@@ -71,6 +71,7 @@ namespace Antlr3.ST
          *  </summary>
          */
         List<string> _indents = new List<string>();
+        int _indentationWidth;
 
         /** <summary>
          *  Stack of integer anchors (char positions in line); avoid Integer
@@ -137,7 +138,7 @@ namespace Antlr3.ST
         public virtual void pushIndentation( string indent )
         {
             int lastAnchor = 0;
-            int indentWidth = getIndentationWidth();
+            int indentWidth = IndentationWidth;
             // If current anchor is beyond current indent width, add in difference
             if ( _anchors_sp >= 0 && _anchors[_anchors_sp] > indentWidth )
             {
@@ -146,9 +147,12 @@ namespace Antlr3.ST
                 if ( indent != null )
                     buf.Append( indent ); // don't add if null
                 _indents.Add( buf.ToString() );
+                _indentationWidth += buf.Length;
                 return;
             }
             _indents.Add( indent ?? string.Empty );
+            if ( indent != null )
+                _indentationWidth += indent.Length;
         }
 
         /// <exception cref="System.ArgumentOutOfRangeException" />
@@ -156,6 +160,7 @@ namespace Antlr3.ST
         {
             string value = _indents[_indents.Count - 1];
             _indents.RemoveAt( _indents.Count - 1 );
+            _indentationWidth -= value.Length;
             return value;
         }
 
@@ -182,11 +187,12 @@ namespace Antlr3.ST
             _anchors_sp--;
         }
 
-        /// <exception cref="System.ArgumentNullException" />
-        /// <exception cref="System.OverflowException" />
-        public virtual int getIndentationWidth()
+        public int IndentationWidth
         {
-            return _indents.Sum( s => s.Length );
+            get
+            {
+                return _indentationWidth;
+            }
         }
 
         /// <summary>Write out a string literal or attribute expression or expression element.</summary>

@@ -134,7 +134,7 @@ action[StringTemplate self]
 		{
 			string indent = ((ChunkToken)a).Indentation;
 			ASTExpr c = self.parseAction($a.text);
-			c.setIndentation(indent);
+			c.Indentation = indent;
 			self.addChunk(c);
 		}
 
@@ -221,7 +221,7 @@ action[StringTemplate self]
 				// treat as regular action: mangled template include
 				string indent = ((ChunkToken)$rr).Indentation;
 				ASTExpr c = self.parseAction(mangledRef+"()");
-				c.setIndentation(indent);
+				c.Indentation = indent;
 				self.addChunk(c);
 			}
 		}
@@ -238,7 +238,7 @@ action[StringTemplate self]
 				// treat as regular action: mangled template include
 				string indent = ((ChunkToken)$rd).Indentation;
 				ASTExpr c = self.parseAction(regionST.getName()+"()");
-				c.setIndentation(indent);
+				c.Indentation = indent;
 				self.addChunk(c);
 			}
 			else

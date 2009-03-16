@@ -1,4 +1,4 @@
-// $ANTLR 3.1.2 Language\\Template.g3 2009-03-07 08:52:37
+// $ANTLR 3.1.2 Language\\Template.g3 2009-03-16 15:51:02
 
 // The variable 'variable' is assigned but its value is never used.
 #pragma warning disable 219
@@ -269,7 +269,7 @@ public partial class TemplateParser : Parser
 
 							string indent = ((ChunkToken)a).Indentation;
 							ASTExpr c = self.parseAction((a!=null?a.Text:null));
-							c.setIndentation(indent);
+							c.Indentation = indent;
 							self.addChunk(c);
 						
 
@@ -419,7 +419,7 @@ public partial class TemplateParser : Parser
 								// treat as regular action: mangled template include
 								string indent = ((ChunkToken)rr).Indentation;
 								ASTExpr c = self.parseAction(mangledRef+"()");
-								c.setIndentation(indent);
+								c.Indentation = indent;
 								self.addChunk(c);
 							}
 						
@@ -441,7 +441,7 @@ public partial class TemplateParser : Parser
 								// treat as regular action: mangled template include
 								string indent = ((ChunkToken)rd).Indentation;
 								ASTExpr c = self.parseAction(regionST.getName()+"()");
-								c.setIndentation(indent);
+								c.Indentation = indent;
 								self.addChunk(c);
 							}
 							else

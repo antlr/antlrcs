@@ -44,6 +44,9 @@ namespace Antlr3.ST.Language
     using InvalidOperationException = System.InvalidOperationException;
     using IOException = System.IO.IOException;
     using ITree = Antlr.Runtime.Tree.ITree;
+    using MemberInfo = System.Reflection.MemberInfo;
+    using MethodImpl = System.Runtime.CompilerServices.MethodImplAttribute;
+    using MethodImplOptions = System.Runtime.CompilerServices.MethodImplOptions;
     using MethodInfo = System.Reflection.MethodInfo;
     using RecognitionException = Antlr.Runtime.RecognitionException;
     using StringWriter = System.IO.StringWriter;
@@ -89,6 +92,8 @@ namespace Antlr3.ST.Language
                 "separator",
                 "wrap"
             };
+
+        static readonly Dictionary<Type, Dictionary<string, MemberInfo>> _memberAccessors = new Dictionary<Type, Dictionary<string, MemberInfo>>();
 
         protected internal ITree exprTree = null;
 
@@ -170,7 +175,7 @@ namespace Antlr3.ST.Language
             { // any non-empty expr means true; check presence
                 @out.pushAnchorPoint();
             }
-            @out.pushIndentation( getIndentation() );
+            @out.pushIndentation( Indentation );
             handleExprOptions( self );
             //System.out.println("evaluating tree: "+exprTree.toStringList());
             ActionEvaluator eval =
@@ -498,6 +503,63 @@ namespace Antlr3.ST.Language
             return value;
         }
 
+        [MethodImpl( MethodImplOptions.Synchronized )]
+        static MemberInfo FindMember( Type type, string name )
+        {
+            if ( type == null || name == null )
+                throw new ArgumentNullException();
+
+            Dictionary<string, MemberInfo> members;
+            MemberInfo member = null;
+
+            if ( _memberAccessors.TryGetValue( type, out members ) )
+            {
+                if ( members.TryGetValue( name, out member ) )
+                    return member;
+            }
+            else
+            {
+                members = new Dictionary<string, MemberInfo>();
+                _memberAccessors[type] = members;
+            }
+
+            // must look up using reflection
+            string methodSuffix = char.ToUpperInvariant( name[0] ) + name.Substring( 1 );
+
+            // BEGIN ADDED FOR C#
+            if ( member == null )
+            {
+                System.Reflection.PropertyInfo p = type.GetProperty( methodSuffix );
+                if ( p != null )
+                    member = p.GetGetMethod();
+            }
+            if ( member == null )
+            {
+                member = GetMethod( type, "Get" + methodSuffix );
+            }
+            if ( member == null )
+            {
+                member = GetMethod( type, "Is" + methodSuffix );
+            }
+            // END ADDED
+            if ( member == null )
+            {
+                member = GetMethod( type, "get" + methodSuffix );
+            }
+            if ( member == null )
+            {
+                member = GetMethod( type, "is" + methodSuffix );
+            }
+            if ( member == null )
+            {
+                // try for a visible field
+                member = type.GetField( name );
+            }
+
+            members[name] = member;
+            return member;
+        }
+
         protected virtual object rawGetObjectProperty( StringTemplate self, object o, object property )
         {
             Type c = o.GetType();
@@ -565,7 +627,6 @@ namespace Antlr3.ST.Language
             // try getXXX and isXXX properties
 
             // check cache
-            MethodInfo m = null;
             /*
             Member cachedMember =
                 self.getGroup().getCachedClassProperty(c,propertyName);
@@ -589,59 +650,33 @@ namespace Antlr3.ST.Language
             }
             */
 
-            // must look up using reflection
             string propertyName = (string)property;
-            string methodSuffix = Char.ToUpperInvariant( propertyName[0] ) +
-                propertyName.Substring( 1 );
-            m = getMethod( c, "get" + methodSuffix );
-            if ( m == null )
+            MemberInfo member = FindMember( c, propertyName );
+            MethodInfo method = member as MethodInfo;
+            if ( method != null )
             {
-                m = getMethod( c, "is" + methodSuffix );
-            }
-            // BEGIN ADDED FOR C#
-            if ( m == null )
-            {
-                System.Reflection.PropertyInfo p = c.GetProperty( methodSuffix );
-                if ( p != null )
-                    m = p.GetGetMethod();
-            }
-            if ( m == null )
-            {
-                m = getMethod( c, "Get" + methodSuffix );
-            }
-            if ( m == null )
-            {
-                m = getMethod( c, "Is" + methodSuffix );
-            }
-            // END ADDED
-            if ( m != null )
-            {
-                // save to avoid lookup later
-                //self.getGroup().cacheClassProperty(c,propertyName,m);
                 try
                 {
-                    value = invokeMethod( m, o, value );
+                    value = InvokeMethod( method, o, value );
                 }
                 catch ( Exception e )
                 {
-                    self.error( "Can't get property " + propertyName + " using method get/is" + methodSuffix +
+                    self.error( "Can't get property " + propertyName + " using method get/is" + propertyName +
                         " from " + c.Name + " instance", e );
                 }
             }
             else
             {
-                // try for a visible field
-                FieldInfo f = c.GetField( propertyName );
-                if ( f != null )
+                FieldInfo field = member as FieldInfo;
+                if ( field != null )
                 {
-                    //self.getGroup().cacheClassProperty(c,propertyName,f);
                     try
                     {
-                        value = accessField( f, o, value );
+                        value = AccessField( field, o, value );
                     }
                     catch ( FieldAccessException iae )
                     {
-                        self.error( "Can't access property " + propertyName + " using method get/is" + methodSuffix +
+                        self.error( "Can't access property " + propertyName + " using method get/is" + propertyName +
                             " or direct field access from " + c.Name + " instance", iae );
                     }
                 }
@@ -655,41 +690,19 @@ namespace Antlr3.ST.Language
             return value;
         }
 
-        protected virtual object accessField( FieldInfo f, object o, object value )
+        protected static object AccessField( FieldInfo f, object o, object value )
         {
-#if false
-            try
-            {
-                // make sure it's accessible (stupid java)
-                f.setAccessible( true );
-            }
-            catch ( SecurityException se )
-            {
-                ; // oh well; security won't let us
-            }
-#endif
             value = f.GetValue( o );
             return value;
         }
 
-        protected virtual object invokeMethod( MethodInfo m, object o, object value )
+        protected static object InvokeMethod( MethodInfo m, object o, object value )
         {
-#if false
-            try
-            {
-                // make sure it's accessible (stupid java)
-                m.setAccessible( true );
-            }
-            catch ( SecurityException se )
-            {
-                ; // oh well; security won't let us
-            }
-#endif
             value = m.Invoke( o, null );
             return value;
         }
 
-        protected virtual MethodInfo getMethod( Type c, string methodName )
+        protected static MethodInfo GetMethod( Type c, string methodName )
         {
             // we want a getter method
             return c.GetMethod( methodName, new Type[0] );
@@ -746,10 +759,6 @@ namespace Antlr3.ST.Language
          *  Strings then cat.
          *  </summary>
          */
-        public object add( object a, object b )
-        {
-            return Add( a, b );
-        }
         public virtual object Add( object a, object b )
         {
             if ( a == null )

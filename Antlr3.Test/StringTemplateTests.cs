@@ -2887,20 +2887,26 @@ namespace AntlrUnitTests
 
         public class Decl
         {
-            string name;
-            string type;
+            string _name;
+            string _type;
             public Decl( string name, string type )
             {
-                this.name = name;
-                this.type = type;
+                _name = name;
+                _type = type;
             }
-            public string getName()
+            public string Name
             {
-                return name;
+                get
+                {
+                    return _name;
+                }
             }
-            public string getType()
+            public string Type
             {
-                return type;
+                get
+                {
+                    return _type;
+                }
             }
         }
 

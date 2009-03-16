@@ -43,13 +43,13 @@ namespace Antlr3.ST.Language
      *  evaluator.
      *  </remarks>
      */
-    abstract public class Expr
+    public abstract class Expr
     {
         /** <summary>The StringTemplate object surrounding this expr</summary> */
-        protected StringTemplate enclosingTemplate;
+        StringTemplate _enclosingTemplate;
 
         /** <summary>
-         *  Any thing spit out as a chunk (even plain text) must be indented
+         *  Anything spit out as a chunk (even plain text) must be indented
          *  according to whitespace before the action that generated it.  So,
          *  plain text in the outermost template is never indented, but the
          *  text and attribute references in a nested template will all be
@@ -57,30 +57,34 @@ namespace Antlr3.ST.Language
          *  reference that initiates construction of the nested template.
          *  </summary>
          */
-        protected string indentation = null;
+        string _indentation;
 
         public Expr( StringTemplate enclosingTemplate )
         {
-            this.enclosingTemplate = enclosingTemplate;
+            _enclosingTemplate = enclosingTemplate;
         }
 
         /** <summary>How to write this node to output; return how many char written</summary> */
         abstract public int write( StringTemplate self, IStringTemplateWriter writer );
 
-        public virtual StringTemplate getEnclosingTemplate()
+        public StringTemplate EnclosingTemplate
         {
-            return enclosingTemplate;
+            get
+            {
+                return _enclosingTemplate;
+            }
         }
 
-        public virtual string getIndentation()
+        public string Indentation
         {
-            return indentation;
-        }
-
-        public virtual void setIndentation( string indentation )
-        {
-            this.indentation = indentation;
+            get
+            {
+                return _indentation;
+            }
+            set
+            {
+                _indentation = value;
+            }
         }
     }
-
 }
