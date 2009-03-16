@@ -36,6 +36,12 @@ options
 	language=CSharp3;
 }
 
+tokens
+{
+	INTERFACE = 'interface';
+	OPTIONAL = 'optional';
+}
+
 @lexer::header
 {
 /*

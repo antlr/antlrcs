@@ -1,4 +1,4 @@
-// $ANTLR 3.1.2 Language\\ActionEvaluator.g3 2009-03-16 17:34:36
+// $ANTLR 3.1.2 Language\\ActionEvaluator.g3 2009-03-16 18:28:41
 
 // The variable 'variable' is assigned but its value is never used.
 #pragma warning disable 219
@@ -59,17 +59,9 @@ namespace Antlr3.ST.Language
 public partial class ActionEvaluator : TreeParser
 {
 	public static readonly string[] tokenNames = new string[] {
-		"<invalid>", "<EOR>", "<DOWN>", "<UP>", "ANONYMOUS_TEMPLATE", "APPLY", "ARGS", "ASSIGN", "COLON", "COMMA", "CONDITIONAL", "DOT", "DOTDOTDOT", "ESC_CHAR", "FUNCTION", "ID", "INCLUDE", "INT", "LBRACK", "LIST", "LPAREN", "MULTI_APPLY", "NESTED_ANONYMOUS_TEMPLATE", "NOT", "NOTHING", "PLUS", "RBRACK", "RPAREN", "SEMI", "SINGLEVALUEARG", "STRING", "TEMPLATE", "TEMPLATE_ARGS", "VALUE", "WS", "WS_CHAR", "'elseif'", "'first'", "'last'", "'length'", "'rest'", "'strip'", "'super'", "'trunc'"
+		"<invalid>", "<EOR>", "<DOWN>", "<UP>", "ANONYMOUS_TEMPLATE", "APPLY", "ARGS", "ASSIGN", "COLON", "COMMA", "CONDITIONAL", "DOT", "DOTDOTDOT", "ELSEIF", "ESC_CHAR", "FIRST", "FUNCTION", "ID", "INCLUDE", "INT", "LAST", "LBRACK", "LENGTH", "LIST", "LPAREN", "MULTI_APPLY", "NESTED_ANONYMOUS_TEMPLATE", "NOT", "NOTHING", "PLUS", "RBRACK", "REST", "RPAREN", "SEMI", "SINGLEVALUEARG", "STRING", "STRIP", "SUPER", "TEMPLATE", "TEMPLATE_ARGS", "TRUNC", "VALUE", "WS", "WS_CHAR"
 	};
 	public const int EOF=-1;
-	public const int T__36=36;
-	public const int T__37=37;
-	public const int T__38=38;
-	public const int T__39=39;
-	public const int T__40=40;
-	public const int T__41=41;
-	public const int T__42=42;
-	public const int T__43=43;
 	public const int ANONYMOUS_TEMPLATE=4;
 	public const int APPLY=5;
 	public const int ARGS=6;
@@ -79,29 +71,37 @@ public partial class ActionEvaluator : TreeParser
 	public const int CONDITIONAL=10;
 	public const int DOT=11;
 	public const int DOTDOTDOT=12;
-	public const int ESC_CHAR=13;
-	public const int FUNCTION=14;
-	public const int ID=15;
-	public const int INCLUDE=16;
-	public const int INT=17;
-	public const int LBRACK=18;
-	public const int LIST=19;
-	public const int LPAREN=20;
-	public const int MULTI_APPLY=21;
-	public const int NESTED_ANONYMOUS_TEMPLATE=22;
-	public const int NOT=23;
-	public const int NOTHING=24;
-	public const int PLUS=25;
-	public const int RBRACK=26;
-	public const int RPAREN=27;
-	public const int SEMI=28;
-	public const int SINGLEVALUEARG=29;
-	public const int STRING=30;
-	public const int TEMPLATE=31;
-	public const int TEMPLATE_ARGS=32;
-	public const int VALUE=33;
-	public const int WS=34;
-	public const int WS_CHAR=35;
+	public const int ELSEIF=13;
+	public const int ESC_CHAR=14;
+	public const int FIRST=15;
+	public const int FUNCTION=16;
+	public const int ID=17;
+	public const int INCLUDE=18;
+	public const int INT=19;
+	public const int LAST=20;
+	public const int LBRACK=21;
+	public const int LENGTH=22;
+	public const int LIST=23;
+	public const int LPAREN=24;
+	public const int MULTI_APPLY=25;
+	public const int NESTED_ANONYMOUS_TEMPLATE=26;
+	public const int NOT=27;
+	public const int NOTHING=28;
+	public const int PLUS=29;
+	public const int RBRACK=30;
+	public const int REST=31;
+	public const int RPAREN=32;
+	public const int SEMI=33;
+	public const int SINGLEVALUEARG=34;
+	public const int STRING=35;
+	public const int STRIP=36;
+	public const int SUPER=37;
+	public const int TEMPLATE=38;
+	public const int TEMPLATE_ARGS=39;
+	public const int TRUNC=40;
+	public const int VALUE=41;
+	public const int WS=42;
+	public const int WS_CHAR=43;
 
 	// delegates
 	// delegators
@@ -751,32 +751,32 @@ public partial class ActionEvaluator : TreeParser
 			int alt7=6;
 			switch ( input.LA(1) )
 			{
-			case 37:
+			case FIRST:
 				{
 				alt7=1;
 				}
 				break;
-			case 40:
+			case REST:
 				{
 				alt7=2;
 				}
 				break;
-			case 38:
+			case LAST:
 				{
 				alt7=3;
 				}
 				break;
-			case 39:
+			case LENGTH:
 				{
 				alt7=4;
 				}
 				break;
-			case 41:
+			case STRIP:
 				{
 				alt7=5;
 				}
 				break;
-			case 43:
+			case TRUNC:
 				{
 				alt7=6;
 				}
@@ -794,7 +794,7 @@ public partial class ActionEvaluator : TreeParser
 			case 1:
 				// Language\\ActionEvaluator.g3:191:6: 'first' a= singleFunctionArg
 				{
-				Match(input,37,Follow._37_in_function397); 
+				Match(input,FIRST,Follow._FIRST_in_function397); 
 				PushFollow(Follow._singleFunctionArg_in_function402);
 				a=singleFunctionArg();
 
@@ -807,7 +807,7 @@ public partial class ActionEvaluator : TreeParser
 			case 2:
 				// Language\\ActionEvaluator.g3:192:6: 'rest' a= singleFunctionArg
 				{
-				Match(input,40,Follow._40_in_function411); 
+				Match(input,REST,Follow._REST_in_function411); 
 				PushFollow(Follow._singleFunctionArg_in_function416);
 				a=singleFunctionArg();
 
@@ -820,7 +820,7 @@ public partial class ActionEvaluator : TreeParser
 			case 3:
 				// Language\\ActionEvaluator.g3:193:6: 'last' a= singleFunctionArg
 				{
-				Match(input,38,Follow._38_in_function425); 
+				Match(input,LAST,Follow._LAST_in_function425); 
 				PushFollow(Follow._singleFunctionArg_in_function430);
 				a=singleFunctionArg();
 
@@ -833,7 +833,7 @@ public partial class ActionEvaluator : TreeParser
 			case 4:
 				// Language\\ActionEvaluator.g3:194:6: 'length' a= singleFunctionArg
 				{
-				Match(input,39,Follow._39_in_function439); 
+				Match(input,LENGTH,Follow._LENGTH_in_function439); 
 				PushFollow(Follow._singleFunctionArg_in_function443);
 				a=singleFunctionArg();
 
@@ -846,7 +846,7 @@ public partial class ActionEvaluator : TreeParser
 			case 5:
 				// Language\\ActionEvaluator.g3:195:6: 'strip' a= singleFunctionArg
 				{
-				Match(input,41,Follow._41_in_function452); 
+				Match(input,STRIP,Follow._STRIP_in_function452); 
 				PushFollow(Follow._singleFunctionArg_in_function457);
 				a=singleFunctionArg();
 
@@ -859,7 +859,7 @@ public partial class ActionEvaluator : TreeParser
 			case 6:
 				// Language\\ActionEvaluator.g3:196:6: 'trunc' a= singleFunctionArg
 				{
-				Match(input,43,Follow._43_in_function466); 
+				Match(input,TRUNC,Follow._TRUNC_in_function466); 
 				PushFollow(Follow._singleFunctionArg_in_function471);
 				a=singleFunctionArg();
 
@@ -1649,7 +1649,7 @@ public partial class ActionEvaluator : TreeParser
 	{
 		public static readonly BitSet _expr_in_action56 = new BitSet(new ulong[]{0x2UL});
 		public static readonly BitSet _PLUS_in_expr79 = new BitSet(new ulong[]{0x4UL});
-		public static readonly BitSet _expr_in_expr83 = new BitSet(new ulong[]{0x2422BC830UL});
+		public static readonly BitSet _expr_in_expr83 = new BitSet(new ulong[]{0x208228F0830UL});
 		public static readonly BitSet _expr_in_expr87 = new BitSet(new ulong[]{0x8UL});
 		public static readonly BitSet _templateApplication_in_expr95 = new BitSet(new ulong[]{0x2UL});
 		public static readonly BitSet _attribute_in_expr102 = new BitSet(new ulong[]{0x2UL});
@@ -1659,31 +1659,31 @@ public partial class ActionEvaluator : TreeParser
 		public static readonly BitSet _VALUE_in_expr131 = new BitSet(new ulong[]{0x4UL});
 		public static readonly BitSet _expr_in_expr135 = new BitSet(new ulong[]{0x8UL});
 		public static readonly BitSet _LIST_in_list167 = new BitSet(new ulong[]{0x4UL});
-		public static readonly BitSet _expr_in_list174 = new BitSet(new ulong[]{0x2432BC838UL});
-		public static readonly BitSet _NOTHING_in_list187 = new BitSet(new ulong[]{0x2432BC838UL});
+		public static readonly BitSet _expr_in_list174 = new BitSet(new ulong[]{0x208328F0838UL});
+		public static readonly BitSet _NOTHING_in_list187 = new BitSet(new ulong[]{0x208328F0838UL});
 		public static readonly BitSet _INCLUDE_in_templateInclude229 = new BitSet(new ulong[]{0x4UL});
 		public static readonly BitSet _ID_in_templateInclude242 = new BitSet(new ulong[]{0xFFFFFFFFFF0UL});
 		public static readonly BitSet _VALUE_in_templateInclude262 = new BitSet(new ulong[]{0x4UL});
 		public static readonly BitSet _expr_in_templateInclude266 = new BitSet(new ulong[]{0xFFFFFFFFFF0UL});
 		public static readonly BitSet _APPLY_in_templateApplication316 = new BitSet(new ulong[]{0x4UL});
-		public static readonly BitSet _expr_in_templateApplication320 = new BitSet(new ulong[]{0x80000000UL});
-		public static readonly BitSet _template_in_templateApplication326 = new BitSet(new ulong[]{0x80000008UL});
+		public static readonly BitSet _expr_in_templateApplication320 = new BitSet(new ulong[]{0x4000000000UL});
+		public static readonly BitSet _template_in_templateApplication326 = new BitSet(new ulong[]{0x4000000008UL});
 		public static readonly BitSet _MULTI_APPLY_in_templateApplication345 = new BitSet(new ulong[]{0x4UL});
-		public static readonly BitSet _expr_in_templateApplication350 = new BitSet(new ulong[]{0x2422BC930UL});
+		public static readonly BitSet _expr_in_templateApplication350 = new BitSet(new ulong[]{0x208228F0930UL});
 		public static readonly BitSet _COLON_in_templateApplication357 = new BitSet(new ulong[]{0x10UL});
 		public static readonly BitSet _ANONYMOUS_TEMPLATE_in_templateApplication364 = new BitSet(new ulong[]{0x8UL});
 		public static readonly BitSet _FUNCTION_in_function390 = new BitSet(new ulong[]{0x4UL});
-		public static readonly BitSet _37_in_function397 = new BitSet(new ulong[]{0x20000000UL});
+		public static readonly BitSet _FIRST_in_function397 = new BitSet(new ulong[]{0x400000000UL});
 		public static readonly BitSet _singleFunctionArg_in_function402 = new BitSet(new ulong[]{0x8UL});
-		public static readonly BitSet _40_in_function411 = new BitSet(new ulong[]{0x20000000UL});
+		public static readonly BitSet _REST_in_function411 = new BitSet(new ulong[]{0x400000000UL});
 		public static readonly BitSet _singleFunctionArg_in_function416 = new BitSet(new ulong[]{0x8UL});
-		public static readonly BitSet _38_in_function425 = new BitSet(new ulong[]{0x20000000UL});
+		public static readonly BitSet _LAST_in_function425 = new BitSet(new ulong[]{0x400000000UL});
 		public static readonly BitSet _singleFunctionArg_in_function430 = new BitSet(new ulong[]{0x8UL});
-		public static readonly BitSet _39_in_function439 = new BitSet(new ulong[]{0x20000000UL});
+		public static readonly BitSet _LENGTH_in_function439 = new BitSet(new ulong[]{0x400000000UL});
 		public static readonly BitSet _singleFunctionArg_in_function443 = new BitSet(new ulong[]{0x8UL});
-		public static readonly BitSet _41_in_function452 = new BitSet(new ulong[]{0x20000000UL});
+		public static readonly BitSet _STRIP_in_function452 = new BitSet(new ulong[]{0x400000000UL});
 		public static readonly BitSet _singleFunctionArg_in_function457 = new BitSet(new ulong[]{0x8UL});
-		public static readonly BitSet _43_in_function466 = new BitSet(new ulong[]{0x20000000UL});
+		public static readonly BitSet _TRUNC_in_function466 = new BitSet(new ulong[]{0x400000000UL});
 		public static readonly BitSet _singleFunctionArg_in_function471 = new BitSet(new ulong[]{0x8UL});
 		public static readonly BitSet _SINGLEVALUEARG_in_singleFunctionArg499 = new BitSet(new ulong[]{0x4UL});
 		public static readonly BitSet _expr_in_singleFunctionArg501 = new BitSet(new ulong[]{0x8UL});
@@ -1697,7 +1697,7 @@ public partial class ActionEvaluator : TreeParser
 		public static readonly BitSet _ifAtom_in_ifCondition629 = new BitSet(new ulong[]{0x8UL});
 		public static readonly BitSet _expr_in_ifAtom647 = new BitSet(new ulong[]{0x2UL});
 		public static readonly BitSet _DOT_in_attribute671 = new BitSet(new ulong[]{0x4UL});
-		public static readonly BitSet _expr_in_attribute675 = new BitSet(new ulong[]{0x200008000UL});
+		public static readonly BitSet _expr_in_attribute675 = new BitSet(new ulong[]{0x20000020000UL});
 		public static readonly BitSet _ID_in_attribute684 = new BitSet(new ulong[]{0x8UL});
 		public static readonly BitSet _VALUE_in_attribute714 = new BitSet(new ulong[]{0x4UL});
 		public static readonly BitSet _expr_in_attribute718 = new BitSet(new ulong[]{0x8UL});
@@ -1711,7 +1711,7 @@ public partial class ActionEvaluator : TreeParser
 		public static readonly BitSet _SINGLEVALUEARG_in_singleTemplateArg836 = new BitSet(new ulong[]{0x4UL});
 		public static readonly BitSet _expr_in_singleTemplateArg840 = new BitSet(new ulong[]{0x8UL});
 		public static readonly BitSet _ASSIGN_in_argumentAssignment860 = new BitSet(new ulong[]{0x4UL});
-		public static readonly BitSet _ID_in_argumentAssignment864 = new BitSet(new ulong[]{0x2422BC830UL});
+		public static readonly BitSet _ID_in_argumentAssignment864 = new BitSet(new ulong[]{0x208228F0830UL});
 		public static readonly BitSet _expr_in_argumentAssignment866 = new BitSet(new ulong[]{0x8UL});
 		public static readonly BitSet _DOTDOTDOT_in_argumentAssignment877 = new BitSet(new ulong[]{0x2UL});
 

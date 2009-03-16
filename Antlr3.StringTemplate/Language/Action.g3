@@ -49,6 +49,14 @@ tokens
 	// isolated template include (no attribute)
 	INCLUDE;
 	CONDITIONAL='if';
+	ELSEIF='elseif';
+	FIRST='first';
+	REST='rest';
+	LAST='last';
+	LENGTH='length';
+	STRIP='strip';
+	TRUNC='trunc';
+	SUPER='super';
 	// used for (foo): #(VALUE foo)
 	VALUE;
 	TEMPLATE;

@@ -1,4 +1,4 @@
-// $ANTLR 3.1.2 Language\\Action.g3 2009-03-16 17:25:40
+// $ANTLR 3.1.2 Language\\Action.g3 2009-03-16 18:28:08
 
 // The variable 'variable' is assigned but its value is never used.
 #pragma warning disable 219
@@ -55,17 +55,9 @@ namespace  Antlr3.ST.Language
 public partial class ActionParser : Parser
 {
 	public static readonly string[] tokenNames = new string[] {
-		"<invalid>", "<EOR>", "<DOWN>", "<UP>", "ANONYMOUS_TEMPLATE", "APPLY", "ARGS", "ASSIGN", "COLON", "COMMA", "CONDITIONAL", "DOT", "DOTDOTDOT", "ESC_CHAR", "FUNCTION", "ID", "INCLUDE", "INT", "LBRACK", "LIST", "LPAREN", "MULTI_APPLY", "NESTED_ANONYMOUS_TEMPLATE", "NOT", "NOTHING", "PLUS", "RBRACK", "RPAREN", "SEMI", "SINGLEVALUEARG", "STRING", "TEMPLATE", "TEMPLATE_ARGS", "VALUE", "WS", "WS_CHAR", "'elseif'", "'first'", "'last'", "'length'", "'rest'", "'strip'", "'super'", "'trunc'"
+		"<invalid>", "<EOR>", "<DOWN>", "<UP>", "ANONYMOUS_TEMPLATE", "APPLY", "ARGS", "ASSIGN", "COLON", "COMMA", "CONDITIONAL", "DOT", "DOTDOTDOT", "ELSEIF", "ESC_CHAR", "FIRST", "FUNCTION", "ID", "INCLUDE", "INT", "LAST", "LBRACK", "LENGTH", "LIST", "LPAREN", "MULTI_APPLY", "NESTED_ANONYMOUS_TEMPLATE", "NOT", "NOTHING", "PLUS", "RBRACK", "REST", "RPAREN", "SEMI", "SINGLEVALUEARG", "STRING", "STRIP", "SUPER", "TEMPLATE", "TEMPLATE_ARGS", "TRUNC", "VALUE", "WS", "WS_CHAR"
 	};
 	public const int EOF=-1;
-	public const int T__36=36;
-	public const int T__37=37;
-	public const int T__38=38;
-	public const int T__39=39;
-	public const int T__40=40;
-	public const int T__41=41;
-	public const int T__42=42;
-	public const int T__43=43;
 	public const int ANONYMOUS_TEMPLATE=4;
 	public const int APPLY=5;
 	public const int ARGS=6;
@@ -75,29 +67,37 @@ public partial class ActionParser : Parser
 	public const int CONDITIONAL=10;
 	public const int DOT=11;
 	public const int DOTDOTDOT=12;
-	public const int ESC_CHAR=13;
-	public const int FUNCTION=14;
-	public const int ID=15;
-	public const int INCLUDE=16;
-	public const int INT=17;
-	public const int LBRACK=18;
-	public const int LIST=19;
-	public const int LPAREN=20;
-	public const int MULTI_APPLY=21;
-	public const int NESTED_ANONYMOUS_TEMPLATE=22;
-	public const int NOT=23;
-	public const int NOTHING=24;
-	public const int PLUS=25;
-	public const int RBRACK=26;
-	public const int RPAREN=27;
-	public const int SEMI=28;
-	public const int SINGLEVALUEARG=29;
-	public const int STRING=30;
-	public const int TEMPLATE=31;
-	public const int TEMPLATE_ARGS=32;
-	public const int VALUE=33;
-	public const int WS=34;
-	public const int WS_CHAR=35;
+	public const int ELSEIF=13;
+	public const int ESC_CHAR=14;
+	public const int FIRST=15;
+	public const int FUNCTION=16;
+	public const int ID=17;
+	public const int INCLUDE=18;
+	public const int INT=19;
+	public const int LAST=20;
+	public const int LBRACK=21;
+	public const int LENGTH=22;
+	public const int LIST=23;
+	public const int LPAREN=24;
+	public const int MULTI_APPLY=25;
+	public const int NESTED_ANONYMOUS_TEMPLATE=26;
+	public const int NOT=27;
+	public const int NOTHING=28;
+	public const int PLUS=29;
+	public const int RBRACK=30;
+	public const int REST=31;
+	public const int RPAREN=32;
+	public const int SEMI=33;
+	public const int SINGLEVALUEARG=34;
+	public const int STRING=35;
+	public const int STRIP=36;
+	public const int SUPER=37;
+	public const int TEMPLATE=38;
+	public const int TEMPLATE_ARGS=39;
+	public const int TRUNC=40;
+	public const int VALUE=41;
+	public const int WS=42;
+	public const int WS_CHAR=43;
 
 	// delegates
 	// delegators
@@ -138,7 +138,7 @@ public partial class ActionParser : Parser
 	}
 
 	// $ANTLR start "action"
-	// Language\\Action.g3:137:0: public action returns [IDictionary<string, object> opts=null] : ( templatesExpr ( SEMI optionList )? | 'if' LPAREN ifCondition RPAREN | 'elseif' LPAREN ifCondition RPAREN ) EOF ;
+	// Language\\Action.g3:145:0: public action returns [IDictionary<string, object> opts=null] : ( templatesExpr ( SEMI optionList )? | 'if' LPAREN ifCondition RPAREN | 'elseif' LPAREN ifCondition RPAREN ) EOF ;
 	public ActionParser.action_return action(  )
 	{
 		ActionParser.action_return retval = new ActionParser.action_return();
@@ -170,28 +170,28 @@ public partial class ActionParser : Parser
 
 		try
 		{
-			// Language\\Action.g3:138:4: ( ( templatesExpr ( SEMI optionList )? | 'if' LPAREN ifCondition RPAREN | 'elseif' LPAREN ifCondition RPAREN ) EOF )
-			// Language\\Action.g3:138:4: ( templatesExpr ( SEMI optionList )? | 'if' LPAREN ifCondition RPAREN | 'elseif' LPAREN ifCondition RPAREN ) EOF
+			// Language\\Action.g3:146:4: ( ( templatesExpr ( SEMI optionList )? | 'if' LPAREN ifCondition RPAREN | 'elseif' LPAREN ifCondition RPAREN ) EOF )
+			// Language\\Action.g3:146:4: ( templatesExpr ( SEMI optionList )? | 'if' LPAREN ifCondition RPAREN | 'elseif' LPAREN ifCondition RPAREN ) EOF
 			{
 			root_0 = (StringTemplateAST)adaptor.Nil();
 
-			// Language\\Action.g3:138:4: ( templatesExpr ( SEMI optionList )? | 'if' LPAREN ifCondition RPAREN | 'elseif' LPAREN ifCondition RPAREN )
+			// Language\\Action.g3:146:4: ( templatesExpr ( SEMI optionList )? | 'if' LPAREN ifCondition RPAREN | 'elseif' LPAREN ifCondition RPAREN )
 			int alt2=3;
 			switch ( input.LA(1) )
 			{
 			case ANONYMOUS_TEMPLATE:
+			case FIRST:
 			case ID:
 			case INT:
+			case LAST:
 			case LBRACK:
+			case LENGTH:
 			case LPAREN:
+			case REST:
 			case STRING:
-			case 37:
-			case 38:
-			case 39:
-			case 40:
-			case 41:
-			case 42:
-			case 43:
+			case STRIP:
+			case SUPER:
+			case TRUNC:
 				{
 				alt2=1;
 				}
@@ -201,7 +201,7 @@ public partial class ActionParser : Parser
 				alt2=2;
 				}
 				break;
-			case 36:
+			case ELSEIF:
 				{
 				alt2=3;
 				}
@@ -218,15 +218,15 @@ public partial class ActionParser : Parser
 			switch ( alt2 )
 			{
 			case 1:
-				// Language\\Action.g3:138:6: templatesExpr ( SEMI optionList )?
+				// Language\\Action.g3:146:6: templatesExpr ( SEMI optionList )?
 				{
-				PushFollow(Follow._templatesExpr_in_action144);
+				PushFollow(Follow._templatesExpr_in_action192);
 				templatesExpr1=templatesExpr();
 
 				state._fsp--;
 				if (state.failed) return retval;
 				if ( state.backtracking == 0 ) adaptor.AddChild(root_0, templatesExpr1.Tree);
-				// Language\\Action.g3:138:20: ( SEMI optionList )?
+				// Language\\Action.g3:146:20: ( SEMI optionList )?
 				int alt1=2;
 				int LA1_0 = input.LA(1);
 
@@ -237,10 +237,10 @@ public partial class ActionParser : Parser
 				switch ( alt1 )
 				{
 				case 1:
-					// Language\\Action.g3:138:21: SEMI optionList
+					// Language\\Action.g3:146:21: SEMI optionList
 					{
-					SEMI2=(IToken)Match(input,SEMI,Follow._SEMI_in_action147); if (state.failed) return retval;
-					PushFollow(Follow._optionList_in_action150);
+					SEMI2=(IToken)Match(input,SEMI,Follow._SEMI_in_action195); if (state.failed) return retval;
+					PushFollow(Follow._optionList_in_action198);
 					optionList3=optionList();
 
 					state._fsp--;
@@ -260,43 +260,43 @@ public partial class ActionParser : Parser
 				}
 				break;
 			case 2:
-				// Language\\Action.g3:139:5: 'if' LPAREN ifCondition RPAREN
+				// Language\\Action.g3:147:5: 'if' LPAREN ifCondition RPAREN
 				{
-				string_literal4=(IToken)Match(input,CONDITIONAL,Follow._CONDITIONAL_in_action160); if (state.failed) return retval;
+				string_literal4=(IToken)Match(input,CONDITIONAL,Follow._CONDITIONAL_in_action208); if (state.failed) return retval;
 				if ( state.backtracking == 0 ) {
 				string_literal4_tree = (StringTemplateAST)adaptor.Create(string_literal4);
 				root_0 = (StringTemplateAST)adaptor.BecomeRoot(string_literal4_tree, root_0);
 				}
-				LPAREN5=(IToken)Match(input,LPAREN,Follow._LPAREN_in_action163); if (state.failed) return retval;
-				PushFollow(Follow._ifCondition_in_action166);
+				LPAREN5=(IToken)Match(input,LPAREN,Follow._LPAREN_in_action211); if (state.failed) return retval;
+				PushFollow(Follow._ifCondition_in_action214);
 				ifCondition6=ifCondition();
 
 				state._fsp--;
 				if (state.failed) return retval;
 				if ( state.backtracking == 0 ) adaptor.AddChild(root_0, ifCondition6.Tree);
-				RPAREN7=(IToken)Match(input,RPAREN,Follow._RPAREN_in_action168); if (state.failed) return retval;
+				RPAREN7=(IToken)Match(input,RPAREN,Follow._RPAREN_in_action216); if (state.failed) return retval;
 
 				}
 				break;
 			case 3:
-				// Language\\Action.g3:140:5: 'elseif' LPAREN ifCondition RPAREN
+				// Language\\Action.g3:148:5: 'elseif' LPAREN ifCondition RPAREN
 				{
-				string_literal8=(IToken)Match(input,36,Follow._36_in_action175); if (state.failed) return retval;
-				LPAREN9=(IToken)Match(input,LPAREN,Follow._LPAREN_in_action178); if (state.failed) return retval;
-				PushFollow(Follow._ifCondition_in_action181);
+				string_literal8=(IToken)Match(input,ELSEIF,Follow._ELSEIF_in_action223); if (state.failed) return retval;
+				LPAREN9=(IToken)Match(input,LPAREN,Follow._LPAREN_in_action226); if (state.failed) return retval;
+				PushFollow(Follow._ifCondition_in_action229);
 				ifCondition10=ifCondition();
 
 				state._fsp--;
 				if (state.failed) return retval;
 				if ( state.backtracking == 0 ) adaptor.AddChild(root_0, ifCondition10.Tree);
-				RPAREN11=(IToken)Match(input,RPAREN,Follow._RPAREN_in_action183); if (state.failed) return retval;
+				RPAREN11=(IToken)Match(input,RPAREN,Follow._RPAREN_in_action231); if (state.failed) return retval;
 
 				}
 				break;
 
 			}
 
-			EOF12=(IToken)Match(input,EOF,Follow._EOF_in_action193); if (state.failed) return retval;
+			EOF12=(IToken)Match(input,EOF,Follow._EOF_in_action241); if (state.failed) return retval;
 			if ( state.backtracking==0 ) {
 			EOF12_tree = (StringTemplateAST)adaptor.Create(EOF12);
 			adaptor.AddChild(root_0, EOF12_tree);
@@ -334,7 +334,7 @@ public partial class ActionParser : Parser
 	}
 
 	// $ANTLR start "optionList"
-	// Language\\Action.g3:145:0: optionList returns [IDictionary<string, object> opts=new Dictionary<string, object>()] : option[$opts] ( COMMA option[$opts] )* ;
+	// Language\\Action.g3:153:0: optionList returns [IDictionary<string, object> opts=new Dictionary<string, object>()] : option[$opts] ( COMMA option[$opts] )* ;
 	private ActionParser.optionList_return optionList(  )
 	{
 		ActionParser.optionList_return retval = new ActionParser.optionList_return();
@@ -350,18 +350,18 @@ public partial class ActionParser : Parser
 
 		try
 		{
-			// Language\\Action.g3:146:4: ( option[$opts] ( COMMA option[$opts] )* )
-			// Language\\Action.g3:146:4: option[$opts] ( COMMA option[$opts] )*
+			// Language\\Action.g3:154:4: ( option[$opts] ( COMMA option[$opts] )* )
+			// Language\\Action.g3:154:4: option[$opts] ( COMMA option[$opts] )*
 			{
 			root_0 = (StringTemplateAST)adaptor.Nil();
 
-			PushFollow(Follow._option_in_optionList209);
+			PushFollow(Follow._option_in_optionList257);
 			option13=option(retval.opts);
 
 			state._fsp--;
 			if (state.failed) return retval;
 			if ( state.backtracking == 0 ) adaptor.AddChild(root_0, option13.Tree);
-			// Language\\Action.g3:146:18: ( COMMA option[$opts] )*
+			// Language\\Action.g3:154:18: ( COMMA option[$opts] )*
 			for ( ; ; )
 			{
 				int alt3=2;
@@ -376,14 +376,14 @@ public partial class ActionParser : Parser
 				switch ( alt3 )
 				{
 				case 1:
-					// Language\\Action.g3:146:19: COMMA option[$opts]
+					// Language\\Action.g3:154:19: COMMA option[$opts]
 					{
-					COMMA14=(IToken)Match(input,COMMA,Follow._COMMA_in_optionList213); if (state.failed) return retval;
+					COMMA14=(IToken)Match(input,COMMA,Follow._COMMA_in_optionList261); if (state.failed) return retval;
 					if ( state.backtracking==0 ) {
 					COMMA14_tree = (StringTemplateAST)adaptor.Create(COMMA14);
 					adaptor.AddChild(root_0, COMMA14_tree);
 					}
-					PushFollow(Follow._option_in_optionList215);
+					PushFollow(Follow._option_in_optionList263);
 					option15=option(retval.opts);
 
 					state._fsp--;
@@ -434,7 +434,7 @@ public partial class ActionParser : Parser
 	}
 
 	// $ANTLR start "option"
-	// Language\\Action.g3:149:0: option[IDictionary<string, object> opts] : ID ( ASSIGN nonAlternatingTemplateExpr |) ;
+	// Language\\Action.g3:157:0: option[IDictionary<string, object> opts] : ID ( ASSIGN nonAlternatingTemplateExpr |) ;
 	private ActionParser.option_return option( IDictionary<string, object> opts )
 	{
 		ActionParser.option_return retval = new ActionParser.option_return();
@@ -454,17 +454,17 @@ public partial class ActionParser : Parser
 
 		try
 		{
-			// Language\\Action.g3:154:4: ( ID ( ASSIGN nonAlternatingTemplateExpr |) )
-			// Language\\Action.g3:154:4: ID ( ASSIGN nonAlternatingTemplateExpr |)
+			// Language\\Action.g3:162:4: ( ID ( ASSIGN nonAlternatingTemplateExpr |) )
+			// Language\\Action.g3:162:4: ID ( ASSIGN nonAlternatingTemplateExpr |)
 			{
 			root_0 = (StringTemplateAST)adaptor.Nil();
 
-			ID16=(IToken)Match(input,ID,Follow._ID_in_option235); if (state.failed) return retval;
+			ID16=(IToken)Match(input,ID,Follow._ID_in_option283); if (state.failed) return retval;
 			if ( state.backtracking==0 ) {
 			ID16_tree = (StringTemplateAST)adaptor.Create(ID16);
 			adaptor.AddChild(root_0, ID16_tree);
 			}
-			// Language\\Action.g3:155:3: ( ASSIGN nonAlternatingTemplateExpr |)
+			// Language\\Action.g3:163:3: ( ASSIGN nonAlternatingTemplateExpr |)
 			int alt4=2;
 			int LA4_0 = input.LA(1);
 
@@ -486,14 +486,14 @@ public partial class ActionParser : Parser
 			switch ( alt4 )
 			{
 			case 1:
-				// Language\\Action.g3:155:5: ASSIGN nonAlternatingTemplateExpr
+				// Language\\Action.g3:163:5: ASSIGN nonAlternatingTemplateExpr
 				{
-				ASSIGN17=(IToken)Match(input,ASSIGN,Follow._ASSIGN_in_option241); if (state.failed) return retval;
+				ASSIGN17=(IToken)Match(input,ASSIGN,Follow._ASSIGN_in_option289); if (state.failed) return retval;
 				if ( state.backtracking==0 ) {
 				ASSIGN17_tree = (StringTemplateAST)adaptor.Create(ASSIGN17);
 				adaptor.AddChild(root_0, ASSIGN17_tree);
 				}
-				PushFollow(Follow._nonAlternatingTemplateExpr_in_option243);
+				PushFollow(Follow._nonAlternatingTemplateExpr_in_option291);
 				nonAlternatingTemplateExpr18=nonAlternatingTemplateExpr();
 
 				state._fsp--;
@@ -507,7 +507,7 @@ public partial class ActionParser : Parser
 				}
 				break;
 			case 2:
-				// Language\\Action.g3:156:5: 
+				// Language\\Action.g3:164:5: 
 				{
 				if ( state.backtracking == 0 )
 				{
@@ -555,7 +555,7 @@ public partial class ActionParser : Parser
 	}
 
 	// $ANTLR start "templatesExpr"
-	// Language\\Action.g3:161:0: templatesExpr : expr ( ( COMMA expr )+ colon= COLON anonymousTemplate -> ^( MULTI_APPLY[\"MULTI_APPLY\"] ( expr )+ $colon anonymousTemplate ) | ( -> expr ) (colon= COLON templateList -> ^( APPLY[$colon] $templatesExpr templateList ) )* ) ;
+	// Language\\Action.g3:169:0: templatesExpr : expr ( ( COMMA expr )+ colon= COLON anonymousTemplate -> ^( MULTI_APPLY[\"MULTI_APPLY\"] ( expr )+ $colon anonymousTemplate ) | ( -> expr ) (colon= COLON templateList -> ^( APPLY[$colon] $templatesExpr templateList ) )* ) ;
 	private ActionParser.templatesExpr_return templatesExpr(  )
 	{
 		ActionParser.templatesExpr_return retval = new ActionParser.templatesExpr_return();
@@ -579,16 +579,16 @@ public partial class ActionParser : Parser
 		RewriteRuleSubtreeStream stream_templateList=new RewriteRuleSubtreeStream(adaptor,"rule templateList");
 		try
 		{
-			// Language\\Action.g3:163:3: ( expr ( ( COMMA expr )+ colon= COLON anonymousTemplate -> ^( MULTI_APPLY[\"MULTI_APPLY\"] ( expr )+ $colon anonymousTemplate ) | ( -> expr ) (colon= COLON templateList -> ^( APPLY[$colon] $templatesExpr templateList ) )* ) )
-			// Language\\Action.g3:163:3: expr ( ( COMMA expr )+ colon= COLON anonymousTemplate -> ^( MULTI_APPLY[\"MULTI_APPLY\"] ( expr )+ $colon anonymousTemplate ) | ( -> expr ) (colon= COLON templateList -> ^( APPLY[$colon] $templatesExpr templateList ) )* )
+			// Language\\Action.g3:171:3: ( expr ( ( COMMA expr )+ colon= COLON anonymousTemplate -> ^( MULTI_APPLY[\"MULTI_APPLY\"] ( expr )+ $colon anonymousTemplate ) | ( -> expr ) (colon= COLON templateList -> ^( APPLY[$colon] $templatesExpr templateList ) )* ) )
+			// Language\\Action.g3:171:3: expr ( ( COMMA expr )+ colon= COLON anonymousTemplate -> ^( MULTI_APPLY[\"MULTI_APPLY\"] ( expr )+ $colon anonymousTemplate ) | ( -> expr ) (colon= COLON templateList -> ^( APPLY[$colon] $templatesExpr templateList ) )* )
 			{
-			PushFollow(Follow._expr_in_templatesExpr273);
+			PushFollow(Follow._expr_in_templatesExpr321);
 			expr19=expr();
 
 			state._fsp--;
 			if (state.failed) return retval;
 			if ( state.backtracking == 0 ) stream_expr.Add(expr19.Tree);
-			// Language\\Action.g3:164:3: ( ( COMMA expr )+ colon= COLON anonymousTemplate -> ^( MULTI_APPLY[\"MULTI_APPLY\"] ( expr )+ $colon anonymousTemplate ) | ( -> expr ) (colon= COLON templateList -> ^( APPLY[$colon] $templatesExpr templateList ) )* )
+			// Language\\Action.g3:172:3: ( ( COMMA expr )+ colon= COLON anonymousTemplate -> ^( MULTI_APPLY[\"MULTI_APPLY\"] ( expr )+ $colon anonymousTemplate ) | ( -> expr ) (colon= COLON templateList -> ^( APPLY[$colon] $templatesExpr templateList ) )* )
 			int alt7=2;
 			int LA7_0 = input.LA(1);
 
@@ -610,9 +610,9 @@ public partial class ActionParser : Parser
 			switch ( alt7 )
 			{
 			case 1:
-				// Language\\Action.g3:164:5: ( COMMA expr )+ colon= COLON anonymousTemplate
+				// Language\\Action.g3:172:5: ( COMMA expr )+ colon= COLON anonymousTemplate
 				{
-				// Language\\Action.g3:164:5: ( COMMA expr )+
+				// Language\\Action.g3:172:5: ( COMMA expr )+
 				int cnt5=0;
 				for ( ; ; )
 				{
@@ -628,12 +628,12 @@ public partial class ActionParser : Parser
 					switch ( alt5 )
 					{
 					case 1:
-						// Language\\Action.g3:164:6: COMMA expr
+						// Language\\Action.g3:172:6: COMMA expr
 						{
-						COMMA20=(IToken)Match(input,COMMA,Follow._COMMA_in_templatesExpr280); if (state.failed) return retval; 
+						COMMA20=(IToken)Match(input,COMMA,Follow._COMMA_in_templatesExpr328); if (state.failed) return retval; 
 						if ( state.backtracking == 0 ) stream_COMMA.Add(COMMA20);
 
-						PushFollow(Follow._expr_in_templatesExpr282);
+						PushFollow(Follow._expr_in_templatesExpr330);
 						expr21=expr();
 
 						state._fsp--;
@@ -657,10 +657,10 @@ public partial class ActionParser : Parser
 					;
 
 
-				colon=(IToken)Match(input,COLON,Follow._COLON_in_templatesExpr288); if (state.failed) return retval; 
+				colon=(IToken)Match(input,COLON,Follow._COLON_in_templatesExpr336); if (state.failed) return retval; 
 				if ( state.backtracking == 0 ) stream_COLON.Add(colon);
 
-				PushFollow(Follow._anonymousTemplate_in_templatesExpr290);
+				PushFollow(Follow._anonymousTemplate_in_templatesExpr338);
 				anonymousTemplate22=anonymousTemplate();
 
 				state._fsp--;
@@ -682,9 +682,9 @@ public partial class ActionParser : Parser
 				RewriteRuleSubtreeStream stream_retval=new RewriteRuleSubtreeStream(adaptor,"rule retval",retval!=null?retval.tree:null);
 
 				root_0 = (StringTemplateAST)adaptor.Nil();
-				// 165:4: -> ^( MULTI_APPLY[\"MULTI_APPLY\"] ( expr )+ $colon anonymousTemplate )
+				// 173:4: -> ^( MULTI_APPLY[\"MULTI_APPLY\"] ( expr )+ $colon anonymousTemplate )
 				{
-					// Language\\Action.g3:165:7: ^( MULTI_APPLY[\"MULTI_APPLY\"] ( expr )+ $colon anonymousTemplate )
+					// Language\\Action.g3:173:7: ^( MULTI_APPLY[\"MULTI_APPLY\"] ( expr )+ $colon anonymousTemplate )
 					{
 					StringTemplateAST root_1 = (StringTemplateAST)adaptor.Nil();
 					root_1 = (StringTemplateAST)adaptor.BecomeRoot((StringTemplateAST)adaptor.Create(MULTI_APPLY, "MULTI_APPLY"), root_1);
@@ -714,10 +714,10 @@ public partial class ActionParser : Parser
 				}
 				break;
 			case 2:
-				// Language\\Action.g3:166:5: ( -> expr ) (colon= COLON templateList -> ^( APPLY[$colon] $templatesExpr templateList ) )*
+				// Language\\Action.g3:174:5: ( -> expr ) (colon= COLON templateList -> ^( APPLY[$colon] $templatesExpr templateList ) )*
 				{
-				// Language\\Action.g3:166:5: ( -> expr )
-				// Language\\Action.g3:166:7: 
+				// Language\\Action.g3:174:5: ( -> expr )
+				// Language\\Action.g3:174:7: 
 				{
 
 
@@ -735,7 +735,7 @@ public partial class ActionParser : Parser
 				RewriteRuleSubtreeStream stream_retval=new RewriteRuleSubtreeStream(adaptor,"rule retval",retval!=null?retval.tree:null);
 
 				root_0 = (StringTemplateAST)adaptor.Nil();
-				// 166:7: -> expr
+				// 174:7: -> expr
 				{
 					adaptor.AddChild(root_0, stream_expr.NextTree());
 
@@ -747,7 +747,7 @@ public partial class ActionParser : Parser
 
 				}
 
-				// Language\\Action.g3:168:4: (colon= COLON templateList -> ^( APPLY[$colon] $templatesExpr templateList ) )*
+				// Language\\Action.g3:176:4: (colon= COLON templateList -> ^( APPLY[$colon] $templatesExpr templateList ) )*
 				for ( ; ; )
 				{
 					int alt6=2;
@@ -762,12 +762,12 @@ public partial class ActionParser : Parser
 					switch ( alt6 )
 					{
 					case 1:
-						// Language\\Action.g3:168:6: colon= COLON templateList
+						// Language\\Action.g3:176:6: colon= COLON templateList
 						{
-						colon=(IToken)Match(input,COLON,Follow._COLON_in_templatesExpr332); if (state.failed) return retval; 
+						colon=(IToken)Match(input,COLON,Follow._COLON_in_templatesExpr380); if (state.failed) return retval; 
 						if ( state.backtracking == 0 ) stream_COLON.Add(colon);
 
-						PushFollow(Follow._templateList_in_templatesExpr334);
+						PushFollow(Follow._templateList_in_templatesExpr382);
 						templateList23=templateList();
 
 						state._fsp--;
@@ -788,9 +788,9 @@ public partial class ActionParser : Parser
 						RewriteRuleSubtreeStream stream_retval=new RewriteRuleSubtreeStream(adaptor,"rule retval",retval!=null?retval.tree:null);
 
 						root_0 = (StringTemplateAST)adaptor.Nil();
-						// 169:5: -> ^( APPLY[$colon] $templatesExpr templateList )
+						// 177:5: -> ^( APPLY[$colon] $templatesExpr templateList )
 						{
-							// Language\\Action.g3:169:8: ^( APPLY[$colon] $templatesExpr templateList )
+							// Language\\Action.g3:177:8: ^( APPLY[$colon] $templatesExpr templateList )
 							{
 							StringTemplateAST root_1 = (StringTemplateAST)adaptor.Nil();
 							root_1 = (StringTemplateAST)adaptor.BecomeRoot((StringTemplateAST)adaptor.Create(APPLY, colon), root_1);
@@ -857,7 +857,7 @@ public partial class ActionParser : Parser
 	}
 
 	// $ANTLR start "templateList"
-	// Language\\Action.g3:174:0: templateList : template ( COMMA template )* ;
+	// Language\\Action.g3:182:0: templateList : template ( COMMA template )* ;
 	private ActionParser.templateList_return templateList(  )
 	{
 		ActionParser.templateList_return retval = new ActionParser.templateList_return();
@@ -873,18 +873,18 @@ public partial class ActionParser : Parser
 
 		try
 		{
-			// Language\\Action.g3:175:4: ( template ( COMMA template )* )
-			// Language\\Action.g3:175:4: template ( COMMA template )*
+			// Language\\Action.g3:183:4: ( template ( COMMA template )* )
+			// Language\\Action.g3:183:4: template ( COMMA template )*
 			{
 			root_0 = (StringTemplateAST)adaptor.Nil();
 
-			PushFollow(Follow._template_in_templateList373);
+			PushFollow(Follow._template_in_templateList421);
 			template24=template();
 
 			state._fsp--;
 			if (state.failed) return retval;
 			if ( state.backtracking == 0 ) adaptor.AddChild(root_0, template24.Tree);
-			// Language\\Action.g3:175:13: ( COMMA template )*
+			// Language\\Action.g3:183:13: ( COMMA template )*
 			for ( ; ; )
 			{
 				int alt8=2;
@@ -899,10 +899,10 @@ public partial class ActionParser : Parser
 				switch ( alt8 )
 				{
 				case 1:
-					// Language\\Action.g3:175:14: COMMA template
+					// Language\\Action.g3:183:14: COMMA template
 					{
-					COMMA25=(IToken)Match(input,COMMA,Follow._COMMA_in_templateList376); if (state.failed) return retval;
-					PushFollow(Follow._template_in_templateList379);
+					COMMA25=(IToken)Match(input,COMMA,Follow._COMMA_in_templateList424); if (state.failed) return retval;
+					PushFollow(Follow._template_in_templateList427);
 					template26=template();
 
 					state._fsp--;
@@ -953,7 +953,7 @@ public partial class ActionParser : Parser
 	}
 
 	// $ANTLR start "ifCondition"
-	// Language\\Action.g3:178:0: ifCondition : ( ifAtom | NOT ifAtom );
+	// Language\\Action.g3:186:0: ifCondition : ( ifAtom | NOT ifAtom );
 	private ActionParser.ifCondition_return ifCondition(  )
 	{
 		ActionParser.ifCondition_return retval = new ActionParser.ifCondition_return();
@@ -969,11 +969,11 @@ public partial class ActionParser : Parser
 
 		try
 		{
-			// Language\\Action.g3:179:4: ( ifAtom | NOT ifAtom )
+			// Language\\Action.g3:187:4: ( ifAtom | NOT ifAtom )
 			int alt9=2;
 			int LA9_0 = input.LA(1);
 
-			if ( (LA9_0==ANONYMOUS_TEMPLATE||LA9_0==ID||(LA9_0>=INT && LA9_0<=LBRACK)||LA9_0==LPAREN||LA9_0==STRING||(LA9_0>=37 && LA9_0<=43)) )
+			if ( (LA9_0==ANONYMOUS_TEMPLATE||LA9_0==FIRST||LA9_0==ID||(LA9_0>=INT && LA9_0<=LENGTH)||LA9_0==LPAREN||LA9_0==REST||(LA9_0>=STRING && LA9_0<=SUPER)||LA9_0==TRUNC) )
 			{
 				alt9=1;
 			}
@@ -991,11 +991,11 @@ public partial class ActionParser : Parser
 			switch ( alt9 )
 			{
 			case 1:
-				// Language\\Action.g3:179:4: ifAtom
+				// Language\\Action.g3:187:4: ifAtom
 				{
 				root_0 = (StringTemplateAST)adaptor.Nil();
 
-				PushFollow(Follow._ifAtom_in_ifCondition392);
+				PushFollow(Follow._ifAtom_in_ifCondition440);
 				ifAtom27=ifAtom();
 
 				state._fsp--;
@@ -1005,16 +1005,16 @@ public partial class ActionParser : Parser
 				}
 				break;
 			case 2:
-				// Language\\Action.g3:180:4: NOT ifAtom
+				// Language\\Action.g3:188:4: NOT ifAtom
 				{
 				root_0 = (StringTemplateAST)adaptor.Nil();
 
-				NOT28=(IToken)Match(input,NOT,Follow._NOT_in_ifCondition397); if (state.failed) return retval;
+				NOT28=(IToken)Match(input,NOT,Follow._NOT_in_ifCondition445); if (state.failed) return retval;
 				if ( state.backtracking == 0 ) {
 				NOT28_tree = (StringTemplateAST)adaptor.Create(NOT28);
 				root_0 = (StringTemplateAST)adaptor.BecomeRoot(NOT28_tree, root_0);
 				}
-				PushFollow(Follow._ifAtom_in_ifCondition400);
+				PushFollow(Follow._ifAtom_in_ifCondition448);
 				ifAtom29=ifAtom();
 
 				state._fsp--;
@@ -1054,7 +1054,7 @@ public partial class ActionParser : Parser
 	}
 
 	// $ANTLR start "ifAtom"
-	// Language\\Action.g3:183:0: ifAtom : templatesExpr ;
+	// Language\\Action.g3:191:0: ifAtom : templatesExpr ;
 	private ActionParser.ifAtom_return ifAtom(  )
 	{
 		ActionParser.ifAtom_return retval = new ActionParser.ifAtom_return();
@@ -1067,12 +1067,12 @@ public partial class ActionParser : Parser
 
 		try
 		{
-			// Language\\Action.g3:184:4: ( templatesExpr )
-			// Language\\Action.g3:184:4: templatesExpr
+			// Language\\Action.g3:192:4: ( templatesExpr )
+			// Language\\Action.g3:192:4: templatesExpr
 			{
 			root_0 = (StringTemplateAST)adaptor.Nil();
 
-			PushFollow(Follow._templatesExpr_in_ifAtom411);
+			PushFollow(Follow._templatesExpr_in_ifAtom459);
 			templatesExpr30=templatesExpr();
 
 			state._fsp--;
@@ -1110,7 +1110,7 @@ public partial class ActionParser : Parser
 	}
 
 	// $ANTLR start "expr"
-	// Language\\Action.g3:187:0: expr : primaryExpr ( PLUS primaryExpr )* ;
+	// Language\\Action.g3:195:0: expr : primaryExpr ( PLUS primaryExpr )* ;
 	private ActionParser.expr_return expr(  )
 	{
 		ActionParser.expr_return retval = new ActionParser.expr_return();
@@ -1126,18 +1126,18 @@ public partial class ActionParser : Parser
 
 		try
 		{
-			// Language\\Action.g3:188:4: ( primaryExpr ( PLUS primaryExpr )* )
-			// Language\\Action.g3:188:4: primaryExpr ( PLUS primaryExpr )*
+			// Language\\Action.g3:196:4: ( primaryExpr ( PLUS primaryExpr )* )
+			// Language\\Action.g3:196:4: primaryExpr ( PLUS primaryExpr )*
 			{
 			root_0 = (StringTemplateAST)adaptor.Nil();
 
-			PushFollow(Follow._primaryExpr_in_expr422);
+			PushFollow(Follow._primaryExpr_in_expr470);
 			primaryExpr31=primaryExpr();
 
 			state._fsp--;
 			if (state.failed) return retval;
 			if ( state.backtracking == 0 ) adaptor.AddChild(root_0, primaryExpr31.Tree);
-			// Language\\Action.g3:188:16: ( PLUS primaryExpr )*
+			// Language\\Action.g3:196:16: ( PLUS primaryExpr )*
 			for ( ; ; )
 			{
 				int alt10=2;
@@ -1152,14 +1152,14 @@ public partial class ActionParser : Parser
 				switch ( alt10 )
 				{
 				case 1:
-					// Language\\Action.g3:188:17: PLUS primaryExpr
+					// Language\\Action.g3:196:17: PLUS primaryExpr
 					{
-					PLUS32=(IToken)Match(input,PLUS,Follow._PLUS_in_expr425); if (state.failed) return retval;
+					PLUS32=(IToken)Match(input,PLUS,Follow._PLUS_in_expr473); if (state.failed) return retval;
 					if ( state.backtracking == 0 ) {
 					PLUS32_tree = (StringTemplateAST)adaptor.Create(PLUS32);
 					root_0 = (StringTemplateAST)adaptor.BecomeRoot(PLUS32_tree, root_0);
 					}
-					PushFollow(Follow._primaryExpr_in_expr428);
+					PushFollow(Follow._primaryExpr_in_expr476);
 					primaryExpr33=primaryExpr();
 
 					state._fsp--;
@@ -1210,7 +1210,7 @@ public partial class ActionParser : Parser
 	}
 
 	// $ANTLR start "primaryExpr"
-	// Language\\Action.g3:191:0: primaryExpr : (=> templateInclude | atom ( DOT ( ID | valueExpr ) )* | function ( DOT ( ID | valueExpr ) )* | valueExpr | list );
+	// Language\\Action.g3:199:0: primaryExpr : (=> templateInclude | atom ( DOT ( ID | valueExpr ) )* | function ( DOT ( ID | valueExpr ) )* | valueExpr | list );
 	private ActionParser.primaryExpr_return primaryExpr(  )
 	{
 		ActionParser.primaryExpr_return retval = new ActionParser.primaryExpr_return();
@@ -1237,18 +1237,18 @@ public partial class ActionParser : Parser
 
 		try
 		{
-			// Language\\Action.g3:192:4: (=> templateInclude | atom ( DOT ( ID | valueExpr ) )* | function ( DOT ( ID | valueExpr ) )* | valueExpr | list )
+			// Language\\Action.g3:200:4: (=> templateInclude | atom ( DOT ( ID | valueExpr ) )* | function ( DOT ( ID | valueExpr ) )* | valueExpr | list )
 			int alt15=5;
 			alt15 = dfa15.Predict(input);
 			switch ( alt15 )
 			{
 			case 1:
-				// Language\\Action.g3:192:4: => templateInclude
+				// Language\\Action.g3:200:4: => templateInclude
 				{
 				root_0 = (StringTemplateAST)adaptor.Nil();
 
 
-				PushFollow(Follow._templateInclude_in_primaryExpr445);
+				PushFollow(Follow._templateInclude_in_primaryExpr493);
 				templateInclude34=templateInclude();
 
 				state._fsp--;
@@ -1258,17 +1258,17 @@ public partial class ActionParser : Parser
 				}
 				break;
 			case 2:
-				// Language\\Action.g3:193:4: atom ( DOT ( ID | valueExpr ) )*
+				// Language\\Action.g3:201:4: atom ( DOT ( ID | valueExpr ) )*
 				{
 				root_0 = (StringTemplateAST)adaptor.Nil();
 
-				PushFollow(Follow._atom_in_primaryExpr452);
+				PushFollow(Follow._atom_in_primaryExpr500);
 				atom35=atom();
 
 				state._fsp--;
 				if (state.failed) return retval;
 				if ( state.backtracking == 0 ) adaptor.AddChild(root_0, atom35.Tree);
-				// Language\\Action.g3:194:3: ( DOT ( ID | valueExpr ) )*
+				// Language\\Action.g3:202:3: ( DOT ( ID | valueExpr ) )*
 				for ( ; ; )
 				{
 					int alt12=2;
@@ -1283,14 +1283,14 @@ public partial class ActionParser : Parser
 					switch ( alt12 )
 					{
 					case 1:
-						// Language\\Action.g3:194:5: DOT ( ID | valueExpr )
+						// Language\\Action.g3:202:5: DOT ( ID | valueExpr )
 						{
-						DOT36=(IToken)Match(input,DOT,Follow._DOT_in_primaryExpr458); if (state.failed) return retval;
+						DOT36=(IToken)Match(input,DOT,Follow._DOT_in_primaryExpr506); if (state.failed) return retval;
 						if ( state.backtracking == 0 ) {
 						DOT36_tree = (StringTemplateAST)adaptor.Create(DOT36);
 						root_0 = (StringTemplateAST)adaptor.BecomeRoot(DOT36_tree, root_0);
 						}
-						// Language\\Action.g3:195:4: ( ID | valueExpr )
+						// Language\\Action.g3:203:4: ( ID | valueExpr )
 						int alt11=2;
 						int LA11_0 = input.LA(1);
 
@@ -1312,9 +1312,9 @@ public partial class ActionParser : Parser
 						switch ( alt11 )
 						{
 						case 1:
-							// Language\\Action.g3:195:6: ID
+							// Language\\Action.g3:203:6: ID
 							{
-							ID37=(IToken)Match(input,ID,Follow._ID_in_primaryExpr467); if (state.failed) return retval;
+							ID37=(IToken)Match(input,ID,Follow._ID_in_primaryExpr515); if (state.failed) return retval;
 							if ( state.backtracking==0 ) {
 							ID37_tree = (StringTemplateAST)adaptor.Create(ID37);
 							adaptor.AddChild(root_0, ID37_tree);
@@ -1323,9 +1323,9 @@ public partial class ActionParser : Parser
 							}
 							break;
 						case 2:
-							// Language\\Action.g3:196:6: valueExpr
+							// Language\\Action.g3:204:6: valueExpr
 							{
-							PushFollow(Follow._valueExpr_in_primaryExpr474);
+							PushFollow(Follow._valueExpr_in_primaryExpr522);
 							valueExpr38=valueExpr();
 
 							state._fsp--;
@@ -1354,17 +1354,17 @@ public partial class ActionParser : Parser
 				}
 				break;
 			case 3:
-				// Language\\Action.g3:199:4: function ( DOT ( ID | valueExpr ) )*
+				// Language\\Action.g3:207:4: function ( DOT ( ID | valueExpr ) )*
 				{
 				root_0 = (StringTemplateAST)adaptor.Nil();
 
-				PushFollow(Follow._function_in_primaryExpr489);
+				PushFollow(Follow._function_in_primaryExpr537);
 				function39=function();
 
 				state._fsp--;
 				if (state.failed) return retval;
 				if ( state.backtracking == 0 ) adaptor.AddChild(root_0, function39.Tree);
-				// Language\\Action.g3:200:3: ( DOT ( ID | valueExpr ) )*
+				// Language\\Action.g3:208:3: ( DOT ( ID | valueExpr ) )*
 				for ( ; ; )
 				{
 					int alt14=2;
@@ -1379,14 +1379,14 @@ public partial class ActionParser : Parser
 					switch ( alt14 )
 					{
 					case 1:
-						// Language\\Action.g3:200:5: DOT ( ID | valueExpr )
+						// Language\\Action.g3:208:5: DOT ( ID | valueExpr )
 						{
-						DOT40=(IToken)Match(input,DOT,Follow._DOT_in_primaryExpr495); if (state.failed) return retval;
+						DOT40=(IToken)Match(input,DOT,Follow._DOT_in_primaryExpr543); if (state.failed) return retval;
 						if ( state.backtracking == 0 ) {
 						DOT40_tree = (StringTemplateAST)adaptor.Create(DOT40);
 						root_0 = (StringTemplateAST)adaptor.BecomeRoot(DOT40_tree, root_0);
 						}
-						// Language\\Action.g3:201:4: ( ID | valueExpr )
+						// Language\\Action.g3:209:4: ( ID | valueExpr )
 						int alt13=2;
 						int LA13_0 = input.LA(1);
 
@@ -1408,9 +1408,9 @@ public partial class ActionParser : Parser
 						switch ( alt13 )
 						{
 						case 1:
-							// Language\\Action.g3:201:6: ID
+							// Language\\Action.g3:209:6: ID
 							{
-							ID41=(IToken)Match(input,ID,Follow._ID_in_primaryExpr503); if (state.failed) return retval;
+							ID41=(IToken)Match(input,ID,Follow._ID_in_primaryExpr551); if (state.failed) return retval;
 							if ( state.backtracking==0 ) {
 							ID41_tree = (StringTemplateAST)adaptor.Create(ID41);
 							adaptor.AddChild(root_0, ID41_tree);
@@ -1419,9 +1419,9 @@ public partial class ActionParser : Parser
 							}
 							break;
 						case 2:
-							// Language\\Action.g3:202:6: valueExpr
+							// Language\\Action.g3:210:6: valueExpr
 							{
-							PushFollow(Follow._valueExpr_in_primaryExpr510);
+							PushFollow(Follow._valueExpr_in_primaryExpr558);
 							valueExpr42=valueExpr();
 
 							state._fsp--;
@@ -1450,11 +1450,11 @@ public partial class ActionParser : Parser
 				}
 				break;
 			case 4:
-				// Language\\Action.g3:205:4: valueExpr
+				// Language\\Action.g3:213:4: valueExpr
 				{
 				root_0 = (StringTemplateAST)adaptor.Nil();
 
-				PushFollow(Follow._valueExpr_in_primaryExpr525);
+				PushFollow(Follow._valueExpr_in_primaryExpr573);
 				valueExpr43=valueExpr();
 
 				state._fsp--;
@@ -1464,11 +1464,11 @@ public partial class ActionParser : Parser
 				}
 				break;
 			case 5:
-				// Language\\Action.g3:206:4: list
+				// Language\\Action.g3:214:4: list
 				{
 				root_0 = (StringTemplateAST)adaptor.Nil();
 
-				PushFollow(Follow._list_in_primaryExpr530);
+				PushFollow(Follow._list_in_primaryExpr578);
 				list44=list();
 
 				state._fsp--;
@@ -1508,7 +1508,7 @@ public partial class ActionParser : Parser
 	}
 
 	// $ANTLR start "valueExpr"
-	// Language\\Action.g3:209:0: valueExpr : LPAREN templatesExpr RPAREN -> ^( VALUE[$LPAREN,\"value\"] templatesExpr ) ;
+	// Language\\Action.g3:217:0: valueExpr : LPAREN templatesExpr RPAREN -> ^( VALUE[$LPAREN,\"value\"] templatesExpr ) ;
 	private ActionParser.valueExpr_return valueExpr(  )
 	{
 		ActionParser.valueExpr_return retval = new ActionParser.valueExpr_return();
@@ -1527,19 +1527,19 @@ public partial class ActionParser : Parser
 		RewriteRuleSubtreeStream stream_templatesExpr=new RewriteRuleSubtreeStream(adaptor,"rule templatesExpr");
 		try
 		{
-			// Language\\Action.g3:210:4: ( LPAREN templatesExpr RPAREN -> ^( VALUE[$LPAREN,\"value\"] templatesExpr ) )
-			// Language\\Action.g3:210:4: LPAREN templatesExpr RPAREN
+			// Language\\Action.g3:218:4: ( LPAREN templatesExpr RPAREN -> ^( VALUE[$LPAREN,\"value\"] templatesExpr ) )
+			// Language\\Action.g3:218:4: LPAREN templatesExpr RPAREN
 			{
-			LPAREN45=(IToken)Match(input,LPAREN,Follow._LPAREN_in_valueExpr541); if (state.failed) return retval; 
+			LPAREN45=(IToken)Match(input,LPAREN,Follow._LPAREN_in_valueExpr589); if (state.failed) return retval; 
 			if ( state.backtracking == 0 ) stream_LPAREN.Add(LPAREN45);
 
-			PushFollow(Follow._templatesExpr_in_valueExpr543);
+			PushFollow(Follow._templatesExpr_in_valueExpr591);
 			templatesExpr46=templatesExpr();
 
 			state._fsp--;
 			if (state.failed) return retval;
 			if ( state.backtracking == 0 ) stream_templatesExpr.Add(templatesExpr46.Tree);
-			RPAREN47=(IToken)Match(input,RPAREN,Follow._RPAREN_in_valueExpr545); if (state.failed) return retval; 
+			RPAREN47=(IToken)Match(input,RPAREN,Follow._RPAREN_in_valueExpr593); if (state.failed) return retval; 
 			if ( state.backtracking == 0 ) stream_RPAREN.Add(RPAREN47);
 
 
@@ -1557,9 +1557,9 @@ public partial class ActionParser : Parser
 			RewriteRuleSubtreeStream stream_retval=new RewriteRuleSubtreeStream(adaptor,"rule retval",retval!=null?retval.tree:null);
 
 			root_0 = (StringTemplateAST)adaptor.Nil();
-			// 211:3: -> ^( VALUE[$LPAREN,\"value\"] templatesExpr )
+			// 219:3: -> ^( VALUE[$LPAREN,\"value\"] templatesExpr )
 			{
-				// Language\\Action.g3:211:6: ^( VALUE[$LPAREN,\"value\"] templatesExpr )
+				// Language\\Action.g3:219:6: ^( VALUE[$LPAREN,\"value\"] templatesExpr )
 				{
 				StringTemplateAST root_1 = (StringTemplateAST)adaptor.Nil();
 				root_1 = (StringTemplateAST)adaptor.BecomeRoot((StringTemplateAST)adaptor.Create(VALUE, LPAREN45, "value"), root_1);
@@ -1606,7 +1606,7 @@ public partial class ActionParser : Parser
 	}
 
 	// $ANTLR start "nonAlternatingTemplateExpr"
-	// Language\\Action.g3:214:0: nonAlternatingTemplateExpr : ( expr -> expr ) ( COLON template -> ^( APPLY[$COLON] $nonAlternatingTemplateExpr template ) )* ;
+	// Language\\Action.g3:222:0: nonAlternatingTemplateExpr : ( expr -> expr ) ( COLON template -> ^( APPLY[$COLON] $nonAlternatingTemplateExpr template ) )* ;
 	private ActionParser.nonAlternatingTemplateExpr_return nonAlternatingTemplateExpr(  )
 	{
 		ActionParser.nonAlternatingTemplateExpr_return retval = new ActionParser.nonAlternatingTemplateExpr_return();
@@ -1624,13 +1624,13 @@ public partial class ActionParser : Parser
 		RewriteRuleSubtreeStream stream_template=new RewriteRuleSubtreeStream(adaptor,"rule template");
 		try
 		{
-			// Language\\Action.g3:215:4: ( ( expr -> expr ) ( COLON template -> ^( APPLY[$COLON] $nonAlternatingTemplateExpr template ) )* )
-			// Language\\Action.g3:215:4: ( expr -> expr ) ( COLON template -> ^( APPLY[$COLON] $nonAlternatingTemplateExpr template ) )*
+			// Language\\Action.g3:223:4: ( ( expr -> expr ) ( COLON template -> ^( APPLY[$COLON] $nonAlternatingTemplateExpr template ) )* )
+			// Language\\Action.g3:223:4: ( expr -> expr ) ( COLON template -> ^( APPLY[$COLON] $nonAlternatingTemplateExpr template ) )*
 			{
-			// Language\\Action.g3:215:4: ( expr -> expr )
-			// Language\\Action.g3:215:5: expr
+			// Language\\Action.g3:223:4: ( expr -> expr )
+			// Language\\Action.g3:223:5: expr
 			{
-			PushFollow(Follow._expr_in_nonAlternatingTemplateExpr568);
+			PushFollow(Follow._expr_in_nonAlternatingTemplateExpr616);
 			expr48=expr();
 
 			state._fsp--;
@@ -1651,7 +1651,7 @@ public partial class ActionParser : Parser
 			RewriteRuleSubtreeStream stream_retval=new RewriteRuleSubtreeStream(adaptor,"rule retval",retval!=null?retval.tree:null);
 
 			root_0 = (StringTemplateAST)adaptor.Nil();
-			// 215:10: -> expr
+			// 223:10: -> expr
 			{
 				adaptor.AddChild(root_0, stream_expr.NextTree());
 
@@ -1663,7 +1663,7 @@ public partial class ActionParser : Parser
 
 			}
 
-			// Language\\Action.g3:215:19: ( COLON template -> ^( APPLY[$COLON] $nonAlternatingTemplateExpr template ) )*
+			// Language\\Action.g3:223:19: ( COLON template -> ^( APPLY[$COLON] $nonAlternatingTemplateExpr template ) )*
 			for ( ; ; )
 			{
 				int alt16=2;
@@ -1678,12 +1678,12 @@ public partial class ActionParser : Parser
 				switch ( alt16 )
 				{
 				case 1:
-					// Language\\Action.g3:215:21: COLON template
+					// Language\\Action.g3:223:21: COLON template
 					{
-					COLON49=(IToken)Match(input,COLON,Follow._COLON_in_nonAlternatingTemplateExpr577); if (state.failed) return retval; 
+					COLON49=(IToken)Match(input,COLON,Follow._COLON_in_nonAlternatingTemplateExpr625); if (state.failed) return retval; 
 					if ( state.backtracking == 0 ) stream_COLON.Add(COLON49);
 
-					PushFollow(Follow._template_in_nonAlternatingTemplateExpr579);
+					PushFollow(Follow._template_in_nonAlternatingTemplateExpr627);
 					template50=template();
 
 					state._fsp--;
@@ -1704,9 +1704,9 @@ public partial class ActionParser : Parser
 					RewriteRuleSubtreeStream stream_retval=new RewriteRuleSubtreeStream(adaptor,"rule retval",retval!=null?retval.tree:null);
 
 					root_0 = (StringTemplateAST)adaptor.Nil();
-					// 215:36: -> ^( APPLY[$COLON] $nonAlternatingTemplateExpr template )
+					// 223:36: -> ^( APPLY[$COLON] $nonAlternatingTemplateExpr template )
 					{
-						// Language\\Action.g3:215:39: ^( APPLY[$COLON] $nonAlternatingTemplateExpr template )
+						// Language\\Action.g3:223:39: ^( APPLY[$COLON] $nonAlternatingTemplateExpr template )
 						{
 						StringTemplateAST root_1 = (StringTemplateAST)adaptor.Nil();
 						root_1 = (StringTemplateAST)adaptor.BecomeRoot((StringTemplateAST)adaptor.Create(APPLY, COLON49), root_1);
@@ -1767,7 +1767,7 @@ public partial class ActionParser : Parser
 	}
 
 	// $ANTLR start "function"
-	// Language\\Action.g3:218:0: function : ( 'first' | 'rest' | 'last' | 'length' | 'strip' | 'trunc' ) singleArg -> ^( FUNCTION ( 'first' )? ( 'rest' )? ( 'last' )? ( 'length' )? ( 'strip' )? ( 'trunc' )? singleArg ) ;
+	// Language\\Action.g3:226:0: function : ( 'first' | 'rest' | 'last' | 'length' | 'strip' | 'trunc' ) singleArg -> ^( FUNCTION ( 'first' )? ( 'rest' )? ( 'last' )? ( 'length' )? ( 'strip' )? ( 'trunc' )? singleArg ) ;
 	private ActionParser.function_return function(  )
 	{
 		ActionParser.function_return retval = new ActionParser.function_return();
@@ -1789,48 +1789,48 @@ public partial class ActionParser : Parser
 		StringTemplateAST string_literal54_tree=null;
 		StringTemplateAST string_literal55_tree=null;
 		StringTemplateAST string_literal56_tree=null;
-		RewriteRuleITokenStream stream_37=new RewriteRuleITokenStream(adaptor,"token 37");
-		RewriteRuleITokenStream stream_40=new RewriteRuleITokenStream(adaptor,"token 40");
-		RewriteRuleITokenStream stream_38=new RewriteRuleITokenStream(adaptor,"token 38");
-		RewriteRuleITokenStream stream_39=new RewriteRuleITokenStream(adaptor,"token 39");
-		RewriteRuleITokenStream stream_41=new RewriteRuleITokenStream(adaptor,"token 41");
-		RewriteRuleITokenStream stream_43=new RewriteRuleITokenStream(adaptor,"token 43");
+		RewriteRuleITokenStream stream_FIRST=new RewriteRuleITokenStream(adaptor,"token FIRST");
+		RewriteRuleITokenStream stream_REST=new RewriteRuleITokenStream(adaptor,"token REST");
+		RewriteRuleITokenStream stream_LAST=new RewriteRuleITokenStream(adaptor,"token LAST");
+		RewriteRuleITokenStream stream_LENGTH=new RewriteRuleITokenStream(adaptor,"token LENGTH");
+		RewriteRuleITokenStream stream_STRIP=new RewriteRuleITokenStream(adaptor,"token STRIP");
+		RewriteRuleITokenStream stream_TRUNC=new RewriteRuleITokenStream(adaptor,"token TRUNC");
 		RewriteRuleSubtreeStream stream_singleArg=new RewriteRuleSubtreeStream(adaptor,"rule singleArg");
 		try
 		{
-			// Language\\Action.g3:219:4: ( ( 'first' | 'rest' | 'last' | 'length' | 'strip' | 'trunc' ) singleArg -> ^( FUNCTION ( 'first' )? ( 'rest' )? ( 'last' )? ( 'length' )? ( 'strip' )? ( 'trunc' )? singleArg ) )
-			// Language\\Action.g3:219:4: ( 'first' | 'rest' | 'last' | 'length' | 'strip' | 'trunc' ) singleArg
+			// Language\\Action.g3:227:4: ( ( 'first' | 'rest' | 'last' | 'length' | 'strip' | 'trunc' ) singleArg -> ^( FUNCTION ( 'first' )? ( 'rest' )? ( 'last' )? ( 'length' )? ( 'strip' )? ( 'trunc' )? singleArg ) )
+			// Language\\Action.g3:227:4: ( 'first' | 'rest' | 'last' | 'length' | 'strip' | 'trunc' ) singleArg
 			{
-			// Language\\Action.g3:219:4: ( 'first' | 'rest' | 'last' | 'length' | 'strip' | 'trunc' )
+			// Language\\Action.g3:227:4: ( 'first' | 'rest' | 'last' | 'length' | 'strip' | 'trunc' )
 			int alt17=6;
 			switch ( input.LA(1) )
 			{
-			case 37:
+			case FIRST:
 				{
 				alt17=1;
 				}
 				break;
-			case 40:
+			case REST:
 				{
 				alt17=2;
 				}
 				break;
-			case 38:
+			case LAST:
 				{
 				alt17=3;
 				}
 				break;
-			case 39:
+			case LENGTH:
 				{
 				alt17=4;
 				}
 				break;
-			case 41:
+			case STRIP:
 				{
 				alt17=5;
 				}
 				break;
-			case 43:
+			case TRUNC:
 				{
 				alt17=6;
 				}
@@ -1847,55 +1847,55 @@ public partial class ActionParser : Parser
 			switch ( alt17 )
 			{
 			case 1:
-				// Language\\Action.g3:219:6: 'first'
+				// Language\\Action.g3:227:6: 'first'
 				{
-				string_literal51=(IToken)Match(input,37,Follow._37_in_function607); if (state.failed) return retval; 
-				if ( state.backtracking == 0 ) stream_37.Add(string_literal51);
+				string_literal51=(IToken)Match(input,FIRST,Follow._FIRST_in_function655); if (state.failed) return retval; 
+				if ( state.backtracking == 0 ) stream_FIRST.Add(string_literal51);
 
 
 				}
 				break;
 			case 2:
-				// Language\\Action.g3:220:5: 'rest'
+				// Language\\Action.g3:228:5: 'rest'
 				{
-				string_literal52=(IToken)Match(input,40,Follow._40_in_function613); if (state.failed) return retval; 
-				if ( state.backtracking == 0 ) stream_40.Add(string_literal52);
+				string_literal52=(IToken)Match(input,REST,Follow._REST_in_function661); if (state.failed) return retval; 
+				if ( state.backtracking == 0 ) stream_REST.Add(string_literal52);
 
 
 				}
 				break;
 			case 3:
-				// Language\\Action.g3:221:5: 'last'
+				// Language\\Action.g3:229:5: 'last'
 				{
-				string_literal53=(IToken)Match(input,38,Follow._38_in_function619); if (state.failed) return retval; 
-				if ( state.backtracking == 0 ) stream_38.Add(string_literal53);
+				string_literal53=(IToken)Match(input,LAST,Follow._LAST_in_function667); if (state.failed) return retval; 
+				if ( state.backtracking == 0 ) stream_LAST.Add(string_literal53);
 
 
 				}
 				break;
 			case 4:
-				// Language\\Action.g3:222:5: 'length'
+				// Language\\Action.g3:230:5: 'length'
 				{
-				string_literal54=(IToken)Match(input,39,Follow._39_in_function625); if (state.failed) return retval; 
-				if ( state.backtracking == 0 ) stream_39.Add(string_literal54);
+				string_literal54=(IToken)Match(input,LENGTH,Follow._LENGTH_in_function673); if (state.failed) return retval; 
+				if ( state.backtracking == 0 ) stream_LENGTH.Add(string_literal54);
 
 
 				}
 				break;
 			case 5:
-				// Language\\Action.g3:223:5: 'strip'
+				// Language\\Action.g3:231:5: 'strip'
 				{
-				string_literal55=(IToken)Match(input,41,Follow._41_in_function631); if (state.failed) return retval; 
-				if ( state.backtracking == 0 ) stream_41.Add(string_literal55);
+				string_literal55=(IToken)Match(input,STRIP,Follow._STRIP_in_function679); if (state.failed) return retval; 
+				if ( state.backtracking == 0 ) stream_STRIP.Add(string_literal55);
 
 
 				}
 				break;
 			case 6:
-				// Language\\Action.g3:224:5: 'trunc'
+				// Language\\Action.g3:232:5: 'trunc'
 				{
-				string_literal56=(IToken)Match(input,43,Follow._43_in_function637); if (state.failed) return retval; 
-				if ( state.backtracking == 0 ) stream_43.Add(string_literal56);
+				string_literal56=(IToken)Match(input,TRUNC,Follow._TRUNC_in_function685); if (state.failed) return retval; 
+				if ( state.backtracking == 0 ) stream_TRUNC.Add(string_literal56);
 
 
 				}
@@ -1903,7 +1903,7 @@ public partial class ActionParser : Parser
 
 			}
 
-			PushFollow(Follow._singleArg_in_function645);
+			PushFollow(Follow._singleArg_in_function693);
 			singleArg57=singleArg();
 
 			state._fsp--;
@@ -1913,7 +1913,7 @@ public partial class ActionParser : Parser
 
 			{
 			// AST REWRITE
-			// elements: 37, 40, 38, 39, 41, 43, singleArg
+			// elements: FIRST, REST, LAST, LENGTH, STRIP, TRUNC, singleArg
 			// token labels: 
 			// rule labels: retval
 			// token list labels: 
@@ -1924,55 +1924,55 @@ public partial class ActionParser : Parser
 			RewriteRuleSubtreeStream stream_retval=new RewriteRuleSubtreeStream(adaptor,"rule retval",retval!=null?retval.tree:null);
 
 			root_0 = (StringTemplateAST)adaptor.Nil();
-			// 227:3: -> ^( FUNCTION ( 'first' )? ( 'rest' )? ( 'last' )? ( 'length' )? ( 'strip' )? ( 'trunc' )? singleArg )
+			// 235:3: -> ^( FUNCTION ( 'first' )? ( 'rest' )? ( 'last' )? ( 'length' )? ( 'strip' )? ( 'trunc' )? singleArg )
 			{
-				// Language\\Action.g3:227:6: ^( FUNCTION ( 'first' )? ( 'rest' )? ( 'last' )? ( 'length' )? ( 'strip' )? ( 'trunc' )? singleArg )
+				// Language\\Action.g3:235:6: ^( FUNCTION ( 'first' )? ( 'rest' )? ( 'last' )? ( 'length' )? ( 'strip' )? ( 'trunc' )? singleArg )
 				{
 				StringTemplateAST root_1 = (StringTemplateAST)adaptor.Nil();
 				root_1 = (StringTemplateAST)adaptor.BecomeRoot((StringTemplateAST)adaptor.Create(FUNCTION, "FUNCTION"), root_1);
 
-				// Language\\Action.g3:227:17: ( 'first' )?
-				if ( stream_37.HasNext )
+				// Language\\Action.g3:235:17: ( 'first' )?
+				if ( stream_FIRST.HasNext )
 				{
-					adaptor.AddChild(root_1, stream_37.NextNode());
+					adaptor.AddChild(root_1, stream_FIRST.NextNode());
 
 				}
-				stream_37.Reset();
-				// Language\\Action.g3:227:26: ( 'rest' )?
-				if ( stream_40.HasNext )
+				stream_FIRST.Reset();
+				// Language\\Action.g3:235:26: ( 'rest' )?
+				if ( stream_REST.HasNext )
 				{
-					adaptor.AddChild(root_1, stream_40.NextNode());
+					adaptor.AddChild(root_1, stream_REST.NextNode());
 
 				}
-				stream_40.Reset();
-				// Language\\Action.g3:227:34: ( 'last' )?
-				if ( stream_38.HasNext )
+				stream_REST.Reset();
+				// Language\\Action.g3:235:34: ( 'last' )?
+				if ( stream_LAST.HasNext )
 				{
-					adaptor.AddChild(root_1, stream_38.NextNode());
+					adaptor.AddChild(root_1, stream_LAST.NextNode());
 
 				}
-				stream_38.Reset();
-				// Language\\Action.g3:227:42: ( 'length' )?
-				if ( stream_39.HasNext )
+				stream_LAST.Reset();
+				// Language\\Action.g3:235:42: ( 'length' )?
+				if ( stream_LENGTH.HasNext )
 				{
-					adaptor.AddChild(root_1, stream_39.NextNode());
+					adaptor.AddChild(root_1, stream_LENGTH.NextNode());
 
 				}
-				stream_39.Reset();
-				// Language\\Action.g3:227:52: ( 'strip' )?
-				if ( stream_41.HasNext )
+				stream_LENGTH.Reset();
+				// Language\\Action.g3:235:52: ( 'strip' )?
+				if ( stream_STRIP.HasNext )
 				{
-					adaptor.AddChild(root_1, stream_41.NextNode());
+					adaptor.AddChild(root_1, stream_STRIP.NextNode());
 
 				}
-				stream_41.Reset();
-				// Language\\Action.g3:227:61: ( 'trunc' )?
-				if ( stream_43.HasNext )
+				stream_STRIP.Reset();
+				// Language\\Action.g3:235:61: ( 'trunc' )?
+				if ( stream_TRUNC.HasNext )
 				{
-					adaptor.AddChild(root_1, stream_43.NextNode());
+					adaptor.AddChild(root_1, stream_TRUNC.NextNode());
 
 				}
-				stream_43.Reset();
+				stream_TRUNC.Reset();
 				adaptor.AddChild(root_1, stream_singleArg.NextTree());
 
 				adaptor.AddChild(root_0, root_1);
@@ -2015,7 +2015,7 @@ public partial class ActionParser : Parser
 	}
 
 	// $ANTLR start "template"
-	// Language\\Action.g3:230:0: template : ( namedTemplate | anonymousTemplate ) -> ^( TEMPLATE ( namedTemplate )? ( anonymousTemplate )? ) ;
+	// Language\\Action.g3:238:0: template : ( namedTemplate | anonymousTemplate ) -> ^( TEMPLATE ( namedTemplate )? ( anonymousTemplate )? ) ;
 	private ActionParser.template_return template(  )
 	{
 		ActionParser.template_return retval = new ActionParser.template_return();
@@ -2030,14 +2030,14 @@ public partial class ActionParser : Parser
 		RewriteRuleSubtreeStream stream_anonymousTemplate=new RewriteRuleSubtreeStream(adaptor,"rule anonymousTemplate");
 		try
 		{
-			// Language\\Action.g3:231:4: ( ( namedTemplate | anonymousTemplate ) -> ^( TEMPLATE ( namedTemplate )? ( anonymousTemplate )? ) )
-			// Language\\Action.g3:231:4: ( namedTemplate | anonymousTemplate )
+			// Language\\Action.g3:239:4: ( ( namedTemplate | anonymousTemplate ) -> ^( TEMPLATE ( namedTemplate )? ( anonymousTemplate )? ) )
+			// Language\\Action.g3:239:4: ( namedTemplate | anonymousTemplate )
 			{
-			// Language\\Action.g3:231:4: ( namedTemplate | anonymousTemplate )
+			// Language\\Action.g3:239:4: ( namedTemplate | anonymousTemplate )
 			int alt18=2;
 			int LA18_0 = input.LA(1);
 
-			if ( (LA18_0==ID||LA18_0==LPAREN||LA18_0==42) )
+			if ( (LA18_0==ID||LA18_0==LPAREN||LA18_0==SUPER) )
 			{
 				alt18=1;
 			}
@@ -2055,9 +2055,9 @@ public partial class ActionParser : Parser
 			switch ( alt18 )
 			{
 			case 1:
-				// Language\\Action.g3:231:6: namedTemplate
+				// Language\\Action.g3:239:6: namedTemplate
 				{
-				PushFollow(Follow._namedTemplate_in_template686);
+				PushFollow(Follow._namedTemplate_in_template734);
 				namedTemplate58=namedTemplate();
 
 				state._fsp--;
@@ -2067,9 +2067,9 @@ public partial class ActionParser : Parser
 				}
 				break;
 			case 2:
-				// Language\\Action.g3:232:5: anonymousTemplate
+				// Language\\Action.g3:240:5: anonymousTemplate
 				{
-				PushFollow(Follow._anonymousTemplate_in_template695);
+				PushFollow(Follow._anonymousTemplate_in_template743);
 				anonymousTemplate59=anonymousTemplate();
 
 				state._fsp--;
@@ -2096,21 +2096,21 @@ public partial class ActionParser : Parser
 			RewriteRuleSubtreeStream stream_retval=new RewriteRuleSubtreeStream(adaptor,"rule retval",retval!=null?retval.tree:null);
 
 			root_0 = (StringTemplateAST)adaptor.Nil();
-			// 234:3: -> ^( TEMPLATE ( namedTemplate )? ( anonymousTemplate )? )
+			// 242:3: -> ^( TEMPLATE ( namedTemplate )? ( anonymousTemplate )? )
 			{
-				// Language\\Action.g3:234:6: ^( TEMPLATE ( namedTemplate )? ( anonymousTemplate )? )
+				// Language\\Action.g3:242:6: ^( TEMPLATE ( namedTemplate )? ( anonymousTemplate )? )
 				{
 				StringTemplateAST root_1 = (StringTemplateAST)adaptor.Nil();
 				root_1 = (StringTemplateAST)adaptor.BecomeRoot((StringTemplateAST)adaptor.Create(TEMPLATE, "TEMPLATE"), root_1);
 
-				// Language\\Action.g3:234:17: ( namedTemplate )?
+				// Language\\Action.g3:242:17: ( namedTemplate )?
 				if ( stream_namedTemplate.HasNext )
 				{
 					adaptor.AddChild(root_1, stream_namedTemplate.NextTree());
 
 				}
 				stream_namedTemplate.Reset();
-				// Language\\Action.g3:234:32: ( anonymousTemplate )?
+				// Language\\Action.g3:242:32: ( anonymousTemplate )?
 				if ( stream_anonymousTemplate.HasNext )
 				{
 					adaptor.AddChild(root_1, stream_anonymousTemplate.NextTree());
@@ -2158,7 +2158,7 @@ public partial class ActionParser : Parser
 	}
 
 	// $ANTLR start "namedTemplate"
-	// Language\\Action.g3:237:0: namedTemplate : ( ID argList -> ID argList | 'super' DOT qid= ID argList -> ID[$qid,\"super.\"+$qid.text] argList | indirectTemplate -> indirectTemplate );
+	// Language\\Action.g3:245:0: namedTemplate : ( ID argList -> ID argList | 'super' DOT qid= ID argList -> ID[$qid,\"super.\"+$qid.text] argList | indirectTemplate -> indirectTemplate );
 	private ActionParser.namedTemplate_return namedTemplate(  )
 	{
 		ActionParser.namedTemplate_return retval = new ActionParser.namedTemplate_return();
@@ -2179,13 +2179,13 @@ public partial class ActionParser : Parser
 		StringTemplateAST string_literal62_tree=null;
 		StringTemplateAST DOT63_tree=null;
 		RewriteRuleITokenStream stream_ID=new RewriteRuleITokenStream(adaptor,"token ID");
-		RewriteRuleITokenStream stream_42=new RewriteRuleITokenStream(adaptor,"token 42");
+		RewriteRuleITokenStream stream_SUPER=new RewriteRuleITokenStream(adaptor,"token SUPER");
 		RewriteRuleITokenStream stream_DOT=new RewriteRuleITokenStream(adaptor,"token DOT");
 		RewriteRuleSubtreeStream stream_argList=new RewriteRuleSubtreeStream(adaptor,"rule argList");
 		RewriteRuleSubtreeStream stream_indirectTemplate=new RewriteRuleSubtreeStream(adaptor,"rule indirectTemplate");
 		try
 		{
-			// Language\\Action.g3:238:4: ( ID argList -> ID argList | 'super' DOT qid= ID argList -> ID[$qid,\"super.\"+$qid.text] argList | indirectTemplate -> indirectTemplate )
+			// Language\\Action.g3:246:4: ( ID argList -> ID argList | 'super' DOT qid= ID argList -> ID[$qid,\"super.\"+$qid.text] argList | indirectTemplate -> indirectTemplate )
 			int alt19=3;
 			switch ( input.LA(1) )
 			{
@@ -2194,7 +2194,7 @@ public partial class ActionParser : Parser
 				alt19=1;
 				}
 				break;
-			case 42:
+			case SUPER:
 				{
 				alt19=2;
 				}
@@ -2216,12 +2216,12 @@ public partial class ActionParser : Parser
 			switch ( alt19 )
 			{
 			case 1:
-				// Language\\Action.g3:238:4: ID argList
+				// Language\\Action.g3:246:4: ID argList
 				{
-				ID60=(IToken)Match(input,ID,Follow._ID_in_namedTemplate726); if (state.failed) return retval; 
+				ID60=(IToken)Match(input,ID,Follow._ID_in_namedTemplate774); if (state.failed) return retval; 
 				if ( state.backtracking == 0 ) stream_ID.Add(ID60);
 
-				PushFollow(Follow._argList_in_namedTemplate728);
+				PushFollow(Follow._argList_in_namedTemplate776);
 				argList61=argList();
 
 				state._fsp--;
@@ -2242,7 +2242,7 @@ public partial class ActionParser : Parser
 				RewriteRuleSubtreeStream stream_retval=new RewriteRuleSubtreeStream(adaptor,"rule retval",retval!=null?retval.tree:null);
 
 				root_0 = (StringTemplateAST)adaptor.Nil();
-				// 239:3: -> ID argList
+				// 247:3: -> ID argList
 				{
 					adaptor.AddChild(root_0, stream_ID.NextNode());
 					adaptor.AddChild(root_0, stream_argList.NextTree());
@@ -2256,18 +2256,18 @@ public partial class ActionParser : Parser
 				}
 				break;
 			case 2:
-				// Language\\Action.g3:240:4: 'super' DOT qid= ID argList
+				// Language\\Action.g3:248:4: 'super' DOT qid= ID argList
 				{
-				string_literal62=(IToken)Match(input,42,Follow._42_in_namedTemplate741); if (state.failed) return retval; 
-				if ( state.backtracking == 0 ) stream_42.Add(string_literal62);
+				string_literal62=(IToken)Match(input,SUPER,Follow._SUPER_in_namedTemplate789); if (state.failed) return retval; 
+				if ( state.backtracking == 0 ) stream_SUPER.Add(string_literal62);
 
-				DOT63=(IToken)Match(input,DOT,Follow._DOT_in_namedTemplate743); if (state.failed) return retval; 
+				DOT63=(IToken)Match(input,DOT,Follow._DOT_in_namedTemplate791); if (state.failed) return retval; 
 				if ( state.backtracking == 0 ) stream_DOT.Add(DOT63);
 
-				qid=(IToken)Match(input,ID,Follow._ID_in_namedTemplate747); if (state.failed) return retval; 
+				qid=(IToken)Match(input,ID,Follow._ID_in_namedTemplate795); if (state.failed) return retval; 
 				if ( state.backtracking == 0 ) stream_ID.Add(qid);
 
-				PushFollow(Follow._argList_in_namedTemplate749);
+				PushFollow(Follow._argList_in_namedTemplate797);
 				argList64=argList();
 
 				state._fsp--;
@@ -2288,7 +2288,7 @@ public partial class ActionParser : Parser
 				RewriteRuleSubtreeStream stream_retval=new RewriteRuleSubtreeStream(adaptor,"rule retval",retval!=null?retval.tree:null);
 
 				root_0 = (StringTemplateAST)adaptor.Nil();
-				// 241:3: -> ID[$qid,\"super.\"+$qid.text] argList
+				// 249:3: -> ID[$qid,\"super.\"+$qid.text] argList
 				{
 					adaptor.AddChild(root_0, (StringTemplateAST)adaptor.Create(ID, qid, "super."+(qid!=null?qid.Text:null)));
 					adaptor.AddChild(root_0, stream_argList.NextTree());
@@ -2302,9 +2302,9 @@ public partial class ActionParser : Parser
 				}
 				break;
 			case 3:
-				// Language\\Action.g3:242:4: indirectTemplate
+				// Language\\Action.g3:250:4: indirectTemplate
 				{
-				PushFollow(Follow._indirectTemplate_in_namedTemplate763);
+				PushFollow(Follow._indirectTemplate_in_namedTemplate811);
 				indirectTemplate65=indirectTemplate();
 
 				state._fsp--;
@@ -2325,7 +2325,7 @@ public partial class ActionParser : Parser
 				RewriteRuleSubtreeStream stream_retval=new RewriteRuleSubtreeStream(adaptor,"rule retval",retval!=null?retval.tree:null);
 
 				root_0 = (StringTemplateAST)adaptor.Nil();
-				// 243:3: -> indirectTemplate
+				// 251:3: -> indirectTemplate
 				{
 					adaptor.AddChild(root_0, stream_indirectTemplate.NextTree());
 
@@ -2368,7 +2368,7 @@ public partial class ActionParser : Parser
 	}
 
 	// $ANTLR start "anonymousTemplate"
-	// Language\\Action.g3:246:0: anonymousTemplate : t= ANONYMOUS_TEMPLATE ;
+	// Language\\Action.g3:254:0: anonymousTemplate : t= ANONYMOUS_TEMPLATE ;
 	private ActionParser.anonymousTemplate_return anonymousTemplate(  )
 	{
 		ActionParser.anonymousTemplate_return retval = new ActionParser.anonymousTemplate_return();
@@ -2385,12 +2385,12 @@ public partial class ActionParser : Parser
 
 		try
 		{
-			// Language\\Action.g3:255:4: (t= ANONYMOUS_TEMPLATE )
-			// Language\\Action.g3:255:4: t= ANONYMOUS_TEMPLATE
+			// Language\\Action.g3:263:4: (t= ANONYMOUS_TEMPLATE )
+			// Language\\Action.g3:263:4: t= ANONYMOUS_TEMPLATE
 			{
 			root_0 = (StringTemplateAST)adaptor.Nil();
 
-			t=(IToken)Match(input,ANONYMOUS_TEMPLATE,Follow._ANONYMOUS_TEMPLATE_in_anonymousTemplate792); if (state.failed) return retval;
+			t=(IToken)Match(input,ANONYMOUS_TEMPLATE,Follow._ANONYMOUS_TEMPLATE_in_anonymousTemplate840); if (state.failed) return retval;
 			if ( state.backtracking==0 ) {
 			t_tree = (StringTemplateAST)adaptor.Create(t);
 			adaptor.AddChild(root_0, t_tree);
@@ -2446,7 +2446,7 @@ public partial class ActionParser : Parser
 	}
 
 	// $ANTLR start "atom"
-	// Language\\Action.g3:268:0: atom : ( ID | STRING | INT | ANONYMOUS_TEMPLATE );
+	// Language\\Action.g3:276:0: atom : ( ID | STRING | INT | ANONYMOUS_TEMPLATE );
 	private ActionParser.atom_return atom(  )
 	{
 		ActionParser.atom_return retval = new ActionParser.atom_return();
@@ -2460,7 +2460,7 @@ public partial class ActionParser : Parser
 
 		try
 		{
-			// Language\\Action.g3:269:4: ( ID | STRING | INT | ANONYMOUS_TEMPLATE )
+			// Language\\Action.g3:277:4: ( ID | STRING | INT | ANONYMOUS_TEMPLATE )
 			// Language\\Action.g3:
 			{
 			root_0 = (StringTemplateAST)adaptor.Nil();
@@ -2511,7 +2511,7 @@ public partial class ActionParser : Parser
 	}
 
 	// $ANTLR start "list"
-	// Language\\Action.g3:275:0: list : lb= LBRACK listElement ( COMMA listElement )* RBRACK -> ^( LIST[$lb,\"value\"] ( listElement )+ ) ;
+	// Language\\Action.g3:283:0: list : lb= LBRACK listElement ( COMMA listElement )* RBRACK -> ^( LIST[$lb,\"value\"] ( listElement )+ ) ;
 	private ActionParser.list_return list(  )
 	{
 		ActionParser.list_return retval = new ActionParser.list_return();
@@ -2534,19 +2534,19 @@ public partial class ActionParser : Parser
 		RewriteRuleSubtreeStream stream_listElement=new RewriteRuleSubtreeStream(adaptor,"rule listElement");
 		try
 		{
-			// Language\\Action.g3:276:4: (lb= LBRACK listElement ( COMMA listElement )* RBRACK -> ^( LIST[$lb,\"value\"] ( listElement )+ ) )
-			// Language\\Action.g3:276:4: lb= LBRACK listElement ( COMMA listElement )* RBRACK
+			// Language\\Action.g3:284:4: (lb= LBRACK listElement ( COMMA listElement )* RBRACK -> ^( LIST[$lb,\"value\"] ( listElement )+ ) )
+			// Language\\Action.g3:284:4: lb= LBRACK listElement ( COMMA listElement )* RBRACK
 			{
-			lb=(IToken)Match(input,LBRACK,Follow._LBRACK_in_list835); if (state.failed) return retval; 
+			lb=(IToken)Match(input,LBRACK,Follow._LBRACK_in_list883); if (state.failed) return retval; 
 			if ( state.backtracking == 0 ) stream_LBRACK.Add(lb);
 
-			PushFollow(Follow._listElement_in_list839);
+			PushFollow(Follow._listElement_in_list887);
 			listElement67=listElement();
 
 			state._fsp--;
 			if (state.failed) return retval;
 			if ( state.backtracking == 0 ) stream_listElement.Add(listElement67.Tree);
-			// Language\\Action.g3:277:15: ( COMMA listElement )*
+			// Language\\Action.g3:285:15: ( COMMA listElement )*
 			for ( ; ; )
 			{
 				int alt20=2;
@@ -2561,12 +2561,12 @@ public partial class ActionParser : Parser
 				switch ( alt20 )
 				{
 				case 1:
-					// Language\\Action.g3:277:16: COMMA listElement
+					// Language\\Action.g3:285:16: COMMA listElement
 					{
-					COMMA68=(IToken)Match(input,COMMA,Follow._COMMA_in_list842); if (state.failed) return retval; 
+					COMMA68=(IToken)Match(input,COMMA,Follow._COMMA_in_list890); if (state.failed) return retval; 
 					if ( state.backtracking == 0 ) stream_COMMA.Add(COMMA68);
 
-					PushFollow(Follow._listElement_in_list844);
+					PushFollow(Follow._listElement_in_list892);
 					listElement69=listElement();
 
 					state._fsp--;
@@ -2585,7 +2585,7 @@ public partial class ActionParser : Parser
 				;
 
 
-			RBRACK70=(IToken)Match(input,RBRACK,Follow._RBRACK_in_list850); if (state.failed) return retval; 
+			RBRACK70=(IToken)Match(input,RBRACK,Follow._RBRACK_in_list898); if (state.failed) return retval; 
 			if ( state.backtracking == 0 ) stream_RBRACK.Add(RBRACK70);
 
 
@@ -2603,9 +2603,9 @@ public partial class ActionParser : Parser
 			RewriteRuleSubtreeStream stream_retval=new RewriteRuleSubtreeStream(adaptor,"rule retval",retval!=null?retval.tree:null);
 
 			root_0 = (StringTemplateAST)adaptor.Nil();
-			// 279:3: -> ^( LIST[$lb,\"value\"] ( listElement )+ )
+			// 287:3: -> ^( LIST[$lb,\"value\"] ( listElement )+ )
 			{
-				// Language\\Action.g3:279:6: ^( LIST[$lb,\"value\"] ( listElement )+ )
+				// Language\\Action.g3:287:6: ^( LIST[$lb,\"value\"] ( listElement )+ )
 				{
 				StringTemplateAST root_1 = (StringTemplateAST)adaptor.Nil();
 				root_1 = (StringTemplateAST)adaptor.BecomeRoot((StringTemplateAST)adaptor.Create(LIST, lb, "value"), root_1);
@@ -2661,7 +2661,7 @@ public partial class ActionParser : Parser
 	}
 
 	// $ANTLR start "listElement"
-	// Language\\Action.g3:282:0: listElement : ( nonAlternatingTemplateExpr | -> NOTHING[\"NOTHING\"] );
+	// Language\\Action.g3:290:0: listElement : ( nonAlternatingTemplateExpr | -> NOTHING[\"NOTHING\"] );
 	private ActionParser.listElement_return listElement(  )
 	{
 		ActionParser.listElement_return retval = new ActionParser.listElement_return();
@@ -2674,11 +2674,11 @@ public partial class ActionParser : Parser
 
 		try
 		{
-			// Language\\Action.g3:283:4: ( nonAlternatingTemplateExpr | -> NOTHING[\"NOTHING\"] )
+			// Language\\Action.g3:291:4: ( nonAlternatingTemplateExpr | -> NOTHING[\"NOTHING\"] )
 			int alt21=2;
 			int LA21_0 = input.LA(1);
 
-			if ( (LA21_0==ANONYMOUS_TEMPLATE||LA21_0==ID||(LA21_0>=INT && LA21_0<=LBRACK)||LA21_0==LPAREN||LA21_0==STRING||(LA21_0>=37 && LA21_0<=43)) )
+			if ( (LA21_0==ANONYMOUS_TEMPLATE||LA21_0==FIRST||LA21_0==ID||(LA21_0>=INT && LA21_0<=LENGTH)||LA21_0==LPAREN||LA21_0==REST||(LA21_0>=STRING && LA21_0<=SUPER)||LA21_0==TRUNC) )
 			{
 				alt21=1;
 			}
@@ -2696,11 +2696,11 @@ public partial class ActionParser : Parser
 			switch ( alt21 )
 			{
 			case 1:
-				// Language\\Action.g3:283:4: nonAlternatingTemplateExpr
+				// Language\\Action.g3:291:4: nonAlternatingTemplateExpr
 				{
 				root_0 = (StringTemplateAST)adaptor.Nil();
 
-				PushFollow(Follow._nonAlternatingTemplateExpr_in_listElement873);
+				PushFollow(Follow._nonAlternatingTemplateExpr_in_listElement921);
 				nonAlternatingTemplateExpr71=nonAlternatingTemplateExpr();
 
 				state._fsp--;
@@ -2710,7 +2710,7 @@ public partial class ActionParser : Parser
 				}
 				break;
 			case 2:
-				// Language\\Action.g3:285:3: 
+				// Language\\Action.g3:293:3: 
 				{
 
 
@@ -2728,7 +2728,7 @@ public partial class ActionParser : Parser
 				RewriteRuleSubtreeStream stream_retval=new RewriteRuleSubtreeStream(adaptor,"rule retval",retval!=null?retval.tree:null);
 
 				root_0 = (StringTemplateAST)adaptor.Nil();
-				// 285:3: -> NOTHING[\"NOTHING\"]
+				// 293:3: -> NOTHING[\"NOTHING\"]
 				{
 					adaptor.AddChild(root_0, (StringTemplateAST)adaptor.Create(NOTHING, "NOTHING"));
 
@@ -2771,7 +2771,7 @@ public partial class ActionParser : Parser
 	}
 
 	// $ANTLR start "templateInclude"
-	// Language\\Action.g3:288:0: templateInclude : (id= ID argList -> $id argList | 'super' DOT qid= ID argList -> ID[$qid,\"super.\"+$qid.text] argList | indirectTemplate -> indirectTemplate ) -> ^( INCLUDE[\"include\"] $templateInclude) ;
+	// Language\\Action.g3:296:0: templateInclude : (id= ID argList -> $id argList | 'super' DOT qid= ID argList -> ID[$qid,\"super.\"+$qid.text] argList | indirectTemplate -> indirectTemplate ) -> ^( INCLUDE[\"include\"] $templateInclude) ;
 	private ActionParser.templateInclude_return templateInclude(  )
 	{
 		ActionParser.templateInclude_return retval = new ActionParser.templateInclude_return();
@@ -2792,16 +2792,16 @@ public partial class ActionParser : Parser
 		StringTemplateAST string_literal73_tree=null;
 		StringTemplateAST DOT74_tree=null;
 		RewriteRuleITokenStream stream_ID=new RewriteRuleITokenStream(adaptor,"token ID");
-		RewriteRuleITokenStream stream_42=new RewriteRuleITokenStream(adaptor,"token 42");
+		RewriteRuleITokenStream stream_SUPER=new RewriteRuleITokenStream(adaptor,"token SUPER");
 		RewriteRuleITokenStream stream_DOT=new RewriteRuleITokenStream(adaptor,"token DOT");
 		RewriteRuleSubtreeStream stream_argList=new RewriteRuleSubtreeStream(adaptor,"rule argList");
 		RewriteRuleSubtreeStream stream_indirectTemplate=new RewriteRuleSubtreeStream(adaptor,"rule indirectTemplate");
 		try
 		{
-			// Language\\Action.g3:289:4: ( (id= ID argList -> $id argList | 'super' DOT qid= ID argList -> ID[$qid,\"super.\"+$qid.text] argList | indirectTemplate -> indirectTemplate ) -> ^( INCLUDE[\"include\"] $templateInclude) )
-			// Language\\Action.g3:289:4: (id= ID argList -> $id argList | 'super' DOT qid= ID argList -> ID[$qid,\"super.\"+$qid.text] argList | indirectTemplate -> indirectTemplate )
+			// Language\\Action.g3:297:4: ( (id= ID argList -> $id argList | 'super' DOT qid= ID argList -> ID[$qid,\"super.\"+$qid.text] argList | indirectTemplate -> indirectTemplate ) -> ^( INCLUDE[\"include\"] $templateInclude) )
+			// Language\\Action.g3:297:4: (id= ID argList -> $id argList | 'super' DOT qid= ID argList -> ID[$qid,\"super.\"+$qid.text] argList | indirectTemplate -> indirectTemplate )
 			{
-			// Language\\Action.g3:289:4: (id= ID argList -> $id argList | 'super' DOT qid= ID argList -> ID[$qid,\"super.\"+$qid.text] argList | indirectTemplate -> indirectTemplate )
+			// Language\\Action.g3:297:4: (id= ID argList -> $id argList | 'super' DOT qid= ID argList -> ID[$qid,\"super.\"+$qid.text] argList | indirectTemplate -> indirectTemplate )
 			int alt22=3;
 			switch ( input.LA(1) )
 			{
@@ -2810,7 +2810,7 @@ public partial class ActionParser : Parser
 				alt22=1;
 				}
 				break;
-			case 42:
+			case SUPER:
 				{
 				alt22=2;
 				}
@@ -2832,12 +2832,12 @@ public partial class ActionParser : Parser
 			switch ( alt22 )
 			{
 			case 1:
-				// Language\\Action.g3:289:6: id= ID argList
+				// Language\\Action.g3:297:6: id= ID argList
 				{
-				id=(IToken)Match(input,ID,Follow._ID_in_templateInclude898); if (state.failed) return retval; 
+				id=(IToken)Match(input,ID,Follow._ID_in_templateInclude946); if (state.failed) return retval; 
 				if ( state.backtracking == 0 ) stream_ID.Add(id);
 
-				PushFollow(Follow._argList_in_templateInclude900);
+				PushFollow(Follow._argList_in_templateInclude948);
 				argList72=argList();
 
 				state._fsp--;
@@ -2859,7 +2859,7 @@ public partial class ActionParser : Parser
 				RewriteRuleSubtreeStream stream_retval=new RewriteRuleSubtreeStream(adaptor,"rule retval",retval!=null?retval.tree:null);
 
 				root_0 = (StringTemplateAST)adaptor.Nil();
-				// 289:20: -> $id argList
+				// 297:20: -> $id argList
 				{
 					adaptor.AddChild(root_0, stream_id.NextNode());
 					adaptor.AddChild(root_0, stream_argList.NextTree());
@@ -2873,18 +2873,18 @@ public partial class ActionParser : Parser
 				}
 				break;
 			case 2:
-				// Language\\Action.g3:290:5: 'super' DOT qid= ID argList
+				// Language\\Action.g3:298:5: 'super' DOT qid= ID argList
 				{
-				string_literal73=(IToken)Match(input,42,Follow._42_in_templateInclude913); if (state.failed) return retval; 
-				if ( state.backtracking == 0 ) stream_42.Add(string_literal73);
+				string_literal73=(IToken)Match(input,SUPER,Follow._SUPER_in_templateInclude961); if (state.failed) return retval; 
+				if ( state.backtracking == 0 ) stream_SUPER.Add(string_literal73);
 
-				DOT74=(IToken)Match(input,DOT,Follow._DOT_in_templateInclude915); if (state.failed) return retval; 
+				DOT74=(IToken)Match(input,DOT,Follow._DOT_in_templateInclude963); if (state.failed) return retval; 
 				if ( state.backtracking == 0 ) stream_DOT.Add(DOT74);
 
-				qid=(IToken)Match(input,ID,Follow._ID_in_templateInclude919); if (state.failed) return retval; 
+				qid=(IToken)Match(input,ID,Follow._ID_in_templateInclude967); if (state.failed) return retval; 
 				if ( state.backtracking == 0 ) stream_ID.Add(qid);
 
-				PushFollow(Follow._argList_in_templateInclude921);
+				PushFollow(Follow._argList_in_templateInclude969);
 				argList75=argList();
 
 				state._fsp--;
@@ -2905,7 +2905,7 @@ public partial class ActionParser : Parser
 				RewriteRuleSubtreeStream stream_retval=new RewriteRuleSubtreeStream(adaptor,"rule retval",retval!=null?retval.tree:null);
 
 				root_0 = (StringTemplateAST)adaptor.Nil();
-				// 290:32: -> ID[$qid,\"super.\"+$qid.text] argList
+				// 298:32: -> ID[$qid,\"super.\"+$qid.text] argList
 				{
 					adaptor.AddChild(root_0, (StringTemplateAST)adaptor.Create(ID, qid, "super."+(qid!=null?qid.Text:null)));
 					adaptor.AddChild(root_0, stream_argList.NextTree());
@@ -2919,9 +2919,9 @@ public partial class ActionParser : Parser
 				}
 				break;
 			case 3:
-				// Language\\Action.g3:291:5: indirectTemplate
+				// Language\\Action.g3:299:5: indirectTemplate
 				{
-				PushFollow(Follow._indirectTemplate_in_templateInclude934);
+				PushFollow(Follow._indirectTemplate_in_templateInclude982);
 				indirectTemplate76=indirectTemplate();
 
 				state._fsp--;
@@ -2942,7 +2942,7 @@ public partial class ActionParser : Parser
 				RewriteRuleSubtreeStream stream_retval=new RewriteRuleSubtreeStream(adaptor,"rule retval",retval!=null?retval.tree:null);
 
 				root_0 = (StringTemplateAST)adaptor.Nil();
-				// 291:22: -> indirectTemplate
+				// 299:22: -> indirectTemplate
 				{
 					adaptor.AddChild(root_0, stream_indirectTemplate.NextTree());
 
@@ -2972,9 +2972,9 @@ public partial class ActionParser : Parser
 			RewriteRuleSubtreeStream stream_retval=new RewriteRuleSubtreeStream(adaptor,"rule retval",retval!=null?retval.tree:null);
 
 			root_0 = (StringTemplateAST)adaptor.Nil();
-			// 293:3: -> ^( INCLUDE[\"include\"] $templateInclude)
+			// 301:3: -> ^( INCLUDE[\"include\"] $templateInclude)
 			{
-				// Language\\Action.g3:293:6: ^( INCLUDE[\"include\"] $templateInclude)
+				// Language\\Action.g3:301:6: ^( INCLUDE[\"include\"] $templateInclude)
 				{
 				StringTemplateAST root_1 = (StringTemplateAST)adaptor.Nil();
 				root_1 = (StringTemplateAST)adaptor.BecomeRoot((StringTemplateAST)adaptor.Create(INCLUDE, "include"), root_1);
@@ -3021,7 +3021,7 @@ public partial class ActionParser : Parser
 	}
 
 	// $ANTLR start "indirectTemplate"
-	// Language\\Action.g3:297:0: indirectTemplate : LPAREN e= templatesExpr RPAREN args= argList -> ^( VALUE[\"value\"] $e $args) ;
+	// Language\\Action.g3:305:0: indirectTemplate : LPAREN e= templatesExpr RPAREN args= argList -> ^( VALUE[\"value\"] $e $args) ;
 	private ActionParser.indirectTemplate_return indirectTemplate(  )
 	{
 		ActionParser.indirectTemplate_return retval = new ActionParser.indirectTemplate_return();
@@ -3042,22 +3042,22 @@ public partial class ActionParser : Parser
 		RewriteRuleSubtreeStream stream_argList=new RewriteRuleSubtreeStream(adaptor,"rule argList");
 		try
 		{
-			// Language\\Action.g3:298:4: ( LPAREN e= templatesExpr RPAREN args= argList -> ^( VALUE[\"value\"] $e $args) )
-			// Language\\Action.g3:298:4: LPAREN e= templatesExpr RPAREN args= argList
+			// Language\\Action.g3:306:4: ( LPAREN e= templatesExpr RPAREN args= argList -> ^( VALUE[\"value\"] $e $args) )
+			// Language\\Action.g3:306:4: LPAREN e= templatesExpr RPAREN args= argList
 			{
-			LPAREN77=(IToken)Match(input,LPAREN,Follow._LPAREN_in_indirectTemplate968); if (state.failed) return retval; 
+			LPAREN77=(IToken)Match(input,LPAREN,Follow._LPAREN_in_indirectTemplate1016); if (state.failed) return retval; 
 			if ( state.backtracking == 0 ) stream_LPAREN.Add(LPAREN77);
 
-			PushFollow(Follow._templatesExpr_in_indirectTemplate972);
+			PushFollow(Follow._templatesExpr_in_indirectTemplate1020);
 			e=templatesExpr();
 
 			state._fsp--;
 			if (state.failed) return retval;
 			if ( state.backtracking == 0 ) stream_templatesExpr.Add(e.Tree);
-			RPAREN78=(IToken)Match(input,RPAREN,Follow._RPAREN_in_indirectTemplate974); if (state.failed) return retval; 
+			RPAREN78=(IToken)Match(input,RPAREN,Follow._RPAREN_in_indirectTemplate1022); if (state.failed) return retval; 
 			if ( state.backtracking == 0 ) stream_RPAREN.Add(RPAREN78);
 
-			PushFollow(Follow._argList_in_indirectTemplate978);
+			PushFollow(Follow._argList_in_indirectTemplate1026);
 			args=argList();
 
 			state._fsp--;
@@ -3080,9 +3080,9 @@ public partial class ActionParser : Parser
 			RewriteRuleSubtreeStream stream_retval=new RewriteRuleSubtreeStream(adaptor,"rule retval",retval!=null?retval.tree:null);
 
 			root_0 = (StringTemplateAST)adaptor.Nil();
-			// 299:3: -> ^( VALUE[\"value\"] $e $args)
+			// 307:3: -> ^( VALUE[\"value\"] $e $args)
 			{
-				// Language\\Action.g3:299:6: ^( VALUE[\"value\"] $e $args)
+				// Language\\Action.g3:307:6: ^( VALUE[\"value\"] $e $args)
 				{
 				StringTemplateAST root_1 = (StringTemplateAST)adaptor.Nil();
 				root_1 = (StringTemplateAST)adaptor.BecomeRoot((StringTemplateAST)adaptor.Create(VALUE, "value"), root_1);
@@ -3130,7 +3130,7 @@ public partial class ActionParser : Parser
 	}
 
 	// $ANTLR start "argList"
-	// Language\\Action.g3:302:0: argList : ( LPAREN RPAREN -> ARGS[\"ARGS\"] |=> singleArg -> singleArg | LPAREN argumentAssignment ( COMMA argumentAssignment )* RPAREN -> ^( ARGS[\"ARGS\"] ( argumentAssignment )+ ) );
+	// Language\\Action.g3:310:0: argList : ( LPAREN RPAREN -> ARGS[\"ARGS\"] |=> singleArg -> singleArg | LPAREN argumentAssignment ( COMMA argumentAssignment )* RPAREN -> ^( ARGS[\"ARGS\"] ( argumentAssignment )+ ) );
 	private ActionParser.argList_return argList(  )
 	{
 		ActionParser.argList_return retval = new ActionParser.argList_return();
@@ -3159,18 +3159,18 @@ public partial class ActionParser : Parser
 		RewriteRuleSubtreeStream stream_argumentAssignment=new RewriteRuleSubtreeStream(adaptor,"rule argumentAssignment");
 		try
 		{
-			// Language\\Action.g3:303:4: ( LPAREN RPAREN -> ARGS[\"ARGS\"] |=> singleArg -> singleArg | LPAREN argumentAssignment ( COMMA argumentAssignment )* RPAREN -> ^( ARGS[\"ARGS\"] ( argumentAssignment )+ ) )
+			// Language\\Action.g3:311:4: ( LPAREN RPAREN -> ARGS[\"ARGS\"] |=> singleArg -> singleArg | LPAREN argumentAssignment ( COMMA argumentAssignment )* RPAREN -> ^( ARGS[\"ARGS\"] ( argumentAssignment )+ ) )
 			int alt24=3;
 			alt24 = dfa24.Predict(input);
 			switch ( alt24 )
 			{
 			case 1:
-				// Language\\Action.g3:303:4: LPAREN RPAREN
+				// Language\\Action.g3:311:4: LPAREN RPAREN
 				{
-				LPAREN79=(IToken)Match(input,LPAREN,Follow._LPAREN_in_argList1005); if (state.failed) return retval; 
+				LPAREN79=(IToken)Match(input,LPAREN,Follow._LPAREN_in_argList1053); if (state.failed) return retval; 
 				if ( state.backtracking == 0 ) stream_LPAREN.Add(LPAREN79);
 
-				RPAREN80=(IToken)Match(input,RPAREN,Follow._RPAREN_in_argList1007); if (state.failed) return retval; 
+				RPAREN80=(IToken)Match(input,RPAREN,Follow._RPAREN_in_argList1055); if (state.failed) return retval; 
 				if ( state.backtracking == 0 ) stream_RPAREN.Add(RPAREN80);
 
 
@@ -3188,7 +3188,7 @@ public partial class ActionParser : Parser
 				RewriteRuleSubtreeStream stream_retval=new RewriteRuleSubtreeStream(adaptor,"rule retval",retval!=null?retval.tree:null);
 
 				root_0 = (StringTemplateAST)adaptor.Nil();
-				// 303:18: -> ARGS[\"ARGS\"]
+				// 311:18: -> ARGS[\"ARGS\"]
 				{
 					adaptor.AddChild(root_0, (StringTemplateAST)adaptor.Create(ARGS, "ARGS"));
 
@@ -3201,10 +3201,10 @@ public partial class ActionParser : Parser
 				}
 				break;
 			case 2:
-				// Language\\Action.g3:304:4: => singleArg
+				// Language\\Action.g3:312:4: => singleArg
 				{
 
-				PushFollow(Follow._singleArg_in_argList1022);
+				PushFollow(Follow._singleArg_in_argList1070);
 				singleArg81=singleArg();
 
 				state._fsp--;
@@ -3225,7 +3225,7 @@ public partial class ActionParser : Parser
 				RewriteRuleSubtreeStream stream_retval=new RewriteRuleSubtreeStream(adaptor,"rule retval",retval!=null?retval.tree:null);
 
 				root_0 = (StringTemplateAST)adaptor.Nil();
-				// 304:27: -> singleArg
+				// 312:27: -> singleArg
 				{
 					adaptor.AddChild(root_0, stream_singleArg.NextTree());
 
@@ -3238,18 +3238,18 @@ public partial class ActionParser : Parser
 				}
 				break;
 			case 3:
-				// Language\\Action.g3:305:4: LPAREN argumentAssignment ( COMMA argumentAssignment )* RPAREN
+				// Language\\Action.g3:313:4: LPAREN argumentAssignment ( COMMA argumentAssignment )* RPAREN
 				{
-				LPAREN82=(IToken)Match(input,LPAREN,Follow._LPAREN_in_argList1039); if (state.failed) return retval; 
+				LPAREN82=(IToken)Match(input,LPAREN,Follow._LPAREN_in_argList1087); if (state.failed) return retval; 
 				if ( state.backtracking == 0 ) stream_LPAREN.Add(LPAREN82);
 
-				PushFollow(Follow._argumentAssignment_in_argList1041);
+				PushFollow(Follow._argumentAssignment_in_argList1089);
 				argumentAssignment83=argumentAssignment();
 
 				state._fsp--;
 				if (state.failed) return retval;
 				if ( state.backtracking == 0 ) stream_argumentAssignment.Add(argumentAssignment83.Tree);
-				// Language\\Action.g3:305:30: ( COMMA argumentAssignment )*
+				// Language\\Action.g3:313:30: ( COMMA argumentAssignment )*
 				for ( ; ; )
 				{
 					int alt23=2;
@@ -3264,12 +3264,12 @@ public partial class ActionParser : Parser
 					switch ( alt23 )
 					{
 					case 1:
-						// Language\\Action.g3:305:31: COMMA argumentAssignment
+						// Language\\Action.g3:313:31: COMMA argumentAssignment
 						{
-						COMMA84=(IToken)Match(input,COMMA,Follow._COMMA_in_argList1044); if (state.failed) return retval; 
+						COMMA84=(IToken)Match(input,COMMA,Follow._COMMA_in_argList1092); if (state.failed) return retval; 
 						if ( state.backtracking == 0 ) stream_COMMA.Add(COMMA84);
 
-						PushFollow(Follow._argumentAssignment_in_argList1046);
+						PushFollow(Follow._argumentAssignment_in_argList1094);
 						argumentAssignment85=argumentAssignment();
 
 						state._fsp--;
@@ -3288,7 +3288,7 @@ public partial class ActionParser : Parser
 					;
 
 
-				RPAREN86=(IToken)Match(input,RPAREN,Follow._RPAREN_in_argList1050); if (state.failed) return retval; 
+				RPAREN86=(IToken)Match(input,RPAREN,Follow._RPAREN_in_argList1098); if (state.failed) return retval; 
 				if ( state.backtracking == 0 ) stream_RPAREN.Add(RPAREN86);
 
 
@@ -3306,9 +3306,9 @@ public partial class ActionParser : Parser
 				RewriteRuleSubtreeStream stream_retval=new RewriteRuleSubtreeStream(adaptor,"rule retval",retval!=null?retval.tree:null);
 
 				root_0 = (StringTemplateAST)adaptor.Nil();
-				// 306:3: -> ^( ARGS[\"ARGS\"] ( argumentAssignment )+ )
+				// 314:3: -> ^( ARGS[\"ARGS\"] ( argumentAssignment )+ )
 				{
-					// Language\\Action.g3:306:6: ^( ARGS[\"ARGS\"] ( argumentAssignment )+ )
+					// Language\\Action.g3:314:6: ^( ARGS[\"ARGS\"] ( argumentAssignment )+ )
 					{
 					StringTemplateAST root_1 = (StringTemplateAST)adaptor.Nil();
 					root_1 = (StringTemplateAST)adaptor.BecomeRoot((StringTemplateAST)adaptor.Create(ARGS, "ARGS"), root_1);
@@ -3366,7 +3366,7 @@ public partial class ActionParser : Parser
 	}
 
 	// $ANTLR start "singleArg"
-	// Language\\Action.g3:309:0: singleArg : LPAREN nonAlternatingTemplateExpr RPAREN -> ^( SINGLEVALUEARG[\"SINGLEVALUEARG\"] nonAlternatingTemplateExpr ) ;
+	// Language\\Action.g3:317:0: singleArg : LPAREN nonAlternatingTemplateExpr RPAREN -> ^( SINGLEVALUEARG[\"SINGLEVALUEARG\"] nonAlternatingTemplateExpr ) ;
 	private ActionParser.singleArg_return singleArg(  )
 	{
 		ActionParser.singleArg_return retval = new ActionParser.singleArg_return();
@@ -3385,19 +3385,19 @@ public partial class ActionParser : Parser
 		RewriteRuleSubtreeStream stream_nonAlternatingTemplateExpr=new RewriteRuleSubtreeStream(adaptor,"rule nonAlternatingTemplateExpr");
 		try
 		{
-			// Language\\Action.g3:310:4: ( LPAREN nonAlternatingTemplateExpr RPAREN -> ^( SINGLEVALUEARG[\"SINGLEVALUEARG\"] nonAlternatingTemplateExpr ) )
-			// Language\\Action.g3:310:4: LPAREN nonAlternatingTemplateExpr RPAREN
+			// Language\\Action.g3:318:4: ( LPAREN nonAlternatingTemplateExpr RPAREN -> ^( SINGLEVALUEARG[\"SINGLEVALUEARG\"] nonAlternatingTemplateExpr ) )
+			// Language\\Action.g3:318:4: LPAREN nonAlternatingTemplateExpr RPAREN
 			{
-			LPAREN87=(IToken)Match(input,LPAREN,Follow._LPAREN_in_singleArg1073); if (state.failed) return retval; 
+			LPAREN87=(IToken)Match(input,LPAREN,Follow._LPAREN_in_singleArg1121); if (state.failed) return retval; 
 			if ( state.backtracking == 0 ) stream_LPAREN.Add(LPAREN87);
 
-			PushFollow(Follow._nonAlternatingTemplateExpr_in_singleArg1075);
+			PushFollow(Follow._nonAlternatingTemplateExpr_in_singleArg1123);
 			nonAlternatingTemplateExpr88=nonAlternatingTemplateExpr();
 
 			state._fsp--;
 			if (state.failed) return retval;
 			if ( state.backtracking == 0 ) stream_nonAlternatingTemplateExpr.Add(nonAlternatingTemplateExpr88.Tree);
-			RPAREN89=(IToken)Match(input,RPAREN,Follow._RPAREN_in_singleArg1077); if (state.failed) return retval; 
+			RPAREN89=(IToken)Match(input,RPAREN,Follow._RPAREN_in_singleArg1125); if (state.failed) return retval; 
 			if ( state.backtracking == 0 ) stream_RPAREN.Add(RPAREN89);
 
 
@@ -3415,9 +3415,9 @@ public partial class ActionParser : Parser
 			RewriteRuleSubtreeStream stream_retval=new RewriteRuleSubtreeStream(adaptor,"rule retval",retval!=null?retval.tree:null);
 
 			root_0 = (StringTemplateAST)adaptor.Nil();
-			// 311:3: -> ^( SINGLEVALUEARG[\"SINGLEVALUEARG\"] nonAlternatingTemplateExpr )
+			// 319:3: -> ^( SINGLEVALUEARG[\"SINGLEVALUEARG\"] nonAlternatingTemplateExpr )
 			{
-				// Language\\Action.g3:311:6: ^( SINGLEVALUEARG[\"SINGLEVALUEARG\"] nonAlternatingTemplateExpr )
+				// Language\\Action.g3:319:6: ^( SINGLEVALUEARG[\"SINGLEVALUEARG\"] nonAlternatingTemplateExpr )
 				{
 				StringTemplateAST root_1 = (StringTemplateAST)adaptor.Nil();
 				root_1 = (StringTemplateAST)adaptor.BecomeRoot((StringTemplateAST)adaptor.Create(SINGLEVALUEARG, "SINGLEVALUEARG"), root_1);
@@ -3464,7 +3464,7 @@ public partial class ActionParser : Parser
 	}
 
 	// $ANTLR start "argumentAssignment"
-	// Language\\Action.g3:314:0: argumentAssignment : ( ID ASSIGN nonAlternatingTemplateExpr | DOTDOTDOT );
+	// Language\\Action.g3:322:0: argumentAssignment : ( ID ASSIGN nonAlternatingTemplateExpr | DOTDOTDOT );
 	private ActionParser.argumentAssignment_return argumentAssignment(  )
 	{
 		ActionParser.argumentAssignment_return retval = new ActionParser.argumentAssignment_return();
@@ -3483,7 +3483,7 @@ public partial class ActionParser : Parser
 
 		try
 		{
-			// Language\\Action.g3:315:4: ( ID ASSIGN nonAlternatingTemplateExpr | DOTDOTDOT )
+			// Language\\Action.g3:323:4: ( ID ASSIGN nonAlternatingTemplateExpr | DOTDOTDOT )
 			int alt25=2;
 			int LA25_0 = input.LA(1);
 
@@ -3505,21 +3505,21 @@ public partial class ActionParser : Parser
 			switch ( alt25 )
 			{
 			case 1:
-				// Language\\Action.g3:315:4: ID ASSIGN nonAlternatingTemplateExpr
+				// Language\\Action.g3:323:4: ID ASSIGN nonAlternatingTemplateExpr
 				{
 				root_0 = (StringTemplateAST)adaptor.Nil();
 
-				ID90=(IToken)Match(input,ID,Follow._ID_in_argumentAssignment1099); if (state.failed) return retval;
+				ID90=(IToken)Match(input,ID,Follow._ID_in_argumentAssignment1147); if (state.failed) return retval;
 				if ( state.backtracking==0 ) {
 				ID90_tree = (StringTemplateAST)adaptor.Create(ID90);
 				adaptor.AddChild(root_0, ID90_tree);
 				}
-				ASSIGN91=(IToken)Match(input,ASSIGN,Follow._ASSIGN_in_argumentAssignment1101); if (state.failed) return retval;
+				ASSIGN91=(IToken)Match(input,ASSIGN,Follow._ASSIGN_in_argumentAssignment1149); if (state.failed) return retval;
 				if ( state.backtracking == 0 ) {
 				ASSIGN91_tree = (StringTemplateAST)adaptor.Create(ASSIGN91);
 				root_0 = (StringTemplateAST)adaptor.BecomeRoot(ASSIGN91_tree, root_0);
 				}
-				PushFollow(Follow._nonAlternatingTemplateExpr_in_argumentAssignment1104);
+				PushFollow(Follow._nonAlternatingTemplateExpr_in_argumentAssignment1152);
 				nonAlternatingTemplateExpr92=nonAlternatingTemplateExpr();
 
 				state._fsp--;
@@ -3529,11 +3529,11 @@ public partial class ActionParser : Parser
 				}
 				break;
 			case 2:
-				// Language\\Action.g3:316:4: DOTDOTDOT
+				// Language\\Action.g3:324:4: DOTDOTDOT
 				{
 				root_0 = (StringTemplateAST)adaptor.Nil();
 
-				DOTDOTDOT93=(IToken)Match(input,DOTDOTDOT,Follow._DOTDOTDOT_in_argumentAssignment1109); if (state.failed) return retval;
+				DOTDOTDOT93=(IToken)Match(input,DOTDOTDOT,Follow._DOTDOTDOT_in_argumentAssignment1157); if (state.failed) return retval;
 				if ( state.backtracking==0 ) {
 				DOTDOTDOT93_tree = (StringTemplateAST)adaptor.Create(DOTDOTDOT93);
 				adaptor.AddChild(root_0, DOTDOTDOT93_tree);
@@ -3568,10 +3568,10 @@ public partial class ActionParser : Parser
 	// $ANTLR start synpred1_Action
 	public void synpred1_Action_fragment()
 	{
-		// Language\\Action.g3:192:4: ( templateInclude )
-		// Language\\Action.g3:192:5: templateInclude
+		// Language\\Action.g3:200:4: ( templateInclude )
+		// Language\\Action.g3:200:5: templateInclude
 		{
-		PushFollow(Follow._templateInclude_in_synpred1_Action442);
+		PushFollow(Follow._templateInclude_in_synpred1_Action490);
 		templateInclude();
 
 		state._fsp--;
@@ -3584,10 +3584,10 @@ public partial class ActionParser : Parser
 	// $ANTLR start synpred2_Action
 	public void synpred2_Action_fragment()
 	{
-		// Language\\Action.g3:304:4: ( singleArg )
-		// Language\\Action.g3:304:5: singleArg
+		// Language\\Action.g3:312:4: ( singleArg )
+		// Language\\Action.g3:312:5: singleArg
 		{
-		PushFollow(Follow._singleArg_in_synpred2_Action1019);
+		PushFollow(Follow._singleArg_in_synpred2_Action1067);
 		singleArg();
 
 		state._fsp--;
@@ -3661,15 +3661,16 @@ public partial class ActionParser : Parser
 		const string DFA15_minS =
 			"\x1\x4\x1\x0\x1\xFFFF\x1\x0\x9\xFFFF";
 		const string DFA15_maxS =
-			"\x1\x2B\x1\x0\x1\xFFFF\x1\x0\x9\xFFFF";
+			"\x1\x28\x1\x0\x1\xFFFF\x1\x0\x9\xFFFF";
 		const string DFA15_acceptS =
 			"\x2\xFFFF\x1\x1\x1\xFFFF\x1\x2\x1\x3\x5\xFFFF\x1\x5\x1\x4";
 		const string DFA15_specialS =
 			"\x1\x0\x1\x1\x1\xFFFF\x1\x2\x9\xFFFF}>";
 		static readonly string[] DFA15_transitionS =
 			{
-				"\x1\x4\xA\xFFFF\x1\x1\x1\xFFFF\x1\x4\x1\xB\x1\xFFFF\x1\x3\x9\xFFFF\x1"+
-				"\x4\x6\xFFFF\x5\x5\x1\x2\x1\x5",
+				"\x1\x4\xA\xFFFF\x1\x5\x1\xFFFF\x1\x1\x1\xFFFF\x1\x4\x1\x5\x1\xB\x1\x5"+
+				"\x1\xFFFF\x1\x3\x6\xFFFF\x1\x5\x3\xFFFF\x1\x4\x1\x5\x1\x2\x2\xFFFF\x1"+
+				"\x5",
 				"\x1\xFFFF",
 				"",
 				"\x1\xFFFF",
@@ -3716,7 +3717,7 @@ public partial class ActionParser : Parser
 		}
 		public override string GetDescription()
 		{
-			return "191:0: primaryExpr : (=> templateInclude | atom ( DOT ( ID | valueExpr ) )* | function ( DOT ( ID | valueExpr ) )* | valueExpr | list );";
+			return "199:0: primaryExpr : (=> templateInclude | atom ( DOT ( ID | valueExpr ) )* | function ( DOT ( ID | valueExpr ) )* | valueExpr | list );";
 		}
 	}
 
@@ -3736,13 +3737,13 @@ public partial class ActionParser : Parser
 				s = -1;
 				if ( (LA15_0==ID) ) {s = 1;}
 
-				else if ( (LA15_0==42) && (synpred1_Action())) {s = 2;}
+				else if ( (LA15_0==SUPER) && (synpred1_Action())) {s = 2;}
 
 				else if ( (LA15_0==LPAREN) ) {s = 3;}
 
 				else if ( (LA15_0==ANONYMOUS_TEMPLATE||LA15_0==INT||LA15_0==STRING) ) {s = 4;}
 
-				else if ( ((LA15_0>=37 && LA15_0<=41)||LA15_0==43) ) {s = 5;}
+				else if ( (LA15_0==FIRST||LA15_0==LAST||LA15_0==LENGTH||LA15_0==REST||LA15_0==STRIP||LA15_0==TRUNC) ) {s = 5;}
 
 				else if ( (LA15_0==LBRACK) ) {s = 11;}
 
@@ -3796,9 +3797,9 @@ public partial class ActionParser : Parser
 		const string DFA24_eofS =
 			"\x14\xFFFF";
 		const string DFA24_minS =
-			"\x1\x14\x1\x4\x1\xFFFF\x1\x7\x10\xFFFF";
+			"\x1\x18\x1\x4\x1\xFFFF\x1\x7\x10\xFFFF";
 		const string DFA24_maxS =
-			"\x1\x14\x1\x2B\x1\xFFFF\x1\x1B\x10\xFFFF";
+			"\x1\x18\x1\x28\x1\xFFFF\x1\x20\x10\xFFFF";
 		const string DFA24_acceptS =
 			"\x2\xFFFF\x1\x1\x1\xFFFF\xA\x2\x1\x3\x5\x2";
 		const string DFA24_specialS =
@@ -3806,11 +3807,11 @@ public partial class ActionParser : Parser
 		static readonly string[] DFA24_transitionS =
 			{
 				"\x1\x1",
-				"\x1\x6\x7\xFFFF\x1\xE\x2\xFFFF\x1\x3\x1\xFFFF\x1\x6\x1\xD\x1\xFFFF\x1"+
-				"\x5\x6\xFFFF\x1\x2\x2\xFFFF\x1\x6\x6\xFFFF\x1\x7\x1\x9\x1\xA\x1\x8\x1"+
-				"\xB\x1\x4\x1\xC",
+				"\x1\x6\x7\xFFFF\x1\xE\x2\xFFFF\x1\x7\x1\xFFFF\x1\x3\x1\xFFFF\x1\x6\x1"+
+				"\x9\x1\xD\x1\xA\x1\xFFFF\x1\x5\x6\xFFFF\x1\x8\x1\x2\x2\xFFFF\x1\x6\x1"+
+				"\xB\x1\x4\x2\xFFFF\x1\xC",
 				"",
-				"\x1\xE\x1\x12\x2\xFFFF\x1\x10\x8\xFFFF\x1\xF\x4\xFFFF\x1\x11\x1\xFFFF"+
+				"\x1\xE\x1\x12\x2\xFFFF\x1\x10\xC\xFFFF\x1\xF\x4\xFFFF\x1\x11\x2\xFFFF"+
 				"\x1\x13",
 				"",
 				"",
@@ -3862,7 +3863,7 @@ public partial class ActionParser : Parser
 		}
 		public override string GetDescription()
 		{
-			return "302:0: argList : ( LPAREN RPAREN -> ARGS[\"ARGS\"] |=> singleArg -> singleArg | LPAREN argumentAssignment ( COMMA argumentAssignment )* RPAREN -> ^( ARGS[\"ARGS\"] ( argumentAssignment )+ ) );";
+			return "310:0: argList : ( LPAREN RPAREN -> ARGS[\"ARGS\"] |=> singleArg -> singleArg | LPAREN argumentAssignment ( COMMA argumentAssignment )* RPAREN -> ^( ARGS[\"ARGS\"] ( argumentAssignment )+ ) );";
 		}
 	}
 
@@ -3884,23 +3885,23 @@ public partial class ActionParser : Parser
 
 				else if ( (LA24_1==ID) ) {s = 3;}
 
-				else if ( (LA24_1==42) && (synpred2_Action())) {s = 4;}
+				else if ( (LA24_1==SUPER) && (synpred2_Action())) {s = 4;}
 
 				else if ( (LA24_1==LPAREN) && (synpred2_Action())) {s = 5;}
 
 				else if ( (LA24_1==ANONYMOUS_TEMPLATE||LA24_1==INT||LA24_1==STRING) && (synpred2_Action())) {s = 6;}
 
-				else if ( (LA24_1==37) && (synpred2_Action())) {s = 7;}
+				else if ( (LA24_1==FIRST) && (synpred2_Action())) {s = 7;}
 
-				else if ( (LA24_1==40) && (synpred2_Action())) {s = 8;}
+				else if ( (LA24_1==REST) && (synpred2_Action())) {s = 8;}
 
-				else if ( (LA24_1==38) && (synpred2_Action())) {s = 9;}
+				else if ( (LA24_1==LAST) && (synpred2_Action())) {s = 9;}
 
-				else if ( (LA24_1==39) && (synpred2_Action())) {s = 10;}
+				else if ( (LA24_1==LENGTH) && (synpred2_Action())) {s = 10;}
 
-				else if ( (LA24_1==41) && (synpred2_Action())) {s = 11;}
+				else if ( (LA24_1==STRIP) && (synpred2_Action())) {s = 11;}
 
-				else if ( (LA24_1==43) && (synpred2_Action())) {s = 12;}
+				else if ( (LA24_1==TRUNC) && (synpred2_Action())) {s = 12;}
 
 				else if ( (LA24_1==LBRACK) && (synpred2_Action())) {s = 13;}
 
@@ -3946,110 +3947,110 @@ public partial class ActionParser : Parser
 	#region Follow Sets
 	public static class Follow
 	{
-		public static readonly BitSet _templatesExpr_in_action144 = new BitSet(new ulong[]{0x10000000UL});
-		public static readonly BitSet _SEMI_in_action147 = new BitSet(new ulong[]{0x8000UL});
-		public static readonly BitSet _optionList_in_action150 = new BitSet(new ulong[]{0x0UL});
-		public static readonly BitSet _CONDITIONAL_in_action160 = new BitSet(new ulong[]{0x100000UL});
-		public static readonly BitSet _LPAREN_in_action163 = new BitSet(new ulong[]{0xFE040968010UL});
-		public static readonly BitSet _ifCondition_in_action166 = new BitSet(new ulong[]{0x8000000UL});
-		public static readonly BitSet _RPAREN_in_action168 = new BitSet(new ulong[]{0x0UL});
-		public static readonly BitSet _36_in_action175 = new BitSet(new ulong[]{0x100000UL});
-		public static readonly BitSet _LPAREN_in_action178 = new BitSet(new ulong[]{0xFE040968010UL});
-		public static readonly BitSet _ifCondition_in_action181 = new BitSet(new ulong[]{0x8000000UL});
-		public static readonly BitSet _RPAREN_in_action183 = new BitSet(new ulong[]{0x0UL});
-		public static readonly BitSet _EOF_in_action193 = new BitSet(new ulong[]{0x2UL});
-		public static readonly BitSet _option_in_optionList209 = new BitSet(new ulong[]{0x202UL});
-		public static readonly BitSet _COMMA_in_optionList213 = new BitSet(new ulong[]{0x8000UL});
-		public static readonly BitSet _option_in_optionList215 = new BitSet(new ulong[]{0x202UL});
-		public static readonly BitSet _ID_in_option235 = new BitSet(new ulong[]{0x82UL});
-		public static readonly BitSet _ASSIGN_in_option241 = new BitSet(new ulong[]{0xFE040168010UL});
-		public static readonly BitSet _nonAlternatingTemplateExpr_in_option243 = new BitSet(new ulong[]{0x2UL});
-		public static readonly BitSet _expr_in_templatesExpr273 = new BitSet(new ulong[]{0x302UL});
-		public static readonly BitSet _COMMA_in_templatesExpr280 = new BitSet(new ulong[]{0xFE040168010UL});
-		public static readonly BitSet _expr_in_templatesExpr282 = new BitSet(new ulong[]{0x300UL});
-		public static readonly BitSet _COLON_in_templatesExpr288 = new BitSet(new ulong[]{0x10UL});
-		public static readonly BitSet _anonymousTemplate_in_templatesExpr290 = new BitSet(new ulong[]{0x2UL});
-		public static readonly BitSet _COLON_in_templatesExpr332 = new BitSet(new ulong[]{0x40000108010UL});
-		public static readonly BitSet _templateList_in_templatesExpr334 = new BitSet(new ulong[]{0x102UL});
-		public static readonly BitSet _template_in_templateList373 = new BitSet(new ulong[]{0x202UL});
-		public static readonly BitSet _COMMA_in_templateList376 = new BitSet(new ulong[]{0x40000108010UL});
-		public static readonly BitSet _template_in_templateList379 = new BitSet(new ulong[]{0x202UL});
-		public static readonly BitSet _ifAtom_in_ifCondition392 = new BitSet(new ulong[]{0x2UL});
-		public static readonly BitSet _NOT_in_ifCondition397 = new BitSet(new ulong[]{0xFE040168010UL});
-		public static readonly BitSet _ifAtom_in_ifCondition400 = new BitSet(new ulong[]{0x2UL});
-		public static readonly BitSet _templatesExpr_in_ifAtom411 = new BitSet(new ulong[]{0x2UL});
-		public static readonly BitSet _primaryExpr_in_expr422 = new BitSet(new ulong[]{0x2000002UL});
-		public static readonly BitSet _PLUS_in_expr425 = new BitSet(new ulong[]{0xFE040168010UL});
-		public static readonly BitSet _primaryExpr_in_expr428 = new BitSet(new ulong[]{0x2000002UL});
-		public static readonly BitSet _templateInclude_in_primaryExpr445 = new BitSet(new ulong[]{0x2UL});
-		public static readonly BitSet _atom_in_primaryExpr452 = new BitSet(new ulong[]{0x802UL});
-		public static readonly BitSet _DOT_in_primaryExpr458 = new BitSet(new ulong[]{0x108000UL});
-		public static readonly BitSet _ID_in_primaryExpr467 = new BitSet(new ulong[]{0x802UL});
-		public static readonly BitSet _valueExpr_in_primaryExpr474 = new BitSet(new ulong[]{0x802UL});
-		public static readonly BitSet _function_in_primaryExpr489 = new BitSet(new ulong[]{0x802UL});
-		public static readonly BitSet _DOT_in_primaryExpr495 = new BitSet(new ulong[]{0x108000UL});
-		public static readonly BitSet _ID_in_primaryExpr503 = new BitSet(new ulong[]{0x802UL});
-		public static readonly BitSet _valueExpr_in_primaryExpr510 = new BitSet(new ulong[]{0x802UL});
-		public static readonly BitSet _valueExpr_in_primaryExpr525 = new BitSet(new ulong[]{0x2UL});
-		public static readonly BitSet _list_in_primaryExpr530 = new BitSet(new ulong[]{0x2UL});
-		public static readonly BitSet _LPAREN_in_valueExpr541 = new BitSet(new ulong[]{0xFE040168010UL});
-		public static readonly BitSet _templatesExpr_in_valueExpr543 = new BitSet(new ulong[]{0x8000000UL});
-		public static readonly BitSet _RPAREN_in_valueExpr545 = new BitSet(new ulong[]{0x2UL});
-		public static readonly BitSet _expr_in_nonAlternatingTemplateExpr568 = new BitSet(new ulong[]{0x102UL});
-		public static readonly BitSet _COLON_in_nonAlternatingTemplateExpr577 = new BitSet(new ulong[]{0x40000108010UL});
-		public static readonly BitSet _template_in_nonAlternatingTemplateExpr579 = new BitSet(new ulong[]{0x102UL});
-		public static readonly BitSet _37_in_function607 = new BitSet(new ulong[]{0x100000UL});
-		public static readonly BitSet _40_in_function613 = new BitSet(new ulong[]{0x100000UL});
-		public static readonly BitSet _38_in_function619 = new BitSet(new ulong[]{0x100000UL});
-		public static readonly BitSet _39_in_function625 = new BitSet(new ulong[]{0x100000UL});
-		public static readonly BitSet _41_in_function631 = new BitSet(new ulong[]{0x100000UL});
-		public static readonly BitSet _43_in_function637 = new BitSet(new ulong[]{0x100000UL});
-		public static readonly BitSet _singleArg_in_function645 = new BitSet(new ulong[]{0x2UL});
-		public static readonly BitSet _namedTemplate_in_template686 = new BitSet(new ulong[]{0x2UL});
-		public static readonly BitSet _anonymousTemplate_in_template695 = new BitSet(new ulong[]{0x2UL});
-		public static readonly BitSet _ID_in_namedTemplate726 = new BitSet(new ulong[]{0x100000UL});
-		public static readonly BitSet _argList_in_namedTemplate728 = new BitSet(new ulong[]{0x2UL});
-		public static readonly BitSet _42_in_namedTemplate741 = new BitSet(new ulong[]{0x800UL});
-		public static readonly BitSet _DOT_in_namedTemplate743 = new BitSet(new ulong[]{0x8000UL});
-		public static readonly BitSet _ID_in_namedTemplate747 = new BitSet(new ulong[]{0x100000UL});
-		public static readonly BitSet _argList_in_namedTemplate749 = new BitSet(new ulong[]{0x2UL});
-		public static readonly BitSet _indirectTemplate_in_namedTemplate763 = new BitSet(new ulong[]{0x2UL});
-		public static readonly BitSet _ANONYMOUS_TEMPLATE_in_anonymousTemplate792 = new BitSet(new ulong[]{0x2UL});
-		public static readonly BitSet _set_in_atom807 = new BitSet(new ulong[]{0x2UL});
-		public static readonly BitSet _LBRACK_in_list835 = new BitSet(new ulong[]{0xFE044168210UL});
-		public static readonly BitSet _listElement_in_list839 = new BitSet(new ulong[]{0x4000200UL});
-		public static readonly BitSet _COMMA_in_list842 = new BitSet(new ulong[]{0xFE044168210UL});
-		public static readonly BitSet _listElement_in_list844 = new BitSet(new ulong[]{0x4000200UL});
-		public static readonly BitSet _RBRACK_in_list850 = new BitSet(new ulong[]{0x2UL});
-		public static readonly BitSet _nonAlternatingTemplateExpr_in_listElement873 = new BitSet(new ulong[]{0x2UL});
-		public static readonly BitSet _ID_in_templateInclude898 = new BitSet(new ulong[]{0x100000UL});
-		public static readonly BitSet _argList_in_templateInclude900 = new BitSet(new ulong[]{0x2UL});
-		public static readonly BitSet _42_in_templateInclude913 = new BitSet(new ulong[]{0x800UL});
-		public static readonly BitSet _DOT_in_templateInclude915 = new BitSet(new ulong[]{0x8000UL});
-		public static readonly BitSet _ID_in_templateInclude919 = new BitSet(new ulong[]{0x100000UL});
-		public static readonly BitSet _argList_in_templateInclude921 = new BitSet(new ulong[]{0x2UL});
-		public static readonly BitSet _indirectTemplate_in_templateInclude934 = new BitSet(new ulong[]{0x2UL});
-		public static readonly BitSet _LPAREN_in_indirectTemplate968 = new BitSet(new ulong[]{0xFE040168010UL});
-		public static readonly BitSet _templatesExpr_in_indirectTemplate972 = new BitSet(new ulong[]{0x8000000UL});
-		public static readonly BitSet _RPAREN_in_indirectTemplate974 = new BitSet(new ulong[]{0x100000UL});
-		public static readonly BitSet _argList_in_indirectTemplate978 = new BitSet(new ulong[]{0x2UL});
-		public static readonly BitSet _LPAREN_in_argList1005 = new BitSet(new ulong[]{0x8000000UL});
-		public static readonly BitSet _RPAREN_in_argList1007 = new BitSet(new ulong[]{0x2UL});
-		public static readonly BitSet _singleArg_in_argList1022 = new BitSet(new ulong[]{0x2UL});
-		public static readonly BitSet _LPAREN_in_argList1039 = new BitSet(new ulong[]{0x9000UL});
-		public static readonly BitSet _argumentAssignment_in_argList1041 = new BitSet(new ulong[]{0x8000200UL});
-		public static readonly BitSet _COMMA_in_argList1044 = new BitSet(new ulong[]{0x9000UL});
-		public static readonly BitSet _argumentAssignment_in_argList1046 = new BitSet(new ulong[]{0x8000200UL});
-		public static readonly BitSet _RPAREN_in_argList1050 = new BitSet(new ulong[]{0x2UL});
-		public static readonly BitSet _LPAREN_in_singleArg1073 = new BitSet(new ulong[]{0xFE040168010UL});
-		public static readonly BitSet _nonAlternatingTemplateExpr_in_singleArg1075 = new BitSet(new ulong[]{0x8000000UL});
-		public static readonly BitSet _RPAREN_in_singleArg1077 = new BitSet(new ulong[]{0x2UL});
-		public static readonly BitSet _ID_in_argumentAssignment1099 = new BitSet(new ulong[]{0x80UL});
-		public static readonly BitSet _ASSIGN_in_argumentAssignment1101 = new BitSet(new ulong[]{0xFE040168010UL});
-		public static readonly BitSet _nonAlternatingTemplateExpr_in_argumentAssignment1104 = new BitSet(new ulong[]{0x2UL});
-		public static readonly BitSet _DOTDOTDOT_in_argumentAssignment1109 = new BitSet(new ulong[]{0x2UL});
-		public static readonly BitSet _templateInclude_in_synpred1_Action442 = new BitSet(new ulong[]{0x2UL});
-		public static readonly BitSet _singleArg_in_synpred2_Action1019 = new BitSet(new ulong[]{0x2UL});
+		public static readonly BitSet _templatesExpr_in_action192 = new BitSet(new ulong[]{0x200000000UL});
+		public static readonly BitSet _SEMI_in_action195 = new BitSet(new ulong[]{0x20000UL});
+		public static readonly BitSet _optionList_in_action198 = new BitSet(new ulong[]{0x0UL});
+		public static readonly BitSet _CONDITIONAL_in_action208 = new BitSet(new ulong[]{0x1000000UL});
+		public static readonly BitSet _LPAREN_in_action211 = new BitSet(new ulong[]{0x138897A8010UL});
+		public static readonly BitSet _ifCondition_in_action214 = new BitSet(new ulong[]{0x100000000UL});
+		public static readonly BitSet _RPAREN_in_action216 = new BitSet(new ulong[]{0x0UL});
+		public static readonly BitSet _ELSEIF_in_action223 = new BitSet(new ulong[]{0x1000000UL});
+		public static readonly BitSet _LPAREN_in_action226 = new BitSet(new ulong[]{0x138897A8010UL});
+		public static readonly BitSet _ifCondition_in_action229 = new BitSet(new ulong[]{0x100000000UL});
+		public static readonly BitSet _RPAREN_in_action231 = new BitSet(new ulong[]{0x0UL});
+		public static readonly BitSet _EOF_in_action241 = new BitSet(new ulong[]{0x2UL});
+		public static readonly BitSet _option_in_optionList257 = new BitSet(new ulong[]{0x202UL});
+		public static readonly BitSet _COMMA_in_optionList261 = new BitSet(new ulong[]{0x20000UL});
+		public static readonly BitSet _option_in_optionList263 = new BitSet(new ulong[]{0x202UL});
+		public static readonly BitSet _ID_in_option283 = new BitSet(new ulong[]{0x82UL});
+		public static readonly BitSet _ASSIGN_in_option289 = new BitSet(new ulong[]{0x138817A8010UL});
+		public static readonly BitSet _nonAlternatingTemplateExpr_in_option291 = new BitSet(new ulong[]{0x2UL});
+		public static readonly BitSet _expr_in_templatesExpr321 = new BitSet(new ulong[]{0x302UL});
+		public static readonly BitSet _COMMA_in_templatesExpr328 = new BitSet(new ulong[]{0x138817A8010UL});
+		public static readonly BitSet _expr_in_templatesExpr330 = new BitSet(new ulong[]{0x300UL});
+		public static readonly BitSet _COLON_in_templatesExpr336 = new BitSet(new ulong[]{0x10UL});
+		public static readonly BitSet _anonymousTemplate_in_templatesExpr338 = new BitSet(new ulong[]{0x2UL});
+		public static readonly BitSet _COLON_in_templatesExpr380 = new BitSet(new ulong[]{0x2001020010UL});
+		public static readonly BitSet _templateList_in_templatesExpr382 = new BitSet(new ulong[]{0x102UL});
+		public static readonly BitSet _template_in_templateList421 = new BitSet(new ulong[]{0x202UL});
+		public static readonly BitSet _COMMA_in_templateList424 = new BitSet(new ulong[]{0x2001020010UL});
+		public static readonly BitSet _template_in_templateList427 = new BitSet(new ulong[]{0x202UL});
+		public static readonly BitSet _ifAtom_in_ifCondition440 = new BitSet(new ulong[]{0x2UL});
+		public static readonly BitSet _NOT_in_ifCondition445 = new BitSet(new ulong[]{0x138817A8010UL});
+		public static readonly BitSet _ifAtom_in_ifCondition448 = new BitSet(new ulong[]{0x2UL});
+		public static readonly BitSet _templatesExpr_in_ifAtom459 = new BitSet(new ulong[]{0x2UL});
+		public static readonly BitSet _primaryExpr_in_expr470 = new BitSet(new ulong[]{0x20000002UL});
+		public static readonly BitSet _PLUS_in_expr473 = new BitSet(new ulong[]{0x138817A8010UL});
+		public static readonly BitSet _primaryExpr_in_expr476 = new BitSet(new ulong[]{0x20000002UL});
+		public static readonly BitSet _templateInclude_in_primaryExpr493 = new BitSet(new ulong[]{0x2UL});
+		public static readonly BitSet _atom_in_primaryExpr500 = new BitSet(new ulong[]{0x802UL});
+		public static readonly BitSet _DOT_in_primaryExpr506 = new BitSet(new ulong[]{0x1020000UL});
+		public static readonly BitSet _ID_in_primaryExpr515 = new BitSet(new ulong[]{0x802UL});
+		public static readonly BitSet _valueExpr_in_primaryExpr522 = new BitSet(new ulong[]{0x802UL});
+		public static readonly BitSet _function_in_primaryExpr537 = new BitSet(new ulong[]{0x802UL});
+		public static readonly BitSet _DOT_in_primaryExpr543 = new BitSet(new ulong[]{0x1020000UL});
+		public static readonly BitSet _ID_in_primaryExpr551 = new BitSet(new ulong[]{0x802UL});
+		public static readonly BitSet _valueExpr_in_primaryExpr558 = new BitSet(new ulong[]{0x802UL});
+		public static readonly BitSet _valueExpr_in_primaryExpr573 = new BitSet(new ulong[]{0x2UL});
+		public static readonly BitSet _list_in_primaryExpr578 = new BitSet(new ulong[]{0x2UL});
+		public static readonly BitSet _LPAREN_in_valueExpr589 = new BitSet(new ulong[]{0x138817A8010UL});
+		public static readonly BitSet _templatesExpr_in_valueExpr591 = new BitSet(new ulong[]{0x100000000UL});
+		public static readonly BitSet _RPAREN_in_valueExpr593 = new BitSet(new ulong[]{0x2UL});
+		public static readonly BitSet _expr_in_nonAlternatingTemplateExpr616 = new BitSet(new ulong[]{0x102UL});
+		public static readonly BitSet _COLON_in_nonAlternatingTemplateExpr625 = new BitSet(new ulong[]{0x2001020010UL});
+		public static readonly BitSet _template_in_nonAlternatingTemplateExpr627 = new BitSet(new ulong[]{0x102UL});
+		public static readonly BitSet _FIRST_in_function655 = new BitSet(new ulong[]{0x1000000UL});
+		public static readonly BitSet _REST_in_function661 = new BitSet(new ulong[]{0x1000000UL});
+		public static readonly BitSet _LAST_in_function667 = new BitSet(new ulong[]{0x1000000UL});
+		public static readonly BitSet _LENGTH_in_function673 = new BitSet(new ulong[]{0x1000000UL});
+		public static readonly BitSet _STRIP_in_function679 = new BitSet(new ulong[]{0x1000000UL});
+		public static readonly BitSet _TRUNC_in_function685 = new BitSet(new ulong[]{0x1000000UL});
+		public static readonly BitSet _singleArg_in_function693 = new BitSet(new ulong[]{0x2UL});
+		public static readonly BitSet _namedTemplate_in_template734 = new BitSet(new ulong[]{0x2UL});
+		public static readonly BitSet _anonymousTemplate_in_template743 = new BitSet(new ulong[]{0x2UL});
+		public static readonly BitSet _ID_in_namedTemplate774 = new BitSet(new ulong[]{0x1000000UL});
+		public static readonly BitSet _argList_in_namedTemplate776 = new BitSet(new ulong[]{0x2UL});
+		public static readonly BitSet _SUPER_in_namedTemplate789 = new BitSet(new ulong[]{0x800UL});
+		public static readonly BitSet _DOT_in_namedTemplate791 = new BitSet(new ulong[]{0x20000UL});
+		public static readonly BitSet _ID_in_namedTemplate795 = new BitSet(new ulong[]{0x1000000UL});
+		public static readonly BitSet _argList_in_namedTemplate797 = new BitSet(new ulong[]{0x2UL});
+		public static readonly BitSet _indirectTemplate_in_namedTemplate811 = new BitSet(new ulong[]{0x2UL});
+		public static readonly BitSet _ANONYMOUS_TEMPLATE_in_anonymousTemplate840 = new BitSet(new ulong[]{0x2UL});
+		public static readonly BitSet _set_in_atom855 = new BitSet(new ulong[]{0x2UL});
+		public static readonly BitSet _LBRACK_in_list883 = new BitSet(new ulong[]{0x138C17A8210UL});
+		public static readonly BitSet _listElement_in_list887 = new BitSet(new ulong[]{0x40000200UL});
+		public static readonly BitSet _COMMA_in_list890 = new BitSet(new ulong[]{0x138C17A8210UL});
+		public static readonly BitSet _listElement_in_list892 = new BitSet(new ulong[]{0x40000200UL});
+		public static readonly BitSet _RBRACK_in_list898 = new BitSet(new ulong[]{0x2UL});
+		public static readonly BitSet _nonAlternatingTemplateExpr_in_listElement921 = new BitSet(new ulong[]{0x2UL});
+		public static readonly BitSet _ID_in_templateInclude946 = new BitSet(new ulong[]{0x1000000UL});
+		public static readonly BitSet _argList_in_templateInclude948 = new BitSet(new ulong[]{0x2UL});
+		public static readonly BitSet _SUPER_in_templateInclude961 = new BitSet(new ulong[]{0x800UL});
+		public static readonly BitSet _DOT_in_templateInclude963 = new BitSet(new ulong[]{0x20000UL});
+		public static readonly BitSet _ID_in_templateInclude967 = new BitSet(new ulong[]{0x1000000UL});
+		public static readonly BitSet _argList_in_templateInclude969 = new BitSet(new ulong[]{0x2UL});
+		public static readonly BitSet _indirectTemplate_in_templateInclude982 = new BitSet(new ulong[]{0x2UL});
+		public static readonly BitSet _LPAREN_in_indirectTemplate1016 = new BitSet(new ulong[]{0x138817A8010UL});
+		public static readonly BitSet _templatesExpr_in_indirectTemplate1020 = new BitSet(new ulong[]{0x100000000UL});
+		public static readonly BitSet _RPAREN_in_indirectTemplate1022 = new BitSet(new ulong[]{0x1000000UL});
+		public static readonly BitSet _argList_in_indirectTemplate1026 = new BitSet(new ulong[]{0x2UL});
+		public static readonly BitSet _LPAREN_in_argList1053 = new BitSet(new ulong[]{0x100000000UL});
+		public static readonly BitSet _RPAREN_in_argList1055 = new BitSet(new ulong[]{0x2UL});
+		public static readonly BitSet _singleArg_in_argList1070 = new BitSet(new ulong[]{0x2UL});
+		public static readonly BitSet _LPAREN_in_argList1087 = new BitSet(new ulong[]{0x21000UL});
+		public static readonly BitSet _argumentAssignment_in_argList1089 = new BitSet(new ulong[]{0x100000200UL});
+		public static readonly BitSet _COMMA_in_argList1092 = new BitSet(new ulong[]{0x21000UL});
+		public static readonly BitSet _argumentAssignment_in_argList1094 = new BitSet(new ulong[]{0x100000200UL});
+		public static readonly BitSet _RPAREN_in_argList1098 = new BitSet(new ulong[]{0x2UL});
+		public static readonly BitSet _LPAREN_in_singleArg1121 = new BitSet(new ulong[]{0x138817A8010UL});
+		public static readonly BitSet _nonAlternatingTemplateExpr_in_singleArg1123 = new BitSet(new ulong[]{0x100000000UL});
+		public static readonly BitSet _RPAREN_in_singleArg1125 = new BitSet(new ulong[]{0x2UL});
+		public static readonly BitSet _ID_in_argumentAssignment1147 = new BitSet(new ulong[]{0x80UL});
+		public static readonly BitSet _ASSIGN_in_argumentAssignment1149 = new BitSet(new ulong[]{0x138817A8010UL});
+		public static readonly BitSet _nonAlternatingTemplateExpr_in_argumentAssignment1152 = new BitSet(new ulong[]{0x2UL});
+		public static readonly BitSet _DOTDOTDOT_in_argumentAssignment1157 = new BitSet(new ulong[]{0x2UL});
+		public static readonly BitSet _templateInclude_in_synpred1_Action490 = new BitSet(new ulong[]{0x2UL});
+		public static readonly BitSet _singleArg_in_synpred2_Action1067 = new BitSet(new ulong[]{0x2UL});
 
 	}
 	#endregion

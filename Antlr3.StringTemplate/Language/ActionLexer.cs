@@ -1,4 +1,4 @@
-// $ANTLR 3.1.2 Language\\Action.g3 2009-03-15 17:10:10
+// $ANTLR 3.1.2 Language\\Action.g3 2009-03-16 18:28:08
 
 // The variable 'variable' is assigned but its value is never used.
 #pragma warning disable 219
@@ -51,14 +51,6 @@ namespace  Antlr3.ST.Language
 public partial class ActionLexer : Lexer
 {
 	public const int EOF=-1;
-	public const int T__36=36;
-	public const int T__37=37;
-	public const int T__38=38;
-	public const int T__39=39;
-	public const int T__40=40;
-	public const int T__41=41;
-	public const int T__42=42;
-	public const int T__43=43;
 	public const int ANONYMOUS_TEMPLATE=4;
 	public const int APPLY=5;
 	public const int ARGS=6;
@@ -68,29 +60,37 @@ public partial class ActionLexer : Lexer
 	public const int CONDITIONAL=10;
 	public const int DOT=11;
 	public const int DOTDOTDOT=12;
-	public const int ESC_CHAR=13;
-	public const int FUNCTION=14;
-	public const int ID=15;
-	public const int INCLUDE=16;
-	public const int INT=17;
-	public const int LBRACK=18;
-	public const int LIST=19;
-	public const int LPAREN=20;
-	public const int MULTI_APPLY=21;
-	public const int NESTED_ANONYMOUS_TEMPLATE=22;
-	public const int NOT=23;
-	public const int NOTHING=24;
-	public const int PLUS=25;
-	public const int RBRACK=26;
-	public const int RPAREN=27;
-	public const int SEMI=28;
-	public const int SINGLEVALUEARG=29;
-	public const int STRING=30;
-	public const int TEMPLATE=31;
-	public const int TEMPLATE_ARGS=32;
-	public const int VALUE=33;
-	public const int WS=34;
-	public const int WS_CHAR=35;
+	public const int ELSEIF=13;
+	public const int ESC_CHAR=14;
+	public const int FIRST=15;
+	public const int FUNCTION=16;
+	public const int ID=17;
+	public const int INCLUDE=18;
+	public const int INT=19;
+	public const int LAST=20;
+	public const int LBRACK=21;
+	public const int LENGTH=22;
+	public const int LIST=23;
+	public const int LPAREN=24;
+	public const int MULTI_APPLY=25;
+	public const int NESTED_ANONYMOUS_TEMPLATE=26;
+	public const int NOT=27;
+	public const int NOTHING=28;
+	public const int PLUS=29;
+	public const int RBRACK=30;
+	public const int REST=31;
+	public const int RPAREN=32;
+	public const int SEMI=33;
+	public const int SINGLEVALUEARG=34;
+	public const int STRING=35;
+	public const int STRIP=36;
+	public const int SUPER=37;
+	public const int TEMPLATE=38;
+	public const int TEMPLATE_ARGS=39;
+	public const int TRUNC=40;
+	public const int VALUE=41;
+	public const int WS=42;
+	public const int WS_CHAR=43;
 
     // delegates
     // delegators
@@ -131,15 +131,15 @@ public partial class ActionLexer : Lexer
 	}
 	// $ANTLR end "CONDITIONAL"
 
-	// $ANTLR start "T__36"
-	private void mT__36()
+	// $ANTLR start "ELSEIF"
+	private void mELSEIF()
 	{
 		try
 		{
-			int _type = T__36;
+			int _type = ELSEIF;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// Language\\Action.g3:43:9: ( 'elseif' )
-			// Language\\Action.g3:43:9: 'elseif'
+			// Language\\Action.g3:43:10: ( 'elseif' )
+			// Language\\Action.g3:43:10: 'elseif'
 			{
 			Match("elseif"); if (state.failed) return ;
 
@@ -153,14 +153,14 @@ public partial class ActionLexer : Lexer
 		{
 		}
 	}
-	// $ANTLR end "T__36"
+	// $ANTLR end "ELSEIF"
 
-	// $ANTLR start "T__37"
-	private void mT__37()
+	// $ANTLR start "FIRST"
+	private void mFIRST()
 	{
 		try
 		{
-			int _type = T__37;
+			int _type = FIRST;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
 			// Language\\Action.g3:44:9: ( 'first' )
 			// Language\\Action.g3:44:9: 'first'
@@ -177,17 +177,17 @@ public partial class ActionLexer : Lexer
 		{
 		}
 	}
-	// $ANTLR end "T__37"
+	// $ANTLR end "FIRST"
 
-	// $ANTLR start "T__38"
-	private void mT__38()
+	// $ANTLR start "LAST"
+	private void mLAST()
 	{
 		try
 		{
-			int _type = T__38;
+			int _type = LAST;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// Language\\Action.g3:45:9: ( 'last' )
-			// Language\\Action.g3:45:9: 'last'
+			// Language\\Action.g3:45:8: ( 'last' )
+			// Language\\Action.g3:45:8: 'last'
 			{
 			Match("last"); if (state.failed) return ;
 
@@ -201,17 +201,17 @@ public partial class ActionLexer : Lexer
 		{
 		}
 	}
-	// $ANTLR end "T__38"
+	// $ANTLR end "LAST"
 
-	// $ANTLR start "T__39"
-	private void mT__39()
+	// $ANTLR start "LENGTH"
+	private void mLENGTH()
 	{
 		try
 		{
-			int _type = T__39;
+			int _type = LENGTH;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// Language\\Action.g3:46:9: ( 'length' )
-			// Language\\Action.g3:46:9: 'length'
+			// Language\\Action.g3:46:10: ( 'length' )
+			// Language\\Action.g3:46:10: 'length'
 			{
 			Match("length"); if (state.failed) return ;
 
@@ -225,17 +225,17 @@ public partial class ActionLexer : Lexer
 		{
 		}
 	}
-	// $ANTLR end "T__39"
+	// $ANTLR end "LENGTH"
 
-	// $ANTLR start "T__40"
-	private void mT__40()
+	// $ANTLR start "REST"
+	private void mREST()
 	{
 		try
 		{
-			int _type = T__40;
+			int _type = REST;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// Language\\Action.g3:47:9: ( 'rest' )
-			// Language\\Action.g3:47:9: 'rest'
+			// Language\\Action.g3:47:8: ( 'rest' )
+			// Language\\Action.g3:47:8: 'rest'
 			{
 			Match("rest"); if (state.failed) return ;
 
@@ -249,14 +249,14 @@ public partial class ActionLexer : Lexer
 		{
 		}
 	}
-	// $ANTLR end "T__40"
+	// $ANTLR end "REST"
 
-	// $ANTLR start "T__41"
-	private void mT__41()
+	// $ANTLR start "STRIP"
+	private void mSTRIP()
 	{
 		try
 		{
-			int _type = T__41;
+			int _type = STRIP;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
 			// Language\\Action.g3:48:9: ( 'strip' )
 			// Language\\Action.g3:48:9: 'strip'
@@ -273,14 +273,14 @@ public partial class ActionLexer : Lexer
 		{
 		}
 	}
-	// $ANTLR end "T__41"
+	// $ANTLR end "STRIP"
 
-	// $ANTLR start "T__42"
-	private void mT__42()
+	// $ANTLR start "SUPER"
+	private void mSUPER()
 	{
 		try
 		{
-			int _type = T__42;
+			int _type = SUPER;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
 			// Language\\Action.g3:49:9: ( 'super' )
 			// Language\\Action.g3:49:9: 'super'
@@ -297,14 +297,14 @@ public partial class ActionLexer : Lexer
 		{
 		}
 	}
-	// $ANTLR end "T__42"
+	// $ANTLR end "SUPER"
 
-	// $ANTLR start "T__43"
-	private void mT__43()
+	// $ANTLR start "TRUNC"
+	private void mTRUNC()
 	{
 		try
 		{
-			int _type = T__43;
+			int _type = TRUNC;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
 			// Language\\Action.g3:50:9: ( 'trunc' )
 			// Language\\Action.g3:50:9: 'trunc'
@@ -321,7 +321,7 @@ public partial class ActionLexer : Lexer
 		{
 		}
 	}
-	// $ANTLR end "T__43"
+	// $ANTLR end "TRUNC"
 
 	// $ANTLR start "ID"
 	private void mID()
@@ -330,8 +330,8 @@ public partial class ActionLexer : Lexer
 		{
 			int _type = ID;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// Language\\Action.g3:325:4: ( ( 'a' .. 'z' | 'A' .. 'Z' | '_' ) ( 'a' .. 'z' | 'A' .. 'Z' | '0' .. '9' | '_' | '/' )* )
-			// Language\\Action.g3:325:4: ( 'a' .. 'z' | 'A' .. 'Z' | '_' ) ( 'a' .. 'z' | 'A' .. 'Z' | '0' .. '9' | '_' | '/' )*
+			// Language\\Action.g3:333:4: ( ( 'a' .. 'z' | 'A' .. 'Z' | '_' ) ( 'a' .. 'z' | 'A' .. 'Z' | '0' .. '9' | '_' | '/' )* )
+			// Language\\Action.g3:333:4: ( 'a' .. 'z' | 'A' .. 'Z' | '_' ) ( 'a' .. 'z' | 'A' .. 'Z' | '0' .. '9' | '_' | '/' )*
 			{
 			if ( (input.LA(1)>='A' && input.LA(1)<='Z')||input.LA(1)=='_'||(input.LA(1)>='a' && input.LA(1)<='z') )
 			{
@@ -345,7 +345,7 @@ public partial class ActionLexer : Lexer
 				Recover(mse);
 				throw mse;}
 
-			// Language\\Action.g3:325:28: ( 'a' .. 'z' | 'A' .. 'Z' | '0' .. '9' | '_' | '/' )*
+			// Language\\Action.g3:333:28: ( 'a' .. 'z' | 'A' .. 'Z' | '0' .. '9' | '_' | '/' )*
 			for ( ; ; )
 			{
 				int alt1=2;
@@ -396,10 +396,10 @@ public partial class ActionLexer : Lexer
 		{
 			int _type = INT;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// Language\\Action.g3:329:4: ( ( '0' .. '9' )+ )
-			// Language\\Action.g3:329:4: ( '0' .. '9' )+
+			// Language\\Action.g3:337:4: ( ( '0' .. '9' )+ )
+			// Language\\Action.g3:337:4: ( '0' .. '9' )+
 			{
-			// Language\\Action.g3:329:4: ( '0' .. '9' )+
+			// Language\\Action.g3:337:4: ( '0' .. '9' )+
 			int cnt2=0;
 			for ( ; ; )
 			{
@@ -462,11 +462,11 @@ public partial class ActionLexer : Lexer
 				char uc = '\0';
 				System.Text.StringBuilder builder = new System.Text.StringBuilder();
 
-			// Language\\Action.g3:338:4: ( '\"' ( ESC_CHAR[out uc, true] |ch=~ ( '\\\\' | '\"' ) )* '\"' )
-			// Language\\Action.g3:338:4: '\"' ( ESC_CHAR[out uc, true] |ch=~ ( '\\\\' | '\"' ) )* '\"'
+			// Language\\Action.g3:346:4: ( '\"' ( ESC_CHAR[out uc, true] |ch=~ ( '\\\\' | '\"' ) )* '\"' )
+			// Language\\Action.g3:346:4: '\"' ( ESC_CHAR[out uc, true] |ch=~ ( '\\\\' | '\"' ) )* '\"'
 			{
 			Match('\"'); if (state.failed) return ;
-			// Language\\Action.g3:339:3: ( ESC_CHAR[out uc, true] |ch=~ ( '\\\\' | '\"' ) )*
+			// Language\\Action.g3:347:3: ( ESC_CHAR[out uc, true] |ch=~ ( '\\\\' | '\"' ) )*
 			for ( ; ; )
 			{
 				int alt3=3;
@@ -485,7 +485,7 @@ public partial class ActionLexer : Lexer
 				switch ( alt3 )
 				{
 				case 1:
-					// Language\\Action.g3:339:5: ESC_CHAR[out uc, true]
+					// Language\\Action.g3:347:5: ESC_CHAR[out uc, true]
 					{
 					mESC_CHAR(out uc, true); if (state.failed) return ;
 					if ( state.backtracking == 0 )
@@ -496,7 +496,7 @@ public partial class ActionLexer : Lexer
 					}
 					break;
 				case 2:
-					// Language\\Action.g3:340:5: ch=~ ( '\\\\' | '\"' )
+					// Language\\Action.g3:348:5: ch=~ ( '\\\\' | '\"' )
 					{
 					ch= input.LA(1);
 					input.Consume();
@@ -554,17 +554,17 @@ public partial class ActionLexer : Lexer
 				string subtext = string.Empty;
 				char uc = '\0';
 
-			// Language\\Action.g3:357:4: ( '{' (=> TEMPLATE_ARGS[out subtext, args] (=> WS_CHAR )? |) (=> '\\\\{' |=> '\\\\}' | ESC_CHAR[out uc, false] | NESTED_ANONYMOUS_TEMPLATE[out subtext] |ch=~ ( '\\\\' | '{' | '}' ) )* '}' )
-			// Language\\Action.g3:357:4: '{' (=> TEMPLATE_ARGS[out subtext, args] (=> WS_CHAR )? |) (=> '\\\\{' |=> '\\\\}' | ESC_CHAR[out uc, false] | NESTED_ANONYMOUS_TEMPLATE[out subtext] |ch=~ ( '\\\\' | '{' | '}' ) )* '}'
+			// Language\\Action.g3:365:4: ( '{' (=> TEMPLATE_ARGS[out subtext, args] (=> WS_CHAR )? |) (=> '\\\\{' |=> '\\\\}' | ESC_CHAR[out uc, false] | NESTED_ANONYMOUS_TEMPLATE[out subtext] |ch=~ ( '\\\\' | '{' | '}' ) )* '}' )
+			// Language\\Action.g3:365:4: '{' (=> TEMPLATE_ARGS[out subtext, args] (=> WS_CHAR )? |) (=> '\\\\{' |=> '\\\\}' | ESC_CHAR[out uc, false] | NESTED_ANONYMOUS_TEMPLATE[out subtext] |ch=~ ( '\\\\' | '{' | '}' ) )* '}'
 			{
 			Match('{'); if (state.failed) return ;
-			// Language\\Action.g3:358:3: (=> TEMPLATE_ARGS[out subtext, args] (=> WS_CHAR )? |)
+			// Language\\Action.g3:366:3: (=> TEMPLATE_ARGS[out subtext, args] (=> WS_CHAR )? |)
 			int alt5=2;
 			alt5 = dfa5.Predict(input);
 			switch ( alt5 )
 			{
 			case 1:
-				// Language\\Action.g3:358:5: => TEMPLATE_ARGS[out subtext, args] (=> WS_CHAR )?
+				// Language\\Action.g3:366:5: => TEMPLATE_ARGS[out subtext, args] (=> WS_CHAR )?
 				{
 
 				mTEMPLATE_ARGS(out subtext, args); if (state.failed) return ;
@@ -572,7 +572,7 @@ public partial class ActionLexer : Lexer
 				{
 					builder.Append(subtext);
 				}
-				// Language\\Action.g3:358:82: (=> WS_CHAR )?
+				// Language\\Action.g3:366:82: (=> WS_CHAR )?
 				int alt4=2;
 				int LA4_0 = input.LA(1);
 
@@ -588,7 +588,7 @@ public partial class ActionLexer : Lexer
 				switch ( alt4 )
 				{
 				case 1:
-					// Language\\Action.g3:358:83: => WS_CHAR
+					// Language\\Action.g3:366:83: => WS_CHAR
 					{
 
 					mWS_CHAR(); if (state.failed) return ;
@@ -611,7 +611,7 @@ public partial class ActionLexer : Lexer
 				}
 				break;
 			case 2:
-				// Language\\Action.g3:366:3: 
+				// Language\\Action.g3:374:3: 
 				{
 
 
@@ -620,7 +620,7 @@ public partial class ActionLexer : Lexer
 
 			}
 
-			// Language\\Action.g3:367:3: (=> '\\\\{' |=> '\\\\}' | ESC_CHAR[out uc, false] | NESTED_ANONYMOUS_TEMPLATE[out subtext] |ch=~ ( '\\\\' | '{' | '}' ) )*
+			// Language\\Action.g3:375:3: (=> '\\\\{' |=> '\\\\}' | ESC_CHAR[out uc, false] | NESTED_ANONYMOUS_TEMPLATE[out subtext] |ch=~ ( '\\\\' | '{' | '}' ) )*
 			for ( ; ; )
 			{
 				int alt6=6;
@@ -628,7 +628,7 @@ public partial class ActionLexer : Lexer
 				switch ( alt6 )
 				{
 				case 1:
-					// Language\\Action.g3:367:5: => '\\\\{'
+					// Language\\Action.g3:375:5: => '\\\\{'
 					{
 
 					Match("\\{"); if (state.failed) return ;
@@ -641,7 +641,7 @@ public partial class ActionLexer : Lexer
 					}
 					break;
 				case 2:
-					// Language\\Action.g3:368:5: => '\\\\}'
+					// Language\\Action.g3:376:5: => '\\\\}'
 					{
 
 					Match("\\}"); if (state.failed) return ;
@@ -654,7 +654,7 @@ public partial class ActionLexer : Lexer
 					}
 					break;
 				case 3:
-					// Language\\Action.g3:369:5: ESC_CHAR[out uc, false]
+					// Language\\Action.g3:377:5: ESC_CHAR[out uc, false]
 					{
 					int ESC_CHAR1Start300 = GetCharIndex();
 					mESC_CHAR(out uc, false); if (state.failed) return ;
@@ -667,7 +667,7 @@ public partial class ActionLexer : Lexer
 					}
 					break;
 				case 4:
-					// Language\\Action.g3:370:5: NESTED_ANONYMOUS_TEMPLATE[out subtext]
+					// Language\\Action.g3:378:5: NESTED_ANONYMOUS_TEMPLATE[out subtext]
 					{
 					mNESTED_ANONYMOUS_TEMPLATE(out subtext); if (state.failed) return ;
 					if ( state.backtracking == 0 )
@@ -678,7 +678,7 @@ public partial class ActionLexer : Lexer
 					}
 					break;
 				case 5:
-					// Language\\Action.g3:371:5: ch=~ ( '\\\\' | '{' | '}' )
+					// Language\\Action.g3:379:5: ch=~ ( '\\\\' | '{' | '}' )
 					{
 					ch= input.LA(1);
 					input.Consume();
@@ -733,10 +733,10 @@ public partial class ActionLexer : Lexer
 				_text = string.Empty; // this template is empty text
 				args.Clear();
 
-			// Language\\Action.g3:389:4: ( ( WS_CHAR )? a= ID ( ( WS_CHAR )? ',' ( WS_CHAR )? a2= ID )* ( WS_CHAR )? '|' )
-			// Language\\Action.g3:389:4: ( WS_CHAR )? a= ID ( ( WS_CHAR )? ',' ( WS_CHAR )? a2= ID )* ( WS_CHAR )? '|'
+			// Language\\Action.g3:397:4: ( ( WS_CHAR )? a= ID ( ( WS_CHAR )? ',' ( WS_CHAR )? a2= ID )* ( WS_CHAR )? '|' )
+			// Language\\Action.g3:397:4: ( WS_CHAR )? a= ID ( ( WS_CHAR )? ',' ( WS_CHAR )? a2= ID )* ( WS_CHAR )? '|'
 			{
-			// Language\\Action.g3:389:4: ( WS_CHAR )?
+			// Language\\Action.g3:397:4: ( WS_CHAR )?
 			int alt7=2;
 			int LA7_0 = input.LA(1);
 
@@ -764,7 +764,7 @@ public partial class ActionLexer : Lexer
 			{
 				args.Add((a!=null?a.Text:null));
 			}
-			// Language\\Action.g3:390:3: ( ( WS_CHAR )? ',' ( WS_CHAR )? a2= ID )*
+			// Language\\Action.g3:398:3: ( ( WS_CHAR )? ',' ( WS_CHAR )? a2= ID )*
 			for ( ; ; )
 			{
 				int alt10=2;
@@ -790,9 +790,9 @@ public partial class ActionLexer : Lexer
 				switch ( alt10 )
 				{
 				case 1:
-					// Language\\Action.g3:390:5: ( WS_CHAR )? ',' ( WS_CHAR )? a2= ID
+					// Language\\Action.g3:398:5: ( WS_CHAR )? ',' ( WS_CHAR )? a2= ID
 					{
-					// Language\\Action.g3:390:5: ( WS_CHAR )?
+					// Language\\Action.g3:398:5: ( WS_CHAR )?
 					int alt8=2;
 					int LA8_0 = input.LA(1);
 
@@ -814,7 +814,7 @@ public partial class ActionLexer : Lexer
 					}
 
 					Match(','); if (state.failed) return ;
-					// Language\\Action.g3:390:20: ( WS_CHAR )?
+					// Language\\Action.g3:398:20: ( WS_CHAR )?
 					int alt9=2;
 					int LA9_0 = input.LA(1);
 
@@ -855,7 +855,7 @@ public partial class ActionLexer : Lexer
 				;
 
 
-			// Language\\Action.g3:391:3: ( WS_CHAR )?
+			// Language\\Action.g3:399:3: ( WS_CHAR )?
 			int alt11=2;
 			int LA11_0 = input.LA(1);
 
@@ -901,15 +901,15 @@ public partial class ActionLexer : Lexer
 				string subtext = string.Empty;
 				System.Text.StringBuilder builder = new System.Text.StringBuilder();
 
-			// Language\\Action.g3:403:4: ( '{' (=> '\\\\{' |=> '\\\\}' | ESC_CHAR[out uc, false] | NESTED_ANONYMOUS_TEMPLATE[out subtext] |ch=~ ( '{' | '}' | '\\\\' ) )* '}' )
-			// Language\\Action.g3:403:4: '{' (=> '\\\\{' |=> '\\\\}' | ESC_CHAR[out uc, false] | NESTED_ANONYMOUS_TEMPLATE[out subtext] |ch=~ ( '{' | '}' | '\\\\' ) )* '}'
+			// Language\\Action.g3:411:4: ( '{' (=> '\\\\{' |=> '\\\\}' | ESC_CHAR[out uc, false] | NESTED_ANONYMOUS_TEMPLATE[out subtext] |ch=~ ( '{' | '}' | '\\\\' ) )* '}' )
+			// Language\\Action.g3:411:4: '{' (=> '\\\\{' |=> '\\\\}' | ESC_CHAR[out uc, false] | NESTED_ANONYMOUS_TEMPLATE[out subtext] |ch=~ ( '{' | '}' | '\\\\' ) )* '}'
 			{
 			Match('{'); if (state.failed) return ;
 			if ( state.backtracking == 0 )
 			{
 				builder.Append('{');
 			}
-			// Language\\Action.g3:405:3: (=> '\\\\{' |=> '\\\\}' | ESC_CHAR[out uc, false] | NESTED_ANONYMOUS_TEMPLATE[out subtext] |ch=~ ( '{' | '}' | '\\\\' ) )*
+			// Language\\Action.g3:413:3: (=> '\\\\{' |=> '\\\\}' | ESC_CHAR[out uc, false] | NESTED_ANONYMOUS_TEMPLATE[out subtext] |ch=~ ( '{' | '}' | '\\\\' ) )*
 			for ( ; ; )
 			{
 				int alt12=6;
@@ -917,7 +917,7 @@ public partial class ActionLexer : Lexer
 				switch ( alt12 )
 				{
 				case 1:
-					// Language\\Action.g3:405:5: => '\\\\{'
+					// Language\\Action.g3:413:5: => '\\\\{'
 					{
 
 					Match("\\{"); if (state.failed) return ;
@@ -930,7 +930,7 @@ public partial class ActionLexer : Lexer
 					}
 					break;
 				case 2:
-					// Language\\Action.g3:406:5: => '\\\\}'
+					// Language\\Action.g3:414:5: => '\\\\}'
 					{
 
 					Match("\\}"); if (state.failed) return ;
@@ -943,7 +943,7 @@ public partial class ActionLexer : Lexer
 					}
 					break;
 				case 3:
-					// Language\\Action.g3:407:5: ESC_CHAR[out uc, false]
+					// Language\\Action.g3:415:5: ESC_CHAR[out uc, false]
 					{
 					int ESC_CHAR2Start460 = GetCharIndex();
 					mESC_CHAR(out uc, false); if (state.failed) return ;
@@ -956,7 +956,7 @@ public partial class ActionLexer : Lexer
 					}
 					break;
 				case 4:
-					// Language\\Action.g3:408:5: NESTED_ANONYMOUS_TEMPLATE[out subtext]
+					// Language\\Action.g3:416:5: NESTED_ANONYMOUS_TEMPLATE[out subtext]
 					{
 					mNESTED_ANONYMOUS_TEMPLATE(out subtext); if (state.failed) return ;
 					if ( state.backtracking == 0 )
@@ -967,7 +967,7 @@ public partial class ActionLexer : Lexer
 					}
 					break;
 				case 5:
-					// Language\\Action.g3:409:5: ch=~ ( '{' | '}' | '\\\\' )
+					// Language\\Action.g3:417:5: ch=~ ( '{' | '}' | '\\\\' )
 					{
 					ch= input.LA(1);
 					input.Consume();
@@ -1017,11 +1017,11 @@ public partial class ActionLexer : Lexer
 
 				uc = '\0';
 
-			// Language\\Action.g3:430:4: ( '\\\\' ( 'n' | 'r' | 't' | 'b' | 'f' |c=~ ( 'n' | 'r' | 't' | 'b' | 'f' ) ) )
-			// Language\\Action.g3:430:4: '\\\\' ( 'n' | 'r' | 't' | 'b' | 'f' |c=~ ( 'n' | 'r' | 't' | 'b' | 'f' ) )
+			// Language\\Action.g3:438:4: ( '\\\\' ( 'n' | 'r' | 't' | 'b' | 'f' |c=~ ( 'n' | 'r' | 't' | 'b' | 'f' ) ) )
+			// Language\\Action.g3:438:4: '\\\\' ( 'n' | 'r' | 't' | 'b' | 'f' |c=~ ( 'n' | 'r' | 't' | 'b' | 'f' ) )
 			{
 			Match('\\'); if (state.failed) return ;
-			// Language\\Action.g3:431:3: ( 'n' | 'r' | 't' | 'b' | 'f' |c=~ ( 'n' | 'r' | 't' | 'b' | 'f' ) )
+			// Language\\Action.g3:439:3: ( 'n' | 'r' | 't' | 'b' | 'f' |c=~ ( 'n' | 'r' | 't' | 'b' | 'f' ) )
 			int alt13=6;
 			int LA13_0 = input.LA(1);
 
@@ -1059,7 +1059,7 @@ public partial class ActionLexer : Lexer
 			switch ( alt13 )
 			{
 			case 1:
-				// Language\\Action.g3:431:5: 'n'
+				// Language\\Action.g3:439:5: 'n'
 				{
 				Match('n'); if (state.failed) return ;
 				if ( state.backtracking == 0 )
@@ -1070,7 +1070,7 @@ public partial class ActionLexer : Lexer
 				}
 				break;
 			case 2:
-				// Language\\Action.g3:432:5: 'r'
+				// Language\\Action.g3:440:5: 'r'
 				{
 				Match('r'); if (state.failed) return ;
 				if ( state.backtracking == 0 )
@@ -1081,7 +1081,7 @@ public partial class ActionLexer : Lexer
 				}
 				break;
 			case 3:
-				// Language\\Action.g3:433:5: 't'
+				// Language\\Action.g3:441:5: 't'
 				{
 				Match('t'); if (state.failed) return ;
 				if ( state.backtracking == 0 )
@@ -1092,7 +1092,7 @@ public partial class ActionLexer : Lexer
 				}
 				break;
 			case 4:
-				// Language\\Action.g3:434:5: 'b'
+				// Language\\Action.g3:442:5: 'b'
 				{
 				Match('b'); if (state.failed) return ;
 				if ( state.backtracking == 0 )
@@ -1103,7 +1103,7 @@ public partial class ActionLexer : Lexer
 				}
 				break;
 			case 5:
-				// Language\\Action.g3:435:5: 'f'
+				// Language\\Action.g3:443:5: 'f'
 				{
 				Match('f'); if (state.failed) return ;
 				if ( state.backtracking == 0 )
@@ -1114,7 +1114,7 @@ public partial class ActionLexer : Lexer
 				}
 				break;
 			case 6:
-				// Language\\Action.g3:436:5: c=~ ( 'n' | 'r' | 't' | 'b' | 'f' )
+				// Language\\Action.g3:444:5: c=~ ( 'n' | 'r' | 't' | 'b' | 'f' )
 				{
 				c= input.LA(1);
 				input.Consume();
@@ -1146,8 +1146,8 @@ public partial class ActionLexer : Lexer
 		{
 			int _type = LBRACK;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// Language\\Action.g3:436:11: ( '[' )
-			// Language\\Action.g3:436:11: '['
+			// Language\\Action.g3:444:11: ( '[' )
+			// Language\\Action.g3:444:11: '['
 			{
 			Match('['); if (state.failed) return ;
 
@@ -1169,8 +1169,8 @@ public partial class ActionLexer : Lexer
 		{
 			int _type = RBRACK;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// Language\\Action.g3:437:11: ( ']' )
-			// Language\\Action.g3:437:11: ']'
+			// Language\\Action.g3:445:11: ( ']' )
+			// Language\\Action.g3:445:11: ']'
 			{
 			Match(']'); if (state.failed) return ;
 
@@ -1192,8 +1192,8 @@ public partial class ActionLexer : Lexer
 		{
 			int _type = LPAREN;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// Language\\Action.g3:438:11: ( '(' )
-			// Language\\Action.g3:438:11: '('
+			// Language\\Action.g3:446:11: ( '(' )
+			// Language\\Action.g3:446:11: '('
 			{
 			Match('('); if (state.failed) return ;
 
@@ -1215,8 +1215,8 @@ public partial class ActionLexer : Lexer
 		{
 			int _type = RPAREN;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// Language\\Action.g3:439:11: ( ')' )
-			// Language\\Action.g3:439:11: ')'
+			// Language\\Action.g3:447:11: ( ')' )
+			// Language\\Action.g3:447:11: ')'
 			{
 			Match(')'); if (state.failed) return ;
 
@@ -1238,8 +1238,8 @@ public partial class ActionLexer : Lexer
 		{
 			int _type = COMMA;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// Language\\Action.g3:440:10: ( ',' )
-			// Language\\Action.g3:440:10: ','
+			// Language\\Action.g3:448:10: ( ',' )
+			// Language\\Action.g3:448:10: ','
 			{
 			Match(','); if (state.failed) return ;
 
@@ -1261,8 +1261,8 @@ public partial class ActionLexer : Lexer
 		{
 			int _type = DOT;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// Language\\Action.g3:441:9: ( '.' )
-			// Language\\Action.g3:441:9: '.'
+			// Language\\Action.g3:449:9: ( '.' )
+			// Language\\Action.g3:449:9: '.'
 			{
 			Match('.'); if (state.failed) return ;
 
@@ -1284,8 +1284,8 @@ public partial class ActionLexer : Lexer
 		{
 			int _type = ASSIGN;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// Language\\Action.g3:442:11: ( '=' )
-			// Language\\Action.g3:442:11: '='
+			// Language\\Action.g3:450:11: ( '=' )
+			// Language\\Action.g3:450:11: '='
 			{
 			Match('='); if (state.failed) return ;
 
@@ -1307,8 +1307,8 @@ public partial class ActionLexer : Lexer
 		{
 			int _type = COLON;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// Language\\Action.g3:443:10: ( ':' )
-			// Language\\Action.g3:443:10: ':'
+			// Language\\Action.g3:451:10: ( ':' )
+			// Language\\Action.g3:451:10: ':'
 			{
 			Match(':'); if (state.failed) return ;
 
@@ -1330,8 +1330,8 @@ public partial class ActionLexer : Lexer
 		{
 			int _type = PLUS;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// Language\\Action.g3:444:9: ( '+' )
-			// Language\\Action.g3:444:9: '+'
+			// Language\\Action.g3:452:9: ( '+' )
+			// Language\\Action.g3:452:9: '+'
 			{
 			Match('+'); if (state.failed) return ;
 
@@ -1353,8 +1353,8 @@ public partial class ActionLexer : Lexer
 		{
 			int _type = SEMI;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// Language\\Action.g3:445:9: ( ';' )
-			// Language\\Action.g3:445:9: ';'
+			// Language\\Action.g3:453:9: ( ';' )
+			// Language\\Action.g3:453:9: ';'
 			{
 			Match(';'); if (state.failed) return ;
 
@@ -1376,8 +1376,8 @@ public partial class ActionLexer : Lexer
 		{
 			int _type = NOT;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// Language\\Action.g3:446:9: ( '!' )
-			// Language\\Action.g3:446:9: '!'
+			// Language\\Action.g3:454:9: ( '!' )
+			// Language\\Action.g3:454:9: '!'
 			{
 			Match('!'); if (state.failed) return ;
 
@@ -1399,8 +1399,8 @@ public partial class ActionLexer : Lexer
 		{
 			int _type = DOTDOTDOT;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// Language\\Action.g3:447:13: ( '...' )
-			// Language\\Action.g3:447:13: '...'
+			// Language\\Action.g3:455:13: ( '...' )
+			// Language\\Action.g3:455:13: '...'
 			{
 			Match("..."); if (state.failed) return ;
 
@@ -1423,10 +1423,10 @@ public partial class ActionLexer : Lexer
 		{
 			int _type = WS;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// Language\\Action.g3:450:4: ( ( ' ' | '\\t' | '\\r' | '\\n' )+ )
-			// Language\\Action.g3:450:4: ( ' ' | '\\t' | '\\r' | '\\n' )+
+			// Language\\Action.g3:458:4: ( ( ' ' | '\\t' | '\\r' | '\\n' )+ )
+			// Language\\Action.g3:458:4: ( ' ' | '\\t' | '\\r' | '\\n' )+
 			{
-			// Language\\Action.g3:450:4: ( ' ' | '\\t' | '\\r' | '\\n' )+
+			// Language\\Action.g3:458:4: ( ' ' | '\\t' | '\\r' | '\\n' )+
 			int cnt14=0;
 			for ( ; ; )
 			{
@@ -1485,7 +1485,7 @@ public partial class ActionLexer : Lexer
 	{
 		try
 		{
-			// Language\\Action.g3:457:4: ( ' ' | '\\t' | '\\r' | '\\n' )
+			// Language\\Action.g3:465:4: ( ' ' | '\\t' | '\\r' | '\\n' )
 			// Language\\Action.g3:
 			{
 			if ( (input.LA(1)>='\t' && input.LA(1)<='\n')||input.LA(1)=='\r'||input.LA(1)==' ' )
@@ -1512,7 +1512,7 @@ public partial class ActionLexer : Lexer
 
 	public override void mTokens()
 	{
-		// Language\\Action.g3:1:10: ( CONDITIONAL | T__36 | T__37 | T__38 | T__39 | T__40 | T__41 | T__42 | T__43 | ID | INT | STRING | ANONYMOUS_TEMPLATE | LBRACK | RBRACK | LPAREN | RPAREN | COMMA | DOT | ASSIGN | COLON | PLUS | SEMI | NOT | DOTDOTDOT | WS )
+		// Language\\Action.g3:1:10: ( CONDITIONAL | ELSEIF | FIRST | LAST | LENGTH | REST | STRIP | SUPER | TRUNC | ID | INT | STRING | ANONYMOUS_TEMPLATE | LBRACK | RBRACK | LPAREN | RPAREN | COMMA | DOT | ASSIGN | COLON | PLUS | SEMI | NOT | DOTDOTDOT | WS )
 		int alt15=26;
 		alt15 = dfa15.Predict(input);
 		switch ( alt15 )
@@ -1525,58 +1525,58 @@ public partial class ActionLexer : Lexer
 			}
 			break;
 		case 2:
-			// Language\\Action.g3:1:22: T__36
+			// Language\\Action.g3:1:22: ELSEIF
 			{
-			mT__36(); if (state.failed) return ;
+			mELSEIF(); if (state.failed) return ;
 
 			}
 			break;
 		case 3:
-			// Language\\Action.g3:1:28: T__37
+			// Language\\Action.g3:1:29: FIRST
 			{
-			mT__37(); if (state.failed) return ;
+			mFIRST(); if (state.failed) return ;
 
 			}
 			break;
 		case 4:
-			// Language\\Action.g3:1:34: T__38
+			// Language\\Action.g3:1:35: LAST
 			{
-			mT__38(); if (state.failed) return ;
+			mLAST(); if (state.failed) return ;
 
 			}
 			break;
 		case 5:
-			// Language\\Action.g3:1:40: T__39
+			// Language\\Action.g3:1:40: LENGTH
 			{
-			mT__39(); if (state.failed) return ;
+			mLENGTH(); if (state.failed) return ;
 
 			}
 			break;
 		case 6:
-			// Language\\Action.g3:1:46: T__40
+			// Language\\Action.g3:1:47: REST
 			{
-			mT__40(); if (state.failed) return ;
+			mREST(); if (state.failed) return ;
 
 			}
 			break;
 		case 7:
-			// Language\\Action.g3:1:52: T__41
+			// Language\\Action.g3:1:52: STRIP
 			{
-			mT__41(); if (state.failed) return ;
+			mSTRIP(); if (state.failed) return ;
 
 			}
 			break;
 		case 8:
-			// Language\\Action.g3:1:58: T__42
+			// Language\\Action.g3:1:58: SUPER
 			{
-			mT__42(); if (state.failed) return ;
+			mSUPER(); if (state.failed) return ;
 
 			}
 			break;
 		case 9:
-			// Language\\Action.g3:1:64: T__43
+			// Language\\Action.g3:1:64: TRUNC
 			{
-			mT__43(); if (state.failed) return ;
+			mTRUNC(); if (state.failed) return ;
 
 			}
 			break;
@@ -1707,10 +1707,10 @@ public partial class ActionLexer : Lexer
 	// $ANTLR start synpred1_Action
 	public void synpred1_Action_fragment()
 	{
-		// Language\\Action.g3:358:5: ( ( WS_CHAR )? ID )
-		// Language\\Action.g3:358:6: ( WS_CHAR )? ID
+		// Language\\Action.g3:366:5: ( ( WS_CHAR )? ID )
+		// Language\\Action.g3:366:6: ( WS_CHAR )? ID
 		{
-		// Language\\Action.g3:358:6: ( WS_CHAR )?
+		// Language\\Action.g3:366:6: ( WS_CHAR )?
 		int alt16=2;
 		int LA16_0 = input.LA(1);
 
@@ -1750,7 +1750,7 @@ public partial class ActionLexer : Lexer
 	// $ANTLR start synpred2_Action
 	public void synpred2_Action_fragment()
 	{
-		// Language\\Action.g3:358:83: ( WS_CHAR )
+		// Language\\Action.g3:366:83: ( WS_CHAR )
 		// Language\\Action.g3:
 		{
 		if ( (input.LA(1)>='\t' && input.LA(1)<='\n')||input.LA(1)=='\r'||input.LA(1)==' ' )
@@ -1773,8 +1773,8 @@ public partial class ActionLexer : Lexer
 	// $ANTLR start synpred3_Action
 	public void synpred3_Action_fragment()
 	{
-		// Language\\Action.g3:367:5: ( '\\\\{' )
-		// Language\\Action.g3:367:6: '\\\\{'
+		// Language\\Action.g3:375:5: ( '\\\\{' )
+		// Language\\Action.g3:375:6: '\\\\{'
 		{
 		Match("\\{"); if (state.failed) return ;
 
@@ -1786,8 +1786,8 @@ public partial class ActionLexer : Lexer
 	// $ANTLR start synpred4_Action
 	public void synpred4_Action_fragment()
 	{
-		// Language\\Action.g3:368:5: ( '\\\\}' )
-		// Language\\Action.g3:368:6: '\\\\}'
+		// Language\\Action.g3:376:5: ( '\\\\}' )
+		// Language\\Action.g3:376:6: '\\\\}'
 		{
 		Match("\\}"); if (state.failed) return ;
 
@@ -1799,8 +1799,8 @@ public partial class ActionLexer : Lexer
 	// $ANTLR start synpred5_Action
 	public void synpred5_Action_fragment()
 	{
-		// Language\\Action.g3:405:5: ( '\\\\{' )
-		// Language\\Action.g3:405:6: '\\\\{'
+		// Language\\Action.g3:413:5: ( '\\\\{' )
+		// Language\\Action.g3:413:6: '\\\\{'
 		{
 		Match("\\{"); if (state.failed) return ;
 
@@ -1812,8 +1812,8 @@ public partial class ActionLexer : Lexer
 	// $ANTLR start synpred6_Action
 	public void synpred6_Action_fragment()
 	{
-		// Language\\Action.g3:406:5: ( '\\\\}' )
-		// Language\\Action.g3:406:6: '\\\\}'
+		// Language\\Action.g3:414:5: ( '\\\\}' )
+		// Language\\Action.g3:414:6: '\\\\}'
 		{
 		Match("\\}"); if (state.failed) return ;
 
@@ -2018,7 +2018,7 @@ public partial class ActionLexer : Lexer
 		}
 		public override string GetDescription()
 		{
-			return "358:3: (=> TEMPLATE_ARGS[out subtext, args] (=> WS_CHAR )? |)";
+			return "366:3: (=> TEMPLATE_ARGS[out subtext, args] (=> WS_CHAR )? |)";
 		}
 	}
 
@@ -2253,7 +2253,7 @@ public partial class ActionLexer : Lexer
 		}
 		public override string GetDescription()
 		{
-			return "()* loopback of 367:3: (=> '\\\\{' |=> '\\\\}' | ESC_CHAR[out uc, false] | NESTED_ANONYMOUS_TEMPLATE[out subtext] |ch=~ ( '\\\\' | '{' | '}' ) )*";
+			return "()* loopback of 375:3: (=> '\\\\{' |=> '\\\\}' | ESC_CHAR[out uc, false] | NESTED_ANONYMOUS_TEMPLATE[out subtext] |ch=~ ( '\\\\' | '{' | '}' ) )*";
 		}
 	}
 
@@ -2390,7 +2390,7 @@ public partial class ActionLexer : Lexer
 		}
 		public override string GetDescription()
 		{
-			return "()* loopback of 405:3: (=> '\\\\{' |=> '\\\\}' | ESC_CHAR[out uc, false] | NESTED_ANONYMOUS_TEMPLATE[out subtext] |ch=~ ( '{' | '}' | '\\\\' ) )*";
+			return "()* loopback of 413:3: (=> '\\\\{' |=> '\\\\}' | ESC_CHAR[out uc, false] | NESTED_ANONYMOUS_TEMPLATE[out subtext] |ch=~ ( '{' | '}' | '\\\\' ) )*";
 		}
 	}
 
@@ -2602,7 +2602,7 @@ public partial class ActionLexer : Lexer
 		}
 		public override string GetDescription()
 		{
-			return "1:0: Tokens : ( CONDITIONAL | T__36 | T__37 | T__38 | T__39 | T__40 | T__41 | T__42 | T__43 | ID | INT | STRING | ANONYMOUS_TEMPLATE | LBRACK | RBRACK | LPAREN | RPAREN | COMMA | DOT | ASSIGN | COLON | PLUS | SEMI | NOT | DOTDOTDOT | WS );";
+			return "1:0: Tokens : ( CONDITIONAL | ELSEIF | FIRST | LAST | LENGTH | REST | STRIP | SUPER | TRUNC | ID | INT | STRING | ANONYMOUS_TEMPLATE | LBRACK | RBRACK | LPAREN | RPAREN | COMMA | DOT | ASSIGN | COLON | PLUS | SEMI | NOT | DOTDOTDOT | WS );";
 		}
 	}
 

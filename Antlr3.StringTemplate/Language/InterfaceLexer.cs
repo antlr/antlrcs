@@ -1,4 +1,4 @@
-// $ANTLR 3.1.2 Language\\Interface.g3 2009-03-07 08:51:17
+// $ANTLR 3.1.2 Language\\Interface.g3 2009-03-16 18:25:15
 
 // The variable 'variable' is assigned but its value is never used.
 #pragma warning disable 219
@@ -50,17 +50,17 @@ namespace Antlr3.ST.Language
 public partial class InterfaceLexer : Lexer
 {
 	public const int EOF=-1;
-	public const int T__13=13;
-	public const int T__14=14;
 	public const int COLON=4;
 	public const int COMMA=5;
 	public const int ID=6;
-	public const int LPAREN=7;
-	public const int ML_COMMENT=8;
-	public const int RPAREN=9;
-	public const int SEMI=10;
-	public const int SL_COMMENT=11;
-	public const int WS=12;
+	public const int INTERFACE=7;
+	public const int LPAREN=8;
+	public const int ML_COMMENT=9;
+	public const int OPTIONAL=10;
+	public const int RPAREN=11;
+	public const int SEMI=12;
+	public const int SL_COMMENT=13;
+	public const int WS=14;
 
     // delegates
     // delegators
@@ -77,15 +77,15 @@ public partial class InterfaceLexer : Lexer
 	}
 	public override string GrammarFileName { get { return "Language\\Interface.g3"; } }
 
-	// $ANTLR start "T__13"
-	private void mT__13()
+	// $ANTLR start "INTERFACE"
+	private void mINTERFACE()
 	{
 		try
 		{
-			int _type = T__13;
+			int _type = INTERFACE;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// Language\\Interface.g3:42:9: ( 'interface' )
-			// Language\\Interface.g3:42:9: 'interface'
+			// Language\\Interface.g3:42:13: ( 'interface' )
+			// Language\\Interface.g3:42:13: 'interface'
 			{
 			Match("interface"); 
 
@@ -99,17 +99,17 @@ public partial class InterfaceLexer : Lexer
 		{
 		}
 	}
-	// $ANTLR end "T__13"
+	// $ANTLR end "INTERFACE"
 
-	// $ANTLR start "T__14"
-	private void mT__14()
+	// $ANTLR start "OPTIONAL"
+	private void mOPTIONAL()
 	{
 		try
 		{
-			int _type = T__14;
+			int _type = OPTIONAL;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// Language\\Interface.g3:43:9: ( 'optional' )
-			// Language\\Interface.g3:43:9: 'optional'
+			// Language\\Interface.g3:43:12: ( 'optional' )
+			// Language\\Interface.g3:43:12: 'optional'
 			{
 			Match("optional"); 
 
@@ -123,7 +123,7 @@ public partial class InterfaceLexer : Lexer
 		{
 		}
 	}
-	// $ANTLR end "T__14"
+	// $ANTLR end "OPTIONAL"
 
 	// $ANTLR start "ID"
 	private void mID()
@@ -132,8 +132,8 @@ public partial class InterfaceLexer : Lexer
 		{
 			int _type = ID;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// Language\\Interface.g3:150:6: ( ( 'a' .. 'z' | 'A' .. 'Z' | '_' ) ( 'a' .. 'z' | 'A' .. 'Z' | '0' .. '9' | '-' | '_' )* )
-			// Language\\Interface.g3:150:6: ( 'a' .. 'z' | 'A' .. 'Z' | '_' ) ( 'a' .. 'z' | 'A' .. 'Z' | '0' .. '9' | '-' | '_' )*
+			// Language\\Interface.g3:156:6: ( ( 'a' .. 'z' | 'A' .. 'Z' | '_' ) ( 'a' .. 'z' | 'A' .. 'Z' | '0' .. '9' | '-' | '_' )* )
+			// Language\\Interface.g3:156:6: ( 'a' .. 'z' | 'A' .. 'Z' | '_' ) ( 'a' .. 'z' | 'A' .. 'Z' | '0' .. '9' | '-' | '_' )*
 			{
 			if ( (input.LA(1)>='A' && input.LA(1)<='Z')||input.LA(1)=='_'||(input.LA(1)>='a' && input.LA(1)<='z') )
 			{
@@ -146,7 +146,7 @@ public partial class InterfaceLexer : Lexer
 				Recover(mse);
 				throw mse;}
 
-			// Language\\Interface.g3:150:30: ( 'a' .. 'z' | 'A' .. 'Z' | '0' .. '9' | '-' | '_' )*
+			// Language\\Interface.g3:156:30: ( 'a' .. 'z' | 'A' .. 'Z' | '0' .. '9' | '-' | '_' )*
 			for ( ; ; )
 			{
 				int alt1=2;
@@ -197,8 +197,8 @@ public partial class InterfaceLexer : Lexer
 		{
 			int _type = LPAREN;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// Language\\Interface.g3:153:10: ( '(' )
-			// Language\\Interface.g3:153:10: '('
+			// Language\\Interface.g3:159:10: ( '(' )
+			// Language\\Interface.g3:159:10: '('
 			{
 			Match('('); 
 
@@ -220,8 +220,8 @@ public partial class InterfaceLexer : Lexer
 		{
 			int _type = RPAREN;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// Language\\Interface.g3:154:10: ( ')' )
-			// Language\\Interface.g3:154:10: ')'
+			// Language\\Interface.g3:160:10: ( ')' )
+			// Language\\Interface.g3:160:10: ')'
 			{
 			Match(')'); 
 
@@ -243,8 +243,8 @@ public partial class InterfaceLexer : Lexer
 		{
 			int _type = COMMA;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// Language\\Interface.g3:155:9: ( ',' )
-			// Language\\Interface.g3:155:9: ','
+			// Language\\Interface.g3:161:9: ( ',' )
+			// Language\\Interface.g3:161:9: ','
 			{
 			Match(','); 
 
@@ -266,8 +266,8 @@ public partial class InterfaceLexer : Lexer
 		{
 			int _type = SEMI;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// Language\\Interface.g3:156:8: ( ';' )
-			// Language\\Interface.g3:156:8: ';'
+			// Language\\Interface.g3:162:8: ( ';' )
+			// Language\\Interface.g3:162:8: ';'
 			{
 			Match(';'); 
 
@@ -289,8 +289,8 @@ public partial class InterfaceLexer : Lexer
 		{
 			int _type = COLON;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// Language\\Interface.g3:157:9: ( ':' )
-			// Language\\Interface.g3:157:9: ':'
+			// Language\\Interface.g3:163:9: ( ':' )
+			// Language\\Interface.g3:163:9: ':'
 			{
 			Match(':'); 
 
@@ -312,12 +312,12 @@ public partial class InterfaceLexer : Lexer
 		{
 			int _type = SL_COMMENT;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// Language\\Interface.g3:161:4: ( '//' (~ ( '\\n' | '\\r' ) )* ( ( '\\r' )? '\\n' )? )
-			// Language\\Interface.g3:161:4: '//' (~ ( '\\n' | '\\r' ) )* ( ( '\\r' )? '\\n' )?
+			// Language\\Interface.g3:167:4: ( '//' (~ ( '\\n' | '\\r' ) )* ( ( '\\r' )? '\\n' )? )
+			// Language\\Interface.g3:167:4: '//' (~ ( '\\n' | '\\r' ) )* ( ( '\\r' )? '\\n' )?
 			{
 			Match("//"); 
 
-			// Language\\Interface.g3:162:3: (~ ( '\\n' | '\\r' ) )*
+			// Language\\Interface.g3:168:3: (~ ( '\\n' | '\\r' ) )*
 			for ( ; ; )
 			{
 				int alt2=2;
@@ -349,7 +349,7 @@ public partial class InterfaceLexer : Lexer
 				;
 
 
-			// Language\\Interface.g3:162:19: ( ( '\\r' )? '\\n' )?
+			// Language\\Interface.g3:168:19: ( ( '\\r' )? '\\n' )?
 			int alt4=2;
 			int LA4_0 = input.LA(1);
 
@@ -360,9 +360,9 @@ public partial class InterfaceLexer : Lexer
 			switch ( alt4 )
 			{
 			case 1:
-				// Language\\Interface.g3:162:20: ( '\\r' )? '\\n'
+				// Language\\Interface.g3:168:20: ( '\\r' )? '\\n'
 				{
-				// Language\\Interface.g3:162:20: ( '\\r' )?
+				// Language\\Interface.g3:168:20: ( '\\r' )?
 				int alt3=2;
 				int LA3_0 = input.LA(1);
 
@@ -373,7 +373,7 @@ public partial class InterfaceLexer : Lexer
 				switch ( alt3 )
 				{
 				case 1:
-					// Language\\Interface.g3:162:21: '\\r'
+					// Language\\Interface.g3:168:21: '\\r'
 					{
 					Match('\r'); 
 
@@ -409,12 +409,12 @@ public partial class InterfaceLexer : Lexer
 		{
 			int _type = ML_COMMENT;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// Language\\Interface.g3:167:4: ( '/*' ( . )* '*/' )
-			// Language\\Interface.g3:167:4: '/*' ( . )* '*/'
+			// Language\\Interface.g3:173:4: ( '/*' ( . )* '*/' )
+			// Language\\Interface.g3:173:4: '/*' ( . )* '*/'
 			{
 			Match("/*"); 
 
-			// Language\\Interface.g3:167:9: ( . )*
+			// Language\\Interface.g3:173:9: ( . )*
 			for ( ; ; )
 			{
 				int alt5=2;
@@ -444,7 +444,7 @@ public partial class InterfaceLexer : Lexer
 				switch ( alt5 )
 				{
 				case 1:
-					// Language\\Interface.g3:167:0: .
+					// Language\\Interface.g3:173:0: .
 					{
 					MatchAny(); 
 
@@ -482,10 +482,10 @@ public partial class InterfaceLexer : Lexer
 		{
 			int _type = WS;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// Language\\Interface.g3:172:4: ( ( ' ' | '\\t' | '\\f' | ( '\\r' )? '\\n' )+ )
-			// Language\\Interface.g3:172:4: ( ' ' | '\\t' | '\\f' | ( '\\r' )? '\\n' )+
+			// Language\\Interface.g3:178:4: ( ( ' ' | '\\t' | '\\f' | ( '\\r' )? '\\n' )+ )
+			// Language\\Interface.g3:178:4: ( ' ' | '\\t' | '\\f' | ( '\\r' )? '\\n' )+
 			{
-			// Language\\Interface.g3:172:4: ( ' ' | '\\t' | '\\f' | ( '\\r' )? '\\n' )+
+			// Language\\Interface.g3:178:4: ( ' ' | '\\t' | '\\f' | ( '\\r' )? '\\n' )+
 			int cnt7=0;
 			for ( ; ; )
 			{
@@ -519,30 +519,30 @@ public partial class InterfaceLexer : Lexer
 				switch ( alt7 )
 				{
 				case 1:
-					// Language\\Interface.g3:172:6: ' '
+					// Language\\Interface.g3:178:6: ' '
 					{
 					Match(' '); 
 
 					}
 					break;
 				case 2:
-					// Language\\Interface.g3:173:5: '\\t'
+					// Language\\Interface.g3:179:5: '\\t'
 					{
 					Match('\t'); 
 
 					}
 					break;
 				case 3:
-					// Language\\Interface.g3:174:5: '\\f'
+					// Language\\Interface.g3:180:5: '\\f'
 					{
 					Match('\f'); 
 
 					}
 					break;
 				case 4:
-					// Language\\Interface.g3:175:5: ( '\\r' )? '\\n'
+					// Language\\Interface.g3:181:5: ( '\\r' )? '\\n'
 					{
-					// Language\\Interface.g3:175:5: ( '\\r' )?
+					// Language\\Interface.g3:181:5: ( '\\r' )?
 					int alt6=2;
 					int LA6_0 = input.LA(1);
 
@@ -553,7 +553,7 @@ public partial class InterfaceLexer : Lexer
 					switch ( alt6 )
 					{
 					case 1:
-						// Language\\Interface.g3:175:6: '\\r'
+						// Language\\Interface.g3:181:6: '\\r'
 						{
 						Match('\r'); 
 
@@ -595,83 +595,83 @@ public partial class InterfaceLexer : Lexer
 
 	public override void mTokens()
 	{
-		// Language\\Interface.g3:1:10: ( T__13 | T__14 | ID | LPAREN | RPAREN | COMMA | SEMI | COLON | SL_COMMENT | ML_COMMENT | WS )
+		// Language\\Interface.g3:1:10: ( INTERFACE | OPTIONAL | ID | LPAREN | RPAREN | COMMA | SEMI | COLON | SL_COMMENT | ML_COMMENT | WS )
 		int alt8=11;
 		alt8 = dfa8.Predict(input);
 		switch ( alt8 )
 		{
 		case 1:
-			// Language\\Interface.g3:1:10: T__13
+			// Language\\Interface.g3:1:10: INTERFACE
 			{
-			mT__13(); 
+			mINTERFACE(); 
 
 			}
 			break;
 		case 2:
-			// Language\\Interface.g3:1:16: T__14
+			// Language\\Interface.g3:1:20: OPTIONAL
 			{
-			mT__14(); 
+			mOPTIONAL(); 
 
 			}
 			break;
 		case 3:
-			// Language\\Interface.g3:1:22: ID
+			// Language\\Interface.g3:1:29: ID
 			{
 			mID(); 
 
 			}
 			break;
 		case 4:
-			// Language\\Interface.g3:1:25: LPAREN
+			// Language\\Interface.g3:1:32: LPAREN
 			{
 			mLPAREN(); 
 
 			}
 			break;
 		case 5:
-			// Language\\Interface.g3:1:32: RPAREN
+			// Language\\Interface.g3:1:39: RPAREN
 			{
 			mRPAREN(); 
 
 			}
 			break;
 		case 6:
-			// Language\\Interface.g3:1:39: COMMA
+			// Language\\Interface.g3:1:46: COMMA
 			{
 			mCOMMA(); 
 
 			}
 			break;
 		case 7:
-			// Language\\Interface.g3:1:45: SEMI
+			// Language\\Interface.g3:1:52: SEMI
 			{
 			mSEMI(); 
 
 			}
 			break;
 		case 8:
-			// Language\\Interface.g3:1:50: COLON
+			// Language\\Interface.g3:1:57: COLON
 			{
 			mCOLON(); 
 
 			}
 			break;
 		case 9:
-			// Language\\Interface.g3:1:56: SL_COMMENT
+			// Language\\Interface.g3:1:63: SL_COMMENT
 			{
 			mSL_COMMENT(); 
 
 			}
 			break;
 		case 10:
-			// Language\\Interface.g3:1:67: ML_COMMENT
+			// Language\\Interface.g3:1:74: ML_COMMENT
 			{
 			mML_COMMENT(); 
 
 			}
 			break;
 		case 11:
-			// Language\\Interface.g3:1:78: WS
+			// Language\\Interface.g3:1:85: WS
 			{
 			mWS(); 
 
@@ -780,7 +780,7 @@ public partial class InterfaceLexer : Lexer
 		}
 		public override string GetDescription()
 		{
-			return "1:0: Tokens : ( T__13 | T__14 | ID | LPAREN | RPAREN | COMMA | SEMI | COLON | SL_COMMENT | ML_COMMENT | WS );";
+			return "1:0: Tokens : ( INTERFACE | OPTIONAL | ID | LPAREN | RPAREN | COMMA | SEMI | COLON | SL_COMMENT | ML_COMMENT | WS );";
 		}
 	}
 
