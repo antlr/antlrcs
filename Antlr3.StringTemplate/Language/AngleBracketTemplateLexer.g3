@@ -1,0 +1,349 @@
+/*
+ [The "BSD licence"]
+ Copyright (c) 2005-2008 Terence Parr
+ All rights reserved.
+
+ Grammar conversion to ANTLR v3 and C#:
+ Copyright (c) 2008 Sam Harwell, Pixel Mine, Inc.
+ All rights reserved.
+
+ Redistribution and use in source and binary forms, with or without
+ modification, are permitted provided that the following conditions
+ are met:
+ 1. Redistributions of source code must retain the above copyright
+	notice, this list of conditions and the following disclaimer.
+ 2. Redistributions in binary form must reproduce the above copyright
+	notice, this list of conditions and the following disclaimer in the
+	documentation and/or other materials provided with the distribution.
+ 3. The name of the author may not be used to endorse or promote products
+	derived from this software without specific prior written permission.
+
+ THIS SOFTWARE IS PROVIDED BY THE AUTHOR ``AS IS'' AND ANY EXPRESS OR
+ IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
+ OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.
+ IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT,
+ INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+ NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+ DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
+ THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+ (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
+ THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+*/
+lexer grammar AngleBracketTemplateLexer;
+
+options
+{
+	tokenVocab=Template;
+	language=CSharp3;
+}
+
+@lexer::header
+{
+/*
+ [The "BSD licence"]
+ Copyright (c) 2005-2008 Terence Parr
+ All rights reserved.
+
+ Grammar conversion to ANTLR v3 and C#:
+ Copyright (c) 2008 Sam Harwell, Pixel Mine, Inc.
+ All rights reserved.
+
+ Redistribution and use in source and binary forms, with or without
+ modification, are permitted provided that the following conditions
+ are met:
+ 1. Redistributions of source code must retain the above copyright
+	notice, this list of conditions and the following disclaimer.
+ 2. Redistributions in binary form must reproduce the above copyright
+	notice, this list of conditions and the following disclaimer in the
+	documentation and/or other materials provided with the distribution.
+ 3. The name of the author may not be used to endorse or promote products
+	derived from this software without specific prior written permission.
+
+ THIS SOFTWARE IS PROVIDED BY THE AUTHOR ``AS IS'' AND ANY EXPRESS OR
+ IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
+ OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.
+ IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT,
+ INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+ NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+ DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
+ THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+ (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
+ THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+*/
+
+using StringBuffer = System.Text.StringBuilder;
+}
+
+@lexer::namespace {Antlr3.ST.Language}
+
+NEWLINE
+	:	('\r')? '\n' {currentIndent=null;}
+	;
+
+ACTION
+options { k = 1; }
+@init
+{
+	int startCol = CharPositionInLine;
+	System.Text.StringBuilder buf = null;
+	string subtext = string.Empty;
+	char uc = '\0';
+	System.Text.StringBuilder builder = null;
+	bool atLeft = false;
+	string t = null;
+}
+	:	('<\\') =>
+		// Match escapes not in a string like <\n\ufea5>
+		{
+			buf = new System.Text.StringBuilder();
+			uc = '\0';
+		}
+		'<' (ESC_CHAR[out uc] {buf.Append(uc);} )+ '>'
+		{
+			Text = buf.ToString();
+			$type = LITERAL;
+		}
+	|	('<!') => COMMENT {$channel = HIDDEN;}
+	|	(	options { k = 1; } :
+			('<if') =>
+			'<if' (' ')* '(' exp=IF_EXPR ')>'
+			( ('\r')? '\n' )? // ignore any newline right after an IF
+			{
+				Text = "if(" + $exp.text + ")";
+				$type = TemplateParser.IF;
+			}
+		|	('<elseif') =>
+			'<elseif' (' ')* '(' exp=IF_EXPR ')>'
+			( ('\r')? '\n' )? // ignore any newline right after an IF
+			{
+				Text = "elseif(" + $exp.text + ")";
+				$type = TemplateParser.ELSEIF;
+			}
+		|	('<else') =>
+			'<else>'
+			( ('\r')? '\n' )? // ignore any newline right after an ELSE
+			{
+				Text = "else";
+				$type = TemplateParser.ELSE;
+			}
+		|	('<endif') =>
+			'<endif>'
+			( {startCol==0}? => ('\r')? '\n' )? // ignore after ENDIF if on line by itself
+			{
+				Text = "endif";
+				$type = TemplateParser.ENDIF;
+			}
+		|	// match <@foo()> => foo
+			// match <@foo>...<@end> => foo::=...
+			('<@') =>
+			{
+				builder = new System.Text.StringBuilder();
+			}
+			'<@'
+			( ch=~('>'|'(') {builder.Append((char)$ch);} )+
+			{ t = builder.ToString(); }
+			(	'()>'
+				{
+					$type = TemplateParser.REGION_REF;
+				}
+			|	'>'
+				{
+					$type = TemplateParser.REGION_DEF;
+					builder.Append("::=");
+				}
+				( ('\r'|'\n') => ('\r')? '\n' )?
+				{
+					atLeft = false;
+				}
+				(	{!(upcomingAtEND(1) || ( input.LA(1) == '\n' && upcomingAtEND(2) ) || ( input.LA(1) == '\r' && input.LA(2) == '\n' && upcomingAtEND(3) ))}? =>
+					(	('\r'|'\n') => ('\r' {builder.Append('\r');})? '\n' {builder.Append('\n'); atLeft = true;}
+					|	ch=. {builder.Append((char)$ch); atLeft = false;}
+					)
+				)+
+				(	('\r'|'\n') => ('\r')? '\n' {atLeft = true;} )?
+				(	'<@end>'
+				|	. {self.error("missing region "+t+" <@end> tag");}
+				)
+				( {atLeft}? => ('\r')? '\n' )?
+			)
+			{
+				Text = builder.ToString();
+			}
+		|	'<' EXPR[out subtext] '>'
+			{ Text = subtext; }
+		)
+		{
+			//ChunkToken t = new ChunkToken($type, $text, currentIndent);
+			//state.token = t; //$ setToken(t);
+			state.token = new ChunkToken($type, $text, currentIndent);
+		}
+	;
+
+LITERAL
+@init
+{
+	System.Text.StringBuilder builder = new System.Text.StringBuilder();
+	int loopStartIndex = 0;
+	int col = 0;
+}
+	:	(	(	'\\'
+				(	options {k=1;}:
+					('<') => '<' { builder.Append('<'); } // allow escaped delimiter
+				|	('>') => '>' { builder.Append('>'); }
+				|	('\\') => '\\' { builder.Append('\\'); } // always replace \\ with \
+				|	ch=. { builder.Append( "\\" + (char)$ch ); }  // otherwise ignore escape char
+				)
+			)
+		|	ind=INDENT
+			{
+				loopStartIndex = builder.Length;
+				col = CharPositionInLine - $ind.text.Length;
+
+				builder.Append( $ind.text );
+				if ( col==0 && input.LA(1)=='<' )
+				{
+					// store indent in ASTExpr not in a literal
+					currentIndent=$ind.text;
+					builder.Length = loopStartIndex; // reset length to wack text
+				}
+				else
+				{
+					currentIndent=null;
+				}
+			}
+		|	ch=~('\\'|' '|'\t'|'<'|'\r'|'\n') { builder.Append( (char)$ch ); }
+		)+
+		{
+			Text = builder.ToString();
+			if ( $text.Length == 0 )
+			{
+				$channel = HIDDEN;
+			}
+		} // pure indent?
+	;
+
+fragment
+INDENT // done
+	:	(' ' | '\t')+
+	;
+
+fragment
+EXPR[out string _text]
+@init
+{
+	string subtext = string.Empty;
+	$_text = string.Empty;
+	System.Text.StringBuilder builder = new System.Text.StringBuilder();
+}
+	:	(	ESC									{builder.Append($ESC.text);}
+		|	st=SUBTEMPLATE						{builder.Append($st.text);}
+		|	(	'='								{builder.Append('=');}
+			|	'+'								{builder.Append('+');}
+			)
+			(	TEMPLATE[out subtext]			{builder.Append(subtext);}
+			|	st=SUBTEMPLATE					{builder.Append($st.text);}
+			|	ch=~('"'|'<'|'{')				{builder.Append((char)$ch);}
+			)
+		|	ch=~('\\'|'{'|'='|'+'|'>')			{builder.Append((char)$ch);}
+		)+
+		{$_text = builder.ToString();}
+	;
+
+fragment
+TEMPLATE[out string _text]
+@init
+{
+	$_text = string.Empty;
+	System.Text.StringBuilder builder = new System.Text.StringBuilder();
+}
+	:	'"'
+		{builder.Append('"');}
+		(	ESC						{builder.Append($ESC.text);}
+		|	ch=~('\\'|'"')			{builder.Append((char)$ch);}
+		)*
+		'"'
+		{
+			builder.Append('"');
+			$_text = builder.ToString();
+		}
+	|	'<<'
+		{
+			builder.Append("<<");
+		}
+		(	('\r'|'\n') => ('\r')? '\n' )? // consume 1st \n
+		(	options { k=2; }:
+			('\r'? '\n>>') => ('\r')? '\n'	// kill last \r\n or last \n
+		|	('>' ~'>' | ~'>') => ch=. {builder.Append((char)$ch);}
+		)*
+		'>>'
+		{
+			builder.Append(">>");
+			$_text = builder.ToString();
+		}
+	;
+
+fragment
+IF_EXPR
+	:	(	ESC
+		|	SUBTEMPLATE
+		|	NESTED_PARENS
+		|	~('\\'|'{'|'('|')')
+		)+
+	;
+
+fragment
+ESC_CHAR[out char uc]
+@init
+{
+	$uc = '\0';
+}
+	:	'\\'
+		(	'n' {$uc = '\n';}
+		|	'r' {$uc = '\r';}
+		|	't' {$uc = '\t';}
+		|	' ' {$uc = ' ';}
+		|	'u' a=HEX b=HEX c=HEX d=HEX
+			{ $uc = (char)int.Parse($a.text+$b.text+$c.text+$d.text, System.Globalization.NumberStyles.AllowHexSpecifier); }
+		)
+	;
+
+// just used to skip stuff (not part of unicode escape stuff)
+fragment
+ESC
+	:	'\\' . // ('<'|'>'|'n'|'t'|'"'|'\''|':'|'{'|'}'|'\\')
+	;
+
+fragment
+HEX
+	:	'0'..'9'|'A'..'F'|'a'..'f'
+	;
+
+fragment
+SUBTEMPLATE
+	:	'{'
+		(	SUBTEMPLATE
+		|	ESC
+		|	~('{'|'\\'|'}')
+		)*
+		'}'
+	;
+
+fragment
+NESTED_PARENS
+	:	'('
+		(	NESTED_PARENS
+		|	ESC
+		|	~('('|'\\'|')')
+		)+
+		')'
+	;
+
+fragment
+COMMENT
+@init
+{
+    int startCol = CharPositionInLine;
+}
+	:	'<!' .* '!>'
+		( {startCol==0}? => ('\r')? '\n' )?
+	;

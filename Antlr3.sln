@@ -1,0 +1,222 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 10.00
+# Visual Studio 2008
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Antlr3", "Antlr3\Antlr3.csproj", "{2AB8CAED-C046-4F05-8B18-6948100D2FE7}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Antlr3.StringTemplate", "Antlr3.StringTemplate\Antlr3.StringTemplate.csproj", "{B5910BE2-DE21-4AA9-95C1-486F42B9E794}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Antlr3.Test", "Antlr3.Test\Antlr3.Test.csproj", "{8B58597B-058E-4D7A-B83E-5269BDABBE2C}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Targets", "Targets", "{3A92893D-7810-4D8B-80D8-E1E8D151FA73}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Antlr3.Targets.ActionScript", "Antlr3.Targets\Antlr3.Targets.ActionScript\Antlr3.Targets.ActionScript.csproj", "{2A03CB56-C3E2-4B65-92C0-004C9D78E2A4}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Antlr3.Targets.C", "Antlr3.Targets\Antlr3.Targets.C\Antlr3.Targets.C.csproj", "{ABFF04E1-91CE-4F31-AAA0-0C70E3DBB4A6}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Antlr3.Targets.Cpp", "Antlr3.Targets\Antlr3.Targets.Cpp\Antlr3.Targets.Cpp.csproj", "{46171154-755A-4595-99AA-537D684BCA28}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Antlr3.Targets.CSharp", "Antlr3.Targets\Antlr3.Targets.CSharp\Antlr3.Targets.CSharp.csproj", "{48A0E438-158B-4C9E-887D-350E67A8AA09}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Antlr3.Targets.CSharp2", "Antlr3.Targets\Antlr3.Targets.CSharp2\Antlr3.Targets.CSharp2.csproj", "{5CBAC55A-A209-45CA-9F57-D0BFFFE2B7F9}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Antlr3.Targets.CSharp3", "Antlr3.Targets\Antlr3.Targets.CSharp3\Antlr3.Targets.CSharp3.csproj", "{67012F41-94F9-48E6-9677-E3C56E42917F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Antlr3.Targets.Delphi", "Antlr3.Targets\Antlr3.Targets.Delphi\Antlr3.Targets.Delphi.csproj", "{6689F268-CE30-4CEC-AAD5-2DF72C43623C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Antlr3.Targets.Java", "Antlr3.Targets\Antlr3.Targets.Java\Antlr3.Targets.Java.csproj", "{696F611F-003B-477D-AFA0-4F15478C9D32}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Antlr3.Targets.JavaScript", "Antlr3.Targets\Antlr3.Targets.JavaScript\Antlr3.Targets.JavaScript.csproj", "{1551D1E7-D515-4488-A889-5DEBB4950880}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Antlr3.Targets.ObjC", "Antlr3.Targets\Antlr3.Targets.ObjC\Antlr3.Targets.ObjC.csproj", "{8EFEA650-B9F6-498B-8865-A78103CCB590}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Antlr3.Targets.Perl5", "Antlr3.Targets\Antlr3.Targets.Perl5\Antlr3.Targets.Perl5.csproj", "{9444ACEF-784D-47B0-B317-F374782FA511}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Antlr3.Targets.Python", "Antlr3.Targets\Antlr3.Targets.Python\Antlr3.Targets.Python.csproj", "{1DEA6EB4-2288-4B6C-B5F4-1D102B8745BB}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Antlr3.Targets.Ruby", "Antlr3.Targets\Antlr3.Targets.Ruby\Antlr3.Targets.Ruby.csproj", "{64418260-E75A-4556-BB7E-8BDAAFC2EFB9}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Antlr3.Runtime", "..\..\antlr\main\runtime\CSharp3\Sources\Antlr3.Runtime\Antlr3.Runtime.csproj", "{8FDC0A87-9005-4D5A-AB75-E55CEB575559}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Antlr3.Runtime.Debug", "..\..\antlr\main\runtime\CSharp3\Sources\Antlr3.Runtime.Debug\Antlr3.Runtime.Debug.csproj", "{5EE27A90-B023-42C9-AAF1-52B0424C5D0B}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{C0B451C4-EAFC-4942-B18E-49EC73DABABD}"
+	ProjectSection(SolutionItems) = preProject
+		Antlr3.vsmdi = Antlr3.vsmdi
+		AntlrTestConfig.testrunconfig = AntlrTestConfig.testrunconfig
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(TestCaseManagementSettings) = postSolution
+		CategoryFile = Antlr3.vsmdi
+	EndGlobalSection
+	GlobalSection(SourceCodeControl) = preSolution
+		SccNumberOfProjects = 19
+		SccProjectName0 = Perforce\u0020Project
+		SccLocalPath0 = ..\\..
+		SccProvider0 = MSSCCI:Perforce\u0020SCM
+		SccProjectFilePathRelativizedFromConnection0 = antlrcs\\main\\
+		SccProjectUniqueName1 = Antlr3\\Antlr3.csproj
+		SccLocalPath1 = ..\\..
+		SccProjectFilePathRelativizedFromConnection1 = antlrcs\\main\\Antlr3\\
+		SccProjectUniqueName2 = Antlr3.StringTemplate\\Antlr3.StringTemplate.csproj
+		SccLocalPath2 = ..\\..
+		SccProjectFilePathRelativizedFromConnection2 = antlrcs\\main\\Antlr3.StringTemplate\\
+		SccProjectUniqueName3 = Antlr3.Targets\\Antlr3.Targets.ActionScript\\Antlr3.Targets.ActionScript.csproj
+		SccProjectTopLevelParentUniqueName3 = Antlr3.sln
+		SccLocalPath3 = ..\\..
+		SccProjectFilePathRelativizedFromConnection3 = antlrcs\\main\\Antlr3.Targets\\Antlr3.Targets.ActionScript\\
+		SccProjectUniqueName4 = Antlr3.Targets\\Antlr3.Targets.C\\Antlr3.Targets.C.csproj
+		SccProjectTopLevelParentUniqueName4 = Antlr3.sln
+		SccLocalPath4 = ..\\..
+		SccProjectFilePathRelativizedFromConnection4 = antlrcs\\main\\Antlr3.Targets\\Antlr3.Targets.C\\
+		SccProjectUniqueName5 = Antlr3.Targets\\Antlr3.Targets.Cpp\\Antlr3.Targets.Cpp.csproj
+		SccProjectTopLevelParentUniqueName5 = Antlr3.sln
+		SccLocalPath5 = ..\\..
+		SccProjectFilePathRelativizedFromConnection5 = antlrcs\\main\\Antlr3.Targets\\Antlr3.Targets.Cpp\\
+		SccProjectUniqueName6 = Antlr3.Targets\\Antlr3.Targets.CSharp\\Antlr3.Targets.CSharp.csproj
+		SccProjectTopLevelParentUniqueName6 = Antlr3.sln
+		SccLocalPath6 = ..\\..
+		SccProjectFilePathRelativizedFromConnection6 = antlrcs\\main\\Antlr3.Targets\\Antlr3.Targets.CSharp\\
+		SccProjectUniqueName7 = Antlr3.Targets\\Antlr3.Targets.CSharp2\\Antlr3.Targets.CSharp2.csproj
+		SccProjectTopLevelParentUniqueName7 = Antlr3.sln
+		SccLocalPath7 = ..\\..
+		SccProjectFilePathRelativizedFromConnection7 = antlrcs\\main\\Antlr3.Targets\\Antlr3.Targets.CSharp2\\
+		SccProjectUniqueName8 = Antlr3.Targets\\Antlr3.Targets.CSharp3\\Antlr3.Targets.CSharp3.csproj
+		SccProjectTopLevelParentUniqueName8 = Antlr3.sln
+		SccLocalPath8 = ..\\..
+		SccProjectFilePathRelativizedFromConnection8 = antlrcs\\main\\Antlr3.Targets\\Antlr3.Targets.CSharp3\\
+		SccProjectUniqueName9 = Antlr3.Targets\\Antlr3.Targets.Delphi\\Antlr3.Targets.Delphi.csproj
+		SccProjectTopLevelParentUniqueName9 = Antlr3.sln
+		SccLocalPath9 = ..\\..
+		SccProjectFilePathRelativizedFromConnection9 = antlrcs\\main\\Antlr3.Targets\\Antlr3.Targets.Delphi\\
+		SccProjectUniqueName10 = Antlr3.Targets\\Antlr3.Targets.Java\\Antlr3.Targets.Java.csproj
+		SccProjectTopLevelParentUniqueName10 = Antlr3.sln
+		SccLocalPath10 = ..\\..
+		SccProjectFilePathRelativizedFromConnection10 = antlrcs\\main\\Antlr3.Targets\\Antlr3.Targets.Java\\
+		SccProjectUniqueName11 = Antlr3.Targets\\Antlr3.Targets.JavaScript\\Antlr3.Targets.JavaScript.csproj
+		SccProjectTopLevelParentUniqueName11 = Antlr3.sln
+		SccLocalPath11 = ..\\..
+		SccProjectFilePathRelativizedFromConnection11 = antlrcs\\main\\Antlr3.Targets\\Antlr3.Targets.JavaScript\\
+		SccProjectUniqueName12 = Antlr3.Targets\\Antlr3.Targets.ObjC\\Antlr3.Targets.ObjC.csproj
+		SccProjectTopLevelParentUniqueName12 = Antlr3.sln
+		SccLocalPath12 = ..\\..
+		SccProjectFilePathRelativizedFromConnection12 = antlrcs\\main\\Antlr3.Targets\\Antlr3.Targets.ObjC\\
+		SccProjectUniqueName13 = Antlr3.Targets\\Antlr3.Targets.Perl5\\Antlr3.Targets.Perl5.csproj
+		SccProjectTopLevelParentUniqueName13 = Antlr3.sln
+		SccLocalPath13 = ..\\..
+		SccProjectFilePathRelativizedFromConnection13 = antlrcs\\main\\Antlr3.Targets\\Antlr3.Targets.Perl5\\
+		SccProjectUniqueName14 = Antlr3.Targets\\Antlr3.Targets.Python\\Antlr3.Targets.Python.csproj
+		SccProjectTopLevelParentUniqueName14 = Antlr3.sln
+		SccLocalPath14 = ..\\..
+		SccProjectFilePathRelativizedFromConnection14 = antlrcs\\main\\Antlr3.Targets\\Antlr3.Targets.Python\\
+		SccProjectUniqueName15 = Antlr3.Targets\\Antlr3.Targets.Ruby\\Antlr3.Targets.Ruby.csproj
+		SccProjectTopLevelParentUniqueName15 = Antlr3.sln
+		SccLocalPath15 = ..\\..
+		SccProjectFilePathRelativizedFromConnection15 = antlrcs\\main\\Antlr3.Targets\\Antlr3.Targets.Ruby\\
+		SccProjectUniqueName16 = ..\\..\\antlr\\main\\runtime\\CSharp3\\Sources\\Antlr3.Runtime\\Antlr3.Runtime.csproj
+		SccLocalPath16 = ..\\..
+		SccProjectFilePathRelativizedFromConnection16 = antlr\\main\\runtime\\CSharp3\\Sources\\Antlr3.Runtime\\
+		SccProjectUniqueName17 = ..\\..\\antlr\\main\\runtime\\CSharp3\\Sources\\Antlr3.Runtime.Debug\\Antlr3.Runtime.Debug.csproj
+		SccLocalPath17 = ..\\..
+		SccProjectFilePathRelativizedFromConnection17 = antlr\\main\\runtime\\CSharp3\\Sources\\Antlr3.Runtime.Debug\\
+		SccProjectUniqueName18 = Antlr3.Test\\Antlr3.Test.csproj
+		SccLocalPath18 = ..\\..
+		SccProjectFilePathRelativizedFromConnection18 = antlrcs\\main\\Antlr3.Test\\
+	EndGlobalSection
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{2AB8CAED-C046-4F05-8B18-6948100D2FE7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2AB8CAED-C046-4F05-8B18-6948100D2FE7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2AB8CAED-C046-4F05-8B18-6948100D2FE7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2AB8CAED-C046-4F05-8B18-6948100D2FE7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B5910BE2-DE21-4AA9-95C1-486F42B9E794}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B5910BE2-DE21-4AA9-95C1-486F42B9E794}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B5910BE2-DE21-4AA9-95C1-486F42B9E794}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B5910BE2-DE21-4AA9-95C1-486F42B9E794}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8B58597B-058E-4D7A-B83E-5269BDABBE2C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8B58597B-058E-4D7A-B83E-5269BDABBE2C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8B58597B-058E-4D7A-B83E-5269BDABBE2C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8B58597B-058E-4D7A-B83E-5269BDABBE2C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2A03CB56-C3E2-4B65-92C0-004C9D78E2A4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2A03CB56-C3E2-4B65-92C0-004C9D78E2A4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2A03CB56-C3E2-4B65-92C0-004C9D78E2A4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2A03CB56-C3E2-4B65-92C0-004C9D78E2A4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{ABFF04E1-91CE-4F31-AAA0-0C70E3DBB4A6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{ABFF04E1-91CE-4F31-AAA0-0C70E3DBB4A6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{ABFF04E1-91CE-4F31-AAA0-0C70E3DBB4A6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{ABFF04E1-91CE-4F31-AAA0-0C70E3DBB4A6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{46171154-755A-4595-99AA-537D684BCA28}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{46171154-755A-4595-99AA-537D684BCA28}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{46171154-755A-4595-99AA-537D684BCA28}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{46171154-755A-4595-99AA-537D684BCA28}.Release|Any CPU.Build.0 = Release|Any CPU
+		{48A0E438-158B-4C9E-887D-350E67A8AA09}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{48A0E438-158B-4C9E-887D-350E67A8AA09}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{48A0E438-158B-4C9E-887D-350E67A8AA09}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{48A0E438-158B-4C9E-887D-350E67A8AA09}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5CBAC55A-A209-45CA-9F57-D0BFFFE2B7F9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5CBAC55A-A209-45CA-9F57-D0BFFFE2B7F9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5CBAC55A-A209-45CA-9F57-D0BFFFE2B7F9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5CBAC55A-A209-45CA-9F57-D0BFFFE2B7F9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{67012F41-94F9-48E6-9677-E3C56E42917F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{67012F41-94F9-48E6-9677-E3C56E42917F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{67012F41-94F9-48E6-9677-E3C56E42917F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{67012F41-94F9-48E6-9677-E3C56E42917F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6689F268-CE30-4CEC-AAD5-2DF72C43623C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6689F268-CE30-4CEC-AAD5-2DF72C43623C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6689F268-CE30-4CEC-AAD5-2DF72C43623C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6689F268-CE30-4CEC-AAD5-2DF72C43623C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{696F611F-003B-477D-AFA0-4F15478C9D32}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{696F611F-003B-477D-AFA0-4F15478C9D32}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{696F611F-003B-477D-AFA0-4F15478C9D32}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{696F611F-003B-477D-AFA0-4F15478C9D32}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1551D1E7-D515-4488-A889-5DEBB4950880}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1551D1E7-D515-4488-A889-5DEBB4950880}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1551D1E7-D515-4488-A889-5DEBB4950880}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1551D1E7-D515-4488-A889-5DEBB4950880}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8EFEA650-B9F6-498B-8865-A78103CCB590}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8EFEA650-B9F6-498B-8865-A78103CCB590}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8EFEA650-B9F6-498B-8865-A78103CCB590}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8EFEA650-B9F6-498B-8865-A78103CCB590}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9444ACEF-784D-47B0-B317-F374782FA511}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9444ACEF-784D-47B0-B317-F374782FA511}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9444ACEF-784D-47B0-B317-F374782FA511}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9444ACEF-784D-47B0-B317-F374782FA511}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1DEA6EB4-2288-4B6C-B5F4-1D102B8745BB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1DEA6EB4-2288-4B6C-B5F4-1D102B8745BB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1DEA6EB4-2288-4B6C-B5F4-1D102B8745BB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1DEA6EB4-2288-4B6C-B5F4-1D102B8745BB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{64418260-E75A-4556-BB7E-8BDAAFC2EFB9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{64418260-E75A-4556-BB7E-8BDAAFC2EFB9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{64418260-E75A-4556-BB7E-8BDAAFC2EFB9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{64418260-E75A-4556-BB7E-8BDAAFC2EFB9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8FDC0A87-9005-4D5A-AB75-E55CEB575559}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8FDC0A87-9005-4D5A-AB75-E55CEB575559}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8FDC0A87-9005-4D5A-AB75-E55CEB575559}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8FDC0A87-9005-4D5A-AB75-E55CEB575559}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5EE27A90-B023-42C9-AAF1-52B0424C5D0B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5EE27A90-B023-42C9-AAF1-52B0424C5D0B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5EE27A90-B023-42C9-AAF1-52B0424C5D0B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5EE27A90-B023-42C9-AAF1-52B0424C5D0B}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{2A03CB56-C3E2-4B65-92C0-004C9D78E2A4} = {3A92893D-7810-4D8B-80D8-E1E8D151FA73}
+		{ABFF04E1-91CE-4F31-AAA0-0C70E3DBB4A6} = {3A92893D-7810-4D8B-80D8-E1E8D151FA73}
+		{46171154-755A-4595-99AA-537D684BCA28} = {3A92893D-7810-4D8B-80D8-E1E8D151FA73}
+		{48A0E438-158B-4C9E-887D-350E67A8AA09} = {3A92893D-7810-4D8B-80D8-E1E8D151FA73}
+		{5CBAC55A-A209-45CA-9F57-D0BFFFE2B7F9} = {3A92893D-7810-4D8B-80D8-E1E8D151FA73}
+		{67012F41-94F9-48E6-9677-E3C56E42917F} = {3A92893D-7810-4D8B-80D8-E1E8D151FA73}
+		{6689F268-CE30-4CEC-AAD5-2DF72C43623C} = {3A92893D-7810-4D8B-80D8-E1E8D151FA73}
+		{696F611F-003B-477D-AFA0-4F15478C9D32} = {3A92893D-7810-4D8B-80D8-E1E8D151FA73}
+		{1551D1E7-D515-4488-A889-5DEBB4950880} = {3A92893D-7810-4D8B-80D8-E1E8D151FA73}
+		{8EFEA650-B9F6-498B-8865-A78103CCB590} = {3A92893D-7810-4D8B-80D8-E1E8D151FA73}
+		{9444ACEF-784D-47B0-B317-F374782FA511} = {3A92893D-7810-4D8B-80D8-E1E8D151FA73}
+		{1DEA6EB4-2288-4B6C-B5F4-1D102B8745BB} = {3A92893D-7810-4D8B-80D8-E1E8D151FA73}
+		{64418260-E75A-4556-BB7E-8BDAAFC2EFB9} = {3A92893D-7810-4D8B-80D8-E1E8D151FA73}
+	EndGlobalSection
+EndGlobal

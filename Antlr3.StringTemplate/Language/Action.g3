@@ -1,0 +1,457 @@
+/*
+ [The "BSD licence"]
+ Copyright (c) 2005-2008 Terence Parr
+ All rights reserved.
+
+ Grammar conversion to ANTLR v3 and C#:
+ Copyright (c) 2008 Sam Harwell, Pixel Mine, Inc.
+ All rights reserved.
+
+ Redistribution and use in source and binary forms, with or without
+ modification, are permitted provided that the following conditions
+ are met:
+ 1. Redistributions of source code must retain the above copyright
+	notice, this list of conditions and the following disclaimer.
+ 2. Redistributions in binary form must reproduce the above copyright
+	notice, this list of conditions and the following disclaimer in the
+	documentation and/or other materials provided with the distribution.
+ 3. The name of the author may not be used to endorse or promote products
+	derived from this software without specific prior written permission.
+
+ THIS SOFTWARE IS PROVIDED BY THE AUTHOR ``AS IS'' AND ANY EXPRESS OR
+ IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
+ OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.
+ IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT,
+ INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+ NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+ DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
+ THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+ (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
+ THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+*/
+grammar Action;
+
+options
+{
+	language=CSharp3;
+	output=AST;
+	ASTLabelType=StringTemplateAST;
+}
+
+tokens
+{
+	// template application
+	APPLY;
+	// parallel array template application
+	MULTI_APPLY;
+	// subtree is a list of (possibly empty) arguments
+	ARGS;
+	// isolated template include (no attribute)
+	INCLUDE;
+	CONDITIONAL='if';
+	// used for (foo): #(VALUE foo)
+	VALUE;
+	TEMPLATE;
+	FUNCTION;
+	SINGLEVALUEARG;
+	// [a,b,c]
+	LIST;
+	// empty list element [a, ,c]
+	NOTHING;
+}
+
+@lexer::header
+{
+/*
+ [The "BSD licence"]
+ Copyright (c) 2005-2008 Terence Parr
+ All rights reserved.
+
+ Grammar conversion to ANTLR v3 and C#:
+ Copyright (c) 2008 Sam Harwell, Pixel Mine, Inc.
+ All rights reserved.
+
+ Redistribution and use in source and binary forms, with or without
+ modification, are permitted provided that the following conditions
+ are met:
+ 1. Redistributions of source code must retain the above copyright
+	notice, this list of conditions and the following disclaimer.
+ 2. Redistributions in binary form must reproduce the above copyright
+	notice, this list of conditions and the following disclaimer in the
+	documentation and/or other materials provided with the distribution.
+ 3. The name of the author may not be used to endorse or promote products
+	derived from this software without specific prior written permission.
+
+ THIS SOFTWARE IS PROVIDED BY THE AUTHOR ``AS IS'' AND ANY EXPRESS OR
+ IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
+ OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.
+ IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT,
+ INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+ NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+ DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
+ THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+ (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
+ THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+*/
+}
+
+@parser::header
+{
+/*
+ [The "BSD licence"]
+ Copyright (c) 2005-2008 Terence Parr
+ All rights reserved.
+
+ Grammar conversion to ANTLR v3 and C#:
+ Copyright (c) 2008 Sam Harwell, Pixel Mine, Inc.
+ All rights reserved.
+
+ Redistribution and use in source and binary forms, with or without
+ modification, are permitted provided that the following conditions
+ are met:
+ 1. Redistributions of source code must retain the above copyright
+	notice, this list of conditions and the following disclaimer.
+ 2. Redistributions in binary form must reproduce the above copyright
+	notice, this list of conditions and the following disclaimer in the
+	documentation and/or other materials provided with the distribution.
+ 3. The name of the author may not be used to endorse or promote products
+	derived from this software without specific prior written permission.
+
+ THIS SOFTWARE IS PROVIDED BY THE AUTHOR ``AS IS'' AND ANY EXPRESS OR
+ IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
+ OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.
+ IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT,
+ INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+ NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+ DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
+ THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+ (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
+ THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+*/
+}
+
+@lexer::namespace { Antlr3.ST.Language }
+@parser::namespace { Antlr3.ST.Language }
+
+public
+action returns [IDictionary<string, object> opts=null]
+	:	(	templatesExpr (SEMI! optionList {$opts = $optionList.opts;})?
+		|	'if'^ LPAREN! ifCondition RPAREN!
+		|	'elseif'! LPAREN! ifCondition RPAREN! // return just conditional
+		)
+		EOF
+	;
+
+optionList! returns [IDictionary<string, object> opts=new Dictionary<string, object>()]
+	:	option[$opts] (COMMA option[$opts])*
+	;
+
+option[IDictionary<string, object> opts]
+@init
+{
+object v=null;
+}
+	:	ID
+		( ASSIGN nonAlternatingTemplateExpr {v=$nonAlternatingTemplateExpr.tree;}
+		| {v=ASTExpr.EMPTY_OPTION;}
+		)
+		{opts[$ID.text] = v;}
+	;
+
+templatesExpr
+	:	// LEFT FACTORED parallelArrayTemplateApplication INTO THIS RULE
+		expr
+		(	(COMMA expr)+ colon=COLON anonymousTemplate
+			-> ^(MULTI_APPLY["MULTI_APPLY"] expr+ $colon anonymousTemplate)
+		|	(	-> expr
+			)
+			(	colon=COLON templateList //template (COMMA template)*
+				-> ^(APPLY[$colon] $templatesExpr templateList/*template+*/)
+			)*
+		)
+	;
+
+templateList
+	:	template (COMMA! template)*
+	;
+
+ifCondition
+	:	ifAtom
+	|	NOT^ ifAtom
+	;
+
+ifAtom
+	:	templatesExpr
+	;
+
+expr
+	:	primaryExpr (PLUS^ primaryExpr)*
+	;
+
+primaryExpr
+	:	(templateInclude)=>templateInclude  // (see past parens to arglist)
+	|	atom
+		(	DOT^ // ignore warning on DOT ID
+			(	ID
+			|	valueExpr
+			)
+		)*
+	|	function
+		(	DOT^
+			(	ID
+			|	valueExpr
+			)
+		)*
+	|	valueExpr
+	|	list
+	;
+
+valueExpr
+	:	LPAREN templatesExpr RPAREN
+		-> ^(VALUE[$LPAREN,"value"] templatesExpr)
+	;
+
+nonAlternatingTemplateExpr
+	:	(expr -> expr) ( COLON template -> ^(APPLY[$COLON] $nonAlternatingTemplateExpr template) )*
+	;
+
+function
+	:	(	'first'
+		|	'rest'
+		|	'last'
+		|	'length'
+		|	'strip'
+		|	'trunc'
+		)
+		singleArg
+		-> ^(FUNCTION 'first'? 'rest'? 'last'? 'length'? 'strip'? 'trunc'? singleArg)
+	;
+
+template
+	:	(	namedTemplate			// foo()
+		|	anonymousTemplate		// {foo}
+		)
+		-> ^(TEMPLATE namedTemplate? anonymousTemplate?)
+	;
+
+namedTemplate
+	:	ID argList
+		-> ID argList
+	|	'super' DOT qid=ID argList
+		-> ID[$qid,"super."+$qid.text] argList
+	|	indirectTemplate
+		-> indirectTemplate
+	;
+
+anonymousTemplate
+@init
+{
+	StringTemplate anonymous = null;
+}
+@after
+{
+	$tree.StringTemplate = anonymous;
+}
+	:	t=ANONYMOUS_TEMPLATE
+		{
+			anonymous = new StringTemplate();
+			anonymous.setGroup(self.getGroup());
+			anonymous.setEnclosingInstance(self);
+			anonymous.setTemplate($t.text);
+			if ( $t is StringTemplateToken )
+				anonymous.defineFormalArguments(((StringTemplateToken)$t).args);
+			else
+				anonymous.defineFormalArguments(new ArrayList());
+		}
+	;
+
+atom
+	:	ID
+	|	STRING
+	|	INT
+	|	ANONYMOUS_TEMPLATE
+	;
+
+list
+	:	lb=LBRACK
+		listElement (COMMA listElement)*
+		RBRACK
+		-> ^(LIST[$lb,"value"] listElement+)
+	;
+
+listElement
+	:	nonAlternatingTemplateExpr
+	|
+		-> NOTHING["NOTHING"]
+	;
+
+templateInclude
+	:	(	id=ID argList -> $id argList
+		|	'super' DOT qid=ID argList -> ID[$qid,"super."+$qid.text] argList
+		|	indirectTemplate -> indirectTemplate
+		)
+		->	^(INCLUDE["include"] $templateInclude)
+	;
+
+/** Match (foo)() and (foo+".terse")() */
+indirectTemplate!
+	:	LPAREN e=templatesExpr RPAREN args=argList
+		-> ^(VALUE["value"] $e $args)
+	;
+
+argList!
+	:	LPAREN RPAREN -> ARGS["ARGS"] // view()
+	|	(singleArg)=>singleArg -> singleArg						  // bold(name)
+	|	LPAREN argumentAssignment (COMMA argumentAssignment)* RPAREN
+		-> ^(ARGS["ARGS"] argumentAssignment+)
+	;
+
+singleArg
+	:	LPAREN nonAlternatingTemplateExpr RPAREN
+		-> ^(SINGLEVALUEARG["SINGLEVALUEARG"] nonAlternatingTemplateExpr)
+	;
+
+argumentAssignment
+	:	ID ASSIGN^ nonAlternatingTemplateExpr
+	|	DOTDOTDOT
+	;
+
+//////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////
+// LEXER
+
+ID
+	:	('a'..'z'|'A'..'Z'|'_') ('a'..'z'|'A'..'Z'|'0'..'9'|'_'|'/')*
+	;
+
+INT
+	:	('0'..'9')+
+	;
+
+STRING
+@init
+{
+	char uc = '\0';
+	System.Text.StringBuilder builder = new System.Text.StringBuilder();
+}
+	:	'"'
+		(	ESC_CHAR[out uc, true] {builder.Append(uc);} // use uc since doEscape is true
+		|	ch=~('\\'|'"') {builder.Append((char)$ch);}
+		)*
+		'"'
+		{
+			$text = builder.ToString();
+		}
+	;
+
+ANONYMOUS_TEMPLATE
+@init
+{
+	StringTemplateToken t = null;
+	System.Text.StringBuilder builder = new System.Text.StringBuilder();
+	List args = new ArrayList();
+	string subtext = string.Empty;
+	char uc = '\0';
+}
+	:	'{'
+		(	(WS_CHAR? ID) => TEMPLATE_ARGS[out subtext, args] {builder.Append(subtext);} ((WS_CHAR) => WS_CHAR)?
+			{
+				// create a special token to track args
+				t = new StringTemplateToken(ANONYMOUS_TEMPLATE,$text,args);
+				//setToken(t);
+				state.token = t;
+			}
+		|	/* nothing */
+		)
+		(	('\\{') => '\\{' {builder.Append( '{' );}
+		|	('\\}') => '\\}' {builder.Append( '}' );}
+		|	ESC_CHAR[out uc, false] {builder.Append( $ESC_CHAR.text );} // use $ESC_CHAR.text since doEscape is false
+		|	NESTED_ANONYMOUS_TEMPLATE[out subtext] {builder.Append(subtext);}
+		|	ch=~('\\'|'{'|'}') {builder.Append((char)$ch);}
+		)*
+		{
+			Text = builder.ToString();
+			if ( t!=null )
+				t.Text = $text;
+		}
+		'}'
+	;
+
+fragment
+TEMPLATE_ARGS[out string _text, List args]
+@init
+{
+	$_text = string.Empty; // this template is empty text
+	$args.Clear();
+}
+	:	(WS_CHAR)? a=ID {$args.Add($a.text);}
+		( (WS_CHAR)? ',' (WS_CHAR)? a2=ID {args.Add($a2.text);} )*
+		(WS_CHAR)? '|'
+	;
+
+fragment
+NESTED_ANONYMOUS_TEMPLATE[out string _text]
+@init
+{
+	$_text = string.Empty;
+	char uc = '\0';
+	string subtext = string.Empty;
+	System.Text.StringBuilder builder = new System.Text.StringBuilder();
+}
+	:	'{'
+		{builder.Append('{');}
+		(	('\\{') => '\\{' {builder.Append('{');}
+		|	('\\}') => '\\}' {builder.Append('}');}
+		|	ESC_CHAR[out uc, false] {builder.Append($ESC_CHAR.text);} // use $ESC_CHAR.text since doEscape is false
+		|	NESTED_ANONYMOUS_TEMPLATE[out subtext] {builder.Append(subtext);}
+		|	ch=~('{'|'}'|'\\') {builder.Append((char)$ch);}
+		)*
+		'}'
+		{
+			builder.Append('}');
+			$_text = builder.ToString();
+		}
+	;
+
+/** Match escape sequences, optionally translating them for strings, but not
+ *  for templates.  Do \} only when in {...} templates.
+ */
+fragment
+ESC_CHAR[out char uc, bool doEscape]
+@init
+{
+	$uc = '\0';
+}
+	:	'\\'
+		(	'n' {if (doEscape) { $uc = '\n'; }}
+		|	'r' {if (doEscape) { $uc = '\r'; }}
+		|	't' {if (doEscape) { $uc = '\t'; }}
+		|	'b' {if (doEscape) { $uc = '\b'; }}
+		|	'f' {if (doEscape) { $uc = '\f'; }}
+		|	c=~('n'|'r'|'t'|'b'|'f') {if (doEscape) { $uc = (char)$c; }}
+		)
+	;
+
+LBRACK		: '[' ;
+RBRACK		: ']' ;
+LPAREN		: '(' ;
+RPAREN		: ')' ;
+COMMA		: ',' ;
+DOT			: '.' ;
+ASSIGN		: '=' ;
+COLON		: ':' ;
+PLUS		: '+' ;
+SEMI		: ';' ;
+NOT			: '!' ;
+DOTDOTDOT	: '...' ;
+
+WS
+	:	(' '|'\t'|'\r'|'\n')+
+		{$channel = HIDDEN;}
+	;
+
+fragment
+WS_CHAR
+	:	' '|'\t'|'\r'|'\n'
+	;

@@ -1,0 +1,218 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="3.5" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>9.0.30729</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{B5910BE2-DE21-4AA9-95C1-486F42B9E794}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Antlr.ST</RootNamespace>
+    <AssemblyName>Antlr3.StringTemplate</AssemblyName>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <StartupObject>
+    </StartupObject>
+    <SccProjectName>SAK</SccProjectName>
+    <SccLocalPath>SAK</SccLocalPath>
+    <SccAuxPath>SAK</SccAuxPath>
+    <SccProvider>SAK</SccProvider>
+    <TargetFrameworkSubset>Client</TargetFrameworkSubset>
+    <SignAssembly>true</SignAssembly>
+    <AssemblyOriginatorKeyFile>Key.snk</AssemblyOriginatorKeyFile>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>TRACE;DEBUG</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="AttributeRenderer.cs" />
+    <Compile Include="AutoIndentWriter.cs" />
+    <Compile Include="CommonGroupLoader.cs" />
+    <Compile Include="NoIndentWriter.cs" />
+    <Compile Include="PathGroupLoader.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="StringTemplate.cs" />
+    <Compile Include="StringTemplateErrorListener.cs" />
+    <Compile Include="StringTemplateGroup.cs" />
+    <Compile Include="StringTemplateGroupInterface.cs" />
+    <Compile Include="StringTemplateGroupLoader.cs" />
+    <Compile Include="StringTemplateWriter.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Antlr3 Include="Language\AngleBracketTemplateLexer.g3">
+      <OutputFiles>Language\AngleBracketTemplateLexer.cs;Language\AngleBracketTemplateLexer.tokens</OutputFiles>
+    </Antlr3>
+    <Compile Include="JavaExtensions\AntlrJavaExtensions.cs" />
+    <Compile Include="JavaExtensions\DictionaryExtensions.cs" />
+    <Compile Include="JavaExtensions\ListExtensions.cs" />
+    <Compile Include="Language\AngleBracketTemplateLexer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>AngleBracketTemplateLexer.g3</DependentUpon>
+    </Compile>
+    <Compile Include="Language\AngleBracketTemplateLexerHelper.cs">
+      <DependentUpon>AngleBracketTemplateLexer.g3</DependentUpon>
+    </Compile>
+    <Antlr3 Include="Language\Template.g3">
+      <OutputFiles>Language\TemplateLexer.cs;Language\TemplateParser.cs;Language\Template.tokens</OutputFiles>
+    </Antlr3>
+    <Compile Include="Language\ASTExpr.cs" />
+    <Compile Include="Language\Cat.cs" />
+    <Compile Include="Language\ChunkToken.cs" />
+    <Compile Include="Language\ConditionalExpr.cs" />
+    <Compile Include="Language\Expr.cs" />
+    <Compile Include="Language\FormalArgument.cs" />
+    <Compile Include="Language\NewlineRef.cs" />
+    <Compile Include="Language\StringRef.cs" />
+    <Compile Include="Language\StringTemplateAST.cs" />
+    <Compile Include="Language\StringTemplateToken.cs" />
+    <Compile Include="Language\StringTemplateTreeAdaptor.cs" />
+    <Compile Include="Language\TemplateLexer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Template.g3</DependentUpon>
+    </Compile>
+    <Compile Include="Language\TemplateLexerHelper.cs">
+      <DependentUpon>Template.g3</DependentUpon>
+    </Compile>
+    <Compile Include="Language\TemplateParser.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Template.g3</DependentUpon>
+    </Compile>
+    <Compile Include="Language\TemplateParserHelper.cs">
+      <DependentUpon>Template.g3</DependentUpon>
+    </Compile>
+    <Antlr3 Include="Language\Interface.g3">
+      <OutputFiles>Language\InterfaceLexer.cs;Language\InterfaceParser.cs;Language\Interface.tokens</OutputFiles>
+    </Antlr3>
+    <Compile Include="Language\InterfaceLexer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Interface.g3</DependentUpon>
+    </Compile>
+    <Compile Include="Language\InterfaceLexerHelper.cs">
+      <DependentUpon>Interface.g3</DependentUpon>
+    </Compile>
+    <Compile Include="Language\InterfaceParser.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Interface.g3</DependentUpon>
+    </Compile>
+    <Compile Include="Language\InterfaceParserHelper.cs">
+      <DependentUpon>Interface.g3</DependentUpon>
+    </Compile>
+    <Antlr3 Include="Language\Group.g3">
+      <OutputFiles>Language\GroupLexer.cs;Language\GroupParser.cs;Language\Group.tokens</OutputFiles>
+    </Antlr3>
+    <Compile Include="Language\GroupLexer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Group.g3</DependentUpon>
+    </Compile>
+    <Compile Include="Language\GroupLexerHelper.cs">
+      <DependentUpon>Group.g3</DependentUpon>
+    </Compile>
+    <Compile Include="Language\GroupParser.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Group.g3</DependentUpon>
+    </Compile>
+    <Compile Include="Language\GroupParserHelper.cs">
+      <DependentUpon>Group.g3</DependentUpon>
+    </Compile>
+    <Antlr3 Include="Language\Action.g3">
+      <OutputFiles>Language\ActionLexer.cs;Language\ActionParser.cs;Language\Action.tokens</OutputFiles>
+    </Antlr3>
+    <Compile Include="Language\ActionLexer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Action.g3</DependentUpon>
+    </Compile>
+    <Compile Include="Language\ActionLexerHelper.cs">
+      <DependentUpon>Action.g3</DependentUpon>
+    </Compile>
+    <Compile Include="Language\ActionParser.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Action.g3</DependentUpon>
+    </Compile>
+    <Compile Include="Language\ActionParserHelper.cs">
+      <DependentUpon>Action.g3</DependentUpon>
+    </Compile>
+    <Antlr3 Include="Language\ActionEvaluator.g3">
+      <OutputFiles>Language\ActionEvaluator.cs;Language\ActionEvaluator.tokens</OutputFiles>
+    </Antlr3>
+    <Compile Include="Language\ActionEvaluator.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ActionEvaluator.g3</DependentUpon>
+    </Compile>
+    <Compile Include="Language\ActionEvaluatorHelper.cs">
+      <DependentUpon>ActionEvaluator.g3</DependentUpon>
+    </Compile>
+    <Compile Include="Runtime.Tree\DOTTreeGenerator.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Key.snk" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\antlr\main\runtime\CSharp3\Sources\Antlr3.Runtime.Debug\Antlr3.Runtime.Debug.csproj">
+      <Project>{5EE27A90-B023-42C9-AAF1-52B0424C5D0B}</Project>
+      <Name>Antlr3.Runtime.Debug</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\antlr\main\runtime\CSharp3\Sources\Antlr3.Runtime\Antlr3.Runtime.csproj">
+      <Project>{8FDC0A87-9005-4D5A-AB75-E55CEB575559}</Project>
+      <Name>Antlr3.Runtime</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <PropertyGroup>
+    <UseHostCompilerIfAvailable>False</UseHostCompilerIfAvailable>
+  </PropertyGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <Antlr3ToolPath>$(MSBuildProjectDirectory)\..\bin\Bootstrap</Antlr3ToolPath>
+    <CoreCompileDependsOn>$(CoreCompileDependsOn);GenerateAntlrCode</CoreCompileDependsOn>
+    <CoreCleanDependsOn>$(CoreCleanDependsOn);CleanAntlrCode</CoreCleanDependsOn>
+  </PropertyGroup>
+  <Target Name="GenerateAntlrCode" Inputs="@(Antlr3)" Outputs="%(OutputFiles)">
+    <Message Importance="normal" Text="Antlr: Transforming '@(Antlr3)' to '%(Antlr3.OutputFiles)'" />
+    <!--<Exec Command="java -cp %22$(Antlr3ToolPath)\antlr3.jar;$(Antlr3ToolPath)\antlr-2.7.7.jar;$(Antlr3ToolPath)\stringtemplate-3.1b1.jar%22 org.antlr.Tool -lib %22%(RootDir)%(Directory).%22 -message-format vs2005 @(Antlr3)" Outputs="%(OutputFiles)" />-->
+    <Exec Command="%22$(Antlr3ToolPath)\Antlr3.exe%22 -Xconversiontimeout 60000 -lib %22%(RootDir)%(Directory).%22 -message-format vs2005 @(Antlr3)" Outputs="%(OutputFiles)" />
+  </Target>
+  <Target Name="CleanAntlrCode">
+    <ItemGroup>
+      <_CleanAntlrFileWrites Include="@(Antlr3->'%(RelativeDir)%(Filename).tokens')" />
+    </ItemGroup>
+    <Message Importance="normal" Text="Antlr: Deleting output files '@(_CleanAntlrFileWrites)'" />
+    <!--<Delete Files="@(_CleanAntlrFileWrites)" />-->
+  </Target>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

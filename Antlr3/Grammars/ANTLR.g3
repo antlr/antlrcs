@@ -1,0 +1,1133 @@
+/*
+ [The "BSD licence"]
+ Copyright (c) 2005-2008 Terence Parr
+ All rights reserved.
+
+ Grammar conversion to ANTLR v3 and C#:
+ Copyright (c) 2008 Sam Harwell, Pixel Mine, Inc.
+ All rights reserved.
+
+ Redistribution and use in source and binary forms, with or without
+ modification, are permitted provided that the following conditions
+ are met:
+ 1. Redistributions of source code must retain the above copyright
+	notice, this list of conditions and the following disclaimer.
+ 2. Redistributions in binary form must reproduce the above copyright
+	notice, this list of conditions and the following disclaimer in the
+	documentation and/or other materials provided with the distribution.
+ 3. The name of the author may not be used to endorse or promote products
+	derived from this software without specific prior written permission.
+
+ THIS SOFTWARE IS PROVIDED BY THE AUTHOR ``AS IS'' AND ANY EXPRESS OR
+ IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
+ OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.
+ IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT,
+ INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+ NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+ DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
+ THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+ (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
+ THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+*/
+
+/** Read in an ANTLR grammar and build an AST.  Try not to do
+ *  any actions, just build the tree.
+ *
+ *  The phases are:
+ *
+ *		antlr.g (this file)
+ *		assign.types.g
+ *		define.g
+ *		buildnfa.g
+ *		antlr.print.g (optional)
+ *		codegen.g
+ *
+ *  Terence Parr
+ *  University of San Francisco
+ *  2005
+ */
+
+grammar ANTLR;
+
+options
+{
+	language=CSharp3;
+	output=AST;
+	ASTLabelType=GrammarAST;
+}
+
+tokens
+{
+	//OPTIONS='options';
+	//TOKENS='tokens';
+	LEXER='lexer';
+	PARSER='parser';
+	CATCH='catch';
+	FINALLY='finally';
+	GRAMMAR='grammar';
+	PRIVATE='private';
+	PROTECTED='protected';
+	PUBLIC='public';
+	RETURNS='returns';
+	THROWS='throws';
+	TREE='tree';
+
+	RULE;
+	BLOCK;
+	OPTIONAL;
+	CLOSURE;
+	POSITIVE_CLOSURE;
+	SYNPRED;
+	RANGE;
+	CHAR_RANGE;
+	EPSILON;
+	ALT;
+	EOR;
+	EOB;
+	EOA; // end of alt
+	ID;
+	ARG;
+	ARGLIST;
+	RET;
+	LEXER_GRAMMAR;
+	PARSER_GRAMMAR;
+	TREE_GRAMMAR;
+	COMBINED_GRAMMAR;
+	INITACTION;
+	FORCED_ACTION; // {{...}} always exec even during syn preds
+	LABEL; // $x used in rewrite rules
+	TEMPLATE;
+	SCOPE='scope';
+	IMPORT='import';
+	GATED_SEMPRED; // {p}? =>
+	SYN_SEMPRED; // (...) =>   it's a manually-specified synpred converted to sempred
+	BACKTRACK_SEMPRED; // auto backtracking mode syn pred converted to sempred
+	FRAGMENT='fragment';
+	DOT;
+}
+
+@lexer::header
+{
+/*
+ [The "BSD licence"]
+ Copyright (c) 2005-2008 Terence Parr
+ All rights reserved.
+
+ Grammar conversion to ANTLR v3 and C#:
+ Copyright (c) 2008 Sam Harwell, Pixel Mine, Inc.
+ All rights reserved.
+
+ Redistribution and use in source and binary forms, with or without
+ modification, are permitted provided that the following conditions
+ are met:
+ 1. Redistributions of source code must retain the above copyright
+	notice, this list of conditions and the following disclaimer.
+ 2. Redistributions in binary form must reproduce the above copyright
+	notice, this list of conditions and the following disclaimer in the
+	documentation and/or other materials provided with the distribution.
+ 3. The name of the author may not be used to endorse or promote products
+	derived from this software without specific prior written permission.
+
+ THIS SOFTWARE IS PROVIDED BY THE AUTHOR ``AS IS'' AND ANY EXPRESS OR
+ IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
+ OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.
+ IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT,
+ INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+ NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+ DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
+ THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+ (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
+ THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+*/
+
+using ErrorManager = Antlr3.Tool.ErrorManager;
+using Grammar = Antlr3.Tool.Grammar;
+using StringBuffer = System.Text.StringBuilder;
+}
+
+@parser::header {
+/*
+ [The "BSD licence"]
+ Copyright (c) 2005-2008 Terence Parr
+ All rights reserved.
+
+ Grammar conversion to ANTLR v3 and C#:
+ Copyright (c) 2008 Sam Harwell, Pixel Mine, Inc.
+ All rights reserved.
+
+ Redistribution and use in source and binary forms, with or without
+ modification, are permitted provided that the following conditions
+ are met:
+ 1. Redistributions of source code must retain the above copyright
+	notice, this list of conditions and the following disclaimer.
+ 2. Redistributions in binary form must reproduce the above copyright
+	notice, this list of conditions and the following disclaimer in the
+	documentation and/or other materials provided with the distribution.
+ 3. The name of the author may not be used to endorse or promote products
+	derived from this software without specific prior written permission.
+
+ THIS SOFTWARE IS PROVIDED BY THE AUTHOR ``AS IS'' AND ANY EXPRESS OR
+ IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
+ OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.
+ IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT,
+ INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+ NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+ DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
+ THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+ (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
+ THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+*/
+
+using ErrorManager = Antlr3.Tool.ErrorManager;
+using Grammar = Antlr3.Tool.Grammar;
+using GrammarAST = Antlr3.Tool.GrammarAST;
+using IntSet = Antlr3.Misc.IIntSet;
+using StringBuffer = System.Text.StringBuilder;
+using TokenWithIndex = Antlr.Runtime.CommonToken;
+}
+
+@lexer::namespace{Antlr3.Grammars}
+@parser::namespace{Antlr3.Grammars}
+
+public
+grammar_![Grammar g]
+@init
+{
+	this.Grammar = g;
+	IDictionary<string, object> opts;
+}
+@after
+{
+	cleanup( $tree );
+}
+	:	//hdr:headerSpec
+		( ACTION )?
+		( cmt=DOC_COMMENT  )?
+		gr=grammarType gid=id {Grammar.setName($gid.text);} SEMI
+		(	optionsSpec {opts = $optionsSpec.opts; Grammar.setOptions(opts, $optionsSpec.start);}
+		)?
+		(ig=delegateGrammars)?
+		(ts=tokensSpec)?
+		scopes=attrScopes
+		(a=actions)?
+		r=rules
+		EOF
+		-> ^($gr $gid $cmt? optionsSpec? $ig? $ts? $scopes? $a? $r)
+	;
+
+grammarType
+	:	(	'lexer'  gr='grammar' {GrammarType=LEXER_GRAMMAR; Grammar.type = Grammar.LEXER;}       // pure lexer
+			-> LEXER_GRAMMAR[$gr]
+		|	'parser' gr='grammar' {GrammarType=PARSER_GRAMMAR; Grammar.type = Grammar.PARSER;}     // pure parser
+			-> PARSER_GRAMMAR[$gr]
+		|	'tree'   gr='grammar' {GrammarType=TREE_GRAMMAR; Grammar.type = Grammar.TREE_PARSER;}  // a tree parser
+			-> TREE_GRAMMAR[$gr]
+		|			 gr='grammar' {GrammarType=COMBINED_GRAMMAR; Grammar.type = Grammar.COMBINED;} // merged parser/lexer
+			-> COMBINED_GRAMMAR[$gr]
+		)
+	;
+
+actions
+	:	(action)+
+	;
+
+/** Match stuff like @parser::members {int i;} */
+action
+	:	AMPERSAND^ (actionScopeName COLON! COLON!)? id ACTION
+	;
+
+/** Sometimes the scope names will collide with keywords; allow them as
+ *  ids for action scopes.
+ */
+actionScopeName
+	:	id
+	|	l='lexer'
+		-> ID[l]
+	|	p='parser'
+		-> ID[p]
+	;
+
+optionsSpec returns [IDictionary<string, object> opts=new Dictionary<string, object>()]
+	:	OPTIONS^ (option[$opts] SEMI!)+ RCURLY!
+	;
+
+option[IDictionary<string, object> opts]
+	:	id ASSIGN^ optionValue
+		{
+			$opts[$id.text] = $optionValue.value;
+		}
+	;
+
+optionValue returns [object value=null]
+	:	x=id			 {$value = $x.text;}
+	|	s=STRING_LITERAL {string vs = $s.text;
+						  // remove the quotes:
+						  $value=vs.Substring(1,vs.Length-2);}
+	|	c=CHAR_LITERAL   {string vs = $c.text;
+						  // remove the quotes:
+						  $value=vs.Substring(1,vs.Length-2);}
+	|	i=INT            {$value = int.Parse($i.text);}
+	|	ss=STAR			 {$value = "*";} // used for k=*
+		-> STRING_LITERAL[$ss]
+//	|	cs:charSet       {value = #cs;} // return set AST in this case
+	;
+
+delegateGrammars
+	:	'import'^ delegateGrammar (COMMA! delegateGrammar)* SEMI!
+	;
+
+delegateGrammar
+	:	lab=id ASSIGN^ g=id {Grammar.importGrammar($g.tree, $lab.text);}
+	|	g2=id               {Grammar.importGrammar($g2.tree,null);}
+	;
+
+tokensSpec
+	:	TOKENS^
+			( tokenSpec	)+
+		RCURLY!
+	;
+
+tokenSpec
+	:	TOKEN_REF ( ASSIGN^ (STRING_LITERAL|CHAR_LITERAL) )? SEMI!
+	;
+
+attrScopes
+	:	(attrScope)*
+	;
+
+attrScope
+	:	'scope'^ id ruleActions? ACTION
+	;
+
+rules
+	:	(	rule
+		)+
+	;
+
+public
+rule
+@init
+{
+	GrammarAST eob=null;
+	int start = ((CommonToken)LT(1)).TokenIndex;
+	int startLine = LT(1).Line;
+}
+	:
+	(	(	d=DOC_COMMENT
+		)?
+		(	p1='protected'	//{modifier=$p1.tree;}
+		|	p2='public'		//{modifier=$p2.tree;}
+		|	p3='private'	//{modifier=$p3.tree;}
+		|	p4='fragment'	//{modifier=$p4.tree;}
+		)?
+		ruleName=id
+		{
+			currentRuleName=$ruleName.text;
+			if ( GrammarType==LEXER_GRAMMAR && $p4==null )
+				Grammar.lexerRuleNamesInCombined.Add(currentRuleName);
+		}
+		( BANG )?
+		( aa=ARG_ACTION )?
+		( 'returns' rt=ARG_ACTION  )?
+		( throwsSpec )?
+		( optionsSpec )?
+		scopes=ruleScopeSpec
+		(ruleActions)?
+		COLON
+		altList[$optionsSpec.opts]
+		SEMI
+		( ex=exceptionGroup )?
+		->	^(	RULE["rule"]
+				^($ruleName)
+				// the modifier will be 0 or one of the modifiers:
+				$p1? $p2? $p3? $p4?
+				^(ARG["ARG"] $aa?)
+				^(RET["RET"] $rt?)
+				throwsSpec?
+				optionsSpec?
+				^($scopes)
+				ruleActions?
+				altList
+				$ex?
+				EOR[$SEMI,"<end-of-rule>"])
+	)
+	{
+		((GrammarAST)$tree.GetChild(0)).setBlockOptions( $optionsSpec.opts );
+	}
+	;
+
+ruleActions
+	:	(ruleAction)+
+	;
+
+/** Match stuff like @init {int i;} */
+ruleAction
+	:	AMPERSAND^ id ACTION
+	;
+
+throwsSpec
+	:	'throws'^ id ( COMMA! id )*
+	;
+
+ruleScopeSpec
+	:	( 'scope' ruleActions? ACTION )?
+		( 'scope' idList SEMI )*
+		-> ^(SCOPE[$start,"scope"] ruleActions? ACTION? idList*)
+	;
+
+/** Build #(BLOCK ( #(ALT ...) EOB )+ ) */
+block
+@init
+{
+	GrammarAST save = currentBlockAST;
+	Map opts=null;
+}
+	:	(	lp=LPAREN
+			-> BLOCK[$lp,"BLOCK"]
+		)
+		{currentBlockAST = (GrammarAST)$tree.GetChild(0);}
+		(
+			// 2nd alt and optional branch ambig due to
+			// linear approx LL(2) issue.  COLON ACTION
+			// matched correctly in 2nd alt.
+			(optionsSpec {((GrammarAST)$tree.GetChild(0)).setOptions(Grammar,$optionsSpec.opts);})?
+			( ruleActions )?
+			COLON
+		|	ACTION COLON
+		)?
+
+		a=alternative r=rewrite
+		{
+			stream_alternative.Add( $r.tree );
+			if ( LA(1)==OR || (LA(2)==QUESTION||LA(2)==PLUS||LA(2)==STAR) )
+				prefixWithSynPred($a.tree);
+		}
+		(	OR a=alternative r=rewrite
+			{
+				stream_alternative.Add( $r.tree );
+				if (LA(1)==OR||(LA(2)==QUESTION||LA(2)==PLUS||LA(2)==STAR))
+					prefixWithSynPred($a.tree);
+			}
+		)*
+
+		rp=RPAREN
+		-> ^($block optionsSpec? ruleActions? ACTION? alternative+ EOB[$rp,"<end-of-block>"])
+	;
+finally { currentBlockAST = save; }
+
+altList[IDictionary<string, object> opts]
+@init
+{
+	GrammarAST blkRoot = null;
+	GrammarAST save = currentBlockAST;
+}
+	:	( -> BLOCK[$start,"BLOCK"] )
+		{
+			blkRoot = (GrammarAST)$tree.GetChild(0);
+			blkRoot.setBlockOptions( $opts );
+			currentBlockAST = blkRoot;
+		}
+		(	a1=alternative r1=rewrite
+			{if (LA(1)==OR||(LA(2)==QUESTION||LA(2)==PLUS||LA(2)==STAR)) prefixWithSynPred($a1.tree);}
+			-> $a1 $r1?
+		)
+		(	OR a2=alternative r2=rewrite
+			{if (LA(1)==OR||(LA(2)==QUESTION||LA(2)==PLUS||LA(2)==STAR)) prefixWithSynPred($a2.tree);}
+			-> $altList $a2 $r2?
+		)*
+		-> ^({blkRoot} $altList EOB["<end-of-block>"])
+	;
+finally { currentBlockAST = save; }
+
+alternative
+@init
+{
+	GrammarAST eoa = null;
+	GrammarAST altRoot = null;
+}
+	:	( -> EOA["<end-of-alt>"] )
+		{ eoa = $tree; }
+		( -> ALT[$start,"ALT"] )
+		{ altRoot = $tree; }
+
+		(	( el+=element )+
+			-> ^({altRoot} $el+ {eoa})
+		|
+			-> ^({altRoot} EPSILON[$start,"epsilon"] {eoa})
+		)
+	;
+
+exceptionGroup
+	:	( exceptionHandler )+ ( finallyClause )?
+	|	finallyClause
+	;
+
+exceptionHandler
+	:	'catch'^ ARG_ACTION ACTION
+	;
+
+finallyClause
+	:	'finally'^ ACTION
+	;
+
+element
+	:	elementNoOptionSpec
+	;
+
+elementNoOptionSpec
+@init
+{
+	IntSet elements=null;
+}
+	:	(	(	id (ASSIGN^|PLUS_ASSIGN^) (atom|block)
+			)
+			(	sub=ebnfSuffix[root_0,false]! {root_0 = $sub.tree;}
+			)?
+		|	a=atom
+			(	sub2=ebnfSuffix[$a.tree,false]! {root_0=$sub2.tree;}
+			)?
+		|	ebnf
+		|	FORCED_ACTION
+		|	ACTION
+		|	p=SEMPRED ( IMPLIES! {$p.Type = GATED_SEMPRED;} )?
+			{
+			Grammar.blocksWithSemPreds.Add(currentBlockAST);
+			}
+		|	t3=tree_
+		)
+	;
+
+atom
+	:	range (ROOT^|BANG^)?
+	|	(
+			// grammar.rule but ensure no spaces. "A . B" is not a qualified ref
+			// We do here rather than lexer so we can build a tree
+			({LT(1).CharPositionInLine+LT(1).Text.Length==LT(2).CharPositionInLine&&
+			 LT(2).CharPositionInLine+1==LT(3).CharPositionInLine}? id WILDCARD (terminal|ruleref)) =>
+			id w=WILDCARD^ (terminal|ruleref) {$w.Type = DOT;}
+		|	terminal
+		|	ruleref
+		)
+	|	notSet (ROOT^|BANG^)?
+	;
+
+ruleref
+	:	rr=RULE_REF^ ( ARG_ACTION )? (ROOT^|BANG^)?
+	;
+
+notSet
+	:	NOT^
+		(	notTerminal
+		|	block
+		)
+	;
+
+treeRoot
+	:	{atTreeRoot=true;}
+		(	id (ASSIGN^|PLUS_ASSIGN^) (atom|block)
+		|	atom
+		|	block
+		)
+		{atTreeRoot=false;}
+	;
+
+tree_
+	:	TREE_BEGIN^
+		treeRoot ( element )+
+		RPAREN!
+	;
+
+/** matches ENBF blocks (and sets via block rule) */
+ebnf
+	:	block
+		(	QUESTION
+			-> ^(OPTIONAL[$start,"?"] block)
+		|	STAR
+			-> ^(CLOSURE[$start,"*"] block)
+		|	PLUS
+			-> ^(POSITIVE_CLOSURE[$start,"+"] block)
+		|	IMPLIES // syntactic predicate
+			// ignore for lexer rules in combined
+			-> {GrammarType == COMBINED_GRAMMAR && char.IsUpper(currentRuleName[0])}? ^(SYNPRED[$start,"=>"] block)
+			// create manually specified (...)=> predicate; convert to sempred
+			-> {createSynSemPredFromBlock($block.tree, SYN_SEMPRED)}
+		|	ROOT
+			-> ^(ROOT block)
+		|	BANG
+			-> ^(BANG block)
+		|
+			-> block
+		)
+	;
+
+range
+	:	c1=CHAR_LITERAL RANGE c2=CHAR_LITERAL
+		-> ^(CHAR_RANGE[$c1,".."] $c1 $c2)
+	;
+
+terminal
+	:	cl=CHAR_LITERAL^ ( elementOptions[$cl.tree]! )? (ROOT^|BANG^)?
+
+	|	tr=TOKEN_REF^
+		( elementOptions[$tr.tree]! )?
+		( ARG_ACTION )? // Args are only valid for lexer rules
+		(ROOT^|BANG^)?
+
+	|	sl=STRING_LITERAL^ ( elementOptions[$sl.tree]! )? (ROOT^|BANG^)?
+
+	|	wi=WILDCARD (ROOT^|BANG^)?
+		{
+			if ( atTreeRoot )
+			{
+				ErrorManager.syntaxError(
+					ErrorManager.MSG_WILDCARD_AS_ROOT,Grammar,$wi,null,null);
+			}
+		}
+	;
+
+elementOptions[GrammarAST terminalAST]
+	:	OPEN_ELEMENT_OPTION^ defaultNodeOption[terminalAST] CLOSE_ELEMENT_OPTION!
+	|	OPEN_ELEMENT_OPTION^ elementOption[terminalAST] (SEMI! elementOption[terminalAST])* CLOSE_ELEMENT_OPTION!
+	;
+
+defaultNodeOption[GrammarAST terminalAST]
+@init
+{
+StringBuffer buf = new StringBuffer();
+}
+	:	i=id {buf.Append($i.text);} (WILDCARD i2=id {buf.Append("."+$i2.text);})*
+		{terminalAST.setTerminalOption(Grammar,Grammar.defaultTokenOption,buf.ToString());}
+	;
+
+elementOption[GrammarAST terminalAST]
+	:	a=id ASSIGN^ (b=id|s=STRING_LITERAL)
+		{
+		object v = ($b.tree!=null)?$b.text:$s.text;
+		terminalAST.setTerminalOption(Grammar,$a.text,v);
+		}
+	;
+
+ebnfSuffix[GrammarAST elemAST, bool inRewrite]
+@init
+{
+GrammarAST blkRoot=null;
+GrammarAST alt=null;
+GrammarAST save = currentBlockAST;
+}
+@after
+{
+currentBlockAST = save;
+}
+	:	(	-> BLOCK["BLOCK"]
+		)
+		{ blkRoot = (GrammarAST)$tree.GetChild(0); currentBlockAST = blkRoot; }
+		(	// create alt
+			-> ^(ALT["ALT"] {$elemAST} EOA["<end-of-alt>"])
+		)
+		{
+			alt = (GrammarAST)$tree.GetChild(0);
+			if ( !inRewrite )
+				prefixWithSynPred(alt);
+		}
+		(	QUESTION
+			-> OPTIONAL[$elemAST.Token,"?"]
+		|	STAR
+			-> CLOSURE[$elemAST.Token,"*"]
+		|	PLUS
+			-> POSITIVE_CLOSURE[$elemAST.Token,"+"]
+		)
+		-> ^($ebnfSuffix ^({blkRoot} {alt} EOB[$elemAST.Token, "<end-of-block>"]))
+	;
+
+notTerminal
+	:	cl=CHAR_LITERAL
+	|	tr=TOKEN_REF
+	|	STRING_LITERAL
+	;
+
+idList
+	:	id (COMMA! id)*
+	;
+
+id
+	:	TOKEN_REF
+		-> ID[$TOKEN_REF]
+	|	RULE_REF
+		-> ID[$RULE_REF]
+	;
+
+// R E W R I T E  S Y N T A X
+
+rewrite
+	:	rewrite_with_sempred*
+		REWRITE rewrite_alternative
+		-> rewrite_with_sempred* ^(REWRITE rewrite_alternative)
+	|
+	;
+
+rewrite_with_sempred
+	:	REWRITE^ SEMPRED rewrite_alternative
+	;
+
+rewrite_block
+	:	LPAREN
+		rewrite_alternative
+		RPAREN
+		-> ^(BLOCK[$LPAREN,"BLOCK"] rewrite_alternative EOB[$RPAREN,"<end-of-block>"])
+	;
+
+rewrite_alternative
+options{k=1;}
+	:	{Grammar.BuildTemplate}? => rewrite_template
+
+	|	{Grammar.BuildAST}? => ( rewrite_element )+
+		-> {!stream_rewrite_element.HasNext}? ^(ALT[LT(1),"ALT"] EPSILON["epsilon"] EOA["<end-of-alt>"])
+		-> ^(ALT[LT(1),"ALT"] rewrite_element+ EOA["<end-of-alt>"])
+
+	|
+		-> ^(ALT[LT(1),"ALT"] EPSILON["epsilon"] EOA["<end-of-alt>"])
+	|	{Grammar.BuildAST}? ETC
+	;
+
+rewrite_element
+	:	(	t=rewrite_atom
+			-> $t
+		)
+		(	subrule=ebnfSuffix[$t.tree,true]
+			-> $subrule
+		)?
+	|	rewrite_ebnf
+	|	(	tr=rewrite_tree
+			-> $tr
+		)
+		(	subrule=ebnfSuffix[$tr.tree,true]
+			-> $subrule
+		)?
+	;
+
+rewrite_atom
+@init
+{
+GrammarAST subrule=null;
+}
+	:	(	tr=TOKEN_REF
+			-> $tr
+		)
+		(elementOptions[(GrammarAST)$tree.GetChild(0)])? (ARG_ACTION)? // for imaginary nodes
+		-> ^($rewrite_atom ARG_ACTION?)
+	|	rr=RULE_REF
+	|	(	cl=CHAR_LITERAL
+			-> $cl
+		)
+		(elementOptions[(GrammarAST)$tree.GetChild(0)])?
+	|	(	sl=STRING_LITERAL
+			-> $sl
+		)
+		(eo=elementOptions[(GrammarAST)$tree.GetChild(0)])?
+	|	d=DOLLAR i=id // reference to a label in a rewrite rule
+		-> LABEL[$i.start,$i.text]
+	|	ACTION
+	;
+
+rewrite_ebnf
+	:	b=rewrite_block
+		(	QUESTION
+			-> ^(OPTIONAL[$b.start,"?"] $b)
+		|	STAR
+			-> ^(CLOSURE[$b.start,"*"] $b)
+		|	PLUS
+			-> ^(POSITIVE_CLOSURE[$b.start,"+"] $b)
+		)
+	;
+
+rewrite_tree
+	:	TREE_BEGIN^
+			rewrite_atom ( rewrite_element )*
+		RPAREN!
+	;
+
+/** Build a tree for a template rewrite:
+	  ^(TEMPLATE (ID|ACTION) ^(ARGLIST ^(ARG ID ACTION) ...) )
+	where ARGLIST is always there even if no args exist.
+	ID can be "template" keyword.  If first child is ACTION then it's
+	an indirect template ref
+
+	-> foo(a={...}, b={...})
+	-> ({string-e})(a={...}, b={...})  // e evaluates to template name
+	-> {%{$ID.text}} // create literal template from string (done in ActionTranslator)
+	-> {st-expr} // st-expr evaluates to ST
+ */
+public
+rewrite_template
+options{k=1;}
+	:	// -> template(a={...},...) "..."
+		{LT(1).Text.Equals("template")}? => // inline
+		(	rewrite_template_head
+			-> rewrite_template_head
+		)
+		( st=DOUBLE_QUOTE_STRING_LITERAL | st=DOUBLE_ANGLE_STRING_LITERAL )
+		{ adaptor.AddChild( $tree.GetChild(0), adaptor.Create($st) ); }
+
+	|	// -> foo(a={...}, ...)
+		rewrite_template_head
+
+	|	// -> ({expr})(a={...}, ...)
+		rewrite_indirect_template_head
+
+	|	// -> {...}
+		ACTION
+	;
+
+/** -> foo(a={...}, ...) */
+rewrite_template_head
+	:	id lp=LPAREN
+		rewrite_template_args
+		RPAREN
+		-> ^(TEMPLATE[$lp,"TEMPLATE"] id rewrite_template_args)
+	;
+
+/** -> ({expr})(a={...}, ...) */
+rewrite_indirect_template_head
+	:	lp=LPAREN
+		ACTION
+		RPAREN
+		LPAREN rewrite_template_args RPAREN
+		-> ^(TEMPLATE[$lp,"TEMPLATE"] ACTION rewrite_template_args)
+	;
+
+rewrite_template_args
+	:	rewrite_template_arg (COMMA rewrite_template_arg)*
+		-> ^(ARGLIST["ARGLIST"] rewrite_template_arg+)
+	|
+		-> ARGLIST["ARGLIST"]
+	;
+
+rewrite_template_arg
+	:	id a=ASSIGN ACTION
+		-> ^(ARG[$a,"ARG"] id ACTION)
+	;
+
+//////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////
+// L E X E R
+
+// get rid of warnings:
+fragment STRING_LITERAL : ;
+fragment FORCED_ACTION : ;
+fragment DOC_COMMENT : ;
+fragment SEMPRED : ;
+
+WS
+	:	(	' '
+		|	'\t'
+		|	('\r')? '\n'
+		)
+		{ $channel = HIDDEN; }
+	;
+
+COMMENT
+	:	( SL_COMMENT | ML_COMMENT[ref $type] )
+		{
+			if ( $type != DOC_COMMENT )
+				$channel = HIDDEN;
+		}
+	;
+
+fragment
+SL_COMMENT
+	:	'//'
+		(	(' $ANTLR') => ' $ANTLR ' SRC (('\r')? '\n')? // src directive
+		|	~('\r'|'\n')* (('\r')? '\n')?
+		)
+	;
+
+fragment
+ML_COMMENT[ref int type]
+@init
+{
+	$type = ML_COMMENT;
+}
+	:	'/*'
+		(	('*' ~'/') => '*' {$type = DOC_COMMENT;}
+		|
+		)
+		(	('*' ~'/') => '*'
+		|	~'*'
+		)*
+		'*/'
+	;
+
+OPEN_ELEMENT_OPTION
+	:	'<'
+	;
+
+CLOSE_ELEMENT_OPTION
+	:	'>'
+	;
+
+AMPERSAND : '@';
+
+COMMA : ',';
+
+QUESTION :	'?' ;
+
+TREE_BEGIN : '^(' ;
+
+LPAREN:	'(' ;
+
+RPAREN:	')' ;
+
+COLON :	':' ;
+
+STAR:	'*' ;
+
+PLUS:	'+' ;
+
+ASSIGN : '=' ;
+
+PLUS_ASSIGN : '+=' ;
+
+IMPLIES : '=>' ;
+
+REWRITE : '->' ;
+
+SEMI:	';' ;
+
+ROOT : '^' {hasASTOperator=true;} ;
+
+BANG : '!' {hasASTOperator=true;} ;
+
+OR	:	'|' ;
+
+WILDCARD : '.' ;
+
+ETC : '...' ;
+
+RANGE : '..' ;
+
+NOT :	'~' ;
+
+RCURLY:	'}'	;
+
+DOLLAR : '$' ;
+
+STRAY_BRACKET
+	:	']'
+		{
+			ErrorManager.syntaxError(
+				ErrorManager.MSG_SYNTAX_ERROR,
+				null,
+				state.token,
+				"antlr: dangling ']'? make sure to escape with \\]",
+				null);
+		}
+	;
+
+CHAR_LITERAL
+	:	'\''
+		(	ESC
+		|	~('\\'|'\'')
+		)*
+		'\''
+		{
+			StringBuffer s = Grammar.getUnescapedStringFromGrammarStringLiteral($text);
+			if ( s.Length > 1 )
+			{
+				$type = STRING_LITERAL;
+			}
+		}
+	;
+
+DOUBLE_QUOTE_STRING_LITERAL
+@init
+{
+	System.Text.StringBuilder builder = new System.Text.StringBuilder();
+}
+	:	'"'							{builder.Append('"');}
+		(	('\\\"') => '\\' '"'	{builder.Append('"');}
+		|	'\\' c=~'"'				{builder.Append("\\" + (char)$c);}
+		|	c=~('\\'|'"')			{builder.Append((char)$c);}
+		)*
+		'"'							{builder.Append('"');}
+		{
+			Text = builder.ToString();
+		}
+	;
+
+DOUBLE_ANGLE_STRING_LITERAL
+	:	'<<'
+		(	~'>'
+		|	('>' ~'>') => '>'
+		)*
+		'>>'
+	;
+
+fragment
+ESC
+	:	'\\'
+		(	'n'
+		|	'r'
+		|	't'
+		|	'b'
+		|	'f'
+		|	'"'
+		|	'\''
+		|	'\\'
+		|	'>'
+		|	'u' XDIGIT XDIGIT XDIGIT XDIGIT
+		|	. // unknown, leave as it is
+		)
+	;
+
+fragment
+DIGIT
+	:	'0'..'9'
+	;
+
+fragment
+XDIGIT
+	:	'0' .. '9'
+	|	'a' .. 'f'
+	|	'A' .. 'F'
+	;
+
+INT
+	:	('0'..'9')+
+	;
+
+ARG_ACTION
+@init
+{
+	string text_ = string.Empty;
+}
+	:	'['
+		NESTED_ARG_ACTION[out text_]
+		']'
+		{ Text = text_; }
+	;
+
+fragment
+NESTED_ARG_ACTION[out string text_]
+@init
+{
+	$text_ = string.Empty;
+	System.Text.StringBuilder builder = new System.Text.StringBuilder();
+}
+	:	(	('\\]') => '\\' ']'		{builder.Append("]");}
+		|	'\\' c=~(']')			{builder.Append("\\" + (char)$c);}
+		|	ACTION_STRING_LITERAL	{builder.Append($ACTION_STRING_LITERAL.text);}
+		|	ACTION_CHAR_LITERAL		{builder.Append($ACTION_CHAR_LITERAL.text);}
+		|	c=~('\\'|'"'|'\''|']')	{builder.Append((char)$c);}
+		)*
+		{
+			$text_ = builder.ToString();
+		}
+	;
+
+ACTION
+@init
+{
+	int actionLine = Line;
+	int actionColumn = CharPositionInLine;
+}
+	:	NESTED_ACTION
+		('?' {$type = SEMPRED;})?
+		{
+			string action = $text;
+			int n = 1; // num delimiter chars
+			if ( action.StartsWith("{{") && action.EndsWith("}}") )
+			{
+				$type = FORCED_ACTION;
+				n = 2;
+			}
+			action = action.Substring(n,action.Length-n - ($type==SEMPRED ? 1 : 0) - n);
+			Text = action;
+		}
+	;
+
+fragment
+NESTED_ACTION
+	:	'{'
+		(	NESTED_ACTION
+		|	ACTION_CHAR_LITERAL
+		|	('//' | '/*') => COMMENT
+		|	ACTION_STRING_LITERAL
+		|	ACTION_ESC
+		|	~('{'|'\''|'"'|'\\'|'}')
+		)*
+		'}'
+	;
+
+fragment
+ACTION_CHAR_LITERAL
+	:	'\''
+		(	ACTION_ESC
+		|	~('\\'|'\'')
+		)*
+		'\''
+	;
+
+fragment
+ACTION_STRING_LITERAL
+	:	'"'
+		(	ACTION_ESC
+		|	~('\\'|'"')
+		)*
+		'"'
+	;
+
+fragment
+ACTION_ESC
+	:	'\\\''
+	|	'\\\"'
+	|	'\\' ~('\''|'"')
+	;
+
+TOKEN_REF
+	:	'A'..'Z'
+		(	'a'..'z'|'A'..'Z'|'_'|'0'..'9'
+		)*
+	;
+
+TOKENS
+	:	'tokens' WS_LOOP '{'
+	;
+
+OPTIONS
+	:	'options' WS_LOOP '{'
+	;
+
+// we get a warning here when looking for options '{', but it works right
+RULE_REF
+@init
+{
+	int t=0;
+}
+	:	'a'..'z' ('a'..'z' | 'A'..'Z' | '_' | '0'..'9')*
+	;
+
+fragment
+WS_LOOP
+	:	(	WS
+		|	COMMENT
+		)*
+	;
+
+fragment
+WS_OPT
+	:	(WS)?
+	;
+
+/** Reset the file and line information; useful when the grammar
+ *  has been generated so that errors are shown relative to the
+ *  original file like the old C preprocessor used to do.
+ */
+fragment
+SRC
+	:	'src' ' ' file=ACTION_STRING_LITERAL ' ' line=INT
+		{
+			Filename = $file.text.Substring(1,$file.text.Length-2);
+			Line = int.Parse($line.text) - 1;  // -1 because SL_COMMENT will increment the line no. KR
+		}
+	;

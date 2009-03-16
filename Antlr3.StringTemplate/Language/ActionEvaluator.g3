@@ -1,0 +1,372 @@
+/*
+ [The "BSD licence"]
+ Copyright (c) 2005-2008 Terence Parr
+ All rights reserved.
+
+ Grammar conversion to ANTLR v3 and C#:
+ Copyright (c) 2008 Sam Harwell, Pixel Mine, Inc.
+ All rights reserved.
+
+ Redistribution and use in source and binary forms, with or without
+ modification, are permitted provided that the following conditions
+ are met:
+ 1. Redistributions of source code must retain the above copyright
+	notice, this list of conditions and the following disclaimer.
+ 2. Redistributions in binary form must reproduce the above copyright
+	notice, this list of conditions and the following disclaimer in the
+	documentation and/or other materials provided with the distribution.
+ 3. The name of the author may not be used to endorse or promote products
+	derived from this software without specific prior written permission.
+
+ THIS SOFTWARE IS PROVIDED BY THE AUTHOR ``AS IS'' AND ANY EXPRESS OR
+ IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
+ OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.
+ IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT,
+ INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+ NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+ DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
+ THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+ (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
+ THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+*/
+tree grammar ActionEvaluator;
+
+options
+{
+	language=CSharp3;
+	tokenVocab=Action;
+	ASTLabelType=StringTemplateAST;
+}
+
+@header
+{
+/*
+ [The "BSD licence"]
+ Copyright (c) 2005-2008 Terence Parr
+ All rights reserved.
+
+ Grammar conversion to ANTLR v3 and C#:
+ Copyright (c) 2008 Sam Harwell, Pixel Mine, Inc.
+ All rights reserved.
+
+ Redistribution and use in source and binary forms, with or without
+ modification, are permitted provided that the following conditions
+ are met:
+ 1. Redistributions of source code must retain the above copyright
+	notice, this list of conditions and the following disclaimer.
+ 2. Redistributions in binary form must reproduce the above copyright
+	notice, this list of conditions and the following disclaimer in the
+	documentation and/or other materials provided with the distribution.
+ 3. The name of the author may not be used to endorse or promote products
+	derived from this software without specific prior written permission.
+
+ THIS SOFTWARE IS PROVIDED BY THE AUTHOR ``AS IS'' AND ANY EXPRESS OR
+ IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
+ OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.
+ IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT,
+ INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+ NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+ DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
+ THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+ (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
+ THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+*/
+
+using System.Linq;
+using Antlr.Runtime.JavaExtensions;
+
+using Map = System.Collections.IDictionary;
+using Set = System.Collections.Generic.HashSet<object>;
+using StringWriter = System.IO.StringWriter;
+using Vector = System.Collections.Generic.List<object>;
+}
+
+@namespace {Antlr3.ST.Language}
+
+public
+action returns [int numCharsWritten=0]
+	:	expr {$numCharsWritten = chunk.writeAttribute(self,$expr.value,writer);}
+	;
+
+expr returns [object value]
+@init
+{
+	Map argumentContext=null;
+	$value = null;
+}
+	:	^(PLUS a=expr b=expr {$value = chunk.Add($a.value,$b.value);})
+	|	templateApplication {$value = $templateApplication.value;}
+	|	attribute {$value = $attribute.value;}
+	|	templateInclude {$value = $templateInclude.value;}
+	|	function {$value = $function.value;}
+	|	list {$value = $list.value;}
+	|	^(VALUE e=expr)
+		// convert to string (force early eval)
+		{
+			StringWriter buf = new StringWriter();
+			IStringTemplateWriter sw = self.getGroup().getStringTemplateWriter(buf);
+			int n = chunk.writeAttribute(self,$e.value,sw);
+			if ( n > 0 )
+			{
+				$value = buf.ToString();
+			}
+		}
+	;
+
+/** create a new list of expressions as a new multi-value attribute */
+list returns [object value=null]
+@init
+{
+	List elements = new ArrayList();
+}
+	:	^(	LIST
+			(	expr
+				{
+					if ( $expr.value!=null )
+					{
+						elements.Add($expr.value);
+					}
+				}
+			|	NOTHING
+				{
+					List nullSingleton = new ArrayList( new object[] {null} );
+					elements.Add(nullSingleton.iterator()); // add a blank
+				}
+			)+
+		)
+		{$value = new Cat(elements);}
+	;
+
+templateInclude returns [object value=null]
+@init
+{
+	StringTemplateAST args = null;
+	string name = null;
+}
+	:	^(	INCLUDE
+			//{value = chunk.getTemplateInclude(self, name.getText(), #args);}
+			(	id=ID a1=.
+				{name=$id.text; args=$a1;}
+
+			|	^( VALUE n=expr a2=. )
+				{if ($n.value!=null) {name=$n.value.ToString();} args=$a2;}
+
+			)
+		)
+		{
+			if ( name!=null )
+			{
+				$value = chunk.getTemplateInclude(self, name, args);
+			}
+		}
+	;
+
+/** Apply template(s) to an attribute; can be applied to another apply
+ *  result.
+ */
+templateApplication returns [object value]
+@init
+{
+	var templatesToApply = new System.Collections.Generic.List<StringTemplate>();
+	List attributes = new ArrayList();
+}
+	:	^(	APPLY a=expr
+			(template[templatesToApply])+
+			{$value = chunk.applyListOfAlternatingTemplates(self,$a.value,templatesToApply);}
+		)
+	|	^(	MULTI_APPLY (a=expr {attributes.Add($a.value);} )+ COLON
+			anon=ANONYMOUS_TEMPLATE
+			{
+				StringTemplate anonymous = $anon.StringTemplate;
+				templatesToApply.Add(anonymous);
+				$value = chunk.applyTemplateToListOfAttributes(self,
+															  attributes,
+															  $anon.StringTemplate);
+			}
+		)
+	;
+
+function returns [object value]
+	:	^(	FUNCTION
+			(	'first'		a=singleFunctionArg	{$value=chunk.first($a.value);}
+			|	'rest'		a=singleFunctionArg	{$value=chunk.rest($a.value);}
+			|	'last'		a=singleFunctionArg	{$value=chunk.last($a.value);}
+			|	'length'	a=singleFunctionArg	{$value=chunk.length($a.value);}
+			|	'strip'		a=singleFunctionArg	{$value=chunk.strip($a.value);}
+			|	'trunc'		a=singleFunctionArg	{$value=chunk.trunc($a.value);}
+			)
+		)
+	;
+
+singleFunctionArg returns [object value=null]
+	:	^( SINGLEVALUEARG expr {$value = $expr.value;} )
+	;
+
+template[System.Collections.Generic.List<StringTemplate> templatesToApply]
+@init
+{
+	Map argumentContext = null;
+}
+	:	^(	TEMPLATE
+			(	ID args=. // don't eval argList now; must re-eval each iteration
+				{
+					string templateName = $ID.text;
+					StringTemplateGroup group = self.getGroup();
+					StringTemplate embedded = group.getEmbeddedInstanceOf(self, templateName);
+					if ( embedded!=null )
+					{
+						embedded.setArgumentsAST($args);
+						$templatesToApply.Add(embedded);
+					}
+				}
+
+			|	anon=ANONYMOUS_TEMPLATE
+				{
+					StringTemplate anonymous = $anon.StringTemplate;
+					// to properly see overridden templates, always set
+					// anonymous' group to be self's group
+					anonymous.setGroup(self.getGroup());
+					$templatesToApply.Add(anonymous);
+				}
+
+			|	^(	VALUE n=expr args2=.
+					{
+						StringTemplate embedded = null;
+						if ( $n.value!=null )
+						{
+							string templateName = $n.value.ToString();
+							StringTemplateGroup group = self.getGroup();
+							embedded = group.getEmbeddedInstanceOf(self, templateName);
+							if ( embedded!=null )
+							{
+								embedded.setArgumentsAST($args2);
+								$templatesToApply.Add(embedded);
+							}
+						}
+					}
+				)
+			)
+		)
+	;
+
+public
+ifCondition returns [bool value]
+	:	a=ifAtom {$value = chunk.testAttributeTrue($a.value);}
+	|	^(NOT a=ifAtom) {$value = !chunk.testAttributeTrue($a.value);}
+	;
+
+ifAtom returns [object value]
+	:	expr {$value = $expr.value;}
+	;
+
+attribute returns [object value]
+@init
+{
+	object propName = null;
+}
+	:	^(	DOT obj=expr
+			(	prop=ID {propName = $prop.text;}
+				// don't force early eval here in case it's a map
+				// we need the right type on the key.
+				// E.g., <aMap.keys:{k|<k>:<aMap.(k)>}>
+				// If aMap has Integer keys, can't convert k to string then lookup.
+			|	^(VALUE e=expr) {if ($e.value!=null) {propName=$e.value;}}
+			)
+		)
+		{$value = chunk.getObjectProperty(self,$obj.value,propName);}
+
+	|	i3=ID
+		{
+		$value=self.getAttribute($i3.text);
+		}
+
+	|	i=INT {$value=int.Parse($i.text);}
+
+	|	s=STRING
+		{
+		$value=$s.text;
+		}
+
+	|	at=ANONYMOUS_TEMPLATE
+		{
+			$value=$at.text;
+			if ( $at.text!=null )
+			{
+				StringTemplate valueST =new StringTemplate(self.getGroup(), $at.text);
+				valueST.setEnclosingInstance(self);
+				valueST.setName("<anonymous template argument>");
+				$value = valueST;
+			}
+		}
+	;
+
+/** self is assumed to be the enclosing context as foo(x=y) must find y in
+ *  the template that encloses the ref to foo(x=y).  We must pass in
+ *  the embedded template (the one invoked) so we can check formal args
+ *  in rawSetArgumentAttribute.
+ */
+public
+argList[StringTemplate embedded, System.Collections.Generic.Dictionary<string, object> initialContext]
+	returns [System.Collections.Generic.Dictionary<string, object> argumentContext=null]
+@init
+{
+	$argumentContext = $initialContext;
+	if ( $argumentContext==null )
+	{
+		$argumentContext=new System.Collections.Generic.Dictionary<string, object>();
+	}
+}
+	:	^( ARGS (argumentAssignment[$embedded,$argumentContext])* )
+	|	singleTemplateArg[$embedded,$argumentContext]
+	;
+
+singleTemplateArg[StringTemplate embedded, Map argumentContext]
+	:	^( SINGLEVALUEARG e=expr )
+		{
+			if ( $e.value!=null )
+			{
+				string soleArgName = null;
+				// find the sole defined formal argument for embedded
+				bool error = false;
+				var formalArgs = $embedded.getFormalArguments();
+				if ( formalArgs!=null )
+				{
+					var argNames = formalArgs.Select( fa => fa.name ).ToArray();
+					if ( argNames.Length==1 )
+					{
+						soleArgName = (string)argNames.ToArray()[0];
+						//System.out.println("sole formal arg of "+$embedded.getName()+" is "+soleArgName);
+					}
+					else
+					{
+						error=true;
+					}
+				}
+				else
+				{
+					error=true;
+				}
+				if ( error )
+				{
+					self.error("template "+$embedded.getName()+
+							   " must have exactly one formal arg in template context "+
+							   self.getEnclosingInstanceStackString());
+				}
+				else
+				{
+					self.rawSetArgumentAttribute($embedded,$argumentContext,soleArgName,$e.value);
+				}
+			}
+		}
+	;
+
+argumentAssignment[StringTemplate embedded, Map argumentContext]
+	:	^( ASSIGN arg=ID expr )
+		{
+			if ( $expr.value != null )
+			{
+				self.rawSetArgumentAttribute($embedded,$argumentContext,$arg.text,$expr.value);
+			}
+		}
+	|	DOTDOTDOT {$embedded.setPassThroughAttributes(true);}
+	;

@@ -1,0 +1,415 @@
+/*
+ [The "BSD licence"]
+ Copyright (c) 2005-2008 Terence Parr
+ All rights reserved.
+
+ Grammar conversion to ANTLR v3 and C#:
+ Copyright (c) 2008 Sam Harwell, Pixel Mine, Inc.
+ All rights reserved.
+
+ Redistribution and use in source and binary forms, with or without
+ modification, are permitted provided that the following conditions
+ are met:
+ 1. Redistributions of source code must retain the above copyright
+	notice, this list of conditions and the following disclaimer.
+ 2. Redistributions in binary form must reproduce the above copyright
+	notice, this list of conditions and the following disclaimer in the
+	documentation and/or other materials provided with the distribution.
+ 3. The name of the author may not be used to endorse or promote products
+	derived from this software without specific prior written permission.
+
+ THIS SOFTWARE IS PROVIDED BY THE AUTHOR ``AS IS'' AND ANY EXPRESS OR
+ IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
+ OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.
+ IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT,
+ INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+ NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+ DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
+ THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+ (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
+ THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+*/
+grammar Group;
+
+options
+{
+	language=CSharp3;
+}
+
+tokens
+{
+KWGROUP = 'group';
+KWIMPLEMENTS = 'implements';
+KWDEFAULT = 'default';
+}
+
+@lexer::header
+{
+/*
+ [The "BSD licence"]
+ Copyright (c) 2005-2008 Terence Parr
+ All rights reserved.
+
+ Grammar conversion to ANTLR v3 and C#:
+ Copyright (c) 2008 Sam Harwell, Pixel Mine, Inc.
+ All rights reserved.
+
+ Redistribution and use in source and binary forms, with or without
+ modification, are permitted provided that the following conditions
+ are met:
+ 1. Redistributions of source code must retain the above copyright
+	notice, this list of conditions and the following disclaimer.
+ 2. Redistributions in binary form must reproduce the above copyright
+	notice, this list of conditions and the following disclaimer in the
+	documentation and/or other materials provided with the distribution.
+ 3. The name of the author may not be used to endorse or promote products
+	derived from this software without specific prior written permission.
+
+ THIS SOFTWARE IS PROVIDED BY THE AUTHOR ``AS IS'' AND ANY EXPRESS OR
+ IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
+ OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.
+ IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT,
+ INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+ NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+ DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
+ THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+ (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
+ THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+*/
+}
+
+@parser::header
+{
+/*
+ [The "BSD licence"]
+ Copyright (c) 2005-2008 Terence Parr
+ All rights reserved.
+
+ Grammar conversion to ANTLR v3 and C#:
+ Copyright (c) 2008 Sam Harwell, Pixel Mine, Inc.
+ All rights reserved.
+
+ Redistribution and use in source and binary forms, with or without
+ modification, are permitted provided that the following conditions
+ are met:
+ 1. Redistributions of source code must retain the above copyright
+	notice, this list of conditions and the following disclaimer.
+ 2. Redistributions in binary form must reproduce the above copyright
+	notice, this list of conditions and the following disclaimer in the
+	documentation and/or other materials provided with the distribution.
+ 3. The name of the author may not be used to endorse or promote products
+	derived from this software without specific prior written permission.
+
+ THIS SOFTWARE IS PROVIDED BY THE AUTHOR ``AS IS'' AND ANY EXPRESS OR
+ IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
+ OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.
+ IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT,
+ INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+ NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+ DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
+ THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+ (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
+ THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+*/
+
+using HashMap = System.Collections.Hashtable;
+using Map = System.Collections.IDictionary;
+}
+
+@lexer::namespace {Antlr3.ST.Language}
+@parser::namespace {Antlr3.ST.Language}
+
+public
+group[StringTemplateGroup g]
+@init
+{
+this._group = g;
+}
+	:	'group' name=ID {g.Name = $name.text;}
+		( COLON s=ID {g.setSuperGroup($s.text);} )?
+		(	'implements' i=ID {g.implementInterface($i.text);}
+			(COMMA i2=ID {g.implementInterface($i2.text);} )*
+		)?
+		SEMI
+		( template[g] | mapdef[g] )+
+		EOF
+	;
+
+template[StringTemplateGroup g]
+@init
+{
+	Map formalArgs = null;
+	StringTemplate st = null;
+	bool ignore = false;
+	string templateName=null;
+	int line = input.LT(1).Line;
+}
+	:	(	AT scope2=ID DOT region=ID
+			{
+				templateName=g.getMangledRegionName($scope2.text,$region.text);
+				if ( g.isDefinedInThisGroup(templateName) )
+				{
+					g.error("group "+g.Name+" line "+line+": redefinition of template region: @"+
+						$scope2.text+"."+$region.text);
+					st = new StringTemplate(); // create bogus template to fill in
+				}
+				else
+				{
+					bool err = false;
+					// @template.region() ::= "..."
+					StringTemplate scopeST = g.lookupTemplate($scope2.text);
+					if ( scopeST == null )
+					{
+						g.error("group "+g.Name+" line "+line+": reference to region within undefined template: "+
+							$scope2.text);
+						err=true;
+					}
+					else if ( !scopeST.containsRegionName($region.text) )
+					{
+						g.error("group "+g.Name+" line "+line+": template "+$scope2.text+" has no region called "+
+							$region.text);
+						err=true;
+					}
+					if ( err )
+					{
+						st = new StringTemplate();
+					}
+					else
+					{
+						st = g.defineRegionTemplate($scope2.text,
+													$region.text,
+													null,
+													StringTemplate.REGION_EXPLICIT);
+					}
+				}
+			}
+		|	name=ID {templateName = $name.text;}
+			{
+				if ( g.isDefinedInThisGroup(templateName) )
+				{
+					g.error("redefinition of template: "+templateName);
+					st = new StringTemplate(); // create bogus template to fill in
+				}
+				else
+				{
+					st = g.defineTemplate(templateName, null);
+				}
+			}
+		)
+		{if ( st!=null ) {st.setGroupFileLine(line);}}
+		LPAREN
+			(args[st]|{st.defineEmptyFormalArgumentList();})
+		RPAREN
+		DEFINED_TO_BE
+		(	t=STRING     {st.setTemplate($t.text);}
+		|	bt=BIGSTRING {st.setTemplate($bt.text);}
+		)
+
+	|   alias=ID DEFINED_TO_BE target=ID
+		{g.defineTemplateAlias($alias.text, $target.text);}
+	;
+
+args[StringTemplate st]
+	:	arg[st] ( COMMA arg[st] )*
+	;
+
+arg[StringTemplate st]
+@init
+{
+	StringTemplate defaultValue = null;
+}
+	:	name=ID
+		(	ASSIGN s=STRING
+			{
+				defaultValue=new StringTemplate("\$_val_\$");
+				defaultValue.setAttribute("_val_", $s.text);
+				defaultValue.defineFormalArgument("_val_");
+				defaultValue.Name = "<"+st.getName()+"'s arg "+$name.text+" default value subtemplate>";
+			}
+		|	ASSIGN bs=ANONYMOUS_TEMPLATE
+			{
+				defaultValue=new StringTemplate(st.getGroup(), $bs.text);
+				defaultValue.Name = "<"+st.getName()+"'s arg "+$name.text+" default value subtemplate>";
+			}
+		)?
+		{st.defineFormalArgument($name.text, defaultValue);}
+	;
+
+mapdef[StringTemplateGroup g]
+	:	name=ID
+		DEFINED_TO_BE m=map
+		{
+			if ( g.getMap($name.text)!=null )
+			{
+				g.error("redefinition of map: "+$name.text);
+			}
+			else if ( g.isDefinedInThisGroup($name.text) )
+			{
+				g.error("redefinition of template as map: "+$name.text);
+			}
+			else
+			{
+				g.defineMap($name.text, m);
+			}
+		}
+	;
+
+map returns [Map mapping=new HashMap()]
+	:   LBRACK mapPairs[mapping] RBRACK
+	;
+
+mapPairs [Map mapping]
+	:	keyValuePair[mapping] (COMMA keyValuePair[mapping])*
+		(COMMA defaultValuePair[mapping])?
+	|	defaultValuePair[mapping] 
+	;
+
+defaultValuePair[Map mapping]
+	:	'default' COLON v=keyValue
+		{mapping[ASTExpr.DEFAULT_MAP_VALUE_NAME] = $v.value;}
+	;
+
+keyValuePair[Map mapping]
+	:	key=STRING COLON v=keyValue {mapping[$key.text] = $v.value;}
+	;
+
+keyValue returns [StringTemplate value=null]
+	:	s1=BIGSTRING	{value = new StringTemplate(_group,$s1.text);}
+	|	s2=STRING		{value = new StringTemplate(_group,$s2.text);}
+	|	k=ID			{$k.text == "key"}?
+						{value = ASTExpr.MAP_KEY_VALUE;}
+	|					{value = null;}
+	;
+
+//////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////
+// LEXER
+
+ID
+	:	('a'..'z'|'A'..'Z'|'_') ('a'..'z'|'A'..'Z'|'0'..'9'|'-'|'_')*
+	;
+
+STRING
+@init
+{
+	System.Text.StringBuilder builder = new System.Text.StringBuilder();
+}
+	:	'"'
+		(	'\\'
+			(	'"'		{builder.Append('"');}
+			|	ch=~'"'	{builder.Append("\\" + (char)$ch);}
+			)
+		|	ch=~('\\'|'"') {builder.Append((char)$ch);}
+		)*
+		(	{InColorizer}? => '"'?
+		|	'"'
+		)
+		{
+			Text = builder.ToString();
+		}
+	;
+
+BIGSTRING
+@init
+{
+	System.Text.StringBuilder builder = new System.Text.StringBuilder();
+}
+	:	(	'<<'
+			{
+				if ( !InAnonymousTemplate && !InBlockComment )
+					InBigString=true;
+			}
+			( ('\r'|'\n') => ('\r')? '\n' )? // consume 1st \n
+			(	('\r\n>>') => '\r' '\n' // kill last \r\n
+			|	('\n>>') => '\n' // kill last \n
+			|	('\r'|'\n') => ('\r' { builder.Append('\r'); })? '\n' { builder.Append('\n'); } // else keep
+			|	('\\>') => '\\>' { builder.Append('>'); } // \> escape
+			|	('>' ~'>' | ~'>') => ch=. { builder.Append((char)$ch); }
+			)*
+			(	'>>'
+				{ InBigString = false; }
+			)?
+		)
+		{
+			Text = builder.ToString();
+		}
+	;
+
+ANONYMOUS_TEMPLATE
+@init
+{
+	System.Text.StringBuilder builder = new System.Text.StringBuilder();
+}
+	:	(	'{'
+			{
+				if ( !InBigString && !InBlockComment )
+					InAnonymousTemplate=true;
+			}
+			(	('\r' { builder.Append('\r'); })? '\n' { builder.Append('\n'); } // else keep
+			|	('\\}') => '\\' '}' { builder.Append('}'); }  // \} escape
+			|	ch=~('\r'|'\n'|'}') { builder.Append((char)$ch); }
+			)*
+			(	'}'
+				{ InAnonymousTemplate = false; }
+			)?
+		)
+		{
+			Text = builder.ToString();
+		}
+	;
+
+
+AT	:	'@' ;
+LPAREN: '(' ;
+RPAREN: ')' ;
+LBRACK: '[' ;
+RBRACK: ']' ;
+COMMA:  ',' ;
+DOT:  '.' ;
+DEFINED_TO_BE:  '::=';
+SEMI:   ';' ;
+COLON:  ':' ;
+STAR:   '*' ;
+PLUS:   '+' ;
+ASSIGN:   '=' ;
+OPTIONAL : '?' ;
+
+CLOSE_BIG_STRING : '>>';
+CLOSE_BLOCK_COMMENT : '*/';
+CLOSE_ANON_TEMPLATE : '}';
+
+// Single-line comments
+SL_COMMENT
+	:	'//'
+		(~('\n'|'\r'))* (('\r')? '\n')?
+		{ $channel = HIDDEN; }
+	;
+
+// multiple-line comments
+ML_COMMENT
+	:	'/*'
+		{
+			if ( !InAnonymousTemplate && !InBigString )
+				InBlockComment=true;
+
+			$channel = HIDDEN;
+		}
+		(	~('*')
+			|	('*' ~'/') => '*'
+		)*
+		('*/' {InBlockComment = false;})?
+	;
+
+// Whitespace -- ignored
+WS  :   (   ' '
+        |   '\t'
+        |   '\f'
+        |   ('\r')? '\n'
+        )+
+        { $channel = HIDDEN; }
+    ;
+
+ANYCHAR
+	:	.
+	;

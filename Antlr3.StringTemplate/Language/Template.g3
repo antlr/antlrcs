@@ -1,0 +1,518 @@
+/*
+ [The "BSD licence"]
+ Copyright (c) 2005-2008 Terence Parr
+ All rights reserved.
+
+ Grammar conversion to ANTLR v3 and C#:
+ Copyright (c) 2008 Sam Harwell, Pixel Mine, Inc.
+ All rights reserved.
+
+ Redistribution and use in source and binary forms, with or without
+ modification, are permitted provided that the following conditions
+ are met:
+ 1. Redistributions of source code must retain the above copyright
+	notice, this list of conditions and the following disclaimer.
+ 2. Redistributions in binary form must reproduce the above copyright
+	notice, this list of conditions and the following disclaimer in the
+	documentation and/or other materials provided with the distribution.
+ 3. The name of the author may not be used to endorse or promote products
+	derived from this software without specific prior written permission.
+
+ THIS SOFTWARE IS PROVIDED BY THE AUTHOR ``AS IS'' AND ANY EXPRESS OR
+ IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
+ OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.
+ IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT,
+ INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+ NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+ DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
+ THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+ (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
+ THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+*/
+grammar Template;
+
+options
+{
+	language=CSharp3;
+}
+
+@lexer::header
+{
+/*
+ [The "BSD licence"]
+ Copyright (c) 2005-2008 Terence Parr
+ All rights reserved.
+
+ Grammar conversion to ANTLR v3 and C#:
+ Copyright (c) 2008 Sam Harwell, Pixel Mine, Inc.
+ All rights reserved.
+
+ Redistribution and use in source and binary forms, with or without
+ modification, are permitted provided that the following conditions
+ are met:
+ 1. Redistributions of source code must retain the above copyright
+	notice, this list of conditions and the following disclaimer.
+ 2. Redistributions in binary form must reproduce the above copyright
+	notice, this list of conditions and the following disclaimer in the
+	documentation and/or other materials provided with the distribution.
+ 3. The name of the author may not be used to endorse or promote products
+	derived from this software without specific prior written permission.
+
+ THIS SOFTWARE IS PROVIDED BY THE AUTHOR ``AS IS'' AND ANY EXPRESS OR
+ IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
+ OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.
+ IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT,
+ INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+ NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+ DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
+ THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+ (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
+ THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+*/
+}
+
+@parser::header
+{
+/*
+ [The "BSD licence"]
+ Copyright (c) 2005-2008 Terence Parr
+ All rights reserved.
+
+ Grammar conversion to ANTLR v3 and C#:
+ Copyright (c) 2008 Sam Harwell, Pixel Mine, Inc.
+ All rights reserved.
+
+ Redistribution and use in source and binary forms, with or without
+ modification, are permitted provided that the following conditions
+ are met:
+ 1. Redistributions of source code must retain the above copyright
+	notice, this list of conditions and the following disclaimer.
+ 2. Redistributions in binary form must reproduce the above copyright
+	notice, this list of conditions and the following disclaimer in the
+	documentation and/or other materials provided with the distribution.
+ 3. The name of the author may not be used to endorse or promote products
+	derived from this software without specific prior written permission.
+
+ THIS SOFTWARE IS PROVIDED BY THE AUTHOR ``AS IS'' AND ANY EXPRESS OR
+ IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
+ OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.
+ IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT,
+ INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+ NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+ DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
+ THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+ (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
+ THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+*/
+using Antlr.Runtime.JavaExtensions;
+}
+
+@lexer::namespace {Antlr3.ST.Language}
+@parser::namespace {Antlr3.ST.Language}
+
+public
+template[StringTemplate self]
+@init
+{
+	this.self = self;
+}
+	:	(	s=LITERAL  {self.addChunk(new StringRef(self,$s.text));}
+		|	nl=NEWLINE
+			{
+				if ( input.LA(1)!=ELSE && input.LA(1)!=ENDIF )
+				{
+					self.addChunk(new NewlineRef(self,$nl.text));
+				}
+			}
+		|	action[self]
+		)*
+		EOF?
+	;
+
+action[StringTemplate self]
+	:	a=ACTION
+		{
+			string indent = ((ChunkToken)a).Indentation;
+			ASTExpr c = self.parseAction($a.text);
+			c.setIndentation(indent);
+			self.addChunk(c);
+		}
+
+	|	i=IF
+		{
+			ConditionalExpr c = (ConditionalExpr)self.parseAction($i.text);
+			// create and precompile the subtemplate
+			StringTemplate subtemplate = new StringTemplate(self.getGroup(), null);
+			subtemplate.setEnclosingInstance(self);
+			subtemplate.setName($i.text+"_subtemplate");
+			self.addChunk(c);
+		}
+
+		template[subtemplate] {if ( c!=null ) c.setSubtemplate(subtemplate);}
+
+		(	ei=ELSEIF
+			{
+				ASTExpr ec = self.parseAction($ei.text);
+				// create and precompile the subtemplate
+				StringTemplate elseIfSubtemplate = new StringTemplate(self.getGroup(), null);
+				elseIfSubtemplate.setEnclosingInstance(self);
+				elseIfSubtemplate.setName($ei.text+"_subtemplate");
+			}
+
+			template[elseIfSubtemplate]
+
+			{if ( c!=null ) c.addElseIfSubtemplate(ec, elseIfSubtemplate);}
+		)*
+
+		(	ELSE
+			{
+				// create and precompile the subtemplate
+				StringTemplate elseSubtemplate = new StringTemplate(self.getGroup(), null);
+				elseSubtemplate.setEnclosingInstance(self);
+				elseSubtemplate.setName("else_subtemplate");
+			}
+
+			template[elseSubtemplate]
+			{if ( c!=null ) c.setElseSubtemplate(elseSubtemplate);}
+		)?
+
+		ENDIF
+
+	|	rr=REGION_REF
+		{
+			// define implicit template and
+			// convert <@r()> to <region__enclosingTemplate__r()>
+			string regionName = $rr.text;
+			string mangledRef = null;
+			bool err = false;
+			// watch out for <@super.r()>; that does NOT def implicit region
+			// convert to <super.region__enclosingTemplate__r()>
+			if ( regionName.StartsWith("super.") )
+			{
+				//System.out.println("super region ref "+regionName);
+				string regionRef = regionName.substring("super.".Length,regionName.Length);
+				string templateScope = self.getGroup().getUnMangledTemplateName(self.getName());
+				StringTemplate scopeST = self.getGroup().lookupTemplate(templateScope);
+				if ( scopeST==null )
+				{
+					self.getGroup().error("reference to region within undefined template: "+templateScope);
+					err=true;
+				}
+				if ( !scopeST.containsRegionName(regionRef) )
+				{
+					self.getGroup().error("template "+templateScope+" has no region called "+regionRef);
+					err=true;
+				}
+				else
+				{
+					mangledRef = self.getGroup().getMangledRegionName(templateScope,regionRef);
+					mangledRef = "super."+mangledRef;
+				}
+			}
+			else
+			{
+				//System.out.println("region ref "+regionName);
+				StringTemplate regionST = self.getGroup().defineImplicitRegionTemplate(self,regionName);
+				mangledRef = regionST.getName();
+			}
+
+			if ( !err )
+			{
+				// treat as regular action: mangled template include
+				string indent = ((ChunkToken)$rr).Indentation;
+				ASTExpr c = self.parseAction(mangledRef+"()");
+				c.setIndentation(indent);
+				self.addChunk(c);
+			}
+		}
+
+	|	rd=REGION_DEF
+		{
+			string combinedNameTemplateStr = $rd.text;
+			int indexOfDefSymbol = combinedNameTemplateStr.IndexOf("::=");
+			if ( indexOfDefSymbol>=1 )
+			{
+				string regionName = combinedNameTemplateStr.substring(0,indexOfDefSymbol);
+				string template = combinedNameTemplateStr.substring(indexOfDefSymbol+3, combinedNameTemplateStr.Length);
+				StringTemplate regionST = self.getGroup().defineRegionTemplate(self,regionName,template,StringTemplate.REGION_EMBEDDED);
+				// treat as regular action: mangled template include
+				string indent = ((ChunkToken)$rd).Indentation;
+				ASTExpr c = self.parseAction(regionST.getName()+"()");
+				c.setIndentation(indent);
+				self.addChunk(c);
+			}
+			else
+			{
+				self.error("embedded region definition screwed up");
+			}
+		}
+	;
+
+//////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////
+// LEXER
+
+// these rules are for manually-set tokens
+fragment IF : ;
+fragment ELSEIF : ;
+fragment ELSE : ;
+fragment ENDIF : ;
+fragment REGION_DEF : ;
+fragment REGION_REF : ;
+
+NEWLINE
+	:	('\r')? '\n' {currentIndent=null;}
+	;
+
+ACTION
+@init
+{
+	int startCol = CharPositionInLine;
+	System.Text.StringBuilder builder = new System.Text.StringBuilder();
+	System.Text.StringBuilder buf = null;
+	string subtext = string.Empty;
+	char uc = '\0';
+	bool atLeft = false;
+	string t = null;
+}
+	:	(	options { k = 1; } :
+			('$\\') =>
+			// Match escapes not in a string like <\n\ufea5>
+			'$' (ESC_CHAR[out uc] {builder.Append(uc);} )+ '$'
+			{
+				Text = builder.ToString();
+				$type = LITERAL;
+			}
+		|	('$!') => COMMENT
+			{ $channel = HIDDEN; }
+		|	(	('$if' (' '|'(')) =>
+				'$if' (' ')* '(' exp=IF_EXPR ')$'
+				{
+					Text = "if(" + $exp.text + ")";
+					$type = TemplateParser.IF;
+				}
+				( ('\r')? '\n' )? // ignore any newline right after an IF
+			|	('$elseif' (' '|'(')) =>
+				'$elseif' (' ')* '(' exp=IF_EXPR ')$'
+				{
+					Text = "elseif(" + $exp.text + ")";
+					$type = TemplateParser.ELSEIF;
+				}
+				( ('\r')? '\n' )? // ignore any newline right after an IF
+			|	('$else$') =>
+				'$else$'
+				{
+					Text = "else";
+					$type = (TemplateParser.ELSE);
+				}
+				( ('\r')? '\n' )? // ignore any newline right after an ELSE
+			|	('$endif$') =>
+				'$endif$'
+				{
+					Text = "endif";
+					$type = TemplateParser.ENDIF;
+				}
+				( {startCol==0}? => ('\r')? '\n' )? // ignore after ENDIF if on line by itself
+
+			|	// match $@foo()$ => foo
+				// match $@foo$...$@end$ => foo::=...
+				('$@') =>
+				{
+					builder = new System.Text.StringBuilder();
+				}
+				'$@' ( ch=~('$'|'(') {builder.Append((char)$ch);} )+
+				{ t = builder.ToString(); }
+				(	'()$'
+					{
+						$type = TemplateParser.REGION_REF;
+					}
+				|	'$'
+					{
+						$type = TemplateParser.REGION_DEF;
+						builder.Append("::=");
+					}
+					( ('\r'|'\n') => ('\r')? '\n' )?
+					{atLeft = false;}
+					(	{!(upcomingAtEND(1) || ( input.LA(1) == '\n' && upcomingAtEND(2) ) || ( input.LA(1) == '\r' && input.LA(2) == '\n' && upcomingAtEND(3) ))}? =>
+						(	('\r'|'\n') => ('\r' {builder.Append('\r');})? '\n' {builder.Append('\n'); atLeft = true;}
+						|	ch=. {builder.Append((char)$ch); atLeft = false;}
+						)
+					)+
+					(	('\r'|'\n') => ('\r')? '\n' {atLeft = true;} )?
+					(	('$@end$') => '$@end$'
+					|	.	{self.error("missing region "+t+" $@end$ tag");}
+					)
+					(	{atLeft}? ('\r')? '\n' )?
+				)
+				{
+					Text = builder.ToString();
+				}
+			|	'$' EXPR[out subtext] '$'  // (Can't start with '!', which would mean comment)
+				{ Text = subtext; }
+			)
+			{
+				//ChunkToken t = new ChunkToken($type, $text, currentIndent);
+				//state.token = t;
+				state.token = new ChunkToken($type, $text, currentIndent);
+			}
+		)
+	;
+
+LITERAL
+@init
+{
+	int loopStartIndex = $text.Length;
+	int col = CharPositionInLine;
+	System.Text.StringBuilder builder = new System.Text.StringBuilder();
+}
+	:	(	'\\'
+			(	'$'				{builder.Append("$");}  // allow escaped delimiter
+			|	'\\'			{builder.Append("\\");} // always replace \\ with \
+			|	ch=~('$'|'\\')	{builder.Append("\\" + (char)$ch);}  // otherwise ignore escape char
+			)
+		|	ind=INDENT
+			{
+				loopStartIndex = builder.Length;
+				col = CharPositionInLine - $ind.text.Length;
+
+				builder.Append( $ind.text );
+				if ( col==0 && input.LA(1)=='$' )
+				{
+					// store indent in ASTExpr not in a literal
+					currentIndent=$ind.text;
+					//text.setLength(loopStartIndex); // reset length to wack text
+					builder.Length = loopStartIndex; //= $text.Substring( 0, loopStartIndex );
+				}
+				else
+				{
+					currentIndent=null;
+				}
+			}
+		|	ch=~('$'|'\r'|'\n'|'\\'|' '|'\t') {builder.Append((char)$ch);}
+		)+
+		{Text = builder.ToString();}
+		{if ($text.Length==0) {$channel = HIDDEN;}} // pure indent?
+	;
+
+fragment
+EXPR[out string _text]
+@init
+{
+	_text = string.Empty;
+	string subtext = string.Empty;
+	System.Text.StringBuilder builder = new System.Text.StringBuilder();
+}
+	:	(	ESC							{builder.Append($ESC.text);}
+		|	st=SUBTEMPLATE				{builder.Append($st.text);}
+		|	(	'='						{builder.Append('=');}
+			|	'+'						{builder.Append('+');}
+			)
+			(	TEMPLATE[out subtext]	{builder.Append(subtext);}
+			|	st=SUBTEMPLATE			{builder.Append($st.text);}
+			|	ch=~('"'|'<'|'{')		{builder.Append((char)$ch);}
+			)
+		|	ch=~('\\'|'{'|'='|'+'|'$')	{builder.Append((char)$ch);}
+		)+
+		{$_text = builder.ToString();}
+	;
+
+fragment
+TEMPLATE[out string _text]
+@init
+{
+	_text = string.Empty;
+	System.Text.StringBuilder builder = new System.Text.StringBuilder();
+}
+	:	'"'
+		{builder.Append('"');}
+		(	ESC						{builder.Append($ESC.text);}
+		|	ch=~('\\'|'"')	{builder.Append((char)$ch);}
+		)*
+		'"'
+		{
+			builder.Append('"');
+			$_text = builder.ToString();
+		}
+	|	'<<'
+		{
+			builder.Append("<<");
+		}
+	 	(	('\r'|'\n') => ('\r')? '\n'
+	 	)? // consume 1st \n
+		(	('\r'? '\n>>') => ('\r')? '\n'	// kill last \r\n
+		|	ch=. {builder.Append((char)$ch);}
+		)*
+		'>>'
+		{
+			builder.Append(">>");
+			$_text = builder.ToString();
+		}
+	;
+
+fragment
+IF_EXPR
+	:	(	ESC
+		|	SUBTEMPLATE
+		|	NESTED_PARENS
+		|	~('\\'|'{'|'('|')')
+		)+
+	;
+
+fragment
+ESC_CHAR[out char uc]
+@init
+{
+	$uc = '\0';
+}
+	:	'\\n' {$uc = '\n';}
+	|	'\\r' {$uc = '\r';}
+	|	'\\t' {$uc = '\t';}
+	|	'\\ ' {$uc = ' ';}
+	|	'\\u' a=HEX b=HEX c=HEX d=HEX
+		{$uc = (char)int.Parse($a.text+$b.text+$c.text+$d.text, System.Globalization.NumberStyles.AllowHexSpecifier);}
+	;
+
+fragment
+ESC
+	:	'\\' . // ('$'|'n'|'t'|'"'|'\''|':'|'{'|'}')
+	;
+
+fragment
+HEX
+	:	'0'..'9'|'A'..'F'|'a'..'f'
+	;
+
+fragment
+SUBTEMPLATE
+	:	'{'
+		(	SUBTEMPLATE
+		|	ESC
+		|	~('{'|'\\'|'}')
+		)*
+		'}'
+	;
+
+fragment
+NESTED_PARENS
+	:	'('
+		(	NESTED_PARENS
+		|	ESC
+		|	~('('|'\\'|')')
+		)+
+		')'
+	;
+
+fragment
+INDENT
+	:	(' ' | '\t')+
+	;
+
+fragment
+COMMENT
+@init
+{
+	int startCol = CharPositionInLine;
+}
+	:	'$!' .* '!$' ( {startCol==0}? => ('\r')? '\n' )?
+	;
