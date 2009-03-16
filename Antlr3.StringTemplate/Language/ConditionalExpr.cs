@@ -56,12 +56,12 @@ namespace Antlr3.ST.Language
         {
         }
 
-        public virtual void setSubtemplate( StringTemplate subtemplate )
+        public virtual void SetSubtemplate( StringTemplate subtemplate )
         {
             this.subtemplate = subtemplate;
         }
 
-        public virtual void addElseIfSubtemplate( ASTExpr conditionalTree,
+        public virtual void AddElseIfSubtemplate( ASTExpr conditionalTree,
                                          StringTemplate subtemplate )
         {
             if ( elseIfSubtemplates == null )
@@ -76,17 +76,17 @@ namespace Antlr3.ST.Language
             elseIfSubtemplates.Add( d );
         }
 
-        public virtual StringTemplate getSubtemplate()
+        public virtual StringTemplate GetSubtemplate()
         {
             return subtemplate;
         }
 
-        public virtual StringTemplate getElseSubtemplate()
+        public virtual StringTemplate GetElseSubtemplate()
         {
             return elseSubtemplate;
         }
 
-        public virtual void setElseSubtemplate( StringTemplate elseSubtemplate )
+        public virtual void SetElseSubtemplate( StringTemplate elseSubtemplate )
         {
             this.elseSubtemplate = elseSubtemplate;
         }
@@ -97,7 +97,7 @@ namespace Antlr3.ST.Language
          *  is true, then write subtemplate.
          *  </summary>
          */
-        public override int write( StringTemplate self, IStringTemplateWriter @out )
+        public override int Write( StringTemplate self, IStringTemplateWriter @out )
         {
             if ( exprTree == null || self == null || @out == null )
             {
@@ -117,7 +117,7 @@ namespace Antlr3.ST.Language
                 // IF
                 if ( includeSubtemplate )
                 {
-                    n = writeSubTemplate( self, @out, subtemplate );
+                    n = WriteSubTemplate( self, @out, subtemplate );
                     testedTrue = true;
                 }
                 // ELSEIF
@@ -130,7 +130,7 @@ namespace Antlr3.ST.Language
                         includeSubtemplate = eval.ifCondition();
                         if ( includeSubtemplate )
                         {
-                            writeSubTemplate( self, @out, elseIfClause.st );
+                            WriteSubTemplate( self, @out, elseIfClause.st );
                             testedTrue = true;
                             break;
                         }
@@ -140,21 +140,21 @@ namespace Antlr3.ST.Language
                 if ( !testedTrue && elseSubtemplate != null )
                 {
                     // evaluate ELSE clause if present and IF condition failed
-                    StringTemplate s = elseSubtemplate.getInstanceOf();
-                    s.setEnclosingInstance( self );
-                    s.setGroup( self.getGroup() );
-                    s.setNativeGroup( self.getNativeGroup() );
-                    n = s.write( @out );
+                    StringTemplate s = elseSubtemplate.GetInstanceOf();
+                    s.SetEnclosingInstance( self );
+                    s.SetGroup( self.GetGroup() );
+                    s.SetNativeGroup( self.GetNativeGroup() );
+                    n = s.Write( @out );
                 }
             }
             catch ( RecognitionException re )
             {
-                self.error( "can't evaluate tree: " + exprTree.ToStringTree(), re );
+                self.Error( "can't evaluate tree: " + exprTree.ToStringTree(), re );
             }
             return n;
         }
 
-        protected virtual int writeSubTemplate( StringTemplate self,
+        protected virtual int WriteSubTemplate( StringTemplate self,
                                        IStringTemplateWriter @out,
                                        StringTemplate subtemplate )
         {
@@ -164,13 +164,13 @@ namespace Antlr3.ST.Language
              * new template instance every time we exec this chunk to get the new
              * "enclosing instance" pointer.
              */
-            StringTemplate s = subtemplate.getInstanceOf();
-            s.setEnclosingInstance( self );
+            StringTemplate s = subtemplate.GetInstanceOf();
+            s.SetEnclosingInstance( self );
             // make sure we evaluate in context of enclosing template's
             // group so polymorphism works. :)
-            s.setGroup( self.getGroup() );
-            s.setNativeGroup( self.getNativeGroup() );
-            return s.write( @out );
+            s.SetGroup( self.GetGroup() );
+            s.SetNativeGroup( self.GetNativeGroup() );
+            return s.Write( @out );
         }
     }
 }

@@ -41,7 +41,7 @@ namespace Antlr3.ST
      */
     public interface IStringTemplateErrorListener
     {
-        void error( string msg, Exception e );
-        void warning( string msg );
+        void Error( string msg, Exception e );
+        void Warning( string msg );
     }
 }

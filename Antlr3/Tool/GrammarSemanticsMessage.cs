@@ -88,11 +88,11 @@ namespace Antlr3.Tool
             StringTemplate st = getMessageTemplate();
             if ( arg != null )
             {
-                st.setAttribute( "arg", arg );
+                st.SetAttribute( "arg", arg );
             }
             if ( arg2 != null )
             {
-                st.setAttribute( "arg2", arg2 );
+                st.SetAttribute( "arg2", arg2 );
             }
             return base.ToString( st );
         }

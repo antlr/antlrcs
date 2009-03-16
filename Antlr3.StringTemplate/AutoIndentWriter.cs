@@ -117,7 +117,7 @@ namespace Antlr3.ST
             }
         }
 
-        public virtual void setLineWidth( int lineWidth )
+        public virtual void SetLineWidth( int lineWidth )
         {
             _lineWidth = lineWidth;
         }
@@ -135,7 +135,7 @@ namespace Antlr3.ST
          *  This prevents a check later to deal with anchors when starting new line.
          *  </remarks>
          */
-        public virtual void pushIndentation( string indent )
+        public virtual void PushIndentation( string indent )
         {
             int lastAnchor = 0;
             int indentWidth = IndentationWidth;
@@ -143,7 +143,7 @@ namespace Antlr3.ST
             if ( _anchors_sp >= 0 && _anchors[_anchors_sp] > indentWidth )
             {
                 lastAnchor = _anchors[_anchors_sp];
-                StringBuilder buf = getIndentString( lastAnchor - indentWidth );
+                StringBuilder buf = GetIndentString( lastAnchor - indentWidth );
                 if ( indent != null )
                     buf.Append( indent ); // don't add if null
                 _indents.Add( buf.ToString() );
@@ -156,7 +156,7 @@ namespace Antlr3.ST
         }
 
         /// <exception cref="System.ArgumentOutOfRangeException" />
-        public virtual string popIndentation()
+        public virtual string PopIndentation()
         {
             string value = _indents[_indents.Count - 1];
             _indents.RemoveAt( _indents.Count - 1 );
@@ -170,7 +170,7 @@ namespace Antlr3.ST
         /// <exception cref="System.InvalidCastException" />
         /// <exception cref="System.ArgumentOutOfRangeException" />
         /// <exception cref="System.ArgumentException" />
-        public virtual void pushAnchorPoint()
+        public virtual void PushAnchorPoint()
         {
             if ( ( _anchors_sp + 1 ) >= _anchors.Length )
             {
@@ -182,7 +182,7 @@ namespace Antlr3.ST
             _anchors[_anchors_sp] = _charPosition;
         }
 
-        public virtual void popAnchorPoint()
+        public virtual void PopAnchorPoint()
         {
             _anchors_sp--;
         }
@@ -198,7 +198,7 @@ namespace Antlr3.ST
         /// <summary>Write out a string literal or attribute expression or expression element.</summary>
         /// <exception cref="System.ObjectDisposedException" />
         /// <exception cref="System.IO.IOException" />
-        public virtual int write( string str )
+        public virtual int Write( string str )
         {
             int n = 0;
             for ( int i = 0; i < str.Length; i++ )
@@ -222,7 +222,7 @@ namespace Antlr3.ST
                 // check to see if we are at the start of a line; need indent if so
                 if ( _atStartOfLine )
                 {
-                    n += indent();
+                    n += Indent();
                     _atStartOfLine = false;
                 }
                 n++;
@@ -234,9 +234,9 @@ namespace Antlr3.ST
 
         /// <exception cref="System.ObjectDisposedException" />
         /// <exception cref="System.IO.IOException" />
-        public virtual int writeSeparator( string str )
+        public virtual int WriteSeparator( string str )
         {
-            return write( str );
+            return Write( str );
         }
 
         /** <summary>Write out a string literal or attribute expression or expression element.</summary>
@@ -252,17 +252,17 @@ namespace Antlr3.ST
          *  <exception cref="System.OverflowException" />
          *  <exception cref="System.IO.IOException" />
          */
-        public virtual int write( string str, string wrap )
+        public virtual int Write( string str, string wrap )
         {
-            int n = writeWrapSeparator( wrap );
-            return n + write( str );
+            int n = WriteWrapSeparator( wrap );
+            return n + Write( str );
         }
 
         /// <exception cref="System.ArgumentNullException" />
         /// <exception cref="System.ObjectDisposedException" />
         /// <exception cref="System.OverflowException" />
         /// <exception cref="System.IO.IOException" />
-        public virtual int writeWrapSeparator( string wrap )
+        public virtual int WriteWrapSeparator( string wrap )
         {
             int n = 0;
             // if want wrap and not already at start of line (last char was \n)
@@ -282,7 +282,7 @@ namespace Antlr3.ST
                         n += _newline.Length;
                         _writer.Write( _newline );
                         _charPosition = 0;
-                        n += indent();
+                        n += Indent();
 
                         // handle \r\n in the wrap string
                         if ( (c == '\r') && (i < wrap.Length - 1) && (wrap[i + 1] == '\n') )
@@ -303,7 +303,7 @@ namespace Antlr3.ST
 
         /// <exception cref="System.ObjectDisposedException" />
         /// <exception cref="System.IO.IOException" />
-        public virtual int indent()
+        public virtual int Indent()
         {
             int n = 0;
             for ( int i = 0; i < _indents.Count; i++ )
@@ -322,7 +322,7 @@ namespace Antlr3.ST
         /// <exception cref="System.ArgumentException" />
         /// <exception cref="System.ObjectDisposedException" />
         /// <exception cref="System.IO.IOException" />
-        public virtual int indent( int spaces )
+        public virtual int Indent( int spaces )
         {
             if ( spaces < 0 )
                 throw new ArgumentException( "spaces cannot be negative", "spaces" );
@@ -332,7 +332,7 @@ namespace Antlr3.ST
             return spaces;
         }
 
-        protected virtual StringBuilder getIndentString( int spaces )
+        protected virtual StringBuilder GetIndentString( int spaces )
         {
             return new StringBuilder( new string( ' ', spaces ) );
         }

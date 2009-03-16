@@ -105,7 +105,7 @@ namespace AntlrUnitTests
             {
             }
 
-            StringTemplate.resetTemplateCounter();
+            StringTemplate.ResetTemplateCounter();
             StringTemplate.defaultGroup = new StringTemplateGroup( "defaultGroup", "." );
 
             // verify token constants in StringTemplate
@@ -290,7 +290,7 @@ namespace AntlrUnitTests
             catch ( Exception e )
             {
                 Console.Error.WriteLine( "can't exec compilation" );
-                e.printStackTrace( Console.Error );
+                e.PrintStackTrace( Console.Error );
                 return false;
             }
         }
@@ -346,7 +346,7 @@ namespace AntlrUnitTests
             {
                 allIsWell = false;
                 Console.Error.WriteLine( "problems building grammar: " + e );
-                e.printStackTrace( Console.Error );
+                e.PrintStackTrace( Console.Error );
             }
             return allIsWell;
         }
@@ -602,7 +602,7 @@ namespace AntlrUnitTests
             catch ( Exception e )
             {
                 Console.Error.WriteLine( "can't exec recognizer" );
-                e.printStackTrace( Console.Error );
+                e.PrintStackTrace( Console.Error );
             }
             return null;
         }
@@ -736,7 +736,7 @@ namespace AntlrUnitTests
             catch ( IOException ioe )
             {
                 Console.Error.WriteLine( "can't write file" );
-                ioe.printStackTrace( Console.Error );
+                ioe.PrintStackTrace( Console.Error );
             }
         }
 
@@ -781,10 +781,10 @@ namespace AntlrUnitTests
                     new StringTemplate(
                     "        $parserName$ parser = new $parserName$(tokens);\n" );
             }
-            outputFileST.setAttribute( "createParser", createParserST );
-            outputFileST.setAttribute( "parserName", parserName );
-            outputFileST.setAttribute( "lexerName", lexerName );
-            outputFileST.setAttribute( "parserStartRuleName", parserStartRuleName );
+            outputFileST.SetAttribute( "createParser", createParserST );
+            outputFileST.SetAttribute( "parserName", parserName );
+            outputFileST.SetAttribute( "lexerName", lexerName );
+            outputFileST.SetAttribute( "parserStartRuleName", parserStartRuleName );
             writeFile( tmpdir, "Test.java", outputFileST.ToString() );
         }
 
@@ -807,7 +807,7 @@ namespace AntlrUnitTests
                 "    }\n" +
                 "}"
                 );
-            outputFileST.setAttribute( "lexerName", lexerName );
+            outputFileST.SetAttribute( "lexerName", lexerName );
             writeFile( tmpdir, "Test.java", outputFileST.ToString() );
         }
 
@@ -858,12 +858,12 @@ namespace AntlrUnitTests
                     new StringTemplate(
                     "        $parserName$ parser = new $parserName$(tokens);\n" );
             }
-            outputFileST.setAttribute( "createParser", createParserST );
-            outputFileST.setAttribute( "parserName", parserName );
-            outputFileST.setAttribute( "treeParserName", treeParserName );
-            outputFileST.setAttribute( "lexerName", lexerName );
-            outputFileST.setAttribute( "parserStartRuleName", parserStartRuleName );
-            outputFileST.setAttribute( "treeParserStartRuleName", treeParserStartRuleName );
+            outputFileST.SetAttribute( "createParser", createParserST );
+            outputFileST.SetAttribute( "parserName", parserName );
+            outputFileST.SetAttribute( "treeParserName", treeParserName );
+            outputFileST.SetAttribute( "lexerName", lexerName );
+            outputFileST.SetAttribute( "parserStartRuleName", parserStartRuleName );
+            outputFileST.SetAttribute( "treeParserStartRuleName", treeParserStartRuleName );
             writeFile( tmpdir, "Test.java", outputFileST.ToString() );
         }
 
@@ -911,12 +911,12 @@ namespace AntlrUnitTests
                     new StringTemplate(
                     "        $parserName$ parser = new $parserName$(tokens);\n" );
             }
-            outputFileST.setAttribute( "createParser", createParserST );
-            outputFileST.setAttribute( "parserName", parserName );
-            outputFileST.setAttribute( "treeParserName", treeParserName );
-            outputFileST.setAttribute( "lexerName", lexerName );
-            outputFileST.setAttribute( "parserStartRuleName", parserStartRuleName );
-            outputFileST.setAttribute( "treeParserStartRuleName", treeParserStartRuleName );
+            outputFileST.SetAttribute( "createParser", createParserST );
+            outputFileST.SetAttribute( "parserName", parserName );
+            outputFileST.SetAttribute( "treeParserName", treeParserName );
+            outputFileST.SetAttribute( "lexerName", lexerName );
+            outputFileST.SetAttribute( "parserStartRuleName", parserStartRuleName );
+            outputFileST.SetAttribute( "treeParserStartRuleName", treeParserStartRuleName );
             writeFile( tmpdir, "Test.java", outputFileST.ToString() );
         }
 
@@ -967,10 +967,10 @@ namespace AntlrUnitTests
                     new StringTemplate(
                     "        $parserName$ parser = new $parserName$(tokens);\n" );
             }
-            outputFileST.setAttribute( "createParser", createParserST );
-            outputFileST.setAttribute( "parserName", parserName );
-            outputFileST.setAttribute( "lexerName", lexerName );
-            outputFileST.setAttribute( "parserStartRuleName", parserStartRuleName );
+            outputFileST.SetAttribute( "createParser", createParserST );
+            outputFileST.SetAttribute( "parserName", parserName );
+            outputFileST.SetAttribute( "lexerName", lexerName );
+            outputFileST.SetAttribute( "parserStartRuleName", parserStartRuleName );
             writeFile( tmpdir, "Test.java", outputFileST.ToString() );
         }
 

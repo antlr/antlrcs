@@ -66,6 +66,8 @@ namespace Antlr3.Codegen
     using IToken = Antlr.Runtime.IToken;
     using Label = Antlr3.Analysis.Label;
     using LookaheadSet = Antlr3.Analysis.LookaheadSet;
+    using MethodImpl = System.Runtime.CompilerServices.MethodImplAttribute;
+    using MethodImplOptions = System.Runtime.CompilerServices.MethodImplOptions;
     using NFAState = Antlr3.Analysis.NFAState;
     using RecognitionException = Antlr.Runtime.RecognitionException;
     using Rule = Antlr3.Tool.Rule;
@@ -128,6 +130,7 @@ namespace Antlr3.Codegen
          *  specific actions.
          */
         public Target target = null;
+        static readonly Dictionary<string, Target> _targets = new Dictionary<string, Target>();
 
         /** Where are the templates this generator should use to generate code? */
         protected StringTemplateGroup templates;
@@ -240,47 +243,52 @@ namespace Antlr3.Codegen
         }
         #endregion
 
+        [MethodImpl( MethodImplOptions.Synchronized )]
         protected virtual void loadLanguageTarget( string language )
         {
-            // first try to load the target via a satellite DLL
-            string assembly = "Antlr3.Targets." + language + ".dll";
-            string path1 = System.IO.Path.Combine( System.IO.Path.GetDirectoryName( typeof( CodeGenerator ).Assembly.Location ), "Targets" );
-            string path2 = System.IO.Path.GetDirectoryName( typeof( CodeGenerator ).Assembly.Location );
-            string[] paths = { path1, path2 };
-
-            System.Reflection.Assembly targetAssembly = null;
-            System.Type targetType = null;
-            string targetName = "Antlr3.Targets." + language + "Target";
-
-            foreach ( string path in paths )
+            if ( !_targets.TryGetValue( language, out target ) )
             {
-                string filename = System.IO.Path.Combine( path, assembly );
-                if ( System.IO.File.Exists( filename ) )
+                // first try to load the target via a satellite DLL
+                string assembly = "Antlr3.Targets." + language + ".dll";
+                string path1 = System.IO.Path.Combine( System.IO.Path.GetDirectoryName( typeof( CodeGenerator ).Assembly.Location ), "Targets" );
+                string path2 = System.IO.Path.GetDirectoryName( typeof( CodeGenerator ).Assembly.Location );
+                string[] paths = { path1, path2 };
+
+                System.Reflection.Assembly targetAssembly = null;
+                System.Type targetType = null;
+                string targetName = "Antlr3.Targets." + language + "Target";
+
+                foreach ( string path in paths )
                 {
-                    try
+                    string filename = System.IO.Path.Combine( path, assembly );
+                    if ( System.IO.File.Exists( filename ) )
                     {
-                        targetAssembly = System.Reflection.Assembly.LoadFile( filename );
-                        targetType = targetAssembly.GetType( targetName, false );
-                    }
-                    catch
-                    {
+                        try
+                        {
+                            targetAssembly = System.Reflection.Assembly.LoadFile( filename );
+                            targetType = targetAssembly.GetType( targetName, false );
+                        }
+                        catch
+                        {
+                        }
                     }
                 }
-            }
 
-            // then try to load from the current file
-            if ( targetType == null )
-            {
-                targetType = System.Type.GetType( targetName );
-
+                // then try to load from the current file
                 if ( targetType == null )
                 {
-                    ErrorManager.error( ErrorManager.MSG_CANNOT_CREATE_TARGET_GENERATOR, targetName );
-                    return;
-                }
-            }
+                    targetType = System.Type.GetType( targetName );
 
-            target = (Target)targetType.GetConstructor( new System.Type[0] ).Invoke( new object[0] );
+                    if ( targetType == null )
+                    {
+                        ErrorManager.error( ErrorManager.MSG_CANNOT_CREATE_TARGET_GENERATOR, targetName );
+                        return;
+                    }
+                }
+
+                target = (Target)targetType.GetConstructor( new System.Type[0] ).Invoke( new object[0] );
+                _targets[language] = target;
+            }
         }
 
         /** load the main language.stg template group file */
@@ -294,12 +302,12 @@ namespace Antlr3.Codegen
             IStringTemplateGroupLoader loader =
                 new CommonGroupLoader( templateDirs,
                                       ErrorManager.getStringTemplateErrorListener() );
-            StringTemplateGroup.registerGroupLoader( loader );
-            StringTemplateGroup.registerDefaultLexer( typeof( AngleBracketTemplateLexer ) );
+            StringTemplateGroup.RegisterGroupLoader( loader );
+            StringTemplateGroup.RegisterDefaultLexer( typeof( AngleBracketTemplateLexer ) );
 
             // first load main language template
             StringTemplateGroup coreTemplates =
-                StringTemplateGroup.loadGroup( language );
+                StringTemplateGroup.LoadGroup( language );
             baseTemplates = coreTemplates;
             if ( coreTemplates == null )
             {
@@ -316,42 +324,42 @@ namespace Antlr3.Codegen
                 if ( debug && grammar.type != Grammar.LEXER )
                 {
                     StringTemplateGroup dbgTemplates =
-                        StringTemplateGroup.loadGroup( "Dbg", coreTemplates );
+                        StringTemplateGroup.LoadGroup( "Dbg", coreTemplates );
                     baseTemplates = dbgTemplates;
                     StringTemplateGroup astTemplates =
-                        StringTemplateGroup.loadGroup( "AST", dbgTemplates );
+                        StringTemplateGroup.LoadGroup( "AST", dbgTemplates );
                     StringTemplateGroup astParserTemplates = astTemplates;
                     //if ( !grammar.rewriteMode() ) {
                     if ( grammar.type == Grammar.TREE_PARSER )
                     {
                         astParserTemplates =
-                            StringTemplateGroup.loadGroup( "ASTTreeParser", astTemplates );
+                            StringTemplateGroup.LoadGroup( "ASTTreeParser", astTemplates );
                     }
                     else
                     {
                         astParserTemplates =
-                            StringTemplateGroup.loadGroup( "ASTParser", astTemplates );
+                            StringTemplateGroup.LoadGroup( "ASTParser", astTemplates );
                     }
                     //}
                     StringTemplateGroup astDbgTemplates =
-                        StringTemplateGroup.loadGroup( "ASTDbg", astParserTemplates );
+                        StringTemplateGroup.LoadGroup( "ASTDbg", astParserTemplates );
                     templates = astDbgTemplates;
                 }
                 else
                 {
                     StringTemplateGroup astTemplates =
-                        StringTemplateGroup.loadGroup( "AST", coreTemplates );
+                        StringTemplateGroup.LoadGroup( "AST", coreTemplates );
                     StringTemplateGroup astParserTemplates = astTemplates;
                     //if ( !grammar.rewriteMode() ) {
                     if ( grammar.type == Grammar.TREE_PARSER )
                     {
                         astParserTemplates =
-                            StringTemplateGroup.loadGroup( "ASTTreeParser", astTemplates );
+                            StringTemplateGroup.LoadGroup( "ASTTreeParser", astTemplates );
                     }
                     else
                     {
                         astParserTemplates =
-                            StringTemplateGroup.loadGroup( "ASTParser", astTemplates );
+                            StringTemplateGroup.LoadGroup( "ASTParser", astTemplates );
                     }
                     //}
                     templates = astParserTemplates;
@@ -362,20 +370,20 @@ namespace Antlr3.Codegen
                 if ( debug && grammar.type != Grammar.LEXER )
                 {
                     StringTemplateGroup dbgTemplates =
-                        StringTemplateGroup.loadGroup( "Dbg", coreTemplates );
+                        StringTemplateGroup.LoadGroup( "Dbg", coreTemplates );
                     baseTemplates = dbgTemplates;
                     StringTemplateGroup stTemplates =
-                        StringTemplateGroup.loadGroup( "ST", dbgTemplates );
+                        StringTemplateGroup.LoadGroup( "ST", dbgTemplates );
                     templates = stTemplates;
                 }
                 else
                 {
-                    templates = StringTemplateGroup.loadGroup( "ST", coreTemplates );
+                    templates = StringTemplateGroup.LoadGroup( "ST", coreTemplates );
                 }
             }
             else if ( debug && grammar.type != Grammar.LEXER )
             {
-                templates = StringTemplateGroup.loadGroup( "Dbg", coreTemplates );
+                templates = StringTemplateGroup.LoadGroup( "Dbg", coreTemplates );
                 baseTemplates = templates;
             }
             else
@@ -385,9 +393,9 @@ namespace Antlr3.Codegen
 
             if ( EMIT_TEMPLATE_DELIMITERS )
             {
-                templates.emitDebugStartStopStrings( true );
-                templates.doNotEmitDebugStringsForTemplate( "codeFileExtension" );
-                templates.doNotEmitDebugStringsForTemplate( "headerFileExtension" );
+                templates.EmitDebugStartStopStrings( true );
+                templates.DoNotEmitDebugStringsForTemplate( "codeFileExtension" );
+                templates.DoNotEmitDebugStringsForTemplate( "headerFileExtension" );
             }
         }
 
@@ -432,18 +440,18 @@ namespace Antlr3.Codegen
             optimizer.optimize();
 
             // OUTPUT FILE (contains recognizerST)
-            outputFileST = templates.getInstanceOf( "outputFile" );
+            outputFileST = templates.GetInstanceOf( "outputFile" );
 
             // HEADER FILE
-            if ( templates.isDefined( "headerFile" ) )
+            if ( templates.IsDefined( "headerFile" ) )
             {
-                headerFileST = templates.getInstanceOf( "headerFile" );
+                headerFileST = templates.GetInstanceOf( "headerFile" );
             }
             else
             {
                 // create a dummy to avoid null-checks all over code generator
                 headerFileST = new StringTemplate( templates, "" );
-                headerFileST.setName( "dummy-header-file" );
+                headerFileST.SetName( "dummy-header-file" );
             }
 
             bool filterMode = grammar.getOption( "filter" ) != null &&
@@ -463,85 +471,85 @@ namespace Antlr3.Codegen
             verifyActionScopesOkForTarget( actions );
             // translate $x::y references
             translateActionAttributeReferences( actions );
-            StringTemplate gateST = templates.getInstanceOf( "actionGate" );
+            StringTemplate gateST = templates.GetInstanceOf( "actionGate" );
             if ( filterMode )
             {
                 // if filtering, we need to set actions to execute at backtracking
                 // level 1 not 0.
-                gateST = templates.getInstanceOf( "filteringActionGate" );
+                gateST = templates.GetInstanceOf( "filteringActionGate" );
             }
             grammar.setSynPredGateIfNotAlready( gateST );
 
-            headerFileST.setAttribute( "actions", actions );
-            outputFileST.setAttribute( "actions", actions );
+            headerFileST.SetAttribute( "actions", actions );
+            outputFileST.SetAttribute( "actions", actions );
 
-            headerFileST.setAttribute( "buildTemplate", grammar.BuildTemplate );
-            outputFileST.setAttribute( "buildTemplate", grammar.BuildTemplate );
-            headerFileST.setAttribute( "buildAST", grammar.BuildAST );
-            outputFileST.setAttribute( "buildAST", grammar.BuildAST );
+            headerFileST.SetAttribute( "buildTemplate", grammar.BuildTemplate );
+            outputFileST.SetAttribute( "buildTemplate", grammar.BuildTemplate );
+            headerFileST.SetAttribute( "buildAST", grammar.BuildAST );
+            outputFileST.SetAttribute( "buildAST", grammar.BuildAST );
 
-            outputFileST.setAttribute( "rewriteMode", grammar.RewriteMode );
-            headerFileST.setAttribute( "rewriteMode", grammar.RewriteMode );
+            outputFileST.SetAttribute( "rewriteMode", grammar.RewriteMode );
+            headerFileST.SetAttribute( "rewriteMode", grammar.RewriteMode );
 
-            outputFileST.setAttribute( "backtracking", canBacktrack );
-            headerFileST.setAttribute( "backtracking", canBacktrack );
+            outputFileST.SetAttribute( "backtracking", canBacktrack );
+            headerFileST.SetAttribute( "backtracking", canBacktrack );
             // turn on memoize attribute at grammar level so we can create ruleMemo.
             // each rule has memoize attr that hides this one, indicating whether
             // it needs to save results
             string memoize = (string)grammar.getOption( "memoize" );
-            outputFileST.setAttribute( "memoize",
+            outputFileST.SetAttribute( "memoize",
                                       ( grammar.atLeastOneRuleMemoizes ||
                                       ( memoize != null && memoize.Equals( "true" ) ) &&
                                                   canBacktrack ) );
-            headerFileST.setAttribute( "memoize",
+            headerFileST.SetAttribute( "memoize",
                                       ( grammar.atLeastOneRuleMemoizes ||
                                       ( memoize != null && memoize.Equals( "true" ) ) &&
                                                   canBacktrack ) );
 
 
-            outputFileST.setAttribute( "trace", trace );
-            headerFileST.setAttribute( "trace", trace );
+            outputFileST.SetAttribute( "trace", trace );
+            headerFileST.SetAttribute( "trace", trace );
 
-            outputFileST.setAttribute( "profile", profile );
-            headerFileST.setAttribute( "profile", profile );
+            outputFileST.SetAttribute( "profile", profile );
+            headerFileST.SetAttribute( "profile", profile );
 
             // RECOGNIZER
             if ( grammar.type == Grammar.LEXER )
             {
-                recognizerST = templates.getInstanceOf( "lexer" );
-                outputFileST.setAttribute( "LEXER", true );
-                headerFileST.setAttribute( "LEXER", true );
-                recognizerST.setAttribute( "filterMode", filterMode );
+                recognizerST = templates.GetInstanceOf( "lexer" );
+                outputFileST.SetAttribute( "LEXER", true );
+                headerFileST.SetAttribute( "LEXER", true );
+                recognizerST.SetAttribute( "filterMode", filterMode );
             }
             else if ( grammar.type == Grammar.PARSER ||
                 grammar.type == Grammar.COMBINED )
             {
-                recognizerST = templates.getInstanceOf( "parser" );
-                outputFileST.setAttribute( "PARSER", true );
-                headerFileST.setAttribute( "PARSER", true );
+                recognizerST = templates.GetInstanceOf( "parser" );
+                outputFileST.SetAttribute( "PARSER", true );
+                headerFileST.SetAttribute( "PARSER", true );
             }
             else
             {
-                recognizerST = templates.getInstanceOf( "treeParser" );
-                outputFileST.setAttribute( "TREE_PARSER", true );
-                headerFileST.setAttribute( "TREE_PARSER", true );
-                recognizerST.setAttribute( "filterMode", filterMode );
+                recognizerST = templates.GetInstanceOf( "treeParser" );
+                outputFileST.SetAttribute( "TREE_PARSER", true );
+                headerFileST.SetAttribute( "TREE_PARSER", true );
+                recognizerST.SetAttribute( "filterMode", filterMode );
             }
-            outputFileST.setAttribute( "recognizer", recognizerST );
-            headerFileST.setAttribute( "recognizer", recognizerST );
-            outputFileST.setAttribute( "actionScope",
+            outputFileST.SetAttribute( "recognizer", recognizerST );
+            headerFileST.SetAttribute( "recognizer", recognizerST );
+            outputFileST.SetAttribute( "actionScope",
                                       grammar.getDefaultActionScope( grammar.type ) );
-            headerFileST.setAttribute( "actionScope",
+            headerFileST.SetAttribute( "actionScope",
                                       grammar.getDefaultActionScope( grammar.type ) );
 
             string targetAppropriateFileNameString =
                 target.getTargetStringLiteralFromString( grammar.FileName );
-            outputFileST.setAttribute( "fileName", targetAppropriateFileNameString );
-            headerFileST.setAttribute( "fileName", targetAppropriateFileNameString );
-            outputFileST.setAttribute( "ANTLRVersion", tool.VERSION );
-            headerFileST.setAttribute( "ANTLRVersion", tool.VERSION );
-            outputFileST.setAttribute( "generatedTimestamp", AntlrTool.getCurrentTimeStamp() );
-            headerFileST.setAttribute( "generatedTimestamp", AntlrTool.getCurrentTimeStamp() );
+            outputFileST.SetAttribute( "fileName", targetAppropriateFileNameString );
+            headerFileST.SetAttribute( "fileName", targetAppropriateFileNameString );
+            outputFileST.SetAttribute( "ANTLRVersion", tool.VERSION );
+            headerFileST.SetAttribute( "ANTLRVersion", tool.VERSION );
+            outputFileST.SetAttribute( "generatedTimestamp", AntlrTool.getCurrentTimeStamp() );
+            headerFileST.SetAttribute( "generatedTimestamp", AntlrTool.getCurrentTimeStamp() );
 
             {
                 // GENERATE RECOGNIZER
@@ -580,19 +588,19 @@ namespace Antlr3.Codegen
             {
                 synpredNames = grammar.synPredNamesUsedInDFA;
             }
-            outputFileST.setAttribute( "synpreds", synpredNames );
-            headerFileST.setAttribute( "synpreds", synpredNames );
+            outputFileST.SetAttribute( "synpreds", synpredNames );
+            headerFileST.SetAttribute( "synpreds", synpredNames );
 
             // all recognizers can see Grammar object
-            recognizerST.setAttribute( "grammar", grammar );
+            recognizerST.SetAttribute( "grammar", grammar );
 
             // WRITE FILES
             try
             {
                 target.genRecognizerFile( tool, this, grammar, outputFileST );
-                if ( templates.isDefined( "headerFile" ) )
+                if ( templates.IsDefined( "headerFile" ) )
                 {
-                    StringTemplate extST = templates.getInstanceOf( "headerFileExtension" );
+                    StringTemplate extST = templates.GetInstanceOf( "headerFileExtension" );
                     target.genRecognizerHeaderFile( tool, this, grammar, headerFileST, extST.ToString() );
                 }
                 // write out the vocab interchange file; used by antlr,
@@ -745,19 +753,19 @@ namespace Antlr3.Codegen
                 ulong w = words[j];
                 wordStrings[j] = target.getTarget64BitStringFromValue( w );
             }
-            recognizerST.setAttribute( "bitsets.{name,inName,bits,tokenTypes,tokenIndex}",
+            recognizerST.SetAttribute( "bitsets.{name,inName,bits,tokenTypes,tokenIndex}",
                     referencedElementName,
                     enclosingRuleName,
                     wordStrings,
                     tokenTypeList,
                     elementIndex );
-            outputFileST.setAttribute( "bitsets.{name,inName,bits,tokenTypes,tokenIndex}",
+            outputFileST.SetAttribute( "bitsets.{name,inName,bits,tokenTypes,tokenIndex}",
                     referencedElementName,
                     enclosingRuleName,
                     wordStrings,
                     tokenTypeList,
                     elementIndex );
-            headerFileST.setAttribute( "bitsets.{name,inName,bits,tokenTypes,tokenIndex}",
+            headerFileST.SetAttribute( "bitsets.{name,inName,bits,tokenTypes,tokenIndex}",
                     referencedElementName,
                     enclosingRuleName,
                     wordStrings,
@@ -791,16 +799,16 @@ namespace Antlr3.Codegen
             {
                 // generate any kind of DFA here (cyclic or acyclic)
                 dfa.createStateTables( this );
-                outputFileST.setAttribute( "cyclicDFAs", dfa );
-                headerFileST.setAttribute( "cyclicDFAs", dfa );
-                decisionST = templates.getInstanceOf( "dfaDecision" );
+                outputFileST.SetAttribute( "cyclicDFAs", dfa );
+                headerFileST.SetAttribute( "cyclicDFAs", dfa );
+                decisionST = templates.GetInstanceOf( "dfaDecision" );
                 string description = dfa.NFADecisionStartState.Description;
                 description = target.getTargetStringLiteralFromString( description );
                 if ( description != null )
                 {
-                    decisionST.setAttribute( "description", description );
+                    decisionST.SetAttribute( "description", description );
                 }
-                decisionST.setAttribute( "decisionNumber",
+                decisionST.SetAttribute( "decisionNumber",
                                         dfa.DecisionNumber );
             }
             return decisionST;
@@ -815,11 +823,11 @@ namespace Antlr3.Codegen
         public virtual StringTemplate generateSpecialState( DFAState s )
         {
             StringTemplate stateST;
-            stateST = templates.getInstanceOf( "cyclicDFAState" );
-            stateST.setAttribute( "needErrorClause", true );
-            stateST.setAttribute( "semPredState", s.IsResolvedWithPredicates );
-            stateST.setAttribute( "stateNumber", s.stateNumber );
-            stateST.setAttribute( "decisionNumber", s.dfa.decisionNumber );
+            stateST = templates.GetInstanceOf( "cyclicDFAState" );
+            stateST.SetAttribute( "needErrorClause", true );
+            stateST.SetAttribute( "semPredState", s.IsResolvedWithPredicates );
+            stateST.SetAttribute( "stateNumber", s.stateNumber );
+            stateST.SetAttribute( "decisionNumber", s.dfa.decisionNumber );
 
             bool foundGatedPred = false;
             StringTemplate eotST = null;
@@ -830,19 +838,19 @@ namespace Antlr3.Codegen
                 if ( edge.label.Atom == Label.EOT )
                 {
                     // this is the default clause; has to held until last
-                    edgeST = templates.getInstanceOf( "eotDFAEdge" );
-                    stateST.removeAttribute( "needErrorClause" );
+                    edgeST = templates.GetInstanceOf( "eotDFAEdge" );
+                    stateST.RemoveAttribute( "needErrorClause" );
                     eotST = edgeST;
                 }
                 else
                 {
-                    edgeST = templates.getInstanceOf( "cyclicDFAEdge" );
+                    edgeST = templates.GetInstanceOf( "cyclicDFAEdge" );
                     StringTemplate exprST =
                         genLabelExpr( templates, edge, 1 );
-                    edgeST.setAttribute( "labelExpr", exprST );
+                    edgeST.SetAttribute( "labelExpr", exprST );
                 }
-                edgeST.setAttribute( "edgeNumber", i + 1 );
-                edgeST.setAttribute( "targetStateNumber",
+                edgeST.SetAttribute( "edgeNumber", i + 1 );
+                edgeST.SetAttribute( "targetStateNumber",
                                      edge.target.stateNumber );
                 // stick in any gated predicates for any edge if not already a pred
                 if ( !edge.label.IsSemanticPredicate )
@@ -855,23 +863,23 @@ namespace Antlr3.Codegen
                         StringTemplate predST = preds.genExpr( this,
                                                               Templates,
                                                               t.dfa );
-                        edgeST.setAttribute( "predicates", predST.ToString() );
+                        edgeST.SetAttribute( "predicates", predST.ToString() );
                     }
                 }
                 if ( edge.label.Atom != Label.EOT )
                 {
-                    stateST.setAttribute( "edges", edgeST );
+                    stateST.SetAttribute( "edges", edgeST );
                 }
             }
             if ( foundGatedPred )
             {
                 // state has >= 1 edge with a gated pred (syn or sem)
                 // must rewind input first, set flag.
-                stateST.setAttribute( "semPredState", foundGatedPred );
+                stateST.SetAttribute( "semPredState", foundGatedPred );
             }
             if ( eotST != null )
             {
-                stateST.setAttribute( "edges", eotST );
+                stateST.SetAttribute( "edges", eotST );
             }
             return stateST;
         }
@@ -891,10 +899,10 @@ namespace Antlr3.Codegen
                 return genSetExpr( templates, label.Set, k, true );
             }
             // must be simple label
-            StringTemplate eST = templates.getInstanceOf( "lookaheadTest" );
-            eST.setAttribute( "atom", getTokenTypeAsTargetLabel( label.Atom ) );
-            eST.setAttribute( "atomAsInt", label.Atom );
-            eST.setAttribute( "k", k );
+            StringTemplate eST = templates.GetInstanceOf( "lookaheadTest" );
+            eST.SetAttribute( "atom", getTokenTypeAsTargetLabel( label.Atom ) );
+            eST.SetAttribute( "atomAsInt", label.Atom );
+            eST.SetAttribute( "k", k );
             return eST;
         }
 
@@ -923,7 +931,7 @@ namespace Antlr3.Codegen
             if ( iset.Intervals == null || iset.Intervals.Count == 0 )
             {
                 StringTemplate emptyST = new StringTemplate( templates, "" );
-                emptyST.setName( "empty-set-expr" );
+                emptyST.SetName( "empty-set-expr" );
                 return emptyST;
             }
             string testSTName = "lookaheadTest";
@@ -933,7 +941,7 @@ namespace Antlr3.Codegen
                 testSTName = "isolatedLookaheadTest";
                 testRangeSTName = "isolatedLookaheadRangeTest";
             }
-            StringTemplate setST = templates.getInstanceOf( "setTest" );
+            StringTemplate setST = templates.GetInstanceOf( "setTest" );
             int rangeNumber = 1;
             foreach ( Interval I in iset.getIntervals() )
             {
@@ -942,22 +950,22 @@ namespace Antlr3.Codegen
                 StringTemplate eST;
                 if ( a == b )
                 {
-                    eST = templates.getInstanceOf( testSTName );
-                    eST.setAttribute( "atom", getTokenTypeAsTargetLabel( a ) );
-                    eST.setAttribute( "atomAsInt", a );
+                    eST = templates.GetInstanceOf( testSTName );
+                    eST.SetAttribute( "atom", getTokenTypeAsTargetLabel( a ) );
+                    eST.SetAttribute( "atomAsInt", a );
                     //eST.setAttribute("k",Utils.integer(k));
                 }
                 else
                 {
-                    eST = templates.getInstanceOf( testRangeSTName );
-                    eST.setAttribute( "lower", getTokenTypeAsTargetLabel( a ) );
-                    eST.setAttribute( "lowerAsInt", a );
-                    eST.setAttribute( "upper", getTokenTypeAsTargetLabel( b ) );
-                    eST.setAttribute( "upperAsInt", b );
-                    eST.setAttribute( "rangeNumber", rangeNumber );
+                    eST = templates.GetInstanceOf( testRangeSTName );
+                    eST.SetAttribute( "lower", getTokenTypeAsTargetLabel( a ) );
+                    eST.SetAttribute( "lowerAsInt", a );
+                    eST.SetAttribute( "upper", getTokenTypeAsTargetLabel( b ) );
+                    eST.SetAttribute( "upperAsInt", b );
+                    eST.SetAttribute( "rangeNumber", rangeNumber );
                 }
-                eST.setAttribute( "k", k );
-                setST.setAttribute( "ranges", eST );
+                eST.SetAttribute( "k", k );
+                setST.SetAttribute( "ranges", eST );
                 rangeNumber++;
             }
             return setST;
@@ -979,7 +987,7 @@ namespace Antlr3.Codegen
                      tokenType >= Label.MIN_TOKEN_TYPE )
                 {
                     // don't do FAUX labels 'cept EOF
-                    code.setAttribute( "tokens.{name,type}", tokenID, tokenType );
+                    code.SetAttribute( "tokens.{name,type}", tokenID, tokenType );
                 }
             }
         }
@@ -995,7 +1003,7 @@ namespace Antlr3.Codegen
                 if ( tokenName != null )
                 {
                     tokenName = target.getTargetStringLiteralFromString( tokenName, true );
-                    code.setAttribute( "tokenNames", tokenName );
+                    code.SetAttribute( "tokenNames", tokenName );
                 }
             }
         }
@@ -1032,14 +1040,14 @@ namespace Antlr3.Codegen
             StringTemplate vocabFileST =
                 new StringTemplate( vocabFilePattern,
                                    typeof( AngleBracketTemplateLexer ) );
-            vocabFileST.setName( "vocab-file" );
+            vocabFileST.SetName( "vocab-file" );
             // make constants for the token names
             foreach ( string tokenID in grammar.TokenIDs )
             {
                 int tokenType = grammar.getTokenType( tokenID );
                 if ( tokenType >= Label.MIN_TOKEN_TYPE )
                 {
-                    vocabFileST.setAttribute( "tokens.{name,type}", tokenID, tokenType );
+                    vocabFileST.SetAttribute( "tokens.{name,type}", tokenID, tokenType );
                 }
             }
 
@@ -1049,7 +1057,7 @@ namespace Antlr3.Codegen
                 int tokenType = grammar.getTokenType( literal );
                 if ( tokenType >= Label.MIN_TOKEN_TYPE )
                 {
-                    vocabFileST.setAttribute( "tokens.{name,type}", literal, tokenType );
+                    vocabFileST.SetAttribute( "tokens.{name,type}", literal, tokenType );
                 }
             }
 
@@ -1093,8 +1101,8 @@ namespace Antlr3.Codegen
                     IList chunks = translator.translateToChunks();
                     chunks = target.postProcessAction( chunks, actionToken );
                     StringTemplate catST = new StringTemplate( templates, "<chunks>" );
-                    catST.setAttribute( "chunks", chunks );
-                    templates.createStringTemplate();
+                    catST.SetAttribute( "chunks", chunks );
+                    templates.CreateStringTemplate();
                     translatedArgs.Add( catST );
                 }
             }
@@ -1455,7 +1463,7 @@ namespace Antlr3.Codegen
          */
         public virtual string getRecognizerFileName( string name, int type )
         {
-            StringTemplate extST = templates.getInstanceOf( "codeFileExtension" );
+            StringTemplate extST = templates.GetInstanceOf( "codeFileExtension" );
             string recognizerName = grammar.getRecognizerName();
             return recognizerName + extST.ToString();
             /*
@@ -1486,9 +1494,9 @@ namespace Antlr3.Codegen
             DateTime start = DateTime.Now;
             TextWriter w = tool.getOutputFile( grammar, fileName );
             // Write the output to a StringWriter
-            IStringTemplateWriter wr = templates.getStringTemplateWriter( w );
-            wr.setLineWidth( lineWidth );
-            code.write( wr );
+            IStringTemplateWriter wr = templates.GetStringTemplateWriter( w );
+            wr.SetLineWidth( lineWidth );
+            code.Write( wr );
             w.Close();
             DateTime stop = DateTime.Now;
             //JSystem.@out.println("render time for "+fileName+": "+(int)(stop-start)+"ms");

@@ -255,13 +255,13 @@ anonymousTemplate
 	:	t=ANONYMOUS_TEMPLATE
 		{
 			anonymous = new StringTemplate();
-			anonymous.setGroup(self.getGroup());
-			anonymous.setEnclosingInstance(self);
-			anonymous.setTemplate($t.text);
+			anonymous.SetGroup(self.GetGroup());
+			anonymous.SetEnclosingInstance(self);
+			anonymous.SetTemplate($t.text);
 			if ( $t is StringTemplateToken )
-				anonymous.defineFormalArguments(((StringTemplateToken)$t).args);
+				anonymous.DefineFormalArguments(((StringTemplateToken)$t).args);
 			else
-				anonymous.defineFormalArguments(new ArrayList());
+				anonymous.DefineFormalArguments(new ArrayList());
 		}
 	;
 

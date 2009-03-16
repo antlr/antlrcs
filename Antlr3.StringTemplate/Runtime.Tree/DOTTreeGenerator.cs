@@ -81,16 +81,16 @@ namespace Antlr.Runtime.Tree
         /** Track node number so we can get unique node names */
         int nodeNumber = 0;
 
-        public virtual StringTemplate toDOT( object tree,
+        public virtual StringTemplate ToDOT( object tree,
                                     ITreeAdaptor adaptor,
                                     StringTemplate _treeST,
                                     StringTemplate _edgeST )
         {
-            StringTemplate treeST = _treeST.getInstanceOf();
+            StringTemplate treeST = _treeST.GetInstanceOf();
             nodeNumber = 0;
-            toDOTDefineNodes( tree, adaptor, treeST );
+            ToDOTDefineNodes( tree, adaptor, treeST );
             nodeNumber = 0;
-            toDOTDefineEdges( tree, adaptor, treeST );
+            ToDOTDefineEdges( tree, adaptor, treeST );
             /*
             if ( adaptor.getChildCount(tree)==0 ) {
                 // single node, don't do edge.
@@ -100,10 +100,10 @@ namespace Antlr.Runtime.Tree
             return treeST;
         }
 
-        public virtual StringTemplate toDOT( object tree,
+        public virtual StringTemplate ToDOT( object tree,
                                     ITreeAdaptor adaptor )
         {
-            return toDOT( tree, adaptor, _treeST, _edgeST );
+            return ToDOT( tree, adaptor, _treeST, _edgeST );
         }
 
         /** Generate DOT (graphviz) for a whole tree not just a node.
@@ -123,12 +123,12 @@ namespace Antlr.Runtime.Tree
          *
          * Takes a Tree interface object.
          */
-        public virtual StringTemplate toDOT( ITree tree )
+        public virtual StringTemplate ToDOT( ITree tree )
         {
-            return toDOT( tree, new CommonTreeAdaptor() );
+            return ToDOT( tree, new CommonTreeAdaptor() );
         }
 
-        protected virtual void toDOTDefineNodes( object tree, ITreeAdaptor adaptor, StringTemplate treeST )
+        protected virtual void ToDOTDefineNodes( object tree, ITreeAdaptor adaptor, StringTemplate treeST )
         {
             if ( tree == null )
             {
@@ -143,20 +143,20 @@ namespace Antlr.Runtime.Tree
             }
 
             // define parent node
-            StringTemplate parentNodeST = getNodeST( adaptor, tree );
-            treeST.setAttribute( "nodes", parentNodeST );
+            StringTemplate parentNodeST = GetNodeST( adaptor, tree );
+            treeST.SetAttribute( "nodes", parentNodeST );
 
             // for each child, do a "<unique-name> [label=text]" node def
             for ( int i = 0; i < n; i++ )
             {
                 object child = adaptor.GetChild( tree, i );
-                StringTemplate nodeST = getNodeST( adaptor, child );
-                treeST.setAttribute( "nodes", nodeST );
-                toDOTDefineNodes( child, adaptor, treeST );
+                StringTemplate nodeST = GetNodeST( adaptor, child );
+                treeST.SetAttribute( "nodes", nodeST );
+                ToDOTDefineNodes( child, adaptor, treeST );
             }
         }
 
-        protected virtual void toDOTDefineEdges( object tree, ITreeAdaptor adaptor, StringTemplate treeST )
+        protected virtual void ToDOTDefineEdges( object tree, ITreeAdaptor adaptor, StringTemplate treeST )
         {
             if ( tree == null )
             {
@@ -170,7 +170,7 @@ namespace Antlr.Runtime.Tree
                 return;
             }
 
-            string parentName = "n" + getNodeNumber( tree );
+            string parentName = "n" + GetNodeNumber( tree );
 
             // for each child, do a parent -> child edge using unique node names
             string parentText = adaptor.GetText( tree );
@@ -178,28 +178,28 @@ namespace Antlr.Runtime.Tree
             {
                 object child = adaptor.GetChild( tree, i );
                 string childText = adaptor.GetText( child );
-                string childName = "n" + getNodeNumber( child );
-                StringTemplate edgeST = _edgeST.getInstanceOf();
-                edgeST.setAttribute( "parent", parentName );
-                edgeST.setAttribute( "child", childName );
-                edgeST.setAttribute( "parentText", fixString( parentText ) );
-                edgeST.setAttribute( "childText", fixString( childText ) );
-                treeST.setAttribute( "edges", edgeST );
-                toDOTDefineEdges( child, adaptor, treeST );
+                string childName = "n" + GetNodeNumber( child );
+                StringTemplate edgeST = _edgeST.GetInstanceOf();
+                edgeST.SetAttribute( "parent", parentName );
+                edgeST.SetAttribute( "child", childName );
+                edgeST.SetAttribute( "parentText", FixString( parentText ) );
+                edgeST.SetAttribute( "childText", FixString( childText ) );
+                treeST.SetAttribute( "edges", edgeST );
+                ToDOTDefineEdges( child, adaptor, treeST );
             }
         }
 
-        protected virtual StringTemplate getNodeST( ITreeAdaptor adaptor, object t )
+        protected virtual StringTemplate GetNodeST( ITreeAdaptor adaptor, object t )
         {
             string text = adaptor.GetText( t );
-            StringTemplate nodeST = _nodeST.getInstanceOf();
-            string uniqueName = "n" + getNodeNumber( t );
-            nodeST.setAttribute( "name", uniqueName );
-            nodeST.setAttribute( "text", fixString( text ) );
+            StringTemplate nodeST = _nodeST.GetInstanceOf();
+            string uniqueName = "n" + GetNodeNumber( t );
+            nodeST.SetAttribute( "name", uniqueName );
+            nodeST.SetAttribute( "text", FixString( text ) );
             return nodeST;
         }
 
-        protected virtual int getNodeNumber( object t )
+        protected virtual int GetNodeNumber( object t )
         {
             int i;
             if ( nodeToNumberMap.TryGetValue( t, out i ) )
@@ -214,7 +214,7 @@ namespace Antlr.Runtime.Tree
             }
         }
 
-        protected virtual string fixString( string text )
+        protected virtual string FixString( string text )
         {
             if ( text != null )
             {

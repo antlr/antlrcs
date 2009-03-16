@@ -185,11 +185,11 @@ namespace Antlr3.Analysis
                 {
                     if ( synpred )
                     {
-                        eST = templates.getInstanceOf( "evalSynPredicate" );
+                        eST = templates.GetInstanceOf( "evalSynPredicate" );
                     }
                     else
                     {
-                        eST = templates.getInstanceOf( "evalPredicate" );
+                        eST = templates.GetInstanceOf( "evalPredicate" );
                         generator.grammar.decisionsWhoseDFAsUsesSemPreds.Add( dfa );
                     }
                     string predEnclosingRuleName = predicateAST.enclosingRuleName;
@@ -203,21 +203,21 @@ namespace Antlr3.Analysis
                     //eST.setAttribute("pred", this.toString());
                     if ( generator != null )
                     {
-                        eST.setAttribute( "pred",
+                        eST.SetAttribute( "pred",
                                          generator.translateAction( predEnclosingRuleName, predicateAST ) );
                     }
                 }
                 else
                 {
                     eST = new StringTemplate( "$pred$" );
-                    eST.setAttribute( "pred", this.ToString() );
+                    eST.SetAttribute( "pred", this.ToString() );
                     return eST;
                 }
                 if ( generator != null )
                 {
                     string description =
                         generator.target.getTargetStringLiteralFromString( this.ToString() );
-                    eST.setAttribute( "description", description );
+                    eST.SetAttribute( "description", description );
                 }
                 return eST;
             }
@@ -275,7 +275,7 @@ namespace Antlr3.Analysis
             {
                 if ( templates != null )
                 {
-                    return templates.getInstanceOf( "true" );
+                    return templates.GetInstanceOf( "true" );
                 }
                 return new StringTemplate( "true" );
             }
@@ -322,14 +322,14 @@ namespace Antlr3.Analysis
                 StringTemplate eST = null;
                 if ( templates != null )
                 {
-                    eST = templates.getInstanceOf( "andPredicates" );
+                    eST = templates.GetInstanceOf( "andPredicates" );
                 }
                 else
                 {
                     eST = new StringTemplate( "($left$&&$right$)" );
                 }
-                eST.setAttribute( "left", left.genExpr( generator, templates, dfa ) );
-                eST.setAttribute( "right", right.genExpr( generator, templates, dfa ) );
+                eST.SetAttribute( "left", left.genExpr( generator, templates, dfa ) );
+                eST.SetAttribute( "right", right.genExpr( generator, templates, dfa ) );
                 return eST;
             }
             public override SemanticContext GatedPredicateContext
@@ -397,7 +397,7 @@ namespace Antlr3.Analysis
                 StringTemplate eST = null;
                 if ( templates != null )
                 {
-                    eST = templates.getInstanceOf( "orPredicates" );
+                    eST = templates.GetInstanceOf( "orPredicates" );
                 }
                 else
                 {
@@ -405,7 +405,7 @@ namespace Antlr3.Analysis
                 }
                 foreach ( SemanticContext semctx in operands )
                 {
-                    eST.setAttribute( "operands", semctx.genExpr( generator, templates, dfa ) );
+                    eST.SetAttribute( "operands", semctx.genExpr( generator, templates, dfa ) );
                 }
                 return eST;
             }
@@ -480,13 +480,13 @@ namespace Antlr3.Analysis
                 StringTemplate eST = null;
                 if ( templates != null )
                 {
-                    eST = templates.getInstanceOf( "notPredicate" );
+                    eST = templates.GetInstanceOf( "notPredicate" );
                 }
                 else
                 {
                     eST = new StringTemplate( "?!($pred$)" );
                 }
-                eST.setAttribute( "pred", ctx.genExpr( generator, templates, dfa ) );
+                eST.SetAttribute( "pred", ctx.genExpr( generator, templates, dfa ) );
                 return eST;
             }
             public override SemanticContext GatedPredicateContext

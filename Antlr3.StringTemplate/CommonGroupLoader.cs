@@ -70,7 +70,7 @@ namespace Antlr3.ST
          *  Look in each relative directory for the file called 'name'.
          *  </summary>
          */
-        protected override TextReader locate( string name )
+        protected override TextReader Locate( string name )
         {
             // check for templates on disk first
             foreach ( string dir in _dirs )

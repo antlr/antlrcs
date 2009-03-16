@@ -104,21 +104,21 @@ namespace Antlr3.Tool
             markedStates = new HashSet<object>();
             if ( startState is DFAState )
             {
-                dot = stlib.getInstanceOf( "org/antlr/tool/templates/dot/dfa" );
-                dot.setAttribute( "startState",
+                dot = stlib.GetInstanceOf( "org/antlr/tool/templates/dot/dfa" );
+                dot.SetAttribute( "startState",
                         startState.stateNumber );
-                dot.setAttribute( "useBox",
+                dot.SetAttribute( "useBox",
                                  Tool.internalOption_ShowNFAConfigsInDFA );
                 walkCreatingDFADOT( dot, (DFAState)startState );
             }
             else
             {
-                dot = stlib.getInstanceOf( "org/antlr/tool/templates/dot/nfa" );
-                dot.setAttribute( "startState",
+                dot = stlib.GetInstanceOf( "org/antlr/tool/templates/dot/nfa" );
+                dot.SetAttribute( "startState",
                         startState.stateNumber );
                 walkRuleNFACreatingDOT( dot, startState );
             }
-            dot.setAttribute( "rankdir", rankdir );
+            dot.SetAttribute( "rankdir", rankdir );
             return dot.ToString();
         }
 
@@ -155,14 +155,14 @@ namespace Antlr3.Tool
             StringTemplate st;
             if ( s.IsAcceptState )
             {
-                st = stlib.getInstanceOf( "org/antlr/tool/templates/dot/stopstate" );
+                st = stlib.GetInstanceOf( "org/antlr/tool/templates/dot/stopstate" );
             }
             else
             {
-                st = stlib.getInstanceOf( "org/antlr/tool/templates/dot/state" );
+                st = stlib.GetInstanceOf( "org/antlr/tool/templates/dot/state" );
             }
-            st.setAttribute( "name", getStateLabel( s ) );
-            dot.setAttribute( "states", st );
+            st.SetAttribute( "name", getStateLabel( s ) );
+            dot.SetAttribute( "states", st );
 
             // make a DOT edge for each transition
             for ( int i = 0; i < s.NumberOfTransitions; i++ )
@@ -180,12 +180,12 @@ namespace Antlr3.Tool
                         continue; // don't generate nodes for terminal states
                     }
                 }
-                st = stlib.getInstanceOf( "org/antlr/tool/templates/dot/edge" );
-                st.setAttribute( "label", getEdgeLabel( edge ) );
-                st.setAttribute( "src", getStateLabel( s ) );
-                st.setAttribute( "target", getStateLabel( edge.target ) );
-                st.setAttribute( "arrowhead", arrowhead );
-                dot.setAttribute( "edges", st );
+                st = stlib.GetInstanceOf( "org/antlr/tool/templates/dot/edge" );
+                st.SetAttribute( "label", getEdgeLabel( edge ) );
+                st.SetAttribute( "src", getStateLabel( s ) );
+                st.SetAttribute( "target", getStateLabel( edge.target ) );
+                st.SetAttribute( "arrowhead", arrowhead );
+                dot.SetAttribute( "edges", st );
                 walkCreatingDFADOT( dot, (DFAState)edge.target ); // keep walkin'
             }
         }
@@ -210,14 +210,14 @@ namespace Antlr3.Tool
             StringTemplate stateST;
             if ( s.IsAcceptState )
             {
-                stateST = stlib.getInstanceOf( "org/antlr/tool/templates/dot/stopstate" );
+                stateST = stlib.GetInstanceOf( "org/antlr/tool/templates/dot/stopstate" );
             }
             else
             {
-                stateST = stlib.getInstanceOf( "org/antlr/tool/templates/dot/state" );
+                stateST = stlib.GetInstanceOf( "org/antlr/tool/templates/dot/state" );
             }
-            stateST.setAttribute( "name", getStateLabel( s ) );
-            dot.setAttribute( "states", stateST );
+            stateST.SetAttribute( "name", getStateLabel( s ) );
+            dot.SetAttribute( "states", stateST );
 
             if ( s.IsAcceptState )
             {
@@ -231,11 +231,11 @@ namespace Antlr3.Tool
                 GrammarAST n = ( (NFAState)s ).associatedASTNode;
                 if ( n != null && n.Type != ANTLRParser.EOB )
                 {
-                    StringTemplate rankST = stlib.getInstanceOf( "org/antlr/tool/templates/dot/decision-rank" );
+                    StringTemplate rankST = stlib.GetInstanceOf( "org/antlr/tool/templates/dot/decision-rank" );
                     NFAState alt = (NFAState)s;
                     while ( alt != null )
                     {
-                        rankST.setAttribute( "states", getStateLabel( alt ) );
+                        rankST.SetAttribute( "states", getStateLabel( alt ) );
                         if ( alt.transition[1] != null )
                         {
                             alt = (NFAState)alt.transition[1].target;
@@ -245,7 +245,7 @@ namespace Antlr3.Tool
                             alt = null;
                         }
                     }
-                    dot.setAttribute( "decisionRanks", rankST );
+                    dot.SetAttribute( "decisionRanks", rankST );
                 }
             }
 
@@ -258,39 +258,39 @@ namespace Antlr3.Tool
                 {
                     RuleClosureTransition rr = ( (RuleClosureTransition)edge );
                     // don't jump to other rules, but display edge to follow node
-                    edgeST = stlib.getInstanceOf( "org/antlr/tool/templates/dot/edge" );
+                    edgeST = stlib.GetInstanceOf( "org/antlr/tool/templates/dot/edge" );
                     if ( rr.rule.grammar != grammar )
                     {
-                        edgeST.setAttribute( "label", "<" + rr.rule.grammar.name + "." + rr.rule.name + ">" );
+                        edgeST.SetAttribute( "label", "<" + rr.rule.grammar.name + "." + rr.rule.name + ">" );
                     }
                     else
                     {
-                        edgeST.setAttribute( "label", "<" + rr.rule.name + ">" );
+                        edgeST.SetAttribute( "label", "<" + rr.rule.name + ">" );
                     }
-                    edgeST.setAttribute( "src", getStateLabel( s ) );
-                    edgeST.setAttribute( "target", getStateLabel( rr.followState ) );
-                    edgeST.setAttribute( "arrowhead", arrowhead );
-                    dot.setAttribute( "edges", edgeST );
+                    edgeST.SetAttribute( "src", getStateLabel( s ) );
+                    edgeST.SetAttribute( "target", getStateLabel( rr.followState ) );
+                    edgeST.SetAttribute( "arrowhead", arrowhead );
+                    dot.SetAttribute( "edges", edgeST );
                     walkRuleNFACreatingDOT( dot, rr.followState );
                     continue;
                 }
                 if ( edge.IsAction )
                 {
-                    edgeST = stlib.getInstanceOf( "org/antlr/tool/templates/dot/action-edge" );
+                    edgeST = stlib.GetInstanceOf( "org/antlr/tool/templates/dot/action-edge" );
                 }
                 else if ( edge.IsEpsilon )
                 {
-                    edgeST = stlib.getInstanceOf( "org/antlr/tool/templates/dot/epsilon-edge" );
+                    edgeST = stlib.GetInstanceOf( "org/antlr/tool/templates/dot/epsilon-edge" );
                 }
                 else
                 {
-                    edgeST = stlib.getInstanceOf( "org/antlr/tool/templates/dot/edge" );
+                    edgeST = stlib.GetInstanceOf( "org/antlr/tool/templates/dot/edge" );
                 }
-                edgeST.setAttribute( "label", getEdgeLabel( edge ) );
-                edgeST.setAttribute( "src", getStateLabel( s ) );
-                edgeST.setAttribute( "target", getStateLabel( edge.target ) );
-                edgeST.setAttribute( "arrowhead", arrowhead );
-                dot.setAttribute( "edges", edgeST );
+                edgeST.SetAttribute( "label", getEdgeLabel( edge ) );
+                edgeST.SetAttribute( "src", getStateLabel( s ) );
+                edgeST.SetAttribute( "target", getStateLabel( edge.target ) );
+                edgeST.SetAttribute( "arrowhead", arrowhead );
+                dot.SetAttribute( "edges", edgeST );
                 walkRuleNFACreatingDOT( dot, edge.target ); // keep walkin'
             }
         }

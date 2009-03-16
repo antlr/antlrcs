@@ -85,7 +85,7 @@ using Vector = System.Collections.Generic.List<object>;
 
 public
 action returns [int numCharsWritten=0]
-	:	expr {$numCharsWritten = chunk.writeAttribute(self,$expr.value,writer);}
+	:	expr {$numCharsWritten = chunk.WriteAttribute(self,$expr.value,writer);}
 	;
 
 expr returns [object value]
@@ -104,8 +104,8 @@ expr returns [object value]
 		// convert to string (force early eval)
 		{
 			StringWriter buf = new StringWriter();
-			IStringTemplateWriter sw = self.getGroup().getStringTemplateWriter(buf);
-			int n = chunk.writeAttribute(self,$e.value,sw);
+			IStringTemplateWriter sw = self.GetGroup().GetStringTemplateWriter(buf);
+			int n = chunk.WriteAttribute(self,$e.value,sw);
 			if ( n > 0 )
 			{
 				$value = buf.ToString();
@@ -144,7 +144,7 @@ templateInclude returns [object value=null]
 	string name = null;
 }
 	:	^(	INCLUDE
-			//{value = chunk.getTemplateInclude(self, name.getText(), #args);}
+			//{value = chunk.GetTemplateInclude(self, name.getText(), #args);}
 			(	id=ID a1=.
 				{name=$id.text; args=$a1;}
 
@@ -156,7 +156,7 @@ templateInclude returns [object value=null]
 		{
 			if ( name!=null )
 			{
-				$value = chunk.getTemplateInclude(self, name, args);
+				$value = chunk.GetTemplateInclude(self, name, args);
 			}
 		}
 	;
@@ -172,14 +172,14 @@ templateApplication returns [object value]
 }
 	:	^(	APPLY a=expr
 			(template[templatesToApply])+
-			{$value = chunk.applyListOfAlternatingTemplates(self,$a.value,templatesToApply);}
+			{$value = chunk.ApplyListOfAlternatingTemplates(self,$a.value,templatesToApply);}
 		)
 	|	^(	MULTI_APPLY (a=expr {attributes.Add($a.value);} )+ COLON
 			anon=ANONYMOUS_TEMPLATE
 			{
 				StringTemplate anonymous = $anon.StringTemplate;
 				templatesToApply.Add(anonymous);
-				$value = chunk.applyTemplateToListOfAttributes(self,
+				$value = chunk.ApplyTemplateToListOfAttributes(self,
 															  attributes,
 															  $anon.StringTemplate);
 			}
@@ -188,12 +188,12 @@ templateApplication returns [object value]
 
 function returns [object value]
 	:	^(	FUNCTION
-			(	'first'		a=singleFunctionArg	{$value=chunk.first($a.value);}
-			|	'rest'		a=singleFunctionArg	{$value=chunk.rest($a.value);}
-			|	'last'		a=singleFunctionArg	{$value=chunk.last($a.value);}
-			|	'length'	a=singleFunctionArg	{$value=chunk.length($a.value);}
-			|	'strip'		a=singleFunctionArg	{$value=chunk.strip($a.value);}
-			|	'trunc'		a=singleFunctionArg	{$value=chunk.trunc($a.value);}
+			(	'first'		a=singleFunctionArg	{$value=chunk.First($a.value);}
+			|	'rest'		a=singleFunctionArg	{$value=chunk.Rest($a.value);}
+			|	'last'		a=singleFunctionArg	{$value=chunk.Last($a.value);}
+			|	'length'	a=singleFunctionArg	{$value=chunk.Length($a.value);}
+			|	'strip'		a=singleFunctionArg	{$value=chunk.Strip($a.value);}
+			|	'trunc'		a=singleFunctionArg	{$value=chunk.Trunc($a.value);}
 			)
 		)
 	;
@@ -211,11 +211,11 @@ template[System.Collections.Generic.List<StringTemplate> templatesToApply]
 			(	ID args=. // don't eval argList now; must re-eval each iteration
 				{
 					string templateName = $ID.text;
-					StringTemplateGroup group = self.getGroup();
-					StringTemplate embedded = group.getEmbeddedInstanceOf(self, templateName);
+					StringTemplateGroup group = self.GetGroup();
+					StringTemplate embedded = group.GetEmbeddedInstanceOf(self, templateName);
 					if ( embedded!=null )
 					{
-						embedded.setArgumentsAST($args);
+						embedded.SetArgumentsAST($args);
 						$templatesToApply.Add(embedded);
 					}
 				}
@@ -225,7 +225,7 @@ template[System.Collections.Generic.List<StringTemplate> templatesToApply]
 					StringTemplate anonymous = $anon.StringTemplate;
 					// to properly see overridden templates, always set
 					// anonymous' group to be self's group
-					anonymous.setGroup(self.getGroup());
+					anonymous.SetGroup(self.GetGroup());
 					$templatesToApply.Add(anonymous);
 				}
 
@@ -235,11 +235,11 @@ template[System.Collections.Generic.List<StringTemplate> templatesToApply]
 						if ( $n.value!=null )
 						{
 							string templateName = $n.value.ToString();
-							StringTemplateGroup group = self.getGroup();
-							embedded = group.getEmbeddedInstanceOf(self, templateName);
+							StringTemplateGroup group = self.GetGroup();
+							embedded = group.GetEmbeddedInstanceOf(self, templateName);
 							if ( embedded!=null )
 							{
-								embedded.setArgumentsAST($args2);
+								embedded.SetArgumentsAST($args2);
 								$templatesToApply.Add(embedded);
 							}
 						}
@@ -251,8 +251,8 @@ template[System.Collections.Generic.List<StringTemplate> templatesToApply]
 
 public
 ifCondition returns [bool value]
-	:	a=ifAtom {$value = chunk.testAttributeTrue($a.value);}
-	|	^(NOT a=ifAtom) {$value = !chunk.testAttributeTrue($a.value);}
+	:	a=ifAtom {$value = chunk.TestAttributeTrue($a.value);}
+	|	^(NOT a=ifAtom) {$value = !chunk.TestAttributeTrue($a.value);}
 	;
 
 ifAtom returns [object value]
@@ -273,11 +273,11 @@ attribute returns [object value]
 			|	^(VALUE e=expr) {if ($e.value!=null) {propName=$e.value;}}
 			)
 		)
-		{$value = chunk.getObjectProperty(self,$obj.value,propName);}
+		{$value = chunk.GetObjectProperty(self,$obj.value,propName);}
 
 	|	i3=ID
 		{
-		$value=self.getAttribute($i3.text);
+		$value=self.GetAttribute($i3.text);
 		}
 
 	|	i=INT {$value=int.Parse($i.text);}
@@ -292,9 +292,9 @@ attribute returns [object value]
 			$value=$at.text;
 			if ( $at.text!=null )
 			{
-				StringTemplate valueST =new StringTemplate(self.getGroup(), $at.text);
-				valueST.setEnclosingInstance(self);
-				valueST.setName("<anonymous template argument>");
+				StringTemplate valueST =new StringTemplate(self.GetGroup(), $at.text);
+				valueST.SetEnclosingInstance(self);
+				valueST.SetName("<anonymous template argument>");
 				$value = valueST;
 			}
 		}
@@ -328,14 +328,14 @@ singleTemplateArg[StringTemplate embedded, Map argumentContext]
 				string soleArgName = null;
 				// find the sole defined formal argument for embedded
 				bool error = false;
-				var formalArgs = $embedded.getFormalArguments();
+				var formalArgs = $embedded.GetFormalArguments();
 				if ( formalArgs!=null )
 				{
 					var argNames = formalArgs.Select( fa => fa.name ).ToArray();
 					if ( argNames.Length==1 )
 					{
 						soleArgName = (string)argNames.ToArray()[0];
-						//System.out.println("sole formal arg of "+$embedded.getName()+" is "+soleArgName);
+						//System.out.println("sole formal arg of "+$embedded.GetName()+" is "+soleArgName);
 					}
 					else
 					{
@@ -348,13 +348,13 @@ singleTemplateArg[StringTemplate embedded, Map argumentContext]
 				}
 				if ( error )
 				{
-					self.error("template "+$embedded.getName()+
+					self.Error("template "+$embedded.GetName()+
 							   " must have exactly one formal arg in template context "+
-							   self.getEnclosingInstanceStackString());
+							   self.GetEnclosingInstanceStackString());
 				}
 				else
 				{
-					self.rawSetArgumentAttribute($embedded,$argumentContext,soleArgName,$e.value);
+					self.RawSetArgumentAttribute($embedded,$argumentContext,soleArgName,$e.value);
 				}
 			}
 		}
@@ -365,8 +365,8 @@ argumentAssignment[StringTemplate embedded, Map argumentContext]
 		{
 			if ( $expr.value != null )
 			{
-				self.rawSetArgumentAttribute($embedded,$argumentContext,$arg.text,$expr.value);
+				self.RawSetArgumentAttribute($embedded,$argumentContext,$arg.text,$expr.value);
 			}
 		}
-	|	DOTDOTDOT {$embedded.setPassThroughAttributes(true);}
+	|	DOTDOTDOT {$embedded.SetPassThroughAttributes(true);}
 	;

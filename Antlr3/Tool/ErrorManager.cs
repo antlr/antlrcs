@@ -331,7 +331,7 @@ namespace Antlr3.Tool
 
         class InitSTListener : IStringTemplateErrorListener
         {
-            public virtual void error( String s, Exception e )
+            public virtual void Error( String s, Exception e )
             {
                 Console.Error.WriteLine( "ErrorManager init error: " + s );
                 if ( e != null )
@@ -344,11 +344,11 @@ namespace Antlr3.Tool
                 }
                 */
             }
-            public virtual void warning( String s )
+            public virtual void Warning( String s )
             {
                 Console.Error.WriteLine( "ErrorManager init warning: " + s );
             }
-            public virtual void debug( String s )
+            public virtual void Debug( String s )
             {
             }
         }
@@ -378,10 +378,10 @@ namespace Antlr3.Tool
 
         class BlankSTListener : IStringTemplateErrorListener
         {
-            public virtual void error( string msg, Exception e )
+            public virtual void Error( string msg, Exception e )
             {
             }
-            public virtual void warning( string msg )
+            public virtual void Warning( string msg )
             {
             }
         }
@@ -400,7 +400,7 @@ namespace Antlr3.Tool
 
         class DefaultSTListener : IStringTemplateErrorListener
         {
-            public virtual void error( String s, Exception e )
+            public virtual void Error( String s, Exception e )
             {
                 if ( e is TargetInvocationException )
                 {
@@ -408,11 +408,11 @@ namespace Antlr3.Tool
                 }
                 ErrorManager.error( ErrorManager.MSG_INTERNAL_ERROR, s, e );
             }
-            public virtual void warning( String s )
+            public virtual void Warning( String s )
             {
                 ErrorManager.warning( ErrorManager.MSG_INTERNAL_WARNING, s );
             }
-            public virtual void debug( String s )
+            public virtual void Debug( String s )
             {
             }
         }
@@ -673,17 +673,17 @@ namespace Antlr3.Tool
         public static StringTemplate getMessage( int msgID )
         {
             String msgName = idToMessageTemplateName[msgID];
-            return messages.getInstanceOf( msgName );
+            return messages.GetInstanceOf( msgName );
         }
         public static String getMessageType( int msgID )
         {
             if ( getErrorState().warningMsgIDs.member( msgID ) )
             {
-                return messages.getInstanceOf( "warning" ).ToString();
+                return messages.GetInstanceOf( "warning" ).ToString();
             }
             else if ( getErrorState().errorMsgIDs.member( msgID ) )
             {
-                return messages.getInstanceOf( "error" ).ToString();
+                return messages.GetInstanceOf( "error" ).ToString();
             }
             assertTrue( false, "Assertion failed! Message ID " + msgID + " created but is not present in errorMsgIDs or warningMsgIDs." );
             return "";
@@ -694,19 +694,19 @@ namespace Antlr3.Tool
          */
         public static StringTemplate getLocationFormat()
         {
-            return format.getInstanceOf( "location" );
+            return format.GetInstanceOf( "location" );
         }
         public static StringTemplate getReportFormat()
         {
-            return format.getInstanceOf( "report" );
+            return format.GetInstanceOf( "report" );
         }
         public static StringTemplate getMessageFormat()
         {
-            return format.getInstanceOf( "message" );
+            return format.GetInstanceOf( "message" );
         }
         public static bool formatWantsSingleLineMessage()
         {
-            return format.getInstanceOf( "wantsSingleLineMessage" ).ToString().Equals( "true" );
+            return format.GetInstanceOf( "wantsSingleLineMessage" ).ToString().Equals( "true" );
         }
 
         public static IANTLRErrorListener getErrorListener()
@@ -1062,7 +1062,7 @@ namespace Antlr3.Tool
                     fieldName.Substring( "MSG_".Length );
                 if ( fieldName.StartsWith( "MSG_" ) )
                 {
-                    if ( !messages.isDefined( templateName ) )
+                    if ( !messages.IsDefined( templateName ) )
                     {
                         Console.Out.WriteLine( "Message " + templateName + " in locale " +
                                            locale + " not found" );
@@ -1071,12 +1071,12 @@ namespace Antlr3.Tool
                 }
             }
             // check for special templates
-            if ( !messages.isDefined( "warning" ) )
+            if ( !messages.IsDefined( "warning" ) )
             {
                 Console.Error.WriteLine( "Message template 'warning' not found in locale " + locale );
                 ok = false;
             }
-            if ( !messages.isDefined( "error" ) )
+            if ( !messages.IsDefined( "error" ) )
             {
                 Console.Error.WriteLine( "Message template 'error' not found in locale " + locale );
                 ok = false;
@@ -1088,17 +1088,17 @@ namespace Antlr3.Tool
         static bool verifyFormat()
         {
             bool ok = true;
-            if ( !format.isDefined( "location" ) )
+            if ( !format.IsDefined( "location" ) )
             {
                 Console.Error.WriteLine( "Format template 'location' not found in " + formatName );
                 ok = false;
             }
-            if ( !format.isDefined( "message" ) )
+            if ( !format.IsDefined( "message" ) )
             {
                 Console.Error.WriteLine( "Format template 'message' not found in " + formatName );
                 ok = false;
             }
-            if ( !format.isDefined( "report" ) )
+            if ( !format.IsDefined( "report" ) )
             {
                 Console.Error.WriteLine( "Format template 'report' not found in " + formatName );
                 ok = false;
@@ -1117,7 +1117,7 @@ namespace Antlr3.Tool
         static void rawError( String msg, Exception e )
         {
             rawError( msg );
-            e.printStackTrace( Console.Error );
+            e.PrintStackTrace( Console.Error );
         }
 
         /** I *think* this will allow Tool subclasses to exit gracefully

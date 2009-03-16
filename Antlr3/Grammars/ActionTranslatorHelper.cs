@@ -188,7 +188,7 @@ namespace Antlr3.Grammars
 
         protected StringTemplate template( string name )
         {
-            StringTemplate st = generator.Templates.getInstanceOf( name );
+            StringTemplate st = generator.Templates.GetInstanceOf( name );
             chunks.Add( st );
             return st;
         }

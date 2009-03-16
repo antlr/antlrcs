@@ -78,16 +78,16 @@ namespace Antlr3.ST
         {
             #region StringTemplateErrorListener Members
 
-            public void error( string s, Exception e )
+            public void Error( string s, Exception e )
             {
                 Console.Error.WriteLine( s );
                 if ( e != null )
                 {
-                    e.printStackTrace( Console.Error );
+                    e.PrintStackTrace( Console.Error );
                 }
             }
 
-            public void warning( string s )
+            public void Warning( string s )
             {
                 Console.Out.WriteLine( s );
             }
@@ -127,21 +127,21 @@ namespace Antlr3.ST
                                             StringTemplateGroupInterface superInterface )
         {
             this._listener = errors;
-            setSuperInterface( superInterface );
-            parseInterface( r );
+            SetSuperInterface( superInterface );
+            ParseInterface( r );
         }
 
-        public virtual StringTemplateGroupInterface getSuperInterface()
+        public virtual StringTemplateGroupInterface GetSuperInterface()
         {
             return _superInterface;
         }
 
-        public virtual void setSuperInterface( StringTemplateGroupInterface superInterface )
+        public virtual void SetSuperInterface( StringTemplateGroupInterface superInterface )
         {
             this._superInterface = superInterface;
         }
 
-        protected virtual void parseInterface( TextReader r )
+        protected virtual void ParseInterface( TextReader r )
         {
             try
             {
@@ -153,15 +153,15 @@ namespace Antlr3.ST
             catch ( Exception e )
             {
                 string name = "<unknown>";
-                if ( getName() != null )
+                if ( GetName() != null )
                 {
-                    name = getName();
+                    name = GetName();
                 }
-                error( "problem parsing group " + name + ": " + e, e );
+                Error( "problem parsing group " + name + ": " + e, e );
             }
         }
 
-        public virtual void defineTemplate( string name, IDictionary<string, FormalArgument> formalArgs, bool optional )
+        public virtual void DefineTemplate( string name, IDictionary<string, FormalArgument> formalArgs, bool optional )
         {
             TemplateDefinition d = new TemplateDefinition( name, formalArgs, optional );
             _templates[d.name] = d;
@@ -172,11 +172,11 @@ namespace Antlr3.ST
          *  in this interface.  Return null if all is well.
          *  </summary>
          */
-        public virtual IList getMissingTemplates( StringTemplateGroup group )
+        public virtual IList GetMissingTemplates( StringTemplateGroup group )
         {
             IList missing =
                 _templates.Values
-                .Where( template => !template.optional && !group.isDefined( template.name ) )
+                .Where( template => !template.optional && !group.IsDefined( template.name ) )
                 .Select( template => template.name )
                 .ToArray();
 
@@ -188,15 +188,15 @@ namespace Antlr3.ST
          *  that have wrong formal argument lists.  Return null if all is well.
          *  </summary>
          */
-        public virtual IList getMismatchedTemplates( StringTemplateGroup group )
+        public virtual IList GetMismatchedTemplates( StringTemplateGroup group )
         {
             IList mismatched = new List<object>();
             foreach ( TemplateDefinition d in _templates.Values )
             {
-                if ( group.isDefined( d.name ) )
+                if ( group.IsDefined( d.name ) )
                 {
-                    StringTemplate defST = group.getTemplateDefinition( d.name );
-                    var formalArgs = defST.getFormalArguments();
+                    StringTemplate defST = group.GetTemplateDefinition( d.name );
+                    var formalArgs = defST.GetFormalArguments();
                     bool ack = false;
                     if ( ( d.formalArgs != null && formalArgs == null ) ||
                         ( d.formalArgs == null && formalArgs != null ) ||
@@ -219,7 +219,7 @@ namespace Antlr3.ST
                     if ( ack )
                     {
                         //System.out.println(d.formalArgs+"!="+formalArgs);
-                        mismatched.Add( getTemplateSignature( d ) );
+                        mismatched.Add( GetTemplateSignature( d ) );
                     }
                 }
             }
@@ -230,33 +230,33 @@ namespace Antlr3.ST
             return mismatched;
         }
 
-        public virtual string getName()
+        public virtual string GetName()
         {
             return _name;
         }
 
-        public virtual void setName( string name )
+        public virtual void SetName( string name )
         {
             this._name = name;
         }
 
-        public virtual void error( string msg )
+        public virtual void Error( string msg )
         {
-            error( msg, null );
+            Error( msg, null );
         }
 
-        public virtual void error( string msg, Exception e )
+        public virtual void Error( string msg, Exception e )
         {
             if ( _listener != null )
             {
-                _listener.error( msg, e );
+                _listener.Error( msg, e );
             }
             else
             {
                 Console.Error.WriteLine( "StringTemplate: " + msg );
                 if ( e != null )
                 {
-                    e.printStackTrace();
+                    e.PrintStackTrace();
                 }
             }
         }
@@ -267,17 +267,17 @@ namespace Antlr3.ST
         {
             StringBuilder buf = new StringBuilder();
             buf.Append( "interface " );
-            buf.Append( getName() );
+            buf.Append( GetName() );
             buf.Append( ";" + newline );
             foreach ( TemplateDefinition d in _templates.Values )
             {
-                buf.Append( getTemplateSignature( d ) );
+                buf.Append( GetTemplateSignature( d ) );
                 buf.Append( ";" + newline );
             }
             return buf.ToString();
         }
 
-        protected virtual string getTemplateSignature( TemplateDefinition d )
+        protected virtual string GetTemplateSignature( TemplateDefinition d )
         {
             StringBuilder buf = new StringBuilder();
             if ( d.optional )

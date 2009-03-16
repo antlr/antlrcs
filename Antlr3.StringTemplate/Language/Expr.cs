@@ -65,7 +65,7 @@ namespace Antlr3.ST.Language
         }
 
         /** <summary>How to write this node to output; return how many char written</summary> */
-        abstract public int write( StringTemplate self, IStringTemplateWriter writer );
+        abstract public int Write( StringTemplate self, IStringTemplateWriter writer );
 
         public StringTemplate EnclosingTemplate
         {

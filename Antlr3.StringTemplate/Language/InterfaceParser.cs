@@ -1,4 +1,4 @@
-// $ANTLR 3.1.2 Language\\Interface.g3 2009-03-07 08:51:17
+// $ANTLR 3.1.2 Language\\Interface.g3 2009-03-16 17:22:55
 
 // The variable 'variable' is assigned but its value is never used.
 #pragma warning disable 219
@@ -100,7 +100,7 @@ public partial class InterfaceParser : Parser
 			{
 			Match(input,13,Follow._13_in_groupInterface67); 
 			name=(IToken)Match(input,ID,Follow._ID_in_groupInterface71); 
-			groupI.setName((name!=null?name.Text:null));
+			groupI.SetName((name!=null?name.Text:null));
 			Match(input,SEMI,Follow._SEMI_in_groupInterface75); 
 			// Language\\Interface.g3:119:3: ( template[groupI] )+
 			int cnt1=0;
@@ -226,7 +226,7 @@ public partial class InterfaceParser : Parser
 			Match(input,SEMI,Follow._SEMI_in_template129); 
 
 						templateName = (name!=null?name.Text:null);
-						groupI.defineTemplate( templateName, formalArgs ?? new System.Collections.Generic.SortedList<string, FormalArgument>(), opt!=null );
+						groupI.DefineTemplate( templateName, formalArgs ?? new System.Collections.Generic.SortedList<string, FormalArgument>(), opt!=null );
 					
 
 			}

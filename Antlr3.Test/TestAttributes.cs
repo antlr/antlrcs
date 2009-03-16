@@ -76,7 +76,7 @@ namespace AntlrUnitTests
             StringTemplateGroup templates =
                 new StringTemplateGroup( ".", typeof( AngleBracketTemplateLexer ) );
             StringTemplate actionST = new StringTemplate( templates, "<action>" );
-            actionST.setAttribute( "action", rawTranslation );
+            actionST.SetAttribute( "action", rawTranslation );
             string found = actionST.ToString();
             assertEquals( expecting, found );
         }
@@ -3443,7 +3443,7 @@ namespace AntlrUnitTests
                 object chunk = translator.chunks[i];
                 if ( chunk is StringTemplate )
                 {
-                    if ( ( (StringTemplate)chunk ).getName().Equals( "scopeSetAttributeRef" ) )
+                    if ( ( (StringTemplate)chunk ).GetName().Equals( "scopeSetAttributeRef" ) )
                     {
                         foundScopeSetAttributeRef = true;
                     }

@@ -89,7 +89,7 @@ namespace Antlr3.ST
          *  during parsing.
          *  </summary>
          */
-        public virtual StringTemplateGroup loadGroup( string groupName,
+        public virtual StringTemplateGroup LoadGroup( string groupName,
                                              Type templateLexer,
                                              StringTemplateGroup superGroup )
         {
@@ -103,10 +103,10 @@ namespace Antlr3.ST
             }
             try
             {
-                br = locate( groupName + ".stg" );
+                br = Locate( groupName + ".stg" );
                 if ( br == null )
                 {
-                    error( "no such group file " + groupName + ".stg" );
+                    Error( "no such group file " + groupName + ".stg" );
                     return null;
                 }
                 group = new StringTemplateGroup( br, lexer, _errors, superGroup );
@@ -115,7 +115,7 @@ namespace Antlr3.ST
             }
             catch ( IOException ioe )
             {
-                error( "can't load group " + groupName, ioe );
+                Error( "can't load group " + groupName, ioe );
             }
             finally
             {
@@ -127,46 +127,46 @@ namespace Antlr3.ST
                     }
                     catch ( IOException ioe2 )
                     {
-                        error( "Cannot close template group file: " + groupName + ".stg", ioe2 );
+                        Error( "Cannot close template group file: " + groupName + ".stg", ioe2 );
                     }
                 }
             }
             return group;
         }
 
-        public virtual StringTemplateGroup loadGroup( string groupName,
+        public virtual StringTemplateGroup LoadGroup( string groupName,
                                              StringTemplateGroup superGroup )
         {
-            return loadGroup( groupName, null, superGroup );
+            return LoadGroup( groupName, null, superGroup );
         }
 
-        public virtual StringTemplateGroup loadGroup( string groupName )
+        public virtual StringTemplateGroup LoadGroup( string groupName )
         {
-            return loadGroup( groupName, null );
+            return LoadGroup( groupName, null );
         }
 
-        public virtual StringTemplateGroupInterface loadInterface( string interfaceName )
+        public virtual StringTemplateGroupInterface LoadInterface( string interfaceName )
         {
             StringTemplateGroupInterface I = null;
             try
             {
-                TextReader br = locate( interfaceName + ".sti" );
+                TextReader br = Locate( interfaceName + ".sti" );
                 if ( br == null )
                 {
-                    error( "no such interface file " + interfaceName + ".sti" );
+                    Error( "no such interface file " + interfaceName + ".sti" );
                     return null;
                 }
                 I = new StringTemplateGroupInterface( br, _errors );
             }
             catch ( IOException ioe )
             {
-                error( "can't load interface " + interfaceName, ioe );
+                Error( "can't load interface " + interfaceName, ioe );
             }
             return I;
         }
 
         /** <summary>Look in each directory for the file called 'name'.</summary> */
-        protected virtual TextReader locate( string name )
+        protected virtual TextReader Locate( string name )
         {
             for ( int i = 0; i < _dirs.Length; i++ )
             {
@@ -175,45 +175,45 @@ namespace Antlr3.ST
                 if ( System.IO.File.Exists( fileName ) )
                 {
                     System.IO.FileStream fis = System.IO.File.OpenRead( fileName );
-                    StreamReader isr = getInputStreamReader( new System.IO.BufferedStream( fis ) );
+                    StreamReader isr = GetInputStreamReader( new System.IO.BufferedStream( fis ) );
                     return isr;
                 }
             }
             return null;
         }
 
-        protected virtual StreamReader getInputStreamReader( Stream stream )
+        protected virtual StreamReader GetInputStreamReader( Stream stream )
         {
             return new StreamReader( stream, _fileCharEncoding );
         }
 
-        public virtual Encoding getFileCharEncoding()
+        public virtual Encoding GetFileCharEncoding()
         {
             return _fileCharEncoding;
         }
 
-        public virtual void setFileCharEncoding( Encoding fileCharEncoding )
+        public virtual void SetFileCharEncoding( Encoding fileCharEncoding )
         {
             this._fileCharEncoding = fileCharEncoding ?? Encoding.Default;
         }
 
-        public virtual void error( string msg )
+        public virtual void Error( string msg )
         {
-            error( msg, null );
+            Error( msg, null );
         }
 
-        public virtual void error( string msg, Exception e )
+        public virtual void Error( string msg, Exception e )
         {
             if ( _errors != null )
             {
-                _errors.error( msg, e );
+                _errors.Error( msg, e );
             }
             else
             {
                 Console.Error.WriteLine( "StringTemplate: " + msg );
                 if ( e != null )
                 {
-                    e.printStackTrace();
+                    e.PrintStackTrace();
                 }
             }
         }

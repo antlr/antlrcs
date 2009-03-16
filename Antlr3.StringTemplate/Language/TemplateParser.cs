@@ -1,4 +1,4 @@
-// $ANTLR 3.1.2 Language\\Template.g3 2009-03-16 15:51:02
+// $ANTLR 3.1.2 Language\\Template.g3 2009-03-16 17:21:57
 
 // The variable 'variable' is assigned but its value is never used.
 #pragma warning disable 219
@@ -141,7 +141,7 @@ public partial class TemplateParser : Parser
 					// Language\\Template.g3:119:6: s= LITERAL
 					{
 					s=(IToken)Match(input,LITERAL,Follow._LITERAL_in_template71); 
-					self.addChunk(new StringRef(self,(s!=null?s.Text:null)));
+					self.AddChunk(new StringRef(self,(s!=null?s.Text:null)));
 
 					}
 					break;
@@ -152,7 +152,7 @@ public partial class TemplateParser : Parser
 
 									if ( input.LA(1)!=ELSE && input.LA(1)!=ENDIF )
 									{
-										self.addChunk(new NewlineRef(self,(nl!=null?nl.Text:null)));
+										self.AddChunk(new NewlineRef(self,(nl!=null?nl.Text:null)));
 									}
 								
 
@@ -268,9 +268,9 @@ public partial class TemplateParser : Parser
 				a=(IToken)Match(input,ACTION,Follow._ACTION_in_action118); 
 
 							string indent = ((ChunkToken)a).Indentation;
-							ASTExpr c = self.parseAction((a!=null?a.Text:null));
+							ASTExpr c = self.ParseAction((a!=null?a.Text:null));
 							c.Indentation = indent;
-							self.addChunk(c);
+							self.AddChunk(c);
 						
 
 				}
@@ -280,19 +280,19 @@ public partial class TemplateParser : Parser
 				{
 				i=(IToken)Match(input,IF,Follow._IF_in_action130); 
 
-							ConditionalExpr c = (ConditionalExpr)self.parseAction((i!=null?i.Text:null));
+							ConditionalExpr c = (ConditionalExpr)self.ParseAction((i!=null?i.Text:null));
 							// create and precompile the subtemplate
-							StringTemplate subtemplate = new StringTemplate(self.getGroup(), null);
-							subtemplate.setEnclosingInstance(self);
-							subtemplate.setName((i!=null?i.Text:null)+"_subtemplate");
-							self.addChunk(c);
+							StringTemplate subtemplate = new StringTemplate(self.GetGroup(), null);
+							subtemplate.SetEnclosingInstance(self);
+							subtemplate.SetName((i!=null?i.Text:null)+"_subtemplate");
+							self.AddChunk(c);
 						
 				PushFollow(Follow._template_in_action139);
 				template(subtemplate);
 
 				state._fsp--;
 
-				if ( c!=null ) c.setSubtemplate(subtemplate);
+				if ( c!=null ) c.SetSubtemplate(subtemplate);
 				// Language\\Template.g3:153:3: (ei= ELSEIF template[elseIfSubtemplate] )*
 				for ( ; ; )
 				{
@@ -312,18 +312,18 @@ public partial class TemplateParser : Parser
 						{
 						ei=(IToken)Match(input,ELSEIF,Follow._ELSEIF_in_action151); 
 
-										ASTExpr ec = self.parseAction((ei!=null?ei.Text:null));
+										ASTExpr ec = self.ParseAction((ei!=null?ei.Text:null));
 										// create and precompile the subtemplate
-										StringTemplate elseIfSubtemplate = new StringTemplate(self.getGroup(), null);
-										elseIfSubtemplate.setEnclosingInstance(self);
-										elseIfSubtemplate.setName((ei!=null?ei.Text:null)+"_subtemplate");
+										StringTemplate elseIfSubtemplate = new StringTemplate(self.GetGroup(), null);
+										elseIfSubtemplate.SetEnclosingInstance(self);
+										elseIfSubtemplate.SetName((ei!=null?ei.Text:null)+"_subtemplate");
 									
 						PushFollow(Follow._template_in_action162);
 						template(elseIfSubtemplate);
 
 						state._fsp--;
 
-						if ( c!=null ) c.addElseIfSubtemplate(ec, elseIfSubtemplate);
+						if ( c!=null ) c.AddElseIfSubtemplate(ec, elseIfSubtemplate);
 
 						}
 						break;
@@ -353,16 +353,16 @@ public partial class TemplateParser : Parser
 					Match(input,ELSE,Follow._ELSE_in_action181); 
 
 									// create and precompile the subtemplate
-									StringTemplate elseSubtemplate = new StringTemplate(self.getGroup(), null);
-									elseSubtemplate.setEnclosingInstance(self);
-									elseSubtemplate.setName("else_subtemplate");
+									StringTemplate elseSubtemplate = new StringTemplate(self.GetGroup(), null);
+									elseSubtemplate.SetEnclosingInstance(self);
+									elseSubtemplate.SetName("else_subtemplate");
 								
 					PushFollow(Follow._template_in_action192);
 					template(elseSubtemplate);
 
 					state._fsp--;
 
-					if ( c!=null ) c.setElseSubtemplate(elseSubtemplate);
+					if ( c!=null ) c.SetElseSubtemplate(elseSubtemplate);
 
 					}
 					break;
@@ -389,38 +389,38 @@ public partial class TemplateParser : Parser
 							{
 								//System.out.println("super region ref "+regionName);
 								string regionRef = regionName.substring("super.".Length,regionName.Length);
-								string templateScope = self.getGroup().getUnMangledTemplateName(self.getName());
-								StringTemplate scopeST = self.getGroup().lookupTemplate(templateScope);
+								string templateScope = self.GetGroup().GetUnMangledTemplateName(self.GetName());
+								StringTemplate scopeST = self.GetGroup().LookupTemplate(templateScope);
 								if ( scopeST==null )
 								{
-									self.getGroup().error("reference to region within undefined template: "+templateScope);
+									self.GetGroup().Error("reference to region within undefined template: "+templateScope);
 									err=true;
 								}
-								if ( !scopeST.containsRegionName(regionRef) )
+								if ( !scopeST.ContainsRegionName(regionRef) )
 								{
-									self.getGroup().error("template "+templateScope+" has no region called "+regionRef);
+									self.GetGroup().Error("template "+templateScope+" has no region called "+regionRef);
 									err=true;
 								}
 								else
 								{
-									mangledRef = self.getGroup().getMangledRegionName(templateScope,regionRef);
+									mangledRef = self.GetGroup().GetMangledRegionName(templateScope,regionRef);
 									mangledRef = "super."+mangledRef;
 								}
 							}
 							else
 							{
 								//System.out.println("region ref "+regionName);
-								StringTemplate regionST = self.getGroup().defineImplicitRegionTemplate(self,regionName);
-								mangledRef = regionST.getName();
+								StringTemplate regionST = self.GetGroup().DefineImplicitRegionTemplate(self,regionName);
+								mangledRef = regionST.GetName();
 							}
 
 							if ( !err )
 							{
 								// treat as regular action: mangled template include
 								string indent = ((ChunkToken)rr).Indentation;
-								ASTExpr c = self.parseAction(mangledRef+"()");
+								ASTExpr c = self.ParseAction(mangledRef+"()");
 								c.Indentation = indent;
-								self.addChunk(c);
+								self.AddChunk(c);
 							}
 						
 
@@ -437,16 +437,16 @@ public partial class TemplateParser : Parser
 							{
 								string regionName = combinedNameTemplateStr.substring(0,indexOfDefSymbol);
 								string template = combinedNameTemplateStr.substring(indexOfDefSymbol+3, combinedNameTemplateStr.Length);
-								StringTemplate regionST = self.getGroup().defineRegionTemplate(self,regionName,template,StringTemplate.REGION_EMBEDDED);
+								StringTemplate regionST = self.GetGroup().DefineRegionTemplate(self,regionName,template,StringTemplate.REGION_EMBEDDED);
 								// treat as regular action: mangled template include
 								string indent = ((ChunkToken)rd).Indentation;
-								ASTExpr c = self.parseAction(regionST.getName()+"()");
+								ASTExpr c = self.ParseAction(regionST.GetName()+"()");
 								c.Indentation = indent;
-								self.addChunk(c);
+								self.AddChunk(c);
 							}
 							else
 							{
-								self.error("embedded region definition screwed up");
+								self.Error("embedded region definition screwed up");
 							}
 						
 

@@ -49,26 +49,17 @@ namespace Antlr3.ST.Language
 
         public override void ReportError( RecognitionException e )
         {
-            self.error( "$...$ chunk lexer error", e );
+            self.Error( "$...$ chunk lexer error", e );
         }
 
-        //protected boolean upcomingELSE(int i) throws CharStreamException {
-        //    return LA(i)=='$'&&LA(i+1)=='e'&&LA(i+2)=='l'&&LA(i+3)=='s'&&LA(i+4)=='e'&&
-        //           LA(i+5)=='$';
-        //}
-
-        //protected boolean upcomingENDIF(int i) throws CharStreamException {
-        //    return LA(i)=='$'&&LA(i+1)=='e'&&LA(i+2)=='n'&&LA(i+3)=='d'&&LA(i+4)=='i'&&
-        //           LA(i+5)=='f'&&LA(i+6)=='$';
-        //}
-
-        protected bool upcomingAtEND(int i)
+        bool UpcomingAtEND( int i )
         {
-            return input.LA(i)=='$'&&input.LA(i+1)=='@'&&input.LA(i+2)=='e'&&input.LA(i+3)=='n'&&input.LA(i+4)=='d'&&input.LA(i+5)=='$';
+            return input.LA( i ) == '$'
+                && input.LA( i + 1 ) == '@'
+                && input.LA( i + 2 ) == 'e'
+                && input.LA( i + 3 ) == 'n'
+                && input.LA( i + 4 ) == 'd'
+                && input.LA( i + 5 ) == '$';
         }
-
-        //protected boolean upcomingNewline(int i) throws CharStreamException {
-        //    return (LA(i)=='\r'&&LA(i+1)=='\n')||LA(i)=='\n';
-        //}
     }
 }

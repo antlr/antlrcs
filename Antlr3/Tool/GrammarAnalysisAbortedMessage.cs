@@ -59,7 +59,7 @@ namespace Antlr3.Tool
                 file = fileName;
             }
             StringTemplate st = getMessageTemplate();
-            st.setAttribute( "enclosingRule",
+            st.SetAttribute( "enclosingRule",
                             probe.dfa.NFADecisionStartState.enclosingRule.name );
 
             return base.ToString( st );

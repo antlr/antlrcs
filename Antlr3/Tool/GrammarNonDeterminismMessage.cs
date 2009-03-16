@@ -77,7 +77,7 @@ namespace Antlr3.Tool
             // Now fill template with information about problemState
             var labels = probe.getSampleNonDeterministicInputSequence( problemState );
             String input = probe.getInputSequenceDisplay( labels );
-            st.setAttribute( "input", input );
+            st.SetAttribute( "input", input );
 
             if ( probe.dfa.IsTokensRuleDecision )
             {
@@ -91,12 +91,12 @@ namespace Antlr3.Tool
                         probe.dfa.nfa.grammar.getRuleStartState( tokenName );
                     line = ruleStart.associatedASTNode.Line;
                     charPositionInLine = ruleStart.associatedASTNode.CharPositionInLine;
-                    st.setAttribute( "disabled", tokenName );
+                    st.SetAttribute( "disabled", tokenName );
                 }
             }
             else
             {
-                st.setAttribute( "disabled", probe.getDisabledAlternatives( problemState ) );
+                st.SetAttribute( "disabled", probe.getDisabledAlternatives( problemState ) );
             }
 
             IList nondetAlts = probe.getNonDeterministicAltsForState( problemState );
@@ -119,7 +119,7 @@ namespace Antlr3.Tool
                             probe.getNFAPathStatesForAlt( firstAlt,
                                                          tracePathAlt,
                                                          labels );
-                        st.setAttribute( "paths.{alt,states}",
+                        st.SetAttribute( "paths.{alt,states}",
                                         displayAltI, path );
                     }
                     else
@@ -129,16 +129,16 @@ namespace Antlr3.Tool
                             // alts are token rules, convert to the names instead of numbers
                             String tokenName =
                                 probe.getTokenNameForTokensRuleAlt( (int)displayAltI );
-                            st.setAttribute( "conflictingTokens", tokenName );
+                            st.SetAttribute( "conflictingTokens", tokenName );
                         }
                         else
                         {
-                            st.setAttribute( "conflictingAlts", displayAltI );
+                            st.SetAttribute( "conflictingAlts", displayAltI );
                         }
                     }
                 }
             }
-            st.setAttribute( "hasPredicateBlockedByAction", problemState.dfa.hasPredicateBlockedByAction );
+            st.SetAttribute( "hasPredicateBlockedByAction", problemState.dfa.hasPredicateBlockedByAction );
             return base.ToString( st );
         }
 

@@ -72,8 +72,8 @@ namespace Antlr3.Tool
             alts.addAll( problemState.AltSet );
             alts.Sort();
             //Collections.sort(alts);
-            st.setAttribute( "danglingAlts", alts );
-            st.setAttribute( "input", input );
+            st.SetAttribute( "danglingAlts", alts );
+            st.SetAttribute( "input", input );
 
             return base.ToString( st );
         }

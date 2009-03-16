@@ -1,4 +1,4 @@
-// $ANTLR 3.1.2 Language\\Template.g3 2009-03-07 08:52:37
+// $ANTLR 3.1.2 Language\\Template.g3 2009-03-16 17:21:57
 
 // The variable 'variable' is assigned but its value is never used.
 #pragma warning disable 219
@@ -910,10 +910,10 @@ public partial class TemplateLexer : Lexer
 							case 1:
 								// Language\\Template.g3:337:8: {...}? => (=> ( '\\r' )? '\\n' |ch= . )
 								{
-								if ( !((!(upcomingAtEND(1) || ( input.LA(1) == '\n' && upcomingAtEND(2) ) || ( input.LA(1) == '\r' && input.LA(2) == '\n' && upcomingAtEND(3) )))) )
+								if ( !((!(UpcomingAtEND(1) || ( input.LA(1) == '\n' && UpcomingAtEND(2) ) || ( input.LA(1) == '\r' && input.LA(2) == '\n' && UpcomingAtEND(3) )))) )
 								{
 									if (state.backtracking>0) {state.failed=true; return ;}
-									throw new FailedPredicateException(input, "ACTION", "!(upcomingAtEND(1) || ( input.LA(1) == '\\n' && upcomingAtEND(2) ) || ( input.LA(1) == '\\r' && input.LA(2) == '\\n' && upcomingAtEND(3) ))");
+									throw new FailedPredicateException(input, "ACTION", "!(UpcomingAtEND(1) || ( input.LA(1) == '\\n' && UpcomingAtEND(2) ) || ( input.LA(1) == '\\r' && input.LA(2) == '\\n' && UpcomingAtEND(3) ))");
 								}
 								// Language\\Template.g3:338:7: (=> ( '\\r' )? '\\n' |ch= . )
 								int alt17=2;
@@ -1175,7 +1175,7 @@ public partial class TemplateLexer : Lexer
 							MatchAny(); if (state.failed) return ;
 							if ( state.backtracking == 0 )
 							{
-								self.error("missing region "+t+" $@end$ tag");
+								self.Error("missing region "+t+" $@end$ tag");
 							}
 
 							}
@@ -3278,7 +3278,7 @@ public partial class TemplateLexer : Lexer
 				int index18_1 = input.Index;
 				input.Rewind();
 				s = -1;
-				if ( ((!(upcomingAtEND(1) || ( input.LA(1) == '\n' && upcomingAtEND(2) ) || ( input.LA(1) == '\r' && input.LA(2) == '\n' && upcomingAtEND(3) )))) ) {s = 5;}
+				if ( ((!(UpcomingAtEND(1) || ( input.LA(1) == '\n' && UpcomingAtEND(2) ) || ( input.LA(1) == '\r' && input.LA(2) == '\n' && UpcomingAtEND(3) )))) ) {s = 5;}
 
 				else if ( (true) ) {s = 6;}
 
@@ -3294,7 +3294,7 @@ public partial class TemplateLexer : Lexer
 				int index18_2 = input.Index;
 				input.Rewind();
 				s = -1;
-				if ( ((!(upcomingAtEND(1) || ( input.LA(1) == '\n' && upcomingAtEND(2) ) || ( input.LA(1) == '\r' && input.LA(2) == '\n' && upcomingAtEND(3) )))) ) {s = 5;}
+				if ( ((!(UpcomingAtEND(1) || ( input.LA(1) == '\n' && UpcomingAtEND(2) ) || ( input.LA(1) == '\r' && input.LA(2) == '\n' && UpcomingAtEND(3) )))) ) {s = 5;}
 
 				else if ( (true) ) {s = 6;}
 
@@ -3316,7 +3316,7 @@ public partial class TemplateLexer : Lexer
 
 				else if ( (LA18_3=='\n') ) {s = 9;}
 
-				else if ( ((LA18_3>='\u0000' && LA18_3<='\t')||(LA18_3>='\u000B' && LA18_3<='\f')||(LA18_3>='\u000E' && LA18_3<='?')||(LA18_3>='A' && LA18_3<='\uFFFF')) && ((!(upcomingAtEND(1) || ( input.LA(1) == '\n' && upcomingAtEND(2) ) || ( input.LA(1) == '\r' && input.LA(2) == '\n' && upcomingAtEND(3) ))))) {s = 5;}
+				else if ( ((LA18_3>='\u0000' && LA18_3<='\t')||(LA18_3>='\u000B' && LA18_3<='\f')||(LA18_3>='\u000E' && LA18_3<='?')||(LA18_3>='A' && LA18_3<='\uFFFF')) && ((!(UpcomingAtEND(1) || ( input.LA(1) == '\n' && UpcomingAtEND(2) ) || ( input.LA(1) == '\r' && input.LA(2) == '\n' && UpcomingAtEND(3) ))))) {s = 5;}
 
 				else s = 6;
 
@@ -3336,7 +3336,7 @@ public partial class TemplateLexer : Lexer
 
 				else if ( (LA18_4=='\n') ) {s = 9;}
 
-				else if ( ((LA18_4>='\u0000' && LA18_4<='\t')||(LA18_4>='\u000B' && LA18_4<='\f')||(LA18_4>='\u000E' && LA18_4<='\uFFFF')) && ((!(upcomingAtEND(1) || ( input.LA(1) == '\n' && upcomingAtEND(2) ) || ( input.LA(1) == '\r' && input.LA(2) == '\n' && upcomingAtEND(3) ))))) {s = 5;}
+				else if ( ((LA18_4>='\u0000' && LA18_4<='\t')||(LA18_4>='\u000B' && LA18_4<='\f')||(LA18_4>='\u000E' && LA18_4<='\uFFFF')) && ((!(UpcomingAtEND(1) || ( input.LA(1) == '\n' && UpcomingAtEND(2) ) || ( input.LA(1) == '\r' && input.LA(2) == '\n' && UpcomingAtEND(3) ))))) {s = 5;}
 
 				else s = 6;
 
@@ -3368,7 +3368,7 @@ public partial class TemplateLexer : Lexer
 				int index18_8 = input.Index;
 				input.Rewind();
 				s = -1;
-				if ( ((!(upcomingAtEND(1) || ( input.LA(1) == '\n' && upcomingAtEND(2) ) || ( input.LA(1) == '\r' && input.LA(2) == '\n' && upcomingAtEND(3) )))) ) {s = 5;}
+				if ( ((!(UpcomingAtEND(1) || ( input.LA(1) == '\n' && UpcomingAtEND(2) ) || ( input.LA(1) == '\r' && input.LA(2) == '\n' && UpcomingAtEND(3) )))) ) {s = 5;}
 
 				else if ( (true) ) {s = 6;}
 
@@ -3384,7 +3384,7 @@ public partial class TemplateLexer : Lexer
 				int index18_9 = input.Index;
 				input.Rewind();
 				s = -1;
-				if ( ((!(upcomingAtEND(1) || ( input.LA(1) == '\n' && upcomingAtEND(2) ) || ( input.LA(1) == '\r' && input.LA(2) == '\n' && upcomingAtEND(3) )))) ) {s = 5;}
+				if ( ((!(UpcomingAtEND(1) || ( input.LA(1) == '\n' && UpcomingAtEND(2) ) || ( input.LA(1) == '\r' && input.LA(2) == '\n' && UpcomingAtEND(3) )))) ) {s = 5;}
 
 				else if ( (true) ) {s = 6;}
 
@@ -3448,7 +3448,7 @@ public partial class TemplateLexer : Lexer
 				int index18_13 = input.Index;
 				input.Rewind();
 				s = -1;
-				if ( ((!(upcomingAtEND(1) || ( input.LA(1) == '\n' && upcomingAtEND(2) ) || ( input.LA(1) == '\r' && input.LA(2) == '\n' && upcomingAtEND(3) )))) ) {s = 5;}
+				if ( ((!(UpcomingAtEND(1) || ( input.LA(1) == '\n' && UpcomingAtEND(2) ) || ( input.LA(1) == '\r' && input.LA(2) == '\n' && UpcomingAtEND(3) )))) ) {s = 5;}
 
 				else if ( (true) ) {s = 6;}
 

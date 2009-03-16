@@ -48,15 +48,15 @@ namespace Antlr3.ST
      */
     public interface IStringTemplateWriter
     {
-        void pushIndentation( string indent );
+        void PushIndentation( string indent );
 
-        string popIndentation();
+        string PopIndentation();
 
-        void pushAnchorPoint();
+        void PushAnchorPoint();
 
-        void popAnchorPoint();
+        void PopAnchorPoint();
 
-        void setLineWidth( int lineWidth );
+        void SetLineWidth( int lineWidth );
 
         /** <summary>
          *  Write the string and return how many actual chars were written.
@@ -64,14 +64,14 @@ namespace Antlr3.ST
          *  can be emitted.  No wrapping is done.
          *  </summary>
          */
-        int write( string str );
+        int Write( string str );
 
         /** <summary>
          *  Same as write, but wrap lines using the indicated string as the
          *  wrap character (such as "\n").
          *  </summary>
          */
-        int write( string str, string wrap );
+        int Write( string str, string wrap );
 
         /** <summary>
          *  Because we might need to wrap at a non-atomic string boundary
@@ -80,13 +80,13 @@ namespace Antlr3.ST
          *  writing just like for the separator.
          *  </summary>
          */
-        int writeWrapSeparator( string wrap );
+        int WriteWrapSeparator( string wrap );
 
         /** <summary>
          *  Write a separator.  Same as write() except that a \n cannot
          *  be inserted before emitting a separator.
          *  </summary>
          */
-        int writeSeparator( string str );
+        int WriteSeparator( string str );
     }
 }

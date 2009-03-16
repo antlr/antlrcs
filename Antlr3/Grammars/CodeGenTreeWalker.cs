@@ -1,4 +1,4 @@
-// $ANTLR 3.1.2 Grammars\\CodeGenTreeWalker.g3 2009-03-08 16:36:01
+// $ANTLR 3.1.2 Grammars\\CodeGenTreeWalker.g3 2009-03-16 17:47:49
 
 // The variable 'variable' is assigned but its value is never used.
 #pragma warning disable 219
@@ -201,9 +201,9 @@ public partial class CodeGenTreeWalker : TreeParser
 				this.headerFileST = headerFileST;
 				string superClass = (string)g.getOption("superClass");
 				outputOption = (string)g.getOption("output");
-				recognizerST.setAttribute("superClass", superClass);
+				recognizerST.SetAttribute("superClass", superClass);
 				if ( g.type!=Grammar.LEXER ) {
-					recognizerST.setAttribute("ASTLabelType", g.getOption("ASTLabelType"));
+					recognizerST.SetAttribute("ASTLabelType", g.getOption("ASTLabelType"));
 				}
 				if ( g.type==Grammar.TREE_PARSER && g.getOption("ASTLabelType")==null ) {
 					ErrorManager.grammarWarning(ErrorManager.MSG_MISSING_AST_TYPE_IN_TREE_GRAMMAR,
@@ -212,11 +212,11 @@ public partial class CodeGenTreeWalker : TreeParser
 											   g.name);
 				}
 				if ( g.type!=Grammar.TREE_PARSER ) {
-					recognizerST.setAttribute("labelType", g.getOption("TokenLabelType"));
+					recognizerST.SetAttribute("labelType", g.getOption("TokenLabelType"));
 				}
-				recognizerST.setAttribute("numRules", grammar.Rules.Count);
-				outputFileST.setAttribute("numRules", grammar.Rules.Count);
-				headerFileST.setAttribute("numRules", grammar.Rules.Count);
+				recognizerST.SetAttribute("numRules", grammar.Rules.Count);
+				outputFileST.SetAttribute("numRules", grammar.Rules.Count);
+				headerFileST.SetAttribute("numRules", grammar.Rules.Count);
 			}
 
 		try
@@ -479,8 +479,8 @@ public partial class CodeGenTreeWalker : TreeParser
 				if ( state.backtracking == 0 )
 				{
 
-									outputFileST.setAttribute("docComment", (cmt!=null?cmt.Text:null));
-									headerFileST.setAttribute("docComment", (cmt!=null?cmt.Text:null));
+									outputFileST.SetAttribute("docComment", (cmt!=null?cmt.Text:null));
+									headerFileST.SetAttribute("docComment", (cmt!=null?cmt.Text:null));
 								
 				}
 
@@ -492,11 +492,11 @@ public partial class CodeGenTreeWalker : TreeParser
 			if ( state.backtracking == 0 )
 			{
 
-							recognizerST.setAttribute("name", grammar.getRecognizerName());
-							outputFileST.setAttribute("name", grammar.getRecognizerName());
-							headerFileST.setAttribute("name", grammar.getRecognizerName());
-							recognizerST.setAttribute("scopes", grammar.GlobalScopes);
-							headerFileST.setAttribute("scopes", grammar.GlobalScopes);
+							recognizerST.SetAttribute("name", grammar.getRecognizerName());
+							outputFileST.SetAttribute("name", grammar.getRecognizerName());
+							headerFileST.SetAttribute("name", grammar.getRecognizerName());
+							recognizerST.SetAttribute("scopes", grammar.GlobalScopes);
+							headerFileST.SetAttribute("scopes", grammar.GlobalScopes);
 						
 			}
 			// Grammars\\CodeGenTreeWalker.g3:155:3: ( ^( OPTIONS ( . )* ) )?
@@ -899,9 +899,9 @@ public partial class CodeGenTreeWalker : TreeParser
 
 												if ( (rST!=null?rST.code:default(StringTemplate)) != null )
 												{
-													recognizerST.setAttribute("rules", (rST!=null?rST.code:default(StringTemplate)));
-													outputFileST.setAttribute("rules", (rST!=null?rST.code:default(StringTemplate)));
-													headerFileST.setAttribute("rules", (rST!=null?rST.code:default(StringTemplate)));
+													recognizerST.SetAttribute("rules", (rST!=null?rST.code:default(StringTemplate)));
+													outputFileST.SetAttribute("rules", (rST!=null?rST.code:default(StringTemplate)));
+													headerFileST.SetAttribute("rules", (rST!=null?rST.code:default(StringTemplate)));
 												}
 											
 						}
@@ -1328,7 +1328,7 @@ public partial class CodeGenTreeWalker : TreeParser
 																false);
 								description =
 									generator.target.getTargetStringLiteralFromString(description);
-								(b!=null?b.code:default(StringTemplate)).setAttribute("description", description);
+								(b!=null?b.code:default(StringTemplate)).SetAttribute("description", description);
 								// do not generate lexer rules in combined grammar
 								string stName = null;
 								if ( ruleDescr.isSynPred )
@@ -1354,12 +1354,12 @@ public partial class CodeGenTreeWalker : TreeParser
 										stName = "rule";
 									}
 								}
-								retval.code = templates.getInstanceOf(stName);
-								if ( retval.code.getName().Equals("rule") )
+								retval.code = templates.GetInstanceOf(stName);
+								if ( retval.code.GetName().Equals("rule") )
 								{
-									retval.code.setAttribute("emptyRule", grammar.isEmptyRule(block2));
+									retval.code.SetAttribute("emptyRule", grammar.isEmptyRule(block2));
 								}
-								retval.code.setAttribute("ruleDescriptor", ruleDescr);
+								retval.code.SetAttribute("ruleDescriptor", ruleDescr);
 								string memo = (string)grammar.getBlockOption(((GrammarAST)retval.start),"memoize");
 								if ( memo==null )
 								{
@@ -1368,7 +1368,7 @@ public partial class CodeGenTreeWalker : TreeParser
 								if ( memo!=null && memo.Equals("true") &&
 									 (stName.Equals("rule")||stName.Equals("lexerRule")) )
 								{
-									retval.code.setAttribute("memoize", memo!=null && memo.Equals("true"));
+									retval.code.SetAttribute("memoize", memo!=null && memo.Equals("true"));
 								}
 							
 			}
@@ -1409,24 +1409,24 @@ public partial class CodeGenTreeWalker : TreeParser
 									bool naked =
 										currentRuleName.Equals(Grammar.ARTIFICIAL_TOKENS_RULENAME) ||
 										((mod!=null?((GrammarAST)mod.start):null)!=null&&(mod!=null?((GrammarAST)mod.start):null).Text.Equals(Grammar.FRAGMENT_RULE_MODIFIER));
-									retval.code.setAttribute("nakedBlock", naked);
+									retval.code.SetAttribute("nakedBlock", naked);
 								}
 								else
 								{
 									description = grammar.grammarTreeToString(((GrammarAST)retval.start),false);
 									description = generator.target.getTargetStringLiteralFromString(description);
-									retval.code.setAttribute("description", description);
+									retval.code.SetAttribute("description", description);
 								}
 								Rule theRule = grammar.getRule(currentRuleName);
 								generator.translateActionAttributeReferencesForSingleScope(
 									theRule,
 									theRule.Actions
 								);
-								retval.code.setAttribute("ruleName", currentRuleName);
-								retval.code.setAttribute("block", (b!=null?b.code:default(StringTemplate)));
+								retval.code.SetAttribute("ruleName", currentRuleName);
+								retval.code.SetAttribute("block", (b!=null?b.code:default(StringTemplate)));
 								if ( initAction!=null )
 								{
-									retval.code.setAttribute("initAction", initAction);
+									retval.code.SetAttribute("initAction", initAction);
 								}
 							}
 						
@@ -1743,19 +1743,19 @@ public partial class CodeGenTreeWalker : TreeParser
 				StringTemplate decision = null;
 				if ( dfa != null )
 				{
-					retval.code = templates.getInstanceOf(blockTemplateName);
+					retval.code = templates.GetInstanceOf(blockTemplateName);
 					decision = generator.genLookaheadDecision(recognizerST,dfa);
-					retval.code.setAttribute("decision", decision);
-					retval.code.setAttribute("decisionNumber", dfa.DecisionNumber);
-					retval.code.setAttribute("maxK",dfa.MaxLookaheadDepth);
-					retval.code.setAttribute("maxAlt",dfa.NumberOfAlts);
+					retval.code.SetAttribute("decision", decision);
+					retval.code.SetAttribute("decisionNumber", dfa.DecisionNumber);
+					retval.code.SetAttribute("maxK",dfa.MaxLookaheadDepth);
+					retval.code.SetAttribute("maxAlt",dfa.NumberOfAlts);
 				}
 				else
 				{
-					retval.code = templates.getInstanceOf(blockTemplateName+"SingleAlt");
+					retval.code = templates.GetInstanceOf(blockTemplateName+"SingleAlt");
 				}
-				retval.code.setAttribute("blockLevel", blockNestingLevel);
-				retval.code.setAttribute("enclosingBlockLevel", blockNestingLevel-1);
+				retval.code.SetAttribute("blockLevel", blockNestingLevel);
+				retval.code.SetAttribute("enclosingBlockLevel", blockNestingLevel-1);
 				altNum = 1;
 				if ( this.blockNestingLevel==RULE_BLOCK_NESTING_LEVEL ) {
 					this.outerAltNum=1;
@@ -1813,7 +1813,7 @@ public partial class CodeGenTreeWalker : TreeParser
 				if ( state.backtracking == 0 )
 				{
 
-								retval.code.setAttribute("alts",(setBlock1!=null?setBlock1.code:default(StringTemplate)));
+								retval.code.SetAttribute("alts",(setBlock1!=null?setBlock1.code:default(StringTemplate)));
 							
 				}
 
@@ -1931,12 +1931,12 @@ public partial class CodeGenTreeWalker : TreeParser
 													(rew!=null?((GrammarAST)rew.start):null).GetChild(0).Type==ETC;
 												if ( (rew!=null?rew.code:default(StringTemplate))!=null && !etc )
 												{
-													(alt!=null?alt.code:default(StringTemplate)).setAttribute("rew", (rew!=null?rew.code:default(StringTemplate)));
+													(alt!=null?alt.code:default(StringTemplate)).SetAttribute("rew", (rew!=null?rew.code:default(StringTemplate)));
 												}
 												// add this alt to the list of alts for this block
-												retval.code.setAttribute("alts",(alt!=null?alt.code:default(StringTemplate)));
-												(alt!=null?alt.code:default(StringTemplate)).setAttribute("altNum", altNum);
-												(alt!=null?alt.code:default(StringTemplate)).setAttribute("outerAlt", blockNestingLevel==RULE_BLOCK_NESTING_LEVEL);
+												retval.code.SetAttribute("alts",(alt!=null?alt.code:default(StringTemplate)));
+												(alt!=null?alt.code:default(StringTemplate)).SetAttribute("altNum", altNum);
+												(alt!=null?alt.code:default(StringTemplate)).SetAttribute("outerAlt", blockNestingLevel==RULE_BLOCK_NESTING_LEVEL);
 												altNum++;
 											
 						}
@@ -2069,26 +2069,26 @@ public partial class CodeGenTreeWalker : TreeParser
 							{
 								setcode = getTokenElementST("matchSet", "set", s, null, null);
 							}
-							setcode.setAttribute("elementIndex", i);
+							setcode.SetAttribute("elementIndex", i);
 							if ( grammar.type!=Grammar.LEXER )
 							{
 								generator.generateLocalFOLLOW(s,"set",currentRuleName,i);
 							}
-							setcode.setAttribute("s",
+							setcode.SetAttribute("s",
 								generator.genSetExpr(templates,s.SetValue,1,false));
-							StringTemplate altcode=templates.getInstanceOf("alt");
-							altcode.setAttribute("elements.{el,line,pos}",
+							StringTemplate altcode=templates.GetInstanceOf("alt");
+							altcode.SetAttribute("elements.{el,line,pos}",
 												 setcode,
 												 s.Line,
 												 s.CharPositionInLine
 												);
-							altcode.setAttribute("altNum", 1);
-							altcode.setAttribute("outerAlt", blockNestingLevel==RULE_BLOCK_NESTING_LEVEL);
+							altcode.SetAttribute("altNum", 1);
+							altcode.SetAttribute("outerAlt", blockNestingLevel==RULE_BLOCK_NESTING_LEVEL);
 							if ( !currentAltHasASTRewrite && grammar.BuildAST )
 							{
-								altcode.setAttribute("autoAST", true);
+								altcode.SetAttribute("autoAST", true);
 							}
-							altcode.setAttribute("treeLevel", rewriteTreeNestingLevel);
+							altcode.SetAttribute("treeLevel", rewriteTreeNestingLevel);
 							retval.code = altcode;
 						
 			}
@@ -2330,7 +2330,7 @@ public partial class CodeGenTreeWalker : TreeParser
 			{
 
 							List chunks = generator.translateAction(currentRuleName,ACTION2);
-							ruleST.setAttribute("exceptions.{decl,action}",(ARG_ACTION3!=null?ARG_ACTION3.Text:null),chunks);
+							ruleST.SetAttribute("exceptions.{decl,action}",(ARG_ACTION3!=null?ARG_ACTION3.Text:null),chunks);
 						
 			}
 
@@ -2371,7 +2371,7 @@ public partial class CodeGenTreeWalker : TreeParser
 			{
 
 							List chunks = generator.translateAction(currentRuleName,ACTION4);
-							ruleST.setAttribute("finally",chunks);
+							ruleST.SetAttribute("finally",chunks);
 						
 			}
 
@@ -2408,7 +2408,7 @@ public partial class CodeGenTreeWalker : TreeParser
 
 			if ( state.backtracking == 0 )
 			{
-				retval.code = templates.getInstanceOf("alt");
+				retval.code = templates.GetInstanceOf("alt");
 				/*
 				// TODO: can we use Rule.altsWithRewrites???
 				if ( blockNestingLevel==RULE_BLOCK_NESTING_LEVEL ) {
@@ -2432,11 +2432,11 @@ public partial class CodeGenTreeWalker : TreeParser
 				}
 				string description = grammar.grammarTreeToString(((GrammarAST)retval.start), false);
 				description = generator.target.getTargetStringLiteralFromString(description);
-				retval.code.setAttribute("description", description);
-				retval.code.setAttribute("treeLevel", rewriteTreeNestingLevel);
+				retval.code.SetAttribute("description", description);
+				retval.code.SetAttribute("treeLevel", rewriteTreeNestingLevel);
 				if ( !currentAltHasASTRewrite && grammar.BuildAST )
 				{
-					retval.code.setAttribute("autoAST", true);
+					retval.code.SetAttribute("autoAST", true);
 				}
 			}
 
@@ -2476,7 +2476,7 @@ public partial class CodeGenTreeWalker : TreeParser
 
 											if ( e!=null )
 											{
-												retval.code.setAttribute("elements.{el,line,pos}",
+												retval.code.SetAttribute("elements.{el,line,pos}",
 																  (e!=null?e.code:default(StringTemplate)),
 																  (e!=null?((GrammarAST)e.start):null).Line,
 																  (e!=null?((GrammarAST)e.start):null).CharPositionInLine
@@ -2674,14 +2674,14 @@ public partial class CodeGenTreeWalker : TreeParser
 				if ( state.backtracking == 0 )
 				{
 
-								retval.code = templates.getInstanceOf("charRangeRef");
+								retval.code = templates.GetInstanceOf("charRangeRef");
 								string low = generator.target.getTargetCharLiteralFromANTLRCharLiteral(generator,(a!=null?a.Text:null));
 								string high = generator.target.getTargetCharLiteralFromANTLRCharLiteral(generator,(b!=null?b.Text:null));
-								retval.code.setAttribute("a", low);
-								retval.code.setAttribute("b", high);
+								retval.code.SetAttribute("a", low);
+								retval.code.SetAttribute("b", high);
 								if ( label!=null )
 								{
-									retval.code.setAttribute("label", label.Text);
+									retval.code.SetAttribute("label", label.Text);
 								}
 							
 				}
@@ -2793,10 +2793,10 @@ public partial class CodeGenTreeWalker : TreeParser
 				if ( state.backtracking == 0 )
 				{
 
-								retval.code = templates.getInstanceOf("validateSemanticPredicate");
-								retval.code.setAttribute("pred", generator.translateAction(currentRuleName,sp));
+								retval.code = templates.GetInstanceOf("validateSemanticPredicate");
+								retval.code.SetAttribute("pred", generator.translateAction(currentRuleName,sp));
 								string description = generator.target.getTargetStringLiteralFromString((sp!=null?sp.Text:null));
-								retval.code.setAttribute("description", description);
+								retval.code.SetAttribute("description", description);
 							
 				}
 
@@ -2974,8 +2974,8 @@ public partial class CodeGenTreeWalker : TreeParser
 				if ( state.backtracking == 0 )
 				{
 
-								retval.code = templates.getInstanceOf("execAction");
-								retval.code.setAttribute("action", generator.translateAction(currentRuleName,act));
+								retval.code = templates.GetInstanceOf("execAction");
+								retval.code.SetAttribute("action", generator.translateAction(currentRuleName,act));
 							
 				}
 
@@ -2988,8 +2988,8 @@ public partial class CodeGenTreeWalker : TreeParser
 				if ( state.backtracking == 0 )
 				{
 
-								retval.code = templates.getInstanceOf("execForcedAction");
-								retval.code.setAttribute("action", generator.translateAction(currentRuleName,act2));
+								retval.code = templates.GetInstanceOf("execForcedAction");
+								retval.code.SetAttribute("action", generator.translateAction(currentRuleName,act2));
 							
 				}
 
@@ -3196,9 +3196,9 @@ public partial class CodeGenTreeWalker : TreeParser
 													 (GrammarAST)n.GetChild(0),
 													 astSuffix,
 													 labelText);
-							code.setAttribute("s",generator.genSetExpr(templates,elements,1,false));
+							code.SetAttribute("s",generator.genSetExpr(templates,elements,1,false));
 							int i = ((TokenWithIndex)n.Token).TokenIndex;
-							code.setAttribute("elementIndex", i);
+							code.SetAttribute("elementIndex", i);
 							if ( grammar.type!=Grammar.LEXER )
 							{
 								generator.generateLocalFOLLOW(n,"set",currentRuleName,i);
@@ -3379,7 +3379,7 @@ public partial class CodeGenTreeWalker : TreeParser
 
 							string description = grammar.grammarTreeToString(((GrammarAST)retval.start), false);
 							description = generator.target.getTargetStringLiteralFromString(description);
-							retval.code.setAttribute("description", description);
+							retval.code.SetAttribute("description", description);
 						
 			}
 
@@ -3418,17 +3418,17 @@ public partial class CodeGenTreeWalker : TreeParser
 			GrammarAST rootSuffix = null;
 			if ( state.backtracking == 0 )
 			{
-				retval.code = templates.getInstanceOf("tree");
+				retval.code = templates.GetInstanceOf("tree");
 				NFAState afterDOWN = (NFAState)((GrammarAST)retval.start).NFATreeDownState.getTransition(0).target;
 				LookaheadSet s = grammar.LOOK(afterDOWN);
 				if ( s.member(Label.UP) ) {
 					// nullable child list if we can see the UP as the next token
 					// we need an "if ( input.LA(1)==Token.DOWN )" gate around
 					// the child list.
-					retval.code.setAttribute("nullableChildList", "true");
+					retval.code.SetAttribute("nullableChildList", "true");
 				}
-				retval.code.setAttribute("enclosingTreeLevel", rewriteTreeNestingLevel-1);
-				retval.code.setAttribute("treeLevel", rewriteTreeNestingLevel);
+				retval.code.SetAttribute("enclosingTreeLevel", rewriteTreeNestingLevel-1);
+				retval.code.SetAttribute("treeLevel", rewriteTreeNestingLevel);
 				Rule r = grammar.getRule(currentRuleName);
 				if ( grammar.BuildAST && !r.hasRewrite(outerAltNum) ) {
 					rootSuffix = new GrammarAST(ROOT,"ROOT");
@@ -3451,7 +3451,7 @@ public partial class CodeGenTreeWalker : TreeParser
 			if ( state.backtracking == 0 )
 			{
 
-								retval.code.setAttribute("root.{el,line,pos}",
+								retval.code.SetAttribute("root.{el,line,pos}",
 												  (el!=null?el.code:default(StringTemplate)),
 												  (el!=null?((GrammarAST)el.start):null).Line,
 												  (el!=null?((GrammarAST)el.start):null).CharPositionInLine
@@ -3502,7 +3502,7 @@ public partial class CodeGenTreeWalker : TreeParser
 					if ( state.backtracking == 0 )
 					{
 
-											retval.code.setAttribute("actionsAfterRoot.{el,line,pos}",
+											retval.code.SetAttribute("actionsAfterRoot.{el,line,pos}",
 															  (act!=null?act.code:default(StringTemplate)),
 															  (act!=null?((GrammarAST)act.start):null).Line,
 															  (act!=null?((GrammarAST)act.start):null).CharPositionInLine
@@ -3547,7 +3547,7 @@ public partial class CodeGenTreeWalker : TreeParser
 					if ( state.backtracking == 0 )
 					{
 
-										 retval.code.setAttribute("children.{el,line,pos}",
+										 retval.code.SetAttribute("children.{el,line,pos}",
 														  (el!=null?el.code:default(StringTemplate)),
 														  (el!=null?((GrammarAST)el.start):null).Line,
 														  (el!=null?((GrammarAST)el.start):null).CharPositionInLine
@@ -3731,23 +3731,23 @@ public partial class CodeGenTreeWalker : TreeParser
 									labelText = null;
 								}
 								retval.code = getRuleElementST("ruleRef", (r!=null?r.Text:null), r, astSuffix, labelText);
-								retval.code.setAttribute("rule", rdef);
+								retval.code.SetAttribute("rule", rdef);
 								if ( scope!=null ) { // scoped rule ref
 									Grammar scopeG = grammar.composite.getGrammar(scope.Text);
-									retval.code.setAttribute("scope", scopeG);
+									retval.code.SetAttribute("scope", scopeG);
 								}
 								else if ( rdef.grammar != this.grammar ) { // nonlocal
 									// if rule definition is not in this grammar, it's nonlocal
 									IList<Grammar> rdefDelegates = rdef.grammar.getDelegates();
 									if ( rdefDelegates.Contains(this.grammar) ) {
-										retval.code.setAttribute("scope", rdef.grammar);
+										retval.code.SetAttribute("scope", rdef.grammar);
 									}
 									else {
 										// defining grammar is not a delegate, scope all the
 										// back to root, which has delegate methods for all
 										// rules.  Don't use scope if we are root.
 										if ( this.grammar != rdef.grammar.composite.delegateGrammarTreeRoot.grammar ) {
-											retval.code.setAttribute("scope",
+											retval.code.SetAttribute("scope",
 															  rdef.grammar.composite.delegateGrammarTreeRoot.grammar);
 										}
 									}
@@ -3755,10 +3755,10 @@ public partial class CodeGenTreeWalker : TreeParser
 
 								if ( rarg!=null ) {
 									List args = generator.translateAction(currentRuleName,rarg);
-									retval.code.setAttribute("args", args);
+									retval.code.SetAttribute("args", args);
 								}
 								int i = ((TokenWithIndex)r.Token).TokenIndex;
-								retval.code.setAttribute("elementIndex", i);
+								retval.code.SetAttribute("elementIndex", i);
 								generator.generateLocalFOLLOW(r,(r!=null?r.Text:null),currentRuleName,i);
 								r.code = retval.code;
 							
@@ -3813,14 +3813,14 @@ public partial class CodeGenTreeWalker : TreeParser
 								{
 									if ( grammar.getTokenType((t!=null?t.Text:null))==Label.EOF )
 									{
-										retval.code = templates.getInstanceOf("lexerMatchEOF");
+										retval.code = templates.GetInstanceOf("lexerMatchEOF");
 									}
 									else
 									{
-										retval.code = templates.getInstanceOf("lexerRuleRef");
+										retval.code = templates.GetInstanceOf("lexerRuleRef");
 										if ( isListLabel(labelText) )
 										{
-											retval.code = templates.getInstanceOf("lexerRuleRefAndListLabel");
+											retval.code = templates.GetInstanceOf("lexerRuleRefAndListLabel");
 										}
 										string scopeName = null;
 										if ( scope!=null )
@@ -3828,40 +3828,40 @@ public partial class CodeGenTreeWalker : TreeParser
 											scopeName = scope.Text;
 										}
 										Rule rdef2 = grammar.getRule(scopeName, (t!=null?t.Text:null));
-										retval.code.setAttribute("rule", rdef2);
+										retval.code.SetAttribute("rule", rdef2);
 										if ( scope!=null )
 										{ // scoped rule ref
 											Grammar scopeG = grammar.composite.getGrammar(scope.Text);
-											retval.code.setAttribute("scope", scopeG);
+											retval.code.SetAttribute("scope", scopeG);
 										}
 										else if ( rdef2.grammar != this.grammar )
 										{ // nonlocal
 											// if rule definition is not in this grammar, it's nonlocal
-											retval.code.setAttribute("scope", rdef2.grammar);
+											retval.code.SetAttribute("scope", rdef2.grammar);
 										}
 										if ( targ!=null )
 										{
 											List args = generator.translateAction(currentRuleName,targ);
-											retval.code.setAttribute("args", args);
+											retval.code.SetAttribute("args", args);
 										}
 									}
 									int i = ((TokenWithIndex)t.Token).TokenIndex;
-									retval.code.setAttribute("elementIndex", i);
+									retval.code.SetAttribute("elementIndex", i);
 									if ( label!=null )
-										retval.code.setAttribute("label", labelText);
+										retval.code.SetAttribute("label", labelText);
 								}
 								else
 								{
 									retval.code = getTokenElementST("tokenRef", (t!=null?t.Text:null), t, astSuffix, labelText);
 									string tokenLabel =
 										generator.getTokenTypeAsTargetLabel(grammar.getTokenType(t.Text));
-									retval.code.setAttribute("token",tokenLabel);
+									retval.code.SetAttribute("token",tokenLabel);
 									if ( !currentAltHasASTRewrite && t.terminalOptions!=null )
 									{ 
-										retval.code.setAttribute("hetero",t.terminalOptions[Grammar.defaultTokenOption]);
+										retval.code.SetAttribute("hetero",t.terminalOptions[Grammar.defaultTokenOption]);
 									}
 									int i = ((TokenWithIndex)t.Token).TokenIndex;
-									retval.code.setAttribute("elementIndex", i);
+									retval.code.SetAttribute("elementIndex", i);
 									generator.generateLocalFOLLOW(t,tokenLabel,currentRuleName,i);
 								}
 								t.code = retval.code;
@@ -3879,23 +3879,23 @@ public partial class CodeGenTreeWalker : TreeParser
 
 								if ( grammar.type==Grammar.LEXER )
 								{
-									retval.code = templates.getInstanceOf("charRef");
-									retval.code.setAttribute("char",
+									retval.code = templates.GetInstanceOf("charRef");
+									retval.code.SetAttribute("char",
 									   generator.target.getTargetCharLiteralFromANTLRCharLiteral(generator,(c!=null?c.Text:null)));
 									if ( label!=null )
 									{
-										retval.code.setAttribute("label", labelText);
+										retval.code.SetAttribute("label", labelText);
 									}
 								}
 								else { // else it's a token type reference
 									retval.code = getTokenElementST("tokenRef", "char_literal", c, astSuffix, labelText);
 									string tokenLabel = generator.getTokenTypeAsTargetLabel(grammar.getTokenType((c!=null?c.Text:null)));
-									retval.code.setAttribute("token",tokenLabel);
+									retval.code.SetAttribute("token",tokenLabel);
 									if ( c.terminalOptions!=null ) {
-										retval.code.setAttribute("hetero",c.terminalOptions[Grammar.defaultTokenOption]);
+										retval.code.SetAttribute("hetero",c.terminalOptions[Grammar.defaultTokenOption]);
 									}
 									int i = ((TokenWithIndex)c.Token).TokenIndex;
-									retval.code.setAttribute("elementIndex", i);
+									retval.code.SetAttribute("elementIndex", i);
 									generator.generateLocalFOLLOW(c,tokenLabel,currentRuleName,i);
 								}
 							
@@ -3912,12 +3912,12 @@ public partial class CodeGenTreeWalker : TreeParser
 
 								if ( grammar.type==Grammar.LEXER )
 								{
-									retval.code = templates.getInstanceOf("lexerStringRef");
-									retval.code.setAttribute("string",
+									retval.code = templates.GetInstanceOf("lexerStringRef");
+									retval.code.SetAttribute("string",
 										generator.target.getTargetStringLiteralFromANTLRStringLiteral(generator,(s!=null?s.Text:null)));
 									if ( label!=null )
 									{
-										retval.code.setAttribute("label", labelText);
+										retval.code.SetAttribute("label", labelText);
 									}
 								}
 								else
@@ -3925,13 +3925,13 @@ public partial class CodeGenTreeWalker : TreeParser
 									retval.code = getTokenElementST("tokenRef", "string_literal", s, astSuffix, labelText);
 									string tokenLabel =
 										generator.getTokenTypeAsTargetLabel(grammar.getTokenType((s!=null?s.Text:null)));
-									retval.code.setAttribute("token",tokenLabel);
+									retval.code.SetAttribute("token",tokenLabel);
 									if ( s.terminalOptions!=null )
 									{
-										retval.code.setAttribute("hetero",s.terminalOptions[Grammar.defaultTokenOption]);
+										retval.code.SetAttribute("hetero",s.terminalOptions[Grammar.defaultTokenOption]);
 									}
 									int i = ((TokenWithIndex)s.Token).TokenIndex;
-									retval.code.setAttribute("elementIndex", i);
+									retval.code.SetAttribute("elementIndex", i);
 									generator.generateLocalFOLLOW(s,tokenLabel,currentRuleName,i);
 								}
 							
@@ -3947,7 +3947,7 @@ public partial class CodeGenTreeWalker : TreeParser
 				{
 
 								retval.code = getWildcardST(w,astSuffix,labelText);
-								retval.code.setAttribute("elementIndex", ((TokenWithIndex)w.Token).TokenIndex);
+								retval.code.SetAttribute("elementIndex", ((TokenWithIndex)w.Token).TokenIndex);
 							
 				}
 
@@ -4112,12 +4112,12 @@ public partial class CodeGenTreeWalker : TreeParser
 
 							code = getTokenElementST("matchSet", "set", s, astSuffix, labelText);
 							int i = ((TokenWithIndex)s.Token).TokenIndex;
-							code.setAttribute("elementIndex", i);
+							code.SetAttribute("elementIndex", i);
 							if ( grammar.type!=Grammar.LEXER )
 							{
 								generator.generateLocalFOLLOW(s,"set",currentRuleName,i);
 							}
-							code.setAttribute("s", generator.genSetExpr(templates,s.SetValue,1,false));
+							code.SetAttribute("s", generator.genSetExpr(templates,s.SetValue,1,false));
 						
 			}
 
@@ -4250,14 +4250,14 @@ public partial class CodeGenTreeWalker : TreeParser
 				{
 					if ( generator.grammar.BuildTemplate )
 					{
-						retval.code = templates.getInstanceOf("rewriteTemplate");
+						retval.code = templates.GetInstanceOf("rewriteTemplate");
 					}
 					else
 					{
-						retval.code = templates.getInstanceOf("rewriteCode");
-						retval.code.setAttribute("treeLevel", OUTER_REWRITE_NESTING_LEVEL);
-						retval.code.setAttribute("rewriteBlockLevel", OUTER_REWRITE_NESTING_LEVEL);
-						retval.code.setAttribute("referencedElementsDeep",
+						retval.code = templates.GetInstanceOf("rewriteCode");
+						retval.code.SetAttribute("treeLevel", OUTER_REWRITE_NESTING_LEVEL);
+						retval.code.SetAttribute("rewriteBlockLevel", OUTER_REWRITE_NESTING_LEVEL);
+						retval.code.SetAttribute("referencedElementsDeep",
 										  getTokenTypesAsTargetLabels(((GrammarAST)retval.start).rewriteRefsDeep));
 						HashSet<string> tokenLabels =
 							grammar.getLabels(((GrammarAST)retval.start).rewriteRefsDeep, Grammar.TOKEN_LABEL);
@@ -4273,21 +4273,21 @@ public partial class CodeGenTreeWalker : TreeParser
 							grammar.getLabels(((GrammarAST)retval.start).rewriteRefsDeep, Grammar.WILDCARD_TREE_LIST_LABEL);
 						// just in case they ref r for "previous value", make a stream
 						// from retval.tree
-						StringTemplate retvalST = templates.getInstanceOf("prevRuleRootRef");
+						StringTemplate retvalST = templates.GetInstanceOf("prevRuleRootRef");
 						ruleLabels.Add(retvalST.ToString());
-						retval.code.setAttribute("referencedTokenLabels", tokenLabels);
-						retval.code.setAttribute("referencedTokenListLabels", tokenListLabels);
-						retval.code.setAttribute("referencedRuleLabels", ruleLabels);
-						retval.code.setAttribute("referencedRuleListLabels", ruleListLabels);
-						retval.code.setAttribute("referencedWildcardLabels", wildcardLabels);
-						retval.code.setAttribute("referencedWildcardListLabels", wildcardListLabels);
+						retval.code.SetAttribute("referencedTokenLabels", tokenLabels);
+						retval.code.SetAttribute("referencedTokenListLabels", tokenListLabels);
+						retval.code.SetAttribute("referencedRuleLabels", ruleLabels);
+						retval.code.SetAttribute("referencedRuleListLabels", ruleListLabels);
+						retval.code.SetAttribute("referencedWildcardLabels", wildcardLabels);
+						retval.code.SetAttribute("referencedWildcardListLabels", wildcardListLabels);
 					}
 				}
 				else
 				{
-						retval.code = templates.getInstanceOf("noRewrite");
-						retval.code.setAttribute("treeLevel", OUTER_REWRITE_NESTING_LEVEL);
-						retval.code.setAttribute("rewriteBlockLevel", OUTER_REWRITE_NESTING_LEVEL);
+						retval.code = templates.GetInstanceOf("noRewrite");
+						retval.code.SetAttribute("treeLevel", OUTER_REWRITE_NESTING_LEVEL);
+						retval.code.SetAttribute("rewriteBlockLevel", OUTER_REWRITE_NESTING_LEVEL);
 				}
 			}
 
@@ -4360,7 +4360,7 @@ public partial class CodeGenTreeWalker : TreeParser
 										string description =
 											grammar.grammarTreeToString(r,false);
 										description = generator.target.getTargetStringLiteralFromString(description);
-										retval.code.setAttribute("alts.{pred,alt,description}",
+										retval.code.SetAttribute("alts.{pred,alt,description}",
 														  predChunks,
 														  alt,
 														  description);
@@ -4412,9 +4412,9 @@ public partial class CodeGenTreeWalker : TreeParser
 			StringTemplate save_currentBlockST = currentBlockST;
 			if ( state.backtracking == 0 )
 			{
-				code = templates.getInstanceOf(blockTemplateName);
+				code = templates.GetInstanceOf(blockTemplateName);
 				currentBlockST = code;
-				code.setAttribute("rewriteBlockLevel", rewriteBlockNestingLevel);
+				code.SetAttribute("rewriteBlockLevel", rewriteBlockNestingLevel);
 			}
 
 		try
@@ -4427,9 +4427,9 @@ public partial class CodeGenTreeWalker : TreeParser
 			if ( state.backtracking == 0 )
 			{
 
-								currentBlockST.setAttribute("referencedElementsDeep",
+								currentBlockST.SetAttribute("referencedElementsDeep",
 									getTokenTypesAsTargetLabels(BLOCK14.rewriteRefsDeep));
-								currentBlockST.setAttribute("referencedElements",
+								currentBlockST.SetAttribute("referencedElements",
 									getTokenTypesAsTargetLabels(BLOCK14.rewriteRefsShallow));
 							
 			}
@@ -4446,7 +4446,7 @@ public partial class CodeGenTreeWalker : TreeParser
 			if ( state.backtracking == 0 )
 			{
 
-							code.setAttribute("alt", alt);
+							code.SetAttribute("alt", alt);
 						
 			}
 
@@ -4591,7 +4591,7 @@ public partial class CodeGenTreeWalker : TreeParser
 
 				if ( state.backtracking == 0 )
 				{
-					code =templates.getInstanceOf("rewriteElementList");
+					code =templates.GetInstanceOf("rewriteElementList");
 				}
 
 				Match(input, TokenConstants.DOWN, null); if (state.failed) return code;
@@ -4644,7 +4644,7 @@ public partial class CodeGenTreeWalker : TreeParser
 							if (state.failed) return code;
 							if ( state.backtracking == 0 )
 							{
-								code.setAttribute("elements.{el,line,pos}",
+								code.SetAttribute("elements.{el,line,pos}",
 																		(el!=null?el.code:default(StringTemplate)),
 																		(el!=null?((GrammarAST)el.start):null).Line,
 																		(el!=null?((GrammarAST)el.start):null).CharPositionInLine
@@ -4678,8 +4678,8 @@ public partial class CodeGenTreeWalker : TreeParser
 					Match(input,EPSILON,Follow._EPSILON_in_rewrite_alternative1827); if (state.failed) return code;
 					if ( state.backtracking == 0 )
 					{
-						code.setAttribute("elements.{el,line,pos}",
-														   templates.getInstanceOf("rewriteEmptyAlt"),
+						code.SetAttribute("elements.{el,line,pos}",
+														   templates.GetInstanceOf("rewriteEmptyAlt"),
 														   a.Line,
 														   a.CharPositionInLine
 														   );
@@ -4928,7 +4928,7 @@ public partial class CodeGenTreeWalker : TreeParser
 
 								string description = grammar.grammarTreeToString(((GrammarAST)retval.start), false);
 								description = generator.target.getTargetStringLiteralFromString(description);
-								retval.code.setAttribute("description", description);
+								retval.code.SetAttribute("description", description);
 							
 				}
 
@@ -4956,7 +4956,7 @@ public partial class CodeGenTreeWalker : TreeParser
 
 								string description = grammar.grammarTreeToString(((GrammarAST)retval.start), false);
 								description = generator.target.getTargetStringLiteralFromString(description);
-								retval.code.setAttribute("description", description);
+								retval.code.SetAttribute("description", description);
 							
 				}
 
@@ -4984,7 +4984,7 @@ public partial class CodeGenTreeWalker : TreeParser
 
 								string description = grammar.grammarTreeToString(((GrammarAST)retval.start), false);
 								description = generator.target.getTargetStringLiteralFromString(description);
-								retval.code.setAttribute("description", description);
+								retval.code.SetAttribute("description", description);
 							
 				}
 
@@ -5024,9 +5024,9 @@ public partial class CodeGenTreeWalker : TreeParser
 			rewriteTreeNestingLevel++;
 			if ( state.backtracking == 0 )
 			{
-				retval.code = templates.getInstanceOf("rewriteTree");
-				retval.code.setAttribute("treeLevel", rewriteTreeNestingLevel);
-				retval.code.setAttribute("enclosingTreeLevel", rewriteTreeNestingLevel-1);
+				retval.code = templates.GetInstanceOf("rewriteTree");
+				retval.code.SetAttribute("treeLevel", rewriteTreeNestingLevel);
+				retval.code.SetAttribute("enclosingTreeLevel", rewriteTreeNestingLevel-1);
 			}
 
 		try
@@ -5045,7 +5045,7 @@ public partial class CodeGenTreeWalker : TreeParser
 			if ( state.backtracking == 0 )
 			{
 
-								retval.code.setAttribute("root.{el,line,pos}",
+								retval.code.SetAttribute("root.{el,line,pos}",
 												   (r!=null?r.code:default(StringTemplate)),
 												   (r!=null?((GrammarAST)r.start):null).Line,
 												   (r!=null?((GrammarAST)r.start):null).CharPositionInLine
@@ -5077,7 +5077,7 @@ public partial class CodeGenTreeWalker : TreeParser
 					if ( state.backtracking == 0 )
 					{
 
-										retval.code.setAttribute("children.{el,line,pos}",
+										retval.code.SetAttribute("children.{el,line,pos}",
 															(el!=null?el.code:default(StringTemplate)),
 															(el!=null?((GrammarAST)el.start):null).Line,
 															(el!=null?((GrammarAST)el.start):null).CharPositionInLine
@@ -5104,7 +5104,7 @@ public partial class CodeGenTreeWalker : TreeParser
 
 							string description = grammar.grammarTreeToString(((GrammarAST)retval.start), false);
 							description = generator.target.getTargetStringLiteralFromString(description);
-							retval.code.setAttribute("description", description);
+							retval.code.SetAttribute("description", description);
 						
 			}
 
@@ -5196,8 +5196,8 @@ public partial class CodeGenTreeWalker : TreeParser
 								{
 									stName += "Root";
 								}
-								retval.code = templates.getInstanceOf(stName);
-								retval.code.setAttribute("rule", ruleRefName);
+								retval.code = templates.GetInstanceOf(stName);
+								retval.code.SetAttribute("rule", ruleRefName);
 								if ( grammar.getRule(ruleRefName)==null )
 								{
 									ErrorManager.grammarError(ErrorManager.MSG_UNDEFINED_RULE_REF,
@@ -5334,17 +5334,17 @@ public partial class CodeGenTreeWalker : TreeParser
 								{
 									stName += "Root";
 								}
-								retval.code = templates.getInstanceOf(stName);
-								retval.code.setAttribute("hetero", hetero);
+								retval.code = templates.GetInstanceOf(stName);
+								retval.code.SetAttribute("hetero", hetero);
 								if ( arg!=null )
 								{
 									List args = generator.translateAction(currentRuleName,arg);
-									retval.code.setAttribute("args", args);
+									retval.code.SetAttribute("args", args);
 								}
-								retval.code.setAttribute("elementIndex", ((TokenWithIndex)((GrammarAST)retval.start).Token).TokenIndex);
+								retval.code.SetAttribute("elementIndex", ((TokenWithIndex)((GrammarAST)retval.start).Token).TokenIndex);
 								int ttype = grammar.getTokenType(tokenName);
 								string tok = generator.getTokenTypeAsTargetLabel(ttype);
-								retval.code.setAttribute("token", tok);
+								retval.code.SetAttribute("token", tok);
 								if ( grammar.getTokenType(tokenName)==Label.INVALID )
 								{
 									ErrorManager.grammarError(ErrorManager.MSG_UNDEFINED_TOKEN_REF_IN_REWRITE,
@@ -5379,9 +5379,9 @@ public partial class CodeGenTreeWalker : TreeParser
 																  ((GrammarAST)(LABEL22)).Token,
 																  labelName);
 									}
-									StringTemplate labelST = templates.getInstanceOf("prevRuleRootRef");
-									retval.code = templates.getInstanceOf("rewriteRuleLabelRef"+(isRoot?"Root":""));
-									retval.code.setAttribute("label", labelST);
+									StringTemplate labelST = templates.GetInstanceOf("prevRuleRootRef");
+									retval.code = templates.GetInstanceOf("rewriteRuleLabelRef"+(isRoot?"Root":""));
+									retval.code.SetAttribute("label", labelST);
 								}
 								else if ( pair==null )
 								{
@@ -5419,8 +5419,8 @@ public partial class CodeGenTreeWalker : TreeParser
 									{
 										stName += "Root";
 									}
-									retval.code = templates.getInstanceOf(stName);
-									retval.code.setAttribute("label", labelName);
+									retval.code = templates.GetInstanceOf(stName);
+									retval.code.SetAttribute("label", labelName);
 								}
 							
 				}
@@ -5437,8 +5437,8 @@ public partial class CodeGenTreeWalker : TreeParser
 								// actions in rewrite rules yield a tree object
 								string actText = (ACTION23!=null?ACTION23.Text:null);
 								List chunks = generator.translateAction(currentRuleName,ACTION23);
-								retval.code = templates.getInstanceOf("rewriteNodeAction"+(isRoot?"Root":""));
-								retval.code.setAttribute("action", chunks);
+								retval.code = templates.GetInstanceOf("rewriteNodeAction"+(isRoot?"Root":""));
+								retval.code.SetAttribute("action", chunks);
 							
 				}
 
@@ -5519,7 +5519,7 @@ public partial class CodeGenTreeWalker : TreeParser
 				Match(input, TokenConstants.UP, null); if (state.failed) return code;
 				if ( state.backtracking == 0 )
 				{
-					code =templates.getInstanceOf("rewriteEmptyTemplate");
+					code =templates.GetInstanceOf("rewriteEmptyTemplate");
 				}
 
 				}
@@ -5573,18 +5573,18 @@ public partial class CodeGenTreeWalker : TreeParser
 
 									if ( id!=null && (id!=null?id.Text:null).Equals("template") )
 									{
-											code = templates.getInstanceOf("rewriteInlineTemplate");
+											code = templates.GetInstanceOf("rewriteInlineTemplate");
 									}
 									else if ( id!=null )
 									{
-											code = templates.getInstanceOf("rewriteExternalTemplate");
-											code.setAttribute("name", (id!=null?id.Text:null));
+											code = templates.GetInstanceOf("rewriteExternalTemplate");
+											code.SetAttribute("name", (id!=null?id.Text:null));
 									}
 									else if ( ind!=null )
 									{ // must be %({expr})(args)
-										code = templates.getInstanceOf("rewriteIndirectTemplate");
+										code = templates.GetInstanceOf("rewriteIndirectTemplate");
 										List chunks=generator.translateAction(currentRuleName,ind);
-										code.setAttribute("expr", chunks);
+										code.SetAttribute("expr", chunks);
 									}
 								
 				}
@@ -5623,7 +5623,7 @@ public partial class CodeGenTreeWalker : TreeParser
 														// broken up yet into trees.
 														a.outerAltNum = this.outerAltNum;
 														List chunks = generator.translateAction(currentRuleName,a);
-														code.setAttribute("args.{name,value}", (arg!=null?arg.Text:null), chunks);
+														code.SetAttribute("args.{name,value}", (arg!=null?arg.Text:null), chunks);
 													
 							}
 
@@ -5668,7 +5668,7 @@ public partial class CodeGenTreeWalker : TreeParser
 											string sl = (DOUBLE_QUOTE_STRING_LITERAL24!=null?DOUBLE_QUOTE_STRING_LITERAL24.Text:null);
 											string t = sl.Substring( 1, sl.Length - 2 ); // strip quotes
 											t = generator.target.getTargetStringLiteralFromString(t);
-											code.setAttribute("template",t);
+											code.SetAttribute("template",t);
 										
 					}
 
@@ -5684,7 +5684,7 @@ public partial class CodeGenTreeWalker : TreeParser
 											string sl = (DOUBLE_ANGLE_STRING_LITERAL25!=null?DOUBLE_ANGLE_STRING_LITERAL25.Text:null);
 											string t = sl.Substring( 2, sl.Length - 4 ); // strip double angle quotes
 											t = generator.target.getTargetStringLiteralFromString(t);
-											code.setAttribute("template",t);
+											code.SetAttribute("template",t);
 										
 					}
 
@@ -5707,8 +5707,8 @@ public partial class CodeGenTreeWalker : TreeParser
 
 								// set alt num for same reason as ARGLIST above
 								act.outerAltNum = this.outerAltNum;
-								code =templates.getInstanceOf("rewriteAction");
-								code.setAttribute("action",
+								code =templates.GetInstanceOf("rewriteAction");
+								code.SetAttribute("action",
 												  generator.translateAction(currentRuleName,act));
 							
 				}

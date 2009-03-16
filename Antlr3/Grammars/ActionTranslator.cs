@@ -1,4 +1,4 @@
-// $ANTLR 3.1.2 Grammars\\ActionTranslator.g3 2009-03-07 08:57:31
+// $ANTLR 3.1.2 Grammars\\ActionTranslator.g3 2009-03-16 17:44:10
 
 // The variable 'variable' is assigned but its value is never used.
 #pragma warning disable 219
@@ -223,9 +223,9 @@ public partial class ActionTranslator : Lexer
 								{
 									st = template("ruleSetPropertyRef_"+(y!=null?y.Text:null));
 									grammar.referenceRuleLabelPredefinedAttribute((x!=null?x.Text:null));
-									st.setAttribute("scope", (x!=null?x.Text:null));
-									st.setAttribute("attr", (y!=null?y.Text:null));
-									st.setAttribute("expr", translateAction((expr!=null?expr.Text:null)));
+									st.SetAttribute("scope", (x!=null?x.Text:null));
+									st.SetAttribute("attr", (y!=null?y.Text:null));
+									st.SetAttribute("expr", translateAction((expr!=null?expr.Text:null)));
 								}
 								else
 								{
@@ -248,15 +248,15 @@ public partial class ActionTranslator : Lexer
 							else if ( scope.isParameterScope )
 							{
 								st = template("parameterSetAttributeRef");
-								st.setAttribute("attr", scope.getAttribute((y!=null?y.Text:null)));
-								st.setAttribute("expr", translateAction((expr!=null?expr.Text:null)));
+								st.SetAttribute("attr", scope.getAttribute((y!=null?y.Text:null)));
+								st.SetAttribute("expr", translateAction((expr!=null?expr.Text:null)));
 							}
 							else
 							{ // must be return value
 								st = template("returnSetAttributeRef");
-								st.setAttribute("ruleDescriptor", enclosingRule);
-								st.setAttribute("attr", scope.getAttribute((y!=null?y.Text:null)));
-								st.setAttribute("expr", translateAction((expr!=null?expr.Text:null)));
+								st.SetAttribute("ruleDescriptor", enclosingRule);
+								st.SetAttribute("attr", scope.getAttribute((y!=null?y.Text:null)));
+								st.SetAttribute("expr", translateAction((expr!=null?expr.Text:null)));
 							}
 						
 			}
@@ -316,8 +316,8 @@ public partial class ActionTranslator : Lexer
 							{
 								st = template("rulePropertyRef_"+(y!=null?y.Text:null));
 								grammar.referenceRuleLabelPredefinedAttribute((x!=null?x.Text:null));
-								st.setAttribute("scope", (x!=null?x.Text:null));
-								st.setAttribute("attr", (y!=null?y.Text:null));
+								st.SetAttribute("scope", (x!=null?x.Text:null));
+								st.SetAttribute("attr", (y!=null?y.Text:null));
 							}
 							else if ( scope.isPredefinedLexerRuleScope )
 							{
@@ -330,13 +330,13 @@ public partial class ActionTranslator : Lexer
 							else if ( scope.isParameterScope )
 							{
 								st = template("parameterAttributeRef");
-								st.setAttribute("attr", scope.getAttribute((y!=null?y.Text:null)));
+								st.SetAttribute("attr", scope.getAttribute((y!=null?y.Text:null)));
 							}
 							else
 							{ // must be return value
 								st = template("returnAttributeRef");
-								st.setAttribute("ruleDescriptor", enclosingRule);
-								st.setAttribute("attr", scope.getAttribute((y!=null?y.Text:null)));
+								st.SetAttribute("ruleDescriptor", enclosingRule);
+								st.SetAttribute("attr", scope.getAttribute((y!=null?y.Text:null)));
 							}
 						
 			}
@@ -475,8 +475,8 @@ public partial class ActionTranslator : Lexer
 								}
 							}
 							StringTemplate st = template("tokenLabelPropertyRef_"+(y!=null?y.Text:null));
-							st.setAttribute("scope", label);
-							st.setAttribute("attr", AttributeScope.tokenScope.getAttribute((y!=null?y.Text:null)));
+							st.SetAttribute("scope", label);
+							st.SetAttribute("attr", AttributeScope.tokenScope.getAttribute((y!=null?y.Text:null)));
 						
 			}
 
@@ -652,15 +652,15 @@ public partial class ActionTranslator : Lexer
 							{
 								st = template("ruleLabelPropertyRef_"+(y!=null?y.Text:null));
 								grammar.referenceRuleLabelPredefinedAttribute(refdRuleName);
-								st.setAttribute("scope", label);
-								st.setAttribute("attr", (y!=null?y.Text:null));
+								st.SetAttribute("scope", label);
+								st.SetAttribute("attr", (y!=null?y.Text:null));
 							}
 							else if ( scope.isPredefinedLexerRuleScope )
 							{
 								st = template("lexerRuleLabelPropertyRef_"+(y!=null?y.Text:null));
 								grammar.referenceRuleLabelPredefinedAttribute(refdRuleName);
-								st.setAttribute("scope", label);
-								st.setAttribute("attr", (y!=null?y.Text:null));
+								st.SetAttribute("scope", label);
+								st.SetAttribute("attr", (y!=null?y.Text:null));
 							}
 							else if ( scope.isParameterScope )
 							{
@@ -669,9 +669,9 @@ public partial class ActionTranslator : Lexer
 							else
 							{
 								st = template("ruleLabelRef");
-								st.setAttribute("referencedRule", refdRule);
-								st.setAttribute("scope", label);
-								st.setAttribute("attr", scope.getAttribute((y!=null?y.Text:null)));
+								st.SetAttribute("referencedRule", refdRule);
+								st.SetAttribute("scope", label);
+								st.SetAttribute("attr", scope.getAttribute((y!=null?y.Text:null)));
 							}
 						
 			}
@@ -725,7 +725,7 @@ public partial class ActionTranslator : Lexer
 							{
 								st = template("tokenLabelRef");
 							}
-							st.setAttribute("label", (ID1!=null?ID1.Text:null));
+							st.SetAttribute("label", (ID1!=null?ID1.Text:null));
 						
 			}
 
@@ -776,7 +776,7 @@ public partial class ActionTranslator : Lexer
 							else
 							{
 								StringTemplate st = template("tokenLabelRef");
-								st.setAttribute("label", label);
+								st.SetAttribute("label", label);
 							}
 						
 			}
@@ -830,7 +830,7 @@ public partial class ActionTranslator : Lexer
 							else
 							{
 								StringTemplate st = template("lexerRuleLabel");
-								st.setAttribute("label", label);
+								st.SetAttribute("label", label);
 							}
 						
 			}
@@ -906,9 +906,9 @@ public partial class ActionTranslator : Lexer
 								{
 									st = template("ruleSetPropertyRef_"+(ID4!=null?ID4.Text:null));
 									grammar.referenceRuleLabelPredefinedAttribute(enclosingRule.name);
-									st.setAttribute("scope", enclosingRule.name);
-									st.setAttribute("attr", (ID4!=null?ID4.Text:null));
-									st.setAttribute("expr", translateAction((expr!=null?expr.Text:null)));
+									st.SetAttribute("scope", enclosingRule.name);
+									st.SetAttribute("attr", (ID4!=null?ID4.Text:null));
+									st.SetAttribute("expr", translateAction((expr!=null?expr.Text:null)));
 								}
 								else
 								{
@@ -922,15 +922,15 @@ public partial class ActionTranslator : Lexer
 							else if ( scope.isParameterScope )
 							{
 								st = template("parameterSetAttributeRef");
-								st.setAttribute("attr", scope.getAttribute((ID4!=null?ID4.Text:null)));
-								st.setAttribute("expr", translateAction((expr!=null?expr.Text:null)));
+								st.SetAttribute("attr", scope.getAttribute((ID4!=null?ID4.Text:null)));
+								st.SetAttribute("expr", translateAction((expr!=null?expr.Text:null)));
 							}
 							else
 							{
 								st = template("returnSetAttributeRef");
-								st.setAttribute("ruleDescriptor", enclosingRule);
-								st.setAttribute("attr", scope.getAttribute((ID4!=null?ID4.Text:null)));
-								st.setAttribute("expr", translateAction((expr!=null?expr.Text:null)));
+								st.SetAttribute("ruleDescriptor", enclosingRule);
+								st.SetAttribute("attr", scope.getAttribute((ID4!=null?ID4.Text:null)));
+								st.SetAttribute("expr", translateAction((expr!=null?expr.Text:null)));
 							}
 						
 			}
@@ -976,25 +976,25 @@ public partial class ActionTranslator : Lexer
 							{
 								st = template("rulePropertyRef_"+(ID5!=null?ID5.Text:null));
 								grammar.referenceRuleLabelPredefinedAttribute(enclosingRule.name);
-								st.setAttribute("scope", enclosingRule.name);
-								st.setAttribute("attr", (ID5!=null?ID5.Text:null));
+								st.SetAttribute("scope", enclosingRule.name);
+								st.SetAttribute("attr", (ID5!=null?ID5.Text:null));
 							}
 							else if ( scope.isPredefinedLexerRuleScope )
 							{
 								st = template("lexerRulePropertyRef_"+(ID5!=null?ID5.Text:null));
-								st.setAttribute("scope", enclosingRule.name);
-								st.setAttribute("attr", (ID5!=null?ID5.Text:null));
+								st.SetAttribute("scope", enclosingRule.name);
+								st.SetAttribute("attr", (ID5!=null?ID5.Text:null));
 							}
 							else if ( scope.isParameterScope )
 							{
 								st = template("parameterAttributeRef");
-								st.setAttribute("attr", scope.getAttribute((ID5!=null?ID5.Text:null)));
+								st.SetAttribute("attr", scope.getAttribute((ID5!=null?ID5.Text:null)));
 							}
 							else
 							{
 								st = template("returnAttributeRef");
-								st.setAttribute("ruleDescriptor", enclosingRule);
-								st.setAttribute("attr", scope.getAttribute((ID5!=null?ID5.Text:null)));
+								st.SetAttribute("ruleDescriptor", enclosingRule);
+								st.SetAttribute("attr", scope.getAttribute((ID5!=null?ID5.Text:null)));
 							}
 						
 			}
@@ -1071,9 +1071,9 @@ public partial class ActionTranslator : Lexer
 							if ( scope!=null )
 							{
 								StringTemplate st = template("scopeSetAttributeRef");
-								st.setAttribute("scope", (x!=null?x.Text:null));
-								st.setAttribute("attr",  scope.getAttribute((y!=null?y.Text:null)));
-								st.setAttribute("expr",  translateAction((expr!=null?expr.Text:null)));
+								st.SetAttribute("scope", (x!=null?x.Text:null));
+								st.SetAttribute("attr",  scope.getAttribute((y!=null?y.Text:null)));
+								st.SetAttribute("expr",  translateAction((expr!=null?expr.Text:null)));
 							}
 							else
 							{
@@ -1128,8 +1128,8 @@ public partial class ActionTranslator : Lexer
 							if ( scope!=null )
 							{
 								StringTemplate st = template("scopeAttributeRef");
-								st.setAttribute("scope", (x!=null?x.Text:null));
-								st.setAttribute("attr",  scope.getAttribute((y!=null?y.Text:null)));
+								st.SetAttribute("scope", (x!=null?x.Text:null));
+								st.SetAttribute("attr",  scope.getAttribute((y!=null?y.Text:null)));
 							}
 							else
 							{
@@ -1225,9 +1225,9 @@ public partial class ActionTranslator : Lexer
 			{
 
 							StringTemplate st = template("scopeAttributeRef");
-							st.setAttribute("scope",    (x!=null?x.Text:null));
-							st.setAttribute("attr",     resolveDynamicScope((x!=null?x.Text:null)).getAttribute((y!=null?y.Text:null)));
-							st.setAttribute("negIndex", (expr!=null?expr.Text:null));
+							st.SetAttribute("scope",    (x!=null?x.Text:null));
+							st.SetAttribute("attr",     resolveDynamicScope((x!=null?x.Text:null)).getAttribute((y!=null?y.Text:null)));
+							st.SetAttribute("negIndex", (expr!=null?expr.Text:null));
 						
 			}
 
@@ -1274,9 +1274,9 @@ public partial class ActionTranslator : Lexer
 			{
 
 							StringTemplate st = template("scopeAttributeRef");
-							st.setAttribute("scope", (x!=null?x.Text:null));
-							st.setAttribute("attr",  resolveDynamicScope((x!=null?x.Text:null)).getAttribute((y!=null?y.Text:null)));
-							st.setAttribute("index", (expr!=null?expr.Text:null));
+							st.SetAttribute("scope", (x!=null?x.Text:null));
+							st.SetAttribute("attr",  resolveDynamicScope((x!=null?x.Text:null)).getAttribute((y!=null?y.Text:null)));
+							st.SetAttribute("index", (expr!=null?expr.Text:null));
 						
 			}
 
@@ -1372,7 +1372,7 @@ public partial class ActionTranslator : Lexer
 			{
 
 							StringTemplate st = template("isolatedDynamicScopeRef");
-							st.setAttribute("scope", (ID6!=null?ID6.Text:null));
+							st.SetAttribute("scope", (ID6!=null?ID6.Text:null));
 						
 			}
 
@@ -1771,9 +1771,9 @@ public partial class ActionTranslator : Lexer
 							StringTemplate st = template("actionSetAttribute");
 							string action = (a!=null?a.Text:null);
 							action = action.Substring( 1, action.Length - 2 ); // stuff inside {...}
-							st.setAttribute("st", translateAction(action));
-							st.setAttribute("attrName", (ID7!=null?ID7.Text:null));
-							st.setAttribute("expr", translateAction((expr!=null?expr.Text:null)));
+							st.SetAttribute("st", translateAction(action));
+							st.SetAttribute("attrName", (ID7!=null?ID7.Text:null));
+							st.SetAttribute("expr", translateAction((expr!=null?expr.Text:null)));
 						
 			}
 
@@ -1839,9 +1839,9 @@ public partial class ActionTranslator : Lexer
 			{
 
 							StringTemplate st = template("actionSetAttribute");
-							st.setAttribute("st", (x!=null?x.Text:null));
-							st.setAttribute("attrName", (y!=null?y.Text:null));
-							st.setAttribute("expr", translateAction((expr!=null?expr.Text:null)));
+							st.SetAttribute("st", (x!=null?x.Text:null));
+							st.SetAttribute("attrName", (y!=null?y.Text:null));
+							st.SetAttribute("expr", translateAction((expr!=null?expr.Text:null)));
 						
 			}
 
@@ -1940,7 +1940,7 @@ public partial class ActionTranslator : Lexer
 							StringTemplate st = template("actionStringConstructor");
 							string action = (a!=null?a.Text:null);
 							action = action.Substring( 1, action.Length - 2 ); // stuff inside {...}
-							st.setAttribute("stringExpr", translateAction(action));
+							st.SetAttribute("stringExpr", translateAction(action));
 						
 			}
 

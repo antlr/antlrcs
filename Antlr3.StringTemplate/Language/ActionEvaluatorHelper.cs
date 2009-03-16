@@ -58,7 +58,7 @@ namespace Antlr3.ST.Language
 
         public override void ReportError( RecognitionException e )
         {
-            self.error( "eval tree parse error", e );
+            self.Error( "eval tree parse error", e );
         }
     }
 

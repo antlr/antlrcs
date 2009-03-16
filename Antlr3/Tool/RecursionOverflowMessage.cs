@@ -75,13 +75,13 @@ namespace Antlr3.Tool
             }
 
             StringTemplate st = getMessageTemplate();
-            st.setAttribute( "targetRules", targetRules );
-            st.setAttribute( "alt", alt );
-            st.setAttribute( "callSiteStates", callSiteStates );
+            st.SetAttribute( "targetRules", targetRules );
+            st.SetAttribute( "alt", alt );
+            st.SetAttribute( "callSiteStates", callSiteStates );
 
             var labels = probe.getSampleNonDeterministicInputSequence( sampleBadState );
             String input = probe.getInputSequenceDisplay( labels );
-            st.setAttribute( "input", input );
+            st.SetAttribute( "input", input );
 
             return base.ToString( st );
         }

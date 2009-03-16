@@ -130,10 +130,10 @@ namespace Antlr3.Grammars
                 CommonToken labelTok = new CommonToken( ANTLRParser.ID, label );
                 grammar.defineRuleRefLabel( currentRuleName, labelTok, elementAST );
             }
-            StringTemplate elementST = templates.getInstanceOf( name );
+            StringTemplate elementST = templates.GetInstanceOf( name );
             if ( label != null )
             {
-                elementST.setAttribute( "label", label );
+                elementST.SetAttribute( "label", label );
             }
             return elementST;
         }
@@ -171,14 +171,14 @@ namespace Antlr3.Grammars
             }
 
             StringTemplate elementST = null;
-            if ( tryUnchecked && templates.isDefined( name + "Unchecked" + suffix ) )
-                elementST = templates.getInstanceOf( name + "Unchecked" + suffix );
+            if ( tryUnchecked && templates.IsDefined( name + "Unchecked" + suffix ) )
+                elementST = templates.GetInstanceOf( name + "Unchecked" + suffix );
             if ( elementST == null )
-                elementST = templates.getInstanceOf( name + suffix );
+                elementST = templates.GetInstanceOf( name + suffix );
 
             if ( label != null )
             {
-                elementST.setAttribute( "label", label );
+                elementST.SetAttribute( "label", label );
             }
             return elementST;
         }

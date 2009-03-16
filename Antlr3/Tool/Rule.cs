@@ -585,7 +585,7 @@ namespace Antlr3.Tool
             }
             string labelName = null;
             string existingLabelName =
-                (string)uniqueRefAST.code.getAttribute( "label" );
+                (string)uniqueRefAST.code.GetAttribute( "label" );
             // reuse any label or list label if it exists
             if ( existingLabelName != null )
             {
@@ -605,7 +605,7 @@ namespace Antlr3.Tool
                 {
                     grammar.defineRuleRefLabel( name, label, uniqueRefAST );
                 }
-                uniqueRefAST.code.setAttribute( "label", labelName );
+                uniqueRefAST.code.SetAttribute( "label", labelName );
             }
             return labelName;
         }

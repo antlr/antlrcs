@@ -163,20 +163,20 @@ namespace Antlr3.ST.Language
          *  char position.
          *  </remarks>
          */
-        public override int write( StringTemplate self, IStringTemplateWriter @out )
+        public override int Write( StringTemplate self, IStringTemplateWriter @out )
         {
             if ( exprTree == null || self == null || @out == null )
             {
                 return 0;
             }
             // handle options, anchor, wrap, separator...
-            StringTemplateAST anchorAST = (StringTemplateAST)getOption( "anchor" );
+            StringTemplateAST anchorAST = (StringTemplateAST)GetOption( "anchor" );
             if ( anchorAST != null )
             { // any non-empty expr means true; check presence
-                @out.pushAnchorPoint();
+                @out.PushAnchorPoint();
             }
-            @out.pushIndentation( Indentation );
-            handleExprOptions( self );
+            @out.PushIndentation( Indentation );
+            HandleExprOptions( self );
             //System.out.println("evaluating tree: "+exprTree.toStringList());
             ActionEvaluator eval =
                     new ActionEvaluator( self, this, @out, exprTree );
@@ -188,43 +188,43 @@ namespace Antlr3.ST.Language
             }
             catch ( RecognitionException re )
             {
-                self.error( "can't evaluate tree: " + exprTree.ToStringTree(), re );
+                self.Error( "can't evaluate tree: " + exprTree.ToStringTree(), re );
             }
-            @out.popIndentation();
+            @out.PopIndentation();
             if ( anchorAST != null )
             {
-                @out.popAnchorPoint();
+                @out.PopAnchorPoint();
             }
             return n;
         }
 
         /** <summary>Grab and cache options; verify options are valid</summary> */
-        protected virtual void handleExprOptions( StringTemplate self )
+        protected virtual void HandleExprOptions( StringTemplate self )
         {
             // make sure options don't use format / renderer.  They are usually
             // strings which might invoke a string renderer etc...
             formatString = null;
-            StringTemplateAST wrapAST = (StringTemplateAST)getOption( "wrap" );
+            StringTemplateAST wrapAST = (StringTemplateAST)GetOption( "wrap" );
             if ( wrapAST != null )
             {
-                wrapString = evaluateExpression( self, wrapAST );
+                wrapString = EvaluateExpression( self, wrapAST );
             }
-            StringTemplateAST nullValueAST = (StringTemplateAST)getOption( "null" );
+            StringTemplateAST nullValueAST = (StringTemplateAST)GetOption( "null" );
             if ( nullValueAST != null )
             {
-                nullValue = evaluateExpression( self, nullValueAST );
+                nullValue = EvaluateExpression( self, nullValueAST );
             }
-            StringTemplateAST separatorAST = (StringTemplateAST)getOption( "separator" );
+            StringTemplateAST separatorAST = (StringTemplateAST)GetOption( "separator" );
             if ( separatorAST != null )
             {
-                separatorString = evaluateExpression( self, separatorAST );
+                separatorString = EvaluateExpression( self, separatorAST );
             }
             // following addition inspired by John Snyders
             StringTemplateAST formatAST =
-                (StringTemplateAST)getOption( "format" );
+                (StringTemplateAST)GetOption( "format" );
             if ( formatAST != null )
             {
-                formatString = evaluateExpression( self, formatAST );
+                formatString = EvaluateExpression( self, formatAST );
             }
 
             // Check that option is valid
@@ -233,7 +233,7 @@ namespace Antlr3.ST.Language
                 foreach ( string option in options.Keys )
                 {
                     if ( !supportedOptions.Contains( option ) )
-                        self.warning( "ignoring unsupported option: " + option );
+                        self.Warning( "ignoring unsupported option: " + option );
                 }
             }
         }
@@ -245,7 +245,7 @@ namespace Antlr3.ST.Language
          *  to be walked in lock step as n=names[i], p=phones[i].
          *  </summary>
          */
-        public virtual object applyTemplateToListOfAttributes( StringTemplate self,
+        public virtual object ApplyTemplateToListOfAttributes( StringTemplate self,
                                                       IList attributes,
                                                       StringTemplate templateToApply )
         {
@@ -263,7 +263,7 @@ namespace Antlr3.ST.Language
                 object o = attributes[a];
                 if ( o != null )
                 {
-                    o = convertAnythingToIterator( o );
+                    o = ConvertAnythingToIterator( o );
                     attributes[a] = o; // alter the list in place
                 }
             }
@@ -271,20 +271,20 @@ namespace Antlr3.ST.Language
             int numAttributes = attributes.Count;
 
             // ensure arguments line up
-            var formalArguments = templateToApply.getFormalArguments();
+            var formalArguments = templateToApply.GetFormalArguments();
             if ( formalArguments == null || formalArguments.Count == 0 )
             {
-                self.error( "missing arguments in anonymous" +
-                           " template in context " + self.getEnclosingInstanceStackString() );
+                self.Error( "missing arguments in anonymous" +
+                           " template in context " + self.GetEnclosingInstanceStackString() );
                 return null;
             }
             string[] formalArgumentNames = formalArguments.Select( fa => fa.name ).ToArray();
             if ( formalArgumentNames.Length != numAttributes )
             {
                 string formalArgumentsText = formalArguments.Select( fa => fa.name ).ToList().ToElementString();
-                self.error( "number of arguments " + formalArgumentsText +
+                self.Error( "number of arguments " + formalArgumentsText +
                            " mismatch between attribute list and anonymous" +
-                           " template in context " + self.getEnclosingInstanceStackString() );
+                           " template in context " + self.GetEnclosingInstanceStackString() );
                 // truncate arg list to match smaller size
                 int shorterSize = Math.Min( formalArgumentNames.Length, numAttributes );
                 numAttributes = shorterSize;
@@ -323,9 +323,9 @@ namespace Antlr3.ST.Language
                 }
                 argumentContext[DEFAULT_INDEX_VARIABLE_NAME] = i + 1;
                 argumentContext[DEFAULT_INDEX0_VARIABLE_NAME] = i;
-                StringTemplate embedded = templateToApply.getInstanceOf();
-                embedded.setEnclosingInstance( self );
-                embedded.setArgumentContext( argumentContext );
+                StringTemplate embedded = templateToApply.GetInstanceOf();
+                embedded.SetEnclosingInstance( self );
+                embedded.SetArgumentContext( argumentContext );
                 results.Add( embedded );
                 i++;
             }
@@ -333,7 +333,7 @@ namespace Antlr3.ST.Language
             return results;
         }
 
-        public virtual object applyListOfAlternatingTemplates( StringTemplate self,
+        public virtual object ApplyListOfAlternatingTemplates( StringTemplate self,
                                                       object attributeValue,
                                                       IList<StringTemplate> templatesToApply )
         {
@@ -346,8 +346,8 @@ namespace Antlr3.ST.Language
 
             // normalize collections and such to use iterators
             // anything iteratable can be used for "APPLY"
-            attributeValue = convertArrayToList( attributeValue );
-            attributeValue = convertAnythingIteratableToIterator( attributeValue );
+            attributeValue = ConvertArrayToList( attributeValue );
+            attributeValue = ConvertAnythingIteratableToIterator( attributeValue );
 
             if ( attributeValue is Iterator )
             {
@@ -372,15 +372,15 @@ namespace Antlr3.ST.Language
                     // eval.g), but that is used as the examplar.  We must create
                     // a new instance of the embedded template to apply each time
                     // to get new attribute sets etc...
-                    StringTemplateAST args = embedded.getArgumentsAST();
-                    embedded = embedded.getInstanceOf(); // make new instance
-                    embedded.setEnclosingInstance( self );
-                    embedded.setArgumentsAST( args );
+                    StringTemplateAST args = embedded.GetArgumentsAST();
+                    embedded = embedded.GetInstanceOf(); // make new instance
+                    embedded.SetEnclosingInstance( self );
+                    embedded.SetArgumentsAST( args );
                     argumentContext = new Dictionary<string, object>();
-                    var formalArgs = embedded.getFormalArguments();
+                    var formalArgs = embedded.GetFormalArguments();
                     bool isAnonymous =
-                        embedded.getName() == StringTemplate.ANONYMOUS_ST_NAME;
-                    setSoleFormalArgumentToIthValue( embedded, argumentContext, ithValue );
+                        embedded.GetName() == StringTemplate.ANONYMOUS_ST_NAME;
+                    SetSoleFormalArgumentToIthValue( embedded, argumentContext, ithValue );
                     // if it's an anonymous template with a formal arg, don't set it/attr
                     if ( !( isAnonymous && formalArgs != null && formalArgs.Count > 0 ) )
                     {
@@ -389,8 +389,8 @@ namespace Antlr3.ST.Language
                     }
                     argumentContext[DEFAULT_INDEX_VARIABLE_NAME] = i + 1;
                     argumentContext[DEFAULT_INDEX0_VARIABLE_NAME] = i;
-                    embedded.setArgumentContext( argumentContext );
-                    evaluateArguments( embedded );
+                    embedded.SetArgumentContext( argumentContext );
+                    EvaluateArguments( embedded );
                     /*
                     System.err.println("i="+i+": applyTemplate("+embedded.getName()+
                             ", args="+argumentContext+
@@ -414,11 +414,11 @@ namespace Antlr3.ST.Language
                 */
                 embedded = (StringTemplate)templatesToApply[0];
                 argumentContext = new Dictionary<string, object>();
-                var formalArgs = embedded.getFormalArguments();
-                StringTemplateAST args = embedded.getArgumentsAST();
-                setSoleFormalArgumentToIthValue( embedded, argumentContext, attributeValue );
+                var formalArgs = embedded.GetFormalArguments();
+                StringTemplateAST args = embedded.GetArgumentsAST();
+                SetSoleFormalArgumentToIthValue( embedded, argumentContext, attributeValue );
                 bool isAnonymous =
-                    embedded.getName() == StringTemplate.ANONYMOUS_ST_NAME;
+                    embedded.GetName() == StringTemplate.ANONYMOUS_ST_NAME;
                 // if it's an anonymous template with a formal arg, don't set it/attr
                 if ( !( isAnonymous && formalArgs != null && formalArgs.Count > 0 ) )
                 {
@@ -427,25 +427,25 @@ namespace Antlr3.ST.Language
                 }
                 argumentContext[DEFAULT_INDEX_VARIABLE_NAME] = 1;
                 argumentContext[DEFAULT_INDEX0_VARIABLE_NAME] = 0;
-                embedded.setArgumentContext( argumentContext );
-                evaluateArguments( embedded );
+                embedded.SetArgumentContext( argumentContext );
+                EvaluateArguments( embedded );
                 return embedded;
             }
         }
 
-        protected virtual void setSoleFormalArgumentToIthValue( StringTemplate embedded, IDictionary argumentContext, object ithValue )
+        protected virtual void SetSoleFormalArgumentToIthValue( StringTemplate embedded, IDictionary argumentContext, object ithValue )
         {
-            var formalArgs = embedded.getFormalArguments();
+            var formalArgs = embedded.GetFormalArguments();
             if ( formalArgs != null )
             {
                 string soleArgName = null;
                 bool isAnonymous =
-                    embedded.getName() == StringTemplate.ANONYMOUS_ST_NAME;
+                    embedded.GetName() == StringTemplate.ANONYMOUS_ST_NAME;
                 if ( formalArgs.Count == 1 || ( isAnonymous && formalArgs.Count > 0 ) )
                 {
                     if ( isAnonymous && formalArgs.Count > 1 )
                     {
-                        embedded.error( "too many arguments on {...} template: " + formalArgs );
+                        embedded.Error( "too many arguments on {...} template: " + formalArgs );
                     }
                     // if exactly 1 arg or anonymous, give that the value of
                     // "it" as a convenience like they said
@@ -468,7 +468,7 @@ namespace Antlr3.ST.Language
          *  Cache repeated requests for obj.prop within same group.
          *  </remarks>
          */
-        public virtual object getObjectProperty( StringTemplate self,
+        public virtual object GetObjectProperty( StringTemplate self,
                                         object o,
                                         object propertyName )
         {
@@ -496,10 +496,10 @@ namespace Antlr3.ST.Language
             value = convertArrayToList(value);
             self.getGroup().cacheObjectProperty(o,propertyName,value);
             */
-            object value = rawGetObjectProperty( self, o, propertyName );
+            object value = RawGetObjectProperty( self, o, propertyName );
             // take care of array properties...convert to a List so we can
             // apply templates to the elements etc...
-            value = convertArrayToList( value );
+            value = ConvertArrayToList( value );
             return value;
         }
 
@@ -560,7 +560,7 @@ namespace Antlr3.ST.Language
             return member;
         }
 
-        protected virtual object rawGetObjectProperty( StringTemplate self, object o, object property )
+        protected virtual object RawGetObjectProperty( StringTemplate self, object o, object property )
         {
             Type c = o.GetType();
             object value = null;
@@ -570,7 +570,7 @@ namespace Antlr3.ST.Language
             if ( c == typeof( StringTemplate.Aggregate ) )
             {
                 string propertyName2 = (string)property;
-                value = ( (StringTemplate.Aggregate)o ).get( (string)propertyName2 );
+                value = ( (StringTemplate.Aggregate)o ).Get( (string)propertyName2 );
                 return value;
             }
 
@@ -579,7 +579,7 @@ namespace Antlr3.ST.Language
             // TODO: TJP just asked himself why we can't do inherited attr here?
             else if ( c == typeof( StringTemplate ) )
             {
-                var attributes = ( (StringTemplate)o ).getAttributes();
+                var attributes = ( (StringTemplate)o ).GetAttributes();
                 if ( attributes != null )
                 {
                     string propertyName2 = (string)property;
@@ -661,7 +661,7 @@ namespace Antlr3.ST.Language
                 }
                 catch ( Exception e )
                 {
-                    self.error( "Can't get property " + propertyName + " using method get/is" + propertyName +
+                    self.Error( "Can't get property " + propertyName + " using method get/is" + propertyName +
                         " from " + c.Name + " instance", e );
                 }
             }
@@ -676,14 +676,14 @@ namespace Antlr3.ST.Language
                     }
                     catch ( FieldAccessException iae )
                     {
-                        self.error( "Can't access property " + propertyName + " using method get/is" + propertyName +
+                        self.Error( "Can't access property " + propertyName + " using method get/is" + propertyName +
                             " or direct field access from " + c.Name + " instance", iae );
                     }
                 }
                 else
                 {
-                    self.error( "Class " + c.Name + " has no such attribute: " + propertyName +
-                        " in template context " + self.getEnclosingInstanceStackString(), null );
+                    self.Error( "Class " + c.Name + " has no such attribute: " + propertyName +
+                        " in template context " + self.GetEnclosingInstanceStackString(), null );
                 }
             }
 
@@ -729,7 +729,7 @@ namespace Antlr3.ST.Language
          *  with size==0 to return false. TJP 5/1/2005
          *  </remarks>
          */
-        public virtual bool testAttributeTrue( object a )
+        public virtual bool TestAttributeTrue( object a )
         {
             if ( a == null )
             {
@@ -778,21 +778,21 @@ namespace Antlr3.ST.Language
          *  this is inserted into another template.
          *  </summary>
          */
-        public virtual StringTemplate getTemplateInclude( StringTemplate enclosing,
+        public virtual StringTemplate GetTemplateInclude( StringTemplate enclosing,
                                                  string templateName,
                                                  StringTemplateAST argumentsAST )
         {
             //System.out.println("getTemplateInclude: look up "+enclosing.getGroup().getName()+"::"+templateName);
-            StringTemplateGroup group = enclosing.getGroup();
-            StringTemplate embedded = group.getEmbeddedInstanceOf( enclosing, templateName );
+            StringTemplateGroup group = enclosing.GetGroup();
+            StringTemplate embedded = group.GetEmbeddedInstanceOf( enclosing, templateName );
             if ( embedded == null )
             {
-                enclosing.error( "cannot make embedded instance of " + templateName +
-                        " in template " + enclosing.getName() );
+                enclosing.Error( "cannot make embedded instance of " + templateName +
+                        " in template " + enclosing.GetName() );
                 return null;
             }
-            embedded.setArgumentsAST( argumentsAST );
-            evaluateArguments( embedded );
+            embedded.SetArgumentsAST( argumentsAST );
+            EvaluateArguments( embedded );
             return embedded;
         }
 
@@ -810,9 +810,9 @@ namespace Antlr3.ST.Language
          *  a separator arg; used when is a vector.
          *  </remarks>
          */
-        public virtual int writeAttribute( StringTemplate self, object o, IStringTemplateWriter @out )
+        public virtual int WriteAttribute( StringTemplate self, object o, IStringTemplateWriter @out )
         {
-            return write( self, o, @out );
+            return Write( self, o, @out );
         }
 
         /** <summary>Write o relative to self to out.</summary>
@@ -822,7 +822,7 @@ namespace Antlr3.ST.Language
          *  you are about to write a value, check formatting.
          *  </remarks>
          */
-        protected virtual int write( StringTemplate self,
+        protected virtual int Write( StringTemplate self,
                             object o,
                             IStringTemplateWriter @out )
         {
@@ -846,18 +846,18 @@ namespace Antlr3.ST.Language
                     // than one template (like both a header file and C file when
                     // generating C code).  It must execute within the context of
                     // the enclosing template.
-                    stToWrite.setEnclosingInstance( self );
+                    stToWrite.SetEnclosingInstance( self );
                     // if self is found up the enclosing instance chain, then
                     // infinite recursion
-                    if ( StringTemplate.inLintMode() &&
-                         StringTemplate.isRecursiveEnclosingInstance( stToWrite ) )
+                    if ( StringTemplate.InLintMode() &&
+                         StringTemplate.IsRecursiveEnclosingInstance( stToWrite ) )
                     {
                         // throw exception since sometimes eval keeps going
                         // even after I ignore this write of o.
                         throw new InvalidOperationException( "infinite recursion to " +
-                                stToWrite.getTemplateDeclaratorString() + " referenced in " +
-                                stToWrite.getEnclosingInstance().getTemplateDeclaratorString() +
-                                "; stack trace:" + Environment.NewLine + stToWrite.getEnclosingInstanceStackTrace() );
+                                stToWrite.GetTemplateDeclaratorString() + " referenced in " +
+                                stToWrite.GetEnclosingInstance().GetTemplateDeclaratorString() +
+                                "; stack trace:" + Environment.NewLine + stToWrite.GetEnclosingInstanceStackTrace() );
                     }
                     else
                     {
@@ -865,13 +865,13 @@ namespace Antlr3.ST.Language
                         // might need to wrap
                         if ( wrapString != null )
                         {
-                            n = @out.writeWrapSeparator( wrapString );
+                            n = @out.WriteWrapSeparator( wrapString );
                         }
                         // check if formatting needs to be applied to the stToWrite
                         if ( formatString != null )
                         {
                             IAttributeRenderer renderer =
-                                self.getAttributeRenderer( typeof( string ) );
+                                self.GetAttributeRenderer( typeof( string ) );
                             if ( renderer != null )
                             {
                                 // you pay a penalty for applying format option to a template
@@ -879,18 +879,18 @@ namespace Antlr3.ST.Language
                                 // be formatted before being written to the real output.
                                 StringWriter buf = new StringWriter();
                                 IStringTemplateWriter sw =
-                                    self.getGroup().getStringTemplateWriter( buf );
-                                stToWrite.write( sw );
-                                n = @out.write( renderer.ToString( buf.ToString(), formatString ) );
+                                    self.GetGroup().GetStringTemplateWriter( buf );
+                                stToWrite.Write( sw );
+                                n = @out.Write( renderer.ToString( buf.ToString(), formatString ) );
                                 return n;
                             }
                         }
-                        n = stToWrite.write( @out );
+                        n = stToWrite.Write( @out );
                     }
                     return n;
                 }
                 // normalize anything iteratable to iterator
-                o = convertAnythingIteratableToIterator( o );
+                o = ConvertAnythingIteratableToIterator( o );
                 if ( o is Iterator )
                 {
                     Iterator iter = (Iterator)o;
@@ -907,10 +907,10 @@ namespace Antlr3.ST.Language
                             if ( seenPrevValue /*prevIterValue!=null*/
                                 && separatorString != null )
                             {
-                                n += @out.writeSeparator( separatorString );
+                                n += @out.WriteSeparator( separatorString );
                             }
                             seenPrevValue = true;
-                            int nw = write( self, iterValue, @out );
+                            int nw = Write( self, iterValue, @out );
                             n += nw;
                         }
                     }
@@ -918,7 +918,7 @@ namespace Antlr3.ST.Language
                 else
                 {
                     IAttributeRenderer renderer =
-                        self.getAttributeRenderer( o.GetType() );
+                        self.GetAttributeRenderer( o.GetType() );
                     string v = null;
                     if ( renderer != null )
                     {
@@ -937,18 +937,18 @@ namespace Antlr3.ST.Language
                     }
                     if ( wrapString != null )
                     {
-                        n = @out.write( v, wrapString );
+                        n = @out.Write( v, wrapString );
                     }
                     else
                     {
-                        n = @out.write( v );
+                        n = @out.Write( v );
                     }
                     return n;
                 }
             }
             catch ( IOException io )
             {
-                self.error( "problem writing object: " + o, io );
+                self.Error( "problem writing object: " + o, io );
             }
             return n;
         }
@@ -961,7 +961,7 @@ namespace Antlr3.ST.Language
          *  all the time; must precompute w/o writing to output buffer.
          *  </summary>
          */
-        protected virtual string evaluateExpression( StringTemplate self,
+        protected virtual string EvaluateExpression( StringTemplate self,
                                             object expr )
         {
             if ( expr == null )
@@ -974,7 +974,7 @@ namespace Antlr3.ST.Language
                 // must evaluate, writing to a string so we can hang on to it
                 StringWriter buf = new StringWriter();
                 IStringTemplateWriter sw =
-                    self.getGroup().getStringTemplateWriter( buf );
+                    self.GetGroup().GetStringTemplateWriter( buf );
                 {
                     ActionEvaluator eval =
                             new ActionEvaluator( self, this, sw, exprAST );
@@ -984,7 +984,7 @@ namespace Antlr3.ST.Language
                     }
                     catch ( RecognitionException re )
                     {
-                        self.error( "can't evaluate tree: " + exprTree.ToStringTree(), re );
+                        self.Error( "can't evaluate tree: " + exprTree.ToStringTree(), re );
                     }
                 }
                 return buf.ToString();
@@ -1003,9 +1003,9 @@ namespace Antlr3.ST.Language
          *  that bold.item should get the value of enclosing.item.
          *  </summary>
          */
-        protected virtual void evaluateArguments( StringTemplate self )
+        protected virtual void EvaluateArguments( StringTemplate self )
         {
-            StringTemplateAST argumentsAST = self.getArgumentsAST();
+            StringTemplateAST argumentsAST = self.GetArgumentsAST();
             if ( argumentsAST == null || argumentsAST.GetChild( 0 ) == null )
             {
                 // return immediately if missing tree or no actual args
@@ -1017,11 +1017,11 @@ namespace Antlr3.ST.Language
             // available as well so we put a dummy ST between the enclosing
             // context and the embedded context.  The dummy has the predefined
             // context as does the embedded.
-            StringTemplate enclosing = self.getEnclosingInstance();
-            StringTemplate argContextST = new StringTemplate( self.getGroup(), "" );
-            argContextST.setName( "<invoke " + self.getName() + " arg context>" );
-            argContextST.setEnclosingInstance( enclosing );
-            argContextST.setArgumentContext( self.getArgumentContext() );
+            StringTemplate enclosing = self.GetEnclosingInstance();
+            StringTemplate argContextST = new StringTemplate( self.GetGroup(), "" );
+            argContextST.SetName( "<invoke " + self.GetName() + " arg context>" );
+            argContextST.SetEnclosingInstance( enclosing );
+            argContextST.SetArgumentContext( self.GetArgumentContext() );
 
             ActionEvaluator eval =
                     new ActionEvaluator( argContextST, this, null, argumentsAST );
@@ -1036,12 +1036,12 @@ namespace Antlr3.ST.Language
                 // in any existing arg context, that context gets filled with
                 // new values.  With bold(item=obj), context becomes:
                 // {[obj=...],[item=...]}.
-                Dictionary<string, object> ac = eval.argList( self, self.getArgumentContext() );
-                self.setArgumentContext( ac );
+                Dictionary<string, object> ac = eval.argList( self, self.GetArgumentContext() );
+                self.SetArgumentContext( ac );
             }
             catch ( RecognitionException re )
             {
-                self.error( "can't evaluate tree: " + argumentsAST.ToStringTree(), re );
+                self.Error( "can't evaluate tree: " + argumentsAST.ToStringTree(), re );
             }
         }
 
@@ -1061,7 +1061,7 @@ namespace Antlr3.ST.Language
          *  ArrayWrappedInList that knows to create an ArrayIterator.
          *  </summary>
          */
-        public static object convertArrayToList( object value )
+        public static object ConvertArrayToList( object value )
         {
             if ( value == null )
             {
@@ -1078,7 +1078,7 @@ namespace Antlr3.ST.Language
             return value;
         }
 
-        protected internal static object convertAnythingIteratableToIterator( object o )
+        protected internal static object ConvertAnythingIteratableToIterator( object o )
         {
             Iterator iter = null;
             if ( o is IDictionary )
@@ -1100,7 +1100,7 @@ namespace Antlr3.ST.Language
             return iter;
         }
 
-        protected static Iterator convertAnythingToIterator( object o )
+        protected static Iterator ConvertAnythingToIterator( object o )
         {
             Iterator iter = null;
             if ( o is ICollection )
@@ -1129,14 +1129,14 @@ namespace Antlr3.ST.Language
          *  itself if single-valued.  Used in &lt;names:first()>
          *  </summary>
          */
-        public virtual object first( object attribute )
+        public virtual object First( object attribute )
         {
             if ( attribute == null )
             {
                 return null;
             }
             object f = attribute;
-            attribute = convertAnythingIteratableToIterator( attribute );
+            attribute = ConvertAnythingIteratableToIterator( attribute );
             if ( attribute is Iterator )
             {
                 Iterator it = (Iterator)attribute;
@@ -1154,14 +1154,14 @@ namespace Antlr3.ST.Language
          *  or null if single-valued.  Used in &lt;names:rest()>.
          *  </summary>
          */
-        public virtual object rest( object attribute )
+        public virtual object Rest( object attribute )
         {
             if ( attribute == null )
             {
                 return null;
             }
             object theRest = attribute;
-            attribute = convertAnythingIteratableToIterator( attribute );
+            attribute = ConvertAnythingIteratableToIterator( attribute );
             if ( attribute is Iterator )
             {
                 IList a = new List<object>();
@@ -1194,14 +1194,14 @@ namespace Antlr3.ST.Language
          *  make a special case for a List or Vector.
          *  </summary>
          */
-        public virtual object last( object attribute )
+        public virtual object Last( object attribute )
         {
             if ( attribute == null )
             {
                 return null;
             }
             object last = attribute;
-            attribute = convertAnythingIteratableToIterator( attribute );
+            attribute = ConvertAnythingIteratableToIterator( attribute );
             if ( attribute is Iterator )
             {
                 Iterator it = (Iterator)attribute;
@@ -1215,13 +1215,13 @@ namespace Antlr3.ST.Language
         }
 
         /** <summary>Return a new list w/o null values.</summary> */
-        public virtual object strip( object attribute )
+        public virtual object Strip( object attribute )
         {
             if ( attribute == null )
             {
                 return null;
             }
-            attribute = convertAnythingIteratableToIterator( attribute );
+            attribute = ConvertAnythingIteratableToIterator( attribute );
             if ( attribute is Iterator )
             {
                 IList a = new List<object>();
@@ -1238,13 +1238,13 @@ namespace Antlr3.ST.Language
         }
 
         /** <summary>Return all but the last element.  trunc(x)=null if x is single-valued.</summary> */
-        public virtual object trunc( object attribute )
+        public virtual object Trunc( object attribute )
         {
             if ( attribute == null )
             {
                 return null;
             }
-            attribute = convertAnythingIteratableToIterator( attribute );
+            attribute = ConvertAnythingIteratableToIterator( attribute );
             if ( attribute is Iterator )
             {
                 IList a = new List<object>();
@@ -1267,7 +1267,7 @@ namespace Antlr3.ST.Language
          *  speed.  This method by Kay Roepke.
          *  </summary>
          */
-        public virtual object length( object attribute )
+        public virtual object Length( object attribute )
         {
             if ( attribute == null )
             {
@@ -1320,7 +1320,7 @@ namespace Antlr3.ST.Language
             return i;
         }
 
-        public virtual object getOption( string name )
+        public virtual object GetOption( string name )
         {
             object value = null;
             if ( options != null )

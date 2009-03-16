@@ -124,11 +124,11 @@ namespace Antlr3.ST
              *  user from doing so.
              *  </summary>
              */
-            public void put( string propName, object propValue )
+            public void Put( string propName, object propValue )
             {
                 properties[propName] = propValue;
             }
-            public object get( string propName )
+            public object Get( string propName )
             {
                 object value;
                 if ( properties.TryGetValue( propName, out value ) )
@@ -168,7 +168,7 @@ namespace Antlr3.ST
         string _name = ANONYMOUS_ST_NAME;
 
         static int _templateCounter = 0;
-        static int getNextTemplateCounter()
+        static int GetNextTemplateCounter()
         {
             return System.Threading.Interlocked.Increment( ref _templateCounter );
         }
@@ -177,12 +177,12 @@ namespace Antlr3.ST
          *  can access but not really of interest to the user.
          *  </summary>
          */
-        public static void resetTemplateCounter()
+        public static void ResetTemplateCounter()
         {
             _templateCounter = 0;
         }
 
-        int _templateID = getNextTemplateCounter();
+        int _templateID = GetNextTemplateCounter();
 
         /** <summary>
          *  Enclosing instance if I'm embedded within another template.
@@ -375,8 +375,8 @@ namespace Antlr3.ST
         public StringTemplate( string template, Type lexer )
             : this()
         {
-            setGroup( new StringTemplateGroup( "defaultGroup", lexer ) );
-            setTemplate( template );
+            SetGroup( new StringTemplateGroup( "defaultGroup", lexer ) );
+            SetTemplate( template );
         }
 
         /** <summary>Create an anonymous template with no name, but with a group</summary> */
@@ -385,9 +385,9 @@ namespace Antlr3.ST
         {
             if ( group != null )
             {
-                setGroup( group );
+                SetGroup( group );
             }
-            setTemplate( template );
+            SetTemplate( template );
         }
 
         public StringTemplate( StringTemplateGroup group,
@@ -404,11 +404,11 @@ namespace Antlr3.ST
         {
             get
             {
-                return getArgumentContext();
+                return GetArgumentContext();
             }
             set
             {
-                setArgumentContext( value );
+                SetArgumentContext( value );
             }
         }
 
@@ -416,11 +416,11 @@ namespace Antlr3.ST
         {
             get
             {
-                return getArgumentsAST();
+                return GetArgumentsAST();
             }
             set
             {
-                setArgumentsAST( value );
+                SetArgumentsAST( value );
             }
         }
 
@@ -428,11 +428,11 @@ namespace Antlr3.ST
         {
             get
             {
-                return getAttributes();
+                return GetAttributes();
             }
             set
             {
-                setAttributes( value );
+                SetAttributes( value );
             }
         }
 
@@ -440,7 +440,7 @@ namespace Antlr3.ST
         {
             get
             {
-                return getChunks();
+                return GetChunks();
             }
         }
 
@@ -448,11 +448,11 @@ namespace Antlr3.ST
         {
             get
             {
-                return getEnclosingInstance();
+                return GetEnclosingInstance();
             }
             set
             {
-                setEnclosingInstance( value );
+                SetEnclosingInstance( value );
             }
         }
 
@@ -460,11 +460,11 @@ namespace Antlr3.ST
         {
             get
             {
-                return getErrorListener();
+                return GetErrorListener();
             }
             set
             {
-                setErrorListener( value );
+                SetErrorListener( value );
             }
         }
 
@@ -472,11 +472,11 @@ namespace Antlr3.ST
         {
             get
             {
-                return getGroup();
+                return GetGroup();
             }
             set
             {
-                setGroup( value );
+                SetGroup( value );
             }
         }
 
@@ -484,11 +484,11 @@ namespace Antlr3.ST
         {
             get
             {
-                return getGroupFileLine();
+                return GetGroupFileLine();
             }
             set
             {
-                setGroupFileLine( value );
+                SetGroupFileLine( value );
             }
         }
 
@@ -496,7 +496,7 @@ namespace Antlr3.ST
         {
             get
             {
-                return getFormalArguments();
+                return GetFormalArguments();
             }
         }
 
@@ -504,11 +504,11 @@ namespace Antlr3.ST
         {
             get
             {
-                return getIsRegion();
+                return GetIsRegion();
             }
             set
             {
-                setIsRegion( value );
+                SetIsRegion( value );
             }
         }
 
@@ -516,11 +516,11 @@ namespace Antlr3.ST
         {
             get
             {
-                return inLintMode();
+                return InLintMode();
             }
             set
             {
-                setLintMode( value );
+                SetLintMode( value );
             }
         }
 
@@ -528,11 +528,11 @@ namespace Antlr3.ST
         {
             get
             {
-                return getName();
+                return GetName();
             }
             set
             {
-                setName( value );
+                SetName( value );
             }
         }
 
@@ -540,11 +540,11 @@ namespace Antlr3.ST
         {
             get
             {
-                return getNativeGroup();
+                return GetNativeGroup();
             }
             set
             {
-                setNativeGroup( value );
+                SetNativeGroup( value );
             }
         }
 
@@ -552,7 +552,7 @@ namespace Antlr3.ST
         {
             get
             {
-                return getOutermostEnclosingInstance();
+                return GetOutermostEnclosingInstance();
             }
         }
 
@@ -560,7 +560,7 @@ namespace Antlr3.ST
         {
             get
             {
-                return getOutermostName();
+                return GetOutermostName();
             }
         }
 
@@ -568,11 +568,11 @@ namespace Antlr3.ST
         {
             get
             {
-                return getRegionDefType();
+                return GetRegionDefType();
             }
             set
             {
-                setRegionDefType( value );
+                SetRegionDefType( value );
             }
         }
 
@@ -580,11 +580,11 @@ namespace Antlr3.ST
         {
             get
             {
-                return getTemplate();
+                return GetTemplate();
             }
             set
             {
-                setTemplate( value );
+                SetTemplate( value );
             }
         }
 
@@ -592,7 +592,7 @@ namespace Antlr3.ST
         {
             get
             {
-                return getTemplateDeclaratorString();
+                return GetTemplateDeclaratorString();
             }
         }
 
@@ -600,7 +600,7 @@ namespace Antlr3.ST
         {
             get
             {
-                return getTemplateID();
+                return GetTemplateID();
             }
         }
 
@@ -615,7 +615,7 @@ namespace Antlr3.ST
          *  template to eval in a context different from the examplar.
          *  </summary>
          */
-        protected virtual void dup( StringTemplate from, StringTemplate to )
+        protected virtual void Dup( StringTemplate from, StringTemplate to )
         {
             to._attributeRenderers = from._attributeRenderers;
             to._pattern = from._pattern;
@@ -638,7 +638,7 @@ namespace Antlr3.ST
          *  template but does not have any attribute values.
          *  </summary>
          */
-        public virtual StringTemplate getInstanceOf()
+        public virtual StringTemplate GetInstanceOf()
         {
             StringTemplate t = null;
             if ( _nativeGroup != null )
@@ -646,131 +646,131 @@ namespace Antlr3.ST
                 // create a template using the native group for this template
                 // but it's "group" is set to this.group by dup after creation so
                 // polymorphism still works.
-                t = _nativeGroup.createStringTemplate();
+                t = _nativeGroup.CreateStringTemplate();
             }
             else
             {
-                t = _group.createStringTemplate();
+                t = _group.CreateStringTemplate();
             }
-            dup( this, t );
+            Dup( this, t );
             return t;
         }
 
-        public virtual StringTemplate getEnclosingInstance()
+        public virtual StringTemplate GetEnclosingInstance()
         {
             return _enclosingInstance;
         }
 
-        public virtual StringTemplate getOutermostEnclosingInstance()
+        public virtual StringTemplate GetOutermostEnclosingInstance()
         {
             if ( _enclosingInstance != null )
             {
-                return _enclosingInstance.getOutermostEnclosingInstance();
+                return _enclosingInstance.GetOutermostEnclosingInstance();
             }
             return this;
         }
 
-        public virtual void setEnclosingInstance( StringTemplate enclosingInstance )
+        public virtual void SetEnclosingInstance( StringTemplate enclosingInstance )
         {
             if ( this == enclosingInstance )
             {
-                throw new ArgumentException( "cannot embed template " + getName() + " in itself" );
+                throw new ArgumentException( "cannot embed template " + GetName() + " in itself" );
             }
             // set the parent for this template
             this._enclosingInstance = enclosingInstance;
         }
 
-        public virtual Dictionary<string, object> getArgumentContext()
+        public virtual Dictionary<string, object> GetArgumentContext()
         {
             return _argumentContext;
         }
 
-        public virtual void setArgumentContext( Dictionary<string, object> ac )
+        public virtual void SetArgumentContext( Dictionary<string, object> ac )
         {
             _argumentContext = ac;
         }
 
-        public virtual StringTemplateAST getArgumentsAST()
+        public virtual StringTemplateAST GetArgumentsAST()
         {
             return _argumentsAST;
         }
 
-        public virtual void setArgumentsAST( StringTemplateAST argumentsAST )
+        public virtual void SetArgumentsAST( StringTemplateAST argumentsAST )
         {
             this._argumentsAST = argumentsAST;
         }
 
-        public virtual string getName()
+        public virtual string GetName()
         {
             return _name;
         }
 
-        public virtual string getOutermostName()
+        public virtual string GetOutermostName()
         {
             if ( _enclosingInstance != null )
             {
-                return _enclosingInstance.getOutermostName();
+                return _enclosingInstance.GetOutermostName();
             }
-            return getName();
+            return GetName();
         }
 
-        public virtual void setName( string name )
+        public virtual void SetName( string name )
         {
             this._name = name;
         }
 
-        public virtual StringTemplateGroup getGroup()
+        public virtual StringTemplateGroup GetGroup()
         {
             return _group;
         }
 
-        public virtual void setGroup( StringTemplateGroup group )
+        public virtual void SetGroup( StringTemplateGroup group )
         {
             this._group = group;
         }
 
-        public virtual StringTemplateGroup getNativeGroup()
+        public virtual StringTemplateGroup GetNativeGroup()
         {
             return _nativeGroup;
         }
 
-        public virtual void setNativeGroup( StringTemplateGroup nativeGroup )
+        public virtual void SetNativeGroup( StringTemplateGroup nativeGroup )
         {
             this._nativeGroup = nativeGroup;
         }
 
         /** <summary>Return the outermost template's group file line number</summary> */
-        public virtual int getGroupFileLine()
+        public virtual int GetGroupFileLine()
         {
             if ( _enclosingInstance != null )
             {
-                return _enclosingInstance.getGroupFileLine();
+                return _enclosingInstance.GetGroupFileLine();
             }
             return _groupFileLine;
         }
 
-        public virtual void setGroupFileLine( int groupFileLine )
+        public virtual void SetGroupFileLine( int groupFileLine )
         {
             this._groupFileLine = groupFileLine;
         }
 
-        public virtual void setTemplate( string template )
+        public virtual void SetTemplate( string template )
         {
             this._pattern = template;
-            breakTemplateIntoChunks();
+            BreakTemplateIntoChunks();
         }
 
-        public virtual string getTemplate()
+        public virtual string GetTemplate()
         {
             return _pattern;
         }
 
-        public virtual void setErrorListener( IStringTemplateErrorListener listener )
+        public virtual void SetErrorListener( IStringTemplateErrorListener listener )
         {
             this._listener = listener;
         }
 
-        public virtual IStringTemplateErrorListener getErrorListener()
+        public virtual IStringTemplateErrorListener GetErrorListener()
         {
             if ( _listener == null )
             {
@@ -779,20 +779,20 @@ namespace Antlr3.ST
             return _listener;
         }
 
-        public virtual void reset()
+        public virtual void Reset()
         {
             attributes = new Dictionary<string, object>(); // just throw out table and make new one
         }
 
-        public virtual void setPredefinedAttributes()
+        public virtual void SetPredefinedAttributes()
         {
-            if ( !inLintMode() )
+            if ( !InLintMode() )
             {
                 return; // only do this method so far in lint mode
             }
         }
 
-        public virtual void removeAttribute( string name )
+        public virtual void RemoveAttribute( string name )
         {
             if ( attributes != null )
                 attributes.Remove( name );
@@ -815,7 +815,7 @@ namespace Antlr3.ST
          *  If you send in an array, it is converted to an ArrayIterator.
          *  </remarks>
          */
-        public virtual void setAttribute( string name, object value )
+        public virtual void SetAttribute( string name, object value )
         {
             if ( value == null || name == null )
             {
@@ -832,7 +832,7 @@ namespace Antlr3.ST
 
             if ( value is StringTemplate )
             {
-                ( (StringTemplate)value ).setEnclosingInstance( this );
+                ( (StringTemplate)value ).SetEnclosingInstance( this );
             }
             else if ( value is HashSet<object> )
             {
@@ -841,7 +841,7 @@ namespace Antlr3.ST
             else
             {
                 // convert value if array
-                value = ASTExpr.convertArrayToList( value );
+                value = ASTExpr.ConvertArrayToList( value );
             }
 
             // convert plain collections
@@ -849,7 +849,7 @@ namespace Antlr3.ST
             object o = this.attributes.get( name );
             if ( o == null )
             { // new attribute
-                rawSetAttribute( this.attributes, name, value );
+                RawSetAttribute( this.attributes, name, value );
                 return;
             }
             // it will be a multi-value attribute
@@ -865,14 +865,14 @@ namespace Antlr3.ST
                 IList listAttr = (IList)o;
                 v = new STAttributeList( listAttr.Count );
                 v.AddRange( listAttr.Cast<object>() );
-                rawSetAttribute( this.attributes, name, v ); // replace attribute w/list
+                RawSetAttribute( this.attributes, name, v ); // replace attribute w/list
             }
             else
             {
                 // non-list second attribute, must convert existing to ArrayList
                 v = new STAttributeList(); // make list to hold multiple values
                 // make it point to list now
-                rawSetAttribute( this.attributes, name, v ); // replace attribute w/list
+                RawSetAttribute( this.attributes, name, v ); // replace attribute w/list
                 v.Add( o );  // add previous single-valued attribute
             }
             if ( value is IList )
@@ -894,24 +894,24 @@ namespace Antlr3.ST
          *  must have the format: "name.{propName1,propName2}".
          *  </summary>
          */
-        public virtual void setAttribute( string aggrSpec, object v1, object v2 )
+        public virtual void SetAttribute( string aggrSpec, object v1, object v2 )
         {
-            setAttribute( aggrSpec, new object[] { v1, v2 } );
+            SetAttribute( aggrSpec, new object[] { v1, v2 } );
         }
 
-        public virtual void setAttribute( string aggrSpec, object v1, object v2, object v3 )
+        public virtual void SetAttribute( string aggrSpec, object v1, object v2, object v3 )
         {
-            setAttribute( aggrSpec, new object[] { v1, v2, v3 } );
+            SetAttribute( aggrSpec, new object[] { v1, v2, v3 } );
         }
 
-        public virtual void setAttribute( string aggrSpec, object v1, object v2, object v3, object v4 )
+        public virtual void SetAttribute( string aggrSpec, object v1, object v2, object v3, object v4 )
         {
-            setAttribute( aggrSpec, new object[] { v1, v2, v3, v4 } );
+            SetAttribute( aggrSpec, new object[] { v1, v2, v3, v4 } );
         }
 
-        public virtual void setAttribute( string aggrSpec, object v1, object v2, object v3, object v4, object v5 )
+        public virtual void SetAttribute( string aggrSpec, object v1, object v2, object v3, object v4, object v5 )
         {
-            setAttribute( aggrSpec, new object[] { v1, v2, v3, v4, v5 } );
+            SetAttribute( aggrSpec, new object[] { v1, v2, v3, v4, v5 } );
         }
 
         /** <summary>
@@ -920,13 +920,13 @@ namespace Antlr3.ST
          *  it conflicts semantically with setAttribute("foo",new Object[] {...});
          *  </summary>
          */
-        protected virtual void setAttribute( string aggrSpec, params object[] values )
+        protected virtual void SetAttribute( string aggrSpec, params object[] values )
         {
             if ( values.Length < 2 )
                 throw new ArgumentException();
 
             List<string> properties = new List<string>();
-            string aggrName = parseAggregateAttributeSpec( aggrSpec, properties );
+            string aggrName = ParseAggregateAttributeSpec( aggrSpec, properties );
             if ( values == null || properties.Count == 0 )
             {
                 throw new ArgumentException( "missing properties or values for '" + aggrSpec + "'" );
@@ -941,15 +941,15 @@ namespace Antlr3.ST
                 object value = values[i];
                 if ( value is StringTemplate )
                 {
-                    ( (StringTemplate)value ).setEnclosingInstance( this );
+                    ( (StringTemplate)value ).SetEnclosingInstance( this );
                 }
                 else
                 {
-                    value = ASTExpr.convertArrayToList( value );
+                    value = ASTExpr.ConvertArrayToList( value );
                 }
-                aggr.put( properties[i], value );
+                aggr.Put( properties[i], value );
             }
-            setAttribute( aggrName, aggr );
+            SetAttribute( aggrName, aggr );
         }
 
         /** <summary>
@@ -957,7 +957,7 @@ namespace Antlr3.ST
          *  and the aggrName. Space is allowed around ','.
          *  </summary>
          */
-        protected virtual string parseAggregateAttributeSpec( string aggrSpec, List<string> properties )
+        protected virtual string ParseAggregateAttributeSpec( string aggrSpec, List<string> properties )
         {
             int dot = aggrSpec.IndexOf( '.' );
             if ( dot <= 0 )
@@ -1009,17 +1009,17 @@ namespace Antlr3.ST
          *  and a formal argument list exists.
          *  </summary>
          */
-        protected virtual void rawSetAttribute( IDictionary<string, object> attributes,
+        protected virtual void RawSetAttribute( IDictionary<string, object> attributes,
                                        string name,
                                        object value )
         {
             if ( _formalArguments != FormalArgument.UNKNOWN &&
-                getFormalArgument( name ) == null )
+                GetFormalArgument( name ) == null )
             {
                 // a normal call to setAttribute with unknown attribute
                 throw new ArgumentException( "no such attribute: " + name +
                                                  " in template context " +
-                                                 getEnclosingInstanceStackString() );
+                                                 GetEnclosingInstanceStackString() );
             }
             if ( value == null )
             {
@@ -1035,18 +1035,18 @@ namespace Antlr3.ST
          *  something other than "this".
          *  </summary>
          */
-        public virtual void rawSetArgumentAttribute( StringTemplate embedded,
+        public virtual void RawSetArgumentAttribute( StringTemplate embedded,
                                             IDictionary attributes,
                                             string name,
                                             object value )
         {
             if ( embedded._formalArguments != FormalArgument.UNKNOWN &&
-                 embedded.getFormalArgument( name ) == null )
+                 embedded.GetFormalArgument( name ) == null )
             {
-                throw new ArgumentException( "template " + embedded.getName() +
+                throw new ArgumentException( "template " + embedded.GetName() +
                                                  " has no such attribute: " + name +
                                                  " in template context " +
-                                                 getEnclosingInstanceStackString() );
+                                                 GetEnclosingInstanceStackString() );
             }
             if ( value == null )
             {
@@ -1055,9 +1055,9 @@ namespace Antlr3.ST
             attributes[name] = value;
         }
 
-        public virtual object getAttribute( string name )
+        public virtual object GetAttribute( string name )
         {
-            return get( this, name );
+            return Get( this, name );
         }
 
         /** <summary>
@@ -1068,19 +1068,19 @@ namespace Antlr3.ST
          *  for all instances of this template.
          *  </summary>
          */
-        public virtual int write( IStringTemplateWriter writer )
+        public virtual int Write( IStringTemplateWriter writer )
         {
             if ( _group.debugTemplateOutput )
             {
-                _group.emitTemplateStartDebugString( this, writer );
+                _group.EmitTemplateStartDebugString( this, writer );
             }
             int n = 0;
-            setPredefinedAttributes();
-            setDefaultArgumentValues();
+            SetPredefinedAttributes();
+            SetDefaultArgumentValues();
             for ( int i = 0; _chunks != null && i < _chunks.Count; i++ )
             {
                 Expr a = (Expr)_chunks[i];
-                int chunkN = a.write( this, writer );
+                int chunkN = a.Write( this, writer );
                 // expr-on-first-line-with-no-output NEWLINE => NEWLINE
                 if ( chunkN == 0 && i == 0 && ( i + 1 ) < _chunks.Count &&
                      _chunks[i + 1] is NewlineRef )
@@ -1103,11 +1103,11 @@ namespace Antlr3.ST
             }
             if ( _group.debugTemplateOutput )
             {
-                _group.emitTemplateStopDebugString( this, writer );
+                _group.EmitTemplateStopDebugString( this, writer );
             }
             if ( _lintMode )
             {
-                checkForTrouble();
+                CheckForTrouble();
             }
             return n;
         }
@@ -1142,7 +1142,7 @@ namespace Antlr3.ST
          *  This method is not static so people can override functionality.
          *  </remarks>
          */
-        public virtual object get( StringTemplate self, string attribute )
+        public virtual object Get( StringTemplate self, string attribute )
         {
             //System.out.println("### get("+self.getEnclosingInstanceStackString()+", "+attribute+")");
             //System.out.println("attributes="+(self.attributes!=null?self.attributes.keySet().toString():"none"));
@@ -1153,7 +1153,7 @@ namespace Antlr3.ST
 
             if ( _lintMode )
             {
-                self.trackAttributeReference( attribute );
+                self.TrackAttributeReference( attribute );
             }
 
             // is it here?
@@ -1166,7 +1166,7 @@ namespace Antlr3.ST
             // nope, check argument context in case embedded
             if ( o == null )
             {
-                IDictionary<string, object> argContext = self.getArgumentContext();
+                IDictionary<string, object> argContext = self.GetArgumentContext();
                 if ( argContext != null )
                 {
                     o = argContext.get( attribute );
@@ -1175,7 +1175,7 @@ namespace Antlr3.ST
 
             if ( o == null &&
                  !self._passThroughAttributes &&
-                 self.getFormalArgument( attribute ) != null )
+                 self.GetFormalArgument( attribute ) != null )
             {
                 // if you've defined attribute as formal arg for this
                 // template and it has no value, do not look up the
@@ -1191,10 +1191,10 @@ namespace Antlr3.ST
                 System.out.println("looking for "+getName()+"."+attribute+" in super="+
                         enclosingInstance.getName());
                 */
-                object valueFromEnclosing = get( self._enclosingInstance, attribute );
+                object valueFromEnclosing = Get( self._enclosingInstance, attribute );
                 if ( valueFromEnclosing == null )
                 {
-                    checkNullAttributeAgainstFormalArguments( self, attribute );
+                    CheckNullAttributeAgainstFormalArguments( self, attribute );
                 }
                 o = valueFromEnclosing;
             }
@@ -1203,7 +1203,7 @@ namespace Antlr3.ST
             else if ( o == null && self._enclosingInstance == null )
             {
                 // It might be a map in the group or supergroup...
-                o = self._group.getMap( attribute );
+                o = self._group.GetMap( attribute );
             }
 
             return o;
@@ -1214,7 +1214,7 @@ namespace Antlr3.ST
          *  chunks: Strings and actions/expressions.
          *  </summary>
          */
-        protected virtual void breakTemplateIntoChunks()
+        protected virtual void BreakTemplateIntoChunks()
         {
             //System.out.println("parsing template: "+pattern);
             if ( _pattern == null )
@@ -1247,20 +1247,20 @@ namespace Antlr3.ST
             catch ( Exception e )
             {
                 string name = "<unknown>";
-                string outerName = getOutermostName();
-                if ( getName() != null )
+                string outerName = GetOutermostName();
+                if ( GetName() != null )
                 {
-                    name = getName();
+                    name = GetName();
                 }
                 if ( outerName != null && !name.Equals( outerName ) )
                 {
                     name = name + " nested in " + outerName;
                 }
-                error( "problem parsing template '" + name + "'", e );
+                Error( "problem parsing template '" + name + "'", e );
             }
         }
 
-        public virtual ASTExpr parseAction( string action )
+        public virtual ASTExpr ParseAction( string action )
         {
             //System.out.println("parse action "+action);
             ActionLexer lexer = new ActionLexer( new Antlr.Runtime.ANTLRStringStream( action.ToString() ) );
@@ -1288,7 +1288,7 @@ namespace Antlr3.ST
             }
             catch ( RecognitionException re )
             {
-                error( "Can't parse chunk: " + action.ToString(), re );
+                Error( "Can't parse chunk: " + action.ToString(), re );
             }
             //catch (TokenStreamException tse) {
             //    error("Can't parse chunk: "+action.toString(), tse);
@@ -1301,12 +1301,12 @@ namespace Antlr3.ST
             return a;
         }
 
-        public virtual int getTemplateID()
+        public virtual int GetTemplateID()
         {
             return _templateID;
         }
 
-        public virtual IDictionary<string, object> getAttributes()
+        public virtual IDictionary<string, object> GetAttributes()
         {
             return attributes;
         }
@@ -1316,12 +1316,12 @@ namespace Antlr3.ST
          *  refs in a template.
          *  </summary>
          */
-        public virtual IList<Expr> getChunks()
+        public virtual IList<Expr> GetChunks()
         {
             return _chunks;
         }
 
-        public virtual void addChunk( Expr e )
+        public virtual void AddChunk( Expr e )
         {
             if ( _chunks == null )
             {
@@ -1330,19 +1330,19 @@ namespace Antlr3.ST
             _chunks.Add( e );
         }
 
-        public virtual void setAttributes( IDictionary<string, object> attributes )
+        public virtual void SetAttributes( IDictionary<string, object> attributes )
         {
             this.attributes = attributes;
         }
 
         #region Formal Arg Stuff
 
-        public virtual IList<FormalArgument> getFormalArguments()
+        public virtual IList<FormalArgument> GetFormalArguments()
         {
             return _formalArguments;
         }
 
-        public virtual void setFormalArguments( IList<FormalArgument> args )
+        public virtual void SetFormalArguments( IList<FormalArgument> args )
         {
             _formalArguments = args;
         }
@@ -1361,7 +1361,7 @@ namespace Antlr3.ST
          *  the template attributes table just for consistency's sake.
          *  </remarks>
          */
-        public virtual void setDefaultArgumentValues()
+        public virtual void SetDefaultArgumentValues()
         {
             if ( _numberOfDefaultArgumentValues == 0 )
             {
@@ -1379,7 +1379,7 @@ namespace Antlr3.ST
                     // use the default value then
                     if ( arg.defaultValueST != null )
                     {
-                        object existingValue = getAttribute( argName );
+                        object existingValue = GetAttribute( argName );
                         if ( existingValue == null )
                         { // value unset?
                             // if no value for attribute, set arg context
@@ -1398,32 +1398,32 @@ namespace Antlr3.ST
          *  recursively look for the formal parameter.
          *  </summary>
          */
-        public virtual FormalArgument lookupFormalArgument( string name )
+        public virtual FormalArgument LookupFormalArgument( string name )
         {
-            FormalArgument arg = getFormalArgument( name );
+            FormalArgument arg = GetFormalArgument( name );
             if ( arg == null && _enclosingInstance != null )
             {
-                arg = _enclosingInstance.lookupFormalArgument( name );
+                arg = _enclosingInstance.LookupFormalArgument( name );
             }
             return arg;
         }
 
-        public virtual FormalArgument getFormalArgument( string name )
+        public virtual FormalArgument GetFormalArgument( string name )
         {
             return _formalArguments.FirstOrDefault( fa => fa.name == name );
         }
 
-        public virtual void defineEmptyFormalArgumentList()
+        public virtual void DefineEmptyFormalArgumentList()
         {
-            setFormalArguments( new List<FormalArgument>() );
+            SetFormalArguments( new List<FormalArgument>() );
         }
 
-        public virtual void defineFormalArgument( string name )
+        public virtual void DefineFormalArgument( string name )
         {
-            defineFormalArgument( name, null );
+            DefineFormalArgument( name, null );
         }
 
-        public virtual void defineFormalArguments( IList names )
+        public virtual void DefineFormalArguments( IList names )
         {
             if ( names == null )
             {
@@ -1432,11 +1432,11 @@ namespace Antlr3.ST
             for ( int i = 0; i < names.Count; i++ )
             {
                 string name = (string)names[i];
-                defineFormalArgument( name );
+                DefineFormalArgument( name );
             }
         }
 
-        public virtual void defineFormalArgument( string name, StringTemplate defaultValue )
+        public virtual void DefineFormalArgument( string name, StringTemplate defaultValue )
         {
             if ( defaultValue != null )
             {
@@ -1459,7 +1459,7 @@ namespace Antlr3.ST
          *  template to see through the formal arg list to inherited values.
          *  </summary>
          */
-        public virtual void setPassThroughAttributes( bool passThroughAttributes )
+        public virtual void SetPassThroughAttributes( bool passThroughAttributes )
         {
             this._passThroughAttributes = passThroughAttributes;
         }
@@ -1469,7 +1469,7 @@ namespace Antlr3.ST
          *  renderer objects.
          *  </summary>
          */
-        public virtual void setAttributeRenderers( Dictionary<Type, IAttributeRenderer> renderers )
+        public virtual void SetAttributeRenderers( Dictionary<Type, IAttributeRenderer> renderers )
         {
             this._attributeRenderers = renderers;
         }
@@ -1479,7 +1479,7 @@ namespace Antlr3.ST
          *  overrides any renderer set in the group for this class type.
          *  </summary>
          */
-        public virtual void registerRenderer( Type attributeClassType, IAttributeRenderer renderer )
+        public virtual void RegisterRenderer( Type attributeClassType, IAttributeRenderer renderer )
         {
             if ( _attributeRenderers == null )
             {
@@ -1493,7 +1493,7 @@ namespace Antlr3.ST
          *  this template.  If not found, the template's group is queried.
          *  </summary>
          */
-        public virtual IAttributeRenderer getAttributeRenderer( Type attributeClassType )
+        public virtual IAttributeRenderer GetAttributeRenderer( Type attributeClassType )
         {
             IAttributeRenderer renderer = null;
             if ( _attributeRenderers != null )
@@ -1511,24 +1511,24 @@ namespace Antlr3.ST
             // check parent template if we are embedded
             if ( _enclosingInstance != null )
             {
-                return _enclosingInstance.getAttributeRenderer( attributeClassType );
+                return _enclosingInstance.GetAttributeRenderer( attributeClassType );
             }
             // else check group
-            return _group.getAttributeRenderer( attributeClassType );
+            return _group.GetAttributeRenderer( attributeClassType );
         }
 
         #region Utility routines
 
-        public virtual void error( string msg )
+        public virtual void Error( string msg )
         {
-            error( msg, null );
+            Error( msg, null );
         }
 
-        public virtual void warning( string msg )
+        public virtual void Warning( string msg )
         {
-            if ( getErrorListener() != null )
+            if ( GetErrorListener() != null )
             {
-                getErrorListener().warning( msg );
+                GetErrorListener().Warning( msg );
             }
             else
             {
@@ -1536,11 +1536,11 @@ namespace Antlr3.ST
             }
         }
 
-        public virtual void error( string msg, Exception e )
+        public virtual void Error( string msg, Exception e )
         {
-            if ( getErrorListener() != null )
+            if ( GetErrorListener() != null )
             {
-                getErrorListener().error( msg, e );
+                GetErrorListener().Error( msg, e );
             }
             else
             {
@@ -1551,7 +1551,7 @@ namespace Antlr3.ST
                     {
                         e = e.InnerException ?? e;
                     }
-                    e.printStackTrace( Console.Error );
+                    e.PrintStackTrace( Console.Error );
                 }
                 else
                 {
@@ -1566,18 +1566,18 @@ namespace Antlr3.ST
          *  you set attributes that are not used.
          *  </summary>
          */
-        public static void setLintMode( bool lint )
+        public static void SetLintMode( bool lint )
         {
             StringTemplate._lintMode = lint;
         }
 
-        public static bool inLintMode()
+        public static bool InLintMode()
         {
             return _lintMode;
         }
 
         /** <summary>Indicates that 'name' has been referenced in this template.</summary> */
-        protected virtual void trackAttributeReference( string name )
+        protected virtual void TrackAttributeReference( string name )
         {
             if ( _referencedAttributes == null )
             {
@@ -1591,7 +1591,7 @@ namespace Antlr3.ST
          *  if st is a template already in the enclosing instance chain.
          *  </summary>
          */
-        public static bool isRecursiveEnclosingInstance( StringTemplate st )
+        public static bool IsRecursiveEnclosingInstance( StringTemplate st )
         {
             if ( st == null )
             {
@@ -1616,7 +1616,7 @@ namespace Antlr3.ST
 
         string _newline = Environment.NewLine;
 
-        public virtual string getEnclosingInstanceStackTrace()
+        public virtual string GetEnclosingInstanceStackTrace()
         {
             StringBuilder buf = new StringBuilder();
             HashSet<object> seen = new HashSet<object>();
@@ -1625,14 +1625,14 @@ namespace Antlr3.ST
             {
                 if ( seen.Contains( p ) )
                 {
-                    buf.Append( p.getTemplateDeclaratorString() );
+                    buf.Append( p.GetTemplateDeclaratorString() );
                     buf.Append( " (start of recursive cycle)" );
                     buf.Append( _newline );
                     buf.Append( "..." );
                     break;
                 }
                 seen.Add( p );
-                buf.Append( p.getTemplateDeclaratorString() );
+                buf.Append( p.GetTemplateDeclaratorString() );
                 if ( p.attributes != null )
                 {
                     buf.Append( ", attributes=[" );
@@ -1651,9 +1651,9 @@ namespace Antlr3.ST
                             StringTemplate st = (StringTemplate)o;
                             buf.Append( "=" );
                             buf.Append( "<" );
-                            buf.Append( st.getName() );
+                            buf.Append( st.GetName() );
                             buf.Append( "()@" );
-                            buf.Append( st.getTemplateID().ToString() );
+                            buf.Append( st.GetTemplateID().ToString() );
                             buf.Append( ">" );
                         }
                         else if ( o is IList )
@@ -1673,9 +1673,9 @@ namespace Antlr3.ST
                                     n++;
                                     StringTemplate st = (StringTemplate)listValue;
                                     buf.Append( "<" );
-                                    buf.Append( st.getName() );
+                                    buf.Append( st.GetName() );
                                     buf.Append( "()@" );
-                                    buf.Append( st.getTemplateID().ToString() );
+                                    buf.Append( st.GetTemplateID().ToString() );
                                     buf.Append( ">" );
                                 }
                             }
@@ -1700,32 +1700,32 @@ namespace Antlr3.ST
             return buf.ToString();
         }
 
-        public virtual string getTemplateDeclaratorString()
+        public virtual string GetTemplateDeclaratorString()
         {
             StringBuilder buf = new StringBuilder();
             buf.Append( "<" );
-            buf.Append( getName() );
+            buf.Append( GetName() );
             buf.Append( "(" );
             buf.Append( _formalArguments.Select( fa => fa.name ).ToList().ToElementString() );
             buf.Append( ")@" );
-            buf.Append( getTemplateID().ToString() );
+            buf.Append( GetTemplateID().ToString() );
             buf.Append( ">" );
             return buf.ToString();
         }
 
-        protected virtual string getTemplateHeaderString( bool showAttributes )
+        protected virtual string GetTemplateHeaderString( bool showAttributes )
         {
             if ( showAttributes )
             {
                 StringBuilder buf = new StringBuilder();
-                buf.Append( getName() );
+                buf.Append( GetName() );
                 if ( attributes != null )
                 {
                     buf.Append( "[" + string.Join( ", ", attributes.Keys.Cast<object>().Select( o => o.ToString() ).ToArray() ) + "]" );
                 }
                 return buf.ToString();
             }
-            return getName();
+            return GetName();
         }
 
 #if false
@@ -1737,7 +1737,7 @@ namespace Antlr3.ST
          *  in argumentContext.
          *  </summary>
          */
-        protected void checkAttributesAgainstFormalArguments()
+        protected void CheckAttributesAgainstFormalArguments()
         {
             var args = FormalArguments;
             /*
@@ -1778,26 +1778,26 @@ namespace Antlr3.ST
          *  ask enclosing.
          *  </remarks>
          */
-        protected virtual void checkNullAttributeAgainstFormalArguments(
+        protected virtual void CheckNullAttributeAgainstFormalArguments(
                 StringTemplate self,
                 string attribute )
         {
-            if ( self.getFormalArguments() == FormalArgument.UNKNOWN )
+            if ( self.GetFormalArguments() == FormalArgument.UNKNOWN )
             {
                 // bypass unknown arg lists
                 if ( self._enclosingInstance != null )
                 {
-                    checkNullAttributeAgainstFormalArguments(
+                    CheckNullAttributeAgainstFormalArguments(
                             self._enclosingInstance,
                             attribute );
                 }
                 return;
             }
-            FormalArgument formalArg = self.lookupFormalArgument( attribute );
+            FormalArgument formalArg = self.LookupFormalArgument( attribute );
             if ( formalArg == null )
             {
                 throw new ArgumentException( "no such attribute: " + attribute +
-                                                 " in template context " + getEnclosingInstanceStackString() );
+                                                 " in template context " + GetEnclosingInstanceStackString() );
             }
         }
 
@@ -1806,7 +1806,7 @@ namespace Antlr3.ST
          *  of attributes not reference.
          *  </summary>
          */
-        protected virtual void checkForTrouble()
+        protected virtual void CheckForTrouble()
         {
             // we have table of set values and list of values referenced
             // compare, looking for SET BUT NOT REFERENCED ATTRIBUTES
@@ -1820,7 +1820,7 @@ namespace Antlr3.ST
                 if ( _referencedAttributes != null &&
                     !_referencedAttributes.Contains( name ) )
                 {
-                    warning( getName() + ": set but not used: " + name );
+                    Warning( GetName() + ": set but not used: " + name );
                 }
             }
             // can do the reverse, but will have lots of false warnings :(
@@ -1832,30 +1832,30 @@ namespace Antlr3.ST
          *  here that would be "[z y x]".
          *  </summary>
          */
-        public virtual string getEnclosingInstanceStackString()
+        public virtual string GetEnclosingInstanceStackString()
         {
             System.Collections.Generic.List<string> names = new System.Collections.Generic.List<string>();
             StringTemplate p = this;
             while ( p != null )
             {
-                string name = p.getName();
+                string name = p.GetName();
                 names.Insert( 0, name + ( p._passThroughAttributes ? "(...)" : "" ) );
                 p = p._enclosingInstance;
             }
             return "[" + string.Join( " ", names.ToArray() ) + "]";
         }
 
-        public virtual bool getIsRegion()
+        public virtual bool GetIsRegion()
         {
             return _isRegion;
         }
 
-        public virtual void setIsRegion( bool isRegion )
+        public virtual void SetIsRegion( bool isRegion )
         {
             this._isRegion = isRegion;
         }
 
-        public virtual void addRegionName( string name )
+        public virtual void AddRegionName( string name )
         {
             if ( _regions == null )
             {
@@ -1865,7 +1865,7 @@ namespace Antlr3.ST
         }
 
         /** <summary>Does this template ref or embed region name?</summary> */
-        public virtual bool containsRegionName( string name )
+        public virtual bool ContainsRegionName( string name )
         {
             if ( _regions == null )
             {
@@ -1874,20 +1874,20 @@ namespace Antlr3.ST
             return _regions.Contains( name );
         }
 
-        public virtual int getRegionDefType()
+        public virtual int GetRegionDefType()
         {
             return _regionDefType;
         }
 
-        public virtual void setRegionDefType( int regionDefType )
+        public virtual void SetRegionDefType( int regionDefType )
         {
             this._regionDefType = regionDefType;
         }
 
-        public virtual string toDebugString()
+        public virtual string ToDebugString()
         {
             StringBuilder buf = new StringBuilder();
-            buf.Append( "template-" + getTemplateDeclaratorString() + ":" );
+            buf.Append( "template-" + GetTemplateDeclaratorString() + ":" );
             buf.Append( "chunks=" );
             if ( _chunks != null )
             {
@@ -1907,7 +1907,7 @@ namespace Antlr3.ST
                     object value = attributes.get( name );
                     if ( value is StringTemplate )
                     {
-                        buf.Append( ( (StringTemplate)value ).toDebugString() );
+                        buf.Append( ( (StringTemplate)value ).ToDebugString() );
                     }
                     else
                     {
@@ -1925,19 +1925,19 @@ namespace Antlr3.ST
          *  Follow (nest) attributes that are templates only.
          *  </summary>
          */
-        public virtual string toStructureString()
+        public virtual string ToStructureString()
         {
-            return toStructureString( 0 );
+            return ToStructureString( 0 );
         }
 
-        public virtual string toStructureString( int indent )
+        public virtual string ToStructureString( int indent )
         {
             StringBuilder buf = new StringBuilder();
             for ( int i = 1; i <= indent; i++ )
             { // indent
                 buf.Append( "  " );
             }
-            buf.Append( getName() );
+            buf.Append( GetName() );
             buf.Append( attributes.Keys );
             buf.Append( ":" + _newline );
             if ( attributes != null )
@@ -1948,7 +1948,7 @@ namespace Antlr3.ST
                     object value = attr.Value;
                     if ( value is StringTemplate )
                     { // descend
-                        buf.Append( ( (StringTemplate)value ).toStructureString( indent + 1 ) );
+                        buf.Append( ( (StringTemplate)value ).ToStructureString( indent + 1 ) );
                     }
                     else
                     {
@@ -1960,7 +1960,7 @@ namespace Antlr3.ST
                                 object o = (object)alist[i];
                                 if ( o is StringTemplate )
                                 { // descend
-                                    buf.Append( ( (StringTemplate)o ).toStructureString( indent + 1 ) );
+                                    buf.Append( ( (StringTemplate)o ).ToStructureString( indent + 1 ) );
                                 }
                             }
                         }
@@ -1972,7 +1972,7 @@ namespace Antlr3.ST
                             {
                                 if ( o is StringTemplate )
                                 { // descend
-                                    buf.Append( ( (StringTemplate)o ).toStructureString( indent + 1 ) );
+                                    buf.Append( ( (StringTemplate)o ).ToStructureString( indent + 1 ) );
                                 }
                             }
                         }
@@ -1983,7 +1983,7 @@ namespace Antlr3.ST
         }
 
 #if false
-        public String getDOTForDependencyGraph(bool showAttributes) {
+        public String GetDOTForDependencyGraph(bool showAttributes) {
             StringBuffer buf = new StringBuffer();
             buf.append("digraph prof {\n");
             HashMap edges = new HashMap();
@@ -2024,7 +2024,7 @@ namespace Antlr3.ST
          *      }
          *  </remarks>
          */
-        public virtual StringTemplate getDOTForDependencyGraph( bool showAttributes )
+        public virtual StringTemplate GetDOTForDependencyGraph( bool showAttributes )
         {
             string structure =
                 "digraph StringTemplateDependencyGraph {" + _newline +
@@ -2034,7 +2034,7 @@ namespace Antlr3.ST
                 "}" + _newline;
             StringTemplate graphST = new StringTemplate( structure );
             Dictionary<object, object> edges = new Dictionary<object, object>();
-            this.getDependencyGraph( edges, showAttributes );
+            this.GetDependencyGraph( edges, showAttributes );
             var sourceNodes = edges.Keys;
             // for each source template
             foreach ( string src in sourceNodes )
@@ -2043,12 +2043,12 @@ namespace Antlr3.ST
                 // for each target template
                 foreach ( string trg in targetNodes )
                 {
-                    graphST.setAttribute( "edges.{src,trg}", src, trg );
+                    graphST.SetAttribute( "edges.{src,trg}", src, trg );
                 }
             }
-            graphST.setAttribute( "shape", "none" );
-            graphST.setAttribute( "fontsize", "11" );
-            graphST.setAttribute( "height", "0" ); // make height
+            graphST.SetAttribute( "shape", "none" );
+            graphST.SetAttribute( "fontsize", "11" );
+            graphST.SetAttribute( "height", "0" ); // make height
             return graphST;
         }
 
@@ -2068,9 +2068,9 @@ namespace Antlr3.ST
          *  because we are static like method and method[...] with args.
          *  </remarks>
          */
-        public virtual void getDependencyGraph( IDictionary edges, bool showAttributes )
+        public virtual void GetDependencyGraph( IDictionary edges, bool showAttributes )
         {
-            string srcNode = this.getTemplateHeaderString( showAttributes );
+            string srcNode = this.GetTemplateHeaderString( showAttributes );
             if ( attributes != null )
             {
                 foreach ( var attr in attributes )
@@ -2080,9 +2080,9 @@ namespace Antlr3.ST
                     if ( value is StringTemplate )
                     {
                         string targetNode =
-                            ( (StringTemplate)value ).getTemplateHeaderString( showAttributes );
-                        putToMultiValuedMap( edges, srcNode, targetNode );
-                        ( (StringTemplate)value ).getDependencyGraph( edges, showAttributes ); // descend
+                            ( (StringTemplate)value ).GetTemplateHeaderString( showAttributes );
+                        PutToMultiValuedMap( edges, srcNode, targetNode );
+                        ( (StringTemplate)value ).GetDependencyGraph( edges, showAttributes ); // descend
                     }
                     else
                     {
@@ -2095,9 +2095,9 @@ namespace Antlr3.ST
                                 if ( o is StringTemplate )
                                 {
                                     string targetNode =
-                                        ( (StringTemplate)o ).getTemplateHeaderString( showAttributes );
-                                    putToMultiValuedMap( edges, srcNode, targetNode );
-                                    ( (StringTemplate)o ).getDependencyGraph( edges, showAttributes ); // descend
+                                        ( (StringTemplate)o ).GetTemplateHeaderString( showAttributes );
+                                    PutToMultiValuedMap( edges, srcNode, targetNode );
+                                    ( (StringTemplate)o ).GetDependencyGraph( edges, showAttributes ); // descend
                                 }
                             }
                         }
@@ -2110,9 +2110,9 @@ namespace Antlr3.ST
                                 if ( o is StringTemplate )
                                 {
                                     string targetNode =
-                                        ( (StringTemplate)o ).getTemplateHeaderString( showAttributes );
-                                    putToMultiValuedMap( edges, srcNode, targetNode );
-                                    ( (StringTemplate)o ).getDependencyGraph( edges, showAttributes ); // descend
+                                        ( (StringTemplate)o ).GetTemplateHeaderString( showAttributes );
+                                    PutToMultiValuedMap( edges, srcNode, targetNode );
+                                    ( (StringTemplate)o ).GetDependencyGraph( edges, showAttributes ); // descend
                                 }
                             }
                         }
@@ -2134,13 +2134,13 @@ namespace Antlr3.ST
                     {
                         string templateInclude = t.GetChild( 0 ).Text;
                         Console.Out.WriteLine( "found include " + templateInclude );
-                        putToMultiValuedMap( edges, srcNode, templateInclude );
-                        StringTemplateGroup group = getGroup();
+                        PutToMultiValuedMap( edges, srcNode, templateInclude );
+                        StringTemplateGroup group = GetGroup();
                         if ( group != null )
                         {
-                            StringTemplate st = group.getInstanceOf( templateInclude );
+                            StringTemplate st = group.GetInstanceOf( templateInclude );
                             // descend into the reference template
-                            st.getDependencyGraph( edges, showAttributes );
+                            st.GetDependencyGraph( edges, showAttributes );
                         }
                     }
                 }
@@ -2148,7 +2148,7 @@ namespace Antlr3.ST
         }
 
         /** <summary>Manage a hash table like it has multiple unique values.  Map&lt;Object,Set>.</summary> */
-        protected virtual void putToMultiValuedMap( IDictionary map, object key, object value )
+        protected virtual void PutToMultiValuedMap( IDictionary map, object key, object value )
         {
             HashSet<object> bag = (HashSet<object>)map[key];
             if ( bag == null )
@@ -2159,9 +2159,9 @@ namespace Antlr3.ST
             bag.Add( value );
         }
 
-        public virtual void printDebugString()
+        public virtual void PrintDebugString()
         {
-            Console.Out.WriteLine( "template-" + getName() + ":" );
+            Console.Out.WriteLine( "template-" + GetName() + ":" );
             Console.Out.Write( "chunks=" );
             Console.Out.WriteLine( _chunks.ToString() );
             if ( attributes == null )
@@ -2181,7 +2181,7 @@ namespace Antlr3.ST
                 if ( value is StringTemplate )
                 {
                     Console.Out.Write( name + "=" );
-                    ( (StringTemplate)value ).printDebugString();
+                    ( (StringTemplate)value ).PrintDebugString();
                 }
                 else
                 {
@@ -2194,7 +2194,7 @@ namespace Antlr3.ST
                             Console.Out.Write( name + "[" + i + "] is " + o.GetType().Name + "=" );
                             if ( o is StringTemplate )
                             {
-                                ( (StringTemplate)o ).printDebugString();
+                                ( (StringTemplate)o ).PrintDebugString();
                             }
                             else
                             {
@@ -2222,20 +2222,20 @@ namespace Antlr3.ST
         {
             StringWriter @out = new StringWriter();
             // Write the output to a StringWriter
-            IStringTemplateWriter wr = _group.getStringTemplateWriter( @out );
-            wr.setLineWidth( lineWidth );
+            IStringTemplateWriter wr = _group.GetStringTemplateWriter( @out );
+            wr.SetLineWidth( lineWidth );
             try
             {
-                write( wr );
+                Write( wr );
             }
             catch ( IOException /*io*/)
             {
-                error( "Got IOException writing to writer " + wr.GetType().Name );
+                Error( "Got IOException writing to writer " + wr.GetType().Name );
             }
             // reset so next toString() does not wrap; normally this is a new writer
             // each time, but just in case they override the group to reuse the
             // writer.
-            wr.setLineWidth( StringTemplateWriterConstants.NO_WRAP );
+            wr.SetLineWidth( StringTemplateWriterConstants.NO_WRAP );
             return @out.ToString();
         }
 

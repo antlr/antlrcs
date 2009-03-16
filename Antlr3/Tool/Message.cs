@@ -99,7 +99,7 @@ namespace Antlr3.Tool
          */
         public virtual StringTemplate getMessageTemplate()
         {
-            return msgST.getInstanceOf();
+            return msgST.GetInstanceOf();
         }
 
         /** Return a new template instance for the location part of a Message.
@@ -107,7 +107,7 @@ namespace Antlr3.Tool
          */
         public virtual StringTemplate getLocationTemplate()
         {
-            return locationST.getInstanceOf();
+            return locationST.GetInstanceOf();
         }
 
         public virtual string ToString( StringTemplate messageST )
@@ -119,29 +119,29 @@ namespace Antlr3.Tool
             bool locationValid = false;
             if ( line != -1 )
             {
-                locationST.setAttribute( "line", line );
+                locationST.SetAttribute( "line", line );
                 locationValid = true;
             }
             if ( charPositionInLine != -1 )
             {
-                locationST.setAttribute( "column", charPositionInLine + 1 );
+                locationST.SetAttribute( "column", charPositionInLine + 1 );
                 locationValid = true;
             }
             if ( file != null )
             {
-                locationST.setAttribute( "file", file );
+                locationST.SetAttribute( "file", file );
                 locationValid = true;
             }
 
-            messageFormatST.setAttribute( "id", msgID );
-            messageFormatST.setAttribute( "text", messageST );
+            messageFormatST.SetAttribute( "id", msgID );
+            messageFormatST.SetAttribute( "text", messageST );
 
             if ( locationValid )
             {
-                reportST.setAttribute( "location", locationST );
+                reportST.SetAttribute( "location", locationST );
             }
-            reportST.setAttribute( "message", messageFormatST );
-            reportST.setAttribute( "type", ErrorManager.getMessageType( msgID ) );
+            reportST.SetAttribute( "message", messageFormatST );
+            reportST.SetAttribute( "type", ErrorManager.getMessageType( msgID ) );
 
             return reportST.ToString();
         }

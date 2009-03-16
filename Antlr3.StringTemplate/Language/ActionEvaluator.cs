@@ -1,4 +1,4 @@
-// $ANTLR 3.1.2 Language\\ActionEvaluator.g3 2009-03-07 08:54:44
+// $ANTLR 3.1.2 Language\\ActionEvaluator.g3 2009-03-16 17:34:36
 
 // The variable 'variable' is assigned but its value is never used.
 #pragma warning disable 219
@@ -141,7 +141,7 @@ public partial class ActionEvaluator : TreeParser
 
 			state._fsp--;
 
-			numCharsWritten = chunk.writeAttribute(self,expr1,writer);
+			numCharsWritten = chunk.WriteAttribute(self,expr1,writer);
 
 			}
 
@@ -332,8 +332,8 @@ public partial class ActionEvaluator : TreeParser
 				Match(input, TokenConstants.UP, null); 
 
 							StringWriter buf = new StringWriter();
-							IStringTemplateWriter sw = self.getGroup().getStringTemplateWriter(buf);
-							int n = chunk.writeAttribute(self,e,sw);
+							IStringTemplateWriter sw = self.GetGroup().GetStringTemplateWriter(buf);
+							int n = chunk.WriteAttribute(self,e,sw);
 							if ( n > 0 )
 							{
 								value = buf.ToString();
@@ -540,7 +540,7 @@ public partial class ActionEvaluator : TreeParser
 
 						if ( name!=null )
 						{
-							value = chunk.getTemplateInclude(self, name, args);
+							value = chunk.GetTemplateInclude(self, name, args);
 						}
 					
 
@@ -647,7 +647,7 @@ public partial class ActionEvaluator : TreeParser
 					;
 
 
-				value = chunk.applyListOfAlternatingTemplates(self,a,templatesToApply);
+				value = chunk.ApplyListOfAlternatingTemplates(self,a,templatesToApply);
 
 				Match(input, TokenConstants.UP, null); 
 
@@ -705,7 +705,7 @@ public partial class ActionEvaluator : TreeParser
 
 								StringTemplate anonymous = anon.StringTemplate;
 								templatesToApply.Add(anonymous);
-								value = chunk.applyTemplateToListOfAttributes(self,
+								value = chunk.ApplyTemplateToListOfAttributes(self,
 																			  attributes,
 																			  anon.StringTemplate);
 							
@@ -800,7 +800,7 @@ public partial class ActionEvaluator : TreeParser
 
 				state._fsp--;
 
-				value =chunk.first(a);
+				value =chunk.First(a);
 
 				}
 				break;
@@ -813,7 +813,7 @@ public partial class ActionEvaluator : TreeParser
 
 				state._fsp--;
 
-				value =chunk.rest(a);
+				value =chunk.Rest(a);
 
 				}
 				break;
@@ -826,7 +826,7 @@ public partial class ActionEvaluator : TreeParser
 
 				state._fsp--;
 
-				value =chunk.last(a);
+				value =chunk.Last(a);
 
 				}
 				break;
@@ -839,7 +839,7 @@ public partial class ActionEvaluator : TreeParser
 
 				state._fsp--;
 
-				value =chunk.length(a);
+				value =chunk.Length(a);
 
 				}
 				break;
@@ -852,7 +852,7 @@ public partial class ActionEvaluator : TreeParser
 
 				state._fsp--;
 
-				value =chunk.strip(a);
+				value =chunk.Strip(a);
 
 				}
 				break;
@@ -865,7 +865,7 @@ public partial class ActionEvaluator : TreeParser
 
 				state._fsp--;
 
-				value =chunk.trunc(a);
+				value =chunk.Trunc(a);
 
 				}
 				break;
@@ -991,11 +991,11 @@ public partial class ActionEvaluator : TreeParser
 				MatchAny(input); 
 
 									string templateName = (ID9!=null?ID9.Text:null);
-									StringTemplateGroup group = self.getGroup();
-									StringTemplate embedded = group.getEmbeddedInstanceOf(self, templateName);
+									StringTemplateGroup group = self.GetGroup();
+									StringTemplate embedded = group.GetEmbeddedInstanceOf(self, templateName);
 									if ( embedded!=null )
 									{
-										embedded.setArgumentsAST(args);
+										embedded.SetArgumentsAST(args);
 										templatesToApply.Add(embedded);
 									}
 								
@@ -1010,7 +1010,7 @@ public partial class ActionEvaluator : TreeParser
 									StringTemplate anonymous = anon.StringTemplate;
 									// to properly see overridden templates, always set
 									// anonymous' group to be self's group
-									anonymous.setGroup(self.getGroup());
+									anonymous.SetGroup(self.GetGroup());
 									templatesToApply.Add(anonymous);
 								
 
@@ -1034,11 +1034,11 @@ public partial class ActionEvaluator : TreeParser
 										if ( n!=null )
 										{
 											string templateName = n.ToString();
-											StringTemplateGroup group = self.getGroup();
-											embedded = group.getEmbeddedInstanceOf(self, templateName);
+											StringTemplateGroup group = self.GetGroup();
+											embedded = group.GetEmbeddedInstanceOf(self, templateName);
 											if ( embedded!=null )
 											{
-												embedded.setArgumentsAST(args2);
+												embedded.SetArgumentsAST(args2);
 												templatesToApply.Add(embedded);
 											}
 										}
@@ -1109,7 +1109,7 @@ public partial class ActionEvaluator : TreeParser
 
 				state._fsp--;
 
-				value = chunk.testAttributeTrue(a);
+				value = chunk.TestAttributeTrue(a);
 
 				}
 				break;
@@ -1126,7 +1126,7 @@ public partial class ActionEvaluator : TreeParser
 
 
 				Match(input, TokenConstants.UP, null); 
-				value = !chunk.testAttributeTrue(a);
+				value = !chunk.TestAttributeTrue(a);
 
 				}
 				break;
@@ -1303,7 +1303,7 @@ public partial class ActionEvaluator : TreeParser
 
 
 				Match(input, TokenConstants.UP, null); 
-				value = chunk.getObjectProperty(self,obj,propName);
+				value = chunk.GetObjectProperty(self,obj,propName);
 
 				}
 				break;
@@ -1312,7 +1312,7 @@ public partial class ActionEvaluator : TreeParser
 				{
 				i3=(StringTemplateAST)Match(input,ID,Follow._ID_in_attribute742); 
 
-						value =self.getAttribute((i3!=null?i3.Text:null));
+						value =self.GetAttribute((i3!=null?i3.Text:null));
 						
 
 				}
@@ -1343,9 +1343,9 @@ public partial class ActionEvaluator : TreeParser
 							value =(at!=null?at.Text:null);
 							if ( (at!=null?at.Text:null)!=null )
 							{
-								StringTemplate valueST =new StringTemplate(self.getGroup(), (at!=null?at.Text:null));
-								valueST.setEnclosingInstance(self);
-								valueST.setName("<anonymous template argument>");
+								StringTemplate valueST =new StringTemplate(self.GetGroup(), (at!=null?at.Text:null));
+								valueST.SetEnclosingInstance(self);
+								valueST.SetName("<anonymous template argument>");
 								value = valueST;
 							}
 						
@@ -1507,14 +1507,14 @@ public partial class ActionEvaluator : TreeParser
 							string soleArgName = null;
 							// find the sole defined formal argument for embedded
 							bool error = false;
-							var formalArgs = embedded.getFormalArguments();
+							var formalArgs = embedded.GetFormalArguments();
 							if ( formalArgs!=null )
 							{
 								var argNames = formalArgs.Select( fa => fa.name ).ToArray();
 								if ( argNames.Length==1 )
 								{
 									soleArgName = (string)argNames.ToArray()[0];
-									//System.out.println("sole formal arg of "+embedded.getName()+" is "+soleArgName);
+									//System.out.println("sole formal arg of "+embedded.GetName()+" is "+soleArgName);
 								}
 								else
 								{
@@ -1527,13 +1527,13 @@ public partial class ActionEvaluator : TreeParser
 							}
 							if ( error )
 							{
-								self.error("template "+embedded.getName()+
+								self.Error("template "+embedded.GetName()+
 										   " must have exactly one formal arg in template context "+
-										   self.getEnclosingInstanceStackString());
+										   self.GetEnclosingInstanceStackString());
 							}
 							else
 							{
-								self.rawSetArgumentAttribute(embedded,argumentContext,soleArgName,e);
+								self.RawSetArgumentAttribute(embedded,argumentContext,soleArgName,e);
 							}
 						}
 					
@@ -1600,7 +1600,7 @@ public partial class ActionEvaluator : TreeParser
 
 							if ( expr11 != null )
 							{
-								self.rawSetArgumentAttribute(embedded,argumentContext,(arg!=null?arg.Text:null),expr11);
+								self.RawSetArgumentAttribute(embedded,argumentContext,(arg!=null?arg.Text:null),expr11);
 							}
 						
 
@@ -1610,7 +1610,7 @@ public partial class ActionEvaluator : TreeParser
 				// Language\\ActionEvaluator.g3:371:4: DOTDOTDOT
 				{
 				Match(input,DOTDOTDOT,Follow._DOTDOTDOT_in_argumentAssignment877); 
-				embedded.setPassThroughAttributes(true);
+				embedded.SetPassThroughAttributes(true);
 
 				}
 				break;

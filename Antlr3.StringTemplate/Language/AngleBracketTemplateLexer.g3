@@ -155,14 +155,14 @@ options { k = 1; }
 				{
 					atLeft = false;
 				}
-				(	{!(upcomingAtEND(1) || ( input.LA(1) == '\n' && upcomingAtEND(2) ) || ( input.LA(1) == '\r' && input.LA(2) == '\n' && upcomingAtEND(3) ))}? =>
+				(	{!(UpcomingAtEND(1) || ( input.LA(1) == '\n' && UpcomingAtEND(2) ) || ( input.LA(1) == '\r' && input.LA(2) == '\n' && UpcomingAtEND(3) ))}? =>
 					(	('\r'|'\n') => ('\r' {builder.Append('\r');})? '\n' {builder.Append('\n'); atLeft = true;}
 					|	ch=. {builder.Append((char)$ch); atLeft = false;}
 					)
 				)+
 				(	('\r'|'\n') => ('\r')? '\n' {atLeft = true;} )?
 				(	'<@end>'
-				|	. {self.error("missing region "+t+" <@end> tag");}
+				|	. {self.Error("missing region "+t+" <@end> tag");}
 				)
 				( {atLeft}? => ('\r')? '\n' )?
 			)

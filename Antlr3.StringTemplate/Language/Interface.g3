@@ -115,7 +115,7 @@ groupInterface[StringTemplateGroupInterface groupI]
 {
 	this.groupI = groupI;
 }
-	:	'interface' name=ID {groupI.setName($name.text);} SEMI
+	:	'interface' name=ID {groupI.SetName($name.text);} SEMI
 		( template[groupI] )+
 		EOF
 	;
@@ -129,7 +129,7 @@ template[StringTemplateGroupInterface groupI]
 	:	(opt='optional')? name=ID LPAREN (formalArgs=args)? RPAREN SEMI
 		{
 			templateName = $name.text;
-			$groupI.defineTemplate( templateName, $formalArgs.args ?? new System.Collections.Generic.SortedList<string, FormalArgument>(), opt!=null );
+			$groupI.DefineTemplate( templateName, $formalArgs.args ?? new System.Collections.Generic.SortedList<string, FormalArgument>(), opt!=null );
 		}
 	;
 

@@ -47,7 +47,7 @@ namespace Antlr3.ST
          *  if no group is found.
          *  </summary>
          */
-        StringTemplateGroup loadGroup( string groupName );
+        StringTemplateGroup LoadGroup( string groupName );
 
         /** <summary>
          *  Load a group with a specified superGroup.  Groups with
@@ -55,7 +55,7 @@ namespace Antlr3.ST
          *  during parsing.
          *  </summary>
          */
-        StringTemplateGroup loadGroup( string groupName,
+        StringTemplateGroup LoadGroup( string groupName,
                                              StringTemplateGroup superGroup );
 
 
@@ -64,7 +64,7 @@ namespace Antlr3.ST
          *  it assumes angle brackets &lt;...>.
          *  </summary>
          */
-        StringTemplateGroup loadGroup( string groupName,
+        StringTemplateGroup LoadGroup( string groupName,
                                              Type templateLexer,
                                              StringTemplateGroup superGroup );
 
@@ -73,6 +73,6 @@ namespace Antlr3.ST
          *  if no interface is found.
          *  </summary>
          */
-        StringTemplateGroupInterface loadInterface( string interfaceName );
+        StringTemplateGroupInterface LoadInterface( string interfaceName );
     }
 }

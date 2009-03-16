@@ -84,13 +84,13 @@ namespace Antlr3.Tool
                 System.out.println("tokens=\n"+tokens);
                 */
             }
-            st.setAttribute( "altToLocations", altToLocationsWithStringKey );
+            st.SetAttribute( "altToLocations", altToLocationsWithStringKey );
 
             var sampleInputLabels = problemState.dfa.probe.getSampleNonDeterministicInputSequence( problemState );
             string input = problemState.dfa.probe.getInputSequenceDisplay( sampleInputLabels );
-            st.setAttribute( "upon", input );
+            st.SetAttribute( "upon", input );
 
-            st.setAttribute( "hasPredicateBlockedByAction", problemState.dfa.hasPredicateBlockedByAction );
+            st.SetAttribute( "hasPredicateBlockedByAction", problemState.dfa.hasPredicateBlockedByAction );
 
             return base.ToString( st );
         }

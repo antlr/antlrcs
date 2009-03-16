@@ -143,10 +143,10 @@ namespace Antlr3.Tool
             files.Add( new FileInfo( System.IO.Path.Combine( tool.OutputDirectory, generator.VocabFileName ) ) );
             // are we generating a .h file?
             StringTemplate headerExtST = null;
-            StringTemplate extST = generator.Templates.getInstanceOf( "codeFileExtension" );
-            if ( generator.Templates.isDefined( "headerFile" ) )
+            StringTemplate extST = generator.Templates.GetInstanceOf( "codeFileExtension" );
+            if ( generator.Templates.IsDefined( "headerFile" ) )
             {
-                headerExtST = generator.Templates.getInstanceOf( "headerFileExtension" );
+                headerExtST = generator.Templates.GetInstanceOf( "headerFileExtension" );
                 string suffix = Grammar.grammarTypeToFileNameSuffix[grammar.type];
                 string fileName = grammar.name + suffix + headerExtST.ToString();
                 files.Add( new FileInfo( System.IO.Path.Combine( outputDir.FullName, fileName ) ) );
@@ -239,10 +239,10 @@ namespace Antlr3.Tool
         public virtual StringTemplate getDependencies()
         {
             loadDependencyTemplates();
-            StringTemplate dependenciesST = templates.getInstanceOf( "dependencies" );
-            dependenciesST.setAttribute( "in", getDependenciesFileList() );
-            dependenciesST.setAttribute( "out", getGeneratedFileList() );
-            dependenciesST.setAttribute( "grammarFileName", grammar.fileName );
+            StringTemplate dependenciesST = templates.GetInstanceOf( "dependencies" );
+            dependenciesST.SetAttribute( "in", getDependenciesFileList() );
+            dependenciesST.SetAttribute( "out", getGeneratedFileList() );
+            dependenciesST.SetAttribute( "grammarFileName", grammar.fileName );
             return dependenciesST;
         }
 

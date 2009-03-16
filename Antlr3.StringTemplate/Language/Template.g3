@@ -116,12 +116,12 @@ template[StringTemplate self]
 {
 	this.self = self;
 }
-	:	(	s=LITERAL  {self.addChunk(new StringRef(self,$s.text));}
+	:	(	s=LITERAL  {self.AddChunk(new StringRef(self,$s.text));}
 		|	nl=NEWLINE
 			{
 				if ( input.LA(1)!=ELSE && input.LA(1)!=ENDIF )
 				{
-					self.addChunk(new NewlineRef(self,$nl.text));
+					self.AddChunk(new NewlineRef(self,$nl.text));
 				}
 			}
 		|	action[self]
@@ -133,47 +133,47 @@ action[StringTemplate self]
 	:	a=ACTION
 		{
 			string indent = ((ChunkToken)a).Indentation;
-			ASTExpr c = self.parseAction($a.text);
+			ASTExpr c = self.ParseAction($a.text);
 			c.Indentation = indent;
-			self.addChunk(c);
+			self.AddChunk(c);
 		}
 
 	|	i=IF
 		{
-			ConditionalExpr c = (ConditionalExpr)self.parseAction($i.text);
+			ConditionalExpr c = (ConditionalExpr)self.ParseAction($i.text);
 			// create and precompile the subtemplate
-			StringTemplate subtemplate = new StringTemplate(self.getGroup(), null);
-			subtemplate.setEnclosingInstance(self);
-			subtemplate.setName($i.text+"_subtemplate");
-			self.addChunk(c);
+			StringTemplate subtemplate = new StringTemplate(self.GetGroup(), null);
+			subtemplate.SetEnclosingInstance(self);
+			subtemplate.SetName($i.text+"_subtemplate");
+			self.AddChunk(c);
 		}
 
-		template[subtemplate] {if ( c!=null ) c.setSubtemplate(subtemplate);}
+		template[subtemplate] {if ( c!=null ) c.SetSubtemplate(subtemplate);}
 
 		(	ei=ELSEIF
 			{
-				ASTExpr ec = self.parseAction($ei.text);
+				ASTExpr ec = self.ParseAction($ei.text);
 				// create and precompile the subtemplate
-				StringTemplate elseIfSubtemplate = new StringTemplate(self.getGroup(), null);
-				elseIfSubtemplate.setEnclosingInstance(self);
-				elseIfSubtemplate.setName($ei.text+"_subtemplate");
+				StringTemplate elseIfSubtemplate = new StringTemplate(self.GetGroup(), null);
+				elseIfSubtemplate.SetEnclosingInstance(self);
+				elseIfSubtemplate.SetName($ei.text+"_subtemplate");
 			}
 
 			template[elseIfSubtemplate]
 
-			{if ( c!=null ) c.addElseIfSubtemplate(ec, elseIfSubtemplate);}
+			{if ( c!=null ) c.AddElseIfSubtemplate(ec, elseIfSubtemplate);}
 		)*
 
 		(	ELSE
 			{
 				// create and precompile the subtemplate
-				StringTemplate elseSubtemplate = new StringTemplate(self.getGroup(), null);
-				elseSubtemplate.setEnclosingInstance(self);
-				elseSubtemplate.setName("else_subtemplate");
+				StringTemplate elseSubtemplate = new StringTemplate(self.GetGroup(), null);
+				elseSubtemplate.SetEnclosingInstance(self);
+				elseSubtemplate.SetName("else_subtemplate");
 			}
 
 			template[elseSubtemplate]
-			{if ( c!=null ) c.setElseSubtemplate(elseSubtemplate);}
+			{if ( c!=null ) c.SetElseSubtemplate(elseSubtemplate);}
 		)?
 
 		ENDIF
@@ -191,38 +191,38 @@ action[StringTemplate self]
 			{
 				//System.out.println("super region ref "+regionName);
 				string regionRef = regionName.substring("super.".Length,regionName.Length);
-				string templateScope = self.getGroup().getUnMangledTemplateName(self.getName());
-				StringTemplate scopeST = self.getGroup().lookupTemplate(templateScope);
+				string templateScope = self.GetGroup().GetUnMangledTemplateName(self.GetName());
+				StringTemplate scopeST = self.GetGroup().LookupTemplate(templateScope);
 				if ( scopeST==null )
 				{
-					self.getGroup().error("reference to region within undefined template: "+templateScope);
+					self.GetGroup().Error("reference to region within undefined template: "+templateScope);
 					err=true;
 				}
-				if ( !scopeST.containsRegionName(regionRef) )
+				if ( !scopeST.ContainsRegionName(regionRef) )
 				{
-					self.getGroup().error("template "+templateScope+" has no region called "+regionRef);
+					self.GetGroup().Error("template "+templateScope+" has no region called "+regionRef);
 					err=true;
 				}
 				else
 				{
-					mangledRef = self.getGroup().getMangledRegionName(templateScope,regionRef);
+					mangledRef = self.GetGroup().GetMangledRegionName(templateScope,regionRef);
 					mangledRef = "super."+mangledRef;
 				}
 			}
 			else
 			{
 				//System.out.println("region ref "+regionName);
-				StringTemplate regionST = self.getGroup().defineImplicitRegionTemplate(self,regionName);
-				mangledRef = regionST.getName();
+				StringTemplate regionST = self.GetGroup().DefineImplicitRegionTemplate(self,regionName);
+				mangledRef = regionST.GetName();
 			}
 
 			if ( !err )
 			{
 				// treat as regular action: mangled template include
 				string indent = ((ChunkToken)$rr).Indentation;
-				ASTExpr c = self.parseAction(mangledRef+"()");
+				ASTExpr c = self.ParseAction(mangledRef+"()");
 				c.Indentation = indent;
-				self.addChunk(c);
+				self.AddChunk(c);
 			}
 		}
 
@@ -234,16 +234,16 @@ action[StringTemplate self]
 			{
 				string regionName = combinedNameTemplateStr.substring(0,indexOfDefSymbol);
 				string template = combinedNameTemplateStr.substring(indexOfDefSymbol+3, combinedNameTemplateStr.Length);
-				StringTemplate regionST = self.getGroup().defineRegionTemplate(self,regionName,template,StringTemplate.REGION_EMBEDDED);
+				StringTemplate regionST = self.GetGroup().DefineRegionTemplate(self,regionName,template,StringTemplate.REGION_EMBEDDED);
 				// treat as regular action: mangled template include
 				string indent = ((ChunkToken)$rd).Indentation;
-				ASTExpr c = self.parseAction(regionST.getName()+"()");
+				ASTExpr c = self.ParseAction(regionST.GetName()+"()");
 				c.Indentation = indent;
-				self.addChunk(c);
+				self.AddChunk(c);
 			}
 			else
 			{
-				self.error("embedded region definition screwed up");
+				self.Error("embedded region definition screwed up");
 			}
 		}
 	;
@@ -334,14 +334,14 @@ ACTION
 					}
 					( ('\r'|'\n') => ('\r')? '\n' )?
 					{atLeft = false;}
-					(	{!(upcomingAtEND(1) || ( input.LA(1) == '\n' && upcomingAtEND(2) ) || ( input.LA(1) == '\r' && input.LA(2) == '\n' && upcomingAtEND(3) ))}? =>
+					(	{!(UpcomingAtEND(1) || ( input.LA(1) == '\n' && UpcomingAtEND(2) ) || ( input.LA(1) == '\r' && input.LA(2) == '\n' && UpcomingAtEND(3) ))}? =>
 						(	('\r'|'\n') => ('\r' {builder.Append('\r');})? '\n' {builder.Append('\n'); atLeft = true;}
 						|	ch=. {builder.Append((char)$ch); atLeft = false;}
 						)
 					)+
 					(	('\r'|'\n') => ('\r')? '\n' {atLeft = true;} )?
 					(	('$@end$') => '$@end$'
-					|	.	{self.error("missing region "+t+" $@end$ tag");}
+					|	.	{self.Error("missing region "+t+" $@end$ tag");}
 					)
 					(	{atLeft}? ('\r')? '\n' )?
 				)

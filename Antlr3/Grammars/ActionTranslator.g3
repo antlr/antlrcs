@@ -102,9 +102,9 @@ SET_ENCLOSING_RULE_SCOPE_ATTR
 				{
 					st = template("ruleSetPropertyRef_"+$y.text);
 					grammar.referenceRuleLabelPredefinedAttribute($x.text);
-					st.setAttribute("scope", $x.text);
-					st.setAttribute("attr", $y.text);
-					st.setAttribute("expr", translateAction($expr.text));
+					st.SetAttribute("scope", $x.text);
+					st.SetAttribute("attr", $y.text);
+					st.SetAttribute("expr", translateAction($expr.text));
 				}
 				else
 				{
@@ -127,15 +127,15 @@ SET_ENCLOSING_RULE_SCOPE_ATTR
 			else if ( scope.isParameterScope )
 			{
 				st = template("parameterSetAttributeRef");
-				st.setAttribute("attr", scope.getAttribute($y.text));
-				st.setAttribute("expr", translateAction($expr.text));
+				st.SetAttribute("attr", scope.getAttribute($y.text));
+				st.SetAttribute("expr", translateAction($expr.text));
 			}
 			else
 			{ // must be return value
 				st = template("returnSetAttributeRef");
-				st.setAttribute("ruleDescriptor", enclosingRule);
-				st.setAttribute("attr", scope.getAttribute($y.text));
-				st.setAttribute("expr", translateAction($expr.text));
+				st.SetAttribute("ruleDescriptor", enclosingRule);
+				st.SetAttribute("attr", scope.getAttribute($y.text));
+				st.SetAttribute("expr", translateAction($expr.text));
 			}
 		}
 	;
@@ -158,8 +158,8 @@ ENCLOSING_RULE_SCOPE_ATTR
 			{
 				st = template("rulePropertyRef_"+$y.text);
 				grammar.referenceRuleLabelPredefinedAttribute($x.text);
-				st.setAttribute("scope", $x.text);
-				st.setAttribute("attr", $y.text);
+				st.SetAttribute("scope", $x.text);
+				st.SetAttribute("attr", $y.text);
 			}
 			else if ( scope.isPredefinedLexerRuleScope )
 			{
@@ -172,13 +172,13 @@ ENCLOSING_RULE_SCOPE_ATTR
 			else if ( scope.isParameterScope )
 			{
 				st = template("parameterAttributeRef");
-				st.setAttribute("attr", scope.getAttribute($y.text));
+				st.SetAttribute("attr", scope.getAttribute($y.text));
 			}
 			else
 			{ // must be return value
 				st = template("returnAttributeRef");
-				st.setAttribute("ruleDescriptor", enclosingRule);
-				st.setAttribute("attr", scope.getAttribute($y.text));
+				st.SetAttribute("ruleDescriptor", enclosingRule);
+				st.SetAttribute("attr", scope.getAttribute($y.text));
 			}
 		}
 	;
@@ -229,8 +229,8 @@ TOKEN_SCOPE_ATTR
 				}
 			}
 			StringTemplate st = template("tokenLabelPropertyRef_"+$y.text);
-			st.setAttribute("scope", label);
-			st.setAttribute("attr", AttributeScope.tokenScope.getAttribute($y.text));
+			st.SetAttribute("scope", label);
+			st.SetAttribute("attr", AttributeScope.tokenScope.getAttribute($y.text));
 		}
 	;
 
@@ -313,15 +313,15 @@ RULE_SCOPE_ATTR
 			{
 				st = template("ruleLabelPropertyRef_"+$y.text);
 				grammar.referenceRuleLabelPredefinedAttribute(refdRuleName);
-				st.setAttribute("scope", label);
-				st.setAttribute("attr", $y.text);
+				st.SetAttribute("scope", label);
+				st.SetAttribute("attr", $y.text);
 			}
 			else if ( scope.isPredefinedLexerRuleScope )
 			{
 				st = template("lexerRuleLabelPropertyRef_"+$y.text);
 				grammar.referenceRuleLabelPredefinedAttribute(refdRuleName);
-				st.setAttribute("scope", label);
-				st.setAttribute("attr", $y.text);
+				st.SetAttribute("scope", label);
+				st.SetAttribute("attr", $y.text);
 			}
 			else if ( scope.isParameterScope )
 			{
@@ -330,9 +330,9 @@ RULE_SCOPE_ATTR
 			else
 			{
 				st = template("ruleLabelRef");
-				st.setAttribute("referencedRule", refdRule);
-				st.setAttribute("scope", label);
-				st.setAttribute("attr", scope.getAttribute($y.text));
+				st.SetAttribute("referencedRule", refdRule);
+				st.SetAttribute("scope", label);
+				st.SetAttribute("attr", scope.getAttribute($y.text));
 			}
 		}
 	;
@@ -357,7 +357,7 @@ LABEL_REF
 			{
 				st = template("tokenLabelRef");
 			}
-			st.setAttribute("label", $ID.text);
+			st.SetAttribute("label", $ID.text);
 		}
 	;
 
@@ -378,7 +378,7 @@ ISOLATED_TOKEN_REF
 			else
 			{
 				StringTemplate st = template("tokenLabelRef");
-				st.setAttribute("label", label);
+				st.SetAttribute("label", label);
 			}
 		}
 	;
@@ -402,7 +402,7 @@ ISOLATED_LEXER_RULE_REF
 			else
 			{
 				StringTemplate st = template("lexerRuleLabel");
-				st.setAttribute("label", label);
+				st.SetAttribute("label", label);
 			}
 		}
 	;
@@ -432,9 +432,9 @@ SET_LOCAL_ATTR
 				{
 					st = template("ruleSetPropertyRef_"+$ID.text);
 					grammar.referenceRuleLabelPredefinedAttribute(enclosingRule.name);
-					st.setAttribute("scope", enclosingRule.name);
-					st.setAttribute("attr", $ID.text);
-					st.setAttribute("expr", translateAction($expr.text));
+					st.SetAttribute("scope", enclosingRule.name);
+					st.SetAttribute("attr", $ID.text);
+					st.SetAttribute("expr", translateAction($expr.text));
 				}
 				else
 				{
@@ -448,15 +448,15 @@ SET_LOCAL_ATTR
 			else if ( scope.isParameterScope )
 			{
 				st = template("parameterSetAttributeRef");
-				st.setAttribute("attr", scope.getAttribute($ID.text));
-				st.setAttribute("expr", translateAction($expr.text));
+				st.SetAttribute("attr", scope.getAttribute($ID.text));
+				st.SetAttribute("expr", translateAction($expr.text));
 			}
 			else
 			{
 				st = template("returnSetAttributeRef");
-				st.setAttribute("ruleDescriptor", enclosingRule);
-				st.setAttribute("attr", scope.getAttribute($ID.text));
-				st.setAttribute("expr", translateAction($expr.text));
+				st.SetAttribute("ruleDescriptor", enclosingRule);
+				st.SetAttribute("attr", scope.getAttribute($ID.text));
+				st.SetAttribute("expr", translateAction($expr.text));
 			}
 		}
 	;
@@ -470,25 +470,25 @@ LOCAL_ATTR
 			{
 				st = template("rulePropertyRef_"+$ID.text);
 				grammar.referenceRuleLabelPredefinedAttribute(enclosingRule.name);
-				st.setAttribute("scope", enclosingRule.name);
-				st.setAttribute("attr", $ID.text);
+				st.SetAttribute("scope", enclosingRule.name);
+				st.SetAttribute("attr", $ID.text);
 			}
 			else if ( scope.isPredefinedLexerRuleScope )
 			{
 				st = template("lexerRulePropertyRef_"+$ID.text);
-				st.setAttribute("scope", enclosingRule.name);
-				st.setAttribute("attr", $ID.text);
+				st.SetAttribute("scope", enclosingRule.name);
+				st.SetAttribute("attr", $ID.text);
 			}
 			else if ( scope.isParameterScope )
 			{
 				st = template("parameterAttributeRef");
-				st.setAttribute("attr", scope.getAttribute($ID.text));
+				st.SetAttribute("attr", scope.getAttribute($ID.text));
 			}
 			else
 			{
 				st = template("returnAttributeRef");
-				st.setAttribute("ruleDescriptor", enclosingRule);
-				st.setAttribute("attr", scope.getAttribute($ID.text));
+				st.SetAttribute("ruleDescriptor", enclosingRule);
+				st.SetAttribute("attr", scope.getAttribute($ID.text));
 			}
 		}
 	;
@@ -515,9 +515,9 @@ SET_DYNAMIC_SCOPE_ATTR
 			if ( scope!=null )
 			{
 				StringTemplate st = template("scopeSetAttributeRef");
-				st.setAttribute("scope", $x.text);
-				st.setAttribute("attr",  scope.getAttribute($y.text));
-				st.setAttribute("expr",  translateAction($expr.text));
+				st.SetAttribute("scope", $x.text);
+				st.SetAttribute("attr",  scope.getAttribute($y.text));
+				st.SetAttribute("expr",  translateAction($expr.text));
 			}
 			else
 			{
@@ -536,8 +536,8 @@ DYNAMIC_SCOPE_ATTR
 			if ( scope!=null )
 			{
 				StringTemplate st = template("scopeAttributeRef");
-				st.setAttribute("scope", $x.text);
-				st.setAttribute("attr",  scope.getAttribute($y.text));
+				st.SetAttribute("scope", $x.text);
+				st.SetAttribute("attr",  scope.getAttribute($y.text));
 			}
 			else
 			{
@@ -570,9 +570,9 @@ DYNAMIC_NEGATIVE_INDEXED_SCOPE_ATTR
 		// {JSystem.@out.println("found \$scope[-...]::attr");}
 		{
 			StringTemplate st = template("scopeAttributeRef");
-			st.setAttribute("scope",    $x.text);
-			st.setAttribute("attr",     resolveDynamicScope($x.text).getAttribute($y.text));
-			st.setAttribute("negIndex", $expr.text);
+			st.SetAttribute("scope",    $x.text);
+			st.SetAttribute("attr",     resolveDynamicScope($x.text).getAttribute($y.text));
+			st.SetAttribute("negIndex", $expr.text);
 		}		
 	;
 
@@ -581,9 +581,9 @@ DYNAMIC_ABSOLUTE_INDEXED_SCOPE_ATTR
 		// {JSystem.@out.println("found \$scope[...]::attr");}
 		{
 			StringTemplate st = template("scopeAttributeRef");
-			st.setAttribute("scope", $x.text);
-			st.setAttribute("attr",  resolveDynamicScope($x.text).getAttribute($y.text));
-			st.setAttribute("index", $expr.text);
+			st.SetAttribute("scope", $x.text);
+			st.SetAttribute("attr",  resolveDynamicScope($x.text).getAttribute($y.text));
+			st.SetAttribute("index", $expr.text);
 		}		
 	;
 
@@ -602,7 +602,7 @@ ISOLATED_DYNAMIC_SCOPE
 		// {JSystem.@out.println("found isolated \$scope where scope is a dynamic scope");}
 		{
 			StringTemplate st = template("isolatedDynamicScopeRef");
-			st.setAttribute("scope", $ID.text);
+			st.SetAttribute("scope", $ID.text);
 		}		
 	;
 	
@@ -659,9 +659,9 @@ SET_EXPR_ATTRIBUTE
 			StringTemplate st = template("actionSetAttribute");
 			string action = $a.text;
 			action = action.Substring( 1, action.Length - 2 ); // stuff inside {...}
-			st.setAttribute("st", translateAction(action));
-			st.setAttribute("attrName", $ID.text);
-			st.setAttribute("expr", translateAction($expr.text));
+			st.SetAttribute("st", translateAction(action));
+			st.SetAttribute("attrName", $ID.text);
+			st.SetAttribute("expr", translateAction($expr.text));
 		}
 	;
 	
@@ -674,9 +674,9 @@ SET_ATTRIBUTE
 		// {JSystem.@out.println("found \%x.y = z;");}
 		{
 			StringTemplate st = template("actionSetAttribute");
-			st.setAttribute("st", $x.text);
-			st.setAttribute("attrName", $y.text);
-			st.setAttribute("expr", translateAction($expr.text));
+			st.SetAttribute("st", $x.text);
+			st.SetAttribute("attrName", $y.text);
+			st.SetAttribute("expr", translateAction($expr.text));
 		}
 	;
 
@@ -694,7 +694,7 @@ TEMPLATE_EXPR
 			StringTemplate st = template("actionStringConstructor");
 			string action = $a.text;
 			action = action.Substring( 1, action.Length - 2 ); // stuff inside {...}
-			st.setAttribute("stringExpr", translateAction(action));
+			st.SetAttribute("stringExpr", translateAction(action));
 		}
 	;
 	

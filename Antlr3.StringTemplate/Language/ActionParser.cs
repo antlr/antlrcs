@@ -1,4 +1,4 @@
-// $ANTLR 3.1.2 Language\\Action.g3 2009-03-15 17:10:09
+// $ANTLR 3.1.2 Language\\Action.g3 2009-03-16 17:25:40
 
 // The variable 'variable' is assigned but its value is never used.
 #pragma warning disable 219
@@ -2399,13 +2399,13 @@ public partial class ActionParser : Parser
 			{
 
 							anonymous = new StringTemplate();
-							anonymous.setGroup(self.getGroup());
-							anonymous.setEnclosingInstance(self);
-							anonymous.setTemplate((t!=null?t.Text:null));
+							anonymous.SetGroup(self.GetGroup());
+							anonymous.SetEnclosingInstance(self);
+							anonymous.SetTemplate((t!=null?t.Text:null));
 							if ( t is StringTemplateToken )
-								anonymous.defineFormalArguments(((StringTemplateToken)t).args);
+								anonymous.DefineFormalArguments(((StringTemplateToken)t).args);
 							else
-								anonymous.defineFormalArguments(new ArrayList());
+								anonymous.DefineFormalArguments(new ArrayList());
 						
 			}
 

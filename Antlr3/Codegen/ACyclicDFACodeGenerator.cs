@@ -63,8 +63,8 @@ namespace Antlr3.Codegen
             //System.out.println("walk "+s.stateNumber+" in dfa for decision "+dfa.decisionNumber);
             if ( s.IsAcceptState )
             {
-                StringTemplate dfaST2 = templates.getInstanceOf( "dfaAcceptState" );
-                dfaST2.setAttribute( "alt", s.getUniquelyPredictedAlt() );
+                StringTemplate dfaST2 = templates.GetInstanceOf( "dfaAcceptState" );
+                dfaST2.SetAttribute( "alt", s.getUniquelyPredictedAlt() );
                 return dfaST2;
             }
 
@@ -82,18 +82,18 @@ namespace Antlr3.Codegen
                 dfaEdgeName = "dfaEdgeSwitch";
             }
 
-            StringTemplate dfaST = templates.getInstanceOf( dfaStateName );
+            StringTemplate dfaST = templates.GetInstanceOf( dfaStateName );
             if ( dfa.NFADecisionStartState.decisionStateType == NFAState.LOOPBACK )
             {
-                dfaST = templates.getInstanceOf( dfaLoopbackStateName );
+                dfaST = templates.GetInstanceOf( dfaLoopbackStateName );
             }
             else if ( dfa.NFADecisionStartState.decisionStateType == NFAState.OPTIONAL_BLOCK_START )
             {
-                dfaST = templates.getInstanceOf( dfaOptionalBlockStateName );
+                dfaST = templates.GetInstanceOf( dfaOptionalBlockStateName );
             }
-            dfaST.setAttribute( "k", k );
-            dfaST.setAttribute( "stateNumber", s.stateNumber );
-            dfaST.setAttribute( "semPredState",
+            dfaST.SetAttribute( "k", k );
+            dfaST.SetAttribute( "stateNumber", s.stateNumber );
+            dfaST.SetAttribute( "semPredState",
                                s.IsResolvedWithPredicates );
             /*
             String description = dfa.getNFADecisionStartState().getDescription();
@@ -123,16 +123,16 @@ namespace Antlr3.Codegen
                     */
                     continue;
                 }
-                StringTemplate edgeST = templates.getInstanceOf( dfaEdgeName );
+                StringTemplate edgeST = templates.GetInstanceOf( dfaEdgeName );
                 // If the template wants all the label values delineated, do that
-                if ( edgeST.getFormalArgument( "labels" ) != null )
+                if ( edgeST.GetFormalArgument( "labels" ) != null )
                 {
                     List<string> labels = edge.Label.Set.Select( value => parentGenerator.getTokenTypeAsTargetLabel( value ) ).ToList();
-                    edgeST.setAttribute( "labels", labels );
+                    edgeST.SetAttribute( "labels", labels );
                 }
                 else
                 { // else create an expression to evaluate (the general case)
-                    edgeST.setAttribute( "labelExpr",
+                    edgeST.SetAttribute( "labelExpr",
                                         parentGenerator.genLabelExpr( templates, edge, k ) );
                 }
 
@@ -148,7 +148,7 @@ namespace Antlr3.Codegen
                         StringTemplate predST = preds.genExpr( parentGenerator,
                                                               parentGenerator.Templates,
                                                               dfa );
-                        edgeST.setAttribute( "predicates", predST );
+                        edgeST.SetAttribute( "predicates", predST );
                     }
                 }
 
@@ -157,8 +157,8 @@ namespace Antlr3.Codegen
                                                        dfa,
                                                        (DFAState)edge.target,
                                                        k + 1 );
-                edgeST.setAttribute( "targetState", targetST );
-                dfaST.setAttribute( "edges", edgeST );
+                edgeST.SetAttribute( "targetState", targetST );
+                dfaST.SetAttribute( "edges", edgeST );
                 /*
                 System.out.println("back to DFA "+
                                    dfa.decisionNumber+"."+s.stateNumber);
@@ -169,7 +169,7 @@ namespace Antlr3.Codegen
             if ( EOTPredicts != NFA.INVALID_ALT_NUMBER )
             {
                 // EOT unique predicts an alt
-                dfaST.setAttribute( "eotPredictsAlt", EOTPredicts );
+                dfaST.SetAttribute( "eotPredictsAlt", EOTPredicts );
             }
             else if ( EOTTarget != null && EOTTarget.NumberOfTransitions > 0 )
             {
@@ -184,8 +184,8 @@ namespace Antlr3.Codegen
                 for ( int i = 0; i < EOTTarget.NumberOfTransitions; i++ )
                 {
                     Transition predEdge = (Transition)EOTTarget.transition( i );
-                    StringTemplate edgeST = templates.getInstanceOf( dfaEdgeName );
-                    edgeST.setAttribute( "labelExpr",
+                    StringTemplate edgeST = templates.GetInstanceOf( dfaEdgeName );
+                    edgeST.SetAttribute( "labelExpr",
                                         parentGenerator.genSemanticPredicateExpr( templates, predEdge ) );
                     // the target must be an accept state
                     //System.out.println("EOT edge");
@@ -194,8 +194,8 @@ namespace Antlr3.Codegen
                                                            dfa,
                                                            (DFAState)predEdge.target,
                                                            k + 1 );
-                    edgeST.setAttribute( "targetState", targetST );
-                    dfaST.setAttribute( "edges", edgeST );
+                    edgeST.SetAttribute( "targetState", targetST );
+                    dfaST.SetAttribute( "edges", edgeST );
                 }
             }
             return dfaST;

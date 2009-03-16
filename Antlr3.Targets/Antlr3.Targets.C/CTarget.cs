@@ -53,7 +53,7 @@ namespace Antlr3.Targets
             // Before we write this, and cause it to generate its string,
             // we need to add all the string literals that we are going to match
             //
-            outputFileST.setAttribute( "literals", strings );
+            outputFileST.SetAttribute( "literals", strings );
             string fileName = generator.getRecognizerFileName( grammar.name, grammar.type );
             generator.write( outputFileST, fileName );
         }

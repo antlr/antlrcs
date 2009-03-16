@@ -42,7 +42,7 @@ namespace Antlr3.ST
         {
         }
 
-        public override int write( string str )
+        public override int Write( string str )
         {
             Writer.Write( str );
             return str.Length;

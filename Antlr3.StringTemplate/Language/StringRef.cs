@@ -50,9 +50,9 @@ namespace Antlr3.ST.Language
          *  &lt;"foo"; wrap="\n"> should wrap though if necessary.
          *  </summary>
          */
-        public override int write( StringTemplate self, IStringTemplateWriter writer )
+        public override int Write( StringTemplate self, IStringTemplateWriter writer )
         {
-            return writer.write( str ?? string.Empty );
+            return writer.Write( str ?? string.Empty );
         }
 
         public override string ToString()

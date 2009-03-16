@@ -62,7 +62,7 @@ namespace AntlrUnitTests
         {
             StringBuilder errorOutput = new StringBuilder( 500 );
             int n = 0;
-            public void error( string msg, Exception e )
+            public void Error( string msg, Exception e )
             {
                 n++;
                 if ( n > 1 )
@@ -72,7 +72,7 @@ namespace AntlrUnitTests
                 if ( e != null )
                 {
                     StringWriter duh = new StringWriter();
-                    e.printStackTrace( duh );
+                    e.PrintStackTrace( duh );
                     errorOutput.Append( msg + ": " + duh.ToString() );
                 }
                 else
@@ -80,7 +80,7 @@ namespace AntlrUnitTests
                     errorOutput.Append( msg );
                 }
             }
-            public void warning( string msg )
+            public void Warning( string msg )
             {
                 n++;
                 errorOutput.Append( msg );
@@ -170,7 +170,7 @@ namespace AntlrUnitTests
             // this also tests the group loader
             IStringTemplateErrorListener errors = new ErrorBuffer();
             string tmpdir = Path.GetTempPath();
-            StringTemplateGroup.registerGroupLoader( null );
+            StringTemplateGroup.RegisterGroupLoader( null );
 
             string templates =
                 "group testG implements blort;" + newline +
@@ -193,7 +193,7 @@ namespace AntlrUnitTests
             // this also tests the group loader
             IStringTemplateErrorListener errors = new ErrorBuffer();
             string tmpdir = Path.GetTempPath();
-            StringTemplateGroup.registerGroupLoader( new PathGroupLoader( tmpdir, errors ) );
+            StringTemplateGroup.RegisterGroupLoader( new PathGroupLoader( tmpdir, errors ) );
 
             string templates =
                 "group testG implements blort;" + newline +
@@ -228,7 +228,7 @@ namespace AntlrUnitTests
                     return;
                 }
             }
-            StringTemplateGroup.registerGroupLoader(
+            StringTemplateGroup.RegisterGroupLoader(
                 new PathGroupLoader( tmpdir + ":" + tmpdir + "/sub", errors )
             );
 
@@ -241,7 +241,7 @@ namespace AntlrUnitTests
             writeFile( tmpdir + "/sub", "testG2.stg", templates );
 
             StringTemplateGroup group =
-                StringTemplateGroup.loadGroup( "testG2" );
+                StringTemplateGroup.LoadGroup( "testG2" );
             string expecting = "group testG2;" + newline +
                 "bold(item) ::= <<foo>>" + newline +
                 "duh(a,b,c) ::= <<foo>>" + newline +
@@ -255,7 +255,7 @@ namespace AntlrUnitTests
             // this also tests the group loader
             IStringTemplateErrorListener errors = new ErrorBuffer();
             string tmpdir = Path.GetTempPath();
-            StringTemplateGroup.registerGroupLoader( new PathGroupLoader( tmpdir, errors ) );
+            StringTemplateGroup.RegisterGroupLoader( new PathGroupLoader( tmpdir, errors ) );
             string groupI =
                     "interface testI;" + newline +
                     "t();" + newline +
@@ -284,7 +284,7 @@ namespace AntlrUnitTests
             // this also tests the group loader
             IStringTemplateErrorListener errors = new ErrorBuffer();
             string tmpdir = Path.GetTempPath();
-            StringTemplateGroup.registerGroupLoader(
+            StringTemplateGroup.RegisterGroupLoader(
                 new PathGroupLoader( tmpdir, errors )
             );
             string superGroup =
@@ -302,8 +302,8 @@ namespace AntlrUnitTests
                     new StringTemplateGroup( new StreamReader( tmpdir + "/testG.stg" ),
                                             typeof( DefaultTemplateLexer ),
                                             errors );
-            StringTemplate st = group.getInstanceOf( "main" );
-            st.setAttribute( "x", "foo" );
+            StringTemplate st = group.GetInstanceOf( "main" );
+            st.SetAttribute( "x", "foo" );
 
             string expecting = "*foo*";
             Assert.AreEqual( expecting, st.ToString() );
@@ -315,7 +315,7 @@ namespace AntlrUnitTests
             // this also tests the group loader
             IStringTemplateErrorListener errors = new ErrorBuffer();
             string tmpdir = Path.GetTempPath();
-            StringTemplateGroup.registerGroupLoader(
+            StringTemplateGroup.RegisterGroupLoader(
                 new PathGroupLoader( tmpdir, errors )
             );
             string superGroup =
@@ -332,8 +332,8 @@ namespace AntlrUnitTests
             StringTemplateGroup group =
                     new StringTemplateGroup( new StreamReader( tmpdir + "/testG.stg" ),
                                             errors );
-            StringTemplate st = group.getInstanceOf( "main" );
-            st.setAttribute( "x", "foo" );
+            StringTemplate st = group.GetInstanceOf( "main" );
+            st.SetAttribute( "x", "foo" );
 
             string expecting = "*foo*";
             Assert.AreEqual( expecting, st.ToString() );
@@ -345,7 +345,7 @@ namespace AntlrUnitTests
             // this also tests the group loader
             IStringTemplateErrorListener errors = new ErrorBuffer();
             string tmpdir = Path.GetTempPath();
-            StringTemplateGroup.registerGroupLoader( new PathGroupLoader( tmpdir, errors ) );
+            StringTemplateGroup.RegisterGroupLoader( new PathGroupLoader( tmpdir, errors ) );
             string groupI =
                     "interface testI;" + newline +
                     "t();" + newline +
@@ -373,7 +373,7 @@ namespace AntlrUnitTests
             // this also tests the group loader
             IStringTemplateErrorListener errors = new ErrorBuffer();
             string tmpdir = Path.GetTempPath();
-            StringTemplateGroup.registerGroupLoader( new PathGroupLoader( tmpdir, errors ) );
+            StringTemplateGroup.RegisterGroupLoader( new PathGroupLoader( tmpdir, errors ) );
             string groupI =
                     "interface testI;" + newline +
                     "t();" + newline +
@@ -401,7 +401,7 @@ namespace AntlrUnitTests
             // this also tests the group loader
             IStringTemplateErrorListener errors = new ErrorBuffer();
             string tmpdir = Path.GetTempPath();
-            StringTemplateGroup.registerGroupLoader( new PathGroupLoader( tmpdir, errors ) );
+            StringTemplateGroup.RegisterGroupLoader( new PathGroupLoader( tmpdir, errors ) );
             string groupI =
                     "interface testI;" + newline +
                     "t();" + newline +
@@ -442,12 +442,12 @@ namespace AntlrUnitTests
                     "t() ::= <<literal template>>" + newline;
             Assert.AreEqual( expecting, group.ToString() );
 
-            StringTemplate a = group.getInstanceOf( "t" );
+            StringTemplate a = group.GetInstanceOf( "t" );
             expecting = "literal template";
             Assert.AreEqual( expecting, a.ToString() );
 
-            StringTemplate b = group.getInstanceOf( "bold" );
-            b.setAttribute( "item", "dork" );
+            StringTemplate b = group.GetInstanceOf( "bold" );
+            b.SetAttribute( "item", "dork" );
             expecting = "<b>dork</b>";
             Assert.AreEqual( expecting, b.ToString() );
         }
@@ -470,12 +470,12 @@ namespace AntlrUnitTests
                     "t() ::= <<$\"literal\":{a|$a$\\}}$ template>>" + newline;
             Assert.AreEqual( expecting, group.ToString() );
 
-            StringTemplate b = group.getInstanceOf( "bold" );
-            b.setAttribute( "item", "dork" );
+            StringTemplate b = group.GetInstanceOf( "bold" );
+            b.SetAttribute( "item", "dork" );
             expecting = "<b>dork</b>";
             Assert.AreEqual( expecting, b.ToString() );
 
-            StringTemplate a = group.getInstanceOf( "t" );
+            StringTemplate a = group.GetInstanceOf( "t" );
             expecting = "literal} template";
             Assert.AreEqual( expecting, a.ToString() );
         }
@@ -496,11 +496,11 @@ namespace AntlrUnitTests
                                             typeof( DefaultTemplateLexer ) );
 
             // check setting unknown arg in empty formal list
-            StringTemplate a = group.getInstanceOf( "t" );
+            StringTemplate a = group.GetInstanceOf( "t" );
             string error = null;
             try
             {
-                a.setAttribute( "foo", "x" ); // want NoSuchElementException
+                a.SetAttribute( "foo", "x" ); // want NoSuchElementException
             }
             catch ( ArgumentException e )
             {
@@ -510,12 +510,12 @@ namespace AntlrUnitTests
             Assert.AreEqual( expecting, error );
 
             // check setting known arg
-            a = group.getInstanceOf( "t2" );
-            a.setAttribute( "item", "x" ); // shouldn't get exception
+            a = group.GetInstanceOf( "t2" );
+            a.SetAttribute( "item", "x" ); // shouldn't get exception
 
             // check setting unknown arg in nonempty list of formal args
-            a = group.getInstanceOf( "t3" );
-            a.setAttribute( "b", "x" );
+            a = group.GetInstanceOf( "t3" );
+            a.SetAttribute( "b", "x" );
         }
 
         [TestMethod]
@@ -549,9 +549,9 @@ namespace AntlrUnitTests
             StringTemplateGroup group =
                     new StringTemplateGroup( new StringReader( templates ),
                                             typeof( DefaultTemplateLexer ) );
-            StringTemplate t = group.getInstanceOf( "page" );
-            t.setAttribute( "title", "my title" );
-            t.setAttribute( "font", "Helvetica" ); // body() will see it
+            StringTemplate t = group.GetInstanceOf( "page" );
+            t.SetAttribute( "title", "my title" );
+            t.SetAttribute( "font", "Helvetica" ); // body() will see it
             t.ToString(); // should be no problem
         }
 
@@ -565,7 +565,7 @@ namespace AntlrUnitTests
             StringTemplateGroup group =
                     new StringTemplateGroup( new StringReader( templates ),
                                             typeof( DefaultTemplateLexer ) );
-            StringTemplate t = group.getInstanceOf( "page" );
+            StringTemplate t = group.GetInstanceOf( "page" );
             string expecting = "<font face=Times>my body</font>";
             Assert.AreEqual( expecting, t.ToString() );
         }
@@ -580,8 +580,8 @@ namespace AntlrUnitTests
             StringTemplateGroup group =
                     new StringTemplateGroup( new StringReader( templates ),
                                             typeof( DefaultTemplateLexer ) );
-            StringTemplate t = group.getInstanceOf( "page" );
-            t.setAttribute( "x", "Times" );
+            StringTemplate t = group.GetInstanceOf( "page" );
+            t.SetAttribute( "x", "Times" );
             string error = "";
             try
             {
@@ -605,8 +605,8 @@ namespace AntlrUnitTests
             StringTemplateGroup group =
                     new StringTemplateGroup( new StringReader( templates ),
                                             typeof( DefaultTemplateLexer ) );
-            StringTemplate t = group.getInstanceOf( "page" );
-            t.setAttribute( "name", "Ter" );
+            StringTemplate t = group.GetInstanceOf( "page" );
+            t.SetAttribute( "name", "Ter" );
             string expecting = "<font face=Times><b>Ter</b></font>";
             Assert.AreEqual( expecting, t.ToString() );
         }
@@ -621,9 +621,9 @@ namespace AntlrUnitTests
             StringTemplateGroup group =
                     new StringTemplateGroup( new StringReader( templates ),
                                             typeof( DefaultTemplateLexer ) );
-            StringTemplate t = group.getInstanceOf( "page" );
-            t.setAttribute( "x", "Times" );
-            t.setAttribute( "name", "Ter" );
+            StringTemplate t = group.GetInstanceOf( "page" );
+            t.SetAttribute( "x", "Times" );
+            t.SetAttribute( "name", "Ter" );
             string error = "";
             try
             {
@@ -647,7 +647,7 @@ namespace AntlrUnitTests
             StringTemplateGroup group =
                     new StringTemplateGroup( new StringReader( templates ),
                                             typeof( DefaultTemplateLexer ) );
-            StringTemplate t = group.getInstanceOf( "page" );
+            StringTemplate t = group.GetInstanceOf( "page" );
             string error = "";
             try
             {
@@ -671,7 +671,7 @@ namespace AntlrUnitTests
             StringTemplateGroup group =
                     new StringTemplateGroup( new StringReader( templates ),
                                             typeof( DefaultTemplateLexer ) );
-            StringTemplate t = group.getInstanceOf( "page" );
+            StringTemplate t = group.GetInstanceOf( "page" );
             string error = "";
             try
             {
@@ -697,8 +697,8 @@ namespace AntlrUnitTests
             StringTemplateGroup group =
                     new StringTemplateGroup(
                             new StringReader( templates ) );
-            StringTemplate t = group.getInstanceOf( "a" );
-            t.setAttribute( "s", "Test" );
+            StringTemplate t = group.GetInstanceOf( "a" );
+            t.SetAttribute( "s", "Test" );
             string expecting = "case 1 : Test break;";
             Assert.AreEqual( expecting, t.ToString() );
         }
@@ -709,8 +709,8 @@ namespace AntlrUnitTests
             StringTemplate st = new StringTemplate(
                     "Tokens : <rules; separator=\"|\"> ;",
                     typeof( AngleBracketTemplateLexer ) );
-            st.setAttribute( "rules", "A" );
-            st.setAttribute( "rules", "B" );
+            st.SetAttribute( "rules", "A" );
+            st.SetAttribute( "rules", "B" );
             string expecting = "Tokens : A|B ;";
             Assert.AreEqual( expecting, st.ToString() );
         }
@@ -724,7 +724,7 @@ namespace AntlrUnitTests
             StringTemplateGroup group =
                     new StringTemplateGroup( new StringReader( templates ),
                                             typeof( DefaultTemplateLexer ) );
-            StringTemplate st = group.getInstanceOf( "a" );
+            StringTemplate st = group.GetInstanceOf( "a" );
             string result = st.ToString();
             string expecting = "XY";
             Assert.AreEqual( expecting, result );
@@ -739,7 +739,7 @@ namespace AntlrUnitTests
             StringTemplateGroup group =
                     new StringTemplateGroup( new StringReader( templates ),
                                             typeof( DefaultTemplateLexer ) );
-            StringTemplate st = group.getInstanceOf( "a" );
+            StringTemplate st = group.GetInstanceOf( "a" );
             string result = st.ToString();
             string expecting = "XblortY";
             Assert.AreEqual( expecting, result );
@@ -753,7 +753,7 @@ namespace AntlrUnitTests
                     "a() ::= \"X<@r()>Y\"" + newline;
             StringTemplateGroup group =
                     new StringTemplateGroup( new StringReader( templates ) );
-            StringTemplate st = group.getInstanceOf( "a" );
+            StringTemplate st = group.GetInstanceOf( "a" );
             string result = st.ToString();
             string expecting = "XY";
             Assert.AreEqual( expecting, result );
@@ -767,7 +767,7 @@ namespace AntlrUnitTests
                     "a() ::= \"X<@r>blort<@end>Y\"" + newline;
             StringTemplateGroup group =
                     new StringTemplateGroup( new StringReader( templates ) );
-            StringTemplate st = group.getInstanceOf( "a" );
+            StringTemplate st = group.GetInstanceOf( "a" );
             string result = st.ToString();
             string expecting = "XblortY";
             Assert.AreEqual( expecting, result );
@@ -785,7 +785,7 @@ namespace AntlrUnitTests
                     "Y\"" + newline;
             StringTemplateGroup group =
                     new StringTemplateGroup( new StringReader( templates ) );
-            StringTemplate st = group.getInstanceOf( "a" );
+            StringTemplate st = group.GetInstanceOf( "a" );
             string result = st.ToString();
             string expecting = "XblortY";
             Assert.AreEqual( expecting, result );
@@ -800,7 +800,7 @@ namespace AntlrUnitTests
                     "@a.r() ::= \"foo\"" + newline;
             StringTemplateGroup group =
                     new StringTemplateGroup( new StringReader( templates ) );
-            StringTemplate st = group.getInstanceOf( "a" );
+            StringTemplate st = group.GetInstanceOf( "a" );
             string result = st.ToString();
             string expecting = "XfooY";
             Assert.AreEqual( expecting, result );
@@ -815,8 +815,8 @@ namespace AntlrUnitTests
                     "@a.r() ::= \"foo\"" + newline;
             StringTemplateGroup group =
                     new StringTemplateGroup( new StringReader( templates ) );
-            StringTemplate st = group.getInstanceOf( "a" );
-            st.setAttribute( "v", "true" );
+            StringTemplate st = group.GetInstanceOf( "a" );
+            st.SetAttribute( "v", "true" );
             string result = st.ToString();
             string expecting = "XAfooBY";
             Assert.AreEqual( expecting, result );
@@ -833,8 +833,8 @@ namespace AntlrUnitTests
             StringTemplateGroup group =
                     new StringTemplateGroup( new StringReader( templates ),
                                             errors );
-            StringTemplate st = group.getInstanceOf( "a" );
-            st.setAttribute( "v", "true" );
+            StringTemplate st = group.GetInstanceOf( "a" );
+            st.SetAttribute( "v", "true" );
             string result = st.ToString();
             string expecting = "XAyoBY";
             Assert.AreEqual( expecting, result );
@@ -863,7 +863,7 @@ namespace AntlrUnitTests
                                             null,
                                             group );
 
-            StringTemplate st = subGroup.getInstanceOf( "a" );
+            StringTemplate st = subGroup.GetInstanceOf( "a" );
             string result = st.ToString();
             string expecting = "XfooY";
             Assert.AreEqual( expecting, result );
@@ -888,7 +888,7 @@ namespace AntlrUnitTests
                                             null,
                                             group );
 
-            StringTemplate st = subGroup.getInstanceOf( "a" );
+            StringTemplate st = subGroup.GetInstanceOf( "a" );
             string result = st.ToString();
             string expecting = "XAfooBY";
             Assert.AreEqual( expecting, result );
@@ -908,7 +908,7 @@ namespace AntlrUnitTests
             // ...
             // Somehow, the ref to super in subsub is not moving up the chain
             // to the @super.r(); oh, i introduced a bug when i put setGroup
-            // into STG.getInstanceOf()!
+            // into STG.GetInstanceOf()!
 
             string templates1 =
                     "group super;" + newline +
@@ -935,7 +935,7 @@ namespace AntlrUnitTests
                                             null,
                                             subGroup );
 
-            StringTemplate st = subSubGroup.getInstanceOf( "a" );
+            StringTemplate st = subSubGroup.GetInstanceOf( "a" );
             string result = st.ToString();
             string expecting = "Xfoo23Y";
             Assert.AreEqual( expecting, result );
@@ -959,7 +959,7 @@ namespace AntlrUnitTests
                                             null,
                                             group );
 
-            StringTemplate st = subGroup.getInstanceOf( "a" );
+            StringTemplate st = subGroup.GetInstanceOf( "a" );
             string result = st.ToString();
             string expecting = "XAfooY";
             Assert.AreEqual( expecting, result );
@@ -977,7 +977,7 @@ namespace AntlrUnitTests
             StringTemplateGroup group =
                     new StringTemplateGroup( new StringReader( templates ),
                                             errors );
-            StringTemplate st = group.getInstanceOf( "a" );
+            StringTemplate st = group.GetInstanceOf( "a" );
             st.ToString();
             string result = errors.ToString();
             string expecting = "group test line 2: redefinition of template region: @a.r";
@@ -997,7 +997,7 @@ namespace AntlrUnitTests
             StringTemplateGroup group =
                     new StringTemplateGroup( new StringReader( templates ),
                                             errors );
-            StringTemplate st = group.getInstanceOf( "a" );
+            StringTemplate st = group.GetInstanceOf( "a" );
             st.ToString();
             string result = errors.ToString();
             string expecting = "group test line 4: redefinition of template region: @a.r";
@@ -1025,7 +1025,7 @@ namespace AntlrUnitTests
                                             errors,
                                             group );
 
-            StringTemplate st = subGroup.getInstanceOf( "a" );
+            StringTemplate st = subGroup.GetInstanceOf( "a" );
             string result = errors.ToString();
             string expecting = "group sub line 3: redefinition of template region: @a.r";
             Assert.AreEqual( expecting, result );
@@ -1043,7 +1043,7 @@ namespace AntlrUnitTests
             StringTemplateGroup group =
                     new StringTemplateGroup( new StringReader( templates ),
                                             errors );
-            StringTemplate st = group.getInstanceOf( "a" );
+            StringTemplate st = group.GetInstanceOf( "a" );
             st.ToString();
             string result = errors.ToString();
             string expecting = "group test line 3: template a has no region called q";
@@ -1070,7 +1070,7 @@ namespace AntlrUnitTests
                                             errors,
                                             group );
 
-            StringTemplate st = subGroup.getInstanceOf( "a" );
+            StringTemplate st = subGroup.GetInstanceOf( "a" );
             string result = errors.ToString();
             string expecting = "template a has no region called q";
             Assert.AreEqual( expecting, result );
@@ -1089,7 +1089,7 @@ namespace AntlrUnitTests
                                             typeof( DefaultTemplateLexer ),
                                             errors,
                                             null );
-            StringTemplate st = group.getInstanceOf( "a" );
+            StringTemplate st = group.GetInstanceOf( "a" );
             st.ToString();
             string result = errors.ToString();
             string expecting = "missing region r $@end$ tag";
@@ -1107,7 +1107,7 @@ namespace AntlrUnitTests
             StringTemplateGroup group =
                     new StringTemplateGroup( new StringReader( templates ),
                                             errors );
-            StringTemplate st = group.getInstanceOf( "a" );
+            StringTemplate st = group.GetInstanceOf( "a" );
             st.ToString();
             string result = errors.ToString();
             string expecting = "missing region r <@end> tag";
@@ -1120,13 +1120,13 @@ namespace AntlrUnitTests
             // make a bold template in the super group that you can inherit from sub
             StringTemplateGroup supergroup = new StringTemplateGroup( "super" );
             StringTemplateGroup subgroup = new StringTemplateGroup( "sub" );
-            StringTemplate bold = supergroup.defineTemplate( "bold", "<b>$it$</b>" );
+            StringTemplate bold = supergroup.DefineTemplate( "bold", "<b>$it$</b>" );
             subgroup.SuperGroup = supergroup;
             IStringTemplateErrorListener errors = new ErrorBuffer();
             subgroup.ErrorListener = errors;
             supergroup.ErrorListener = errors;
             StringTemplate duh = new StringTemplate( subgroup, "$name:bold()$" );
-            duh.setAttribute( "name", "Terence" );
+            duh.SetAttribute( "name", "Terence" );
             string expecting = "<b>Terence</b>";
             Assert.AreEqual( expecting, duh.ToString() );
         }
@@ -1137,14 +1137,14 @@ namespace AntlrUnitTests
             // make a bold template in the super group and one in sub group
             StringTemplateGroup supergroup = new StringTemplateGroup( "super" );
             StringTemplateGroup subgroup = new StringTemplateGroup( "sub" );
-            supergroup.defineTemplate( "bold", "<b>$it$</b>" );
-            subgroup.defineTemplate( "bold", "<strong>$it$</strong>" );
+            supergroup.DefineTemplate( "bold", "<b>$it$</b>" );
+            subgroup.DefineTemplate( "bold", "<strong>$it$</strong>" );
             subgroup.SuperGroup = supergroup;
             IStringTemplateErrorListener errors = new ErrorBuffer();
             subgroup.ErrorListener = errors;
             supergroup.ErrorListener = errors;
             StringTemplate duh = new StringTemplate( subgroup, "$name:bold()$" );
-            duh.setAttribute( "name", "Terence" );
+            duh.SetAttribute( "name", "Terence" );
             string expecting = "<strong>Terence</strong>";
             Assert.AreEqual( expecting, duh.ToString() );
         }
@@ -1156,7 +1156,7 @@ namespace AntlrUnitTests
             StringTemplateGroup rootgroup = new StringTemplateGroup( "root" );
             StringTemplateGroup level1 = new StringTemplateGroup( "level1" );
             StringTemplateGroup level2 = new StringTemplateGroup( "level2" );
-            rootgroup.defineTemplate( "bold", "<b>$it$</b>" );
+            rootgroup.DefineTemplate( "bold", "<b>$it$</b>" );
             level1.SuperGroup = rootgroup;
             level2.SuperGroup = level1;
             IStringTemplateErrorListener errors = new ErrorBuffer();
@@ -1164,7 +1164,7 @@ namespace AntlrUnitTests
             level1.ErrorListener = errors;
             level2.ErrorListener = errors;
             StringTemplate duh = new StringTemplate( level2, "$name:bold()$" );
-            duh.setAttribute( "name", "Terence" );
+            duh.SetAttribute( "name", "Terence" );
             string expecting = "<b>Terence</b>";
             Assert.AreEqual( expecting, duh.ToString() );
         }
@@ -1195,7 +1195,7 @@ namespace AntlrUnitTests
             StringTemplateGroup sub =
                     new StringTemplateGroup( new StringReader( subtemplates ) );
             sub.SuperGroup = @base;
-            StringTemplate st = sub.getInstanceOf( "decls" );
+            StringTemplate st = sub.GetInstanceOf( "decls" );
             string expecting = "DSL";
             string result = st.ToString();
             Assert.AreEqual( expecting, result );
@@ -1228,7 +1228,7 @@ namespace AntlrUnitTests
                                             null,
                                             subGroup );
 
-            StringTemplate st = subSubGroup.getInstanceOf( "r" );
+            StringTemplate st = subSubGroup.GetInstanceOf( "r" );
             string result = st.ToString();
             string expecting = "foo23";
             Assert.AreEqual( expecting, result );
@@ -1241,11 +1241,11 @@ namespace AntlrUnitTests
             // Use a template group so we can specify the start/stop chars
             StringTemplateGroup group =
                 new StringTemplateGroup( "dummy", "." );
-            StringTemplate bold = group.defineTemplate( "bold", "<b>$it$</b>" );
+            StringTemplate bold = group.DefineTemplate( "bold", "<b>$it$</b>" );
             StringTemplate duh = new StringTemplate( group, "$(\"blort: \"+(list)):bold()$" );
-            duh.setAttribute( "list", "a" );
-            duh.setAttribute( "list", "b" );
-            duh.setAttribute( "list", "c" );
+            duh.SetAttribute( "list", "a" );
+            duh.SetAttribute( "list", "b" );
+            duh.SetAttribute( "list", "c" );
             // System.out.println(duh);
             string expecting = "<b>blort: abc</b>";
             Assert.AreEqual( expecting, duh.ToString() );
@@ -1258,12 +1258,12 @@ namespace AntlrUnitTests
             // Use a template group so we can specify the start/stop chars
             StringTemplateGroup group =
                 new StringTemplateGroup( "dummy", "." );
-            group.defineTemplate( "link", "<a href=\"$url$\"><b>$title$</b></a>" );
+            group.DefineTemplate( "link", "<a href=\"$url$\"><b>$title$</b></a>" );
             StringTemplate duh =
                 new StringTemplate( group,
                     "$link(url=\"/member/view?ID=\"+ID+\"&x=y\"+foo, title=\"the title\")$" );
-            duh.setAttribute( "ID", "3321" );
-            duh.setAttribute( "foo", "fubar" );
+            duh.SetAttribute( "ID", "3321" );
+            duh.SetAttribute( "foo", "fubar" );
             string expecting = "<a href=\"/member/view?ID=3321&x=yfubar\"><b>the title</b></a>";
             Assert.AreEqual( expecting, duh.ToString() );
         }
@@ -1273,7 +1273,7 @@ namespace AntlrUnitTests
         {
             StringTemplateGroup group =
                     new StringTemplateGroup( "test" );
-            StringTemplate bold = group.defineTemplate( "bold", "<b>$it$</b>" );
+            StringTemplate bold = group.DefineTemplate( "bold", "<b>$it$</b>" );
             StringTemplate t =
                 new StringTemplate( group, "$data$, $data:bold()$, " +
                                           "$list:bold():bold()$, $array$, $a2$, $a3$, $a4$" );
@@ -1285,12 +1285,12 @@ namespace AntlrUnitTests
             list.Add( "a" );
             list.Add( "b" );
             list.Add( "c" );
-            t.setAttribute( "data", v );
-            t.setAttribute( "list", list );
-            t.setAttribute( "array", new string[] { "x", "y" } );
-            t.setAttribute( "a2", new int[] { 10, 20 } );
-            t.setAttribute( "a3", new float[] { 1.2f, 1.3f } );
-            t.setAttribute( "a4", new double[] { 8.7, 9.2 } );
+            t.SetAttribute( "data", v );
+            t.SetAttribute( "list", list );
+            t.SetAttribute( "array", new string[] { "x", "y" } );
+            t.SetAttribute( "a2", new int[] { 10, 20 } );
+            t.SetAttribute( "a3", new float[] { 1.2f, 1.3f } );
+            t.SetAttribute( "a4", new double[] { 8.7, 9.2 } );
             //System.out.println(t);
             string expecting = "123, <b>1</b><b>2</b><b>3</b>, " +
                 "<b><b>a</b></b><b><b>b</b></b><b><b>c</b></b>, xy, 1020, 1.21.3, 8.79.2";
@@ -1302,10 +1302,10 @@ namespace AntlrUnitTests
         {
             StringTemplateGroup group =
                     new StringTemplateGroup( "test" );
-            StringTemplate bold = group.defineTemplate( "bold", "<b>$it$</b>" );
+            StringTemplate bold = group.DefineTemplate( "bold", "<b>$it$</b>" );
             StringTemplate t = new StringTemplate( group, "$(f+l):bold()$" );
-            t.setAttribute( "f", "Joe" );
-            t.setAttribute( "l", "Schmoe" );
+            t.SetAttribute( "f", "Joe" );
+            t.SetAttribute( "l", "Schmoe" );
             //System.out.println(t);
             string expecting = "<b>JoeSchmoe</b>";
             Assert.AreEqual( expecting, t.ToString() );
@@ -1316,11 +1316,11 @@ namespace AntlrUnitTests
         {
             StringTemplateGroup group =
                     new StringTemplateGroup( "test" );
-            StringTemplate bold = group.defineTemplate( "foobar", "foo$attr$bar" );
+            StringTemplate bold = group.DefineTemplate( "foobar", "foo$attr$bar" );
             StringTemplate t = new StringTemplate( group, "$data:(name+\"bar\")()$" );
-            t.setAttribute( "data", "Ter" );
-            t.setAttribute( "data", "Tom" );
-            t.setAttribute( "name", "foo" );
+            t.SetAttribute( "data", "Ter" );
+            t.SetAttribute( "data", "Tom" );
+            t.SetAttribute( "name", "foo" );
             //System.out.println(t);
             string expecting = "fooTerbarfooTombar";
             Assert.AreEqual( expecting, t.ToString() );
@@ -1331,11 +1331,11 @@ namespace AntlrUnitTests
         {
             StringTemplateGroup group =
                     new StringTemplateGroup( "test" );
-            StringTemplate foobar = group.defineTemplate( "foobar", "foo$it$bar" );
-            StringTemplate a = group.defineTemplate( "a", "$it$bar" );
+            StringTemplate foobar = group.DefineTemplate( "foobar", "foo$it$bar" );
+            StringTemplate a = group.DefineTemplate( "a", "$it$bar" );
             StringTemplate t = new StringTemplate( group, "$data:(\"foo\":a())()$" );
-            t.setAttribute( "data", "Ter" );
-            t.setAttribute( "data", "Tom" );
+            t.SetAttribute( "data", "Ter" );
+            t.SetAttribute( "data", "Tom" );
             //System.out.println(t);
             string expecting = "fooTerbarfooTombar";
             Assert.AreEqual( expecting, t.ToString() );
@@ -1346,9 +1346,9 @@ namespace AntlrUnitTests
         {
             StringTemplateGroup group =
                     new StringTemplateGroup( "test" );
-            StringTemplate foo = group.defineTemplate( "foo", "hi there!" );
+            StringTemplate foo = group.DefineTemplate( "foo", "hi there!" );
             StringTemplate t = new StringTemplate( group, "$(name)()$" );
-            t.setAttribute( "name", "foo" );
+            t.SetAttribute( "name", "foo" );
             //System.out.println(t);
             string expecting = "hi there!";
             Assert.AreEqual( expecting, t.ToString() );
@@ -1376,20 +1376,20 @@ namespace AntlrUnitTests
         [TestMethod]
         public void TestSetButNotRefd()
         {
-            StringTemplate.setLintMode( true );
+            StringTemplate.SetLintMode( true );
             StringTemplateGroup group =
                     new StringTemplateGroup( "test" );
             StringTemplate t = new StringTemplate( group, "$a$ then $b$ and $c$ refs." );
-            t.setAttribute( "a", "Terence" );
-            t.setAttribute( "b", "Terence" );
-            t.setAttribute( "cc", "Terence" ); // oops...should be 'c'
+            t.SetAttribute( "a", "Terence" );
+            t.SetAttribute( "b", "Terence" );
+            t.SetAttribute( "cc", "Terence" ); // oops...should be 'c'
             IStringTemplateErrorListener errors = new ErrorBuffer();
             group.ErrorListener = errors;
             string expectingError = "anonymous: set but not used: cc";
             string result = t.ToString();    // result is irrelevant
             //System.out.println("result error: '"+errors+"'");
             //System.out.println("expecting: '"+expectingError+"'");
-            StringTemplate.setLintMode( false );
+            StringTemplate.SetLintMode( false );
             Assert.AreEqual( expectingError, errors.ToString() );
         }
 
@@ -1401,7 +1401,7 @@ namespace AntlrUnitTests
             IStringTemplateErrorListener errors = new ErrorBuffer();
             group.ErrorListener = errors;
             StringTemplate t = new StringTemplate( group, "$names:bold(x=it)$" );
-            t.setAttribute( "names", "Terence" );
+            t.SetAttribute( "names", "Terence" );
 
             string error = null;
             try
@@ -1424,8 +1424,8 @@ namespace AntlrUnitTests
             IStringTemplateErrorListener errors = new ErrorBuffer();
             group.ErrorListener = errors;
             StringTemplate t = new StringTemplate( group, "$names:bold(x=it)$" );
-            t.setAttribute( "names", "Terence" );
-            t.setAttribute( "names", "Tom" );
+            t.SetAttribute( "names", "Terence" );
+            t.SetAttribute( "names", "Tom" );
             //System.out.println(t);
             string error = null;
             try
@@ -1445,10 +1445,10 @@ namespace AntlrUnitTests
         {
             StringTemplateGroup group =
                     new StringTemplateGroup( "test" );
-            StringTemplate bold = group.defineTemplate( "bold", "<b>$x$</b>" );
+            StringTemplate bold = group.DefineTemplate( "bold", "<b>$x$</b>" );
             StringTemplate t = new StringTemplate( group, "$names:bold(x=it)$" );
-            t.setAttribute( "names", "Terence" );
-            t.setAttribute( "names", "Tom" );
+            t.SetAttribute( "names", "Terence" );
+            t.SetAttribute( "names", "Tom" );
             //System.out.println("'"+t.toString()+"'");
             string expecting = "<b>Terence</b><b>Tom</b>";
             Assert.AreEqual( expecting, t.ToString() );
@@ -1458,12 +1458,12 @@ namespace AntlrUnitTests
         public void TestChangingAttrValueRepeatedTemplateApplicationToVector()
         {
             StringTemplateGroup group = new StringTemplateGroup( "dummy", "." );
-            StringTemplate bold = group.defineTemplate( "bold", "<b>$item$</b>" );
-            StringTemplate italics = group.defineTemplate( "italics", "<i>$it$</i>" );
+            StringTemplate bold = group.DefineTemplate( "bold", "<b>$item$</b>" );
+            StringTemplate italics = group.DefineTemplate( "italics", "<i>$it$</i>" );
             StringTemplate members = new StringTemplate( group, "$members:bold(item=it):italics(it=it)$" );
-            members.setAttribute( "members", "Jim" );
-            members.setAttribute( "members", "Mike" );
-            members.setAttribute( "members", "Ashar" );
+            members.SetAttribute( "members", "Jim" );
+            members.SetAttribute( "members", "Mike" );
+            members.SetAttribute( "members", "Ashar" );
             //System.out.println("members="+members);
             string expecting = "<i><b>Jim</b></i><i><b>Mike</b></i><i><b>Ashar</b></i>";
             Assert.AreEqual( expecting, members.ToString() );
@@ -1473,13 +1473,13 @@ namespace AntlrUnitTests
         public void TestAlternatingTemplateApplication()
         {
             StringTemplateGroup group = new StringTemplateGroup( "dummy", "." );
-            StringTemplate listItem = group.defineTemplate( "listItem", "<li>$it$</li>" );
-            StringTemplate bold = group.defineTemplate( "bold", "<b>$it$</b>" );
-            StringTemplate italics = group.defineTemplate( "italics", "<i>$it$</i>" );
+            StringTemplate listItem = group.DefineTemplate( "listItem", "<li>$it$</li>" );
+            StringTemplate bold = group.DefineTemplate( "bold", "<b>$it$</b>" );
+            StringTemplate italics = group.DefineTemplate( "italics", "<i>$it$</i>" );
             StringTemplate item = new StringTemplate( group, "$item:bold(),italics():listItem()$" );
-            item.setAttribute( "item", "Jim" );
-            item.setAttribute( "item", "Mike" );
-            item.setAttribute( "item", "Ashar" );
+            item.SetAttribute( "item", "Jim" );
+            item.SetAttribute( "item", "Mike" );
+            item.SetAttribute( "item", "Ashar" );
             //System.out.println("ITEM="+item);
             string expecting = "<li><b>Jim</b></li><li><i>Mike</i></li><li><b>Ashar</b></li>";
             Assert.AreEqual( expecting, item.ToString() );
@@ -1490,8 +1490,8 @@ namespace AntlrUnitTests
         {
             StringTemplateGroup group =
                     new StringTemplateGroup( "test" );
-            StringTemplate hostname = group.defineTemplate( "hostname", "$machine$.jguru.com" );
-            StringTemplate bold = group.defineTemplate( "bold", "<b>$x$</b>" );
+            StringTemplate hostname = group.DefineTemplate( "hostname", "$machine$.jguru.com" );
+            StringTemplate bold = group.DefineTemplate( "bold", "<b>$x$</b>" );
             StringTemplate t = new StringTemplate( group, "$bold(x=hostname(machine=\"www\"))$" );
             string expecting = "<b>www.jguru.com</b>";
             Assert.AreEqual( expecting, t.ToString() );
@@ -1501,9 +1501,9 @@ namespace AntlrUnitTests
         public void TestTemplateApplicationAsRHSOfAssignment()
         {
             StringTemplateGroup group = new StringTemplateGroup( "test" );
-            StringTemplate hostname = group.defineTemplate( "hostname", "$machine$.jguru.com" );
-            StringTemplate bold = group.defineTemplate( "bold", "<b>$x$</b>" );
-            StringTemplate italics = group.defineTemplate( "italics", "<i>$it$</i>" );
+            StringTemplate hostname = group.DefineTemplate( "hostname", "$machine$.jguru.com" );
+            StringTemplate bold = group.DefineTemplate( "bold", "<b>$x$</b>" );
+            StringTemplate italics = group.DefineTemplate( "italics", "<i>$it$</i>" );
             StringTemplate t = new StringTemplate( group, "$bold(x=hostname(machine=\"www\"):italics())$" );
             string expecting = "<b><i>www.jguru.com</i></b>";
             Assert.AreEqual( expecting, t.ToString() );
@@ -1514,10 +1514,10 @@ namespace AntlrUnitTests
         {
             StringTemplateGroup group =
                     new StringTemplateGroup( "test" );
-            StringTemplate italics = group.defineTemplate( "italics", "<i>$x$</i>" );
-            StringTemplate bold = group.defineTemplate( "bold", "<b>$x$</b>" );
+            StringTemplate italics = group.DefineTemplate( "italics", "<i>$x$</i>" );
+            StringTemplate bold = group.DefineTemplate( "bold", "<b>$x$</b>" );
             StringTemplate t = new StringTemplate( group, "$bold(x=italics(x=name))$" );
-            t.setAttribute( "name", "Terence" );
+            t.SetAttribute( "name", "Terence" );
             //System.out.println(t);
             string expecting = "<b><i>Terence</i></b>";
             Assert.AreEqual( expecting, t.ToString() );
@@ -1528,14 +1528,14 @@ namespace AntlrUnitTests
         {
             StringTemplateGroup group =
                     new StringTemplateGroup( "test" );
-            StringTemplate bold = group.defineTemplate( "bulletSeparator", "</li>$foo$<li>" );
+            StringTemplate bold = group.DefineTemplate( "bulletSeparator", "</li>$foo$<li>" );
             // make separator a complicated expression with args passed to included template
             StringTemplate t =
                 new StringTemplate( group,
                                    "<ul>$name; separator=bulletSeparator(foo=\" \")+\"&nbsp;\"$</ul>" );
-            t.setAttribute( "name", "Ter" );
-            t.setAttribute( "name", "Tom" );
-            t.setAttribute( "name", "Mel" );
+            t.SetAttribute( "name", "Ter" );
+            t.SetAttribute( "name", "Tom" );
+            t.SetAttribute( "name", "Mel" );
             //System.out.println(t);
             string expecting = "<ul>Ter</li> <li>&nbsp;Tom</li> <li>&nbsp;Mel</ul>";
             Assert.AreEqual( expecting, t.ToString() );
@@ -1548,7 +1548,7 @@ namespace AntlrUnitTests
                     new StringTemplateGroup( "test" );
             StringTemplate a = new StringTemplate( group,
                                                   "$if (!firstName)$$email$$endif$" );
-            a.setAttribute( "email", "parrt@jguru.com" );
+            a.SetAttribute( "email", "parrt@jguru.com" );
             string expecting = "parrt@jguru.com";
             Assert.AreEqual( a.ToString(), expecting );
         }
@@ -1558,11 +1558,11 @@ namespace AntlrUnitTests
         {
             StringTemplateGroup group =
                     new StringTemplateGroup( "test" );
-            StringTemplate bold = group.defineTemplate( "bold", "<b>$it$</b>" );
+            StringTemplate bold = group.DefineTemplate( "bold", "<b>$it$</b>" );
             //StringTemplate a = new StringTemplate(group, "$\" Parr\":bold()$");
             StringTemplate b = new StringTemplate( group, "$bold(it={$name$ Parr})$" );
-            //a.setAttribute("name", "Terence");
-            b.setAttribute( "name", "Terence" );
+            //a.SetAttribute("name", "Terence");
+            b.SetAttribute( "name", "Terence" );
             string expecting = "<b>Terence Parr</b>";
             //assertEquals(a.toString(), expecting);
             Assert.AreEqual( b.ToString(), expecting );
@@ -1573,10 +1573,10 @@ namespace AntlrUnitTests
         {
             StringTemplateGroup group =
                     new StringTemplateGroup( "test" );
-            StringTemplate bold = group.defineTemplate( "bold", "<b>$it$</b>" );
+            StringTemplate bold = group.DefineTemplate( "bold", "<b>$it$</b>" );
             StringTemplate b = new StringTemplate( group, "$bold(it=name+\" Parr\")$" );
-            //a.setAttribute("name", "Terence");
-            b.setAttribute( "name", "Terence" );
+            //a.SetAttribute("name", "Terence");
+            b.SetAttribute( "name", "Terence" );
             string expecting = "<b>Terence Parr</b>";
             //assertEquals(expecting, a.toString());
             Assert.AreEqual( expecting, b.ToString() );
@@ -1587,10 +1587,10 @@ namespace AntlrUnitTests
         {
             StringTemplateGroup group =
                     new StringTemplateGroup( "test" );
-            StringTemplate bold = group.defineTemplate( "bold", "<b>$it$</b>" );
+            StringTemplate bold = group.DefineTemplate( "bold", "<b>$it$</b>" );
             StringTemplate b = new StringTemplate( group, "$bold(it=name+\" Parr=\")$" );
-            //a.setAttribute("name", "Terence");
-            b.setAttribute( "name", "Terence" );
+            //a.SetAttribute("name", "Terence");
+            b.SetAttribute( "name", "Terence" );
             string expecting = "<b>Terence Parr=</b>";
             //assertEquals(expecting, a.toString());
             Assert.AreEqual( expecting, b.ToString() );
@@ -1639,8 +1639,8 @@ namespace AntlrUnitTests
                         StringTemplateGroup group =
                                 new StringTemplateGroup( "dummy", tmpWorkDir.ToString() );
 
-                        StringTemplate a = group.getInstanceOf( "page" );
-                        a.setAttribute( "member", new Connector() );
+                        StringTemplate a = group.GetInstanceOf( "page" );
+                        a.SetAttribute( "member", new Connector() );
                         string expecting = "<html><head>" + newline +
                                 "</head>" + newline +
                                 "<body>" + newline +
@@ -1678,9 +1678,9 @@ namespace AntlrUnitTests
                                        " List:" + newline + "  " + newline + "foo" + newline + newline +
                                        "$names:{<br>$i$. $it$" + newline +
                                        "}$" );
-            t.setAttribute( "names", "Terence" );
-            t.setAttribute( "names", "Jim" );
-            t.setAttribute( "names", "Sriram" );
+            t.SetAttribute( "names", "Terence" );
+            t.SetAttribute( "names", "Jim" );
+            t.SetAttribute( "names", "Sriram" );
             //System.out.println(t);
             string expecting =
                     " List:" + newline +
@@ -1701,13 +1701,13 @@ namespace AntlrUnitTests
                                             null,
                                             typeof( AngleBracketTemplateLexer ),
                                             System.Reflection.Assembly.GetExecutingAssembly() );
-            StringTemplate m = mgroup.getInstanceOf( "AntlrUnitTests/method" );
+            StringTemplate m = mgroup.GetInstanceOf( "AntlrUnitTests/method" );
             // "method.st" references body() so "body.st" will be loaded too
-            m.setAttribute( "visibility", "public" );
-            m.setAttribute( "name", "foobar" );
-            m.setAttribute( "returnType", "void" );
-            m.setAttribute( "statements", "i=1;" ); // body inherits these from method
-            m.setAttribute( "statements", "x=i;" );
+            m.SetAttribute( "visibility", "public" );
+            m.SetAttribute( "name", "foobar" );
+            m.SetAttribute( "returnType", "void" );
+            m.SetAttribute( "statements", "i=1;" ); // body inherits these from method
+            m.SetAttribute( "statements", "x=i;" );
             string expecting =
                     "public void foobar() {" + newline +
                     "\t// start of a body" + newline +
@@ -1723,9 +1723,9 @@ namespace AntlrUnitTests
         public void TestApplyTemplateToSingleValuedAttribute()
         {
             StringTemplateGroup group = new StringTemplateGroup( "test" );
-            StringTemplate bold = group.defineTemplate( "bold", "<b>$x$</b>" );
+            StringTemplate bold = group.DefineTemplate( "bold", "<b>$x$</b>" );
             StringTemplate name = new StringTemplate( group, "$name:bold(x=name)$" );
-            name.setAttribute( "name", "Terence" );
+            name.SetAttribute( "name", "Terence" );
             Assert.AreEqual( "<b>Terence</b>", name.ToString() );
         }
 
@@ -1733,7 +1733,7 @@ namespace AntlrUnitTests
         public void TestStringLiteralAsAttribute()
         {
             StringTemplateGroup group = new StringTemplateGroup( "test" );
-            StringTemplate bold = group.defineTemplate( "bold", "<b>$it$</b>" );
+            StringTemplate bold = group.DefineTemplate( "bold", "<b>$it$</b>" );
             StringTemplate name = new StringTemplate( group, "$\"Terence\":bold()$" );
             Assert.AreEqual( "<b>Terence</b>", name.ToString() );
         }
@@ -1742,9 +1742,9 @@ namespace AntlrUnitTests
         public void TestApplyTemplateToSingleValuedAttributeWithDefaultAttribute()
         {
             StringTemplateGroup group = new StringTemplateGroup( "test" );
-            StringTemplate bold = group.defineTemplate( "bold", "<b>$it$</b>" );
+            StringTemplate bold = group.DefineTemplate( "bold", "<b>$it$</b>" );
             StringTemplate name = new StringTemplate( group, "$name:bold()$" );
-            name.setAttribute( "name", "Terence" );
+            name.SetAttribute( "name", "Terence" );
             Assert.AreEqual( "<b>Terence</b>", name.ToString() );
         }
 
@@ -1755,7 +1755,7 @@ namespace AntlrUnitTests
             // Use a template group so we can specify the start/stop chars
             StringTemplateGroup group = new StringTemplateGroup( "dummy", "." );
             StringTemplate item = new StringTemplate( group, "$item:{<li>$it$</li>}$" );
-            item.setAttribute( "item", "Terence" );
+            item.SetAttribute( "item", "Terence" );
             Assert.AreEqual( "<li>Terence</li>", item.ToString() );
         }
 
@@ -1768,10 +1768,10 @@ namespace AntlrUnitTests
             StringTemplate list = new StringTemplate( group, "<ul>$items$</ul>" );
             // demonstrate setting arg to anonymous subtemplate
             StringTemplate item = new StringTemplate( group, "$item:{<li>$it$</li>}; separator=\",\"$" );
-            item.setAttribute( "item", "Terence" );
-            item.setAttribute( "item", "Jim" );
-            item.setAttribute( "item", "John" );
-            list.setAttribute( "items", item ); // nested template
+            item.SetAttribute( "item", "Terence" );
+            item.SetAttribute( "item", "Jim" );
+            item.SetAttribute( "item", "John" );
+            list.SetAttribute( "items", item ); // nested template
             string expecting = "<ul><li>Terence</li>,<li>Jim</li>,<li>John</li></ul>";
             Assert.AreEqual( expecting, list.ToString() );
         }
@@ -1781,8 +1781,8 @@ namespace AntlrUnitTests
         {
             StringTemplate st = new StringTemplate( "$items:{$it.lastName$, $it.firstName$\n}$" );
             // also testing wacky spaces in aggregate spec
-            st.setAttribute( "items.{ firstName ,lastName}", "Ter", "Parr" );
-            st.setAttribute( "items.{firstName, lastName }", "Tom", "Burns" );
+            st.SetAttribute( "items.{ firstName ,lastName}", "Ter", "Parr" );
+            st.SetAttribute( "items.{firstName, lastName }", "Tom", "Burns" );
             string expecting =
                     "Parr, Ter" + newline +
                     "Burns, Tom" + newline;
@@ -1793,9 +1793,9 @@ namespace AntlrUnitTests
         public void TestRepeatedApplicationOfTemplateToSingleValuedAttribute()
         {
             StringTemplateGroup group = new StringTemplateGroup( "dummy", "." );
-            StringTemplate search = group.defineTemplate( "bold", "<b>$it$</b>" );
+            StringTemplate search = group.DefineTemplate( "bold", "<b>$it$</b>" );
             StringTemplate item = new StringTemplate( group, "$item:bold():bold()$" );
-            item.setAttribute( "item", "Jim" );
+            item.SetAttribute( "item", "Jim" );
             Assert.AreEqual( "<b><b>Jim</b></b>", item.ToString() );
         }
 
@@ -1803,11 +1803,11 @@ namespace AntlrUnitTests
         public void TestRepeatedApplicationOfTemplateToMultiValuedAttributeWithSeparator()
         {
             StringTemplateGroup group = new StringTemplateGroup( "dummy", "." );
-            StringTemplate search = group.defineTemplate( "bold", "<b>$it$</b>" );
+            StringTemplate search = group.DefineTemplate( "bold", "<b>$it$</b>" );
             StringTemplate item = new StringTemplate( group, "$item:bold():bold(); separator=\",\"$" );
-            item.setAttribute( "item", "Jim" );
-            item.setAttribute( "item", "Mike" );
-            item.setAttribute( "item", "Ashar" );
+            item.SetAttribute( "item", "Jim" );
+            item.SetAttribute( "item", "Mike" );
+            item.SetAttribute( "item", "Ashar" );
             // first application of template must yield another vector!
             //System.out.println("ITEM="+item);
             string expecting = "<b><b>Jim</b></b>,<b><b>Mike</b></b>,<b><b>Ashar</b></b>";
@@ -1825,11 +1825,11 @@ namespace AntlrUnitTests
             StringTemplateGroup group =
                 new StringTemplateGroup( "dummy", ".", typeof( AngleBracketTemplateLexer ) );
             query = new StringTemplate( group, "SELECT <distinct> <column; separator=\", \"> FROM <table>;" );
-            query.setAttribute( "column", "name" );
-            query.setAttribute( "column", "email" );
-            query.setAttribute( "table", "User" );
+            query.SetAttribute( "column", "name" );
+            query.SetAttribute( "column", "email" );
+            query.SetAttribute( "table", "User" );
             // uncomment next line to make "DISTINCT" appear in output
-            // query.setAttribute("distince", "DISTINCT");
+            // query.SetAttribute("distince", "DISTINCT");
             // System.out.println(query);
             Assert.AreEqual( "SELECT  name, email FROM User;", query.ToString() );
         }
@@ -1839,8 +1839,8 @@ namespace AntlrUnitTests
         {
             // all attributes are single-valued:
             StringTemplate query = new StringTemplate( "SELECT $column$ FROM $table$;" );
-            query.setAttribute( "column", "name" );
-            query.setAttribute( "table", "User" );
+            query.SetAttribute( "column", "name" );
+            query.SetAttribute( "table", "User" );
             Assert.AreEqual( "SELECT name FROM User;", query.ToString() );
         }
 
@@ -1853,9 +1853,9 @@ namespace AntlrUnitTests
                 new StringTemplate( group,
                           "SELECT <column> FROM PERSON " +
                           "<if(cond)>WHERE ID=<id><endif>;" );
-            t.setAttribute( "column", "name" );
-            t.setAttribute( "cond", "true" );
-            t.setAttribute( "id", "231" );
+            t.SetAttribute( "column", "name" );
+            t.SetAttribute( "cond", "true" );
+            t.SetAttribute( "id", "231" );
             Assert.AreEqual( "SELECT name FROM PERSON WHERE ID=231;", t.ToString() );
         }
 
@@ -1866,9 +1866,9 @@ namespace AntlrUnitTests
             StringTemplate t = new StringTemplate( group, "<if(map.(type))><type> <prop>=<map.(type)>;<endif>" );
             Dictionary<object, object> map = new Dictionary<object, object>();
             map["int"] = "0";
-            t.setAttribute( "map", map );
-            t.setAttribute( "prop", "x" );
-            t.setAttribute( "type", "int" );
+            t.SetAttribute( "map", map );
+            t.SetAttribute( "prop", "x" );
+            t.SetAttribute( "type", "int" );
             Assert.AreEqual( "int x=0;", t.ToString() );
         }
 
@@ -1879,9 +1879,9 @@ namespace AntlrUnitTests
             StringTemplate t = new StringTemplate( group, "$if(map.(type))$$type$ $prop$=$map.(type)$;$endif$" );
             Dictionary<object, object> map = new Dictionary<object, object>();
             map["int"] = "0";
-            t.setAttribute( "map", map );
-            t.setAttribute( "prop", "x" );
-            t.setAttribute( "type", "int" );
+            t.SetAttribute( "map", map );
+            t.SetAttribute( "prop", "x" );
+            t.SetAttribute( "type", "int" );
             Assert.AreEqual( "int x=0;", t.ToString() );
         }
 
@@ -1894,11 +1894,11 @@ namespace AntlrUnitTests
             StringTemplate t =
                 new StringTemplate( group,
                           "$if(b)$x$endif$ $if(!b)$y$endif$" );
-            t.setAttribute( "b", true );
+            t.SetAttribute( "b", true );
             Assert.AreEqual( t.ToString(), "x " );
 
-            t = t.getInstanceOf();
-            t.setAttribute( "b", false );
+            t = t.GetInstanceOf();
+            t.SetAttribute( "b", false );
             Assert.AreEqual( " y", t.ToString() );
         }
 
@@ -1915,7 +1915,7 @@ namespace AntlrUnitTests
                     "junk" + newline +
                     "<endif>"
                 );
-            t.setAttribute( "a", "blort" );
+            t.SetAttribute( "a", "blort" );
             // leave b as null
             //System.out.println("t="+t);
             string expecting =
@@ -1933,7 +1933,7 @@ namespace AntlrUnitTests
             StringTemplate t =
                 new StringTemplate( group,
                           "$if(names:{$it$})$Fail!$endif$ $if(!names:{$it$})$Works!$endif$" );
-            t.setAttribute( "b", true );
+            t.SetAttribute( "b", true );
             Assert.AreEqual( t.ToString(), " Works!" );
         }
 
@@ -2009,7 +2009,7 @@ namespace AntlrUnitTests
                             "<b>Email: $p.email$</b><br>" + newline +
                             "$p.bio$"
                     );
-            t.setAttribute( "p", new Connector() );
+            t.SetAttribute( "p", new Connector() );
             //System.out.println("t is "+t.toString());
             string expecting =
                     "<b>Name: Terence Parr</b><br>" + newline +
@@ -2025,13 +2025,13 @@ namespace AntlrUnitTests
             // Use a template group so we can specify the start/stop chars
             StringTemplateGroup group =
                 new StringTemplateGroup( "dummy", "." );
-            group.defineTemplate( "link", "<a href=\"$url$\"><b>$title$</b></a>" );
+            group.DefineTemplate( "link", "<a href=\"$url$\"><b>$title$</b></a>" );
             StringTemplate duh =
                 new StringTemplate( group,
             "start|$p:{$link(url=\"/member/view?ID=\"+it.ID, title=it.firstName)$ $if(it.canEdit)$canEdit$endif$}:" +
             "{$it$<br>\n}$|end" );
-            duh.setAttribute( "p", new Connector() );
-            duh.setAttribute( "p", new Connector2() );
+            duh.SetAttribute( "p", new Connector() );
+            duh.SetAttribute( "p", new Connector2() );
             //System.out.println(duh);
             string expecting = "start|<a href=\"/member/view?ID=1\"><b>Terence</b></a> <br>" + newline +
                 "<a href=\"/member/view?ID=2\"><b>Tom</b></a> canEdit<br>" + newline +
@@ -2073,13 +2073,13 @@ namespace AntlrUnitTests
         public void TestRecursion()
         {
             StringTemplateGroup group = new StringTemplateGroup( "dummy", ".", typeof( AngleBracketTemplateLexer ) );
-            group.defineTemplate( "tree",
+            group.DefineTemplate( "tree",
             "<if(it.firstChild)>" +
               "( <it.text> <it.children:tree(); separator=\" \"> )" +
             "<else>" +
               "<it.text>" +
             "<endif>" );
-            StringTemplate tree = group.getInstanceOf( "tree" );
+            StringTemplate tree = group.GetInstanceOf( "tree" );
             // build ( a b (c d) e )
             Tree root = new Tree( "a" );
             root.addChild( new Tree( "b" ) );
@@ -2087,7 +2087,7 @@ namespace AntlrUnitTests
             subtree.addChild( new Tree( "d" ) );
             root.addChild( subtree );
             root.addChild( new Tree( "e" ) );
-            tree.setAttribute( "it", root );
+            tree.SetAttribute( "it", root );
             string expecting = "( a b ( c d ) e )";
             Assert.AreEqual( expecting, tree.ToString() );
         }
@@ -2106,7 +2106,7 @@ namespace AntlrUnitTests
                               "}$</i>" + newline +
                             "}$"
                     );
-            t.setAttribute( "A", "parrt" );
+            t.SetAttribute( "A", "parrt" );
             string expecting = newline +
                 "<i>" + newline +
                 "<b>parrt</b>" + newline +
@@ -2128,8 +2128,8 @@ namespace AntlrUnitTests
                               "}$</i>" + newline +
                             "}$"
                     );
-            t.setAttribute( "A", "parrt" );
-            t.setAttribute( "B", "tombu" );
+            t.SetAttribute( "A", "parrt" );
+            t.SetAttribute( "B", "tombu" );
             string expecting = newline +
                 "<i>" + newline +
                 "<b>parrt, tombu</b>" + newline +
@@ -2149,8 +2149,8 @@ namespace AntlrUnitTests
                             "$names:{<tr>$it:{<td>$it:{<b>$it$</b>}$</td>}$</tr>}$" + newline +
                             "</table>" + newline
                     );
-            t.setAttribute( "names", "parrt" );
-            t.setAttribute( "names", "tombu" );
+            t.SetAttribute( "names", "parrt" );
+            t.SetAttribute( "names", "tombu" );
             string expecting =
                     "<table>" + newline +
                     "<tr><td><b>parrt</b></td></tr><tr><td><b>tombu</b></td></tr>" + newline +
@@ -2163,7 +2163,7 @@ namespace AntlrUnitTests
         {
             StringTemplateGroup group =
                     new StringTemplateGroup( "dummy", "." );
-            group.defineTemplate( "foo", "$x$ && $it$" );
+            group.DefineTemplate( "foo", "$x$ && $it$" );
             StringTemplate t =
                     new StringTemplate(
                             group,
@@ -2180,9 +2180,9 @@ namespace AntlrUnitTests
                 // $A:{$attr:foo(x="\{dog\}\"")$ is cool}$
                             "$A:{$it:foo(x=\"\\{dog\\}\\\"\")$ is cool}$"
                     );
-            t.setAttribute( "A", "ick" );
-            u.setAttribute( "A", "ick" );
-            v.setAttribute( "A", "ick" );
+            t.SetAttribute( "A", "ick" );
+            u.SetAttribute( "A", "ick" );
+            v.SetAttribute( "A", "ick" );
             //System.out.println("t is '"+t.toString()+"'");
             //System.out.println("u is '"+u.toString()+"'");
             //System.out.println("v is '"+v.toString()+"'");
@@ -2198,7 +2198,7 @@ namespace AntlrUnitTests
         public void TestEscapesOutsideExpressions()
         {
             StringTemplate b = new StringTemplate( "It\\'s ok...\\$; $a:{\\'hi\\', $it$}$" );
-            b.setAttribute( "a", "Ter" );
+            b.SetAttribute( "a", "Ter" );
             string expecting = "It\\'s ok...$; \\'hi\\', Ter";
             string result = b.ToString();
             Assert.AreEqual( expecting, result );
@@ -2214,11 +2214,11 @@ namespace AntlrUnitTests
                     "bar" + newline +
                     "$endif$"
                 );
-            e.setAttribute( "title", "sample" );
+            e.SetAttribute( "title", "sample" );
             string expecting = "foo";
             Assert.AreEqual( expecting, e.ToString() );
 
-            e = e.getInstanceOf();
+            e = e.GetInstanceOf();
             expecting = "bar";
             Assert.AreEqual( expecting, e.ToString() );
         }
@@ -2233,7 +2233,7 @@ namespace AntlrUnitTests
                     "bar" + newline +
                     "$endif$"
                 );
-            e.setAttribute( "y", "yep" );
+            e.SetAttribute( "y", "yep" );
             string expecting = "bar";
             Assert.AreEqual( expecting, e.ToString() );
         }
@@ -2249,7 +2249,7 @@ namespace AntlrUnitTests
                     "<endif>",
                     typeof( AngleBracketTemplateLexer )
                 );
-            e.setAttribute( "y", "yep" );
+            e.SetAttribute( "y", "yep" );
             string expecting = "bar";
             Assert.AreEqual( expecting, e.ToString() );
         }
@@ -2266,7 +2266,7 @@ namespace AntlrUnitTests
                     "blort" + newline +
                     "$endif$"
                 );
-            e.setAttribute( "z", "yep" );
+            e.SetAttribute( "z", "yep" );
             string expecting = "blort";
             Assert.AreEqual( expecting, e.ToString() );
         }
@@ -2303,16 +2303,16 @@ namespace AntlrUnitTests
                     "$endif$" + newline +
                     "$endif$"
                 );
-            e.setAttribute( "title", "sample" );
+            e.SetAttribute( "title", "sample" );
             string expecting = "foo";
             Assert.AreEqual( expecting, e.ToString() );
 
-            e = e.getInstanceOf();
-            e.setAttribute( "header", "more" );
+            e = e.GetInstanceOf();
+            e.SetAttribute( "header", "more" );
             expecting = "bar";
             Assert.AreEqual( expecting, e.ToString() );
 
-            e = e.getInstanceOf();
+            e = e.GetInstanceOf();
             expecting = "blort";
             Assert.AreEqual( expecting, e.ToString() );
         }
@@ -2331,16 +2331,16 @@ namespace AntlrUnitTests
                     "blort" + newline +
                     "$endif$" + newline
                 );
-            sub.setAttribute( "foo", "stuff" );
-            main.setAttribute( "sub", sub );
+            sub.SetAttribute( "foo", "stuff" );
+            main.SetAttribute( "sub", sub );
             string expecting =
                 "begin" + newline +
                 "stuff";
             Assert.AreEqual( expecting, main.ToString() );
 
             main = new StringTemplate( group, "$sub$" );
-            sub = sub.getInstanceOf();
-            main.setAttribute( "sub", sub );
+            sub = sub.GetInstanceOf();
+            main.SetAttribute( "sub", sub );
             expecting =
                 "begin" + newline +
                 "blort";
@@ -2360,10 +2360,10 @@ namespace AntlrUnitTests
                     new StringTemplateGroup( new StringReader( templates ),
                                             typeof( DefaultTemplateLexer ),
                                             errors );
-            StringTemplate t = group.getInstanceOf( "list" );
-            t.setAttribute( "names", "Terence" );
-            t.setAttribute( "names", "Jim" );
-            t.setAttribute( "names", "Sriram" );
+            StringTemplate t = group.GetInstanceOf( "list" );
+            t.SetAttribute( "names", "Terence" );
+            t.SetAttribute( "names", "Jim" );
+            t.SetAttribute( "names", "Sriram" );
             string expecting =
                     "  Terence" + newline +
                     "  Jim" + newline +
@@ -2384,10 +2384,10 @@ namespace AntlrUnitTests
                     new StringTemplateGroup( new StringReader( templates ),
                                             typeof( DefaultTemplateLexer ),
                                             errors );
-            StringTemplate t = group.getInstanceOf( "list" );
-            t.setAttribute( "names", "Terence\nis\na\nmaniac" );
-            t.setAttribute( "names", "Jim" );
-            t.setAttribute( "names", "Sriram\nis\ncool" );
+            StringTemplate t = group.GetInstanceOf( "list" );
+            t.SetAttribute( "names", "Terence\nis\na\nmaniac" );
+            t.SetAttribute( "names", "Jim" );
+            t.SetAttribute( "names", "Sriram\nis\ncool" );
             string expecting =
                     "  Terence" + newline +
                     "  is" + newline +
@@ -2413,8 +2413,8 @@ namespace AntlrUnitTests
                     new StringTemplateGroup( new StringReader( templates ),
                                             typeof( DefaultTemplateLexer ),
                                             errors );
-            StringTemplate t = group.getInstanceOf( "list" );
-            t.setAttribute( "names", "Terence\n\nis a maniac" );
+            StringTemplate t = group.GetInstanceOf( "list" );
+            t.SetAttribute( "names", "Terence\n\nis a maniac" );
             string expecting =
                     "  Terence" + newline +
                     "" + newline + // no indent on blank line
@@ -2437,10 +2437,10 @@ namespace AntlrUnitTests
                     new StringTemplateGroup( new StringReader( templates ),
                                             typeof( DefaultTemplateLexer ),
                                             errors );
-            StringTemplate t = group.getInstanceOf( "list" );
-            t.setAttribute( "names", "Terence" );
-            t.setAttribute( "names", "Jim" );
-            t.setAttribute( "names", "Sriram" );
+            StringTemplate t = group.GetInstanceOf( "list" );
+            t.SetAttribute( "names", "Terence" );
+            t.SetAttribute( "names", "Jim" );
+            t.SetAttribute( "names", "Sriram" );
             string expecting =
                     "Before:" + newline +
                     "  Terence" + newline +
@@ -2472,23 +2472,23 @@ namespace AntlrUnitTests
                     new StringTemplateGroup( new StringReader( templates ),
                                             typeof( DefaultTemplateLexer ),
                                             errors );
-            StringTemplate t = group.getInstanceOf( "method" );
-            t.setAttribute( "name", "foo" );
-            StringTemplate s1 = group.getInstanceOf( "assign" );
-            s1.setAttribute( "lhs", "x" );
-            s1.setAttribute( "expr", "0" );
-            StringTemplate s2 = group.getInstanceOf( "ifstat" );
-            s2.setAttribute( "expr", "x>0" );
-            StringTemplate s2a = group.getInstanceOf( "assign" );
-            s2a.setAttribute( "lhs", "y" );
-            s2a.setAttribute( "expr", "x+y" );
-            StringTemplate s2b = group.getInstanceOf( "assign" );
-            s2b.setAttribute( "lhs", "z" );
-            s2b.setAttribute( "expr", "4" );
-            s2.setAttribute( "stats", s2a );
-            s2.setAttribute( "stats", s2b );
-            t.setAttribute( "stats", s1 );
-            t.setAttribute( "stats", s2 );
+            StringTemplate t = group.GetInstanceOf( "method" );
+            t.SetAttribute( "name", "foo" );
+            StringTemplate s1 = group.GetInstanceOf( "assign" );
+            s1.SetAttribute( "lhs", "x" );
+            s1.SetAttribute( "expr", "0" );
+            StringTemplate s2 = group.GetInstanceOf( "ifstat" );
+            s2.SetAttribute( "expr", "x>0" );
+            StringTemplate s2a = group.GetInstanceOf( "assign" );
+            s2a.SetAttribute( "lhs", "y" );
+            s2a.SetAttribute( "expr", "x+y" );
+            StringTemplate s2b = group.GetInstanceOf( "assign" );
+            s2b.SetAttribute( "lhs", "z" );
+            s2b.SetAttribute( "expr", "4" );
+            s2.SetAttribute( "stats", s2a );
+            s2.SetAttribute( "stats", s2b );
+            t.SetAttribute( "stats", s1 );
+            t.SetAttribute( "stats", s2 );
             string expecting =
                     "void foo() {" + newline +
                     "\tx=0;" + newline +
@@ -2509,38 +2509,38 @@ namespace AntlrUnitTests
                 _buffer = buffer;
             }
 
-            public void pushIndentation( string indent )
+            public void PushIndentation( string indent )
             {
             }
-            public string popIndentation()
+            public string PopIndentation()
             {
                 return null;
             }
-            public void pushAnchorPoint()
+            public void PushAnchorPoint()
             {
             }
-            public void popAnchorPoint()
+            public void PopAnchorPoint()
             {
             }
-            public void setLineWidth( int lineWidth )
+            public void SetLineWidth( int lineWidth )
             {
             }
-            public int write( string str )
+            public int Write( string str )
             {
                 _buffer.Append( str );
                 return str.Length;
             }
-            public int write( string str, string wrap )
+            public int Write( string str, string wrap )
             {
                 return 0;
             }
-            public int writeWrapSeparator( string wrap )
+            public int WriteWrapSeparator( string wrap )
             {
                 return 0;
             }
-            public int writeSeparator( string str )
+            public int WriteSeparator( string str )
             {
-                return write( str );
+                return Write( str );
             }
         }
 
@@ -2551,10 +2551,10 @@ namespace AntlrUnitTests
             IStringTemplateWriter w = new AlternativeWriter( buf );
             StringTemplateGroup group =
                     new StringTemplateGroup( "test" );
-            group.defineTemplate( "bold", "<b>$x$</b>" );
+            group.DefineTemplate( "bold", "<b>$x$</b>" );
             StringTemplate name = new StringTemplate( group, "$name:bold(x=name)$" );
-            name.setAttribute( "name", "Terence" );
-            name.write( w );
+            name.SetAttribute( "name", "Terence" );
+            name.Write( w );
             Assert.AreEqual( "<b>Terence</b>", buf.ToString() );
         }
 
@@ -2567,16 +2567,16 @@ namespace AntlrUnitTests
             m["a"] = "1";
             m["b"] = "2";
             m["c"] = "3";
-            st.setAttribute( "items", m );
+            st.SetAttribute( "items", m );
             string expecting = "<li>1</li><li>2</li><li>3</li>";
             Assert.AreEqual( expecting, st.ToString() );
 
-            st = st.getInstanceOf();
+            st = st.GetInstanceOf();
             HashSet<object> s = new HashSet<object>();
             s.Add( "1" );
             s.Add( "2" );
             s.Add( "3" );
-            st.setAttribute( "items", s );
+            st.SetAttribute( "items", s );
             //expecting = "<li>3</li><li>2</li><li>1</li>";
             expecting = "<li>1</li><li>2</li><li>3</li>";
             Assert.AreEqual( expecting, st.ToString() );
@@ -2591,16 +2591,16 @@ namespace AntlrUnitTests
             m["a"] = "1";
             m["b"] = "2";
             m["c"] = "3";
-            st.setAttribute( "items", m );
+            st.SetAttribute( "items", m );
             string expecting = "1,2,3";
             Assert.AreEqual( expecting, st.ToString() );
 
-            st = st.getInstanceOf();
+            st = st.GetInstanceOf();
             HashSet<object> s = new HashSet<object>();
             s.Add( "1" );
             s.Add( "2" );
             s.Add( "3" );
-            st.setAttribute( "items", s );
+            st.SetAttribute( "items", s );
             //expecting = "3,2,1";
             expecting = "1,2,3";
             Assert.AreEqual( expecting, st.ToString() );
@@ -2626,12 +2626,12 @@ namespace AntlrUnitTests
         {
             StringTemplate st =
                     new StringTemplate( "$x.values:{<li>$it$</li>}$" );
-            st.setAttribute( "x", new Connector3() );
+            st.SetAttribute( "x", new Connector3() );
             string expecting = "<li>1</li><li>2</li><li>3</li>";
             Assert.AreEqual( expecting, st.ToString() );
 
             st = new StringTemplate( "$x.stuff:{<li>$it$</li>}$" );
-            st.setAttribute( "x", new Connector3() );
+            st.SetAttribute( "x", new Connector3() );
             expecting = "<li>1</li><li>2</li>";
             Assert.AreEqual( expecting, st.ToString() );
         }
@@ -2643,10 +2643,10 @@ namespace AntlrUnitTests
             StringTemplateGroup group = new StringTemplateGroup( "super" );
             StringTemplateGroup subGroup = new StringTemplateGroup( "sub" );
             subGroup.SuperGroup = group;
-            group.defineTemplate( "page", "$font()$:text" );
-            group.defineTemplate( "font", "Helvetica" );
-            subGroup.defineTemplate( "font", "$super.font()$ and Times" );
-            StringTemplate st = subGroup.getInstanceOf( "page" );
+            group.DefineTemplate( "page", "$font()$:text" );
+            group.DefineTemplate( "font", "Helvetica" );
+            subGroup.DefineTemplate( "font", "$super.font()$ and Times" );
+            StringTemplate st = subGroup.GetInstanceOf( "page" );
             string expecting =
                     "Helvetica and Times:text";
             Assert.AreEqual( expecting, st.ToString() );
@@ -2658,11 +2658,11 @@ namespace AntlrUnitTests
             StringTemplateGroup group = new StringTemplateGroup( "super" );
             StringTemplateGroup subGroup = new StringTemplateGroup( "sub" );
             subGroup.SuperGroup = group;
-            group.defineTemplate( "bold", "<b>$it$</b>" );
-            subGroup.defineTemplate( "bold", "<strong>$it$</strong>" );
-            subGroup.defineTemplate( "page", "$name:super.bold()$" );
-            StringTemplate st = subGroup.getInstanceOf( "page" );
-            st.setAttribute( "name", "Ter" );
+            group.DefineTemplate( "bold", "<b>$it$</b>" );
+            subGroup.DefineTemplate( "bold", "<strong>$it$</strong>" );
+            subGroup.DefineTemplate( "page", "$name:super.bold()$" );
+            StringTemplate st = subGroup.GetInstanceOf( "page" );
+            st.SetAttribute( "name", "Ter" );
             string expecting =
                     "<b>Ter</b>";
             Assert.AreEqual( expecting, st.ToString() );
@@ -2674,8 +2674,8 @@ namespace AntlrUnitTests
             StringTemplateGroup group = new StringTemplateGroup( "base" );
             StringTemplateGroup subGroup = new StringTemplateGroup( "sub" );
             subGroup.SuperGroup = group;
-            group.defineTemplate( "bold", "<b>$it$</b>" );
-            subGroup.defineTemplate( "bold", "<strong>$it$</strong>" );
+            group.DefineTemplate( "bold", "<b>$it$</b>" );
+            subGroup.DefineTemplate( "bold", "<strong>$it$</strong>" );
             // this is the same as testApplySuperTemplateRef() test
             // 'cept notice that here the supergroup defines page
             // As long as you create the instance via the subgroup,
@@ -2684,9 +2684,9 @@ namespace AntlrUnitTests
             // getGroup().superGroup value.  If I create instance
             // of page in group not subGroup, however, I will get
             // an error as superGroup is null for group "group".
-            group.defineTemplate( "page", "$name:super.bold()$" );
-            StringTemplate st = subGroup.getInstanceOf( "page" );
-            st.setAttribute( "name", "Ter" );
+            group.DefineTemplate( "page", "$name:super.bold()$" );
+            StringTemplate st = subGroup.GetInstanceOf( "page" );
+            st.SetAttribute( "name", "Ter" );
             string error = null;
             try
             {
@@ -2710,11 +2710,11 @@ namespace AntlrUnitTests
             // if you create an instance of page via the subgroup,
             // then bold() should evaluate to the subgroup not the super
             // even though page is defined in the super.  Just like polymorphism.
-            group.defineTemplate( "bold", "<b>$it$</b>" );
-            group.defineTemplate( "page", "$name:bold()$" );
-            subGroup.defineTemplate( "bold", "<strong>$it$</strong>" );
-            StringTemplate st = subGroup.getInstanceOf( "page" );
-            st.setAttribute( "name", "Ter" );
+            group.DefineTemplate( "bold", "<b>$it$</b>" );
+            group.DefineTemplate( "page", "$name:bold()$" );
+            subGroup.DefineTemplate( "bold", "<strong>$it$</strong>" );
+            StringTemplate st = subGroup.GetInstanceOf( "page" );
+            st.SetAttribute( "name", "Ter" );
             string expecting =
                     "<strong>Ter</strong>";
             Assert.AreEqual( expecting, st.ToString() );
@@ -2734,13 +2734,13 @@ namespace AntlrUnitTests
                     new StringTemplateGroup( new StringReader( templates ),
                                             typeof( DefaultTemplateLexer ),
                                             errors );
-            StringTemplate outputST = group.getInstanceOf( "output" );
-            StringTemplate bodyST1 = group.getInstanceOf( "mybody" );
-            StringTemplate bodyST2 = group.getInstanceOf( "mybody" );
-            StringTemplate bodyST3 = group.getInstanceOf( "mybody" );
-            outputST.setAttribute( "items", bodyST1 );
-            outputST.setAttribute( "items", bodyST2 );
-            outputST.setAttribute( "items", bodyST3 );
+            StringTemplate outputST = group.GetInstanceOf( "output" );
+            StringTemplate bodyST1 = group.GetInstanceOf( "mybody" );
+            StringTemplate bodyST2 = group.GetInstanceOf( "mybody" );
+            StringTemplate bodyST3 = group.GetInstanceOf( "mybody" );
+            outputST.SetAttribute( "items", bodyST1 );
+            outputST.SetAttribute( "items", bodyST2 );
+            outputST.SetAttribute( "items", bodyST3 );
             string expecting = "page: thatstuffthatstuffthatstuff";
             Assert.AreEqual( expecting, outputST.ToString() );
         }
@@ -2756,9 +2756,9 @@ namespace AntlrUnitTests
                     ;
             StringTemplateGroup group =
                     new StringTemplateGroup( new StringReader( templates ) );
-            StringTemplate b = group.getInstanceOf( "block" );
-            b.setAttribute( "stats", group.getInstanceOf( "ifstat" ) );
-            b.setAttribute( "stats", group.getInstanceOf( "ifstat" ) );
+            StringTemplate b = group.GetInstanceOf( "block" );
+            b.SetAttribute( "stats", group.GetInstanceOf( "ifstat" ) );
+            b.SetAttribute( "stats", group.GetInstanceOf( "ifstat" ) );
             string expecting = "IF true then IF true then ";
             string result = b.ToString();
             //System.err.println("result='"+result+"'");
@@ -2776,14 +2776,14 @@ namespace AntlrUnitTests
                     "block(stats) ::= \"<stats>\"" +
                     "ifstat(stats) ::= \"IF true then <stats>\"" + newline
                     ;
-            StringTemplate.setLintMode( true );
-            StringTemplate.resetTemplateCounter();
+            StringTemplate.SetLintMode( true );
+            StringTemplate.ResetTemplateCounter();
             StringTemplateGroup group =
                     new StringTemplateGroup( new StringReader( templates ) );
-            StringTemplate b = group.getInstanceOf( "block" );
-            StringTemplate ifstat = group.getInstanceOf( "ifstat" );
-            b.setAttribute( "stats", ifstat ); // block has if stat
-            ifstat.setAttribute( "stats", b ); // but make "if" contain block
+            StringTemplate b = group.GetInstanceOf( "block" );
+            StringTemplate ifstat = group.GetInstanceOf( "ifstat" );
+            b.SetAttribute( "stats", ifstat ); // block has if stat
+            ifstat.SetAttribute( "stats", b ); // but make "if" contain block
             string expectingError =
                     "infinite recursion to <ifstat([stats])@4> referenced in <block([stats])@3>; stack trace:" + newline +
                     "<ifstat([stats])@4>, attributes=[stats=<block()@3>]>" + newline +
@@ -2805,7 +2805,7 @@ namespace AntlrUnitTests
             }
             //System.err.println("errors="+errors+"'");
             //System.err.println("expecting="+expectingError+"'");
-            StringTemplate.setLintMode( false );
+            StringTemplate.SetLintMode( false );
             Assert.AreEqual( expectingError, errors );
         }
 
@@ -2822,8 +2822,8 @@ namespace AntlrUnitTests
                     ;
             StringTemplateGroup group =
                     new StringTemplateGroup( new StringReader( templates ) );
-            StringTemplate b = group.getInstanceOf( "block" );
-            b.setAttribute( "stats", group.getInstanceOf( "block" ) );
+            StringTemplate b = group.GetInstanceOf( "block" );
+            b.SetAttribute( "stats", group.GetInstanceOf( "block" ) );
             string expecting = "{{}}";
             string result = b.ToString();
             //System.err.println(result);
@@ -2841,8 +2841,8 @@ namespace AntlrUnitTests
                     ;
             StringTemplateGroup group =
                     new StringTemplateGroup( new StringReader( templates ) );
-            StringTemplate b = group.getInstanceOf( "other" );  // alias for page
-            b.setAttribute( "name", "Ter" );
+            StringTemplate b = group.GetInstanceOf( "other" );  // alias for page
+            b.SetAttribute( "name", "Ter" );
             string expecting = "name is Ter";
             string result = b.ToString();
             Assert.AreEqual( expecting, result );
@@ -2866,17 +2866,17 @@ namespace AntlrUnitTests
                     ;
             StringTemplateGroup group =
                     new StringTemplateGroup( new StringReader( templates ) );
-            StringTemplate b = group.getInstanceOf( "Cfile" );
-            StringTemplate f1 = group.getInstanceOf( "func" );
-            StringTemplate f2 = group.getInstanceOf( "func" );
-            f1.setAttribute( "name", "f" );
-            f1.setAttribute( "args", "" );
-            f1.setAttribute( "body", "i=1;" );
-            f2.setAttribute( "name", "g" );
-            f2.setAttribute( "args", "int arg" );
-            f2.setAttribute( "body", "y=1;" );
-            b.setAttribute( "funcs", f1 );
-            b.setAttribute( "funcs", f2 );
+            StringTemplate b = group.GetInstanceOf( "Cfile" );
+            StringTemplate f1 = group.GetInstanceOf( "func" );
+            StringTemplate f2 = group.GetInstanceOf( "func" );
+            f1.SetAttribute( "name", "f" );
+            f1.SetAttribute( "args", "" );
+            f1.SetAttribute( "body", "i=1;" );
+            f2.SetAttribute( "name", "g" );
+            f2.SetAttribute( "args", "int arg" );
+            f2.SetAttribute( "body", "y=1;" );
+            b.SetAttribute( "funcs", f1 );
+            b.SetAttribute( "funcs", f2 );
             string expecting = "#include <stdio.h>" + newline +
                     "public void f();" + newline +
                     "public void g(int arg);" + newline +
@@ -2924,9 +2924,9 @@ namespace AntlrUnitTests
                     ;
             StringTemplateGroup group =
                     new StringTemplateGroup( new StringReader( templates ) );
-            StringTemplate f = group.getInstanceOf( "file" );
-            f.setAttribute( "variables.{decl,format}", new Decl( "i", "int" ), "intdecl" );
-            f.setAttribute( "variables.{decl,format}", new Decl( "a", "int-array" ), "intarray" );
+            StringTemplate f = group.GetInstanceOf( "file" );
+            f.SetAttribute( "variables.{decl,format}", new Decl( "i", "int" ), "intdecl" );
+            f.SetAttribute( "variables.{decl,format}", new Decl( "a", "int-array" ), "intarray" );
             //System.out.println("f='"+f+"'");
             string expecting = "int i = 0;" + newline +
                     "int[] a = null;";
@@ -2947,8 +2947,8 @@ namespace AntlrUnitTests
                     ;
             StringTemplateGroup group =
                     new StringTemplateGroup( new StringReader( templates ) );
-            StringTemplate f = group.getInstanceOf( "test" );
-            f.setAttribute( "name", "first" );
+            StringTemplate f = group.GetInstanceOf( "test" );
+            f.SetAttribute( "name", "first" );
             string expecting = "the first";
             Assert.AreEqual( expecting, f.ToString() );
         }
@@ -2967,8 +2967,8 @@ namespace AntlrUnitTests
                     ;
             StringTemplateGroup group =
                     new StringTemplateGroup( new StringReader( templates ) );
-            StringTemplate f = group.getInstanceOf( "test" );
-            f.setAttribute( "name", "first" );
+            StringTemplate f = group.GetInstanceOf( "test" );
+            f.SetAttribute( "name", "first" );
             string expecting = "the first: foo";
             Assert.AreEqual( expecting, f.ToString() );
         }
@@ -2986,9 +2986,9 @@ namespace AntlrUnitTests
             ;
             StringTemplateGroup group =
                     new StringTemplateGroup( new StringReader( templates ) );
-            StringTemplate f = group.getInstanceOf( "test" );
-            f.setAttribute( "names", "me" );
-            f.setAttribute( "names", "you" );
+            StringTemplate f = group.GetInstanceOf( "test" );
+            f.SetAttribute( "names", "me" );
+            f.SetAttribute( "names", "you" );
             string expecting = "";
             Assert.AreEqual( expecting, f.ToString() );
         }
@@ -3007,8 +3007,8 @@ namespace AntlrUnitTests
                     ;
             StringTemplateGroup group =
                     new StringTemplateGroup( new StringReader( templates ) );
-            StringTemplate f = group.getInstanceOf( "test" );
-            //f.setAttribute("name", "first");
+            StringTemplate f = group.GetInstanceOf( "test" );
+            //f.SetAttribute("name", "first");
             string expecting = "";
             Assert.AreEqual( expecting, f.ToString() );
         }
@@ -3018,7 +3018,7 @@ namespace AntlrUnitTests
         {
             StringTemplate a = new StringTemplate( "$stuff.prop$" );
             Dictionary<object, object> map = new Dictionary<object, object>();
-            a.setAttribute( "stuff", map );
+            a.SetAttribute( "stuff", map );
             map["prop"] = "Terence";
             string results = a.ToString();
             //System.out.println(results);
@@ -3031,8 +3031,8 @@ namespace AntlrUnitTests
         {
             StringTemplate a = new StringTemplate( "$stuff.prop$" );
             Dictionary<object, object> map = new Dictionary<object, object>();
-            a.setAttribute( "stuff", map );
-            a.setAttribute( "title", "ST rocks" );
+            a.SetAttribute( "stuff", map );
+            a.SetAttribute( "title", "ST rocks" );
             map["prop"] = new StringTemplate( "embedded refers to $title$" );
             string results = a.ToString();
             //System.out.println(results);
@@ -3148,7 +3148,7 @@ namespace AntlrUnitTests
                     typeof( AngleBracketTemplateLexer )
                     );
             StringWriter sw = new StringWriter();
-            st.write( new AutoIndentWriter( sw, "\n" ) ); // force \n as newline
+            st.Write( new AutoIndentWriter( sw, "\n" ) ); // force \n as newline
             string result = sw.ToString();
             string expecting = "Foo \n\n\t bar\n";     // expect \n in output
             Assert.AreEqual( expecting, result );
@@ -3156,7 +3156,7 @@ namespace AntlrUnitTests
             st = new StringTemplate(
                     "Foo $\\n$$\\t$ bar" + newline );
             sw = new StringWriter();
-            st.write( new AutoIndentWriter( sw, "\n" ) ); // force \n as newline
+            st.Write( new AutoIndentWriter( sw, "\n" ) ); // force \n as newline
             expecting = "Foo \n\t bar\n";     // expect \n in output
             result = sw.ToString();
             Assert.AreEqual( expecting, result );
@@ -3164,7 +3164,7 @@ namespace AntlrUnitTests
             st = new StringTemplate(
                     "Foo$\\ $bar$\\n$" );
             sw = new StringWriter();
-            st.write( new AutoIndentWriter( sw, "\n" ) ); // force \n as newline
+            st.Write( new AutoIndentWriter( sw, "\n" ) ); // force \n as newline
             result = sw.ToString();
             expecting = "Foo bar\n"; // force \n
             Assert.AreEqual( expecting, result );
@@ -3179,7 +3179,7 @@ namespace AntlrUnitTests
                     typeof( AngleBracketTemplateLexer )
                     );
             StringWriter sw = new StringWriter();
-            st.write( new AutoIndentWriter( sw, "\n" ) ); // force \n as newline
+            st.Write( new AutoIndentWriter( sw, "\n" ) ); // force \n as newline
             string result = sw.ToString();
             string expecting = "Foo\nBar\n";     // expect \n in output
             Assert.AreEqual( expecting, result );
@@ -3194,7 +3194,7 @@ namespace AntlrUnitTests
                     typeof( AngleBracketTemplateLexer )
                     );
             StringWriter sw = new StringWriter();
-            st.write( new AutoIndentWriter( sw, "\r\n" ) ); // force \r\n as newline
+            st.Write( new AutoIndentWriter( sw, "\r\n" ) ); // force \r\n as newline
             string result = sw.ToString();
             string expecting = "Foo\r\nBar\r\n";     // expect \r\n in output
             Assert.AreEqual( expecting, result );
@@ -3208,9 +3208,9 @@ namespace AntlrUnitTests
                     "<name>\n",
                     typeof( AngleBracketTemplateLexer )
                     );
-            st.setAttribute( "name", "a\nb\r\nc" );
+            st.SetAttribute( "name", "a\nb\r\nc" );
             StringWriter sw = new StringWriter();
-            st.write( new AutoIndentWriter( sw, "\n" ) ); // force \n as newline
+            st.Write( new AutoIndentWriter( sw, "\n" ) ); // force \n as newline
             string result = sw.ToString();
             string expecting = "Foo\na\nb\nc\n";     // expect \n in output
             Assert.AreEqual( expecting, result );
@@ -3249,12 +3249,12 @@ namespace AntlrUnitTests
             IStringTemplateErrorListener errors = new ErrorBuffer();
             group.ErrorListener = errors;
             StringTemplate t = new StringTemplate( group, "$names; separator=\",\"$" );
-            t.setAttribute( "names", "Terence" );
-            t.setAttribute( "names", "" );
-            t.setAttribute( "names", "" );
-            t.setAttribute( "names", "Tom" );
-            t.setAttribute( "names", "Frank" );
-            t.setAttribute( "names", "" );
+            t.SetAttribute( "names", "Terence" );
+            t.SetAttribute( "names", "" );
+            t.SetAttribute( "names", "" );
+            t.SetAttribute( "names", "Tom" );
+            t.SetAttribute( "names", "Frank" );
+            t.SetAttribute( "names", "" );
             // empty values get separator still
             string expecting = "Terence,,,Tom,Frank,";
             string result = t.ToString();
@@ -3270,10 +3270,10 @@ namespace AntlrUnitTests
             group.ErrorListener = errors;
             StringTemplate t = new StringTemplate( group,
                 "$users:{$if(it.ok)$$it.name$$endif$}; separator=\",\"$" );
-            t.setAttribute( "users.{name,ok}", "Terence", ( true ) );
-            t.setAttribute( "users.{name,ok}", "Tom", ( false ) );
-            t.setAttribute( "users.{name,ok}", "Frank", ( true ) );
-            t.setAttribute( "users.{name,ok}", "Johnny", ( false ) );
+            t.SetAttribute( "users.{name,ok}", "Terence", ( true ) );
+            t.SetAttribute( "users.{name,ok}", "Tom", ( false ) );
+            t.SetAttribute( "users.{name,ok}", "Frank", ( true ) );
+            t.SetAttribute( "users.{name,ok}", "Johnny", ( false ) );
             // empty conditional values get no separator
             string expecting = "Terence,,Frank,";
             string result = t.ToString();
@@ -3289,10 +3289,10 @@ namespace AntlrUnitTests
             group.ErrorListener = errors;
             StringTemplate t = new StringTemplate( group,
                 "$users:{$if(it.ok)$$it.name$$else$$endif$}; separator=\",\"$" );
-            t.setAttribute( "users.{name,ok}", "Terence", true );
-            t.setAttribute( "users.{name,ok}", "Tom", false );
-            t.setAttribute( "users.{name,ok}", "Frank", true );
-            t.setAttribute( "users.{name,ok}", "Johnny", false );
+            t.SetAttribute( "users.{name,ok}", "Terence", true );
+            t.SetAttribute( "users.{name,ok}", "Tom", false );
+            t.SetAttribute( "users.{name,ok}", "Frank", true );
+            t.SetAttribute( "users.{name,ok}", "Johnny", false );
             // empty conditional values get no separator
             string expecting = "Terence,,Frank,";
             string result = t.ToString();
@@ -3303,15 +3303,15 @@ namespace AntlrUnitTests
         public void TestWhiteSpaceAtEndOfTemplate()
         {
             StringTemplateGroup group = new StringTemplateGroup( "group", System.Reflection.Assembly.GetExecutingAssembly() );
-            StringTemplate pageST = group.getInstanceOf( "AntlrUnitTests/page" );
-            StringTemplate listST = group.getInstanceOf( "AntlrUnitTests/users_list" );
+            StringTemplate pageST = group.GetInstanceOf( "AntlrUnitTests/page" );
+            StringTemplate listST = group.GetInstanceOf( "AntlrUnitTests/users_list" );
             // users.list references row.st which has a single blank line at the end.
             // I.e., there are 2 \n in a row at the end
             // ST should eat all whitespace at end
-            listST.setAttribute( "users", new Connector() );
-            listST.setAttribute( "users", new Connector2() );
-            pageST.setAttribute( "title", "some title" );
-            pageST.setAttribute( "body", listST );
+            listST.SetAttribute( "users", new Connector() );
+            listST.SetAttribute( "users", new Connector2() );
+            pageST.SetAttribute( "title", "some title" );
+            pageST.SetAttribute( "body", listST );
             string expecting = "some title" + newline +
                 "Terence parrt@jguru.comTom tombu@jguru.com";
             string result = pageST.ToString();
@@ -3335,7 +3335,7 @@ namespace AntlrUnitTests
                 "begin\n" +
                 "$duh.users:{name: $it$}; separator=\", \"$\n" +
                 "end\n" );
-            t.setAttribute( "duh", new Duh() );
+            t.SetAttribute( "duh", new Duh() );
             string expecting = "begin" + newline + "end" + newline;
             string result = t.ToString();
             Assert.AreEqual( expecting, result );
@@ -3352,7 +3352,7 @@ namespace AntlrUnitTests
                 "begin\n" +
                 "$users:{name: $it$}; separator=\", \"$\n" +
                 "end\n" );
-            //t.setAttribute("users", new Duh());
+            //t.SetAttribute("users", new Duh());
             string expecting = "begin" + newline + "end" + newline;
             string result = t.ToString();
             Assert.AreEqual( expecting, result );
@@ -3369,7 +3369,7 @@ namespace AntlrUnitTests
                 "begin\n" +
                 "$users:{name: $it$}; separator=\", \"$\n" +
                 "end\n" );
-            t.setAttribute( "users", new List<object>() );
+            t.SetAttribute( "users", new List<object>() );
             string expecting = "begin" + newline + "end" + newline;
             string result = t.ToString();
             Assert.AreEqual( expecting, result );
@@ -3386,7 +3386,7 @@ namespace AntlrUnitTests
                 "begin\n" +
                 "$users; separator=\", \"$\n" +
                 "end\n" );
-            t.setAttribute( "users", new List<object>() );
+            t.SetAttribute( "users", new List<object>() );
             string expecting = "begin" + newline + "end" + newline;
             string result = t.ToString();
             Assert.AreEqual( expecting, result );
@@ -3399,7 +3399,7 @@ namespace AntlrUnitTests
                     new StringTemplateGroup( "test" );
             IStringTemplateErrorListener errors = new ErrorBuffer();
             group.ErrorListener = errors;
-            group.defineTemplate( "bold", "<b>$it$</b>" );
+            group.DefineTemplate( "bold", "<b>$it$</b>" );
             StringTemplate t = new StringTemplate( group,
                 "$users$\n" +
                 "end\n" );
@@ -3451,9 +3451,9 @@ namespace AntlrUnitTests
                 "$title$: {\n" +
                 "	$name; separator=\"\n\"$\n" +
                 "}" );
-            a.setAttribute( "title", "foo" );
-            a.setAttribute( "name", "Terence" );
-            a.setAttribute( "name", "Frank" );
+            a.SetAttribute( "title", "foo" );
+            a.SetAttribute( "name", "Terence" );
+            a.SetAttribute( "name", "Frank" );
             string results = a.ToString();
             //System.out.println(results);
             string expecting =
@@ -3473,8 +3473,8 @@ namespace AntlrUnitTests
             group.ErrorListener = errors;
             StringTemplate t = new StringTemplate( group,
                 "variable property $propName$=$v.(propName)$" );
-            t.setAttribute( "v", new Decl( "i", "int" ) );
-            t.setAttribute( "propName", "type" );
+            t.SetAttribute( "v", new Decl( "i", "int" ) );
+            t.SetAttribute( "propName", "type" );
             string expecting = "variable property type=int";
             string result = t.ToString();
             Assert.AreEqual( "", errors.ToString() );
@@ -3490,7 +3490,7 @@ namespace AntlrUnitTests
                 "$if(users)$\n" +
                 "Users: $users:{$it.name$ }$\n" +
                 "$endif$" );
-            t.setAttribute( "users", new LinkedList<object>() );
+            t.SetAttribute( "users", new LinkedList<object>() );
             string expecting = "";
             string result = t.ToString();
             Assert.AreEqual( expecting, result );
@@ -3508,8 +3508,8 @@ namespace AntlrUnitTests
             // somehow, it must be set.
             StringTemplateGroup group =
                     new StringTemplateGroup( new StringReader( templates ) );
-            StringTemplate b = group.getInstanceOf( "method" );
-            b.setAttribute( "name", "foo" );
+            StringTemplate b = group.GetInstanceOf( "method" );
+            b.SetAttribute( "name", "foo" );
             string expecting = "x=y; // ";
             string result = b.ToString();
             //System.err.println("result='"+result+"'");
@@ -3531,8 +3531,8 @@ namespace AntlrUnitTests
             // is evaluated in the context of stat's arg list.
             StringTemplateGroup group =
                     new StringTemplateGroup( new StringReader( templates ) );
-            StringTemplate b = group.getInstanceOf( "method" );
-            b.setAttribute( "name", "foo" );
+            StringTemplate b = group.GetInstanceOf( "method" );
+            b.SetAttribute( "name", "foo" );
             string expecting = "x=y; // foo";
             string result = b.ToString();
             //System.err.println("result='"+result+"'");
@@ -3549,8 +3549,8 @@ namespace AntlrUnitTests
                     ;
             StringTemplateGroup group =
                     new StringTemplateGroup( new StringReader( templates ) );
-            StringTemplate b = group.getInstanceOf( "method" );
-            b.setAttribute( "name", "foo" );
+            StringTemplate b = group.GetInstanceOf( "method" );
+            b.SetAttribute( "name", "foo" );
             string expecting = "x=y; // foo";
             string result = b.ToString();
             //System.err.println("result='"+result+"'");
@@ -3569,8 +3569,8 @@ namespace AntlrUnitTests
                     ;
             StringTemplateGroup group =
                     new StringTemplateGroup( new StringReader( templates ) );
-            StringTemplate b = group.getInstanceOf( "method" );
-            b.setAttribute( "name", "foo" );
+            StringTemplate b = group.GetInstanceOf( "method" );
+            b.SetAttribute( "name", "foo" );
             string expecting = "x=34; // foo";
             string result = b.ToString();
             //System.err.println("result='"+result+"'");
@@ -3589,8 +3589,8 @@ namespace AntlrUnitTests
                     ;
             StringTemplateGroup group =
                     new StringTemplateGroup( new StringReader( templates ) );
-            StringTemplate b = group.getInstanceOf( "method" );
-            b.setAttribute( "name", "foo" );
+            StringTemplate b = group.GetInstanceOf( "method" );
+            b.SetAttribute( "name", "foo" );
             string expecting = "x=99; // foo";
             string result = b.ToString();
             //System.err.println("result='"+result+"'");
@@ -3606,8 +3606,8 @@ namespace AntlrUnitTests
                     ;
             StringTemplateGroup group =
                     new StringTemplateGroup( new StringReader( templates ) );
-            StringTemplate b = group.getInstanceOf( "stat" );
-            b.setAttribute( "name", "foo" );
+            StringTemplate b = group.GetInstanceOf( "stat" );
+            b.SetAttribute( "name", "foo" );
             string expecting = "x=99; // foo";
             string result = b.ToString();
             //System.err.println("result='"+result+"'");
@@ -3626,9 +3626,9 @@ namespace AntlrUnitTests
                     ;
             StringTemplateGroup group =
                     new StringTemplateGroup( new StringReader( templates ) );
-            StringTemplate b = group.getInstanceOf( "method" );
-            b.setAttribute( "name", "foo" );
-            b.setAttribute( "size", "2" );
+            StringTemplate b = group.GetInstanceOf( "method" );
+            b.SetAttribute( "name", "foo" );
+            b.SetAttribute( "size", "2" );
             string expecting = "x=foo; // foo";
             string result = b.ToString();
             //System.err.println("result='"+result+"'");
@@ -3647,9 +3647,9 @@ namespace AntlrUnitTests
                     ;
             StringTemplateGroup group =
                     new StringTemplateGroup( new StringReader( templates ) );
-            StringTemplate b = group.getInstanceOf( "method" );
-            b.setAttribute( "name", "foo" );
-            b.setAttribute( "size", "2" );
+            StringTemplate b = group.GetInstanceOf( "method" );
+            b.SetAttribute( "name", "foo" );
+            b.SetAttribute( "size", "2" );
             string expecting = "x= [foo] ; // foo";
             string result = b.ToString();
             //System.err.println("result='"+result+"'");
@@ -3668,8 +3668,8 @@ namespace AntlrUnitTests
                     ;
             StringTemplateGroup group =
                     new StringTemplateGroup( new StringReader( templates ) );
-            StringTemplate b = group.getInstanceOf( "method" );
-            b.setAttribute( "name", "foo" );
+            StringTemplate b = group.GetInstanceOf( "method" );
+            b.SetAttribute( "name", "foo" );
             string expecting = "x=34; // foo";
             string result = b.ToString();
             Assert.AreEqual( expecting, result );
@@ -3687,9 +3687,9 @@ namespace AntlrUnitTests
                     ;
             StringTemplateGroup group =
                     new StringTemplateGroup( new StringReader( templates ) );
-            StringTemplate b = group.getInstanceOf( "method" );
-            b.setAttribute( "name", "foo" );
-            b.setAttribute( "size", "34" );
+            StringTemplate b = group.GetInstanceOf( "method" );
+            b.SetAttribute( "name", "foo" );
+            b.SetAttribute( "size", "34" );
             string expecting = "x=34;";
             string result = b.ToString();
             Assert.AreEqual( expecting, result );
@@ -3708,11 +3708,11 @@ namespace AntlrUnitTests
                     ;
             StringTemplateGroup group =
                     new StringTemplateGroup( new StringReader( templates ) );
-            StringTemplate f = group.getInstanceOf( "file" );
-            f.setAttribute( "size", "34" );
-            StringTemplate m = group.getInstanceOf( "method" );
-            m.setAttribute( "name", "foo" );
-            f.setAttribute( "m", m );
+            StringTemplate f = group.GetInstanceOf( "file" );
+            f.SetAttribute( "size", "34" );
+            StringTemplate m = group.GetInstanceOf( "method" );
+            m.SetAttribute( "name", "foo" );
+            f.SetAttribute( "m", m );
             string expecting = "x=34.0;";
             string result = m.ToString();
             Assert.AreEqual( expecting, result );
@@ -3731,9 +3731,9 @@ namespace AntlrUnitTests
             StringTemplateGroup group =
                     new StringTemplateGroup( new StringReader( templates ),
                                             typeof( DefaultTemplateLexer ) );
-            StringTemplate b = group.getInstanceOf( "method" );
-            b.setAttribute( "name", "foo" );
-            b.setAttribute( "size", "34" );
+            StringTemplate b = group.GetInstanceOf( "method" );
+            b.SetAttribute( "name", "foo" );
+            b.SetAttribute( "size", "34" );
             string expecting = "x=34;";
             string result = b.ToString();
             Assert.AreEqual( expecting, result );
@@ -3748,7 +3748,7 @@ namespace AntlrUnitTests
                     ;
             StringTemplateGroup group =
                     new StringTemplateGroup( new StringReader( templates ) );
-            StringTemplate b = group.getInstanceOf( "b" );
+            StringTemplate b = group.GetInstanceOf( "b" );
             string expecting = ".foo.";
             string result = b.ToString();
             Assert.AreEqual( expecting, result );
@@ -3820,9 +3820,9 @@ namespace AntlrUnitTests
             StringTemplate st = new StringTemplate(
                     "date: <created>",
                     typeof( AngleBracketTemplateLexer ) );
-            st.setAttribute( "created",
+            st.SetAttribute( "created",
                             new DateTime( 2005, 07, 05 ) );
-            st.registerRenderer( typeof( DateTime ), new DateRenderer() );
+            st.RegisterRenderer( typeof( DateTime ), new DateRenderer() );
             string expecting = "date: 2005.07.05";
             string result = st.ToString();
             Assert.AreEqual( expecting, result );
@@ -3834,9 +3834,9 @@ namespace AntlrUnitTests
             StringTemplate st = new StringTemplate(
                     "date: <created; format=\"yyyy.MM.dd\">",
                     typeof( AngleBracketTemplateLexer ) );
-            st.setAttribute( "created",
+            st.SetAttribute( "created",
                             new DateTime( 2005, 07, 05 ) );
-            st.registerRenderer( typeof( DateTime ), new DateRenderer3() );
+            st.RegisterRenderer( typeof( DateTime ), new DateRenderer3() );
             string expecting = "date: 2005.07.05";
             string result = st.ToString();
             Assert.AreEqual( expecting, result );
@@ -3848,10 +3848,10 @@ namespace AntlrUnitTests
             StringTemplate st = new StringTemplate(
                     "The names: <names; format=\"upper\">",
                     typeof( AngleBracketTemplateLexer ) );
-            st.setAttribute( "names", "ter" );
-            st.setAttribute( "names", "tom" );
-            st.setAttribute( "names", "sriram" );
-            st.registerRenderer( typeof( string ), new StringRenderer() );
+            st.SetAttribute( "names", "ter" );
+            st.SetAttribute( "names", "tom" );
+            st.SetAttribute( "names", "sriram" );
+            st.RegisterRenderer( typeof( string ), new StringRenderer() );
             string expecting = "The names: TERTOMSRIRAM";
             string result = st.ToString();
             Assert.AreEqual( expecting, result );
@@ -3863,10 +3863,10 @@ namespace AntlrUnitTests
             StringTemplate st = new StringTemplate(
                     "The names: <names; separator=\" and \", format=\"upper\">",
                     typeof( AngleBracketTemplateLexer ) );
-            st.setAttribute( "names", "ter" );
-            st.setAttribute( "names", "tom" );
-            st.setAttribute( "names", "sriram" );
-            st.registerRenderer( typeof( string ), new StringRenderer() );
+            st.SetAttribute( "names", "ter" );
+            st.SetAttribute( "names", "tom" );
+            st.SetAttribute( "names", "sriram" );
+            st.RegisterRenderer( typeof( string ), new StringRenderer() );
             string expecting = "The names: TER and TOM and SRIRAM";
             string result = st.ToString();
             Assert.AreEqual( expecting, result );
@@ -3882,8 +3882,8 @@ namespace AntlrUnitTests
             names.Add( "ter" );
             names.Add( null );
             names.Add( "sriram" );
-            st.setAttribute( "names", names );
-            st.registerRenderer( typeof( string ), new StringRenderer() );
+            st.SetAttribute( "names", names );
+            st.RegisterRenderer( typeof( string ), new StringRenderer() );
             string expecting = "The names: TER and N/A and SRIRAM";
             string result = st.ToString();
             Assert.AreEqual( expecting, result );
@@ -3900,10 +3900,10 @@ namespace AntlrUnitTests
             StringTemplate st = new StringTemplate(
                     "date: <created>",
                     typeof( AngleBracketTemplateLexer ) );
-            st.setAttribute( "created",
+            st.SetAttribute( "created",
                             new DateTime( 2005, 07, 05 ) );
-            outer.setAttribute( "x", st );
-            outer.registerRenderer( typeof( DateTime ), new DateRenderer() );
+            outer.SetAttribute( "x", st );
+            outer.RegisterRenderer( typeof( DateTime ), new DateRenderer() );
             string expecting = "X: date: 2005.07.05";
             string result = outer.ToString();
             Assert.AreEqual( expecting, result );
@@ -3918,10 +3918,10 @@ namespace AntlrUnitTests
                     ;
             StringTemplateGroup group =
                     new StringTemplateGroup( new StringReader( templates ) );
-            StringTemplate st = group.getInstanceOf( "dateThing" );
-            st.setAttribute( "created",
+            StringTemplate st = group.GetInstanceOf( "dateThing" );
+            st.SetAttribute( "created",
                             new DateTime( 2005, 07, 05 ) );
-            group.registerRenderer( typeof( DateTime ), new DateRenderer() );
+            group.RegisterRenderer( typeof( DateTime ), new DateRenderer() );
             string expecting = "date: 2005.07.05";
             string result = st.ToString();
             Assert.AreEqual( expecting, result );
@@ -3936,11 +3936,11 @@ namespace AntlrUnitTests
                     ;
             StringTemplateGroup group =
                     new StringTemplateGroup( new StringReader( templates ) );
-            StringTemplate st = group.getInstanceOf( "dateThing" );
-            st.setAttribute( "created",
+            StringTemplate st = group.GetInstanceOf( "dateThing" );
+            st.SetAttribute( "created",
                             new DateTime( 2005, 07, 05 ) );
-            group.registerRenderer( typeof( DateTime ), new DateRenderer() );
-            st.registerRenderer( typeof( DateTime ), new DateRenderer2() );
+            group.RegisterRenderer( typeof( DateTime ), new DateRenderer() );
+            st.RegisterRenderer( typeof( DateTime ), new DateRenderer2() );
             string expecting = "date: 07/05/2005";
             string result = st.ToString();
             Assert.AreEqual( expecting, result );
@@ -3956,9 +3956,9 @@ namespace AntlrUnitTests
                     ;
             StringTemplateGroup group =
                     new StringTemplateGroup( new StringReader( templates ) );
-            StringTemplate st = group.getInstanceOf( "var" );
-            st.setAttribute( "type", "int" );
-            st.setAttribute( "name", "x" );
+            StringTemplate st = group.GetInstanceOf( "var" );
+            st.SetAttribute( "type", "int" );
+            st.SetAttribute( "name", "x" );
             string expecting = "int x = 0;";
             string result = st.ToString();
             Assert.AreEqual( expecting, result );
@@ -3974,10 +3974,10 @@ namespace AntlrUnitTests
                     ;
             StringTemplateGroup group =
                     new StringTemplateGroup( new StringReader( templates ) );
-            StringTemplate st = group.getInstanceOf( "var" );
-            st.setAttribute( "w", "L" );
-            st.setAttribute( "type", "int" );
-            st.setAttribute( "name", "x" );
+            StringTemplate st = group.GetInstanceOf( "var" );
+            st.SetAttribute( "w", "L" );
+            st.SetAttribute( "type", "int" );
+            st.SetAttribute( "name", "x" );
             string expecting = "int x = 0L;";
             string result = st.ToString();
             Assert.AreEqual( expecting, result );
@@ -3996,10 +3996,10 @@ namespace AntlrUnitTests
                     ;
             StringTemplateGroup group =
                     new StringTemplateGroup( new StringReader( templates ) );
-            StringTemplate st = group.getInstanceOf( "var" );
-            st.setAttribute( "w", "L" );
-            st.setAttribute( "type", new StringTemplate( "int" ) );
-            st.setAttribute( "name", "x" );
+            StringTemplate st = group.GetInstanceOf( "var" );
+            st.SetAttribute( "w", "L" );
+            st.SetAttribute( "type", new StringTemplate( "int" ) );
+            st.SetAttribute( "name", "x" );
             string expecting = "int x = 0L;";
             string result = st.ToString();
             Assert.AreEqual( expecting, result );
@@ -4015,10 +4015,10 @@ namespace AntlrUnitTests
                     ;
             StringTemplateGroup group =
                     new StringTemplateGroup( new StringReader( templates ) );
-            StringTemplate st = group.getInstanceOf( "var" );
-            st.setAttribute( "w", "L" );
-            st.setAttribute( "type", "double" ); // double not in typeInit map
-            st.setAttribute( "name", "x" );
+            StringTemplate st = group.GetInstanceOf( "var" );
+            st.SetAttribute( "w", "L" );
+            st.SetAttribute( "type", "double" ); // double not in typeInit map
+            st.SetAttribute( "name", "x" );
             string expecting = "double x = ;"; // weird, but tests default value is key
             string result = st.ToString();
             Assert.AreEqual( expecting, result );
@@ -4034,9 +4034,9 @@ namespace AntlrUnitTests
                     ;
             StringTemplateGroup group =
                     new StringTemplateGroup( new StringReader( templates ) );
-            StringTemplate st = group.getInstanceOf( "var" );
-            st.setAttribute( "type", "int" );
-            st.setAttribute( "name", "x" );
+            StringTemplate st = group.GetInstanceOf( "var" );
+            st.SetAttribute( "type", "int" );
+            st.SetAttribute( "name", "x" );
             string expecting = "int x = ;";
             string result = st.ToString();
             Assert.AreEqual( expecting, result );
@@ -4052,9 +4052,9 @@ namespace AntlrUnitTests
                     ;
             StringTemplateGroup group =
                     new StringTemplateGroup( new StringReader( templates ) );
-            StringTemplate st = group.getInstanceOf( "var" );
-            st.setAttribute( "type", "float" );
-            st.setAttribute( "name", "x" );
+            StringTemplate st = group.GetInstanceOf( "var" );
+            st.SetAttribute( "type", "float" );
+            st.SetAttribute( "name", "x" );
             string expecting = "float x = ;";
             string result = st.ToString();
             Assert.AreEqual( expecting, result );
@@ -4070,9 +4070,9 @@ namespace AntlrUnitTests
                     ;
             StringTemplateGroup group =
                     new StringTemplateGroup( new StringReader( templates ) );
-            StringTemplate st = group.getInstanceOf( "var" );
-            st.setAttribute( "type", "UserRecord" );
-            st.setAttribute( "name", "x" );
+            StringTemplate st = group.GetInstanceOf( "var" );
+            st.SetAttribute( "type", "UserRecord" );
+            st.SetAttribute( "name", "x" );
             string expecting = "UserRecord x = null;";
             string result = st.ToString();
             Assert.AreEqual( expecting, result );
@@ -4088,9 +4088,9 @@ namespace AntlrUnitTests
                     ;
             StringTemplateGroup group =
                     new StringTemplateGroup( new StringReader( templates ) );
-            StringTemplate st = group.getInstanceOf( "var" );
-            st.setAttribute( "type", "UserRecord" );
-            st.setAttribute( "name", "x" );
+            StringTemplate st = group.GetInstanceOf( "var" );
+            st.SetAttribute( "type", "UserRecord" );
+            st.SetAttribute( "name", "x" );
             string expecting = "UserRecord x = ;";
             string result = st.ToString();
             Assert.AreEqual( expecting, result );
@@ -4106,9 +4106,9 @@ namespace AntlrUnitTests
                     ;
             StringTemplateGroup group =
                     new StringTemplateGroup( new StringReader( templates ) );
-            StringTemplate st = group.getInstanceOf( "var" );
-            st.setAttribute( "type", "UserRecord" );
-            st.setAttribute( "name", "x" );
+            StringTemplate st = group.GetInstanceOf( "var" );
+            st.SetAttribute( "type", "UserRecord" );
+            st.SetAttribute( "name", "x" );
             string expecting = "UserRecord x = UserRecord;";
             string result = st.ToString();
             Assert.AreEqual( expecting, result );
@@ -4129,9 +4129,9 @@ namespace AntlrUnitTests
                     ;
             StringTemplateGroup group =
                     new StringTemplateGroup( new StringReader( templates ) );
-            StringTemplate st = group.getInstanceOf( "var" );
-            st.setAttribute( "type", "default" );
-            st.setAttribute( "name", "x" );
+            StringTemplate st = group.GetInstanceOf( "var" );
+            st.SetAttribute( "type", "default" );
+            st.SetAttribute( "name", "x" );
             string expecting = "default x = foo;";
             string result = st.ToString();
             Assert.AreEqual( expecting, result );
@@ -4152,7 +4152,7 @@ namespace AntlrUnitTests
                     ;
             StringTemplateGroup group =
                     new StringTemplateGroup( new StringReader( templates ) );
-            StringTemplate st = group.getInstanceOf( "t1" );
+            StringTemplate st = group.GetInstanceOf( "t1" );
             string expecting = "default";
             string result = st.ToString();
             Assert.AreEqual( expecting, result );
@@ -4169,9 +4169,9 @@ namespace AntlrUnitTests
                     ;
             StringTemplateGroup group =
                     new StringTemplateGroup( new StringReader( templates ) );
-            StringTemplate st = group.getInstanceOf( "intermediate" );
-            st.setAttribute( "type", "int" );
-            st.setAttribute( "name", "x" );
+            StringTemplate st = group.GetInstanceOf( "intermediate" );
+            st.SetAttribute( "type", "int" );
+            st.SetAttribute( "name", "x" );
             string expecting = "int x = 0;";
             string result = st.ToString();
             Assert.AreEqual( expecting, result );
@@ -4188,11 +4188,11 @@ namespace AntlrUnitTests
                     ;
             StringTemplateGroup group =
                     new StringTemplateGroup( new StringReader( templates ) );
-            StringTemplate interm = group.getInstanceOf( "intermediate" );
-            StringTemplate var = group.getInstanceOf( "var" );
-            var.setAttribute( "type", "int" );
-            var.setAttribute( "name", "x" );
-            interm.setAttribute( "stuff", var );
+            StringTemplate interm = group.GetInstanceOf( "intermediate" );
+            StringTemplate var = group.GetInstanceOf( "var" );
+            var.SetAttribute( "type", "int" );
+            var.SetAttribute( "name", "x" );
+            interm.SetAttribute( "stuff", var );
             string expecting = "int x = 0;";
             string result = interm.ToString();
             Assert.AreEqual( expecting, result );
@@ -4207,7 +4207,7 @@ namespace AntlrUnitTests
                     ;
             StringTemplateGroup group =
                     new StringTemplateGroup( new StringReader( templates ) );
-            StringTemplate a = group.getInstanceOf( "foo" );
+            StringTemplate a = group.GetInstanceOf( "foo" );
             string expecting = "";
             string result = a.ToString();
             Assert.AreEqual( expecting, result );
@@ -4222,7 +4222,7 @@ namespace AntlrUnitTests
                     "x(a,b) ::= \"a=<a>, b=<b>\"" + newline;
             StringTemplateGroup group =
                     new StringTemplateGroup( new StringReader( templates ) );
-            StringTemplate a = group.getInstanceOf( "top" );
+            StringTemplate a = group.GetInstanceOf( "top" );
             string expecting = "a=, b=";
             string result = a.ToString();
             Assert.AreEqual( expecting, result );
@@ -4238,7 +4238,7 @@ namespace AntlrUnitTests
             StringTemplateGroup group =
                     new StringTemplateGroup( new StringReader( templates ),
                                             typeof( DefaultTemplateLexer ) );
-            StringTemplate a = group.getInstanceOf( "top" );
+            StringTemplate a = group.GetInstanceOf( "top" );
             string expecting = "a=, b=";
             string result = a.ToString();
             Assert.AreEqual( expecting, result );
@@ -4255,7 +4255,7 @@ namespace AntlrUnitTests
             StringTemplate e = new StringTemplate(
                     "Danish: \x0143 char"
                 );
-            e = e.getInstanceOf();
+            e = e.GetInstanceOf();
             string expecting = "Danish: \x0143 char";
             Assert.AreEqual( expecting, e.ToString() );
         }
@@ -4266,7 +4266,7 @@ namespace AntlrUnitTests
             StringTemplate e = new StringTemplate(
                     "DINGBAT CIRCLED SANS-SERIF DIGIT ONE: \x2780"
                 );
-            e = e.getInstanceOf();
+            e = e.GetInstanceOf();
             string expecting = "DINGBAT CIRCLED SANS-SERIF DIGIT ONE: \x2780";
             Assert.AreEqual( expecting, e.ToString() );
         }
@@ -4277,10 +4277,10 @@ namespace AntlrUnitTests
             StringTemplate e = new StringTemplate(
                     "$first(names)$"
                 );
-            e = e.getInstanceOf();
-            e.setAttribute( "names", "Ter" );
-            e.setAttribute( "names", "Tom" );
-            e.setAttribute( "names", "Sriram" );
+            e = e.GetInstanceOf();
+            e.SetAttribute( "names", "Ter" );
+            e.SetAttribute( "names", "Tom" );
+            e.SetAttribute( "names", "Sriram" );
             string expecting = "Ter";
             Assert.AreEqual( expecting, e.ToString() );
         }
@@ -4291,10 +4291,10 @@ namespace AntlrUnitTests
             StringTemplate e = new StringTemplate(
                     "$trunc(names); separator=\", \"$"
                 );
-            e = e.getInstanceOf();
-            e.setAttribute( "names", "Ter" );
-            e.setAttribute( "names", "Tom" );
-            e.setAttribute( "names", "Sriram" );
+            e = e.GetInstanceOf();
+            e.SetAttribute( "names", "Ter" );
+            e.SetAttribute( "names", "Tom" );
+            e.SetAttribute( "names", "Sriram" );
             string expecting = "Ter, Tom";
             Assert.AreEqual( expecting, e.ToString() );
         }
@@ -4305,10 +4305,10 @@ namespace AntlrUnitTests
             StringTemplate e = new StringTemplate(
                     "$rest(names); separator=\", \"$"
                 );
-            e = e.getInstanceOf();
-            e.setAttribute( "names", "Ter" );
-            e.setAttribute( "names", "Tom" );
-            e.setAttribute( "names", "Sriram" );
+            e = e.GetInstanceOf();
+            e.SetAttribute( "names", "Ter" );
+            e.SetAttribute( "names", "Tom" );
+            e.SetAttribute( "names", "Sriram" );
             string expecting = "Tom, Sriram";
             Assert.AreEqual( expecting, e.ToString() );
         }
@@ -4319,8 +4319,8 @@ namespace AntlrUnitTests
             StringTemplate e = new StringTemplate(
                     "$rest(names); separator=\", \"$"
                 );
-            e = e.getInstanceOf();
-            e.setAttribute( "names", new List<object>() );
+            e = e.GetInstanceOf();
+            e.SetAttribute( "names", new List<object>() );
             string expecting = "";
             Assert.AreEqual( expecting, e.ToString() );
         }
@@ -4335,11 +4335,11 @@ namespace AntlrUnitTests
                 ;
             StringTemplateGroup group =
                 new StringTemplateGroup( new StringReader( templates ) );
-            StringTemplate e = group.getInstanceOf( "a" );
+            StringTemplate e = group.GetInstanceOf( "a" );
             IList names = new List<object>();
             names.Add( "Ter" );
             names.Add( "Tom" );
-            e.setAttribute( "names", names );
+            e.SetAttribute( "names", names );
             string expecting = "Tom, Tom";
             Assert.AreEqual( expecting, e.ToString() );
         }
@@ -4350,10 +4350,10 @@ namespace AntlrUnitTests
             StringTemplate e = new StringTemplate(
                     "$last(names)$"
                 );
-            e = e.getInstanceOf();
-            e.setAttribute( "names", "Ter" );
-            e.setAttribute( "names", "Tom" );
-            e.setAttribute( "names", "Sriram" );
+            e = e.GetInstanceOf();
+            e.SetAttribute( "names", "Ter" );
+            e.SetAttribute( "names", "Tom" );
+            e.SetAttribute( "names", "Sriram" );
             string expecting = "Sriram";
             Assert.AreEqual( expecting, e.ToString() );
         }
@@ -4365,12 +4365,12 @@ namespace AntlrUnitTests
             StringTemplate e = new StringTemplate(
                     "$[first(mine),rest(yours)]; separator=\", \"$"
                 );
-            e = e.getInstanceOf();
-            e.setAttribute( "mine", "1" );
-            e.setAttribute( "mine", "2" );
-            e.setAttribute( "mine", "3" );
-            e.setAttribute( "yours", "a" );
-            e.setAttribute( "yours", "b" );
+            e = e.GetInstanceOf();
+            e.SetAttribute( "mine", "1" );
+            e.SetAttribute( "mine", "2" );
+            e.SetAttribute( "mine", "3" );
+            e.SetAttribute( "yours", "a" );
+            e.SetAttribute( "yours", "b" );
             string expecting = "1, b";
             Assert.AreEqual( expecting, e.ToString() );
         }
@@ -4382,11 +4382,11 @@ namespace AntlrUnitTests
             StringTemplate e = new StringTemplate(
                     "$[mine,yours]; separator=\", \"$"
                 );
-            e = e.getInstanceOf();
-            e.setAttribute( "mine", "1" );
-            e.setAttribute( "mine", "2" );
-            e.setAttribute( "mine", "3" );
-            e.setAttribute( "yours", "a" );
+            e = e.GetInstanceOf();
+            e.SetAttribute( "mine", "1" );
+            e.SetAttribute( "mine", "2" );
+            e.SetAttribute( "mine", "3" );
+            e.SetAttribute( "yours", "a" );
             string expecting = "1, 2, 3, a";
             Assert.AreEqual( expecting, e.ToString() );
         }
@@ -4401,14 +4401,14 @@ namespace AntlrUnitTests
                 ;
             StringTemplateGroup group =
                 new StringTemplateGroup( new StringReader( templates ) );
-            StringTemplate e = group.getInstanceOf( "a" );
+            StringTemplate e = group.GetInstanceOf( "a" );
             IList mine = new List<object>();
             mine.Add( "Ter" );
             mine.Add( "Tom" );
-            e.setAttribute( "mine", mine );
+            e.SetAttribute( "mine", mine );
             IList yours = new List<object>();
             yours.Add( "Foo" );
-            e.setAttribute( "yours", yours );
+            e.SetAttribute( "yours", yours );
             string expecting = "TerTomFoo, TerTomFoo";
             Assert.AreEqual( expecting, e.ToString() );
         }
@@ -4423,11 +4423,11 @@ namespace AntlrUnitTests
             StringTemplate e = new StringTemplate(
                     "$[x,mine,y,yours,z]; separator=\", \"$"
                 );
-            e = e.getInstanceOf();
-            e.setAttribute( "mine", "1" );
-            e.setAttribute( "mine", "2" );
-            e.setAttribute( "mine", "3" );
-            e.setAttribute( "yours", "a" );
+            e = e.GetInstanceOf();
+            e.SetAttribute( "mine", "1" );
+            e.SetAttribute( "mine", "2" );
+            e.SetAttribute( "mine", "3" );
+            e.SetAttribute( "yours", "a" );
             string expecting = "1, 2, 3, a";
             Assert.AreEqual( expecting, e.ToString() );
         }
@@ -4438,10 +4438,10 @@ namespace AntlrUnitTests
             StringTemplate e = new StringTemplate(
                     "$first(rest(names))$" // gets 2nd element
                 );
-            e = e.getInstanceOf();
-            e.setAttribute( "names", "Ter" );
-            e.setAttribute( "names", "Tom" );
-            e.setAttribute( "names", "Sriram" );
+            e = e.GetInstanceOf();
+            e.SetAttribute( "names", "Ter" );
+            e.SetAttribute( "names", "Tom" );
+            e.SetAttribute( "names", "Sriram" );
             string expecting = "Tom";
             Assert.AreEqual( expecting, e.ToString() );
         }
@@ -4452,8 +4452,8 @@ namespace AntlrUnitTests
             StringTemplate e = new StringTemplate(
                     "$first(names)$"
                 );
-            e = e.getInstanceOf();
-            e.setAttribute( "names", "Ter" );
+            e = e.GetInstanceOf();
+            e.SetAttribute( "names", "Ter" );
             string expecting = "Ter";
             Assert.AreEqual( expecting, e.ToString() );
         }
@@ -4464,8 +4464,8 @@ namespace AntlrUnitTests
             StringTemplate e = new StringTemplate(
                     "$last(names)$"
                 );
-            e = e.getInstanceOf();
-            e.setAttribute( "names", "Ter" );
+            e = e.GetInstanceOf();
+            e.SetAttribute( "names", "Ter" );
             string expecting = "Ter";
             Assert.AreEqual( expecting, e.ToString() );
         }
@@ -4476,8 +4476,8 @@ namespace AntlrUnitTests
             StringTemplate e = new StringTemplate(
                     "$last(names)$"
                 );
-            e = e.getInstanceOf();
-            e.setAttribute( "names", new List<object>( new object[] { "Ter" } ) );
+            e = e.GetInstanceOf();
+            e.SetAttribute( "names", new List<object>( new object[] { "Ter" } ) );
             string expecting = "Ter";
             Assert.AreEqual( expecting, e.ToString() );
         }
@@ -4488,8 +4488,8 @@ namespace AntlrUnitTests
             StringTemplate e = new StringTemplate(
                     "$rest(names)$"
                 );
-            e = e.getInstanceOf();
-            e.setAttribute( "names", "Ter" );
+            e = e.GetInstanceOf();
+            e.SetAttribute( "names", "Ter" );
             string expecting = "";
             Assert.AreEqual( expecting, e.ToString() );
         }
@@ -4500,8 +4500,8 @@ namespace AntlrUnitTests
             StringTemplate e = new StringTemplate(
                     "$rest(names)$"
                 );
-            e = e.getInstanceOf();
-            e.setAttribute( "names", new List<object>( new object[] { "Ter" } ) );
+            e = e.GetInstanceOf();
+            e.SetAttribute( "names", new List<object>( new object[] { "Ter" } ) );
             string expecting = "";
             Assert.AreEqual( expecting, e.ToString() );
         }
@@ -4512,9 +4512,9 @@ namespace AntlrUnitTests
             StringTemplate e = new StringTemplate(
                     "$rest(names)$, $rest(names)$" // gets 2nd element
                 );
-            e = e.getInstanceOf();
-            e.setAttribute( "names", "Ter" );
-            e.setAttribute( "names", "Tom" );
+            e = e.GetInstanceOf();
+            e.SetAttribute( "names", "Ter" );
+            e.SetAttribute( "names", "Tom" );
             string expecting = "Tom, Tom";
             Assert.AreEqual( expecting, e.ToString() );
         }
@@ -4535,11 +4535,11 @@ namespace AntlrUnitTests
             StringTemplateGroup group =
                     new StringTemplateGroup( new StringReader( templates ),
                                             typeof( DefaultTemplateLexer ) );
-            StringTemplate e = group.getInstanceOf( "root" );
+            StringTemplate e = group.GetInstanceOf( "root" );
             IList names = new List<object>();
             names.Add( "Ter" );
             names.Add( "Tom" );
-            e.setAttribute( "names", names.iterator() );
+            e.SetAttribute( "names", names.iterator() );
             string expecting = "TerTom, ";  // This does not give TerTom twice!!
             Assert.AreEqual( expecting, e.ToString() );
         }
@@ -4563,9 +4563,9 @@ namespace AntlrUnitTests
             StringTemplateGroup group =
                     new StringTemplateGroup( new StringReader( templates ),
                                             typeof( DefaultTemplateLexer ) );
-            StringTemplate e = group.getInstanceOf( "root" );
-            e.setAttribute( "names", "Ter" );
-            e.setAttribute( "names", "Tom" );
+            StringTemplate e = group.GetInstanceOf( "root" );
+            e.SetAttribute( "names", "Ter" );
+            e.SetAttribute( "names", "Tom" );
             String expecting = "Tom, Tom";
             Assert.AreEqual( expecting, e.ToString() );
         }
@@ -4577,9 +4577,9 @@ namespace AntlrUnitTests
             StringTemplate e = new StringTemplate(
                     "$rest(names)$, $rest(names)$" // gets 2nd element
                 );
-            e = e.getInstanceOf();
-            e.setAttribute( "names", "Ter" );
-            e.setAttribute( "names", "Tom" );
+            e = e.GetInstanceOf();
+            e.SetAttribute( "names", "Ter" );
+            e.SetAttribute( "names", "Tom" );
             string expecting = "Tom, Tom";
             Assert.AreEqual( expecting, e.ToString() );
         }
@@ -4590,12 +4590,12 @@ namespace AntlrUnitTests
             StringTemplate e = new StringTemplate(
                     "$names; separator=\", \"$" // gets 2nd element
                 );
-            e = e.getInstanceOf();
+            e = e.GetInstanceOf();
             IList names = new List<object>();
             names.Add( "Ter" );
             names.Add( "Tom" );
-            e.setAttribute( "names", names );
-            e.setAttribute( "names", "Sriram" );
+            e.SetAttribute( "names", names );
+            e.SetAttribute( "names", "Sriram" );
             string expecting = "Ter, Tom, Sriram";
             Assert.AreEqual( expecting, e.ToString() );
 
@@ -4608,12 +4608,12 @@ namespace AntlrUnitTests
             StringTemplate e = new StringTemplate(
                     "$names; separator=\", \"$" // gets 2nd element
                 );
-            e = e.getInstanceOf();
+            e = e.GetInstanceOf();
             IList names = new List<object>();
             names.Add( "Ter" );
             names.Add( "Tom" );
-            e.setAttribute( "names", "Sriram" ); // single element first now
-            e.setAttribute( "names", names );
+            e.SetAttribute( "names", "Sriram" ); // single element first now
+            e.SetAttribute( "names", names );
             string expecting = "Sriram, Ter, Tom";
             Assert.AreEqual( expecting, e.ToString() );
 
@@ -4626,9 +4626,9 @@ namespace AntlrUnitTests
             StringTemplate e = new StringTemplate(
                     "$names; separator=\", \"$" // gets 2nd element
                 );
-            e = e.getInstanceOf();
-            e.setAttribute( "names", new string[] { "Ter", "Tom" } );
-            e.setAttribute( "names", "Sriram" );
+            e = e.GetInstanceOf();
+            e.SetAttribute( "names", new string[] { "Ter", "Tom" } );
+            e.SetAttribute( "names", "Sriram" );
             string expecting = "Ter, Tom, Sriram";
             Assert.AreEqual( expecting, e.ToString() );
         }
@@ -4642,9 +4642,9 @@ namespace AntlrUnitTests
                     ;
             StringTemplateGroup group =
                     new StringTemplateGroup( new StringReader( templates ) );
-            StringTemplate e = group.getInstanceOf( "f" );
-            e.setAttribute( "x", "Ter" );
-            e.setAttribute( "x", "Tom" );
+            StringTemplate e = group.GetInstanceOf( "f" );
+            e.SetAttribute( "x", "Ter" );
+            e.SetAttribute( "x", "Tom" );
             string expecting = "TerTom TerTom";
             Assert.AreEqual( expecting, e.ToString() );
         }
@@ -4659,9 +4659,9 @@ namespace AntlrUnitTests
                     ;
             StringTemplateGroup group =
                     new StringTemplateGroup( new StringReader( templates ) );
-            StringTemplate e = group.getInstanceOf( "test" );
-            e.setAttribute( "names", "Ter" );
-            e.setAttribute( "names", "Tom" );
+            StringTemplate e = group.GetInstanceOf( "test" );
+            e.SetAttribute( "names", "Ter" );
+            e.SetAttribute( "names", "Tom" );
             string expecting = "*Ter*, *Tom* ";
             string result = e.ToString();
             Assert.AreEqual( expecting, result );
@@ -4678,9 +4678,9 @@ namespace AntlrUnitTests
             StringTemplateGroup group =
                     new StringTemplateGroup( new StringReader( templates ),
                             typeof( AngleBracketTemplateLexer ) );
-            StringTemplate e = group.getInstanceOf( "test" );
-            e.setAttribute( "names", "Ter" );
-            e.setAttribute( "names", "Tom" );
+            StringTemplate e = group.GetInstanceOf( "test" );
+            e.SetAttribute( "names", "Ter" );
+            e.SetAttribute( "names", "Tom" );
             string expecting = "*Ter*, *Tom* ";
             string result = e.ToString();
             Assert.AreEqual( expecting, result );
@@ -4692,9 +4692,9 @@ namespace AntlrUnitTests
             StringTemplate e = new StringTemplate(
                     "$names:{n| $n$}; separator=\", \"$"
                 );
-            e = e.getInstanceOf();
-            e.setAttribute( "names", "Ter" );
-            e.setAttribute( "names", "Tom" );
+            e = e.GetInstanceOf();
+            e.SetAttribute( "names", "Ter" );
+            e.SetAttribute( "names", "Tom" );
             string expecting = "Ter, Tom";
             Assert.AreEqual( expecting, e.ToString() );
         }
@@ -4705,9 +4705,9 @@ namespace AntlrUnitTests
             StringTemplate e = new StringTemplate(
                     "$names:{n| $n$:$it$}; separator=\", \"$"
                 );
-            e = e.getInstanceOf();
-            e.setAttribute( "names", "Ter" );
-            e.setAttribute( "names", "Tom" );
+            e = e.GetInstanceOf();
+            e.SetAttribute( "names", "Ter" );
+            e.SetAttribute( "names", "Tom" );
             string error = null;
             try
             {
@@ -4727,9 +4727,9 @@ namespace AntlrUnitTests
             StringTemplate e = new StringTemplate(
                     "$names:{n| .$n$.}:{ n | _$n$_}; separator=\", \"$"
                 );
-            e = e.getInstanceOf();
-            e.setAttribute( "names", "Ter" );
-            e.setAttribute( "names", "Tom" );
+            e = e.GetInstanceOf();
+            e.SetAttribute( "names", "Ter" );
+            e.SetAttribute( "names", "Tom" );
             string expecting = "_.Ter._, _.Tom._";
             Assert.AreEqual( expecting, e.ToString() );
         }
@@ -4740,11 +4740,11 @@ namespace AntlrUnitTests
             StringTemplate e = new StringTemplate(
                     "$first([names,phones])$"
                 );
-            e = e.getInstanceOf();
-            e.setAttribute( "names", "Ter" );
-            e.setAttribute( "names", "Tom" );
-            e.setAttribute( "phones", "1" );
-            e.setAttribute( "phones", "2" );
+            e = e.GetInstanceOf();
+            e.SetAttribute( "names", "Ter" );
+            e.SetAttribute( "names", "Tom" );
+            e.SetAttribute( "phones", "1" );
+            e.SetAttribute( "phones", "2" );
             string expecting = "Ter";
             Assert.AreEqual( expecting, e.ToString() );
         }
@@ -4755,19 +4755,19 @@ namespace AntlrUnitTests
             StringTemplate e = new StringTemplate(
                     "$first(maps).Ter$"
                 );
-            e = e.getInstanceOf();
+            e = e.GetInstanceOf();
             IDictionary m1 = new Dictionary<object, object>();
             IDictionary m2 = new Dictionary<object, object>();
             m1["Ter"] = "x5707";
-            e.setAttribute( "maps", m1 );
+            e.SetAttribute( "maps", m1 );
             m2["Tom"] = "x5332";
-            e.setAttribute( "maps", m2 );
+            e.SetAttribute( "maps", m2 );
             string expecting = "x5707";
             Assert.AreEqual( expecting, e.ToString() );
 
-            e = e.getInstanceOf();
+            e = e.GetInstanceOf();
             IList list = new List<object>( new object[] { m1, m2 } );
-            e.setAttribute( "maps", list );
+            e.SetAttribute( "maps", list );
             expecting = "x5707";
             Assert.AreEqual( expecting, e.ToString() );
         }
@@ -4783,15 +4783,15 @@ namespace AntlrUnitTests
             IDictionary m1 = new Dictionary<object, object>();
             IDictionary m2 = new Dictionary<object, object>();
             m1.Add( "Ter", "x5707" );
-            e.setAttribute( "maps", m1 );
+            e.SetAttribute( "maps", m1 );
             m2.Add( "Tom", "x5332" );
-            e.setAttribute( "maps", m2 );
+            e.SetAttribute( "maps", m2 );
             string expecting = "x5707";
             Assert.AreEqual( expecting, e.ToString() );
 
-            e = e.getInstanceOf();
+            e = e.GetInstanceOf();
             IList list = new List<object>() { m1, m2 };
-            e.setAttribute( "maps", list );
+            e.SetAttribute( "maps", list );
             expecting = "x5707";
             Assert.AreEqual( expecting, e.ToString() );
         }
@@ -4803,11 +4803,11 @@ namespace AntlrUnitTests
             StringTemplate e = new StringTemplate(
                     "$[names,phones]$"
                 );
-            e = e.getInstanceOf();
-            e.setAttribute( "names", "Ter" );
-            e.setAttribute( "names", "Tom" );
-            e.setAttribute( "phones", "1" );
-            e.setAttribute( "phones", "2" );
+            e = e.GetInstanceOf();
+            e.SetAttribute( "names", "Ter" );
+            e.SetAttribute( "names", "Tom" );
+            e.SetAttribute( "phones", "1" );
+            e.SetAttribute( "phones", "2" );
             string expecting = "TerTom12";
             Assert.AreEqual( expecting, e.ToString() );
         }
@@ -4818,11 +4818,11 @@ namespace AntlrUnitTests
             StringTemplate e = new StringTemplate(
                     "$[names,phones]; separator=\", \"$"
                 );
-            e = e.getInstanceOf();
-            e.setAttribute( "names", "Ter" );
-            e.setAttribute( "names", "Tom" );
-            e.setAttribute( "phones", "1" );
-            e.setAttribute( "phones", "2" );
+            e = e.GetInstanceOf();
+            e.SetAttribute( "names", "Ter" );
+            e.SetAttribute( "names", "Tom" );
+            e.SetAttribute( "phones", "1" );
+            e.SetAttribute( "phones", "2" );
             string expecting = "Ter, Tom, 1, 2";
             Assert.AreEqual( expecting, e.ToString() );
         }
@@ -4833,11 +4833,11 @@ namespace AntlrUnitTests
             StringTemplate e = new StringTemplate(
                     "$[names,phones]:{a|$a$.}$"
                 );
-            e = e.getInstanceOf();
-            e.setAttribute( "names", "Ter" );
-            e.setAttribute( "names", "Tom" );
-            e.setAttribute( "phones", "1" );
-            e.setAttribute( "phones", "2" );
+            e = e.GetInstanceOf();
+            e.SetAttribute( "names", "Ter" );
+            e.SetAttribute( "names", "Tom" );
+            e.SetAttribute( "phones", "1" );
+            e.SetAttribute( "phones", "2" );
             string expecting = "Ter.Tom.1.2.";
             Assert.AreEqual( expecting, e.ToString() );
         }
@@ -4848,13 +4848,13 @@ namespace AntlrUnitTests
             StringTemplate e = new StringTemplate(
                     "$[names,phones,salaries]; separator=\", \"$"
                 );
-            e = e.getInstanceOf();
-            e.setAttribute( "names", "Ter" );
-            e.setAttribute( "names", "Tom" );
-            e.setAttribute( "phones", "1" );
-            e.setAttribute( "phones", "2" );
-            e.setAttribute( "salaries", "big" );
-            e.setAttribute( "salaries", "huge" );
+            e = e.GetInstanceOf();
+            e.SetAttribute( "names", "Ter" );
+            e.SetAttribute( "names", "Tom" );
+            e.SetAttribute( "phones", "1" );
+            e.SetAttribute( "phones", "2" );
+            e.SetAttribute( "salaries", "big" );
+            e.SetAttribute( "salaries", "huge" );
             string expecting = "Ter, Tom, 1, 2, big, huge";
             Assert.AreEqual( expecting, e.ToString() );
         }
@@ -4865,11 +4865,11 @@ namespace AntlrUnitTests
             StringTemplate e = new StringTemplate(
                     "$[names:{$it$!},phones]; separator=\", \"$"
                 );
-            e = e.getInstanceOf();
-            e.setAttribute( "names", "Ter" );
-            e.setAttribute( "names", "Tom" );
-            e.setAttribute( "phones", "1" );
-            e.setAttribute( "phones", "2" );
+            e = e.GetInstanceOf();
+            e.SetAttribute( "names", "Ter" );
+            e.SetAttribute( "names", "Tom" );
+            e.SetAttribute( "phones", "1" );
+            e.SetAttribute( "phones", "2" );
             string expecting = "Ter!, Tom!, 1, 2";
             Assert.AreEqual( expecting, e.ToString() );
         }
@@ -4880,11 +4880,11 @@ namespace AntlrUnitTests
             StringTemplate e = new StringTemplate(
                     "$[{$if(names)$doh$endif$},phones]; separator=\", \"$"
                 );
-            e = e.getInstanceOf();
-            e.setAttribute( "names", "Ter" );
-            e.setAttribute( "names", "Tom" );
-            e.setAttribute( "phones", "1" );
-            e.setAttribute( "phones", "2" );
+            e = e.GetInstanceOf();
+            e.SetAttribute( "names", "Ter" );
+            e.SetAttribute( "names", "Tom" );
+            e.SetAttribute( "phones", "1" );
+            e.SetAttribute( "phones", "2" );
             string expecting = "doh, 1, 2";
             Assert.AreEqual( expecting, e.ToString() );
         }
@@ -4895,9 +4895,9 @@ namespace AntlrUnitTests
             StringTemplate e = new StringTemplate(
                     "$[names:{$it$!},\"foo\"]:{x}; separator=\", \"$"
                 );
-            e = e.getInstanceOf();
-            e.setAttribute( "phones", "1" );
-            e.setAttribute( "phones", "2" );
+            e = e.GetInstanceOf();
+            e.SetAttribute( "phones", "1" );
+            e.SetAttribute( "phones", "2" );
             string expecting = "x";  // only one since template application gives nothing
             Assert.AreEqual( expecting, e.ToString() );
         }
@@ -4908,11 +4908,11 @@ namespace AntlrUnitTests
             StringTemplate e = new StringTemplate(
                     "$[names, [\"foo\",\"bar\"]:{$it$!},phones]; separator=\", \"$"
                 );
-            e = e.getInstanceOf();
-            e.setAttribute( "names", "Ter" );
-            e.setAttribute( "names", "Tom" );
-            e.setAttribute( "phones", "1" );
-            e.setAttribute( "phones", "2" );
+            e = e.GetInstanceOf();
+            e.SetAttribute( "names", "Ter" );
+            e.SetAttribute( "names", "Tom" );
+            e.SetAttribute( "phones", "1" );
+            e.SetAttribute( "phones", "2" );
             string expecting = "Ter, Tom, foo!, bar!, 1, 2";
             Assert.AreEqual( expecting, e.ToString() );
         }
@@ -4928,11 +4928,11 @@ namespace AntlrUnitTests
             StringTemplateGroup group =
                     new StringTemplateGroup( new StringReader( templates ),
                             typeof( AngleBracketTemplateLexer ) );
-            StringTemplate e = group.getInstanceOf( "test" );
-            e.setAttribute( "names", "Ter" );
-            e.setAttribute( "names", "Tom" );
-            e.setAttribute( "phones", "1" );
-            e.setAttribute( "phones", "2" );
+            StringTemplate e = group.GetInstanceOf( "test" );
+            e.SetAttribute( "names", "Ter" );
+            e.SetAttribute( "names", "Tom" );
+            e.SetAttribute( "phones", "1" );
+            e.SetAttribute( "phones", "2" );
             string expecting = "*Ter**Tom**1**2*";
             string result = e.ToString();
             Assert.AreEqual( expecting, result );
@@ -4949,8 +4949,8 @@ namespace AntlrUnitTests
             StringTemplateGroup group =
                     new StringTemplateGroup( new StringReader( templates ),
                             typeof( AngleBracketTemplateLexer ) );
-            StringTemplate e = group.getInstanceOf( "test" );
-            e.setAttribute( "name", "Ter" );
+            StringTemplate e = group.GetInstanceOf( "test" );
+            e.SetAttribute( "name", "Ter" );
             string expecting = "*Ter*";
             string result = e.ToString();
             Assert.AreEqual( expecting, result );
@@ -4970,10 +4970,10 @@ namespace AntlrUnitTests
             StringTemplateGroup group =
                     new StringTemplateGroup( new StringReader( templates ),
                             typeof( AngleBracketTemplateLexer ) );
-            StringTemplate e = group.getInstanceOf( "test" );
-            e.setAttribute( "names", "Ter" );
-            e.setAttribute( "names", "Tom" );
-            e.setAttribute( "x", "ick" );
+            StringTemplate e = group.GetInstanceOf( "test" );
+            e.SetAttribute( "names", "Ter" );
+            e.SetAttribute( "names", "Tom" );
+            e.SetAttribute( "x", "ick" );
             string expecting = "*ick**ick*";
             string result = e.ToString();
             Assert.AreEqual( expecting, result );
@@ -4991,9 +4991,9 @@ namespace AntlrUnitTests
             StringTemplateGroup group =
                     new StringTemplateGroup( new StringReader( templates ),
                             typeof( AngleBracketTemplateLexer ) );
-            StringTemplate e = group.getInstanceOf( "test" );
-            e.setAttribute( "names", "Ter" );
-            e.setAttribute( "names", "Tom" );
+            StringTemplate e = group.GetInstanceOf( "test" );
+            e.SetAttribute( "names", "Ter" );
+            e.SetAttribute( "names", "Tom" );
             string expecting = "*Ter*_Tom_";
             string result = e.ToString();
             Assert.AreEqual( expecting, result );
@@ -5011,8 +5011,8 @@ namespace AntlrUnitTests
             StringTemplateGroup group =
                     new StringTemplateGroup( new StringReader( templates ),
                             typeof( AngleBracketTemplateLexer ), errors );
-            StringTemplate e = group.getInstanceOf( "test" );
-            e.setAttribute( "name", "Ter" );
+            StringTemplate e = group.GetInstanceOf( "test" );
+            e.SetAttribute( "name", "Ter" );
             string result = e.ToString();
             string expecting = "template bold must have exactly one formal arg in template context [test <invoke bold arg context>]";
             Assert.AreEqual( expecting, errors.ToString() );
@@ -5029,9 +5029,9 @@ namespace AntlrUnitTests
                     ;
             StringTemplateGroup group =
                     new StringTemplateGroup( new StringReader( templates ) );
-            StringTemplate e = group.getInstanceOf( "test" );
-            e.setAttribute( "templateName", "italics" );
-            e.setAttribute( "arg", "Ter" );
+            StringTemplate e = group.GetInstanceOf( "test" );
+            e.SetAttribute( "templateName", "italics" );
+            e.SetAttribute( "arg", "Ter" );
             string expecting = "_Ter_";
             string result = e.ToString();
             Assert.AreEqual( expecting, result );
@@ -5043,13 +5043,13 @@ namespace AntlrUnitTests
             StringTemplate e = new StringTemplate(
                     "$names,phones,salaries:{n,p,s | $n$@$p$: $s$\n}$"
                 );
-            e = e.getInstanceOf();
-            e.setAttribute( "names", "Ter" );
-            e.setAttribute( "names", "Tom" );
-            e.setAttribute( "phones", "1" );
-            e.setAttribute( "phones", "2" );
-            e.setAttribute( "salaries", "big" );
-            e.setAttribute( "salaries", "huge" );
+            e = e.GetInstanceOf();
+            e.SetAttribute( "names", "Ter" );
+            e.SetAttribute( "names", "Tom" );
+            e.SetAttribute( "phones", "1" );
+            e.SetAttribute( "phones", "2" );
+            e.SetAttribute( "salaries", "big" );
+            e.SetAttribute( "salaries", "huge" );
             string expecting = "Ter@1: big" + newline + "Tom@2: huge" + newline;
             Assert.AreEqual( expecting, e.ToString() );
         }
@@ -5060,14 +5060,14 @@ namespace AntlrUnitTests
             StringTemplate e = new StringTemplate(
                     "$names,phones,salaries:{n,p,s | $n$@$p$: $s$\n}$"
                 );
-            e = e.getInstanceOf();
-            e.setAttribute( "names", "Ter" );
-            e.setAttribute( "names", "Tom" );
-            e.setAttribute( "names", "Sriram" );
-            e.setAttribute( "phones", new List<object>( new object[] { "1", null, "3" } ) );
-            e.setAttribute( "salaries", "big" );
-            e.setAttribute( "salaries", "huge" );
-            e.setAttribute( "salaries", "enormous" );
+            e = e.GetInstanceOf();
+            e.SetAttribute( "names", "Ter" );
+            e.SetAttribute( "names", "Tom" );
+            e.SetAttribute( "names", "Sriram" );
+            e.SetAttribute( "phones", new List<object>( new object[] { "1", null, "3" } ) );
+            e.SetAttribute( "salaries", "big" );
+            e.SetAttribute( "salaries", "huge" );
+            e.SetAttribute( "salaries", "enormous" );
             string expecting = "Ter@1: big" + newline +
                                "Tom@: huge" + newline +
                                "Sriram@3: enormous" + newline;
@@ -5080,13 +5080,13 @@ namespace AntlrUnitTests
             StringTemplate e = new StringTemplate(
                     "$names,phones,salaries:{n,p,s | $i0$. $n$@$p$: $s$\n}$"
                 );
-            e = e.getInstanceOf();
-            e.setAttribute( "names", "Ter" );
-            e.setAttribute( "names", "Tom" );
-            e.setAttribute( "phones", "1" );
-            e.setAttribute( "phones", "2" );
-            e.setAttribute( "salaries", "big" );
-            e.setAttribute( "salaries", "huge" );
+            e = e.GetInstanceOf();
+            e.SetAttribute( "names", "Ter" );
+            e.SetAttribute( "names", "Tom" );
+            e.SetAttribute( "phones", "1" );
+            e.SetAttribute( "phones", "2" );
+            e.SetAttribute( "salaries", "big" );
+            e.SetAttribute( "salaries", "huge" );
             string expecting = "0. Ter@1: big" + newline + "1. Tom@2: huge" + newline;
             Assert.AreEqual( expecting, e.ToString() );
         }
@@ -5097,13 +5097,13 @@ namespace AntlrUnitTests
             StringTemplate e = new StringTemplate(
                     "$names,phones,salaries:{n,p,s | $n$@$p$: $s$}; separator=\", \"$"
                 );
-            e = e.getInstanceOf();
-            e.setAttribute( "names", "Ter" );
-            e.setAttribute( "names", "Tom" );
-            e.setAttribute( "names", "Sriram" );
-            e.setAttribute( "phones", "1" );
-            e.setAttribute( "phones", "2" );
-            e.setAttribute( "salaries", "big" );
+            e = e.GetInstanceOf();
+            e.SetAttribute( "names", "Ter" );
+            e.SetAttribute( "names", "Tom" );
+            e.SetAttribute( "names", "Sriram" );
+            e.SetAttribute( "phones", "1" );
+            e.SetAttribute( "phones", "2" );
+            e.SetAttribute( "salaries", "big" );
             string expecting = "Ter@1: big, Tom@2: , Sriram@: ";
             Assert.AreEqual( expecting, e.ToString() );
         }
@@ -5114,10 +5114,10 @@ namespace AntlrUnitTests
             StringTemplate e = new StringTemplate(
                     "$names,phones,salaries:{n,p,s | $n$@$p$: $s$}; separator=\", \"$"
                 );
-            e = e.getInstanceOf();
-            e.setAttribute( "names", "Ter" );
-            e.setAttribute( "phones", "1" );
-            e.setAttribute( "salaries", "big" );
+            e = e.GetInstanceOf();
+            e.SetAttribute( "names", "Ter" );
+            e.SetAttribute( "phones", "1" );
+            e.SetAttribute( "salaries", "big" );
             string expecting = "Ter@1: big";
             Assert.AreEqual( expecting, e.ToString() );
         }
@@ -5129,13 +5129,13 @@ namespace AntlrUnitTests
             StringTemplate e = new StringTemplate(
                     "$names,phones,salaries:{n,p | $n$@$p$}; separator=\", \"$"
                 );
-            e.setErrorListener( errors );
-            e = e.getInstanceOf();
-            e.setAttribute( "names", "Ter" );
-            e.setAttribute( "names", "Tom" );
-            e.setAttribute( "phones", "1" );
-            e.setAttribute( "phones", "2" );
-            e.setAttribute( "salaries", "big" );
+            e.SetErrorListener( errors );
+            e = e.GetInstanceOf();
+            e.SetAttribute( "names", "Ter" );
+            e.SetAttribute( "names", "Tom" );
+            e.SetAttribute( "phones", "1" );
+            e.SetAttribute( "phones", "2" );
+            e.SetAttribute( "salaries", "big" );
             string expecting = "Ter@1, Tom@2";
             Assert.AreEqual( expecting, e.ToString() );
             string errorExpecting = "number of arguments [n, p] mismatch between attribute list and anonymous template in context [anonymous]";
@@ -5149,11 +5149,11 @@ namespace AntlrUnitTests
             StringTemplate e = new StringTemplate(
                     "$names,phones,salaries:{$n$@$p$}; separator=\", \"$"
                 );
-            e.setErrorListener( errors );
-            e = e.getInstanceOf();
-            e.setAttribute( "names", "Tom" );
-            e.setAttribute( "phones", "2" );
-            e.setAttribute( "salaries", "big" );
+            e.SetErrorListener( errors );
+            e = e.GetInstanceOf();
+            e.SetAttribute( "names", "Tom" );
+            e.SetAttribute( "phones", "2" );
+            e.SetAttribute( "salaries", "big" );
             e.ToString(); // generate the error
             string errorExpecting = "missing arguments in anonymous template in context [anonymous]";
             Assert.AreEqual( errorExpecting, errors.ToString() );
@@ -5170,13 +5170,13 @@ namespace AntlrUnitTests
             StringTemplateGroup group =
                     new StringTemplateGroup( new StringReader( templates ),
                                             typeof( DefaultTemplateLexer ) );
-            StringTemplate p = group.getInstanceOf( "page" );
-            p.setAttribute( "names", "Ter" );
-            p.setAttribute( "names", "Tom" );
-            p.setAttribute( "names", "Sriram" );
-            p.setAttribute( "phones", "1" );
-            p.setAttribute( "phones", "2" );
-            p.setAttribute( "salaries", "big" );
+            StringTemplate p = group.GetInstanceOf( "page" );
+            p.SetAttribute( "names", "Ter" );
+            p.SetAttribute( "names", "Tom" );
+            p.SetAttribute( "names", "Sriram" );
+            p.SetAttribute( "phones", "1" );
+            p.SetAttribute( "phones", "2" );
+            p.SetAttribute( "salaries", "big" );
             string expecting = "Ter@1: big, Tom@2: n/a, Sriram@n/a: n/a";
             Assert.AreEqual( expecting, p.ToString() );
         }
@@ -5211,7 +5211,7 @@ namespace AntlrUnitTests
                                         null,
                                         group );
 
-            StringTemplate b = subgroup.getInstanceOf( "body" );
+            StringTemplate b = subgroup.GetInstanceOf( "body" );
             string expecting = "bar";
             string result = b.ToString();
             Assert.AreEqual( expecting, result );
@@ -5233,7 +5233,7 @@ namespace AntlrUnitTests
                     new StringTemplate( "$x.foo$:$x.bar$" );
             object o = new NonPublicProperty();
 
-            st.setAttribute( "x", o );
+            st.SetAttribute( "x", o );
             string expecting = "9:34";
             Assert.AreEqual( expecting, st.ToString() );
         }
@@ -5248,8 +5248,8 @@ namespace AntlrUnitTests
                             group,
                             "$A:{$i$. $it$}; separator=\"\\n\"$"
                     );
-            t.setAttribute( "A", "parrt" );
-            t.setAttribute( "A", "tombu" );
+            t.SetAttribute( "A", "parrt" );
+            t.SetAttribute( "A", "tombu" );
             string expecting =
                 "1. parrt" + newline +
                 "2. tombu";
@@ -5266,8 +5266,8 @@ namespace AntlrUnitTests
                             group,
                             "$A:{$i0$. $it$}; separator=\"\\n\"$"
                     );
-            t.setAttribute( "A", "parrt" );
-            t.setAttribute( "A", "tombu" );
+            t.SetAttribute( "A", "parrt" );
+            t.SetAttribute( "A", "tombu" );
             string expecting =
                 "0. parrt" + newline +
                 "1. tombu";
@@ -5284,10 +5284,10 @@ namespace AntlrUnitTests
                             group,
                             "$A,B:{a,b|$i$. $a$@$b$}; separator=\"\\n\"$"
                     );
-            t.setAttribute( "A", "parrt" );
-            t.setAttribute( "A", "tombu" );
-            t.setAttribute( "B", "x5707" );
-            t.setAttribute( "B", "x5000" );
+            t.SetAttribute( "A", "parrt" );
+            t.SetAttribute( "A", "tombu" );
+            t.SetAttribute( "B", "x5707" );
+            t.SetAttribute( "B", "x5000" );
             string expecting =
                 "1. parrt@x5707" + newline +
                 "2. tombu@x5000";
@@ -5304,10 +5304,10 @@ namespace AntlrUnitTests
                             group,
                             "$A,B:{a,b|$i0$. $a$@$b$}; separator=\"\\n\"$"
                     );
-            t.setAttribute( "A", "parrt" );
-            t.setAttribute( "A", "tombu" );
-            t.setAttribute( "B", "x5707" );
-            t.setAttribute( "B", "x5000" );
+            t.SetAttribute( "A", "parrt" );
+            t.SetAttribute( "A", "tombu" );
+            t.SetAttribute( "B", "x5707" );
+            t.SetAttribute( "B", "x5000" );
             string expecting =
                 "0. parrt@x5707" + newline +
                 "1. tombu@x5000";
@@ -5321,8 +5321,8 @@ namespace AntlrUnitTests
             // context.  it can therefore see name.
             StringTemplateGroup group =
                     new StringTemplateGroup( "test" );
-            StringTemplate main = group.defineTemplate( "main", "$foo(t={Hi, $name$}, name=\"parrt\")$" );
-            StringTemplate foo = group.defineTemplate( "foo", "$t$" );
+            StringTemplate main = group.DefineTemplate( "main", "$foo(t={Hi, $name$}, name=\"parrt\")$" );
+            StringTemplate foo = group.DefineTemplate( "foo", "$t$" );
             string expecting = "Hi, parrt";
             Assert.AreEqual( expecting, main.ToString() );
         }
@@ -5335,7 +5335,7 @@ namespace AntlrUnitTests
             string error = null;
             try
             {
-                t.setAttribute( "user.Name", "Kunle" );
+                t.SetAttribute( "user.Name", "Kunle" );
             }
             catch ( ArgumentException e )
             {
@@ -5375,8 +5375,8 @@ namespace AntlrUnitTests
             StringTemplateGroup group =
                     new StringTemplateGroup( new StringReader( templates ) );
 
-            StringTemplate a = group.getInstanceOf( "array" );
-            a.setAttribute( "values",
+            StringTemplate a = group.GetInstanceOf( "array" );
+            a.SetAttribute( "values",
                            new int[] {3,9,20,2,1,4,6,32,5,6,77,888,2,1,6,32,5,6,77,
                             4,9,20,2,1,4,63,9,20,2,1,4,6,32,5,6,77,6,32,5,6,77,
                             3,9,20,2,1,4,6,32,5,6,77,888,1,6,32,5} );
@@ -5397,8 +5397,8 @@ namespace AntlrUnitTests
             StringTemplateGroup group =
                     new StringTemplateGroup( new StringReader( templates ) );
 
-            StringTemplate a = group.getInstanceOf( "array" );
-            a.setAttribute( "values",
+            StringTemplate a = group.GetInstanceOf( "array" );
+            a.SetAttribute( "values",
                            new int[] {3,9,20,2,1,4,6,32,5,6,77,888,2,1,6,32,5,6,77,
                             4,9,20,2,1,4,63,9,20,2,1,4,6,32,5,6,77,6,32,5,6,77,
                             3,9,20,2,1,4,6,32,5,6,77,888,1,6,32,5} );
@@ -5410,8 +5410,8 @@ namespace AntlrUnitTests
 
             StringWriter sw = new StringWriter();
             IStringTemplateWriter stw = new AutoIndentWriter( sw, "\n" ); // force \n as newline
-            stw.setLineWidth( 40 );
-            a.write( stw );
+            stw.SetLineWidth( 40 );
+            a.Write( stw );
             string result = sw.ToString();
             Assert.AreEqual( expecting, result );
         }
@@ -5425,8 +5425,8 @@ namespace AntlrUnitTests
             StringTemplateGroup group =
                     new StringTemplateGroup( new StringReader( templates ) );
 
-            StringTemplate a = group.getInstanceOf( "array" );
-            a.setAttribute( "values",
+            StringTemplate a = group.GetInstanceOf( "array" );
+            a.SetAttribute( "values",
                            new int[] {3,9,20,2,1,4,6,32,5,6,77,888,2,1,6,32,5,6,77,
                             4,9,20,2,1,4,63,9,20,2,1,4,6,32,5,6,77,6,32,5,6,77,
                             3,9,20,2,1,4,6,32,5,6,77,888,1,6,32,5} );
@@ -5449,11 +5449,11 @@ namespace AntlrUnitTests
                     new StringTemplateGroup( new StringReader( templates ) );
 
             StringTemplate x = new StringTemplate( group, "<\\n>{ <stuff; anchor, separator=\",\\n\"> }<\\n>" );
-            x.setAttribute( "stuff", "1" );
-            x.setAttribute( "stuff", "2" );
-            x.setAttribute( "stuff", "3" );
-            StringTemplate a = group.getInstanceOf( "array" );
-            a.setAttribute( "values", new object[] { "a", x, "b" } );
+            x.SetAttribute( "stuff", "1" );
+            x.SetAttribute( "stuff", "2" );
+            x.SetAttribute( "stuff", "3" );
+            StringTemplate a = group.GetInstanceOf( "array" );
+            a.SetAttribute( "values", new object[] { "a", x, "b" } );
             String expecting =
                 "{ a, " + newline +
                 "  { 1," + newline +
@@ -5472,8 +5472,8 @@ namespace AntlrUnitTests
             StringTemplateGroup group =
                     new StringTemplateGroup( new StringReader( templates ) );
 
-            StringTemplate a = group.getInstanceOf( "func" );
-            a.setAttribute( "args",
+            StringTemplate a = group.GetInstanceOf( "func" );
+            a.SetAttribute( "args",
                            new string[] { "a", "b", "c", "d", "e", "f" } );
             string expecting =
                 "       FUNCTION line( a,b,c,d," + newline +
@@ -5490,8 +5490,8 @@ namespace AntlrUnitTests
             StringTemplateGroup group =
                     new StringTemplateGroup( new StringReader( templates ) );
 
-            StringTemplate a = group.getInstanceOf( "array" );
-            a.setAttribute( "values",
+            StringTemplate a = group.GetInstanceOf( "array" );
+            a.SetAttribute( "values",
                            new int[] {3,9,20,2,1,4,6,32,5,6,77,888,2,1,6,32,5,6,77,
                             4,9,20,2,1,4,63,9,20,2,1,4,6} );
             string expecting =
@@ -5512,8 +5512,8 @@ namespace AntlrUnitTests
             StringTemplateGroup group =
                     new StringTemplateGroup( new StringReader( templates ) );
 
-            StringTemplate a = group.getInstanceOf( "duh" );
-            a.setAttribute( "chars", new string[] { "a", "b", "c", "d", "e" } );
+            StringTemplate a = group.GetInstanceOf( "duh" );
+            a.SetAttribute( "chars", new string[] { "a", "b", "c", "d", "e" } );
             // lineWidth==3 implies that we can have 3 characters at most
             string expecting =
                 "abc" + newline +
@@ -5530,8 +5530,8 @@ namespace AntlrUnitTests
             StringTemplateGroup group =
                     new StringTemplateGroup( new StringReader( templates ) );
 
-            StringTemplate a = group.getInstanceOf( "duh" );
-            a.setAttribute( "chars", new string[] { "a", "b", "\n", "d", "e" } );
+            StringTemplate a = group.GetInstanceOf( "duh" );
+            a.SetAttribute( "chars", new string[] { "a", "b", "\n", "d", "e" } );
             // don't do \n if it's last element anyway
             string expecting =
                 "ab" + newline +
@@ -5548,8 +5548,8 @@ namespace AntlrUnitTests
             StringTemplateGroup group =
                     new StringTemplateGroup( new StringReader( templates ) );
 
-            StringTemplate a = group.getInstanceOf( "duh" );
-            a.setAttribute( "chars", new string[] { "a", "b", "c", "\n", "d", "e" } );
+            StringTemplate a = group.GetInstanceOf( "duh" );
+            a.SetAttribute( "chars", new string[] { "a", "b", "c", "\n", "d", "e" } );
             // Once we wrap, we must dump chars as we see them.  A newline right
             // after a wrap is just an "unfortunate" event.  People will expect
             // a newline if it's in the data.
@@ -5569,8 +5569,8 @@ namespace AntlrUnitTests
             StringTemplateGroup group =
                     new StringTemplateGroup( new StringReader( templates ) );
 
-            StringTemplate a = group.getInstanceOf( "duh" );
-            a.setAttribute( "data", new int[] { 1, 2, 3, 4, 5, 6, 7, 8, 9 } );
+            StringTemplate a = group.GetInstanceOf( "duh" );
+            a.SetAttribute( "data", new int[] { 1, 2, 3, 4, 5, 6, 7, 8, 9 } );
             string expecting =
                 "![1][2][3]" + newline + // width=9 is the 3 char; don't break til after ]
                 "[4][5][6]" + newline +
@@ -5587,8 +5587,8 @@ namespace AntlrUnitTests
             StringTemplateGroup group =
                     new StringTemplateGroup( new StringReader( templates ) );
 
-            StringTemplate a = group.getInstanceOf( "duh" );
-            a.setAttribute( "data", new int[] { 1, 2, 3, 4, 5, 6, 7, 8, 9 } );
+            StringTemplate a = group.GetInstanceOf( "duh" );
+            a.SetAttribute( "data", new int[] { 1, 2, 3, 4, 5, 6, 7, 8, 9 } );
             string expecting =
                 "![1][2][3]" + newline +
                 " [4][5][6]" + newline +
@@ -5606,10 +5606,10 @@ namespace AntlrUnitTests
             StringTemplateGroup group =
                     new StringTemplateGroup( new StringReader( templates ) );
 
-            StringTemplate t = group.getInstanceOf( "top" );
-            StringTemplate s = group.getInstanceOf( "str" );
-            s.setAttribute( "data", new int[] { 1, 2, 3, 4, 5, 6, 7, 8, 9 } );
-            t.setAttribute( "s", s );
+            StringTemplate t = group.GetInstanceOf( "top" );
+            StringTemplate s = group.GetInstanceOf( "str" );
+            s.SetAttribute( "data", new int[] { 1, 2, 3, 4, 5, 6, 7, 8, 9 } );
+            t.SetAttribute( "s", s );
             string expecting =
                 "  ![1][2]!+" + newline +
                 "  ![3][4]!+" + newline +
@@ -5628,8 +5628,8 @@ namespace AntlrUnitTests
             StringTemplateGroup group =
                     new StringTemplateGroup( new StringReader( templates ) );
 
-            StringTemplate a = group.getInstanceOf( "duh" );
-            a.setAttribute( "chars", new string[] { "a", "b", "c", "d", "e" } );
+            StringTemplate a = group.GetInstanceOf( "duh" );
+            a.SetAttribute( "chars", new string[] { "a", "b", "c", "d", "e" } );
             //
             string expecting =
                 "    a" + newline +
@@ -5649,8 +5649,8 @@ namespace AntlrUnitTests
             StringTemplateGroup group =
                     new StringTemplateGroup( new StringReader( templates ) );
 
-            StringTemplate a = group.getInstanceOf( "duh" );
-            a.setAttribute( "chars", new string[] { "a", "b", "c", "d", "e" } );
+            StringTemplate a = group.GetInstanceOf( "duh" );
+            a.SetAttribute( "chars", new string[] { "a", "b", "c", "d", "e" } );
             //
             string expecting =
                 "    ab" + newline +
@@ -5670,10 +5670,10 @@ namespace AntlrUnitTests
             StringTemplateGroup group =
                     new StringTemplateGroup( new StringReader( templates ) );
 
-            StringTemplate top = group.getInstanceOf( "top" );
-            StringTemplate duh = group.getInstanceOf( "duh" );
-            duh.setAttribute( "chars", new string[] { "a", "b", "c", "d", "e" } );
-            top.setAttribute( "d", duh );
+            StringTemplate top = group.GetInstanceOf( "top" );
+            StringTemplate duh = group.GetInstanceOf( "duh" );
+            duh.SetAttribute( "chars", new string[] { "a", "b", "c", "d", "e" } );
+            top.SetAttribute( "d", duh );
             string expecting =
                 "    ab" + newline +
                 "    cd" + newline +
@@ -5692,10 +5692,10 @@ namespace AntlrUnitTests
             StringTemplateGroup group =
                     new StringTemplateGroup( new StringReader( templates ) );
 
-            StringTemplate top = group.getInstanceOf( "top" );
-            StringTemplate duh = group.getInstanceOf( "duh" );
-            duh.setAttribute( "chars", new string[] { "a", "b", "c", "d", "e" } );
-            top.setAttribute( "d", duh );
+            StringTemplate top = group.GetInstanceOf( "top" );
+            StringTemplate duh = group.GetInstanceOf( "duh" );
+            duh.SetAttribute( "chars", new string[] { "a", "b", "c", "d", "e" } );
+            top.SetAttribute( "d", duh );
 
             string expecting =
                 "  x: ab" + newline +
@@ -5713,10 +5713,10 @@ namespace AntlrUnitTests
             StringTemplateGroup group =
                     new StringTemplateGroup( new StringReader( templates ) );
 
-            StringTemplate a = group.getInstanceOf( "m" );
-            a.setAttribute( "args",
+            StringTemplate a = group.GetInstanceOf( "m" );
+            a.SetAttribute( "args",
                            new string[] { "a", "b", "c" } );
-            a.setAttribute( "body", "i=3;" );
+            a.SetAttribute( "body", "i=3;" );
             // make it wrap because of ") throws Ick { " literal
             int n = "public void foo(a, b, c".Length;
             string expecting =
@@ -5733,8 +5733,8 @@ namespace AntlrUnitTests
             StringTemplateGroup group =
                     new StringTemplateGroup( new StringReader( templates ) );
 
-            StringTemplate m = group.getInstanceOf( "m" );
-            m.setAttribute( "body", "i=3;" );
+            StringTemplate m = group.GetInstanceOf( "m" );
+            m.SetAttribute( "body", "i=3;" );
             // make it wrap because of ") throws Ick { " literal
             string expecting =
                 "{ " + newline +
@@ -5752,14 +5752,14 @@ namespace AntlrUnitTests
             StringTemplateGroup group =
                     new StringTemplateGroup( new StringReader( templates ) );
 
-            StringTemplate top = group.getInstanceOf( "top" );
-            StringTemplate a = group.getInstanceOf( "array" );
-            a.setAttribute( "values",
+            StringTemplate top = group.GetInstanceOf( "top" );
+            StringTemplate a = group.GetInstanceOf( "array" );
+            a.SetAttribute( "values",
                            new int[] {3,9,20,2,1,4,6,32,5,6,77,888,2,1,6,32,5,6,77,
                             4,9,20,2,1,4,63,9,20,2,1,4,6,32,5,6,77,6,32,5,6,77,
                             3,9,20,2,1,4,6,32,5,6,77,888,1,6,32,5} );
-            top.setAttribute( "arrays", a );
-            top.setAttribute( "arrays", a ); // add twice
+            top.SetAttribute( "arrays", a );
+            top.SetAttribute( "arrays", a ); // add twice
             string expecting =
                 "Arrays: int[] a = { 3,9,20,2,1,4,6,32,5," + newline +
                 "                    6,77,888,2,1,6,32,5," + newline +
@@ -5782,8 +5782,8 @@ namespace AntlrUnitTests
         {
             StringTemplateGroup group =
                     new StringTemplateGroup( "test" );
-            StringTemplate t = group.defineTemplate( "t", "\\\\$v$" );
-            t.setAttribute( "v", "Joe" );
+            StringTemplate t = group.DefineTemplate( "t", "\\\\$v$" );
+            t.SetAttribute( "v", "Joe" );
             //System.out.println(t);
             string expecting = "\\Joe";
             Assert.AreEqual( expecting, t.ToString() );
@@ -5794,8 +5794,8 @@ namespace AntlrUnitTests
         {
             StringTemplateGroup group =
                     new StringTemplateGroup( "test", typeof( AngleBracketTemplateLexer ) );
-            StringTemplate t = group.defineTemplate( "t", "<v:{a|\\\\<a>}>" );
-            t.setAttribute( "v", "Joe" );
+            StringTemplate t = group.DefineTemplate( "t", "<v:{a|\\\\<a>}>" );
+            t.SetAttribute( "v", "Joe" );
             //System.out.println(t);
             string expecting = "\\Joe";
             Assert.AreEqual( expecting, t.ToString() );
@@ -5807,13 +5807,13 @@ namespace AntlrUnitTests
             StringTemplateGroup group =
                     new StringTemplateGroup( "test", typeof( AngleBracketTemplateLexer ) );
             StringTemplate t =
-                group.defineTemplate( "t", "<data:array()>" );
-            group.defineTemplate( "array", "[<it:element(); separator=\",\">]" );
-            group.defineTemplate( "element", "<it>" );
+                group.DefineTemplate( "t", "<data:array()>" );
+            group.DefineTemplate( "array", "[<it:element(); separator=\",\">]" );
+            group.DefineTemplate( "element", "<it>" );
             IList data = new List<object>();
             data.Add( new int[] { 1, 2, 3 } );
             data.Add( new int[] { 10, 20, 30 } );
-            t.setAttribute( "data", data );
+            t.SetAttribute( "data", data );
             //System.out.println(t);
             string expecting = "[1,2,3][10,20,30]";
             Assert.AreEqual( expecting, t.ToString() );
@@ -5827,7 +5827,7 @@ namespace AntlrUnitTests
             StringTemplateGroup group =
                     new StringTemplateGroup( "test", typeof( AngleBracketTemplateLexer ) );
             StringTemplate t =
-                group.defineTemplate( "t", "<data; null=\"0\">" );
+                group.DefineTemplate( "t", "<data; null=\"0\">" );
             //System.out.println(t);
             string expecting = "0";
             Assert.AreEqual( expecting, t.ToString() );
@@ -5839,11 +5839,11 @@ namespace AntlrUnitTests
             StringTemplateGroup group =
                     new StringTemplateGroup( "test", typeof( AngleBracketTemplateLexer ) );
             StringTemplate t =
-                group.defineTemplate( "t", "<data; null=\"\", separator=\", \">" );
+                group.DefineTemplate( "t", "<data; null=\"\", separator=\", \">" );
             IList data = new List<object>();
             data.Add( null );
             data.Add( 1 );
-            t.setAttribute( "data", data );
+            t.SetAttribute( "data", data );
             string expecting = ", 1";
             Assert.AreEqual( expecting, t.ToString() );
         }
@@ -5854,10 +5854,10 @@ namespace AntlrUnitTests
             StringTemplateGroup group =
                     new StringTemplateGroup( "test", typeof( AngleBracketTemplateLexer ) );
             StringTemplate t =
-                group.defineTemplate( "t", "<data; null=\"0\">" );
+                group.DefineTemplate( "t", "<data; null=\"0\">" );
             IList data = new List<object>();
             data.Add( null );
-            t.setAttribute( "data", data );
+            t.SetAttribute( "data", data );
             //System.out.println(t);
             string expecting = "0";
             Assert.AreEqual( expecting, t.ToString() );
@@ -5869,7 +5869,7 @@ namespace AntlrUnitTests
             StringTemplateGroup group =
                     new StringTemplateGroup( "test", typeof( AngleBracketTemplateLexer ) );
             StringTemplate t =
-                group.defineTemplate( "t", "<data; null=\"-1\", separator=\", \">" );
+                group.DefineTemplate( "t", "<data; null=\"-1\", separator=\", \">" );
             IList data = new List<object>();
             data.Add( null );
             data.Add( 1 );
@@ -5877,7 +5877,7 @@ namespace AntlrUnitTests
             data.Add( 3 );
             data.Add( 4 );
             data.Add( null );
-            t.setAttribute( "data", data );
+            t.SetAttribute( "data", data );
             //System.out.println(t);
             string expecting = "-1, 1, -1, 3, 4, -1";
             Assert.AreEqual( expecting, t.ToString() );
@@ -5889,7 +5889,7 @@ namespace AntlrUnitTests
             StringTemplateGroup group =
                     new StringTemplateGroup( "test", typeof( AngleBracketTemplateLexer ) );
             StringTemplate t =
-                group.defineTemplate( "t", "<data; separator=\", \">" );
+                group.DefineTemplate( "t", "<data; separator=\", \">" );
             IList data = new List<object>();
             data.Add( null );
             data.Add( 1 );
@@ -5897,7 +5897,7 @@ namespace AntlrUnitTests
             data.Add( 3 );
             data.Add( 4 );
             data.Add( null );
-            t.setAttribute( "data", data );
+            t.SetAttribute( "data", data );
             //System.out.println(t);
             string expecting = "1, 3, 4";
             Assert.AreEqual( expecting, t.ToString() );
@@ -5909,14 +5909,14 @@ namespace AntlrUnitTests
             StringTemplateGroup group =
                     new StringTemplateGroup( "test", typeof( AngleBracketTemplateLexer ) );
             StringTemplate t =
-                group.defineTemplate( "t", "<data:array(); null=\"-1\", separator=\", \">" );
-            group.defineTemplate( "array", "<it>" );
+                group.DefineTemplate( "t", "<data:array(); null=\"-1\", separator=\", \">" );
+            group.DefineTemplate( "array", "<it>" );
             IList data = new List<object>();
             data.Add( 0 );
             data.Add( null );
             data.Add( 2 );
             data.Add( null );
-            t.setAttribute( "data", data );
+            t.SetAttribute( "data", data );
             string expecting = "0, -1, 2, -1";
             Assert.AreEqual( expecting, t.ToString() );
         }
@@ -5927,14 +5927,14 @@ namespace AntlrUnitTests
             StringTemplateGroup group =
                     new StringTemplateGroup( "test", typeof( AngleBracketTemplateLexer ) );
             StringTemplate t =
-                group.defineTemplate( "t", "<data:array(); null=\"-1\", separator=\", \">" );
-            group.defineTemplate( "array", "<it>" );
+                group.DefineTemplate( "t", "<data:array(); null=\"-1\", separator=\", \">" );
+            group.DefineTemplate( "array", "<it>" );
             IList data = new List<object>();
             data.Add( null );
             data.Add( 0 );
             data.Add( null );
             data.Add( 2 );
-            t.setAttribute( "data", data );
+            t.SetAttribute( "data", data );
             string expecting = "-1, 0, -1, 2";
             Assert.AreEqual( expecting, t.ToString() );
         }
@@ -5945,11 +5945,11 @@ namespace AntlrUnitTests
             StringTemplateGroup group =
                     new StringTemplateGroup( "test", typeof( AngleBracketTemplateLexer ) );
             StringTemplate t =
-                group.defineTemplate( "t", "<data:array(); null=\"-1\", separator=\", \">" );
-            group.defineTemplate( "array", "<it>" );
+                group.DefineTemplate( "t", "<data:array(); null=\"-1\", separator=\", \">" );
+            group.DefineTemplate( "array", "<it>" );
             IList data = new List<object>();
             data.Add( null );
-            t.setAttribute( "data", data );
+            t.SetAttribute( "data", data );
             string expecting = "-1";
             Assert.AreEqual( expecting, t.ToString() );
         }
@@ -5960,8 +5960,8 @@ namespace AntlrUnitTests
             StringTemplateGroup group =
                     new StringTemplateGroup( "test", typeof( AngleBracketTemplateLexer ) );
             StringTemplate t =
-                group.defineTemplate( "t", "<data:array(); null=\"-1\", separator=\", \">" );
-            group.defineTemplate( "array", "<it>" );
+                group.DefineTemplate( "t", "<data:array(); null=\"-1\", separator=\", \">" );
+            group.DefineTemplate( "array", "<it>" );
             string expecting = "-1";
             Assert.AreEqual( expecting, t.ToString() );
         }
@@ -5972,10 +5972,10 @@ namespace AntlrUnitTests
             StringTemplate e = new StringTemplate(
                     "$length(names)$"
                 );
-            e = e.getInstanceOf();
-            e.setAttribute( "names", "Ter" );
-            e.setAttribute( "names", "Tom" );
-            e.setAttribute( "names", "Sriram" );
+            e = e.GetInstanceOf();
+            e.SetAttribute( "names", "Ter" );
+            e.SetAttribute( "names", "Tom" );
+            e.SetAttribute( "names", "Sriram" );
             string expecting = "3";
             Assert.AreEqual( expecting, e.ToString() );
         }
@@ -5986,12 +5986,12 @@ namespace AntlrUnitTests
             StringTemplate e = new StringTemplate(
                     "$length(names)$"
                 );
-            e = e.getInstanceOf();
+            e = e.GetInstanceOf();
             IDictionary m = new Dictionary<object, object>();
             m["Tom"] = "foo";
             m["Sriram"] = "foo";
             m["Doug"] = "foo";
-            e.setAttribute( "names", m );
+            e.SetAttribute( "names", m );
             string expecting = "3";
             Assert.AreEqual( expecting, e.ToString() );
         }
@@ -6002,12 +6002,12 @@ namespace AntlrUnitTests
             StringTemplate e = new StringTemplate(
                     "$length(names)$"
                 );
-            e = e.getInstanceOf();
+            e = e.GetInstanceOf();
             HashSet<object> m = new HashSet<object>();
             m.Add( "Tom" );
             m.Add( "Sriram" );
             m.Add( "Doug" );
-            e.setAttribute( "names", m );
+            e.SetAttribute( "names", m );
             string expecting = "3";
             Assert.AreEqual( expecting, e.ToString() );
         }
@@ -6018,8 +6018,8 @@ namespace AntlrUnitTests
             StringTemplate e = new StringTemplate(
                     "$length(names)$"
                 );
-            e = e.getInstanceOf();
-            e.setAttribute( "names", null );
+            e = e.GetInstanceOf();
+            e.SetAttribute( "names", null );
             string expecting = "0";
             Assert.AreEqual( expecting, e.ToString() );
         }
@@ -6030,8 +6030,8 @@ namespace AntlrUnitTests
             StringTemplate e = new StringTemplate(
                     "$length(names)$"
                 );
-            e = e.getInstanceOf();
-            e.setAttribute( "names", "Ter" );
+            e = e.GetInstanceOf();
+            e.SetAttribute( "names", "Ter" );
             string expecting = "1";
             Assert.AreEqual( expecting, e.ToString() );
         }
@@ -6042,8 +6042,8 @@ namespace AntlrUnitTests
             StringTemplate e = new StringTemplate(
                     "$length(ints)$"
                 );
-            e = e.getInstanceOf();
-            e.setAttribute( "ints", new int[] { 1, 2, 3, 4 } );
+            e = e.GetInstanceOf();
+            e.SetAttribute( "ints", new int[] { 1, 2, 3, 4 } );
             string expecting = "4";
             Assert.AreEqual( expecting, e.ToString() );
         }
@@ -6054,13 +6054,13 @@ namespace AntlrUnitTests
             StringTemplate e = new StringTemplate(
                     "$length(data)$"
                 );
-            e = e.getInstanceOf();
+            e = e.GetInstanceOf();
             IList data = new List<object>();
             data.Add( "Hi" );
             data.Add( null );
             data.Add( "mom" );
             data.Add( null );
-            e.setAttribute( "data", data );
+            e.SetAttribute( "data", data );
             string expecting = "4"; // nulls are counted
             Assert.AreEqual( expecting, e.ToString() );
         }
@@ -6071,13 +6071,13 @@ namespace AntlrUnitTests
             StringTemplate e = new StringTemplate(
                     "$strip(data)$"
                 );
-            e = e.getInstanceOf();
+            e = e.GetInstanceOf();
             IList data = new List<object>();
             data.Add( "Hi" );
             data.Add( null );
             data.Add( "mom" );
             data.Add( null );
-            e.setAttribute( "data", data );
+            e.SetAttribute( "data", data );
             string expecting = "Himom"; // nulls are skipped
             Assert.AreEqual( expecting, e.ToString() );
         }
@@ -6088,7 +6088,7 @@ namespace AntlrUnitTests
             StringTemplate e = new StringTemplate(
                     "$strip(data):{list | $strip(list)$}; separator=\",\"$"
                 );
-            e = e.getInstanceOf();
+            e = e.GetInstanceOf();
             IList data = new List<object>();
             IList dataOne = new List<object>();
             dataOne.Add( "Hi" );
@@ -6101,7 +6101,7 @@ namespace AntlrUnitTests
             dataTwo.Add( "dad" );
             dataTwo.Add( null );
             data.Add( dataTwo );
-            e.setAttribute( "data", data );
+            e.SetAttribute( "data", data );
             string expecting = "Himom,Hidad"; // nulls are skipped
             Assert.AreEqual( expecting, e.ToString() );
         }
@@ -6112,8 +6112,8 @@ namespace AntlrUnitTests
             StringTemplate e = new StringTemplate(
                     "$strip(data)$"
                 );
-            e = e.getInstanceOf();
-            e.setAttribute( "data", "hi" );
+            e = e.GetInstanceOf();
+            e.SetAttribute( "data", "hi" );
             string expecting = "hi"; // nulls are skipped
             Assert.AreEqual( expecting, e.ToString() );
         }
@@ -6124,7 +6124,7 @@ namespace AntlrUnitTests
             StringTemplate e = new StringTemplate(
                     "$strip(data)$"
                 );
-            e = e.getInstanceOf();
+            e = e.GetInstanceOf();
             string expecting = ""; // nulls are skipped
             Assert.AreEqual( expecting, e.ToString() );
         }
@@ -6139,12 +6139,12 @@ namespace AntlrUnitTests
                 ;
             StringTemplateGroup group =
                 new StringTemplateGroup( new StringReader( templates ) );
-            StringTemplate e = group.getInstanceOf( "a" );
+            StringTemplate e = group.GetInstanceOf( "a" );
             IList names = new List<object>();
             names.Add( "Ter" );
             names.Add( null );
             names.Add( "Tom" );
-            e.setAttribute( "names", names );
+            e.SetAttribute( "names", names );
             string expecting = "TerTom, TerTom";
             Assert.AreEqual( expecting, e.ToString() );
         }
@@ -6155,13 +6155,13 @@ namespace AntlrUnitTests
             StringTemplate e = new StringTemplate(
                     "$length(strip(data))$"
                 );
-            e = e.getInstanceOf();
+            e = e.GetInstanceOf();
             IList data = new List<object>();
             data.Add( "Hi" );
             data.Add( null );
             data.Add( "mom" );
             data.Add( null );
-            e.setAttribute( "data", data );
+            e.SetAttribute( "data", data );
             string expecting = "2"; // nulls are counted
             Assert.AreEqual( expecting, e.ToString() );
         }
@@ -6172,7 +6172,7 @@ namespace AntlrUnitTests
             StringTemplate e = new StringTemplate(
                     "$length(strip(data))$"
                 );
-            e = e.getInstanceOf();
+            e = e.GetInstanceOf();
             IList data = new List<object>();
             data.Add( null );
             data.Add( null );
@@ -6185,7 +6185,7 @@ namespace AntlrUnitTests
             data.Add( null );
             data.Add( null );
             data.Add( null );
-            e.setAttribute( "data", data );
+            e.SetAttribute( "data", data );
             string expecting = "2"; // nulls are counted
             Assert.AreEqual( expecting, e.ToString() );
         }
@@ -6201,7 +6201,7 @@ namespace AntlrUnitTests
             IDictionary map = new SortedList<object, object>();
             map["int"] = "0";
             map["float"] = "0.0";
-            t.setAttribute( "aMap", map );
+            t.SetAttribute( "aMap", map );
             // either order of enumerating the dictionary is allowed
             string result = t.ToString();
             if ( result.StartsWith( "int" ) )
@@ -6221,7 +6221,7 @@ namespace AntlrUnitTests
             IDictionary map = new SortedList<object, object>();
             map["int"] = "0";
             map["float"] = "0.0";
-            t.setAttribute( "aMap", map );
+            t.SetAttribute( "aMap", map );
 
             // either order of enumerating the dictionary is allowed
             string result = t.ToString();
@@ -6242,7 +6242,7 @@ namespace AntlrUnitTests
             IDictionary map = new Dictionary<object, object>();
             map.Add( 1, new List<object>( new object[] { "ick", "foo" } ) );
             map.Add( 2, new List<object>( new object[] { "x", "y" } ) );
-            t.setAttribute( "aMap", map );
+            t.SetAttribute( "aMap", map );
             string result = t.ToString();
             if ( result.StartsWith( "1" ) )
                 Assert.AreEqual( "1:ickfoo, 2:xy", t.ToString() );
@@ -6260,9 +6260,9 @@ namespace AntlrUnitTests
             // context.  it can therefore see name.
             StringTemplateGroup group =
                     new StringTemplateGroup( "test" );
-            StringTemplate main = group.defineTemplate( "main", "$foo(t={Hi, $super.name$}, name=\"parrt\")$" );
-            main.setAttribute( "name", "tombu" );
-            StringTemplate foo = group.defineTemplate( "foo", "$t$" );
+            StringTemplate main = group.DefineTemplate( "main", "$foo(t={Hi, $super.name$}, name=\"parrt\")$" );
+            main.SetAttribute( "name", "tombu" );
+            StringTemplate foo = group.DefineTemplate( "foo", "$t$" );
             string expecting = "Hi, parrt";
             Assert.AreEqual( expecting, main.ToString() );
         }
@@ -6288,10 +6288,10 @@ namespace AntlrUnitTests
                 StringTemplateGroup group =
                         new StringTemplateGroup( new StringReader( templates ) );
 
-                StringTemplate st = group.getInstanceOf( "t1" );
+                StringTemplate st = group.GetInstanceOf( "t1" );
                 Assert.AreEqual( "R1", st.ToString() );
 
-                st = group.getInstanceOf( "t2" );
+                st = group.GetInstanceOf( "t2" );
                 Assert.AreEqual( "R2", st.ToString() );
 
                 Assert.Fail( "A parse error should have been generated" );
@@ -6320,12 +6320,12 @@ namespace AntlrUnitTests
             StringTemplateGroup subGroup = new StringTemplateGroup(
                 new StringReader( subGroupString ), typeof( AngleBracketTemplateLexer ) );
             subGroup.SuperGroup = superGroup;
-            StringTemplate a = subGroup.getInstanceOf( "a" );
-            a.setAttribute( "x", "foo" );
+            StringTemplate a = subGroup.GetInstanceOf( "a" );
+            a.SetAttribute( "x", "foo" );
             Assert.AreEqual( "super.a", a.ToString() );
-            StringTemplate b = subGroup.getInstanceOf( "b" );
+            StringTemplate b = subGroup.GetInstanceOf( "b" );
             Assert.AreEqual( "sub.csuper.b", b.ToString() );
-            StringTemplate c = subGroup.getInstanceOf( "c" );
+            StringTemplate c = subGroup.GetInstanceOf( "c" );
             Assert.AreEqual( "sub.c", c.ToString() );
         }
 
@@ -6336,10 +6336,10 @@ namespace AntlrUnitTests
             StringTemplate e = new StringTemplate(
                     "$[\"Ter\",,\"Jesse\"]:{n | $i$:$n$}; separator=\", \", null=\"\"$"
                 );
-            e = e.getInstanceOf();
-            e.setAttribute( "names", "Ter" );
-            e.setAttribute( "phones", "1" );
-            e.setAttribute( "salaries", "big" );
+            e = e.GetInstanceOf();
+            e.SetAttribute( "names", "Ter" );
+            e.SetAttribute( "phones", "1" );
+            e.SetAttribute( "salaries", "big" );
             string expecting = "1:Ter, 2:, 3:Jesse";
             Assert.AreEqual( expecting, e.ToString() );
         }
@@ -6350,10 +6350,10 @@ namespace AntlrUnitTests
             StringTemplate st = new StringTemplate(
                     "Tokens : <rules; separator=names:{<it>}> ;",
                     typeof( AngleBracketTemplateLexer ) );
-            st.setAttribute( "rules", "A" );
-            st.setAttribute( "rules", "B" );
-            st.setAttribute( "names", "Ter" );
-            st.setAttribute( "names", "Tom" );
+            st.SetAttribute( "rules", "A" );
+            st.SetAttribute( "rules", "B" );
+            st.SetAttribute( "names", "Ter" );
+            st.SetAttribute( "names", "Tom" );
             string expecting = "Tokens : ATerTomB ;";
             Assert.AreEqual( expecting, st.ToString() );
         }
@@ -6367,7 +6367,7 @@ namespace AntlrUnitTests
             catch ( IOException ioe )
             {
                 Console.Error.WriteLine( "can't write file" );
-                ioe.printStackTrace( Console.Error );
+                ioe.PrintStackTrace( Console.Error );
             }
         }
     }

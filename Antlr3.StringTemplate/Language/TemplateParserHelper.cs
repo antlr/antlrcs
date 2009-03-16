@@ -40,14 +40,14 @@ namespace Antlr3.ST.Language
 
         public override void ReportError( RecognitionException e )
         {
-            StringTemplateGroup group = self.getGroup();
+            StringTemplateGroup group = self.GetGroup();
             if ( group == StringTemplate.defaultGroup )
             {
-                self.error( "template parse error; template context is " + self.getEnclosingInstanceStackString(), e );
+                self.Error( "template parse error; template context is " + self.GetEnclosingInstanceStackString(), e );
             }
             else
             {
-                self.error( "template parse error in group " + self.getGroup().Name + " line " + self.getGroupFileLine() + "; template context is " + self.getEnclosingInstanceStackString(), e );
+                self.Error( "template parse error in group " + self.GetGroup().Name + " line " + self.GetGroupFileLine() + "; template context is " + self.GetEnclosingInstanceStackString(), e );
             }
         }
     }

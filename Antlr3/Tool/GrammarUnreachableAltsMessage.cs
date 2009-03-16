@@ -85,13 +85,13 @@ namespace Antlr3.Tool
                     NFAState ruleStart = probe.dfa.nfa.grammar.getRuleStartState( tokenName );
                     line = ruleStart.associatedASTNode.Line;
                     charPositionInLine = ruleStart.associatedASTNode.CharPositionInLine;
-                    st.setAttribute( "tokens", tokenName );
+                    st.SetAttribute( "tokens", tokenName );
                 }
             }
             else
             {
                 // regular alt numbers, show the alts
-                st.setAttribute( "alts", alts );
+                st.SetAttribute( "alts", alts );
             }
 
             return base.ToString( st );

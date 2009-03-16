@@ -44,7 +44,7 @@ namespace AntlrUnitTests
         {
             StringTemplate outputFileST = GetLexerTestFileTemplate();
 
-            outputFileST.setAttribute( "lexerName", lexerName );
+            outputFileST.SetAttribute( "lexerName", lexerName );
 
             WriteTestFile( outputFileST.ToString() );
         }
@@ -53,10 +53,10 @@ namespace AntlrUnitTests
             StringTemplate outputFileST = GetCombinedTestFileTemplate();
             StringTemplate createParserST = GetParserCreationTemplate();
 
-            outputFileST.setAttribute( "createParser", createParserST );
-            outputFileST.setAttribute( "parserName", parserName );
-            outputFileST.setAttribute( "lexerName", lexerName );
-            outputFileST.setAttribute( "parserStartRuleName", parserStartRuleName );
+            outputFileST.SetAttribute( "createParser", createParserST );
+            outputFileST.SetAttribute( "parserName", parserName );
+            outputFileST.SetAttribute( "lexerName", lexerName );
+            outputFileST.SetAttribute( "parserStartRuleName", parserStartRuleName );
 
             WriteTestFile( outputFileST.ToString() );
         }
@@ -65,12 +65,12 @@ namespace AntlrUnitTests
             StringTemplate outputFileST = GetTreeTestFileTemplate();
             StringTemplate createParserST = GetParserCreationTemplate();
 
-            outputFileST.setAttribute( "createParser", createParserST );
-            outputFileST.setAttribute( "parserName", parserName );
-            outputFileST.setAttribute( "treeParserName", treeParserName );
-            outputFileST.setAttribute( "lexerName", lexerName );
-            outputFileST.setAttribute( "parserStartRuleName", parserStartRuleName );
-            outputFileST.setAttribute( "treeParserStartRuleName", treeParserStartRuleName );
+            outputFileST.SetAttribute( "createParser", createParserST );
+            outputFileST.SetAttribute( "parserName", parserName );
+            outputFileST.SetAttribute( "treeParserName", treeParserName );
+            outputFileST.SetAttribute( "lexerName", lexerName );
+            outputFileST.SetAttribute( "parserStartRuleName", parserStartRuleName );
+            outputFileST.SetAttribute( "treeParserStartRuleName", treeParserStartRuleName );
 
             WriteTestFile( outputFileST.ToString() );
         }
@@ -84,12 +84,12 @@ namespace AntlrUnitTests
             StringTemplate outputFileST = GetTreeAndTreeTestFileTemplate();
             StringTemplate createParserST = GetParserCreationTemplate();
 
-            outputFileST.setAttribute( "createParser", createParserST );
-            outputFileST.setAttribute( "parserName", parserName );
-            outputFileST.setAttribute( "treeParserName", treeParserName );
-            outputFileST.setAttribute( "lexerName", lexerName );
-            outputFileST.setAttribute( "parserStartRuleName", parserStartRuleName );
-            outputFileST.setAttribute( "treeParserStartRuleName", treeParserStartRuleName );
+            outputFileST.SetAttribute( "createParser", createParserST );
+            outputFileST.SetAttribute( "parserName", parserName );
+            outputFileST.SetAttribute( "treeParserName", treeParserName );
+            outputFileST.SetAttribute( "lexerName", lexerName );
+            outputFileST.SetAttribute( "parserStartRuleName", parserStartRuleName );
+            outputFileST.SetAttribute( "treeParserStartRuleName", treeParserStartRuleName );
 
             WriteTestFile( outputFileST.ToString() );
         }
@@ -98,10 +98,10 @@ namespace AntlrUnitTests
             StringTemplate outputFileST = GetTemplateTestFileTemplate();
             StringTemplate createParserST = GetParserCreationTemplate();
 
-            outputFileST.setAttribute( "createParser", createParserST );
-            outputFileST.setAttribute( "parserName", parserName );
-            outputFileST.setAttribute( "lexerName", lexerName );
-            outputFileST.setAttribute( "parserStartRuleName", parserStartRuleName );
+            outputFileST.SetAttribute( "createParser", createParserST );
+            outputFileST.SetAttribute( "parserName", parserName );
+            outputFileST.SetAttribute( "lexerName", lexerName );
+            outputFileST.SetAttribute( "parserStartRuleName", parserStartRuleName );
 
             WriteTestFile( outputFileST.ToString() );
         }

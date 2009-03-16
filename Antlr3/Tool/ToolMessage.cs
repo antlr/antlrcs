@@ -77,16 +77,16 @@ namespace Antlr3.Tool
             StringTemplate st = getMessageTemplate();
             if ( arg != null )
             {
-                st.setAttribute( "arg", arg );
+                st.SetAttribute( "arg", arg );
             }
             if ( arg2 != null )
             {
-                st.setAttribute( "arg2", arg2 );
+                st.SetAttribute( "arg2", arg2 );
             }
             if ( e != null )
             {
-                st.setAttribute( "exception", e );
-                st.setAttribute( "stackTrace", e.getStackTrace() );
+                st.SetAttribute( "exception", e );
+                st.SetAttribute( "stackTrace", e.getStackTrace() );
             }
             return base.ToString( st );
         }

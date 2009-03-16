@@ -101,7 +101,7 @@ namespace Antlr3.ST.Language
             this.defaultValueST = defaultValueST;
         }
 
-        public static string getCardinalityName( int cardinality )
+        public static string GetCardinalityName( int cardinality )
         {
             switch ( cardinality )
             {

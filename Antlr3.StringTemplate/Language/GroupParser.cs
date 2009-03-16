@@ -1,4 +1,4 @@
-// $ANTLR 3.1.2 Language\\Group.g3 2009-03-07 08:51:18
+// $ANTLR 3.1.2 Language\\Group.g3 2009-03-16 17:25:52
 
 // The variable 'variable' is assigned but its value is never used.
 #pragma warning disable 219
@@ -139,7 +139,7 @@ public partial class GroupParser : Parser
 				{
 				Match(input,COLON,Follow._COLON_in_group105); 
 				s=(IToken)Match(input,ID,Follow._ID_in_group109); 
-				g.setSuperGroup((s!=null?s.Text:null));
+				g.SetSuperGroup((s!=null?s.Text:null));
 
 				}
 				break;
@@ -161,7 +161,7 @@ public partial class GroupParser : Parser
 				{
 				Match(input,KWIMPLEMENTS,Follow._KWIMPLEMENTS_in_group120); 
 				i=(IToken)Match(input,ID,Follow._ID_in_group124); 
-				g.implementInterface((i!=null?i.Text:null));
+				g.ImplementInterface((i!=null?i.Text:null));
 				// Language\\Group.g3:131:4: ( COMMA i2= ID )*
 				for ( ; ; )
 				{
@@ -181,7 +181,7 @@ public partial class GroupParser : Parser
 						{
 						Match(input,COMMA,Follow._COMMA_in_group132); 
 						i2=(IToken)Match(input,ID,Follow._ID_in_group136); 
-						g.implementInterface((i2!=null?i2.Text:null));
+						g.ImplementInterface((i2!=null?i2.Text:null));
 
 						}
 						break;
@@ -384,10 +384,10 @@ public partial class GroupParser : Parser
 					Match(input,DOT,Follow._DOT_in_template194); 
 					region=(IToken)Match(input,ID,Follow._ID_in_template198); 
 
-									templateName=g.getMangledRegionName((scope2!=null?scope2.Text:null),(region!=null?region.Text:null));
-									if ( g.isDefinedInThisGroup(templateName) )
+									templateName=g.GetMangledRegionName((scope2!=null?scope2.Text:null),(region!=null?region.Text:null));
+									if ( g.IsDefinedInThisGroup(templateName) )
 									{
-										g.error("group "+g.Name+" line "+line+": redefinition of template region: @"+
+										g.Error("group "+g.Name+" line "+line+": redefinition of template region: @"+
 											(scope2!=null?scope2.Text:null)+"."+(region!=null?region.Text:null));
 										st = new StringTemplate(); // create bogus template to fill in
 									}
@@ -395,16 +395,16 @@ public partial class GroupParser : Parser
 									{
 										bool err = false;
 										// @template.region() ::= "..."
-										StringTemplate scopeST = g.lookupTemplate((scope2!=null?scope2.Text:null));
+										StringTemplate scopeST = g.LookupTemplate((scope2!=null?scope2.Text:null));
 										if ( scopeST == null )
 										{
-											g.error("group "+g.Name+" line "+line+": reference to region within undefined template: "+
+											g.Error("group "+g.Name+" line "+line+": reference to region within undefined template: "+
 												(scope2!=null?scope2.Text:null));
 											err=true;
 										}
-										else if ( !scopeST.containsRegionName((region!=null?region.Text:null)) )
+										else if ( !scopeST.ContainsRegionName((region!=null?region.Text:null)) )
 										{
-											g.error("group "+g.Name+" line "+line+": template "+(scope2!=null?scope2.Text:null)+" has no region called "+
+											g.Error("group "+g.Name+" line "+line+": template "+(scope2!=null?scope2.Text:null)+" has no region called "+
 												(region!=null?region.Text:null));
 											err=true;
 										}
@@ -414,7 +414,7 @@ public partial class GroupParser : Parser
 										}
 										else
 										{
-											st = g.defineRegionTemplate((scope2!=null?scope2.Text:null),
+											st = g.DefineRegionTemplate((scope2!=null?scope2.Text:null),
 																		(region!=null?region.Text:null),
 																		null,
 																		StringTemplate.REGION_EXPLICIT);
@@ -430,14 +430,14 @@ public partial class GroupParser : Parser
 					name=(IToken)Match(input,ID,Follow._ID_in_template211); 
 					templateName = (name!=null?name.Text:null);
 
-									if ( g.isDefinedInThisGroup(templateName) )
+									if ( g.IsDefinedInThisGroup(templateName) )
 									{
-										g.error("redefinition of template: "+templateName);
+										g.Error("redefinition of template: "+templateName);
 										st = new StringTemplate(); // create bogus template to fill in
 									}
 									else
 									{
-										st = g.defineTemplate(templateName, null);
+										st = g.DefineTemplate(templateName, null);
 									}
 								
 
@@ -446,7 +446,7 @@ public partial class GroupParser : Parser
 
 				}
 
-				if ( st!=null ) {st.setGroupFileLine(line);}
+				if ( st!=null ) {st.SetGroupFileLine(line);}
 				Match(input,LPAREN,Follow._LPAREN_in_template230); 
 				// Language\\Group.g3:201:4: ( args[st] |)
 				int alt6=2;
@@ -482,7 +482,7 @@ public partial class GroupParser : Parser
 				case 2:
 					// Language\\Group.g3:201:14: 
 					{
-					st.defineEmptyFormalArgumentList();
+					st.DefineEmptyFormalArgumentList();
 
 					}
 					break;
@@ -515,7 +515,7 @@ public partial class GroupParser : Parser
 					// Language\\Group.g3:204:5: t= STRING
 					{
 					t=(IToken)Match(input,STRING,Follow._STRING_in_template256); 
-					st.setTemplate((t!=null?t.Text:null));
+					st.SetTemplate((t!=null?t.Text:null));
 
 					}
 					break;
@@ -523,7 +523,7 @@ public partial class GroupParser : Parser
 					// Language\\Group.g3:205:5: bt= BIGSTRING
 					{
 					bt=(IToken)Match(input,BIGSTRING,Follow._BIGSTRING_in_template270); 
-					st.setTemplate((bt!=null?bt.Text:null));
+					st.SetTemplate((bt!=null?bt.Text:null));
 
 					}
 					break;
@@ -539,7 +539,7 @@ public partial class GroupParser : Parser
 				alias=(IToken)Match(input,ID,Follow._ID_in_template286); 
 				Match(input,DEFINED_TO_BE,Follow._DEFINED_TO_BE_in_template288); 
 				target=(IToken)Match(input,ID,Follow._ID_in_template292); 
-				g.defineTemplateAlias((alias!=null?alias.Text:null), (target!=null?target.Text:null));
+				g.DefineTemplateAlias((alias!=null?alias.Text:null), (target!=null?target.Text:null));
 
 				}
 				break;
@@ -669,9 +669,9 @@ public partial class GroupParser : Parser
 				s=(IToken)Match(input,STRING,Follow._STRING_in_arg348); 
 
 								defaultValue=new StringTemplate("$_val_$");
-								defaultValue.setAttribute("_val_", (s!=null?s.Text:null));
-								defaultValue.defineFormalArgument("_val_");
-								defaultValue.Name = "<"+st.getName()+"'s arg "+(name!=null?name.Text:null)+" default value subtemplate>";
+								defaultValue.SetAttribute("_val_", (s!=null?s.Text:null));
+								defaultValue.DefineFormalArgument("_val_");
+								defaultValue.Name = "<"+st.GetName()+"'s arg "+(name!=null?name.Text:null)+" default value subtemplate>";
 							
 
 				}
@@ -682,8 +682,8 @@ public partial class GroupParser : Parser
 				Match(input,ASSIGN,Follow._ASSIGN_in_arg359); 
 				bs=(IToken)Match(input,ANONYMOUS_TEMPLATE,Follow._ANONYMOUS_TEMPLATE_in_arg363); 
 
-								defaultValue=new StringTemplate(st.getGroup(), (bs!=null?bs.Text:null));
-								defaultValue.Name = "<"+st.getName()+"'s arg "+(name!=null?name.Text:null)+" default value subtemplate>";
+								defaultValue=new StringTemplate(st.GetGroup(), (bs!=null?bs.Text:null));
+								defaultValue.Name = "<"+st.GetName()+"'s arg "+(name!=null?name.Text:null)+" default value subtemplate>";
 							
 
 				}
@@ -691,7 +691,7 @@ public partial class GroupParser : Parser
 
 			}
 
-			st.defineFormalArgument((name!=null?name.Text:null), defaultValue);
+			st.DefineFormalArgument((name!=null?name.Text:null), defaultValue);
 
 			}
 
@@ -729,17 +729,17 @@ public partial class GroupParser : Parser
 			state._fsp--;
 
 
-						if ( g.getMap((name!=null?name.Text:null))!=null )
+						if ( g.GetMap((name!=null?name.Text:null))!=null )
 						{
-							g.error("redefinition of map: "+(name!=null?name.Text:null));
+							g.Error("redefinition of map: "+(name!=null?name.Text:null));
 						}
-						else if ( g.isDefinedInThisGroup((name!=null?name.Text:null)) )
+						else if ( g.IsDefinedInThisGroup((name!=null?name.Text:null)) )
 						{
-							g.error("redefinition of template as map: "+(name!=null?name.Text:null));
+							g.Error("redefinition of template as map: "+(name!=null?name.Text:null));
 						}
 						else
 						{
-							g.defineMap((name!=null?name.Text:null), m);
+							g.DefineMap((name!=null?name.Text:null), m);
 						}
 					
 

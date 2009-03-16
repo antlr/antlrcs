@@ -45,12 +45,12 @@ namespace Antlr3.ST.Language
         {
             if ( groupI != null )
             {
-                groupI.error( "template group interface parse error", e );
+                groupI.Error( "template group interface parse error", e );
             }
             else
             {
                 Console.Error.WriteLine( "template group interface parse error: " + e );
-                e.printStackTrace( Console.Error );
+                e.PrintStackTrace( Console.Error );
             }
         }
     }

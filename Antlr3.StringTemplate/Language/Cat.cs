@@ -51,7 +51,7 @@ namespace Antlr3.ST.Language
         {
             return items.SelectMany( ( item ) =>
             {
-                item = ASTExpr.convertAnythingIteratableToIterator( item );
+                item = ASTExpr.ConvertAnythingIteratableToIterator( item );
                 if ( item is Antlr.Runtime.JavaExtensions.Iterator )
                     return ( (Antlr.Runtime.JavaExtensions.Iterator)item ).Source.Cast<object>();
                 else if ( item is string )
