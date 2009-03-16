@@ -55,12 +55,12 @@ namespace Antlr3
     {
         public string VERSION = "3.1.2";
         public const string UNINITIALIZED_DIR = "<unset-dir>";
-        private HashSet<string> grammarFileNames = new HashSet<string>();
+        private IList<string> grammarFileNames = new List<string>();
         private bool generate_NFA_dot = false;
         private bool generate_DFA_dot = false;
         private string outputDirectory = ".";
         private bool haveOutputDir = false;
-        private string inputDirectory = "";
+        private string inputDirectory;
         private string parentGrammarDirectory;
         private string grammarOutputDirectory;
         private bool haveInputDir = false;
@@ -585,11 +585,11 @@ namespace Antlr3
 
         public virtual void sortGrammarFiles()
         {
-            //System.out.println("Grammar names "+getGrammarFileNames());
+            //Console.Out.WriteLine( "Grammar names " + GrammarFileNames );
             Graph g = new Graph();
             foreach ( string gfile in GrammarFileNames )
             {
-                GrammarSpelunker grammar = new GrammarSpelunker( gfile );
+                GrammarSpelunker grammar = new GrammarSpelunker( inputDirectory, gfile );
                 grammar.parse();
                 string vocabName = grammar.getTokenVocab();
                 string grammarName = grammar.getGrammarName();
@@ -601,12 +601,12 @@ namespace Antlr3
             }
             List<object> sorted = g.Sort();
             //Console.Out.WriteLine( "sorted=" + sorted );
-            grammarFileNames.Clear(); // wipe so we can give new ordered list
+            GrammarFileNames.Clear(); // wipe so we can give new ordered list
             for ( int i = 0; i < sorted.Count; i++ )
             {
                 string f = (string)sorted[i];
                 if ( GrammarExtensions.Any( ext => f.EndsWith( ext, StringComparison.OrdinalIgnoreCase ) ) )
-                    grammarFileNames.Add( f );
+                    addGrammarFile( f );
             }
             //Console.Out.WriteLine( "new grammars=" + grammarFileNames );
         }
@@ -1086,15 +1086,11 @@ namespace Antlr3
          *
          * @return the grammarFileNames
          */
-        public virtual HashSet<string> GrammarFileNames
+        public virtual IList<string> GrammarFileNames
         {
             get
             {
                 return grammarFileNames;
-            }
-            set
-            {
-                grammarFileNames = value;
             }
         }
 
@@ -1401,7 +1397,8 @@ namespace Antlr3
 
         public virtual void addGrammarFile( string grammarFileName )
         {
-            grammarFileNames.Add( grammarFileName );
+            if ( !GrammarFileNames.Contains( grammarFileName ) )
+                GrammarFileNames.Add( grammarFileName );
         }
     }
 }

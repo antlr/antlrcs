@@ -38,6 +38,7 @@ namespace Antlr3.Tool
     using Console = System.Console;
 #endif
     using Exception = System.Exception;
+    using Path = System.IO.Path;
     using StringBuilder = System.Text.StringBuilder;
     using TextReader = System.IO.TextReader;
 
@@ -65,10 +66,12 @@ namespace Antlr3.Tool
         protected string grammarName;
         protected string tokenVocab;
         protected string language = "Java"; // default
+        protected string inputDirectory;
         protected List<string> importedGrammars;
 
-        public GrammarSpelunker( string grammarFileName )
+        public GrammarSpelunker( string inputDirectory, string grammarFileName )
         {
+            this.inputDirectory = inputDirectory;
             this.grammarFileName = grammarFileName;
         }
 
@@ -89,7 +92,11 @@ namespace Antlr3.Tool
 
         public virtual void parse()
         {
-            TextReader r = new System.IO.StreamReader( grammarFileName );
+            string fileName = grammarFileName;
+            if ( inputDirectory != null )
+                fileName = Path.Combine( inputDirectory, grammarFileName );
+
+            TextReader r = new System.IO.StreamReader( fileName );
             try
             {
                 scanner = new Scanner( r );
@@ -309,7 +316,7 @@ namespace Antlr3.Tool
         /** Tester; Give grammar filename as arg */
         public static void Main( string[] args )
         {
-            GrammarSpelunker g = new GrammarSpelunker( args[0] );
+            GrammarSpelunker g = new GrammarSpelunker( ".", args[0] );
             g.parse();
             Console.Out.WriteLine( g.grammarModifier + " grammar " + g.grammarName );
             Console.Out.WriteLine( "language=" + g.language );
