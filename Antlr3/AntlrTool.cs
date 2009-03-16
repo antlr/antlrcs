@@ -89,6 +89,12 @@ namespace Antlr3
         public static bool internalOption_ShowNFAConfigsInDFA = false;
         public static bool internalOption_watchNFAConversion = false;
 
+        readonly string[] GrammarExtensions =
+            {
+                ".g",
+                ".g3"
+            };
+
 #if false
         /**
          * A list of dependency generators that are accumulated aaaas (and if) the
@@ -486,12 +492,12 @@ namespace Antlr3
                         Console.Out.WriteLine( report2.getBacktrackingReport() );
                         // same for aborted NFA->DFA conversions
                         Console.Out.WriteLine( report2.getAnalysisTimeoutReport() );
-                    }
-                    if ( Profile )
-                    {
-                        GrammarReport report2 = new GrammarReport( grammar );
-                        Stats.WriteReport( GrammarReport.GRAMMAR_STATS_FILENAME,
-                                          report2.toNotifyString() );
+
+                        if ( Profile )
+                        {
+                            Stats.WriteReport( GrammarReport.GRAMMAR_STATS_FILENAME,
+                                              report2.toNotifyString() );
+                        }
                     }
 
                     // now handle the lexer if one was created for a merged spec
@@ -599,7 +605,7 @@ namespace Antlr3
             for ( int i = 0; i < sorted.Count; i++ )
             {
                 string f = (string)sorted[i];
-                if ( f.EndsWith( ".g" ) )
+                if ( GrammarExtensions.Any( ext => f.EndsWith( ext, StringComparison.OrdinalIgnoreCase ) ) )
                     grammarFileNames.Add( f );
             }
             //Console.Out.WriteLine( "new grammars=" + grammarFileNames );
@@ -861,6 +867,7 @@ namespace Antlr3
             // But, if this is a .tokens file, then we force the output to
             // be the base output directory (or current directory if there is not a -o)
             //
+#if false
             System.IO.DirectoryInfo outputDir;
             if ( fileName.EndsWith( CodeGenerator.VOCAB_FILE_EXTENSION ) )
             {
@@ -877,6 +884,9 @@ namespace Antlr3
             {
                 outputDir = getOutputDirectory( g.FileName );
             }
+#else
+            System.IO.DirectoryInfo outputDir = getOutputDirectory( g.FileName );
+#endif
             FileInfo outputFile = new FileInfo( System.IO.Path.Combine( outputDir.FullName, fileName ) );
 
             if ( !outputDir.Exists )
