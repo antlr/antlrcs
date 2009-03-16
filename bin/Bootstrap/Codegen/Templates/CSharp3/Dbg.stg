@@ -29,7 +29,6 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-
 /** Template overrides to add debugging to normal Java output;
  *  If ASTs are built, then you'll also get ASTDbg.stg loaded.
  */
@@ -37,8 +36,8 @@ group Dbg;
 
 @outputFile.imports() ::= <<
 <@super.imports()>
-using Antlr.Runtime.Debug;<!import org.antlr.runtime.debug.*;!>
-using IOException = System.IO.IOException;<!import java.io.IOException;!>
+using Antlr.Runtime.Debug;
+using IOException = System.IO.IOException;
 >>
 
 @genericParser.members() ::= <<
@@ -50,44 +49,37 @@ public static readonly string[] ruleNames =
 	};<\n>
 <endif>
 <if(grammar.grammarIsRoot)><! grammar imports other grammar(s) !>
-<!
-public int ruleLevel = 0;
-public virtual int getRuleLevel() { return ruleLevel; }
-public virtual void incRuleLevel() { ruleLevel++; }
-public virtual void decRuleLevel() { ruleLevel--; }
-!>
+	int ruleLevel = 0;
+	public virtual int RuleLevel { get { return ruleLevel; } }
+	public virtual void IncRuleLevel() { ruleLevel++; }
+	public virtual void DecRuleLevel() { ruleLevel--; }
 <if(profile)>
-<ctorForProfilingRootGrammar()>
+	<ctorForProfilingRootGrammar()>
 <else>
-<ctorForRootGrammar()>
+	<ctorForRootGrammar()>
 <endif>
-<!<ctorForPredefinedListener()>!>
+<ctorForPredefinedListener()>
 <else><! imported grammar !>
-public virtual int getRuleLevel() { return <grammar.delegators:{g| <g:delegateName()>}>.getRuleLevel(); }
-public virtual void incRuleLevel() { <grammar.delegators:{g| <g:delegateName()>}>.incRuleLevel(); }
-public virtual void decRuleLevel() { <grammar.delegators:{g| <g:delegateName()>}>.decRuleLevel(); }
-<ctorForDelegateGrammar()>
+	public int RuleLevel { get { return <grammar.delegators:{g| <g:delegateName()>}>.RuleLevel; } }
+	public void IncRuleLevel() { <grammar.delegators:{g| <g:delegateName()>}>.IncRuleLevel(); }
+	public void DecRuleLevel() { <grammar.delegators:{g| <g:delegateName()>}>.DecRuleLevel(); }
+	<ctorForDelegateGrammar()>
 <endif>
 <if(profile)>
-public virtual bool alreadyParsedRule( IIntStream input, int ruleIndex )
+public virtual bool AlreadyParsedRule( IIntStream input, int ruleIndex )
 {
-	((Profiler)dbg).examineRuleMemoization(input, ruleIndex, <grammar.composite.rootGrammar.recognizerName>.ruleNames[ruleIndex]);
-	return super.alreadyParsedRule(input, ruleIndex);
+	((Profiler)dbg).ExamineRuleMemoization(input, ruleIndex, <grammar.composite.rootGrammar.recognizerName>.ruleNames[ruleIndex]);
+	return super.AlreadyParsedRule(input, ruleIndex);
 }<\n>
-public virtual void memoize( IIntStream input, int ruleIndex, int ruleStartIndex )
+public virtual void Memoize( IIntStream input, int ruleIndex, int ruleStartIndex )
 {
-	((Profiler)dbg).memoize(input, ruleIndex, ruleStartIndex, <grammar.composite.rootGrammar.recognizerName>.ruleNames[ruleIndex]);
-	super.memoize(input, ruleIndex, ruleStartIndex);
+	((Profiler)dbg).Memoize(input, ruleIndex, ruleStartIndex, <grammar.composite.rootGrammar.recognizerName>.ruleNames[ruleIndex]);
+	super.Memoize(input, ruleIndex, ruleStartIndex);
 }<\n>
 <endif>
-public override IDebugEventListener DebugListener
+protected virtual bool EvalPredicate( bool result, string predicate )
 {
-	get;
-	set;
-}
-static bool EvalPredicate( bool result, string predicate )
-{
-	DebugSemanticPredicate( dbg, result, predicate );
+	dbg.SemanticPredicate( result, predicate );
 	return result;
 }<\n>
 >>
@@ -96,15 +88,15 @@ ctorForRootGrammar() ::= <<
 <! bug: can't use <@super.members()> cut-n-paste instead !>
 <! Same except we add port number and profile stuff if root grammar !>
 public <name>( <inputStreamType> input )
-	: this( input, <!DebugEventSocketProxy.DEFAULT_DEBUGGER_PORT, !>new RecognizerSharedState() )
+	: this( input, DebugEventSocketProxy.DEFAULT_DEBUGGER_PORT, new RecognizerSharedState() )
 {
 }
-public <name>( <inputStreamType> input, <!int port, !>RecognizerSharedState state )
+public <name>( <inputStreamType> input, int port, RecognizerSharedState state )
 	: base( input, state )
 {
 	<parserCtorBody()>
-<!	<createListenerAndHandshake()>!>
-	<grammar.directDelegates:{g|<g:delegateName()> = new <g.recognizerName>( input, <!dbg, !>this.state, this<grammar.delegators:{g|, <g:delegateName()>}> );}; separator="\n">
+	<createListenerAndHandshake()>
+	<grammar.directDelegates:{g|<g:delegateName()> = new <g.recognizerName>( input, dbg, this.state, this<grammar.delegators:{g|, <g:delegateName()>}> );}; separator="\n">
 	<@finally()>
 }<\n>
 >>
@@ -159,10 +151,10 @@ DebugEventSocketProxy proxy = new DebugEventSocketProxy( this, port, input.TreeA
 <else>
 DebugEventSocketProxy proxy = new DebugEventSocketProxy( this, port, null );<\n>
 <endif>
-setDebugListener( proxy );
+DebugListener = proxy;
 try
 {
-	proxy.handshake();
+	proxy.Handshake();
 }
 catch ( IOException ioe )
 {
@@ -170,88 +162,69 @@ catch ( IOException ioe )
 }
 >>
 
-//@genericParser.superClassName() ::= "Debug<@super.superClassName()>"
+@genericParser.superClassName() ::= "Debug<@super.superClassName()>"
 
 @rule.preamble() ::= <<
-<!
 try
 {
 	dbg.EnterRule( GrammarFileName, "<ruleName>" );
-	if ( getRuleLevel() == 0 )
+	if ( RuleLevel == 0 )
+	{
 		dbg.Commence();
-	incRuleLevel();
-	dbg.Location( <ruleDescriptor.tree.line>, <ruleDescriptor.tree.charPositionInLine> );
-!>
-DebugEnterRule( DebugListener, GrammarFileName, "<ruleName>" );
-DebugLocation( DebugListener, <ruleDescriptor.tree.line>, <ruleDescriptor.tree.charPositionInLine> );<\n>
+	}
+	IncRuleLevel();
+	dbg.Location( <ruleDescriptor.tree.line>, <ruleDescriptor.tree.charPositionInLine> );<\n>
 >>
 
 @rule.postamble() ::= <<
-<!
-	dbg.Location( <ruleDescriptor.EORNode.line>, <ruleDescriptor.EORNode.charPositionInLine> );
+dbg.Location(<ruleDescriptor.EORNode.line>, <ruleDescriptor.EORNode.charPositionInLine>);<\n>
 }
 finally
 {
 	dbg.ExitRule( GrammarFileName, "<ruleName>" );
-	decRuleLevel();
-	if ( getRuleLevel() == 0 )
+	DecRuleLevel();
+	if ( RuleLevel == 0 )
+	{
 		dbg.Terminate();
-}
-!>
-DebugLocation( DebugListener, <ruleDescriptor.EORNode.line>, <ruleDescriptor.EORNode.charPositionInLine> );
-DebugExitRule( DebugListener, GrammarFileName, "<ruleName>" );<\n>
+	}
+}<\n>
 >>
 
-@synpred.start() ::= "DebugBeginBacktrack( DebugListener, state.backtracking );"
-//@synpred.start() ::= "dbg.beginBacktrack( state.backtracking );"
+@synpred.start() ::= "dbg.BeginBacktrack( state.backtracking );"
 
-@synpred.stop() ::= "DebugEndBacktrack( DebugListener, state.backtracking, success );"
-//@synpred.stop() ::= "dbg.endBacktrack( state.backtracking, success );"
+@synpred.stop() ::= "dbg.EndBacktrack( state.backtracking, success );"
 
 // Common debug event triggers used by region overrides below
 
 enterSubRule() ::= <<
-<!
 try
 {
-	dbg.EnterSubRule( <decisionNumber> );
-!>
-DebugEnterSubRule( DebugListener, <decisionNumber> );<\n>
+	dbg.EnterSubRule( <decisionNumber> );<\n>
 >>
 
 exitSubRule() ::= <<
-<!
 }
 finally
 {
 	dbg.ExitSubRule( <decisionNumber> );
-}
-!>
-DebugExitSubRule( DebugListener, <decisionNumber> );<\n>
+}<\n>
 >>
 
 enterDecision() ::= <<
-<!
 try
 {
-	dbg.EnterDecision( <decisionNumber> );
-!>
-DebugEnterDecision( DebugListener, <decisionNumber> );<\n>
+	dbg.EnterDecision( <decisionNumber> );<\n>
 >>
 
 exitDecision() ::= <<
-<!
 }
 finally
 {
 	dbg.ExitDecision( <decisionNumber> );
-}
-!>
-DebugExitDecision( DebugListener, <decisionNumber> );<\n>
+}<\n>
 >>
 
-enterAlt(n) ::= "DebugEnterAlt( DebugListener, <n> );<\n>"
-//enterAlt(n) ::= "dbg.enterAlt(<n>);<\n>"
+enterAlt(n) ::= "dbg.EnterAlt( <n> );<\n>"
 
 // Region overrides that tell various constructs to add debugging triggers
 
@@ -278,9 +251,7 @@ enterAlt(n) ::= "DebugEnterAlt( DebugListener, <n> );<\n>"
 @positiveClosureBlock.postdecision() ::= "<exitDecision()>"
 
 @positiveClosureBlock.earlyExitException() ::=
-    "DebugRecognitionException( DebugListener, eee<decisionNumber> );<\n>"
-//@positiveClosureBlock.earlyExitException() ::=
-//    "dbg.recognitionException( eee );<\n>"
+	"dbg.RecognitionException( eee<decisionNumber> );<\n>"
 
 @closureBlock.preloop() ::= "<enterSubRule()>"
 
@@ -293,20 +264,14 @@ enterAlt(n) ::= "DebugEnterAlt( DebugListener, <n> );<\n>"
 @altSwitchCase.prealt() ::= "<enterAlt(n=i)>"
 
 @element.prematch() ::=
-    "DebugLocation( DebugListener, <it.line>,<it.pos> );"
-//@element.prematch() ::=
-//    "dbg.location( <it.line>,<it.pos> );"
+	"dbg.Location( <it.line>, <it.pos> );"
 
 @matchSet.mismatchedSetException() ::=
-    "DebugRecognitionException( DebugListener, mse );"
-//@matchSet.mismatchedSetException() ::=
-//    "dbg.recognitionException( mse );"
+	"dbg.RecognitionException( mse );"
 
-@dfaState.noViableAltException() ::= "DebugRecognitionException( DebugListener, nvae );"
-//@dfaState.noViableAltException() ::= "dbg.recognitionException( nvae );"
+@dfaState.noViableAltException() ::= "dbg.RecognitionException( nvae );"
 
-@dfaStateSwitch.noViableAltException() ::= "DebugRecognitionException( DebugListener, nvae );"
-//@dfaStateSwitch.noViableAltException() ::= "dbg.recognitionException( nvae );"
+@dfaStateSwitch.noViableAltException() ::= "dbg.RecognitionException( nvae );"
 
 dfaDecision(decisionNumber,description) ::= <<
 try
@@ -316,19 +281,19 @@ try
 }
 catch ( NoViableAltException nvae )
 {
-	DebugRecognitionException( DebugListener, nvae );
+	dbg.RecognitionException( nvae );
 	throw nvae;
 }
 >>
 
 @cyclicDFA.errorMethod() ::= <<
-public virtual void Error( NoViableAltException nvae )
+public override void Error( NoViableAltException nvae )
 {
-	DebugRecognitionException( DebugListener, nvae );
+	((DebugParser)recognizer).dbg.RecognitionException( nvae );
 }
 >>
 
 /** Force predicate validation to trigger an event */
 evalPredicate(pred,description) ::= <<
-evalPredicate( <pred>, "<description>" )
+EvalPredicate( <pred>, "<description>" )
 >>

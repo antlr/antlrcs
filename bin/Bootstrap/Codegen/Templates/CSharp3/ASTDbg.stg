@@ -36,7 +36,7 @@
 group ASTDbg;
 
 parserMembers() ::= <<
-protected ITreeAdaptor adaptor;
+protected DebugTreeAdaptor adaptor;
 public ITreeAdaptor TreeAdaptor
 {
 	get
@@ -45,12 +45,11 @@ public ITreeAdaptor TreeAdaptor
 	}
 	set
 	{
-<!<if(grammar.grammarIsRoot)>
-		this.adaptor = new DebugTreeAdaptor( dbg, value );
+<if(grammar.grammarIsRoot)>
+		this.adaptor = new DebugTreeAdaptor(dbg,adaptor);
 <else>
-		this.adaptor = (DebugTreeAdaptor)value; // delegator sends dbg adaptor 
-<endif><\n>!>
-		this.adaptor = value;
+		this.adaptor = (DebugTreeAdaptor)adaptor; // delegator sends dbg adaptor
+<endif><\n>
 		<grammar.directDelegates:{g|<g:delegateName()>.TreeAdaptor = this.adaptor;}>
 	}
 }<\n>
@@ -63,10 +62,10 @@ parserCtorBody() ::= <<
 createListenerAndHandshake() ::= <<
 DebugEventSocketProxy proxy = new DebugEventSocketProxy( this, port, <if(TREE_PARSER)>input.TreeAdaptor<else>adaptor<endif> );
 DebugListener = proxy;
-set<inputStreamType>( new Debug<inputStreamType>( input, proxy ) );
+<inputStreamType> = new Debug<inputStreamType>( input, proxy );
 try
 {
-	proxy.handshake();
+	proxy.Handshake();
 }
 catch ( IOException ioe )
 {
@@ -75,23 +74,23 @@ catch ( IOException ioe )
 >>
 
 @ctorForRootGrammar.finally() ::= <<
-if ( TreeAdaptor == null )
-	TreeAdaptor = new CommonTreeAdaptor();
-<!proxy.TreeAdaptor = adap;!>
+ITreeAdaptor adap = new CommonTreeAdaptor();
+TreeAdaptor = adap;
+proxy.TreeAdaptor = adap;
 >>
 
 @ctorForProfilingRootGrammar.finally() ::=<<
-if ( TreeAdaptor == null )
-	TreeAdaptor = new CommonTreeAdaptor();
-<!proxy.TreeAdaptor = adap;!>
+ITreeAdaptor adap = new CommonTreeAdaptor();
+TreeAdaptor = adap;
+proxy.TreeAdaptor = adap;
 >>
 
 @ctorForPredefinedListener.superClassRef() ::= ": base( input, dbg )"
 
 @ctorForPredefinedListener.finally() ::=<<
 <if(grammar.grammarIsRoot)><! don't create new adaptor for delegates !>
-if ( TreeAdaptor == null )
-	TreeAdaptor = new CommonTreeAdaptor();<\n>
+ITreeAdaptor adap = new CommonTreeAdaptor();
+TreeAdaptor = adap;<\n>
 <endif>
 >>
 
