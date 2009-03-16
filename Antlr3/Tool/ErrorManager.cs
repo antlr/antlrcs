@@ -169,11 +169,7 @@ namespace Antlr3.Tool
         public const int MSG_LEFT_RECURSION_CYCLES = 210;
         public const int MSG_NONREGULAR_DECISION = 211;
 
-    // Dependency sorting errors
-    //
-        public const int MSG_CIRCULAR_DEPENDENCY = 212; // t1.g -> t2.g -> t3.g ->t1.g
-
-        public const int MAX_MESSAGE_NUMBER = 212;
+        public const int MAX_MESSAGE_NUMBER = 211;
 
         /** Do not do perform analysis if one of these happens */
         public static readonly BitSet ERRORS_FORCING_NO_ANALYSIS;
@@ -451,7 +447,6 @@ namespace Antlr3.Tool
             ERRORS_FORCING_NO_ANALYSIS.add( MSG_NO_SUCH_RULE_IN_SCOPE );
             ERRORS_FORCING_NO_ANALYSIS.add( MSG_LEXER_RULES_NOT_ALLOWED );
             ERRORS_FORCING_NO_ANALYSIS.add( MSG_WILDCARD_AS_ROOT );
-            ERRORS_FORCING_NO_ANALYSIS.add( MSG_CIRCULAR_DEPENDENCY );
             // TODO: ...
 
             /** Do not do code gen if one of these happens */
@@ -462,7 +457,6 @@ namespace Antlr3.Tool
             ERRORS_FORCING_NO_CODEGEN.add( MSG_FILE_AND_GRAMMAR_NAME_DIFFER );
             ERRORS_FORCING_NO_CODEGEN.add( MSG_INVALID_IMPORT );
             ERRORS_FORCING_NO_CODEGEN.add( MSG_AST_OP_WITH_NON_AST_OUTPUT_OPTION );
-            ERRORS_FORCING_NO_CODEGEN.add( MSG_CIRCULAR_DEPENDENCY );
             // TODO: ...
 
             /** Only one error can be emitted for any entry in this table.
