@@ -205,6 +205,7 @@
     <Compile Include="Extensions\EnumerableExtensions.cs" />
     <Compile Include="Extensions\FuncEqualityComparer.cs" />
     <Compile Include="Extensions\ListExtensions.cs" />
+    <Compile Include="Misc\Graph.cs" />
     <Compile Include="Tool\AssignTokenTypesBehavior.cs" />
     <Compile Include="Tool\BuildDependencyGenerator.cs" />
     <Compile Include="Tool\DOTGenerator.cs" />
@@ -215,6 +216,7 @@
     <Compile Include="Tool\GrammarNonDeterminismMessage.cs" />
     <Compile Include="Tool\GrammarReport.cs" />
     <Compile Include="Tool\GrammarSemanticsMessage.cs" />
+    <Compile Include="Tool\GrammarSpelunker.cs" />
     <Compile Include="Tool\GrammarSyntaxMessage.cs" />
     <Compile Include="Tool\GrammarUnreachableAltsMessage.cs" />
     <Compile Include="Tool\Interpreter.cs" />

@@ -34,14 +34,18 @@ namespace Antlr3
 {
     using System;
     using System.Collections.Generic;
+    using System.Linq;
     using Antlr.Runtime.JavaExtensions;
     using Antlr3.Analysis;
     using Antlr3.Codegen;
     using Antlr3.Tool;
 
+    using File = System.IO.File;
     using FileInfo = System.IO.FileInfo;
+    using Graph = Antlr3.Misc.Graph;
     using IList = System.Collections.IList;
     using IOException = System.IO.IOException;
+    using Path = System.IO.Path;
     using Stats = Antlr.Runtime.Misc.Stats;
     using StringReader = System.IO.StringReader;
     using StringWriter = System.IO.StringWriter;
@@ -49,40 +53,58 @@ namespace Antlr3
 
     public class AntlrTool
     {
-        public const string VERSION = "3.1.2";
+        public string VERSION = "3.1.2";
         public const string UNINITIALIZED_DIR = "<unset-dir>";
+        private HashSet<string> grammarFileNames = new HashSet<string>();
+        private bool generate_NFA_dot = false;
+        private bool generate_DFA_dot = false;
+        private string outputDirectory = ".";
+        private bool haveOutputDir = false;
+        private string inputDirectory = "";
+        private string parentGrammarDirectory;
+        private string grammarOutputDirectory;
+        private bool haveInputDir = false;
+        private string libDirectory = ".";
+        private bool debug = false;
+        private bool trace = false;
+        private bool profile = false;
+        private bool report = false;
+        private bool printGrammar = false;
+        private bool depend = false;
+        private bool forceAllFilesToOutputDir = false;
+        private bool forceRelativeOutput = false;
+        private bool deleteTempLexer = true;
+        private bool verbose = false;
+        /** Don't process grammar file if generated files are newer than grammar */
+        private bool make = false;
+        private bool showBanner = true;
+        // true when we are in a unit test
+        private bool testMode = false;
+        private static bool exitNow = false;
 
-        // Input parameters / option
-
-        protected List<string> grammarFileNames = new List<string>();
-        protected bool generate_NFA_dot = false;
-        protected bool generate_DFA_dot = false;
-        protected string outputDirectory = UNINITIALIZED_DIR;
-        protected string libDirectory = ".";
-        protected bool debug = false;
-        protected bool trace = false;
-        protected bool profile = false;
-        protected bool report = false;
-        protected bool printGrammar = false;
-        protected bool depend = false;
-        protected bool forceAllFilesToOutputDir = false;
-        protected bool deleteTempLexer = true;
-        protected bool verbose = false;
-
-        // the internal options are for my use on the command line during dev
-
+        // The internal options are for my use on the command line during dev
+        //
         public static bool internalOption_PrintGrammarTree = false;
         public static bool internalOption_PrintDFA = false;
         public static bool internalOption_ShowNFAConfigsInDFA = false;
         public static bool internalOption_watchNFAConversion = false;
 
+#if false
+        /**
+         * A list of dependency generators that are accumulated aaaas (and if) the
+         * tool is required to sort the provided grammars into build dependency order.
+         */
+        protected Dictionary<string, BuildDependencyGenerator> buildDependencyGenerators;
+#endif
+
         public static void Main( string[] args )
         {
             AntlrTool antlr = new AntlrTool( args );
-            if ( antlr.verbose )
-                ErrorManager.info( "ANTLR Parser Generator  Version " + VERSION );
-            antlr.process();
-            Environment.ExitCode = ( ErrorManager.getNumErrors() > 0 ) ? 1 : 0;
+            if ( !exitNow )
+            {
+                antlr.process();
+                Environment.ExitCode = ( ErrorManager.getNumErrors() > 0 ) ? 1 : 0;
+            }
         }
 
         public AntlrTool()
@@ -96,6 +118,12 @@ namespace Antlr3
 
         public virtual void processArgs( string[] args )
         {
+            if ( verbose )
+            {
+                ErrorManager.info( "ANTLR Parser Generator  Version " + VERSION );
+                showBanner = false;
+            }
+
             if ( args == null || args.Length == 0 )
             {
                 help();
@@ -113,15 +141,16 @@ namespace Antlr3
                     else
                     {
                         if ( args[i] == "-fo" )
-                            forceAllFilesToOutputDir = true;
+                            ForceAllFilesToOutputDir = true;
                         i++;
                         outputDirectory = args[i];
                         if ( outputDirectory.EndsWith( "/" ) || outputDirectory.EndsWith( "\\" ) )
-                            outputDirectory = outputDirectory.Substring( 0, outputDirectory.Length - 1 );
+                            outputDirectory = outputDirectory.Substring( 0, OutputDirectory.Length - 1 );
+                        haveOutputDir = true;
                         if ( System.IO.File.Exists( outputDirectory ) )
                         {
                             ErrorManager.error( ErrorManager.MSG_OUTPUT_DIR_IS_FILE, outputDirectory );
-                            libDirectory = ".";
+                            LibraryDirectory = ".";
                         }
                     }
                 }
@@ -134,56 +163,68 @@ namespace Antlr3
                     else
                     {
                         i++;
-                        libDirectory = args[i];
-                        if ( libDirectory.EndsWith( "/" ) ||
-                             libDirectory.EndsWith( "\\" ) )
+                        LibraryDirectory = args[i];
+                        if ( LibraryDirectory.EndsWith( "/" ) ||
+                             LibraryDirectory.EndsWith( "\\" ) )
                         {
-                            libDirectory =
-                                libDirectory.Substring( 0, libDirectory.Length - 1 );
+                            LibraryDirectory =
+                                LibraryDirectory.Substring( 0, LibraryDirectory.Length - 1 );
                         }
-                        //File outDir = new File( libDirectory );
                         if ( !System.IO.Directory.Exists( libDirectory ) )
                         {
-                            ErrorManager.error( ErrorManager.MSG_DIR_NOT_FOUND, libDirectory );
-                            libDirectory = ".";
+                            ErrorManager.error( ErrorManager.MSG_DIR_NOT_FOUND, LibraryDirectory );
+                            LibraryDirectory = ".";
                         }
                     }
                 }
                 else if ( args[i] == "-nfa" )
                 {
-                    generate_NFA_dot = true;
+                    Generate_NFA_dot = true;
                 }
                 else if ( args[i] == "-dfa" )
                 {
-                    generate_DFA_dot = true;
+                    Generate_DFA_dot = true;
                 }
                 else if ( args[i] == "-debug" )
                 {
-                    debug = true;
+                    Debug = true;
                 }
                 else if ( args[i] == "-trace" )
                 {
-                    trace = true;
+                    Trace = true;
                 }
                 else if ( args[i] == "-report" )
                 {
-                    report = true;
+                    Report = true;
                 }
                 else if ( args[i] == "-profile" )
                 {
-                    profile = true;
+                    Profile = true;
                 }
                 else if ( args[i] == "-print" )
                 {
-                    printGrammar = true;
+                    PrintGrammar = true;
                 }
                 else if ( args[i] == "-depend" )
                 {
-                    depend = true;
+                    Depend = true;
+                }
+                else if ( args[i] == "-testmode" )
+                {
+                    TestMode = true;
                 }
                 else if ( args[i] == "-verbose" )
                 {
-                    verbose = true;
+                    Verbose = true;
+                }
+                else if ( args[i] == "-version" )
+                {
+                    version();
+                    exitNow = true;
+                }
+                else if ( args[i] == "-make" )
+                {
+                    Make = true;
                 }
                 else if ( args[i] == "-message-format" )
                 {
@@ -297,48 +338,132 @@ namespace Antlr3
                 {
                     if ( args[i][0] != '-' )
                     {
-                        // must be the grammar file
-                        grammarFileNames.Add( args[i] );
+                        // Must be the grammar file
+                        addGrammarFile( args[i] );
                     }
                 }
             }
         }
 
-        /*
-            protected void checkForInvalidArguments(String[] args, BitSet cmdLineArgValid) {
-                // check for invalid command line args
-                for (int a = 0; a < args.length; a++) {
-                    if (!cmdLineArgValid.member(a)) {
-                        System.err.println("invalid command-line argument: " + args[a] + "; ignored");
+#if false
+        protected virtual void checkForInvalidArguments( string[] args, Antlr.Runtime.BitSet cmdLineArgValid )
+        {
+            // check for invalid command line args
+            for ( int a = 0; a < args.Length; a++ )
+            {
+                if ( !cmdLineArgValid.Member( a ) )
+                {
+                    Console.Error.WriteLine( "invalid command-line argument: " + args[a] + "; ignored" );
+                }
+            }
+        }
+#endif
+
+        /**
+         * Checks to see if the list of outputFiles all exist, and have
+         * last-modified timestamps which are later than the last-modified
+         * timestamp of all the grammar files involved in build the output
+         * (imports must be checked). If these conditions hold, the method
+         * returns false, otherwise, it returns true.
+         *
+         * @param grammarFileName The grammar file we are checking
+         * @param outputFiles
+         * @return
+         */
+        public virtual bool buildRequired( string grammarFileName )
+        {
+            BuildDependencyGenerator bd = new BuildDependencyGenerator( this, grammarFileName );
+            IList<string> outputFiles = bd.getGeneratedFileList();
+            IList<string> inputFiles = bd.getDependenciesFileList();
+            DateTime grammarLastModified = File.GetLastWriteTime( grammarFileName );
+            foreach ( string outputFile in outputFiles )
+            {
+                if ( !File.Exists( outputFile ) || grammarLastModified > File.GetLastWriteTime( outputFile ) )
+                {
+                    // One of the output files does not exist or is out of date, so we must build it
+                    return true;
+                }
+
+                // Check all of the imported grammars and see if any of these are younger
+                // than any of the output files.
+                if ( inputFiles != null )
+                {
+                    foreach ( string inputFile in inputFiles )
+                    {
+                        if ( File.GetLastWriteTime( inputFile ) > File.GetLastWriteTime( outputFile ) )
+                        {
+                            // One of the imported grammar files has been updated so we must build
+                            return true;
+                        }
                     }
                 }
             }
-            */
+            if ( Verbose )
+            {
+                Console.Out.WriteLine( "Grammar " + grammarFileName + " is up to date - build skipped" );
+            }
+            return false;
+        }
 
         public virtual void process()
         {
-            int numFiles = grammarFileNames.Count;
             bool exceptionWhenWritingLexerFile = false;
             string lexerGrammarFileName = null;		// necessary at this scope to have access in the catch below
-            for ( int i = 0; i < numFiles; i++ )
+
+            // Have to be tricky here when Maven or build tools call in and must new Tool()
+            // before setting options. The banner won't display that way!
+            if ( Verbose && showBanner )
             {
-                string grammarFileName = grammarFileNames[i];
-                if ( verbose && !depend )
+                ErrorManager.info( "ANTLR Parser Generator  Version " + VERSION );
+                showBanner = false;
+            }
+
+            try
+            {
+                sortGrammarFiles(); // update grammarFileNames
+            }
+            catch ( Exception e )
+            {
+                ErrorManager.error( ErrorManager.MSG_INTERNAL_ERROR, e );
+            }
+
+            foreach ( string grammarFileName in GrammarFileNames )
+            {
+                // If we are in make mode (to support build tools like Maven) and the
+                // file is already up to date, then we do not build it (and in verbose mode
+                // we will say so).
+                if ( Make )
+                {
+                    try
+                    {
+                        if ( !buildRequired( grammarFileName ) )
+                            continue;
+                    }
+                    catch ( Exception e )
+                    {
+                        ErrorManager.error( ErrorManager.MSG_INTERNAL_ERROR, e );
+                    }
+                }
+
+                if ( Verbose && !Depend )
                 {
                     Console.Out.WriteLine( grammarFileName );
                 }
                 try
                 {
-                    if ( depend )
+                    if ( Depend )
                     {
                         BuildDependencyGenerator dep = new BuildDependencyGenerator( this, grammarFileName );
+#if false
                         IList<string> outputFiles = dep.getGeneratedFileList();
                         IList<string> dependents = dep.getDependenciesFileList();
-                        //Console.Out.println("output: "+outputFiles);
-                        //Console.Out.println("dependents: "+dependents);
+                        Console.Out.WriteLine( "output: " + outputFiles );
+                        Console.Out.WriteLine( "dependents: " + dependents );
+#endif
                         Console.Out.WriteLine( dep.getDependencies() );
                         continue;
                     }
+
                     Grammar grammar = getRootGrammar( grammarFileName );
                     // we now have all grammars read in as ASTs
                     // (i.e., root and all delegates)
@@ -348,12 +473,12 @@ namespace Antlr3
 
                     generateRecognizer( grammar );
 
-                    if ( printGrammar )
+                    if ( PrintGrammar )
                     {
                         grammar.printGrammar( Console.Out );
                     }
 
-                    if ( report )
+                    if ( Report )
                     {
                         GrammarReport report2 = new GrammarReport( grammar );
                         Console.Out.WriteLine( report2.ToString() );
@@ -362,7 +487,7 @@ namespace Antlr3
                         // same for aborted NFA->DFA conversions
                         Console.Out.WriteLine( report2.getAnalysisTimeoutReport() );
                     }
-                    if ( profile )
+                    if ( Profile )
                     {
                         GrammarReport report2 = new GrammarReport( grammar );
                         Stats.WriteReport( GrammarReport.GRAMMAR_STATS_FILENAME,
@@ -395,6 +520,8 @@ namespace Antlr3
                             lexerGrammar.composite.watchNFAConversion = internalOption_watchNFAConversion;
                             lexerGrammar.implicitLexer = true;
                             lexerGrammar.Tool = this;
+                            if ( TestMode )
+                                lexerGrammar.DefaultRuleModifier = "public";
                             FileInfo lexerGrammarFullFile = new FileInfo( System.IO.Path.Combine( getFileDirectory( lexerGrammarFileName ), lexerGrammarFileName ) );
                             lexerGrammar.FileName = lexerGrammarFullFile.ToString();
 
@@ -438,15 +565,44 @@ namespace Antlr3
                 {
                     ErrorManager.error( ErrorManager.MSG_INTERNAL_ERROR, grammarFileName, e );
                 }
-                /*
-                finally {
-                    JSystem.@out.println("creates="+ Interval.creates);
-                    JSystem.@out.println("hits="+ Interval.hits);
-                    JSystem.@out.println("misses="+ Interval.misses);
-                    JSystem.@out.println("outOfRange="+ Interval.outOfRange);
+#if false
+                finally
+                {
+                    Console.Out.WriteLine( "creates=" + Interval.creates );
+                    Console.Out.WriteLine( "hits=" + Interval.hits );
+                    Console.Out.WriteLine( "misses=" + Interval.misses );
+                    Console.Out.WriteLine( "outOfRange=" + Interval.outOfRange );
                 }
-                */
+#endif
             }
+        }
+
+        public virtual void sortGrammarFiles()
+        {
+            //System.out.println("Grammar names "+getGrammarFileNames());
+            Graph g = new Graph();
+            foreach ( string gfile in GrammarFileNames )
+            {
+                GrammarSpelunker grammar = new GrammarSpelunker( gfile );
+                grammar.parse();
+                string vocabName = grammar.getTokenVocab();
+                string grammarName = grammar.getGrammarName();
+                // Make all grammars depend on any tokenVocab options
+                if ( vocabName != null )
+                    g.AddEdge( gfile, vocabName + CodeGenerator.VOCAB_FILE_EXTENSION );
+                // Make all generated tokens files depend on their grammars
+                g.AddEdge( grammarName + CodeGenerator.VOCAB_FILE_EXTENSION, gfile );
+            }
+            List<object> sorted = g.Sort();
+            //Console.Out.WriteLine( "sorted=" + sorted );
+            grammarFileNames.Clear(); // wipe so we can give new ordered list
+            for ( int i = 0; i < sorted.Count; i++ )
+            {
+                string f = (string)sorted[i];
+                if ( f.EndsWith( ".g" ) )
+                    grammarFileNames.Add( f );
+            }
+            //Console.Out.WriteLine( "new grammars=" + grammarFileNames );
         }
 
         /** Get a grammar mentioned on the command-line and any delegates */
@@ -458,12 +614,40 @@ namespace Antlr3
             // single grammar needs it to get token types.
             CompositeGrammar composite = new CompositeGrammar();
             Grammar grammar = new Grammar( this, grammarFileName, composite );
+            if ( TestMode )
+                grammar.DefaultRuleModifier = "public";
             composite.setDelegationRoot( grammar );
             //FileReader fr = null;
             //fr = new FileReader( grammarFileName );
+            string f = null;
+
+            if ( haveInputDir )
+            {
+                f = Path.Combine( inputDirectory, grammarFileName );
+            }
+            else
+            {
+                f = grammarFileName;
+            }
+
+            // Store the location of this grammar as if we import files, we can then
+            // search for imports in the same location as the original grammar as well as in
+            // the lib directory.
+            //
+            parentGrammarDirectory = Path.GetDirectoryName( f );
+
+            if ( grammarFileName.LastIndexOfAny( new char[] { Path.DirectorySeparatorChar, Path.AltDirectorySeparatorChar } ) == -1 )
+            {
+                grammarOutputDirectory = ".";
+            }
+            else
+            {
+                grammarOutputDirectory = grammarFileName.Substring( 0, grammarFileName.LastIndexOfAny( new char[] { Path.DirectorySeparatorChar, Path.AltDirectorySeparatorChar } ) );
+            }
+
             //BufferedReader br = new BufferedReader( fr );
             //grammar.parseAndBuildAST( br );
-            StringReader reader = new StringReader( System.IO.File.ReadAllText( grammarFileName ) );
+            StringReader reader = new StringReader( System.IO.File.ReadAllText( f ) );
             grammar.parseAndBuildAST( reader );
             composite.watchNFAConversion = internalOption_watchNFAConversion;
             //br.close();
@@ -485,12 +669,12 @@ namespace Antlr3
             {
                 CodeGenerator generator = new CodeGenerator( this, grammar, language );
                 grammar.setCodeGenerator( generator );
-                generator.setDebug( debug );
-                generator.setProfile( profile );
-                generator.setTrace( trace );
+                generator.setDebug( Debug );
+                generator.setProfile( Profile );
+                generator.setTrace( Trace );
 
                 // generate NFA early in case of crash later (for debugging)
-                if ( generate_NFA_dot )
+                if ( Generate_NFA_dot )
                 {
                     generateNFAs( grammar );
                 }
@@ -498,7 +682,7 @@ namespace Antlr3
                 // GENERATE CODE
                 generator.genRecognizer();
 
-                if ( generate_DFA_dot )
+                if ( Generate_DFA_dot )
                 {
                     generateDFAs( grammar );
                 }
@@ -579,8 +763,14 @@ namespace Antlr3
             fw.Close();
         }
 
+        private static void version()
+        {
+            ErrorManager.info( "ANTLR Parser Generator  Version " + new AntlrTool().VERSION );
+        }
+
         private static void help()
         {
+            version();
             Console.Error.WriteLine( "usage: java org.antlr.Tool [args] file.g [file2.g file3.g ...]" );
             Console.Error.WriteLine( "  -o outputDir          specify output directory where all output is generated" );
             Console.Error.WriteLine( "  -fo outputDir         same as -o but force even files with relative paths to dir" );
@@ -594,11 +784,15 @@ namespace Antlr3
             Console.Error.WriteLine( "  -nfa                  generate an NFA for each rule" );
             Console.Error.WriteLine( "  -dfa                  generate a DFA for each decision point" );
             Console.Error.WriteLine( "  -message-format name  specify output style for messages" );
+            Console.Error.WriteLine( "  -verbose              generate ANTLR version and other information" );
+            Console.Error.WriteLine( "  -make                 only build if generated files older than grammar" );
+            Console.Error.WriteLine( "  -version              print the version of ANTLR and exit." );
             Console.Error.WriteLine( "  -X                    display extended argument list" );
         }
 
         private static void Xhelp()
         {
+            version();
             Console.Error.WriteLine( "  -Xgrtree               print the grammar AST" );
             Console.Error.WriteLine( "  -Xdfa                  print DFA as text " );
             Console.Error.WriteLine( "  -Xnoprune              test lookahead against EBNF block exit branches" );
@@ -616,17 +810,73 @@ namespace Antlr3
             Console.Error.WriteLine( "  -Xnfastates            for nondeterminisms, list NFA states for each path" );
         }
 
+        /// <summary>
+        /// Set the location (base directory) where output files should be produced by the ANTLR tool.
+        /// </summary>
+        /// <param name="outputDirectory"></param>
         public virtual void setOutputDirectory( string outputDirectory )
         {
+            haveOutputDir = true;
             this.outputDirectory = outputDirectory;
+        }
+
+        /**
+         * Used by build tools to force the output files to always be
+         * relative to the base output directory, even though the tool
+         * had to set the output directory to an absolute path as it
+         * cannot rely on the workign directory like command line invocation
+         * can.
+         *
+         * @param forceRelativeOutput true if output files hould always be relative to base output directory
+         */
+        public virtual void setForceRelativeOutput( bool forceRelativeOutput )
+        {
+            this.forceRelativeOutput = forceRelativeOutput;
+        }
+
+        /**
+         * Set the base location of input files. Normally (when the tool is
+         * invoked from the command line), the inputDirectory is not set, but
+         * for build tools such as Maven, we need to be able to locate the input
+         * files relative to the base, as the working directory could be anywhere and
+         * changing workig directories is not a valid concept for JVMs because of threading and
+         * so on. Setting the directory just means that the getFileDirectory() method will
+         * try to open files relative to this input directory.
+         *
+         * @param inputDirectory Input source base directory
+         */
+        public virtual void setInputDirectory( string inputDirectory )
+        {
+            this.inputDirectory = inputDirectory;
+            haveInputDir = true;
         }
 
         public virtual TextWriter getOutputFile( Grammar g, string fileName )
         {
-            if ( outputDirectory == null )
+            if ( OutputDirectory == null )
                 return new StringWriter();
 
-            System.IO.DirectoryInfo outputDir = getOutputDirectory( g.FileName );
+            // output directory is a function of where the grammar file lives
+            // for subdir/T.g, you get subdir here.  Well, depends on -o etc...
+            // But, if this is a .tokens file, then we force the output to
+            // be the base output directory (or current directory if there is not a -o)
+            //
+            System.IO.DirectoryInfo outputDir;
+            if ( fileName.EndsWith( CodeGenerator.VOCAB_FILE_EXTENSION ) )
+            {
+                if ( haveOutputDir )
+                {
+                    outputDir = new System.IO.DirectoryInfo( OutputDirectory );
+                }
+                else
+                {
+                    outputDir = new System.IO.DirectoryInfo( "." );
+                }
+            }
+            else
+            {
+                outputDir = getOutputDirectory( g.FileName );
+            }
             FileInfo outputFile = new FileInfo( System.IO.Path.Combine( outputDir.FullName, fileName ) );
 
             if ( !outputDir.Exists )
@@ -636,69 +886,20 @@ namespace Antlr3
                 outputFile.Delete();
 
             return new System.IO.StreamWriter( new System.IO.BufferedStream( outputFile.OpenWrite() ) );
-            //if ( outputDirectory == null )
-            //{
-            //    return new StringWriter();
-            //}
-            //// output directory is a function of where the grammar file lives
-            //// for subdir/T.g, you get subdir here.  Well, depends on -o etc...
-            //File outputDir = getOutputDirectory( g.getFileName() );
-            //File outputFile = new File( outputDir, fileName );
-
-            //if ( !outputDir.exists() )
-            //{
-            //    outputDir.mkdirs();
-            //}
-            //FileWriter fw = new FileWriter( outputFile );
-            //return new BufferedWriter( fw );
         }
 
+        /**
+         * Return the location where ANTLR will generate output files for a given file. This is a
+         * base directory and output files will be relative to here in some cases
+         * such as when -o option is used and input files are given relative
+         * to the input directory.
+         *
+         * @param fileNameWithPath path to input source
+         * @return
+         */
         public virtual System.IO.DirectoryInfo getOutputDirectory( string fileNameWithPath )
         {
-            //File outputDir = new File( outputDirectory );
-            //String fileDirectory = getFileDirectory( fileNameWithPath );
-            //if ( outputDirectory != UNINITIALIZED_DIR )
-            //{
-            //    // -o /tmp /var/lib/t.g => /tmp/T.java
-            //    // -o subdir/output /usr/lib/t.g => subdir/output/T.java
-            //    // -o . /usr/lib/t.g => ./T.java
-            //    if ( fileDirectory != null &&
-            //         ( new File( fileDirectory ).isAbsolute() ||
-            //          fileDirectory.startsWith( "~" ) ) || // isAbsolute doesn't count this :(
-            //                                         forceAllFilesToOutputDir
-            //        )
-            //    {
-            //        // somebody set the dir, it takes precendence; write new file there
-            //        outputDir = new File( outputDirectory );
-            //    }
-            //    else
-            //    {
-            //        // -o /tmp subdir/t.g => /tmp/subdir/t.g
-            //        if ( fileDirectory != null )
-            //        {
-            //            outputDir = new File( outputDirectory, fileDirectory );
-            //        }
-            //        else
-            //        {
-            //            outputDir = new File( outputDirectory );
-            //        }
-            //    }
-            //}
-            //else
-            //{
-            //    // they didn't specify a -o dir so just write to location
-            //    // where grammar is, absolute or relative
-            //    String dir = ".";
-            //    if ( fileDirectory != null )
-            //    {
-            //        dir = fileDirectory;
-            //    }
-            //    outputDir = new File( dir );
-            //}
-            //return outputDir;
-
-            //File outputDir = new File( outputDirectory );
-            string outputDir = outputDirectory;
+            string outputDir = OutputDirectory;
 
             if ( fileNameWithPath.IndexOfAny( System.IO.Path.GetInvalidPathChars() ) >= 0 )
                 return new System.IO.DirectoryInfo( outputDir );
@@ -706,89 +907,156 @@ namespace Antlr3
             if ( !System.IO.Path.IsPathRooted( fileNameWithPath ) )
                 fileNameWithPath = System.IO.Path.GetFullPath( fileNameWithPath );
 
-            string fileDirectory = getFileDirectory( fileNameWithPath );
-            if ( outputDirectory != UNINITIALIZED_DIR )
+            string fileDirectory;
+            // Some files are given to us without a PATH but should should
+            // still be written to the output directory in the relative path of
+            // the output directory. The file directory is either the set of sub directories
+            // or just or the relative path recorded for the parent grammar. This means
+            // that when we write the tokens files, or the .java files for imported grammars
+            // taht we will write them in the correct place.
+            //
+            if ( fileNameWithPath.IndexOfAny( new char[] { Path.DirectorySeparatorChar, Path.AltDirectorySeparatorChar } ) == -1 )
+            {
+                // No path is included in the file name, so make the file
+                // directory the same as the parent grammar (which might sitll be just ""
+                // but when it is not, we will write the file in the correct place.
+                //
+                fileDirectory = grammarOutputDirectory;
+            }
+            else
+            {
+                fileDirectory = fileNameWithPath.Substring( 0, fileNameWithPath.LastIndexOfAny( new char[] { Path.DirectorySeparatorChar, Path.AltDirectorySeparatorChar } ) );
+            }
+
+            if ( haveOutputDir )
             {
                 // -o /tmp /var/lib/t.g => /tmp/T.java
                 // -o subdir/output /usr/lib/t.g => subdir/output/T.java
                 // -o . /usr/lib/t.g => ./T.java
-                if ( fileDirectory != null &&
+                if ( ( fileDirectory != null && !forceRelativeOutput ) &&
                      ( System.IO.Path.IsPathRooted( fileDirectory ) ||
-                      fileDirectory.StartsWith( "~" ) ) || // isAbsolute doesn't count this :(
-                                                     forceAllFilesToOutputDir
-                    )
+                        fileDirectory.StartsWith( "~" ) ) || // isAbsolute doesn't count this :(
+                        ForceAllFilesToOutputDir )
                 {
                     // somebody set the dir, it takes precendence; write new file there
-                    //outputDir = new File( outputDirectory );
-                    outputDir = outputDirectory;
+                    outputDir = OutputDirectory;
                 }
                 else
                 {
                     // -o /tmp subdir/t.g => /tmp/subdir/t.g
                     if ( fileDirectory != null )
                     {
-                        //outputDir = new File( outputDirectory, fileDirectory );
-                        outputDir = System.IO.Path.Combine( outputDirectory, fileDirectory );
+                        outputDir = System.IO.Path.Combine( OutputDirectory, fileDirectory );
                     }
                     else
                     {
-                        //outputDir = new File( outputDirectory );
-                        outputDir = outputDirectory;
+                        outputDir = OutputDirectory;
                     }
                 }
             }
             else
             {
                 // they didn't specify a -o dir so just write to location
-                // where grammar is, absolute or relative
-                string dir = ".";
-                if ( fileDirectory != null )
-                {
-                    dir = fileDirectory;
-                }
-                //outputDir = new File( dir );
-                outputDir = dir;
+                // where grammar is, absolute or relative, this will only happen
+                // with command line invocation as build tools will always
+                // supply an output directory.
+                //
+                outputDir = fileDirectory;
             }
             return new System.IO.DirectoryInfo( outputDir );
         }
 
+        /**
+         * Name a file from the -lib dir.  Imported grammars and .tokens files
+         *
+         * If we do not locate the file in the library directory, then we try
+         * the location of the originating grammar.
+         *
+         * @param fileName input name we are looking for
+         * @return Path to file that we think shuold be the import file
+         *
+         * @throws java.io.IOException
+         */
         public virtual string getLibraryFile( string fileName )
         {
-            return System.IO.Path.Combine( libDirectory, fileName );
+            // First, see if we can find the file in the library directory
+            //
+            string f = Path.Combine( LibraryDirectory, fileName );
+
+            if ( File.Exists( f ) )
+            {
+                // Found in the library directory
+                //
+                return Path.GetFullPath( f );
+            }
+
+            // Need to assume it is in the same location as the input file. Note that
+            // this is only relevant for external build tools and when the input grammar
+            // was specified relative to the source directory (working directory if using
+            // the command line.
+            //
+            return Path.Combine( parentGrammarDirectory, fileName );
         }
 
-        public virtual string getLibraryDirectory()
-        {
-            return libDirectory;
-        }
-
+        /** Return the directory containing the grammar file for this grammar.
+         *  normally this is a relative path from current directory.  People will
+         *  often do "java org.antlr.Tool grammars/*.g3"  So the file will be
+         *  "grammars/foo.g3" etc...  This method returns "grammars".
+         *
+         *  If we have been given a specific input directory as a base, then
+         *  we must find the directory relative to this directory, unless the
+         *  file name is given to us in absolute terms.
+         */
         public virtual string getFileDirectory( string fileName )
         {
-            return System.IO.Path.GetDirectoryName( fileName );
+            string f;
+            if ( haveInputDir && !( fileName.StartsWith( Path.DirectorySeparatorChar.ToString() ) || fileName.StartsWith( Path.AltDirectorySeparatorChar.ToString() ) ) )
+            {
+                f = Path.Combine( inputDirectory, fileName );
+            }
+            else
+            {
+                f = fileName;
+            }
+
+            // And ask .NET what the base directory of this location is
+            //
+            return Path.GetDirectoryName( f );
         }
 
+        /** Return a File descriptor for vocab file.  Look in library or
+         *  in -o output path.  antlr -o foo T.g U.g where U needs T.tokens
+         *  won't work unless we look in foo too. If we do not find the
+         *  file in the lib directory then must assume that the .tokens file
+         *  is going to be generated as part of this build and we have defined
+         *  .tokens files so that they ALWAYS are generated in the base output
+         *  directory, which means the current directory for the command line tool if there
+         *  was no output directory specified.
+         */
         public virtual FileInfo getImportedVocabFile( string vocabName )
         {
-            string path = System.IO.Path.Combine( getLibraryDirectory(), vocabName + CodeGenerator.VOCAB_FILE_EXTENSION );
+            string path = System.IO.Path.Combine( LibraryDirectory, vocabName + CodeGenerator.VOCAB_FILE_EXTENSION );
             if ( System.IO.File.Exists( path ) )
                 return new FileInfo( path );
 
-            return new FileInfo( System.IO.Path.Combine( outputDirectory, vocabName + CodeGenerator.VOCAB_FILE_EXTENSION ) );
-            //File f = new File( getLibraryDirectory(),
-            //                  File.separator +
-            //                  vocabName +
-            //                  CodeGenerator.VOCAB_FILE_EXTENSION );
-            //if ( f.exists() )
-            //{
-            //    return f;
-            //}
+            // We did not find the vocab file in the lib directory, so we need
+            // to look for it in the output directory which is where .tokens
+            // files are generated (in the base, not relative to the input
+            // location.)
             //
-            //return new File( outputDirectory +
-            //                File.separator +
-            //                vocabName +
-            //                CodeGenerator.VOCAB_FILE_EXTENSION );
+            if ( haveOutputDir )
+            {
+                path = Path.Combine( OutputDirectory, vocabName + CodeGenerator.VOCAB_FILE_EXTENSION );
+            }
+            else
+            {
+                path = vocabName + CodeGenerator.VOCAB_FILE_EXTENSION;
+            }
+            return new FileInfo( path );
         }
 
+        /** If the tool needs to panic/exit, how do we do that?
+         */
         public virtual void panic()
         {
             throw new Exception( "ANTLR panic" );
@@ -800,6 +1068,330 @@ namespace Antlr3
         public static string getCurrentTimeStamp()
         {
             return DateTime.Now.ToString( "yyyy\\-MM\\-dd HH\\:mm\\:ss" );
+        }
+
+        /**
+         * Provide the List of all grammar file names that the ANTLR tool will
+         * process or has processed.
+         *
+         * @return the grammarFileNames
+         */
+        public virtual HashSet<string> GrammarFileNames
+        {
+            get
+            {
+                return grammarFileNames;
+            }
+            set
+            {
+                grammarFileNames = value;
+            }
+        }
+
+        /**
+         * Indicates whether ANTLR has gnerated or will generate a description of
+         * all the NFAs in <a href="http://www.graphviz.org">Dot format</a>
+         *
+         * @return the generate_NFA_dot
+         */
+        public virtual bool Generate_NFA_dot
+        {
+            get
+            {
+                return generate_NFA_dot;
+            }
+            set
+            {
+                this.generate_NFA_dot = value;
+            }
+        }
+
+        /**
+         * Indicates whether ANTLR has generated or will generate a description of
+         * all the NFAs in <a href="http://www.graphviz.org">Dot format</a>
+         *
+         * @return the generate_DFA_dot
+         */
+        public virtual bool Generate_DFA_dot
+        {
+            get
+            {
+                return generate_DFA_dot;
+            }
+            set
+            {
+                this.generate_DFA_dot = value;
+            }
+        }
+
+        /**
+         * Return the Path to the base output directory, where ANTLR
+         * will generate all the output files for the current language target as
+         * well as any ancillary files such as .tokens vocab files.
+         * 
+         * @return the output Directory
+         */
+        public virtual string OutputDirectory
+        {
+            get
+            {
+                return outputDirectory;
+            }
+        }
+
+        /**
+         * Return the Path to the directory in which ANTLR will search for ancillary
+         * files such as .tokens vocab files and imported grammar files.
+         *
+         * @return the lib Directory
+         */
+        public virtual string LibraryDirectory
+        {
+            get
+            {
+                return libDirectory;
+            }
+            set
+            {
+                this.libDirectory = value;
+            }
+        }
+
+        /**
+         * Indicate if ANTLR has generated, or will generate a debug version of the
+         * recognizer. Debug versions of a parser communicate with a debugger such
+         * as that contained in ANTLRWorks and at start up will 'hang' waiting for
+         * a connection on an IP port (49100 by default).
+         *
+         * @return the debug flag
+         */
+        public virtual bool Debug
+        {
+            get
+            {
+                return debug;
+            }
+            set
+            {
+                debug = value;
+            }
+        }
+
+        /**
+         * Indicate whether ANTLR has generated, or will generate a version of the
+         * recognizer that prints trace messages on entry and exit of each rule.
+         *
+         * @return the trace flag
+         */
+        public virtual bool Trace
+        {
+            get
+            {
+                return trace;
+            }
+            set
+            {
+                trace = value;
+            }
+        }
+
+        /**
+         * Indicates whether ANTLR has generated or will generate a version of the
+         * recognizer that gathers statistics about its execution, which it prints when
+         * it terminates.
+         *
+         * @return the profile
+         */
+        public virtual bool Profile
+        {
+            get
+            {
+                return profile;
+            }
+            set
+            {
+                profile = value;
+            }
+        }
+
+        /**
+         * Indicates whether ANTLR has generated or will generate a report of various
+         * elements of the grammar analysis, once it it has finished analyzing a grammar
+         * file.
+         *
+         * @return the report flag
+         */
+        public virtual bool Report
+        {
+            get
+            {
+                return report;
+            }
+            set
+            {
+                report = value;
+            }
+        }
+
+        /**
+         * Indicates whether ANTLR has printed, or will print, a version of the input grammar
+         * file(s) that is stripped of any action code embedded within.
+         *
+         * @return the printGrammar flag
+         */
+        public virtual bool PrintGrammar
+        {
+            get
+            {
+                return printGrammar;
+            }
+            set
+            {
+                printGrammar = value;
+            }
+        }
+
+        /**
+         * Indicates whether ANTLR has supplied, or will supply, a list of all the things
+         * that the input grammar depends upon and all the things that will be generated
+         * when that grammar is successfully analyzed.
+         *
+         * @return the depend flag
+         */
+        public virtual bool Depend
+        {
+            get
+            {
+                return depend;
+            }
+            set
+            {
+                depend = value;
+            }
+        }
+
+        public virtual bool TestMode
+        {
+            get
+            {
+                return testMode;
+            }
+            set
+            {
+                testMode = value;
+            }
+        }
+
+        /**
+         * Indicates whether ANTLR will force all files to the output directory, even
+         * if the input files have relative paths from the input directory.
+         *
+         * @return the forceAllFilesToOutputDir flag
+         */
+        public virtual bool ForceAllFilesToOutputDir
+        {
+            get
+            {
+                return forceAllFilesToOutputDir;
+            }
+            set
+            {
+                forceAllFilesToOutputDir = value;
+            }
+        }
+
+        /**
+         * Indicates whether ANTLR will be verbose when analyzing grammar files, such as
+         * displaying the names of the files it is generating and similar information.
+         *
+         * @return the verbose flag
+         */
+        public virtual bool Verbose
+        {
+            get
+            {
+                return verbose;
+            }
+            set
+            {
+                verbose = value;
+            }
+        }
+
+        /**
+         * Gets or sets the current setting of the conversion timeout on DFA creation.
+         *
+         * @return DFA creation timeout value in milliseconds
+         */
+        public virtual TimeSpan ConversionTimeout
+        {
+            get
+            {
+                return DFA.MAX_TIME_PER_DFA_CREATION;
+            }
+            set
+            {
+                DFA.MAX_TIME_PER_DFA_CREATION = value;
+            }
+        }
+
+        /**
+         * Gets or sets the current setting of the message format descriptor.
+         */
+        public virtual string MessageFormat
+        {
+            get
+            {
+                return ErrorManager.getMessageFormat().ToString();
+            }
+            set
+            {
+                ErrorManager.setFormat( value );
+            }
+        }
+
+        /**
+         * Returns the number of errors that the analysis/processing threw up.
+         * @return Error count
+         */
+        public virtual int NumErrors
+        {
+            get
+            {
+                return ErrorManager.getNumErrors();
+            }
+        }
+
+        /**
+         * Indicate whether the tool will analyze the dependencies of the provided grammar
+         * file list and ensure that grammars with dependencies are built
+         * after any of the other gramamrs in the list that they are dependent on. Setting
+         * this option also has the side effect that any grammars that are includes for other
+         * grammars in the list are excluded from individual analysis, which allows the caller
+         * to invoke the tool via org.antlr.tool -make *.g and not worry about the inclusion
+         * of grammars that are just includes for other grammars or what order the grammars
+         * appear on the command line.
+         *
+         * This option was coded to make life easier for tool integration (such as Maven) but
+         * may also be useful at the command line.
+         *
+         * @return true if the tool is currently configured to analyze and sort grammar files.
+         */
+        public virtual bool Make
+        {
+            get
+            {
+                return make;
+            }
+            set
+            {
+                make = value;
+            }
+        }
+
+        public virtual void addGrammarFile( string grammarFileName )
+        {
+            grammarFileNames.Add( grammarFileName );
         }
     }
 }

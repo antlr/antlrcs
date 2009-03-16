@@ -538,8 +538,8 @@ namespace Antlr3.Codegen
                 target.getTargetStringLiteralFromString( grammar.FileName );
             outputFileST.setAttribute( "fileName", targetAppropriateFileNameString );
             headerFileST.setAttribute( "fileName", targetAppropriateFileNameString );
-            outputFileST.setAttribute( "ANTLRVersion", AntlrTool.VERSION );
-            headerFileST.setAttribute( "ANTLRVersion", AntlrTool.VERSION );
+            outputFileST.setAttribute( "ANTLRVersion", tool.VERSION );
+            headerFileST.setAttribute( "ANTLRVersion", tool.VERSION );
             outputFileST.setAttribute( "generatedTimestamp", AntlrTool.getCurrentTimeStamp() );
             headerFileST.setAttribute( "generatedTimestamp", AntlrTool.getCurrentTimeStamp() );
 

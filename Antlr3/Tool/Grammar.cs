@@ -409,6 +409,8 @@ namespace Antlr3.Tool
         /** Was this created from a COMBINED grammar? */
         public bool implicitLexer;
 
+        string defaultRuleModifier;
+
         /** Map a rule to it's Rule object */
         protected SortedList<string, Rule> nameToRuleMap = new SortedList<string, Rule>();
 
@@ -554,6 +556,10 @@ namespace Antlr3.Tool
             {
                 composite.setDelegationRoot( this );
             }
+            else
+            {
+                defaultRuleModifier = composite.delegateGrammarTreeRoot.grammar.DefaultRuleModifier;
+            }
         }
 
         /** Useful for when you are sure that you are not part of a composite
@@ -649,6 +655,17 @@ namespace Antlr3.Tool
             get
             {
                 return generator;
+            }
+        }
+        public string DefaultRuleModifier
+        {
+            get
+            {
+                return defaultRuleModifier;
+            }
+            set
+            {
+                defaultRuleModifier = value;
             }
         }
         public ICollection<Rule> DelegatedRuleReferences
@@ -1080,10 +1097,10 @@ namespace Antlr3.Tool
                                        "rewrite", rewrite );
                 }
                 // set options properly
-                setOption( "backtrack", true, null );
+                setOption( "backtrack", "true", null );
                 if ( output != null && output.ToString().Equals( "AST" ) )
                 {
-                    setOption( "rewrite", true, null );
+                    setOption( "rewrite", "true", null );
                 }
                 // @synpredgate set to state.backtracking==1 by code gen when filter=true
                 // superClass set in template target::treeParser
@@ -1885,7 +1902,7 @@ namespace Antlr3.Tool
             JSystem.@out.println("defineRule("+ruleName+",modifier="+modifier+
                                "): index="+r.index+", nalts="+numAlts);
             */
-            r.modifier = modifier;
+            r.modifier = modifier ?? DefaultRuleModifier;
             nameToRuleMap[ruleName] = r;
             setRuleAST( ruleName, tree );
             r.setOptions( options, ruleToken );

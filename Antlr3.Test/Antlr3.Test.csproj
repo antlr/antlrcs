@@ -1,0 +1,133 @@
+﻿<Project ToolsVersion="3.5" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>9.0.30729</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{8B58597B-058E-4D7A-B83E-5269BDABBE2C}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>AntlrUnitTests</RootNamespace>
+    <AssemblyName>AntlrUnitTests</AssemblyName>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <ProjectTypeGuids>{3AC096D0-A1C2-E12C-1390-A8335801FDAB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <SccProjectName>SAK</SccProjectName>
+    <SccLocalPath>SAK</SccLocalPath>
+    <SccAuxPath>SAK</SccAuxPath>
+    <SccProvider>SAK</SccProvider>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Microsoft.VisualStudio.QualityTools.UnitTestFramework, Version=9.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
+    <Reference Include="System" />
+    <Reference Include="System.Core">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="BaseTest.cs" />
+    <Compile Include="DebugTestAutoAST.cs" />
+    <Compile Include="DebugTestCompositeGrammars.cs" />
+    <Compile Include="DebugTestRewriteAST.cs" />
+    <Compile Include="ErrorQueue.cs" />
+    <Compile Include="IRuntimeTestHarness.cs" />
+    <Compile Include="JavaRuntimeTestHarness.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="RuntimeTestHarness.cs" />
+    <Compile Include="StringTemplateTests.cs" />
+    <Compile Include="TestASTConstruction.cs" />
+    <Compile Include="TestAttributes.cs" />
+    <Compile Include="TestAutoAST.cs" />
+    <Compile Include="TestBufferedTreeNodeStream.cs" />
+    <Compile Include="TestCharDFAConversion.cs" />
+    <Compile Include="TestCompositeGrammars.cs" />
+    <Compile Include="TestDFAConversion.cs" />
+    <Compile Include="TestDFAMatching.cs" />
+    <Compile Include="TestFastQueue.cs" />
+    <Compile Include="TestHeteroAST.cs" />
+    <Compile Include="TestInterpretedLexing.cs" />
+    <Compile Include="TestInterpretedParsing.cs" />
+    <Compile Include="TestIntervalSet.cs" />
+    <Compile Include="TestJavaCodeGeneration.cs" />
+    <Compile Include="TestLexer.cs" />
+    <Compile Include="TestMessages.cs" />
+    <Compile Include="TestNFAConstruction.cs" />
+    <Compile Include="TestRewriteAST.cs" />
+    <Compile Include="TestRewriteTemplates.cs" />
+    <Compile Include="TestSemanticPredicateEvaluation.cs" />
+    <Compile Include="TestSemanticPredicates.cs" />
+    <Compile Include="TestSets.cs" />
+    <Compile Include="TestSymbolDefinitions.cs" />
+    <Compile Include="TestSyntacticPredicateEvaluation.cs" />
+    <Compile Include="TestTemplates.cs" />
+    <Compile Include="TestTokenRewriteStream.cs" />
+    <Compile Include="TestTopologicalSort.cs" />
+    <Compile Include="TestTreeGrammarRewriteAST.cs" />
+    <Compile Include="TestTreeIterator.cs" />
+    <Compile Include="TestTreeNodeStream.cs" />
+    <Compile Include="TestTreeParsing.cs" />
+    <Compile Include="TestTrees.cs" />
+    <Compile Include="TestTreeWizard.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="AuthoringTests.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="body.st">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="method.st">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="page.st">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="row.st">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="users_list.st">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\antlr\main\runtime\CSharp3\Sources\Antlr3.Runtime.Debug\Antlr3.Runtime.Debug.csproj">
+      <Project>{5EE27A90-B023-42C9-AAF1-52B0424C5D0B}</Project>
+      <Name>Antlr3.Runtime.Debug</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\antlr\main\runtime\CSharp3\Sources\Antlr3.Runtime\Antlr3.Runtime.csproj">
+      <Project>{8FDC0A87-9005-4D5A-AB75-E55CEB575559}</Project>
+      <Name>Antlr3.Runtime</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Antlr3.StringTemplate\Antlr3.StringTemplate.csproj">
+      <Project>{B5910BE2-DE21-4AA9-95C1-486F42B9E794}</Project>
+      <Name>Antlr3.StringTemplate</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Antlr3\Antlr3.csproj">
+      <Project>{2AB8CAED-C046-4F05-8B18-6948100D2FE7}</Project>
+      <Name>Antlr3</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+  <PropertyGroup>
+    <PostBuildEvent>
+    </PostBuildEvent>
+  </PropertyGroup>
+</Project>
