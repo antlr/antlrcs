@@ -570,10 +570,14 @@ namespace Antlr3.ST.Language
 
         static Func<object, object> BuildAccessor( MethodInfo method )
         {
-            System.Reflection.Emit.DynamicMethod dm = new System.Reflection.Emit.DynamicMethod( method.DeclaringType.Name + method.Name + "Accessor", typeof( object ), new Type[] { typeof( object ) }, method.DeclaringType );
+            System.Reflection.Emit.DynamicMethod dm = new System.Reflection.Emit.DynamicMethod( method.DeclaringType.Name + method.Name + "MethodAccessor", typeof( object ), new Type[] { typeof( object ) }, method.DeclaringType );
             var gen = dm.GetILGenerator();
-            gen.Emit( System.Reflection.Emit.OpCodes.Ldarg_0 );
-            gen.Emit( System.Reflection.Emit.OpCodes.Castclass, method.DeclaringType );
+
+            if ( !method.IsStatic )
+            {
+                gen.Emit( System.Reflection.Emit.OpCodes.Ldarg_0 );
+                gen.Emit( System.Reflection.Emit.OpCodes.Castclass, method.DeclaringType );
+            }
 
             if ( method.IsVirtual && !method.IsFinal )
                 gen.EmitCall( System.Reflection.Emit.OpCodes.Callvirt, method, null );
@@ -589,11 +593,19 @@ namespace Antlr3.ST.Language
 
         static Func<object, object> BuildAccessor( FieldInfo field )
         {
-            System.Reflection.Emit.DynamicMethod dm = new System.Reflection.Emit.DynamicMethod( field.DeclaringType.Name + field.Name + "Accessor", typeof( object ), new Type[] { typeof( object ) }, field.DeclaringType );
+            System.Reflection.Emit.DynamicMethod dm = new System.Reflection.Emit.DynamicMethod( field.DeclaringType.Name + field.Name + "FieldAccessor", typeof( object ), new Type[] { typeof( object ) }, field.DeclaringType );
+
             var gen = dm.GetILGenerator();
-            gen.Emit( System.Reflection.Emit.OpCodes.Ldarg_0 );
-            gen.Emit( System.Reflection.Emit.OpCodes.Castclass, field.DeclaringType );
-            gen.Emit( System.Reflection.Emit.OpCodes.Ldfld, field );
+            if ( field.IsStatic )
+            {
+                gen.Emit( System.Reflection.Emit.OpCodes.Ldsfld, field );
+            }
+            else
+            {
+                gen.Emit( System.Reflection.Emit.OpCodes.Ldarg_0 );
+                gen.Emit( System.Reflection.Emit.OpCodes.Castclass, field.DeclaringType );
+                gen.Emit( System.Reflection.Emit.OpCodes.Ldfld, field );
+            }
 
             if ( field.FieldType.IsValueType )
                 gen.Emit( System.Reflection.Emit.OpCodes.Box, field.FieldType );
