@@ -78,9 +78,14 @@ namespace Antlr3.Tool
             ProcessArgs( args );
             ICharStream input = null;
             if ( filename != null )
+            {
                 input = new ANTLRFileStream( filename );
+            }
             else
-                input = new ANTLRInputStream( Console.In );
+            {
+                input = new ANTLRInputStream();
+                ( (ANTLRInputStream)input ).Load( Console.In, ANTLRInputStream.INITIAL_BUFFER_SIZE, ANTLRInputStream.READ_BUFFER_SIZE );
+            }
             // BUILD AST
             ANTLRLexer lex = new ANTLRLexer( input );
             tokens = new TokenRewriteStream( lex );
