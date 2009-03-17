@@ -232,6 +232,7 @@
     <Compile Include="Grammars\TreeToNFAConverterHelper.cs">
       <DependentUpon>TreeToNFAConverter.g3</DependentUpon>
     </Compile>
+    <Compile Include="Tool\Strip.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="..\..\..\antlr\main\tool\src\main\resources\org\antlr\codegen\templates\ActionScript\ActionScript.stg">
