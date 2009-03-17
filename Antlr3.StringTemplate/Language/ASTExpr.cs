@@ -93,7 +93,7 @@ namespace Antlr3.ST.Language
                 "wrap"
             };
 
-        static readonly Dictionary<Type, Dictionary<string, MemberInfo>> _memberAccessors = new Dictionary<Type, Dictionary<string, MemberInfo>>();
+        static readonly Dictionary<Type, Dictionary<string, Func<object, object>>> _memberAccessors = new Dictionary<Type, Dictionary<string, Func<object, object>>>();
 
         protected internal ITree exprTree = null;
 
@@ -504,22 +504,22 @@ namespace Antlr3.ST.Language
         }
 
         [MethodImpl( MethodImplOptions.Synchronized )]
-        static MemberInfo FindMember( Type type, string name )
+        static Func<object, object> FindMember( Type type, string name )
         {
             if ( type == null || name == null )
                 throw new ArgumentNullException();
 
-            Dictionary<string, MemberInfo> members;
-            MemberInfo member = null;
+            Dictionary<string, Func<object, object>> members;
+            Func<object, object> accessor = null;
 
             if ( _memberAccessors.TryGetValue( type, out members ) )
             {
-                if ( members.TryGetValue( name, out member ) )
-                    return member;
+                if ( members.TryGetValue( name, out accessor ) )
+                    return accessor;
             }
             else
             {
-                members = new Dictionary<string, MemberInfo>();
+                members = new Dictionary<string, Func<object, object>>();
                 _memberAccessors[type] = members;
             }
 
@@ -527,37 +527,79 @@ namespace Antlr3.ST.Language
             string methodSuffix = char.ToUpperInvariant( name[0] ) + name.Substring( 1 );
 
             // BEGIN ADDED FOR C#
-            if ( member == null )
+            MethodInfo method = null;
+            if ( method == null )
             {
                 System.Reflection.PropertyInfo p = type.GetProperty( methodSuffix );
                 if ( p != null )
-                    member = p.GetGetMethod();
+                    method = p.GetGetMethod();
             }
-            if ( member == null )
+            if ( method == null )
             {
-                member = GetMethod( type, "Get" + methodSuffix );
+                method = GetMethod( type, "Get" + methodSuffix );
             }
-            if ( member == null )
+            if ( method == null )
             {
-                member = GetMethod( type, "Is" + methodSuffix );
+                method = GetMethod( type, "Is" + methodSuffix );
             }
             // END ADDED
-            if ( member == null )
+            if ( method == null )
             {
-                member = GetMethod( type, "get" + methodSuffix );
+                method = GetMethod( type, "get" + methodSuffix );
             }
-            if ( member == null )
+            if ( method == null )
             {
-                member = GetMethod( type, "is" + methodSuffix );
-            }
-            if ( member == null )
-            {
-                // try for a visible field
-                member = type.GetField( name );
+                method = GetMethod( type, "is" + methodSuffix );
             }
 
-            members[name] = member;
-            return member;
+            if ( method != null )
+            {
+                accessor = BuildAccessor( method );
+            }
+            else
+            {
+                // try for a visible field
+                FieldInfo field = type.GetField( name );
+                if ( field != null )
+                    accessor = BuildAccessor( field );
+            }
+
+            members[name] = accessor;
+            return accessor;
+        }
+
+        static Func<object, object> BuildAccessor( MethodInfo method )
+        {
+            System.Reflection.Emit.DynamicMethod dm = new System.Reflection.Emit.DynamicMethod( method.DeclaringType.Name + method.Name + "Accessor", typeof( object ), new Type[] { typeof( object ) }, method.DeclaringType );
+            var gen = dm.GetILGenerator();
+            gen.Emit( System.Reflection.Emit.OpCodes.Ldarg_0 );
+            gen.Emit( System.Reflection.Emit.OpCodes.Castclass, method.DeclaringType );
+
+            if ( method.IsVirtual && !method.IsFinal )
+                gen.EmitCall( System.Reflection.Emit.OpCodes.Callvirt, method, null );
+            else
+                gen.EmitCall( System.Reflection.Emit.OpCodes.Call, method, null );
+
+            if ( method.ReturnType.IsValueType )
+                gen.Emit( System.Reflection.Emit.OpCodes.Box, method.ReturnType );
+
+            gen.Emit( System.Reflection.Emit.OpCodes.Ret );
+            return (Func<object, object>)dm.CreateDelegate( typeof( Func<object, object> ) );
+        }
+
+        static Func<object, object> BuildAccessor( FieldInfo field )
+        {
+            System.Reflection.Emit.DynamicMethod dm = new System.Reflection.Emit.DynamicMethod( field.DeclaringType.Name + field.Name + "Accessor", typeof( object ), new Type[] { typeof( object ) }, field.DeclaringType );
+            var gen = dm.GetILGenerator();
+            gen.Emit( System.Reflection.Emit.OpCodes.Ldarg_0 );
+            gen.Emit( System.Reflection.Emit.OpCodes.Castclass, field.DeclaringType );
+            gen.Emit( System.Reflection.Emit.OpCodes.Ldfld, field );
+
+            if ( field.FieldType.IsValueType )
+                gen.Emit( System.Reflection.Emit.OpCodes.Box, field.FieldType );
+
+            gen.Emit( System.Reflection.Emit.OpCodes.Ret );
+            return (Func<object, object>)dm.CreateDelegate( typeof( Func<object, object> ) );
         }
 
         protected virtual object RawGetObjectProperty( StringTemplate self, object o, object property )
@@ -624,81 +666,26 @@ namespace Antlr3.ST.Language
                 return value;
             }
 
-            // try getXXX and isXXX properties
-
-            // check cache
-            /*
-            Member cachedMember =
-                self.getGroup().getCachedClassProperty(c,propertyName);
-            if ( cachedMember!=null ) {
-                try {
-                    if ( cachedMember is Method ) {
-                        m = (Method)cachedMember;
-                        value = invokeMethod(m, o, value);
-                    }
-                    else {
-                        // must be a field
-                        Field f = (Field)cachedMember;
-                        value = accessField(f, o, value);
-                    }
-                }
-                catch (Exception e) {
-                    self.error("Can't get property "+propertyName+
-                        " from "+c.getName()+" instance", e);
-                }
-                return value;
-            }
-            */
-
             string propertyName = (string)property;
-            MemberInfo member = FindMember( c, propertyName );
-            MethodInfo method = member as MethodInfo;
-            if ( method != null )
+            var accessor = FindMember( c, propertyName );
+            if ( accessor != null )
             {
                 try
                 {
-                    value = InvokeMethod( method, o, value );
+                    value = accessor( o );
                 }
                 catch ( Exception e )
                 {
-                    self.Error( "Can't get property " + propertyName + " using method get/is" + propertyName +
-                        " from " + c.Name + " instance", e );
+                    self.Error( "Can't access property " + propertyName + " using method get/is" + propertyName +
+                        " or direct field access from " + c.Name + " instance", e );
                 }
             }
             else
             {
-                FieldInfo field = member as FieldInfo;
-                if ( field != null )
-                {
-                    try
-                    {
-                        value = AccessField( field, o, value );
-                    }
-                    catch ( FieldAccessException iae )
-                    {
-                        self.Error( "Can't access property " + propertyName + " using method get/is" + propertyName +
-                            " or direct field access from " + c.Name + " instance", iae );
-                    }
-                }
-                else
-                {
-                    self.Error( "Class " + c.Name + " has no such attribute: " + propertyName +
-                        " in template context " + self.GetEnclosingInstanceStackString(), null );
-                }
+                self.Error( "Class " + c.Name + " has no such attribute: " + propertyName +
+                    " in template context " + self.GetEnclosingInstanceStackString(), null );
             }
 
-            return value;
-        }
-
-        protected static object AccessField( FieldInfo f, object o, object value )
-        {
-            value = f.GetValue( o );
-            return value;
-        }
-
-        protected static object InvokeMethod( MethodInfo m, object o, object value )
-        {
-            value = m.Invoke( o, null );
             return value;
         }
 

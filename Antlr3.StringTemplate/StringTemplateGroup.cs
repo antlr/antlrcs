@@ -98,7 +98,8 @@ namespace Antlr3.ST
         Dictionary<string, IDictionary> _maps = new Dictionary<string, IDictionary>();
 
         /** <summary>How to pull apart a template into chunks?</summary> */
-        Type _templateLexerClass = null;
+        Type _templateLexerClass;
+        Func<StringTemplate, TextReader, Antlr.Runtime.Lexer> _templateLexerClassCtor;
 
         /** <summary>
          *  You can set the lexer once if you know all of your groups use the
@@ -106,7 +107,9 @@ namespace Antlr3.ST
          *  then it is used as an override.
          *  </summary>
          */
-        static Type _defaultTemplateLexerClass = typeof( DefaultTemplateLexer );
+        static Type _defaultTemplateLexerClass;
+        static Func<StringTemplate, TextReader, Antlr.Runtime.Lexer> _defaultTemplateLexerClassCtor;
+        static readonly Dictionary<Type, Func<StringTemplate, TextReader, Antlr.Runtime.Lexer>> _ctors = new Dictionary<Type, Func<StringTemplate, TextReader, Antlr.Runtime.Lexer>>();
 
         /** <summary>
          *  Under what directory should I look for templates?  If null,
@@ -266,6 +269,11 @@ namespace Antlr3.ST
          */
         Encoding _fileCharEncoding = Encoding.Default;
 
+        static StringTemplateGroup()
+        {
+            RegisterDefaultLexer( typeof( DefaultTemplateLexer ) );
+        }
+
         /** <summary>
          *  Create a group manager for some templates, all of which are
          *  at or below the indicated directory.
@@ -292,7 +300,7 @@ namespace Antlr3.ST
             this._rootAssembly = rootAssembly;
             _lastCheckedDisk = DateTime.Now;
             _nameToGroupMap[name] = this;
-            this._templateLexerClass = lexer;
+            TemplateLexerClass = lexer;
         }
 
         /** <summary>
@@ -363,7 +371,7 @@ namespace Antlr3.ST
             {
                 lexer = typeof( AngleBracketTemplateLexer );
             }
-            this._templateLexerClass = lexer;
+            TemplateLexerClass = lexer;
             if ( errors != null )
             { // always have to have a listener
                 this._listener = errors;
@@ -472,6 +480,11 @@ namespace Antlr3.ST
                 }
                 return _defaultTemplateLexerClass;
             }
+            private set
+            {
+                _templateLexerClass = value;
+                _templateLexerClassCtor = BuildLexerCtor( value );
+            }
         }
 
         public ICollection<StringTemplate> Templates
@@ -483,6 +496,40 @@ namespace Antlr3.ST
         }
 
         #endregion
+
+        [MethodImpl( MethodImplOptions.Synchronized )]
+        static Func<StringTemplate, TextReader, Antlr.Runtime.Lexer> BuildLexerCtor( Type lexerType )
+        {
+            if ( lexerType == null )
+                return null;
+
+            Func<StringTemplate, TextReader, Antlr.Runtime.Lexer> result;
+            if ( !_ctors.TryGetValue( lexerType, out result ) )
+            {
+                ConstructorInfo ctor = lexerType.GetConstructor( new Type[] { typeof( StringTemplate ), typeof( TextReader ) } );
+
+                System.Reflection.Emit.DynamicMethod dm = new System.Reflection.Emit.DynamicMethod( lexerType.Name + "Ctor", typeof( Antlr.Runtime.Lexer ), new Type[] { typeof( StringTemplate ), typeof( TextReader ) } );
+                var gen = dm.GetILGenerator();
+                gen.Emit( System.Reflection.Emit.OpCodes.Ldarg_0 );
+                gen.Emit( System.Reflection.Emit.OpCodes.Ldarg_1 );
+                gen.Emit( System.Reflection.Emit.OpCodes.Newobj, ctor );
+                gen.Emit( System.Reflection.Emit.OpCodes.Ret );
+                result = (Func<StringTemplate, TextReader, Antlr.Runtime.Lexer>)dm.CreateDelegate( typeof( Func<StringTemplate, TextReader, Antlr.Runtime.Lexer> ) );
+                _ctors[lexerType] = result;
+            }
+
+            return result;
+        }
+
+        public Antlr.Runtime.Lexer CreateLexer( StringTemplate template, TextReader reader )
+        {
+            if ( _templateLexerClassCtor != null )
+            {
+                return _templateLexerClassCtor( template, reader );
+            }
+
+            return _defaultTemplateLexerClassCtor( template, reader );
+        }
 
         [Obsolete]
         public Type GetTemplateLexerClass()
@@ -1310,6 +1357,7 @@ namespace Antlr3.ST
         public static void RegisterDefaultLexer( Type lexerClass )
         {
             _defaultTemplateLexerClass = lexerClass;
+            _defaultTemplateLexerClassCtor = BuildLexerCtor( lexerClass );
         }
 
         public static void RegisterGroupLoader( IStringTemplateGroupLoader loader )

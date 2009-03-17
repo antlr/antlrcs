@@ -1228,18 +1228,7 @@ namespace Antlr3.ST
                 // The default is DefaultTemplateLexer.
                 // The only constraint is that you use an ANTLR lexer
                 // so I can use the special ChunkToken.
-                Type lexerClass = _group.TemplateLexerClass;
-                ConstructorInfo ctor =
-                        lexerClass.GetConstructor(
-                            new Type[] { typeof( StringTemplate ), typeof( TextReader ) }
-                        );
-                Lexer chunkStream =
-                        (Lexer)ctor.Invoke(
-                            new object[] { this, new StringReader( _pattern ) }
-                        );
-                //chunkStream.setTokenObjectClass("org.antlr.stringtemplate.language.ChunkToken");
-                //ITokenStream tokenStream = new CommonTokenStream(chunkStream);
-                //System.Diagnostics.Debug.Assert( tokenStream.LT( 1 ) is ChunkToken );
+                Lexer chunkStream = _group.CreateLexer( this, new StringReader( _pattern ) );
                 TemplateParser chunkifier = new TemplateParser( new CommonTokenStream( chunkStream ) );
                 chunkifier.template( this );
                 //System.out.println("chunks="+chunks);
@@ -1262,16 +1251,13 @@ namespace Antlr3.ST
 
         public virtual ASTExpr ParseAction( string action )
         {
-            //System.out.println("parse action "+action);
-            ActionLexer lexer = new ActionLexer( new Antlr.Runtime.ANTLRStringStream( action.ToString() ) );
-            ActionParser parser =
-                new ActionParser( lexer, this );
-            //parser.setASTNodeClass("org.antlr.stringtemplate.language.StringTemplateAST");
-            //lexer.setTokenObjectClass("org.antlr.stringtemplate.language.StringTemplateToken");
+            //Console.Out.WriteLine( "parse action " + action );
+            ActionLexer lexer = new ActionLexer( new Antlr.Runtime.ANTLRStringStream( action ) );
+            ActionParser parser = new ActionParser( lexer, this );
             ASTExpr a = null;
             try
             {
-                ActionParser.action_return result = parser.action();
+                var result = parser.action();
                 IDictionary<string, object> options = result.opts;
                 ITree tree = (ITree)result.Tree;
                 if ( tree != null )
@@ -1288,15 +1274,8 @@ namespace Antlr3.ST
             }
             catch ( RecognitionException re )
             {
-                Error( "Can't parse chunk: " + action.ToString(), re );
+                Error( "Can't parse chunk: " + action, re );
             }
-            //catch (TokenStreamException tse) {
-            //    error("Can't parse chunk: "+action.toString(), tse);
-            //}
-            //catch ( Exception e )
-            //{
-            //    throw new NotImplementedException("Specific exception may need handling", e);
-            //}
 
             return a;
         }
