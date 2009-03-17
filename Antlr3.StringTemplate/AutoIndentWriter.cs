@@ -201,18 +201,20 @@ namespace Antlr3.ST
         public virtual int Write( string str )
         {
             int n = 0;
-            for ( int i = 0; i < str.Length; i++ )
+            int strLength = str.Length;
+            int newlineLength = _newline.Length;
+            for ( int i = 0; i < strLength; i++ )
             {
                 char c = str[i];
                 // found \n or \r\n newline?
                 if ( c == '\r' || c == '\n' )
                 {
                     _atStartOfLine = true;
-                    n += _newline.Length; // wrote n more char
+                    n += newlineLength; // wrote n more char
                     _writer.Write( _newline );
                     _charPosition = 0; 
                     // skip an extra char upon \r\n
-                    if ( ( c == '\r' && ( i + 1 ) < str.Length && str[i+1] == '\n' ) )
+                    if ( ( c == '\r' && ( i + 1 ) < strLength && str[i+1] == '\n' ) )
                     {
                         i++; // loop iteration i++ takes care of skipping 2nd char
                     }
@@ -305,18 +307,17 @@ namespace Antlr3.ST
         /// <exception cref="System.IO.IOException" />
         public virtual int Indent()
         {
-            int n = 0;
-            for ( int i = 0; i < _indents.Count; i++ )
+            int count = _indents.Count;
+            for ( int i = 0; i < count; i++ )
             {
                 string ind = _indents[i];
                 if ( ind != null )
                 {
-                    n += ind.Length;
                     _writer.Write( ind );
                 }
             }
-            _charPosition += n;
-            return n;
+            _charPosition += IndentationWidth;
+            return IndentationWidth;
         }
 
         /// <exception cref="System.ArgumentException" />
