@@ -1319,15 +1319,21 @@ namespace Antlr3.ST.Language
             return i;
         }
 
-        public virtual object GetOption( string name )
+        public object GetOption( string name )
         {
             object value = null;
             if ( options != null )
             {
-                value = options.get( name );
-                if ( (value is string) && (string)value == EMPTY_OPTION )
+                if ( options.TryGetValue( name, out value ) )
                 {
-                    return defaultOptionValues.get( name );
+                    string s = value as string;
+                    if ( s != null && s == EMPTY_OPTION )
+                    {
+                        StringTemplateAST st;
+                        if ( defaultOptionValues.TryGetValue( name, out st ) )
+                            return st;
+                        return null;
+                    }
                 }
             }
             return value;

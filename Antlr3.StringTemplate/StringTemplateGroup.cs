@@ -1043,7 +1043,7 @@ namespace Antlr3.ST
             string mangledName =
                 GetMangledRegionName( enclosingTemplateName, regionName );
             StringTemplate regionST = DefineTemplate( mangledName, template );
-            regionST.SetIsRegion( true );
+            regionST.IsRegion = true;
             regionST.SetRegionDefType( type );
             return regionST;
         }
@@ -1118,7 +1118,7 @@ namespace Antlr3.ST
             StringTemplate st;
             if ( _templates.TryGetValue( name, out st ) && st != null )
             {
-                if ( st.GetIsRegion() )
+                if ( st.IsRegion )
                 {
                     // don't allow redef of @t.r() ::= "..." or <@r>...<@end>
                     if ( st.GetRegionDefType() == StringTemplate.REGION_IMPLICIT )

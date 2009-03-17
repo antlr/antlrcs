@@ -200,38 +200,66 @@ namespace Antlr3.ST
         /// <exception cref="System.IO.IOException" />
         public virtual int Write( string str )
         {
-            int n = 0;
-            int strLength = str.Length;
-            int newlineLength = _newline.Length;
-            for ( int i = 0; i < strLength; i++ )
+            if ( string.IsNullOrEmpty( str ) )
             {
-                char c = str[i];
-                // found \n or \r\n newline?
-                if ( c == '\r' || c == '\n' )
-                {
-                    _atStartOfLine = true;
-                    n += newlineLength; // wrote n more char
-                    _writer.Write( _newline );
-                    _charPosition = 0; 
-                    // skip an extra char upon \r\n
-                    if ( ( c == '\r' && ( i + 1 ) < strLength && str[i+1] == '\n' ) )
-                    {
-                        i++; // loop iteration i++ takes care of skipping 2nd char
-                    }
-                    continue;
-                }
-                // normal character
-                // check to see if we are at the start of a line; need indent if so
-                if ( _atStartOfLine )
-                {
-                    n += Indent();
-                    _atStartOfLine = false;
-                }
-                n++;
-                _writer.Write( c );
-                _charPosition++;
+                return 0;
             }
-            return n;
+            else if ( str.Contains( '\n' ) || str.Contains( '\r' ) )
+            {
+                str = str.Replace( "\r\n", "\n" );
+                str = str.Replace( '\r', '\n' );
+                if ( _indents.Count > 1 )
+                {
+                    string[] lines = str.Split( '\n' );
+                    string indent = null;
+                    for ( int i = 0; i < lines.Length; i++ )
+                    {
+                        if ( ( i > 0 || _charPosition == 0 ) && lines[i].Length > 0 )
+                        {
+                            if ( indent == null )
+                            {
+                                indent = string.Join( string.Empty, _indents.ToArray() );
+                                if ( indent.Length == 0 )
+                                    break;
+                            }
+
+                            lines[i] = indent + lines[i];
+                        }
+                    }
+
+                    if ( lines.Length == 1 )
+                    {
+                        str = lines[0];
+                        _charPosition += str.Length;
+                    }
+                    else
+                    {
+                        str = string.Join( _newline, lines );
+                        _charPosition = lines[lines.Length - 1].Length;
+                    }
+                }
+                else
+                {
+                    if ( _newline != "\n" )
+                        str = str.Replace( "\n", _newline );
+                    _charPosition = str.Length - str.LastIndexOf( _newline[_newline.Length - 1] ) - 1;
+                }
+            }
+            else
+            {
+                if ( _charPosition == 0 && _indents.Count > 1 )
+                {
+                    string indent = string.Join( string.Empty, _indents.ToArray() );
+                    str = indent + str;
+                }
+
+                _charPosition += str.Length;
+            }
+
+            Writer.Write( str );
+
+            _atStartOfLine = ( _charPosition == 0 );
+            return str.Length;
         }
 
         /// <exception cref="System.ObjectDisposedException" />

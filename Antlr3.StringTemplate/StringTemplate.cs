@@ -504,11 +504,11 @@ namespace Antlr3.ST
         {
             get
             {
-                return GetIsRegion();
+                return _isRegion;
             }
             set
             {
-                SetIsRegion( value );
+                _isRegion = value;
             }
         }
 
@@ -1822,16 +1822,6 @@ namespace Antlr3.ST
                 p = p._enclosingInstance;
             }
             return "[" + string.Join( " ", names.ToArray() ) + "]";
-        }
-
-        public virtual bool GetIsRegion()
-        {
-            return _isRegion;
-        }
-
-        public virtual void SetIsRegion( bool isRegion )
-        {
-            this._isRegion = isRegion;
         }
 
         public virtual void AddRegionName( string name )
