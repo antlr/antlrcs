@@ -696,6 +696,7 @@ setElement[IIntSet elements]
  *  and from the rule testSetElement below.
  */
 testBlockAsSet returns [int alts=0]
+options { backtrack = true; }
 @init
 {
 	inTest++;

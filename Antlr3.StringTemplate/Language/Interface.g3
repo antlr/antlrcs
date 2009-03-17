@@ -121,7 +121,7 @@ groupInterface[StringTemplateGroupInterface groupI]
 {
 	this.groupI = groupI;
 }
-	:	'interface' name=ID {groupI.SetName($name.text);} SEMI
+	:	'interface' name=ID {groupI.Name = $name.text;} SEMI
 		( template[groupI] )+
 		EOF
 	;

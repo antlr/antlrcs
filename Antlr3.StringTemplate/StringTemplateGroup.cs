@@ -184,38 +184,6 @@ namespace Antlr3.ST
          */
         Dictionary<Type, IAttributeRenderer> _attributeRenderers;
 
-#if false
-        /** <summary>
-         *  Maps obj.prop to a value to avoid reflection costs; track one
-         *  set of all class.property -> Member mappings for all ST usage in VM.
-         *  </summary>
-         */
-        protected static IDictionary classPropertyCache = new Dictionary<object, object>();
-
-        public class ClassPropCacheKey
-        {
-            Type c;
-            string propertyName;
-            public ClassPropCacheKey( Type c, string propertyName )
-            {
-                this.c = c;
-                this.propertyName = propertyName;
-            }
-
-            public override bool Equals( object other )
-            {
-                ClassPropCacheKey otherKey = (ClassPropCacheKey)other;
-                return c.Equals( otherKey.c ) &&
-                    propertyName.Equals( otherKey.propertyName );
-            }
-
-            public override int GetHashCode()
-            {
-                return c.GetHashCode() + propertyName.GetHashCode();
-            }
-        }
-#endif
-
         /** <summary>
          *  If a group file indicates it derives from a supergroup, how do we
          *  find it?  Shall we make it so the initial StringTemplateGroup file
@@ -373,7 +341,8 @@ namespace Antlr3.ST
             }
             TemplateLexerClass = lexer;
             if ( errors != null )
-            { // always have to have a listener
+            {
+                // always have to have a listener
                 this._listener = errors;
             }
             SuperGroup = superGroup;
@@ -531,30 +500,6 @@ namespace Antlr3.ST
             return _defaultTemplateLexerClassCtor( template, reader );
         }
 
-        [Obsolete]
-        public Type GetTemplateLexerClass()
-        {
-            return TemplateLexerClass;
-        }
-
-        [Obsolete]
-        public string GetName()
-        {
-            return Name;
-        }
-
-        [Obsolete]
-        public void SetName( string name )
-        {
-            Name = name;
-        }
-
-        [Obsolete]
-        public void SetSuperGroup( StringTemplateGroup superGroup )
-        {
-            SuperGroup = superGroup;
-        }
-
         /** <summary>
          *  Called by group parser when ": supergroupname" is found.
          *  This method forces the supergroup's lexer to be same as lexer
@@ -566,7 +511,8 @@ namespace Antlr3.ST
             StringTemplateGroup superGroup =
                 (StringTemplateGroup)_nameToGroupMap.get( superGroupName );
             if ( superGroup != null )
-            { // we've seen before; just use it
+            {
+                // we've seen before; just use it
                 SuperGroup = superGroup;
                 return;
             }
@@ -605,7 +551,8 @@ namespace Antlr3.ST
         {
             StringTemplateGroupInterface I = _nameToInterfaceMap.get( interfaceName );
             if ( I != null )
-            { // we've seen before; just use it
+            {
+                // we've seen before; just use it
                 ImplementInterface( I );
                 return;
             }
@@ -624,12 +571,6 @@ namespace Antlr3.ST
             }
         }
 
-        [Obsolete]
-        public StringTemplateGroup GetSuperGroup()
-        {
-            return SuperGroup;
-        }
-
         /** <summary>Walk up group hierarchy and show top down to this group</summary> */
         public virtual string GetGroupHierarchyStackString()
         {
@@ -641,18 +582,6 @@ namespace Antlr3.ST
                 p = p._superGroup;
             }
             return "[" + string.Join( " ", groupNames.ToArray() ) + "]";
-        }
-
-        [Obsolete]
-        public string GetRootDir()
-        {
-            return RootDir;
-        }
-
-        [Obsolete]
-        public void SetRootDir( string rootDir )
-        {
-            RootDir = rootDir;
         }
 
         /** <summary>StringTemplate object factory; each group can have its own.</summary> */
@@ -670,7 +599,7 @@ namespace Antlr3.ST
         protected virtual StringTemplate GetInstanceOf( StringTemplate enclosingInstance,
                                                string name )
         {
-            //System.out.println("getInstanceOf("+getName()+"::"+name+")");
+            //Console.Out.WriteLine( "getInstanceOf(" + Name + "::" + name + ")" );
             StringTemplate st = LookupTemplate( enclosingInstance, name );
             if ( st != null )
             {
@@ -702,11 +631,9 @@ namespace Antlr3.ST
         public virtual StringTemplate GetEmbeddedInstanceOf( StringTemplate enclosingInstance,
                                                     string name )
         {
-            /*
-            System.out.println("surrounding group is "+
-                               enclosingInstance.getGroup().getName()+
-                               " with native group "+enclosingInstance.getNativeGroup().getName());
-                               */
+            //Console.Out.WriteLine( "surrounding group is " +
+            //                   enclosingInstance.Group.Name +
+            //                   " with native group " + enclosingInstance.NativeGroup.Name );
             StringTemplate st = null;
             // TODO: seems like this should go into lookupTemplate
             if ( name.StartsWith( "super." ) )
@@ -743,7 +670,7 @@ namespace Antlr3.ST
         [MethodImpl( MethodImplOptions.Synchronized )]
         public virtual StringTemplate LookupTemplate( StringTemplate enclosingInstance, string name )
         {
-            //System.out.println("look up "+getName()+"::"+name);
+            //Console.Out.WriteLine( "look up " + Name + "::" + name );
             if ( name.StartsWith( "super." ) )
             {
                 if ( _superGroup != null )
@@ -752,11 +679,9 @@ namespace Antlr3.ST
                     name = name.Substring( dot + 1 );
                     StringTemplate superScopeST =
                         _superGroup.LookupTemplate( enclosingInstance, name );
-                    /*
-                    System.out.println("superScopeST is "+
-                                       superScopeST.getGroup().getName()+"::"+name+
-                                       " with native group "+superScopeST.getNativeGroup().getName());
-                    */
+                    //Console.Out.WriteLine( "superScopeST is " +
+                    //                   superScopeST.Group.Name + "::" + name +
+                    //                   " with native group " + superScopeST.NativeGroup.Name );
                     return superScopeST;
                 }
                 throw new ArgumentException( Name + " has no super group; invalid template: " + name );
@@ -783,7 +708,8 @@ namespace Antlr3.ST
                     }
                 }
                 if ( st != null )
-                { // found in superGroup
+                {
+                    // found in superGroup
                     // insert into this group; refresh will allow super
                     // to change it's def later or this group to add
                     // an override.
@@ -810,7 +736,7 @@ namespace Antlr3.ST
             {
                 return null;
             }
-            //System.out.println("lookup found "+st.getGroup().getName()+"::"+st.getName());
+            //Console.Out.WriteLine( "lookup found " + st.Group.Name + "::" + st.Name );
             return st;
         }
 
@@ -999,18 +925,6 @@ namespace Antlr3.ST
             return isr;
         }
 
-        [Obsolete]
-        public Encoding GetFileCharEncoding()
-        {
-            return FileCharEncoding;
-        }
-
-        [Obsolete]
-        public void SetFileCharEncoding( Encoding fileCharEncoding )
-        {
-            FileCharEncoding = fileCharEncoding;
-        }
-
         /** <summary>
          *  Define an examplar template; precompiled and stored
          *  with no attributes.  Remove any previous definition.
@@ -1181,45 +1095,21 @@ namespace Antlr3.ST
             for ( int i = 0; _interfaces != null && i < _interfaces.Count; i++ )
             {
                 StringTemplateGroupInterface I = _interfaces[i];
-                IList missing = I.GetMissingTemplates( this );
-                IList mismatched = I.GetMismatchedTemplates( this );
+                IList<string> missing = I.GetMissingTemplates( this );
+                IList<string> mismatched = I.GetMismatchedTemplates( this );
                 if ( missing != null )
                 {
-                    string missingText = "[" + string.Join( ",", missing.Cast<string>().ToArray() ) + "]";
+                    string missingText = "[" + string.Join( ",", missing.ToArray() ) + "]";
                     Error( "group " + Name + " does not satisfy interface " +
-                          I.GetName() + ": missing templates " + missingText );
+                          I.Name + ": missing templates " + missingText );
                 }
                 if ( mismatched != null )
                 {
-                    string mismatchedText = "[" + string.Join( ",", mismatched.Cast<string>().ToArray() ) + "]";
+                    string mismatchedText = "[" + string.Join( ",", mismatched.ToArray() ) + "]";
                     Error( "group " + Name + " does not satisfy interface " +
-                          I.GetName() + ": mismatched arguments on these templates " + mismatchedText );
+                          I.Name + ": mismatched arguments on these templates " + mismatchedText );
                 }
             }
-        }
-
-        [Obsolete]
-        public TimeSpan GetRefreshInterval()
-        {
-            return RefreshInterval;
-        }
-
-        [Obsolete]
-        public void SetRefreshInterval( TimeSpan refreshInterval )
-        {
-            RefreshInterval = refreshInterval;
-        }
-
-        [Obsolete]
-        public void SetErrorListener( IStringTemplateErrorListener listener )
-        {
-            ErrorListener = listener;
-        }
-
-        [Obsolete]
-        public IStringTemplateErrorListener GetErrorListener()
-        {
-            return ErrorListener;
         }
 
         /** <summary>
@@ -1313,18 +1203,6 @@ namespace Antlr3.ST
             }
             return renderer;
         }
-
-#if false
-        public virtual void CacheClassProperty(Type c, String propertyName, Member member) {
-            Object key = new ClassPropCacheKey(c,propertyName);
-            classPropertyCache.put(key,member);
-        }
-
-        public virtual Member GetCachedClassProperty(Type c, String propertyName) {
-            Object key = new ClassPropCacheKey(c,propertyName);
-            return (Member)classPropertyCache.get(key);
-        }
-#endif
 
         public virtual IDictionary GetMap( string name )
         {

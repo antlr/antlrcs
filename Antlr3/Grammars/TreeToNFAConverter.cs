@@ -1,4 +1,4 @@
-// $ANTLR 3.1.2 Grammars\\TreeToNFAConverter.g3 2009-03-08 16:36:57
+// $ANTLR 3.1.2 Grammars\\TreeToNFAConverter.g3 2009-03-17 14:56:01
 
 // The variable 'variable' is assigned but its value is never used.
 #pragma warning disable 219
@@ -52,7 +52,8 @@ using Antlr.Runtime.Tree;
 using RewriteRuleITokenStream = Antlr.Runtime.Tree.RewriteRuleTokenStream;using Stack = System.Collections.Generic.Stack<object>;
 using List = System.Collections.IList;
 using ArrayList = System.Collections.Generic.List<object>;
-
+using Map = System.Collections.IDictionary;
+using HashMap = System.Collections.Generic.Dictionary<object, object>;
 namespace Antlr3.Grammars
 {
 /** Build an NFA from a tree representing an ANTLR grammar. */
@@ -213,6 +214,7 @@ public partial class TreeToNFAConverter : TreeParser
 				break;
 			default:
 				{
+					if (state.backtracking>0) {state.failed=true; return ;}
 					NoViableAltException nvae = new NoViableAltException("", 1, 0, input);
 
 					throw nvae;
@@ -224,64 +226,64 @@ public partial class TreeToNFAConverter : TreeParser
 			case 1:
 				// Grammars\\TreeToNFAConverter.g3:93:6: ^( LEXER_GRAMMAR grammarSpec )
 				{
-				Match(input,LEXER_GRAMMAR,Follow._LEXER_GRAMMAR_in_grammar_67); 
+				Match(input,LEXER_GRAMMAR,Follow._LEXER_GRAMMAR_in_grammar_67); if (state.failed) return ;
 
-				Match(input, TokenConstants.DOWN, null); 
+				Match(input, TokenConstants.DOWN, null); if (state.failed) return ;
 				PushFollow(Follow._grammarSpec_in_grammar_69);
 				grammarSpec();
 
 				state._fsp--;
+				if (state.failed) return ;
 
-
-				Match(input, TokenConstants.UP, null); 
+				Match(input, TokenConstants.UP, null); if (state.failed) return ;
 
 				}
 				break;
 			case 2:
 				// Grammars\\TreeToNFAConverter.g3:94:5: ^( PARSER_GRAMMAR grammarSpec )
 				{
-				Match(input,PARSER_GRAMMAR,Follow._PARSER_GRAMMAR_in_grammar_79); 
+				Match(input,PARSER_GRAMMAR,Follow._PARSER_GRAMMAR_in_grammar_79); if (state.failed) return ;
 
-				Match(input, TokenConstants.DOWN, null); 
+				Match(input, TokenConstants.DOWN, null); if (state.failed) return ;
 				PushFollow(Follow._grammarSpec_in_grammar_81);
 				grammarSpec();
 
 				state._fsp--;
+				if (state.failed) return ;
 
-
-				Match(input, TokenConstants.UP, null); 
+				Match(input, TokenConstants.UP, null); if (state.failed) return ;
 
 				}
 				break;
 			case 3:
 				// Grammars\\TreeToNFAConverter.g3:95:5: ^( TREE_GRAMMAR grammarSpec )
 				{
-				Match(input,TREE_GRAMMAR,Follow._TREE_GRAMMAR_in_grammar_91); 
+				Match(input,TREE_GRAMMAR,Follow._TREE_GRAMMAR_in_grammar_91); if (state.failed) return ;
 
-				Match(input, TokenConstants.DOWN, null); 
+				Match(input, TokenConstants.DOWN, null); if (state.failed) return ;
 				PushFollow(Follow._grammarSpec_in_grammar_93);
 				grammarSpec();
 
 				state._fsp--;
+				if (state.failed) return ;
 
-
-				Match(input, TokenConstants.UP, null); 
+				Match(input, TokenConstants.UP, null); if (state.failed) return ;
 
 				}
 				break;
 			case 4:
 				// Grammars\\TreeToNFAConverter.g3:96:5: ^( COMBINED_GRAMMAR grammarSpec )
 				{
-				Match(input,COMBINED_GRAMMAR,Follow._COMBINED_GRAMMAR_in_grammar_103); 
+				Match(input,COMBINED_GRAMMAR,Follow._COMBINED_GRAMMAR_in_grammar_103); if (state.failed) return ;
 
-				Match(input, TokenConstants.DOWN, null); 
+				Match(input, TokenConstants.DOWN, null); if (state.failed) return ;
 				PushFollow(Follow._grammarSpec_in_grammar_105);
 				grammarSpec();
 
 				state._fsp--;
+				if (state.failed) return ;
 
-
-				Match(input, TokenConstants.UP, null); 
+				Match(input, TokenConstants.UP, null); if (state.failed) return ;
 
 				}
 				break;
@@ -291,9 +293,12 @@ public partial class TreeToNFAConverter : TreeParser
 
 			}
 
+			if ( state.backtracking == 0 )
+			{
 
-				finish();
+					finish();
 
+			}
 		}
 		catch ( RecognitionException re )
 		{
@@ -317,10 +322,10 @@ public partial class TreeToNFAConverter : TreeParser
 			// Grammars\\TreeToNFAConverter.g3:101:4: ( ^( 'scope' ID ( ^( AMPERSAND ( . )* ) )* ACTION ) )
 			// Grammars\\TreeToNFAConverter.g3:101:4: ^( 'scope' ID ( ^( AMPERSAND ( . )* ) )* ACTION )
 			{
-			Match(input,SCOPE,Follow._SCOPE_in_attrScope124); 
+			Match(input,SCOPE,Follow._SCOPE_in_attrScope124); if (state.failed) return ;
 
-			Match(input, TokenConstants.DOWN, null); 
-			Match(input,ID,Follow._ID_in_attrScope126); 
+			Match(input, TokenConstants.DOWN, null); if (state.failed) return ;
+			Match(input,ID,Follow._ID_in_attrScope126); if (state.failed) return ;
 			// Grammars\\TreeToNFAConverter.g3:101:18: ( ^( AMPERSAND ( . )* ) )*
 			for ( ; ; )
 			{
@@ -338,11 +343,11 @@ public partial class TreeToNFAConverter : TreeParser
 				case 1:
 					// Grammars\\TreeToNFAConverter.g3:101:20: ^( AMPERSAND ( . )* )
 					{
-					Match(input,AMPERSAND,Follow._AMPERSAND_in_attrScope131); 
+					Match(input,AMPERSAND,Follow._AMPERSAND_in_attrScope131); if (state.failed) return ;
 
 					if ( input.LA(1)==TokenConstants.DOWN )
 					{
-						Match(input, TokenConstants.DOWN, null); 
+						Match(input, TokenConstants.DOWN, null); if (state.failed) return ;
 						// Grammars\\TreeToNFAConverter.g3:101:32: ( . )*
 						for ( ; ; )
 						{
@@ -364,7 +369,7 @@ public partial class TreeToNFAConverter : TreeParser
 							case 1:
 								// Grammars\\TreeToNFAConverter.g3:101:0: .
 								{
-								MatchAny(input); 
+								MatchAny(input); if (state.failed) return ;
 
 								}
 								break;
@@ -379,7 +384,7 @@ public partial class TreeToNFAConverter : TreeParser
 
 
 
-						Match(input, TokenConstants.UP, null); 
+						Match(input, TokenConstants.UP, null); if (state.failed) return ;
 					}
 
 					}
@@ -394,9 +399,9 @@ public partial class TreeToNFAConverter : TreeParser
 				;
 
 
-			Match(input,ACTION,Follow._ACTION_in_attrScope140); 
+			Match(input,ACTION,Follow._ACTION_in_attrScope140); if (state.failed) return ;
 
-			Match(input, TokenConstants.UP, null); 
+			Match(input, TokenConstants.UP, null); if (state.failed) return ;
 
 			}
 
@@ -425,7 +430,7 @@ public partial class TreeToNFAConverter : TreeParser
 			// Grammars\\TreeToNFAConverter.g3:105:4: ( ID (cmt= DOC_COMMENT )? ( ^( OPTIONS ( . )* ) )? ( ^( IMPORT ( . )* ) )? ( ^( TOKENS ( . )* ) )? ( attrScope )* ( ^( AMPERSAND ( . )* ) )* rules )
 			// Grammars\\TreeToNFAConverter.g3:105:4: ID (cmt= DOC_COMMENT )? ( ^( OPTIONS ( . )* ) )? ( ^( IMPORT ( . )* ) )? ( ^( TOKENS ( . )* ) )? ( attrScope )* ( ^( AMPERSAND ( . )* ) )* rules
 			{
-			Match(input,ID,Follow._ID_in_grammarSpec153); 
+			Match(input,ID,Follow._ID_in_grammarSpec153); if (state.failed) return ;
 			// Grammars\\TreeToNFAConverter.g3:106:3: (cmt= DOC_COMMENT )?
 			int alt4=2;
 			int LA4_0 = input.LA(1);
@@ -439,7 +444,7 @@ public partial class TreeToNFAConverter : TreeParser
 			case 1:
 				// Grammars\\TreeToNFAConverter.g3:106:4: cmt= DOC_COMMENT
 				{
-				cmt=(GrammarAST)Match(input,DOC_COMMENT,Follow._DOC_COMMENT_in_grammarSpec160); 
+				cmt=(GrammarAST)Match(input,DOC_COMMENT,Follow._DOC_COMMENT_in_grammarSpec160); if (state.failed) return ;
 
 				}
 				break;
@@ -459,11 +464,11 @@ public partial class TreeToNFAConverter : TreeParser
 			case 1:
 				// Grammars\\TreeToNFAConverter.g3:107:5: ^( OPTIONS ( . )* )
 				{
-				Match(input,OPTIONS,Follow._OPTIONS_in_grammarSpec169); 
+				Match(input,OPTIONS,Follow._OPTIONS_in_grammarSpec169); if (state.failed) return ;
 
 				if ( input.LA(1)==TokenConstants.DOWN )
 				{
-					Match(input, TokenConstants.DOWN, null); 
+					Match(input, TokenConstants.DOWN, null); if (state.failed) return ;
 					// Grammars\\TreeToNFAConverter.g3:107:15: ( . )*
 					for ( ; ; )
 					{
@@ -485,7 +490,7 @@ public partial class TreeToNFAConverter : TreeParser
 						case 1:
 							// Grammars\\TreeToNFAConverter.g3:107:0: .
 							{
-							MatchAny(input); 
+							MatchAny(input); if (state.failed) return ;
 
 							}
 							break;
@@ -500,7 +505,7 @@ public partial class TreeToNFAConverter : TreeParser
 
 
 
-					Match(input, TokenConstants.UP, null); 
+					Match(input, TokenConstants.UP, null); if (state.failed) return ;
 				}
 
 				}
@@ -521,11 +526,11 @@ public partial class TreeToNFAConverter : TreeParser
 			case 1:
 				// Grammars\\TreeToNFAConverter.g3:108:5: ^( IMPORT ( . )* )
 				{
-				Match(input,IMPORT,Follow._IMPORT_in_grammarSpec183); 
+				Match(input,IMPORT,Follow._IMPORT_in_grammarSpec183); if (state.failed) return ;
 
 				if ( input.LA(1)==TokenConstants.DOWN )
 				{
-					Match(input, TokenConstants.DOWN, null); 
+					Match(input, TokenConstants.DOWN, null); if (state.failed) return ;
 					// Grammars\\TreeToNFAConverter.g3:108:14: ( . )*
 					for ( ; ; )
 					{
@@ -547,7 +552,7 @@ public partial class TreeToNFAConverter : TreeParser
 						case 1:
 							// Grammars\\TreeToNFAConverter.g3:108:0: .
 							{
-							MatchAny(input); 
+							MatchAny(input); if (state.failed) return ;
 
 							}
 							break;
@@ -562,7 +567,7 @@ public partial class TreeToNFAConverter : TreeParser
 
 
 
-					Match(input, TokenConstants.UP, null); 
+					Match(input, TokenConstants.UP, null); if (state.failed) return ;
 				}
 
 				}
@@ -583,11 +588,11 @@ public partial class TreeToNFAConverter : TreeParser
 			case 1:
 				// Grammars\\TreeToNFAConverter.g3:109:5: ^( TOKENS ( . )* )
 				{
-				Match(input,TOKENS,Follow._TOKENS_in_grammarSpec197); 
+				Match(input,TOKENS,Follow._TOKENS_in_grammarSpec197); if (state.failed) return ;
 
 				if ( input.LA(1)==TokenConstants.DOWN )
 				{
-					Match(input, TokenConstants.DOWN, null); 
+					Match(input, TokenConstants.DOWN, null); if (state.failed) return ;
 					// Grammars\\TreeToNFAConverter.g3:109:14: ( . )*
 					for ( ; ; )
 					{
@@ -609,7 +614,7 @@ public partial class TreeToNFAConverter : TreeParser
 						case 1:
 							// Grammars\\TreeToNFAConverter.g3:109:0: .
 							{
-							MatchAny(input); 
+							MatchAny(input); if (state.failed) return ;
 
 							}
 							break;
@@ -624,7 +629,7 @@ public partial class TreeToNFAConverter : TreeParser
 
 
 
-					Match(input, TokenConstants.UP, null); 
+					Match(input, TokenConstants.UP, null); if (state.failed) return ;
 				}
 
 				}
@@ -653,7 +658,7 @@ public partial class TreeToNFAConverter : TreeParser
 					attrScope();
 
 					state._fsp--;
-
+					if (state.failed) return ;
 
 					}
 					break;
@@ -684,11 +689,11 @@ public partial class TreeToNFAConverter : TreeParser
 				case 1:
 					// Grammars\\TreeToNFAConverter.g3:111:5: ^( AMPERSAND ( . )* )
 					{
-					Match(input,AMPERSAND,Follow._AMPERSAND_in_grammarSpec218); 
+					Match(input,AMPERSAND,Follow._AMPERSAND_in_grammarSpec218); if (state.failed) return ;
 
 					if ( input.LA(1)==TokenConstants.DOWN )
 					{
-						Match(input, TokenConstants.DOWN, null); 
+						Match(input, TokenConstants.DOWN, null); if (state.failed) return ;
 						// Grammars\\TreeToNFAConverter.g3:111:17: ( . )*
 						for ( ; ; )
 						{
@@ -710,7 +715,7 @@ public partial class TreeToNFAConverter : TreeParser
 							case 1:
 								// Grammars\\TreeToNFAConverter.g3:111:0: .
 								{
-								MatchAny(input); 
+								MatchAny(input); if (state.failed) return ;
 
 								}
 								break;
@@ -725,7 +730,7 @@ public partial class TreeToNFAConverter : TreeParser
 
 
 
-						Match(input, TokenConstants.UP, null); 
+						Match(input, TokenConstants.UP, null); if (state.failed) return ;
 					}
 
 					}
@@ -744,7 +749,7 @@ public partial class TreeToNFAConverter : TreeParser
 			rules();
 
 			state._fsp--;
-
+			if (state.failed) return ;
 
 			}
 
@@ -793,7 +798,7 @@ public partial class TreeToNFAConverter : TreeParser
 					rule();
 
 					state._fsp--;
-
+					if (state.failed) return ;
 
 					}
 					break;
@@ -802,6 +807,7 @@ public partial class TreeToNFAConverter : TreeParser
 					if ( cnt14 >= 1 )
 						goto loop14;
 
+					if (state.backtracking>0) {state.failed=true; return ;}
 					EarlyExitException eee14 = new EarlyExitException( 14, input );
 					throw eee14;
 				}
@@ -846,14 +852,17 @@ public partial class TreeToNFAConverter : TreeParser
 			// Grammars\\TreeToNFAConverter.g3:120:4: ( ^( RULE id= ID ( modifier )? ^( ARG ( ARG_ACTION )? ) ^( RET ( ARG_ACTION )? ) ( throwsSpec )? ( ^( OPTIONS ( . )* ) )? ( ruleScopeSpec )? ( ^( AMPERSAND ( . )* ) )* b= block ( exceptionGroup )? EOR ) )
 			// Grammars\\TreeToNFAConverter.g3:120:4: ^( RULE id= ID ( modifier )? ^( ARG ( ARG_ACTION )? ) ^( RET ( ARG_ACTION )? ) ( throwsSpec )? ( ^( OPTIONS ( . )* ) )? ( ruleScopeSpec )? ( ^( AMPERSAND ( . )* ) )* b= block ( exceptionGroup )? EOR )
 			{
-			Match(input,RULE,Follow._RULE_in_rule255); 
+			Match(input,RULE,Follow._RULE_in_rule255); if (state.failed) return retval;
 
-			Match(input, TokenConstants.DOWN, null); 
-			id=(GrammarAST)Match(input,ID,Follow._ID_in_rule259); 
+			Match(input, TokenConstants.DOWN, null); if (state.failed) return retval;
+			id=(GrammarAST)Match(input,ID,Follow._ID_in_rule259); if (state.failed) return retval;
+			if ( state.backtracking == 0 )
+			{
 
-							currentRuleName = (id!=null?id.Text:null);
-							factory.setCurrentRule( grammar.getLocallyDefinedRule(currentRuleName) );
-						
+								currentRuleName = (id!=null?id.Text:null);
+								factory.setCurrentRule( grammar.getLocallyDefinedRule(currentRuleName) );
+							
+			}
 			// Grammars\\TreeToNFAConverter.g3:125:4: ( modifier )?
 			int alt15=2;
 			int LA15_0 = input.LA(1);
@@ -871,18 +880,18 @@ public partial class TreeToNFAConverter : TreeParser
 				modifier();
 
 				state._fsp--;
-
+				if (state.failed) return retval;
 
 				}
 				break;
 
 			}
 
-			Match(input,ARG,Follow._ARG_in_rule278); 
+			Match(input,ARG,Follow._ARG_in_rule278); if (state.failed) return retval;
 
 			if ( input.LA(1)==TokenConstants.DOWN )
 			{
-				Match(input, TokenConstants.DOWN, null); 
+				Match(input, TokenConstants.DOWN, null); if (state.failed) return retval;
 				// Grammars\\TreeToNFAConverter.g3:126:10: ( ARG_ACTION )?
 				int alt16=2;
 				int LA16_0 = input.LA(1);
@@ -896,7 +905,7 @@ public partial class TreeToNFAConverter : TreeParser
 				case 1:
 					// Grammars\\TreeToNFAConverter.g3:126:11: ARG_ACTION
 					{
-					Match(input,ARG_ACTION,Follow._ARG_ACTION_in_rule281); 
+					Match(input,ARG_ACTION,Follow._ARG_ACTION_in_rule281); if (state.failed) return retval;
 
 					}
 					break;
@@ -904,13 +913,13 @@ public partial class TreeToNFAConverter : TreeParser
 				}
 
 
-				Match(input, TokenConstants.UP, null); 
+				Match(input, TokenConstants.UP, null); if (state.failed) return retval;
 			}
-			Match(input,RET,Follow._RET_in_rule290); 
+			Match(input,RET,Follow._RET_in_rule290); if (state.failed) return retval;
 
 			if ( input.LA(1)==TokenConstants.DOWN )
 			{
-				Match(input, TokenConstants.DOWN, null); 
+				Match(input, TokenConstants.DOWN, null); if (state.failed) return retval;
 				// Grammars\\TreeToNFAConverter.g3:127:10: ( ARG_ACTION )?
 				int alt17=2;
 				int LA17_0 = input.LA(1);
@@ -924,7 +933,7 @@ public partial class TreeToNFAConverter : TreeParser
 				case 1:
 					// Grammars\\TreeToNFAConverter.g3:127:11: ARG_ACTION
 					{
-					Match(input,ARG_ACTION,Follow._ARG_ACTION_in_rule293); 
+					Match(input,ARG_ACTION,Follow._ARG_ACTION_in_rule293); if (state.failed) return retval;
 
 					}
 					break;
@@ -932,7 +941,7 @@ public partial class TreeToNFAConverter : TreeParser
 				}
 
 
-				Match(input, TokenConstants.UP, null); 
+				Match(input, TokenConstants.UP, null); if (state.failed) return retval;
 			}
 			// Grammars\\TreeToNFAConverter.g3:128:4: ( throwsSpec )?
 			int alt18=2;
@@ -951,7 +960,7 @@ public partial class TreeToNFAConverter : TreeParser
 				throwsSpec();
 
 				state._fsp--;
-
+				if (state.failed) return retval;
 
 				}
 				break;
@@ -971,11 +980,11 @@ public partial class TreeToNFAConverter : TreeParser
 			case 1:
 				// Grammars\\TreeToNFAConverter.g3:129:6: ^( OPTIONS ( . )* )
 				{
-				Match(input,OPTIONS,Follow._OPTIONS_in_rule312); 
+				Match(input,OPTIONS,Follow._OPTIONS_in_rule312); if (state.failed) return retval;
 
 				if ( input.LA(1)==TokenConstants.DOWN )
 				{
-					Match(input, TokenConstants.DOWN, null); 
+					Match(input, TokenConstants.DOWN, null); if (state.failed) return retval;
 					// Grammars\\TreeToNFAConverter.g3:129:16: ( . )*
 					for ( ; ; )
 					{
@@ -997,7 +1006,7 @@ public partial class TreeToNFAConverter : TreeParser
 						case 1:
 							// Grammars\\TreeToNFAConverter.g3:129:0: .
 							{
-							MatchAny(input); 
+							MatchAny(input); if (state.failed) return retval;
 
 							}
 							break;
@@ -1012,7 +1021,7 @@ public partial class TreeToNFAConverter : TreeParser
 
 
 
-					Match(input, TokenConstants.UP, null); 
+					Match(input, TokenConstants.UP, null); if (state.failed) return retval;
 				}
 
 				}
@@ -1037,7 +1046,7 @@ public partial class TreeToNFAConverter : TreeParser
 				ruleScopeSpec();
 
 				state._fsp--;
-
+				if (state.failed) return retval;
 
 				}
 				break;
@@ -1061,11 +1070,11 @@ public partial class TreeToNFAConverter : TreeParser
 				case 1:
 					// Grammars\\TreeToNFAConverter.g3:131:6: ^( AMPERSAND ( . )* )
 					{
-					Match(input,AMPERSAND,Follow._AMPERSAND_in_rule337); 
+					Match(input,AMPERSAND,Follow._AMPERSAND_in_rule337); if (state.failed) return retval;
 
 					if ( input.LA(1)==TokenConstants.DOWN )
 					{
-						Match(input, TokenConstants.DOWN, null); 
+						Match(input, TokenConstants.DOWN, null); if (state.failed) return retval;
 						// Grammars\\TreeToNFAConverter.g3:131:18: ( . )*
 						for ( ; ; )
 						{
@@ -1087,7 +1096,7 @@ public partial class TreeToNFAConverter : TreeParser
 							case 1:
 								// Grammars\\TreeToNFAConverter.g3:131:0: .
 								{
-								MatchAny(input); 
+								MatchAny(input); if (state.failed) return retval;
 
 								}
 								break;
@@ -1102,7 +1111,7 @@ public partial class TreeToNFAConverter : TreeParser
 
 
 
-						Match(input, TokenConstants.UP, null); 
+						Match(input, TokenConstants.UP, null); if (state.failed) return retval;
 					}
 
 					}
@@ -1121,7 +1130,7 @@ public partial class TreeToNFAConverter : TreeParser
 			b=block();
 
 			state._fsp--;
-
+			if (state.failed) return retval;
 			// Grammars\\TreeToNFAConverter.g3:133:4: ( exceptionGroup )?
 			int alt24=2;
 			int LA24_0 = input.LA(1);
@@ -1139,48 +1148,51 @@ public partial class TreeToNFAConverter : TreeParser
 				exceptionGroup();
 
 				state._fsp--;
-
+				if (state.failed) return retval;
 
 				}
 				break;
 
 			}
 
-			Match(input,EOR,Follow._EOR_in_rule364); 
+			Match(input,EOR,Follow._EOR_in_rule364); if (state.failed) return retval;
+			if ( state.backtracking == 0 )
+			{
 
-							StateCluster g = (b!=null?b.g:default(StateCluster));
-							if ( (b!=null?((GrammarAST)b.start):null).SetValue!=null )
-							{
-								// if block comes back as a set not BLOCK, make it
-								// a single ALT block
-								g = factory.build_AlternativeBlockFromSet(g);
-							}
-							if ( char.IsLower(currentRuleName[0]) ||
-								 grammar.type==Grammar.LEXER )
-							{
-								// attach start node to block for this rule
-								Rule thisR = grammar.getLocallyDefinedRule(currentRuleName);
-								NFAState start = thisR.startState;
-								start.associatedASTNode = id;
-								start.addTransition(new Transition(Label.EPSILON, g.left));
-
-								// track decision if > 1 alts
-								if ( grammar.getNumberOfAltsForDecisionNFA(g.left)>1 )
+								StateCluster g = (b!=null?b.g:default(StateCluster));
+								if ( (b!=null?((GrammarAST)b.start):null).SetValue!=null )
 								{
-									g.left.Description = grammar.grammarTreeToString(((GrammarAST)retval.start),false);
-									g.left.setDecisionASTNode((b!=null?((GrammarAST)b.start):null));
-									int d = grammar.assignDecisionNumber( g.left );
-									grammar.setDecisionNFA( d, g.left );
-									grammar.setDecisionBlockAST(d, (b!=null?((GrammarAST)b.start):null));
+									// if block comes back as a set not BLOCK, make it
+									// a single ALT block
+									g = factory.build_AlternativeBlockFromSet(g);
 								}
+								if ( char.IsLower(currentRuleName[0]) ||
+									 grammar.type==Grammar.LEXER )
+								{
+									// attach start node to block for this rule
+									Rule thisR = grammar.getLocallyDefinedRule(currentRuleName);
+									NFAState start = thisR.startState;
+									start.associatedASTNode = id;
+									start.addTransition(new Transition(Label.EPSILON, g.left));
 
-								// hook to end of rule node
-								NFAState end = thisR.stopState;
-								g.right.addTransition(new Transition(Label.EPSILON,end));
-							}
-						
+									// track decision if > 1 alts
+									if ( grammar.getNumberOfAltsForDecisionNFA(g.left)>1 )
+									{
+										g.left.Description = grammar.grammarTreeToString(((GrammarAST)retval.start),false);
+										g.left.setDecisionASTNode((b!=null?((GrammarAST)b.start):null));
+										int d = grammar.assignDecisionNumber( g.left );
+										grammar.setDecisionNFA( d, g.left );
+										grammar.setDecisionBlockAST(d, (b!=null?((GrammarAST)b.start):null));
+									}
 
-			Match(input, TokenConstants.UP, null); 
+									// hook to end of rule node
+									NFAState end = thisR.stopState;
+									g.right.addTransition(new Transition(Label.EPSILON,end));
+								}
+							
+			}
+
+			Match(input, TokenConstants.UP, null); if (state.failed) return retval;
 
 			}
 
@@ -1210,10 +1222,11 @@ public partial class TreeToNFAConverter : TreeParser
 			if ( input.LA(1)==FRAGMENT||(input.LA(1)>=PRIVATE && input.LA(1)<=PUBLIC) )
 			{
 				input.Consume();
-				state.errorRecovery=false;
+				state.errorRecovery=false;state.failed=false;
 			}
 			else
 			{
+				if (state.backtracking>0) {state.failed=true; return ;}
 				MismatchedSetException mse = new MismatchedSetException(null,input);
 				throw mse;
 			}
@@ -1244,9 +1257,9 @@ public partial class TreeToNFAConverter : TreeParser
 			// Grammars\\TreeToNFAConverter.g3:178:4: ( ^( 'throws' ( ID )+ ) )
 			// Grammars\\TreeToNFAConverter.g3:178:4: ^( 'throws' ( ID )+ )
 			{
-			Match(input,THROWS,Follow._THROWS_in_throwsSpec411); 
+			Match(input,THROWS,Follow._THROWS_in_throwsSpec411); if (state.failed) return ;
 
-			Match(input, TokenConstants.DOWN, null); 
+			Match(input, TokenConstants.DOWN, null); if (state.failed) return ;
 			// Grammars\\TreeToNFAConverter.g3:178:15: ( ID )+
 			int cnt25=0;
 			for ( ; ; )
@@ -1265,7 +1278,7 @@ public partial class TreeToNFAConverter : TreeParser
 				case 1:
 					// Grammars\\TreeToNFAConverter.g3:178:0: ID
 					{
-					Match(input,ID,Follow._ID_in_throwsSpec413); 
+					Match(input,ID,Follow._ID_in_throwsSpec413); if (state.failed) return ;
 
 					}
 					break;
@@ -1274,6 +1287,7 @@ public partial class TreeToNFAConverter : TreeParser
 					if ( cnt25 >= 1 )
 						goto loop25;
 
+					if (state.backtracking>0) {state.failed=true; return ;}
 					EarlyExitException eee25 = new EarlyExitException( 25, input );
 					throw eee25;
 				}
@@ -1284,7 +1298,7 @@ public partial class TreeToNFAConverter : TreeParser
 
 
 
-			Match(input, TokenConstants.UP, null); 
+			Match(input, TokenConstants.UP, null); if (state.failed) return ;
 
 			}
 
@@ -1311,11 +1325,11 @@ public partial class TreeToNFAConverter : TreeParser
 			// Grammars\\TreeToNFAConverter.g3:182:4: ( ^( 'scope' ( ^( AMPERSAND ( . )* ) )* ( ACTION )? ( ID )* ) )
 			// Grammars\\TreeToNFAConverter.g3:182:4: ^( 'scope' ( ^( AMPERSAND ( . )* ) )* ( ACTION )? ( ID )* )
 			{
-			Match(input,SCOPE,Follow._SCOPE_in_ruleScopeSpec428); 
+			Match(input,SCOPE,Follow._SCOPE_in_ruleScopeSpec428); if (state.failed) return ;
 
 			if ( input.LA(1)==TokenConstants.DOWN )
 			{
-				Match(input, TokenConstants.DOWN, null); 
+				Match(input, TokenConstants.DOWN, null); if (state.failed) return ;
 				// Grammars\\TreeToNFAConverter.g3:182:15: ( ^( AMPERSAND ( . )* ) )*
 				for ( ; ; )
 				{
@@ -1333,11 +1347,11 @@ public partial class TreeToNFAConverter : TreeParser
 					case 1:
 						// Grammars\\TreeToNFAConverter.g3:182:17: ^( AMPERSAND ( . )* )
 						{
-						Match(input,AMPERSAND,Follow._AMPERSAND_in_ruleScopeSpec433); 
+						Match(input,AMPERSAND,Follow._AMPERSAND_in_ruleScopeSpec433); if (state.failed) return ;
 
 						if ( input.LA(1)==TokenConstants.DOWN )
 						{
-							Match(input, TokenConstants.DOWN, null); 
+							Match(input, TokenConstants.DOWN, null); if (state.failed) return ;
 							// Grammars\\TreeToNFAConverter.g3:182:29: ( . )*
 							for ( ; ; )
 							{
@@ -1359,7 +1373,7 @@ public partial class TreeToNFAConverter : TreeParser
 								case 1:
 									// Grammars\\TreeToNFAConverter.g3:182:0: .
 									{
-									MatchAny(input); 
+									MatchAny(input); if (state.failed) return ;
 
 									}
 									break;
@@ -1374,7 +1388,7 @@ public partial class TreeToNFAConverter : TreeParser
 
 
 
-							Match(input, TokenConstants.UP, null); 
+							Match(input, TokenConstants.UP, null); if (state.failed) return ;
 						}
 
 						}
@@ -1402,7 +1416,7 @@ public partial class TreeToNFAConverter : TreeParser
 				case 1:
 					// Grammars\\TreeToNFAConverter.g3:182:37: ACTION
 					{
-					Match(input,ACTION,Follow._ACTION_in_ruleScopeSpec443); 
+					Match(input,ACTION,Follow._ACTION_in_ruleScopeSpec443); if (state.failed) return ;
 
 					}
 					break;
@@ -1426,7 +1440,7 @@ public partial class TreeToNFAConverter : TreeParser
 					case 1:
 						// Grammars\\TreeToNFAConverter.g3:182:48: ID
 						{
-						Match(input,ID,Follow._ID_in_ruleScopeSpec449); 
+						Match(input,ID,Follow._ID_in_ruleScopeSpec449); if (state.failed) return ;
 
 						}
 						break;
@@ -1441,7 +1455,7 @@ public partial class TreeToNFAConverter : TreeParser
 
 
 
-				Match(input, TokenConstants.UP, null); 
+				Match(input, TokenConstants.UP, null); if (state.failed) return ;
 			}
 
 			}
@@ -1501,6 +1515,7 @@ public partial class TreeToNFAConverter : TreeParser
 				}
 				else
 				{
+					if (state.backtracking>0) {state.failed=true; return retval;}
 					NoViableAltException nvae = new NoViableAltException("", 33, 1, input);
 
 					throw nvae;
@@ -1508,6 +1523,7 @@ public partial class TreeToNFAConverter : TreeParser
 			}
 			else
 			{
+				if (state.backtracking>0) {state.failed=true; return retval;}
 				NoViableAltException nvae = new NoViableAltException("", 33, 0, input);
 
 				throw nvae;
@@ -1520,23 +1536,27 @@ public partial class TreeToNFAConverter : TreeParser
 				if ( !((grammar.isValidSet(this,((GrammarAST)retval.start)) &&
 						 !currentRuleName.Equals(Grammar.ARTIFICIAL_TOKENS_RULENAME))) )
 				{
+					if (state.backtracking>0) {state.failed=true; return retval;}
 					throw new FailedPredicateException(input, "block", "grammar.isValidSet(this,$start) &&\r\n\t\t !currentRuleName.Equals(Grammar.ARTIFICIAL_TOKENS_RULENAME)");
 				}
 				PushFollow(Follow._set_in_block480);
 				set1=set();
 
 				state._fsp--;
-
-				retval.g = (set1!=null?set1.g:default(StateCluster));
+				if (state.failed) return retval;
+				if ( state.backtracking == 0 )
+				{
+					retval.g = (set1!=null?set1.g:default(StateCluster));
+				}
 
 				}
 				break;
 			case 2:
 				// Grammars\\TreeToNFAConverter.g3:197:4: ^( BLOCK ( ^( OPTIONS ( . )* ) )? (a= alternative rewrite )+ EOB )
 				{
-				Match(input,BLOCK,Follow._BLOCK_in_block490); 
+				Match(input,BLOCK,Follow._BLOCK_in_block490); if (state.failed) return retval;
 
-				Match(input, TokenConstants.DOWN, null); 
+				Match(input, TokenConstants.DOWN, null); if (state.failed) return retval;
 				// Grammars\\TreeToNFAConverter.g3:197:13: ( ^( OPTIONS ( . )* ) )?
 				int alt31=2;
 				int LA31_0 = input.LA(1);
@@ -1550,11 +1570,11 @@ public partial class TreeToNFAConverter : TreeParser
 				case 1:
 					// Grammars\\TreeToNFAConverter.g3:197:15: ^( OPTIONS ( . )* )
 					{
-					Match(input,OPTIONS,Follow._OPTIONS_in_block495); 
+					Match(input,OPTIONS,Follow._OPTIONS_in_block495); if (state.failed) return retval;
 
 					if ( input.LA(1)==TokenConstants.DOWN )
 					{
-						Match(input, TokenConstants.DOWN, null); 
+						Match(input, TokenConstants.DOWN, null); if (state.failed) return retval;
 						// Grammars\\TreeToNFAConverter.g3:197:25: ( . )*
 						for ( ; ; )
 						{
@@ -1576,7 +1596,7 @@ public partial class TreeToNFAConverter : TreeParser
 							case 1:
 								// Grammars\\TreeToNFAConverter.g3:197:0: .
 								{
-								MatchAny(input); 
+								MatchAny(input); if (state.failed) return retval;
 
 								}
 								break;
@@ -1591,7 +1611,7 @@ public partial class TreeToNFAConverter : TreeParser
 
 
 
-						Match(input, TokenConstants.UP, null); 
+						Match(input, TokenConstants.UP, null); if (state.failed) return retval;
 					}
 
 					}
@@ -1621,15 +1641,18 @@ public partial class TreeToNFAConverter : TreeParser
 						a=alternative();
 
 						state._fsp--;
-
+						if (state.failed) return retval;
 						PushFollow(Follow._rewrite_in_block513);
 						rewrite();
 
 						state._fsp--;
+						if (state.failed) return retval;
+						if ( state.backtracking == 0 )
+						{
 
-
-											alts.Add(a);
-										
+												alts.Add(a);
+											
+						}
 
 											if ( blockLevel == 1 )
 												outerAltNum++;
@@ -1642,6 +1665,7 @@ public partial class TreeToNFAConverter : TreeParser
 						if ( cnt32 >= 1 )
 							goto loop32;
 
+						if (state.backtracking>0) {state.failed=true; return retval;}
 						EarlyExitException eee32 = new EarlyExitException( 32, input );
 						throw eee32;
 					}
@@ -1651,10 +1675,13 @@ public partial class TreeToNFAConverter : TreeParser
 					;
 
 
-				Match(input,EOB,Follow._EOB_in_block536); 
+				Match(input,EOB,Follow._EOB_in_block536); if (state.failed) return retval;
 
-				Match(input, TokenConstants.UP, null); 
-				retval.g = factory.build_AlternativeBlock(alts);
+				Match(input, TokenConstants.UP, null); if (state.failed) return retval;
+				if ( state.backtracking == 0 )
+				{
+					retval.g = factory.build_AlternativeBlock(alts);
+				}
 
 				}
 				break;
@@ -1689,9 +1716,9 @@ public partial class TreeToNFAConverter : TreeParser
 			// Grammars\\TreeToNFAConverter.g3:214:4: ( ^( ALT (e= element )+ EOA ) )
 			// Grammars\\TreeToNFAConverter.g3:214:4: ^( ALT (e= element )+ EOA )
 			{
-			Match(input,ALT,Follow._ALT_in_alternative565); 
+			Match(input,ALT,Follow._ALT_in_alternative565); if (state.failed) return g;
 
-			Match(input, TokenConstants.DOWN, null); 
+			Match(input, TokenConstants.DOWN, null); if (state.failed) return g;
 			// Grammars\\TreeToNFAConverter.g3:214:11: (e= element )+
 			int cnt34=0;
 			for ( ; ; )
@@ -1714,8 +1741,11 @@ public partial class TreeToNFAConverter : TreeParser
 					e=element();
 
 					state._fsp--;
-
-					g = factory.build_AB(g,(e!=null?e.g:default(StateCluster)));
+					if (state.failed) return g;
+					if ( state.backtracking == 0 )
+					{
+						g = factory.build_AB(g,(e!=null?e.g:default(StateCluster)));
+					}
 
 					}
 					break;
@@ -1724,6 +1754,7 @@ public partial class TreeToNFAConverter : TreeParser
 					if ( cnt34 >= 1 )
 						goto loop34;
 
+					if (state.backtracking>0) {state.failed=true; return g;}
 					EarlyExitException eee34 = new EarlyExitException( 34, input );
 					throw eee34;
 				}
@@ -1733,17 +1764,20 @@ public partial class TreeToNFAConverter : TreeParser
 				;
 
 
-			Match(input,EOA,Follow._EOA_in_alternative577); 
+			Match(input,EOA,Follow._EOA_in_alternative577); if (state.failed) return g;
 
-			Match(input, TokenConstants.UP, null); 
+			Match(input, TokenConstants.UP, null); if (state.failed) return g;
+			if ( state.backtracking == 0 )
+			{
 
-						if (g==null) { // if alt was a list of actions or whatever
-							g = factory.build_Epsilon();
-						}
-						else {
-							factory.optimizeAlternative(g);
-						}
-					
+							if (g==null) { // if alt was a list of actions or whatever
+								g = factory.build_Epsilon();
+							}
+							else {
+								factory.optimizeAlternative(g);
+							}
+						
+			}
 
 			}
 
@@ -1781,6 +1815,7 @@ public partial class TreeToNFAConverter : TreeParser
 			}
 			else
 			{
+				if (state.backtracking>0) {state.failed=true; return ;}
 				NoViableAltException nvae = new NoViableAltException("", 37, 0, input);
 
 				throw nvae;
@@ -1812,7 +1847,7 @@ public partial class TreeToNFAConverter : TreeParser
 						exceptionHandler();
 
 						state._fsp--;
-
+						if (state.failed) return ;
 
 						}
 						break;
@@ -1821,6 +1856,7 @@ public partial class TreeToNFAConverter : TreeParser
 						if ( cnt35 >= 1 )
 							goto loop35;
 
+						if (state.backtracking>0) {state.failed=true; return ;}
 						EarlyExitException eee35 = new EarlyExitException( 35, input );
 						throw eee35;
 					}
@@ -1847,7 +1883,7 @@ public partial class TreeToNFAConverter : TreeParser
 					finallyClause();
 
 					state._fsp--;
-
+					if (state.failed) return ;
 
 					}
 					break;
@@ -1864,7 +1900,7 @@ public partial class TreeToNFAConverter : TreeParser
 				finallyClause();
 
 				state._fsp--;
-
+				if (state.failed) return ;
 
 				}
 				break;
@@ -1893,13 +1929,13 @@ public partial class TreeToNFAConverter : TreeParser
 			// Grammars\\TreeToNFAConverter.g3:231:7: ( ^( 'catch' ARG_ACTION ACTION ) )
 			// Grammars\\TreeToNFAConverter.g3:231:7: ^( 'catch' ARG_ACTION ACTION )
 			{
-			Match(input,CATCH,Follow._CATCH_in_exceptionHandler624); 
+			Match(input,CATCH,Follow._CATCH_in_exceptionHandler624); if (state.failed) return ;
 
-			Match(input, TokenConstants.DOWN, null); 
-			Match(input,ARG_ACTION,Follow._ARG_ACTION_in_exceptionHandler626); 
-			Match(input,ACTION,Follow._ACTION_in_exceptionHandler628); 
+			Match(input, TokenConstants.DOWN, null); if (state.failed) return ;
+			Match(input,ARG_ACTION,Follow._ARG_ACTION_in_exceptionHandler626); if (state.failed) return ;
+			Match(input,ACTION,Follow._ACTION_in_exceptionHandler628); if (state.failed) return ;
 
-			Match(input, TokenConstants.UP, null); 
+			Match(input, TokenConstants.UP, null); if (state.failed) return ;
 
 			}
 
@@ -1926,12 +1962,12 @@ public partial class TreeToNFAConverter : TreeParser
 			// Grammars\\TreeToNFAConverter.g3:235:7: ( ^( 'finally' ACTION ) )
 			// Grammars\\TreeToNFAConverter.g3:235:7: ^( 'finally' ACTION )
 			{
-			Match(input,FINALLY,Follow._FINALLY_in_finallyClause644); 
+			Match(input,FINALLY,Follow._FINALLY_in_finallyClause644); if (state.failed) return ;
 
-			Match(input, TokenConstants.DOWN, null); 
-			Match(input,ACTION,Follow._ACTION_in_finallyClause646); 
+			Match(input, TokenConstants.DOWN, null); if (state.failed) return ;
+			Match(input,ACTION,Follow._ACTION_in_finallyClause646); if (state.failed) return ;
 
-			Match(input, TokenConstants.UP, null); 
+			Match(input, TokenConstants.UP, null); if (state.failed) return ;
 
 			}
 
@@ -1981,18 +2017,21 @@ public partial class TreeToNFAConverter : TreeParser
 				case 1:
 					// Grammars\\TreeToNFAConverter.g3:240:4: ^( REWRITE ( . )* )
 					{
+					if ( state.backtracking == 0 )
+					{
 
-									if ( grammar.getOption("output")==null )
-									{
-										ErrorManager.grammarError(ErrorManager.MSG_REWRITE_OR_OP_WITH_NO_OUTPUT_OPTION,
-																  grammar, ((GrammarAST)retval.start).Token, currentRuleName);
-									}
-								
-					Match(input,REWRITE,Follow._REWRITE_in_rewrite669); 
+										if ( grammar.getOption("output")==null )
+										{
+											ErrorManager.grammarError(ErrorManager.MSG_REWRITE_OR_OP_WITH_NO_OUTPUT_OPTION,
+																	  grammar, ((GrammarAST)retval.start).Token, currentRuleName);
+										}
+									
+					}
+					Match(input,REWRITE,Follow._REWRITE_in_rewrite669); if (state.failed) return retval;
 
 					if ( input.LA(1)==TokenConstants.DOWN )
 					{
-						Match(input, TokenConstants.DOWN, null); 
+						Match(input, TokenConstants.DOWN, null); if (state.failed) return retval;
 						// Grammars\\TreeToNFAConverter.g3:247:14: ( . )*
 						for ( ; ; )
 						{
@@ -2014,7 +2053,7 @@ public partial class TreeToNFAConverter : TreeParser
 							case 1:
 								// Grammars\\TreeToNFAConverter.g3:247:0: .
 								{
-								MatchAny(input); 
+								MatchAny(input); if (state.failed) return retval;
 
 								}
 								break;
@@ -2029,7 +2068,7 @@ public partial class TreeToNFAConverter : TreeParser
 
 
 
-						Match(input, TokenConstants.UP, null); 
+						Match(input, TokenConstants.UP, null); if (state.failed) return retval;
 					}
 
 					}
@@ -2097,115 +2136,133 @@ public partial class TreeToNFAConverter : TreeParser
 			case 1:
 				// Grammars\\TreeToNFAConverter.g3:252:6: ^( ROOT e= element )
 				{
-				Match(input,ROOT,Follow._ROOT_in_element696); 
+				Match(input,ROOT,Follow._ROOT_in_element696); if (state.failed) return retval;
 
-				Match(input, TokenConstants.DOWN, null); 
+				Match(input, TokenConstants.DOWN, null); if (state.failed) return retval;
 				PushFollow(Follow._element_in_element700);
 				e=element();
 
 				state._fsp--;
+				if (state.failed) return retval;
+				if ( state.backtracking == 0 )
+				{
+					retval.g = (e!=null?e.g:default(StateCluster));
+				}
 
-				retval.g = (e!=null?e.g:default(StateCluster));
-
-				Match(input, TokenConstants.UP, null); 
+				Match(input, TokenConstants.UP, null); if (state.failed) return retval;
 
 				}
 				break;
 			case 2:
 				// Grammars\\TreeToNFAConverter.g3:253:6: ^( BANG e= element )
 				{
-				Match(input,BANG,Follow._BANG_in_element711); 
+				Match(input,BANG,Follow._BANG_in_element711); if (state.failed) return retval;
 
-				Match(input, TokenConstants.DOWN, null); 
+				Match(input, TokenConstants.DOWN, null); if (state.failed) return retval;
 				PushFollow(Follow._element_in_element715);
 				e=element();
 
 				state._fsp--;
+				if (state.failed) return retval;
+				if ( state.backtracking == 0 )
+				{
+					retval.g = (e!=null?e.g:default(StateCluster));
+				}
 
-				retval.g = (e!=null?e.g:default(StateCluster));
-
-				Match(input, TokenConstants.UP, null); 
+				Match(input, TokenConstants.UP, null); if (state.failed) return retval;
 
 				}
 				break;
 			case 3:
 				// Grammars\\TreeToNFAConverter.g3:254:4: ^( ASSIGN ID e= element )
 				{
-				Match(input,ASSIGN,Follow._ASSIGN_in_element724); 
+				Match(input,ASSIGN,Follow._ASSIGN_in_element724); if (state.failed) return retval;
 
-				Match(input, TokenConstants.DOWN, null); 
-				Match(input,ID,Follow._ID_in_element726); 
+				Match(input, TokenConstants.DOWN, null); if (state.failed) return retval;
+				Match(input,ID,Follow._ID_in_element726); if (state.failed) return retval;
 				PushFollow(Follow._element_in_element730);
 				e=element();
 
 				state._fsp--;
+				if (state.failed) return retval;
+				if ( state.backtracking == 0 )
+				{
+					retval.g = (e!=null?e.g:default(StateCluster));
+				}
 
-				retval.g = (e!=null?e.g:default(StateCluster));
-
-				Match(input, TokenConstants.UP, null); 
+				Match(input, TokenConstants.UP, null); if (state.failed) return retval;
 
 				}
 				break;
 			case 4:
 				// Grammars\\TreeToNFAConverter.g3:255:4: ^( PLUS_ASSIGN ID e= element )
 				{
-				Match(input,PLUS_ASSIGN,Follow._PLUS_ASSIGN_in_element739); 
+				Match(input,PLUS_ASSIGN,Follow._PLUS_ASSIGN_in_element739); if (state.failed) return retval;
 
-				Match(input, TokenConstants.DOWN, null); 
-				Match(input,ID,Follow._ID_in_element741); 
+				Match(input, TokenConstants.DOWN, null); if (state.failed) return retval;
+				Match(input,ID,Follow._ID_in_element741); if (state.failed) return retval;
 				PushFollow(Follow._element_in_element745);
 				e=element();
 
 				state._fsp--;
+				if (state.failed) return retval;
+				if ( state.backtracking == 0 )
+				{
+					retval.g = (e!=null?e.g:default(StateCluster));
+				}
 
-				retval.g = (e!=null?e.g:default(StateCluster));
-
-				Match(input, TokenConstants.UP, null); 
+				Match(input, TokenConstants.UP, null); if (state.failed) return retval;
 
 				}
 				break;
 			case 5:
 				// Grammars\\TreeToNFAConverter.g3:256:6: ^( RANGE a= atom[null] b= atom[null] )
 				{
-				Match(input,RANGE,Follow._RANGE_in_element756); 
+				Match(input,RANGE,Follow._RANGE_in_element756); if (state.failed) return retval;
 
-				Match(input, TokenConstants.DOWN, null); 
+				Match(input, TokenConstants.DOWN, null); if (state.failed) return retval;
 				PushFollow(Follow._atom_in_element760);
 				a=atom(null);
 
 				state._fsp--;
-
+				if (state.failed) return retval;
 				PushFollow(Follow._atom_in_element765);
 				b=atom(null);
 
 				state._fsp--;
+				if (state.failed) return retval;
 
-
-				Match(input, TokenConstants.UP, null); 
-				retval.g = factory.build_Range(grammar.getTokenType((a!=null?(input.TokenStream.ToString(
-				  input.TreeAdaptor.GetTokenStartIndex(a.start),
-				  input.TreeAdaptor.GetTokenStopIndex(a.start))):null)),
-												 grammar.getTokenType((b!=null?(input.TokenStream.ToString(
-				  input.TreeAdaptor.GetTokenStartIndex(b.start),
-				  input.TreeAdaptor.GetTokenStopIndex(b.start))):null)));
+				Match(input, TokenConstants.UP, null); if (state.failed) return retval;
+				if ( state.backtracking == 0 )
+				{
+					retval.g = factory.build_Range(grammar.getTokenType((a!=null?(input.TokenStream.ToString(
+					  input.TreeAdaptor.GetTokenStartIndex(a.start),
+					  input.TreeAdaptor.GetTokenStopIndex(a.start))):null)),
+													 grammar.getTokenType((b!=null?(input.TokenStream.ToString(
+					  input.TreeAdaptor.GetTokenStartIndex(b.start),
+					  input.TreeAdaptor.GetTokenStopIndex(b.start))):null)));
+				}
 
 				}
 				break;
 			case 6:
 				// Grammars\\TreeToNFAConverter.g3:259:6: ^( CHAR_RANGE c1= CHAR_LITERAL c2= CHAR_LITERAL )
 				{
-				Match(input,CHAR_RANGE,Follow._CHAR_RANGE_in_element779); 
+				Match(input,CHAR_RANGE,Follow._CHAR_RANGE_in_element779); if (state.failed) return retval;
 
-				Match(input, TokenConstants.DOWN, null); 
-				c1=(GrammarAST)Match(input,CHAR_LITERAL,Follow._CHAR_LITERAL_in_element783); 
-				c2=(GrammarAST)Match(input,CHAR_LITERAL,Follow._CHAR_LITERAL_in_element787); 
+				Match(input, TokenConstants.DOWN, null); if (state.failed) return retval;
+				c1=(GrammarAST)Match(input,CHAR_LITERAL,Follow._CHAR_LITERAL_in_element783); if (state.failed) return retval;
+				c2=(GrammarAST)Match(input,CHAR_LITERAL,Follow._CHAR_LITERAL_in_element787); if (state.failed) return retval;
 
-				Match(input, TokenConstants.UP, null); 
+				Match(input, TokenConstants.UP, null); if (state.failed) return retval;
+				if ( state.backtracking == 0 )
+				{
 
-						if ( grammar.type==Grammar.LEXER ) {
-							retval.g = factory.build_CharRange((c1!=null?c1.Text:null), (c2!=null?c2.Text:null));
-						}
-						
+							if ( grammar.type==Grammar.LEXER ) {
+								retval.g = factory.build_CharRange((c1!=null?c1.Text:null), (c2!=null?c2.Text:null));
+							}
+							
+				}
 
 				}
 				break;
@@ -2216,8 +2273,11 @@ public partial class TreeToNFAConverter : TreeParser
 				atom_or_notatom2=atom_or_notatom();
 
 				state._fsp--;
-
-				retval.g = atom_or_notatom2;
+				if (state.failed) return retval;
+				if ( state.backtracking == 0 )
+				{
+					retval.g = atom_or_notatom2;
+				}
 
 				}
 				break;
@@ -2228,8 +2288,11 @@ public partial class TreeToNFAConverter : TreeParser
 				ebnf3=ebnf();
 
 				state._fsp--;
-
-				retval.g = (ebnf3!=null?ebnf3.g:default(StateCluster));
+				if (state.failed) return retval;
+				if ( state.backtracking == 0 )
+				{
+					retval.g = (ebnf3!=null?ebnf3.g:default(StateCluster));
+				}
 
 				}
 				break;
@@ -2240,67 +2303,82 @@ public partial class TreeToNFAConverter : TreeParser
 				tree_4=tree_();
 
 				state._fsp--;
-
-				retval.g = (tree_4!=null?tree_4.g:default(StateCluster));
+				if (state.failed) return retval;
+				if ( state.backtracking == 0 )
+				{
+					retval.g = (tree_4!=null?tree_4.g:default(StateCluster));
+				}
 
 				}
 				break;
 			case 10:
 				// Grammars\\TreeToNFAConverter.g3:268:6: ^( SYNPRED block )
 				{
-				Match(input,SYNPRED,Follow._SYNPRED_in_element828); 
+				Match(input,SYNPRED,Follow._SYNPRED_in_element828); if (state.failed) return retval;
 
-				Match(input, TokenConstants.DOWN, null); 
+				Match(input, TokenConstants.DOWN, null); if (state.failed) return retval;
 				PushFollow(Follow._block_in_element830);
 				block();
 
 				state._fsp--;
+				if (state.failed) return retval;
 
-
-				Match(input, TokenConstants.UP, null); 
+				Match(input, TokenConstants.UP, null); if (state.failed) return retval;
 
 				}
 				break;
 			case 11:
 				// Grammars\\TreeToNFAConverter.g3:269:6: ACTION
 				{
-				ACTION5=(GrammarAST)Match(input,ACTION,Follow._ACTION_in_element839); 
-				retval.g = factory.build_Action(ACTION5);
+				ACTION5=(GrammarAST)Match(input,ACTION,Follow._ACTION_in_element839); if (state.failed) return retval;
+				if ( state.backtracking == 0 )
+				{
+					retval.g = factory.build_Action(ACTION5);
+				}
 
 				}
 				break;
 			case 12:
 				// Grammars\\TreeToNFAConverter.g3:270:6: FORCED_ACTION
 				{
-				FORCED_ACTION6=(GrammarAST)Match(input,FORCED_ACTION,Follow._FORCED_ACTION_in_element848); 
-				retval.g = factory.build_Action(FORCED_ACTION6);
+				FORCED_ACTION6=(GrammarAST)Match(input,FORCED_ACTION,Follow._FORCED_ACTION_in_element848); if (state.failed) return retval;
+				if ( state.backtracking == 0 )
+				{
+					retval.g = factory.build_Action(FORCED_ACTION6);
+				}
 
 				}
 				break;
 			case 13:
 				// Grammars\\TreeToNFAConverter.g3:271:6: pred= SEMPRED
 				{
-				pred=(GrammarAST)Match(input,SEMPRED,Follow._SEMPRED_in_element859); 
-				retval.g = factory.build_SemanticPredicate(pred);
+				pred=(GrammarAST)Match(input,SEMPRED,Follow._SEMPRED_in_element859); if (state.failed) return retval;
+				if ( state.backtracking == 0 )
+				{
+					retval.g = factory.build_SemanticPredicate(pred);
+				}
 
 				}
 				break;
 			case 14:
 				// Grammars\\TreeToNFAConverter.g3:272:6: spred= SYN_SEMPRED
 				{
-				spred=(GrammarAST)Match(input,SYN_SEMPRED,Follow._SYN_SEMPRED_in_element870); 
-				retval.g = factory.build_SemanticPredicate(spred);
+				spred=(GrammarAST)Match(input,SYN_SEMPRED,Follow._SYN_SEMPRED_in_element870); if (state.failed) return retval;
+				if ( state.backtracking == 0 )
+				{
+					retval.g = factory.build_SemanticPredicate(spred);
+				}
 
 				}
 				break;
 			case 15:
 				// Grammars\\TreeToNFAConverter.g3:273:6: ^(bpred= BACKTRACK_SEMPRED ( . )* )
 				{
-				bpred=(GrammarAST)Match(input,BACKTRACK_SEMPRED,Follow._BACKTRACK_SEMPRED_in_element882); 
+				bpred=(GrammarAST)Match(input,BACKTRACK_SEMPRED,Follow._BACKTRACK_SEMPRED_in_element882); if (state.failed) return retval;
 
 				if ( input.LA(1)==TokenConstants.DOWN )
 				{
-					Match(input, TokenConstants.DOWN, null); 
+					Match(input, TokenConstants.DOWN, null); if (state.failed) return retval;
 					// Grammars\\TreeToNFAConverter.g3:273:32: ( . )*
 					for ( ; ; )
 					{
@@ -2322,7 +2400,7 @@ public partial class TreeToNFAConverter : TreeParser
 						case 1:
 							// Grammars\\TreeToNFAConverter.g3:273:0: .
 							{
-							MatchAny(input); 
+							MatchAny(input); if (state.failed) return retval;
 
 							}
 							break;
@@ -2337,25 +2415,34 @@ public partial class TreeToNFAConverter : TreeParser
 
 
 
-					Match(input, TokenConstants.UP, null); 
+					Match(input, TokenConstants.UP, null); if (state.failed) return retval;
 				}
-				retval.g = factory.build_SemanticPredicate(bpred);
+				if ( state.backtracking == 0 )
+				{
+					retval.g = factory.build_SemanticPredicate(bpred);
+				}
 
 				}
 				break;
 			case 16:
 				// Grammars\\TreeToNFAConverter.g3:274:6: gpred= GATED_SEMPRED
 				{
-				gpred=(GrammarAST)Match(input,GATED_SEMPRED,Follow._GATED_SEMPRED_in_element897); 
-				retval.g = factory.build_SemanticPredicate(gpred);
+				gpred=(GrammarAST)Match(input,GATED_SEMPRED,Follow._GATED_SEMPRED_in_element897); if (state.failed) return retval;
+				if ( state.backtracking == 0 )
+				{
+					retval.g = factory.build_SemanticPredicate(gpred);
+				}
 
 				}
 				break;
 			case 17:
 				// Grammars\\TreeToNFAConverter.g3:275:6: EPSILON
 				{
-				Match(input,EPSILON,Follow._EPSILON_in_element906); 
-				retval.g = factory.build_Epsilon();
+				Match(input,EPSILON,Follow._EPSILON_in_element906); if (state.failed) return retval;
+				if ( state.backtracking == 0 )
+				{
+					retval.g = factory.build_Epsilon();
+				}
 
 				}
 				break;
@@ -2416,6 +2503,7 @@ public partial class TreeToNFAConverter : TreeParser
 				}
 				else
 				{
+					if (state.backtracking>0) {state.failed=true; return retval;}
 					NoViableAltException nvae = new NoViableAltException("", 42, 1, input);
 
 					throw nvae;
@@ -2439,6 +2527,7 @@ public partial class TreeToNFAConverter : TreeParser
 				break;
 			default:
 				{
+					if (state.backtracking>0) {state.failed=true; return retval;}
 					NoViableAltException nvae = new NoViableAltException("", 42, 0, input);
 
 					throw nvae;
@@ -2452,14 +2541,18 @@ public partial class TreeToNFAConverter : TreeParser
 				{
 				if ( !((grammar.isValidSet(this,((GrammarAST)retval.start)))) )
 				{
+					if (state.backtracking>0) {state.failed=true; return retval;}
 					throw new FailedPredicateException(input, "ebnf", "grammar.isValidSet(this,$start)");
 				}
 				PushFollow(Follow._set_in_ebnf932);
 				set7=set();
 
 				state._fsp--;
-
-				retval.g = (set7!=null?set7.g:default(StateCluster));
+				if (state.failed) return retval;
+				if ( state.backtracking == 0 )
+				{
+					retval.g = (set7!=null?set7.g:default(StateCluster));
+				}
 
 				}
 				break;
@@ -2470,122 +2563,134 @@ public partial class TreeToNFAConverter : TreeParser
 				b=block();
 
 				state._fsp--;
+				if (state.failed) return retval;
+				if ( state.backtracking == 0 )
+				{
 
-
-							// track decision if > 1 alts
-							if ( grammar.getNumberOfAltsForDecisionNFA((b!=null?b.g:default(StateCluster)).left)>1 )
-							{
-								(b!=null?b.g:default(StateCluster)).left.Description = grammar.grammarTreeToString(blk,false);
-								(b!=null?b.g:default(StateCluster)).left.setDecisionASTNode(blk);
-								int d = grammar.assignDecisionNumber( (b!=null?b.g:default(StateCluster)).left );
-								grammar.setDecisionNFA( d, (b!=null?b.g:default(StateCluster)).left );
-								grammar.setDecisionBlockAST(d, blk);
-							}
-							retval.g = (b!=null?b.g:default(StateCluster));
-						
+								// track decision if > 1 alts
+								if ( grammar.getNumberOfAltsForDecisionNFA((b!=null?b.g:default(StateCluster)).left)>1 )
+								{
+									(b!=null?b.g:default(StateCluster)).left.Description = grammar.grammarTreeToString(blk,false);
+									(b!=null?b.g:default(StateCluster)).left.setDecisionASTNode(blk);
+									int d = grammar.assignDecisionNumber( (b!=null?b.g:default(StateCluster)).left );
+									grammar.setDecisionNFA( d, (b!=null?b.g:default(StateCluster)).left );
+									grammar.setDecisionBlockAST(d, blk);
+								}
+								retval.g = (b!=null?b.g:default(StateCluster));
+							
+				}
 
 				}
 				break;
 			case 3:
 				// Grammars\\TreeToNFAConverter.g3:302:4: ^( OPTIONAL b= block )
 				{
-				Match(input,OPTIONAL,Follow._OPTIONAL_in_ebnf953); 
+				Match(input,OPTIONAL,Follow._OPTIONAL_in_ebnf953); if (state.failed) return retval;
 
-				Match(input, TokenConstants.DOWN, null); 
+				Match(input, TokenConstants.DOWN, null); if (state.failed) return retval;
 				PushFollow(Follow._block_in_ebnf957);
 				b=block();
 
 				state._fsp--;
+				if (state.failed) return retval;
 
+				Match(input, TokenConstants.UP, null); if (state.failed) return retval;
+				if ( state.backtracking == 0 )
+				{
 
-				Match(input, TokenConstants.UP, null); 
-
-							StateCluster bg = (b!=null?b.g:default(StateCluster));
-							if ( blk.SetValue!=null )
-							{
-								// if block comes back SET not BLOCK, make it
-								// a single ALT block
-								bg = factory.build_AlternativeBlockFromSet(bg);
-							}
-							retval.g = factory.build_Aoptional(bg);
-							retval.g.left.Description = grammar.grammarTreeToString(((GrammarAST)retval.start),false);
-							// there is always at least one alt even if block has just 1 alt
-							int d = grammar.assignDecisionNumber( retval.g.left );
-							grammar.setDecisionNFA(d, retval.g.left);
-							grammar.setDecisionBlockAST(d, blk);
-							retval.g.left.setDecisionASTNode(((GrammarAST)retval.start));
-						
+								StateCluster bg = (b!=null?b.g:default(StateCluster));
+								if ( blk.SetValue!=null )
+								{
+									// if block comes back SET not BLOCK, make it
+									// a single ALT block
+									bg = factory.build_AlternativeBlockFromSet(bg);
+								}
+								retval.g = factory.build_Aoptional(bg);
+								retval.g.left.Description = grammar.grammarTreeToString(((GrammarAST)retval.start),false);
+								// there is always at least one alt even if block has just 1 alt
+								int d = grammar.assignDecisionNumber( retval.g.left );
+								grammar.setDecisionNFA(d, retval.g.left);
+								grammar.setDecisionBlockAST(d, blk);
+								retval.g.left.setDecisionASTNode(((GrammarAST)retval.start));
+							
+				}
 
 				}
 				break;
 			case 4:
 				// Grammars\\TreeToNFAConverter.g3:319:4: ^( CLOSURE b= block )
 				{
-				Match(input,CLOSURE,Follow._CLOSURE_in_ebnf970); 
+				Match(input,CLOSURE,Follow._CLOSURE_in_ebnf970); if (state.failed) return retval;
 
-				Match(input, TokenConstants.DOWN, null); 
+				Match(input, TokenConstants.DOWN, null); if (state.failed) return retval;
 				PushFollow(Follow._block_in_ebnf974);
 				b=block();
 
 				state._fsp--;
+				if (state.failed) return retval;
 
+				Match(input, TokenConstants.UP, null); if (state.failed) return retval;
+				if ( state.backtracking == 0 )
+				{
 
-				Match(input, TokenConstants.UP, null); 
-
-							StateCluster bg = (b!=null?b.g:default(StateCluster));
-							if ( blk.SetValue!=null )
-							{
-								bg = factory.build_AlternativeBlockFromSet(bg);
-							}
-							retval.g = factory.build_Astar(bg);
-							// track the loop back / exit decision point
-							bg.right.Description = "()* loopback of "+grammar.grammarTreeToString(((GrammarAST)retval.start),false);
-							int d = grammar.assignDecisionNumber( bg.right );
-							grammar.setDecisionNFA(d, bg.right);
-							grammar.setDecisionBlockAST(d, blk);
-							bg.right.setDecisionASTNode(eob);
-							// make block entry state also have same decision for interpreting grammar
-							NFAState altBlockState = (NFAState)retval.g.left.getTransition(0).target;
-							altBlockState.setDecisionASTNode(((GrammarAST)retval.start));
-							altBlockState.DecisionNumber = d;
-							retval.g.left.DecisionNumber = d; // this is the bypass decision (2 alts)
-							retval.g.left.setDecisionASTNode(((GrammarAST)retval.start));
-						
+								StateCluster bg = (b!=null?b.g:default(StateCluster));
+								if ( blk.SetValue!=null )
+								{
+									bg = factory.build_AlternativeBlockFromSet(bg);
+								}
+								retval.g = factory.build_Astar(bg);
+								// track the loop back / exit decision point
+								bg.right.Description = "()* loopback of "+grammar.grammarTreeToString(((GrammarAST)retval.start),false);
+								int d = grammar.assignDecisionNumber( bg.right );
+								grammar.setDecisionNFA(d, bg.right);
+								grammar.setDecisionBlockAST(d, blk);
+								bg.right.setDecisionASTNode(eob);
+								// make block entry state also have same decision for interpreting grammar
+								NFAState altBlockState = (NFAState)retval.g.left.getTransition(0).target;
+								altBlockState.setDecisionASTNode(((GrammarAST)retval.start));
+								altBlockState.DecisionNumber = d;
+								retval.g.left.DecisionNumber = d; // this is the bypass decision (2 alts)
+								retval.g.left.setDecisionASTNode(((GrammarAST)retval.start));
+							
+				}
 
 				}
 				break;
 			case 5:
 				// Grammars\\TreeToNFAConverter.g3:340:4: ^( POSITIVE_CLOSURE b= block )
 				{
-				Match(input,POSITIVE_CLOSURE,Follow._POSITIVE_CLOSURE_in_ebnf987); 
+				Match(input,POSITIVE_CLOSURE,Follow._POSITIVE_CLOSURE_in_ebnf987); if (state.failed) return retval;
 
-				Match(input, TokenConstants.DOWN, null); 
+				Match(input, TokenConstants.DOWN, null); if (state.failed) return retval;
 				PushFollow(Follow._block_in_ebnf991);
 				b=block();
 
 				state._fsp--;
+				if (state.failed) return retval;
 
+				Match(input, TokenConstants.UP, null); if (state.failed) return retval;
+				if ( state.backtracking == 0 )
+				{
 
-				Match(input, TokenConstants.UP, null); 
-
-							StateCluster bg = (b!=null?b.g:default(StateCluster));
-							if ( blk.SetValue!=null )
-							{
-								bg = factory.build_AlternativeBlockFromSet(bg);
-							}
-							retval.g = factory.build_Aplus(bg);
-							// don't make a decision on left edge, can reuse loop end decision
-							// track the loop back / exit decision point
-							bg.right.Description = "()+ loopback of "+grammar.grammarTreeToString(((GrammarAST)retval.start),false);
-							int d = grammar.assignDecisionNumber( bg.right );
-							grammar.setDecisionNFA(d, bg.right);
-							grammar.setDecisionBlockAST(d, blk);
-							bg.right.setDecisionASTNode(eob);
-							// make block entry state also have same decision for interpreting grammar
-							NFAState altBlockState = (NFAState)retval.g.left.getTransition(0).target;
-							altBlockState.setDecisionASTNode(((GrammarAST)retval.start));
-							altBlockState.DecisionNumber = d;
-						
+								StateCluster bg = (b!=null?b.g:default(StateCluster));
+								if ( blk.SetValue!=null )
+								{
+									bg = factory.build_AlternativeBlockFromSet(bg);
+								}
+								retval.g = factory.build_Aplus(bg);
+								// don't make a decision on left edge, can reuse loop end decision
+								// track the loop back / exit decision point
+								bg.right.Description = "()+ loopback of "+grammar.grammarTreeToString(((GrammarAST)retval.start),false);
+								int d = grammar.assignDecisionNumber( bg.right );
+								grammar.setDecisionNFA(d, bg.right);
+								grammar.setDecisionBlockAST(d, blk);
+								bg.right.setDecisionASTNode(eob);
+								// make block entry state also have same decision for interpreting grammar
+								NFAState altBlockState = (NFAState)retval.g.left.getTransition(0).target;
+								altBlockState.setDecisionASTNode(((GrammarAST)retval.start));
+								altBlockState.DecisionNumber = d;
+							
+				}
 
 				}
 				break;
@@ -2626,21 +2731,27 @@ public partial class TreeToNFAConverter : TreeParser
 			// Grammars\\TreeToNFAConverter.g3:367:4: ( ^( TREE_BEGIN e= element (e= element )* ) )
 			// Grammars\\TreeToNFAConverter.g3:367:4: ^( TREE_BEGIN e= element (e= element )* )
 			{
-			Match(input,TREE_BEGIN,Follow._TREE_BEGIN_in_tree_1019); 
+			Match(input,TREE_BEGIN,Follow._TREE_BEGIN_in_tree_1019); if (state.failed) return retval;
 
-			Match(input, TokenConstants.DOWN, null); 
+			Match(input, TokenConstants.DOWN, null); if (state.failed) return retval;
 			PushFollow(Follow._element_in_tree_1026);
 			e=element();
 
 			state._fsp--;
+			if (state.failed) return retval;
+			if ( state.backtracking == 0 )
+			{
+				 retval.g = (e!=null?e.g:default(StateCluster)); 
+			}
+			if ( state.backtracking == 0 )
+			{
 
-			 retval.g = (e!=null?e.g:default(StateCluster)); 
-
-							down = factory.build_Atom(Label.DOWN, (e!=null?((GrammarAST)e.start):null));
-							// TODO set following states for imaginary nodes?
-							//el.followingNFAState = down.right;
-							retval.g = factory.build_AB(retval.g,down);
-						
+								down = factory.build_Atom(Label.DOWN, (e!=null?((GrammarAST)e.start):null));
+								// TODO set following states for imaginary nodes?
+								//el.followingNFAState = down.right;
+								retval.g = factory.build_AB(retval.g,down);
+							
+			}
 			// Grammars\\TreeToNFAConverter.g3:375:4: (e= element )*
 			for ( ; ; )
 			{
@@ -2662,8 +2773,11 @@ public partial class TreeToNFAConverter : TreeParser
 					e=element();
 
 					state._fsp--;
-
-					retval.g = factory.build_AB(retval.g,(e!=null?e.g:default(StateCluster)));
+					if (state.failed) return retval;
+					if ( state.backtracking == 0 )
+					{
+						retval.g = factory.build_AB(retval.g,(e!=null?e.g:default(StateCluster)));
+					}
 
 					}
 					break;
@@ -2677,15 +2791,18 @@ public partial class TreeToNFAConverter : TreeParser
 				;
 
 
+			if ( state.backtracking == 0 )
+			{
 
-							up = factory.build_Atom(Label.UP, (e!=null?((GrammarAST)e.start):null));
-							//el.followingNFAState = up.right;
-							retval.g = factory.build_AB(retval.g,up);
-							// tree roots point at right edge of DOWN for LOOK computation later
-							((GrammarAST)retval.start).NFATreeDownState = down.left;
-						
+								up = factory.build_Atom(Label.UP, (e!=null?((GrammarAST)e.start):null));
+								//el.followingNFAState = up.right;
+								retval.g = factory.build_AB(retval.g,up);
+								// tree roots point at right edge of DOWN for LOOK computation later
+								((GrammarAST)retval.start).NFATreeDownState = down.left;
+							
+			}
 
-			Match(input, TokenConstants.UP, null); 
+			Match(input, TokenConstants.UP, null); if (state.failed) return retval;
 
 			}
 
@@ -2732,6 +2849,7 @@ public partial class TreeToNFAConverter : TreeParser
 			}
 			else
 			{
+				if (state.backtracking>0) {state.failed=true; return g;}
 				NoViableAltException nvae = new NoViableAltException("", 47, 0, input);
 
 				throw nvae;
@@ -2745,17 +2863,20 @@ public partial class TreeToNFAConverter : TreeParser
 				atom8=atom(null);
 
 				state._fsp--;
-
-				g = (atom8!=null?atom8.g:default(StateCluster));
+				if (state.failed) return g;
+				if ( state.backtracking == 0 )
+				{
+					g = (atom8!=null?atom8.g:default(StateCluster));
+				}
 
 				}
 				break;
 			case 2:
 				// Grammars\\TreeToNFAConverter.g3:388:4: ^(n= NOT (c= CHAR_LITERAL (ast1= ast_suffix )? |t= TOKEN_REF (ast3= ast_suffix )? | set ) )
 				{
-				n=(GrammarAST)Match(input,NOT,Follow._NOT_in_atom_or_notatom1083); 
+				n=(GrammarAST)Match(input,NOT,Follow._NOT_in_atom_or_notatom1083); if (state.failed) return g;
 
-				Match(input, TokenConstants.DOWN, null); 
+				Match(input, TokenConstants.DOWN, null); if (state.failed) return g;
 				// Grammars\\TreeToNFAConverter.g3:389:4: (c= CHAR_LITERAL (ast1= ast_suffix )? |t= TOKEN_REF (ast3= ast_suffix )? | set )
 				int alt46=3;
 				switch ( input.LA(1) )
@@ -2777,6 +2898,7 @@ public partial class TreeToNFAConverter : TreeParser
 					break;
 				default:
 					{
+						if (state.backtracking>0) {state.failed=true; return g;}
 						NoViableAltException nvae = new NoViableAltException("", 46, 0, input);
 
 						throw nvae;
@@ -2788,7 +2910,7 @@ public partial class TreeToNFAConverter : TreeParser
 				case 1:
 					// Grammars\\TreeToNFAConverter.g3:389:6: c= CHAR_LITERAL (ast1= ast_suffix )?
 					{
-					c=(GrammarAST)Match(input,CHAR_LITERAL,Follow._CHAR_LITERAL_in_atom_or_notatom1092); 
+					c=(GrammarAST)Match(input,CHAR_LITERAL,Follow._CHAR_LITERAL_in_atom_or_notatom1092); if (state.failed) return g;
 					// Grammars\\TreeToNFAConverter.g3:389:21: (ast1= ast_suffix )?
 					int alt44=2;
 					int LA44_0 = input.LA(1);
@@ -2806,41 +2928,44 @@ public partial class TreeToNFAConverter : TreeParser
 						ast_suffix();
 
 						state._fsp--;
-
+						if (state.failed) return g;
 
 						}
 						break;
 
 					}
 
+					if ( state.backtracking == 0 )
+					{
 
-										int ttype=0;
-										if ( grammar.type==Grammar.LEXER )
-										{
-											ttype = Grammar.getCharValueFromGrammarCharLiteral((c!=null?c.Text:null));
-										}
-										else
-										{
-											ttype = grammar.getTokenType((c!=null?c.Text:null));
-										}
-										IIntSet notAtom = grammar.complement(ttype);
-										if ( notAtom.isNil() )
-										{
-											ErrorManager.grammarError(
-												ErrorManager.MSG_EMPTY_COMPLEMENT,
-												grammar,
-												c.Token,
-												(c!=null?c.Text:null));
-										}
-										g =factory.build_Set(notAtom,n);
-									
+											int ttype=0;
+											if ( grammar.type==Grammar.LEXER )
+											{
+												ttype = Grammar.getCharValueFromGrammarCharLiteral((c!=null?c.Text:null));
+											}
+											else
+											{
+												ttype = grammar.getTokenType((c!=null?c.Text:null));
+											}
+											IIntSet notAtom = grammar.complement(ttype);
+											if ( notAtom.isNil() )
+											{
+												ErrorManager.grammarError(
+													ErrorManager.MSG_EMPTY_COMPLEMENT,
+													grammar,
+													c.Token,
+													(c!=null?c.Text:null));
+											}
+											g =factory.build_Set(notAtom,n);
+										
+					}
 
 					}
 					break;
 				case 2:
 					// Grammars\\TreeToNFAConverter.g3:411:6: t= TOKEN_REF (ast3= ast_suffix )?
 					{
-					t=(GrammarAST)Match(input,TOKEN_REF,Follow._TOKEN_REF_in_atom_or_notatom1114); 
+					t=(GrammarAST)Match(input,TOKEN_REF,Follow._TOKEN_REF_in_atom_or_notatom1114); if (state.failed) return g;
 					// Grammars\\TreeToNFAConverter.g3:411:18: (ast3= ast_suffix )?
 					int alt45=2;
 					int LA45_0 = input.LA(1);
@@ -2858,47 +2983,50 @@ public partial class TreeToNFAConverter : TreeParser
 						ast_suffix();
 
 						state._fsp--;
-
+						if (state.failed) return g;
 
 						}
 						break;
 
 					}
 
+					if ( state.backtracking == 0 )
+					{
 
-										int ttype=0;
-										IIntSet notAtom = null;
-										if ( grammar.type==Grammar.LEXER )
-										{
-											notAtom = grammar.getSetFromRule(this,(t!=null?t.Text:null));
-											if ( notAtom==null )
+											int ttype=0;
+											IIntSet notAtom = null;
+											if ( grammar.type==Grammar.LEXER )
+											{
+												notAtom = grammar.getSetFromRule(this,(t!=null?t.Text:null));
+												if ( notAtom==null )
+												{
+													ErrorManager.grammarError(
+														ErrorManager.MSG_RULE_INVALID_SET,
+														grammar,
+														t.Token,
+														(t!=null?t.Text:null));
+												}
+												else
+												{
+													notAtom = grammar.complement(notAtom);
+												}
+											}
+											else
+											{
+												ttype = grammar.getTokenType((t!=null?t.Text:null));
+												notAtom = grammar.complement(ttype);
+											}
+											if ( notAtom==null || notAtom.isNil() )
 											{
 												ErrorManager.grammarError(
-													ErrorManager.MSG_RULE_INVALID_SET,
+													ErrorManager.MSG_EMPTY_COMPLEMENT,
 													grammar,
 													t.Token,
 													(t!=null?t.Text:null));
 											}
-											else
-											{
-												notAtom = grammar.complement(notAtom);
-											}
-										}
-										else
-										{
-											ttype = grammar.getTokenType((t!=null?t.Text:null));
-											notAtom = grammar.complement(ttype);
-										}
-										if ( notAtom==null || notAtom.isNil() )
-										{
-											ErrorManager.grammarError(
-												ErrorManager.MSG_EMPTY_COMPLEMENT,
-												grammar,
-												t.Token,
-												(t!=null?t.Text:null));
-										}
-										g =factory.build_Set(notAtom,n);
-									
+											g =factory.build_Set(notAtom,n);
+										
+					}
 
 					}
 					break;
@@ -2909,35 +3037,44 @@ public partial class TreeToNFAConverter : TreeParser
 					set9=set();
 
 					state._fsp--;
+					if (state.failed) return g;
+					if ( state.backtracking == 0 )
+					{
+						g = (set9!=null?set9.g:default(StateCluster));
+					}
+					if ( state.backtracking == 0 )
+					{
 
-					g = (set9!=null?set9.g:default(StateCluster));
-
-										GrammarAST stNode = (GrammarAST)n.GetChild(0);
-										//IIntSet notSet = grammar.complement(stNode.SetValue);
-										// let code generator complement the sets
-										IIntSet s = stNode.SetValue;
-										stNode.setSetValue(s);
-										// let code gen do the complement again; here we compute
-										// for NFA construction
-										s = grammar.complement(s);
-										if ( s.isNil() )
-										{
-											ErrorManager.grammarError(
-												ErrorManager.MSG_EMPTY_COMPLEMENT,
-												grammar,
-												n.Token);
-										}
-										g =factory.build_Set(s,n);
-									
+											GrammarAST stNode = (GrammarAST)n.GetChild(0);
+											//IIntSet notSet = grammar.complement(stNode.SetValue);
+											// let code generator complement the sets
+											IIntSet s = stNode.SetValue;
+											stNode.setSetValue(s);
+											// let code gen do the complement again; here we compute
+											// for NFA construction
+											s = grammar.complement(s);
+											if ( s.isNil() )
+											{
+												ErrorManager.grammarError(
+													ErrorManager.MSG_EMPTY_COMPLEMENT,
+													grammar,
+													n.Token);
+											}
+											g =factory.build_Set(s,n);
+										
+					}
 
 					}
 					break;
 
 				}
 
-				n.followingNFAState = g.right;
+				if ( state.backtracking == 0 )
+				{
+					n.followingNFAState = g.right;
+				}
 
-				Match(input, TokenConstants.UP, null); 
+				Match(input, TokenConstants.UP, null); if (state.failed) return g;
 
 				}
 				break;
@@ -3016,6 +3153,7 @@ public partial class TreeToNFAConverter : TreeParser
 				break;
 			default:
 				{
+					if (state.backtracking>0) {state.failed=true; return retval;}
 					NoViableAltException nvae = new NoViableAltException("", 55, 0, input);
 
 					throw nvae;
@@ -3027,11 +3165,11 @@ public partial class TreeToNFAConverter : TreeParser
 			case 1:
 				// Grammars\\TreeToNFAConverter.g3:471:4: ^(r= RULE_REF (rarg= ARG_ACTION )? (as1= ast_suffix )? )
 				{
-				r=(GrammarAST)Match(input,RULE_REF,Follow._RULE_REF_in_atom1176); 
+				r=(GrammarAST)Match(input,RULE_REF,Follow._RULE_REF_in_atom1176); if (state.failed) return retval;
 
 				if ( input.LA(1)==TokenConstants.DOWN )
 				{
-					Match(input, TokenConstants.DOWN, null); 
+					Match(input, TokenConstants.DOWN, null); if (state.failed) return retval;
 					// Grammars\\TreeToNFAConverter.g3:471:18: (rarg= ARG_ACTION )?
 					int alt48=2;
 					int LA48_0 = input.LA(1);
@@ -3045,7 +3183,7 @@ public partial class TreeToNFAConverter : TreeParser
 					case 1:
 						// Grammars\\TreeToNFAConverter.g3:471:19: rarg= ARG_ACTION
 						{
-						rarg=(GrammarAST)Match(input,ARG_ACTION,Follow._ARG_ACTION_in_atom1181); 
+						rarg=(GrammarAST)Match(input,ARG_ACTION,Follow._ARG_ACTION_in_atom1181); if (state.failed) return retval;
 
 						}
 						break;
@@ -3069,7 +3207,7 @@ public partial class TreeToNFAConverter : TreeParser
 						ast_suffix();
 
 						state._fsp--;
-
+						if (state.failed) return retval;
 
 						}
 						break;
@@ -3077,35 +3215,38 @@ public partial class TreeToNFAConverter : TreeParser
 					}
 
 
-					Match(input, TokenConstants.UP, null); 
+					Match(input, TokenConstants.UP, null); if (state.failed) return retval;
 				}
+				if ( state.backtracking == 0 )
+				{
 
-							NFAState start = grammar.getRuleStartState(scopeName,(r!=null?r.Text:null));
-							if ( start!=null )
-							{
-								Rule rr = grammar.getRule(scopeName,(r!=null?r.Text:null));
-								retval.g = factory.build_RuleRef(rr, start);
-								r.followingNFAState = retval.g.right;
-								r._nfaStartState = retval.g.left;
-								if ( retval.g.left.getTransition(0) is RuleClosureTransition
-									&& grammar.type!=Grammar.LEXER )
+								NFAState start = grammar.getRuleStartState(scopeName,(r!=null?r.Text:null));
+								if ( start!=null )
 								{
-									addFollowTransition((r!=null?r.Text:null), retval.g.right);
+									Rule rr = grammar.getRule(scopeName,(r!=null?r.Text:null));
+									retval.g = factory.build_RuleRef(rr, start);
+									r.followingNFAState = retval.g.right;
+									r._nfaStartState = retval.g.left;
+									if ( retval.g.left.getTransition(0) is RuleClosureTransition
+										&& grammar.type!=Grammar.LEXER )
+									{
+										addFollowTransition((r!=null?r.Text:null), retval.g.right);
+									}
+									// else rule ref got inlined to a set
 								}
-								// else rule ref got inlined to a set
-							}
-						
+							
+				}
 
 				}
 				break;
 			case 2:
 				// Grammars\\TreeToNFAConverter.g3:489:4: ^(t= TOKEN_REF (targ= ARG_ACTION )? (as2= ast_suffix )? )
 				{
-				t=(GrammarAST)Match(input,TOKEN_REF,Follow._TOKEN_REF_in_atom1206); 
+				t=(GrammarAST)Match(input,TOKEN_REF,Follow._TOKEN_REF_in_atom1206); if (state.failed) return retval;
 
 				if ( input.LA(1)==TokenConstants.DOWN )
 				{
-					Match(input, TokenConstants.DOWN, null); 
+					Match(input, TokenConstants.DOWN, null); if (state.failed) return retval;
 					// Grammars\\TreeToNFAConverter.g3:489:20: (targ= ARG_ACTION )?
 					int alt50=2;
 					int LA50_0 = input.LA(1);
@@ -3119,7 +3260,7 @@ public partial class TreeToNFAConverter : TreeParser
 					case 1:
 						// Grammars\\TreeToNFAConverter.g3:489:21: targ= ARG_ACTION
 						{
-						targ=(GrammarAST)Match(input,ARG_ACTION,Follow._ARG_ACTION_in_atom1212); 
+						targ=(GrammarAST)Match(input,ARG_ACTION,Follow._ARG_ACTION_in_atom1212); if (state.failed) return retval;
 
 						}
 						break;
@@ -3143,7 +3284,7 @@ public partial class TreeToNFAConverter : TreeParser
 						ast_suffix();
 
 						state._fsp--;
-
+						if (state.failed) return retval;
 
 						}
 						break;
@@ -3151,38 +3292,41 @@ public partial class TreeToNFAConverter : TreeParser
 					}
 
 
-					Match(input, TokenConstants.UP, null); 
+					Match(input, TokenConstants.UP, null); if (state.failed) return retval;
 				}
+				if ( state.backtracking == 0 )
+				{
 
-							if ( grammar.type==Grammar.LEXER )
-							{
-								NFAState start = grammar.getRuleStartState(scopeName,(t!=null?t.Text:null));
-								if ( start!=null )
+								if ( grammar.type==Grammar.LEXER )
 								{
-									Rule rr = grammar.getRule(scopeName,t.Text);
-									retval.g = factory.build_RuleRef(rr, start);
-									t._nfaStartState = retval.g.left;
-									// don't add FOLLOW transitions in the lexer;
-									// only exact context should be used.
+									NFAState start = grammar.getRuleStartState(scopeName,(t!=null?t.Text:null));
+									if ( start!=null )
+									{
+										Rule rr = grammar.getRule(scopeName,t.Text);
+										retval.g = factory.build_RuleRef(rr, start);
+										t._nfaStartState = retval.g.left;
+										// don't add FOLLOW transitions in the lexer;
+										// only exact context should be used.
+									}
 								}
-							}
-							else
-							{
-								retval.g = factory.build_Atom(t);
-								t.followingNFAState = retval.g.right;
-							}
-						
+								else
+								{
+									retval.g = factory.build_Atom(t);
+									t.followingNFAState = retval.g.right;
+								}
+							
+				}
 
 				}
 				break;
 			case 3:
 				// Grammars\\TreeToNFAConverter.g3:510:4: ^(c= CHAR_LITERAL (as3= ast_suffix )? )
 				{
-				c=(GrammarAST)Match(input,CHAR_LITERAL,Follow._CHAR_LITERAL_in_atom1237); 
+				c=(GrammarAST)Match(input,CHAR_LITERAL,Follow._CHAR_LITERAL_in_atom1237); if (state.failed) return retval;
 
 				if ( input.LA(1)==TokenConstants.DOWN )
 				{
-					Match(input, TokenConstants.DOWN, null); 
+					Match(input, TokenConstants.DOWN, null); if (state.failed) return retval;
 					// Grammars\\TreeToNFAConverter.g3:510:23: (as3= ast_suffix )?
 					int alt52=2;
 					int LA52_0 = input.LA(1);
@@ -3200,7 +3344,7 @@ public partial class TreeToNFAConverter : TreeParser
 						ast_suffix();
 
 						state._fsp--;
-
+						if (state.failed) return retval;
 
 						}
 						break;
@@ -3208,30 +3352,33 @@ public partial class TreeToNFAConverter : TreeParser
 					}
 
 
-					Match(input, TokenConstants.UP, null); 
+					Match(input, TokenConstants.UP, null); if (state.failed) return retval;
 				}
+				if ( state.backtracking == 0 )
+				{
 
-							if ( grammar.type==Grammar.LEXER )
-							{
-								retval.g = factory.build_CharLiteralAtom(c);
-							}
-							else
-							{
-								retval.g = factory.build_Atom(c);
-								c.followingNFAState = retval.g.right;
-							}
-						
+								if ( grammar.type==Grammar.LEXER )
+								{
+									retval.g = factory.build_CharLiteralAtom(c);
+								}
+								else
+								{
+									retval.g = factory.build_Atom(c);
+									c.followingNFAState = retval.g.right;
+								}
+							
+				}
 
 				}
 				break;
 			case 4:
 				// Grammars\\TreeToNFAConverter.g3:523:4: ^(s= STRING_LITERAL (as4= ast_suffix )? )
 				{
-				s=(GrammarAST)Match(input,STRING_LITERAL,Follow._STRING_LITERAL_in_atom1261); 
+				s=(GrammarAST)Match(input,STRING_LITERAL,Follow._STRING_LITERAL_in_atom1261); if (state.failed) return retval;
 
 				if ( input.LA(1)==TokenConstants.DOWN )
 				{
-					Match(input, TokenConstants.DOWN, null); 
+					Match(input, TokenConstants.DOWN, null); if (state.failed) return retval;
 					// Grammars\\TreeToNFAConverter.g3:523:25: (as4= ast_suffix )?
 					int alt53=2;
 					int LA53_0 = input.LA(1);
@@ -3249,7 +3396,7 @@ public partial class TreeToNFAConverter : TreeParser
 						ast_suffix();
 
 						state._fsp--;
-
+						if (state.failed) return retval;
 
 						}
 						break;
@@ -3257,30 +3404,33 @@ public partial class TreeToNFAConverter : TreeParser
 					}
 
 
-					Match(input, TokenConstants.UP, null); 
+					Match(input, TokenConstants.UP, null); if (state.failed) return retval;
 				}
+				if ( state.backtracking == 0 )
+				{
 
-							if ( grammar.type==Grammar.LEXER )
-							{
-								retval.g = factory.build_StringLiteralAtom(s);
-							}
-							else
-							{
-								retval.g = factory.build_Atom(s);
-								s.followingNFAState = retval.g.right;
-							}
-						
+								if ( grammar.type==Grammar.LEXER )
+								{
+									retval.g = factory.build_StringLiteralAtom(s);
+								}
+								else
+								{
+									retval.g = factory.build_Atom(s);
+									s.followingNFAState = retval.g.right;
+								}
+							
+				}
 
 				}
 				break;
 			case 5:
 				// Grammars\\TreeToNFAConverter.g3:536:4: ^(w= WILDCARD (as5= ast_suffix )? )
 				{
-				w=(GrammarAST)Match(input,WILDCARD,Follow._WILDCARD_in_atom1285); 
+				w=(GrammarAST)Match(input,WILDCARD,Follow._WILDCARD_in_atom1285); if (state.failed) return retval;
 
 				if ( input.LA(1)==TokenConstants.DOWN )
 				{
-					Match(input, TokenConstants.DOWN, null); 
+					Match(input, TokenConstants.DOWN, null); if (state.failed) return retval;
 					// Grammars\\TreeToNFAConverter.g3:536:18: (as5= ast_suffix )?
 					int alt54=2;
 					int LA54_0 = input.LA(1);
@@ -3298,7 +3448,7 @@ public partial class TreeToNFAConverter : TreeParser
 						ast_suffix();
 
 						state._fsp--;
-
+						if (state.failed) return retval;
 
 						}
 						break;
@@ -3306,37 +3456,43 @@ public partial class TreeToNFAConverter : TreeParser
 					}
 
 
-					Match(input, TokenConstants.UP, null); 
+					Match(input, TokenConstants.UP, null); if (state.failed) return retval;
 				}
+				if ( state.backtracking == 0 )
+				{
 
-								if ( nfa.grammar.type == Grammar.TREE_PARSER
-									&& (w.ChildIndex > 0 || w.Parent.GetChild(1).Type == EOA) )
-								{
-									retval.g = factory.build_WildcardTree( w );
-								}
-								else
-								{
-									retval.g = factory.build_Wildcard( w );
-								}
-							
+									if ( nfa.grammar.type == Grammar.TREE_PARSER
+										&& (w.ChildIndex > 0 || w.Parent.GetChild(1).Type == EOA) )
+									{
+										retval.g = factory.build_WildcardTree( w );
+									}
+									else
+									{
+										retval.g = factory.build_Wildcard( w );
+									}
+								
+				}
 
 				}
 				break;
 			case 6:
 				// Grammars\\TreeToNFAConverter.g3:549:4: ^( DOT scope_= ID a= atom[$scope_.text] )
 				{
-				Match(input,DOT,Follow._DOT_in_atom1307); 
+				Match(input,DOT,Follow._DOT_in_atom1307); if (state.failed) return retval;
 
-				Match(input, TokenConstants.DOWN, null); 
-				scope_=(GrammarAST)Match(input,ID,Follow._ID_in_atom1311); 
+				Match(input, TokenConstants.DOWN, null); if (state.failed) return retval;
+				scope_=(GrammarAST)Match(input,ID,Follow._ID_in_atom1311); if (state.failed) return retval;
 				PushFollow(Follow._atom_in_atom1315);
 				a=atom((scope_!=null?scope_.Text:null));
 
 				state._fsp--;
+				if (state.failed) return retval;
+				if ( state.backtracking == 0 )
+				{
+					retval.g = (a!=null?a.g:default(StateCluster));
+				}
 
-				retval.g = (a!=null?a.g:default(StateCluster));
-
-				Match(input, TokenConstants.UP, null); 
+				Match(input, TokenConstants.UP, null); if (state.failed) return retval;
 
 				}
 				break;
@@ -3368,10 +3524,11 @@ public partial class TreeToNFAConverter : TreeParser
 			if ( input.LA(1)==BANG||input.LA(1)==ROOT )
 			{
 				input.Consume();
-				state.errorRecovery=false;
+				state.errorRecovery=false;state.failed=false;
 			}
 			else
 			{
+				if (state.backtracking>0) {state.failed=true; return ;}
 				MismatchedSetException mse = new MismatchedSetException(null,input);
 				throw mse;
 			}
@@ -3416,9 +3573,9 @@ public partial class TreeToNFAConverter : TreeParser
 			// Grammars\\TreeToNFAConverter.g3:564:4: ( ^(b= BLOCK ( ^( ALT ( ^( BACKTRACK_SEMPRED ( . )* ) )? setElement[elements] EOA ) )+ EOB ) )
 			// Grammars\\TreeToNFAConverter.g3:564:4: ^(b= BLOCK ( ^( ALT ( ^( BACKTRACK_SEMPRED ( . )* ) )? setElement[elements] EOA ) )+ EOB )
 			{
-			b=(GrammarAST)Match(input,BLOCK,Follow._BLOCK_in_set1361); 
+			b=(GrammarAST)Match(input,BLOCK,Follow._BLOCK_in_set1361); if (state.failed) return retval;
 
-			Match(input, TokenConstants.DOWN, null); 
+			Match(input, TokenConstants.DOWN, null); if (state.failed) return retval;
 			// Grammars\\TreeToNFAConverter.g3:565:6: ( ^( ALT ( ^( BACKTRACK_SEMPRED ( . )* ) )? setElement[elements] EOA ) )+
 			int cnt58=0;
 			for ( ; ; )
@@ -3437,9 +3594,9 @@ public partial class TreeToNFAConverter : TreeParser
 				case 1:
 					// Grammars\\TreeToNFAConverter.g3:565:7: ^( ALT ( ^( BACKTRACK_SEMPRED ( . )* ) )? setElement[elements] EOA )
 					{
-					Match(input,ALT,Follow._ALT_in_set1370); 
+					Match(input,ALT,Follow._ALT_in_set1370); if (state.failed) return retval;
 
-					Match(input, TokenConstants.DOWN, null); 
+					Match(input, TokenConstants.DOWN, null); if (state.failed) return retval;
 					// Grammars\\TreeToNFAConverter.g3:565:13: ( ^( BACKTRACK_SEMPRED ( . )* ) )?
 					int alt57=2;
 					int LA57_0 = input.LA(1);
@@ -3453,11 +3610,11 @@ public partial class TreeToNFAConverter : TreeParser
 					case 1:
 						// Grammars\\TreeToNFAConverter.g3:565:15: ^( BACKTRACK_SEMPRED ( . )* )
 						{
-						Match(input,BACKTRACK_SEMPRED,Follow._BACKTRACK_SEMPRED_in_set1375); 
+						Match(input,BACKTRACK_SEMPRED,Follow._BACKTRACK_SEMPRED_in_set1375); if (state.failed) return retval;
 
 						if ( input.LA(1)==TokenConstants.DOWN )
 						{
-							Match(input, TokenConstants.DOWN, null); 
+							Match(input, TokenConstants.DOWN, null); if (state.failed) return retval;
 							// Grammars\\TreeToNFAConverter.g3:565:35: ( . )*
 							for ( ; ; )
 							{
@@ -3479,7 +3636,7 @@ public partial class TreeToNFAConverter : TreeParser
 								case 1:
 									// Grammars\\TreeToNFAConverter.g3:565:0: .
 									{
-									MatchAny(input); 
+									MatchAny(input); if (state.failed) return retval;
 
 									}
 									break;
@@ -3494,7 +3651,7 @@ public partial class TreeToNFAConverter : TreeParser
 
 
 
-							Match(input, TokenConstants.UP, null); 
+							Match(input, TokenConstants.UP, null); if (state.failed) return retval;
 						}
 
 						}
@@ -3506,10 +3663,10 @@ public partial class TreeToNFAConverter : TreeParser
 					setElement(elements);
 
 					state._fsp--;
+					if (state.failed) return retval;
+					Match(input,EOA,Follow._EOA_in_set1387); if (state.failed) return retval;
 
-					Match(input,EOA,Follow._EOA_in_set1387); 
-
-					Match(input, TokenConstants.UP, null); 
+					Match(input, TokenConstants.UP, null); if (state.failed) return retval;
 
 					}
 					break;
@@ -3518,6 +3675,7 @@ public partial class TreeToNFAConverter : TreeParser
 					if ( cnt58 >= 1 )
 						goto loop58;
 
+					if (state.backtracking>0) {state.failed=true; return retval;}
 					EarlyExitException eee58 = new EarlyExitException( 58, input );
 					throw eee58;
 				}
@@ -3527,14 +3685,17 @@ public partial class TreeToNFAConverter : TreeParser
 				;
 
 
-			Match(input,EOB,Follow._EOB_in_set1397); 
+			Match(input,EOB,Follow._EOB_in_set1397); if (state.failed) return retval;
 
-			Match(input, TokenConstants.UP, null); 
+			Match(input, TokenConstants.UP, null); if (state.failed) return retval;
+			if ( state.backtracking == 0 )
+			{
 
-					retval.g = factory.build_Set(elements,b);
-					b.followingNFAState = retval.g.right;
-					b.setSetValue(elements); // track set value of this block
-					
+						retval.g = factory.build_Set(elements,b);
+						b.followingNFAState = retval.g.right;
+						b.setSetValue(elements); // track set value of this block
+						
+			}
 
 			}
 
@@ -3569,10 +3730,10 @@ public partial class TreeToNFAConverter : TreeParser
 			// Grammars\\TreeToNFAConverter.g3:581:4: ( ^( RULE id= ID ( modifier )? ARG RET ( ^( OPTIONS ( . )* ) )? ( ruleScopeSpec )? ( ^( AMPERSAND ( . )* ) )* ^( BLOCK ( ^( OPTIONS ( . )* ) )? ( ^( ALT ( BACKTRACK_SEMPRED )? setElement[elements] EOA ) )+ EOB ) ( exceptionGroup )? EOR ) )
 			// Grammars\\TreeToNFAConverter.g3:581:4: ^( RULE id= ID ( modifier )? ARG RET ( ^( OPTIONS ( . )* ) )? ( ruleScopeSpec )? ( ^( AMPERSAND ( . )* ) )* ^( BLOCK ( ^( OPTIONS ( . )* ) )? ( ^( ALT ( BACKTRACK_SEMPRED )? setElement[elements] EOA ) )+ EOB ) ( exceptionGroup )? EOR )
 			{
-			Match(input,RULE,Follow._RULE_in_setRule1431); 
+			Match(input,RULE,Follow._RULE_in_setRule1431); if (state.failed) return elements;
 
-			Match(input, TokenConstants.DOWN, null); 
-			id=(GrammarAST)Match(input,ID,Follow._ID_in_setRule1435); 
+			Match(input, TokenConstants.DOWN, null); if (state.failed) return elements;
+			id=(GrammarAST)Match(input,ID,Follow._ID_in_setRule1435); if (state.failed) return elements;
 			// Grammars\\TreeToNFAConverter.g3:581:18: ( modifier )?
 			int alt59=2;
 			int LA59_0 = input.LA(1);
@@ -3590,15 +3751,15 @@ public partial class TreeToNFAConverter : TreeParser
 				modifier();
 
 				state._fsp--;
-
+				if (state.failed) return elements;
 
 				}
 				break;
 
 			}
 
-			Match(input,ARG,Follow._ARG_in_setRule1442); 
-			Match(input,RET,Follow._RET_in_setRule1444); 
+			Match(input,ARG,Follow._ARG_in_setRule1442); if (state.failed) return elements;
+			Match(input,RET,Follow._RET_in_setRule1444); if (state.failed) return elements;
 			// Grammars\\TreeToNFAConverter.g3:581:38: ( ^( OPTIONS ( . )* ) )?
 			int alt61=2;
 			int LA61_0 = input.LA(1);
@@ -3612,11 +3773,11 @@ public partial class TreeToNFAConverter : TreeParser
 			case 1:
 				// Grammars\\TreeToNFAConverter.g3:581:40: ^( OPTIONS ( . )* )
 				{
-				Match(input,OPTIONS,Follow._OPTIONS_in_setRule1449); 
+				Match(input,OPTIONS,Follow._OPTIONS_in_setRule1449); if (state.failed) return elements;
 
 				if ( input.LA(1)==TokenConstants.DOWN )
 				{
-					Match(input, TokenConstants.DOWN, null); 
+					Match(input, TokenConstants.DOWN, null); if (state.failed) return elements;
 					// Grammars\\TreeToNFAConverter.g3:581:50: ( . )*
 					for ( ; ; )
 					{
@@ -3638,7 +3799,7 @@ public partial class TreeToNFAConverter : TreeParser
 						case 1:
 							// Grammars\\TreeToNFAConverter.g3:581:0: .
 							{
-							MatchAny(input); 
+							MatchAny(input); if (state.failed) return elements;
 
 							}
 							break;
@@ -3653,7 +3814,7 @@ public partial class TreeToNFAConverter : TreeParser
 
 
 
-					Match(input, TokenConstants.UP, null); 
+					Match(input, TokenConstants.UP, null); if (state.failed) return elements;
 				}
 
 				}
@@ -3678,7 +3839,7 @@ public partial class TreeToNFAConverter : TreeParser
 				ruleScopeSpec();
 
 				state._fsp--;
-
+				if (state.failed) return elements;
 
 				}
 				break;
@@ -3702,11 +3863,11 @@ public partial class TreeToNFAConverter : TreeParser
 				case 1:
 					// Grammars\\TreeToNFAConverter.g3:582:6: ^( AMPERSAND ( . )* )
 					{
-					Match(input,AMPERSAND,Follow._AMPERSAND_in_setRule1471); 
+					Match(input,AMPERSAND,Follow._AMPERSAND_in_setRule1471); if (state.failed) return elements;
 
 					if ( input.LA(1)==TokenConstants.DOWN )
 					{
-						Match(input, TokenConstants.DOWN, null); 
+						Match(input, TokenConstants.DOWN, null); if (state.failed) return elements;
 						// Grammars\\TreeToNFAConverter.g3:582:18: ( . )*
 						for ( ; ; )
 						{
@@ -3728,7 +3889,7 @@ public partial class TreeToNFAConverter : TreeParser
 							case 1:
 								// Grammars\\TreeToNFAConverter.g3:582:0: .
 								{
-								MatchAny(input); 
+								MatchAny(input); if (state.failed) return elements;
 
 								}
 								break;
@@ -3743,7 +3904,7 @@ public partial class TreeToNFAConverter : TreeParser
 
 
 
-						Match(input, TokenConstants.UP, null); 
+						Match(input, TokenConstants.UP, null); if (state.failed) return elements;
 					}
 
 					}
@@ -3758,9 +3919,9 @@ public partial class TreeToNFAConverter : TreeParser
 				;
 
 
-			Match(input,BLOCK,Follow._BLOCK_in_setRule1485); 
+			Match(input,BLOCK,Follow._BLOCK_in_setRule1485); if (state.failed) return elements;
 
-			Match(input, TokenConstants.DOWN, null); 
+			Match(input, TokenConstants.DOWN, null); if (state.failed) return elements;
 			// Grammars\\TreeToNFAConverter.g3:583:13: ( ^( OPTIONS ( . )* ) )?
 			int alt66=2;
 			int LA66_0 = input.LA(1);
@@ -3774,11 +3935,11 @@ public partial class TreeToNFAConverter : TreeParser
 			case 1:
 				// Grammars\\TreeToNFAConverter.g3:583:15: ^( OPTIONS ( . )* )
 				{
-				Match(input,OPTIONS,Follow._OPTIONS_in_setRule1490); 
+				Match(input,OPTIONS,Follow._OPTIONS_in_setRule1490); if (state.failed) return elements;
 
 				if ( input.LA(1)==TokenConstants.DOWN )
 				{
-					Match(input, TokenConstants.DOWN, null); 
+					Match(input, TokenConstants.DOWN, null); if (state.failed) return elements;
 					// Grammars\\TreeToNFAConverter.g3:583:25: ( . )*
 					for ( ; ; )
 					{
@@ -3800,7 +3961,7 @@ public partial class TreeToNFAConverter : TreeParser
 						case 1:
 							// Grammars\\TreeToNFAConverter.g3:583:0: .
 							{
-							MatchAny(input); 
+							MatchAny(input); if (state.failed) return elements;
 
 							}
 							break;
@@ -3815,7 +3976,7 @@ public partial class TreeToNFAConverter : TreeParser
 
 
 
-					Match(input, TokenConstants.UP, null); 
+					Match(input, TokenConstants.UP, null); if (state.failed) return elements;
 				}
 
 				}
@@ -3841,9 +4002,9 @@ public partial class TreeToNFAConverter : TreeParser
 				case 1:
 					// Grammars\\TreeToNFAConverter.g3:584:9: ^( ALT ( BACKTRACK_SEMPRED )? setElement[elements] EOA )
 					{
-					Match(input,ALT,Follow._ALT_in_setRule1508); 
+					Match(input,ALT,Follow._ALT_in_setRule1508); if (state.failed) return elements;
 
-					Match(input, TokenConstants.DOWN, null); 
+					Match(input, TokenConstants.DOWN, null); if (state.failed) return elements;
 					// Grammars\\TreeToNFAConverter.g3:584:15: ( BACKTRACK_SEMPRED )?
 					int alt67=2;
 					int LA67_0 = input.LA(1);
@@ -3857,7 +4018,7 @@ public partial class TreeToNFAConverter : TreeParser
 					case 1:
 						// Grammars\\TreeToNFAConverter.g3:584:16: BACKTRACK_SEMPRED
 						{
-						Match(input,BACKTRACK_SEMPRED,Follow._BACKTRACK_SEMPRED_in_setRule1511); 
+						Match(input,BACKTRACK_SEMPRED,Follow._BACKTRACK_SEMPRED_in_setRule1511); if (state.failed) return elements;
 
 						}
 						break;
@@ -3868,10 +4029,10 @@ public partial class TreeToNFAConverter : TreeParser
 					setElement(elements);
 
 					state._fsp--;
+					if (state.failed) return elements;
+					Match(input,EOA,Follow._EOA_in_setRule1518); if (state.failed) return elements;
 
-					Match(input,EOA,Follow._EOA_in_setRule1518); 
-
-					Match(input, TokenConstants.UP, null); 
+					Match(input, TokenConstants.UP, null); if (state.failed) return elements;
 
 					}
 					break;
@@ -3880,6 +4041,7 @@ public partial class TreeToNFAConverter : TreeParser
 					if ( cnt68 >= 1 )
 						goto loop68;
 
+					if (state.backtracking>0) {state.failed=true; return elements;}
 					EarlyExitException eee68 = new EarlyExitException( 68, input );
 					throw eee68;
 				}
@@ -3889,9 +4051,9 @@ public partial class TreeToNFAConverter : TreeParser
 				;
 
 
-			Match(input,EOB,Follow._EOB_in_setRule1530); 
+			Match(input,EOB,Follow._EOB_in_setRule1530); if (state.failed) return elements;
 
-			Match(input, TokenConstants.UP, null); 
+			Match(input, TokenConstants.UP, null); if (state.failed) return elements;
 			// Grammars\\TreeToNFAConverter.g3:587:4: ( exceptionGroup )?
 			int alt69=2;
 			int LA69_0 = input.LA(1);
@@ -3909,16 +4071,16 @@ public partial class TreeToNFAConverter : TreeParser
 				exceptionGroup();
 
 				state._fsp--;
-
+				if (state.failed) return elements;
 
 				}
 				break;
 
 			}
 
-			Match(input,EOR,Follow._EOR_in_setRule1549); 
+			Match(input,EOR,Follow._EOR_in_setRule1549); if (state.failed) return elements;
 
-			Match(input, TokenConstants.UP, null); 
+			Match(input, TokenConstants.UP, null); if (state.failed) return elements;
 
 			}
 
@@ -3988,6 +4150,7 @@ public partial class TreeToNFAConverter : TreeParser
 				break;
 			default:
 				{
+					if (state.backtracking>0) {state.failed=true; return ;}
 					NoViableAltException nvae = new NoViableAltException("", 70, 0, input);
 
 					throw nvae;
@@ -3999,105 +4162,117 @@ public partial class TreeToNFAConverter : TreeParser
 			case 1:
 				// Grammars\\TreeToNFAConverter.g3:599:4: c= CHAR_LITERAL
 				{
-				c=(GrammarAST)Match(input,CHAR_LITERAL,Follow._CHAR_LITERAL_in_setElement1578); 
+				c=(GrammarAST)Match(input,CHAR_LITERAL,Follow._CHAR_LITERAL_in_setElement1578); if (state.failed) return ;
+				if ( state.backtracking == 0 )
+				{
 
-							if ( grammar.type==Grammar.LEXER )
-							{
-								ttype = Grammar.getCharValueFromGrammarCharLiteral((c!=null?c.Text:null));
-							}
-							else
-							{
-								ttype = grammar.getTokenType((c!=null?c.Text:null));
-							}
-							if ( elements.member(ttype) )
-							{
-								ErrorManager.grammarError(
-									ErrorManager.MSG_DUPLICATE_SET_ENTRY,
-									grammar,
-									c.Token,
-									(c!=null?c.Text:null));
-							}
-							elements.Add(ttype);
-						
+								if ( grammar.type==Grammar.LEXER )
+								{
+									ttype = Grammar.getCharValueFromGrammarCharLiteral((c!=null?c.Text:null));
+								}
+								else
+								{
+									ttype = grammar.getTokenType((c!=null?c.Text:null));
+								}
+								if ( elements.member(ttype) )
+								{
+									ErrorManager.grammarError(
+										ErrorManager.MSG_DUPLICATE_SET_ENTRY,
+										grammar,
+										c.Token,
+										(c!=null?c.Text:null));
+								}
+								elements.Add(ttype);
+							
+				}
 
 				}
 				break;
 			case 2:
 				// Grammars\\TreeToNFAConverter.g3:619:4: t= TOKEN_REF
 				{
-				t=(GrammarAST)Match(input,TOKEN_REF,Follow._TOKEN_REF_in_setElement1589); 
+				t=(GrammarAST)Match(input,TOKEN_REF,Follow._TOKEN_REF_in_setElement1589); if (state.failed) return ;
+				if ( state.backtracking == 0 )
+				{
 
-							if ( grammar.type==Grammar.LEXER )
-							{
-								// recursively will invoke this rule to match elements in target rule ref
-								IIntSet ruleSet = grammar.getSetFromRule(this,(t!=null?t.Text:null));
-								if ( ruleSet==null )
+								if ( grammar.type==Grammar.LEXER )
 								{
-									ErrorManager.grammarError(
-										ErrorManager.MSG_RULE_INVALID_SET,
-										grammar,
-										t.Token,
-										(t!=null?t.Text:null));
+									// recursively will invoke this rule to match elements in target rule ref
+									IIntSet ruleSet = grammar.getSetFromRule(this,(t!=null?t.Text:null));
+									if ( ruleSet==null )
+									{
+										ErrorManager.grammarError(
+											ErrorManager.MSG_RULE_INVALID_SET,
+											grammar,
+											t.Token,
+											(t!=null?t.Text:null));
+									}
+									else
+									{
+										elements.addAll(ruleSet);
+									}
 								}
 								else
 								{
-									elements.addAll(ruleSet);
+									ttype = grammar.getTokenType((t!=null?t.Text:null));
+									if ( elements.member(ttype) )
+									{
+										ErrorManager.grammarError(
+											ErrorManager.MSG_DUPLICATE_SET_ENTRY,
+											grammar,
+											t.Token,
+											(t!=null?t.Text:null));
+									}
+									elements.Add(ttype);
 								}
-							}
-							else
-							{
-								ttype = grammar.getTokenType((t!=null?t.Text:null));
-								if ( elements.member(ttype) )
-								{
-									ErrorManager.grammarError(
-										ErrorManager.MSG_DUPLICATE_SET_ENTRY,
-										grammar,
-										t.Token,
-										(t!=null?t.Text:null));
-								}
-								elements.Add(ttype);
-							}
-						
+							
+				}
 
 				}
 				break;
 			case 3:
 				// Grammars\\TreeToNFAConverter.g3:653:4: s= STRING_LITERAL
 				{
-				s=(GrammarAST)Match(input,STRING_LITERAL,Follow._STRING_LITERAL_in_setElement1601); 
+				s=(GrammarAST)Match(input,STRING_LITERAL,Follow._STRING_LITERAL_in_setElement1601); if (state.failed) return ;
+				if ( state.backtracking == 0 )
+				{
 
-							ttype = grammar.getTokenType((s!=null?s.Text:null));
-							if ( elements.member(ttype) )
-							{
-								ErrorManager.grammarError(
-									ErrorManager.MSG_DUPLICATE_SET_ENTRY,
-									grammar,
-									s.Token,
-									(s!=null?s.Text:null));
-							}
-							elements.Add(ttype);
-						
+								ttype = grammar.getTokenType((s!=null?s.Text:null));
+								if ( elements.member(ttype) )
+								{
+									ErrorManager.grammarError(
+										ErrorManager.MSG_DUPLICATE_SET_ENTRY,
+										grammar,
+										s.Token,
+										(s!=null?s.Text:null));
+								}
+								elements.Add(ttype);
+							
+				}
 
 				}
 				break;
 			case 4:
 				// Grammars\\TreeToNFAConverter.g3:666:4: ^( CHAR_RANGE c1= CHAR_LITERAL c2= CHAR_LITERAL )
 				{
-				Match(input,CHAR_RANGE,Follow._CHAR_RANGE_in_setElement1611); 
+				Match(input,CHAR_RANGE,Follow._CHAR_RANGE_in_setElement1611); if (state.failed) return ;
 
-				Match(input, TokenConstants.DOWN, null); 
-				c1=(GrammarAST)Match(input,CHAR_LITERAL,Follow._CHAR_LITERAL_in_setElement1615); 
-				c2=(GrammarAST)Match(input,CHAR_LITERAL,Follow._CHAR_LITERAL_in_setElement1619); 
+				Match(input, TokenConstants.DOWN, null); if (state.failed) return ;
+				c1=(GrammarAST)Match(input,CHAR_LITERAL,Follow._CHAR_LITERAL_in_setElement1615); if (state.failed) return ;
+				c2=(GrammarAST)Match(input,CHAR_LITERAL,Follow._CHAR_LITERAL_in_setElement1619); if (state.failed) return ;
 
-				Match(input, TokenConstants.UP, null); 
+				Match(input, TokenConstants.UP, null); if (state.failed) return ;
+				if ( state.backtracking == 0 )
+				{
 
-							if ( grammar.type==Grammar.LEXER )
-							{
-								int a = Grammar.getCharValueFromGrammarCharLiteral((c1!=null?c1.Text:null));
-								int b = Grammar.getCharValueFromGrammarCharLiteral((c2!=null?c2.Text:null));
-								elements.addAll(IntervalSet.of(a,b));
-							}
-						
+								if ( grammar.type==Grammar.LEXER )
+								{
+									int a = Grammar.getCharValueFromGrammarCharLiteral((c1!=null?c1.Text:null));
+									int b = Grammar.getCharValueFromGrammarCharLiteral((c2!=null?c2.Text:null));
+									elements.addAll(IntervalSet.of(a,b));
+								}
+							
+				}
 
 				}
 				break;
@@ -4108,33 +4283,42 @@ public partial class TreeToNFAConverter : TreeParser
 				gset=set();
 
 				state._fsp--;
+				if (state.failed) return ;
+				if ( state.backtracking == 0 )
+				{
 
-
-							Transition setTrans = (gset!=null?gset.g:default(StateCluster)).left.getTransition(0);
-							elements.addAll(setTrans.label.Set);
-						
+								Transition setTrans = (gset!=null?gset.g:default(StateCluster)).left.getTransition(0);
+								elements.addAll(setTrans.label.Set);
+							
+				}
 
 				}
 				break;
 			case 6:
 				// Grammars\\TreeToNFAConverter.g3:682:4: ^( NOT setElement[ns] )
 				{
-				Match(input,NOT,Follow._NOT_in_setElement1644); 
+				Match(input,NOT,Follow._NOT_in_setElement1644); if (state.failed) return ;
 
-				ns=new IntervalSet();
+				if ( state.backtracking == 0 )
+				{
+					ns=new IntervalSet();
+				}
 
-				Match(input, TokenConstants.DOWN, null); 
+				Match(input, TokenConstants.DOWN, null); if (state.failed) return ;
 				PushFollow(Follow._setElement_in_setElement1651);
 				setElement(ns);
 
 				state._fsp--;
+				if (state.failed) return ;
+				if ( state.backtracking == 0 )
+				{
 
+									IIntSet not = grammar.complement(ns);
+									elements.addAll(not);
+								
+				}
 
-								IIntSet not = grammar.complement(ns);
-								elements.addAll(not);
-							
-
-				Match(input, TokenConstants.UP, null); 
+				Match(input, TokenConstants.UP, null); if (state.failed) return ;
 
 				}
 				break;
@@ -4155,7 +4339,7 @@ public partial class TreeToNFAConverter : TreeParser
 
 
 	// $ANTLR start "testBlockAsSet"
-	// Grammars\\TreeToNFAConverter.g3:698:0: testBlockAsSet returns [int alts=0] : ^( BLOCK ( ^( ALT ( BACKTRACK_SEMPRED )? testSetElement EOA ) )+ EOB ) ;
+	// Grammars\\TreeToNFAConverter.g3:698:0: testBlockAsSet returns [int alts=0] options {backtrack=true; } : ^( BLOCK ( ^( ALT ( BACKTRACK_SEMPRED )? testSetElement EOA ) )+ EOB ) ;
 	private int testBlockAsSet(  )
 	{
 
@@ -4168,13 +4352,13 @@ public partial class TreeToNFAConverter : TreeParser
 
 		try
 		{
-			// Grammars\\TreeToNFAConverter.g3:703:4: ( ^( BLOCK ( ^( ALT ( BACKTRACK_SEMPRED )? testSetElement EOA ) )+ EOB ) )
-			// Grammars\\TreeToNFAConverter.g3:703:4: ^( BLOCK ( ^( ALT ( BACKTRACK_SEMPRED )? testSetElement EOA ) )+ EOB )
+			// Grammars\\TreeToNFAConverter.g3:704:4: ( ^( BLOCK ( ^( ALT ( BACKTRACK_SEMPRED )? testSetElement EOA ) )+ EOB ) )
+			// Grammars\\TreeToNFAConverter.g3:704:4: ^( BLOCK ( ^( ALT ( BACKTRACK_SEMPRED )? testSetElement EOA ) )+ EOB )
 			{
-			Match(input,BLOCK,Follow._BLOCK_in_testBlockAsSet1685); 
+			Match(input,BLOCK,Follow._BLOCK_in_testBlockAsSet1696); if (state.failed) return alts;
 
-			Match(input, TokenConstants.DOWN, null); 
-			// Grammars\\TreeToNFAConverter.g3:704:4: ( ^( ALT ( BACKTRACK_SEMPRED )? testSetElement EOA ) )+
+			Match(input, TokenConstants.DOWN, null); if (state.failed) return alts;
+			// Grammars\\TreeToNFAConverter.g3:705:4: ( ^( ALT ( BACKTRACK_SEMPRED )? testSetElement EOA ) )+
 			int cnt72=0;
 			for ( ; ; )
 			{
@@ -4190,12 +4374,12 @@ public partial class TreeToNFAConverter : TreeParser
 				switch ( alt72 )
 				{
 				case 1:
-					// Grammars\\TreeToNFAConverter.g3:704:6: ^( ALT ( BACKTRACK_SEMPRED )? testSetElement EOA )
+					// Grammars\\TreeToNFAConverter.g3:705:6: ^( ALT ( BACKTRACK_SEMPRED )? testSetElement EOA )
 					{
-					Match(input,ALT,Follow._ALT_in_testBlockAsSet1693); 
+					Match(input,ALT,Follow._ALT_in_testBlockAsSet1704); if (state.failed) return alts;
 
-					Match(input, TokenConstants.DOWN, null); 
-					// Grammars\\TreeToNFAConverter.g3:704:12: ( BACKTRACK_SEMPRED )?
+					Match(input, TokenConstants.DOWN, null); if (state.failed) return alts;
+					// Grammars\\TreeToNFAConverter.g3:705:12: ( BACKTRACK_SEMPRED )?
 					int alt71=2;
 					int LA71_0 = input.LA(1);
 
@@ -4206,24 +4390,24 @@ public partial class TreeToNFAConverter : TreeParser
 					switch ( alt71 )
 					{
 					case 1:
-						// Grammars\\TreeToNFAConverter.g3:704:13: BACKTRACK_SEMPRED
+						// Grammars\\TreeToNFAConverter.g3:705:13: BACKTRACK_SEMPRED
 						{
-						Match(input,BACKTRACK_SEMPRED,Follow._BACKTRACK_SEMPRED_in_testBlockAsSet1696); 
+						Match(input,BACKTRACK_SEMPRED,Follow._BACKTRACK_SEMPRED_in_testBlockAsSet1707); if (state.failed) return alts;
 
 						}
 						break;
 
 					}
 
-					PushFollow(Follow._testSetElement_in_testBlockAsSet1700);
+					PushFollow(Follow._testSetElement_in_testBlockAsSet1711);
 					testSetElement10=testSetElement();
 
 					state._fsp--;
-
+					if (state.failed) return alts;
 					alts += testSetElement10;
-					Match(input,EOA,Follow._EOA_in_testBlockAsSet1704); 
+					Match(input,EOA,Follow._EOA_in_testBlockAsSet1715); if (state.failed) return alts;
 
-					Match(input, TokenConstants.UP, null); 
+					Match(input, TokenConstants.UP, null); if (state.failed) return alts;
 
 					}
 					break;
@@ -4232,6 +4416,7 @@ public partial class TreeToNFAConverter : TreeParser
 					if ( cnt72 >= 1 )
 						goto loop72;
 
+					if (state.backtracking>0) {state.failed=true; return alts;}
 					EarlyExitException eee72 = new EarlyExitException( 72, input );
 					throw eee72;
 				}
@@ -4241,9 +4426,9 @@ public partial class TreeToNFAConverter : TreeParser
 				;
 
 
-			Match(input,EOB,Follow._EOB_in_testBlockAsSet1716); 
+			Match(input,EOB,Follow._EOB_in_testBlockAsSet1727); if (state.failed) return alts;
 
-			Match(input, TokenConstants.UP, null); 
+			Match(input, TokenConstants.UP, null); if (state.failed) return alts;
 
 			}
 
@@ -4262,7 +4447,7 @@ public partial class TreeToNFAConverter : TreeParser
 
 
 	// $ANTLR start "testSetRule"
-	// Grammars\\TreeToNFAConverter.g3:712:0: testSetRule returns [int alts=0] : ^( RULE id= ID ( modifier )? ARG RET ( ^( OPTIONS ( . )* ) )? ( ruleScopeSpec )? ( ^( AMPERSAND ( . )* ) )* ^( BLOCK ( ^( ALT ( BACKTRACK_SEMPRED )? testSetElement EOA ) )+ EOB ) ( exceptionGroup )? EOR ) ;
+	// Grammars\\TreeToNFAConverter.g3:713:0: testSetRule returns [int alts=0] : ^( RULE id= ID ( modifier )? ARG RET ( ^( OPTIONS ( . )* ) )? ( ruleScopeSpec )? ( ^( AMPERSAND ( . )* ) )* ^( BLOCK ( ^( ALT ( BACKTRACK_SEMPRED )? testSetElement EOA ) )+ EOB ) ( exceptionGroup )? EOR ) ;
 	private int testSetRule(  )
 	{
 
@@ -4276,14 +4461,14 @@ public partial class TreeToNFAConverter : TreeParser
 
 		try
 		{
-			// Grammars\\TreeToNFAConverter.g3:717:4: ( ^( RULE id= ID ( modifier )? ARG RET ( ^( OPTIONS ( . )* ) )? ( ruleScopeSpec )? ( ^( AMPERSAND ( . )* ) )* ^( BLOCK ( ^( ALT ( BACKTRACK_SEMPRED )? testSetElement EOA ) )+ EOB ) ( exceptionGroup )? EOR ) )
-			// Grammars\\TreeToNFAConverter.g3:717:4: ^( RULE id= ID ( modifier )? ARG RET ( ^( OPTIONS ( . )* ) )? ( ruleScopeSpec )? ( ^( AMPERSAND ( . )* ) )* ^( BLOCK ( ^( ALT ( BACKTRACK_SEMPRED )? testSetElement EOA ) )+ EOB ) ( exceptionGroup )? EOR )
+			// Grammars\\TreeToNFAConverter.g3:718:4: ( ^( RULE id= ID ( modifier )? ARG RET ( ^( OPTIONS ( . )* ) )? ( ruleScopeSpec )? ( ^( AMPERSAND ( . )* ) )* ^( BLOCK ( ^( ALT ( BACKTRACK_SEMPRED )? testSetElement EOA ) )+ EOB ) ( exceptionGroup )? EOR ) )
+			// Grammars\\TreeToNFAConverter.g3:718:4: ^( RULE id= ID ( modifier )? ARG RET ( ^( OPTIONS ( . )* ) )? ( ruleScopeSpec )? ( ^( AMPERSAND ( . )* ) )* ^( BLOCK ( ^( ALT ( BACKTRACK_SEMPRED )? testSetElement EOA ) )+ EOB ) ( exceptionGroup )? EOR )
 			{
-			Match(input,RULE,Follow._RULE_in_testSetRule1751); 
+			Match(input,RULE,Follow._RULE_in_testSetRule1762); if (state.failed) return alts;
 
-			Match(input, TokenConstants.DOWN, null); 
-			id=(GrammarAST)Match(input,ID,Follow._ID_in_testSetRule1755); 
-			// Grammars\\TreeToNFAConverter.g3:717:18: ( modifier )?
+			Match(input, TokenConstants.DOWN, null); if (state.failed) return alts;
+			id=(GrammarAST)Match(input,ID,Follow._ID_in_testSetRule1766); if (state.failed) return alts;
+			// Grammars\\TreeToNFAConverter.g3:718:18: ( modifier )?
 			int alt73=2;
 			int LA73_0 = input.LA(1);
 
@@ -4294,22 +4479,22 @@ public partial class TreeToNFAConverter : TreeParser
 			switch ( alt73 )
 			{
 			case 1:
-				// Grammars\\TreeToNFAConverter.g3:717:19: modifier
+				// Grammars\\TreeToNFAConverter.g3:718:19: modifier
 				{
-				PushFollow(Follow._modifier_in_testSetRule1758);
+				PushFollow(Follow._modifier_in_testSetRule1769);
 				modifier();
 
 				state._fsp--;
-
+				if (state.failed) return alts;
 
 				}
 				break;
 
 			}
 
-			Match(input,ARG,Follow._ARG_in_testSetRule1762); 
-			Match(input,RET,Follow._RET_in_testSetRule1764); 
-			// Grammars\\TreeToNFAConverter.g3:717:38: ( ^( OPTIONS ( . )* ) )?
+			Match(input,ARG,Follow._ARG_in_testSetRule1773); if (state.failed) return alts;
+			Match(input,RET,Follow._RET_in_testSetRule1775); if (state.failed) return alts;
+			// Grammars\\TreeToNFAConverter.g3:718:38: ( ^( OPTIONS ( . )* ) )?
 			int alt75=2;
 			int LA75_0 = input.LA(1);
 
@@ -4320,14 +4505,14 @@ public partial class TreeToNFAConverter : TreeParser
 			switch ( alt75 )
 			{
 			case 1:
-				// Grammars\\TreeToNFAConverter.g3:717:40: ^( OPTIONS ( . )* )
+				// Grammars\\TreeToNFAConverter.g3:718:40: ^( OPTIONS ( . )* )
 				{
-				Match(input,OPTIONS,Follow._OPTIONS_in_testSetRule1769); 
+				Match(input,OPTIONS,Follow._OPTIONS_in_testSetRule1780); if (state.failed) return alts;
 
 				if ( input.LA(1)==TokenConstants.DOWN )
 				{
-					Match(input, TokenConstants.DOWN, null); 
-					// Grammars\\TreeToNFAConverter.g3:717:50: ( . )*
+					Match(input, TokenConstants.DOWN, null); if (state.failed) return alts;
+					// Grammars\\TreeToNFAConverter.g3:718:50: ( . )*
 					for ( ; ; )
 					{
 						int alt74=2;
@@ -4346,9 +4531,9 @@ public partial class TreeToNFAConverter : TreeParser
 						switch ( alt74 )
 						{
 						case 1:
-							// Grammars\\TreeToNFAConverter.g3:717:0: .
+							// Grammars\\TreeToNFAConverter.g3:718:0: .
 							{
-							MatchAny(input); 
+							MatchAny(input); if (state.failed) return alts;
 
 							}
 							break;
@@ -4363,7 +4548,7 @@ public partial class TreeToNFAConverter : TreeParser
 
 
 
-					Match(input, TokenConstants.UP, null); 
+					Match(input, TokenConstants.UP, null); if (state.failed) return alts;
 				}
 
 				}
@@ -4371,7 +4556,7 @@ public partial class TreeToNFAConverter : TreeParser
 
 			}
 
-			// Grammars\\TreeToNFAConverter.g3:717:57: ( ruleScopeSpec )?
+			// Grammars\\TreeToNFAConverter.g3:718:57: ( ruleScopeSpec )?
 			int alt76=2;
 			int LA76_0 = input.LA(1);
 
@@ -4382,20 +4567,20 @@ public partial class TreeToNFAConverter : TreeParser
 			switch ( alt76 )
 			{
 			case 1:
-				// Grammars\\TreeToNFAConverter.g3:717:59: ruleScopeSpec
+				// Grammars\\TreeToNFAConverter.g3:718:59: ruleScopeSpec
 				{
-				PushFollow(Follow._ruleScopeSpec_in_testSetRule1780);
+				PushFollow(Follow._ruleScopeSpec_in_testSetRule1791);
 				ruleScopeSpec();
 
 				state._fsp--;
-
+				if (state.failed) return alts;
 
 				}
 				break;
 
 			}
 
-			// Grammars\\TreeToNFAConverter.g3:718:4: ( ^( AMPERSAND ( . )* ) )*
+			// Grammars\\TreeToNFAConverter.g3:719:4: ( ^( AMPERSAND ( . )* ) )*
 			for ( ; ; )
 			{
 				int alt78=2;
@@ -4410,14 +4595,14 @@ public partial class TreeToNFAConverter : TreeParser
 				switch ( alt78 )
 				{
 				case 1:
-					// Grammars\\TreeToNFAConverter.g3:718:6: ^( AMPERSAND ( . )* )
+					// Grammars\\TreeToNFAConverter.g3:719:6: ^( AMPERSAND ( . )* )
 					{
-					Match(input,AMPERSAND,Follow._AMPERSAND_in_testSetRule1791); 
+					Match(input,AMPERSAND,Follow._AMPERSAND_in_testSetRule1802); if (state.failed) return alts;
 
 					if ( input.LA(1)==TokenConstants.DOWN )
 					{
-						Match(input, TokenConstants.DOWN, null); 
-						// Grammars\\TreeToNFAConverter.g3:718:18: ( . )*
+						Match(input, TokenConstants.DOWN, null); if (state.failed) return alts;
+						// Grammars\\TreeToNFAConverter.g3:719:18: ( . )*
 						for ( ; ; )
 						{
 							int alt77=2;
@@ -4436,9 +4621,9 @@ public partial class TreeToNFAConverter : TreeParser
 							switch ( alt77 )
 							{
 							case 1:
-								// Grammars\\TreeToNFAConverter.g3:718:0: .
+								// Grammars\\TreeToNFAConverter.g3:719:0: .
 								{
-								MatchAny(input); 
+								MatchAny(input); if (state.failed) return alts;
 
 								}
 								break;
@@ -4453,7 +4638,7 @@ public partial class TreeToNFAConverter : TreeParser
 
 
 
-						Match(input, TokenConstants.UP, null); 
+						Match(input, TokenConstants.UP, null); if (state.failed) return alts;
 					}
 
 					}
@@ -4468,10 +4653,10 @@ public partial class TreeToNFAConverter : TreeParser
 				;
 
 
-			Match(input,BLOCK,Follow._BLOCK_in_testSetRule1805); 
+			Match(input,BLOCK,Follow._BLOCK_in_testSetRule1816); if (state.failed) return alts;
 
-			Match(input, TokenConstants.DOWN, null); 
-			// Grammars\\TreeToNFAConverter.g3:720:5: ( ^( ALT ( BACKTRACK_SEMPRED )? testSetElement EOA ) )+
+			Match(input, TokenConstants.DOWN, null); if (state.failed) return alts;
+			// Grammars\\TreeToNFAConverter.g3:721:5: ( ^( ALT ( BACKTRACK_SEMPRED )? testSetElement EOA ) )+
 			int cnt80=0;
 			for ( ; ; )
 			{
@@ -4487,12 +4672,12 @@ public partial class TreeToNFAConverter : TreeParser
 				switch ( alt80 )
 				{
 				case 1:
-					// Grammars\\TreeToNFAConverter.g3:720:7: ^( ALT ( BACKTRACK_SEMPRED )? testSetElement EOA )
+					// Grammars\\TreeToNFAConverter.g3:721:7: ^( ALT ( BACKTRACK_SEMPRED )? testSetElement EOA )
 					{
-					Match(input,ALT,Follow._ALT_in_testSetRule1814); 
+					Match(input,ALT,Follow._ALT_in_testSetRule1825); if (state.failed) return alts;
 
-					Match(input, TokenConstants.DOWN, null); 
-					// Grammars\\TreeToNFAConverter.g3:720:13: ( BACKTRACK_SEMPRED )?
+					Match(input, TokenConstants.DOWN, null); if (state.failed) return alts;
+					// Grammars\\TreeToNFAConverter.g3:721:13: ( BACKTRACK_SEMPRED )?
 					int alt79=2;
 					int LA79_0 = input.LA(1);
 
@@ -4503,24 +4688,24 @@ public partial class TreeToNFAConverter : TreeParser
 					switch ( alt79 )
 					{
 					case 1:
-						// Grammars\\TreeToNFAConverter.g3:720:14: BACKTRACK_SEMPRED
+						// Grammars\\TreeToNFAConverter.g3:721:14: BACKTRACK_SEMPRED
 						{
-						Match(input,BACKTRACK_SEMPRED,Follow._BACKTRACK_SEMPRED_in_testSetRule1817); 
+						Match(input,BACKTRACK_SEMPRED,Follow._BACKTRACK_SEMPRED_in_testSetRule1828); if (state.failed) return alts;
 
 						}
 						break;
 
 					}
 
-					PushFollow(Follow._testSetElement_in_testSetRule1821);
+					PushFollow(Follow._testSetElement_in_testSetRule1832);
 					testSetElement11=testSetElement();
 
 					state._fsp--;
-
+					if (state.failed) return alts;
 					alts += testSetElement11;
-					Match(input,EOA,Follow._EOA_in_testSetRule1825); 
+					Match(input,EOA,Follow._EOA_in_testSetRule1836); if (state.failed) return alts;
 
-					Match(input, TokenConstants.UP, null); 
+					Match(input, TokenConstants.UP, null); if (state.failed) return alts;
 
 					}
 					break;
@@ -4529,6 +4714,7 @@ public partial class TreeToNFAConverter : TreeParser
 					if ( cnt80 >= 1 )
 						goto loop80;
 
+					if (state.backtracking>0) {state.failed=true; return alts;}
 					EarlyExitException eee80 = new EarlyExitException( 80, input );
 					throw eee80;
 				}
@@ -4538,10 +4724,10 @@ public partial class TreeToNFAConverter : TreeParser
 				;
 
 
-			Match(input,EOB,Follow._EOB_in_testSetRule1839); 
+			Match(input,EOB,Follow._EOB_in_testSetRule1850); if (state.failed) return alts;
 
-			Match(input, TokenConstants.UP, null); 
-			// Grammars\\TreeToNFAConverter.g3:724:4: ( exceptionGroup )?
+			Match(input, TokenConstants.UP, null); if (state.failed) return alts;
+			// Grammars\\TreeToNFAConverter.g3:725:4: ( exceptionGroup )?
 			int alt81=2;
 			int LA81_0 = input.LA(1);
 
@@ -4552,22 +4738,22 @@ public partial class TreeToNFAConverter : TreeParser
 			switch ( alt81 )
 			{
 			case 1:
-				// Grammars\\TreeToNFAConverter.g3:724:5: exceptionGroup
+				// Grammars\\TreeToNFAConverter.g3:725:5: exceptionGroup
 				{
-				PushFollow(Follow._exceptionGroup_in_testSetRule1850);
+				PushFollow(Follow._exceptionGroup_in_testSetRule1861);
 				exceptionGroup();
 
 				state._fsp--;
-
+				if (state.failed) return alts;
 
 				}
 				break;
 
 			}
 
-			Match(input,EOR,Follow._EOR_in_testSetRule1857); 
+			Match(input,EOR,Follow._EOR_in_testSetRule1868); if (state.failed) return alts;
 
-			Match(input, TokenConstants.UP, null); 
+			Match(input, TokenConstants.UP, null); if (state.failed) return alts;
 
 			}
 
@@ -4586,7 +4772,7 @@ public partial class TreeToNFAConverter : TreeParser
 
 
 	// $ANTLR start "testSetElement"
-	// Grammars\\TreeToNFAConverter.g3:732:0: testSetElement returns [int alts=1] : (c= CHAR_LITERAL |t= TOKEN_REF |{...}? =>s= STRING_LITERAL | ^( CHAR_RANGE c1= CHAR_LITERAL c2= CHAR_LITERAL ) | testBlockAsSet | ^( NOT tse= testSetElement ) );
+	// Grammars\\TreeToNFAConverter.g3:733:0: testSetElement returns [int alts=1] : (c= CHAR_LITERAL |t= TOKEN_REF |{...}? =>s= STRING_LITERAL | ^( CHAR_RANGE c1= CHAR_LITERAL c2= CHAR_LITERAL ) | testBlockAsSet | ^( NOT tse= testSetElement ) );
 	private int testSetElement(  )
 	{
 
@@ -4602,7 +4788,7 @@ public partial class TreeToNFAConverter : TreeParser
 
 		try
 		{
-			// Grammars\\TreeToNFAConverter.g3:733:4: (c= CHAR_LITERAL |t= TOKEN_REF |{...}? =>s= STRING_LITERAL | ^( CHAR_RANGE c1= CHAR_LITERAL c2= CHAR_LITERAL ) | testBlockAsSet | ^( NOT tse= testSetElement ) )
+			// Grammars\\TreeToNFAConverter.g3:734:4: (c= CHAR_LITERAL |t= TOKEN_REF |{...}? =>s= STRING_LITERAL | ^( CHAR_RANGE c1= CHAR_LITERAL c2= CHAR_LITERAL ) | testBlockAsSet | ^( NOT tse= testSetElement ) )
 			int alt82=6;
 			int LA82_0 = input.LA(1);
 
@@ -4632,6 +4818,7 @@ public partial class TreeToNFAConverter : TreeParser
 			}
 			else
 			{
+				if (state.backtracking>0) {state.failed=true; return alts;}
 				NoViableAltException nvae = new NoViableAltException("", 82, 0, input);
 
 				throw nvae;
@@ -4639,16 +4826,16 @@ public partial class TreeToNFAConverter : TreeParser
 			switch ( alt82 )
 			{
 			case 1:
-				// Grammars\\TreeToNFAConverter.g3:733:4: c= CHAR_LITERAL
+				// Grammars\\TreeToNFAConverter.g3:734:4: c= CHAR_LITERAL
 				{
-				c=(GrammarAST)Match(input,CHAR_LITERAL,Follow._CHAR_LITERAL_in_testSetElement1889); 
+				c=(GrammarAST)Match(input,CHAR_LITERAL,Follow._CHAR_LITERAL_in_testSetElement1900); if (state.failed) return alts;
 
 				}
 				break;
 			case 2:
-				// Grammars\\TreeToNFAConverter.g3:734:4: t= TOKEN_REF
+				// Grammars\\TreeToNFAConverter.g3:735:4: t= TOKEN_REF
 				{
-				t=(GrammarAST)Match(input,TOKEN_REF,Follow._TOKEN_REF_in_testSetElement1896); 
+				t=(GrammarAST)Match(input,TOKEN_REF,Follow._TOKEN_REF_in_testSetElement1907); if (state.failed) return alts;
 
 							if ( grammar.type==Grammar.LEXER )
 							{
@@ -4666,55 +4853,56 @@ public partial class TreeToNFAConverter : TreeParser
 				}
 				break;
 			case 3:
-				// Grammars\\TreeToNFAConverter.g3:748:6: {...}? =>s= STRING_LITERAL
+				// Grammars\\TreeToNFAConverter.g3:749:6: {...}? =>s= STRING_LITERAL
 				{
 				if ( !((grammar.type!=Grammar.LEXER)) )
 				{
+					if (state.backtracking>0) {state.failed=true; return alts;}
 					throw new FailedPredicateException(input, "testSetElement", "grammar.type!=Grammar.LEXER");
 				}
-				s=(GrammarAST)Match(input,STRING_LITERAL,Follow._STRING_LITERAL_in_testSetElement1913); 
+				s=(GrammarAST)Match(input,STRING_LITERAL,Follow._STRING_LITERAL_in_testSetElement1924); if (state.failed) return alts;
 
 				}
 				break;
 			case 4:
-				// Grammars\\TreeToNFAConverter.g3:749:4: ^( CHAR_RANGE c1= CHAR_LITERAL c2= CHAR_LITERAL )
+				// Grammars\\TreeToNFAConverter.g3:750:4: ^( CHAR_RANGE c1= CHAR_LITERAL c2= CHAR_LITERAL )
 				{
-				Match(input,CHAR_RANGE,Follow._CHAR_RANGE_in_testSetElement1919); 
+				Match(input,CHAR_RANGE,Follow._CHAR_RANGE_in_testSetElement1930); if (state.failed) return alts;
 
-				Match(input, TokenConstants.DOWN, null); 
-				c1=(GrammarAST)Match(input,CHAR_LITERAL,Follow._CHAR_LITERAL_in_testSetElement1923); 
-				c2=(GrammarAST)Match(input,CHAR_LITERAL,Follow._CHAR_LITERAL_in_testSetElement1927); 
+				Match(input, TokenConstants.DOWN, null); if (state.failed) return alts;
+				c1=(GrammarAST)Match(input,CHAR_LITERAL,Follow._CHAR_LITERAL_in_testSetElement1934); if (state.failed) return alts;
+				c2=(GrammarAST)Match(input,CHAR_LITERAL,Follow._CHAR_LITERAL_in_testSetElement1938); if (state.failed) return alts;
 
-				Match(input, TokenConstants.UP, null); 
+				Match(input, TokenConstants.UP, null); if (state.failed) return alts;
 				 alts = IntervalSet.of( Grammar.getCharValueFromGrammarCharLiteral((c1!=null?c1.Text:null)), Grammar.getCharValueFromGrammarCharLiteral((c2!=null?c2.Text:null)) ).size(); 
 
 				}
 				break;
 			case 5:
-				// Grammars\\TreeToNFAConverter.g3:751:6: testBlockAsSet
+				// Grammars\\TreeToNFAConverter.g3:752:6: testBlockAsSet
 				{
-				PushFollow(Follow._testBlockAsSet_in_testSetElement1939);
+				PushFollow(Follow._testBlockAsSet_in_testSetElement1950);
 				testBlockAsSet12=testBlockAsSet();
 
 				state._fsp--;
-
+				if (state.failed) return alts;
 				 alts = testBlockAsSet12; 
 
 				}
 				break;
 			case 6:
-				// Grammars\\TreeToNFAConverter.g3:753:6: ^( NOT tse= testSetElement )
+				// Grammars\\TreeToNFAConverter.g3:754:6: ^( NOT tse= testSetElement )
 				{
-				Match(input,NOT,Follow._NOT_in_testSetElement1952); 
+				Match(input,NOT,Follow._NOT_in_testSetElement1963); if (state.failed) return alts;
 
-				Match(input, TokenConstants.DOWN, null); 
-				PushFollow(Follow._testSetElement_in_testSetElement1956);
+				Match(input, TokenConstants.DOWN, null); if (state.failed) return alts;
+				PushFollow(Follow._testSetElement_in_testSetElement1967);
 				tse=testSetElement();
 
 				state._fsp--;
+				if (state.failed) return alts;
 
-
-				Match(input, TokenConstants.UP, null); 
+				Match(input, TokenConstants.UP, null); if (state.failed) return alts;
 				 alts = grammar.TokenTypes.size() - tse; 
 
 				}
@@ -4986,37 +5174,37 @@ public partial class TreeToNFAConverter : TreeParser
 		public static readonly BitSet _set_in_setElement1632 = new BitSet(new ulong[]{0x2UL});
 		public static readonly BitSet _NOT_in_setElement1644 = new BitSet(new ulong[]{0x4UL});
 		public static readonly BitSet _setElement_in_setElement1651 = new BitSet(new ulong[]{0x8UL});
-		public static readonly BitSet _BLOCK_in_testBlockAsSet1685 = new BitSet(new ulong[]{0x4UL});
-		public static readonly BitSet _ALT_in_testBlockAsSet1693 = new BitSet(new ulong[]{0x4UL});
-		public static readonly BitSet _BACKTRACK_SEMPRED_in_testBlockAsSet1696 = new BitSet(new ulong[]{0x800000000D0000UL,0x4200000UL});
-		public static readonly BitSet _testSetElement_in_testBlockAsSet1700 = new BitSet(new ulong[]{0x100000000UL});
-		public static readonly BitSet _EOA_in_testBlockAsSet1704 = new BitSet(new ulong[]{0x8UL});
-		public static readonly BitSet _EOB_in_testBlockAsSet1716 = new BitSet(new ulong[]{0x8UL});
-		public static readonly BitSet _RULE_in_testSetRule1751 = new BitSet(new ulong[]{0x4UL});
-		public static readonly BitSet _ID_in_testSetRule1755 = new BitSet(new ulong[]{0x10000000400UL,0xEUL});
-		public static readonly BitSet _modifier_in_testSetRule1758 = new BitSet(new ulong[]{0x400UL});
-		public static readonly BitSet _ARG_in_testSetRule1762 = new BitSet(new ulong[]{0x0UL,0x80UL});
-		public static readonly BitSet _RET_in_testSetRule1764 = new BitSet(new ulong[]{0x400000000010200UL,0x4000UL});
-		public static readonly BitSet _OPTIONS_in_testSetRule1769 = new BitSet(new ulong[]{0x4UL});
-		public static readonly BitSet _ruleScopeSpec_in_testSetRule1780 = new BitSet(new ulong[]{0x10200UL});
-		public static readonly BitSet _AMPERSAND_in_testSetRule1791 = new BitSet(new ulong[]{0x4UL});
-		public static readonly BitSet _BLOCK_in_testSetRule1805 = new BitSet(new ulong[]{0x4UL});
-		public static readonly BitSet _ALT_in_testSetRule1814 = new BitSet(new ulong[]{0x4UL});
-		public static readonly BitSet _BACKTRACK_SEMPRED_in_testSetRule1817 = new BitSet(new ulong[]{0x800000000D0000UL,0x4200000UL});
-		public static readonly BitSet _testSetElement_in_testSetRule1821 = new BitSet(new ulong[]{0x100000000UL});
-		public static readonly BitSet _EOA_in_testSetRule1825 = new BitSet(new ulong[]{0x8UL});
-		public static readonly BitSet _EOB_in_testSetRule1839 = new BitSet(new ulong[]{0x8UL});
-		public static readonly BitSet _exceptionGroup_in_testSetRule1850 = new BitSet(new ulong[]{0x400000000UL});
-		public static readonly BitSet _EOR_in_testSetRule1857 = new BitSet(new ulong[]{0x8UL});
-		public static readonly BitSet _CHAR_LITERAL_in_testSetElement1889 = new BitSet(new ulong[]{0x2UL});
-		public static readonly BitSet _TOKEN_REF_in_testSetElement1896 = new BitSet(new ulong[]{0x2UL});
-		public static readonly BitSet _STRING_LITERAL_in_testSetElement1913 = new BitSet(new ulong[]{0x2UL});
-		public static readonly BitSet _CHAR_RANGE_in_testSetElement1919 = new BitSet(new ulong[]{0x4UL});
-		public static readonly BitSet _CHAR_LITERAL_in_testSetElement1923 = new BitSet(new ulong[]{0x40000UL});
-		public static readonly BitSet _CHAR_LITERAL_in_testSetElement1927 = new BitSet(new ulong[]{0x8UL});
-		public static readonly BitSet _testBlockAsSet_in_testSetElement1939 = new BitSet(new ulong[]{0x2UL});
-		public static readonly BitSet _NOT_in_testSetElement1952 = new BitSet(new ulong[]{0x4UL});
-		public static readonly BitSet _testSetElement_in_testSetElement1956 = new BitSet(new ulong[]{0x8UL});
+		public static readonly BitSet _BLOCK_in_testBlockAsSet1696 = new BitSet(new ulong[]{0x4UL});
+		public static readonly BitSet _ALT_in_testBlockAsSet1704 = new BitSet(new ulong[]{0x4UL});
+		public static readonly BitSet _BACKTRACK_SEMPRED_in_testBlockAsSet1707 = new BitSet(new ulong[]{0x800000000D0000UL,0x4200000UL});
+		public static readonly BitSet _testSetElement_in_testBlockAsSet1711 = new BitSet(new ulong[]{0x100000000UL});
+		public static readonly BitSet _EOA_in_testBlockAsSet1715 = new BitSet(new ulong[]{0x8UL});
+		public static readonly BitSet _EOB_in_testBlockAsSet1727 = new BitSet(new ulong[]{0x8UL});
+		public static readonly BitSet _RULE_in_testSetRule1762 = new BitSet(new ulong[]{0x4UL});
+		public static readonly BitSet _ID_in_testSetRule1766 = new BitSet(new ulong[]{0x10000000400UL,0xEUL});
+		public static readonly BitSet _modifier_in_testSetRule1769 = new BitSet(new ulong[]{0x400UL});
+		public static readonly BitSet _ARG_in_testSetRule1773 = new BitSet(new ulong[]{0x0UL,0x80UL});
+		public static readonly BitSet _RET_in_testSetRule1775 = new BitSet(new ulong[]{0x400000000010200UL,0x4000UL});
+		public static readonly BitSet _OPTIONS_in_testSetRule1780 = new BitSet(new ulong[]{0x4UL});
+		public static readonly BitSet _ruleScopeSpec_in_testSetRule1791 = new BitSet(new ulong[]{0x10200UL});
+		public static readonly BitSet _AMPERSAND_in_testSetRule1802 = new BitSet(new ulong[]{0x4UL});
+		public static readonly BitSet _BLOCK_in_testSetRule1816 = new BitSet(new ulong[]{0x4UL});
+		public static readonly BitSet _ALT_in_testSetRule1825 = new BitSet(new ulong[]{0x4UL});
+		public static readonly BitSet _BACKTRACK_SEMPRED_in_testSetRule1828 = new BitSet(new ulong[]{0x800000000D0000UL,0x4200000UL});
+		public static readonly BitSet _testSetElement_in_testSetRule1832 = new BitSet(new ulong[]{0x100000000UL});
+		public static readonly BitSet _EOA_in_testSetRule1836 = new BitSet(new ulong[]{0x8UL});
+		public static readonly BitSet _EOB_in_testSetRule1850 = new BitSet(new ulong[]{0x8UL});
+		public static readonly BitSet _exceptionGroup_in_testSetRule1861 = new BitSet(new ulong[]{0x400000000UL});
+		public static readonly BitSet _EOR_in_testSetRule1868 = new BitSet(new ulong[]{0x8UL});
+		public static readonly BitSet _CHAR_LITERAL_in_testSetElement1900 = new BitSet(new ulong[]{0x2UL});
+		public static readonly BitSet _TOKEN_REF_in_testSetElement1907 = new BitSet(new ulong[]{0x2UL});
+		public static readonly BitSet _STRING_LITERAL_in_testSetElement1924 = new BitSet(new ulong[]{0x2UL});
+		public static readonly BitSet _CHAR_RANGE_in_testSetElement1930 = new BitSet(new ulong[]{0x4UL});
+		public static readonly BitSet _CHAR_LITERAL_in_testSetElement1934 = new BitSet(new ulong[]{0x40000UL});
+		public static readonly BitSet _CHAR_LITERAL_in_testSetElement1938 = new BitSet(new ulong[]{0x8UL});
+		public static readonly BitSet _testBlockAsSet_in_testSetElement1950 = new BitSet(new ulong[]{0x2UL});
+		public static readonly BitSet _NOT_in_testSetElement1963 = new BitSet(new ulong[]{0x4UL});
+		public static readonly BitSet _testSetElement_in_testSetElement1967 = new BitSet(new ulong[]{0x8UL});
 
 	}
 	#endregion

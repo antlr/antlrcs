@@ -127,18 +127,31 @@ namespace Antlr3.ST
                                             StringTemplateGroupInterface superInterface )
         {
             this._listener = errors;
-            SetSuperInterface( superInterface );
+            SuperInterface = superInterface;
             ParseInterface( r );
         }
 
-        public virtual StringTemplateGroupInterface GetSuperInterface()
+        public string Name
         {
-            return _superInterface;
+            get
+            {
+                return _name;
+            }
+            set
+            {
+                _name = value;
+            }
         }
-
-        public virtual void SetSuperInterface( StringTemplateGroupInterface superInterface )
+        public StringTemplateGroupInterface SuperInterface
         {
-            this._superInterface = superInterface;
+            get
+            {
+                return _superInterface;
+            }
+            set
+            {
+                _superInterface = value;
+            }
         }
 
         protected virtual void ParseInterface( TextReader r )
@@ -153,9 +166,9 @@ namespace Antlr3.ST
             catch ( Exception e )
             {
                 string name = "<unknown>";
-                if ( GetName() != null )
+                if ( Name != null )
                 {
-                    name = GetName();
+                    name = Name;
                 }
                 Error( "problem parsing group " + name + ": " + e, e );
             }
@@ -172,15 +185,15 @@ namespace Antlr3.ST
          *  in this interface.  Return null if all is well.
          *  </summary>
          */
-        public virtual IList GetMissingTemplates( StringTemplateGroup group )
+        public virtual IList<string> GetMissingTemplates( StringTemplateGroup group )
         {
-            IList missing =
+            string[] missing =
                 _templates.Values
                 .Where( template => !template.optional && !group.IsDefined( template.name ) )
                 .Select( template => template.name )
                 .ToArray();
 
-            return ( missing.Count == 0 ) ? null : missing;
+            return ( missing.Length == 0 ) ? null : missing;
         }
 
         /** <summary>
@@ -188,9 +201,9 @@ namespace Antlr3.ST
          *  that have wrong formal argument lists.  Return null if all is well.
          *  </summary>
          */
-        public virtual IList GetMismatchedTemplates( StringTemplateGroup group )
+        public virtual IList<string> GetMismatchedTemplates( StringTemplateGroup group )
         {
-            IList mismatched = new List<object>();
+            List<string> mismatched = new List<string>();
             foreach ( TemplateDefinition d in _templates.Values )
             {
                 if ( group.IsDefined( d.name ) )
@@ -230,16 +243,6 @@ namespace Antlr3.ST
             return mismatched;
         }
 
-        public virtual string GetName()
-        {
-            return _name;
-        }
-
-        public virtual void SetName( string name )
-        {
-            this._name = name;
-        }
-
         public virtual void Error( string msg )
         {
             Error( msg, null );
@@ -261,18 +264,18 @@ namespace Antlr3.ST
             }
         }
 
-        string newline = Environment.NewLine;
+        string _newline = Environment.NewLine;
 
         public override string ToString()
         {
             StringBuilder buf = new StringBuilder();
             buf.Append( "interface " );
-            buf.Append( GetName() );
-            buf.Append( ";" + newline );
+            buf.Append( Name );
+            buf.Append( ";" + _newline );
             foreach ( TemplateDefinition d in _templates.Values )
             {
                 buf.Append( GetTemplateSignature( d ) );
-                buf.Append( ";" + newline );
+                buf.Append( ";" + _newline );
             }
             return buf.ToString();
         }

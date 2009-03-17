@@ -88,21 +88,31 @@ namespace Antlr3.Grammars
 
             TreeToNFAConverter other = new TreeToNFAConverter( grammar, nfa, factory, new CommonTreeNodeStream( t ) );
 
+            other.state.backtracking++;
             other.currentRuleName = currentRuleName;
             other.outerAltNum = outerAltNum;
             other.blockLevel = blockLevel;
 
-            return other.testBlockAsSet();
+            var result = other.testBlockAsSet();
+            if ( other.state.failed )
+                return -1;
+
+            return result;
         }
         public int testSetRule( GrammarAST t )
         {
             TreeToNFAConverter other = new TreeToNFAConverter( grammar, nfa, factory, new CommonTreeNodeStream( t ) );
 
+            other.state.backtracking++;
             other.currentRuleName = currentRuleName;
             other.outerAltNum = outerAltNum;
             other.blockLevel = blockLevel;
 
-            return other.testSetRule();
+            var result = other.testSetRule();
+            if ( other.state.failed )
+                state.failed = true;
+
+            return result;
         }
 
         protected virtual void addFollowTransition( string ruleName, NFAState following )
