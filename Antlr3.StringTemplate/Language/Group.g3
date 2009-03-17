@@ -302,63 +302,32 @@ STRING
 			)
 		|	ch=~('\\'|'"') {builder.Append((char)$ch);}
 		)*
-		(	{InColorizer}? => '"'?
-		|	'"'
-		)
+		'"'
 		{
 			Text = builder.ToString();
 		}
 	;
 
 BIGSTRING
-@init
-{
-	System.Text.StringBuilder builder = new System.Text.StringBuilder();
-}
-	:	(	'<<'
-			{
-				if ( !InAnonymousTemplate && !InBlockComment )
-					InBigString=true;
-			}
-			( ('\r'|'\n') => ('\r')? '\n' )? // consume 1st \n
-			(	('\r\n>>') => '\r' '\n' // kill last \r\n
-			|	('\n>>') => '\n' // kill last \n
-			|	('\r'|'\n') => ('\r' { builder.Append('\r'); })? '\n' { builder.Append('\n'); } // else keep
-			|	('\\>') => '\\>' { builder.Append('>'); } // \> escape
-			|	('>' ~'>' | ~'>') => ch=. { builder.Append((char)$ch); }
-			)*
-			(	'>>'
-				{ InBigString = false; }
-			)?
-		)
+	:	'<<' ('\\>' | '\\' ~'>' | '>' ~'>' | ~('\\'|'>'))* '>>'
 		{
-			Text = builder.ToString();
+			System.Text.StringBuilder builder = new System.Text.StringBuilder( input.substring( state.tokenStartCharIndex + 2, GetCharIndex() - 3 ) );
+			$text = ProcessBigString( builder );
 		}
 	;
 
 ANONYMOUS_TEMPLATE
-@init
-{
-	System.Text.StringBuilder builder = new System.Text.StringBuilder();
-}
-	:	(	'{'
-			{
-				if ( !InBigString && !InBlockComment )
-					InAnonymousTemplate=true;
-			}
-			(	('\r' { builder.Append('\r'); })? '\n' { builder.Append('\n'); } // else keep
-			|	('\\}') => '\\' '}' { builder.Append('}'); }  // \} escape
-			|	ch=~('\r'|'\n'|'}') { builder.Append((char)$ch); }
-			)*
-			(	'}'
-				{ InAnonymousTemplate = false; }
-			)?
-		)
+	:	'{'
+		(	'\\}'
+		|	'\\' ~'}'
+		|	~('\\' | '}')
+		)*
+		'}'
 		{
-			Text = builder.ToString();
+			System.Text.StringBuilder builder = new System.Text.StringBuilder( input.substring( state.tokenStartCharIndex + 1, GetCharIndex() - 2 ) );
+			$text = ProcessAnonymousTemplate( builder );
 		}
 	;
-
 
 AT	:	'@' ;
 LPAREN: '(' ;
@@ -375,10 +344,6 @@ PLUS:   '+' ;
 ASSIGN:   '=' ;
 OPTIONAL : '?' ;
 
-CLOSE_BIG_STRING : '>>';
-CLOSE_BLOCK_COMMENT : '*/';
-CLOSE_ANON_TEMPLATE : '}';
-
 // Single-line comments
 SL_COMMENT
 	:	'//'
@@ -388,17 +353,8 @@ SL_COMMENT
 
 // multiple-line comments
 ML_COMMENT
-	:	'/*'
-		{
-			if ( !InAnonymousTemplate && !InBigString )
-				InBlockComment=true;
-
-			$channel = HIDDEN;
-		}
-		(	~('*')
-			|	('*' ~'/') => '*'
-		)*
-		('*/' {InBlockComment = false;})?
+	:	'/*' .* '*/'
+		{ $channel = HIDDEN; }
 	;
 
 // Whitespace -- ignored
@@ -409,7 +365,3 @@ WS  :   (   ' '
         )+
         { $channel = HIDDEN; }
     ;
-
-ANYCHAR
-	:	.
-	;

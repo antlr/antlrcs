@@ -1,4 +1,4 @@
-// $ANTLR 3.1.2 Grammars\\ANTLR.g3 2009-03-07 09:02:31
+// $ANTLR 3.1.2 Grammars\\ANTLR.g3 2009-03-16 19:03:27
 
 // The variable 'variable' is assigned but its value is never used.
 #pragma warning disable 219
@@ -920,140 +920,58 @@ public partial class ANTLRLexer : Lexer
 	{
 		try
 		{
-
-				type = ML_COMMENT;
-
-			// Grammars\\ANTLR.g3:852:4: ( '/*' (=> '*' |) (=> '*' |~ '*' )* '*/' )
-			// Grammars\\ANTLR.g3:852:4: '/*' (=> '*' |) (=> '*' |~ '*' )* '*/'
+			// Grammars\\ANTLR.g3:848:4: ( '/*' ( . )* '*/' )
+			// Grammars\\ANTLR.g3:848:4: '/*' ( . )* '*/'
 			{
 			Match("/*"); if (state.failed) return ;
 
-			// Grammars\\ANTLR.g3:853:3: (=> '*' |)
-			int alt10=2;
-			int LA10_0 = input.LA(1);
-
-			if ( (LA10_0=='*') )
+			if ( state.backtracking == 0 )
 			{
-				int LA10_1 = input.LA(2);
+				type = (input.LA(1) == '*' && input.LA(2) != '/') ? DOC_COMMENT : ML_COMMENT;
+			}
+			// Grammars\\ANTLR.g3:850:3: ( . )*
+			for ( ; ; )
+			{
+				int alt10=2;
+				int LA10_0 = input.LA(1);
 
-				if ( (synpred2_ANTLR()) )
+				if ( (LA10_0=='*') )
+				{
+					int LA10_1 = input.LA(2);
+
+					if ( (LA10_1=='/') )
+					{
+						alt10=2;
+					}
+					else if ( ((LA10_1>='\u0000' && LA10_1<='.')||(LA10_1>='0' && LA10_1<='\uFFFF')) )
+					{
+						alt10=1;
+					}
+
+
+				}
+				else if ( ((LA10_0>='\u0000' && LA10_0<=')')||(LA10_0>='+' && LA10_0<='\uFFFF')) )
 				{
 					alt10=1;
 				}
-				else if ( (true) )
-				{
-					alt10=2;
-				}
-				else
-				{
-					if (state.backtracking>0) {state.failed=true; return ;}
-					NoViableAltException nvae = new NoViableAltException("", 10, 1, input);
-
-					throw nvae;
-				}
-			}
-			else if ( ((LA10_0>='\u0000' && LA10_0<=')')||(LA10_0>='+' && LA10_0<='\uFFFF')) )
-			{
-				alt10=2;
-			}
-			else
-			{
-				if (state.backtracking>0) {state.failed=true; return ;}
-				NoViableAltException nvae = new NoViableAltException("", 10, 0, input);
-
-				throw nvae;
-			}
-			switch ( alt10 )
-			{
-			case 1:
-				// Grammars\\ANTLR.g3:853:5: => '*'
-				{
-
-				Match('*'); if (state.failed) return ;
-				if ( state.backtracking == 0 )
-				{
-					type = DOC_COMMENT;
-				}
-
-				}
-				break;
-			case 2:
-				// Grammars\\ANTLR.g3:855:3: 
-				{
 
 
-				}
-				break;
-
-			}
-
-			// Grammars\\ANTLR.g3:856:3: (=> '*' |~ '*' )*
-			for ( ; ; )
-			{
-				int alt11=3;
-				int LA11_0 = input.LA(1);
-
-				if ( (LA11_0=='*') )
-				{
-					int LA11_1 = input.LA(2);
-
-					if ( (LA11_1=='/') )
-					{
-						int LA11_3 = input.LA(3);
-
-						if ( (LA11_3=='*') && (synpred3_ANTLR()))
-						{
-							alt11=1;
-						}
-						else if ( ((LA11_3>='\u0000' && LA11_3<=')')||(LA11_3>='+' && LA11_3<='\uFFFF')) && (synpred3_ANTLR()))
-						{
-							alt11=1;
-						}
-
-
-					}
-					else if ( (LA11_1=='*') && (synpred3_ANTLR()))
-					{
-						alt11=1;
-					}
-					else if ( ((LA11_1>='\u0000' && LA11_1<=')')||(LA11_1>='+' && LA11_1<='.')||(LA11_1>='0' && LA11_1<='\uFFFF')) && (synpred3_ANTLR()))
-					{
-						alt11=1;
-					}
-
-
-				}
-				else if ( ((LA11_0>='\u0000' && LA11_0<=')')||(LA11_0>='+' && LA11_0<='\uFFFF')) )
-				{
-					alt11=2;
-				}
-
-
-				switch ( alt11 )
+				switch ( alt10 )
 				{
 				case 1:
-					// Grammars\\ANTLR.g3:856:5: => '*'
+					// Grammars\\ANTLR.g3:850:0: .
 					{
-
-					Match('*'); if (state.failed) return ;
-
-					}
-					break;
-				case 2:
-					// Grammars\\ANTLR.g3:857:5: ~ '*'
-					{
-					input.Consume();
-					state.failed=false;
+					MatchAny(); if (state.failed) return ;
 
 					}
 					break;
 
 				default:
-					goto loop11;
+					goto loop10;
 				}
 			}
 
-			loop11:
+			loop10:
 				;
 
 
@@ -1076,8 +994,8 @@ public partial class ANTLRLexer : Lexer
 		{
 			int _type = OPEN_ELEMENT_OPTION;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// Grammars\\ANTLR.g3:862:4: ( '<' )
-			// Grammars\\ANTLR.g3:862:4: '<'
+			// Grammars\\ANTLR.g3:854:4: ( '<' )
+			// Grammars\\ANTLR.g3:854:4: '<'
 			{
 			Match('<'); if (state.failed) return ;
 
@@ -1099,8 +1017,8 @@ public partial class ANTLRLexer : Lexer
 		{
 			int _type = CLOSE_ELEMENT_OPTION;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// Grammars\\ANTLR.g3:866:4: ( '>' )
-			// Grammars\\ANTLR.g3:866:4: '>'
+			// Grammars\\ANTLR.g3:858:4: ( '>' )
+			// Grammars\\ANTLR.g3:858:4: '>'
 			{
 			Match('>'); if (state.failed) return ;
 
@@ -1122,8 +1040,8 @@ public partial class ANTLRLexer : Lexer
 		{
 			int _type = AMPERSAND;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// Grammars\\ANTLR.g3:869:13: ( '@' )
-			// Grammars\\ANTLR.g3:869:13: '@'
+			// Grammars\\ANTLR.g3:861:13: ( '@' )
+			// Grammars\\ANTLR.g3:861:13: '@'
 			{
 			Match('@'); if (state.failed) return ;
 
@@ -1145,8 +1063,8 @@ public partial class ANTLRLexer : Lexer
 		{
 			int _type = COMMA;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// Grammars\\ANTLR.g3:871:9: ( ',' )
-			// Grammars\\ANTLR.g3:871:9: ','
+			// Grammars\\ANTLR.g3:863:9: ( ',' )
+			// Grammars\\ANTLR.g3:863:9: ','
 			{
 			Match(','); if (state.failed) return ;
 
@@ -1168,8 +1086,8 @@ public partial class ANTLRLexer : Lexer
 		{
 			int _type = QUESTION;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// Grammars\\ANTLR.g3:873:12: ( '?' )
-			// Grammars\\ANTLR.g3:873:12: '?'
+			// Grammars\\ANTLR.g3:865:12: ( '?' )
+			// Grammars\\ANTLR.g3:865:12: '?'
 			{
 			Match('?'); if (state.failed) return ;
 
@@ -1191,8 +1109,8 @@ public partial class ANTLRLexer : Lexer
 		{
 			int _type = TREE_BEGIN;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// Grammars\\ANTLR.g3:875:14: ( '^(' )
-			// Grammars\\ANTLR.g3:875:14: '^('
+			// Grammars\\ANTLR.g3:867:14: ( '^(' )
+			// Grammars\\ANTLR.g3:867:14: '^('
 			{
 			Match("^("); if (state.failed) return ;
 
@@ -1215,8 +1133,8 @@ public partial class ANTLRLexer : Lexer
 		{
 			int _type = LPAREN;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// Grammars\\ANTLR.g3:877:9: ( '(' )
-			// Grammars\\ANTLR.g3:877:9: '('
+			// Grammars\\ANTLR.g3:869:9: ( '(' )
+			// Grammars\\ANTLR.g3:869:9: '('
 			{
 			Match('('); if (state.failed) return ;
 
@@ -1238,8 +1156,8 @@ public partial class ANTLRLexer : Lexer
 		{
 			int _type = RPAREN;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// Grammars\\ANTLR.g3:879:9: ( ')' )
-			// Grammars\\ANTLR.g3:879:9: ')'
+			// Grammars\\ANTLR.g3:871:9: ( ')' )
+			// Grammars\\ANTLR.g3:871:9: ')'
 			{
 			Match(')'); if (state.failed) return ;
 
@@ -1261,8 +1179,8 @@ public partial class ANTLRLexer : Lexer
 		{
 			int _type = COLON;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// Grammars\\ANTLR.g3:881:9: ( ':' )
-			// Grammars\\ANTLR.g3:881:9: ':'
+			// Grammars\\ANTLR.g3:873:9: ( ':' )
+			// Grammars\\ANTLR.g3:873:9: ':'
 			{
 			Match(':'); if (state.failed) return ;
 
@@ -1284,8 +1202,8 @@ public partial class ANTLRLexer : Lexer
 		{
 			int _type = STAR;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// Grammars\\ANTLR.g3:883:7: ( '*' )
-			// Grammars\\ANTLR.g3:883:7: '*'
+			// Grammars\\ANTLR.g3:875:7: ( '*' )
+			// Grammars\\ANTLR.g3:875:7: '*'
 			{
 			Match('*'); if (state.failed) return ;
 
@@ -1307,8 +1225,8 @@ public partial class ANTLRLexer : Lexer
 		{
 			int _type = PLUS;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// Grammars\\ANTLR.g3:885:7: ( '+' )
-			// Grammars\\ANTLR.g3:885:7: '+'
+			// Grammars\\ANTLR.g3:877:7: ( '+' )
+			// Grammars\\ANTLR.g3:877:7: '+'
 			{
 			Match('+'); if (state.failed) return ;
 
@@ -1330,8 +1248,8 @@ public partial class ANTLRLexer : Lexer
 		{
 			int _type = ASSIGN;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// Grammars\\ANTLR.g3:887:10: ( '=' )
-			// Grammars\\ANTLR.g3:887:10: '='
+			// Grammars\\ANTLR.g3:879:10: ( '=' )
+			// Grammars\\ANTLR.g3:879:10: '='
 			{
 			Match('='); if (state.failed) return ;
 
@@ -1353,8 +1271,8 @@ public partial class ANTLRLexer : Lexer
 		{
 			int _type = PLUS_ASSIGN;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// Grammars\\ANTLR.g3:889:15: ( '+=' )
-			// Grammars\\ANTLR.g3:889:15: '+='
+			// Grammars\\ANTLR.g3:881:15: ( '+=' )
+			// Grammars\\ANTLR.g3:881:15: '+='
 			{
 			Match("+="); if (state.failed) return ;
 
@@ -1377,8 +1295,8 @@ public partial class ANTLRLexer : Lexer
 		{
 			int _type = IMPLIES;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// Grammars\\ANTLR.g3:891:11: ( '=>' )
-			// Grammars\\ANTLR.g3:891:11: '=>'
+			// Grammars\\ANTLR.g3:883:11: ( '=>' )
+			// Grammars\\ANTLR.g3:883:11: '=>'
 			{
 			Match("=>"); if (state.failed) return ;
 
@@ -1401,8 +1319,8 @@ public partial class ANTLRLexer : Lexer
 		{
 			int _type = REWRITE;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// Grammars\\ANTLR.g3:893:11: ( '->' )
-			// Grammars\\ANTLR.g3:893:11: '->'
+			// Grammars\\ANTLR.g3:885:11: ( '->' )
+			// Grammars\\ANTLR.g3:885:11: '->'
 			{
 			Match("->"); if (state.failed) return ;
 
@@ -1425,8 +1343,8 @@ public partial class ANTLRLexer : Lexer
 		{
 			int _type = SEMI;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// Grammars\\ANTLR.g3:895:7: ( ';' )
-			// Grammars\\ANTLR.g3:895:7: ';'
+			// Grammars\\ANTLR.g3:887:7: ( ';' )
+			// Grammars\\ANTLR.g3:887:7: ';'
 			{
 			Match(';'); if (state.failed) return ;
 
@@ -1448,8 +1366,8 @@ public partial class ANTLRLexer : Lexer
 		{
 			int _type = ROOT;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// Grammars\\ANTLR.g3:897:8: ( '^' )
-			// Grammars\\ANTLR.g3:897:8: '^'
+			// Grammars\\ANTLR.g3:889:8: ( '^' )
+			// Grammars\\ANTLR.g3:889:8: '^'
 			{
 			Match('^'); if (state.failed) return ;
 			if ( state.backtracking == 0 )
@@ -1475,8 +1393,8 @@ public partial class ANTLRLexer : Lexer
 		{
 			int _type = BANG;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// Grammars\\ANTLR.g3:899:8: ( '!' )
-			// Grammars\\ANTLR.g3:899:8: '!'
+			// Grammars\\ANTLR.g3:891:8: ( '!' )
+			// Grammars\\ANTLR.g3:891:8: '!'
 			{
 			Match('!'); if (state.failed) return ;
 			if ( state.backtracking == 0 )
@@ -1502,8 +1420,8 @@ public partial class ANTLRLexer : Lexer
 		{
 			int _type = OR;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// Grammars\\ANTLR.g3:901:6: ( '|' )
-			// Grammars\\ANTLR.g3:901:6: '|'
+			// Grammars\\ANTLR.g3:893:6: ( '|' )
+			// Grammars\\ANTLR.g3:893:6: '|'
 			{
 			Match('|'); if (state.failed) return ;
 
@@ -1525,8 +1443,8 @@ public partial class ANTLRLexer : Lexer
 		{
 			int _type = WILDCARD;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// Grammars\\ANTLR.g3:903:12: ( '.' )
-			// Grammars\\ANTLR.g3:903:12: '.'
+			// Grammars\\ANTLR.g3:895:12: ( '.' )
+			// Grammars\\ANTLR.g3:895:12: '.'
 			{
 			Match('.'); if (state.failed) return ;
 
@@ -1548,8 +1466,8 @@ public partial class ANTLRLexer : Lexer
 		{
 			int _type = ETC;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// Grammars\\ANTLR.g3:905:7: ( '...' )
-			// Grammars\\ANTLR.g3:905:7: '...'
+			// Grammars\\ANTLR.g3:897:7: ( '...' )
+			// Grammars\\ANTLR.g3:897:7: '...'
 			{
 			Match("..."); if (state.failed) return ;
 
@@ -1572,8 +1490,8 @@ public partial class ANTLRLexer : Lexer
 		{
 			int _type = RANGE;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// Grammars\\ANTLR.g3:907:9: ( '..' )
-			// Grammars\\ANTLR.g3:907:9: '..'
+			// Grammars\\ANTLR.g3:899:9: ( '..' )
+			// Grammars\\ANTLR.g3:899:9: '..'
 			{
 			Match(".."); if (state.failed) return ;
 
@@ -1596,8 +1514,8 @@ public partial class ANTLRLexer : Lexer
 		{
 			int _type = NOT;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// Grammars\\ANTLR.g3:909:7: ( '~' )
-			// Grammars\\ANTLR.g3:909:7: '~'
+			// Grammars\\ANTLR.g3:901:7: ( '~' )
+			// Grammars\\ANTLR.g3:901:7: '~'
 			{
 			Match('~'); if (state.failed) return ;
 
@@ -1619,8 +1537,8 @@ public partial class ANTLRLexer : Lexer
 		{
 			int _type = RCURLY;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// Grammars\\ANTLR.g3:911:9: ( '}' )
-			// Grammars\\ANTLR.g3:911:9: '}'
+			// Grammars\\ANTLR.g3:903:9: ( '}' )
+			// Grammars\\ANTLR.g3:903:9: '}'
 			{
 			Match('}'); if (state.failed) return ;
 
@@ -1642,8 +1560,8 @@ public partial class ANTLRLexer : Lexer
 		{
 			int _type = DOLLAR;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// Grammars\\ANTLR.g3:913:10: ( '$' )
-			// Grammars\\ANTLR.g3:913:10: '$'
+			// Grammars\\ANTLR.g3:905:10: ( '$' )
+			// Grammars\\ANTLR.g3:905:10: '$'
 			{
 			Match('$'); if (state.failed) return ;
 
@@ -1665,8 +1583,8 @@ public partial class ANTLRLexer : Lexer
 		{
 			int _type = STRAY_BRACKET;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// Grammars\\ANTLR.g3:916:4: ( ']' )
-			// Grammars\\ANTLR.g3:916:4: ']'
+			// Grammars\\ANTLR.g3:908:4: ( ']' )
+			// Grammars\\ANTLR.g3:908:4: ']'
 			{
 			Match(']'); if (state.failed) return ;
 			if ( state.backtracking == 0 )
@@ -1699,37 +1617,37 @@ public partial class ANTLRLexer : Lexer
 		{
 			int _type = CHAR_LITERAL;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// Grammars\\ANTLR.g3:928:4: ( '\\'' ( ESC |~ ( '\\\\' | '\\'' ) )* '\\'' )
-			// Grammars\\ANTLR.g3:928:4: '\\'' ( ESC |~ ( '\\\\' | '\\'' ) )* '\\''
+			// Grammars\\ANTLR.g3:920:4: ( '\\'' ( ESC |~ ( '\\\\' | '\\'' ) )* '\\'' )
+			// Grammars\\ANTLR.g3:920:4: '\\'' ( ESC |~ ( '\\\\' | '\\'' ) )* '\\''
 			{
 			Match('\''); if (state.failed) return ;
-			// Grammars\\ANTLR.g3:929:3: ( ESC |~ ( '\\\\' | '\\'' ) )*
+			// Grammars\\ANTLR.g3:921:3: ( ESC |~ ( '\\\\' | '\\'' ) )*
 			for ( ; ; )
 			{
-				int alt12=3;
-				int LA12_0 = input.LA(1);
+				int alt11=3;
+				int LA11_0 = input.LA(1);
 
-				if ( (LA12_0=='\\') )
+				if ( (LA11_0=='\\') )
 				{
-					alt12=1;
+					alt11=1;
 				}
-				else if ( ((LA12_0>='\u0000' && LA12_0<='&')||(LA12_0>='(' && LA12_0<='[')||(LA12_0>=']' && LA12_0<='\uFFFF')) )
+				else if ( ((LA11_0>='\u0000' && LA11_0<='&')||(LA11_0>='(' && LA11_0<='[')||(LA11_0>=']' && LA11_0<='\uFFFF')) )
 				{
-					alt12=2;
+					alt11=2;
 				}
 
 
-				switch ( alt12 )
+				switch ( alt11 )
 				{
 				case 1:
-					// Grammars\\ANTLR.g3:929:5: ESC
+					// Grammars\\ANTLR.g3:921:5: ESC
 					{
 					mESC(); if (state.failed) return ;
 
 					}
 					break;
 				case 2:
-					// Grammars\\ANTLR.g3:930:5: ~ ( '\\\\' | '\\'' )
+					// Grammars\\ANTLR.g3:922:5: ~ ( '\\\\' | '\\'' )
 					{
 					input.Consume();
 					state.failed=false;
@@ -1738,11 +1656,11 @@ public partial class ANTLRLexer : Lexer
 					break;
 
 				default:
-					goto loop12;
+					goto loop11;
 				}
 			}
 
-			loop12:
+			loop11:
 				;
 
 
@@ -1781,45 +1699,45 @@ public partial class ANTLRLexer : Lexer
 
 				System.Text.StringBuilder builder = new System.Text.StringBuilder();
 
-			// Grammars\\ANTLR.g3:947:4: ( '\"' (=> '\\\\' '\"' | '\\\\' c=~ '\"' |c=~ ( '\\\\' | '\"' ) )* '\"' )
-			// Grammars\\ANTLR.g3:947:4: '\"' (=> '\\\\' '\"' | '\\\\' c=~ '\"' |c=~ ( '\\\\' | '\"' ) )* '\"'
+			// Grammars\\ANTLR.g3:939:4: ( '\"' (=> '\\\\' '\"' | '\\\\' c=~ '\"' |c=~ ( '\\\\' | '\"' ) )* '\"' )
+			// Grammars\\ANTLR.g3:939:4: '\"' (=> '\\\\' '\"' | '\\\\' c=~ '\"' |c=~ ( '\\\\' | '\"' ) )* '\"'
 			{
 			Match('\"'); if (state.failed) return ;
 			if ( state.backtracking == 0 )
 			{
 				builder.Append('"');
 			}
-			// Grammars\\ANTLR.g3:948:3: (=> '\\\\' '\"' | '\\\\' c=~ '\"' |c=~ ( '\\\\' | '\"' ) )*
+			// Grammars\\ANTLR.g3:940:3: (=> '\\\\' '\"' | '\\\\' c=~ '\"' |c=~ ( '\\\\' | '\"' ) )*
 			for ( ; ; )
 			{
-				int alt13=4;
-				int LA13_0 = input.LA(1);
+				int alt12=4;
+				int LA12_0 = input.LA(1);
 
-				if ( (LA13_0=='\\') )
+				if ( (LA12_0=='\\') )
 				{
-					int LA13_2 = input.LA(2);
+					int LA12_2 = input.LA(2);
 
-					if ( (LA13_2=='\"') && (synpred4_ANTLR()))
+					if ( (LA12_2=='\"') && (synpred2_ANTLR()))
 					{
-						alt13=1;
+						alt12=1;
 					}
-					else if ( ((LA13_2>='\u0000' && LA13_2<='!')||(LA13_2>='#' && LA13_2<='\uFFFF')) )
+					else if ( ((LA12_2>='\u0000' && LA12_2<='!')||(LA12_2>='#' && LA12_2<='\uFFFF')) )
 					{
-						alt13=2;
+						alt12=2;
 					}
 
 
 				}
-				else if ( ((LA13_0>='\u0000' && LA13_0<='!')||(LA13_0>='#' && LA13_0<='[')||(LA13_0>=']' && LA13_0<='\uFFFF')) )
+				else if ( ((LA12_0>='\u0000' && LA12_0<='!')||(LA12_0>='#' && LA12_0<='[')||(LA12_0>=']' && LA12_0<='\uFFFF')) )
 				{
-					alt13=3;
+					alt12=3;
 				}
 
 
-				switch ( alt13 )
+				switch ( alt12 )
 				{
 				case 1:
-					// Grammars\\ANTLR.g3:948:5: => '\\\\' '\"'
+					// Grammars\\ANTLR.g3:940:5: => '\\\\' '\"'
 					{
 
 					Match('\\'); if (state.failed) return ;
@@ -1832,7 +1750,7 @@ public partial class ANTLRLexer : Lexer
 					}
 					break;
 				case 2:
-					// Grammars\\ANTLR.g3:949:5: '\\\\' c=~ '\"'
+					// Grammars\\ANTLR.g3:941:5: '\\\\' c=~ '\"'
 					{
 					Match('\\'); if (state.failed) return ;
 					c= input.LA(1);
@@ -1846,7 +1764,7 @@ public partial class ANTLRLexer : Lexer
 					}
 					break;
 				case 3:
-					// Grammars\\ANTLR.g3:950:5: c=~ ( '\\\\' | '\"' )
+					// Grammars\\ANTLR.g3:942:5: c=~ ( '\\\\' | '\"' )
 					{
 					c= input.LA(1);
 					input.Consume();
@@ -1860,11 +1778,11 @@ public partial class ANTLRLexer : Lexer
 					break;
 
 				default:
-					goto loop13;
+					goto loop12;
 				}
 			}
 
-			loop13:
+			loop12:
 				;
 
 
@@ -1898,74 +1816,54 @@ public partial class ANTLRLexer : Lexer
 		{
 			int _type = DOUBLE_ANGLE_STRING_LITERAL;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// Grammars\\ANTLR.g3:959:4: ( '<<' (~ '>' |=> '>' )* '>>' )
-			// Grammars\\ANTLR.g3:959:4: '<<' (~ '>' |=> '>' )* '>>'
+			// Grammars\\ANTLR.g3:951:4: ( '<<' ( . )* '>>' )
+			// Grammars\\ANTLR.g3:951:4: '<<' ( . )* '>>'
 			{
 			Match("<<"); if (state.failed) return ;
 
-			// Grammars\\ANTLR.g3:960:3: (~ '>' |=> '>' )*
+			// Grammars\\ANTLR.g3:951:9: ( . )*
 			for ( ; ; )
 			{
-				int alt14=3;
-				int LA14_0 = input.LA(1);
+				int alt13=2;
+				int LA13_0 = input.LA(1);
 
-				if ( (LA14_0=='>') )
+				if ( (LA13_0=='>') )
 				{
-					int LA14_1 = input.LA(2);
+					int LA13_1 = input.LA(2);
 
-					if ( (LA14_1=='>') )
+					if ( (LA13_1=='>') )
 					{
-						int LA14_3 = input.LA(3);
-
-						if ( (LA14_3=='>') && (synpred5_ANTLR()))
-						{
-							alt14=2;
-						}
-						else if ( ((LA14_3>='\u0000' && LA14_3<='=')||(LA14_3>='?' && LA14_3<='\uFFFF')) && (synpred5_ANTLR()))
-						{
-							alt14=2;
-						}
-
-
+						alt13=2;
 					}
-					else if ( ((LA14_1>='\u0000' && LA14_1<='=')||(LA14_1>='?' && LA14_1<='\uFFFF')) && (synpred5_ANTLR()))
+					else if ( ((LA13_1>='\u0000' && LA13_1<='=')||(LA13_1>='?' && LA13_1<='\uFFFF')) )
 					{
-						alt14=2;
+						alt13=1;
 					}
 
 
 				}
-				else if ( ((LA14_0>='\u0000' && LA14_0<='=')||(LA14_0>='?' && LA14_0<='\uFFFF')) )
+				else if ( ((LA13_0>='\u0000' && LA13_0<='=')||(LA13_0>='?' && LA13_0<='\uFFFF')) )
 				{
-					alt14=1;
+					alt13=1;
 				}
 
 
-				switch ( alt14 )
+				switch ( alt13 )
 				{
 				case 1:
-					// Grammars\\ANTLR.g3:960:5: ~ '>'
+					// Grammars\\ANTLR.g3:951:0: .
 					{
-					input.Consume();
-					state.failed=false;
-
-					}
-					break;
-				case 2:
-					// Grammars\\ANTLR.g3:961:5: => '>'
-					{
-
-					Match('>'); if (state.failed) return ;
+					MatchAny(); if (state.failed) return ;
 
 					}
 					break;
 
 				default:
-					goto loop14;
+					goto loop13;
 				}
 			}
 
-			loop14:
+			loop13:
 				;
 
 
@@ -1988,96 +1886,14 @@ public partial class ANTLRLexer : Lexer
 	{
 		try
 		{
-			// Grammars\\ANTLR.g3:969:4: ( '\\\\' ( 'n' | 'r' | 't' | 'b' | 'f' | '\"' | '\\'' | '\\\\' | '>' | 'u' XDIGIT XDIGIT XDIGIT XDIGIT | . ) )
-			// Grammars\\ANTLR.g3:969:4: '\\\\' ( 'n' | 'r' | 't' | 'b' | 'f' | '\"' | '\\'' | '\\\\' | '>' | 'u' XDIGIT XDIGIT XDIGIT XDIGIT | . )
+			// Grammars\\ANTLR.g3:957:4: ( '\\\\' ( . ) )
+			// Grammars\\ANTLR.g3:957:4: '\\\\' ( . )
 			{
 			Match('\\'); if (state.failed) return ;
-			// Grammars\\ANTLR.g3:970:3: ( 'n' | 'r' | 't' | 'b' | 'f' | '\"' | '\\'' | '\\\\' | '>' | 'u' XDIGIT XDIGIT XDIGIT XDIGIT | . )
-			int alt15=11;
-			alt15 = dfa15.Predict(input);
-			switch ( alt15 )
+			// Grammars\\ANTLR.g3:958:3: ( . )
+			// Grammars\\ANTLR.g3:969:7: .
 			{
-			case 1:
-				// Grammars\\ANTLR.g3:970:5: 'n'
-				{
-				Match('n'); if (state.failed) return ;
-
-				}
-				break;
-			case 2:
-				// Grammars\\ANTLR.g3:971:5: 'r'
-				{
-				Match('r'); if (state.failed) return ;
-
-				}
-				break;
-			case 3:
-				// Grammars\\ANTLR.g3:972:5: 't'
-				{
-				Match('t'); if (state.failed) return ;
-
-				}
-				break;
-			case 4:
-				// Grammars\\ANTLR.g3:973:5: 'b'
-				{
-				Match('b'); if (state.failed) return ;
-
-				}
-				break;
-			case 5:
-				// Grammars\\ANTLR.g3:974:5: 'f'
-				{
-				Match('f'); if (state.failed) return ;
-
-				}
-				break;
-			case 6:
-				// Grammars\\ANTLR.g3:975:5: '\"'
-				{
-				Match('\"'); if (state.failed) return ;
-
-				}
-				break;
-			case 7:
-				// Grammars\\ANTLR.g3:976:5: '\\''
-				{
-				Match('\''); if (state.failed) return ;
-
-				}
-				break;
-			case 8:
-				// Grammars\\ANTLR.g3:977:5: '\\\\'
-				{
-				Match('\\'); if (state.failed) return ;
-
-				}
-				break;
-			case 9:
-				// Grammars\\ANTLR.g3:978:5: '>'
-				{
-				Match('>'); if (state.failed) return ;
-
-				}
-				break;
-			case 10:
-				// Grammars\\ANTLR.g3:979:5: 'u' XDIGIT XDIGIT XDIGIT XDIGIT
-				{
-				Match('u'); if (state.failed) return ;
-				mXDIGIT(); if (state.failed) return ;
-				mXDIGIT(); if (state.failed) return ;
-				mXDIGIT(); if (state.failed) return ;
-				mXDIGIT(); if (state.failed) return ;
-
-				}
-				break;
-			case 11:
-				// Grammars\\ANTLR.g3:980:5: .
-				{
-				MatchAny(); if (state.failed) return ;
-
-				}
-				break;
+			MatchAny(); if (state.failed) return ;
 
 			}
 
@@ -2096,7 +1912,7 @@ public partial class ANTLRLexer : Lexer
 	{
 		try
 		{
-			// Grammars\\ANTLR.g3:986:4: ( '0' .. '9' )
+			// Grammars\\ANTLR.g3:975:4: ( '0' .. '9' )
 			// Grammars\\ANTLR.g3:
 			{
 			if ( (input.LA(1)>='0' && input.LA(1)<='9') )
@@ -2126,7 +1942,7 @@ public partial class ANTLRLexer : Lexer
 	{
 		try
 		{
-			// Grammars\\ANTLR.g3:991:4: ( '0' .. '9' | 'a' .. 'f' | 'A' .. 'F' )
+			// Grammars\\ANTLR.g3:980:4: ( '0' .. '9' | 'a' .. 'f' | 'A' .. 'F' )
 			// Grammars\\ANTLR.g3:
 			{
 			if ( (input.LA(1)>='0' && input.LA(1)<='9')||(input.LA(1)>='A' && input.LA(1)<='F')||(input.LA(1)>='a' && input.LA(1)<='f') )
@@ -2158,23 +1974,23 @@ public partial class ANTLRLexer : Lexer
 		{
 			int _type = INT;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// Grammars\\ANTLR.g3:996:4: ( ( '0' .. '9' )+ )
-			// Grammars\\ANTLR.g3:996:4: ( '0' .. '9' )+
+			// Grammars\\ANTLR.g3:985:4: ( ( '0' .. '9' )+ )
+			// Grammars\\ANTLR.g3:985:4: ( '0' .. '9' )+
 			{
-			// Grammars\\ANTLR.g3:996:4: ( '0' .. '9' )+
-			int cnt16=0;
+			// Grammars\\ANTLR.g3:985:4: ( '0' .. '9' )+
+			int cnt14=0;
 			for ( ; ; )
 			{
-				int alt16=2;
-				int LA16_0 = input.LA(1);
+				int alt14=2;
+				int LA14_0 = input.LA(1);
 
-				if ( ((LA16_0>='0' && LA16_0<='9')) )
+				if ( ((LA14_0>='0' && LA14_0<='9')) )
 				{
-					alt16=1;
+					alt14=1;
 				}
 
 
-				switch ( alt16 )
+				switch ( alt14 )
 				{
 				case 1:
 					// Grammars\\ANTLR.g3:
@@ -2186,16 +2002,16 @@ public partial class ANTLRLexer : Lexer
 					break;
 
 				default:
-					if ( cnt16 >= 1 )
-						goto loop16;
+					if ( cnt14 >= 1 )
+						goto loop14;
 
 					if (state.backtracking>0) {state.failed=true; return ;}
-					EarlyExitException eee16 = new EarlyExitException( 16, input );
-					throw eee16;
+					EarlyExitException eee14 = new EarlyExitException( 14, input );
+					throw eee14;
 				}
-				cnt16++;
+				cnt14++;
 			}
-			loop16:
+			loop14:
 				;
 
 
@@ -2221,8 +2037,8 @@ public partial class ANTLRLexer : Lexer
 
 				string text_ = string.Empty;
 
-			// Grammars\\ANTLR.g3:1004:4: ( '[' NESTED_ARG_ACTION[out text_] ']' )
-			// Grammars\\ANTLR.g3:1004:4: '[' NESTED_ARG_ACTION[out text_] ']'
+			// Grammars\\ANTLR.g3:993:4: ( '[' NESTED_ARG_ACTION[out text_] ']' )
+			// Grammars\\ANTLR.g3:993:4: '[' NESTED_ARG_ACTION[out text_] ']'
 			{
 			Match('['); if (state.failed) return ;
 			mNESTED_ARG_ACTION(out text_); if (state.failed) return ;
@@ -2256,48 +2072,48 @@ public partial class ANTLRLexer : Lexer
 				text_ = string.Empty;
 				System.Text.StringBuilder builder = new System.Text.StringBuilder();
 
-			// Grammars\\ANTLR.g3:1018:4: ( (=> '\\\\' ']' | '\\\\' c=~ ( ']' ) | ACTION_STRING_LITERAL | ACTION_CHAR_LITERAL |c=~ ( '\\\\' | '\"' | '\\'' | ']' ) )* )
-			// Grammars\\ANTLR.g3:1018:4: (=> '\\\\' ']' | '\\\\' c=~ ( ']' ) | ACTION_STRING_LITERAL | ACTION_CHAR_LITERAL |c=~ ( '\\\\' | '\"' | '\\'' | ']' ) )*
+			// Grammars\\ANTLR.g3:1007:4: ( (=> '\\\\' ']' | '\\\\' c=~ ( ']' ) | ACTION_STRING_LITERAL | ACTION_CHAR_LITERAL |c=~ ( '\\\\' | '\"' | '\\'' | ']' ) )* )
+			// Grammars\\ANTLR.g3:1007:4: (=> '\\\\' ']' | '\\\\' c=~ ( ']' ) | ACTION_STRING_LITERAL | ACTION_CHAR_LITERAL |c=~ ( '\\\\' | '\"' | '\\'' | ']' ) )*
 			{
-			// Grammars\\ANTLR.g3:1018:4: (=> '\\\\' ']' | '\\\\' c=~ ( ']' ) | ACTION_STRING_LITERAL | ACTION_CHAR_LITERAL |c=~ ( '\\\\' | '\"' | '\\'' | ']' ) )*
+			// Grammars\\ANTLR.g3:1007:4: (=> '\\\\' ']' | '\\\\' c=~ ( ']' ) | ACTION_STRING_LITERAL | ACTION_CHAR_LITERAL |c=~ ( '\\\\' | '\"' | '\\'' | ']' ) )*
 			for ( ; ; )
 			{
-				int alt17=6;
-				int LA17_0 = input.LA(1);
+				int alt15=6;
+				int LA15_0 = input.LA(1);
 
-				if ( (LA17_0=='\\') )
+				if ( (LA15_0=='\\') )
 				{
-					int LA17_2 = input.LA(2);
+					int LA15_2 = input.LA(2);
 
-					if ( (LA17_2==']') && (synpred6_ANTLR()))
+					if ( (LA15_2==']') && (synpred3_ANTLR()))
 					{
-						alt17=1;
+						alt15=1;
 					}
-					else if ( ((LA17_2>='\u0000' && LA17_2<='\\')||(LA17_2>='^' && LA17_2<='\uFFFF')) )
+					else if ( ((LA15_2>='\u0000' && LA15_2<='\\')||(LA15_2>='^' && LA15_2<='\uFFFF')) )
 					{
-						alt17=2;
+						alt15=2;
 					}
 
 
 				}
-				else if ( (LA17_0=='\"') )
+				else if ( (LA15_0=='\"') )
 				{
-					alt17=3;
+					alt15=3;
 				}
-				else if ( (LA17_0=='\'') )
+				else if ( (LA15_0=='\'') )
 				{
-					alt17=4;
+					alt15=4;
 				}
-				else if ( ((LA17_0>='\u0000' && LA17_0<='!')||(LA17_0>='#' && LA17_0<='&')||(LA17_0>='(' && LA17_0<='[')||(LA17_0>='^' && LA17_0<='\uFFFF')) )
+				else if ( ((LA15_0>='\u0000' && LA15_0<='!')||(LA15_0>='#' && LA15_0<='&')||(LA15_0>='(' && LA15_0<='[')||(LA15_0>='^' && LA15_0<='\uFFFF')) )
 				{
-					alt17=5;
+					alt15=5;
 				}
 
 
-				switch ( alt17 )
+				switch ( alt15 )
 				{
 				case 1:
-					// Grammars\\ANTLR.g3:1018:6: => '\\\\' ']'
+					// Grammars\\ANTLR.g3:1007:6: => '\\\\' ']'
 					{
 
 					Match('\\'); if (state.failed) return ;
@@ -2310,7 +2126,7 @@ public partial class ANTLRLexer : Lexer
 					}
 					break;
 				case 2:
-					// Grammars\\ANTLR.g3:1019:5: '\\\\' c=~ ( ']' )
+					// Grammars\\ANTLR.g3:1008:5: '\\\\' c=~ ( ']' )
 					{
 					Match('\\'); if (state.failed) return ;
 					c= input.LA(1);
@@ -2324,11 +2140,11 @@ public partial class ANTLRLexer : Lexer
 					}
 					break;
 				case 3:
-					// Grammars\\ANTLR.g3:1020:5: ACTION_STRING_LITERAL
+					// Grammars\\ANTLR.g3:1009:5: ACTION_STRING_LITERAL
 					{
-					int ACTION_STRING_LITERAL1Start993 = GetCharIndex();
+					int ACTION_STRING_LITERAL1Start857 = GetCharIndex();
 					mACTION_STRING_LITERAL(); if (state.failed) return ;
-					ACTION_STRING_LITERAL1 = new CommonToken(input, TokenConstants.INVALID_TOKEN_TYPE, TokenConstants.DEFAULT_CHANNEL, ACTION_STRING_LITERAL1Start993, GetCharIndex()-1);
+					ACTION_STRING_LITERAL1 = new CommonToken(input, TokenConstants.INVALID_TOKEN_TYPE, TokenConstants.DEFAULT_CHANNEL, ACTION_STRING_LITERAL1Start857, GetCharIndex()-1);
 					if ( state.backtracking == 0 )
 					{
 						builder.Append((ACTION_STRING_LITERAL1!=null?ACTION_STRING_LITERAL1.Text:null));
@@ -2337,11 +2153,11 @@ public partial class ANTLRLexer : Lexer
 					}
 					break;
 				case 4:
-					// Grammars\\ANTLR.g3:1021:5: ACTION_CHAR_LITERAL
+					// Grammars\\ANTLR.g3:1010:5: ACTION_CHAR_LITERAL
 					{
-					int ACTION_CHAR_LITERAL2Start1001 = GetCharIndex();
+					int ACTION_CHAR_LITERAL2Start865 = GetCharIndex();
 					mACTION_CHAR_LITERAL(); if (state.failed) return ;
-					ACTION_CHAR_LITERAL2 = new CommonToken(input, TokenConstants.INVALID_TOKEN_TYPE, TokenConstants.DEFAULT_CHANNEL, ACTION_CHAR_LITERAL2Start1001, GetCharIndex()-1);
+					ACTION_CHAR_LITERAL2 = new CommonToken(input, TokenConstants.INVALID_TOKEN_TYPE, TokenConstants.DEFAULT_CHANNEL, ACTION_CHAR_LITERAL2Start865, GetCharIndex()-1);
 					if ( state.backtracking == 0 )
 					{
 						builder.Append((ACTION_CHAR_LITERAL2!=null?ACTION_CHAR_LITERAL2.Text:null));
@@ -2350,7 +2166,7 @@ public partial class ANTLRLexer : Lexer
 					}
 					break;
 				case 5:
-					// Grammars\\ANTLR.g3:1022:5: c=~ ( '\\\\' | '\"' | '\\'' | ']' )
+					// Grammars\\ANTLR.g3:1011:5: c=~ ( '\\\\' | '\"' | '\\'' | ']' )
 					{
 					c= input.LA(1);
 					input.Consume();
@@ -2364,11 +2180,11 @@ public partial class ANTLRLexer : Lexer
 					break;
 
 				default:
-					goto loop17;
+					goto loop15;
 				}
 			}
 
-			loop17:
+			loop15:
 				;
 
 
@@ -2399,22 +2215,22 @@ public partial class ANTLRLexer : Lexer
 				int actionLine = Line;
 				int actionColumn = CharPositionInLine;
 
-			// Grammars\\ANTLR.g3:1034:4: ( NESTED_ACTION ( '?' )? )
-			// Grammars\\ANTLR.g3:1034:4: NESTED_ACTION ( '?' )?
+			// Grammars\\ANTLR.g3:1023:4: ( NESTED_ACTION ( '?' )? )
+			// Grammars\\ANTLR.g3:1023:4: NESTED_ACTION ( '?' )?
 			{
 			mNESTED_ACTION(); if (state.failed) return ;
-			// Grammars\\ANTLR.g3:1035:3: ( '?' )?
-			int alt18=2;
-			int LA18_0 = input.LA(1);
+			// Grammars\\ANTLR.g3:1024:3: ( '?' )?
+			int alt16=2;
+			int LA16_0 = input.LA(1);
 
-			if ( (LA18_0=='?') )
+			if ( (LA16_0=='?') )
 			{
-				alt18=1;
+				alt16=1;
 			}
-			switch ( alt18 )
+			switch ( alt16 )
 			{
 			case 1:
-				// Grammars\\ANTLR.g3:1035:4: '?'
+				// Grammars\\ANTLR.g3:1024:4: '?'
 				{
 				Match('?'); if (state.failed) return ;
 				if ( state.backtracking == 0 )
@@ -2458,71 +2274,71 @@ public partial class ANTLRLexer : Lexer
 	{
 		try
 		{
-			// Grammars\\ANTLR.g3:1052:4: ( '{' ( NESTED_ACTION | ACTION_CHAR_LITERAL |=> COMMENT | ACTION_STRING_LITERAL | ACTION_ESC |~ ( '{' | '\\'' | '\"' | '\\\\' | '}' ) )* '}' )
-			// Grammars\\ANTLR.g3:1052:4: '{' ( NESTED_ACTION | ACTION_CHAR_LITERAL |=> COMMENT | ACTION_STRING_LITERAL | ACTION_ESC |~ ( '{' | '\\'' | '\"' | '\\\\' | '}' ) )* '}'
+			// Grammars\\ANTLR.g3:1041:4: ( '{' ( NESTED_ACTION | ACTION_CHAR_LITERAL |=> COMMENT | ACTION_STRING_LITERAL | ACTION_ESC |~ ( '{' | '\\'' | '\"' | '\\\\' | '}' ) )* '}' )
+			// Grammars\\ANTLR.g3:1041:4: '{' ( NESTED_ACTION | ACTION_CHAR_LITERAL |=> COMMENT | ACTION_STRING_LITERAL | ACTION_ESC |~ ( '{' | '\\'' | '\"' | '\\\\' | '}' ) )* '}'
 			{
 			Match('{'); if (state.failed) return ;
-			// Grammars\\ANTLR.g3:1053:3: ( NESTED_ACTION | ACTION_CHAR_LITERAL |=> COMMENT | ACTION_STRING_LITERAL | ACTION_ESC |~ ( '{' | '\\'' | '\"' | '\\\\' | '}' ) )*
+			// Grammars\\ANTLR.g3:1042:3: ( NESTED_ACTION | ACTION_CHAR_LITERAL |=> COMMENT | ACTION_STRING_LITERAL | ACTION_ESC |~ ( '{' | '\\'' | '\"' | '\\\\' | '}' ) )*
 			for ( ; ; )
 			{
-				int alt19=7;
-				int LA19_0 = input.LA(1);
+				int alt17=7;
+				int LA17_0 = input.LA(1);
 
-				if ( (LA19_0=='{') )
+				if ( (LA17_0=='{') )
 				{
-					alt19=1;
+					alt17=1;
 				}
-				else if ( (LA19_0=='\'') )
+				else if ( (LA17_0=='\'') )
 				{
-					alt19=2;
+					alt17=2;
 				}
-				else if ( (LA19_0=='/') )
+				else if ( (LA17_0=='/') )
 				{
-					int LA19_4 = input.LA(2);
+					int LA17_4 = input.LA(2);
 
-					if ( (synpred7_ANTLR()) )
+					if ( (synpred4_ANTLR()) )
 					{
-						alt19=3;
+						alt17=3;
 					}
 					else if ( (true) )
 					{
-						alt19=6;
+						alt17=6;
 					}
 
 
 				}
-				else if ( (LA19_0=='\"') )
+				else if ( (LA17_0=='\"') )
 				{
-					alt19=4;
+					alt17=4;
 				}
-				else if ( (LA19_0=='\\') )
+				else if ( (LA17_0=='\\') )
 				{
-					alt19=5;
+					alt17=5;
 				}
-				else if ( ((LA19_0>='\u0000' && LA19_0<='!')||(LA19_0>='#' && LA19_0<='&')||(LA19_0>='(' && LA19_0<='.')||(LA19_0>='0' && LA19_0<='[')||(LA19_0>=']' && LA19_0<='z')||LA19_0=='|'||(LA19_0>='~' && LA19_0<='\uFFFF')) )
+				else if ( ((LA17_0>='\u0000' && LA17_0<='!')||(LA17_0>='#' && LA17_0<='&')||(LA17_0>='(' && LA17_0<='.')||(LA17_0>='0' && LA17_0<='[')||(LA17_0>=']' && LA17_0<='z')||LA17_0=='|'||(LA17_0>='~' && LA17_0<='\uFFFF')) )
 				{
-					alt19=6;
+					alt17=6;
 				}
 
 
-				switch ( alt19 )
+				switch ( alt17 )
 				{
 				case 1:
-					// Grammars\\ANTLR.g3:1053:5: NESTED_ACTION
+					// Grammars\\ANTLR.g3:1042:5: NESTED_ACTION
 					{
 					mNESTED_ACTION(); if (state.failed) return ;
 
 					}
 					break;
 				case 2:
-					// Grammars\\ANTLR.g3:1054:5: ACTION_CHAR_LITERAL
+					// Grammars\\ANTLR.g3:1043:5: ACTION_CHAR_LITERAL
 					{
 					mACTION_CHAR_LITERAL(); if (state.failed) return ;
 
 					}
 					break;
 				case 3:
-					// Grammars\\ANTLR.g3:1055:5: => COMMENT
+					// Grammars\\ANTLR.g3:1044:5: => COMMENT
 					{
 
 					mCOMMENT(); if (state.failed) return ;
@@ -2530,21 +2346,21 @@ public partial class ANTLRLexer : Lexer
 					}
 					break;
 				case 4:
-					// Grammars\\ANTLR.g3:1056:5: ACTION_STRING_LITERAL
+					// Grammars\\ANTLR.g3:1045:5: ACTION_STRING_LITERAL
 					{
 					mACTION_STRING_LITERAL(); if (state.failed) return ;
 
 					}
 					break;
 				case 5:
-					// Grammars\\ANTLR.g3:1057:5: ACTION_ESC
+					// Grammars\\ANTLR.g3:1046:5: ACTION_ESC
 					{
 					mACTION_ESC(); if (state.failed) return ;
 
 					}
 					break;
 				case 6:
-					// Grammars\\ANTLR.g3:1058:5: ~ ( '{' | '\\'' | '\"' | '\\\\' | '}' )
+					// Grammars\\ANTLR.g3:1047:5: ~ ( '{' | '\\'' | '\"' | '\\\\' | '}' )
 					{
 					input.Consume();
 					state.failed=false;
@@ -2553,11 +2369,11 @@ public partial class ANTLRLexer : Lexer
 					break;
 
 				default:
-					goto loop19;
+					goto loop17;
 				}
 			}
 
-			loop19:
+			loop17:
 				;
 
 
@@ -2577,37 +2393,37 @@ public partial class ANTLRLexer : Lexer
 	{
 		try
 		{
-			// Grammars\\ANTLR.g3:1065:4: ( '\\'' ( ACTION_ESC |~ ( '\\\\' | '\\'' ) )* '\\'' )
-			// Grammars\\ANTLR.g3:1065:4: '\\'' ( ACTION_ESC |~ ( '\\\\' | '\\'' ) )* '\\''
+			// Grammars\\ANTLR.g3:1054:4: ( '\\'' ( ACTION_ESC |~ ( '\\\\' | '\\'' ) )* '\\'' )
+			// Grammars\\ANTLR.g3:1054:4: '\\'' ( ACTION_ESC |~ ( '\\\\' | '\\'' ) )* '\\''
 			{
 			Match('\''); if (state.failed) return ;
-			// Grammars\\ANTLR.g3:1066:3: ( ACTION_ESC |~ ( '\\\\' | '\\'' ) )*
+			// Grammars\\ANTLR.g3:1055:3: ( ACTION_ESC |~ ( '\\\\' | '\\'' ) )*
 			for ( ; ; )
 			{
-				int alt20=3;
-				int LA20_0 = input.LA(1);
+				int alt18=3;
+				int LA18_0 = input.LA(1);
 
-				if ( (LA20_0=='\\') )
+				if ( (LA18_0=='\\') )
 				{
-					alt20=1;
+					alt18=1;
 				}
-				else if ( ((LA20_0>='\u0000' && LA20_0<='&')||(LA20_0>='(' && LA20_0<='[')||(LA20_0>=']' && LA20_0<='\uFFFF')) )
+				else if ( ((LA18_0>='\u0000' && LA18_0<='&')||(LA18_0>='(' && LA18_0<='[')||(LA18_0>=']' && LA18_0<='\uFFFF')) )
 				{
-					alt20=2;
+					alt18=2;
 				}
 
 
-				switch ( alt20 )
+				switch ( alt18 )
 				{
 				case 1:
-					// Grammars\\ANTLR.g3:1066:5: ACTION_ESC
+					// Grammars\\ANTLR.g3:1055:5: ACTION_ESC
 					{
 					mACTION_ESC(); if (state.failed) return ;
 
 					}
 					break;
 				case 2:
-					// Grammars\\ANTLR.g3:1067:5: ~ ( '\\\\' | '\\'' )
+					// Grammars\\ANTLR.g3:1056:5: ~ ( '\\\\' | '\\'' )
 					{
 					input.Consume();
 					state.failed=false;
@@ -2616,11 +2432,11 @@ public partial class ANTLRLexer : Lexer
 					break;
 
 				default:
-					goto loop20;
+					goto loop18;
 				}
 			}
 
-			loop20:
+			loop18:
 				;
 
 
@@ -2640,37 +2456,37 @@ public partial class ANTLRLexer : Lexer
 	{
 		try
 		{
-			// Grammars\\ANTLR.g3:1074:4: ( '\"' ( ACTION_ESC |~ ( '\\\\' | '\"' ) )* '\"' )
-			// Grammars\\ANTLR.g3:1074:4: '\"' ( ACTION_ESC |~ ( '\\\\' | '\"' ) )* '\"'
+			// Grammars\\ANTLR.g3:1063:4: ( '\"' ( ACTION_ESC |~ ( '\\\\' | '\"' ) )* '\"' )
+			// Grammars\\ANTLR.g3:1063:4: '\"' ( ACTION_ESC |~ ( '\\\\' | '\"' ) )* '\"'
 			{
 			Match('\"'); if (state.failed) return ;
-			// Grammars\\ANTLR.g3:1075:3: ( ACTION_ESC |~ ( '\\\\' | '\"' ) )*
+			// Grammars\\ANTLR.g3:1064:3: ( ACTION_ESC |~ ( '\\\\' | '\"' ) )*
 			for ( ; ; )
 			{
-				int alt21=3;
-				int LA21_0 = input.LA(1);
+				int alt19=3;
+				int LA19_0 = input.LA(1);
 
-				if ( (LA21_0=='\\') )
+				if ( (LA19_0=='\\') )
 				{
-					alt21=1;
+					alt19=1;
 				}
-				else if ( ((LA21_0>='\u0000' && LA21_0<='!')||(LA21_0>='#' && LA21_0<='[')||(LA21_0>=']' && LA21_0<='\uFFFF')) )
+				else if ( ((LA19_0>='\u0000' && LA19_0<='!')||(LA19_0>='#' && LA19_0<='[')||(LA19_0>=']' && LA19_0<='\uFFFF')) )
 				{
-					alt21=2;
+					alt19=2;
 				}
 
 
-				switch ( alt21 )
+				switch ( alt19 )
 				{
 				case 1:
-					// Grammars\\ANTLR.g3:1075:5: ACTION_ESC
+					// Grammars\\ANTLR.g3:1064:5: ACTION_ESC
 					{
 					mACTION_ESC(); if (state.failed) return ;
 
 					}
 					break;
 				case 2:
-					// Grammars\\ANTLR.g3:1076:5: ~ ( '\\\\' | '\"' )
+					// Grammars\\ANTLR.g3:1065:5: ~ ( '\\\\' | '\"' )
 					{
 					input.Consume();
 					state.failed=false;
@@ -2679,11 +2495,11 @@ public partial class ANTLRLexer : Lexer
 					break;
 
 				default:
-					goto loop21;
+					goto loop19;
 				}
 			}
 
-			loop21:
+			loop19:
 				;
 
 
@@ -2703,30 +2519,30 @@ public partial class ANTLRLexer : Lexer
 	{
 		try
 		{
-			// Grammars\\ANTLR.g3:1083:4: ( '\\\\\\'' | '\\\\\\\"' | '\\\\' ~ ( '\\'' | '\"' ) )
-			int alt22=3;
-			int LA22_0 = input.LA(1);
+			// Grammars\\ANTLR.g3:1072:4: ( '\\\\\\'' | '\\\\\\\"' | '\\\\' ~ ( '\\'' | '\"' ) )
+			int alt20=3;
+			int LA20_0 = input.LA(1);
 
-			if ( (LA22_0=='\\') )
+			if ( (LA20_0=='\\') )
 			{
-				int LA22_1 = input.LA(2);
+				int LA20_1 = input.LA(2);
 
-				if ( (LA22_1=='\'') )
+				if ( (LA20_1=='\'') )
 				{
-					alt22=1;
+					alt20=1;
 				}
-				else if ( (LA22_1=='\"') )
+				else if ( (LA20_1=='\"') )
 				{
-					alt22=2;
+					alt20=2;
 				}
-				else if ( ((LA22_1>='\u0000' && LA22_1<='!')||(LA22_1>='#' && LA22_1<='&')||(LA22_1>='(' && LA22_1<='\uFFFF')) )
+				else if ( ((LA20_1>='\u0000' && LA20_1<='!')||(LA20_1>='#' && LA20_1<='&')||(LA20_1>='(' && LA20_1<='\uFFFF')) )
 				{
-					alt22=3;
+					alt20=3;
 				}
 				else
 				{
 					if (state.backtracking>0) {state.failed=true; return ;}
-					NoViableAltException nvae = new NoViableAltException("", 22, 1, input);
+					NoViableAltException nvae = new NoViableAltException("", 20, 1, input);
 
 					throw nvae;
 				}
@@ -2734,14 +2550,14 @@ public partial class ANTLRLexer : Lexer
 			else
 			{
 				if (state.backtracking>0) {state.failed=true; return ;}
-				NoViableAltException nvae = new NoViableAltException("", 22, 0, input);
+				NoViableAltException nvae = new NoViableAltException("", 20, 0, input);
 
 				throw nvae;
 			}
-			switch ( alt22 )
+			switch ( alt20 )
 			{
 			case 1:
-				// Grammars\\ANTLR.g3:1083:4: '\\\\\\''
+				// Grammars\\ANTLR.g3:1072:4: '\\\\\\''
 				{
 				Match("\\'"); if (state.failed) return ;
 
@@ -2749,7 +2565,7 @@ public partial class ANTLRLexer : Lexer
 				}
 				break;
 			case 2:
-				// Grammars\\ANTLR.g3:1084:4: '\\\\\\\"'
+				// Grammars\\ANTLR.g3:1073:4: '\\\\\\\"'
 				{
 				Match("\\\""); if (state.failed) return ;
 
@@ -2757,7 +2573,7 @@ public partial class ANTLRLexer : Lexer
 				}
 				break;
 			case 3:
-				// Grammars\\ANTLR.g3:1085:4: '\\\\' ~ ( '\\'' | '\"' )
+				// Grammars\\ANTLR.g3:1074:4: '\\\\' ~ ( '\\'' | '\"' )
 				{
 				Match('\\'); if (state.failed) return ;
 				input.Consume();
@@ -2781,23 +2597,23 @@ public partial class ANTLRLexer : Lexer
 		{
 			int _type = TOKEN_REF;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// Grammars\\ANTLR.g3:1088:4: ( 'A' .. 'Z' ( 'a' .. 'z' | 'A' .. 'Z' | '_' | '0' .. '9' )* )
-			// Grammars\\ANTLR.g3:1088:4: 'A' .. 'Z' ( 'a' .. 'z' | 'A' .. 'Z' | '_' | '0' .. '9' )*
+			// Grammars\\ANTLR.g3:1077:4: ( 'A' .. 'Z' ( 'a' .. 'z' | 'A' .. 'Z' | '_' | '0' .. '9' )* )
+			// Grammars\\ANTLR.g3:1077:4: 'A' .. 'Z' ( 'a' .. 'z' | 'A' .. 'Z' | '_' | '0' .. '9' )*
 			{
 			MatchRange('A','Z'); if (state.failed) return ;
-			// Grammars\\ANTLR.g3:1089:3: ( 'a' .. 'z' | 'A' .. 'Z' | '_' | '0' .. '9' )*
+			// Grammars\\ANTLR.g3:1078:3: ( 'a' .. 'z' | 'A' .. 'Z' | '_' | '0' .. '9' )*
 			for ( ; ; )
 			{
-				int alt23=2;
-				int LA23_0 = input.LA(1);
+				int alt21=2;
+				int LA21_0 = input.LA(1);
 
-				if ( ((LA23_0>='0' && LA23_0<='9')||(LA23_0>='A' && LA23_0<='Z')||LA23_0=='_'||(LA23_0>='a' && LA23_0<='z')) )
+				if ( ((LA21_0>='0' && LA21_0<='9')||(LA21_0>='A' && LA21_0<='Z')||LA21_0=='_'||(LA21_0>='a' && LA21_0<='z')) )
 				{
-					alt23=1;
+					alt21=1;
 				}
 
 
-				switch ( alt23 )
+				switch ( alt21 )
 				{
 				case 1:
 					// Grammars\\ANTLR.g3:
@@ -2809,11 +2625,11 @@ public partial class ANTLRLexer : Lexer
 					break;
 
 				default:
-					goto loop23;
+					goto loop21;
 				}
 			}
 
-			loop23:
+			loop21:
 				;
 
 
@@ -2836,8 +2652,8 @@ public partial class ANTLRLexer : Lexer
 		{
 			int _type = TOKENS;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// Grammars\\ANTLR.g3:1094:4: ( 'tokens' WS_LOOP '{' )
-			// Grammars\\ANTLR.g3:1094:4: 'tokens' WS_LOOP '{'
+			// Grammars\\ANTLR.g3:1083:4: ( 'tokens' WS_LOOP '{' )
+			// Grammars\\ANTLR.g3:1083:4: 'tokens' WS_LOOP '{'
 			{
 			Match("tokens"); if (state.failed) return ;
 
@@ -2862,8 +2678,8 @@ public partial class ANTLRLexer : Lexer
 		{
 			int _type = OPTIONS;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// Grammars\\ANTLR.g3:1098:4: ( 'options' WS_LOOP '{' )
-			// Grammars\\ANTLR.g3:1098:4: 'options' WS_LOOP '{'
+			// Grammars\\ANTLR.g3:1087:4: ( 'options' WS_LOOP '{' )
+			// Grammars\\ANTLR.g3:1087:4: 'options' WS_LOOP '{'
 			{
 			Match("options"); if (state.failed) return ;
 
@@ -2891,23 +2707,23 @@ public partial class ANTLRLexer : Lexer
 
 				int t=0;
 
-			// Grammars\\ANTLR.g3:1107:4: ( 'a' .. 'z' ( 'a' .. 'z' | 'A' .. 'Z' | '_' | '0' .. '9' )* )
-			// Grammars\\ANTLR.g3:1107:4: 'a' .. 'z' ( 'a' .. 'z' | 'A' .. 'Z' | '_' | '0' .. '9' )*
+			// Grammars\\ANTLR.g3:1096:4: ( 'a' .. 'z' ( 'a' .. 'z' | 'A' .. 'Z' | '_' | '0' .. '9' )* )
+			// Grammars\\ANTLR.g3:1096:4: 'a' .. 'z' ( 'a' .. 'z' | 'A' .. 'Z' | '_' | '0' .. '9' )*
 			{
 			MatchRange('a','z'); if (state.failed) return ;
-			// Grammars\\ANTLR.g3:1107:13: ( 'a' .. 'z' | 'A' .. 'Z' | '_' | '0' .. '9' )*
+			// Grammars\\ANTLR.g3:1096:13: ( 'a' .. 'z' | 'A' .. 'Z' | '_' | '0' .. '9' )*
 			for ( ; ; )
 			{
-				int alt24=2;
-				int LA24_0 = input.LA(1);
+				int alt22=2;
+				int LA22_0 = input.LA(1);
 
-				if ( ((LA24_0>='0' && LA24_0<='9')||(LA24_0>='A' && LA24_0<='Z')||LA24_0=='_'||(LA24_0>='a' && LA24_0<='z')) )
+				if ( ((LA22_0>='0' && LA22_0<='9')||(LA22_0>='A' && LA22_0<='Z')||LA22_0=='_'||(LA22_0>='a' && LA22_0<='z')) )
 				{
-					alt24=1;
+					alt22=1;
 				}
 
 
-				switch ( alt24 )
+				switch ( alt22 )
 				{
 				case 1:
 					// Grammars\\ANTLR.g3:
@@ -2919,11 +2735,11 @@ public partial class ANTLRLexer : Lexer
 					break;
 
 				default:
-					goto loop24;
+					goto loop22;
 				}
 			}
 
-			loop24:
+			loop22:
 				;
 
 
@@ -2944,36 +2760,36 @@ public partial class ANTLRLexer : Lexer
 	{
 		try
 		{
-			// Grammars\\ANTLR.g3:1113:4: ( ( WS | COMMENT )* )
-			// Grammars\\ANTLR.g3:1113:4: ( WS | COMMENT )*
+			// Grammars\\ANTLR.g3:1102:4: ( ( WS | COMMENT )* )
+			// Grammars\\ANTLR.g3:1102:4: ( WS | COMMENT )*
 			{
-			// Grammars\\ANTLR.g3:1113:4: ( WS | COMMENT )*
+			// Grammars\\ANTLR.g3:1102:4: ( WS | COMMENT )*
 			for ( ; ; )
 			{
-				int alt25=3;
-				int LA25_0 = input.LA(1);
+				int alt23=3;
+				int LA23_0 = input.LA(1);
 
-				if ( ((LA25_0>='\t' && LA25_0<='\n')||LA25_0=='\r'||LA25_0==' ') )
+				if ( ((LA23_0>='\t' && LA23_0<='\n')||LA23_0=='\r'||LA23_0==' ') )
 				{
-					alt25=1;
+					alt23=1;
 				}
-				else if ( (LA25_0=='/') )
+				else if ( (LA23_0=='/') )
 				{
-					alt25=2;
+					alt23=2;
 				}
 
 
-				switch ( alt25 )
+				switch ( alt23 )
 				{
 				case 1:
-					// Grammars\\ANTLR.g3:1113:6: WS
+					// Grammars\\ANTLR.g3:1102:6: WS
 					{
 					mWS(); if (state.failed) return ;
 
 					}
 					break;
 				case 2:
-					// Grammars\\ANTLR.g3:1114:5: COMMENT
+					// Grammars\\ANTLR.g3:1103:5: COMMENT
 					{
 					mCOMMENT(); if (state.failed) return ;
 
@@ -2981,11 +2797,11 @@ public partial class ANTLRLexer : Lexer
 					break;
 
 				default:
-					goto loop25;
+					goto loop23;
 				}
 			}
 
-			loop25:
+			loop23:
 				;
 
 
@@ -3004,21 +2820,21 @@ public partial class ANTLRLexer : Lexer
 	{
 		try
 		{
-			// Grammars\\ANTLR.g3:1120:4: ( ( WS )? )
-			// Grammars\\ANTLR.g3:1120:4: ( WS )?
+			// Grammars\\ANTLR.g3:1109:4: ( ( WS )? )
+			// Grammars\\ANTLR.g3:1109:4: ( WS )?
 			{
-			// Grammars\\ANTLR.g3:1120:4: ( WS )?
-			int alt26=2;
-			int LA26_0 = input.LA(1);
+			// Grammars\\ANTLR.g3:1109:4: ( WS )?
+			int alt24=2;
+			int LA24_0 = input.LA(1);
 
-			if ( ((LA26_0>='\t' && LA26_0<='\n')||LA26_0=='\r'||LA26_0==' ') )
+			if ( ((LA24_0>='\t' && LA24_0<='\n')||LA24_0=='\r'||LA24_0==' ') )
 			{
-				alt26=1;
+				alt24=1;
 			}
-			switch ( alt26 )
+			switch ( alt24 )
 			{
 			case 1:
-				// Grammars\\ANTLR.g3:1120:5: WS
+				// Grammars\\ANTLR.g3:1109:5: WS
 				{
 				mWS(); if (state.failed) return ;
 
@@ -3045,19 +2861,19 @@ public partial class ANTLRLexer : Lexer
 			IToken file=null;
 			IToken line=null;
 
-			// Grammars\\ANTLR.g3:1133:4: ( 'src' ' ' file= ACTION_STRING_LITERAL ' ' line= INT )
-			// Grammars\\ANTLR.g3:1133:4: 'src' ' ' file= ACTION_STRING_LITERAL ' ' line= INT
+			// Grammars\\ANTLR.g3:1122:4: ( 'src' ' ' file= ACTION_STRING_LITERAL ' ' line= INT )
+			// Grammars\\ANTLR.g3:1122:4: 'src' ' ' file= ACTION_STRING_LITERAL ' ' line= INT
 			{
 			Match("src"); if (state.failed) return ;
 
 			Match(' '); if (state.failed) return ;
-			int fileStart1406 = GetCharIndex();
+			int fileStart1270 = GetCharIndex();
 			mACTION_STRING_LITERAL(); if (state.failed) return ;
-			file = new CommonToken(input, TokenConstants.INVALID_TOKEN_TYPE, TokenConstants.DEFAULT_CHANNEL, fileStart1406, GetCharIndex()-1);
+			file = new CommonToken(input, TokenConstants.INVALID_TOKEN_TYPE, TokenConstants.DEFAULT_CHANNEL, fileStart1270, GetCharIndex()-1);
 			Match(' '); if (state.failed) return ;
-			int lineStart1412 = GetCharIndex();
+			int lineStart1276 = GetCharIndex();
 			mINT(); if (state.failed) return ;
-			line = new CommonToken(input, TokenConstants.INVALID_TOKEN_TYPE, TokenConstants.DEFAULT_CHANNEL, lineStart1412, GetCharIndex()-1);
+			line = new CommonToken(input, TokenConstants.INVALID_TOKEN_TYPE, TokenConstants.DEFAULT_CHANNEL, lineStart1276, GetCharIndex()-1);
 			if ( state.backtracking == 0 )
 			{
 
@@ -3078,9 +2894,9 @@ public partial class ANTLRLexer : Lexer
 	public override void mTokens()
 	{
 		// Grammars\\ANTLR.g3:1:10: ( CATCH | FINALLY | FRAGMENT | GRAMMAR | IMPORT | LEXER | PARSER | PRIVATE | PROTECTED | PUBLIC | RETURNS | SCOPE | THROWS | TREE | WS | COMMENT | OPEN_ELEMENT_OPTION | CLOSE_ELEMENT_OPTION | AMPERSAND | COMMA | QUESTION | TREE_BEGIN | LPAREN | RPAREN | COLON | STAR | PLUS | ASSIGN | PLUS_ASSIGN | IMPLIES | REWRITE | SEMI | ROOT | BANG | OR | WILDCARD | ETC | RANGE | NOT | RCURLY | DOLLAR | STRAY_BRACKET | CHAR_LITERAL | DOUBLE_QUOTE_STRING_LITERAL | DOUBLE_ANGLE_STRING_LITERAL | INT | ARG_ACTION | ACTION | TOKEN_REF | TOKENS | OPTIONS | RULE_REF )
-		int alt27=52;
-		alt27 = dfa27.Predict(input);
-		switch ( alt27 )
+		int alt25=52;
+		alt25 = dfa25.Predict(input);
+		switch ( alt25 )
 		{
 		case 1:
 			// Grammars\\ANTLR.g3:1:10: CATCH
@@ -3467,21 +3283,10 @@ public partial class ANTLRLexer : Lexer
 	// $ANTLR start synpred2_ANTLR
 	public void synpred2_ANTLR_fragment()
 	{
-		// Grammars\\ANTLR.g3:853:5: ( '*' ~ '/' )
-		// Grammars\\ANTLR.g3:853:6: '*' ~ '/'
+		// Grammars\\ANTLR.g3:940:5: ( '\\\\\\\"' )
+		// Grammars\\ANTLR.g3:940:6: '\\\\\\\"'
 		{
-		Match('*'); if (state.failed) return ;
-		if ( (input.LA(1)>='\u0000' && input.LA(1)<='.')||(input.LA(1)>='0' && input.LA(1)<='\uFFFF') )
-		{
-			input.Consume();
-		state.failed=false;
-		}
-		else
-		{
-			if (state.backtracking>0) {state.failed=true; return ;}
-			MismatchedSetException mse = new MismatchedSetException(null,input);
-			Recover(mse);
-			throw mse;}
+		Match("\\\""); if (state.failed) return ;
 
 
 		}
@@ -3491,21 +3296,10 @@ public partial class ANTLRLexer : Lexer
 	// $ANTLR start synpred3_ANTLR
 	public void synpred3_ANTLR_fragment()
 	{
-		// Grammars\\ANTLR.g3:856:5: ( '*' ~ '/' )
-		// Grammars\\ANTLR.g3:856:6: '*' ~ '/'
+		// Grammars\\ANTLR.g3:1007:6: ( '\\\\]' )
+		// Grammars\\ANTLR.g3:1007:7: '\\\\]'
 		{
-		Match('*'); if (state.failed) return ;
-		if ( (input.LA(1)>='\u0000' && input.LA(1)<='.')||(input.LA(1)>='0' && input.LA(1)<='\uFFFF') )
-		{
-			input.Consume();
-		state.failed=false;
-		}
-		else
-		{
-			if (state.backtracking>0) {state.failed=true; return ;}
-			MismatchedSetException mse = new MismatchedSetException(null,input);
-			Recover(mse);
-			throw mse;}
+		Match("\\]"); if (state.failed) return ;
 
 
 		}
@@ -3515,76 +3309,26 @@ public partial class ANTLRLexer : Lexer
 	// $ANTLR start synpred4_ANTLR
 	public void synpred4_ANTLR_fragment()
 	{
-		// Grammars\\ANTLR.g3:948:5: ( '\\\\\\\"' )
-		// Grammars\\ANTLR.g3:948:6: '\\\\\\\"'
+		// Grammars\\ANTLR.g3:1044:5: ( '//' | '/*' )
+		int alt26=2;
+		int LA26_0 = input.LA(1);
+
+		if ( (LA26_0=='/') )
 		{
-		Match("\\\""); if (state.failed) return ;
+			int LA26_1 = input.LA(2);
 
-
-		}
-	}
-	// $ANTLR end synpred4_ANTLR
-
-	// $ANTLR start synpred5_ANTLR
-	public void synpred5_ANTLR_fragment()
-	{
-		// Grammars\\ANTLR.g3:961:5: ( '>' ~ '>' )
-		// Grammars\\ANTLR.g3:961:6: '>' ~ '>'
-		{
-		Match('>'); if (state.failed) return ;
-		if ( (input.LA(1)>='\u0000' && input.LA(1)<='=')||(input.LA(1)>='?' && input.LA(1)<='\uFFFF') )
-		{
-			input.Consume();
-		state.failed=false;
-		}
-		else
-		{
-			if (state.backtracking>0) {state.failed=true; return ;}
-			MismatchedSetException mse = new MismatchedSetException(null,input);
-			Recover(mse);
-			throw mse;}
-
-
-		}
-	}
-	// $ANTLR end synpred5_ANTLR
-
-	// $ANTLR start synpred6_ANTLR
-	public void synpred6_ANTLR_fragment()
-	{
-		// Grammars\\ANTLR.g3:1018:6: ( '\\\\]' )
-		// Grammars\\ANTLR.g3:1018:7: '\\\\]'
-		{
-		Match("\\]"); if (state.failed) return ;
-
-
-		}
-	}
-	// $ANTLR end synpred6_ANTLR
-
-	// $ANTLR start synpred7_ANTLR
-	public void synpred7_ANTLR_fragment()
-	{
-		// Grammars\\ANTLR.g3:1055:5: ( '//' | '/*' )
-		int alt28=2;
-		int LA28_0 = input.LA(1);
-
-		if ( (LA28_0=='/') )
-		{
-			int LA28_1 = input.LA(2);
-
-			if ( (LA28_1=='/') )
+			if ( (LA26_1=='/') )
 			{
-				alt28=1;
+				alt26=1;
 			}
-			else if ( (LA28_1=='*') )
+			else if ( (LA26_1=='*') )
 			{
-				alt28=2;
+				alt26=2;
 			}
 			else
 			{
 				if (state.backtracking>0) {state.failed=true; return ;}
-				NoViableAltException nvae = new NoViableAltException("", 28, 1, input);
+				NoViableAltException nvae = new NoViableAltException("", 26, 1, input);
 
 				throw nvae;
 			}
@@ -3592,14 +3336,14 @@ public partial class ANTLRLexer : Lexer
 		else
 		{
 			if (state.backtracking>0) {state.failed=true; return ;}
-			NoViableAltException nvae = new NoViableAltException("", 28, 0, input);
+			NoViableAltException nvae = new NoViableAltException("", 26, 0, input);
 
 			throw nvae;
 		}
-		switch ( alt28 )
+		switch ( alt26 )
 		{
 		case 1:
-			// Grammars\\ANTLR.g3:1055:6: '//'
+			// Grammars\\ANTLR.g3:1044:6: '//'
 			{
 			Match("//"); if (state.failed) return ;
 
@@ -3607,7 +3351,7 @@ public partial class ANTLRLexer : Lexer
 			}
 			break;
 		case 2:
-			// Grammars\\ANTLR.g3:1055:13: '/*'
+			// Grammars\\ANTLR.g3:1044:13: '/*'
 			{
 			Match("/*"); if (state.failed) return ;
 
@@ -3616,7 +3360,7 @@ public partial class ANTLRLexer : Lexer
 			break;
 
 		}}
-	// $ANTLR end synpred7_ANTLR
+	// $ANTLR end synpred4_ANTLR
 
 	public bool synpred1_ANTLR()
 	{
@@ -3690,73 +3434,17 @@ public partial class ANTLRLexer : Lexer
 		state.failed=false;
 		return success;
 	}
-	public bool synpred5_ANTLR()
-	{
-		state.backtracking++;
-		int start = input.Mark();
-		try
-		{
-			synpred5_ANTLR_fragment(); // can never throw exception
-		}
-		catch ( RecognitionException re )
-		{
-			System.Console.Error.WriteLine("impossible: "+re);
-		}
-		bool success = !state.failed;
-		input.Rewind(start);
-		state.backtracking--;
-		state.failed=false;
-		return success;
-	}
-	public bool synpred6_ANTLR()
-	{
-		state.backtracking++;
-		int start = input.Mark();
-		try
-		{
-			synpred6_ANTLR_fragment(); // can never throw exception
-		}
-		catch ( RecognitionException re )
-		{
-			System.Console.Error.WriteLine("impossible: "+re);
-		}
-		bool success = !state.failed;
-		input.Rewind(start);
-		state.backtracking--;
-		state.failed=false;
-		return success;
-	}
-	public bool synpred7_ANTLR()
-	{
-		state.backtracking++;
-		int start = input.Mark();
-		try
-		{
-			synpred7_ANTLR_fragment(); // can never throw exception
-		}
-		catch ( RecognitionException re )
-		{
-			System.Console.Error.WriteLine("impossible: "+re);
-		}
-		bool success = !state.failed;
-		input.Rewind(start);
-		state.backtracking--;
-		state.failed=false;
-		return success;
-	}
 
 
 	#region DFA
 	DFA9 dfa9;
-	DFA15 dfa15;
-	DFA27 dfa27;
+	DFA25 dfa25;
 
 	protected override void InitDFAs()
 	{
 		base.InitDFAs();
 		dfa9 = new DFA9( this, new SpecialStateTransitionHandler( specialStateTransition9 ) );
-		dfa15 = new DFA15( this, new SpecialStateTransitionHandler( specialStateTransition15 ) );
-		dfa27 = new DFA27( this );
+		dfa25 = new DFA25( this );
 	}
 
 	class DFA9 : DFA
@@ -4072,121 +3760,10 @@ public partial class ANTLRLexer : Lexer
 		dfa.Error(nvae);
 		throw nvae;
 	}
-	class DFA15 : DFA
+	class DFA25 : DFA
 	{
 
-		const string DFA15_eotS =
-			"\xA\xFFFF\x1\xB\x2\xFFFF";
-		const string DFA15_eofS =
-			"\xD\xFFFF";
-		const string DFA15_minS =
-			"\x1\x0\x9\xFFFF\x1\x30\x2\xFFFF";
-		const string DFA15_maxS =
-			"\x1\xFFFF\x9\xFFFF\x1\x66\x2\xFFFF";
-		const string DFA15_acceptS =
-			"\x1\xFFFF\x1\x1\x1\x2\x1\x3\x1\x4\x1\x5\x1\x6\x1\x7\x1\x8\x1\x9\x1\xFFFF"+
-			"\x1\xB\x1\xA";
-		const string DFA15_specialS =
-			"\x1\x0\xC\xFFFF}>";
-		static readonly string[] DFA15_transitionS =
-			{
-				"\x22\xB\x1\x6\x4\xB\x1\x7\x16\xB\x1\x9\x1D\xB\x1\x8\x5\xB\x1\x4\x3\xB"+
-				"\x1\x5\x7\xB\x1\x1\x3\xB\x1\x2\x1\xB\x1\x3\x1\xA\xFF8A\xB",
-				"",
-				"",
-				"",
-				"",
-				"",
-				"",
-				"",
-				"",
-				"",
-				"\xA\xC\x7\xFFFF\x6\xC\x1A\xFFFF\x6\xC",
-				"",
-				""
-			};
-
-		static readonly short[] DFA15_eot = DFA.UnpackEncodedString(DFA15_eotS);
-		static readonly short[] DFA15_eof = DFA.UnpackEncodedString(DFA15_eofS);
-		static readonly char[] DFA15_min = DFA.UnpackEncodedStringToUnsignedChars(DFA15_minS);
-		static readonly char[] DFA15_max = DFA.UnpackEncodedStringToUnsignedChars(DFA15_maxS);
-		static readonly short[] DFA15_accept = DFA.UnpackEncodedString(DFA15_acceptS);
-		static readonly short[] DFA15_special = DFA.UnpackEncodedString(DFA15_specialS);
-		static readonly short[][] DFA15_transition;
-
-		static DFA15()
-		{
-			int numStates = DFA15_transitionS.Length;
-			DFA15_transition = new short[numStates][];
-			for ( int i=0; i < numStates; i++ )
-			{
-				DFA15_transition[i] = DFA.UnpackEncodedString(DFA15_transitionS[i]);
-			}
-		}
-
-		public DFA15( BaseRecognizer recognizer, SpecialStateTransitionHandler specialStateTransition )
-			: base( specialStateTransition )	{
-			this.recognizer = recognizer;
-			this.decisionNumber = 15;
-			this.eot = DFA15_eot;
-			this.eof = DFA15_eof;
-			this.min = DFA15_min;
-			this.max = DFA15_max;
-			this.accept = DFA15_accept;
-			this.special = DFA15_special;
-			this.transition = DFA15_transition;
-		}
-		public override string GetDescription()
-		{
-			return "970:3: ( 'n' | 'r' | 't' | 'b' | 'f' | '\"' | '\\'' | '\\\\' | '>' | 'u' XDIGIT XDIGIT XDIGIT XDIGIT | . )";
-		}
-	}
-
-	int specialStateTransition15( DFA dfa, int s, IIntStream _input )
-	{
-		IIntStream input = _input;
-		int _s = s;
-		switch ( s )
-		{
-
-			case 0:
-				int LA15_0 = input.LA(1);
-
-				s = -1;
-				if ( (LA15_0=='n') ) {s = 1;}
-
-				else if ( (LA15_0=='r') ) {s = 2;}
-
-				else if ( (LA15_0=='t') ) {s = 3;}
-
-				else if ( (LA15_0=='b') ) {s = 4;}
-
-				else if ( (LA15_0=='f') ) {s = 5;}
-
-				else if ( (LA15_0=='\"') ) {s = 6;}
-
-				else if ( (LA15_0=='\'') ) {s = 7;}
-
-				else if ( (LA15_0=='\\') ) {s = 8;}
-
-				else if ( (LA15_0=='>') ) {s = 9;}
-
-				else if ( (LA15_0=='u') ) {s = 10;}
-
-				else if ( ((LA15_0>='\u0000' && LA15_0<='!')||(LA15_0>='#' && LA15_0<='&')||(LA15_0>='(' && LA15_0<='=')||(LA15_0>='?' && LA15_0<='[')||(LA15_0>=']' && LA15_0<='a')||(LA15_0>='c' && LA15_0<='e')||(LA15_0>='g' && LA15_0<='m')||(LA15_0>='o' && LA15_0<='q')||LA15_0=='s'||(LA15_0>='v' && LA15_0<='\uFFFF')) ) {s = 11;}
-
-				if ( s>=0 ) return s;
-				break;
-		}
-		if (state.backtracking>0) {state.failed=true; return -1;}
-		NoViableAltException nvae = new NoViableAltException(dfa.GetDescription(), 15, _s, input);
-		dfa.Error(nvae);
-		throw nvae;
-	}
-	class DFA27 : DFA
-	{
-
-		const string DFA27_eotS =
+		const string DFA25_eotS =
 			"\x1\xFFFF\x9\x28\x2\xFFFF\x1\x38\x4\xFFFF\x1\x3A\x4\xFFFF\x1\x3C\x1\x3E"+
 			"\x4\xFFFF\x1\x40\xA\xFFFF\x1\x28\x1\xFFFF\xE\x28\x8\xFFFF\x1\x52\x1\xFFFF"+
 			"\x10\x28\x2\xFFFF\xE\x28\x1\x71\x2\x28\x1\x74\x4\x28\x1\x79\x5\x28\x1"+
@@ -4194,9 +3771,9 @@ public partial class ANTLRLexer : Lexer
 			"\x28\x1\x8A\x1\x28\x1\xFFFF\x1\x8C\x2\x28\x1\x8F\x1\x28\x1\x91\x2\xFFFF"+
 			"\x1\x92\x1\x28\x1\xFFFF\x1\x94\x2\xFFFF\x1\x28\x1\xFFFF\x1\x96\x2\xFFFF"+
 			"\x1\x28\x3\xFFFF\x1\x98\x1\xFFFF";
-		const string DFA27_eofS =
+		const string DFA25_eofS =
 			"\x99\xFFFF";
-		const string DFA27_minS =
+		const string DFA25_minS =
 			"\x1\x9\x1\x61\x1\x69\x1\x72\x1\x6D\x1\x65\x1\x61\x1\x65\x1\x63\x1\x68"+
 			"\x2\xFFFF\x1\x3C\x4\xFFFF\x1\x28\x4\xFFFF\x1\x3D\x1\x3E\x4\xFFFF\x1\x2E"+
 			"\xA\xFFFF\x1\x70\x1\xFFFF\x1\x74\x1\x6E\x2\x61\x1\x70\x1\x78\x1\x72\x1"+
@@ -4210,7 +3787,7 @@ public partial class ANTLRLexer : Lexer
 			"\x30\x1\x9\x1\x73\x1\x30\x1\x74\x1\x30\x2\xFFFF\x1\x30\x1\x65\x1\xFFFF"+
 			"\x1\x30\x2\xFFFF\x1\x9\x1\xFFFF\x1\x30\x2\xFFFF\x1\x64\x3\xFFFF\x1\x30"+
 			"\x1\xFFFF";
-		const string DFA27_maxS =
+		const string DFA25_maxS =
 			"\x1\x7E\x1\x61\x2\x72\x1\x6D\x1\x65\x1\x75\x1\x65\x1\x63\x1\x72\x2\xFFFF"+
 			"\x1\x3C\x4\xFFFF\x1\x28\x4\xFFFF\x1\x3D\x1\x3E\x4\xFFFF\x1\x2E\xA\xFFFF"+
 			"\x1\x70\x1\xFFFF\x1\x74\x1\x6E\x2\x61\x1\x70\x1\x78\x1\x72\x1\x6F\x1"+
@@ -4223,7 +3800,7 @@ public partial class ANTLRLexer : Lexer
 			"\x1\x7A\x1\xFFFF\x1\x7A\x1\x65\x1\x74\x1\x7A\x1\x73\x1\xFFFF\x1\x7A\x1"+
 			"\x7B\x1\x73\x1\x7A\x1\x74\x1\x7A\x2\xFFFF\x1\x7A\x1\x65\x1\xFFFF\x1\x7A"+
 			"\x2\xFFFF\x1\x7B\x1\xFFFF\x1\x7A\x2\xFFFF\x1\x64\x3\xFFFF\x1\x7A\x1\xFFFF";
-		const string DFA27_acceptS =
+		const string DFA25_acceptS =
 			"\xA\xFFFF\x1\xF\x1\x10\x1\xFFFF\x1\x12\x1\x13\x1\x14\x1\x15\x1\xFFFF"+
 			"\x1\x17\x1\x18\x1\x19\x1\x1A\x2\xFFFF\x1\x1F\x1\x20\x1\x22\x1\x23\x1"+
 			"\xFFFF\x1\x27\x1\x28\x1\x29\x1\x2A\x1\x2B\x1\x2C\x1\x2E\x1\x2F\x1\x30"+
@@ -4232,9 +3809,9 @@ public partial class ANTLRLexer : Lexer
 			"\x1\xE\x2\xFFFF\x1\x1\x4\xFFFF\x1\x6\x5\xFFFF\x1\xC\x6\xFFFF\x1\x5\x1"+
 			"\x7\x2\xFFFF\x1\xA\x1\xFFFF\x1\xD\x1\x32\x1\xFFFF\x1\x2\x1\xFFFF\x1\x4"+
 			"\x1\x8\x1\xFFFF\x1\xB\x1\x33\x1\x3\x1\xFFFF\x1\x9";
-		const string DFA27_specialS =
+		const string DFA25_specialS =
 			"\x99\xFFFF}>";
-		static readonly string[] DFA27_transitionS =
+		static readonly string[] DFA25_transitionS =
 			{
 				"\x2\xA\x2\xFFFF\x1\xA\x12\xFFFF\x1\xA\x1\x1A\x1\x22\x1\xFFFF\x1\x1F"+
 				"\x2\xFFFF\x1\x21\x1\x12\x1\x13\x1\x15\x1\x16\x1\xF\x1\x18\x1\x1C\x1"+
@@ -4398,35 +3975,35 @@ public partial class ANTLRLexer : Lexer
 				""
 			};
 
-		static readonly short[] DFA27_eot = DFA.UnpackEncodedString(DFA27_eotS);
-		static readonly short[] DFA27_eof = DFA.UnpackEncodedString(DFA27_eofS);
-		static readonly char[] DFA27_min = DFA.UnpackEncodedStringToUnsignedChars(DFA27_minS);
-		static readonly char[] DFA27_max = DFA.UnpackEncodedStringToUnsignedChars(DFA27_maxS);
-		static readonly short[] DFA27_accept = DFA.UnpackEncodedString(DFA27_acceptS);
-		static readonly short[] DFA27_special = DFA.UnpackEncodedString(DFA27_specialS);
-		static readonly short[][] DFA27_transition;
+		static readonly short[] DFA25_eot = DFA.UnpackEncodedString(DFA25_eotS);
+		static readonly short[] DFA25_eof = DFA.UnpackEncodedString(DFA25_eofS);
+		static readonly char[] DFA25_min = DFA.UnpackEncodedStringToUnsignedChars(DFA25_minS);
+		static readonly char[] DFA25_max = DFA.UnpackEncodedStringToUnsignedChars(DFA25_maxS);
+		static readonly short[] DFA25_accept = DFA.UnpackEncodedString(DFA25_acceptS);
+		static readonly short[] DFA25_special = DFA.UnpackEncodedString(DFA25_specialS);
+		static readonly short[][] DFA25_transition;
 
-		static DFA27()
+		static DFA25()
 		{
-			int numStates = DFA27_transitionS.Length;
-			DFA27_transition = new short[numStates][];
+			int numStates = DFA25_transitionS.Length;
+			DFA25_transition = new short[numStates][];
 			for ( int i=0; i < numStates; i++ )
 			{
-				DFA27_transition[i] = DFA.UnpackEncodedString(DFA27_transitionS[i]);
+				DFA25_transition[i] = DFA.UnpackEncodedString(DFA25_transitionS[i]);
 			}
 		}
 
-		public DFA27( BaseRecognizer recognizer )
+		public DFA25( BaseRecognizer recognizer )
 		{
 			this.recognizer = recognizer;
-			this.decisionNumber = 27;
-			this.eot = DFA27_eot;
-			this.eof = DFA27_eof;
-			this.min = DFA27_min;
-			this.max = DFA27_max;
-			this.accept = DFA27_accept;
-			this.special = DFA27_special;
-			this.transition = DFA27_transition;
+			this.decisionNumber = 25;
+			this.eot = DFA25_eot;
+			this.eof = DFA25_eof;
+			this.min = DFA25_min;
+			this.max = DFA25_max;
+			this.accept = DFA25_accept;
+			this.special = DFA25_special;
+			this.transition = DFA25_transition;
 		}
 		public override string GetDescription()
 		{

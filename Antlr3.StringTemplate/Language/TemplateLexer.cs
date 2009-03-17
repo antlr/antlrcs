@@ -1,4 +1,4 @@
-// $ANTLR 3.1.2 Language\\Template.g3 2009-03-16 17:21:57
+// $ANTLR 3.1.2 Language\\Template.g3 2009-03-16 21:10:52
 
 // The variable 'variable' is assigned but its value is never used.
 #pragma warning disable 219
@@ -91,8 +91,8 @@ public partial class TemplateLexer : Lexer
 	{
 		try
 		{
-			// Language\\Template.g3:257:15: ()
-			// Language\\Template.g3:257:15: 
+			// Language\\Template.g3:258:15: ()
+			// Language\\Template.g3:258:15: 
 			{
 
 
@@ -110,8 +110,8 @@ public partial class TemplateLexer : Lexer
 	{
 		try
 		{
-			// Language\\Template.g3:258:19: ()
-			// Language\\Template.g3:258:19: 
+			// Language\\Template.g3:259:19: ()
+			// Language\\Template.g3:259:19: 
 			{
 
 
@@ -129,8 +129,8 @@ public partial class TemplateLexer : Lexer
 	{
 		try
 		{
-			// Language\\Template.g3:259:17: ()
-			// Language\\Template.g3:259:17: 
+			// Language\\Template.g3:260:17: ()
+			// Language\\Template.g3:260:17: 
 			{
 
 
@@ -148,8 +148,8 @@ public partial class TemplateLexer : Lexer
 	{
 		try
 		{
-			// Language\\Template.g3:260:18: ()
-			// Language\\Template.g3:260:18: 
+			// Language\\Template.g3:261:18: ()
+			// Language\\Template.g3:261:18: 
 			{
 
 
@@ -167,8 +167,8 @@ public partial class TemplateLexer : Lexer
 	{
 		try
 		{
-			// Language\\Template.g3:261:23: ()
-			// Language\\Template.g3:261:23: 
+			// Language\\Template.g3:262:23: ()
+			// Language\\Template.g3:262:23: 
 			{
 
 
@@ -186,8 +186,8 @@ public partial class TemplateLexer : Lexer
 	{
 		try
 		{
-			// Language\\Template.g3:262:23: ()
-			// Language\\Template.g3:262:23: 
+			// Language\\Template.g3:263:23: ()
+			// Language\\Template.g3:263:23: 
 			{
 
 
@@ -207,10 +207,10 @@ public partial class TemplateLexer : Lexer
 		{
 			int _type = NEWLINE;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// Language\\Template.g3:265:4: ( ( '\\r' )? '\\n' )
-			// Language\\Template.g3:265:4: ( '\\r' )? '\\n'
+			// Language\\Template.g3:266:4: ( ( '\\r' )? '\\n' )
+			// Language\\Template.g3:266:4: ( '\\r' )? '\\n'
 			{
-			// Language\\Template.g3:265:4: ( '\\r' )?
+			// Language\\Template.g3:266:4: ( '\\r' )?
 			int alt1=2;
 			int LA1_0 = input.LA(1);
 
@@ -221,7 +221,7 @@ public partial class TemplateLexer : Lexer
 			switch ( alt1 )
 			{
 			case 1:
-				// Language\\Template.g3:265:5: '\\r'
+				// Language\\Template.g3:266:5: '\\r'
 				{
 				Match('\r'); if (state.failed) return ;
 
@@ -266,10 +266,10 @@ public partial class TemplateLexer : Lexer
 				bool atLeft = false;
 				string t = null;
 
-			// Language\\Template.g3:279:4: ( ( options {k=1; } :=> '$' ( ESC_CHAR[out uc] )+ '$' |=> COMMENT | (=> '$if' ( ' ' )* '(' exp= IF_EXPR ')$' ( ( '\\r' )? '\\n' )? |=> '$elseif' ( ' ' )* '(' exp= IF_EXPR ')$' ( ( '\\r' )? '\\n' )? |=> '$else$' ( ( '\\r' )? '\\n' )? |=> '$endif$' ({...}? => ( '\\r' )? '\\n' )? |=> '$@' (ch=~ ( '$' | '(' ) )+ ( '()$' | '$' (=> ( '\\r' )? '\\n' )? ({...}? => (=> ( '\\r' )? '\\n' |ch= . ) )+ (=> ( '\\r' )? '\\n' )? (=> '$@end$' | . ) ({...}? ( '\\r' )? '\\n' )? ) | '$' EXPR[out subtext] '$' ) ) )
-			// Language\\Template.g3:279:4: ( options {k=1; } :=> '$' ( ESC_CHAR[out uc] )+ '$' |=> COMMENT | (=> '$if' ( ' ' )* '(' exp= IF_EXPR ')$' ( ( '\\r' )? '\\n' )? |=> '$elseif' ( ' ' )* '(' exp= IF_EXPR ')$' ( ( '\\r' )? '\\n' )? |=> '$else$' ( ( '\\r' )? '\\n' )? |=> '$endif$' ({...}? => ( '\\r' )? '\\n' )? |=> '$@' (ch=~ ( '$' | '(' ) )+ ( '()$' | '$' (=> ( '\\r' )? '\\n' )? ({...}? => (=> ( '\\r' )? '\\n' |ch= . ) )+ (=> ( '\\r' )? '\\n' )? (=> '$@end$' | . ) ({...}? ( '\\r' )? '\\n' )? ) | '$' EXPR[out subtext] '$' ) )
+			// Language\\Template.g3:280:4: ( ( options {k=1; } :=> '$' ( ESC_CHAR[out uc] )+ '$' |=> COMMENT | (=> '$if' ( ' ' )* '(' exp= IF_EXPR ')$' ( ( '\\r' )? '\\n' )? |=> '$elseif' ( ' ' )* '(' exp= IF_EXPR ')$' ( ( '\\r' )? '\\n' )? |=> '$else$' ( ( '\\r' )? '\\n' )? |=> '$endif$' ({...}? => ( '\\r' )? '\\n' )? |=> '$@' (ch=~ ( '$' | '(' ) )+ ( '()$' | '$' (=> ( '\\r' )? '\\n' )? ({...}? => (=> ( '\\r' )? '\\n' |ch= . ) )+ (=> ( '\\r' )? '\\n' )? (=> '$@end$' | . ) ({...}? ( '\\r' )? '\\n' )? ) | '$' EXPR[out subtext] '$' ) ) )
+			// Language\\Template.g3:280:4: ( options {k=1; } :=> '$' ( ESC_CHAR[out uc] )+ '$' |=> COMMENT | (=> '$if' ( ' ' )* '(' exp= IF_EXPR ')$' ( ( '\\r' )? '\\n' )? |=> '$elseif' ( ' ' )* '(' exp= IF_EXPR ')$' ( ( '\\r' )? '\\n' )? |=> '$else$' ( ( '\\r' )? '\\n' )? |=> '$endif$' ({...}? => ( '\\r' )? '\\n' )? |=> '$@' (ch=~ ( '$' | '(' ) )+ ( '()$' | '$' (=> ( '\\r' )? '\\n' )? ({...}? => (=> ( '\\r' )? '\\n' |ch= . ) )+ (=> ( '\\r' )? '\\n' )? (=> '$@end$' | . ) ({...}? ( '\\r' )? '\\n' )? ) | '$' EXPR[out subtext] '$' ) )
 			{
-			// Language\\Template.g3:279:4: ( options {k=1; } :=> '$' ( ESC_CHAR[out uc] )+ '$' |=> COMMENT | (=> '$if' ( ' ' )* '(' exp= IF_EXPR ')$' ( ( '\\r' )? '\\n' )? |=> '$elseif' ( ' ' )* '(' exp= IF_EXPR ')$' ( ( '\\r' )? '\\n' )? |=> '$else$' ( ( '\\r' )? '\\n' )? |=> '$endif$' ({...}? => ( '\\r' )? '\\n' )? |=> '$@' (ch=~ ( '$' | '(' ) )+ ( '()$' | '$' (=> ( '\\r' )? '\\n' )? ({...}? => (=> ( '\\r' )? '\\n' |ch= . ) )+ (=> ( '\\r' )? '\\n' )? (=> '$@end$' | . ) ({...}? ( '\\r' )? '\\n' )? ) | '$' EXPR[out subtext] '$' ) )
+			// Language\\Template.g3:280:4: ( options {k=1; } :=> '$' ( ESC_CHAR[out uc] )+ '$' |=> COMMENT | (=> '$if' ( ' ' )* '(' exp= IF_EXPR ')$' ( ( '\\r' )? '\\n' )? |=> '$elseif' ( ' ' )* '(' exp= IF_EXPR ')$' ( ( '\\r' )? '\\n' )? |=> '$else$' ( ( '\\r' )? '\\n' )? |=> '$endif$' ({...}? => ( '\\r' )? '\\n' )? |=> '$@' (ch=~ ( '$' | '(' ) )+ ( '()$' | '$' (=> ( '\\r' )? '\\n' )? ({...}? => (=> ( '\\r' )? '\\n' |ch= . ) )+ (=> ( '\\r' )? '\\n' )? (=> '$@end$' | . ) ({...}? ( '\\r' )? '\\n' )? ) | '$' EXPR[out subtext] '$' ) )
 			int alt26=3;
 			int LA26_0 = input.LA(1);
 
@@ -307,11 +307,11 @@ public partial class TemplateLexer : Lexer
 			switch ( alt26 )
 			{
 			case 1:
-				// Language\\Template.g3:280:4: => '$' ( ESC_CHAR[out uc] )+ '$'
+				// Language\\Template.g3:281:4: => '$' ( ESC_CHAR[out uc] )+ '$'
 				{
 
 				Match('$'); if (state.failed) return ;
-				// Language\\Template.g3:282:8: ( ESC_CHAR[out uc] )+
+				// Language\\Template.g3:283:8: ( ESC_CHAR[out uc] )+
 				int cnt2=0;
 				for ( ; ; )
 				{
@@ -327,7 +327,7 @@ public partial class TemplateLexer : Lexer
 					switch ( alt2 )
 					{
 					case 1:
-						// Language\\Template.g3:282:9: ESC_CHAR[out uc]
+						// Language\\Template.g3:283:9: ESC_CHAR[out uc]
 						{
 						mESC_CHAR(out uc); if (state.failed) return ;
 						if ( state.backtracking == 0 )
@@ -364,7 +364,7 @@ public partial class TemplateLexer : Lexer
 				}
 				break;
 			case 2:
-				// Language\\Template.g3:287:5: => COMMENT
+				// Language\\Template.g3:288:5: => COMMENT
 				{
 
 				mCOMMENT(); if (state.failed) return ;
@@ -376,9 +376,9 @@ public partial class TemplateLexer : Lexer
 				}
 				break;
 			case 3:
-				// Language\\Template.g3:289:5: (=> '$if' ( ' ' )* '(' exp= IF_EXPR ')$' ( ( '\\r' )? '\\n' )? |=> '$elseif' ( ' ' )* '(' exp= IF_EXPR ')$' ( ( '\\r' )? '\\n' )? |=> '$else$' ( ( '\\r' )? '\\n' )? |=> '$endif$' ({...}? => ( '\\r' )? '\\n' )? |=> '$@' (ch=~ ( '$' | '(' ) )+ ( '()$' | '$' (=> ( '\\r' )? '\\n' )? ({...}? => (=> ( '\\r' )? '\\n' |ch= . ) )+ (=> ( '\\r' )? '\\n' )? (=> '$@end$' | . ) ({...}? ( '\\r' )? '\\n' )? ) | '$' EXPR[out subtext] '$' )
+				// Language\\Template.g3:290:5: (=> '$if' ( ' ' )* '(' exp= IF_EXPR ')$' ( ( '\\r' )? '\\n' )? |=> '$elseif' ( ' ' )* '(' exp= IF_EXPR ')$' ( ( '\\r' )? '\\n' )? |=> '$else$' ( ( '\\r' )? '\\n' )? |=> '$endif$' ({...}? => ( '\\r' )? '\\n' )? |=> '$@' (ch=~ ( '$' | '(' ) )+ ( '()$' | '$' (=> ( '\\r' )? '\\n' )? ({...}? => (=> ( '\\r' )? '\\n' |ch= . ) )+ (=> ( '\\r' )? '\\n' )? (=> '$@end$' | . ) ({...}? ( '\\r' )? '\\n' )? ) | '$' EXPR[out subtext] '$' )
 				{
-				// Language\\Template.g3:289:5: (=> '$if' ( ' ' )* '(' exp= IF_EXPR ')$' ( ( '\\r' )? '\\n' )? |=> '$elseif' ( ' ' )* '(' exp= IF_EXPR ')$' ( ( '\\r' )? '\\n' )? |=> '$else$' ( ( '\\r' )? '\\n' )? |=> '$endif$' ({...}? => ( '\\r' )? '\\n' )? |=> '$@' (ch=~ ( '$' | '(' ) )+ ( '()$' | '$' (=> ( '\\r' )? '\\n' )? ({...}? => (=> ( '\\r' )? '\\n' |ch= . ) )+ (=> ( '\\r' )? '\\n' )? (=> '$@end$' | . ) ({...}? ( '\\r' )? '\\n' )? ) | '$' EXPR[out subtext] '$' )
+				// Language\\Template.g3:290:5: (=> '$if' ( ' ' )* '(' exp= IF_EXPR ')$' ( ( '\\r' )? '\\n' )? |=> '$elseif' ( ' ' )* '(' exp= IF_EXPR ')$' ( ( '\\r' )? '\\n' )? |=> '$else$' ( ( '\\r' )? '\\n' )? |=> '$endif$' ({...}? => ( '\\r' )? '\\n' )? |=> '$@' (ch=~ ( '$' | '(' ) )+ ( '()$' | '$' (=> ( '\\r' )? '\\n' )? ({...}? => (=> ( '\\r' )? '\\n' |ch= . ) )+ (=> ( '\\r' )? '\\n' )? (=> '$@end$' | . ) ({...}? ( '\\r' )? '\\n' )? ) | '$' EXPR[out subtext] '$' )
 				int alt25=6;
 				int LA25_0 = input.LA(1);
 
@@ -428,12 +428,12 @@ public partial class TemplateLexer : Lexer
 				switch ( alt25 )
 				{
 				case 1:
-					// Language\\Template.g3:289:7: => '$if' ( ' ' )* '(' exp= IF_EXPR ')$' ( ( '\\r' )? '\\n' )?
+					// Language\\Template.g3:290:7: => '$if' ( ' ' )* '(' exp= IF_EXPR ')$' ( ( '\\r' )? '\\n' )?
 					{
 
 					Match("$if"); if (state.failed) return ;
 
-					// Language\\Template.g3:290:11: ( ' ' )*
+					// Language\\Template.g3:291:11: ( ' ' )*
 					for ( ; ; )
 					{
 						int alt3=2;
@@ -448,7 +448,7 @@ public partial class TemplateLexer : Lexer
 						switch ( alt3 )
 						{
 						case 1:
-							// Language\\Template.g3:290:12: ' '
+							// Language\\Template.g3:291:12: ' '
 							{
 							Match(' '); if (state.failed) return ;
 
@@ -477,7 +477,7 @@ public partial class TemplateLexer : Lexer
 											_type = TemplateParser.IF;
 										
 					}
-					// Language\\Template.g3:295:5: ( ( '\\r' )? '\\n' )?
+					// Language\\Template.g3:296:5: ( ( '\\r' )? '\\n' )?
 					int alt5=2;
 					int LA5_0 = input.LA(1);
 
@@ -488,9 +488,9 @@ public partial class TemplateLexer : Lexer
 					switch ( alt5 )
 					{
 					case 1:
-						// Language\\Template.g3:295:7: ( '\\r' )? '\\n'
+						// Language\\Template.g3:296:7: ( '\\r' )? '\\n'
 						{
-						// Language\\Template.g3:295:7: ( '\\r' )?
+						// Language\\Template.g3:296:7: ( '\\r' )?
 						int alt4=2;
 						int LA4_0 = input.LA(1);
 
@@ -501,7 +501,7 @@ public partial class TemplateLexer : Lexer
 						switch ( alt4 )
 						{
 						case 1:
-							// Language\\Template.g3:295:8: '\\r'
+							// Language\\Template.g3:296:8: '\\r'
 							{
 							Match('\r'); if (state.failed) return ;
 
@@ -521,12 +521,12 @@ public partial class TemplateLexer : Lexer
 					}
 					break;
 				case 2:
-					// Language\\Template.g3:296:6: => '$elseif' ( ' ' )* '(' exp= IF_EXPR ')$' ( ( '\\r' )? '\\n' )?
+					// Language\\Template.g3:297:6: => '$elseif' ( ' ' )* '(' exp= IF_EXPR ')$' ( ( '\\r' )? '\\n' )?
 					{
 
 					Match("$elseif"); if (state.failed) return ;
 
-					// Language\\Template.g3:297:15: ( ' ' )*
+					// Language\\Template.g3:298:15: ( ' ' )*
 					for ( ; ; )
 					{
 						int alt6=2;
@@ -541,7 +541,7 @@ public partial class TemplateLexer : Lexer
 						switch ( alt6 )
 						{
 						case 1:
-							// Language\\Template.g3:297:16: ' '
+							// Language\\Template.g3:298:16: ' '
 							{
 							Match(' '); if (state.failed) return ;
 
@@ -570,7 +570,7 @@ public partial class TemplateLexer : Lexer
 											_type = TemplateParser.ELSEIF;
 										
 					}
-					// Language\\Template.g3:302:5: ( ( '\\r' )? '\\n' )?
+					// Language\\Template.g3:303:5: ( ( '\\r' )? '\\n' )?
 					int alt8=2;
 					int LA8_0 = input.LA(1);
 
@@ -581,9 +581,9 @@ public partial class TemplateLexer : Lexer
 					switch ( alt8 )
 					{
 					case 1:
-						// Language\\Template.g3:302:7: ( '\\r' )? '\\n'
+						// Language\\Template.g3:303:7: ( '\\r' )? '\\n'
 						{
-						// Language\\Template.g3:302:7: ( '\\r' )?
+						// Language\\Template.g3:303:7: ( '\\r' )?
 						int alt7=2;
 						int LA7_0 = input.LA(1);
 
@@ -594,7 +594,7 @@ public partial class TemplateLexer : Lexer
 						switch ( alt7 )
 						{
 						case 1:
-							// Language\\Template.g3:302:8: '\\r'
+							// Language\\Template.g3:303:8: '\\r'
 							{
 							Match('\r'); if (state.failed) return ;
 
@@ -614,7 +614,7 @@ public partial class TemplateLexer : Lexer
 					}
 					break;
 				case 3:
-					// Language\\Template.g3:303:6: => '$else$' ( ( '\\r' )? '\\n' )?
+					// Language\\Template.g3:304:6: => '$else$' ( ( '\\r' )? '\\n' )?
 					{
 
 					Match("$else$"); if (state.failed) return ;
@@ -626,7 +626,7 @@ public partial class TemplateLexer : Lexer
 											_type = (TemplateParser.ELSE);
 										
 					}
-					// Language\\Template.g3:309:5: ( ( '\\r' )? '\\n' )?
+					// Language\\Template.g3:310:5: ( ( '\\r' )? '\\n' )?
 					int alt10=2;
 					int LA10_0 = input.LA(1);
 
@@ -637,9 +637,9 @@ public partial class TemplateLexer : Lexer
 					switch ( alt10 )
 					{
 					case 1:
-						// Language\\Template.g3:309:7: ( '\\r' )? '\\n'
+						// Language\\Template.g3:310:7: ( '\\r' )? '\\n'
 						{
-						// Language\\Template.g3:309:7: ( '\\r' )?
+						// Language\\Template.g3:310:7: ( '\\r' )?
 						int alt9=2;
 						int LA9_0 = input.LA(1);
 
@@ -650,7 +650,7 @@ public partial class TemplateLexer : Lexer
 						switch ( alt9 )
 						{
 						case 1:
-							// Language\\Template.g3:309:8: '\\r'
+							// Language\\Template.g3:310:8: '\\r'
 							{
 							Match('\r'); if (state.failed) return ;
 
@@ -670,7 +670,7 @@ public partial class TemplateLexer : Lexer
 					}
 					break;
 				case 4:
-					// Language\\Template.g3:310:6: => '$endif$' ({...}? => ( '\\r' )? '\\n' )?
+					// Language\\Template.g3:311:6: => '$endif$' ({...}? => ( '\\r' )? '\\n' )?
 					{
 
 					Match("$endif$"); if (state.failed) return ;
@@ -682,7 +682,7 @@ public partial class TemplateLexer : Lexer
 											_type = TemplateParser.ENDIF;
 										
 					}
-					// Language\\Template.g3:316:5: ({...}? => ( '\\r' )? '\\n' )?
+					// Language\\Template.g3:317:5: ({...}? => ( '\\r' )? '\\n' )?
 					int alt12=2;
 					int LA12_0 = input.LA(1);
 
@@ -693,14 +693,14 @@ public partial class TemplateLexer : Lexer
 					switch ( alt12 )
 					{
 					case 1:
-						// Language\\Template.g3:316:7: {...}? => ( '\\r' )? '\\n'
+						// Language\\Template.g3:317:7: {...}? => ( '\\r' )? '\\n'
 						{
 						if ( !((startCol==0)) )
 						{
 							if (state.backtracking>0) {state.failed=true; return ;}
 							throw new FailedPredicateException(input, "ACTION", "startCol==0");
 						}
-						// Language\\Template.g3:316:25: ( '\\r' )?
+						// Language\\Template.g3:317:25: ( '\\r' )?
 						int alt11=2;
 						int LA11_0 = input.LA(1);
 
@@ -711,7 +711,7 @@ public partial class TemplateLexer : Lexer
 						switch ( alt11 )
 						{
 						case 1:
-							// Language\\Template.g3:316:26: '\\r'
+							// Language\\Template.g3:317:26: '\\r'
 							{
 							Match('\r'); if (state.failed) return ;
 
@@ -731,7 +731,7 @@ public partial class TemplateLexer : Lexer
 					}
 					break;
 				case 5:
-					// Language\\Template.g3:320:5: => '$@' (ch=~ ( '$' | '(' ) )+ ( '()$' | '$' (=> ( '\\r' )? '\\n' )? ({...}? => (=> ( '\\r' )? '\\n' |ch= . ) )+ (=> ( '\\r' )? '\\n' )? (=> '$@end$' | . ) ({...}? ( '\\r' )? '\\n' )? )
+					// Language\\Template.g3:321:5: => '$@' (ch=~ ( '$' | '(' ) )+ ( '()$' | '$' (=> ( '\\r' )? '\\n' )? ({...}? => (=> ( '\\r' )? '\\n' |ch= . ) )+ (=> ( '\\r' )? '\\n' )? (=> '$@end$' | . ) ({...}? ( '\\r' )? '\\n' )? )
 					{
 
 					if ( state.backtracking == 0 )
@@ -742,7 +742,7 @@ public partial class TemplateLexer : Lexer
 					}
 					Match("$@"); if (state.failed) return ;
 
-					// Language\\Template.g3:324:10: (ch=~ ( '$' | '(' ) )+
+					// Language\\Template.g3:325:10: (ch=~ ( '$' | '(' ) )+
 					int cnt13=0;
 					for ( ; ; )
 					{
@@ -758,7 +758,7 @@ public partial class TemplateLexer : Lexer
 						switch ( alt13 )
 						{
 						case 1:
-							// Language\\Template.g3:324:12: ch=~ ( '$' | '(' )
+							// Language\\Template.g3:325:12: ch=~ ( '$' | '(' )
 							{
 							ch= input.LA(1);
 							input.Consume();
@@ -789,7 +789,7 @@ public partial class TemplateLexer : Lexer
 					{
 						 t = builder.ToString(); 
 					}
-					// Language\\Template.g3:326:5: ( '()$' | '$' (=> ( '\\r' )? '\\n' )? ({...}? => (=> ( '\\r' )? '\\n' |ch= . ) )+ (=> ( '\\r' )? '\\n' )? (=> '$@end$' | . ) ({...}? ( '\\r' )? '\\n' )? )
+					// Language\\Template.g3:327:5: ( '()$' | '$' (=> ( '\\r' )? '\\n' )? ({...}? => (=> ( '\\r' )? '\\n' |ch= . ) )+ (=> ( '\\r' )? '\\n' )? (=> '$@end$' | . ) ({...}? ( '\\r' )? '\\n' )? )
 					int alt24=2;
 					int LA24_0 = input.LA(1);
 
@@ -811,7 +811,7 @@ public partial class TemplateLexer : Lexer
 					switch ( alt24 )
 					{
 					case 1:
-						// Language\\Template.g3:326:7: '()$'
+						// Language\\Template.g3:327:7: '()$'
 						{
 						Match("()$"); if (state.failed) return ;
 
@@ -825,7 +825,7 @@ public partial class TemplateLexer : Lexer
 						}
 						break;
 					case 2:
-						// Language\\Template.g3:330:7: '$' (=> ( '\\r' )? '\\n' )? ({...}? => (=> ( '\\r' )? '\\n' |ch= . ) )+ (=> ( '\\r' )? '\\n' )? (=> '$@end$' | . ) ({...}? ( '\\r' )? '\\n' )?
+						// Language\\Template.g3:331:7: '$' (=> ( '\\r' )? '\\n' )? ({...}? => (=> ( '\\r' )? '\\n' |ch= . ) )+ (=> ( '\\r' )? '\\n' )? (=> '$@end$' | . ) ({...}? ( '\\r' )? '\\n' )?
 						{
 						Match('$'); if (state.failed) return ;
 						if ( state.backtracking == 0 )
@@ -835,7 +835,7 @@ public partial class TemplateLexer : Lexer
 													builder.Append("::=");
 												
 						}
-						// Language\\Template.g3:335:6: (=> ( '\\r' )? '\\n' )?
+						// Language\\Template.g3:336:6: (=> ( '\\r' )? '\\n' )?
 						int alt15=2;
 						int LA15_0 = input.LA(1);
 
@@ -865,10 +865,10 @@ public partial class TemplateLexer : Lexer
 						switch ( alt15 )
 						{
 						case 1:
-							// Language\\Template.g3:335:8: => ( '\\r' )? '\\n'
+							// Language\\Template.g3:336:8: => ( '\\r' )? '\\n'
 							{
 
-							// Language\\Template.g3:335:23: ( '\\r' )?
+							// Language\\Template.g3:336:23: ( '\\r' )?
 							int alt14=2;
 							int LA14_0 = input.LA(1);
 
@@ -879,7 +879,7 @@ public partial class TemplateLexer : Lexer
 							switch ( alt14 )
 							{
 							case 1:
-								// Language\\Template.g3:335:24: '\\r'
+								// Language\\Template.g3:336:24: '\\r'
 								{
 								Match('\r'); if (state.failed) return ;
 
@@ -899,7 +899,7 @@ public partial class TemplateLexer : Lexer
 						{
 							atLeft = false;
 						}
-						// Language\\Template.g3:337:6: ({...}? => (=> ( '\\r' )? '\\n' |ch= . ) )+
+						// Language\\Template.g3:338:6: ({...}? => (=> ( '\\r' )? '\\n' |ch= . ) )+
 						int cnt18=0;
 						for ( ; ; )
 						{
@@ -908,14 +908,14 @@ public partial class TemplateLexer : Lexer
 							switch ( alt18 )
 							{
 							case 1:
-								// Language\\Template.g3:337:8: {...}? => (=> ( '\\r' )? '\\n' |ch= . )
+								// Language\\Template.g3:338:8: {...}? => (=> ( '\\r' )? '\\n' |ch= . )
 								{
 								if ( !((!(UpcomingAtEND(1) || ( input.LA(1) == '\n' && UpcomingAtEND(2) ) || ( input.LA(1) == '\r' && input.LA(2) == '\n' && UpcomingAtEND(3) )))) )
 								{
 									if (state.backtracking>0) {state.failed=true; return ;}
 									throw new FailedPredicateException(input, "ACTION", "!(UpcomingAtEND(1) || ( input.LA(1) == '\\n' && UpcomingAtEND(2) ) || ( input.LA(1) == '\\r' && input.LA(2) == '\\n' && UpcomingAtEND(3) ))");
 								}
-								// Language\\Template.g3:338:7: (=> ( '\\r' )? '\\n' |ch= . )
+								// Language\\Template.g3:339:7: (=> ( '\\r' )? '\\n' |ch= . )
 								int alt17=2;
 								int LA17_0 = input.LA(1);
 
@@ -973,10 +973,10 @@ public partial class TemplateLexer : Lexer
 								switch ( alt17 )
 								{
 								case 1:
-									// Language\\Template.g3:338:9: => ( '\\r' )? '\\n'
+									// Language\\Template.g3:339:9: => ( '\\r' )? '\\n'
 									{
 
-									// Language\\Template.g3:338:24: ( '\\r' )?
+									// Language\\Template.g3:339:24: ( '\\r' )?
 									int alt16=2;
 									int LA16_0 = input.LA(1);
 
@@ -987,7 +987,7 @@ public partial class TemplateLexer : Lexer
 									switch ( alt16 )
 									{
 									case 1:
-										// Language\\Template.g3:338:25: '\\r'
+										// Language\\Template.g3:339:25: '\\r'
 										{
 										Match('\r'); if (state.failed) return ;
 										if ( state.backtracking == 0 )
@@ -1009,7 +1009,7 @@ public partial class TemplateLexer : Lexer
 									}
 									break;
 								case 2:
-									// Language\\Template.g3:339:9: ch= .
+									// Language\\Template.g3:340:9: ch= .
 									{
 									ch = input.LA(1);
 									MatchAny(); if (state.failed) return ;
@@ -1041,7 +1041,7 @@ public partial class TemplateLexer : Lexer
 							;
 
 
-						// Language\\Template.g3:342:6: (=> ( '\\r' )? '\\n' )?
+						// Language\\Template.g3:343:6: (=> ( '\\r' )? '\\n' )?
 						int alt20=2;
 						int LA20_0 = input.LA(1);
 
@@ -1097,10 +1097,10 @@ public partial class TemplateLexer : Lexer
 						switch ( alt20 )
 						{
 						case 1:
-							// Language\\Template.g3:342:8: => ( '\\r' )? '\\n'
+							// Language\\Template.g3:343:8: => ( '\\r' )? '\\n'
 							{
 
-							// Language\\Template.g3:342:23: ( '\\r' )?
+							// Language\\Template.g3:343:23: ( '\\r' )?
 							int alt19=2;
 							int LA19_0 = input.LA(1);
 
@@ -1111,7 +1111,7 @@ public partial class TemplateLexer : Lexer
 							switch ( alt19 )
 							{
 							case 1:
-								// Language\\Template.g3:342:24: '\\r'
+								// Language\\Template.g3:343:24: '\\r'
 								{
 								Match('\r'); if (state.failed) return ;
 
@@ -1131,7 +1131,7 @@ public partial class TemplateLexer : Lexer
 
 						}
 
-						// Language\\Template.g3:343:6: (=> '$@end$' | . )
+						// Language\\Template.g3:344:6: (=> '$@end$' | . )
 						int alt21=2;
 						int LA21_0 = input.LA(1);
 
@@ -1161,7 +1161,7 @@ public partial class TemplateLexer : Lexer
 						switch ( alt21 )
 						{
 						case 1:
-							// Language\\Template.g3:343:8: => '$@end$'
+							// Language\\Template.g3:344:8: => '$@end$'
 							{
 
 							Match("$@end$"); if (state.failed) return ;
@@ -1170,7 +1170,7 @@ public partial class TemplateLexer : Lexer
 							}
 							break;
 						case 2:
-							// Language\\Template.g3:344:8: .
+							// Language\\Template.g3:345:8: .
 							{
 							MatchAny(); if (state.failed) return ;
 							if ( state.backtracking == 0 )
@@ -1183,7 +1183,7 @@ public partial class TemplateLexer : Lexer
 
 						}
 
-						// Language\\Template.g3:346:6: ({...}? ( '\\r' )? '\\n' )?
+						// Language\\Template.g3:347:6: ({...}? ( '\\r' )? '\\n' )?
 						int alt23=2;
 						int LA23_0 = input.LA(1);
 
@@ -1194,14 +1194,14 @@ public partial class TemplateLexer : Lexer
 						switch ( alt23 )
 						{
 						case 1:
-							// Language\\Template.g3:346:8: {...}? ( '\\r' )? '\\n'
+							// Language\\Template.g3:347:8: {...}? ( '\\r' )? '\\n'
 							{
 							if ( !((atLeft)) )
 							{
 								if (state.backtracking>0) {state.failed=true; return ;}
 								throw new FailedPredicateException(input, "ACTION", "atLeft");
 							}
-							// Language\\Template.g3:346:18: ( '\\r' )?
+							// Language\\Template.g3:347:18: ( '\\r' )?
 							int alt22=2;
 							int LA22_0 = input.LA(1);
 
@@ -1212,7 +1212,7 @@ public partial class TemplateLexer : Lexer
 							switch ( alt22 )
 							{
 							case 1:
-								// Language\\Template.g3:346:19: '\\r'
+								// Language\\Template.g3:347:19: '\\r'
 								{
 								Match('\r'); if (state.failed) return ;
 
@@ -1244,7 +1244,7 @@ public partial class TemplateLexer : Lexer
 					}
 					break;
 				case 6:
-					// Language\\Template.g3:351:6: '$' EXPR[out subtext] '$'
+					// Language\\Template.g3:352:6: '$' EXPR[out subtext] '$'
 					{
 					Match('$'); if (state.failed) return ;
 					mEXPR(out subtext); if (state.failed) return ;
@@ -1300,10 +1300,10 @@ public partial class TemplateLexer : Lexer
 				int col = CharPositionInLine;
 				System.Text.StringBuilder builder = new System.Text.StringBuilder();
 
-			// Language\\Template.g3:369:4: ( ( '\\\\' ( '$' | '\\\\' |ch=~ ( '$' | '\\\\' ) ) |ind= INDENT |ch=~ ( '$' | '\\r' | '\\n' | '\\\\' | ' ' | '\\t' ) )+ )
-			// Language\\Template.g3:369:4: ( '\\\\' ( '$' | '\\\\' |ch=~ ( '$' | '\\\\' ) ) |ind= INDENT |ch=~ ( '$' | '\\r' | '\\n' | '\\\\' | ' ' | '\\t' ) )+
+			// Language\\Template.g3:370:4: ( ( '\\\\' ( '$' | '\\\\' |ch=~ ( '$' | '\\\\' ) ) |ind= INDENT |ch=~ ( '$' | '\\r' | '\\n' | '\\\\' | ' ' | '\\t' ) )+ )
+			// Language\\Template.g3:370:4: ( '\\\\' ( '$' | '\\\\' |ch=~ ( '$' | '\\\\' ) ) |ind= INDENT |ch=~ ( '$' | '\\r' | '\\n' | '\\\\' | ' ' | '\\t' ) )+
 			{
-			// Language\\Template.g3:369:4: ( '\\\\' ( '$' | '\\\\' |ch=~ ( '$' | '\\\\' ) ) |ind= INDENT |ch=~ ( '$' | '\\r' | '\\n' | '\\\\' | ' ' | '\\t' ) )+
+			// Language\\Template.g3:370:4: ( '\\\\' ( '$' | '\\\\' |ch=~ ( '$' | '\\\\' ) ) |ind= INDENT |ch=~ ( '$' | '\\r' | '\\n' | '\\\\' | ' ' | '\\t' ) )+
 			int cnt28=0;
 			for ( ; ; )
 			{
@@ -1327,10 +1327,10 @@ public partial class TemplateLexer : Lexer
 				switch ( alt28 )
 				{
 				case 1:
-					// Language\\Template.g3:369:6: '\\\\' ( '$' | '\\\\' |ch=~ ( '$' | '\\\\' ) )
+					// Language\\Template.g3:370:6: '\\\\' ( '$' | '\\\\' |ch=~ ( '$' | '\\\\' ) )
 					{
 					Match('\\'); if (state.failed) return ;
-					// Language\\Template.g3:370:4: ( '$' | '\\\\' |ch=~ ( '$' | '\\\\' ) )
+					// Language\\Template.g3:371:4: ( '$' | '\\\\' |ch=~ ( '$' | '\\\\' ) )
 					int alt27=3;
 					int LA27_0 = input.LA(1);
 
@@ -1356,7 +1356,7 @@ public partial class TemplateLexer : Lexer
 					switch ( alt27 )
 					{
 					case 1:
-						// Language\\Template.g3:370:6: '$'
+						// Language\\Template.g3:371:6: '$'
 						{
 						Match('$'); if (state.failed) return ;
 						if ( state.backtracking == 0 )
@@ -1367,7 +1367,7 @@ public partial class TemplateLexer : Lexer
 						}
 						break;
 					case 2:
-						// Language\\Template.g3:371:6: '\\\\'
+						// Language\\Template.g3:372:6: '\\\\'
 						{
 						Match('\\'); if (state.failed) return ;
 						if ( state.backtracking == 0 )
@@ -1378,7 +1378,7 @@ public partial class TemplateLexer : Lexer
 						}
 						break;
 					case 3:
-						// Language\\Template.g3:372:6: ch=~ ( '$' | '\\\\' )
+						// Language\\Template.g3:373:6: ch=~ ( '$' | '\\\\' )
 						{
 						ch= input.LA(1);
 						input.Consume();
@@ -1397,7 +1397,7 @@ public partial class TemplateLexer : Lexer
 					}
 					break;
 				case 2:
-					// Language\\Template.g3:374:5: ind= INDENT
+					// Language\\Template.g3:375:5: ind= INDENT
 					{
 					int indStart759 = GetCharIndex();
 					mINDENT(); if (state.failed) return ;
@@ -1426,7 +1426,7 @@ public partial class TemplateLexer : Lexer
 					}
 					break;
 				case 3:
-					// Language\\Template.g3:392:5: ch=~ ( '$' | '\\r' | '\\n' | '\\\\' | ' ' | '\\t' )
+					// Language\\Template.g3:393:5: ch=~ ( '$' | '\\r' | '\\n' | '\\\\' | ' ' | '\\t' )
 					{
 					ch= input.LA(1);
 					input.Consume();
@@ -1487,10 +1487,10 @@ public partial class TemplateLexer : Lexer
 				string subtext = string.Empty;
 				System.Text.StringBuilder builder = new System.Text.StringBuilder();
 
-			// Language\\Template.g3:407:4: ( ( ESC |st= SUBTEMPLATE | ( '=' | '+' ) ( TEMPLATE[out subtext] |st= SUBTEMPLATE |ch=~ ( '\"' | '<' | '{' ) ) |ch=~ ( '\\\\' | '{' | '=' | '+' | '$' ) )+ )
-			// Language\\Template.g3:407:4: ( ESC |st= SUBTEMPLATE | ( '=' | '+' ) ( TEMPLATE[out subtext] |st= SUBTEMPLATE |ch=~ ( '\"' | '<' | '{' ) ) |ch=~ ( '\\\\' | '{' | '=' | '+' | '$' ) )+
+			// Language\\Template.g3:408:4: ( ( ESC |st= SUBTEMPLATE | ( '=' | '+' ) ( TEMPLATE[out subtext] |st= SUBTEMPLATE |ch=~ ( '\"' | '<' | '{' ) ) |ch=~ ( '\\\\' | '{' | '=' | '+' | '$' ) )+ )
+			// Language\\Template.g3:408:4: ( ESC |st= SUBTEMPLATE | ( '=' | '+' ) ( TEMPLATE[out subtext] |st= SUBTEMPLATE |ch=~ ( '\"' | '<' | '{' ) ) |ch=~ ( '\\\\' | '{' | '=' | '+' | '$' ) )+
 			{
-			// Language\\Template.g3:407:4: ( ESC |st= SUBTEMPLATE | ( '=' | '+' ) ( TEMPLATE[out subtext] |st= SUBTEMPLATE |ch=~ ( '\"' | '<' | '{' ) ) |ch=~ ( '\\\\' | '{' | '=' | '+' | '$' ) )+
+			// Language\\Template.g3:408:4: ( ESC |st= SUBTEMPLATE | ( '=' | '+' ) ( TEMPLATE[out subtext] |st= SUBTEMPLATE |ch=~ ( '\"' | '<' | '{' ) ) |ch=~ ( '\\\\' | '{' | '=' | '+' | '$' ) )+
 			int cnt31=0;
 			for ( ; ; )
 			{
@@ -1518,7 +1518,7 @@ public partial class TemplateLexer : Lexer
 				switch ( alt31 )
 				{
 				case 1:
-					// Language\\Template.g3:407:6: ESC
+					// Language\\Template.g3:408:6: ESC
 					{
 					int ESC1Start821 = GetCharIndex();
 					mESC(); if (state.failed) return ;
@@ -1531,7 +1531,7 @@ public partial class TemplateLexer : Lexer
 					}
 					break;
 				case 2:
-					// Language\\Template.g3:408:5: st= SUBTEMPLATE
+					// Language\\Template.g3:409:5: st= SUBTEMPLATE
 					{
 					int stStart837 = GetCharIndex();
 					mSUBTEMPLATE(); if (state.failed) return ;
@@ -1544,9 +1544,9 @@ public partial class TemplateLexer : Lexer
 					}
 					break;
 				case 3:
-					// Language\\Template.g3:409:5: ( '=' | '+' ) ( TEMPLATE[out subtext] |st= SUBTEMPLATE |ch=~ ( '\"' | '<' | '{' ) )
+					// Language\\Template.g3:410:5: ( '=' | '+' ) ( TEMPLATE[out subtext] |st= SUBTEMPLATE |ch=~ ( '\"' | '<' | '{' ) )
 					{
-					// Language\\Template.g3:409:5: ( '=' | '+' )
+					// Language\\Template.g3:410:5: ( '=' | '+' )
 					int alt29=2;
 					int LA29_0 = input.LA(1);
 
@@ -1568,7 +1568,7 @@ public partial class TemplateLexer : Lexer
 					switch ( alt29 )
 					{
 					case 1:
-						// Language\\Template.g3:409:7: '='
+						// Language\\Template.g3:410:7: '='
 						{
 						Match('='); if (state.failed) return ;
 						if ( state.backtracking == 0 )
@@ -1579,7 +1579,7 @@ public partial class TemplateLexer : Lexer
 						}
 						break;
 					case 2:
-						// Language\\Template.g3:410:6: '+'
+						// Language\\Template.g3:411:6: '+'
 						{
 						Match('+'); if (state.failed) return ;
 						if ( state.backtracking == 0 )
@@ -1592,7 +1592,7 @@ public partial class TemplateLexer : Lexer
 
 					}
 
-					// Language\\Template.g3:412:4: ( TEMPLATE[out subtext] |st= SUBTEMPLATE |ch=~ ( '\"' | '<' | '{' ) )
+					// Language\\Template.g3:413:4: ( TEMPLATE[out subtext] |st= SUBTEMPLATE |ch=~ ( '\"' | '<' | '{' ) )
 					int alt30=3;
 					int LA30_0 = input.LA(1);
 
@@ -1618,7 +1618,7 @@ public partial class TemplateLexer : Lexer
 					switch ( alt30 )
 					{
 					case 1:
-						// Language\\Template.g3:412:6: TEMPLATE[out subtext]
+						// Language\\Template.g3:413:6: TEMPLATE[out subtext]
 						{
 						mTEMPLATE(out subtext); if (state.failed) return ;
 						if ( state.backtracking == 0 )
@@ -1629,7 +1629,7 @@ public partial class TemplateLexer : Lexer
 						}
 						break;
 					case 2:
-						// Language\\Template.g3:413:6: st= SUBTEMPLATE
+						// Language\\Template.g3:414:6: st= SUBTEMPLATE
 						{
 						int stStart895 = GetCharIndex();
 						mSUBTEMPLATE(); if (state.failed) return ;
@@ -1642,7 +1642,7 @@ public partial class TemplateLexer : Lexer
 						}
 						break;
 					case 3:
-						// Language\\Template.g3:414:6: ch=~ ( '\"' | '<' | '{' )
+						// Language\\Template.g3:415:6: ch=~ ( '\"' | '<' | '{' )
 						{
 						ch= input.LA(1);
 						input.Consume();
@@ -1661,7 +1661,7 @@ public partial class TemplateLexer : Lexer
 					}
 					break;
 				case 4:
-					// Language\\Template.g3:416:5: ch=~ ( '\\\\' | '{' | '=' | '+' | '$' )
+					// Language\\Template.g3:417:5: ch=~ ( '\\\\' | '{' | '=' | '+' | '$' )
 					{
 					ch= input.LA(1);
 					input.Consume();
@@ -1714,7 +1714,7 @@ public partial class TemplateLexer : Lexer
 				_text = string.Empty;
 				System.Text.StringBuilder builder = new System.Text.StringBuilder();
 
-			// Language\\Template.g3:428:4: ( '\"' ( ESC |ch=~ ( '\\\\' | '\"' ) )* '\"' | '<<' (=> ( '\\r' )? '\\n' )? (=> ( '\\r' )? '\\n' |ch= . )* '>>' )
+			// Language\\Template.g3:429:4: ( '\"' ( ESC |ch=~ ( '\\\\' | '\"' ) )* '\"' | '<<' (=> ( '\\r' )? '\\n' )? (=> ( '\\r' )? '\\n' |ch= . )* '>>' )
 			int alt37=2;
 			int LA37_0 = input.LA(1);
 
@@ -1736,14 +1736,14 @@ public partial class TemplateLexer : Lexer
 			switch ( alt37 )
 			{
 			case 1:
-				// Language\\Template.g3:428:4: '\"' ( ESC |ch=~ ( '\\\\' | '\"' ) )* '\"'
+				// Language\\Template.g3:429:4: '\"' ( ESC |ch=~ ( '\\\\' | '\"' ) )* '\"'
 				{
 				Match('\"'); if (state.failed) return ;
 				if ( state.backtracking == 0 )
 				{
 					builder.Append('"');
 				}
-				// Language\\Template.g3:430:3: ( ESC |ch=~ ( '\\\\' | '\"' ) )*
+				// Language\\Template.g3:431:3: ( ESC |ch=~ ( '\\\\' | '\"' ) )*
 				for ( ; ; )
 				{
 					int alt32=3;
@@ -1762,7 +1762,7 @@ public partial class TemplateLexer : Lexer
 					switch ( alt32 )
 					{
 					case 1:
-						// Language\\Template.g3:430:5: ESC
+						// Language\\Template.g3:431:5: ESC
 						{
 						int ESC2Start981 = GetCharIndex();
 						mESC(); if (state.failed) return ;
@@ -1775,7 +1775,7 @@ public partial class TemplateLexer : Lexer
 						}
 						break;
 					case 2:
-						// Language\\Template.g3:431:5: ch=~ ( '\\\\' | '\"' )
+						// Language\\Template.g3:432:5: ch=~ ( '\\\\' | '\"' )
 						{
 						ch= input.LA(1);
 						input.Consume();
@@ -1809,7 +1809,7 @@ public partial class TemplateLexer : Lexer
 				}
 				break;
 			case 2:
-				// Language\\Template.g3:438:4: '<<' (=> ( '\\r' )? '\\n' )? (=> ( '\\r' )? '\\n' |ch= . )* '>>'
+				// Language\\Template.g3:439:4: '<<' (=> ( '\\r' )? '\\n' )? (=> ( '\\r' )? '\\n' |ch= . )* '>>'
 				{
 				Match("<<"); if (state.failed) return ;
 
@@ -1819,7 +1819,7 @@ public partial class TemplateLexer : Lexer
 								builder.Append("<<");
 							
 				}
-				// Language\\Template.g3:442:4: (=> ( '\\r' )? '\\n' )?
+				// Language\\Template.g3:443:4: (=> ( '\\r' )? '\\n' )?
 				int alt34=2;
 				int LA34_0 = input.LA(1);
 
@@ -1849,10 +1849,10 @@ public partial class TemplateLexer : Lexer
 				switch ( alt34 )
 				{
 				case 1:
-					// Language\\Template.g3:442:6: => ( '\\r' )? '\\n'
+					// Language\\Template.g3:443:6: => ( '\\r' )? '\\n'
 					{
 
-					// Language\\Template.g3:442:21: ( '\\r' )?
+					// Language\\Template.g3:443:21: ( '\\r' )?
 					int alt33=2;
 					int LA33_0 = input.LA(1);
 
@@ -1863,7 +1863,7 @@ public partial class TemplateLexer : Lexer
 					switch ( alt33 )
 					{
 					case 1:
-						// Language\\Template.g3:442:22: '\\r'
+						// Language\\Template.g3:443:22: '\\r'
 						{
 						Match('\r'); if (state.failed) return ;
 
@@ -1879,7 +1879,7 @@ public partial class TemplateLexer : Lexer
 
 				}
 
-				// Language\\Template.g3:444:3: (=> ( '\\r' )? '\\n' |ch= . )*
+				// Language\\Template.g3:445:3: (=> ( '\\r' )? '\\n' |ch= . )*
 				for ( ; ; )
 				{
 					int alt36=3;
@@ -1946,10 +1946,10 @@ public partial class TemplateLexer : Lexer
 					switch ( alt36 )
 					{
 					case 1:
-						// Language\\Template.g3:444:5: => ( '\\r' )? '\\n'
+						// Language\\Template.g3:445:5: => ( '\\r' )? '\\n'
 						{
 
-						// Language\\Template.g3:444:23: ( '\\r' )?
+						// Language\\Template.g3:445:23: ( '\\r' )?
 						int alt35=2;
 						int LA35_0 = input.LA(1);
 
@@ -1960,7 +1960,7 @@ public partial class TemplateLexer : Lexer
 						switch ( alt35 )
 						{
 						case 1:
-							// Language\\Template.g3:444:24: '\\r'
+							// Language\\Template.g3:445:24: '\\r'
 							{
 							Match('\r'); if (state.failed) return ;
 
@@ -1974,7 +1974,7 @@ public partial class TemplateLexer : Lexer
 						}
 						break;
 					case 2:
-						// Language\\Template.g3:445:5: ch= .
+						// Language\\Template.g3:446:5: ch= .
 						{
 						ch = input.LA(1);
 						MatchAny(); if (state.failed) return ;
@@ -2021,10 +2021,10 @@ public partial class TemplateLexer : Lexer
 	{
 		try
 		{
-			// Language\\Template.g3:456:4: ( ( ESC | SUBTEMPLATE | NESTED_PARENS |~ ( '\\\\' | '{' | '(' | ')' ) )+ )
-			// Language\\Template.g3:456:4: ( ESC | SUBTEMPLATE | NESTED_PARENS |~ ( '\\\\' | '{' | '(' | ')' ) )+
+			// Language\\Template.g3:457:4: ( ( ESC | SUBTEMPLATE | NESTED_PARENS |~ ( '\\\\' | '{' | '(' | ')' ) )+ )
+			// Language\\Template.g3:457:4: ( ESC | SUBTEMPLATE | NESTED_PARENS |~ ( '\\\\' | '{' | '(' | ')' ) )+
 			{
-			// Language\\Template.g3:456:4: ( ESC | SUBTEMPLATE | NESTED_PARENS |~ ( '\\\\' | '{' | '(' | ')' ) )+
+			// Language\\Template.g3:457:4: ( ESC | SUBTEMPLATE | NESTED_PARENS |~ ( '\\\\' | '{' | '(' | ')' ) )+
 			int cnt38=0;
 			for ( ; ; )
 			{
@@ -2052,28 +2052,28 @@ public partial class TemplateLexer : Lexer
 				switch ( alt38 )
 				{
 				case 1:
-					// Language\\Template.g3:456:6: ESC
+					// Language\\Template.g3:457:6: ESC
 					{
 					mESC(); if (state.failed) return ;
 
 					}
 					break;
 				case 2:
-					// Language\\Template.g3:457:5: SUBTEMPLATE
+					// Language\\Template.g3:458:5: SUBTEMPLATE
 					{
 					mSUBTEMPLATE(); if (state.failed) return ;
 
 					}
 					break;
 				case 3:
-					// Language\\Template.g3:458:5: NESTED_PARENS
+					// Language\\Template.g3:459:5: NESTED_PARENS
 					{
 					mNESTED_PARENS(); if (state.failed) return ;
 
 					}
 					break;
 				case 4:
-					// Language\\Template.g3:459:5: ~ ( '\\\\' | '{' | '(' | ')' )
+					// Language\\Template.g3:460:5: ~ ( '\\\\' | '{' | '(' | ')' )
 					{
 					input.Consume();
 					state.failed=false;
@@ -2118,7 +2118,7 @@ public partial class TemplateLexer : Lexer
 
 				uc = '\0';
 
-			// Language\\Template.g3:469:4: ( '\\\\n' | '\\\\r' | '\\\\t' | '\\\\ ' | '\\\\u' a= HEX b= HEX c= HEX d= HEX )
+			// Language\\Template.g3:470:4: ( '\\\\n' | '\\\\r' | '\\\\t' | '\\\\ ' | '\\\\u' a= HEX b= HEX c= HEX d= HEX )
 			int alt39=5;
 			int LA39_0 = input.LA(1);
 
@@ -2171,7 +2171,7 @@ public partial class TemplateLexer : Lexer
 			switch ( alt39 )
 			{
 			case 1:
-				// Language\\Template.g3:469:4: '\\\\n'
+				// Language\\Template.g3:470:4: '\\\\n'
 				{
 				Match("\\n"); if (state.failed) return ;
 
@@ -2183,7 +2183,7 @@ public partial class TemplateLexer : Lexer
 				}
 				break;
 			case 2:
-				// Language\\Template.g3:470:4: '\\\\r'
+				// Language\\Template.g3:471:4: '\\\\r'
 				{
 				Match("\\r"); if (state.failed) return ;
 
@@ -2195,7 +2195,7 @@ public partial class TemplateLexer : Lexer
 				}
 				break;
 			case 3:
-				// Language\\Template.g3:471:4: '\\\\t'
+				// Language\\Template.g3:472:4: '\\\\t'
 				{
 				Match("\\t"); if (state.failed) return ;
 
@@ -2207,7 +2207,7 @@ public partial class TemplateLexer : Lexer
 				}
 				break;
 			case 4:
-				// Language\\Template.g3:472:4: '\\\\ '
+				// Language\\Template.g3:473:4: '\\\\ '
 				{
 				Match("\\ "); if (state.failed) return ;
 
@@ -2219,7 +2219,7 @@ public partial class TemplateLexer : Lexer
 				}
 				break;
 			case 5:
-				// Language\\Template.g3:473:4: '\\\\u' a= HEX b= HEX c= HEX d= HEX
+				// Language\\Template.g3:474:4: '\\\\u' a= HEX b= HEX c= HEX d= HEX
 				{
 				Match("\\u"); if (state.failed) return ;
 
@@ -2256,8 +2256,8 @@ public partial class TemplateLexer : Lexer
 	{
 		try
 		{
-			// Language\\Template.g3:479:4: ( '\\\\' . )
-			// Language\\Template.g3:479:4: '\\\\' .
+			// Language\\Template.g3:480:4: ( '\\\\' . )
+			// Language\\Template.g3:480:4: '\\\\' .
 			{
 			Match('\\'); if (state.failed) return ;
 			MatchAny(); if (state.failed) return ;
@@ -2276,7 +2276,7 @@ public partial class TemplateLexer : Lexer
 	{
 		try
 		{
-			// Language\\Template.g3:484:4: ( '0' .. '9' | 'A' .. 'F' | 'a' .. 'f' )
+			// Language\\Template.g3:485:4: ( '0' .. '9' | 'A' .. 'F' | 'a' .. 'f' )
 			// Language\\Template.g3:
 			{
 			if ( (input.LA(1)>='0' && input.LA(1)<='9')||(input.LA(1)>='A' && input.LA(1)<='F')||(input.LA(1)>='a' && input.LA(1)<='f') )
@@ -2306,11 +2306,11 @@ public partial class TemplateLexer : Lexer
 	{
 		try
 		{
-			// Language\\Template.g3:489:4: ( '{' ( SUBTEMPLATE | ESC |~ ( '{' | '\\\\' | '}' ) )* '}' )
-			// Language\\Template.g3:489:4: '{' ( SUBTEMPLATE | ESC |~ ( '{' | '\\\\' | '}' ) )* '}'
+			// Language\\Template.g3:490:4: ( '{' ( SUBTEMPLATE | ESC |~ ( '{' | '\\\\' | '}' ) )* '}' )
+			// Language\\Template.g3:490:4: '{' ( SUBTEMPLATE | ESC |~ ( '{' | '\\\\' | '}' ) )* '}'
 			{
 			Match('{'); if (state.failed) return ;
-			// Language\\Template.g3:490:3: ( SUBTEMPLATE | ESC |~ ( '{' | '\\\\' | '}' ) )*
+			// Language\\Template.g3:491:3: ( SUBTEMPLATE | ESC |~ ( '{' | '\\\\' | '}' ) )*
 			for ( ; ; )
 			{
 				int alt40=4;
@@ -2333,21 +2333,21 @@ public partial class TemplateLexer : Lexer
 				switch ( alt40 )
 				{
 				case 1:
-					// Language\\Template.g3:490:5: SUBTEMPLATE
+					// Language\\Template.g3:491:5: SUBTEMPLATE
 					{
 					mSUBTEMPLATE(); if (state.failed) return ;
 
 					}
 					break;
 				case 2:
-					// Language\\Template.g3:491:5: ESC
+					// Language\\Template.g3:492:5: ESC
 					{
 					mESC(); if (state.failed) return ;
 
 					}
 					break;
 				case 3:
-					// Language\\Template.g3:492:5: ~ ( '{' | '\\\\' | '}' )
+					// Language\\Template.g3:493:5: ~ ( '{' | '\\\\' | '}' )
 					{
 					input.Consume();
 					state.failed=false;
@@ -2380,11 +2380,11 @@ public partial class TemplateLexer : Lexer
 	{
 		try
 		{
-			// Language\\Template.g3:499:4: ( '(' ( NESTED_PARENS | ESC |~ ( '(' | '\\\\' | ')' ) )+ ')' )
-			// Language\\Template.g3:499:4: '(' ( NESTED_PARENS | ESC |~ ( '(' | '\\\\' | ')' ) )+ ')'
+			// Language\\Template.g3:500:4: ( '(' ( NESTED_PARENS | ESC |~ ( '(' | '\\\\' | ')' ) )+ ')' )
+			// Language\\Template.g3:500:4: '(' ( NESTED_PARENS | ESC |~ ( '(' | '\\\\' | ')' ) )+ ')'
 			{
 			Match('('); if (state.failed) return ;
-			// Language\\Template.g3:500:3: ( NESTED_PARENS | ESC |~ ( '(' | '\\\\' | ')' ) )+
+			// Language\\Template.g3:501:3: ( NESTED_PARENS | ESC |~ ( '(' | '\\\\' | ')' ) )+
 			int cnt41=0;
 			for ( ; ; )
 			{
@@ -2408,21 +2408,21 @@ public partial class TemplateLexer : Lexer
 				switch ( alt41 )
 				{
 				case 1:
-					// Language\\Template.g3:500:5: NESTED_PARENS
+					// Language\\Template.g3:501:5: NESTED_PARENS
 					{
 					mNESTED_PARENS(); if (state.failed) return ;
 
 					}
 					break;
 				case 2:
-					// Language\\Template.g3:501:5: ESC
+					// Language\\Template.g3:502:5: ESC
 					{
 					mESC(); if (state.failed) return ;
 
 					}
 					break;
 				case 3:
-					// Language\\Template.g3:502:5: ~ ( '(' | '\\\\' | ')' )
+					// Language\\Template.g3:503:5: ~ ( '(' | '\\\\' | ')' )
 					{
 					input.Consume();
 					state.failed=false;
@@ -2460,10 +2460,10 @@ public partial class TemplateLexer : Lexer
 	{
 		try
 		{
-			// Language\\Template.g3:509:4: ( ( ' ' | '\\t' )+ )
-			// Language\\Template.g3:509:4: ( ' ' | '\\t' )+
+			// Language\\Template.g3:510:4: ( ( ' ' | '\\t' )+ )
+			// Language\\Template.g3:510:4: ( ' ' | '\\t' )+
 			{
-			// Language\\Template.g3:509:4: ( ' ' | '\\t' )+
+			// Language\\Template.g3:510:4: ( ' ' | '\\t' )+
 			int cnt42=0;
 			for ( ; ; )
 			{
@@ -2519,12 +2519,12 @@ public partial class TemplateLexer : Lexer
 
 				int startCol = CharPositionInLine;
 
-			// Language\\Template.g3:518:4: ( '$!' ( . )* '!$' ({...}? => ( '\\r' )? '\\n' )? )
-			// Language\\Template.g3:518:4: '$!' ( . )* '!$' ({...}? => ( '\\r' )? '\\n' )?
+			// Language\\Template.g3:519:4: ( '$!' ( . )* '!$' ({...}? => ( '\\r' )? '\\n' )? )
+			// Language\\Template.g3:519:4: '$!' ( . )* '!$' ({...}? => ( '\\r' )? '\\n' )?
 			{
 			Match("$!"); if (state.failed) return ;
 
-			// Language\\Template.g3:518:9: ( . )*
+			// Language\\Template.g3:519:9: ( . )*
 			for ( ; ; )
 			{
 				int alt43=2;
@@ -2554,7 +2554,7 @@ public partial class TemplateLexer : Lexer
 				switch ( alt43 )
 				{
 				case 1:
-					// Language\\Template.g3:518:0: .
+					// Language\\Template.g3:519:0: .
 					{
 					MatchAny(); if (state.failed) return ;
 
@@ -2572,7 +2572,7 @@ public partial class TemplateLexer : Lexer
 
 			Match("!$"); if (state.failed) return ;
 
-			// Language\\Template.g3:518:17: ({...}? => ( '\\r' )? '\\n' )?
+			// Language\\Template.g3:519:17: ({...}? => ( '\\r' )? '\\n' )?
 			int alt45=2;
 			int LA45_0 = input.LA(1);
 
@@ -2583,14 +2583,14 @@ public partial class TemplateLexer : Lexer
 			switch ( alt45 )
 			{
 			case 1:
-				// Language\\Template.g3:518:19: {...}? => ( '\\r' )? '\\n'
+				// Language\\Template.g3:519:19: {...}? => ( '\\r' )? '\\n'
 				{
 				if ( !((startCol==0)) )
 				{
 					if (state.backtracking>0) {state.failed=true; return ;}
 					throw new FailedPredicateException(input, "COMMENT", "startCol==0");
 				}
-				// Language\\Template.g3:518:37: ( '\\r' )?
+				// Language\\Template.g3:519:37: ( '\\r' )?
 				int alt44=2;
 				int LA44_0 = input.LA(1);
 
@@ -2601,7 +2601,7 @@ public partial class TemplateLexer : Lexer
 				switch ( alt44 )
 				{
 				case 1:
-					// Language\\Template.g3:518:38: '\\r'
+					// Language\\Template.g3:519:38: '\\r'
 					{
 					Match('\r'); if (state.failed) return ;
 
@@ -2683,8 +2683,8 @@ public partial class TemplateLexer : Lexer
 	// $ANTLR start synpred1_Template
 	public void synpred1_Template_fragment()
 	{
-		// Language\\Template.g3:280:4: ( '$\\\\' )
-		// Language\\Template.g3:280:5: '$\\\\'
+		// Language\\Template.g3:281:4: ( '$\\\\' )
+		// Language\\Template.g3:281:5: '$\\\\'
 		{
 		Match("$\\"); if (state.failed) return ;
 
@@ -2696,7 +2696,7 @@ public partial class TemplateLexer : Lexer
 	// $ANTLR start synpred10_Template
 	public void synpred10_Template_fragment()
 	{
-		// Language\\Template.g3:342:8: ( '\\r' | '\\n' )
+		// Language\\Template.g3:343:8: ( '\\r' | '\\n' )
 		// Language\\Template.g3:
 		{
 		if ( input.LA(1)=='\n'||input.LA(1)=='\r' )
@@ -2719,8 +2719,8 @@ public partial class TemplateLexer : Lexer
 	// $ANTLR start synpred11_Template
 	public void synpred11_Template_fragment()
 	{
-		// Language\\Template.g3:343:8: ( '$@end$' )
-		// Language\\Template.g3:343:9: '$@end$'
+		// Language\\Template.g3:344:8: ( '$@end$' )
+		// Language\\Template.g3:344:9: '$@end$'
 		{
 		Match("$@end$"); if (state.failed) return ;
 
@@ -2732,7 +2732,7 @@ public partial class TemplateLexer : Lexer
 	// $ANTLR start synpred12_Template
 	public void synpred12_Template_fragment()
 	{
-		// Language\\Template.g3:442:6: ( '\\r' | '\\n' )
+		// Language\\Template.g3:443:6: ( '\\r' | '\\n' )
 		// Language\\Template.g3:
 		{
 		if ( input.LA(1)=='\n'||input.LA(1)=='\r' )
@@ -2755,10 +2755,10 @@ public partial class TemplateLexer : Lexer
 	// $ANTLR start synpred13_Template
 	public void synpred13_Template_fragment()
 	{
-		// Language\\Template.g3:444:5: ( ( '\\r' )? '\\n>>' )
-		// Language\\Template.g3:444:6: ( '\\r' )? '\\n>>'
+		// Language\\Template.g3:445:5: ( ( '\\r' )? '\\n>>' )
+		// Language\\Template.g3:445:6: ( '\\r' )? '\\n>>'
 		{
-		// Language\\Template.g3:444:6: ( '\\r' )?
+		// Language\\Template.g3:445:6: ( '\\r' )?
 		int alt47=2;
 		int LA47_0 = input.LA(1);
 
@@ -2769,7 +2769,7 @@ public partial class TemplateLexer : Lexer
 		switch ( alt47 )
 		{
 		case 1:
-			// Language\\Template.g3:444:0: '\\r'
+			// Language\\Template.g3:445:0: '\\r'
 			{
 			Match('\r'); if (state.failed) return ;
 
@@ -2788,8 +2788,8 @@ public partial class TemplateLexer : Lexer
 	// $ANTLR start synpred2_Template
 	public void synpred2_Template_fragment()
 	{
-		// Language\\Template.g3:287:5: ( '$!' )
-		// Language\\Template.g3:287:6: '$!'
+		// Language\\Template.g3:288:5: ( '$!' )
+		// Language\\Template.g3:288:6: '$!'
 		{
 		Match("$!"); if (state.failed) return ;
 
@@ -2801,8 +2801,8 @@ public partial class TemplateLexer : Lexer
 	// $ANTLR start synpred3_Template
 	public void synpred3_Template_fragment()
 	{
-		// Language\\Template.g3:289:7: ( '$if' ( ' ' | '(' ) )
-		// Language\\Template.g3:289:8: '$if' ( ' ' | '(' )
+		// Language\\Template.g3:290:7: ( '$if' ( ' ' | '(' ) )
+		// Language\\Template.g3:290:8: '$if' ( ' ' | '(' )
 		{
 		Match("$if"); if (state.failed) return ;
 
@@ -2826,8 +2826,8 @@ public partial class TemplateLexer : Lexer
 	// $ANTLR start synpred4_Template
 	public void synpred4_Template_fragment()
 	{
-		// Language\\Template.g3:296:6: ( '$elseif' ( ' ' | '(' ) )
-		// Language\\Template.g3:296:7: '$elseif' ( ' ' | '(' )
+		// Language\\Template.g3:297:6: ( '$elseif' ( ' ' | '(' ) )
+		// Language\\Template.g3:297:7: '$elseif' ( ' ' | '(' )
 		{
 		Match("$elseif"); if (state.failed) return ;
 
@@ -2851,8 +2851,8 @@ public partial class TemplateLexer : Lexer
 	// $ANTLR start synpred5_Template
 	public void synpred5_Template_fragment()
 	{
-		// Language\\Template.g3:303:6: ( '$else$' )
-		// Language\\Template.g3:303:7: '$else$'
+		// Language\\Template.g3:304:6: ( '$else$' )
+		// Language\\Template.g3:304:7: '$else$'
 		{
 		Match("$else$"); if (state.failed) return ;
 
@@ -2864,8 +2864,8 @@ public partial class TemplateLexer : Lexer
 	// $ANTLR start synpred6_Template
 	public void synpred6_Template_fragment()
 	{
-		// Language\\Template.g3:310:6: ( '$endif$' )
-		// Language\\Template.g3:310:7: '$endif$'
+		// Language\\Template.g3:311:6: ( '$endif$' )
+		// Language\\Template.g3:311:7: '$endif$'
 		{
 		Match("$endif$"); if (state.failed) return ;
 
@@ -2877,8 +2877,8 @@ public partial class TemplateLexer : Lexer
 	// $ANTLR start synpred7_Template
 	public void synpred7_Template_fragment()
 	{
-		// Language\\Template.g3:320:5: ( '$@' )
-		// Language\\Template.g3:320:6: '$@'
+		// Language\\Template.g3:321:5: ( '$@' )
+		// Language\\Template.g3:321:6: '$@'
 		{
 		Match("$@"); if (state.failed) return ;
 
@@ -2890,7 +2890,7 @@ public partial class TemplateLexer : Lexer
 	// $ANTLR start synpred8_Template
 	public void synpred8_Template_fragment()
 	{
-		// Language\\Template.g3:335:8: ( '\\r' | '\\n' )
+		// Language\\Template.g3:336:8: ( '\\r' | '\\n' )
 		// Language\\Template.g3:
 		{
 		if ( input.LA(1)=='\n'||input.LA(1)=='\r' )
@@ -2913,7 +2913,7 @@ public partial class TemplateLexer : Lexer
 	// $ANTLR start synpred9_Template
 	public void synpred9_Template_fragment()
 	{
-		// Language\\Template.g3:338:9: ( '\\r' | '\\n' )
+		// Language\\Template.g3:339:9: ( '\\r' | '\\n' )
 		// Language\\Template.g3:
 		{
 		if ( input.LA(1)=='\n'||input.LA(1)=='\r' )
@@ -3245,7 +3245,7 @@ public partial class TemplateLexer : Lexer
 		}
 		public override string GetDescription()
 		{
-			return "()+ loopback of 337:6: ({...}? => (=> ( '\\r' )? '\\n' |ch= . ) )+";
+			return "()+ loopback of 338:6: ({...}? => (=> ( '\\r' )? '\\n' |ch= . ) )+";
 		}
 	}
 

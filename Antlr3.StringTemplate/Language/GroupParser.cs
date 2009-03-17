@@ -1,4 +1,4 @@
-// $ANTLR 3.1.2 Language\\Group.g3 2009-03-16 17:25:52
+// $ANTLR 3.1.2 Language\\Group.g3 2009-03-16 20:26:39
 
 // The variable 'variable' is assigned but its value is never used.
 #pragma warning disable 219
@@ -53,37 +53,33 @@ namespace Antlr3.ST.Language
 public partial class GroupParser : Parser
 {
 	public static readonly string[] tokenNames = new string[] {
-		"<invalid>", "<EOR>", "<DOWN>", "<UP>", "ANONYMOUS_TEMPLATE", "ANYCHAR", "ASSIGN", "AT", "BIGSTRING", "CLOSE_ANON_TEMPLATE", "CLOSE_BIG_STRING", "CLOSE_BLOCK_COMMENT", "COLON", "COMMA", "DEFINED_TO_BE", "DOT", "ID", "KWDEFAULT", "KWGROUP", "KWIMPLEMENTS", "LBRACK", "LPAREN", "ML_COMMENT", "OPTIONAL", "PLUS", "RBRACK", "RPAREN", "SEMI", "SL_COMMENT", "STAR", "STRING", "WS"
+		"<invalid>", "<EOR>", "<DOWN>", "<UP>", "ANONYMOUS_TEMPLATE", "ASSIGN", "AT", "BIGSTRING", "COLON", "COMMA", "DEFINED_TO_BE", "DOT", "ID", "KWDEFAULT", "KWGROUP", "KWIMPLEMENTS", "LBRACK", "LPAREN", "ML_COMMENT", "OPTIONAL", "PLUS", "RBRACK", "RPAREN", "SEMI", "SL_COMMENT", "STAR", "STRING", "WS"
 	};
 	public const int EOF=-1;
 	public const int ANONYMOUS_TEMPLATE=4;
-	public const int ANYCHAR=5;
-	public const int ASSIGN=6;
-	public const int AT=7;
-	public const int BIGSTRING=8;
-	public const int CLOSE_ANON_TEMPLATE=9;
-	public const int CLOSE_BIG_STRING=10;
-	public const int CLOSE_BLOCK_COMMENT=11;
-	public const int COLON=12;
-	public const int COMMA=13;
-	public const int DEFINED_TO_BE=14;
-	public const int DOT=15;
-	public const int ID=16;
-	public const int KWDEFAULT=17;
-	public const int KWGROUP=18;
-	public const int KWIMPLEMENTS=19;
-	public const int LBRACK=20;
-	public const int LPAREN=21;
-	public const int ML_COMMENT=22;
-	public const int OPTIONAL=23;
-	public const int PLUS=24;
-	public const int RBRACK=25;
-	public const int RPAREN=26;
-	public const int SEMI=27;
-	public const int SL_COMMENT=28;
-	public const int STAR=29;
-	public const int STRING=30;
-	public const int WS=31;
+	public const int ASSIGN=5;
+	public const int AT=6;
+	public const int BIGSTRING=7;
+	public const int COLON=8;
+	public const int COMMA=9;
+	public const int DEFINED_TO_BE=10;
+	public const int DOT=11;
+	public const int ID=12;
+	public const int KWDEFAULT=13;
+	public const int KWGROUP=14;
+	public const int KWIMPLEMENTS=15;
+	public const int LBRACK=16;
+	public const int LPAREN=17;
+	public const int ML_COMMENT=18;
+	public const int OPTIONAL=19;
+	public const int PLUS=20;
+	public const int RBRACK=21;
+	public const int RPAREN=22;
+	public const int SEMI=23;
+	public const int SL_COMMENT=24;
+	public const int STAR=25;
+	public const int STRING=26;
+	public const int WS=27;
 
 	// delegates
 	// delegators
@@ -1116,57 +1112,57 @@ public partial class GroupParser : Parser
 	#region Follow Sets
 	public static class Follow
 	{
-		public static readonly BitSet _KWGROUP_in_group93 = new BitSet(new ulong[]{0x10000UL});
-		public static readonly BitSet _ID_in_group97 = new BitSet(new ulong[]{0x8081000UL});
-		public static readonly BitSet _COLON_in_group105 = new BitSet(new ulong[]{0x10000UL});
-		public static readonly BitSet _ID_in_group109 = new BitSet(new ulong[]{0x8080000UL});
-		public static readonly BitSet _KWIMPLEMENTS_in_group120 = new BitSet(new ulong[]{0x10000UL});
-		public static readonly BitSet _ID_in_group124 = new BitSet(new ulong[]{0x8002000UL});
-		public static readonly BitSet _COMMA_in_group132 = new BitSet(new ulong[]{0x10000UL});
-		public static readonly BitSet _ID_in_group136 = new BitSet(new ulong[]{0x8002000UL});
-		public static readonly BitSet _SEMI_in_group150 = new BitSet(new ulong[]{0x10080UL});
-		public static readonly BitSet _template_in_group156 = new BitSet(new ulong[]{0x10080UL});
-		public static readonly BitSet _mapdef_in_group161 = new BitSet(new ulong[]{0x10080UL});
+		public static readonly BitSet _KWGROUP_in_group93 = new BitSet(new ulong[]{0x1000UL});
+		public static readonly BitSet _ID_in_group97 = new BitSet(new ulong[]{0x808100UL});
+		public static readonly BitSet _COLON_in_group105 = new BitSet(new ulong[]{0x1000UL});
+		public static readonly BitSet _ID_in_group109 = new BitSet(new ulong[]{0x808000UL});
+		public static readonly BitSet _KWIMPLEMENTS_in_group120 = new BitSet(new ulong[]{0x1000UL});
+		public static readonly BitSet _ID_in_group124 = new BitSet(new ulong[]{0x800200UL});
+		public static readonly BitSet _COMMA_in_group132 = new BitSet(new ulong[]{0x1000UL});
+		public static readonly BitSet _ID_in_group136 = new BitSet(new ulong[]{0x800200UL});
+		public static readonly BitSet _SEMI_in_group150 = new BitSet(new ulong[]{0x1040UL});
+		public static readonly BitSet _template_in_group156 = new BitSet(new ulong[]{0x1040UL});
+		public static readonly BitSet _mapdef_in_group161 = new BitSet(new ulong[]{0x1040UL});
 		public static readonly BitSet _EOF_in_group169 = new BitSet(new ulong[]{0x2UL});
-		public static readonly BitSet _AT_in_template188 = new BitSet(new ulong[]{0x10000UL});
-		public static readonly BitSet _ID_in_template192 = new BitSet(new ulong[]{0x8000UL});
-		public static readonly BitSet _DOT_in_template194 = new BitSet(new ulong[]{0x10000UL});
-		public static readonly BitSet _ID_in_template198 = new BitSet(new ulong[]{0x200000UL});
-		public static readonly BitSet _ID_in_template211 = new BitSet(new ulong[]{0x200000UL});
-		public static readonly BitSet _LPAREN_in_template230 = new BitSet(new ulong[]{0x4010000UL});
-		public static readonly BitSet _args_in_template236 = new BitSet(new ulong[]{0x4000000UL});
-		public static readonly BitSet _RPAREN_in_template244 = new BitSet(new ulong[]{0x4000UL});
-		public static readonly BitSet _DEFINED_TO_BE_in_template248 = new BitSet(new ulong[]{0x40000100UL});
+		public static readonly BitSet _AT_in_template188 = new BitSet(new ulong[]{0x1000UL});
+		public static readonly BitSet _ID_in_template192 = new BitSet(new ulong[]{0x800UL});
+		public static readonly BitSet _DOT_in_template194 = new BitSet(new ulong[]{0x1000UL});
+		public static readonly BitSet _ID_in_template198 = new BitSet(new ulong[]{0x20000UL});
+		public static readonly BitSet _ID_in_template211 = new BitSet(new ulong[]{0x20000UL});
+		public static readonly BitSet _LPAREN_in_template230 = new BitSet(new ulong[]{0x401000UL});
+		public static readonly BitSet _args_in_template236 = new BitSet(new ulong[]{0x400000UL});
+		public static readonly BitSet _RPAREN_in_template244 = new BitSet(new ulong[]{0x400UL});
+		public static readonly BitSet _DEFINED_TO_BE_in_template248 = new BitSet(new ulong[]{0x4000080UL});
 		public static readonly BitSet _STRING_in_template256 = new BitSet(new ulong[]{0x2UL});
 		public static readonly BitSet _BIGSTRING_in_template270 = new BitSet(new ulong[]{0x2UL});
-		public static readonly BitSet _ID_in_template286 = new BitSet(new ulong[]{0x4000UL});
-		public static readonly BitSet _DEFINED_TO_BE_in_template288 = new BitSet(new ulong[]{0x10000UL});
+		public static readonly BitSet _ID_in_template286 = new BitSet(new ulong[]{0x400UL});
+		public static readonly BitSet _DEFINED_TO_BE_in_template288 = new BitSet(new ulong[]{0x1000UL});
 		public static readonly BitSet _ID_in_template292 = new BitSet(new ulong[]{0x2UL});
-		public static readonly BitSet _arg_in_args308 = new BitSet(new ulong[]{0x2002UL});
-		public static readonly BitSet _COMMA_in_args313 = new BitSet(new ulong[]{0x10000UL});
-		public static readonly BitSet _arg_in_args315 = new BitSet(new ulong[]{0x2002UL});
-		public static readonly BitSet _ID_in_arg338 = new BitSet(new ulong[]{0x42UL});
-		public static readonly BitSet _ASSIGN_in_arg344 = new BitSet(new ulong[]{0x40000000UL});
+		public static readonly BitSet _arg_in_args308 = new BitSet(new ulong[]{0x202UL});
+		public static readonly BitSet _COMMA_in_args313 = new BitSet(new ulong[]{0x1000UL});
+		public static readonly BitSet _arg_in_args315 = new BitSet(new ulong[]{0x202UL});
+		public static readonly BitSet _ID_in_arg338 = new BitSet(new ulong[]{0x22UL});
+		public static readonly BitSet _ASSIGN_in_arg344 = new BitSet(new ulong[]{0x4000000UL});
 		public static readonly BitSet _STRING_in_arg348 = new BitSet(new ulong[]{0x2UL});
 		public static readonly BitSet _ASSIGN_in_arg359 = new BitSet(new ulong[]{0x10UL});
 		public static readonly BitSet _ANONYMOUS_TEMPLATE_in_arg363 = new BitSet(new ulong[]{0x2UL});
-		public static readonly BitSet _ID_in_mapdef391 = new BitSet(new ulong[]{0x4000UL});
-		public static readonly BitSet _DEFINED_TO_BE_in_mapdef395 = new BitSet(new ulong[]{0x100000UL});
+		public static readonly BitSet _ID_in_mapdef391 = new BitSet(new ulong[]{0x400UL});
+		public static readonly BitSet _DEFINED_TO_BE_in_mapdef395 = new BitSet(new ulong[]{0x10000UL});
 		public static readonly BitSet _map_in_mapdef399 = new BitSet(new ulong[]{0x2UL});
-		public static readonly BitSet _LBRACK_in_map420 = new BitSet(new ulong[]{0x40020000UL});
-		public static readonly BitSet _mapPairs_in_map422 = new BitSet(new ulong[]{0x2000000UL});
+		public static readonly BitSet _LBRACK_in_map420 = new BitSet(new ulong[]{0x4002000UL});
+		public static readonly BitSet _mapPairs_in_map422 = new BitSet(new ulong[]{0x200000UL});
 		public static readonly BitSet _RBRACK_in_map425 = new BitSet(new ulong[]{0x2UL});
-		public static readonly BitSet _keyValuePair_in_mapPairs438 = new BitSet(new ulong[]{0x2002UL});
-		public static readonly BitSet _COMMA_in_mapPairs442 = new BitSet(new ulong[]{0x40000000UL});
-		public static readonly BitSet _keyValuePair_in_mapPairs444 = new BitSet(new ulong[]{0x2002UL});
-		public static readonly BitSet _COMMA_in_mapPairs452 = new BitSet(new ulong[]{0x40020000UL});
+		public static readonly BitSet _keyValuePair_in_mapPairs438 = new BitSet(new ulong[]{0x202UL});
+		public static readonly BitSet _COMMA_in_mapPairs442 = new BitSet(new ulong[]{0x4000000UL});
+		public static readonly BitSet _keyValuePair_in_mapPairs444 = new BitSet(new ulong[]{0x202UL});
+		public static readonly BitSet _COMMA_in_mapPairs452 = new BitSet(new ulong[]{0x4002000UL});
 		public static readonly BitSet _defaultValuePair_in_mapPairs454 = new BitSet(new ulong[]{0x2UL});
 		public static readonly BitSet _defaultValuePair_in_mapPairs462 = new BitSet(new ulong[]{0x2UL});
-		public static readonly BitSet _KWDEFAULT_in_defaultValuePair476 = new BitSet(new ulong[]{0x1000UL});
-		public static readonly BitSet _COLON_in_defaultValuePair478 = new BitSet(new ulong[]{0x40010100UL});
+		public static readonly BitSet _KWDEFAULT_in_defaultValuePair476 = new BitSet(new ulong[]{0x100UL});
+		public static readonly BitSet _COLON_in_defaultValuePair478 = new BitSet(new ulong[]{0x4001080UL});
 		public static readonly BitSet _keyValue_in_defaultValuePair482 = new BitSet(new ulong[]{0x2UL});
-		public static readonly BitSet _STRING_in_keyValuePair500 = new BitSet(new ulong[]{0x1000UL});
-		public static readonly BitSet _COLON_in_keyValuePair502 = new BitSet(new ulong[]{0x40010100UL});
+		public static readonly BitSet _STRING_in_keyValuePair500 = new BitSet(new ulong[]{0x100UL});
+		public static readonly BitSet _COLON_in_keyValuePair502 = new BitSet(new ulong[]{0x4001080UL});
 		public static readonly BitSet _keyValue_in_keyValuePair506 = new BitSet(new ulong[]{0x2UL});
 		public static readonly BitSet _BIGSTRING_in_keyValue525 = new BitSet(new ulong[]{0x2UL});
 		public static readonly BitSet _STRING_in_keyValue534 = new BitSet(new ulong[]{0x2UL});

@@ -1,4 +1,4 @@
-// $ANTLR 3.1.2 Language\\Action.g3 2009-03-16 18:28:08
+// $ANTLR 3.1.2 Language\\Action.g3 2009-03-16 19:22:22
 
 // The variable 'variable' is assigned but its value is never used.
 #pragma warning disable 219
@@ -3130,7 +3130,7 @@ public partial class ActionParser : Parser
 	}
 
 	// $ANTLR start "argList"
-	// Language\\Action.g3:310:0: argList : ( LPAREN RPAREN -> ARGS[\"ARGS\"] |=> singleArg -> singleArg | LPAREN argumentAssignment ( COMMA argumentAssignment )* RPAREN -> ^( ARGS[\"ARGS\"] ( argumentAssignment )+ ) );
+	// Language\\Action.g3:310:0: argList : ( LPAREN ( argumentAssignment ( COMMA argumentAssignment )* )? RPAREN -> ^( ARGS[\"ARGS\"] ( argumentAssignment )* ) | singleArg );
 	private ActionParser.argList_return argList(  )
 	{
 		ActionParser.argList_return retval = new ActionParser.argList_return();
@@ -3139,157 +3139,163 @@ public partial class ActionParser : Parser
 		StringTemplateAST root_0 = null;
 
 		IToken LPAREN79=null;
-		IToken RPAREN80=null;
-		IToken LPAREN82=null;
-		IToken COMMA84=null;
-		IToken RPAREN86=null;
-		ActionParser.singleArg_return singleArg81 = default(ActionParser.singleArg_return);
-		ActionParser.argumentAssignment_return argumentAssignment83 = default(ActionParser.argumentAssignment_return);
-		ActionParser.argumentAssignment_return argumentAssignment85 = default(ActionParser.argumentAssignment_return);
+		IToken COMMA81=null;
+		IToken RPAREN83=null;
+		ActionParser.argumentAssignment_return argumentAssignment80 = default(ActionParser.argumentAssignment_return);
+		ActionParser.argumentAssignment_return argumentAssignment82 = default(ActionParser.argumentAssignment_return);
+		ActionParser.singleArg_return singleArg84 = default(ActionParser.singleArg_return);
 
 		StringTemplateAST LPAREN79_tree=null;
-		StringTemplateAST RPAREN80_tree=null;
-		StringTemplateAST LPAREN82_tree=null;
-		StringTemplateAST COMMA84_tree=null;
-		StringTemplateAST RPAREN86_tree=null;
+		StringTemplateAST COMMA81_tree=null;
+		StringTemplateAST RPAREN83_tree=null;
 		RewriteRuleITokenStream stream_LPAREN=new RewriteRuleITokenStream(adaptor,"token LPAREN");
-		RewriteRuleITokenStream stream_RPAREN=new RewriteRuleITokenStream(adaptor,"token RPAREN");
 		RewriteRuleITokenStream stream_COMMA=new RewriteRuleITokenStream(adaptor,"token COMMA");
-		RewriteRuleSubtreeStream stream_singleArg=new RewriteRuleSubtreeStream(adaptor,"rule singleArg");
+		RewriteRuleITokenStream stream_RPAREN=new RewriteRuleITokenStream(adaptor,"token RPAREN");
 		RewriteRuleSubtreeStream stream_argumentAssignment=new RewriteRuleSubtreeStream(adaptor,"rule argumentAssignment");
 		try
 		{
-			// Language\\Action.g3:311:4: ( LPAREN RPAREN -> ARGS[\"ARGS\"] |=> singleArg -> singleArg | LPAREN argumentAssignment ( COMMA argumentAssignment )* RPAREN -> ^( ARGS[\"ARGS\"] ( argumentAssignment )+ ) )
-			int alt24=3;
-			alt24 = dfa24.Predict(input);
-			switch ( alt24 )
+			// Language\\Action.g3:311:4: ( LPAREN ( argumentAssignment ( COMMA argumentAssignment )* )? RPAREN -> ^( ARGS[\"ARGS\"] ( argumentAssignment )* ) | singleArg )
+			int alt25=2;
+			int LA25_0 = input.LA(1);
+
+			if ( (LA25_0==LPAREN) )
+			{
+				switch ( input.LA(2) )
+				{
+				case ID:
+					{
+					int LA25_2 = input.LA(3);
+
+					if ( (LA25_2==ASSIGN) )
+					{
+						alt25=1;
+					}
+					else if ( (LA25_2==COLON||LA25_2==DOT||LA25_2==LPAREN||LA25_2==PLUS||LA25_2==RPAREN) )
+					{
+						alt25=2;
+					}
+					else
+					{
+						if (state.backtracking>0) {state.failed=true; return retval;}
+						NoViableAltException nvae = new NoViableAltException("", 25, 2, input);
+
+						throw nvae;
+					}
+					}
+					break;
+				case DOTDOTDOT:
+				case RPAREN:
+					{
+					alt25=1;
+					}
+					break;
+				case ANONYMOUS_TEMPLATE:
+				case FIRST:
+				case INT:
+				case LAST:
+				case LBRACK:
+				case LENGTH:
+				case LPAREN:
+				case REST:
+				case STRING:
+				case STRIP:
+				case SUPER:
+				case TRUNC:
+					{
+					alt25=2;
+					}
+					break;
+				default:
+					{
+						if (state.backtracking>0) {state.failed=true; return retval;}
+						NoViableAltException nvae = new NoViableAltException("", 25, 1, input);
+
+						throw nvae;
+					}
+				}
+
+			}
+			else
+			{
+				if (state.backtracking>0) {state.failed=true; return retval;}
+				NoViableAltException nvae = new NoViableAltException("", 25, 0, input);
+
+				throw nvae;
+			}
+			switch ( alt25 )
 			{
 			case 1:
-				// Language\\Action.g3:311:4: LPAREN RPAREN
+				// Language\\Action.g3:311:4: LPAREN ( argumentAssignment ( COMMA argumentAssignment )* )? RPAREN
 				{
 				LPAREN79=(IToken)Match(input,LPAREN,Follow._LPAREN_in_argList1053); if (state.failed) return retval; 
 				if ( state.backtracking == 0 ) stream_LPAREN.Add(LPAREN79);
 
-				RPAREN80=(IToken)Match(input,RPAREN,Follow._RPAREN_in_argList1055); if (state.failed) return retval; 
-				if ( state.backtracking == 0 ) stream_RPAREN.Add(RPAREN80);
+				// Language\\Action.g3:312:3: ( argumentAssignment ( COMMA argumentAssignment )* )?
+				int alt24=2;
+				int LA24_0 = input.LA(1);
 
-
-
+				if ( (LA24_0==DOTDOTDOT||LA24_0==ID) )
 				{
-				// AST REWRITE
-				// elements: 
-				// token labels: 
-				// rule labels: retval
-				// token list labels: 
-				// rule list labels: 
-				// wildcard labels: 
-				if ( state.backtracking == 0 ) {
-				retval.tree = root_0;
-				RewriteRuleSubtreeStream stream_retval=new RewriteRuleSubtreeStream(adaptor,"rule retval",retval!=null?retval.tree:null);
-
-				root_0 = (StringTemplateAST)adaptor.Nil();
-				// 311:18: -> ARGS[\"ARGS\"]
+					alt24=1;
+				}
+				switch ( alt24 )
 				{
-					adaptor.AddChild(root_0, (StringTemplateAST)adaptor.Create(ARGS, "ARGS"));
-
-				}
-
-				retval.tree = root_0;
-				}
-				}
-
-				}
-				break;
-			case 2:
-				// Language\\Action.g3:312:4: => singleArg
-				{
-
-				PushFollow(Follow._singleArg_in_argList1070);
-				singleArg81=singleArg();
-
-				state._fsp--;
-				if (state.failed) return retval;
-				if ( state.backtracking == 0 ) stream_singleArg.Add(singleArg81.Tree);
-
-
-				{
-				// AST REWRITE
-				// elements: singleArg
-				// token labels: 
-				// rule labels: retval
-				// token list labels: 
-				// rule list labels: 
-				// wildcard labels: 
-				if ( state.backtracking == 0 ) {
-				retval.tree = root_0;
-				RewriteRuleSubtreeStream stream_retval=new RewriteRuleSubtreeStream(adaptor,"rule retval",retval!=null?retval.tree:null);
-
-				root_0 = (StringTemplateAST)adaptor.Nil();
-				// 312:27: -> singleArg
-				{
-					adaptor.AddChild(root_0, stream_singleArg.NextTree());
-
-				}
-
-				retval.tree = root_0;
-				}
-				}
-
-				}
-				break;
-			case 3:
-				// Language\\Action.g3:313:4: LPAREN argumentAssignment ( COMMA argumentAssignment )* RPAREN
-				{
-				LPAREN82=(IToken)Match(input,LPAREN,Follow._LPAREN_in_argList1087); if (state.failed) return retval; 
-				if ( state.backtracking == 0 ) stream_LPAREN.Add(LPAREN82);
-
-				PushFollow(Follow._argumentAssignment_in_argList1089);
-				argumentAssignment83=argumentAssignment();
-
-				state._fsp--;
-				if (state.failed) return retval;
-				if ( state.backtracking == 0 ) stream_argumentAssignment.Add(argumentAssignment83.Tree);
-				// Language\\Action.g3:313:30: ( COMMA argumentAssignment )*
-				for ( ; ; )
-				{
-					int alt23=2;
-					int LA23_0 = input.LA(1);
-
-					if ( (LA23_0==COMMA) )
+				case 1:
+					// Language\\Action.g3:312:5: argumentAssignment ( COMMA argumentAssignment )*
 					{
-						alt23=1;
-					}
+					PushFollow(Follow._argumentAssignment_in_argList1059);
+					argumentAssignment80=argumentAssignment();
 
-
-					switch ( alt23 )
+					state._fsp--;
+					if (state.failed) return retval;
+					if ( state.backtracking == 0 ) stream_argumentAssignment.Add(argumentAssignment80.Tree);
+					// Language\\Action.g3:312:24: ( COMMA argumentAssignment )*
+					for ( ; ; )
 					{
-					case 1:
-						// Language\\Action.g3:313:31: COMMA argumentAssignment
+						int alt23=2;
+						int LA23_0 = input.LA(1);
+
+						if ( (LA23_0==COMMA) )
 						{
-						COMMA84=(IToken)Match(input,COMMA,Follow._COMMA_in_argList1092); if (state.failed) return retval; 
-						if ( state.backtracking == 0 ) stream_COMMA.Add(COMMA84);
-
-						PushFollow(Follow._argumentAssignment_in_argList1094);
-						argumentAssignment85=argumentAssignment();
-
-						state._fsp--;
-						if (state.failed) return retval;
-						if ( state.backtracking == 0 ) stream_argumentAssignment.Add(argumentAssignment85.Tree);
-
+							alt23=1;
 						}
-						break;
 
-					default:
-						goto loop23;
+
+						switch ( alt23 )
+						{
+						case 1:
+							// Language\\Action.g3:312:25: COMMA argumentAssignment
+							{
+							COMMA81=(IToken)Match(input,COMMA,Follow._COMMA_in_argList1062); if (state.failed) return retval; 
+							if ( state.backtracking == 0 ) stream_COMMA.Add(COMMA81);
+
+							PushFollow(Follow._argumentAssignment_in_argList1064);
+							argumentAssignment82=argumentAssignment();
+
+							state._fsp--;
+							if (state.failed) return retval;
+							if ( state.backtracking == 0 ) stream_argumentAssignment.Add(argumentAssignment82.Tree);
+
+							}
+							break;
+
+						default:
+							goto loop23;
+						}
 					}
+
+					loop23:
+						;
+
+
+
+					}
+					break;
+
 				}
 
-				loop23:
-					;
-
-
-				RPAREN86=(IToken)Match(input,RPAREN,Follow._RPAREN_in_argList1098); if (state.failed) return retval; 
-				if ( state.backtracking == 0 ) stream_RPAREN.Add(RPAREN86);
+				RPAREN83=(IToken)Match(input,RPAREN,Follow._RPAREN_in_argList1075); if (state.failed) return retval; 
+				if ( state.backtracking == 0 ) stream_RPAREN.Add(RPAREN83);
 
 
 
@@ -3306,17 +3312,14 @@ public partial class ActionParser : Parser
 				RewriteRuleSubtreeStream stream_retval=new RewriteRuleSubtreeStream(adaptor,"rule retval",retval!=null?retval.tree:null);
 
 				root_0 = (StringTemplateAST)adaptor.Nil();
-				// 314:3: -> ^( ARGS[\"ARGS\"] ( argumentAssignment )+ )
+				// 315:3: -> ^( ARGS[\"ARGS\"] ( argumentAssignment )* )
 				{
-					// Language\\Action.g3:314:6: ^( ARGS[\"ARGS\"] ( argumentAssignment )+ )
+					// Language\\Action.g3:315:6: ^( ARGS[\"ARGS\"] ( argumentAssignment )* )
 					{
 					StringTemplateAST root_1 = (StringTemplateAST)adaptor.Nil();
 					root_1 = (StringTemplateAST)adaptor.BecomeRoot((StringTemplateAST)adaptor.Create(ARGS, "ARGS"), root_1);
 
-					if ( !(stream_argumentAssignment.HasNext) )
-					{
-						throw new RewriteEarlyExitException();
-					}
+					// Language\\Action.g3:315:21: ( argumentAssignment )*
 					while ( stream_argumentAssignment.HasNext )
 					{
 						adaptor.AddChild(root_1, stream_argumentAssignment.NextTree());
@@ -3332,6 +3335,20 @@ public partial class ActionParser : Parser
 				retval.tree = root_0;
 				}
 				}
+
+				}
+				break;
+			case 2:
+				// Language\\Action.g3:316:4: singleArg
+				{
+				root_0 = (StringTemplateAST)adaptor.Nil();
+
+				PushFollow(Follow._singleArg_in_argList1092);
+				singleArg84=singleArg();
+
+				state._fsp--;
+				if (state.failed) return retval;
+				if ( state.backtracking == 0 ) adaptor.AddChild(root_0, singleArg84.Tree);
 
 				}
 				break;
@@ -3366,7 +3383,7 @@ public partial class ActionParser : Parser
 	}
 
 	// $ANTLR start "singleArg"
-	// Language\\Action.g3:317:0: singleArg : LPAREN nonAlternatingTemplateExpr RPAREN -> ^( SINGLEVALUEARG[\"SINGLEVALUEARG\"] nonAlternatingTemplateExpr ) ;
+	// Language\\Action.g3:319:0: singleArg : LPAREN nonAlternatingTemplateExpr RPAREN -> ^( SINGLEVALUEARG[\"SINGLEVALUEARG\"] nonAlternatingTemplateExpr ) ;
 	private ActionParser.singleArg_return singleArg(  )
 	{
 		ActionParser.singleArg_return retval = new ActionParser.singleArg_return();
@@ -3374,31 +3391,31 @@ public partial class ActionParser : Parser
 
 		StringTemplateAST root_0 = null;
 
-		IToken LPAREN87=null;
-		IToken RPAREN89=null;
-		ActionParser.nonAlternatingTemplateExpr_return nonAlternatingTemplateExpr88 = default(ActionParser.nonAlternatingTemplateExpr_return);
+		IToken LPAREN85=null;
+		IToken RPAREN87=null;
+		ActionParser.nonAlternatingTemplateExpr_return nonAlternatingTemplateExpr86 = default(ActionParser.nonAlternatingTemplateExpr_return);
 
-		StringTemplateAST LPAREN87_tree=null;
-		StringTemplateAST RPAREN89_tree=null;
+		StringTemplateAST LPAREN85_tree=null;
+		StringTemplateAST RPAREN87_tree=null;
 		RewriteRuleITokenStream stream_LPAREN=new RewriteRuleITokenStream(adaptor,"token LPAREN");
 		RewriteRuleITokenStream stream_RPAREN=new RewriteRuleITokenStream(adaptor,"token RPAREN");
 		RewriteRuleSubtreeStream stream_nonAlternatingTemplateExpr=new RewriteRuleSubtreeStream(adaptor,"rule nonAlternatingTemplateExpr");
 		try
 		{
-			// Language\\Action.g3:318:4: ( LPAREN nonAlternatingTemplateExpr RPAREN -> ^( SINGLEVALUEARG[\"SINGLEVALUEARG\"] nonAlternatingTemplateExpr ) )
-			// Language\\Action.g3:318:4: LPAREN nonAlternatingTemplateExpr RPAREN
+			// Language\\Action.g3:320:4: ( LPAREN nonAlternatingTemplateExpr RPAREN -> ^( SINGLEVALUEARG[\"SINGLEVALUEARG\"] nonAlternatingTemplateExpr ) )
+			// Language\\Action.g3:320:4: LPAREN nonAlternatingTemplateExpr RPAREN
 			{
-			LPAREN87=(IToken)Match(input,LPAREN,Follow._LPAREN_in_singleArg1121); if (state.failed) return retval; 
-			if ( state.backtracking == 0 ) stream_LPAREN.Add(LPAREN87);
+			LPAREN85=(IToken)Match(input,LPAREN,Follow._LPAREN_in_singleArg1104); if (state.failed) return retval; 
+			if ( state.backtracking == 0 ) stream_LPAREN.Add(LPAREN85);
 
-			PushFollow(Follow._nonAlternatingTemplateExpr_in_singleArg1123);
-			nonAlternatingTemplateExpr88=nonAlternatingTemplateExpr();
+			PushFollow(Follow._nonAlternatingTemplateExpr_in_singleArg1106);
+			nonAlternatingTemplateExpr86=nonAlternatingTemplateExpr();
 
 			state._fsp--;
 			if (state.failed) return retval;
-			if ( state.backtracking == 0 ) stream_nonAlternatingTemplateExpr.Add(nonAlternatingTemplateExpr88.Tree);
-			RPAREN89=(IToken)Match(input,RPAREN,Follow._RPAREN_in_singleArg1125); if (state.failed) return retval; 
-			if ( state.backtracking == 0 ) stream_RPAREN.Add(RPAREN89);
+			if ( state.backtracking == 0 ) stream_nonAlternatingTemplateExpr.Add(nonAlternatingTemplateExpr86.Tree);
+			RPAREN87=(IToken)Match(input,RPAREN,Follow._RPAREN_in_singleArg1108); if (state.failed) return retval; 
+			if ( state.backtracking == 0 ) stream_RPAREN.Add(RPAREN87);
 
 
 
@@ -3415,9 +3432,9 @@ public partial class ActionParser : Parser
 			RewriteRuleSubtreeStream stream_retval=new RewriteRuleSubtreeStream(adaptor,"rule retval",retval!=null?retval.tree:null);
 
 			root_0 = (StringTemplateAST)adaptor.Nil();
-			// 319:3: -> ^( SINGLEVALUEARG[\"SINGLEVALUEARG\"] nonAlternatingTemplateExpr )
+			// 321:3: -> ^( SINGLEVALUEARG[\"SINGLEVALUEARG\"] nonAlternatingTemplateExpr )
 			{
-				// Language\\Action.g3:319:6: ^( SINGLEVALUEARG[\"SINGLEVALUEARG\"] nonAlternatingTemplateExpr )
+				// Language\\Action.g3:321:6: ^( SINGLEVALUEARG[\"SINGLEVALUEARG\"] nonAlternatingTemplateExpr )
 				{
 				StringTemplateAST root_1 = (StringTemplateAST)adaptor.Nil();
 				root_1 = (StringTemplateAST)adaptor.BecomeRoot((StringTemplateAST)adaptor.Create(SINGLEVALUEARG, "SINGLEVALUEARG"), root_1);
@@ -3464,7 +3481,7 @@ public partial class ActionParser : Parser
 	}
 
 	// $ANTLR start "argumentAssignment"
-	// Language\\Action.g3:322:0: argumentAssignment : ( ID ASSIGN nonAlternatingTemplateExpr | DOTDOTDOT );
+	// Language\\Action.g3:324:0: argumentAssignment : ( ID ASSIGN nonAlternatingTemplateExpr | DOTDOTDOT );
 	private ActionParser.argumentAssignment_return argumentAssignment(  )
 	{
 		ActionParser.argumentAssignment_return retval = new ActionParser.argumentAssignment_return();
@@ -3472,71 +3489,71 @@ public partial class ActionParser : Parser
 
 		StringTemplateAST root_0 = null;
 
-		IToken ID90=null;
-		IToken ASSIGN91=null;
-		IToken DOTDOTDOT93=null;
-		ActionParser.nonAlternatingTemplateExpr_return nonAlternatingTemplateExpr92 = default(ActionParser.nonAlternatingTemplateExpr_return);
+		IToken ID88=null;
+		IToken ASSIGN89=null;
+		IToken DOTDOTDOT91=null;
+		ActionParser.nonAlternatingTemplateExpr_return nonAlternatingTemplateExpr90 = default(ActionParser.nonAlternatingTemplateExpr_return);
 
-		StringTemplateAST ID90_tree=null;
-		StringTemplateAST ASSIGN91_tree=null;
-		StringTemplateAST DOTDOTDOT93_tree=null;
+		StringTemplateAST ID88_tree=null;
+		StringTemplateAST ASSIGN89_tree=null;
+		StringTemplateAST DOTDOTDOT91_tree=null;
 
 		try
 		{
-			// Language\\Action.g3:323:4: ( ID ASSIGN nonAlternatingTemplateExpr | DOTDOTDOT )
-			int alt25=2;
-			int LA25_0 = input.LA(1);
+			// Language\\Action.g3:325:4: ( ID ASSIGN nonAlternatingTemplateExpr | DOTDOTDOT )
+			int alt26=2;
+			int LA26_0 = input.LA(1);
 
-			if ( (LA25_0==ID) )
+			if ( (LA26_0==ID) )
 			{
-				alt25=1;
+				alt26=1;
 			}
-			else if ( (LA25_0==DOTDOTDOT) )
+			else if ( (LA26_0==DOTDOTDOT) )
 			{
-				alt25=2;
+				alt26=2;
 			}
 			else
 			{
 				if (state.backtracking>0) {state.failed=true; return retval;}
-				NoViableAltException nvae = new NoViableAltException("", 25, 0, input);
+				NoViableAltException nvae = new NoViableAltException("", 26, 0, input);
 
 				throw nvae;
 			}
-			switch ( alt25 )
+			switch ( alt26 )
 			{
 			case 1:
-				// Language\\Action.g3:323:4: ID ASSIGN nonAlternatingTemplateExpr
+				// Language\\Action.g3:325:4: ID ASSIGN nonAlternatingTemplateExpr
 				{
 				root_0 = (StringTemplateAST)adaptor.Nil();
 
-				ID90=(IToken)Match(input,ID,Follow._ID_in_argumentAssignment1147); if (state.failed) return retval;
+				ID88=(IToken)Match(input,ID,Follow._ID_in_argumentAssignment1130); if (state.failed) return retval;
 				if ( state.backtracking==0 ) {
-				ID90_tree = (StringTemplateAST)adaptor.Create(ID90);
-				adaptor.AddChild(root_0, ID90_tree);
+				ID88_tree = (StringTemplateAST)adaptor.Create(ID88);
+				adaptor.AddChild(root_0, ID88_tree);
 				}
-				ASSIGN91=(IToken)Match(input,ASSIGN,Follow._ASSIGN_in_argumentAssignment1149); if (state.failed) return retval;
+				ASSIGN89=(IToken)Match(input,ASSIGN,Follow._ASSIGN_in_argumentAssignment1132); if (state.failed) return retval;
 				if ( state.backtracking == 0 ) {
-				ASSIGN91_tree = (StringTemplateAST)adaptor.Create(ASSIGN91);
-				root_0 = (StringTemplateAST)adaptor.BecomeRoot(ASSIGN91_tree, root_0);
+				ASSIGN89_tree = (StringTemplateAST)adaptor.Create(ASSIGN89);
+				root_0 = (StringTemplateAST)adaptor.BecomeRoot(ASSIGN89_tree, root_0);
 				}
-				PushFollow(Follow._nonAlternatingTemplateExpr_in_argumentAssignment1152);
-				nonAlternatingTemplateExpr92=nonAlternatingTemplateExpr();
+				PushFollow(Follow._nonAlternatingTemplateExpr_in_argumentAssignment1135);
+				nonAlternatingTemplateExpr90=nonAlternatingTemplateExpr();
 
 				state._fsp--;
 				if (state.failed) return retval;
-				if ( state.backtracking == 0 ) adaptor.AddChild(root_0, nonAlternatingTemplateExpr92.Tree);
+				if ( state.backtracking == 0 ) adaptor.AddChild(root_0, nonAlternatingTemplateExpr90.Tree);
 
 				}
 				break;
 			case 2:
-				// Language\\Action.g3:324:4: DOTDOTDOT
+				// Language\\Action.g3:326:4: DOTDOTDOT
 				{
 				root_0 = (StringTemplateAST)adaptor.Nil();
 
-				DOTDOTDOT93=(IToken)Match(input,DOTDOTDOT,Follow._DOTDOTDOT_in_argumentAssignment1157); if (state.failed) return retval;
+				DOTDOTDOT91=(IToken)Match(input,DOTDOTDOT,Follow._DOTDOTDOT_in_argumentAssignment1140); if (state.failed) return retval;
 				if ( state.backtracking==0 ) {
-				DOTDOTDOT93_tree = (StringTemplateAST)adaptor.Create(DOTDOTDOT93);
-				adaptor.AddChild(root_0, DOTDOTDOT93_tree);
+				DOTDOTDOT91_tree = (StringTemplateAST)adaptor.Create(DOTDOTDOT91);
+				adaptor.AddChild(root_0, DOTDOTDOT91_tree);
 				}
 
 				}
@@ -3580,22 +3597,6 @@ public partial class ActionParser : Parser
 		}
 	}
 	// $ANTLR end synpred1_Action
-
-	// $ANTLR start synpred2_Action
-	public void synpred2_Action_fragment()
-	{
-		// Language\\Action.g3:312:4: ( singleArg )
-		// Language\\Action.g3:312:5: singleArg
-		{
-		PushFollow(Follow._singleArg_in_synpred2_Action1067);
-		singleArg();
-
-		state._fsp--;
-		if (state.failed) return ;
-
-		}
-	}
-	// $ANTLR end synpred2_Action
 	#endregion
 
 	// Delegated rules
@@ -3619,36 +3620,16 @@ public partial class ActionParser : Parser
 		state.failed=false;
 		return success;
 	}
-	public bool synpred2_Action()
-	{
-		state.backtracking++;
-		int start = input.Mark();
-		try
-		{
-			synpred2_Action_fragment(); // can never throw exception
-		}
-		catch ( RecognitionException re )
-		{
-			System.Console.Error.WriteLine("impossible: "+re);
-		}
-		bool success = !state.failed;
-		input.Rewind(start);
-		state.backtracking--;
-		state.failed=false;
-		return success;
-	}
 
 	#endregion
 
 	#region DFA
 	DFA15 dfa15;
-	DFA24 dfa24;
 
 	protected override void InitDFAs()
 	{
 		base.InitDFAs();
 		dfa15 = new DFA15( this, new SpecialStateTransitionHandler( specialStateTransition15 ) );
-		dfa24 = new DFA24( this, new SpecialStateTransitionHandler( specialStateTransition24 ) );
 	}
 
 	class DFA15 : DFA
@@ -3789,158 +3770,6 @@ public partial class ActionParser : Parser
 		dfa.Error(nvae);
 		throw nvae;
 	}
-	class DFA24 : DFA
-	{
-
-		const string DFA24_eotS =
-			"\x14\xFFFF";
-		const string DFA24_eofS =
-			"\x14\xFFFF";
-		const string DFA24_minS =
-			"\x1\x18\x1\x4\x1\xFFFF\x1\x7\x10\xFFFF";
-		const string DFA24_maxS =
-			"\x1\x18\x1\x28\x1\xFFFF\x1\x20\x10\xFFFF";
-		const string DFA24_acceptS =
-			"\x2\xFFFF\x1\x1\x1\xFFFF\xA\x2\x1\x3\x5\x2";
-		const string DFA24_specialS =
-			"\x1\xFFFF\x1\x0\x1\xFFFF\x1\x1\x10\xFFFF}>";
-		static readonly string[] DFA24_transitionS =
-			{
-				"\x1\x1",
-				"\x1\x6\x7\xFFFF\x1\xE\x2\xFFFF\x1\x7\x1\xFFFF\x1\x3\x1\xFFFF\x1\x6\x1"+
-				"\x9\x1\xD\x1\xA\x1\xFFFF\x1\x5\x6\xFFFF\x1\x8\x1\x2\x2\xFFFF\x1\x6\x1"+
-				"\xB\x1\x4\x2\xFFFF\x1\xC",
-				"",
-				"\x1\xE\x1\x12\x2\xFFFF\x1\x10\xC\xFFFF\x1\xF\x4\xFFFF\x1\x11\x2\xFFFF"+
-				"\x1\x13",
-				"",
-				"",
-				"",
-				"",
-				"",
-				"",
-				"",
-				"",
-				"",
-				"",
-				"",
-				"",
-				"",
-				"",
-				"",
-				""
-			};
-
-		static readonly short[] DFA24_eot = DFA.UnpackEncodedString(DFA24_eotS);
-		static readonly short[] DFA24_eof = DFA.UnpackEncodedString(DFA24_eofS);
-		static readonly char[] DFA24_min = DFA.UnpackEncodedStringToUnsignedChars(DFA24_minS);
-		static readonly char[] DFA24_max = DFA.UnpackEncodedStringToUnsignedChars(DFA24_maxS);
-		static readonly short[] DFA24_accept = DFA.UnpackEncodedString(DFA24_acceptS);
-		static readonly short[] DFA24_special = DFA.UnpackEncodedString(DFA24_specialS);
-		static readonly short[][] DFA24_transition;
-
-		static DFA24()
-		{
-			int numStates = DFA24_transitionS.Length;
-			DFA24_transition = new short[numStates][];
-			for ( int i=0; i < numStates; i++ )
-			{
-				DFA24_transition[i] = DFA.UnpackEncodedString(DFA24_transitionS[i]);
-			}
-		}
-
-		public DFA24( BaseRecognizer recognizer, SpecialStateTransitionHandler specialStateTransition )
-			: base( specialStateTransition )	{
-			this.recognizer = recognizer;
-			this.decisionNumber = 24;
-			this.eot = DFA24_eot;
-			this.eof = DFA24_eof;
-			this.min = DFA24_min;
-			this.max = DFA24_max;
-			this.accept = DFA24_accept;
-			this.special = DFA24_special;
-			this.transition = DFA24_transition;
-		}
-		public override string GetDescription()
-		{
-			return "310:0: argList : ( LPAREN RPAREN -> ARGS[\"ARGS\"] |=> singleArg -> singleArg | LPAREN argumentAssignment ( COMMA argumentAssignment )* RPAREN -> ^( ARGS[\"ARGS\"] ( argumentAssignment )+ ) );";
-		}
-	}
-
-	int specialStateTransition24( DFA dfa, int s, IIntStream _input )
-	{
-		ITokenStream input = (ITokenStream)_input;
-		int _s = s;
-		switch ( s )
-		{
-
-			case 0:
-				int LA24_1 = input.LA(1);
-
-
-				int index24_1 = input.Index;
-				input.Rewind();
-				s = -1;
-				if ( (LA24_1==RPAREN) ) {s = 2;}
-
-				else if ( (LA24_1==ID) ) {s = 3;}
-
-				else if ( (LA24_1==SUPER) && (synpred2_Action())) {s = 4;}
-
-				else if ( (LA24_1==LPAREN) && (synpred2_Action())) {s = 5;}
-
-				else if ( (LA24_1==ANONYMOUS_TEMPLATE||LA24_1==INT||LA24_1==STRING) && (synpred2_Action())) {s = 6;}
-
-				else if ( (LA24_1==FIRST) && (synpred2_Action())) {s = 7;}
-
-				else if ( (LA24_1==REST) && (synpred2_Action())) {s = 8;}
-
-				else if ( (LA24_1==LAST) && (synpred2_Action())) {s = 9;}
-
-				else if ( (LA24_1==LENGTH) && (synpred2_Action())) {s = 10;}
-
-				else if ( (LA24_1==STRIP) && (synpred2_Action())) {s = 11;}
-
-				else if ( (LA24_1==TRUNC) && (synpred2_Action())) {s = 12;}
-
-				else if ( (LA24_1==LBRACK) && (synpred2_Action())) {s = 13;}
-
-				else if ( (LA24_1==DOTDOTDOT) ) {s = 14;}
-
-
-				input.Seek(index24_1);
-				if ( s>=0 ) return s;
-				break;
-
-			case 1:
-				int LA24_3 = input.LA(1);
-
-
-				int index24_3 = input.Index;
-				input.Rewind();
-				s = -1;
-				if ( (LA24_3==ASSIGN) ) {s = 14;}
-
-				else if ( (LA24_3==LPAREN) && (synpred2_Action())) {s = 15;}
-
-				else if ( (LA24_3==DOT) && (synpred2_Action())) {s = 16;}
-
-				else if ( (LA24_3==PLUS) && (synpred2_Action())) {s = 17;}
-
-				else if ( (LA24_3==COLON) && (synpred2_Action())) {s = 18;}
-
-				else if ( (LA24_3==RPAREN) && (synpred2_Action())) {s = 19;}
-
-
-				input.Seek(index24_3);
-				if ( s>=0 ) return s;
-				break;
-		}
-		if (state.backtracking>0) {state.failed=true; return -1;}
-		NoViableAltException nvae = new NoViableAltException(dfa.GetDescription(), 24, _s, input);
-		dfa.Error(nvae);
-		throw nvae;
-	}
 
 	#endregion
 
@@ -4034,23 +3863,20 @@ public partial class ActionParser : Parser
 		public static readonly BitSet _templatesExpr_in_indirectTemplate1020 = new BitSet(new ulong[]{0x100000000UL});
 		public static readonly BitSet _RPAREN_in_indirectTemplate1022 = new BitSet(new ulong[]{0x1000000UL});
 		public static readonly BitSet _argList_in_indirectTemplate1026 = new BitSet(new ulong[]{0x2UL});
-		public static readonly BitSet _LPAREN_in_argList1053 = new BitSet(new ulong[]{0x100000000UL});
-		public static readonly BitSet _RPAREN_in_argList1055 = new BitSet(new ulong[]{0x2UL});
-		public static readonly BitSet _singleArg_in_argList1070 = new BitSet(new ulong[]{0x2UL});
-		public static readonly BitSet _LPAREN_in_argList1087 = new BitSet(new ulong[]{0x21000UL});
-		public static readonly BitSet _argumentAssignment_in_argList1089 = new BitSet(new ulong[]{0x100000200UL});
-		public static readonly BitSet _COMMA_in_argList1092 = new BitSet(new ulong[]{0x21000UL});
-		public static readonly BitSet _argumentAssignment_in_argList1094 = new BitSet(new ulong[]{0x100000200UL});
-		public static readonly BitSet _RPAREN_in_argList1098 = new BitSet(new ulong[]{0x2UL});
-		public static readonly BitSet _LPAREN_in_singleArg1121 = new BitSet(new ulong[]{0x138817A8010UL});
-		public static readonly BitSet _nonAlternatingTemplateExpr_in_singleArg1123 = new BitSet(new ulong[]{0x100000000UL});
-		public static readonly BitSet _RPAREN_in_singleArg1125 = new BitSet(new ulong[]{0x2UL});
-		public static readonly BitSet _ID_in_argumentAssignment1147 = new BitSet(new ulong[]{0x80UL});
-		public static readonly BitSet _ASSIGN_in_argumentAssignment1149 = new BitSet(new ulong[]{0x138817A8010UL});
-		public static readonly BitSet _nonAlternatingTemplateExpr_in_argumentAssignment1152 = new BitSet(new ulong[]{0x2UL});
-		public static readonly BitSet _DOTDOTDOT_in_argumentAssignment1157 = new BitSet(new ulong[]{0x2UL});
+		public static readonly BitSet _LPAREN_in_argList1053 = new BitSet(new ulong[]{0x100021000UL});
+		public static readonly BitSet _argumentAssignment_in_argList1059 = new BitSet(new ulong[]{0x100000200UL});
+		public static readonly BitSet _COMMA_in_argList1062 = new BitSet(new ulong[]{0x21000UL});
+		public static readonly BitSet _argumentAssignment_in_argList1064 = new BitSet(new ulong[]{0x100000200UL});
+		public static readonly BitSet _RPAREN_in_argList1075 = new BitSet(new ulong[]{0x2UL});
+		public static readonly BitSet _singleArg_in_argList1092 = new BitSet(new ulong[]{0x2UL});
+		public static readonly BitSet _LPAREN_in_singleArg1104 = new BitSet(new ulong[]{0x138817A8010UL});
+		public static readonly BitSet _nonAlternatingTemplateExpr_in_singleArg1106 = new BitSet(new ulong[]{0x100000000UL});
+		public static readonly BitSet _RPAREN_in_singleArg1108 = new BitSet(new ulong[]{0x2UL});
+		public static readonly BitSet _ID_in_argumentAssignment1130 = new BitSet(new ulong[]{0x80UL});
+		public static readonly BitSet _ASSIGN_in_argumentAssignment1132 = new BitSet(new ulong[]{0x138817A8010UL});
+		public static readonly BitSet _nonAlternatingTemplateExpr_in_argumentAssignment1135 = new BitSet(new ulong[]{0x2UL});
+		public static readonly BitSet _DOTDOTDOT_in_argumentAssignment1140 = new BitSet(new ulong[]{0x2UL});
 		public static readonly BitSet _templateInclude_in_synpred1_Action490 = new BitSet(new ulong[]{0x2UL});
-		public static readonly BitSet _singleArg_in_synpred2_Action1067 = new BitSet(new ulong[]{0x2UL});
 
 	}
 	#endregion

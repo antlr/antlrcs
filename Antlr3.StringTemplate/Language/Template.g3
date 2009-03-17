@@ -119,7 +119,8 @@ template[StringTemplate self]
 	:	(	s=LITERAL  {self.AddChunk(new StringRef(self,$s.text));}
 		|	nl=NEWLINE
 			{
-				if ( input.LA(1)!=ELSE && input.LA(1)!=ENDIF )
+				int next = input.LA(1);
+				if ( next!=ELSE && next!=ENDIF )
 				{
 					self.AddChunk(new NewlineRef(self,$nl.text));
 				}

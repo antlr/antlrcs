@@ -73,7 +73,7 @@ options
 
 using StringBuffer = System.Text.StringBuilder;
 }
-
+/**/
 @lexer::namespace {Antlr3.ST.Language}
 
 NEWLINE
@@ -187,11 +187,10 @@ LITERAL
 	int col = 0;
 }
 	:	(	(	'\\'
-				(	options {k=1;}:
-					('<') => '<' { builder.Append('<'); } // allow escaped delimiter
-				|	('>') => '>' { builder.Append('>'); }
-				|	('\\') => '\\' { builder.Append('\\'); } // always replace \\ with \
-				|	ch=. { builder.Append( "\\" + (char)$ch ); }  // otherwise ignore escape char
+				(	'<' { builder.Append('<'); } // allow escaped delimiter
+				|	'>' { builder.Append('>'); }
+				|	'\\' { builder.Append('\\'); } // always replace \\ with \
+				|	ch=~('<'|'>'|'\\') { builder.Append( "\\" + (char)$ch ); }  // otherwise ignore escape char
 				)
 			)
 		|	ind=INDENT

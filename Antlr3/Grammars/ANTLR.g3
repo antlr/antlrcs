@@ -844,17 +844,9 @@ SL_COMMENT
 
 fragment
 ML_COMMENT[ref int type]
-@init
-{
-	$type = ML_COMMENT;
-}
 	:	'/*'
-		(	('*' ~'/') => '*' {$type = DOC_COMMENT;}
-		|
-		)
-		(	('*' ~'/') => '*'
-		|	~'*'
-		)*
+		{type = (input.LA(1) == '*' && input.LA(2) != '/') ? DOC_COMMENT : ML_COMMENT;}
+		.*
 		'*/'
 	;
 
@@ -956,17 +948,14 @@ DOUBLE_QUOTE_STRING_LITERAL
 	;
 
 DOUBLE_ANGLE_STRING_LITERAL
-	:	'<<'
-		(	~'>'
-		|	('>' ~'>') => '>'
-		)*
-		'>>'
+	:	'<<' .* '>>'
 	;
 
 fragment
 ESC
 	:	'\\'
-		(	'n'
+		(	// due to the way ESC is used, we don't need to handle the following character in different ways
+			/*'n'
 		|	'r'
 		|	't'
 		|	'b'
@@ -976,7 +965,7 @@ ESC
 		|	'\\'
 		|	'>'
 		|	'u' XDIGIT XDIGIT XDIGIT XDIGIT
-		|	. // unknown, leave as it is
+		|*/	. // unknown, leave as it is
 		)
 	;
 

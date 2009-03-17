@@ -32,121 +32,67 @@
 
 namespace Antlr3.ST.Language
 {
-    using System;
-    using Antlr.Runtime;
-
-    using IToken = Antlr.Runtime.IToken;
+    using StringBuilder = System.Text.StringBuilder;
 
     partial class GroupLexer
     {
-        [Flags]
-        public enum StateFlags
+        string ProcessAnonymousTemplate( StringBuilder builder )
         {
-            LineScanning = 1 << 0,
-            InBlockComment = 1 << 1,
-            InDocComment = 1 << 2,
-            InTextBlock = 1 << 3,
-            InAction = 15 << 4,
-            InActionComment = 1 << 8,
-            InBigString = 1 << 9,
-            InAnonymousTemplate = 1 << 10
+            // handle escaped }
+            builder.Replace( @"\}", "}" );
+            return builder.ToString();
         }
 
-        bool GetFlag( int bitfield, StateFlags flag )
+        string ProcessBigString( StringBuilder builder )
         {
-            return ( bitfield & (int)flag ) == (int)flag;
-        }
-        int SetFlag( int bitfield, StateFlags flag, bool value )
-        {
-            bitfield &= ~(int)flag;
-            if ( value )
-                bitfield |= (int)flag;
-            return bitfield;
-        }
+            // handle escaped >
+            builder.Replace( @"\>", ">" );
 
-        int ScannerState
-        {
-            get;
-            set;
-        }
-        public bool InColorizer
-        {
-            get;
-            set;
-        }
-        public bool InBlockComment
-        {
-            get
+            // kill first newline
+            int trimStart = 0;
+            if ( builder.Length > 0 )
             {
-                return GetFlag( ScannerState, StateFlags.InBlockComment );
-            }
-            set
-            {
-                //if ( !value )
-                //    InDocComment = value;
+                switch ( builder[0] )
+                {
+                case '\r':
+                    if ( builder.Length > 1 && builder[1] == '\n' )
+                        trimStart = 2;
+                    else
+                        trimStart = 1;
+                    break;
 
-                //if ( LineScanning && Line > _startLine )
-                //    return;
+                case '\n':
+                    trimStart = 1;
+                    break;
 
-                ScannerState = SetFlag( ScannerState, StateFlags.InBlockComment, value );
-            }
-        }
-        public bool InBigString
-        {
-            get
-            {
-                return GetFlag( ScannerState, StateFlags.InBigString );
-            }
-            set
-            {
-                ScannerState = SetFlag( ScannerState, StateFlags.InBigString, value );
-            }
-        }
-        public bool InAnonymousTemplate
-        {
-            get
-            {
-                return GetFlag( ScannerState, StateFlags.InAnonymousTemplate );
-            }
-            set
-            {
-                ScannerState = SetFlag( ScannerState, StateFlags.InAnonymousTemplate, value );
-            }
-        }
-
-        public override IToken NextToken()
-        {
-            if ( !InColorizer )
-                return base.NextToken();
-
-            CommonToken token = (CommonToken)base.NextToken();
-
-            if ( InBlockComment && token.Type != EOF )
-            {
-                if ( token.Type == CLOSE_BLOCK_COMMENT )
-                    InBlockComment = false;
-
-                token.Type = ML_COMMENT;
-            }
-            else if ( InBigString && token.Type != EOF )
-            {
-                if ( token.Type == CLOSE_BIG_STRING )
-                    InBigString = false;
-
-                token.Type = BIGSTRING;
-            }
-            else if ( InAnonymousTemplate && token.Type != EOF )
-            {
-                if ( token.Type == CLOSE_ANON_TEMPLATE )
-                    InAnonymousTemplate = false;
-
-                token.Type = ANONYMOUS_TEMPLATE;
+                default:
+                    break;
+                }
             }
 
-            if ( token.Type != EOF && token.StartIndex > token.StopIndex )
-                throw new OperationCanceledException();
+            // kill last newline
+            int trimEnd = 0;
+            if ( builder.Length > trimStart )
+            {
+                switch ( builder[builder.Length - 1] )
+                {
+                case '\r':
+                    trimEnd = 1;
+                    break;
 
-            return token;
+                case '\n':
+                    if ( builder[builder.Length - 2] == '\r' )
+                        trimEnd = 2;
+                    else
+                        trimEnd = 1;
+                    break;
+
+                default:
+                    break;
+                }
+            }
+
+            return builder.ToString( trimStart, builder.Length - trimStart - trimEnd );
         }
     }
 }

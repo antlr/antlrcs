@@ -308,10 +308,12 @@ indirectTemplate!
 	;
 
 argList!
-	:	LPAREN RPAREN -> ARGS["ARGS"] // view()
-	|	(singleArg)=>singleArg -> singleArg						  // bold(name)
-	|	LPAREN argumentAssignment (COMMA argumentAssignment)* RPAREN
-		-> ^(ARGS["ARGS"] argumentAssignment+)
+	:	LPAREN
+		(	argumentAssignment (COMMA argumentAssignment)*
+		)?
+		RPAREN
+		-> ^(ARGS["ARGS"] argumentAssignment*)
+	|	singleArg // bold(name)
 	;
 
 singleArg

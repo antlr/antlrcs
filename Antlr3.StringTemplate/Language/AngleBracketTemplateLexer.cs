@@ -1,4 +1,4 @@
-// $ANTLR 3.1.2 Language\\AngleBracketTemplateLexer.g3 2009-03-16 17:15:43
+// $ANTLR 3.1.2 Language\\AngleBracketTemplateLexer.g3 2009-03-16 20:58:36
 
 // The variable 'variable' is assigned but its value is never used.
 #pragma warning disable 219
@@ -357,9 +357,9 @@ public partial class AngleBracketTemplateLexer : Lexer
 
 
 					Match('('); if (state.failed) return ;
-					int expStart170 = GetCharIndex();
+					int expStart171 = GetCharIndex();
 					mIF_EXPR(); if (state.failed) return ;
-					exp = new CommonToken(input, TokenConstants.INVALID_TOKEN_TYPE, TokenConstants.DEFAULT_CHANNEL, expStart170, GetCharIndex()-1);
+					exp = new CommonToken(input, TokenConstants.INVALID_TOKEN_TYPE, TokenConstants.DEFAULT_CHANNEL, expStart171, GetCharIndex()-1);
 					Match(")>"); if (state.failed) return ;
 
 					// Language\\AngleBracketTemplateLexer.g3:110:4: ( ( '\\r' )? '\\n' )?
@@ -450,9 +450,9 @@ public partial class AngleBracketTemplateLexer : Lexer
 
 
 					Match('('); if (state.failed) return ;
-					int expStart219 = GetCharIndex();
+					int expStart220 = GetCharIndex();
 					mIF_EXPR(); if (state.failed) return ;
-					exp = new CommonToken(input, TokenConstants.INVALID_TOKEN_TYPE, TokenConstants.DEFAULT_CHANNEL, expStart219, GetCharIndex()-1);
+					exp = new CommonToken(input, TokenConstants.INVALID_TOKEN_TYPE, TokenConstants.DEFAULT_CHANNEL, expStart220, GetCharIndex()-1);
 					Match(")>"); if (state.failed) return ;
 
 					// Language\\AngleBracketTemplateLexer.g3:117:4: ( ( '\\r' )? '\\n' )?
@@ -1189,10 +1189,10 @@ public partial class AngleBracketTemplateLexer : Lexer
 				int loopStartIndex = 0;
 				int col = 0;
 
-			// Language\\AngleBracketTemplateLexer.g3:189:4: ( ( ( '\\\\' ( options {k=1; } :=> '<' |=> '>' |=> '\\\\' |ch= . ) ) |ind= INDENT |ch=~ ( '\\\\' | ' ' | '\\t' | '<' | '\\r' | '\\n' ) )+ )
-			// Language\\AngleBracketTemplateLexer.g3:189:4: ( ( '\\\\' ( options {k=1; } :=> '<' |=> '>' |=> '\\\\' |ch= . ) ) |ind= INDENT |ch=~ ( '\\\\' | ' ' | '\\t' | '<' | '\\r' | '\\n' ) )+
+			// Language\\AngleBracketTemplateLexer.g3:189:4: ( ( ( '\\\\' ( '<' | '>' | '\\\\' |ch=~ ( '<' | '>' | '\\\\' ) ) ) |ind= INDENT |ch=~ ( '\\\\' | ' ' | '\\t' | '<' | '\\r' | '\\n' ) )+ )
+			// Language\\AngleBracketTemplateLexer.g3:189:4: ( ( '\\\\' ( '<' | '>' | '\\\\' |ch=~ ( '<' | '>' | '\\\\' ) ) ) |ind= INDENT |ch=~ ( '\\\\' | ' ' | '\\t' | '<' | '\\r' | '\\n' ) )+
 			{
-			// Language\\AngleBracketTemplateLexer.g3:189:4: ( ( '\\\\' ( options {k=1; } :=> '<' |=> '>' |=> '\\\\' |ch= . ) ) |ind= INDENT |ch=~ ( '\\\\' | ' ' | '\\t' | '<' | '\\r' | '\\n' ) )+
+			// Language\\AngleBracketTemplateLexer.g3:189:4: ( ( '\\\\' ( '<' | '>' | '\\\\' |ch=~ ( '<' | '>' | '\\\\' ) ) ) |ind= INDENT |ch=~ ( '\\\\' | ' ' | '\\t' | '<' | '\\r' | '\\n' ) )+
 			int cnt28=0;
 			for ( ; ; )
 			{
@@ -1216,75 +1216,27 @@ public partial class AngleBracketTemplateLexer : Lexer
 				switch ( alt28 )
 				{
 				case 1:
-					// Language\\AngleBracketTemplateLexer.g3:189:6: ( '\\\\' ( options {k=1; } :=> '<' |=> '>' |=> '\\\\' |ch= . ) )
+					// Language\\AngleBracketTemplateLexer.g3:189:6: ( '\\\\' ( '<' | '>' | '\\\\' |ch=~ ( '<' | '>' | '\\\\' ) ) )
 					{
-					// Language\\AngleBracketTemplateLexer.g3:189:6: ( '\\\\' ( options {k=1; } :=> '<' |=> '>' |=> '\\\\' |ch= . ) )
-					// Language\\AngleBracketTemplateLexer.g3:189:8: '\\\\' ( options {k=1; } :=> '<' |=> '>' |=> '\\\\' |ch= . )
+					// Language\\AngleBracketTemplateLexer.g3:189:6: ( '\\\\' ( '<' | '>' | '\\\\' |ch=~ ( '<' | '>' | '\\\\' ) ) )
+					// Language\\AngleBracketTemplateLexer.g3:189:8: '\\\\' ( '<' | '>' | '\\\\' |ch=~ ( '<' | '>' | '\\\\' ) )
 					{
 					Match('\\'); if (state.failed) return ;
-					// Language\\AngleBracketTemplateLexer.g3:190:5: ( options {k=1; } :=> '<' |=> '>' |=> '\\\\' |ch= . )
+					// Language\\AngleBracketTemplateLexer.g3:190:5: ( '<' | '>' | '\\\\' |ch=~ ( '<' | '>' | '\\\\' ) )
 					int alt27=4;
 					int LA27_0 = input.LA(1);
 
 					if ( (LA27_0=='<') )
 					{
-						int LA27_1 = input.LA(2);
-
-						if ( (synpred11_AngleBracketTemplateLexer()) )
-						{
-							alt27=1;
-						}
-						else if ( (true) )
-						{
-							alt27=4;
-						}
-						else
-						{
-							if (state.backtracking>0) {state.failed=true; return ;}
-							NoViableAltException nvae = new NoViableAltException("", 27, 1, input);
-
-							throw nvae;
-						}
+						alt27=1;
 					}
 					else if ( (LA27_0=='>') )
 					{
-						int LA27_2 = input.LA(2);
-
-						if ( (synpred12_AngleBracketTemplateLexer()) )
-						{
-							alt27=2;
-						}
-						else if ( (true) )
-						{
-							alt27=4;
-						}
-						else
-						{
-							if (state.backtracking>0) {state.failed=true; return ;}
-							NoViableAltException nvae = new NoViableAltException("", 27, 2, input);
-
-							throw nvae;
-						}
+						alt27=2;
 					}
 					else if ( (LA27_0=='\\') )
 					{
-						int LA27_3 = input.LA(2);
-
-						if ( (synpred13_AngleBracketTemplateLexer()) )
-						{
-							alt27=3;
-						}
-						else if ( (true) )
-						{
-							alt27=4;
-						}
-						else
-						{
-							if (state.backtracking>0) {state.failed=true; return ;}
-							NoViableAltException nvae = new NoViableAltException("", 27, 3, input);
-
-							throw nvae;
-						}
+						alt27=3;
 					}
 					else if ( ((LA27_0>='\u0000' && LA27_0<=';')||LA27_0=='='||(LA27_0>='?' && LA27_0<='[')||(LA27_0>=']' && LA27_0<='\uFFFF')) )
 					{
@@ -1300,9 +1252,8 @@ public partial class AngleBracketTemplateLexer : Lexer
 					switch ( alt27 )
 					{
 					case 1:
-						// Language\\AngleBracketTemplateLexer.g3:191:6: => '<'
+						// Language\\AngleBracketTemplateLexer.g3:190:7: '<'
 						{
-
 						Match('<'); if (state.failed) return ;
 						if ( state.backtracking == 0 )
 						{
@@ -1312,9 +1263,8 @@ public partial class AngleBracketTemplateLexer : Lexer
 						}
 						break;
 					case 2:
-						// Language\\AngleBracketTemplateLexer.g3:192:7: => '>'
+						// Language\\AngleBracketTemplateLexer.g3:191:7: '>'
 						{
-
 						Match('>'); if (state.failed) return ;
 						if ( state.backtracking == 0 )
 						{
@@ -1324,9 +1274,8 @@ public partial class AngleBracketTemplateLexer : Lexer
 						}
 						break;
 					case 3:
-						// Language\\AngleBracketTemplateLexer.g3:193:7: => '\\\\'
+						// Language\\AngleBracketTemplateLexer.g3:192:7: '\\\\'
 						{
-
 						Match('\\'); if (state.failed) return ;
 						if ( state.backtracking == 0 )
 						{
@@ -1336,10 +1285,11 @@ public partial class AngleBracketTemplateLexer : Lexer
 						}
 						break;
 					case 4:
-						// Language\\AngleBracketTemplateLexer.g3:194:7: ch= .
+						// Language\\AngleBracketTemplateLexer.g3:193:7: ch=~ ( '<' | '>' | '\\\\' )
 						{
-						ch = input.LA(1);
-						MatchAny(); if (state.failed) return ;
+						ch= input.LA(1);
+						input.Consume();
+						state.failed=false;
 						if ( state.backtracking == 0 )
 						{
 							 builder.Append( "\\" + (char)ch ); 
@@ -1357,11 +1307,11 @@ public partial class AngleBracketTemplateLexer : Lexer
 					}
 					break;
 				case 2:
-					// Language\\AngleBracketTemplateLexer.g3:197:5: ind= INDENT
+					// Language\\AngleBracketTemplateLexer.g3:196:5: ind= INDENT
 					{
-					int indStart709 = GetCharIndex();
+					int indStart686 = GetCharIndex();
 					mINDENT(); if (state.failed) return ;
-					ind = new CommonToken(input, TokenConstants.INVALID_TOKEN_TYPE, TokenConstants.DEFAULT_CHANNEL, indStart709, GetCharIndex()-1);
+					ind = new CommonToken(input, TokenConstants.INVALID_TOKEN_TYPE, TokenConstants.DEFAULT_CHANNEL, indStart686, GetCharIndex()-1);
 					if ( state.backtracking == 0 )
 					{
 
@@ -1385,7 +1335,7 @@ public partial class AngleBracketTemplateLexer : Lexer
 					}
 					break;
 				case 3:
-					// Language\\AngleBracketTemplateLexer.g3:214:5: ch=~ ( '\\\\' | ' ' | '\\t' | '<' | '\\r' | '\\n' )
+					// Language\\AngleBracketTemplateLexer.g3:213:5: ch=~ ( '\\\\' | ' ' | '\\t' | '<' | '\\r' | '\\n' )
 					{
 					ch= input.LA(1);
 					input.Consume();
@@ -1439,10 +1389,10 @@ public partial class AngleBracketTemplateLexer : Lexer
 	{
 		try
 		{
-			// Language\\AngleBracketTemplateLexer.g3:227:4: ( ( ' ' | '\\t' )+ )
-			// Language\\AngleBracketTemplateLexer.g3:227:4: ( ' ' | '\\t' )+
+			// Language\\AngleBracketTemplateLexer.g3:226:4: ( ( ' ' | '\\t' )+ )
+			// Language\\AngleBracketTemplateLexer.g3:226:4: ( ' ' | '\\t' )+
 			{
-			// Language\\AngleBracketTemplateLexer.g3:227:4: ( ' ' | '\\t' )+
+			// Language\\AngleBracketTemplateLexer.g3:226:4: ( ' ' | '\\t' )+
 			int cnt29=0;
 			for ( ; ; )
 			{
@@ -1504,10 +1454,10 @@ public partial class AngleBracketTemplateLexer : Lexer
 				_text = string.Empty;
 				System.Text.StringBuilder builder = new System.Text.StringBuilder();
 
-			// Language\\AngleBracketTemplateLexer.g3:238:4: ( ( ESC |st= SUBTEMPLATE | ( '=' | '+' ) ( TEMPLATE[out subtext] |st= SUBTEMPLATE |ch=~ ( '\"' | '<' | '{' ) ) |ch=~ ( '\\\\' | '{' | '=' | '+' | '>' ) )+ )
-			// Language\\AngleBracketTemplateLexer.g3:238:4: ( ESC |st= SUBTEMPLATE | ( '=' | '+' ) ( TEMPLATE[out subtext] |st= SUBTEMPLATE |ch=~ ( '\"' | '<' | '{' ) ) |ch=~ ( '\\\\' | '{' | '=' | '+' | '>' ) )+
+			// Language\\AngleBracketTemplateLexer.g3:237:4: ( ( ESC |st= SUBTEMPLATE | ( '=' | '+' ) ( TEMPLATE[out subtext] |st= SUBTEMPLATE |ch=~ ( '\"' | '<' | '{' ) ) |ch=~ ( '\\\\' | '{' | '=' | '+' | '>' ) )+ )
+			// Language\\AngleBracketTemplateLexer.g3:237:4: ( ESC |st= SUBTEMPLATE | ( '=' | '+' ) ( TEMPLATE[out subtext] |st= SUBTEMPLATE |ch=~ ( '\"' | '<' | '{' ) ) |ch=~ ( '\\\\' | '{' | '=' | '+' | '>' ) )+
 			{
-			// Language\\AngleBracketTemplateLexer.g3:238:4: ( ESC |st= SUBTEMPLATE | ( '=' | '+' ) ( TEMPLATE[out subtext] |st= SUBTEMPLATE |ch=~ ( '\"' | '<' | '{' ) ) |ch=~ ( '\\\\' | '{' | '=' | '+' | '>' ) )+
+			// Language\\AngleBracketTemplateLexer.g3:237:4: ( ESC |st= SUBTEMPLATE | ( '=' | '+' ) ( TEMPLATE[out subtext] |st= SUBTEMPLATE |ch=~ ( '\"' | '<' | '{' ) ) |ch=~ ( '\\\\' | '{' | '=' | '+' | '>' ) )+
 			int cnt32=0;
 			for ( ; ; )
 			{
@@ -1535,11 +1485,11 @@ public partial class AngleBracketTemplateLexer : Lexer
 				switch ( alt32 )
 				{
 				case 1:
-					// Language\\AngleBracketTemplateLexer.g3:238:6: ESC
+					// Language\\AngleBracketTemplateLexer.g3:237:6: ESC
 					{
-					int ESC1Start789 = GetCharIndex();
+					int ESC1Start766 = GetCharIndex();
 					mESC(); if (state.failed) return ;
-					ESC1 = new CommonToken(input, TokenConstants.INVALID_TOKEN_TYPE, TokenConstants.DEFAULT_CHANNEL, ESC1Start789, GetCharIndex()-1);
+					ESC1 = new CommonToken(input, TokenConstants.INVALID_TOKEN_TYPE, TokenConstants.DEFAULT_CHANNEL, ESC1Start766, GetCharIndex()-1);
 					if ( state.backtracking == 0 )
 					{
 						builder.Append((ESC1!=null?ESC1.Text:null));
@@ -1548,11 +1498,11 @@ public partial class AngleBracketTemplateLexer : Lexer
 					}
 					break;
 				case 2:
-					// Language\\AngleBracketTemplateLexer.g3:239:5: st= SUBTEMPLATE
+					// Language\\AngleBracketTemplateLexer.g3:238:5: st= SUBTEMPLATE
 					{
-					int stStart807 = GetCharIndex();
+					int stStart784 = GetCharIndex();
 					mSUBTEMPLATE(); if (state.failed) return ;
-					st = new CommonToken(input, TokenConstants.INVALID_TOKEN_TYPE, TokenConstants.DEFAULT_CHANNEL, stStart807, GetCharIndex()-1);
+					st = new CommonToken(input, TokenConstants.INVALID_TOKEN_TYPE, TokenConstants.DEFAULT_CHANNEL, stStart784, GetCharIndex()-1);
 					if ( state.backtracking == 0 )
 					{
 						builder.Append((st!=null?st.Text:null));
@@ -1561,9 +1511,9 @@ public partial class AngleBracketTemplateLexer : Lexer
 					}
 					break;
 				case 3:
-					// Language\\AngleBracketTemplateLexer.g3:240:5: ( '=' | '+' ) ( TEMPLATE[out subtext] |st= SUBTEMPLATE |ch=~ ( '\"' | '<' | '{' ) )
+					// Language\\AngleBracketTemplateLexer.g3:239:5: ( '=' | '+' ) ( TEMPLATE[out subtext] |st= SUBTEMPLATE |ch=~ ( '\"' | '<' | '{' ) )
 					{
-					// Language\\AngleBracketTemplateLexer.g3:240:5: ( '=' | '+' )
+					// Language\\AngleBracketTemplateLexer.g3:239:5: ( '=' | '+' )
 					int alt30=2;
 					int LA30_0 = input.LA(1);
 
@@ -1585,7 +1535,7 @@ public partial class AngleBracketTemplateLexer : Lexer
 					switch ( alt30 )
 					{
 					case 1:
-						// Language\\AngleBracketTemplateLexer.g3:240:7: '='
+						// Language\\AngleBracketTemplateLexer.g3:239:7: '='
 						{
 						Match('='); if (state.failed) return ;
 						if ( state.backtracking == 0 )
@@ -1596,7 +1546,7 @@ public partial class AngleBracketTemplateLexer : Lexer
 						}
 						break;
 					case 2:
-						// Language\\AngleBracketTemplateLexer.g3:241:6: '+'
+						// Language\\AngleBracketTemplateLexer.g3:240:6: '+'
 						{
 						Match('+'); if (state.failed) return ;
 						if ( state.backtracking == 0 )
@@ -1609,7 +1559,7 @@ public partial class AngleBracketTemplateLexer : Lexer
 
 					}
 
-					// Language\\AngleBracketTemplateLexer.g3:243:4: ( TEMPLATE[out subtext] |st= SUBTEMPLATE |ch=~ ( '\"' | '<' | '{' ) )
+					// Language\\AngleBracketTemplateLexer.g3:242:4: ( TEMPLATE[out subtext] |st= SUBTEMPLATE |ch=~ ( '\"' | '<' | '{' ) )
 					int alt31=3;
 					int LA31_0 = input.LA(1);
 
@@ -1635,7 +1585,7 @@ public partial class AngleBracketTemplateLexer : Lexer
 					switch ( alt31 )
 					{
 					case 1:
-						// Language\\AngleBracketTemplateLexer.g3:243:6: TEMPLATE[out subtext]
+						// Language\\AngleBracketTemplateLexer.g3:242:6: TEMPLATE[out subtext]
 						{
 						mTEMPLATE(out subtext); if (state.failed) return ;
 						if ( state.backtracking == 0 )
@@ -1646,11 +1596,11 @@ public partial class AngleBracketTemplateLexer : Lexer
 						}
 						break;
 					case 2:
-						// Language\\AngleBracketTemplateLexer.g3:244:6: st= SUBTEMPLATE
+						// Language\\AngleBracketTemplateLexer.g3:243:6: st= SUBTEMPLATE
 						{
-						int stStart873 = GetCharIndex();
+						int stStart850 = GetCharIndex();
 						mSUBTEMPLATE(); if (state.failed) return ;
-						st = new CommonToken(input, TokenConstants.INVALID_TOKEN_TYPE, TokenConstants.DEFAULT_CHANNEL, stStart873, GetCharIndex()-1);
+						st = new CommonToken(input, TokenConstants.INVALID_TOKEN_TYPE, TokenConstants.DEFAULT_CHANNEL, stStart850, GetCharIndex()-1);
 						if ( state.backtracking == 0 )
 						{
 							builder.Append((st!=null?st.Text:null));
@@ -1659,7 +1609,7 @@ public partial class AngleBracketTemplateLexer : Lexer
 						}
 						break;
 					case 3:
-						// Language\\AngleBracketTemplateLexer.g3:245:6: ch=~ ( '\"' | '<' | '{' )
+						// Language\\AngleBracketTemplateLexer.g3:244:6: ch=~ ( '\"' | '<' | '{' )
 						{
 						ch= input.LA(1);
 						input.Consume();
@@ -1678,7 +1628,7 @@ public partial class AngleBracketTemplateLexer : Lexer
 					}
 					break;
 				case 4:
-					// Language\\AngleBracketTemplateLexer.g3:247:5: ch=~ ( '\\\\' | '{' | '=' | '+' | '>' )
+					// Language\\AngleBracketTemplateLexer.g3:246:5: ch=~ ( '\\\\' | '{' | '=' | '+' | '>' )
 					{
 					ch= input.LA(1);
 					input.Consume();
@@ -1731,7 +1681,7 @@ public partial class AngleBracketTemplateLexer : Lexer
 				_text = string.Empty;
 				System.Text.StringBuilder builder = new System.Text.StringBuilder();
 
-			// Language\\AngleBracketTemplateLexer.g3:259:4: ( '\"' ( ESC |ch=~ ( '\\\\' | '\"' ) )* '\"' | '<<' (=> ( '\\r' )? '\\n' )? ( options {k=2; } :=> ( '\\r' )? '\\n' |=>ch= . )* '>>' )
+			// Language\\AngleBracketTemplateLexer.g3:258:4: ( '\"' ( ESC |ch=~ ( '\\\\' | '\"' ) )* '\"' | '<<' (=> ( '\\r' )? '\\n' )? ( options {k=2; } :=> ( '\\r' )? '\\n' |=>ch= . )* '>>' )
 			int alt38=2;
 			int LA38_0 = input.LA(1);
 
@@ -1753,14 +1703,14 @@ public partial class AngleBracketTemplateLexer : Lexer
 			switch ( alt38 )
 			{
 			case 1:
-				// Language\\AngleBracketTemplateLexer.g3:259:4: '\"' ( ESC |ch=~ ( '\\\\' | '\"' ) )* '\"'
+				// Language\\AngleBracketTemplateLexer.g3:258:4: '\"' ( ESC |ch=~ ( '\\\\' | '\"' ) )* '\"'
 				{
 				Match('\"'); if (state.failed) return ;
 				if ( state.backtracking == 0 )
 				{
 					builder.Append('"');
 				}
-				// Language\\AngleBracketTemplateLexer.g3:261:3: ( ESC |ch=~ ( '\\\\' | '\"' ) )*
+				// Language\\AngleBracketTemplateLexer.g3:260:3: ( ESC |ch=~ ( '\\\\' | '\"' ) )*
 				for ( ; ; )
 				{
 					int alt33=3;
@@ -1779,11 +1729,11 @@ public partial class AngleBracketTemplateLexer : Lexer
 					switch ( alt33 )
 					{
 					case 1:
-						// Language\\AngleBracketTemplateLexer.g3:261:5: ESC
+						// Language\\AngleBracketTemplateLexer.g3:260:5: ESC
 						{
-						int ESC2Start966 = GetCharIndex();
+						int ESC2Start943 = GetCharIndex();
 						mESC(); if (state.failed) return ;
-						ESC2 = new CommonToken(input, TokenConstants.INVALID_TOKEN_TYPE, TokenConstants.DEFAULT_CHANNEL, ESC2Start966, GetCharIndex()-1);
+						ESC2 = new CommonToken(input, TokenConstants.INVALID_TOKEN_TYPE, TokenConstants.DEFAULT_CHANNEL, ESC2Start943, GetCharIndex()-1);
 						if ( state.backtracking == 0 )
 						{
 							builder.Append((ESC2!=null?ESC2.Text:null));
@@ -1792,7 +1742,7 @@ public partial class AngleBracketTemplateLexer : Lexer
 						}
 						break;
 					case 2:
-						// Language\\AngleBracketTemplateLexer.g3:262:5: ch=~ ( '\\\\' | '\"' )
+						// Language\\AngleBracketTemplateLexer.g3:261:5: ch=~ ( '\\\\' | '\"' )
 						{
 						ch= input.LA(1);
 						input.Consume();
@@ -1826,7 +1776,7 @@ public partial class AngleBracketTemplateLexer : Lexer
 				}
 				break;
 			case 2:
-				// Language\\AngleBracketTemplateLexer.g3:269:4: '<<' (=> ( '\\r' )? '\\n' )? ( options {k=2; } :=> ( '\\r' )? '\\n' |=>ch= . )* '>>'
+				// Language\\AngleBracketTemplateLexer.g3:268:4: '<<' (=> ( '\\r' )? '\\n' )? ( options {k=2; } :=> ( '\\r' )? '\\n' |=>ch= . )* '>>'
 				{
 				Match("<<"); if (state.failed) return ;
 
@@ -1836,7 +1786,7 @@ public partial class AngleBracketTemplateLexer : Lexer
 								builder.Append("<<");
 							
 				}
-				// Language\\AngleBracketTemplateLexer.g3:273:3: (=> ( '\\r' )? '\\n' )?
+				// Language\\AngleBracketTemplateLexer.g3:272:3: (=> ( '\\r' )? '\\n' )?
 				int alt35=2;
 				int LA35_0 = input.LA(1);
 
@@ -1848,7 +1798,7 @@ public partial class AngleBracketTemplateLexer : Lexer
 					{
 						int LA35_2 = input.LA(3);
 
-						if ( (synpred14_AngleBracketTemplateLexer()) )
+						if ( (synpred11_AngleBracketTemplateLexer()) )
 						{
 							alt35=1;
 						}
@@ -1858,7 +1808,7 @@ public partial class AngleBracketTemplateLexer : Lexer
 				{
 					int LA35_2 = input.LA(2);
 
-					if ( (synpred14_AngleBracketTemplateLexer()) )
+					if ( (synpred11_AngleBracketTemplateLexer()) )
 					{
 						alt35=1;
 					}
@@ -1866,10 +1816,10 @@ public partial class AngleBracketTemplateLexer : Lexer
 				switch ( alt35 )
 				{
 				case 1:
-					// Language\\AngleBracketTemplateLexer.g3:273:5: => ( '\\r' )? '\\n'
+					// Language\\AngleBracketTemplateLexer.g3:272:5: => ( '\\r' )? '\\n'
 					{
 
-					// Language\\AngleBracketTemplateLexer.g3:273:20: ( '\\r' )?
+					// Language\\AngleBracketTemplateLexer.g3:272:20: ( '\\r' )?
 					int alt34=2;
 					int LA34_0 = input.LA(1);
 
@@ -1880,7 +1830,7 @@ public partial class AngleBracketTemplateLexer : Lexer
 					switch ( alt34 )
 					{
 					case 1:
-						// Language\\AngleBracketTemplateLexer.g3:273:21: '\\r'
+						// Language\\AngleBracketTemplateLexer.g3:272:21: '\\r'
 						{
 						Match('\r'); if (state.failed) return ;
 
@@ -1896,7 +1846,7 @@ public partial class AngleBracketTemplateLexer : Lexer
 
 				}
 
-				// Language\\AngleBracketTemplateLexer.g3:274:3: ( options {k=2; } :=> ( '\\r' )? '\\n' |=>ch= . )*
+				// Language\\AngleBracketTemplateLexer.g3:273:3: ( options {k=2; } :=> ( '\\r' )? '\\n' |=>ch= . )*
 				for ( ; ; )
 				{
 					int alt37=3;
@@ -1904,10 +1854,10 @@ public partial class AngleBracketTemplateLexer : Lexer
 					switch ( alt37 )
 					{
 					case 1:
-						// Language\\AngleBracketTemplateLexer.g3:275:4: => ( '\\r' )? '\\n'
+						// Language\\AngleBracketTemplateLexer.g3:274:4: => ( '\\r' )? '\\n'
 						{
 
-						// Language\\AngleBracketTemplateLexer.g3:275:22: ( '\\r' )?
+						// Language\\AngleBracketTemplateLexer.g3:274:22: ( '\\r' )?
 						int alt36=2;
 						int LA36_0 = input.LA(1);
 
@@ -1918,7 +1868,7 @@ public partial class AngleBracketTemplateLexer : Lexer
 						switch ( alt36 )
 						{
 						case 1:
-							// Language\\AngleBracketTemplateLexer.g3:275:23: '\\r'
+							// Language\\AngleBracketTemplateLexer.g3:274:23: '\\r'
 							{
 							Match('\r'); if (state.failed) return ;
 
@@ -1932,7 +1882,7 @@ public partial class AngleBracketTemplateLexer : Lexer
 						}
 						break;
 					case 2:
-						// Language\\AngleBracketTemplateLexer.g3:276:5: =>ch= .
+						// Language\\AngleBracketTemplateLexer.g3:275:5: =>ch= .
 						{
 
 						ch = input.LA(1);
@@ -1980,10 +1930,10 @@ public partial class AngleBracketTemplateLexer : Lexer
 	{
 		try
 		{
-			// Language\\AngleBracketTemplateLexer.g3:287:4: ( ( ESC | SUBTEMPLATE | NESTED_PARENS |~ ( '\\\\' | '{' | '(' | ')' ) )+ )
-			// Language\\AngleBracketTemplateLexer.g3:287:4: ( ESC | SUBTEMPLATE | NESTED_PARENS |~ ( '\\\\' | '{' | '(' | ')' ) )+
+			// Language\\AngleBracketTemplateLexer.g3:286:4: ( ( ESC | SUBTEMPLATE | NESTED_PARENS |~ ( '\\\\' | '{' | '(' | ')' ) )+ )
+			// Language\\AngleBracketTemplateLexer.g3:286:4: ( ESC | SUBTEMPLATE | NESTED_PARENS |~ ( '\\\\' | '{' | '(' | ')' ) )+
 			{
-			// Language\\AngleBracketTemplateLexer.g3:287:4: ( ESC | SUBTEMPLATE | NESTED_PARENS |~ ( '\\\\' | '{' | '(' | ')' ) )+
+			// Language\\AngleBracketTemplateLexer.g3:286:4: ( ESC | SUBTEMPLATE | NESTED_PARENS |~ ( '\\\\' | '{' | '(' | ')' ) )+
 			int cnt39=0;
 			for ( ; ; )
 			{
@@ -2011,28 +1961,28 @@ public partial class AngleBracketTemplateLexer : Lexer
 				switch ( alt39 )
 				{
 				case 1:
-					// Language\\AngleBracketTemplateLexer.g3:287:6: ESC
+					// Language\\AngleBracketTemplateLexer.g3:286:6: ESC
 					{
 					mESC(); if (state.failed) return ;
 
 					}
 					break;
 				case 2:
-					// Language\\AngleBracketTemplateLexer.g3:288:5: SUBTEMPLATE
+					// Language\\AngleBracketTemplateLexer.g3:287:5: SUBTEMPLATE
 					{
 					mSUBTEMPLATE(); if (state.failed) return ;
 
 					}
 					break;
 				case 3:
-					// Language\\AngleBracketTemplateLexer.g3:289:5: NESTED_PARENS
+					// Language\\AngleBracketTemplateLexer.g3:288:5: NESTED_PARENS
 					{
 					mNESTED_PARENS(); if (state.failed) return ;
 
 					}
 					break;
 				case 4:
-					// Language\\AngleBracketTemplateLexer.g3:290:5: ~ ( '\\\\' | '{' | '(' | ')' )
+					// Language\\AngleBracketTemplateLexer.g3:289:5: ~ ( '\\\\' | '{' | '(' | ')' )
 					{
 					input.Consume();
 					state.failed=false;
@@ -2077,11 +2027,11 @@ public partial class AngleBracketTemplateLexer : Lexer
 
 				uc = '\0';
 
-			// Language\\AngleBracketTemplateLexer.g3:300:4: ( '\\\\' ( 'n' | 'r' | 't' | ' ' | 'u' a= HEX b= HEX c= HEX d= HEX ) )
-			// Language\\AngleBracketTemplateLexer.g3:300:4: '\\\\' ( 'n' | 'r' | 't' | ' ' | 'u' a= HEX b= HEX c= HEX d= HEX )
+			// Language\\AngleBracketTemplateLexer.g3:299:4: ( '\\\\' ( 'n' | 'r' | 't' | ' ' | 'u' a= HEX b= HEX c= HEX d= HEX ) )
+			// Language\\AngleBracketTemplateLexer.g3:299:4: '\\\\' ( 'n' | 'r' | 't' | ' ' | 'u' a= HEX b= HEX c= HEX d= HEX )
 			{
 			Match('\\'); if (state.failed) return ;
-			// Language\\AngleBracketTemplateLexer.g3:301:3: ( 'n' | 'r' | 't' | ' ' | 'u' a= HEX b= HEX c= HEX d= HEX )
+			// Language\\AngleBracketTemplateLexer.g3:300:3: ( 'n' | 'r' | 't' | ' ' | 'u' a= HEX b= HEX c= HEX d= HEX )
 			int alt40=5;
 			switch ( input.LA(1) )
 			{
@@ -2122,7 +2072,7 @@ public partial class AngleBracketTemplateLexer : Lexer
 			switch ( alt40 )
 			{
 			case 1:
-				// Language\\AngleBracketTemplateLexer.g3:301:5: 'n'
+				// Language\\AngleBracketTemplateLexer.g3:300:5: 'n'
 				{
 				Match('n'); if (state.failed) return ;
 				if ( state.backtracking == 0 )
@@ -2133,7 +2083,7 @@ public partial class AngleBracketTemplateLexer : Lexer
 				}
 				break;
 			case 2:
-				// Language\\AngleBracketTemplateLexer.g3:302:5: 'r'
+				// Language\\AngleBracketTemplateLexer.g3:301:5: 'r'
 				{
 				Match('r'); if (state.failed) return ;
 				if ( state.backtracking == 0 )
@@ -2144,7 +2094,7 @@ public partial class AngleBracketTemplateLexer : Lexer
 				}
 				break;
 			case 3:
-				// Language\\AngleBracketTemplateLexer.g3:303:5: 't'
+				// Language\\AngleBracketTemplateLexer.g3:302:5: 't'
 				{
 				Match('t'); if (state.failed) return ;
 				if ( state.backtracking == 0 )
@@ -2155,7 +2105,7 @@ public partial class AngleBracketTemplateLexer : Lexer
 				}
 				break;
 			case 4:
-				// Language\\AngleBracketTemplateLexer.g3:304:5: ' '
+				// Language\\AngleBracketTemplateLexer.g3:303:5: ' '
 				{
 				Match(' '); if (state.failed) return ;
 				if ( state.backtracking == 0 )
@@ -2166,21 +2116,21 @@ public partial class AngleBracketTemplateLexer : Lexer
 				}
 				break;
 			case 5:
-				// Language\\AngleBracketTemplateLexer.g3:305:5: 'u' a= HEX b= HEX c= HEX d= HEX
+				// Language\\AngleBracketTemplateLexer.g3:304:5: 'u' a= HEX b= HEX c= HEX d= HEX
 				{
 				Match('u'); if (state.failed) return ;
-				int aStart1214 = GetCharIndex();
+				int aStart1191 = GetCharIndex();
 				mHEX(); if (state.failed) return ;
-				a = new CommonToken(input, TokenConstants.INVALID_TOKEN_TYPE, TokenConstants.DEFAULT_CHANNEL, aStart1214, GetCharIndex()-1);
-				int bStart1218 = GetCharIndex();
+				a = new CommonToken(input, TokenConstants.INVALID_TOKEN_TYPE, TokenConstants.DEFAULT_CHANNEL, aStart1191, GetCharIndex()-1);
+				int bStart1195 = GetCharIndex();
 				mHEX(); if (state.failed) return ;
-				b = new CommonToken(input, TokenConstants.INVALID_TOKEN_TYPE, TokenConstants.DEFAULT_CHANNEL, bStart1218, GetCharIndex()-1);
-				int cStart1222 = GetCharIndex();
+				b = new CommonToken(input, TokenConstants.INVALID_TOKEN_TYPE, TokenConstants.DEFAULT_CHANNEL, bStart1195, GetCharIndex()-1);
+				int cStart1199 = GetCharIndex();
 				mHEX(); if (state.failed) return ;
-				c = new CommonToken(input, TokenConstants.INVALID_TOKEN_TYPE, TokenConstants.DEFAULT_CHANNEL, cStart1222, GetCharIndex()-1);
-				int dStart1226 = GetCharIndex();
+				c = new CommonToken(input, TokenConstants.INVALID_TOKEN_TYPE, TokenConstants.DEFAULT_CHANNEL, cStart1199, GetCharIndex()-1);
+				int dStart1203 = GetCharIndex();
 				mHEX(); if (state.failed) return ;
-				d = new CommonToken(input, TokenConstants.INVALID_TOKEN_TYPE, TokenConstants.DEFAULT_CHANNEL, dStart1226, GetCharIndex()-1);
+				d = new CommonToken(input, TokenConstants.INVALID_TOKEN_TYPE, TokenConstants.DEFAULT_CHANNEL, dStart1203, GetCharIndex()-1);
 				if ( state.backtracking == 0 )
 				{
 					 uc = (char)int.Parse((a!=null?a.Text:null)+(b!=null?b.Text:null)+(c!=null?c.Text:null)+(d!=null?d.Text:null), System.Globalization.NumberStyles.AllowHexSpecifier); 
@@ -2206,8 +2156,8 @@ public partial class AngleBracketTemplateLexer : Lexer
 	{
 		try
 		{
-			// Language\\AngleBracketTemplateLexer.g3:313:4: ( '\\\\' . )
-			// Language\\AngleBracketTemplateLexer.g3:313:4: '\\\\' .
+			// Language\\AngleBracketTemplateLexer.g3:312:4: ( '\\\\' . )
+			// Language\\AngleBracketTemplateLexer.g3:312:4: '\\\\' .
 			{
 			Match('\\'); if (state.failed) return ;
 			MatchAny(); if (state.failed) return ;
@@ -2226,7 +2176,7 @@ public partial class AngleBracketTemplateLexer : Lexer
 	{
 		try
 		{
-			// Language\\AngleBracketTemplateLexer.g3:318:4: ( '0' .. '9' | 'A' .. 'F' | 'a' .. 'f' )
+			// Language\\AngleBracketTemplateLexer.g3:317:4: ( '0' .. '9' | 'A' .. 'F' | 'a' .. 'f' )
 			// Language\\AngleBracketTemplateLexer.g3:
 			{
 			if ( (input.LA(1)>='0' && input.LA(1)<='9')||(input.LA(1)>='A' && input.LA(1)<='F')||(input.LA(1)>='a' && input.LA(1)<='f') )
@@ -2256,11 +2206,11 @@ public partial class AngleBracketTemplateLexer : Lexer
 	{
 		try
 		{
-			// Language\\AngleBracketTemplateLexer.g3:323:4: ( '{' ( SUBTEMPLATE | ESC |~ ( '{' | '\\\\' | '}' ) )* '}' )
-			// Language\\AngleBracketTemplateLexer.g3:323:4: '{' ( SUBTEMPLATE | ESC |~ ( '{' | '\\\\' | '}' ) )* '}'
+			// Language\\AngleBracketTemplateLexer.g3:322:4: ( '{' ( SUBTEMPLATE | ESC |~ ( '{' | '\\\\' | '}' ) )* '}' )
+			// Language\\AngleBracketTemplateLexer.g3:322:4: '{' ( SUBTEMPLATE | ESC |~ ( '{' | '\\\\' | '}' ) )* '}'
 			{
 			Match('{'); if (state.failed) return ;
-			// Language\\AngleBracketTemplateLexer.g3:324:3: ( SUBTEMPLATE | ESC |~ ( '{' | '\\\\' | '}' ) )*
+			// Language\\AngleBracketTemplateLexer.g3:323:3: ( SUBTEMPLATE | ESC |~ ( '{' | '\\\\' | '}' ) )*
 			for ( ; ; )
 			{
 				int alt41=4;
@@ -2283,21 +2233,21 @@ public partial class AngleBracketTemplateLexer : Lexer
 				switch ( alt41 )
 				{
 				case 1:
-					// Language\\AngleBracketTemplateLexer.g3:324:5: SUBTEMPLATE
+					// Language\\AngleBracketTemplateLexer.g3:323:5: SUBTEMPLATE
 					{
 					mSUBTEMPLATE(); if (state.failed) return ;
 
 					}
 					break;
 				case 2:
-					// Language\\AngleBracketTemplateLexer.g3:325:5: ESC
+					// Language\\AngleBracketTemplateLexer.g3:324:5: ESC
 					{
 					mESC(); if (state.failed) return ;
 
 					}
 					break;
 				case 3:
-					// Language\\AngleBracketTemplateLexer.g3:326:5: ~ ( '{' | '\\\\' | '}' )
+					// Language\\AngleBracketTemplateLexer.g3:325:5: ~ ( '{' | '\\\\' | '}' )
 					{
 					input.Consume();
 					state.failed=false;
@@ -2330,11 +2280,11 @@ public partial class AngleBracketTemplateLexer : Lexer
 	{
 		try
 		{
-			// Language\\AngleBracketTemplateLexer.g3:333:4: ( '(' ( NESTED_PARENS | ESC |~ ( '(' | '\\\\' | ')' ) )+ ')' )
-			// Language\\AngleBracketTemplateLexer.g3:333:4: '(' ( NESTED_PARENS | ESC |~ ( '(' | '\\\\' | ')' ) )+ ')'
+			// Language\\AngleBracketTemplateLexer.g3:332:4: ( '(' ( NESTED_PARENS | ESC |~ ( '(' | '\\\\' | ')' ) )+ ')' )
+			// Language\\AngleBracketTemplateLexer.g3:332:4: '(' ( NESTED_PARENS | ESC |~ ( '(' | '\\\\' | ')' ) )+ ')'
 			{
 			Match('('); if (state.failed) return ;
-			// Language\\AngleBracketTemplateLexer.g3:334:3: ( NESTED_PARENS | ESC |~ ( '(' | '\\\\' | ')' ) )+
+			// Language\\AngleBracketTemplateLexer.g3:333:3: ( NESTED_PARENS | ESC |~ ( '(' | '\\\\' | ')' ) )+
 			int cnt42=0;
 			for ( ; ; )
 			{
@@ -2358,21 +2308,21 @@ public partial class AngleBracketTemplateLexer : Lexer
 				switch ( alt42 )
 				{
 				case 1:
-					// Language\\AngleBracketTemplateLexer.g3:334:5: NESTED_PARENS
+					// Language\\AngleBracketTemplateLexer.g3:333:5: NESTED_PARENS
 					{
 					mNESTED_PARENS(); if (state.failed) return ;
 
 					}
 					break;
 				case 2:
-					// Language\\AngleBracketTemplateLexer.g3:335:5: ESC
+					// Language\\AngleBracketTemplateLexer.g3:334:5: ESC
 					{
 					mESC(); if (state.failed) return ;
 
 					}
 					break;
 				case 3:
-					// Language\\AngleBracketTemplateLexer.g3:336:5: ~ ( '(' | '\\\\' | ')' )
+					// Language\\AngleBracketTemplateLexer.g3:335:5: ~ ( '(' | '\\\\' | ')' )
 					{
 					input.Consume();
 					state.failed=false;
@@ -2413,12 +2363,12 @@ public partial class AngleBracketTemplateLexer : Lexer
 
 			    int startCol = CharPositionInLine;
 
-			// Language\\AngleBracketTemplateLexer.g3:347:4: ( '<!' ( . )* '!>' ({...}? => ( '\\r' )? '\\n' )? )
-			// Language\\AngleBracketTemplateLexer.g3:347:4: '<!' ( . )* '!>' ({...}? => ( '\\r' )? '\\n' )?
+			// Language\\AngleBracketTemplateLexer.g3:346:4: ( '<!' ( . )* '!>' ({...}? => ( '\\r' )? '\\n' )? )
+			// Language\\AngleBracketTemplateLexer.g3:346:4: '<!' ( . )* '!>' ({...}? => ( '\\r' )? '\\n' )?
 			{
 			Match("<!"); if (state.failed) return ;
 
-			// Language\\AngleBracketTemplateLexer.g3:347:9: ( . )*
+			// Language\\AngleBracketTemplateLexer.g3:346:9: ( . )*
 			for ( ; ; )
 			{
 				int alt43=2;
@@ -2448,7 +2398,7 @@ public partial class AngleBracketTemplateLexer : Lexer
 				switch ( alt43 )
 				{
 				case 1:
-					// Language\\AngleBracketTemplateLexer.g3:347:0: .
+					// Language\\AngleBracketTemplateLexer.g3:346:0: .
 					{
 					MatchAny(); if (state.failed) return ;
 
@@ -2466,7 +2416,7 @@ public partial class AngleBracketTemplateLexer : Lexer
 
 			Match("!>"); if (state.failed) return ;
 
-			// Language\\AngleBracketTemplateLexer.g3:348:3: ({...}? => ( '\\r' )? '\\n' )?
+			// Language\\AngleBracketTemplateLexer.g3:347:3: ({...}? => ( '\\r' )? '\\n' )?
 			int alt45=2;
 			int LA45_0 = input.LA(1);
 
@@ -2477,14 +2427,14 @@ public partial class AngleBracketTemplateLexer : Lexer
 			switch ( alt45 )
 			{
 			case 1:
-				// Language\\AngleBracketTemplateLexer.g3:348:5: {...}? => ( '\\r' )? '\\n'
+				// Language\\AngleBracketTemplateLexer.g3:347:5: {...}? => ( '\\r' )? '\\n'
 				{
 				if ( !((startCol==0)) )
 				{
 					if (state.backtracking>0) {state.failed=true; return ;}
 					throw new FailedPredicateException(input, "COMMENT", "startCol==0");
 				}
-				// Language\\AngleBracketTemplateLexer.g3:348:23: ( '\\r' )?
+				// Language\\AngleBracketTemplateLexer.g3:347:23: ( '\\r' )?
 				int alt44=2;
 				int LA44_0 = input.LA(1);
 
@@ -2495,7 +2445,7 @@ public partial class AngleBracketTemplateLexer : Lexer
 				switch ( alt44 )
 				{
 				case 1:
-					// Language\\AngleBracketTemplateLexer.g3:348:24: '\\r'
+					// Language\\AngleBracketTemplateLexer.g3:347:24: '\\r'
 					{
 					Match('\r'); if (state.failed) return ;
 
@@ -2613,43 +2563,7 @@ public partial class AngleBracketTemplateLexer : Lexer
 	// $ANTLR start synpred11_AngleBracketTemplateLexer
 	public void synpred11_AngleBracketTemplateLexer_fragment()
 	{
-		// Language\\AngleBracketTemplateLexer.g3:191:6: ( '<' )
-		// Language\\AngleBracketTemplateLexer.g3:191:7: '<'
-		{
-		Match('<'); if (state.failed) return ;
-
-		}
-	}
-	// $ANTLR end synpred11_AngleBracketTemplateLexer
-
-	// $ANTLR start synpred12_AngleBracketTemplateLexer
-	public void synpred12_AngleBracketTemplateLexer_fragment()
-	{
-		// Language\\AngleBracketTemplateLexer.g3:192:7: ( '>' )
-		// Language\\AngleBracketTemplateLexer.g3:192:8: '>'
-		{
-		Match('>'); if (state.failed) return ;
-
-		}
-	}
-	// $ANTLR end synpred12_AngleBracketTemplateLexer
-
-	// $ANTLR start synpred13_AngleBracketTemplateLexer
-	public void synpred13_AngleBracketTemplateLexer_fragment()
-	{
-		// Language\\AngleBracketTemplateLexer.g3:193:7: ( '\\\\' )
-		// Language\\AngleBracketTemplateLexer.g3:193:8: '\\\\'
-		{
-		Match('\\'); if (state.failed) return ;
-
-		}
-	}
-	// $ANTLR end synpred13_AngleBracketTemplateLexer
-
-	// $ANTLR start synpred14_AngleBracketTemplateLexer
-	public void synpred14_AngleBracketTemplateLexer_fragment()
-	{
-		// Language\\AngleBracketTemplateLexer.g3:273:5: ( '\\r' | '\\n' )
+		// Language\\AngleBracketTemplateLexer.g3:272:5: ( '\\r' | '\\n' )
 		// Language\\AngleBracketTemplateLexer.g3:
 		{
 		if ( input.LA(1)=='\n'||input.LA(1)=='\r' )
@@ -2667,15 +2581,15 @@ public partial class AngleBracketTemplateLexer : Lexer
 
 		}
 	}
-	// $ANTLR end synpred14_AngleBracketTemplateLexer
+	// $ANTLR end synpred11_AngleBracketTemplateLexer
 
-	// $ANTLR start synpred15_AngleBracketTemplateLexer
-	public void synpred15_AngleBracketTemplateLexer_fragment()
+	// $ANTLR start synpred12_AngleBracketTemplateLexer
+	public void synpred12_AngleBracketTemplateLexer_fragment()
 	{
-		// Language\\AngleBracketTemplateLexer.g3:275:4: ( ( '\\r' )? '\\n>>' )
-		// Language\\AngleBracketTemplateLexer.g3:275:5: ( '\\r' )? '\\n>>'
+		// Language\\AngleBracketTemplateLexer.g3:274:4: ( ( '\\r' )? '\\n>>' )
+		// Language\\AngleBracketTemplateLexer.g3:274:5: ( '\\r' )? '\\n>>'
 		{
-		// Language\\AngleBracketTemplateLexer.g3:275:5: ( '\\r' )?
+		// Language\\AngleBracketTemplateLexer.g3:274:5: ( '\\r' )?
 		int alt47=2;
 		int LA47_0 = input.LA(1);
 
@@ -2686,7 +2600,7 @@ public partial class AngleBracketTemplateLexer : Lexer
 		switch ( alt47 )
 		{
 		case 1:
-			// Language\\AngleBracketTemplateLexer.g3:275:0: '\\r'
+			// Language\\AngleBracketTemplateLexer.g3:274:0: '\\r'
 			{
 			Match('\r'); if (state.failed) return ;
 
@@ -2700,12 +2614,12 @@ public partial class AngleBracketTemplateLexer : Lexer
 
 		}
 	}
-	// $ANTLR end synpred15_AngleBracketTemplateLexer
+	// $ANTLR end synpred12_AngleBracketTemplateLexer
 
-	// $ANTLR start synpred16_AngleBracketTemplateLexer
-	public void synpred16_AngleBracketTemplateLexer_fragment()
+	// $ANTLR start synpred13_AngleBracketTemplateLexer
+	public void synpred13_AngleBracketTemplateLexer_fragment()
 	{
-		// Language\\AngleBracketTemplateLexer.g3:276:5: ( '>' ~ '>' |~ '>' )
+		// Language\\AngleBracketTemplateLexer.g3:275:5: ( '>' ~ '>' |~ '>' )
 		int alt48=2;
 		int LA48_0 = input.LA(1);
 
@@ -2727,7 +2641,7 @@ public partial class AngleBracketTemplateLexer : Lexer
 		switch ( alt48 )
 		{
 		case 1:
-			// Language\\AngleBracketTemplateLexer.g3:276:6: '>' ~ '>'
+			// Language\\AngleBracketTemplateLexer.g3:275:6: '>' ~ '>'
 			{
 			Match('>'); if (state.failed) return ;
 			if ( (input.LA(1)>='\u0000' && input.LA(1)<='=')||(input.LA(1)>='?' && input.LA(1)<='\uFFFF') )
@@ -2746,7 +2660,7 @@ public partial class AngleBracketTemplateLexer : Lexer
 			}
 			break;
 		case 2:
-			// Language\\AngleBracketTemplateLexer.g3:276:17: ~ '>'
+			// Language\\AngleBracketTemplateLexer.g3:275:17: ~ '>'
 			{
 			if ( (input.LA(1)>='\u0000' && input.LA(1)<='=')||(input.LA(1)>='?' && input.LA(1)<='\uFFFF') )
 			{
@@ -2765,7 +2679,7 @@ public partial class AngleBracketTemplateLexer : Lexer
 			break;
 
 		}}
-	// $ANTLR end synpred16_AngleBracketTemplateLexer
+	// $ANTLR end synpred13_AngleBracketTemplateLexer
 
 	// $ANTLR start synpred2_AngleBracketTemplateLexer
 	public void synpred2_AngleBracketTemplateLexer_fragment()
@@ -3114,60 +3028,6 @@ public partial class AngleBracketTemplateLexer : Lexer
 		try
 		{
 			synpred13_AngleBracketTemplateLexer_fragment(); // can never throw exception
-		}
-		catch ( RecognitionException re )
-		{
-			System.Console.Error.WriteLine("impossible: "+re);
-		}
-		bool success = !state.failed;
-		input.Rewind(start);
-		state.backtracking--;
-		state.failed=false;
-		return success;
-	}
-	public bool synpred14_AngleBracketTemplateLexer()
-	{
-		state.backtracking++;
-		int start = input.Mark();
-		try
-		{
-			synpred14_AngleBracketTemplateLexer_fragment(); // can never throw exception
-		}
-		catch ( RecognitionException re )
-		{
-			System.Console.Error.WriteLine("impossible: "+re);
-		}
-		bool success = !state.failed;
-		input.Rewind(start);
-		state.backtracking--;
-		state.failed=false;
-		return success;
-	}
-	public bool synpred15_AngleBracketTemplateLexer()
-	{
-		state.backtracking++;
-		int start = input.Mark();
-		try
-		{
-			synpred15_AngleBracketTemplateLexer_fragment(); // can never throw exception
-		}
-		catch ( RecognitionException re )
-		{
-			System.Console.Error.WriteLine("impossible: "+re);
-		}
-		bool success = !state.failed;
-		input.Rewind(start);
-		state.backtracking--;
-		state.failed=false;
-		return success;
-	}
-	public bool synpred16_AngleBracketTemplateLexer()
-	{
-		state.backtracking++;
-		int start = input.Mark();
-		try
-		{
-			synpred16_AngleBracketTemplateLexer_fragment(); // can never throw exception
 		}
 		catch ( RecognitionException re )
 		{
@@ -3546,7 +3406,7 @@ public partial class AngleBracketTemplateLexer : Lexer
 		}
 		public override string GetDescription()
 		{
-			return "()* loopback of 274:3: ( options {k=2; } :=> ( '\\r' )? '\\n' |=>ch= . )*";
+			return "()* loopback of 273:3: ( options {k=2; } :=> ( '\\r' )? '\\n' |=>ch= . )*";
 		}
 	}
 
@@ -3570,7 +3430,7 @@ public partial class AngleBracketTemplateLexer : Lexer
 
 				else if ( (LA37_0=='\n') ) {s = 3;}
 
-				else if ( ((LA37_0>='\u0000' && LA37_0<='\t')||(LA37_0>='\u000B' && LA37_0<='\f')||(LA37_0>='\u000E' && LA37_0<='=')||(LA37_0>='?' && LA37_0<='\uFFFF')) && (synpred16_AngleBracketTemplateLexer())) {s = 4;}
+				else if ( ((LA37_0>='\u0000' && LA37_0<='\t')||(LA37_0>='\u000B' && LA37_0<='\f')||(LA37_0>='\u000E' && LA37_0<='=')||(LA37_0>='?' && LA37_0<='\uFFFF')) && (synpred13_AngleBracketTemplateLexer())) {s = 4;}
 
 
 				input.Seek(index37_0);
@@ -3586,11 +3446,11 @@ public partial class AngleBracketTemplateLexer : Lexer
 				s = -1;
 				if ( (LA37_1=='>') ) {s = 5;}
 
-				else if ( (LA37_1=='\r') && (synpred16_AngleBracketTemplateLexer())) {s = 6;}
+				else if ( (LA37_1=='\r') && (synpred13_AngleBracketTemplateLexer())) {s = 6;}
 
-				else if ( (LA37_1=='\n') && (synpred16_AngleBracketTemplateLexer())) {s = 7;}
+				else if ( (LA37_1=='\n') && (synpred13_AngleBracketTemplateLexer())) {s = 7;}
 
-				else if ( ((LA37_1>='\u0000' && LA37_1<='\t')||(LA37_1>='\u000B' && LA37_1<='\f')||(LA37_1>='\u000E' && LA37_1<='=')||(LA37_1>='?' && LA37_1<='\uFFFF')) && (synpred16_AngleBracketTemplateLexer())) {s = 8;}
+				else if ( ((LA37_1>='\u0000' && LA37_1<='\t')||(LA37_1>='\u000B' && LA37_1<='\f')||(LA37_1>='\u000E' && LA37_1<='=')||(LA37_1>='?' && LA37_1<='\uFFFF')) && (synpred13_AngleBracketTemplateLexer())) {s = 8;}
 
 
 				input.Seek(index37_1);
@@ -3604,9 +3464,9 @@ public partial class AngleBracketTemplateLexer : Lexer
 				int index37_2 = input.Index;
 				input.Rewind();
 				s = -1;
-				if ( (synpred15_AngleBracketTemplateLexer()) ) {s = 13;}
+				if ( (synpred12_AngleBracketTemplateLexer()) ) {s = 13;}
 
-				else if ( (synpred16_AngleBracketTemplateLexer()) ) {s = 8;}
+				else if ( (synpred13_AngleBracketTemplateLexer()) ) {s = 8;}
 
 
 				input.Seek(index37_2);
@@ -3620,9 +3480,9 @@ public partial class AngleBracketTemplateLexer : Lexer
 				int index37_3 = input.Index;
 				input.Rewind();
 				s = -1;
-				if ( (synpred15_AngleBracketTemplateLexer()) ) {s = 13;}
+				if ( (synpred12_AngleBracketTemplateLexer()) ) {s = 13;}
 
-				else if ( (synpred16_AngleBracketTemplateLexer()) ) {s = 8;}
+				else if ( (synpred13_AngleBracketTemplateLexer()) ) {s = 8;}
 
 
 				input.Seek(index37_3);
@@ -3636,7 +3496,7 @@ public partial class AngleBracketTemplateLexer : Lexer
 				int index37_5 = input.Index;
 				input.Rewind();
 				s = -1;
-				if ( (synpred16_AngleBracketTemplateLexer()) ) {s = 8;}
+				if ( (synpred13_AngleBracketTemplateLexer()) ) {s = 8;}
 
 				else if ( (true) ) {s = 18;}
 

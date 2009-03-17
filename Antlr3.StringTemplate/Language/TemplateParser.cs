@@ -1,4 +1,4 @@
-// $ANTLR 3.1.2 Language\\Template.g3 2009-03-16 17:21:57
+// $ANTLR 3.1.2 Language\\Template.g3 2009-03-16 21:10:52
 
 // The variable 'variable' is assigned but its value is never used.
 #pragma warning disable 219
@@ -150,7 +150,8 @@ public partial class TemplateParser : Parser
 					{
 					nl=(IToken)Match(input,NEWLINE,Follow._NEWLINE_in_template82); 
 
-									if ( input.LA(1)!=ELSE && input.LA(1)!=ENDIF )
+									int next = input.LA(1);
+									if ( next!=ELSE && next!=ENDIF )
 									{
 										self.AddChunk(new NewlineRef(self,(nl!=null?nl.Text:null)));
 									}
@@ -159,7 +160,7 @@ public partial class TemplateParser : Parser
 					}
 					break;
 				case 3:
-					// Language\\Template.g3:127:5: action[self]
+					// Language\\Template.g3:128:5: action[self]
 					{
 					PushFollow(Follow._action_in_template93);
 					action(self);
@@ -179,7 +180,7 @@ public partial class TemplateParser : Parser
 				;
 
 
-			// Language\\Template.g3:129:3: ( EOF )?
+			// Language\\Template.g3:130:3: ( EOF )?
 			int alt2=2;
 			int LA2_0 = input.LA(1);
 
@@ -190,7 +191,7 @@ public partial class TemplateParser : Parser
 			switch ( alt2 )
 			{
 			case 1:
-				// Language\\Template.g3:129:0: EOF
+				// Language\\Template.g3:130:0: EOF
 				{
 				Match(input,EOF,Follow._EOF_in_template103); 
 
@@ -217,7 +218,7 @@ public partial class TemplateParser : Parser
 
 
 	// $ANTLR start "action"
-	// Language\\Template.g3:132:0: action[StringTemplate self] : (a= ACTION |i= IF template[subtemplate] (ei= ELSEIF template[elseIfSubtemplate] )* ( ELSE template[elseSubtemplate] )? ENDIF |rr= REGION_REF |rd= REGION_DEF );
+	// Language\\Template.g3:133:0: action[StringTemplate self] : (a= ACTION |i= IF template[subtemplate] (ei= ELSEIF template[elseIfSubtemplate] )* ( ELSE template[elseSubtemplate] )? ENDIF |rr= REGION_REF |rd= REGION_DEF );
 	private void action( StringTemplate self )
 	{
 		IToken a=null;
@@ -228,7 +229,7 @@ public partial class TemplateParser : Parser
 
 		try
 		{
-			// Language\\Template.g3:133:4: (a= ACTION |i= IF template[subtemplate] (ei= ELSEIF template[elseIfSubtemplate] )* ( ELSE template[elseSubtemplate] )? ENDIF |rr= REGION_REF |rd= REGION_DEF )
+			// Language\\Template.g3:134:4: (a= ACTION |i= IF template[subtemplate] (ei= ELSEIF template[elseIfSubtemplate] )* ( ELSE template[elseSubtemplate] )? ENDIF |rr= REGION_REF |rd= REGION_DEF )
 			int alt5=4;
 			switch ( input.LA(1) )
 			{
@@ -263,7 +264,7 @@ public partial class TemplateParser : Parser
 			switch ( alt5 )
 			{
 			case 1:
-				// Language\\Template.g3:133:4: a= ACTION
+				// Language\\Template.g3:134:4: a= ACTION
 				{
 				a=(IToken)Match(input,ACTION,Follow._ACTION_in_action118); 
 
@@ -276,7 +277,7 @@ public partial class TemplateParser : Parser
 				}
 				break;
 			case 2:
-				// Language\\Template.g3:141:4: i= IF template[subtemplate] (ei= ELSEIF template[elseIfSubtemplate] )* ( ELSE template[elseSubtemplate] )? ENDIF
+				// Language\\Template.g3:142:4: i= IF template[subtemplate] (ei= ELSEIF template[elseIfSubtemplate] )* ( ELSE template[elseSubtemplate] )? ENDIF
 				{
 				i=(IToken)Match(input,IF,Follow._IF_in_action130); 
 
@@ -293,7 +294,7 @@ public partial class TemplateParser : Parser
 				state._fsp--;
 
 				if ( c!=null ) c.SetSubtemplate(subtemplate);
-				// Language\\Template.g3:153:3: (ei= ELSEIF template[elseIfSubtemplate] )*
+				// Language\\Template.g3:154:3: (ei= ELSEIF template[elseIfSubtemplate] )*
 				for ( ; ; )
 				{
 					int alt3=2;
@@ -308,7 +309,7 @@ public partial class TemplateParser : Parser
 					switch ( alt3 )
 					{
 					case 1:
-						// Language\\Template.g3:153:5: ei= ELSEIF template[elseIfSubtemplate]
+						// Language\\Template.g3:154:5: ei= ELSEIF template[elseIfSubtemplate]
 						{
 						ei=(IToken)Match(input,ELSEIF,Follow._ELSEIF_in_action151); 
 
@@ -337,7 +338,7 @@ public partial class TemplateParser : Parser
 					;
 
 
-				// Language\\Template.g3:167:3: ( ELSE template[elseSubtemplate] )?
+				// Language\\Template.g3:168:3: ( ELSE template[elseSubtemplate] )?
 				int alt4=2;
 				int LA4_0 = input.LA(1);
 
@@ -348,7 +349,7 @@ public partial class TemplateParser : Parser
 				switch ( alt4 )
 				{
 				case 1:
-					// Language\\Template.g3:167:5: ELSE template[elseSubtemplate]
+					// Language\\Template.g3:168:5: ELSE template[elseSubtemplate]
 					{
 					Match(input,ELSE,Follow._ELSE_in_action181); 
 
@@ -374,7 +375,7 @@ public partial class TemplateParser : Parser
 				}
 				break;
 			case 3:
-				// Language\\Template.g3:181:4: rr= REGION_REF
+				// Language\\Template.g3:182:4: rr= REGION_REF
 				{
 				rr=(IToken)Match(input,REGION_REF,Follow._REGION_REF_in_action216); 
 
@@ -427,7 +428,7 @@ public partial class TemplateParser : Parser
 				}
 				break;
 			case 4:
-				// Language\\Template.g3:229:4: rd= REGION_DEF
+				// Language\\Template.g3:230:4: rd= REGION_DEF
 				{
 				rd=(IToken)Match(input,REGION_DEF,Follow._REGION_DEF_in_action228); 
 
