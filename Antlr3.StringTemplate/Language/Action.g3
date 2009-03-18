@@ -161,7 +161,7 @@ object v=null;
 }
 	:	ID
 		( ASSIGN nonAlternatingTemplateExpr {v=$nonAlternatingTemplateExpr.tree;}
-		| {v=ASTExpr.EMPTY_OPTION;}
+		| {v=ASTExpr.EmptyOption;}
 		)
 		{opts[$ID.text] = v;}
 	;

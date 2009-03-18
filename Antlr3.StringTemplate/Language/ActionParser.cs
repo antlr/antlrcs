@@ -1,4 +1,4 @@
-// $ANTLR 3.1.2 Language\\Action.g3 2009-03-16 19:22:22
+// $ANTLR 3.1.2 Language\\Action.g3 2009-03-18 17:32:04
 
 // The variable 'variable' is assigned but its value is never used.
 #pragma warning disable 219
@@ -511,7 +511,7 @@ public partial class ActionParser : Parser
 				{
 				if ( state.backtracking == 0 )
 				{
-					v=ASTExpr.EMPTY_OPTION;
+					v=ASTExpr.EmptyOption;
 				}
 
 				}

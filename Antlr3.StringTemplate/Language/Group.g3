@@ -266,7 +266,7 @@ mapPairs [Map mapping]
 
 defaultValuePair[Map mapping]
 	:	'default' COLON v=keyValue
-		{mapping[ASTExpr.DEFAULT_MAP_VALUE_NAME] = $v.value;}
+		{mapping[ASTExpr.DefaultMapValueName] = $v.value;}
 	;
 
 keyValuePair[Map mapping]
@@ -277,7 +277,7 @@ keyValue returns [StringTemplate value=null]
 	:	s1=BIGSTRING	{value = new StringTemplate(_group,$s1.text);}
 	|	s2=STRING		{value = new StringTemplate(_group,$s2.text);}
 	|	k=ID			{$k.text == "key"}?
-						{value = ASTExpr.MAP_KEY_VALUE;}
+						{value = ASTExpr.MapKeyValue;}
 	|					{value = null;}
 	;
 

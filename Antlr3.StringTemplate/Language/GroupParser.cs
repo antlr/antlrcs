@@ -1,4 +1,4 @@
-// $ANTLR 3.1.2 Language\\Group.g3 2009-03-16 20:26:39
+// $ANTLR 3.1.2 Language\\Group.g3 2009-03-18 17:32:03
 
 // The variable 'variable' is assigned but its value is never used.
 #pragma warning disable 219
@@ -941,7 +941,7 @@ public partial class GroupParser : Parser
 
 			state._fsp--;
 
-			mapping[ASTExpr.DEFAULT_MAP_VALUE_NAME] = v;
+			mapping[ASTExpr.DefaultMapValueName] = v;
 
 			}
 
@@ -1068,7 +1068,7 @@ public partial class GroupParser : Parser
 				{
 					throw new FailedPredicateException(input, "keyValue", "$k.text == \"key\"");
 				}
-				value = ASTExpr.MAP_KEY_VALUE;
+				value = ASTExpr.MapKeyValue;
 
 				}
 				break;

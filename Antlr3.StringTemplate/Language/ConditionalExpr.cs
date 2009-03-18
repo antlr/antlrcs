@@ -99,7 +99,7 @@ namespace Antlr3.ST.Language
          */
         public override int Write( StringTemplate self, IStringTemplateWriter @out )
         {
-            if ( exprTree == null || self == null || @out == null )
+            if ( _exprTree == null || self == null || @out == null )
             {
                 return 0;
             }
@@ -110,7 +110,7 @@ namespace Antlr3.ST.Language
             {
                 bool testedTrue = false;
                 // get conditional from tree and compute result
-                ITree cond = exprTree.GetChild( 0 );
+                ITree cond = _exprTree.GetChild( 0 );
                 eval = new ActionEvaluator( self, this, @out, cond );
                 bool includeSubtemplate = eval.ifCondition(); // eval and write out tree
                 // System.out.println("subtemplate "+subtemplate);
@@ -126,7 +126,7 @@ namespace Antlr3.ST.Language
                     for ( int i = 0; i < elseIfSubtemplates.Count; i++ )
                     {
                         ElseIfClauseData elseIfClause = elseIfSubtemplates[i];
-                        eval = new ActionEvaluator( self, this, @out, elseIfClause.expr.exprTree );
+                        eval = new ActionEvaluator( self, this, @out, elseIfClause.expr._exprTree );
                         includeSubtemplate = eval.ifCondition();
                         if ( includeSubtemplate )
                         {
@@ -149,7 +149,7 @@ namespace Antlr3.ST.Language
             }
             catch ( RecognitionException re )
             {
-                self.Error( "can't evaluate tree: " + exprTree.ToStringTree(), re );
+                self.Error( "can't evaluate tree: " + _exprTree.ToStringTree(), re );
             }
             return n;
         }

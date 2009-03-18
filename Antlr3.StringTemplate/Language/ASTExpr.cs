@@ -58,24 +58,24 @@ namespace Antlr3.ST.Language
      */
     public class ASTExpr : Expr
     {
-        public const string DEFAULT_ATTRIBUTE_NAME = "it";
-        public const string DEFAULT_ATTRIBUTE_NAME_DEPRECATED = "attr";
-        public const string DEFAULT_INDEX_VARIABLE_NAME = "i";
-        public const string DEFAULT_INDEX0_VARIABLE_NAME = "i0";
-        public const string DEFAULT_MAP_VALUE_NAME = "_default_";
-        public const string DEFAULT_MAP_KEY_NAME = "key";
+        public const string DefaultAttributeName = "it";
+        public const string DefaultAttributeNameDeprecated = "attr";
+        public const string DefaultIndexVariableName = "i";
+        public const string DefaultIndex0VariableName = "i0";
+        public const string DefaultMapValueName = "_default_";
+        public const string DefaultMapKeyName = "key";
 
         /** <summary>Used to indicate "default:key" in maps within groups</summary> */
-        public static readonly StringTemplate MAP_KEY_VALUE = new StringTemplate();
+        public static readonly StringTemplate MapKeyValue = new StringTemplate();
 
         /** <summary>
          *  Using an expr option w/o value, makes options table hold EMPTY_OPTION
          *  value for that key.
          *  </summary>
          */
-        public const string EMPTY_OPTION = "empty expr option";
+        public const string EmptyOption = "empty expr option";
 
-        public static readonly IDictionary<string, StringTemplateAST> defaultOptionValues =
+        static readonly IDictionary<string, StringTemplateAST> _defaultOptionValues =
             new Dictionary<string, StringTemplateAST>()
             {
                 { "anchor", new StringTemplateAST( ActionEvaluator.STRING, "true" ) },
@@ -83,7 +83,7 @@ namespace Antlr3.ST.Language
             };
 
         /** <summary>John Snyders gave me an example implementation for this checking</summary> */
-        public static readonly HashSet<string> supportedOptions =
+        static readonly HashSet<string> _supportedOptions =
             new HashSet<string>()
             {
                 "anchor",
@@ -95,10 +95,10 @@ namespace Antlr3.ST.Language
 
         static readonly Dictionary<Type, Dictionary<string, Func<object, object>>> _memberAccessors = new Dictionary<Type, Dictionary<string, Func<object, object>>>();
 
-        protected internal ITree exprTree = null;
+        protected internal ITree _exprTree = null;
 
         /** <summary>store separator etc...</summary> */
-        IDictionary<string, object> options = null;
+        IDictionary<string, object> _options = null;
 
         /** <summary>
          *  A cached value of wrap=expr from the &lt;...> expression.
@@ -106,7 +106,7 @@ namespace Antlr3.ST.Language
          *  in writeAttribute.
          *  </summary>
          */
-        string wrapString = null;
+        string _wrapString = null;
 
         /** <summary>
          *  For null values in iterated attributes and single attributes that
@@ -118,7 +118,7 @@ namespace Antlr3.ST.Language
          *  &lt;values:{v| &lt;v>}; null="0"> also.
          *  </summary>
          */
-        string nullValue = null;
+        string _nullValue = null;
 
         /** <summary>
          *  A cached value of separator=expr from the &lt;...> expression.
@@ -126,16 +126,16 @@ namespace Antlr3.ST.Language
          *  in writeAttribute.
          *  </summary>
          */
-        string separatorString = null;
+        string _separatorString = null;
 
         /** <summary>A cached value of option format=expr</summary> */
-        string formatString = null;
+        string _formatString = null;
 
         public ASTExpr( StringTemplate enclosingTemplate, ITree exprTree, IDictionary<string, object> options ) :
             base( enclosingTemplate )
         {
-            this.exprTree = exprTree;
-            this.options = options;
+            this._exprTree = exprTree;
+            this._options = options;
         }
 
         #region Properties
@@ -144,7 +144,7 @@ namespace Antlr3.ST.Language
         {
             get
             {
-                return exprTree;
+                return _exprTree;
             }
         }
         #endregion
@@ -165,7 +165,7 @@ namespace Antlr3.ST.Language
          */
         public override int Write( StringTemplate self, IStringTemplateWriter @out )
         {
-            if ( exprTree == null || self == null || @out == null )
+            if ( _exprTree == null || self == null || @out == null )
             {
                 return 0;
             }
@@ -179,7 +179,7 @@ namespace Antlr3.ST.Language
             HandleExprOptions( self );
             //System.out.println("evaluating tree: "+exprTree.toStringList());
             ActionEvaluator eval =
-                    new ActionEvaluator( self, this, @out, exprTree );
+                    new ActionEvaluator( self, this, @out, _exprTree );
             int n = 0;
             try
             {
@@ -188,7 +188,7 @@ namespace Antlr3.ST.Language
             }
             catch ( RecognitionException re )
             {
-                self.Error( "can't evaluate tree: " + exprTree.ToStringTree(), re );
+                self.Error( "can't evaluate tree: " + _exprTree.ToStringTree(), re );
             }
             @out.PopIndentation();
             if ( anchorAST != null )
@@ -203,36 +203,36 @@ namespace Antlr3.ST.Language
         {
             // make sure options don't use format / renderer.  They are usually
             // strings which might invoke a string renderer etc...
-            formatString = null;
+            _formatString = null;
             StringTemplateAST wrapAST = (StringTemplateAST)GetOption( "wrap" );
             if ( wrapAST != null )
             {
-                wrapString = EvaluateExpression( self, wrapAST );
+                _wrapString = EvaluateExpression( self, wrapAST );
             }
             StringTemplateAST nullValueAST = (StringTemplateAST)GetOption( "null" );
             if ( nullValueAST != null )
             {
-                nullValue = EvaluateExpression( self, nullValueAST );
+                _nullValue = EvaluateExpression( self, nullValueAST );
             }
             StringTemplateAST separatorAST = (StringTemplateAST)GetOption( "separator" );
             if ( separatorAST != null )
             {
-                separatorString = EvaluateExpression( self, separatorAST );
+                _separatorString = EvaluateExpression( self, separatorAST );
             }
             // following addition inspired by John Snyders
             StringTemplateAST formatAST =
                 (StringTemplateAST)GetOption( "format" );
             if ( formatAST != null )
             {
-                formatString = EvaluateExpression( self, formatAST );
+                _formatString = EvaluateExpression( self, formatAST );
             }
 
             // Check that option is valid
-            if ( options != null )
+            if ( _options != null )
             {
-                foreach ( string option in options.Keys )
+                foreach ( string option in _options.Keys )
                 {
-                    if ( !supportedOptions.Contains( option ) )
+                    if ( !_supportedOptions.Contains( option ) )
                         self.Warning( "ignoring unsupported option: " + option );
                 }
             }
@@ -321,8 +321,8 @@ namespace Antlr3.ST.Language
                 {
                     break;
                 }
-                argumentContext[DEFAULT_INDEX_VARIABLE_NAME] = i + 1;
-                argumentContext[DEFAULT_INDEX0_VARIABLE_NAME] = i;
+                argumentContext[DefaultIndexVariableName] = i + 1;
+                argumentContext[DefaultIndex0VariableName] = i;
                 StringTemplate embedded = templateToApply.GetInstanceOf();
                 embedded.SetEnclosingInstance( self );
                 embedded.SetArgumentContext( argumentContext );
@@ -360,11 +360,11 @@ namespace Antlr3.ST.Language
                     object ithValue = iter.next();
                     if ( ithValue == null )
                     {
-                        if ( nullValue == null )
+                        if ( _nullValue == null )
                         {
                             continue;
                         }
-                        ithValue = nullValue;
+                        ithValue = _nullValue;
                     }
                     int templateIndex = i % templatesToApply.Count; // rotate through
                     embedded = (StringTemplate)templatesToApply[templateIndex];
@@ -384,11 +384,11 @@ namespace Antlr3.ST.Language
                     // if it's an anonymous template with a formal arg, don't set it/attr
                     if ( !( isAnonymous && formalArgs != null && formalArgs.Count > 0 ) )
                     {
-                        argumentContext[DEFAULT_ATTRIBUTE_NAME] = ithValue;
-                        argumentContext[DEFAULT_ATTRIBUTE_NAME_DEPRECATED] = ithValue;
+                        argumentContext[DefaultAttributeName] = ithValue;
+                        argumentContext[DefaultAttributeNameDeprecated] = ithValue;
                     }
-                    argumentContext[DEFAULT_INDEX_VARIABLE_NAME] = i + 1;
-                    argumentContext[DEFAULT_INDEX0_VARIABLE_NAME] = i;
+                    argumentContext[DefaultIndexVariableName] = i + 1;
+                    argumentContext[DefaultIndex0VariableName] = i;
                     embedded.SetArgumentContext( argumentContext );
                     EvaluateArguments( embedded );
                     /*
@@ -422,11 +422,11 @@ namespace Antlr3.ST.Language
                 // if it's an anonymous template with a formal arg, don't set it/attr
                 if ( !( isAnonymous && formalArgs != null && formalArgs.Count > 0 ) )
                 {
-                    argumentContext[DEFAULT_ATTRIBUTE_NAME] = attributeValue;
-                    argumentContext[DEFAULT_ATTRIBUTE_NAME_DEPRECATED] = attributeValue;
+                    argumentContext[DefaultAttributeName] = attributeValue;
+                    argumentContext[DefaultAttributeNameDeprecated] = attributeValue;
                 }
-                argumentContext[DEFAULT_INDEX_VARIABLE_NAME] = 1;
-                argumentContext[DEFAULT_INDEX0_VARIABLE_NAME] = 0;
+                argumentContext[DefaultIndexVariableName] = 1;
+                argumentContext[DefaultIndex0VariableName] = 0;
                 embedded.SetArgumentContext( argumentContext );
                 EvaluateArguments( embedded );
                 return embedded;
@@ -477,8 +477,8 @@ namespace Antlr3.ST.Language
 
             if ( propertyName == null )
             {
-                if ( o is IDictionary && ( (IDictionary)o ).Contains( DEFAULT_MAP_VALUE_NAME ) )
-                    propertyName = DEFAULT_MAP_VALUE_NAME;
+                if ( o is IDictionary && ( (IDictionary)o ).Contains( DefaultMapValueName ) )
+                    propertyName = DefaultMapValueName;
                 else
                     return null;
             }
@@ -560,6 +560,10 @@ namespace Antlr3.ST.Language
             {
                 // try for a visible field
                 FieldInfo field = type.GetField( name );
+                // also check .NET naming convention for fields
+                if ( field == null )
+                    field = type.GetField( "_" + name );
+
                 if ( field != null )
                     accessor = BuildAccessor( field );
             }
@@ -666,12 +670,12 @@ namespace Antlr3.ST.Language
                 }
                 else
                 {
-                    if ( map.Contains( DEFAULT_MAP_VALUE_NAME ) )
+                    if ( map.Contains( DefaultMapValueName ) )
                     {
-                        value = map[DEFAULT_MAP_VALUE_NAME];
+                        value = map[DefaultMapValueName];
                     }
                 }
-                if ( value == MAP_KEY_VALUE )
+                if ( value == MapKeyValue )
                 {
                     value = property;
                 }
@@ -827,11 +831,11 @@ namespace Antlr3.ST.Language
         {
             if ( o == null )
             {
-                if ( nullValue == null )
+                if ( _nullValue == null )
                 {
                     return 0;
                 }
-                o = nullValue; // continue with null option if specified
+                o = _nullValue; // continue with null option if specified
             }
             int n = 0;
             try
@@ -862,12 +866,12 @@ namespace Antlr3.ST.Language
                     {
                         // if we have a wrap string, then inform writer it
                         // might need to wrap
-                        if ( wrapString != null )
+                        if ( _wrapString != null )
                         {
-                            n = @out.WriteWrapSeparator( wrapString );
+                            n = @out.WriteWrapSeparator( _wrapString );
                         }
                         // check if formatting needs to be applied to the stToWrite
-                        if ( formatString != null )
+                        if ( _formatString != null )
                         {
                             IAttributeRenderer renderer =
                                 self.GetAttributeRenderer( typeof( string ) );
@@ -880,7 +884,7 @@ namespace Antlr3.ST.Language
                                 IStringTemplateWriter sw =
                                     self.GetGroup().GetStringTemplateWriter( buf );
                                 stToWrite.Write( sw );
-                                n = @out.Write( renderer.ToString( buf.ToString(), formatString ) );
+                                n = @out.Write( renderer.ToString( buf.ToString(), _formatString ) );
                                 return n;
                             }
                         }
@@ -899,14 +903,14 @@ namespace Antlr3.ST.Language
                         object iterValue = iter.next();
                         if ( iterValue == null )
                         {
-                            iterValue = nullValue;
+                            iterValue = _nullValue;
                         }
                         if ( iterValue != null )
                         {
                             if ( seenPrevValue /*prevIterValue!=null*/
-                                && separatorString != null )
+                                && _separatorString != null )
                             {
-                                n += @out.WriteSeparator( separatorString );
+                                n += @out.WriteSeparator( _separatorString );
                             }
                             seenPrevValue = true;
                             int nw = Write( self, iterValue, @out );
@@ -921,9 +925,9 @@ namespace Antlr3.ST.Language
                     string v = null;
                     if ( renderer != null )
                     {
-                        if ( formatString != null )
+                        if ( _formatString != null )
                         {
-                            v = renderer.ToString( o, formatString );
+                            v = renderer.ToString( o, _formatString );
                         }
                         else
                         {
@@ -934,9 +938,9 @@ namespace Antlr3.ST.Language
                     {
                         v = o.ToString();
                     }
-                    if ( wrapString != null )
+                    if ( _wrapString != null )
                     {
-                        n = @out.Write( v, wrapString );
+                        n = @out.Write( v, _wrapString );
                     }
                     else
                     {
@@ -983,7 +987,7 @@ namespace Antlr3.ST.Language
                     }
                     catch ( RecognitionException re )
                     {
-                        self.Error( "can't evaluate tree: " + exprTree.ToStringTree(), re );
+                        self.Error( "can't evaluate tree: " + _exprTree.ToStringTree(), re );
                     }
                 }
                 return buf.ToString();
@@ -1322,15 +1326,15 @@ namespace Antlr3.ST.Language
         public object GetOption( string name )
         {
             object value = null;
-            if ( options != null )
+            if ( _options != null )
             {
-                if ( options.TryGetValue( name, out value ) )
+                if ( _options.TryGetValue( name, out value ) )
                 {
                     string s = value as string;
-                    if ( s != null && s == EMPTY_OPTION )
+                    if ( s != null && s == EmptyOption )
                     {
                         StringTemplateAST st;
-                        if ( defaultOptionValues.TryGetValue( name, out st ) )
+                        if ( _defaultOptionValues.TryGetValue( name, out st ) )
                             return st;
                         return null;
                     }
@@ -1341,7 +1345,7 @@ namespace Antlr3.ST.Language
 
         public override string ToString()
         {
-            return exprTree.ToStringTree();
+            return _exprTree.ToStringTree();
         }
 
         #endregion
