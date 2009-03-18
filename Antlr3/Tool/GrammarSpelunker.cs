@@ -82,7 +82,7 @@ namespace Antlr3.Tool
 
         protected virtual void match( string expecting )
         {
-            //System.out.println("match "+expecting+"; is "+token);
+            //System.Console.Out.WriteLine( "match " + expecting + "; is " + token );
             if ( token.Equals( expecting ) )
                 consume();
             else
@@ -152,7 +152,7 @@ namespace Antlr3.Tool
                 consume();
                 string value = token;
                 consume();
-                consume(); // kill ';'
+                match( ";" );
                 if ( name.Equals( "tokenVocab" ) )
                     tokenVocab = value;
                 if ( name.Equals( "language" ) )
@@ -216,6 +216,10 @@ namespace Antlr3.Tool
                 consume();
             }
 
+            bool isDIGIT()
+            {
+                return c >= '0' && c <= '9';
+            }
             bool isID_START()
             {
                 return c >= 'a' && c <= 'z' || c >= 'A' && c <= 'Z';
@@ -234,7 +238,7 @@ namespace Antlr3.Tool
             {
                 while ( c != EOF )
                 {
-                    //System.out.println("check "+(char)c);
+                    //System.Console.Out.WriteLine( "check " + (char)c );
                     switch ( c )
                     {
                     case ';':
@@ -255,9 +259,13 @@ namespace Antlr3.Tool
                     case '/':
                         COMMENT();
                         break;
+                    case '\'':
+                        return STRING();
                     default:
                         if ( isID_START() )
                             return ID();
+                        else if ( isDIGIT() )
+                            return INT();
                         consume(); // ignore anything else
                         break;
                     }
@@ -269,11 +277,40 @@ namespace Antlr3.Tool
             string ID()
             {
                 StringBuilder buf = new StringBuilder();
-                while ( isID_LETTER() )
+                while ( c != EOF && isID_LETTER() )
                 {
                     buf.Append( (char)c );
                     consume();
                 }
+                return buf.ToString();
+            }
+
+            string INT()
+            {
+                StringBuilder buf = new StringBuilder();
+                while ( c != EOF && isDIGIT() )
+                {
+                    buf.Append( (char)c );
+                    consume();
+                }
+                return buf.ToString();
+            }
+
+            string STRING()
+            {
+                StringBuilder buf = new StringBuilder();
+                consume();
+                while ( c != EOF && c != '\'' )
+                {
+                    if ( c == '\\' )
+                    {
+                        buf.Append( (char)c );
+                        consume();
+                    }
+                    buf.Append( (char)c );
+                    consume();
+                }
+                consume(); // scan past '
                 return buf.ToString();
             }
 
@@ -298,14 +335,14 @@ namespace Antlr3.Tool
                             }
                             else
                             {
-                                while ( c != '*' )
+                                while ( c != EOF && c != '*' )
                                     consume();
                             }
                         }
                     }
                     else if ( c == '/' )
                     {
-                        while ( c != '\n' )
+                        while ( c != EOF && c != '\n' )
                             consume();
                     }
                 }
