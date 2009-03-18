@@ -41,9 +41,9 @@ namespace Antlr3.ST.Language
     /** <summary>A conditional reference to an embedded subtemplate.</summary> */
     public class ConditionalExpr : ASTExpr
     {
-        StringTemplate subtemplate = null;
-        List<ElseIfClauseData> elseIfSubtemplates = null;
-        StringTemplate elseSubtemplate = null;
+        StringTemplate _subtemplate;
+        List<ElseIfClauseData> _elseIfSubtemplates;
+        StringTemplate _elseSubtemplate;
 
         protected class ElseIfClauseData
         {
@@ -51,44 +51,47 @@ namespace Antlr3.ST.Language
             public StringTemplate st;
         }
 
-        public ConditionalExpr( StringTemplate enclosingTemplate, ITree tree ) :
-            base( enclosingTemplate, tree, null )
+        public ConditionalExpr( StringTemplate enclosingTemplate, ITree tree )
+            : base( enclosingTemplate, tree, null )
         {
         }
 
-        public virtual void SetSubtemplate( StringTemplate subtemplate )
+        public StringTemplate Subtemplate
         {
-            this.subtemplate = subtemplate;
+            get
+            {
+                return _subtemplate;
+            }
+            set
+            {
+                _subtemplate = value;
+            }
+        }
+        public StringTemplate ElseSubtemplate
+        {
+            get
+            {
+                return _elseSubtemplate;
+            }
+            set
+            {
+                _elseSubtemplate = value;
+            }
         }
 
         public virtual void AddElseIfSubtemplate( ASTExpr conditionalTree,
                                          StringTemplate subtemplate )
         {
-            if ( elseIfSubtemplates == null )
+            if ( _elseIfSubtemplates == null )
             {
-                elseIfSubtemplates = new List<ElseIfClauseData>();
+                _elseIfSubtemplates = new List<ElseIfClauseData>();
             }
             ElseIfClauseData d = new ElseIfClauseData()
             {
                 expr = conditionalTree,
                 st = subtemplate
             };
-            elseIfSubtemplates.Add( d );
-        }
-
-        public virtual StringTemplate GetSubtemplate()
-        {
-            return subtemplate;
-        }
-
-        public virtual StringTemplate GetElseSubtemplate()
-        {
-            return elseSubtemplate;
-        }
-
-        public virtual void SetElseSubtemplate( StringTemplate elseSubtemplate )
-        {
-            this.elseSubtemplate = elseSubtemplate;
+            _elseIfSubtemplates.Add( d );
         }
 
         /** <summary>
@@ -99,7 +102,7 @@ namespace Antlr3.ST.Language
          */
         public override int Write( StringTemplate self, IStringTemplateWriter @out )
         {
-            if ( _exprTree == null || self == null || @out == null )
+            if ( AST == null || self == null || @out == null )
             {
                 return 0;
             }
@@ -110,23 +113,23 @@ namespace Antlr3.ST.Language
             {
                 bool testedTrue = false;
                 // get conditional from tree and compute result
-                ITree cond = _exprTree.GetChild( 0 );
+                ITree cond = AST.GetChild( 0 );
                 eval = new ActionEvaluator( self, this, @out, cond );
                 bool includeSubtemplate = eval.ifCondition(); // eval and write out tree
                 // System.out.println("subtemplate "+subtemplate);
                 // IF
                 if ( includeSubtemplate )
                 {
-                    n = WriteSubTemplate( self, @out, subtemplate );
+                    n = WriteSubTemplate( self, @out, _subtemplate );
                     testedTrue = true;
                 }
                 // ELSEIF
-                else if ( elseIfSubtemplates != null && elseIfSubtemplates.Count > 0 )
+                else if ( _elseIfSubtemplates != null && _elseIfSubtemplates.Count > 0 )
                 {
-                    for ( int i = 0; i < elseIfSubtemplates.Count; i++ )
+                    for ( int i = 0; i < _elseIfSubtemplates.Count; i++ )
                     {
-                        ElseIfClauseData elseIfClause = elseIfSubtemplates[i];
-                        eval = new ActionEvaluator( self, this, @out, elseIfClause.expr._exprTree );
+                        ElseIfClauseData elseIfClause = _elseIfSubtemplates[i];
+                        eval = new ActionEvaluator( self, this, @out, elseIfClause.expr.AST );
                         includeSubtemplate = eval.ifCondition();
                         if ( includeSubtemplate )
                         {
@@ -137,19 +140,19 @@ namespace Antlr3.ST.Language
                     }
                 }
                 // ELSE
-                if ( !testedTrue && elseSubtemplate != null )
+                if ( !testedTrue && _elseSubtemplate != null )
                 {
                     // evaluate ELSE clause if present and IF condition failed
-                    StringTemplate s = elseSubtemplate.GetInstanceOf();
-                    s.SetEnclosingInstance( self );
-                    s.SetGroup( self.GetGroup() );
-                    s.SetNativeGroup( self.GetNativeGroup() );
+                    StringTemplate s = _elseSubtemplate.GetInstanceOf();
+                    s.EnclosingInstance = self;
+                    s.Group = self.Group;
+                    s.NativeGroup = self.NativeGroup;
                     n = s.Write( @out );
                 }
             }
             catch ( RecognitionException re )
             {
-                self.Error( "can't evaluate tree: " + _exprTree.ToStringTree(), re );
+                self.Error( "can't evaluate tree: " + AST.ToStringTree(), re );
             }
             return n;
         }
@@ -165,11 +168,11 @@ namespace Antlr3.ST.Language
              * "enclosing instance" pointer.
              */
             StringTemplate s = subtemplate.GetInstanceOf();
-            s.SetEnclosingInstance( self );
+            s.EnclosingInstance = self;
             // make sure we evaluate in context of enclosing template's
             // group so polymorphism works. :)
-            s.SetGroup( self.GetGroup() );
-            s.SetNativeGroup( self.GetNativeGroup() );
+            s.Group = self.Group;
+            s.NativeGroup = self.NativeGroup;
             return s.Write( @out );
         }
     }

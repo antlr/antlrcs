@@ -143,21 +143,21 @@ action[StringTemplate self]
 		{
 			ConditionalExpr c = (ConditionalExpr)self.ParseAction($i.text);
 			// create and precompile the subtemplate
-			StringTemplate subtemplate = new StringTemplate(self.GetGroup(), null);
-			subtemplate.SetEnclosingInstance(self);
-			subtemplate.SetName($i.text+"_subtemplate");
+			StringTemplate subtemplate = new StringTemplate(self.Group, null);
+			subtemplate.EnclosingInstance = self;
+			subtemplate.Name = $i.text + "_subtemplate";
 			self.AddChunk(c);
 		}
 
-		template[subtemplate] {if ( c!=null ) c.SetSubtemplate(subtemplate);}
+		template[subtemplate] {if ( c!=null ) c.Subtemplate = subtemplate;}
 
 		(	ei=ELSEIF
 			{
 				ASTExpr ec = self.ParseAction($ei.text);
 				// create and precompile the subtemplate
-				StringTemplate elseIfSubtemplate = new StringTemplate(self.GetGroup(), null);
-				elseIfSubtemplate.SetEnclosingInstance(self);
-				elseIfSubtemplate.SetName($ei.text+"_subtemplate");
+				StringTemplate elseIfSubtemplate = new StringTemplate(self.Group, null);
+				elseIfSubtemplate.EnclosingInstance = self;
+				elseIfSubtemplate.Name = $ei.text + "_subtemplate";
 			}
 
 			template[elseIfSubtemplate]
@@ -168,13 +168,13 @@ action[StringTemplate self]
 		(	ELSE
 			{
 				// create and precompile the subtemplate
-				StringTemplate elseSubtemplate = new StringTemplate(self.GetGroup(), null);
-				elseSubtemplate.SetEnclosingInstance(self);
-				elseSubtemplate.SetName("else_subtemplate");
+				StringTemplate elseSubtemplate = new StringTemplate(self.Group, null);
+				elseSubtemplate.EnclosingInstance = self;
+				elseSubtemplate.Name = "else_subtemplate";
 			}
 
 			template[elseSubtemplate]
-			{if ( c!=null ) c.SetElseSubtemplate(elseSubtemplate);}
+			{if ( c!=null ) c.ElseSubtemplate = elseSubtemplate;}
 		)?
 
 		ENDIF
@@ -190,31 +190,31 @@ action[StringTemplate self]
 			// convert to <super.region__enclosingTemplate__r()>
 			if ( regionName.StartsWith("super.") )
 			{
-				//System.out.println("super region ref "+regionName);
+				//System.Console.Out.WriteLine( "super region ref " + regionName );
 				string regionRef = regionName.substring("super.".Length,regionName.Length);
-				string templateScope = self.GetGroup().GetUnMangledTemplateName(self.GetName());
-				StringTemplate scopeST = self.GetGroup().LookupTemplate(templateScope);
+				string templateScope = self.Group.GetUnMangledTemplateName(self.Name);
+				StringTemplate scopeST = self.Group.LookupTemplate(templateScope);
 				if ( scopeST==null )
 				{
-					self.GetGroup().Error("reference to region within undefined template: "+templateScope);
+					self.Group.Error("reference to region within undefined template: "+templateScope);
 					err=true;
 				}
 				if ( !scopeST.ContainsRegionName(regionRef) )
 				{
-					self.GetGroup().Error("template "+templateScope+" has no region called "+regionRef);
+					self.Group.Error("template "+templateScope+" has no region called "+regionRef);
 					err=true;
 				}
 				else
 				{
-					mangledRef = self.GetGroup().GetMangledRegionName(templateScope,regionRef);
+					mangledRef = self.Group.GetMangledRegionName(templateScope,regionRef);
 					mangledRef = "super."+mangledRef;
 				}
 			}
 			else
 			{
 				//System.out.println("region ref "+regionName);
-				StringTemplate regionST = self.GetGroup().DefineImplicitRegionTemplate(self,regionName);
-				mangledRef = regionST.GetName();
+				StringTemplate regionST = self.Group.DefineImplicitRegionTemplate(self,regionName);
+				mangledRef = regionST.Name;
 			}
 
 			if ( !err )
@@ -235,10 +235,10 @@ action[StringTemplate self]
 			{
 				string regionName = combinedNameTemplateStr.substring(0,indexOfDefSymbol);
 				string template = combinedNameTemplateStr.substring(indexOfDefSymbol+3, combinedNameTemplateStr.Length);
-				StringTemplate regionST = self.GetGroup().DefineRegionTemplate(self,regionName,template,StringTemplate.REGION_EMBEDDED);
+				StringTemplate regionST = self.Group.DefineRegionTemplate(self,regionName,template,StringTemplate.REGION_EMBEDDED);
 				// treat as regular action: mangled template include
 				string indent = ((ChunkToken)$rd).Indentation;
-				ASTExpr c = self.ParseAction(regionST.GetName()+"()");
+				ASTExpr c = self.ParseAction(regionST.Name+"()");
 				c.Indentation = indent;
 				self.AddChunk(c);
 			}

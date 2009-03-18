@@ -1,4 +1,4 @@
-// $ANTLR 3.1.2 Language\\ActionEvaluator.g3 2009-03-16 18:28:41
+// $ANTLR 3.1.2 Language\\ActionEvaluator.g3 2009-03-18 18:21:39
 
 // The variable 'variable' is assigned but its value is never used.
 #pragma warning disable 219
@@ -332,7 +332,7 @@ public partial class ActionEvaluator : TreeParser
 				Match(input, TokenConstants.UP, null); 
 
 							StringWriter buf = new StringWriter();
-							IStringTemplateWriter sw = self.GetGroup().GetStringTemplateWriter(buf);
+							IStringTemplateWriter sw = self.Group.GetStringTemplateWriter(buf);
 							int n = chunk.WriteAttribute(self,e,sw);
 							if ( n > 0 )
 							{
@@ -991,11 +991,11 @@ public partial class ActionEvaluator : TreeParser
 				MatchAny(input); 
 
 									string templateName = (ID9!=null?ID9.Text:null);
-									StringTemplateGroup group = self.GetGroup();
+									StringTemplateGroup group = self.Group;
 									StringTemplate embedded = group.GetEmbeddedInstanceOf(self, templateName);
 									if ( embedded!=null )
 									{
-										embedded.SetArgumentsAST(args);
+										embedded.ArgumentsAST = args;
 										templatesToApply.Add(embedded);
 									}
 								
@@ -1010,7 +1010,7 @@ public partial class ActionEvaluator : TreeParser
 									StringTemplate anonymous = anon.StringTemplate;
 									// to properly see overridden templates, always set
 									// anonymous' group to be self's group
-									anonymous.SetGroup(self.GetGroup());
+									anonymous.Group = self.Group;
 									templatesToApply.Add(anonymous);
 								
 
@@ -1034,11 +1034,11 @@ public partial class ActionEvaluator : TreeParser
 										if ( n!=null )
 										{
 											string templateName = n.ToString();
-											StringTemplateGroup group = self.GetGroup();
+											StringTemplateGroup group = self.Group;
 											embedded = group.GetEmbeddedInstanceOf(self, templateName);
 											if ( embedded!=null )
 											{
-												embedded.SetArgumentsAST(args2);
+												embedded.ArgumentsAST = args2;
 												templatesToApply.Add(embedded);
 											}
 										}
@@ -1343,9 +1343,9 @@ public partial class ActionEvaluator : TreeParser
 							value =(at!=null?at.Text:null);
 							if ( (at!=null?at.Text:null)!=null )
 							{
-								StringTemplate valueST =new StringTemplate(self.GetGroup(), (at!=null?at.Text:null));
-								valueST.SetEnclosingInstance(self);
-								valueST.SetName("<anonymous template argument>");
+								StringTemplate valueST =new StringTemplate(self.Group, (at!=null?at.Text:null));
+								valueST.EnclosingInstance = self;
+								valueST.Name = "<anonymous template argument>";
 								value = valueST;
 							}
 						
@@ -1507,14 +1507,14 @@ public partial class ActionEvaluator : TreeParser
 							string soleArgName = null;
 							// find the sole defined formal argument for embedded
 							bool error = false;
-							var formalArgs = embedded.GetFormalArguments();
+							var formalArgs = embedded.FormalArguments;
 							if ( formalArgs!=null )
 							{
 								var argNames = formalArgs.Select( fa => fa.name ).ToArray();
 								if ( argNames.Length==1 )
 								{
 									soleArgName = (string)argNames.ToArray()[0];
-									//System.out.println("sole formal arg of "+embedded.GetName()+" is "+soleArgName);
+									//System.out.println("sole formal arg of "+embedded.Name+" is "+soleArgName);
 								}
 								else
 								{
@@ -1527,7 +1527,7 @@ public partial class ActionEvaluator : TreeParser
 							}
 							if ( error )
 							{
-								self.Error("template "+embedded.GetName()+
+								self.Error("template "+embedded.Name+
 										   " must have exactly one formal arg in template context "+
 										   self.GetEnclosingInstanceStackString());
 							}

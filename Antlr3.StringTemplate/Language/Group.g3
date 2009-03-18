@@ -196,13 +196,13 @@ template[StringTemplateGroup g]
 				}
 			}
 		)
-		{if ( st!=null ) {st.SetGroupFileLine(line);}}
+		{if ( st!=null ) {st.GroupFileLine = line;}}
 		LPAREN
 			(args[st]|{st.DefineEmptyFormalArgumentList();})
 		RPAREN
 		DEFINED_TO_BE
-		(	t=STRING     {st.SetTemplate($t.text);}
-		|	bt=BIGSTRING {st.SetTemplate($bt.text);}
+		(	t=STRING     {st.Template = $t.text;}
+		|	bt=BIGSTRING {st.Template = $bt.text;}
 		)
 
 	|   alias=ID DEFINED_TO_BE target=ID
@@ -224,12 +224,12 @@ arg[StringTemplate st]
 				defaultValue=new StringTemplate("\$_val_\$");
 				defaultValue.SetAttribute("_val_", $s.text);
 				defaultValue.DefineFormalArgument("_val_");
-				defaultValue.Name = "<"+st.GetName()+"'s arg "+$name.text+" default value subtemplate>";
+				defaultValue.Name = "<"+st.Name+"'s arg "+$name.text+" default value subtemplate>";
 			}
 		|	ASSIGN bs=ANONYMOUS_TEMPLATE
 			{
-				defaultValue=new StringTemplate(st.GetGroup(), $bs.text);
-				defaultValue.Name = "<"+st.GetName()+"'s arg "+$name.text+" default value subtemplate>";
+				defaultValue=new StringTemplate(st.Group, $bs.text);
+				defaultValue.Name = "<"+st.Name+"'s arg "+$name.text+" default value subtemplate>";
 			}
 		)?
 		{st.DefineFormalArgument($name.text, defaultValue);}

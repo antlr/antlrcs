@@ -256,7 +256,7 @@ rule returns [StringTemplate code=null]
 					}
 				}
 				$code = templates.GetInstanceOf(stName);
-				if ( $code.GetName().Equals("rule") )
+				if ( $code.Name.Equals("rule") )
 				{
 					$code.SetAttribute("emptyRule", grammar.isEmptyRule(block2));
 				}

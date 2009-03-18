@@ -642,7 +642,7 @@ namespace Antlr3.ST
                 // group for the embedded instance not the current evaluation
                 // group (which is always pulled down to the original group
                 // from which somebody did group.getInstanceOf("foo");
-                st = enclosingInstance.GetNativeGroup().GetInstanceOf( enclosingInstance, name );
+                st = enclosingInstance.NativeGroup.GetInstanceOf( enclosingInstance, name );
             }
             else
             {
@@ -650,8 +650,8 @@ namespace Antlr3.ST
             }
             // make sure all embedded templates have the same group as enclosing
             // so that polymorphic refs will start looking at the original group
-            st.SetGroup( this );
-            st.SetEnclosingInstance( enclosingInstance );
+            st.Group = this;
+            st.EnclosingInstance = enclosingInstance;
             return st;
         }
 
@@ -704,7 +704,7 @@ namespace Antlr3.ST
                     // group is reset; it's nativeGroup will remain where it was
                     if ( st != null )
                     {
-                        st.SetGroup( this );
+                        st.Group = this;
                     }
                 }
                 if ( st != null )
@@ -939,11 +939,11 @@ namespace Antlr3.ST
                 throw new ArgumentException( "cannot have '.' in template names" );
             }
             StringTemplate st = CreateStringTemplate();
-            st.SetName( name );
-            st.SetGroup( this );
-            st.SetNativeGroup( this );
-            st.SetTemplate( template );
-            st.SetErrorListener( _listener );
+            st.Name = name;
+            st.Group = this;
+            st.NativeGroup = this;
+            st.Template = template;
+            st.ErrorListener = _listener;
             _templates[name] = st;
             return st;
         }
@@ -958,7 +958,7 @@ namespace Antlr3.ST
                 GetMangledRegionName( enclosingTemplateName, regionName );
             StringTemplate regionST = DefineTemplate( mangledName, template );
             regionST.IsRegion = true;
-            regionST.SetRegionDefType( type );
+            regionST.RegionDefType = type;
             return regionST;
         }
 
@@ -969,11 +969,11 @@ namespace Antlr3.ST
                                                    int type )
         {
             StringTemplate regionST =
-                DefineRegionTemplate( enclosingTemplate.GetOutermostName(),
+                DefineRegionTemplate( enclosingTemplate.OutermostName,
                                      regionName,
                                      template,
                                      type );
-            enclosingTemplate.GetOutermostEnclosingInstance().AddRegionName( regionName );
+            enclosingTemplate.OutermostEnclosingInstance.AddRegionName( regionName );
             return regionST;
         }
 
@@ -1035,7 +1035,7 @@ namespace Antlr3.ST
                 if ( st.IsRegion )
                 {
                     // don't allow redef of @t.r() ::= "..." or <@r>...<@end>
-                    if ( st.GetRegionDefType() == StringTemplate.REGION_IMPLICIT )
+                    if ( st.RegionDefType == StringTemplate.REGION_IMPLICIT )
                     {
                         return false;
                     }
@@ -1324,21 +1324,21 @@ namespace Antlr3.ST
                                                  IStringTemplateWriter @out )
         {
             if ( _noDebugStartStopStrings == null ||
-                 !_noDebugStartStopStrings.Contains( st.GetName() ) )
+                 !_noDebugStartStopStrings.Contains( st.Name ) )
             {
                 string groupPrefix = "";
-                if ( !st.GetName().StartsWith( "if" ) && !st.GetName().StartsWith( "else" ) )
+                if ( !st.Name.StartsWith( "if" ) && !st.Name.StartsWith( "else" ) )
                 {
-                    if ( st.GetNativeGroup() != null )
+                    if ( st.NativeGroup != null )
                     {
-                        groupPrefix = st.GetNativeGroup().Name + ".";
+                        groupPrefix = st.NativeGroup.Name + ".";
                     }
                     else
                     {
-                        groupPrefix = st.GetGroup().Name + ".";
+                        groupPrefix = st.Group.Name + ".";
                     }
                 }
-                @out.Write( "<" + groupPrefix + st.GetName() + ">" );
+                @out.Write( "<" + groupPrefix + st.Name + ">" );
             }
         }
 
@@ -1346,21 +1346,21 @@ namespace Antlr3.ST
                                                 IStringTemplateWriter @out )
         {
             if ( _noDebugStartStopStrings == null ||
-                 !_noDebugStartStopStrings.Contains( st.GetName() ) )
+                 !_noDebugStartStopStrings.Contains( st.Name ) )
             {
                 string groupPrefix = "";
-                if ( !st.GetName().StartsWith( "if" ) && !st.GetName().StartsWith( "else" ) )
+                if ( !st.Name.StartsWith( "if" ) && !st.Name.StartsWith( "else" ) )
                 {
-                    if ( st.GetNativeGroup() != null )
+                    if ( st.NativeGroup != null )
                     {
-                        groupPrefix = st.GetNativeGroup().Name + ".";
+                        groupPrefix = st.NativeGroup.Name + ".";
                     }
                     else
                     {
-                        groupPrefix = st.GetGroup().Name + ".";
+                        groupPrefix = st.Group.Name + ".";
                     }
                 }
-                @out.Write( "</" + groupPrefix + st.GetName() + ">" );
+                @out.Write( "</" + groupPrefix + st.Name + ">" );
             }
         }
 
@@ -1383,12 +1383,12 @@ namespace Antlr3.ST
                 if ( st != NOT_FOUND_ST )
                 {
                     formalArgs = formalArgs.GetInstanceOf();
-                    formalArgs.SetAttribute( "args", st.GetFormalArguments() );
+                    formalArgs.SetAttribute( "args", st.FormalArguments );
                     buf.Append( tname + "(" + formalArgs + ")" );
                     if ( showTemplatePatterns )
                     {
                         buf.Append( " ::= <<" );
-                        buf.Append( st.GetTemplate() );
+                        buf.Append( st.Template );
                         buf.Append( ">>" + _newline );
                     }
                     else

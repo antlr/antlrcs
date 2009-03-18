@@ -95,10 +95,10 @@ namespace Antlr3.ST.Language
 
         static readonly Dictionary<Type, Dictionary<string, Func<object, object>>> _memberAccessors = new Dictionary<Type, Dictionary<string, Func<object, object>>>();
 
-        protected internal ITree _exprTree = null;
+        ITree _exprTree;
 
         /** <summary>store separator etc...</summary> */
-        IDictionary<string, object> _options = null;
+        IDictionary<string, object> _options;
 
         /** <summary>
          *  A cached value of wrap=expr from the &lt;...> expression.
@@ -106,7 +106,7 @@ namespace Antlr3.ST.Language
          *  in writeAttribute.
          *  </summary>
          */
-        string _wrapString = null;
+        string _wrapString;
 
         /** <summary>
          *  For null values in iterated attributes and single attributes that
@@ -118,7 +118,7 @@ namespace Antlr3.ST.Language
          *  &lt;values:{v| &lt;v>}; null="0"> also.
          *  </summary>
          */
-        string _nullValue = null;
+        string _nullValue;
 
         /** <summary>
          *  A cached value of separator=expr from the &lt;...> expression.
@@ -126,10 +126,10 @@ namespace Antlr3.ST.Language
          *  in writeAttribute.
          *  </summary>
          */
-        string _separatorString = null;
+        string _separatorString;
 
         /** <summary>A cached value of option format=expr</summary> */
-        string _formatString = null;
+        string _formatString;
 
         public ASTExpr( StringTemplate enclosingTemplate, ITree exprTree, IDictionary<string, object> options ) :
             base( enclosingTemplate )
@@ -140,7 +140,7 @@ namespace Antlr3.ST.Language
 
         #region Properties
         /** <summary>Return the tree interpreted when this template is written out.</summary> */
-        public virtual ITree AST
+        public ITree AST
         {
             get
             {
@@ -271,7 +271,7 @@ namespace Antlr3.ST.Language
             int numAttributes = attributes.Count;
 
             // ensure arguments line up
-            var formalArguments = templateToApply.GetFormalArguments();
+            var formalArguments = templateToApply.FormalArguments;
             if ( formalArguments == null || formalArguments.Count == 0 )
             {
                 self.Error( "missing arguments in anonymous" +
@@ -324,8 +324,8 @@ namespace Antlr3.ST.Language
                 argumentContext[DefaultIndexVariableName] = i + 1;
                 argumentContext[DefaultIndex0VariableName] = i;
                 StringTemplate embedded = templateToApply.GetInstanceOf();
-                embedded.SetEnclosingInstance( self );
-                embedded.SetArgumentContext( argumentContext );
+                embedded.EnclosingInstance = self;
+                embedded.ArgumentContext = argumentContext;
                 results.Add( embedded );
                 i++;
             }
@@ -372,14 +372,14 @@ namespace Antlr3.ST.Language
                     // eval.g), but that is used as the examplar.  We must create
                     // a new instance of the embedded template to apply each time
                     // to get new attribute sets etc...
-                    StringTemplateAST args = embedded.GetArgumentsAST();
+                    StringTemplateAST args = embedded.ArgumentsAST;
                     embedded = embedded.GetInstanceOf(); // make new instance
-                    embedded.SetEnclosingInstance( self );
-                    embedded.SetArgumentsAST( args );
+                    embedded.EnclosingInstance = self;
+                    embedded.ArgumentsAST = args;
                     argumentContext = new Dictionary<string, object>();
-                    var formalArgs = embedded.GetFormalArguments();
+                    var formalArgs = embedded.FormalArguments;
                     bool isAnonymous =
-                        embedded.GetName() == StringTemplate.ANONYMOUS_ST_NAME;
+                        embedded.Name == StringTemplate.ANONYMOUS_ST_NAME;
                     SetSoleFormalArgumentToIthValue( embedded, argumentContext, ithValue );
                     // if it's an anonymous template with a formal arg, don't set it/attr
                     if ( !( isAnonymous && formalArgs != null && formalArgs.Count > 0 ) )
@@ -389,7 +389,7 @@ namespace Antlr3.ST.Language
                     }
                     argumentContext[DefaultIndexVariableName] = i + 1;
                     argumentContext[DefaultIndex0VariableName] = i;
-                    embedded.SetArgumentContext( argumentContext );
+                    embedded.ArgumentContext = argumentContext;
                     EvaluateArguments( embedded );
                     /*
                     System.err.println("i="+i+": applyTemplate("+embedded.getName()+
@@ -414,11 +414,11 @@ namespace Antlr3.ST.Language
                 */
                 embedded = (StringTemplate)templatesToApply[0];
                 argumentContext = new Dictionary<string, object>();
-                var formalArgs = embedded.GetFormalArguments();
-                StringTemplateAST args = embedded.GetArgumentsAST();
+                var formalArgs = embedded.FormalArguments;
+                StringTemplateAST args = embedded.ArgumentsAST;
                 SetSoleFormalArgumentToIthValue( embedded, argumentContext, attributeValue );
                 bool isAnonymous =
-                    embedded.GetName() == StringTemplate.ANONYMOUS_ST_NAME;
+                    embedded.Name == StringTemplate.ANONYMOUS_ST_NAME;
                 // if it's an anonymous template with a formal arg, don't set it/attr
                 if ( !( isAnonymous && formalArgs != null && formalArgs.Count > 0 ) )
                 {
@@ -427,7 +427,7 @@ namespace Antlr3.ST.Language
                 }
                 argumentContext[DefaultIndexVariableName] = 1;
                 argumentContext[DefaultIndex0VariableName] = 0;
-                embedded.SetArgumentContext( argumentContext );
+                embedded.ArgumentContext = argumentContext;
                 EvaluateArguments( embedded );
                 return embedded;
             }
@@ -435,12 +435,12 @@ namespace Antlr3.ST.Language
 
         protected virtual void SetSoleFormalArgumentToIthValue( StringTemplate embedded, IDictionary argumentContext, object ithValue )
         {
-            var formalArgs = embedded.GetFormalArguments();
+            var formalArgs = embedded.FormalArguments;
             if ( formalArgs != null )
             {
                 string soleArgName = null;
                 bool isAnonymous =
-                    embedded.GetName() == StringTemplate.ANONYMOUS_ST_NAME;
+                    embedded.Name == StringTemplate.ANONYMOUS_ST_NAME;
                 if ( formalArgs.Count == 1 || ( isAnonymous && formalArgs.Count > 0 ) )
                 {
                     if ( isAnonymous && formalArgs.Count > 1 )
@@ -637,7 +637,7 @@ namespace Antlr3.ST.Language
             // TODO: TJP just asked himself why we can't do inherited attr here?
             else if ( c == typeof( StringTemplate ) )
             {
-                var attributes = ( (StringTemplate)o ).GetAttributes();
+                var attributes = ( (StringTemplate)o ).Attributes;
                 if ( attributes != null )
                 {
                     string propertyName2 = (string)property;
@@ -786,15 +786,15 @@ namespace Antlr3.ST.Language
                                                  StringTemplateAST argumentsAST )
         {
             //System.out.println("getTemplateInclude: look up "+enclosing.getGroup().getName()+"::"+templateName);
-            StringTemplateGroup group = enclosing.GetGroup();
+            StringTemplateGroup group = enclosing.Group;
             StringTemplate embedded = group.GetEmbeddedInstanceOf( enclosing, templateName );
             if ( embedded == null )
             {
                 enclosing.Error( "cannot make embedded instance of " + templateName +
-                        " in template " + enclosing.GetName() );
+                        " in template " + enclosing.Name );
                 return null;
             }
-            embedded.SetArgumentsAST( argumentsAST );
+            embedded.ArgumentsAST = argumentsAST;
             EvaluateArguments( embedded );
             return embedded;
         }
@@ -849,17 +849,17 @@ namespace Antlr3.ST.Language
                     // than one template (like both a header file and C file when
                     // generating C code).  It must execute within the context of
                     // the enclosing template.
-                    stToWrite.SetEnclosingInstance( self );
+                    stToWrite.EnclosingInstance = self;
                     // if self is found up the enclosing instance chain, then
                     // infinite recursion
-                    if ( StringTemplate.InLintMode() &&
+                    if ( StringTemplate.LintMode &&
                          StringTemplate.IsRecursiveEnclosingInstance( stToWrite ) )
                     {
                         // throw exception since sometimes eval keeps going
                         // even after I ignore this write of o.
                         throw new InvalidOperationException( "infinite recursion to " +
                                 stToWrite.GetTemplateDeclaratorString() + " referenced in " +
-                                stToWrite.GetEnclosingInstance().GetTemplateDeclaratorString() +
+                                stToWrite.EnclosingInstance.GetTemplateDeclaratorString() +
                                 "; stack trace:" + Environment.NewLine + stToWrite.GetEnclosingInstanceStackTrace() );
                     }
                     else
@@ -882,7 +882,7 @@ namespace Antlr3.ST.Language
                                 // be formatted before being written to the real output.
                                 StringWriter buf = new StringWriter();
                                 IStringTemplateWriter sw =
-                                    self.GetGroup().GetStringTemplateWriter( buf );
+                                    self.Group.GetStringTemplateWriter( buf );
                                 stToWrite.Write( sw );
                                 n = @out.Write( renderer.ToString( buf.ToString(), _formatString ) );
                                 return n;
@@ -977,7 +977,7 @@ namespace Antlr3.ST.Language
                 // must evaluate, writing to a string so we can hang on to it
                 StringWriter buf = new StringWriter();
                 IStringTemplateWriter sw =
-                    self.GetGroup().GetStringTemplateWriter( buf );
+                    self.Group.GetStringTemplateWriter( buf );
                 {
                     ActionEvaluator eval =
                             new ActionEvaluator( self, this, sw, exprAST );
@@ -1008,7 +1008,7 @@ namespace Antlr3.ST.Language
          */
         protected virtual void EvaluateArguments( StringTemplate self )
         {
-            StringTemplateAST argumentsAST = self.GetArgumentsAST();
+            StringTemplateAST argumentsAST = self.ArgumentsAST;
             if ( argumentsAST == null || argumentsAST.GetChild( 0 ) == null )
             {
                 // return immediately if missing tree or no actual args
@@ -1020,11 +1020,11 @@ namespace Antlr3.ST.Language
             // available as well so we put a dummy ST between the enclosing
             // context and the embedded context.  The dummy has the predefined
             // context as does the embedded.
-            StringTemplate enclosing = self.GetEnclosingInstance();
-            StringTemplate argContextST = new StringTemplate( self.GetGroup(), "" );
-            argContextST.SetName( "<invoke " + self.GetName() + " arg context>" );
-            argContextST.SetEnclosingInstance( enclosing );
-            argContextST.SetArgumentContext( self.GetArgumentContext() );
+            StringTemplate enclosing = self.EnclosingInstance;
+            StringTemplate argContextST = new StringTemplate( self.Group, "" );
+            argContextST.Name = "<invoke " + self.Name + " arg context>";
+            argContextST.EnclosingInstance = enclosing;
+            argContextST.ArgumentContext = self.ArgumentContext;
 
             ActionEvaluator eval =
                     new ActionEvaluator( argContextST, this, null, argumentsAST );
@@ -1039,8 +1039,8 @@ namespace Antlr3.ST.Language
                 // in any existing arg context, that context gets filled with
                 // new values.  With bold(item=obj), context becomes:
                 // {[obj=...],[item=...]}.
-                Dictionary<string, object> ac = eval.argList( self, self.GetArgumentContext() );
-                self.SetArgumentContext( ac );
+                Dictionary<string, object> ac = eval.argList( self, self.ArgumentContext );
+                self.ArgumentContext = ac;
             }
             catch ( RecognitionException re )
             {

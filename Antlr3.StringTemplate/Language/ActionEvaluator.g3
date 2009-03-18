@@ -104,7 +104,7 @@ expr returns [object value]
 		// convert to string (force early eval)
 		{
 			StringWriter buf = new StringWriter();
-			IStringTemplateWriter sw = self.GetGroup().GetStringTemplateWriter(buf);
+			IStringTemplateWriter sw = self.Group.GetStringTemplateWriter(buf);
 			int n = chunk.WriteAttribute(self,$e.value,sw);
 			if ( n > 0 )
 			{
@@ -211,11 +211,11 @@ template[System.Collections.Generic.List<StringTemplate> templatesToApply]
 			(	ID args=. // don't eval argList now; must re-eval each iteration
 				{
 					string templateName = $ID.text;
-					StringTemplateGroup group = self.GetGroup();
+					StringTemplateGroup group = self.Group;
 					StringTemplate embedded = group.GetEmbeddedInstanceOf(self, templateName);
 					if ( embedded!=null )
 					{
-						embedded.SetArgumentsAST($args);
+						embedded.ArgumentsAST = $args;
 						$templatesToApply.Add(embedded);
 					}
 				}
@@ -225,7 +225,7 @@ template[System.Collections.Generic.List<StringTemplate> templatesToApply]
 					StringTemplate anonymous = $anon.StringTemplate;
 					// to properly see overridden templates, always set
 					// anonymous' group to be self's group
-					anonymous.SetGroup(self.GetGroup());
+					anonymous.Group = self.Group;
 					$templatesToApply.Add(anonymous);
 				}
 
@@ -235,11 +235,11 @@ template[System.Collections.Generic.List<StringTemplate> templatesToApply]
 						if ( $n.value!=null )
 						{
 							string templateName = $n.value.ToString();
-							StringTemplateGroup group = self.GetGroup();
+							StringTemplateGroup group = self.Group;
 							embedded = group.GetEmbeddedInstanceOf(self, templateName);
 							if ( embedded!=null )
 							{
-								embedded.SetArgumentsAST($args2);
+								embedded.ArgumentsAST = $args2;
 								$templatesToApply.Add(embedded);
 							}
 						}
@@ -292,9 +292,9 @@ attribute returns [object value]
 			$value=$at.text;
 			if ( $at.text!=null )
 			{
-				StringTemplate valueST =new StringTemplate(self.GetGroup(), $at.text);
-				valueST.SetEnclosingInstance(self);
-				valueST.SetName("<anonymous template argument>");
+				StringTemplate valueST =new StringTemplate(self.Group, $at.text);
+				valueST.EnclosingInstance = self;
+				valueST.Name = "<anonymous template argument>";
 				$value = valueST;
 			}
 		}
@@ -328,14 +328,14 @@ singleTemplateArg[StringTemplate embedded, Map argumentContext]
 				string soleArgName = null;
 				// find the sole defined formal argument for embedded
 				bool error = false;
-				var formalArgs = $embedded.GetFormalArguments();
+				var formalArgs = $embedded.FormalArguments;
 				if ( formalArgs!=null )
 				{
 					var argNames = formalArgs.Select( fa => fa.name ).ToArray();
 					if ( argNames.Length==1 )
 					{
 						soleArgName = (string)argNames.ToArray()[0];
-						//System.out.println("sole formal arg of "+$embedded.GetName()+" is "+soleArgName);
+						//System.out.println("sole formal arg of "+$embedded.Name+" is "+soleArgName);
 					}
 					else
 					{
@@ -348,7 +348,7 @@ singleTemplateArg[StringTemplate embedded, Map argumentContext]
 				}
 				if ( error )
 				{
-					self.Error("template "+$embedded.GetName()+
+					self.Error("template "+$embedded.Name+
 							   " must have exactly one formal arg in template context "+
 							   self.GetEnclosingInstanceStackString());
 				}

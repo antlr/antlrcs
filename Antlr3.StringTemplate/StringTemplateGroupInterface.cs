@@ -209,7 +209,7 @@ namespace Antlr3.ST
                 if ( group.IsDefined( d.name ) )
                 {
                     StringTemplate defST = group.GetTemplateDefinition( d.name );
-                    var formalArgs = defST.GetFormalArguments();
+                    var formalArgs = defST.FormalArguments;
                     bool ack = false;
                     if ( ( d.formalArgs != null && formalArgs == null ) ||
                         ( d.formalArgs == null && formalArgs != null ) ||

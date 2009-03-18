@@ -1376,7 +1376,7 @@ namespace AntlrUnitTests
         [TestMethod]
         public void TestSetButNotRefd()
         {
-            StringTemplate.SetLintMode( true );
+            StringTemplate.LintMode = true;
             StringTemplateGroup group =
                     new StringTemplateGroup( "test" );
             StringTemplate t = new StringTemplate( group, "$a$ then $b$ and $c$ refs." );
@@ -1389,7 +1389,7 @@ namespace AntlrUnitTests
             string result = t.ToString();    // result is irrelevant
             //System.out.println("result error: '"+errors+"'");
             //System.out.println("expecting: '"+expectingError+"'");
-            StringTemplate.SetLintMode( false );
+            StringTemplate.LintMode = false;
             Assert.AreEqual( expectingError, errors.ToString() );
         }
 
@@ -2776,7 +2776,7 @@ namespace AntlrUnitTests
                     "block(stats) ::= \"<stats>\"" +
                     "ifstat(stats) ::= \"IF true then <stats>\"" + newline
                     ;
-            StringTemplate.SetLintMode( true );
+            StringTemplate.LintMode = true;
             StringTemplate.ResetTemplateCounter();
             StringTemplateGroup group =
                     new StringTemplateGroup( new StringReader( templates ) );
@@ -2805,7 +2805,7 @@ namespace AntlrUnitTests
             }
             //System.err.println("errors="+errors+"'");
             //System.err.println("expecting="+expectingError+"'");
-            StringTemplate.SetLintMode( false );
+            StringTemplate.LintMode = false;
             Assert.AreEqual( expectingError, errors );
         }
 
@@ -5129,7 +5129,7 @@ namespace AntlrUnitTests
             StringTemplate e = new StringTemplate(
                     "$names,phones,salaries:{n,p | $n$@$p$}; separator=\", \"$"
                 );
-            e.SetErrorListener( errors );
+            e.ErrorListener = errors;
             e = e.GetInstanceOf();
             e.SetAttribute( "names", "Ter" );
             e.SetAttribute( "names", "Tom" );
@@ -5149,7 +5149,7 @@ namespace AntlrUnitTests
             StringTemplate e = new StringTemplate(
                     "$names,phones,salaries:{$n$@$p$}; separator=\", \"$"
                 );
-            e.SetErrorListener( errors );
+            e.ErrorListener = errors;
             e = e.GetInstanceOf();
             e.SetAttribute( "names", "Tom" );
             e.SetAttribute( "phones", "2" );

@@ -1,4 +1,4 @@
-// $ANTLR 3.1.2 Language\\Group.g3 2009-03-18 17:32:03
+// $ANTLR 3.1.2 Language\\Group.g3 2009-03-18 18:21:15
 
 // The variable 'variable' is assigned but its value is never used.
 #pragma warning disable 219
@@ -442,7 +442,7 @@ public partial class GroupParser : Parser
 
 				}
 
-				if ( st!=null ) {st.SetGroupFileLine(line);}
+				if ( st!=null ) {st.GroupFileLine = line;}
 				Match(input,LPAREN,Follow._LPAREN_in_template230); 
 				// Language\\Group.g3:201:4: ( args[st] |)
 				int alt6=2;
@@ -511,7 +511,7 @@ public partial class GroupParser : Parser
 					// Language\\Group.g3:204:5: t= STRING
 					{
 					t=(IToken)Match(input,STRING,Follow._STRING_in_template256); 
-					st.SetTemplate((t!=null?t.Text:null));
+					st.Template = (t!=null?t.Text:null);
 
 					}
 					break;
@@ -519,7 +519,7 @@ public partial class GroupParser : Parser
 					// Language\\Group.g3:205:5: bt= BIGSTRING
 					{
 					bt=(IToken)Match(input,BIGSTRING,Follow._BIGSTRING_in_template270); 
-					st.SetTemplate((bt!=null?bt.Text:null));
+					st.Template = (bt!=null?bt.Text:null);
 
 					}
 					break;
@@ -667,7 +667,7 @@ public partial class GroupParser : Parser
 								defaultValue=new StringTemplate("$_val_$");
 								defaultValue.SetAttribute("_val_", (s!=null?s.Text:null));
 								defaultValue.DefineFormalArgument("_val_");
-								defaultValue.Name = "<"+st.GetName()+"'s arg "+(name!=null?name.Text:null)+" default value subtemplate>";
+								defaultValue.Name = "<"+st.Name+"'s arg "+(name!=null?name.Text:null)+" default value subtemplate>";
 							
 
 				}
@@ -678,8 +678,8 @@ public partial class GroupParser : Parser
 				Match(input,ASSIGN,Follow._ASSIGN_in_arg359); 
 				bs=(IToken)Match(input,ANONYMOUS_TEMPLATE,Follow._ANONYMOUS_TEMPLATE_in_arg363); 
 
-								defaultValue=new StringTemplate(st.GetGroup(), (bs!=null?bs.Text:null));
-								defaultValue.Name = "<"+st.GetName()+"'s arg "+(name!=null?name.Text:null)+" default value subtemplate>";
+								defaultValue=new StringTemplate(st.Group, (bs!=null?bs.Text:null));
+								defaultValue.Name = "<"+st.Name+"'s arg "+(name!=null?name.Text:null)+" default value subtemplate>";
 							
 
 				}

@@ -451,7 +451,7 @@ namespace Antlr3.Codegen
             {
                 // create a dummy to avoid null-checks all over code generator
                 headerFileST = new StringTemplate( templates, "" );
-                headerFileST.SetName( "dummy-header-file" );
+                headerFileST.Name = "dummy-header-file";
             }
 
             bool filterMode = grammar.getOption( "filter" ) != null &&
@@ -931,7 +931,7 @@ namespace Antlr3.Codegen
             if ( iset.Intervals == null || iset.Intervals.Count == 0 )
             {
                 StringTemplate emptyST = new StringTemplate( templates, "" );
-                emptyST.SetName( "empty-set-expr" );
+                emptyST.Name = "empty-set-expr";
                 return emptyST;
             }
             string testSTName = "lookaheadTest";
@@ -1040,7 +1040,7 @@ namespace Antlr3.Codegen
             StringTemplate vocabFileST =
                 new StringTemplate( vocabFilePattern,
                                    typeof( AngleBracketTemplateLexer ) );
-            vocabFileST.SetName( "vocab-file" );
+            vocabFileST.Name = "vocab-file";
             // make constants for the token names
             foreach ( string tokenID in grammar.TokenIDs )
             {

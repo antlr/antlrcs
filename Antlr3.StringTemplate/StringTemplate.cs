@@ -375,8 +375,8 @@ namespace Antlr3.ST
         public StringTemplate( string template, Type lexer )
             : this()
         {
-            SetGroup( new StringTemplateGroup( "defaultGroup", lexer ) );
-            SetTemplate( template );
+            Group = new StringTemplateGroup( "defaultGroup", lexer );
+            Template = template;
         }
 
         /** <summary>Create an anonymous template with no name, but with a group</summary> */
@@ -385,9 +385,9 @@ namespace Antlr3.ST
         {
             if ( group != null )
             {
-                SetGroup( group );
+                Group = group;
             }
-            SetTemplate( template );
+            Template = template;
         }
 
         public StringTemplate( StringTemplateGroup group,
@@ -404,11 +404,11 @@ namespace Antlr3.ST
         {
             get
             {
-                return GetArgumentContext();
+                return _argumentContext;
             }
             set
             {
-                SetArgumentContext( value );
+                _argumentContext = value;
             }
         }
 
@@ -416,11 +416,11 @@ namespace Antlr3.ST
         {
             get
             {
-                return GetArgumentsAST();
+                return _argumentsAST;
             }
             set
             {
-                SetArgumentsAST( value );
+                _argumentsAST = value;
             }
         }
 
@@ -428,19 +428,24 @@ namespace Antlr3.ST
         {
             get
             {
-                return GetAttributes();
+                return attributes;
             }
             set
             {
-                SetAttributes( value );
+                attributes = value;
             }
         }
 
+        /** <summary>
+         *  Get a list of the strings and subtemplates and attribute
+         *  refs in a template.
+         *  </summary>
+         */
         public IList<Expr> Chunks
         {
             get
             {
-                return GetChunks();
+                return _chunks;
             }
         }
 
@@ -448,11 +453,15 @@ namespace Antlr3.ST
         {
             get
             {
-                return GetEnclosingInstance();
+                return _enclosingInstance;
             }
             set
             {
-                SetEnclosingInstance( value );
+                if ( this == value )
+                    throw new ArgumentException( "cannot embed template " + Name + " in itself" );
+
+                // set the parent for this template
+                _enclosingInstance = value;
             }
         }
 
@@ -460,11 +469,14 @@ namespace Antlr3.ST
         {
             get
             {
-                return GetErrorListener();
+                if ( _listener == null )
+                    return _group.ErrorListener;
+
+                return _listener;
             }
             set
             {
-                SetErrorListener( value );
+                _listener = value;
             }
         }
 
@@ -472,31 +484,39 @@ namespace Antlr3.ST
         {
             get
             {
-                return GetGroup();
+                return _group;
             }
             set
             {
-                SetGroup( value );
+                _group = value;
             }
         }
 
+        /** <summary>Gets or sets the outermost template's group file line number</summary> */
         public int GroupFileLine
         {
             get
             {
-                return GetGroupFileLine();
+                if ( _enclosingInstance != null )
+                    return _enclosingInstance.GroupFileLine;
+
+                return _groupFileLine;
             }
             set
             {
-                SetGroupFileLine( value );
+                _groupFileLine = value;
             }
         }
 
-        public IEnumerable<FormalArgument> FormalArguments
+        public IList<FormalArgument> FormalArguments
         {
             get
             {
-                return GetFormalArguments();
+                return _formalArguments;
+            }
+            private set
+            {
+                _formalArguments = value;
             }
         }
 
@@ -512,15 +532,21 @@ namespace Antlr3.ST
             }
         }
 
+        /** <summary>
+         *  Make StringTemplate check your work as it evaluates templates.
+         *  Problems are sent to error listener.   Currently warns when
+         *  you set attributes that are not used.
+         *  </summary>
+         */
         public static bool LintMode
         {
             get
             {
-                return InLintMode();
+                return _lintMode;
             }
             set
             {
-                SetLintMode( value );
+                _lintMode = value;
             }
         }
 
@@ -528,11 +554,11 @@ namespace Antlr3.ST
         {
             get
             {
-                return GetName();
+                return _name;
             }
             set
             {
-                SetName( value );
+                _name = value;
             }
         }
 
@@ -540,11 +566,11 @@ namespace Antlr3.ST
         {
             get
             {
-                return GetNativeGroup();
+                return _nativeGroup;
             }
             set
             {
-                SetNativeGroup( value );
+                _nativeGroup = value;
             }
         }
 
@@ -552,7 +578,10 @@ namespace Antlr3.ST
         {
             get
             {
-                return GetOutermostEnclosingInstance();
+                if ( _enclosingInstance != null )
+                    return _enclosingInstance.OutermostEnclosingInstance;
+
+                return this;
             }
         }
 
@@ -560,7 +589,10 @@ namespace Antlr3.ST
         {
             get
             {
-                return GetOutermostName();
+                if ( _enclosingInstance != null )
+                    return _enclosingInstance.OutermostName;
+
+                return Name;
             }
         }
 
@@ -568,11 +600,11 @@ namespace Antlr3.ST
         {
             get
             {
-                return GetRegionDefType();
+                return _regionDefType;
             }
             set
             {
-                SetRegionDefType( value );
+                _regionDefType = value;
             }
         }
 
@@ -580,11 +612,12 @@ namespace Antlr3.ST
         {
             get
             {
-                return GetTemplate();
+                return _pattern;
             }
             set
             {
-                SetTemplate( value );
+                _pattern = value;
+                BreakTemplateIntoChunks();
             }
         }
 
@@ -600,7 +633,7 @@ namespace Antlr3.ST
         {
             get
             {
-                return GetTemplateID();
+                return _templateID;
             }
         }
 
@@ -656,129 +689,6 @@ namespace Antlr3.ST
             return t;
         }
 
-        public virtual StringTemplate GetEnclosingInstance()
-        {
-            return _enclosingInstance;
-        }
-
-        public virtual StringTemplate GetOutermostEnclosingInstance()
-        {
-            if ( _enclosingInstance != null )
-            {
-                return _enclosingInstance.GetOutermostEnclosingInstance();
-            }
-            return this;
-        }
-
-        public virtual void SetEnclosingInstance( StringTemplate enclosingInstance )
-        {
-            if ( this == enclosingInstance )
-            {
-                throw new ArgumentException( "cannot embed template " + GetName() + " in itself" );
-            }
-            // set the parent for this template
-            this._enclosingInstance = enclosingInstance;
-        }
-
-        public virtual Dictionary<string, object> GetArgumentContext()
-        {
-            return _argumentContext;
-        }
-
-        public virtual void SetArgumentContext( Dictionary<string, object> ac )
-        {
-            _argumentContext = ac;
-        }
-
-        public virtual StringTemplateAST GetArgumentsAST()
-        {
-            return _argumentsAST;
-        }
-
-        public virtual void SetArgumentsAST( StringTemplateAST argumentsAST )
-        {
-            this._argumentsAST = argumentsAST;
-        }
-
-        public virtual string GetName()
-        {
-            return _name;
-        }
-
-        public virtual string GetOutermostName()
-        {
-            if ( _enclosingInstance != null )
-            {
-                return _enclosingInstance.GetOutermostName();
-            }
-            return GetName();
-        }
-
-        public virtual void SetName( string name )
-        {
-            this._name = name;
-        }
-
-        public virtual StringTemplateGroup GetGroup()
-        {
-            return _group;
-        }
-
-        public virtual void SetGroup( StringTemplateGroup group )
-        {
-            this._group = group;
-        }
-
-        public virtual StringTemplateGroup GetNativeGroup()
-        {
-            return _nativeGroup;
-        }
-
-        public virtual void SetNativeGroup( StringTemplateGroup nativeGroup )
-        {
-            this._nativeGroup = nativeGroup;
-        }
-
-        /** <summary>Return the outermost template's group file line number</summary> */
-        public virtual int GetGroupFileLine()
-        {
-            if ( _enclosingInstance != null )
-            {
-                return _enclosingInstance.GetGroupFileLine();
-            }
-            return _groupFileLine;
-        }
-
-        public virtual void SetGroupFileLine( int groupFileLine )
-        {
-            this._groupFileLine = groupFileLine;
-        }
-
-        public virtual void SetTemplate( string template )
-        {
-            this._pattern = template;
-            BreakTemplateIntoChunks();
-        }
-
-        public virtual string GetTemplate()
-        {
-            return _pattern;
-        }
-
-        public virtual void SetErrorListener( IStringTemplateErrorListener listener )
-        {
-            this._listener = listener;
-        }
-
-        public virtual IStringTemplateErrorListener GetErrorListener()
-        {
-            if ( _listener == null )
-            {
-                return _group.ErrorListener;
-            }
-            return _listener;
-        }
-
         public virtual void Reset()
         {
             attributes = new Dictionary<string, object>(); // just throw out table and make new one
@@ -786,7 +696,7 @@ namespace Antlr3.ST
 
         public virtual void SetPredefinedAttributes()
         {
-            if ( !InLintMode() )
+            if ( !LintMode )
             {
                 return; // only do this method so far in lint mode
             }
@@ -832,7 +742,7 @@ namespace Antlr3.ST
 
             if ( value is StringTemplate )
             {
-                ( (StringTemplate)value ).SetEnclosingInstance( this );
+                ( (StringTemplate)value ).EnclosingInstance = this;
             }
             else if ( value is HashSet<object> )
             {
@@ -941,7 +851,7 @@ namespace Antlr3.ST
                 object value = values[i];
                 if ( value is StringTemplate )
                 {
-                    ( (StringTemplate)value ).SetEnclosingInstance( this );
+                    ( (StringTemplate)value ).EnclosingInstance = this;
                 }
                 else
                 {
@@ -1043,7 +953,7 @@ namespace Antlr3.ST
             if ( embedded._formalArguments != FormalArgument.UNKNOWN &&
                  embedded.GetFormalArgument( name ) == null )
             {
-                throw new ArgumentException( "template " + embedded.GetName() +
+                throw new ArgumentException( "template " + embedded.Name +
                                                  " has no such attribute: " + name +
                                                  " in template context " +
                                                  GetEnclosingInstanceStackString() );
@@ -1166,7 +1076,7 @@ namespace Antlr3.ST
             // nope, check argument context in case embedded
             if ( o == null )
             {
-                IDictionary<string, object> argContext = self.GetArgumentContext();
+                IDictionary<string, object> argContext = self.ArgumentContext;
                 if ( argContext != null )
                 {
                     o = argContext.get( attribute );
@@ -1236,10 +1146,10 @@ namespace Antlr3.ST
             catch ( Exception e )
             {
                 string name = "<unknown>";
-                string outerName = GetOutermostName();
-                if ( GetName() != null )
+                string outerName = OutermostName;
+                if ( Name != null )
                 {
-                    name = GetName();
+                    name = Name;
                 }
                 if ( outerName != null && !name.Equals( outerName ) )
                 {
@@ -1280,26 +1190,6 @@ namespace Antlr3.ST
             return a;
         }
 
-        public virtual int GetTemplateID()
-        {
-            return _templateID;
-        }
-
-        public virtual IDictionary<string, object> GetAttributes()
-        {
-            return attributes;
-        }
-
-        /** <summary>
-         *  Get a list of the strings and subtemplates and attribute
-         *  refs in a template.
-         *  </summary>
-         */
-        public virtual IList<Expr> GetChunks()
-        {
-            return _chunks;
-        }
-
         public virtual void AddChunk( Expr e )
         {
             if ( _chunks == null )
@@ -1309,22 +1199,7 @@ namespace Antlr3.ST
             _chunks.Add( e );
         }
 
-        public virtual void SetAttributes( IDictionary<string, object> attributes )
-        {
-            this.attributes = attributes;
-        }
-
         #region Formal Arg Stuff
-
-        public virtual IList<FormalArgument> GetFormalArguments()
-        {
-            return _formalArguments;
-        }
-
-        public virtual void SetFormalArguments( IList<FormalArgument> args )
-        {
-            _formalArguments = args;
-        }
 
         /** <summary>
          *  Set any default argument values that were not set by the
@@ -1394,7 +1269,7 @@ namespace Antlr3.ST
 
         public virtual void DefineEmptyFormalArgumentList()
         {
-            SetFormalArguments( new List<FormalArgument>() );
+            FormalArguments = new List<FormalArgument>();
         }
 
         public virtual void DefineFormalArgument( string name )
@@ -1505,9 +1380,9 @@ namespace Antlr3.ST
 
         public virtual void Warning( string msg )
         {
-            if ( GetErrorListener() != null )
+            if ( ErrorListener != null )
             {
-                GetErrorListener().Warning( msg );
+                ErrorListener.Warning( msg );
             }
             else
             {
@@ -1517,9 +1392,9 @@ namespace Antlr3.ST
 
         public virtual void Error( string msg, Exception e )
         {
-            if ( GetErrorListener() != null )
+            if ( ErrorListener != null )
             {
-                GetErrorListener().Error( msg, e );
+                ErrorListener.Error( msg, e );
             }
             else
             {
@@ -1537,22 +1412,6 @@ namespace Antlr3.ST
                     Console.Error.WriteLine( "StringTemplate: error: " + msg );
                 }
             }
-        }
-
-        /** <summary>
-         *  Make StringTemplate check your work as it evaluates templates.
-         *  Problems are sent to error listener.   Currently warns when
-         *  you set attributes that are not used.
-         *  </summary>
-         */
-        public static void SetLintMode( bool lint )
-        {
-            StringTemplate._lintMode = lint;
-        }
-
-        public static bool InLintMode()
-        {
-            return _lintMode;
         }
 
         /** <summary>Indicates that 'name' has been referenced in this template.</summary> */
@@ -1630,9 +1489,9 @@ namespace Antlr3.ST
                             StringTemplate st = (StringTemplate)o;
                             buf.Append( "=" );
                             buf.Append( "<" );
-                            buf.Append( st.GetName() );
+                            buf.Append( st.Name );
                             buf.Append( "()@" );
-                            buf.Append( st.GetTemplateID().ToString() );
+                            buf.Append( st.TemplateID.ToString() );
                             buf.Append( ">" );
                         }
                         else if ( o is IList )
@@ -1652,9 +1511,9 @@ namespace Antlr3.ST
                                     n++;
                                     StringTemplate st = (StringTemplate)listValue;
                                     buf.Append( "<" );
-                                    buf.Append( st.GetName() );
+                                    buf.Append( st.Name );
                                     buf.Append( "()@" );
-                                    buf.Append( st.GetTemplateID().ToString() );
+                                    buf.Append( st.TemplateID.ToString() );
                                     buf.Append( ">" );
                                 }
                             }
@@ -1683,11 +1542,11 @@ namespace Antlr3.ST
         {
             StringBuilder buf = new StringBuilder();
             buf.Append( "<" );
-            buf.Append( GetName() );
+            buf.Append( Name );
             buf.Append( "(" );
             buf.Append( _formalArguments.Select( fa => fa.name ).ToList().ToElementString() );
             buf.Append( ")@" );
-            buf.Append( GetTemplateID().ToString() );
+            buf.Append( TemplateID.ToString() );
             buf.Append( ">" );
             return buf.ToString();
         }
@@ -1697,14 +1556,14 @@ namespace Antlr3.ST
             if ( showAttributes )
             {
                 StringBuilder buf = new StringBuilder();
-                buf.Append( GetName() );
+                buf.Append( Name );
                 if ( attributes != null )
                 {
                     buf.Append( "[" + string.Join( ", ", attributes.Keys.Cast<object>().Select( o => o.ToString() ).ToArray() ) + "]" );
                 }
                 return buf.ToString();
             }
-            return GetName();
+            return Name;
         }
 
 #if false
@@ -1761,7 +1620,7 @@ namespace Antlr3.ST
                 StringTemplate self,
                 string attribute )
         {
-            if ( self.GetFormalArguments() == FormalArgument.UNKNOWN )
+            if ( self.FormalArguments == FormalArgument.UNKNOWN )
             {
                 // bypass unknown arg lists
                 if ( self._enclosingInstance != null )
@@ -1799,7 +1658,7 @@ namespace Antlr3.ST
                 if ( _referencedAttributes != null &&
                     !_referencedAttributes.Contains( name ) )
                 {
-                    Warning( GetName() + ": set but not used: " + name );
+                    Warning( Name + ": set but not used: " + name );
                 }
             }
             // can do the reverse, but will have lots of false warnings :(
@@ -1817,7 +1676,7 @@ namespace Antlr3.ST
             StringTemplate p = this;
             while ( p != null )
             {
-                string name = p.GetName();
+                string name = p.Name;
                 names.Insert( 0, name + ( p._passThroughAttributes ? "(...)" : "" ) );
                 p = p._enclosingInstance;
             }
@@ -1841,16 +1700,6 @@ namespace Antlr3.ST
                 return false;
             }
             return _regions.Contains( name );
-        }
-
-        public virtual int GetRegionDefType()
-        {
-            return _regionDefType;
-        }
-
-        public virtual void SetRegionDefType( int regionDefType )
-        {
-            this._regionDefType = regionDefType;
         }
 
         public virtual string ToDebugString()
@@ -1906,7 +1755,7 @@ namespace Antlr3.ST
             { // indent
                 buf.Append( "  " );
             }
-            buf.Append( GetName() );
+            buf.Append( Name );
             buf.Append( attributes.Keys );
             buf.Append( ":" + _newline );
             if ( attributes != null )
@@ -2104,7 +1953,7 @@ namespace Antlr3.ST
                         string templateInclude = t.GetChild( 0 ).Text;
                         Console.Out.WriteLine( "found include " + templateInclude );
                         PutToMultiValuedMap( edges, srcNode, templateInclude );
-                        StringTemplateGroup group = GetGroup();
+                        StringTemplateGroup group = Group;
                         if ( group != null )
                         {
                             StringTemplate st = group.GetInstanceOf( templateInclude );
@@ -2130,7 +1979,7 @@ namespace Antlr3.ST
 
         public virtual void PrintDebugString()
         {
-            Console.Out.WriteLine( "template-" + GetName() + ":" );
+            Console.Out.WriteLine( "template-" + Name + ":" );
             Console.Out.Write( "chunks=" );
             Console.Out.WriteLine( _chunks.ToString() );
             if ( attributes == null )

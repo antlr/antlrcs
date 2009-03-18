@@ -263,9 +263,9 @@ anonymousTemplate
 	:	t=ANONYMOUS_TEMPLATE
 		{
 			anonymous = new StringTemplate();
-			anonymous.SetGroup(self.GetGroup());
-			anonymous.SetEnclosingInstance(self);
-			anonymous.SetTemplate($t.text);
+			anonymous.Group = self.Group;
+			anonymous.EnclosingInstance = self;
+			anonymous.Template = $t.text;
 			if ( $t is StringTemplateToken )
 				anonymous.DefineFormalArguments(((StringTemplateToken)$t).args);
 			else
