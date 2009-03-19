@@ -36,13 +36,12 @@ using System.Linq;
 
 using IEnumerable = System.Collections.IEnumerable;
 using IEnumerator = System.Collections.IEnumerator;
-using IList = System.Collections.IList;
 
 namespace Antlr3.ST.Language
 {
     public class Cat : List<object>
     {
-        public Cat( IList attributes )
+        public Cat( IEnumerable attributes )
             : base( Unfold( attributes.Cast<object>() ).ToArray() )
         {
         }
