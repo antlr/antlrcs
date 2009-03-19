@@ -1895,7 +1895,7 @@ namespace AntlrUnitTests
                 new StringTemplate( group,
                           "$if(b)$x$endif$ $if(!b)$y$endif$" );
             t.SetAttribute( "b", true );
-            Assert.AreEqual( t.ToString(), "x " );
+            Assert.AreEqual( "x ", t.ToString() );
 
             t = t.GetInstanceOf();
             t.SetAttribute( "b", false );
