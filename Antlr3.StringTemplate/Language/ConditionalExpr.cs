@@ -37,16 +37,28 @@ namespace Antlr3.ST.Language
 
     using ITree = Antlr.Runtime.Tree.ITree;
     using RecognitionException = Antlr.Runtime.RecognitionException;
+#if COMPILE_EXPRESSIONS
+    using DynamicMethod = System.Reflection.Emit.DynamicMethod;
+    using OpCodes = System.Reflection.Emit.OpCodes;
+    using ParameterAttributes = System.Reflection.ParameterAttributes;
+    using Type = System.Type;
+#endif
 
     /** <summary>A conditional reference to an embedded subtemplate.</summary> */
     public class ConditionalExpr : ASTExpr
     {
+#if COMPILE_EXPRESSIONS
+        System.Func<StringTemplate, IStringTemplateWriter, bool> EvaluateCondition;
+#endif
         StringTemplate _subtemplate;
         List<ElseIfClauseData> _elseIfSubtemplates;
         StringTemplate _elseSubtemplate;
 
         protected class ElseIfClauseData
         {
+#if COMPILE_EXPRESSIONS
+            public System.Func<StringTemplate, IStringTemplateWriter, bool> EvaluateCondition;
+#endif
             public ASTExpr expr;
             public StringTemplate st;
         }
@@ -79,6 +91,79 @@ namespace Antlr3.ST.Language
             }
         }
 
+#if COMPILE_EXPRESSIONS
+        public class HoldsConditionFuncAndChunk
+        {
+            public System.Func<ASTExpr, StringTemplate, IStringTemplateWriter, bool> func;
+            public ASTExpr chunk;
+        }
+        public static bool CallFunctionalConditionEvaluator( HoldsConditionFuncAndChunk data, StringTemplate self, IStringTemplateWriter writer )
+        {
+            return data.func( data.chunk, self, writer );
+        }
+
+        static int _evaluatorNumber = 0;
+#if CACHE_FUNCTORS
+        static Dictionary<ITree, DynamicMethod> _methods = new Dictionary<ITree, DynamicMethod>();
+#endif
+        static System.Func<StringTemplate, IStringTemplateWriter, bool> GetEvaluator( ASTExpr chunk, ITree condition )
+        {
+            if ( EnableDynamicMethods )
+            {
+                try
+                {
+                    if ( UseFunctionalMethods )
+                    {
+                        ActionEvaluator evalFunctional = new ActionEvaluator( null, chunk, null, condition );
+                        var functionalEvaluator = evalFunctional.ifConditionFunctional();
+                        HoldsConditionFuncAndChunk holder = new HoldsConditionFuncAndChunk()
+                        {
+                            func = functionalEvaluator,
+                            chunk = chunk
+                        };
+                        return (System.Func<StringTemplate, IStringTemplateWriter, bool>)System.Delegate.CreateDelegate( typeof( System.Func<StringTemplate, IStringTemplateWriter, bool> ), holder, typeof( ConditionalExpr ).GetMethod( "CallFunctionalConditionEvaluator" ) );
+                    }
+                    else
+                    {
+                        DynamicMethod method = null;
+#if CACHE_FUNCTORS
+                        if ( !_methods.TryGetValue( condition, out method ) )
+#endif
+                        {
+                            Type[] parameterTypes = { typeof( ASTExpr ), typeof( StringTemplate ), typeof( IStringTemplateWriter ) };
+                            method = new DynamicMethod( "ConditionEvaluator" + _evaluatorNumber, typeof( bool ), parameterTypes, typeof( ConditionalExpr ), true );
+                            method.DefineParameter( 1, ParameterAttributes.None, "chunk" );
+                            method.DefineParameter( 2, ParameterAttributes.None, "self" );
+                            method.DefineParameter( 3, ParameterAttributes.None, "writer" );
+                            _evaluatorNumber++;
+
+                            var gen = method.GetILGenerator();
+                            ActionEvaluator evalCompiled = new ActionEvaluator( null, chunk, null, condition );
+                            evalCompiled.ifConditionCompiled( gen );
+                            gen.Emit( OpCodes.Ret );
+#if CACHE_FUNCTORS
+                            _methods[condition] = method;
+#endif
+                        }
+
+                        var dynamicEvaluator = (System.Func<StringTemplate, IStringTemplateWriter, bool>)method.CreateDelegate( typeof( System.Func<StringTemplate, IStringTemplateWriter, bool> ), chunk );
+                        return dynamicEvaluator;
+                    }
+                }
+                catch
+                {
+                    // fall back to interpreted version
+                }
+            }
+
+            return new System.Func<StringTemplate, IStringTemplateWriter, bool>( ( self, @out ) =>
+            {
+                ActionEvaluator eval = new ActionEvaluator( self, chunk, @out, condition );
+                return eval.ifCondition();
+            } );
+        }
+#endif
+
         public virtual void AddElseIfSubtemplate( ASTExpr conditionalTree,
                                          StringTemplate subtemplate )
         {
@@ -106,17 +191,26 @@ namespace Antlr3.ST.Language
             {
                 return 0;
             }
-            // System.out.println("evaluating conditional tree: "+exprTree.toStringList());
+            //System.Console.Out.WriteLine( "evaluating conditional tree: " + AST.ToStringTree() );
+#if !COMPILE_EXPRESSIONS
             ActionEvaluator eval = null;
+#endif
             int n = 0;
             try
             {
                 bool testedTrue = false;
                 // get conditional from tree and compute result
+#if COMPILE_EXPRESSIONS
+                if ( EvaluateCondition == null )
+                    EvaluateCondition = GetEvaluator( this, AST.GetChild( 0 ) );
+                bool includeSubtemplate = EvaluateCondition( self, @out ); // eval and write out tree
+#else
                 ITree cond = AST.GetChild( 0 );
                 eval = new ActionEvaluator( self, this, @out, cond );
-                bool includeSubtemplate = eval.ifCondition(); // eval and write out tree
-                // System.out.println("subtemplate "+subtemplate);
+                // eval and write out trees
+                bool includeSubtemplate = eval.ifCondition();
+#endif
+                //System.Console.Out.WriteLine( "subtemplate " + _subtemplate );
                 // IF
                 if ( includeSubtemplate )
                 {
@@ -129,8 +223,14 @@ namespace Antlr3.ST.Language
                     for ( int i = 0; i < _elseIfSubtemplates.Count; i++ )
                     {
                         ElseIfClauseData elseIfClause = _elseIfSubtemplates[i];
+#if COMPILE_EXPRESSIONS
+                        if ( elseIfClause.EvaluateCondition == null )
+                            elseIfClause.EvaluateCondition = GetEvaluator( this, elseIfClause.expr.AST );
+                        includeSubtemplate = elseIfClause.EvaluateCondition( self, @out );
+#else
                         eval = new ActionEvaluator( self, this, @out, elseIfClause.expr.AST );
                         includeSubtemplate = eval.ifCondition();
+#endif
                         if ( includeSubtemplate )
                         {
                             WriteSubTemplate( self, @out, elseIfClause.st );

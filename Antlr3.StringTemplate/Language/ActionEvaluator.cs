@@ -1,4 +1,4 @@
-// $ANTLR 3.1.2 Language\\ActionEvaluator.g3 2009-03-18 18:21:39
+// $ANTLR 3.1.2 Language\\ActionEvaluator.g3 2009-03-19 17:26:07
 
 // The variable 'variable' is assigned but its value is never used.
 #pragma warning disable 219
@@ -1628,6 +1628,2484 @@ public partial class ActionEvaluator : TreeParser
 		return ;
 	}
 	// $ANTLR end "argumentAssignment"
+
+
+	// $ANTLR start "actionCompiled"
+	// Language\\ActionEvaluator.g3:375:0: public actionCompiled[System.Reflection.Emit.ILGenerator gen] : exprCompiled[$gen] ;
+	public void actionCompiled( System.Reflection.Emit.ILGenerator gen )
+	{
+		try
+		{
+			// Language\\ActionEvaluator.g3:376:4: ( exprCompiled[$gen] )
+			// Language\\ActionEvaluator.g3:376:4: exprCompiled[$gen]
+			{
+			PushFollow(Follow._exprCompiled_in_actionCompiled893);
+			exprCompiled(gen);
+
+			state._fsp--;
+
+
+			#if COMPILE_EXPRESSIONS
+						EmitWriteAttribute(gen);
+			#endif
+					
+
+			}
+
+		}
+		catch ( RecognitionException re )
+		{
+			ReportError(re);
+			Recover(input,re);
+		}
+		finally
+		{
+		}
+		return ;
+	}
+	// $ANTLR end "actionCompiled"
+
+
+	// $ANTLR start "actionFunctional"
+	// Language\\ActionEvaluator.g3:385:0: public actionFunctional returns [System.Func<ASTExpr,StringTemplate,IStringTemplateWriter,int> func] : exprFunctional ;
+	public System.Func<ASTExpr,StringTemplate,IStringTemplateWriter,int> actionFunctional(  )
+	{
+
+		System.Func<ASTExpr,StringTemplate,IStringTemplateWriter,int> func = default(System.Func<ASTExpr,StringTemplate,IStringTemplateWriter,int>);
+
+		System.Func<ASTExpr,StringTemplate,IStringTemplateWriter,object> exprFunctional12 = default(System.Func<ASTExpr,StringTemplate,IStringTemplateWriter,object>);
+
+		try
+		{
+			// Language\\ActionEvaluator.g3:386:4: ( exprFunctional )
+			// Language\\ActionEvaluator.g3:386:4: exprFunctional
+			{
+			PushFollow(Follow._exprFunctional_in_actionFunctional915);
+			exprFunctional12=exprFunctional();
+
+			state._fsp--;
+
+
+			#if COMPILE_EXPRESSIONS
+						func = (chunk,self,writer) => chunk.WriteAttribute(self,exprFunctional12(chunk,self,writer),writer);
+			#endif
+					
+
+			}
+
+		}
+		catch ( RecognitionException re )
+		{
+			ReportError(re);
+			Recover(input,re);
+		}
+		finally
+		{
+		}
+		return func;
+	}
+	// $ANTLR end "actionFunctional"
+
+
+	// $ANTLR start "ifConditionCompiled"
+	// Language\\ActionEvaluator.g3:395:0: public ifConditionCompiled[System.Reflection.Emit.ILGenerator gen] : ( ifAtomCompiled[$gen] | ^( NOT ifAtomCompiled[$gen] ) );
+	public void ifConditionCompiled( System.Reflection.Emit.ILGenerator gen )
+	{
+		try
+		{
+			// Language\\ActionEvaluator.g3:396:4: ( ifAtomCompiled[$gen] | ^( NOT ifAtomCompiled[$gen] ) )
+			int alt15=2;
+			int LA15_0 = input.LA(1);
+
+			if ( ((LA15_0>=ANONYMOUS_TEMPLATE && LA15_0<=APPLY)||LA15_0==DOT||(LA15_0>=FUNCTION && LA15_0<=INT)||LA15_0==LIST||LA15_0==MULTI_APPLY||LA15_0==PLUS||LA15_0==STRING||LA15_0==VALUE) )
+			{
+				alt15=1;
+			}
+			else if ( (LA15_0==NOT) )
+			{
+				alt15=2;
+			}
+			else
+			{
+				NoViableAltException nvae = new NoViableAltException("", 15, 0, input);
+
+				throw nvae;
+			}
+			switch ( alt15 )
+			{
+			case 1:
+				// Language\\ActionEvaluator.g3:396:4: ifAtomCompiled[$gen]
+				{
+				PushFollow(Follow._ifAtomCompiled_in_ifConditionCompiled933);
+				ifAtomCompiled(gen);
+
+				state._fsp--;
+
+
+				}
+				break;
+			case 2:
+				// Language\\ActionEvaluator.g3:397:4: ^( NOT ifAtomCompiled[$gen] )
+				{
+				Match(input,NOT,Follow._NOT_in_ifConditionCompiled940); 
+
+				Match(input, TokenConstants.DOWN, null); 
+				PushFollow(Follow._ifAtomCompiled_in_ifConditionCompiled942);
+				ifAtomCompiled(gen);
+
+				state._fsp--;
+
+
+				Match(input, TokenConstants.UP, null); 
+
+				#if COMPILE_EXPRESSIONS
+							EmitNot(gen);
+				#endif
+						
+
+				}
+				break;
+
+			}
+		}
+		catch ( RecognitionException re )
+		{
+			ReportError(re);
+			Recover(input,re);
+		}
+		finally
+		{
+		}
+		return ;
+	}
+	// $ANTLR end "ifConditionCompiled"
+
+
+	// $ANTLR start "ifConditionFunctional"
+	// Language\\ActionEvaluator.g3:406:0: public ifConditionFunctional returns [System.Func<ASTExpr,StringTemplate,IStringTemplateWriter,bool> func] : ( ifAtomFunctional | ^( NOT ifAtomFunctional ) );
+	public System.Func<ASTExpr,StringTemplate,IStringTemplateWriter,bool> ifConditionFunctional(  )
+	{
+
+		System.Func<ASTExpr,StringTemplate,IStringTemplateWriter,bool> func = default(System.Func<ASTExpr,StringTemplate,IStringTemplateWriter,bool>);
+
+		System.Func<ASTExpr,StringTemplate,IStringTemplateWriter,bool> ifAtomFunctional13 = default(System.Func<ASTExpr,StringTemplate,IStringTemplateWriter,bool>);
+		System.Func<ASTExpr,StringTemplate,IStringTemplateWriter,bool> ifAtomFunctional14 = default(System.Func<ASTExpr,StringTemplate,IStringTemplateWriter,bool>);
+
+		try
+		{
+			// Language\\ActionEvaluator.g3:407:4: ( ifAtomFunctional | ^( NOT ifAtomFunctional ) )
+			int alt16=2;
+			int LA16_0 = input.LA(1);
+
+			if ( ((LA16_0>=ANONYMOUS_TEMPLATE && LA16_0<=APPLY)||LA16_0==DOT||(LA16_0>=FUNCTION && LA16_0<=INT)||LA16_0==LIST||LA16_0==MULTI_APPLY||LA16_0==PLUS||LA16_0==STRING||LA16_0==VALUE) )
+			{
+				alt16=1;
+			}
+			else if ( (LA16_0==NOT) )
+			{
+				alt16=2;
+			}
+			else
+			{
+				NoViableAltException nvae = new NoViableAltException("", 16, 0, input);
+
+				throw nvae;
+			}
+			switch ( alt16 )
+			{
+			case 1:
+				// Language\\ActionEvaluator.g3:407:4: ifAtomFunctional
+				{
+				PushFollow(Follow._ifAtomFunctional_in_ifConditionFunctional965);
+				ifAtomFunctional13=ifAtomFunctional();
+
+				state._fsp--;
+
+
+				#if COMPILE_EXPRESSIONS
+							func = ifAtomFunctional13;
+				#endif
+						
+
+				}
+				break;
+			case 2:
+				// Language\\ActionEvaluator.g3:413:4: ^( NOT ifAtomFunctional )
+				{
+				Match(input,NOT,Follow._NOT_in_ifConditionFunctional975); 
+
+				Match(input, TokenConstants.DOWN, null); 
+				PushFollow(Follow._ifAtomFunctional_in_ifConditionFunctional977);
+				ifAtomFunctional14=ifAtomFunctional();
+
+				state._fsp--;
+
+
+				Match(input, TokenConstants.UP, null); 
+
+				#if COMPILE_EXPRESSIONS
+							func = (chunk,self,writer) => !(ifAtomFunctional14(chunk,self,writer));
+				#endif
+						
+
+				}
+				break;
+
+			}
+		}
+		catch ( RecognitionException re )
+		{
+			ReportError(re);
+			Recover(input,re);
+		}
+		finally
+		{
+		}
+		return func;
+	}
+	// $ANTLR end "ifConditionFunctional"
+
+
+	// $ANTLR start "ifAtomCompiled"
+	// Language\\ActionEvaluator.g3:421:0: ifAtomCompiled[System.Reflection.Emit.ILGenerator gen] : exprCompiled[$gen] ;
+	private void ifAtomCompiled( System.Reflection.Emit.ILGenerator gen )
+	{
+		try
+		{
+			// Language\\ActionEvaluator.g3:422:4: ( exprCompiled[$gen] )
+			// Language\\ActionEvaluator.g3:422:4: exprCompiled[$gen]
+			{
+			PushFollow(Follow._exprCompiled_in_ifAtomCompiled994);
+			exprCompiled(gen);
+
+			state._fsp--;
+
+
+			#if COMPILE_EXPRESSIONS
+						EmitTest(gen);
+			#endif
+					
+
+			}
+
+		}
+		catch ( RecognitionException re )
+		{
+			ReportError(re);
+			Recover(input,re);
+		}
+		finally
+		{
+		}
+		return ;
+	}
+	// $ANTLR end "ifAtomCompiled"
+
+
+	// $ANTLR start "ifAtomFunctional"
+	// Language\\ActionEvaluator.g3:430:0: ifAtomFunctional returns [System.Func<ASTExpr,StringTemplate,IStringTemplateWriter,bool> func] : exprFunctional ;
+	private System.Func<ASTExpr,StringTemplate,IStringTemplateWriter,bool> ifAtomFunctional(  )
+	{
+
+		System.Func<ASTExpr,StringTemplate,IStringTemplateWriter,bool> func = default(System.Func<ASTExpr,StringTemplate,IStringTemplateWriter,bool>);
+
+		System.Func<ASTExpr,StringTemplate,IStringTemplateWriter,object> exprFunctional15 = default(System.Func<ASTExpr,StringTemplate,IStringTemplateWriter,object>);
+
+		try
+		{
+			// Language\\ActionEvaluator.g3:431:4: ( exprFunctional )
+			// Language\\ActionEvaluator.g3:431:4: exprFunctional
+			{
+			PushFollow(Follow._exprFunctional_in_ifAtomFunctional1014);
+			exprFunctional15=exprFunctional();
+
+			state._fsp--;
+
+
+			#if COMPILE_EXPRESSIONS
+						func = (chunk,self,writer) => chunk.TestAttributeTrue(exprFunctional15(chunk,self,writer));
+			#endif
+					
+
+			}
+
+		}
+		catch ( RecognitionException re )
+		{
+			ReportError(re);
+			Recover(input,re);
+		}
+		finally
+		{
+		}
+		return func;
+	}
+	// $ANTLR end "ifAtomFunctional"
+
+
+	// $ANTLR start "exprCompiled"
+	// Language\\ActionEvaluator.g3:439:0: exprCompiled[System.Reflection.Emit.ILGenerator gen] : ( ^( PLUS exprCompiled[$gen] exprCompiled[$gen] ) | templateApplicationCompiled[$gen] | attributeCompiled[$gen] | templateIncludeCompiled[$gen] | functionCompiled[$gen] | listCompiled[$gen] | ^( VALUE exprCompiled[$gen] ) );
+	private void exprCompiled( System.Reflection.Emit.ILGenerator gen )
+	{
+		try
+		{
+			// Language\\ActionEvaluator.g3:440:4: ( ^( PLUS exprCompiled[$gen] exprCompiled[$gen] ) | templateApplicationCompiled[$gen] | attributeCompiled[$gen] | templateIncludeCompiled[$gen] | functionCompiled[$gen] | listCompiled[$gen] | ^( VALUE exprCompiled[$gen] ) )
+			int alt17=7;
+			switch ( input.LA(1) )
+			{
+			case PLUS:
+				{
+				alt17=1;
+				}
+				break;
+			case APPLY:
+			case MULTI_APPLY:
+				{
+				alt17=2;
+				}
+				break;
+			case ANONYMOUS_TEMPLATE:
+			case DOT:
+			case ID:
+			case INT:
+			case STRING:
+				{
+				alt17=3;
+				}
+				break;
+			case INCLUDE:
+				{
+				alt17=4;
+				}
+				break;
+			case FUNCTION:
+				{
+				alt17=5;
+				}
+				break;
+			case LIST:
+				{
+				alt17=6;
+				}
+				break;
+			case VALUE:
+				{
+				alt17=7;
+				}
+				break;
+			default:
+				{
+					NoViableAltException nvae = new NoViableAltException("", 17, 0, input);
+
+					throw nvae;
+				}
+			}
+
+			switch ( alt17 )
+			{
+			case 1:
+				// Language\\ActionEvaluator.g3:440:4: ^( PLUS exprCompiled[$gen] exprCompiled[$gen] )
+				{
+				Match(input,PLUS,Follow._PLUS_in_exprCompiled1031); 
+
+				Match(input, TokenConstants.DOWN, null); 
+				PushFollow(Follow._exprCompiled_in_exprCompiled1033);
+				exprCompiled(gen);
+
+				state._fsp--;
+
+				PushFollow(Follow._exprCompiled_in_exprCompiled1036);
+				exprCompiled(gen);
+
+				state._fsp--;
+
+
+				Match(input, TokenConstants.UP, null); 
+
+				#if COMPILE_EXPRESSIONS
+							EmitAdd(gen);
+				#endif
+						
+
+				}
+				break;
+			case 2:
+				// Language\\ActionEvaluator.g3:446:4: templateApplicationCompiled[$gen]
+				{
+				PushFollow(Follow._templateApplicationCompiled_in_exprCompiled1047);
+				templateApplicationCompiled(gen);
+
+				state._fsp--;
+
+
+				}
+				break;
+			case 3:
+				// Language\\ActionEvaluator.g3:447:4: attributeCompiled[$gen]
+				{
+				PushFollow(Follow._attributeCompiled_in_exprCompiled1053);
+				attributeCompiled(gen);
+
+				state._fsp--;
+
+
+				}
+				break;
+			case 4:
+				// Language\\ActionEvaluator.g3:448:4: templateIncludeCompiled[$gen]
+				{
+				PushFollow(Follow._templateIncludeCompiled_in_exprCompiled1059);
+				templateIncludeCompiled(gen);
+
+				state._fsp--;
+
+
+				}
+				break;
+			case 5:
+				// Language\\ActionEvaluator.g3:449:4: functionCompiled[$gen]
+				{
+				PushFollow(Follow._functionCompiled_in_exprCompiled1065);
+				functionCompiled(gen);
+
+				state._fsp--;
+
+
+				}
+				break;
+			case 6:
+				// Language\\ActionEvaluator.g3:450:4: listCompiled[$gen]
+				{
+				PushFollow(Follow._listCompiled_in_exprCompiled1071);
+				listCompiled(gen);
+
+				state._fsp--;
+
+
+				}
+				break;
+			case 7:
+				// Language\\ActionEvaluator.g3:451:4: ^( VALUE exprCompiled[$gen] )
+				{
+				Match(input,VALUE,Follow._VALUE_in_exprCompiled1078); 
+
+				Match(input, TokenConstants.DOWN, null); 
+				PushFollow(Follow._exprCompiled_in_exprCompiled1080);
+				exprCompiled(gen);
+
+				state._fsp--;
+
+
+				Match(input, TokenConstants.UP, null); 
+
+				#if COMPILE_EXPRESSIONS
+							EmitWriteToString(gen);
+				#endif
+						
+
+				}
+				break;
+
+			}
+		}
+		catch ( RecognitionException re )
+		{
+			ReportError(re);
+			Recover(input,re);
+		}
+		finally
+		{
+		}
+		return ;
+	}
+	// $ANTLR end "exprCompiled"
+
+
+	// $ANTLR start "exprFunctional"
+	// Language\\ActionEvaluator.g3:459:0: exprFunctional returns [System.Func<ASTExpr,StringTemplate,IStringTemplateWriter,object> func] : ( ^( PLUS a= exprFunctional b= exprFunctional ) | templateApplicationFunctional | attributeFunctional | templateIncludeFunctional | functionFunctional | listFunctional | ^( VALUE a= exprFunctional ) );
+	private System.Func<ASTExpr,StringTemplate,IStringTemplateWriter,object> exprFunctional(  )
+	{
+
+		System.Func<ASTExpr,StringTemplate,IStringTemplateWriter,object> func = default(System.Func<ASTExpr,StringTemplate,IStringTemplateWriter,object>);
+
+		System.Func<ASTExpr,StringTemplate,IStringTemplateWriter,object> a = default(System.Func<ASTExpr,StringTemplate,IStringTemplateWriter,object>);
+		System.Func<ASTExpr,StringTemplate,IStringTemplateWriter,object> b = default(System.Func<ASTExpr,StringTemplate,IStringTemplateWriter,object>);
+		System.Func<ASTExpr,StringTemplate,IStringTemplateWriter,object> templateApplicationFunctional16 = default(System.Func<ASTExpr,StringTemplate,IStringTemplateWriter,object>);
+		System.Func<ASTExpr,StringTemplate,IStringTemplateWriter,object> attributeFunctional17 = default(System.Func<ASTExpr,StringTemplate,IStringTemplateWriter,object>);
+		System.Func<ASTExpr,StringTemplate,IStringTemplateWriter,object> templateIncludeFunctional18 = default(System.Func<ASTExpr,StringTemplate,IStringTemplateWriter,object>);
+		System.Func<ASTExpr,StringTemplate,IStringTemplateWriter,object> functionFunctional19 = default(System.Func<ASTExpr,StringTemplate,IStringTemplateWriter,object>);
+		System.Func<ASTExpr,StringTemplate,IStringTemplateWriter,object> listFunctional20 = default(System.Func<ASTExpr,StringTemplate,IStringTemplateWriter,object>);
+
+		try
+		{
+			// Language\\ActionEvaluator.g3:460:4: ( ^( PLUS a= exprFunctional b= exprFunctional ) | templateApplicationFunctional | attributeFunctional | templateIncludeFunctional | functionFunctional | listFunctional | ^( VALUE a= exprFunctional ) )
+			int alt18=7;
+			switch ( input.LA(1) )
+			{
+			case PLUS:
+				{
+				alt18=1;
+				}
+				break;
+			case APPLY:
+			case MULTI_APPLY:
+				{
+				alt18=2;
+				}
+				break;
+			case ANONYMOUS_TEMPLATE:
+			case DOT:
+			case ID:
+			case INT:
+			case STRING:
+				{
+				alt18=3;
+				}
+				break;
+			case INCLUDE:
+				{
+				alt18=4;
+				}
+				break;
+			case FUNCTION:
+				{
+				alt18=5;
+				}
+				break;
+			case LIST:
+				{
+				alt18=6;
+				}
+				break;
+			case VALUE:
+				{
+				alt18=7;
+				}
+				break;
+			default:
+				{
+					NoViableAltException nvae = new NoViableAltException("", 18, 0, input);
+
+					throw nvae;
+				}
+			}
+
+			switch ( alt18 )
+			{
+			case 1:
+				// Language\\ActionEvaluator.g3:460:4: ^( PLUS a= exprFunctional b= exprFunctional )
+				{
+				Match(input,PLUS,Follow._PLUS_in_exprFunctional1102); 
+
+				Match(input, TokenConstants.DOWN, null); 
+				PushFollow(Follow._exprFunctional_in_exprFunctional1106);
+				a=exprFunctional();
+
+				state._fsp--;
+
+				PushFollow(Follow._exprFunctional_in_exprFunctional1110);
+				b=exprFunctional();
+
+				state._fsp--;
+
+
+				Match(input, TokenConstants.UP, null); 
+
+				#if COMPILE_EXPRESSIONS
+							func = (chunk,self,writer) => chunk.Add(a(chunk,self,writer),b(chunk,self,writer));
+				#endif
+						
+
+				}
+				break;
+			case 2:
+				// Language\\ActionEvaluator.g3:466:4: templateApplicationFunctional
+				{
+				PushFollow(Follow._templateApplicationFunctional_in_exprFunctional1120);
+				templateApplicationFunctional16=templateApplicationFunctional();
+
+				state._fsp--;
+
+
+				#if COMPILE_EXPRESSIONS
+							func = templateApplicationFunctional16;
+				#endif
+						
+
+				}
+				break;
+			case 3:
+				// Language\\ActionEvaluator.g3:472:4: attributeFunctional
+				{
+				PushFollow(Follow._attributeFunctional_in_exprFunctional1129);
+				attributeFunctional17=attributeFunctional();
+
+				state._fsp--;
+
+
+				#if COMPILE_EXPRESSIONS
+							func = attributeFunctional17;
+				#endif
+						
+
+				}
+				break;
+			case 4:
+				// Language\\ActionEvaluator.g3:478:4: templateIncludeFunctional
+				{
+				PushFollow(Follow._templateIncludeFunctional_in_exprFunctional1138);
+				templateIncludeFunctional18=templateIncludeFunctional();
+
+				state._fsp--;
+
+
+				#if COMPILE_EXPRESSIONS
+							func = templateIncludeFunctional18;
+				#endif
+						
+
+				}
+				break;
+			case 5:
+				// Language\\ActionEvaluator.g3:484:4: functionFunctional
+				{
+				PushFollow(Follow._functionFunctional_in_exprFunctional1147);
+				functionFunctional19=functionFunctional();
+
+				state._fsp--;
+
+
+				#if COMPILE_EXPRESSIONS
+							func = functionFunctional19;
+				#endif
+						
+
+				}
+				break;
+			case 6:
+				// Language\\ActionEvaluator.g3:490:4: listFunctional
+				{
+				PushFollow(Follow._listFunctional_in_exprFunctional1156);
+				listFunctional20=listFunctional();
+
+				state._fsp--;
+
+
+				#if COMPILE_EXPRESSIONS
+							func = listFunctional20;
+				#endif
+						
+
+				}
+				break;
+			case 7:
+				// Language\\ActionEvaluator.g3:496:4: ^( VALUE a= exprFunctional )
+				{
+				Match(input,VALUE,Follow._VALUE_in_exprFunctional1166); 
+
+				Match(input, TokenConstants.DOWN, null); 
+				PushFollow(Follow._exprFunctional_in_exprFunctional1170);
+				a=exprFunctional();
+
+				state._fsp--;
+
+
+				Match(input, TokenConstants.UP, null); 
+
+				#if COMPILE_EXPRESSIONS
+							func = (chunk,self,writer) =>
+								{
+									var value = a(chunk,self,writer);
+									StringWriter buf = new StringWriter();
+									IStringTemplateWriter sw = self.Group.GetStringTemplateWriter( buf );
+									int n = chunk.WriteAttribute( self, value, sw );
+									if ( n > 0 )
+										return buf.ToString();
+									return value;
+								};
+				#endif
+						
+
+				}
+				break;
+
+			}
+		}
+		catch ( RecognitionException re )
+		{
+			ReportError(re);
+			Recover(input,re);
+		}
+		finally
+		{
+		}
+		return func;
+	}
+	// $ANTLR end "exprFunctional"
+
+
+	// $ANTLR start "templateApplicationCompiled"
+	// Language\\ActionEvaluator.g3:513:0: templateApplicationCompiled[System.Reflection.Emit.ILGenerator gen] : ( ^( APPLY a= expr ( template[templatesToApply] )+ ) | ^( MULTI_APPLY ( exprCompiled[$gen] )+ COLON ANONYMOUS_TEMPLATE ) );
+	private void templateApplicationCompiled( System.Reflection.Emit.ILGenerator gen )
+	{
+		object a = default(object);
+
+
+			var templatesToApply = new System.Collections.Generic.List<StringTemplate>();
+
+		try
+		{
+			// Language\\ActionEvaluator.g3:518:4: ( ^( APPLY a= expr ( template[templatesToApply] )+ ) | ^( MULTI_APPLY ( exprCompiled[$gen] )+ COLON ANONYMOUS_TEMPLATE ) )
+			int alt21=2;
+			int LA21_0 = input.LA(1);
+
+			if ( (LA21_0==APPLY) )
+			{
+				alt21=1;
+			}
+			else if ( (LA21_0==MULTI_APPLY) )
+			{
+				alt21=2;
+			}
+			else
+			{
+				NoViableAltException nvae = new NoViableAltException("", 21, 0, input);
+
+				throw nvae;
+			}
+			switch ( alt21 )
+			{
+			case 1:
+				// Language\\ActionEvaluator.g3:518:4: ^( APPLY a= expr ( template[templatesToApply] )+ )
+				{
+				Match(input,APPLY,Follow._APPLY_in_templateApplicationCompiled1194); 
+
+				Match(input, TokenConstants.DOWN, null); 
+				PushFollow(Follow._expr_in_templateApplicationCompiled1198);
+				a=expr();
+
+				state._fsp--;
+
+				// Language\\ActionEvaluator.g3:519:4: ( template[templatesToApply] )+
+				int cnt19=0;
+				for ( ; ; )
+				{
+					int alt19=2;
+					int LA19_0 = input.LA(1);
+
+					if ( (LA19_0==TEMPLATE) )
+					{
+						alt19=1;
+					}
+
+
+					switch ( alt19 )
+					{
+					case 1:
+						// Language\\ActionEvaluator.g3:519:5: template[templatesToApply]
+						{
+						PushFollow(Follow._template_in_templateApplicationCompiled1204);
+						template(templatesToApply);
+
+						state._fsp--;
+
+
+						}
+						break;
+
+					default:
+						if ( cnt19 >= 1 )
+							goto loop19;
+
+						EarlyExitException eee19 = new EarlyExitException( 19, input );
+						throw eee19;
+					}
+					cnt19++;
+				}
+				loop19:
+					;
+
+
+
+				#if COMPILE_EXPRESSIONS
+								throw new System.NotImplementedException();
+				#endif
+							
+
+				Match(input, TokenConstants.UP, null); 
+
+				}
+				break;
+			case 2:
+				// Language\\ActionEvaluator.g3:527:4: ^( MULTI_APPLY ( exprCompiled[$gen] )+ COLON ANONYMOUS_TEMPLATE )
+				{
+				Match(input,MULTI_APPLY,Follow._MULTI_APPLY_in_templateApplicationCompiled1227); 
+
+				Match(input, TokenConstants.DOWN, null); 
+				// Language\\ActionEvaluator.g3:527:19: ( exprCompiled[$gen] )+
+				int cnt20=0;
+				for ( ; ; )
+				{
+					int alt20=2;
+					int LA20_0 = input.LA(1);
+
+					if ( ((LA20_0>=ANONYMOUS_TEMPLATE && LA20_0<=APPLY)||LA20_0==DOT||(LA20_0>=FUNCTION && LA20_0<=INT)||LA20_0==LIST||LA20_0==MULTI_APPLY||LA20_0==PLUS||LA20_0==STRING||LA20_0==VALUE) )
+					{
+						alt20=1;
+					}
+
+
+					switch ( alt20 )
+					{
+					case 1:
+						// Language\\ActionEvaluator.g3:527:20: exprCompiled[$gen]
+						{
+						PushFollow(Follow._exprCompiled_in_templateApplicationCompiled1230);
+						exprCompiled(gen);
+
+						state._fsp--;
+
+
+						}
+						break;
+
+					default:
+						if ( cnt20 >= 1 )
+							goto loop20;
+
+						EarlyExitException eee20 = new EarlyExitException( 20, input );
+						throw eee20;
+					}
+					cnt20++;
+				}
+				loop20:
+					;
+
+
+				Match(input,COLON,Follow._COLON_in_templateApplicationCompiled1235); 
+				Match(input,ANONYMOUS_TEMPLATE,Follow._ANONYMOUS_TEMPLATE_in_templateApplicationCompiled1240); 
+
+				#if COMPILE_EXPRESSIONS
+								throw new System.NotImplementedException();
+				#endif
+							
+
+				Match(input, TokenConstants.UP, null); 
+
+				}
+				break;
+
+			}
+		}
+		catch ( RecognitionException re )
+		{
+			ReportError(re);
+			Recover(input,re);
+		}
+		finally
+		{
+		}
+		return ;
+	}
+	// $ANTLR end "templateApplicationCompiled"
+
+
+	// $ANTLR start "templateApplicationFunctional"
+	// Language\\ActionEvaluator.g3:544:0: templateApplicationFunctional returns [System.Func<ASTExpr,StringTemplate,IStringTemplateWriter,object> func] : ( ^( APPLY a= exprFunctional ( templateFunctional[templateApplicators] )+ ) | ^( MULTI_APPLY (a= exprFunctional )+ COLON ANONYMOUS_TEMPLATE ) );
+	private System.Func<ASTExpr,StringTemplate,IStringTemplateWriter,object> templateApplicationFunctional(  )
+	{
+
+		System.Func<ASTExpr,StringTemplate,IStringTemplateWriter,object> func = default(System.Func<ASTExpr,StringTemplate,IStringTemplateWriter,object>);
+
+		StringTemplateAST ANONYMOUS_TEMPLATE21=null;
+		System.Func<ASTExpr,StringTemplate,IStringTemplateWriter,object> a = default(System.Func<ASTExpr,StringTemplate,IStringTemplateWriter,object>);
+
+
+			var  templateApplicators = new List<System.Func<ASTExpr,StringTemplate,IStringTemplateWriter,StringTemplate>>();
+		#if COMPILE_EXPRESSIONS
+			List<System.Func<ASTExpr,StringTemplate,IStringTemplateWriter,object>> attributes = new List<System.Func<ASTExpr,StringTemplate,IStringTemplateWriter,object>>();
+		#endif
+
+		try
+		{
+			// Language\\ActionEvaluator.g3:552:4: ( ^( APPLY a= exprFunctional ( templateFunctional[templateApplicators] )+ ) | ^( MULTI_APPLY (a= exprFunctional )+ COLON ANONYMOUS_TEMPLATE ) )
+			int alt24=2;
+			int LA24_0 = input.LA(1);
+
+			if ( (LA24_0==APPLY) )
+			{
+				alt24=1;
+			}
+			else if ( (LA24_0==MULTI_APPLY) )
+			{
+				alt24=2;
+			}
+			else
+			{
+				NoViableAltException nvae = new NoViableAltException("", 24, 0, input);
+
+				throw nvae;
+			}
+			switch ( alt24 )
+			{
+			case 1:
+				// Language\\ActionEvaluator.g3:552:4: ^( APPLY a= exprFunctional ( templateFunctional[templateApplicators] )+ )
+				{
+				Match(input,APPLY,Follow._APPLY_in_templateApplicationFunctional1299); 
+
+				Match(input, TokenConstants.DOWN, null); 
+				PushFollow(Follow._exprFunctional_in_templateApplicationFunctional1303);
+				a=exprFunctional();
+
+				state._fsp--;
+
+				// Language\\ActionEvaluator.g3:553:4: ( templateFunctional[templateApplicators] )+
+				int cnt22=0;
+				for ( ; ; )
+				{
+					int alt22=2;
+					int LA22_0 = input.LA(1);
+
+					if ( (LA22_0==TEMPLATE) )
+					{
+						alt22=1;
+					}
+
+
+					switch ( alt22 )
+					{
+					case 1:
+						// Language\\ActionEvaluator.g3:553:5: templateFunctional[templateApplicators]
+						{
+						PushFollow(Follow._templateFunctional_in_templateApplicationFunctional1309);
+						templateFunctional(templateApplicators);
+
+						state._fsp--;
+
+
+						}
+						break;
+
+					default:
+						if ( cnt22 >= 1 )
+							goto loop22;
+
+						EarlyExitException eee22 = new EarlyExitException( 22, input );
+						throw eee22;
+					}
+					cnt22++;
+				}
+				loop22:
+					;
+
+
+
+				#if COMPILE_EXPRESSIONS
+								func = (chunk,self,writer) =>
+									{
+										var templatesToApply =	( from applicator in templateApplicators
+																  let st = applicator(chunk,self,writer)
+																  where st != null
+																  select st )
+																.ToList();
+										return chunk.ApplyListOfAlternatingTemplates( self, a(chunk,self,writer), templatesToApply );
+									};
+				#endif
+							
+
+				Match(input, TokenConstants.UP, null); 
+
+				}
+				break;
+			case 2:
+				// Language\\ActionEvaluator.g3:568:4: ^( MULTI_APPLY (a= exprFunctional )+ COLON ANONYMOUS_TEMPLATE )
+				{
+				Match(input,MULTI_APPLY,Follow._MULTI_APPLY_in_templateApplicationFunctional1328); 
+
+				Match(input, TokenConstants.DOWN, null); 
+				// Language\\ActionEvaluator.g3:569:4: (a= exprFunctional )+
+				int cnt23=0;
+				for ( ; ; )
+				{
+					int alt23=2;
+					int LA23_0 = input.LA(1);
+
+					if ( ((LA23_0>=ANONYMOUS_TEMPLATE && LA23_0<=APPLY)||LA23_0==DOT||(LA23_0>=FUNCTION && LA23_0<=INT)||LA23_0==LIST||LA23_0==MULTI_APPLY||LA23_0==PLUS||LA23_0==STRING||LA23_0==VALUE) )
+					{
+						alt23=1;
+					}
+
+
+					switch ( alt23 )
+					{
+					case 1:
+						// Language\\ActionEvaluator.g3:569:6: a= exprFunctional
+						{
+						PushFollow(Follow._exprFunctional_in_templateApplicationFunctional1337);
+						a=exprFunctional();
+
+						state._fsp--;
+
+
+						#if COMPILE_EXPRESSIONS
+											attributes.Add(a);
+						#endif
+										
+
+						}
+						break;
+
+					default:
+						if ( cnt23 >= 1 )
+							goto loop23;
+
+						EarlyExitException eee23 = new EarlyExitException( 23, input );
+						throw eee23;
+					}
+					cnt23++;
+				}
+				loop23:
+					;
+
+
+				Match(input,COLON,Follow._COLON_in_templateApplicationFunctional1354); 
+				ANONYMOUS_TEMPLATE21=(StringTemplateAST)Match(input,ANONYMOUS_TEMPLATE,Follow._ANONYMOUS_TEMPLATE_in_templateApplicationFunctional1356); 
+
+				#if COMPILE_EXPRESSIONS
+								StringTemplate anonymous = ANONYMOUS_TEMPLATE21.StringTemplate;
+								func = (chunk,self,writer) =>
+									{
+										var attr =	from f in attributes
+													select f(chunk,self,writer);
+										return chunk.ApplyTemplateToListOfAttributes( self, attr.ToList(), anonymous );
+									};
+				#endif
+							
+
+				Match(input, TokenConstants.UP, null); 
+
+				}
+				break;
+
+			}
+		}
+		catch ( RecognitionException re )
+		{
+			ReportError(re);
+			Recover(input,re);
+		}
+		finally
+		{
+		}
+		return func;
+	}
+	// $ANTLR end "templateApplicationFunctional"
+
+
+	// $ANTLR start "attributeCompiled"
+	// Language\\ActionEvaluator.g3:591:0: attributeCompiled[System.Reflection.Emit.ILGenerator gen] : ( ^( DOT exprCompiled[$gen] (id= ID | ^( VALUE exprCompiled[$gen] ) ) ) |id= ID | INT | STRING | ANONYMOUS_TEMPLATE );
+	private void attributeCompiled( System.Reflection.Emit.ILGenerator gen )
+	{
+		StringTemplateAST id=null;
+		StringTemplateAST INT22=null;
+		StringTemplateAST STRING23=null;
+		StringTemplateAST ANONYMOUS_TEMPLATE24=null;
+
+		try
+		{
+			// Language\\ActionEvaluator.g3:592:4: ( ^( DOT exprCompiled[$gen] (id= ID | ^( VALUE exprCompiled[$gen] ) ) ) |id= ID | INT | STRING | ANONYMOUS_TEMPLATE )
+			int alt26=5;
+			switch ( input.LA(1) )
+			{
+			case DOT:
+				{
+				alt26=1;
+				}
+				break;
+			case ID:
+				{
+				alt26=2;
+				}
+				break;
+			case INT:
+				{
+				alt26=3;
+				}
+				break;
+			case STRING:
+				{
+				alt26=4;
+				}
+				break;
+			case ANONYMOUS_TEMPLATE:
+				{
+				alt26=5;
+				}
+				break;
+			default:
+				{
+					NoViableAltException nvae = new NoViableAltException("", 26, 0, input);
+
+					throw nvae;
+				}
+			}
+
+			switch ( alt26 )
+			{
+			case 1:
+				// Language\\ActionEvaluator.g3:592:4: ^( DOT exprCompiled[$gen] (id= ID | ^( VALUE exprCompiled[$gen] ) ) )
+				{
+				Match(input,DOT,Follow._DOT_in_attributeCompiled1379); 
+
+				Match(input, TokenConstants.DOWN, null); 
+				PushFollow(Follow._exprCompiled_in_attributeCompiled1381);
+				exprCompiled(gen);
+
+				state._fsp--;
+
+				// Language\\ActionEvaluator.g3:593:4: (id= ID | ^( VALUE exprCompiled[$gen] ) )
+				int alt25=2;
+				int LA25_0 = input.LA(1);
+
+				if ( (LA25_0==ID) )
+				{
+					alt25=1;
+				}
+				else if ( (LA25_0==VALUE) )
+				{
+					alt25=2;
+				}
+				else
+				{
+					NoViableAltException nvae = new NoViableAltException("", 25, 0, input);
+
+					throw nvae;
+				}
+				switch ( alt25 )
+				{
+				case 1:
+					// Language\\ActionEvaluator.g3:593:6: id= ID
+					{
+					id=(StringTemplateAST)Match(input,ID,Follow._ID_in_attributeCompiled1391); 
+
+					#if COMPILE_EXPRESSIONS
+										EmitLoadString(gen,(id!=null?id.Text:null));
+					#endif
+									
+
+					}
+					break;
+				case 2:
+					// Language\\ActionEvaluator.g3:599:6: ^( VALUE exprCompiled[$gen] )
+					{
+					Match(input,VALUE,Follow._VALUE_in_attributeCompiled1405); 
+
+					Match(input, TokenConstants.DOWN, null); 
+					PushFollow(Follow._exprCompiled_in_attributeCompiled1407);
+					exprCompiled(gen);
+
+					state._fsp--;
+
+
+					Match(input, TokenConstants.UP, null); 
+
+					}
+					break;
+
+				}
+
+
+				#if COMPILE_EXPRESSIONS
+								EmitObjectProperty(gen);
+				#endif
+							
+
+				Match(input, TokenConstants.UP, null); 
+
+				}
+				break;
+			case 2:
+				// Language\\ActionEvaluator.g3:608:4: id= ID
+				{
+				id=(StringTemplateAST)Match(input,ID,Follow._ID_in_attributeCompiled1431); 
+
+				#if COMPILE_EXPRESSIONS
+							EmitAttribute(gen,(id!=null?id.Text:null));
+				#endif
+						
+
+				}
+				break;
+			case 3:
+				// Language\\ActionEvaluator.g3:615:4: INT
+				{
+				INT22=(StringTemplateAST)Match(input,INT,Follow._INT_in_attributeCompiled1441); 
+
+				#if COMPILE_EXPRESSIONS
+							EmitLoadIntAsObject(gen,int.Parse((INT22!=null?INT22.Text:null)));
+				#endif
+						
+
+				}
+				break;
+			case 4:
+				// Language\\ActionEvaluator.g3:622:4: STRING
+				{
+				STRING23=(StringTemplateAST)Match(input,STRING,Follow._STRING_in_attributeCompiled1451); 
+
+				#if COMPILE_EXPRESSIONS
+							EmitLoadString(gen,(STRING23!=null?STRING23.Text:null));
+				#endif
+						
+
+				}
+				break;
+			case 5:
+				// Language\\ActionEvaluator.g3:629:4: ANONYMOUS_TEMPLATE
+				{
+				ANONYMOUS_TEMPLATE24=(StringTemplateAST)Match(input,ANONYMOUS_TEMPLATE,Follow._ANONYMOUS_TEMPLATE_in_attributeCompiled1461); 
+
+				#if COMPILE_EXPRESSIONS
+							EmitAnonymousTemplate(gen,(ANONYMOUS_TEMPLATE24!=null?ANONYMOUS_TEMPLATE24.Text:null));
+				#endif
+						
+
+				}
+				break;
+
+			}
+		}
+		catch ( RecognitionException re )
+		{
+			ReportError(re);
+			Recover(input,re);
+		}
+		finally
+		{
+		}
+		return ;
+	}
+	// $ANTLR end "attributeCompiled"
+
+
+	// $ANTLR start "attributeFunctional"
+	// Language\\ActionEvaluator.g3:637:0: attributeFunctional returns [System.Func<ASTExpr,StringTemplate,IStringTemplateWriter,object> func] : ( ^( DOT a= exprFunctional (id= ID | ^( VALUE b= exprFunctional ) ) ) |id= ID | INT | STRING | ANONYMOUS_TEMPLATE );
+	private System.Func<ASTExpr,StringTemplate,IStringTemplateWriter,object> attributeFunctional(  )
+	{
+
+		System.Func<ASTExpr,StringTemplate,IStringTemplateWriter,object> func = default(System.Func<ASTExpr,StringTemplate,IStringTemplateWriter,object>);
+
+		StringTemplateAST id=null;
+		StringTemplateAST INT25=null;
+		StringTemplateAST STRING26=null;
+		StringTemplateAST ANONYMOUS_TEMPLATE27=null;
+		System.Func<ASTExpr,StringTemplate,IStringTemplateWriter,object> a = default(System.Func<ASTExpr,StringTemplate,IStringTemplateWriter,object>);
+		System.Func<ASTExpr,StringTemplate,IStringTemplateWriter,object> b = default(System.Func<ASTExpr,StringTemplate,IStringTemplateWriter,object>);
+
+		try
+		{
+			// Language\\ActionEvaluator.g3:638:4: ( ^( DOT a= exprFunctional (id= ID | ^( VALUE b= exprFunctional ) ) ) |id= ID | INT | STRING | ANONYMOUS_TEMPLATE )
+			int alt28=5;
+			switch ( input.LA(1) )
+			{
+			case DOT:
+				{
+				alt28=1;
+				}
+				break;
+			case ID:
+				{
+				alt28=2;
+				}
+				break;
+			case INT:
+				{
+				alt28=3;
+				}
+				break;
+			case STRING:
+				{
+				alt28=4;
+				}
+				break;
+			case ANONYMOUS_TEMPLATE:
+				{
+				alt28=5;
+				}
+				break;
+			default:
+				{
+					NoViableAltException nvae = new NoViableAltException("", 28, 0, input);
+
+					throw nvae;
+				}
+			}
+
+			switch ( alt28 )
+			{
+			case 1:
+				// Language\\ActionEvaluator.g3:638:4: ^( DOT a= exprFunctional (id= ID | ^( VALUE b= exprFunctional ) ) )
+				{
+				Match(input,DOT,Follow._DOT_in_attributeFunctional1482); 
+
+				Match(input, TokenConstants.DOWN, null); 
+				PushFollow(Follow._exprFunctional_in_attributeFunctional1486);
+				a=exprFunctional();
+
+				state._fsp--;
+
+				// Language\\ActionEvaluator.g3:639:4: (id= ID | ^( VALUE b= exprFunctional ) )
+				int alt27=2;
+				int LA27_0 = input.LA(1);
+
+				if ( (LA27_0==ID) )
+				{
+					alt27=1;
+				}
+				else if ( (LA27_0==VALUE) )
+				{
+					alt27=2;
+				}
+				else
+				{
+					NoViableAltException nvae = new NoViableAltException("", 27, 0, input);
+
+					throw nvae;
+				}
+				switch ( alt27 )
+				{
+				case 1:
+					// Language\\ActionEvaluator.g3:639:6: id= ID
+					{
+					id=(StringTemplateAST)Match(input,ID,Follow._ID_in_attributeFunctional1495); 
+
+					#if COMPILE_EXPRESSIONS
+										string text = (id!=null?id.Text:null);
+										func = (chunk,self,writer) => chunk.GetObjectProperty( self, a(chunk,self,writer), text );
+					#endif
+									
+
+					}
+					break;
+				case 2:
+					// Language\\ActionEvaluator.g3:646:6: ^( VALUE b= exprFunctional )
+					{
+					Match(input,VALUE,Follow._VALUE_in_attributeFunctional1509); 
+
+					Match(input, TokenConstants.DOWN, null); 
+					PushFollow(Follow._exprFunctional_in_attributeFunctional1513);
+					b=exprFunctional();
+
+					state._fsp--;
+
+
+					Match(input, TokenConstants.UP, null); 
+
+					#if COMPILE_EXPRESSIONS
+										func = (chunk,self,writer) => chunk.GetObjectProperty( self, a(chunk,self,writer), b(chunk,self,writer) );
+					#endif
+									
+
+					}
+					break;
+
+				}
+
+
+				Match(input, TokenConstants.UP, null); 
+
+				}
+				break;
+			case 2:
+				// Language\\ActionEvaluator.g3:655:4: id= ID
+				{
+				id=(StringTemplateAST)Match(input,ID,Follow._ID_in_attributeFunctional1537); 
+
+				#if COMPILE_EXPRESSIONS
+							string text = (id!=null?id.Text:null);
+							func = (chunk,self,writer) => self.GetAttribute( text );
+				#endif
+						
+
+				}
+				break;
+			case 3:
+				// Language\\ActionEvaluator.g3:663:4: INT
+				{
+				INT25=(StringTemplateAST)Match(input,INT,Follow._INT_in_attributeFunctional1547); 
+
+				#if COMPILE_EXPRESSIONS
+							int i = int.Parse((INT25!=null?INT25.Text:null));
+							func = (chunk,self,writer) => i;
+				#endif
+						
+
+				}
+				break;
+			case 4:
+				// Language\\ActionEvaluator.g3:671:4: STRING
+				{
+				STRING26=(StringTemplateAST)Match(input,STRING,Follow._STRING_in_attributeFunctional1557); 
+
+				#if COMPILE_EXPRESSIONS
+							string text = (STRING26!=null?STRING26.Text:null);
+							func = (chunk,self,writer) => text;
+				#endif
+						
+
+				}
+				break;
+			case 5:
+				// Language\\ActionEvaluator.g3:679:4: ANONYMOUS_TEMPLATE
+				{
+				ANONYMOUS_TEMPLATE27=(StringTemplateAST)Match(input,ANONYMOUS_TEMPLATE,Follow._ANONYMOUS_TEMPLATE_in_attributeFunctional1567); 
+
+				#if COMPILE_EXPRESSIONS
+							string text = (ANONYMOUS_TEMPLATE27!=null?ANONYMOUS_TEMPLATE27.Text:null);
+							if ( text != null )
+							{
+								func = (chunk,self,writer) =>
+									new StringTemplate( self.Group, text )
+									{
+										EnclosingInstance = self,
+										Name = "<anonymous template argument>"
+									};
+							}
+							else
+							{
+								func = (chunk,self,writer) => null;
+							}
+				#endif
+						
+
+				}
+				break;
+
+			}
+		}
+		catch ( RecognitionException re )
+		{
+			ReportError(re);
+			Recover(input,re);
+		}
+		finally
+		{
+		}
+		return func;
+	}
+	// $ANTLR end "attributeFunctional"
+
+
+	// $ANTLR start "templateIncludeCompiled"
+	// Language\\ActionEvaluator.g3:700:0: templateIncludeCompiled[System.Reflection.Emit.ILGenerator gen] : ^( INCLUDE ( ID args= . | ^( VALUE exprCompiled[$gen] args= . ) ) ) ;
+	private void templateIncludeCompiled( System.Reflection.Emit.ILGenerator gen )
+	{
+		StringTemplateAST ID28=null;
+		StringTemplateAST args=null;
+
+		try
+		{
+			// Language\\ActionEvaluator.g3:701:4: ( ^( INCLUDE ( ID args= . | ^( VALUE exprCompiled[$gen] args= . ) ) ) )
+			// Language\\ActionEvaluator.g3:701:4: ^( INCLUDE ( ID args= . | ^( VALUE exprCompiled[$gen] args= . ) ) )
+			{
+			Match(input,INCLUDE,Follow._INCLUDE_in_templateIncludeCompiled1585); 
+
+			Match(input, TokenConstants.DOWN, null); 
+			// Language\\ActionEvaluator.g3:702:4: ( ID args= . | ^( VALUE exprCompiled[$gen] args= . ) )
+			int alt29=2;
+			int LA29_0 = input.LA(1);
+
+			if ( (LA29_0==ID) )
+			{
+				alt29=1;
+			}
+			else if ( (LA29_0==VALUE) )
+			{
+				alt29=2;
+			}
+			else
+			{
+				NoViableAltException nvae = new NoViableAltException("", 29, 0, input);
+
+				throw nvae;
+			}
+			switch ( alt29 )
+			{
+			case 1:
+				// Language\\ActionEvaluator.g3:702:6: ID args= .
+				{
+				ID28=(StringTemplateAST)Match(input,ID,Follow._ID_in_templateIncludeCompiled1592); 
+				args=(StringTemplateAST)input.LT(1);
+				MatchAny(input); 
+
+				#if COMPILE_EXPRESSIONS
+									EmitLoadString( gen, (ID28!=null?ID28.Text:null) );
+				#endif
+								
+
+				}
+				break;
+			case 2:
+				// Language\\ActionEvaluator.g3:708:6: ^( VALUE exprCompiled[$gen] args= . )
+				{
+				Match(input,VALUE,Follow._VALUE_in_templateIncludeCompiled1611); 
+
+				Match(input, TokenConstants.DOWN, null); 
+				PushFollow(Follow._exprCompiled_in_templateIncludeCompiled1613);
+				exprCompiled(gen);
+
+				state._fsp--;
+
+				args=(StringTemplateAST)input.LT(1);
+				MatchAny(input); 
+
+				Match(input, TokenConstants.UP, null); 
+
+				}
+				break;
+
+			}
+
+
+			Match(input, TokenConstants.UP, null); 
+
+			#if COMPILE_EXPRESSIONS
+						EmitTemplateInclude( gen, args );
+			#endif
+					
+
+			}
+
+		}
+		catch ( RecognitionException re )
+		{
+			ReportError(re);
+			Recover(input,re);
+		}
+		finally
+		{
+		}
+		return ;
+	}
+	// $ANTLR end "templateIncludeCompiled"
+
+
+	// $ANTLR start "templateIncludeFunctional"
+	// Language\\ActionEvaluator.g3:718:0: templateIncludeFunctional returns [System.Func<ASTExpr,StringTemplate,IStringTemplateWriter,object> func] : ^( INCLUDE ( ID args= . | ^( VALUE exprFunctional args= . ) ) ) ;
+	private System.Func<ASTExpr,StringTemplate,IStringTemplateWriter,object> templateIncludeFunctional(  )
+	{
+
+		System.Func<ASTExpr,StringTemplate,IStringTemplateWriter,object> func = default(System.Func<ASTExpr,StringTemplate,IStringTemplateWriter,object>);
+
+		StringTemplateAST ID29=null;
+		StringTemplateAST args=null;
+		System.Func<ASTExpr,StringTemplate,IStringTemplateWriter,object> exprFunctional30 = default(System.Func<ASTExpr,StringTemplate,IStringTemplateWriter,object>);
+
+		try
+		{
+			// Language\\ActionEvaluator.g3:719:4: ( ^( INCLUDE ( ID args= . | ^( VALUE exprFunctional args= . ) ) ) )
+			// Language\\ActionEvaluator.g3:719:4: ^( INCLUDE ( ID args= . | ^( VALUE exprFunctional args= . ) ) )
+			{
+			Match(input,INCLUDE,Follow._INCLUDE_in_templateIncludeFunctional1650); 
+
+			Match(input, TokenConstants.DOWN, null); 
+			// Language\\ActionEvaluator.g3:720:4: ( ID args= . | ^( VALUE exprFunctional args= . ) )
+			int alt30=2;
+			int LA30_0 = input.LA(1);
+
+			if ( (LA30_0==ID) )
+			{
+				alt30=1;
+			}
+			else if ( (LA30_0==VALUE) )
+			{
+				alt30=2;
+			}
+			else
+			{
+				NoViableAltException nvae = new NoViableAltException("", 30, 0, input);
+
+				throw nvae;
+			}
+			switch ( alt30 )
+			{
+			case 1:
+				// Language\\ActionEvaluator.g3:720:6: ID args= .
+				{
+				ID29=(StringTemplateAST)Match(input,ID,Follow._ID_in_templateIncludeFunctional1657); 
+				args=(StringTemplateAST)input.LT(1);
+				MatchAny(input); 
+
+				}
+				break;
+			case 2:
+				// Language\\ActionEvaluator.g3:721:6: ^( VALUE exprFunctional args= . )
+				{
+				Match(input,VALUE,Follow._VALUE_in_templateIncludeFunctional1670); 
+
+				Match(input, TokenConstants.DOWN, null); 
+				PushFollow(Follow._exprFunctional_in_templateIncludeFunctional1672);
+				exprFunctional30=exprFunctional();
+
+				state._fsp--;
+
+				args=(StringTemplateAST)input.LT(1);
+				MatchAny(input); 
+
+				Match(input, TokenConstants.UP, null); 
+
+				}
+				break;
+
+			}
+
+
+			Match(input, TokenConstants.UP, null); 
+
+			#if COMPILE_EXPRESSIONS
+						if ( ID29 != null )
+						{
+							string name = (ID29!=null?ID29.Text:null);
+							if ( name != null )
+							{
+								func = (chunk,self,writer) =>
+									{
+										return chunk.GetTemplateInclude( self, name, args );
+									};
+							}
+							else
+							{
+								func = (chunk,self,writer) => null;
+							}
+						}
+						else
+						{
+							func = (chunk,self,writer) =>
+								{
+									var value = exprFunctional30(chunk,self,writer);
+									if ( value == null )
+										return null;
+										
+									string name = value.ToString();
+									if ( name != null )
+									{
+										return chunk.GetTemplateInclude( self, name, args );
+									}
+									return null;
+								};
+						}
+			#endif
+					
+
+			}
+
+		}
+		catch ( RecognitionException re )
+		{
+			ReportError(re);
+			Recover(input,re);
+		}
+		finally
+		{
+		}
+		return func;
+	}
+	// $ANTLR end "templateIncludeFunctional"
+
+
+	// $ANTLR start "functionCompiled"
+	// Language\\ActionEvaluator.g3:761:0: functionCompiled[System.Reflection.Emit.ILGenerator gen] : ^( FUNCTION ( 'first' singleFunctionArgCompiled[$gen] | 'rest' singleFunctionArgCompiled[$gen] | 'last' singleFunctionArgCompiled[$gen] | 'length' singleFunctionArgCompiled[$gen] | 'strip' singleFunctionArgCompiled[$gen] | 'trunc' singleFunctionArgCompiled[$gen] ) ) ;
+	private void functionCompiled( System.Reflection.Emit.ILGenerator gen )
+	{
+		try
+		{
+			// Language\\ActionEvaluator.g3:762:4: ( ^( FUNCTION ( 'first' singleFunctionArgCompiled[$gen] | 'rest' singleFunctionArgCompiled[$gen] | 'last' singleFunctionArgCompiled[$gen] | 'length' singleFunctionArgCompiled[$gen] | 'strip' singleFunctionArgCompiled[$gen] | 'trunc' singleFunctionArgCompiled[$gen] ) ) )
+			// Language\\ActionEvaluator.g3:762:4: ^( FUNCTION ( 'first' singleFunctionArgCompiled[$gen] | 'rest' singleFunctionArgCompiled[$gen] | 'last' singleFunctionArgCompiled[$gen] | 'length' singleFunctionArgCompiled[$gen] | 'strip' singleFunctionArgCompiled[$gen] | 'trunc' singleFunctionArgCompiled[$gen] ) )
+			{
+			Match(input,FUNCTION,Follow._FUNCTION_in_functionCompiled1705); 
+
+			Match(input, TokenConstants.DOWN, null); 
+			// Language\\ActionEvaluator.g3:763:4: ( 'first' singleFunctionArgCompiled[$gen] | 'rest' singleFunctionArgCompiled[$gen] | 'last' singleFunctionArgCompiled[$gen] | 'length' singleFunctionArgCompiled[$gen] | 'strip' singleFunctionArgCompiled[$gen] | 'trunc' singleFunctionArgCompiled[$gen] )
+			int alt31=6;
+			switch ( input.LA(1) )
+			{
+			case FIRST:
+				{
+				alt31=1;
+				}
+				break;
+			case REST:
+				{
+				alt31=2;
+				}
+				break;
+			case LAST:
+				{
+				alt31=3;
+				}
+				break;
+			case LENGTH:
+				{
+				alt31=4;
+				}
+				break;
+			case STRIP:
+				{
+				alt31=5;
+				}
+				break;
+			case TRUNC:
+				{
+				alt31=6;
+				}
+				break;
+			default:
+				{
+					NoViableAltException nvae = new NoViableAltException("", 31, 0, input);
+
+					throw nvae;
+				}
+			}
+
+			switch ( alt31 )
+			{
+			case 1:
+				// Language\\ActionEvaluator.g3:763:6: 'first' singleFunctionArgCompiled[$gen]
+				{
+				Match(input,FIRST,Follow._FIRST_in_functionCompiled1712); 
+				PushFollow(Follow._singleFunctionArgCompiled_in_functionCompiled1715);
+				singleFunctionArgCompiled(gen);
+
+				state._fsp--;
+
+
+				#if COMPILE_EXPRESSIONS
+									EmitFunctionFirst(gen);
+				#endif
+								
+
+				}
+				break;
+			case 2:
+				// Language\\ActionEvaluator.g3:769:6: 'rest' singleFunctionArgCompiled[$gen]
+				{
+				Match(input,REST,Follow._REST_in_functionCompiled1729); 
+				PushFollow(Follow._singleFunctionArgCompiled_in_functionCompiled1732);
+				singleFunctionArgCompiled(gen);
+
+				state._fsp--;
+
+
+				#if COMPILE_EXPRESSIONS
+									EmitFunctionRest(gen);
+				#endif
+								
+
+				}
+				break;
+			case 3:
+				// Language\\ActionEvaluator.g3:775:6: 'last' singleFunctionArgCompiled[$gen]
+				{
+				Match(input,LAST,Follow._LAST_in_functionCompiled1746); 
+				PushFollow(Follow._singleFunctionArgCompiled_in_functionCompiled1749);
+				singleFunctionArgCompiled(gen);
+
+				state._fsp--;
+
+
+				#if COMPILE_EXPRESSIONS
+									EmitFunctionLast(gen);
+				#endif
+								
+
+				}
+				break;
+			case 4:
+				// Language\\ActionEvaluator.g3:781:6: 'length' singleFunctionArgCompiled[$gen]
+				{
+				Match(input,LENGTH,Follow._LENGTH_in_functionCompiled1763); 
+				PushFollow(Follow._singleFunctionArgCompiled_in_functionCompiled1765);
+				singleFunctionArgCompiled(gen);
+
+				state._fsp--;
+
+
+				#if COMPILE_EXPRESSIONS
+									EmitFunctionLength(gen);
+				#endif
+								
+
+				}
+				break;
+			case 5:
+				// Language\\ActionEvaluator.g3:787:6: 'strip' singleFunctionArgCompiled[$gen]
+				{
+				Match(input,STRIP,Follow._STRIP_in_functionCompiled1779); 
+				PushFollow(Follow._singleFunctionArgCompiled_in_functionCompiled1782);
+				singleFunctionArgCompiled(gen);
+
+				state._fsp--;
+
+
+				#if COMPILE_EXPRESSIONS
+									EmitFunctionStrip(gen);
+				#endif
+								
+
+				}
+				break;
+			case 6:
+				// Language\\ActionEvaluator.g3:793:6: 'trunc' singleFunctionArgCompiled[$gen]
+				{
+				Match(input,TRUNC,Follow._TRUNC_in_functionCompiled1796); 
+				PushFollow(Follow._singleFunctionArgCompiled_in_functionCompiled1799);
+				singleFunctionArgCompiled(gen);
+
+				state._fsp--;
+
+
+				#if COMPILE_EXPRESSIONS
+									EmitFunctionTrunc(gen);
+				#endif
+								
+
+				}
+				break;
+
+			}
+
+
+			Match(input, TokenConstants.UP, null); 
+
+			}
+
+		}
+		catch ( RecognitionException re )
+		{
+			ReportError(re);
+			Recover(input,re);
+		}
+		finally
+		{
+		}
+		return ;
+	}
+	// $ANTLR end "functionCompiled"
+
+
+	// $ANTLR start "functionFunctional"
+	// Language\\ActionEvaluator.g3:803:0: functionFunctional returns [System.Func<ASTExpr,StringTemplate,IStringTemplateWriter,object> func] : ^( FUNCTION ( 'first' a= singleFunctionArgFunctional | 'rest' a= singleFunctionArgFunctional | 'last' a= singleFunctionArgFunctional | 'length' a= singleFunctionArgFunctional | 'strip' a= singleFunctionArgFunctional | 'trunc' a= singleFunctionArgFunctional ) ) ;
+	private System.Func<ASTExpr,StringTemplate,IStringTemplateWriter,object> functionFunctional(  )
+	{
+
+		System.Func<ASTExpr,StringTemplate,IStringTemplateWriter,object> func = default(System.Func<ASTExpr,StringTemplate,IStringTemplateWriter,object>);
+
+		System.Func<ASTExpr,StringTemplate,IStringTemplateWriter,object> a = default(System.Func<ASTExpr,StringTemplate,IStringTemplateWriter,object>);
+
+		try
+		{
+			// Language\\ActionEvaluator.g3:804:4: ( ^( FUNCTION ( 'first' a= singleFunctionArgFunctional | 'rest' a= singleFunctionArgFunctional | 'last' a= singleFunctionArgFunctional | 'length' a= singleFunctionArgFunctional | 'strip' a= singleFunctionArgFunctional | 'trunc' a= singleFunctionArgFunctional ) ) )
+			// Language\\ActionEvaluator.g3:804:4: ^( FUNCTION ( 'first' a= singleFunctionArgFunctional | 'rest' a= singleFunctionArgFunctional | 'last' a= singleFunctionArgFunctional | 'length' a= singleFunctionArgFunctional | 'strip' a= singleFunctionArgFunctional | 'trunc' a= singleFunctionArgFunctional ) )
+			{
+			Match(input,FUNCTION,Follow._FUNCTION_in_functionFunctional1832); 
+
+			Match(input, TokenConstants.DOWN, null); 
+			// Language\\ActionEvaluator.g3:805:4: ( 'first' a= singleFunctionArgFunctional | 'rest' a= singleFunctionArgFunctional | 'last' a= singleFunctionArgFunctional | 'length' a= singleFunctionArgFunctional | 'strip' a= singleFunctionArgFunctional | 'trunc' a= singleFunctionArgFunctional )
+			int alt32=6;
+			switch ( input.LA(1) )
+			{
+			case FIRST:
+				{
+				alt32=1;
+				}
+				break;
+			case REST:
+				{
+				alt32=2;
+				}
+				break;
+			case LAST:
+				{
+				alt32=3;
+				}
+				break;
+			case LENGTH:
+				{
+				alt32=4;
+				}
+				break;
+			case STRIP:
+				{
+				alt32=5;
+				}
+				break;
+			case TRUNC:
+				{
+				alt32=6;
+				}
+				break;
+			default:
+				{
+					NoViableAltException nvae = new NoViableAltException("", 32, 0, input);
+
+					throw nvae;
+				}
+			}
+
+			switch ( alt32 )
+			{
+			case 1:
+				// Language\\ActionEvaluator.g3:805:6: 'first' a= singleFunctionArgFunctional
+				{
+				Match(input,FIRST,Follow._FIRST_in_functionFunctional1839); 
+				PushFollow(Follow._singleFunctionArgFunctional_in_functionFunctional1844);
+				a=singleFunctionArgFunctional();
+
+				state._fsp--;
+
+
+				#if COMPILE_EXPRESSIONS
+									func = (chunk,self,writer) => chunk.First( a(chunk,self,writer) );
+				#endif
+								
+
+				}
+				break;
+			case 2:
+				// Language\\ActionEvaluator.g3:811:6: 'rest' a= singleFunctionArgFunctional
+				{
+				Match(input,REST,Follow._REST_in_functionFunctional1857); 
+				PushFollow(Follow._singleFunctionArgFunctional_in_functionFunctional1862);
+				a=singleFunctionArgFunctional();
+
+				state._fsp--;
+
+
+				#if COMPILE_EXPRESSIONS
+									func = (chunk,self,writer) => chunk.Rest( a(chunk,self,writer) );
+				#endif
+								
+
+				}
+				break;
+			case 3:
+				// Language\\ActionEvaluator.g3:817:6: 'last' a= singleFunctionArgFunctional
+				{
+				Match(input,LAST,Follow._LAST_in_functionFunctional1875); 
+				PushFollow(Follow._singleFunctionArgFunctional_in_functionFunctional1880);
+				a=singleFunctionArgFunctional();
+
+				state._fsp--;
+
+
+				#if COMPILE_EXPRESSIONS
+									func = (chunk,self,writer) => chunk.Last( a(chunk,self,writer) );
+				#endif
+								
+
+				}
+				break;
+			case 4:
+				// Language\\ActionEvaluator.g3:823:6: 'length' a= singleFunctionArgFunctional
+				{
+				Match(input,LENGTH,Follow._LENGTH_in_functionFunctional1893); 
+				PushFollow(Follow._singleFunctionArgFunctional_in_functionFunctional1897);
+				a=singleFunctionArgFunctional();
+
+				state._fsp--;
+
+
+				#if COMPILE_EXPRESSIONS
+									func = (chunk,self,writer) => chunk.Length( a(chunk,self,writer) );
+				#endif
+								
+
+				}
+				break;
+			case 5:
+				// Language\\ActionEvaluator.g3:829:6: 'strip' a= singleFunctionArgFunctional
+				{
+				Match(input,STRIP,Follow._STRIP_in_functionFunctional1910); 
+				PushFollow(Follow._singleFunctionArgFunctional_in_functionFunctional1915);
+				a=singleFunctionArgFunctional();
+
+				state._fsp--;
+
+
+				#if COMPILE_EXPRESSIONS
+									func = (chunk,self,writer) => chunk.Strip( a(chunk,self,writer) );
+				#endif
+								
+
+				}
+				break;
+			case 6:
+				// Language\\ActionEvaluator.g3:835:6: 'trunc' a= singleFunctionArgFunctional
+				{
+				Match(input,TRUNC,Follow._TRUNC_in_functionFunctional1928); 
+				PushFollow(Follow._singleFunctionArgFunctional_in_functionFunctional1933);
+				a=singleFunctionArgFunctional();
+
+				state._fsp--;
+
+
+				#if COMPILE_EXPRESSIONS
+									func = (chunk,self,writer) => chunk.Trunc( a(chunk,self,writer) );
+				#endif
+								
+
+				}
+				break;
+
+			}
+
+
+			Match(input, TokenConstants.UP, null); 
+
+			}
+
+		}
+		catch ( RecognitionException re )
+		{
+			ReportError(re);
+			Recover(input,re);
+		}
+		finally
+		{
+		}
+		return func;
+	}
+	// $ANTLR end "functionFunctional"
+
+
+	// $ANTLR start "listCompiled"
+	// Language\\ActionEvaluator.g3:845:0: listCompiled[System.Reflection.Emit.ILGenerator gen] : ^( LIST ( exprCompiled[$gen] | NOTHING )+ ) ;
+	private void listCompiled( System.Reflection.Emit.ILGenerator gen )
+	{
+		try
+		{
+			// Language\\ActionEvaluator.g3:846:4: ( ^( LIST ( exprCompiled[$gen] | NOTHING )+ ) )
+			// Language\\ActionEvaluator.g3:846:4: ^( LIST ( exprCompiled[$gen] | NOTHING )+ )
+			{
+			Match(input,LIST,Follow._LIST_in_listCompiled1962); 
+
+			Match(input, TokenConstants.DOWN, null); 
+			// Language\\ActionEvaluator.g3:847:4: ( exprCompiled[$gen] | NOTHING )+
+			int cnt33=0;
+			for ( ; ; )
+			{
+				int alt33=3;
+				int LA33_0 = input.LA(1);
+
+				if ( ((LA33_0>=ANONYMOUS_TEMPLATE && LA33_0<=APPLY)||LA33_0==DOT||(LA33_0>=FUNCTION && LA33_0<=INT)||LA33_0==LIST||LA33_0==MULTI_APPLY||LA33_0==PLUS||LA33_0==STRING||LA33_0==VALUE) )
+				{
+					alt33=1;
+				}
+				else if ( (LA33_0==NOTHING) )
+				{
+					alt33=2;
+				}
+
+
+				switch ( alt33 )
+				{
+				case 1:
+					// Language\\ActionEvaluator.g3:847:6: exprCompiled[$gen]
+					{
+					PushFollow(Follow._exprCompiled_in_listCompiled1969);
+					exprCompiled(gen);
+
+					state._fsp--;
+
+
+					}
+					break;
+				case 2:
+					// Language\\ActionEvaluator.g3:848:6: NOTHING
+					{
+					Match(input,NOTHING,Follow._NOTHING_in_listCompiled1977); 
+
+					}
+					break;
+
+				default:
+					if ( cnt33 >= 1 )
+						goto loop33;
+
+					EarlyExitException eee33 = new EarlyExitException( 33, input );
+					throw eee33;
+				}
+				cnt33++;
+			}
+			loop33:
+				;
+
+
+
+			Match(input, TokenConstants.UP, null); 
+			throw new System.NotImplementedException();
+
+			}
+
+		}
+		catch ( RecognitionException re )
+		{
+			ReportError(re);
+			Recover(input,re);
+		}
+		finally
+		{
+		}
+		return ;
+	}
+	// $ANTLR end "listCompiled"
+
+
+	// $ANTLR start "listFunctional"
+	// Language\\ActionEvaluator.g3:854:0: listFunctional returns [System.Func<ASTExpr,StringTemplate,IStringTemplateWriter,object> func] : ^( LIST ( exprFunctional | NOTHING )+ ) ;
+	private System.Func<ASTExpr,StringTemplate,IStringTemplateWriter,object> listFunctional(  )
+	{
+
+		System.Func<ASTExpr,StringTemplate,IStringTemplateWriter,object> func = default(System.Func<ASTExpr,StringTemplate,IStringTemplateWriter,object>);
+
+		System.Func<ASTExpr,StringTemplate,IStringTemplateWriter,object> exprFunctional31 = default(System.Func<ASTExpr,StringTemplate,IStringTemplateWriter,object>);
+
+
+			List<System.Func<ASTExpr,StringTemplate,IStringTemplateWriter,object>> elements = new List<System.Func<ASTExpr,StringTemplate,IStringTemplateWriter,object>>();
+
+		try
+		{
+			// Language\\ActionEvaluator.g3:859:4: ( ^( LIST ( exprFunctional | NOTHING )+ ) )
+			// Language\\ActionEvaluator.g3:859:4: ^( LIST ( exprFunctional | NOTHING )+ )
+			{
+			Match(input,LIST,Follow._LIST_in_listFunctional2013); 
+
+			Match(input, TokenConstants.DOWN, null); 
+			// Language\\ActionEvaluator.g3:860:4: ( exprFunctional | NOTHING )+
+			int cnt34=0;
+			for ( ; ; )
+			{
+				int alt34=3;
+				int LA34_0 = input.LA(1);
+
+				if ( ((LA34_0>=ANONYMOUS_TEMPLATE && LA34_0<=APPLY)||LA34_0==DOT||(LA34_0>=FUNCTION && LA34_0<=INT)||LA34_0==LIST||LA34_0==MULTI_APPLY||LA34_0==PLUS||LA34_0==STRING||LA34_0==VALUE) )
+				{
+					alt34=1;
+				}
+				else if ( (LA34_0==NOTHING) )
+				{
+					alt34=2;
+				}
+
+
+				switch ( alt34 )
+				{
+				case 1:
+					// Language\\ActionEvaluator.g3:860:6: exprFunctional
+					{
+					PushFollow(Follow._exprFunctional_in_listFunctional2020);
+					exprFunctional31=exprFunctional();
+
+					state._fsp--;
+
+
+					#if COMPILE_EXPRESSIONS
+										if ( exprFunctional31 != null )
+											elements.Add(exprFunctional31);
+					#endif
+									
+
+					}
+					break;
+				case 2:
+					// Language\\ActionEvaluator.g3:867:6: NOTHING
+					{
+					Match(input,NOTHING,Follow._NOTHING_in_listFunctional2033); 
+
+					#if COMPILE_EXPRESSIONS
+										elements.Add( (chunk,self,writer) => new ArrayList( new object[] { null } ).iterator() );
+					#endif
+									
+
+					}
+					break;
+
+				default:
+					if ( cnt34 >= 1 )
+						goto loop34;
+
+					EarlyExitException eee34 = new EarlyExitException( 34, input );
+					throw eee34;
+				}
+				cnt34++;
+			}
+			loop34:
+				;
+
+
+
+			Match(input, TokenConstants.UP, null); 
+
+			#if COMPILE_EXPRESSIONS
+						func = (chunk,self,writer) =>
+							new Cat(from f in elements
+									let value = f(chunk,self,writer)
+									where value != null
+									select value
+									);
+			#endif
+					
+
+			}
+
+		}
+		catch ( RecognitionException re )
+		{
+			ReportError(re);
+			Recover(input,re);
+		}
+		finally
+		{
+		}
+		return func;
+	}
+	// $ANTLR end "listFunctional"
+
+
+	// $ANTLR start "singleFunctionArgCompiled"
+	// Language\\ActionEvaluator.g3:887:0: singleFunctionArgCompiled[System.Reflection.Emit.ILGenerator gen] : ^( SINGLEVALUEARG exprCompiled[$gen] ) ;
+	private void singleFunctionArgCompiled( System.Reflection.Emit.ILGenerator gen )
+	{
+		try
+		{
+			// Language\\ActionEvaluator.g3:888:4: ( ^( SINGLEVALUEARG exprCompiled[$gen] ) )
+			// Language\\ActionEvaluator.g3:888:4: ^( SINGLEVALUEARG exprCompiled[$gen] )
+			{
+			Match(input,SINGLEVALUEARG,Follow._SINGLEVALUEARG_in_singleFunctionArgCompiled2067); 
+
+			Match(input, TokenConstants.DOWN, null); 
+			PushFollow(Follow._exprCompiled_in_singleFunctionArgCompiled2069);
+			exprCompiled(gen);
+
+			state._fsp--;
+
+
+			Match(input, TokenConstants.UP, null); 
+
+			}
+
+		}
+		catch ( RecognitionException re )
+		{
+			ReportError(re);
+			Recover(input,re);
+		}
+		finally
+		{
+		}
+		return ;
+	}
+	// $ANTLR end "singleFunctionArgCompiled"
+
+
+	// $ANTLR start "singleFunctionArgFunctional"
+	// Language\\ActionEvaluator.g3:891:0: singleFunctionArgFunctional returns [System.Func<ASTExpr,StringTemplate,IStringTemplateWriter,object> func] : ^( SINGLEVALUEARG exprFunctional ) ;
+	private System.Func<ASTExpr,StringTemplate,IStringTemplateWriter,object> singleFunctionArgFunctional(  )
+	{
+
+		System.Func<ASTExpr,StringTemplate,IStringTemplateWriter,object> func = default(System.Func<ASTExpr,StringTemplate,IStringTemplateWriter,object>);
+
+		System.Func<ASTExpr,StringTemplate,IStringTemplateWriter,object> exprFunctional32 = default(System.Func<ASTExpr,StringTemplate,IStringTemplateWriter,object>);
+
+		try
+		{
+			// Language\\ActionEvaluator.g3:892:4: ( ^( SINGLEVALUEARG exprFunctional ) )
+			// Language\\ActionEvaluator.g3:892:4: ^( SINGLEVALUEARG exprFunctional )
+			{
+			Match(input,SINGLEVALUEARG,Follow._SINGLEVALUEARG_in_singleFunctionArgFunctional2089); 
+
+			Match(input, TokenConstants.DOWN, null); 
+			PushFollow(Follow._exprFunctional_in_singleFunctionArgFunctional2091);
+			exprFunctional32=exprFunctional();
+
+			state._fsp--;
+
+			func = exprFunctional32;
+
+			Match(input, TokenConstants.UP, null); 
+
+			}
+
+		}
+		catch ( RecognitionException re )
+		{
+			ReportError(re);
+			Recover(input,re);
+		}
+		finally
+		{
+		}
+		return func;
+	}
+	// $ANTLR end "singleFunctionArgFunctional"
+
+
+	// $ANTLR start "templateFunctional"
+	// Language\\ActionEvaluator.g3:895:0: templateFunctional[List<System.Func<ASTExpr,StringTemplate,IStringTemplateWriter,StringTemplate>> templateApplicators] : ^( TEMPLATE ( ID args= . |anon= ANONYMOUS_TEMPLATE | ^( VALUE n= expr args2= . ) ) ) ;
+	private void templateFunctional( List<System.Func<ASTExpr,StringTemplate,IStringTemplateWriter,StringTemplate>> templateApplicators )
+	{
+		StringTemplateAST anon=null;
+		StringTemplateAST ID33=null;
+		StringTemplateAST args=null;
+		StringTemplateAST args2=null;
+		object n = default(object);
+
+
+			Map argumentContext = null;
+
+		try
+		{
+			// Language\\ActionEvaluator.g3:900:4: ( ^( TEMPLATE ( ID args= . |anon= ANONYMOUS_TEMPLATE | ^( VALUE n= expr args2= . ) ) ) )
+			// Language\\ActionEvaluator.g3:900:4: ^( TEMPLATE ( ID args= . |anon= ANONYMOUS_TEMPLATE | ^( VALUE n= expr args2= . ) ) )
+			{
+			Match(input,TEMPLATE,Follow._TEMPLATE_in_templateFunctional2114); 
+
+			Match(input, TokenConstants.DOWN, null); 
+			// Language\\ActionEvaluator.g3:901:4: ( ID args= . |anon= ANONYMOUS_TEMPLATE | ^( VALUE n= expr args2= . ) )
+			int alt35=3;
+			switch ( input.LA(1) )
+			{
+			case ID:
+				{
+				alt35=1;
+				}
+				break;
+			case ANONYMOUS_TEMPLATE:
+				{
+				alt35=2;
+				}
+				break;
+			case VALUE:
+				{
+				alt35=3;
+				}
+				break;
+			default:
+				{
+					NoViableAltException nvae = new NoViableAltException("", 35, 0, input);
+
+					throw nvae;
+				}
+			}
+
+			switch ( alt35 )
+			{
+			case 1:
+				// Language\\ActionEvaluator.g3:901:6: ID args= .
+				{
+				ID33=(StringTemplateAST)Match(input,ID,Follow._ID_in_templateFunctional2121); 
+				args=(StringTemplateAST)input.LT(1);
+				MatchAny(input); 
+
+				#if COMPILE_EXPRESSIONS
+									System.Func<ASTExpr,StringTemplate,IStringTemplateWriter,StringTemplate> func =
+										(chunk,self,writer) =>
+										{
+											string templateName = (ID33!=null?ID33.Text:null);
+											StringTemplateGroup group = self.Group;
+											StringTemplate embedded = group.GetEmbeddedInstanceOf(self, templateName);
+											if ( embedded!=null )
+											{
+												embedded.ArgumentsAST = args;
+											}
+											return embedded;
+										};
+									templateApplicators.Add( func );
+				#endif
+								
+
+				}
+				break;
+			case 2:
+				// Language\\ActionEvaluator.g3:920:6: anon= ANONYMOUS_TEMPLATE
+				{
+				anon=(StringTemplateAST)Match(input,ANONYMOUS_TEMPLATE,Follow._ANONYMOUS_TEMPLATE_in_templateFunctional2142); 
+
+				#if COMPILE_EXPRESSIONS
+									System.Func<ASTExpr,StringTemplate,IStringTemplateWriter,StringTemplate> func =
+										(chunk,self,writer) =>
+										{
+											StringTemplate anonymous = anon.StringTemplate;
+											// to properly see overridden templates, always set
+											// anonymous' group to be self's group
+											anonymous.Group = self.Group;
+											return anonymous;
+										};
+									templateApplicators.Add( func );
+				#endif
+								
+
+				}
+				break;
+			case 3:
+				// Language\\ActionEvaluator.g3:936:6: ^( VALUE n= expr args2= . )
+				{
+				Match(input,VALUE,Follow._VALUE_in_templateFunctional2158); 
+
+				Match(input, TokenConstants.DOWN, null); 
+				PushFollow(Follow._expr_in_templateFunctional2162);
+				n=expr();
+
+				state._fsp--;
+
+				args2=(StringTemplateAST)input.LT(1);
+				MatchAny(input); 
+
+				#if COMPILE_EXPRESSIONS
+										System.Func<ASTExpr,StringTemplate,IStringTemplateWriter,StringTemplate> func =
+											(chunk,self,writer) =>
+											{
+												StringTemplate embedded = null;
+												if ( n!=null )
+												{
+													string templateName = n.ToString();
+													StringTemplateGroup group = self.Group;
+													embedded = group.GetEmbeddedInstanceOf(self, templateName);
+													if ( embedded!=null )
+													{
+														embedded.ArgumentsAST = args2;
+													}
+												}
+												return embedded;
+											};
+										templateApplicators.Add( func );
+				#endif
+									
+
+				Match(input, TokenConstants.UP, null); 
+
+				}
+				break;
+
+			}
+
+
+			Match(input, TokenConstants.UP, null); 
+
+			}
+
+		}
+		catch ( RecognitionException re )
+		{
+			ReportError(re);
+			Recover(input,re);
+		}
+		finally
+		{
+		}
+		return ;
+	}
+	// $ANTLR end "templateFunctional"
 	#endregion
 
 	// Delegated rules
@@ -1714,6 +4192,117 @@ public partial class ActionEvaluator : TreeParser
 		public static readonly BitSet _ID_in_argumentAssignment864 = new BitSet(new ulong[]{0x208228F0830UL});
 		public static readonly BitSet _expr_in_argumentAssignment866 = new BitSet(new ulong[]{0x8UL});
 		public static readonly BitSet _DOTDOTDOT_in_argumentAssignment877 = new BitSet(new ulong[]{0x2UL});
+		public static readonly BitSet _exprCompiled_in_actionCompiled893 = new BitSet(new ulong[]{0x2UL});
+		public static readonly BitSet _exprFunctional_in_actionFunctional915 = new BitSet(new ulong[]{0x2UL});
+		public static readonly BitSet _ifAtomCompiled_in_ifConditionCompiled933 = new BitSet(new ulong[]{0x2UL});
+		public static readonly BitSet _NOT_in_ifConditionCompiled940 = new BitSet(new ulong[]{0x4UL});
+		public static readonly BitSet _ifAtomCompiled_in_ifConditionCompiled942 = new BitSet(new ulong[]{0x8UL});
+		public static readonly BitSet _ifAtomFunctional_in_ifConditionFunctional965 = new BitSet(new ulong[]{0x2UL});
+		public static readonly BitSet _NOT_in_ifConditionFunctional975 = new BitSet(new ulong[]{0x4UL});
+		public static readonly BitSet _ifAtomFunctional_in_ifConditionFunctional977 = new BitSet(new ulong[]{0x8UL});
+		public static readonly BitSet _exprCompiled_in_ifAtomCompiled994 = new BitSet(new ulong[]{0x2UL});
+		public static readonly BitSet _exprFunctional_in_ifAtomFunctional1014 = new BitSet(new ulong[]{0x2UL});
+		public static readonly BitSet _PLUS_in_exprCompiled1031 = new BitSet(new ulong[]{0x4UL});
+		public static readonly BitSet _exprCompiled_in_exprCompiled1033 = new BitSet(new ulong[]{0x208228F0830UL});
+		public static readonly BitSet _exprCompiled_in_exprCompiled1036 = new BitSet(new ulong[]{0x8UL});
+		public static readonly BitSet _templateApplicationCompiled_in_exprCompiled1047 = new BitSet(new ulong[]{0x2UL});
+		public static readonly BitSet _attributeCompiled_in_exprCompiled1053 = new BitSet(new ulong[]{0x2UL});
+		public static readonly BitSet _templateIncludeCompiled_in_exprCompiled1059 = new BitSet(new ulong[]{0x2UL});
+		public static readonly BitSet _functionCompiled_in_exprCompiled1065 = new BitSet(new ulong[]{0x2UL});
+		public static readonly BitSet _listCompiled_in_exprCompiled1071 = new BitSet(new ulong[]{0x2UL});
+		public static readonly BitSet _VALUE_in_exprCompiled1078 = new BitSet(new ulong[]{0x4UL});
+		public static readonly BitSet _exprCompiled_in_exprCompiled1080 = new BitSet(new ulong[]{0x8UL});
+		public static readonly BitSet _PLUS_in_exprFunctional1102 = new BitSet(new ulong[]{0x4UL});
+		public static readonly BitSet _exprFunctional_in_exprFunctional1106 = new BitSet(new ulong[]{0x208228F0830UL});
+		public static readonly BitSet _exprFunctional_in_exprFunctional1110 = new BitSet(new ulong[]{0x8UL});
+		public static readonly BitSet _templateApplicationFunctional_in_exprFunctional1120 = new BitSet(new ulong[]{0x2UL});
+		public static readonly BitSet _attributeFunctional_in_exprFunctional1129 = new BitSet(new ulong[]{0x2UL});
+		public static readonly BitSet _templateIncludeFunctional_in_exprFunctional1138 = new BitSet(new ulong[]{0x2UL});
+		public static readonly BitSet _functionFunctional_in_exprFunctional1147 = new BitSet(new ulong[]{0x2UL});
+		public static readonly BitSet _listFunctional_in_exprFunctional1156 = new BitSet(new ulong[]{0x2UL});
+		public static readonly BitSet _VALUE_in_exprFunctional1166 = new BitSet(new ulong[]{0x4UL});
+		public static readonly BitSet _exprFunctional_in_exprFunctional1170 = new BitSet(new ulong[]{0x8UL});
+		public static readonly BitSet _APPLY_in_templateApplicationCompiled1194 = new BitSet(new ulong[]{0x4UL});
+		public static readonly BitSet _expr_in_templateApplicationCompiled1198 = new BitSet(new ulong[]{0x4000000000UL});
+		public static readonly BitSet _template_in_templateApplicationCompiled1204 = new BitSet(new ulong[]{0x4000000008UL});
+		public static readonly BitSet _MULTI_APPLY_in_templateApplicationCompiled1227 = new BitSet(new ulong[]{0x4UL});
+		public static readonly BitSet _exprCompiled_in_templateApplicationCompiled1230 = new BitSet(new ulong[]{0x208228F0930UL});
+		public static readonly BitSet _COLON_in_templateApplicationCompiled1235 = new BitSet(new ulong[]{0x10UL});
+		public static readonly BitSet _ANONYMOUS_TEMPLATE_in_templateApplicationCompiled1240 = new BitSet(new ulong[]{0x8UL});
+		public static readonly BitSet _APPLY_in_templateApplicationFunctional1299 = new BitSet(new ulong[]{0x4UL});
+		public static readonly BitSet _exprFunctional_in_templateApplicationFunctional1303 = new BitSet(new ulong[]{0x4000000000UL});
+		public static readonly BitSet _templateFunctional_in_templateApplicationFunctional1309 = new BitSet(new ulong[]{0x4000000008UL});
+		public static readonly BitSet _MULTI_APPLY_in_templateApplicationFunctional1328 = new BitSet(new ulong[]{0x4UL});
+		public static readonly BitSet _exprFunctional_in_templateApplicationFunctional1337 = new BitSet(new ulong[]{0x208228F0930UL});
+		public static readonly BitSet _COLON_in_templateApplicationFunctional1354 = new BitSet(new ulong[]{0x10UL});
+		public static readonly BitSet _ANONYMOUS_TEMPLATE_in_templateApplicationFunctional1356 = new BitSet(new ulong[]{0x8UL});
+		public static readonly BitSet _DOT_in_attributeCompiled1379 = new BitSet(new ulong[]{0x4UL});
+		public static readonly BitSet _exprCompiled_in_attributeCompiled1381 = new BitSet(new ulong[]{0x20000020000UL});
+		public static readonly BitSet _ID_in_attributeCompiled1391 = new BitSet(new ulong[]{0x8UL});
+		public static readonly BitSet _VALUE_in_attributeCompiled1405 = new BitSet(new ulong[]{0x4UL});
+		public static readonly BitSet _exprCompiled_in_attributeCompiled1407 = new BitSet(new ulong[]{0x8UL});
+		public static readonly BitSet _ID_in_attributeCompiled1431 = new BitSet(new ulong[]{0x2UL});
+		public static readonly BitSet _INT_in_attributeCompiled1441 = new BitSet(new ulong[]{0x2UL});
+		public static readonly BitSet _STRING_in_attributeCompiled1451 = new BitSet(new ulong[]{0x2UL});
+		public static readonly BitSet _ANONYMOUS_TEMPLATE_in_attributeCompiled1461 = new BitSet(new ulong[]{0x2UL});
+		public static readonly BitSet _DOT_in_attributeFunctional1482 = new BitSet(new ulong[]{0x4UL});
+		public static readonly BitSet _exprFunctional_in_attributeFunctional1486 = new BitSet(new ulong[]{0x20000020000UL});
+		public static readonly BitSet _ID_in_attributeFunctional1495 = new BitSet(new ulong[]{0x8UL});
+		public static readonly BitSet _VALUE_in_attributeFunctional1509 = new BitSet(new ulong[]{0x4UL});
+		public static readonly BitSet _exprFunctional_in_attributeFunctional1513 = new BitSet(new ulong[]{0x8UL});
+		public static readonly BitSet _ID_in_attributeFunctional1537 = new BitSet(new ulong[]{0x2UL});
+		public static readonly BitSet _INT_in_attributeFunctional1547 = new BitSet(new ulong[]{0x2UL});
+		public static readonly BitSet _STRING_in_attributeFunctional1557 = new BitSet(new ulong[]{0x2UL});
+		public static readonly BitSet _ANONYMOUS_TEMPLATE_in_attributeFunctional1567 = new BitSet(new ulong[]{0x2UL});
+		public static readonly BitSet _INCLUDE_in_templateIncludeCompiled1585 = new BitSet(new ulong[]{0x4UL});
+		public static readonly BitSet _ID_in_templateIncludeCompiled1592 = new BitSet(new ulong[]{0xFFFFFFFFFF0UL});
+		public static readonly BitSet _VALUE_in_templateIncludeCompiled1611 = new BitSet(new ulong[]{0x4UL});
+		public static readonly BitSet _exprCompiled_in_templateIncludeCompiled1613 = new BitSet(new ulong[]{0xFFFFFFFFFF0UL});
+		public static readonly BitSet _INCLUDE_in_templateIncludeFunctional1650 = new BitSet(new ulong[]{0x4UL});
+		public static readonly BitSet _ID_in_templateIncludeFunctional1657 = new BitSet(new ulong[]{0xFFFFFFFFFF0UL});
+		public static readonly BitSet _VALUE_in_templateIncludeFunctional1670 = new BitSet(new ulong[]{0x4UL});
+		public static readonly BitSet _exprFunctional_in_templateIncludeFunctional1672 = new BitSet(new ulong[]{0xFFFFFFFFFF0UL});
+		public static readonly BitSet _FUNCTION_in_functionCompiled1705 = new BitSet(new ulong[]{0x4UL});
+		public static readonly BitSet _FIRST_in_functionCompiled1712 = new BitSet(new ulong[]{0x400000000UL});
+		public static readonly BitSet _singleFunctionArgCompiled_in_functionCompiled1715 = new BitSet(new ulong[]{0x8UL});
+		public static readonly BitSet _REST_in_functionCompiled1729 = new BitSet(new ulong[]{0x400000000UL});
+		public static readonly BitSet _singleFunctionArgCompiled_in_functionCompiled1732 = new BitSet(new ulong[]{0x8UL});
+		public static readonly BitSet _LAST_in_functionCompiled1746 = new BitSet(new ulong[]{0x400000000UL});
+		public static readonly BitSet _singleFunctionArgCompiled_in_functionCompiled1749 = new BitSet(new ulong[]{0x8UL});
+		public static readonly BitSet _LENGTH_in_functionCompiled1763 = new BitSet(new ulong[]{0x400000000UL});
+		public static readonly BitSet _singleFunctionArgCompiled_in_functionCompiled1765 = new BitSet(new ulong[]{0x8UL});
+		public static readonly BitSet _STRIP_in_functionCompiled1779 = new BitSet(new ulong[]{0x400000000UL});
+		public static readonly BitSet _singleFunctionArgCompiled_in_functionCompiled1782 = new BitSet(new ulong[]{0x8UL});
+		public static readonly BitSet _TRUNC_in_functionCompiled1796 = new BitSet(new ulong[]{0x400000000UL});
+		public static readonly BitSet _singleFunctionArgCompiled_in_functionCompiled1799 = new BitSet(new ulong[]{0x8UL});
+		public static readonly BitSet _FUNCTION_in_functionFunctional1832 = new BitSet(new ulong[]{0x4UL});
+		public static readonly BitSet _FIRST_in_functionFunctional1839 = new BitSet(new ulong[]{0x400000000UL});
+		public static readonly BitSet _singleFunctionArgFunctional_in_functionFunctional1844 = new BitSet(new ulong[]{0x8UL});
+		public static readonly BitSet _REST_in_functionFunctional1857 = new BitSet(new ulong[]{0x400000000UL});
+		public static readonly BitSet _singleFunctionArgFunctional_in_functionFunctional1862 = new BitSet(new ulong[]{0x8UL});
+		public static readonly BitSet _LAST_in_functionFunctional1875 = new BitSet(new ulong[]{0x400000000UL});
+		public static readonly BitSet _singleFunctionArgFunctional_in_functionFunctional1880 = new BitSet(new ulong[]{0x8UL});
+		public static readonly BitSet _LENGTH_in_functionFunctional1893 = new BitSet(new ulong[]{0x400000000UL});
+		public static readonly BitSet _singleFunctionArgFunctional_in_functionFunctional1897 = new BitSet(new ulong[]{0x8UL});
+		public static readonly BitSet _STRIP_in_functionFunctional1910 = new BitSet(new ulong[]{0x400000000UL});
+		public static readonly BitSet _singleFunctionArgFunctional_in_functionFunctional1915 = new BitSet(new ulong[]{0x8UL});
+		public static readonly BitSet _TRUNC_in_functionFunctional1928 = new BitSet(new ulong[]{0x400000000UL});
+		public static readonly BitSet _singleFunctionArgFunctional_in_functionFunctional1933 = new BitSet(new ulong[]{0x8UL});
+		public static readonly BitSet _LIST_in_listCompiled1962 = new BitSet(new ulong[]{0x4UL});
+		public static readonly BitSet _exprCompiled_in_listCompiled1969 = new BitSet(new ulong[]{0x208328F0838UL});
+		public static readonly BitSet _NOTHING_in_listCompiled1977 = new BitSet(new ulong[]{0x208328F0838UL});
+		public static readonly BitSet _LIST_in_listFunctional2013 = new BitSet(new ulong[]{0x4UL});
+		public static readonly BitSet _exprFunctional_in_listFunctional2020 = new BitSet(new ulong[]{0x208328F0838UL});
+		public static readonly BitSet _NOTHING_in_listFunctional2033 = new BitSet(new ulong[]{0x208328F0838UL});
+		public static readonly BitSet _SINGLEVALUEARG_in_singleFunctionArgCompiled2067 = new BitSet(new ulong[]{0x4UL});
+		public static readonly BitSet _exprCompiled_in_singleFunctionArgCompiled2069 = new BitSet(new ulong[]{0x8UL});
+		public static readonly BitSet _SINGLEVALUEARG_in_singleFunctionArgFunctional2089 = new BitSet(new ulong[]{0x4UL});
+		public static readonly BitSet _exprFunctional_in_singleFunctionArgFunctional2091 = new BitSet(new ulong[]{0x8UL});
+		public static readonly BitSet _TEMPLATE_in_templateFunctional2114 = new BitSet(new ulong[]{0x4UL});
+		public static readonly BitSet _ID_in_templateFunctional2121 = new BitSet(new ulong[]{0xFFFFFFFFFF0UL});
+		public static readonly BitSet _ANONYMOUS_TEMPLATE_in_templateFunctional2142 = new BitSet(new ulong[]{0x8UL});
+		public static readonly BitSet _VALUE_in_templateFunctional2158 = new BitSet(new ulong[]{0x4UL});
+		public static readonly BitSet _expr_in_templateFunctional2162 = new BitSet(new ulong[]{0xFFFFFFFFFF0UL});
 
 	}
 	#endregion

@@ -370,3 +370,592 @@ argumentAssignment[StringTemplate embedded, Map argumentContext]
 		}
 	|	DOTDOTDOT {$embedded.SetPassThroughAttributes(true);}
 	;
+
+public
+actionCompiled[System.Reflection.Emit.ILGenerator gen]
+	:	exprCompiled[$gen]
+		{
+#if COMPILE_EXPRESSIONS
+			EmitWriteAttribute($gen);
+#endif
+		}
+	;
+
+public
+actionFunctional returns [System.Func<ASTExpr,StringTemplate,IStringTemplateWriter,int> func]
+	:	exprFunctional
+		{
+#if COMPILE_EXPRESSIONS
+			$func = (chunk,self,writer) => chunk.WriteAttribute(self,$exprFunctional.func(chunk,self,writer),writer);
+#endif
+		}
+	;
+
+public
+ifConditionCompiled[System.Reflection.Emit.ILGenerator gen]
+	:	ifAtomCompiled[$gen]
+	|	^(NOT ifAtomCompiled[$gen])
+		{
+#if COMPILE_EXPRESSIONS
+			EmitNot($gen);
+#endif
+		}
+	;
+
+public
+ifConditionFunctional returns [System.Func<ASTExpr,StringTemplate,IStringTemplateWriter,bool> func]
+	:	ifAtomFunctional
+		{
+#if COMPILE_EXPRESSIONS
+			$func = $ifAtomFunctional.func;
+#endif
+		}
+	|	^(NOT ifAtomFunctional)
+		{
+#if COMPILE_EXPRESSIONS
+			$func = (chunk,self,writer) => !($ifAtomFunctional.func(chunk,self,writer));
+#endif
+		}
+	;
+
+ifAtomCompiled[System.Reflection.Emit.ILGenerator gen]
+	:	exprCompiled[$gen]
+		{
+#if COMPILE_EXPRESSIONS
+			EmitTest($gen);
+#endif
+		}
+	;
+
+ifAtomFunctional returns [System.Func<ASTExpr,StringTemplate,IStringTemplateWriter,bool> func]
+	:	exprFunctional
+		{
+#if COMPILE_EXPRESSIONS
+			$func = (chunk,self,writer) => chunk.TestAttributeTrue($exprFunctional.func(chunk,self,writer));
+#endif
+		}
+	;
+
+exprCompiled[System.Reflection.Emit.ILGenerator gen]
+	:	^(PLUS exprCompiled[$gen] exprCompiled[$gen])
+		{
+#if COMPILE_EXPRESSIONS
+			EmitAdd($gen);
+#endif
+		}
+	|	templateApplicationCompiled[$gen]
+	|	attributeCompiled[$gen]
+	|	templateIncludeCompiled[$gen]
+	|	functionCompiled[$gen]
+	|	listCompiled[$gen]
+	|	^(VALUE exprCompiled[$gen])
+		{
+#if COMPILE_EXPRESSIONS
+			EmitWriteToString($gen);
+#endif
+		}
+	;
+
+exprFunctional returns [System.Func<ASTExpr,StringTemplate,IStringTemplateWriter,object> func]
+	:	^(PLUS a=exprFunctional b=exprFunctional)
+		{
+#if COMPILE_EXPRESSIONS
+			$func = (chunk,self,writer) => chunk.Add($a.func(chunk,self,writer),$b.func(chunk,self,writer));
+#endif
+		}
+	|	templateApplicationFunctional
+		{
+#if COMPILE_EXPRESSIONS
+			$func = $templateApplicationFunctional.func;
+#endif
+		}
+	|	attributeFunctional
+		{
+#if COMPILE_EXPRESSIONS
+			$func = $attributeFunctional.func;
+#endif
+		}
+	|	templateIncludeFunctional
+		{
+#if COMPILE_EXPRESSIONS
+			$func = $templateIncludeFunctional.func;
+#endif
+		}
+	|	functionFunctional
+		{
+#if COMPILE_EXPRESSIONS
+			$func = $functionFunctional.func;
+#endif
+		}
+	|	listFunctional
+		{
+#if COMPILE_EXPRESSIONS
+			$func = $listFunctional.func;
+#endif
+		}
+	|	^(VALUE a=exprFunctional)
+		{
+#if COMPILE_EXPRESSIONS
+			$func = (chunk,self,writer) =>
+				{
+					var value = $a.func(chunk,self,writer);
+					StringWriter buf = new StringWriter();
+					IStringTemplateWriter sw = self.Group.GetStringTemplateWriter( buf );
+					int n = chunk.WriteAttribute( self, value, sw );
+					if ( n > 0 )
+						return buf.ToString();
+					return value;
+				};
+#endif
+		}
+	;
+
+templateApplicationCompiled[System.Reflection.Emit.ILGenerator gen]
+@init
+{
+	var templatesToApply = new System.Collections.Generic.List<StringTemplate>();
+}
+	:	^(	APPLY a=expr
+			(template[templatesToApply])+
+			//{$value = chunk.ApplyListOfAlternatingTemplates(self,$a.value,templatesToApply);}
+			{
+#if COMPILE_EXPRESSIONS
+				throw new System.NotImplementedException();
+#endif
+			}
+		)
+	|	^(	MULTI_APPLY (exprCompiled[$gen])+ COLON
+			ANONYMOUS_TEMPLATE
+			{
+#if COMPILE_EXPRESSIONS
+				throw new System.NotImplementedException();
+#endif
+			}
+			//{
+			//	StringTemplate anonymous = $anon.StringTemplate;
+			//	templatesToApply.Add(anonymous);
+			//	$value = chunk.ApplyTemplateToListOfAttributes(self,
+			//												  attributes,
+			//												  $anon.StringTemplate);
+			//}
+		)
+	;
+
+templateApplicationFunctional returns [System.Func<ASTExpr,StringTemplate,IStringTemplateWriter,object> func]
+@init
+{
+	var  templateApplicators = new List<System.Func<ASTExpr,StringTemplate,IStringTemplateWriter,StringTemplate>>();
+#if COMPILE_EXPRESSIONS
+	List<System.Func<ASTExpr,StringTemplate,IStringTemplateWriter,object>> attributes = new List<System.Func<ASTExpr,StringTemplate,IStringTemplateWriter,object>>();
+#endif
+}
+	:	^(	APPLY a=exprFunctional
+			(templateFunctional[templateApplicators])+
+			{
+#if COMPILE_EXPRESSIONS
+				$func = (chunk,self,writer) =>
+					{
+						var templatesToApply =	( from applicator in templateApplicators
+												  let st = applicator(chunk,self,writer)
+												  where st != null
+												  select st )
+												.ToList();
+						return chunk.ApplyListOfAlternatingTemplates( self, $a.func(chunk,self,writer), templatesToApply );
+					};
+#endif
+			}
+		)
+	|	^(	MULTI_APPLY
+			(	a=exprFunctional
+				{
+#if COMPILE_EXPRESSIONS
+					attributes.Add($a.func);
+#endif
+				}
+			)+
+			COLON ANONYMOUS_TEMPLATE
+			{
+#if COMPILE_EXPRESSIONS
+				StringTemplate anonymous = $ANONYMOUS_TEMPLATE.StringTemplate;
+				$func = (chunk,self,writer) =>
+					{
+						var attr =	from f in attributes
+									select f(chunk,self,writer);
+						return chunk.ApplyTemplateToListOfAttributes( self, attr.ToList(), anonymous );
+					};
+#endif
+			}
+		)
+	;
+
+attributeCompiled[System.Reflection.Emit.ILGenerator gen]
+	:	^(	DOT exprCompiled[$gen]
+			(	id=ID
+				{
+#if COMPILE_EXPRESSIONS
+					EmitLoadString($gen,$id.text);
+#endif
+				}
+			|	^(VALUE exprCompiled[$gen])
+			)
+			{
+#if COMPILE_EXPRESSIONS
+				EmitObjectProperty($gen);
+#endif
+			}
+		)
+
+	|	id=ID
+		{
+#if COMPILE_EXPRESSIONS
+			EmitAttribute($gen,$id.text);
+#endif
+		}
+
+	|	INT
+		{
+#if COMPILE_EXPRESSIONS
+			EmitLoadIntAsObject($gen,int.Parse($INT.text));
+#endif
+		}
+
+	|	STRING
+		{
+#if COMPILE_EXPRESSIONS
+			EmitLoadString($gen,$STRING.text);
+#endif
+		}
+
+	|	ANONYMOUS_TEMPLATE
+		{
+#if COMPILE_EXPRESSIONS
+			EmitAnonymousTemplate($gen,$ANONYMOUS_TEMPLATE.text);
+#endif
+		}
+	;
+
+attributeFunctional returns [System.Func<ASTExpr,StringTemplate,IStringTemplateWriter,object> func]
+	:	^(	DOT a=exprFunctional
+			(	id=ID
+				{
+#if COMPILE_EXPRESSIONS
+					string text = $id.text;
+					$func = (chunk,self,writer) => chunk.GetObjectProperty( self, $a.func(chunk,self,writer), text );
+#endif
+				}
+			|	^(VALUE b=exprFunctional)
+				{
+#if COMPILE_EXPRESSIONS
+					$func = (chunk,self,writer) => chunk.GetObjectProperty( self, $a.func(chunk,self,writer), $b.func(chunk,self,writer) );
+#endif
+				}
+			)
+		)
+
+	|	id=ID
+		{
+#if COMPILE_EXPRESSIONS
+			string text = $id.text;
+			$func = (chunk,self,writer) => self.GetAttribute( text );
+#endif
+		}
+
+	|	INT
+		{
+#if COMPILE_EXPRESSIONS
+			int i = int.Parse($INT.text);
+			$func = (chunk,self,writer) => i;
+#endif
+		}
+
+	|	STRING
+		{
+#if COMPILE_EXPRESSIONS
+			string text = $STRING.text;
+			$func = (chunk,self,writer) => text;
+#endif
+		}
+
+	|	ANONYMOUS_TEMPLATE
+		{
+#if COMPILE_EXPRESSIONS
+			string text = $ANONYMOUS_TEMPLATE.text;
+			if ( text != null )
+			{
+				$func = (chunk,self,writer) =>
+					new StringTemplate( self.Group, text )
+					{
+						EnclosingInstance = self,
+						Name = "<anonymous template argument>"
+					};
+			}
+			else
+			{
+				$func = (chunk,self,writer) => null;
+			}
+#endif
+		}
+	;
+
+templateIncludeCompiled[System.Reflection.Emit.ILGenerator gen]
+	:	^(	INCLUDE
+			(	ID args=.
+				{
+#if COMPILE_EXPRESSIONS
+					EmitLoadString( $gen, $ID.text );
+#endif
+				}
+			|	^( VALUE exprCompiled[$gen] args=. )
+			)
+		)
+		{
+#if COMPILE_EXPRESSIONS
+			EmitTemplateInclude( $gen, $args );
+#endif
+		}
+	;
+
+templateIncludeFunctional returns [System.Func<ASTExpr,StringTemplate,IStringTemplateWriter,object> func]
+	:	^(	INCLUDE
+			(	ID args=.
+			|	^( VALUE exprFunctional args=. )
+			)
+		)
+		{
+#if COMPILE_EXPRESSIONS
+			if ( $ID != null )
+			{
+				string name = $ID.text;
+				if ( name != null )
+				{
+					$func = (chunk,self,writer) =>
+						{
+							return chunk.GetTemplateInclude( self, name, $args );
+						};
+				}
+				else
+				{
+					$func = (chunk,self,writer) => null;
+				}
+			}
+			else
+			{
+				$func = (chunk,self,writer) =>
+					{
+						var value = $exprFunctional.func(chunk,self,writer);
+						if ( value == null )
+							return null;
+							
+						string name = value.ToString();
+						if ( name != null )
+						{
+							return chunk.GetTemplateInclude( self, name, $args );
+						}
+						return null;
+					};
+			}
+#endif
+		}
+	;
+
+functionCompiled[System.Reflection.Emit.ILGenerator gen]
+	:	^(	FUNCTION
+			(	'first'		singleFunctionArgCompiled[$gen]
+				{
+#if COMPILE_EXPRESSIONS
+					EmitFunctionFirst($gen);
+#endif
+				}
+			|	'rest'		singleFunctionArgCompiled[$gen]
+				{
+#if COMPILE_EXPRESSIONS
+					EmitFunctionRest($gen);
+#endif
+				}
+			|	'last'		singleFunctionArgCompiled[$gen]
+				{
+#if COMPILE_EXPRESSIONS
+					EmitFunctionLast($gen);
+#endif
+				}
+			|	'length'	singleFunctionArgCompiled[$gen]
+				{
+#if COMPILE_EXPRESSIONS
+					EmitFunctionLength($gen);
+#endif
+				}
+			|	'strip'		singleFunctionArgCompiled[$gen]
+				{
+#if COMPILE_EXPRESSIONS
+					EmitFunctionStrip($gen);
+#endif
+				}
+			|	'trunc'		singleFunctionArgCompiled[$gen]
+				{
+#if COMPILE_EXPRESSIONS
+					EmitFunctionTrunc($gen);
+#endif
+				}
+			)
+		)
+	;
+
+functionFunctional returns [System.Func<ASTExpr,StringTemplate,IStringTemplateWriter,object> func]
+	:	^(	FUNCTION
+			(	'first'		a=singleFunctionArgFunctional
+				{
+#if COMPILE_EXPRESSIONS
+					$func = (chunk,self,writer) => chunk.First( $a.func(chunk,self,writer) );
+#endif
+				}
+			|	'rest'		a=singleFunctionArgFunctional
+				{
+#if COMPILE_EXPRESSIONS
+					$func = (chunk,self,writer) => chunk.Rest( $a.func(chunk,self,writer) );
+#endif
+				}
+			|	'last'		a=singleFunctionArgFunctional
+				{
+#if COMPILE_EXPRESSIONS
+					$func = (chunk,self,writer) => chunk.Last( $a.func(chunk,self,writer) );
+#endif
+				}
+			|	'length'	a=singleFunctionArgFunctional
+				{
+#if COMPILE_EXPRESSIONS
+					$func = (chunk,self,writer) => chunk.Length( $a.func(chunk,self,writer) );
+#endif
+				}
+			|	'strip'		a=singleFunctionArgFunctional
+				{
+#if COMPILE_EXPRESSIONS
+					$func = (chunk,self,writer) => chunk.Strip( $a.func(chunk,self,writer) );
+#endif
+				}
+			|	'trunc'		a=singleFunctionArgFunctional
+				{
+#if COMPILE_EXPRESSIONS
+					$func = (chunk,self,writer) => chunk.Trunc( $a.func(chunk,self,writer) );
+#endif
+				}
+			)
+		)
+	;
+
+listCompiled[System.Reflection.Emit.ILGenerator gen]
+	:	^(	LIST
+			(	exprCompiled[$gen]
+			|	NOTHING
+			)+
+		)
+		{throw new System.NotImplementedException();}
+	;
+
+listFunctional returns [System.Func<ASTExpr,StringTemplate,IStringTemplateWriter,object> func]
+@init
+{
+	List<System.Func<ASTExpr,StringTemplate,IStringTemplateWriter,object>> elements = new List<System.Func<ASTExpr,StringTemplate,IStringTemplateWriter,object>>();
+}
+	:	^(	LIST
+			(	exprFunctional
+				{
+#if COMPILE_EXPRESSIONS
+					if ( $exprFunctional.func != null )
+						elements.Add($exprFunctional.func);
+#endif
+				}
+			|	NOTHING
+				{
+#if COMPILE_EXPRESSIONS
+					elements.Add( (chunk,self,writer) => new ArrayList( new object[] { null } ).iterator() );
+#endif
+				}
+			)+
+		)
+		{
+#if COMPILE_EXPRESSIONS
+			$func = (chunk,self,writer) =>
+				new Cat(from f in elements
+						let value = f(chunk,self,writer)
+						where value != null
+						select value
+						);
+#endif
+		}
+	;
+
+singleFunctionArgCompiled[System.Reflection.Emit.ILGenerator gen]
+	:	^( SINGLEVALUEARG exprCompiled[$gen] )
+	;
+
+singleFunctionArgFunctional returns [System.Func<ASTExpr,StringTemplate,IStringTemplateWriter,object> func]
+	:	^( SINGLEVALUEARG exprFunctional {$func = $exprFunctional.func;} )
+	;
+
+templateFunctional[List<System.Func<ASTExpr,StringTemplate,IStringTemplateWriter,StringTemplate>> templateApplicators]
+@init
+{
+	Map argumentContext = null;
+}
+	:	^(	TEMPLATE
+			(	ID args=. // don't eval argList now; must re-eval each iteration
+				{
+#if COMPILE_EXPRESSIONS
+					System.Func<ASTExpr,StringTemplate,IStringTemplateWriter,StringTemplate> func =
+						(chunk,self,writer) =>
+						{
+							string templateName = $ID.text;
+							StringTemplateGroup group = self.Group;
+							StringTemplate embedded = group.GetEmbeddedInstanceOf(self, templateName);
+							if ( embedded!=null )
+							{
+								embedded.ArgumentsAST = $args;
+							}
+							return embedded;
+						};
+					$templateApplicators.Add( func );
+#endif
+				}
+
+			|	anon=ANONYMOUS_TEMPLATE
+				{
+#if COMPILE_EXPRESSIONS
+					System.Func<ASTExpr,StringTemplate,IStringTemplateWriter,StringTemplate> func =
+						(chunk,self,writer) =>
+						{
+							StringTemplate anonymous = $anon.StringTemplate;
+							// to properly see overridden templates, always set
+							// anonymous' group to be self's group
+							anonymous.Group = self.Group;
+							return anonymous;
+						};
+					$templateApplicators.Add( func );
+#endif
+				}
+
+			|	^(	VALUE n=expr args2=.
+					{
+#if COMPILE_EXPRESSIONS
+						System.Func<ASTExpr,StringTemplate,IStringTemplateWriter,StringTemplate> func =
+							(chunk,self,writer) =>
+							{
+								StringTemplate embedded = null;
+								if ( $n.value!=null )
+								{
+									string templateName = $n.value.ToString();
+									StringTemplateGroup group = self.Group;
+									embedded = group.GetEmbeddedInstanceOf(self, templateName);
+									if ( embedded!=null )
+									{
+										embedded.ArgumentsAST = $args2;
+									}
+								}
+								return embedded;
+							};
+						$templateApplicators.Add( func );
+#endif
+					}
+				)
+			)
+		)
+	;

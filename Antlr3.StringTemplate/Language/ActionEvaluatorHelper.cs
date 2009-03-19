@@ -35,6 +35,13 @@ namespace Antlr3.ST.Language
     using Antlr.Runtime;
     using Antlr.Runtime.Tree;
 
+#if COMPILE_EXPRESSIONS
+    using ILGenerator = System.Reflection.Emit.ILGenerator;
+    using MethodInfo = System.Reflection.MethodInfo;
+    using OpCodes = System.Reflection.Emit.OpCodes;
+    using PropertyInfo = System.Reflection.PropertyInfo;
+    using StringWriter = System.IO.StringWriter;
+#endif
 
     partial class ActionEvaluator
     {
@@ -60,6 +67,222 @@ namespace Antlr3.ST.Language
         {
             self.Error( "eval tree parse error", e );
         }
+
+#if COMPILE_EXPRESSIONS
+        static void EmitLoadChunk( ILGenerator gen )
+        {
+            gen.Emit( OpCodes.Ldarg_0 );
+        }
+        static void EmitLoadSelf( ILGenerator gen )
+        {
+            gen.Emit( OpCodes.Ldarg_1 );
+        }
+        static void EmitLoadWriter( ILGenerator gen )
+        {
+            gen.Emit( OpCodes.Ldarg_2 );
+        }
+
+        static void EmitNot( ILGenerator gen )
+        {
+            gen.Emit( OpCodes.Ldc_I4_0 );
+            gen.Emit( OpCodes.Ceq );
+        }
+        static void EmitTest( ILGenerator gen )
+        {
+            var local = gen.DeclareLocal( typeof( object ) );
+            gen.Emit( OpCodes.Stloc, local );
+            EmitLoadChunk( gen );
+            gen.Emit( OpCodes.Ldloc, local );
+            gen.Emit( OpCodes.Callvirt, typeof( ASTExpr ).GetMethod( "TestAttributeTrue", new System.Type[] { typeof( object ) } ) );
+        }
+        static void EmitAdd( ILGenerator gen )
+        {
+            //System.Func<object, object, object> add = ( a, b ) => chunk.Add( a, b );
+            var local1 = gen.DeclareLocal( typeof( object ) );
+            var local2 = gen.DeclareLocal( typeof( object ) );
+            gen.Emit( OpCodes.Stloc, local2 );
+            gen.Emit( OpCodes.Stloc, local1 );
+            EmitLoadChunk( gen );
+            gen.Emit( OpCodes.Call, typeof( ASTExpr ).GetMethod( "Add", new System.Type[] { typeof( object ), typeof( object ) } ) );
+        }
+        static void EmitWriteToString( ILGenerator gen )
+        {
+            //System.Func<object, StringTemplate, object> write = ( value, self ) =>
+            //{
+            //    StringWriter buf = new StringWriter();
+            //    IStringTemplateWriter sw = self.Group.GetStringTemplateWriter( buf );
+            //    int n = chunk.WriteAttribute( self, value, sw );
+            //    if ( n > 0 )
+            //        return buf.ToString();
+            //    return value;
+            //};
+
+            var value = gen.DeclareLocal( typeof( object ) );
+            var buf = gen.DeclareLocal( typeof( StringWriter ) );
+            var sw = gen.DeclareLocal( typeof( IStringTemplateWriter ) );
+
+            var preserveValue = gen.DefineLabel();
+            var endOfWrite = gen.DefineLabel();
+
+            gen.Emit( OpCodes.Stloc, value );
+
+            gen.Emit( OpCodes.Newobj, typeof( StringWriter ) );
+            gen.Emit( OpCodes.Stloc, buf );
+
+            EmitLoadSelf( gen );
+            gen.Emit( OpCodes.Callvirt, typeof( StringTemplate ).GetProperty( "Group" ).GetGetMethod() );
+            gen.Emit( OpCodes.Ldloc, buf );
+            gen.Emit( OpCodes.Callvirt, typeof( StringTemplateGroup ).GetMethod( "GetStringTemplateWriter", new System.Type[] { typeof( System.IO.TextWriter ) } ) );
+            gen.Emit( OpCodes.Stloc, sw );
+
+            EmitLoadChunk( gen );
+            EmitLoadSelf( gen );
+            gen.Emit( OpCodes.Ldloc, value );
+            gen.Emit( OpCodes.Ldloc, sw );
+            gen.Emit( OpCodes.Callvirt, typeof( ASTExpr ).GetMethod( "WriteAttribute", new System.Type[] { typeof( StringTemplate ), typeof( object ), typeof( IStringTemplateWriter ) } ) );
+            gen.Emit( OpCodes.Ldc_I4_0 );
+            gen.Emit( OpCodes.Ble, preserveValue );
+
+            gen.Emit( OpCodes.Ldloc, buf );
+            gen.Emit( OpCodes.Callvirt, typeof( StringWriter ).GetMethod( "ToString", new System.Type[0] ) );
+            gen.Emit( OpCodes.Br_S, endOfWrite );
+
+            gen.MarkLabel( preserveValue );
+            gen.Emit( OpCodes.Ldloc, value );
+
+            gen.MarkLabel( endOfWrite );
+        }
+        static void EmitObjectProperty( ILGenerator gen )
+        {
+            var local2 = gen.DeclareLocal( typeof( object ) );
+            gen.Emit( OpCodes.Stloc, local2 );
+            var local1 = gen.DeclareLocal( typeof( object ) );
+            gen.Emit( OpCodes.Stloc, local1 );
+
+            EmitLoadChunk( gen );
+            EmitLoadSelf( gen );
+            gen.Emit( OpCodes.Ldloc, local1 );
+            gen.Emit( OpCodes.Ldloc, local2 );
+            gen.Emit( OpCodes.Callvirt, typeof( ASTExpr ).GetMethod( "GetObjectProperty", new System.Type[] { typeof( StringTemplate ), typeof( object ), typeof( object ) } ) );
+        }
+        static void EmitAttribute( ILGenerator gen, string attribute )
+        {
+            //$value=self.GetAttribute($i3.text);
+            EmitLoadSelf( gen );
+            gen.Emit( OpCodes.Ldstr, attribute );
+            gen.Emit( OpCodes.Callvirt, typeof( StringTemplate ).GetMethod( "GetAttribute", new System.Type[] { typeof( string ) } ) );
+        }
+        static void EmitLoadIntAsObject( ILGenerator gen, int value )
+        {
+            gen.Emit( OpCodes.Ldc_I4, value );
+            gen.Emit( OpCodes.Box, typeof( int ) );
+        }
+        static void EmitLoadString( ILGenerator gen, string value )
+        {
+            gen.Emit( OpCodes.Ldstr, value );
+        }
+        static void EmitAnonymousTemplate( ILGenerator gen, string value )
+        {
+            //System.Func<StringTemplate, string, object> loadTemplate = ( self, text ) =>
+            //{
+            //    if ( text != null )
+            //    {
+            //        StringTemplate valueST = new StringTemplate( self.Group, text );
+            //        valueST.EnclosingInstance = self;
+            //        valueST.Name = "<anonymous template argument>";
+            //        return valueST;
+            //    }
+            //    return null;
+            //};
+
+            if ( value != null )
+            {
+                var valueST = gen.DeclareLocal( typeof( StringTemplate ) );
+
+                EmitLoadSelf( gen );
+                gen.Emit( OpCodes.Callvirt, typeof( StringTemplate ).GetProperty( "Group" ).GetGetMethod() );
+                gen.Emit( OpCodes.Ldstr, value );
+                gen.Emit( OpCodes.Newobj, typeof( StringTemplate ).GetConstructor( new System.Type[] { typeof( StringTemplateGroup ), typeof( string ) } ) );
+                // copies for store, set EnclosingInstance, set Name, and one left on the evaluation stack
+                gen.Emit( OpCodes.Dup );
+                gen.Emit( OpCodes.Dup );
+                gen.Emit( OpCodes.Dup );
+                gen.Emit( OpCodes.Stloc, valueST );
+                EmitLoadSelf( gen );
+                gen.Emit( OpCodes.Callvirt, typeof( StringTemplate ).GetProperty( "EnclosingInstance" ).GetSetMethod() );
+                gen.Emit( OpCodes.Ldstr, "<anonymous template argument>" );
+                gen.Emit( OpCodes.Callvirt, typeof( StringTemplate ).GetProperty( "Name" ).GetSetMethod() );
+            }
+            else
+            {
+                gen.Emit( OpCodes.Ldnull );
+            }
+        }
+        static void EmitTemplateInclude( ILGenerator gen, StringTemplateAST args )
+        {
+            var name = gen.DeclareLocal( typeof( string ) );
+
+            var ldnull = gen.DefineLabel();
+            var endinclude = gen.DefineLabel();
+
+            gen.Emit( OpCodes.Dup );
+            gen.Emit( OpCodes.Brfalse_S, endinclude ); // the dup of a null object already loaded null back on the stack
+            gen.Emit( OpCodes.Callvirt, typeof( object ).GetMethod( "ToString" ) );
+            // at this point, the name is the top item on the evaluation stack
+            gen.Emit( OpCodes.Dup );
+            gen.Emit( OpCodes.Brfalse_S, endinclude );
+            gen.Emit( OpCodes.Stloc, name );
+
+            // $value = chunk.GetTemplateInclude(self, name, args);
+            EmitLoadChunk( gen );
+            EmitLoadSelf( gen );
+            gen.Emit( OpCodes.Ldloc, name );
+
+            // TODO: handle args
+            throw new System.NotImplementedException();
+
+            gen.Emit( OpCodes.Callvirt, typeof( ASTExpr ).GetMethod( "GetTemplateInclude", new System.Type[] { typeof( StringTemplate ), typeof( string ), typeof( StringTemplateAST ) } ) );
+
+            gen.MarkLabel( endinclude );
+        }
+        static void EmitWriteAttribute( ILGenerator gen )
+        {
+            // $numCharsWritten = chunk.WriteAttribute(self,$expr.value,writer);
+
+            var value = gen.DeclareLocal( typeof( object ) );
+            gen.Emit( OpCodes.Stloc, value );
+
+            EmitLoadChunk( gen );
+            EmitLoadSelf( gen );
+            gen.Emit( OpCodes.Ldloc, value );
+            EmitLoadWriter( gen );
+            gen.Emit( OpCodes.Callvirt, typeof( ASTExpr ).GetMethod( "WriteAttribute", new System.Type[] { typeof( StringTemplate ), typeof( object ), typeof( IStringTemplateWriter ) } ) );
+        }
+        static void EmitFunctionFirst( ILGenerator gen )
+        {
+            throw new System.NotImplementedException();
+        }
+        static void EmitFunctionRest( ILGenerator gen )
+        {
+            throw new System.NotImplementedException();
+        }
+        static void EmitFunctionLast( ILGenerator gen )
+        {
+            throw new System.NotImplementedException();
+        }
+        static void EmitFunctionLength( ILGenerator gen )
+        {
+            throw new System.NotImplementedException();
+        }
+        static void EmitFunctionStrip( ILGenerator gen )
+        {
+            throw new System.NotImplementedException();
+        }
+        static void EmitFunctionTrunc( ILGenerator gen )
+        {
+            throw new System.NotImplementedException();
+        }
+#endif
     }
 
 }

@@ -50,6 +50,11 @@ namespace Antlr3.ST.Language
     using MethodInfo = System.Reflection.MethodInfo;
     using RecognitionException = Antlr.Runtime.RecognitionException;
     using StringWriter = System.IO.StringWriter;
+#if COMPILE_EXPRESSIONS
+    using DynamicMethod = System.Reflection.Emit.DynamicMethod;
+    using OpCodes = System.Reflection.Emit.OpCodes;
+    using ParameterAttributes = System.Reflection.ParameterAttributes;
+#endif
 
     /** <summary>
      *  A single string template expression enclosed in $...; separator=...$
@@ -131,8 +136,24 @@ namespace Antlr3.ST.Language
         /** <summary>A cached value of option format=expr</summary> */
         string _formatString;
 
-        public ASTExpr( StringTemplate enclosingTemplate, ITree exprTree, IDictionary<string, object> options ) :
-            base( enclosingTemplate )
+#if COMPILE_EXPRESSIONS
+        public class HoldsActionFuncAndChunk
+        {
+            public System.Func<ASTExpr, StringTemplate, IStringTemplateWriter, int> func;
+            public ASTExpr chunk;
+        }
+        public static bool EnableDynamicMethods = true;
+        public static bool UseFunctionalMethods = true;
+        static int _evaluatorNumber = 0;
+#if CACHE_FUNCTORS
+        static Dictionary<ITree, DynamicMethod> _methods = new Dictionary<ITree, DynamicMethod>();
+#endif
+
+        System.Func<StringTemplate, IStringTemplateWriter, int> EvaluateAction;
+#endif
+
+        public ASTExpr( StringTemplate enclosingTemplate, ITree exprTree, IDictionary<string, object> options )
+            : base( enclosingTemplate )
         {
             this._exprTree = exprTree;
             this._options = options;
@@ -148,6 +169,69 @@ namespace Antlr3.ST.Language
             }
         }
         #endregion
+
+#if COMPILE_EXPRESSIONS
+        public static int CallFunctionalActionEvaluator( HoldsActionFuncAndChunk data, StringTemplate self, IStringTemplateWriter writer )
+        {
+            return data.func( data.chunk, self, writer );
+        }
+        static System.Func<StringTemplate, IStringTemplateWriter, int> GetEvaluator( ASTExpr chunk, ITree condition )
+        {
+            if ( EnableDynamicMethods )
+            {
+                try
+                {
+                    if ( UseFunctionalMethods )
+                    {
+                        ActionEvaluator evalFunctional = new ActionEvaluator( null, chunk, null, condition );
+                        var functionalEvaluator = evalFunctional.actionFunctional();
+                        HoldsActionFuncAndChunk holder = new HoldsActionFuncAndChunk()
+                        {
+                            func = functionalEvaluator,
+                            chunk = chunk
+                        };
+                        return (System.Func<StringTemplate, IStringTemplateWriter, int>)System.Delegate.CreateDelegate( typeof( System.Func<StringTemplate, IStringTemplateWriter, int> ), holder, typeof( ASTExpr ).GetMethod( "CallFunctionalActionEvaluator" ) );
+                    }
+                    else
+                    {
+                        DynamicMethod method = null;
+#if CACHE_FUNCTORS
+                        if ( !_methods.TryGetValue( condition, out method ) )
+#endif
+                        {
+                            Type[] parameterTypes = { typeof( ASTExpr ), typeof( StringTemplate ), typeof( IStringTemplateWriter ) };
+                            method = new DynamicMethod( "ActionEvaluator" + _evaluatorNumber, typeof( int ), parameterTypes, typeof( ConditionalExpr ), true );
+                            method.DefineParameter( 1, ParameterAttributes.None, "chunk" );
+                            method.DefineParameter( 2, ParameterAttributes.None, "self" );
+                            method.DefineParameter( 3, ParameterAttributes.None, "writer" );
+                            _evaluatorNumber++;
+
+                            var gen = method.GetILGenerator();
+                            ActionEvaluator evalCompiled = new ActionEvaluator( null, chunk, null, condition );
+                            evalCompiled.actionCompiled( gen );
+                            gen.Emit( OpCodes.Ret );
+#if CACHE_FUNCTORS
+                            _methods[condition] = method;
+#endif
+                        }
+
+                        var dynamicEvaluator = (System.Func<StringTemplate, IStringTemplateWriter, int>)method.CreateDelegate( typeof( System.Func<StringTemplate, IStringTemplateWriter, int> ), chunk );
+                        return dynamicEvaluator;
+                    }
+                }
+                catch
+                {
+                    // fall back to interpreted version
+                }
+            }
+
+            return ( self, writer ) =>
+                {
+                    ActionEvaluator eval = new ActionEvaluator( self, chunk, writer, condition );
+                    return eval.action();
+                };
+        }
+#endif
 
         /** <summary>
          *  To write out the value of an ASTExpr, invoke the evaluator in eval.g
@@ -178,13 +262,22 @@ namespace Antlr3.ST.Language
             @out.PushIndentation( Indentation );
             HandleExprOptions( self );
             //System.out.println("evaluating tree: "+exprTree.toStringList());
+#if COMPILE_EXPRESSIONS
+            if ( EvaluateAction == null )
+                EvaluateAction = GetEvaluator( this, AST );
+#else
             ActionEvaluator eval =
                     new ActionEvaluator( self, this, @out, _exprTree );
+#endif
             int n = 0;
             try
             {
+                // eval and write out tree
+#if COMPILE_EXPRESSIONS
+                n = EvaluateAction( self, @out );
+#else
                 n = eval.action();
-                //n = eval.action( exprTree ); // eval and write out tree
+#endif
             }
             catch ( RecognitionException re )
             {
@@ -451,7 +544,7 @@ namespace Antlr3.ST.Language
                     // "it" as a convenience like they said
                     // $list:template(arg=it)$
                     var argNames = formalArgs.Select( fa => fa.name );
-                    soleArgName = (string)argNames.ToArray()[0];
+                    soleArgName = argNames.ToArray()[0];
                     argumentContext[soleArgName] = ithValue;
                 }
             }
@@ -956,6 +1049,10 @@ namespace Antlr3.ST.Language
             return n;
         }
 
+#if COMPILE_EXPRESSIONS && CACHE_FUNCTORS
+        Dictionary<object, System.Func<StringTemplate, IStringTemplateWriter, int>> _evaluators = new Dictionary<object,Func<StringTemplate,IStringTemplateWriter,int>>();
+#endif
+
         /** <summary>
          *  A expr is normally just a string literal, but is still an AST that
          *  we must evaluate.  The expr can be any expression such as a template
@@ -973,17 +1070,35 @@ namespace Antlr3.ST.Language
             }
             if ( expr is StringTemplateAST )
             {
+#if COMPILE_EXPRESSIONS
+                System.Func<StringTemplate, IStringTemplateWriter, int> value;
+#if CACHE_FUNCTORS
+                if ( !_evaluators.TryGetValue( expr, out value ) )
+#endif
+                {
+                    StringTemplateAST exprAST = (StringTemplateAST)expr;
+                    value = GetEvaluator( this, exprAST );
+#if CACHE_FUNCTORS
+                    _evaluators[expr] = value;
+#endif
+                }
+#else
                 StringTemplateAST exprAST = (StringTemplateAST)expr;
+#endif
                 // must evaluate, writing to a string so we can hang on to it
                 StringWriter buf = new StringWriter();
                 IStringTemplateWriter sw =
                     self.Group.GetStringTemplateWriter( buf );
                 {
-                    ActionEvaluator eval =
-                            new ActionEvaluator( self, this, sw, exprAST );
                     try
                     {
-                        eval.action(); // eval tree
+#if COMPILE_EXPRESSIONS
+                        value( self, sw );
+#else
+                        ActionEvaluator eval = new ActionEvaluator( self, this, sw, exprAST );
+                        // eval tree
+                        eval.action();
+#endif
                     }
                     catch ( RecognitionException re )
                     {

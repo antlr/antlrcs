@@ -987,12 +987,13 @@ namespace Antlr3.ST
             int n = 0;
             SetPredefinedAttributes();
             SetDefaultArgumentValues();
-            for ( int i = 0; _chunks != null && i < _chunks.Count; i++ )
+            int chunkCount = _chunks != null ? _chunks.Count : 0;
+            for ( int i = 0; _chunks != null && i < chunkCount; i++ )
             {
-                Expr a = (Expr)_chunks[i];
+                Expr a = _chunks[i];
                 int chunkN = a.Write( this, writer );
                 // expr-on-first-line-with-no-output NEWLINE => NEWLINE
-                if ( chunkN == 0 && i == 0 && ( i + 1 ) < _chunks.Count &&
+                if ( chunkN == 0 && i == 0 && ( i + 1 ) < chunkCount &&
                      _chunks[i + 1] is NewlineRef )
                 {
                     //System.out.println("found pure first-line-blank \\n pattern");
@@ -1004,7 +1005,7 @@ namespace Antlr3.ST
                 // so the indent does not come out as a StringRef
                 if ( chunkN == 0 &&
                     ( i - 1 ) >= 0 && _chunks[i - 1] is NewlineRef &&
-                    ( i + 1 ) < _chunks.Count && _chunks[i + 1] is NewlineRef )
+                    ( i + 1 ) < chunkCount && _chunks[i + 1] is NewlineRef )
                 {
                     //System.out.println("found pure \\n blank \\n pattern");
                     i++; // make it skip over the next chunk, the NEWLINE
@@ -1015,7 +1016,7 @@ namespace Antlr3.ST
             {
                 _group.EmitTemplateStopDebugString( this, writer );
             }
-            if ( _lintMode )
+            if ( LintMode )
             {
                 CheckForTrouble();
             }
@@ -1061,7 +1062,7 @@ namespace Antlr3.ST
                 return null;
             }
 
-            if ( _lintMode )
+            if ( LintMode )
             {
                 self.TrackAttributeReference( attribute );
             }
@@ -1070,7 +1071,7 @@ namespace Antlr3.ST
             object o = null;
             if ( self.attributes != null )
             {
-                o = self.attributes.get( attribute );
+                self.attributes.TryGetValue( attribute, out o );
             }
 
             // nope, check argument context in case embedded
@@ -1079,7 +1080,7 @@ namespace Antlr3.ST
                 IDictionary<string, object> argContext = self.ArgumentContext;
                 if ( argContext != null )
                 {
-                    o = argContext.get( attribute );
+                    argContext.TryGetValue( attribute, out o );
                 }
             }
 
@@ -1097,10 +1098,7 @@ namespace Antlr3.ST
             // not locally defined, check enclosingInstance if embedded
             if ( o == null && self._enclosingInstance != null )
             {
-                /*
-                System.out.println("looking for "+getName()+"."+attribute+" in super="+
-                        enclosingInstance.getName());
-                */
+                //System.Console.Out.WriteLine( "looking for " + Name + "." + attribute + " in super=" + _enclosingInstance.Name );
                 object valueFromEnclosing = Get( self._enclosingInstance, attribute );
                 if ( valueFromEnclosing == null )
                 {
@@ -1227,7 +1225,7 @@ namespace Antlr3.ST
             }
             if ( _formalArguments != FormalArgument.UNKNOWN )
             {
-                foreach ( FormalArgument arg in _formalArguments )
+                foreach ( var arg in _formalArguments )
                 {
                     string argName = arg.name;
                     // use the default value then
@@ -1264,7 +1262,13 @@ namespace Antlr3.ST
 
         public virtual FormalArgument GetFormalArgument( string name )
         {
-            return _formalArguments.FirstOrDefault( fa => fa.name == name );
+            foreach ( var arg in FormalArguments )
+            {
+                if ( arg.name == name )
+                    return arg;
+            }
+
+            return null;
         }
 
         public virtual void DefineEmptyFormalArgumentList()
