@@ -40,6 +40,7 @@ namespace Antlr3.ST.Language
     using FieldInfo = System.Reflection.FieldInfo;
     using ICollection = System.Collections.ICollection;
     using IDictionary = System.Collections.IDictionary;
+    using IEnumerable = System.Collections.IEnumerable;
     using IList = System.Collections.IList;
     using InvalidOperationException = System.InvalidOperationException;
     using IOException = System.IO.IOException;
@@ -842,6 +843,10 @@ namespace Antlr3.ST.Language
             if ( a is IDictionary )
             {
                 return ( (IDictionary)a ).Count > 0;
+            }
+            if ( a is IEnumerable && !( a is string ) )
+            {
+                return ( (IEnumerable)a ).GetEnumerator().MoveNext();
             }
             if ( a is Iterator )
             {
