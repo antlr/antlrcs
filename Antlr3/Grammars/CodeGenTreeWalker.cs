@@ -1,4 +1,4 @@
-// $ANTLR 3.1.2 Grammars\\CodeGenTreeWalker.g3 2009-03-18 18:16:14
+// $ANTLR 3.1.2 Grammars\\CodeGenTreeWalker.g3 2009-03-20 14:32:43
 
 // The variable 'variable' is assigned but its value is never used.
 #pragma warning disable 219
@@ -5773,9 +5773,7 @@ public partial class CodeGenTreeWalker : TreeParser
 		}
 	}
 	// $ANTLR end synpred2_CodeGenTreeWalker
-	#endregion
-
-	// Delegated rules
+	#endregion Rules
 
 	#region Synpreds
 	public bool synpred1_CodeGenTreeWalker()
@@ -5815,7 +5813,7 @@ public partial class CodeGenTreeWalker : TreeParser
 		return success;
 	}
 
-	#endregion
+	#endregion Synpreds
 
 	#region DFA
 	DFA45 dfa45;
@@ -5989,9 +5987,9 @@ public partial class CodeGenTreeWalker : TreeParser
 		throw nvae;
 	}
 
-	#endregion
+	#endregion DFA
 
-	#region Follow Sets
+	#region Follow sets
 	public static class Follow
 	{
 		public static readonly BitSet _LEXER_GRAMMAR_in_grammar_66 = new BitSet(new ulong[]{0x4UL});
@@ -6167,7 +6165,7 @@ public partial class CodeGenTreeWalker : TreeParser
 		public static readonly BitSet _element_action_in_synpred2_CodeGenTreeWalker1385 = new BitSet(new ulong[]{0x2UL});
 
 	}
-	#endregion
+	#endregion Follow sets
 }
 
 } // namespace Antlr3.Grammars

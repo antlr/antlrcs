@@ -1,4 +1,4 @@
-// $ANTLR 3.1.2 Grammars\\ANTLRTreePrinter.g3 2009-03-07 09:00:04
+// $ANTLR 3.1.2 Grammars\\ANTLRTreePrinter.g3 2009-03-20 14:32:48
 
 // The variable 'variable' is assigned but its value is never used.
 #pragma warning disable 219
@@ -3730,23 +3730,9 @@ public partial class ANTLRTreePrinter : TreeParser
 		return ;
 	}
 	// $ANTLR end "ast_suffix"
-	#endregion
+	#endregion Rules
 
-	// Delegated rules
-
-	#region Synpreds
-	#endregion
-
-	#region DFA
-
-	protected override void InitDFAs()
-	{
-		base.InitDFAs();
-	}
-
-	#endregion
-
-	#region Follow Sets
+	#region Follow sets
 	public static class Follow
 	{
 		public static readonly BitSet _grammar__in_toString72 = new BitSet(new ulong[]{0x2UL});
@@ -3920,7 +3906,7 @@ public partial class ANTLRTreePrinter : TreeParser
 		public static readonly BitSet _BANG_in_ast_suffix1657 = new BitSet(new ulong[]{0x2UL});
 
 	}
-	#endregion
+	#endregion Follow sets
 }
 
 } // namespace Antlr3.Grammars

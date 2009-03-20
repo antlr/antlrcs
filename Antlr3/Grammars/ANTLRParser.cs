@@ -1,4 +1,4 @@
-// $ANTLR 3.1.2 Grammars\\ANTLR.g3 2009-03-20 13:30:48
+// $ANTLR 3.1.2 Grammars\\ANTLR.g3 2009-03-20 14:32:46
 
 // The variable 'variable' is assigned but its value is never used.
 #pragma warning disable 219
@@ -10364,9 +10364,7 @@ public partial class ANTLRParser : Parser
 		}
 	}
 	// $ANTLR end synpred1_ANTLR
-	#endregion
-
-	// Delegated rules
+	#endregion Rules
 
 	#region Synpreds
 	public bool synpred1_ANTLR()
@@ -10388,7 +10386,7 @@ public partial class ANTLRParser : Parser
 		return success;
 	}
 
-	#endregion
+	#endregion Synpreds
 
 	#region DFA
 	DFA49 dfa49;
@@ -10911,9 +10909,9 @@ public partial class ANTLRParser : Parser
 		throw nvae;
 	}
 
-	#endregion
+	#endregion DFA
 
-	#region Follow Sets
+	#region Follow sets
 	public static class Follow
 	{
 		public static readonly BitSet _ACTION_in_grammar_308 = new BitSet(new ulong[]{0x1002040008000000UL,0x10000000UL});
@@ -11198,7 +11196,7 @@ public partial class ANTLRParser : Parser
 		public static readonly BitSet _ruleref_in_synpred1_ANTLR1971 = new BitSet(new ulong[]{0x2UL});
 
 	}
-	#endregion
+	#endregion Follow sets
 }
 
 } // namespace Antlr3.Grammars

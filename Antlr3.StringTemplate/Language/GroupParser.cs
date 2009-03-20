@@ -1,4 +1,4 @@
-// $ANTLR 3.1.2 Language\\Group.g3 2009-03-18 18:21:15
+// $ANTLR 3.1.2 Language\\Group.g3 2009-03-20 14:32:36
 
 // The variable 'variable' is assigned but its value is never used.
 #pragma warning disable 219
@@ -1093,23 +1093,9 @@ public partial class GroupParser : Parser
 		return value;
 	}
 	// $ANTLR end "keyValue"
-	#endregion
+	#endregion Rules
 
-	// Delegated rules
-
-	#region Synpreds
-	#endregion
-
-	#region DFA
-
-	protected override void InitDFAs()
-	{
-		base.InitDFAs();
-	}
-
-	#endregion
-
-	#region Follow Sets
+	#region Follow sets
 	public static class Follow
 	{
 		public static readonly BitSet _KWGROUP_in_group93 = new BitSet(new ulong[]{0x1000UL});
@@ -1169,7 +1155,7 @@ public partial class GroupParser : Parser
 		public static readonly BitSet _ID_in_keyValue544 = new BitSet(new ulong[]{0x2UL});
 
 	}
-	#endregion
+	#endregion Follow sets
 }
 
 } // namespace Antlr3.ST.Language

@@ -264,18 +264,24 @@ public <grammar.recognizerName>( <inputStreamType> input, RecognizerSharedState 
 
 	#region Rules
 	<rules; separator="\n\n">
-	#endregion
+	#endregion Rules
 
+<if(grammar.delegatedRules)>
 <! generate rule/method definitions for imported rules so they
    appear to be defined in this recognizer. !>
-	// Delegated rules
+	#region Delegated rules
 <grammar.delegatedRules:{ruleDescriptor|
 	public <returnType()> <ruleDescriptor.name>(<ruleDescriptor.parameterScope:parameterScope(scope=it)>) <!throws RecognitionException !>\{ <if(ruleDescriptor.hasReturnValue)>return <endif><ruleDescriptor.grammar:delegateName()>.<ruleDescriptor.name>(<ruleDescriptor.parameterScope.attributes:{a|<a.name>}; separator=", ">); \}}; separator="\n">
+	#endregion Delegated rules<\n>
+<endif>
 
+<if(synpreds)>
 	#region Synpreds
 	<synpreds:{p | <synpred(p)>}>
-	#endregion
+	#endregion Synpreds<\n>
+<endif>
 
+<if(cyclicDFAs)>
 	#region DFA
 	<cyclicDFAs:{dfa | DFA<dfa.decisionNumber> dfa<dfa.decisionNumber>;}; separator="\n">
 
@@ -286,15 +292,18 @@ public <grammar.recognizerName>( <inputStreamType> input, RecognizerSharedState 
 	}
 
 	<cyclicDFAs:cyclicDFA()><! dump tables for all DFA !>
-	#endregion
+	#endregion DFA<\n>
+<endif>
 
-	#region Follow Sets
+<if(bitsets)>
+	#region Follow sets
 	public static class Follow
 	{
 		<bitsets:bitset(name={_<it.name>_in_<it.inName><it.tokenIndex>},
 							words64=it.bits)>
 	}
-	#endregion
+	#endregion Follow sets<\n>
+<endif>
 }
 >>
 

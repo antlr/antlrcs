@@ -1,4 +1,4 @@
-// $ANTLR 3.1.2 Grammars\\TreeToNFAConverter.g3 2009-03-17 14:56:01
+// $ANTLR 3.1.2 Grammars\\TreeToNFAConverter.g3 2009-03-20 14:32:52
 
 // The variable 'variable' is assigned but its value is never used.
 #pragma warning disable 219
@@ -4920,12 +4920,7 @@ public partial class TreeToNFAConverter : TreeParser
 		return alts;
 	}
 	// $ANTLR end "testSetElement"
-	#endregion
-
-	// Delegated rules
-
-	#region Synpreds
-	#endregion
+	#endregion Rules
 
 	#region DFA
 	DFA41 dfa41;
@@ -5015,9 +5010,9 @@ public partial class TreeToNFAConverter : TreeParser
 	}
 
 
-	#endregion
+	#endregion DFA
 
-	#region Follow Sets
+	#region Follow sets
 	public static class Follow
 	{
 		public static readonly BitSet _LEXER_GRAMMAR_in_grammar_67 = new BitSet(new ulong[]{0x4UL});
@@ -5207,7 +5202,7 @@ public partial class TreeToNFAConverter : TreeParser
 		public static readonly BitSet _testSetElement_in_testSetElement1967 = new BitSet(new ulong[]{0x8UL});
 
 	}
-	#endregion
+	#endregion Follow sets
 }
 
 } // namespace Antlr3.Grammars

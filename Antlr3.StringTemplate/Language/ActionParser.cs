@@ -1,4 +1,4 @@
-// $ANTLR 3.1.2 Language\\Action.g3 2009-03-20 13:31:28
+// $ANTLR 3.1.2 Language\\Action.g3 2009-03-20 14:32:38
 
 // The variable 'variable' is assigned but its value is never used.
 #pragma warning disable 219
@@ -3602,9 +3602,7 @@ public partial class ActionParser : Parser
 		}
 	}
 	// $ANTLR end synpred1_Action
-	#endregion
-
-	// Delegated rules
+	#endregion Rules
 
 	#region Synpreds
 	public bool synpred1_Action()
@@ -3626,7 +3624,7 @@ public partial class ActionParser : Parser
 		return success;
 	}
 
-	#endregion
+	#endregion Synpreds
 
 	#region DFA
 	DFA15 dfa15;
@@ -3776,9 +3774,9 @@ public partial class ActionParser : Parser
 		throw nvae;
 	}
 
-	#endregion
+	#endregion DFA
 
-	#region Follow Sets
+	#region Follow sets
 	public static class Follow
 	{
 		public static readonly BitSet _templatesExpr_in_action192 = new BitSet(new ulong[]{0x200000000UL});
@@ -3884,7 +3882,7 @@ public partial class ActionParser : Parser
 		public static readonly BitSet _templateInclude_in_synpred1_Action490 = new BitSet(new ulong[]{0x2UL});
 
 	}
-	#endregion
+	#endregion Follow sets
 }
 
 } // namespace  Antlr3.ST.Language 

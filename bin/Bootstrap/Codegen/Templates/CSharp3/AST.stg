@@ -55,7 +55,8 @@ if ( TreeAdaptor == null )
 parserMembers() ::= <<
 // Implement this function in your helper file to use a custom tree adaptor
 partial void InitializeTreeAdaptor();
-ITreeAdaptor adaptor;<\n>
+ITreeAdaptor adaptor;
+
 public ITreeAdaptor TreeAdaptor
 {
 	get

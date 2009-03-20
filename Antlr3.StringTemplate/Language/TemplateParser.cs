@@ -1,4 +1,4 @@
-// $ANTLR 3.1.2 Language\\Template.g3 2009-03-18 18:13:50
+// $ANTLR 3.1.2 Language\\Template.g3 2009-03-20 14:32:33
 
 // The variable 'variable' is assigned but its value is never used.
 #pragma warning disable 219
@@ -467,23 +467,9 @@ public partial class TemplateParser : Parser
 		return ;
 	}
 	// $ANTLR end "action"
-	#endregion
+	#endregion Rules
 
-	// Delegated rules
-
-	#region Synpreds
-	#endregion
-
-	#region DFA
-
-	protected override void InitDFAs()
-	{
-		base.InitDFAs();
-	}
-
-	#endregion
-
-	#region Follow Sets
+	#region Follow sets
 	public static class Follow
 	{
 		public static readonly BitSet _LITERAL_in_template71 = new BitSet(new ulong[]{0x1D2012UL});
@@ -502,7 +488,7 @@ public partial class TemplateParser : Parser
 		public static readonly BitSet _REGION_DEF_in_action228 = new BitSet(new ulong[]{0x2UL});
 
 	}
-	#endregion
+	#endregion Follow sets
 }
 
 } // namespace Antlr3.ST.Language

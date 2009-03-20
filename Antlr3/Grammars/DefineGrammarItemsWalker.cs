@@ -1,4 +1,4 @@
-// $ANTLR 3.1.2 Grammars\\DefineGrammarItemsWalker.g3 2009-03-08 16:36:55
+// $ANTLR 3.1.2 Grammars\\DefineGrammarItemsWalker.g3 2009-03-20 14:32:51
 
 // The variable 'variable' is assigned but its value is never used.
 #pragma warning disable 219
@@ -4428,9 +4428,7 @@ public partial class DefineGrammarItemsWalker : TreeParser
 		}
 	}
 	// $ANTLR end synpred1_DefineGrammarItemsWalker
-	#endregion
-
-	// Delegated rules
+	#endregion Rules
 
 	#region Synpreds
 	public bool synpred1_DefineGrammarItemsWalker()
@@ -4452,7 +4450,7 @@ public partial class DefineGrammarItemsWalker : TreeParser
 		return success;
 	}
 
-	#endregion
+	#endregion Synpreds
 
 	#region DFA
 	DFA36 dfa36;
@@ -4690,9 +4688,9 @@ public partial class DefineGrammarItemsWalker : TreeParser
 		throw nvae;
 	}
 
-	#endregion
+	#endregion DFA
 
-	#region Follow Sets
+	#region Follow sets
 	public static class Follow
 	{
 		public static readonly BitSet _LEXER_GRAMMAR_in_grammar_77 = new BitSet(new ulong[]{0x4UL});
@@ -4887,7 +4885,7 @@ public partial class DefineGrammarItemsWalker : TreeParser
 		public static readonly BitSet _dotLoop_in_synpred1_DefineGrammarItemsWalker1201 = new BitSet(new ulong[]{0x2UL});
 
 	}
-	#endregion
+	#endregion Follow sets
 }
 
 } // namespace Antlr3.Grammars

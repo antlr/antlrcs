@@ -36,7 +36,10 @@
 group ASTDbg;
 
 parserMembers() ::= <<
+// Implement this function in your helper file to use a custom tree adaptor
+partial void InitializeTreeAdaptor();
 protected DebugTreeAdaptor adaptor;
+
 public ITreeAdaptor TreeAdaptor
 {
 	get

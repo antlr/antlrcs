@@ -1,4 +1,4 @@
-// $ANTLR 3.1.2 Language\\ActionEvaluator.g3 2009-03-19 17:26:07
+// $ANTLR 3.1.2 Language\\ActionEvaluator.g3 2009-03-20 14:32:39
 
 // The variable 'variable' is assigned but its value is never used.
 #pragma warning disable 219
@@ -4106,23 +4106,9 @@ public partial class ActionEvaluator : TreeParser
 		return ;
 	}
 	// $ANTLR end "templateFunctional"
-	#endregion
+	#endregion Rules
 
-	// Delegated rules
-
-	#region Synpreds
-	#endregion
-
-	#region DFA
-
-	protected override void InitDFAs()
-	{
-		base.InitDFAs();
-	}
-
-	#endregion
-
-	#region Follow Sets
+	#region Follow sets
 	public static class Follow
 	{
 		public static readonly BitSet _expr_in_action56 = new BitSet(new ulong[]{0x2UL});
@@ -4305,7 +4291,7 @@ public partial class ActionEvaluator : TreeParser
 		public static readonly BitSet _expr_in_templateFunctional2162 = new BitSet(new ulong[]{0xFFFFFFFFFF0UL});
 
 	}
-	#endregion
+	#endregion Follow sets
 }
 
 } // namespace Antlr3.ST.Language

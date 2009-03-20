@@ -1,4 +1,4 @@
-// $ANTLR 3.1.2 Language\\Interface.g3 2009-03-17 15:10:59
+// $ANTLR 3.1.2 Language\\Interface.g3 2009-03-20 14:32:35
 
 // The variable 'variable' is assigned but its value is never used.
 #pragma warning disable 219
@@ -313,23 +313,9 @@ public partial class InterfaceParser : Parser
 		return args;
 	}
 	// $ANTLR end "args"
-	#endregion
+	#endregion Rules
 
-	// Delegated rules
-
-	#region Synpreds
-	#endregion
-
-	#region DFA
-
-	protected override void InitDFAs()
-	{
-		base.InitDFAs();
-	}
-
-	#endregion
-
-	#region Follow Sets
+	#region Follow sets
 	public static class Follow
 	{
 		public static readonly BitSet _INTERFACE_in_groupInterface88 = new BitSet(new ulong[]{0x40UL});
@@ -348,7 +334,7 @@ public partial class InterfaceParser : Parser
 		public static readonly BitSet _ID_in_args187 = new BitSet(new ulong[]{0x22UL});
 
 	}
-	#endregion
+	#endregion Follow sets
 }
 
 } // namespace Antlr3.ST.Language
