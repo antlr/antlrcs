@@ -1,4 +1,4 @@
-// $ANTLR 3.1.2 Grammars\\ANTLR.g3 2009-03-16 19:03:26
+// $ANTLR 3.1.2 Grammars\\ANTLR.g3 2009-03-20 13:30:48
 
 // The variable 'variable' is assigned but its value is never used.
 #pragma warning disable 219
@@ -188,9 +188,14 @@ public partial class ANTLRParser : Parser
 	public ANTLRParser( ITokenStream input, RecognizerSharedState state )
 		: base( input, state )
 	{
+		InitializeTreeAdaptor();
+		if ( TreeAdaptor == null )
+			TreeAdaptor = new CommonTreeAdaptor();
 	}
 		
-	protected ITreeAdaptor adaptor = new CommonTreeAdaptor();
+	// Implement this function in your helper file to use a custom tree adaptor
+	partial void InitializeTreeAdaptor();
+	ITreeAdaptor adaptor;
 
 	public ITreeAdaptor TreeAdaptor
 	{

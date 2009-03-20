@@ -44,9 +44,18 @@ using RewriteRuleITokenStream = Antlr.Runtime.Tree.RewriteRuleTokenStream;<\n>
 <parserMembers()>
 >>
 
+parserCtorBody() ::= <<
+<super.parserCtorBody()>
+InitializeTreeAdaptor();
+if ( TreeAdaptor == null )
+	TreeAdaptor = new CommonTreeAdaptor();
+>>
+
 /** Add an adaptor property that knows how to build trees */
 parserMembers() ::= <<
-protected ITreeAdaptor adaptor = new CommonTreeAdaptor();<\n>
+// Implement this function in your helper file to use a custom tree adaptor
+partial void InitializeTreeAdaptor();
+ITreeAdaptor adaptor;<\n>
 public ITreeAdaptor TreeAdaptor
 {
 	get

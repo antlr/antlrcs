@@ -1,4 +1,4 @@
-// $ANTLR 3.1.2 Language\\Action.g3 2009-03-18 18:14:46
+// $ANTLR 3.1.2 Language\\Action.g3 2009-03-20 13:31:28
 
 // The variable 'variable' is assigned but its value is never used.
 #pragma warning disable 219
@@ -109,9 +109,14 @@ public partial class ActionParser : Parser
 	public ActionParser( ITokenStream input, RecognizerSharedState state )
 		: base( input, state )
 	{
+		InitializeTreeAdaptor();
+		if ( TreeAdaptor == null )
+			TreeAdaptor = new CommonTreeAdaptor();
 	}
 		
-	protected ITreeAdaptor adaptor = new CommonTreeAdaptor();
+	// Implement this function in your helper file to use a custom tree adaptor
+	partial void InitializeTreeAdaptor();
+	ITreeAdaptor adaptor;
 
 	public ITreeAdaptor TreeAdaptor
 	{

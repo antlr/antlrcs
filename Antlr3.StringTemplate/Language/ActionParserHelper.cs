@@ -48,10 +48,9 @@ namespace Antlr3.ST.Language
             this.self = self;
         }
 
-        protected override void Initialize()
+        partial void InitializeTreeAdaptor()
         {
             TreeAdaptor = new StringTemplateTreeAdaptor();
-            base.Initialize();
         }
 
         public override void ReportError( RecognitionException e )

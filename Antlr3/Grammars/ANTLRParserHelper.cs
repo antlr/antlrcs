@@ -208,10 +208,9 @@ namespace Antlr3.Grammars
             return input.LT( k );
         }
 
-        protected override void Initialize()
+        partial void InitializeTreeAdaptor()
         {
             TreeAdaptor = new grammar_Adaptor( this );
-            base.Initialize();
         }
 
         protected virtual GrammarAST setToBlockWithSet( GrammarAST b )
