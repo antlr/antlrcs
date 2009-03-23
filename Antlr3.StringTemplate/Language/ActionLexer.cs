@@ -1,4 +1,4 @@
-// $ANTLR 3.1.2 Language\\Action.g3 2009-03-16 19:22:22
+// $ANTLR 3.1.2 Language\\Action.g3 2009-03-23 17:53:11
 
 // The variable 'variable' is assigned but its value is never used.
 #pragma warning disable 219
@@ -113,7 +113,7 @@ public partial class ActionLexer : Lexer
 		try
 		{
 			int _type = CONDITIONAL;
-			int _channel = DEFAULT_TOKEN_CHANNEL;
+			int _channel = DefaultTokenChannel;
 			// Language\\Action.g3:42:15: ( 'if' )
 			// Language\\Action.g3:42:15: 'if'
 			{
@@ -137,7 +137,7 @@ public partial class ActionLexer : Lexer
 		try
 		{
 			int _type = ELSEIF;
-			int _channel = DEFAULT_TOKEN_CHANNEL;
+			int _channel = DefaultTokenChannel;
 			// Language\\Action.g3:43:10: ( 'elseif' )
 			// Language\\Action.g3:43:10: 'elseif'
 			{
@@ -161,7 +161,7 @@ public partial class ActionLexer : Lexer
 		try
 		{
 			int _type = FIRST;
-			int _channel = DEFAULT_TOKEN_CHANNEL;
+			int _channel = DefaultTokenChannel;
 			// Language\\Action.g3:44:9: ( 'first' )
 			// Language\\Action.g3:44:9: 'first'
 			{
@@ -185,7 +185,7 @@ public partial class ActionLexer : Lexer
 		try
 		{
 			int _type = LAST;
-			int _channel = DEFAULT_TOKEN_CHANNEL;
+			int _channel = DefaultTokenChannel;
 			// Language\\Action.g3:45:8: ( 'last' )
 			// Language\\Action.g3:45:8: 'last'
 			{
@@ -209,7 +209,7 @@ public partial class ActionLexer : Lexer
 		try
 		{
 			int _type = LENGTH;
-			int _channel = DEFAULT_TOKEN_CHANNEL;
+			int _channel = DefaultTokenChannel;
 			// Language\\Action.g3:46:10: ( 'length' )
 			// Language\\Action.g3:46:10: 'length'
 			{
@@ -233,7 +233,7 @@ public partial class ActionLexer : Lexer
 		try
 		{
 			int _type = REST;
-			int _channel = DEFAULT_TOKEN_CHANNEL;
+			int _channel = DefaultTokenChannel;
 			// Language\\Action.g3:47:8: ( 'rest' )
 			// Language\\Action.g3:47:8: 'rest'
 			{
@@ -257,7 +257,7 @@ public partial class ActionLexer : Lexer
 		try
 		{
 			int _type = STRIP;
-			int _channel = DEFAULT_TOKEN_CHANNEL;
+			int _channel = DefaultTokenChannel;
 			// Language\\Action.g3:48:9: ( 'strip' )
 			// Language\\Action.g3:48:9: 'strip'
 			{
@@ -281,7 +281,7 @@ public partial class ActionLexer : Lexer
 		try
 		{
 			int _type = SUPER;
-			int _channel = DEFAULT_TOKEN_CHANNEL;
+			int _channel = DefaultTokenChannel;
 			// Language\\Action.g3:49:9: ( 'super' )
 			// Language\\Action.g3:49:9: 'super'
 			{
@@ -305,7 +305,7 @@ public partial class ActionLexer : Lexer
 		try
 		{
 			int _type = TRUNC;
-			int _channel = DEFAULT_TOKEN_CHANNEL;
+			int _channel = DefaultTokenChannel;
 			// Language\\Action.g3:50:9: ( 'trunc' )
 			// Language\\Action.g3:50:9: 'trunc'
 			{
@@ -329,7 +329,7 @@ public partial class ActionLexer : Lexer
 		try
 		{
 			int _type = ID;
-			int _channel = DEFAULT_TOKEN_CHANNEL;
+			int _channel = DefaultTokenChannel;
 			// Language\\Action.g3:335:4: ( ( 'a' .. 'z' | 'A' .. 'Z' | '_' ) ( 'a' .. 'z' | 'A' .. 'Z' | '0' .. '9' | '_' | '/' )* )
 			// Language\\Action.g3:335:4: ( 'a' .. 'z' | 'A' .. 'Z' | '_' ) ( 'a' .. 'z' | 'A' .. 'Z' | '0' .. '9' | '_' | '/' )*
 			{
@@ -395,7 +395,7 @@ public partial class ActionLexer : Lexer
 		try
 		{
 			int _type = INT;
-			int _channel = DEFAULT_TOKEN_CHANNEL;
+			int _channel = DefaultTokenChannel;
 			// Language\\Action.g3:339:4: ( ( '0' .. '9' )+ )
 			// Language\\Action.g3:339:4: ( '0' .. '9' )+
 			{
@@ -455,7 +455,7 @@ public partial class ActionLexer : Lexer
 		try
 		{
 			int _type = STRING;
-			int _channel = DEFAULT_TOKEN_CHANNEL;
+			int _channel = DefaultTokenChannel;
 			int ch;
 
 
@@ -543,7 +543,7 @@ public partial class ActionLexer : Lexer
 		try
 		{
 			int _type = ANONYMOUS_TEMPLATE;
-			int _channel = DEFAULT_TOKEN_CHANNEL;
+			int _channel = DefaultTokenChannel;
 			IToken ESC_CHAR1=null;
 			int ch;
 
@@ -658,7 +658,7 @@ public partial class ActionLexer : Lexer
 					{
 					int ESC_CHAR1Start300 = GetCharIndex();
 					mESC_CHAR(out uc, false); if (state.failed) return ;
-					ESC_CHAR1 = new CommonToken(input, TokenConstants.INVALID_TOKEN_TYPE, TokenConstants.DEFAULT_CHANNEL, ESC_CHAR1Start300, GetCharIndex()-1);
+					ESC_CHAR1 = new CommonToken(input, TokenConstants.InvalidTokenType, TokenConstants.DefaultChannel, ESC_CHAR1Start300, GetCharIndex()-1);
 					if ( state.backtracking == 0 )
 					{
 						builder.Append( (ESC_CHAR1!=null?ESC_CHAR1.Text:null) );
@@ -759,7 +759,7 @@ public partial class ActionLexer : Lexer
 
 			int aStart368 = GetCharIndex();
 			mID(); if (state.failed) return ;
-			a = new CommonToken(input, TokenConstants.INVALID_TOKEN_TYPE, TokenConstants.DEFAULT_CHANNEL, aStart368, GetCharIndex()-1);
+			a = new CommonToken(input, TokenConstants.InvalidTokenType, TokenConstants.DefaultChannel, aStart368, GetCharIndex()-1);
 			if ( state.backtracking == 0 )
 			{
 				args.Add((a!=null?a.Text:null));
@@ -837,7 +837,7 @@ public partial class ActionLexer : Lexer
 
 					int a2Start390 = GetCharIndex();
 					mID(); if (state.failed) return ;
-					a2 = new CommonToken(input, TokenConstants.INVALID_TOKEN_TYPE, TokenConstants.DEFAULT_CHANNEL, a2Start390, GetCharIndex()-1);
+					a2 = new CommonToken(input, TokenConstants.InvalidTokenType, TokenConstants.DefaultChannel, a2Start390, GetCharIndex()-1);
 					if ( state.backtracking == 0 )
 					{
 						args.Add((a2!=null?a2.Text:null));
@@ -947,7 +947,7 @@ public partial class ActionLexer : Lexer
 					{
 					int ESC_CHAR2Start460 = GetCharIndex();
 					mESC_CHAR(out uc, false); if (state.failed) return ;
-					ESC_CHAR2 = new CommonToken(input, TokenConstants.INVALID_TOKEN_TYPE, TokenConstants.DEFAULT_CHANNEL, ESC_CHAR2Start460, GetCharIndex()-1);
+					ESC_CHAR2 = new CommonToken(input, TokenConstants.InvalidTokenType, TokenConstants.DefaultChannel, ESC_CHAR2Start460, GetCharIndex()-1);
 					if ( state.backtracking == 0 )
 					{
 						builder.Append((ESC_CHAR2!=null?ESC_CHAR2.Text:null));
@@ -1145,7 +1145,7 @@ public partial class ActionLexer : Lexer
 		try
 		{
 			int _type = LBRACK;
-			int _channel = DEFAULT_TOKEN_CHANNEL;
+			int _channel = DefaultTokenChannel;
 			// Language\\Action.g3:446:11: ( '[' )
 			// Language\\Action.g3:446:11: '['
 			{
@@ -1168,7 +1168,7 @@ public partial class ActionLexer : Lexer
 		try
 		{
 			int _type = RBRACK;
-			int _channel = DEFAULT_TOKEN_CHANNEL;
+			int _channel = DefaultTokenChannel;
 			// Language\\Action.g3:447:11: ( ']' )
 			// Language\\Action.g3:447:11: ']'
 			{
@@ -1191,7 +1191,7 @@ public partial class ActionLexer : Lexer
 		try
 		{
 			int _type = LPAREN;
-			int _channel = DEFAULT_TOKEN_CHANNEL;
+			int _channel = DefaultTokenChannel;
 			// Language\\Action.g3:448:11: ( '(' )
 			// Language\\Action.g3:448:11: '('
 			{
@@ -1214,7 +1214,7 @@ public partial class ActionLexer : Lexer
 		try
 		{
 			int _type = RPAREN;
-			int _channel = DEFAULT_TOKEN_CHANNEL;
+			int _channel = DefaultTokenChannel;
 			// Language\\Action.g3:449:11: ( ')' )
 			// Language\\Action.g3:449:11: ')'
 			{
@@ -1237,7 +1237,7 @@ public partial class ActionLexer : Lexer
 		try
 		{
 			int _type = COMMA;
-			int _channel = DEFAULT_TOKEN_CHANNEL;
+			int _channel = DefaultTokenChannel;
 			// Language\\Action.g3:450:10: ( ',' )
 			// Language\\Action.g3:450:10: ','
 			{
@@ -1260,7 +1260,7 @@ public partial class ActionLexer : Lexer
 		try
 		{
 			int _type = DOT;
-			int _channel = DEFAULT_TOKEN_CHANNEL;
+			int _channel = DefaultTokenChannel;
 			// Language\\Action.g3:451:9: ( '.' )
 			// Language\\Action.g3:451:9: '.'
 			{
@@ -1283,7 +1283,7 @@ public partial class ActionLexer : Lexer
 		try
 		{
 			int _type = ASSIGN;
-			int _channel = DEFAULT_TOKEN_CHANNEL;
+			int _channel = DefaultTokenChannel;
 			// Language\\Action.g3:452:11: ( '=' )
 			// Language\\Action.g3:452:11: '='
 			{
@@ -1306,7 +1306,7 @@ public partial class ActionLexer : Lexer
 		try
 		{
 			int _type = COLON;
-			int _channel = DEFAULT_TOKEN_CHANNEL;
+			int _channel = DefaultTokenChannel;
 			// Language\\Action.g3:453:10: ( ':' )
 			// Language\\Action.g3:453:10: ':'
 			{
@@ -1329,7 +1329,7 @@ public partial class ActionLexer : Lexer
 		try
 		{
 			int _type = PLUS;
-			int _channel = DEFAULT_TOKEN_CHANNEL;
+			int _channel = DefaultTokenChannel;
 			// Language\\Action.g3:454:9: ( '+' )
 			// Language\\Action.g3:454:9: '+'
 			{
@@ -1352,7 +1352,7 @@ public partial class ActionLexer : Lexer
 		try
 		{
 			int _type = SEMI;
-			int _channel = DEFAULT_TOKEN_CHANNEL;
+			int _channel = DefaultTokenChannel;
 			// Language\\Action.g3:455:9: ( ';' )
 			// Language\\Action.g3:455:9: ';'
 			{
@@ -1375,7 +1375,7 @@ public partial class ActionLexer : Lexer
 		try
 		{
 			int _type = NOT;
-			int _channel = DEFAULT_TOKEN_CHANNEL;
+			int _channel = DefaultTokenChannel;
 			// Language\\Action.g3:456:9: ( '!' )
 			// Language\\Action.g3:456:9: '!'
 			{
@@ -1398,7 +1398,7 @@ public partial class ActionLexer : Lexer
 		try
 		{
 			int _type = DOTDOTDOT;
-			int _channel = DEFAULT_TOKEN_CHANNEL;
+			int _channel = DefaultTokenChannel;
 			// Language\\Action.g3:457:13: ( '...' )
 			// Language\\Action.g3:457:13: '...'
 			{
@@ -1422,7 +1422,7 @@ public partial class ActionLexer : Lexer
 		try
 		{
 			int _type = WS;
-			int _channel = DEFAULT_TOKEN_CHANNEL;
+			int _channel = DefaultTokenChannel;
 			// Language\\Action.g3:460:4: ( ( ' ' | '\\t' | '\\r' | '\\n' )+ )
 			// Language\\Action.g3:460:4: ( ' ' | '\\t' | '\\r' | '\\n' )+
 			{
@@ -1466,7 +1466,7 @@ public partial class ActionLexer : Lexer
 
 			if ( state.backtracking == 0 )
 			{
-				_channel = HIDDEN;
+				_channel = Hidden;
 			}
 
 			}

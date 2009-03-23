@@ -4,7 +4,7 @@
  * All rights reserved.
  *
  * Conversion to C#:
- * Copyright (c) 2008 Sam Harwell, Pixel Mine, Inc.
+ * Copyright (c) 2008-2009 Sam Harwell, Pixel Mine, Inc.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -32,6 +32,8 @@
 
 namespace Antlr3.Misc
 {
+    using MethodImpl = System.Runtime.CompilerServices.MethodImplAttribute;
+    using MethodImplOptions = System.Runtime.CompilerServices.MethodImplOptions;
 
     /**A very simple barrier wait.  Once a thread has requested a
      * wait on the barrier with waitForRelease, it cannot fool the
@@ -48,39 +50,39 @@ namespace Antlr3.Misc
             threshold = t;
         }
 
-        public /*synchronized*/ void waitForRelease()
+        [MethodImpl( MethodImplOptions.Synchronized )]
+        public void WaitForRelease()
         {
-            throw new System.NotImplementedException( "synchronized and confusing ??" );
-#if false
             count++;
             // The final thread to reach barrier resets barrier and
             // releases all threads
             if ( count == threshold )
             {
                 // notify blocked threads that threshold has been reached
-                action(); // perform the requested operation
-                notifyAll();
+                Action(); // perform the requested operation
+                NotifyAll();
             }
             else
+            {
                 while ( count < threshold )
                 {
-                    wait();
+                    Wait();
                 }
-#endif
+            }
         }
 
-        private void wait()
+        private void Wait()
         {
             throw new System.NotImplementedException();
         }
 
-        private void notifyAll()
+        private void NotifyAll()
         {
             throw new System.NotImplementedException();
         }
 
         /** What to do when everyone reaches barrier */
-        public void action()
+        public virtual void Action()
         {
         }
     }

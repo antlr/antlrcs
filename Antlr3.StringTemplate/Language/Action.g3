@@ -458,7 +458,7 @@ DOTDOTDOT	: '...' ;
 
 WS
 	:	(' '|'\t'|'\r'|'\n')+
-		{$channel = HIDDEN;}
+		{$channel = Hidden;}
 	;
 
 fragment

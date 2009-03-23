@@ -103,7 +103,7 @@ options { k = 1; }
 			Text = buf.ToString();
 			$type = LITERAL;
 		}
-	|	('<!') => COMMENT {$channel = HIDDEN;}
+	|	('<!') => COMMENT {$channel = Hidden;}
 	|	(	options { k = 1; } :
 			('<if') =>
 			'<if' (' ')* '(' exp=IF_EXPR ')>'
@@ -216,7 +216,7 @@ LITERAL
 			Text = builder.ToString();
 			if ( $text.Length == 0 )
 			{
-				$channel = HIDDEN;
+				$channel = Hidden;
 			}
 		} // pure indent?
 	;

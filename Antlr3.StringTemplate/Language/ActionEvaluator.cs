@@ -1,4 +1,4 @@
-// $ANTLR 3.1.2 Language\\ActionEvaluator.g3 2009-03-20 14:32:39
+// $ANTLR 3.1.2 Language\\ActionEvaluator.g3 2009-03-23 17:52:08
 
 // The variable 'variable' is assigned but its value is never used.
 #pragma warning disable 219
@@ -240,7 +240,7 @@ public partial class ActionEvaluator : TreeParser
 				{
 				Match(input,PLUS,Follow._PLUS_in_expr79); 
 
-				Match(input, TokenConstants.DOWN, null); 
+				Match(input, TokenConstants.Down, null); 
 				PushFollow(Follow._expr_in_expr83);
 				a=expr();
 
@@ -253,7 +253,7 @@ public partial class ActionEvaluator : TreeParser
 
 				value = chunk.Add(a,b);
 
-				Match(input, TokenConstants.UP, null); 
+				Match(input, TokenConstants.Up, null); 
 
 				}
 				break;
@@ -322,14 +322,14 @@ public partial class ActionEvaluator : TreeParser
 				{
 				Match(input,VALUE,Follow._VALUE_in_expr131); 
 
-				Match(input, TokenConstants.DOWN, null); 
+				Match(input, TokenConstants.Down, null); 
 				PushFollow(Follow._expr_in_expr135);
 				e=expr();
 
 				state._fsp--;
 
 
-				Match(input, TokenConstants.UP, null); 
+				Match(input, TokenConstants.Up, null); 
 
 							StringWriter buf = new StringWriter();
 							IStringTemplateWriter sw = self.Group.GetStringTemplateWriter(buf);
@@ -377,7 +377,7 @@ public partial class ActionEvaluator : TreeParser
 			{
 			Match(input,LIST,Follow._LIST_in_list167); 
 
-			Match(input, TokenConstants.DOWN, null); 
+			Match(input, TokenConstants.Down, null); 
 			// Language\\ActionEvaluator.g3:123:4: ( expr | NOTHING )+
 			int cnt2=0;
 			for ( ; ; )
@@ -440,7 +440,7 @@ public partial class ActionEvaluator : TreeParser
 
 
 
-			Match(input, TokenConstants.UP, null); 
+			Match(input, TokenConstants.Up, null); 
 			value = new Cat(elements);
 
 			}
@@ -482,7 +482,7 @@ public partial class ActionEvaluator : TreeParser
 			{
 			Match(input,INCLUDE,Follow._INCLUDE_in_templateInclude229); 
 
-			Match(input, TokenConstants.DOWN, null); 
+			Match(input, TokenConstants.Down, null); 
 			// Language\\ActionEvaluator.g3:148:4: (id= ID a1= . | ^( VALUE n= expr a2= . ) )
 			int alt3=2;
 			int LA3_0 = input.LA(1);
@@ -518,7 +518,7 @@ public partial class ActionEvaluator : TreeParser
 				{
 				Match(input,VALUE,Follow._VALUE_in_templateInclude262); 
 
-				Match(input, TokenConstants.DOWN, null); 
+				Match(input, TokenConstants.Down, null); 
 				PushFollow(Follow._expr_in_templateInclude266);
 				n=expr();
 
@@ -527,7 +527,7 @@ public partial class ActionEvaluator : TreeParser
 				a2=(StringTemplateAST)input.LT(1);
 				MatchAny(input); 
 
-				Match(input, TokenConstants.UP, null); 
+				Match(input, TokenConstants.Up, null); 
 				if (n!=null) {name=n.ToString();} args=a2;
 
 				}
@@ -536,7 +536,7 @@ public partial class ActionEvaluator : TreeParser
 			}
 
 
-			Match(input, TokenConstants.UP, null); 
+			Match(input, TokenConstants.Up, null); 
 
 						if ( name!=null )
 						{
@@ -601,7 +601,7 @@ public partial class ActionEvaluator : TreeParser
 				{
 				Match(input,APPLY,Follow._APPLY_in_templateApplication316); 
 
-				Match(input, TokenConstants.DOWN, null); 
+				Match(input, TokenConstants.Down, null); 
 				PushFollow(Follow._expr_in_templateApplication320);
 				a=expr();
 
@@ -649,7 +649,7 @@ public partial class ActionEvaluator : TreeParser
 
 				value = chunk.ApplyListOfAlternatingTemplates(self,a,templatesToApply);
 
-				Match(input, TokenConstants.UP, null); 
+				Match(input, TokenConstants.Up, null); 
 
 				}
 				break;
@@ -658,7 +658,7 @@ public partial class ActionEvaluator : TreeParser
 				{
 				Match(input,MULTI_APPLY,Follow._MULTI_APPLY_in_templateApplication345); 
 
-				Match(input, TokenConstants.DOWN, null); 
+				Match(input, TokenConstants.Down, null); 
 				// Language\\ActionEvaluator.g3:177:19: (a= expr )+
 				int cnt5=0;
 				for ( ; ; )
@@ -710,7 +710,7 @@ public partial class ActionEvaluator : TreeParser
 																			  anon.StringTemplate);
 							
 
-				Match(input, TokenConstants.UP, null); 
+				Match(input, TokenConstants.Up, null); 
 
 				}
 				break;
@@ -746,7 +746,7 @@ public partial class ActionEvaluator : TreeParser
 			{
 			Match(input,FUNCTION,Follow._FUNCTION_in_function390); 
 
-			Match(input, TokenConstants.DOWN, null); 
+			Match(input, TokenConstants.Down, null); 
 			// Language\\ActionEvaluator.g3:191:4: ( 'first' a= singleFunctionArg | 'rest' a= singleFunctionArg | 'last' a= singleFunctionArg | 'length' a= singleFunctionArg | 'strip' a= singleFunctionArg | 'trunc' a= singleFunctionArg )
 			int alt7=6;
 			switch ( input.LA(1) )
@@ -873,7 +873,7 @@ public partial class ActionEvaluator : TreeParser
 			}
 
 
-			Match(input, TokenConstants.UP, null); 
+			Match(input, TokenConstants.Up, null); 
 
 			}
 
@@ -907,7 +907,7 @@ public partial class ActionEvaluator : TreeParser
 			{
 			Match(input,SINGLEVALUEARG,Follow._SINGLEVALUEARG_in_singleFunctionArg499); 
 
-			Match(input, TokenConstants.DOWN, null); 
+			Match(input, TokenConstants.Down, null); 
 			PushFollow(Follow._expr_in_singleFunctionArg501);
 			expr8=expr();
 
@@ -915,7 +915,7 @@ public partial class ActionEvaluator : TreeParser
 
 			value = expr8;
 
-			Match(input, TokenConstants.UP, null); 
+			Match(input, TokenConstants.Up, null); 
 
 			}
 
@@ -953,7 +953,7 @@ public partial class ActionEvaluator : TreeParser
 			{
 			Match(input,TEMPLATE,Follow._TEMPLATE_in_template524); 
 
-			Match(input, TokenConstants.DOWN, null); 
+			Match(input, TokenConstants.Down, null); 
 			// Language\\ActionEvaluator.g3:211:4: ( ID args= . |anon= ANONYMOUS_TEMPLATE | ^( VALUE n= expr args2= . ) )
 			int alt8=3;
 			switch ( input.LA(1) )
@@ -1021,7 +1021,7 @@ public partial class ActionEvaluator : TreeParser
 				{
 				Match(input,VALUE,Follow._VALUE_in_template568); 
 
-				Match(input, TokenConstants.DOWN, null); 
+				Match(input, TokenConstants.Down, null); 
 				PushFollow(Follow._expr_in_template572);
 				n=expr();
 
@@ -1044,7 +1044,7 @@ public partial class ActionEvaluator : TreeParser
 										}
 									
 
-				Match(input, TokenConstants.UP, null); 
+				Match(input, TokenConstants.Up, null); 
 
 				}
 				break;
@@ -1052,7 +1052,7 @@ public partial class ActionEvaluator : TreeParser
 			}
 
 
-			Match(input, TokenConstants.UP, null); 
+			Match(input, TokenConstants.Up, null); 
 
 			}
 
@@ -1118,14 +1118,14 @@ public partial class ActionEvaluator : TreeParser
 				{
 				Match(input,NOT,Follow._NOT_in_ifCondition625); 
 
-				Match(input, TokenConstants.DOWN, null); 
+				Match(input, TokenConstants.Down, null); 
 				PushFollow(Follow._ifAtom_in_ifCondition629);
 				a=ifAtom();
 
 				state._fsp--;
 
 
-				Match(input, TokenConstants.UP, null); 
+				Match(input, TokenConstants.Up, null); 
 				value = !chunk.TestAttributeTrue(a);
 
 				}
@@ -1247,7 +1247,7 @@ public partial class ActionEvaluator : TreeParser
 				{
 				Match(input,DOT,Follow._DOT_in_attribute671); 
 
-				Match(input, TokenConstants.DOWN, null); 
+				Match(input, TokenConstants.Down, null); 
 				PushFollow(Follow._expr_in_attribute675);
 				obj=expr();
 
@@ -1286,14 +1286,14 @@ public partial class ActionEvaluator : TreeParser
 					{
 					Match(input,VALUE,Follow._VALUE_in_attribute714); 
 
-					Match(input, TokenConstants.DOWN, null); 
+					Match(input, TokenConstants.Down, null); 
 					PushFollow(Follow._expr_in_attribute718);
 					e=expr();
 
 					state._fsp--;
 
 
-					Match(input, TokenConstants.UP, null); 
+					Match(input, TokenConstants.Up, null); 
 					if (e!=null) {propName=e;}
 
 					}
@@ -1302,7 +1302,7 @@ public partial class ActionEvaluator : TreeParser
 				}
 
 
-				Match(input, TokenConstants.UP, null); 
+				Match(input, TokenConstants.Up, null); 
 				value = chunk.GetObjectProperty(self,obj,propName);
 
 				}
@@ -1409,9 +1409,9 @@ public partial class ActionEvaluator : TreeParser
 				{
 				Match(input,ARGS,Follow._ARGS_in_argList808); 
 
-				if ( input.LA(1)==TokenConstants.DOWN )
+				if ( input.LA(1)==TokenConstants.Down )
 				{
-					Match(input, TokenConstants.DOWN, null); 
+					Match(input, TokenConstants.Down, null); 
 					// Language\\ActionEvaluator.g3:319:12: ( argumentAssignment[$embedded,$argumentContext] )*
 					for ( ; ; )
 					{
@@ -1448,7 +1448,7 @@ public partial class ActionEvaluator : TreeParser
 
 
 
-					Match(input, TokenConstants.UP, null); 
+					Match(input, TokenConstants.Up, null); 
 				}
 
 				}
@@ -1493,14 +1493,14 @@ public partial class ActionEvaluator : TreeParser
 			{
 			Match(input,SINGLEVALUEARG,Follow._SINGLEVALUEARG_in_singleTemplateArg836); 
 
-			Match(input, TokenConstants.DOWN, null); 
+			Match(input, TokenConstants.Down, null); 
 			PushFollow(Follow._expr_in_singleTemplateArg840);
 			e=expr();
 
 			state._fsp--;
 
 
-			Match(input, TokenConstants.UP, null); 
+			Match(input, TokenConstants.Up, null); 
 
 						if ( e!=null )
 						{
@@ -1588,7 +1588,7 @@ public partial class ActionEvaluator : TreeParser
 				{
 				Match(input,ASSIGN,Follow._ASSIGN_in_argumentAssignment860); 
 
-				Match(input, TokenConstants.DOWN, null); 
+				Match(input, TokenConstants.Down, null); 
 				arg=(StringTemplateAST)Match(input,ID,Follow._ID_in_argumentAssignment864); 
 				PushFollow(Follow._expr_in_argumentAssignment866);
 				expr11=expr();
@@ -1596,7 +1596,7 @@ public partial class ActionEvaluator : TreeParser
 				state._fsp--;
 
 
-				Match(input, TokenConstants.UP, null); 
+				Match(input, TokenConstants.Up, null); 
 
 							if ( expr11 != null )
 							{
@@ -1749,14 +1749,14 @@ public partial class ActionEvaluator : TreeParser
 				{
 				Match(input,NOT,Follow._NOT_in_ifConditionCompiled940); 
 
-				Match(input, TokenConstants.DOWN, null); 
+				Match(input, TokenConstants.Down, null); 
 				PushFollow(Follow._ifAtomCompiled_in_ifConditionCompiled942);
 				ifAtomCompiled(gen);
 
 				state._fsp--;
 
 
-				Match(input, TokenConstants.UP, null); 
+				Match(input, TokenConstants.Up, null); 
 
 				#if COMPILE_EXPRESSIONS
 							EmitNot(gen);
@@ -1834,14 +1834,14 @@ public partial class ActionEvaluator : TreeParser
 				{
 				Match(input,NOT,Follow._NOT_in_ifConditionFunctional975); 
 
-				Match(input, TokenConstants.DOWN, null); 
+				Match(input, TokenConstants.Down, null); 
 				PushFollow(Follow._ifAtomFunctional_in_ifConditionFunctional977);
 				ifAtomFunctional14=ifAtomFunctional();
 
 				state._fsp--;
 
 
-				Match(input, TokenConstants.UP, null); 
+				Match(input, TokenConstants.Up, null); 
 
 				#if COMPILE_EXPRESSIONS
 							func = (chunk,self,writer) => !(ifAtomFunctional14(chunk,self,writer));
@@ -2008,7 +2008,7 @@ public partial class ActionEvaluator : TreeParser
 				{
 				Match(input,PLUS,Follow._PLUS_in_exprCompiled1031); 
 
-				Match(input, TokenConstants.DOWN, null); 
+				Match(input, TokenConstants.Down, null); 
 				PushFollow(Follow._exprCompiled_in_exprCompiled1033);
 				exprCompiled(gen);
 
@@ -2020,7 +2020,7 @@ public partial class ActionEvaluator : TreeParser
 				state._fsp--;
 
 
-				Match(input, TokenConstants.UP, null); 
+				Match(input, TokenConstants.Up, null); 
 
 				#if COMPILE_EXPRESSIONS
 							EmitAdd(gen);
@@ -2089,14 +2089,14 @@ public partial class ActionEvaluator : TreeParser
 				{
 				Match(input,VALUE,Follow._VALUE_in_exprCompiled1078); 
 
-				Match(input, TokenConstants.DOWN, null); 
+				Match(input, TokenConstants.Down, null); 
 				PushFollow(Follow._exprCompiled_in_exprCompiled1080);
 				exprCompiled(gen);
 
 				state._fsp--;
 
 
-				Match(input, TokenConstants.UP, null); 
+				Match(input, TokenConstants.Up, null); 
 
 				#if COMPILE_EXPRESSIONS
 							EmitWriteToString(gen);
@@ -2197,7 +2197,7 @@ public partial class ActionEvaluator : TreeParser
 				{
 				Match(input,PLUS,Follow._PLUS_in_exprFunctional1102); 
 
-				Match(input, TokenConstants.DOWN, null); 
+				Match(input, TokenConstants.Down, null); 
 				PushFollow(Follow._exprFunctional_in_exprFunctional1106);
 				a=exprFunctional();
 
@@ -2209,7 +2209,7 @@ public partial class ActionEvaluator : TreeParser
 				state._fsp--;
 
 
-				Match(input, TokenConstants.UP, null); 
+				Match(input, TokenConstants.Up, null); 
 
 				#if COMPILE_EXPRESSIONS
 							func = (chunk,self,writer) => chunk.Add(a(chunk,self,writer),b(chunk,self,writer));
@@ -2303,14 +2303,14 @@ public partial class ActionEvaluator : TreeParser
 				{
 				Match(input,VALUE,Follow._VALUE_in_exprFunctional1166); 
 
-				Match(input, TokenConstants.DOWN, null); 
+				Match(input, TokenConstants.Down, null); 
 				PushFollow(Follow._exprFunctional_in_exprFunctional1170);
 				a=exprFunctional();
 
 				state._fsp--;
 
 
-				Match(input, TokenConstants.UP, null); 
+				Match(input, TokenConstants.Up, null); 
 
 				#if COMPILE_EXPRESSIONS
 							func = (chunk,self,writer) =>
@@ -2380,7 +2380,7 @@ public partial class ActionEvaluator : TreeParser
 				{
 				Match(input,APPLY,Follow._APPLY_in_templateApplicationCompiled1194); 
 
-				Match(input, TokenConstants.DOWN, null); 
+				Match(input, TokenConstants.Down, null); 
 				PushFollow(Follow._expr_in_templateApplicationCompiled1198);
 				a=expr();
 
@@ -2432,7 +2432,7 @@ public partial class ActionEvaluator : TreeParser
 				#endif
 							
 
-				Match(input, TokenConstants.UP, null); 
+				Match(input, TokenConstants.Up, null); 
 
 				}
 				break;
@@ -2441,7 +2441,7 @@ public partial class ActionEvaluator : TreeParser
 				{
 				Match(input,MULTI_APPLY,Follow._MULTI_APPLY_in_templateApplicationCompiled1227); 
 
-				Match(input, TokenConstants.DOWN, null); 
+				Match(input, TokenConstants.Down, null); 
 				// Language\\ActionEvaluator.g3:527:19: ( exprCompiled[$gen] )+
 				int cnt20=0;
 				for ( ; ; )
@@ -2490,7 +2490,7 @@ public partial class ActionEvaluator : TreeParser
 				#endif
 							
 
-				Match(input, TokenConstants.UP, null); 
+				Match(input, TokenConstants.Up, null); 
 
 				}
 				break;
@@ -2553,7 +2553,7 @@ public partial class ActionEvaluator : TreeParser
 				{
 				Match(input,APPLY,Follow._APPLY_in_templateApplicationFunctional1299); 
 
-				Match(input, TokenConstants.DOWN, null); 
+				Match(input, TokenConstants.Down, null); 
 				PushFollow(Follow._exprFunctional_in_templateApplicationFunctional1303);
 				a=exprFunctional();
 
@@ -2613,7 +2613,7 @@ public partial class ActionEvaluator : TreeParser
 				#endif
 							
 
-				Match(input, TokenConstants.UP, null); 
+				Match(input, TokenConstants.Up, null); 
 
 				}
 				break;
@@ -2622,7 +2622,7 @@ public partial class ActionEvaluator : TreeParser
 				{
 				Match(input,MULTI_APPLY,Follow._MULTI_APPLY_in_templateApplicationFunctional1328); 
 
-				Match(input, TokenConstants.DOWN, null); 
+				Match(input, TokenConstants.Down, null); 
 				// Language\\ActionEvaluator.g3:569:4: (a= exprFunctional )+
 				int cnt23=0;
 				for ( ; ; )
@@ -2682,7 +2682,7 @@ public partial class ActionEvaluator : TreeParser
 				#endif
 							
 
-				Match(input, TokenConstants.UP, null); 
+				Match(input, TokenConstants.Up, null); 
 
 				}
 				break;
@@ -2757,7 +2757,7 @@ public partial class ActionEvaluator : TreeParser
 				{
 				Match(input,DOT,Follow._DOT_in_attributeCompiled1379); 
 
-				Match(input, TokenConstants.DOWN, null); 
+				Match(input, TokenConstants.Down, null); 
 				PushFollow(Follow._exprCompiled_in_attributeCompiled1381);
 				exprCompiled(gen);
 
@@ -2800,14 +2800,14 @@ public partial class ActionEvaluator : TreeParser
 					{
 					Match(input,VALUE,Follow._VALUE_in_attributeCompiled1405); 
 
-					Match(input, TokenConstants.DOWN, null); 
+					Match(input, TokenConstants.Down, null); 
 					PushFollow(Follow._exprCompiled_in_attributeCompiled1407);
 					exprCompiled(gen);
 
 					state._fsp--;
 
 
-					Match(input, TokenConstants.UP, null); 
+					Match(input, TokenConstants.Up, null); 
 
 					}
 					break;
@@ -2820,7 +2820,7 @@ public partial class ActionEvaluator : TreeParser
 				#endif
 							
 
-				Match(input, TokenConstants.UP, null); 
+				Match(input, TokenConstants.Up, null); 
 
 				}
 				break;
@@ -2948,7 +2948,7 @@ public partial class ActionEvaluator : TreeParser
 				{
 				Match(input,DOT,Follow._DOT_in_attributeFunctional1482); 
 
-				Match(input, TokenConstants.DOWN, null); 
+				Match(input, TokenConstants.Down, null); 
 				PushFollow(Follow._exprFunctional_in_attributeFunctional1486);
 				a=exprFunctional();
 
@@ -2992,14 +2992,14 @@ public partial class ActionEvaluator : TreeParser
 					{
 					Match(input,VALUE,Follow._VALUE_in_attributeFunctional1509); 
 
-					Match(input, TokenConstants.DOWN, null); 
+					Match(input, TokenConstants.Down, null); 
 					PushFollow(Follow._exprFunctional_in_attributeFunctional1513);
 					b=exprFunctional();
 
 					state._fsp--;
 
 
-					Match(input, TokenConstants.UP, null); 
+					Match(input, TokenConstants.Up, null); 
 
 					#if COMPILE_EXPRESSIONS
 										func = (chunk,self,writer) => chunk.GetObjectProperty( self, a(chunk,self,writer), b(chunk,self,writer) );
@@ -3012,7 +3012,7 @@ public partial class ActionEvaluator : TreeParser
 				}
 
 
-				Match(input, TokenConstants.UP, null); 
+				Match(input, TokenConstants.Up, null); 
 
 				}
 				break;
@@ -3110,7 +3110,7 @@ public partial class ActionEvaluator : TreeParser
 			{
 			Match(input,INCLUDE,Follow._INCLUDE_in_templateIncludeCompiled1585); 
 
-			Match(input, TokenConstants.DOWN, null); 
+			Match(input, TokenConstants.Down, null); 
 			// Language\\ActionEvaluator.g3:702:4: ( ID args= . | ^( VALUE exprCompiled[$gen] args= . ) )
 			int alt29=2;
 			int LA29_0 = input.LA(1);
@@ -3150,7 +3150,7 @@ public partial class ActionEvaluator : TreeParser
 				{
 				Match(input,VALUE,Follow._VALUE_in_templateIncludeCompiled1611); 
 
-				Match(input, TokenConstants.DOWN, null); 
+				Match(input, TokenConstants.Down, null); 
 				PushFollow(Follow._exprCompiled_in_templateIncludeCompiled1613);
 				exprCompiled(gen);
 
@@ -3159,7 +3159,7 @@ public partial class ActionEvaluator : TreeParser
 				args=(StringTemplateAST)input.LT(1);
 				MatchAny(input); 
 
-				Match(input, TokenConstants.UP, null); 
+				Match(input, TokenConstants.Up, null); 
 
 				}
 				break;
@@ -3167,7 +3167,7 @@ public partial class ActionEvaluator : TreeParser
 			}
 
 
-			Match(input, TokenConstants.UP, null); 
+			Match(input, TokenConstants.Up, null); 
 
 			#if COMPILE_EXPRESSIONS
 						EmitTemplateInclude( gen, args );
@@ -3208,7 +3208,7 @@ public partial class ActionEvaluator : TreeParser
 			{
 			Match(input,INCLUDE,Follow._INCLUDE_in_templateIncludeFunctional1650); 
 
-			Match(input, TokenConstants.DOWN, null); 
+			Match(input, TokenConstants.Down, null); 
 			// Language\\ActionEvaluator.g3:720:4: ( ID args= . | ^( VALUE exprFunctional args= . ) )
 			int alt30=2;
 			int LA30_0 = input.LA(1);
@@ -3243,7 +3243,7 @@ public partial class ActionEvaluator : TreeParser
 				{
 				Match(input,VALUE,Follow._VALUE_in_templateIncludeFunctional1670); 
 
-				Match(input, TokenConstants.DOWN, null); 
+				Match(input, TokenConstants.Down, null); 
 				PushFollow(Follow._exprFunctional_in_templateIncludeFunctional1672);
 				exprFunctional30=exprFunctional();
 
@@ -3252,7 +3252,7 @@ public partial class ActionEvaluator : TreeParser
 				args=(StringTemplateAST)input.LT(1);
 				MatchAny(input); 
 
-				Match(input, TokenConstants.UP, null); 
+				Match(input, TokenConstants.Up, null); 
 
 				}
 				break;
@@ -3260,7 +3260,7 @@ public partial class ActionEvaluator : TreeParser
 			}
 
 
-			Match(input, TokenConstants.UP, null); 
+			Match(input, TokenConstants.Up, null); 
 
 			#if COMPILE_EXPRESSIONS
 						if ( ID29 != null )
@@ -3324,7 +3324,7 @@ public partial class ActionEvaluator : TreeParser
 			{
 			Match(input,FUNCTION,Follow._FUNCTION_in_functionCompiled1705); 
 
-			Match(input, TokenConstants.DOWN, null); 
+			Match(input, TokenConstants.Down, null); 
 			// Language\\ActionEvaluator.g3:763:4: ( 'first' singleFunctionArgCompiled[$gen] | 'rest' singleFunctionArgCompiled[$gen] | 'last' singleFunctionArgCompiled[$gen] | 'length' singleFunctionArgCompiled[$gen] | 'strip' singleFunctionArgCompiled[$gen] | 'trunc' singleFunctionArgCompiled[$gen] )
 			int alt31=6;
 			switch ( input.LA(1) )
@@ -3475,7 +3475,7 @@ public partial class ActionEvaluator : TreeParser
 			}
 
 
-			Match(input, TokenConstants.UP, null); 
+			Match(input, TokenConstants.Up, null); 
 
 			}
 
@@ -3509,7 +3509,7 @@ public partial class ActionEvaluator : TreeParser
 			{
 			Match(input,FUNCTION,Follow._FUNCTION_in_functionFunctional1832); 
 
-			Match(input, TokenConstants.DOWN, null); 
+			Match(input, TokenConstants.Down, null); 
 			// Language\\ActionEvaluator.g3:805:4: ( 'first' a= singleFunctionArgFunctional | 'rest' a= singleFunctionArgFunctional | 'last' a= singleFunctionArgFunctional | 'length' a= singleFunctionArgFunctional | 'strip' a= singleFunctionArgFunctional | 'trunc' a= singleFunctionArgFunctional )
 			int alt32=6;
 			switch ( input.LA(1) )
@@ -3660,7 +3660,7 @@ public partial class ActionEvaluator : TreeParser
 			}
 
 
-			Match(input, TokenConstants.UP, null); 
+			Match(input, TokenConstants.Up, null); 
 
 			}
 
@@ -3689,7 +3689,7 @@ public partial class ActionEvaluator : TreeParser
 			{
 			Match(input,LIST,Follow._LIST_in_listCompiled1962); 
 
-			Match(input, TokenConstants.DOWN, null); 
+			Match(input, TokenConstants.Down, null); 
 			// Language\\ActionEvaluator.g3:847:4: ( exprCompiled[$gen] | NOTHING )+
 			int cnt33=0;
 			for ( ; ; )
@@ -3742,7 +3742,7 @@ public partial class ActionEvaluator : TreeParser
 
 
 
-			Match(input, TokenConstants.UP, null); 
+			Match(input, TokenConstants.Up, null); 
 			throw new System.NotImplementedException();
 
 			}
@@ -3780,7 +3780,7 @@ public partial class ActionEvaluator : TreeParser
 			{
 			Match(input,LIST,Follow._LIST_in_listFunctional2013); 
 
-			Match(input, TokenConstants.DOWN, null); 
+			Match(input, TokenConstants.Down, null); 
 			// Language\\ActionEvaluator.g3:860:4: ( exprFunctional | NOTHING )+
 			int cnt34=0;
 			for ( ; ; )
@@ -3844,7 +3844,7 @@ public partial class ActionEvaluator : TreeParser
 
 
 
-			Match(input, TokenConstants.UP, null); 
+			Match(input, TokenConstants.Up, null); 
 
 			#if COMPILE_EXPRESSIONS
 						func = (chunk,self,writer) =>
@@ -3883,14 +3883,14 @@ public partial class ActionEvaluator : TreeParser
 			{
 			Match(input,SINGLEVALUEARG,Follow._SINGLEVALUEARG_in_singleFunctionArgCompiled2067); 
 
-			Match(input, TokenConstants.DOWN, null); 
+			Match(input, TokenConstants.Down, null); 
 			PushFollow(Follow._exprCompiled_in_singleFunctionArgCompiled2069);
 			exprCompiled(gen);
 
 			state._fsp--;
 
 
-			Match(input, TokenConstants.UP, null); 
+			Match(input, TokenConstants.Up, null); 
 
 			}
 
@@ -3924,7 +3924,7 @@ public partial class ActionEvaluator : TreeParser
 			{
 			Match(input,SINGLEVALUEARG,Follow._SINGLEVALUEARG_in_singleFunctionArgFunctional2089); 
 
-			Match(input, TokenConstants.DOWN, null); 
+			Match(input, TokenConstants.Down, null); 
 			PushFollow(Follow._exprFunctional_in_singleFunctionArgFunctional2091);
 			exprFunctional32=exprFunctional();
 
@@ -3932,7 +3932,7 @@ public partial class ActionEvaluator : TreeParser
 
 			func = exprFunctional32;
 
-			Match(input, TokenConstants.UP, null); 
+			Match(input, TokenConstants.Up, null); 
 
 			}
 
@@ -3970,7 +3970,7 @@ public partial class ActionEvaluator : TreeParser
 			{
 			Match(input,TEMPLATE,Follow._TEMPLATE_in_templateFunctional2114); 
 
-			Match(input, TokenConstants.DOWN, null); 
+			Match(input, TokenConstants.Down, null); 
 			// Language\\ActionEvaluator.g3:901:4: ( ID args= . |anon= ANONYMOUS_TEMPLATE | ^( VALUE n= expr args2= . ) )
 			int alt35=3;
 			switch ( input.LA(1) )
@@ -4052,7 +4052,7 @@ public partial class ActionEvaluator : TreeParser
 				{
 				Match(input,VALUE,Follow._VALUE_in_templateFunctional2158); 
 
-				Match(input, TokenConstants.DOWN, null); 
+				Match(input, TokenConstants.Down, null); 
 				PushFollow(Follow._expr_in_templateFunctional2162);
 				n=expr();
 
@@ -4082,7 +4082,7 @@ public partial class ActionEvaluator : TreeParser
 				#endif
 									
 
-				Match(input, TokenConstants.UP, null); 
+				Match(input, TokenConstants.Up, null); 
 
 				}
 				break;
@@ -4090,7 +4090,7 @@ public partial class ActionEvaluator : TreeParser
 			}
 
 
-			Match(input, TokenConstants.UP, null); 
+			Match(input, TokenConstants.Up, null); 
 
 			}
 

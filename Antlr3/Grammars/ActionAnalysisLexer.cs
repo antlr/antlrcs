@@ -1,4 +1,4 @@
-// $ANTLR 3.1.2 Grammars\\ActionAnalysisLexer.g3 2009-03-07 08:57:34
+// $ANTLR 3.1.2 Grammars\\ActionAnalysisLexer.g3 2009-03-23 17:53:56
 
 // The variable 'variable' is assigned but its value is never used.
 #pragma warning disable 219
@@ -84,12 +84,12 @@ public partial class ActionAnalysisLexer : Lexer
 	{
 		for ( ; ;)
 		{
-			if ( input.LA(1)==CharStreamConstants.EOF )
+			if ( input.LA(1)==CharStreamConstants.Eof )
 			{
-				return TokenConstants.EOF_TOKEN;
+				return TokenConstants.EofToken;
 			}
 			state.token = null;
-			state.channel = TokenConstants.DEFAULT_CHANNEL;
+			state.channel = TokenConstants.DefaultChannel;
 			state.tokenStartCharIndex = input.Index;
 			state.tokenStartCharPositionInLine = input.CharPositionInLine;
 			state.tokenStartLine = input.Line;
@@ -140,7 +140,7 @@ public partial class ActionAnalysisLexer : Lexer
 		try
 		{
 			int _type = X_Y;
-			int _channel = DEFAULT_TOKEN_CHANNEL;
+			int _channel = DefaultTokenChannel;
 			IToken x=null;
 			IToken y=null;
 
@@ -150,11 +150,11 @@ public partial class ActionAnalysisLexer : Lexer
 			Match('$'); if (state.failed) return ;
 			int xStart57 = GetCharIndex();
 			mID(); if (state.failed) return ;
-			x = new CommonToken(input, TokenConstants.INVALID_TOKEN_TYPE, TokenConstants.DEFAULT_CHANNEL, xStart57, GetCharIndex()-1);
+			x = new CommonToken(input, TokenConstants.InvalidTokenType, TokenConstants.DefaultChannel, xStart57, GetCharIndex()-1);
 			Match('.'); if (state.failed) return ;
 			int yStart63 = GetCharIndex();
 			mID(); if (state.failed) return ;
-			y = new CommonToken(input, TokenConstants.INVALID_TOKEN_TYPE, TokenConstants.DEFAULT_CHANNEL, yStart63, GetCharIndex()-1);
+			y = new CommonToken(input, TokenConstants.InvalidTokenType, TokenConstants.DefaultChannel, yStart63, GetCharIndex()-1);
 			if ( !((enclosingRule!=null)) )
 			{
 				if (state.backtracking>0) {state.failed=true; return ;}
@@ -219,7 +219,7 @@ public partial class ActionAnalysisLexer : Lexer
 		try
 		{
 			int _type = X;
-			int _channel = DEFAULT_TOKEN_CHANNEL;
+			int _channel = DefaultTokenChannel;
 			IToken ID1=null;
 
 			// Grammars\\ActionAnalysisLexer.g3:135:4: ( '$' ID {...}?)
@@ -228,7 +228,7 @@ public partial class ActionAnalysisLexer : Lexer
 			Match('$'); if (state.failed) return ;
 			int ID1Start84 = GetCharIndex();
 			mID(); if (state.failed) return ;
-			ID1 = new CommonToken(input, TokenConstants.INVALID_TOKEN_TYPE, TokenConstants.DEFAULT_CHANNEL, ID1Start84, GetCharIndex()-1);
+			ID1 = new CommonToken(input, TokenConstants.InvalidTokenType, TokenConstants.DefaultChannel, ID1Start84, GetCharIndex()-1);
 			if ( !((enclosingRule!=null && enclosingRule.getRuleLabel((ID1!=null?ID1.Text:null))!=null)) )
 			{
 				if (state.backtracking>0) {state.failed=true; return ;}
@@ -259,7 +259,7 @@ public partial class ActionAnalysisLexer : Lexer
 		try
 		{
 			int _type = Y;
-			int _channel = DEFAULT_TOKEN_CHANNEL;
+			int _channel = DefaultTokenChannel;
 			IToken ID2=null;
 
 			// Grammars\\ActionAnalysisLexer.g3:144:4: ( '$' ID {...}?)
@@ -268,7 +268,7 @@ public partial class ActionAnalysisLexer : Lexer
 			Match('$'); if (state.failed) return ;
 			int ID2Start106 = GetCharIndex();
 			mID(); if (state.failed) return ;
-			ID2 = new CommonToken(input, TokenConstants.INVALID_TOKEN_TYPE, TokenConstants.DEFAULT_CHANNEL, ID2Start106, GetCharIndex()-1);
+			ID2 = new CommonToken(input, TokenConstants.InvalidTokenType, TokenConstants.DefaultChannel, ID2Start106, GetCharIndex()-1);
 			if ( !((enclosingRule!=null && enclosingRule.getLocalAttributeScope((ID2!=null?ID2.Text:null))!=null)) )
 			{
 				if (state.backtracking>0) {state.failed=true; return ;}

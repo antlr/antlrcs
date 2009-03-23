@@ -1,4 +1,4 @@
-// $ANTLR 3.1.2 Language\\Interface.g3 2009-03-16 18:25:15
+// $ANTLR 3.1.2 Language\\Interface.g3 2009-03-23 17:53:08
 
 // The variable 'variable' is assigned but its value is never used.
 #pragma warning disable 219
@@ -83,7 +83,7 @@ public partial class InterfaceLexer : Lexer
 		try
 		{
 			int _type = INTERFACE;
-			int _channel = DEFAULT_TOKEN_CHANNEL;
+			int _channel = DefaultTokenChannel;
 			// Language\\Interface.g3:42:13: ( 'interface' )
 			// Language\\Interface.g3:42:13: 'interface'
 			{
@@ -107,7 +107,7 @@ public partial class InterfaceLexer : Lexer
 		try
 		{
 			int _type = OPTIONAL;
-			int _channel = DEFAULT_TOKEN_CHANNEL;
+			int _channel = DefaultTokenChannel;
 			// Language\\Interface.g3:43:12: ( 'optional' )
 			// Language\\Interface.g3:43:12: 'optional'
 			{
@@ -131,7 +131,7 @@ public partial class InterfaceLexer : Lexer
 		try
 		{
 			int _type = ID;
-			int _channel = DEFAULT_TOKEN_CHANNEL;
+			int _channel = DefaultTokenChannel;
 			// Language\\Interface.g3:156:6: ( ( 'a' .. 'z' | 'A' .. 'Z' | '_' ) ( 'a' .. 'z' | 'A' .. 'Z' | '0' .. '9' | '-' | '_' )* )
 			// Language\\Interface.g3:156:6: ( 'a' .. 'z' | 'A' .. 'Z' | '_' ) ( 'a' .. 'z' | 'A' .. 'Z' | '0' .. '9' | '-' | '_' )*
 			{
@@ -196,7 +196,7 @@ public partial class InterfaceLexer : Lexer
 		try
 		{
 			int _type = LPAREN;
-			int _channel = DEFAULT_TOKEN_CHANNEL;
+			int _channel = DefaultTokenChannel;
 			// Language\\Interface.g3:159:10: ( '(' )
 			// Language\\Interface.g3:159:10: '('
 			{
@@ -219,7 +219,7 @@ public partial class InterfaceLexer : Lexer
 		try
 		{
 			int _type = RPAREN;
-			int _channel = DEFAULT_TOKEN_CHANNEL;
+			int _channel = DefaultTokenChannel;
 			// Language\\Interface.g3:160:10: ( ')' )
 			// Language\\Interface.g3:160:10: ')'
 			{
@@ -242,7 +242,7 @@ public partial class InterfaceLexer : Lexer
 		try
 		{
 			int _type = COMMA;
-			int _channel = DEFAULT_TOKEN_CHANNEL;
+			int _channel = DefaultTokenChannel;
 			// Language\\Interface.g3:161:9: ( ',' )
 			// Language\\Interface.g3:161:9: ','
 			{
@@ -265,7 +265,7 @@ public partial class InterfaceLexer : Lexer
 		try
 		{
 			int _type = SEMI;
-			int _channel = DEFAULT_TOKEN_CHANNEL;
+			int _channel = DefaultTokenChannel;
 			// Language\\Interface.g3:162:8: ( ';' )
 			// Language\\Interface.g3:162:8: ';'
 			{
@@ -288,7 +288,7 @@ public partial class InterfaceLexer : Lexer
 		try
 		{
 			int _type = COLON;
-			int _channel = DEFAULT_TOKEN_CHANNEL;
+			int _channel = DefaultTokenChannel;
 			// Language\\Interface.g3:163:9: ( ':' )
 			// Language\\Interface.g3:163:9: ':'
 			{
@@ -311,7 +311,7 @@ public partial class InterfaceLexer : Lexer
 		try
 		{
 			int _type = SL_COMMENT;
-			int _channel = DEFAULT_TOKEN_CHANNEL;
+			int _channel = DefaultTokenChannel;
 			// Language\\Interface.g3:167:4: ( '//' (~ ( '\\n' | '\\r' ) )* ( ( '\\r' )? '\\n' )? )
 			// Language\\Interface.g3:167:4: '//' (~ ( '\\n' | '\\r' ) )* ( ( '\\r' )? '\\n' )?
 			{
@@ -389,7 +389,7 @@ public partial class InterfaceLexer : Lexer
 
 			}
 
-			 _channel = HIDDEN; 
+			 _channel = Hidden; 
 
 			}
 
@@ -408,7 +408,7 @@ public partial class InterfaceLexer : Lexer
 		try
 		{
 			int _type = ML_COMMENT;
-			int _channel = DEFAULT_TOKEN_CHANNEL;
+			int _channel = DefaultTokenChannel;
 			// Language\\Interface.g3:173:4: ( '/*' ( . )* '*/' )
 			// Language\\Interface.g3:173:4: '/*' ( . )* '*/'
 			{
@@ -462,7 +462,7 @@ public partial class InterfaceLexer : Lexer
 
 			Match("*/"); 
 
-			 _channel = HIDDEN; 
+			 _channel = Hidden; 
 
 			}
 
@@ -481,7 +481,7 @@ public partial class InterfaceLexer : Lexer
 		try
 		{
 			int _type = WS;
-			int _channel = DEFAULT_TOKEN_CHANNEL;
+			int _channel = DefaultTokenChannel;
 			// Language\\Interface.g3:178:4: ( ( ' ' | '\\t' | '\\f' | ( '\\r' )? '\\n' )+ )
 			// Language\\Interface.g3:178:4: ( ' ' | '\\t' | '\\f' | ( '\\r' )? '\\n' )+
 			{
@@ -580,7 +580,7 @@ public partial class InterfaceLexer : Lexer
 				;
 
 
-			 _channel = HIDDEN; 
+			 _channel = Hidden; 
 
 			}
 

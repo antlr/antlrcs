@@ -1,4 +1,4 @@
-// $ANTLR 3.1.2 Grammars\\ActionTranslator.g3 2009-03-16 17:44:10
+// $ANTLR 3.1.2 Grammars\\ActionTranslator.g3 2009-03-23 17:53:53
 
 // The variable 'variable' is assigned but its value is never used.
 #pragma warning disable 219
@@ -108,12 +108,12 @@ public partial class ActionTranslator : Lexer
 	{
 		for ( ; ;)
 		{
-			if ( input.LA(1)==CharStreamConstants.EOF )
+			if ( input.LA(1)==CharStreamConstants.Eof )
 			{
-				return TokenConstants.EOF_TOKEN;
+				return TokenConstants.EofToken;
 			}
 			state.token = null;
-			state.channel = TokenConstants.DEFAULT_CHANNEL;
+			state.channel = TokenConstants.DefaultChannel;
 			state.tokenStartCharIndex = input.Index;
 			state.tokenStartCharPositionInLine = input.CharPositionInLine;
 			state.tokenStartLine = input.Line;
@@ -164,7 +164,7 @@ public partial class ActionTranslator : Lexer
 		try
 		{
 			int _type = SET_ENCLOSING_RULE_SCOPE_ATTR;
-			int _channel = DEFAULT_TOKEN_CHANNEL;
+			int _channel = DefaultTokenChannel;
 			IToken x=null;
 			IToken y=null;
 			IToken expr=null;
@@ -175,11 +175,11 @@ public partial class ActionTranslator : Lexer
 			Match('$'); if (state.failed) return ;
 			int xStart60 = GetCharIndex();
 			mID(); if (state.failed) return ;
-			x = new CommonToken(input, TokenConstants.INVALID_TOKEN_TYPE, TokenConstants.DEFAULT_CHANNEL, xStart60, GetCharIndex()-1);
+			x = new CommonToken(input, TokenConstants.InvalidTokenType, TokenConstants.DefaultChannel, xStart60, GetCharIndex()-1);
 			Match('.'); if (state.failed) return ;
 			int yStart66 = GetCharIndex();
 			mID(); if (state.failed) return ;
-			y = new CommonToken(input, TokenConstants.INVALID_TOKEN_TYPE, TokenConstants.DEFAULT_CHANNEL, yStart66, GetCharIndex()-1);
+			y = new CommonToken(input, TokenConstants.InvalidTokenType, TokenConstants.DefaultChannel, yStart66, GetCharIndex()-1);
 			// Grammars\\ActionTranslator.g3:91:22: ( WS )?
 			int alt1=2;
 			int LA1_0 = input.LA(1);
@@ -203,7 +203,7 @@ public partial class ActionTranslator : Lexer
 			Match('='); if (state.failed) return ;
 			int exprStart75 = GetCharIndex();
 			mATTR_VALUE_EXPR(); if (state.failed) return ;
-			expr = new CommonToken(input, TokenConstants.INVALID_TOKEN_TYPE, TokenConstants.DEFAULT_CHANNEL, exprStart75, GetCharIndex()-1);
+			expr = new CommonToken(input, TokenConstants.InvalidTokenType, TokenConstants.DefaultChannel, exprStart75, GetCharIndex()-1);
 			Match(';'); if (state.failed) return ;
 			if ( !((enclosingRule!=null &&
 				                         (x!=null?x.Text:null).Equals(enclosingRule.name) &&
@@ -278,7 +278,7 @@ public partial class ActionTranslator : Lexer
 		try
 		{
 			int _type = ENCLOSING_RULE_SCOPE_ATTR;
-			int _channel = DEFAULT_TOKEN_CHANNEL;
+			int _channel = DefaultTokenChannel;
 			IToken x=null;
 			IToken y=null;
 
@@ -288,11 +288,11 @@ public partial class ActionTranslator : Lexer
 			Match('$'); if (state.failed) return ;
 			int xStart107 = GetCharIndex();
 			mID(); if (state.failed) return ;
-			x = new CommonToken(input, TokenConstants.INVALID_TOKEN_TYPE, TokenConstants.DEFAULT_CHANNEL, xStart107, GetCharIndex()-1);
+			x = new CommonToken(input, TokenConstants.InvalidTokenType, TokenConstants.DefaultChannel, xStart107, GetCharIndex()-1);
 			Match('.'); if (state.failed) return ;
 			int yStart113 = GetCharIndex();
 			mID(); if (state.failed) return ;
-			y = new CommonToken(input, TokenConstants.INVALID_TOKEN_TYPE, TokenConstants.DEFAULT_CHANNEL, yStart113, GetCharIndex()-1);
+			y = new CommonToken(input, TokenConstants.InvalidTokenType, TokenConstants.DefaultChannel, yStart113, GetCharIndex()-1);
 			if ( !((enclosingRule!=null &&
 				                         (x!=null?x.Text:null).Equals(enclosingRule.name) &&
 				                         enclosingRule.getLocalAttributeScope((y!=null?y.Text:null))!=null)) )
@@ -358,7 +358,7 @@ public partial class ActionTranslator : Lexer
 		try
 		{
 			int _type = SET_TOKEN_SCOPE_ATTR;
-			int _channel = DEFAULT_TOKEN_CHANNEL;
+			int _channel = DefaultTokenChannel;
 			IToken x=null;
 			IToken y=null;
 
@@ -368,11 +368,11 @@ public partial class ActionTranslator : Lexer
 			Match('$'); if (state.failed) return ;
 			int xStart139 = GetCharIndex();
 			mID(); if (state.failed) return ;
-			x = new CommonToken(input, TokenConstants.INVALID_TOKEN_TYPE, TokenConstants.DEFAULT_CHANNEL, xStart139, GetCharIndex()-1);
+			x = new CommonToken(input, TokenConstants.InvalidTokenType, TokenConstants.DefaultChannel, xStart139, GetCharIndex()-1);
 			Match('.'); if (state.failed) return ;
 			int yStart145 = GetCharIndex();
 			mID(); if (state.failed) return ;
-			y = new CommonToken(input, TokenConstants.INVALID_TOKEN_TYPE, TokenConstants.DEFAULT_CHANNEL, yStart145, GetCharIndex()-1);
+			y = new CommonToken(input, TokenConstants.InvalidTokenType, TokenConstants.DefaultChannel, yStart145, GetCharIndex()-1);
 			// Grammars\\ActionTranslator.g3:188:22: ( WS )?
 			int alt2=2;
 			int LA2_0 = input.LA(1);
@@ -430,7 +430,7 @@ public partial class ActionTranslator : Lexer
 		try
 		{
 			int _type = TOKEN_SCOPE_ATTR;
-			int _channel = DEFAULT_TOKEN_CHANNEL;
+			int _channel = DefaultTokenChannel;
 			IToken x=null;
 			IToken y=null;
 
@@ -440,11 +440,11 @@ public partial class ActionTranslator : Lexer
 			Match('$'); if (state.failed) return ;
 			int xStart184 = GetCharIndex();
 			mID(); if (state.failed) return ;
-			x = new CommonToken(input, TokenConstants.INVALID_TOKEN_TYPE, TokenConstants.DEFAULT_CHANNEL, xStart184, GetCharIndex()-1);
+			x = new CommonToken(input, TokenConstants.InvalidTokenType, TokenConstants.DefaultChannel, xStart184, GetCharIndex()-1);
 			Match('.'); if (state.failed) return ;
 			int yStart190 = GetCharIndex();
 			mID(); if (state.failed) return ;
-			y = new CommonToken(input, TokenConstants.INVALID_TOKEN_TYPE, TokenConstants.DEFAULT_CHANNEL, yStart190, GetCharIndex()-1);
+			y = new CommonToken(input, TokenConstants.InvalidTokenType, TokenConstants.DefaultChannel, yStart190, GetCharIndex()-1);
 			if ( !((enclosingRule!=null &&
 				                         (enclosingRule.getTokenLabel((x!=null?x.Text:null))!=null||
 				                          isTokenRefInAlt((x!=null?x.Text:null))) &&
@@ -497,7 +497,7 @@ public partial class ActionTranslator : Lexer
 		try
 		{
 			int _type = SET_RULE_SCOPE_ATTR;
-			int _channel = DEFAULT_TOKEN_CHANNEL;
+			int _channel = DefaultTokenChannel;
 			IToken x=null;
 			IToken y=null;
 
@@ -511,11 +511,11 @@ public partial class ActionTranslator : Lexer
 			Match('$'); if (state.failed) return ;
 			int xStart221 = GetCharIndex();
 			mID(); if (state.failed) return ;
-			x = new CommonToken(input, TokenConstants.INVALID_TOKEN_TYPE, TokenConstants.DEFAULT_CHANNEL, xStart221, GetCharIndex()-1);
+			x = new CommonToken(input, TokenConstants.InvalidTokenType, TokenConstants.DefaultChannel, xStart221, GetCharIndex()-1);
 			Match('.'); if (state.failed) return ;
 			int yStart227 = GetCharIndex();
 			mID(); if (state.failed) return ;
-			y = new CommonToken(input, TokenConstants.INVALID_TOKEN_TYPE, TokenConstants.DEFAULT_CHANNEL, yStart227, GetCharIndex()-1);
+			y = new CommonToken(input, TokenConstants.InvalidTokenType, TokenConstants.DefaultChannel, yStart227, GetCharIndex()-1);
 			// Grammars\\ActionTranslator.g3:248:22: ( WS )?
 			int alt3=2;
 			int LA3_0 = input.LA(1);
@@ -587,7 +587,7 @@ public partial class ActionTranslator : Lexer
 		try
 		{
 			int _type = RULE_SCOPE_ATTR;
-			int _channel = DEFAULT_TOKEN_CHANNEL;
+			int _channel = DefaultTokenChannel;
 			IToken x=null;
 			IToken y=null;
 
@@ -601,11 +601,11 @@ public partial class ActionTranslator : Lexer
 			Match('$'); if (state.failed) return ;
 			int xStart280 = GetCharIndex();
 			mID(); if (state.failed) return ;
-			x = new CommonToken(input, TokenConstants.INVALID_TOKEN_TYPE, TokenConstants.DEFAULT_CHANNEL, xStart280, GetCharIndex()-1);
+			x = new CommonToken(input, TokenConstants.InvalidTokenType, TokenConstants.DefaultChannel, xStart280, GetCharIndex()-1);
 			Match('.'); if (state.failed) return ;
 			int yStart286 = GetCharIndex();
 			mID(); if (state.failed) return ;
-			y = new CommonToken(input, TokenConstants.INVALID_TOKEN_TYPE, TokenConstants.DEFAULT_CHANNEL, yStart286, GetCharIndex()-1);
+			y = new CommonToken(input, TokenConstants.InvalidTokenType, TokenConstants.DefaultChannel, yStart286, GetCharIndex()-1);
 			if ( !((enclosingRule!=null)) )
 			{
 				if (state.backtracking>0) {state.failed=true; return ;}
@@ -693,7 +693,7 @@ public partial class ActionTranslator : Lexer
 		try
 		{
 			int _type = LABEL_REF;
-			int _channel = DEFAULT_TOKEN_CHANNEL;
+			int _channel = DefaultTokenChannel;
 			IToken ID1=null;
 
 			// Grammars\\ActionTranslator.g3:343:4: ( '$' ID {...}?)
@@ -702,7 +702,7 @@ public partial class ActionTranslator : Lexer
 			Match('$'); if (state.failed) return ;
 			int ID1Start328 = GetCharIndex();
 			mID(); if (state.failed) return ;
-			ID1 = new CommonToken(input, TokenConstants.INVALID_TOKEN_TYPE, TokenConstants.DEFAULT_CHANNEL, ID1Start328, GetCharIndex()-1);
+			ID1 = new CommonToken(input, TokenConstants.InvalidTokenType, TokenConstants.DefaultChannel, ID1Start328, GetCharIndex()-1);
 			if ( !((enclosingRule!=null &&
 				            getElementLabel((ID1!=null?ID1.Text:null))!=null &&
 					        enclosingRule.getRuleLabel((ID1!=null?ID1.Text:null))==null)) )
@@ -746,7 +746,7 @@ public partial class ActionTranslator : Lexer
 		try
 		{
 			int _type = ISOLATED_TOKEN_REF;
-			int _channel = DEFAULT_TOKEN_CHANNEL;
+			int _channel = DefaultTokenChannel;
 			IToken ID2=null;
 
 			// Grammars\\ActionTranslator.g3:366:4: ( '$' ID {...}?)
@@ -755,7 +755,7 @@ public partial class ActionTranslator : Lexer
 			Match('$'); if (state.failed) return ;
 			int ID2Start352 = GetCharIndex();
 			mID(); if (state.failed) return ;
-			ID2 = new CommonToken(input, TokenConstants.INVALID_TOKEN_TYPE, TokenConstants.DEFAULT_CHANNEL, ID2Start352, GetCharIndex()-1);
+			ID2 = new CommonToken(input, TokenConstants.InvalidTokenType, TokenConstants.DefaultChannel, ID2Start352, GetCharIndex()-1);
 			if ( !((grammar.type!=Grammar.LEXER && enclosingRule!=null && isTokenRefInAlt((ID2!=null?ID2.Text:null)))) )
 			{
 				if (state.backtracking>0) {state.failed=true; return ;}
@@ -798,7 +798,7 @@ public partial class ActionTranslator : Lexer
 		try
 		{
 			int _type = ISOLATED_LEXER_RULE_REF;
-			int _channel = DEFAULT_TOKEN_CHANNEL;
+			int _channel = DefaultTokenChannel;
 			IToken ID3=null;
 
 			// Grammars\\ActionTranslator.g3:388:4: ( '$' ID {...}?)
@@ -807,7 +807,7 @@ public partial class ActionTranslator : Lexer
 			Match('$'); if (state.failed) return ;
 			int ID3Start376 = GetCharIndex();
 			mID(); if (state.failed) return ;
-			ID3 = new CommonToken(input, TokenConstants.INVALID_TOKEN_TYPE, TokenConstants.DEFAULT_CHANNEL, ID3Start376, GetCharIndex()-1);
+			ID3 = new CommonToken(input, TokenConstants.InvalidTokenType, TokenConstants.DefaultChannel, ID3Start376, GetCharIndex()-1);
 			if ( !((grammar.type==Grammar.LEXER &&
 				             enclosingRule!=null &&
 				             isRuleRefInAlt((ID3!=null?ID3.Text:null)))) )
@@ -852,7 +852,7 @@ public partial class ActionTranslator : Lexer
 		try
 		{
 			int _type = SET_LOCAL_ATTR;
-			int _channel = DEFAULT_TOKEN_CHANNEL;
+			int _channel = DefaultTokenChannel;
 			IToken expr=null;
 			IToken ID4=null;
 
@@ -862,7 +862,7 @@ public partial class ActionTranslator : Lexer
 			Match('$'); if (state.failed) return ;
 			int ID4Start400 = GetCharIndex();
 			mID(); if (state.failed) return ;
-			ID4 = new CommonToken(input, TokenConstants.INVALID_TOKEN_TYPE, TokenConstants.DEFAULT_CHANNEL, ID4Start400, GetCharIndex()-1);
+			ID4 = new CommonToken(input, TokenConstants.InvalidTokenType, TokenConstants.DefaultChannel, ID4Start400, GetCharIndex()-1);
 			// Grammars\\ActionTranslator.g3:422:11: ( WS )?
 			int alt4=2;
 			int LA4_0 = input.LA(1);
@@ -886,7 +886,7 @@ public partial class ActionTranslator : Lexer
 			Match('='); if (state.failed) return ;
 			int exprStart409 = GetCharIndex();
 			mATTR_VALUE_EXPR(); if (state.failed) return ;
-			expr = new CommonToken(input, TokenConstants.INVALID_TOKEN_TYPE, TokenConstants.DEFAULT_CHANNEL, exprStart409, GetCharIndex()-1);
+			expr = new CommonToken(input, TokenConstants.InvalidTokenType, TokenConstants.DefaultChannel, exprStart409, GetCharIndex()-1);
 			Match(';'); if (state.failed) return ;
 			if ( !((enclosingRule!=null
 																&& enclosingRule.getLocalAttributeScope((ID4!=null?ID4.Text:null))!=null
@@ -952,7 +952,7 @@ public partial class ActionTranslator : Lexer
 		try
 		{
 			int _type = LOCAL_ATTR;
-			int _channel = DEFAULT_TOKEN_CHANNEL;
+			int _channel = DefaultTokenChannel;
 			IToken ID5=null;
 
 			// Grammars\\ActionTranslator.g3:464:4: ( '$' ID {...}?)
@@ -961,7 +961,7 @@ public partial class ActionTranslator : Lexer
 			Match('$'); if (state.failed) return ;
 			int ID5Start432 = GetCharIndex();
 			mID(); if (state.failed) return ;
-			ID5 = new CommonToken(input, TokenConstants.INVALID_TOKEN_TYPE, TokenConstants.DEFAULT_CHANNEL, ID5Start432, GetCharIndex()-1);
+			ID5 = new CommonToken(input, TokenConstants.InvalidTokenType, TokenConstants.DefaultChannel, ID5Start432, GetCharIndex()-1);
 			if ( !((enclosingRule!=null && enclosingRule.getLocalAttributeScope((ID5!=null?ID5.Text:null))!=null)) )
 			{
 				if (state.backtracking>0) {state.failed=true; return ;}
@@ -1016,7 +1016,7 @@ public partial class ActionTranslator : Lexer
 		try
 		{
 			int _type = SET_DYNAMIC_SCOPE_ATTR;
-			int _channel = DEFAULT_TOKEN_CHANNEL;
+			int _channel = DefaultTokenChannel;
 			IToken x=null;
 			IToken y=null;
 			IToken expr=null;
@@ -1027,12 +1027,12 @@ public partial class ActionTranslator : Lexer
 			Match('$'); if (state.failed) return ;
 			int xStart458 = GetCharIndex();
 			mID(); if (state.failed) return ;
-			x = new CommonToken(input, TokenConstants.INVALID_TOKEN_TYPE, TokenConstants.DEFAULT_CHANNEL, xStart458, GetCharIndex()-1);
+			x = new CommonToken(input, TokenConstants.InvalidTokenType, TokenConstants.DefaultChannel, xStart458, GetCharIndex()-1);
 			Match("::"); if (state.failed) return ;
 
 			int yStart464 = GetCharIndex();
 			mID(); if (state.failed) return ;
-			y = new CommonToken(input, TokenConstants.INVALID_TOKEN_TYPE, TokenConstants.DEFAULT_CHANNEL, yStart464, GetCharIndex()-1);
+			y = new CommonToken(input, TokenConstants.InvalidTokenType, TokenConstants.DefaultChannel, yStart464, GetCharIndex()-1);
 			// Grammars\\ActionTranslator.g3:509:23: ( WS )?
 			int alt5=2;
 			int LA5_0 = input.LA(1);
@@ -1056,7 +1056,7 @@ public partial class ActionTranslator : Lexer
 			Match('='); if (state.failed) return ;
 			int exprStart473 = GetCharIndex();
 			mATTR_VALUE_EXPR(); if (state.failed) return ;
-			expr = new CommonToken(input, TokenConstants.INVALID_TOKEN_TYPE, TokenConstants.DEFAULT_CHANNEL, exprStart473, GetCharIndex()-1);
+			expr = new CommonToken(input, TokenConstants.InvalidTokenType, TokenConstants.DefaultChannel, exprStart473, GetCharIndex()-1);
 			Match(';'); if (state.failed) return ;
 			if ( !((resolveDynamicScope((x!=null?x.Text:null))!=null &&
 									     resolveDynamicScope((x!=null?x.Text:null)).getAttribute((y!=null?y.Text:null))!=null)) )
@@ -1099,7 +1099,7 @@ public partial class ActionTranslator : Lexer
 		try
 		{
 			int _type = DYNAMIC_SCOPE_ATTR;
-			int _channel = DEFAULT_TOKEN_CHANNEL;
+			int _channel = DefaultTokenChannel;
 			IToken x=null;
 			IToken y=null;
 
@@ -1109,12 +1109,12 @@ public partial class ActionTranslator : Lexer
 			Match('$'); if (state.failed) return ;
 			int xStart508 = GetCharIndex();
 			mID(); if (state.failed) return ;
-			x = new CommonToken(input, TokenConstants.INVALID_TOKEN_TYPE, TokenConstants.DEFAULT_CHANNEL, xStart508, GetCharIndex()-1);
+			x = new CommonToken(input, TokenConstants.InvalidTokenType, TokenConstants.DefaultChannel, xStart508, GetCharIndex()-1);
 			Match("::"); if (state.failed) return ;
 
 			int yStart514 = GetCharIndex();
 			mID(); if (state.failed) return ;
-			y = new CommonToken(input, TokenConstants.INVALID_TOKEN_TYPE, TokenConstants.DEFAULT_CHANNEL, yStart514, GetCharIndex()-1);
+			y = new CommonToken(input, TokenConstants.InvalidTokenType, TokenConstants.DefaultChannel, yStart514, GetCharIndex()-1);
 			if ( !((resolveDynamicScope((x!=null?x.Text:null))!=null &&
 									     resolveDynamicScope((x!=null?x.Text:null)).getAttribute((y!=null?y.Text:null))!=null)) )
 			{
@@ -1155,7 +1155,7 @@ public partial class ActionTranslator : Lexer
 		try
 		{
 			int _type = ERROR_SCOPED_XY;
-			int _channel = DEFAULT_TOKEN_CHANNEL;
+			int _channel = DefaultTokenChannel;
 			IToken x=null;
 			IToken y=null;
 
@@ -1165,12 +1165,12 @@ public partial class ActionTranslator : Lexer
 			Match('$'); if (state.failed) return ;
 			int xStart548 = GetCharIndex();
 			mID(); if (state.failed) return ;
-			x = new CommonToken(input, TokenConstants.INVALID_TOKEN_TYPE, TokenConstants.DEFAULT_CHANNEL, xStart548, GetCharIndex()-1);
+			x = new CommonToken(input, TokenConstants.InvalidTokenType, TokenConstants.DefaultChannel, xStart548, GetCharIndex()-1);
 			Match("::"); if (state.failed) return ;
 
 			int yStart554 = GetCharIndex();
 			mID(); if (state.failed) return ;
-			y = new CommonToken(input, TokenConstants.INVALID_TOKEN_TYPE, TokenConstants.DEFAULT_CHANNEL, yStart554, GetCharIndex()-1);
+			y = new CommonToken(input, TokenConstants.InvalidTokenType, TokenConstants.DefaultChannel, yStart554, GetCharIndex()-1);
 			if ( state.backtracking==1 )
 			{
 
@@ -1198,7 +1198,7 @@ public partial class ActionTranslator : Lexer
 		try
 		{
 			int _type = DYNAMIC_NEGATIVE_INDEXED_SCOPE_ATTR;
-			int _channel = DEFAULT_TOKEN_CHANNEL;
+			int _channel = DefaultTokenChannel;
 			IToken x=null;
 			IToken expr=null;
 			IToken y=null;
@@ -1209,18 +1209,18 @@ public partial class ActionTranslator : Lexer
 			Match('$'); if (state.failed) return ;
 			int xStart576 = GetCharIndex();
 			mID(); if (state.failed) return ;
-			x = new CommonToken(input, TokenConstants.INVALID_TOKEN_TYPE, TokenConstants.DEFAULT_CHANNEL, xStart576, GetCharIndex()-1);
+			x = new CommonToken(input, TokenConstants.InvalidTokenType, TokenConstants.DefaultChannel, xStart576, GetCharIndex()-1);
 			Match('['); if (state.failed) return ;
 			Match('-'); if (state.failed) return ;
 			int exprStart584 = GetCharIndex();
 			mSCOPE_INDEX_EXPR(); if (state.failed) return ;
-			expr = new CommonToken(input, TokenConstants.INVALID_TOKEN_TYPE, TokenConstants.DEFAULT_CHANNEL, exprStart584, GetCharIndex()-1);
+			expr = new CommonToken(input, TokenConstants.InvalidTokenType, TokenConstants.DefaultChannel, exprStart584, GetCharIndex()-1);
 			Match(']'); if (state.failed) return ;
 			Match("::"); if (state.failed) return ;
 
 			int yStart592 = GetCharIndex();
 			mID(); if (state.failed) return ;
-			y = new CommonToken(input, TokenConstants.INVALID_TOKEN_TYPE, TokenConstants.DEFAULT_CHANNEL, yStart592, GetCharIndex()-1);
+			y = new CommonToken(input, TokenConstants.InvalidTokenType, TokenConstants.DefaultChannel, yStart592, GetCharIndex()-1);
 			if ( state.backtracking==1 )
 			{
 
@@ -1248,7 +1248,7 @@ public partial class ActionTranslator : Lexer
 		try
 		{
 			int _type = DYNAMIC_ABSOLUTE_INDEXED_SCOPE_ATTR;
-			int _channel = DEFAULT_TOKEN_CHANNEL;
+			int _channel = DefaultTokenChannel;
 			IToken x=null;
 			IToken expr=null;
 			IToken y=null;
@@ -1259,17 +1259,17 @@ public partial class ActionTranslator : Lexer
 			Match('$'); if (state.failed) return ;
 			int xStart616 = GetCharIndex();
 			mID(); if (state.failed) return ;
-			x = new CommonToken(input, TokenConstants.INVALID_TOKEN_TYPE, TokenConstants.DEFAULT_CHANNEL, xStart616, GetCharIndex()-1);
+			x = new CommonToken(input, TokenConstants.InvalidTokenType, TokenConstants.DefaultChannel, xStart616, GetCharIndex()-1);
 			Match('['); if (state.failed) return ;
 			int exprStart622 = GetCharIndex();
 			mSCOPE_INDEX_EXPR(); if (state.failed) return ;
-			expr = new CommonToken(input, TokenConstants.INVALID_TOKEN_TYPE, TokenConstants.DEFAULT_CHANNEL, exprStart622, GetCharIndex()-1);
+			expr = new CommonToken(input, TokenConstants.InvalidTokenType, TokenConstants.DefaultChannel, exprStart622, GetCharIndex()-1);
 			Match(']'); if (state.failed) return ;
 			Match("::"); if (state.failed) return ;
 
 			int yStart630 = GetCharIndex();
 			mID(); if (state.failed) return ;
-			y = new CommonToken(input, TokenConstants.INVALID_TOKEN_TYPE, TokenConstants.DEFAULT_CHANNEL, yStart630, GetCharIndex()-1);
+			y = new CommonToken(input, TokenConstants.InvalidTokenType, TokenConstants.DefaultChannel, yStart630, GetCharIndex()-1);
 			if ( state.backtracking==1 )
 			{
 
@@ -1353,7 +1353,7 @@ public partial class ActionTranslator : Lexer
 		try
 		{
 			int _type = ISOLATED_DYNAMIC_SCOPE;
-			int _channel = DEFAULT_TOKEN_CHANNEL;
+			int _channel = DefaultTokenChannel;
 			IToken ID6=null;
 
 			// Grammars\\ActionTranslator.g3:601:4: ( '$' ID {...}?)
@@ -1362,7 +1362,7 @@ public partial class ActionTranslator : Lexer
 			Match('$'); if (state.failed) return ;
 			int ID6Start673 = GetCharIndex();
 			mID(); if (state.failed) return ;
-			ID6 = new CommonToken(input, TokenConstants.INVALID_TOKEN_TYPE, TokenConstants.DEFAULT_CHANNEL, ID6Start673, GetCharIndex()-1);
+			ID6 = new CommonToken(input, TokenConstants.InvalidTokenType, TokenConstants.DefaultChannel, ID6Start673, GetCharIndex()-1);
 			if ( !((resolveDynamicScope((ID6!=null?ID6.Text:null))!=null)) )
 			{
 				if (state.backtracking>0) {state.failed=true; return ;}
@@ -1393,7 +1393,7 @@ public partial class ActionTranslator : Lexer
 		try
 		{
 			int _type = TEMPLATE_INSTANCE;
-			int _channel = DEFAULT_TOKEN_CHANNEL;
+			int _channel = DefaultTokenChannel;
 			// Grammars\\ActionTranslator.g3:614:4: ( '%' ID '(' ( ( WS )? ARG ( ',' ( WS )? ARG )* ( WS )? )? ')' )
 			// Grammars\\ActionTranslator.g3:614:4: '%' ID '(' ( ( WS )? ARG ( ',' ( WS )? ARG )* ( WS )? )? ')'
 			{
@@ -1551,7 +1551,7 @@ public partial class ActionTranslator : Lexer
 		try
 		{
 			int _type = INDIRECT_TEMPLATE_INSTANCE;
-			int _channel = DEFAULT_TOKEN_CHANNEL;
+			int _channel = DefaultTokenChannel;
 			// Grammars\\ActionTranslator.g3:637:4: ( '%' '(' ACTION ')' '(' ( ( WS )? ARG ( ',' ( WS )? ARG )* ( WS )? )? ')' )
 			// Grammars\\ActionTranslator.g3:637:4: '%' '(' ACTION ')' '(' ( ( WS )? ARG ( ',' ( WS )? ARG )* ( WS )? )? ')'
 			{
@@ -1724,7 +1724,7 @@ public partial class ActionTranslator : Lexer
 		try
 		{
 			int _type = SET_EXPR_ATTRIBUTE;
-			int _channel = DEFAULT_TOKEN_CHANNEL;
+			int _channel = DefaultTokenChannel;
 			IToken a=null;
 			IToken expr=null;
 			IToken ID7=null;
@@ -1735,11 +1735,11 @@ public partial class ActionTranslator : Lexer
 			Match('%'); if (state.failed) return ;
 			int aStart823 = GetCharIndex();
 			mACTION(); if (state.failed) return ;
-			a = new CommonToken(input, TokenConstants.INVALID_TOKEN_TYPE, TokenConstants.DEFAULT_CHANNEL, aStart823, GetCharIndex()-1);
+			a = new CommonToken(input, TokenConstants.InvalidTokenType, TokenConstants.DefaultChannel, aStart823, GetCharIndex()-1);
 			Match('.'); if (state.failed) return ;
 			int ID7Start827 = GetCharIndex();
 			mID(); if (state.failed) return ;
-			ID7 = new CommonToken(input, TokenConstants.INVALID_TOKEN_TYPE, TokenConstants.DEFAULT_CHANNEL, ID7Start827, GetCharIndex()-1);
+			ID7 = new CommonToken(input, TokenConstants.InvalidTokenType, TokenConstants.DefaultChannel, ID7Start827, GetCharIndex()-1);
 			// Grammars\\ActionTranslator.g3:656:24: ( WS )?
 			int alt17=2;
 			int LA17_0 = input.LA(1);
@@ -1763,7 +1763,7 @@ public partial class ActionTranslator : Lexer
 			Match('='); if (state.failed) return ;
 			int exprStart836 = GetCharIndex();
 			mATTR_VALUE_EXPR(); if (state.failed) return ;
-			expr = new CommonToken(input, TokenConstants.INVALID_TOKEN_TYPE, TokenConstants.DEFAULT_CHANNEL, exprStart836, GetCharIndex()-1);
+			expr = new CommonToken(input, TokenConstants.InvalidTokenType, TokenConstants.DefaultChannel, exprStart836, GetCharIndex()-1);
 			Match(';'); if (state.failed) return ;
 			if ( state.backtracking==1 )
 			{
@@ -1794,7 +1794,7 @@ public partial class ActionTranslator : Lexer
 		try
 		{
 			int _type = SET_ATTRIBUTE;
-			int _channel = DEFAULT_TOKEN_CHANNEL;
+			int _channel = DefaultTokenChannel;
 			IToken x=null;
 			IToken y=null;
 			IToken expr=null;
@@ -1805,11 +1805,11 @@ public partial class ActionTranslator : Lexer
 			Match('%'); if (state.failed) return ;
 			int xStart863 = GetCharIndex();
 			mID(); if (state.failed) return ;
-			x = new CommonToken(input, TokenConstants.INVALID_TOKEN_TYPE, TokenConstants.DEFAULT_CHANNEL, xStart863, GetCharIndex()-1);
+			x = new CommonToken(input, TokenConstants.InvalidTokenType, TokenConstants.DefaultChannel, xStart863, GetCharIndex()-1);
 			Match('.'); if (state.failed) return ;
 			int yStart869 = GetCharIndex();
 			mID(); if (state.failed) return ;
-			y = new CommonToken(input, TokenConstants.INVALID_TOKEN_TYPE, TokenConstants.DEFAULT_CHANNEL, yStart869, GetCharIndex()-1);
+			y = new CommonToken(input, TokenConstants.InvalidTokenType, TokenConstants.DefaultChannel, yStart869, GetCharIndex()-1);
 			// Grammars\\ActionTranslator.g3:673:22: ( WS )?
 			int alt18=2;
 			int LA18_0 = input.LA(1);
@@ -1833,7 +1833,7 @@ public partial class ActionTranslator : Lexer
 			Match('='); if (state.failed) return ;
 			int exprStart878 = GetCharIndex();
 			mATTR_VALUE_EXPR(); if (state.failed) return ;
-			expr = new CommonToken(input, TokenConstants.INVALID_TOKEN_TYPE, TokenConstants.DEFAULT_CHANNEL, exprStart878, GetCharIndex()-1);
+			expr = new CommonToken(input, TokenConstants.InvalidTokenType, TokenConstants.DefaultChannel, exprStart878, GetCharIndex()-1);
 			Match(';'); if (state.failed) return ;
 			if ( state.backtracking==1 )
 			{
@@ -1924,7 +1924,7 @@ public partial class ActionTranslator : Lexer
 		try
 		{
 			int _type = TEMPLATE_EXPR;
-			int _channel = DEFAULT_TOKEN_CHANNEL;
+			int _channel = DefaultTokenChannel;
 			IToken a=null;
 
 			// Grammars\\ActionTranslator.g3:691:4: ( '%' a= ACTION )
@@ -1933,7 +1933,7 @@ public partial class ActionTranslator : Lexer
 			Match('%'); if (state.failed) return ;
 			int aStart927 = GetCharIndex();
 			mACTION(); if (state.failed) return ;
-			a = new CommonToken(input, TokenConstants.INVALID_TOKEN_TYPE, TokenConstants.DEFAULT_CHANNEL, aStart927, GetCharIndex()-1);
+			a = new CommonToken(input, TokenConstants.InvalidTokenType, TokenConstants.DefaultChannel, aStart927, GetCharIndex()-1);
 			if ( state.backtracking==1 )
 			{
 
@@ -2016,7 +2016,7 @@ public partial class ActionTranslator : Lexer
 		try
 		{
 			int _type = ESC;
-			int _channel = DEFAULT_TOKEN_CHANNEL;
+			int _channel = DefaultTokenChannel;
 			// Grammars\\ActionTranslator.g3:707:4: ( '\\\\' '$' | '\\\\' '%' | '\\\\' ~ ( '$' | '%' ) )
 			int alt21=3;
 			int LA21_0 = input.LA(1);
@@ -2108,7 +2108,7 @@ public partial class ActionTranslator : Lexer
 		try
 		{
 			int _type = ERROR_XY;
-			int _channel = DEFAULT_TOKEN_CHANNEL;
+			int _channel = DefaultTokenChannel;
 			IToken x=null;
 			IToken y=null;
 
@@ -2118,11 +2118,11 @@ public partial class ActionTranslator : Lexer
 			Match('$'); if (state.failed) return ;
 			int xStart1016 = GetCharIndex();
 			mID(); if (state.failed) return ;
-			x = new CommonToken(input, TokenConstants.INVALID_TOKEN_TYPE, TokenConstants.DEFAULT_CHANNEL, xStart1016, GetCharIndex()-1);
+			x = new CommonToken(input, TokenConstants.InvalidTokenType, TokenConstants.DefaultChannel, xStart1016, GetCharIndex()-1);
 			Match('.'); if (state.failed) return ;
 			int yStart1022 = GetCharIndex();
 			mID(); if (state.failed) return ;
-			y = new CommonToken(input, TokenConstants.INVALID_TOKEN_TYPE, TokenConstants.DEFAULT_CHANNEL, yStart1022, GetCharIndex()-1);
+			y = new CommonToken(input, TokenConstants.InvalidTokenType, TokenConstants.DefaultChannel, yStart1022, GetCharIndex()-1);
 			if ( state.backtracking==1 )
 			{
 
@@ -2150,7 +2150,7 @@ public partial class ActionTranslator : Lexer
 		try
 		{
 			int _type = ERROR_X;
-			int _channel = DEFAULT_TOKEN_CHANNEL;
+			int _channel = DefaultTokenChannel;
 			IToken x=null;
 
 			// Grammars\\ActionTranslator.g3:723:4: ( '$' x= ID )
@@ -2159,7 +2159,7 @@ public partial class ActionTranslator : Lexer
 			Match('$'); if (state.failed) return ;
 			int xStart1042 = GetCharIndex();
 			mID(); if (state.failed) return ;
-			x = new CommonToken(input, TokenConstants.INVALID_TOKEN_TYPE, TokenConstants.DEFAULT_CHANNEL, xStart1042, GetCharIndex()-1);
+			x = new CommonToken(input, TokenConstants.InvalidTokenType, TokenConstants.DefaultChannel, xStart1042, GetCharIndex()-1);
 			if ( state.backtracking==1 )
 			{
 
@@ -2187,7 +2187,7 @@ public partial class ActionTranslator : Lexer
 		try
 		{
 			int _type = UNKNOWN_SYNTAX;
-			int _channel = DEFAULT_TOKEN_CHANNEL;
+			int _channel = DefaultTokenChannel;
 			// Grammars\\ActionTranslator.g3:733:4: ( '$' | '%' ( ID | '.' | '(' | ')' | ',' | '{' | '}' | '\"' )* )
 			int alt23=2;
 			int LA23_0 = input.LA(1);
@@ -2330,7 +2330,7 @@ public partial class ActionTranslator : Lexer
 		try
 		{
 			int _type = TEXT;
-			int _channel = DEFAULT_TOKEN_CHANNEL;
+			int _channel = DefaultTokenChannel;
 			// Grammars\\ActionTranslator.g3:749:4: ( (~ ( '$' | '%' | '\\\\' ) )+ )
 			// Grammars\\ActionTranslator.g3:749:4: (~ ( '$' | '%' | '\\\\' ) )+
 			{

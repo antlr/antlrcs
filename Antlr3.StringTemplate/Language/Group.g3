@@ -348,13 +348,13 @@ OPTIONAL : '?' ;
 SL_COMMENT
 	:	'//'
 		(~('\n'|'\r'))* (('\r')? '\n')?
-		{ $channel = HIDDEN; }
+		{ $channel = Hidden; }
 	;
 
 // multiple-line comments
 ML_COMMENT
 	:	'/*' .* '*/'
-		{ $channel = HIDDEN; }
+		{ $channel = Hidden; }
 	;
 
 // Whitespace -- ignored
@@ -363,5 +363,5 @@ WS  :   (   ' '
         |   '\f'
         |   ('\r')? '\n'
         )+
-        { $channel = HIDDEN; }
+        { $channel = Hidden; }
     ;

@@ -1532,7 +1532,7 @@ namespace Antlr3.Tool
                 // wait for these two threads to finish
                 try
                 {
-                    barrier.waitForRelease();
+                    barrier.WaitForRelease();
                 }
                 //catch ( InterruptedException e )
                 //{
@@ -1845,7 +1845,7 @@ namespace Antlr3.Tool
         public virtual void defineToken( string text, int tokenType )
         {
             //JSystem.@out.println("defineToken("+text+", "+tokenType+")");
-            if ( composite.tokenIDToTypeMap.ContainsKey( text ) && composite.tokenIDToTypeMap[text] < TokenConstants.MIN_TOKEN_TYPE )
+            if ( composite.tokenIDToTypeMap.ContainsKey( text ) && composite.tokenIDToTypeMap[text] < TokenConstants.MinTokenType )
             {
                 // already defined?  Must be predefined one like EOF;
                 // do nothing

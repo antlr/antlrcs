@@ -286,7 +286,7 @@ ACTION
 				$type = LITERAL;
 			}
 		|	('$!') => COMMENT
-			{ $channel = HIDDEN; }
+			{ $channel = Hidden; }
 		|	(	('$if' (' '|'(')) =>
 				'$if' (' ')* '(' exp=IF_EXPR ')$'
 				{
@@ -393,7 +393,7 @@ LITERAL
 		|	ch=~('$'|'\r'|'\n'|'\\'|' '|'\t') {builder.Append((char)$ch);}
 		)+
 		{Text = builder.ToString();}
-		{if ($text.Length==0) {$channel = HIDDEN;}} // pure indent?
+		{if ($text.Length==0) {$channel = Hidden;}} // pure indent?
 	;
 
 fragment

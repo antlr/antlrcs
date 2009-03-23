@@ -4,7 +4,7 @@
  * All rights reserved.
  *
  * Conversion to C#:
- * Copyright (c) 2008 Sam Harwell, Pixel Mine, Inc.
+ * Copyright (c) 2008-2009 Sam Harwell, Pixel Mine, Inc.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -44,15 +44,14 @@ namespace Antlr3.Tool
     using StringBuffer = System.Text.StringBuilder;
     using StringTemplate = Antlr3.ST.StringTemplate;
     using StringTemplateGroup = Antlr3.ST.StringTemplateGroup;
-    using Tool = Antlr3.AntlrTool;
 
     /** The DOT (part of graphviz) generation aspect. */
     public class DOTGenerator
     {
-        internal bool STRIP_NONREDUCED_STATES = false;
+        internal bool StripNonreducedStates = false;
 
-        protected String arrowhead = "normal";
-        protected String rankdir = "LR";
+        protected string arrowhead = "normal";
+        protected string rankdir = "LR";
 
         /** Library of output templates; use <attrname> format */
         public static StringTemplateGroup stlib =
@@ -62,7 +61,7 @@ namespace Antlr3.Tool
          *  which states we've visited.  Make a new set every time you start
          *  walking in case you reuse this object.
          */
-        protected ICollection<object> markedStates = null;
+        protected ICollection<int> markedStates;
 
         protected Grammar grammar;
 
@@ -77,14 +76,22 @@ namespace Antlr3.Tool
         {
             get
             {
-                return getArrowheadType();
+                return arrowhead;
+            }
+            set
+            {
+                arrowhead = value;
             }
         }
         public string RankDir
         {
             get
             {
-                return getRankdir();
+                return rankdir;
+            }
+            set
+            {
+                rankdir = value;
             }
         }
         #endregion
@@ -93,7 +100,7 @@ namespace Antlr3.Tool
          *  will show the incoming state machine visually.  All nodes reachable
          *  from startState will be included.
          */
-        public virtual String getDOT( State startState )
+        public virtual string getDOT( State startState )
         {
             if ( startState == null )
             {
@@ -101,14 +108,14 @@ namespace Antlr3.Tool
             }
             // The output DOT graph for visualization
             StringTemplate dot = null;
-            markedStates = new HashSet<object>();
+            markedStates = new HashSet<int>();
             if ( startState is DFAState )
             {
                 dot = stlib.GetInstanceOf( "org/antlr/tool/templates/dot/dfa" );
                 dot.SetAttribute( "startState",
                         startState.stateNumber );
                 dot.SetAttribute( "useBox",
-                                 Tool.internalOption_ShowNFAConfigsInDFA );
+                                 AntlrTool.internalOption_ShowNFAConfigsInDFA );
                 walkCreatingDFADOT( dot, (DFAState)startState );
             }
             else
@@ -122,20 +129,22 @@ namespace Antlr3.Tool
             return dot.ToString();
         }
 
+#if false
         /** Return a String containing a DOT description that, when displayed,
          *  will show the incoming state machine visually.  All nodes reachable
          *  from startState will be included.
-        public String getRuleNFADOT(State startState) {
-            // The output DOT graph for visualization
-            StringTemplate dot = stlib.getInstanceOf("org/antlr/tool/templates/dot/nfa");
-
-            markedStates = new HashSet();
-            dot.setAttribute("startState",
-                    Utils.integer(startState.stateNumber));
-            walkRuleNFACreatingDOT(dot, startState);
-            return dot.toString();
-        }
          */
+        public string getRuleNFADOT( State startState )
+        {
+            // The output DOT graph for visualization
+            StringTemplate dot = stlib.GetInstanceOf( "org/antlr/tool/templates/dot/nfa" );
+
+            markedStates = new HashSet<object>();
+            dot.SetAttribute( "startState", startState.stateNumber );
+            walkRuleNFACreatingDOT( dot, startState );
+            return dot.ToString();
+        }
+#endif
 
         /** Do a depth-first walk of the state machine graph and
          *  fill a DOT description template.  Keep filling the
@@ -168,11 +177,9 @@ namespace Antlr3.Tool
             for ( int i = 0; i < s.NumberOfTransitions; i++ )
             {
                 Transition edge = (Transition)s.transition( i );
-                /*
-                System.out.println("dfa "+s.dfa.decisionNumber+
-                    " edge from s"+s.stateNumber+" ["+i+"] of "+s.getNumberOfTransitions());
-                */
-                if ( STRIP_NONREDUCED_STATES )
+                //Console.Out.WriteLine( "dfa " + s.dfa.decisionNumber + " edge from s"
+                //    + s.stateNumber + " [" + i + "] of " + s.NumberOfTransitions );
+                if ( StripNonreducedStates )
                 {
                     if ( edge.target is DFAState &&
                         ( (DFAState)edge.target ).AcceptStateReachable != DFA.REACHABLE_YES )
@@ -199,12 +206,12 @@ namespace Antlr3.Tool
         protected virtual void walkRuleNFACreatingDOT( StringTemplate dot,
                                               State s )
         {
-            if ( markedStates.Contains( s ) )
+            if ( markedStates.Contains( s.stateNumber ) )
             {
                 return; // already visited this node
             }
 
-            markedStates.Add( s ); // mark this node as completed.
+            markedStates.Add( s.stateNumber ); // mark this node as completed.
 
             // first add this node
             StringTemplate stateST;
@@ -339,9 +346,9 @@ namespace Antlr3.Tool
         /** Fix edge strings so they print out in DOT properly;
          *  generate any gated predicates on edge too.
          */
-        protected virtual String getEdgeLabel( Transition edge )
+        protected virtual string getEdgeLabel( Transition edge )
         {
-            String label = edge.label.ToString( grammar );
+            string label = edge.label.ToString( grammar );
             label = label.Replace( "\\", "\\\\" );
             label = label.Replace( "\"", "\\\"" );
             label = label.Replace( "\n", "\\\\n" );
@@ -358,7 +365,7 @@ namespace Antlr3.Tool
                     ( (DFAState)target ).getGatedPredicatesInNFAConfigurations();
                 if ( preds != null )
                 {
-                    String predsStr = "";
+                    string predsStr = "";
                     predsStr = "&&{" +
                         preds.genExpr( grammar.generator,
                                       grammar.generator.Templates, null ).ToString()
@@ -369,19 +376,19 @@ namespace Antlr3.Tool
             return label;
         }
 
-        protected virtual String getStateLabel( State s )
+        protected virtual string getStateLabel( State s )
         {
             if ( s == null )
             {
                 return "null";
             }
-            String stateLabel = s.stateNumber.ToString();
+            string stateLabel = s.stateNumber.ToString();
             if ( s is DFAState )
             {
                 StringBuffer buf = new StringBuffer( 250 );
                 buf.Append( 's' );
                 buf.Append( s.stateNumber );
-                if ( Tool.internalOption_ShowNFAConfigsInDFA )
+                if ( AntlrTool.internalOption_ShowNFAConfigsInDFA )
                 {
                     if ( s is DFAState )
                     {
@@ -463,26 +470,6 @@ namespace Antlr3.Tool
                         "=>" + ( (DFAState)s ).getUniquelyPredictedAlt();
             }
             return '"' + stateLabel + '"';
-        }
-
-        public virtual String getArrowheadType()
-        {
-            return arrowhead;
-        }
-
-        public virtual void setArrowheadType( String arrowhead )
-        {
-            this.arrowhead = arrowhead;
-        }
-
-        public virtual String getRankdir()
-        {
-            return rankdir;
-        }
-
-        public virtual void setRankdir( String rankdir )
-        {
-            this.rankdir = rankdir;
         }
     }
 }

@@ -166,12 +166,12 @@ COLON	:	':';
 SL_COMMENT
 	:	'//'
 		(~('\n'|'\r'))* (('\r')? '\n')?
-		{ $channel = HIDDEN; }
+		{ $channel = Hidden; }
 	;
 
 ML_COMMENT
 	:	'/*' .* '*/'
-		{ $channel = HIDDEN; }
+		{ $channel = Hidden; }
 	;
 
 WS
@@ -180,5 +180,5 @@ WS
 		|	'\f'
 		|	('\r')? '\n'
 		)+
-		{ $channel = HIDDEN; }
+		{ $channel = Hidden; }
 	;

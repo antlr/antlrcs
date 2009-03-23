@@ -1,4 +1,4 @@
-// $ANTLR 3.1.2 Grammars\\ANTLR.g3 2009-03-16 19:03:27
+// $ANTLR 3.1.2 Grammars\\ANTLR.g3 2009-03-23 17:53:58
 
 // The variable 'variable' is assigned but its value is never used.
 #pragma warning disable 219
@@ -173,7 +173,7 @@ public partial class ANTLRLexer : Lexer
 		try
 		{
 			int _type = CATCH;
-			int _channel = DEFAULT_TOKEN_CHANNEL;
+			int _channel = DefaultTokenChannel;
 			// Grammars\\ANTLR.g3:46:9: ( 'catch' )
 			// Grammars\\ANTLR.g3:46:9: 'catch'
 			{
@@ -197,7 +197,7 @@ public partial class ANTLRLexer : Lexer
 		try
 		{
 			int _type = FINALLY;
-			int _channel = DEFAULT_TOKEN_CHANNEL;
+			int _channel = DefaultTokenChannel;
 			// Grammars\\ANTLR.g3:47:11: ( 'finally' )
 			// Grammars\\ANTLR.g3:47:11: 'finally'
 			{
@@ -221,7 +221,7 @@ public partial class ANTLRLexer : Lexer
 		try
 		{
 			int _type = FRAGMENT;
-			int _channel = DEFAULT_TOKEN_CHANNEL;
+			int _channel = DefaultTokenChannel;
 			// Grammars\\ANTLR.g3:48:12: ( 'fragment' )
 			// Grammars\\ANTLR.g3:48:12: 'fragment'
 			{
@@ -245,7 +245,7 @@ public partial class ANTLRLexer : Lexer
 		try
 		{
 			int _type = GRAMMAR;
-			int _channel = DEFAULT_TOKEN_CHANNEL;
+			int _channel = DefaultTokenChannel;
 			// Grammars\\ANTLR.g3:49:11: ( 'grammar' )
 			// Grammars\\ANTLR.g3:49:11: 'grammar'
 			{
@@ -269,7 +269,7 @@ public partial class ANTLRLexer : Lexer
 		try
 		{
 			int _type = IMPORT;
-			int _channel = DEFAULT_TOKEN_CHANNEL;
+			int _channel = DefaultTokenChannel;
 			// Grammars\\ANTLR.g3:50:10: ( 'import' )
 			// Grammars\\ANTLR.g3:50:10: 'import'
 			{
@@ -293,7 +293,7 @@ public partial class ANTLRLexer : Lexer
 		try
 		{
 			int _type = LEXER;
-			int _channel = DEFAULT_TOKEN_CHANNEL;
+			int _channel = DefaultTokenChannel;
 			// Grammars\\ANTLR.g3:51:9: ( 'lexer' )
 			// Grammars\\ANTLR.g3:51:9: 'lexer'
 			{
@@ -317,7 +317,7 @@ public partial class ANTLRLexer : Lexer
 		try
 		{
 			int _type = PARSER;
-			int _channel = DEFAULT_TOKEN_CHANNEL;
+			int _channel = DefaultTokenChannel;
 			// Grammars\\ANTLR.g3:52:10: ( 'parser' )
 			// Grammars\\ANTLR.g3:52:10: 'parser'
 			{
@@ -341,7 +341,7 @@ public partial class ANTLRLexer : Lexer
 		try
 		{
 			int _type = PRIVATE;
-			int _channel = DEFAULT_TOKEN_CHANNEL;
+			int _channel = DefaultTokenChannel;
 			// Grammars\\ANTLR.g3:53:11: ( 'private' )
 			// Grammars\\ANTLR.g3:53:11: 'private'
 			{
@@ -365,7 +365,7 @@ public partial class ANTLRLexer : Lexer
 		try
 		{
 			int _type = PROTECTED;
-			int _channel = DEFAULT_TOKEN_CHANNEL;
+			int _channel = DefaultTokenChannel;
 			// Grammars\\ANTLR.g3:54:13: ( 'protected' )
 			// Grammars\\ANTLR.g3:54:13: 'protected'
 			{
@@ -389,7 +389,7 @@ public partial class ANTLRLexer : Lexer
 		try
 		{
 			int _type = PUBLIC;
-			int _channel = DEFAULT_TOKEN_CHANNEL;
+			int _channel = DefaultTokenChannel;
 			// Grammars\\ANTLR.g3:55:10: ( 'public' )
 			// Grammars\\ANTLR.g3:55:10: 'public'
 			{
@@ -413,7 +413,7 @@ public partial class ANTLRLexer : Lexer
 		try
 		{
 			int _type = RETURNS;
-			int _channel = DEFAULT_TOKEN_CHANNEL;
+			int _channel = DefaultTokenChannel;
 			// Grammars\\ANTLR.g3:56:11: ( 'returns' )
 			// Grammars\\ANTLR.g3:56:11: 'returns'
 			{
@@ -437,7 +437,7 @@ public partial class ANTLRLexer : Lexer
 		try
 		{
 			int _type = SCOPE;
-			int _channel = DEFAULT_TOKEN_CHANNEL;
+			int _channel = DefaultTokenChannel;
 			// Grammars\\ANTLR.g3:57:9: ( 'scope' )
 			// Grammars\\ANTLR.g3:57:9: 'scope'
 			{
@@ -461,7 +461,7 @@ public partial class ANTLRLexer : Lexer
 		try
 		{
 			int _type = THROWS;
-			int _channel = DEFAULT_TOKEN_CHANNEL;
+			int _channel = DefaultTokenChannel;
 			// Grammars\\ANTLR.g3:58:10: ( 'throws' )
 			// Grammars\\ANTLR.g3:58:10: 'throws'
 			{
@@ -485,7 +485,7 @@ public partial class ANTLRLexer : Lexer
 		try
 		{
 			int _type = TREE;
-			int _channel = DEFAULT_TOKEN_CHANNEL;
+			int _channel = DefaultTokenChannel;
 			// Grammars\\ANTLR.g3:59:8: ( 'tree' )
 			// Grammars\\ANTLR.g3:59:8: 'tree'
 			{
@@ -585,7 +585,7 @@ public partial class ANTLRLexer : Lexer
 		try
 		{
 			int _type = WS;
-			int _channel = DEFAULT_TOKEN_CHANNEL;
+			int _channel = DefaultTokenChannel;
 			// Grammars\\ANTLR.g3:822:4: ( ( ' ' | '\\t' | ( '\\r' )? '\\n' ) )
 			// Grammars\\ANTLR.g3:822:4: ( ' ' | '\\t' | ( '\\r' )? '\\n' )
 			{
@@ -666,7 +666,7 @@ public partial class ANTLRLexer : Lexer
 
 			if ( state.backtracking == 0 )
 			{
-				 _channel = HIDDEN; 
+				 _channel = Hidden; 
 			}
 
 			}
@@ -686,7 +686,7 @@ public partial class ANTLRLexer : Lexer
 		try
 		{
 			int _type = COMMENT;
-			int _channel = DEFAULT_TOKEN_CHANNEL;
+			int _channel = DefaultTokenChannel;
 			// Grammars\\ANTLR.g3:830:4: ( ( SL_COMMENT | ML_COMMENT[ref $type] ) )
 			// Grammars\\ANTLR.g3:830:4: ( SL_COMMENT | ML_COMMENT[ref $type] )
 			{
@@ -744,7 +744,7 @@ public partial class ANTLRLexer : Lexer
 			{
 
 							if ( _type != DOC_COMMENT )
-								_channel = HIDDEN;
+								_channel = Hidden;
 						
 			}
 
@@ -993,7 +993,7 @@ public partial class ANTLRLexer : Lexer
 		try
 		{
 			int _type = OPEN_ELEMENT_OPTION;
-			int _channel = DEFAULT_TOKEN_CHANNEL;
+			int _channel = DefaultTokenChannel;
 			// Grammars\\ANTLR.g3:854:4: ( '<' )
 			// Grammars\\ANTLR.g3:854:4: '<'
 			{
@@ -1016,7 +1016,7 @@ public partial class ANTLRLexer : Lexer
 		try
 		{
 			int _type = CLOSE_ELEMENT_OPTION;
-			int _channel = DEFAULT_TOKEN_CHANNEL;
+			int _channel = DefaultTokenChannel;
 			// Grammars\\ANTLR.g3:858:4: ( '>' )
 			// Grammars\\ANTLR.g3:858:4: '>'
 			{
@@ -1039,7 +1039,7 @@ public partial class ANTLRLexer : Lexer
 		try
 		{
 			int _type = AMPERSAND;
-			int _channel = DEFAULT_TOKEN_CHANNEL;
+			int _channel = DefaultTokenChannel;
 			// Grammars\\ANTLR.g3:861:13: ( '@' )
 			// Grammars\\ANTLR.g3:861:13: '@'
 			{
@@ -1062,7 +1062,7 @@ public partial class ANTLRLexer : Lexer
 		try
 		{
 			int _type = COMMA;
-			int _channel = DEFAULT_TOKEN_CHANNEL;
+			int _channel = DefaultTokenChannel;
 			// Grammars\\ANTLR.g3:863:9: ( ',' )
 			// Grammars\\ANTLR.g3:863:9: ','
 			{
@@ -1085,7 +1085,7 @@ public partial class ANTLRLexer : Lexer
 		try
 		{
 			int _type = QUESTION;
-			int _channel = DEFAULT_TOKEN_CHANNEL;
+			int _channel = DefaultTokenChannel;
 			// Grammars\\ANTLR.g3:865:12: ( '?' )
 			// Grammars\\ANTLR.g3:865:12: '?'
 			{
@@ -1108,7 +1108,7 @@ public partial class ANTLRLexer : Lexer
 		try
 		{
 			int _type = TREE_BEGIN;
-			int _channel = DEFAULT_TOKEN_CHANNEL;
+			int _channel = DefaultTokenChannel;
 			// Grammars\\ANTLR.g3:867:14: ( '^(' )
 			// Grammars\\ANTLR.g3:867:14: '^('
 			{
@@ -1132,7 +1132,7 @@ public partial class ANTLRLexer : Lexer
 		try
 		{
 			int _type = LPAREN;
-			int _channel = DEFAULT_TOKEN_CHANNEL;
+			int _channel = DefaultTokenChannel;
 			// Grammars\\ANTLR.g3:869:9: ( '(' )
 			// Grammars\\ANTLR.g3:869:9: '('
 			{
@@ -1155,7 +1155,7 @@ public partial class ANTLRLexer : Lexer
 		try
 		{
 			int _type = RPAREN;
-			int _channel = DEFAULT_TOKEN_CHANNEL;
+			int _channel = DefaultTokenChannel;
 			// Grammars\\ANTLR.g3:871:9: ( ')' )
 			// Grammars\\ANTLR.g3:871:9: ')'
 			{
@@ -1178,7 +1178,7 @@ public partial class ANTLRLexer : Lexer
 		try
 		{
 			int _type = COLON;
-			int _channel = DEFAULT_TOKEN_CHANNEL;
+			int _channel = DefaultTokenChannel;
 			// Grammars\\ANTLR.g3:873:9: ( ':' )
 			// Grammars\\ANTLR.g3:873:9: ':'
 			{
@@ -1201,7 +1201,7 @@ public partial class ANTLRLexer : Lexer
 		try
 		{
 			int _type = STAR;
-			int _channel = DEFAULT_TOKEN_CHANNEL;
+			int _channel = DefaultTokenChannel;
 			// Grammars\\ANTLR.g3:875:7: ( '*' )
 			// Grammars\\ANTLR.g3:875:7: '*'
 			{
@@ -1224,7 +1224,7 @@ public partial class ANTLRLexer : Lexer
 		try
 		{
 			int _type = PLUS;
-			int _channel = DEFAULT_TOKEN_CHANNEL;
+			int _channel = DefaultTokenChannel;
 			// Grammars\\ANTLR.g3:877:7: ( '+' )
 			// Grammars\\ANTLR.g3:877:7: '+'
 			{
@@ -1247,7 +1247,7 @@ public partial class ANTLRLexer : Lexer
 		try
 		{
 			int _type = ASSIGN;
-			int _channel = DEFAULT_TOKEN_CHANNEL;
+			int _channel = DefaultTokenChannel;
 			// Grammars\\ANTLR.g3:879:10: ( '=' )
 			// Grammars\\ANTLR.g3:879:10: '='
 			{
@@ -1270,7 +1270,7 @@ public partial class ANTLRLexer : Lexer
 		try
 		{
 			int _type = PLUS_ASSIGN;
-			int _channel = DEFAULT_TOKEN_CHANNEL;
+			int _channel = DefaultTokenChannel;
 			// Grammars\\ANTLR.g3:881:15: ( '+=' )
 			// Grammars\\ANTLR.g3:881:15: '+='
 			{
@@ -1294,7 +1294,7 @@ public partial class ANTLRLexer : Lexer
 		try
 		{
 			int _type = IMPLIES;
-			int _channel = DEFAULT_TOKEN_CHANNEL;
+			int _channel = DefaultTokenChannel;
 			// Grammars\\ANTLR.g3:883:11: ( '=>' )
 			// Grammars\\ANTLR.g3:883:11: '=>'
 			{
@@ -1318,7 +1318,7 @@ public partial class ANTLRLexer : Lexer
 		try
 		{
 			int _type = REWRITE;
-			int _channel = DEFAULT_TOKEN_CHANNEL;
+			int _channel = DefaultTokenChannel;
 			// Grammars\\ANTLR.g3:885:11: ( '->' )
 			// Grammars\\ANTLR.g3:885:11: '->'
 			{
@@ -1342,7 +1342,7 @@ public partial class ANTLRLexer : Lexer
 		try
 		{
 			int _type = SEMI;
-			int _channel = DEFAULT_TOKEN_CHANNEL;
+			int _channel = DefaultTokenChannel;
 			// Grammars\\ANTLR.g3:887:7: ( ';' )
 			// Grammars\\ANTLR.g3:887:7: ';'
 			{
@@ -1365,7 +1365,7 @@ public partial class ANTLRLexer : Lexer
 		try
 		{
 			int _type = ROOT;
-			int _channel = DEFAULT_TOKEN_CHANNEL;
+			int _channel = DefaultTokenChannel;
 			// Grammars\\ANTLR.g3:889:8: ( '^' )
 			// Grammars\\ANTLR.g3:889:8: '^'
 			{
@@ -1392,7 +1392,7 @@ public partial class ANTLRLexer : Lexer
 		try
 		{
 			int _type = BANG;
-			int _channel = DEFAULT_TOKEN_CHANNEL;
+			int _channel = DefaultTokenChannel;
 			// Grammars\\ANTLR.g3:891:8: ( '!' )
 			// Grammars\\ANTLR.g3:891:8: '!'
 			{
@@ -1419,7 +1419,7 @@ public partial class ANTLRLexer : Lexer
 		try
 		{
 			int _type = OR;
-			int _channel = DEFAULT_TOKEN_CHANNEL;
+			int _channel = DefaultTokenChannel;
 			// Grammars\\ANTLR.g3:893:6: ( '|' )
 			// Grammars\\ANTLR.g3:893:6: '|'
 			{
@@ -1442,7 +1442,7 @@ public partial class ANTLRLexer : Lexer
 		try
 		{
 			int _type = WILDCARD;
-			int _channel = DEFAULT_TOKEN_CHANNEL;
+			int _channel = DefaultTokenChannel;
 			// Grammars\\ANTLR.g3:895:12: ( '.' )
 			// Grammars\\ANTLR.g3:895:12: '.'
 			{
@@ -1465,7 +1465,7 @@ public partial class ANTLRLexer : Lexer
 		try
 		{
 			int _type = ETC;
-			int _channel = DEFAULT_TOKEN_CHANNEL;
+			int _channel = DefaultTokenChannel;
 			// Grammars\\ANTLR.g3:897:7: ( '...' )
 			// Grammars\\ANTLR.g3:897:7: '...'
 			{
@@ -1489,7 +1489,7 @@ public partial class ANTLRLexer : Lexer
 		try
 		{
 			int _type = RANGE;
-			int _channel = DEFAULT_TOKEN_CHANNEL;
+			int _channel = DefaultTokenChannel;
 			// Grammars\\ANTLR.g3:899:9: ( '..' )
 			// Grammars\\ANTLR.g3:899:9: '..'
 			{
@@ -1513,7 +1513,7 @@ public partial class ANTLRLexer : Lexer
 		try
 		{
 			int _type = NOT;
-			int _channel = DEFAULT_TOKEN_CHANNEL;
+			int _channel = DefaultTokenChannel;
 			// Grammars\\ANTLR.g3:901:7: ( '~' )
 			// Grammars\\ANTLR.g3:901:7: '~'
 			{
@@ -1536,7 +1536,7 @@ public partial class ANTLRLexer : Lexer
 		try
 		{
 			int _type = RCURLY;
-			int _channel = DEFAULT_TOKEN_CHANNEL;
+			int _channel = DefaultTokenChannel;
 			// Grammars\\ANTLR.g3:903:9: ( '}' )
 			// Grammars\\ANTLR.g3:903:9: '}'
 			{
@@ -1559,7 +1559,7 @@ public partial class ANTLRLexer : Lexer
 		try
 		{
 			int _type = DOLLAR;
-			int _channel = DEFAULT_TOKEN_CHANNEL;
+			int _channel = DefaultTokenChannel;
 			// Grammars\\ANTLR.g3:905:10: ( '$' )
 			// Grammars\\ANTLR.g3:905:10: '$'
 			{
@@ -1582,7 +1582,7 @@ public partial class ANTLRLexer : Lexer
 		try
 		{
 			int _type = STRAY_BRACKET;
-			int _channel = DEFAULT_TOKEN_CHANNEL;
+			int _channel = DefaultTokenChannel;
 			// Grammars\\ANTLR.g3:908:4: ( ']' )
 			// Grammars\\ANTLR.g3:908:4: ']'
 			{
@@ -1616,7 +1616,7 @@ public partial class ANTLRLexer : Lexer
 		try
 		{
 			int _type = CHAR_LITERAL;
-			int _channel = DEFAULT_TOKEN_CHANNEL;
+			int _channel = DefaultTokenChannel;
 			// Grammars\\ANTLR.g3:920:4: ( '\\'' ( ESC |~ ( '\\\\' | '\\'' ) )* '\\'' )
 			// Grammars\\ANTLR.g3:920:4: '\\'' ( ESC |~ ( '\\\\' | '\\'' ) )* '\\''
 			{
@@ -1693,7 +1693,7 @@ public partial class ANTLRLexer : Lexer
 		try
 		{
 			int _type = DOUBLE_QUOTE_STRING_LITERAL;
-			int _channel = DEFAULT_TOKEN_CHANNEL;
+			int _channel = DefaultTokenChannel;
 			int c;
 
 
@@ -1815,7 +1815,7 @@ public partial class ANTLRLexer : Lexer
 		try
 		{
 			int _type = DOUBLE_ANGLE_STRING_LITERAL;
-			int _channel = DEFAULT_TOKEN_CHANNEL;
+			int _channel = DefaultTokenChannel;
 			// Grammars\\ANTLR.g3:951:4: ( '<<' ( . )* '>>' )
 			// Grammars\\ANTLR.g3:951:4: '<<' ( . )* '>>'
 			{
@@ -1973,7 +1973,7 @@ public partial class ANTLRLexer : Lexer
 		try
 		{
 			int _type = INT;
-			int _channel = DEFAULT_TOKEN_CHANNEL;
+			int _channel = DefaultTokenChannel;
 			// Grammars\\ANTLR.g3:985:4: ( ( '0' .. '9' )+ )
 			// Grammars\\ANTLR.g3:985:4: ( '0' .. '9' )+
 			{
@@ -2033,7 +2033,7 @@ public partial class ANTLRLexer : Lexer
 		try
 		{
 			int _type = ARG_ACTION;
-			int _channel = DEFAULT_TOKEN_CHANNEL;
+			int _channel = DefaultTokenChannel;
 
 				string text_ = string.Empty;
 
@@ -2144,7 +2144,7 @@ public partial class ANTLRLexer : Lexer
 					{
 					int ACTION_STRING_LITERAL1Start857 = GetCharIndex();
 					mACTION_STRING_LITERAL(); if (state.failed) return ;
-					ACTION_STRING_LITERAL1 = new CommonToken(input, TokenConstants.INVALID_TOKEN_TYPE, TokenConstants.DEFAULT_CHANNEL, ACTION_STRING_LITERAL1Start857, GetCharIndex()-1);
+					ACTION_STRING_LITERAL1 = new CommonToken(input, TokenConstants.InvalidTokenType, TokenConstants.DefaultChannel, ACTION_STRING_LITERAL1Start857, GetCharIndex()-1);
 					if ( state.backtracking == 0 )
 					{
 						builder.Append((ACTION_STRING_LITERAL1!=null?ACTION_STRING_LITERAL1.Text:null));
@@ -2157,7 +2157,7 @@ public partial class ANTLRLexer : Lexer
 					{
 					int ACTION_CHAR_LITERAL2Start865 = GetCharIndex();
 					mACTION_CHAR_LITERAL(); if (state.failed) return ;
-					ACTION_CHAR_LITERAL2 = new CommonToken(input, TokenConstants.INVALID_TOKEN_TYPE, TokenConstants.DEFAULT_CHANNEL, ACTION_CHAR_LITERAL2Start865, GetCharIndex()-1);
+					ACTION_CHAR_LITERAL2 = new CommonToken(input, TokenConstants.InvalidTokenType, TokenConstants.DefaultChannel, ACTION_CHAR_LITERAL2Start865, GetCharIndex()-1);
 					if ( state.backtracking == 0 )
 					{
 						builder.Append((ACTION_CHAR_LITERAL2!=null?ACTION_CHAR_LITERAL2.Text:null));
@@ -2210,7 +2210,7 @@ public partial class ANTLRLexer : Lexer
 		try
 		{
 			int _type = ACTION;
-			int _channel = DEFAULT_TOKEN_CHANNEL;
+			int _channel = DefaultTokenChannel;
 
 				int actionLine = Line;
 				int actionColumn = CharPositionInLine;
@@ -2596,7 +2596,7 @@ public partial class ANTLRLexer : Lexer
 		try
 		{
 			int _type = TOKEN_REF;
-			int _channel = DEFAULT_TOKEN_CHANNEL;
+			int _channel = DefaultTokenChannel;
 			// Grammars\\ANTLR.g3:1077:4: ( 'A' .. 'Z' ( 'a' .. 'z' | 'A' .. 'Z' | '_' | '0' .. '9' )* )
 			// Grammars\\ANTLR.g3:1077:4: 'A' .. 'Z' ( 'a' .. 'z' | 'A' .. 'Z' | '_' | '0' .. '9' )*
 			{
@@ -2651,7 +2651,7 @@ public partial class ANTLRLexer : Lexer
 		try
 		{
 			int _type = TOKENS;
-			int _channel = DEFAULT_TOKEN_CHANNEL;
+			int _channel = DefaultTokenChannel;
 			// Grammars\\ANTLR.g3:1083:4: ( 'tokens' WS_LOOP '{' )
 			// Grammars\\ANTLR.g3:1083:4: 'tokens' WS_LOOP '{'
 			{
@@ -2677,7 +2677,7 @@ public partial class ANTLRLexer : Lexer
 		try
 		{
 			int _type = OPTIONS;
-			int _channel = DEFAULT_TOKEN_CHANNEL;
+			int _channel = DefaultTokenChannel;
 			// Grammars\\ANTLR.g3:1087:4: ( 'options' WS_LOOP '{' )
 			// Grammars\\ANTLR.g3:1087:4: 'options' WS_LOOP '{'
 			{
@@ -2703,7 +2703,7 @@ public partial class ANTLRLexer : Lexer
 		try
 		{
 			int _type = RULE_REF;
-			int _channel = DEFAULT_TOKEN_CHANNEL;
+			int _channel = DefaultTokenChannel;
 
 				int t=0;
 
@@ -2869,11 +2869,11 @@ public partial class ANTLRLexer : Lexer
 			Match(' '); if (state.failed) return ;
 			int fileStart1270 = GetCharIndex();
 			mACTION_STRING_LITERAL(); if (state.failed) return ;
-			file = new CommonToken(input, TokenConstants.INVALID_TOKEN_TYPE, TokenConstants.DEFAULT_CHANNEL, fileStart1270, GetCharIndex()-1);
+			file = new CommonToken(input, TokenConstants.InvalidTokenType, TokenConstants.DefaultChannel, fileStart1270, GetCharIndex()-1);
 			Match(' '); if (state.failed) return ;
 			int lineStart1276 = GetCharIndex();
 			mINT(); if (state.failed) return ;
-			line = new CommonToken(input, TokenConstants.INVALID_TOKEN_TYPE, TokenConstants.DEFAULT_CHANNEL, lineStart1276, GetCharIndex()-1);
+			line = new CommonToken(input, TokenConstants.InvalidTokenType, TokenConstants.DefaultChannel, lineStart1276, GetCharIndex()-1);
 			if ( state.backtracking == 0 )
 			{
 

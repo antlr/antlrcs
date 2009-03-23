@@ -4,7 +4,7 @@
  * All rights reserved.
  *
  * Conversion to C#:
- * Copyright (c) 2008 Sam Harwell, Pixel Mine, Inc.
+ * Copyright (c) 2008-2009 Sam Harwell, Pixel Mine, Inc.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -111,14 +111,14 @@ namespace Antlr3.Analysis
          *  this issue.
          */
         public const int EOR_TOKEN_TYPE =
-            TokenConstants.EOR_TOKEN_TYPE;
+            TokenConstants.EorTokenType;
 
-        public const int DOWN = TokenConstants.DOWN;
-        public const int UP = TokenConstants.UP;
+        public const int DOWN = TokenConstants.Down;
+        public const int UP = TokenConstants.Up;
 
         /** tokens and char range overlap; tokens are MIN_TOKEN_TYPE..n */
         public const int MIN_TOKEN_TYPE =
-            TokenConstants.MIN_TOKEN_TYPE;
+            TokenConstants.MinTokenType;
 
         /** The wildcard '.' char atom implies all valid characters==UNICODE */
         //public static final IntSet ALLCHAR = IntervalSet.of(MIN_CHAR_VALUE,MAX_CHAR_VALUE);
@@ -255,7 +255,7 @@ namespace Antlr3.Analysis
                 label = SET;
                 if ( a.IsAtom )
                 {
-                    labelSet.add( a.Atom );
+                    labelSet.Add( a.Atom );
                 }
                 else if ( a.IsSet )
                 {
@@ -271,7 +271,7 @@ namespace Antlr3.Analysis
             {
                 if ( a.IsAtom )
                 {
-                    labelSet.add( a.Atom );
+                    labelSet.Add( a.Atom );
                 }
                 else if ( a.IsSet )
                 {

@@ -38,6 +38,7 @@ namespace Antlr3.Tool
     using Antlr3.Misc;
 
     using AngleBracketTemplateLexer = Antlr3.ST.Language.AngleBracketTemplateLexer;
+    using BitSet = Antlr3.Misc.BitSet;
     using CultureInfo = System.Globalization.CultureInfo;
     using DecisionProbe = Antlr3.Analysis.DecisionProbe;
     using DFAState = Antlr3.Analysis.DFAState;
@@ -172,46 +173,42 @@ namespace Antlr3.Tool
         public const int MAX_MESSAGE_NUMBER = 211;
 
         /** Do not do perform analysis if one of these happens */
-        public static readonly BitSet ERRORS_FORCING_NO_ANALYSIS;
-        //public static readonly BitSet ERRORS_FORCING_NO_ANALYSIS = new BitSet() {
-        //    {
-        //        add(MSG_RULE_REDEFINITION);
-        //        add(MSG_UNDEFINED_RULE_REF);
-        //        add(MSG_LEFT_RECURSION_CYCLES);
-        //        add(MSG_REWRITE_OR_OP_WITH_NO_OUTPUT_OPTION);
-        //        add(MSG_NO_RULES);
-        //        add(MSG_NO_SUCH_GRAMMAR_SCOPE);
-        //        add(MSG_NO_SUCH_RULE_IN_SCOPE);
-        //        add(MSG_LEXER_RULES_NOT_ALLOWED);
-        //        // TODO: ...
-        //    }
-        //};
+        public static readonly BitSet ERRORS_FORCING_NO_ANALYSIS =
+            new BitSet()
+            {
+                MSG_CANNOT_CREATE_TARGET_GENERATOR,
+                MSG_RULE_REDEFINITION,
+                MSG_UNDEFINED_RULE_REF,
+                MSG_LEFT_RECURSION_CYCLES,
+                MSG_REWRITE_OR_OP_WITH_NO_OUTPUT_OPTION,
+                MSG_NO_RULES,
+                MSG_NO_SUCH_GRAMMAR_SCOPE,
+                MSG_NO_SUCH_RULE_IN_SCOPE,
+                MSG_LEXER_RULES_NOT_ALLOWED,
+                MSG_WILDCARD_AS_ROOT
+            };
 
         /** Do not do code gen if one of these happens */
-        public static readonly BitSet ERRORS_FORCING_NO_CODEGEN;
-        //public static readonly BitSet ERRORS_FORCING_NO_CODEGEN = new BitSet() {
-        //    {
-        //        add(MSG_NONREGULAR_DECISION);
-        //        add(MSG_RECURSION_OVERLOW);
-        //        add(MSG_UNREACHABLE_ALTS);
-        //        add(MSG_FILE_AND_GRAMMAR_NAME_DIFFER);
-        //        add(MSG_INVALID_IMPORT);
-        //        add(MSG_AST_OP_WITH_NON_AST_OUTPUT_OPTION);
-        //        // TODO: ...
-        //    }
-        //};
+        public static readonly BitSet ERRORS_FORCING_NO_CODEGEN =
+            new BitSet()
+            {
+                MSG_NONREGULAR_DECISION,
+                MSG_RECURSION_OVERLOW,
+                MSG_UNREACHABLE_ALTS,
+                MSG_FILE_AND_GRAMMAR_NAME_DIFFER,
+                MSG_INVALID_IMPORT,
+                MSG_AST_OP_WITH_NON_AST_OUTPUT_OPTION
+            };
 
         /** Only one error can be emitted for any entry in this table.
          *  Map<String,Set> where the key is a method name like danglingState.
          *  The set is whatever that method accepts or derives like a DFA.
          */
-        public static readonly IDictionary<string, ICollection<object>> emitSingleError;
-        //public static readonly Map emitSingleError = new HashMap() {
-        //    {
-        //        put("danglingState", new HashSet());
-        //    }
-        //};
-
+        public static readonly IDictionary<string, ICollection<object>> emitSingleError =
+            new Dictionary<string, ICollection<object>>()
+            {
+                { "danglingState", new HashSet<object>() }
+            };
 
         /** Messages should be sensitive to the locale. */
         private static CultureInfo locale;
@@ -437,36 +434,6 @@ namespace Antlr3.Tool
 
         static ErrorManager()
         {
-            ERRORS_FORCING_NO_ANALYSIS = new BitSet();
-            ERRORS_FORCING_NO_ANALYSIS.add( MSG_CANNOT_CREATE_TARGET_GENERATOR );
-            ERRORS_FORCING_NO_ANALYSIS.add( MSG_RULE_REDEFINITION );
-            ERRORS_FORCING_NO_ANALYSIS.add( MSG_UNDEFINED_RULE_REF );
-            ERRORS_FORCING_NO_ANALYSIS.add( MSG_LEFT_RECURSION_CYCLES );
-            ERRORS_FORCING_NO_ANALYSIS.add( MSG_REWRITE_OR_OP_WITH_NO_OUTPUT_OPTION );
-            ERRORS_FORCING_NO_ANALYSIS.add( MSG_NO_RULES );
-            ERRORS_FORCING_NO_ANALYSIS.add( MSG_NO_SUCH_GRAMMAR_SCOPE );
-            ERRORS_FORCING_NO_ANALYSIS.add( MSG_NO_SUCH_RULE_IN_SCOPE );
-            ERRORS_FORCING_NO_ANALYSIS.add( MSG_LEXER_RULES_NOT_ALLOWED );
-            ERRORS_FORCING_NO_ANALYSIS.add( MSG_WILDCARD_AS_ROOT );
-            // TODO: ...
-
-            /** Do not do code gen if one of these happens */
-            ERRORS_FORCING_NO_CODEGEN = new BitSet();
-            ERRORS_FORCING_NO_CODEGEN.add( MSG_NONREGULAR_DECISION );
-            ERRORS_FORCING_NO_CODEGEN.add( MSG_RECURSION_OVERLOW );
-            ERRORS_FORCING_NO_CODEGEN.add( MSG_UNREACHABLE_ALTS );
-            ERRORS_FORCING_NO_CODEGEN.add( MSG_FILE_AND_GRAMMAR_NAME_DIFFER );
-            ERRORS_FORCING_NO_CODEGEN.add( MSG_INVALID_IMPORT );
-            ERRORS_FORCING_NO_CODEGEN.add( MSG_AST_OP_WITH_NON_AST_OUTPUT_OPTION );
-            // TODO: ...
-
-            /** Only one error can be emitted for any entry in this table.
-             *  Map<String,Set> where the key is a method name like danglingState.
-             *  The set is whatever that method accepts or derives like a DFA.
-             */
-            emitSingleError = new Dictionary<string, ICollection<object>>();
-            emitSingleError["danglingState"] = new HashSet<object>();
-
             initIdToMessageNameMapping();
             // it is inefficient to set the default locale here if another
             // piece of code is going to set the locale, but that would
@@ -754,42 +721,42 @@ namespace Antlr3.Tool
         public static void error( int msgID )
         {
             getErrorState().errors++;
-            getErrorState().errorMsgIDs.add( msgID );
+            getErrorState().errorMsgIDs.Add( msgID );
             getErrorListener().error( new ToolMessage( msgID ) );
         }
 
         public static void error( int msgID, Exception e )
         {
             getErrorState().errors++;
-            getErrorState().errorMsgIDs.add( msgID );
+            getErrorState().errorMsgIDs.Add( msgID );
             getErrorListener().error( new ToolMessage( msgID, e ) );
         }
 
         public static void error( int msgID, Object arg )
         {
             getErrorState().errors++;
-            getErrorState().errorMsgIDs.add( msgID );
+            getErrorState().errorMsgIDs.Add( msgID );
             getErrorListener().error( new ToolMessage( msgID, arg ) );
         }
 
         public static void error( int msgID, Object arg, Object arg2 )
         {
             getErrorState().errors++;
-            getErrorState().errorMsgIDs.add( msgID );
+            getErrorState().errorMsgIDs.Add( msgID );
             getErrorListener().error( new ToolMessage( msgID, arg, arg2 ) );
         }
 
         public static void error( int msgID, Object arg, Exception e )
         {
             getErrorState().errors++;
-            getErrorState().errorMsgIDs.add( msgID );
+            getErrorState().errorMsgIDs.Add( msgID );
             getErrorListener().error( new ToolMessage( msgID, arg, e ) );
         }
 
         public static void warning( int msgID, Object arg )
         {
             getErrorState().warnings++;
-            getErrorState().warningMsgIDs.add( msgID );
+            getErrorState().warningMsgIDs.Add( msgID );
             getErrorListener().warning( new ToolMessage( msgID, arg ) );
         }
 
@@ -798,7 +765,7 @@ namespace Antlr3.Tool
         {
             getErrorState().warnings++;
             Message msg = new GrammarNonDeterminismMessage( probe, d );
-            getErrorState().warningMsgIDs.add( msg.msgID );
+            getErrorState().warningMsgIDs.Add( msg.msgID );
             getErrorListener().warning( msg );
         }
 
@@ -807,7 +774,7 @@ namespace Antlr3.Tool
         {
             getErrorState().errors++;
             Message msg = new GrammarDanglingStateMessage( probe, d );
-            getErrorState().errorMsgIDs.add( msg.msgID );
+            getErrorState().errorMsgIDs.Add( msg.msgID );
             ICollection<object> seen = (ICollection<object>)emitSingleError.get( "danglingState" );
             if ( !seen.Contains( d.dfa.decisionNumber + "|" + d.AltSet ) )
             {
@@ -821,7 +788,7 @@ namespace Antlr3.Tool
         {
             getErrorState().warnings++;
             Message msg = new GrammarAnalysisAbortedMessage( probe );
-            getErrorState().warningMsgIDs.add( msg.msgID );
+            getErrorState().warningMsgIDs.Add( msg.msgID );
             getErrorListener().warning( msg );
         }
 
@@ -830,7 +797,7 @@ namespace Antlr3.Tool
         {
             getErrorState().errors++;
             Message msg = new GrammarUnreachableAltsMessage( probe, alts );
-            getErrorState().errorMsgIDs.add( msg.msgID );
+            getErrorState().errorMsgIDs.Add( msg.msgID );
             getErrorListener().error( msg );
         }
 
@@ -840,7 +807,7 @@ namespace Antlr3.Tool
         {
             getErrorState().warnings++;
             Message msg = new GrammarInsufficientPredicatesMessage( probe, d, altToUncoveredLocations );
-            getErrorState().warningMsgIDs.add( msg.msgID );
+            getErrorState().warningMsgIDs.Add( msg.msgID );
             getErrorListener().warning( msg );
         }
 
@@ -848,7 +815,7 @@ namespace Antlr3.Tool
         {
             getErrorState().errors++;
             Message msg = new NonRegularDecisionMessage( probe, probe.NonDeterministicAlts );
-            getErrorState().errorMsgIDs.add( msg.msgID );
+            getErrorState().errorMsgIDs.Add( msg.msgID );
             getErrorListener().error( msg );
         }
 
@@ -861,7 +828,7 @@ namespace Antlr3.Tool
             getErrorState().errors++;
             Message msg = new RecursionOverflowMessage( probe, sampleBadState, alt,
                                              targetRules, callSiteStates );
-            getErrorState().errorMsgIDs.add( msg.msgID );
+            getErrorState().errorMsgIDs.Add( msg.msgID );
             getErrorListener().error( msg );
         }
 
@@ -883,7 +850,7 @@ namespace Antlr3.Tool
         {
             getErrorState().errors++;
             Message msg = new LeftRecursionCyclesMessage( cycles );
-            getErrorState().errorMsgIDs.add( msg.msgID );
+            getErrorState().errorMsgIDs.Add( msg.msgID );
             getErrorListener().warning( msg );
         }
 
@@ -895,7 +862,7 @@ namespace Antlr3.Tool
         {
             getErrorState().errors++;
             Message msg = new GrammarSemanticsMessage( msgID, g, token, arg, arg2 );
-            getErrorState().errorMsgIDs.add( msgID );
+            getErrorState().errorMsgIDs.Add( msgID );
             getErrorListener().error( msg );
         }
 
@@ -922,7 +889,7 @@ namespace Antlr3.Tool
         {
             getErrorState().warnings++;
             Message msg = new GrammarSemanticsMessage( msgID, g, token, arg, arg2 );
-            getErrorState().warningMsgIDs.add( msgID );
+            getErrorState().warningMsgIDs.Add( msgID );
             getErrorListener().warning( msg );
         }
 
@@ -948,7 +915,7 @@ namespace Antlr3.Tool
                                        RecognitionException re )
         {
             getErrorState().errors++;
-            getErrorState().errorMsgIDs.add( msgID );
+            getErrorState().errorMsgIDs.Add( msgID );
             getErrorListener().error(
                 new GrammarSyntaxMessage( msgID, grammar, token, arg, re )
             );

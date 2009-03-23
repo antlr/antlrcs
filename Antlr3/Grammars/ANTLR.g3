@@ -823,14 +823,14 @@ WS
 		|	'\t'
 		|	('\r')? '\n'
 		)
-		{ $channel = HIDDEN; }
+		{ $channel = Hidden; }
 	;
 
 COMMENT
 	:	( SL_COMMENT | ML_COMMENT[ref $type] )
 		{
 			if ( $type != DOC_COMMENT )
-				$channel = HIDDEN;
+				$channel = Hidden;
 		}
 	;
 

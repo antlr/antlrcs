@@ -1,4 +1,4 @@
-// $ANTLR 3.1.2 Grammars\\DefineGrammarItemsWalker.g3 2009-03-20 14:32:51
+// $ANTLR 3.1.2 Grammars\\DefineGrammarItemsWalker.g3 2009-03-23 17:54:02
 
 // The variable 'variable' is assigned but its value is never used.
 #pragma warning disable 219
@@ -254,14 +254,14 @@ public partial class DefineGrammarItemsWalker : TreeParser
 					grammar.type = Grammar.LEXER;
 				}
 
-				Match(input, TokenConstants.DOWN, null); if (state.failed) return retval;
+				Match(input, TokenConstants.Down, null); if (state.failed) return retval;
 				PushFollow(Follow._grammarSpec_in_grammar_83);
 				grammarSpec();
 
 				state._fsp--;
 				if (state.failed) return retval;
 
-				Match(input, TokenConstants.UP, null); if (state.failed) return retval;
+				Match(input, TokenConstants.Up, null); if (state.failed) return retval;
 
 				}
 				break;
@@ -275,14 +275,14 @@ public partial class DefineGrammarItemsWalker : TreeParser
 					grammar.type = Grammar.PARSER;
 				}
 
-				Match(input, TokenConstants.DOWN, null); if (state.failed) return retval;
+				Match(input, TokenConstants.Down, null); if (state.failed) return retval;
 				PushFollow(Follow._grammarSpec_in_grammar_97);
 				grammarSpec();
 
 				state._fsp--;
 				if (state.failed) return retval;
 
-				Match(input, TokenConstants.UP, null); if (state.failed) return retval;
+				Match(input, TokenConstants.Up, null); if (state.failed) return retval;
 
 				}
 				break;
@@ -296,14 +296,14 @@ public partial class DefineGrammarItemsWalker : TreeParser
 					grammar.type = Grammar.TREE_PARSER;
 				}
 
-				Match(input, TokenConstants.DOWN, null); if (state.failed) return retval;
+				Match(input, TokenConstants.Down, null); if (state.failed) return retval;
 				PushFollow(Follow._grammarSpec_in_grammar_111);
 				grammarSpec();
 
 				state._fsp--;
 				if (state.failed) return retval;
 
-				Match(input, TokenConstants.UP, null); if (state.failed) return retval;
+				Match(input, TokenConstants.Up, null); if (state.failed) return retval;
 
 				}
 				break;
@@ -317,14 +317,14 @@ public partial class DefineGrammarItemsWalker : TreeParser
 					grammar.type = Grammar.COMBINED;
 				}
 
-				Match(input, TokenConstants.DOWN, null); if (state.failed) return retval;
+				Match(input, TokenConstants.Down, null); if (state.failed) return retval;
 				PushFollow(Follow._grammarSpec_in_grammar_125);
 				grammarSpec();
 
 				state._fsp--;
 				if (state.failed) return retval;
 
-				Match(input, TokenConstants.UP, null); if (state.failed) return retval;
+				Match(input, TokenConstants.Up, null); if (state.failed) return retval;
 
 				}
 				break;
@@ -369,7 +369,7 @@ public partial class DefineGrammarItemsWalker : TreeParser
 			{
 			Match(input,SCOPE,Follow._SCOPE_in_attrScope150); if (state.failed) return ;
 
-			Match(input, TokenConstants.DOWN, null); if (state.failed) return ;
+			Match(input, TokenConstants.Down, null); if (state.failed) return ;
 			name=(GrammarAST)Match(input,ID,Follow._ID_in_attrScope154); if (state.failed) return ;
 			// Grammars\\DefineGrammarItemsWalker.g3:113:23: ( attrScopeAction )*
 			for ( ; ; )
@@ -408,7 +408,7 @@ public partial class DefineGrammarItemsWalker : TreeParser
 
 			attrs=(GrammarAST)Match(input,ACTION,Follow._ACTION_in_attrScope161); if (state.failed) return ;
 
-			Match(input, TokenConstants.UP, null); if (state.failed) return ;
+			Match(input, TokenConstants.Up, null); if (state.failed) return ;
 			if ( state.backtracking == 0 )
 			{
 
@@ -452,11 +452,11 @@ public partial class DefineGrammarItemsWalker : TreeParser
 			{
 			Match(input,AMPERSAND,Follow._AMPERSAND_in_attrScopeAction179); if (state.failed) return ;
 
-			Match(input, TokenConstants.DOWN, null); if (state.failed) return ;
+			Match(input, TokenConstants.Down, null); if (state.failed) return ;
 			ID1=(GrammarAST)Match(input,ID,Follow._ID_in_attrScopeAction181); if (state.failed) return ;
 			ACTION2=(GrammarAST)Match(input,ACTION,Follow._ACTION_in_attrScopeAction183); if (state.failed) return ;
 
-			Match(input, TokenConstants.UP, null); if (state.failed) return ;
+			Match(input, TokenConstants.Up, null); if (state.failed) return ;
 			if ( state.backtracking == 0 )
 			{
 
@@ -754,7 +754,7 @@ public partial class DefineGrammarItemsWalker : TreeParser
 			{
 			amp=(GrammarAST)Match(input,AMPERSAND,Follow._AMPERSAND_in_action286); if (state.failed) return ;
 
-			Match(input, TokenConstants.DOWN, null); if (state.failed) return ;
+			Match(input, TokenConstants.Down, null); if (state.failed) return ;
 			id1=(GrammarAST)Match(input,ID,Follow._ID_in_action290); if (state.failed) return ;
 			// Grammars\\DefineGrammarItemsWalker.g3:152:4: (id2= ID a1= ACTION |a2= ACTION )
 			int alt10=2;
@@ -804,7 +804,7 @@ public partial class DefineGrammarItemsWalker : TreeParser
 			}
 
 
-			Match(input, TokenConstants.UP, null); if (state.failed) return ;
+			Match(input, TokenConstants.Up, null); if (state.failed) return ;
 			if ( state.backtracking == 0 )
 			{
 
@@ -839,9 +839,9 @@ public partial class DefineGrammarItemsWalker : TreeParser
 			{
 			Match(input,OPTIONS,Follow._OPTIONS_in_optionsSpec353); if (state.failed) return ;
 
-			if ( input.LA(1)==TokenConstants.DOWN )
+			if ( input.LA(1)==TokenConstants.Down )
 			{
-				Match(input, TokenConstants.DOWN, null); if (state.failed) return ;
+				Match(input, TokenConstants.Down, null); if (state.failed) return ;
 				// Grammars\\DefineGrammarItemsWalker.g3:164:14: ( . )*
 				for ( ; ; )
 				{
@@ -878,7 +878,7 @@ public partial class DefineGrammarItemsWalker : TreeParser
 
 
 
-				Match(input, TokenConstants.UP, null); if (state.failed) return ;
+				Match(input, TokenConstants.Up, null); if (state.failed) return ;
 			}
 
 			}
@@ -908,7 +908,7 @@ public partial class DefineGrammarItemsWalker : TreeParser
 			{
 			Match(input,IMPORT,Follow._IMPORT_in_delegateGrammars370); if (state.failed) return ;
 
-			Match(input, TokenConstants.DOWN, null); if (state.failed) return ;
+			Match(input, TokenConstants.Down, null); if (state.failed) return ;
 			// Grammars\\DefineGrammarItemsWalker.g3:168:16: ( ^( ASSIGN ID ID ) | ID )+
 			int cnt12=0;
 			for ( ; ; )
@@ -933,11 +933,11 @@ public partial class DefineGrammarItemsWalker : TreeParser
 					{
 					Match(input,ASSIGN,Follow._ASSIGN_in_delegateGrammars375); if (state.failed) return ;
 
-					Match(input, TokenConstants.DOWN, null); if (state.failed) return ;
+					Match(input, TokenConstants.Down, null); if (state.failed) return ;
 					Match(input,ID,Follow._ID_in_delegateGrammars377); if (state.failed) return ;
 					Match(input,ID,Follow._ID_in_delegateGrammars379); if (state.failed) return ;
 
-					Match(input, TokenConstants.UP, null); if (state.failed) return ;
+					Match(input, TokenConstants.Up, null); if (state.failed) return ;
 
 					}
 					break;
@@ -964,7 +964,7 @@ public partial class DefineGrammarItemsWalker : TreeParser
 
 
 
-			Match(input, TokenConstants.UP, null); if (state.failed) return ;
+			Match(input, TokenConstants.Up, null); if (state.failed) return ;
 
 			}
 
@@ -993,7 +993,7 @@ public partial class DefineGrammarItemsWalker : TreeParser
 			{
 			Match(input,TOKENS,Follow._TOKENS_in_tokensSpec402); if (state.failed) return ;
 
-			Match(input, TokenConstants.DOWN, null); if (state.failed) return ;
+			Match(input, TokenConstants.Down, null); if (state.failed) return ;
 			// Grammars\\DefineGrammarItemsWalker.g3:172:14: ( tokenSpec )+
 			int cnt13=0;
 			for ( ; ; )
@@ -1036,7 +1036,7 @@ public partial class DefineGrammarItemsWalker : TreeParser
 
 
 
-			Match(input, TokenConstants.UP, null); if (state.failed) return ;
+			Match(input, TokenConstants.Up, null); if (state.failed) return ;
 
 			}
 
@@ -1095,7 +1095,7 @@ public partial class DefineGrammarItemsWalker : TreeParser
 				{
 				Match(input,ASSIGN,Follow._ASSIGN_in_tokenSpec431); if (state.failed) return ;
 
-				Match(input, TokenConstants.DOWN, null); if (state.failed) return ;
+				Match(input, TokenConstants.Down, null); if (state.failed) return ;
 				Match(input,TOKEN_REF,Follow._TOKEN_REF_in_tokenSpec436); if (state.failed) return ;
 				if ( input.LA(1)==CHAR_LITERAL||input.LA(1)==STRING_LITERAL )
 				{
@@ -1110,7 +1110,7 @@ public partial class DefineGrammarItemsWalker : TreeParser
 				}
 
 
-				Match(input, TokenConstants.UP, null); if (state.failed) return ;
+				Match(input, TokenConstants.Up, null); if (state.failed) return ;
 
 				}
 				break;
@@ -1227,7 +1227,7 @@ public partial class DefineGrammarItemsWalker : TreeParser
 			{
 			RULE3=(GrammarAST)Match(input,RULE,Follow._RULE_in_rule491); if (state.failed) return retval;
 
-			Match(input, TokenConstants.DOWN, null); if (state.failed) return retval;
+			Match(input, TokenConstants.Down, null); if (state.failed) return retval;
 			id=(GrammarAST)Match(input,ID,Follow._ID_in_rule495); if (state.failed) return retval;
 			if ( state.backtracking == 0 )
 			{
@@ -1259,9 +1259,9 @@ public partial class DefineGrammarItemsWalker : TreeParser
 
 			Match(input,ARG,Follow._ARG_in_rule512); if (state.failed) return retval;
 
-			if ( input.LA(1)==TokenConstants.DOWN )
+			if ( input.LA(1)==TokenConstants.Down )
 			{
-				Match(input, TokenConstants.DOWN, null); if (state.failed) return retval;
+				Match(input, TokenConstants.Down, null); if (state.failed) return retval;
 				// Grammars\\DefineGrammarItemsWalker.g3:198:11: (args= ARG_ACTION )?
 				int alt17=2;
 				int LA17_0 = input.LA(1);
@@ -1283,13 +1283,13 @@ public partial class DefineGrammarItemsWalker : TreeParser
 				}
 
 
-				Match(input, TokenConstants.UP, null); if (state.failed) return retval;
+				Match(input, TokenConstants.Up, null); if (state.failed) return retval;
 			}
 			Match(input,RET,Follow._RET_in_rule528); if (state.failed) return retval;
 
-			if ( input.LA(1)==TokenConstants.DOWN )
+			if ( input.LA(1)==TokenConstants.Down )
 			{
-				Match(input, TokenConstants.DOWN, null); if (state.failed) return retval;
+				Match(input, TokenConstants.Down, null); if (state.failed) return retval;
 				// Grammars\\DefineGrammarItemsWalker.g3:199:11: (ret= ARG_ACTION )?
 				int alt18=2;
 				int LA18_0 = input.LA(1);
@@ -1311,7 +1311,7 @@ public partial class DefineGrammarItemsWalker : TreeParser
 				}
 
 
-				Match(input, TokenConstants.UP, null); if (state.failed) return retval;
+				Match(input, TokenConstants.Up, null); if (state.failed) return retval;
 			}
 			// Grammars\\DefineGrammarItemsWalker.g3:200:4: ( throwsSpec )?
 			int alt19=2;
@@ -1496,7 +1496,7 @@ public partial class DefineGrammarItemsWalker : TreeParser
 							
 			}
 
-			Match(input, TokenConstants.UP, null); if (state.failed) return retval;
+			Match(input, TokenConstants.Up, null); if (state.failed) return retval;
 
 			}
 
@@ -1529,11 +1529,11 @@ public partial class DefineGrammarItemsWalker : TreeParser
 			{
 			amp=(GrammarAST)Match(input,AMPERSAND,Follow._AMPERSAND_in_ruleAction625); if (state.failed) return ;
 
-			Match(input, TokenConstants.DOWN, null); if (state.failed) return ;
+			Match(input, TokenConstants.Down, null); if (state.failed) return ;
 			id=(GrammarAST)Match(input,ID,Follow._ID_in_ruleAction629); if (state.failed) return ;
 			a=(GrammarAST)Match(input,ACTION,Follow._ACTION_in_ruleAction633); if (state.failed) return ;
 
-			Match(input, TokenConstants.UP, null); if (state.failed) return ;
+			Match(input, TokenConstants.Up, null); if (state.failed) return ;
 			if ( state.backtracking == 0 )
 			{
 				if (r!=null) r.defineNamedAction(amp,id,a);
@@ -1622,7 +1622,7 @@ public partial class DefineGrammarItemsWalker : TreeParser
 			{
 			Match(input,THROWS,Follow._THROWS_in_throwsSpec693); if (state.failed) return exceptions;
 
-			Match(input, TokenConstants.DOWN, null); if (state.failed) return exceptions;
+			Match(input, TokenConstants.Down, null); if (state.failed) return exceptions;
 			// Grammars\\DefineGrammarItemsWalker.g3:266:15: ( ID )+
 			int cnt24=0;
 			for ( ; ; )
@@ -1665,7 +1665,7 @@ public partial class DefineGrammarItemsWalker : TreeParser
 
 
 
-			Match(input, TokenConstants.UP, null); if (state.failed) return exceptions;
+			Match(input, TokenConstants.Up, null); if (state.failed) return exceptions;
 
 			}
 
@@ -1702,9 +1702,9 @@ public partial class DefineGrammarItemsWalker : TreeParser
 			{
 			Match(input,SCOPE,Follow._SCOPE_in_ruleScopeSpec726); if (state.failed) return ;
 
-			if ( input.LA(1)==TokenConstants.DOWN )
+			if ( input.LA(1)==TokenConstants.Down )
 			{
-				Match(input, TokenConstants.DOWN, null); if (state.failed) return ;
+				Match(input, TokenConstants.Down, null); if (state.failed) return ;
 				// Grammars\\DefineGrammarItemsWalker.g3:276:4: ( ( attrScopeAction )* attrs= ACTION )?
 				int alt26=2;
 				int LA26_0 = input.LA(1);
@@ -1817,7 +1817,7 @@ public partial class DefineGrammarItemsWalker : TreeParser
 
 
 
-				Match(input, TokenConstants.UP, null); if (state.failed) return ;
+				Match(input, TokenConstants.Up, null); if (state.failed) return ;
 			}
 
 			}
@@ -1861,7 +1861,7 @@ public partial class DefineGrammarItemsWalker : TreeParser
 			{
 			Match(input,BLOCK,Follow._BLOCK_in_block793); if (state.failed) return retval;
 
-			Match(input, TokenConstants.DOWN, null); if (state.failed) return retval;
+			Match(input, TokenConstants.Down, null); if (state.failed) return retval;
 			// Grammars\\DefineGrammarItemsWalker.g3:311:4: ( optionsSpec )?
 			int alt28=2;
 			int LA28_0 = input.LA(1);
@@ -1973,7 +1973,7 @@ public partial class DefineGrammarItemsWalker : TreeParser
 
 			Match(input,EOB,Follow._EOB_in_block835); if (state.failed) return retval;
 
-			Match(input, TokenConstants.UP, null); if (state.failed) return retval;
+			Match(input, TokenConstants.Up, null); if (state.failed) return retval;
 
 			}
 
@@ -2007,11 +2007,11 @@ public partial class DefineGrammarItemsWalker : TreeParser
 			{
 			amp=(GrammarAST)Match(input,AMPERSAND,Follow._AMPERSAND_in_blockAction859); if (state.failed) return ;
 
-			Match(input, TokenConstants.DOWN, null); if (state.failed) return ;
+			Match(input, TokenConstants.Down, null); if (state.failed) return ;
 			id=(GrammarAST)Match(input,ID,Follow._ID_in_blockAction863); if (state.failed) return ;
 			a=(GrammarAST)Match(input,ACTION,Follow._ACTION_in_blockAction867); if (state.failed) return ;
 
-			Match(input, TokenConstants.UP, null); if (state.failed) return ;
+			Match(input, TokenConstants.Up, null); if (state.failed) return ;
 
 			}
 
@@ -2067,7 +2067,7 @@ public partial class DefineGrammarItemsWalker : TreeParser
 			{
 			Match(input,ALT,Follow._ALT_in_alternative888); if (state.failed) return retval;
 
-			Match(input, TokenConstants.DOWN, null); if (state.failed) return retval;
+			Match(input, TokenConstants.Down, null); if (state.failed) return retval;
 			// Grammars\\DefineGrammarItemsWalker.g3:352:11: ( element )+
 			int cnt31=0;
 			for ( ; ; )
@@ -2111,7 +2111,7 @@ public partial class DefineGrammarItemsWalker : TreeParser
 
 			Match(input,EOA,Follow._EOA_in_alternative895); if (state.failed) return retval;
 
-			Match(input, TokenConstants.UP, null); if (state.failed) return retval;
+			Match(input, TokenConstants.Up, null); if (state.failed) return retval;
 
 			}
 
@@ -2267,11 +2267,11 @@ public partial class DefineGrammarItemsWalker : TreeParser
 			{
 			Match(input,CATCH,Follow._CATCH_in_exceptionHandler937); if (state.failed) return ;
 
-			Match(input, TokenConstants.DOWN, null); if (state.failed) return ;
+			Match(input, TokenConstants.Down, null); if (state.failed) return ;
 			Match(input,ARG_ACTION,Follow._ARG_ACTION_in_exceptionHandler939); if (state.failed) return ;
 			ACTION7=(GrammarAST)Match(input,ACTION,Follow._ACTION_in_exceptionHandler941); if (state.failed) return ;
 
-			Match(input, TokenConstants.UP, null); if (state.failed) return ;
+			Match(input, TokenConstants.Up, null); if (state.failed) return ;
 			if ( state.backtracking == 0 )
 			{
 				trackInlineAction(ACTION7);
@@ -2306,10 +2306,10 @@ public partial class DefineGrammarItemsWalker : TreeParser
 			{
 			Match(input,FINALLY,Follow._FINALLY_in_finallyClause959); if (state.failed) return ;
 
-			Match(input, TokenConstants.DOWN, null); if (state.failed) return ;
+			Match(input, TokenConstants.Down, null); if (state.failed) return ;
 			ACTION8=(GrammarAST)Match(input,ACTION,Follow._ACTION_in_finallyClause961); if (state.failed) return ;
 
-			Match(input, TokenConstants.UP, null); if (state.failed) return ;
+			Match(input, TokenConstants.Up, null); if (state.failed) return ;
 			if ( state.backtracking == 0 )
 			{
 				trackInlineAction(ACTION8);
@@ -2362,14 +2362,14 @@ public partial class DefineGrammarItemsWalker : TreeParser
 				{
 				Match(input,ROOT,Follow._ROOT_in_element978); if (state.failed) return retval;
 
-				Match(input, TokenConstants.DOWN, null); if (state.failed) return retval;
+				Match(input, TokenConstants.Down, null); if (state.failed) return retval;
 				PushFollow(Follow._element_in_element980);
 				element();
 
 				state._fsp--;
 				if (state.failed) return retval;
 
-				Match(input, TokenConstants.UP, null); if (state.failed) return retval;
+				Match(input, TokenConstants.Up, null); if (state.failed) return retval;
 
 				}
 				break;
@@ -2378,14 +2378,14 @@ public partial class DefineGrammarItemsWalker : TreeParser
 				{
 				Match(input,BANG,Follow._BANG_in_element989); if (state.failed) return retval;
 
-				Match(input, TokenConstants.DOWN, null); if (state.failed) return retval;
+				Match(input, TokenConstants.Down, null); if (state.failed) return retval;
 				PushFollow(Follow._element_in_element991);
 				element();
 
 				state._fsp--;
 				if (state.failed) return retval;
 
-				Match(input, TokenConstants.UP, null); if (state.failed) return retval;
+				Match(input, TokenConstants.Up, null); if (state.failed) return retval;
 
 				}
 				break;
@@ -2405,14 +2405,14 @@ public partial class DefineGrammarItemsWalker : TreeParser
 				{
 				Match(input,NOT,Follow._NOT_in_element1008); if (state.failed) return retval;
 
-				Match(input, TokenConstants.DOWN, null); if (state.failed) return retval;
+				Match(input, TokenConstants.Down, null); if (state.failed) return retval;
 				PushFollow(Follow._element_in_element1010);
 				element();
 
 				state._fsp--;
 				if (state.failed) return retval;
 
-				Match(input, TokenConstants.UP, null); if (state.failed) return retval;
+				Match(input, TokenConstants.Up, null); if (state.failed) return retval;
 
 				}
 				break;
@@ -2421,7 +2421,7 @@ public partial class DefineGrammarItemsWalker : TreeParser
 				{
 				Match(input,RANGE,Follow._RANGE_in_element1019); if (state.failed) return retval;
 
-				Match(input, TokenConstants.DOWN, null); if (state.failed) return retval;
+				Match(input, TokenConstants.Down, null); if (state.failed) return retval;
 				PushFollow(Follow._atom_in_element1021);
 				atom(null);
 
@@ -2433,7 +2433,7 @@ public partial class DefineGrammarItemsWalker : TreeParser
 				state._fsp--;
 				if (state.failed) return retval;
 
-				Match(input, TokenConstants.UP, null); if (state.failed) return retval;
+				Match(input, TokenConstants.Up, null); if (state.failed) return retval;
 
 				}
 				break;
@@ -2442,7 +2442,7 @@ public partial class DefineGrammarItemsWalker : TreeParser
 				{
 				Match(input,CHAR_RANGE,Follow._CHAR_RANGE_in_element1034); if (state.failed) return retval;
 
-				Match(input, TokenConstants.DOWN, null); if (state.failed) return retval;
+				Match(input, TokenConstants.Down, null); if (state.failed) return retval;
 				PushFollow(Follow._atom_in_element1036);
 				atom(null);
 
@@ -2454,7 +2454,7 @@ public partial class DefineGrammarItemsWalker : TreeParser
 				state._fsp--;
 				if (state.failed) return retval;
 
-				Match(input, TokenConstants.UP, null); if (state.failed) return retval;
+				Match(input, TokenConstants.Up, null); if (state.failed) return retval;
 
 				}
 				break;
@@ -2463,7 +2463,7 @@ public partial class DefineGrammarItemsWalker : TreeParser
 				{
 				Match(input,ASSIGN,Follow._ASSIGN_in_element1048); if (state.failed) return retval;
 
-				Match(input, TokenConstants.DOWN, null); if (state.failed) return retval;
+				Match(input, TokenConstants.Down, null); if (state.failed) return retval;
 				id=(GrammarAST)Match(input,ID,Follow._ID_in_element1052); if (state.failed) return retval;
 				PushFollow(Follow._element_in_element1056);
 				el=element();
@@ -2471,7 +2471,7 @@ public partial class DefineGrammarItemsWalker : TreeParser
 				state._fsp--;
 				if (state.failed) return retval;
 
-				Match(input, TokenConstants.UP, null); if (state.failed) return retval;
+				Match(input, TokenConstants.Up, null); if (state.failed) return retval;
 				if ( state.backtracking == 0 )
 				{
 
@@ -2502,7 +2502,7 @@ public partial class DefineGrammarItemsWalker : TreeParser
 				{
 				Match(input,PLUS_ASSIGN,Follow._PLUS_ASSIGN_in_element1069); if (state.failed) return retval;
 
-				Match(input, TokenConstants.DOWN, null); if (state.failed) return retval;
+				Match(input, TokenConstants.Down, null); if (state.failed) return retval;
 				id2=(GrammarAST)Match(input,ID,Follow._ID_in_element1073); if (state.failed) return retval;
 				PushFollow(Follow._element_in_element1077);
 				a2=element();
@@ -2532,7 +2532,7 @@ public partial class DefineGrammarItemsWalker : TreeParser
 								
 				}
 
-				Match(input, TokenConstants.UP, null); if (state.failed) return retval;
+				Match(input, TokenConstants.Up, null); if (state.failed) return retval;
 
 				}
 				break;
@@ -2563,14 +2563,14 @@ public partial class DefineGrammarItemsWalker : TreeParser
 				{
 				Match(input,SYNPRED,Follow._SYNPRED_in_element1110); if (state.failed) return retval;
 
-				Match(input, TokenConstants.DOWN, null); if (state.failed) return retval;
+				Match(input, TokenConstants.Down, null); if (state.failed) return retval;
 				PushFollow(Follow._block_in_element1112);
 				block();
 
 				state._fsp--;
 				if (state.failed) return retval;
 
-				Match(input, TokenConstants.UP, null); if (state.failed) return retval;
+				Match(input, TokenConstants.Up, null); if (state.failed) return retval;
 
 				}
 				break;
@@ -2628,9 +2628,9 @@ public partial class DefineGrammarItemsWalker : TreeParser
 				{
 				Match(input,BACKTRACK_SEMPRED,Follow._BACKTRACK_SEMPRED_in_element1166); if (state.failed) return retval;
 
-				if ( input.LA(1)==TokenConstants.DOWN )
+				if ( input.LA(1)==TokenConstants.Down )
 				{
-					Match(input, TokenConstants.DOWN, null); if (state.failed) return retval;
+					Match(input, TokenConstants.Down, null); if (state.failed) return retval;
 					// Grammars\\DefineGrammarItemsWalker.g3:435:26: ( . )*
 					for ( ; ; )
 					{
@@ -2667,7 +2667,7 @@ public partial class DefineGrammarItemsWalker : TreeParser
 
 
 
-					Match(input, TokenConstants.UP, null); if (state.failed) return retval;
+					Match(input, TokenConstants.Up, null); if (state.failed) return retval;
 				}
 
 				}
@@ -2748,14 +2748,14 @@ public partial class DefineGrammarItemsWalker : TreeParser
 				{
 				Match(input,OPTIONAL,Follow._OPTIONAL_in_ebnf1219); if (state.failed) return ;
 
-				Match(input, TokenConstants.DOWN, null); if (state.failed) return ;
+				Match(input, TokenConstants.Down, null); if (state.failed) return ;
 				PushFollow(Follow._block_in_ebnf1221);
 				block();
 
 				state._fsp--;
 				if (state.failed) return ;
 
-				Match(input, TokenConstants.UP, null); if (state.failed) return ;
+				Match(input, TokenConstants.Up, null); if (state.failed) return ;
 
 				}
 				break;
@@ -2764,14 +2764,14 @@ public partial class DefineGrammarItemsWalker : TreeParser
 				{
 				Match(input,CLOSURE,Follow._CLOSURE_in_ebnf1230); if (state.failed) return ;
 
-				Match(input, TokenConstants.DOWN, null); if (state.failed) return ;
+				Match(input, TokenConstants.Down, null); if (state.failed) return ;
 				PushFollow(Follow._block_in_ebnf1232);
 				block();
 
 				state._fsp--;
 				if (state.failed) return ;
 
-				Match(input, TokenConstants.UP, null); if (state.failed) return ;
+				Match(input, TokenConstants.Up, null); if (state.failed) return ;
 
 				}
 				break;
@@ -2780,14 +2780,14 @@ public partial class DefineGrammarItemsWalker : TreeParser
 				{
 				Match(input,POSITIVE_CLOSURE,Follow._POSITIVE_CLOSURE_in_ebnf1241); if (state.failed) return ;
 
-				Match(input, TokenConstants.DOWN, null); if (state.failed) return ;
+				Match(input, TokenConstants.Down, null); if (state.failed) return ;
 				PushFollow(Follow._block_in_ebnf1243);
 				block();
 
 				state._fsp--;
 				if (state.failed) return ;
 
-				Match(input, TokenConstants.UP, null); if (state.failed) return ;
+				Match(input, TokenConstants.Up, null); if (state.failed) return ;
 
 				}
 				break;
@@ -2848,14 +2848,14 @@ public partial class DefineGrammarItemsWalker : TreeParser
 				{
 				Match(input,CLOSURE,Follow._CLOSURE_in_dotLoop1262); if (state.failed) return retval;
 
-				Match(input, TokenConstants.DOWN, null); if (state.failed) return retval;
+				Match(input, TokenConstants.Down, null); if (state.failed) return retval;
 				PushFollow(Follow._dotBlock_in_dotLoop1264);
 				dotBlock();
 
 				state._fsp--;
 				if (state.failed) return retval;
 
-				Match(input, TokenConstants.UP, null); if (state.failed) return retval;
+				Match(input, TokenConstants.Up, null); if (state.failed) return retval;
 
 				}
 				break;
@@ -2864,14 +2864,14 @@ public partial class DefineGrammarItemsWalker : TreeParser
 				{
 				Match(input,POSITIVE_CLOSURE,Follow._POSITIVE_CLOSURE_in_dotLoop1274); if (state.failed) return retval;
 
-				Match(input, TokenConstants.DOWN, null); if (state.failed) return retval;
+				Match(input, TokenConstants.Down, null); if (state.failed) return retval;
 				PushFollow(Follow._dotBlock_in_dotLoop1276);
 				dotBlock();
 
 				state._fsp--;
 				if (state.failed) return retval;
 
-				Match(input, TokenConstants.UP, null); if (state.failed) return retval;
+				Match(input, TokenConstants.Up, null); if (state.failed) return retval;
 
 				}
 				break;
@@ -2921,17 +2921,17 @@ public partial class DefineGrammarItemsWalker : TreeParser
 			{
 			Match(input,BLOCK,Follow._BLOCK_in_dotBlock1299); if (state.failed) return ;
 
-			Match(input, TokenConstants.DOWN, null); if (state.failed) return ;
+			Match(input, TokenConstants.Down, null); if (state.failed) return ;
 			Match(input,ALT,Follow._ALT_in_dotBlock1303); if (state.failed) return ;
 
-			Match(input, TokenConstants.DOWN, null); if (state.failed) return ;
+			Match(input, TokenConstants.Down, null); if (state.failed) return ;
 			Match(input,WILDCARD,Follow._WILDCARD_in_dotBlock1305); if (state.failed) return ;
 			Match(input,EOA,Follow._EOA_in_dotBlock1307); if (state.failed) return ;
 
-			Match(input, TokenConstants.UP, null); if (state.failed) return ;
+			Match(input, TokenConstants.Up, null); if (state.failed) return ;
 			Match(input,EOB,Follow._EOB_in_dotBlock1311); if (state.failed) return ;
 
-			Match(input, TokenConstants.UP, null); if (state.failed) return ;
+			Match(input, TokenConstants.Up, null); if (state.failed) return ;
 
 			}
 
@@ -2960,7 +2960,7 @@ public partial class DefineGrammarItemsWalker : TreeParser
 			{
 			Match(input,TREE_BEGIN,Follow._TREE_BEGIN_in_tree_1325); if (state.failed) return ;
 
-			Match(input, TokenConstants.DOWN, null); if (state.failed) return ;
+			Match(input, TokenConstants.Down, null); if (state.failed) return ;
 			// Grammars\\DefineGrammarItemsWalker.g3:477:17: ( element )+
 			int cnt39=0;
 			for ( ; ; )
@@ -3003,7 +3003,7 @@ public partial class DefineGrammarItemsWalker : TreeParser
 
 
 
-			Match(input, TokenConstants.UP, null); if (state.failed) return ;
+			Match(input, TokenConstants.Up, null); if (state.failed) return ;
 
 			}
 
@@ -3085,9 +3085,9 @@ public partial class DefineGrammarItemsWalker : TreeParser
 				{
 				rr=(GrammarAST)Match(input,RULE_REF,Follow._RULE_REF_in_atom1345); if (state.failed) return ;
 
-				if ( input.LA(1)==TokenConstants.DOWN )
+				if ( input.LA(1)==TokenConstants.Down )
 				{
-					Match(input, TokenConstants.DOWN, null); if (state.failed) return ;
+					Match(input, TokenConstants.Down, null); if (state.failed) return ;
 					// Grammars\\DefineGrammarItemsWalker.g3:481:19: (rarg= ARG_ACTION )?
 					int alt40=2;
 					int LA40_0 = input.LA(1);
@@ -3109,7 +3109,7 @@ public partial class DefineGrammarItemsWalker : TreeParser
 					}
 
 
-					Match(input, TokenConstants.UP, null); if (state.failed) return ;
+					Match(input, TokenConstants.Up, null); if (state.failed) return ;
 				}
 				if ( state.backtracking == 0 )
 				{
@@ -3130,9 +3130,9 @@ public partial class DefineGrammarItemsWalker : TreeParser
 				{
 				t=(GrammarAST)Match(input,TOKEN_REF,Follow._TOKEN_REF_in_atom1367); if (state.failed) return ;
 
-				if ( input.LA(1)==TokenConstants.DOWN )
+				if ( input.LA(1)==TokenConstants.Down )
 				{
-					Match(input, TokenConstants.DOWN, null); if (state.failed) return ;
+					Match(input, TokenConstants.Down, null); if (state.failed) return ;
 					// Grammars\\DefineGrammarItemsWalker.g3:490:19: (targ= ARG_ACTION )?
 					int alt41=2;
 					int LA41_0 = input.LA(1);
@@ -3154,7 +3154,7 @@ public partial class DefineGrammarItemsWalker : TreeParser
 					}
 
 
-					Match(input, TokenConstants.UP, null); if (state.failed) return ;
+					Match(input, TokenConstants.Up, null); if (state.failed) return ;
 				}
 				if ( state.backtracking == 0 )
 				{
@@ -3225,7 +3225,7 @@ public partial class DefineGrammarItemsWalker : TreeParser
 				{
 				Match(input,DOT,Follow._DOT_in_atom1415); if (state.failed) return ;
 
-				Match(input, TokenConstants.DOWN, null); if (state.failed) return ;
+				Match(input, TokenConstants.Down, null); if (state.failed) return ;
 				ID11=(GrammarAST)Match(input,ID,Follow._ID_in_atom1417); if (state.failed) return ;
 				PushFollow(Follow._atom_in_atom1419);
 				atom(ID11);
@@ -3233,7 +3233,7 @@ public partial class DefineGrammarItemsWalker : TreeParser
 				state._fsp--;
 				if (state.failed) return ;
 
-				Match(input, TokenConstants.UP, null); if (state.failed) return ;
+				Match(input, TokenConstants.Up, null); if (state.failed) return ;
 
 				}
 				break;
@@ -3335,7 +3335,7 @@ public partial class DefineGrammarItemsWalker : TreeParser
 					{
 					Match(input,REWRITE,Follow._REWRITE_in_rewrite1461); if (state.failed) return retval;
 
-					Match(input, TokenConstants.DOWN, null); if (state.failed) return retval;
+					Match(input, TokenConstants.Down, null); if (state.failed) return retval;
 					// Grammars\\DefineGrammarItemsWalker.g3:544:15: (pred= SEMPRED )?
 					int alt43=2;
 					int LA43_0 = input.LA(1);
@@ -3362,7 +3362,7 @@ public partial class DefineGrammarItemsWalker : TreeParser
 					state._fsp--;
 					if (state.failed) return retval;
 
-					Match(input, TokenConstants.UP, null); if (state.failed) return retval;
+					Match(input, TokenConstants.Up, null); if (state.failed) return retval;
 					if ( state.backtracking == 0 )
 					{
 
@@ -3430,7 +3430,7 @@ public partial class DefineGrammarItemsWalker : TreeParser
 			{
 			Match(input,BLOCK,Follow._BLOCK_in_rewrite_block1505); if (state.failed) return retval;
 
-			Match(input, TokenConstants.DOWN, null); if (state.failed) return retval;
+			Match(input, TokenConstants.Down, null); if (state.failed) return retval;
 			PushFollow(Follow._rewrite_alternative_in_rewrite_block1507);
 			rewrite_alternative();
 
@@ -3438,7 +3438,7 @@ public partial class DefineGrammarItemsWalker : TreeParser
 			if (state.failed) return retval;
 			Match(input,EOB,Follow._EOB_in_rewrite_block1509); if (state.failed) return retval;
 
-			Match(input, TokenConstants.UP, null); if (state.failed) return retval;
+			Match(input, TokenConstants.Up, null); if (state.failed) return retval;
 			if ( state.backtracking == 0 )
 			{
 
@@ -3580,7 +3580,7 @@ public partial class DefineGrammarItemsWalker : TreeParser
 				}
 				a=(GrammarAST)Match(input,ALT,Follow._ALT_in_rewrite_alternative1541); if (state.failed) return ;
 
-				Match(input, TokenConstants.DOWN, null); if (state.failed) return ;
+				Match(input, TokenConstants.Down, null); if (state.failed) return ;
 				// Grammars\\DefineGrammarItemsWalker.g3:583:36: ( ( rewrite_element )+ | EPSILON )
 				int alt46=2;
 				int LA46_0 = input.LA(1);
@@ -3661,7 +3661,7 @@ public partial class DefineGrammarItemsWalker : TreeParser
 
 				Match(input,EOA,Follow._EOA_in_rewrite_alternative1558); if (state.failed) return ;
 
-				Match(input, TokenConstants.UP, null); if (state.failed) return ;
+				Match(input, TokenConstants.Up, null); if (state.failed) return ;
 
 				}
 				break;
@@ -3842,14 +3842,14 @@ public partial class DefineGrammarItemsWalker : TreeParser
 				{
 				Match(input,OPTIONAL,Follow._OPTIONAL_in_rewrite_ebnf1611); if (state.failed) return ;
 
-				Match(input, TokenConstants.DOWN, null); if (state.failed) return ;
+				Match(input, TokenConstants.Down, null); if (state.failed) return ;
 				PushFollow(Follow._rewrite_block_in_rewrite_ebnf1613);
 				rewrite_block();
 
 				state._fsp--;
 				if (state.failed) return ;
 
-				Match(input, TokenConstants.UP, null); if (state.failed) return ;
+				Match(input, TokenConstants.Up, null); if (state.failed) return ;
 
 				}
 				break;
@@ -3858,14 +3858,14 @@ public partial class DefineGrammarItemsWalker : TreeParser
 				{
 				Match(input,CLOSURE,Follow._CLOSURE_in_rewrite_ebnf1622); if (state.failed) return ;
 
-				Match(input, TokenConstants.DOWN, null); if (state.failed) return ;
+				Match(input, TokenConstants.Down, null); if (state.failed) return ;
 				PushFollow(Follow._rewrite_block_in_rewrite_ebnf1624);
 				rewrite_block();
 
 				state._fsp--;
 				if (state.failed) return ;
 
-				Match(input, TokenConstants.UP, null); if (state.failed) return ;
+				Match(input, TokenConstants.Up, null); if (state.failed) return ;
 
 				}
 				break;
@@ -3874,14 +3874,14 @@ public partial class DefineGrammarItemsWalker : TreeParser
 				{
 				Match(input,POSITIVE_CLOSURE,Follow._POSITIVE_CLOSURE_in_rewrite_ebnf1633); if (state.failed) return ;
 
-				Match(input, TokenConstants.DOWN, null); if (state.failed) return ;
+				Match(input, TokenConstants.Down, null); if (state.failed) return ;
 				PushFollow(Follow._rewrite_block_in_rewrite_ebnf1635);
 				rewrite_block();
 
 				state._fsp--;
 				if (state.failed) return ;
 
-				Match(input, TokenConstants.UP, null); if (state.failed) return ;
+				Match(input, TokenConstants.Up, null); if (state.failed) return ;
 
 				}
 				break;
@@ -3912,7 +3912,7 @@ public partial class DefineGrammarItemsWalker : TreeParser
 			{
 			Match(input,TREE_BEGIN,Follow._TREE_BEGIN_in_rewrite_tree1652); if (state.failed) return ;
 
-			Match(input, TokenConstants.DOWN, null); if (state.failed) return ;
+			Match(input, TokenConstants.Down, null); if (state.failed) return ;
 			PushFollow(Follow._rewrite_atom_in_rewrite_tree1654);
 			rewrite_atom();
 
@@ -3954,7 +3954,7 @@ public partial class DefineGrammarItemsWalker : TreeParser
 
 
 
-			Match(input, TokenConstants.UP, null); if (state.failed) return ;
+			Match(input, TokenConstants.Up, null); if (state.failed) return ;
 
 			}
 
@@ -4094,9 +4094,9 @@ public partial class DefineGrammarItemsWalker : TreeParser
 					{
 					Match(input,TOKEN_REF,Follow._TOKEN_REF_in_rewrite_atom1689); if (state.failed) return retval;
 
-					if ( input.LA(1)==TokenConstants.DOWN )
+					if ( input.LA(1)==TokenConstants.Down )
 					{
-						Match(input, TokenConstants.DOWN, null); if (state.failed) return retval;
+						Match(input, TokenConstants.Down, null); if (state.failed) return retval;
 						// Grammars\\DefineGrammarItemsWalker.g3:633:5: ( ARG_ACTION )?
 						int alt51=2;
 						int LA51_0 = input.LA(1);
@@ -4125,7 +4125,7 @@ public partial class DefineGrammarItemsWalker : TreeParser
 						}
 
 
-						Match(input, TokenConstants.UP, null); if (state.failed) return retval;
+						Match(input, TokenConstants.Up, null); if (state.failed) return retval;
 					}
 
 					}
@@ -4234,11 +4234,11 @@ public partial class DefineGrammarItemsWalker : TreeParser
 				{
 				Match(input,ALT,Follow._ALT_in_rewrite_template1759); if (state.failed) return ;
 
-				Match(input, TokenConstants.DOWN, null); if (state.failed) return ;
+				Match(input, TokenConstants.Down, null); if (state.failed) return ;
 				Match(input,EPSILON,Follow._EPSILON_in_rewrite_template1761); if (state.failed) return ;
 				Match(input,EOA,Follow._EOA_in_rewrite_template1763); if (state.failed) return ;
 
-				Match(input, TokenConstants.UP, null); if (state.failed) return ;
+				Match(input, TokenConstants.Up, null); if (state.failed) return ;
 
 				}
 				break;
@@ -4247,7 +4247,7 @@ public partial class DefineGrammarItemsWalker : TreeParser
 				{
 				Match(input,TEMPLATE,Follow._TEMPLATE_in_rewrite_template1772); if (state.failed) return ;
 
-				Match(input, TokenConstants.DOWN, null); if (state.failed) return ;
+				Match(input, TokenConstants.Down, null); if (state.failed) return ;
 				// Grammars\\DefineGrammarItemsWalker.g3:653:16: (id= ID |ind= ACTION )
 				int alt54=2;
 				int LA54_0 = input.LA(1);
@@ -4288,9 +4288,9 @@ public partial class DefineGrammarItemsWalker : TreeParser
 
 				Match(input,ARGLIST,Follow._ARGLIST_in_rewrite_template1789); if (state.failed) return ;
 
-				if ( input.LA(1)==TokenConstants.DOWN )
+				if ( input.LA(1)==TokenConstants.Down )
 				{
-					Match(input, TokenConstants.DOWN, null); if (state.failed) return ;
+					Match(input, TokenConstants.Down, null); if (state.failed) return ;
 					// Grammars\\DefineGrammarItemsWalker.g3:655:5: ( ^( ARG arg= ID a= ACTION ) )*
 					for ( ; ; )
 					{
@@ -4310,11 +4310,11 @@ public partial class DefineGrammarItemsWalker : TreeParser
 							{
 							Match(input,ARG,Follow._ARG_in_rewrite_template1799); if (state.failed) return ;
 
-							Match(input, TokenConstants.DOWN, null); if (state.failed) return ;
+							Match(input, TokenConstants.Down, null); if (state.failed) return ;
 							arg=(GrammarAST)Match(input,ID,Follow._ID_in_rewrite_template1803); if (state.failed) return ;
 							a=(GrammarAST)Match(input,ACTION,Follow._ACTION_in_rewrite_template1807); if (state.failed) return ;
 
-							Match(input, TokenConstants.UP, null); if (state.failed) return ;
+							Match(input, TokenConstants.Up, null); if (state.failed) return ;
 							if ( state.backtracking == 0 )
 							{
 
@@ -4336,7 +4336,7 @@ public partial class DefineGrammarItemsWalker : TreeParser
 
 
 
-					Match(input, TokenConstants.UP, null); if (state.failed) return ;
+					Match(input, TokenConstants.Up, null); if (state.failed) return ;
 				}
 				if ( state.backtracking == 0 )
 				{
@@ -4380,7 +4380,7 @@ public partial class DefineGrammarItemsWalker : TreeParser
 				}
 
 
-				Match(input, TokenConstants.UP, null); if (state.failed) return ;
+				Match(input, TokenConstants.Up, null); if (state.failed) return ;
 
 				}
 				break;

@@ -88,7 +88,7 @@ ctorForRootGrammar() ::= <<
 <! bug: can't use <@super.members()> cut-n-paste instead !>
 <! Same except we add port number and profile stuff if root grammar !>
 public <name>( <inputStreamType> input )
-	: this( input, DebugEventSocketProxy.DEFAULT_DEBUGGER_PORT, new RecognizerSharedState() )
+	: this( input, DebugEventSocketProxy.DefaultDebuggerPort, new RecognizerSharedState() )
 {
 }
 public <name>( <inputStreamType> input, int port, RecognizerSharedState state )

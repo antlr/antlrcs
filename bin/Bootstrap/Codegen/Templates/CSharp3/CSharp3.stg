@@ -159,12 +159,12 @@ public override IToken NextToken()
 {
 	for ( ; ;)
 	{
-		if ( input.LA(1)==CharStreamConstants.EOF )
+		if ( input.LA(1)==CharStreamConstants.Eof )
 		{
-			return TokenConstants.EOF_TOKEN;
+			return TokenConstants.EofToken;
 		}
 		state.token = null;
-		state.channel = TokenConstants.DEFAULT_CHANNEL;
+		state.channel = TokenConstants.DefaultChannel;
 		state.tokenStartCharIndex = input.Index;
 		state.tokenStartCharPositionInLine = input.CharPositionInLine;
 		state.tokenStartLine = input.Line;
@@ -562,7 +562,7 @@ lexerRule(ruleName,nakedBlock,ruleDescriptor,block,memoize) ::= <<
 		<block><\n>
 <else>
 		int _type = <ruleName>;
-		int _channel = DEFAULT_TOKEN_CHANNEL;
+		int _channel = DefaultTokenChannel;
 		<ruleMemoization(name=ruleName)>
 		<lexerRuleLabelDefs()>
 		<ruleDescriptor.actions.init>
@@ -840,7 +840,7 @@ lexerStringRef(string,label) ::= <<
 <if(label)>
 int <label>Start = GetCharIndex();
 Match(<string>); <checkRuleBacktrackFailure()>
-<label> = new CommonToken(input, TokenConstants.INVALID_TOKEN_TYPE, TokenConstants.DEFAULT_CHANNEL, <label>Start, GetCharIndex()-1);
+<label> = new CommonToken(input, TokenConstants.InvalidTokenType, TokenConstants.DefaultChannel, <label>Start, GetCharIndex()-1);
 <else>
 Match(<string>); <checkRuleBacktrackFailure()><\n>
 <endif>
@@ -900,7 +900,7 @@ lexerRuleRef(rule,label,args,elementIndex,scope) ::= <<
 <if(label)>
 int <label>Start<elementIndex> = GetCharIndex();
 <if(scope)><scope:delegateName()>.<endif>m<rule.name>(<args; separator=", ">); <checkRuleBacktrackFailure()>
-<label> = new CommonToken(input, TokenConstants.INVALID_TOKEN_TYPE, TokenConstants.DEFAULT_CHANNEL, <label>Start<elementIndex>, GetCharIndex()-1);
+<label> = new CommonToken(input, TokenConstants.InvalidTokenType, TokenConstants.DefaultChannel, <label>Start<elementIndex>, GetCharIndex()-1);
 <else>
 <if(scope)><scope:delegateName()>.<endif>m<rule.name>(<args; separator=", ">); <checkRuleBacktrackFailure()>
 <endif>
@@ -916,10 +916,10 @@ lexerRuleRefAndListLabel(rule,label,args,elementIndex,scope) ::= <<
 lexerMatchEOF(label,elementIndex) ::= <<
 <if(label)>
 int <label>Start<elementIndex> = GetCharIndex();
-Match(EOF); <checkRuleBacktrackFailure()>
-<labelType> <label> = new CommonToken(input, EOF, TokenConstants.DEFAULT_CHANNEL, <label>Start<elementIndex>, GetCharIndex()-1);
+Match(Eof); <checkRuleBacktrackFailure()>
+<labelType> <label> = new CommonToken(input, Eof, TokenConstants.DefaultChannel, <label>Start<elementIndex>, GetCharIndex()-1);
 <else>
-Match(EOF); <checkRuleBacktrackFailure()>
+Match(Eof); <checkRuleBacktrackFailure()>
 <endif>
 >>
 
@@ -929,16 +929,16 @@ tree(root, actionsAfterRoot, children, nullableChildList,
 <root:element()>
 <actionsAfterRoot:element()>
 <if(nullableChildList)>
-if ( input.LA(1)==TokenConstants.DOWN )
+if ( input.LA(1)==TokenConstants.Down )
 {
-	Match(input, TokenConstants.DOWN, null); <checkRuleBacktrackFailure()>
+	Match(input, TokenConstants.Down, null); <checkRuleBacktrackFailure()>
 	<children:element()>
-	Match(input, TokenConstants.UP, null); <checkRuleBacktrackFailure()>
+	Match(input, TokenConstants.Up, null); <checkRuleBacktrackFailure()>
 }
 <else>
-Match(input, TokenConstants.DOWN, null); <checkRuleBacktrackFailure()>
+Match(input, TokenConstants.Down, null); <checkRuleBacktrackFailure()>
 <children:element()>
-Match(input, TokenConstants.UP, null); <checkRuleBacktrackFailure()>
+Match(input, TokenConstants.Up, null); <checkRuleBacktrackFailure()>
 <endif>
 >>
 

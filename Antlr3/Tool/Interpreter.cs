@@ -4,7 +4,7 @@
  * All rights reserved.
  *
  * Conversion to C#:
- * Copyright (c) 2008 Sam Harwell, Pixel Mine, Inc.
+ * Copyright (c) 2008-2009 Sam Harwell, Pixel Mine, Inc.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -81,7 +81,7 @@ namespace Antlr3.Tool
                 if ( !ruleName.Equals( Grammar.ARTIFICIAL_TOKENS_RULENAME ) )
                 {
                     int type = g.getTokenType( ruleName );
-                    int channel = TokenConstants.DEFAULT_CHANNEL;
+                    int channel = TokenConstants.DefaultChannel;
                     token = new CommonToken( (ICharStream)outer.input, type, channel, 0, 0 );
                 }
             }
@@ -107,14 +107,14 @@ namespace Antlr3.Tool
             {
                 return null;
             }
-            if ( input.LA( 1 ) == CharStreamConstants.EOF )
+            if ( input.LA( 1 ) == CharStreamConstants.Eof )
             {
-                return TokenConstants.EOF_TOKEN;
+                return TokenConstants.EofToken;
             }
             int start = input.Index;
             int charPos = ( (ICharStream)input ).CharPositionInLine;
             CommonToken token = null;
-            while ( input.LA( 1 ) != CharStreamConstants.EOF )
+            while ( input.LA( 1 ) != CharStreamConstants.Eof )
             {
                 try
                 {
@@ -133,7 +133,7 @@ namespace Antlr3.Tool
             int stop = input.Index - 1;
             if ( token == null )
             {
-                return TokenConstants.EOF_TOKEN;
+                return TokenConstants.EofToken;
             }
             token.Line = ( ( (ICharStream)input ).Line );
             token.StartIndex = start;

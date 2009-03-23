@@ -1,4 +1,4 @@
-// $ANTLR 3.1.2 Language\\Group.g3 2009-03-16 20:26:39
+// $ANTLR 3.1.2 Language\\Group.g3 2009-03-23 18:22:46
 
 // The variable 'variable' is assigned but its value is never used.
 #pragma warning disable 219
@@ -96,7 +96,7 @@ public partial class GroupLexer : Lexer
 		try
 		{
 			int _type = KWDEFAULT;
-			int _channel = DEFAULT_TOKEN_CHANNEL;
+			int _channel = DefaultTokenChannel;
 			// Language\\Group.g3:42:13: ( 'default' )
 			// Language\\Group.g3:42:13: 'default'
 			{
@@ -120,7 +120,7 @@ public partial class GroupLexer : Lexer
 		try
 		{
 			int _type = KWGROUP;
-			int _channel = DEFAULT_TOKEN_CHANNEL;
+			int _channel = DefaultTokenChannel;
 			// Language\\Group.g3:43:11: ( 'group' )
 			// Language\\Group.g3:43:11: 'group'
 			{
@@ -144,7 +144,7 @@ public partial class GroupLexer : Lexer
 		try
 		{
 			int _type = KWIMPLEMENTS;
-			int _channel = DEFAULT_TOKEN_CHANNEL;
+			int _channel = DefaultTokenChannel;
 			// Language\\Group.g3:44:16: ( 'implements' )
 			// Language\\Group.g3:44:16: 'implements'
 			{
@@ -168,7 +168,7 @@ public partial class GroupLexer : Lexer
 		try
 		{
 			int _type = ID;
-			int _channel = DEFAULT_TOKEN_CHANNEL;
+			int _channel = DefaultTokenChannel;
 			// Language\\Group.g3:290:4: ( ( 'a' .. 'z' | 'A' .. 'Z' | '_' ) ( 'a' .. 'z' | 'A' .. 'Z' | '0' .. '9' | '-' | '_' )* )
 			// Language\\Group.g3:290:4: ( 'a' .. 'z' | 'A' .. 'Z' | '_' ) ( 'a' .. 'z' | 'A' .. 'Z' | '0' .. '9' | '-' | '_' )*
 			{
@@ -233,7 +233,7 @@ public partial class GroupLexer : Lexer
 		try
 		{
 			int _type = STRING;
-			int _channel = DEFAULT_TOKEN_CHANNEL;
+			int _channel = DefaultTokenChannel;
 			int ch;
 
 
@@ -351,7 +351,7 @@ public partial class GroupLexer : Lexer
 		try
 		{
 			int _type = BIGSTRING;
-			int _channel = DEFAULT_TOKEN_CHANNEL;
+			int _channel = DefaultTokenChannel;
 			// Language\\Group.g3:312:4: ( '<<' ( '\\\\>' | '\\\\' ~ '>' | '>' ~ '>' |~ ( '\\\\' | '>' ) )* '>>' )
 			// Language\\Group.g3:312:4: '<<' ( '\\\\>' | '\\\\' ~ '>' | '>' ~ '>' |~ ( '\\\\' | '>' ) )* '>>'
 			{
@@ -465,7 +465,7 @@ public partial class GroupLexer : Lexer
 		try
 		{
 			int _type = ANONYMOUS_TEMPLATE;
-			int _channel = DEFAULT_TOKEN_CHANNEL;
+			int _channel = DefaultTokenChannel;
 			// Language\\Group.g3:320:4: ( '{' ( '\\\\}' | '\\\\' ~ '}' |~ ( '\\\\' | '}' ) )* '}' )
 			// Language\\Group.g3:320:4: '{' ( '\\\\}' | '\\\\' ~ '}' |~ ( '\\\\' | '}' ) )* '}'
 			{
@@ -557,7 +557,7 @@ public partial class GroupLexer : Lexer
 		try
 		{
 			int _type = AT;
-			int _channel = DEFAULT_TOKEN_CHANNEL;
+			int _channel = DefaultTokenChannel;
 			// Language\\Group.g3:332:6: ( '@' )
 			// Language\\Group.g3:332:6: '@'
 			{
@@ -580,7 +580,7 @@ public partial class GroupLexer : Lexer
 		try
 		{
 			int _type = LPAREN;
-			int _channel = DEFAULT_TOKEN_CHANNEL;
+			int _channel = DefaultTokenChannel;
 			// Language\\Group.g3:333:9: ( '(' )
 			// Language\\Group.g3:333:9: '('
 			{
@@ -603,7 +603,7 @@ public partial class GroupLexer : Lexer
 		try
 		{
 			int _type = RPAREN;
-			int _channel = DEFAULT_TOKEN_CHANNEL;
+			int _channel = DefaultTokenChannel;
 			// Language\\Group.g3:334:9: ( ')' )
 			// Language\\Group.g3:334:9: ')'
 			{
@@ -626,7 +626,7 @@ public partial class GroupLexer : Lexer
 		try
 		{
 			int _type = LBRACK;
-			int _channel = DEFAULT_TOKEN_CHANNEL;
+			int _channel = DefaultTokenChannel;
 			// Language\\Group.g3:335:9: ( '[' )
 			// Language\\Group.g3:335:9: '['
 			{
@@ -649,7 +649,7 @@ public partial class GroupLexer : Lexer
 		try
 		{
 			int _type = RBRACK;
-			int _channel = DEFAULT_TOKEN_CHANNEL;
+			int _channel = DefaultTokenChannel;
 			// Language\\Group.g3:336:9: ( ']' )
 			// Language\\Group.g3:336:9: ']'
 			{
@@ -672,7 +672,7 @@ public partial class GroupLexer : Lexer
 		try
 		{
 			int _type = COMMA;
-			int _channel = DEFAULT_TOKEN_CHANNEL;
+			int _channel = DefaultTokenChannel;
 			// Language\\Group.g3:337:9: ( ',' )
 			// Language\\Group.g3:337:9: ','
 			{
@@ -695,7 +695,7 @@ public partial class GroupLexer : Lexer
 		try
 		{
 			int _type = DOT;
-			int _channel = DEFAULT_TOKEN_CHANNEL;
+			int _channel = DefaultTokenChannel;
 			// Language\\Group.g3:338:7: ( '.' )
 			// Language\\Group.g3:338:7: '.'
 			{
@@ -718,7 +718,7 @@ public partial class GroupLexer : Lexer
 		try
 		{
 			int _type = DEFINED_TO_BE;
-			int _channel = DEFAULT_TOKEN_CHANNEL;
+			int _channel = DefaultTokenChannel;
 			// Language\\Group.g3:339:17: ( '::=' )
 			// Language\\Group.g3:339:17: '::='
 			{
@@ -742,7 +742,7 @@ public partial class GroupLexer : Lexer
 		try
 		{
 			int _type = SEMI;
-			int _channel = DEFAULT_TOKEN_CHANNEL;
+			int _channel = DefaultTokenChannel;
 			// Language\\Group.g3:340:9: ( ';' )
 			// Language\\Group.g3:340:9: ';'
 			{
@@ -765,7 +765,7 @@ public partial class GroupLexer : Lexer
 		try
 		{
 			int _type = COLON;
-			int _channel = DEFAULT_TOKEN_CHANNEL;
+			int _channel = DefaultTokenChannel;
 			// Language\\Group.g3:341:9: ( ':' )
 			// Language\\Group.g3:341:9: ':'
 			{
@@ -788,7 +788,7 @@ public partial class GroupLexer : Lexer
 		try
 		{
 			int _type = STAR;
-			int _channel = DEFAULT_TOKEN_CHANNEL;
+			int _channel = DefaultTokenChannel;
 			// Language\\Group.g3:342:9: ( '*' )
 			// Language\\Group.g3:342:9: '*'
 			{
@@ -811,7 +811,7 @@ public partial class GroupLexer : Lexer
 		try
 		{
 			int _type = PLUS;
-			int _channel = DEFAULT_TOKEN_CHANNEL;
+			int _channel = DefaultTokenChannel;
 			// Language\\Group.g3:343:9: ( '+' )
 			// Language\\Group.g3:343:9: '+'
 			{
@@ -834,7 +834,7 @@ public partial class GroupLexer : Lexer
 		try
 		{
 			int _type = ASSIGN;
-			int _channel = DEFAULT_TOKEN_CHANNEL;
+			int _channel = DefaultTokenChannel;
 			// Language\\Group.g3:344:11: ( '=' )
 			// Language\\Group.g3:344:11: '='
 			{
@@ -857,7 +857,7 @@ public partial class GroupLexer : Lexer
 		try
 		{
 			int _type = OPTIONAL;
-			int _channel = DEFAULT_TOKEN_CHANNEL;
+			int _channel = DefaultTokenChannel;
 			// Language\\Group.g3:345:12: ( '?' )
 			// Language\\Group.g3:345:12: '?'
 			{
@@ -880,7 +880,7 @@ public partial class GroupLexer : Lexer
 		try
 		{
 			int _type = SL_COMMENT;
-			int _channel = DEFAULT_TOKEN_CHANNEL;
+			int _channel = DefaultTokenChannel;
 			// Language\\Group.g3:349:4: ( '//' (~ ( '\\n' | '\\r' ) )* ( ( '\\r' )? '\\n' )? )
 			// Language\\Group.g3:349:4: '//' (~ ( '\\n' | '\\r' ) )* ( ( '\\r' )? '\\n' )?
 			{
@@ -958,7 +958,7 @@ public partial class GroupLexer : Lexer
 
 			}
 
-			 _channel = HIDDEN; 
+			 _channel = Hidden; 
 
 			}
 
@@ -977,7 +977,7 @@ public partial class GroupLexer : Lexer
 		try
 		{
 			int _type = ML_COMMENT;
-			int _channel = DEFAULT_TOKEN_CHANNEL;
+			int _channel = DefaultTokenChannel;
 			// Language\\Group.g3:356:4: ( '/*' ( . )* '*/' )
 			// Language\\Group.g3:356:4: '/*' ( . )* '*/'
 			{
@@ -1031,7 +1031,7 @@ public partial class GroupLexer : Lexer
 
 			Match("*/"); 
 
-			 _channel = HIDDEN; 
+			 _channel = Hidden; 
 
 			}
 
@@ -1050,7 +1050,7 @@ public partial class GroupLexer : Lexer
 		try
 		{
 			int _type = WS;
-			int _channel = DEFAULT_TOKEN_CHANNEL;
+			int _channel = DefaultTokenChannel;
 			// Language\\Group.g3:361:9: ( ( ' ' | '\\t' | '\\f' | ( '\\r' )? '\\n' )+ )
 			// Language\\Group.g3:361:9: ( ' ' | '\\t' | '\\f' | ( '\\r' )? '\\n' )+
 			{
@@ -1149,7 +1149,7 @@ public partial class GroupLexer : Lexer
 				;
 
 
-			 _channel = HIDDEN; 
+			 _channel = Hidden; 
 
 			}
 

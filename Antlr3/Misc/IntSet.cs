@@ -4,7 +4,7 @@
  * All rights reserved.
  *
  * Conversion to C#:
- * Copyright (c) 2008 Sam Harwell, Pixel Mine, Inc.
+ * Copyright (c) 2008-2009 Sam Harwell, Pixel Mine, Inc.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -47,9 +47,6 @@ namespace Antlr3.Misc
      */
     public interface IIntSet : ICollection<int>
     {
-        /** Add an element to the set */
-        void add( int el );
-
         /** Add all elements from incoming set to this set.  Can limit
          *  to set of its own type.
          */
