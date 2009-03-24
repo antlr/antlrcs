@@ -1,4 +1,4 @@
-// $ANTLR 3.1.2 Language\\Action.g3 2009-03-23 17:53:11
+// $ANTLR 3.1.2 Language\\Action.g3 2009-03-23 20:30:08
 
 // The variable 'variable' is assigned but its value is never used.
 #pragma warning disable 219
@@ -550,7 +550,7 @@ public partial class ActionLexer : Lexer
 
 				StringTemplateToken t = null;
 				System.Text.StringBuilder builder = new System.Text.StringBuilder();
-				List args = new ArrayList();
+				List<string> args = new List<string>();
 				string subtext = string.Empty;
 				char uc = '\0';
 
@@ -722,7 +722,7 @@ public partial class ActionLexer : Lexer
 	// $ANTLR end "ANONYMOUS_TEMPLATE"
 
 	// $ANTLR start "TEMPLATE_ARGS"
-	private void mTEMPLATE_ARGS(out string _text, List args)
+	private void mTEMPLATE_ARGS(out string _text, List<string> args)
 	{
 		try
 		{

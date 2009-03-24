@@ -32,8 +32,8 @@
 
 namespace Antlr3.ST.Language
 {
+    using System.Collections.Generic;
     using CommonToken = Antlr.Runtime.CommonToken;
-    using IList = System.Collections.IList;
 
     public class StringTemplateToken : CommonToken
     {
@@ -45,14 +45,14 @@ namespace Antlr3.ST.Language
          *  available for when I build the anonymous template.
          *  </summary>
          */
-        public IList args;
+        public IList<string> args;
 
         public StringTemplateToken( int type, string text )
             : base( type, text )
         {
         }
 
-        public StringTemplateToken( int type, string text, IList args )
+        public StringTemplateToken( int type, string text, IList<string> args )
             : base( type, text )
         {
             this.args = args;

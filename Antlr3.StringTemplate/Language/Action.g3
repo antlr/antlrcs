@@ -269,7 +269,7 @@ anonymousTemplate
 			if ( $t is StringTemplateToken )
 				anonymous.DefineFormalArguments(((StringTemplateToken)$t).args);
 			else
-				anonymous.DefineFormalArguments(new ArrayList());
+				anonymous.DefineFormalArguments(new string[0]);
 		}
 	;
 
@@ -360,7 +360,7 @@ ANONYMOUS_TEMPLATE
 {
 	StringTemplateToken t = null;
 	System.Text.StringBuilder builder = new System.Text.StringBuilder();
-	List args = new ArrayList();
+	List<string> args = new List<string>();
 	string subtext = string.Empty;
 	char uc = '\0';
 }
@@ -389,7 +389,7 @@ ANONYMOUS_TEMPLATE
 	;
 
 fragment
-TEMPLATE_ARGS[out string _text, List args]
+TEMPLATE_ARGS[out string _text, List<string> args]
 @init
 {
 	$_text = string.Empty; // this template is empty text

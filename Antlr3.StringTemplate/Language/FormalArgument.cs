@@ -91,8 +91,8 @@ namespace Antlr3.ST.Language
         public StringTemplate defaultValueST;
 
         public FormalArgument( string name )
+            : this( name, null )
         {
-            this.name = name;
         }
 
         public FormalArgument( string name, StringTemplate defaultValueST )
@@ -120,11 +120,10 @@ namespace Antlr3.ST.Language
 
         public override bool Equals( object o )
         {
-            if ( o == null || !( o is FormalArgument ) )
-            {
+            FormalArgument other = o as FormalArgument;
+            if ( other == null )
                 return false;
-            }
-            FormalArgument other = (FormalArgument)o;
+
             if ( !this.name.Equals( other.name ) )
             {
                 return false;
