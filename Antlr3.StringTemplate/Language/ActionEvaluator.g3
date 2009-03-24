@@ -513,31 +513,50 @@ exprFunctional returns [System.Func<ASTExpr,StringTemplate,IStringTemplateWriter
 templateApplicationCompiled[System.Reflection.Emit.ILGenerator gen]
 @init
 {
-	var templatesToApply = new System.Collections.Generic.List<StringTemplate>();
+#if COMPILE_EXPRESSIONS
+	System.Reflection.Emit.LocalBuilder templates = null;
+	System.Reflection.Emit.LocalBuilder attributes = null;
+#endif
 }
-	:	^(	APPLY a=expr
-			(template[templatesToApply])+
-			//{$value = chunk.ApplyListOfAlternatingTemplates(self,$a.value,templatesToApply);}
+	:	^(	APPLY a=exprCompiled[$gen]
 			{
 #if COMPILE_EXPRESSIONS
-				throw new System.NotImplementedException();
+				templates = EmitCreateList<StringTemplate>($gen);
+#endif
+			}
+			(	templateCompiled[$gen]
+				{
+#if COMPILE_EXPRESSIONS
+					EmitAddValueToList($gen, templates);
+#endif
+				}
+			)+
+			{
+#if COMPILE_EXPRESSIONS
+				EmitApplyAlternatingTemplates( $gen, templates );
 #endif
 			}
 		)
-	|	^(	MULTI_APPLY (exprCompiled[$gen])+ COLON
+	|	^(	MULTI_APPLY
+			{
+#if COMPILE_EXPRESSIONS
+				attributes = EmitCreateList<object>($gen);
+#endif
+			}
+			(	exprCompiled[$gen]
+				{
+#if COMPILE_EXPRESSIONS
+					EmitAddValueToList($gen, attributes);
+#endif
+				}
+			)+
+			COLON
 			ANONYMOUS_TEMPLATE
 			{
 #if COMPILE_EXPRESSIONS
-				throw new System.NotImplementedException();
+				EmitApplyAnonymousTemplate( $gen, $ANONYMOUS_TEMPLATE.StringTemplate, attributes );
 #endif
 			}
-			//{
-			//	StringTemplate anonymous = $anon.StringTemplate;
-			//	templatesToApply.Add(anonymous);
-			//	$value = chunk.ApplyTemplateToListOfAttributes(self,
-			//												  attributes,
-			//												  $anon.StringTemplate);
-			//}
 		)
 	;
 
@@ -843,12 +862,32 @@ functionFunctional returns [System.Func<ASTExpr,StringTemplate,IStringTemplateWr
 	;
 
 listCompiled[System.Reflection.Emit.ILGenerator gen]
+@init
+{
+#if COMPILE_EXPRESSIONS
+	var elements = EmitCreateList<object>($gen);
+#endif
+}
 	:	^(	LIST
 			(	exprCompiled[$gen]
+				{
+#if COMPILE_EXPRESSIONS
+					EmitAddValueToList($gen, elements);
+#endif
+				}
 			|	NOTHING
+				{
+#if COMPILE_EXPRESSIONS
+					EmitAddNothingToList($gen, elements);
+#endif
+				}
 			)+
 		)
-		{throw new System.NotImplementedException();}
+		{
+#if COMPILE_EXPRESSIONS
+			EmitCatList($gen,elements);
+#endif
+		}
 	;
 
 listFunctional returns [System.Func<ASTExpr,StringTemplate,IStringTemplateWriter,object> func]
@@ -890,6 +929,33 @@ singleFunctionArgCompiled[System.Reflection.Emit.ILGenerator gen]
 
 singleFunctionArgFunctional returns [System.Func<ASTExpr,StringTemplate,IStringTemplateWriter,object> func]
 	:	^( SINGLEVALUEARG exprFunctional {$func = $exprFunctional.func;} )
+	;
+
+templateCompiled[System.Reflection.Emit.ILGenerator gen]
+	:	^(	TEMPLATE
+			(	ID args=. // don't eval argList now; must re-eval each iteration
+				{
+#if COMPILE_EXPRESSIONS
+					throw new System.NotImplementedException();
+#endif
+				}
+
+			|	anon=ANONYMOUS_TEMPLATE
+				{
+#if COMPILE_EXPRESSIONS
+					throw new System.NotImplementedException();
+#endif
+				}
+
+			|	^(	VALUE n=exprCompiled[$gen] args2=.
+					{
+#if COMPILE_EXPRESSIONS
+						throw new System.NotImplementedException();
+#endif
+					}
+				)
+			)
+		)
 	;
 
 templateFunctional[List<System.Func<ASTExpr,StringTemplate,IStringTemplateWriter,StringTemplate>> templateApplicators]

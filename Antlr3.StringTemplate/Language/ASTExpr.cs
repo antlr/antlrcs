@@ -143,8 +143,8 @@ namespace Antlr3.ST.Language
             public System.Func<ASTExpr, StringTemplate, IStringTemplateWriter, int> func;
             public ASTExpr chunk;
         }
-        public static bool EnableDynamicMethods = true;
-        public static bool UseFunctionalMethods = true;
+        public static bool EnableDynamicMethods = false;
+        public static bool EnableFunctionalMethods = true;
         static int _evaluatorNumber = 0;
 #if CACHE_FUNCTORS
         static Dictionary<ITree, DynamicMethod> _methods = new Dictionary<ITree, DynamicMethod>();
@@ -182,43 +182,48 @@ namespace Antlr3.ST.Language
             {
                 try
                 {
-                    if ( UseFunctionalMethods )
-                    {
-                        ActionEvaluator evalFunctional = new ActionEvaluator( null, chunk, null, condition );
-                        var functionalEvaluator = evalFunctional.actionFunctional();
-                        HoldsActionFuncAndChunk holder = new HoldsActionFuncAndChunk()
-                        {
-                            func = functionalEvaluator,
-                            chunk = chunk
-                        };
-                        return (System.Func<StringTemplate, IStringTemplateWriter, int>)System.Delegate.CreateDelegate( typeof( System.Func<StringTemplate, IStringTemplateWriter, int> ), holder, typeof( ASTExpr ).GetMethod( "CallFunctionalActionEvaluator" ) );
-                    }
-                    else
-                    {
-                        DynamicMethod method = null;
+                    DynamicMethod method = null;
 #if CACHE_FUNCTORS
-                        if ( !_methods.TryGetValue( condition, out method ) )
+                    if ( !_methods.TryGetValue( condition, out method ) )
 #endif
-                        {
-                            Type[] parameterTypes = { typeof( ASTExpr ), typeof( StringTemplate ), typeof( IStringTemplateWriter ) };
-                            method = new DynamicMethod( "ActionEvaluator" + _evaluatorNumber, typeof( int ), parameterTypes, typeof( ConditionalExpr ), true );
-                            method.DefineParameter( 1, ParameterAttributes.None, "chunk" );
-                            method.DefineParameter( 2, ParameterAttributes.None, "self" );
-                            method.DefineParameter( 3, ParameterAttributes.None, "writer" );
-                            _evaluatorNumber++;
+                    {
+                        Type[] parameterTypes = { typeof( ASTExpr ), typeof( StringTemplate ), typeof( IStringTemplateWriter ) };
+                        method = new DynamicMethod( "ActionEvaluator" + _evaluatorNumber, typeof( int ), parameterTypes, typeof( ConditionalExpr ), true );
+                        method.DefineParameter( 1, ParameterAttributes.None, "chunk" );
+                        method.DefineParameter( 2, ParameterAttributes.None, "self" );
+                        method.DefineParameter( 3, ParameterAttributes.None, "writer" );
+                        _evaluatorNumber++;
 
-                            var gen = method.GetILGenerator();
-                            ActionEvaluator evalCompiled = new ActionEvaluator( null, chunk, null, condition );
-                            evalCompiled.actionCompiled( gen );
-                            gen.Emit( OpCodes.Ret );
+                        var gen = method.GetILGenerator();
+                        ActionEvaluator evalCompiled = new ActionEvaluator( null, chunk, null, condition );
+                        evalCompiled.actionCompiled( gen );
+                        gen.Emit( OpCodes.Ret );
 #if CACHE_FUNCTORS
-                            _methods[condition] = method;
+                        _methods[condition] = method;
 #endif
-                        }
-
-                        var dynamicEvaluator = (System.Func<StringTemplate, IStringTemplateWriter, int>)method.CreateDelegate( typeof( System.Func<StringTemplate, IStringTemplateWriter, int> ), chunk );
-                        return dynamicEvaluator;
                     }
+
+                    var dynamicEvaluator = (System.Func<StringTemplate, IStringTemplateWriter, int>)method.CreateDelegate( typeof( System.Func<StringTemplate, IStringTemplateWriter, int> ), chunk );
+                    return dynamicEvaluator;
+                }
+                catch
+                {
+                    // fall back to functional (or interpreted) version
+                }
+            }
+
+            if ( EnableFunctionalMethods )
+            {
+                try
+                {
+                    ActionEvaluator evalFunctional = new ActionEvaluator( null, chunk, null, condition );
+                    var functionalEvaluator = evalFunctional.actionFunctional();
+                    HoldsActionFuncAndChunk holder = new HoldsActionFuncAndChunk()
+                    {
+                        func = functionalEvaluator,
+                        chunk = chunk
+                    };
+                    return (System.Func<StringTemplate, IStringTemplateWriter, int>)System.Delegate.CreateDelegate( typeof( System.Func<StringTemplate, IStringTemplateWriter, int> ), holder, typeof( ASTExpr ).GetMethod( "CallFunctionalActionEvaluator" ) );
                 }
                 catch
                 {

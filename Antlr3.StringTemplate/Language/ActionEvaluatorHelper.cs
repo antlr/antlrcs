@@ -36,7 +36,12 @@ namespace Antlr3.ST.Language
     using Antlr.Runtime.Tree;
 
 #if COMPILE_EXPRESSIONS
+    using System.Collections.Generic;
+
+    using ArrayList = System.Collections.ArrayList;
+    using ICollection = System.Collections.ICollection;
     using ILGenerator = System.Reflection.Emit.ILGenerator;
+    using LocalBuilder = System.Reflection.Emit.LocalBuilder;
     using MethodInfo = System.Reflection.MethodInfo;
     using OpCodes = System.Reflection.Emit.OpCodes;
     using PropertyInfo = System.Reflection.PropertyInfo;
@@ -71,42 +76,42 @@ namespace Antlr3.ST.Language
 #if COMPILE_EXPRESSIONS
         static void EmitLoadChunk( ILGenerator gen )
         {
+            // Stack behavior: ... => ..., (ASTExpr)chunk
             gen.Emit( OpCodes.Ldarg_0 );
         }
         static void EmitLoadSelf( ILGenerator gen )
         {
+            // Stack behavior: ... => ..., (StringTemplate)self
             gen.Emit( OpCodes.Ldarg_1 );
         }
         static void EmitLoadWriter( ILGenerator gen )
         {
+            // Stack behavior: ... => ..., (IStringTemplateWriter)writer
             gen.Emit( OpCodes.Ldarg_2 );
         }
 
         static void EmitNot( ILGenerator gen )
         {
+            // Stack behavior: ..., (int32)value => ..., (int32)(value == 0 ? 1 : 0)
             gen.Emit( OpCodes.Ldc_I4_0 );
             gen.Emit( OpCodes.Ceq );
         }
         static void EmitTest( ILGenerator gen )
         {
-            var local = gen.DeclareLocal( typeof( object ) );
-            gen.Emit( OpCodes.Stloc, local );
+            // Stack behavior: ..., (object)a => ..., (bool)result
             EmitLoadChunk( gen );
-            gen.Emit( OpCodes.Ldloc, local );
-            gen.Emit( OpCodes.Callvirt, typeof( ASTExpr ).GetMethod( "TestAttributeTrue", new System.Type[] { typeof( object ) } ) );
+            gen.Emit( OpCodes.Call, GetFuncMethodInfo( ( object a, ASTExpr chunk ) => chunk.TestAttributeTrue( a ) ) );
         }
         static void EmitAdd( ILGenerator gen )
         {
-            //System.Func<object, object, object> add = ( a, b ) => chunk.Add( a, b );
-            var local1 = gen.DeclareLocal( typeof( object ) );
-            var local2 = gen.DeclareLocal( typeof( object ) );
-            gen.Emit( OpCodes.Stloc, local2 );
-            gen.Emit( OpCodes.Stloc, local1 );
+            // Stack behavior: ..., (object)a, (object)b => ..., (object)result
             EmitLoadChunk( gen );
-            gen.Emit( OpCodes.Call, typeof( ASTExpr ).GetMethod( "Add", new System.Type[] { typeof( object ), typeof( object ) } ) );
+            gen.Emit( OpCodes.Call, GetFuncMethodInfo( ( object a, object b, ASTExpr chunk ) => chunk.Add( a, b ) ) );
         }
         static void EmitWriteToString( ILGenerator gen )
         {
+            // Stack behavior: ..., (object)value => ..., (string)result
+
             //System.Func<object, StringTemplate, object> write = ( value, self ) =>
             //{
             //    StringWriter buf = new StringWriter();
@@ -154,35 +159,35 @@ namespace Antlr3.ST.Language
         }
         static void EmitObjectProperty( ILGenerator gen )
         {
-            var local2 = gen.DeclareLocal( typeof( object ) );
-            gen.Emit( OpCodes.Stloc, local2 );
-            var local1 = gen.DeclareLocal( typeof( object ) );
-            gen.Emit( OpCodes.Stloc, local1 );
-
+            // Stack behavior: ..., (object)o, (object)propertyName => ..., (object)result
             EmitLoadChunk( gen );
             EmitLoadSelf( gen );
-            gen.Emit( OpCodes.Ldloc, local1 );
-            gen.Emit( OpCodes.Ldloc, local2 );
-            gen.Emit( OpCodes.Callvirt, typeof( ASTExpr ).GetMethod( "GetObjectProperty", new System.Type[] { typeof( StringTemplate ), typeof( object ), typeof( object ) } ) );
+            gen.Emit( OpCodes.Call, GetFuncMethodInfo( ( object o, object propertyName, ASTExpr chunk, StringTemplate self ) => chunk.GetObjectProperty( self, o, propertyName ) ) );
         }
         static void EmitAttribute( ILGenerator gen, string attribute )
         {
+            // Stack behavior: ... => ..., (object)result
+
             //$value=self.GetAttribute($i3.text);
             EmitLoadSelf( gen );
             gen.Emit( OpCodes.Ldstr, attribute );
-            gen.Emit( OpCodes.Callvirt, typeof( StringTemplate ).GetMethod( "GetAttribute", new System.Type[] { typeof( string ) } ) );
+            gen.Emit( OpCodes.Call, GetFuncMethodInfo( ( StringTemplate self, string attr ) => self.GetAttribute( attr ) ) );
         }
         static void EmitLoadIntAsObject( ILGenerator gen, int value )
         {
+            // Stack behavior: ... => ..., (object)result
             gen.Emit( OpCodes.Ldc_I4, value );
             gen.Emit( OpCodes.Box, typeof( int ) );
         }
         static void EmitLoadString( ILGenerator gen, string value )
         {
+            // Stack behavior: ... => ..., (string)result
             gen.Emit( OpCodes.Ldstr, value );
         }
         static void EmitAnonymousTemplate( ILGenerator gen, string value )
         {
+            // Stack behavior: ... => ..., (StringTemplate)result
+
             //System.Func<StringTemplate, string, object> loadTemplate = ( self, text ) =>
             //{
             //    if ( text != null )
@@ -197,26 +202,42 @@ namespace Antlr3.ST.Language
 
             if ( value != null )
             {
-                var valueST = gen.DeclareLocal( typeof( StringTemplate ) );
-
                 EmitLoadSelf( gen );
-                gen.Emit( OpCodes.Callvirt, typeof( StringTemplate ).GetProperty( "Group" ).GetGetMethod() );
+                gen.Emit( OpCodes.Call, GetFuncMethodInfo( ( StringTemplate self ) => (object)self.Group ) );
                 gen.Emit( OpCodes.Ldstr, value );
                 gen.Emit( OpCodes.Newobj, typeof( StringTemplate ).GetConstructor( new System.Type[] { typeof( StringTemplateGroup ), typeof( string ) } ) );
-                // copies for store, set EnclosingInstance, set Name, and one left on the evaluation stack
+                // copies for set EnclosingInstance, set Name, and one left on the evaluation stack
                 gen.Emit( OpCodes.Dup );
                 gen.Emit( OpCodes.Dup );
-                gen.Emit( OpCodes.Dup );
-                gen.Emit( OpCodes.Stloc, valueST );
                 EmitLoadSelf( gen );
-                gen.Emit( OpCodes.Callvirt, typeof( StringTemplate ).GetProperty( "EnclosingInstance" ).GetSetMethod() );
-                gen.Emit( OpCodes.Ldstr, "<anonymous template argument>" );
-                gen.Emit( OpCodes.Callvirt, typeof( StringTemplate ).GetProperty( "Name" ).GetSetMethod() );
+                gen.Emit( OpCodes.Call, GetActionMethodInfo( ( StringTemplate v, StringTemplate self ) => v.EnclosingInstance = self ) );
+                gen.Emit( OpCodes.Call, GetActionMethodInfo( ( StringTemplate v ) => v.Name = "<anonymous template argument>" ) );
             }
             else
             {
                 gen.Emit( OpCodes.Ldnull );
             }
+        }
+        static List<StringTemplate> _anonymousTemplates = new List<StringTemplate>();
+        static void EmitApplyAnonymousTemplate( ILGenerator gen, StringTemplate anonymous, LocalBuilder attributes )
+        {
+            // Stack behavior: ... => ..., (StringTemplate)result
+
+            int index;
+            lock ( _anonymousTemplates )
+            {
+                index = _anonymousTemplates.Count;
+                _anonymousTemplates.Add( anonymous );
+            }
+
+            EmitLoadChunk( gen );
+            EmitLoadSelf( gen );
+            gen.Emit( OpCodes.Ldloc, attributes );
+            gen.Emit( OpCodes.Ldc_I4, index );
+            gen.Emit( OpCodes.Call, GetFuncMethodInfo( ( int i ) => _anonymousTemplates[i] ) );
+            gen.Emit( OpCodes.Call, GetFuncMethodInfo(
+                ( ASTExpr chunk, StringTemplate self, List<object> attr, StringTemplate anon ) =>
+                    chunk.ApplyTemplateToListOfAttributes( self, attr, anon ) ) );
         }
         static void EmitTemplateInclude( ILGenerator gen, StringTemplateAST args )
         {
@@ -227,7 +248,7 @@ namespace Antlr3.ST.Language
 
             gen.Emit( OpCodes.Dup );
             gen.Emit( OpCodes.Brfalse_S, endinclude ); // the dup of a null object already loaded null back on the stack
-            gen.Emit( OpCodes.Callvirt, typeof( object ).GetMethod( "ToString" ) );
+            gen.Emit( OpCodes.Call, GetFuncMethodInfo<object, string>( ( o ) => o.ToString() ) );
             // at this point, the name is the top item on the evaluation stack
             gen.Emit( OpCodes.Dup );
             gen.Emit( OpCodes.Brfalse_S, endinclude );
@@ -245,42 +266,134 @@ namespace Antlr3.ST.Language
 
             gen.MarkLabel( endinclude );
         }
+
         static void EmitWriteAttribute( ILGenerator gen )
         {
+            // Stack behavior: ..., (object)value => ..., (int32)result
+
             // $numCharsWritten = chunk.WriteAttribute(self,$expr.value,writer);
-
-            var value = gen.DeclareLocal( typeof( object ) );
-            gen.Emit( OpCodes.Stloc, value );
-
             EmitLoadChunk( gen );
             EmitLoadSelf( gen );
-            gen.Emit( OpCodes.Ldloc, value );
             EmitLoadWriter( gen );
-            gen.Emit( OpCodes.Callvirt, typeof( ASTExpr ).GetMethod( "WriteAttribute", new System.Type[] { typeof( StringTemplate ), typeof( object ), typeof( IStringTemplateWriter ) } ) );
+            gen.Emit( OpCodes.Call, GetFuncMethodInfo(
+                ( object o, ASTExpr chunk, StringTemplate self, IStringTemplateWriter writer ) => chunk.WriteAttribute( self, o, writer )
+                ) );
         }
+
         static void EmitFunctionFirst( ILGenerator gen )
         {
-            throw new System.NotImplementedException();
+            // Stack behavior: ..., value => ..., result
+            EmitLoadChunk( gen );
+            gen.Emit( OpCodes.Call, GetFuncMethodInfo( ( object value, ASTExpr chunk ) => chunk.First( value ) ) );
         }
         static void EmitFunctionRest( ILGenerator gen )
         {
-            throw new System.NotImplementedException();
+            // Stack behavior: ..., value => ..., result
+            EmitLoadChunk( gen );
+            gen.Emit( OpCodes.Call, GetFuncMethodInfo( ( object value, ASTExpr chunk ) => chunk.Rest( value ) ) );
         }
         static void EmitFunctionLast( ILGenerator gen )
         {
-            throw new System.NotImplementedException();
+            // Stack behavior: ..., value => ..., result
+            EmitLoadChunk( gen );
+            gen.Emit( OpCodes.Call, GetFuncMethodInfo( ( object value, ASTExpr chunk ) => chunk.Last( value ) ) );
         }
         static void EmitFunctionLength( ILGenerator gen )
         {
-            throw new System.NotImplementedException();
+            // Stack behavior: ..., value => ..., result
+            EmitLoadChunk( gen );
+            gen.Emit( OpCodes.Call, GetFuncMethodInfo( ( object value, ASTExpr chunk ) => chunk.Length( value ) ) );
         }
         static void EmitFunctionStrip( ILGenerator gen )
         {
-            throw new System.NotImplementedException();
+            // Stack behavior: ..., value => ..., result
+            EmitLoadChunk( gen );
+            gen.Emit( OpCodes.Call, GetFuncMethodInfo( ( object value, ASTExpr chunk ) => chunk.Strip( value ) ) );
         }
         static void EmitFunctionTrunc( ILGenerator gen )
         {
-            throw new System.NotImplementedException();
+            // Stack behavior: ..., value => ..., result
+            EmitLoadChunk( gen );
+            gen.Emit( OpCodes.Call, GetFuncMethodInfo( ( object value, ASTExpr chunk ) => chunk.Trunc( value ) ) );
+        }
+
+        static LocalBuilder EmitCreateList<T>( ILGenerator gen )
+        {
+            var local = gen.DeclareLocal( typeof( List<T> ) );
+            gen.Emit( OpCodes.Newobj, typeof( List<T> ).GetConstructor( new System.Type[0] ) );
+            gen.Emit( OpCodes.Stloc, local );
+            return local;
+        }
+        static void EmitAddValueToList( ILGenerator gen, LocalBuilder local )
+        {
+            var label1 = gen.DefineLabel();
+            var label2 = gen.DefineLabel();
+            gen.Emit( OpCodes.Dup );
+            gen.Emit( OpCodes.Brfalse_S, label1 );
+            gen.Emit( OpCodes.Ldloc, local );
+            gen.Emit( OpCodes.Call, GetActionMethodInfo( ( object value, List<object> list ) => list.Add( value ) ) );
+            gen.Emit( OpCodes.Br_S, label2 );
+            gen.MarkLabel( label1 );
+            gen.Emit( OpCodes.Pop );
+            gen.MarkLabel( label2 );
+        }
+        static void EmitAddNothingToList( ILGenerator gen, LocalBuilder local )
+        {
+            gen.Emit( OpCodes.Ldc_I4_1 );
+            gen.Emit( OpCodes.Newarr, typeof( object ) );
+            gen.Emit( OpCodes.Newobj, typeof( ArrayList ).GetConstructor( new System.Type[] { typeof( ICollection ) } ) );
+            gen.Emit( OpCodes.Ldloc, local );
+            gen.Emit( OpCodes.Call, GetActionMethodInfo( ( object value, List<object> list ) => list.Add( value ) ) );
+        }
+        static void EmitCatList( ILGenerator gen, LocalBuilder local )
+        {
+            gen.Emit( OpCodes.Ldloc, local );
+            gen.Emit( OpCodes.Call, GetFuncMethodInfo( ( List<object> list ) => new Cat( list ) ) );
+        }
+
+        static void EmitApplyAlternatingTemplates( ILGenerator gen, LocalBuilder local )
+        {
+            //{$value = chunk.ApplyListOfAlternatingTemplates(self,$a.value,templatesToApply);}
+            gen.Emit( OpCodes.Ldloc, local );
+            EmitLoadChunk( gen );
+            EmitLoadSelf( gen );
+            gen.Emit( OpCodes.Call, GetFuncMethodInfo(
+                ( object value, List<StringTemplate> templates, ASTExpr chunk, StringTemplate self ) => chunk.ApplyListOfAlternatingTemplates( self, value, templates )
+                ) );
+        }
+
+        static MethodInfo GetActionMethodInfo( System.Action method )
+        {
+            return method.Method;
+        }
+        static MethodInfo GetActionMethodInfo<T>( System.Action<T> method )
+        {
+            return method.Method;
+        }
+        static MethodInfo GetActionMethodInfo<T1, T2>( System.Action<T1, T2> method )
+        {
+            return method.Method;
+        }
+
+        static MethodInfo GetFuncMethodInfo<TResult>( System.Func<TResult> method )
+        {
+            return method.Method;
+        }
+        static MethodInfo GetFuncMethodInfo<T, TResult>( System.Func<T, TResult> method )
+        {
+            return method.Method;
+        }
+        static MethodInfo GetFuncMethodInfo<T1, T2, TResult>( System.Func<T1, T2, TResult> method )
+        {
+            return method.Method;
+        }
+        static MethodInfo GetFuncMethodInfo<T1, T2, T3, TResult>( System.Func<T1, T2, T3, TResult> method )
+        {
+            return method.Method;
+        }
+        static MethodInfo GetFuncMethodInfo<T1, T2, T3, T4, TResult>( System.Func<T1, T2, T3, T4, TResult> method )
+        {
+            return method.Method;
         }
 #endif
     }
