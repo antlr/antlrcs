@@ -1,4 +1,4 @@
-// $ANTLR 3.1.2 Language\\Group.g3 2009-03-20 14:32:36
+// $ANTLR 3.1.2 Language\\Group.g3 2009-03-23 20:35:09
 
 // The variable 'variable' is assigned but its value is never used.
 #pragma warning disable 219
@@ -413,7 +413,7 @@ public partial class GroupParser : Parser
 											st = g.DefineRegionTemplate((scope2!=null?scope2.Text:null),
 																		(region!=null?region.Text:null),
 																		null,
-																		StringTemplate.REGION_EXPLICIT);
+																		RegionType.Explicit);
 										}
 									}
 								

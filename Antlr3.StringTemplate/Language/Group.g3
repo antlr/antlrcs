@@ -179,7 +179,7 @@ template[StringTemplateGroup g]
 						st = g.DefineRegionTemplate($scope2.text,
 													$region.text,
 													null,
-													StringTemplate.REGION_EXPLICIT);
+													RegionType.Explicit);
 					}
 				}
 			}

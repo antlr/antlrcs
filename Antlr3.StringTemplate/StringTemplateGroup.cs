@@ -51,6 +51,7 @@ namespace Antlr3.ST
     using IOException = System.IO.IOException;
     using MethodImpl = System.Runtime.CompilerServices.MethodImplAttribute;
     using MethodImplOptions = System.Runtime.CompilerServices.MethodImplOptions;
+    using RegionType = Antlr3.ST.Language.RegionType;
     using Stream = System.IO.Stream;
     using StreamReader = System.IO.StreamReader;
     using StringBuilder = System.Text.StringBuilder;
@@ -624,7 +625,7 @@ namespace Antlr3.ST
         public virtual StringTemplate GetInstanceOf( string name, IDictionary<string, object> attributes )
         {
             StringTemplate st = GetInstanceOf( name );
-            st.attributes = attributes;
+            st.Attributes = attributes;
             return st;
         }
 
@@ -800,7 +801,7 @@ namespace Antlr3.ST
         {
             StringTemplate template = null;
             string name = GetTemplateNameFromFileName( fileName );
-            // if no rootDir, try to load as a resource in CLASSPATH
+            // if no RootDir, try to load as a resource in CLASSPATH
             if ( RootDir == null )
             {
                 string resourceName = GetFileNameFromTemplateName( name.Replace( '/', '.' ) );
@@ -811,46 +812,43 @@ namespace Antlr3.ST
                     assembly = this.GetType().Assembly;
                     @is = assembly.GetManifestResourceStream( resourceName );
                 }
-#if false
-			ClassLoader cl = Thread.currentThread().getContextClassLoader();
-			InputStream @is = cl.getResourceAsStream(fileName);
-			if ( @is==null ) {
-				cl = this.getClass().getClassLoader();
-				@is = cl.getResourceAsStream(fileName);
-			}
-#endif
-                if ( @is == null )
+
+                if ( @is != null )
                 {
-                    return null;
-                }
-                TextReader br = null;
-                try
-                {
-                    br = GetInputStreamReader( new System.IO.BufferedStream( @is ) );
-                    template = LoadTemplate( name, br );
-                }
-                catch ( IOException ioe )
-                {
-                    Error( "Problem reading template file: " + fileName, ioe );
-                }
-                finally
-                {
-                    if ( br != null )
+                    TextReader br = null;
+                    try
                     {
-                        try
+                        br = GetInputStreamReader( new System.IO.BufferedStream( @is ) );
+                        template = LoadTemplate( name, br );
+                    }
+                    catch ( IOException ioe )
+                    {
+                        Error( "Problem reading template file: " + fileName, ioe );
+                    }
+                    finally
+                    {
+                        if ( br != null )
                         {
-                            br.Close();
-                        }
-                        catch ( IOException ioe2 )
-                        {
-                            Error( "Cannot close template file: " + fileName, ioe2 );
+                            try
+                            {
+                                br.Close();
+                            }
+                            catch ( IOException ioe2 )
+                            {
+                                Error( "Cannot close template file: " + fileName, ioe2 );
+                            }
                         }
                     }
+                    return template;
                 }
-                return template;
             }
+
             // load via rootDir
-            template = LoadTemplate( name, RootDir + "/" + fileName );
+            if ( System.IO.Path.IsPathRooted( fileName ) )
+                template = LoadTemplate( name, fileName );
+            else if ( RootDir != null )
+                template = LoadTemplate( name, System.IO.Path.Combine( RootDir, fileName ) );
+
             return template;
         }
 
@@ -952,7 +950,7 @@ namespace Antlr3.ST
         public virtual StringTemplate DefineRegionTemplate( string enclosingTemplateName,
                                                    string regionName,
                                                    string template,
-                                                   int type )
+                                                   RegionType type )
         {
             string mangledName =
                 GetMangledRegionName( enclosingTemplateName, regionName );
@@ -966,7 +964,7 @@ namespace Antlr3.ST
         public virtual StringTemplate DefineRegionTemplate( StringTemplate enclosingTemplate,
                                                    string regionName,
                                                    string template,
-                                                   int type )
+                                                   RegionType type )
         {
             StringTemplate regionST =
                 DefineRegionTemplate( enclosingTemplate.OutermostName,
@@ -994,7 +992,7 @@ namespace Antlr3.ST
             return DefineRegionTemplate( enclosingTemplate,
                                         name,
                                         "",
-                                        StringTemplate.REGION_IMPLICIT );
+                                        RegionType.Implicit );
 
         }
 
@@ -1035,7 +1033,7 @@ namespace Antlr3.ST
                 if ( st.IsRegion )
                 {
                     // don't allow redef of @t.r() ::= "..." or <@r>...<@end>
-                    if ( st.RegionDefType == StringTemplate.REGION_IMPLICIT )
+                    if ( st.RegionDefType == RegionType.Implicit )
                     {
                         return false;
                     }

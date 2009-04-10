@@ -1,4 +1,4 @@
-// $ANTLR 3.1.2 Language\\Template.g3 2009-03-20 14:32:33
+// $ANTLR 3.1.2 Language\\Template.g3 2009-03-23 20:35:08
 
 // The variable 'variable' is assigned but its value is never used.
 #pragma warning disable 219
@@ -438,7 +438,7 @@ public partial class TemplateParser : Parser
 							{
 								string regionName = combinedNameTemplateStr.substring(0,indexOfDefSymbol);
 								string template = combinedNameTemplateStr.substring(indexOfDefSymbol+3, combinedNameTemplateStr.Length);
-								StringTemplate regionST = self.Group.DefineRegionTemplate(self,regionName,template,StringTemplate.REGION_EMBEDDED);
+								StringTemplate regionST = self.Group.DefineRegionTemplate(self,regionName,template,RegionType.Embedded);
 								// treat as regular action: mangled template include
 								string indent = ((ChunkToken)rd).Indentation;
 								ASTExpr c = self.ParseAction(regionST.Name+"()");
