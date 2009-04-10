@@ -1,4 +1,4 @@
-// $ANTLR 3.1.2 Grammars\\ActionTranslator.g3 2009-03-23 17:53:53
+// $ANTLR 3.1.2 Grammars\\ActionTranslator.g3 2009-04-10 15:22:09
 
 // The variable 'variable' is assigned but its value is never used.
 #pragma warning disable 219
@@ -3089,13 +3089,14 @@ public partial class ActionTranslator : Lexer
 	}
 	// $ANTLR end synpred9_ActionTranslator
 
-	public bool synpred1_ActionTranslator()
+	#region Synpreds
+	bool EvaluatePredicate( System.Action fragment )
 	{
 		state.backtracking++;
 		int start = input.Mark();
 		try
 		{
-			synpred1_ActionTranslator_fragment(); // can never throw exception
+			fragment();
 		}
 		catch ( RecognitionException re )
 		{
@@ -3107,438 +3108,7 @@ public partial class ActionTranslator : Lexer
 		state.failed=false;
 		return success;
 	}
-	public bool synpred2_ActionTranslator()
-	{
-		state.backtracking++;
-		int start = input.Mark();
-		try
-		{
-			synpred2_ActionTranslator_fragment(); // can never throw exception
-		}
-		catch ( RecognitionException re )
-		{
-			System.Console.Error.WriteLine("impossible: "+re);
-		}
-		bool success = !state.failed;
-		input.Rewind(start);
-		state.backtracking--;
-		state.failed=false;
-		return success;
-	}
-	public bool synpred3_ActionTranslator()
-	{
-		state.backtracking++;
-		int start = input.Mark();
-		try
-		{
-			synpred3_ActionTranslator_fragment(); // can never throw exception
-		}
-		catch ( RecognitionException re )
-		{
-			System.Console.Error.WriteLine("impossible: "+re);
-		}
-		bool success = !state.failed;
-		input.Rewind(start);
-		state.backtracking--;
-		state.failed=false;
-		return success;
-	}
-	public bool synpred4_ActionTranslator()
-	{
-		state.backtracking++;
-		int start = input.Mark();
-		try
-		{
-			synpred4_ActionTranslator_fragment(); // can never throw exception
-		}
-		catch ( RecognitionException re )
-		{
-			System.Console.Error.WriteLine("impossible: "+re);
-		}
-		bool success = !state.failed;
-		input.Rewind(start);
-		state.backtracking--;
-		state.failed=false;
-		return success;
-	}
-	public bool synpred5_ActionTranslator()
-	{
-		state.backtracking++;
-		int start = input.Mark();
-		try
-		{
-			synpred5_ActionTranslator_fragment(); // can never throw exception
-		}
-		catch ( RecognitionException re )
-		{
-			System.Console.Error.WriteLine("impossible: "+re);
-		}
-		bool success = !state.failed;
-		input.Rewind(start);
-		state.backtracking--;
-		state.failed=false;
-		return success;
-	}
-	public bool synpred6_ActionTranslator()
-	{
-		state.backtracking++;
-		int start = input.Mark();
-		try
-		{
-			synpred6_ActionTranslator_fragment(); // can never throw exception
-		}
-		catch ( RecognitionException re )
-		{
-			System.Console.Error.WriteLine("impossible: "+re);
-		}
-		bool success = !state.failed;
-		input.Rewind(start);
-		state.backtracking--;
-		state.failed=false;
-		return success;
-	}
-	public bool synpred7_ActionTranslator()
-	{
-		state.backtracking++;
-		int start = input.Mark();
-		try
-		{
-			synpred7_ActionTranslator_fragment(); // can never throw exception
-		}
-		catch ( RecognitionException re )
-		{
-			System.Console.Error.WriteLine("impossible: "+re);
-		}
-		bool success = !state.failed;
-		input.Rewind(start);
-		state.backtracking--;
-		state.failed=false;
-		return success;
-	}
-	public bool synpred8_ActionTranslator()
-	{
-		state.backtracking++;
-		int start = input.Mark();
-		try
-		{
-			synpred8_ActionTranslator_fragment(); // can never throw exception
-		}
-		catch ( RecognitionException re )
-		{
-			System.Console.Error.WriteLine("impossible: "+re);
-		}
-		bool success = !state.failed;
-		input.Rewind(start);
-		state.backtracking--;
-		state.failed=false;
-		return success;
-	}
-	public bool synpred9_ActionTranslator()
-	{
-		state.backtracking++;
-		int start = input.Mark();
-		try
-		{
-			synpred9_ActionTranslator_fragment(); // can never throw exception
-		}
-		catch ( RecognitionException re )
-		{
-			System.Console.Error.WriteLine("impossible: "+re);
-		}
-		bool success = !state.failed;
-		input.Rewind(start);
-		state.backtracking--;
-		state.failed=false;
-		return success;
-	}
-	public bool synpred10_ActionTranslator()
-	{
-		state.backtracking++;
-		int start = input.Mark();
-		try
-		{
-			synpred10_ActionTranslator_fragment(); // can never throw exception
-		}
-		catch ( RecognitionException re )
-		{
-			System.Console.Error.WriteLine("impossible: "+re);
-		}
-		bool success = !state.failed;
-		input.Rewind(start);
-		state.backtracking--;
-		state.failed=false;
-		return success;
-	}
-	public bool synpred11_ActionTranslator()
-	{
-		state.backtracking++;
-		int start = input.Mark();
-		try
-		{
-			synpred11_ActionTranslator_fragment(); // can never throw exception
-		}
-		catch ( RecognitionException re )
-		{
-			System.Console.Error.WriteLine("impossible: "+re);
-		}
-		bool success = !state.failed;
-		input.Rewind(start);
-		state.backtracking--;
-		state.failed=false;
-		return success;
-	}
-	public bool synpred12_ActionTranslator()
-	{
-		state.backtracking++;
-		int start = input.Mark();
-		try
-		{
-			synpred12_ActionTranslator_fragment(); // can never throw exception
-		}
-		catch ( RecognitionException re )
-		{
-			System.Console.Error.WriteLine("impossible: "+re);
-		}
-		bool success = !state.failed;
-		input.Rewind(start);
-		state.backtracking--;
-		state.failed=false;
-		return success;
-	}
-	public bool synpred13_ActionTranslator()
-	{
-		state.backtracking++;
-		int start = input.Mark();
-		try
-		{
-			synpred13_ActionTranslator_fragment(); // can never throw exception
-		}
-		catch ( RecognitionException re )
-		{
-			System.Console.Error.WriteLine("impossible: "+re);
-		}
-		bool success = !state.failed;
-		input.Rewind(start);
-		state.backtracking--;
-		state.failed=false;
-		return success;
-	}
-	public bool synpred14_ActionTranslator()
-	{
-		state.backtracking++;
-		int start = input.Mark();
-		try
-		{
-			synpred14_ActionTranslator_fragment(); // can never throw exception
-		}
-		catch ( RecognitionException re )
-		{
-			System.Console.Error.WriteLine("impossible: "+re);
-		}
-		bool success = !state.failed;
-		input.Rewind(start);
-		state.backtracking--;
-		state.failed=false;
-		return success;
-	}
-	public bool synpred15_ActionTranslator()
-	{
-		state.backtracking++;
-		int start = input.Mark();
-		try
-		{
-			synpred15_ActionTranslator_fragment(); // can never throw exception
-		}
-		catch ( RecognitionException re )
-		{
-			System.Console.Error.WriteLine("impossible: "+re);
-		}
-		bool success = !state.failed;
-		input.Rewind(start);
-		state.backtracking--;
-		state.failed=false;
-		return success;
-	}
-	public bool synpred16_ActionTranslator()
-	{
-		state.backtracking++;
-		int start = input.Mark();
-		try
-		{
-			synpred16_ActionTranslator_fragment(); // can never throw exception
-		}
-		catch ( RecognitionException re )
-		{
-			System.Console.Error.WriteLine("impossible: "+re);
-		}
-		bool success = !state.failed;
-		input.Rewind(start);
-		state.backtracking--;
-		state.failed=false;
-		return success;
-	}
-	public bool synpred17_ActionTranslator()
-	{
-		state.backtracking++;
-		int start = input.Mark();
-		try
-		{
-			synpred17_ActionTranslator_fragment(); // can never throw exception
-		}
-		catch ( RecognitionException re )
-		{
-			System.Console.Error.WriteLine("impossible: "+re);
-		}
-		bool success = !state.failed;
-		input.Rewind(start);
-		state.backtracking--;
-		state.failed=false;
-		return success;
-	}
-	public bool synpred24_ActionTranslator()
-	{
-		state.backtracking++;
-		int start = input.Mark();
-		try
-		{
-			synpred24_ActionTranslator_fragment(); // can never throw exception
-		}
-		catch ( RecognitionException re )
-		{
-			System.Console.Error.WriteLine("impossible: "+re);
-		}
-		bool success = !state.failed;
-		input.Rewind(start);
-		state.backtracking--;
-		state.failed=false;
-		return success;
-	}
-	public bool synpred25_ActionTranslator()
-	{
-		state.backtracking++;
-		int start = input.Mark();
-		try
-		{
-			synpred25_ActionTranslator_fragment(); // can never throw exception
-		}
-		catch ( RecognitionException re )
-		{
-			System.Console.Error.WriteLine("impossible: "+re);
-		}
-		bool success = !state.failed;
-		input.Rewind(start);
-		state.backtracking--;
-		state.failed=false;
-		return success;
-	}
-	public bool synpred26_ActionTranslator()
-	{
-		state.backtracking++;
-		int start = input.Mark();
-		try
-		{
-			synpred26_ActionTranslator_fragment(); // can never throw exception
-		}
-		catch ( RecognitionException re )
-		{
-			System.Console.Error.WriteLine("impossible: "+re);
-		}
-		bool success = !state.failed;
-		input.Rewind(start);
-		state.backtracking--;
-		state.failed=false;
-		return success;
-	}
-	public bool synpred18_ActionTranslator()
-	{
-		state.backtracking++;
-		int start = input.Mark();
-		try
-		{
-			synpred18_ActionTranslator_fragment(); // can never throw exception
-		}
-		catch ( RecognitionException re )
-		{
-			System.Console.Error.WriteLine("impossible: "+re);
-		}
-		bool success = !state.failed;
-		input.Rewind(start);
-		state.backtracking--;
-		state.failed=false;
-		return success;
-	}
-	public bool synpred19_ActionTranslator()
-	{
-		state.backtracking++;
-		int start = input.Mark();
-		try
-		{
-			synpred19_ActionTranslator_fragment(); // can never throw exception
-		}
-		catch ( RecognitionException re )
-		{
-			System.Console.Error.WriteLine("impossible: "+re);
-		}
-		bool success = !state.failed;
-		input.Rewind(start);
-		state.backtracking--;
-		state.failed=false;
-		return success;
-	}
-	public bool synpred20_ActionTranslator()
-	{
-		state.backtracking++;
-		int start = input.Mark();
-		try
-		{
-			synpred20_ActionTranslator_fragment(); // can never throw exception
-		}
-		catch ( RecognitionException re )
-		{
-			System.Console.Error.WriteLine("impossible: "+re);
-		}
-		bool success = !state.failed;
-		input.Rewind(start);
-		state.backtracking--;
-		state.failed=false;
-		return success;
-	}
-	public bool synpred21_ActionTranslator()
-	{
-		state.backtracking++;
-		int start = input.Mark();
-		try
-		{
-			synpred21_ActionTranslator_fragment(); // can never throw exception
-		}
-		catch ( RecognitionException re )
-		{
-			System.Console.Error.WriteLine("impossible: "+re);
-		}
-		bool success = !state.failed;
-		input.Rewind(start);
-		state.backtracking--;
-		state.failed=false;
-		return success;
-	}
-	public bool synpred22_ActionTranslator()
-	{
-		state.backtracking++;
-		int start = input.Mark();
-		try
-		{
-			synpred22_ActionTranslator_fragment(); // can never throw exception
-		}
-		catch ( RecognitionException re )
-		{
-			System.Console.Error.WriteLine("impossible: "+re);
-		}
-		bool success = !state.failed;
-		input.Rewind(start);
-		state.backtracking--;
-		state.failed=false;
-		return success;
-	}
+	#endregion Synpreds
 
 
 	#region DFA
@@ -3734,45 +3304,45 @@ public partial class ActionTranslator : Lexer
 				int index28_1 = input.Index;
 				input.Rewind();
 				s = -1;
-				if ( (synpred1_ActionTranslator()) ) {s = 2;}
+				if ( (EvaluatePredicate(synpred1_ActionTranslator_fragment)) ) {s = 2;}
 
-				else if ( (synpred2_ActionTranslator()) ) {s = 3;}
+				else if ( (EvaluatePredicate(synpred2_ActionTranslator_fragment)) ) {s = 3;}
 
-				else if ( (synpred3_ActionTranslator()) ) {s = 4;}
+				else if ( (EvaluatePredicate(synpred3_ActionTranslator_fragment)) ) {s = 4;}
 
-				else if ( (synpred4_ActionTranslator()) ) {s = 5;}
+				else if ( (EvaluatePredicate(synpred4_ActionTranslator_fragment)) ) {s = 5;}
 
-				else if ( (synpred5_ActionTranslator()) ) {s = 6;}
+				else if ( (EvaluatePredicate(synpred5_ActionTranslator_fragment)) ) {s = 6;}
 
-				else if ( (synpred6_ActionTranslator()) ) {s = 7;}
+				else if ( (EvaluatePredicate(synpred6_ActionTranslator_fragment)) ) {s = 7;}
 
-				else if ( (synpred7_ActionTranslator()) ) {s = 8;}
+				else if ( (EvaluatePredicate(synpred7_ActionTranslator_fragment)) ) {s = 8;}
 
-				else if ( (synpred8_ActionTranslator()) ) {s = 9;}
+				else if ( (EvaluatePredicate(synpred8_ActionTranslator_fragment)) ) {s = 9;}
 
-				else if ( (synpred9_ActionTranslator()) ) {s = 10;}
+				else if ( (EvaluatePredicate(synpred9_ActionTranslator_fragment)) ) {s = 10;}
 
-				else if ( (synpred10_ActionTranslator()) ) {s = 11;}
+				else if ( (EvaluatePredicate(synpred10_ActionTranslator_fragment)) ) {s = 11;}
 
-				else if ( (synpred11_ActionTranslator()) ) {s = 12;}
+				else if ( (EvaluatePredicate(synpred11_ActionTranslator_fragment)) ) {s = 12;}
 
-				else if ( (synpred12_ActionTranslator()) ) {s = 13;}
+				else if ( (EvaluatePredicate(synpred12_ActionTranslator_fragment)) ) {s = 13;}
 
-				else if ( (synpred13_ActionTranslator()) ) {s = 14;}
+				else if ( (EvaluatePredicate(synpred13_ActionTranslator_fragment)) ) {s = 14;}
 
-				else if ( (synpred14_ActionTranslator()) ) {s = 15;}
+				else if ( (EvaluatePredicate(synpred14_ActionTranslator_fragment)) ) {s = 15;}
 
-				else if ( (synpred15_ActionTranslator()) ) {s = 16;}
+				else if ( (EvaluatePredicate(synpred15_ActionTranslator_fragment)) ) {s = 16;}
 
-				else if ( (synpred16_ActionTranslator()) ) {s = 17;}
+				else if ( (EvaluatePredicate(synpred16_ActionTranslator_fragment)) ) {s = 17;}
 
-				else if ( (synpred17_ActionTranslator()) ) {s = 18;}
+				else if ( (EvaluatePredicate(synpred17_ActionTranslator_fragment)) ) {s = 18;}
 
-				else if ( (synpred24_ActionTranslator()) ) {s = 19;}
+				else if ( (EvaluatePredicate(synpred24_ActionTranslator_fragment)) ) {s = 19;}
 
-				else if ( (synpred25_ActionTranslator()) ) {s = 20;}
+				else if ( (EvaluatePredicate(synpred25_ActionTranslator_fragment)) ) {s = 20;}
 
-				else if ( (synpred26_ActionTranslator()) ) {s = 21;}
+				else if ( (EvaluatePredicate(synpred26_ActionTranslator_fragment)) ) {s = 21;}
 
 
 				input.Seek(index28_1);
@@ -3786,17 +3356,17 @@ public partial class ActionTranslator : Lexer
 				int index28_22 = input.Index;
 				input.Rewind();
 				s = -1;
-				if ( (synpred18_ActionTranslator()) ) {s = 23;}
+				if ( (EvaluatePredicate(synpred18_ActionTranslator_fragment)) ) {s = 23;}
 
-				else if ( (synpred19_ActionTranslator()) ) {s = 24;}
+				else if ( (EvaluatePredicate(synpred19_ActionTranslator_fragment)) ) {s = 24;}
 
-				else if ( (synpred20_ActionTranslator()) ) {s = 25;}
+				else if ( (EvaluatePredicate(synpred20_ActionTranslator_fragment)) ) {s = 25;}
 
-				else if ( (synpred21_ActionTranslator()) ) {s = 26;}
+				else if ( (EvaluatePredicate(synpred21_ActionTranslator_fragment)) ) {s = 26;}
 
-				else if ( (synpred22_ActionTranslator()) ) {s = 27;}
+				else if ( (EvaluatePredicate(synpred22_ActionTranslator_fragment)) ) {s = 27;}
 
-				else if ( (synpred26_ActionTranslator()) ) {s = 21;}
+				else if ( (EvaluatePredicate(synpred26_ActionTranslator_fragment)) ) {s = 21;}
 
 
 				input.Seek(index28_22);

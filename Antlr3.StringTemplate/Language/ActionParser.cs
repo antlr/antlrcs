@@ -1,4 +1,4 @@
-// $ANTLR 3.1.2 Language\\Action.g3 2009-03-23 20:30:07
+// $ANTLR 3.1.2 Language\\Action.g3 2009-04-10 15:18:38
 
 // The variable 'variable' is assigned but its value is never used.
 #pragma warning disable 219
@@ -3605,13 +3605,13 @@ public partial class ActionParser : Parser
 	#endregion Rules
 
 	#region Synpreds
-	public bool synpred1_Action()
+	bool EvaluatePredicate( System.Action fragment )
 	{
 		state.backtracking++;
 		int start = input.Mark();
 		try
 		{
-			synpred1_Action_fragment(); // can never throw exception
+			fragment();
 		}
 		catch ( RecognitionException re )
 		{
@@ -3623,8 +3623,8 @@ public partial class ActionParser : Parser
 		state.failed=false;
 		return success;
 	}
-
 	#endregion Synpreds
+
 
 	#region DFA
 	DFA15 dfa15;
@@ -3721,7 +3721,7 @@ public partial class ActionParser : Parser
 				s = -1;
 				if ( (LA15_0==ID) ) {s = 1;}
 
-				else if ( (LA15_0==SUPER) && (synpred1_Action())) {s = 2;}
+				else if ( (LA15_0==SUPER) && (EvaluatePredicate(synpred1_Action_fragment))) {s = 2;}
 
 				else if ( (LA15_0==LPAREN) ) {s = 3;}
 
@@ -3743,7 +3743,7 @@ public partial class ActionParser : Parser
 				int index15_1 = input.Index;
 				input.Rewind();
 				s = -1;
-				if ( (synpred1_Action()) ) {s = 2;}
+				if ( (EvaluatePredicate(synpred1_Action_fragment)) ) {s = 2;}
 
 				else if ( (true) ) {s = 4;}
 
@@ -3759,7 +3759,7 @@ public partial class ActionParser : Parser
 				int index15_3 = input.Index;
 				input.Rewind();
 				s = -1;
-				if ( (synpred1_Action()) ) {s = 2;}
+				if ( (EvaluatePredicate(synpred1_Action_fragment)) ) {s = 2;}
 
 				else if ( (true) ) {s = 12;}
 

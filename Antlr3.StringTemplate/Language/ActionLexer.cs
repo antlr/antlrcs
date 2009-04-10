@@ -1,4 +1,4 @@
-// $ANTLR 3.1.2 Language\\Action.g3 2009-03-23 20:30:08
+// $ANTLR 3.1.2 Language\\Action.g3 2009-04-10 15:18:38
 
 // The variable 'variable' is assigned but its value is never used.
 #pragma warning disable 219
@@ -580,7 +580,7 @@ public partial class ActionLexer : Lexer
 				{
 					int LA4_1 = input.LA(2);
 
-					if ( (synpred2_Action()) )
+					if ( (EvaluatePredicate(synpred2_Action_fragment)) )
 					{
 						alt4=1;
 					}
@@ -1822,13 +1822,14 @@ public partial class ActionLexer : Lexer
 	}
 	// $ANTLR end synpred6_Action
 
-	public bool synpred2_Action()
+	#region Synpreds
+	bool EvaluatePredicate( System.Action fragment )
 	{
 		state.backtracking++;
 		int start = input.Mark();
 		try
 		{
-			synpred2_Action_fragment(); // can never throw exception
+			fragment();
 		}
 		catch ( RecognitionException re )
 		{
@@ -1840,96 +1841,7 @@ public partial class ActionLexer : Lexer
 		state.failed=false;
 		return success;
 	}
-	public bool synpred1_Action()
-	{
-		state.backtracking++;
-		int start = input.Mark();
-		try
-		{
-			synpred1_Action_fragment(); // can never throw exception
-		}
-		catch ( RecognitionException re )
-		{
-			System.Console.Error.WriteLine("impossible: "+re);
-		}
-		bool success = !state.failed;
-		input.Rewind(start);
-		state.backtracking--;
-		state.failed=false;
-		return success;
-	}
-	public bool synpred3_Action()
-	{
-		state.backtracking++;
-		int start = input.Mark();
-		try
-		{
-			synpred3_Action_fragment(); // can never throw exception
-		}
-		catch ( RecognitionException re )
-		{
-			System.Console.Error.WriteLine("impossible: "+re);
-		}
-		bool success = !state.failed;
-		input.Rewind(start);
-		state.backtracking--;
-		state.failed=false;
-		return success;
-	}
-	public bool synpred4_Action()
-	{
-		state.backtracking++;
-		int start = input.Mark();
-		try
-		{
-			synpred4_Action_fragment(); // can never throw exception
-		}
-		catch ( RecognitionException re )
-		{
-			System.Console.Error.WriteLine("impossible: "+re);
-		}
-		bool success = !state.failed;
-		input.Rewind(start);
-		state.backtracking--;
-		state.failed=false;
-		return success;
-	}
-	public bool synpred5_Action()
-	{
-		state.backtracking++;
-		int start = input.Mark();
-		try
-		{
-			synpred5_Action_fragment(); // can never throw exception
-		}
-		catch ( RecognitionException re )
-		{
-			System.Console.Error.WriteLine("impossible: "+re);
-		}
-		bool success = !state.failed;
-		input.Rewind(start);
-		state.backtracking--;
-		state.failed=false;
-		return success;
-	}
-	public bool synpred6_Action()
-	{
-		state.backtracking++;
-		int start = input.Mark();
-		try
-		{
-			synpred6_Action_fragment(); // can never throw exception
-		}
-		catch ( RecognitionException re )
-		{
-			System.Console.Error.WriteLine("impossible: "+re);
-		}
-		bool success = !state.failed;
-		input.Rewind(start);
-		state.backtracking--;
-		state.failed=false;
-		return success;
-	}
+	#endregion Synpreds
 
 
 	#region DFA
@@ -2120,7 +2032,7 @@ public partial class ActionLexer : Lexer
 				int index5_7 = input.Index;
 				input.Rewind();
 				s = -1;
-				if ( (synpred1_Action()) ) {s = 10;}
+				if ( (EvaluatePredicate(synpred1_Action_fragment)) ) {s = 10;}
 
 				else if ( (true) ) {s = 3;}
 
@@ -2299,7 +2211,7 @@ public partial class ActionLexer : Lexer
 				int index6_5 = input.Index;
 				input.Rewind();
 				s = -1;
-				if ( (synpred3_Action()) ) {s = 8;}
+				if ( (EvaluatePredicate(synpred3_Action_fragment)) ) {s = 8;}
 
 				else if ( (true) ) {s = 7;}
 
@@ -2315,7 +2227,7 @@ public partial class ActionLexer : Lexer
 				int index6_6 = input.Index;
 				input.Rewind();
 				s = -1;
-				if ( (synpred4_Action()) ) {s = 9;}
+				if ( (EvaluatePredicate(synpred4_Action_fragment)) ) {s = 9;}
 
 				else if ( (true) ) {s = 7;}
 
@@ -2436,7 +2348,7 @@ public partial class ActionLexer : Lexer
 				int index12_5 = input.Index;
 				input.Rewind();
 				s = -1;
-				if ( (synpred5_Action()) ) {s = 8;}
+				if ( (EvaluatePredicate(synpred5_Action_fragment)) ) {s = 8;}
 
 				else if ( (true) ) {s = 7;}
 
@@ -2452,7 +2364,7 @@ public partial class ActionLexer : Lexer
 				int index12_6 = input.Index;
 				input.Rewind();
 				s = -1;
-				if ( (synpred6_Action()) ) {s = 9;}
+				if ( (EvaluatePredicate(synpred6_Action_fragment)) ) {s = 9;}
 
 				else if ( (true) ) {s = 7;}
 

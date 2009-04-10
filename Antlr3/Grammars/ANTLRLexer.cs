@@ -1,4 +1,4 @@
-// $ANTLR 3.1.2 Grammars\\ANTLR.g3 2009-03-23 17:53:58
+// $ANTLR 3.1.2 Grammars\\ANTLR.g3 2009-04-10 15:22:15
 
 // The variable 'variable' is assigned but its value is never used.
 #pragma warning disable 219
@@ -1717,7 +1717,7 @@ public partial class ANTLRLexer : Lexer
 				{
 					int LA12_2 = input.LA(2);
 
-					if ( (LA12_2=='\"') && (synpred2_ANTLR()))
+					if ( (LA12_2=='\"') && (EvaluatePredicate(synpred2_ANTLR_fragment)))
 					{
 						alt12=1;
 					}
@@ -2085,7 +2085,7 @@ public partial class ANTLRLexer : Lexer
 				{
 					int LA15_2 = input.LA(2);
 
-					if ( (LA15_2==']') && (synpred3_ANTLR()))
+					if ( (LA15_2==']') && (EvaluatePredicate(synpred3_ANTLR_fragment)))
 					{
 						alt15=1;
 					}
@@ -2296,7 +2296,7 @@ public partial class ANTLRLexer : Lexer
 				{
 					int LA17_4 = input.LA(2);
 
-					if ( (synpred4_ANTLR()) )
+					if ( (EvaluatePredicate(synpred4_ANTLR_fragment)) )
 					{
 						alt17=3;
 					}
@@ -3362,13 +3362,14 @@ public partial class ANTLRLexer : Lexer
 		}}
 	// $ANTLR end synpred4_ANTLR
 
-	public bool synpred1_ANTLR()
+	#region Synpreds
+	bool EvaluatePredicate( System.Action fragment )
 	{
 		state.backtracking++;
 		int start = input.Mark();
 		try
 		{
-			synpred1_ANTLR_fragment(); // can never throw exception
+			fragment();
 		}
 		catch ( RecognitionException re )
 		{
@@ -3380,60 +3381,7 @@ public partial class ANTLRLexer : Lexer
 		state.failed=false;
 		return success;
 	}
-	public bool synpred2_ANTLR()
-	{
-		state.backtracking++;
-		int start = input.Mark();
-		try
-		{
-			synpred2_ANTLR_fragment(); // can never throw exception
-		}
-		catch ( RecognitionException re )
-		{
-			System.Console.Error.WriteLine("impossible: "+re);
-		}
-		bool success = !state.failed;
-		input.Rewind(start);
-		state.backtracking--;
-		state.failed=false;
-		return success;
-	}
-	public bool synpred3_ANTLR()
-	{
-		state.backtracking++;
-		int start = input.Mark();
-		try
-		{
-			synpred3_ANTLR_fragment(); // can never throw exception
-		}
-		catch ( RecognitionException re )
-		{
-			System.Console.Error.WriteLine("impossible: "+re);
-		}
-		bool success = !state.failed;
-		input.Rewind(start);
-		state.backtracking--;
-		state.failed=false;
-		return success;
-	}
-	public bool synpred4_ANTLR()
-	{
-		state.backtracking++;
-		int start = input.Mark();
-		try
-		{
-			synpred4_ANTLR_fragment(); // can never throw exception
-		}
-		catch ( RecognitionException re )
-		{
-			System.Console.Error.WriteLine("impossible: "+re);
-		}
-		bool success = !state.failed;
-		input.Rewind(start);
-		state.backtracking--;
-		state.failed=false;
-		return success;
-	}
+	#endregion Synpreds
 
 
 	#region DFA
@@ -3590,13 +3538,13 @@ public partial class ANTLRLexer : Lexer
 				int index9_16 = input.Index;
 				input.Rewind();
 				s = -1;
-				if ( (LA9_16=='\"') && (synpred1_ANTLR())) {s = 25;}
+				if ( (LA9_16=='\"') && (EvaluatePredicate(synpred1_ANTLR_fragment))) {s = 25;}
 
-				else if ( (LA9_16=='\\') && (synpred1_ANTLR())) {s = 26;}
+				else if ( (LA9_16=='\\') && (EvaluatePredicate(synpred1_ANTLR_fragment))) {s = 26;}
 
 				else if ( (LA9_16=='\n') ) {s = 18;}
 
-				else if ( ((LA9_16>='\u0000' && LA9_16<='\t')||(LA9_16>='\u000B' && LA9_16<='!')||(LA9_16>='#' && LA9_16<='[')||(LA9_16>=']' && LA9_16<='\uFFFF')) && (synpred1_ANTLR())) {s = 27;}
+				else if ( ((LA9_16>='\u0000' && LA9_16<='\t')||(LA9_16>='\u000B' && LA9_16<='!')||(LA9_16>='#' && LA9_16<='[')||(LA9_16>=']' && LA9_16<='\uFFFF')) && (EvaluatePredicate(synpred1_ANTLR_fragment))) {s = 27;}
 
 
 				input.Seek(index9_16);
@@ -3610,11 +3558,11 @@ public partial class ANTLRLexer : Lexer
 				int index9_18 = input.Index;
 				input.Rewind();
 				s = -1;
-				if ( (LA9_18=='\"') && (synpred1_ANTLR())) {s = 25;}
+				if ( (LA9_18=='\"') && (EvaluatePredicate(synpred1_ANTLR_fragment))) {s = 25;}
 
-				else if ( (LA9_18=='\\') && (synpred1_ANTLR())) {s = 26;}
+				else if ( (LA9_18=='\\') && (EvaluatePredicate(synpred1_ANTLR_fragment))) {s = 26;}
 
-				else if ( ((LA9_18>='\u0000' && LA9_18<='!')||(LA9_18>='#' && LA9_18<='[')||(LA9_18>=']' && LA9_18<='\uFFFF')) && (synpred1_ANTLR())) {s = 27;}
+				else if ( ((LA9_18>='\u0000' && LA9_18<='!')||(LA9_18>='#' && LA9_18<='[')||(LA9_18>=']' && LA9_18<='\uFFFF')) && (EvaluatePredicate(synpred1_ANTLR_fragment))) {s = 27;}
 
 				else s = 2;
 
@@ -3687,13 +3635,13 @@ public partial class ANTLRLexer : Lexer
 				int index9_22 = input.Index;
 				input.Rewind();
 				s = -1;
-				if ( (LA9_22=='\"') && (synpred1_ANTLR())) {s = 25;}
+				if ( (LA9_22=='\"') && (EvaluatePredicate(synpred1_ANTLR_fragment))) {s = 25;}
 
-				else if ( (LA9_22=='\\') && (synpred1_ANTLR())) {s = 26;}
+				else if ( (LA9_22=='\\') && (EvaluatePredicate(synpred1_ANTLR_fragment))) {s = 26;}
 
 				else if ( (LA9_22=='\n') ) {s = 18;}
 
-				else if ( ((LA9_22>='\u0000' && LA9_22<='\t')||(LA9_22>='\u000B' && LA9_22<='!')||(LA9_22>='#' && LA9_22<='[')||(LA9_22>=']' && LA9_22<='\uFFFF')) && (synpred1_ANTLR())) {s = 27;}
+				else if ( ((LA9_22>='\u0000' && LA9_22<='\t')||(LA9_22>='\u000B' && LA9_22<='!')||(LA9_22>='#' && LA9_22<='[')||(LA9_22>=']' && LA9_22<='\uFFFF')) && (EvaluatePredicate(synpred1_ANTLR_fragment))) {s = 27;}
 
 
 				input.Seek(index9_22);
@@ -3707,11 +3655,11 @@ public partial class ANTLRLexer : Lexer
 				int index9_23 = input.Index;
 				input.Rewind();
 				s = -1;
-				if ( (LA9_23=='\"') && (synpred1_ANTLR())) {s = 25;}
+				if ( (LA9_23=='\"') && (EvaluatePredicate(synpred1_ANTLR_fragment))) {s = 25;}
 
-				else if ( (LA9_23=='\\') && (synpred1_ANTLR())) {s = 26;}
+				else if ( (LA9_23=='\\') && (EvaluatePredicate(synpred1_ANTLR_fragment))) {s = 26;}
 
-				else if ( ((LA9_23>='\u0000' && LA9_23<='!')||(LA9_23>='#' && LA9_23<='[')||(LA9_23>=']' && LA9_23<='\uFFFF')) && (synpred1_ANTLR())) {s = 27;}
+				else if ( ((LA9_23>='\u0000' && LA9_23<='!')||(LA9_23>='#' && LA9_23<='[')||(LA9_23>=']' && LA9_23<='\uFFFF')) && (EvaluatePredicate(synpred1_ANTLR_fragment))) {s = 27;}
 
 				else s = 2;
 
@@ -3746,7 +3694,7 @@ public partial class ANTLRLexer : Lexer
 				int index9_29 = input.Index;
 				input.Rewind();
 				s = -1;
-				if ( (synpred1_ANTLR()) ) {s = 27;}
+				if ( (EvaluatePredicate(synpred1_ANTLR_fragment)) ) {s = 27;}
 
 				else if ( (true) ) {s = 2;}
 

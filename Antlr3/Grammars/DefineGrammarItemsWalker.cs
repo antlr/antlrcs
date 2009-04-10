@@ -1,4 +1,4 @@
-// $ANTLR 3.1.2 Grammars\\DefineGrammarItemsWalker.g3 2009-03-23 17:54:02
+// $ANTLR 3.1.2 Grammars\\DefineGrammarItemsWalker.g3 2009-04-10 15:22:19
 
 // The variable 'variable' is assigned but its value is never used.
 #pragma warning disable 219
@@ -4431,13 +4431,13 @@ public partial class DefineGrammarItemsWalker : TreeParser
 	#endregion Rules
 
 	#region Synpreds
-	public bool synpred1_DefineGrammarItemsWalker()
+	bool EvaluatePredicate( System.Action fragment )
 	{
 		state.backtracking++;
 		int start = input.Mark();
 		try
 		{
-			synpred1_DefineGrammarItemsWalker_fragment(); // can never throw exception
+			fragment();
 		}
 		catch ( RecognitionException re )
 		{
@@ -4449,8 +4449,8 @@ public partial class DefineGrammarItemsWalker : TreeParser
 		state.failed=false;
 		return success;
 	}
-
 	#endregion Synpreds
+
 
 	#region DFA
 	DFA36 dfa36;
@@ -4657,7 +4657,7 @@ public partial class DefineGrammarItemsWalker : TreeParser
 				int index37_27 = input.Index;
 				input.Rewind();
 				s = -1;
-				if ( (synpred1_DefineGrammarItemsWalker()) ) {s = 29;}
+				if ( (EvaluatePredicate(synpred1_DefineGrammarItemsWalker_fragment)) ) {s = 29;}
 
 				else if ( (true) ) {s = 12;}
 
@@ -4673,7 +4673,7 @@ public partial class DefineGrammarItemsWalker : TreeParser
 				int index37_28 = input.Index;
 				input.Rewind();
 				s = -1;
-				if ( (synpred1_DefineGrammarItemsWalker()) ) {s = 29;}
+				if ( (EvaluatePredicate(synpred1_DefineGrammarItemsWalker_fragment)) ) {s = 29;}
 
 				else if ( (true) ) {s = 14;}
 

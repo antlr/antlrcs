@@ -1,4 +1,4 @@
-// $ANTLR 3.1.2 Grammars\\ActionAnalysisLexer.g3 2009-03-23 17:53:56
+// $ANTLR 3.1.2 Grammars\\ActionAnalysisLexer.g3 2009-04-10 15:22:12
 
 // The variable 'variable' is assigned but its value is never used.
 #pragma warning disable 219
@@ -370,11 +370,11 @@ public partial class ActionAnalysisLexer : Lexer
 		{
 			int LA2_1 = input.LA(2);
 
-			if ( (synpred1_ActionAnalysisLexer()) )
+			if ( (EvaluatePredicate(synpred1_ActionAnalysisLexer_fragment)) )
 			{
 				alt2=1;
 			}
-			else if ( (synpred2_ActionAnalysisLexer()) )
+			else if ( (EvaluatePredicate(synpred2_ActionAnalysisLexer_fragment)) )
 			{
 				alt2=2;
 			}
@@ -451,13 +451,14 @@ public partial class ActionAnalysisLexer : Lexer
 	}
 	// $ANTLR end synpred2_ActionAnalysisLexer
 
-	public bool synpred1_ActionAnalysisLexer()
+	#region Synpreds
+	bool EvaluatePredicate( System.Action fragment )
 	{
 		state.backtracking++;
 		int start = input.Mark();
 		try
 		{
-			synpred1_ActionAnalysisLexer_fragment(); // can never throw exception
+			fragment();
 		}
 		catch ( RecognitionException re )
 		{
@@ -469,24 +470,7 @@ public partial class ActionAnalysisLexer : Lexer
 		state.failed=false;
 		return success;
 	}
-	public bool synpred2_ActionAnalysisLexer()
-	{
-		state.backtracking++;
-		int start = input.Mark();
-		try
-		{
-			synpred2_ActionAnalysisLexer_fragment(); // can never throw exception
-		}
-		catch ( RecognitionException re )
-		{
-			System.Console.Error.WriteLine("impossible: "+re);
-		}
-		bool success = !state.failed;
-		input.Rewind(start);
-		state.backtracking--;
-		state.failed=false;
-		return success;
-	}
+	#endregion Synpreds
 
 
 	#region DFA

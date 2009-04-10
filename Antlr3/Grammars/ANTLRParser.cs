@@ -1,4 +1,4 @@
-// $ANTLR 3.1.2 Grammars\\ANTLR.g3 2009-03-20 14:32:46
+// $ANTLR 3.1.2 Grammars\\ANTLR.g3 2009-04-10 15:22:14
 
 // The variable 'variable' is assigned but its value is never used.
 #pragma warning disable 219
@@ -10367,13 +10367,13 @@ public partial class ANTLRParser : Parser
 	#endregion Rules
 
 	#region Synpreds
-	public bool synpred1_ANTLR()
+	bool EvaluatePredicate( System.Action fragment )
 	{
 		state.backtracking++;
 		int start = input.Mark();
 		try
 		{
-			synpred1_ANTLR_fragment(); // can never throw exception
+			fragment();
 		}
 		catch ( RecognitionException re )
 		{
@@ -10385,8 +10385,8 @@ public partial class ANTLRParser : Parser
 		state.failed=false;
 		return success;
 	}
-
 	#endregion Synpreds
+
 
 	#region DFA
 	DFA49 dfa49;
@@ -10576,7 +10576,7 @@ public partial class ANTLRParser : Parser
 				int index52_7 = input.Index;
 				input.Rewind();
 				s = -1;
-				if ( (synpred1_ANTLR()) ) {s = 17;}
+				if ( (EvaluatePredicate(synpred1_ANTLR_fragment)) ) {s = 17;}
 
 				else if ( (true) ) {s = 3;}
 
@@ -10592,7 +10592,7 @@ public partial class ANTLRParser : Parser
 				int index52_8 = input.Index;
 				input.Rewind();
 				s = -1;
-				if ( (synpred1_ANTLR()) ) {s = 17;}
+				if ( (EvaluatePredicate(synpred1_ANTLR_fragment)) ) {s = 17;}
 
 				else if ( (true) ) {s = 3;}
 
@@ -10608,7 +10608,7 @@ public partial class ANTLRParser : Parser
 				int index52_9 = input.Index;
 				input.Rewind();
 				s = -1;
-				if ( (synpred1_ANTLR()) ) {s = 17;}
+				if ( (EvaluatePredicate(synpred1_ANTLR_fragment)) ) {s = 17;}
 
 				else if ( (true) ) {s = 3;}
 
@@ -10624,7 +10624,7 @@ public partial class ANTLRParser : Parser
 				int index52_10 = input.Index;
 				input.Rewind();
 				s = -1;
-				if ( (synpred1_ANTLR()) ) {s = 17;}
+				if ( (EvaluatePredicate(synpred1_ANTLR_fragment)) ) {s = 17;}
 
 				else if ( (true) ) {s = 3;}
 
@@ -10640,7 +10640,7 @@ public partial class ANTLRParser : Parser
 				int index52_11 = input.Index;
 				input.Rewind();
 				s = -1;
-				if ( (synpred1_ANTLR()) ) {s = 17;}
+				if ( (EvaluatePredicate(synpred1_ANTLR_fragment)) ) {s = 17;}
 
 				else if ( (true) ) {s = 3;}
 
@@ -10656,7 +10656,7 @@ public partial class ANTLRParser : Parser
 				int index52_12 = input.Index;
 				input.Rewind();
 				s = -1;
-				if ( (synpred1_ANTLR()) ) {s = 17;}
+				if ( (EvaluatePredicate(synpred1_ANTLR_fragment)) ) {s = 17;}
 
 				else if ( (true) ) {s = 6;}
 
@@ -10672,7 +10672,7 @@ public partial class ANTLRParser : Parser
 				int index52_13 = input.Index;
 				input.Rewind();
 				s = -1;
-				if ( (synpred1_ANTLR()) ) {s = 17;}
+				if ( (EvaluatePredicate(synpred1_ANTLR_fragment)) ) {s = 17;}
 
 				else if ( (true) ) {s = 6;}
 
@@ -10688,7 +10688,7 @@ public partial class ANTLRParser : Parser
 				int index52_14 = input.Index;
 				input.Rewind();
 				s = -1;
-				if ( (synpred1_ANTLR()) ) {s = 17;}
+				if ( (EvaluatePredicate(synpred1_ANTLR_fragment)) ) {s = 17;}
 
 				else if ( (true) ) {s = 6;}
 
@@ -10704,7 +10704,7 @@ public partial class ANTLRParser : Parser
 				int index52_15 = input.Index;
 				input.Rewind();
 				s = -1;
-				if ( (synpred1_ANTLR()) ) {s = 17;}
+				if ( (EvaluatePredicate(synpred1_ANTLR_fragment)) ) {s = 17;}
 
 				else if ( (true) ) {s = 6;}
 
@@ -10720,7 +10720,7 @@ public partial class ANTLRParser : Parser
 				int index52_16 = input.Index;
 				input.Rewind();
 				s = -1;
-				if ( (synpred1_ANTLR()) ) {s = 17;}
+				if ( (EvaluatePredicate(synpred1_ANTLR_fragment)) ) {s = 17;}
 
 				else if ( (true) ) {s = 6;}
 

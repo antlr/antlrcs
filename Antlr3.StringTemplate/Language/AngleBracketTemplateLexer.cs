@@ -1,4 +1,4 @@
-// $ANTLR 3.1.2 Language\\AngleBracketTemplateLexer.g3 2009-03-23 17:53:05
+// $ANTLR 3.1.2 Language\\AngleBracketTemplateLexer.g3 2009-04-10 15:18:31
 
 // The variable 'variable' is assigned but its value is never used.
 #pragma warning disable 219
@@ -162,11 +162,11 @@ public partial class AngleBracketTemplateLexer : Lexer
 			{
 				int LA26_1 = input.LA(2);
 
-				if ( (synpred1_AngleBracketTemplateLexer()) )
+				if ( (EvaluatePredicate(synpred1_AngleBracketTemplateLexer_fragment)) )
 				{
 					alt26=1;
 				}
-				else if ( (synpred2_AngleBracketTemplateLexer()) )
+				else if ( (EvaluatePredicate(synpred2_AngleBracketTemplateLexer_fragment)) )
 				{
 					alt26=2;
 				}
@@ -278,23 +278,23 @@ public partial class AngleBracketTemplateLexer : Lexer
 				{
 					int LA25_1 = input.LA(2);
 
-					if ( (synpred3_AngleBracketTemplateLexer()) )
+					if ( (EvaluatePredicate(synpred3_AngleBracketTemplateLexer_fragment)) )
 					{
 						alt25=1;
 					}
-					else if ( (synpred4_AngleBracketTemplateLexer()) )
+					else if ( (EvaluatePredicate(synpred4_AngleBracketTemplateLexer_fragment)) )
 					{
 						alt25=2;
 					}
-					else if ( (synpred5_AngleBracketTemplateLexer()) )
+					else if ( (EvaluatePredicate(synpred5_AngleBracketTemplateLexer_fragment)) )
 					{
 						alt25=3;
 					}
-					else if ( (synpred6_AngleBracketTemplateLexer()) )
+					else if ( (EvaluatePredicate(synpred6_AngleBracketTemplateLexer_fragment)) )
 					{
 						alt25=4;
 					}
-					else if ( (synpred7_AngleBracketTemplateLexer()) )
+					else if ( (EvaluatePredicate(synpred7_AngleBracketTemplateLexer_fragment)) )
 					{
 						alt25=5;
 					}
@@ -739,7 +739,7 @@ public partial class AngleBracketTemplateLexer : Lexer
 							{
 								int LA15_4 = input.LA(3);
 
-								if ( (synpred8_AngleBracketTemplateLexer()) )
+								if ( (EvaluatePredicate(synpred8_AngleBracketTemplateLexer_fragment)) )
 								{
 									alt15=1;
 								}
@@ -749,7 +749,7 @@ public partial class AngleBracketTemplateLexer : Lexer
 						{
 							int LA15_2 = input.LA(2);
 
-							if ( (synpred8_AngleBracketTemplateLexer()) )
+							if ( (EvaluatePredicate(synpred8_AngleBracketTemplateLexer_fragment)) )
 							{
 								alt15=1;
 							}
@@ -817,7 +817,7 @@ public partial class AngleBracketTemplateLexer : Lexer
 								{
 									int LA17_1 = input.LA(2);
 
-									if ( (synpred9_AngleBracketTemplateLexer()) )
+									if ( (EvaluatePredicate(synpred9_AngleBracketTemplateLexer_fragment)) )
 									{
 										alt17=1;
 									}
@@ -837,7 +837,7 @@ public partial class AngleBracketTemplateLexer : Lexer
 								{
 									int LA17_2 = input.LA(2);
 
-									if ( (synpred9_AngleBracketTemplateLexer()) )
+									if ( (EvaluatePredicate(synpred9_AngleBracketTemplateLexer_fragment)) )
 									{
 										alt17=1;
 									}
@@ -947,11 +947,11 @@ public partial class AngleBracketTemplateLexer : Lexer
 							{
 								int LA20_4 = input.LA(3);
 
-								if ( (LA20_4=='<') && (synpred10_AngleBracketTemplateLexer()))
+								if ( (LA20_4=='<') && (EvaluatePredicate(synpred10_AngleBracketTemplateLexer_fragment)))
 								{
 									alt20=1;
 								}
-								else if ( ((LA20_4>='\u0000' && LA20_4<=';')||(LA20_4>='=' && LA20_4<='\uFFFF')) && (synpred10_AngleBracketTemplateLexer()))
+								else if ( ((LA20_4>='\u0000' && LA20_4<=';')||(LA20_4>='=' && LA20_4<='\uFFFF')) && (EvaluatePredicate(synpred10_AngleBracketTemplateLexer_fragment)))
 								{
 									alt20=1;
 								}
@@ -961,7 +961,7 @@ public partial class AngleBracketTemplateLexer : Lexer
 						{
 							int LA20_2 = input.LA(2);
 
-							if ( (LA20_2=='<') && (synpred10_AngleBracketTemplateLexer()))
+							if ( (LA20_2=='<') && (EvaluatePredicate(synpred10_AngleBracketTemplateLexer_fragment)))
 							{
 								alt20=1;
 							}
@@ -969,7 +969,7 @@ public partial class AngleBracketTemplateLexer : Lexer
 							{
 								int LA20_6 = input.LA(3);
 
-								if ( (synpred10_AngleBracketTemplateLexer()) )
+								if ( (EvaluatePredicate(synpred10_AngleBracketTemplateLexer_fragment)) )
 								{
 									alt20=1;
 								}
@@ -978,12 +978,12 @@ public partial class AngleBracketTemplateLexer : Lexer
 							{
 								int LA20_7 = input.LA(3);
 
-								if ( (synpred10_AngleBracketTemplateLexer()) )
+								if ( (EvaluatePredicate(synpred10_AngleBracketTemplateLexer_fragment)) )
 								{
 									alt20=1;
 								}
 							}
-							else if ( ((LA20_2>='\u0000' && LA20_2<='\t')||(LA20_2>='\u000B' && LA20_2<='\f')||(LA20_2>='\u000E' && LA20_2<=';')||(LA20_2>='=' && LA20_2<='\uFFFF')) && (synpred10_AngleBracketTemplateLexer()))
+							else if ( ((LA20_2>='\u0000' && LA20_2<='\t')||(LA20_2>='\u000B' && LA20_2<='\f')||(LA20_2>='\u000E' && LA20_2<=';')||(LA20_2>='=' && LA20_2<='\uFFFF')) && (EvaluatePredicate(synpred10_AngleBracketTemplateLexer_fragment)))
 							{
 								alt20=1;
 							}
@@ -1798,7 +1798,7 @@ public partial class AngleBracketTemplateLexer : Lexer
 					{
 						int LA35_2 = input.LA(3);
 
-						if ( (synpred11_AngleBracketTemplateLexer()) )
+						if ( (EvaluatePredicate(synpred11_AngleBracketTemplateLexer_fragment)) )
 						{
 							alt35=1;
 						}
@@ -1808,7 +1808,7 @@ public partial class AngleBracketTemplateLexer : Lexer
 				{
 					int LA35_2 = input.LA(2);
 
-					if ( (synpred11_AngleBracketTemplateLexer()) )
+					if ( (EvaluatePredicate(synpred11_AngleBracketTemplateLexer_fragment)) )
 					{
 						alt35=1;
 					}
@@ -2805,13 +2805,14 @@ public partial class AngleBracketTemplateLexer : Lexer
 	}
 	// $ANTLR end synpred9_AngleBracketTemplateLexer
 
-	public bool synpred8_AngleBracketTemplateLexer()
+	#region Synpreds
+	bool EvaluatePredicate( System.Action fragment )
 	{
 		state.backtracking++;
 		int start = input.Mark();
 		try
 		{
-			synpred8_AngleBracketTemplateLexer_fragment(); // can never throw exception
+			fragment();
 		}
 		catch ( RecognitionException re )
 		{
@@ -2823,222 +2824,7 @@ public partial class AngleBracketTemplateLexer : Lexer
 		state.failed=false;
 		return success;
 	}
-	public bool synpred9_AngleBracketTemplateLexer()
-	{
-		state.backtracking++;
-		int start = input.Mark();
-		try
-		{
-			synpred9_AngleBracketTemplateLexer_fragment(); // can never throw exception
-		}
-		catch ( RecognitionException re )
-		{
-			System.Console.Error.WriteLine("impossible: "+re);
-		}
-		bool success = !state.failed;
-		input.Rewind(start);
-		state.backtracking--;
-		state.failed=false;
-		return success;
-	}
-	public bool synpred10_AngleBracketTemplateLexer()
-	{
-		state.backtracking++;
-		int start = input.Mark();
-		try
-		{
-			synpred10_AngleBracketTemplateLexer_fragment(); // can never throw exception
-		}
-		catch ( RecognitionException re )
-		{
-			System.Console.Error.WriteLine("impossible: "+re);
-		}
-		bool success = !state.failed;
-		input.Rewind(start);
-		state.backtracking--;
-		state.failed=false;
-		return success;
-	}
-	public bool synpred3_AngleBracketTemplateLexer()
-	{
-		state.backtracking++;
-		int start = input.Mark();
-		try
-		{
-			synpred3_AngleBracketTemplateLexer_fragment(); // can never throw exception
-		}
-		catch ( RecognitionException re )
-		{
-			System.Console.Error.WriteLine("impossible: "+re);
-		}
-		bool success = !state.failed;
-		input.Rewind(start);
-		state.backtracking--;
-		state.failed=false;
-		return success;
-	}
-	public bool synpred4_AngleBracketTemplateLexer()
-	{
-		state.backtracking++;
-		int start = input.Mark();
-		try
-		{
-			synpred4_AngleBracketTemplateLexer_fragment(); // can never throw exception
-		}
-		catch ( RecognitionException re )
-		{
-			System.Console.Error.WriteLine("impossible: "+re);
-		}
-		bool success = !state.failed;
-		input.Rewind(start);
-		state.backtracking--;
-		state.failed=false;
-		return success;
-	}
-	public bool synpred5_AngleBracketTemplateLexer()
-	{
-		state.backtracking++;
-		int start = input.Mark();
-		try
-		{
-			synpred5_AngleBracketTemplateLexer_fragment(); // can never throw exception
-		}
-		catch ( RecognitionException re )
-		{
-			System.Console.Error.WriteLine("impossible: "+re);
-		}
-		bool success = !state.failed;
-		input.Rewind(start);
-		state.backtracking--;
-		state.failed=false;
-		return success;
-	}
-	public bool synpred6_AngleBracketTemplateLexer()
-	{
-		state.backtracking++;
-		int start = input.Mark();
-		try
-		{
-			synpred6_AngleBracketTemplateLexer_fragment(); // can never throw exception
-		}
-		catch ( RecognitionException re )
-		{
-			System.Console.Error.WriteLine("impossible: "+re);
-		}
-		bool success = !state.failed;
-		input.Rewind(start);
-		state.backtracking--;
-		state.failed=false;
-		return success;
-	}
-	public bool synpred7_AngleBracketTemplateLexer()
-	{
-		state.backtracking++;
-		int start = input.Mark();
-		try
-		{
-			synpred7_AngleBracketTemplateLexer_fragment(); // can never throw exception
-		}
-		catch ( RecognitionException re )
-		{
-			System.Console.Error.WriteLine("impossible: "+re);
-		}
-		bool success = !state.failed;
-		input.Rewind(start);
-		state.backtracking--;
-		state.failed=false;
-		return success;
-	}
-	public bool synpred1_AngleBracketTemplateLexer()
-	{
-		state.backtracking++;
-		int start = input.Mark();
-		try
-		{
-			synpred1_AngleBracketTemplateLexer_fragment(); // can never throw exception
-		}
-		catch ( RecognitionException re )
-		{
-			System.Console.Error.WriteLine("impossible: "+re);
-		}
-		bool success = !state.failed;
-		input.Rewind(start);
-		state.backtracking--;
-		state.failed=false;
-		return success;
-	}
-	public bool synpred2_AngleBracketTemplateLexer()
-	{
-		state.backtracking++;
-		int start = input.Mark();
-		try
-		{
-			synpred2_AngleBracketTemplateLexer_fragment(); // can never throw exception
-		}
-		catch ( RecognitionException re )
-		{
-			System.Console.Error.WriteLine("impossible: "+re);
-		}
-		bool success = !state.failed;
-		input.Rewind(start);
-		state.backtracking--;
-		state.failed=false;
-		return success;
-	}
-	public bool synpred11_AngleBracketTemplateLexer()
-	{
-		state.backtracking++;
-		int start = input.Mark();
-		try
-		{
-			synpred11_AngleBracketTemplateLexer_fragment(); // can never throw exception
-		}
-		catch ( RecognitionException re )
-		{
-			System.Console.Error.WriteLine("impossible: "+re);
-		}
-		bool success = !state.failed;
-		input.Rewind(start);
-		state.backtracking--;
-		state.failed=false;
-		return success;
-	}
-	public bool synpred12_AngleBracketTemplateLexer()
-	{
-		state.backtracking++;
-		int start = input.Mark();
-		try
-		{
-			synpred12_AngleBracketTemplateLexer_fragment(); // can never throw exception
-		}
-		catch ( RecognitionException re )
-		{
-			System.Console.Error.WriteLine("impossible: "+re);
-		}
-		bool success = !state.failed;
-		input.Rewind(start);
-		state.backtracking--;
-		state.failed=false;
-		return success;
-	}
-	public bool synpred13_AngleBracketTemplateLexer()
-	{
-		state.backtracking++;
-		int start = input.Mark();
-		try
-		{
-			synpred13_AngleBracketTemplateLexer_fragment(); // can never throw exception
-		}
-		catch ( RecognitionException re )
-		{
-			System.Console.Error.WriteLine("impossible: "+re);
-		}
-		bool success = !state.failed;
-		input.Rewind(start);
-		state.backtracking--;
-		state.failed=false;
-		return success;
-	}
+	#endregion Synpreds
 
 
 	#region DFA
@@ -3430,7 +3216,7 @@ public partial class AngleBracketTemplateLexer : Lexer
 
 				else if ( (LA37_0=='\n') ) {s = 3;}
 
-				else if ( ((LA37_0>='\u0000' && LA37_0<='\t')||(LA37_0>='\u000B' && LA37_0<='\f')||(LA37_0>='\u000E' && LA37_0<='=')||(LA37_0>='?' && LA37_0<='\uFFFF')) && (synpred13_AngleBracketTemplateLexer())) {s = 4;}
+				else if ( ((LA37_0>='\u0000' && LA37_0<='\t')||(LA37_0>='\u000B' && LA37_0<='\f')||(LA37_0>='\u000E' && LA37_0<='=')||(LA37_0>='?' && LA37_0<='\uFFFF')) && (EvaluatePredicate(synpred13_AngleBracketTemplateLexer_fragment))) {s = 4;}
 
 
 				input.Seek(index37_0);
@@ -3446,11 +3232,11 @@ public partial class AngleBracketTemplateLexer : Lexer
 				s = -1;
 				if ( (LA37_1=='>') ) {s = 5;}
 
-				else if ( (LA37_1=='\r') && (synpred13_AngleBracketTemplateLexer())) {s = 6;}
+				else if ( (LA37_1=='\r') && (EvaluatePredicate(synpred13_AngleBracketTemplateLexer_fragment))) {s = 6;}
 
-				else if ( (LA37_1=='\n') && (synpred13_AngleBracketTemplateLexer())) {s = 7;}
+				else if ( (LA37_1=='\n') && (EvaluatePredicate(synpred13_AngleBracketTemplateLexer_fragment))) {s = 7;}
 
-				else if ( ((LA37_1>='\u0000' && LA37_1<='\t')||(LA37_1>='\u000B' && LA37_1<='\f')||(LA37_1>='\u000E' && LA37_1<='=')||(LA37_1>='?' && LA37_1<='\uFFFF')) && (synpred13_AngleBracketTemplateLexer())) {s = 8;}
+				else if ( ((LA37_1>='\u0000' && LA37_1<='\t')||(LA37_1>='\u000B' && LA37_1<='\f')||(LA37_1>='\u000E' && LA37_1<='=')||(LA37_1>='?' && LA37_1<='\uFFFF')) && (EvaluatePredicate(synpred13_AngleBracketTemplateLexer_fragment))) {s = 8;}
 
 
 				input.Seek(index37_1);
@@ -3464,9 +3250,9 @@ public partial class AngleBracketTemplateLexer : Lexer
 				int index37_2 = input.Index;
 				input.Rewind();
 				s = -1;
-				if ( (synpred12_AngleBracketTemplateLexer()) ) {s = 13;}
+				if ( (EvaluatePredicate(synpred12_AngleBracketTemplateLexer_fragment)) ) {s = 13;}
 
-				else if ( (synpred13_AngleBracketTemplateLexer()) ) {s = 8;}
+				else if ( (EvaluatePredicate(synpred13_AngleBracketTemplateLexer_fragment)) ) {s = 8;}
 
 
 				input.Seek(index37_2);
@@ -3480,9 +3266,9 @@ public partial class AngleBracketTemplateLexer : Lexer
 				int index37_3 = input.Index;
 				input.Rewind();
 				s = -1;
-				if ( (synpred12_AngleBracketTemplateLexer()) ) {s = 13;}
+				if ( (EvaluatePredicate(synpred12_AngleBracketTemplateLexer_fragment)) ) {s = 13;}
 
-				else if ( (synpred13_AngleBracketTemplateLexer()) ) {s = 8;}
+				else if ( (EvaluatePredicate(synpred13_AngleBracketTemplateLexer_fragment)) ) {s = 8;}
 
 
 				input.Seek(index37_3);
@@ -3496,7 +3282,7 @@ public partial class AngleBracketTemplateLexer : Lexer
 				int index37_5 = input.Index;
 				input.Rewind();
 				s = -1;
-				if ( (synpred13_AngleBracketTemplateLexer()) ) {s = 8;}
+				if ( (EvaluatePredicate(synpred13_AngleBracketTemplateLexer_fragment)) ) {s = 8;}
 
 				else if ( (true) ) {s = 18;}
 

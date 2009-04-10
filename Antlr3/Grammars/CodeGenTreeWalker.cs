@@ -1,4 +1,4 @@
-// $ANTLR 3.1.2 Grammars\\CodeGenTreeWalker.g3 2009-03-23 17:53:55
+// $ANTLR 3.1.2 Grammars\\CodeGenTreeWalker.g3 2009-04-10 15:22:10
 
 // The variable 'variable' is assigned but its value is never used.
 #pragma warning disable 219
@@ -3468,7 +3468,7 @@ public partial class CodeGenTreeWalker : TreeParser
 				{
 					int LA50_2 = input.LA(2);
 
-					if ( (synpred2_CodeGenTreeWalker()) )
+					if ( (EvaluatePredicate(synpred2_CodeGenTreeWalker_fragment)) )
 					{
 						alt50=1;
 					}
@@ -3479,7 +3479,7 @@ public partial class CodeGenTreeWalker : TreeParser
 				{
 					int LA50_3 = input.LA(2);
 
-					if ( (synpred2_CodeGenTreeWalker()) )
+					if ( (EvaluatePredicate(synpred2_CodeGenTreeWalker_fragment)) )
 					{
 						alt50=1;
 					}
@@ -5776,13 +5776,13 @@ public partial class CodeGenTreeWalker : TreeParser
 	#endregion Rules
 
 	#region Synpreds
-	public bool synpred1_CodeGenTreeWalker()
+	bool EvaluatePredicate( System.Action fragment )
 	{
 		state.backtracking++;
 		int start = input.Mark();
 		try
 		{
-			synpred1_CodeGenTreeWalker_fragment(); // can never throw exception
+			fragment();
 		}
 		catch ( RecognitionException re )
 		{
@@ -5794,26 +5794,8 @@ public partial class CodeGenTreeWalker : TreeParser
 		state.failed=false;
 		return success;
 	}
-	public bool synpred2_CodeGenTreeWalker()
-	{
-		state.backtracking++;
-		int start = input.Mark();
-		try
-		{
-			synpred2_CodeGenTreeWalker_fragment(); // can never throw exception
-		}
-		catch ( RecognitionException re )
-		{
-			System.Console.Error.WriteLine("impossible: "+re);
-		}
-		bool success = !state.failed;
-		input.Rewind(start);
-		state.backtracking--;
-		state.failed=false;
-		return success;
-	}
-
 	#endregion Synpreds
+
 
 	#region DFA
 	DFA45 dfa45;
@@ -5938,11 +5920,11 @@ public partial class CodeGenTreeWalker : TreeParser
 
 				else if ( (LA45_0==BLOCK) ) {s = 7;}
 
-				else if ( (LA45_0==OPTIONAL) && (synpred1_CodeGenTreeWalker())) {s = 8;}
+				else if ( (LA45_0==OPTIONAL) && (EvaluatePredicate(synpred1_CodeGenTreeWalker_fragment))) {s = 8;}
 
-				else if ( (LA45_0==CLOSURE) && (synpred1_CodeGenTreeWalker())) {s = 9;}
+				else if ( (LA45_0==CLOSURE) && (EvaluatePredicate(synpred1_CodeGenTreeWalker_fragment))) {s = 9;}
 
-				else if ( (LA45_0==POSITIVE_CLOSURE) && (synpred1_CodeGenTreeWalker())) {s = 10;}
+				else if ( (LA45_0==POSITIVE_CLOSURE) && (EvaluatePredicate(synpred1_CodeGenTreeWalker_fragment))) {s = 10;}
 
 				else if ( (LA45_0==CHAR_LITERAL||LA45_0==DOT||LA45_0==RULE_REF||LA45_0==STRING_LITERAL||LA45_0==TOKEN_REF||LA45_0==WILDCARD) ) {s = 11;}
 
@@ -5972,7 +5954,7 @@ public partial class CodeGenTreeWalker : TreeParser
 				int index45_7 = input.Index;
 				input.Rewind();
 				s = -1;
-				if ( (synpred1_CodeGenTreeWalker()) ) {s = 10;}
+				if ( (EvaluatePredicate(synpred1_CodeGenTreeWalker_fragment)) ) {s = 10;}
 
 				else if ( (true) ) {s = 11;}
 

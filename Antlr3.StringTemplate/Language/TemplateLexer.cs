@@ -1,4 +1,4 @@
-// $ANTLR 3.1.2 Language\\Template.g3 2009-03-23 18:21:53
+// $ANTLR 3.1.2 Language\\Template.g3 2009-04-10 15:18:33
 
 // The variable 'variable' is assigned but its value is never used.
 #pragma warning disable 219
@@ -277,11 +277,11 @@ public partial class TemplateLexer : Lexer
 			{
 				int LA26_1 = input.LA(2);
 
-				if ( (synpred1_Template()) )
+				if ( (EvaluatePredicate(synpred1_Template_fragment)) )
 				{
 					alt26=1;
 				}
-				else if ( (synpred2_Template()) )
+				else if ( (EvaluatePredicate(synpred2_Template_fragment)) )
 				{
 					alt26=2;
 				}
@@ -386,23 +386,23 @@ public partial class TemplateLexer : Lexer
 				{
 					int LA25_1 = input.LA(2);
 
-					if ( (synpred3_Template()) )
+					if ( (EvaluatePredicate(synpred3_Template_fragment)) )
 					{
 						alt25=1;
 					}
-					else if ( (synpred4_Template()) )
+					else if ( (EvaluatePredicate(synpred4_Template_fragment)) )
 					{
 						alt25=2;
 					}
-					else if ( (synpred5_Template()) )
+					else if ( (EvaluatePredicate(synpred5_Template_fragment)) )
 					{
 						alt25=3;
 					}
-					else if ( (synpred6_Template()) )
+					else if ( (EvaluatePredicate(synpred6_Template_fragment)) )
 					{
 						alt25=4;
 					}
-					else if ( (synpred7_Template()) )
+					else if ( (EvaluatePredicate(synpred7_Template_fragment)) )
 					{
 						alt25=5;
 					}
@@ -847,7 +847,7 @@ public partial class TemplateLexer : Lexer
 							{
 								int LA15_4 = input.LA(3);
 
-								if ( (synpred8_Template()) )
+								if ( (EvaluatePredicate(synpred8_Template_fragment)) )
 								{
 									alt15=1;
 								}
@@ -857,7 +857,7 @@ public partial class TemplateLexer : Lexer
 						{
 							int LA15_2 = input.LA(2);
 
-							if ( (synpred8_Template()) )
+							if ( (EvaluatePredicate(synpred8_Template_fragment)) )
 							{
 								alt15=1;
 							}
@@ -923,7 +923,7 @@ public partial class TemplateLexer : Lexer
 								{
 									int LA17_1 = input.LA(2);
 
-									if ( (synpred9_Template()) )
+									if ( (EvaluatePredicate(synpred9_Template_fragment)) )
 									{
 										alt17=1;
 									}
@@ -943,7 +943,7 @@ public partial class TemplateLexer : Lexer
 								{
 									int LA17_2 = input.LA(2);
 
-									if ( (synpred9_Template()) )
+									if ( (EvaluatePredicate(synpred9_Template_fragment)) )
 									{
 										alt17=1;
 									}
@@ -1053,11 +1053,11 @@ public partial class TemplateLexer : Lexer
 							{
 								int LA20_4 = input.LA(3);
 
-								if ( (LA20_4=='$') && (synpred10_Template()))
+								if ( (LA20_4=='$') && (EvaluatePredicate(synpred10_Template_fragment)))
 								{
 									alt20=1;
 								}
-								else if ( ((LA20_4>='\u0000' && LA20_4<='#')||(LA20_4>='%' && LA20_4<='\uFFFF')) && (synpred10_Template()))
+								else if ( ((LA20_4>='\u0000' && LA20_4<='#')||(LA20_4>='%' && LA20_4<='\uFFFF')) && (EvaluatePredicate(synpred10_Template_fragment)))
 								{
 									alt20=1;
 								}
@@ -1067,7 +1067,7 @@ public partial class TemplateLexer : Lexer
 						{
 							int LA20_2 = input.LA(2);
 
-							if ( (LA20_2=='$') && (synpred10_Template()))
+							if ( (LA20_2=='$') && (EvaluatePredicate(synpred10_Template_fragment)))
 							{
 								alt20=1;
 							}
@@ -1075,7 +1075,7 @@ public partial class TemplateLexer : Lexer
 							{
 								int LA20_6 = input.LA(3);
 
-								if ( (synpred10_Template()) )
+								if ( (EvaluatePredicate(synpred10_Template_fragment)) )
 								{
 									alt20=1;
 								}
@@ -1084,12 +1084,12 @@ public partial class TemplateLexer : Lexer
 							{
 								int LA20_7 = input.LA(3);
 
-								if ( (synpred10_Template()) )
+								if ( (EvaluatePredicate(synpred10_Template_fragment)) )
 								{
 									alt20=1;
 								}
 							}
-							else if ( ((LA20_2>='\u0000' && LA20_2<='\t')||(LA20_2>='\u000B' && LA20_2<='\f')||(LA20_2>='\u000E' && LA20_2<='#')||(LA20_2>='%' && LA20_2<='\uFFFF')) && (synpred10_Template()))
+							else if ( ((LA20_2>='\u0000' && LA20_2<='\t')||(LA20_2>='\u000B' && LA20_2<='\f')||(LA20_2>='\u000E' && LA20_2<='#')||(LA20_2>='%' && LA20_2<='\uFFFF')) && (EvaluatePredicate(synpred10_Template_fragment)))
 							{
 								alt20=1;
 							}
@@ -1139,7 +1139,7 @@ public partial class TemplateLexer : Lexer
 						{
 							int LA21_1 = input.LA(2);
 
-							if ( (LA21_1=='@') && (synpred11_Template()))
+							if ( (LA21_1=='@') && (EvaluatePredicate(synpred11_Template_fragment)))
 							{
 								alt21=1;
 							}
@@ -1831,7 +1831,7 @@ public partial class TemplateLexer : Lexer
 					{
 						int LA34_2 = input.LA(3);
 
-						if ( (synpred12_Template()) )
+						if ( (EvaluatePredicate(synpred12_Template_fragment)) )
 						{
 							alt34=1;
 						}
@@ -1841,7 +1841,7 @@ public partial class TemplateLexer : Lexer
 				{
 					int LA34_2 = input.LA(2);
 
-					if ( (synpred12_Template()) )
+					if ( (EvaluatePredicate(synpred12_Template_fragment)) )
 					{
 						alt34=1;
 					}
@@ -1911,7 +1911,7 @@ public partial class TemplateLexer : Lexer
 					{
 						int LA36_2 = input.LA(2);
 
-						if ( (synpred13_Template()) )
+						if ( (EvaluatePredicate(synpred13_Template_fragment)) )
 						{
 							alt36=1;
 						}
@@ -1926,7 +1926,7 @@ public partial class TemplateLexer : Lexer
 					{
 						int LA36_3 = input.LA(2);
 
-						if ( (synpred13_Template()) )
+						if ( (EvaluatePredicate(synpred13_Template_fragment)) )
 						{
 							alt36=1;
 						}
@@ -2933,13 +2933,14 @@ public partial class TemplateLexer : Lexer
 	}
 	// $ANTLR end synpred9_Template
 
-	public bool synpred8_Template()
+	#region Synpreds
+	bool EvaluatePredicate( System.Action fragment )
 	{
 		state.backtracking++;
 		int start = input.Mark();
 		try
 		{
-			synpred8_Template_fragment(); // can never throw exception
+			fragment();
 		}
 		catch ( RecognitionException re )
 		{
@@ -2951,222 +2952,7 @@ public partial class TemplateLexer : Lexer
 		state.failed=false;
 		return success;
 	}
-	public bool synpred9_Template()
-	{
-		state.backtracking++;
-		int start = input.Mark();
-		try
-		{
-			synpred9_Template_fragment(); // can never throw exception
-		}
-		catch ( RecognitionException re )
-		{
-			System.Console.Error.WriteLine("impossible: "+re);
-		}
-		bool success = !state.failed;
-		input.Rewind(start);
-		state.backtracking--;
-		state.failed=false;
-		return success;
-	}
-	public bool synpred10_Template()
-	{
-		state.backtracking++;
-		int start = input.Mark();
-		try
-		{
-			synpred10_Template_fragment(); // can never throw exception
-		}
-		catch ( RecognitionException re )
-		{
-			System.Console.Error.WriteLine("impossible: "+re);
-		}
-		bool success = !state.failed;
-		input.Rewind(start);
-		state.backtracking--;
-		state.failed=false;
-		return success;
-	}
-	public bool synpred11_Template()
-	{
-		state.backtracking++;
-		int start = input.Mark();
-		try
-		{
-			synpred11_Template_fragment(); // can never throw exception
-		}
-		catch ( RecognitionException re )
-		{
-			System.Console.Error.WriteLine("impossible: "+re);
-		}
-		bool success = !state.failed;
-		input.Rewind(start);
-		state.backtracking--;
-		state.failed=false;
-		return success;
-	}
-	public bool synpred3_Template()
-	{
-		state.backtracking++;
-		int start = input.Mark();
-		try
-		{
-			synpred3_Template_fragment(); // can never throw exception
-		}
-		catch ( RecognitionException re )
-		{
-			System.Console.Error.WriteLine("impossible: "+re);
-		}
-		bool success = !state.failed;
-		input.Rewind(start);
-		state.backtracking--;
-		state.failed=false;
-		return success;
-	}
-	public bool synpred4_Template()
-	{
-		state.backtracking++;
-		int start = input.Mark();
-		try
-		{
-			synpred4_Template_fragment(); // can never throw exception
-		}
-		catch ( RecognitionException re )
-		{
-			System.Console.Error.WriteLine("impossible: "+re);
-		}
-		bool success = !state.failed;
-		input.Rewind(start);
-		state.backtracking--;
-		state.failed=false;
-		return success;
-	}
-	public bool synpred5_Template()
-	{
-		state.backtracking++;
-		int start = input.Mark();
-		try
-		{
-			synpred5_Template_fragment(); // can never throw exception
-		}
-		catch ( RecognitionException re )
-		{
-			System.Console.Error.WriteLine("impossible: "+re);
-		}
-		bool success = !state.failed;
-		input.Rewind(start);
-		state.backtracking--;
-		state.failed=false;
-		return success;
-	}
-	public bool synpred6_Template()
-	{
-		state.backtracking++;
-		int start = input.Mark();
-		try
-		{
-			synpred6_Template_fragment(); // can never throw exception
-		}
-		catch ( RecognitionException re )
-		{
-			System.Console.Error.WriteLine("impossible: "+re);
-		}
-		bool success = !state.failed;
-		input.Rewind(start);
-		state.backtracking--;
-		state.failed=false;
-		return success;
-	}
-	public bool synpred7_Template()
-	{
-		state.backtracking++;
-		int start = input.Mark();
-		try
-		{
-			synpred7_Template_fragment(); // can never throw exception
-		}
-		catch ( RecognitionException re )
-		{
-			System.Console.Error.WriteLine("impossible: "+re);
-		}
-		bool success = !state.failed;
-		input.Rewind(start);
-		state.backtracking--;
-		state.failed=false;
-		return success;
-	}
-	public bool synpred1_Template()
-	{
-		state.backtracking++;
-		int start = input.Mark();
-		try
-		{
-			synpred1_Template_fragment(); // can never throw exception
-		}
-		catch ( RecognitionException re )
-		{
-			System.Console.Error.WriteLine("impossible: "+re);
-		}
-		bool success = !state.failed;
-		input.Rewind(start);
-		state.backtracking--;
-		state.failed=false;
-		return success;
-	}
-	public bool synpred2_Template()
-	{
-		state.backtracking++;
-		int start = input.Mark();
-		try
-		{
-			synpred2_Template_fragment(); // can never throw exception
-		}
-		catch ( RecognitionException re )
-		{
-			System.Console.Error.WriteLine("impossible: "+re);
-		}
-		bool success = !state.failed;
-		input.Rewind(start);
-		state.backtracking--;
-		state.failed=false;
-		return success;
-	}
-	public bool synpred12_Template()
-	{
-		state.backtracking++;
-		int start = input.Mark();
-		try
-		{
-			synpred12_Template_fragment(); // can never throw exception
-		}
-		catch ( RecognitionException re )
-		{
-			System.Console.Error.WriteLine("impossible: "+re);
-		}
-		bool success = !state.failed;
-		input.Rewind(start);
-		state.backtracking--;
-		state.failed=false;
-		return success;
-	}
-	public bool synpred13_Template()
-	{
-		state.backtracking++;
-		int start = input.Mark();
-		try
-		{
-			synpred13_Template_fragment(); // can never throw exception
-		}
-		catch ( RecognitionException re )
-		{
-			System.Console.Error.WriteLine("impossible: "+re);
-		}
-		bool success = !state.failed;
-		input.Rewind(start);
-		state.backtracking--;
-		state.failed=false;
-		return success;
-	}
+	#endregion Synpreds
 
 
 	#region DFA
