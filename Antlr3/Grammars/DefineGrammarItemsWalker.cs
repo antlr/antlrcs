@@ -1,4 +1,4 @@
-// $ANTLR 3.1.2 Grammars\\DefineGrammarItemsWalker.g3 2009-04-10 15:22:19
+// $ANTLR 3.1.2 Grammars\\DefineGrammarItemsWalker.g3 2009-04-10 17:46:17
 
 // The variable 'variable' is assigned but its value is never used.
 #pragma warning disable 219
@@ -43,7 +43,9 @@ using System;
 using Antlr3.Tool;
 using boolean = System.Boolean;
 using Character = java.lang.Character;
+#if DEBUG
 using Utils = Antlr3.Misc.Utils;
+#endif
 
 
 using System.Collections.Generic;
@@ -197,7 +199,7 @@ public partial class DefineGrammarItemsWalker : TreeParser
 	}
 
 	// $ANTLR start "grammar_"
-	// Grammars\\DefineGrammarItemsWalker.g3:91:0: public grammar_[Grammar g] : ( ^( LEXER_GRAMMAR grammarSpec ) | ^( PARSER_GRAMMAR grammarSpec ) | ^( TREE_GRAMMAR grammarSpec ) | ^( COMBINED_GRAMMAR grammarSpec ) );
+	// Grammars\\DefineGrammarItemsWalker.g3:93:0: public grammar_[Grammar g] : ( ^( LEXER_GRAMMAR grammarSpec ) | ^( PARSER_GRAMMAR grammarSpec ) | ^( TREE_GRAMMAR grammarSpec ) | ^( COMBINED_GRAMMAR grammarSpec ) );
 	public DefineGrammarItemsWalker.grammar__return grammar_( Grammar g )
 	{
 		DefineGrammarItemsWalker.grammar__return retval = new DefineGrammarItemsWalker.grammar__return();
@@ -209,7 +211,7 @@ public partial class DefineGrammarItemsWalker : TreeParser
 
 		try
 		{
-			// Grammars\\DefineGrammarItemsWalker.g3:101:4: ( ^( LEXER_GRAMMAR grammarSpec ) | ^( PARSER_GRAMMAR grammarSpec ) | ^( TREE_GRAMMAR grammarSpec ) | ^( COMBINED_GRAMMAR grammarSpec ) )
+			// Grammars\\DefineGrammarItemsWalker.g3:103:4: ( ^( LEXER_GRAMMAR grammarSpec ) | ^( PARSER_GRAMMAR grammarSpec ) | ^( TREE_GRAMMAR grammarSpec ) | ^( COMBINED_GRAMMAR grammarSpec ) )
 			int alt1=4;
 			switch ( input.LA(1) )
 			{
@@ -245,7 +247,7 @@ public partial class DefineGrammarItemsWalker : TreeParser
 			switch ( alt1 )
 			{
 			case 1:
-				// Grammars\\DefineGrammarItemsWalker.g3:101:4: ^( LEXER_GRAMMAR grammarSpec )
+				// Grammars\\DefineGrammarItemsWalker.g3:103:4: ^( LEXER_GRAMMAR grammarSpec )
 				{
 				Match(input,LEXER_GRAMMAR,Follow._LEXER_GRAMMAR_in_grammar_77); if (state.failed) return retval;
 
@@ -266,7 +268,7 @@ public partial class DefineGrammarItemsWalker : TreeParser
 				}
 				break;
 			case 2:
-				// Grammars\\DefineGrammarItemsWalker.g3:102:4: ^( PARSER_GRAMMAR grammarSpec )
+				// Grammars\\DefineGrammarItemsWalker.g3:104:4: ^( PARSER_GRAMMAR grammarSpec )
 				{
 				Match(input,PARSER_GRAMMAR,Follow._PARSER_GRAMMAR_in_grammar_92); if (state.failed) return retval;
 
@@ -287,7 +289,7 @@ public partial class DefineGrammarItemsWalker : TreeParser
 				}
 				break;
 			case 3:
-				// Grammars\\DefineGrammarItemsWalker.g3:103:4: ^( TREE_GRAMMAR grammarSpec )
+				// Grammars\\DefineGrammarItemsWalker.g3:105:4: ^( TREE_GRAMMAR grammarSpec )
 				{
 				Match(input,TREE_GRAMMAR,Follow._TREE_GRAMMAR_in_grammar_106); if (state.failed) return retval;
 
@@ -308,7 +310,7 @@ public partial class DefineGrammarItemsWalker : TreeParser
 				}
 				break;
 			case 4:
-				// Grammars\\DefineGrammarItemsWalker.g3:104:4: ^( COMBINED_GRAMMAR grammarSpec )
+				// Grammars\\DefineGrammarItemsWalker.g3:106:4: ^( COMBINED_GRAMMAR grammarSpec )
 				{
 				Match(input,COMBINED_GRAMMAR,Follow._COMBINED_GRAMMAR_in_grammar_120); if (state.failed) return retval;
 
@@ -351,7 +353,7 @@ public partial class DefineGrammarItemsWalker : TreeParser
 
 
 	// $ANTLR start "attrScope"
-	// Grammars\\DefineGrammarItemsWalker.g3:107:0: attrScope : ^( 'scope' name= ID ( attrScopeAction )* attrs= ACTION ) ;
+	// Grammars\\DefineGrammarItemsWalker.g3:109:0: attrScope : ^( 'scope' name= ID ( attrScopeAction )* attrs= ACTION ) ;
 	private void attrScope(  )
 	{
 		AttributeScopeActions_scope.PushScope(this);
@@ -364,14 +366,14 @@ public partial class DefineGrammarItemsWalker : TreeParser
 
 		try
 		{
-			// Grammars\\DefineGrammarItemsWalker.g3:113:4: ( ^( 'scope' name= ID ( attrScopeAction )* attrs= ACTION ) )
-			// Grammars\\DefineGrammarItemsWalker.g3:113:4: ^( 'scope' name= ID ( attrScopeAction )* attrs= ACTION )
+			// Grammars\\DefineGrammarItemsWalker.g3:115:4: ( ^( 'scope' name= ID ( attrScopeAction )* attrs= ACTION ) )
+			// Grammars\\DefineGrammarItemsWalker.g3:115:4: ^( 'scope' name= ID ( attrScopeAction )* attrs= ACTION )
 			{
 			Match(input,SCOPE,Follow._SCOPE_in_attrScope150); if (state.failed) return ;
 
 			Match(input, TokenConstants.Down, null); if (state.failed) return ;
 			name=(GrammarAST)Match(input,ID,Follow._ID_in_attrScope154); if (state.failed) return ;
-			// Grammars\\DefineGrammarItemsWalker.g3:113:23: ( attrScopeAction )*
+			// Grammars\\DefineGrammarItemsWalker.g3:115:23: ( attrScopeAction )*
 			for ( ; ; )
 			{
 				int alt2=2;
@@ -386,7 +388,7 @@ public partial class DefineGrammarItemsWalker : TreeParser
 				switch ( alt2 )
 				{
 				case 1:
-					// Grammars\\DefineGrammarItemsWalker.g3:113:0: attrScopeAction
+					// Grammars\\DefineGrammarItemsWalker.g3:115:0: attrScopeAction
 					{
 					PushFollow(Follow._attrScopeAction_in_attrScope156);
 					attrScopeAction();
@@ -439,7 +441,7 @@ public partial class DefineGrammarItemsWalker : TreeParser
 
 
 	// $ANTLR start "attrScopeAction"
-	// Grammars\\DefineGrammarItemsWalker.g3:123:0: attrScopeAction : ^( AMPERSAND ID ACTION ) ;
+	// Grammars\\DefineGrammarItemsWalker.g3:125:0: attrScopeAction : ^( AMPERSAND ID ACTION ) ;
 	private void attrScopeAction(  )
 	{
 		GrammarAST ID1=null;
@@ -447,8 +449,8 @@ public partial class DefineGrammarItemsWalker : TreeParser
 
 		try
 		{
-			// Grammars\\DefineGrammarItemsWalker.g3:124:4: ( ^( AMPERSAND ID ACTION ) )
-			// Grammars\\DefineGrammarItemsWalker.g3:124:4: ^( AMPERSAND ID ACTION )
+			// Grammars\\DefineGrammarItemsWalker.g3:126:4: ( ^( AMPERSAND ID ACTION ) )
+			// Grammars\\DefineGrammarItemsWalker.g3:126:4: ^( AMPERSAND ID ACTION )
 			{
 			Match(input,AMPERSAND,Follow._AMPERSAND_in_attrScopeAction179); if (state.failed) return ;
 
@@ -481,7 +483,7 @@ public partial class DefineGrammarItemsWalker : TreeParser
 
 
 	// $ANTLR start "grammarSpec"
-	// Grammars\\DefineGrammarItemsWalker.g3:130:0: grammarSpec : id= ID (cmt= DOC_COMMENT )? ( optionsSpec )? ( delegateGrammars )? ( tokensSpec )? ( attrScope )* ( actions )? rules ;
+	// Grammars\\DefineGrammarItemsWalker.g3:132:0: grammarSpec : id= ID (cmt= DOC_COMMENT )? ( optionsSpec )? ( delegateGrammars )? ( tokensSpec )? ( attrScope )* ( actions )? rules ;
 	private void grammarSpec(  )
 	{
 		GrammarAST id=null;
@@ -489,11 +491,11 @@ public partial class DefineGrammarItemsWalker : TreeParser
 
 		try
 		{
-			// Grammars\\DefineGrammarItemsWalker.g3:131:4: (id= ID (cmt= DOC_COMMENT )? ( optionsSpec )? ( delegateGrammars )? ( tokensSpec )? ( attrScope )* ( actions )? rules )
-			// Grammars\\DefineGrammarItemsWalker.g3:131:4: id= ID (cmt= DOC_COMMENT )? ( optionsSpec )? ( delegateGrammars )? ( tokensSpec )? ( attrScope )* ( actions )? rules
+			// Grammars\\DefineGrammarItemsWalker.g3:133:4: (id= ID (cmt= DOC_COMMENT )? ( optionsSpec )? ( delegateGrammars )? ( tokensSpec )? ( attrScope )* ( actions )? rules )
+			// Grammars\\DefineGrammarItemsWalker.g3:133:4: id= ID (cmt= DOC_COMMENT )? ( optionsSpec )? ( delegateGrammars )? ( tokensSpec )? ( attrScope )* ( actions )? rules
 			{
 			id=(GrammarAST)Match(input,ID,Follow._ID_in_grammarSpec201); if (state.failed) return ;
-			// Grammars\\DefineGrammarItemsWalker.g3:132:3: (cmt= DOC_COMMENT )?
+			// Grammars\\DefineGrammarItemsWalker.g3:134:3: (cmt= DOC_COMMENT )?
 			int alt3=2;
 			int LA3_0 = input.LA(1);
 
@@ -504,7 +506,7 @@ public partial class DefineGrammarItemsWalker : TreeParser
 			switch ( alt3 )
 			{
 			case 1:
-				// Grammars\\DefineGrammarItemsWalker.g3:132:4: cmt= DOC_COMMENT
+				// Grammars\\DefineGrammarItemsWalker.g3:134:4: cmt= DOC_COMMENT
 				{
 				cmt=(GrammarAST)Match(input,DOC_COMMENT,Follow._DOC_COMMENT_in_grammarSpec208); if (state.failed) return ;
 
@@ -513,7 +515,7 @@ public partial class DefineGrammarItemsWalker : TreeParser
 
 			}
 
-			// Grammars\\DefineGrammarItemsWalker.g3:133:3: ( optionsSpec )?
+			// Grammars\\DefineGrammarItemsWalker.g3:135:3: ( optionsSpec )?
 			int alt4=2;
 			int LA4_0 = input.LA(1);
 
@@ -524,7 +526,7 @@ public partial class DefineGrammarItemsWalker : TreeParser
 			switch ( alt4 )
 			{
 			case 1:
-				// Grammars\\DefineGrammarItemsWalker.g3:133:5: optionsSpec
+				// Grammars\\DefineGrammarItemsWalker.g3:135:5: optionsSpec
 				{
 				PushFollow(Follow._optionsSpec_in_grammarSpec216);
 				optionsSpec();
@@ -537,7 +539,7 @@ public partial class DefineGrammarItemsWalker : TreeParser
 
 			}
 
-			// Grammars\\DefineGrammarItemsWalker.g3:134:3: ( delegateGrammars )?
+			// Grammars\\DefineGrammarItemsWalker.g3:136:3: ( delegateGrammars )?
 			int alt5=2;
 			int LA5_0 = input.LA(1);
 
@@ -548,7 +550,7 @@ public partial class DefineGrammarItemsWalker : TreeParser
 			switch ( alt5 )
 			{
 			case 1:
-				// Grammars\\DefineGrammarItemsWalker.g3:134:4: delegateGrammars
+				// Grammars\\DefineGrammarItemsWalker.g3:136:4: delegateGrammars
 				{
 				PushFollow(Follow._delegateGrammars_in_grammarSpec224);
 				delegateGrammars();
@@ -561,7 +563,7 @@ public partial class DefineGrammarItemsWalker : TreeParser
 
 			}
 
-			// Grammars\\DefineGrammarItemsWalker.g3:135:3: ( tokensSpec )?
+			// Grammars\\DefineGrammarItemsWalker.g3:137:3: ( tokensSpec )?
 			int alt6=2;
 			int LA6_0 = input.LA(1);
 
@@ -572,7 +574,7 @@ public partial class DefineGrammarItemsWalker : TreeParser
 			switch ( alt6 )
 			{
 			case 1:
-				// Grammars\\DefineGrammarItemsWalker.g3:135:4: tokensSpec
+				// Grammars\\DefineGrammarItemsWalker.g3:137:4: tokensSpec
 				{
 				PushFollow(Follow._tokensSpec_in_grammarSpec231);
 				tokensSpec();
@@ -585,7 +587,7 @@ public partial class DefineGrammarItemsWalker : TreeParser
 
 			}
 
-			// Grammars\\DefineGrammarItemsWalker.g3:136:3: ( attrScope )*
+			// Grammars\\DefineGrammarItemsWalker.g3:138:3: ( attrScope )*
 			for ( ; ; )
 			{
 				int alt7=2;
@@ -600,7 +602,7 @@ public partial class DefineGrammarItemsWalker : TreeParser
 				switch ( alt7 )
 				{
 				case 1:
-					// Grammars\\DefineGrammarItemsWalker.g3:136:4: attrScope
+					// Grammars\\DefineGrammarItemsWalker.g3:138:4: attrScope
 					{
 					PushFollow(Follow._attrScope_in_grammarSpec238);
 					attrScope();
@@ -620,7 +622,7 @@ public partial class DefineGrammarItemsWalker : TreeParser
 				;
 
 
-			// Grammars\\DefineGrammarItemsWalker.g3:137:3: ( actions )?
+			// Grammars\\DefineGrammarItemsWalker.g3:139:3: ( actions )?
 			int alt8=2;
 			int LA8_0 = input.LA(1);
 
@@ -631,7 +633,7 @@ public partial class DefineGrammarItemsWalker : TreeParser
 			switch ( alt8 )
 			{
 			case 1:
-				// Grammars\\DefineGrammarItemsWalker.g3:137:4: actions
+				// Grammars\\DefineGrammarItemsWalker.g3:139:4: actions
 				{
 				PushFollow(Follow._actions_in_grammarSpec245);
 				actions();
@@ -667,15 +669,15 @@ public partial class DefineGrammarItemsWalker : TreeParser
 
 
 	// $ANTLR start "actions"
-	// Grammars\\DefineGrammarItemsWalker.g3:141:0: actions : ( action )+ ;
+	// Grammars\\DefineGrammarItemsWalker.g3:143:0: actions : ( action )+ ;
 	private void actions(  )
 	{
 		try
 		{
-			// Grammars\\DefineGrammarItemsWalker.g3:142:4: ( ( action )+ )
-			// Grammars\\DefineGrammarItemsWalker.g3:142:4: ( action )+
+			// Grammars\\DefineGrammarItemsWalker.g3:144:4: ( ( action )+ )
+			// Grammars\\DefineGrammarItemsWalker.g3:144:4: ( action )+
 			{
-			// Grammars\\DefineGrammarItemsWalker.g3:142:4: ( action )+
+			// Grammars\\DefineGrammarItemsWalker.g3:144:4: ( action )+
 			int cnt9=0;
 			for ( ; ; )
 			{
@@ -691,7 +693,7 @@ public partial class DefineGrammarItemsWalker : TreeParser
 				switch ( alt9 )
 				{
 				case 1:
-					// Grammars\\DefineGrammarItemsWalker.g3:142:6: action
+					// Grammars\\DefineGrammarItemsWalker.g3:144:6: action
 					{
 					PushFollow(Follow._action_in_actions264);
 					action();
@@ -734,7 +736,7 @@ public partial class DefineGrammarItemsWalker : TreeParser
 
 
 	// $ANTLR start "action"
-	// Grammars\\DefineGrammarItemsWalker.g3:145:0: action : ^(amp= AMPERSAND id1= ID (id2= ID a1= ACTION |a2= ACTION ) ) ;
+	// Grammars\\DefineGrammarItemsWalker.g3:147:0: action : ^(amp= AMPERSAND id1= ID (id2= ID a1= ACTION |a2= ACTION ) ) ;
 	private void action(  )
 	{
 		GrammarAST amp=null;
@@ -749,14 +751,14 @@ public partial class DefineGrammarItemsWalker : TreeParser
 
 		try
 		{
-			// Grammars\\DefineGrammarItemsWalker.g3:151:4: ( ^(amp= AMPERSAND id1= ID (id2= ID a1= ACTION |a2= ACTION ) ) )
-			// Grammars\\DefineGrammarItemsWalker.g3:151:4: ^(amp= AMPERSAND id1= ID (id2= ID a1= ACTION |a2= ACTION ) )
+			// Grammars\\DefineGrammarItemsWalker.g3:153:4: ( ^(amp= AMPERSAND id1= ID (id2= ID a1= ACTION |a2= ACTION ) ) )
+			// Grammars\\DefineGrammarItemsWalker.g3:153:4: ^(amp= AMPERSAND id1= ID (id2= ID a1= ACTION |a2= ACTION ) )
 			{
 			amp=(GrammarAST)Match(input,AMPERSAND,Follow._AMPERSAND_in_action286); if (state.failed) return ;
 
 			Match(input, TokenConstants.Down, null); if (state.failed) return ;
 			id1=(GrammarAST)Match(input,ID,Follow._ID_in_action290); if (state.failed) return ;
-			// Grammars\\DefineGrammarItemsWalker.g3:152:4: (id2= ID a1= ACTION |a2= ACTION )
+			// Grammars\\DefineGrammarItemsWalker.g3:154:4: (id2= ID a1= ACTION |a2= ACTION )
 			int alt10=2;
 			int LA10_0 = input.LA(1);
 
@@ -778,7 +780,7 @@ public partial class DefineGrammarItemsWalker : TreeParser
 			switch ( alt10 )
 			{
 			case 1:
-				// Grammars\\DefineGrammarItemsWalker.g3:152:6: id2= ID a1= ACTION
+				// Grammars\\DefineGrammarItemsWalker.g3:154:6: id2= ID a1= ACTION
 				{
 				id2=(GrammarAST)Match(input,ID,Follow._ID_in_action299); if (state.failed) return ;
 				a1=(GrammarAST)Match(input,ACTION,Follow._ACTION_in_action303); if (state.failed) return ;
@@ -790,7 +792,7 @@ public partial class DefineGrammarItemsWalker : TreeParser
 				}
 				break;
 			case 2:
-				// Grammars\\DefineGrammarItemsWalker.g3:154:6: a2= ACTION
+				// Grammars\\DefineGrammarItemsWalker.g3:156:6: a2= ACTION
 				{
 				a2=(GrammarAST)Match(input,ACTION,Follow._ACTION_in_action319); if (state.failed) return ;
 				if ( state.backtracking == 0 )
@@ -829,20 +831,20 @@ public partial class DefineGrammarItemsWalker : TreeParser
 
 
 	// $ANTLR start "optionsSpec"
-	// Grammars\\DefineGrammarItemsWalker.g3:163:0: optionsSpec : ^( OPTIONS ( . )* ) ;
+	// Grammars\\DefineGrammarItemsWalker.g3:165:0: optionsSpec : ^( OPTIONS ( . )* ) ;
 	private void optionsSpec(  )
 	{
 		try
 		{
-			// Grammars\\DefineGrammarItemsWalker.g3:164:4: ( ^( OPTIONS ( . )* ) )
-			// Grammars\\DefineGrammarItemsWalker.g3:164:4: ^( OPTIONS ( . )* )
+			// Grammars\\DefineGrammarItemsWalker.g3:166:4: ( ^( OPTIONS ( . )* ) )
+			// Grammars\\DefineGrammarItemsWalker.g3:166:4: ^( OPTIONS ( . )* )
 			{
 			Match(input,OPTIONS,Follow._OPTIONS_in_optionsSpec353); if (state.failed) return ;
 
 			if ( input.LA(1)==TokenConstants.Down )
 			{
 				Match(input, TokenConstants.Down, null); if (state.failed) return ;
-				// Grammars\\DefineGrammarItemsWalker.g3:164:14: ( . )*
+				// Grammars\\DefineGrammarItemsWalker.g3:166:14: ( . )*
 				for ( ; ; )
 				{
 					int alt11=2;
@@ -861,7 +863,7 @@ public partial class DefineGrammarItemsWalker : TreeParser
 					switch ( alt11 )
 					{
 					case 1:
-						// Grammars\\DefineGrammarItemsWalker.g3:164:0: .
+						// Grammars\\DefineGrammarItemsWalker.g3:166:0: .
 						{
 						MatchAny(input); if (state.failed) return ;
 
@@ -898,18 +900,18 @@ public partial class DefineGrammarItemsWalker : TreeParser
 
 
 	// $ANTLR start "delegateGrammars"
-	// Grammars\\DefineGrammarItemsWalker.g3:167:0: delegateGrammars : ^( 'import' ( ^( ASSIGN ID ID ) | ID )+ ) ;
+	// Grammars\\DefineGrammarItemsWalker.g3:169:0: delegateGrammars : ^( 'import' ( ^( ASSIGN ID ID ) | ID )+ ) ;
 	private void delegateGrammars(  )
 	{
 		try
 		{
-			// Grammars\\DefineGrammarItemsWalker.g3:168:4: ( ^( 'import' ( ^( ASSIGN ID ID ) | ID )+ ) )
-			// Grammars\\DefineGrammarItemsWalker.g3:168:4: ^( 'import' ( ^( ASSIGN ID ID ) | ID )+ )
+			// Grammars\\DefineGrammarItemsWalker.g3:170:4: ( ^( 'import' ( ^( ASSIGN ID ID ) | ID )+ ) )
+			// Grammars\\DefineGrammarItemsWalker.g3:170:4: ^( 'import' ( ^( ASSIGN ID ID ) | ID )+ )
 			{
 			Match(input,IMPORT,Follow._IMPORT_in_delegateGrammars370); if (state.failed) return ;
 
 			Match(input, TokenConstants.Down, null); if (state.failed) return ;
-			// Grammars\\DefineGrammarItemsWalker.g3:168:16: ( ^( ASSIGN ID ID ) | ID )+
+			// Grammars\\DefineGrammarItemsWalker.g3:170:16: ( ^( ASSIGN ID ID ) | ID )+
 			int cnt12=0;
 			for ( ; ; )
 			{
@@ -929,7 +931,7 @@ public partial class DefineGrammarItemsWalker : TreeParser
 				switch ( alt12 )
 				{
 				case 1:
-					// Grammars\\DefineGrammarItemsWalker.g3:168:18: ^( ASSIGN ID ID )
+					// Grammars\\DefineGrammarItemsWalker.g3:170:18: ^( ASSIGN ID ID )
 					{
 					Match(input,ASSIGN,Follow._ASSIGN_in_delegateGrammars375); if (state.failed) return ;
 
@@ -942,7 +944,7 @@ public partial class DefineGrammarItemsWalker : TreeParser
 					}
 					break;
 				case 2:
-					// Grammars\\DefineGrammarItemsWalker.g3:168:36: ID
+					// Grammars\\DefineGrammarItemsWalker.g3:170:36: ID
 					{
 					Match(input,ID,Follow._ID_in_delegateGrammars384); if (state.failed) return ;
 
@@ -983,18 +985,18 @@ public partial class DefineGrammarItemsWalker : TreeParser
 
 
 	// $ANTLR start "tokensSpec"
-	// Grammars\\DefineGrammarItemsWalker.g3:171:0: tokensSpec : ^( TOKENS ( tokenSpec )+ ) ;
+	// Grammars\\DefineGrammarItemsWalker.g3:173:0: tokensSpec : ^( TOKENS ( tokenSpec )+ ) ;
 	private void tokensSpec(  )
 	{
 		try
 		{
-			// Grammars\\DefineGrammarItemsWalker.g3:172:4: ( ^( TOKENS ( tokenSpec )+ ) )
-			// Grammars\\DefineGrammarItemsWalker.g3:172:4: ^( TOKENS ( tokenSpec )+ )
+			// Grammars\\DefineGrammarItemsWalker.g3:174:4: ( ^( TOKENS ( tokenSpec )+ ) )
+			// Grammars\\DefineGrammarItemsWalker.g3:174:4: ^( TOKENS ( tokenSpec )+ )
 			{
 			Match(input,TOKENS,Follow._TOKENS_in_tokensSpec402); if (state.failed) return ;
 
 			Match(input, TokenConstants.Down, null); if (state.failed) return ;
-			// Grammars\\DefineGrammarItemsWalker.g3:172:14: ( tokenSpec )+
+			// Grammars\\DefineGrammarItemsWalker.g3:174:14: ( tokenSpec )+
 			int cnt13=0;
 			for ( ; ; )
 			{
@@ -1010,7 +1012,7 @@ public partial class DefineGrammarItemsWalker : TreeParser
 				switch ( alt13 )
 				{
 				case 1:
-					// Grammars\\DefineGrammarItemsWalker.g3:172:16: tokenSpec
+					// Grammars\\DefineGrammarItemsWalker.g3:174:16: tokenSpec
 					{
 					PushFollow(Follow._tokenSpec_in_tokensSpec406);
 					tokenSpec();
@@ -1055,14 +1057,14 @@ public partial class DefineGrammarItemsWalker : TreeParser
 
 
 	// $ANTLR start "tokenSpec"
-	// Grammars\\DefineGrammarItemsWalker.g3:175:0: tokenSpec : (t= TOKEN_REF | ^( ASSIGN TOKEN_REF ( STRING_LITERAL | CHAR_LITERAL ) ) );
+	// Grammars\\DefineGrammarItemsWalker.g3:177:0: tokenSpec : (t= TOKEN_REF | ^( ASSIGN TOKEN_REF ( STRING_LITERAL | CHAR_LITERAL ) ) );
 	private void tokenSpec(  )
 	{
 		GrammarAST t=null;
 
 		try
 		{
-			// Grammars\\DefineGrammarItemsWalker.g3:176:4: (t= TOKEN_REF | ^( ASSIGN TOKEN_REF ( STRING_LITERAL | CHAR_LITERAL ) ) )
+			// Grammars\\DefineGrammarItemsWalker.g3:178:4: (t= TOKEN_REF | ^( ASSIGN TOKEN_REF ( STRING_LITERAL | CHAR_LITERAL ) ) )
 			int alt14=2;
 			int LA14_0 = input.LA(1);
 
@@ -1084,14 +1086,14 @@ public partial class DefineGrammarItemsWalker : TreeParser
 			switch ( alt14 )
 			{
 			case 1:
-				// Grammars\\DefineGrammarItemsWalker.g3:176:4: t= TOKEN_REF
+				// Grammars\\DefineGrammarItemsWalker.g3:178:4: t= TOKEN_REF
 				{
 				t=(GrammarAST)Match(input,TOKEN_REF,Follow._TOKEN_REF_in_tokenSpec424); if (state.failed) return ;
 
 				}
 				break;
 			case 2:
-				// Grammars\\DefineGrammarItemsWalker.g3:177:4: ^( ASSIGN TOKEN_REF ( STRING_LITERAL | CHAR_LITERAL ) )
+				// Grammars\\DefineGrammarItemsWalker.g3:179:4: ^( ASSIGN TOKEN_REF ( STRING_LITERAL | CHAR_LITERAL ) )
 				{
 				Match(input,ASSIGN,Follow._ASSIGN_in_tokenSpec431); if (state.failed) return ;
 
@@ -1131,15 +1133,15 @@ public partial class DefineGrammarItemsWalker : TreeParser
 
 
 	// $ANTLR start "rules"
-	// Grammars\\DefineGrammarItemsWalker.g3:185:0: rules : ( rule )+ ;
+	// Grammars\\DefineGrammarItemsWalker.g3:187:0: rules : ( rule )+ ;
 	private void rules(  )
 	{
 		try
 		{
-			// Grammars\\DefineGrammarItemsWalker.g3:186:4: ( ( rule )+ )
-			// Grammars\\DefineGrammarItemsWalker.g3:186:4: ( rule )+
+			// Grammars\\DefineGrammarItemsWalker.g3:188:4: ( ( rule )+ )
+			// Grammars\\DefineGrammarItemsWalker.g3:188:4: ( rule )+
 			{
-			// Grammars\\DefineGrammarItemsWalker.g3:186:4: ( rule )+
+			// Grammars\\DefineGrammarItemsWalker.g3:188:4: ( rule )+
 			int cnt15=0;
 			for ( ; ; )
 			{
@@ -1155,7 +1157,7 @@ public partial class DefineGrammarItemsWalker : TreeParser
 				switch ( alt15 )
 				{
 				case 1:
-					// Grammars\\DefineGrammarItemsWalker.g3:186:0: rule
+					// Grammars\\DefineGrammarItemsWalker.g3:188:0: rule
 					{
 					PushFollow(Follow._rule_in_rules471);
 					rule();
@@ -1201,7 +1203,7 @@ public partial class DefineGrammarItemsWalker : TreeParser
 	}
 
 	// $ANTLR start "rule"
-	// Grammars\\DefineGrammarItemsWalker.g3:189:0: rule : ^( RULE id= ID ( modifier )? ^( ARG (args= ARG_ACTION )? ) ^( RET (ret= ARG_ACTION )? ) ( throwsSpec )? ( optionsSpec )? ( ruleScopeSpec[r] )? ( ruleAction[r] )* b= block ( exceptionGroup )? EOR ) ;
+	// Grammars\\DefineGrammarItemsWalker.g3:191:0: rule : ^( RULE id= ID ( modifier )? ^( ARG (args= ARG_ACTION )? ) ^( RET (ret= ARG_ACTION )? ) ( throwsSpec )? ( optionsSpec )? ( ruleScopeSpec[r] )? ( ruleAction[r] )* b= block ( exceptionGroup )? EOR ) ;
 	private DefineGrammarItemsWalker.rule_return rule(  )
 	{
 		DefineGrammarItemsWalker.rule_return retval = new DefineGrammarItemsWalker.rule_return();
@@ -1222,8 +1224,8 @@ public partial class DefineGrammarItemsWalker : TreeParser
 
 		try
 		{
-			// Grammars\\DefineGrammarItemsWalker.g3:196:5: ( ^( RULE id= ID ( modifier )? ^( ARG (args= ARG_ACTION )? ) ^( RET (ret= ARG_ACTION )? ) ( throwsSpec )? ( optionsSpec )? ( ruleScopeSpec[r] )? ( ruleAction[r] )* b= block ( exceptionGroup )? EOR ) )
-			// Grammars\\DefineGrammarItemsWalker.g3:196:5: ^( RULE id= ID ( modifier )? ^( ARG (args= ARG_ACTION )? ) ^( RET (ret= ARG_ACTION )? ) ( throwsSpec )? ( optionsSpec )? ( ruleScopeSpec[r] )? ( ruleAction[r] )* b= block ( exceptionGroup )? EOR )
+			// Grammars\\DefineGrammarItemsWalker.g3:198:5: ( ^( RULE id= ID ( modifier )? ^( ARG (args= ARG_ACTION )? ) ^( RET (ret= ARG_ACTION )? ) ( throwsSpec )? ( optionsSpec )? ( ruleScopeSpec[r] )? ( ruleAction[r] )* b= block ( exceptionGroup )? EOR ) )
+			// Grammars\\DefineGrammarItemsWalker.g3:198:5: ^( RULE id= ID ( modifier )? ^( ARG (args= ARG_ACTION )? ) ^( RET (ret= ARG_ACTION )? ) ( throwsSpec )? ( optionsSpec )? ( ruleScopeSpec[r] )? ( ruleAction[r] )* b= block ( exceptionGroup )? EOR )
 			{
 			RULE3=(GrammarAST)Match(input,RULE,Follow._RULE_in_rule491); if (state.failed) return retval;
 
@@ -1233,7 +1235,7 @@ public partial class DefineGrammarItemsWalker : TreeParser
 			{
 				opts = RULE3.BlockOptions;
 			}
-			// Grammars\\DefineGrammarItemsWalker.g3:197:4: ( modifier )?
+			// Grammars\\DefineGrammarItemsWalker.g3:199:4: ( modifier )?
 			int alt16=2;
 			int LA16_0 = input.LA(1);
 
@@ -1244,7 +1246,7 @@ public partial class DefineGrammarItemsWalker : TreeParser
 			switch ( alt16 )
 			{
 			case 1:
-				// Grammars\\DefineGrammarItemsWalker.g3:197:5: modifier
+				// Grammars\\DefineGrammarItemsWalker.g3:199:5: modifier
 				{
 				PushFollow(Follow._modifier_in_rule503);
 				modifier4=modifier();
@@ -1262,7 +1264,7 @@ public partial class DefineGrammarItemsWalker : TreeParser
 			if ( input.LA(1)==TokenConstants.Down )
 			{
 				Match(input, TokenConstants.Down, null); if (state.failed) return retval;
-				// Grammars\\DefineGrammarItemsWalker.g3:198:11: (args= ARG_ACTION )?
+				// Grammars\\DefineGrammarItemsWalker.g3:200:11: (args= ARG_ACTION )?
 				int alt17=2;
 				int LA17_0 = input.LA(1);
 
@@ -1273,7 +1275,7 @@ public partial class DefineGrammarItemsWalker : TreeParser
 				switch ( alt17 )
 				{
 				case 1:
-					// Grammars\\DefineGrammarItemsWalker.g3:198:12: args= ARG_ACTION
+					// Grammars\\DefineGrammarItemsWalker.g3:200:12: args= ARG_ACTION
 					{
 					args=(GrammarAST)Match(input,ARG_ACTION,Follow._ARG_ACTION_in_rule517); if (state.failed) return retval;
 
@@ -1290,7 +1292,7 @@ public partial class DefineGrammarItemsWalker : TreeParser
 			if ( input.LA(1)==TokenConstants.Down )
 			{
 				Match(input, TokenConstants.Down, null); if (state.failed) return retval;
-				// Grammars\\DefineGrammarItemsWalker.g3:199:11: (ret= ARG_ACTION )?
+				// Grammars\\DefineGrammarItemsWalker.g3:201:11: (ret= ARG_ACTION )?
 				int alt18=2;
 				int LA18_0 = input.LA(1);
 
@@ -1301,7 +1303,7 @@ public partial class DefineGrammarItemsWalker : TreeParser
 				switch ( alt18 )
 				{
 				case 1:
-					// Grammars\\DefineGrammarItemsWalker.g3:199:12: ret= ARG_ACTION
+					// Grammars\\DefineGrammarItemsWalker.g3:201:12: ret= ARG_ACTION
 					{
 					ret=(GrammarAST)Match(input,ARG_ACTION,Follow._ARG_ACTION_in_rule533); if (state.failed) return retval;
 
@@ -1313,7 +1315,7 @@ public partial class DefineGrammarItemsWalker : TreeParser
 
 				Match(input, TokenConstants.Up, null); if (state.failed) return retval;
 			}
-			// Grammars\\DefineGrammarItemsWalker.g3:200:4: ( throwsSpec )?
+			// Grammars\\DefineGrammarItemsWalker.g3:202:4: ( throwsSpec )?
 			int alt19=2;
 			int LA19_0 = input.LA(1);
 
@@ -1324,7 +1326,7 @@ public partial class DefineGrammarItemsWalker : TreeParser
 			switch ( alt19 )
 			{
 			case 1:
-				// Grammars\\DefineGrammarItemsWalker.g3:200:5: throwsSpec
+				// Grammars\\DefineGrammarItemsWalker.g3:202:5: throwsSpec
 				{
 				PushFollow(Follow._throwsSpec_in_rule543);
 				throwsSpec5=throwsSpec();
@@ -1337,7 +1339,7 @@ public partial class DefineGrammarItemsWalker : TreeParser
 
 			}
 
-			// Grammars\\DefineGrammarItemsWalker.g3:201:4: ( optionsSpec )?
+			// Grammars\\DefineGrammarItemsWalker.g3:203:4: ( optionsSpec )?
 			int alt20=2;
 			int LA20_0 = input.LA(1);
 
@@ -1348,7 +1350,7 @@ public partial class DefineGrammarItemsWalker : TreeParser
 			switch ( alt20 )
 			{
 			case 1:
-				// Grammars\\DefineGrammarItemsWalker.g3:201:5: optionsSpec
+				// Grammars\\DefineGrammarItemsWalker.g3:203:5: optionsSpec
 				{
 				PushFollow(Follow._optionsSpec_in_rule551);
 				optionsSpec();
@@ -1394,7 +1396,7 @@ public partial class DefineGrammarItemsWalker : TreeParser
 								}
 							
 			}
-			// Grammars\\DefineGrammarItemsWalker.g3:232:4: ( ruleScopeSpec[r] )?
+			// Grammars\\DefineGrammarItemsWalker.g3:234:4: ( ruleScopeSpec[r] )?
 			int alt21=2;
 			int LA21_0 = input.LA(1);
 
@@ -1405,7 +1407,7 @@ public partial class DefineGrammarItemsWalker : TreeParser
 			switch ( alt21 )
 			{
 			case 1:
-				// Grammars\\DefineGrammarItemsWalker.g3:232:5: ruleScopeSpec[r]
+				// Grammars\\DefineGrammarItemsWalker.g3:234:5: ruleScopeSpec[r]
 				{
 				PushFollow(Follow._ruleScopeSpec_in_rule564);
 				ruleScopeSpec(r);
@@ -1418,7 +1420,7 @@ public partial class DefineGrammarItemsWalker : TreeParser
 
 			}
 
-			// Grammars\\DefineGrammarItemsWalker.g3:233:4: ( ruleAction[r] )*
+			// Grammars\\DefineGrammarItemsWalker.g3:235:4: ( ruleAction[r] )*
 			for ( ; ; )
 			{
 				int alt22=2;
@@ -1433,7 +1435,7 @@ public partial class DefineGrammarItemsWalker : TreeParser
 				switch ( alt22 )
 				{
 				case 1:
-					// Grammars\\DefineGrammarItemsWalker.g3:233:5: ruleAction[r]
+					// Grammars\\DefineGrammarItemsWalker.g3:235:5: ruleAction[r]
 					{
 					PushFollow(Follow._ruleAction_in_rule573);
 					ruleAction(r);
@@ -1462,7 +1464,7 @@ public partial class DefineGrammarItemsWalker : TreeParser
 
 			state._fsp--;
 			if (state.failed) return retval;
-			// Grammars\\DefineGrammarItemsWalker.g3:236:4: ( exceptionGroup )?
+			// Grammars\\DefineGrammarItemsWalker.g3:238:4: ( exceptionGroup )?
 			int alt23=2;
 			int LA23_0 = input.LA(1);
 
@@ -1473,7 +1475,7 @@ public partial class DefineGrammarItemsWalker : TreeParser
 			switch ( alt23 )
 			{
 			case 1:
-				// Grammars\\DefineGrammarItemsWalker.g3:236:5: exceptionGroup
+				// Grammars\\DefineGrammarItemsWalker.g3:238:5: exceptionGroup
 				{
 				PushFollow(Follow._exceptionGroup_in_rule594);
 				exceptionGroup();
@@ -1515,7 +1517,7 @@ public partial class DefineGrammarItemsWalker : TreeParser
 
 
 	// $ANTLR start "ruleAction"
-	// Grammars\\DefineGrammarItemsWalker.g3:246:0: ruleAction[Rule r] : ^(amp= AMPERSAND id= ID a= ACTION ) ;
+	// Grammars\\DefineGrammarItemsWalker.g3:248:0: ruleAction[Rule r] : ^(amp= AMPERSAND id= ID a= ACTION ) ;
 	private void ruleAction( Rule r )
 	{
 		GrammarAST amp=null;
@@ -1524,8 +1526,8 @@ public partial class DefineGrammarItemsWalker : TreeParser
 
 		try
 		{
-			// Grammars\\DefineGrammarItemsWalker.g3:247:4: ( ^(amp= AMPERSAND id= ID a= ACTION ) )
-			// Grammars\\DefineGrammarItemsWalker.g3:247:4: ^(amp= AMPERSAND id= ID a= ACTION )
+			// Grammars\\DefineGrammarItemsWalker.g3:249:4: ( ^(amp= AMPERSAND id= ID a= ACTION ) )
+			// Grammars\\DefineGrammarItemsWalker.g3:249:4: ^(amp= AMPERSAND id= ID a= ACTION )
 			{
 			amp=(GrammarAST)Match(input,AMPERSAND,Follow._AMPERSAND_in_ruleAction625); if (state.failed) return ;
 
@@ -1560,7 +1562,7 @@ public partial class DefineGrammarItemsWalker : TreeParser
 	}
 
 	// $ANTLR start "modifier"
-	// Grammars\\DefineGrammarItemsWalker.g3:250:0: modifier returns [string mod] : ( 'protected' | 'public' | 'private' | 'fragment' );
+	// Grammars\\DefineGrammarItemsWalker.g3:252:0: modifier returns [string mod] : ( 'protected' | 'public' | 'private' | 'fragment' );
 	private DefineGrammarItemsWalker.modifier_return modifier(  )
 	{
 		DefineGrammarItemsWalker.modifier_return retval = new DefineGrammarItemsWalker.modifier_return();
@@ -1571,7 +1573,7 @@ public partial class DefineGrammarItemsWalker : TreeParser
 
 		try
 		{
-			// Grammars\\DefineGrammarItemsWalker.g3:255:4: ( 'protected' | 'public' | 'private' | 'fragment' )
+			// Grammars\\DefineGrammarItemsWalker.g3:257:4: ( 'protected' | 'public' | 'private' | 'fragment' )
 			// Grammars\\DefineGrammarItemsWalker.g3:
 			{
 			if ( input.LA(1)==FRAGMENT||(input.LA(1)>=PRIVATE && input.LA(1)<=PUBLIC) )
@@ -1604,7 +1606,7 @@ public partial class DefineGrammarItemsWalker : TreeParser
 
 
 	// $ANTLR start "throwsSpec"
-	// Grammars\\DefineGrammarItemsWalker.g3:261:0: throwsSpec returns [HashSet<string> exceptions] : ^( 'throws' ( ID )+ ) ;
+	// Grammars\\DefineGrammarItemsWalker.g3:263:0: throwsSpec returns [HashSet<string> exceptions] : ^( 'throws' ( ID )+ ) ;
 	private HashSet<string> throwsSpec(  )
 	{
 
@@ -1617,13 +1619,13 @@ public partial class DefineGrammarItemsWalker : TreeParser
 
 		try
 		{
-			// Grammars\\DefineGrammarItemsWalker.g3:266:4: ( ^( 'throws' ( ID )+ ) )
-			// Grammars\\DefineGrammarItemsWalker.g3:266:4: ^( 'throws' ( ID )+ )
+			// Grammars\\DefineGrammarItemsWalker.g3:268:4: ( ^( 'throws' ( ID )+ ) )
+			// Grammars\\DefineGrammarItemsWalker.g3:268:4: ^( 'throws' ( ID )+ )
 			{
 			Match(input,THROWS,Follow._THROWS_in_throwsSpec693); if (state.failed) return exceptions;
 
 			Match(input, TokenConstants.Down, null); if (state.failed) return exceptions;
-			// Grammars\\DefineGrammarItemsWalker.g3:266:15: ( ID )+
+			// Grammars\\DefineGrammarItemsWalker.g3:268:15: ( ID )+
 			int cnt24=0;
 			for ( ; ; )
 			{
@@ -1639,7 +1641,7 @@ public partial class DefineGrammarItemsWalker : TreeParser
 				switch ( alt24 )
 				{
 				case 1:
-					// Grammars\\DefineGrammarItemsWalker.g3:266:16: ID
+					// Grammars\\DefineGrammarItemsWalker.g3:268:16: ID
 					{
 					ID6=(GrammarAST)Match(input,ID,Follow._ID_in_throwsSpec696); if (state.failed) return exceptions;
 					if ( state.backtracking == 0 )
@@ -1684,7 +1686,7 @@ public partial class DefineGrammarItemsWalker : TreeParser
 
 
 	// $ANTLR start "ruleScopeSpec"
-	// Grammars\\DefineGrammarItemsWalker.g3:269:0: ruleScopeSpec[Rule r] : ^( 'scope' ( ( attrScopeAction )* attrs= ACTION )? (uses= ID )* ) ;
+	// Grammars\\DefineGrammarItemsWalker.g3:271:0: ruleScopeSpec[Rule r] : ^( 'scope' ( ( attrScopeAction )* attrs= ACTION )? (uses= ID )* ) ;
 	private void ruleScopeSpec( Rule r )
 	{
 		AttributeScopeActions_scope.PushScope(this);
@@ -1697,15 +1699,15 @@ public partial class DefineGrammarItemsWalker : TreeParser
 
 		try
 		{
-			// Grammars\\DefineGrammarItemsWalker.g3:275:4: ( ^( 'scope' ( ( attrScopeAction )* attrs= ACTION )? (uses= ID )* ) )
-			// Grammars\\DefineGrammarItemsWalker.g3:275:4: ^( 'scope' ( ( attrScopeAction )* attrs= ACTION )? (uses= ID )* )
+			// Grammars\\DefineGrammarItemsWalker.g3:277:4: ( ^( 'scope' ( ( attrScopeAction )* attrs= ACTION )? (uses= ID )* ) )
+			// Grammars\\DefineGrammarItemsWalker.g3:277:4: ^( 'scope' ( ( attrScopeAction )* attrs= ACTION )? (uses= ID )* )
 			{
 			Match(input,SCOPE,Follow._SCOPE_in_ruleScopeSpec726); if (state.failed) return ;
 
 			if ( input.LA(1)==TokenConstants.Down )
 			{
 				Match(input, TokenConstants.Down, null); if (state.failed) return ;
-				// Grammars\\DefineGrammarItemsWalker.g3:276:4: ( ( attrScopeAction )* attrs= ACTION )?
+				// Grammars\\DefineGrammarItemsWalker.g3:278:4: ( ( attrScopeAction )* attrs= ACTION )?
 				int alt26=2;
 				int LA26_0 = input.LA(1);
 
@@ -1716,9 +1718,9 @@ public partial class DefineGrammarItemsWalker : TreeParser
 				switch ( alt26 )
 				{
 				case 1:
-					// Grammars\\DefineGrammarItemsWalker.g3:276:6: ( attrScopeAction )* attrs= ACTION
+					// Grammars\\DefineGrammarItemsWalker.g3:278:6: ( attrScopeAction )* attrs= ACTION
 					{
-					// Grammars\\DefineGrammarItemsWalker.g3:276:6: ( attrScopeAction )*
+					// Grammars\\DefineGrammarItemsWalker.g3:278:6: ( attrScopeAction )*
 					for ( ; ; )
 					{
 						int alt25=2;
@@ -1733,7 +1735,7 @@ public partial class DefineGrammarItemsWalker : TreeParser
 						switch ( alt25 )
 						{
 						case 1:
-							// Grammars\\DefineGrammarItemsWalker.g3:276:0: attrScopeAction
+							// Grammars\\DefineGrammarItemsWalker.g3:278:0: attrScopeAction
 							{
 							PushFollow(Follow._attrScopeAction_in_ruleScopeSpec733);
 							attrScopeAction();
@@ -1770,7 +1772,7 @@ public partial class DefineGrammarItemsWalker : TreeParser
 
 				}
 
-				// Grammars\\DefineGrammarItemsWalker.g3:285:4: (uses= ID )*
+				// Grammars\\DefineGrammarItemsWalker.g3:287:4: (uses= ID )*
 				for ( ; ; )
 				{
 					int alt27=2;
@@ -1785,7 +1787,7 @@ public partial class DefineGrammarItemsWalker : TreeParser
 					switch ( alt27 )
 					{
 					case 1:
-						// Grammars\\DefineGrammarItemsWalker.g3:285:6: uses= ID
+						// Grammars\\DefineGrammarItemsWalker.g3:287:6: uses= ID
 						{
 						uses=(GrammarAST)Match(input,ID,Follow._ID_in_ruleScopeSpec759); if (state.failed) return ;
 						if ( state.backtracking == 0 )
@@ -1842,7 +1844,7 @@ public partial class DefineGrammarItemsWalker : TreeParser
 	}
 
 	// $ANTLR start "block"
-	// Grammars\\DefineGrammarItemsWalker.g3:302:0: block : ^( BLOCK ( optionsSpec )? ( blockAction )* ( alternative rewrite )+ EOB ) ;
+	// Grammars\\DefineGrammarItemsWalker.g3:304:0: block : ^( BLOCK ( optionsSpec )? ( blockAction )* ( alternative rewrite )+ EOB ) ;
 	private DefineGrammarItemsWalker.block_return block(  )
 	{
 		DefineGrammarItemsWalker.block_return retval = new DefineGrammarItemsWalker.block_return();
@@ -1856,13 +1858,13 @@ public partial class DefineGrammarItemsWalker : TreeParser
 
 		try
 		{
-			// Grammars\\DefineGrammarItemsWalker.g3:310:4: ( ^( BLOCK ( optionsSpec )? ( blockAction )* ( alternative rewrite )+ EOB ) )
-			// Grammars\\DefineGrammarItemsWalker.g3:310:4: ^( BLOCK ( optionsSpec )? ( blockAction )* ( alternative rewrite )+ EOB )
+			// Grammars\\DefineGrammarItemsWalker.g3:312:4: ( ^( BLOCK ( optionsSpec )? ( blockAction )* ( alternative rewrite )+ EOB ) )
+			// Grammars\\DefineGrammarItemsWalker.g3:312:4: ^( BLOCK ( optionsSpec )? ( blockAction )* ( alternative rewrite )+ EOB )
 			{
 			Match(input,BLOCK,Follow._BLOCK_in_block793); if (state.failed) return retval;
 
 			Match(input, TokenConstants.Down, null); if (state.failed) return retval;
-			// Grammars\\DefineGrammarItemsWalker.g3:311:4: ( optionsSpec )?
+			// Grammars\\DefineGrammarItemsWalker.g3:313:4: ( optionsSpec )?
 			int alt28=2;
 			int LA28_0 = input.LA(1);
 
@@ -1873,7 +1875,7 @@ public partial class DefineGrammarItemsWalker : TreeParser
 			switch ( alt28 )
 			{
 			case 1:
-				// Grammars\\DefineGrammarItemsWalker.g3:311:5: optionsSpec
+				// Grammars\\DefineGrammarItemsWalker.g3:313:5: optionsSpec
 				{
 				PushFollow(Follow._optionsSpec_in_block799);
 				optionsSpec();
@@ -1886,7 +1888,7 @@ public partial class DefineGrammarItemsWalker : TreeParser
 
 			}
 
-			// Grammars\\DefineGrammarItemsWalker.g3:312:4: ( blockAction )*
+			// Grammars\\DefineGrammarItemsWalker.g3:314:4: ( blockAction )*
 			for ( ; ; )
 			{
 				int alt29=2;
@@ -1901,7 +1903,7 @@ public partial class DefineGrammarItemsWalker : TreeParser
 				switch ( alt29 )
 				{
 				case 1:
-					// Grammars\\DefineGrammarItemsWalker.g3:312:5: blockAction
+					// Grammars\\DefineGrammarItemsWalker.g3:314:5: blockAction
 					{
 					PushFollow(Follow._blockAction_in_block807);
 					blockAction();
@@ -1921,7 +1923,7 @@ public partial class DefineGrammarItemsWalker : TreeParser
 				;
 
 
-			// Grammars\\DefineGrammarItemsWalker.g3:313:4: ( alternative rewrite )+
+			// Grammars\\DefineGrammarItemsWalker.g3:315:4: ( alternative rewrite )+
 			int cnt30=0;
 			for ( ; ; )
 			{
@@ -1937,7 +1939,7 @@ public partial class DefineGrammarItemsWalker : TreeParser
 				switch ( alt30 )
 				{
 				case 1:
-					// Grammars\\DefineGrammarItemsWalker.g3:313:6: alternative rewrite
+					// Grammars\\DefineGrammarItemsWalker.g3:315:6: alternative rewrite
 					{
 					PushFollow(Follow._alternative_in_block816);
 					alternative();
@@ -1993,7 +1995,7 @@ public partial class DefineGrammarItemsWalker : TreeParser
 
 
 	// $ANTLR start "blockAction"
-	// Grammars\\DefineGrammarItemsWalker.g3:325:0: blockAction : ^(amp= AMPERSAND id= ID a= ACTION ) ;
+	// Grammars\\DefineGrammarItemsWalker.g3:327:0: blockAction : ^(amp= AMPERSAND id= ID a= ACTION ) ;
 	private void blockAction(  )
 	{
 		GrammarAST amp=null;
@@ -2002,8 +2004,8 @@ public partial class DefineGrammarItemsWalker : TreeParser
 
 		try
 		{
-			// Grammars\\DefineGrammarItemsWalker.g3:326:4: ( ^(amp= AMPERSAND id= ID a= ACTION ) )
-			// Grammars\\DefineGrammarItemsWalker.g3:326:4: ^(amp= AMPERSAND id= ID a= ACTION )
+			// Grammars\\DefineGrammarItemsWalker.g3:328:4: ( ^(amp= AMPERSAND id= ID a= ACTION ) )
+			// Grammars\\DefineGrammarItemsWalker.g3:328:4: ^(amp= AMPERSAND id= ID a= ACTION )
 			{
 			amp=(GrammarAST)Match(input,AMPERSAND,Follow._AMPERSAND_in_blockAction859); if (state.failed) return ;
 
@@ -2033,7 +2035,7 @@ public partial class DefineGrammarItemsWalker : TreeParser
 	}
 
 	// $ANTLR start "alternative"
-	// Grammars\\DefineGrammarItemsWalker.g3:329:0: alternative : ^( ALT ( element )+ EOA ) ;
+	// Grammars\\DefineGrammarItemsWalker.g3:331:0: alternative : ^( ALT ( element )+ EOA ) ;
 	private DefineGrammarItemsWalker.alternative_return alternative(  )
 	{
 		DefineGrammarItemsWalker.alternative_return retval = new DefineGrammarItemsWalker.alternative_return();
@@ -2062,13 +2064,13 @@ public partial class DefineGrammarItemsWalker : TreeParser
 
 		try
 		{
-			// Grammars\\DefineGrammarItemsWalker.g3:352:4: ( ^( ALT ( element )+ EOA ) )
-			// Grammars\\DefineGrammarItemsWalker.g3:352:4: ^( ALT ( element )+ EOA )
+			// Grammars\\DefineGrammarItemsWalker.g3:354:4: ( ^( ALT ( element )+ EOA ) )
+			// Grammars\\DefineGrammarItemsWalker.g3:354:4: ^( ALT ( element )+ EOA )
 			{
 			Match(input,ALT,Follow._ALT_in_alternative888); if (state.failed) return retval;
 
 			Match(input, TokenConstants.Down, null); if (state.failed) return retval;
-			// Grammars\\DefineGrammarItemsWalker.g3:352:11: ( element )+
+			// Grammars\\DefineGrammarItemsWalker.g3:354:11: ( element )+
 			int cnt31=0;
 			for ( ; ; )
 			{
@@ -2084,7 +2086,7 @@ public partial class DefineGrammarItemsWalker : TreeParser
 				switch ( alt31 )
 				{
 				case 1:
-					// Grammars\\DefineGrammarItemsWalker.g3:352:12: element
+					// Grammars\\DefineGrammarItemsWalker.g3:354:12: element
 					{
 					PushFollow(Follow._element_in_alternative891);
 					element();
@@ -2130,12 +2132,12 @@ public partial class DefineGrammarItemsWalker : TreeParser
 
 
 	// $ANTLR start "exceptionGroup"
-	// Grammars\\DefineGrammarItemsWalker.g3:355:0: exceptionGroup : ( ( exceptionHandler )+ ( finallyClause )? | finallyClause );
+	// Grammars\\DefineGrammarItemsWalker.g3:357:0: exceptionGroup : ( ( exceptionHandler )+ ( finallyClause )? | finallyClause );
 	private void exceptionGroup(  )
 	{
 		try
 		{
-			// Grammars\\DefineGrammarItemsWalker.g3:356:4: ( ( exceptionHandler )+ ( finallyClause )? | finallyClause )
+			// Grammars\\DefineGrammarItemsWalker.g3:358:4: ( ( exceptionHandler )+ ( finallyClause )? | finallyClause )
 			int alt34=2;
 			int LA34_0 = input.LA(1);
 
@@ -2157,9 +2159,9 @@ public partial class DefineGrammarItemsWalker : TreeParser
 			switch ( alt34 )
 			{
 			case 1:
-				// Grammars\\DefineGrammarItemsWalker.g3:356:4: ( exceptionHandler )+ ( finallyClause )?
+				// Grammars\\DefineGrammarItemsWalker.g3:358:4: ( exceptionHandler )+ ( finallyClause )?
 				{
-				// Grammars\\DefineGrammarItemsWalker.g3:356:4: ( exceptionHandler )+
+				// Grammars\\DefineGrammarItemsWalker.g3:358:4: ( exceptionHandler )+
 				int cnt32=0;
 				for ( ; ; )
 				{
@@ -2175,7 +2177,7 @@ public partial class DefineGrammarItemsWalker : TreeParser
 					switch ( alt32 )
 					{
 					case 1:
-						// Grammars\\DefineGrammarItemsWalker.g3:356:6: exceptionHandler
+						// Grammars\\DefineGrammarItemsWalker.g3:358:6: exceptionHandler
 						{
 						PushFollow(Follow._exceptionHandler_in_exceptionGroup910);
 						exceptionHandler();
@@ -2200,7 +2202,7 @@ public partial class DefineGrammarItemsWalker : TreeParser
 					;
 
 
-				// Grammars\\DefineGrammarItemsWalker.g3:356:26: ( finallyClause )?
+				// Grammars\\DefineGrammarItemsWalker.g3:358:26: ( finallyClause )?
 				int alt33=2;
 				int LA33_0 = input.LA(1);
 
@@ -2211,7 +2213,7 @@ public partial class DefineGrammarItemsWalker : TreeParser
 				switch ( alt33 )
 				{
 				case 1:
-					// Grammars\\DefineGrammarItemsWalker.g3:356:27: finallyClause
+					// Grammars\\DefineGrammarItemsWalker.g3:358:27: finallyClause
 					{
 					PushFollow(Follow._finallyClause_in_exceptionGroup916);
 					finallyClause();
@@ -2228,7 +2230,7 @@ public partial class DefineGrammarItemsWalker : TreeParser
 				}
 				break;
 			case 2:
-				// Grammars\\DefineGrammarItemsWalker.g3:357:4: finallyClause
+				// Grammars\\DefineGrammarItemsWalker.g3:359:4: finallyClause
 				{
 				PushFollow(Follow._finallyClause_in_exceptionGroup923);
 				finallyClause();
@@ -2255,15 +2257,15 @@ public partial class DefineGrammarItemsWalker : TreeParser
 
 
 	// $ANTLR start "exceptionHandler"
-	// Grammars\\DefineGrammarItemsWalker.g3:360:0: exceptionHandler : ^( 'catch' ARG_ACTION ACTION ) ;
+	// Grammars\\DefineGrammarItemsWalker.g3:362:0: exceptionHandler : ^( 'catch' ARG_ACTION ACTION ) ;
 	private void exceptionHandler(  )
 	{
 		GrammarAST ACTION7=null;
 
 		try
 		{
-			// Grammars\\DefineGrammarItemsWalker.g3:361:6: ( ^( 'catch' ARG_ACTION ACTION ) )
-			// Grammars\\DefineGrammarItemsWalker.g3:361:6: ^( 'catch' ARG_ACTION ACTION )
+			// Grammars\\DefineGrammarItemsWalker.g3:363:6: ( ^( 'catch' ARG_ACTION ACTION ) )
+			// Grammars\\DefineGrammarItemsWalker.g3:363:6: ^( 'catch' ARG_ACTION ACTION )
 			{
 			Match(input,CATCH,Follow._CATCH_in_exceptionHandler937); if (state.failed) return ;
 
@@ -2294,15 +2296,15 @@ public partial class DefineGrammarItemsWalker : TreeParser
 
 
 	// $ANTLR start "finallyClause"
-	// Grammars\\DefineGrammarItemsWalker.g3:364:0: finallyClause : ^( 'finally' ACTION ) ;
+	// Grammars\\DefineGrammarItemsWalker.g3:366:0: finallyClause : ^( 'finally' ACTION ) ;
 	private void finallyClause(  )
 	{
 		GrammarAST ACTION8=null;
 
 		try
 		{
-			// Grammars\\DefineGrammarItemsWalker.g3:365:7: ( ^( 'finally' ACTION ) )
-			// Grammars\\DefineGrammarItemsWalker.g3:365:7: ^( 'finally' ACTION )
+			// Grammars\\DefineGrammarItemsWalker.g3:367:7: ( ^( 'finally' ACTION ) )
+			// Grammars\\DefineGrammarItemsWalker.g3:367:7: ^( 'finally' ACTION )
 			{
 			Match(input,FINALLY,Follow._FINALLY_in_finallyClause959); if (state.failed) return ;
 
@@ -2335,7 +2337,7 @@ public partial class DefineGrammarItemsWalker : TreeParser
 	}
 
 	// $ANTLR start "element"
-	// Grammars\\DefineGrammarItemsWalker.g3:368:0: element : ( ^( ROOT element ) | ^( BANG element ) | atom[null] | ^( NOT element ) | ^( RANGE atom[null] atom[null] ) | ^( CHAR_RANGE atom[null] atom[null] ) | ^( ASSIGN id= ID el= element ) | ^( PLUS_ASSIGN id2= ID a2= element ) | ebnf | tree_ | ^( SYNPRED block ) |act= ACTION |act2= FORCED_ACTION | SEMPRED | SYN_SEMPRED | ^( BACKTRACK_SEMPRED ( . )* ) | GATED_SEMPRED | EPSILON );
+	// Grammars\\DefineGrammarItemsWalker.g3:370:0: element : ( ^( ROOT element ) | ^( BANG element ) | atom[null] | ^( NOT element ) | ^( RANGE atom[null] atom[null] ) | ^( CHAR_RANGE atom[null] atom[null] ) | ^( ASSIGN id= ID el= element ) | ^( PLUS_ASSIGN id2= ID a2= element ) | ebnf | tree_ | ^( SYNPRED block ) |act= ACTION |act2= FORCED_ACTION | SEMPRED | SYN_SEMPRED | ^( BACKTRACK_SEMPRED ( . )* ) | GATED_SEMPRED | EPSILON );
 	private DefineGrammarItemsWalker.element_return element(  )
 	{
 		DefineGrammarItemsWalker.element_return retval = new DefineGrammarItemsWalker.element_return();
@@ -2352,13 +2354,13 @@ public partial class DefineGrammarItemsWalker : TreeParser
 
 		try
 		{
-			// Grammars\\DefineGrammarItemsWalker.g3:369:6: ( ^( ROOT element ) | ^( BANG element ) | atom[null] | ^( NOT element ) | ^( RANGE atom[null] atom[null] ) | ^( CHAR_RANGE atom[null] atom[null] ) | ^( ASSIGN id= ID el= element ) | ^( PLUS_ASSIGN id2= ID a2= element ) | ebnf | tree_ | ^( SYNPRED block ) |act= ACTION |act2= FORCED_ACTION | SEMPRED | SYN_SEMPRED | ^( BACKTRACK_SEMPRED ( . )* ) | GATED_SEMPRED | EPSILON )
+			// Grammars\\DefineGrammarItemsWalker.g3:371:6: ( ^( ROOT element ) | ^( BANG element ) | atom[null] | ^( NOT element ) | ^( RANGE atom[null] atom[null] ) | ^( CHAR_RANGE atom[null] atom[null] ) | ^( ASSIGN id= ID el= element ) | ^( PLUS_ASSIGN id2= ID a2= element ) | ebnf | tree_ | ^( SYNPRED block ) |act= ACTION |act2= FORCED_ACTION | SEMPRED | SYN_SEMPRED | ^( BACKTRACK_SEMPRED ( . )* ) | GATED_SEMPRED | EPSILON )
 			int alt36=18;
 			alt36 = dfa36.Predict(input);
 			switch ( alt36 )
 			{
 			case 1:
-				// Grammars\\DefineGrammarItemsWalker.g3:369:6: ^( ROOT element )
+				// Grammars\\DefineGrammarItemsWalker.g3:371:6: ^( ROOT element )
 				{
 				Match(input,ROOT,Follow._ROOT_in_element978); if (state.failed) return retval;
 
@@ -2374,7 +2376,7 @@ public partial class DefineGrammarItemsWalker : TreeParser
 				}
 				break;
 			case 2:
-				// Grammars\\DefineGrammarItemsWalker.g3:370:6: ^( BANG element )
+				// Grammars\\DefineGrammarItemsWalker.g3:372:6: ^( BANG element )
 				{
 				Match(input,BANG,Follow._BANG_in_element989); if (state.failed) return retval;
 
@@ -2390,7 +2392,7 @@ public partial class DefineGrammarItemsWalker : TreeParser
 				}
 				break;
 			case 3:
-				// Grammars\\DefineGrammarItemsWalker.g3:371:6: atom[null]
+				// Grammars\\DefineGrammarItemsWalker.g3:373:6: atom[null]
 				{
 				PushFollow(Follow._atom_in_element999);
 				atom(null);
@@ -2401,7 +2403,7 @@ public partial class DefineGrammarItemsWalker : TreeParser
 				}
 				break;
 			case 4:
-				// Grammars\\DefineGrammarItemsWalker.g3:372:6: ^( NOT element )
+				// Grammars\\DefineGrammarItemsWalker.g3:374:6: ^( NOT element )
 				{
 				Match(input,NOT,Follow._NOT_in_element1008); if (state.failed) return retval;
 
@@ -2417,7 +2419,7 @@ public partial class DefineGrammarItemsWalker : TreeParser
 				}
 				break;
 			case 5:
-				// Grammars\\DefineGrammarItemsWalker.g3:373:6: ^( RANGE atom[null] atom[null] )
+				// Grammars\\DefineGrammarItemsWalker.g3:375:6: ^( RANGE atom[null] atom[null] )
 				{
 				Match(input,RANGE,Follow._RANGE_in_element1019); if (state.failed) return retval;
 
@@ -2438,7 +2440,7 @@ public partial class DefineGrammarItemsWalker : TreeParser
 				}
 				break;
 			case 6:
-				// Grammars\\DefineGrammarItemsWalker.g3:374:6: ^( CHAR_RANGE atom[null] atom[null] )
+				// Grammars\\DefineGrammarItemsWalker.g3:376:6: ^( CHAR_RANGE atom[null] atom[null] )
 				{
 				Match(input,CHAR_RANGE,Follow._CHAR_RANGE_in_element1034); if (state.failed) return retval;
 
@@ -2459,7 +2461,7 @@ public partial class DefineGrammarItemsWalker : TreeParser
 				}
 				break;
 			case 7:
-				// Grammars\\DefineGrammarItemsWalker.g3:375:4: ^( ASSIGN id= ID el= element )
+				// Grammars\\DefineGrammarItemsWalker.g3:377:4: ^( ASSIGN id= ID el= element )
 				{
 				Match(input,ASSIGN,Follow._ASSIGN_in_element1048); if (state.failed) return retval;
 
@@ -2498,7 +2500,7 @@ public partial class DefineGrammarItemsWalker : TreeParser
 				}
 				break;
 			case 8:
-				// Grammars\\DefineGrammarItemsWalker.g3:395:4: ^( PLUS_ASSIGN id2= ID a2= element )
+				// Grammars\\DefineGrammarItemsWalker.g3:397:4: ^( PLUS_ASSIGN id2= ID a2= element )
 				{
 				Match(input,PLUS_ASSIGN,Follow._PLUS_ASSIGN_in_element1069); if (state.failed) return retval;
 
@@ -2537,7 +2539,7 @@ public partial class DefineGrammarItemsWalker : TreeParser
 				}
 				break;
 			case 9:
-				// Grammars\\DefineGrammarItemsWalker.g3:416:6: ebnf
+				// Grammars\\DefineGrammarItemsWalker.g3:418:6: ebnf
 				{
 				PushFollow(Follow._ebnf_in_element1094);
 				ebnf();
@@ -2548,7 +2550,7 @@ public partial class DefineGrammarItemsWalker : TreeParser
 				}
 				break;
 			case 10:
-				// Grammars\\DefineGrammarItemsWalker.g3:417:6: tree_
+				// Grammars\\DefineGrammarItemsWalker.g3:419:6: tree_
 				{
 				PushFollow(Follow._tree__in_element1101);
 				tree_();
@@ -2559,7 +2561,7 @@ public partial class DefineGrammarItemsWalker : TreeParser
 				}
 				break;
 			case 11:
-				// Grammars\\DefineGrammarItemsWalker.g3:418:6: ^( SYNPRED block )
+				// Grammars\\DefineGrammarItemsWalker.g3:420:6: ^( SYNPRED block )
 				{
 				Match(input,SYNPRED,Follow._SYNPRED_in_element1110); if (state.failed) return retval;
 
@@ -2575,7 +2577,7 @@ public partial class DefineGrammarItemsWalker : TreeParser
 				}
 				break;
 			case 12:
-				// Grammars\\DefineGrammarItemsWalker.g3:419:6: act= ACTION
+				// Grammars\\DefineGrammarItemsWalker.g3:421:6: act= ACTION
 				{
 				act=(GrammarAST)Match(input,ACTION,Follow._ACTION_in_element1123); if (state.failed) return retval;
 				if ( state.backtracking == 0 )
@@ -2589,7 +2591,7 @@ public partial class DefineGrammarItemsWalker : TreeParser
 				}
 				break;
 			case 13:
-				// Grammars\\DefineGrammarItemsWalker.g3:424:6: act2= FORCED_ACTION
+				// Grammars\\DefineGrammarItemsWalker.g3:426:6: act2= FORCED_ACTION
 				{
 				act2=(GrammarAST)Match(input,FORCED_ACTION,Follow._FORCED_ACTION_in_element1136); if (state.failed) return retval;
 				if ( state.backtracking == 0 )
@@ -2603,7 +2605,7 @@ public partial class DefineGrammarItemsWalker : TreeParser
 				}
 				break;
 			case 14:
-				// Grammars\\DefineGrammarItemsWalker.g3:429:6: SEMPRED
+				// Grammars\\DefineGrammarItemsWalker.g3:431:6: SEMPRED
 				{
 				SEMPRED9=(GrammarAST)Match(input,SEMPRED,Follow._SEMPRED_in_element1147); if (state.failed) return retval;
 				if ( state.backtracking == 0 )
@@ -2617,21 +2619,21 @@ public partial class DefineGrammarItemsWalker : TreeParser
 				}
 				break;
 			case 15:
-				// Grammars\\DefineGrammarItemsWalker.g3:434:6: SYN_SEMPRED
+				// Grammars\\DefineGrammarItemsWalker.g3:436:6: SYN_SEMPRED
 				{
 				Match(input,SYN_SEMPRED,Follow._SYN_SEMPRED_in_element1158); if (state.failed) return retval;
 
 				}
 				break;
 			case 16:
-				// Grammars\\DefineGrammarItemsWalker.g3:435:6: ^( BACKTRACK_SEMPRED ( . )* )
+				// Grammars\\DefineGrammarItemsWalker.g3:437:6: ^( BACKTRACK_SEMPRED ( . )* )
 				{
 				Match(input,BACKTRACK_SEMPRED,Follow._BACKTRACK_SEMPRED_in_element1166); if (state.failed) return retval;
 
 				if ( input.LA(1)==TokenConstants.Down )
 				{
 					Match(input, TokenConstants.Down, null); if (state.failed) return retval;
-					// Grammars\\DefineGrammarItemsWalker.g3:435:26: ( . )*
+					// Grammars\\DefineGrammarItemsWalker.g3:437:26: ( . )*
 					for ( ; ; )
 					{
 						int alt35=2;
@@ -2650,7 +2652,7 @@ public partial class DefineGrammarItemsWalker : TreeParser
 						switch ( alt35 )
 						{
 						case 1:
-							// Grammars\\DefineGrammarItemsWalker.g3:435:0: .
+							// Grammars\\DefineGrammarItemsWalker.g3:437:0: .
 							{
 							MatchAny(input); if (state.failed) return retval;
 
@@ -2673,7 +2675,7 @@ public partial class DefineGrammarItemsWalker : TreeParser
 				}
 				break;
 			case 17:
-				// Grammars\\DefineGrammarItemsWalker.g3:436:6: GATED_SEMPRED
+				// Grammars\\DefineGrammarItemsWalker.g3:438:6: GATED_SEMPRED
 				{
 				GATED_SEMPRED10=(GrammarAST)Match(input,GATED_SEMPRED,Follow._GATED_SEMPRED_in_element1177); if (state.failed) return retval;
 				if ( state.backtracking == 0 )
@@ -2687,7 +2689,7 @@ public partial class DefineGrammarItemsWalker : TreeParser
 				}
 				break;
 			case 18:
-				// Grammars\\DefineGrammarItemsWalker.g3:441:6: EPSILON
+				// Grammars\\DefineGrammarItemsWalker.g3:443:6: EPSILON
 				{
 				Match(input,EPSILON,Follow._EPSILON_in_element1188); if (state.failed) return retval;
 
@@ -2710,18 +2712,18 @@ public partial class DefineGrammarItemsWalker : TreeParser
 
 
 	// $ANTLR start "ebnf"
-	// Grammars\\DefineGrammarItemsWalker.g3:444:0: ebnf : (=> dotLoop | block | ^( OPTIONAL block ) | ^( CLOSURE block ) | ^( POSITIVE_CLOSURE block ) );
+	// Grammars\\DefineGrammarItemsWalker.g3:446:0: ebnf : (=> dotLoop | block | ^( OPTIONAL block ) | ^( CLOSURE block ) | ^( POSITIVE_CLOSURE block ) );
 	private void ebnf(  )
 	{
 		try
 		{
-			// Grammars\\DefineGrammarItemsWalker.g3:445:4: (=> dotLoop | block | ^( OPTIONAL block ) | ^( CLOSURE block ) | ^( POSITIVE_CLOSURE block ) )
+			// Grammars\\DefineGrammarItemsWalker.g3:447:4: (=> dotLoop | block | ^( OPTIONAL block ) | ^( CLOSURE block ) | ^( POSITIVE_CLOSURE block ) )
 			int alt37=5;
 			alt37 = dfa37.Predict(input);
 			switch ( alt37 )
 			{
 			case 1:
-				// Grammars\\DefineGrammarItemsWalker.g3:445:4: => dotLoop
+				// Grammars\\DefineGrammarItemsWalker.g3:447:4: => dotLoop
 				{
 
 				PushFollow(Follow._dotLoop_in_ebnf1206);
@@ -2733,7 +2735,7 @@ public partial class DefineGrammarItemsWalker : TreeParser
 				}
 				break;
 			case 2:
-				// Grammars\\DefineGrammarItemsWalker.g3:446:4: block
+				// Grammars\\DefineGrammarItemsWalker.g3:448:4: block
 				{
 				PushFollow(Follow._block_in_ebnf1212);
 				block();
@@ -2744,7 +2746,7 @@ public partial class DefineGrammarItemsWalker : TreeParser
 				}
 				break;
 			case 3:
-				// Grammars\\DefineGrammarItemsWalker.g3:447:4: ^( OPTIONAL block )
+				// Grammars\\DefineGrammarItemsWalker.g3:449:4: ^( OPTIONAL block )
 				{
 				Match(input,OPTIONAL,Follow._OPTIONAL_in_ebnf1219); if (state.failed) return ;
 
@@ -2760,7 +2762,7 @@ public partial class DefineGrammarItemsWalker : TreeParser
 				}
 				break;
 			case 4:
-				// Grammars\\DefineGrammarItemsWalker.g3:448:4: ^( CLOSURE block )
+				// Grammars\\DefineGrammarItemsWalker.g3:450:4: ^( CLOSURE block )
 				{
 				Match(input,CLOSURE,Follow._CLOSURE_in_ebnf1230); if (state.failed) return ;
 
@@ -2776,7 +2778,7 @@ public partial class DefineGrammarItemsWalker : TreeParser
 				}
 				break;
 			case 5:
-				// Grammars\\DefineGrammarItemsWalker.g3:449:4: ^( POSITIVE_CLOSURE block )
+				// Grammars\\DefineGrammarItemsWalker.g3:451:4: ^( POSITIVE_CLOSURE block )
 				{
 				Match(input,POSITIVE_CLOSURE,Follow._POSITIVE_CLOSURE_in_ebnf1241); if (state.failed) return ;
 
@@ -2811,7 +2813,7 @@ public partial class DefineGrammarItemsWalker : TreeParser
 	}
 
 	// $ANTLR start "dotLoop"
-	// Grammars\\DefineGrammarItemsWalker.g3:454:0: dotLoop : ( ^( CLOSURE dotBlock ) | ^( POSITIVE_CLOSURE dotBlock ) ) ;
+	// Grammars\\DefineGrammarItemsWalker.g3:456:0: dotLoop : ( ^( CLOSURE dotBlock ) | ^( POSITIVE_CLOSURE dotBlock ) ) ;
 	private DefineGrammarItemsWalker.dotLoop_return dotLoop(  )
 	{
 		DefineGrammarItemsWalker.dotLoop_return retval = new DefineGrammarItemsWalker.dotLoop_return();
@@ -2819,10 +2821,10 @@ public partial class DefineGrammarItemsWalker : TreeParser
 
 		try
 		{
-			// Grammars\\DefineGrammarItemsWalker.g3:455:4: ( ( ^( CLOSURE dotBlock ) | ^( POSITIVE_CLOSURE dotBlock ) ) )
-			// Grammars\\DefineGrammarItemsWalker.g3:455:4: ( ^( CLOSURE dotBlock ) | ^( POSITIVE_CLOSURE dotBlock ) )
+			// Grammars\\DefineGrammarItemsWalker.g3:457:4: ( ( ^( CLOSURE dotBlock ) | ^( POSITIVE_CLOSURE dotBlock ) ) )
+			// Grammars\\DefineGrammarItemsWalker.g3:457:4: ( ^( CLOSURE dotBlock ) | ^( POSITIVE_CLOSURE dotBlock ) )
 			{
-			// Grammars\\DefineGrammarItemsWalker.g3:455:4: ( ^( CLOSURE dotBlock ) | ^( POSITIVE_CLOSURE dotBlock ) )
+			// Grammars\\DefineGrammarItemsWalker.g3:457:4: ( ^( CLOSURE dotBlock ) | ^( POSITIVE_CLOSURE dotBlock ) )
 			int alt38=2;
 			int LA38_0 = input.LA(1);
 
@@ -2844,7 +2846,7 @@ public partial class DefineGrammarItemsWalker : TreeParser
 			switch ( alt38 )
 			{
 			case 1:
-				// Grammars\\DefineGrammarItemsWalker.g3:455:6: ^( CLOSURE dotBlock )
+				// Grammars\\DefineGrammarItemsWalker.g3:457:6: ^( CLOSURE dotBlock )
 				{
 				Match(input,CLOSURE,Follow._CLOSURE_in_dotLoop1262); if (state.failed) return retval;
 
@@ -2860,7 +2862,7 @@ public partial class DefineGrammarItemsWalker : TreeParser
 				}
 				break;
 			case 2:
-				// Grammars\\DefineGrammarItemsWalker.g3:456:5: ^( POSITIVE_CLOSURE dotBlock )
+				// Grammars\\DefineGrammarItemsWalker.g3:458:5: ^( POSITIVE_CLOSURE dotBlock )
 				{
 				Match(input,POSITIVE_CLOSURE,Follow._POSITIVE_CLOSURE_in_dotLoop1274); if (state.failed) return retval;
 
@@ -2911,13 +2913,13 @@ public partial class DefineGrammarItemsWalker : TreeParser
 
 
 	// $ANTLR start "dotBlock"
-	// Grammars\\DefineGrammarItemsWalker.g3:472:0: dotBlock : ^( BLOCK ^( ALT WILDCARD EOA ) EOB ) ;
+	// Grammars\\DefineGrammarItemsWalker.g3:474:0: dotBlock : ^( BLOCK ^( ALT WILDCARD EOA ) EOB ) ;
 	private void dotBlock(  )
 	{
 		try
 		{
-			// Grammars\\DefineGrammarItemsWalker.g3:473:4: ( ^( BLOCK ^( ALT WILDCARD EOA ) EOB ) )
-			// Grammars\\DefineGrammarItemsWalker.g3:473:4: ^( BLOCK ^( ALT WILDCARD EOA ) EOB )
+			// Grammars\\DefineGrammarItemsWalker.g3:475:4: ( ^( BLOCK ^( ALT WILDCARD EOA ) EOB ) )
+			// Grammars\\DefineGrammarItemsWalker.g3:475:4: ^( BLOCK ^( ALT WILDCARD EOA ) EOB )
 			{
 			Match(input,BLOCK,Follow._BLOCK_in_dotBlock1299); if (state.failed) return ;
 
@@ -2950,18 +2952,18 @@ public partial class DefineGrammarItemsWalker : TreeParser
 
 
 	// $ANTLR start "tree_"
-	// Grammars\\DefineGrammarItemsWalker.g3:476:0: tree_ : ^( TREE_BEGIN ( element )+ ) ;
+	// Grammars\\DefineGrammarItemsWalker.g3:478:0: tree_ : ^( TREE_BEGIN ( element )+ ) ;
 	private void tree_(  )
 	{
 		try
 		{
-			// Grammars\\DefineGrammarItemsWalker.g3:477:4: ( ^( TREE_BEGIN ( element )+ ) )
-			// Grammars\\DefineGrammarItemsWalker.g3:477:4: ^( TREE_BEGIN ( element )+ )
+			// Grammars\\DefineGrammarItemsWalker.g3:479:4: ( ^( TREE_BEGIN ( element )+ ) )
+			// Grammars\\DefineGrammarItemsWalker.g3:479:4: ^( TREE_BEGIN ( element )+ )
 			{
 			Match(input,TREE_BEGIN,Follow._TREE_BEGIN_in_tree_1325); if (state.failed) return ;
 
 			Match(input, TokenConstants.Down, null); if (state.failed) return ;
-			// Grammars\\DefineGrammarItemsWalker.g3:477:17: ( element )+
+			// Grammars\\DefineGrammarItemsWalker.g3:479:17: ( element )+
 			int cnt39=0;
 			for ( ; ; )
 			{
@@ -2977,7 +2979,7 @@ public partial class DefineGrammarItemsWalker : TreeParser
 				switch ( alt39 )
 				{
 				case 1:
-					// Grammars\\DefineGrammarItemsWalker.g3:477:0: element
+					// Grammars\\DefineGrammarItemsWalker.g3:479:0: element
 					{
 					PushFollow(Follow._element_in_tree_1327);
 					element();
@@ -3022,7 +3024,7 @@ public partial class DefineGrammarItemsWalker : TreeParser
 
 
 	// $ANTLR start "atom"
-	// Grammars\\DefineGrammarItemsWalker.g3:480:0: atom[GrammarAST scope_] : ( ^(rr= RULE_REF (rarg= ARG_ACTION )? ) | ^(t= TOKEN_REF (targ= ARG_ACTION )? ) |c= CHAR_LITERAL |s= STRING_LITERAL | WILDCARD | ^( DOT ID atom[$ID] ) );
+	// Grammars\\DefineGrammarItemsWalker.g3:482:0: atom[GrammarAST scope_] : ( ^(rr= RULE_REF (rarg= ARG_ACTION )? ) | ^(t= TOKEN_REF (targ= ARG_ACTION )? ) |c= CHAR_LITERAL |s= STRING_LITERAL | WILDCARD | ^( DOT ID atom[$ID] ) );
 	private void atom( GrammarAST scope_ )
 	{
 		GrammarAST rr=null;
@@ -3035,7 +3037,7 @@ public partial class DefineGrammarItemsWalker : TreeParser
 
 		try
 		{
-			// Grammars\\DefineGrammarItemsWalker.g3:481:4: ( ^(rr= RULE_REF (rarg= ARG_ACTION )? ) | ^(t= TOKEN_REF (targ= ARG_ACTION )? ) |c= CHAR_LITERAL |s= STRING_LITERAL | WILDCARD | ^( DOT ID atom[$ID] ) )
+			// Grammars\\DefineGrammarItemsWalker.g3:483:4: ( ^(rr= RULE_REF (rarg= ARG_ACTION )? ) | ^(t= TOKEN_REF (targ= ARG_ACTION )? ) |c= CHAR_LITERAL |s= STRING_LITERAL | WILDCARD | ^( DOT ID atom[$ID] ) )
 			int alt42=6;
 			switch ( input.LA(1) )
 			{
@@ -3081,14 +3083,14 @@ public partial class DefineGrammarItemsWalker : TreeParser
 			switch ( alt42 )
 			{
 			case 1:
-				// Grammars\\DefineGrammarItemsWalker.g3:481:4: ^(rr= RULE_REF (rarg= ARG_ACTION )? )
+				// Grammars\\DefineGrammarItemsWalker.g3:483:4: ^(rr= RULE_REF (rarg= ARG_ACTION )? )
 				{
 				rr=(GrammarAST)Match(input,RULE_REF,Follow._RULE_REF_in_atom1345); if (state.failed) return ;
 
 				if ( input.LA(1)==TokenConstants.Down )
 				{
 					Match(input, TokenConstants.Down, null); if (state.failed) return ;
-					// Grammars\\DefineGrammarItemsWalker.g3:481:19: (rarg= ARG_ACTION )?
+					// Grammars\\DefineGrammarItemsWalker.g3:483:19: (rarg= ARG_ACTION )?
 					int alt40=2;
 					int LA40_0 = input.LA(1);
 
@@ -3099,7 +3101,7 @@ public partial class DefineGrammarItemsWalker : TreeParser
 					switch ( alt40 )
 					{
 					case 1:
-						// Grammars\\DefineGrammarItemsWalker.g3:481:20: rarg= ARG_ACTION
+						// Grammars\\DefineGrammarItemsWalker.g3:483:20: rarg= ARG_ACTION
 						{
 						rarg=(GrammarAST)Match(input,ARG_ACTION,Follow._ARG_ACTION_in_atom1350); if (state.failed) return ;
 
@@ -3126,14 +3128,14 @@ public partial class DefineGrammarItemsWalker : TreeParser
 				}
 				break;
 			case 2:
-				// Grammars\\DefineGrammarItemsWalker.g3:490:4: ^(t= TOKEN_REF (targ= ARG_ACTION )? )
+				// Grammars\\DefineGrammarItemsWalker.g3:492:4: ^(t= TOKEN_REF (targ= ARG_ACTION )? )
 				{
 				t=(GrammarAST)Match(input,TOKEN_REF,Follow._TOKEN_REF_in_atom1367); if (state.failed) return ;
 
 				if ( input.LA(1)==TokenConstants.Down )
 				{
 					Match(input, TokenConstants.Down, null); if (state.failed) return ;
-					// Grammars\\DefineGrammarItemsWalker.g3:490:19: (targ= ARG_ACTION )?
+					// Grammars\\DefineGrammarItemsWalker.g3:492:19: (targ= ARG_ACTION )?
 					int alt41=2;
 					int LA41_0 = input.LA(1);
 
@@ -3144,7 +3146,7 @@ public partial class DefineGrammarItemsWalker : TreeParser
 					switch ( alt41 )
 					{
 					case 1:
-						// Grammars\\DefineGrammarItemsWalker.g3:490:20: targ= ARG_ACTION
+						// Grammars\\DefineGrammarItemsWalker.g3:492:20: targ= ARG_ACTION
 						{
 						targ=(GrammarAST)Match(input,ARG_ACTION,Follow._ARG_ACTION_in_atom1372); if (state.failed) return ;
 
@@ -3178,7 +3180,7 @@ public partial class DefineGrammarItemsWalker : TreeParser
 				}
 				break;
 			case 3:
-				// Grammars\\DefineGrammarItemsWalker.g3:506:4: c= CHAR_LITERAL
+				// Grammars\\DefineGrammarItemsWalker.g3:508:4: c= CHAR_LITERAL
 				{
 				c=(GrammarAST)Match(input,CHAR_LITERAL,Follow._CHAR_LITERAL_in_atom1388); if (state.failed) return ;
 				if ( state.backtracking == 0 )
@@ -3196,7 +3198,7 @@ public partial class DefineGrammarItemsWalker : TreeParser
 				}
 				break;
 			case 4:
-				// Grammars\\DefineGrammarItemsWalker.g3:515:4: s= STRING_LITERAL
+				// Grammars\\DefineGrammarItemsWalker.g3:517:4: s= STRING_LITERAL
 				{
 				s=(GrammarAST)Match(input,STRING_LITERAL,Follow._STRING_LITERAL_in_atom1399); if (state.failed) return ;
 				if ( state.backtracking == 0 )
@@ -3214,14 +3216,14 @@ public partial class DefineGrammarItemsWalker : TreeParser
 				}
 				break;
 			case 5:
-				// Grammars\\DefineGrammarItemsWalker.g3:524:4: WILDCARD
+				// Grammars\\DefineGrammarItemsWalker.g3:526:4: WILDCARD
 				{
 				Match(input,WILDCARD,Follow._WILDCARD_in_atom1409); if (state.failed) return ;
 
 				}
 				break;
 			case 6:
-				// Grammars\\DefineGrammarItemsWalker.g3:525:4: ^( DOT ID atom[$ID] )
+				// Grammars\\DefineGrammarItemsWalker.g3:527:4: ^( DOT ID atom[$ID] )
 				{
 				Match(input,DOT,Follow._DOT_in_atom1415); if (state.failed) return ;
 
@@ -3254,12 +3256,12 @@ public partial class DefineGrammarItemsWalker : TreeParser
 
 
 	// $ANTLR start "ast_suffix"
-	// Grammars\\DefineGrammarItemsWalker.g3:528:0: ast_suffix : ( ROOT | BANG );
+	// Grammars\\DefineGrammarItemsWalker.g3:530:0: ast_suffix : ( ROOT | BANG );
 	private void ast_suffix(  )
 	{
 		try
 		{
-			// Grammars\\DefineGrammarItemsWalker.g3:529:4: ( ROOT | BANG )
+			// Grammars\\DefineGrammarItemsWalker.g3:531:4: ( ROOT | BANG )
 			// Grammars\\DefineGrammarItemsWalker.g3:
 			{
 			if ( input.LA(1)==BANG||input.LA(1)==ROOT )
@@ -3295,7 +3297,7 @@ public partial class DefineGrammarItemsWalker : TreeParser
 	}
 
 	// $ANTLR start "rewrite"
-	// Grammars\\DefineGrammarItemsWalker.g3:533:0: rewrite : ( ^( REWRITE (pred= SEMPRED )? rewrite_alternative ) )* ;
+	// Grammars\\DefineGrammarItemsWalker.g3:535:0: rewrite : ( ^( REWRITE (pred= SEMPRED )? rewrite_alternative ) )* ;
 	private DefineGrammarItemsWalker.rewrite_return rewrite(  )
 	{
 		DefineGrammarItemsWalker.rewrite_return retval = new DefineGrammarItemsWalker.rewrite_return();
@@ -3313,10 +3315,10 @@ public partial class DefineGrammarItemsWalker : TreeParser
 
 		try
 		{
-			// Grammars\\DefineGrammarItemsWalker.g3:543:4: ( ( ^( REWRITE (pred= SEMPRED )? rewrite_alternative ) )* )
-			// Grammars\\DefineGrammarItemsWalker.g3:543:4: ( ^( REWRITE (pred= SEMPRED )? rewrite_alternative ) )*
+			// Grammars\\DefineGrammarItemsWalker.g3:545:4: ( ( ^( REWRITE (pred= SEMPRED )? rewrite_alternative ) )* )
+			// Grammars\\DefineGrammarItemsWalker.g3:545:4: ( ^( REWRITE (pred= SEMPRED )? rewrite_alternative ) )*
 			{
-			// Grammars\\DefineGrammarItemsWalker.g3:543:4: ( ^( REWRITE (pred= SEMPRED )? rewrite_alternative ) )*
+			// Grammars\\DefineGrammarItemsWalker.g3:545:4: ( ^( REWRITE (pred= SEMPRED )? rewrite_alternative ) )*
 			for ( ; ; )
 			{
 				int alt44=2;
@@ -3331,12 +3333,12 @@ public partial class DefineGrammarItemsWalker : TreeParser
 				switch ( alt44 )
 				{
 				case 1:
-					// Grammars\\DefineGrammarItemsWalker.g3:544:4: ^( REWRITE (pred= SEMPRED )? rewrite_alternative )
+					// Grammars\\DefineGrammarItemsWalker.g3:546:4: ^( REWRITE (pred= SEMPRED )? rewrite_alternative )
 					{
 					Match(input,REWRITE,Follow._REWRITE_in_rewrite1461); if (state.failed) return retval;
 
 					Match(input, TokenConstants.Down, null); if (state.failed) return retval;
-					// Grammars\\DefineGrammarItemsWalker.g3:544:15: (pred= SEMPRED )?
+					// Grammars\\DefineGrammarItemsWalker.g3:546:15: (pred= SEMPRED )?
 					int alt43=2;
 					int LA43_0 = input.LA(1);
 
@@ -3347,7 +3349,7 @@ public partial class DefineGrammarItemsWalker : TreeParser
 					switch ( alt43 )
 					{
 					case 1:
-						// Grammars\\DefineGrammarItemsWalker.g3:544:16: pred= SEMPRED
+						// Grammars\\DefineGrammarItemsWalker.g3:546:16: pred= SEMPRED
 						{
 						pred=(GrammarAST)Match(input,SEMPRED,Follow._SEMPRED_in_rewrite1466); if (state.failed) return retval;
 
@@ -3407,7 +3409,7 @@ public partial class DefineGrammarItemsWalker : TreeParser
 	}
 
 	// $ANTLR start "rewrite_block"
-	// Grammars\\DefineGrammarItemsWalker.g3:556:0: rewrite_block : ^( BLOCK rewrite_alternative EOB ) ;
+	// Grammars\\DefineGrammarItemsWalker.g3:558:0: rewrite_block : ^( BLOCK rewrite_alternative EOB ) ;
 	private DefineGrammarItemsWalker.rewrite_block_return rewrite_block(  )
 	{
 		DefineGrammarItemsWalker.rewrite_block_return retval = new DefineGrammarItemsWalker.rewrite_block_return();
@@ -3425,8 +3427,8 @@ public partial class DefineGrammarItemsWalker : TreeParser
 
 		try
 		{
-			// Grammars\\DefineGrammarItemsWalker.g3:568:6: ( ^( BLOCK rewrite_alternative EOB ) )
-			// Grammars\\DefineGrammarItemsWalker.g3:568:6: ^( BLOCK rewrite_alternative EOB )
+			// Grammars\\DefineGrammarItemsWalker.g3:570:6: ( ^( BLOCK rewrite_alternative EOB ) )
+			// Grammars\\DefineGrammarItemsWalker.g3:570:6: ^( BLOCK rewrite_alternative EOB )
 			{
 			Match(input,BLOCK,Follow._BLOCK_in_rewrite_block1505); if (state.failed) return retval;
 
@@ -3470,14 +3472,14 @@ public partial class DefineGrammarItemsWalker : TreeParser
 
 
 	// $ANTLR start "rewrite_alternative"
-	// Grammars\\DefineGrammarItemsWalker.g3:582:0: rewrite_alternative : ({...}? => ^(a= ALT ( ( rewrite_element )+ | EPSILON ) EOA ) |{...}? => rewrite_template | ETC {...}?);
+	// Grammars\\DefineGrammarItemsWalker.g3:584:0: rewrite_alternative : ({...}? => ^(a= ALT ( ( rewrite_element )+ | EPSILON ) EOA ) |{...}? => rewrite_template | ETC {...}?);
 	private void rewrite_alternative(  )
 	{
 		GrammarAST a=null;
 
 		try
 		{
-			// Grammars\\DefineGrammarItemsWalker.g3:583:4: ({...}? => ^(a= ALT ( ( rewrite_element )+ | EPSILON ) EOA ) |{...}? => rewrite_template | ETC {...}?)
+			// Grammars\\DefineGrammarItemsWalker.g3:585:4: ({...}? => ^(a= ALT ( ( rewrite_element )+ | EPSILON ) EOA ) |{...}? => rewrite_template | ETC {...}?)
 			int alt47=3;
 			int LA47_0 = input.LA(1);
 
@@ -3571,7 +3573,7 @@ public partial class DefineGrammarItemsWalker : TreeParser
 			switch ( alt47 )
 			{
 			case 1:
-				// Grammars\\DefineGrammarItemsWalker.g3:583:4: {...}? => ^(a= ALT ( ( rewrite_element )+ | EPSILON ) EOA )
+				// Grammars\\DefineGrammarItemsWalker.g3:585:4: {...}? => ^(a= ALT ( ( rewrite_element )+ | EPSILON ) EOA )
 				{
 				if ( !((grammar.BuildAST)) )
 				{
@@ -3581,7 +3583,7 @@ public partial class DefineGrammarItemsWalker : TreeParser
 				a=(GrammarAST)Match(input,ALT,Follow._ALT_in_rewrite_alternative1541); if (state.failed) return ;
 
 				Match(input, TokenConstants.Down, null); if (state.failed) return ;
-				// Grammars\\DefineGrammarItemsWalker.g3:583:36: ( ( rewrite_element )+ | EPSILON )
+				// Grammars\\DefineGrammarItemsWalker.g3:585:36: ( ( rewrite_element )+ | EPSILON )
 				int alt46=2;
 				int LA46_0 = input.LA(1);
 
@@ -3603,9 +3605,9 @@ public partial class DefineGrammarItemsWalker : TreeParser
 				switch ( alt46 )
 				{
 				case 1:
-					// Grammars\\DefineGrammarItemsWalker.g3:583:38: ( rewrite_element )+
+					// Grammars\\DefineGrammarItemsWalker.g3:585:38: ( rewrite_element )+
 					{
-					// Grammars\\DefineGrammarItemsWalker.g3:583:38: ( rewrite_element )+
+					// Grammars\\DefineGrammarItemsWalker.g3:585:38: ( rewrite_element )+
 					int cnt45=0;
 					for ( ; ; )
 					{
@@ -3621,7 +3623,7 @@ public partial class DefineGrammarItemsWalker : TreeParser
 						switch ( alt45 )
 						{
 						case 1:
-							// Grammars\\DefineGrammarItemsWalker.g3:583:40: rewrite_element
+							// Grammars\\DefineGrammarItemsWalker.g3:585:40: rewrite_element
 							{
 							PushFollow(Follow._rewrite_element_in_rewrite_alternative1547);
 							rewrite_element();
@@ -3650,7 +3652,7 @@ public partial class DefineGrammarItemsWalker : TreeParser
 					}
 					break;
 				case 2:
-					// Grammars\\DefineGrammarItemsWalker.g3:583:61: EPSILON
+					// Grammars\\DefineGrammarItemsWalker.g3:585:61: EPSILON
 					{
 					Match(input,EPSILON,Follow._EPSILON_in_rewrite_alternative1554); if (state.failed) return ;
 
@@ -3666,7 +3668,7 @@ public partial class DefineGrammarItemsWalker : TreeParser
 				}
 				break;
 			case 2:
-				// Grammars\\DefineGrammarItemsWalker.g3:584:4: {...}? => rewrite_template
+				// Grammars\\DefineGrammarItemsWalker.g3:586:4: {...}? => rewrite_template
 				{
 				if ( !((grammar.BuildTemplate)) )
 				{
@@ -3682,7 +3684,7 @@ public partial class DefineGrammarItemsWalker : TreeParser
 				}
 				break;
 			case 3:
-				// Grammars\\DefineGrammarItemsWalker.g3:585:4: ETC {...}?
+				// Grammars\\DefineGrammarItemsWalker.g3:587:4: ETC {...}?
 				{
 				Match(input,ETC,Follow._ETC_in_rewrite_alternative1574); if (state.failed) return ;
 				if ( !((this.blockLevel==1)) )
@@ -3710,12 +3712,12 @@ public partial class DefineGrammarItemsWalker : TreeParser
 
 
 	// $ANTLR start "rewrite_element"
-	// Grammars\\DefineGrammarItemsWalker.g3:588:0: rewrite_element : ( rewrite_atom | rewrite_ebnf | rewrite_tree );
+	// Grammars\\DefineGrammarItemsWalker.g3:590:0: rewrite_element : ( rewrite_atom | rewrite_ebnf | rewrite_tree );
 	private void rewrite_element(  )
 	{
 		try
 		{
-			// Grammars\\DefineGrammarItemsWalker.g3:589:4: ( rewrite_atom | rewrite_ebnf | rewrite_tree )
+			// Grammars\\DefineGrammarItemsWalker.g3:591:4: ( rewrite_atom | rewrite_ebnf | rewrite_tree )
 			int alt48=3;
 			switch ( input.LA(1) )
 			{
@@ -3753,7 +3755,7 @@ public partial class DefineGrammarItemsWalker : TreeParser
 			switch ( alt48 )
 			{
 			case 1:
-				// Grammars\\DefineGrammarItemsWalker.g3:589:4: rewrite_atom
+				// Grammars\\DefineGrammarItemsWalker.g3:591:4: rewrite_atom
 				{
 				PushFollow(Follow._rewrite_atom_in_rewrite_element1588);
 				rewrite_atom();
@@ -3764,7 +3766,7 @@ public partial class DefineGrammarItemsWalker : TreeParser
 				}
 				break;
 			case 2:
-				// Grammars\\DefineGrammarItemsWalker.g3:590:4: rewrite_ebnf
+				// Grammars\\DefineGrammarItemsWalker.g3:592:4: rewrite_ebnf
 				{
 				PushFollow(Follow._rewrite_ebnf_in_rewrite_element1593);
 				rewrite_ebnf();
@@ -3775,7 +3777,7 @@ public partial class DefineGrammarItemsWalker : TreeParser
 				}
 				break;
 			case 3:
-				// Grammars\\DefineGrammarItemsWalker.g3:591:4: rewrite_tree
+				// Grammars\\DefineGrammarItemsWalker.g3:593:4: rewrite_tree
 				{
 				PushFollow(Follow._rewrite_tree_in_rewrite_element1598);
 				rewrite_tree();
@@ -3802,12 +3804,12 @@ public partial class DefineGrammarItemsWalker : TreeParser
 
 
 	// $ANTLR start "rewrite_ebnf"
-	// Grammars\\DefineGrammarItemsWalker.g3:594:0: rewrite_ebnf : ( ^( OPTIONAL rewrite_block ) | ^( CLOSURE rewrite_block ) | ^( POSITIVE_CLOSURE rewrite_block ) );
+	// Grammars\\DefineGrammarItemsWalker.g3:596:0: rewrite_ebnf : ( ^( OPTIONAL rewrite_block ) | ^( CLOSURE rewrite_block ) | ^( POSITIVE_CLOSURE rewrite_block ) );
 	private void rewrite_ebnf(  )
 	{
 		try
 		{
-			// Grammars\\DefineGrammarItemsWalker.g3:595:4: ( ^( OPTIONAL rewrite_block ) | ^( CLOSURE rewrite_block ) | ^( POSITIVE_CLOSURE rewrite_block ) )
+			// Grammars\\DefineGrammarItemsWalker.g3:597:4: ( ^( OPTIONAL rewrite_block ) | ^( CLOSURE rewrite_block ) | ^( POSITIVE_CLOSURE rewrite_block ) )
 			int alt49=3;
 			switch ( input.LA(1) )
 			{
@@ -3838,7 +3840,7 @@ public partial class DefineGrammarItemsWalker : TreeParser
 			switch ( alt49 )
 			{
 			case 1:
-				// Grammars\\DefineGrammarItemsWalker.g3:595:4: ^( OPTIONAL rewrite_block )
+				// Grammars\\DefineGrammarItemsWalker.g3:597:4: ^( OPTIONAL rewrite_block )
 				{
 				Match(input,OPTIONAL,Follow._OPTIONAL_in_rewrite_ebnf1611); if (state.failed) return ;
 
@@ -3854,7 +3856,7 @@ public partial class DefineGrammarItemsWalker : TreeParser
 				}
 				break;
 			case 2:
-				// Grammars\\DefineGrammarItemsWalker.g3:596:4: ^( CLOSURE rewrite_block )
+				// Grammars\\DefineGrammarItemsWalker.g3:598:4: ^( CLOSURE rewrite_block )
 				{
 				Match(input,CLOSURE,Follow._CLOSURE_in_rewrite_ebnf1622); if (state.failed) return ;
 
@@ -3870,7 +3872,7 @@ public partial class DefineGrammarItemsWalker : TreeParser
 				}
 				break;
 			case 3:
-				// Grammars\\DefineGrammarItemsWalker.g3:597:4: ^( POSITIVE_CLOSURE rewrite_block )
+				// Grammars\\DefineGrammarItemsWalker.g3:599:4: ^( POSITIVE_CLOSURE rewrite_block )
 				{
 				Match(input,POSITIVE_CLOSURE,Follow._POSITIVE_CLOSURE_in_rewrite_ebnf1633); if (state.failed) return ;
 
@@ -3902,13 +3904,13 @@ public partial class DefineGrammarItemsWalker : TreeParser
 
 
 	// $ANTLR start "rewrite_tree"
-	// Grammars\\DefineGrammarItemsWalker.g3:600:0: rewrite_tree : ^( TREE_BEGIN rewrite_atom ( rewrite_element )* ) ;
+	// Grammars\\DefineGrammarItemsWalker.g3:602:0: rewrite_tree : ^( TREE_BEGIN rewrite_atom ( rewrite_element )* ) ;
 	private void rewrite_tree(  )
 	{
 		try
 		{
-			// Grammars\\DefineGrammarItemsWalker.g3:601:6: ( ^( TREE_BEGIN rewrite_atom ( rewrite_element )* ) )
-			// Grammars\\DefineGrammarItemsWalker.g3:601:6: ^( TREE_BEGIN rewrite_atom ( rewrite_element )* )
+			// Grammars\\DefineGrammarItemsWalker.g3:603:6: ( ^( TREE_BEGIN rewrite_atom ( rewrite_element )* ) )
+			// Grammars\\DefineGrammarItemsWalker.g3:603:6: ^( TREE_BEGIN rewrite_atom ( rewrite_element )* )
 			{
 			Match(input,TREE_BEGIN,Follow._TREE_BEGIN_in_rewrite_tree1652); if (state.failed) return ;
 
@@ -3918,7 +3920,7 @@ public partial class DefineGrammarItemsWalker : TreeParser
 
 			state._fsp--;
 			if (state.failed) return ;
-			// Grammars\\DefineGrammarItemsWalker.g3:601:33: ( rewrite_element )*
+			// Grammars\\DefineGrammarItemsWalker.g3:603:33: ( rewrite_element )*
 			for ( ; ; )
 			{
 				int alt50=2;
@@ -3933,7 +3935,7 @@ public partial class DefineGrammarItemsWalker : TreeParser
 				switch ( alt50 )
 				{
 				case 1:
-					// Grammars\\DefineGrammarItemsWalker.g3:601:35: rewrite_element
+					// Grammars\\DefineGrammarItemsWalker.g3:603:35: rewrite_element
 					{
 					PushFollow(Follow._rewrite_element_in_rewrite_tree1658);
 					rewrite_element();
@@ -3976,7 +3978,7 @@ public partial class DefineGrammarItemsWalker : TreeParser
 	}
 
 	// $ANTLR start "rewrite_atom"
-	// Grammars\\DefineGrammarItemsWalker.g3:604:0: rewrite_atom : ( RULE_REF | ( ^( TOKEN_REF ( ARG_ACTION )? ) | CHAR_LITERAL | STRING_LITERAL ) | LABEL | ACTION );
+	// Grammars\\DefineGrammarItemsWalker.g3:606:0: rewrite_atom : ( RULE_REF | ( ^( TOKEN_REF ( ARG_ACTION )? ) | CHAR_LITERAL | STRING_LITERAL ) | LABEL | ACTION );
 	private DefineGrammarItemsWalker.rewrite_atom_return rewrite_atom(  )
 	{
 		DefineGrammarItemsWalker.rewrite_atom_return retval = new DefineGrammarItemsWalker.rewrite_atom_return();
@@ -4012,7 +4014,7 @@ public partial class DefineGrammarItemsWalker : TreeParser
 
 		try
 		{
-			// Grammars\\DefineGrammarItemsWalker.g3:631:4: ( RULE_REF | ( ^( TOKEN_REF ( ARG_ACTION )? ) | CHAR_LITERAL | STRING_LITERAL ) | LABEL | ACTION )
+			// Grammars\\DefineGrammarItemsWalker.g3:633:4: ( RULE_REF | ( ^( TOKEN_REF ( ARG_ACTION )? ) | CHAR_LITERAL | STRING_LITERAL ) | LABEL | ACTION )
 			int alt53=4;
 			switch ( input.LA(1) )
 			{
@@ -4050,16 +4052,16 @@ public partial class DefineGrammarItemsWalker : TreeParser
 			switch ( alt53 )
 			{
 			case 1:
-				// Grammars\\DefineGrammarItemsWalker.g3:631:4: RULE_REF
+				// Grammars\\DefineGrammarItemsWalker.g3:633:4: RULE_REF
 				{
 				Match(input,RULE_REF,Follow._RULE_REF_in_rewrite_atom1679); if (state.failed) return retval;
 
 				}
 				break;
 			case 2:
-				// Grammars\\DefineGrammarItemsWalker.g3:632:4: ( ^( TOKEN_REF ( ARG_ACTION )? ) | CHAR_LITERAL | STRING_LITERAL )
+				// Grammars\\DefineGrammarItemsWalker.g3:634:4: ( ^( TOKEN_REF ( ARG_ACTION )? ) | CHAR_LITERAL | STRING_LITERAL )
 				{
-				// Grammars\\DefineGrammarItemsWalker.g3:632:4: ( ^( TOKEN_REF ( ARG_ACTION )? ) | CHAR_LITERAL | STRING_LITERAL )
+				// Grammars\\DefineGrammarItemsWalker.g3:634:4: ( ^( TOKEN_REF ( ARG_ACTION )? ) | CHAR_LITERAL | STRING_LITERAL )
 				int alt52=3;
 				switch ( input.LA(1) )
 				{
@@ -4090,14 +4092,14 @@ public partial class DefineGrammarItemsWalker : TreeParser
 				switch ( alt52 )
 				{
 				case 1:
-					// Grammars\\DefineGrammarItemsWalker.g3:632:6: ^( TOKEN_REF ( ARG_ACTION )? )
+					// Grammars\\DefineGrammarItemsWalker.g3:634:6: ^( TOKEN_REF ( ARG_ACTION )? )
 					{
 					Match(input,TOKEN_REF,Follow._TOKEN_REF_in_rewrite_atom1689); if (state.failed) return retval;
 
 					if ( input.LA(1)==TokenConstants.Down )
 					{
 						Match(input, TokenConstants.Down, null); if (state.failed) return retval;
-						// Grammars\\DefineGrammarItemsWalker.g3:633:5: ( ARG_ACTION )?
+						// Grammars\\DefineGrammarItemsWalker.g3:635:5: ( ARG_ACTION )?
 						int alt51=2;
 						int LA51_0 = input.LA(1);
 
@@ -4108,7 +4110,7 @@ public partial class DefineGrammarItemsWalker : TreeParser
 						switch ( alt51 )
 						{
 						case 1:
-							// Grammars\\DefineGrammarItemsWalker.g3:633:7: ARG_ACTION
+							// Grammars\\DefineGrammarItemsWalker.g3:635:7: ARG_ACTION
 							{
 							ARG_ACTION12=(GrammarAST)Match(input,ARG_ACTION,Follow._ARG_ACTION_in_rewrite_atom1697); if (state.failed) return retval;
 							if ( state.backtracking == 0 )
@@ -4131,14 +4133,14 @@ public partial class DefineGrammarItemsWalker : TreeParser
 					}
 					break;
 				case 2:
-					// Grammars\\DefineGrammarItemsWalker.g3:640:5: CHAR_LITERAL
+					// Grammars\\DefineGrammarItemsWalker.g3:642:5: CHAR_LITERAL
 					{
 					Match(input,CHAR_LITERAL,Follow._CHAR_LITERAL_in_rewrite_atom1722); if (state.failed) return retval;
 
 					}
 					break;
 				case 3:
-					// Grammars\\DefineGrammarItemsWalker.g3:641:5: STRING_LITERAL
+					// Grammars\\DefineGrammarItemsWalker.g3:643:5: STRING_LITERAL
 					{
 					Match(input,STRING_LITERAL,Follow._STRING_LITERAL_in_rewrite_atom1728); if (state.failed) return retval;
 
@@ -4151,14 +4153,14 @@ public partial class DefineGrammarItemsWalker : TreeParser
 				}
 				break;
 			case 3:
-				// Grammars\\DefineGrammarItemsWalker.g3:643:4: LABEL
+				// Grammars\\DefineGrammarItemsWalker.g3:645:4: LABEL
 				{
 				Match(input,LABEL,Follow._LABEL_in_rewrite_atom1737); if (state.failed) return retval;
 
 				}
 				break;
 			case 4:
-				// Grammars\\DefineGrammarItemsWalker.g3:644:4: ACTION
+				// Grammars\\DefineGrammarItemsWalker.g3:646:4: ACTION
 				{
 				ACTION13=(GrammarAST)Match(input,ACTION,Follow._ACTION_in_rewrite_atom1742); if (state.failed) return retval;
 				if ( state.backtracking == 0 )
@@ -4188,7 +4190,7 @@ public partial class DefineGrammarItemsWalker : TreeParser
 
 
 	// $ANTLR start "rewrite_template"
-	// Grammars\\DefineGrammarItemsWalker.g3:651:0: rewrite_template : ( ^( ALT EPSILON EOA ) | ^( TEMPLATE (id= ID |ind= ACTION ) ^( ARGLIST ( ^( ARG arg= ID a= ACTION ) )* ) ( DOUBLE_QUOTE_STRING_LITERAL | DOUBLE_ANGLE_STRING_LITERAL )? ) |act= ACTION );
+	// Grammars\\DefineGrammarItemsWalker.g3:653:0: rewrite_template : ( ^( ALT EPSILON EOA ) | ^( TEMPLATE (id= ID |ind= ACTION ) ^( ARGLIST ( ^( ARG arg= ID a= ACTION ) )* ) ( DOUBLE_QUOTE_STRING_LITERAL | DOUBLE_ANGLE_STRING_LITERAL )? ) |act= ACTION );
 	private void rewrite_template(  )
 	{
 		GrammarAST id=null;
@@ -4199,7 +4201,7 @@ public partial class DefineGrammarItemsWalker : TreeParser
 
 		try
 		{
-			// Grammars\\DefineGrammarItemsWalker.g3:652:4: ( ^( ALT EPSILON EOA ) | ^( TEMPLATE (id= ID |ind= ACTION ) ^( ARGLIST ( ^( ARG arg= ID a= ACTION ) )* ) ( DOUBLE_QUOTE_STRING_LITERAL | DOUBLE_ANGLE_STRING_LITERAL )? ) |act= ACTION )
+			// Grammars\\DefineGrammarItemsWalker.g3:654:4: ( ^( ALT EPSILON EOA ) | ^( TEMPLATE (id= ID |ind= ACTION ) ^( ARGLIST ( ^( ARG arg= ID a= ACTION ) )* ) ( DOUBLE_QUOTE_STRING_LITERAL | DOUBLE_ANGLE_STRING_LITERAL )? ) |act= ACTION )
 			int alt57=3;
 			switch ( input.LA(1) )
 			{
@@ -4230,7 +4232,7 @@ public partial class DefineGrammarItemsWalker : TreeParser
 			switch ( alt57 )
 			{
 			case 1:
-				// Grammars\\DefineGrammarItemsWalker.g3:652:4: ^( ALT EPSILON EOA )
+				// Grammars\\DefineGrammarItemsWalker.g3:654:4: ^( ALT EPSILON EOA )
 				{
 				Match(input,ALT,Follow._ALT_in_rewrite_template1759); if (state.failed) return ;
 
@@ -4243,12 +4245,12 @@ public partial class DefineGrammarItemsWalker : TreeParser
 				}
 				break;
 			case 2:
-				// Grammars\\DefineGrammarItemsWalker.g3:653:4: ^( TEMPLATE (id= ID |ind= ACTION ) ^( ARGLIST ( ^( ARG arg= ID a= ACTION ) )* ) ( DOUBLE_QUOTE_STRING_LITERAL | DOUBLE_ANGLE_STRING_LITERAL )? )
+				// Grammars\\DefineGrammarItemsWalker.g3:655:4: ^( TEMPLATE (id= ID |ind= ACTION ) ^( ARGLIST ( ^( ARG arg= ID a= ACTION ) )* ) ( DOUBLE_QUOTE_STRING_LITERAL | DOUBLE_ANGLE_STRING_LITERAL )? )
 				{
 				Match(input,TEMPLATE,Follow._TEMPLATE_in_rewrite_template1772); if (state.failed) return ;
 
 				Match(input, TokenConstants.Down, null); if (state.failed) return ;
-				// Grammars\\DefineGrammarItemsWalker.g3:653:16: (id= ID |ind= ACTION )
+				// Grammars\\DefineGrammarItemsWalker.g3:655:16: (id= ID |ind= ACTION )
 				int alt54=2;
 				int LA54_0 = input.LA(1);
 
@@ -4270,14 +4272,14 @@ public partial class DefineGrammarItemsWalker : TreeParser
 				switch ( alt54 )
 				{
 				case 1:
-					// Grammars\\DefineGrammarItemsWalker.g3:653:17: id= ID
+					// Grammars\\DefineGrammarItemsWalker.g3:655:17: id= ID
 					{
 					id=(GrammarAST)Match(input,ID,Follow._ID_in_rewrite_template1777); if (state.failed) return ;
 
 					}
 					break;
 				case 2:
-					// Grammars\\DefineGrammarItemsWalker.g3:653:23: ind= ACTION
+					// Grammars\\DefineGrammarItemsWalker.g3:655:23: ind= ACTION
 					{
 					ind=(GrammarAST)Match(input,ACTION,Follow._ACTION_in_rewrite_template1781); if (state.failed) return ;
 
@@ -4291,7 +4293,7 @@ public partial class DefineGrammarItemsWalker : TreeParser
 				if ( input.LA(1)==TokenConstants.Down )
 				{
 					Match(input, TokenConstants.Down, null); if (state.failed) return ;
-					// Grammars\\DefineGrammarItemsWalker.g3:655:5: ( ^( ARG arg= ID a= ACTION ) )*
+					// Grammars\\DefineGrammarItemsWalker.g3:657:5: ( ^( ARG arg= ID a= ACTION ) )*
 					for ( ; ; )
 					{
 						int alt55=2;
@@ -4306,7 +4308,7 @@ public partial class DefineGrammarItemsWalker : TreeParser
 						switch ( alt55 )
 						{
 						case 1:
-							// Grammars\\DefineGrammarItemsWalker.g3:655:7: ^( ARG arg= ID a= ACTION )
+							// Grammars\\DefineGrammarItemsWalker.g3:657:7: ^( ARG arg= ID a= ACTION )
 							{
 							Match(input,ARG,Follow._ARG_in_rewrite_template1799); if (state.failed) return ;
 
@@ -4348,7 +4350,7 @@ public partial class DefineGrammarItemsWalker : TreeParser
 									}
 								
 				}
-				// Grammars\\DefineGrammarItemsWalker.g3:669:4: ( DOUBLE_QUOTE_STRING_LITERAL | DOUBLE_ANGLE_STRING_LITERAL )?
+				// Grammars\\DefineGrammarItemsWalker.g3:671:4: ( DOUBLE_QUOTE_STRING_LITERAL | DOUBLE_ANGLE_STRING_LITERAL )?
 				int alt56=2;
 				int LA56_0 = input.LA(1);
 
@@ -4385,7 +4387,7 @@ public partial class DefineGrammarItemsWalker : TreeParser
 				}
 				break;
 			case 3:
-				// Grammars\\DefineGrammarItemsWalker.g3:673:4: act= ACTION
+				// Grammars\\DefineGrammarItemsWalker.g3:675:4: act= ACTION
 				{
 				act=(GrammarAST)Match(input,ACTION,Follow._ACTION_in_rewrite_template1864); if (state.failed) return ;
 				if ( state.backtracking == 0 )
@@ -4416,8 +4418,8 @@ public partial class DefineGrammarItemsWalker : TreeParser
 	// $ANTLR start synpred1_DefineGrammarItemsWalker
 	public void synpred1_DefineGrammarItemsWalker_fragment()
 	{
-		// Grammars\\DefineGrammarItemsWalker.g3:445:4: ( dotLoop )
-		// Grammars\\DefineGrammarItemsWalker.g3:445:5: dotLoop
+		// Grammars\\DefineGrammarItemsWalker.g3:447:4: ( dotLoop )
+		// Grammars\\DefineGrammarItemsWalker.g3:447:5: dotLoop
 		{
 		PushFollow(Follow._dotLoop_in_synpred1_DefineGrammarItemsWalker1201);
 		dotLoop();
@@ -4538,7 +4540,7 @@ public partial class DefineGrammarItemsWalker : TreeParser
 		}
 		public override string GetDescription()
 		{
-			return "368:0: element : ( ^( ROOT element ) | ^( BANG element ) | atom[null] | ^( NOT element ) | ^( RANGE atom[null] atom[null] ) | ^( CHAR_RANGE atom[null] atom[null] ) | ^( ASSIGN id= ID el= element ) | ^( PLUS_ASSIGN id2= ID a2= element ) | ebnf | tree_ | ^( SYNPRED block ) |act= ACTION |act2= FORCED_ACTION | SEMPRED | SYN_SEMPRED | ^( BACKTRACK_SEMPRED ( . )* ) | GATED_SEMPRED | EPSILON );";
+			return "370:0: element : ( ^( ROOT element ) | ^( BANG element ) | atom[null] | ^( NOT element ) | ^( RANGE atom[null] atom[null] ) | ^( CHAR_RANGE atom[null] atom[null] ) | ^( ASSIGN id= ID el= element ) | ^( PLUS_ASSIGN id2= ID a2= element ) | ebnf | tree_ | ^( SYNPRED block ) |act= ACTION |act2= FORCED_ACTION | SEMPRED | SYN_SEMPRED | ^( BACKTRACK_SEMPRED ( . )* ) | GATED_SEMPRED | EPSILON );";
 		}
 	}
 
@@ -4639,7 +4641,7 @@ public partial class DefineGrammarItemsWalker : TreeParser
 		}
 		public override string GetDescription()
 		{
-			return "444:0: ebnf : (=> dotLoop | block | ^( OPTIONAL block ) | ^( CLOSURE block ) | ^( POSITIVE_CLOSURE block ) );";
+			return "446:0: ebnf : (=> dotLoop | block | ^( OPTIONAL block ) | ^( CLOSURE block ) | ^( POSITIVE_CLOSURE block ) );";
 		}
 	}
 

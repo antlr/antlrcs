@@ -1686,7 +1686,7 @@ namespace AntlrUnitTests
                 RecursionOverflowMessage recMsg = null;
                 GrammarNonDeterminismMessage nondetMsg =
                     getNonDeterminismMessage( equeue.warnings );
-                IList nonDetAlts = null;
+                IList<int> nonDetAlts = null;
                 if ( nondetMsg != null )
                 {
                     nonDetAlts =

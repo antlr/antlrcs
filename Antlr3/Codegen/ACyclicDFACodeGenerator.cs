@@ -60,7 +60,7 @@ namespace Antlr3.Codegen
                 DFAState s,
                 int k )
         {
-            //System.out.println("walk "+s.stateNumber+" in dfa for decision "+dfa.decisionNumber);
+            //System.Console.Out.WriteLine( "walk " + s.stateNumber + " in dfa for decision " + dfa.decisionNumber );
             if ( s.IsAcceptState )
             {
                 StringTemplate dfaST2 = templates.GetInstanceOf( "dfaAcceptState" );
@@ -96,20 +96,21 @@ namespace Antlr3.Codegen
             dfaST.SetAttribute( "semPredState",
                                s.IsResolvedWithPredicates );
             /*
-            String description = dfa.getNFADecisionStartState().getDescription();
-            description = parentGenerator.target.getTargetStringLiteralFromString(description);
-            //System.out.println("DFA: "+description+" associated with AST "+dfa.getNFADecisionStartState());
-            if ( description!=null ) {
-                dfaST.setAttribute("description", description);
+            string description = dfa.getNFADecisionStartState().Description;
+            description = parentGenerator.target.getTargetStringLiteralFromString( description );
+            //System.Console.Out.WriteLine( "DFA: " + description + " associated with AST " + dfa.getNFADecisionStartState() );
+            if ( description != null )
+            {
+                dfaST.SetAttribute( "description", description );
             }
             */
             int EOTPredicts = NFA.INVALID_ALT_NUMBER;
             DFAState EOTTarget = null;
-            //System.out.println("DFA state "+s.stateNumber);
+            //System.Console.Out.WriteLine( "DFA state " + s.stateNumber );
             for ( int i = 0; i < s.NumberOfTransitions; i++ )
             {
                 Transition edge = (Transition)s.transition( i );
-                //System.out.println("edge "+s.stateNumber+"-"+edge.label.toString()+"->"+edge.target.stateNumber);
+                //System.Console.Out.WriteLine( "edge " + s.stateNumber + "-" + edge.label.ToString() + "->" + edge.target.stateNumber );
                 if ( edge.label.Atom == Label.EOT )
                 {
                     // don't generate a real edge for EOT; track alt EOT predicts
@@ -117,7 +118,7 @@ namespace Antlr3.Codegen
                     EOTTarget = (DFAState)edge.target;
                     EOTPredicts = EOTTarget.getUniquelyPredictedAlt();
                     /*
-                    System.out.println("DFA s"+s.stateNumber+" EOT goes to s"+
+                    System.Console.Out.WriteLine("DFA s"+s.stateNumber+" EOT goes to s"+
                                        edge.target.stateNumber+" predicates alt "+
                                        EOTPredicts);
                     */
@@ -144,7 +145,7 @@ namespace Antlr3.Codegen
                         target.getGatedPredicatesInNFAConfigurations();
                     if ( preds != null )
                     {
-                        //System.out.println("preds="+target.getGatedPredicatesInNFAConfigurations());
+                        //System.Console.Out.WriteLine( "preds=" + target.getGatedPredicatesInNFAConfigurations() );
                         StringTemplate predST = preds.genExpr( parentGenerator,
                                                               parentGenerator.Templates,
                                                               dfa );
@@ -159,10 +160,7 @@ namespace Antlr3.Codegen
                                                        k + 1 );
                 edgeST.SetAttribute( "targetState", targetST );
                 dfaST.SetAttribute( "edges", edgeST );
-                /*
-                System.out.println("back to DFA "+
-                                   dfa.decisionNumber+"."+s.stateNumber);
-                                   */
+                //System.Console.Out.WriteLine( "back to DFA " + dfa.decisionNumber + "." + s.stateNumber );
             }
 
             // HANDLE EOT EDGE
@@ -188,7 +186,7 @@ namespace Antlr3.Codegen
                     edgeST.SetAttribute( "labelExpr",
                                         parentGenerator.genSemanticPredicateExpr( templates, predEdge ) );
                     // the target must be an accept state
-                    //System.out.println("EOT edge");
+                    //System.Console.Out.WriteLine( "EOT edge" );
                     StringTemplate targetST =
                         walkFixedDFAGeneratingStateMachine( templates,
                                                            dfa,

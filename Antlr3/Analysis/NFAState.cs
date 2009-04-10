@@ -290,7 +290,7 @@ namespace Antlr3.Analysis
          */
         public void setDecisionASTNode( GrammarAST decisionASTNode )
         {
-            decisionASTNode.setNFAStartState( this );
+            decisionASTNode.NFAStartState = this;
             this.associatedASTNode = decisionASTNode;
         }
 

@@ -623,8 +623,7 @@ namespace Antlr3
             if ( TestMode )
                 grammar.DefaultRuleModifier = "public";
             composite.setDelegationRoot( grammar );
-            //FileReader fr = null;
-            //fr = new FileReader( grammarFileName );
+
             string f = null;
 
             if ( haveInputDir )
@@ -651,13 +650,9 @@ namespace Antlr3
                 grammarOutputDirectory = grammarFileName.Substring( 0, grammarFileName.LastIndexOfAny( new char[] { Path.DirectorySeparatorChar, Path.AltDirectorySeparatorChar } ) );
             }
 
-            //BufferedReader br = new BufferedReader( fr );
-            //grammar.parseAndBuildAST( br );
             StringReader reader = new StringReader( System.IO.File.ReadAllText( f ) );
             grammar.parseAndBuildAST( reader );
             composite.watchNFAConversion = internalOption_watchNFAConversion;
-            //br.close();
-            //fr.close();
             return grammar;
         }
 
@@ -698,7 +693,8 @@ namespace Antlr3
                 {
                     Grammar @delegate = (Grammar)delegates[i];
                     if ( @delegate != grammar )
-                    { // already processing this one
+                    {
+                        // already processing this one
                         generateRecognizer( @delegate );
                     }
                 }

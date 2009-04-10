@@ -260,22 +260,27 @@ namespace Antlr3.Analysis
             }
         }
 
+#if false
         /** Walk DFA states, unlinking the nfa configs and whatever else I
          *  can to reduce memory footprint.
-        protected void unlinkUnneededStateData(DFAState d) {
-            Integer sI = Utils.integer(d.stateNumber);
-            if ( visited.contains(sI) ) {
+         */
+        protected virtual void unlinkUnneededStateData( DFAState d )
+        {
+            int sI = d.stateNumber;
+            if ( visited.Contains( sI ) )
+            {
                 return; // already visited
             }
-            visited.add(sI);
+            visited.Add( sI );
             d.nfaConfigurations = null;
-            for (int i = 0; i < d.getNumberOfTransitions(); i++) {
-                Transition edge = (Transition) d.transition(i);
-                DFAState edgeTarget = ((DFAState)edge.target);
-                unlinkUnneededStateData(edgeTarget);
+            for ( int i = 0; i < d.NumberOfTransitions; i++ )
+            {
+                Transition edge = (Transition)d.transition( i );
+                DFAState edgeTarget = ( (DFAState)edge.target );
+                unlinkUnneededStateData( edgeTarget );
             }
         }
-         */
+#endif
 
     }
 }

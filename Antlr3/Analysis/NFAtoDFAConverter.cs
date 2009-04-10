@@ -339,7 +339,7 @@ namespace Antlr3.Analysis
                 // We are possibly setting the depth of a pre-existing state
                 // that is equal to one we just computed...not sure if that's
                 // ok.
-                targetState.setLookaheadDepth( d.LookaheadDepth + 1 );
+                targetState.LookaheadDepth = d.LookaheadDepth + 1;
             }
 
             //JSystem.@out.println("DFA after reach / closures:\n"+dfa);
@@ -349,7 +349,7 @@ namespace Antlr3.Analysis
                 //JSystem.@out.println("dangling DFA state "+d+"\nAfter reach / closures:\n"+dfa);
                 // TODO: can fixed lookahead hit a dangling state case?
                 // TODO: yes, with left recursion
-                //System.err.println("dangling state alts: "+d.getAltSet());
+                //Console.Error.WriteLine( "dangling state alts: " + d.getAltSet() );
                 dfa.probe.reportDanglingState( d );
                 // turn off all configurations except for those associated with
                 // min alt number; somebody has to win else some input will not
@@ -385,14 +385,14 @@ namespace Antlr3.Analysis
          *
          *  The normal decision to predict alts 1, 2, 3 is:
          *
-         *  if ( (input.LA(1)>='1' && input.LA(1)<='9') ) {
+         *  if ( (input.LA(1)>='1' && input.LA(1)&lt;='9') ) {
          *       alt7=1;
          *  }
          *  else if ( input.LA(1)=='0' ) {
          *      if ( input.LA(2)=='X'||input.LA(2)=='x' ) {
          *          alt7=2;
          *      }
-         *      else if ( (input.LA(2)>='0' && input.LA(2)<='7') ) {
+         *      else if ( (input.LA(2)>='0' && input.LA(2)&lt;='7') ) {
          *           alt7=3;
          *      }
          *      else if ( input.LA(2)=='L'||input.LA(2)=='l' ) {
@@ -410,7 +410,7 @@ namespace Antlr3.Analysis
          *
          *  A better decision is as follows:
          *
-         *  if ( (input.LA(1)>='1' && input.LA(1)<='9') ) {
+         *  if ( (input.LA(1)>='1' && input.LA(1)&lt;='9') ) {
          *      alt7=1;
          *  }
          *  else if ( input.LA(1)=='0' ) {

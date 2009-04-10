@@ -109,7 +109,6 @@ namespace Antlr3.Tool
             StringBuilder buf = new StringBuilder( 0 );
             // sort lines to normalize; makes states come out ordered
             // and then ordered by edge labels then by target state number :)
-            //Collections.sort( lines );
             lines.Sort( System.StringComparer.Ordinal );
             for ( int i = 0; i < lines.Count; i++ )
             {

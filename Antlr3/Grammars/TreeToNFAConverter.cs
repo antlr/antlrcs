@@ -1,4 +1,4 @@
-// $ANTLR 3.1.2 Grammars\\TreeToNFAConverter.g3 2009-03-23 17:54:04
+// $ANTLR 3.1.2 Grammars\\TreeToNFAConverter.g3 2009-04-10 17:43:58
 
 // The variable 'variable' is assigned but its value is never used.
 #pragma warning disable 219
@@ -860,7 +860,7 @@ public partial class TreeToNFAConverter : TreeParser
 			{
 
 								currentRuleName = (id!=null?id.Text:null);
-								factory.setCurrentRule( grammar.getLocallyDefinedRule(currentRuleName) );
+								factory.CurrentRule = grammar.getLocallyDefinedRule( currentRuleName );
 							
 			}
 			// Grammars\\TreeToNFAConverter.g3:125:4: ( modifier )?
@@ -2481,7 +2481,7 @@ public partial class TreeToNFAConverter : TreeParser
 			if ( blk.Type!=BLOCK ) {
 				blk = (GrammarAST)blk.GetChild(0);
 			}
-			GrammarAST eob = blk.getLastChild();
+			GrammarAST eob = blk.LastChild;
 
 		try
 		{
@@ -3049,7 +3049,7 @@ public partial class TreeToNFAConverter : TreeParser
 											//IIntSet notSet = grammar.complement(stNode.SetValue);
 											// let code generator complement the sets
 											IIntSet s = stNode.SetValue;
-											stNode.setSetValue(s);
+											stNode.SetValue = s;
 											// let code gen do the complement again; here we compute
 											// for NFA construction
 											s = grammar.complement(s);
@@ -3566,7 +3566,7 @@ public partial class TreeToNFAConverter : TreeParser
 
 			IIntSet elements=new IntervalSet();
 			if ( state.backtracking == 0 )
-				((GrammarAST)retval.start).setSetValue(elements); // track set for use by code gen
+				((GrammarAST)retval.start).SetValue = elements; // track set for use by code gen
 
 		try
 		{
@@ -3693,7 +3693,7 @@ public partial class TreeToNFAConverter : TreeParser
 
 						retval.g = factory.build_Set(elements,b);
 						b.followingNFAState = retval.g.right;
-						b.setSetValue(elements); // track set value of this block
+						b.SetValue = elements; // track set value of this block
 						
 			}
 
@@ -4921,6 +4921,7 @@ public partial class TreeToNFAConverter : TreeParser
 	}
 	// $ANTLR end "testSetElement"
 	#endregion Rules
+
 
 	#region DFA
 	DFA41 dfa41;

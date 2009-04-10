@@ -668,7 +668,7 @@ ebnf returns [StringTemplate code=null]
 {
 	Antlr3.Analysis.DFA dfa=null;
 	GrammarAST b = (GrammarAST)$start.GetChild(0);
-	GrammarAST eob = (GrammarAST)b.getLastChild(); // loops will use EOB DFA
+	GrammarAST eob = (GrammarAST)b.LastChild; // loops will use EOB DFA
 }
 	:	(	{ dfa = $start.LookaheadDFA; }
 			blk=block["block", dfa]

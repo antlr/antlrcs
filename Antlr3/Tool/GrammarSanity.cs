@@ -121,10 +121,7 @@ namespace Antlr3.Tool
                 {
                     // record left-recursive rule, but don't go back in
                     grammar.leftRecursiveRules.Add( refRuleDef );
-                    /*
-                    System.out.println("already visited "+refRuleDef+", calling from "+
-                                       s.enclosingRule);
-                                       */
+                    //System.Console.Out.WriteLine( "already visited " + refRuleDef + ", calling from " + s.enclosingRule );
                     addRulesToCycle( refRuleDef,
                                     s.enclosingRule,
                                     listOfRecursiveCycles );

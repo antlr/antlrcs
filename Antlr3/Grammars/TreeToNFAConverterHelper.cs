@@ -117,7 +117,7 @@ namespace Antlr3.Grammars
 
         protected virtual void addFollowTransition( string ruleName, NFAState following )
         {
-            //System.out.println("adding follow link to rule "+ruleName);
+            //System.Console.Out.WriteLine( "adding follow link to rule " + ruleName );
             // find last link in FOLLOW chain emanating from rule
             Rule r = grammar.getRule( ruleName );
             NFAState end = r.stopState;

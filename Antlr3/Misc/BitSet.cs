@@ -718,7 +718,7 @@ namespace Antlr3.Misc
             return ToString();
         }
 
-        private /*final*/ static int wordNumber( int bit )
+        private static int wordNumber( int bit )
         {
             return bit >> LogBits; // bit / BITS
         }

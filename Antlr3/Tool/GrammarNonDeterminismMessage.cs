@@ -32,7 +32,6 @@
 
 namespace Antlr3.Tool
 {
-    using System;
     using Antlr.Runtime.JavaExtensions;
 
     using DecisionProbe = Antlr3.Analysis.DecisionProbe;
@@ -62,12 +61,12 @@ namespace Antlr3.Tool
             }
         }
 
-        public override String ToString()
+        public override string ToString()
         {
             GrammarAST decisionASTNode = probe.dfa.DecisionASTNode;
             line = decisionASTNode.Line;
             charPositionInLine = decisionASTNode.CharPositionInLine;
-            String fileName = probe.dfa.nfa.grammar.FileName;
+            string fileName = probe.dfa.nfa.grammar.FileName;
             if ( fileName != null )
             {
                 file = fileName;
@@ -76,7 +75,7 @@ namespace Antlr3.Tool
             StringTemplate st = getMessageTemplate();
             // Now fill template with information about problemState
             var labels = probe.getSampleNonDeterministicInputSequence( problemState );
-            String input = probe.getInputSequenceDisplay( labels );
+            string input = probe.getInputSequenceDisplay( labels );
             st.SetAttribute( "input", input );
 
             if ( probe.dfa.IsTokensRuleDecision )
@@ -84,7 +83,7 @@ namespace Antlr3.Tool
                 var disabledAlts = probe.getDisabledAlternatives( problemState );
                 foreach ( int altI in disabledAlts )
                 {
-                    String tokenName =
+                    string tokenName =
                         probe.getTokenNameForTokensRuleAlt( (int)altI );
                     // reset the line/col to the token definition (pick last one)
                     NFAState ruleStart =
@@ -99,7 +98,7 @@ namespace Antlr3.Tool
                 st.SetAttribute( "disabled", probe.getDisabledAlternatives( problemState ) );
             }
 
-            IList nondetAlts = probe.getNonDeterministicAltsForState( problemState );
+            var nondetAlts = probe.getNonDeterministicAltsForState( problemState );
             NFAState nfaStart = probe.dfa.NFADecisionStartState;
             // all state paths have to begin with same NFA state
             int firstAlt = 0;
@@ -127,7 +126,7 @@ namespace Antlr3.Tool
                         if ( probe.dfa.IsTokensRuleDecision )
                         {
                             // alts are token rules, convert to the names instead of numbers
-                            String tokenName =
+                            string tokenName =
                                 probe.getTokenNameForTokensRuleAlt( (int)displayAltI );
                             st.SetAttribute( "conflictingTokens", tokenName );
                         }

@@ -293,38 +293,6 @@ namespace Antlr3.Tool
         }
 
         static IANTLRErrorListener theDefaultErrorListener = new DefaultErrorListener();
-        //static ANTLRErrorListener theDefaultErrorListener = new ANTLRErrorListener() {
-        //    public void info(String msg) {
-        //        if (formatWantsSingleLineMessage()) {
-        //            msg = msg.replaceAll("\n", " ");
-        //        }
-        //        System.err.println(msg);
-        //    }
-
-        //    public void error(Message msg) {
-        //        String outputMsg = msg.toString();
-        //        if (formatWantsSingleLineMessage()) {
-        //            outputMsg = outputMsg.replaceAll("\n", " ");
-        //        }
-        //        System.err.println(outputMsg);
-        //    }
-
-        //    public void warning(Message msg) {
-        //        String outputMsg = msg.toString();
-        //        if (formatWantsSingleLineMessage()) {
-        //            outputMsg = outputMsg.replaceAll("\n", " ");
-        //        }
-        //        System.err.println(outputMsg);
-        //    }
-
-        //    public void error(ToolMessage msg) {
-        //        String outputMsg = msg.toString();
-        //        if (formatWantsSingleLineMessage()) {
-        //            outputMsg = outputMsg.replaceAll("\n", " ");
-        //        }
-        //        System.err.println(outputMsg);
-        //    }
-        //};
 
         class InitSTListener : IStringTemplateErrorListener
         {
@@ -354,24 +322,6 @@ namespace Antlr3.Tool
          *  use templates.
          */
         static IStringTemplateErrorListener initSTListener = new InitSTListener();
-        //static StringTemplateErrorListener initSTListener =
-        //    new StringTemplateErrorListener() {
-        //        public void error(String s, Throwable e) {
-        //            System.err.println("ErrorManager init error: "+s);
-        //            if ( e!=null ) {
-        //                System.err.println("exception: "+e);
-        //            }
-        //            /*
-        //            if ( e!=null ) {
-        //                e.printStackTrace(System.err);
-        //            }
-        //            */
-        //        }
-        //        public void warning(String s) {
-        //            System.err.println("ErrorManager init warning: "+s);
-        //        }
-        //        public void debug(String s) {}
-        //    };
 
         class BlankSTListener : IStringTemplateErrorListener
         {
@@ -388,12 +338,6 @@ namespace Antlr3.Tool
          *  and only for the messages STG.
          */
         static IStringTemplateErrorListener blankSTListener = new BlankSTListener();
-        //static StringTemplateErrorListener blankSTListener =
-        //    new StringTemplateErrorListener() {
-        //        public void error(String s, Throwable e) {}
-        //        public void warning(String s) {}
-        //        public void debug(String s) {}
-        //    };
 
         class DefaultSTListener : IStringTemplateErrorListener
         {
@@ -417,20 +361,6 @@ namespace Antlr3.Tool
         /** Errors during initialization related to ST must all go to System.err.
          */
         static IStringTemplateErrorListener theDefaultSTListener = new DefaultSTListener();
-        //static StringTemplateErrorListener theDefaultSTListener =
-        //    new StringTemplateErrorListener() {
-        //    public void error(String s, Throwable e) {
-        //        if ( e instanceof InvocationTargetException ) {
-        //            e = ((InvocationTargetException)e).getTargetException();
-        //        }
-        //        ErrorManager.error(ErrorManager.MSG_INTERNAL_ERROR, s, e);
-        //    }
-        //    public void warning(String s) {
-        //        ErrorManager.warning(ErrorManager.MSG_INTERNAL_WARNING, s);
-        //    }
-        //    public void debug(String s) {
-        //    }
-        //};
 
         static ErrorManager()
         {
@@ -832,19 +762,19 @@ namespace Antlr3.Tool
             getErrorListener().error( msg );
         }
 
-        /*
+#if false
         // TODO: we can remove I think.  All detected now with cycles check.
         public static void leftRecursion(DecisionProbe probe,
                                          int alt,
-                                         Collection targetRules,
-                                         Collection callSiteStates)
+                                         ICollection targetRules,
+                                         ICollection callSiteStates)
         {
             getErrorState().warnings++;
             Message msg = new LeftRecursionMessage(probe, alt, targetRules, callSiteStates);
             getErrorState().warningMsgIDs.add(msg.msgID);
             getErrorListener().warning(msg);
         }
-        */
+#endif
 
         public static void leftRecursionCycles( ICollection cycles )
         {

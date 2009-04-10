@@ -908,7 +908,7 @@ namespace AntlrUnitTests
                     getNonDeterminismMessage( equeue.warnings );
                 assertNotNull( "found no nondet alts; expecting: " +
                                             str( expectingNonDetAlts ), nondetMsg );
-                IList nonDetAlts =
+                var nonDetAlts =
                     nondetMsg.probe.getNonDeterministicAltsForState( nondetMsg.problemState );
                 // compare nonDetAlts with expectingNonDetAlts
                 BitSet s = new BitSet();

@@ -53,7 +53,7 @@ namespace Antlr3.Grammars
 
         public void analyze()
         {
-            // System.out.println("###\naction="+actionToken);
+            //System.Console.Out.WriteLine( "###\naction=" + actionToken );
             IToken t;
             do
             {

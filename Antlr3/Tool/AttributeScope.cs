@@ -246,18 +246,12 @@ namespace Antlr3.Tool
         public virtual Attribute getAttribute( string name )
         {
             return attributes.FirstOrDefault( attr => attr.Name == name );
-            //return (Attribute)attributes.get( name );
         }
 
         /** Used by templates to get all attributes */
         public virtual IList<Attribute> getAttributes()
         {
             return attributes.ToArray();
-            //return attributes.Values.ToArray();
-
-            //IList<Attribute> a = new List<Attribute>();
-            //a.addAll( attributes.values() );
-            //return a;
         }
 
         /** Return the set of keys that collide from

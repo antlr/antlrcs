@@ -44,6 +44,7 @@ namespace Antlr3.Tool
     using IToken = Antlr.Runtime.IToken;
     using ITree = Antlr.Runtime.Tree.ITree;
     using NFAState = Antlr3.Analysis.NFAState;
+    using Obsolete = System.ObsoleteAttribute;
     using StringTemplate = Antlr3.ST.StringTemplate;
 
     /** Grammars are first converted to ASTs using this class and then are
@@ -180,33 +181,33 @@ namespace Antlr3.Tool
         {
             get
             {
-                return getLookaheadDFA();
+                return lookaheadDFA;
             }
             set
             {
-                setLookaheadDFA( value );
+                lookaheadDFA = value;
             }
         }
         public NFAState NFAStartState
         {
             get
             {
-                return getNFAStartState();
+                return _nfaStartState;
             }
             set
             {
-                setNFAStartState( value );
+                _nfaStartState = value;
             }
         }
         public IIntSet SetValue
         {
             get
             {
-                return getSetValue();
+                return setValue;
             }
             set
             {
-                setSetValue( value );
+                setValue = value;
             }
         }
         #endregion
@@ -243,24 +244,28 @@ namespace Antlr3.Tool
             this.token = token;
         }
 
+        [Obsolete]
         public virtual DFA getLookaheadDFA()
         {
-            return lookaheadDFA;
+            return LookaheadDFA;
         }
 
+        [Obsolete]
         public virtual void setLookaheadDFA( DFA lookaheadDFA )
         {
-            this.lookaheadDFA = lookaheadDFA;
+            LookaheadDFA = lookaheadDFA;
         }
 
+        [Obsolete]
         public virtual NFAState getNFAStartState()
         {
-            return _nfaStartState;
+            return NFAStartState;
         }
 
+        [Obsolete]
         public virtual void setNFAStartState( NFAState nfaStartState )
         {
-            this._nfaStartState = nfaStartState;
+            NFAStartState = nfaStartState;
         }
 
         /** Save the option key/value pair and process it; return the key
@@ -416,21 +421,25 @@ namespace Antlr3.Tool
             }
         }
 
+        [Obsolete]
         public virtual IIntSet getSetValue()
         {
-            return setValue;
+            return SetValue;
         }
 
+        [Obsolete]
         public virtual void setSetValue( IIntSet setValue )
         {
-            this.setValue = setValue;
+            SetValue = setValue;
         }
 
+        [Obsolete]
         public virtual GrammarAST getLastChild()
         {
             return LastChild;
         }
 
+        [Obsolete]
         public virtual GrammarAST getLastSibling()
         {
             return LastSibling;

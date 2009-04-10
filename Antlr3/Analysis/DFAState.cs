@@ -179,7 +179,11 @@ namespace Antlr3.Analysis
         {
             get
             {
-                return getAcceptStateReachable();
+                return acceptStateReachable;
+            }
+            set
+            {
+                acceptStateReachable = value;
             }
         }
         public ICollection<int> AltSet
@@ -200,14 +204,23 @@ namespace Antlr3.Analysis
         {
             get
             {
-                return isResolvedWithPredicates();
+                return resolvedWithPredicates;
             }
         }
         public int LookaheadDepth
         {
             get
             {
-                return getLookaheadDepth();
+                return k;
+            }
+            set
+            {
+                k = value;
+                if ( value > dfa.max_k )
+                {
+                    // track max k for entire DFA
+                    dfa.max_k = value;
+                }
             }
         }
         public ICollection<Label> ReachableLabels
@@ -384,7 +397,8 @@ namespace Antlr3.Analysis
                     "reachableLabels="+reachableLabels.toString());
                     */
             if ( reachableLabels.Contains( label ) )
-            { // exact label present
+            {
+                // exact label present
                 return;
             }
             IIntSet t = label.Set;
@@ -871,19 +885,22 @@ namespace Antlr3.Analysis
         }
 
         /** Is an accept state reachable from this state? */
+        [Obsolete]
         public virtual int getAcceptStateReachable()
         {
-            return acceptStateReachable;
+            return AcceptStateReachable;
         }
 
+        [Obsolete]
         public virtual void setAcceptStateReachable( int acceptStateReachable )
         {
-            this.acceptStateReachable = acceptStateReachable;
+            AcceptStateReachable = acceptStateReachable;
         }
 
+        [Obsolete]
         public virtual bool isResolvedWithPredicates()
         {
-            return resolvedWithPredicates;
+            return IsResolvedWithPredicates;
         }
 
         /** Print all NFA states plus what alts they predict */
@@ -904,18 +921,16 @@ namespace Antlr3.Analysis
             return buf.ToString();
         }
 
+        [Obsolete]
         public virtual int getLookaheadDepth()
         {
-            return k;
+            return LookaheadDepth;
         }
 
+        [Obsolete]
         public virtual void setLookaheadDepth( int k )
         {
-            this.k = k;
-            if ( k > dfa.max_k )
-            { // track max k for entire DFA
-                dfa.max_k = k;
-            }
+            LookaheadDepth = k;
         }
 
     }

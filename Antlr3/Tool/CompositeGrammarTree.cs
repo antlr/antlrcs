@@ -50,7 +50,7 @@ namespace Antlr3.Tool
 
         public virtual void addChild( CompositeGrammarTree t )
         {
-            //System.out.println("add "+t.toStringTree()+" as child to "+this.toStringTree());
+            //Console.Out.WriteLine("add "+t.toStringTree()+" as child to "+this.toStringTree());
             if ( t == null )
             {
                 return; // do nothing upon addChild(null)
@@ -173,7 +173,7 @@ namespace Antlr3.Tool
             if ( p.grammar.type == Grammar.LEXER && p.parent != null &&
                  p.parent.grammar.type == Grammar.COMBINED )
             {
-                //System.out.println("wacking "+p.grammar.name+" from "+p.parent.grammar.name);
+                //System.Console.Out.WriteLine( "wacking " + p.grammar.name + " from " + p.parent.grammar.name );
                 p.parent.children.Remove( this );
             }
             for ( int i = 0; children != null && i < children.Count; i++ )

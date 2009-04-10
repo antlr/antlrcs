@@ -186,19 +186,21 @@ namespace Antlr3.Tool
 
         /** Add delegate grammar as child of delegator */
 #if WTF
-	public void addGrammar(Grammar delegator, Grammar delegate) {
-		if ( delegator.compositeTreeNode==null ) {
-			delegator.compositeTreeNode = new CompositeGrammarTree(delegator);
-		}
-		delegator.compositeTreeNode.addChild(new CompositeGrammarTree(delegate));
+        public void addGrammar( Grammar delegator, Grammar @delegate )
+        {
+            if ( delegator.compositeTreeNode == null )
+            {
+                delegator.compositeTreeNode = new CompositeGrammarTree( delegator );
+            }
+            delegator.compositeTreeNode.addChild( new CompositeGrammarTree( @delegate ) );
 
-		/*// find delegator in tree so we can add a child to it
-		CompositeGrammarTree t = delegateGrammarTreeRoot.findNode(delegator);
-		t.addChild();
-		*/
-		// make sure new grammar shares this composite
-		delegate.composite = this;
-	}
+            //// find delegator in tree so we can add a child to it
+            //CompositeGrammarTree t = delegateGrammarTreeRoot.findNode(delegator);
+            //t.addChild();
+
+            // make sure new grammar shares this composite
+            @delegate.composite = this;
+        }
 #else
         public virtual void addGrammar( Grammar delegator, Grammar @delegate )
         {
@@ -302,18 +304,8 @@ namespace Antlr3.Tool
             {
                 return null;
             }
+
             HashSet<Rule> rules = getAllImportedRules( g );
-            //for ( Iterator it = rules.iterator(); it.hasNext(); )
-            //{
-            //    Rule r = (Rule)it.next();
-            //    Rule localRule = g.getLocallyDefinedRule( r.name );
-            //    // if locally defined or it's not local but synpred, don't make
-            //    // a delegation method
-            //    if ( localRule != null || r.isSynPred )
-            //    {
-            //        it.remove(); // kill overridden rules
-            //    }
-            //}
             foreach ( Rule r in rules.ToArray() )
             {
                 Rule localRule = g.getLocallyDefinedRule( r.name );
@@ -393,7 +385,7 @@ namespace Antlr3.Tool
         public virtual void assignTokenTypes()
         {
             // ASSIGN TOKEN TYPES for all delegates (same walker)
-            //System.out.println("### assign types");
+            //System.Console.Out.WriteLine( "### assign types" );
             //ttypesWalker.setASTNodeClass( "org.antlr.tool.GrammarAST" );
             IList<Grammar> grammars = delegateGrammarTreeRoot.getPostOrderedGrammarList();
             for ( int i = 0; grammars != null && i < grammars.Count; i++ )
@@ -402,7 +394,7 @@ namespace Antlr3.Tool
                 AssignTokenTypesWalker ttypesWalker = new AssignTokenTypesBehavior( new Antlr.Runtime.Tree.CommonTreeNodeStream( g.Tree ) );
                 try
                 {
-                    //System.out.println("    walking "+g.name);
+                    //System.Console.Out.WriteLine( "    walking " + g.name );
                     ttypesWalker.grammar_( g );
 
                     // the walker has filled literals, tokens, and alias tables.
@@ -447,7 +439,7 @@ namespace Antlr3.Tool
                 Grammar g = (Grammar)grammars[i];
                 names.Add( g.name );
             }
-            //System.out.println("### createNFAs for composite; grammars: "+names);
+            //System.Console.Out.WriteLine( "### createNFAs for composite; grammars: " + names );
             for ( int i = 0; grammars != null && i < grammars.Count; i++ )
             {
                 Grammar g = (Grammar)grammars[i];
@@ -484,8 +476,8 @@ namespace Antlr3.Tool
                     overrides.Add( r.name );
                 }
             }
-            //System.out.println("rule defs for "+p.grammar.name+": "+localRuleDefs);
-            //System.out.println("overridden rule for "+p.grammar.name+": "+overrides);
+            //System.Console.Out.WriteLine( "rule defs for " + p.grammar.name + ": " + localRuleDefs );
+            //System.Console.Out.WriteLine( "overridden rule for " + p.grammar.name + ": " + overrides );
             p.grammar.overriddenRules = overrides;
 
             // make set of all rules defined thus far walking delegation tree.
@@ -503,73 +495,85 @@ namespace Antlr3.Tool
             }
         }
 
-        /*
-        public void minimizeRuleSet() {
-            Set<Rule> refs = _minimizeRuleSet(delegateGrammarTreeRoot);
-            System.out.println("all rule refs: "+refs);
+#if false
+        public virtual void minimizeRuleSet()
+        {
+            var refs = _minimizeRuleSet( delegateGrammarTreeRoot );
+            System.Console.Out.WriteLine( "all rule refs: " + refs );
         }
 
-        public Set<Rule> _minimizeRuleSet(CompositeGrammarTree p) {
-            Set<Rule> refs = new HashSet<Rule>();
-            for (GrammarAST refAST : p.grammar.ruleRefs) {
-                System.out.println("ref "+refAST.getText()+": "+refAST.NFAStartState+
-                                   " enclosing rule: "+refAST.NFAStartState.enclosingRule+
-                                   " invoking rule: "+((NFAState)refAST.NFAStartState.transition[0].target).enclosingRule);
-                refs.add(((NFAState)refAST.NFAStartState.transition[0].target).enclosingRule);
+        public virtual HashSet<Rule> _minimizeRuleSet( CompositeGrammarTree p )
+        {
+            var refs = new HashSet<Rule>();
+            foreach ( GrammarAST refAST in p.grammar.ruleRefs )
+            {
+                System.Console.Out.WriteLine( "ref " + refAST.Text + ": " + refAST.NFAStartState +
+                                   " enclosing rule: " + refAST.NFAStartState.enclosingRule +
+                                   " invoking rule: " + ( (NFAState)refAST.NFAStartState.transition[0].target ).enclosingRule );
+                refs.Add( ( (NFAState)refAST.NFAStartState.transition[0].target ).enclosingRule );
             }
 
-            if ( p.children!=null ) {
-                for (CompositeGrammarTree delegate : p.children) {
-                    Set<Rule> delegateRuleRefs = _minimizeRuleSet(delegate);
-                    refs.addAll(delegateRuleRefs);
+            if ( p.children != null )
+            {
+                foreach ( CompositeGrammarTree @delegate in p.children )
+                {
+                    var delegateRuleRefs = _minimizeRuleSet( @delegate );
+                    refs.addAll( delegateRuleRefs );
                 }
             }
 
             return refs;
         }
-        */
+#endif
 
-        /*
-        public void oldminimizeRuleSet() {
+#if false
+        public virtual void oldminimizeRuleSet()
+        {
             // first walk to remove all overridden rules
-            Set<String> ruleDefs = new HashSet<String>();
-            Set<String> ruleRefs = new HashSet<String>();
-            for (GrammarAST refAST : delegateGrammarTreeRoot.grammar.ruleRefs) {
-                String rname = refAST.getText();
-                ruleRefs.add(rname);
+            var ruleDefs = new HashSet<string>();
+            var ruleRefs = new HashSet<string>();
+            foreach ( GrammarAST refAST in delegateGrammarTreeRoot.grammar.ruleRefs )
+            {
+                string rname = refAST.Text;
+                ruleRefs.add( rname );
             }
-            _minimizeRuleSet(ruleDefs,
+            _minimizeRuleSet( ruleDefs,
                              ruleRefs,
-                             delegateGrammarTreeRoot);
-            System.out.println("overall rule defs: "+ruleDefs);
+                             delegateGrammarTreeRoot );
+            System.Console.Out.WriteLine( "overall rule defs: " + ruleDefs );
         }
 
-        public void _minimizeRuleSet(Set<String> ruleDefs,
-                                     Set<String> ruleRefs,
-                                     CompositeGrammarTree p) {
-            Set<String> localRuleDefs = new HashSet<String>();
-            for (Rule r : p.grammar.getRules()) {
-                if ( !ruleDefs.contains(r.name) ) {
-                    localRuleDefs.add(r.name);
-                    ruleDefs.add(r.name);
+        public virtual void _minimizeRuleSet( HashSet<string> ruleDefs, HashSet<string> ruleRefs, CompositeGrammarTree p )
+        {
+            var localRuleDefs = new HashSet<string>();
+            foreach ( Rule r in p.grammar.Rules )
+            {
+                if ( !ruleDefs.contains( r.name ) )
+                {
+                    localRuleDefs.add( r.name );
+                    ruleDefs.add( r.name );
                 }
             }
-            System.out.println("rule defs for "+p.grammar.name+": "+localRuleDefs);
+            System.Console.Out.WriteLine( "rule defs for " + p.grammar.name + ": " + localRuleDefs );
 
             // remove locally-defined rules not in ref set
             // find intersection of local rules and references from delegator
             // that is set of rules needed by delegator
-            Set<String> localRuleDefsSatisfyingRefsFromBelow = new HashSet<String>();
-            for (String r : ruleRefs) {
-                if ( localRuleDefs.contains(r) ) {
-                    localRuleDefsSatisfyingRefsFromBelow.add(r);
+            HashSet<string> localRuleDefsSatisfyingRefsFromBelow = new HashSet<string>();
+            foreach ( string r in ruleRefs )
+            {
+                if ( localRuleDefs.contains( r ) )
+                {
+                    localRuleDefsSatisfyingRefsFromBelow.add( r );
                 }
             }
 
             // now get list of refs from localRuleDefsSatisfyingRefsFromBelow.
             // Those rules are also allowed in this delegate
-            for (GrammarAST refAST : p.grammar.ruleRefs) {
-                if ( localRuleDefsSatisfyingRefsFromBelow.contains(refAST.enclosingRuleName) ) {
+            foreach ( GrammarAST refAST in p.grammar.ruleRefs )
+            {
+                if ( localRuleDefsSatisfyingRefsFromBelow.contains( refAST.enclosingRuleName ) )
+                {
                     // found rule ref within needed rule
                 }
             }
@@ -577,33 +581,37 @@ namespace Antlr3.Tool
             // remove rule refs not in the new rule def set
 
             // walk all children, adding rules not already defined
-            if ( p.children!=null ) {
-                for (CompositeGrammarTree delegate : p.children) {
-                    _minimizeRuleSet(ruleDefs, ruleRefs, delegate);
+            if ( p.children != null )
+            {
+                foreach ( CompositeGrammarTree @delegate in p.children )
+                {
+                    _minimizeRuleSet( ruleDefs, ruleRefs, @delegate );
                 }
             }
         }
-        */
+#endif
 
-        /*
-        public void trackNFAStatesThatHaveLabeledEdge(Label label,
-                                                      NFAState stateWithLabeledEdge)
+#if false
+        public virtual void trackNFAStatesThatHaveLabeledEdge( Label label, NFAState stateWithLabeledEdge )
         {
-            Set<NFAState> states = typeToNFAStatesWithEdgeOfTypeMap.get(label);
-            if ( states==null ) {
+            HashSet<NFAState> states = typeToNFAStatesWithEdgeOfTypeMap.get( label );
+            if ( states == null )
+            {
                 states = new HashSet<NFAState>();
-                typeToNFAStatesWithEdgeOfTypeMap.put(label, states);
+                typeToNFAStatesWithEdgeOfTypeMap[label] = states;
             }
-            states.add(stateWithLabeledEdge);
+            states.Add( stateWithLabeledEdge );
         }
 
-        public Map<Label, Set<NFAState>> getTypeToNFAStatesWithEdgeOfTypeMap() {
+        public virtual IDictionary<Label, HashSet<NFAState>> getTypeToNFAStatesWithEdgeOfTypeMap()
+        {
             return typeToNFAStatesWithEdgeOfTypeMap;
         }
 
-        public Set<NFAState> getStatesWithEdge(Label label) {
-            return typeToNFAStatesWithEdgeOfTypeMap.get(label);
+        public HashSet<NFAState> getStatesWithEdge( Label label )
+        {
+            return typeToNFAStatesWithEdgeOfTypeMap.get( label );
         }
-    */
+#endif
     }
 }

@@ -71,27 +71,31 @@ namespace Antlr3.Analysis
             this.grammar = grammar;
         }
 
-        /*
-        public void computeRuleFIRSTSets() {
-            if ( getNumberOfDecisions()==0 ) {
+#if false
+        public virtual void computeRuleFIRSTSets()
+        {
+            if ( NumberOfDecisions == 0 )
+            {
                 createNFAs();
             }
-            for (Iterator it = getRules().iterator(); it.hasNext();) {
+            for ( Iterator it = getRules().iterator(); it.hasNext(); )
+            {
                 Rule r = (Rule)it.next();
-                if ( r.isSynPred ) {
+                if ( r.isSynPred )
+                {
                     continue;
                 }
-                LookaheadSet s = FIRST(r);
-                JSystem.@out.println("FIRST("+r.name+")="+s);
+                LookaheadSet s = FIRST( r );
+                JSystem.@out.println( "FIRST(" + r.name + ")=" + s );
             }
         }
-        */
+#endif
 
-        /*
-        public Set<String> getOverriddenRulesWithDifferentFIRST() {
+#if false
+        public HashSet<string> getOverriddenRulesWithDifferentFIRST() {
             // walk every rule in this grammar and compare FIRST set with
             // those in imported grammars.
-            Set<String> rules = new HashSet();
+            HashSet<string> rules = new HashSet<string>();
             for (Iterator it = getRules().iterator(); it.hasNext();) {
                 Rule r = (Rule)it.next();
                 //JSystem.@out.println(r.name+" FIRST="+r.FIRST);
@@ -126,16 +130,16 @@ namespace Antlr3.Analysis
             }
             return rules;
         }
-    */
+#endif
 
-        /*
+#if false
         public LookaheadSet LOOK(Rule r) {
             if ( r.FIRST==null ) {
                 r.FIRST = FIRST(r.startState);
             }
             return r.FIRST;
         }
-    */
+#endif
 
         /** From an NFA state, s, find the set of all labels reachable from s.
          *  Used to compute follow sets for error recovery.  Never computes

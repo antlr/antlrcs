@@ -89,7 +89,6 @@ namespace Antlr3.Analysis
          *  Note that from the DFA state, you can ask for
          *  which alts are nondeterministic.
          */
-        //protected Set<DFAState> statesWithSyntacticallyAmbiguousAltsSet = new HashSet<DFAState>();
         protected ICollection<DFAState> statesWithSyntacticallyAmbiguousAltsSet = new HashSet<DFAState>();
 
         /** Track just like stateToSyntacticallyAmbiguousAltsMap, but only
@@ -97,8 +96,6 @@ namespace Antlr3.Analysis
          *  ID rule.  The state maps to the list of Tokens rule alts that are
          *  in conflict.
          */
-        //protected Map<DFAState, Set<Integer>> stateToSyntacticallyAmbiguousTokensRuleAltsMap =
-        //    new HashMap<DFAState, Set<Integer>>();
         protected internal IDictionary<DFAState, ICollection<int>> stateToSyntacticallyAmbiguousTokensRuleAltsMap =
             new Dictionary<DFAState, ICollection<int>>();
 
@@ -106,7 +103,6 @@ namespace Antlr3.Analysis
          *  state that predicts more than one alternative, must be resolved
          *  with predicates or it should be reported to the user.
          */
-        //protected Set<DFAState> statesResolvedWithSemanticPredicatesSet = new HashSet<DFAState>();
         protected ICollection<DFAState> statesResolvedWithSemanticPredicatesSet = new HashSet<DFAState>();
 
         /** Track the predicates for each alt per DFA state;
@@ -114,8 +110,6 @@ namespace Antlr3.Analysis
          *  Maps DFA state to another map, mapping alt number to a
          *  SemanticContext (pred(s) to execute to resolve syntactic ambiguity).
          */
-        //protected Map<DFAState, Map<Integer,SemanticContext>> stateToAltSetWithSemanticPredicatesMap =
-        //    new HashMap<DFAState, Map<Integer,SemanticContext>>();
         protected IDictionary<DFAState, IDictionary<int, SemanticContext>> stateToAltSetWithSemanticPredicatesMap =
             new Dictionary<DFAState, IDictionary<int, SemanticContext>>();
 
@@ -123,19 +117,15 @@ namespace Antlr3.Analysis
          *  For example, p1||true gets reduced to true and so leaves
          *  whole alt uncovered.  This maps DFA state to the set of alts
          */
-        //protected Map<DFAState,Map<Integer, Set<Token>>> stateToIncompletelyCoveredAltsMap =
-        //    new HashMap<DFAState,Map<Integer, Set<Token>>>();
         protected IDictionary<DFAState, IDictionary<int, ICollection<IToken>>> stateToIncompletelyCoveredAltsMap =
             new Dictionary<DFAState, IDictionary<int, ICollection<IToken>>>();
 
         /** The set of states w/o emanating edges and w/o resolving sem preds. */
-        //protected Set<DFAState> danglingStates = new HashSet<DFAState>();
         protected ICollection<DFAState> danglingStates = new HashSet<DFAState>();
 
         /** The overall list of alts within the decision that have at least one
          *  conflicting input sequence.
          */
-        //protected Set<Integer> altsWithProblem = new HashSet<Integer>();
         protected ICollection<int> altsWithProblem = new HashSet<int>();
 
         /** If decision with > 1 alt has recursion in > 1 alt, it's nonregular
@@ -147,10 +137,8 @@ namespace Antlr3.Analysis
         /** Recursion is limited to a particular depth.  If that limit is exceeded
          *  the proposed new NFAConfiguration is recorded for the associated DFA state.
          */
-        //protected MultiMap<Integer, NFAConfiguration> stateToRecursionOverflowConfigurationsMap =
-        //    new MultiMap<Integer, NFAConfiguration>();
-	protected MultiMap<int, NFAConfiguration> stateToRecursionOverflowConfigurationsMap =
-		new MultiMap<int, NFAConfiguration>();
+        protected MultiMap<int, NFAConfiguration> stateToRecursionOverflowConfigurationsMap =
+            new MultiMap<int, NFAConfiguration>();
 
         /*
 	protected Map<Integer, List<NFAConfiguration>> stateToRecursionOverflowConfigurationsMap =
@@ -169,7 +157,6 @@ namespace Antlr3.Analysis
         /** Used to find paths through syntactically ambiguous DFA. If we've
          *  seen statement number before, what did we learn?
          */
-        //protected Map<Integer, Integer> stateReachable;
         protected IDictionary<int, int> stateReachable;
 
         public const int REACHABLE_BUSY = -1;
@@ -183,10 +170,8 @@ namespace Antlr3.Analysis
          *  infinite loop.  Stop.  Set<String>.  The strings look like
          *  stateNumber_labelIndex.
          */
-        //protected Set<String> statesVisitedAtInputDepth;
-        protected ICollection<String> statesVisitedAtInputDepth;
+        protected ICollection<string> statesVisitedAtInputDepth;
 
-        //protected Set<Integer> statesVisitedDuringSampleSequence;
         protected ICollection<int> statesVisitedDuringSampleSequence;
 
         public static bool verbose = false;
@@ -201,49 +186,49 @@ namespace Antlr3.Analysis
         {
             get
             {
-                return analysisOverflowed();
+                return stateToRecursionOverflowConfigurationsMap.Count > 0;
             }
         }
         public bool AnalysisTimedOut
         {
             get
             {
-                return analysisTimedOut();
+                return timedOut;
             }
         }
         public ICollection<DFAState> DanglingStates
         {
             get
             {
-                return getDanglingStates();
+                return danglingStates;
             }
         }
         public string Description
         {
             get
             {
-                return getDescription();
+                return dfa.NFADecisionStartState.Description;
             }
         }
         public ICollection<DFAState> DFAStatesWithSyntacticallyAmbiguousAlts
         {
             get
             {
-                return getDFAStatesWithSyntacticallyAmbiguousAlts();
+                return statesWithSyntacticallyAmbiguousAltsSet;
             }
         }
         public bool HasPredicate
         {
             get
             {
-                return hasPredicate();
+                return stateToAltSetWithSemanticPredicatesMap.Count > 0;
             }
         }
         public bool IsCyclic
         {
             get
             {
-                return isCyclic();
+                return dfa.IsCyclic;
             }
         }
         public bool IsDeterministic
@@ -257,42 +242,42 @@ namespace Antlr3.Analysis
         {
             get
             {
-                return isNonLLStarDecision();
+                return nonLLStarDecision;
             }
         }
         public bool IsReduced
         {
             get
             {
-                return isReduced();
+                return dfa.IsReduced;
             }
         }
         public ICollection<int> NonDeterministicAlts
         {
             get
             {
-                return getNonDeterministicAlts();
+                return altsWithProblem;
             }
         }
         public ICollection<DFAState> NondeterministicStatesResolvedWithSemanticPredicate
         {
             get
             {
-                return getNondeterministicStatesResolvedWithSemanticPredicate();
+                return statesResolvedWithSemanticPredicatesSet;
             }
         }
         public int NumberOfStates
         {
             get
             {
-                return getNumberOfStates();
+                return dfa.NumberOfStates;
             }
         }
         public ICollection<int> UnreachableAlts
         {
             get
             {
-                return getUnreachableAlts();
+                return dfa.UnreachableAlts;
             }
         }
         #endregion
@@ -302,19 +287,22 @@ namespace Antlr3.Analysis
         /** Return a string like "3:22: ( A {;} | B )" that describes this
          *  decision.
          */
+        [Obsolete]
         public virtual String getDescription()
         {
-            return dfa.NFADecisionStartState.Description;
+            return Description;
         }
 
+        [Obsolete]
         public virtual bool isReduced()
         {
-            return dfa.IsReduced;
+            return IsReduced;
         }
 
+        [Obsolete]
         public virtual bool isCyclic()
         {
-            return dfa.IsCyclic;
+            return IsCyclic;
         }
 
         /** If no states are dead-ends, no alts are unreachable, there are
@@ -357,27 +345,31 @@ namespace Antlr3.Analysis
         }
 
         /** Did the analysis complete it's work? */
+        [Obsolete]
         public virtual bool analysisTimedOut()
         {
-            return timedOut;
+            return AnalysisTimedOut;
         }
 
         /** Took too long to analyze a DFA */
+        [Obsolete]
         public virtual bool analysisOverflowed()
         {
-            return stateToRecursionOverflowConfigurationsMap.Count > 0;
+            return AnalysisOverflowed;
         }
 
         /** Found recursion in > 1 alt */
+        [Obsolete]
         public virtual bool isNonLLStarDecision()
         {
-            return nonLLStarDecision;
+            return IsNonLLStarDecision;
         }
 
         /** How many states does the DFA predictor have? */
+        [Obsolete]
         public virtual int getNumberOfStates()
         {
-            return dfa.NumberOfStates;
+            return NumberOfStates;
         }
 
         /** Get a list of all unreachable alternatives for this decision.  There
@@ -385,9 +377,10 @@ namespace Antlr3.Analysis
          *  is the overall list of unreachable alternatives (either due to
          *  conflict resolution or alts w/o accept states).
          */
+        [Obsolete]
         public virtual IList<int> getUnreachableAlts()
         {
-            return (IList<int>)dfa.UnreachableAlts;
+            return (IList<int>)UnreachableAlts;
         }
 
         /** return set of states w/o emanating edges and w/o resolving sem preds.
@@ -395,20 +388,22 @@ namespace Antlr3.Analysis
          *  terminate early to avoid infinite recursion for example (due to
          *  left recursion perhaps).
          */
+        [Obsolete]
         public virtual ICollection<DFAState> getDanglingStates()
         {
-            return danglingStates;
+            return DanglingStates;
         }
 
+        [Obsolete]
         public virtual ICollection<int> getNonDeterministicAlts()
         {
-            return altsWithProblem;
+            return NonDeterministicAlts;
         }
 
         /** Return the sorted list of alts that conflict within a single state.
          *  Note that predicates may resolve the conflict.
          */
-        public virtual IList getNonDeterministicAltsForState( DFAState targetState )
+        public virtual IList<int> getNonDeterministicAltsForState( DFAState targetState )
         {
             IEnumerable<int> nondetAlts = targetState.getNonDeterministicAlts();
             if ( nondetAlts == null )
@@ -431,9 +426,10 @@ namespace Antlr3.Analysis
          *  conflict.  You must report a problem for each state in this set
          *  because each state represents a different input sequence.
          */
+        [Obsolete]
         public virtual ICollection<DFAState> getDFAStatesWithSyntacticallyAmbiguousAlts()
         {
-            return statesWithSyntacticallyAmbiguousAltsSet;
+            return DFAStatesWithSyntacticallyAmbiguousAlts;
         }
 
         /** Which alts were specifically turned off to resolve nondeterminisms?
@@ -452,7 +448,6 @@ namespace Antlr3.Analysis
          */
         public virtual void removeRecursiveOverflowState( DFAState d )
         {
-            //Integer stateI = Utils.integer( d.stateNumber );
             stateToRecursionOverflowConfigurationsMap.Remove( d.stateNumber );
         }
 
@@ -476,7 +471,7 @@ namespace Antlr3.Analysis
             return labels;
         }
 
-        /** Given IList<Label>, return a String with a useful representation
+        /** Given IList&lt;Label&gt;, return a String with a useful representation
          *  of the associated input string.  One could show something different
          *  for lexers and parsers, for example.
          */
@@ -484,10 +479,8 @@ namespace Antlr3.Analysis
         {
             Grammar g = dfa.nfa.grammar;
             StringBuilder buf = new StringBuilder();
-            //for ( Iterator it = labels.iterator(); it.hasNext(); )
             foreach ( Label label in labels )
             {
-                //Label label = (Label)it.next();
                 buf.Append( label.ToString( g ) );
                 if ( /*it.hasNext() &&*/ g.type != Grammar.LEXER )
                 {
@@ -572,14 +565,16 @@ namespace Antlr3.Analysis
         }
 
         /** At least one alt refs a sem or syn pred */
+        [Obsolete]
         public virtual bool hasPredicate()
         {
-            return stateToAltSetWithSemanticPredicatesMap.Count > 0;
+            return HasPredicate;
         }
 
+        [Obsolete]
         public virtual ICollection<DFAState> getNondeterministicStatesResolvedWithSemanticPredicate()
         {
-            return statesResolvedWithSemanticPredicatesSet;
+            return NondeterministicStatesResolvedWithSemanticPredicate;
         }
 
         /** Return a list of alts whose predicate context was insufficient to
@@ -646,7 +641,7 @@ namespace Antlr3.Analysis
             ICollection<DFAState> danglingStates = DanglingStates;
             if ( danglingStates.Count > 0 )
             {
-                //System.err.println("no emanating edges for states: "+danglingStates);
+                //Console.Error.WriteLine( "no emanating edges for states: " + danglingStates );
                 foreach ( DFAState d in danglingStates )
                 {
                     ErrorManager.danglingState( this, d );

@@ -120,7 +120,7 @@ rule
 	:	^(	RULE id=ID
 			{
 				currentRuleName = $id.text;
-				factory.setCurrentRule( grammar.getLocallyDefinedRule(currentRuleName) );
+				factory.CurrentRule = grammar.getLocallyDefinedRule( currentRuleName );
 			}
 			(modifier)?
 			^(ARG (ARG_ACTION)?)
@@ -282,7 +282,7 @@ ebnf returns [StateCluster g=null]
 	if ( blk.Type!=BLOCK ) {
 		blk = (GrammarAST)blk.GetChild(0);
 	}
-	GrammarAST eob = blk.getLastChild();
+	GrammarAST eob = blk.LastChild;
 }
 	:	{grammar.isValidSet(this,$start)}? => set {$g = $set.g;}
 
@@ -449,7 +449,7 @@ atom_or_notatom returns [StateCluster g=null]
 					//IIntSet notSet = grammar.complement(stNode.SetValue);
 					// let code generator complement the sets
 					IIntSet s = stNode.SetValue;
-					stNode.setSetValue(s);
+					stNode.SetValue = s;
 					// let code gen do the complement again; here we compute
 					// for NFA construction
 					s = grammar.complement(s);
@@ -559,7 +559,7 @@ set returns [StateCluster g=null]
 {
 	IIntSet elements=new IntervalSet();
 	if ( state.backtracking == 0 )
-		$start.setSetValue(elements); // track set for use by code gen
+		$start.SetValue = elements; // track set for use by code gen
 }
 	:	^( b=BLOCK
 		   (^(ALT ( ^(BACKTRACK_SEMPRED .*) )? setElement[elements] EOA))+
@@ -568,7 +568,7 @@ set returns [StateCluster g=null]
 		{
 		$g = factory.build_Set(elements,$b);
 		$b.followingNFAState = $g.right;
-		$b.setSetValue(elements); // track set value of this block
+		$b.SetValue = elements; // track set value of this block
 		}
 		//{System.out.println("set elements="+elements.toString(grammar));}
 	;

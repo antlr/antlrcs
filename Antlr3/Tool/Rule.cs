@@ -141,7 +141,7 @@ namespace Antlr3.Tool
 
         public int numberOfAlts;
 
-        /** Each alt has a Map<tokenRefName,List<tokenRefAST>>; range 1..numberOfAlts.
+        /** Each alt has a Map&lt;tokenRefName,List&lt;tokenRefAST&gt;&gt;; range 1..numberOfAlts.
          *  So, if there are 3 ID refs in a rule's alt number 2, you'll have
          *  altToTokenRef[2].get("ID").size()==3.  This is used to see if $ID is ok.
          *  There must be only one ID reference in the alt for $ID to be ok in
@@ -154,7 +154,7 @@ namespace Antlr3.Tool
          */
         IDictionary<string, IList<GrammarAST>>[] altToTokenRefMap;
 
-        /** Each alt has a Map<ruleRefName,List<ruleRefAST>>; range 1..numberOfAlts
+        /** Each alt has a Map&lt;ruleRefName,List&lt;ruleRefAST&gt;&gt;; range 1..numberOfAlts
          *  So, if there are 3 expr refs in a rule's alt number 2, you'll have
          *  altToRuleRef[2].get("expr").size()==3.  This is used to see if $expr is ok.
          *  There must be only one expr reference in the alt for $expr to be ok in
@@ -274,7 +274,6 @@ namespace Antlr3.Tool
                 {
                     tokenLabels = new Dictionary<string, Grammar.LabelElementPair>();
                 }
-                //tokenLabels.put( label.getText(), pair );
                 tokenLabels[label.Text] = pair;
                 break;
 
@@ -295,7 +294,6 @@ namespace Antlr3.Tool
                 {
                     ruleLabels = new Dictionary<string, Grammar.LabelElementPair>();
                 }
-                //ruleLabels.put( label.getText(), pair );
                 ruleLabels[label.Text] = pair;
                 break;
             case Grammar.TOKEN_LIST_LABEL:
@@ -303,7 +301,6 @@ namespace Antlr3.Tool
                 {
                     tokenListLabels = new Dictionary<string, Grammar.LabelElementPair>();
                 }
-                //tokenListLabels.put( label.getText(), pair );
                 tokenListLabels[label.Text] = pair;
                 break;
             case Grammar.RULE_LIST_LABEL:
@@ -311,7 +308,6 @@ namespace Antlr3.Tool
                 {
                     ruleListLabels = new Dictionary<string, Grammar.LabelElementPair>();
                 }
-                //ruleListLabels.put( label.getText(), pair );
                 ruleListLabels[label.Text] = pair;
                 break;
             case Grammar.CHAR_LABEL:
@@ -319,7 +315,6 @@ namespace Antlr3.Tool
                 {
                     charLabels = new Dictionary<string, Grammar.LabelElementPair>();
                 }
-                //charLabels.put( label.getText(), pair );
                 charLabels[label.Text] = pair;
                 break;
             }
@@ -658,11 +653,6 @@ namespace Antlr3.Tool
             if ( returnScope != null && returnScope.attributes.Count == 1 )
             {
                 return returnScope.attributes[0].Name;
-                //ICollection<Attribute> retvalAttrs = returnScope.attributes.Values;
-                //return retvalAttrs.First().Name;
-
-                //object[] javaSucks = retvalAttrs.toArray();
-                //return ( (Attribute)javaSucks[0] ).name;
             }
             return null;
         }
@@ -734,41 +724,36 @@ namespace Antlr3.Tool
                 this.options = null;
                 return;
             }
-            //Set keys = options.keySet();
-            //for ( Iterator it = keys.iterator(); it.hasNext(); )
-            //{
-            //    String optionName = (String)it.next();
-            //    object optionValue = options.get( optionName );
-            //    String stored = setOption( optionName, optionValue, optionsStartToken );
-            //    if ( stored == null )
-            //    {
-            //        it.remove();
-            //    }
-            //}
-            foreach ( string optionName in options.Keys.ToArray() )
+
+            foreach ( var option in options.ToArray() )
             {
-                object optionValue = options.get( optionName );
+                string optionName = option.Key;
+                object optionValue = option.Value;
                 string stored = setOption( optionName, optionValue, optionsStartToken );
                 if ( stored == null )
                     options.Remove( optionName );
             }
         }
 
+#if false
         /** Used during grammar imports to see if sets of rules intersect... This
          *  method and hashCode use the String name as the key for Rule objects.
-        public boolean equals(Object other) {
-            return this.name.equals(((Rule)other).name);
-        }
          */
-
-        /** Used during grammar imports to see if sets of rules intersect...
-        public int hashCode() {
-            return name.hashCode();
+        public override bool Equals( object other )
+        {
+            return this.name.Equals( ( (Rule)other ).name );
         }
-         * */
+
+        /** Used during grammar imports to see if sets of rules intersect... */
+        public override int GetHashCode()
+        {
+            return name.GetHashCode();
+        }
+#endif
 
         public override string ToString()
-        { // used for testing
+        {
+            // used for testing
             return "[" + grammar.name + "." + name + ",index=" + index + ",line=" + tree.Token.Line + "]";
         }
     }

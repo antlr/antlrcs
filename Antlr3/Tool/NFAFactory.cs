@@ -40,7 +40,9 @@ namespace Antlr3.Tool
     using IIntSet = Antlr3.Misc.IIntSet;
     using IList = System.Collections.IList;
     using IntervalSet = Antlr3.Misc.IntervalSet;
+    using Obsolete = System.ObsoleteAttribute;
     using StringBuilder = System.Text.StringBuilder;
+    using StringComparison = System.StringComparison;
 
     /** Routines to construct StateClusters from EBNF grammar constructs.
      *  No optimization is done to remove unnecessary epsilon edges.
@@ -69,19 +71,25 @@ namespace Antlr3.Tool
         {
             get
             {
-                return getCurrentRule();
+                return currentRule;
+            }
+            set
+            {
+                currentRule = value;
             }
         }
         #endregion
 
+        [Obsolete]
         public Rule getCurrentRule()
         {
-            return currentRule;
+            return CurrentRule;
         }
 
+        [Obsolete]
         public void setCurrentRule( Rule value )
         {
-            currentRule = value;
+            CurrentRule = value;
         }
 
         public virtual NFAState newState()
@@ -130,10 +138,7 @@ namespace Antlr3.Tool
                          epsilonTarget.transition[0] != null )
                     {
                         s.setTransition0( epsilonTarget.transition[0] );
-                        /*
-                        System.out.println("### opt "+s.stateNumber+"->"+
-                                           epsilonTarget.transition(0).target.stateNumber);
-                        */
+                        //System.Console.Out.WriteLine( "### opt " + s.stateNumber + "->" + epsilonTarget.transition[0].target.stateNumber );
                     }
                 }
                 s = (NFAState)t.target;
@@ -174,20 +179,24 @@ namespace Antlr3.Tool
             return g;
         }
 
+#if false
         /** Can only complement block of simple alts; can complement build_Set()
          *  result, that is.  Get set and complement, replace old with complement.
-        public StateCluster build_AlternativeBlockComplement(StateCluster blk) {
+         */
+        public StateCluster build_AlternativeBlockComplement( StateCluster blk )
+        {
             State s0 = blk.left;
-            IntSet set = getCollapsedBlockAsSet(s0);
-            if ( set!=null ) {
+            IIntSet set = getCollapsedBlockAsSet( s0 );
+            if ( set != null )
+            {
                 // if set is available, then structure known and blk is a set
-                set = nfa.grammar.complement(set);
-                Label label = s0.transition(0).target.transition(0).label;
-                label.setSet(set);
+                set = nfa.grammar.complement( set );
+                Label label = s0.getTransition( 0 ).target.getTransition( 0 ).label;
+                label.Set = set;
             }
             return blk;
         }
-         */
+#endif
 
         public virtual StateCluster build_Range( int a, int b )
         {
@@ -267,11 +276,11 @@ namespace Antlr3.Tool
          */
         public virtual StateCluster build_RuleRef( Rule refDef, NFAState ruleStart )
         {
-            //System.out.println("building ref to rule "+nfa.grammar.name+"."+refDef.name);
+            //System.Console.Out.WriteLine( "building ref to rule " + nfa.grammar.name + "." + refDef.name );
             NFAState left = newState();
-            // left.setDescription("ref to "+ruleStart.getDescription());
+            //left.Description = "ref to " + ruleStart.Description;
             NFAState right = newState();
-            // right.setDescription("NFAState following ref to "+ruleStart.getDescription());
+            //right.Description = "NFAState following ref to " + ruleStart.Description;
             Transition e = new RuleClosureTransition( refDef, ruleStart, right );
             left.addTransition( e );
             StateCluster g = new StateCluster( left, right );
@@ -295,8 +304,7 @@ namespace Antlr3.Tool
         public virtual StateCluster build_SemanticPredicate( GrammarAST pred )
         {
             // don't count syn preds
-            if ( !pred.Text.ToUpperInvariant()
-                    .StartsWith( Grammar.SYNPRED_RULE_PREFIX.ToUpperInvariant() ) )
+            if ( !pred.Text.StartsWith( Grammar.SYNPRED_RULE_PREFIX, StringComparison.OrdinalIgnoreCase ) )
             {
                 nfa.grammar.numberOfSemanticPredicates++;
             }
@@ -362,11 +370,9 @@ namespace Antlr3.Tool
                 label = Label.EOT;
                 end.IsEOTTargetState = true;
             }
-            /*
-            System.out.println("build "+nfa.grammar.getTokenDisplayName(label)+
-                               " loop on end of state "+endNFAState.getDescription()+
-                               " to state "+end.stateNumber);
-            */
+            //System.Console.Out.WriteLine( "build " + nfa.grammar.getTokenDisplayName( label ) +
+            //                              " loop on end of state " + endNFAState.Description +
+            //                              " to state " + end.stateNumber );
             Transition toEnd = new Transition( label, end );
             endNFAState.addTransition( toEnd );
         }
@@ -448,7 +454,7 @@ namespace Antlr3.Tool
                 NFAState startOfAlt = newState(); // must have this no matter what
                 transitionBetweenStates( startOfAlt, g.left, Label.EPSILON );
 
-                //System.out.println("### opt saved start/stop end in (...)");
+                //System.Console.Out.WriteLine( "### opt saved start/stop end in (...)" );
                 return new StateCluster( startOfAlt, g.right );
             }
 
@@ -666,6 +672,7 @@ namespace Antlr3.Tool
             return g;
         }
 
+#if false
         /** Build an NFA predictor for special rule called Tokens manually that
          *  predicts which token will succeed.  The refs to the rules are not
          *  RuleRefTransitions as I want DFA conversion to stop at the EOT
@@ -689,33 +696,38 @@ namespace Antlr3.Tool
          *  Grammar.addArtificialMatchTokensRule().
          *
          *  11/28/2005: removed so we can use normal rule construction for Tokens.
-        public NFAState build_ArtificialMatchTokensRuleNFA() {
+         */
+        public NFAState build_ArtificialMatchTokensRuleNFA()
+        {
             int altNum = 1;
             NFAState firstAlt = null; // the start state for the "rule"
             NFAState prevAlternative = null;
             Iterator iter = nfa.grammar.getRules().iterator();
             // TODO: add a single decision node/state for good description
-            while (iter.hasNext()) {
-                Rule r = (Rule) iter.next();
-                String ruleName = r.name;
-                String modifier = nfa.grammar.getRuleModifier(ruleName);
-                if ( ruleName.equals(Grammar.ARTIFICIAL_TOKENS_RULENAME) ||
-                     (modifier!=null &&
-                      modifier.equals(Grammar.FRAGMENT_RULE_MODIFIER)) )
+            while ( iter.hasNext() )
+            {
+                Rule r = (Rule)iter.next();
+                string ruleName = r.name;
+                string modifier = nfa.grammar.getRuleModifier( ruleName );
+                if ( ruleName.Equals( Grammar.ARTIFICIAL_TOKENS_RULENAME ) ||
+                     ( modifier != null &&
+                      modifier.Equals( Grammar.FRAGMENT_RULE_MODIFIER ) ) )
                 {
                     continue; // don't loop to yourself or do nontoken rules
                 }
-                NFAState ruleStartState = nfa.grammar.getRuleStartState(ruleName);
+                NFAState ruleStartState = nfa.grammar.getRuleStartState( ruleName );
                 NFAState left = newState();
-                left.setDescription("alt "+altNum+" of artificial rule "+Grammar.ARTIFICIAL_TOKENS_RULENAME);
-                transitionBetweenStates(left, ruleStartState, Label.EPSILON);
+                left.Description = "alt " + altNum + " of artificial rule " + Grammar.ARTIFICIAL_TOKENS_RULENAME;
+                transitionBetweenStates( left, ruleStartState, Label.EPSILON );
                 // Are we the first alternative?
-                if ( firstAlt==null ) {
+                if ( firstAlt == null )
+                {
                     firstAlt = left; // track extreme top left node as rule start
                 }
-                else {
+                else
+                {
                     // if not first alternative, must link to this alt from previous
-                    transitionBetweenStates(prevAlternative, left, Label.EPSILON);
+                    transitionBetweenStates( prevAlternative, left, Label.EPSILON );
                 }
                 prevAlternative = left;
                 altNum++;
@@ -724,7 +736,7 @@ namespace Antlr3.Tool
 
             return firstAlt;
         }
-         */
+#endif
 
         /** Build an atom with all possible values in its label */
         public virtual StateCluster build_Wildcard( GrammarAST associatedAST )

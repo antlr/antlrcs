@@ -1,4 +1,4 @@
-// $ANTLR 3.1.2 Grammars\\CodeGenTreeWalker.g3 2009-04-10 15:22:10
+// $ANTLR 3.1.2 Grammars\\CodeGenTreeWalker.g3 2009-04-10 17:42:48
 
 // The variable 'variable' is assigned but its value is never used.
 #pragma warning disable 219
@@ -3238,7 +3238,7 @@ public partial class CodeGenTreeWalker : TreeParser
 
 			Antlr3.Analysis.DFA dfa=null;
 			GrammarAST b = (GrammarAST)((GrammarAST)retval.start).GetChild(0);
-			GrammarAST eob = (GrammarAST)b.getLastChild(); // loops will use EOB DFA
+			GrammarAST eob = (GrammarAST)b.LastChild; // loops will use EOB DFA
 
 		try
 		{

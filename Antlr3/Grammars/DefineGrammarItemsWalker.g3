@@ -82,7 +82,9 @@ using System;
 using Antlr3.Tool;
 using boolean = System.Boolean;
 using Character = java.lang.Character;
+#if DEBUG
 using Utils = Antlr3.Misc.Utils;
+#endif
 }
 
 @namespace{Antlr3.Grammars}

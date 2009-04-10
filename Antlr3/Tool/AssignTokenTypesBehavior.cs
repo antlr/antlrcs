@@ -223,12 +223,10 @@ namespace Antlr3.Tool
 
         protected internal override void defineTokens( Grammar root )
         {
-            /*
-                System.out.println("stringLiterals="+stringLiterals);
-                System.out.println("tokens="+tokens);
-                System.out.println("aliases="+aliases);
-                System.out.println("aliasesReverseIndex="+aliasesReverseIndex);
-            */
+            //System.Console.Out.WriteLine( "stringLiterals=" + stringLiterals );
+            //System.Console.Out.WriteLine( "tokens=" + tokens );
+            //System.Console.Out.WriteLine( "aliases=" + aliases );
+            //System.Console.Out.WriteLine( "aliasesReverseIndex=" + aliasesReverseIndex );
 
             assignTokenIDTypes( root );
 
@@ -236,32 +234,33 @@ namespace Antlr3.Tool
 
             assignStringTypes( root );
 
-            /*
-                System.out.println("stringLiterals="+stringLiterals);
-                System.out.println("tokens="+tokens);
-                System.out.println("aliases="+aliases);
-            */
+            //System.Console.Out.WriteLine( "stringLiterals=" + stringLiterals );
+            //System.Console.Out.WriteLine( "tokens=" + tokens );
+            //System.Console.Out.WriteLine( "aliases=" + aliases );
             defineTokenNamesAndLiteralsInGrammar( root );
         }
 
-        /*
-        protected void defineStringLiteralsFromDelegates() {
-             if ( grammar.getGrammarIsMaster() && grammar.type==Grammar.COMBINED ) {
-                 List<Grammar> delegates = grammar.getDelegates();
-                 System.out.println("delegates in master combined: "+delegates);
-                 for (int i = 0; i < delegates.size(); i++) {
-                     Grammar d = (Grammar) delegates.get(i);
-                     Set<String> literals = d.getStringLiterals();
-                     for (Iterator it = literals.iterator(); it.hasNext();) {
-                         String literal = (String) it.next();
-                         System.out.println("literal "+literal);
-                         int ttype = grammar.getTokenType(literal);
-                         grammar.defineLexerRuleForStringLiteral(literal, ttype);
-                     }
-                 }
-             }
+#if false
+        protected virtual void defineStringLiteralsFromDelegates()
+        {
+            if ( grammar.IsRoot && grammar.type == Grammar.COMBINED )
+            {
+                IList<Grammar> delegates = grammar.getDelegates();
+                System.Console.Out.WriteLine( "delegates in master combined: " + delegates );
+                for ( int i = 0; i < delegates.size(); i++ )
+                {
+                    Grammar d = (Grammar)delegates.get( i );
+                    var literals = d.StringLiterals;
+                    foreach ( string literal in literals )
+                    {
+                        System.Console.Out.WriteLine( "literal " + literal );
+                        int ttype = grammar.getTokenType( literal );
+                        grammar.defineLexerRuleForStringLiteral( literal, ttype );
+                    }
+                }
+            }
         }
-        */
+#endif
 
         protected override void assignStringTypes( Grammar root )
         {

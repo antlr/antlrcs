@@ -69,7 +69,6 @@ namespace Antlr3.Tool
             List<int> sortedAlts = new List<int>();
             sortedAlts.addAll( altsWithRecursion );
             sortedAlts.Sort();
-            //Collections.sort(sortedAlts); // make sure it's 1, 2, ...
             st.SetAttribute( "alts", sortedAlts );
 
             return base.ToString( st );

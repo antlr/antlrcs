@@ -252,21 +252,26 @@ namespace Antlr3.Analysis
             return true;
         }
 
+#if false
         /** Walk upwards to the root of the call stack context looking
          *  for a particular invoking state.
-        public boolean contains(int state) {
+         */
+        public virtual bool contains( int state )
+        {
             NFAContext sp = this;
             int n = 0; // track recursive invocations of state
-            JSystem.@out.println("this.context is "+sp);
-            while ( sp.parent!=null ) {
-                if ( sp.invokingState.stateNumber == state ) {
+            System.Console.Out.WriteLine( "this.context is " + sp );
+            while ( sp.parent != null )
+            {
+                if ( sp.invokingState.stateNumber == state )
+                {
                     return true;
                 }
                 sp = sp.parent;
             }
             return false;
         }
-         */
+#endif
 
         /** Given an NFA state number, how many times has the NFA-to-DFA
          *  conversion pushed that state on the stack?  In other words,

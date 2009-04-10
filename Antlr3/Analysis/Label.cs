@@ -367,6 +367,7 @@ namespace Antlr3.Analysis
             return this.label - ( (Label)o ).label;
         }
 
+#if false
         /** Predicates are lists of AST nodes from the NFA created from the
          *  grammar, but the same predicate could be cut/paste into multiple
          *  places in the grammar.  I must compare the text of all the
@@ -378,7 +379,6 @@ namespace Antlr3.Analysis
          *  At this point, Labels are not compared for equals when they are
          *  predicates, but here's the code for future use.
          */
-        /*
         protected boolean predicatesEquals(Set others) {
             Iterator iter = semanticContext.iterator();
             while (iter.hasNext()) {
@@ -393,7 +393,7 @@ namespace Antlr3.Analysis
             }
             return true;
         }
-          */
+#endif
 
         public override string ToString()
         {
@@ -417,7 +417,7 @@ namespace Antlr3.Analysis
             }
         }
 
-        /*
+#if false
         public String predicatesToString() {
             if ( semanticContext==NFAConfiguration.DEFAULT_CLAUSE_SEMANTIC_CONTEXT ) {
                 return "!other preds";
@@ -433,7 +433,7 @@ namespace Antlr3.Analysis
             }
             return buf.toString();
         }
-        */
+#endif
 
         public static bool intersect( Label label, Label edgeLabel )
         {

@@ -161,7 +161,7 @@ namespace Antlr3.Tool
                 return;
             }
             ICharStream @in = (ICharStream)this.input;
-            //System.out.println("scan("+startRule+",'"+in.substring(in.index(),in.size()-1)+"')");
+            //Console.Out.WriteLine( "scan(" + startRule + ",'" + @in.substring( @in.Index, @in.Size() - 1 ) + "')" );
             // Build NFAs/DFAs from the grammar AST if NFAs haven't been built yet
             if ( grammar.getRuleStartState( startRule ) == null )
             {
@@ -199,7 +199,7 @@ namespace Antlr3.Tool
                           IDebugEventListener actions,
                           IList visitedStates )
         {
-            //System.out.println("parse("+startRule+")");
+            //Console.Out.WriteLine( "parse(" + startRule + ")" );
             // Build NFAs/DFAs from the grammar AST if NFAs haven't been built yet
             if ( grammar.getRuleStartState( startRule ) == null )
             {
@@ -260,22 +260,18 @@ namespace Antlr3.Tool
                 {
                     visitedStates.Add( s );
                 }
-                /*
-                System.out.println("parse state "+s.stateNumber+" input="+
-                    s.nfa.grammar.getTokenDisplayName(t));
-                    */
+                //Console.Out.WriteLine( "parse state " + s.stateNumber + " input=" + s.nfa.grammar.getTokenDisplayName( t ) );
                 // CASE 1: decision state
                 if ( s.DecisionNumber > 0 && s.nfa.grammar.getNumberOfAltsForDecisionNFA( s ) > 1 )
                 {
                     // decision point, must predict and jump to alt
                     DFA dfa = s.nfa.grammar.getLookaheadDFA( s.DecisionNumber );
-                    /*
-                    if ( s.nfa.grammar.type!=Grammar.LEXER ) {
-                        System.out.println("decision: "+
-                                       dfa.getNFADecisionStartState().getDescription()+
-                                       " input="+s.nfa.grammar.getTokenDisplayName(t));
-                    }
-                    */
+                    //if ( s.nfa.grammar.type != Grammar.LEXER )
+                    //{
+                    //    Console.Out.WriteLine( "decision: " +
+                    //                   dfa.getNFADecisionStartState().Description +
+                    //                   " input=" + s.nfa.grammar.getTokenDisplayName( t ) );
+                    //}
                     int m = input.Mark();
                     int predictedAlt = predict( dfa );
                     if ( predictedAlt == NFA.INVALID_ALT_NUMBER )
@@ -296,12 +292,10 @@ namespace Antlr3.Tool
                     input.Rewind( m );
                     int parseAlt =
                         s.translateDisplayAltToWalkAlt( predictedAlt );
-                    /*
-                    if ( s.nfa.grammar.type!=Grammar.LEXER ) {
-                        System.out.println("predicted alt "+predictedAlt+", parseAlt "+
-                                           parseAlt);
-                    }
-                    */
+                    //if ( s.nfa.grammar.type != Grammar.LEXER )
+                    //{
+                    //    Console.Out.WriteLine( "predicted alt " + predictedAlt + ", parseAlt " + parseAlt );
+                    //}
                     NFAState alt;
                     if ( parseAlt > s.nfa.grammar.getNumberOfAltsForDecisionNFA( s ) )
                     {
@@ -326,7 +320,7 @@ namespace Antlr3.Tool
                     if ( ruleInvocationStack.Count == 0 )
                     {
                         // done parsing.  Hit the start state.
-                        //System.out.println("stack empty in stop state for "+s.getEnclosingRule());
+                        //Console.Out.WriteLine( "stack empty in stop state for " + s.enclosingRule );
                         break;
                     }
                     // pop invoking state off the stack to know where to return to
@@ -360,7 +354,7 @@ namespace Antlr3.Tool
                     {
                         ruleInvocationStack.Push( s );
                         s = (NFAState)trans.target;
-                        //System.out.println("call "+s.enclosingRule.name+" from "+s.nfa.grammar.getFileName());
+                        //Console.Out.WriteLine( "call " + s.enclosingRule.name + " from " + s.nfa.grammar.getFileName() );
                         if ( actions != null )
                         {
                             actions.EnterRule( s.nfa.grammar.FileName, s.enclosingRule.name );
@@ -439,7 +433,7 @@ namespace Antlr3.Tool
                     }
                 }
             }
-            //System.out.println("hit stop state for "+stop.getEnclosingRule());
+            //Console.Out.WriteLine( "hit stop state for " + stop.enclosingRule );
             if ( actions != null )
             {
                 actions.ExitRule( s.nfa.grammar.FileName, stop.enclosingRule.name );
@@ -452,50 +446,50 @@ namespace Antlr3.Tool
          *  input.lookahead(1) must point at the input symbol you want to start
          *  predicting with.
          */
-        public int predict( DFA dfa ) {
-		DFAState s = dfa.startState;
-		int c = input.LA(1);
-		Transition eotTransition = null;
-	dfaLoop:
-		while ( !s.IsAcceptState ) {
-			/*
-			System.out.println("DFA.predict("+s.getStateNumber()+", "+
-					dfa.getNFA().getGrammar().getTokenName(c)+")");
-			*/
-			// for each edge of s, look for intersection with current char
-			for (int i=0; i<s.NumberOfTransitions; i++) {
-				Transition t = s.transition(i);
-				// special case: EOT matches any char
-				if ( t.label.matches(c) ) {
-					// take transition i
-					s = (DFAState)t.target;
-					input.Consume();
-					c = input.LA(1);
-					goto dfaLoop;
-				}
-				if ( t.label.Atom==Label.EOT ) {
-					eotTransition = t;
-				}
-			}
-			if ( eotTransition!=null ) {
-				s = (DFAState)eotTransition.target;
-				goto dfaLoop;
-			}
-			/*
-			ErrorManager.error(ErrorManager.MSG_NO_VIABLE_DFA_ALT,
-							   s,
-							   dfa.nfa.grammar.getTokenName(c));
-			*/
-			return NFA.INVALID_ALT_NUMBER;
-		}
-		// woohoo!  We know which alt to predict
-		// nothing emanates from a stop state; must terminate anyway
-		/*
-		System.out.println("DFA stop state "+s.getStateNumber()+" predicts "+
-				s.getUniquelyPredictedAlt());
-		*/
-		return s.getUniquelyPredictedAlt();
-	}
+        public int predict( DFA dfa )
+        {
+            DFAState s = dfa.startState;
+            int c = input.LA( 1 );
+            Transition eotTransition = null;
+        dfaLoop:
+            while ( !s.IsAcceptState )
+            {
+                //Console.Out.WriteLine( "DFA.predict(" + s.stateNumber + ", " + dfa.nfa.grammar.getTokenDisplayName( c ) + ")" );
+                // for each edge of s, look for intersection with current char
+                for ( int i = 0; i < s.NumberOfTransitions; i++ )
+                {
+                    Transition t = s.transition( i );
+                    // special case: EOT matches any char
+                    if ( t.label.matches( c ) )
+                    {
+                        // take transition i
+                        s = (DFAState)t.target;
+                        input.Consume();
+                        c = input.LA( 1 );
+                        goto dfaLoop;
+                    }
+                    if ( t.label.Atom == Label.EOT )
+                    {
+                        eotTransition = t;
+                    }
+                }
+                if ( eotTransition != null )
+                {
+                    s = (DFAState)eotTransition.target;
+                    goto dfaLoop;
+                }
+                /*
+                ErrorManager.error(ErrorManager.MSG_NO_VIABLE_DFA_ALT,
+                                   s,
+                                   dfa.nfa.grammar.getTokenName(c));
+                */
+                return NFA.INVALID_ALT_NUMBER;
+            }
+            // woohoo!  We know which alt to predict
+            // nothing emanates from a stop state; must terminate anyway
+            //Console.Out.WriteLine( "DFA stop state " + s.stateNumber + " predicts " + s.getUniquelyPredictedAlt() );
+            return s.getUniquelyPredictedAlt();
+        }
 
         public virtual void reportScanError( RecognitionException re )
         {

@@ -59,7 +59,7 @@ namespace Antlr3.Grammars
             public GrammarASTErrorNode( ITokenStream input, IToken start, IToken stop,
                                    RecognitionException e )
             {
-                //System.out.println("start: "+start+", stop: "+stop);
+                //Console.Out.WriteLine( "start: " + start + ", stop: " + stop );
                 if ( stop == null ||
                      ( stop.TokenIndex < start.TokenIndex &&
                       stop.Type != TokenConstants.Eof ) )
@@ -325,7 +325,7 @@ namespace Antlr3.Grammars
             adaptor.AddChild( rule, adaptor.Create( RET, "RET" ) );
             adaptor.AddChild( rule, adaptor.Create( SCOPE, "scope" ) );
             adaptor.AddChild( rule, block );
-            adaptor.AddChild( rule, adaptor.Create( EOR, block.getLastChild().Token, "<end-of-rule>" ) );
+            adaptor.AddChild( rule, adaptor.Create( EOR, block.LastChild.Token, "<end-of-rule>" ) );
 
             return rule;
         }

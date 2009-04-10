@@ -175,7 +175,7 @@ namespace Antlr3.Tool
         public const string IGNORE_STRING_IN_GRAMMAR_FILE_NAME = "__";
         public const string AUTO_GENERATED_TOKEN_NAME_PREFIX = "T__";
 
-        public /*static*/ class Decision
+        public class Decision
         {
             public int decision;
             public NFAState startState;
@@ -1340,19 +1340,22 @@ namespace Antlr3.Tool
             return rules;
         }
 
+#if false
         /** Walk the list of options, altering this Grammar object according
          *  to any I recognize.
-        protected void processOptions() {
-            Iterator optionNames = options.keySet().iterator();
-            while (optionNames.hasNext()) {
-                String optionName = (String) optionNames.next();
-                Object value = options.get(optionName);
-                if ( optionName.equals("tokenVocab") ) {
-
+         */
+        protected virtual void processOptions()
+        {
+            foreach ( var option in options )
+            {
+                string optionName = option.Key;
+                object value = option.Value;
+                if ( optionName.Equals( "tokenVocab" ) )
+                {
                 }
             }
         }
-         */
+#endif
 
         /** Define all the rule begin/end NFAStates to solve forward reference
          *  issues.  Critical for composite grammars too.
@@ -1970,11 +1973,12 @@ namespace Antlr3.Tool
             semCtx.trackUseOfSyntacticPredicates( this ); // walk ctx looking for preds
         }
 
-        /*
-        public Set<Rule> getRuleNamesVisitedDuringLOOK() {
+#if false
+        public HashSet<Rule> getRuleNamesVisitedDuringLOOK()
+        {
             return rulesSensitiveToOtherRules;
         }
-        */
+#endif
 
         /** Given @scope::name {action} define it for this grammar.  Later,
          *  the code generator will ask for the actions table.  For composite
@@ -3137,20 +3141,10 @@ namespace Antlr3.Tool
                 this.options = null;
                 return;
             }
-            //Set keys = options.keySet();
-            //for ( Iterator it = keys.iterator(); it.hasNext(); )
-            //{
-            //    String optionName = (String)it.next();
-            //    object optionValue = options.get( optionName );
-            //    String stored = setOption( optionName, optionValue, optionsStartToken );
-            //    if ( stored == null )
-            //    {
-            //        it.remove();
-            //    }
-            //}
-            foreach ( string optionName in options.Keys.ToArray() )
+            foreach ( var option in options.ToArray() )
             {
-                object optionValue = options.get( optionName );
+                string optionName = option.Key;
+                object optionValue = option.Value;
                 string stored = setOption( optionName, optionValue, optionsStartToken );
                 if ( stored == null )
                     options.Remove( optionName );
@@ -3357,7 +3351,7 @@ namespace Antlr3.Tool
             if ( r != null )
             {
                 r.tree = t;
-                r.EORNode = t.getLastChild();
+                r.EORNode = t.LastChild;
             }
         }
 
@@ -3506,30 +3500,36 @@ namespace Antlr3.Tool
             return LineColumnToLookaheadDFAMap;
         }
 
-        /*
-        public void setDecisionOptions(int decision, Map options) {
-            Decision d = createDecision(decision);
+#if false
+        public virtual void setDecisionOptions( int decision, IDictionary options )
+        {
+            Decision d = createDecision( decision );
             d.options = options;
         }
 
-        public void setDecisionOption(int decision, String name, Object value) {
-            Decision d = getDecision(decision);
-            if ( d!=null ) {
-                if ( d.options==null ) {
-                    d.options = new HashMap();
+        public virtual void setDecisionOption( int decision, string name, object value )
+        {
+            Decision d = getDecision( decision );
+            if ( d != null )
+            {
+                if ( d.options == null )
+                {
+                    d.options = new Dictionary<object, object>();
                 }
-                d.options.put(name,value);
+                d.options.put( name, value );
             }
         }
 
-        public Map getDecisionOptions(int decision) {
-            Decision d = getDecision(decision);
-            if ( d==null ) {
+        public virtual IDictionary getDecisionOptions( int decision )
+        {
+            Decision d = getDecision( decision );
+            if ( d == null )
+            {
                 return null;
             }
             return d.options;
         }
-        */
+#endif
 
         [System.Obsolete]
         public int getNumberOfDecisions()
@@ -3566,7 +3566,7 @@ namespace Antlr3.Tool
             Decision d = createDecision( decision );
             d.dfa = lookaheadDFA;
             GrammarAST ast = d.startState.associatedASTNode;
-            ast.setLookaheadDFA( lookaheadDFA );
+            ast.LookaheadDFA = lookaheadDFA;
         }
 
         public virtual void setDecisionNFA( int decision, NFAState state )
@@ -3770,21 +3770,25 @@ namespace Antlr3.Tool
             return null;
         }
 
-        /*
-        public void computeRuleFOLLOWSets() {
-            if ( getNumberOfDecisions()==0 ) {
+#if false
+        public virtual void computeRuleFOLLOWSets()
+        {
+            if ( getNumberOfDecisions() == 0 )
+            {
                 createNFAs();
             }
-            for (Iterator it = getRules().iterator(); it.hasNext();) {
+            for ( Iterator it = getRules().iterator(); it.hasNext(); )
+            {
                 Rule r = (Rule)it.next();
-                if ( r.isSynPred ) {
+                if ( r.isSynPred )
+                {
                     continue;
                 }
-                LookaheadSet s = ll1Analyzer.FOLLOW(r);
-                JSystem.@out.println("FOLLOW("+r.name+")="+s);
+                LookaheadSet s = ll1Analyzer.FOLLOW( r );
+                JSystem.@out.println( "FOLLOW(" + r.name + ")=" + s );
             }
         }
-        */
+#endif
 
         public virtual LookaheadSet FIRST( NFAState s )
         {

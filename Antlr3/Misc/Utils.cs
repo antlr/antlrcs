@@ -30,6 +30,8 @@
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+#if DEBUG
+
 namespace Antlr3.Misc
 {
     using System;
@@ -70,3 +72,5 @@ namespace Antlr3.Misc
         }
     }
 }
+
+#endif

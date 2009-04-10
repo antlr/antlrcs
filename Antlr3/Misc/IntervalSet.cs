@@ -39,6 +39,7 @@ namespace Antlr3.Misc
     using Grammar = Antlr3.Tool.Grammar;
     using Label = Antlr3.Analysis.Label;
     using NotImplementedException = System.NotImplementedException;
+    using Obsolete = System.ObsoleteAttribute;
     using StringBuilder = System.Text.StringBuilder;
 
     /** A set of integers that relies on ranges being common to do
@@ -208,50 +209,58 @@ namespace Antlr3.Misc
             intervals.Add( addition );
         }
 
-        /*
-        protected void add(Interval addition) {
+#if false
+        protected virtual void add( Interval addition )
+        {
             //JSystem.@out.println("add "+addition+" to "+intervals.toString());
-            if ( addition.b<addition.a ) {
+            if ( addition.b < addition.a )
+            {
                 return;
             }
             // find position in list
             //for (ListIterator iter = intervals.listIterator(); iter.hasNext();) {
-            int n = intervals.size();
-            for (int i=0; i<n; i++) {
-                Interval r = (Interval)intervals.get(i);
-                if ( addition.equals(r) ) {
+            int n = intervals.Count;
+            for ( int i = 0; i < n; i++ )
+            {
+                Interval r = (Interval)intervals[i];
+                if ( addition.Equals( r ) )
+                {
                     return;
                 }
-                if ( addition.adjacent(r) || !addition.disjoint(r) ) {
+                if ( addition.adjacent( r ) || !addition.disjoint( r ) )
+                {
                     // next to each other, make a single larger interval
-                    Interval bigger = addition.union(r);
-                    intervals.set(i, bigger);
+                    Interval bigger = addition.union( r );
+                    intervals[i] = bigger;
                     // make sure we didn't just create an interval that
                     // should be merged with next interval in list
-                    if ( (i+1)<n ) {
+                    if ( ( i + 1 ) < n )
+                    {
                         i++;
-                        Interval next = (Interval)intervals.get(i);
-                        if ( bigger.adjacent(next)||!bigger.disjoint(next) ) {
+                        Interval next = (Interval)intervals[i];
+                        if ( bigger.adjacent( next ) || !bigger.disjoint( next ) )
+                        {
                             // if we bump up against or overlap next, merge
-                            intervals.remove(i); // remove next one
+                            intervals.RemoveAt( i ); // remove next one
                             i--;
-                            intervals.set(i, bigger.union(next)); // set to 3 merged ones
+                            intervals[i] = bigger.union( next ); // set to 3 merged ones
                         }
                     }
                     return;
                 }
-                if ( addition.startsBeforeDisjoint(r) ) {
+                if ( addition.startsBeforeDisjoint( r ) )
+                {
                     // insert before r
-                    intervals.add(i, addition);
+                    intervals.Insert( i, addition );
                     return;
                 }
                 // if disjoint and after r, a future iteration will handle it
             }
             // ok, must be after last interval (and disjoint from last interval)
             // just add it
-            intervals.add(addition);
+            intervals.Add( addition );
         }
-    */
+#endif
 
         public virtual void addAll( IIntSet set )
         {
@@ -349,6 +358,7 @@ namespace Antlr3.Misc
             return this.and( ( (IntervalSet)other ).complement( COMPLETE_SET ) );
         }
 
+#if false
         /** return a new set containing all elements in this but not in other.
          *  Intervals may have to be broken up when ranges in this overlap
          *  with ranges in other.  other is assumed to be a subset of this;
@@ -356,93 +366,112 @@ namespace Antlr3.Misc
          *
          *  Keep around, but 10-20-2005, I decided to make complement work w/o
          *  subtract and so then subtract can simply be a&~b
-         *
-        public IntSet subtract(IntSet other) {
-            if ( other==null || !(other instanceof IntervalSet) ) {
+         */
+        public IIntSet subtract( IIntSet other )
+        {
+            if ( other == null || !( other is IntervalSet ) )
+            {
                 return null; // nothing in common with null set
             }
 
             IntervalSet diff = new IntervalSet();
 
             // iterate down both interval lists
-            ListIterator thisIter = this.intervals.listIterator();
-            ListIterator otherIter = ((IntervalSet)other).intervals.listIterator();
-            Interval mine=null;
-            Interval theirs=null;
-            if ( thisIter.hasNext() ) {
-                mine = (Interval)thisIter.next();
+            var thisIter = this.intervals.GetEnumerator();
+            var otherIter = ( (IntervalSet)other ).intervals.GetEnumerator();
+            Interval mine = null;
+            Interval theirs = null;
+            if ( thisIter.MoveNext() )
+            {
+                mine = (Interval)thisIter.Current;
             }
-            if ( otherIter.hasNext() ) {
-                theirs = (Interval)otherIter.next();
+            if ( otherIter.MoveNext() )
+            {
+                theirs = (Interval)otherIter.Current;
             }
-            while ( mine!=null ) {
+            while ( mine != null )
+            {
                 //JSystem.@out.println("mine="+mine+", theirs="+theirs);
                 // CASE 1: nothing in theirs removes a chunk from mine
-                if ( theirs==null || mine.disjoint(theirs) ) {
+                if ( theirs == null || mine.disjoint( theirs ) )
+                {
                     // SUBCASE 1a: finished traversing theirs; keep adding mine now
-                    if ( theirs==null ) {
+                    if ( theirs == null )
+                    {
                         // add everything in mine to difference since theirs done
-                        diff.add(mine);
+                        diff.add( mine );
                         mine = null;
-                        if ( thisIter.hasNext() ) {
-                            mine = (Interval)thisIter.next();
+                        if ( thisIter.MoveNext() )
+                        {
+                            mine = (Interval)thisIter.Current;
                         }
                     }
-                    else {
+                    else
+                    {
                         // SUBCASE 1b: mine is completely to the left of theirs
                         // so we can add to difference; move mine, but not theirs
-                        if ( mine.startsBeforeDisjoint(theirs) ) {
-                            diff.add(mine);
+                        if ( mine.startsBeforeDisjoint( theirs ) )
+                        {
+                            diff.add( mine );
                             mine = null;
-                            if ( thisIter.hasNext() ) {
-                                mine = (Interval)thisIter.next();
+                            if ( thisIter.MoveNext() )
+                            {
+                                mine = (Interval)thisIter.Current;
                             }
                         }
                         // SUBCASE 1c: theirs is completely to the left of mine
-                        else {
+                        else
+                        {
                             // keep looking in theirs
                             theirs = null;
-                            if ( otherIter.hasNext() ) {
-                                theirs = (Interval)otherIter.next();
+                            if ( otherIter.MoveNext() )
+                            {
+                                theirs = (Interval)otherIter.Current;
                             }
                         }
                     }
                 }
-                else {
+                else
+                {
                     // CASE 2: theirs breaks mine into two chunks
-                    if ( mine.properlyContains(theirs) ) {
+                    if ( mine.properlyContains( theirs ) )
+                    {
                         // must add two intervals: stuff to left and stuff to right
-                        diff.add(mine.a, theirs.a-1);
+                        diff.add( mine.a, theirs.a - 1 );
                         // don't actually add stuff to right yet as next 'theirs'
                         // might overlap with it
                         // The stuff to the right might overlap with next "theirs".
                         // so it is considered next
-                        Interval right = new Interval(theirs.b+1, mine.b);
+                        Interval right = new Interval( theirs.b + 1, mine.b );
                         mine = right;
                         // move theirs forward
                         theirs = null;
-                        if ( otherIter.hasNext() ) {
-                            theirs = (Interval)otherIter.next();
+                        if ( otherIter.MoveNext() )
+                        {
+                            theirs = (Interval)otherIter.Current;
                         }
                     }
 
                     // CASE 3: theirs covers mine; nothing to add to diff
-                    else if ( theirs.properlyContains(mine) ) {
+                    else if ( theirs.properlyContains( mine ) )
+                    {
                         // nothing to add, theirs forces removal totally of mine
                         // just move mine looking for an overlapping interval
                         mine = null;
-                        if ( thisIter.hasNext() ) {
-                            mine = (Interval)thisIter.next();
+                        if ( thisIter.MoveNext() )
+                        {
+                            mine = (Interval)thisIter.Current;
                         }
                     }
 
                     // CASE 4: non proper overlap
-                    else {
+                    else
+                    {
                         // overlap, but not properly contained
-                        diff.add(mine.differenceNotProperlyContained(theirs));
+                        diff.add( mine.differenceNotProperlyContained( theirs ) );
                         // update iterators
-                        boolean moveTheirs = true;
-                        if ( mine.startsBeforeNonDisjoint(theirs) ||
+                        bool moveTheirs = true;
+                        if ( mine.startsBeforeNonDisjoint( theirs ) ||
                              theirs.b > mine.b )
                         {
                             // uh oh, right of theirs extends past right of mine
@@ -452,13 +481,16 @@ namespace Antlr3.Misc
                         }
                         // always move mine
                         mine = null;
-                        if ( thisIter.hasNext() ) {
-                            mine = (Interval)thisIter.next();
+                        if ( thisIter.MoveNext() )
+                        {
+                            mine = (Interval)thisIter.Current;
                         }
-                        if ( moveTheirs ) {
+                        if ( moveTheirs )
+                        {
                             theirs = null;
-                            if ( otherIter.hasNext() ) {
-                                theirs = (Interval)otherIter.next();
+                            if ( otherIter.MoveNext() )
+                            {
+                                theirs = (Interval)otherIter.Current;
                             }
                         }
                     }
@@ -466,7 +498,7 @@ namespace Antlr3.Misc
             }
             return diff;
         }
-         */
+#endif
 
         /** TODO: implement this! */
         public IIntSet or( IIntSet a )
@@ -796,8 +828,6 @@ namespace Antlr3.Misc
 
         public Antlr.Runtime.BitSet toRuntimeBitSet()
         {
-            //org.antlr.runtime.BitSet s =
-            //    new org.antlr.runtime.BitSet( getMaxElement() + 1 );
             Antlr.Runtime.BitSet s =
                 new Antlr.Runtime.BitSet( getMaxElement() + 1 );
             int n = intervals.Count;
@@ -816,7 +846,6 @@ namespace Antlr3.Misc
 
         public virtual void remove( int el )
         {
-            //throw new NoSuchMethodError("IntervalSet.remove() unimplemented");
             throw new NotImplementedException();
         }
 

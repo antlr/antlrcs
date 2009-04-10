@@ -90,7 +90,7 @@ namespace Antlr3.Grammars
                     continue;
 
                 string ruleName = p.GetChild( i ).GetChild( 0 ).Text;
-                //System.out.println("rule "+ruleName+" prev="+prev.getText());
+                //Console.Out.WriteLine( "rule " + ruleName + " prev=" + prev.getText() );
                 if ( char.IsUpper( ruleName[0] ) )
                 {
                     // remove lexer rule
@@ -98,7 +98,7 @@ namespace Antlr3.Grammars
                     i--;
                 }
             }
-            //System.out.println("root after removal is: "+root.toStringList());
+            //Console.Out.WriteLine( "root after removal is: " + root.ToStringList() );
         }
 
         protected void trackInlineAction( GrammarAST actionAST )

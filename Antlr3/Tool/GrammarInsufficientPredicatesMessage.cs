@@ -71,18 +71,16 @@ namespace Antlr3.Tool
             List<int> alts = new List<int>();
             alts.addAll( altToLocations.Keys );
             alts.Sort();
-            //Collections.sort(alts);
             foreach ( int altI in alts )
             {
                 altToLocationsWithStringKey[altI.ToString()] = altToLocations.get( altI );
-                /*
-                List<String> tokens = new ArrayList<String>();
-                for (Token t : altToLocations.get(altI)) {
-                    tokens.add(t.toString());
-                }
-                Collections.sort(tokens);
-                System.out.println("tokens=\n"+tokens);
-                */
+                //List<string> tokens = new List<string>();
+                //foreach ( IToken t in altToLocations.get( altI ) )
+                //{
+                //    tokens.Add( t.ToString() );
+                //}
+                //tokens.Sort();
+                //System.Console.Out.WriteLine( "tokens=\n" + tokens );
             }
             st.SetAttribute( "altToLocations", altToLocationsWithStringKey );
 
