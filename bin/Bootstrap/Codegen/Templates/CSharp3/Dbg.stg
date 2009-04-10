@@ -190,9 +190,9 @@ finally
 }<\n>
 >>
 
-@synpred.start() ::= "dbg.BeginBacktrack( state.backtracking );"
+@insertSynpreds.start() ::= "dbg.BeginBacktrack( state.backtracking );"
 
-@synpred.stop() ::= "dbg.EndBacktrack( state.backtracking, success );"
+@insertSynpreds.stop() ::= "dbg.EndBacktrack( state.backtracking, success );"
 
 // Common debug event triggers used by region overrides below
 

@@ -131,7 +131,7 @@ public partial class <grammar.recognizerName> : <@superClassName><superClass><@e
 <endif>
 	<rules; separator="\n\n">
 
-	<synpreds:{p | <lexerSynpred(p)>}>
+	<insertLexerSynpreds(synpreds)>
 
 	#region DFA
 	<cyclicDFAs:{dfa | DFA<dfa.decisionNumber> dfa<dfa.decisionNumber>;}; separator="\n">
@@ -275,11 +275,7 @@ public <grammar.recognizerName>( <inputStreamType> input, RecognizerSharedState 
 	#endregion Delegated rules<\n>
 <endif>
 
-<if(synpreds)>
-	#region Synpreds
-	<synpreds:{p | <synpred(p)>}>
-	#endregion Synpreds<\n>
-<endif>
+	<insertSynpreds(synpreds)>
 
 <if(cyclicDFAs)>
 	#region DFA
@@ -364,15 +360,21 @@ public <!final !>void <ruleName>_fragment(<ruleDescriptor.parameterScope:paramet
 // $ANTLR end <ruleName>
 >>
 
-synpred(name) ::= <<
-public <!final !>bool <name>()
+insertLexerSynpreds(synpreds) ::= <<
+<insertSynpreds(synpreds)>
+>>
+
+insertSynpreds(synpreds) ::= <<
+<if(synpreds)>
+#region Synpreds
+bool EvaluatePredicate( System.Action fragment )
 {
 	state.backtracking++;
 	<@start()>
 	int start = input.Mark();
 	try
 	{
-		<name>_fragment(); // can never throw exception
+		fragment();
 	}
 	catch ( RecognitionException re )
 	{
@@ -384,11 +386,9 @@ public <!final !>bool <name>()
 	state.backtracking--;
 	state.failed=false;
 	return success;
-}<\n>
->>
-
-lexerSynpred(name) ::= <<
-<synpred(name)>
+}
+#endregion Synpreds<\n>
+<endif>
 >>
 
 ruleMemoization(name) ::= <<
@@ -1217,7 +1217,7 @@ notPredicate(pred) ::= "!(<evalPredicate(...)>)"
 
 evalPredicate(pred,description) ::= "(<pred>)"
 
-evalSynPredicate(pred,description) ::= "<pred>()"
+evalSynPredicate(pred,description) ::= "EvaluatePredicate(<pred>_fragment)"
 
 lookaheadTest(atom,k,atomAsInt) ::= "LA<decisionNumber>_<stateNumber>==<atom>"
 
