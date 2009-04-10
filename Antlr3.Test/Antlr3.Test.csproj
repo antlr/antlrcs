@@ -104,18 +104,22 @@
     <ProjectReference Include="..\..\..\antlr\main\runtime\CSharp3\Sources\Antlr3.Runtime.Debug\Antlr3.Runtime.Debug.csproj">
       <Project>{5EE27A90-B023-42C9-AAF1-52B0424C5D0B}</Project>
       <Name>Antlr3.Runtime.Debug</Name>
+      <Private>True</Private>
     </ProjectReference>
     <ProjectReference Include="..\..\..\antlr\main\runtime\CSharp3\Sources\Antlr3.Runtime\Antlr3.Runtime.csproj">
       <Project>{8FDC0A87-9005-4D5A-AB75-E55CEB575559}</Project>
       <Name>Antlr3.Runtime</Name>
+      <Private>True</Private>
     </ProjectReference>
     <ProjectReference Include="..\Antlr3.StringTemplate\Antlr3.StringTemplate.csproj">
       <Project>{B5910BE2-DE21-4AA9-95C1-486F42B9E794}</Project>
       <Name>Antlr3.StringTemplate</Name>
+      <Private>True</Private>
     </ProjectReference>
     <ProjectReference Include="..\Antlr3\Antlr3.csproj">
       <Project>{2AB8CAED-C046-4F05-8B18-6948100D2FE7}</Project>
       <Name>Antlr3</Name>
+      <Private>True</Private>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
