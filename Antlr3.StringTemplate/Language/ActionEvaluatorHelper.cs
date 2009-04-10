@@ -135,21 +135,21 @@ namespace Antlr3.ST.Language
             gen.Emit( OpCodes.Stloc, buf );
 
             EmitLoadSelf( gen );
-            gen.Emit( OpCodes.Callvirt, typeof( StringTemplate ).GetProperty( "Group" ).GetGetMethod() );
+            gen.Emit( OpCodes.Call, GetFuncMethodInfo( ( StringTemplate self ) => self.Group ) );
             gen.Emit( OpCodes.Ldloc, buf );
-            gen.Emit( OpCodes.Callvirt, typeof( StringTemplateGroup ).GetMethod( "GetStringTemplateWriter", new System.Type[] { typeof( System.IO.TextWriter ) } ) );
+            gen.Emit( OpCodes.Call, GetFuncMethodInfo( ( StringTemplateGroup group, System.IO.TextWriter writer ) => group.GetStringTemplateWriter( writer ) ) );
             gen.Emit( OpCodes.Stloc, sw );
 
             EmitLoadChunk( gen );
             EmitLoadSelf( gen );
             gen.Emit( OpCodes.Ldloc, value );
             gen.Emit( OpCodes.Ldloc, sw );
-            gen.Emit( OpCodes.Callvirt, typeof( ASTExpr ).GetMethod( "WriteAttribute", new System.Type[] { typeof( StringTemplate ), typeof( object ), typeof( IStringTemplateWriter ) } ) );
+            gen.Emit( OpCodes.Call, GetFuncMethodInfo( ( ASTExpr chunk, StringTemplate self, object o, IStringTemplateWriter writer ) => chunk.WriteAttribute( self, o, writer ) ) );
             gen.Emit( OpCodes.Ldc_I4_0 );
             gen.Emit( OpCodes.Ble, preserveValue );
 
             gen.Emit( OpCodes.Ldloc, buf );
-            gen.Emit( OpCodes.Callvirt, typeof( StringWriter ).GetMethod( "ToString", new System.Type[0] ) );
+            gen.Emit( OpCodes.Call, GetFuncMethodInfo( ( StringWriter writer ) => writer.ToString() ) );
             gen.Emit( OpCodes.Br_S, endOfWrite );
 
             gen.MarkLabel( preserveValue );
