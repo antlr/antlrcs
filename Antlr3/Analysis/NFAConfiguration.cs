@@ -60,7 +60,7 @@ namespace Antlr3.Analysis
          *  the equals() method will correctly show {pred1,pred2} as equals()
          *  to {pred2,pred1}.
          */
-        public SemanticContext semanticContext = SemanticContext.EMPTY_SEMANTIC_CONTEXT;
+        public SemanticContext semanticContext = SemanticContext.EmptySemanticContext;
 
         /** Indicate that this configuration has been resolved and no further
          *  DFA processing should occur with it.  Essentially, this is used
@@ -149,7 +149,7 @@ namespace Antlr3.Analysis
                 buf.Append( context );
             }
             if ( semanticContext != null &&
-                 semanticContext != SemanticContext.EMPTY_SEMANTIC_CONTEXT )
+                 semanticContext != SemanticContext.EmptySemanticContext )
             {
                 buf.Append( "|" );
                 string escQuote = semanticContext.ToString().Replace( "\"", "\\\"" );

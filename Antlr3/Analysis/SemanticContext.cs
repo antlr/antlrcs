@@ -70,7 +70,7 @@ namespace Antlr3.Analysis
          *  This prevents lots of if!=null type checks all over; it represents
          *  just an empty set of predicates.
          */
-        public static readonly SemanticContext EMPTY_SEMANTIC_CONTEXT = new Predicate();
+        public static readonly SemanticContext EmptySemanticContext = new Predicate();
 
         /** Given a semantic context expression tree, return a tree with all
          *  nongated predicates set to true and then reduced.  So p&&(q||r) would
@@ -98,7 +98,7 @@ namespace Antlr3.Analysis
         {
         }
 
-        public /*static*/ class Predicate : SemanticContext
+        public class Predicate : SemanticContext
         {
             /** The AST node in tree created from the grammar holding the predicate */
             public GrammarAST predicateAST;
@@ -117,15 +117,15 @@ namespace Antlr3.Analysis
              */
             protected bool synpred = false;
 
-            public const int INVALID_PRED_VALUE = -1;
-            public const int FALSE_PRED = 0;
-            public const int TRUE_PRED = 1;
+            public const int InvalidPredValue = -1;
+            public const int FalsePred = 0;
+            public const int TruePred = 1;
 
             /** sometimes predicates are known to be true or false; we need
              *  a way to represent this without resorting to a target language
              *  value like true or TRUE.
              */
-            protected int constantValue = INVALID_PRED_VALUE;
+            protected int constantValue = InvalidPredValue;
 
             public Predicate()
             {
@@ -262,11 +262,11 @@ namespace Antlr3.Analysis
             }
         }
 
-        public /*static*/ class TruePredicate : Predicate
+        public class TruePredicate : Predicate
         {
             public TruePredicate()
             {
-                this.constantValue = TRUE_PRED;
+                this.constantValue = TruePred;
             }
 
             public override StringTemplate genExpr( CodeGenerator generator,
@@ -286,28 +286,31 @@ namespace Antlr3.Analysis
             }
         }
 
-        /*
-        public static class FalsePredicate extends Predicate {
-            public FalsePredicate() {
-                super();
-                this.constantValue = FALSE_PRED;
-            }
-            public StringTemplate genExpr(CodeGenerator generator,
-                                          StringTemplateGroup templates,
-                                          DFA dfa)
+#if false
+        public class FalsePredicate : Predicate
+        {
+            public FalsePredicate()
             {
-                if ( templates!=null ) {
-                    return templates.getInstanceOf("false");
-                }
-                return new StringTemplate("false");
+                this.constantValue = FalsePred;
             }
-            public String toString() {
+            public StringTemplate genExpr( CodeGenerator generator,
+                                          StringTemplateGroup templates,
+                                          DFA dfa )
+            {
+                if ( templates != null )
+                {
+                    return templates.GetInstanceOf( "false" );
+                }
+                return new StringTemplate( "false" );
+            }
+            public override string ToString()
+            {
                 return "false"; // not used for code gen, just DOT and print outs
             }
         }
-        */
+#endif
 
-        public /*static*/ class AND : SemanticContext
+        public class AND : SemanticContext
         {
             protected SemanticContext left, right;
             public AND( SemanticContext a, SemanticContext b )
@@ -367,7 +370,7 @@ namespace Antlr3.Analysis
             }
         }
 
-        public /*static*/ class OR : SemanticContext
+        public class OR : SemanticContext
         {
             protected HashSet<object> operands;
             public OR( SemanticContext a, SemanticContext b )
@@ -419,7 +422,7 @@ namespace Antlr3.Analysis
                         SemanticContext gatedPred = semctx.GatedPredicateContext;
                         if ( gatedPred != null )
                         {
-                            result = or( result, gatedPred );
+                            result = Or( result, gatedPred );
                             // result = new OR(result, gatedPred);
                         }
                     }
@@ -466,7 +469,7 @@ namespace Antlr3.Analysis
             }
         }
 
-        public /*static*/ class NOT : SemanticContext
+        public class NOT : SemanticContext
         {
             protected internal SemanticContext ctx;
             public NOT( SemanticContext ctx )
@@ -533,14 +536,14 @@ namespace Antlr3.Analysis
             }
         }
 
-        public static SemanticContext and( SemanticContext a, SemanticContext b )
+        public static SemanticContext And( SemanticContext a, SemanticContext b )
         {
-            //JSystem.@out.println("AND: "+a+"&&"+b);
-            if ( a == EMPTY_SEMANTIC_CONTEXT || a == null )
+            //System.Console.Out.WriteLine( "AND: " + a + "&&" + b );
+            if ( a == EmptySemanticContext || a == null )
             {
                 return b;
             }
-            if ( b == EMPTY_SEMANTIC_CONTEXT || b == null )
+            if ( b == EmptySemanticContext || b == null )
             {
                 return a;
             }
@@ -548,18 +551,18 @@ namespace Antlr3.Analysis
             {
                 return a; // if same, just return left one
             }
-            //JSystem.@out.println("## have to AND");
+            //System.Console.Out.WriteLine( "## have to AND" );
             return new AND( a, b );
         }
 
-        public static SemanticContext or( SemanticContext a, SemanticContext b )
+        public static SemanticContext Or( SemanticContext a, SemanticContext b )
         {
-            //JSystem.@out.println("OR: "+a+"||"+b);
-            if ( a == EMPTY_SEMANTIC_CONTEXT || a == null )
+            //System.Console.Out.WriteLine( "OR: " + a + "||" + b );
+            if ( a == EmptySemanticContext || a == null )
             {
                 return b;
             }
-            if ( b == EMPTY_SEMANTIC_CONTEXT || b == null )
+            if ( b == EmptySemanticContext || b == null )
             {
                 return a;
             }
@@ -593,12 +596,16 @@ namespace Antlr3.Analysis
             {
                 return a;
             }
-            //JSystem.@out.println("## have to OR");
+            //System.Console.Out.WriteLine( "## have to OR" );
             return new OR( a, b );
         }
 
-        public static SemanticContext not( SemanticContext a )
+        public static SemanticContext Not( SemanticContext a )
         {
+            NOT nota = a as NOT;
+            if ( nota != null )
+                return nota.ctx;
+
             return new NOT( a );
         }
 

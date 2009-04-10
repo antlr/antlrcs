@@ -35,7 +35,7 @@ namespace AntlrUnitTests
     using Microsoft.VisualStudio.TestTools.UnitTesting;
     using Antlr.Runtime.JavaExtensions;
 
-    using Graph = Antlr3.Misc.Graph;
+    using Graph = Antlr3.Misc.Graph<string>;
 
     /** Test topo sort in GraphNode. */
     [TestClass]

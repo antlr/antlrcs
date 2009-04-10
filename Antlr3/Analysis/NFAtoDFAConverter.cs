@@ -177,7 +177,7 @@ namespace Antlr3.Analysis
                     closure( (NFAState)alt.transition[0].target,
                             altNum,
                             initialContext,
-                            SemanticContext.EMPTY_SEMANTIC_CONTEXT,
+                            SemanticContext.EmptySemanticContext,
                             startState,
                             true
                     );
@@ -188,7 +188,7 @@ namespace Antlr3.Analysis
                     closure( (NFAState)alt.transition[0].target,
                             altNum,
                             initialContext,
-                            SemanticContext.EMPTY_SEMANTIC_CONTEXT,
+                            SemanticContext.EmptySemanticContext,
                             startState,
                             true
                     );
@@ -270,20 +270,20 @@ namespace Antlr3.Analysis
             // [Taking back out a few days later on Jan 17, 2006.  This could
             //  be an option for the future, but this was wrong soluion for
             //  filtering.]
-            /*
-            if ( dfa.nfa.grammar.type==Grammar.LEXER && containsEOT ) {
-                String filterOption = (String)dfa.nfa.grammar.getOption("filter");
-                boolean filterMode = filterOption!=null && filterOption.equals("true");
+#if false
+            if ( dfa.nfa.grammar.type==Antlr3.Tool.Grammar.LEXER && containsEOT ) {
+                string filterOption = (string)dfa.nfa.grammar.getOption("filter");
+                bool filterMode = filterOption!=null && filterOption.Equals("true");
                 if ( filterMode && d.dfa.isTokensRuleDecision() ) {
                     DFAState t = reach(d, EOTLabel);
-                    if ( t.getNFAConfigurations().size()>0 ) {
+                    if ( t.nfaConfigurations.size()>0 ) {
                         convertToEOTAcceptState(d);
                         //JSystem.@out.println("state "+d+" has EOT target "+t.stateNumber);
                         return;
                     }
                 }
             }
-            */
+#endif
 
             int numberOfEdgesEmanating = 0;
             var targetToLabelMap = new Dictionary<int, Transition>();
@@ -807,7 +807,7 @@ namespace Antlr3.Analysis
                         {
                             //JSystem.@out.println("&"+labelContext+" enclosingRule="+p.enclosingRule);
                             newSemanticContext =
-                                SemanticContext.and( semanticContext, labelContext );
+                                SemanticContext.And( semanticContext, labelContext );
                         }
                     }
                     closure( (NFAState)transition0.target,
@@ -1510,7 +1510,7 @@ namespace Antlr3.Analysis
                     else
                     {
                         nakedAltPred =
-                            SemanticContext.not( unionOfPredicatesFromAllAlts );
+                            SemanticContext.Not( unionOfPredicatesFromAllAlts );
                     }
                 }
 
@@ -1629,7 +1629,7 @@ namespace Antlr3.Analysis
                 {
                     // if there is a predicate for this NFA configuration, OR in
                     if ( configuration.semanticContext !=
-                         SemanticContext.EMPTY_SEMANTIC_CONTEXT )
+                         SemanticContext.EmptySemanticContext )
                     {
                         HashSet<SemanticContext> predSet = altToSetOfContextsMap.get( altI );
                         predSet.Add( configuration.semanticContext );
@@ -1683,7 +1683,7 @@ namespace Antlr3.Analysis
                 SemanticContext combinedContext = null;
                 foreach ( SemanticContext ctx in contextsForThisAlt )
                 {
-                    combinedContext = SemanticContext.or( combinedContext, ctx );
+                    combinedContext = SemanticContext.Or( combinedContext, ctx );
                 }
                 altToPredicateContextMap[altI] = combinedContext;
             }
@@ -1706,7 +1706,7 @@ namespace Antlr3.Analysis
                     NFAConfiguration configuration = (NFAConfiguration)d.nfaConfigurations.get( i );
                     int altI = configuration.alt;
                     if ( incompletelyCoveredAlts.Contains( altI ) &&
-                         configuration.semanticContext == SemanticContext.EMPTY_SEMANTIC_CONTEXT )
+                         configuration.semanticContext == SemanticContext.EmptySemanticContext )
                     {
                         NFAState s = dfa.nfa.getState( configuration.state );
                         /*
@@ -1760,7 +1760,7 @@ namespace Antlr3.Analysis
                 else
                 {
                     unionOfPredicatesFromAllAlts =
-                            SemanticContext.or( unionOfPredicatesFromAllAlts, semCtx );
+                            SemanticContext.Or( unionOfPredicatesFromAllAlts, semCtx );
                 }
             }
             return unionOfPredicatesFromAllAlts;

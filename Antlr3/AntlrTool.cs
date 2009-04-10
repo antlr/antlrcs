@@ -38,11 +38,11 @@ namespace Antlr3
     using Antlr.Runtime.JavaExtensions;
     using Antlr3.Analysis;
     using Antlr3.Codegen;
+    using Antlr3.Misc;
     using Antlr3.Tool;
 
     using File = System.IO.File;
     using FileInfo = System.IO.FileInfo;
-    using Graph = Antlr3.Misc.Graph;
     using IList = System.Collections.IList;
     using IOException = System.IO.IOException;
     using Path = System.IO.Path;
@@ -586,7 +586,7 @@ namespace Antlr3
         public virtual void sortGrammarFiles()
         {
             //Console.Out.WriteLine( "Grammar names " + GrammarFileNames );
-            Graph g = new Graph();
+            Graph<string> g = new Graph<string>();
             foreach ( string gfile in GrammarFileNames )
             {
                 GrammarSpelunker grammar = new GrammarSpelunker( inputDirectory, gfile );
@@ -599,7 +599,7 @@ namespace Antlr3
                 // Make all generated tokens files depend on their grammars
                 g.AddEdge( grammarName + CodeGenerator.VOCAB_FILE_EXTENSION, gfile );
             }
-            List<object> sorted = g.Sort();
+            List<string> sorted = g.Sort();
             //Console.Out.WriteLine( "sorted=" + sorted );
             GrammarFileNames.Clear(); // wipe so we can give new ordered list
             for ( int i = 0; i < sorted.Count; i++ )

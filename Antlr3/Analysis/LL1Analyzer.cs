@@ -494,7 +494,7 @@ namespace Antlr3.Analysis
             }
 
             // join this&following-right|following-down
-            return SemanticContext.and( p, SemanticContext.or( p0, p1 ) );
+            return SemanticContext.And( p, SemanticContext.Or( p0, p1 ) );
         }
     }
 }

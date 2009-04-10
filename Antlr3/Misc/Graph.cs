@@ -34,14 +34,14 @@ namespace Antlr3.Misc
 {
     using System.Collections.Generic;
 
-    public class Graph
+    public class Graph<T>
     {
         public class Node
         {
-            internal object _payload;
+            internal T _payload;
             internal List<Node> _edges; // points at which nodes?
 
-            public Node( object payload )
+            public Node( T payload )
             {
                 _payload = payload;
             }
@@ -63,7 +63,7 @@ namespace Antlr3.Misc
         /** Map from node payload to node containing it */
         protected Dictionary<object, Node> nodes = new Dictionary<object, Node>();
 
-        public virtual void AddEdge( object a, object b )
+        public virtual void AddEdge( T a, T b )
         {
             //System.Console.Out.WriteLine( "add edge " + a + " to " + b );
             Node a_node = GetNode( a );
@@ -71,7 +71,7 @@ namespace Antlr3.Misc
             a_node.AddEdge( b_node );
         }
 
-        protected virtual Node GetNode( object a )
+        protected virtual Node GetNode( T a )
         {
             Node existing;
             if ( nodes.TryGetValue( a, out existing ) && existing != null )
@@ -92,10 +92,10 @@ namespace Antlr3.Misc
          *  So if this gives nonreversed postorder traversal, I get the order
          *  I want.
          */
-        public virtual List<object> Sort()
+        public virtual List<T> Sort()
         {
             HashSet<Node> visited = new HashSet<Node>();
-            List<object> sorted = new List<object>();
+            List<T> sorted = new List<T>();
             while ( visited.Count < nodes.Count )
             {
                 // pick any unvisited node, n
@@ -111,7 +111,7 @@ namespace Antlr3.Misc
             return sorted;
         }
 
-        public virtual void DFS( Node n, HashSet<Node> visited, List<object> sorted )
+        public virtual void DFS( Node n, HashSet<Node> visited, List<T> sorted )
         {
             if ( visited.Contains( n ) )
                 return;

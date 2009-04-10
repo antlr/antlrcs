@@ -296,7 +296,7 @@ namespace Antlr3.Analysis
                 minAltInConfigurations = c.alt;
             }
 
-            if ( c.semanticContext != SemanticContext.EMPTY_SEMANTIC_CONTEXT )
+            if ( c.semanticContext != SemanticContext.EmptySemanticContext )
             {
                 atLeastOneConfigurationHasAPredicate = true;
             }
@@ -859,7 +859,7 @@ namespace Antlr3.Analysis
                     else
                     {
                         unionOfPredicatesFromAllAlts =
-                            SemanticContext.or( unionOfPredicatesFromAllAlts, gatedPredExpr );
+                            SemanticContext.Or( unionOfPredicatesFromAllAlts, gatedPredExpr );
                     }
                 }
             }
