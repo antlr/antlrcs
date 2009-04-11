@@ -41,7 +41,7 @@ namespace Antlr3.Analysis
      *  transitions) and has a label/target pair.  I have abstracted the notion
      *  of a Label to handle the various kinds of things it can be.
      */
-    public class Transition : IComparable
+    public class Transition : IComparable<Transition>
     {
         /** What label must be consumed to transition to target */
         public Label label;
@@ -112,9 +112,8 @@ namespace Antlr3.Analysis
                    this.target.Equals( other.target );
         }
 
-        public virtual int CompareTo( object o )
+        public int CompareTo( Transition other )
         {
-            Transition other = (Transition)o;
             return this.label.CompareTo( other.label );
         }
 
@@ -122,5 +121,6 @@ namespace Antlr3.Analysis
         {
             return label + "->" + target.stateNumber;
         }
+
     }
 }

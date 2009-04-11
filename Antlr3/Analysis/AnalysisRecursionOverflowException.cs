@@ -37,13 +37,13 @@ namespace Antlr3.Analysis
     /** An NFA configuration context stack overflowed. */
     public class AnalysisRecursionOverflowException : Exception
     {
-        public DFAState ovfState;
-        public NFAConfiguration proposedNFAConfiguration;
+        DFAState _ovfState;
+        NFAConfiguration _proposedNFAConfiguration;
 
         public AnalysisRecursionOverflowException( DFAState ovfState, NFAConfiguration proposedNFAConfiguration )
         {
-            this.ovfState = ovfState;
-            this.proposedNFAConfiguration = proposedNFAConfiguration;
+            _ovfState = ovfState;
+            _proposedNFAConfiguration = proposedNFAConfiguration;
         }
     }
 }

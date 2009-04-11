@@ -49,7 +49,7 @@ namespace Antlr3.Analysis
     public class NFAToDFAConverter
     {
         /** A list of DFA states we still need to process during NFA conversion */
-        protected Queue<DFAState> work = new Queue<DFAState>();
+        Queue<DFAState> _work = new Queue<DFAState>();
 
         /** While converting NFA, we must track states that
          *  reference other rule's NFAs so we know what to do
@@ -58,10 +58,10 @@ namespace Antlr3.Analysis
          *  states.  I'm tracking a context tree (record of rule invocation
          *  stack trace) for each alternative that could be predicted.
          */
-        protected NFAContext[] contextTrees;
+        NFAContext[] _contextTrees;
 
         /** We are converting which DFA? */
-        protected DFA dfa;
+        DFA _dfa;
 
         public static bool debug = false;
 
@@ -74,33 +74,33 @@ namespace Antlr3.Analysis
          */
         public static bool SINGLE_THREADED_NFA_CONVERSION = true;
 
-        protected bool computingStartState = false;
+        bool _computingStartState = false;
 
         public NFAToDFAConverter( DFA dfa )
         {
-            this.dfa = dfa;
+            this._dfa = dfa;
             int nAlts = dfa.NumberOfAlts;
             initContextTrees( nAlts );
         }
 
         public virtual void convert()
         {
-            dfa.conversionStartTime = System.DateTime.Now;
+            _dfa.conversionStartTime = System.DateTime.Now;
 
             // create the DFA start state
-            dfa.startState = computeStartState();
+            _dfa.startState = computeStartState();
 
             // while more DFA states to check, process them
-            while ( work.Count > 0 &&
-                    !dfa.nfa.grammar.NFAToDFAConversionExternallyAborted() )
+            while ( _work.Count > 0 &&
+                    !_dfa.nfa.grammar.NFAToDFAConversionExternallyAborted() )
             {
-                DFAState d = (DFAState)work.Peek();
-                if ( dfa.nfa.grammar.composite.watchNFAConversion )
+                DFAState d = (DFAState)_work.Peek();
+                if ( _dfa.nfa.grammar.composite.watchNFAConversion )
                 {
                     Console.Out.WriteLine( "convert DFA state " + d.stateNumber +
                                        " (" + d.nfaConfigurations.size() + " nfa states)" );
                 }
-                int k = dfa.UserMaxLookahead;
+                int k = _dfa.UserMaxLookahead;
                 if ( k > 0 && k == d.LookaheadDepth )
                 {
                     // we've hit max lookahead, make this a stop state
@@ -125,13 +125,13 @@ namespace Antlr3.Analysis
                 {
                     findNewDFAStatesAndAddDFATransitions( d );
                 }
-                work.Dequeue(); // done with it; remove from work list
+                _work.Dequeue(); // done with it; remove from work list
             }
 
             // Find all manual syn preds (gated).  These are not discovered
             // in tryToResolveWithSemanticPredicates because they are implicitly
             // added to every edge by code gen, DOT generation etc...
-            dfa.findAllGatedSynPredsUsedInDFAAcceptStates();
+            _dfa.findAllGatedSynPredsUsedInDFAAcceptStates();
         }
 
         /** From this first NFA state of a decision, create a DFA.
@@ -154,9 +154,9 @@ namespace Antlr3.Analysis
          */
         protected virtual DFAState computeStartState()
         {
-            NFAState alt = dfa.decisionNFAStartState;
-            DFAState startState = dfa.newState();
-            computingStartState = true;
+            NFAState alt = _dfa.NFADecisionStartState;
+            DFAState startState = _dfa.newState();
+            _computingStartState = true;
             int i = 0;
             int altNum = 1;
             while ( alt != null )
@@ -165,14 +165,14 @@ namespace Antlr3.Analysis
                 // any input symbols for each alt.  Keep adding to same
                 // overall closure that will represent the DFA start state,
                 // but track the alt number
-                NFAContext initialContext = contextTrees[i];
+                NFAContext initialContext = _contextTrees[i];
                 // if first alt is derived from loopback/exit branch of loop,
                 // make alt=n+1 for n alts instead of 1
                 if ( i == 0 &&
-                     dfa.NFADecisionStartState.decisionStateType == NFAState.LOOPBACK )
+                     _dfa.NFADecisionStartState.decisionStateType == NFAState.LOOPBACK )
                 {
-                    int numAltsIncludingExitBranch = dfa.nfa.grammar
-                        .getNumberOfAltsForDecisionNFA( dfa.decisionNFAStartState );
+                    int numAltsIncludingExitBranch = _dfa.nfa.grammar
+                        .getNumberOfAltsForDecisionNFA( _dfa.NFADecisionStartState );
                     altNum = numAltsIncludingExitBranch;
                     closure( (NFAState)alt.transition[0].target,
                             altNum,
@@ -207,9 +207,9 @@ namespace Antlr3.Analysis
             // now DFA start state has the complete closure for the decision
             // but we have tracked which alt is associated with which
             // NFA states.
-            dfa.addState( startState ); // make sure dfa knows about this state
-            work.Enqueue( startState );
-            computingStartState = false;
+            _dfa.addState( startState ); // make sure dfa knows about this state
+            _work.Enqueue( startState );
+            _computingStartState = false;
             return startState;
         }
 
@@ -256,7 +256,7 @@ namespace Antlr3.Analysis
             // TODO: should this be done in the resolveAmbig method?
             Label EOTLabel = new Label( Label.EOT );
             bool containsEOT = labels != null && labels.Contains( EOTLabel );
-            if ( !dfa.IsGreedy && containsEOT )
+            if ( !_dfa.IsGreedy && containsEOT )
             {
                 convertToEOTAcceptState( d );
                 return; // no more work to do on this accept state
@@ -300,7 +300,7 @@ namespace Antlr3.Analysis
                 if ( debug )
                 {
                     Console.Out.WriteLine( "DFA state after reach " + label + " " + d + "-" +
-                                       label.ToString( dfa.nfa.grammar ) + "->" + t );
+                                       label.ToString( _dfa.nfa.grammar ) + "->" + t );
                 }
                 if ( t == null )
                 {
@@ -350,7 +350,7 @@ namespace Antlr3.Analysis
                 // TODO: can fixed lookahead hit a dangling state case?
                 // TODO: yes, with left recursion
                 //Console.Error.WriteLine( "dangling state alts: " + d.getAltSet() );
-                dfa.probe.reportDanglingState( d );
+                _dfa.probe.reportDanglingState( d );
                 // turn off all configurations except for those associated with
                 // min alt number; somebody has to win else some input will not
                 // predict any alt.
@@ -359,7 +359,7 @@ namespace Antlr3.Analysis
                 // don't call convertToAcceptState() which merges stop states.
                 // other states point at us; don't want them pointing to dead states
                 d.IsAcceptState = true; // might be adding new accept state for alt
-                dfa.setAcceptState( minAlt, d );
+                _dfa.setAcceptState( minAlt, d );
                 //convertToAcceptState(d, minAlt); // force it to be an accept state
             }
 
@@ -514,7 +514,7 @@ namespace Antlr3.Analysis
                 // figure out reachable NFA states from each of d's nfa states
                 // via epsilon transitions.
                 // Fill configsInClosure rather than altering d configs inline
-                closure( dfa.nfa.getState( c.state ),
+                closure( _dfa.nfa.getState( c.state ),
                         c.alt,
                         c.context,
                         c.semanticContext,
@@ -767,18 +767,18 @@ namespace Antlr3.Analysis
                 }
                 else if ( transition0 != null && transition0.IsSemanticPredicate )
                 {
-                    if ( computingStartState )
+                    if ( _computingStartState )
                     {
                         if ( collectPredicates )
                         {
                             // only indicate we can see a predicate if we're collecting preds
                             // Could be computing start state & seen an action before this.
-                            dfa.predicateVisible = true;
+                            _dfa.predicateVisible = true;
                         }
                         else
                         {
                             // this state has a pred, but we can't see it.
-                            dfa.hasPredicateBlockedByAction = true;
+                            _dfa.hasPredicateBlockedByAction = true;
                             // JSystem.@out.println("found pred during prediction but blocked by action found previously");
                         }
                     }
@@ -792,9 +792,9 @@ namespace Antlr3.Analysis
                         // do not hoist syn preds from other rules; only get if in
                         // starting state's rule (i.e., context is empty)
                         int walkAlt =
-                            dfa.decisionNFAStartState.translateDisplayAltToWalkAlt( alt );
+                            _dfa.NFADecisionStartState.translateDisplayAltToWalkAlt( alt );
                         NFAState altLeftEdge =
-                            dfa.nfa.grammar.getNFAStateForAltOfDecision( dfa.decisionNFAStartState, walkAlt );
+                            _dfa.nfa.grammar.getNFAStateForAltOfDecision( _dfa.NFADecisionStartState, walkAlt );
                         /*
                         JSystem.@out.println("state "+p.stateNumber+" alt "+alt+" walkAlt "+walkAlt+" trans to "+transition0.target);
                         JSystem.@out.println("DFA start state "+dfa.decisionNFAStartState.stateNumber);
@@ -907,7 +907,7 @@ namespace Antlr3.Analysis
         public virtual DFAState reach( DFAState d, Label label )
         {
             //JSystem.@out.println("reach "+label.toString(dfa.nfa.grammar)+" from "+d.stateNumber);
-            DFAState labelDFATarget = dfa.newState();
+            DFAState labelDFATarget = _dfa.newState();
 
             // for each NFA state in d with a labeled edge,
             // add in target states for label
@@ -922,7 +922,7 @@ namespace Antlr3.Analysis
                 {
                     continue; // the conflict resolver indicates we must leave alone
                 }
-                NFAState p = dfa.nfa.getState( c.state );
+                NFAState p = _dfa.nfa.getState( c.state );
                 // by design of the grammar->NFA conversion, only transition 0
                 // may have a non-epsilon edge.
                 Transition edge = p.transition[0];
@@ -961,7 +961,7 @@ namespace Antlr3.Analysis
             if ( labelDFATarget.nfaConfigurations.size() == 0 )
             {
                 // kill; it's empty
-                dfa.setState( labelDFATarget.stateNumber, null );
+                _dfa.setState( labelDFATarget.stateNumber, null );
                 labelDFATarget = null;
             }
             return labelDFATarget;
@@ -989,7 +989,7 @@ namespace Antlr3.Analysis
                 {
                     continue; // the conflict resolver indicates we must leave alone
                 }
-                NFAState p = dfa.nfa.getState( c.state );
+                NFAState p = _dfa.nfa.getState( c.state );
                 Transition edge = p.transition[0];
                 Label edgeLabel = edge.label;
                 if ( edgeLabel.Equals( eot ) )
@@ -1014,7 +1014,7 @@ namespace Antlr3.Analysis
          */
         protected virtual DFAState addDFAStateToWorkList( DFAState d )
         {
-            DFAState existingState = dfa.addState( d );
+            DFAState existingState = _dfa.addState( d );
             if ( d != existingState )
             {
                 // already there...use/return the existing DFA state.
@@ -1027,7 +1027,7 @@ namespace Antlr3.Analysis
                 // into the reachable state space and the error
                 // reporting must be able to compute the path from
                 // start to the error state with infinite recursion
-                dfa.setState( d.stateNumber, existingState );
+                _dfa.setState( d.stateNumber, existingState );
                 return existingState;
             }
 
@@ -1051,7 +1051,7 @@ namespace Antlr3.Analysis
             else
             {
                 // unresolved, add to work list to continue NFA conversion
-                work.Enqueue( d );
+                _work.Enqueue( d );
             }
             return d;
         }
@@ -1070,7 +1070,7 @@ namespace Antlr3.Analysis
             {
                 // check to see if we already have an accept state for this alt
                 // [must do this after we resolve nondeterminisms in general]
-                DFAState acceptStateForAlt = dfa.getAcceptState( alt );
+                DFAState acceptStateForAlt = _dfa.getAcceptState( alt );
                 if ( acceptStateForAlt != null )
                 {
                     // we already have an accept state for alt;
@@ -1087,8 +1087,8 @@ namespace Antlr3.Analysis
                           gatedPreds.Equals( existingStateGatedPreds ) ) )
                     {
                         // make this d.statenumber point at old DFA state
-                        dfa.setState( d.stateNumber, acceptStateForAlt );
-                        dfa.removeState( d );    // remove this state from unique DFA state set
+                        _dfa.setState( d.stateNumber, acceptStateForAlt );
+                        _dfa.removeState( d );    // remove this state from unique DFA state set
                         d = acceptStateForAlt; // use old accept state; throw this one out
                         return d;
                     }
@@ -1096,7 +1096,7 @@ namespace Antlr3.Analysis
                 }
             }
             d.IsAcceptState = true; // new accept state for alt
-            dfa.setAcceptState( alt, d );
+            _dfa.setAcceptState( alt, d );
             return d;
         }
 
@@ -1260,7 +1260,7 @@ namespace Antlr3.Analysis
             // states in d must be targets of EOT.  These are the end states
             // created in NFAFactory.build_EOFState
             NFAConfiguration anyConfig = d.nfaConfigurations.get( 0 );
-            NFAState anyState = dfa.nfa.getState( anyConfig.state );
+            NFAState anyState = _dfa.nfa.getState( anyConfig.state );
 
             // if d is target of EOT and more than one predicted alt
             // indicate that d is nondeterministic on all alts otherwise
@@ -1275,7 +1275,7 @@ namespace Antlr3.Analysis
                     // track Tokens rule issues differently than other decisions
                     if ( d.dfa.IsTokensRuleDecision )
                     {
-                        dfa.probe.reportLexerRuleNondeterminism( d, allAlts );
+                        _dfa.probe.reportLexerRuleNondeterminism( d, allAlts );
                         //JSystem.@out.println("Tokens rule DFA state "+d+" nondeterministic");
                         conflictingLexerRules = true;
                     }
@@ -1293,7 +1293,7 @@ namespace Antlr3.Analysis
             if ( !d.abortedDueToRecursionOverflow && !conflictingLexerRules )
             {
                 // TODO: with k=x option set, this is called twice for same state
-                dfa.probe.reportNondeterminism( d, nondeterministicAlts );
+                _dfa.probe.reportNondeterminism( d, nondeterministicAlts );
                 // TODO: how to turn off when it's only the FOLLOW that is
                 // conflicting.  This used to shut off even alts i,j < n
                 // conflict warnings. :(
@@ -1308,8 +1308,8 @@ namespace Antlr3.Analysis
                 {
                     Console.Out.WriteLine( "resolved DFA state " + d.stateNumber + " with pred" );
                 }
-                d.resolvedWithPredicates = true;
-                dfa.probe.reportNondeterminismResolvedWithSemanticPredicate( d );
+                d.IsResolvedWithPredicates = true;
+                _dfa.probe.reportNondeterminismResolvedWithSemanticPredicate( d );
                 return;
             }
 
@@ -1322,7 +1322,7 @@ namespace Antlr3.Analysis
         protected virtual int resolveByChoosingFirstAlt( DFAState d, ICollection<int> nondeterministicAlts )
         {
             int winningAlt = 0;
-            if ( dfa.IsGreedy )
+            if ( _dfa.IsGreedy )
             {
                 winningAlt = resolveByPickingMinAlt( d, nondeterministicAlts );
             }
@@ -1336,7 +1336,7 @@ namespace Antlr3.Analysis
                 JSystem.@out.println("nondet="+nondeterministicAlts);
                 JSystem.@out.println("exit alt "+exitAlt);
                 */
-                int exitAlt = dfa.NumberOfAlts;
+                int exitAlt = _dfa.NumberOfAlts;
                 if ( nondeterministicAlts.Contains( exitAlt ) )
                 {
                     // if nongreedy and exit alt is one of those nondeterministic alts
@@ -1383,7 +1383,7 @@ namespace Antlr3.Analysis
          */
         protected virtual int resolveByPickingExitAlt( DFAState d, ICollection<int> nondeterministicAlts )
         {
-            int exitAlt = dfa.NumberOfAlts;
+            int exitAlt = _dfa.NumberOfAlts;
             turnOffOtherAlts( d, exitAlt, nondeterministicAlts );
             return exitAlt;
         }
@@ -1462,7 +1462,7 @@ namespace Antlr3.Analysis
             }
 
             //JSystem.@out.println("nondeterministic alts with predicates: "+altToPredMap);
-            dfa.probe.reportAltPredicateContext( d, altToPredMap );
+            _dfa.probe.reportAltPredicateContext( d, altToPredMap );
 
             if ( nondeterministicAlts.Count - altToPredMap.Count > 1 )
             {
@@ -1556,7 +1556,7 @@ namespace Antlr3.Analysis
                         // notify grammar that we've used the preds contained in semCtx
                         if ( semCtx.IsSyntacticPredicate )
                         {
-                            dfa.nfa.grammar.synPredUsedInDFA( dfa, semCtx );
+                            _dfa.nfa.grammar.synPredUsedInDFA( _dfa, semCtx );
                         }
                     }
                     else if ( nondeterministicAlts.Contains( configuration.alt ) )
@@ -1708,7 +1708,7 @@ namespace Antlr3.Analysis
                     if ( incompletelyCoveredAlts.Contains( altI ) &&
                          configuration.semanticContext == SemanticContext.EmptySemanticContext )
                     {
-                        NFAState s = dfa.nfa.getState( configuration.state );
+                        NFAState s = _dfa.nfa.getState( configuration.state );
                         /*
                         JSystem.@out.print("nondet config w/o context "+configuration+
                                          " incident "+(s.incidentEdgeLabel!=null?s.incidentEdgeLabel.toString(dfa.nfa.grammar):null));
@@ -1738,7 +1738,7 @@ namespace Antlr3.Analysis
                         }
                     }
                 }
-                dfa.probe.reportIncompletelyCoveredAlts( d,
+                _dfa.probe.reportIncompletelyCoveredAlts( d,
                                                         altToLocationsReachableWithoutPredicate );
             }
 
@@ -1811,21 +1811,21 @@ namespace Antlr3.Analysis
                 DFAState predDFATarget = d.dfa.getAcceptState( c.alt );
                 if ( predDFATarget == null )
                 {
-                    predDFATarget = dfa.newState(); // create if not there.
+                    predDFATarget = _dfa.newState(); // create if not there.
                     // create a new DFA state that is a target of the predicate from d
-                    predDFATarget.addNFAConfiguration( dfa.nfa.getState( c.state ),
+                    predDFATarget.addNFAConfiguration( _dfa.nfa.getState( c.state ),
                                                       c.alt,
                                                       c.context,
                                                       c.semanticContext );
                     predDFATarget.IsAcceptState = true;
-                    dfa.setAcceptState( c.alt, predDFATarget );
-                    DFAState existingState = dfa.addState( predDFATarget );
+                    _dfa.setAcceptState( c.alt, predDFATarget );
+                    DFAState existingState = _dfa.addState( predDFATarget );
                     if ( predDFATarget != existingState )
                     {
                         // already there...use/return the existing DFA state that
                         // is a target of this predicate.  Make this state number
                         // point at the existing state
-                        dfa.setState( predDFATarget.stateNumber, existingState );
+                        _dfa.setState( predDFATarget.stateNumber, existingState );
                         predDFATarget = existingState;
                     }
                 }
@@ -1836,15 +1836,15 @@ namespace Antlr3.Analysis
 
         protected virtual void initContextTrees( int numberOfAlts )
         {
-            contextTrees = new NFAContext[numberOfAlts];
-            for ( int i = 0; i < contextTrees.Length; i++ )
+            _contextTrees = new NFAContext[numberOfAlts];
+            for ( int i = 0; i < _contextTrees.Length; i++ )
             {
                 int alt = i + 1;
                 // add a dummy root node so that an NFA configuration can
                 // always point at an NFAContext.  If a context refers to this
                 // node then it implies there is no call stack for
                 // that configuration
-                contextTrees[i] = new NFAContext( null, null );
+                _contextTrees[i] = new NFAContext( null, null );
             }
         }
 

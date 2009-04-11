@@ -37,12 +37,12 @@ namespace Antlr3.Analysis
 
     public class ActionLabel : Label
     {
-        public GrammarAST actionAST;
+        GrammarAST _actionAST;
 
-        public ActionLabel( GrammarAST actionAST ) :
-            base( ACTION )
+        public ActionLabel( GrammarAST actionAST )
+            : base( ACTION )
         {
-            this.actionAST = actionAST;
+            _actionAST = actionAST;
         }
 
         public override bool IsEpsilon
@@ -64,7 +64,7 @@ namespace Antlr3.Analysis
 
         public override string ToString()
         {
-            return "{" + actionAST + "}";
+            return "{" + _actionAST + "}";
         }
 
         public override string ToString( Grammar g )

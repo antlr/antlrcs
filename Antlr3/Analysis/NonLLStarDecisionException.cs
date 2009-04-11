@@ -39,10 +39,11 @@ namespace Antlr3.Analysis
      */
     public class NonLLStarDecisionException : Exception
     {
-        public DFA abortedDFA;
+        DFA _abortedDFA;
+
         public NonLLStarDecisionException( DFA abortedDFA )
         {
-            this.abortedDFA = abortedDFA;
+            _abortedDFA = abortedDFA;
         }
     }
 }

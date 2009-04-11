@@ -57,10 +57,12 @@ namespace Antlr3.Analysis
         public const int REACHABLE_NO = 0;
         public const int REACHABLE_YES = 1;
 
+#if false
         /** Prevent explosion of DFA states during conversion. The max number
          *  of states per alt in a single decision's DFA.
-        public const int MAX_STATES_PER_ALT_IN_DFA = 450;
          */
+        public const int MAX_STATES_PER_ALT_IN_DFA = 450;
+#endif
 
         /** Set to 0 to not terminate early (time in ms) */
         public static TimeSpan MAX_TIME_PER_DFA_CREATION = TimeSpan.FromSeconds( 1 );
@@ -77,19 +79,19 @@ namespace Antlr3.Analysis
         public int decisionNumber = 0;
 
         /** From what NFAState did we create the DFA? */
-        public NFAState decisionNFAStartState;
+        NFAState _decisionNFAStartState;
 
         /** The printable grammar fragment associated with this DFA */
-        public String description;
+        string _description;
 
         /** A set of all uniquely-numbered DFA states.  Maps hash of DFAState
          *  to the actual DFAState object.  We use this to detect
-         *  existing DFA states.  Map<DFAState,DFAState>.  Use Map so
+         *  existing DFA states.  Map&lt;DFAState,DFAState&gt;.  Use Map so
          *  we can get old state back (Set only allows you to see if it's there).
          *  Not used during fixed k lookahead as it's a waste to fill it with
          *  a dup of states array.
          */
-        protected IDictionary<DFAState, DFAState> uniqueStates = new Dictionary<DFAState, DFAState>();
+        IDictionary<DFAState, DFAState> _uniqueStates = new Dictionary<DFAState, DFAState>();
 
         /** Maps the state number to the actual DFAState.  Use a Vector as it
          *  grows automatically when I set the ith element.  This contains all
@@ -102,29 +104,29 @@ namespace Antlr3.Analysis
          *  a way to go from state number to DFAState rather than via a
          *  hash lookup.
          */
-        protected List<DFAState> states = new List<DFAState>();
+        List<DFAState> _states = new List<DFAState>();
 
         /** Unique state numbers per DFA */
-        protected int stateCounter = 0;
+        int _stateCounter = 0;
 
         /** count only new states not states that were rejected as already present */
-        protected int numberOfStates = 0;
+        int _numberOfStates = 0;
 
         /** User specified max fixed lookahead.  If 0, nothing specified.  -1
          *  implies we have not looked at the options table yet to set k.
          */
-        protected int user_k = -1;
+        int _userK = -1;
 
         /** While building the DFA, track max lookahead depth if not cyclic */
-        protected internal int max_k = -1;
+        internal int max_k = -1;
 
         /** Is this DFA reduced?  I.e., can all states lead to an accept state? */
-        protected bool reduced = true;
+        bool _reduced = true;
 
         /** Are there any loops in this DFA?
          *  Computed by doesStateReachAcceptState()
          */
-        protected bool cyclic = false;
+        bool _cyclic = false;
 
         /** Track whether this DFA has at least one sem/syn pred encountered
          *  during a closure operation.  This is useful for deciding whether
@@ -144,12 +146,12 @@ namespace Antlr3.Analysis
          *  and then in method doesStateReachAcceptState() I remove the alts I
          *  know to be uniquely predicted.
          */
-        protected List<int> unreachableAlts;
+        List<int> _unreachableAlts;
 
-        protected int nAlts = 0;
+        int _nAlts = 0;
 
         /** We only want one accept state per predicted alt; track here */
-        protected DFAState[] altToAcceptState;
+        DFAState[] _altToAcceptState;
 
         /** Track whether an alt discovers recursion for each alt during
          *  NFA to DFA conversion; >1 alt with recursion implies nonregular.
@@ -159,7 +161,7 @@ namespace Antlr3.Analysis
         /** Which NFA are we converting (well, which piece of the NFA)? */
         public NFA nfa;
 
-        protected NFAToDFAConverter nfaConverter;
+        NFAToDFAConverter _nfaConverter;
 
         /** This probe tells you a lot about a decision and is useful even
          *  when there is no error such as when a syntactic nondeterminism
@@ -172,7 +174,7 @@ namespace Antlr3.Analysis
          *  if it takes too long, then terminate.  Assume bugs are in the
          *  analysis engine.
          */
-        protected internal DateTime conversionStartTime;
+        internal DateTime conversionStartTime;
 
         /** Map an edge transition table to a unique set number; ordered so
          *  we can push into the output template as an ordered list of sets
@@ -189,14 +191,14 @@ namespace Antlr3.Analysis
          *     	  ...
          *      };
          */
-        public IDictionary<int[], int?> edgeTransitionClassMap = new Dictionary<int[], int?>();
+        IDictionary<int[], int?> _edgeTransitionClassMap = new Dictionary<int[], int?>();
 
         /** The unique edge transition class number; every time we see a new
          *  set of edges emanating from a state, we number it so we can reuse
          *  if it's every seen again for another state.  For Java grammar,
          *  some of the big edge transition tables are seen about 57 times.
          */
-        protected int edgeTransitionClass = 0;
+        int _edgeTransitionClass = 0;
 
         /* This DFA can be converted to a transition[state][char] table and
          * the following tables are filled by createStateTables upon request.
@@ -208,25 +210,25 @@ namespace Antlr3.Analysis
          */
 
         /** List of special DFAState objects */
-        public IList specialStates;
+        IList<DFAState> _specialStates;
         /** List of ST for special states. */
-        public IList specialStateSTs;
-        public const int EmptyValue = -1;
-        public int[] accept;
-        public int[] eot;
-        public int[] eof;
-        public int[] min;
-        public int[] max;
-        public int[] special;
-        public int[][] transition;
-        /** just the Vector<Integer> indicating which unique edge table is at
+        IList<StringTemplate> _specialStateSTs;
+        const int EmptyValue = -1;
+        int[] _accept;
+        int[] _eot;
+        int[] _eof;
+        int[] _min;
+        int[] _max;
+        int[] _special;
+        int[][] _transition;
+        /** just the Vector&lt;Integer&gt; indicating which unique edge table is at
          *  position i.
          */
-        public List<int?> transitionEdgeTables; // not used by java yet
-        protected int uniqueCompressedSpecialStateNum = 0;
+        List<int?> _transitionEdgeTables; // not used by java yet
+        int _uniqueCompressedSpecialStateNum = 0;
 
         /** Which generator to use if we're building state tables */
-        protected CodeGenerator generator = null;
+        CodeGenerator _generator = null;
 
         protected DFA()
         {
@@ -237,17 +239,17 @@ namespace Antlr3.Analysis
             : this()
         {
             this.decisionNumber = decisionNumber;
-            this.decisionNFAStartState = decisionStartState;
+            this._decisionNFAStartState = decisionStartState;
             nfa = decisionStartState.nfa;
-            nAlts = nfa.grammar.getNumberOfAltsForDecisionNFA( decisionStartState );
+            _nAlts = nfa.grammar.getNumberOfAltsForDecisionNFA( decisionStartState );
             //setOptions( nfa.grammar.getDecisionOptions(getDecisionNumber()) );
             initAltRelatedInfo();
 
             //long start = JSystem.currentTimeMillis();
-            nfaConverter = new NFAToDFAConverter( this );
+            _nfaConverter = new NFAToDFAConverter( this );
             try
             {
-                nfaConverter.convert();
+                _nfaConverter.convert();
 
                 // figure out if there are problems with decision
                 verify();
@@ -312,28 +314,28 @@ namespace Antlr3.Analysis
         {
             get
             {
-                return decisionNFAStartState.associatedASTNode;
+                return _decisionNFAStartState.associatedASTNode;
             }
         }
         public int DecisionNumber
         {
             get
             {
-                return decisionNFAStartState.DecisionNumber;
+                return _decisionNFAStartState.DecisionNumber;
             }
         }
         public string Description
         {
             get
             {
-                return description;
+                return _description;
             }
         }
         public bool IsCyclic
         {
             get
             {
-                return cyclic && UserMaxLookahead == 0;
+                return _cyclic && UserMaxLookahead == 0;
             }
         }
         public bool IsGreedy
@@ -347,7 +349,7 @@ namespace Antlr3.Analysis
         {
             get
             {
-                return reduced;
+                return _reduced;
             }
         }
         public bool IsTokensRuleDecision
@@ -372,21 +374,29 @@ namespace Antlr3.Analysis
         {
             get
             {
-                return states.Count - 1;
+                return _states.Count - 1;
             }
         }
         public NFAState NFADecisionStartState
         {
             get
             {
-                return decisionNFAStartState;
+                return _decisionNFAStartState;
+            }
+            set
+            {
+                _decisionNFAStartState = value;
             }
         }
         public int NumberOfAlts
         {
             get
             {
-                return nAlts;
+                return _nAlts;
+            }
+            set
+            {
+                _nAlts = value;
             }
         }
         public int NumberOfStates
@@ -396,9 +406,9 @@ namespace Antlr3.Analysis
                 if ( UserMaxLookahead > 0 )
                 {
                     // if using fixed lookahead then uniqueSets not set
-                    return states.Count;
+                    return _states.Count;
                 }
-                return numberOfStates;
+                return _numberOfStates;
             }
         }
         public bool OkToRetryWithK1
@@ -415,18 +425,29 @@ namespace Antlr3.Analysis
                 return getReasonForFailure();
             }
         }
+        public IList<StringTemplate> SpecialStateSTs
+        {
+            get
+            {
+                return _specialStateSTs;
+            }
+        }
         public IDictionary<DFAState, DFAState> UniqueStates
         {
             get
             {
-                return uniqueStates;
+                return _uniqueStates;
             }
         }
-        public ICollection<int> UnreachableAlts
+        public List<int> UnreachableAlts
         {
             get
             {
-                return unreachableAlts;
+                return _unreachableAlts;
+            }
+            set
+            {
+                _unreachableAlts = value;
             }
         }
         public int UserMaxLookahead
@@ -489,7 +510,7 @@ namespace Antlr3.Analysis
             if ( snum != NumberOfStates )
             {
                 ErrorManager.internalError( "DFA " + decisionNumber + ": " +
-                    decisionNFAStartState.Description + " num unique states " + NumberOfStates +
+                    _decisionNFAStartState.Description + " num unique states " + NumberOfStates +
                     "!= num renumbered states " + snum );
             }
         }
@@ -500,39 +521,39 @@ namespace Antlr3.Analysis
 
         public virtual List<string> getJavaCompressedAccept()
         {
-            return getRunLengthEncoding( accept );
+            return getRunLengthEncoding( _accept );
         }
         public virtual List<string> getJavaCompressedEOT()
         {
-            return getRunLengthEncoding( eot );
+            return getRunLengthEncoding( _eot );
         }
         public virtual List<string> getJavaCompressedEOF()
         {
-            return getRunLengthEncoding( eof );
+            return getRunLengthEncoding( _eof );
         }
         public virtual List<string> getJavaCompressedMin()
         {
-            return getRunLengthEncoding( min );
+            return getRunLengthEncoding( _min );
         }
         public virtual List<string> getJavaCompressedMax()
         {
-            return getRunLengthEncoding( max );
+            return getRunLengthEncoding( _max );
         }
         public virtual List<string> getJavaCompressedSpecial()
         {
-            return getRunLengthEncoding( special );
+            return getRunLengthEncoding( _special );
         }
         public virtual List<List<string>> getJavaCompressedTransition()
         {
-            if ( transition == null || transition.Length == 0 )
+            if ( _transition == null || _transition.Length == 0 )
             {
                 return null;
             }
-            List<List<string>> encoded = new List<List<string>>( transition.Length );
+            List<List<string>> encoded = new List<List<string>>( _transition.Length );
             // walk Vector<Vector<FormattedInteger>> which is the transition[][] table
-            for ( int i = 0; i < transition.Length; i++ )
+            for ( int i = 0; i < _transition.Length; i++ )
             {
-                var transitionsForState = transition[i];
+                var transitionsForState = _transition[i];
                 encoded.Add( getRunLengthEncoding( transitionsForState ) );
             }
             return encoded;
@@ -588,8 +609,8 @@ namespace Antlr3.Analysis
                         break;
                     }
                 }
-                encoded.Add( generator.target.encodeIntAsCharEscape( (char)n ) );
-                encoded.Add( generator.target.encodeIntAsCharEscape( (char)(int)I ) );
+                encoded.Add( _generator.target.encodeIntAsCharEscape( (char)n ) );
+                encoded.Add( _generator.target.encodeIntAsCharEscape( (char)(int)I ) );
                 i += n;
             }
             return encoded;
@@ -598,42 +619,42 @@ namespace Antlr3.Analysis
         public virtual void createStateTables( CodeGenerator generator )
         {
             //JSystem.@out.println("createTables:\n"+this);
-            this.generator = generator;
-            description = NFADecisionStartState.Description;
-            description =
-                generator.target.getTargetStringLiteralFromString( description );
+            this._generator = generator;
+            _description = NFADecisionStartState.Description;
+            _description =
+                generator.target.getTargetStringLiteralFromString( _description );
 
             // create all the tables
             //special = new List<int>( this.NumberOfStates ); // Vector<short>
             //special.setSize( this.NumberOfStates );
-            special = Enumerable.Repeat( EmptyValue, NumberOfStates ).ToArray();
-            specialStates = new List<object>();				// List<DFAState>
-            specialStateSTs = new List<object>();				// List<ST>
+            _special = Enumerable.Repeat( EmptyValue, NumberOfStates ).ToArray();
+            _specialStates = new List<DFAState>();
+            _specialStateSTs = new List<StringTemplate>();
             //accept = new List<int>( this.NumberOfStates ); // Vector<int>
             //accept.setSize( this.NumberOfStates );
-            accept = Enumerable.Repeat( EmptyValue, NumberOfStates ).ToArray();
+            _accept = Enumerable.Repeat( EmptyValue, NumberOfStates ).ToArray();
             //eot = new List<int>( this.NumberOfStates ); // Vector<int>
             //eot.setSize( this.NumberOfStates );
-            eot = Enumerable.Repeat( EmptyValue, NumberOfStates ).ToArray();
+            _eot = Enumerable.Repeat( EmptyValue, NumberOfStates ).ToArray();
             //eof = new List<int>( this.NumberOfStates ); // Vector<int>
             //eof.setSize( this.NumberOfStates );
-            eof = Enumerable.Repeat( EmptyValue, NumberOfStates ).ToArray();
+            _eof = Enumerable.Repeat( EmptyValue, NumberOfStates ).ToArray();
             //min = new List<int>( this.NumberOfStates ); // Vector<int>
             //min.setSize( this.NumberOfStates );
-            min = Enumerable.Repeat( EmptyValue, NumberOfStates ).ToArray();
+            _min = Enumerable.Repeat( EmptyValue, NumberOfStates ).ToArray();
             //max = new List<int>( this.NumberOfStates ); // Vector<int>
             //max.setSize( this.NumberOfStates );
-            max = Enumerable.Repeat( EmptyValue, NumberOfStates ).ToArray();
-            transition = new int[NumberOfStates][]; // Vector<Vector<int>>
+            _max = Enumerable.Repeat( EmptyValue, NumberOfStates ).ToArray();
+            _transition = new int[NumberOfStates][]; // Vector<Vector<int>>
             //transition.setSize( this.NumberOfStates );
-            transitionEdgeTables = new List<int?>( this.NumberOfStates ); // Vector<Vector<int>>
-            transitionEdgeTables.setSize( this.NumberOfStates );
+            _transitionEdgeTables = new List<int?>( this.NumberOfStates ); // Vector<Vector<int>>
+            _transitionEdgeTables.setSize( this.NumberOfStates );
 
             // for each state in the DFA, fill relevant tables.
             IEnumerable<DFAState> it = null;
             if ( UserMaxLookahead > 0 )
             {
-                it = states;
+                it = _states;
             }
             else
             {
@@ -650,7 +671,7 @@ namespace Antlr3.Analysis
                 if ( s.IsAcceptState )
                 {
                     // can't compute min,max,special,transition on accepts
-                    accept[s.stateNumber] = s.getUniquelyPredictedAlt();
+                    _accept[s.stateNumber] = s.getUniquelyPredictedAlt();
                 }
                 else
                 {
@@ -662,12 +683,12 @@ namespace Antlr3.Analysis
             }
 
             // now that we have computed list of specialStates, gen code for 'em
-            for ( int i = 0; i < specialStates.Count; i++ )
+            for ( int i = 0; i < _specialStates.Count; i++ )
             {
-                DFAState ss = (DFAState)specialStates[i];
+                DFAState ss = (DFAState)_specialStates[i];
                 StringTemplate stateST =
                     generator.generateSpecialState( ss );
-                specialStateSTs.Add( stateST );
+                _specialStateSTs.Add( stateST );
             }
 
             // check that the tables are not messed up by encode/decode
@@ -767,12 +788,12 @@ namespace Antlr3.Analysis
                 smax = Label.MIN_CHAR_VALUE;
             }
 
-            min[s.stateNumber] = (char)smin;
-            max[s.stateNumber] = (char)smax;
+            _min[s.stateNumber] = (char)smin;
+            _max[s.stateNumber] = (char)smax;
 
             if ( smax < 0 || smin > Label.MAX_CHAR_VALUE || smin < 0 )
             {
-                ErrorManager.internalError( "messed up: min=" + min + ", max=" + max );
+                ErrorManager.internalError( "messed up: min=" + _min + ", max=" + _max );
             }
         }
 
@@ -782,14 +803,14 @@ namespace Antlr3.Analysis
             JSystem.@out.println("createTransitionTableEntryForState s"+s.stateNumber+
                 " dec "+s.dfa.decisionNumber+" cyclic="+s.dfa.isCyclic());
                 */
-            int smax = max[s.stateNumber];
-            int smin = min[s.stateNumber];
+            int smax = _max[s.stateNumber];
+            int smin = _min[s.stateNumber];
 
             int[] stateTransitions = new int[smax - smin + 1];
             for ( int i = 0; i < stateTransitions.Length; i++ )
                 stateTransitions[i] = EmptyValue;
 
-            transition[s.stateNumber] = stateTransitions;
+            _transition[s.stateNumber] = stateTransitions;
             for ( int j = 0; j < s.NumberOfTransitions; j++ )
             {
                 Transition edge = s.transition( j );
@@ -812,17 +833,17 @@ namespace Antlr3.Analysis
             }
             // track unique state transition tables so we can reuse
             int? edgeClass; // = edgeTransitionClassMap.get( stateTransitions );
-            if ( edgeTransitionClassMap.TryGetValue( stateTransitions, out edgeClass ) && edgeClass != null )
+            if ( _edgeTransitionClassMap.TryGetValue( stateTransitions, out edgeClass ) && edgeClass != null )
             {
                 //JSystem.@out.println("we've seen this array before; size="+stateTransitions.size());
-                transitionEdgeTables[s.stateNumber] = edgeClass;
+                _transitionEdgeTables[s.stateNumber] = edgeClass;
             }
             else
             {
-                edgeClass = edgeTransitionClass;
-                transitionEdgeTables[s.stateNumber] = edgeClass;
-                edgeTransitionClassMap[stateTransitions] = edgeClass;
-                edgeTransitionClass++;
+                edgeClass = _edgeTransitionClass;
+                _transitionEdgeTables[s.stateNumber] = edgeClass;
+                _edgeTransitionClassMap[stateTransitions] = edgeClass;
+                _edgeTransitionClass++;
             }
         }
 
@@ -840,24 +861,24 @@ namespace Antlr3.Analysis
                     if ( label.Atom == Label.EOT )
                     {
                         // eot[s] points to accept state
-                        eot[s.stateNumber] = edge.target.stateNumber;
+                        _eot[s.stateNumber] = edge.target.stateNumber;
                     }
                     else if ( label.Atom == Label.EOF )
                     {
                         // eof[s] points to accept state
-                        eof[s.stateNumber] = edge.target.stateNumber;
+                        _eof[s.stateNumber] = edge.target.stateNumber;
                     }
                 }
                 else if ( label.IsSet )
                 {
                     if ( label.Set.member( Label.EOT ) )
                     {
-                        eot[s.stateNumber] = edge.target.stateNumber;
+                        _eot[s.stateNumber] = edge.target.stateNumber;
                     }
 
                     if ( label.Set.member( Label.EOF ) )
                     {
-                        eof[s.stateNumber] = edge.target.stateNumber;
+                        _eof[s.stateNumber] = edge.target.stateNumber;
                     }
                 }
             }
@@ -883,17 +904,17 @@ namespace Antlr3.Analysis
                 }
             }
             // if has pred or too big for table, make it special
-            int smax = max[s.stateNumber];
-            int smin = min[s.stateNumber];
+            int smax = _max[s.stateNumber];
+            int smin = _min[s.stateNumber];
             if ( hasSemPred || smax - smin > MAX_STATE_TRANSITIONS_FOR_TABLE )
             {
-                special[s.stateNumber] = uniqueCompressedSpecialStateNum;
-                uniqueCompressedSpecialStateNum++;
-                specialStates.Add( s );
+                _special[s.stateNumber] = _uniqueCompressedSpecialStateNum;
+                _uniqueCompressedSpecialStateNum++;
+                _specialStates.Add( s );
             }
             else
             {
-                special[s.stateNumber] = EmptyValue; // not special
+                _special[s.stateNumber] = EmptyValue; // not special
             }
         }
 
@@ -918,7 +939,7 @@ namespace Antlr3.Analysis
             }
             // does a DFA state exist already with everything the same
             // except its state number?
-            DFAState existing = (DFAState)uniqueStates.get( d );
+            DFAState existing = (DFAState)_uniqueStates.get( d );
             if ( existing != null )
             {
                 /*
@@ -930,20 +951,20 @@ namespace Antlr3.Analysis
             }
 
             // if not there, then add new state.
-            uniqueStates[d] = d;
-            numberOfStates++;
+            _uniqueStates[d] = d;
+            _numberOfStates++;
             return d;
         }
 
         public void removeState( DFAState d )
         {
             DFAState it;
-            if ( uniqueStates.TryGetValue( d, out it ) )
+            if ( _uniqueStates.TryGetValue( d, out it ) )
             {
-                uniqueStates.Remove( d );
+                _uniqueStates.Remove( d );
                 if ( it != null )
                 {
-                    numberOfStates--;
+                    _numberOfStates--;
                 }
             }
         }
@@ -965,12 +986,12 @@ namespace Antlr3.Analysis
 
         public virtual DFAState getState( int stateNumber )
         {
-            return (DFAState)states[stateNumber];
+            return (DFAState)_states[stateNumber];
         }
 
         public virtual void setState( int stateNumber, DFAState d )
         {
-            states[stateNumber] = d;
+            _states[stateNumber] = d;
         }
 
         /** Is the DFA reduced?  I.e., does every state have a path to an accept
@@ -1023,12 +1044,12 @@ namespace Antlr3.Analysis
          */
         public virtual int getUserMaxLookahead()
         {
-            if ( user_k >= 0 )
+            if ( _userK >= 0 )
             { // cache for speed
-                return user_k;
+                return _userK;
             }
-            user_k = nfa.grammar.getUserMaxLookahead( decisionNumber );
-            return user_k;
+            _userK = nfa.grammar.getUserMaxLookahead( decisionNumber );
+            return _userK;
         }
 
         public virtual bool getAutoBacktrackMode()
@@ -1038,7 +1059,7 @@ namespace Antlr3.Analysis
 
         public virtual void setUserMaxLookahead( int k )
         {
-            this.user_k = k;
+            this._userK = k;
         }
 
         /** Return k if decision is LL(k) for some k else return max int */
@@ -1096,7 +1117,7 @@ namespace Antlr3.Analysis
                 d.AcceptStateReachable = REACHABLE_YES;
                 // this alt is uniquely predicted, remove from nondeterministic list
                 int predicts = d.getUniquelyPredictedAlt();
-                unreachableAlts.Remove( predicts );
+                _unreachableAlts.Remove( predicts );
                 return true;
             }
 
@@ -1114,7 +1135,7 @@ namespace Antlr3.Analysis
                 int targetStatus = edgeTarget.AcceptStateReachable;
                 if ( targetStatus == REACHABLE_BUSY )
                 { // avoid cycles; they say nothing
-                    cyclic = true;
+                    _cyclic = true;
                     continue;
                 }
                 if ( targetStatus == REACHABLE_YES )
@@ -1141,7 +1162,7 @@ namespace Antlr3.Analysis
             else
             {
                 d.AcceptStateReachable = REACHABLE_NO;
-                reduced = false;
+                _reduced = false;
             }
             return anEdgeReachesAcceptState;
         }
@@ -1184,12 +1205,12 @@ namespace Antlr3.Analysis
 
         public virtual DFAState getAcceptState( int alt )
         {
-            return altToAcceptState[alt];
+            return _altToAcceptState[alt];
         }
 
         public virtual void setAcceptState( int alt, DFAState acceptState )
         {
-            altToAcceptState[alt] = acceptState;
+            _altToAcceptState[alt] = acceptState;
         }
 
         [Obsolete]
@@ -1278,10 +1299,10 @@ namespace Antlr3.Analysis
         public virtual DFAState newState()
         {
             DFAState n = new DFAState( this );
-            n.stateNumber = stateCounter;
-            stateCounter++;
-            states.setSize( n.stateNumber + 1 );
-            states[n.stateNumber] = n; // track state num to state
+            n.stateNumber = _stateCounter;
+            _stateCounter++;
+            _states.setSize( n.stateNumber + 1 );
+            _states[n.stateNumber] = n; // track state num to state
             return n;
         }
 
@@ -1305,12 +1326,12 @@ namespace Antlr3.Analysis
 
         protected virtual void initAltRelatedInfo()
         {
-            unreachableAlts = new List<int>();
-            for ( int i = 1; i <= nAlts; i++ )
+            _unreachableAlts = new List<int>();
+            for ( int i = 1; i <= _nAlts; i++ )
             {
-                unreachableAlts.Add( i );
+                _unreachableAlts.Add( i );
             }
-            altToAcceptState = new DFAState[nAlts + 1];
+            _altToAcceptState = new DFAState[_nAlts + 1];
         }
 
         public override string ToString()

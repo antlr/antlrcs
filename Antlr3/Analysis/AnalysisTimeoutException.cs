@@ -37,11 +37,11 @@ namespace Antlr3.Analysis
     /** Analysis took too long; bail out of entire DFA construction. */
     public class AnalysisTimeoutException : Exception
     {
-        public DFA abortedDFA;
+        DFA _abortedDFA;
 
         public AnalysisTimeoutException( DFA abortedDFA )
         {
-            this.abortedDFA = abortedDFA;
+            _abortedDFA = abortedDFA;
         }
     }
 }

@@ -247,12 +247,12 @@ namespace Antlr3.Tool
                 }
                 decisions.Add( dfa.decisionNumber );
                 buf.Append( "Rule " );
-                buf.Append( dfa.decisionNFAStartState.enclosingRule.name );
+                buf.Append( dfa.NFADecisionStartState.enclosingRule.name );
                 buf.Append( " decision " );
                 buf.Append( dfa.decisionNumber );
                 buf.Append( " location " );
                 GrammarAST decisionAST =
-                    dfa.decisionNFAStartState.associatedASTNode;
+                    dfa.NFADecisionStartState.associatedASTNode;
                 buf.Append( decisionAST.Line );
                 buf.Append( ":" );
                 buf.Append( decisionAST.CharPositionInLine );

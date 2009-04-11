@@ -42,25 +42,25 @@ namespace Antlr3.Analysis
          *  may have to combine a bunch of them as it collects predicates from
          *  multiple NFA configurations into a single DFA state.
          */
-        protected SemanticContext semanticContext;
+        SemanticContext _semanticContext;
 
         /** Make a semantic predicate label */
         public PredicateLabel( GrammarAST predicateASTNode )
             : base( SEMPRED )
         {
-            this.semanticContext = new SemanticContext.Predicate( predicateASTNode );
+            this._semanticContext = new SemanticContext.Predicate( predicateASTNode );
         }
 
         /** Make a semantic predicates label */
         public PredicateLabel( SemanticContext semCtx )
             : base( SEMPRED )
         {
-            this.semanticContext = semCtx;
+            this._semanticContext = semCtx;
         }
 
         public override int GetHashCode()
         {
-            return semanticContext.GetHashCode();
+            return _semanticContext.GetHashCode();
         }
 
         public override bool Equals( object o )
@@ -78,7 +78,7 @@ namespace Antlr3.Analysis
             {
                 return false;
             }
-            return semanticContext.Equals( pl.SemanticContext );
+            return _semanticContext.Equals( pl.SemanticContext );
         }
 
         public override bool IsSemanticPredicate
@@ -93,13 +93,13 @@ namespace Antlr3.Analysis
         {
             get
             {
-                return semanticContext;
+                return _semanticContext;
             }
         }
 
         public override string ToString()
         {
-            return "{" + semanticContext + "}?";
+            return "{" + _semanticContext + "}?";
         }
 
         public override string ToString( Grammar g )

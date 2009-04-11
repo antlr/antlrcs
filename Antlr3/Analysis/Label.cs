@@ -121,14 +121,14 @@ namespace Antlr3.Analysis
             TokenConstants.MinTokenType;
 
         /** The wildcard '.' char atom implies all valid characters==UNICODE */
-        //public static final IntSet ALLCHAR = IntervalSet.of(MIN_CHAR_VALUE,MAX_CHAR_VALUE);
+        //public static readonly IIntSet ALLCHAR = IntervalSet.of( MIN_CHAR_VALUE, MAX_CHAR_VALUE );
 
         /** The token type or character value; or, signifies special label. */
-        protected internal int label;
+        internal int label;
 
         /** A set of token types or character codes if label==SET */
         // TODO: try IntervalSet for everything
-        protected IIntSet labelSet;
+        IIntSet _labelSet;
 
         public Label( int label )
         {
@@ -141,7 +141,7 @@ namespace Antlr3.Analysis
             if ( labelSet == null )
             {
                 this.label = SET;
-                this.labelSet = IntervalSet.of( INVALID );
+                this._labelSet = IntervalSet.of( INVALID );
                 return;
             }
             int singleAtom = labelSet.getSingleElement();
@@ -152,7 +152,7 @@ namespace Antlr3.Analysis
                 return;
             }
             this.label = SET;
-            this.labelSet = labelSet;
+            this._labelSet = labelSet;
         }
 
         #region Properties
@@ -219,12 +219,12 @@ namespace Antlr3.Analysis
                     // convert single element to a set if they ask for it.
                     return IntervalSet.of( label );
                 }
-                return labelSet;
+                return _labelSet;
             }
             set
             {
                 label = SET;
-                labelSet = value;
+                _labelSet = value;
             }
         }
         #endregion
@@ -237,8 +237,8 @@ namespace Antlr3.Analysis
                 //l = (Label)base.clone();
                 l = new Label( label );
                 l.label = this.label;
-                l.labelSet = new IntervalSet();
-                l.labelSet.addAll( this.labelSet );
+                l._labelSet = new IntervalSet();
+                l._labelSet.addAll( this._labelSet );
             //}
             //catch ( CloneNotSupportedException e )
             //{
@@ -251,15 +251,15 @@ namespace Antlr3.Analysis
         {
             if ( IsAtom )
             {
-                labelSet = IntervalSet.of( label );
+                _labelSet = IntervalSet.of( label );
                 label = SET;
                 if ( a.IsAtom )
                 {
-                    labelSet.Add( a.Atom );
+                    _labelSet.Add( a.Atom );
                 }
                 else if ( a.IsSet )
                 {
-                    labelSet.addAll( a.Set );
+                    _labelSet.addAll( a.Set );
                 }
                 else
                 {
@@ -271,11 +271,11 @@ namespace Antlr3.Analysis
             {
                 if ( a.IsAtom )
                 {
-                    labelSet.Add( a.Atom );
+                    _labelSet.Add( a.Atom );
                 }
                 else if ( a.IsSet )
                 {
-                    labelSet.addAll( a.Set );
+                    _labelSet.addAll( a.Set );
                 }
                 else
                 {
@@ -294,7 +294,7 @@ namespace Antlr3.Analysis
             }
             if ( IsSet )
             {
-                return labelSet.member( atom );
+                return _labelSet.member( atom );
             }
             return false;
         }
@@ -331,7 +331,7 @@ namespace Antlr3.Analysis
         {
             if ( label == SET )
             {
-                return labelSet.GetHashCode();
+                return _labelSet.GetHashCode();
             }
             else
             {
@@ -357,7 +357,7 @@ namespace Antlr3.Analysis
             }
             if ( label == SET )
             {
-                return this.labelSet.Equals( ( (Label)o ).labelSet );
+                return this._labelSet.Equals( ( (Label)o )._labelSet );
             }
             return true;  // label values are same, so true
         }
@@ -400,7 +400,7 @@ namespace Antlr3.Analysis
             switch ( label )
             {
             case SET:
-                return labelSet.ToString();
+                return _labelSet.ToString();
             default:
                 return label.ToString(); //String.valueOf( label );
             }
@@ -411,7 +411,7 @@ namespace Antlr3.Analysis
             switch ( label )
             {
             case SET:
-                return labelSet.ToString( g );
+                return _labelSet.ToString( g );
             default:
                 return g.getTokenDisplayName( label );
             }

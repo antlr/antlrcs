@@ -110,12 +110,12 @@ namespace Antlr3.Analysis
              *  The simple Predicate object's predicate AST's type is used to set
              *  gated to true if type==GATED_SEMPRED.
              */
-            protected bool gated = false;
+            bool _gated;
 
             /** syntactic predicates are converted to semantic predicates
              *  but synpreds are generated slightly differently.
              */
-            protected bool synpred = false;
+            bool _synpred;
 
             public const int InvalidPredValue = -1;
             public const int FalsePred = 0;
@@ -130,16 +130,16 @@ namespace Antlr3.Analysis
             public Predicate()
             {
                 predicateAST = new GrammarAST();
-                this.gated = false;
+                this._gated = false;
             }
 
             public Predicate( GrammarAST predicate )
             {
                 this.predicateAST = predicate;
-                this.gated =
+                this._gated =
                     predicate.Type == ANTLRParser.GATED_SEMPRED ||
                     predicate.Type == ANTLRParser.SYN_SEMPRED;
-                this.synpred =
+                this._synpred =
                     predicate.Type == ANTLRParser.SYN_SEMPRED ||
                     predicate.Type == ANTLRParser.BACKTRACK_SEMPRED;
             }
@@ -147,8 +147,8 @@ namespace Antlr3.Analysis
             public Predicate( Predicate p )
             {
                 this.predicateAST = p.predicateAST;
-                this.gated = p.gated;
-                this.synpred = p.synpred;
+                this._gated = p._gated;
+                this._synpred = p._synpred;
                 this.constantValue = p.constantValue;
             }
 
@@ -183,7 +183,7 @@ namespace Antlr3.Analysis
                 StringTemplate eST = null;
                 if ( templates != null )
                 {
-                    if ( synpred )
+                    if ( _synpred )
                     {
                         eST = templates.GetInstanceOf( "evalSynPredicate" );
                     }
@@ -226,7 +226,7 @@ namespace Antlr3.Analysis
             {
                 get
                 {
-                    if ( gated )
+                    if ( _gated )
                     {
                         return this;
                     }
@@ -246,7 +246,7 @@ namespace Antlr3.Analysis
 
             public override void trackUseOfSyntacticPredicates( Grammar g )
             {
-                if ( synpred )
+                if ( _synpred )
                 {
                     g.synPredNamesUsedInDFA.Add( predicateAST.Text );
                 }
@@ -312,11 +312,13 @@ namespace Antlr3.Analysis
 
         public class AND : SemanticContext
         {
-            protected SemanticContext left, right;
+            SemanticContext _left;
+            SemanticContext _right;
+
             public AND( SemanticContext a, SemanticContext b )
             {
-                this.left = a;
-                this.right = b;
+                this._left = a;
+                this._right = b;
             }
             public override StringTemplate genExpr( CodeGenerator generator,
                                           StringTemplateGroup templates,
@@ -331,16 +333,16 @@ namespace Antlr3.Analysis
                 {
                     eST = new StringTemplate( "($left$&&$right$)" );
                 }
-                eST.SetAttribute( "left", left.genExpr( generator, templates, dfa ) );
-                eST.SetAttribute( "right", right.genExpr( generator, templates, dfa ) );
+                eST.SetAttribute( "left", _left.genExpr( generator, templates, dfa ) );
+                eST.SetAttribute( "right", _right.genExpr( generator, templates, dfa ) );
                 return eST;
             }
             public override SemanticContext GatedPredicateContext
             {
                 get
                 {
-                    SemanticContext gatedLeft = left.GatedPredicateContext;
-                    SemanticContext gatedRight = right.GatedPredicateContext;
+                    SemanticContext gatedLeft = _left.GatedPredicateContext;
+                    SemanticContext gatedRight = _right.GatedPredicateContext;
                     if ( gatedLeft == null )
                     {
                         return gatedRight;
@@ -356,41 +358,42 @@ namespace Antlr3.Analysis
             {
                 get
                 {
-                    return left.IsSyntacticPredicate || right.IsSyntacticPredicate;
+                    return _left.IsSyntacticPredicate || _right.IsSyntacticPredicate;
                 }
             }
             public override void trackUseOfSyntacticPredicates( Grammar g )
             {
-                left.trackUseOfSyntacticPredicates( g );
-                right.trackUseOfSyntacticPredicates( g );
+                _left.trackUseOfSyntacticPredicates( g );
+                _right.trackUseOfSyntacticPredicates( g );
             }
             public override string ToString()
             {
-                return "(" + left + "&&" + right + ")";
+                return "(" + _left + "&&" + _right + ")";
             }
         }
 
         public class OR : SemanticContext
         {
-            protected HashSet<object> operands;
+            HashSet<object> _operands;
+
             public OR( SemanticContext a, SemanticContext b )
             {
-                operands = new HashSet<object>();
+                _operands = new HashSet<object>();
                 if ( a is OR )
                 {
-                    operands.addAll( ( (OR)a ).operands );
+                    _operands.addAll( ( (OR)a )._operands );
                 }
                 else if ( a != null )
                 {
-                    operands.Add( a );
+                    _operands.Add( a );
                 }
                 if ( b is OR )
                 {
-                    operands.addAll( ( (OR)b ).operands );
+                    _operands.addAll( ( (OR)b )._operands );
                 }
                 else if ( b != null )
                 {
-                    operands.Add( b );
+                    _operands.Add( b );
                 }
             }
             public override StringTemplate genExpr( CodeGenerator generator,
@@ -406,7 +409,7 @@ namespace Antlr3.Analysis
                 {
                     eST = new StringTemplate( "($first(operands)$$rest(operands):{o | ||$o$}$)" );
                 }
-                foreach ( SemanticContext semctx in operands )
+                foreach ( SemanticContext semctx in _operands )
                 {
                     eST.SetAttribute( "operands", semctx.genExpr( generator, templates, dfa ) );
                 }
@@ -417,7 +420,7 @@ namespace Antlr3.Analysis
                 get
                 {
                     SemanticContext result = null;
-                    foreach ( SemanticContext semctx in operands )
+                    foreach ( SemanticContext semctx in _operands )
                     {
                         SemanticContext gatedPred = semctx.GatedPredicateContext;
                         if ( gatedPred != null )
@@ -433,7 +436,7 @@ namespace Antlr3.Analysis
             {
                 get
                 {
-                    foreach ( SemanticContext semctx in operands )
+                    foreach ( SemanticContext semctx in _operands )
                     {
                         if ( semctx.IsSyntacticPredicate )
                         {
@@ -445,7 +448,7 @@ namespace Antlr3.Analysis
             }
             public override void trackUseOfSyntacticPredicates( Grammar g )
             {
-                foreach ( SemanticContext semctx in operands )
+                foreach ( SemanticContext semctx in _operands )
                 {
                     semctx.trackUseOfSyntacticPredicates( g );
                 }
@@ -455,7 +458,7 @@ namespace Antlr3.Analysis
                 StringBuilder buf = new StringBuilder();
                 buf.Append( "(" );
                 int i = 0;
-                foreach ( SemanticContext semctx in operands )
+                foreach ( SemanticContext semctx in _operands )
                 {
                     if ( i > 0 )
                     {

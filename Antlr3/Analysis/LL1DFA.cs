@@ -58,17 +58,17 @@ namespace Antlr3.Analysis
             DFAState s0 = newState();
             startState = s0;
             nfa = decisionStartState.nfa;
-            nAlts = nfa.grammar.getNumberOfAltsForDecisionNFA( decisionStartState );
+            NumberOfAlts = nfa.grammar.getNumberOfAltsForDecisionNFA( decisionStartState );
             this.decisionNumber = decisionNumber;
-            this.decisionNFAStartState = decisionStartState;
+            this.NFADecisionStartState = decisionStartState;
             initAltRelatedInfo();
-            unreachableAlts = null;
+            UnreachableAlts = null;
             for ( int alt = 1; alt < altLook.Length; alt++ )
             {
                 DFAState acceptAltState = newState();
                 acceptAltState.acceptState = true;
                 setAcceptState( alt, acceptAltState );
-                acceptAltState.k = 1;
+                acceptAltState.LookaheadDepth = 1;
                 acceptAltState.cachedUniquelyPredicatedAlt = alt;
                 Label e = getLabelForSet( altLook[alt].tokenTypeSet );
                 s0.addTransition( acceptAltState, e );
@@ -85,11 +85,11 @@ namespace Antlr3.Analysis
             DFAState s0 = newState();
             startState = s0;
             nfa = decisionStartState.nfa;
-            nAlts = nfa.grammar.getNumberOfAltsForDecisionNFA( decisionStartState );
+            NumberOfAlts = nfa.grammar.getNumberOfAltsForDecisionNFA( decisionStartState );
             this.decisionNumber = decisionNumber;
-            this.decisionNFAStartState = decisionStartState;
+            this.NFADecisionStartState = decisionStartState;
             initAltRelatedInfo();
-            unreachableAlts = null;
+            UnreachableAlts = null;
             foreach ( var edgeVar in edgeMap )
             {
                 IntervalSet edge = edgeVar.Key;
@@ -98,7 +98,7 @@ namespace Antlr3.Analysis
                 //Collections.sort( alts ); // make sure alts are attempted in order
                 //JSystem.@out.println(edge+" -> "+alts);
                 DFAState s = newState();
-                s.k = 1;
+                s.LookaheadDepth = 1;
                 Label e = getLabelForSet( edge );
                 s0.addTransition( s, e );
                 if ( alts.Count == 1 )
@@ -112,7 +112,7 @@ namespace Antlr3.Analysis
                 {
                     // resolve with syntactic predicates.  Add edges from
                     // state s that test predicates.
-                    s.resolvedWithPredicates = true;
+                    s.IsResolvedWithPredicates = true;
                     for ( int i = 0; i < alts.Count; i++ )
                     {
                         int alt = (int)alts[i];

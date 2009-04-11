@@ -58,17 +58,17 @@ namespace Antlr3.Analysis
         /**	2	if we didn't find such a pred */
         public const int DETECT_PRED_NOT_FOUND = 2;
 
-        public Grammar grammar;
+        Grammar _grammar;
 
         /** Used during LOOK to detect computation cycles */
-        protected HashSet<NFAState> lookBusy = new HashSet<NFAState>();
+        HashSet<NFAState> _lookBusy = new HashSet<NFAState>();
 
-        public IDictionary<NFAState, LookaheadSet> FIRSTCache = new Dictionary<NFAState, LookaheadSet>();
-        public IDictionary<Rule, LookaheadSet> FOLLOWCache = new Dictionary<Rule, LookaheadSet>();
+        IDictionary<NFAState, LookaheadSet> _firstCache = new Dictionary<NFAState, LookaheadSet>();
+        IDictionary<Rule, LookaheadSet> _followCache = new Dictionary<Rule, LookaheadSet>();
 
         public LL1Analyzer( Grammar grammar )
         {
-            this.grammar = grammar;
+            this._grammar = grammar;
         }
 
 #if false
@@ -160,7 +160,7 @@ namespace Antlr3.Analysis
         public virtual LookaheadSet FIRST( NFAState s )
         {
             //JSystem.@out.println("> FIRST("+s.enclosingRule.name+") in rule "+s.enclosingRule);
-            lookBusy.Clear();
+            _lookBusy.Clear();
             LookaheadSet look = _FIRST( s, false );
             //JSystem.@out.println("< FIRST("+s.enclosingRule.name+") in rule "+s.enclosingRule+"="+look.toString(this.grammar));
             return look;
@@ -169,13 +169,13 @@ namespace Antlr3.Analysis
         public virtual LookaheadSet FOLLOW( Rule r )
         {
             //JSystem.@out.println("> FOLLOW("+r.name+") in rule "+r.startState.enclosingRule);
-            LookaheadSet f = FOLLOWCache.get( r );
+            LookaheadSet f = _followCache.get( r );
             if ( f != null )
             {
                 return f;
             }
             f = _FIRST( r.stopState, true );
-            FOLLOWCache[r] = f;
+            _followCache[r] = f;
             //JSystem.@out.println("< FOLLOW("+r+") in rule "+r.startState.enclosingRule+"="+f.toString(this.grammar));
             return f;
         }
@@ -186,10 +186,10 @@ namespace Antlr3.Analysis
             {
                 Console.Out.WriteLine( "> LOOK(" + s + ")" );
             }
-            lookBusy.Clear();
+            _lookBusy.Clear();
             LookaheadSet look = _FIRST( s, true );
             // FOLLOW makes no sense (at the moment!) for lexical rules.
-            if ( grammar.type != Grammar.LEXER && look.member( Label.EOR_TOKEN_TYPE ) )
+            if ( _grammar.type != Grammar.LEXER && look.member( Label.EOR_TOKEN_TYPE ) )
             {
                 // avoid altering FIRST reset as it is cached
                 LookaheadSet f = FOLLOW( s.enclosingRule );
@@ -198,7 +198,7 @@ namespace Antlr3.Analysis
                 look = f;
                 //look.orInPlace(FOLLOW(s.enclosingRule));
             }
-            else if ( grammar.type == Grammar.LEXER && look.member( Label.EOT ) )
+            else if ( _grammar.type == Grammar.LEXER && look.member( Label.EOT ) )
             {
                 // if this has EOT, lookahead is all char (all char can follow rule)
                 //look = new LookaheadSet(Label.EOT);
@@ -206,7 +206,7 @@ namespace Antlr3.Analysis
             }
             if ( NFAToDFAConverter.debug )
             {
-                Console.Out.WriteLine( "< LOOK(" + s + ")=" + look.ToString( grammar ) );
+                Console.Out.WriteLine( "< LOOK(" + s + ")=" + look.ToString( _grammar ) );
             }
             return look;
         }
@@ -221,7 +221,7 @@ namespace Antlr3.Analysis
             */
             if ( !chaseFollowTransitions && s.IsAcceptState )
             {
-                if ( grammar.type == Grammar.LEXER )
+                if ( _grammar.type == Grammar.LEXER )
                 {
                     // FOLLOW makes no sense (at the moment!) for lexical rules.
                     // assume all char can follow
@@ -230,12 +230,12 @@ namespace Antlr3.Analysis
                 return new LookaheadSet( Label.EOR_TOKEN_TYPE );
             }
 
-            if ( lookBusy.Contains( s ) )
+            if ( _lookBusy.Contains( s ) )
             {
                 // return a copy of an empty set; we may modify set inline
                 return new LookaheadSet();
             }
-            lookBusy.Add( s );
+            _lookBusy.Add( s );
 
             Transition transition0 = s.transition[0];
             if ( transition0 == null )
@@ -259,7 +259,7 @@ namespace Antlr3.Analysis
             // if transition 0 is a rule call and we don't want FOLLOW, check cache
             if ( !chaseFollowTransitions && transition0 is RuleClosureTransition )
             {
-                LookaheadSet prev = FIRSTCache.get( (NFAState)transition0.target );
+                LookaheadSet prev = _firstCache.get( (NFAState)transition0.target );
                 if ( prev != null )
                 {
                     tset = new LookaheadSet( prev );
@@ -273,12 +273,12 @@ namespace Antlr3.Analysis
                 // save FIRST cache for transition 0 if rule call
                 if ( !chaseFollowTransitions && transition0 is RuleClosureTransition )
                 {
-                    FIRSTCache[(NFAState)transition0.target] = tset;
+                    _firstCache[(NFAState)transition0.target] = tset;
                 }
             }
 
             // did we fall off the end?
-            if ( grammar.type != Grammar.LEXER && tset.member( Label.EOR_TOKEN_TYPE ) )
+            if ( _grammar.type != Grammar.LEXER && tset.member( Label.EOR_TOKEN_TYPE ) )
             {
                 if ( transition0 is RuleClosureTransition )
                 {
@@ -319,7 +319,7 @@ namespace Antlr3.Analysis
          */
         public bool detectConfoundingPredicates( NFAState s )
         {
-            lookBusy.Clear();
+            _lookBusy.Clear();
             Rule r = s.enclosingRule;
             return _detectConfoundingPredicates( s, r, false ) == DETECT_PRED_FOUND;
         }
@@ -331,7 +331,7 @@ namespace Antlr3.Analysis
             //JSystem.@out.println("_detectNonAutobacktrackPredicates("+s+")");
             if ( !chaseFollowTransitions && s.IsAcceptState )
             {
-                if ( grammar.type == Grammar.LEXER )
+                if ( _grammar.type == Grammar.LEXER )
                 {
                     // FOLLOW makes no sense (at the moment!) for lexical rules.
                     // assume all char can follow
@@ -340,12 +340,12 @@ namespace Antlr3.Analysis
                 return DETECT_PRED_EOR;
             }
 
-            if ( lookBusy.Contains( s ) )
+            if ( _lookBusy.Contains( s ) )
             {
                 // return a copy of an empty set; we may modify set inline
                 return DETECT_PRED_NOT_FOUND;
             }
-            lookBusy.Add( s );
+            _lookBusy.Add( s );
 
             Transition transition0 = s.transition[0];
             if ( transition0 == null )
@@ -438,7 +438,7 @@ namespace Antlr3.Analysis
          */
         public virtual SemanticContext getPredicates( NFAState altStartState )
         {
-            lookBusy.Clear();
+            _lookBusy.Clear();
             return _getPredicates( altStartState, altStartState );
         }
 
@@ -451,11 +451,11 @@ namespace Antlr3.Analysis
             }
 
             // avoid infinite loops from (..)* etc...
-            if ( lookBusy.Contains( s ) )
+            if ( _lookBusy.Contains( s ) )
             {
                 return null;
             }
-            lookBusy.Add( s );
+            _lookBusy.Add( s );
 
             Transition transition0 = s.transition[0];
             // no transitions

@@ -52,7 +52,7 @@ namespace Antlr3.Analysis
         public const int MAX_TRANSITIONS = 2;
 
         /** How many transitions; 0, 1, or 2 transitions */
-        int numTransitions = 0;
+        int _numTransitions = 0;
         public Transition[] transition = new Transition[MAX_TRANSITIONS];
 
         /** For o-A->o type NFA tranitions, record the label that leads to this
@@ -62,10 +62,10 @@ namespace Antlr3.Analysis
         public Label incidentEdgeLabel;
 
         /** Which NFA are we in? */
-        public NFA nfa = null;
+        public NFA nfa;
 
         /** What's its decision number from 1..n? */
-        int decisionNumber = 0;
+        int _decisionNumber;
 
         /** Subrules (...)* and (...)+ have more than one decision point in
          *  the NFA created for them.  They both have a loop-exit-or-stay-in
@@ -93,7 +93,7 @@ namespace Antlr3.Analysis
          *  to know what relationship this node has to the original grammar.
          *  For example, "start of alt 1 of rule a".
          */
-        string description;
+        string _description;
 
         /** Associate this NFAState with the corresponding GrammarAST node
          *  from which this node was created.  This is useful not only for
@@ -106,7 +106,7 @@ namespace Antlr3.Analysis
         public GrammarAST associatedASTNode;
 
         /** Is this state the sole target of an EOT transition? */
-        bool EOTTargetState = false;
+        bool _eotTargetState = false;
 
         /** Jean Bovet needs in the GUI to know which state pairs correspond
          *  to the start/stop of a block.
@@ -123,22 +123,22 @@ namespace Antlr3.Analysis
         {
             get
             {
-                return decisionNumber;
+                return _decisionNumber;
             }
             set
             {
-                decisionNumber = value;
+                _decisionNumber = value;
             }
         }
         public string Description
         {
             get
             {
-                return description;
+                return _description;
             }
             set
             {
-                description = value;
+                _description = value;
             }
         }
         public bool IsDecisionState
@@ -152,11 +152,11 @@ namespace Antlr3.Analysis
         {
             get
             {
-                return EOTTargetState;
+                return _eotTargetState;
             }
             set
             {
-                EOTTargetState = value;
+                _eotTargetState = value;
             }
         }
         #endregion
@@ -165,7 +165,7 @@ namespace Antlr3.Analysis
         {
             get
             {
-                return numTransitions;
+                return _numTransitions;
             }
         }
 
@@ -175,14 +175,14 @@ namespace Antlr3.Analysis
             {
                 throw new ArgumentException( "You can't add a null transition" );
             }
-            if ( numTransitions > transition.Length )
+            if ( _numTransitions > transition.Length )
             {
                 throw new ArgumentException( "You can only have " + transition.Length + " transitions" );
             }
             if ( e != null )
             {
-                transition[numTransitions] = e;
-                numTransitions++;
+                transition[_numTransitions] = e;
+                _numTransitions++;
                 // Set the "back pointer" of the target state so that it
                 // knows about the label of the incoming edge.
                 Label label = e.label;
@@ -208,7 +208,7 @@ namespace Antlr3.Analysis
             }
             transition[0] = e;
             transition[1] = null;
-            numTransitions = 1;
+            _numTransitions = 1;
         }
 
         public override Transition getTransition( int i )
@@ -245,7 +245,7 @@ namespace Antlr3.Analysis
         public int translateDisplayAltToWalkAlt( int displayAlt )
         {
             NFAState nfaStart = this;
-            if ( decisionNumber == 0 || decisionStateType == 0 )
+            if ( _decisionNumber == 0 || decisionStateType == 0 )
             {
                 return displayAlt;
             }

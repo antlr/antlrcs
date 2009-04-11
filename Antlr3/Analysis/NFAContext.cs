@@ -122,7 +122,7 @@ namespace Antlr3.Analysis
          *  and nothing on the stack is ever modified...ctx just grows
          *  or shrinks.
          */
-        protected int cachedHashCode;
+        int _cachedHashCode;
 
         public NFAContext( NFAContext parent, NFAState invokingState )
         {
@@ -130,11 +130,11 @@ namespace Antlr3.Analysis
             this.invokingState = invokingState;
             if ( invokingState != null )
             {
-                this.cachedHashCode = invokingState.stateNumber;
+                this._cachedHashCode = invokingState.stateNumber;
             }
             if ( parent != null )
             {
-                this.cachedHashCode += parent.cachedHashCode;
+                this._cachedHashCode += parent._cachedHashCode;
             }
         }
 
@@ -162,7 +162,7 @@ namespace Antlr3.Analysis
         public override bool Equals( object o )
         {
             NFAContext other = ( (NFAContext)o );
-            if ( this.cachedHashCode != other.cachedHashCode )
+            if ( this._cachedHashCode != other._cachedHashCode )
             {
                 return false; // can't be same if hash is different
             }
@@ -303,7 +303,7 @@ namespace Antlr3.Analysis
 
         public override int GetHashCode()
         {
-            return cachedHashCode;
+            return _cachedHashCode;
             /*
             int h = 0;
             NFAContext sp = this;

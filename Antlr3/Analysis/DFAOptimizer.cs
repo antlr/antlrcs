@@ -129,23 +129,23 @@ namespace Antlr3.Analysis
          *  This is a side-effect of calling optimize; can't clear after use
          *  because code gen needs it.
          */
-        protected HashSet<object> visited = new HashSet<object>();
+        HashSet<object> _visited = new HashSet<object>();
 
-        protected Grammar grammar;
+        Grammar _grammar;
 
         public DFAOptimizer( Grammar grammar )
         {
-            this.grammar = grammar;
+            this._grammar = grammar;
         }
 
         public virtual void optimize()
         {
             // optimize each DFA in this grammar
             for ( int decisionNumber = 1;
-                 decisionNumber <= grammar.NumberOfDecisions;
+                 decisionNumber <= _grammar.NumberOfDecisions;
                  decisionNumber++ )
             {
-                DFA dfa = grammar.getLookaheadDFA( decisionNumber );
+                DFA dfa = _grammar.getLookaheadDFA( decisionNumber );
                 optimize( dfa );
             }
         }
@@ -163,7 +163,7 @@ namespace Antlr3.Analysis
             //long start = JSystem.currentTimeMillis();
             if ( PRUNE_EBNF_EXIT_BRANCHES && dfa.CanInlineDecision )
             {
-                visited.Clear();
+                _visited.Clear();
                 int decisionType =
                     dfa.NFADecisionStartState.decisionStateType;
                 if ( dfa.IsGreedy &&
@@ -178,7 +178,7 @@ namespace Antlr3.Analysis
                  dfa.IsTokensRuleDecision &&
                  dfa.probe.stateToSyntacticallyAmbiguousTokensRuleAltsMap.Count > 0 )
             {
-                visited.Clear();
+                _visited.Clear();
                 optimizeEOTBranches( dfa.startState );
             }
 
@@ -193,11 +193,11 @@ namespace Antlr3.Analysis
         protected virtual void optimizeExitBranches( DFAState d )
         {
             int sI = d.stateNumber;
-            if ( visited.Contains( sI ) )
+            if ( _visited.Contains( sI ) )
             {
                 return; // already visited
             }
-            visited.Add( sI );
+            _visited.Add( sI );
             int nAlts = d.dfa.NumberOfAlts;
             for ( int i = 0; i < d.NumberOfTransitions; i++ )
             {
@@ -226,11 +226,11 @@ namespace Antlr3.Analysis
         protected virtual void optimizeEOTBranches( DFAState d )
         {
             int sI = d.stateNumber;
-            if ( visited.Contains( sI ) )
+            if ( _visited.Contains( sI ) )
             {
                 return; // already visited
             }
-            visited.Add( sI );
+            _visited.Add( sI );
             for ( int i = 0; i < d.NumberOfTransitions; i++ )
             {
                 Transition edge = (Transition)d.transition( i );

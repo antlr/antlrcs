@@ -45,10 +45,10 @@ namespace Antlr3.Analysis
         public const int INVALID_ALT_NUMBER = -1;
 
         /** This NFA represents which grammar? */
-        public Grammar grammar;
+        internal Grammar grammar;
 
         /** Which factory created this NFA? */
-        protected NFAFactory factory = null;
+        NFAFactory _factory;
 
         public bool complete;
 
@@ -62,11 +62,11 @@ namespace Antlr3.Analysis
         {
             get
             {
-                return factory;
+                return _factory;
             }
             set
             {
-                factory = value;
+                _factory = value;
             }
         }
         #endregion

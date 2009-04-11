@@ -81,7 +81,7 @@ namespace Antlr3.Analysis
         /** Track the transitions emanating from this DFA state.  The List
          *  elements are Transition objects.
          */
-        protected IList<Transition> transitions =
+        IList<Transition> _transitions =
             new List<Transition>( INITIAL_NUM_TRANSITIONS );
 
         /** When doing an acyclic DFA, this is the number of lookahead symbols
@@ -89,7 +89,7 @@ namespace Antlr3.Analysis
          *  dfa states, but it is only a valid value if the user has specified
          *  a max fixed lookahead.
          */
-        protected internal int k;
+        int _k;
 
         /** The NFA->DFA algorithm may terminate leaving some states
          *  without a path to an accept state, implying that upon certain
@@ -97,14 +97,14 @@ namespace Antlr3.Analysis
          *  predicting a unique alternative can be made.  Recall that an
          *  accept state is one in which a unique alternative is predicted.
          */
-        protected int acceptStateReachable = DFA.REACHABLE_UNKNOWN;
+        int _acceptStateReachable = DFA.REACHABLE_UNKNOWN;
 
         /** Rather than recheck every NFA configuration in a DFA state (after
          *  resolving) in findNewDFAStatesAndAddDFATransitions just check
          *  this boolean.  Saves a linear walk perhaps DFA state creation.
          *  Every little bit helps.
          */
-        protected internal bool resolvedWithPredicates = false;
+        bool _resolvedWithPredicates = false;
 
         /** If a closure operation finds that we tried to invoke the same
          *  rule too many times (stack would grow beyond a threshold), it
@@ -128,18 +128,18 @@ namespace Antlr3.Analysis
          *  now and we simply report the problem.  If synpreds exist, I'll retry
          *  with k=1.
          */
-        protected internal bool abortedDueToMultipleRecursiveAlts = false;
+        internal bool abortedDueToMultipleRecursiveAlts = false;
 
         /** Build up the hash code for this state as NFA configurations
          *  are added as it's monotonically increasing list of configurations.
          */
-        protected int cachedHashCode;
+        int _cachedHashCode;
 
-        protected internal int cachedUniquelyPredicatedAlt = PREDICTED_ALT_UNSET;
+        internal int cachedUniquelyPredicatedAlt = PREDICTED_ALT_UNSET;
 
         public int minAltInConfigurations = int.MaxValue;
 
-        public bool atLeastOneConfigurationHasAPredicate = false;
+        bool _atLeastOneConfigurationHasAPredicate = false;
 
         /** The set of NFA configurations (state,alt,context) for this DFA state */
         public OrderedHashSet<NFAConfiguration> nfaConfigurations =
@@ -157,7 +157,7 @@ namespace Antlr3.Analysis
          *  Two configurations identical including semantic context are
          *  considered the same closure computation.  @see NFAToDFAConverter.closureBusy().
          */
-        protected internal HashSet<NFAConfiguration> closureBusy = new HashSet<NFAConfiguration>();
+        internal HashSet<NFAConfiguration> closureBusy = new HashSet<NFAConfiguration>();
 
         /** As this state is constructed (i.e., as NFA states are added), we
          *  can easily check for non-epsilon transitions because the only
@@ -167,7 +167,7 @@ namespace Antlr3.Analysis
          *  times size(nfa states), which can be pretty damn big.  It's better
          *  to simply track possible labels.
          */
-        protected OrderedHashSet<Label> reachableLabels;
+        OrderedHashSet<Label> _reachableLabels;
 
         public DFAState( DFA dfa )
         {
@@ -179,11 +179,11 @@ namespace Antlr3.Analysis
         {
             get
             {
-                return acceptStateReachable;
+                return _acceptStateReachable;
             }
             set
             {
-                acceptStateReachable = value;
+                _acceptStateReachable = value;
             }
         }
         public ICollection<int> AltSet
@@ -204,18 +204,22 @@ namespace Antlr3.Analysis
         {
             get
             {
-                return resolvedWithPredicates;
+                return _resolvedWithPredicates;
+            }
+            set
+            {
+                _resolvedWithPredicates = value;
             }
         }
         public int LookaheadDepth
         {
             get
             {
-                return k;
+                return _k;
             }
             set
             {
-                k = value;
+                _k = value;
                 if ( value > dfa.max_k )
                 {
                     // track max k for entire DFA
@@ -237,25 +241,25 @@ namespace Antlr3.Analysis
             //nfaConfigurations = null; // getGatedPredicatesInNFAConfigurations needs
             configurationsWithLabeledEdges = null;
             closureBusy = null;
-            reachableLabels = null;
+            _reachableLabels = null;
         }
 
         public virtual Transition transition( int i )
         {
-            return (Transition)transitions[i];
+            return (Transition)_transitions[i];
         }
 
         public override int NumberOfTransitions
         {
             get
             {
-                return transitions.Count;
+                return _transitions.Count;
             }
         }
 
         public override void addTransition( Transition t )
         {
-            transitions.Add( t );
+            _transitions.Add( t );
         }
 
         /** Add a transition from this state to target with label.  Return
@@ -263,18 +267,18 @@ namespace Antlr3.Analysis
          */
         public virtual int addTransition( DFAState target, Label label )
         {
-            transitions.Add( new Transition( label, target ) );
-            return transitions.Count - 1;
+            _transitions.Add( new Transition( label, target ) );
+            return _transitions.Count - 1;
         }
 
         public override Transition getTransition( int trans )
         {
-            return transitions[trans];
+            return _transitions[trans];
         }
 
         public virtual void removeTransition( int trans )
         {
-            transitions.RemoveAt( trans );
+            _transitions.RemoveAt( trans );
         }
 
         /** Add an NFA configuration to this DFA node.  Add uniquely
@@ -311,12 +315,12 @@ namespace Antlr3.Analysis
 
             if ( c.semanticContext != SemanticContext.EmptySemanticContext )
             {
-                atLeastOneConfigurationHasAPredicate = true;
+                _atLeastOneConfigurationHasAPredicate = true;
             }
 
             // update hashCode; for some reason using context.hashCode() also
             // makes the GC take like 70% of the CPU and is slow!
-            cachedHashCode += c.state + c.alt;
+            _cachedHashCode += c.state + c.alt;
 
             // update reachableLabels
             // We're adding an NFA state; check to see if it has a non-epsilon edge
@@ -387,27 +391,27 @@ namespace Antlr3.Analysis
          */
         protected virtual void addReachableLabel( Label label )
         {
-            if ( reachableLabels == null )
+            if ( _reachableLabels == null )
             {
-                reachableLabels = new OrderedHashSet<Label>();
+                _reachableLabels = new OrderedHashSet<Label>();
             }
             /*
             JSystem.@out.println("addReachableLabel to state "+dfa.decisionNumber+"."+stateNumber+": "+label.getSet().toString(dfa.nfa.grammar));
             JSystem.@out.println("start of add to state "+dfa.decisionNumber+"."+stateNumber+": " +
                     "reachableLabels="+reachableLabels.toString());
                     */
-            if ( reachableLabels.Contains( label ) )
+            if ( _reachableLabels.Contains( label ) )
             {
                 // exact label present
                 return;
             }
             IIntSet t = label.Set;
             IIntSet remainder = t; // remainder starts out as whole set to add
-            int n = reachableLabels.size(); // only look at initial elements
+            int n = _reachableLabels.size(); // only look at initial elements
             // walk the existing list looking for the collision
             for ( int i = 0; i < n; i++ )
             {
-                Label rl = reachableLabels.get( i );
+                Label rl = _reachableLabels.get( i );
                 /*
                 JSystem.@out.println("comparing ["+i+"]: "+label.toString(dfa.nfa.grammar)+" & "+
                         rl.toString(dfa.nfa.grammar)+"="+
@@ -426,7 +430,7 @@ namespace Antlr3.Analysis
                 // know that will always be a non nil character class
                 IIntSet s_i = rl.Set;
                 IIntSet intersection = s_i.and( t );
-                reachableLabels.set( i, new Label( intersection ) );
+                _reachableLabels.set( i, new Label( intersection ) );
 
                 // Compute s_i-t to see what is in current set and not in incoming
                 IIntSet existingMinusNewElements = s_i.subtract( t );
@@ -436,7 +440,7 @@ namespace Antlr3.Analysis
                     // found a new character class, add to the end (doesn't affect
                     // outer loop duration due to n computation a priori.
                     Label newLabel = new Label( existingMinusNewElements );
-                    reachableLabels.add( newLabel );
+                    _reachableLabels.add( newLabel );
                 }
 
                 /*
@@ -461,7 +465,7 @@ namespace Antlr3.Analysis
                 JSystem.@out.println("remainder state "+dfa.decisionNumber+"."+stateNumber+": "+remainder.toString(dfa.nfa.grammar));
                 */
                 Label newLabel = new Label( remainder );
-                reachableLabels.add( newLabel );
+                _reachableLabels.add( newLabel );
             }
             /*
             JSystem.@out.println("#END of add to state "+dfa.decisionNumber+"."+stateNumber+": " +
@@ -471,7 +475,7 @@ namespace Antlr3.Analysis
 
         public virtual OrderedHashSet<Label> getReachableLabels()
         {
-            return reachableLabels;
+            return _reachableLabels;
         }
 
         public virtual void setNFAConfigurations( OrderedHashSet<NFAConfiguration> configs )
@@ -485,13 +489,13 @@ namespace Antlr3.Analysis
          */
         public override int GetHashCode()
         {
-            if ( cachedHashCode == 0 )
+            if ( _cachedHashCode == 0 )
             {
                 // LL(1) algorithm doesn't use NFA configurations, which
                 // dynamically compute hashcode; must have something; use super
                 return base.GetHashCode();
             }
-            return cachedHashCode;
+            return _cachedHashCode;
         }
 
         /** Two DFAStates are equal if their NFA configuration sets are the
@@ -613,7 +617,7 @@ namespace Antlr3.Analysis
         protected internal virtual HashSet<int> getNonDeterministicAlts()
         {
             int user_k = dfa.UserMaxLookahead;
-            if ( user_k > 0 && user_k == k )
+            if ( user_k > 0 && user_k == _k )
             {
                 // if fixed lookahead, then more than 1 alt is a nondeterminism
                 // if we have hit the max lookahead
@@ -705,7 +709,7 @@ namespace Antlr3.Analysis
                         // meaning input "ab" would test preds to decide what to
                         // do but it should match rule C w/o testing preds.
                         if ( dfa.nfa.grammar.type != Grammar.LEXER ||
-                             !dfa.decisionNFAStartState.enclosingRule.name.Equals( Grammar.ARTIFICIAL_TOKENS_RULENAME ) )
+                             !dfa.NFADecisionStartState.enclosingRule.name.Equals( Grammar.ARTIFICIAL_TOKENS_RULENAME ) )
                         {
                             numPotentialConflicts++;
                             thisStateHasPotentialProblem = true;
