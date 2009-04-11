@@ -463,5 +463,11 @@ WS
 
 fragment
 WS_CHAR
-	:	' '|'\t'|'\r'|'\n'
+	:	' '|'\t'|NEWLINE
+	;
+
+fragment
+NEWLINE
+	:	'\r' (('\n') => '\n')?
+	|	'\n'
 	;

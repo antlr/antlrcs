@@ -1,4 +1,4 @@
-// $ANTLR 3.1.2 Language\\Action.g3 2009-04-10 15:18:38
+// $ANTLR 3.1.2 Language\\Action.g3 2009-04-11 17:03:15
 
 // The variable 'variable' is assigned but its value is never used.
 #pragma warning disable 219
@@ -55,7 +55,7 @@ namespace  Antlr3.ST.Language
 public partial class ActionParser : Parser
 {
 	public static readonly string[] tokenNames = new string[] {
-		"<invalid>", "<EOR>", "<DOWN>", "<UP>", "ANONYMOUS_TEMPLATE", "APPLY", "ARGS", "ASSIGN", "COLON", "COMMA", "CONDITIONAL", "DOT", "DOTDOTDOT", "ELSEIF", "ESC_CHAR", "FIRST", "FUNCTION", "ID", "INCLUDE", "INT", "LAST", "LBRACK", "LENGTH", "LIST", "LPAREN", "MULTI_APPLY", "NESTED_ANONYMOUS_TEMPLATE", "NOT", "NOTHING", "PLUS", "RBRACK", "REST", "RPAREN", "SEMI", "SINGLEVALUEARG", "STRING", "STRIP", "SUPER", "TEMPLATE", "TEMPLATE_ARGS", "TRUNC", "VALUE", "WS", "WS_CHAR"
+		"<invalid>", "<EOR>", "<DOWN>", "<UP>", "ANONYMOUS_TEMPLATE", "APPLY", "ARGS", "ASSIGN", "COLON", "COMMA", "CONDITIONAL", "DOT", "DOTDOTDOT", "ELSEIF", "ESC_CHAR", "FIRST", "FUNCTION", "ID", "INCLUDE", "INT", "LAST", "LBRACK", "LENGTH", "LIST", "LPAREN", "MULTI_APPLY", "NESTED_ANONYMOUS_TEMPLATE", "NEWLINE", "NOT", "NOTHING", "PLUS", "RBRACK", "REST", "RPAREN", "SEMI", "SINGLEVALUEARG", "STRING", "STRIP", "SUPER", "TEMPLATE", "TEMPLATE_ARGS", "TRUNC", "VALUE", "WS", "WS_CHAR"
 	};
 	public const int EOF=-1;
 	public const int ANONYMOUS_TEMPLATE=4;
@@ -81,23 +81,24 @@ public partial class ActionParser : Parser
 	public const int LPAREN=24;
 	public const int MULTI_APPLY=25;
 	public const int NESTED_ANONYMOUS_TEMPLATE=26;
-	public const int NOT=27;
-	public const int NOTHING=28;
-	public const int PLUS=29;
-	public const int RBRACK=30;
-	public const int REST=31;
-	public const int RPAREN=32;
-	public const int SEMI=33;
-	public const int SINGLEVALUEARG=34;
-	public const int STRING=35;
-	public const int STRIP=36;
-	public const int SUPER=37;
-	public const int TEMPLATE=38;
-	public const int TEMPLATE_ARGS=39;
-	public const int TRUNC=40;
-	public const int VALUE=41;
-	public const int WS=42;
-	public const int WS_CHAR=43;
+	public const int NEWLINE=27;
+	public const int NOT=28;
+	public const int NOTHING=29;
+	public const int PLUS=30;
+	public const int RBRACK=31;
+	public const int REST=32;
+	public const int RPAREN=33;
+	public const int SEMI=34;
+	public const int SINGLEVALUEARG=35;
+	public const int STRING=36;
+	public const int STRIP=37;
+	public const int SUPER=38;
+	public const int TEMPLATE=39;
+	public const int TEMPLATE_ARGS=40;
+	public const int TRUNC=41;
+	public const int VALUE=42;
+	public const int WS=43;
+	public const int WS_CHAR=44;
 
 	// delegates
 	// delegators
@@ -3645,7 +3646,7 @@ public partial class ActionParser : Parser
 		const string DFA15_minS =
 			"\x1\x4\x1\x0\x1\xFFFF\x1\x0\x9\xFFFF";
 		const string DFA15_maxS =
-			"\x1\x28\x1\x0\x1\xFFFF\x1\x0\x9\xFFFF";
+			"\x1\x29\x1\x0\x1\xFFFF\x1\x0\x9\xFFFF";
 		const string DFA15_acceptS =
 			"\x2\xFFFF\x1\x1\x1\xFFFF\x1\x2\x1\x3\x5\xFFFF\x1\x5\x1\x4";
 		const string DFA15_specialS =
@@ -3653,7 +3654,7 @@ public partial class ActionParser : Parser
 		static readonly string[] DFA15_transitionS =
 			{
 				"\x1\x4\xA\xFFFF\x1\x5\x1\xFFFF\x1\x1\x1\xFFFF\x1\x4\x1\x5\x1\xB\x1\x5"+
-				"\x1\xFFFF\x1\x3\x6\xFFFF\x1\x5\x3\xFFFF\x1\x4\x1\x5\x1\x2\x2\xFFFF\x1"+
+				"\x1\xFFFF\x1\x3\x7\xFFFF\x1\x5\x3\xFFFF\x1\x4\x1\x5\x1\x2\x2\xFFFF\x1"+
 				"\x5",
 				"\x1\xFFFF",
 				"",
@@ -3779,41 +3780,41 @@ public partial class ActionParser : Parser
 	#region Follow sets
 	public static class Follow
 	{
-		public static readonly BitSet _templatesExpr_in_action192 = new BitSet(new ulong[]{0x200000000UL});
+		public static readonly BitSet _templatesExpr_in_action192 = new BitSet(new ulong[]{0x400000000UL});
 		public static readonly BitSet _SEMI_in_action195 = new BitSet(new ulong[]{0x20000UL});
 		public static readonly BitSet _optionList_in_action198 = new BitSet(new ulong[]{0x0UL});
 		public static readonly BitSet _CONDITIONAL_in_action208 = new BitSet(new ulong[]{0x1000000UL});
-		public static readonly BitSet _LPAREN_in_action211 = new BitSet(new ulong[]{0x138897A8010UL});
-		public static readonly BitSet _ifCondition_in_action214 = new BitSet(new ulong[]{0x100000000UL});
+		public static readonly BitSet _LPAREN_in_action211 = new BitSet(new ulong[]{0x271117A8010UL});
+		public static readonly BitSet _ifCondition_in_action214 = new BitSet(new ulong[]{0x200000000UL});
 		public static readonly BitSet _RPAREN_in_action216 = new BitSet(new ulong[]{0x0UL});
 		public static readonly BitSet _ELSEIF_in_action223 = new BitSet(new ulong[]{0x1000000UL});
-		public static readonly BitSet _LPAREN_in_action226 = new BitSet(new ulong[]{0x138897A8010UL});
-		public static readonly BitSet _ifCondition_in_action229 = new BitSet(new ulong[]{0x100000000UL});
+		public static readonly BitSet _LPAREN_in_action226 = new BitSet(new ulong[]{0x271117A8010UL});
+		public static readonly BitSet _ifCondition_in_action229 = new BitSet(new ulong[]{0x200000000UL});
 		public static readonly BitSet _RPAREN_in_action231 = new BitSet(new ulong[]{0x0UL});
 		public static readonly BitSet _EOF_in_action241 = new BitSet(new ulong[]{0x2UL});
 		public static readonly BitSet _option_in_optionList257 = new BitSet(new ulong[]{0x202UL});
 		public static readonly BitSet _COMMA_in_optionList261 = new BitSet(new ulong[]{0x20000UL});
 		public static readonly BitSet _option_in_optionList263 = new BitSet(new ulong[]{0x202UL});
 		public static readonly BitSet _ID_in_option283 = new BitSet(new ulong[]{0x82UL});
-		public static readonly BitSet _ASSIGN_in_option289 = new BitSet(new ulong[]{0x138817A8010UL});
+		public static readonly BitSet _ASSIGN_in_option289 = new BitSet(new ulong[]{0x271017A8010UL});
 		public static readonly BitSet _nonAlternatingTemplateExpr_in_option291 = new BitSet(new ulong[]{0x2UL});
 		public static readonly BitSet _expr_in_templatesExpr321 = new BitSet(new ulong[]{0x302UL});
-		public static readonly BitSet _COMMA_in_templatesExpr328 = new BitSet(new ulong[]{0x138817A8010UL});
+		public static readonly BitSet _COMMA_in_templatesExpr328 = new BitSet(new ulong[]{0x271017A8010UL});
 		public static readonly BitSet _expr_in_templatesExpr330 = new BitSet(new ulong[]{0x300UL});
 		public static readonly BitSet _COLON_in_templatesExpr336 = new BitSet(new ulong[]{0x10UL});
 		public static readonly BitSet _anonymousTemplate_in_templatesExpr338 = new BitSet(new ulong[]{0x2UL});
-		public static readonly BitSet _COLON_in_templatesExpr380 = new BitSet(new ulong[]{0x2001020010UL});
+		public static readonly BitSet _COLON_in_templatesExpr380 = new BitSet(new ulong[]{0x4001020010UL});
 		public static readonly BitSet _templateList_in_templatesExpr382 = new BitSet(new ulong[]{0x102UL});
 		public static readonly BitSet _template_in_templateList421 = new BitSet(new ulong[]{0x202UL});
-		public static readonly BitSet _COMMA_in_templateList424 = new BitSet(new ulong[]{0x2001020010UL});
+		public static readonly BitSet _COMMA_in_templateList424 = new BitSet(new ulong[]{0x4001020010UL});
 		public static readonly BitSet _template_in_templateList427 = new BitSet(new ulong[]{0x202UL});
 		public static readonly BitSet _ifAtom_in_ifCondition440 = new BitSet(new ulong[]{0x2UL});
-		public static readonly BitSet _NOT_in_ifCondition445 = new BitSet(new ulong[]{0x138817A8010UL});
+		public static readonly BitSet _NOT_in_ifCondition445 = new BitSet(new ulong[]{0x271017A8010UL});
 		public static readonly BitSet _ifAtom_in_ifCondition448 = new BitSet(new ulong[]{0x2UL});
 		public static readonly BitSet _templatesExpr_in_ifAtom459 = new BitSet(new ulong[]{0x2UL});
-		public static readonly BitSet _primaryExpr_in_expr470 = new BitSet(new ulong[]{0x20000002UL});
-		public static readonly BitSet _PLUS_in_expr473 = new BitSet(new ulong[]{0x138817A8010UL});
-		public static readonly BitSet _primaryExpr_in_expr476 = new BitSet(new ulong[]{0x20000002UL});
+		public static readonly BitSet _primaryExpr_in_expr470 = new BitSet(new ulong[]{0x40000002UL});
+		public static readonly BitSet _PLUS_in_expr473 = new BitSet(new ulong[]{0x271017A8010UL});
+		public static readonly BitSet _primaryExpr_in_expr476 = new BitSet(new ulong[]{0x40000002UL});
 		public static readonly BitSet _templateInclude_in_primaryExpr493 = new BitSet(new ulong[]{0x2UL});
 		public static readonly BitSet _atom_in_primaryExpr500 = new BitSet(new ulong[]{0x802UL});
 		public static readonly BitSet _DOT_in_primaryExpr506 = new BitSet(new ulong[]{0x1020000UL});
@@ -3825,11 +3826,11 @@ public partial class ActionParser : Parser
 		public static readonly BitSet _valueExpr_in_primaryExpr558 = new BitSet(new ulong[]{0x802UL});
 		public static readonly BitSet _valueExpr_in_primaryExpr573 = new BitSet(new ulong[]{0x2UL});
 		public static readonly BitSet _list_in_primaryExpr578 = new BitSet(new ulong[]{0x2UL});
-		public static readonly BitSet _LPAREN_in_valueExpr589 = new BitSet(new ulong[]{0x138817A8010UL});
-		public static readonly BitSet _templatesExpr_in_valueExpr591 = new BitSet(new ulong[]{0x100000000UL});
+		public static readonly BitSet _LPAREN_in_valueExpr589 = new BitSet(new ulong[]{0x271017A8010UL});
+		public static readonly BitSet _templatesExpr_in_valueExpr591 = new BitSet(new ulong[]{0x200000000UL});
 		public static readonly BitSet _RPAREN_in_valueExpr593 = new BitSet(new ulong[]{0x2UL});
 		public static readonly BitSet _expr_in_nonAlternatingTemplateExpr616 = new BitSet(new ulong[]{0x102UL});
-		public static readonly BitSet _COLON_in_nonAlternatingTemplateExpr625 = new BitSet(new ulong[]{0x2001020010UL});
+		public static readonly BitSet _COLON_in_nonAlternatingTemplateExpr625 = new BitSet(new ulong[]{0x4001020010UL});
 		public static readonly BitSet _template_in_nonAlternatingTemplateExpr627 = new BitSet(new ulong[]{0x102UL});
 		public static readonly BitSet _FIRST_in_function655 = new BitSet(new ulong[]{0x1000000UL});
 		public static readonly BitSet _REST_in_function661 = new BitSet(new ulong[]{0x1000000UL});
@@ -3849,10 +3850,10 @@ public partial class ActionParser : Parser
 		public static readonly BitSet _indirectTemplate_in_namedTemplate811 = new BitSet(new ulong[]{0x2UL});
 		public static readonly BitSet _ANONYMOUS_TEMPLATE_in_anonymousTemplate840 = new BitSet(new ulong[]{0x2UL});
 		public static readonly BitSet _set_in_atom855 = new BitSet(new ulong[]{0x2UL});
-		public static readonly BitSet _LBRACK_in_list883 = new BitSet(new ulong[]{0x138C17A8210UL});
-		public static readonly BitSet _listElement_in_list887 = new BitSet(new ulong[]{0x40000200UL});
-		public static readonly BitSet _COMMA_in_list890 = new BitSet(new ulong[]{0x138C17A8210UL});
-		public static readonly BitSet _listElement_in_list892 = new BitSet(new ulong[]{0x40000200UL});
+		public static readonly BitSet _LBRACK_in_list883 = new BitSet(new ulong[]{0x271817A8210UL});
+		public static readonly BitSet _listElement_in_list887 = new BitSet(new ulong[]{0x80000200UL});
+		public static readonly BitSet _COMMA_in_list890 = new BitSet(new ulong[]{0x271817A8210UL});
+		public static readonly BitSet _listElement_in_list892 = new BitSet(new ulong[]{0x80000200UL});
 		public static readonly BitSet _RBRACK_in_list898 = new BitSet(new ulong[]{0x2UL});
 		public static readonly BitSet _nonAlternatingTemplateExpr_in_listElement921 = new BitSet(new ulong[]{0x2UL});
 		public static readonly BitSet _ID_in_templateInclude946 = new BitSet(new ulong[]{0x1000000UL});
@@ -3862,21 +3863,21 @@ public partial class ActionParser : Parser
 		public static readonly BitSet _ID_in_templateInclude967 = new BitSet(new ulong[]{0x1000000UL});
 		public static readonly BitSet _argList_in_templateInclude969 = new BitSet(new ulong[]{0x2UL});
 		public static readonly BitSet _indirectTemplate_in_templateInclude982 = new BitSet(new ulong[]{0x2UL});
-		public static readonly BitSet _LPAREN_in_indirectTemplate1016 = new BitSet(new ulong[]{0x138817A8010UL});
-		public static readonly BitSet _templatesExpr_in_indirectTemplate1020 = new BitSet(new ulong[]{0x100000000UL});
+		public static readonly BitSet _LPAREN_in_indirectTemplate1016 = new BitSet(new ulong[]{0x271017A8010UL});
+		public static readonly BitSet _templatesExpr_in_indirectTemplate1020 = new BitSet(new ulong[]{0x200000000UL});
 		public static readonly BitSet _RPAREN_in_indirectTemplate1022 = new BitSet(new ulong[]{0x1000000UL});
 		public static readonly BitSet _argList_in_indirectTemplate1026 = new BitSet(new ulong[]{0x2UL});
-		public static readonly BitSet _LPAREN_in_argList1053 = new BitSet(new ulong[]{0x100021000UL});
-		public static readonly BitSet _argumentAssignment_in_argList1059 = new BitSet(new ulong[]{0x100000200UL});
+		public static readonly BitSet _LPAREN_in_argList1053 = new BitSet(new ulong[]{0x200021000UL});
+		public static readonly BitSet _argumentAssignment_in_argList1059 = new BitSet(new ulong[]{0x200000200UL});
 		public static readonly BitSet _COMMA_in_argList1062 = new BitSet(new ulong[]{0x21000UL});
-		public static readonly BitSet _argumentAssignment_in_argList1064 = new BitSet(new ulong[]{0x100000200UL});
+		public static readonly BitSet _argumentAssignment_in_argList1064 = new BitSet(new ulong[]{0x200000200UL});
 		public static readonly BitSet _RPAREN_in_argList1075 = new BitSet(new ulong[]{0x2UL});
 		public static readonly BitSet _singleArg_in_argList1092 = new BitSet(new ulong[]{0x2UL});
-		public static readonly BitSet _LPAREN_in_singleArg1104 = new BitSet(new ulong[]{0x138817A8010UL});
-		public static readonly BitSet _nonAlternatingTemplateExpr_in_singleArg1106 = new BitSet(new ulong[]{0x100000000UL});
+		public static readonly BitSet _LPAREN_in_singleArg1104 = new BitSet(new ulong[]{0x271017A8010UL});
+		public static readonly BitSet _nonAlternatingTemplateExpr_in_singleArg1106 = new BitSet(new ulong[]{0x200000000UL});
 		public static readonly BitSet _RPAREN_in_singleArg1108 = new BitSet(new ulong[]{0x2UL});
 		public static readonly BitSet _ID_in_argumentAssignment1130 = new BitSet(new ulong[]{0x80UL});
-		public static readonly BitSet _ASSIGN_in_argumentAssignment1132 = new BitSet(new ulong[]{0x138817A8010UL});
+		public static readonly BitSet _ASSIGN_in_argumentAssignment1132 = new BitSet(new ulong[]{0x271017A8010UL});
 		public static readonly BitSet _nonAlternatingTemplateExpr_in_argumentAssignment1135 = new BitSet(new ulong[]{0x2UL});
 		public static readonly BitSet _DOTDOTDOT_in_argumentAssignment1140 = new BitSet(new ulong[]{0x2UL});
 		public static readonly BitSet _templateInclude_in_synpred1_Action490 = new BitSet(new ulong[]{0x2UL});

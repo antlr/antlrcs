@@ -1,4 +1,4 @@
-// $ANTLR 3.1.2 Language\\Action.g3 2009-04-10 15:18:38
+// $ANTLR 3.1.2 Language\\Action.g3 2009-04-11 17:03:16
 
 // The variable 'variable' is assigned but its value is never used.
 #pragma warning disable 219
@@ -74,23 +74,24 @@ public partial class ActionLexer : Lexer
 	public const int LPAREN=24;
 	public const int MULTI_APPLY=25;
 	public const int NESTED_ANONYMOUS_TEMPLATE=26;
-	public const int NOT=27;
-	public const int NOTHING=28;
-	public const int PLUS=29;
-	public const int RBRACK=30;
-	public const int REST=31;
-	public const int RPAREN=32;
-	public const int SEMI=33;
-	public const int SINGLEVALUEARG=34;
-	public const int STRING=35;
-	public const int STRIP=36;
-	public const int SUPER=37;
-	public const int TEMPLATE=38;
-	public const int TEMPLATE_ARGS=39;
-	public const int TRUNC=40;
-	public const int VALUE=41;
-	public const int WS=42;
-	public const int WS_CHAR=43;
+	public const int NEWLINE=27;
+	public const int NOT=28;
+	public const int NOTHING=29;
+	public const int PLUS=30;
+	public const int RBRACK=31;
+	public const int REST=32;
+	public const int RPAREN=33;
+	public const int SEMI=34;
+	public const int SINGLEVALUEARG=35;
+	public const int STRING=36;
+	public const int STRIP=37;
+	public const int SUPER=38;
+	public const int TEMPLATE=39;
+	public const int TEMPLATE_ARGS=40;
+	public const int TRUNC=41;
+	public const int VALUE=42;
+	public const int WS=43;
+	public const int WS_CHAR=44;
 
     // delegates
     // delegators
@@ -574,17 +575,50 @@ public partial class ActionLexer : Lexer
 				}
 				// Language\\Action.g3:368:82: (=> WS_CHAR )?
 				int alt4=2;
-				int LA4_0 = input.LA(1);
-
-				if ( ((LA4_0>='\t' && LA4_0<='\n')||LA4_0=='\r'||LA4_0==' ') )
+				switch ( input.LA(1) )
 				{
+				case ' ':
+					{
 					int LA4_1 = input.LA(2);
 
 					if ( (EvaluatePredicate(synpred2_Action_fragment)) )
 					{
 						alt4=1;
 					}
+					}
+					break;
+				case '\t':
+					{
+					int LA4_2 = input.LA(2);
+
+					if ( (EvaluatePredicate(synpred2_Action_fragment)) )
+					{
+						alt4=1;
+					}
+					}
+					break;
+				case '\r':
+					{
+					int LA4_3 = input.LA(2);
+
+					if ( (EvaluatePredicate(synpred2_Action_fragment)) )
+					{
+						alt4=1;
+					}
+					}
+					break;
+				case '\n':
+					{
+					int LA4_4 = input.LA(2);
+
+					if ( (EvaluatePredicate(synpred2_Action_fragment)) )
+					{
+						alt4=1;
+					}
+					}
+					break;
 				}
+
 				switch ( alt4 )
 				{
 				case 1:
@@ -747,10 +781,9 @@ public partial class ActionLexer : Lexer
 			switch ( alt7 )
 			{
 			case 1:
-				// Language\\Action.g3:
+				// Language\\Action.g3:399:5: WS_CHAR
 				{
-				input.Consume();
-				state.failed=false;
+				mWS_CHAR(); if (state.failed) return ;
 
 				}
 				break;
@@ -768,10 +801,10 @@ public partial class ActionLexer : Lexer
 			for ( ; ; )
 			{
 				int alt10=2;
-				int LA10_0 = input.LA(1);
-
-				if ( ((LA10_0>='\t' && LA10_0<='\n')||LA10_0=='\r'||LA10_0==' ') )
+				switch ( input.LA(1) )
 				{
+				case ' ':
+					{
 					int LA10_1 = input.LA(2);
 
 					if ( (LA10_1==',') )
@@ -780,12 +813,62 @@ public partial class ActionLexer : Lexer
 					}
 
 
-				}
-				else if ( (LA10_0==',') )
-				{
-					alt10=1;
-				}
+					}
+					break;
+				case '\t':
+					{
+					int LA10_2 = input.LA(2);
 
+					if ( (LA10_2==',') )
+					{
+						alt10=1;
+					}
+
+
+					}
+					break;
+				case '\r':
+					{
+					int LA10_3 = input.LA(2);
+
+					if ( (LA10_3=='\n') )
+					{
+						int LA10_7 = input.LA(3);
+
+						if ( (LA10_7==',') )
+						{
+							alt10=1;
+						}
+
+
+					}
+					else if ( (LA10_3==',') )
+					{
+						alt10=1;
+					}
+
+
+					}
+					break;
+				case '\n':
+					{
+					int LA10_4 = input.LA(2);
+
+					if ( (LA10_4==',') )
+					{
+						alt10=1;
+					}
+
+
+					}
+					break;
+				case ',':
+					{
+					alt10=1;
+					}
+					break;
+
+				}
 
 				switch ( alt10 )
 				{
@@ -803,10 +886,9 @@ public partial class ActionLexer : Lexer
 					switch ( alt8 )
 					{
 					case 1:
-						// Language\\Action.g3:
+						// Language\\Action.g3:400:6: WS_CHAR
 						{
-						input.Consume();
-						state.failed=false;
+						mWS_CHAR(); if (state.failed) return ;
 
 						}
 						break;
@@ -825,10 +907,9 @@ public partial class ActionLexer : Lexer
 					switch ( alt9 )
 					{
 					case 1:
-						// Language\\Action.g3:
+						// Language\\Action.g3:400:21: WS_CHAR
 						{
-						input.Consume();
-						state.failed=false;
+						mWS_CHAR(); if (state.failed) return ;
 
 						}
 						break;
@@ -866,10 +947,9 @@ public partial class ActionLexer : Lexer
 			switch ( alt11 )
 			{
 			case 1:
-				// Language\\Action.g3:
+				// Language\\Action.g3:401:4: WS_CHAR
 				{
-				input.Consume();
-				state.failed=false;
+				mWS_CHAR(); if (state.failed) return ;
 
 				}
 				break;
@@ -1485,24 +1565,60 @@ public partial class ActionLexer : Lexer
 	{
 		try
 		{
-			// Language\\Action.g3:467:4: ( ' ' | '\\t' | '\\r' | '\\n' )
-			// Language\\Action.g3:
+			// Language\\Action.g3:467:4: ( ' ' | '\\t' | NEWLINE )
+			int alt15=3;
+			switch ( input.LA(1) )
 			{
-			if ( (input.LA(1)>='\t' && input.LA(1)<='\n')||input.LA(1)=='\r'||input.LA(1)==' ' )
-			{
-				input.Consume();
-			state.failed=false;
+			case ' ':
+				{
+				alt15=1;
+				}
+				break;
+			case '\t':
+				{
+				alt15=2;
+				}
+				break;
+			case '\n':
+			case '\r':
+				{
+				alt15=3;
+				}
+				break;
+			default:
+				{
+					if (state.backtracking>0) {state.failed=true; return ;}
+					NoViableAltException nvae = new NoViableAltException("", 15, 0, input);
+
+					throw nvae;
+				}
 			}
-			else
-			{
-				if (state.backtracking>0) {state.failed=true; return ;}
-				MismatchedSetException mse = new MismatchedSetException(null,input);
-				Recover(mse);
-				throw mse;}
 
+			switch ( alt15 )
+			{
+			case 1:
+				// Language\\Action.g3:467:4: ' '
+				{
+				Match(' '); if (state.failed) return ;
+
+				}
+				break;
+			case 2:
+				// Language\\Action.g3:467:8: '\\t'
+				{
+				Match('\t'); if (state.failed) return ;
+
+				}
+				break;
+			case 3:
+				// Language\\Action.g3:467:13: NEWLINE
+				{
+				mNEWLINE(); if (state.failed) return ;
+
+				}
+				break;
 
 			}
-
 		}
 		finally
 		{
@@ -1510,12 +1626,82 @@ public partial class ActionLexer : Lexer
 	}
 	// $ANTLR end "WS_CHAR"
 
+	// $ANTLR start "NEWLINE"
+	private void mNEWLINE()
+	{
+		try
+		{
+			// Language\\Action.g3:472:4: ( '\\r' (=> '\\n' )? | '\\n' )
+			int alt17=2;
+			int LA17_0 = input.LA(1);
+
+			if ( (LA17_0=='\r') )
+			{
+				alt17=1;
+			}
+			else if ( (LA17_0=='\n') )
+			{
+				alt17=2;
+			}
+			else
+			{
+				if (state.backtracking>0) {state.failed=true; return ;}
+				NoViableAltException nvae = new NoViableAltException("", 17, 0, input);
+
+				throw nvae;
+			}
+			switch ( alt17 )
+			{
+			case 1:
+				// Language\\Action.g3:472:4: '\\r' (=> '\\n' )?
+				{
+				Match('\r'); if (state.failed) return ;
+				// Language\\Action.g3:472:9: (=> '\\n' )?
+				int alt16=2;
+				int LA16_0 = input.LA(1);
+
+				if ( (LA16_0=='\n') && (EvaluatePredicate(synpred7_Action_fragment)))
+				{
+					alt16=1;
+				}
+				switch ( alt16 )
+				{
+				case 1:
+					// Language\\Action.g3:472:10: => '\\n'
+					{
+
+					Match('\n'); if (state.failed) return ;
+
+					}
+					break;
+
+				}
+
+
+				}
+				break;
+			case 2:
+				// Language\\Action.g3:473:4: '\\n'
+				{
+				Match('\n'); if (state.failed) return ;
+
+				}
+				break;
+
+			}
+		}
+		finally
+		{
+		}
+	}
+	// $ANTLR end "NEWLINE"
+
 	public override void mTokens()
 	{
 		// Language\\Action.g3:1:10: ( CONDITIONAL | ELSEIF | FIRST | LAST | LENGTH | REST | STRIP | SUPER | TRUNC | ID | INT | STRING | ANONYMOUS_TEMPLATE | LBRACK | RBRACK | LPAREN | RPAREN | COMMA | DOT | ASSIGN | COLON | PLUS | SEMI | NOT | DOTDOTDOT | WS )
-		int alt15=26;
-		alt15 = dfa15.Predict(input);
-		switch ( alt15 )
+		int alt18=26;
+		alt18 = dfa18.Predict(input);
+		switch ( alt18 )
 		{
 		case 1:
 			// Language\\Action.g3:1:10: CONDITIONAL
@@ -1711,30 +1897,19 @@ public partial class ActionLexer : Lexer
 		// Language\\Action.g3:368:6: ( WS_CHAR )? ID
 		{
 		// Language\\Action.g3:368:6: ( WS_CHAR )?
-		int alt16=2;
-		int LA16_0 = input.LA(1);
+		int alt19=2;
+		int LA19_0 = input.LA(1);
 
-		if ( ((LA16_0>='\t' && LA16_0<='\n')||LA16_0=='\r'||LA16_0==' ') )
+		if ( ((LA19_0>='\t' && LA19_0<='\n')||LA19_0=='\r'||LA19_0==' ') )
 		{
-			alt16=1;
+			alt19=1;
 		}
-		switch ( alt16 )
+		switch ( alt19 )
 		{
 		case 1:
-			// Language\\Action.g3:
+			// Language\\Action.g3:368:0: WS_CHAR
 			{
-			if ( (input.LA(1)>='\t' && input.LA(1)<='\n')||input.LA(1)=='\r'||input.LA(1)==' ' )
-			{
-				input.Consume();
-			state.failed=false;
-			}
-			else
-			{
-				if (state.backtracking>0) {state.failed=true; return ;}
-				MismatchedSetException mse = new MismatchedSetException(null,input);
-				Recover(mse);
-				throw mse;}
-
+			mWS_CHAR(); if (state.failed) return ;
 
 			}
 			break;
@@ -1751,20 +1926,9 @@ public partial class ActionLexer : Lexer
 	public void synpred2_Action_fragment()
 	{
 		// Language\\Action.g3:368:83: ( WS_CHAR )
-		// Language\\Action.g3:
+		// Language\\Action.g3:368:84: WS_CHAR
 		{
-		if ( (input.LA(1)>='\t' && input.LA(1)<='\n')||input.LA(1)=='\r'||input.LA(1)==' ' )
-		{
-			input.Consume();
-		state.failed=false;
-		}
-		else
-		{
-			if (state.backtracking>0) {state.failed=true; return ;}
-			MismatchedSetException mse = new MismatchedSetException(null,input);
-			Recover(mse);
-			throw mse;}
-
+		mWS_CHAR(); if (state.failed) return ;
 
 		}
 	}
@@ -1822,6 +1986,18 @@ public partial class ActionLexer : Lexer
 	}
 	// $ANTLR end synpred6_Action
 
+	// $ANTLR start synpred7_Action
+	public void synpred7_Action_fragment()
+	{
+		// Language\\Action.g3:472:10: ( '\\n' )
+		// Language\\Action.g3:472:11: '\\n'
+		{
+		Match('\n'); if (state.failed) return ;
+
+		}
+	}
+	// $ANTLR end synpred7_Action
+
 	#region Synpreds
 	bool EvaluatePredicate( System.Action fragment )
 	{
@@ -1848,7 +2024,7 @@ public partial class ActionLexer : Lexer
 	DFA5 dfa5;
 	DFA6 dfa6;
 	DFA12 dfa12;
-	DFA15 dfa15;
+	DFA18 dfa18;
 
 	protected override void InitDFAs()
 	{
@@ -1856,46 +2032,63 @@ public partial class ActionLexer : Lexer
 		dfa5 = new DFA5( this, new SpecialStateTransitionHandler( specialStateTransition5 ) );
 		dfa6 = new DFA6( this, new SpecialStateTransitionHandler( specialStateTransition6 ) );
 		dfa12 = new DFA12( this, new SpecialStateTransitionHandler( specialStateTransition12 ) );
-		dfa15 = new DFA15( this );
+		dfa18 = new DFA18( this );
 	}
 
 	class DFA5 : DFA
 	{
 
 		const string DFA5_eotS =
-			"\xD\xFFFF";
+			"\x1D\xFFFF";
 		const string DFA5_eofS =
-			"\xD\xFFFF";
+			"\x1D\xFFFF";
 		const string DFA5_minS =
-			"\x3\x0\x1\xFFFF\x6\x0\x1\xFFFF\x2\x0";
+			"\x6\x0\x1\xFFFF\xE\x0\x1\xFFFF\x7\x0";
 		const string DFA5_maxS =
-			"\x3\xFFFF\x1\xFFFF\x3\xFFFF\x1\x0\x2\xFFFF\x1\xFFFF\x2\xFFFF";
+			"\x6\xFFFF\x1\xFFFF\x7\xFFFF\x1\x0\x6\xFFFF\x1\xFFFF\x7\xFFFF";
 		const string DFA5_acceptS =
-			"\x3\xFFFF\x1\x2\x6\xFFFF\x1\x1\x2\xFFFF";
+			"\x6\xFFFF\x1\x2\xE\xFFFF\x1\x1\x7\xFFFF";
 		const string DFA5_specialS =
-			"\x1\x0\x1\x1\x1\x2\x1\xFFFF\x1\x3\x1\x4\x1\x5\x1\x6\x1\x7\x1\x8\x1\xFFFF"+
-			"\x1\x9\x1\xA}>";
+			"\x1\x0\x1\x1\x1\x2\x1\x3\x1\x4\x1\x5\x1\xFFFF\x1\x6\x1\x7\x1\x8\x1\x9"+
+			"\x1\xA\x1\xB\x1\xC\x1\xD\x1\xE\x1\xF\x1\x10\x1\x11\x1\x12\x1\x13\x1\xFFFF"+
+			"\x1\x14\x1\x15\x1\x16\x1\x17\x1\x18\x1\x19\x1\x1A}>";
 		static readonly string[] DFA5_transitionS =
 			{
-				"\x9\x3\x2\x1\x2\x3\x1\x1\x12\x3\x1\x1\x20\x3\x1A\x2\x4\x3\x1\x2\x1\x3"+
-				"\x1A\x2\xFF85\x3",
-				"\x41\x3\x1A\x2\x4\x3\x1\x2\x1\x3\x1A\x2\xFF85\x3",
-				"\x9\x3\x2\x5\x2\x3\x1\x5\x12\x3\x1\x5\xB\x3\x1\x6\x2\x3\xB\x4\x7\x3"+
-				"\x1A\x4\x4\x3\x1\x4\x1\x3\x1A\x4\x1\x3\x1\x7\xFF83\x3",
+				"\x9\x6\x1\x2\x1\x4\x2\x6\x1\x3\x12\x6\x1\x1\x20\x6\x1A\x5\x4\x6\x1\x5"+
+				"\x1\x6\x1A\x5\xFF85\x6",
+				"\x41\x6\x1A\x5\x4\x6\x1\x5\x1\x6\x1A\x5\xFF85\x6",
+				"\x41\x6\x1A\x5\x4\x6\x1\x5\x1\x6\x1A\x5\xFF85\x6",
+				"\xA\x6\x1\x7\x36\x6\x1A\x5\x4\x6\x1\x5\x1\x6\x1A\x5\xFF85\x6",
+				"\x41\x6\x1A\x5\x4\x6\x1\x5\x1\x6\x1A\x5\xFF85\x6",
+				"\x9\x6\x1\xA\x1\xC\x2\x6\x1\xB\x12\x6\x1\x9\xB\x6\x1\xD\x2\x6\xB\x8"+
+				"\x7\x6\x1A\x8\x4\x6\x1\x8\x1\x6\x1A\x8\x1\x6\x1\xE\xFF83\x6",
 				"",
-				"\x9\x3\x2\x5\x2\x3\x1\x5\x12\x3\x1\x5\xB\x3\x1\x6\x2\x3\xB\x4\x7\x3"+
-				"\x1A\x4\x4\x3\x1\x4\x1\x3\x1A\x4\x1\x3\x1\x7\xFF83\x3",
-				"\x2C\x3\x1\x6\x4F\x3\x1\x7\xFF83\x3",
-				"\x9\x3\x2\x8\x2\x3\x1\x8\x12\x3\x1\x8\x20\x3\x1A\x9\x4\x3\x1\x9\x1\x3"+
-				"\x1A\x9\xFF85\x3",
+				"\x41\x6\x1A\x5\x4\x6\x1\x5\x1\x6\x1A\x5\xFF85\x6",
+				"\x9\x6\x1\xA\x1\xC\x2\x6\x1\xB\x12\x6\x1\x9\xB\x6\x1\xD\x2\x6\xB\x8"+
+				"\x7\x6\x1A\x8\x4\x6\x1\x8\x1\x6\x1A\x8\x1\x6\x1\xE\xFF83\x6",
+				"\x2C\x6\x1\xD\x4F\x6\x1\xE\xFF83\x6",
+				"\x2C\x6\x1\xD\x4F\x6\x1\xE\xFF83\x6",
+				"\xA\x6\x1\xF\x21\x6\x1\xD\x4F\x6\x1\xE\xFF83\x6",
+				"\x2C\x6\x1\xD\x4F\x6\x1\xE\xFF83\x6",
+				"\x9\x6\x1\x11\x1\x13\x2\x6\x1\x12\x12\x6\x1\x10\x20\x6\x1A\x14\x4\x6"+
+				"\x1\x14\x1\x6\x1A\x14\xFF85\x6",
 				"\x1\xFFFF",
-				"\x41\x3\x1A\x9\x4\x3\x1\x9\x1\x3\x1A\x9\xFF85\x3",
-				"\x9\x3\x2\xC\x2\x3\x1\xC\x12\x3\x1\xC\xB\x3\x1\x6\x2\x3\xB\xB\x7\x3"+
-				"\x1A\xB\x4\x3\x1\xB\x1\x3\x1A\xB\x1\x3\x1\x7\xFF83\x3",
+				"\x2C\x6\x1\xD\x4F\x6\x1\xE\xFF83\x6",
+				"\x41\x6\x1A\x14\x4\x6\x1\x14\x1\x6\x1A\x14\xFF85\x6",
+				"\x41\x6\x1A\x14\x4\x6\x1\x14\x1\x6\x1A\x14\xFF85\x6",
+				"\xA\x6\x1\x16\x36\x6\x1A\x14\x4\x6\x1\x14\x1\x6\x1A\x14\xFF85\x6",
+				"\x41\x6\x1A\x14\x4\x6\x1\x14\x1\x6\x1A\x14\xFF85\x6",
+				"\x9\x6\x1\x19\x1\x1B\x2\x6\x1\x1A\x12\x6\x1\x18\xB\x6\x1\xD\x2\x6\xB"+
+				"\x17\x7\x6\x1A\x17\x4\x6\x1\x17\x1\x6\x1A\x17\x1\x6\x1\xE\xFF83\x6",
 				"",
-				"\x9\x3\x2\xC\x2\x3\x1\xC\x12\x3\x1\xC\xB\x3\x1\x6\x2\x3\xB\xB\x7\x3"+
-				"\x1A\xB\x4\x3\x1\xB\x1\x3\x1A\xB\x1\x3\x1\x7\xFF83\x3",
-				"\x2C\x3\x1\x6\x4F\x3\x1\x7\xFF83\x3"
+				"\x41\x6\x1A\x14\x4\x6\x1\x14\x1\x6\x1A\x14\xFF85\x6",
+				"\x9\x6\x1\x19\x1\x1B\x2\x6\x1\x1A\x12\x6\x1\x18\xB\x6\x1\xD\x2\x6\xB"+
+				"\x17\x7\x6\x1A\x17\x4\x6\x1\x17\x1\x6\x1A\x17\x1\x6\x1\xE\xFF83\x6",
+				"\x2C\x6\x1\xD\x4F\x6\x1\xE\xFF83\x6",
+				"\x2C\x6\x1\xD\x4F\x6\x1\xE\xFF83\x6",
+				"\xA\x6\x1\x1C\x21\x6\x1\xD\x4F\x6\x1\xE\xFF83\x6",
+				"\x2C\x6\x1\xD\x4F\x6\x1\xE\xFF83\x6",
+				"\x2C\x6\x1\xD\x4F\x6\x1\xE\xFF83\x6"
 			};
 
 		static readonly short[] DFA5_eot = DFA.UnpackEncodedString(DFA5_eotS);
@@ -1945,11 +2138,17 @@ public partial class ActionLexer : Lexer
 				int LA5_0 = input.LA(1);
 
 				s = -1;
-				if ( ((LA5_0>='\t' && LA5_0<='\n')||LA5_0=='\r'||LA5_0==' ') ) {s = 1;}
+				if ( (LA5_0==' ') ) {s = 1;}
 
-				else if ( ((LA5_0>='A' && LA5_0<='Z')||LA5_0=='_'||(LA5_0>='a' && LA5_0<='z')) ) {s = 2;}
+				else if ( (LA5_0=='\t') ) {s = 2;}
 
-				else if ( ((LA5_0>='\u0000' && LA5_0<='\b')||(LA5_0>='\u000B' && LA5_0<='\f')||(LA5_0>='\u000E' && LA5_0<='\u001F')||(LA5_0>='!' && LA5_0<='@')||(LA5_0>='[' && LA5_0<='^')||LA5_0=='`'||(LA5_0>='{' && LA5_0<='\uFFFF')) ) {s = 3;}
+				else if ( (LA5_0=='\r') ) {s = 3;}
+
+				else if ( (LA5_0=='\n') ) {s = 4;}
+
+				else if ( ((LA5_0>='A' && LA5_0<='Z')||LA5_0=='_'||(LA5_0>='a' && LA5_0<='z')) ) {s = 5;}
+
+				else if ( ((LA5_0>='\u0000' && LA5_0<='\b')||(LA5_0>='\u000B' && LA5_0<='\f')||(LA5_0>='\u000E' && LA5_0<='\u001F')||(LA5_0>='!' && LA5_0<='@')||(LA5_0>='[' && LA5_0<='^')||LA5_0=='`'||(LA5_0>='{' && LA5_0<='\uFFFF')) ) {s = 6;}
 
 				if ( s>=0 ) return s;
 				break;
@@ -1958,9 +2157,9 @@ public partial class ActionLexer : Lexer
 				int LA5_1 = input.LA(1);
 
 				s = -1;
-				if ( ((LA5_1>='A' && LA5_1<='Z')||LA5_1=='_'||(LA5_1>='a' && LA5_1<='z')) ) {s = 2;}
+				if ( ((LA5_1>='A' && LA5_1<='Z')||LA5_1=='_'||(LA5_1>='a' && LA5_1<='z')) ) {s = 5;}
 
-				else if ( ((LA5_1>='\u0000' && LA5_1<='@')||(LA5_1>='[' && LA5_1<='^')||LA5_1=='`'||(LA5_1>='{' && LA5_1<='\uFFFF')) ) {s = 3;}
+				else if ( ((LA5_1>='\u0000' && LA5_1<='@')||(LA5_1>='[' && LA5_1<='^')||LA5_1=='`'||(LA5_1>='{' && LA5_1<='\uFFFF')) ) {s = 6;}
 
 				if ( s>=0 ) return s;
 				break;
@@ -1969,58 +2168,56 @@ public partial class ActionLexer : Lexer
 				int LA5_2 = input.LA(1);
 
 				s = -1;
-				if ( ((LA5_2>='/' && LA5_2<='9')||(LA5_2>='A' && LA5_2<='Z')||LA5_2=='_'||(LA5_2>='a' && LA5_2<='z')) ) {s = 4;}
+				if ( ((LA5_2>='A' && LA5_2<='Z')||LA5_2=='_'||(LA5_2>='a' && LA5_2<='z')) ) {s = 5;}
 
-				else if ( ((LA5_2>='\t' && LA5_2<='\n')||LA5_2=='\r'||LA5_2==' ') ) {s = 5;}
-
-				else if ( (LA5_2==',') ) {s = 6;}
-
-				else if ( (LA5_2=='|') ) {s = 7;}
-
-				else if ( ((LA5_2>='\u0000' && LA5_2<='\b')||(LA5_2>='\u000B' && LA5_2<='\f')||(LA5_2>='\u000E' && LA5_2<='\u001F')||(LA5_2>='!' && LA5_2<='+')||(LA5_2>='-' && LA5_2<='.')||(LA5_2>=':' && LA5_2<='@')||(LA5_2>='[' && LA5_2<='^')||LA5_2=='`'||LA5_2=='{'||(LA5_2>='}' && LA5_2<='\uFFFF')) ) {s = 3;}
+				else if ( ((LA5_2>='\u0000' && LA5_2<='@')||(LA5_2>='[' && LA5_2<='^')||LA5_2=='`'||(LA5_2>='{' && LA5_2<='\uFFFF')) ) {s = 6;}
 
 				if ( s>=0 ) return s;
 				break;
 
 			case 3:
-				int LA5_4 = input.LA(1);
+				int LA5_3 = input.LA(1);
 
 				s = -1;
-				if ( ((LA5_4>='\t' && LA5_4<='\n')||LA5_4=='\r'||LA5_4==' ') ) {s = 5;}
+				if ( (LA5_3=='\n') ) {s = 7;}
 
-				else if ( (LA5_4==',') ) {s = 6;}
+				else if ( ((LA5_3>='A' && LA5_3<='Z')||LA5_3=='_'||(LA5_3>='a' && LA5_3<='z')) ) {s = 5;}
 
-				else if ( (LA5_4=='|') ) {s = 7;}
-
-				else if ( ((LA5_4>='/' && LA5_4<='9')||(LA5_4>='A' && LA5_4<='Z')||LA5_4=='_'||(LA5_4>='a' && LA5_4<='z')) ) {s = 4;}
-
-				else if ( ((LA5_4>='\u0000' && LA5_4<='\b')||(LA5_4>='\u000B' && LA5_4<='\f')||(LA5_4>='\u000E' && LA5_4<='\u001F')||(LA5_4>='!' && LA5_4<='+')||(LA5_4>='-' && LA5_4<='.')||(LA5_4>=':' && LA5_4<='@')||(LA5_4>='[' && LA5_4<='^')||LA5_4=='`'||LA5_4=='{'||(LA5_4>='}' && LA5_4<='\uFFFF')) ) {s = 3;}
+				else if ( ((LA5_3>='\u0000' && LA5_3<='\t')||(LA5_3>='\u000B' && LA5_3<='@')||(LA5_3>='[' && LA5_3<='^')||LA5_3=='`'||(LA5_3>='{' && LA5_3<='\uFFFF')) ) {s = 6;}
 
 				if ( s>=0 ) return s;
 				break;
 
 			case 4:
-				int LA5_5 = input.LA(1);
+				int LA5_4 = input.LA(1);
 
 				s = -1;
-				if ( (LA5_5==',') ) {s = 6;}
+				if ( ((LA5_4>='A' && LA5_4<='Z')||LA5_4=='_'||(LA5_4>='a' && LA5_4<='z')) ) {s = 5;}
 
-				else if ( (LA5_5=='|') ) {s = 7;}
-
-				else if ( ((LA5_5>='\u0000' && LA5_5<='+')||(LA5_5>='-' && LA5_5<='{')||(LA5_5>='}' && LA5_5<='\uFFFF')) ) {s = 3;}
+				else if ( ((LA5_4>='\u0000' && LA5_4<='@')||(LA5_4>='[' && LA5_4<='^')||LA5_4=='`'||(LA5_4>='{' && LA5_4<='\uFFFF')) ) {s = 6;}
 
 				if ( s>=0 ) return s;
 				break;
 
 			case 5:
-				int LA5_6 = input.LA(1);
+				int LA5_5 = input.LA(1);
 
 				s = -1;
-				if ( ((LA5_6>='\t' && LA5_6<='\n')||LA5_6=='\r'||LA5_6==' ') ) {s = 8;}
+				if ( ((LA5_5>='/' && LA5_5<='9')||(LA5_5>='A' && LA5_5<='Z')||LA5_5=='_'||(LA5_5>='a' && LA5_5<='z')) ) {s = 8;}
 
-				else if ( ((LA5_6>='A' && LA5_6<='Z')||LA5_6=='_'||(LA5_6>='a' && LA5_6<='z')) ) {s = 9;}
+				else if ( (LA5_5==' ') ) {s = 9;}
 
-				else if ( ((LA5_6>='\u0000' && LA5_6<='\b')||(LA5_6>='\u000B' && LA5_6<='\f')||(LA5_6>='\u000E' && LA5_6<='\u001F')||(LA5_6>='!' && LA5_6<='@')||(LA5_6>='[' && LA5_6<='^')||LA5_6=='`'||(LA5_6>='{' && LA5_6<='\uFFFF')) ) {s = 3;}
+				else if ( (LA5_5=='\t') ) {s = 10;}
+
+				else if ( (LA5_5=='\r') ) {s = 11;}
+
+				else if ( (LA5_5=='\n') ) {s = 12;}
+
+				else if ( (LA5_5==',') ) {s = 13;}
+
+				else if ( (LA5_5=='|') ) {s = 14;}
+
+				else if ( ((LA5_5>='\u0000' && LA5_5<='\b')||(LA5_5>='\u000B' && LA5_5<='\f')||(LA5_5>='\u000E' && LA5_5<='\u001F')||(LA5_5>='!' && LA5_5<='+')||(LA5_5>='-' && LA5_5<='.')||(LA5_5>=':' && LA5_5<='@')||(LA5_5>='[' && LA5_5<='^')||LA5_5=='`'||LA5_5=='{'||(LA5_5>='}' && LA5_5<='\uFFFF')) ) {s = 6;}
 
 				if ( s>=0 ) return s;
 				break;
@@ -2028,16 +2225,11 @@ public partial class ActionLexer : Lexer
 			case 6:
 				int LA5_7 = input.LA(1);
 
-
-				int index5_7 = input.Index;
-				input.Rewind();
 				s = -1;
-				if ( (EvaluatePredicate(synpred1_Action_fragment)) ) {s = 10;}
+				if ( ((LA5_7>='A' && LA5_7<='Z')||LA5_7=='_'||(LA5_7>='a' && LA5_7<='z')) ) {s = 5;}
 
-				else if ( (true) ) {s = 3;}
+				else if ( ((LA5_7>='\u0000' && LA5_7<='@')||(LA5_7>='[' && LA5_7<='^')||LA5_7=='`'||(LA5_7>='{' && LA5_7<='\uFFFF')) ) {s = 6;}
 
-
-				input.Seek(index5_7);
 				if ( s>=0 ) return s;
 				break;
 
@@ -2045,9 +2237,21 @@ public partial class ActionLexer : Lexer
 				int LA5_8 = input.LA(1);
 
 				s = -1;
-				if ( ((LA5_8>='A' && LA5_8<='Z')||LA5_8=='_'||(LA5_8>='a' && LA5_8<='z')) ) {s = 9;}
+				if ( (LA5_8==' ') ) {s = 9;}
 
-				else if ( ((LA5_8>='\u0000' && LA5_8<='@')||(LA5_8>='[' && LA5_8<='^')||LA5_8=='`'||(LA5_8>='{' && LA5_8<='\uFFFF')) ) {s = 3;}
+				else if ( (LA5_8=='\t') ) {s = 10;}
+
+				else if ( (LA5_8=='\r') ) {s = 11;}
+
+				else if ( (LA5_8=='\n') ) {s = 12;}
+
+				else if ( (LA5_8==',') ) {s = 13;}
+
+				else if ( (LA5_8=='|') ) {s = 14;}
+
+				else if ( ((LA5_8>='/' && LA5_8<='9')||(LA5_8>='A' && LA5_8<='Z')||LA5_8=='_'||(LA5_8>='a' && LA5_8<='z')) ) {s = 8;}
+
+				else if ( ((LA5_8>='\u0000' && LA5_8<='\b')||(LA5_8>='\u000B' && LA5_8<='\f')||(LA5_8>='\u000E' && LA5_8<='\u001F')||(LA5_8>='!' && LA5_8<='+')||(LA5_8>='-' && LA5_8<='.')||(LA5_8>=':' && LA5_8<='@')||(LA5_8>='[' && LA5_8<='^')||LA5_8=='`'||LA5_8=='{'||(LA5_8>='}' && LA5_8<='\uFFFF')) ) {s = 6;}
 
 				if ( s>=0 ) return s;
 				break;
@@ -2056,45 +2260,270 @@ public partial class ActionLexer : Lexer
 				int LA5_9 = input.LA(1);
 
 				s = -1;
-				if ( ((LA5_9>='/' && LA5_9<='9')||(LA5_9>='A' && LA5_9<='Z')||LA5_9=='_'||(LA5_9>='a' && LA5_9<='z')) ) {s = 11;}
+				if ( (LA5_9==',') ) {s = 13;}
 
-				else if ( ((LA5_9>='\t' && LA5_9<='\n')||LA5_9=='\r'||LA5_9==' ') ) {s = 12;}
+				else if ( (LA5_9=='|') ) {s = 14;}
 
-				else if ( (LA5_9=='|') ) {s = 7;}
-
-				else if ( (LA5_9==',') ) {s = 6;}
-
-				else if ( ((LA5_9>='\u0000' && LA5_9<='\b')||(LA5_9>='\u000B' && LA5_9<='\f')||(LA5_9>='\u000E' && LA5_9<='\u001F')||(LA5_9>='!' && LA5_9<='+')||(LA5_9>='-' && LA5_9<='.')||(LA5_9>=':' && LA5_9<='@')||(LA5_9>='[' && LA5_9<='^')||LA5_9=='`'||LA5_9=='{'||(LA5_9>='}' && LA5_9<='\uFFFF')) ) {s = 3;}
+				else if ( ((LA5_9>='\u0000' && LA5_9<='+')||(LA5_9>='-' && LA5_9<='{')||(LA5_9>='}' && LA5_9<='\uFFFF')) ) {s = 6;}
 
 				if ( s>=0 ) return s;
 				break;
 
 			case 9:
-				int LA5_11 = input.LA(1);
+				int LA5_10 = input.LA(1);
 
 				s = -1;
-				if ( ((LA5_11>='\t' && LA5_11<='\n')||LA5_11=='\r'||LA5_11==' ') ) {s = 12;}
+				if ( (LA5_10==',') ) {s = 13;}
 
-				else if ( (LA5_11=='|') ) {s = 7;}
+				else if ( (LA5_10=='|') ) {s = 14;}
 
-				else if ( (LA5_11==',') ) {s = 6;}
-
-				else if ( ((LA5_11>='/' && LA5_11<='9')||(LA5_11>='A' && LA5_11<='Z')||LA5_11=='_'||(LA5_11>='a' && LA5_11<='z')) ) {s = 11;}
-
-				else if ( ((LA5_11>='\u0000' && LA5_11<='\b')||(LA5_11>='\u000B' && LA5_11<='\f')||(LA5_11>='\u000E' && LA5_11<='\u001F')||(LA5_11>='!' && LA5_11<='+')||(LA5_11>='-' && LA5_11<='.')||(LA5_11>=':' && LA5_11<='@')||(LA5_11>='[' && LA5_11<='^')||LA5_11=='`'||LA5_11=='{'||(LA5_11>='}' && LA5_11<='\uFFFF')) ) {s = 3;}
+				else if ( ((LA5_10>='\u0000' && LA5_10<='+')||(LA5_10>='-' && LA5_10<='{')||(LA5_10>='}' && LA5_10<='\uFFFF')) ) {s = 6;}
 
 				if ( s>=0 ) return s;
 				break;
 
 			case 10:
+				int LA5_11 = input.LA(1);
+
+				s = -1;
+				if ( (LA5_11=='\n') ) {s = 15;}
+
+				else if ( (LA5_11==',') ) {s = 13;}
+
+				else if ( (LA5_11=='|') ) {s = 14;}
+
+				else if ( ((LA5_11>='\u0000' && LA5_11<='\t')||(LA5_11>='\u000B' && LA5_11<='+')||(LA5_11>='-' && LA5_11<='{')||(LA5_11>='}' && LA5_11<='\uFFFF')) ) {s = 6;}
+
+				if ( s>=0 ) return s;
+				break;
+
+			case 11:
 				int LA5_12 = input.LA(1);
 
 				s = -1;
-				if ( (LA5_12=='|') ) {s = 7;}
+				if ( (LA5_12==',') ) {s = 13;}
 
-				else if ( (LA5_12==',') ) {s = 6;}
+				else if ( (LA5_12=='|') ) {s = 14;}
 
-				else if ( ((LA5_12>='\u0000' && LA5_12<='+')||(LA5_12>='-' && LA5_12<='{')||(LA5_12>='}' && LA5_12<='\uFFFF')) ) {s = 3;}
+				else if ( ((LA5_12>='\u0000' && LA5_12<='+')||(LA5_12>='-' && LA5_12<='{')||(LA5_12>='}' && LA5_12<='\uFFFF')) ) {s = 6;}
+
+				if ( s>=0 ) return s;
+				break;
+
+			case 12:
+				int LA5_13 = input.LA(1);
+
+				s = -1;
+				if ( (LA5_13==' ') ) {s = 16;}
+
+				else if ( (LA5_13=='\t') ) {s = 17;}
+
+				else if ( (LA5_13=='\r') ) {s = 18;}
+
+				else if ( (LA5_13=='\n') ) {s = 19;}
+
+				else if ( ((LA5_13>='A' && LA5_13<='Z')||LA5_13=='_'||(LA5_13>='a' && LA5_13<='z')) ) {s = 20;}
+
+				else if ( ((LA5_13>='\u0000' && LA5_13<='\b')||(LA5_13>='\u000B' && LA5_13<='\f')||(LA5_13>='\u000E' && LA5_13<='\u001F')||(LA5_13>='!' && LA5_13<='@')||(LA5_13>='[' && LA5_13<='^')||LA5_13=='`'||(LA5_13>='{' && LA5_13<='\uFFFF')) ) {s = 6;}
+
+				if ( s>=0 ) return s;
+				break;
+
+			case 13:
+				int LA5_14 = input.LA(1);
+
+
+				int index5_14 = input.Index;
+				input.Rewind();
+				s = -1;
+				if ( (EvaluatePredicate(synpred1_Action_fragment)) ) {s = 21;}
+
+				else if ( (true) ) {s = 6;}
+
+
+				input.Seek(index5_14);
+				if ( s>=0 ) return s;
+				break;
+
+			case 14:
+				int LA5_15 = input.LA(1);
+
+				s = -1;
+				if ( (LA5_15==',') ) {s = 13;}
+
+				else if ( (LA5_15=='|') ) {s = 14;}
+
+				else if ( ((LA5_15>='\u0000' && LA5_15<='+')||(LA5_15>='-' && LA5_15<='{')||(LA5_15>='}' && LA5_15<='\uFFFF')) ) {s = 6;}
+
+				if ( s>=0 ) return s;
+				break;
+
+			case 15:
+				int LA5_16 = input.LA(1);
+
+				s = -1;
+				if ( ((LA5_16>='A' && LA5_16<='Z')||LA5_16=='_'||(LA5_16>='a' && LA5_16<='z')) ) {s = 20;}
+
+				else if ( ((LA5_16>='\u0000' && LA5_16<='@')||(LA5_16>='[' && LA5_16<='^')||LA5_16=='`'||(LA5_16>='{' && LA5_16<='\uFFFF')) ) {s = 6;}
+
+				if ( s>=0 ) return s;
+				break;
+
+			case 16:
+				int LA5_17 = input.LA(1);
+
+				s = -1;
+				if ( ((LA5_17>='A' && LA5_17<='Z')||LA5_17=='_'||(LA5_17>='a' && LA5_17<='z')) ) {s = 20;}
+
+				else if ( ((LA5_17>='\u0000' && LA5_17<='@')||(LA5_17>='[' && LA5_17<='^')||LA5_17=='`'||(LA5_17>='{' && LA5_17<='\uFFFF')) ) {s = 6;}
+
+				if ( s>=0 ) return s;
+				break;
+
+			case 17:
+				int LA5_18 = input.LA(1);
+
+				s = -1;
+				if ( (LA5_18=='\n') ) {s = 22;}
+
+				else if ( ((LA5_18>='A' && LA5_18<='Z')||LA5_18=='_'||(LA5_18>='a' && LA5_18<='z')) ) {s = 20;}
+
+				else if ( ((LA5_18>='\u0000' && LA5_18<='\t')||(LA5_18>='\u000B' && LA5_18<='@')||(LA5_18>='[' && LA5_18<='^')||LA5_18=='`'||(LA5_18>='{' && LA5_18<='\uFFFF')) ) {s = 6;}
+
+				if ( s>=0 ) return s;
+				break;
+
+			case 18:
+				int LA5_19 = input.LA(1);
+
+				s = -1;
+				if ( ((LA5_19>='A' && LA5_19<='Z')||LA5_19=='_'||(LA5_19>='a' && LA5_19<='z')) ) {s = 20;}
+
+				else if ( ((LA5_19>='\u0000' && LA5_19<='@')||(LA5_19>='[' && LA5_19<='^')||LA5_19=='`'||(LA5_19>='{' && LA5_19<='\uFFFF')) ) {s = 6;}
+
+				if ( s>=0 ) return s;
+				break;
+
+			case 19:
+				int LA5_20 = input.LA(1);
+
+				s = -1;
+				if ( ((LA5_20>='/' && LA5_20<='9')||(LA5_20>='A' && LA5_20<='Z')||LA5_20=='_'||(LA5_20>='a' && LA5_20<='z')) ) {s = 23;}
+
+				else if ( (LA5_20==' ') ) {s = 24;}
+
+				else if ( (LA5_20=='\t') ) {s = 25;}
+
+				else if ( (LA5_20=='\r') ) {s = 26;}
+
+				else if ( (LA5_20=='\n') ) {s = 27;}
+
+				else if ( (LA5_20=='|') ) {s = 14;}
+
+				else if ( (LA5_20==',') ) {s = 13;}
+
+				else if ( ((LA5_20>='\u0000' && LA5_20<='\b')||(LA5_20>='\u000B' && LA5_20<='\f')||(LA5_20>='\u000E' && LA5_20<='\u001F')||(LA5_20>='!' && LA5_20<='+')||(LA5_20>='-' && LA5_20<='.')||(LA5_20>=':' && LA5_20<='@')||(LA5_20>='[' && LA5_20<='^')||LA5_20=='`'||LA5_20=='{'||(LA5_20>='}' && LA5_20<='\uFFFF')) ) {s = 6;}
+
+				if ( s>=0 ) return s;
+				break;
+
+			case 20:
+				int LA5_22 = input.LA(1);
+
+				s = -1;
+				if ( ((LA5_22>='A' && LA5_22<='Z')||LA5_22=='_'||(LA5_22>='a' && LA5_22<='z')) ) {s = 20;}
+
+				else if ( ((LA5_22>='\u0000' && LA5_22<='@')||(LA5_22>='[' && LA5_22<='^')||LA5_22=='`'||(LA5_22>='{' && LA5_22<='\uFFFF')) ) {s = 6;}
+
+				if ( s>=0 ) return s;
+				break;
+
+			case 21:
+				int LA5_23 = input.LA(1);
+
+				s = -1;
+				if ( (LA5_23==' ') ) {s = 24;}
+
+				else if ( (LA5_23=='\t') ) {s = 25;}
+
+				else if ( (LA5_23=='\r') ) {s = 26;}
+
+				else if ( (LA5_23=='\n') ) {s = 27;}
+
+				else if ( (LA5_23=='|') ) {s = 14;}
+
+				else if ( (LA5_23==',') ) {s = 13;}
+
+				else if ( ((LA5_23>='/' && LA5_23<='9')||(LA5_23>='A' && LA5_23<='Z')||LA5_23=='_'||(LA5_23>='a' && LA5_23<='z')) ) {s = 23;}
+
+				else if ( ((LA5_23>='\u0000' && LA5_23<='\b')||(LA5_23>='\u000B' && LA5_23<='\f')||(LA5_23>='\u000E' && LA5_23<='\u001F')||(LA5_23>='!' && LA5_23<='+')||(LA5_23>='-' && LA5_23<='.')||(LA5_23>=':' && LA5_23<='@')||(LA5_23>='[' && LA5_23<='^')||LA5_23=='`'||LA5_23=='{'||(LA5_23>='}' && LA5_23<='\uFFFF')) ) {s = 6;}
+
+				if ( s>=0 ) return s;
+				break;
+
+			case 22:
+				int LA5_24 = input.LA(1);
+
+				s = -1;
+				if ( (LA5_24=='|') ) {s = 14;}
+
+				else if ( (LA5_24==',') ) {s = 13;}
+
+				else if ( ((LA5_24>='\u0000' && LA5_24<='+')||(LA5_24>='-' && LA5_24<='{')||(LA5_24>='}' && LA5_24<='\uFFFF')) ) {s = 6;}
+
+				if ( s>=0 ) return s;
+				break;
+
+			case 23:
+				int LA5_25 = input.LA(1);
+
+				s = -1;
+				if ( (LA5_25=='|') ) {s = 14;}
+
+				else if ( (LA5_25==',') ) {s = 13;}
+
+				else if ( ((LA5_25>='\u0000' && LA5_25<='+')||(LA5_25>='-' && LA5_25<='{')||(LA5_25>='}' && LA5_25<='\uFFFF')) ) {s = 6;}
+
+				if ( s>=0 ) return s;
+				break;
+
+			case 24:
+				int LA5_26 = input.LA(1);
+
+				s = -1;
+				if ( (LA5_26=='\n') ) {s = 28;}
+
+				else if ( (LA5_26=='|') ) {s = 14;}
+
+				else if ( (LA5_26==',') ) {s = 13;}
+
+				else if ( ((LA5_26>='\u0000' && LA5_26<='\t')||(LA5_26>='\u000B' && LA5_26<='+')||(LA5_26>='-' && LA5_26<='{')||(LA5_26>='}' && LA5_26<='\uFFFF')) ) {s = 6;}
+
+				if ( s>=0 ) return s;
+				break;
+
+			case 25:
+				int LA5_27 = input.LA(1);
+
+				s = -1;
+				if ( (LA5_27=='|') ) {s = 14;}
+
+				else if ( (LA5_27==',') ) {s = 13;}
+
+				else if ( ((LA5_27>='\u0000' && LA5_27<='+')||(LA5_27>='-' && LA5_27<='{')||(LA5_27>='}' && LA5_27<='\uFFFF')) ) {s = 6;}
+
+				if ( s>=0 ) return s;
+				break;
+
+			case 26:
+				int LA5_28 = input.LA(1);
+
+				s = -1;
+				if ( (LA5_28=='|') ) {s = 14;}
+
+				else if ( (LA5_28==',') ) {s = 13;}
+
+				else if ( ((LA5_28>='\u0000' && LA5_28<='+')||(LA5_28>='-' && LA5_28<='{')||(LA5_28>='}' && LA5_28<='\uFFFF')) ) {s = 6;}
 
 				if ( s>=0 ) return s;
 				break;
@@ -2378,35 +2807,35 @@ public partial class ActionLexer : Lexer
 		dfa.Error(nvae);
 		throw nvae;
 	}
-	class DFA15 : DFA
+	class DFA18 : DFA
 	{
 
-		const string DFA15_eotS =
+		const string DFA18_eotS =
 			"\x1\xFFFF\x7\x8\x9\xFFFF\x1\x22\x6\xFFFF\x1\x23\x8\x8\x3\xFFFF\xA\x8"+
 			"\x1\x36\x1\x8\x1\x38\x4\x8\x1\x3D\x1\xFFFF\x1\x8\x1\xFFFF\x1\x3F\x1\x40"+
 			"\x1\x41\x1\x42\x1\xFFFF\x1\x43\x5\xFFFF";
-		const string DFA15_eofS =
+		const string DFA18_eofS =
 			"\x44\xFFFF";
-		const string DFA15_minS =
+		const string DFA18_minS =
 			"\x1\x9\x1\x66\x1\x6C\x1\x69\x1\x61\x1\x65\x1\x74\x1\x72\x9\xFFFF\x1\x2E"+
 			"\x6\xFFFF\x1\x2F\x1\x73\x1\x72\x1\x73\x1\x6E\x1\x73\x1\x72\x1\x70\x1"+
 			"\x75\x3\xFFFF\x1\x65\x1\x73\x1\x74\x1\x67\x1\x74\x1\x69\x1\x65\x1\x6E"+
 			"\x1\x69\x1\x74\x1\x2F\x1\x74\x1\x2F\x1\x70\x1\x72\x1\x63\x1\x66\x1\x2F"+
 			"\x1\xFFFF\x1\x68\x1\xFFFF\x4\x2F\x1\xFFFF\x1\x2F\x5\xFFFF";
-		const string DFA15_maxS =
+		const string DFA18_maxS =
 			"\x1\x7B\x1\x66\x1\x6C\x1\x69\x2\x65\x1\x75\x1\x72\x9\xFFFF\x1\x2E\x6"+
 			"\xFFFF\x1\x7A\x1\x73\x1\x72\x1\x73\x1\x6E\x1\x73\x1\x72\x1\x70\x1\x75"+
 			"\x3\xFFFF\x1\x65\x1\x73\x1\x74\x1\x67\x1\x74\x1\x69\x1\x65\x1\x6E\x1"+
 			"\x69\x1\x74\x1\x7A\x1\x74\x1\x7A\x1\x70\x1\x72\x1\x63\x1\x66\x1\x7A\x1"+
 			"\xFFFF\x1\x68\x1\xFFFF\x4\x7A\x1\xFFFF\x1\x7A\x5\xFFFF";
-		const string DFA15_acceptS =
+		const string DFA18_acceptS =
 			"\x8\xFFFF\x1\xA\x1\xB\x1\xC\x1\xD\x1\xE\x1\xF\x1\x10\x1\x11\x1\x12\x1"+
 			"\xFFFF\x1\x14\x1\x15\x1\x16\x1\x17\x1\x18\x1\x1A\x9\xFFFF\x1\x19\x1\x13"+
 			"\x1\x1\x12\xFFFF\x1\x4\x1\xFFFF\x1\x6\x4\xFFFF\x1\x3\x1\xFFFF\x1\x7\x1"+
 			"\x8\x1\x9\x1\x2\x1\x5";
-		const string DFA15_specialS =
+		const string DFA18_specialS =
 			"\x44\xFFFF}>";
-		static readonly string[] DFA15_transitionS =
+		static readonly string[] DFA18_transitionS =
 			{
 				"\x2\x17\x2\xFFFF\x1\x17\x12\xFFFF\x1\x17\x1\x16\x1\xA\x5\xFFFF\x1\xE"+
 				"\x1\xF\x1\xFFFF\x1\x14\x1\x10\x1\xFFFF\x1\x11\x1\xFFFF\xA\x9\x1\x13"+
@@ -2482,35 +2911,35 @@ public partial class ActionLexer : Lexer
 				""
 			};
 
-		static readonly short[] DFA15_eot = DFA.UnpackEncodedString(DFA15_eotS);
-		static readonly short[] DFA15_eof = DFA.UnpackEncodedString(DFA15_eofS);
-		static readonly char[] DFA15_min = DFA.UnpackEncodedStringToUnsignedChars(DFA15_minS);
-		static readonly char[] DFA15_max = DFA.UnpackEncodedStringToUnsignedChars(DFA15_maxS);
-		static readonly short[] DFA15_accept = DFA.UnpackEncodedString(DFA15_acceptS);
-		static readonly short[] DFA15_special = DFA.UnpackEncodedString(DFA15_specialS);
-		static readonly short[][] DFA15_transition;
+		static readonly short[] DFA18_eot = DFA.UnpackEncodedString(DFA18_eotS);
+		static readonly short[] DFA18_eof = DFA.UnpackEncodedString(DFA18_eofS);
+		static readonly char[] DFA18_min = DFA.UnpackEncodedStringToUnsignedChars(DFA18_minS);
+		static readonly char[] DFA18_max = DFA.UnpackEncodedStringToUnsignedChars(DFA18_maxS);
+		static readonly short[] DFA18_accept = DFA.UnpackEncodedString(DFA18_acceptS);
+		static readonly short[] DFA18_special = DFA.UnpackEncodedString(DFA18_specialS);
+		static readonly short[][] DFA18_transition;
 
-		static DFA15()
+		static DFA18()
 		{
-			int numStates = DFA15_transitionS.Length;
-			DFA15_transition = new short[numStates][];
+			int numStates = DFA18_transitionS.Length;
+			DFA18_transition = new short[numStates][];
 			for ( int i=0; i < numStates; i++ )
 			{
-				DFA15_transition[i] = DFA.UnpackEncodedString(DFA15_transitionS[i]);
+				DFA18_transition[i] = DFA.UnpackEncodedString(DFA18_transitionS[i]);
 			}
 		}
 
-		public DFA15( BaseRecognizer recognizer )
+		public DFA18( BaseRecognizer recognizer )
 		{
 			this.recognizer = recognizer;
-			this.decisionNumber = 15;
-			this.eot = DFA15_eot;
-			this.eof = DFA15_eof;
-			this.min = DFA15_min;
-			this.max = DFA15_max;
-			this.accept = DFA15_accept;
-			this.special = DFA15_special;
-			this.transition = DFA15_transition;
+			this.decisionNumber = 18;
+			this.eot = DFA18_eot;
+			this.eof = DFA18_eof;
+			this.min = DFA18_min;
+			this.max = DFA18_max;
+			this.accept = DFA18_accept;
+			this.special = DFA18_special;
+			this.transition = DFA18_transition;
 		}
 		public override string GetDescription()
 		{
