@@ -1522,7 +1522,7 @@ namespace Antlr3.Tool
                 int midpoint = numDecisions / 2;
                 NFAConversionThread t1 =
                     new NFAConversionThread( this, barrier, 1, midpoint );
-                new System.Threading.Thread( t1.run ).Start();
+                new System.Threading.Thread( t1.Run ).Start();
                 //new Thread( t1 ).start();
                 if ( midpoint == ( numDecisions / 2 ) )
                 {
@@ -1530,7 +1530,7 @@ namespace Antlr3.Tool
                 }
                 NFAConversionThread t2 =
                     new NFAConversionThread( this, barrier, midpoint, numDecisions );
-                new System.Threading.Thread( t2.run ).Start();
+                new System.Threading.Thread( t2.Run ).Start();
                 //new Thread( t2 ).start();
                 // wait for these two threads to finish
                 try
@@ -1579,11 +1579,11 @@ namespace Antlr3.Tool
             for ( int alt = 1; alt <= numAlts; alt++ )
             {
                 int walkAlt =
-                    decisionStartState.translateDisplayAltToWalkAlt( alt );
+                    decisionStartState.TranslateDisplayAltToWalkAlt( alt );
                 NFAState altLeftEdge = getNFAStateForAltOfDecision( decisionStartState, walkAlt );
                 NFAState altStartState = (NFAState)altLeftEdge.transition[0].target;
                 //JSystem.@out.println("alt "+alt+" start state = "+altStartState.stateNumber);
-                altLook[alt] = ll1Analyzer.LOOK( altStartState );
+                altLook[alt] = ll1Analyzer.Look( altStartState );
                 //JSystem.@out.println("alt "+alt+": "+altLook[alt].toString(this));
             }
 
@@ -1598,7 +1598,7 @@ namespace Antlr3.Tool
                                        altLook[i].toString(this)+" with "+
                                        altLook[j].toString(this));
                     */
-                    LookaheadSet collision = altLook[i].intersection( altLook[j] );
+                    LookaheadSet collision = altLook[i].Intersection( altLook[j] );
                     if ( !collision.IsNil )
                     {
                         //JSystem.@out.println("collision (non-LL(1)): "+collision.toString(this));
@@ -1610,7 +1610,7 @@ namespace Antlr3.Tool
 
         outer:
             bool foundConfoundingPredicate =
-                ll1Analyzer.detectConfoundingPredicates( decisionStartState );
+                ll1Analyzer.DetectConfoundingPredicates( decisionStartState );
             if ( decisionIsLL_1 && !foundConfoundingPredicate )
             {
                 // build an LL(1) optimized DFA with edge for each altLook[i]
@@ -1661,7 +1661,7 @@ namespace Antlr3.Tool
                 for ( int alt = 1; alt < altLook.Length; alt++ )
                 {
                     LookaheadSet look = altLook[alt];
-                    if ( !ds.and( look.tokenTypeSet ).isNil() )
+                    if ( !ds.and( look.tokenTypeSet ).IsNil )
                     {
                         edgeMap.map( ds, alt );
                     }
@@ -1709,7 +1709,7 @@ namespace Antlr3.Tool
                 {
                     IntervalSet s_i = (IntervalSet)disjointSets.get( i );
 
-                    if ( t.and( s_i ).isNil() )
+                    if ( t.and( s_i ).IsNil )
                     { // nothing in common
                         continue;
                     }
@@ -1726,7 +1726,7 @@ namespace Antlr3.Tool
                     // Compute s_i-t to see what is in current set and not in incoming
                     IIntSet existingMinusNewElements = s_i.subtract( t );
                     //JSystem.@out.println(s_i+"-"+t+"="+existingMinusNewElements);
-                    if ( !existingMinusNewElements.isNil() )
+                    if ( !existingMinusNewElements.IsNil )
                     {
                         // found a new character class, add to the end (doesn't affect
                         // outer loop duration due to n computation a priori.
@@ -1735,14 +1735,14 @@ namespace Antlr3.Tool
 
                     // anything left to add to the reachableLabels?
                     remainder = (IntervalSet)t.subtract( s_i );
-                    if ( remainder.isNil() )
+                    if ( remainder.IsNil )
                     {
                         break; // nothing left to add to set.  done!
                     }
 
                     t = remainder;
                 }
-                if ( !remainder.isNil() )
+                if ( !remainder.IsNil )
                 {
                     disjointSets.add( remainder );
                 }
@@ -1805,7 +1805,7 @@ namespace Antlr3.Tool
             {
                 foreach ( DFAState s in lookaheadDFA.UniqueStates.Values )
                 {
-                    s.reset();
+                    s.Reset();
                 }
             }
 
@@ -1970,7 +1970,7 @@ namespace Antlr3.Tool
         public virtual void synPredUsedInDFA( DFA dfa, SemanticContext semCtx )
         {
             decisionsWhoseDFAsUsesSynPreds.Add( dfa );
-            semCtx.trackUseOfSyntacticPredicates( this ); // walk ctx looking for preds
+            semCtx.TrackUseOfSyntacticPredicates( this ); // walk ctx looking for preds
         }
 
 #if false
@@ -3792,12 +3792,12 @@ namespace Antlr3.Tool
 
         public virtual LookaheadSet FIRST( NFAState s )
         {
-            return ll1Analyzer.FIRST( s );
+            return ll1Analyzer.First( s );
         }
 
         public virtual LookaheadSet LOOK( NFAState s )
         {
-            return ll1Analyzer.LOOK( s );
+            return ll1Analyzer.Look( s );
         }
 
         public virtual void setCodeGenerator( CodeGenerator generator )

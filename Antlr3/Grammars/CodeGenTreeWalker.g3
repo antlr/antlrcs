@@ -698,9 +698,9 @@ tree_ returns [StringTemplate code]
 	if ( state.backtracking == 0 )
 	{
 		$code = templates.GetInstanceOf("tree");
-		NFAState afterDOWN = (NFAState)$start.NFATreeDownState.getTransition(0).target;
+		NFAState afterDOWN = (NFAState)$start.NFATreeDownState.GetTransition(0).target;
 		LookaheadSet s = grammar.LOOK(afterDOWN);
-		if ( s.member(Label.UP) ) {
+		if ( s.Member(Label.UP) ) {
 			// nullable child list if we can see the UP as the next token
 			// we need an "if ( input.LA(1)==Token.DOWN )" gate around
 			// the child list.

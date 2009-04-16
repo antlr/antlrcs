@@ -210,9 +210,9 @@ namespace Antlr3.Analysis
          *  discussed with Sriram Srinivasan Feb 28, 2005 about not terminating
          *  fast enough upon nondeterminism.
          */
-        public virtual bool conflictsWith( NFAContext other )
+        public virtual bool ConflictsWith( NFAContext other )
         {
-            return this.suffix( other ); // || this.equals(other);
+            return this.Suffix( other ); // || this.equals(other);
         }
 
         /** [$] suffix any context
@@ -235,7 +235,7 @@ namespace Antlr3.Analysis
          *  another, then it will still degenerate to the simple empty stack
          *  comparison case.
          */
-        protected virtual bool suffix( NFAContext other )
+        protected virtual bool Suffix( NFAContext other )
         {
             NFAContext sp = this;
             // if one of the contexts is empty, it never enters loop and returns true
@@ -256,7 +256,7 @@ namespace Antlr3.Analysis
         /** Walk upwards to the root of the call stack context looking
          *  for a particular invoking state.
          */
-        public virtual bool contains( int state )
+        public virtual bool Contains( int state )
         {
             NFAContext sp = this;
             int n = 0; // track recursive invocations of state
@@ -285,7 +285,7 @@ namespace Antlr3.Analysis
          *  Note that many NFA states can invoke rule r, but we ignore recursion
          *  unless you hit the same rule invocation state again.
          */
-        public virtual int recursionDepthEmanatingFromState( int state )
+        public virtual int RecursionDepthEmanatingFromState( int state )
         {
             NFAContext sp = this;
             int n = 0; // track recursive invocations of target from this state

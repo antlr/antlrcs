@@ -121,21 +121,21 @@ namespace Antlr3.Grammars
             // find last link in FOLLOW chain emanating from rule
             Rule r = grammar.getRule( ruleName );
             NFAState end = r.stopState;
-            while ( end.getTransition( 1 ) != null )
+            while ( end.GetTransition( 1 ) != null )
             {
-                end = (NFAState)end.getTransition( 1 ).target;
+                end = (NFAState)end.GetTransition( 1 ).target;
             }
-            if ( end.getTransition( 0 ) != null )
+            if ( end.GetTransition( 0 ) != null )
             {
                 // already points to a following node
                 // gotta add another node to keep edges to a max of 2
                 NFAState n = factory.newState();
                 Transition e = new Transition( Label.EPSILON, n );
-                end.addTransition( e );
+                end.AddTransition( e );
                 end = n;
             }
             Transition followEdge = new Transition( Label.EPSILON, following );
-            end.addTransition( followEdge );
+            end.AddTransition( followEdge );
         }
 
         protected virtual void finish()

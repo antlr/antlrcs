@@ -175,6 +175,7 @@ namespace Antlr3.Analysis
         }
 
         #region Properties
+        /** Is an accept state reachable from this state? */
         public int AcceptStateReachable
         {
             get
@@ -190,14 +191,14 @@ namespace Antlr3.Analysis
         {
             get
             {
-                return getAltSet();
+                return GetAltSet();
             }
         }
         public ICollection<int> DisabledAlternatives
         {
             get
             {
-                return getDisabledAlternatives();
+                return GetDisabledAlternatives();
             }
         }
         public bool IsResolvedWithPredicates
@@ -231,12 +232,12 @@ namespace Antlr3.Analysis
         {
             get
             {
-                return getReachableLabels();
+                return GetReachableLabels();
             }
         }
         #endregion
 
-        public virtual void reset()
+        public virtual void Reset()
         {
             //nfaConfigurations = null; // getGatedPredicatesInNFAConfigurations needs
             configurationsWithLabeledEdges = null;
@@ -244,7 +245,7 @@ namespace Antlr3.Analysis
             _reachableLabels = null;
         }
 
-        public virtual Transition transition( int i )
+        public virtual Transition Transition( int i )
         {
             return (Transition)_transitions[i];
         }
@@ -257,7 +258,7 @@ namespace Antlr3.Analysis
             }
         }
 
-        public override void addTransition( Transition t )
+        public override void AddTransition( Transition t )
         {
             _transitions.Add( t );
         }
@@ -265,18 +266,18 @@ namespace Antlr3.Analysis
         /** Add a transition from this state to target with label.  Return
          *  the transition number from 0..n-1.
          */
-        public virtual int addTransition( DFAState target, Label label )
+        public virtual int AddTransition( DFAState target, Label label )
         {
             _transitions.Add( new Transition( label, target ) );
             return _transitions.Count - 1;
         }
 
-        public override Transition getTransition( int trans )
+        public override Transition GetTransition( int trans )
         {
             return _transitions[trans];
         }
 
-        public virtual void removeTransition( int trans )
+        public virtual void RemoveTransition( int trans )
         {
             _transitions.RemoveAt( trans );
         }
@@ -298,7 +299,7 @@ namespace Antlr3.Analysis
          *  transition labels so we can simply walk it later rather than doing a
          *  loop over all possible labels in the NFA.
          */
-        public virtual void addNFAConfiguration( NFAState state, NFAConfiguration c )
+        public virtual void AddNFAConfiguration( NFAState state, NFAConfiguration c )
         {
             if ( nfaConfigurations.Contains( c ) )
             {
@@ -338,12 +339,12 @@ namespace Antlr3.Analysis
                         // later we can check this to ignore o-A->o states in closure
                         c.singleAtomTransitionEmanating = true;
                     }
-                    addReachableLabel( label );
+                    AddReachableLabel( label );
                 }
             }
         }
 
-        public virtual NFAConfiguration addNFAConfiguration( NFAState state,
+        public virtual NFAConfiguration AddNFAConfiguration( NFAState state,
                                                     int alt,
                                                     NFAContext context,
                                                     SemanticContext semanticContext )
@@ -352,7 +353,7 @@ namespace Antlr3.Analysis
                                                       alt,
                                                       context,
                                                       semanticContext );
-            addNFAConfiguration( state, c );
+            AddNFAConfiguration( state, c );
             return c;
         }
 
@@ -389,7 +390,7 @@ namespace Antlr3.Analysis
          *
          *  Single element labels are treated as sets to make the code uniform.
          */
-        protected virtual void addReachableLabel( Label label )
+        protected virtual void AddReachableLabel( Label label )
         {
             if ( _reachableLabels == null )
             {
@@ -417,7 +418,7 @@ namespace Antlr3.Analysis
                         rl.toString(dfa.nfa.grammar)+"="+
                         intersection.toString(dfa.nfa.grammar));
                 */
-                if ( !Label.intersect( label, rl ) )
+                if ( !Label.Intersect( label, rl ) )
                 {
                     continue;
                 }
@@ -435,7 +436,7 @@ namespace Antlr3.Analysis
                 // Compute s_i-t to see what is in current set and not in incoming
                 IIntSet existingMinusNewElements = s_i.subtract( t );
                 //JSystem.@out.println(s_i+"-"+t+"="+existingMinusNewElements);
-                if ( !existingMinusNewElements.isNil() )
+                if ( !existingMinusNewElements.IsNil )
                 {
                     // found a new character class, add to the end (doesn't affect
                     // outer loop duration due to n computation a priori.
@@ -450,14 +451,14 @@ namespace Antlr3.Analysis
 
                 // anything left to add to the reachableLabels?
                 remainder = t.subtract( s_i );
-                if ( remainder.isNil() )
+                if ( remainder.IsNil )
                 {
                     break; // nothing left to add to set.  done!
                 }
 
                 t = remainder;
             }
-            if ( !remainder.isNil() )
+            if ( !remainder.IsNil )
             {
                 /*
                 JSystem.@out.println("before add remainder to state "+dfa.decisionNumber+"."+stateNumber+": " +
@@ -473,12 +474,12 @@ namespace Antlr3.Analysis
                     */
         }
 
-        public virtual OrderedHashSet<Label> getReachableLabels()
+        public virtual OrderedHashSet<Label> GetReachableLabels()
         {
             return _reachableLabels;
         }
 
-        public virtual void setNFAConfigurations( OrderedHashSet<NFAConfiguration> configs )
+        public virtual void SetNFAConfigurations( OrderedHashSet<NFAConfiguration> configs )
         {
             this.nfaConfigurations = configs;
         }
@@ -533,7 +534,7 @@ namespace Antlr3.Analysis
          *  this to the work list and then have semantic predicate edges
          *  emanating from it.
          */
-        public virtual int getUniquelyPredictedAlt()
+        public virtual int GetUniquelyPredictedAlt()
         {
             if ( cachedUniquelyPredicatedAlt != PREDICTED_ALT_UNSET )
             {
@@ -568,7 +569,7 @@ namespace Antlr3.Analysis
          *  Ignore the resolved bit etc...  Return INVALID_ALT_NUMBER
          *  if there is more than one alt mentioned.
          */
-        public virtual int getUniqueAlt()
+        public virtual int GetUniqueAlt()
         {
             int alt = NFA.INVALID_ALT_NUMBER;
             int numConfigs = nfaConfigurations.size();
@@ -599,7 +600,7 @@ namespace Antlr3.Analysis
          *  DFA state, that alt is disabled.  There may be other accept states
          *  for that alt.
          */
-        public virtual ICollection<int> getDisabledAlternatives()
+        public virtual ICollection<int> GetDisabledAlternatives()
         {
             HashSet<int> disabled = new HashSet<int>();
             int numConfigs = nfaConfigurations.size();
@@ -614,7 +615,7 @@ namespace Antlr3.Analysis
             return disabled;
         }
 
-        protected internal virtual HashSet<int> getNonDeterministicAlts()
+        protected internal virtual HashSet<int> GetNonDeterministicAlts()
         {
             int user_k = dfa.UserMaxLookahead;
             if ( user_k > 0 && user_k == _k )
@@ -630,7 +631,7 @@ namespace Antlr3.Analysis
             }
             else
             {
-                return getConflictingAlts();
+                return GetConflictingAlts();
             }
         }
 
@@ -650,7 +651,7 @@ namespace Antlr3.Analysis
          *  Don't report conflicts for DFA states that have conflicting Tokens
          *  rule NFA states; they will be resolved in favor of the first rule.
          */
-        protected virtual HashSet<int> getConflictingAlts()
+        protected virtual HashSet<int> GetConflictingAlts()
         {
             // TODO this is called multiple times: cache result?
             //JSystem.@out.println("getNondetAlts for DFA state "+stateNumber);
@@ -763,7 +764,7 @@ namespace Antlr3.Analysis
                         // conflicts means s.ctx==t.ctx or s.ctx is a stack
                         // suffix of t.ctx or vice versa (if alts differ).
                         // Also a conflict if s.ctx or t.ctx is empty
-                        if ( s.alt != t.alt && s.context.conflictsWith( t.context ) )
+                        if ( s.alt != t.alt && s.context.ConflictsWith( t.context ) )
                         {
                             nondeterministicAlts.Add( s.alt );
                             nondeterministicAlts.Add( t.alt );
@@ -782,7 +783,7 @@ namespace Antlr3.Analysis
         /** Get the set of all alts mentioned by all NFA configurations in this
          *  DFA state.
          */
-        public virtual HashSet<int> getAltSet()
+        public virtual HashSet<int> GetAltSet()
         {
             int numConfigs = nfaConfigurations.size();
             HashSet<int> alts = new HashSet<int>();
@@ -798,7 +799,7 @@ namespace Antlr3.Analysis
             return alts;
         }
 
-        public virtual HashSet<SemanticContext> getGatedSyntacticPredicatesInNFAConfigurations()
+        public virtual HashSet<SemanticContext> GetGatedSyntacticPredicatesInNFAConfigurations()
         {
             int numConfigs = nfaConfigurations.size();
             HashSet<SemanticContext> synpreds = new HashSet<SemanticContext>();
@@ -847,7 +848,7 @@ namespace Antlr3.Analysis
          *
          *  TODO: cache this as it's called a lot; or at least set bit if >1 present in state
          */
-        public virtual SemanticContext getGatedPredicatesInNFAConfigurations()
+        public virtual SemanticContext GetGatedPredicatesInNFAConfigurations()
         {
             SemanticContext unionOfPredicatesFromAllAlts = null;
             int numConfigs = nfaConfigurations.size();
@@ -888,25 +889,6 @@ namespace Antlr3.Analysis
             return unionOfPredicatesFromAllAlts;
         }
 
-        /** Is an accept state reachable from this state? */
-        [Obsolete]
-        public virtual int getAcceptStateReachable()
-        {
-            return AcceptStateReachable;
-        }
-
-        [Obsolete]
-        public virtual void setAcceptStateReachable( int acceptStateReachable )
-        {
-            AcceptStateReachable = acceptStateReachable;
-        }
-
-        [Obsolete]
-        public virtual bool isResolvedWithPredicates()
-        {
-            return IsResolvedWithPredicates;
-        }
-
         /** Print all NFA states plus what alts they predict */
         public override String ToString()
         {
@@ -924,18 +906,5 @@ namespace Antlr3.Analysis
             buf.Append( "}" );
             return buf.ToString();
         }
-
-        [Obsolete]
-        public virtual int getLookaheadDepth()
-        {
-            return LookaheadDepth;
-        }
-
-        [Obsolete]
-        public virtual void setLookaheadDepth( int k )
-        {
-            LookaheadDepth = k;
-        }
-
     }
 }

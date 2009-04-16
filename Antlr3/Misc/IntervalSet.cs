@@ -631,9 +631,12 @@ namespace Antlr3.Misc
         }
 
         /** return true if this set has no members */
-        public virtual bool isNil()
+        public virtual bool IsNil
         {
-            return intervals == null || intervals.Count == 0;
+            get
+            {
+                return intervals == null || intervals.Count == 0;
+            }
         }
 
         /** If this set is a single integer, return it otherwise Label.INVALID */
@@ -652,7 +655,7 @@ namespace Antlr3.Misc
 
         public virtual int getMaxElement()
         {
-            if ( isNil() )
+            if ( IsNil )
             {
                 return Label.INVALID;
             }
@@ -663,7 +666,7 @@ namespace Antlr3.Misc
         /** Return minimum element >= 0 */
         public virtual int getMinElement()
         {
-            if ( isNil() )
+            if ( IsNil )
             {
                 return Label.INVALID;
             }

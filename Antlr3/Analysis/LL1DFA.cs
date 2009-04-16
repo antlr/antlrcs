@@ -55,23 +55,23 @@ namespace Antlr3.Analysis
          */
         public LL1DFA( int decisionNumber, NFAState decisionStartState, LookaheadSet[] altLook )
         {
-            DFAState s0 = newState();
+            DFAState s0 = NewState();
             startState = s0;
             nfa = decisionStartState.nfa;
             NumberOfAlts = nfa.grammar.getNumberOfAltsForDecisionNFA( decisionStartState );
             this.decisionNumber = decisionNumber;
             this.NFADecisionStartState = decisionStartState;
-            initAltRelatedInfo();
+            InitAltRelatedInfo();
             UnreachableAlts = null;
             for ( int alt = 1; alt < altLook.Length; alt++ )
             {
-                DFAState acceptAltState = newState();
+                DFAState acceptAltState = NewState();
                 acceptAltState.acceptState = true;
-                setAcceptState( alt, acceptAltState );
+                SetAcceptState( alt, acceptAltState );
                 acceptAltState.LookaheadDepth = 1;
                 acceptAltState.cachedUniquelyPredicatedAlt = alt;
-                Label e = getLabelForSet( altLook[alt].tokenTypeSet );
-                s0.addTransition( acceptAltState, e );
+                Label e = GetLabelForSet( altLook[alt].tokenTypeSet );
+                s0.AddTransition( acceptAltState, e );
             }
         }
 
@@ -82,13 +82,13 @@ namespace Antlr3.Analysis
                       NFAState decisionStartState,
                       MultiMap<IntervalSet, int> edgeMap )
         {
-            DFAState s0 = newState();
+            DFAState s0 = NewState();
             startState = s0;
             nfa = decisionStartState.nfa;
             NumberOfAlts = nfa.grammar.getNumberOfAltsForDecisionNFA( decisionStartState );
             this.decisionNumber = decisionNumber;
             this.NFADecisionStartState = decisionStartState;
-            initAltRelatedInfo();
+            InitAltRelatedInfo();
             UnreachableAlts = null;
             foreach ( var edgeVar in edgeMap )
             {
@@ -97,15 +97,15 @@ namespace Antlr3.Analysis
                 alts = alts.OrderBy( i => i ).ToList();
                 //Collections.sort( alts ); // make sure alts are attempted in order
                 //JSystem.@out.println(edge+" -> "+alts);
-                DFAState s = newState();
+                DFAState s = NewState();
                 s.LookaheadDepth = 1;
-                Label e = getLabelForSet( edge );
-                s0.addTransition( s, e );
+                Label e = GetLabelForSet( edge );
+                s0.AddTransition( s, e );
                 if ( alts.Count == 1 )
                 {
                     s.acceptState = true;
                     int alt = alts[0];
-                    setAcceptState( alt, s );
+                    SetAcceptState( alt, s );
                     s.cachedUniquelyPredicatedAlt = alt;
                 }
                 else
@@ -117,13 +117,13 @@ namespace Antlr3.Analysis
                     {
                         int alt = (int)alts[i];
                         s.cachedUniquelyPredicatedAlt = NFA.INVALID_ALT_NUMBER;
-                        DFAState predDFATarget = getAcceptState( alt );
+                        DFAState predDFATarget = GetAcceptState( alt );
                         if ( predDFATarget == null )
                         {
-                            predDFATarget = newState(); // create if not there.
+                            predDFATarget = NewState(); // create if not there.
                             predDFATarget.acceptState = true;
                             predDFATarget.cachedUniquelyPredicatedAlt = alt;
-                            setAcceptState( alt, predDFATarget );
+                            SetAcceptState( alt, predDFATarget );
                         }
                         // add a transition to pred target from d
                         /*
@@ -139,19 +139,19 @@ namespace Antlr3.Analysis
                         s.addTransition(predDFATarget, new Label(ctx));
                         */
                         SemanticContext.Predicate synpred =
-                            getSynPredForAlt( decisionStartState, alt );
+                            GetSynPredForAlt( decisionStartState, alt );
                         if ( synpred == null )
                         {
                             synpred = new SemanticContext.TruePredicate();
                         }
-                        s.addTransition( predDFATarget, new PredicateLabel( synpred ) );
+                        s.AddTransition( predDFATarget, new PredicateLabel( synpred ) );
                     }
                 }
             }
             //JSystem.@out.println("dfa for preds=\n"+this);
         }
 
-        protected virtual Label getLabelForSet( IntervalSet edgeSet )
+        protected virtual Label GetLabelForSet( IntervalSet edgeSet )
         {
             Label e = null;
             int atom = edgeSet.getSingleElement();
@@ -166,11 +166,11 @@ namespace Antlr3.Analysis
             return e;
         }
 
-        protected virtual SemanticContext.Predicate getSynPredForAlt( NFAState decisionStartState,
+        protected virtual SemanticContext.Predicate GetSynPredForAlt( NFAState decisionStartState,
                                                              int alt )
         {
             int walkAlt =
-                decisionStartState.translateDisplayAltToWalkAlt( alt );
+                decisionStartState.TranslateDisplayAltToWalkAlt( alt );
             NFAState altLeftEdge =
                 nfa.grammar.getNFAStateForAltOfDecision( decisionStartState, walkAlt );
             NFAState altStartState = (NFAState)altLeftEdge.transition[0].target;

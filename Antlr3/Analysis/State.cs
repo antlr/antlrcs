@@ -62,8 +62,8 @@ namespace Antlr3.Analysis
         }
         #endregion
 
-        public abstract void addTransition( Transition e );
+        public abstract void AddTransition( Transition e );
 
-        public abstract Transition getTransition( int i );
+        public abstract Transition GetTransition( int i );
     }
 }

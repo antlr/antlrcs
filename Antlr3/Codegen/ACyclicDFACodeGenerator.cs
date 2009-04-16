@@ -64,7 +64,7 @@ namespace Antlr3.Codegen
             if ( s.IsAcceptState )
             {
                 StringTemplate dfaST2 = templates.GetInstanceOf( "dfaAcceptState" );
-                dfaST2.SetAttribute( "alt", s.getUniquelyPredictedAlt() );
+                dfaST2.SetAttribute( "alt", s.GetUniquelyPredictedAlt() );
                 return dfaST2;
             }
 
@@ -109,14 +109,14 @@ namespace Antlr3.Codegen
             //System.Console.Out.WriteLine( "DFA state " + s.stateNumber );
             for ( int i = 0; i < s.NumberOfTransitions; i++ )
             {
-                Transition edge = (Transition)s.transition( i );
+                Transition edge = (Transition)s.Transition( i );
                 //System.Console.Out.WriteLine( "edge " + s.stateNumber + "-" + edge.label.ToString() + "->" + edge.target.stateNumber );
                 if ( edge.label.Atom == Label.EOT )
                 {
                     // don't generate a real edge for EOT; track alt EOT predicts
                     // generate that prediction in the else clause as default case
                     EOTTarget = (DFAState)edge.target;
-                    EOTPredicts = EOTTarget.getUniquelyPredictedAlt();
+                    EOTPredicts = EOTTarget.GetUniquelyPredictedAlt();
                     /*
                     System.Console.Out.WriteLine("DFA s"+s.stateNumber+" EOT goes to s"+
                                        edge.target.stateNumber+" predicates alt "+
@@ -142,11 +142,11 @@ namespace Antlr3.Codegen
                 {
                     DFAState target = (DFAState)edge.target;
                     SemanticContext preds =
-                        target.getGatedPredicatesInNFAConfigurations();
+                        target.GetGatedPredicatesInNFAConfigurations();
                     if ( preds != null )
                     {
                         //System.Console.Out.WriteLine( "preds=" + target.getGatedPredicatesInNFAConfigurations() );
-                        StringTemplate predST = preds.genExpr( parentGenerator,
+                        StringTemplate predST = preds.GenExpr( parentGenerator,
                                                               parentGenerator.Templates,
                                                               dfa );
                         edgeST.SetAttribute( "predicates", predST );
@@ -181,7 +181,7 @@ namespace Antlr3.Codegen
                 // hoisted up to the state that has the EOT edge.
                 for ( int i = 0; i < EOTTarget.NumberOfTransitions; i++ )
                 {
-                    Transition predEdge = (Transition)EOTTarget.transition( i );
+                    Transition predEdge = (Transition)EOTTarget.Transition( i );
                     StringTemplate edgeST = templates.GetInstanceOf( dfaEdgeName );
                     edgeST.SetAttribute( "labelExpr",
                                         parentGenerator.genSemanticPredicateExpr( templates, predEdge ) );

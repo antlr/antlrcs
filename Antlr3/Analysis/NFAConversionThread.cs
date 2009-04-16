@@ -53,7 +53,7 @@ namespace Antlr3.Analysis
             this.i = i;
             this.j = j;
         }
-        public virtual void run()
+        public virtual void Run()
         {
             for ( int decision = i; decision <= j; decision++ )
             {

@@ -1,4 +1,4 @@
-// $ANTLR 3.1.2 Grammars\\TreeToNFAConverter.g3 2009-04-10 17:43:58
+// $ANTLR 3.1.2 Grammars\\TreeToNFAConverter.g3 2009-04-16 17:19:06
 
 // The variable 'variable' is assigned but its value is never used.
 #pragma warning disable 219
@@ -1173,13 +1173,13 @@ public partial class TreeToNFAConverter : TreeParser
 									Rule thisR = grammar.getLocallyDefinedRule(currentRuleName);
 									NFAState start = thisR.startState;
 									start.associatedASTNode = id;
-									start.addTransition(new Transition(Label.EPSILON, g.left));
+									start.AddTransition(new Transition(Label.EPSILON, g.left));
 
 									// track decision if > 1 alts
 									if ( grammar.getNumberOfAltsForDecisionNFA(g.left)>1 )
 									{
 										g.left.Description = grammar.grammarTreeToString(((GrammarAST)retval.start),false);
-										g.left.setDecisionASTNode((b!=null?((GrammarAST)b.start):null));
+										g.left.SetDecisionASTNode((b!=null?((GrammarAST)b.start):null));
 										int d = grammar.assignDecisionNumber( g.left );
 										grammar.setDecisionNFA( d, g.left );
 										grammar.setDecisionBlockAST(d, (b!=null?((GrammarAST)b.start):null));
@@ -1187,7 +1187,7 @@ public partial class TreeToNFAConverter : TreeParser
 
 									// hook to end of rule node
 									NFAState end = thisR.stopState;
-									g.right.addTransition(new Transition(Label.EPSILON,end));
+									g.right.AddTransition(new Transition(Label.EPSILON,end));
 								}
 							
 			}
@@ -2571,7 +2571,7 @@ public partial class TreeToNFAConverter : TreeParser
 								if ( grammar.getNumberOfAltsForDecisionNFA((b!=null?b.g:default(StateCluster)).left)>1 )
 								{
 									(b!=null?b.g:default(StateCluster)).left.Description = grammar.grammarTreeToString(blk,false);
-									(b!=null?b.g:default(StateCluster)).left.setDecisionASTNode(blk);
+									(b!=null?b.g:default(StateCluster)).left.SetDecisionASTNode(blk);
 									int d = grammar.assignDecisionNumber( (b!=null?b.g:default(StateCluster)).left );
 									grammar.setDecisionNFA( d, (b!=null?b.g:default(StateCluster)).left );
 									grammar.setDecisionBlockAST(d, blk);
@@ -2611,7 +2611,7 @@ public partial class TreeToNFAConverter : TreeParser
 								int d = grammar.assignDecisionNumber( retval.g.left );
 								grammar.setDecisionNFA(d, retval.g.left);
 								grammar.setDecisionBlockAST(d, blk);
-								retval.g.left.setDecisionASTNode(((GrammarAST)retval.start));
+								retval.g.left.SetDecisionASTNode(((GrammarAST)retval.start));
 							
 				}
 
@@ -2644,13 +2644,13 @@ public partial class TreeToNFAConverter : TreeParser
 								int d = grammar.assignDecisionNumber( bg.right );
 								grammar.setDecisionNFA(d, bg.right);
 								grammar.setDecisionBlockAST(d, blk);
-								bg.right.setDecisionASTNode(eob);
+								bg.right.SetDecisionASTNode(eob);
 								// make block entry state also have same decision for interpreting grammar
-								NFAState altBlockState = (NFAState)retval.g.left.getTransition(0).target;
-								altBlockState.setDecisionASTNode(((GrammarAST)retval.start));
+								NFAState altBlockState = (NFAState)retval.g.left.GetTransition(0).target;
+								altBlockState.SetDecisionASTNode(((GrammarAST)retval.start));
 								altBlockState.DecisionNumber = d;
 								retval.g.left.DecisionNumber = d; // this is the bypass decision (2 alts)
-								retval.g.left.setDecisionASTNode(((GrammarAST)retval.start));
+								retval.g.left.SetDecisionASTNode(((GrammarAST)retval.start));
 							
 				}
 
@@ -2684,10 +2684,10 @@ public partial class TreeToNFAConverter : TreeParser
 								int d = grammar.assignDecisionNumber( bg.right );
 								grammar.setDecisionNFA(d, bg.right);
 								grammar.setDecisionBlockAST(d, blk);
-								bg.right.setDecisionASTNode(eob);
+								bg.right.SetDecisionASTNode(eob);
 								// make block entry state also have same decision for interpreting grammar
-								NFAState altBlockState = (NFAState)retval.g.left.getTransition(0).target;
-								altBlockState.setDecisionASTNode(((GrammarAST)retval.start));
+								NFAState altBlockState = (NFAState)retval.g.left.GetTransition(0).target;
+								altBlockState.SetDecisionASTNode(((GrammarAST)retval.start));
 								altBlockState.DecisionNumber = d;
 							
 				}
@@ -2948,7 +2948,7 @@ public partial class TreeToNFAConverter : TreeParser
 												ttype = grammar.getTokenType((c!=null?c.Text:null));
 											}
 											IIntSet notAtom = grammar.complement(ttype);
-											if ( notAtom.isNil() )
+											if ( notAtom.IsNil )
 											{
 												ErrorManager.grammarError(
 													ErrorManager.MSG_EMPTY_COMPLEMENT,
@@ -3016,7 +3016,7 @@ public partial class TreeToNFAConverter : TreeParser
 												ttype = grammar.getTokenType((t!=null?t.Text:null));
 												notAtom = grammar.complement(ttype);
 											}
-											if ( notAtom==null || notAtom.isNil() )
+											if ( notAtom==null || notAtom.IsNil )
 											{
 												ErrorManager.grammarError(
 													ErrorManager.MSG_EMPTY_COMPLEMENT,
@@ -3053,7 +3053,7 @@ public partial class TreeToNFAConverter : TreeParser
 											// let code gen do the complement again; here we compute
 											// for NFA construction
 											s = grammar.complement(s);
-											if ( s.isNil() )
+											if ( s.IsNil )
 											{
 												ErrorManager.grammarError(
 													ErrorManager.MSG_EMPTY_COMPLEMENT,
@@ -3227,7 +3227,7 @@ public partial class TreeToNFAConverter : TreeParser
 									retval.g = factory.build_RuleRef(rr, start);
 									r.followingNFAState = retval.g.right;
 									r._nfaStartState = retval.g.left;
-									if ( retval.g.left.getTransition(0) is RuleClosureTransition
+									if ( retval.g.left.GetTransition(0) is RuleClosureTransition
 										&& grammar.type!=Grammar.LEXER )
 									{
 										addFollowTransition((r!=null?r.Text:null), retval.g.right);
@@ -4287,7 +4287,7 @@ public partial class TreeToNFAConverter : TreeParser
 				if ( state.backtracking == 0 )
 				{
 
-								Transition setTrans = (gset!=null?gset.g:default(StateCluster)).left.getTransition(0);
+								Transition setTrans = (gset!=null?gset.g:default(StateCluster)).left.GetTransition(0);
 								elements.addAll(setTrans.label.Set);
 							
 				}

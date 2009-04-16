@@ -68,7 +68,10 @@ namespace Antlr3.Misc
          */
         int size();
 
-        bool isNil();
+        bool IsNil
+        {
+            get;
+        }
 
         bool Equals( object obj );
 

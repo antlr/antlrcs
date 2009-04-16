@@ -247,7 +247,7 @@ namespace Antlr3.Analysis
             return l;
         }
 
-        public virtual void add( Label a )
+        public virtual void Add( Label a )
         {
             if ( IsAtom )
             {
@@ -286,7 +286,7 @@ namespace Antlr3.Analysis
             throw new InvalidOperationException( "can't add element to Label of type " + label );
         }
 
-        public virtual bool matches( int atom )
+        public virtual bool Matches( int atom )
         {
             if ( label == atom )
             {
@@ -299,7 +299,7 @@ namespace Antlr3.Analysis
             return false;
         }
 
-        public virtual bool matches( IIntSet set )
+        public virtual bool Matches( IIntSet set )
         {
             if ( IsAtom )
             {
@@ -308,21 +308,21 @@ namespace Antlr3.Analysis
             if ( IsSet )
             {
                 // matches if intersection non-nil
-                return !Set.and( set ).isNil();
+                return !Set.and( set ).IsNil;
             }
             return false;
         }
 
 
-        public virtual bool matches( Label other )
+        public virtual bool Matches( Label other )
         {
             if ( other.IsSet )
             {
-                return matches( other.Set );
+                return Matches( other.Set );
             }
             if ( other.IsAtom )
             {
-                return matches( other.Atom );
+                return Matches( other.Atom );
             }
             return false;
         }
@@ -379,7 +379,7 @@ namespace Antlr3.Analysis
          *  At this point, Labels are not compared for equals when they are
          *  predicates, but here's the code for future use.
          */
-        protected boolean predicatesEquals(Set others) {
+        protected boolean PredicatesEquals(Set others) {
             Iterator iter = semanticContext.iterator();
             while (iter.hasNext()) {
                 AST predAST = (AST) iter.next();
@@ -418,7 +418,7 @@ namespace Antlr3.Analysis
         }
 
 #if false
-        public String predicatesToString() {
+        public String PredicatesToString() {
             if ( semanticContext==NFAConfiguration.DEFAULT_CLAUSE_SEMANTIC_CONTEXT ) {
                 return "!other preds";
             }
@@ -435,7 +435,7 @@ namespace Antlr3.Analysis
         }
 #endif
 
-        public static bool intersect( Label label, Label edgeLabel )
+        public static bool Intersect( Label label, Label edgeLabel )
         {
             bool hasIntersection = false;
             bool labelIsSet = label.IsSet;
@@ -445,7 +445,7 @@ namespace Antlr3.Analysis
                 hasIntersection = true;
             }
             else if ( labelIsSet && edgeIsSet &&
-                      !edgeLabel.Set.and( label.Set ).isNil() )
+                      !edgeLabel.Set.and( label.Set ).IsNil )
             {
                 hasIntersection = true;
             }

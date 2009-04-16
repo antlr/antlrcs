@@ -1,4 +1,4 @@
-// $ANTLR 3.1.2 Grammars\\CodeGenTreeWalker.g3 2009-04-10 17:42:48
+// $ANTLR 3.1.2 Grammars\\CodeGenTreeWalker.g3 2009-04-16 17:15:31
 
 // The variable 'variable' is assigned but its value is never used.
 #pragma warning disable 219
@@ -3419,9 +3419,9 @@ public partial class CodeGenTreeWalker : TreeParser
 			if ( state.backtracking == 0 )
 			{
 				retval.code = templates.GetInstanceOf("tree");
-				NFAState afterDOWN = (NFAState)((GrammarAST)retval.start).NFATreeDownState.getTransition(0).target;
+				NFAState afterDOWN = (NFAState)((GrammarAST)retval.start).NFATreeDownState.GetTransition(0).target;
 				LookaheadSet s = grammar.LOOK(afterDOWN);
-				if ( s.member(Label.UP) ) {
+				if ( s.Member(Label.UP) ) {
 					// nullable child list if we can see the UP as the next token
 					// we need an "if ( input.LA(1)==Token.DOWN )" gate around
 					// the child list.

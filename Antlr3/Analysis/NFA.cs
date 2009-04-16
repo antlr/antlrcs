@@ -71,17 +71,17 @@ namespace Antlr3.Analysis
         }
         #endregion
 
-        public int getNewNFAStateNumber()
+        public int GetNewNFAStateNumber()
         {
             return grammar.composite.getNewNFAStateNumber();
         }
 
-        public void addState( NFAState state )
+        public void AddState( NFAState state )
         {
             grammar.composite.addState( state );
         }
 
-        public NFAState getState( int s )
+        public NFAState GetState( int s )
         {
             return grammar.composite.getState( s );
         }

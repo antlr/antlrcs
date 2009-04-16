@@ -95,9 +95,9 @@ namespace Antlr3.Tool
         public virtual NFAState newState()
         {
             NFAState n = new NFAState( nfa );
-            int state = nfa.getNewNFAStateNumber();
+            int state = nfa.GetNewNFAStateNumber();
             n.stateNumber = state;
-            nfa.addState( n );
+            nfa.AddState( n );
             n.enclosingRule = currentRule;
             return n;
         }
@@ -118,7 +118,7 @@ namespace Antlr3.Tool
                 // if it's a block element, jump over it and continue
                 if ( s.endOfBlockStateNumber != State.INVALID_STATE_NUMBER )
                 {
-                    s = nfa.getState( s.endOfBlockStateNumber );
+                    s = nfa.GetState( s.endOfBlockStateNumber );
                     continue;
                 }
                 Transition t = s.transition[0];
@@ -137,7 +137,7 @@ namespace Antlr3.Tool
                     if ( epsilonTarget.endOfBlockStateNumber == State.INVALID_STATE_NUMBER &&
                          epsilonTarget.transition[0] != null )
                     {
-                        s.setTransition0( epsilonTarget.transition[0] );
+                        s.SetTransition0( epsilonTarget.transition[0] );
                         //System.Console.Out.WriteLine( "### opt " + s.stateNumber + "->" + epsilonTarget.transition[0].target.stateNumber );
                     }
                 }
@@ -174,7 +174,7 @@ namespace Antlr3.Tool
             right.associatedASTNode = associatedAST;
             Label label = new Label( set );
             Transition e = new Transition( label, right );
-            left.addTransition( e );
+            left.AddTransition( e );
             StateCluster g = new StateCluster( left, right );
             return g;
         }
@@ -204,7 +204,7 @@ namespace Antlr3.Tool
             NFAState right = newState();
             Label label = new Label( IntervalSet.of( a, b ) );
             Transition e = new Transition( label, right );
-            left.addTransition( e );
+            left.AddTransition( e );
             StateCluster g = new StateCluster( left, right );
             return g;
         }
@@ -282,7 +282,7 @@ namespace Antlr3.Tool
             NFAState right = newState();
             //right.Description = "NFAState following ref to " + ruleStart.Description;
             Transition e = new RuleClosureTransition( refDef, ruleStart, right );
-            left.addTransition( e );
+            left.AddTransition( e );
             StateCluster g = new StateCluster( left, right );
             return g;
         }
@@ -311,7 +311,7 @@ namespace Antlr3.Tool
             NFAState left = newState();
             NFAState right = newState();
             Transition e = new Transition( new PredicateLabel( pred ), right );
-            left.addTransition( e );
+            left.AddTransition( e );
             StateCluster g = new StateCluster( left, right );
             return g;
         }
@@ -326,7 +326,7 @@ namespace Antlr3.Tool
             NFAState left = newState();
             NFAState right = newState();
             Transition e = new Transition( new ActionLabel( action ), right );
-            left.addTransition( e );
+            left.AddTransition( e );
             return new StateCluster( left, right );
         }
 
@@ -374,7 +374,7 @@ namespace Antlr3.Tool
             //                              " loop on end of state " + endNFAState.Description +
             //                              " to state " + end.stateNumber );
             Transition toEnd = new Transition( label, end );
-            endNFAState.addTransition( toEnd );
+            endNFAState.AddTransition( toEnd );
         }
 
         /** From A B build A-e->B (that is, build an epsilon arc from right
@@ -747,7 +747,7 @@ namespace Antlr3.Tool
             right.associatedASTNode = associatedAST;
             Label label = new Label( nfa.grammar.TokenTypes ); // char or tokens
             Transition e = new Transition( label, right );
-            left.addTransition( e );
+            left.AddTransition( e );
             StateCluster g = new StateCluster( left, right );
             return g;
         }
@@ -790,12 +790,12 @@ namespace Antlr3.Tool
         protected virtual IIntSet getCollapsedBlockAsSet( State blk )
         {
             State s0 = blk;
-            if ( s0 != null && s0.getTransition( 0 ) != null )
+            if ( s0 != null && s0.GetTransition( 0 ) != null )
             {
-                State s1 = s0.getTransition( 0 ).target;
-                if ( s1 != null && s1.getTransition( 0 ) != null )
+                State s1 = s0.GetTransition( 0 ).target;
+                if ( s1 != null && s1.GetTransition( 0 ) != null )
                 {
-                    Label label = s1.getTransition( 0 ).label;
+                    Label label = s1.GetTransition( 0 ).label;
                     if ( label.IsSet )
                     {
                         return label.Set;
@@ -808,7 +808,7 @@ namespace Antlr3.Tool
         private void transitionBetweenStates( NFAState a, NFAState b, int label )
         {
             Transition e = new Transition( label, b );
-            a.addTransition( e );
+            a.AddTransition( e );
         }
     }
 }

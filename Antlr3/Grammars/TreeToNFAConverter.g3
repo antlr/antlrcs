@@ -147,13 +147,13 @@ rule
 					Rule thisR = grammar.getLocallyDefinedRule(currentRuleName);
 					NFAState start = thisR.startState;
 					start.associatedASTNode = $id;
-					start.addTransition(new Transition(Label.EPSILON, g.left));
+					start.AddTransition(new Transition(Label.EPSILON, g.left));
 
 					// track decision if > 1 alts
 					if ( grammar.getNumberOfAltsForDecisionNFA(g.left)>1 )
 					{
 						g.left.Description = grammar.grammarTreeToString($start,false);
-						g.left.setDecisionASTNode($b.start);
+						g.left.SetDecisionASTNode($b.start);
 						int d = grammar.assignDecisionNumber( g.left );
 						grammar.setDecisionNFA( d, g.left );
 						grammar.setDecisionBlockAST(d, $b.start);
@@ -161,7 +161,7 @@ rule
 
 					// hook to end of rule node
 					NFAState end = thisR.stopState;
-					g.right.addTransition(new Transition(Label.EPSILON,end));
+					g.right.AddTransition(new Transition(Label.EPSILON,end));
 				}
 			}
 		)
@@ -292,7 +292,7 @@ ebnf returns [StateCluster g=null]
 			if ( grammar.getNumberOfAltsForDecisionNFA($b.g.left)>1 )
 			{
 				$b.g.left.Description = grammar.grammarTreeToString(blk,false);
-				$b.g.left.setDecisionASTNode(blk);
+				$b.g.left.SetDecisionASTNode(blk);
 				int d = grammar.assignDecisionNumber( $b.g.left );
 				grammar.setDecisionNFA( d, $b.g.left );
 				grammar.setDecisionBlockAST(d, blk);
@@ -314,7 +314,7 @@ ebnf returns [StateCluster g=null]
 			int d = grammar.assignDecisionNumber( $g.left );
 			grammar.setDecisionNFA(d, $g.left);
 			grammar.setDecisionBlockAST(d, blk);
-			$g.left.setDecisionASTNode($start);
+			$g.left.SetDecisionASTNode($start);
 		}
 	|	^( CLOSURE b=block )
 		{
@@ -329,13 +329,13 @@ ebnf returns [StateCluster g=null]
 			int d = grammar.assignDecisionNumber( bg.right );
 			grammar.setDecisionNFA(d, bg.right);
 			grammar.setDecisionBlockAST(d, blk);
-			bg.right.setDecisionASTNode(eob);
+			bg.right.SetDecisionASTNode(eob);
 			// make block entry state also have same decision for interpreting grammar
-			NFAState altBlockState = (NFAState)$g.left.getTransition(0).target;
-			altBlockState.setDecisionASTNode($start);
+			NFAState altBlockState = (NFAState)$g.left.GetTransition(0).target;
+			altBlockState.SetDecisionASTNode($start);
 			altBlockState.DecisionNumber = d;
 			$g.left.DecisionNumber = d; // this is the bypass decision (2 alts)
-			$g.left.setDecisionASTNode($start);
+			$g.left.SetDecisionASTNode($start);
 		}
 	|	^( POSITIVE_CLOSURE b=block )
 		{
@@ -351,10 +351,10 @@ ebnf returns [StateCluster g=null]
 			int d = grammar.assignDecisionNumber( bg.right );
 			grammar.setDecisionNFA(d, bg.right);
 			grammar.setDecisionBlockAST(d, blk);
-			bg.right.setDecisionASTNode(eob);
+			bg.right.SetDecisionASTNode(eob);
 			// make block entry state also have same decision for interpreting grammar
-			NFAState altBlockState = (NFAState)$g.left.getTransition(0).target;
-			altBlockState.setDecisionASTNode($start);
+			NFAState altBlockState = (NFAState)$g.left.GetTransition(0).target;
+			altBlockState.SetDecisionASTNode($start);
 			altBlockState.DecisionNumber = d;
 		}
 	;
@@ -398,7 +398,7 @@ atom_or_notatom returns [StateCluster g=null]
 						ttype = grammar.getTokenType($c.text);
 					}
 					IIntSet notAtom = grammar.complement(ttype);
-					if ( notAtom.isNil() )
+					if ( notAtom.IsNil )
 					{
 						ErrorManager.grammarError(
 							ErrorManager.MSG_EMPTY_COMPLEMENT,
@@ -433,7 +433,7 @@ atom_or_notatom returns [StateCluster g=null]
 						ttype = grammar.getTokenType($t.text);
 						notAtom = grammar.complement(ttype);
 					}
-					if ( notAtom==null || notAtom.isNil() )
+					if ( notAtom==null || notAtom.IsNil )
 					{
 						ErrorManager.grammarError(
 							ErrorManager.MSG_EMPTY_COMPLEMENT,
@@ -453,7 +453,7 @@ atom_or_notatom returns [StateCluster g=null]
 					// let code gen do the complement again; here we compute
 					// for NFA construction
 					s = grammar.complement(s);
-					if ( s.isNil() )
+					if ( s.IsNil )
 					{
 						ErrorManager.grammarError(
 							ErrorManager.MSG_EMPTY_COMPLEMENT,
@@ -477,7 +477,7 @@ atom[string scopeName] returns [StateCluster g=null]
 				$g = factory.build_RuleRef(rr, start);
 				r.followingNFAState = $g.right;
 				r._nfaStartState = $g.left;
-				if ( $g.left.getTransition(0) is RuleClosureTransition
+				if ( $g.left.GetTransition(0) is RuleClosureTransition
 					&& grammar.type!=Grammar.LEXER )
 				{
 					addFollowTransition($r.text, $g.right);
@@ -675,7 +675,7 @@ setElement[IIntSet elements]
 
 	|	gset=set
 		{
-			Transition setTrans = $gset.g.left.getTransition(0);
+			Transition setTrans = $gset.g.left.GetTransition(0);
 			elements.addAll(setTrans.label.Set);
 		}
 

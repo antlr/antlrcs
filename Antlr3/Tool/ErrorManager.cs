@@ -868,13 +868,13 @@ namespace Antlr3.Tool
 
         public static bool doNotAttemptAnalysis()
         {
-            return !getErrorState().errorMsgIDs.and( ERRORS_FORCING_NO_ANALYSIS ).isNil();
+            return !getErrorState().errorMsgIDs.and( ERRORS_FORCING_NO_ANALYSIS ).IsNil;
         }
 
         public static bool doNotAttemptCodeGen()
         {
             return doNotAttemptAnalysis() ||
-                   !getErrorState().errorMsgIDs.and( ERRORS_FORCING_NO_CODEGEN ).isNil();
+                   !getErrorState().errorMsgIDs.and( ERRORS_FORCING_NO_CODEGEN ).IsNil;
         }
 
         /** Return first non ErrorManager code location for generating messages */

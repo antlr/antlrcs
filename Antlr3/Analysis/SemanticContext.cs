@@ -84,7 +84,7 @@ namespace Antlr3.Analysis
         /** Generate an expression that will evaluate the semantic context,
          *  given a set of output templates.
          */
-        public abstract StringTemplate genExpr( CodeGenerator generator,
+        public abstract StringTemplate GenExpr( CodeGenerator generator,
                                                StringTemplateGroup templates,
                                                DFA dfa );
 
@@ -94,7 +94,7 @@ namespace Antlr3.Analysis
         }
 
         /** Notify the indicated grammar of any syn preds used within this context */
-        public virtual void trackUseOfSyntacticPredicates( Grammar g )
+        public virtual void TrackUseOfSyntacticPredicates( Grammar g )
         {
         }
 
@@ -176,7 +176,7 @@ namespace Antlr3.Analysis
                 return predicateAST.Text.GetHashCode();
             }
 
-            public override StringTemplate genExpr( CodeGenerator generator,
+            public override StringTemplate GenExpr( CodeGenerator generator,
                                           StringTemplateGroup templates,
                                           DFA dfa )
             {
@@ -244,7 +244,7 @@ namespace Antlr3.Analysis
                 }
             }
 
-            public override void trackUseOfSyntacticPredicates( Grammar g )
+            public override void TrackUseOfSyntacticPredicates( Grammar g )
             {
                 if ( _synpred )
                 {
@@ -269,7 +269,7 @@ namespace Antlr3.Analysis
                 this.constantValue = TruePred;
             }
 
-            public override StringTemplate genExpr( CodeGenerator generator,
+            public override StringTemplate GenExpr( CodeGenerator generator,
                                           StringTemplateGroup templates,
                                           DFA dfa )
             {
@@ -293,7 +293,7 @@ namespace Antlr3.Analysis
             {
                 this.constantValue = FalsePred;
             }
-            public StringTemplate genExpr( CodeGenerator generator,
+            public StringTemplate GenExpr( CodeGenerator generator,
                                           StringTemplateGroup templates,
                                           DFA dfa )
             {
@@ -320,7 +320,7 @@ namespace Antlr3.Analysis
                 this._left = a;
                 this._right = b;
             }
-            public override StringTemplate genExpr( CodeGenerator generator,
+            public override StringTemplate GenExpr( CodeGenerator generator,
                                           StringTemplateGroup templates,
                                           DFA dfa )
             {
@@ -333,8 +333,8 @@ namespace Antlr3.Analysis
                 {
                     eST = new StringTemplate( "($left$&&$right$)" );
                 }
-                eST.SetAttribute( "left", _left.genExpr( generator, templates, dfa ) );
-                eST.SetAttribute( "right", _right.genExpr( generator, templates, dfa ) );
+                eST.SetAttribute( "left", _left.GenExpr( generator, templates, dfa ) );
+                eST.SetAttribute( "right", _right.GenExpr( generator, templates, dfa ) );
                 return eST;
             }
             public override SemanticContext GatedPredicateContext
@@ -361,10 +361,10 @@ namespace Antlr3.Analysis
                     return _left.IsSyntacticPredicate || _right.IsSyntacticPredicate;
                 }
             }
-            public override void trackUseOfSyntacticPredicates( Grammar g )
+            public override void TrackUseOfSyntacticPredicates( Grammar g )
             {
-                _left.trackUseOfSyntacticPredicates( g );
-                _right.trackUseOfSyntacticPredicates( g );
+                _left.TrackUseOfSyntacticPredicates( g );
+                _right.TrackUseOfSyntacticPredicates( g );
             }
             public override string ToString()
             {
@@ -396,7 +396,7 @@ namespace Antlr3.Analysis
                     _operands.Add( b );
                 }
             }
-            public override StringTemplate genExpr( CodeGenerator generator,
+            public override StringTemplate GenExpr( CodeGenerator generator,
                                           StringTemplateGroup templates,
                                           DFA dfa )
             {
@@ -411,7 +411,7 @@ namespace Antlr3.Analysis
                 }
                 foreach ( SemanticContext semctx in _operands )
                 {
-                    eST.SetAttribute( "operands", semctx.genExpr( generator, templates, dfa ) );
+                    eST.SetAttribute( "operands", semctx.GenExpr( generator, templates, dfa ) );
                 }
                 return eST;
             }
@@ -446,11 +446,11 @@ namespace Antlr3.Analysis
                     return false;
                 }
             }
-            public override void trackUseOfSyntacticPredicates( Grammar g )
+            public override void TrackUseOfSyntacticPredicates( Grammar g )
             {
                 foreach ( SemanticContext semctx in _operands )
                 {
-                    semctx.trackUseOfSyntacticPredicates( g );
+                    semctx.TrackUseOfSyntacticPredicates( g );
                 }
             }
             public override string ToString()
@@ -479,7 +479,7 @@ namespace Antlr3.Analysis
             {
                 this.ctx = ctx;
             }
-            public override StringTemplate genExpr( CodeGenerator generator,
+            public override StringTemplate GenExpr( CodeGenerator generator,
                                           StringTemplateGroup templates,
                                           DFA dfa )
             {
@@ -492,7 +492,7 @@ namespace Antlr3.Analysis
                 {
                     eST = new StringTemplate( "?!($pred$)" );
                 }
-                eST.SetAttribute( "pred", ctx.genExpr( generator, templates, dfa ) );
+                eST.SetAttribute( "pred", ctx.GenExpr( generator, templates, dfa ) );
                 return eST;
             }
             public override SemanticContext GatedPredicateContext
@@ -514,9 +514,9 @@ namespace Antlr3.Analysis
                     return ctx.IsSyntacticPredicate;
                 }
             }
-            public override void trackUseOfSyntacticPredicates( Grammar g )
+            public override void TrackUseOfSyntacticPredicates( Grammar g )
             {
-                ctx.trackUseOfSyntacticPredicates( g );
+                ctx.TrackUseOfSyntacticPredicates( g );
             }
 
             public override bool Equals( object @object )

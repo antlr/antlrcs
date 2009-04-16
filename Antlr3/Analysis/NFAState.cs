@@ -169,7 +169,7 @@ namespace Antlr3.Analysis
             }
         }
 
-        public override void addTransition( Transition e )
+        public override void AddTransition( Transition e )
         {
             if ( e == null )
             {
@@ -200,7 +200,7 @@ namespace Antlr3.Analysis
         /** Used during optimization to reset a state to have the (single)
          *  transition another state has.
          */
-        public void setTransition0( Transition e )
+        public void SetTransition0( Transition e )
         {
             if ( e == null )
             {
@@ -211,7 +211,7 @@ namespace Antlr3.Analysis
             _numTransitions = 1;
         }
 
-        public override Transition getTransition( int i )
+        public override Transition GetTransition( int i )
         {
             return transition[i];
         }
@@ -242,7 +242,7 @@ namespace Antlr3.Analysis
          *
          *  Return same alt if we can't translate.
          */
-        public int translateDisplayAltToWalkAlt( int displayAlt )
+        public int TranslateDisplayAltToWalkAlt( int displayAlt )
         {
             NFAState nfaStart = this;
             if ( _decisionNumber == 0 || decisionStateType == 0 )
@@ -288,7 +288,7 @@ namespace Antlr3.Analysis
         /** What AST node is associated with this NFAState?  When you
          *  set the AST node, I set the node to point back to this NFA state.
          */
-        public void setDecisionASTNode( GrammarAST decisionASTNode )
+        public void SetDecisionASTNode( GrammarAST decisionASTNode )
         {
             decisionASTNode.NFAStartState = this;
             this.associatedASTNode = decisionASTNode;

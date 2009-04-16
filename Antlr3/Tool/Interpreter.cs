@@ -291,7 +291,7 @@ namespace Antlr3.Tool
                     }
                     input.Rewind( m );
                     int parseAlt =
-                        s.translateDisplayAltToWalkAlt( predictedAlt );
+                        s.TranslateDisplayAltToWalkAlt( predictedAlt );
                     //if ( s.nfa.grammar.type != Grammar.LEXER )
                     //{
                     //    Console.Out.WriteLine( "predicted alt " + predictedAlt + ", parseAlt " + parseAlt );
@@ -300,7 +300,7 @@ namespace Antlr3.Tool
                     if ( parseAlt > s.nfa.grammar.getNumberOfAltsForDecisionNFA( s ) )
                     {
                         // implied branch of loop etc...
-                        alt = s.nfa.grammar.nfa.getState( s.endOfBlockStateNumber );
+                        alt = s.nfa.grammar.nfa.GetState( s.endOfBlockStateNumber );
                     }
                     else
                     {
@@ -373,7 +373,7 @@ namespace Antlr3.Tool
                 }
 
                 // CASE 4: match label on transition
-                else if ( label.matches( t ) )
+                else if ( label.Matches( t ) )
                 {
                     if ( actions != null )
                     {
@@ -458,9 +458,9 @@ namespace Antlr3.Tool
                 // for each edge of s, look for intersection with current char
                 for ( int i = 0; i < s.NumberOfTransitions; i++ )
                 {
-                    Transition t = s.transition( i );
+                    Transition t = s.Transition( i );
                     // special case: EOT matches any char
-                    if ( t.label.matches( c ) )
+                    if ( t.label.Matches( c ) )
                     {
                         // take transition i
                         s = (DFAState)t.target;
@@ -488,7 +488,7 @@ namespace Antlr3.Tool
             // woohoo!  We know which alt to predict
             // nothing emanates from a stop state; must terminate anyway
             //Console.Out.WriteLine( "DFA stop state " + s.stateNumber + " predicts " + s.getUniquelyPredictedAlt() );
-            return s.getUniquelyPredictedAlt();
+            return s.GetUniquelyPredictedAlt();
         }
 
         public virtual void reportScanError( RecognitionException re )

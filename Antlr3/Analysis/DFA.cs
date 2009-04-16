@@ -243,16 +243,16 @@ namespace Antlr3.Analysis
             nfa = decisionStartState.nfa;
             _nAlts = nfa.grammar.getNumberOfAltsForDecisionNFA( decisionStartState );
             //setOptions( nfa.grammar.getDecisionOptions(getDecisionNumber()) );
-            initAltRelatedInfo();
+            InitAltRelatedInfo();
 
             //long start = JSystem.currentTimeMillis();
             _nfaConverter = new NFAToDFAConverter( this );
             try
             {
-                _nfaConverter.convert();
+                _nfaConverter.Convert();
 
                 // figure out if there are problems with decision
-                verify();
+                Verify();
 
                 if ( !probe.IsDeterministic || probe.AnalysisOverflowed )
                 {
@@ -262,7 +262,7 @@ namespace Antlr3.Analysis
                 // must be after verify as it computes cyclic, needed by this routine
                 // should be after warnings because early termination or something
                 // will not allow the reset to operate properly in some cases.
-                resetStateNumbersToBeContiguous();
+                ResetStateNumbersToBeContiguous();
 
                 //long stop = JSystem.currentTimeMillis();
                 //JSystem.@out.println("verify cost: "+(int)(stop-start)+" ms");
@@ -307,9 +307,13 @@ namespace Antlr3.Analysis
         {
             get
             {
-                return getAutoBacktrackMode();
+                return GetAutoBacktrackMode();
             }
         }
+        /** What GrammarAST node (derived from the grammar) is this DFA
+         *  associated with?  It will point to the start of a block or
+         *  the loop back of a (...)+ block etc...
+         */
         public GrammarAST DecisionASTNode
         {
             get
@@ -331,6 +335,12 @@ namespace Antlr3.Analysis
                 return _description;
             }
         }
+        /** Is this DFA cyclic?  That is, are there any loops?  If not, then
+         *  the DFA is essentially an LL(k) predictor for some fixed, max k value.
+         *  We can build a series of nested IF statements to match this.  In the
+         *  presence of cycles, we need to build a general DFA and interpret it
+         *  to distinguish between alternatives.
+         */
         public bool IsCyclic
         {
             get
@@ -342,9 +352,14 @@ namespace Antlr3.Analysis
         {
             get
             {
-                return isGreedy();
+                return GetIsGreedy();
             }
         }
+        /** Is the DFA reduced?  I.e., does every state have a path to an accept
+         *  state?  If not, don't delete as we need to generate an error indicating
+         *  which paths are "dead ends".  Also tracks list of alts with no accept
+         *  state in the DFA.  Must call verify() first before this makes sense.
+         */
         public bool IsReduced
         {
             get
@@ -356,9 +371,10 @@ namespace Antlr3.Analysis
         {
             get
             {
-                return isTokensRuleDecision();
+                return GetIsTokensRuleDecision();
             }
         }
+        /** Return k if decision is LL(k) for some k else return max int */
         public int MaxLookaheadDepth
         {
             get
@@ -370,6 +386,9 @@ namespace Antlr3.Analysis
                 return max_k;
             }
         }
+        /** What is the max state number ever created?  This may be beyond
+         *  getNumberOfStates().
+         */
         public int MaxStateNumber
         {
             get
@@ -415,14 +434,14 @@ namespace Antlr3.Analysis
         {
             get
             {
-                return okToRetryDFAWithK1();
+                return OkToRetryDFAWithK1();
             }
         }
         public string ReasonForFailure
         {
             get
             {
-                return getReasonForFailure();
+                return GetReasonForFailure();
             }
         }
         public IList<StringTemplate> SpecialStateSTs
@@ -439,6 +458,10 @@ namespace Antlr3.Analysis
                 return _uniqueStates;
             }
         }
+        /** Return a list of Integer alt numbers for which no lookahead could
+         *  be computed or for which no single DFA accept state predicts those
+         *  alts.  Must call verify() first before this makes sense.
+         */
         public List<int> UnreachableAlts
         {
             get
@@ -454,7 +477,7 @@ namespace Antlr3.Analysis
         {
             get
             {
-                return getUserMaxLookahead();
+                return GetUserMaxLookahead();
             }
         }
         #endregion
@@ -473,7 +496,7 @@ namespace Antlr3.Analysis
          *  of state numbers from all states should represent a contiguous range
          *  from 0..n-1 where n is the number of unique states.
          */
-        public virtual void resetStateNumbersToBeContiguous()
+        public virtual void ResetStateNumbersToBeContiguous()
         {
             if ( UserMaxLookahead > 0 )
             {
@@ -486,7 +509,7 @@ namespace Antlr3.Analysis
             int snum = 0;
             for ( int i = 0; i <= MaxStateNumber; i++ )
             {
-                DFAState s = getState( i );
+                DFAState s = GetState( i );
                 // some states are unused after creation most commonly due to cycles
                 // or conflict resolution.
                 if ( s == null )
@@ -519,31 +542,31 @@ namespace Antlr3.Analysis
         // or even consistently formatted strings acceptable to java that
         // I am forced to build the individual char elements here
 
-        public virtual List<string> getJavaCompressedAccept()
+        public virtual List<string> GetJavaCompressedAccept()
         {
-            return getRunLengthEncoding( _accept );
+            return GetRunLengthEncoding( _accept );
         }
-        public virtual List<string> getJavaCompressedEOT()
+        public virtual List<string> GetJavaCompressedEOT()
         {
-            return getRunLengthEncoding( _eot );
+            return GetRunLengthEncoding( _eot );
         }
-        public virtual List<string> getJavaCompressedEOF()
+        public virtual List<string> GetJavaCompressedEOF()
         {
-            return getRunLengthEncoding( _eof );
+            return GetRunLengthEncoding( _eof );
         }
-        public virtual List<string> getJavaCompressedMin()
+        public virtual List<string> GetJavaCompressedMin()
         {
-            return getRunLengthEncoding( _min );
+            return GetRunLengthEncoding( _min );
         }
-        public virtual List<string> getJavaCompressedMax()
+        public virtual List<string> GetJavaCompressedMax()
         {
-            return getRunLengthEncoding( _max );
+            return GetRunLengthEncoding( _max );
         }
-        public virtual List<string> getJavaCompressedSpecial()
+        public virtual List<string> GetJavaCompressedSpecial()
         {
-            return getRunLengthEncoding( _special );
+            return GetRunLengthEncoding( _special );
         }
-        public virtual List<List<string>> getJavaCompressedTransition()
+        public virtual List<List<string>> GetJavaCompressedTransition()
         {
             if ( _transition == null || _transition.Length == 0 )
             {
@@ -554,7 +577,7 @@ namespace Antlr3.Analysis
             for ( int i = 0; i < _transition.Length; i++ )
             {
                 var transitionsForState = _transition[i];
-                encoded.Add( getRunLengthEncoding( transitionsForState ) );
+                encoded.Add( GetRunLengthEncoding( transitionsForState ) );
             }
             return encoded;
         }
@@ -569,7 +592,7 @@ namespace Antlr3.Analysis
          *  and \uFFFF for 16bit.  Hideous and specific to Java, but it is the
          *  only target bad enough to need it.
          */
-        public virtual List<string> getRunLengthEncoding( int[] data )
+        public virtual List<string> GetRunLengthEncoding( int[] data )
         {
             if ( data == null || data.Length == 0 )
             {
@@ -616,7 +639,7 @@ namespace Antlr3.Analysis
             return encoded;
         }
 
-        public virtual void createStateTables( CodeGenerator generator )
+        public virtual void CreateStateTables( CodeGenerator generator )
         {
             //JSystem.@out.println("createTables:\n"+this);
             this._generator = generator;
@@ -671,14 +694,14 @@ namespace Antlr3.Analysis
                 if ( s.IsAcceptState )
                 {
                     // can't compute min,max,special,transition on accepts
-                    _accept[s.stateNumber] = s.getUniquelyPredictedAlt();
+                    _accept[s.stateNumber] = s.GetUniquelyPredictedAlt();
                 }
                 else
                 {
-                    createMinMaxTables( s );
-                    createTransitionTableEntryForState( s );
-                    createSpecialTable( s );
-                    createEOTAndEOFTables( s );
+                    CreateMinMaxTables( s );
+                    CreateTransitionTableEntryForState( s );
+                    CreateSpecialTable( s );
+                    CreateEOTAndEOFTables( s );
                 }
             }
 
@@ -708,7 +731,7 @@ namespace Antlr3.Analysis
         }
 
 #if false
-        private void testEncodeDecode( int[] data )
+        private void TestEncodeDecode( int[] data )
         {
             JSystem.@out.println( "data=" + data );
             var encoded = getRunLengthEncoding( data );
@@ -743,13 +766,13 @@ namespace Antlr3.Analysis
         }
 #endif
 
-        protected virtual void createMinMaxTables( DFAState s )
+        protected virtual void CreateMinMaxTables( DFAState s )
         {
             int smin = Label.MAX_CHAR_VALUE + 1;
             int smax = Label.MIN_ATOM_VALUE - 1;
             for ( int j = 0; j < s.NumberOfTransitions; j++ )
             {
-                Transition edge = (Transition)s.transition( j );
+                Transition edge = (Transition)s.Transition( j );
                 Label label = edge.label;
                 if ( label.IsAtom )
                 {
@@ -797,7 +820,7 @@ namespace Antlr3.Analysis
             }
         }
 
-        protected virtual void createTransitionTableEntryForState( DFAState s )
+        protected virtual void CreateTransitionTableEntryForState( DFAState s )
         {
             /*
             JSystem.@out.println("createTransitionTableEntryForState s"+s.stateNumber+
@@ -813,7 +836,7 @@ namespace Antlr3.Analysis
             _transition[s.stateNumber] = stateTransitions;
             for ( int j = 0; j < s.NumberOfTransitions; j++ )
             {
-                Transition edge = s.transition( j );
+                Transition edge = s.Transition( j );
                 Label label = edge.label;
                 if ( label.IsAtom && label.Atom >= Label.MIN_CHAR_VALUE )
                 {
@@ -850,11 +873,11 @@ namespace Antlr3.Analysis
         /** Set up the EOT and EOF tables; we cannot put -1 min/max values so
          *  we need another way to test that in the DFA transition function.
          */
-        protected virtual void createEOTAndEOFTables( DFAState s )
+        protected virtual void CreateEOTAndEOFTables( DFAState s )
         {
             for ( int j = 0; j < s.NumberOfTransitions; j++ )
             {
-                Transition edge = s.transition( j );
+                Transition edge = s.Transition( j );
                 Label label = edge.label;
                 if ( label.IsAtom )
                 {
@@ -884,7 +907,7 @@ namespace Antlr3.Analysis
             }
         }
 
-        protected virtual void createSpecialTable( DFAState s )
+        protected virtual void CreateSpecialTable( DFAState s )
         {
             // number all special states from 0...n-1 instead of their usual numbers
             bool hasSemPred = false;
@@ -892,12 +915,12 @@ namespace Antlr3.Analysis
             // TODO this code is very similar to canGenerateSwitch.  Refactor to share
             for ( int j = 0; j < s.NumberOfTransitions; j++ )
             {
-                Transition edge = (Transition)s.transition( j );
+                Transition edge = (Transition)s.Transition( j );
                 Label label = edge.label;
                 // can't do a switch if the edges have preds or are going to
                 // require gated predicates
                 if ( label.IsSemanticPredicate ||
-                     ( (DFAState)edge.target ).getGatedPredicatesInNFAConfigurations() != null )
+                     ( (DFAState)edge.target ).GetGatedPredicatesInNFAConfigurations() != null )
                 {
                     hasSemPred = true;
                     break;
@@ -918,7 +941,7 @@ namespace Antlr3.Analysis
             }
         }
 
-        public virtual int predict( IIntStream input )
+        public virtual int Predict( IIntStream input )
         {
             Interpreter interp = new Interpreter( nfa.grammar, input );
             return interp.predict( this );
@@ -931,7 +954,7 @@ namespace Antlr3.Analysis
          *  don't updated uniqueStates, just return incoming state, which
          *  indicates it's a new state.
          */
-        protected internal virtual DFAState addState( DFAState d )
+        protected internal virtual DFAState AddState( DFAState d )
         {
             if ( UserMaxLookahead > 0 )
             {
@@ -956,7 +979,7 @@ namespace Antlr3.Analysis
             return d;
         }
 
-        public void removeState( DFAState d )
+        public void RemoveState( DFAState d )
         {
             DFAState it;
             if ( _uniqueStates.TryGetValue( d, out it ) )
@@ -969,62 +992,18 @@ namespace Antlr3.Analysis
             }
         }
 
-        [Obsolete]
-        public IDictionary<DFAState, DFAState> getUniqueStates()
-        {
-            return UniqueStates;
-        }
-
-        /** What is the max state number ever created?  This may be beyond
-         *  getNumberOfStates().
-         */
-        [Obsolete]
-        public int getMaxStateNumber()
-        {
-            return MaxStateNumber;
-        }
-
-        public virtual DFAState getState( int stateNumber )
+        public virtual DFAState GetState( int stateNumber )
         {
             return (DFAState)_states[stateNumber];
         }
 
-        public virtual void setState( int stateNumber, DFAState d )
+        public virtual void SetState( int stateNumber, DFAState d )
         {
             _states[stateNumber] = d;
         }
 
-        /** Is the DFA reduced?  I.e., does every state have a path to an accept
-         *  state?  If not, don't delete as we need to generate an error indicating
-         *  which paths are "dead ends".  Also tracks list of alts with no accept
-         *  state in the DFA.  Must call verify() first before this makes sense.
-         */
-        [Obsolete]
-        public virtual bool isReduced()
-        {
-            return IsReduced;
-        }
-
-        /** Is this DFA cyclic?  That is, are there any loops?  If not, then
-         *  the DFA is essentially an LL(k) predictor for some fixed, max k value.
-         *  We can build a series of nested IF statements to match this.  In the
-         *  presence of cycles, we need to build a general DFA and interpret it
-         *  to distinguish between alternatives.
-         */
-        [Obsolete]
-        public virtual bool isCyclic()
-        {
-            return IsCyclic;
-        }
-
-        [Obsolete]
-        public virtual bool canInlineDecision()
-        {
-            return CanInlineDecision;
-        }
-
         /** Is this DFA derived from the NFA for the Tokens rule? */
-        public virtual bool isTokensRuleDecision()
+        public virtual bool GetIsTokensRuleDecision()
         {
             if ( nfa.grammar.type != Grammar.LEXER )
             {
@@ -1042,7 +1021,7 @@ namespace Antlr3.Analysis
          *  DFA cycles are created when this value, k, is greater than 0.
          *  If this decision has no k lookahead specified, then try the grammar.
          */
-        public virtual int getUserMaxLookahead()
+        public virtual int GetUserMaxLookahead()
         {
             if ( _userK >= 0 )
             { // cache for speed
@@ -1052,31 +1031,14 @@ namespace Antlr3.Analysis
             return _userK;
         }
 
-        public virtual bool getAutoBacktrackMode()
+        public virtual bool GetAutoBacktrackMode()
         {
             return nfa.grammar.getAutoBacktrackMode( decisionNumber );
         }
 
-        public virtual void setUserMaxLookahead( int k )
+        public virtual void SetUserMaxLookahead( int k )
         {
             this._userK = k;
-        }
-
-        /** Return k if decision is LL(k) for some k else return max int */
-        [Obsolete]
-        public virtual int getMaxLookaheadDepth()
-        {
-            return MaxLookaheadDepth;
-        }
-
-        /** Return a list of Integer alt numbers for which no lookahead could
-         *  be computed or for which no single DFA accept state predicts those
-         *  alts.  Must call verify() first before this makes sense.
-         */
-        [Obsolete]
-        public virtual List<int> getUnreachableAlts()
-        {
-            return (List<int>)UnreachableAlts;
         }
 
         /** Once this DFA has been built, need to verify that:
@@ -1091,9 +1053,9 @@ namespace Antlr3.Analysis
          *
          *  This is avoided if analysis bails out for any reason.
          */
-        public virtual void verify()
+        public virtual void Verify()
         {
-            doesStateReachAcceptState( startState );
+            DoesStateReachAcceptState( startState );
         }
 
         /** figure out if this state eventually reaches an accept state and
@@ -1109,14 +1071,14 @@ namespace Antlr3.Analysis
          *
          *  TODO: I call getUniquelyPredicatedAlt too much; cache predicted alt
          */
-        protected virtual bool doesStateReachAcceptState( DFAState d )
+        protected virtual bool DoesStateReachAcceptState( DFAState d )
         {
             if ( d.IsAcceptState )
             {
                 // accept states have no edges emanating from them so we can return
                 d.AcceptStateReachable = REACHABLE_YES;
                 // this alt is uniquely predicted, remove from nondeterministic list
-                int predicts = d.getUniquelyPredictedAlt();
+                int predicts = d.GetUniquelyPredictedAlt();
                 _unreachableAlts.Remove( predicts );
                 return true;
             }
@@ -1130,7 +1092,7 @@ namespace Antlr3.Analysis
             // all transitions must be traversed to set status of each DFA state.
             for ( int i = 0; i < d.NumberOfTransitions; i++ )
             {
-                Transition t = d.transition( i );
+                Transition t = d.Transition( i );
                 DFAState edgeTarget = (DFAState)t.target;
                 int targetStatus = edgeTarget.AcceptStateReachable;
                 if ( targetStatus == REACHABLE_BUSY )
@@ -1148,7 +1110,7 @@ namespace Antlr3.Analysis
                     continue;
                 }
                 // target must be REACHABLE_UNKNOWN (i.e., unvisited)
-                if ( doesStateReachAcceptState( edgeTarget ) )
+                if ( DoesStateReachAcceptState( edgeTarget ) )
                 {
                     anEdgeReachesAcceptState = true;
                     // have to keep looking so don't break loop
@@ -1174,16 +1136,16 @@ namespace Antlr3.Analysis
          *  syntactic predicates that are not ever used such as those
          *  created by autobacktrack mode.
          */
-        public virtual void findAllGatedSynPredsUsedInDFAAcceptStates()
+        public virtual void FindAllGatedSynPredsUsedInDFAAcceptStates()
         {
             int nAlts = NumberOfAlts;
             for ( int i = 1; i <= nAlts; i++ )
             {
-                DFAState a = getAcceptState( i );
+                DFAState a = GetAcceptState( i );
                 //JSystem.@out.println("alt "+i+": "+a);
                 if ( a != null )
                 {
-                    HashSet<SemanticContext> synpreds = a.getGatedSyntacticPredicatesInNFAConfigurations();
+                    HashSet<SemanticContext> synpreds = a.GetGatedSyntacticPredicatesInNFAConfigurations();
                     if ( synpreds != null )
                     {
                         // add all the predicates we find (should be just one, right?)
@@ -1197,32 +1159,14 @@ namespace Antlr3.Analysis
             }
         }
 
-        [Obsolete]
-        public virtual NFAState getNFADecisionStartState()
-        {
-            return NFADecisionStartState;
-        }
-
-        public virtual DFAState getAcceptState( int alt )
+        public virtual DFAState GetAcceptState( int alt )
         {
             return _altToAcceptState[alt];
         }
 
-        public virtual void setAcceptState( int alt, DFAState acceptState )
+        public virtual void SetAcceptState( int alt, DFAState acceptState )
         {
             _altToAcceptState[alt] = acceptState;
-        }
-
-        [Obsolete]
-        public virtual String getDescription()
-        {
-            return Description;
-        }
-
-        [Obsolete]
-        public virtual int getDecisionNumber()
-        {
-            return DecisionNumber;
         }
 
         /** If this DFA failed to finish during construction, we might be
@@ -1232,7 +1176,7 @@ namespace Antlr3.Analysis
          *  cycle forever.  Timeout can retry with k=1 even if no predicate
          *  if k!=1.
          */
-        public virtual bool okToRetryDFAWithK1()
+        public virtual bool OkToRetryDFAWithK1()
         {
             bool nonLLStarOrOverflowAndPredicateVisible =
                 ( probe.IsNonLLStarDecision || probe.AnalysisOverflowed ) &&
@@ -1241,7 +1185,7 @@ namespace Antlr3.Analysis
                  ( AnalysisTimedOut || nonLLStarOrOverflowAndPredicateVisible );
         }
 
-        public virtual String getReasonForFailure()
+        public virtual string GetReasonForFailure()
         {
             StringBuilder buf = new StringBuilder();
             if ( probe.IsNonLLStarDecision )
@@ -1274,17 +1218,7 @@ namespace Antlr3.Analysis
             return buf.ToString();
         }
 
-        /** What GrammarAST node (derived from the grammar) is this DFA
-         *  associated with?  It will point to the start of a block or
-         *  the loop back of a (...)+ block etc...
-         */
-        [Obsolete]
-        public virtual GrammarAST getDecisionASTNode()
-        {
-            return DecisionASTNode;
-        }
-
-        public virtual bool isGreedy()
+        public virtual bool GetIsGreedy()
         {
             GrammarAST blockAST = nfa.grammar.getDecisionBlockAST( decisionNumber );
             Object v = nfa.grammar.getBlockOption( blockAST, "greedy" );
@@ -1296,7 +1230,7 @@ namespace Antlr3.Analysis
 
         }
 
-        public virtual DFAState newState()
+        public virtual DFAState NewState()
         {
             DFAState n = new DFAState( this );
             n.stateNumber = _stateCounter;
@@ -1306,25 +1240,7 @@ namespace Antlr3.Analysis
             return n;
         }
 
-        [Obsolete]
-        public virtual int getNumberOfStates()
-        {
-            return NumberOfStates;
-        }
-
-        [Obsolete]
-        public virtual int getNumberOfAlts()
-        {
-            return NumberOfAlts;
-        }
-
-        [Obsolete]
-        public virtual bool analysisTimedOut()
-        {
-            return AnalysisTimedOut;
-        }
-
-        protected virtual void initAltRelatedInfo()
+        protected virtual void InitAltRelatedInfo()
         {
             _unreachableAlts = new List<int>();
             for ( int i = 1; i <= _nAlts; i++ )
@@ -1375,7 +1291,7 @@ namespace Antlr3.Analysis
          *  1. If not greedy, modify the labels parameter to be EOT
          *  2. If greedy, remove EOT from the labels set
          */
-        protected boolean reachableLabelsEOTCoexistsWithAllChar(OrderedHashSet labels)
+        protected boolean ReachableLabelsEOTCoexistsWithAllChar(OrderedHashSet labels)
         {
             Label eot = new Label(Label.EOT);
             if ( !labels.containsKey(eot) ) {

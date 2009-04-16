@@ -109,7 +109,7 @@ namespace Antlr3.Tool
                     if ( DecisionProbe.verbose )
                     {
                         int tracePathAlt =
-                            nfaStart.translateDisplayAltToWalkAlt( (int)displayAltI );
+                            nfaStart.TranslateDisplayAltToWalkAlt( (int)displayAltI );
                         if ( firstAlt == 0 )
                         {
                             firstAlt = tracePathAlt;

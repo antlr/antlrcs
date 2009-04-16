@@ -437,7 +437,7 @@ namespace Antlr3.Codegen
 
             // OPTIMIZE DFA
             DFAOptimizer optimizer = new DFAOptimizer( grammar );
-            optimizer.optimize();
+            optimizer.Optimize();
 
             // OUTPUT FILE (contains recognizerST)
             outputFileST = templates.GetInstanceOf( "outputFile" );
@@ -724,12 +724,12 @@ namespace Antlr3.Codegen
                 ErrorManager.internalError( "no follow state or cannot compute follow" );
                 follow = new LookaheadSet();
             }
-            if ( follow.member( Label.EOF ) )
+            if ( follow.Member( Label.EOF ) )
             {
                 // TODO: can we just remove?  Seems needed here:
                 // compilation_unit : global_statement* EOF
                 // Actually i guess we resync to EOF regardless
-                follow.remove( Label.EOF );
+                follow.Remove( Label.EOF );
             }
             //JSystem.@out.println(" "+follow);
 
@@ -798,7 +798,7 @@ namespace Antlr3.Codegen
             else
             {
                 // generate any kind of DFA here (cyclic or acyclic)
-                dfa.createStateTables( this );
+                dfa.CreateStateTables( this );
                 outputFileST.SetAttribute( "cyclicDFAs", dfa );
                 headerFileST.SetAttribute( "cyclicDFAs", dfa );
                 decisionST = templates.GetInstanceOf( "dfaDecision" );
@@ -833,7 +833,7 @@ namespace Antlr3.Codegen
             StringTemplate eotST = null;
             for ( int i = 0; i < s.NumberOfTransitions; i++ )
             {
-                Transition edge = (Transition)s.transition( i );
+                Transition edge = (Transition)s.Transition( i );
                 StringTemplate edgeST;
                 if ( edge.label.Atom == Label.EOT )
                 {
@@ -856,11 +856,11 @@ namespace Antlr3.Codegen
                 if ( !edge.label.IsSemanticPredicate )
                 {
                     DFAState t = (DFAState)edge.target;
-                    SemanticContext preds = t.getGatedPredicatesInNFAConfigurations();
+                    SemanticContext preds = t.GetGatedPredicatesInNFAConfigurations();
                     if ( preds != null )
                     {
                         foundGatedPred = true;
-                        StringTemplate predST = preds.genExpr( this,
+                        StringTemplate predST = preds.GenExpr( this,
                                                               Templates,
                                                               t.dfa );
                         edgeST.SetAttribute( "predicates", predST.ToString() );
@@ -912,7 +912,7 @@ namespace Antlr3.Codegen
             DFA dfa = ( (DFAState)edge.target ).dfa; // which DFA are we in
             Label label = edge.label;
             SemanticContext semCtx = label.SemanticContext;
-            return semCtx.genExpr( this, templates, dfa );
+            return semCtx.GenExpr( this, templates, dfa );
         }
 
         /** For intervals such as [3..3, 30..35], generate an expression that
@@ -1517,7 +1517,7 @@ namespace Antlr3.Codegen
             int size = 0;
             for ( int i = 0; i < s.NumberOfTransitions; i++ )
             {
-                Transition edge = (Transition)s.transition( i );
+                Transition edge = (Transition)s.Transition( i );
                 if ( edge.label.IsSemanticPredicate )
                 {
                     return false;
@@ -1525,7 +1525,7 @@ namespace Antlr3.Codegen
                 // can't do a switch if the edges are going to require predicates
                 if ( edge.label.Atom == Label.EOT )
                 {
-                    int EOTPredicts = ( (DFAState)edge.target ).getUniquelyPredictedAlt();
+                    int EOTPredicts = ( (DFAState)edge.target ).GetUniquelyPredictedAlt();
                     if ( EOTPredicts == NFA.INVALID_ALT_NUMBER )
                     {
                         // EOT target has to be a predicate then; no unique alt
@@ -1534,7 +1534,7 @@ namespace Antlr3.Codegen
                 }
                 // if target is a state with gated preds, we need to use preds on
                 // this edge then to reach it.
-                if ( ( (DFAState)edge.target ).getGatedPredicatesInNFAConfigurations() != null )
+                if ( ( (DFAState)edge.target ).GetGatedPredicatesInNFAConfigurations() != null )
                 {
                     return false;
                 }

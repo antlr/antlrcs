@@ -72,44 +72,39 @@ namespace Antlr3.Analysis
         {
             get
             {
-                return isNil();
+                return tokenTypeSet.IsNil;
             }
         }
         #endregion
 
-        public virtual void orInPlace( LookaheadSet other )
+        public virtual void OrInPlace( LookaheadSet other )
         {
             this.tokenTypeSet.addAll( other.tokenTypeSet );
         }
 
-        public virtual LookaheadSet or( LookaheadSet other )
+        public virtual LookaheadSet Or( LookaheadSet other )
         {
             return new LookaheadSet( tokenTypeSet.or( other.tokenTypeSet ) );
         }
 
-        public virtual LookaheadSet subtract( LookaheadSet other )
+        public virtual LookaheadSet Subtract( LookaheadSet other )
         {
             return new LookaheadSet( this.tokenTypeSet.subtract( other.tokenTypeSet ) );
         }
 
-        public virtual bool member( int a )
+        public virtual bool Member( int a )
         {
             return tokenTypeSet.member( a );
         }
 
-        public virtual LookaheadSet intersection( LookaheadSet s )
+        public virtual LookaheadSet Intersection( LookaheadSet s )
         {
             IIntSet i = this.tokenTypeSet.and( s.tokenTypeSet );
             LookaheadSet intersection = new LookaheadSet( i );
             return intersection;
         }
 
-        public virtual bool isNil()
-        {
-            return tokenTypeSet.isNil();
-        }
-
-        public virtual void remove( int a )
+        public virtual void Remove( int a )
         {
             tokenTypeSet = (IntervalSet)tokenTypeSet.subtract( IntervalSet.of( a ) );
         }

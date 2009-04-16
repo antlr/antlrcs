@@ -332,7 +332,7 @@ namespace Antlr3.Analysis
          */
         public virtual IList<int> GetNonDeterministicAltsForState( DFAState targetState )
         {
-            IEnumerable<int> nondetAlts = targetState.getNonDeterministicAlts();
+            IEnumerable<int> nondetAlts = targetState.GetNonDeterministicAlts();
             if ( nondetAlts == null )
                 return null;
 
@@ -676,7 +676,7 @@ namespace Antlr3.Analysis
                 for ( int i = 0; i < configs.Count; i++ )
                 {
                     NFAConfiguration c = (NFAConfiguration)configs[i];
-                    NFAState ruleInvocationState = dfa.nfa.getState( c.state );
+                    NFAState ruleInvocationState = dfa.nfa.GetState( c.state );
                     Transition transition0 = ruleInvocationState.transition[0];
                     RuleClosureTransition @ref = (RuleClosureTransition)transition0;
                     String targetRule = ( (NFAState)@ref.target ).enclosingRule.name;
@@ -698,7 +698,7 @@ namespace Antlr3.Analysis
                     // track one problem DFA state per alt
                     if ( altToDFAState.get( altI ) == null )
                     {
-                        DFAState sampleBadState = dfa.getState( stateI );
+                        DFAState sampleBadState = dfa.GetState( stateI );
                         altToDFAState[altI] = sampleBadState;
                     }
                 }
@@ -710,7 +710,7 @@ namespace Antlr3.Analysis
             HashSet<object> dfaStatesUnaliased = new HashSet<object>();
             foreach ( int stateI in dfaStatesWithRecursionProblems )
             {
-                DFAState d = dfa.getState( stateI );
+                DFAState d = dfa.GetState( stateI );
                 dfaStatesUnaliased.Add( d.stateNumber );
             }
             return dfaStatesUnaliased;
@@ -842,7 +842,7 @@ namespace Antlr3.Analysis
             // at most one path to any DFA state with conflicting predictions
             for ( int i = 0; i < s.NumberOfTransitions; i++ )
             {
-                Transition t = s.transition( i );
+                Transition t = s.Transition( i );
                 DFAState edgeTarget = (DFAState)t.target;
 
                 int targetStatus; //= stateReachable.get( edgeTarget.stateNumber );
@@ -907,7 +907,7 @@ namespace Antlr3.Analysis
             // pick the first edge in states as the one to traverse
             for ( int i = 0; i < startState.NumberOfTransitions; i++ )
             {
-                Transition t = startState.getTransition( i );
+                Transition t = startState.GetTransition( i );
                 DFAState edgeTarget = (DFAState)t.target;
                 if ( states.Contains( edgeTarget ) &&
                      !_statesVisitedDuringSampleSequence.Contains( edgeTarget.stateNumber ) )
@@ -987,7 +987,7 @@ namespace Antlr3.Analysis
                     path.RemoveAt( path.Count - 1 ); // remove; didn't work out
                     continue; // look at the next edge
                 }
-                if ( t.label.matches( label ) )
+                if ( t.label.Matches( label ) )
                 {
                     path.Add( edgeTarget );
                     /*

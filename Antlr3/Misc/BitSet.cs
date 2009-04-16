@@ -103,7 +103,12 @@ namespace Antlr3.Misc
         {
             get
             {
-                return isNil();
+                for ( int i = _bits.Length - 1; i >= 0; i-- )
+                {
+                    if ( _bits[i] != 0 )
+                        return false;
+                }
+                return true;
             }
         }
         public int LengthInLongWords
@@ -350,16 +355,6 @@ namespace Antlr3.Misc
                 }
             }
             return Label.INVALID;
-        }
-
-        public virtual bool isNil()
-        {
-            for ( int i = _bits.Length - 1; i >= 0; i-- )
-            {
-                if ( _bits[i] != 0 )
-                    return false;
-            }
-            return true;
         }
 
         public virtual IIntSet complement()

@@ -140,7 +140,7 @@ namespace Antlr3.Tool
             // visit nodes pointed to by each transition;
             for ( int i = 0; i < s.NumberOfTransitions; i++ )
             {
-                Transition edge = (Transition)s.getTransition( i );
+                Transition edge = (Transition)s.GetTransition( i );
                 walkFANormalizingStateNumbers( edge.target ); // keep walkin'
                 // if this transition is a rule reference, the node "following" this state
                 // will not be found and appear to be not in graph.  Must explicitly jump
@@ -172,7 +172,7 @@ namespace Antlr3.Tool
             // depth first walk each transition, printing its edge first
             for ( int i = 0; i < s.NumberOfTransitions; i++ )
             {
-                Transition edge = (Transition)s.getTransition( i );
+                Transition edge = (Transition)s.GetTransition( i );
                 StringBuilder buf = new StringBuilder();
                 buf.Append( stateStr );
                 if ( edge.IsAction )
@@ -194,11 +194,11 @@ namespace Antlr3.Tool
                     {
                         // look for gated predicates; don't add gated to simple sempred edges
                         SemanticContext preds =
-                            ( (DFAState)edge.target ).getGatedPredicatesInNFAConfigurations();
+                            ( (DFAState)edge.target ).GetGatedPredicatesInNFAConfigurations();
                         if ( preds != null )
                         {
                             predsStr = "&&{" +
-                                preds.genExpr( grammar.generator,
+                                preds.GenExpr( grammar.generator,
                                               grammar.generator.Templates, null ).ToString()
                                 + "}?";
                         }
@@ -236,7 +236,7 @@ namespace Antlr3.Tool
             {
                 if ( s is DFAState )
                 {
-                    stateStr = ":s" + n + "=>" + ( (DFAState)s ).getUniquelyPredictedAlt();
+                    stateStr = ":s" + n + "=>" + ( (DFAState)s ).GetUniquelyPredictedAlt();
                 }
                 else
                 {

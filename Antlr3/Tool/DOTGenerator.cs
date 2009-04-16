@@ -180,7 +180,7 @@ namespace Antlr3.Tool
             // make a DOT edge for each transition
             for ( int i = 0; i < s.NumberOfTransitions; i++ )
             {
-                Transition edge = (Transition)s.transition( i );
+                Transition edge = (Transition)s.Transition( i );
                 //Console.Out.WriteLine( "dfa " + s.dfa.decisionNumber + " edge from s"
                 //    + s.stateNumber + " [" + i + "] of " + s.NumberOfTransitions );
                 if ( StripNonreducedStates )
@@ -264,7 +264,7 @@ namespace Antlr3.Tool
             StringTemplate edgeST = null;
             for ( int i = 0; i < s.NumberOfTransitions; i++ )
             {
-                Transition edge = (Transition)s.getTransition( i );
+                Transition edge = (Transition)s.GetTransition( i );
                 if ( edge is RuleClosureTransition )
                 {
                     RuleClosureTransition rr = ( (RuleClosureTransition)edge );
@@ -366,12 +366,12 @@ namespace Antlr3.Tool
             {
                 // look for gated predicates; don't add gated to simple sempred edges
                 SemanticContext preds =
-                    ( (DFAState)target ).getGatedPredicatesInNFAConfigurations();
+                    ( (DFAState)target ).GetGatedPredicatesInNFAConfigurations();
                 if ( preds != null )
                 {
                     string predsStr = "";
                     predsStr = "&&{" +
-                        preds.genExpr( grammar.generator,
+                        preds.GenExpr( grammar.generator,
                                       grammar.generator.Templates, null ).ToString()
                         + "}?";
                     label += predsStr;
@@ -471,7 +471,7 @@ namespace Antlr3.Tool
             else if ( s is DFAState && ( (DFAState)s ).IsAcceptState )
             {
                 stateLabel = stateLabel +
-                        "=>" + ( (DFAState)s ).getUniquelyPredictedAlt();
+                        "=>" + ( (DFAState)s ).GetUniquelyPredictedAlt();
             }
             return '"' + stateLabel + '"';
         }

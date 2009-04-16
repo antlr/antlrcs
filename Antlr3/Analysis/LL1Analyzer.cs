@@ -72,7 +72,7 @@ namespace Antlr3.Analysis
         }
 
 #if false
-        public virtual void computeRuleFIRSTSets()
+        public virtual void ComputeRuleFIRSTSets()
         {
             if ( NumberOfDecisions == 0 )
             {
@@ -92,7 +92,7 @@ namespace Antlr3.Analysis
 #endif
 
 #if false
-        public HashSet<string> getOverriddenRulesWithDifferentFIRST() {
+        public HashSet<string> GetOverriddenRulesWithDifferentFIRST() {
             // walk every rule in this grammar and compare FIRST set with
             // those in imported grammars.
             HashSet<string> rules = new HashSet<string>();
@@ -113,7 +113,7 @@ namespace Antlr3.Analysis
             return rules;
         }
 
-        public Set<Rule> getImportedRulesSensitiveToOverriddenRulesDueToLOOK() {
+        public Set<Rule> GetImportedRulesSensitiveToOverriddenRulesDueToLOOK() {
             Set<String> diffFIRSTs = getOverriddenRulesWithDifferentFIRST();
             Set<Rule> rules = new HashSet();
             for (Iterator it = diffFIRSTs.iterator(); it.hasNext();) {
@@ -133,7 +133,7 @@ namespace Antlr3.Analysis
 #endif
 
 #if false
-        public LookaheadSet LOOK(Rule r) {
+        public LookaheadSet Look(Rule r) {
             if ( r.FIRST==null ) {
                 r.FIRST = FIRST(r.startState);
             }
@@ -157,16 +157,16 @@ namespace Antlr3.Analysis
          *
          *  This routine will only be used on parser and tree parser grammars.
          */
-        public virtual LookaheadSet FIRST( NFAState s )
+        public LookaheadSet First( NFAState s )
         {
             //JSystem.@out.println("> FIRST("+s.enclosingRule.name+") in rule "+s.enclosingRule);
             _lookBusy.Clear();
-            LookaheadSet look = _FIRST( s, false );
+            LookaheadSet look = FirstCore( s, false );
             //JSystem.@out.println("< FIRST("+s.enclosingRule.name+") in rule "+s.enclosingRule+"="+look.toString(this.grammar));
             return look;
         }
 
-        public virtual LookaheadSet FOLLOW( Rule r )
+        public LookaheadSet Follow( Rule r )
         {
             //JSystem.@out.println("> FOLLOW("+r.name+") in rule "+r.startState.enclosingRule);
             LookaheadSet f = _followCache.get( r );
@@ -174,31 +174,31 @@ namespace Antlr3.Analysis
             {
                 return f;
             }
-            f = _FIRST( r.stopState, true );
+            f = FirstCore( r.stopState, true );
             _followCache[r] = f;
             //JSystem.@out.println("< FOLLOW("+r+") in rule "+r.startState.enclosingRule+"="+f.toString(this.grammar));
             return f;
         }
 
-        public virtual LookaheadSet LOOK( NFAState s )
+        public LookaheadSet Look( NFAState s )
         {
             if ( NFAToDFAConverter.debug )
             {
                 Console.Out.WriteLine( "> LOOK(" + s + ")" );
             }
             _lookBusy.Clear();
-            LookaheadSet look = _FIRST( s, true );
+            LookaheadSet look = FirstCore( s, true );
             // FOLLOW makes no sense (at the moment!) for lexical rules.
-            if ( _grammar.type != Grammar.LEXER && look.member( Label.EOR_TOKEN_TYPE ) )
+            if ( _grammar.type != Grammar.LEXER && look.Member( Label.EOR_TOKEN_TYPE ) )
             {
                 // avoid altering FIRST reset as it is cached
-                LookaheadSet f = FOLLOW( s.enclosingRule );
-                f.orInPlace( look );
-                f.remove( Label.EOR_TOKEN_TYPE );
+                LookaheadSet f = Follow( s.enclosingRule );
+                f.OrInPlace( look );
+                f.Remove( Label.EOR_TOKEN_TYPE );
                 look = f;
                 //look.orInPlace(FOLLOW(s.enclosingRule));
             }
-            else if ( _grammar.type == Grammar.LEXER && look.member( Label.EOT ) )
+            else if ( _grammar.type == Grammar.LEXER && look.Member( Label.EOT ) )
             {
                 // if this has EOT, lookahead is all char (all char can follow rule)
                 //look = new LookaheadSet(Label.EOT);
@@ -211,7 +211,7 @@ namespace Antlr3.Analysis
             return look;
         }
 
-        protected virtual LookaheadSet _FIRST( NFAState s, bool chaseFollowTransitions )
+        protected virtual LookaheadSet FirstCore( NFAState s, bool chaseFollowTransitions )
         {
             /*
             JSystem.@out.println("_LOOK("+s+") in rule "+s.enclosingRule);
@@ -269,7 +269,7 @@ namespace Antlr3.Analysis
             // if not in cache, must compute
             if ( tset == null )
             {
-                tset = _FIRST( (NFAState)transition0.target, chaseFollowTransitions );
+                tset = FirstCore( (NFAState)transition0.target, chaseFollowTransitions );
                 // save FIRST cache for transition 0 if rule call
                 if ( !chaseFollowTransitions && transition0 is RuleClosureTransition )
                 {
@@ -278,7 +278,7 @@ namespace Antlr3.Analysis
             }
 
             // did we fall off the end?
-            if ( _grammar.type != Grammar.LEXER && tset.member( Label.EOR_TOKEN_TYPE ) )
+            if ( _grammar.type != Grammar.LEXER && tset.Member( Label.EOR_TOKEN_TYPE ) )
             {
                 if ( transition0 is RuleClosureTransition )
                 {
@@ -292,9 +292,9 @@ namespace Antlr3.Analysis
                     // remove the EOR and get what follows
                     //tset.remove(Label.EOR_TOKEN_TYPE);
                     NFAState following = (NFAState)ruleInvocationTrans.followState;
-                    LookaheadSet fset = _FIRST( following, chaseFollowTransitions );
-                    fset.orInPlace( tset ); // tset cached; or into new set
-                    fset.remove( Label.EOR_TOKEN_TYPE );
+                    LookaheadSet fset = FirstCore( following, chaseFollowTransitions );
+                    fset.OrInPlace( tset ); // tset cached; or into new set
+                    fset.Remove( Label.EOR_TOKEN_TYPE );
                     tset = fset;
                 }
             }
@@ -303,8 +303,8 @@ namespace Antlr3.Analysis
             if ( transition1 != null )
             {
                 LookaheadSet tset1 =
-                    _FIRST( (NFAState)transition1.target, chaseFollowTransitions );
-                tset1.orInPlace( tset ); // tset cached; or into new set
+                    FirstCore( (NFAState)transition1.target, chaseFollowTransitions );
+                tset1.OrInPlace( tset ); // tset cached; or into new set
                 tset = tset1;
             }
 
@@ -317,14 +317,14 @@ namespace Antlr3.Analysis
          *
          *  TODO: what about gated vs regular preds?
          */
-        public bool detectConfoundingPredicates( NFAState s )
+        public bool DetectConfoundingPredicates( NFAState s )
         {
             _lookBusy.Clear();
             Rule r = s.enclosingRule;
-            return _detectConfoundingPredicates( s, r, false ) == DETECT_PRED_FOUND;
+            return DetectConfoundingPredicatesCore( s, r, false ) == DETECT_PRED_FOUND;
         }
 
-        protected int _detectConfoundingPredicates( NFAState s,
+        protected virtual int DetectConfoundingPredicatesCore( NFAState s,
                                                    Rule enclosingRule,
                                                    bool chaseFollowTransitions )
         {
@@ -385,7 +385,7 @@ namespace Antlr3.Analysis
             }
             */
 
-            int result = _detectConfoundingPredicates( (NFAState)transition0.target,
+            int result = DetectConfoundingPredicatesCore( (NFAState)transition0.target,
                                                       enclosingRule,
                                                       chaseFollowTransitions );
             if ( result == DETECT_PRED_FOUND )
@@ -406,7 +406,7 @@ namespace Antlr3.Analysis
                         (RuleClosureTransition)transition0;
                     NFAState following = (NFAState)ruleInvocationTrans.followState;
                     int afterRuleResult =
-                        _detectConfoundingPredicates( following,
+                        DetectConfoundingPredicatesCore( following,
                                                      enclosingRule,
                                                      chaseFollowTransitions );
                     if ( afterRuleResult == DETECT_PRED_FOUND )
@@ -420,7 +420,7 @@ namespace Antlr3.Analysis
             if ( transition1 != null )
             {
                 int t1Result =
-                    _detectConfoundingPredicates( (NFAState)transition1.target,
+                    DetectConfoundingPredicatesCore( (NFAState)transition1.target,
                                                  enclosingRule,
                                                  chaseFollowTransitions );
                 if ( t1Result == DETECT_PRED_FOUND )
@@ -436,13 +436,13 @@ namespace Antlr3.Analysis
          *  not look into other rules for now.  Do something simple.  Include
          *  backtracking synpreds.
          */
-        public virtual SemanticContext getPredicates( NFAState altStartState )
+        public SemanticContext GetPredicates( NFAState altStartState )
         {
             _lookBusy.Clear();
-            return _getPredicates( altStartState, altStartState );
+            return GetPredicatesCore( altStartState, altStartState );
         }
 
-        protected virtual SemanticContext _getPredicates( NFAState s, NFAState altStartState )
+        protected virtual SemanticContext GetPredicatesCore( NFAState s, NFAState altStartState )
         {
             //JSystem.@out.println("_getPredicates("+s+")");
             if ( s.IsAcceptState )
@@ -488,13 +488,13 @@ namespace Antlr3.Analysis
             }
 
             // get preds from beyond this state
-            p0 = _getPredicates( (NFAState)transition0.target, altStartState );
+            p0 = GetPredicatesCore( (NFAState)transition0.target, altStartState );
 
             // get preds from other transition
             Transition transition1 = s.transition[1];
             if ( transition1 != null )
             {
-                p1 = _getPredicates( (NFAState)transition1.target, altStartState );
+                p1 = GetPredicatesCore( (NFAState)transition1.target, altStartState );
             }
 
             // join this&following-right|following-down

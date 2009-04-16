@@ -238,7 +238,7 @@ namespace AntlrUnitTests
             // This is ok because we've already verified there are no problems
             // with the enter/exit decision
             DFAOptimizer optimizer = new DFAOptimizer( g );
-            optimizer.optimize();
+            optimizer.Optimize();
             FASerializer serializer = new FASerializer( g );
             DFA dfa = g.getLookaheadDFA( 1 );
             string result = serializer.serialize( dfa.startState );
