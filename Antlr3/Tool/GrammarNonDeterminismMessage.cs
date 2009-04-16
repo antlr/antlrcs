@@ -74,17 +74,17 @@ namespace Antlr3.Tool
 
             StringTemplate st = getMessageTemplate();
             // Now fill template with information about problemState
-            var labels = probe.getSampleNonDeterministicInputSequence( problemState );
-            string input = probe.getInputSequenceDisplay( labels );
+            var labels = probe.GetSampleNonDeterministicInputSequence( problemState );
+            string input = probe.GetInputSequenceDisplay( labels );
             st.SetAttribute( "input", input );
 
             if ( probe.dfa.IsTokensRuleDecision )
             {
-                var disabledAlts = probe.getDisabledAlternatives( problemState );
+                var disabledAlts = probe.GetDisabledAlternatives( problemState );
                 foreach ( int altI in disabledAlts )
                 {
                     string tokenName =
-                        probe.getTokenNameForTokensRuleAlt( (int)altI );
+                        probe.GetTokenNameForTokensRuleAlt( (int)altI );
                     // reset the line/col to the token definition (pick last one)
                     NFAState ruleStart =
                         probe.dfa.nfa.grammar.getRuleStartState( tokenName );
@@ -95,10 +95,10 @@ namespace Antlr3.Tool
             }
             else
             {
-                st.SetAttribute( "disabled", probe.getDisabledAlternatives( problemState ) );
+                st.SetAttribute( "disabled", probe.GetDisabledAlternatives( problemState ) );
             }
 
-            var nondetAlts = probe.getNonDeterministicAltsForState( problemState );
+            var nondetAlts = probe.GetNonDeterministicAltsForState( problemState );
             NFAState nfaStart = probe.dfa.NFADecisionStartState;
             // all state paths have to begin with same NFA state
             int firstAlt = 0;
@@ -115,7 +115,7 @@ namespace Antlr3.Tool
                             firstAlt = tracePathAlt;
                         }
                         IList path =
-                            probe.getNFAPathStatesForAlt( firstAlt,
+                            probe.GetNFAPathStatesForAlt( firstAlt,
                                                          tracePathAlt,
                                                          labels );
                         st.SetAttribute( "paths.{alt,states}",
@@ -127,7 +127,7 @@ namespace Antlr3.Tool
                         {
                             // alts are token rules, convert to the names instead of numbers
                             string tokenName =
-                                probe.getTokenNameForTokensRuleAlt( (int)displayAltI );
+                                probe.GetTokenNameForTokensRuleAlt( (int)displayAltI );
                             st.SetAttribute( "conflictingTokens", tokenName );
                         }
                         else

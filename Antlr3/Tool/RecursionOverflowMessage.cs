@@ -79,8 +79,8 @@ namespace Antlr3.Tool
             st.SetAttribute( "alt", alt );
             st.SetAttribute( "callSiteStates", callSiteStates );
 
-            var labels = probe.getSampleNonDeterministicInputSequence( sampleBadState );
-            String input = probe.getInputSequenceDisplay( labels );
+            var labels = probe.GetSampleNonDeterministicInputSequence( sampleBadState );
+            String input = probe.GetInputSequenceDisplay( labels );
             st.SetAttribute( "input", input );
 
             return base.ToString( st );

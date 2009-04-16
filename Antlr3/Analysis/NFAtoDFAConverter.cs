@@ -350,7 +350,7 @@ namespace Antlr3.Analysis
                 // TODO: can fixed lookahead hit a dangling state case?
                 // TODO: yes, with left recursion
                 //Console.Error.WriteLine( "dangling state alts: " + d.getAltSet() );
-                _dfa.probe.reportDanglingState( d );
+                _dfa.probe.ReportDanglingState( d );
                 // turn off all configurations except for those associated with
                 // min alt number; somebody has to win else some input will not
                 // predict any alt.
@@ -706,7 +706,7 @@ namespace Antlr3.Analysis
                     JSystem.@out.println("proposed "+proposedNFAConfiguration);
                     */
                     d.abortedDueToRecursionOverflow = true;
-                    d.dfa.probe.reportRecursionOverflow( d, proposedNFAConfiguration );
+                    d.dfa.probe.ReportRecursionOverflow( d, proposedNFAConfiguration );
                     if ( debug )
                     {
                         Console.Out.WriteLine( "analysis overflow in closure(" + d.stateNumber + ")" );
@@ -1275,7 +1275,7 @@ namespace Antlr3.Analysis
                     // track Tokens rule issues differently than other decisions
                     if ( d.dfa.IsTokensRuleDecision )
                     {
-                        _dfa.probe.reportLexerRuleNondeterminism( d, allAlts );
+                        _dfa.probe.ReportLexerRuleNondeterminism( d, allAlts );
                         //JSystem.@out.println("Tokens rule DFA state "+d+" nondeterministic");
                         conflictingLexerRules = true;
                     }
@@ -1293,7 +1293,7 @@ namespace Antlr3.Analysis
             if ( !d.abortedDueToRecursionOverflow && !conflictingLexerRules )
             {
                 // TODO: with k=x option set, this is called twice for same state
-                _dfa.probe.reportNondeterminism( d, nondeterministicAlts );
+                _dfa.probe.ReportNondeterminism( d, nondeterministicAlts );
                 // TODO: how to turn off when it's only the FOLLOW that is
                 // conflicting.  This used to shut off even alts i,j < n
                 // conflict warnings. :(
@@ -1309,7 +1309,7 @@ namespace Antlr3.Analysis
                     Console.Out.WriteLine( "resolved DFA state " + d.stateNumber + " with pred" );
                 }
                 d.IsResolvedWithPredicates = true;
-                _dfa.probe.reportNondeterminismResolvedWithSemanticPredicate( d );
+                _dfa.probe.ReportNondeterminismResolvedWithSemanticPredicate( d );
                 return;
             }
 
@@ -1462,7 +1462,7 @@ namespace Antlr3.Analysis
             }
 
             //JSystem.@out.println("nondeterministic alts with predicates: "+altToPredMap);
-            _dfa.probe.reportAltPredicateContext( d, altToPredMap );
+            _dfa.probe.ReportAltPredicateContext( d, altToPredMap );
 
             if ( nondeterministicAlts.Count - altToPredMap.Count > 1 )
             {
@@ -1537,7 +1537,7 @@ namespace Antlr3.Analysis
                 // pred resolution
                 if ( d.abortedDueToRecursionOverflow )
                 {
-                    d.dfa.probe.removeRecursiveOverflowState( d );
+                    d.dfa.probe.RemoveRecursiveOverflowState( d );
                 }
                 int numConfigs = d.nfaConfigurations.size();
                 for ( int i = 0; i < numConfigs; i++ )
@@ -1738,7 +1738,7 @@ namespace Antlr3.Analysis
                         }
                     }
                 }
-                _dfa.probe.reportIncompletelyCoveredAlts( d,
+                _dfa.probe.ReportIncompletelyCoveredAlts( d,
                                                         altToLocationsReachableWithoutPredicate );
             }
 

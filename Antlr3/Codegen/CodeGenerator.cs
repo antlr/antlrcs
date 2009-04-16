@@ -793,7 +793,7 @@ namespace Antlr3.Codegen
             if ( dfa.CanInlineDecision )
             {
                 decisionST =
-                    acyclicDFAGenerator.genFixedLookaheadDecision( Templates, dfa );
+                    acyclicDFAGenerator.GenFixedLookaheadDecision( Templates, dfa );
             }
             else
             {

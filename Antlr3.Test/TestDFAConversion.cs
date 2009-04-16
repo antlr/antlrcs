@@ -1675,8 +1675,8 @@ namespace AntlrUnitTests
                 GrammarNonDeterminismMessage nondetMsg =
                     getNonDeterminismMessage( equeue.warnings );
                 var labels =
-                    nondetMsg.probe.getSampleNonDeterministicInputSequence( nondetMsg.problemState );
-                string input = nondetMsg.probe.getInputSequenceDisplay( labels );
+                    nondetMsg.probe.GetSampleNonDeterministicInputSequence( nondetMsg.problemState );
+                string input = nondetMsg.probe.GetInputSequenceDisplay( labels );
                 assertEquals( expectingAmbigInput, input );
             }
 
@@ -1690,7 +1690,7 @@ namespace AntlrUnitTests
                 if ( nondetMsg != null )
                 {
                     nonDetAlts =
-                        nondetMsg.probe.getNonDeterministicAltsForState( nondetMsg.problemState );
+                        nondetMsg.probe.GetNonDeterministicAltsForState( nondetMsg.problemState );
                 }
                 else
                 {

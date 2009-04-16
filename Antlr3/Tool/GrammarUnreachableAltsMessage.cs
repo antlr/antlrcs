@@ -80,7 +80,7 @@ namespace Antlr3.Tool
                 for ( int i = 0; i < alts.Length; i++ )
                 {
                     int altI = alts[i];
-                    String tokenName = probe.getTokenNameForTokensRuleAlt( altI );
+                    String tokenName = probe.GetTokenNameForTokensRuleAlt( altI );
                     // reset the line/col to the token definition
                     NFAState ruleStart = probe.dfa.nfa.grammar.getRuleStartState( tokenName );
                     line = ruleStart.associatedASTNode.Line;

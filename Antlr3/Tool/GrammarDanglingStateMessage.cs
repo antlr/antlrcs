@@ -65,8 +65,8 @@ namespace Antlr3.Tool
             {
                 file = fileName;
             }
-            var labels = probe.getSampleNonDeterministicInputSequence( problemState );
-            string input = probe.getInputSequenceDisplay( labels );
+            var labels = probe.GetSampleNonDeterministicInputSequence( problemState );
+            string input = probe.GetInputSequenceDisplay( labels );
             StringTemplate st = getMessageTemplate();
             List<int> alts = new List<int>();
             alts.addAll( problemState.AltSet );

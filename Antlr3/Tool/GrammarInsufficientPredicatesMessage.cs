@@ -84,8 +84,8 @@ namespace Antlr3.Tool
             }
             st.SetAttribute( "altToLocations", altToLocationsWithStringKey );
 
-            var sampleInputLabels = problemState.dfa.probe.getSampleNonDeterministicInputSequence( problemState );
-            string input = problemState.dfa.probe.getInputSequenceDisplay( sampleInputLabels );
+            var sampleInputLabels = problemState.dfa.probe.GetSampleNonDeterministicInputSequence( problemState );
+            string input = problemState.dfa.probe.GetInputSequenceDisplay( sampleInputLabels );
             st.SetAttribute( "upon", input );
 
             st.SetAttribute( "hasPredicateBlockedByAction", problemState.dfa.hasPredicateBlockedByAction );

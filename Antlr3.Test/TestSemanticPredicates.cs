@@ -896,8 +896,8 @@ namespace AntlrUnitTests
                 GrammarNonDeterminismMessage nondetMsg =
                     getNonDeterminismMessage( equeue.warnings );
                 var labels =
-                    nondetMsg.probe.getSampleNonDeterministicInputSequence( nondetMsg.problemState );
-                string input = nondetMsg.probe.getInputSequenceDisplay( labels );
+                    nondetMsg.probe.GetSampleNonDeterministicInputSequence( nondetMsg.problemState );
+                string input = nondetMsg.probe.GetInputSequenceDisplay( labels );
                 assertEquals( expectingAmbigInput, input );
             }
 
@@ -909,7 +909,7 @@ namespace AntlrUnitTests
                 assertNotNull( "found no nondet alts; expecting: " +
                                             str( expectingNonDetAlts ), nondetMsg );
                 var nonDetAlts =
-                    nondetMsg.probe.getNonDeterministicAltsForState( nondetMsg.problemState );
+                    nondetMsg.probe.GetNonDeterministicAltsForState( nondetMsg.problemState );
                 // compare nonDetAlts with expectingNonDetAlts
                 BitSet s = new BitSet();
                 s.addAll( expectingNonDetAlts );

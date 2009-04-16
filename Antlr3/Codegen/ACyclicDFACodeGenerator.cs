@@ -48,13 +48,13 @@ namespace Antlr3.Codegen
             this.parentGenerator = parent;
         }
 
-        public virtual StringTemplate genFixedLookaheadDecision( StringTemplateGroup templates,
+        public virtual StringTemplate GenFixedLookaheadDecision( StringTemplateGroup templates,
                                                         DFA dfa )
         {
-            return walkFixedDFAGeneratingStateMachine( templates, dfa, dfa.startState, 1 );
+            return WalkFixedDFAGeneratingStateMachine( templates, dfa, dfa.startState, 1 );
         }
 
-        protected virtual StringTemplate walkFixedDFAGeneratingStateMachine(
+        protected virtual StringTemplate WalkFixedDFAGeneratingStateMachine(
                 StringTemplateGroup templates,
                 DFA dfa,
                 DFAState s,
@@ -154,7 +154,7 @@ namespace Antlr3.Codegen
                 }
 
                 StringTemplate targetST =
-                    walkFixedDFAGeneratingStateMachine( templates,
+                    WalkFixedDFAGeneratingStateMachine( templates,
                                                        dfa,
                                                        (DFAState)edge.target,
                                                        k + 1 );
@@ -188,7 +188,7 @@ namespace Antlr3.Codegen
                     // the target must be an accept state
                     //System.Console.Out.WriteLine( "EOT edge" );
                     StringTemplate targetST =
-                        walkFixedDFAGeneratingStateMachine( templates,
+                        WalkFixedDFAGeneratingStateMachine( templates,
                                                            dfa,
                                                            (DFAState)predEdge.target,
                                                            k + 1 );

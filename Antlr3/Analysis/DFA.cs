@@ -256,7 +256,7 @@ namespace Antlr3.Analysis
 
                 if ( !probe.IsDeterministic || probe.AnalysisOverflowed )
                 {
-                    probe.issueWarnings();
+                    probe.IssueWarnings();
                 }
 
                 // must be after verify as it computes cyclic, needed by this routine
@@ -269,19 +269,19 @@ namespace Antlr3.Analysis
             }
             catch ( AnalysisTimeoutException /*at*/ )
             {
-                probe.reportAnalysisTimeout();
+                probe.ReportAnalysisTimeout();
                 if ( !OkToRetryWithK1 )
                 {
-                    probe.issueWarnings();
+                    probe.IssueWarnings();
                 }
             }
             catch ( NonLLStarDecisionException /*nonLL*/ )
             {
-                probe.reportNonLLStarDecision( this );
+                probe.ReportNonLLStarDecision( this );
                 // >1 alt recurses, k=* and no auto backtrack nor manual sem/syn
                 if ( !OkToRetryWithK1 )
                 {
-                    probe.issueWarnings();
+                    probe.IssueWarnings();
                 }
             }
         }
