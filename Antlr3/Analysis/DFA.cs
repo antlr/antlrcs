@@ -632,8 +632,8 @@ namespace Antlr3.Analysis
                         break;
                     }
                 }
-                encoded.Add( _generator.target.encodeIntAsCharEscape( (char)n ) );
-                encoded.Add( _generator.target.encodeIntAsCharEscape( (char)(int)I ) );
+                encoded.Add( _generator.target.EncodeIntAsCharEscape( (char)n ) );
+                encoded.Add( _generator.target.EncodeIntAsCharEscape( (char)(int)I ) );
                 i += n;
             }
             return encoded;
@@ -645,7 +645,7 @@ namespace Antlr3.Analysis
             this._generator = generator;
             _description = NFADecisionStartState.Description;
             _description =
-                generator.target.getTargetStringLiteralFromString( _description );
+                generator.target.GetTargetStringLiteralFromString( _description );
 
             // create all the tables
             //special = new List<int>( this.NumberOfStates ); // Vector<short>
@@ -710,7 +710,7 @@ namespace Antlr3.Analysis
             {
                 DFAState ss = (DFAState)_specialStates[i];
                 StringTemplate stateST =
-                    generator.generateSpecialState( ss );
+                    generator.GenerateSpecialState( ss );
                 _specialStateSTs.Add( stateST );
             }
 

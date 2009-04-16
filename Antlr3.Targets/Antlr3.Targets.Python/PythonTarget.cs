@@ -51,7 +51,7 @@ namespace Antlr3.Targets
     public class PythonTarget : Target
     {
         /** Target must be able to override the labels used for token types */
-        public override string getTokenTypeAsTargetLabel( CodeGenerator generator,
+        public override string GetTokenTypeAsTargetLabel( CodeGenerator generator,
                             int ttype )
         {
             // use ints for predefined types;
@@ -72,7 +72,7 @@ namespace Antlr3.Targets
             return name;
         }
 
-        public override string getTargetCharLiteralFromANTLRCharLiteral(
+        public override string GetTargetCharLiteralFromANTLRCharLiteral(
                 CodeGenerator generator,
                 string literal )
         {
@@ -80,12 +80,12 @@ namespace Antlr3.Targets
             return ( (char)c ).ToString();
         }
 
-        private IList<string> splitLines( string text )
+        private IList<string> SplitLines( string text )
         {
             return text.Split( '\n' );
         }
 
-        public override IList postProcessAction( IList chunks, IToken actionToken )
+        public override IList PostProcessAction( IList chunks, IToken actionToken )
         {
             /* TODO
                - check for and report TAB usage

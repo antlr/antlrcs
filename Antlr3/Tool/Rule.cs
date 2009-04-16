@@ -450,7 +450,7 @@ namespace Antlr3.Tool
                     {
                         // convert token name like ID to ID, "void" to 31
                         int ttype = grammar.getTokenType( tokenName );
-                        string label = grammar.generator.getTokenTypeAsTargetLabel( ttype );
+                        string label = grammar.generator.GetTokenTypeAsTargetLabel( ttype );
                         tokens.Add( label );
                     }
                 }
@@ -589,7 +589,7 @@ namespace Antlr3.Tool
             else
             {
                 // else create new label
-                labelName = generator.createUniqueLabel( refdSymbol );
+                labelName = generator.CreateUniqueLabel( refdSymbol );
                 CommonToken label = new CommonToken( ANTLRParser.ID, labelName );
                 if ( grammar.type != Grammar.LEXER &&
                      char.IsUpper( refdSymbol[0] ) )

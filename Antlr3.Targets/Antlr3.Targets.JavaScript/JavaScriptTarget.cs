@@ -43,7 +43,7 @@ namespace Antlr3.Targets
          *  This method overrides the parent class so that characters will always
          *  be encoded as Unicode literals (e.g. \u0011).
          */
-        public override string encodeIntAsCharEscape( int v )
+        public override string EncodeIntAsCharEscape( int v )
         {
             string hex = v.ToString( "x4" );
             return "\\u" + hex;
@@ -60,18 +60,18 @@ namespace Antlr3.Targets
          *
          *  Note: stole the following two methods from the ActionScript target.
          */
-        public override string getTarget64BitStringFromValue( ulong word )
+        public override string GetTarget64BitStringFromValue( ulong word )
         {
             StringBuilder buf = new StringBuilder( 22 ); // enough for the two "0x", "," and " "
             buf.Append( "0x" );
-            writeHexWithPadding( buf, ( (uint)word ).ToString( "x" ) );
+            WriteHexWithPadding( buf, ( (uint)word ).ToString( "x" ) );
             buf.Append( ", 0x" );
-            writeHexWithPadding( buf, ( word >> 32 ).ToString( "x" ) );
+            WriteHexWithPadding( buf, ( word >> 32 ).ToString( "x" ) );
 
             return buf.ToString();
         }
 
-        private void writeHexWithPadding( StringBuilder buf, string digits )
+        private void WriteHexWithPadding( StringBuilder buf, string digits )
         {
             digits = digits.ToUpperInvariant();
             int padding = 8 - digits.Length;

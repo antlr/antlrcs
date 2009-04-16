@@ -769,7 +769,7 @@ namespace AntlrUnitTests
             antlr.setOutputDirectory( null ); // write to /dev/null
             CodeGenerator generator = new CodeGenerator( antlr, g, "Java" );
             g.setCodeGenerator( generator );
-            generator.genRecognizer();
+            generator.GenRecognizer();
 
             Message msg = (Message)equeue.warnings[0];
             assertTrue( "expecting no start rules; found " + msg.GetType().Name,

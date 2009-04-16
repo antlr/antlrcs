@@ -37,7 +37,7 @@ namespace Antlr3.Targets
 
     public class RubyTarget : Target
     {
-        public override string getTargetCharLiteralFromANTLRCharLiteral(
+        public override string GetTargetCharLiteralFromANTLRCharLiteral(
                 CodeGenerator generator,
                 string literal )
         {
@@ -65,13 +65,13 @@ namespace Antlr3.Targets
             return result;
         }
 
-        public override int getMaxCharValue( CodeGenerator generator )
+        public override int GetMaxCharValue( CodeGenerator generator )
         {
             // we don't support unicode, yet.
             return 0xFF;
         }
 
-        public override string getTokenTypeAsTargetLabel( CodeGenerator generator, int ttype )
+        public override string GetTokenTypeAsTargetLabel( CodeGenerator generator, int ttype )
         {
             string name = generator.grammar.getTokenDisplayName( ttype );
             // If name is a literal, return the token type instead

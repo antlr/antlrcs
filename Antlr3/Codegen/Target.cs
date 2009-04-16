@@ -91,17 +91,17 @@ namespace Antlr3.Codegen
             targetCharValueEscape['"'] = "\\\"";
         }
 
-        protected internal virtual void genRecognizerFile( AntlrTool tool,
+        protected internal virtual void GenRecognizerFile( AntlrTool tool,
                                          CodeGenerator generator,
                                          Grammar grammar,
                                          StringTemplate outputFileST )
         {
             string fileName =
-                generator.getRecognizerFileName( grammar.name, grammar.type );
-            generator.write( outputFileST, fileName );
+                generator.GetRecognizerFileName( grammar.name, grammar.type );
+            generator.Write( outputFileST, fileName );
         }
 
-        protected internal virtual void genRecognizerHeaderFile( AntlrTool tool,
+        protected internal virtual void GenRecognizerHeaderFile( AntlrTool tool,
                                                CodeGenerator generator,
                                                Grammar grammar,
                                                StringTemplate headerFileST,
@@ -110,7 +110,7 @@ namespace Antlr3.Codegen
             // no header file by default
         }
 
-        protected internal virtual void performGrammarAnalysis( CodeGenerator generator,
+        protected internal virtual void PerformGrammarAnalysis( CodeGenerator generator,
                                               Grammar grammar )
         {
             // Build NFAs from the grammar AST
@@ -126,7 +126,7 @@ namespace Antlr3.Codegen
          *  moment so targets can add template actions w/o having to recompile
          *  ANTLR.
          */
-        public virtual bool isValidActionScope( int grammarType, string scope )
+        public virtual bool IsValidActionScope( int grammarType, string scope )
         {
             switch ( grammarType )
             {
@@ -163,7 +163,7 @@ namespace Antlr3.Codegen
         }
 
         /** Target must be able to override the labels used for token types */
-        public virtual string getTokenTypeAsTargetLabel( CodeGenerator generator, int ttype )
+        public virtual string GetTokenTypeAsTargetLabel( CodeGenerator generator, int ttype )
         {
             string name = generator.grammar.getTokenDisplayName( ttype );
             // If name is a literal, return the token type instead
@@ -183,7 +183,7 @@ namespace Antlr3.Codegen
          *
          *  Expect single quotes around the incoming literal.
          */
-        public virtual string getTargetCharLiteralFromANTLRCharLiteral(
+        public virtual string GetTargetCharLiteralFromANTLRCharLiteral(
             CodeGenerator generator,
             string literal )
         {
@@ -231,7 +231,7 @@ namespace Antlr3.Codegen
          *  cannot handle both \" and " without a lot of messing around.
          * 
          */
-        public virtual string getTargetStringLiteralFromANTLRStringLiteral(
+        public virtual string GetTargetStringLiteralFromANTLRStringLiteral(
             CodeGenerator generator,
             string literal )
         {
@@ -329,7 +329,7 @@ namespace Antlr3.Codegen
          *
          *  depending on the quoted arg.
          */
-        public virtual string getTargetStringLiteralFromString( string s, bool quoted )
+        public virtual string GetTargetStringLiteralFromString( string s, bool quoted )
         {
             if ( s == null )
             {
@@ -361,15 +361,15 @@ namespace Antlr3.Codegen
             return buf.ToString();
         }
 
-        public virtual string getTargetStringLiteralFromString( string s )
+        public virtual string GetTargetStringLiteralFromString( string s )
         {
-            return getTargetStringLiteralFromString( s, false );
+            return GetTargetStringLiteralFromString( s, false );
         }
 
         /** Convert long to 0xNNNNNNNNNNNNNNNN by default for spitting out
          *  with bitsets.  I.e., convert bytes to hex string.
          */
-        public virtual string getTarget64BitStringFromValue( ulong word )
+        public virtual string GetTarget64BitStringFromValue( ulong word )
         {
             int numHexDigits = 8 * 2;
             StringBuilder buf = new StringBuilder( numHexDigits + 2 );
@@ -387,7 +387,7 @@ namespace Antlr3.Codegen
             return buf.ToString();
         }
 
-        public virtual string encodeIntAsCharEscape( int v )
+        public virtual string EncodeIntAsCharEscape( int v )
         {
             if ( v <= 127 )
             {
@@ -401,7 +401,7 @@ namespace Antlr3.Codegen
         /** Some targets only support ASCII or 8-bit chars/strings.  For example,
          *  C++ will probably want to return 0xFF here.
          */
-        public virtual int getMaxCharValue( CodeGenerator generator )
+        public virtual int GetMaxCharValue( CodeGenerator generator )
         {
             return Label.MAX_CHAR_VALUE;
         }
@@ -409,7 +409,7 @@ namespace Antlr3.Codegen
         /** Give target a chance to do some postprocessing on actions.
          *  Python for example will have to fix the indention.
          */
-        public virtual IList postProcessAction( IList chunks, IToken actionToken )
+        public virtual IList PostProcessAction( IList chunks, IToken actionToken )
         {
             return chunks;
         }

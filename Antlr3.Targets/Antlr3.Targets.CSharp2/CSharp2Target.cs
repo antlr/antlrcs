@@ -36,7 +36,7 @@ namespace Antlr3.Targets
 
     public class CSharp2Target : Target
     {
-        public override string encodeIntAsCharEscape( int v )
+        public override string EncodeIntAsCharEscape( int v )
         {
             return "\\x" + v.ToString( "X" );
         }

@@ -208,7 +208,7 @@ rule returns [StringTemplate code=null]
 	StringTemplateGroup saveGroup = templates;
 	if ( ruleDescr.isSynPred )
 	{
-		templates = generator.getBaseTemplates();
+		templates = generator.GetBaseTemplates();
 	}
 
 	string description = string.Empty;
@@ -228,7 +228,7 @@ rule returns [StringTemplate code=null]
 					grammar.grammarTreeToString((GrammarAST)$start.GetFirstChildWithType(BLOCK),
 												false);
 				description =
-					generator.target.getTargetStringLiteralFromString(description);
+					generator.target.GetTargetStringLiteralFromString(description);
 				$b.code.SetAttribute("description", description);
 				// do not generate lexer rules in combined grammar
 				string stName = null;
@@ -289,11 +289,11 @@ rule returns [StringTemplate code=null]
 				else
 				{
 					description = grammar.grammarTreeToString($start,false);
-					description = generator.target.getTargetStringLiteralFromString(description);
+					description = generator.target.GetTargetStringLiteralFromString(description);
 					$code.SetAttribute("description", description);
 				}
 				Rule theRule = grammar.getRule(currentRuleName);
-				generator.translateActionAttributeReferencesForSingleScope(
+				generator.TranslateActionAttributeReferencesForSingleScope(
 					theRule,
 					theRule.Actions
 				);
@@ -337,7 +337,7 @@ options { k=1; }
 		if ( $dfa != null )
 		{
 			$code = templates.GetInstanceOf($blockTemplateName);
-			decision = generator.genLookaheadDecision(recognizerST,$dfa);
+			decision = generator.GenLookaheadDecision(recognizerST,$dfa);
 			$code.SetAttribute("decision", decision);
 			$code.SetAttribute("decisionNumber", $dfa.DecisionNumber);
 			$code.SetAttribute("maxK",$dfa.MaxLookaheadDepth);
@@ -422,10 +422,10 @@ setBlock returns [StringTemplate code=null]
 			setcode.SetAttribute("elementIndex", i);
 			if ( grammar.type!=Grammar.LEXER )
 			{
-				generator.generateLocalFOLLOW($s,"set",currentRuleName,i);
+				generator.GenerateLocalFollow($s,"set",currentRuleName,i);
 			}
 			setcode.SetAttribute("s",
-				generator.genSetExpr(templates,$s.SetValue,1,false));
+				generator.GenSetExpr(templates,$s.SetValue,1,false));
 			StringTemplate altcode=templates.GetInstanceOf("alt");
 			altcode.SetAttribute("elements.{el,line,pos}",
 								 setcode,
@@ -455,7 +455,7 @@ exceptionGroup[StringTemplate ruleST]
 exceptionHandler[StringTemplate ruleST]
 	:	^('catch' ARG_ACTION ACTION)
 		{
-			List chunks = generator.translateAction(currentRuleName,$ACTION);
+			List chunks = generator.TranslateAction(currentRuleName,$ACTION);
 			$ruleST.SetAttribute("exceptions.{decl,action}",$ARG_ACTION.text,chunks);
 		}
 	;
@@ -463,7 +463,7 @@ exceptionHandler[StringTemplate ruleST]
 finallyClause[StringTemplate ruleST]
 	:	^('finally' ACTION)
 		{
-			List chunks = generator.translateAction(currentRuleName,$ACTION);
+			List chunks = generator.TranslateAction(currentRuleName,$ACTION);
 			$ruleST.SetAttribute("finally",chunks);
 		}
 	;
@@ -496,7 +496,7 @@ alternative returns [StringTemplate code]
 			currentAltHasASTRewrite = r.hasRewrite(outerAltNum);
 		}
 		string description = grammar.grammarTreeToString($start, false);
-		description = generator.target.getTargetStringLiteralFromString(description);
+		description = generator.target.GetTargetStringLiteralFromString(description);
 		$code.SetAttribute("description", description);
 		$code.SetAttribute("treeLevel", rewriteTreeNestingLevel);
 		if ( !currentAltHasASTRewrite && grammar.BuildAST )
@@ -548,8 +548,8 @@ options { k=1; }
 	|	^(CHAR_RANGE a=CHAR_LITERAL b=CHAR_LITERAL)
 		{
 			$code = templates.GetInstanceOf("charRangeRef");
-			string low = generator.target.getTargetCharLiteralFromANTLRCharLiteral(generator,$a.text);
-			string high = generator.target.getTargetCharLiteralFromANTLRCharLiteral(generator,$b.text);
+			string low = generator.target.GetTargetCharLiteralFromANTLRCharLiteral(generator,$a.text);
+			string high = generator.target.GetTargetCharLiteralFromANTLRCharLiteral(generator,$b.text);
 			$code.SetAttribute("a", low);
 			$code.SetAttribute("b", high);
 			if ( label!=null )
@@ -573,8 +573,8 @@ options { k=1; }
 	|   (sp=SEMPRED|sp=GATED_SEMPRED)
 		{
 			$code = templates.GetInstanceOf("validateSemanticPredicate");
-			$code.SetAttribute("pred", generator.translateAction(currentRuleName,$sp));
-			string description = generator.target.getTargetStringLiteralFromString($sp.text);
+			$code.SetAttribute("pred", generator.TranslateAction(currentRuleName,$sp));
+			string description = generator.target.GetTargetStringLiteralFromString($sp.text);
 			$code.SetAttribute("description", description);
 		}
 
@@ -591,12 +591,12 @@ element_action returns [StringTemplate code=null]
 	:	act=ACTION
 		{
 			$code = templates.GetInstanceOf("execAction");
-			$code.SetAttribute("action", generator.translateAction(currentRuleName,$act));
+			$code.SetAttribute("action", generator.TranslateAction(currentRuleName,$act));
 		}
 	|	act2=FORCED_ACTION
 		{
 			$code = templates.GetInstanceOf("execForcedAction");
-			$code.SetAttribute("action", generator.translateAction(currentRuleName,$act2));
+			$code.SetAttribute("action", generator.TranslateAction(currentRuleName,$act2));
 		}
 	;
 
@@ -653,12 +653,12 @@ notElement[GrammarAST n, GrammarAST label, GrammarAST astSuffix] returns [String
 									 (GrammarAST)$n.GetChild(0),
 									 astSuffix,
 									 labelText);
-			$code.SetAttribute("s",generator.genSetExpr(templates,elements,1,false));
+			$code.SetAttribute("s",generator.GenSetExpr(templates,elements,1,false));
 			int i = ((TokenWithIndex)n.Token).TokenIndex;
 			$code.SetAttribute("elementIndex", i);
 			if ( grammar.type!=Grammar.LEXER )
 			{
-				generator.generateLocalFOLLOW(n,"set",currentRuleName,i);
+				generator.GenerateLocalFollow(n,"set",currentRuleName,i);
 			}
 		}
 	;
@@ -685,7 +685,7 @@ ebnf returns [StringTemplate code=null]
 		)
 		{
 			string description = grammar.grammarTreeToString($start, false);
-			description = generator.target.getTargetStringLiteralFromString(description);
+			description = generator.target.GetTargetStringLiteralFromString(description);
 			$code.SetAttribute("description", description);
 		}
 	;
@@ -813,12 +813,12 @@ atom[GrammarAST scope, GrammarAST label, GrammarAST astSuffix]
 			}
 
 			if ( $rarg!=null ) {
-				List args = generator.translateAction(currentRuleName,$rarg);
+				List args = generator.TranslateAction(currentRuleName,$rarg);
 				$code.SetAttribute("args", args);
 			}
 			int i = ((TokenWithIndex)r.Token).TokenIndex;
 			$code.SetAttribute("elementIndex", i);
-			generator.generateLocalFOLLOW($r,$r.text,currentRuleName,i);
+			generator.GenerateLocalFollow($r,$r.text,currentRuleName,i);
 			$r.code = $code;
 		}
 
@@ -865,7 +865,7 @@ atom[GrammarAST scope, GrammarAST label, GrammarAST astSuffix]
 					}
 					if ( $targ!=null )
 					{
-						List args = generator.translateAction(currentRuleName,$targ);
+						List args = generator.TranslateAction(currentRuleName,$targ);
 						$code.SetAttribute("args", args);
 					}
 				}
@@ -878,7 +878,7 @@ atom[GrammarAST scope, GrammarAST label, GrammarAST astSuffix]
 			{
 				$code = getTokenElementST("tokenRef", $t.text, $t, astSuffix, labelText);
 				string tokenLabel =
-					generator.getTokenTypeAsTargetLabel(grammar.getTokenType(t.Text));
+					generator.GetTokenTypeAsTargetLabel(grammar.getTokenType(t.Text));
 				$code.SetAttribute("token",tokenLabel);
 				if ( !currentAltHasASTRewrite && $t.terminalOptions!=null )
 				{ 
@@ -886,7 +886,7 @@ atom[GrammarAST scope, GrammarAST label, GrammarAST astSuffix]
 				}
 				int i = ((TokenWithIndex)$t.Token).TokenIndex;
 				$code.SetAttribute("elementIndex", i);
-				generator.generateLocalFOLLOW($t,tokenLabel,currentRuleName,i);
+				generator.GenerateLocalFollow($t,tokenLabel,currentRuleName,i);
 			}
 			$t.code = $code;
 		}
@@ -897,7 +897,7 @@ atom[GrammarAST scope, GrammarAST label, GrammarAST astSuffix]
 			{
 				$code = templates.GetInstanceOf("charRef");
 				$code.SetAttribute("char",
-				   generator.target.getTargetCharLiteralFromANTLRCharLiteral(generator,$c.text));
+				   generator.target.GetTargetCharLiteralFromANTLRCharLiteral(generator,$c.text));
 				if ( label!=null )
 				{
 					$code.SetAttribute("label", labelText);
@@ -905,14 +905,14 @@ atom[GrammarAST scope, GrammarAST label, GrammarAST astSuffix]
 			}
 			else { // else it's a token type reference
 				$code = getTokenElementST("tokenRef", "char_literal", $c, astSuffix, labelText);
-				string tokenLabel = generator.getTokenTypeAsTargetLabel(grammar.getTokenType($c.text));
+				string tokenLabel = generator.GetTokenTypeAsTargetLabel(grammar.getTokenType($c.text));
 				$code.SetAttribute("token",tokenLabel);
 				if ( $c.terminalOptions!=null ) {
 					$code.SetAttribute("hetero",$c.terminalOptions[Grammar.defaultTokenOption]);
 				}
 				int i = ((TokenWithIndex)$c.Token).TokenIndex;
 				$code.SetAttribute("elementIndex", i);
-				generator.generateLocalFOLLOW($c,tokenLabel,currentRuleName,i);
+				generator.GenerateLocalFollow($c,tokenLabel,currentRuleName,i);
 			}
 		}
 
@@ -922,7 +922,7 @@ atom[GrammarAST scope, GrammarAST label, GrammarAST astSuffix]
 			{
 				$code = templates.GetInstanceOf("lexerStringRef");
 				$code.SetAttribute("string",
-					generator.target.getTargetStringLiteralFromANTLRStringLiteral(generator,$s.text));
+					generator.target.GetTargetStringLiteralFromANTLRStringLiteral(generator,$s.text));
 				if ( label!=null )
 				{
 					$code.SetAttribute("label", labelText);
@@ -932,7 +932,7 @@ atom[GrammarAST scope, GrammarAST label, GrammarAST astSuffix]
 			{ // else it's a token type reference
 				$code = getTokenElementST("tokenRef", "string_literal", $s, astSuffix, labelText);
 				string tokenLabel =
-					generator.getTokenTypeAsTargetLabel(grammar.getTokenType($s.text));
+					generator.GetTokenTypeAsTargetLabel(grammar.getTokenType($s.text));
 				$code.SetAttribute("token",tokenLabel);
 				if ( $s.terminalOptions!=null )
 				{
@@ -940,7 +940,7 @@ atom[GrammarAST scope, GrammarAST label, GrammarAST astSuffix]
 				}
 				int i = ((TokenWithIndex)$s.Token).TokenIndex;
 				$code.SetAttribute("elementIndex", i);
-				generator.generateLocalFOLLOW($s,tokenLabel,currentRuleName,i);
+				generator.GenerateLocalFollow($s,tokenLabel,currentRuleName,i);
 			}
 		}
 
@@ -978,9 +978,9 @@ set[GrammarAST label, GrammarAST astSuffix] returns [StringTemplate code=null]
 			$code.SetAttribute("elementIndex", i);
 			if ( grammar.type!=Grammar.LEXER )
 			{
-				generator.generateLocalFOLLOW($s,"set",currentRuleName,i);
+				generator.GenerateLocalFollow($s,"set",currentRuleName,i);
 			}
-			$code.SetAttribute("s", generator.genSetExpr(templates,$s.SetValue,1,false));
+			$code.SetAttribute("s", generator.GenSetExpr(templates,$s.SetValue,1,false));
 		}
 	;
 
@@ -1052,11 +1052,11 @@ rewrite returns [StringTemplate code=null]
 				if ( $pred!=null )
 				{
 					//predText = #pred.getText();
-					predChunks = generator.translateAction(currentRuleName,$pred);
+					predChunks = generator.TranslateAction(currentRuleName,$pred);
 				}
 				string description =
 					grammar.grammarTreeToString($r,false);
-				description = generator.target.getTargetStringLiteralFromString(description);
+				description = generator.target.GetTargetStringLiteralFromString(description);
 				$code.SetAttribute("alts.{pred,alt,description}",
 								  predChunks,
 								  alt,
@@ -1143,21 +1143,21 @@ rewrite_ebnf returns [StringTemplate code=null]
 		{ $code = $rewrite_block.code; }
 		{
 			string description = grammar.grammarTreeToString($start, false);
-			description = generator.target.getTargetStringLiteralFromString(description);
+			description = generator.target.GetTargetStringLiteralFromString(description);
 			$code.SetAttribute("description", description);
 		}
 	|	^( CLOSURE rewrite_block["rewriteClosureBlock"] )
 		{ $code = $rewrite_block.code; }
 		{
 			string description = grammar.grammarTreeToString($start, false);
-			description = generator.target.getTargetStringLiteralFromString(description);
+			description = generator.target.GetTargetStringLiteralFromString(description);
 			$code.SetAttribute("description", description);
 		}
 	|	^( POSITIVE_CLOSURE rewrite_block["rewritePositiveClosureBlock"] )
 		{ $code = $rewrite_block.code; }
 		{
 			string description = grammar.grammarTreeToString($start, false);
-			description = generator.target.getTargetStringLiteralFromString(description);
+			description = generator.target.GetTargetStringLiteralFromString(description);
 			$code.SetAttribute("description", description);
 		}
 	;
@@ -1195,7 +1195,7 @@ rewrite_tree returns [StringTemplate code]
 		)
 		{
 			string description = grammar.grammarTreeToString($start, false);
-			description = generator.target.getTargetStringLiteralFromString(description);
+			description = generator.target.GetTargetStringLiteralFromString(description);
 			$code.SetAttribute("description", description);
 		}
 	;
@@ -1268,12 +1268,12 @@ rewrite_atom[bool isRoot] returns [StringTemplate code=null]
 			$code.SetAttribute("hetero", hetero);
 			if ( $arg!=null )
 			{
-				List args = generator.translateAction(currentRuleName,$arg);
+				List args = generator.TranslateAction(currentRuleName,$arg);
 				$code.SetAttribute("args", args);
 			}
 			$code.SetAttribute("elementIndex", ((TokenWithIndex)$start.Token).TokenIndex);
 			int ttype = grammar.getTokenType(tokenName);
-			string tok = generator.getTokenTypeAsTargetLabel(ttype);
+			string tok = generator.GetTokenTypeAsTargetLabel(ttype);
 			$code.SetAttribute("token", tok);
 			if ( grammar.getTokenType(tokenName)==Label.INVALID )
 			{
@@ -1350,7 +1350,7 @@ rewrite_atom[bool isRoot] returns [StringTemplate code=null]
 		{
 			// actions in rewrite rules yield a tree object
 			string actText = $ACTION.text;
-			List chunks = generator.translateAction(currentRuleName,$ACTION);
+			List chunks = generator.TranslateAction(currentRuleName,$ACTION);
 			$code = templates.GetInstanceOf("rewriteNodeAction"+(isRoot?"Root":""));
 			$code.SetAttribute("action", chunks);
 		}
@@ -1373,7 +1373,7 @@ rewrite_template returns [StringTemplate code=null]
 				else if ( $ind!=null )
 				{ // must be \%({expr})(args)
 					$code = templates.GetInstanceOf("rewriteIndirectTemplate");
-					List chunks=generator.translateAction(currentRuleName,$ind);
+					List chunks=generator.TranslateAction(currentRuleName,$ind);
 					$code.SetAttribute("expr", chunks);
 				}
 			}
@@ -1384,7 +1384,7 @@ rewrite_template returns [StringTemplate code=null]
 						// because actions like \%foo(name={\$ID.text}) aren't
 						// broken up yet into trees.
 						$a.outerAltNum = this.outerAltNum;
-						List chunks = generator.translateAction(currentRuleName,$a);
+						List chunks = generator.TranslateAction(currentRuleName,$a);
 						$code.SetAttribute("args.{name,value}", $arg.text, chunks);
 					}
 					)
@@ -1394,14 +1394,14 @@ rewrite_template returns [StringTemplate code=null]
 				{
 					string sl = $DOUBLE_QUOTE_STRING_LITERAL.text;
 					string t = sl.Substring( 1, sl.Length - 2 ); // strip quotes
-					t = generator.target.getTargetStringLiteralFromString(t);
+					t = generator.target.GetTargetStringLiteralFromString(t);
 					$code.SetAttribute("template",t);
 				}
 			|	DOUBLE_ANGLE_STRING_LITERAL
 				{
 					string sl = $DOUBLE_ANGLE_STRING_LITERAL.text;
 					string t = sl.Substring( 2, sl.Length - 4 ); // strip double angle quotes
-					t = generator.target.getTargetStringLiteralFromString(t);
+					t = generator.target.GetTargetStringLiteralFromString(t);
 					$code.SetAttribute("template",t);
 				}
 			)?
@@ -1413,6 +1413,6 @@ rewrite_template returns [StringTemplate code=null]
 			$act.outerAltNum = this.outerAltNum;
 			$code=templates.GetInstanceOf("rewriteAction");
 			$code.SetAttribute("action",
-							  generator.translateAction(currentRuleName,$act));
+							  generator.TranslateAction(currentRuleName,$act));
 		}
 	;

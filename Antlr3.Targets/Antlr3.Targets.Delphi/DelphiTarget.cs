@@ -53,13 +53,13 @@ namespace Antlr3.Targets
             targetCharValueEscape['"'] = "'";
         }
 
-        public override string encodeIntAsCharEscape( int v )
+        public override string EncodeIntAsCharEscape( int v )
         {
             string hex = ( v <= 127 ) ? v.ToString( "x2" ) : v.ToString( "x4" );
             return "'#$" + hex + "'";
         }
 
-        public override string getTargetCharLiteralFromANTLRCharLiteral( CodeGenerator generator, string literal )
+        public override string GetTargetCharLiteralFromANTLRCharLiteral( CodeGenerator generator, string literal )
         {
             StringBuilder buf = new StringBuilder();
             int c = Grammar.getCharValueFromGrammarCharLiteral( literal );
@@ -73,7 +73,7 @@ namespace Antlr3.Targets
             return buf.ToString();
         }
 
-        public override string getTargetStringLiteralFromString( string s, bool quoted )
+        public override string GetTargetStringLiteralFromString( string s, bool quoted )
         {
             if ( s == null )
             {
@@ -111,7 +111,7 @@ namespace Antlr3.Targets
             return buf.ToString();
         }
 
-        public override string getTargetStringLiteralFromANTLRStringLiteral( CodeGenerator generator, string literal )
+        public override string GetTargetStringLiteralFromANTLRStringLiteral( CodeGenerator generator, string literal )
         {
             literal = literal.Replace( "\\\'", "''" ); // \' to ' to normalize
             literal = literal.Replace( "\\r\\n", "'#13#10'" );
@@ -123,7 +123,7 @@ namespace Antlr3.Targets
             return buf.ToString();
         }
 
-        public override string getTarget64BitStringFromValue( ulong word )
+        public override string GetTarget64BitStringFromValue( ulong word )
         {
             int numHexDigits = 8 * 2;
             StringBuilder buf = new StringBuilder( numHexDigits + 2 );

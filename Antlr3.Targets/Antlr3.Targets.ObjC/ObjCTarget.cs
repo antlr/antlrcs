@@ -41,16 +41,16 @@ namespace Antlr3.Targets
 
     public class ObjCTarget : Target
     {
-        protected override void genRecognizerHeaderFile( AntlrTool tool,
+        protected override void GenRecognizerHeaderFile( AntlrTool tool,
                                                CodeGenerator generator,
                                                Grammar grammar,
                                                StringTemplate headerFileST,
                                                string extName )
         {
-            generator.write( headerFileST, grammar.name + Grammar.grammarTypeToFileNameSuffix[grammar.type] + extName );
+            generator.Write( headerFileST, grammar.name + Grammar.grammarTypeToFileNameSuffix[grammar.type] + extName );
         }
 
-        public override string getTargetCharLiteralFromANTLRCharLiteral( CodeGenerator generator,
+        public override string GetTargetCharLiteralFromANTLRCharLiteral( CodeGenerator generator,
                                                                string literal )
         {
             if ( literal.StartsWith( "'\\u" ) )
@@ -75,7 +75,7 @@ namespace Antlr3.Targets
         *  around the incoming literal.  Just flip the quotes and replace
         *  double quotes with \"
         */
-        public override string getTargetStringLiteralFromANTLRStringLiteral( CodeGenerator generator,
+        public override string GetTargetStringLiteralFromANTLRStringLiteral( CodeGenerator generator,
                                                                    string literal )
         {
             literal = literal.Replace( "\"", "\\\"" );
@@ -87,7 +87,7 @@ namespace Antlr3.Targets
         }
 
         /** If we have a label, prefix it with the recognizer's name */
-        public override string getTokenTypeAsTargetLabel( CodeGenerator generator, int ttype )
+        public override string GetTokenTypeAsTargetLabel( CodeGenerator generator, int ttype )
         {
             string name = generator.grammar.getTokenDisplayName( ttype );
             // If name is a literal, return the token type instead
@@ -101,7 +101,7 @@ namespace Antlr3.Targets
         }
 
         /** Target must be able to override the labels used for token types. Sometimes also depends on the token text.*/
-        string getTokenTextAndTypeAsTargetLabel( CodeGenerator generator, string text, int tokenType )
+        string GetTokenTextAndTypeAsTargetLabel( CodeGenerator generator, string text, int tokenType )
         {
             string name = generator.grammar.getTokenDisplayName( tokenType );
             // If name is a literal, return the token type instead

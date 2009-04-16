@@ -40,7 +40,7 @@ namespace Antlr3.Targets
 
     public class CPPTarget : Target
     {
-        public string escapeChar( int c )
+        public string EscapeChar( int c )
         {
             // System.out.println("CPPTarget.escapeChar("+c+")");
             switch ( c )
@@ -87,25 +87,25 @@ namespace Antlr3.Targets
          *
          * @param s The String to be changed into a literal
          */
-        public string escapeString( string s )
+        public string EscapeString( string s )
         {
             StringBuilder retval = new StringBuilder();
             for ( int i = 0; i < s.Length; i++ )
             {
-                retval.Append( escapeChar( s[i] ) );
+                retval.Append( EscapeChar( s[i] ) );
             }
 
             return retval.ToString();
         }
 
-        protected override void genRecognizerHeaderFile( AntlrTool tool,
+        protected override void GenRecognizerHeaderFile( AntlrTool tool,
                                                CodeGenerator generator,
                                                Grammar grammar,
                                                StringTemplate headerFileST,
                                                string extName )
         {
-            StringTemplateGroup templates = generator.getTemplates();
-            generator.write( headerFileST, grammar.name + extName );
+            StringTemplateGroup templates = generator.GetTemplates();
+            generator.Write( headerFileST, grammar.name + extName );
         }
 
         /** Convert from an ANTLR char literal found in a grammar file to
@@ -115,7 +115,7 @@ namespace Antlr3.Targets
          *  around the incoming literal.
          *  Depending on the charvocabulary the charliteral should be prefixed with a 'L'
          */
-        public override string getTargetCharLiteralFromANTLRCharLiteral( CodeGenerator codegen, string literal )
+        public override string GetTargetCharLiteralFromANTLRCharLiteral( CodeGenerator codegen, string literal )
         {
             int c = Grammar.getCharValueFromGrammarCharLiteral( literal );
             string prefix = "'";
@@ -123,7 +123,7 @@ namespace Antlr3.Targets
                 prefix = "L'";
             else if ( ( c & 0x80 ) != 0 )	// if in char mode prevent sign extensions
                 return "" + c;
-            return prefix + escapeChar( c ) + "'";
+            return prefix + EscapeChar( c ) + "'";
         }
 
         /** Convert from an ANTLR string literal found in a grammar file to
@@ -133,20 +133,20 @@ namespace Antlr3.Targets
          *  around the incoming literal.
          *  Depending on the charvocabulary the string should be prefixed with a 'L'
          */
-        public override string getTargetStringLiteralFromANTLRStringLiteral( CodeGenerator codegen, string literal )
+        public override string GetTargetStringLiteralFromANTLRStringLiteral( CodeGenerator codegen, string literal )
         {
             StringBuilder buf = Grammar.getUnescapedStringFromGrammarStringLiteral( literal );
             string prefix = "\"";
             if ( codegen.grammar.MaxCharValue > 255 )
                 prefix = "L\"";
-            return prefix + escapeString( buf.ToString() ) + "\"";
+            return prefix + EscapeString( buf.ToString() ) + "\"";
         }
         /** Character constants get truncated to this value.
          * TODO: This should be derived from the charVocabulary. Depending on it
          * being 255 or 0xFFFF the templates should generate normal character
          * constants or multibyte ones.
          */
-        public override int getMaxCharValue( CodeGenerator codegen )
+        public override int GetMaxCharValue( CodeGenerator codegen )
         {
             int maxval = 255; // codegen.grammar.get????();
             if ( maxval <= 255 )

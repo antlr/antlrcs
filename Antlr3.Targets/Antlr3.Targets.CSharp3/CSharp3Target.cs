@@ -35,12 +35,12 @@ namespace Antlr3.Targets
 
     public class CSharp3Target : Target
     {
-        public override string encodeIntAsCharEscape( int v )
+        public override string EncodeIntAsCharEscape( int v )
         {
             return "\\x" + v.ToString( "X" );
         }
 
-        public override string getTarget64BitStringFromValue( ulong word )
+        public override string GetTarget64BitStringFromValue( ulong word )
         {
             return "0x" + word.ToString( "X" );
         }

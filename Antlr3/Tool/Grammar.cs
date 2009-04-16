@@ -786,7 +786,7 @@ namespace Antlr3.Tool
             {
                 if ( generator != null )
                 {
-                    return generator.target.getMaxCharValue( generator );
+                    return generator.target.GetMaxCharValue( generator );
                 }
                 else
                 {

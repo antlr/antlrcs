@@ -168,7 +168,7 @@ namespace Antlr3.Tool
         public virtual void addAttributes( string definitions, int separator )
         {
             IList<string> attrs = new List<string>();
-            CodeGenerator.getListOfArgumentsFromAction( definitions, 0, -1, separator, attrs );
+            CodeGenerator.GetListOfArgumentsFromAction( definitions, 0, -1, separator, attrs );
             foreach ( string a in attrs )
             {
                 Attribute attr = new Attribute( a );

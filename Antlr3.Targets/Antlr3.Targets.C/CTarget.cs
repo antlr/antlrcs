@@ -42,9 +42,9 @@ namespace Antlr3.Targets
 
     public class CTarget : Target
     {
-        List<string> strings = new List<string>();
+        List<string> _strings = new List<string>();
 
-        protected override void genRecognizerFile( AntlrTool tool,
+        protected override void GenRecognizerFile( AntlrTool tool,
                                     CodeGenerator generator,
                                     Grammar grammar,
                                     StringTemplate outputFileST )
@@ -53,12 +53,12 @@ namespace Antlr3.Targets
             // Before we write this, and cause it to generate its string,
             // we need to add all the string literals that we are going to match
             //
-            outputFileST.SetAttribute( "literals", strings );
-            string fileName = generator.getRecognizerFileName( grammar.name, grammar.type );
-            generator.write( outputFileST, fileName );
+            outputFileST.SetAttribute( "literals", _strings );
+            string fileName = generator.GetRecognizerFileName( grammar.name, grammar.type );
+            generator.Write( outputFileST, fileName );
         }
 
-        protected override void genRecognizerHeaderFile( AntlrTool tool,
+        protected override void GenRecognizerHeaderFile( AntlrTool tool,
                                                CodeGenerator generator,
                                                Grammar grammar,
                                                StringTemplate headerFileST,
@@ -68,10 +68,10 @@ namespace Antlr3.Targets
             // a file suffixed with .c, so we must substring and add the extName
             // to it as we cannot assign into strings in Java.
             ///
-            string fileName = generator.getRecognizerFileName( grammar.name, grammar.type );
+            string fileName = generator.GetRecognizerFileName( grammar.name, grammar.type );
             fileName = fileName.Substring( 0, fileName.Length - 2 ) + extName;
 
-            generator.write( headerFileST, fileName );
+            generator.Write( headerFileST, fileName );
         }
 
         /** Is scope in @scope::name {action} valid for this kind of grammar?
@@ -80,7 +80,7 @@ namespace Antlr3.Targets
          *  moment so targets can add template actions w/o having to recompile
          *  ANTLR.
          */
-        public override bool isValidActionScope( int grammarType, string scope )
+        public override bool IsValidActionScope( int grammarType, string scope )
         {
             switch ( grammarType )
             {
@@ -141,7 +141,7 @@ namespace Antlr3.Targets
             return false;
         }
 
-        public override string getTargetCharLiteralFromANTLRCharLiteral( CodeGenerator generator, string literal )
+        public override string GetTargetCharLiteralFromANTLRCharLiteral( CodeGenerator generator, string literal )
         {
 
             if ( literal.StartsWith( "'\\u" ) )
@@ -169,7 +169,7 @@ namespace Antlr3.Targets
          *  must produce the C array and cater for the case where the 
          *  lexer has been encoded with a string such as 'xyz\n',
          */
-        public override string getTargetStringLiteralFromANTLRStringLiteral( CodeGenerator generator, string literal )
+        public override string GetTargetStringLiteralFromANTLRStringLiteral( CodeGenerator generator, string literal )
         {
             int index;
             //int outc;
@@ -245,12 +245,12 @@ namespace Antlr3.Targets
             buf.Append( " ANTLR3_STRING_TERMINATOR}" );
 
             bytes = buf.ToString();
-            index = strings.IndexOf( bytes );
+            index = _strings.IndexOf( bytes );
 
             if ( index == -1 )
             {
-                strings.Add( bytes );
-                index = strings.IndexOf( bytes );
+                _strings.Add( bytes );
+                index = _strings.IndexOf( bytes );
             }
 
             string strref = "lit_" + ( index + 1 ).ToString();

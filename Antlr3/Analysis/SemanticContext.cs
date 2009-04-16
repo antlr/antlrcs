@@ -204,7 +204,7 @@ namespace Antlr3.Analysis
                     if ( generator != null )
                     {
                         eST.SetAttribute( "pred",
-                                         generator.translateAction( predEnclosingRuleName, predicateAST ) );
+                                         generator.TranslateAction( predEnclosingRuleName, predicateAST ) );
                     }
                 }
                 else
@@ -216,7 +216,7 @@ namespace Antlr3.Analysis
                 if ( generator != null )
                 {
                     string description =
-                        generator.target.getTargetStringLiteralFromString( this.ToString() );
+                        generator.target.GetTargetStringLiteralFromString( this.ToString() );
                     eST.SetAttribute( "description", description );
                 }
                 return eST;

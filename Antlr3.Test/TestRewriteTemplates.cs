@@ -272,7 +272,7 @@ namespace AntlrUnitTests
             antlr.setOutputDirectory( null ); // write to /dev/null
             CodeGenerator generator = new CodeGenerator( antlr, g, "Java" );
             g.setCodeGenerator( generator );
-            generator.genRecognizer();
+            generator.GenRecognizer();
 
             assertEquals( "unexpected errors: " + equeue, 0, equeue.warnings.Count );
         }
@@ -295,7 +295,7 @@ namespace AntlrUnitTests
             antlr.setOutputDirectory( null ); // write to /dev/null
             CodeGenerator generator = new CodeGenerator( antlr, g, "Java" );
             g.setCodeGenerator( generator );
-            generator.genRecognizer();
+            generator.GenRecognizer();
 
             assertEquals( "unexpected errors: " + equeue, 0, equeue.warnings.Count );
         }
@@ -315,7 +315,7 @@ namespace AntlrUnitTests
             antlr.setOutputDirectory( null ); // write to /dev/null
             CodeGenerator generator = new CodeGenerator( antlr, g, "Java" );
             g.setCodeGenerator( generator );
-            generator.genRecognizer();
+            generator.GenRecognizer();
 
             assertEquals( "unexpected errors: " + equeue, 2, equeue.warnings.Count );
         }
@@ -336,7 +336,7 @@ namespace AntlrUnitTests
             antlr.setOutputDirectory( null ); // write to /dev/null
             CodeGenerator generator = new CodeGenerator( antlr, g, "Java" );
             g.setCodeGenerator( generator );
-            generator.genRecognizer();
+            generator.GenRecognizer();
 
             assertEquals( "unexpected errors: " + equeue, 2, equeue.warnings.Count );
         }

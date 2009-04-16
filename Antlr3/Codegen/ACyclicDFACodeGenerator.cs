@@ -74,7 +74,7 @@ namespace Antlr3.Codegen
             string dfaLoopbackStateName = "dfaLoopbackState";
             string dfaOptionalBlockStateName = "dfaOptionalBlockState";
             string dfaEdgeName = "dfaEdge";
-            if ( parentGenerator.canGenerateSwitch( s ) )
+            if ( parentGenerator.CanGenerateSwitch( s ) )
             {
                 dfaStateName = "dfaStateSwitch";
                 dfaLoopbackStateName = "dfaLoopbackStateSwitch";
@@ -128,13 +128,13 @@ namespace Antlr3.Codegen
                 // If the template wants all the label values delineated, do that
                 if ( edgeST.GetFormalArgument( "labels" ) != null )
                 {
-                    List<string> labels = edge.Label.Set.Select( value => parentGenerator.getTokenTypeAsTargetLabel( value ) ).ToList();
+                    List<string> labels = edge.Label.Set.Select( value => parentGenerator.GetTokenTypeAsTargetLabel( value ) ).ToList();
                     edgeST.SetAttribute( "labels", labels );
                 }
                 else
                 { // else create an expression to evaluate (the general case)
                     edgeST.SetAttribute( "labelExpr",
-                                        parentGenerator.genLabelExpr( templates, edge, k ) );
+                                        parentGenerator.GenLabelExpr( templates, edge, k ) );
                 }
 
                 // stick in any gated predicates for any edge if not already a pred
@@ -184,7 +184,7 @@ namespace Antlr3.Codegen
                     Transition predEdge = (Transition)EOTTarget.Transition( i );
                     StringTemplate edgeST = templates.GetInstanceOf( dfaEdgeName );
                     edgeST.SetAttribute( "labelExpr",
-                                        parentGenerator.genSemanticPredicateExpr( templates, predEdge ) );
+                                        parentGenerator.GenSemanticPredicateExpr( templates, predEdge ) );
                     // the target must be an accept state
                     //System.Console.Out.WriteLine( "EOT edge" );
                     StringTemplate targetST =

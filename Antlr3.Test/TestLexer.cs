@@ -275,7 +275,7 @@ namespace AntlrUnitTests
             antlr.setOutputDirectory( null ); // write to /dev/null
             CodeGenerator generator = new CodeGenerator( antlr, g, "Java" );
             g.setCodeGenerator( generator );
-            generator.genRecognizer(); // codegen phase sets some vars we need
+            generator.GenRecognizer(); // codegen phase sets some vars we need
             StringTemplate codeST = generator.RecognizerST;
             string code = codeST.ToString();
             int m = code.IndexOf( "match(\"" );

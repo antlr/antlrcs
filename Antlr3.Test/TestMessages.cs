@@ -67,7 +67,7 @@ namespace AntlrUnitTests
             AntlrTool antlr = newTool();
             CodeGenerator generator = new CodeGenerator( antlr, g, "Java" );
             g.setCodeGenerator( generator );
-            generator.genRecognizer(); // forces load of templates
+            generator.GenRecognizer(); // forces load of templates
             ActionTranslator translator = new ActionTranslator( generator,
                                                                         "rule",
                                                                         new CommonToken( ANTLRParser.ACTION, action ), 1 );

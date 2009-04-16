@@ -262,7 +262,7 @@ namespace AntlrUnitTests
             antlr.setOutputDirectory( null ); // write to /dev/null
             CodeGenerator generator = new CodeGenerator( antlr, g, "Java" );
             g.setCodeGenerator( generator );
-            generator.genRecognizer();
+            generator.GenRecognizer();
 
             assertEquals( "unexpected errors: " + equeue, 1, equeue.errors.Count );
 

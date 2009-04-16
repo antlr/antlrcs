@@ -939,7 +939,7 @@ namespace AntlrUnitTests
             antlr.setOutputDirectory( null ); // write to /dev/null
             CodeGenerator generator = new CodeGenerator( antlr, g, "Java" );
             g.setCodeGenerator( generator );
-            generator.genRecognizer();
+            generator.GenRecognizer();
 
             // $a is ambig; is it previous root or ref to a ref in alt?
             assertEquals( "unexpected errors: " + equeue, 1, equeue.errors.Count );
@@ -1254,7 +1254,7 @@ namespace AntlrUnitTests
             antlr.setOutputDirectory( null ); // write to /dev/null
             CodeGenerator generator = new CodeGenerator( antlr, g, "Java" );
             g.setCodeGenerator( generator );
-            generator.genRecognizer();
+            generator.GenRecognizer();
 
             int expectedMsgID = ErrorManager.MSG_UNDEFINED_RULE_REF;
             object expectedArg = "ugh";
@@ -1284,7 +1284,7 @@ namespace AntlrUnitTests
             antlr.setOutputDirectory( null ); // write to /dev/null
             CodeGenerator generator = new CodeGenerator( antlr, g, "Java" );
             g.setCodeGenerator( generator );
-            generator.genRecognizer();
+            generator.GenRecognizer();
 
             int expectedMsgID = ErrorManager.MSG_REWRITE_ELEMENT_NOT_PRESENT_ON_LHS;
             object expectedArg = "b";
@@ -1313,7 +1313,7 @@ namespace AntlrUnitTests
             antlr.setOutputDirectory( null ); // write to /dev/null
             CodeGenerator generator = new CodeGenerator( antlr, g, "Java" );
             g.setCodeGenerator( generator );
-            generator.genRecognizer();
+            generator.GenRecognizer();
 
             int expectedMsgID = ErrorManager.MSG_UNDEFINED_TOKEN_REF_IN_REWRITE;
             object expectedArg = "ICK";
@@ -1342,7 +1342,7 @@ namespace AntlrUnitTests
             antlr.setOutputDirectory( null ); // write to /dev/null
             CodeGenerator generator = new CodeGenerator( antlr, g, "Java" );
             g.setCodeGenerator( generator );
-            generator.genRecognizer();
+            generator.GenRecognizer();
 
             int expectedMsgID = ErrorManager.MSG_UNDEFINED_LABEL_REF_IN_REWRITE;
             object expectedArg = "foo";
@@ -1371,7 +1371,7 @@ namespace AntlrUnitTests
             antlr.setOutputDirectory( null ); // write to /dev/null
             CodeGenerator generator = new CodeGenerator( antlr, g, "Java" );
             g.setCodeGenerator( generator );
-            generator.genRecognizer();
+            generator.GenRecognizer();
 
             int expectedMsgID = ErrorManager.MSG_UNDEFINED_TOKEN_REF_IN_REWRITE;
             object expectedArg = "'a'";
@@ -1400,7 +1400,7 @@ namespace AntlrUnitTests
             antlr.setOutputDirectory( null ); // write to /dev/null
             CodeGenerator generator = new CodeGenerator( antlr, g, "Java" );
             g.setCodeGenerator( generator );
-            generator.genRecognizer();
+            generator.GenRecognizer();
 
             int expectedMsgID = ErrorManager.MSG_UNDEFINED_TOKEN_REF_IN_REWRITE;
             object expectedArg = "'foo'";

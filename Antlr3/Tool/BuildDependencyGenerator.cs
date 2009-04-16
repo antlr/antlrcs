@@ -96,7 +96,7 @@ namespace Antlr3.Tool
             grammar = tool.getRootGrammar( grammarFileName );
             string language = (string)grammar.getOption( "language" );
             generator = new CodeGenerator( tool, grammar, language );
-            generator.loadTemplates( language );
+            generator.LoadTemplates( language );
         }
 
         public virtual string TokenVocab
@@ -135,7 +135,7 @@ namespace Antlr3.Tool
             }
             // add generated recognizer; e.g., TParser.java
             string recognizer =
-                generator.getRecognizerFileName( grammar.name, grammar.type );
+                generator.GetRecognizerFileName( grammar.name, grammar.type );
             files.Add( new FileInfo( System.IO.Path.Combine( outputDir.FullName, recognizer ) ) );
             // add output vocab file; e.g., T.tokens. This is always generated to
             // the base output directory, which will be just . if there is no -o option

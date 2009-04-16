@@ -551,7 +551,7 @@ ERROR_SCOPED_XY
 	:	'$' x=ID '::' y=ID
 		{
 		chunks.Add(Text);
-		generator.issueInvalidScopeError($x.text,$y.text,
+		generator.IssueInvalidScopeError($x.text,$y.text,
 		                                 enclosingRule,actionToken,
 		                                 outerAltNum);		
 		}
@@ -621,7 +621,7 @@ TEMPLATE_INSTANCE
 				ruleName = enclosingRule.name;
 			}
 			StringTemplate st =
-				generator.translateTemplateConstructor(ruleName,
+				generator.TranslateTemplateConstructor(ruleName,
 													   outerAltNum,
 													   actionToken,
 													   action);
@@ -639,7 +639,7 @@ INDIRECT_TEMPLATE_INSTANCE
 		{
 			string action = $text.Substring( 1, $text.Length - 1 );
 			StringTemplate st =
-				generator.translateTemplateConstructor(enclosingRule.name,
+				generator.TranslateTemplateConstructor(enclosingRule.name,
 													   outerAltNum,
 													   actionToken,
 													   action);
@@ -713,7 +713,7 @@ ERROR_XY
 	:	'$' x=ID '.' y=ID
 		{
 			chunks.Add(Text);
-			generator.issueInvalidAttributeError($x.text,$y.text,
+			generator.IssueInvalidAttributeError($x.text,$y.text,
 												 enclosingRule,actionToken,
 												 outerAltNum);
 		}
@@ -723,7 +723,7 @@ ERROR_X
 	:	'$' x=ID
 		{
 			chunks.Add(Text);
-			generator.issueInvalidAttributeError($x.text,
+			generator.IssueInvalidAttributeError($x.text,
 												 enclosingRule,actionToken,
 												 outerAltNum);
 		}

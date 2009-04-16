@@ -69,6 +69,7 @@ namespace Antlr3.Codegen
     using MethodImpl = System.Runtime.CompilerServices.MethodImplAttribute;
     using MethodImplOptions = System.Runtime.CompilerServices.MethodImplOptions;
     using NFAState = Antlr3.Analysis.NFAState;
+    using Obsolete = System.ObsoleteAttribute;
     using RecognitionException = Antlr.Runtime.RecognitionException;
     using Rule = Antlr3.Tool.Rule;
     using StringTemplate = Antlr3.ST.StringTemplate;
@@ -188,7 +189,7 @@ namespace Antlr3.Codegen
 
             acyclicDFAGenerator = new ACyclicDFACodeGenerator( this );
 
-            loadLanguageTarget( language );
+            LoadLanguageTarget( language );
         }
 
         #region Properties
@@ -196,28 +197,28 @@ namespace Antlr3.Codegen
         {
             get
             {
-                return getBaseTemplates();
+                return GetBaseTemplates();
             }
         }
         public StringTemplate RecognizerST
         {
             get
             {
-                return getRecognizerST();
+                return GetRecognizerST();
             }
         }
         public StringTemplateGroup Templates
         {
             get
             {
-                return getTemplates();
+                return GetTemplates();
             }
         }
         public string VocabFileName
         {
             get
             {
-                return getVocabFileName();
+                return GetVocabFileName();
             }
         }
         public bool Debug
@@ -244,7 +245,7 @@ namespace Antlr3.Codegen
         #endregion
 
         [MethodImpl( MethodImplOptions.Synchronized )]
-        protected virtual void loadLanguageTarget( string language )
+        protected virtual void LoadLanguageTarget( string language )
         {
             if ( !_targets.TryGetValue( language, out target ) )
             {
@@ -292,7 +293,7 @@ namespace Antlr3.Codegen
         }
 
         /** load the main language.stg template group file */
-        public virtual void loadTemplates( string language )
+        public virtual void LoadTemplates( string language )
         {
             // get a group loader containing main templates dir and target subdir
             string templateDirs =
@@ -411,11 +412,11 @@ namespace Antlr3.Codegen
          *
          *  The target, such as JavaTarget, dictates which files get written.
          */
-        public virtual StringTemplate genRecognizer()
+        public virtual StringTemplate GenRecognizer()
         {
             //JSystem.@out.println("### generate "+grammar.name+" recognizer");
             // LOAD OUTPUT TEMPLATES
-            loadTemplates( language );
+            LoadTemplates( language );
             if ( templates == null )
             {
                 return null;
@@ -426,7 +427,7 @@ namespace Antlr3.Codegen
             {
                 return null;
             }
-            target.performGrammarAnalysis( this, grammar );
+            target.PerformGrammarAnalysis( this, grammar );
 
 
             // some grammar analysis errors will not yield reliable DFA
@@ -468,9 +469,9 @@ namespace Antlr3.Codegen
             // Verify action scopes are ok for target and dump actions into output
             // Templates can say <actions.parser.header> for example.
             var actions = grammar.Actions;
-            verifyActionScopesOkForTarget( actions );
+            VerifyActionScopesOkForTarget( actions );
             // translate $x::y references
-            translateActionAttributeReferences( actions );
+            TranslateActionAttributeReferences( actions );
             StringTemplate gateST = templates.GetInstanceOf( "actionGate" );
             if ( filterMode )
             {
@@ -543,7 +544,7 @@ namespace Antlr3.Codegen
                                       grammar.getDefaultActionScope( grammar.type ) );
 
             string targetAppropriateFileNameString =
-                target.getTargetStringLiteralFromString( grammar.FileName );
+                target.GetTargetStringLiteralFromString( grammar.FileName );
             outputFileST.SetAttribute( "fileName", targetAppropriateFileNameString );
             headerFileST.SetAttribute( "fileName", targetAppropriateFileNameString );
             outputFileST.SetAttribute( "ANTLRVersion", tool.VERSION );
@@ -571,15 +572,15 @@ namespace Antlr3.Codegen
                 }
             }
 
-            genTokenTypeConstants( recognizerST );
-            genTokenTypeConstants( outputFileST );
-            genTokenTypeConstants( headerFileST );
+            GenTokenTypeConstants( recognizerST );
+            GenTokenTypeConstants( outputFileST );
+            GenTokenTypeConstants( headerFileST );
 
             if ( grammar.type != Grammar.LEXER )
             {
-                genTokenTypeNames( recognizerST );
-                genTokenTypeNames( outputFileST );
-                genTokenTypeNames( headerFileST );
+                GenTokenTypeNames( recognizerST );
+                GenTokenTypeNames( outputFileST );
+                GenTokenTypeNames( headerFileST );
             }
 
             // Now that we know what synpreds are used, we can set into template
@@ -597,19 +598,19 @@ namespace Antlr3.Codegen
             // WRITE FILES
             try
             {
-                target.genRecognizerFile( tool, this, grammar, outputFileST );
+                target.GenRecognizerFile( tool, this, grammar, outputFileST );
                 if ( templates.IsDefined( "headerFile" ) )
                 {
                     StringTemplate extST = templates.GetInstanceOf( "headerFileExtension" );
-                    target.genRecognizerHeaderFile( tool, this, grammar, headerFileST, extST.ToString() );
+                    target.GenRecognizerHeaderFile( tool, this, grammar, headerFileST, extST.ToString() );
                 }
                 // write out the vocab interchange file; used by antlr,
                 // does not change per target
-                StringTemplate tokenVocabSerialization = genTokenVocabOutput();
+                StringTemplate tokenVocabSerialization = GenTokenVocabOutput();
                 string vocabFileName = VocabFileName;
                 if ( vocabFileName != null )
                 {
-                    write( tokenVocabSerialization, vocabFileName );
+                    Write( tokenVocabSerialization, vocabFileName );
                 }
                 //JSystem.@out.println(outputFileST.getDOTForDependencyGraph(false));
             }
@@ -631,12 +632,12 @@ namespace Antlr3.Codegen
          *  '@headerfile:name {action}' or something.  Make sure the
          *  target likes the scopes in action table.
          */
-        protected virtual void verifyActionScopesOkForTarget( IDictionary<string, IDictionary<string, object>> actions )
+        protected virtual void VerifyActionScopesOkForTarget( IDictionary<string, IDictionary<string, object>> actions )
         {
             foreach ( var action in actions )
             {
                 string scope = action.Key;
-                if ( !target.isValidActionScope( grammar.type, scope ) )
+                if ( !target.IsValidActionScope( grammar.type, scope ) )
                 {
                     // get any action from the scope to get error location
                     var scopeActions = action.Value;
@@ -652,18 +653,18 @@ namespace Antlr3.Codegen
         /** Actions may reference $x::y attributes, call translateAction on
          *  each action and replace that action in the Map.
          */
-        protected virtual void translateActionAttributeReferences( IDictionary<string, IDictionary<string, object>> actions )
+        protected virtual void TranslateActionAttributeReferences( IDictionary<string, IDictionary<string, object>> actions )
         {
             foreach ( var action in actions )
             {
                 string scope = action.Key;
                 var scopeActions = action.Value;
-                translateActionAttributeReferencesForSingleScope( null, scopeActions );
+                TranslateActionAttributeReferencesForSingleScope( null, scopeActions );
             }
         }
 
         /** Use for translating rule @init{...} actions that have no scope */
-        protected internal virtual void translateActionAttributeReferencesForSingleScope(
+        protected internal virtual void TranslateActionAttributeReferencesForSingleScope(
             Rule r,
             IDictionary<string,object> scopeActions )
         {
@@ -676,7 +677,7 @@ namespace Antlr3.Codegen
             foreach ( string name in actionNameSet )
             {
                 GrammarAST actionAST = (GrammarAST)scopeActions.get( name );
-                IList chunks = translateAction( ruleName, actionAST );
+                IList chunks = TranslateAction( ruleName, actionAST );
                 scopeActions[name] = chunks; // replace with translation
             }
         }
@@ -699,7 +700,7 @@ namespace Antlr3.Codegen
          *  Like Grosch I implemented local FOLLOW sets that are combined at run-time
          *  upon error to avoid parsing overhead.
          */
-        public virtual void generateLocalFOLLOW( GrammarAST referencedElementNode,
+        public virtual void GenerateLocalFollow( GrammarAST referencedElementNode,
                                         string referencedElementName,
                                         string enclosingRuleName,
                                         int elementIndex )
@@ -751,7 +752,7 @@ namespace Antlr3.Codegen
             for ( int j = 0; j < words.Length; j++ )
             {
                 ulong w = words[j];
-                wordStrings[j] = target.getTarget64BitStringFromValue( w );
+                wordStrings[j] = target.GetTarget64BitStringFromValue( w );
             }
             recognizerST.SetAttribute( "bitsets.{name,inName,bits,tokenTypes,tokenIndex}",
                     referencedElementName,
@@ -782,7 +783,7 @@ namespace Antlr3.Codegen
          *
          *  Regardless, the output file and header file get a copy of the DFAs.
          */
-        public virtual StringTemplate genLookaheadDecision( StringTemplate recognizerST,
+        public virtual StringTemplate GenLookaheadDecision( StringTemplate recognizerST,
                                                    DFA dfa )
         {
             StringTemplate decisionST;
@@ -803,7 +804,7 @@ namespace Antlr3.Codegen
                 headerFileST.SetAttribute( "cyclicDFAs", dfa );
                 decisionST = templates.GetInstanceOf( "dfaDecision" );
                 string description = dfa.NFADecisionStartState.Description;
-                description = target.getTargetStringLiteralFromString( description );
+                description = target.GetTargetStringLiteralFromString( description );
                 if ( description != null )
                 {
                     decisionST.SetAttribute( "description", description );
@@ -820,7 +821,7 @@ namespace Antlr3.Codegen
          *  because if you get here, the state is super complicated and needs an
          *  if-then-else.  This is used by the new DFA scheme created June 2006.
          */
-        public virtual StringTemplate generateSpecialState( DFAState s )
+        public virtual StringTemplate GenerateSpecialState( DFAState s )
         {
             StringTemplate stateST;
             stateST = templates.GetInstanceOf( "cyclicDFAState" );
@@ -846,7 +847,7 @@ namespace Antlr3.Codegen
                 {
                     edgeST = templates.GetInstanceOf( "cyclicDFAEdge" );
                     StringTemplate exprST =
-                        genLabelExpr( templates, edge, 1 );
+                        GenLabelExpr( templates, edge, 1 );
                     edgeST.SetAttribute( "labelExpr", exprST );
                 }
                 edgeST.SetAttribute( "edgeNumber", i + 1 );
@@ -885,28 +886,28 @@ namespace Antlr3.Codegen
         }
 
         /** Generate an expression for traversing an edge. */
-        protected internal virtual StringTemplate genLabelExpr( StringTemplateGroup templates,
+        protected internal virtual StringTemplate GenLabelExpr( StringTemplateGroup templates,
                                               Transition edge,
                                               int k )
         {
             Label label = edge.label;
             if ( label.IsSemanticPredicate )
             {
-                return genSemanticPredicateExpr( templates, edge );
+                return GenSemanticPredicateExpr( templates, edge );
             }
             if ( label.IsSet )
             {
-                return genSetExpr( templates, label.Set, k, true );
+                return GenSetExpr( templates, label.Set, k, true );
             }
             // must be simple label
             StringTemplate eST = templates.GetInstanceOf( "lookaheadTest" );
-            eST.SetAttribute( "atom", getTokenTypeAsTargetLabel( label.Atom ) );
+            eST.SetAttribute( "atom", GetTokenTypeAsTargetLabel( label.Atom ) );
             eST.SetAttribute( "atomAsInt", label.Atom );
             eST.SetAttribute( "k", k );
             return eST;
         }
 
-        protected internal virtual StringTemplate genSemanticPredicateExpr( StringTemplateGroup templates,
+        protected internal virtual StringTemplate GenSemanticPredicateExpr( StringTemplateGroup templates,
                                                           Transition edge )
         {
             DFA dfa = ( (DFAState)edge.target ).dfa; // which DFA are we in
@@ -918,7 +919,7 @@ namespace Antlr3.Codegen
         /** For intervals such as [3..3, 30..35], generate an expression that
          *  tests the lookahead similar to LA(1)==3 || (LA(1)>=30&&LA(1)<=35)
          */
-        public virtual StringTemplate genSetExpr( StringTemplateGroup templates,
+        public virtual StringTemplate GenSetExpr( StringTemplateGroup templates,
                                          IIntSet set,
                                          int k,
                                          bool partOfDFA )
@@ -951,16 +952,16 @@ namespace Antlr3.Codegen
                 if ( a == b )
                 {
                     eST = templates.GetInstanceOf( testSTName );
-                    eST.SetAttribute( "atom", getTokenTypeAsTargetLabel( a ) );
+                    eST.SetAttribute( "atom", GetTokenTypeAsTargetLabel( a ) );
                     eST.SetAttribute( "atomAsInt", a );
                     //eST.setAttribute("k",Utils.integer(k));
                 }
                 else
                 {
                     eST = templates.GetInstanceOf( testRangeSTName );
-                    eST.SetAttribute( "lower", getTokenTypeAsTargetLabel( a ) );
+                    eST.SetAttribute( "lower", GetTokenTypeAsTargetLabel( a ) );
                     eST.SetAttribute( "lowerAsInt", a );
-                    eST.SetAttribute( "upper", getTokenTypeAsTargetLabel( b ) );
+                    eST.SetAttribute( "upper", GetTokenTypeAsTargetLabel( b ) );
                     eST.SetAttribute( "upperAsInt", b );
                     eST.SetAttribute( "rangeNumber", rangeNumber );
                 }
@@ -977,7 +978,7 @@ namespace Antlr3.Codegen
          *  code template.  This is not the token vocab interchange file, but
          *  rather a list of token type ID needed by the recognizer.
          */
-        protected virtual void genTokenTypeConstants( StringTemplate code )
+        protected virtual void GenTokenTypeConstants( StringTemplate code )
         {
             // make constants for the token types
             foreach ( string tokenID in grammar.TokenIDs )
@@ -995,14 +996,14 @@ namespace Antlr3.Codegen
         /** Generate a token names table that maps token type to a printable
          *  name: either the label like INT or the literal like "begin".
          */
-        protected virtual void genTokenTypeNames( StringTemplate code )
+        protected virtual void GenTokenTypeNames( StringTemplate code )
         {
             for ( int t = Label.MIN_TOKEN_TYPE; t <= grammar.MaxTokenType; t++ )
             {
                 string tokenName = grammar.getTokenDisplayName( t );
                 if ( tokenName != null )
                 {
-                    tokenName = target.getTargetStringLiteralFromString( tokenName, true );
+                    tokenName = target.GetTargetStringLiteralFromString( tokenName, true );
                     code.SetAttribute( "tokenNames", tokenName );
                 }
             }
@@ -1018,14 +1019,14 @@ namespace Antlr3.Codegen
          *  be converted to the target languages literals.  For most C-derived
          *  languages no translation is needed.
          */
-        public virtual string getTokenTypeAsTargetLabel( int ttype )
+        public virtual string GetTokenTypeAsTargetLabel( int ttype )
         {
             if ( grammar.type == Grammar.LEXER )
             {
                 string name = grammar.getTokenDisplayName( ttype );
-                return target.getTargetCharLiteralFromANTLRCharLiteral( this, name );
+                return target.GetTargetCharLiteralFromANTLRCharLiteral( this, name );
             }
-            return target.getTokenTypeAsTargetLabel( this, ttype );
+            return target.GetTokenTypeAsTargetLabel( this, ttype );
         }
 
         /** Generate a token vocab file with all the token names/types.  For example:
@@ -1035,7 +1036,7 @@ namespace Antlr3.Codegen
          *
          *  This is independent of the target language; used by antlr internally
          */
-        protected virtual StringTemplate genTokenVocabOutput()
+        protected virtual StringTemplate GenTokenVocabOutput()
         {
             StringTemplate vocabFileST =
                 new StringTemplate( vocabFilePattern,
@@ -1064,16 +1065,16 @@ namespace Antlr3.Codegen
             return vocabFileST;
         }
 
-        public virtual IList translateAction( string ruleName,
+        public virtual IList TranslateAction( string ruleName,
                                     GrammarAST actionTree )
         {
             if ( actionTree.Type == ANTLRParser.ARG_ACTION )
             {
-                return translateArgAction( ruleName, actionTree );
+                return TranslateArgAction( ruleName, actionTree );
             }
             ActionTranslator translator = new ActionTranslator( this, ruleName, actionTree );
             IList chunks = translator.translateToChunks();
-            chunks = target.postProcessAction( chunks, actionTree.token );
+            chunks = target.PostProcessAction( chunks, actionTree.token );
             return chunks;
         }
 
@@ -1082,11 +1083,11 @@ namespace Antlr3.Codegen
          *  of chunks, must cat together into a StringTemplate>.  Don't translate
          *  to strings early as we need to eval templates in context.
          */
-        public virtual List<StringTemplate> translateArgAction( string ruleName,
+        public virtual List<StringTemplate> TranslateArgAction( string ruleName,
                                                GrammarAST actionTree )
         {
             string actionText = actionTree.token.Text;
-            List<string> args = getListOfArgumentsFromAction( actionText, ',' );
+            List<string> args = GetListOfArgumentsFromAction( actionText, ',' );
             List<StringTemplate> translatedArgs = new List<StringTemplate>();
             foreach ( string arg in args )
             {
@@ -1099,7 +1100,7 @@ namespace Antlr3.Codegen
                                                   actionToken,
                                                   actionTree.outerAltNum );
                     IList chunks = translator.translateToChunks();
-                    chunks = target.postProcessAction( chunks, actionToken );
+                    chunks = target.PostProcessAction( chunks, actionToken );
                     StringTemplate catST = new StringTemplate( templates, "<chunks>" );
                     catST.SetAttribute( "chunks", chunks );
                     templates.CreateStringTemplate();
@@ -1113,11 +1114,11 @@ namespace Antlr3.Codegen
             return translatedArgs;
         }
 
-        public static List<string> getListOfArgumentsFromAction( string actionText,
+        public static List<string> GetListOfArgumentsFromAction( string actionText,
                                                                 int separatorChar )
         {
             List<string> args = new List<string>();
-            getListOfArgumentsFromAction( actionText, 0, -1, separatorChar, args );
+            GetListOfArgumentsFromAction( actionText, 0, -1, separatorChar, args );
             return args;
         }
 
@@ -1129,7 +1130,7 @@ namespace Antlr3.Codegen
          *  convert to a list of arguments.  Allow nested square brackets etc...
          *  Set separatorChar to ';' or ',' or whatever you want.
          */
-        public static int getListOfArgumentsFromAction( string actionText,
+        public static int GetListOfArgumentsFromAction( string actionText,
                                                        int start,
                                                        int targetChar,
                                                        int separatorChar,
@@ -1176,17 +1177,17 @@ namespace Antlr3.Codegen
                     p++;
                     break;
                 case '(':
-                    p = getListOfArgumentsFromAction( actionText, p + 1, ')', separatorChar, args );
+                    p = GetListOfArgumentsFromAction( actionText, p + 1, ')', separatorChar, args );
                     break;
                 case '{':
-                    p = getListOfArgumentsFromAction( actionText, p + 1, '}', separatorChar, args );
+                    p = GetListOfArgumentsFromAction( actionText, p + 1, '}', separatorChar, args );
                     break;
                 case '<':
                     if ( actionText.IndexOf( '>', p + 1 ) >= p )
                     {
                         // do we see a matching '>' ahead?  if so, hope it's a generic
                         // and not less followed by expr with greater than
-                        p = getListOfArgumentsFromAction( actionText, p + 1, '>', separatorChar, args );
+                        p = GetListOfArgumentsFromAction( actionText, p + 1, '>', separatorChar, args );
                     }
                     else
                     {
@@ -1194,7 +1195,7 @@ namespace Antlr3.Codegen
                     }
                     break;
                 case '[':
-                    p = getListOfArgumentsFromAction( actionText, p + 1, ']', separatorChar, args );
+                    p = GetListOfArgumentsFromAction( actionText, p + 1, ']', separatorChar, args );
                     break;
                 default:
                     if ( c == separatorChar && targetChar == -1 )
@@ -1225,7 +1226,7 @@ namespace Antlr3.Codegen
          *  an action, translate it to the appropriate template constructor
          *  from the templateLib. This translates a *piece* of the action.
          */
-        public virtual StringTemplate translateTemplateConstructor( string ruleName,
+        public virtual StringTemplate TranslateTemplateConstructor( string ruleName,
                                                            int outerAltNum,
                                                            IToken actionToken,
                                                            string templateActionText )
@@ -1285,7 +1286,7 @@ namespace Antlr3.Codegen
         }
 
 
-        public virtual void issueInvalidScopeError( string x,
+        public virtual void IssueInvalidScopeError( string x,
                                            string y,
                                            Rule enclosingRule,
                                            IToken actionToken,
@@ -1318,7 +1319,7 @@ namespace Antlr3.Codegen
             }
         }
 
-        public virtual void issueInvalidAttributeError( string x,
+        public virtual void IssueInvalidAttributeError( string x,
                                                string y,
                                                Rule enclosingRule,
                                                IToken actionToken,
@@ -1377,7 +1378,7 @@ namespace Antlr3.Codegen
 
         }
 
-        public virtual void issueInvalidAttributeError( string x,
+        public virtual void IssueInvalidAttributeError( string x,
                                                Rule enclosingRule,
                                                IToken actionToken,
                                                int outerAltNum )
@@ -1424,36 +1425,42 @@ namespace Antlr3.Codegen
 
         // M I S C
 
-        public virtual StringTemplateGroup getTemplates()
+        [Obsolete]
+        public virtual StringTemplateGroup GetTemplates()
         {
             return templates;
         }
 
-        public virtual StringTemplateGroup getBaseTemplates()
+        [Obsolete]
+        public virtual StringTemplateGroup GetBaseTemplates()
         {
             return baseTemplates;
         }
 
-        public virtual void setDebug( bool debug )
+        [Obsolete]
+        public virtual void SetDebug( bool debug )
         {
             this.debug = debug;
         }
 
-        public virtual void setTrace( bool trace )
+        [Obsolete]
+        public virtual void SetTrace( bool trace )
         {
             this.trace = trace;
         }
 
-        public virtual void setProfile( bool profile )
+        [Obsolete]
+        public virtual void SetProfile( bool profile )
         {
             this.profile = profile;
             if ( profile )
             {
-                setDebug( true ); // requires debug events
+                SetDebug( true ); // requires debug events
             }
         }
 
-        public virtual StringTemplate getRecognizerST()
+        [Obsolete]
+        public virtual StringTemplate GetRecognizerST()
         {
             return outputFileST;
         }
@@ -1461,7 +1468,7 @@ namespace Antlr3.Codegen
         /** Generate TParser.java and TLexer.java from T.g if combined, else
          *  just use T.java as output regardless of type.
          */
-        public virtual string getRecognizerFileName( string name, int type )
+        public virtual string GetRecognizerFileName( string name, int type )
         {
             StringTemplate extST = templates.GetInstanceOf( "codeFileExtension" );
             string recognizerName = grammar.getRecognizerName();
@@ -1480,7 +1487,7 @@ namespace Antlr3.Codegen
         /** What is the name of the vocab file generated for this grammar?
          *  Returns null if no .tokens file should be generated.
          */
-        public virtual string getVocabFileName()
+        public virtual string GetVocabFileName()
         {
             if ( grammar.IsBuiltFromString )
             {
@@ -1489,7 +1496,7 @@ namespace Antlr3.Codegen
             return grammar.name + VOCAB_FILE_EXTENSION;
         }
 
-        public virtual void write( StringTemplate code, string fileName )
+        public virtual void Write( StringTemplate code, string fileName )
         {
             DateTime start = DateTime.Now;
             TextWriter w = tool.getOutputFile( grammar, fileName );
@@ -1508,7 +1515,7 @@ namespace Antlr3.Codegen
          *  containing an edge label such as 20..52330 (the resulting byte codes
          *  would overflow the method 65k limit probably).
          */
-        protected internal virtual bool canGenerateSwitch( DFAState s )
+        protected internal virtual bool CanGenerateSwitch( DFAState s )
         {
             if ( !GENERATE_SWITCHES_WHEN_POSSIBLE )
             {
@@ -1554,7 +1561,7 @@ namespace Antlr3.Codegen
          *  target language, however, label ::= <ID><INT> is probably ok in
          *  all languages we care about.
          */
-        public virtual string createUniqueLabel( string name )
+        public virtual string CreateUniqueLabel( string name )
         {
             return name + ( uniqueLabelNumber++ );
             //return new StringBuffer()

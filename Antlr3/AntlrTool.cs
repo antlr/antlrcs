@@ -670,9 +670,9 @@ namespace Antlr3
             {
                 CodeGenerator generator = new CodeGenerator( this, grammar, language );
                 grammar.setCodeGenerator( generator );
-                generator.setDebug( Debug );
-                generator.setProfile( Profile );
-                generator.setTrace( Trace );
+                generator.SetDebug( Debug );
+                generator.SetProfile( Profile );
+                generator.SetTrace( Trace );
 
                 // generate NFA early in case of crash later (for debugging)
                 if ( Generate_NFA_dot )
@@ -681,7 +681,7 @@ namespace Antlr3
                 }
 
                 // GENERATE CODE
-                generator.genRecognizer();
+                generator.GenRecognizer();
 
                 if ( Generate_DFA_dot )
                 {

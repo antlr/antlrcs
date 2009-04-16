@@ -40,7 +40,7 @@ namespace Antlr3.Targets
     public class ActionScriptTarget : Target
     {
 
-        public override string getTargetCharLiteralFromANTLRCharLiteral(
+        public override string GetTargetCharLiteralFromANTLRCharLiteral(
                 CodeGenerator generator,
                 string literal )
         {
@@ -49,7 +49,7 @@ namespace Antlr3.Targets
             return c.ToString();
         }
 
-        public override string getTokenTypeAsTargetLabel( CodeGenerator generator,
+        public override string GetTokenTypeAsTargetLabel( CodeGenerator generator,
                                                 int ttype )
         {
             // use ints for predefined types;
@@ -85,7 +85,7 @@ namespace Antlr3.Targets
          * @param v
          * @return
          */
-        public override string encodeIntAsCharEscape( int v )
+        public override string EncodeIntAsCharEscape( int v )
         {
             // encode as hex
             if ( v <= 255 )
@@ -118,18 +118,18 @@ namespace Antlr3.Targets
          *  This is to match how the BitSet constructor works, where the bits are
          *  passed in in 32-bit chunks with low-order bits coming first.
          */
-        public override string getTarget64BitStringFromValue( ulong word )
+        public override string GetTarget64BitStringFromValue( ulong word )
         {
             StringBuilder buf = new StringBuilder( 22 ); // enough for the two "0x", "," and " "
             buf.Append( "0x" );
-            writeHexWithPadding( buf, ( (uint)word ).ToString( "x" ) );
+            WriteHexWithPadding( buf, ( (uint)word ).ToString( "x" ) );
             buf.Append( ", 0x" );
-            writeHexWithPadding( buf, ( word >> 32 ).ToString( "x" ) );
+            WriteHexWithPadding( buf, ( word >> 32 ).ToString( "x" ) );
 
             return buf.ToString();
         }
 
-        private void writeHexWithPadding( StringBuilder buf, string digits )
+        private void WriteHexWithPadding( StringBuilder buf, string digits )
         {
             // pad left with zeros
             int padding = 8 - digits.Length;

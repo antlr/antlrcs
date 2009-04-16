@@ -50,7 +50,7 @@ namespace Antlr3.Targets
             RuleLabelScope.predefinedLexerRulePropertiesScope.addAttribute( "self", null );
         }
 
-        public override string getTargetCharLiteralFromANTLRCharLiteral( CodeGenerator generator,
+        public override string GetTargetCharLiteralFromANTLRCharLiteral( CodeGenerator generator,
                                                                 string literal )
         {
             StringBuilder buf = new StringBuilder( 10 );
@@ -97,7 +97,7 @@ namespace Antlr3.Targets
             return buf.ToString();
         }
 
-        public override string encodeIntAsCharEscape( int v )
+        public override string EncodeIntAsCharEscape( int v )
         {
             int intValue;
             if ( ( v & 0x8000 ) == 0 )

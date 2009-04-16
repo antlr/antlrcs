@@ -1,4 +1,4 @@
-// $ANTLR 3.1.2 Grammars\\ActionTranslator.g3 2009-04-10 15:22:09
+// $ANTLR 3.1.2 Grammars\\ActionTranslator.g3 2009-04-16 18:07:28
 
 // The variable 'variable' is assigned but its value is never used.
 #pragma warning disable 219
@@ -1175,7 +1175,7 @@ public partial class ActionTranslator : Lexer
 			{
 
 						chunks.Add(Text);
-						generator.issueInvalidScopeError((x!=null?x.Text:null),(y!=null?y.Text:null),
+						generator.IssueInvalidScopeError((x!=null?x.Text:null),(y!=null?y.Text:null),
 						                                 enclosingRule,actionToken,
 						                                 outerAltNum);		
 						
@@ -1523,7 +1523,7 @@ public partial class ActionTranslator : Lexer
 								ruleName = enclosingRule.name;
 							}
 							StringTemplate st =
-								generator.translateTemplateConstructor(ruleName,
+								generator.TranslateTemplateConstructor(ruleName,
 																	   outerAltNum,
 																	   actionToken,
 																	   action);
@@ -1678,7 +1678,7 @@ public partial class ActionTranslator : Lexer
 
 							string action = Text.Substring( 1, Text.Length - 1 );
 							StringTemplate st =
-								generator.translateTemplateConstructor(enclosingRule.name,
+								generator.TranslateTemplateConstructor(enclosingRule.name,
 																	   outerAltNum,
 																	   actionToken,
 																	   action);
@@ -2127,7 +2127,7 @@ public partial class ActionTranslator : Lexer
 			{
 
 							chunks.Add(Text);
-							generator.issueInvalidAttributeError((x!=null?x.Text:null),(y!=null?y.Text:null),
+							generator.IssueInvalidAttributeError((x!=null?x.Text:null),(y!=null?y.Text:null),
 																 enclosingRule,actionToken,
 																 outerAltNum);
 						
@@ -2164,7 +2164,7 @@ public partial class ActionTranslator : Lexer
 			{
 
 							chunks.Add(Text);
-							generator.issueInvalidAttributeError((x!=null?x.Text:null),
+							generator.IssueInvalidAttributeError((x!=null?x.Text:null),
 																 enclosingRule,actionToken,
 																 outerAltNum);
 						

@@ -94,7 +94,7 @@ namespace AntlrUnitTests
             AntlrTool antlr = newTool();
             CodeGenerator generator = new CodeGenerator( antlr, g, "Java" );
             g.setCodeGenerator( generator );
-            generator.genRecognizer(); // forces load of templates
+            generator.GenRecognizer(); // forces load of templates
             ActionTranslator translator =
                 new ActionTranslator( generator,
                                           "a",
@@ -123,7 +123,7 @@ namespace AntlrUnitTests
             AntlrTool antlr = newTool();
             CodeGenerator generator = new CodeGenerator( antlr, g, "Java" );
             g.setCodeGenerator( generator );
-            generator.genRecognizer(); // forces load of templates
+            generator.GenRecognizer(); // forces load of templates
             ActionTranslator translator = new ActionTranslator( generator, "a",
                                                                          new CommonToken( ANTLRParser.ACTION, action ), 1 );
             string rawTranslation =
@@ -155,7 +155,7 @@ namespace AntlrUnitTests
             AntlrTool antlr = newTool();
             CodeGenerator generator = new CodeGenerator( antlr, g, "Java" );
             g.setCodeGenerator( generator );
-            generator.genRecognizer(); // forces load of templates
+            generator.GenRecognizer(); // forces load of templates
             ActionTranslator translator = new ActionTranslator( generator, "a",
                                                                          new CommonToken( ANTLRParser.ACTION, action ), 1 );
             string rawTranslation = translator.translate();
@@ -178,7 +178,7 @@ namespace AntlrUnitTests
             AntlrTool antlr = newTool();
             CodeGenerator generator = new CodeGenerator( antlr, g, "Java" );
             g.setCodeGenerator( generator );
-            generator.genRecognizer(); // forces load of templates
+            generator.GenRecognizer(); // forces load of templates
             Rule r = g.getRule( "a" );
             AttributeScope parameters = r.parameterScope;
             var attrs = parameters.Attributes;
@@ -210,7 +210,7 @@ namespace AntlrUnitTests
             AntlrTool antlr = newTool();
             CodeGenerator generator = new CodeGenerator( antlr, g, "Java" );
             g.setCodeGenerator( generator );
-            generator.genRecognizer(); // forces load of templates
+            generator.GenRecognizer(); // forces load of templates
             ActionTranslator translator = new ActionTranslator( generator, "a",
                                                                          new CommonToken( ANTLRParser.ACTION, action ), 1 );
             string rawTranslation = translator.translate();
@@ -234,7 +234,7 @@ namespace AntlrUnitTests
                 "19"
             } );
 
-            List<string> actualArgs = CodeGenerator.getListOfArgumentsFromAction( action, ',' );
+            List<string> actualArgs = CodeGenerator.GetListOfArgumentsFromAction( action, ',' );
             //assertEquals( "args mismatch", expectArgs, actualArgs );
             assertTrue( "args mismatch", expectArgs.SequenceEqual( actualArgs ) );
 
@@ -258,7 +258,7 @@ namespace AntlrUnitTests
             AntlrTool antlr = newTool();
             CodeGenerator generator = new CodeGenerator( antlr, g, "Java" );
             g.setCodeGenerator( generator );
-            generator.genRecognizer(); // forces load of templates
+            generator.GenRecognizer(); // forces load of templates
             ActionTranslator translator = new ActionTranslator( generator, "a",
                                                                          new CommonToken( ANTLRParser.ACTION, action ), 1 );
             string rawTranslation = translator.translate();
@@ -284,7 +284,7 @@ namespace AntlrUnitTests
             AntlrTool antlr = newTool();
             CodeGenerator generator = new CodeGenerator( antlr, g, "Java" );
             g.setCodeGenerator( generator );
-            generator.genRecognizer(); // forces load of templates
+            generator.GenRecognizer(); // forces load of templates
             ActionTranslator translator = new ActionTranslator( generator, "a",
                                                                          new CommonToken( ANTLRParser.ACTION, action ), 1 );
             string rawTranslation =
@@ -316,7 +316,7 @@ namespace AntlrUnitTests
             AntlrTool antlr = newTool();
             CodeGenerator generator = new CodeGenerator( antlr, g, "Java" );
             g.setCodeGenerator( generator );
-            generator.genRecognizer(); // forces load of templates
+            generator.GenRecognizer(); // forces load of templates
             ActionTranslator translator = new ActionTranslator( generator, "a",
                                                                          new CommonToken( ANTLRParser.ACTION, action ), 1 );
             string rawTranslation =
@@ -361,7 +361,7 @@ namespace AntlrUnitTests
             AntlrTool antlr = newTool();
             CodeGenerator generator = new CodeGenerator( antlr, g, "Java" );
             g.setCodeGenerator( generator );
-            generator.genRecognizer(); // forces load of templates
+            generator.GenRecognizer(); // forces load of templates
             ActionTranslator translator = new ActionTranslator( generator, "a",
                                                                          new CommonToken( ANTLRParser.ACTION, action ), 1 );
             string rawTranslation =
@@ -410,7 +410,7 @@ namespace AntlrUnitTests
             AntlrTool antlr = newTool();
             CodeGenerator generator = new CodeGenerator( antlr, g, "Java" );
             g.setCodeGenerator( generator );
-            generator.genRecognizer(); // forces load of templates
+            generator.GenRecognizer(); // forces load of templates
             ActionTranslator translator = new ActionTranslator( generator, "a",
                                                                          new CommonToken( ANTLRParser.ACTION, action ), 1 );
             string rawTranslation =
@@ -444,7 +444,7 @@ namespace AntlrUnitTests
             AntlrTool antlr = newTool();
             CodeGenerator generator = new CodeGenerator( antlr, g, "Java" );
             g.setCodeGenerator( generator );
-            generator.genRecognizer(); // forces load of templates
+            generator.GenRecognizer(); // forces load of templates
             ActionTranslator translator = new ActionTranslator( generator, "a",
                                                                          new CommonToken( ANTLRParser.ACTION, action ), 1 );
             string rawTranslation =
@@ -476,7 +476,7 @@ namespace AntlrUnitTests
             AntlrTool antlr = newTool();
             CodeGenerator generator = new CodeGenerator( antlr, g, "Java" );
             g.setCodeGenerator( generator );
-            generator.genRecognizer(); // forces load of templates
+            generator.GenRecognizer(); // forces load of templates
             ActionTranslator translator = new ActionTranslator( generator, "a",
                                                                          new CommonToken( ANTLRParser.ACTION, action ), 1 );
             string rawTranslation =
@@ -538,7 +538,7 @@ namespace AntlrUnitTests
             AntlrTool antlr = newTool();
             CodeGenerator generator = new CodeGenerator( antlr, g, "Java" );
             g.setCodeGenerator( generator );
-            generator.genRecognizer(); // forces load of templates
+            generator.GenRecognizer(); // forces load of templates
             ActionTranslator translator =
                 new ActionTranslator( generator,
                                           "b",
@@ -570,7 +570,7 @@ namespace AntlrUnitTests
             AntlrTool antlr = newTool();
             CodeGenerator generator = new CodeGenerator( antlr, g, "Java" );
             g.setCodeGenerator( generator );
-            generator.genRecognizer(); // forces load of templates
+            generator.GenRecognizer(); // forces load of templates
             ActionTranslator translator =
                 new ActionTranslator( generator,
                                           "b",
@@ -601,7 +601,7 @@ namespace AntlrUnitTests
             AntlrTool antlr = newTool();
             CodeGenerator generator = new CodeGenerator( antlr, g, "Java" );
             g.setCodeGenerator( generator );
-            generator.genRecognizer(); // forces load of templates
+            generator.GenRecognizer(); // forces load of templates
             ActionTranslator translator = new ActionTranslator( generator, "a",
                                                                          new CommonToken( ANTLRParser.ACTION, action ), 1 );
             string rawTranslation =
@@ -640,7 +640,7 @@ namespace AntlrUnitTests
             AntlrTool antlr = newTool();
             CodeGenerator generator = new CodeGenerator( antlr, g, "Java" );
             g.setCodeGenerator( generator );
-            generator.genRecognizer(); // forces load of templates
+            generator.GenRecognizer(); // forces load of templates
             int i = 0;
             string action = action1;
             string expecting = expecting1;
@@ -708,7 +708,7 @@ namespace AntlrUnitTests
             AntlrTool antlr = newTool();
             CodeGenerator generator = new CodeGenerator( antlr, g, "Java" );
             g.setCodeGenerator( generator );
-            generator.genRecognizer(); // forces load of templates
+            generator.GenRecognizer(); // forces load of templates
             ActionTranslator translator = new ActionTranslator( generator, "a",
                                                                          new CommonToken( ANTLRParser.ACTION, action ), 1 );
             string rawTranslation =
@@ -742,7 +742,7 @@ namespace AntlrUnitTests
             antlr.setOutputDirectory( null ); // write to /dev/null
             CodeGenerator generator = new CodeGenerator( antlr, g, "Java" );
             g.setCodeGenerator( generator );
-            generator.genRecognizer(); // codegen phase sets some vars we need
+            generator.GenRecognizer(); // codegen phase sets some vars we need
             StringTemplate codeST = generator.RecognizerST;
             string code = codeST.ToString();
             string found = code.substring( code.IndexOf( "###" ) + 3, code.IndexOf( "!!!" ) );
@@ -762,7 +762,7 @@ namespace AntlrUnitTests
             antlr.setOutputDirectory( null ); // write to /dev/null
             CodeGenerator generator = new CodeGenerator( antlr, g, "Java" );
             g.setCodeGenerator( generator );
-            generator.genRecognizer();
+            generator.GenRecognizer();
 
             // error(132): <string>:2:9: reference $a is ambiguous; rule a is enclosing rule and referenced in the production
             assertEquals( "unexpected errors: " + equeue, 1, equeue.errors.Count );
@@ -787,7 +787,7 @@ namespace AntlrUnitTests
             antlr.setOutputDirectory( null ); // write to /dev/null
             CodeGenerator generator = new CodeGenerator( antlr, g, "Java" );
             g.setCodeGenerator( generator );
-            generator.genRecognizer(); // codegen phase sets some vars we need
+            generator.GenRecognizer(); // codegen phase sets some vars we need
 
             StringTemplate codeST = generator.RecognizerST;
             string code = codeST.ToString();
@@ -814,7 +814,7 @@ namespace AntlrUnitTests
             antlr.setOutputDirectory( null ); // write to /dev/null
             CodeGenerator generator = new CodeGenerator( antlr, g, "Java" );
             g.setCodeGenerator( generator );
-            generator.genRecognizer(); // codegen phase sets some vars we need
+            generator.GenRecognizer(); // codegen phase sets some vars we need
 
             StringTemplate codeST = generator.RecognizerST;
             string code = codeST.ToString();
@@ -1067,7 +1067,7 @@ namespace AntlrUnitTests
             AntlrTool antlr = newTool();
             CodeGenerator generator = new CodeGenerator( antlr, g, "Java" );
             g.setCodeGenerator( generator );
-            generator.genRecognizer(); // forces load of templates
+            generator.GenRecognizer(); // forces load of templates
             ActionTranslator translator = new ActionTranslator( generator, "a",
                                                                          new CommonToken( ANTLRParser.ACTION, action ), 1 );
             string rawTranslation =
@@ -1095,7 +1095,7 @@ namespace AntlrUnitTests
             AntlrTool antlr = newTool();
             CodeGenerator generator = new CodeGenerator( antlr, g, "Java" );
             g.setCodeGenerator( generator );
-            generator.genRecognizer(); // forces load of templates
+            generator.GenRecognizer(); // forces load of templates
             ActionTranslator translator = new ActionTranslator( generator, "a",
                                                                          new CommonToken( ANTLRParser.ACTION, action ), 1 );
 
@@ -1128,7 +1128,7 @@ namespace AntlrUnitTests
             AntlrTool antlr = newTool();
             CodeGenerator generator = new CodeGenerator( antlr, g, "Java" );
             g.setCodeGenerator( generator );
-            generator.genRecognizer(); // forces load of templates
+            generator.GenRecognizer(); // forces load of templates
             ActionTranslator translator = new ActionTranslator( generator, "a",
                                                                          new CommonToken( ANTLRParser.ACTION, action ), 1 );
             string rawTranslation =
@@ -1162,7 +1162,7 @@ namespace AntlrUnitTests
             AntlrTool antlr = newTool();
             CodeGenerator generator = new CodeGenerator( antlr, g, "Java" );
             g.setCodeGenerator( generator );
-            generator.genRecognizer(); // forces load of templates
+            generator.GenRecognizer(); // forces load of templates
             ActionTranslator translator = new ActionTranslator( generator, "a",
                                                                          new CommonToken( ANTLRParser.ACTION, action ), 1 );
             string rawTranslation =
@@ -1194,7 +1194,7 @@ namespace AntlrUnitTests
             AntlrTool antlr = newTool();
             CodeGenerator generator = new CodeGenerator( antlr, g, "Java" );
             g.setCodeGenerator( generator );
-            generator.genRecognizer(); // forces load of templates
+            generator.GenRecognizer(); // forces load of templates
             ActionTranslator translator = new ActionTranslator( generator, "a",
                                                                          new CommonToken( ANTLRParser.ACTION, action ), 1 );
             string rawTranslation =
@@ -1224,7 +1224,7 @@ namespace AntlrUnitTests
             AntlrTool antlr = newTool();
             CodeGenerator generator = new CodeGenerator( antlr, g, "Java" );
             g.setCodeGenerator( generator );
-            generator.genRecognizer(); // forces load of templates
+            generator.GenRecognizer(); // forces load of templates
             ActionTranslator translator = new ActionTranslator( generator, "a",
                                                                          new CommonToken( ANTLRParser.ACTION, action ), 1 );
             string rawTranslation =
@@ -1261,7 +1261,7 @@ namespace AntlrUnitTests
             AntlrTool antlr = newTool();
             CodeGenerator generator = new CodeGenerator( antlr, g, "Java" );
             g.setCodeGenerator( generator );
-            generator.genRecognizer(); // forces load of templates
+            generator.GenRecognizer(); // forces load of templates
             ActionTranslator translator = new ActionTranslator( generator, "a",
                                                                          new CommonToken( ANTLRParser.ACTION, action ), 1 );
             string rawTranslation =
@@ -1294,7 +1294,7 @@ namespace AntlrUnitTests
             AntlrTool antlr = newTool();
             CodeGenerator generator = new CodeGenerator( antlr, g, "Java" );
             g.setCodeGenerator( generator );
-            generator.genRecognizer(); // forces load of templates
+            generator.GenRecognizer(); // forces load of templates
             ActionTranslator translator = new ActionTranslator( generator, "a",
                                                                          new CommonToken( ANTLRParser.ACTION, action ), 1 );
             string rawTranslation =
@@ -1325,7 +1325,7 @@ namespace AntlrUnitTests
             AntlrTool antlr = newTool();
             CodeGenerator generator = new CodeGenerator( antlr, g, "Java" );
             g.setCodeGenerator( generator );
-            generator.genRecognizer(); // forces load of templates
+            generator.GenRecognizer(); // forces load of templates
             ActionTranslator translator = new ActionTranslator( generator,
                                                                          null,
                                                                          new CommonToken( ANTLRParser.ACTION, action ), 0 );
@@ -1357,7 +1357,7 @@ namespace AntlrUnitTests
             AntlrTool antlr = newTool();
             CodeGenerator generator = new CodeGenerator( antlr, g, "Java" );
             g.setCodeGenerator( generator );
-            generator.genRecognizer(); // forces load of templates
+            generator.GenRecognizer(); // forces load of templates
             ActionTranslator translator = new ActionTranslator( generator, "a",
                                                                          new CommonToken( ANTLRParser.ACTION, action ), 1 );
             string rawTranslation =
@@ -1388,7 +1388,7 @@ namespace AntlrUnitTests
             AntlrTool antlr = newTool();
             CodeGenerator generator = new CodeGenerator( antlr, g, "Java" );
             g.setCodeGenerator( generator );
-            generator.genRecognizer(); // forces load of templates
+            generator.GenRecognizer(); // forces load of templates
 
             int expectedMsgID = ErrorManager.MSG_ISOLATED_RULE_ATTRIBUTE;
             object expectedArg = "n";
@@ -1417,7 +1417,7 @@ namespace AntlrUnitTests
             AntlrTool antlr = newTool();
             CodeGenerator generator = new CodeGenerator( antlr, g, "Java" );
             g.setCodeGenerator( generator );
-            generator.genRecognizer(); // forces load of templates
+            generator.GenRecognizer(); // forces load of templates
             ActionTranslator translator = new ActionTranslator( generator, "b",
                                                                          new CommonToken( ANTLRParser.ACTION, action ), 1 );
             string rawTranslation =
@@ -1449,7 +1449,7 @@ namespace AntlrUnitTests
             AntlrTool antlr = newTool();
             CodeGenerator generator = new CodeGenerator( antlr, g, "Java" );
             g.setCodeGenerator( generator );
-            generator.genRecognizer(); // forces load of templates
+            generator.GenRecognizer(); // forces load of templates
             ActionTranslator translator = new ActionTranslator( generator, "b",
                                                                          new CommonToken( ANTLRParser.ACTION, action ), 1 );
             string rawTranslation =
@@ -1485,7 +1485,7 @@ namespace AntlrUnitTests
             AntlrTool antlr = newTool();
             CodeGenerator generator = new CodeGenerator( antlr, g, "Java" );
             g.setCodeGenerator( generator );
-            generator.genRecognizer(); // forces load of templates
+            generator.GenRecognizer(); // forces load of templates
             ActionTranslator translator = new ActionTranslator( generator, "a",
                                                                          new CommonToken( ANTLRParser.ACTION, action ), 1 );
             string rawTranslation =
@@ -1518,7 +1518,7 @@ namespace AntlrUnitTests
             AntlrTool antlr = newTool();
             CodeGenerator generator = new CodeGenerator( antlr, g, "Java" );
             g.setCodeGenerator( generator );
-            generator.genRecognizer(); // forces load of templates
+            generator.GenRecognizer(); // forces load of templates
             ActionTranslator translator = new ActionTranslator( generator, "b",
                                                                          new CommonToken( ANTLRParser.ACTION, action ), 1 );
             string rawTranslation =
@@ -1546,7 +1546,7 @@ namespace AntlrUnitTests
             AntlrTool antlr = newTool();
             CodeGenerator generator = new CodeGenerator( antlr, g, "Java" );
             g.setCodeGenerator( generator );
-            generator.genRecognizer(); // forces load of templates
+            generator.GenRecognizer(); // forces load of templates
             ActionTranslator translator = new ActionTranslator( generator, "a",
                                                                          new CommonToken( ANTLRParser.ACTION, action ), 1 );
             string rawTranslation =
@@ -1574,7 +1574,7 @@ namespace AntlrUnitTests
             AntlrTool antlr = newTool();
             CodeGenerator generator = new CodeGenerator( antlr, g, "Java" );
             g.setCodeGenerator( generator );
-            generator.genRecognizer(); // forces load of templates
+            generator.GenRecognizer(); // forces load of templates
             ActionTranslator translator = new ActionTranslator( generator, "a",
                                                                          new CommonToken( ANTLRParser.ACTION, action ), 1 );
             string rawTranslation =
@@ -1602,7 +1602,7 @@ namespace AntlrUnitTests
             AntlrTool antlr = newTool();
             CodeGenerator generator = new CodeGenerator( antlr, g, "Java" );
             g.setCodeGenerator( generator );
-            generator.genRecognizer(); // forces load of templates
+            generator.GenRecognizer(); // forces load of templates
             ActionTranslator translator = new ActionTranslator( generator, "a",
                                                                          new CommonToken( ANTLRParser.ACTION, action ), 1 );
             string rawTranslation =
@@ -1630,7 +1630,7 @@ namespace AntlrUnitTests
             AntlrTool antlr = newTool();
             CodeGenerator generator = new CodeGenerator( antlr, g, "Java" );
             g.setCodeGenerator( generator );
-            generator.genRecognizer(); // forces load of templates
+            generator.GenRecognizer(); // forces load of templates
 
             int expectedMsgID = ErrorManager.MSG_ISOLATED_RULE_SCOPE;
             object expectedArg = "a";
@@ -1655,7 +1655,7 @@ namespace AntlrUnitTests
             AntlrTool antlr = newTool();
             CodeGenerator generator = new CodeGenerator( antlr, g, "Java" );
             g.setCodeGenerator( generator );
-            generator.genRecognizer(); // forces load of templates
+            generator.GenRecognizer(); // forces load of templates
 
             int expectedMsgID = ErrorManager.MSG_ISOLATED_RULE_SCOPE;
             object expectedArg = "x";
@@ -1738,7 +1738,7 @@ namespace AntlrUnitTests
             AntlrTool antlr = newTool();
             CodeGenerator generator = new CodeGenerator( antlr, g, "Java" );
             g.setCodeGenerator( generator );
-            generator.genRecognizer(); // forces load of templates
+            generator.GenRecognizer(); // forces load of templates
             ActionTranslator translator = new ActionTranslator( generator, "a",
                                                                          new CommonToken( ANTLRParser.ACTION, action ), 1 );
             string rawTranslation =
@@ -1770,7 +1770,7 @@ namespace AntlrUnitTests
             AntlrTool antlr = newTool();
             CodeGenerator generator = new CodeGenerator( antlr, g, "Java" );
             g.setCodeGenerator( generator );
-            generator.genRecognizer(); // forces load of templates
+            generator.GenRecognizer(); // forces load of templates
 
             StringTemplate codeST = generator.RecognizerST;
             string code = codeST.ToString();
@@ -1798,7 +1798,7 @@ namespace AntlrUnitTests
             AntlrTool antlr = newTool();
             CodeGenerator generator = new CodeGenerator( antlr, g, "Java" );
             g.setCodeGenerator( generator );
-            generator.genRecognizer(); // forces load of templates
+            generator.GenRecognizer(); // forces load of templates
             ActionTranslator translator = new ActionTranslator( generator, "b",
                                                                          new CommonToken( ANTLRParser.ACTION, action ), 1 );
             string rawTranslation =
@@ -1827,7 +1827,7 @@ namespace AntlrUnitTests
             AntlrTool antlr = newTool();
             CodeGenerator generator = new CodeGenerator( antlr, g, "Java" );
             g.setCodeGenerator( generator );
-            generator.genRecognizer(); // forces load of templates
+            generator.GenRecognizer(); // forces load of templates
             ActionTranslator translator = new ActionTranslator( generator, "a",
                                                                          new CommonToken( ANTLRParser.ACTION, action ), 1 );
             string rawTranslation =
@@ -1856,7 +1856,7 @@ namespace AntlrUnitTests
             AntlrTool antlr = newTool();
             CodeGenerator generator = new CodeGenerator( antlr, g, "Java" );
             g.setCodeGenerator( generator );
-            generator.genRecognizer(); // forces load of templates
+            generator.GenRecognizer(); // forces load of templates
             ActionTranslator translator = new ActionTranslator( generator, "a",
                                                                          new CommonToken( ANTLRParser.ACTION, action ), 1 );
             string rawTranslation =
@@ -1884,7 +1884,7 @@ namespace AntlrUnitTests
             AntlrTool antlr = newTool();
             CodeGenerator generator = new CodeGenerator( antlr, g, "Java" );
             g.setCodeGenerator( generator );
-            generator.genRecognizer(); // forces load of templates
+            generator.GenRecognizer(); // forces load of templates
             ActionTranslator translator = new ActionTranslator( generator, "a",
                                                                          new CommonToken( ANTLRParser.ACTION, action ), 1 );
             StringTemplate codeST = generator.RecognizerST;
@@ -1914,7 +1914,7 @@ namespace AntlrUnitTests
             AntlrTool antlr = newTool();
             CodeGenerator generator = new CodeGenerator( antlr, g, "Java" );
             g.setCodeGenerator( generator );
-            generator.genRecognizer(); // forces load of templates
+            generator.GenRecognizer(); // forces load of templates
             ActionTranslator translator = new ActionTranslator( generator, "a",
                                                                          new CommonToken( ANTLRParser.ACTION, action ), 1 );
             string rawTranslation =
@@ -1960,7 +1960,7 @@ namespace AntlrUnitTests
             AntlrTool antlr = newTool();
             CodeGenerator generator = new CodeGenerator( antlr, g, "Java" );
             g.setCodeGenerator( generator );
-            generator.genRecognizer(); // forces load of templates
+            generator.GenRecognizer(); // forces load of templates
             ActionTranslator translator = new ActionTranslator( generator, "a",
                                                                          new CommonToken( ANTLRParser.ACTION, action ), 1 );
             string rawTranslation =
@@ -2004,7 +2004,7 @@ namespace AntlrUnitTests
             AntlrTool antlr = newTool();
             CodeGenerator generator = new CodeGenerator( antlr, g, "Java" );
             g.setCodeGenerator( generator );
-            generator.genRecognizer(); // forces load of templates
+            generator.GenRecognizer(); // forces load of templates
             ActionTranslator translator =
                 new ActionTranslator( generator,
                                           "a",
@@ -2042,7 +2042,7 @@ namespace AntlrUnitTests
             AntlrTool antlr = newTool();
             CodeGenerator generator = new CodeGenerator( antlr, g, "Java" );
             g.setCodeGenerator( generator );
-            generator.genRecognizer(); // forces load of templates
+            generator.GenRecognizer(); // forces load of templates
             ActionTranslator translator =
                 new ActionTranslator( generator,
                                           "a",
@@ -2184,7 +2184,7 @@ namespace AntlrUnitTests
             AntlrTool antlr = newTool();
             CodeGenerator generator = new CodeGenerator( antlr, g, "Java" );
             g.setCodeGenerator( generator );
-            generator.genRecognizer(); // forces load of templates
+            generator.GenRecognizer(); // forces load of templates
             ActionTranslator translator =
                 new ActionTranslator( generator,
                                           "a",
@@ -2214,7 +2214,7 @@ namespace AntlrUnitTests
             AntlrTool antlr = newTool();
             CodeGenerator generator = new CodeGenerator( antlr, g, "Java" );
             g.setCodeGenerator( generator );
-            generator.genRecognizer(); // forces load of templates
+            generator.GenRecognizer(); // forces load of templates
             ActionTranslator translator =
                 new ActionTranslator( generator,
                                           "a",
@@ -2244,7 +2244,7 @@ namespace AntlrUnitTests
             AntlrTool antlr = newTool();
             CodeGenerator generator = new CodeGenerator( antlr, g, "Java" );
             g.setCodeGenerator( generator );
-            generator.genRecognizer(); // forces load of templates
+            generator.GenRecognizer(); // forces load of templates
             ActionTranslator translator =
                 new ActionTranslator( generator,
                                           "a",
@@ -2278,7 +2278,7 @@ namespace AntlrUnitTests
                                           "a",
                                           new CommonToken( ANTLRParser.ACTION, action ), 1 );
             g.setCodeGenerator( generator );
-            generator.genRecognizer(); // forces load of templates
+            generator.GenRecognizer(); // forces load of templates
             string rawTranslation =
                 translator.translate();
             StringTemplateGroup templates =
@@ -2310,7 +2310,7 @@ namespace AntlrUnitTests
                                           "a",
                                           new CommonToken( ANTLRParser.ACTION, action ), 1 );
             g.setCodeGenerator( generator );
-            generator.genRecognizer(); // forces load of templates
+            generator.GenRecognizer(); // forces load of templates
             string rawTranslation =
                 translator.translate();
             StringTemplateGroup templates =
@@ -2337,7 +2337,7 @@ namespace AntlrUnitTests
             antlr.setOutputDirectory( null ); // write to /dev/null
             CodeGenerator generator = new CodeGenerator( antlr, g, "Java" );
             g.setCodeGenerator( generator );
-            generator.genRecognizer();
+            generator.GenRecognizer();
 
             StringTemplate codeST = generator.RecognizerST;
             string code = codeST.ToString();
@@ -2362,7 +2362,7 @@ namespace AntlrUnitTests
             antlr.setOutputDirectory( null ); // write to /dev/null
             CodeGenerator generator = new CodeGenerator( antlr, g, "Java" );
             g.setCodeGenerator( generator );
-            generator.genRecognizer();
+            generator.GenRecognizer();
 
             StringTemplate codeST = generator.RecognizerST;
             string code = codeST.ToString();
@@ -2388,7 +2388,7 @@ namespace AntlrUnitTests
             antlr.setOutputDirectory( null ); // write to /dev/null
             CodeGenerator generator = new CodeGenerator( antlr, g, "Java" );
             g.setCodeGenerator( generator );
-            generator.genRecognizer();
+            generator.GenRecognizer();
 
             StringTemplate codeST = generator.RecognizerST;
             string code = codeST.ToString();
@@ -2413,7 +2413,7 @@ namespace AntlrUnitTests
             antlr.setOutputDirectory( null ); // write to /dev/null
             CodeGenerator generator = new CodeGenerator( antlr, g, "Java" );
             g.setCodeGenerator( generator );
-            generator.genRecognizer();
+            generator.GenRecognizer();
 
             ActionTranslator translator = new ActionTranslator( generator, "a",
                                                                          new CommonToken( ANTLRParser.ACTION, action ), 1 );
@@ -2443,7 +2443,7 @@ namespace AntlrUnitTests
             antlr.setOutputDirectory( null ); // write to /dev/null
             CodeGenerator generator = new CodeGenerator( antlr, g, "Java" );
             g.setCodeGenerator( generator );
-            generator.genRecognizer();
+            generator.GenRecognizer();
 
             ActionTranslator translator = new ActionTranslator( generator, "a",
                                                                          new CommonToken( ANTLRParser.ACTION, action ), 1 );
@@ -2472,7 +2472,7 @@ namespace AntlrUnitTests
             antlr.setOutputDirectory( null ); // write to /dev/null
             CodeGenerator generator = new CodeGenerator( antlr, g, "Java" );
             g.setCodeGenerator( generator );
-            generator.genRecognizer();
+            generator.GenRecognizer();
 
             int expectedMsgID = ErrorManager.MSG_LIST_LABEL_INVALID_UNLESS_RETVAL_STRUCT;
             object expectedArg = "x";
@@ -2526,7 +2526,7 @@ namespace AntlrUnitTests
             antlr.setOutputDirectory( null ); // write to /dev/null
             CodeGenerator generator = new CodeGenerator( antlr, g, "Java" );
             g.setCodeGenerator( generator );
-            generator.genRecognizer();
+            generator.GenRecognizer();
 
             int expectedMsgID = ErrorManager.MSG_MISSING_RULE_ARGS;
             object expectedArg = "r";
@@ -2548,7 +2548,7 @@ namespace AntlrUnitTests
             antlr.setOutputDirectory( null ); // write to /dev/null
             CodeGenerator generator = new CodeGenerator( antlr, g, "Java" );
             g.setCodeGenerator( generator );
-            generator.genRecognizer();
+            generator.GenRecognizer();
 
             int expectedMsgID = ErrorManager.MSG_RULE_HAS_NO_ARGS;
             object expectedArg = "r";
@@ -2630,7 +2630,7 @@ namespace AntlrUnitTests
             antlr.setOutputDirectory( null ); // write to /dev/null
             CodeGenerator generator = new CodeGenerator( antlr, g, "Java" );
             g.setCodeGenerator( generator );
-            generator.genRecognizer();
+            generator.GenRecognizer();
 
             int expectedMsgID = ErrorManager.MSG_ARG_INIT_VALUES_ILLEGAL;
             object expectedArg = "y";
@@ -2652,7 +2652,7 @@ namespace AntlrUnitTests
             antlr.setOutputDirectory( null ); // write to /dev/null
             CodeGenerator generator = new CodeGenerator( antlr, g, "Java" );
             g.setCodeGenerator( generator );
-            generator.genRecognizer();
+            generator.GenRecognizer();
 
             int expectedMsgID = ErrorManager.MSG_ARGS_ON_TOKEN_REF;
             object expectedArg = "ID";
@@ -2674,7 +2674,7 @@ namespace AntlrUnitTests
             antlr.setOutputDirectory( null ); // write to /dev/null
             CodeGenerator generator = new CodeGenerator( antlr, g, "Java" );
             g.setCodeGenerator( generator );
-            generator.genRecognizer();
+            generator.GenRecognizer();
 
             int expectedMsgID = ErrorManager.MSG_RULE_HAS_NO_ARGS;
             object expectedArg = "ID";
@@ -2697,7 +2697,7 @@ namespace AntlrUnitTests
             AntlrTool antlr = newTool();
             CodeGenerator generator = new CodeGenerator( antlr, g, "Java" );
             g.setCodeGenerator( generator );
-            generator.genRecognizer(); // forces load of templates
+            generator.GenRecognizer(); // forces load of templates
             ActionTranslator translator =
                 new ActionTranslator( generator,
                                           "R",
@@ -2727,7 +2727,7 @@ namespace AntlrUnitTests
             AntlrTool antlr = newTool();
             CodeGenerator generator = new CodeGenerator( antlr, g, "Java" );
             g.setCodeGenerator( generator );
-            generator.genRecognizer(); // forces load of templates
+            generator.GenRecognizer(); // forces load of templates
             ActionTranslator translator =
                 new ActionTranslator( generator,
                                           "R",
@@ -2757,7 +2757,7 @@ namespace AntlrUnitTests
             AntlrTool antlr = newTool();
             CodeGenerator generator = new CodeGenerator( antlr, g, "Java" );
             g.setCodeGenerator( generator );
-            generator.genRecognizer(); // forces load of templates
+            generator.GenRecognizer(); // forces load of templates
             ActionTranslator translator =
                 new ActionTranslator( generator,
                                           "R",
@@ -2785,7 +2785,7 @@ namespace AntlrUnitTests
             AntlrTool antlr = newTool();
             CodeGenerator generator = new CodeGenerator( antlr, g, "Java" );
             g.setCodeGenerator( generator );
-            generator.genRecognizer(); // forces load of templates
+            generator.GenRecognizer(); // forces load of templates
 
             assertEquals( "unexpected errors: " + equeue, 0, equeue.errors.Count );
         }
@@ -2801,7 +2801,7 @@ namespace AntlrUnitTests
             AntlrTool antlr = newTool();
             CodeGenerator generator = new CodeGenerator( antlr, g, "Java" );
             g.setCodeGenerator( generator );
-            generator.genRecognizer(); // forces load of templates
+            generator.GenRecognizer(); // forces load of templates
             assertEquals( "unexpected errors: " + equeue, 0, equeue.errors.Count );
         }
 
@@ -2816,7 +2816,7 @@ namespace AntlrUnitTests
             AntlrTool antlr = newTool();
             CodeGenerator generator = new CodeGenerator( antlr, g, "Java" );
             g.setCodeGenerator( generator );
-            generator.genRecognizer(); // forces load of templates
+            generator.GenRecognizer(); // forces load of templates
             assertEquals( "unexpected errors: " + equeue, 0, equeue.errors.Count );
         }
 
@@ -2831,7 +2831,7 @@ namespace AntlrUnitTests
             AntlrTool antlr = newTool();
             CodeGenerator generator = new CodeGenerator( antlr, g, "Java" );
             g.setCodeGenerator( generator );
-            generator.genRecognizer(); // forces load of templates
+            generator.GenRecognizer(); // forces load of templates
             assertEquals( "unexpected errors: " + equeue, 0, equeue.errors.Count );
         }
 
@@ -2847,7 +2847,7 @@ namespace AntlrUnitTests
             antlr.setOutputDirectory( null ); // write to /dev/null
             CodeGenerator generator = new CodeGenerator( antlr, g, "Java" );
             g.setCodeGenerator( generator );
-            generator.genRecognizer();
+            generator.GenRecognizer();
 
             int expectedMsgID = ErrorManager.MSG_MISSING_RULE_ARGS;
             object expectedArg = "R";
@@ -2870,7 +2870,7 @@ namespace AntlrUnitTests
             AntlrTool antlr = newTool();
             CodeGenerator generator = new CodeGenerator( antlr, g, "Java" );
             g.setCodeGenerator( generator );
-            generator.genRecognizer(); // forces load of templates
+            generator.GenRecognizer(); // forces load of templates
             ActionTranslator translator =
                 new ActionTranslator( generator,
                                           "R",
@@ -2900,7 +2900,7 @@ namespace AntlrUnitTests
             AntlrTool antlr = newTool();
             CodeGenerator generator = new CodeGenerator( antlr, g, "Java" );
             g.setCodeGenerator( generator );
-            generator.genRecognizer(); // forces load of templates
+            generator.GenRecognizer(); // forces load of templates
             ActionTranslator translator =
                 new ActionTranslator( generator,
                                           "R",
@@ -2929,7 +2929,7 @@ namespace AntlrUnitTests
             AntlrTool antlr = newTool();
             CodeGenerator generator = new CodeGenerator( antlr, g, "Java" );
             g.setCodeGenerator( generator );
-            generator.genRecognizer(); // forces load of templates
+            generator.GenRecognizer(); // forces load of templates
             ActionTranslator translator =
                 new ActionTranslator( generator,
                                           "R",
@@ -2970,7 +2970,7 @@ namespace AntlrUnitTests
             antlr.setOutputDirectory( null ); // write to /dev/null
             CodeGenerator generator = new CodeGenerator( antlr, lexerGrammar, "Java" );
             lexerGrammar.setCodeGenerator( generator );
-            generator.genRecognizer();
+            generator.GenRecognizer();
 
             int expectedMsgID = ErrorManager.MSG_RULE_HAS_NO_ARGS;
             object expectedArg = "ID";
@@ -3004,7 +3004,7 @@ namespace AntlrUnitTests
             antlr.setOutputDirectory( null ); // write to /dev/null
             CodeGenerator generator = new CodeGenerator( antlr, lexerGrammar, "Java" );
             lexerGrammar.setCodeGenerator( generator );
-            generator.genRecognizer();
+            generator.GenRecognizer();
 
             int expectedMsgID = ErrorManager.MSG_MISSING_RULE_ARGS;
             object expectedArg = "ID";
@@ -3036,7 +3036,7 @@ namespace AntlrUnitTests
                                           "a",
                                           new CommonToken( ANTLRParser.ACTION, action ), 1 );
             g.setCodeGenerator( generator );
-            generator.genRecognizer(); // forces load of templates
+            generator.GenRecognizer(); // forces load of templates
             string rawTranslation =
                 translator.translate();
             StringTemplateGroup templates =
@@ -3063,7 +3063,7 @@ namespace AntlrUnitTests
             antlr.setOutputDirectory( null ); // write to /dev/null
             CodeGenerator generator = new CodeGenerator( antlr, g, "Java" );
             g.setCodeGenerator( generator );
-            generator.genRecognizer();
+            generator.GenRecognizer();
 
             ActionTranslator translator = new ActionTranslator( generator, "a",
                                                                          new CommonToken( ANTLRParser.ACTION, action ), 1 );
@@ -3091,7 +3091,7 @@ namespace AntlrUnitTests
             antlr.setOutputDirectory( null ); // write to /dev/null
             CodeGenerator generator = new CodeGenerator( antlr, g, "Java" );
             g.setCodeGenerator( generator );
-            generator.genRecognizer();
+            generator.GenRecognizer();
 
             int expectedMsgID = ErrorManager.MSG_NONUNIQUE_REF;
             object expectedArg = "ID";
@@ -3115,7 +3115,7 @@ namespace AntlrUnitTests
             antlr.setOutputDirectory( null ); // write to /dev/null
             CodeGenerator generator = new CodeGenerator( antlr, g, "Java" );
             g.setCodeGenerator( generator );
-            generator.genRecognizer();
+            generator.GenRecognizer();
 
             int expectedMsgID = ErrorManager.MSG_NONUNIQUE_REF;
             object expectedArg = "ID";
@@ -3140,7 +3140,7 @@ namespace AntlrUnitTests
             AntlrTool antlr = newTool();
             CodeGenerator generator = new CodeGenerator( antlr, g, "Java" );
             g.setCodeGenerator( generator );
-            generator.genRecognizer(); // forces load of templates
+            generator.GenRecognizer(); // forces load of templates
             ActionTranslator translator = new ActionTranslator( generator,
                                                                          "field",
                                                                          new CommonToken( ANTLRParser.ACTION, action ), 1 );
@@ -3169,7 +3169,7 @@ namespace AntlrUnitTests
             AntlrTool antlr = newTool();
             CodeGenerator generator = new CodeGenerator( antlr, g, "Java" );
             g.setCodeGenerator( generator );
-            generator.genRecognizer(); // forces load of templates
+            generator.GenRecognizer(); // forces load of templates
             ActionTranslator translator = new ActionTranslator( generator,
                                                                          "rule",
                                                                          new CommonToken( ANTLRParser.ACTION, action ), 1 );
@@ -3198,7 +3198,7 @@ namespace AntlrUnitTests
             AntlrTool antlr = newTool();
             CodeGenerator generator = new CodeGenerator( antlr, g, "Java" );
             g.setCodeGenerator( generator );
-            generator.genRecognizer(); // forces load of templates
+            generator.GenRecognizer(); // forces load of templates
             ActionTranslator translator = new ActionTranslator( generator,
                                                                          "rule",
                                                                          new CommonToken( ANTLRParser.ACTION, action ), 1 );
@@ -3226,7 +3226,7 @@ namespace AntlrUnitTests
             AntlrTool antlr = newTool();
             CodeGenerator generator = new CodeGenerator( antlr, g, "Java" );
             g.setCodeGenerator( generator );
-            generator.genRecognizer(); // forces load of templates
+            generator.GenRecognizer(); // forces load of templates
             ActionTranslator translator = new ActionTranslator( generator,
                                                                          "rule",
                                                                          new CommonToken( ANTLRParser.ACTION, action ), 1 );
@@ -3255,7 +3255,7 @@ namespace AntlrUnitTests
             AntlrTool antlr = newTool();
             CodeGenerator generator = new CodeGenerator( antlr, g, "Java" );
             g.setCodeGenerator( generator );
-            generator.genRecognizer(); // forces load of templates
+            generator.GenRecognizer(); // forces load of templates
             ActionTranslator translator = new ActionTranslator( generator,
                                                                          "rule",
                                                                          new CommonToken( ANTLRParser.ACTION, action ), 1 );
@@ -3298,7 +3298,7 @@ namespace AntlrUnitTests
             AntlrTool antlr = newTool();
             CodeGenerator generator = new CodeGenerator( antlr, g, "Java" );
             g.setCodeGenerator( generator );
-            generator.genRecognizer(); // forces load of templates
+            generator.GenRecognizer(); // forces load of templates
             ActionTranslator translator = new ActionTranslator( generator,
                                                                          "rule",
                                                                          new CommonToken( ANTLRParser.ACTION, action ), 1 );
@@ -3328,7 +3328,7 @@ namespace AntlrUnitTests
             AntlrTool antlr = newTool();
             CodeGenerator generator = new CodeGenerator( antlr, g, "Java" );
             g.setCodeGenerator( generator );
-            generator.genRecognizer(); // forces load of templates
+            generator.GenRecognizer(); // forces load of templates
             ActionTranslator translator = new ActionTranslator( generator,
                                                                          "rule",
                                                                          new CommonToken( ANTLRParser.ACTION, action ), 1 );
@@ -3364,7 +3364,7 @@ namespace AntlrUnitTests
             AntlrTool antlr = newTool();
             CodeGenerator generator = new CodeGenerator( antlr, g, "Java" );
             g.setCodeGenerator( generator );
-            generator.genRecognizer(); // forces load of templates
+            generator.GenRecognizer(); // forces load of templates
             ActionTranslator translator = new ActionTranslator( generator,
                                                                          "rule",
                                                                          new CommonToken( ANTLRParser.ACTION, action ), 1 );
@@ -3394,7 +3394,7 @@ namespace AntlrUnitTests
             AntlrTool antlr = newTool();
             CodeGenerator generator = new CodeGenerator( antlr, g, "Java" );
             g.setCodeGenerator( generator );
-            generator.genRecognizer();
+            generator.GenRecognizer();
             ActionTranslator translator = new ActionTranslator( generator,
                                                                          "RULE",
                                                                          new CommonToken( ANTLRParser.ACTION, action ), 1 );
@@ -3430,7 +3430,7 @@ namespace AntlrUnitTests
             AntlrTool antlr = newTool();
             CodeGenerator generator = new CodeGenerator( antlr, g, "Java" );
             g.setCodeGenerator( generator );
-            generator.genRecognizer();
+            generator.GenRecognizer();
             ActionTranslator translator = new ActionTranslator( generator,
                                                                          "twoIDs",
                                                                          new CommonToken( ANTLRParser.ACTION, action ), 1 );
@@ -3477,7 +3477,7 @@ namespace AntlrUnitTests
             antlr.setOutputDirectory( null ); // write to /dev/null
             CodeGenerator generator = new CodeGenerator( antlr, g, "Java" );
             g.setCodeGenerator( generator );
-            generator.genRecognizer(); // codegen phase sets some vars we need
+            generator.GenRecognizer(); // codegen phase sets some vars we need
             StringTemplate codeST = generator.RecognizerST;
             string code = codeST.ToString();
             string found = code.substring( code.IndexOf( "###" ) + 3, code.IndexOf( "!!!" ) );
@@ -3511,7 +3511,7 @@ namespace AntlrUnitTests
             antlr.setOutputDirectory( null ); // write to /dev/null
             CodeGenerator generator = new CodeGenerator( antlr, g, "Java" );
             g.setCodeGenerator( generator );
-            generator.genRecognizer(); // codegen phase sets some vars we need
+            generator.GenRecognizer(); // codegen phase sets some vars we need
             StringTemplate codeST = generator.RecognizerST;
             string code = codeST.ToString();
             string found = code.substring( code.IndexOf( "###" ) + 3, code.IndexOf( "!!!" ) );
@@ -3538,7 +3538,7 @@ namespace AntlrUnitTests
             AntlrTool antlr = newTool();
             CodeGenerator generator = new CodeGenerator( antlr, g, "Java" );
             g.setCodeGenerator( generator );
-            generator.genRecognizer(); // forces load of templates
+            generator.GenRecognizer(); // forces load of templates
             ActionTranslator translator = new ActionTranslator( generator, "b",
                                                                          new CommonToken( ANTLRParser.ACTION, action ), 1 );
             string rawTranslation =

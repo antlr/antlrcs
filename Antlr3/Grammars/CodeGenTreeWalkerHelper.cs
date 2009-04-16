@@ -126,7 +126,7 @@ namespace Antlr3.Grammars
                  ( r == null || !r.isSynPred ) )
             {
                 // we will need a label to do the AST or tracking, make one
-                label = generator.createUniqueLabel( ruleTargetName );
+                label = generator.CreateUniqueLabel( ruleTargetName );
                 CommonToken labelTok = new CommonToken( ANTLRParser.ID, label );
                 grammar.defineRuleRefLabel( currentRuleName, labelTok, elementAST );
             }
@@ -165,7 +165,7 @@ namespace Antlr3.Grammars
             if ( ( grammar.BuildAST || suffix.Length > 0 ) && label == null &&
                  ( r == null || !r.isSynPred ) )
             {
-                label = generator.createUniqueLabel( elementName );
+                label = generator.CreateUniqueLabel( elementName );
                 CommonToken labelTok = new CommonToken( ANTLRParser.ID, label );
                 grammar.defineTokenRefLabel( currentRuleName, labelTok, elementAST );
             }
@@ -267,7 +267,7 @@ namespace Antlr3.Grammars
                 else
                 {
                     // must be char or string literal
-                    label = generator.getTokenTypeAsTargetLabel(
+                    label = generator.GetTokenTypeAsTargetLabel(
                                 grammar.getTokenType( t.Text ) );
                 }
                 labels.Add( label );

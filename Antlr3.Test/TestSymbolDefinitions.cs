@@ -255,7 +255,7 @@ namespace AntlrUnitTests
             AntlrTool antlr = newTool();
             CodeGenerator generator = new CodeGenerator( antlr, g, "Java" );
             g.setCodeGenerator( generator );
-            StringTemplate recogST = generator.genRecognizer();
+            StringTemplate recogST = generator.GenRecognizer();
             string code = recogST.ToString();
             assertTrue( "not expecting label", code.IndexOf( "x=b();" ) < 0 );
 
