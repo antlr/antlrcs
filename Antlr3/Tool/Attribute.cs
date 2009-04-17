@@ -69,7 +69,7 @@ namespace Antlr3.Tool
 
         public Attribute( string decl )
         {
-            extractAttribute( decl );
+            ExtractAttribute( decl );
         }
 
         public Attribute( string name, string decl )
@@ -86,7 +86,7 @@ namespace Antlr3.Tool
          *
          *  Set name, type, initvalue, and full decl instance vars.
          */
-        protected virtual void extractAttribute( string decl )
+        protected virtual void ExtractAttribute( string decl )
         {
             if ( decl == null )
             {
@@ -124,7 +124,7 @@ namespace Antlr3.Tool
             }
             if ( start < 0 )
             {
-                ErrorManager.error( ErrorManager.MSG_CANNOT_FIND_ATTRIBUTE_NAME_IN_DECL, decl );
+                ErrorManager.Error( ErrorManager.MSG_CANNOT_FIND_ATTRIBUTE_NAME_IN_DECL, decl );
             }
             // walk forwards looking for end of an ID
             int stop = -1;

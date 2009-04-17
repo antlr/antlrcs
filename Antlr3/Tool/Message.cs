@@ -73,31 +73,50 @@ namespace Antlr3.Tool
 
         public Message( int msgID, object arg, object arg2 )
         {
-            setMessageID( msgID );
+            MessageID = msgID;
             this.arg = arg;
             this.arg2 = arg2;
         }
 
-        public virtual void setLine( int line )
+        public virtual int Line
         {
-            this.line = line;
+            get
+            {
+                return line;
+            }
+            set
+            {
+                line = value;
+            }
         }
-
-        public virtual void setColumn( int column )
+        public virtual int Column
         {
-            this.charPositionInLine = column;
+            get
+            {
+                return charPositionInLine;
+            }
+            set
+            {
+                charPositionInLine = value;
+            }
         }
-
-        public virtual void setMessageID( int msgID )
+        public virtual int MessageID
         {
-            this.msgID = msgID;
-            msgST = ErrorManager.getMessage( msgID );
+            get
+            {
+                return msgID;
+            }
+            set
+            {
+                msgID = value;
+                msgST = ErrorManager.GetMessage( msgID );
+            }
         }
 
         /** Return a new template instance every time someone tries to print
          *  a Message.
          */
-        public virtual StringTemplate getMessageTemplate()
+        public virtual StringTemplate GetMessageTemplate()
         {
             return msgST.GetInstanceOf();
         }
@@ -105,7 +124,7 @@ namespace Antlr3.Tool
         /** Return a new template instance for the location part of a Message.
          *  TODO: Is this really necessary? -Kay
          */
-        public virtual StringTemplate getLocationTemplate()
+        public virtual StringTemplate GetLocationTemplate()
         {
             return locationST.GetInstanceOf();
         }
@@ -113,9 +132,9 @@ namespace Antlr3.Tool
         public virtual string ToString( StringTemplate messageST )
         {
             // setup the location
-            locationST = ErrorManager.getLocationFormat();
-            reportST = ErrorManager.getReportFormat();
-            messageFormatST = ErrorManager.getMessageFormat();
+            locationST = ErrorManager.GetLocationFormat();
+            reportST = ErrorManager.GetReportFormat();
+            messageFormatST = ErrorManager.GetMessageFormat();
             bool locationValid = false;
             if ( line != -1 )
             {
@@ -141,7 +160,7 @@ namespace Antlr3.Tool
                 reportST.SetAttribute( "location", locationST );
             }
             reportST.SetAttribute( "message", messageFormatST );
-            reportST.SetAttribute( "type", ErrorManager.getMessageType( msgID ) );
+            reportST.SetAttribute( "type", ErrorManager.GetMessageType( msgID ) );
 
             return reportST.ToString();
         }

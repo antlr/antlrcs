@@ -1,4 +1,4 @@
-// $ANTLR 3.1.2 Grammars\\ANTLRTreePrinter.g3 2009-03-23 17:53:59
+// $ANTLR 3.1.2 Grammars\\ANTLRTreePrinter.g3 2009-04-16 20:58:22
 
 // The variable 'variable' is assigned but its value is never used.
 #pragma warning disable 219
@@ -333,7 +333,7 @@ public partial class ANTLRTreePrinter : TreeParser
 
 			}
 
-			return normalize(buf.ToString());
+			return Normalize(buf.ToString());
 
 			}
 
@@ -1924,7 +1924,7 @@ public partial class ANTLRTreePrinter : TreeParser
 		retval.start = input.LT(1);
 
 
-		int numAlts = countAltsForBlock(((GrammarAST)retval.start));
+		int numAlts = CountAltsForBlock(((GrammarAST)retval.start));
 
 		try
 		{
@@ -3007,8 +3007,8 @@ public partial class ANTLRTreePrinter : TreeParser
 				spred=(GrammarAST)Match(input,SYN_SEMPRED,Follow._SYN_SEMPRED_in_element1333); 
 
 							string name = (spred!=null?spred.Text:null);
-							GrammarAST predAST=grammar.getSyntacticPredicate(name);
-							block(predAST, true);
+							GrammarAST predAST=grammar.GetSyntacticPredicate(name);
+							Block(predAST, true);
 							@out("=>");
 						
 
@@ -3731,6 +3731,7 @@ public partial class ANTLRTreePrinter : TreeParser
 	}
 	// $ANTLR end "ast_suffix"
 	#endregion Rules
+
 
 	#region Follow sets
 	public static class Follow

@@ -109,7 +109,7 @@ namespace Antlr3
             if ( !exitNow )
             {
                 antlr.Process();
-                Environment.ExitCode = ( ErrorManager.getNumErrors() > 0 ) ? 1 : 0;
+                Environment.ExitCode = ( ErrorManager.GetNumErrors() > 0 ) ? 1 : 0;
             }
         }
 
@@ -126,7 +126,7 @@ namespace Antlr3
         {
             if ( verbose )
             {
-                ErrorManager.info( "ANTLR Parser Generator  Version " + VERSION );
+                ErrorManager.Info( "ANTLR Parser Generator  Version " + VERSION );
                 showBanner = false;
             }
 
@@ -155,7 +155,7 @@ namespace Antlr3
                         haveOutputDir = true;
                         if ( System.IO.File.Exists( outputDirectory ) )
                         {
-                            ErrorManager.error( ErrorManager.MSG_OUTPUT_DIR_IS_FILE, outputDirectory );
+                            ErrorManager.Error( ErrorManager.MSG_OUTPUT_DIR_IS_FILE, outputDirectory );
                             LibraryDirectory = ".";
                         }
                     }
@@ -178,7 +178,7 @@ namespace Antlr3
                         }
                         if ( !System.IO.Directory.Exists( libDirectory ) )
                         {
-                            ErrorManager.error( ErrorManager.MSG_DIR_NOT_FOUND, LibraryDirectory );
+                            ErrorManager.Error( ErrorManager.MSG_DIR_NOT_FOUND, LibraryDirectory );
                             LibraryDirectory = ".";
                         }
                     }
@@ -241,7 +241,7 @@ namespace Antlr3
                     else
                     {
                         i++;
-                        ErrorManager.setFormat( args[i] );
+                        ErrorManager.SetFormat( args[i] );
                     }
                 }
                 else if ( args[i] == "-Xgrtree" )
@@ -379,8 +379,8 @@ namespace Antlr3
         public virtual bool BuildRequired( string grammarFileName )
         {
             BuildDependencyGenerator bd = new BuildDependencyGenerator( this, grammarFileName );
-            IList<string> outputFiles = bd.getGeneratedFileList();
-            IList<string> inputFiles = bd.getDependenciesFileList();
+            IList<string> outputFiles = bd.GetGeneratedFileList();
+            IList<string> inputFiles = bd.GetDependenciesFileList();
             DateTime grammarLastModified = File.GetLastWriteTime( grammarFileName );
             foreach ( string outputFile in outputFiles )
             {
@@ -420,7 +420,7 @@ namespace Antlr3
             // before setting options. The banner won't display that way!
             if ( Verbose && showBanner )
             {
-                ErrorManager.info( "ANTLR Parser Generator  Version " + VERSION );
+                ErrorManager.Info( "ANTLR Parser Generator  Version " + VERSION );
                 showBanner = false;
             }
 
@@ -430,7 +430,7 @@ namespace Antlr3
             }
             catch ( Exception e )
             {
-                ErrorManager.error( ErrorManager.MSG_INTERNAL_ERROR, e );
+                ErrorManager.Error( ErrorManager.MSG_INTERNAL_ERROR, e );
             }
 
             foreach ( string grammarFileName in GrammarFileNames )
@@ -447,7 +447,7 @@ namespace Antlr3
                     }
                     catch ( Exception e )
                     {
-                        ErrorManager.error( ErrorManager.MSG_INTERNAL_ERROR, e );
+                        ErrorManager.Error( ErrorManager.MSG_INTERNAL_ERROR, e );
                     }
                 }
 
@@ -466,22 +466,22 @@ namespace Antlr3
                         Console.Out.WriteLine( "output: " + outputFiles );
                         Console.Out.WriteLine( "dependents: " + dependents );
 #endif
-                        Console.Out.WriteLine( dep.getDependencies() );
+                        Console.Out.WriteLine( dep.GetDependencies() );
                         continue;
                     }
 
                     Grammar grammar = GetRootGrammar( grammarFileName );
                     // we now have all grammars read in as ASTs
                     // (i.e., root and all delegates)
-                    grammar.composite.assignTokenTypes();
-                    grammar.composite.defineGrammarSymbols();
-                    grammar.composite.createNFAs();
+                    grammar.composite.AssignTokenTypes();
+                    grammar.composite.DefineGrammarSymbols();
+                    grammar.composite.CreateNFAs();
 
                     GenerateRecognizer( grammar );
 
                     if ( PrintGrammar )
                     {
-                        grammar.printGrammar( Console.Out );
+                        grammar.PrintGrammar( Console.Out );
                     }
 
                     if ( Report )
@@ -489,19 +489,19 @@ namespace Antlr3
                         GrammarReport report2 = new GrammarReport( grammar );
                         Console.Out.WriteLine( report2.ToString() );
                         // print out a backtracking report too (that is not encoded into log)
-                        Console.Out.WriteLine( report2.getBacktrackingReport() );
+                        Console.Out.WriteLine( report2.GetBacktrackingReport() );
                         // same for aborted NFA->DFA conversions
-                        Console.Out.WriteLine( report2.getAnalysisTimeoutReport() );
+                        Console.Out.WriteLine( report2.GetAnalysisTimeoutReport() );
 
                         if ( Profile )
                         {
                             Stats.WriteReport( GrammarReport.GRAMMAR_STATS_FILENAME,
-                                              report2.toNotifyString() );
+                                              report2.ToNotifyString() );
                         }
                     }
 
                     // now handle the lexer if one was created for a merged spec
-                    string lexerGrammarStr = grammar.getLexerGrammar();
+                    string lexerGrammarStr = grammar.GetLexerGrammar();
                     //JSystem.@out.println("lexer grammar:\n"+lexerGrammarStr);
                     if ( grammar.type == Grammar.COMBINED && lexerGrammarStr != null )
                     {
@@ -531,14 +531,14 @@ namespace Antlr3
                             FileInfo lexerGrammarFullFile = new FileInfo( System.IO.Path.Combine( GetFileDirectory( lexerGrammarFileName ), lexerGrammarFileName ) );
                             lexerGrammar.FileName = lexerGrammarFullFile.ToString();
 
-                            lexerGrammar.importTokenVocabulary( grammar );
-                            lexerGrammar.parseAndBuildAST( sr );
+                            lexerGrammar.ImportTokenVocabulary( grammar );
+                            lexerGrammar.ParseAndBuildAST( sr );
 
                             sr.Close();
 
-                            lexerGrammar.composite.assignTokenTypes();
-                            lexerGrammar.composite.defineGrammarSymbols();
-                            lexerGrammar.composite.createNFAs();
+                            lexerGrammar.composite.AssignTokenTypes();
+                            lexerGrammar.composite.DefineGrammarSymbols();
+                            lexerGrammar.composite.CreateNFAs();
 
                             GenerateRecognizer( lexerGrammar );
                         }
@@ -558,18 +558,18 @@ namespace Antlr3
                 {
                     if ( exceptionWhenWritingLexerFile )
                     {
-                        ErrorManager.error( ErrorManager.MSG_CANNOT_WRITE_FILE,
+                        ErrorManager.Error( ErrorManager.MSG_CANNOT_WRITE_FILE,
                                            lexerGrammarFileName, e );
                     }
                     else
                     {
-                        ErrorManager.error( ErrorManager.MSG_CANNOT_OPEN_FILE,
+                        ErrorManager.Error( ErrorManager.MSG_CANNOT_OPEN_FILE,
                                            grammarFileName );
                     }
                 }
                 catch ( Exception e )
                 {
-                    ErrorManager.error( ErrorManager.MSG_INTERNAL_ERROR, grammarFileName, e );
+                    ErrorManager.Error( ErrorManager.MSG_INTERNAL_ERROR, grammarFileName, e );
                 }
 #if false
                 finally
@@ -590,9 +590,9 @@ namespace Antlr3
             foreach ( string gfile in GrammarFileNames )
             {
                 GrammarSpelunker grammar = new GrammarSpelunker( inputDirectory, gfile );
-                grammar.parse();
-                string vocabName = grammar.getTokenVocab();
-                string grammarName = grammar.getGrammarName();
+                grammar.Parse();
+                string vocabName = grammar.TokenVocab;
+                string grammarName = grammar.GrammarName;
                 // Make all grammars depend on any tokenVocab options
                 if ( vocabName != null )
                     g.AddEdge( gfile, vocabName + CodeGenerator.VOCAB_FILE_EXTENSION );
@@ -622,7 +622,7 @@ namespace Antlr3
             Grammar grammar = new Grammar( this, grammarFileName, composite );
             if ( TestMode )
                 grammar.DefaultRuleModifier = "public";
-            composite.setDelegationRoot( grammar );
+            composite.SetDelegationRoot( grammar );
 
             string f = null;
 
@@ -651,7 +651,7 @@ namespace Antlr3
             }
 
             StringReader reader = new StringReader( System.IO.File.ReadAllText( f ) );
-            grammar.parseAndBuildAST( reader );
+            grammar.ParseAndBuildAST( reader );
             composite.watchNFAConversion = internalOption_watchNFAConversion;
             return grammar;
         }
@@ -665,11 +665,11 @@ namespace Antlr3
          */
         protected virtual void GenerateRecognizer( Grammar grammar )
         {
-            string language = (string)grammar.getOption( "language" );
+            string language = (string)grammar.GetOption( "language" );
             if ( language != null )
             {
                 CodeGenerator generator = new CodeGenerator( this, grammar, language );
-                grammar.setCodeGenerator( generator );
+                grammar.CodeGenerator = generator;
                 generator.Debug = Debug;
                 generator.Profile = Profile;
                 generator.Trace = Trace;
@@ -688,7 +688,7 @@ namespace Antlr3
                     GenerateDFAs( grammar );
                 }
 
-                IList<Grammar> delegates = grammar.getDirectDelegates();
+                IList<Grammar> delegates = grammar.GetDirectDelegates();
                 for ( int i = 0; delegates != null && i < delegates.Count; i++ )
                 {
                     Grammar @delegate = (Grammar)delegates[i];
@@ -705,13 +705,13 @@ namespace Antlr3
         {
             for ( int d = 1; d <= g.NumberOfDecisions; d++ )
             {
-                DFA dfa = g.getLookaheadDFA( d );
+                DFA dfa = g.GetLookaheadDFA( d );
                 if ( dfa == null )
                 {
                     continue; // not there for some reason, ignore
                 }
                 DOTGenerator dotGenerator = new DOTGenerator( g );
-                string dot = dotGenerator.getDOT( dfa.startState );
+                string dot = dotGenerator.GetDOT( dfa.startState );
                 string dotFileName = g.name + "." + "dec-" + d;
                 if ( g.implicitLexer )
                 {
@@ -723,7 +723,7 @@ namespace Antlr3
                 }
                 catch ( IOException ioe )
                 {
-                    ErrorManager.error( ErrorManager.MSG_CANNOT_GEN_DOT_FILE,
+                    ErrorManager.Error( ErrorManager.MSG_CANNOT_GEN_DOT_FILE,
                                        dotFileName,
                                        ioe );
                 }
@@ -733,14 +733,14 @@ namespace Antlr3
         protected virtual void GenerateNFAs( Grammar g )
         {
             DOTGenerator dotGenerator = new DOTGenerator( g );
-            ICollection<Rule> rules = g.getAllImportedRules();
+            ICollection<Rule> rules = g.GetAllImportedRules();
             rules.addAll( g.Rules );
 
             foreach ( Rule r in rules )
             {
                 try
                 {
-                    string dot = dotGenerator.getDOT( r.startState );
+                    string dot = dotGenerator.GetDOT( r.startState );
                     if ( dot != null )
                     {
                         WriteDOTFile( g, r, dot );
@@ -748,7 +748,7 @@ namespace Antlr3
                 }
                 catch ( IOException ioe )
                 {
-                    ErrorManager.error( ErrorManager.MSG_CANNOT_WRITE_FILE, ioe );
+                    ErrorManager.Error( ErrorManager.MSG_CANNOT_WRITE_FILE, ioe );
                 }
             }
         }
@@ -767,7 +767,7 @@ namespace Antlr3
 
         private static void Version()
         {
-            ErrorManager.info( "ANTLR Parser Generator  Version " + new AntlrTool().VERSION );
+            ErrorManager.Info( "ANTLR Parser Generator  Version " + new AntlrTool().VERSION );
         }
 
         private static void Help()
@@ -1344,11 +1344,11 @@ namespace Antlr3
         {
             get
             {
-                return ErrorManager.getMessageFormat().ToString();
+                return ErrorManager.GetMessageFormat().ToString();
             }
             set
             {
-                ErrorManager.setFormat( value );
+                ErrorManager.SetFormat( value );
             }
         }
 
@@ -1360,7 +1360,7 @@ namespace Antlr3
         {
             get
             {
-                return ErrorManager.getNumErrors();
+                return ErrorManager.GetNumErrors();
             }
         }
 

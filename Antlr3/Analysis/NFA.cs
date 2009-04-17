@@ -73,17 +73,17 @@ namespace Antlr3.Analysis
 
         public int GetNewNFAStateNumber()
         {
-            return grammar.composite.getNewNFAStateNumber();
+            return grammar.composite.GetNewNFAStateNumber();
         }
 
         public void AddState( NFAState state )
         {
-            grammar.composite.addState( state );
+            grammar.composite.AddState( state );
         }
 
         public NFAState GetState( int s )
         {
-            return grammar.composite.getState( s );
+            return grammar.composite.GetState( s );
         }
     }
 }

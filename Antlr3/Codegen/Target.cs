@@ -114,10 +114,10 @@ namespace Antlr3.Codegen
                                               Grammar grammar )
         {
             // Build NFAs from the grammar AST
-            grammar.buildNFA();
+            grammar.BuildNFA();
 
             // Create the DFA predictors for each decision
-            grammar.createLookaheadDFAs();
+            grammar.CreateLookaheadDFAs();
         }
 
         /** Is scope in @scope::name {action} valid for this kind of grammar?
@@ -165,7 +165,7 @@ namespace Antlr3.Codegen
         /** Target must be able to override the labels used for token types */
         public virtual string GetTokenTypeAsTargetLabel( CodeGenerator generator, int ttype )
         {
-            string name = generator.grammar.getTokenDisplayName( ttype );
+            string name = generator.grammar.GetTokenDisplayName( ttype );
             // If name is a literal, return the token type instead
             if ( name[0] == '\'' )
             {
@@ -189,7 +189,7 @@ namespace Antlr3.Codegen
         {
             StringBuilder buf = new StringBuilder();
             buf.Append( '\'' );
-            int c = Grammar.getCharValueFromGrammarCharLiteral( literal );
+            int c = Grammar.GetCharValueFromGrammarCharLiteral( literal );
             if ( c < Label.MIN_CHAR_VALUE )
             {
                 return "'\u0000'";

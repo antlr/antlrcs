@@ -41,9 +41,9 @@ namespace Antlr3.Tool
      */
     public interface IANTLRErrorListener
     {
-        void info( string msg );
-        void error( Message msg );
-        void warning( Message msg );
-        void error( ToolMessage msg );
+        void Info( string msg );
+        void Error( Message msg );
+        void Warning( Message msg );
+        void Error( ToolMessage msg );
     }
 }

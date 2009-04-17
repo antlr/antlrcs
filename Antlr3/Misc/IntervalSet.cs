@@ -740,7 +740,7 @@ namespace Antlr3.Misc
                 {
                     if ( g != null )
                     {
-                        buf.Append( g.getTokenDisplayName( a ) );
+                        buf.Append( g.GetTokenDisplayName( a ) );
                     }
                     else
                     {
@@ -751,7 +751,7 @@ namespace Antlr3.Misc
                 {
                     if ( g != null )
                     {
-                        buf.Append( g.getTokenDisplayName( a ) + ".." + g.getTokenDisplayName( b ) );
+                        buf.Append( g.GetTokenDisplayName( a ) + ".." + g.GetTokenDisplayName( b ) );
                     }
                     else
                     {

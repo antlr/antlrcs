@@ -57,7 +57,7 @@ namespace Antlr3.Tool
             // flip msg ID if alts are actually token refs in Tokens rule
             if ( probe.dfa.IsTokensRuleDecision )
             {
-                setMessageID( ErrorManager.MSG_UNREACHABLE_TOKENS );
+                MessageID = ErrorManager.MSG_UNREACHABLE_TOKENS;
             }
         }
 
@@ -72,7 +72,7 @@ namespace Antlr3.Tool
                 file = fileName;
             }
 
-            StringTemplate st = getMessageTemplate();
+            StringTemplate st = GetMessageTemplate();
 
             if ( probe.dfa.IsTokensRuleDecision )
             {
@@ -82,7 +82,7 @@ namespace Antlr3.Tool
                     int altI = alts[i];
                     String tokenName = probe.GetTokenNameForTokensRuleAlt( altI );
                     // reset the line/col to the token definition
-                    NFAState ruleStart = probe.dfa.nfa.grammar.getRuleStartState( tokenName );
+                    NFAState ruleStart = probe.dfa.nfa.grammar.GetRuleStartState( tokenName );
                     line = ruleStart.associatedASTNode.Line;
                     charPositionInLine = ruleStart.associatedASTNode.CharPositionInLine;
                     st.SetAttribute( "tokens", tokenName );

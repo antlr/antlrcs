@@ -50,30 +50,30 @@ namespace Antlr3.Tool
         static RuleLabelScope()
         {
             predefinedRulePropertiesScope = new AttributeScope( "RulePredefined", null );
-            predefinedRulePropertiesScope.addAttribute( "text", null );
-            predefinedRulePropertiesScope.addAttribute( "start", null );
-            predefinedRulePropertiesScope.addAttribute( "stop", null );
-            predefinedRulePropertiesScope.addAttribute( "tree", null );
-            predefinedRulePropertiesScope.addAttribute( "st", null );
+            predefinedRulePropertiesScope.AddAttribute( "text", null );
+            predefinedRulePropertiesScope.AddAttribute( "start", null );
+            predefinedRulePropertiesScope.AddAttribute( "stop", null );
+            predefinedRulePropertiesScope.AddAttribute( "tree", null );
+            predefinedRulePropertiesScope.AddAttribute( "st", null );
             predefinedRulePropertiesScope.isPredefinedRuleScope = true;
 
             predefinedTreeRulePropertiesScope = new AttributeScope( "RulePredefined", null );
-            predefinedTreeRulePropertiesScope.addAttribute( "text", null );
-            predefinedTreeRulePropertiesScope.addAttribute( "start", null ); // note: no stop; not meaningful
-            predefinedTreeRulePropertiesScope.addAttribute( "tree", null );
-            predefinedTreeRulePropertiesScope.addAttribute( "st", null );
+            predefinedTreeRulePropertiesScope.AddAttribute( "text", null );
+            predefinedTreeRulePropertiesScope.AddAttribute( "start", null ); // note: no stop; not meaningful
+            predefinedTreeRulePropertiesScope.AddAttribute( "tree", null );
+            predefinedTreeRulePropertiesScope.AddAttribute( "st", null );
             predefinedTreeRulePropertiesScope.isPredefinedRuleScope = true;
 
             predefinedLexerRulePropertiesScope = new AttributeScope( "LexerRulePredefined", null );
-            predefinedLexerRulePropertiesScope.addAttribute( "text", null );
-            predefinedLexerRulePropertiesScope.addAttribute( "type", null );
-            predefinedLexerRulePropertiesScope.addAttribute( "line", null );
-            predefinedLexerRulePropertiesScope.addAttribute( "index", null );
-            predefinedLexerRulePropertiesScope.addAttribute( "pos", null );
-            predefinedLexerRulePropertiesScope.addAttribute( "channel", null );
-            predefinedLexerRulePropertiesScope.addAttribute( "start", null );
-            predefinedLexerRulePropertiesScope.addAttribute( "stop", null );
-            predefinedLexerRulePropertiesScope.addAttribute( "int", null );
+            predefinedLexerRulePropertiesScope.AddAttribute( "text", null );
+            predefinedLexerRulePropertiesScope.AddAttribute( "type", null );
+            predefinedLexerRulePropertiesScope.AddAttribute( "line", null );
+            predefinedLexerRulePropertiesScope.AddAttribute( "index", null );
+            predefinedLexerRulePropertiesScope.AddAttribute( "pos", null );
+            predefinedLexerRulePropertiesScope.AddAttribute( "channel", null );
+            predefinedLexerRulePropertiesScope.AddAttribute( "start", null );
+            predefinedLexerRulePropertiesScope.AddAttribute( "stop", null );
+            predefinedLexerRulePropertiesScope.AddAttribute( "int", null );
             predefinedLexerRulePropertiesScope.isPredefinedLexerRuleScope = true;
 
             grammarTypeToRulePropertiesScope =
@@ -99,18 +99,18 @@ namespace Antlr3.Tool
         /** If you label a rule reference, you can access that rule's
          *  return values as well as any predefined attributes.
          */
-        public override Attribute getAttribute( string name )
+        public override Attribute GetAttribute( string name )
         {
             AttributeScope rulePropertiesScope =
                 RuleLabelScope.grammarTypeToRulePropertiesScope[grammar.type];
-            if ( rulePropertiesScope.getAttribute( name ) != null )
+            if ( rulePropertiesScope.GetAttribute( name ) != null )
             {
-                return rulePropertiesScope.getAttribute( name );
+                return rulePropertiesScope.GetAttribute( name );
             }
 
             if ( referencedRule.returnScope != null )
             {
-                return referencedRule.returnScope.getAttribute( name );
+                return referencedRule.returnScope.GetAttribute( name );
             }
             return null;
         }

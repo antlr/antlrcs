@@ -46,7 +46,7 @@ namespace AntlrUnitTests
         [TestMethod]
         public void TestWildcardStillWorks() /*throws Exception*/ {
             ErrorQueue equeue = new ErrorQueue();
-            ErrorManager.setErrorListener( equeue );
+            ErrorManager.SetErrorListener( equeue );
             string grammar =
                 "parser grammar S;\n" +
                 "a : B . C ;\n"; // not qualified ID
@@ -199,7 +199,7 @@ namespace AntlrUnitTests
         [TestMethod]
         public void TestDelegatesSeeSameTokenType2() /*throws Exception*/ {
             ErrorQueue equeue = new ErrorQueue();
-            ErrorManager.setErrorListener( equeue );
+            ErrorManager.SetErrorListener( equeue );
             string slave =
                 "parser grammar S;\n" + // A, B, C token type order
                 "tokens { A; B; C; }\n" +
@@ -225,9 +225,9 @@ namespace AntlrUnitTests
             AntlrTool antlr = newTool( new string[] { "-lib", tmpdir } );
             CompositeGrammar composite = new CompositeGrammar();
             Grammar g = new Grammar( antlr, tmpdir + "/M.g", composite );
-            composite.setDelegationRoot( g );
-            g.parseAndBuildAST();
-            g.composite.assignTokenTypes();
+            composite.SetDelegationRoot( g );
+            g.ParseAndBuildAST();
+            g.composite.AssignTokenTypes();
 
             string expectedTokenIDToTypeMap = "[A=4, B=5, C=6, WS=7]";
             string expectedStringLiteralToTypeMap = "{}";
@@ -247,7 +247,7 @@ namespace AntlrUnitTests
             //Assert.Inconclusive( "May be failing on just my port..." );
             // for now, we don't allow combined to import combined
             ErrorQueue equeue = new ErrorQueue();
-            ErrorManager.setErrorListener( equeue );
+            ErrorManager.SetErrorListener( equeue );
             string slave =
                 "grammar S;\n" + // A, B, C token type order
                 "tokens { A; B; C; }\n" +
@@ -265,9 +265,9 @@ namespace AntlrUnitTests
             AntlrTool antlr = newTool( new string[] { "-lib", tmpdir } );
             CompositeGrammar composite = new CompositeGrammar();
             Grammar g = new Grammar( antlr, tmpdir + "/M.g", composite );
-            composite.setDelegationRoot( g );
-            g.parseAndBuildAST();
-            g.composite.assignTokenTypes();
+            composite.SetDelegationRoot( g );
+            g.ParseAndBuildAST();
+            g.composite.AssignTokenTypes();
 
             assertEquals( "unexpected errors: " + equeue, 1, equeue.errors.Count );
             string expectedError = "error(161): " + tmpdir.ToString().replaceFirst( "\\-[0-9]+", "" ) + "/M.g:2:8: combined grammar M cannot import combined grammar S";
@@ -278,7 +278,7 @@ namespace AntlrUnitTests
         public void TestSameStringTwoNames() /*throws Exception*/ {
             Assert.Inconclusive( "May be failing on just my port..." );
             ErrorQueue equeue = new ErrorQueue();
-            ErrorManager.setErrorListener( equeue );
+            ErrorManager.SetErrorListener( equeue );
             string slave =
                 "parser grammar S;\n" +
                 "tokens { A='a'; }\n" +
@@ -301,9 +301,9 @@ namespace AntlrUnitTests
             AntlrTool antlr = newTool( new string[] { "-lib", tmpdir } );
             CompositeGrammar composite = new CompositeGrammar();
             Grammar g = new Grammar( antlr, tmpdir + "/M.g", composite );
-            composite.setDelegationRoot( g );
-            g.parseAndBuildAST();
-            g.composite.assignTokenTypes();
+            composite.SetDelegationRoot( g );
+            g.ParseAndBuildAST();
+            g.composite.AssignTokenTypes();
 
             string expectedTokenIDToTypeMap = "[A=4, WS=6, X=5]";
             string expectedStringLiteralToTypeMap = "{'a'=4}";
@@ -333,7 +333,7 @@ namespace AntlrUnitTests
         public void TestSameNameTwoStrings() /*throws Exception*/ {
             Assert.Inconclusive( "May be failing on just my port..." );
             ErrorQueue equeue = new ErrorQueue();
-            ErrorManager.setErrorListener( equeue );
+            ErrorManager.SetErrorListener( equeue );
             string slave =
                 "parser grammar S;\n" +
                 "tokens { A='a'; }\n" +
@@ -355,9 +355,9 @@ namespace AntlrUnitTests
             AntlrTool antlr = newTool( new string[] { "-lib", tmpdir } );
             CompositeGrammar composite = new CompositeGrammar();
             Grammar g = new Grammar( antlr, tmpdir + "/M.g", composite );
-            composite.setDelegationRoot( g );
-            g.parseAndBuildAST();
-            g.composite.assignTokenTypes();
+            composite.SetDelegationRoot( g );
+            g.ParseAndBuildAST();
+            g.composite.AssignTokenTypes();
 
             string expectedTokenIDToTypeMap = "[A=4, T__6=6, WS=5]";
             string expectedStringLiteralToTypeMap = "{'a'=4, 'x'=6}";
@@ -386,7 +386,7 @@ namespace AntlrUnitTests
         [TestMethod]
         public void TestImportedTokenVocabIgnoredWithWarning() /*throws Exception*/ {
             ErrorQueue equeue = new ErrorQueue();
-            ErrorManager.setErrorListener( equeue );
+            ErrorManager.SetErrorListener( equeue );
             string slave =
                 "parser grammar S;\n" +
                 "options {tokenVocab=whatever;}\n" +
@@ -404,9 +404,9 @@ namespace AntlrUnitTests
             AntlrTool antlr = newTool( new string[] { "-lib", tmpdir } );
             CompositeGrammar composite = new CompositeGrammar();
             Grammar g = new Grammar( antlr, tmpdir + "/M.g", composite );
-            composite.setDelegationRoot( g );
-            g.parseAndBuildAST();
-            g.composite.assignTokenTypes();
+            composite.SetDelegationRoot( g );
+            g.ParseAndBuildAST();
+            g.composite.AssignTokenTypes();
 
             object expectedArg = "S";
             int expectedMsgID = ErrorManager.MSG_TOKEN_VOCAB_IN_DELEGATE;
@@ -426,7 +426,7 @@ namespace AntlrUnitTests
         public void TestImportedTokenVocabWorksInRoot() /*throws Exception*/ {
             Assert.Inconclusive( "May be failing on just my port..." );
             ErrorQueue equeue = new ErrorQueue();
-            ErrorManager.setErrorListener( equeue );
+            ErrorManager.SetErrorListener( equeue );
             string slave =
                 "parser grammar S;\n" +
                 "tokens { A='a'; }\n" +
@@ -448,9 +448,9 @@ namespace AntlrUnitTests
             AntlrTool antlr = newTool( new string[] { "-lib", tmpdir } );
             CompositeGrammar composite = new CompositeGrammar();
             Grammar g = new Grammar( antlr, tmpdir + "/M.g", composite );
-            composite.setDelegationRoot( g );
-            g.parseAndBuildAST();
-            g.composite.assignTokenTypes();
+            composite.SetDelegationRoot( g );
+            g.ParseAndBuildAST();
+            g.composite.AssignTokenTypes();
 
             string expectedTokenIDToTypeMap = "[A=99, WS=101]";
             string expectedStringLiteralToTypeMap = "{'a'=100}";
@@ -468,7 +468,7 @@ namespace AntlrUnitTests
         [TestMethod]
         public void TestSyntaxErrorsInImportsNotThrownOut() /*throws Exception*/ {
             ErrorQueue equeue = new ErrorQueue();
-            ErrorManager.setErrorListener( equeue );
+            ErrorManager.SetErrorListener( equeue );
             string slave =
                 "parser grammar S;\n" +
                 "options {toke\n";
@@ -484,9 +484,9 @@ namespace AntlrUnitTests
             AntlrTool antlr = newTool( new string[] { "-lib", tmpdir } );
             CompositeGrammar composite = new CompositeGrammar();
             Grammar g = new Grammar( antlr, tmpdir + "/M.g", composite );
-            composite.setDelegationRoot( g );
-            g.parseAndBuildAST();
-            g.composite.assignTokenTypes();
+            composite.SetDelegationRoot( g );
+            g.ParseAndBuildAST();
+            g.composite.AssignTokenTypes();
 
             // whole bunch of errors from bad S.g file
             assertEquals( "unexpected errors: " + equeue, 5, equeue.errors.Count );
@@ -495,7 +495,7 @@ namespace AntlrUnitTests
         [TestMethod]
         public void TestSyntaxErrorsInImportsNotThrownOut2() /*throws Exception*/ {
             ErrorQueue equeue = new ErrorQueue();
-            ErrorManager.setErrorListener( equeue );
+            ErrorManager.SetErrorListener( equeue );
             string slave =
                 "parser grammar S;\n" +
                 ": A {System.out.println(\"S.x\");} ;\n";
@@ -511,9 +511,9 @@ namespace AntlrUnitTests
             AntlrTool antlr = newTool( new string[] { "-lib", tmpdir } );
             CompositeGrammar composite = new CompositeGrammar();
             Grammar g = new Grammar( antlr, tmpdir + "/M.g", composite );
-            composite.setDelegationRoot( g );
-            g.parseAndBuildAST();
-            g.composite.assignTokenTypes();
+            composite.SetDelegationRoot( g );
+            g.ParseAndBuildAST();
+            g.composite.AssignTokenTypes();
 
             // whole bunch of errors from bad S.g file
             assertEquals( "unexpected errors: " + equeue, 3, equeue.errors.Count );
@@ -618,25 +618,25 @@ namespace AntlrUnitTests
             writeFile( tmpdir, "M.g", master );
 
             ErrorQueue equeue = new ErrorQueue();
-            ErrorManager.setErrorListener( equeue );
+            ErrorManager.SetErrorListener( equeue );
             AntlrTool antlr = newTool( new string[] { "-lib", tmpdir } );
             CompositeGrammar composite = new CompositeGrammar();
             Grammar g = new Grammar( antlr, tmpdir + "/M.g", composite );
-            composite.setDelegationRoot( g );
-            g.parseAndBuildAST();
-            composite.assignTokenTypes();
-            composite.defineGrammarSymbols();
-            composite.createNFAs();
-            g.createLookaheadDFAs( false );
+            composite.SetDelegationRoot( g );
+            g.ParseAndBuildAST();
+            composite.AssignTokenTypes();
+            composite.DefineGrammarSymbols();
+            composite.CreateNFAs();
+            g.CreateLookaheadDFAs( false );
 
             // predict only alts from M not S
             string expectingDFA =
                 ".s0-'a'->.s1\n" +
                 ".s0-{'\\n', ' '}->:s3=>2\n" +
                 ".s1-<EOT>->:s2=>1\n";
-            Antlr3.Analysis.DFA dfa = g.getLookaheadDFA( 1 );
+            Antlr3.Analysis.DFA dfa = g.GetLookaheadDFA( 1 );
             FASerializer serializer = new FASerializer( g );
-            string result = serializer.serialize( dfa.startState );
+            string result = serializer.Serialize( dfa.startState );
             assertEquals( expectingDFA, result );
 
             // must not be a "unreachable alt: Tokens" error
@@ -659,12 +659,12 @@ namespace AntlrUnitTests
             writeFile( tmpdir, "M.g", master );
 
             ErrorQueue equeue = new ErrorQueue();
-            ErrorManager.setErrorListener( equeue );
+            ErrorManager.SetErrorListener( equeue );
             AntlrTool antlr = newTool( new string[] { "-lib", tmpdir } );
             CompositeGrammar composite = new CompositeGrammar();
             Grammar g = new Grammar( antlr, System.IO.Path.Combine( tmpdir, "M.g" ), composite );
-            composite.setDelegationRoot( g );
-            g.parseAndBuildAST();
+            composite.SetDelegationRoot( g );
+            g.ParseAndBuildAST();
 
             assertEquals( "unexpected errors: " + equeue, 1, equeue.errors.Count );
             assertEquals( "unexpected errors: " + equeue, 0, equeue.warnings.Count );
@@ -702,7 +702,7 @@ namespace AntlrUnitTests
         [TestMethod]
         public void TestKeywordVSIDGivesNoWarning() /*throws Exception*/ {
             ErrorQueue equeue = new ErrorQueue();
-            ErrorManager.setErrorListener( equeue );
+            ErrorManager.SetErrorListener( equeue );
             string slave =
                 "lexer grammar S;\n" +
                 "A : 'abc' {System.out.println(\"S.A\");} ;\n" +
@@ -726,7 +726,7 @@ namespace AntlrUnitTests
         [TestMethod]
         public void TestWarningForUndefinedToken() /*throws Exception*/ {
             ErrorQueue equeue = new ErrorQueue();
-            ErrorManager.setErrorListener( equeue );
+            ErrorManager.SetErrorListener( equeue );
             string slave =
                 "lexer grammar S;\n" +
                 "A : 'abc' {System.out.println(\"S.A\");} ;\n";
@@ -753,7 +753,7 @@ namespace AntlrUnitTests
         [TestMethod]
         public void Test3LevelImport() /*throws Exception*/ {
             ErrorQueue equeue = new ErrorQueue();
-            ErrorManager.setErrorListener( equeue );
+            ErrorManager.SetErrorListener( equeue );
             string slave =
                 "parser grammar T;\n" +
                 "a : T ;\n";
@@ -774,10 +774,10 @@ namespace AntlrUnitTests
             AntlrTool antlr = newTool( new string[] { "-lib", tmpdir } );
             CompositeGrammar composite = new CompositeGrammar();
             Grammar g = new Grammar( antlr, tmpdir + "/M.g", composite );
-            composite.setDelegationRoot( g );
-            g.parseAndBuildAST();
-            g.composite.assignTokenTypes();
-            g.composite.defineGrammarSymbols();
+            composite.SetDelegationRoot( g );
+            g.ParseAndBuildAST();
+            g.composite.AssignTokenTypes();
+            g.composite.DefineGrammarSymbols();
 
             string expectedTokenIDToTypeMap = "[M=6, S=5, T=4]";
             string expectedStringLiteralToTypeMap = "{}";
@@ -800,7 +800,7 @@ namespace AntlrUnitTests
         [TestMethod]
         public void TestBigTreeOfImports() /*throws Exception*/ {
             ErrorQueue equeue = new ErrorQueue();
-            ErrorManager.setErrorListener( equeue );
+            ErrorManager.SetErrorListener( equeue );
             string slave =
                 "parser grammar T;\n" +
                 "x : T ;\n";
@@ -838,10 +838,10 @@ namespace AntlrUnitTests
             AntlrTool antlr = newTool( new string[] { "-lib", tmpdir } );
             CompositeGrammar composite = new CompositeGrammar();
             Grammar g = new Grammar( antlr, tmpdir + "/M.g", composite );
-            composite.setDelegationRoot( g );
-            g.parseAndBuildAST();
-            g.composite.assignTokenTypes();
-            g.composite.defineGrammarSymbols();
+            composite.SetDelegationRoot( g );
+            g.ParseAndBuildAST();
+            g.composite.AssignTokenTypes();
+            g.composite.DefineGrammarSymbols();
 
             string expectedTokenIDToTypeMap = "[A=8, B=6, C=7, M=9, S=5, T=4]";
             string expectedStringLiteralToTypeMap = "{}";
@@ -864,7 +864,7 @@ namespace AntlrUnitTests
         [TestMethod]
         public void TestRulesVisibleThroughMultilevelImport() /*throws Exception*/ {
             ErrorQueue equeue = new ErrorQueue();
-            ErrorManager.setErrorListener( equeue );
+            ErrorManager.SetErrorListener( equeue );
             string slave =
                 "parser grammar T;\n" +
                 "x : T ;\n";
@@ -885,10 +885,10 @@ namespace AntlrUnitTests
             AntlrTool antlr = newTool( new string[] { "-lib", tmpdir } );
             CompositeGrammar composite = new CompositeGrammar();
             Grammar g = new Grammar( antlr, tmpdir + "/M.g", composite );
-            composite.setDelegationRoot( g );
-            g.parseAndBuildAST();
-            g.composite.assignTokenTypes();
-            g.composite.defineGrammarSymbols();
+            composite.SetDelegationRoot( g );
+            g.ParseAndBuildAST();
+            g.composite.AssignTokenTypes();
+            g.composite.DefineGrammarSymbols();
 
             string expectedTokenIDToTypeMap = "[M=6, S=5, T=4]";
             string expectedStringLiteralToTypeMap = "{}";

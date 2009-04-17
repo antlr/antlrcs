@@ -74,7 +74,7 @@ namespace Antlr3.Grammars
             {
                 token = ( (NoViableAltException)ex ).token;
             }
-            ErrorManager.syntaxError(
+            ErrorManager.SyntaxError(
                 ErrorManager.MSG_SYNTAX_ERROR,
                 grammar,
                 token,
@@ -82,7 +82,7 @@ namespace Antlr3.Grammars
                 ex );
         }
 
-        public void reportError( string s )
+        public void ReportError( string s )
         {
             Console.Out.WriteLine( "codegen: error: " + s );
         }
@@ -101,34 +101,34 @@ namespace Antlr3.Grammars
 
         protected string outputOption = "";
 
-        protected StringTemplate getWildcardST( GrammarAST elementAST, GrammarAST ast_suffix, string label )
+        protected StringTemplate GetWildcardST( GrammarAST elementAST, GrammarAST ast_suffix, string label )
         {
             string name = "wildcard";
             if ( grammar.type == Grammar.LEXER )
             {
                 name = "wildcardChar";
             }
-            return getTokenElementST( name, name, elementAST, ast_suffix, label );
+            return GetTokenElementST( name, name, elementAST, ast_suffix, label );
         }
 
-        protected StringTemplate getRuleElementST( string name,
+        protected StringTemplate GetRuleElementST( string name,
                                                   string ruleTargetName,
                                                   GrammarAST elementAST,
                                                   GrammarAST ast_suffix,
                                                   string label )
         {
-            string suffix = getSTSuffix( elementAST, ast_suffix, label );
+            string suffix = GetSTSuffix( elementAST, ast_suffix, label );
             name += suffix;
             // if we're building trees and there is no label, gen a label
             // unless we're in a synpred rule.
-            Rule r = grammar.getRule( currentRuleName );
+            Rule r = grammar.GetRule( currentRuleName );
             if ( ( grammar.BuildAST || suffix.Length > 0 ) && label == null &&
                  ( r == null || !r.isSynPred ) )
             {
                 // we will need a label to do the AST or tracking, make one
                 label = generator.CreateUniqueLabel( ruleTargetName );
                 CommonToken labelTok = new CommonToken( ANTLRParser.ID, label );
-                grammar.defineRuleRefLabel( currentRuleName, labelTok, elementAST );
+                grammar.DefineRuleRefLabel( currentRuleName, labelTok, elementAST );
             }
             StringTemplate elementST = templates.GetInstanceOf( name );
             if ( label != null )
@@ -138,7 +138,7 @@ namespace Antlr3.Grammars
             return elementST;
         }
 
-        protected StringTemplate getTokenElementST( string name,
+        protected StringTemplate GetTokenElementST( string name,
                                                    string elementName,
                                                    GrammarAST elementAST,
                                                    GrammarAST ast_suffix,
@@ -158,16 +158,16 @@ namespace Antlr3.Grammars
                 }
             }
 
-            string suffix = getSTSuffix( elementAST, ast_suffix, label );
+            string suffix = GetSTSuffix( elementAST, ast_suffix, label );
             // if we're building trees and there is no label, gen a label
             // unless we're in a synpred rule.
-            Rule r = grammar.getRule( currentRuleName );
+            Rule r = grammar.GetRule( currentRuleName );
             if ( ( grammar.BuildAST || suffix.Length > 0 ) && label == null &&
                  ( r == null || !r.isSynPred ) )
             {
                 label = generator.CreateUniqueLabel( elementName );
                 CommonToken labelTok = new CommonToken( ANTLRParser.ID, label );
-                grammar.defineTokenRefLabel( currentRuleName, labelTok, elementAST );
+                grammar.DefineTokenRefLabel( currentRuleName, labelTok, elementAST );
             }
 
             StringTemplate elementST = null;
@@ -183,16 +183,16 @@ namespace Antlr3.Grammars
             return elementST;
         }
 
-        public bool isListLabel( string label )
+        public bool IsListLabel( string label )
         {
             bool hasListLabel = false;
             if ( label != null )
             {
-                Rule r = grammar.getRule( currentRuleName );
+                Rule r = grammar.GetRule( currentRuleName );
                 //String stName = null;
                 if ( r != null )
                 {
-                    Grammar.LabelElementPair pair = r.getLabel( label );
+                    Grammar.LabelElementPair pair = r.GetLabel( label );
                     if ( pair != null &&
                          ( pair.type == Grammar.TOKEN_LIST_LABEL ||
                           pair.type == Grammar.RULE_LIST_LABEL ||
@@ -208,7 +208,7 @@ namespace Antlr3.Grammars
         /** Return a non-empty template name suffix if the token is to be
          *  tracked, added to a tree, or both.
          */
-        protected string getSTSuffix( GrammarAST elementAST, GrammarAST ast_suffix, string label )
+        protected string GetSTSuffix( GrammarAST elementAST, GrammarAST ast_suffix, string label )
         {
             if ( grammar.type == Grammar.LEXER )
             {
@@ -219,7 +219,7 @@ namespace Antlr3.Grammars
             string operatorPart = "";
             string rewritePart = "";
             string listLabelPart = "";
-            Rule ruleDescr = grammar.getRule( currentRuleName );
+            Rule ruleDescr = grammar.GetRule( currentRuleName );
             if ( ast_suffix != null && !ruleDescr.isSynPred )
             {
                 if ( ast_suffix.Type == ANTLRParser.ROOT )
@@ -235,7 +235,7 @@ namespace Antlr3.Grammars
             {
                 rewritePart = "Track";
             }
-            if ( isListLabel( label ) )
+            if ( IsListLabel( label ) )
             {
                 listLabelPart = "AndListLabel";
             }
@@ -246,7 +246,7 @@ namespace Antlr3.Grammars
         }
 
         /** Convert rewrite AST lists to target labels list */
-        protected IList<string> getTokenTypesAsTargetLabels( HashSet<GrammarAST> refs )
+        protected IList<string> GetTokenTypesAsTargetLabels( HashSet<GrammarAST> refs )
         {
             if ( refs == null || refs.Count == 0 )
             {
@@ -268,14 +268,14 @@ namespace Antlr3.Grammars
                 {
                     // must be char or string literal
                     label = generator.GetTokenTypeAsTargetLabel(
-                                grammar.getTokenType( t.Text ) );
+                                grammar.GetTokenType( t.Text ) );
                 }
                 labels.Add( label );
             }
             return labels;
         }
 
-        public void init( Grammar g )
+        public void Init( Grammar g )
         {
             this.grammar = g;
             this.generator = grammar.CodeGenerator;

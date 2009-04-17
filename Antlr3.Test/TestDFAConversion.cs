@@ -539,9 +539,9 @@ namespace AntlrUnitTests
 
             DecisionProbe.verbose = true; // make sure we get all error info
             ErrorQueue equeue = new ErrorQueue();
-            ErrorManager.setErrorListener( equeue );
+            ErrorManager.SetErrorListener( equeue );
 
-            HashSet<Rule> leftRecursive = g.getLeftRecursiveRules();
+            HashSet<Rule> leftRecursive = g.GetLeftRecursiveRules();
             //Set expectedRules =
             //    new HashSet() {{add("a"); add("b");}};
             var expectedRules = new HashSet<string>();
@@ -550,7 +550,7 @@ namespace AntlrUnitTests
 
             assertTrue( expectedRules.SequenceEqual( ruleNames( leftRecursive ) ) );
 
-            g.createLookaheadDFAs( false );
+            g.CreateLookaheadDFAs( false );
 
             Message msg = (Message)equeue.warnings[0];
             assertTrue( "expecting left recursion cycles; found " + msg.GetType().Name,
@@ -576,9 +576,9 @@ namespace AntlrUnitTests
 
             DecisionProbe.verbose = true; // make sure we get all error info
             ErrorQueue equeue = new ErrorQueue();
-            ErrorManager.setErrorListener( equeue );
+            ErrorManager.SetErrorListener( equeue );
 
-            var leftRecursive = g.getLeftRecursiveRules();
+            var leftRecursive = g.GetLeftRecursiveRules();
             //Set expectedRules =
             //    new HashSet() {{add("a"); add("b");}};
             var expectedRules = new HashSet<string>();
@@ -586,7 +586,7 @@ namespace AntlrUnitTests
             expectedRules.Add( "b" );
             assertTrue( expectedRules.SequenceEqual( ruleNames( leftRecursive ) ) );
 
-            g.createLookaheadDFAs( false );
+            g.CreateLookaheadDFAs( false );
 
             Message msg = (Message)equeue.warnings[0];
             assertTrue( "expecting left recursion cycles; found " + msg.GetType().Name,
@@ -616,9 +616,9 @@ namespace AntlrUnitTests
 
             DecisionProbe.verbose = true; // make sure we get all error info
             ErrorQueue equeue = new ErrorQueue();
-            ErrorManager.setErrorListener( equeue );
+            ErrorManager.SetErrorListener( equeue );
 
-            var leftRecursive = g.getLeftRecursiveRules();
+            var leftRecursive = g.GetLeftRecursiveRules();
             var expectedRules = new HashSet<string>() { "a", "b", "d", "e" };
 
             assertTrue( expectedRules.SequenceEqual( ruleNames( leftRecursive ) ) );
@@ -760,7 +760,7 @@ namespace AntlrUnitTests
         [TestMethod]
         public void TestNoStartRule() /*throws Exception*/ {
             ErrorQueue equeue = new ErrorQueue();
-            ErrorManager.setErrorListener( equeue );
+            ErrorManager.SetErrorListener( equeue );
             Grammar g = new Grammar(
                 "parser grammar t;\n" +
                 "a : A a | X;" ); // single rule 'a' refers to itself; no start rule
@@ -768,7 +768,7 @@ namespace AntlrUnitTests
             AntlrTool antlr = newTool();
             antlr.SetOutputDirectory( null ); // write to /dev/null
             CodeGenerator generator = new CodeGenerator( antlr, g, "Java" );
-            g.setCodeGenerator( generator );
+            g.CodeGenerator = generator;
             generator.GenRecognizer();
 
             Message msg = (Message)equeue.warnings[0];
@@ -801,7 +801,7 @@ namespace AntlrUnitTests
                 "parser grammar t;\n" +
                 "s : a ;\n" +
                 "a : a A | B;" );
-            var leftRecursive = g.getLeftRecursiveRules();
+            var leftRecursive = g.GetLeftRecursiveRules();
             //Set expectedRules = new HashSet() {{add("a");}};
             var expectedRules = new HashSet<string>();
             expectedRules.Add( "a" );
@@ -816,7 +816,7 @@ namespace AntlrUnitTests
                 "a : b | A ;\n" +
                 "b : c ;\n" +
                 "c : a | C ;\n" );
-            var leftRecursive = g.getLeftRecursiveRules();
+            var leftRecursive = g.GetLeftRecursiveRules();
             //Set expectedRules = new HashSet() {{add("a"); add("b"); add("c");}};
             var expectedRules = new HashSet<string>();
             expectedRules.Add( "a" );
@@ -835,7 +835,7 @@ namespace AntlrUnitTests
                     "c : a | C ;\n" +
                     "x : y | X ;\n" +
                     "y : x ;\n" );
-            var leftRecursive = g.getLeftRecursiveRules();
+            var leftRecursive = g.GetLeftRecursiveRules();
             //Set expectedRules =
             //    new HashSet() {{add("a"); add("b"); add("c"); add("x"); add("y");}};
             var expectedRules = new HashSet<string>();
@@ -855,7 +855,7 @@ namespace AntlrUnitTests
                 "a : (A|)+ B;\n" );
             // before I added a visitedStates thing, it was possible to loop
             // forever inside of a rule if there was an epsilon loop.
-            var leftRecursive = g.getLeftRecursiveRules();
+            var leftRecursive = g.GetLeftRecursiveRules();
             var expectedRules = new HashSet<Rule>();
             assertTrue( expectedRules.SequenceEqual( leftRecursive ) );
         }
@@ -1530,13 +1530,13 @@ namespace AntlrUnitTests
         {
             DecisionProbe.verbose = true; // make sure we get all error info
             ErrorQueue equeue = new ErrorQueue();
-            ErrorManager.setErrorListener( equeue );
+            ErrorManager.SetErrorListener( equeue );
 
             // mimic actions of org.antlr.Tool first time for grammar g
             if ( g.NumberOfDecisions == 0 )
             {
-                g.buildNFA();
-                g.createLookaheadDFAs( false );
+                g.BuildNFA();
+                g.CreateLookaheadDFAs( false );
             }
             NonRegularDecisionMessage msg = getNonRegularDecisionMessage( equeue.errors );
             assertTrue( "expected fatal non-LL(*) msg", msg != null );
@@ -1554,13 +1554,13 @@ namespace AntlrUnitTests
         {
             DecisionProbe.verbose = true; // make sure we get all error info
             ErrorQueue equeue = new ErrorQueue();
-            ErrorManager.setErrorListener( equeue );
+            ErrorManager.SetErrorListener( equeue );
 
             // mimic actions of org.antlr.Tool first time for grammar g
             if ( g.NumberOfDecisions == 0 )
             {
-                g.buildNFA();
-                g.createLookaheadDFAs( false );
+                g.BuildNFA();
+                g.CreateLookaheadDFAs( false );
             }
             RecursionOverflowMessage msg = getRecursionOverflowMessage( equeue.errors );
             assertTrue( "missing expected recursion overflow msg" + msg, msg != null );
@@ -1624,16 +1624,16 @@ namespace AntlrUnitTests
         {
             DecisionProbe.verbose = true; // make sure we get all error info
             ErrorQueue equeue = new ErrorQueue();
-            ErrorManager.setErrorListener( equeue );
+            ErrorManager.SetErrorListener( equeue );
 
             // mimic actions of org.antlr.Tool first time for grammar g
             if ( g.NumberOfDecisions == 0 )
             {
-                g.buildNFA();
-                g.createLookaheadDFAs( false );
+                g.BuildNFA();
+                g.CreateLookaheadDFAs( false );
             }
             CodeGenerator generator = new CodeGenerator( newTool(), g, "Java" );
-            g.setCodeGenerator( generator );
+            g.CodeGenerator = generator;
 
             if ( equeue.size() != expectingNumWarnings )
             {
@@ -1643,10 +1643,10 @@ namespace AntlrUnitTests
             assertEquals( "unexpected number of expected problems",
                        expectingNumWarnings, equeue.size() );
 
-            DFA dfa = g.getLookaheadDFA( decision );
+            DFA dfa = g.GetLookaheadDFA( decision );
             assertNotNull( "no DFA for decision " + decision, dfa );
             FASerializer serializer = new FASerializer( g );
-            string result = serializer.serialize( dfa.startState );
+            string result = serializer.Serialize( dfa.startState );
 
             var unreachableAlts = dfa.UnreachableAlts;
 

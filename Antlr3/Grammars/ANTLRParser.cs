@@ -1,4 +1,4 @@
-// $ANTLR 3.1.2 Grammars\\ANTLR.g3 2009-04-10 15:22:14
+// $ANTLR 3.1.2 Grammars\\ANTLR.g3 2009-04-16 21:26:59
 
 // The variable 'variable' is assigned but its value is never used.
 #pragma warning disable 219
@@ -325,7 +325,7 @@ public partial class ANTLRParser : Parser
 			if ( state.backtracking == 0 ) stream_id.Add(gid.Tree);
 			if ( state.backtracking == 0 )
 			{
-				Grammar.setName((gid!=null?input.ToString(gid.start,gid.stop):null));
+				Grammar.SetName((gid!=null?input.ToString(gid.start,gid.stop):null));
 			}
 			SEMI2=(IToken)Match(input,SEMI,Follow._SEMI_in_grammar_337); if (state.failed) return retval; 
 			if ( state.backtracking == 0 ) stream_SEMI.Add(SEMI2);
@@ -351,7 +351,7 @@ public partial class ANTLRParser : Parser
 				if ( state.backtracking == 0 ) stream_optionsSpec.Add(optionsSpec3.Tree);
 				if ( state.backtracking == 0 )
 				{
-					opts = (optionsSpec3!=null?optionsSpec3.opts:default(IDictionary<string, object>)); Grammar.setOptions(opts, (optionsSpec3!=null?((IToken)optionsSpec3.start):null));
+					opts = (optionsSpec3!=null?optionsSpec3.opts:default(IDictionary<string, object>)); Grammar.SetOptions(opts, (optionsSpec3!=null?((IToken)optionsSpec3.start):null));
 				}
 
 				}
@@ -545,7 +545,7 @@ public partial class ANTLRParser : Parser
 			if ( state.backtracking == 0 )
 			{
 
-					cleanup( ((GrammarAST)retval.tree) );
+					Cleanup( ((GrammarAST)retval.tree) );
 
 			}
 		}
@@ -1790,7 +1790,7 @@ public partial class ANTLRParser : Parser
 				if ( state.backtracking == 0 ) adaptor.AddChild(root_0, g.Tree);
 				if ( state.backtracking == 0 )
 				{
-					Grammar.importGrammar((g!=null?((GrammarAST)g.tree):null), (lab!=null?input.ToString(lab.start,lab.stop):null));
+					Grammar.ImportGrammar((g!=null?((GrammarAST)g.tree):null), (lab!=null?input.ToString(lab.start,lab.stop):null));
 				}
 
 				}
@@ -1808,7 +1808,7 @@ public partial class ANTLRParser : Parser
 				if ( state.backtracking == 0 ) adaptor.AddChild(root_0, g2.Tree);
 				if ( state.backtracking == 0 )
 				{
-					Grammar.importGrammar((g2!=null?((GrammarAST)g2.tree):null),null);
+					Grammar.ImportGrammar((g2!=null?((GrammarAST)g2.tree):null),null);
 				}
 
 				}
@@ -2827,7 +2827,7 @@ public partial class ANTLRParser : Parser
 			if ( state.backtracking == 0 )
 			{
 
-						((GrammarAST)((GrammarAST)retval.tree).GetChild(0)).setBlockOptions( (optionsSpec45!=null?optionsSpec45.opts:default(IDictionary<string, object>)) );
+						((GrammarAST)((GrammarAST)retval.tree).GetChild(0)).BlockOptions = (optionsSpec45!=null?optionsSpec45.opts:default(IDictionary<string, object>));
 					
 			}
 
@@ -3460,7 +3460,7 @@ public partial class ANTLRParser : Parser
 					if ( state.backtracking == 0 ) stream_optionsSpec.Add(optionsSpec64.Tree);
 					if ( state.backtracking == 0 )
 					{
-						((GrammarAST)((GrammarAST)retval.tree).GetChild(0)).setOptions(Grammar,(optionsSpec64!=null?optionsSpec64.opts:default(IDictionary<string, object>)));
+						((GrammarAST)((GrammarAST)retval.tree).GetChild(0)).SetOptions(Grammar,(optionsSpec64!=null?optionsSpec64.opts:default(IDictionary<string, object>)));
 					}
 
 					}
@@ -3531,7 +3531,7 @@ public partial class ANTLRParser : Parser
 
 							stream_alternative.Add( (r!=null?((GrammarAST)r.tree):null) );
 							if ( LA(1)==OR || (LA(2)==QUESTION||LA(2)==PLUS||LA(2)==STAR) )
-								prefixWithSynPred((a!=null?((GrammarAST)a.tree):null));
+								PrefixWithSynPred((a!=null?((GrammarAST)a.tree):null));
 						
 			}
 			// Grammars\\ANTLR.g3:405:3: ( OR a= alternative r= rewrite )*
@@ -3571,7 +3571,7 @@ public partial class ANTLRParser : Parser
 
 										stream_alternative.Add( (r!=null?((GrammarAST)r.tree):null) );
 										if (LA(1)==OR||(LA(2)==QUESTION||LA(2)==PLUS||LA(2)==STAR))
-											prefixWithSynPred((a!=null?((GrammarAST)a.tree):null));
+											PrefixWithSynPred((a!=null?((GrammarAST)a.tree):null));
 									
 					}
 
@@ -3748,7 +3748,7 @@ public partial class ANTLRParser : Parser
 			{
 
 							blkRoot = (GrammarAST)((GrammarAST)retval.tree).GetChild(0);
-							blkRoot.setBlockOptions( opts );
+							blkRoot.BlockOptions = opts;
 							currentBlockAST = blkRoot;
 						
 			}
@@ -3769,7 +3769,7 @@ public partial class ANTLRParser : Parser
 			if ( state.backtracking == 0 ) stream_rewrite.Add(r1.Tree);
 			if ( state.backtracking == 0 )
 			{
-				if (LA(1)==OR||(LA(2)==QUESTION||LA(2)==PLUS||LA(2)==STAR)) prefixWithSynPred((a1!=null?((GrammarAST)a1.tree):null));
+				if (LA(1)==OR||(LA(2)==QUESTION||LA(2)==PLUS||LA(2)==STAR)) PrefixWithSynPred((a1!=null?((GrammarAST)a1.tree):null));
 			}
 
 
@@ -3841,7 +3841,7 @@ public partial class ANTLRParser : Parser
 					if ( state.backtracking == 0 ) stream_rewrite.Add(r2.Tree);
 					if ( state.backtracking == 0 )
 					{
-						if (LA(1)==OR||(LA(2)==QUESTION||LA(2)==PLUS||LA(2)==STAR)) prefixWithSynPred((a2!=null?((GrammarAST)a2.tree):null));
+						if (LA(1)==OR||(LA(2)==QUESTION||LA(2)==PLUS||LA(2)==STAR)) PrefixWithSynPred((a2!=null?((GrammarAST)a2.tree):null));
 					}
 
 
@@ -6125,7 +6125,7 @@ public partial class ANTLRParser : Parser
 				}
 				else // 553:4: ->
 				{
-					adaptor.AddChild(root_0, createSynSemPredFromBlock((block117!=null?((GrammarAST)block117.tree):null), SYN_SEMPRED));
+					adaptor.AddChild(root_0, CreateSynSemPredFromBlock((block117!=null?((GrammarAST)block117.tree):null), SYN_SEMPRED));
 
 				}
 
@@ -6764,7 +6764,7 @@ public partial class ANTLRParser : Parser
 
 								if ( atTreeRoot )
 								{
-									ErrorManager.syntaxError(
+									ErrorManager.SyntaxError(
 										ErrorManager.MSG_WILDCARD_AS_ROOT,Grammar,wi,null,null);
 								}
 							
@@ -7082,7 +7082,7 @@ public partial class ANTLRParser : Parser
 
 			if ( state.backtracking == 0 )
 			{
-				terminalAST.setTerminalOption(Grammar,Grammar.defaultTokenOption,buf.ToString());
+				terminalAST.SetTerminalOption(Grammar,Grammar.defaultTokenOption,buf.ToString());
 			}
 
 			}
@@ -7201,7 +7201,7 @@ public partial class ANTLRParser : Parser
 			{
 
 						object v = ((b!=null?((GrammarAST)b.tree):null)!=null)?(b!=null?input.ToString(b.start,b.stop):null):(s!=null?s.Text:null);
-						terminalAST.setTerminalOption(Grammar,(a!=null?input.ToString(a.start,a.stop):null),v);
+						terminalAST.SetTerminalOption(Grammar,(a!=null?input.ToString(a.start,a.stop):null),v);
 						
 			}
 
@@ -7345,7 +7345,7 @@ public partial class ANTLRParser : Parser
 
 							alt = (GrammarAST)((GrammarAST)retval.tree).GetChild(0);
 							if ( !inRewrite )
-								prefixWithSynPred(alt);
+								PrefixWithSynPred(alt);
 						
 			}
 			// Grammars\\ANTLR.g3:632:3: ( QUESTION -> OPTIONAL[$elemAST.Token,\"?\"] | STAR -> CLOSURE[$elemAST.Token,\"*\"] | PLUS -> POSITIVE_CLOSURE[$elemAST.Token,\"+\"] )

@@ -74,7 +74,7 @@ namespace Antlr3.Tool
                 file = fileName;
             }
 
-            StringTemplate st = getMessageTemplate();
+            StringTemplate st = GetMessageTemplate();
             st.SetAttribute( "targetRules", targetRules );
             st.SetAttribute( "alt", alt );
             st.SetAttribute( "callSiteStates", callSiteStates );

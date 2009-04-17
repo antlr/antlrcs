@@ -80,7 +80,7 @@ namespace Antlr3.Tool
             {
                 if ( !ruleName.Equals( Grammar.ARTIFICIAL_TOKENS_RULENAME ) )
                 {
-                    int type = g.getTokenType( ruleName );
+                    int type = g.GetTokenType( ruleName );
                     int channel = TokenConstants.DefaultChannel;
                     token = new CommonToken( (ICharStream)outer.input, type, channel, 0, 0 );
                 }
@@ -118,13 +118,13 @@ namespace Antlr3.Tool
             {
                 try
                 {
-                    token = scan( Grammar.ARTIFICIAL_TOKENS_RULENAME, null );
+                    token = Scan( Grammar.ARTIFICIAL_TOKENS_RULENAME, null );
                     break;
                 }
                 catch ( RecognitionException re )
                 {
                     // report a problem and try for another
-                    reportScanError( re );
+                    ReportScanError( re );
                     continue;
                 }
             }
@@ -152,7 +152,7 @@ namespace Antlr3.Tool
          *
          *  Return the token type associated with the final rule end state.
          */
-        public virtual void scan( String startRule,
+        public virtual void Scan( String startRule,
                          IDebugEventListener actions,
                          IList visitedStates )
         {
@@ -163,72 +163,72 @@ namespace Antlr3.Tool
             ICharStream @in = (ICharStream)this.input;
             //Console.Out.WriteLine( "scan(" + startRule + ",'" + @in.substring( @in.Index, @in.Size() - 1 ) + "')" );
             // Build NFAs/DFAs from the grammar AST if NFAs haven't been built yet
-            if ( grammar.getRuleStartState( startRule ) == null )
+            if ( grammar.GetRuleStartState( startRule ) == null )
             {
-                grammar.buildNFA();
+                grammar.BuildNFA();
             }
 
             if ( !grammar.AllDecisionDFAHaveBeenCreated )
             {
                 // Create the DFA predictors for each decision
-                grammar.createLookaheadDFAs();
+                grammar.CreateLookaheadDFAs();
             }
 
             // do the parse
             Stack<object> ruleInvocationStack = new Stack<object>();
-            NFAState start = grammar.getRuleStartState( startRule );
-            NFAState stop = grammar.getRuleStopState( startRule );
-            parseEngine( startRule, start, stop, @in, ruleInvocationStack,
+            NFAState start = grammar.GetRuleStartState( startRule );
+            NFAState stop = grammar.GetRuleStopState( startRule );
+            ParseEngine( startRule, start, stop, @in, ruleInvocationStack,
                         actions, visitedStates );
         }
 
-        public virtual CommonToken scan( String startRule )
+        public virtual CommonToken Scan( String startRule )
         {
-            return scan( startRule, null );
+            return Scan( startRule, null );
         }
 
-        public virtual CommonToken scan( String startRule,
+        public virtual CommonToken Scan( String startRule,
                                 IList visitedStates )
         {
             LexerActionGetTokenType actions = new LexerActionGetTokenType( this, grammar );
-            scan( startRule, actions, visitedStates );
+            Scan( startRule, actions, visitedStates );
             return actions.token;
         }
 
-        public virtual void parse( String startRule,
+        public virtual void Parse( String startRule,
                           IDebugEventListener actions,
                           IList visitedStates )
         {
             //Console.Out.WriteLine( "parse(" + startRule + ")" );
             // Build NFAs/DFAs from the grammar AST if NFAs haven't been built yet
-            if ( grammar.getRuleStartState( startRule ) == null )
+            if ( grammar.GetRuleStartState( startRule ) == null )
             {
-                grammar.buildNFA();
+                grammar.BuildNFA();
             }
             if ( !grammar.AllDecisionDFAHaveBeenCreated )
             {
                 // Create the DFA predictors for each decision
-                grammar.createLookaheadDFAs();
+                grammar.CreateLookaheadDFAs();
             }
             // do the parse
             Stack<object> ruleInvocationStack = new Stack<object>();
-            NFAState start = grammar.getRuleStartState( startRule );
-            NFAState stop = grammar.getRuleStopState( startRule );
-            parseEngine( startRule, start, stop, input, ruleInvocationStack,
+            NFAState start = grammar.GetRuleStartState( startRule );
+            NFAState stop = grammar.GetRuleStopState( startRule );
+            ParseEngine( startRule, start, stop, input, ruleInvocationStack,
                         actions, visitedStates );
         }
 
-        public virtual ParseTree parse( String startRule )
+        public virtual ParseTree Parse( String startRule )
         {
-            return parse( startRule, null );
+            return Parse( startRule, null );
         }
 
-        public virtual ParseTree parse( String startRule, IList visitedStates )
+        public virtual ParseTree Parse( String startRule, IList visitedStates )
         {
             ParseTreeBuilder actions = new ParseTreeBuilder( grammar.name );
             try
             {
-                parse( startRule, actions, visitedStates );
+                Parse( startRule, actions, visitedStates );
             }
             catch ( RecognitionException /*re*/ )
             {
@@ -240,7 +240,7 @@ namespace Antlr3.Tool
         }
 
         /** Fill a list of all NFA states visited during the parse */
-        protected virtual void parseEngine( String startRule,
+        protected virtual void ParseEngine( String startRule,
                                    NFAState start,
                                    NFAState stop,
                                    IIntStream input,
@@ -262,10 +262,10 @@ namespace Antlr3.Tool
                 }
                 //Console.Out.WriteLine( "parse state " + s.stateNumber + " input=" + s.nfa.grammar.getTokenDisplayName( t ) );
                 // CASE 1: decision state
-                if ( s.DecisionNumber > 0 && s.nfa.grammar.getNumberOfAltsForDecisionNFA( s ) > 1 )
+                if ( s.DecisionNumber > 0 && s.nfa.grammar.GetNumberOfAltsForDecisionNFA( s ) > 1 )
                 {
                     // decision point, must predict and jump to alt
-                    DFA dfa = s.nfa.grammar.getLookaheadDFA( s.DecisionNumber );
+                    DFA dfa = s.nfa.grammar.GetLookaheadDFA( s.DecisionNumber );
                     //if ( s.nfa.grammar.type != Grammar.LEXER )
                     //{
                     //    Console.Out.WriteLine( "decision: " +
@@ -273,7 +273,7 @@ namespace Antlr3.Tool
                     //                   " input=" + s.nfa.grammar.getTokenDisplayName( t ) );
                     //}
                     int m = input.Mark();
-                    int predictedAlt = predict( dfa );
+                    int predictedAlt = Predict( dfa );
                     if ( predictedAlt == NFA.INVALID_ALT_NUMBER )
                     {
                         String description = dfa.NFADecisionStartState.Description;
@@ -297,14 +297,14 @@ namespace Antlr3.Tool
                     //    Console.Out.WriteLine( "predicted alt " + predictedAlt + ", parseAlt " + parseAlt );
                     //}
                     NFAState alt;
-                    if ( parseAlt > s.nfa.grammar.getNumberOfAltsForDecisionNFA( s ) )
+                    if ( parseAlt > s.nfa.grammar.GetNumberOfAltsForDecisionNFA( s ) )
                     {
                         // implied branch of loop etc...
                         alt = s.nfa.grammar.nfa.GetState( s.endOfBlockStateNumber );
                     }
                     else
                     {
-                        alt = s.nfa.grammar.getNFAStateForAltOfDecision( s, parseAlt );
+                        alt = s.nfa.grammar.GetNFAStateForAltOfDecision( s, parseAlt );
                     }
                     s = (NFAState)alt.transition[0].target;
                     continue;
@@ -362,7 +362,7 @@ namespace Antlr3.Tool
                         // could be jumping to new grammar, make sure DFA created
                         if ( !s.nfa.grammar.AllDecisionDFAHaveBeenCreated )
                         {
-                            s.nfa.grammar.createLookaheadDFAs();
+                            s.nfa.grammar.CreateLookaheadDFAs();
                         }
                     }
                     // CASE 3b: plain old epsilon transition, just move
@@ -446,7 +446,7 @@ namespace Antlr3.Tool
          *  input.lookahead(1) must point at the input symbol you want to start
          *  predicting with.
          */
-        public int predict( DFA dfa )
+        public int Predict( DFA dfa )
         {
             DFAState s = dfa.startState;
             int c = input.LA( 1 );
@@ -491,7 +491,7 @@ namespace Antlr3.Tool
             return s.GetUniquelyPredictedAlt();
         }
 
-        public virtual void reportScanError( RecognitionException re )
+        public virtual void ReportScanError( RecognitionException re )
         {
             ICharStream cs = (ICharStream)input;
             // print as good of a message as we can, given that we do not have

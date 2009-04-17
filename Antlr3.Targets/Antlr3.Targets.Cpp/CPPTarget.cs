@@ -117,7 +117,7 @@ namespace Antlr3.Targets
          */
         public override string GetTargetCharLiteralFromANTLRCharLiteral( CodeGenerator codegen, string literal )
         {
-            int c = Grammar.getCharValueFromGrammarCharLiteral( literal );
+            int c = Grammar.GetCharValueFromGrammarCharLiteral( literal );
             string prefix = "'";
             if ( codegen.grammar.MaxCharValue > 255 )
                 prefix = "L'";
@@ -135,7 +135,7 @@ namespace Antlr3.Targets
          */
         public override string GetTargetStringLiteralFromANTLRStringLiteral( CodeGenerator codegen, string literal )
         {
-            StringBuilder buf = Grammar.getUnescapedStringFromGrammarStringLiteral( literal );
+            StringBuilder buf = Grammar.GetUnescapedStringFromGrammarStringLiteral( literal );
             string prefix = "\"";
             if ( codegen.grammar.MaxCharValue > 255 )
                 prefix = "L\"";

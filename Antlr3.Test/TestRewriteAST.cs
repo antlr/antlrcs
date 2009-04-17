@@ -925,7 +925,7 @@ namespace AntlrUnitTests
         [TestMethod]
         public void TestWeirdRuleRef() /*throws Exception*/ {
             ErrorQueue equeue = new ErrorQueue();
-            ErrorManager.setErrorListener( equeue );
+            ErrorManager.SetErrorListener( equeue );
             string grammar =
                 "grammar T;\n" +
                 "options {output=AST;}\n" +
@@ -938,7 +938,7 @@ namespace AntlrUnitTests
             AntlrTool antlr = newTool();
             antlr.SetOutputDirectory( null ); // write to /dev/null
             CodeGenerator generator = new CodeGenerator( antlr, g, "Java" );
-            g.setCodeGenerator( generator );
+            g.CodeGenerator = generator;
             generator.GenRecognizer();
 
             // $a is ambig; is it previous root or ref to a ref in alt?
@@ -1239,7 +1239,7 @@ namespace AntlrUnitTests
         [TestMethod]
         public void TestUnknownRule() /*throws Exception*/ {
             ErrorQueue equeue = new ErrorQueue();
-            ErrorManager.setErrorListener( equeue );
+            ErrorManager.SetErrorListener( equeue );
 
             string grammar =
                 "grammar T;\n" +
@@ -1253,7 +1253,7 @@ namespace AntlrUnitTests
             AntlrTool antlr = newTool();
             antlr.SetOutputDirectory( null ); // write to /dev/null
             CodeGenerator generator = new CodeGenerator( antlr, g, "Java" );
-            g.setCodeGenerator( generator );
+            g.CodeGenerator = generator;
             generator.GenRecognizer();
 
             int expectedMsgID = ErrorManager.MSG_UNDEFINED_RULE_REF;
@@ -1268,7 +1268,7 @@ namespace AntlrUnitTests
         [TestMethod]
         public void TestKnownRuleButNotInLHS() /*throws Exception*/ {
             ErrorQueue equeue = new ErrorQueue();
-            ErrorManager.setErrorListener( equeue );
+            ErrorManager.SetErrorListener( equeue );
 
             string grammar =
                 "grammar T;\n" +
@@ -1283,7 +1283,7 @@ namespace AntlrUnitTests
             AntlrTool antlr = newTool();
             antlr.SetOutputDirectory( null ); // write to /dev/null
             CodeGenerator generator = new CodeGenerator( antlr, g, "Java" );
-            g.setCodeGenerator( generator );
+            g.CodeGenerator = generator;
             generator.GenRecognizer();
 
             int expectedMsgID = ErrorManager.MSG_REWRITE_ELEMENT_NOT_PRESENT_ON_LHS;
@@ -1298,7 +1298,7 @@ namespace AntlrUnitTests
         [TestMethod]
         public void TestUnknownToken() /*throws Exception*/ {
             ErrorQueue equeue = new ErrorQueue();
-            ErrorManager.setErrorListener( equeue );
+            ErrorManager.SetErrorListener( equeue );
 
             string grammar =
                 "grammar T;\n" +
@@ -1312,7 +1312,7 @@ namespace AntlrUnitTests
             AntlrTool antlr = newTool();
             antlr.SetOutputDirectory( null ); // write to /dev/null
             CodeGenerator generator = new CodeGenerator( antlr, g, "Java" );
-            g.setCodeGenerator( generator );
+            g.CodeGenerator = generator;
             generator.GenRecognizer();
 
             int expectedMsgID = ErrorManager.MSG_UNDEFINED_TOKEN_REF_IN_REWRITE;
@@ -1327,7 +1327,7 @@ namespace AntlrUnitTests
         [TestMethod]
         public void TestUnknownLabel() /*throws Exception*/ {
             ErrorQueue equeue = new ErrorQueue();
-            ErrorManager.setErrorListener( equeue );
+            ErrorManager.SetErrorListener( equeue );
 
             string grammar =
                 "grammar T;\n" +
@@ -1341,7 +1341,7 @@ namespace AntlrUnitTests
             AntlrTool antlr = newTool();
             antlr.SetOutputDirectory( null ); // write to /dev/null
             CodeGenerator generator = new CodeGenerator( antlr, g, "Java" );
-            g.setCodeGenerator( generator );
+            g.CodeGenerator = generator;
             generator.GenRecognizer();
 
             int expectedMsgID = ErrorManager.MSG_UNDEFINED_LABEL_REF_IN_REWRITE;
@@ -1356,7 +1356,7 @@ namespace AntlrUnitTests
         [TestMethod]
         public void TestUnknownCharLiteralToken() /*throws Exception*/ {
             ErrorQueue equeue = new ErrorQueue();
-            ErrorManager.setErrorListener( equeue );
+            ErrorManager.SetErrorListener( equeue );
 
             string grammar =
                 "grammar T;\n" +
@@ -1370,7 +1370,7 @@ namespace AntlrUnitTests
             AntlrTool antlr = newTool();
             antlr.SetOutputDirectory( null ); // write to /dev/null
             CodeGenerator generator = new CodeGenerator( antlr, g, "Java" );
-            g.setCodeGenerator( generator );
+            g.CodeGenerator = generator;
             generator.GenRecognizer();
 
             int expectedMsgID = ErrorManager.MSG_UNDEFINED_TOKEN_REF_IN_REWRITE;
@@ -1385,7 +1385,7 @@ namespace AntlrUnitTests
         [TestMethod]
         public void TestUnknownStringLiteralToken() /*throws Exception*/ {
             ErrorQueue equeue = new ErrorQueue();
-            ErrorManager.setErrorListener( equeue );
+            ErrorManager.SetErrorListener( equeue );
 
             string grammar =
                 "grammar T;\n" +
@@ -1399,7 +1399,7 @@ namespace AntlrUnitTests
             AntlrTool antlr = newTool();
             antlr.SetOutputDirectory( null ); // write to /dev/null
             CodeGenerator generator = new CodeGenerator( antlr, g, "Java" );
-            g.setCodeGenerator( generator );
+            g.CodeGenerator = generator;
             generator.GenRecognizer();
 
             int expectedMsgID = ErrorManager.MSG_UNDEFINED_TOKEN_REF_IN_REWRITE;

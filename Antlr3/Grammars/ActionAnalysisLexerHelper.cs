@@ -46,12 +46,12 @@ namespace Antlr3.Grammars
             : this( new ANTLRStringStream( actionAST.token.Text ) )
         {
             this.grammar = grammar;
-            this.enclosingRule = grammar.getLocallyDefinedRule( ruleName );
+            this.enclosingRule = grammar.GetLocallyDefinedRule( ruleName );
             this.actionToken = actionAST.token;
             this.outerAltNum = actionAST.outerAltNum;
         }
 
-        public void analyze()
+        public void Analyze()
         {
             //System.Console.Out.WriteLine( "###\naction=" + actionToken );
             IToken t;

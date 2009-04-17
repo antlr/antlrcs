@@ -59,9 +59,9 @@ namespace Antlr3.Tool
          *  the error manager that we have problems and it sets the list of
          *  recursive rules that we should ignore during analysis.
          */
-        public virtual IList<HashSet<Rule>> checkAllRulesForLeftRecursion()
+        public virtual IList<HashSet<Rule>> CheckAllRulesForLeftRecursion()
         {
-            grammar.buildNFA(); // make sure we have NFAs
+            grammar.BuildNFA(); // make sure we have NFAs
             grammar.leftRecursiveRules = new HashSet<Rule>();
             List<HashSet<Rule>> listOfRecursiveCycles = new List<HashSet<Rule>>();
             for ( int i = 0; i < grammar.composite.ruleIndexToRuleList.Count; i++ )
@@ -72,14 +72,14 @@ namespace Antlr3.Tool
                     visitedDuringRecursionCheck = new HashSet<Rule>();
                     visitedDuringRecursionCheck.Add( r );
                     HashSet<object> visitedStates = new HashSet<object>();
-                    traceStatesLookingForLeftRecursion( r.startState,
+                    TraceStatesLookingForLeftRecursion( r.startState,
                                                        visitedStates,
                                                        listOfRecursiveCycles );
                 }
             }
             if ( listOfRecursiveCycles.Count > 0 )
             {
-                ErrorManager.leftRecursionCycles( listOfRecursiveCycles );
+                ErrorManager.LeftRecursionCycles( listOfRecursiveCycles );
             }
             return listOfRecursiveCycles;
         }
@@ -94,7 +94,7 @@ namespace Antlr3.Tool
          *  filling the cycles in listOfRecursiveCycles and also, as a
          *  side-effect, set leftRecursiveRules.
          */
-        protected virtual bool traceStatesLookingForLeftRecursion( NFAState s,
+        protected virtual bool TraceStatesLookingForLeftRecursion( NFAState s,
                                                              HashSet<object> visitedStates,
                                                              IList<HashSet<Rule>> listOfRecursiveCycles )
         {
@@ -122,7 +122,7 @@ namespace Antlr3.Tool
                     // record left-recursive rule, but don't go back in
                     grammar.leftRecursiveRules.Add( refRuleDef );
                     //System.Console.Out.WriteLine( "already visited " + refRuleDef + ", calling from " + s.enclosingRule );
-                    addRulesToCycle( refRuleDef,
+                    AddRulesToCycle( refRuleDef,
                                     s.enclosingRule,
                                     listOfRecursiveCycles );
                 }
@@ -131,7 +131,7 @@ namespace Antlr3.Tool
                     // must visit if not already visited; send new visitedStates set
                     visitedDuringRecursionCheck.Add( refRuleDef );
                     bool callReachedAcceptState =
-                        traceStatesLookingForLeftRecursion( (NFAState)t0.target,
+                        TraceStatesLookingForLeftRecursion( (NFAState)t0.target,
                                                            new HashSet<object>(),
                                                            listOfRecursiveCycles );
                     // we're back from visiting that rule
@@ -142,7 +142,7 @@ namespace Antlr3.Tool
                         NFAState followingState =
                             ( (RuleClosureTransition)t0 ).followState;
                         stateReachesAcceptState |=
-                            traceStatesLookingForLeftRecursion( followingState,
+                            TraceStatesLookingForLeftRecursion( followingState,
                                                                visitedStates,
                                                                listOfRecursiveCycles );
                     }
@@ -151,7 +151,7 @@ namespace Antlr3.Tool
             else if ( t0.label.IsEpsilon || t0.label.IsSemanticPredicate )
             {
                 stateReachesAcceptState |=
-                    traceStatesLookingForLeftRecursion( (NFAState)t0.target, visitedStates, listOfRecursiveCycles );
+                    TraceStatesLookingForLeftRecursion( (NFAState)t0.target, visitedStates, listOfRecursiveCycles );
             }
             // else it has a labeled edge
 
@@ -160,7 +160,7 @@ namespace Antlr3.Tool
             if ( t1 != null )
             {
                 stateReachesAcceptState |=
-                    traceStatesLookingForLeftRecursion( (NFAState)t1.target,
+                    TraceStatesLookingForLeftRecursion( (NFAState)t1.target,
                                                        visitedStates,
                                                        listOfRecursiveCycles );
             }
@@ -173,7 +173,7 @@ namespace Antlr3.Tool
          *  cycle.  listOfRecursiveCycles is List<Set<String>> that holds a list
          *  of cycles (sets of rule names).
          */
-        protected virtual void addRulesToCycle( Rule targetRule,
+        protected virtual void AddRulesToCycle( Rule targetRule,
                                        Rule enclosingRule,
                                        IList<HashSet<Rule>> listOfRecursiveCycles )
         {
@@ -202,12 +202,12 @@ namespace Antlr3.Tool
             }
         }
 
-        public virtual void checkRuleReference( GrammarAST scopeAST,
+        public virtual void CheckRuleReference( GrammarAST scopeAST,
                                        GrammarAST refAST,
                                        GrammarAST argsAST,
                                        string currentRuleName )
         {
-            Rule r = grammar.getRule( refAST.Text );
+            Rule r = grammar.GetRule( refAST.Text );
             if ( refAST.Type == ANTLRParser.RULE_REF )
             {
                 if ( argsAST != null )
@@ -216,7 +216,7 @@ namespace Antlr3.Tool
                     if ( r != null && r.argActionAST == null )
                     {
                         // but rule def has no args
-                        ErrorManager.grammarError(
+                        ErrorManager.GrammarError(
                             ErrorManager.MSG_RULE_HAS_NO_ARGS,
                             grammar,
                             argsAST.Token,
@@ -229,7 +229,7 @@ namespace Antlr3.Tool
                     if ( r != null && r.argActionAST != null )
                     {
                         // but rule def has args
-                        ErrorManager.grammarError(
+                        ErrorManager.GrammarError(
                             ErrorManager.MSG_MISSING_RULE_ARGS,
                             grammar,
                             refAST.Token,
@@ -244,7 +244,7 @@ namespace Antlr3.Tool
                     if ( argsAST != null )
                     {
                         // args on a token ref not in a lexer rule
-                        ErrorManager.grammarError(
+                        ErrorManager.GrammarError(
                             ErrorManager.MSG_ARGS_ON_TOKEN_REF,
                             grammar,
                             refAST.Token,
@@ -258,7 +258,7 @@ namespace Antlr3.Tool
                     if ( r != null && r.argActionAST == null )
                     {
                         // but token rule def has no args
-                        ErrorManager.grammarError(
+                        ErrorManager.GrammarError(
                             ErrorManager.MSG_RULE_HAS_NO_ARGS,
                             grammar,
                             argsAST.Token,
@@ -271,7 +271,7 @@ namespace Antlr3.Tool
                     if ( r != null && r.argActionAST != null )
                     {
                         // but token rule def has args
-                        ErrorManager.grammarError(
+                        ErrorManager.GrammarError(
                             ErrorManager.MSG_MISSING_RULE_ARGS,
                             grammar,
                             refAST.Token,
@@ -291,16 +291,16 @@ namespace Antlr3.Tool
          *
          *  Ignore predicates in front and labels.
          */
-        public virtual void ensureAltIsSimpleNodeOrTree( GrammarAST altAST,
+        public virtual void EnsureAltIsSimpleNodeOrTree( GrammarAST altAST,
                                                 GrammarAST elementAST,
                                                 int outerAltNum )
         {
-            if ( isValidSimpleElementNode( elementAST ) )
+            if ( IsValidSimpleElementNode( elementAST ) )
             {
                 GrammarAST next = (GrammarAST)elementAST.getNextSibling();
-                if ( !isNextNonActionElementEOA( next ) )
+                if ( !IsNextNonActionElementEOA( next ) )
                 {
-                    ErrorManager.grammarWarning( ErrorManager.MSG_REWRITE_FOR_MULTI_ELEMENT_ALT,
+                    ErrorManager.GrammarWarning( ErrorManager.MSG_REWRITE_FOR_MULTI_ELEMENT_ALT,
                                                 grammar,
                                                 next.token,
                                                 outerAltNum );
@@ -311,7 +311,7 @@ namespace Antlr3.Tool
             {
             case ANTLRParser.ASSIGN:		// labels ok on non-rule refs
             case ANTLRParser.PLUS_ASSIGN:
-                if ( isValidSimpleElementNode( (GrammarAST)elementAST.GetChild( 1 ) ) )
+                if ( IsValidSimpleElementNode( (GrammarAST)elementAST.GetChild( 1 ) ) )
                 {
                     return;
                 }
@@ -321,18 +321,18 @@ namespace Antlr3.Tool
             case ANTLRParser.SYN_SEMPRED:
             case ANTLRParser.BACKTRACK_SEMPRED:
             case ANTLRParser.GATED_SEMPRED:
-                ensureAltIsSimpleNodeOrTree( altAST,
+                EnsureAltIsSimpleNodeOrTree( altAST,
                                             (GrammarAST)elementAST.getNextSibling(),
                                             outerAltNum );
                 return;
             }
-            ErrorManager.grammarWarning( ErrorManager.MSG_REWRITE_FOR_MULTI_ELEMENT_ALT,
+            ErrorManager.GrammarWarning( ErrorManager.MSG_REWRITE_FOR_MULTI_ELEMENT_ALT,
                                         grammar,
                                         elementAST.token,
                                         outerAltNum );
         }
 
-        protected virtual bool isValidSimpleElementNode( GrammarAST t )
+        protected virtual bool IsValidSimpleElementNode( GrammarAST t )
         {
             switch ( t.Type )
             {
@@ -347,7 +347,7 @@ namespace Antlr3.Tool
             }
         }
 
-        protected virtual bool isNextNonActionElementEOA( GrammarAST t )
+        protected virtual bool IsNextNonActionElementEOA( GrammarAST t )
         {
             while ( t.Type == ANTLRParser.ACTION ||
                     t.Type == ANTLRParser.SEMPRED )

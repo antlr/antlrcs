@@ -201,9 +201,9 @@ namespace Antlr3.Tool
                 this.elementRef = elementRef;
                 this.referencedRuleName = elementRef.Text;
             }
-            public Rule getReferencedRule()
+            public Rule GetReferencedRule()
             {
-                return _outer.getRule( referencedRuleName );
+                return _outer.GetRule( referencedRuleName );
             }
             public override string ToString()
             {
@@ -565,7 +565,7 @@ namespace Antlr3.Tool
             // ensure we have the composite set to something
             if ( composite.delegateGrammarTreeRoot == null )
             {
-                composite.setDelegationRoot( this );
+                composite.SetDelegationRoot( this );
             }
             else
             {
@@ -601,10 +601,10 @@ namespace Antlr3.Tool
             Tool = tool;
             FileName = "<string>";
             StringReader r = new StringReader( grammarString );
-            parseAndBuildAST( r );
-            composite.assignTokenTypes();
-            defineGrammarSymbols();
-            checkNameSpaceAndActions();
+            ParseAndBuildAST( r );
+            composite.AssignTokenTypes();
+            DefineGrammarSymbols();
+            CheckNameSpaceAndActions();
         }
 
         #region Properties
@@ -641,7 +641,7 @@ namespace Antlr3.Tool
         {
             get
             {
-                string outputType = (string)getOption( "output" );
+                string outputType = (string)GetOption( "output" );
                 if ( outputType != null )
                 {
                     return outputType.Equals( "AST" );
@@ -653,7 +653,7 @@ namespace Antlr3.Tool
         {
             get
             {
-                string outputType = (string)getOption( "output" );
+                string outputType = (string)GetOption( "output" );
                 if ( outputType != null )
                 {
                     return outputType.Equals( "template" );
@@ -666,6 +666,10 @@ namespace Antlr3.Tool
             get
             {
                 return generator;
+            }
+            set
+            {
+                generator = value;
             }
         }
         public string DefaultRuleModifier
@@ -683,14 +687,14 @@ namespace Antlr3.Tool
         {
             get
             {
-                return getDelegatedRuleReferences();
+                return GetDelegatedRuleReferences();
             }
         }
         public ICollection<Grammar> Delegates
         {
             get
             {
-                return getDelegates();
+                return GetDelegates();
             }
         }
         /** Who's my direct parent grammar? */
@@ -698,21 +702,21 @@ namespace Antlr3.Tool
         {
             get
             {
-                return composite.getDelegator( this );
+                return composite.GetDelegator( this );
             }
         }
         public ICollection<Grammar> Delegators
         {
             get
             {
-                return getDelegators();
+                return GetDelegators();
             }
         }
         public ICollection<Grammar> DirectDelegates
         {
             get
             {
-                return getDirectDelegates();
+                return GetDirectDelegates();
             }
         }
         public string FileName
@@ -753,7 +757,7 @@ namespace Antlr3.Tool
         {
             get
             {
-                return getIndirectDelegates();
+                return GetIndirectDelegates();
             }
         }
         public bool IsBuiltFromString
@@ -770,6 +774,17 @@ namespace Antlr3.Tool
                 return composite.delegateGrammarTreeRoot.grammar == this;
             }
         }
+
+        // this is used by the codegen templates
+        [System.Obsolete]
+        public bool GrammarIsRoot
+        {
+            get
+            {
+                return IsRoot;
+            }
+        }
+
         public IDictionary<string, DFA> LineColumnToLookaheadDFAMap
         {
             get
@@ -806,7 +821,7 @@ namespace Antlr3.Tool
         {
             get
             {
-                return getGrammarMaxLookahead();
+                return GetGrammarMaxLookahead();
             }
         }
         public int NumberOfDecisions
@@ -820,14 +835,14 @@ namespace Antlr3.Tool
         {
             get
             {
-                return getRecognizerName();
+                return GetRecognizerName();
             }
         }
         public bool RewriteMode
         {
             get
             {
-                string outputType = (string)getOption( "rewrite" );
+                string outputType = (string)GetOption( "rewrite" );
                 if ( outputType != null )
                 {
                     return outputType.Equals( "true" );
@@ -897,19 +912,7 @@ namespace Antlr3.Tool
         }
         #endregion
 
-        [System.Obsolete]
-        public virtual void setFileName( string fileName )
-        {
-            FileName = fileName;
-        }
-
-        [System.Obsolete]
-        public string getFileName()
-        {
-            return FileName;
-        }
-
-        public virtual void setName( string name )
+        public virtual void SetName( string name )
         {
             if ( name == null )
             {
@@ -934,7 +937,7 @@ namespace Antlr3.Tool
                 //String onlyFileNameNoSuffix = null;
                 if ( onlyFileNameNoSuffix == onlyFileName )
                 {
-                    ErrorManager.error( ErrorManager.MSG_FILENAME_EXTENSION_ERROR, fileName );
+                    ErrorManager.Error( ErrorManager.MSG_FILENAME_EXTENSION_ERROR, fileName );
                     onlyFileNameNoSuffix = onlyFileName + GRAMMAR_FILE_EXTENSION;
                 }
                 else
@@ -943,7 +946,7 @@ namespace Antlr3.Tool
                 }
                 if ( !name.Equals( onlyFileNameNoSuffix ) )
                 {
-                    ErrorManager.error( ErrorManager.MSG_FILE_AND_GRAMMAR_NAME_DIFFER,
+                    ErrorManager.Error( ErrorManager.MSG_FILE_AND_GRAMMAR_NAME_DIFFER,
                                        name,
                                        fileName );
                 }
@@ -951,19 +954,19 @@ namespace Antlr3.Tool
             this.name = name;
         }
 
-        public virtual void setGrammarContent( string grammarString )
+        public virtual void SetGrammarContent( string grammarString )
         {
             StringReader r = new StringReader( grammarString );
-            parseAndBuildAST( r );
-            composite.assignTokenTypes();
-            composite.defineGrammarSymbols();
+            ParseAndBuildAST( r );
+            composite.AssignTokenTypes();
+            composite.DefineGrammarSymbols();
         }
 
-        public virtual void parseAndBuildAST()
+        public virtual void ParseAndBuildAST()
         {
             using ( System.IO.TextReader reader = System.IO.File.OpenText( fileName ) )
             {
-                parseAndBuildAST( reader );
+                ParseAndBuildAST( reader );
             }
         }
 
@@ -1008,7 +1011,7 @@ namespace Antlr3.Tool
             #endregion
         }
 
-        public virtual void parseAndBuildAST( TextReader r )
+        public virtual void ParseAndBuildAST( TextReader r )
         {
             // BUILD AST FROM GRAMMAR
             ANTLRLexer lexer = new ANTLRLexer( new Antlr.Runtime.ANTLRReaderStream( r ) );
@@ -1037,23 +1040,23 @@ namespace Antlr3.Tool
             //}
             catch ( RecognitionException re )
             {
-                ErrorManager.internalError( "unexpected parser recognition error from " + fileName, re );
+                ErrorManager.InternalError( "unexpected parser recognition error from " + fileName, re );
             }
 
-            dealWithTreeFilterMode(); // tree grammar and filter=true?
+            DealWithTreeFilterMode(); // tree grammar and filter=true?
 
             if ( lexer.hasASTOperator && !BuildAST )
             {
-                object value = getOption( "output" );
+                object value = GetOption( "output" );
                 if ( value == null )
                 {
-                    ErrorManager.grammarWarning( ErrorManager.MSG_REWRITE_OR_OP_WITH_NO_OUTPUT_OPTION,
+                    ErrorManager.GrammarWarning( ErrorManager.MSG_REWRITE_OR_OP_WITH_NO_OUTPUT_OPTION,
                                                 this, null );
-                    setOption( "output", "AST", null );
+                    SetOption( "output", "AST", null );
                 }
                 else
                 {
-                    ErrorManager.grammarError( ErrorManager.MSG_AST_OP_WITH_NON_AST_OUTPUT_OPTION,
+                    ErrorManager.GrammarError( ErrorManager.MSG_AST_OP_WITH_NON_AST_OUTPUT_OPTION,
                                               this, null, value );
                 }
             }
@@ -1061,15 +1064,15 @@ namespace Antlr3.Tool
             //grammarTree = (GrammarAST)parser.getAST();
             grammarTree = (GrammarAST)result.tree;
             FileName = lexer.Filename; // the lexer #src might change name
-            if ( grammarTree == null || grammarTree.findFirstType( ANTLRParser.RULE ) == null )
+            if ( grammarTree == null || grammarTree.FindFirstType( ANTLRParser.RULE ) == null )
             {
-                ErrorManager.error( ErrorManager.MSG_NO_RULES, FileName );
+                ErrorManager.Error( ErrorManager.MSG_NO_RULES, FileName );
                 return;
             }
 
             // Get syn pred rules and add to existing tree
             IList<GrammarAST> synpredRules =
-                getArtificialRulesForSyntacticPredicates( parser,
+                GetArtificialRulesForSyntacticPredicates( parser,
                                                          nameToSynpredASTMap );
             for ( int i = 0; i < synpredRules.Count; i++ )
             {
@@ -1078,9 +1081,9 @@ namespace Antlr3.Tool
             }
         }
 
-        protected virtual void dealWithTreeFilterMode()
+        protected virtual void DealWithTreeFilterMode()
         {
-            object filterMode = (string)getOption( "filter" );
+            object filterMode = (string)GetOption( "filter" );
             if ( type == TREE_PARSER && filterMode != null && filterMode.ToString().Equals( "true" ) )
             {
                 // check for conflicting options
@@ -1088,37 +1091,37 @@ namespace Antlr3.Tool
                 // filter&&output=AST => rewrite=true
                 // filter&&output!=AST => error
                 // any deviation from valid option set is an error
-                object backtrack = (string)getOption( "backtrack" );
-                object output = getOption( "output" );
-                object rewrite = getOption( "rewrite" );
+                object backtrack = (string)GetOption( "backtrack" );
+                object output = GetOption( "output" );
+                object rewrite = GetOption( "rewrite" );
                 if ( backtrack != null && !backtrack.ToString().Equals( "true" ) )
                 {
-                    ErrorManager.error( ErrorManager.MSG_CONFLICTING_OPTION_IN_TREE_FILTER,
+                    ErrorManager.Error( ErrorManager.MSG_CONFLICTING_OPTION_IN_TREE_FILTER,
                                        "backtrack", backtrack );
                 }
                 if ( output != null && !output.ToString().Equals( "AST" ) )
                 {
-                    ErrorManager.error( ErrorManager.MSG_CONFLICTING_OPTION_IN_TREE_FILTER,
+                    ErrorManager.Error( ErrorManager.MSG_CONFLICTING_OPTION_IN_TREE_FILTER,
                                        "output", output );
-                    setOption( "output", "", null );
+                    SetOption( "output", "", null );
                 }
                 if ( rewrite != null && !rewrite.ToString().Equals( "true" ) )
                 {
-                    ErrorManager.error( ErrorManager.MSG_CONFLICTING_OPTION_IN_TREE_FILTER,
+                    ErrorManager.Error( ErrorManager.MSG_CONFLICTING_OPTION_IN_TREE_FILTER,
                                        "rewrite", rewrite );
                 }
                 // set options properly
-                setOption( "backtrack", "true", null );
+                SetOption( "backtrack", "true", null );
                 if ( output != null && output.ToString().Equals( "AST" ) )
                 {
-                    setOption( "rewrite", "true", null );
+                    SetOption( "rewrite", "true", null );
                 }
                 // @synpredgate set to state.backtracking==1 by code gen when filter=true
                 // superClass set in template target::treeParser
             }
         }
 
-        public virtual void defineGrammarSymbols()
+        public virtual void DefineGrammarSymbols()
         {
             if ( Tool.internalOption_PrintGrammarTree )
             {
@@ -1135,22 +1138,22 @@ namespace Antlr3.Tool
             }
             catch ( RecognitionException re )
             {
-                ErrorManager.error( ErrorManager.MSG_BAD_AST_STRUCTURE,
+                ErrorManager.Error( ErrorManager.MSG_BAD_AST_STRUCTURE,
                                    re );
             }
         }
 
         /** ANALYZE ACTIONS, LOOKING FOR LABEL AND ATTR REFS, sanity check */
-        public virtual void checkNameSpaceAndActions()
+        public virtual void CheckNameSpaceAndActions()
         {
-            examineAllExecutableActions();
-            checkAllRulesForUselessLabels();
+            ExamineAllExecutableActions();
+            CheckAllRulesForUselessLabels();
 
-            nameSpaceChecker.checkConflicts();
+            nameSpaceChecker.CheckConflicts();
         }
 
         /** Many imports are illegal such as lexer into a tree grammar */
-        public virtual bool validImport( Grammar @delegate )
+        public virtual bool ValidImport( Grammar @delegate )
         {
             IList<int> validDelegators = validDelegations.get( @delegate.type );
             return validDelegators != null && validDelegators.Contains( this.type );
@@ -1159,7 +1162,7 @@ namespace Antlr3.Tool
         /** If the grammar is a combined grammar, return the text of the implicit
          *  lexer grammar.
          */
-        public virtual string getLexerGrammar()
+        public virtual string GetLexerGrammar()
         {
             if ( LexerGrammarST.GetAttribute( "literals" ) == null &&
                  LexerGrammarST.GetAttribute( "rules" ) == null )
@@ -1192,21 +1195,15 @@ namespace Antlr3.Tool
             return LexerGrammarST.ToString();
         }
 
-        [System.Obsolete]
-        public string getImplicitlyGeneratedLexerFileName()
-        {
-            return ImplicitlyGeneratedLexerFileName;
-        }
-
         /** Get the name of the generated recognizer; may or may not be same
          *  as grammar name.
          *  Recognizer is TParser and TLexer from T if combined, else
          *  just use T regardless of grammar type.
          */
-        public virtual string getRecognizerName()
+        public virtual string GetRecognizerName()
         {
             string suffix = "";
-            IList<Grammar> grammarsFromRootToMe = composite.getDelegators( this );
+            IList<Grammar> grammarsFromRootToMe = composite.GetDelegators( this );
             //JSystem.@out.println("grammarsFromRootToMe="+grammarsFromRootToMe);
             string qualifiedName = name;
             if ( grammarsFromRootToMe != null )
@@ -1243,7 +1240,7 @@ namespace Antlr3.Tool
          *  and builds a string representing the rule; then it creates a parser
          *  and adds the resulting tree to the grammar's tree.
          */
-        public GrammarAST addArtificialMatchTokensRule( GrammarAST grammarAST,
+        public GrammarAST AddArtificialMatchTokensRule( GrammarAST grammarAST,
                                                        IList<string> ruleNames,
                                                        IList<string> delegateNames,
                                                        bool filterMode )
@@ -1309,7 +1306,7 @@ namespace Antlr3.Tool
             }
             catch ( Exception e )
             {
-                ErrorManager.error( ErrorManager.MSG_ERROR_CREATING_ARTIFICIAL_RULE,
+                ErrorManager.Error( ErrorManager.MSG_ERROR_CREATING_ARTIFICIAL_RULE,
                                    e );
             }
             return (GrammarAST)result.Tree;
@@ -1318,7 +1315,7 @@ namespace Antlr3.Tool
         /** for any syntactic predicates, we need to define rules for them; they will get
          *  defined automatically like any other rule. :)
          */
-        protected virtual IList<GrammarAST> getArtificialRulesForSyntacticPredicates( ANTLRParser parser,
+        protected virtual IList<GrammarAST> GetArtificialRulesForSyntacticPredicates( ANTLRParser parser,
                                                                 IDictionary<string, GrammarAST> nameToSynpredASTMap )
         {
             IList<GrammarAST> rules = new List<GrammarAST>();
@@ -1332,7 +1329,7 @@ namespace Antlr3.Tool
                 string synpredName = synpred.Key;
                 GrammarAST fragmentAST = (GrammarAST)synpred.Value;
                 GrammarAST ruleAST =
-                    parser.createSimpleRuleAST( synpredName,
+                    parser.CreateSimpleRuleAST( synpredName,
                                                fragmentAST,
                                                isLexer );
                 rules.Add( ruleAST );
@@ -1344,7 +1341,7 @@ namespace Antlr3.Tool
         /** Walk the list of options, altering this Grammar object according
          *  to any I recognize.
          */
-        protected virtual void processOptions()
+        protected virtual void ProcessOptions()
         {
             foreach ( var option in options )
             {
@@ -1366,7 +1363,7 @@ namespace Antlr3.Tool
          *  just call buildNFA(), which forces a call to this method if not
          *  done already. Works ONLY for single noncomposite grammars.
          */
-        public virtual void createRuleStartAndStopNFAStates()
+        public virtual void CreateRuleStartAndStopNFAStates()
         {
             //JSystem.@out.println("### createRuleStartAndStopNFAStates "+getGrammarTypeString()+" grammar "+name+" NFAs");
             if ( nfa != null )
@@ -1379,11 +1376,11 @@ namespace Antlr3.Tool
             foreach ( Rule r in Rules )
             {
                 string ruleName = r.name;
-                NFAState ruleBeginState = factory.newState();
+                NFAState ruleBeginState = factory.NewState();
                 ruleBeginState.Description = "rule " + ruleName + " start";
                 ruleBeginState.enclosingRule = r;
                 r.startState = ruleBeginState;
-                NFAState ruleEndState = factory.newState();
+                NFAState ruleEndState = factory.NewState();
                 ruleEndState.Description = "rule " + ruleName + " end";
                 ruleEndState.IsAcceptState = true;
                 ruleEndState.enclosingRule = r;
@@ -1391,11 +1388,11 @@ namespace Antlr3.Tool
             }
         }
 
-        public virtual void buildNFA()
+        public virtual void BuildNFA()
         {
             if ( nfa == null )
             {
-                createRuleStartAndStopNFAStates();
+                CreateRuleStartAndStopNFAStates();
             }
             if ( nfa.complete )
             {
@@ -1416,7 +1413,7 @@ namespace Antlr3.Tool
             }
             catch ( RecognitionException re )
             {
-                ErrorManager.error( ErrorManager.MSG_BAD_AST_STRUCTURE,
+                ErrorManager.Error( ErrorManager.MSG_BAD_AST_STRUCTURE,
                                    name,
                                    re );
             }
@@ -1434,20 +1431,20 @@ namespace Antlr3.Tool
          *  This is a separate method because you might want to create a
          *  Grammar without doing the expensive analysis.
          */
-        public virtual void createLookaheadDFAs()
+        public virtual void CreateLookaheadDFAs()
         {
-            createLookaheadDFAs( true );
+            CreateLookaheadDFAs( true );
         }
 
-        public virtual void createLookaheadDFAs( bool wackTempStructures )
+        public virtual void CreateLookaheadDFAs( bool wackTempStructures )
         {
             if ( nfa == null )
             {
-                buildNFA();
+                BuildNFA();
             }
 
             // CHECK FOR LEFT RECURSION; Make sure we can actually do analysis
-            checkAllRulesForLeftRecursion();
+            CheckAllRulesForLeftRecursion();
 
             /*
             // was there a severe problem while sniffing the grammar?
@@ -1464,7 +1461,7 @@ namespace Antlr3.Tool
             {
                 for ( int decision = 1; decision <= numDecisions; decision++ )
                 {
-                    NFAState decisionStartState = getDecisionNFAStartState( decision );
+                    NFAState decisionStartState = GetDecisionNFAStartState( decision );
                     if ( leftRecursiveRules.Contains( decisionStartState.enclosingRule ) )
                     {
                         // don't bother to process decisions within left recursive rules.
@@ -1484,10 +1481,10 @@ namespace Antlr3.Tool
                         }
                         DFA dfa = null;
                         // if k=* or k=1, try LL(1)
-                        if ( getUserMaxLookahead( decision ) == 0 ||
-                             getUserMaxLookahead( decision ) == 1 )
+                        if ( GetUserMaxLookahead( decision ) == 0 ||
+                             GetUserMaxLookahead( decision ) == 1 )
                         {
-                            dfa = createLL_1_LookaheadDFA( decision );
+                            dfa = CreateLL_1_LookaheadDFA( decision );
                         }
                         if ( dfa == null )
                         {
@@ -1496,18 +1493,18 @@ namespace Antlr3.Tool
                                 Console.Out.WriteLine( "decision " + decision +
                                                    " not suitable for LL(1)-optimized DFA analysis" );
                             }
-                            dfa = createLookaheadDFA( decision, wackTempStructures );
+                            dfa = CreateLookaheadDFA( decision, wackTempStructures );
                         }
                         if ( dfa.startState == null )
                         {
                             // something went wrong; wipe out DFA
-                            setLookaheadDFA( decision, null );
+                            SetLookaheadDFA( decision, null );
                         }
                         if ( Tool.internalOption_PrintDFA )
                         {
                             Console.Out.WriteLine( "DFA d=" + decision );
                             FASerializer serializer = new FASerializer( nfa.grammar );
-                            string result = serializer.serialize( dfa.startState );
+                            string result = serializer.Serialize( dfa.startState );
                             Console.Out.WriteLine( result );
                         }
                     }
@@ -1515,7 +1512,7 @@ namespace Antlr3.Tool
             }
             else
             {
-                ErrorManager.info( "two-threaded DFA conversion" );
+                ErrorManager.Info( "two-threaded DFA conversion" );
                 // create a barrier expecting n DFA and this main creation thread
                 Barrier barrier = new Barrier( 3 );
                 // assume 2 CPU for now
@@ -1554,12 +1551,12 @@ namespace Antlr3.Tool
             allDecisionDFACreated = true;
         }
 
-        public virtual DFA createLL_1_LookaheadDFA( int decision )
+        public virtual DFA CreateLL_1_LookaheadDFA( int decision )
         {
-            Decision d = getDecision( decision );
+            Decision d = GetDecision( decision );
             string enclosingRule = d.startState.enclosingRule.name;
             Rule r = d.startState.enclosingRule;
-            NFAState decisionStartState = getDecisionNFAStartState( decision );
+            NFAState decisionStartState = GetDecisionNFAStartState( decision );
 
             if ( composite.watchNFAConversion )
             {
@@ -1574,13 +1571,13 @@ namespace Antlr3.Tool
             }
 
             // compute lookahead for each alt
-            int numAlts = getNumberOfAltsForDecisionNFA( decisionStartState );
+            int numAlts = GetNumberOfAltsForDecisionNFA( decisionStartState );
             LookaheadSet[] altLook = new LookaheadSet[numAlts + 1];
             for ( int alt = 1; alt <= numAlts; alt++ )
             {
                 int walkAlt =
                     decisionStartState.TranslateDisplayAltToWalkAlt( alt );
-                NFAState altLeftEdge = getNFAStateForAltOfDecision( decisionStartState, walkAlt );
+                NFAState altLeftEdge = GetNFAStateForAltOfDecision( decisionStartState, walkAlt );
                 NFAState altStartState = (NFAState)altLeftEdge.transition[0].target;
                 //JSystem.@out.println("alt "+alt+" start state = "+altStartState.stateNumber);
                 altLook[alt] = ll1Analyzer.Look( altStartState );
@@ -1619,8 +1616,8 @@ namespace Antlr3.Tool
                     Console.Out.WriteLine( "decision " + decision + " is simple LL(1)" );
                 }
                 DFA lookaheadDFA2 = new LL1DFA( decision, decisionStartState, altLook );
-                setLookaheadDFA( decision, lookaheadDFA2 );
-                updateLineColumnToLookaheadDFAMap( lookaheadDFA2 );
+                SetLookaheadDFA( decision, lookaheadDFA2 );
+                UpdateLineColumnToLookaheadDFAMap( lookaheadDFA2 );
                 return lookaheadDFA2;
             }
 
@@ -1637,8 +1634,8 @@ namespace Antlr3.Tool
 
             // exit if not forced k=1 or we found a predicate situation we
             // can't handle: predicates in rules invoked from this decision.
-            if ( getUserMaxLookahead( decision ) != 1 || // not manually set to k=1
-                 !getAutoBacktrackMode( decision ) ||
+            if ( GetUserMaxLookahead( decision ) != 1 || // not manually set to k=1
+                 !GetAutoBacktrackMode( decision ) ||
                  foundConfoundingPredicate )
             {
                 //JSystem.@out.println("trying LL(*)");
@@ -1651,7 +1648,7 @@ namespace Antlr3.Tool
                 LookaheadSet s = altLook[i];
                 edges.Add( (IntervalSet)s.tokenTypeSet );
             }
-            IList<IIntSet> disjoint = makeEdgeSetsDisjoint( edges );
+            IList<IIntSet> disjoint = MakeEdgeSetsDisjoint( edges );
             //JSystem.@out.println("disjoint="+disjoint);
 
             MultiMap<IntervalSet, int> edgeMap = new MultiMap<IntervalSet, int>();
@@ -1673,23 +1670,23 @@ namespace Antlr3.Tool
 
             // build an LL(1) optimized DFA with edge for each altLook[i]
             DFA lookaheadDFA = new LL1DFA( decision, decisionStartState, edgeMap );
-            setLookaheadDFA( decision, lookaheadDFA );
+            SetLookaheadDFA( decision, lookaheadDFA );
 
             // create map from line:col to decision DFA (for ANTLRWorks)
-            updateLineColumnToLookaheadDFAMap( lookaheadDFA );
+            UpdateLineColumnToLookaheadDFAMap( lookaheadDFA );
 
             return lookaheadDFA;
         }
 
-        private void updateLineColumnToLookaheadDFAMap( DFA lookaheadDFA )
+        private void UpdateLineColumnToLookaheadDFAMap( DFA lookaheadDFA )
         {
-            GrammarAST decisionAST = nfa.grammar.getDecisionBlockAST( lookaheadDFA.decisionNumber );
+            GrammarAST decisionAST = nfa.grammar.GetDecisionBlockAST( lookaheadDFA.decisionNumber );
             int line = decisionAST.Line;
             int col = decisionAST.CharPositionInLine;
             lineColumnToLookaheadDFAMap[line + ":" + col] = lookaheadDFA;
         }
 
-        protected virtual IList<IIntSet> makeEdgeSetsDisjoint( IList<IIntSet> edges )
+        protected virtual IList<IIntSet> MakeEdgeSetsDisjoint( IList<IIntSet> edges )
         {
             OrderedHashSet<IIntSet> disjointSets = new OrderedHashSet<IIntSet>();
             // walk each incoming edge label/set and add to disjoint set
@@ -1750,14 +1747,14 @@ namespace Antlr3.Tool
             return disjointSets.GetElements();
         }
 
-        public virtual DFA createLookaheadDFA( int decision, bool wackTempStructures )
+        public virtual DFA CreateLookaheadDFA( int decision, bool wackTempStructures )
         {
-            Decision d = getDecision( decision );
+            Decision d = GetDecision( decision );
             string enclosingRule = d.startState.enclosingRule.name;
             Rule r = d.startState.enclosingRule;
 
             //JSystem.@out.println("createLookaheadDFA(): "+enclosingRule+" dec "+decision+"; synprednames prev used "+synPredNamesUsedInDFA);
-            NFAState decisionStartState = getDecisionNFAStartState( decision );
+            NFAState decisionStartState = GetDecisionNFAStartState( decision );
             DateTime startDFA = DateTime.MinValue;
             DateTime stopDFA = DateTime.MinValue;
             if ( composite.watchNFAConversion )
@@ -1781,7 +1778,7 @@ namespace Antlr3.Tool
                 // First, clean up tracking stuff
                 decisionsWhoseDFAsUsesSynPreds.Remove( lookaheadDFA );
                 // TODO: clean up synPredNamesUsedInDFA also (harder)
-                d.blockAST.setBlockOption( this, "k", 1 );
+                d.blockAST.SetBlockOption( this, "k", 1 );
                 if ( composite.watchNFAConversion )
                 {
                     Console.Out.Write( "trying decision " + decision +
@@ -1793,13 +1790,13 @@ namespace Antlr3.Tool
             }
             if ( lookaheadDFA.AnalysisTimedOut )
             { // did analysis bug out?
-                ErrorManager.internalError( "could not even do k=1 for decision " +
+                ErrorManager.InternalError( "could not even do k=1 for decision " +
                                            decision + "; reason: " +
                                            lookaheadDFA.ReasonForFailure );
             }
 
 
-            setLookaheadDFA( decision, lookaheadDFA );
+            SetLookaheadDFA( decision, lookaheadDFA );
 
             if ( wackTempStructures )
             {
@@ -1810,7 +1807,7 @@ namespace Antlr3.Tool
             }
 
             // create map from line:col to decision DFA (for ANTLRWorks)
-            updateLineColumnToLookaheadDFAMap( lookaheadDFA );
+            UpdateLineColumnToLookaheadDFAMap( lookaheadDFA );
 
             if ( composite.watchNFAConversion )
             {
@@ -1824,7 +1821,7 @@ namespace Antlr3.Tool
 
         /** Terminate DFA creation (grammar analysis).
          */
-        public virtual void externallyAbortNFAToDFAConversion()
+        public virtual void ExternallyAbortNFAToDFAConversion()
         {
             externalAnalysisAbort = true;
         }
@@ -1835,7 +1832,7 @@ namespace Antlr3.Tool
         }
 
         /** Return a new unique integer in the token type space */
-        public virtual int getNewTokenType()
+        public virtual int GetNewTokenType()
         {
             composite.maxTokenType++;
             return composite.maxTokenType;
@@ -1845,7 +1842,7 @@ namespace Antlr3.Tool
          *  old value with a new one.  This is called normal grammar processsing
          *  and during import vocab operations to set tokens with specific values.
          */
-        public virtual void defineToken( string text, int tokenType )
+        public virtual void DefineToken( string text, int tokenType )
         {
             //JSystem.@out.println("defineToken("+text+", "+tokenType+")");
             if ( composite.tokenIDToTypeMap.ContainsKey( text ) && composite.tokenIDToTypeMap[text] < TokenConstants.MinTokenType )
@@ -1888,7 +1885,7 @@ namespace Antlr3.Tool
         /** Define a new rule.  A new rule index is created by incrementing
          *  ruleIndex.
          */
-        public virtual void defineRule( IToken ruleToken,
+        public virtual void DefineRule( IToken ruleToken,
                                string modifier,
                                IDictionary<string,object> options,
                                GrammarAST tree,
@@ -1896,9 +1893,9 @@ namespace Antlr3.Tool
                                int numAlts )
         {
             string ruleName = ruleToken.Text;
-            if ( getLocallyDefinedRule( ruleName ) != null )
+            if ( GetLocallyDefinedRule( ruleName ) != null )
             {
-                ErrorManager.grammarError( ErrorManager.MSG_RULE_REDEFINITION,
+                ErrorManager.GrammarError( ErrorManager.MSG_RULE_REDEFINITION,
                                           this, ruleToken, ruleName );
                 return;
             }
@@ -1906,7 +1903,7 @@ namespace Antlr3.Tool
             if ( ( type == Grammar.PARSER || type == Grammar.TREE_PARSER ) &&
                  char.IsUpper( ruleName[0] ) )
             {
-                ErrorManager.grammarError( ErrorManager.MSG_LEXER_RULES_NOT_ALLOWED,
+                ErrorManager.GrammarError( ErrorManager.MSG_LEXER_RULES_NOT_ALLOWED,
                                           this, ruleToken, ruleName );
                 return;
             }
@@ -1918,8 +1915,8 @@ namespace Antlr3.Tool
             */
             r.modifier = modifier ?? DefaultRuleModifier;
             nameToRuleMap[ruleName] = r;
-            setRuleAST( ruleName, tree );
-            r.setOptions( options, ruleToken );
+            SetRuleAST( ruleName, tree );
+            r.SetOptions( options, ruleToken );
             r.argActionAST = argActionAST;
             composite.ruleIndexToRuleList.setSize( composite.ruleIndex + 1 );
             composite.ruleIndexToRuleList[composite.ruleIndex] = r;
@@ -1933,7 +1930,7 @@ namespace Antlr3.Tool
         /** Define a new predicate and get back its name for use in building
          *  a semantic predicate reference to the syn pred.
          */
-        public virtual string defineSyntacticPredicate( GrammarAST blockAST,
+        public virtual string DefineSyntacticPredicate( GrammarAST blockAST,
                                                string currentRuleName )
         {
             if ( nameToSynpredASTMap == null )
@@ -1942,18 +1939,12 @@ namespace Antlr3.Tool
             }
             string predName =
                 SYNPRED_RULE_PREFIX + ( nameToSynpredASTMap.Count + 1 ) + "_" + name;
-            blockAST.setTreeEnclosingRuleNameDeeply( predName );
+            blockAST.SetTreeEnclosingRuleNameDeeply( predName );
             nameToSynpredASTMap[predName] = blockAST;
             return predName;
         }
 
-        [System.Obsolete]
-        public IDictionary<string, GrammarAST> getSyntacticPredicates()
-        {
-            return SyntacticPredicates;
-        }
-
-        public virtual GrammarAST getSyntacticPredicate( string name )
+        public virtual GrammarAST GetSyntacticPredicate( string name )
         {
             if ( nameToSynpredASTMap == null )
             {
@@ -1967,31 +1958,24 @@ namespace Antlr3.Tool
             return null;
         }
 
-        public virtual void synPredUsedInDFA( DFA dfa, SemanticContext semCtx )
+        public virtual void SynPredUsedInDFA( DFA dfa, SemanticContext semCtx )
         {
             decisionsWhoseDFAsUsesSynPreds.Add( dfa );
             semCtx.TrackUseOfSyntacticPredicates( this ); // walk ctx looking for preds
         }
 
-#if false
-        public HashSet<Rule> getRuleNamesVisitedDuringLOOK()
-        {
-            return rulesSensitiveToOtherRules;
-        }
-#endif
-
         /** Given @scope::name {action} define it for this grammar.  Later,
          *  the code generator will ask for the actions table.  For composite
          *  grammars, make sure header action propogates down to all delegates.
          */
-        public virtual void defineNamedAction( GrammarAST ampersandAST,
+        public virtual void DefineNamedAction( GrammarAST ampersandAST,
                                       string scope,
                                       GrammarAST nameAST,
                                       GrammarAST actionAST )
         {
             if ( scope == null )
             {
-                scope = getDefaultActionScope( type );
+                scope = GetDefaultActionScope( type );
             }
             //JSystem.@out.println("@"+scope+"::"+nameAST.getText()+"{"+actionAST.getText()+"}");
             string actionName = nameAST.Text;
@@ -2004,7 +1988,7 @@ namespace Antlr3.Tool
             GrammarAST a = (GrammarAST)scopeActions.get( actionName );
             if ( a != null )
             {
-                ErrorManager.grammarError(
+                ErrorManager.GrammarError(
                     ErrorManager.MSG_ACTION_REDEFINITION, this,
                     nameAST.Token, nameAST.Text );
             }
@@ -2015,23 +1999,17 @@ namespace Antlr3.Tool
             // propogate header (regardless of scope (lexer, parser, ...) ?
             if ( this == composite.RootGrammar && actionName.Equals( "header" ) )
             {
-                IList<Grammar> allgrammars = composite.RootGrammar.getDelegates();
+                IList<Grammar> allgrammars = composite.RootGrammar.GetDelegates();
                 foreach ( Grammar g in allgrammars )
                 {
-                    g.defineNamedAction( ampersandAST, scope, nameAST, actionAST );
+                    g.DefineNamedAction( ampersandAST, scope, nameAST, actionAST );
                 }
             }
         }
 
-        [System.Obsolete]
-        public IDictionary<string, IDictionary<string, object>> getActions()
+        public virtual void SetSynPredGateIfNotAlready( StringTemplate gateST )
         {
-            return Actions;
-        }
-
-        public virtual void setSynPredGateIfNotAlready( StringTemplate gateST )
-        {
-            string scope = getDefaultActionScope( type );
+            string scope = GetDefaultActionScope( type );
             var actionsForGrammarScope = actions.get( scope );
             // if no synpredgate action set by user then set
             if ( actionsForGrammarScope == null || !actionsForGrammarScope.ContainsKey( Grammar.SYNPREDGATE_ACTION_NAME ) )
@@ -2049,7 +2027,7 @@ namespace Antlr3.Tool
          *  If I say @members in a COMBINED grammar, for example, the
          *  default scope should be "parser".
          */
-        public virtual string getDefaultActionScope( int grammarType )
+        public virtual string GetDefaultActionScope( int grammarType )
         {
             switch ( grammarType )
             {
@@ -2064,7 +2042,7 @@ namespace Antlr3.Tool
             return null;
         }
 
-        public virtual void defineLexerRuleFoundInParser( IToken ruleToken,
+        public virtual void DefineLexerRuleFoundInParser( IToken ruleToken,
                                                  GrammarAST ruleAST )
         {
             //JSystem.@out.println("rule tree is:\n"+ruleAST.toStringTree());
@@ -2129,7 +2107,7 @@ namespace Antlr3.Tool
         /** If someone does PLUS='+' in the parser, must make sure we get
          *  "PLUS : '+' ;" in lexer not "T73 : '+';"
          */
-        public virtual void defineLexerRuleForAliasedStringLiteral( string tokenID,
+        public virtual void DefineLexerRuleForAliasedStringLiteral( string tokenID,
                                                            string literal,
                                                            int tokenType )
         {
@@ -2145,12 +2123,12 @@ namespace Antlr3.Tool
             composite.lexerRules.Add( tokenID );
         }
 
-        public virtual void defineLexerRuleForStringLiteral( string literal, int tokenType )
+        public virtual void DefineLexerRuleForStringLiteral( string literal, int tokenType )
         {
             //JSystem.@out.println("defineLexerRuleForStringLiteral: "+literal+" "+tokenType);
             // compute new token name like T237 and define it as having tokenType
-            string tokenID = computeTokenNameFromLiteral( tokenType, literal );
-            defineToken( tokenID, tokenType );
+            string tokenID = ComputeTokenNameFromLiteral( tokenType, literal );
+            DefineToken( tokenID, tokenType );
             // tell implicit lexer to define a rule to match the literal
             if ( IsRoot )
             { // don't build lexers for delegates
@@ -2161,7 +2139,7 @@ namespace Antlr3.Tool
             }
         }
 
-        public virtual Rule getLocallyDefinedRule( string ruleName )
+        public virtual Rule GetLocallyDefinedRule( string ruleName )
         {
             Rule r;
             if ( nameToRuleMap.TryGetValue( ruleName ?? string.Empty, out r ) )
@@ -2170,9 +2148,9 @@ namespace Antlr3.Tool
             return null;
         }
 
-        public virtual Rule getRule( string ruleName )
+        public virtual Rule GetRule( string ruleName )
         {
-            Rule r = composite.getRule( ruleName );
+            Rule r = composite.GetRule( ruleName );
             /*
             if ( r!=null && r.grammar != this ) {
                 JSystem.@out.println(name+".getRule("+ruleName+")="+r);
@@ -2181,23 +2159,23 @@ namespace Antlr3.Tool
             return r;
         }
 
-        public virtual Rule getRule( string scopeName, string ruleName )
+        public virtual Rule GetRule( string scopeName, string ruleName )
         {
             if ( scopeName != null )
             { // scope override
-                Grammar scope = composite.getGrammar( scopeName );
+                Grammar scope = composite.GetGrammar( scopeName );
                 if ( scope == null )
                 {
                     return null;
                 }
-                return scope.getLocallyDefinedRule( ruleName );
+                return scope.GetLocallyDefinedRule( ruleName );
             }
-            return getRule( ruleName );
+            return GetRule( ruleName );
         }
 
-        public virtual int getRuleIndex( string scopeName, string ruleName )
+        public virtual int GetRuleIndex( string scopeName, string ruleName )
         {
-            Rule r = getRule( scopeName, ruleName );
+            Rule r = GetRule( scopeName, ruleName );
             if ( r != null )
             {
                 return r.index;
@@ -2205,12 +2183,12 @@ namespace Antlr3.Tool
             return INVALID_RULE_INDEX;
         }
 
-        public virtual int getRuleIndex( string ruleName )
+        public virtual int GetRuleIndex( string ruleName )
         {
-            return getRuleIndex( null, ruleName );
+            return GetRuleIndex( null, ruleName );
         }
 
-        public virtual string getRuleName( int ruleIndex )
+        public virtual string GetRuleName( int ruleIndex )
         {
             Rule r = composite.ruleIndexToRuleList[ruleIndex];
             if ( r != null )
@@ -2225,7 +2203,7 @@ namespace Antlr3.Tool
          *  If regular rule, only gen if not overridden in delegator
          *  Always gen Tokens rule though.
          */
-        public virtual bool generateMethodForRule( string ruleName )
+        public virtual bool GenerateMethodForRule( string ruleName )
         {
             if ( ruleName.Equals( ARTIFICIAL_TOKENS_RULENAME ) )
             {
@@ -2239,33 +2217,33 @@ namespace Antlr3.Tool
                 return false;
             }
             // generate if non-synpred or synpred used in a DFA
-            Rule r = getLocallyDefinedRule( ruleName );
+            Rule r = GetLocallyDefinedRule( ruleName );
             return !r.isSynPred ||
                    ( r.isSynPred && synPredNamesUsedInDFA.Contains( ruleName ) );
         }
 
-        public virtual AttributeScope defineGlobalScope( string name, IToken scopeAction )
+        public virtual AttributeScope DefineGlobalScope( string name, IToken scopeAction )
         {
             AttributeScope scope = new AttributeScope( this, name, scopeAction );
             scopes[name] = scope;
             return scope;
         }
 
-        public virtual AttributeScope createReturnScope( string ruleName, IToken retAction )
+        public virtual AttributeScope CreateReturnScope( string ruleName, IToken retAction )
         {
             AttributeScope scope = new AttributeScope( this, ruleName, retAction );
             scope.isReturnScope = true;
             return scope;
         }
 
-        public virtual AttributeScope createRuleScope( string ruleName, IToken scopeAction )
+        public virtual AttributeScope CreateRuleScope( string ruleName, IToken scopeAction )
         {
             AttributeScope scope = new AttributeScope( this, ruleName, scopeAction );
             scope.isDynamicRuleScope = true;
             return scope;
         }
 
-        public virtual AttributeScope createParameterScope( string ruleName, IToken argAction )
+        public virtual AttributeScope CreateParameterScope( string ruleName, IToken argAction )
         {
             AttributeScope scope = new AttributeScope( this, ruleName, argAction );
             scope.isParameterScope = true;
@@ -2273,35 +2251,29 @@ namespace Antlr3.Tool
         }
 
         /** Get a global scope */
-        public virtual AttributeScope getGlobalScope( string name )
+        public virtual AttributeScope GetGlobalScope( string name )
         {
             return (AttributeScope)scopes.get( name );
-        }
-
-        [System.Obsolete]
-        public IDictionary<string, AttributeScope> getGlobalScopes()
-        {
-            return GlobalScopes;
         }
 
         /** Define a label defined in a rule r; check the validity then ask the
          *  Rule object to actually define it.
          */
-        protected virtual void defineLabel( Rule r, IToken label, GrammarAST element, int type )
+        protected virtual void DefineLabel( Rule r, IToken label, GrammarAST element, int type )
         {
-            bool err = nameSpaceChecker.checkForLabelTypeMismatch( r, label, type );
+            bool err = nameSpaceChecker.CheckForLabelTypeMismatch( r, label, type );
             if ( err )
             {
                 return;
             }
-            r.defineLabel( label, element, type );
+            r.DefineLabel( label, element, type );
         }
 
-        public virtual void defineTokenRefLabel( string ruleName,
+        public virtual void DefineTokenRefLabel( string ruleName,
                                         IToken label,
                                         GrammarAST tokenRef )
         {
-            Rule r = getLocallyDefinedRule( ruleName );
+            Rule r = GetLocallyDefinedRule( ruleName );
             if ( r != null )
             {
                 if ( type == LEXER &&
@@ -2311,69 +2283,69 @@ namespace Antlr3.Tool
                       tokenRef.Type == ANTLRParser.CHAR_RANGE ||
                       tokenRef.Type == ANTLRParser.WILDCARD ) )
                 {
-                    defineLabel( r, label, tokenRef, CHAR_LABEL );
+                    DefineLabel( r, label, tokenRef, CHAR_LABEL );
                 }
                 else
                 {
-                    defineLabel( r, label, tokenRef, TOKEN_LABEL );
+                    DefineLabel( r, label, tokenRef, TOKEN_LABEL );
                 }
             }
         }
 
-        public virtual void defineWildcardTreeLabel( string ruleName,
+        public virtual void DefineWildcardTreeLabel( string ruleName,
                                                IToken label,
                                                GrammarAST tokenRef )
         {
-            Rule r = getLocallyDefinedRule( ruleName );
+            Rule r = GetLocallyDefinedRule( ruleName );
             if ( r != null )
             {
-                defineLabel( r, label, tokenRef, WILDCARD_TREE_LABEL );
+                DefineLabel( r, label, tokenRef, WILDCARD_TREE_LABEL );
             }
         }
 
-        public virtual void defineWildcardTreeListLabel( string ruleName, IToken label, GrammarAST tokenRef )
+        public virtual void DefineWildcardTreeListLabel( string ruleName, IToken label, GrammarAST tokenRef )
         {
-            Rule r = getLocallyDefinedRule( ruleName );
+            Rule r = GetLocallyDefinedRule( ruleName );
             if ( r != null )
-                defineLabel( r, label, tokenRef, WILDCARD_TREE_LIST_LABEL );
+                DefineLabel( r, label, tokenRef, WILDCARD_TREE_LIST_LABEL );
         }
 
-        public virtual void defineRuleRefLabel( string ruleName,
+        public virtual void DefineRuleRefLabel( string ruleName,
                                        IToken label,
                                        GrammarAST ruleRef )
         {
-            Rule r = getLocallyDefinedRule( ruleName );
+            Rule r = GetLocallyDefinedRule( ruleName );
             if ( r != null )
             {
-                defineLabel( r, label, ruleRef, RULE_LABEL );
+                DefineLabel( r, label, ruleRef, RULE_LABEL );
             }
         }
 
-        public virtual void defineTokenListLabel( string ruleName,
+        public virtual void DefineTokenListLabel( string ruleName,
                                          IToken label,
                                          GrammarAST element )
         {
-            Rule r = getLocallyDefinedRule( ruleName );
+            Rule r = GetLocallyDefinedRule( ruleName );
             if ( r != null )
             {
-                defineLabel( r, label, element, TOKEN_LIST_LABEL );
+                DefineLabel( r, label, element, TOKEN_LIST_LABEL );
             }
         }
 
-        public virtual void defineRuleListLabel( string ruleName,
+        public virtual void DefineRuleListLabel( string ruleName,
                                         IToken label,
                                         GrammarAST element )
         {
-            Rule r = getLocallyDefinedRule( ruleName );
+            Rule r = GetLocallyDefinedRule( ruleName );
             if ( r != null )
             {
                 if ( !r.HasMultipleReturnValues )
                 {
-                    ErrorManager.grammarError(
+                    ErrorManager.GrammarError(
                         ErrorManager.MSG_LIST_LABEL_INVALID_UNLESS_RETVAL_STRUCT, this,
                         label, label.Text );
                 }
-                defineLabel( r, label, element, RULE_LIST_LABEL );
+                DefineLabel( r, label, element, RULE_LIST_LABEL );
             }
         }
 
@@ -2381,7 +2353,7 @@ namespace Antlr3.Tool
          *  label types such as Grammar.TOKEN_LABEL, Grammar.TOKEN_LIST_LABEL, ...
          *  Return a displayable token type name computed from the GrammarAST.
          */
-        public virtual HashSet<string> getLabels( HashSet<GrammarAST> rewriteElements, int labelType )
+        public virtual HashSet<string> GetLabels( HashSet<GrammarAST> rewriteElements, int labelType )
         {
             HashSet<string> labels = new HashSet<string>();
             foreach ( GrammarAST el in rewriteElements )
@@ -2389,8 +2361,8 @@ namespace Antlr3.Tool
                 if ( el.Type == ANTLRParser.LABEL )
                 {
                     string labelName = el.Text;
-                    Rule enclosingRule = getLocallyDefinedRule( el.enclosingRuleName );
-                    LabelElementPair pair = enclosingRule.getLabel( labelName );
+                    Rule enclosingRule = GetLocallyDefinedRule( el.enclosingRuleName );
+                    LabelElementPair pair = enclosingRule.GetLabel( labelName );
                     /*
                     // if tree grammar and we have a wildcard, only notice it
                     // when looking for rule labels not token label. x=. should
@@ -2422,7 +2394,7 @@ namespace Antlr3.Tool
          *  Rule.referencedPredefinedRuleAttributes.  I need to remove unused
          *  rule labels for example.
          */
-        protected virtual void examineAllExecutableActions()
+        protected virtual void ExamineAllExecutableActions()
         {
             foreach ( Rule r in Rules )
             {
@@ -2431,14 +2403,14 @@ namespace Antlr3.Tool
                 foreach ( GrammarAST actionAST in actions )
                 {
                     ActionAnalysisLexer sniffer = new ActionAnalysisLexer( this, r.name, actionAST );
-                    sniffer.analyze();
+                    sniffer.Analyze();
                 }
                 // walk any named actions like @init, @after
                 IEnumerable<GrammarAST> namedActions = r.Actions.Values.Cast<GrammarAST>();
                 foreach ( GrammarAST actionAST in namedActions )
                 {
                     ActionAnalysisLexer sniffer = new ActionAnalysisLexer( this, r.name, actionAST );
-                    sniffer.analyze();
+                    sniffer.Analyze();
                 }
             }
         }
@@ -2446,29 +2418,29 @@ namespace Antlr3.Tool
         /** Remove all labels on rule refs whose target rules have no return value.
          *  Do this for all rules in grammar.
          */
-        public virtual void checkAllRulesForUselessLabels()
+        public virtual void CheckAllRulesForUselessLabels()
         {
             if ( type == LEXER )
                 return;
 
             foreach ( string ruleName in nameToRuleMap.Keys )
             {
-                Rule r = getRule( ruleName );
-                removeUselessLabels( r.RuleLabels );
-                removeUselessLabels( r.RuleListLabels );
+                Rule r = GetRule( ruleName );
+                RemoveUselessLabels( r.RuleLabels );
+                RemoveUselessLabels( r.RuleListLabels );
             }
         }
 
         /** A label on a rule is useless if the rule has no return value, no
          *  tree or template output, and it is not referenced in an action.
          */
-        protected virtual void removeUselessLabels( IDictionary ruleToElementLabelPairMap )
+        protected virtual void RemoveUselessLabels( IDictionary ruleToElementLabelPairMap )
         {
             if ( ruleToElementLabelPairMap == null )
                 return;
 
             var tokill = from pair in ruleToElementLabelPairMap.Values.Cast<LabelElementPair>()
-                         let rule = getRule( pair.elementRef.Text )
+                         let rule = GetRule( pair.elementRef.Text )
                          where rule != null && !rule.HasReturnValue && !pair.actionReferencesLabel
                          select pair.label.Text;
 
@@ -2482,7 +2454,7 @@ namespace Antlr3.Tool
          *
          *  This data is also used to verify that all rules have been defined.
          */
-        public virtual void altReferencesRule( string enclosingRuleName,
+        public virtual void AltReferencesRule( string enclosingRuleName,
                                       GrammarAST refScopeAST,
                                       GrammarAST refAST,
                                       int outerAltNum )
@@ -2497,12 +2469,12 @@ namespace Antlr3.Tool
                 scope = refScopeAST.getText();
             }
             */
-            Rule r = getRule( enclosingRuleName );
+            Rule r = GetRule( enclosingRuleName );
             if ( r == null )
             {
                 return; // no error here; see NameSpaceChecker
             }
-            r.trackRuleReferenceInAlt( refAST, outerAltNum );
+            r.TrackRuleReferenceInAlt( refAST, outerAltNum );
             IToken refToken = refAST.Token;
             if ( !ruleRefs.Contains( refAST ) )
             {
@@ -2516,14 +2488,14 @@ namespace Antlr3.Tool
          *
          *  Rewrite rules force tracking of all tokens.
          */
-        public virtual void altReferencesTokenID( string ruleName, GrammarAST refAST, int outerAltNum )
+        public virtual void AltReferencesTokenID( string ruleName, GrammarAST refAST, int outerAltNum )
         {
-            Rule r = getLocallyDefinedRule( ruleName );
+            Rule r = GetLocallyDefinedRule( ruleName );
             if ( r == null )
             {
                 return;
             }
-            r.trackTokenReferenceInAlt( refAST, outerAltNum );
+            r.TrackTokenReferenceInAlt( refAST, outerAltNum );
             if ( !tokenIDRefs.Contains( refAST.Token ) )
             {
                 tokenIDRefs.Add( refAST.Token );
@@ -2536,9 +2508,9 @@ namespace Antlr3.Tool
          *  etc...  Make the rule have void return value.  Don't track for lexer
          *  rules.
          */
-        public virtual void referenceRuleLabelPredefinedAttribute( string ruleName )
+        public virtual void ReferenceRuleLabelPredefinedAttribute( string ruleName )
         {
-            Rule r = getRule( ruleName );
+            Rule r = GetRule( ruleName );
             if ( r != null && type != LEXER )
             {
                 // indicate that an action ref'd an attr unless it's in a lexer
@@ -2548,35 +2520,35 @@ namespace Antlr3.Tool
             }
         }
 
-        public virtual IList checkAllRulesForLeftRecursion()
+        public virtual IList<HashSet<Rule>> CheckAllRulesForLeftRecursion()
         {
-            return (IList)sanity.checkAllRulesForLeftRecursion();
+            return sanity.CheckAllRulesForLeftRecursion();
         }
 
         /** Return a list of left-recursive rules; no analysis can be done
          *  successfully on these.  Useful to skip these rules then and also
          *  for ANTLRWorks to highlight them.
          */
-        public virtual HashSet<Rule> getLeftRecursiveRules()
+        public virtual HashSet<Rule> GetLeftRecursiveRules()
         {
             if ( nfa == null )
             {
-                buildNFA();
+                BuildNFA();
             }
             if ( leftRecursiveRules != null )
             {
                 return leftRecursiveRules;
             }
-            sanity.checkAllRulesForLeftRecursion();
+            sanity.CheckAllRulesForLeftRecursion();
             return leftRecursiveRules;
         }
 
-        public virtual void checkRuleReference( GrammarAST scopeAST,
+        public virtual void CheckRuleReference( GrammarAST scopeAST,
                                        GrammarAST refAST,
                                        GrammarAST argsAST,
                                        string currentRuleName )
         {
-            sanity.checkRuleReference( scopeAST, refAST, argsAST, currentRuleName );
+            sanity.CheckRuleReference( scopeAST, refAST, argsAST, currentRuleName );
         }
 
         /** Rules like "a : ;" and "a : {...} ;" should not generate
@@ -2585,7 +2557,7 @@ namespace Antlr3.Tool
          *  that can match some input.  W/o that, the rule is unlikey to have
          *  any else.
          */
-        public virtual bool isEmptyRule( GrammarAST block )
+        public virtual bool IsEmptyRule( GrammarAST block )
         {
             foreach ( ITree node in GrammarAST.Descendants(block) )
             {
@@ -2606,7 +2578,7 @@ namespace Antlr3.Tool
             return false;
         }
 
-        public virtual bool isAtomTokenType( int ttype )
+        public virtual bool IsAtomTokenType( int ttype )
         {
             return ttype == ANTLRParser.WILDCARD ||
                    ttype == ANTLRParser.CHAR_LITERAL ||
@@ -2616,7 +2588,7 @@ namespace Antlr3.Tool
                    ( type != LEXER && ttype == ANTLRParser.TOKEN_REF );
         }
 
-        public virtual int getTokenType( string tokenName )
+        public virtual int GetTokenType( string tokenName )
         {
             int i;
             if ( tokenName[0] == '\'' )
@@ -2634,22 +2606,16 @@ namespace Antlr3.Tool
             return Label.INVALID;
         }
 
-        [System.Obsolete]
-        public ICollection<string> getTokenIDs()
-        {
-            return TokenIDs;
-        }
-
         /** Return an ordered integer list of token types that have no
          *  corresponding token ID like INT or KEYWORD_BEGIN; for stuff
          *  like 'begin'.
          */
-        public virtual ICollection getTokenTypesWithoutID()
+        public virtual ICollection<int> GetTokenTypesWithoutID()
         {
-            IList types = new List<object>();
+            IList<int> types = new List<int>();
             for ( int t = Label.MIN_TOKEN_TYPE; t <= MaxTokenType; t++ )
             {
-                string name = getTokenDisplayName( t );
+                string name = GetTokenDisplayName( t );
                 if ( name[0] == '\'' )
                 {
                     types.Add( t );
@@ -2661,12 +2627,12 @@ namespace Antlr3.Tool
         /** Get a list of all token IDs and literals that have an associated
          *  token type.
          */
-        public virtual HashSet<string> getTokenDisplayNames()
+        public virtual HashSet<string> GetTokenDisplayNames()
         {
             HashSet<string> names = new HashSet<string>();
             for ( int t = Label.MIN_TOKEN_TYPE; t <= MaxTokenType; t++ )
             {
-                names.Add( getTokenDisplayName( t ) );
+                names.Add( GetTokenDisplayName( t ) );
             }
             return names;
         }
@@ -2678,7 +2644,7 @@ namespace Antlr3.Tool
          *  11/26/2005: I changed literals to always be '...' even for strings.
          *  This routine still works though.
          */
-        public static int getCharValueFromGrammarCharLiteral( string literal )
+        public static int GetCharValueFromGrammarCharLiteral( string literal )
         {
             switch ( literal.Length )
             {
@@ -2689,7 +2655,7 @@ namespace Antlr3.Tool
                 // '\x'  (antlr lexer will catch invalid char)
                 if ( char.IsDigit( literal[2] ) )
                 {
-                    ErrorManager.error( ErrorManager.MSG_SYNTAX_ERROR,
+                    ErrorManager.Error( ErrorManager.MSG_SYNTAX_ERROR,
                                        "invalid char literal: " + literal );
                     return -1;
                 }
@@ -2707,7 +2673,7 @@ namespace Antlr3.Tool
                 //return Integer.parseInt( unicodeChars, 16 );
                 return int.Parse( unicodeChars, System.Globalization.NumberStyles.AllowHexSpecifier );
             default:
-                ErrorManager.error( ErrorManager.MSG_SYNTAX_ERROR,
+                ErrorManager.Error( ErrorManager.MSG_SYNTAX_ERROR,
                                    "invalid char literal: " + literal );
                 return -1;
             }
@@ -2726,7 +2692,7 @@ namespace Antlr3.Tool
          *
          *  The NFA construction routine must know the actual char values.
          */
-        public static StringBuilder getUnescapedStringFromGrammarStringLiteral( string literal )
+        public static StringBuilder GetUnescapedStringFromGrammarStringLiteral( string literal )
         {
             //JSystem.@out.println("escape: ["+literal+"]");
             StringBuilder buf = new StringBuilder();
@@ -2751,7 +2717,7 @@ namespace Antlr3.Tool
                     }
                     else if ( char.IsDigit( c ) )
                     {
-                        ErrorManager.error( ErrorManager.MSG_SYNTAX_ERROR,
+                        ErrorManager.Error( ErrorManager.MSG_SYNTAX_ERROR,
                                            "invalid char literal: " + literal );
                         buf.Append( "\\" + (char)c );
                     }
@@ -2778,17 +2744,17 @@ namespace Antlr3.Tool
          *
          *  Returns the max token type found.
          */
-        public virtual int importTokenVocabulary( Grammar importFromGr )
+        public virtual int ImportTokenVocabulary( Grammar importFromGr )
         {
             var importedTokenIDs = importFromGr.TokenIDs;
             foreach ( string tokenID in importedTokenIDs )
             {
-                int tokenType = importFromGr.getTokenType( tokenID );
+                int tokenType = importFromGr.GetTokenType( tokenID );
                 composite.maxTokenType = Math.Max( composite.maxTokenType, tokenType );
                 if ( tokenType >= Label.MIN_TOKEN_TYPE )
                 {
                     //JSystem.@out.println("import token from grammar "+tokenID+"="+tokenType);
-                    defineToken( tokenID, tokenType );
+                    DefineToken( tokenID, tokenType );
                 }
             }
             return composite.maxTokenType; // return max found
@@ -2800,7 +2766,7 @@ namespace Antlr3.Tool
          *  Do not create NFA here because NFA construction needs to hook up with
          *  overridden rules in delegation root grammar.
          */
-        public virtual void importGrammar( GrammarAST grammarNameAST, string label )
+        public virtual void ImportGrammar( GrammarAST grammarNameAST, string label )
         {
             string grammarName = grammarNameAST.Text;
             //JSystem.@out.println("import "+gfile.getName());
@@ -2816,12 +2782,12 @@ namespace Antlr3.Tool
                 delegateGrammar = new Grammar( tool, gname, composite );
                 delegateGrammar.label = label;
 
-                addDelegateGrammar( delegateGrammar );
+                AddDelegateGrammar( delegateGrammar );
 
-                delegateGrammar.parseAndBuildAST( br );
-                if ( !validImport( delegateGrammar ) )
+                delegateGrammar.ParseAndBuildAST( br );
+                if ( !ValidImport( delegateGrammar ) )
                 {
-                    ErrorManager.grammarError( ErrorManager.MSG_INVALID_IMPORT,
+                    ErrorManager.GrammarError( ErrorManager.MSG_INVALID_IMPORT,
                                               this,
                                               grammarNameAST.token,
                                               this,
@@ -2832,7 +2798,7 @@ namespace Antlr3.Tool
                      ( delegateGrammar.name.Equals( this.name + grammarTypeToFileNameSuffix[LEXER] ) ||
                       delegateGrammar.name.Equals( this.name + grammarTypeToFileNameSuffix[PARSER] ) ) )
                 {
-                    ErrorManager.grammarError( ErrorManager.MSG_IMPORT_NAME_CLASH,
+                    ErrorManager.GrammarError( ErrorManager.MSG_IMPORT_NAME_CLASH,
                                               this,
                                               grammarNameAST.token,
                                               this,
@@ -2856,7 +2822,7 @@ namespace Antlr3.Tool
             }
             catch ( IOException ioe )
             {
-                ErrorManager.error( ErrorManager.MSG_CANNOT_OPEN_FILE,
+                ErrorManager.Error( ErrorManager.MSG_CANNOT_OPEN_FILE,
                                    gname,
                                    ioe );
             }
@@ -2870,7 +2836,7 @@ namespace Antlr3.Tool
                     }
                     catch ( IOException ioe )
                     {
-                        ErrorManager.error( ErrorManager.MSG_CANNOT_CLOSE_FILE,
+                        ErrorManager.Error( ErrorManager.MSG_CANNOT_CLOSE_FILE,
                                            gname,
                                            ioe );
                     }
@@ -2879,21 +2845,21 @@ namespace Antlr3.Tool
         }
 
         /** add new delegate to composite tree */
-        protected virtual void addDelegateGrammar( Grammar delegateGrammar )
+        protected virtual void AddDelegateGrammar( Grammar delegateGrammar )
         {
-            CompositeGrammarTree t = composite.delegateGrammarTreeRoot.findNode( this );
-            t.addChild( new CompositeGrammarTree( delegateGrammar ) );
+            CompositeGrammarTree t = composite.delegateGrammarTreeRoot.FindNode( this );
+            t.AddChild( new CompositeGrammarTree( delegateGrammar ) );
             // make sure new grammar shares this composite
             delegateGrammar.composite = this.composite;
         }
 
         /** Load a vocab file <vocabName>.tokens and return max token type found. */
-        public virtual int importTokenVocabulary( GrammarAST tokenVocabOptionAST,
+        public virtual int ImportTokenVocabulary( GrammarAST tokenVocabOptionAST,
                                          string vocabName )
         {
             if ( !IsRoot )
             {
-                ErrorManager.grammarWarning( ErrorManager.MSG_TOKEN_VOCAB_IN_DELEGATE,
+                ErrorManager.GrammarWarning( ErrorManager.MSG_TOKEN_VOCAB_IN_DELEGATE,
                                             this,
                                             tokenVocabOptionAST.token,
                                             name );
@@ -2930,7 +2896,7 @@ namespace Antlr3.Tool
                     }
                     else
                     {
-                        ErrorManager.error( ErrorManager.MSG_TOKENS_FILE_SYNTAX_ERROR,
+                        ErrorManager.Error( ErrorManager.MSG_TOKENS_FILE_SYNTAX_ERROR,
                                            vocabName + CodeGenerator.VOCAB_FILE_EXTENSION,
                                            lineNum );
                         while ( tokenizer.nextToken() != StreamTokenizer.TT_EOL )
@@ -2943,7 +2909,7 @@ namespace Antlr3.Tool
                     token = tokenizer.nextToken();
                     if ( token != '=' )
                     {
-                        ErrorManager.error( ErrorManager.MSG_TOKENS_FILE_SYNTAX_ERROR,
+                        ErrorManager.Error( ErrorManager.MSG_TOKENS_FILE_SYNTAX_ERROR,
                                            vocabName + CodeGenerator.VOCAB_FILE_EXTENSION,
                                            lineNum );
                         while ( tokenizer.nextToken() != StreamTokenizer.TT_EOL )
@@ -2956,7 +2922,7 @@ namespace Antlr3.Tool
                     token = tokenizer.nextToken(); // skip '='
                     if ( token != StreamTokenizer.TT_NUMBER )
                     {
-                        ErrorManager.error( ErrorManager.MSG_TOKENS_FILE_SYNTAX_ERROR,
+                        ErrorManager.Error( ErrorManager.MSG_TOKENS_FILE_SYNTAX_ERROR,
                                            vocabName + CodeGenerator.VOCAB_FILE_EXTENSION,
                                            lineNum );
                         while ( tokenizer.nextToken() != StreamTokenizer.TT_EOL )
@@ -2970,11 +2936,11 @@ namespace Antlr3.Tool
                     token = tokenizer.nextToken();
                     //JSystem.@out.println("import "+tokenID+"="+tokenType);
                     composite.maxTokenType = Math.Max( composite.maxTokenType, tokenType );
-                    defineToken( tokenID, tokenType );
+                    DefineToken( tokenID, tokenType );
                     lineNum++;
                     if ( token != StreamTokenizer.TT_EOL )
                     {
-                        ErrorManager.error( ErrorManager.MSG_TOKENS_FILE_SYNTAX_ERROR,
+                        ErrorManager.Error( ErrorManager.MSG_TOKENS_FILE_SYNTAX_ERROR,
                                            vocabName + CodeGenerator.VOCAB_FILE_EXTENSION,
                                            lineNum );
                         while ( tokenizer.nextToken() != StreamTokenizer.TT_EOL )
@@ -2990,18 +2956,18 @@ namespace Antlr3.Tool
             }
             catch ( java.io.FileNotFoundException /*fnfe*/ )
             {
-                ErrorManager.error( ErrorManager.MSG_CANNOT_FIND_TOKENS_FILE,
+                ErrorManager.Error( ErrorManager.MSG_CANNOT_FIND_TOKENS_FILE,
                                    fullFile );
             }
             catch ( IOException ioe )
             {
-                ErrorManager.error( ErrorManager.MSG_ERROR_READING_TOKENS_FILE,
+                ErrorManager.Error( ErrorManager.MSG_ERROR_READING_TOKENS_FILE,
                                    fullFile,
                                    ioe );
             }
             catch ( Exception e )
             {
-                ErrorManager.error( ErrorManager.MSG_ERROR_READING_TOKENS_FILE,
+                ErrorManager.Error( ErrorManager.MSG_ERROR_READING_TOKENS_FILE,
                                    fullFile,
                                    e );
             }
@@ -3012,7 +2978,7 @@ namespace Antlr3.Tool
          *  or string literal.  If this is a lexer and the ttype is in the
          *  char vocabulary, compute an ANTLR-valid (possibly escaped) char literal.
          */
-        public virtual string getTokenDisplayName( int ttype )
+        public virtual string GetTokenDisplayName( int ttype )
         {
             string tokenName = null;
             int index = 0;
@@ -3020,7 +2986,7 @@ namespace Antlr3.Tool
             if ( this.type == LEXER &&
                  ttype >= Label.MIN_CHAR_VALUE && ttype <= Label.MAX_CHAR_VALUE )
             {
-                return getANTLRCharLiteralForChar( ttype );
+                return GetANTLRCharLiteralForChar( ttype );
             }
             // faux label?
             else if ( ttype < 0 )
@@ -3051,25 +3017,13 @@ namespace Antlr3.Tool
             return tokenName;
         }
 
-        [System.Obsolete]
-        public ICollection<string> getStringLiterals()
-        {
-            return StringLiterals;
-        }
-
-        [System.Obsolete]
-        public string getGrammarTypeString()
-        {
-            return GrammarTypeString;
-        }
-
-        public virtual int getGrammarMaxLookahead()
+        public virtual int GetGrammarMaxLookahead()
         {
             if ( global_k >= 0 )
             {
                 return global_k;
             }
-            object k = getOption( "k" );
+            object k = GetOption( "k" );
             if ( k == null )
             {
                 global_k = 0;
@@ -3093,23 +3047,23 @@ namespace Antlr3.Tool
         /** Save the option key/value pair and process it; return the key
          *  or null if invalid option.
          */
-        public virtual string setOption( string key, object value, IToken optionsStartToken )
+        public virtual string SetOption( string key, object value, IToken optionsStartToken )
         {
-            if ( legalOption( key ) )
+            if ( LegalOption( key ) )
             {
-                ErrorManager.grammarError( ErrorManager.MSG_ILLEGAL_OPTION,
+                ErrorManager.GrammarError( ErrorManager.MSG_ILLEGAL_OPTION,
                                           this,
                                           optionsStartToken,
                                           key );
                 return null;
             }
-            if ( !optionIsValid( key, value ) )
+            if ( !OptionIsValid( key, value ) )
             {
                 return null;
             }
             if ( key == "backtrack" && value.ToString() == "true" )
             {
-                composite.getRootGrammar().atLeastOneBacktrackOption = true;
+                composite.GetRootGrammar().atLeastOneBacktrackOption = true;
             }
             if ( options == null )
             {
@@ -3119,7 +3073,7 @@ namespace Antlr3.Tool
             return key;
         }
 
-        public virtual bool legalOption( string key )
+        public virtual bool LegalOption( string key )
         {
             switch ( type )
             {
@@ -3134,7 +3088,7 @@ namespace Antlr3.Tool
             }
         }
 
-        public virtual void setOptions( IDictionary<string, object> options, IToken optionsStartToken )
+        public virtual void SetOptions( IDictionary<string, object> options, IToken optionsStartToken )
         {
             if ( options == null )
             {
@@ -3145,18 +3099,18 @@ namespace Antlr3.Tool
             {
                 string optionName = option.Key;
                 object optionValue = option.Value;
-                string stored = setOption( optionName, optionValue, optionsStartToken );
+                string stored = SetOption( optionName, optionValue, optionsStartToken );
                 if ( stored == null )
                     options.Remove( optionName );
             }
         }
 
-        public virtual object getOption( string key )
+        public virtual object GetOption( string key )
         {
-            return composite.getOption( key );
+            return composite.GetOption( key );
         }
 
-        public virtual object getLocallyDefinedOption( string key )
+        public virtual object GetLocallyDefinedOption( string key )
         {
             object value = null;
             if ( options != null )
@@ -3170,9 +3124,9 @@ namespace Antlr3.Tool
             return value;
         }
 
-        public virtual object getBlockOption( GrammarAST blockAST, string key )
+        public virtual object GetBlockOption( GrammarAST blockAST, string key )
         {
-            string v = (string)blockAST.getBlockOption( key );
+            string v = (string)blockAST.GetBlockOption( key );
             if ( v != null )
             {
                 return v;
@@ -3184,11 +3138,11 @@ namespace Antlr3.Tool
             return defaultBlockOptions.get( key );
         }
 
-        public virtual int getUserMaxLookahead( int decision )
+        public virtual int GetUserMaxLookahead( int decision )
         {
             int user_k = 0;
-            GrammarAST blockAST = nfa.grammar.getDecisionBlockAST( decision );
-            object k = blockAST.getBlockOption( "k" );
+            GrammarAST blockAST = nfa.grammar.GetDecisionBlockAST( decision );
+            object k = blockAST.GetBlockOption( "k" );
             if ( k == null )
             {
                 user_k = nfa.grammar.MaxLookahead;
@@ -3210,52 +3164,22 @@ namespace Antlr3.Tool
             return user_k;
         }
 
-        public virtual bool getAutoBacktrackMode( int decision )
+        public virtual bool GetAutoBacktrackMode( int decision )
         {
-            NFAState decisionNFAStartState = getDecisionNFAStartState( decision );
+            NFAState decisionNFAStartState = GetDecisionNFAStartState( decision );
             string autoBacktrack =
-                (string)getBlockOption( decisionNFAStartState.associatedASTNode, "backtrack" );
+                (string)GetBlockOption( decisionNFAStartState.associatedASTNode, "backtrack" );
 
             if ( autoBacktrack == null )
             {
-                autoBacktrack = (string)nfa.grammar.getOption( "backtrack" );
+                autoBacktrack = (string)nfa.grammar.GetOption( "backtrack" );
             }
             return autoBacktrack != null && autoBacktrack.Equals( "true" );
         }
 
-        public virtual bool optionIsValid( string key, object value )
+        public virtual bool OptionIsValid( string key, object value )
         {
             return true;
-        }
-
-        [System.Obsolete]
-        public bool buildAST()
-        {
-            return BuildAST;
-        }
-
-        [System.Obsolete]
-        public bool rewriteMode()
-        {
-            return RewriteMode;
-        }
-
-        [System.Obsolete]
-        public bool isBuiltFromString()
-        {
-            return IsBuiltFromString;
-        }
-
-        [System.Obsolete]
-        public virtual bool buildTemplate()
-        {
-            return BuildTemplate;
-        }
-
-        [System.Obsolete]
-        public ICollection<Rule> getRules()
-        {
-            return Rules;
         }
 
         /** Get the set of Rules that need to have manual delegations
@@ -3273,32 +3197,32 @@ namespace Antlr3.Tool
          *
          *  delegatedRules = imported - overridden
          */
-        public virtual HashSet<Rule> getDelegatedRules()
+        public virtual HashSet<Rule> GetDelegatedRules()
         {
-            return composite.getDelegatedRules( this );
+            return composite.GetDelegatedRules( this );
         }
 
         /** Get set of all rules imported from all delegate grammars even if
          *  indirectly delegated.
          */
-        public virtual HashSet<Rule> getAllImportedRules()
+        public virtual HashSet<Rule> GetAllImportedRules()
         {
-            return composite.getAllImportedRules( this );
+            return composite.GetAllImportedRules( this );
         }
 
         /** Get list of all delegates from all grammars directly or indirectly
          *  imported into this grammar.
          */
-        public virtual IList<Grammar> getDelegates()
+        public virtual IList<Grammar> GetDelegates()
         {
-            return composite.getDelegates( this );
+            return composite.GetDelegates( this );
         }
 
-        public virtual IList<string> getDelegateNames()
+        public virtual IList<string> GetDelegateNames()
         {
             // compute delegates:{Grammar g | return g.name;}
             IList<string> names = new List<string>();
-            IList<Grammar> delegates = composite.getDelegates( this );
+            IList<Grammar> delegates = composite.GetDelegates( this );
             if ( delegates != null )
             {
                 foreach ( Grammar g in delegates )
@@ -3309,45 +3233,33 @@ namespace Antlr3.Tool
             return names;
         }
 
-        public virtual IList<Grammar> getDirectDelegates()
+        public virtual IList<Grammar> GetDirectDelegates()
         {
-            return composite.getDirectDelegates( this );
+            return composite.GetDirectDelegates( this );
         }
 
         /** Get delegates below direct delegates */
-        public virtual IList<Grammar> getIndirectDelegates()
+        public virtual IList<Grammar> GetIndirectDelegates()
         {
-            return composite.getIndirectDelegates( this );
+            return composite.GetIndirectDelegates( this );
         }
 
         /** Get list of all delegators.  This amounts to the grammars on the path
          *  to the root of the delegation tree.
          */
-        public virtual IList<Grammar> getDelegators()
+        public virtual IList<Grammar> GetDelegators()
         {
-            return composite.getDelegators( this );
+            return composite.GetDelegators( this );
         }
 
-        [System.Obsolete]
-        public Grammar getDelegator()
-        {
-            return Delegator;
-        }
-
-        public virtual HashSet<Rule> getDelegatedRuleReferences()
+        public virtual HashSet<Rule> GetDelegatedRuleReferences()
         {
             return delegatedRuleReferences;
         }
 
-        [System.Obsolete]
-        public bool getGrammarIsRoot()
+        public virtual void SetRuleAST( string ruleName, GrammarAST t )
         {
-            return IsRoot;
-        }
-
-        public virtual void setRuleAST( string ruleName, GrammarAST t )
-        {
-            Rule r = getLocallyDefinedRule( ruleName );
+            Rule r = GetLocallyDefinedRule( ruleName );
             if ( r != null )
             {
                 r.tree = t;
@@ -3355,14 +3267,14 @@ namespace Antlr3.Tool
             }
         }
 
-        public virtual NFAState getRuleStartState( string ruleName )
+        public virtual NFAState GetRuleStartState( string ruleName )
         {
-            return getRuleStartState( null, ruleName );
+            return GetRuleStartState( null, ruleName );
         }
 
-        public virtual NFAState getRuleStartState( string scopeName, string ruleName )
+        public virtual NFAState GetRuleStartState( string scopeName, string ruleName )
         {
-            Rule r = getRule( scopeName, ruleName );
+            Rule r = GetRule( scopeName, ruleName );
             if ( r != null )
             {
                 //JSystem.@out.println("getRuleStartState("+scopeName+", "+ruleName+")="+r.startState);
@@ -3372,9 +3284,9 @@ namespace Antlr3.Tool
             return null;
         }
 
-        public virtual string getRuleModifier( string ruleName )
+        public virtual string GetRuleModifier( string ruleName )
         {
-            Rule r = getRule( ruleName );
+            Rule r = GetRule( ruleName );
             if ( r != null )
             {
                 return r.modifier;
@@ -3382,9 +3294,9 @@ namespace Antlr3.Tool
             return null;
         }
 
-        public virtual NFAState getRuleStopState( string ruleName )
+        public virtual NFAState GetRuleStopState( string ruleName )
         {
-            Rule r = getRule( ruleName );
+            Rule r = GetRule( ruleName );
             if ( r != null )
             {
                 return r.stopState;
@@ -3392,14 +3304,14 @@ namespace Antlr3.Tool
             return null;
         }
 
-        public virtual int assignDecisionNumber( NFAState state )
+        public virtual int AssignDecisionNumber( NFAState state )
         {
             decisionCount++;
             state.DecisionNumber = decisionCount;
             return decisionCount;
         }
 
-        protected internal virtual Decision getDecision( int decision )
+        protected internal virtual Decision GetDecision( int decision )
         {
             int index = decision - 1;
             if ( index >= indexToDecision.Count )
@@ -3410,12 +3322,12 @@ namespace Antlr3.Tool
             return d;
         }
 
-        protected virtual Decision createDecision( int decision )
+        protected virtual Decision CreateDecision( int decision )
         {
             int index = decision - 1;
             if ( index < indexToDecision.Count )
             {
-                return getDecision( decision ); // don't recreate
+                return GetDecision( decision ); // don't recreate
             }
             Decision d = new Decision();
             d.decision = decision;
@@ -3424,9 +3336,9 @@ namespace Antlr3.Tool
             return d;
         }
 
-        public virtual IList getDecisionNFAStartStateList()
+        public virtual IList<NFAState> GetDecisionNFAStartStateList()
         {
-            IList states = new List<object>( 100 );
+            var states = new List<NFAState>( 100 );
             for ( int d = 0; d < indexToDecision.Count; d++ )
             {
                 Decision dec = (Decision)indexToDecision[d];
@@ -3435,9 +3347,9 @@ namespace Antlr3.Tool
             return states;
         }
 
-        public virtual NFAState getDecisionNFAStartState( int decision )
+        public virtual NFAState GetDecisionNFAStartState( int decision )
         {
-            Decision d = getDecision( decision );
+            Decision d = GetDecision( decision );
             if ( d == null )
             {
                 return null;
@@ -3445,9 +3357,9 @@ namespace Antlr3.Tool
             return d.startState;
         }
 
-        public virtual DFA getLookaheadDFA( int decision )
+        public virtual DFA GetLookaheadDFA( int decision )
         {
-            Decision d = getDecision( decision );
+            Decision d = GetDecision( decision );
             if ( d == null )
             {
                 return null;
@@ -3455,9 +3367,9 @@ namespace Antlr3.Tool
             return d.dfa;
         }
 
-        public virtual GrammarAST getDecisionBlockAST( int decision )
+        public virtual GrammarAST GetDecisionBlockAST( int decision )
         {
-            Decision d = getDecision( decision );
+            Decision d = GetDecision( decision );
             if ( d == null )
             {
                 return null;
@@ -3474,10 +3386,10 @@ namespace Antlr3.Tool
          *  This is not particularly fast as it walks entire line:col->DFA map
          *  looking for a prefix of "line:".
          */
-        public virtual IList getLookaheadDFAColumnsForLineInFile( int line )
+        public virtual IList<int> GetLookaheadDFAColumnsForLineInFile( int line )
         {
             string prefix = line + ":";
-            IList columns = new List<object>();
+            var columns = new List<int>();
             foreach ( string key in lineColumnToLookaheadDFAMap.Keys )
             {
                 if ( key.StartsWith( prefix ) )
@@ -3489,25 +3401,19 @@ namespace Antlr3.Tool
         }
 
         /** Useful for ANTLRWorks to map position in file to the DFA for display */
-        public virtual DFA getLookaheadDFAFromPositionInFile( int line, int col )
+        public virtual DFA GetLookaheadDFAFromPositionInFile( int line, int col )
         {
             return (DFA)lineColumnToLookaheadDFAMap.get( line.ToString() + ":" + col.ToString() );
         }
 
-        [System.Obsolete]
-        public IDictionary<string, DFA> getLineColumnToLookaheadDFAMap()
-        {
-            return LineColumnToLookaheadDFAMap;
-        }
-
 #if false
-        public virtual void setDecisionOptions( int decision, IDictionary options )
+        public virtual void SetDecisionOptions( int decision, IDictionary options )
         {
             Decision d = createDecision( decision );
             d.options = options;
         }
 
-        public virtual void setDecisionOption( int decision, string name, object value )
+        public virtual void SetDecisionOption( int decision, string name, object value )
         {
             Decision d = getDecision( decision );
             if ( d != null )
@@ -3520,7 +3426,7 @@ namespace Antlr3.Tool
             }
         }
 
-        public virtual IDictionary getDecisionOptions( int decision )
+        public virtual IDictionary GetDecisionOptions( int decision )
         {
             Decision d = getDecision( decision );
             if ( d == null )
@@ -3531,18 +3437,12 @@ namespace Antlr3.Tool
         }
 #endif
 
-        [System.Obsolete]
-        public int getNumberOfDecisions()
-        {
-            return NumberOfDecisions;
-        }
-
-        public virtual int getNumberOfCyclicDecisions()
+        public virtual int GetNumberOfCyclicDecisions()
         {
             int n = 0;
             for ( int i = 1; i <= NumberOfDecisions; i++ )
             {
-                Decision d = getDecision( i );
+                Decision d = GetDecision( i );
                 if ( d.dfa != null && d.dfa.IsCyclic )
                 {
                     n++;
@@ -3561,55 +3461,25 @@ namespace Antlr3.Tool
          *    g.setLookahead(2, dfa2);
          *    ...
          */
-        public virtual void setLookaheadDFA( int decision, DFA lookaheadDFA )
+        public virtual void SetLookaheadDFA( int decision, DFA lookaheadDFA )
         {
-            Decision d = createDecision( decision );
+            Decision d = CreateDecision( decision );
             d.dfa = lookaheadDFA;
             GrammarAST ast = d.startState.associatedASTNode;
             ast.LookaheadDFA = lookaheadDFA;
         }
 
-        public virtual void setDecisionNFA( int decision, NFAState state )
+        public virtual void SetDecisionNFA( int decision, NFAState state )
         {
-            Decision d = createDecision( decision );
+            Decision d = CreateDecision( decision );
             d.startState = state;
         }
 
-        public virtual void setDecisionBlockAST( int decision, GrammarAST blockAST )
+        public virtual void SetDecisionBlockAST( int decision, GrammarAST blockAST )
         {
             //JSystem.@out.println("setDecisionBlockAST("+decision+", "+blockAST.token);
-            Decision d = createDecision( decision );
+            Decision d = CreateDecision( decision );
             d.blockAST = blockAST;
-        }
-
-        [System.Obsolete]
-        public bool allDecisionDFAHaveBeenCreated()
-        {
-            return AllDecisionDFAHaveBeenCreated;
-        }
-
-        [System.Obsolete]
-        public int getMaxTokenType()
-        {
-            return MaxTokenType;
-        }
-
-        [System.Obsolete]
-        public int getMaxCharValue()
-        {
-            return MaxCharValue;
-        }
-
-        [System.Obsolete]
-        public IIntSet getTokenTypes()
-        {
-            return TokenTypes;
-        }
-
-        [System.Obsolete]
-        public IIntSet getAllCharValues()
-        {
-            return AllCharValues;
         }
 
         /** Return a string representing the escaped char for code c.  E.g., If c
@@ -3621,11 +3491,11 @@ namespace Antlr3.Tool
          *  11/26/2005: I changed this to use double quotes, consistent with antlr.g
          *  12/09/2005: I changed so everything is single quotes
          */
-        public static string getANTLRCharLiteralForChar( int c )
+        public static string GetANTLRCharLiteralForChar( int c )
         {
             if ( c < Label.MIN_CHAR_VALUE )
             {
-                ErrorManager.internalError( "invalid char value " + c );
+                ErrorManager.InternalError( "invalid char value " + c );
                 return "'<INVALID>'";
             }
             if ( c < ANTLRLiteralCharValueEscape.Length && ANTLRLiteralCharValueEscape[c] != null )
@@ -3656,7 +3526,7 @@ namespace Antlr3.Tool
          *  For parser and tree grammars, return everything in token space
          *  from MIN_TOKEN_TYPE to last valid token type or char value.
          */
-        public virtual IIntSet complement( IIntSet set )
+        public virtual IIntSet Complement( IIntSet set )
         {
             //JSystem.@out.println("complement "+set.toString(this));
             //JSystem.@out.println("vocabulary "+getTokenTypes().toString(this));
@@ -3665,21 +3535,21 @@ namespace Antlr3.Tool
             return c;
         }
 
-        public virtual IIntSet complement( int atom )
+        public virtual IIntSet Complement( int atom )
         {
-            return complement( IntervalSet.Of( atom ) );
+            return Complement( IntervalSet.Of( atom ) );
         }
 
         /** Given set tree like ( SET A B ), check that A and B
          *  are both valid sets themselves, else we must tree like a BLOCK
          */
-        public virtual bool isValidSet( TreeToNFAConverter nfabuilder, GrammarAST t )
+        public virtual bool IsValidSet( TreeToNFAConverter nfabuilder, GrammarAST t )
         {
             bool valid = true;
             try
             {
                 //JSystem.@out.println("parse BLOCK as set tree: "+t.toStringTree());
-                int alts = nfabuilder.testBlockAsSet( t );
+                int alts = nfabuilder.TestBlockAsSet( t );
                 valid = ( alts > 1 );
             }
             catch ( RecognitionException /*re*/ )
@@ -3700,16 +3570,16 @@ namespace Antlr3.Tool
          *
          *		^( RULE ID modifier ARG RET SCOPE block EOR )
          */
-        public virtual IIntSet getSetFromRule( TreeToNFAConverter nfabuilder, string ruleName )
+        public virtual IIntSet GetSetFromRule( TreeToNFAConverter nfabuilder, string ruleName )
         {
-            Rule r = getRule( ruleName );
+            Rule r = GetRule( ruleName );
             if ( r == null )
             {
                 return null;
             }
             IIntSet elements = null;
             //JSystem.@out.println("parsed tree: "+r.tree.toStringTree());
-            elements = nfabuilder.setRule( r.tree );
+            elements = nfabuilder.SetRule( r.tree );
             //JSystem.@out.println("elements="+elements);
             return elements;
         }
@@ -3718,7 +3588,7 @@ namespace Antlr3.Tool
          *  many there are.  This is here rather than in NFAState because
          *  a grammar decides how NFAs are put together to form a decision.
          */
-        public virtual int getNumberOfAltsForDecisionNFA( NFAState decisionState )
+        public virtual int GetNumberOfAltsForDecisionNFA( NFAState decisionState )
         {
             if ( decisionState == null )
             {
@@ -3745,7 +3615,7 @@ namespace Antlr3.Tool
          *  This routine returns the leftmost state for each alt.  So alt=1, returns
          *  the upperleft most state in this structure.
          */
-        public virtual NFAState getNFAStateForAltOfDecision( NFAState decisionState, int alt )
+        public virtual NFAState GetNFAStateForAltOfDecision( NFAState decisionState, int alt )
         {
             if ( decisionState == null || alt <= 0 )
             {
@@ -3771,7 +3641,7 @@ namespace Antlr3.Tool
         }
 
 #if false
-        public virtual void computeRuleFOLLOWSets()
+        public virtual void ComputeRuleFOLLOWSets()
         {
             if ( getNumberOfDecisions() == 0 )
             {
@@ -3790,65 +3660,36 @@ namespace Antlr3.Tool
         }
 #endif
 
-        public virtual LookaheadSet FIRST( NFAState s )
+        public virtual LookaheadSet First( NFAState s )
         {
             return ll1Analyzer.First( s );
         }
 
-        public virtual LookaheadSet LOOK( NFAState s )
+        public virtual LookaheadSet Look( NFAState s )
         {
             return ll1Analyzer.Look( s );
-        }
-
-        public virtual void setCodeGenerator( CodeGenerator generator )
-        {
-            this.generator = generator;
-        }
-
-        [System.Obsolete]
-        public CodeGenerator getCodeGenerator()
-        {
-            return CodeGenerator;
-        }
-
-        [System.Obsolete]
-        public GrammarAST getGrammarTree()
-        {
-            return Tree;
-        }
-
-        [System.Obsolete]
-        public Tool getTool()
-        {
-            return Tool;
-        }
-
-        [System.Obsolete]
-        public void setTool( Tool tool )
-        {
-            Tool = tool;
         }
 
         /** given a token type and the text of the literal, come up with a
          *  decent token type label.  For now it's just T<type>.  Actually,
          *  if there is an aliased name from tokens like PLUS='+', use it.
          */
-        public virtual string computeTokenNameFromLiteral( int tokenType, string literal )
+        public virtual string ComputeTokenNameFromLiteral( int tokenType, string literal )
         {
             return AUTO_GENERATED_TOKEN_NAME_PREFIX + tokenType;
         }
 
         public override string ToString()
         {
-            return grammarTreeToString( grammarTree );
+            return GrammarTreeToString( grammarTree );
         }
 
-        public virtual string grammarTreeToString( GrammarAST t )
+        public virtual string GrammarTreeToString( GrammarAST t )
         {
-            return grammarTreeToString( t, true );
+            return GrammarTreeToString( t, true );
         }
 
-        public virtual string grammarTreeToString( GrammarAST t, bool showActions )
+        public virtual string GrammarTreeToString( GrammarAST t, bool showActions )
         {
             string s = null;
             try
@@ -3863,7 +3704,7 @@ namespace Antlr3.Tool
             return s;
         }
 
-        public virtual void printGrammar( TextWriter output )
+        public virtual void PrintGrammar( TextWriter output )
         {
             ANTLRTreePrinter printer = new ANTLRTreePrinter( new Antlr.Runtime.Tree.CommonTreeNodeStream( grammarTree ) );
             //printer.setASTNodeClass( "org.antlr.tool.GrammarAST" );
@@ -3874,7 +3715,7 @@ namespace Antlr3.Tool
             }
             catch ( RecognitionException re )
             {
-                ErrorManager.error( ErrorManager.MSG_SYNTAX_ERROR, re );
+                ErrorManager.Error( ErrorManager.MSG_SYNTAX_ERROR, re );
             }
         }
 

@@ -75,22 +75,22 @@ namespace Antlr3.Tool
             this.grammarFileName = grammarFileName;
         }
 
-        void consume()
+        void Consume()
         {
-            token = scanner.nextToken();
+            token = scanner.NextToken();
         }
 
-        protected virtual void match( string expecting )
+        protected virtual void Match( string expecting )
         {
             //System.Console.Out.WriteLine( "match " + expecting + "; is " + token );
             if ( token.Equals( expecting ) )
-                consume();
+                Consume();
             else
                 throw new Exception( "Error parsing " + grammarFileName + ": '" + token +
                                 "' not expected '" + expecting + "'" );
         }
 
-        public virtual void parse()
+        public virtual void Parse()
         {
             string fileName = grammarFileName;
             if ( inputDirectory != null )
@@ -100,24 +100,24 @@ namespace Antlr3.Tool
             try
             {
                 scanner = new Scanner( r );
-                consume();
-                grammarHeader();
+                Consume();
+                GrammarHeader();
                 // scan until imports or options
                 while ( token != null && !token.Equals( "@" ) && !token.Equals( ":" ) &&
                         !token.Equals( "import" ) && !token.Equals( "options" ) )
                 {
-                    consume();
+                    Consume();
                 }
                 if ( token.Equals( "options" ) )
-                    options();
+                    Options();
                 // scan until options or first rule
                 while ( token != null && !token.Equals( "@" ) && !token.Equals( ":" ) &&
                         !token.Equals( "import" ) )
                 {
-                    consume();
+                    Consume();
                 }
                 if ( token.Equals( "import" ) )
-                    imports();
+                    Imports();
                 // ignore rest of input; close up shop
             }
             finally
@@ -127,78 +127,89 @@ namespace Antlr3.Tool
             }
         }
 
-        protected virtual void grammarHeader()
+        protected virtual void GrammarHeader()
         {
             if ( token == null )
                 return;
             if ( token.Equals( "tree" ) || token.Equals( "parser" ) || token.Equals( "lexer" ) )
             {
                 grammarModifier = token;
-                consume();
+                Consume();
             }
-            match( "grammar" );
+            Match( "grammar" );
             grammarName = token;
-            consume(); // move beyond name
+            Consume(); // move beyond name
         }
 
         // looks like "options { backtrack true ; tokenVocab MyTokens ; }"
-        protected virtual void options()
+        protected virtual void Options()
         {
-            match( "options" );
-            match( "{" );
+            Match( "options" );
+            Match( "{" );
             while ( token != null && !token.Equals( "}" ) )
             {
                 string name = token;
-                consume();
+                Consume();
                 string value = token;
-                consume();
-                match( ";" );
+                Consume();
+                Match( ";" );
                 if ( name.Equals( "tokenVocab" ) )
                     tokenVocab = value;
                 if ( name.Equals( "language" ) )
                     language = value;
             }
-            match( "}" );
+            Match( "}" );
         }
 
         // looks like "import JavaDecl JavaAnnotations JavaExpr ;"
-        protected virtual void imports()
+        protected virtual void Imports()
         {
-            match( "import" );
+            Match( "import" );
             importedGrammars = new List<string>();
             while ( token != null && !token.Equals( ";" ) )
             {
                 importedGrammars.Add( token );
-                consume();
+                Consume();
             }
-            match( ";" );
+            Match( ";" );
             if ( importedGrammars.Count == 0 )
                 importedGrammars = null;
         }
 
-        public virtual string getGrammarModifier()
+        public virtual string GrammarModifier
         {
-            return grammarModifier;
+            get
+            {
+                return grammarModifier;
+            }
         }
-
-        public virtual string getGrammarName()
+        public virtual string GrammarName
         {
-            return grammarName;
+            get
+            {
+                return grammarName;
+            }
         }
-
-        public virtual string getTokenVocab()
+        public virtual string TokenVocab
         {
-            return tokenVocab;
+            get
+            {
+                return tokenVocab;
+            }
         }
-
-        public virtual string getLanguage()
+        public virtual string Language
         {
-            return language;
+            get
+            {
+                return language;
+            }
         }
-
-        public virtual List<string> getImportedGrammars()
+        public virtual List<string> ImportedGrammars
         {
-            return importedGrammars;
+            get
+            {
+                return importedGrammars;
+            }
         }
 
         /** Strip comments and then return stream of words and
@@ -213,28 +224,28 @@ namespace Antlr3.Tool
             public Scanner( TextReader input )
             {
                 this.input = input;
-                consume();
+                Consume();
             }
 
-            bool isDIGIT()
+            bool IsDigit()
             {
                 return c >= '0' && c <= '9';
             }
-            bool isID_START()
+            bool IsIdStart()
             {
                 return c >= 'a' && c <= 'z' || c >= 'A' && c <= 'Z';
             }
-            bool isID_LETTER()
+            bool IsIdLetter()
             {
-                return isID_START() || c >= '0' && c <= '9' || c == '_';
+                return IsIdStart() || c >= '0' && c <= '9' || c == '_';
             }
 
-            void consume()
+            void Consume()
             {
                 c = input.Read();
             }
 
-            public virtual string nextToken()
+            public virtual string NextToken()
             {
                 while ( c != EOF )
                 {
@@ -242,31 +253,31 @@ namespace Antlr3.Tool
                     switch ( c )
                     {
                     case ';':
-                        consume();
+                        Consume();
                         return ";";
                     case '{':
-                        consume();
+                        Consume();
                         return "{";
                     case '}':
-                        consume();
+                        Consume();
                         return "}";
                     case ':':
-                        consume();
+                        Consume();
                         return ":";
                     case '@':
-                        consume();
+                        Consume();
                         return "@";
                     case '/':
-                        COMMENT();
+                        Comment();
                         break;
                     case '\'':
-                        return STRING();
+                        return String();
                     default:
-                        if ( isID_START() )
-                            return ID();
-                        else if ( isDIGIT() )
-                            return INT();
-                        consume(); // ignore anything else
+                        if ( IsIdStart() )
+                            return Id();
+                        else if ( IsDigit() )
+                            return Int();
+                        Consume(); // ignore anything else
                         break;
                     }
                 }
@@ -274,76 +285,76 @@ namespace Antlr3.Tool
             }
 
             /** NAME : LETTER+ ; // NAME is sequence of >=1 letter */
-            string ID()
+            string Id()
             {
                 StringBuilder buf = new StringBuilder();
-                while ( c != EOF && isID_LETTER() )
+                while ( c != EOF && IsIdLetter() )
                 {
                     buf.Append( (char)c );
-                    consume();
+                    Consume();
                 }
                 return buf.ToString();
             }
 
-            string INT()
+            string Int()
             {
                 StringBuilder buf = new StringBuilder();
-                while ( c != EOF && isDIGIT() )
+                while ( c != EOF && IsDigit() )
                 {
                     buf.Append( (char)c );
-                    consume();
+                    Consume();
                 }
                 return buf.ToString();
             }
 
-            string STRING()
+            string String()
             {
                 StringBuilder buf = new StringBuilder();
-                consume();
+                Consume();
                 while ( c != EOF && c != '\'' )
                 {
                     if ( c == '\\' )
                     {
                         buf.Append( (char)c );
-                        consume();
+                        Consume();
                     }
                     buf.Append( (char)c );
-                    consume();
+                    Consume();
                 }
-                consume(); // scan past '
+                Consume(); // scan past '
                 return buf.ToString();
             }
 
-            void COMMENT()
+            void Comment()
             {
                 if ( c == '/' )
                 {
-                    consume();
+                    Consume();
                     if ( c == '*' )
                     {
-                        consume();
+                        Consume();
                         for ( ; ; )
                         {
                             if ( c == '*' )
                             {
-                                consume();
+                                Consume();
                                 if ( c == '/' )
                                 {
-                                    consume();
+                                    Consume();
                                     break;
                                 }
                             }
                             else
                             {
                                 while ( c != EOF && c != '*' )
-                                    consume();
+                                    Consume();
                             }
                         }
                     }
                     else if ( c == '/' )
                     {
                         while ( c != EOF && c != '\n' )
-                            consume();
+                            Consume();
                     }
                 }
             }

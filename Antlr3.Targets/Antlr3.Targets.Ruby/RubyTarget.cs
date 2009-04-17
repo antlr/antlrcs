@@ -73,11 +73,11 @@ namespace Antlr3.Targets
 
         public override string GetTokenTypeAsTargetLabel( CodeGenerator generator, int ttype )
         {
-            string name = generator.grammar.getTokenDisplayName( ttype );
+            string name = generator.grammar.GetTokenDisplayName( ttype );
             // If name is a literal, return the token type instead
             if ( name[0] == '\'' )
             {
-                return generator.grammar.computeTokenNameFromLiteral( ttype, name );
+                return generator.grammar.ComputeTokenNameFromLiteral( ttype, name );
             }
             return name;
         }

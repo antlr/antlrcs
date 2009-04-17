@@ -252,39 +252,39 @@ namespace Antlr3.Tool
 
         class DefaultErrorListener : IANTLRErrorListener
         {
-            public virtual void info( String msg )
+            public virtual void Info( String msg )
             {
-                if ( formatWantsSingleLineMessage() )
+                if ( FormatWantsSingleLineMessage() )
                 {
                     msg = msg.replaceAll( "\n", " " );
                 }
                 Console.Error.WriteLine( msg );
             }
 
-            public virtual void error( Message msg )
+            public virtual void Error( Message msg )
             {
                 String outputMsg = msg.ToString();
-                if ( formatWantsSingleLineMessage() )
+                if ( FormatWantsSingleLineMessage() )
                 {
                     outputMsg = outputMsg.replaceAll( "\n", " " );
                 }
                 Console.Error.WriteLine( outputMsg );
             }
 
-            public virtual void warning( Message msg )
+            public virtual void Warning( Message msg )
             {
                 String outputMsg = msg.ToString();
-                if ( formatWantsSingleLineMessage() )
+                if ( FormatWantsSingleLineMessage() )
                 {
                     outputMsg = outputMsg.replaceAll( "\n", " " );
                 }
                 Console.Error.WriteLine( outputMsg );
             }
 
-            public virtual void error( ToolMessage msg )
+            public virtual void Error( ToolMessage msg )
             {
                 String outputMsg = msg.ToString();
-                if ( formatWantsSingleLineMessage() )
+                if ( FormatWantsSingleLineMessage() )
                 {
                     outputMsg = outputMsg.replaceAll( "\n", " " );
                 }
@@ -347,11 +347,11 @@ namespace Antlr3.Tool
                 {
                     e = e.InnerException ?? e;
                 }
-                ErrorManager.error( ErrorManager.MSG_INTERNAL_ERROR, s, e );
+                ErrorManager.Error( ErrorManager.MSG_INTERNAL_ERROR, s, e );
             }
             public virtual void Warning( String s )
             {
-                ErrorManager.warning( ErrorManager.MSG_INTERNAL_WARNING, s );
+                ErrorManager.Warning( ErrorManager.MSG_INTERNAL_WARNING, s );
             }
             public virtual void Debug( String s )
             {
@@ -364,19 +364,19 @@ namespace Antlr3.Tool
 
         static ErrorManager()
         {
-            initIdToMessageNameMapping();
+            InitIdToMessageNameMapping();
             // it is inefficient to set the default locale here if another
             // piece of code is going to set the locale, but that would
             // require that a user call an init() function or something.  I prefer
             // that this class be ready to go when loaded as I'm absentminded ;)
-            setLocale( CultureInfo.CurrentCulture );
+            SetLocale( CultureInfo.CurrentCulture );
             // try to load the message format group
             // the user might have specified one on the command line
             // if not, or if the user has given an illegal value, we will fall back to "antlr"
-            setFormat( "antlr" );
+            SetFormat( "antlr" );
         }
 
-        public static IStringTemplateErrorListener getStringTemplateErrorListener()
+        public static IStringTemplateErrorListener GetStringTemplateErrorListener()
         {
             return theDefaultSTListener;
         }
@@ -386,7 +386,7 @@ namespace Antlr3.Tool
          *  so that French Canadians and French Frenchies all get the same
          *  template file, fr.stg.  Just easier this way.
          */
-        public static void setLocale( CultureInfo locale )
+        public static void SetLocale( CultureInfo locale )
         {
             ErrorManager.locale = locale;
             String language = locale.TwoLetterISOLanguageName;
@@ -406,12 +406,12 @@ namespace Antlr3.Tool
             //    @is = cl.getResourceAsStream(fileName);
             //}
             if ( @is==null && language.Equals(CultureInfo.GetCultureInfo("en-us").TwoLetterISOLanguageName) ) {
-                rawError("ANTLR installation corrupted; cannot find English messages file "+fileName);
-                panic();
+                RawError("ANTLR installation corrupted; cannot find English messages file "+fileName);
+                Panic();
             }
             else if ( @is==null ) {
                 //rawError("no such locale file "+fileName+" retrying with English locale");
-                setLocale(CultureInfo.GetCultureInfo("en-us")); // recurse on this rule, trying the US locale
+                SetLocale(CultureInfo.GetCultureInfo("en-us")); // recurse on this rule, trying the US locale
                 return;
             }
             StreamReader br = null;
@@ -423,7 +423,7 @@ namespace Antlr3.Tool
                 br.Close();
             }
             catch (IOException ioe) {
-                rawError("error reading message file "+fileName, ioe);
+                RawError("error reading message file "+fileName, ioe);
             }
             finally {
                 if ( br!=null ) {
@@ -431,26 +431,26 @@ namespace Antlr3.Tool
                         br.Close();
                     }
                     catch (IOException ioe) {
-                        rawError("cannot close message file "+fileName, ioe);
+                        RawError("cannot close message file "+fileName, ioe);
                     }
                 }
             }
 
             messages.ErrorListener = blankSTListener;
-            bool messagesOK = verifyMessages();
+            bool messagesOK = VerifyMessages();
             if ( !messagesOK && language.Equals(CultureInfo.GetCultureInfo("en-us").TwoLetterISOLanguageName) ) {
-                rawError("ANTLR installation corrupted; English messages file "+language+".stg incomplete");
-                panic();
+                RawError("ANTLR installation corrupted; English messages file "+language+".stg incomplete");
+                Panic();
             }
             else if ( !messagesOK ) {
-                setLocale(CultureInfo.GetCultureInfo("en-us")); // try US to see if that will work
+                SetLocale(CultureInfo.GetCultureInfo("en-us")); // try US to see if that will work
             }
         }
 
         /** The format gets reset either from the Tool if the user supplied a command line option to that effect
          *  Otherwise we just use the default "antlr".
          */
-        public static void setFormat( String formatName )
+        public static void SetFormat( String formatName )
         {
             ErrorManager.formatName = formatName;
             //String fileName = "org/antlr/tool/templates/messages/formats/"+formatName+".stg";
@@ -470,13 +470,13 @@ namespace Antlr3.Tool
             //}
             if ( @is == null && formatName.Equals( "antlr" ) )
             {
-                rawError( "ANTLR installation corrupted; cannot find ANTLR messages format file " + fileName );
-                panic();
+                RawError( "ANTLR installation corrupted; cannot find ANTLR messages format file " + fileName );
+                Panic();
             }
             else if ( @is == null )
             {
-                rawError( "no such message format file " + fileName + " retrying with default ANTLR format" );
-                setFormat( "antlr" ); // recurse on this rule, trying the default message format
+                RawError( "no such message format file " + fileName + " retrying with default ANTLR format" );
+                SetFormat( "antlr" ); // recurse on this rule, trying the default message format
                 return;
             }
             StreamReader br = null;
@@ -498,20 +498,20 @@ namespace Antlr3.Tool
                 }
                 catch ( IOException ioe )
                 {
-                    rawError( "cannot close message format file " + fileName, ioe );
+                    RawError( "cannot close message format file " + fileName, ioe );
                 }
             }
 
             format.ErrorListener = blankSTListener;
-            bool formatOK = verifyFormat();
+            bool formatOK = VerifyFormat();
             if ( !formatOK && formatName.Equals( "antlr" ) )
             {
-                rawError( "ANTLR installation corrupted; ANTLR messages format file " + formatName + ".stg incomplete" );
-                panic();
+                RawError( "ANTLR installation corrupted; ANTLR messages format file " + formatName + ".stg incomplete" );
+                Panic();
             }
             else if ( !formatOK )
             {
-                setFormat( "antlr" ); // recurse on this rule, trying the default message format
+                SetFormat( "antlr" ); // recurse on this rule, trying the default message format
             }
         }
 
@@ -549,17 +549,17 @@ namespace Antlr3.Tool
          *  depending on the thread.  I store a single listener per
          *  thread.
          */
-        public static void setErrorListener( IANTLRErrorListener listener )
+        public static void SetErrorListener( IANTLRErrorListener listener )
         {
             threadToListenerMap[Thread.CurrentThread] = listener;
         }
 
-        public static void removeErrorListener()
+        public static void RemoveErrorListener()
         {
             threadToListenerMap.Remove( Thread.CurrentThread );
         }
 
-        public static void setTool( Tool tool )
+        public static void SetTool( Tool tool )
         {
             threadToToolMap[Thread.CurrentThread] = tool;
         }
@@ -568,46 +568,46 @@ namespace Antlr3.Tool
          *  with data.  We need to convert the int ID to the name of a template
          *  in the messages ST group.
          */
-        public static StringTemplate getMessage( int msgID )
+        public static StringTemplate GetMessage( int msgID )
         {
             String msgName = idToMessageTemplateName[msgID];
             return messages.GetInstanceOf( msgName );
         }
-        public static String getMessageType( int msgID )
+        public static String GetMessageType( int msgID )
         {
-            if ( getErrorState().warningMsgIDs.Contains( msgID ) )
+            if ( GetErrorState().warningMsgIDs.Contains( msgID ) )
             {
                 return messages.GetInstanceOf( "warning" ).ToString();
             }
-            else if ( getErrorState().errorMsgIDs.Contains( msgID ) )
+            else if ( GetErrorState().errorMsgIDs.Contains( msgID ) )
             {
                 return messages.GetInstanceOf( "error" ).ToString();
             }
-            assertTrue( false, "Assertion failed! Message ID " + msgID + " created but is not present in errorMsgIDs or warningMsgIDs." );
+            AssertTrue( false, "Assertion failed! Message ID " + msgID + " created but is not present in errorMsgIDs or warningMsgIDs." );
             return "";
         }
 
         /** Return a StringTemplate that refers to the current format used for
          * emitting messages.
          */
-        public static StringTemplate getLocationFormat()
+        public static StringTemplate GetLocationFormat()
         {
             return format.GetInstanceOf( "location" );
         }
-        public static StringTemplate getReportFormat()
+        public static StringTemplate GetReportFormat()
         {
             return format.GetInstanceOf( "report" );
         }
-        public static StringTemplate getMessageFormat()
+        public static StringTemplate GetMessageFormat()
         {
             return format.GetInstanceOf( "message" );
         }
-        public static bool formatWantsSingleLineMessage()
+        public static bool FormatWantsSingleLineMessage()
         {
             return format.GetInstanceOf( "wantsSingleLineMessage" ).ToString().Equals( "true" );
         }
 
-        public static IANTLRErrorListener getErrorListener()
+        public static IANTLRErrorListener GetErrorListener()
         {
             IANTLRErrorListener el =
                 (IANTLRErrorListener)threadToListenerMap.get( Thread.CurrentThread );
@@ -618,7 +618,7 @@ namespace Antlr3.Tool
             return el;
         }
 
-        public static ErrorState getErrorState()
+        public static ErrorState GetErrorState()
         {
             ErrorState ec =
                 (ErrorState)threadToErrorStateMap.get( Thread.CurrentThread );
@@ -630,141 +630,141 @@ namespace Antlr3.Tool
             return ec;
         }
 
-        public static int getNumErrors()
+        public static int GetNumErrors()
         {
-            return getErrorState().errors;
+            return GetErrorState().errors;
         }
 
-        public static void resetErrorState()
+        public static void ResetErrorState()
         {
             threadToListenerMap = new Dictionary<Thread, IANTLRErrorListener>();
             ErrorState ec = new ErrorState();
             threadToErrorStateMap[Thread.CurrentThread] = ec;
         }
 
-        public static void info( String msg )
+        public static void Info( String msg )
         {
-            getErrorState().infos++;
-            getErrorListener().info( msg );
+            GetErrorState().infos++;
+            GetErrorListener().Info( msg );
         }
 
-        public static void error( int msgID )
+        public static void Error( int msgID )
         {
-            getErrorState().errors++;
-            getErrorState().errorMsgIDs.Add( msgID );
-            getErrorListener().error( new ToolMessage( msgID ) );
+            GetErrorState().errors++;
+            GetErrorState().errorMsgIDs.Add( msgID );
+            GetErrorListener().Error( new ToolMessage( msgID ) );
         }
 
-        public static void error( int msgID, Exception e )
+        public static void Error( int msgID, Exception e )
         {
-            getErrorState().errors++;
-            getErrorState().errorMsgIDs.Add( msgID );
-            getErrorListener().error( new ToolMessage( msgID, e ) );
+            GetErrorState().errors++;
+            GetErrorState().errorMsgIDs.Add( msgID );
+            GetErrorListener().Error( new ToolMessage( msgID, e ) );
         }
 
-        public static void error( int msgID, Object arg )
+        public static void Error( int msgID, Object arg )
         {
-            getErrorState().errors++;
-            getErrorState().errorMsgIDs.Add( msgID );
-            getErrorListener().error( new ToolMessage( msgID, arg ) );
+            GetErrorState().errors++;
+            GetErrorState().errorMsgIDs.Add( msgID );
+            GetErrorListener().Error( new ToolMessage( msgID, arg ) );
         }
 
-        public static void error( int msgID, Object arg, Object arg2 )
+        public static void Error( int msgID, Object arg, Object arg2 )
         {
-            getErrorState().errors++;
-            getErrorState().errorMsgIDs.Add( msgID );
-            getErrorListener().error( new ToolMessage( msgID, arg, arg2 ) );
+            GetErrorState().errors++;
+            GetErrorState().errorMsgIDs.Add( msgID );
+            GetErrorListener().Error( new ToolMessage( msgID, arg, arg2 ) );
         }
 
-        public static void error( int msgID, Object arg, Exception e )
+        public static void Error( int msgID, Object arg, Exception e )
         {
-            getErrorState().errors++;
-            getErrorState().errorMsgIDs.Add( msgID );
-            getErrorListener().error( new ToolMessage( msgID, arg, e ) );
+            GetErrorState().errors++;
+            GetErrorState().errorMsgIDs.Add( msgID );
+            GetErrorListener().Error( new ToolMessage( msgID, arg, e ) );
         }
 
-        public static void warning( int msgID, Object arg )
+        public static void Warning( int msgID, Object arg )
         {
-            getErrorState().warnings++;
-            getErrorState().warningMsgIDs.Add( msgID );
-            getErrorListener().warning( new ToolMessage( msgID, arg ) );
+            GetErrorState().warnings++;
+            GetErrorState().warningMsgIDs.Add( msgID );
+            GetErrorListener().Warning( new ToolMessage( msgID, arg ) );
         }
 
-        public static void nondeterminism( DecisionProbe probe,
+        public static void Nondeterminism( DecisionProbe probe,
                                           DFAState d )
         {
-            getErrorState().warnings++;
+            GetErrorState().warnings++;
             Message msg = new GrammarNonDeterminismMessage( probe, d );
-            getErrorState().warningMsgIDs.Add( msg.msgID );
-            getErrorListener().warning( msg );
+            GetErrorState().warningMsgIDs.Add( msg.msgID );
+            GetErrorListener().Warning( msg );
         }
 
-        public static void danglingState( DecisionProbe probe,
+        public static void DanglingState( DecisionProbe probe,
                                          DFAState d )
         {
-            getErrorState().errors++;
+            GetErrorState().errors++;
             Message msg = new GrammarDanglingStateMessage( probe, d );
-            getErrorState().errorMsgIDs.Add( msg.msgID );
+            GetErrorState().errorMsgIDs.Add( msg.msgID );
             ICollection<object> seen = (ICollection<object>)emitSingleError.get( "danglingState" );
             if ( !seen.Contains( d.dfa.decisionNumber + "|" + d.AltSet ) )
             {
-                getErrorListener().error( msg );
+                GetErrorListener().Error( msg );
                 // we've seen this decision and this alt set; never again
                 seen.Add( d.dfa.decisionNumber + "|" + d.AltSet );
             }
         }
 
-        public static void analysisAborted( DecisionProbe probe )
+        public static void AnalysisAborted( DecisionProbe probe )
         {
-            getErrorState().warnings++;
+            GetErrorState().warnings++;
             Message msg = new GrammarAnalysisAbortedMessage( probe );
-            getErrorState().warningMsgIDs.Add( msg.msgID );
-            getErrorListener().warning( msg );
+            GetErrorState().warningMsgIDs.Add( msg.msgID );
+            GetErrorListener().Warning( msg );
         }
 
-        public static void unreachableAlts( DecisionProbe probe,
+        public static void UnreachableAlts( DecisionProbe probe,
                                            IEnumerable<int> alts )
         {
-            getErrorState().errors++;
+            GetErrorState().errors++;
             Message msg = new GrammarUnreachableAltsMessage( probe, alts );
-            getErrorState().errorMsgIDs.Add( msg.msgID );
-            getErrorListener().error( msg );
+            GetErrorState().errorMsgIDs.Add( msg.msgID );
+            GetErrorListener().Error( msg );
         }
 
-        public static void insufficientPredicates( DecisionProbe probe,
+        public static void InsufficientPredicates( DecisionProbe probe,
                                                   DFAState d,
                                                   IDictionary<int, ICollection<IToken>> altToUncoveredLocations )
         {
-            getErrorState().warnings++;
+            GetErrorState().warnings++;
             Message msg = new GrammarInsufficientPredicatesMessage( probe, d, altToUncoveredLocations );
-            getErrorState().warningMsgIDs.Add( msg.msgID );
-            getErrorListener().warning( msg );
+            GetErrorState().warningMsgIDs.Add( msg.msgID );
+            GetErrorListener().Warning( msg );
         }
 
-        public static void nonLLStarDecision( DecisionProbe probe )
+        public static void NonLLStarDecision( DecisionProbe probe )
         {
-            getErrorState().errors++;
+            GetErrorState().errors++;
             Message msg = new NonRegularDecisionMessage( probe, probe.NonDeterministicAlts );
-            getErrorState().errorMsgIDs.Add( msg.msgID );
-            getErrorListener().error( msg );
+            GetErrorState().errorMsgIDs.Add( msg.msgID );
+            GetErrorListener().Error( msg );
         }
 
-        public static void recursionOverflow( DecisionProbe probe,
+        public static void RecursionOverflow( DecisionProbe probe,
                                              DFAState sampleBadState,
                                              int alt,
                                              ICollection<string> targetRules,
                                              ICollection<ICollection<NFAState>> callSiteStates )
         {
-            getErrorState().errors++;
+            GetErrorState().errors++;
             Message msg = new RecursionOverflowMessage( probe, sampleBadState, alt,
                                              targetRules, callSiteStates );
-            getErrorState().errorMsgIDs.Add( msg.msgID );
-            getErrorListener().error( msg );
+            GetErrorState().errorMsgIDs.Add( msg.msgID );
+            GetErrorListener().Error( msg );
         }
 
 #if false
         // TODO: we can remove I think.  All detected now with cycles check.
-        public static void leftRecursion(DecisionProbe probe,
+        public static void LeftRecursion(DecisionProbe probe,
                                          int alt,
                                          ICollection targetRules,
                                          ICollection callSiteStates)
@@ -772,113 +772,113 @@ namespace Antlr3.Tool
             getErrorState().warnings++;
             Message msg = new LeftRecursionMessage(probe, alt, targetRules, callSiteStates);
             getErrorState().warningMsgIDs.add(msg.msgID);
-            getErrorListener().warning(msg);
+            getErrorListener().Warning(msg);
         }
 #endif
 
-        public static void leftRecursionCycles( ICollection cycles )
+        public static void LeftRecursionCycles( ICollection cycles )
         {
-            getErrorState().errors++;
+            GetErrorState().errors++;
             Message msg = new LeftRecursionCyclesMessage( cycles );
-            getErrorState().errorMsgIDs.Add( msg.msgID );
-            getErrorListener().warning( msg );
+            GetErrorState().errorMsgIDs.Add( msg.msgID );
+            GetErrorListener().Warning( msg );
         }
 
-        public static void grammarError( int msgID,
+        public static void GrammarError( int msgID,
                                         Grammar g,
                                         IToken token,
                                         Object arg,
                                         Object arg2 )
         {
-            getErrorState().errors++;
+            GetErrorState().errors++;
             Message msg = new GrammarSemanticsMessage( msgID, g, token, arg, arg2 );
-            getErrorState().errorMsgIDs.Add( msgID );
-            getErrorListener().error( msg );
+            GetErrorState().errorMsgIDs.Add( msgID );
+            GetErrorListener().Error( msg );
         }
 
-        public static void grammarError( int msgID,
+        public static void GrammarError( int msgID,
                                         Grammar g,
                                         IToken token,
                                         Object arg )
         {
-            grammarError( msgID, g, token, arg, null );
+            GrammarError( msgID, g, token, arg, null );
         }
 
-        public static void grammarError( int msgID,
+        public static void GrammarError( int msgID,
                                         Grammar g,
                                         IToken token )
         {
-            grammarError( msgID, g, token, null, null );
+            GrammarError( msgID, g, token, null, null );
         }
 
-        public static void grammarWarning( int msgID,
+        public static void GrammarWarning( int msgID,
                                           Grammar g,
                                           IToken token,
                                           Object arg,
                                           Object arg2 )
         {
-            getErrorState().warnings++;
+            GetErrorState().warnings++;
             Message msg = new GrammarSemanticsMessage( msgID, g, token, arg, arg2 );
-            getErrorState().warningMsgIDs.Add( msgID );
-            getErrorListener().warning( msg );
+            GetErrorState().warningMsgIDs.Add( msgID );
+            GetErrorListener().Warning( msg );
         }
 
-        public static void grammarWarning( int msgID,
+        public static void GrammarWarning( int msgID,
                                           Grammar g,
                                           IToken token,
                                           Object arg )
         {
-            grammarWarning( msgID, g, token, arg, null );
+            GrammarWarning( msgID, g, token, arg, null );
         }
 
-        public static void grammarWarning( int msgID,
+        public static void GrammarWarning( int msgID,
                                           Grammar g,
                                           IToken token )
         {
-            grammarWarning( msgID, g, token, null, null );
+            GrammarWarning( msgID, g, token, null, null );
         }
 
-        public static void syntaxError( int msgID,
+        public static void SyntaxError( int msgID,
                                        Grammar grammar,
                                        IToken token,
                                        Object arg,
                                        RecognitionException re )
         {
-            getErrorState().errors++;
-            getErrorState().errorMsgIDs.Add( msgID );
-            getErrorListener().error(
+            GetErrorState().errors++;
+            GetErrorState().errorMsgIDs.Add( msgID );
+            GetErrorListener().Error(
                 new GrammarSyntaxMessage( msgID, grammar, token, arg, re )
             );
         }
 
-        public static void internalError( Object error, Exception e )
+        public static void InternalError( Object error, Exception e )
         {
-            StackFrame location = getLastNonErrorManagerCodeLocation( e );
+            StackFrame location = GetLastNonErrorManagerCodeLocation( e );
             String msg = "Exception " + e + "@" + location + ": " + error;
-            ErrorManager.error( MSG_INTERNAL_ERROR, msg );
+            ErrorManager.Error( MSG_INTERNAL_ERROR, msg );
         }
 
-        public static void internalError( Object error )
+        public static void InternalError( Object error )
         {
             StackFrame location =
-                getLastNonErrorManagerCodeLocation( new Exception() );
+                GetLastNonErrorManagerCodeLocation( new Exception() );
             String msg = location + ": " + error;
-            ErrorManager.error( MSG_INTERNAL_ERROR, msg );
+            ErrorManager.Error( MSG_INTERNAL_ERROR, msg );
         }
 
-        public static bool doNotAttemptAnalysis()
+        public static bool DoNotAttemptAnalysis()
         {
-            return !getErrorState().errorMsgIDs.And( ERRORS_FORCING_NO_ANALYSIS ).IsNil;
+            return !GetErrorState().errorMsgIDs.And( ERRORS_FORCING_NO_ANALYSIS ).IsNil;
         }
 
-        public static bool doNotAttemptCodeGen()
+        public static bool DoNotAttemptCodeGen()
         {
-            return doNotAttemptAnalysis() ||
-                   !getErrorState().errorMsgIDs.And( ERRORS_FORCING_NO_CODEGEN ).IsNil;
+            return DoNotAttemptAnalysis() ||
+                   !GetErrorState().errorMsgIDs.And( ERRORS_FORCING_NO_CODEGEN ).IsNil;
         }
 
         /** Return first non ErrorManager code location for generating messages */
-        private static StackFrame getLastNonErrorManagerCodeLocation( Exception e )
+        private static StackFrame GetLastNonErrorManagerCodeLocation( Exception e )
         {
             StackFrame[] stack = e.getStackTrace();
             int i = 0;
@@ -896,17 +896,17 @@ namespace Antlr3.Tool
 
         // A S S E R T I O N  C O D E
 
-        public static void assertTrue( bool condition, String message )
+        public static void AssertTrue( bool condition, String message )
         {
             if ( !condition )
             {
-                internalError( message );
+                InternalError( message );
             }
         }
 
         // S U P P O R T  C O D E
 
-        static bool initIdToMessageNameMapping()
+        static bool InitIdToMessageNameMapping()
         {
             // make sure a message exists, even if it's just to indicate a problem
             for ( int i = 0; i < idToMessageTemplateName.Length; i++ )
@@ -948,7 +948,7 @@ namespace Antlr3.Tool
         /** Use reflection to find list of MSG_ fields and then verify a
          *  template exists for each one from the locale's group.
          */
-        static bool verifyMessages()
+        static bool VerifyMessages()
         {
             bool ok = true;
             FieldInfo[] fields = typeof( ErrorManager ).GetFields();
@@ -983,7 +983,7 @@ namespace Antlr3.Tool
         }
 
         /** Verify the message format template group */
-        static bool verifyFormat()
+        static bool VerifyFormat()
         {
             bool ok = true;
             if ( !format.IsDefined( "location" ) )
@@ -1007,21 +1007,21 @@ namespace Antlr3.Tool
         /** If there are errors during ErrorManager init, we have no choice
          *  but to go to System.err.
          */
-        static void rawError( String msg )
+        static void RawError( String msg )
         {
             Console.Error.WriteLine( msg );
         }
 
-        static void rawError( String msg, Exception e )
+        static void RawError( String msg, Exception e )
         {
-            rawError( msg );
+            RawError( msg );
             e.PrintStackTrace( Console.Error );
         }
 
         /** I *think* this will allow Tool subclasses to exit gracefully
          *  for GUIs etc...
          */
-        public static void panic()
+        public static void Panic()
         {
             Tool tool = (Tool)threadToToolMap.get( Thread.CurrentThread );
             if ( tool == null )

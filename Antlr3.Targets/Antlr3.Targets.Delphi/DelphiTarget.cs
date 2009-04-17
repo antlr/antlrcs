@@ -62,7 +62,7 @@ namespace Antlr3.Targets
         public override string GetTargetCharLiteralFromANTLRCharLiteral( CodeGenerator generator, string literal )
         {
             StringBuilder buf = new StringBuilder();
-            int c = Grammar.getCharValueFromGrammarCharLiteral( literal );
+            int c = Grammar.GetCharValueFromGrammarCharLiteral( literal );
             if ( c < Label.MIN_CHAR_VALUE )
             {
                 return "0";

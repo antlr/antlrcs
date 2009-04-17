@@ -155,7 +155,7 @@ namespace Antlr3.Tool
         public CompositeGrammar( Grammar g )
             : this()
         {
-            setDelegationRoot( g );
+            SetDelegationRoot( g );
         }
 
         #region Properties
@@ -163,30 +163,30 @@ namespace Antlr3.Tool
         {
             get
             {
-                return getRootGrammar();
+                return GetRootGrammar();
             }
         }
         #endregion
 
-        public virtual void setDelegationRoot( Grammar root )
+        public virtual void SetDelegationRoot( Grammar root )
         {
             delegateGrammarTreeRoot = new CompositeGrammarTree( root );
             root.compositeTreeNode = delegateGrammarTreeRoot;
         }
 
-        public virtual Rule getRule( string ruleName )
+        public virtual Rule GetRule( string ruleName )
         {
-            return delegateGrammarTreeRoot.getRule( ruleName );
+            return delegateGrammarTreeRoot.GetRule( ruleName );
         }
 
-        public virtual object getOption( string key )
+        public virtual object GetOption( string key )
         {
-            return delegateGrammarTreeRoot.getOption( key );
+            return delegateGrammarTreeRoot.GetOption( key );
         }
 
         /** Add delegate grammar as child of delegator */
 #if WTF
-        public void addGrammar( Grammar delegator, Grammar @delegate )
+        public void AddGrammar( Grammar delegator, Grammar @delegate )
         {
             if ( delegator.compositeTreeNode == null )
             {
@@ -202,16 +202,16 @@ namespace Antlr3.Tool
             @delegate.composite = this;
         }
 #else
-        public virtual void addGrammar( Grammar delegator, Grammar @delegate )
+        public virtual void AddGrammar( Grammar delegator, Grammar @delegate )
         {
             throw new System.NotImplementedException();
         }
 #endif
 
         /** Get parent of this grammar */
-        public virtual Grammar getDelegator( Grammar g )
+        public virtual Grammar GetDelegator( Grammar g )
         {
-            CompositeGrammarTree me = delegateGrammarTreeRoot.findNode( g );
+            CompositeGrammarTree me = delegateGrammarTreeRoot.FindNode( g );
             if ( me == null )
             {
                 return null; // not found
@@ -227,21 +227,21 @@ namespace Antlr3.Tool
          *  The grammars are in delegation tree preorder.  Don't include g itself
          *  in list as it is not a delegate of itself.
          */
-        public virtual IList<Grammar> getDelegates( Grammar g )
+        public virtual IList<Grammar> GetDelegates( Grammar g )
         {
-            CompositeGrammarTree t = delegateGrammarTreeRoot.findNode( g );
+            CompositeGrammarTree t = delegateGrammarTreeRoot.FindNode( g );
             if ( t == null )
             {
                 return null; // no delegates
             }
-            IList<Grammar> grammars = t.getPostOrderedGrammarList();
+            IList<Grammar> grammars = t.GetPostOrderedGrammarList();
             grammars.RemoveAt( grammars.Count - 1 ); // remove g (last one)
             return grammars;
         }
 
-        public virtual IList<Grammar> getDirectDelegates( Grammar g )
+        public virtual IList<Grammar> GetDirectDelegates( Grammar g )
         {
-            CompositeGrammarTree t = delegateGrammarTreeRoot.findNode( g );
+            CompositeGrammarTree t = delegateGrammarTreeRoot.FindNode( g );
             IList<CompositeGrammarTree> children = t.children;
             if ( children == null )
             {
@@ -257,28 +257,28 @@ namespace Antlr3.Tool
         }
 
         /** Get delegates below direct delegates of g */
-        public virtual IList<Grammar> getIndirectDelegates( Grammar g )
+        public virtual IList<Grammar> GetIndirectDelegates( Grammar g )
         {
             //IList<Grammar> direct = getDirectDelegates( g );
             //IList<Grammar> delegates = getDelegates( g );
             //delegates.removeAll( direct );
             //return delegates;
-            return getDelegates( g )
-                .Except( getDirectDelegates( g ) ?? Enumerable.Empty<Grammar>() )
+            return GetDelegates( g )
+                .Except( GetDirectDelegates( g ) ?? Enumerable.Empty<Grammar>() )
                 .ToArray();
         }
 
         /** Return list of delegate grammars from root down to g.
          *  Order is root, ..., g.parent.  (g not included).
          */
-        public virtual IList<Grammar> getDelegators( Grammar g )
+        public virtual IList<Grammar> GetDelegators( Grammar g )
         {
             if ( g == delegateGrammarTreeRoot.grammar )
             {
                 return null;
             }
             List<Grammar> grammars = new List<Grammar>();
-            CompositeGrammarTree t = delegateGrammarTreeRoot.findNode( g );
+            CompositeGrammarTree t = delegateGrammarTreeRoot.FindNode( g );
             // walk backwards to root, collecting grammars
             CompositeGrammarTree p = t.parent;
             while ( p != null )
@@ -298,17 +298,17 @@ namespace Antlr3.Tool
          *  should not be instantiated directly for use as parsers (you can create
          *  them to pass to the root parser's ctor as arguments).
          */
-        public virtual HashSet<Rule> getDelegatedRules( Grammar g )
+        public virtual HashSet<Rule> GetDelegatedRules( Grammar g )
         {
             if ( g != delegateGrammarTreeRoot.grammar )
             {
                 return null;
             }
 
-            HashSet<Rule> rules = getAllImportedRules( g );
+            HashSet<Rule> rules = GetAllImportedRules( g );
             foreach ( Rule r in rules.ToArray() )
             {
-                Rule localRule = g.getLocallyDefinedRule( r.name );
+                Rule localRule = g.GetLocallyDefinedRule( r.name );
                 // if locally defined or it's not local but synpred, don't make a delegation method
                 if ( localRule != null || r.isSynPred )
                 {
@@ -322,12 +322,12 @@ namespace Antlr3.Tool
         /** Get all rule definitions from all direct/indirect delegate grammars
          *  of g.
          */
-        public virtual HashSet<Rule> getAllImportedRules( Grammar g )
+        public virtual HashSet<Rule> GetAllImportedRules( Grammar g )
         {
             HashSet<string> ruleNames = new HashSet<string>();
             HashSet<Rule> rules = new HashSet<Rule>();
-            CompositeGrammarTree subtreeRoot = delegateGrammarTreeRoot.findNode( g );
-            IList<Grammar> grammars = subtreeRoot.getPostOrderedGrammarList();
+            CompositeGrammarTree subtreeRoot = delegateGrammarTreeRoot.FindNode( g );
+            IList<Grammar> grammars = subtreeRoot.GetPostOrderedGrammarList();
             // walk all grammars
             foreach ( Grammar grammar in grammars )
             {
@@ -345,7 +345,7 @@ namespace Antlr3.Tool
             return rules;
         }
 
-        public virtual Grammar getRootGrammar()
+        public virtual Grammar GetRootGrammar()
         {
             if ( delegateGrammarTreeRoot == null )
             {
@@ -354,9 +354,9 @@ namespace Antlr3.Tool
             return delegateGrammarTreeRoot.grammar;
         }
 
-        public virtual Grammar getGrammar( string grammarName )
+        public virtual Grammar GetGrammar( string grammarName )
         {
-            CompositeGrammarTree t = delegateGrammarTreeRoot.findNode( grammarName );
+            CompositeGrammarTree t = delegateGrammarTreeRoot.FindNode( grammarName );
             if ( t != null )
             {
                 return t.grammar;
@@ -366,28 +366,28 @@ namespace Antlr3.Tool
 
         // NFA spans multiple grammars, must handle here
 
-        public virtual int getNewNFAStateNumber()
+        public virtual int GetNewNFAStateNumber()
         {
             return stateCounter++;
         }
 
-        public virtual void addState( NFAState state )
+        public virtual void AddState( NFAState state )
         {
             numberToStateList.setSize( state.stateNumber + 1 ); // make sure we have room
             numberToStateList[state.stateNumber] = state;
         }
 
-        public virtual NFAState getState( int s )
+        public virtual NFAState GetState( int s )
         {
             return (NFAState)numberToStateList[s];
         }
 
-        public virtual void assignTokenTypes()
+        public virtual void AssignTokenTypes()
         {
             // ASSIGN TOKEN TYPES for all delegates (same walker)
             //System.Console.Out.WriteLine( "### assign types" );
             //ttypesWalker.setASTNodeClass( "org.antlr.tool.GrammarAST" );
-            IList<Grammar> grammars = delegateGrammarTreeRoot.getPostOrderedGrammarList();
+            IList<Grammar> grammars = delegateGrammarTreeRoot.GetPostOrderedGrammarList();
             for ( int i = 0; grammars != null && i < grammars.Count; i++ )
             {
                 Grammar g = (Grammar)grammars[i];
@@ -399,40 +399,40 @@ namespace Antlr3.Tool
 
                     // the walker has filled literals, tokens, and alias tables.
                     // now tell it to define them in the root grammar
-                    ttypesWalker.defineTokens( delegateGrammarTreeRoot.grammar );
+                    ttypesWalker.DefineTokens( delegateGrammarTreeRoot.grammar );
                 }
                 catch ( RecognitionException re )
                 {
-                    ErrorManager.error( ErrorManager.MSG_BAD_AST_STRUCTURE,
+                    ErrorManager.Error( ErrorManager.MSG_BAD_AST_STRUCTURE,
                                        re );
                 }
             }
         }
 
-        public virtual void defineGrammarSymbols()
+        public virtual void DefineGrammarSymbols()
         {
-            delegateGrammarTreeRoot.trimLexerImportsIntoCombined();
-            IList<Grammar> grammars = delegateGrammarTreeRoot.getPostOrderedGrammarList();
+            delegateGrammarTreeRoot.TrimLexerImportsIntoCombined();
+            IList<Grammar> grammars = delegateGrammarTreeRoot.GetPostOrderedGrammarList();
             for ( int i = 0; grammars != null && i < grammars.Count; i++ )
             {
                 Grammar g = (Grammar)grammars[i];
-                g.defineGrammarSymbols();
+                g.DefineGrammarSymbols();
             }
             for ( int i = 0; grammars != null && i < grammars.Count; i++ )
             {
                 Grammar g = (Grammar)grammars[i];
-                g.checkNameSpaceAndActions();
+                g.CheckNameSpaceAndActions();
             }
-            minimizeRuleSet();
+            MinimizeRuleSet();
         }
 
-        public virtual void createNFAs()
+        public virtual void CreateNFAs()
         {
-            if ( ErrorManager.doNotAttemptAnalysis() )
+            if ( ErrorManager.DoNotAttemptAnalysis() )
             {
                 return;
             }
-            IList<Grammar> grammars = delegateGrammarTreeRoot.getPostOrderedGrammarList();
+            IList<Grammar> grammars = delegateGrammarTreeRoot.GetPostOrderedGrammarList();
             IList<string> names = new List<string>();
             for ( int i = 0; i < grammars.Count; i++ )
             {
@@ -443,22 +443,22 @@ namespace Antlr3.Tool
             for ( int i = 0; grammars != null && i < grammars.Count; i++ )
             {
                 Grammar g = (Grammar)grammars[i];
-                g.createRuleStartAndStopNFAStates();
+                g.CreateRuleStartAndStopNFAStates();
             }
             for ( int i = 0; grammars != null && i < grammars.Count; i++ )
             {
                 Grammar g = (Grammar)grammars[i];
-                g.buildNFA();
+                g.BuildNFA();
             }
         }
 
-        public virtual void minimizeRuleSet()
+        public void MinimizeRuleSet()
         {
             HashSet<string> ruleDefs = new HashSet<string>();
-            _minimizeRuleSet( ruleDefs, delegateGrammarTreeRoot );
+            MinimizeRuleSetCore( ruleDefs, delegateGrammarTreeRoot );
         }
 
-        public virtual void _minimizeRuleSet( HashSet<string> ruleDefs,
+        protected virtual void MinimizeRuleSetCore( HashSet<string> ruleDefs,
                                      CompositeGrammarTree p )
         {
             HashSet<string> localRuleDefs = new HashSet<string>();
@@ -490,7 +490,7 @@ namespace Antlr3.Tool
             {
                 foreach ( CompositeGrammarTree @delegate in p.children )
                 {
-                    _minimizeRuleSet( ruleDefs, @delegate );
+                    MinimizeRuleSetCore( ruleDefs, @delegate );
                 }
             }
         }

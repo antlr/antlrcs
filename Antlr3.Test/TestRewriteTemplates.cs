@@ -258,7 +258,7 @@ namespace AntlrUnitTests
         [TestMethod]
         public void TestRewriteRuleAndRewriteModeOnSimpleElements() /*throws Exception*/ {
             ErrorQueue equeue = new ErrorQueue();
-            ErrorManager.setErrorListener( equeue );
+            ErrorManager.SetErrorListener( equeue );
             Grammar g = new Grammar(
                 "tree grammar TP;\n" +
                 "options {ASTLabelType=CommonTree; output=template; rewrite=true;}\n" +
@@ -271,7 +271,7 @@ namespace AntlrUnitTests
             AntlrTool antlr = newTool();
             antlr.SetOutputDirectory( null ); // write to /dev/null
             CodeGenerator generator = new CodeGenerator( antlr, g, "Java" );
-            g.setCodeGenerator( generator );
+            g.CodeGenerator = generator;
             generator.GenRecognizer();
 
             assertEquals( "unexpected errors: " + equeue, 0, equeue.warnings.Count );
@@ -280,7 +280,7 @@ namespace AntlrUnitTests
         [TestMethod]
         public void TestRewriteRuleAndRewriteModeIgnoreActionsPredicates() /*throws Exception*/ {
             ErrorQueue equeue = new ErrorQueue();
-            ErrorManager.setErrorListener( equeue );
+            ErrorManager.SetErrorListener( equeue );
             Grammar g = new Grammar(
                 "tree grammar TP;\n" +
                 "options {ASTLabelType=CommonTree; output=template; rewrite=true;}\n" +
@@ -294,7 +294,7 @@ namespace AntlrUnitTests
             AntlrTool antlr = newTool();
             antlr.SetOutputDirectory( null ); // write to /dev/null
             CodeGenerator generator = new CodeGenerator( antlr, g, "Java" );
-            g.setCodeGenerator( generator );
+            g.CodeGenerator = generator;
             generator.GenRecognizer();
 
             assertEquals( "unexpected errors: " + equeue, 0, equeue.warnings.Count );
@@ -303,7 +303,7 @@ namespace AntlrUnitTests
         [TestMethod]
         public void TestRewriteRuleAndRewriteModeNotSimple() /*throws Exception*/ {
             ErrorQueue equeue = new ErrorQueue();
-            ErrorManager.setErrorListener( equeue );
+            ErrorManager.SetErrorListener( equeue );
             Grammar g = new Grammar(
                 "tree grammar TP;\n" +
                 "options {ASTLabelType=CommonTree; output=template; rewrite=true;}\n" +
@@ -314,7 +314,7 @@ namespace AntlrUnitTests
             AntlrTool antlr = newTool();
             antlr.SetOutputDirectory( null ); // write to /dev/null
             CodeGenerator generator = new CodeGenerator( antlr, g, "Java" );
-            g.setCodeGenerator( generator );
+            g.CodeGenerator = generator;
             generator.GenRecognizer();
 
             assertEquals( "unexpected errors: " + equeue, 2, equeue.warnings.Count );
@@ -323,7 +323,7 @@ namespace AntlrUnitTests
         [TestMethod]
         public void TestRewriteRuleAndRewriteModeRefRule() /*throws Exception*/ {
             ErrorQueue equeue = new ErrorQueue();
-            ErrorManager.setErrorListener( equeue );
+            ErrorManager.SetErrorListener( equeue );
             Grammar g = new Grammar(
                 "tree grammar TP;\n" +
                 "options {ASTLabelType=CommonTree; output=template; rewrite=true;}\n" +
@@ -335,7 +335,7 @@ namespace AntlrUnitTests
             AntlrTool antlr = newTool();
             antlr.SetOutputDirectory( null ); // write to /dev/null
             CodeGenerator generator = new CodeGenerator( antlr, g, "Java" );
-            g.setCodeGenerator( generator );
+            g.CodeGenerator = generator;
             generator.GenRecognizer();
 
             assertEquals( "unexpected errors: " + equeue, 2, equeue.warnings.Count );

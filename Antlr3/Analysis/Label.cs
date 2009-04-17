@@ -413,7 +413,7 @@ namespace Antlr3.Analysis
             case SET:
                 return _labelSet.ToString( g );
             default:
-                return g.getTokenDisplayName( label );
+                return g.GetTokenDisplayName( label );
             }
         }
 

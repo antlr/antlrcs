@@ -824,7 +824,7 @@ namespace AntlrUnitTests
             Grammar g = new Grammar(
                 "grammar t;\n" +
                 "A : '{' ~('}')* '}';\n" );
-            string result = g.getLexerGrammar();
+            string result = g.GetLexerGrammar();
             string expecting =
                 "lexer grammar t;" + NewLine +
                 "" + NewLine +
@@ -1256,10 +1256,10 @@ namespace AntlrUnitTests
 
         private void checkRule( Grammar g, string rule, string expecting )
         {
-            g.buildNFA();
-            State startState = g.getRuleStartState( rule );
+            g.BuildNFA();
+            State startState = g.GetRuleStartState( rule );
             FASerializer serializer = new FASerializer( g );
-            string result = serializer.serialize( startState );
+            string result = serializer.Serialize( startState );
 
             //System.out.print(result);
             assertEquals( expecting, result );

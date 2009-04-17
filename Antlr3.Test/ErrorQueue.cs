@@ -45,22 +45,22 @@ namespace AntlrUnitTests
         internal List<Message> errors = new List<Message>();
         internal List<Message> warnings = new List<Message>();
 
-        public virtual void info( string msg )
+        public virtual void Info( string msg )
         {
             infos.Add( msg );
         }
 
-        public virtual void error( Message msg )
+        public virtual void Error( Message msg )
         {
             errors.Add( msg );
         }
 
-        public virtual void warning( Message msg )
+        public virtual void Warning( Message msg )
         {
             warnings.Add( msg );
         }
 
-        public virtual void error( ToolMessage msg )
+        public virtual void Error( ToolMessage msg )
         {
             errors.Add( msg );
         }

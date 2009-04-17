@@ -1,4 +1,4 @@
-// $ANTLR 3.1.2 Grammars\\ANTLR.g3 2009-04-10 15:22:15
+// $ANTLR 3.1.2 Grammars\\ANTLR.g3 2009-04-16 21:27:00
 
 // The variable 'variable' is assigned but its value is never used.
 #pragma warning disable 219
@@ -1590,7 +1590,7 @@ public partial class ANTLRLexer : Lexer
 			if ( state.backtracking == 0 )
 			{
 
-							ErrorManager.syntaxError(
+							ErrorManager.SyntaxError(
 								ErrorManager.MSG_SYNTAX_ERROR,
 								null,
 								state.token,
@@ -1668,7 +1668,7 @@ public partial class ANTLRLexer : Lexer
 			if ( state.backtracking == 0 )
 			{
 
-							StringBuffer s = Grammar.getUnescapedStringFromGrammarStringLiteral(Text);
+							StringBuffer s = Grammar.GetUnescapedStringFromGrammarStringLiteral(Text);
 							if ( s.Length > 1 )
 							{
 								_type = STRING_LITERAL;

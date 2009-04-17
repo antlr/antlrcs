@@ -198,13 +198,13 @@ grammar_![Grammar g]
 }
 @after
 {
-	cleanup( $tree );
+	Cleanup( $tree );
 }
 	:	//hdr:headerSpec
 		( ACTION )?
 		( cmt=DOC_COMMENT  )?
-		gr=grammarType gid=id {Grammar.setName($gid.text);} SEMI
-		(	optionsSpec {opts = $optionsSpec.opts; Grammar.setOptions(opts, $optionsSpec.start);}
+		gr=grammarType gid=id {Grammar.SetName($gid.text);} SEMI
+		(	optionsSpec {opts = $optionsSpec.opts; Grammar.SetOptions(opts, $optionsSpec.start);}
 		)?
 		(ig=delegateGrammars)?
 		(ts=tokensSpec)?
@@ -277,8 +277,8 @@ delegateGrammars
 	;
 
 delegateGrammar
-	:	lab=id ASSIGN^ g=id {Grammar.importGrammar($g.tree, $lab.text);}
-	|	g2=id               {Grammar.importGrammar($g2.tree,null);}
+	:	lab=id ASSIGN^ g=id {Grammar.ImportGrammar($g.tree, $lab.text);}
+	|	g2=id               {Grammar.ImportGrammar($g2.tree,null);}
 	;
 
 tokensSpec
@@ -352,7 +352,7 @@ rule
 				EOR[$SEMI,"<end-of-rule>"])
 	)
 	{
-		((GrammarAST)$tree.GetChild(0)).setBlockOptions( $optionsSpec.opts );
+		((GrammarAST)$tree.GetChild(0)).BlockOptions = $optionsSpec.opts;
 	}
 	;
 
@@ -390,7 +390,7 @@ block
 			// 2nd alt and optional branch ambig due to
 			// linear approx LL(2) issue.  COLON ACTION
 			// matched correctly in 2nd alt.
-			(optionsSpec {((GrammarAST)$tree.GetChild(0)).setOptions(Grammar,$optionsSpec.opts);})?
+			(optionsSpec {((GrammarAST)$tree.GetChild(0)).SetOptions(Grammar,$optionsSpec.opts);})?
 			( ruleActions )?
 			COLON
 		|	ACTION COLON
@@ -400,13 +400,13 @@ block
 		{
 			stream_alternative.Add( $r.tree );
 			if ( LA(1)==OR || (LA(2)==QUESTION||LA(2)==PLUS||LA(2)==STAR) )
-				prefixWithSynPred($a.tree);
+				PrefixWithSynPred($a.tree);
 		}
 		(	OR a=alternative r=rewrite
 			{
 				stream_alternative.Add( $r.tree );
 				if (LA(1)==OR||(LA(2)==QUESTION||LA(2)==PLUS||LA(2)==STAR))
-					prefixWithSynPred($a.tree);
+					PrefixWithSynPred($a.tree);
 			}
 		)*
 
@@ -424,15 +424,15 @@ altList[IDictionary<string, object> opts]
 	:	( -> BLOCK[$start,"BLOCK"] )
 		{
 			blkRoot = (GrammarAST)$tree.GetChild(0);
-			blkRoot.setBlockOptions( $opts );
+			blkRoot.BlockOptions = $opts;
 			currentBlockAST = blkRoot;
 		}
 		(	a1=alternative r1=rewrite
-			{if (LA(1)==OR||(LA(2)==QUESTION||LA(2)==PLUS||LA(2)==STAR)) prefixWithSynPred($a1.tree);}
+			{if (LA(1)==OR||(LA(2)==QUESTION||LA(2)==PLUS||LA(2)==STAR)) PrefixWithSynPred($a1.tree);}
 			-> $a1 $r1?
 		)
 		(	OR a2=alternative r2=rewrite
-			{if (LA(1)==OR||(LA(2)==QUESTION||LA(2)==PLUS||LA(2)==STAR)) prefixWithSynPred($a2.tree);}
+			{if (LA(1)==OR||(LA(2)==QUESTION||LA(2)==PLUS||LA(2)==STAR)) PrefixWithSynPred($a2.tree);}
 			-> $altList $a2 $r2?
 		)*
 		-> ^({blkRoot} $altList EOB["<end-of-block>"])
@@ -550,7 +550,7 @@ ebnf
 			// ignore for lexer rules in combined
 			-> {GrammarType == COMBINED_GRAMMAR && char.IsUpper(currentRuleName[0])}? ^(SYNPRED[$start,"=>"] block)
 			// create manually specified (...)=> predicate; convert to sempred
-			-> {createSynSemPredFromBlock($block.tree, SYN_SEMPRED)}
+			-> {CreateSynSemPredFromBlock($block.tree, SYN_SEMPRED)}
 		|	ROOT
 			-> ^(ROOT block)
 		|	BANG
@@ -579,7 +579,7 @@ terminal
 		{
 			if ( atTreeRoot )
 			{
-				ErrorManager.syntaxError(
+				ErrorManager.SyntaxError(
 					ErrorManager.MSG_WILDCARD_AS_ROOT,Grammar,$wi,null,null);
 			}
 		}
@@ -596,14 +596,14 @@ defaultNodeOption[GrammarAST terminalAST]
 StringBuffer buf = new StringBuffer();
 }
 	:	i=id {buf.Append($i.text);} (WILDCARD i2=id {buf.Append("."+$i2.text);})*
-		{terminalAST.setTerminalOption(Grammar,Grammar.defaultTokenOption,buf.ToString());}
+		{terminalAST.SetTerminalOption(Grammar,Grammar.defaultTokenOption,buf.ToString());}
 	;
 
 elementOption[GrammarAST terminalAST]
 	:	a=id ASSIGN^ (b=id|s=STRING_LITERAL)
 		{
 		object v = ($b.tree!=null)?$b.text:$s.text;
-		terminalAST.setTerminalOption(Grammar,$a.text,v);
+		terminalAST.SetTerminalOption(Grammar,$a.text,v);
 		}
 	;
 
@@ -627,7 +627,7 @@ currentBlockAST = save;
 		{
 			alt = (GrammarAST)$tree.GetChild(0);
 			if ( !inRewrite )
-				prefixWithSynPred(alt);
+				PrefixWithSynPred(alt);
 		}
 		(	QUESTION
 			-> OPTIONAL[$elemAST.Token,"?"]
@@ -907,7 +907,7 @@ DOLLAR : '$' ;
 STRAY_BRACKET
 	:	']'
 		{
-			ErrorManager.syntaxError(
+			ErrorManager.SyntaxError(
 				ErrorManager.MSG_SYNTAX_ERROR,
 				null,
 				state.token,
@@ -923,7 +923,7 @@ CHAR_LITERAL
 		)*
 		'\''
 		{
-			StringBuffer s = Grammar.getUnescapedStringFromGrammarStringLiteral($text);
+			StringBuffer s = Grammar.GetUnescapedStringFromGrammarStringLiteral($text);
 			if ( s.Length > 1 )
 			{
 				$type = STRING_LITERAL;

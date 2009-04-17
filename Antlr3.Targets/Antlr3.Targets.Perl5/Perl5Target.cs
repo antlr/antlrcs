@@ -46,8 +46,8 @@ namespace Antlr3.Targets
             targetCharValueEscape['$'] = "\\$";
             targetCharValueEscape['@'] = "\\@";
             targetCharValueEscape['%'] = "\\%";
-            AttributeScope.tokenScope.addAttribute( "self", null );
-            RuleLabelScope.predefinedLexerRulePropertiesScope.addAttribute( "self", null );
+            AttributeScope.tokenScope.AddAttribute( "self", null );
+            RuleLabelScope.predefinedLexerRulePropertiesScope.AddAttribute( "self", null );
         }
 
         public override string GetTargetCharLiteralFromANTLRCharLiteral( CodeGenerator generator,
@@ -55,7 +55,7 @@ namespace Antlr3.Targets
         {
             StringBuilder buf = new StringBuilder( 10 );
 
-            int c = Grammar.getCharValueFromGrammarCharLiteral( literal );
+            int c = Grammar.GetCharValueFromGrammarCharLiteral( literal );
             if ( c < Label.MIN_CHAR_VALUE )
             {
                 buf.Append( "\\x{0000}" );

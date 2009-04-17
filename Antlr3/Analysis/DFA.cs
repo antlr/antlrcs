@@ -241,7 +241,7 @@ namespace Antlr3.Analysis
             this.decisionNumber = decisionNumber;
             this._decisionNFAStartState = decisionStartState;
             nfa = decisionStartState.nfa;
-            _nAlts = nfa.grammar.getNumberOfAltsForDecisionNFA( decisionStartState );
+            _nAlts = nfa.grammar.GetNumberOfAltsForDecisionNFA( decisionStartState );
             //setOptions( nfa.grammar.getDecisionOptions(getDecisionNumber()) );
             InitAltRelatedInfo();
 
@@ -532,7 +532,7 @@ namespace Antlr3.Analysis
             }
             if ( snum != NumberOfStates )
             {
-                ErrorManager.internalError( "DFA " + decisionNumber + ": " +
+                ErrorManager.InternalError( "DFA " + decisionNumber + ": " +
                     _decisionNFAStartState.Description + " num unique states " + NumberOfStates +
                     "!= num renumbered states " + snum );
             }
@@ -816,7 +816,7 @@ namespace Antlr3.Analysis
 
             if ( smax < 0 || smin > Label.MAX_CHAR_VALUE || smin < 0 )
             {
-                ErrorManager.internalError( "messed up: min=" + _min + ", max=" + _max );
+                ErrorManager.InternalError( "messed up: min=" + _min + ", max=" + _max );
             }
         }
 
@@ -944,7 +944,7 @@ namespace Antlr3.Analysis
         public virtual int Predict( IIntStream input )
         {
             Interpreter interp = new Interpreter( nfa.grammar, input );
-            return interp.predict( this );
+            return interp.Predict( this );
         }
 
         /** Add a new DFA state to this DFA if not already present.
@@ -1010,7 +1010,7 @@ namespace Antlr3.Analysis
                 return false;
             }
             NFAState nfaStart = NFADecisionStartState;
-            Rule r = nfa.grammar.getLocallyDefinedRule( Grammar.ARTIFICIAL_TOKENS_RULENAME );
+            Rule r = nfa.grammar.GetLocallyDefinedRule( Grammar.ARTIFICIAL_TOKENS_RULENAME );
             NFAState TokensRuleStart = r.startState;
             NFAState TokensDecisionStart =
                 (NFAState)TokensRuleStart.transition[0].target;
@@ -1027,13 +1027,13 @@ namespace Antlr3.Analysis
             { // cache for speed
                 return _userK;
             }
-            _userK = nfa.grammar.getUserMaxLookahead( decisionNumber );
+            _userK = nfa.grammar.GetUserMaxLookahead( decisionNumber );
             return _userK;
         }
 
         public virtual bool GetAutoBacktrackMode()
         {
-            return nfa.grammar.getAutoBacktrackMode( decisionNumber );
+            return nfa.grammar.GetAutoBacktrackMode( decisionNumber );
         }
 
         public virtual void SetUserMaxLookahead( int k )
@@ -1152,7 +1152,7 @@ namespace Antlr3.Analysis
                         foreach ( SemanticContext semctx in synpreds )
                         {
                             // JSystem.@out.println("synpreds: "+semctx);
-                            nfa.grammar.synPredUsedInDFA( this, semctx );
+                            nfa.grammar.SynPredUsedInDFA( this, semctx );
                         }
                     }
                 }
@@ -1220,8 +1220,8 @@ namespace Antlr3.Analysis
 
         public virtual bool GetIsGreedy()
         {
-            GrammarAST blockAST = nfa.grammar.getDecisionBlockAST( decisionNumber );
-            Object v = nfa.grammar.getBlockOption( blockAST, "greedy" );
+            GrammarAST blockAST = nfa.grammar.GetDecisionBlockAST( decisionNumber );
+            Object v = nfa.grammar.GetBlockOption( blockAST, "greedy" );
             if ( v != null && v.Equals( "false" ) )
             {
                 return false;
@@ -1257,7 +1257,7 @@ namespace Antlr3.Analysis
             {
                 return "";
             }
-            return serializer.serialize( startState, false );
+            return serializer.Serialize( startState, false );
         }
 
 #if false

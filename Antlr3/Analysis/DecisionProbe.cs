@@ -449,12 +449,12 @@ namespace Antlr3.Analysis
             for ( int a = firstAlt; a <= alt; a++ )
             {
                 NFAState s =
-                    dfa.nfa.grammar.getNFAStateForAltOfDecision( nfaStart, a );
+                    dfa.nfa.grammar.GetNFAStateForAltOfDecision( nfaStart, a );
                 path.Add( s );
             }
 
             // add first state of actual alt
-            NFAState altStart = dfa.nfa.grammar.getNFAStateForAltOfDecision( nfaStart, alt );
+            NFAState altStart = dfa.nfa.grammar.GetNFAStateForAltOfDecision( nfaStart, alt );
             NFAState isolatedAltStart = (NFAState)altStart.transition[0].target;
             path.Add( isolatedAltStart );
 
@@ -496,7 +496,7 @@ namespace Antlr3.Analysis
             // if we take too long to terminate
             if ( _nonLLStarDecision && !dfa.AutoBacktrackMode )
             {
-                ErrorManager.nonLLStarDecision( this );
+                ErrorManager.NonLLStarDecision( this );
             }
 
             if ( AnalysisTimedOut )
@@ -504,7 +504,7 @@ namespace Antlr3.Analysis
                 // only report early termination errors if !backtracking
                 if ( !dfa.AutoBacktrackMode )
                 {
-                    ErrorManager.analysisAborted( this );
+                    ErrorManager.AnalysisAborted( this );
                 }
                 // now just return...if we bailed out, don't spew other messages
                 return;
@@ -525,7 +525,7 @@ namespace Antlr3.Analysis
                     IDictionary<int, ICollection<IToken>> insufficientAltToLocations = GetIncompletelyCoveredAlts( d );
                     if ( insufficientAltToLocations != null && insufficientAltToLocations.Count > 0 )
                     {
-                        ErrorManager.insufficientPredicates( this, d, insufficientAltToLocations );
+                        ErrorManager.InsufficientPredicates( this, d, insufficientAltToLocations );
                     }
                     // don't report problem if resolved
                     if ( resolvedStates == null || !resolvedStates.Contains( d ) )
@@ -536,7 +536,7 @@ namespace Antlr3.Analysis
                         StripWildCardAlts( disabledAlts );
                         if ( disabledAlts.Count > 0 )
                         {
-                            ErrorManager.nondeterminism( this, d );
+                            ErrorManager.Nondeterminism( this, d );
                         }
                     }
                 }
@@ -548,7 +548,7 @@ namespace Antlr3.Analysis
                 //Console.Error.WriteLine( "no emanating edges for states: " + danglingStates );
                 foreach ( DFAState d in danglingStates )
                 {
-                    ErrorManager.danglingState( this, d );
+                    ErrorManager.DanglingState( this, d );
                 }
             }
 
@@ -570,7 +570,7 @@ namespace Antlr3.Analysis
                             if ( delegatedTokensAlt != null )
                             {
                                 isInheritedTokensRule = true;
-                                ErrorManager.grammarWarning( ErrorManager.MSG_IMPORTED_TOKENS_RULE_EMPTY,
+                                ErrorManager.GrammarWarning( ErrorManager.MSG_IMPORTED_TOKENS_RULE_EMPTY,
                                                             dfa.nfa.grammar,
                                                             null,
                                                             dfa.nfa.grammar.name,
@@ -583,7 +583,7 @@ namespace Antlr3.Analysis
                     }
                     else
                     {
-                        ErrorManager.unreachableAlts( this, unreachableAlts );
+                        ErrorManager.UnreachableAlts( this, unreachableAlts );
                     }
                 }
             }
@@ -601,7 +601,7 @@ namespace Antlr3.Analysis
             int lastAlt =
                 (int)sortedDisableAlts[sortedDisableAlts.Count - 1];
             GrammarAST blockAST =
-                dfa.nfa.grammar.getDecisionBlockAST( dfa.decisionNumber );
+                dfa.nfa.grammar.GetDecisionBlockAST( dfa.decisionNumber );
             //JSystem.@out.println("block with error = "+blockAST.toStringTree());
             GrammarAST lastAltAST = null;
             if ( blockAST.GetChild( 0 ).Type == ANTLRParser.OPTIONS )
@@ -656,7 +656,7 @@ namespace Antlr3.Analysis
                 var targetRules = targetToCallSiteMap.Keys;
                 var callSiteStates = targetToCallSiteMap.Values;
                 DFAState sampleBadState = (DFAState)altToDFAState.get( altI );
-                ErrorManager.recursionOverflow( this,
+                ErrorManager.RecursionOverflow( this,
                                                sampleBadState,
                                                altI,
                                                targetRules,
@@ -1039,7 +1039,7 @@ namespace Antlr3.Analysis
         {
             NFAState decisionState = dfa.NFADecisionStartState;
             NFAState altState =
-                dfa.nfa.grammar.getNFAStateForAltOfDecision( decisionState, alt );
+                dfa.nfa.grammar.GetNFAStateForAltOfDecision( decisionState, alt );
             NFAState decisionLeft = (NFAState)altState.transition[0].target;
             RuleClosureTransition ruleCallEdge =
                 (RuleClosureTransition)decisionLeft.transition[0];

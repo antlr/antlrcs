@@ -104,7 +104,7 @@ namespace Antlr3.Tool
          *  will show the incoming state machine visually.  All nodes reachable
          *  from startState will be included.
          */
-        public virtual string getDOT( State startState )
+        public virtual string GetDOT( State startState )
         {
             if ( startState == null )
             {
@@ -120,14 +120,14 @@ namespace Antlr3.Tool
                         startState.stateNumber );
                 dot.SetAttribute( "useBox",
                                  AntlrTool.internalOption_ShowNFAConfigsInDFA );
-                walkCreatingDFADOT( dot, (DFAState)startState );
+                WalkCreatingDFADOT( dot, (DFAState)startState );
             }
             else
             {
                 dot = stlib.GetInstanceOf( Path.Combine( dfaTemplateDirectoryName, "nfa" ) );
                 dot.SetAttribute( "startState",
                         startState.stateNumber );
-                walkRuleNFACreatingDOT( dot, startState );
+                WalkRuleNFACreatingDOT( dot, startState );
             }
             dot.SetAttribute( "rankdir", rankdir );
             return dot.ToString();
@@ -138,7 +138,7 @@ namespace Antlr3.Tool
          *  will show the incoming state machine visually.  All nodes reachable
          *  from startState will be included.
          */
-        public string getRuleNFADOT( State startState )
+        public string GetRuleNFADOT( State startState )
         {
             // The output DOT graph for visualization
             StringTemplate dot = stlib.GetInstanceOf( Path.Combine( dfaTemplateDirectoryName, "nfa" ) );
@@ -154,7 +154,7 @@ namespace Antlr3.Tool
          *  fill a DOT description template.  Keep filling the
          *  states and edges attributes.
          */
-        protected virtual void walkCreatingDFADOT( StringTemplate dot,
+        protected virtual void WalkCreatingDFADOT( StringTemplate dot,
                                           DFAState s )
         {
             if ( markedStates.Contains( s.stateNumber ) )
@@ -174,7 +174,7 @@ namespace Antlr3.Tool
             {
                 st = stlib.GetInstanceOf( Path.Combine( dfaTemplateDirectoryName, "state" ) );
             }
-            st.SetAttribute( "name", getStateLabel( s ) );
+            st.SetAttribute( "name", GetStateLabel( s ) );
             dot.SetAttribute( "states", st );
 
             // make a DOT edge for each transition
@@ -192,12 +192,12 @@ namespace Antlr3.Tool
                     }
                 }
                 st = stlib.GetInstanceOf( Path.Combine( dfaTemplateDirectoryName, "edge" ) );
-                st.SetAttribute( "label", getEdgeLabel( edge ) );
-                st.SetAttribute( "src", getStateLabel( s ) );
-                st.SetAttribute( "target", getStateLabel( edge.target ) );
+                st.SetAttribute( "label", GetEdgeLabel( edge ) );
+                st.SetAttribute( "src", GetStateLabel( s ) );
+                st.SetAttribute( "target", GetStateLabel( edge.target ) );
                 st.SetAttribute( "arrowhead", arrowhead );
                 dot.SetAttribute( "edges", st );
-                walkCreatingDFADOT( dot, (DFAState)edge.target ); // keep walkin'
+                WalkCreatingDFADOT( dot, (DFAState)edge.target ); // keep walkin'
             }
         }
 
@@ -207,7 +207,7 @@ namespace Antlr3.Tool
          *  for a rule so don't traverse edges to other rules and
          *  don't go past rule end state.
          */
-        protected virtual void walkRuleNFACreatingDOT( StringTemplate dot,
+        protected virtual void WalkRuleNFACreatingDOT( StringTemplate dot,
                                               State s )
         {
             if ( markedStates.Contains( s.stateNumber ) )
@@ -227,7 +227,7 @@ namespace Antlr3.Tool
             {
                 stateST = stlib.GetInstanceOf( Path.Combine( dfaTemplateDirectoryName, "state" ) );
             }
-            stateST.SetAttribute( "name", getStateLabel( s ) );
+            stateST.SetAttribute( "name", GetStateLabel( s ) );
             dot.SetAttribute( "states", stateST );
 
             if ( s.IsAcceptState )
@@ -246,7 +246,7 @@ namespace Antlr3.Tool
                     NFAState alt = (NFAState)s;
                     while ( alt != null )
                     {
-                        rankST.SetAttribute( "states", getStateLabel( alt ) );
+                        rankST.SetAttribute( "states", GetStateLabel( alt ) );
                         if ( alt.transition[1] != null )
                         {
                             alt = (NFAState)alt.transition[1].target;
@@ -278,11 +278,11 @@ namespace Antlr3.Tool
                     {
                         edgeST.SetAttribute( "label", "<" + rr.rule.name + ">" );
                     }
-                    edgeST.SetAttribute( "src", getStateLabel( s ) );
-                    edgeST.SetAttribute( "target", getStateLabel( rr.followState ) );
+                    edgeST.SetAttribute( "src", GetStateLabel( s ) );
+                    edgeST.SetAttribute( "target", GetStateLabel( rr.followState ) );
                     edgeST.SetAttribute( "arrowhead", arrowhead );
                     dot.SetAttribute( "edges", edgeST );
-                    walkRuleNFACreatingDOT( dot, rr.followState );
+                    WalkRuleNFACreatingDOT( dot, rr.followState );
                     continue;
                 }
                 if ( edge.IsAction )
@@ -297,17 +297,17 @@ namespace Antlr3.Tool
                 {
                     edgeST = stlib.GetInstanceOf( Path.Combine( dfaTemplateDirectoryName, "edge" ) );
                 }
-                edgeST.SetAttribute( "label", getEdgeLabel( edge ) );
-                edgeST.SetAttribute( "src", getStateLabel( s ) );
-                edgeST.SetAttribute( "target", getStateLabel( edge.target ) );
+                edgeST.SetAttribute( "label", GetEdgeLabel( edge ) );
+                edgeST.SetAttribute( "src", GetStateLabel( s ) );
+                edgeST.SetAttribute( "target", GetStateLabel( edge.target ) );
                 edgeST.SetAttribute( "arrowhead", arrowhead );
                 dot.SetAttribute( "edges", edgeST );
-                walkRuleNFACreatingDOT( dot, edge.target ); // keep walkin'
+                WalkRuleNFACreatingDOT( dot, edge.target ); // keep walkin'
             }
         }
 
 #if false
-        public void writeDOTFilesForAllRuleNFAs()
+        public void WriteDOTFilesForAllRuleNFAs()
         {
             var rules = grammar.Rules;
             foreach ( var r in rules )
@@ -321,7 +321,7 @@ namespace Antlr3.Tool
 #endif
 
 #if false
-        public void writeDOTFilesForAllDecisionDFAs()
+        public void WriteDOTFilesForAllDecisionDFAs()
         {
             // for debugging, create a DOT file for each decision in
             // a directory named for the grammar.
@@ -350,7 +350,7 @@ namespace Antlr3.Tool
         /** Fix edge strings so they print out in DOT properly;
          *  generate any gated predicates on edge too.
          */
-        protected virtual string getEdgeLabel( Transition edge )
+        protected virtual string GetEdgeLabel( Transition edge )
         {
             string label = edge.label.ToString( grammar );
             label = label.Replace( "\\", "\\\\" );
@@ -380,7 +380,7 @@ namespace Antlr3.Tool
             return label;
         }
 
-        protected virtual string getStateLabel( State s )
+        protected virtual string GetStateLabel( State s )
         {
             if ( s == null )
             {

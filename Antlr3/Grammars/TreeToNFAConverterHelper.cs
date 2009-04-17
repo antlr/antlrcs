@@ -70,7 +70,7 @@ namespace Antlr3.Grammars
             this.factory = factory;
         }
 
-        public IIntSet setRule( GrammarAST t )
+        public IIntSet SetRule( GrammarAST t )
         {
             TreeToNFAConverter other = new TreeToNFAConverter( grammar, nfa, factory, new CommonTreeNodeStream( t ) );
 
@@ -80,10 +80,10 @@ namespace Antlr3.Grammars
 
             return other.setRule();
         }
-        internal int testBlockAsSet( GrammarAST t )
+        internal int TestBlockAsSet( GrammarAST t )
         {
-            Rule r = grammar.getLocallyDefinedRule( currentRuleName );
-            if ( r.hasRewrite( outerAltNum ) )
+            Rule r = grammar.GetLocallyDefinedRule( currentRuleName );
+            if ( r.HasRewrite( outerAltNum ) )
                 return -1;
 
             TreeToNFAConverter other = new TreeToNFAConverter( grammar, nfa, factory, new CommonTreeNodeStream( t ) );
@@ -99,7 +99,7 @@ namespace Antlr3.Grammars
 
             return result;
         }
-        public int testSetRule( GrammarAST t )
+        public int TestSetRule( GrammarAST t )
         {
             TreeToNFAConverter other = new TreeToNFAConverter( grammar, nfa, factory, new CommonTreeNodeStream( t ) );
 
@@ -115,11 +115,11 @@ namespace Antlr3.Grammars
             return result;
         }
 
-        protected virtual void addFollowTransition( string ruleName, NFAState following )
+        protected virtual void AddFollowTransition( string ruleName, NFAState following )
         {
             //System.Console.Out.WriteLine( "adding follow link to rule " + ruleName );
             // find last link in FOLLOW chain emanating from rule
-            Rule r = grammar.getRule( ruleName );
+            Rule r = grammar.GetRule( ruleName );
             NFAState end = r.stopState;
             while ( end.GetTransition( 1 ) != null )
             {
@@ -129,7 +129,7 @@ namespace Antlr3.Grammars
             {
                 // already points to a following node
                 // gotta add another node to keep edges to a max of 2
-                NFAState n = factory.newState();
+                NFAState n = factory.NewState();
                 Transition e = new Transition( Label.EPSILON, n );
                 end.AddTransition( e );
                 end = n;
@@ -138,12 +138,12 @@ namespace Antlr3.Grammars
             end.AddTransition( followEdge );
         }
 
-        protected virtual void finish()
+        protected virtual void Finish()
         {
-            int numEntryPoints = factory.build_EOFStates( grammar.Rules );
+            int numEntryPoints = factory.BuildEofStates( grammar.Rules );
             if ( numEntryPoints == 0 )
             {
-                ErrorManager.grammarWarning( ErrorManager.MSG_NO_GRAMMAR_START_RULE,
+                ErrorManager.GrammarWarning( ErrorManager.MSG_NO_GRAMMAR_START_RULE,
                                            grammar,
                                            null,
                                            grammar.name );
@@ -164,7 +164,7 @@ namespace Antlr3.Grammars
             {
                 token = ( (NoViableAltException)ex ).token;
             }
-            ErrorManager.syntaxError(
+            ErrorManager.SyntaxError(
                 ErrorManager.MSG_SYNTAX_ERROR,
                 grammar,
                 token,

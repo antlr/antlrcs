@@ -47,7 +47,7 @@ namespace Antlr3.Grammars
         protected int outerAltNum = 0;
         protected int blockLevel = 0;
 
-        public int countAltsForRule( CommonTree t )
+        public int CountAltsForRule( CommonTree t )
         {
             return CountNodes( ALT, t );
         }
@@ -65,13 +65,13 @@ namespace Antlr3.Grammars
             return i;
         }
 
-        protected void finish()
+        protected void Finish()
         {
-            trimGrammar();
+            TrimGrammar();
         }
 
         /** Remove any lexer rules from a COMBINED; already passed to lexer */
-        protected void trimGrammar()
+        protected void TrimGrammar()
         {
             if ( grammar.type != Grammar.COMBINED )
             {
@@ -101,12 +101,12 @@ namespace Antlr3.Grammars
             //Console.Out.WriteLine( "root after removal is: " + root.ToStringList() );
         }
 
-        protected void trackInlineAction( GrammarAST actionAST )
+        protected void TrackInlineAction( GrammarAST actionAST )
         {
-            Rule r = grammar.getRule( currentRuleName );
+            Rule r = grammar.GetRule( currentRuleName );
             if ( r != null )
             {
-                r.trackInlineAction( actionAST );
+                r.TrackInlineAction( actionAST );
             }
         }
     }

@@ -145,7 +145,7 @@ namespace Antlr3.Analysis
                  decisionNumber <= _grammar.NumberOfDecisions;
                  decisionNumber++ )
             {
-                DFA dfa = _grammar.getLookaheadDFA( decisionNumber );
+                DFA dfa = _grammar.GetLookaheadDFA( decisionNumber );
                 Optimize( dfa );
             }
         }

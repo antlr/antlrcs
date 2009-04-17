@@ -61,7 +61,7 @@ namespace Antlr3.Tool
         /** Create a single-line stats report about this grammar suitable to
          *  send to the notify page at antlr.org
          */
-        public virtual string toNotifyString()
+        public virtual string ToNotifyString()
         {
             StringBuilder buf = new StringBuilder();
             buf.Append( Version );
@@ -70,7 +70,7 @@ namespace Antlr3.Tool
             buf.Append( '\t' );
             buf.Append( grammar.GrammarTypeString );
             buf.Append( '\t' );
-            buf.Append( grammar.getOption( "language" ) );
+            buf.Append( grammar.GetOption( "language" ) );
             int totalNonSynPredProductions = 0;
             int totalNonSynPredRules = 0;
             foreach ( Rule r in grammar.Rules )
@@ -87,17 +87,17 @@ namespace Antlr3.Tool
             buf.Append( '\t' );
             buf.Append( totalNonSynPredProductions );
             int numACyclicDecisions =
-                grammar.NumberOfDecisions - grammar.getNumberOfCyclicDecisions();
+                grammar.NumberOfDecisions - grammar.GetNumberOfCyclicDecisions();
             int[] depths = new int[numACyclicDecisions];
             int[] acyclicDFAStates = new int[numACyclicDecisions];
-            int[] cyclicDFAStates = new int[grammar.getNumberOfCyclicDecisions()];
+            int[] cyclicDFAStates = new int[grammar.GetNumberOfCyclicDecisions()];
             int acyclicIndex = 0;
             int cyclicIndex = 0;
             int numLL1 = 0;
             int numDec = 0;
             for ( int i = 1; i <= grammar.NumberOfDecisions; i++ )
             {
-                Grammar.Decision d = grammar.getDecision( i );
+                Grammar.Decision d = grammar.GetDecision( i );
                 if ( d.dfa == null )
                 {
                     continue;
@@ -123,7 +123,7 @@ namespace Antlr3.Tool
             buf.Append( '\t' );
             buf.Append( numDec );
             buf.Append( '\t' );
-            buf.Append( grammar.getNumberOfCyclicDecisions() );
+            buf.Append( grammar.GetNumberOfCyclicDecisions() );
             buf.Append( '\t' );
             buf.Append( numLL1 );
             buf.Append( '\t' );
@@ -169,11 +169,11 @@ namespace Antlr3.Tool
             buf.Append( '\t' );
             buf.Append( grammar.setOfDFAWhoseAnalysisTimedOut.Count );
             buf.Append( '\t' );
-            buf.Append( ErrorManager.getErrorState().errors );
+            buf.Append( ErrorManager.GetErrorState().errors );
             buf.Append( '\t' );
-            buf.Append( ErrorManager.getErrorState().warnings );
+            buf.Append( ErrorManager.GetErrorState().warnings );
             buf.Append( '\t' );
-            buf.Append( ErrorManager.getErrorState().infos );
+            buf.Append( ErrorManager.GetErrorState().infos );
             buf.Append( '\t' );
             var synpreds = grammar.SyntacticPredicates;
             int num_synpreds = synpreds != null ? synpreds.Count : 0;
@@ -187,21 +187,21 @@ namespace Antlr3.Tool
             buf.Append( '\t' );
             buf.Append( grammar.decisionsWhoseDFAsUsesSemPreds.Count );
             buf.Append( '\t' );
-            string output = (string)grammar.getOption( "output" );
+            string output = (string)grammar.GetOption( "output" );
             if ( output == null )
             {
                 output = "none";
             }
             buf.Append( output );
             buf.Append( '\t' );
-            object k = grammar.getOption( "k" );
+            object k = grammar.GetOption( "k" );
             if ( k == null )
             {
                 k = "none";
             }
             buf.Append( k );
             buf.Append( '\t' );
-            string backtrack = (string)grammar.getOption( "backtrack" );
+            string backtrack = (string)grammar.GetOption( "backtrack" );
             if ( backtrack == null )
             {
                 backtrack = "false";
@@ -210,7 +210,7 @@ namespace Antlr3.Tool
             return buf.ToString();
         }
 
-        public virtual string getBacktrackingReport()
+        public virtual string GetBacktrackingReport()
         {
             StringBuilder buf = new StringBuilder();
             buf.Append( "Backtracking report:" );
@@ -218,11 +218,11 @@ namespace Antlr3.Tool
             buf.Append( "Number of decisions that backtrack: " );
             buf.Append( grammar.decisionsWhoseDFAsUsesSynPreds.Count );
             buf.Append( newline );
-            buf.Append( getDFALocations( grammar.decisionsWhoseDFAsUsesSynPreds ) );
+            buf.Append( GetDFALocations( grammar.decisionsWhoseDFAsUsesSynPreds ) );
             return buf.ToString();
         }
 
-        public virtual string getAnalysisTimeoutReport()
+        public virtual string GetAnalysisTimeoutReport()
         {
             StringBuilder buf = new StringBuilder();
             buf.Append( "NFA conversion early termination report:" );
@@ -230,11 +230,11 @@ namespace Antlr3.Tool
             buf.Append( "Number of NFA conversions that terminated early: " );
             buf.Append( grammar.setOfDFAWhoseAnalysisTimedOut.Count );
             buf.Append( newline );
-            buf.Append( getDFALocations( grammar.setOfDFAWhoseAnalysisTimedOut ) );
+            buf.Append( GetDFALocations( grammar.setOfDFAWhoseAnalysisTimedOut ) );
             return buf.ToString();
         }
 
-        protected virtual string getDFALocations( HashSet<DFA> dfas )
+        protected virtual string GetDFALocations( HashSet<DFA> dfas )
         {
             HashSet<int> decisions = new HashSet<int>();
             StringBuilder buf = new StringBuilder();
@@ -267,10 +267,10 @@ namespace Antlr3.Tool
          */
         public override string ToString()
         {
-            return toString( toNotifyString() );
+            return ToString( ToNotifyString() );
         }
 
-        protected static string[] decodeReportData( string data )
+        protected static string[] DecodeReportData( string data )
         {
             string[] fields = new string[NUM_GRAMMAR_STATS];
             StringTokenizer st = new StringTokenizer( data, "\t" );
@@ -287,9 +287,9 @@ namespace Antlr3.Tool
             return fields;
         }
 
-        public static string toString( string notifyDataLine )
+        public static string ToString( string notifyDataLine )
         {
-            string[] fields = decodeReportData( notifyDataLine );
+            string[] fields = DecodeReportData( notifyDataLine );
             if ( fields == null )
             {
                 return null;

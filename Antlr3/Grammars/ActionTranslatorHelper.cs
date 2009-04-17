@@ -65,7 +65,7 @@ namespace Antlr3.Grammars
         {
             this.generator = generator;
             this.grammar = generator.grammar;
-            this.enclosingRule = grammar.getLocallyDefinedRule( ruleName );
+            this.enclosingRule = grammar.GetLocallyDefinedRule( ruleName );
             this.actionToken = actionAST.token;
             this.outerAltNum = actionAST.outerAltNum;
         }
@@ -78,7 +78,7 @@ namespace Antlr3.Grammars
         {
             this.generator = generator;
             grammar = generator.grammar;
-            this.enclosingRule = grammar.getRule( ruleName );
+            this.enclosingRule = grammar.GetRule( ruleName );
             this.actionToken = actionToken;
             this.outerAltNum = outerAltNum;
         }
@@ -86,7 +86,7 @@ namespace Antlr3.Grammars
         /** Return a list of strings and StringTemplate objects that
          *  represent the translated action.
          */
-        public IList translateToChunks()
+        public IList TranslateToChunks()
         {
             // JSystem.@out.println("###\naction="+action);
             IToken t;
@@ -97,9 +97,9 @@ namespace Antlr3.Grammars
             return chunks;
         }
 
-        public string translate()
+        public string Translate()
         {
-            IList theChunks = translateToChunks();
+            IList theChunks = TranslateToChunks();
             //JSystem.@out.println("chunks="+a.chunks);
             StringBuilder buf = new StringBuilder();
             for ( int i = 0; i < theChunks.Count; i++ )
@@ -111,7 +111,7 @@ namespace Antlr3.Grammars
             return buf.ToString();
         }
 
-        public IList translateAction( string action )
+        public IList TranslateAction( string action )
         {
             string rname = null;
             if ( enclosingRule != null )
@@ -122,36 +122,36 @@ namespace Antlr3.Grammars
                 new ActionTranslator( generator,
                                           rname,
                                           new CommonToken( ANTLRParser.ACTION, action ), outerAltNum );
-            return translator.translateToChunks();
+            return translator.TranslateToChunks();
         }
 
-        public bool isTokenRefInAlt( string id )
+        public bool IsTokenRefInAlt( string id )
         {
-            return enclosingRule.getTokenRefsInAlt( id, outerAltNum ) != null;
+            return enclosingRule.GetTokenRefsInAlt( id, outerAltNum ) != null;
         }
-        public bool isRuleRefInAlt( string id )
+        public bool IsRuleRefInAlt( string id )
         {
-            return enclosingRule.getRuleRefsInAlt( id, outerAltNum ) != null;
+            return enclosingRule.GetRuleRefsInAlt( id, outerAltNum ) != null;
         }
-        public Grammar.LabelElementPair getElementLabel( string id )
+        public Grammar.LabelElementPair GetElementLabel( string id )
         {
-            return enclosingRule.getLabel( id );
+            return enclosingRule.GetLabel( id );
         }
 
-        public void checkElementRefUniqueness( string @ref, bool isToken )
+        public void CheckElementRefUniqueness( string @ref, bool isToken )
         {
             IList refs = null;
             if ( isToken )
             {
-                refs = enclosingRule.getTokenRefsInAlt( @ref, outerAltNum );
+                refs = enclosingRule.GetTokenRefsInAlt( @ref, outerAltNum );
             }
             else
             {
-                refs = enclosingRule.getRuleRefsInAlt( @ref, outerAltNum );
+                refs = enclosingRule.GetRuleRefsInAlt( @ref, outerAltNum );
             }
             if ( refs != null && refs.Count > 1 )
             {
-                ErrorManager.grammarError( ErrorManager.MSG_NONUNIQUE_REF,
+                ErrorManager.GrammarError( ErrorManager.MSG_NONUNIQUE_REF,
                                           grammar,
                                           actionToken,
                                           @ref );
@@ -161,24 +161,24 @@ namespace Antlr3.Grammars
         /** For \$rulelabel.name, return the Attribute found for name.  It
          *  will be a predefined property or a return value.
          */
-        public Attribute getRuleLabelAttribute( string ruleName, string attrName )
+        public Attribute GetRuleLabelAttribute( string ruleName, string attrName )
         {
-            Rule r = grammar.getRule( ruleName );
-            AttributeScope scope = r.getLocalAttributeScope( attrName );
+            Rule r = grammar.GetRule( ruleName );
+            AttributeScope scope = r.GetLocalAttributeScope( attrName );
             if ( scope != null && !scope.isParameterScope )
             {
-                return scope.getAttribute( attrName );
+                return scope.GetAttribute( attrName );
             }
             return null;
         }
 
-        AttributeScope resolveDynamicScope( string scopeName )
+        AttributeScope ResolveDynamicScope( string scopeName )
         {
-            if ( grammar.getGlobalScope( scopeName ) != null )
+            if ( grammar.GetGlobalScope( scopeName ) != null )
             {
-                return grammar.getGlobalScope( scopeName );
+                return grammar.GetGlobalScope( scopeName );
             }
-            Rule scopeRule = grammar.getRule( scopeName );
+            Rule scopeRule = grammar.GetRule( scopeName );
             if ( scopeRule != null )
             {
                 return scopeRule.ruleScope;
@@ -186,7 +186,7 @@ namespace Antlr3.Grammars
             return null; // not a valid dynamic scope
         }
 
-        protected StringTemplate template( string name )
+        protected StringTemplate Template( string name )
         {
             StringTemplate st = generator.Templates.GetInstanceOf( name );
             chunks.Add( st );

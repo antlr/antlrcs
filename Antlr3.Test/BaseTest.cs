@@ -92,7 +92,7 @@ namespace AntlrUnitTests
             // new output dir for each test
             tmpdir = Path.GetFullPath( Path.Combine( Path.GetTempPath(), "antlr-" + currentTimeMillis() ) );
 
-            ErrorManager.resetErrorState();
+            ErrorManager.ResetErrorState();
 
             // force reset of static caches
             new StringTemplateGroup( "" );
@@ -323,7 +323,7 @@ namespace AntlrUnitTests
                 */
                 AntlrTool antlr = new AntlrTool( optionsA );
                 antlr.Process();
-                IANTLRErrorListener listener = ErrorManager.getErrorListener();
+                IANTLRErrorListener listener = ErrorManager.GetErrorListener();
                 if ( listener is ErrorQueue )
                 {
                     ErrorQueue equeue = (ErrorQueue)listener;
@@ -677,7 +677,7 @@ namespace AntlrUnitTests
              */
             assertEquals( expectedMessage.arg, foundMsg.arg );
             assertEquals( expectedMessage.arg2, foundMsg.arg2 );
-            ErrorManager.resetErrorState(); // wack errors for next test
+            ErrorManager.ResetErrorState(); // wack errors for next test
         }
 
         public /*static*/ class StreamVacuum //: Runnable

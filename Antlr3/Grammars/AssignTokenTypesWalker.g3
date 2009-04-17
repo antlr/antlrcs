@@ -140,7 +140,7 @@ grammar_[Grammar g]
 @init
 {
 	if ( state.backtracking == 0 )
-		init($g);
+		Init($g);
 }
 	:	(	^( LEXER_GRAMMAR 	  grammarSpec )
 		|	^( PARSER_GRAMMAR   grammarSpec )
@@ -176,7 +176,7 @@ option[Map opts]
 			// check for grammar-level option to import vocabulary
 			if ( currentRuleName==null && key.Equals("tokenVocab") )
 			{
-				grammar.importTokenVocabulary($ID,(string)$optionValue.value);
+				grammar.ImportTokenVocabulary($ID,(string)$optionValue.value);
 			}
 		}
 	;
@@ -218,11 +218,11 @@ tokensSpec
 	;
 
 tokenSpec
-	:	t=TOKEN_REF            {trackToken($t);}
+	:	t=TOKEN_REF            {TrackToken($t);}
 	|	^(	ASSIGN
-			t2=TOKEN_REF       {trackToken($t2);}
-			( s=STRING_LITERAL {trackString($s); alias($t2,$s);}
-			| c=CHAR_LITERAL   {trackString($c); alias($t2,$c);}
+			t2=TOKEN_REF       {TrackToken($t2);}
+			( s=STRING_LITERAL {TrackString($s); Alias($t2,$s);}
+			| c=CHAR_LITERAL   {TrackString($c); Alias($t2,$c);}
 			)
 		)
 	;
@@ -243,7 +243,7 @@ rule
 			b=block
 			(exceptionGroup)?
 			EOR
-			{trackTokenRule($id,$m.start,$b.start);}
+			{TrackTokenRule($id,$m.start,$b.start);}
 		)
 	;
 
@@ -325,9 +325,9 @@ tree_
 
 atom
 	:	^( RULE_REF (ARG_ACTION)? )
-	|	^( t=TOKEN_REF (ARG_ACTION )? ) {trackToken($t);}
-	|	c=CHAR_LITERAL   {trackString($c);}
-	|	s=STRING_LITERAL {trackString($s);}
+	|	^( t=TOKEN_REF (ARG_ACTION )? ) {TrackToken($t);}
+	|	c=CHAR_LITERAL   {TrackString($c);}
+	|	s=STRING_LITERAL {TrackString($s);}
 	|	WILDCARD
 	|	^(DOT ID atom) // scope override on rule
 	;

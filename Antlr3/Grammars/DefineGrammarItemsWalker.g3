@@ -98,7 +98,7 @@ root = $start;
 }
 @after
 {
-finish();
+Finish();
 }
 	:	^( LEXER_GRAMMAR	{grammar.type = Grammar.LEXER;} 		grammarSpec )
 	|	^( PARSER_GRAMMAR	{grammar.type = Grammar.PARSER;}		grammarSpec )
@@ -114,9 +114,9 @@ scope AttributeScopeActions;
 }
 	:	^( 'scope' name=ID attrScopeAction* attrs=ACTION )
 		{
-			AttributeScope scope = grammar.defineGlobalScope($name.text,$attrs.token);
+			AttributeScope scope = grammar.DefineGlobalScope($name.text,$attrs.token);
 			scope.isDynamicGlobalScope = true;
-			scope.addAttributes($attrs.text, ';');
+			scope.AddAttributes($attrs.text, ';');
 			foreach ( var action in $AttributeScopeActions::actions )
 				scope.DefineNamedAction( action.Key, action.Value );
 		}
@@ -158,7 +158,7 @@ action
 			)
 		 )
 		 {
-		 grammar.defineNamedAction($amp,scope,nameAST,actionAST);
+		 grammar.DefineNamedAction($amp,scope,nameAST,actionAST);
 		 }
 	;
 
@@ -207,22 +207,22 @@ rule
 				if ( Character.isUpperCase(name[0]) && grammar.type==Grammar.COMBINED )
 				{
 					// a merged grammar spec, track lexer rules and send to another grammar
-					grammar.defineLexerRuleFoundInParser($id.token, $start);
+					grammar.DefineLexerRuleFoundInParser($id.token, $start);
 				}
 				else
 				{
-					int numAlts = countAltsForRule($start);
-					grammar.defineRule($id.Token, $modifier.mod, opts, $start, $args, numAlts);
-					r = grammar.getRule(name);
+					int numAlts = CountAltsForRule($start);
+					grammar.DefineRule($id.Token, $modifier.mod, opts, $start, $args, numAlts);
+					r = grammar.GetRule(name);
 					if ( $args!=null )
 					{
-						r.parameterScope = grammar.createParameterScope(name,$args.Token);
-						r.parameterScope.addAttributes($args.text, ',');
+						r.parameterScope = grammar.CreateParameterScope(name,$args.Token);
+						r.parameterScope.AddAttributes($args.text, ',');
 					}
 					if ( $ret!=null )
 					{
-						r.returnScope = grammar.createReturnScope(name,$ret.token);
-						r.returnScope.addAttributes($ret.text, ',');
+						r.returnScope = grammar.CreateReturnScope(name,$ret.token);
+						r.returnScope.AddAttributes($ret.text, ',');
 					}
 					if ( $throwsSpec.exceptions != null )
 					{
@@ -240,13 +240,13 @@ rule
 			{
 				// copy rule options into the block AST, which is where
 				// the analysis will look for k option etc...
-				$b.start.setBlockOptions( opts );
+				$b.start.BlockOptions = opts;
 			}
 		)
 	;
 
 ruleAction[Rule r]
-	:	^(amp=AMPERSAND id=ID a=ACTION ) {if (r!=null) r.defineNamedAction($amp,$id,$a);}
+	:	^(amp=AMPERSAND id=ID a=ACTION ) {if (r!=null) r.DefineNamedAction($amp,$id,$a);}
 	;
 
 modifier returns [string mod]
@@ -277,17 +277,17 @@ scope AttributeScopeActions;
 	:	^(	'scope'
 			(	attrScopeAction* attrs=ACTION
 				{
-					r.ruleScope = grammar.createRuleScope(r.name,$attrs.token);
+					r.ruleScope = grammar.CreateRuleScope(r.name,$attrs.token);
 					r.ruleScope.isDynamicRuleScope = true;
-					r.ruleScope.addAttributes($attrs.text, ';');
+					r.ruleScope.AddAttributes($attrs.text, ';');
 					foreach ( var action in $AttributeScopeActions::actions )
 						r.ruleScope.DefineNamedAction( action.Key, action.Value );
 				}
 			)?
 			(	uses=ID
 				{
-					if ( grammar.getGlobalScope($uses.text)==null ) {
-					ErrorManager.grammarError(ErrorManager.MSG_UNKNOWN_DYNAMIC_SCOPE,
+					if ( grammar.GetGlobalScope($uses.text)==null ) {
+					ErrorManager.GrammarError(ErrorManager.MSG_UNKNOWN_DYNAMIC_SCOPE,
 					grammar,
 					$uses.token,
 					$uses.text);
@@ -333,9 +333,9 @@ alternative
 {
 	if ( state.backtracking == 0 )
 	{
-		if ( grammar.type!=Grammar.LEXER && grammar.getOption("output")!=null && blockLevel==1 )
+		if ( grammar.type!=Grammar.LEXER && grammar.GetOption("output")!=null && blockLevel==1 )
 		{
-			GrammarAST aRewriteNode = $start.findFirstType(REWRITE); // alt itself has rewrite?
+			GrammarAST aRewriteNode = $start.FindFirstType(REWRITE); // alt itself has rewrite?
 			GrammarAST rewriteAST = (GrammarAST)$start.Parent.GetChild($start.ChildIndex + 1);
 			// we have a rewrite if alt uses it inside subrule or this alt has one
 			// but don't count -> ... rewrites, which mean "do default auto construction"
@@ -345,8 +345,8 @@ alternative
 				  rewriteAST.GetChild(0)!=null &&
 				  rewriteAST.GetChild(0).Type!=ETC) )
 			{
-				Rule r = grammar.getRule(currentRuleName);
-				r.trackAltsWithRewrites($start,this.outerAltNum);
+				Rule r = grammar.GetRule(currentRuleName);
+				r.TrackAltsWithRewrites($start,this.outerAltNum);
 			}
 		}
 	}
@@ -360,11 +360,11 @@ exceptionGroup
 	;
 
 exceptionHandler
-	:   ^('catch' ARG_ACTION ACTION) {trackInlineAction($ACTION);}
+	:   ^('catch' ARG_ACTION ACTION) {TrackInlineAction($ACTION);}
 	;
 
 finallyClause
-	:    ^('finally' ACTION) {trackInlineAction($ACTION);}
+	:    ^('finally' ACTION) {TrackInlineAction($ACTION);}
 	;
 
 element
@@ -383,15 +383,15 @@ element
 				}
 				if ( e.Type==RULE_REF)
 				{
-					grammar.defineRuleRefLabel(currentRuleName,$id.token,e);
+					grammar.DefineRuleRefLabel(currentRuleName,$id.token,e);
 				}
 				else if ( e.Type==WILDCARD && grammar.type==Grammar.TREE_PARSER )
 				{
-					grammar.defineWildcardTreeLabel(currentRuleName,$id.token,e);
+					grammar.DefineWildcardTreeLabel(currentRuleName,$id.token,e);
 				}
 				else
 				{
-					grammar.defineTokenRefLabel(currentRuleName,$id.Token,e);
+					grammar.DefineTokenRefLabel(currentRuleName,$id.Token,e);
 				}
 			}
 	|	^(	PLUS_ASSIGN id2=ID a2=element
@@ -403,15 +403,15 @@ element
 				}
 				if ( a.Type==RULE_REF )
 				{
-					grammar.defineRuleListLabel(currentRuleName,$id2.Token,a);
+					grammar.DefineRuleListLabel(currentRuleName,$id2.Token,a);
 				}
 				else if ( a.Type == WILDCARD && grammar.type == Grammar.TREE_PARSER )
 				{
-					grammar.defineWildcardTreeListLabel( currentRuleName, $id2.token, a );
+					grammar.DefineWildcardTreeListLabel( currentRuleName, $id2.token, a );
 				}
 				else
 				{
-					grammar.defineTokenListLabel(currentRuleName,$id2.Token,a);
+					grammar.DefineTokenListLabel(currentRuleName,$id2.Token,a);
 				}
 			}
 		 )
@@ -421,24 +421,24 @@ element
 	|   act=ACTION
 		{
 			$act.outerAltNum = this.outerAltNum;
-			trackInlineAction($act);
+			TrackInlineAction($act);
 		}
 	|   act2=FORCED_ACTION
 		{
 			$act2.outerAltNum = this.outerAltNum;
-			trackInlineAction($act2);
+			TrackInlineAction($act2);
 		}
 	|   SEMPRED
 		{
 			$SEMPRED.outerAltNum = this.outerAltNum;
-			trackInlineAction($SEMPRED);
+			TrackInlineAction($SEMPRED);
 		}
 	|   SYN_SEMPRED
 	|   ^(BACKTRACK_SEMPRED .*)
 	|   GATED_SEMPRED
 		{
 			$GATED_SEMPRED.outerAltNum = this.outerAltNum;
-			trackInlineAction($GATED_SEMPRED);
+			TrackInlineAction($GATED_SEMPRED);
 		}
 	|   EPSILON 
 	;
@@ -467,7 +467,7 @@ dotLoop
 				// otherwise they (analysis?) look til EOF!
 				opts["k"] = 1;
 			}
-			block.setOptions(grammar,opts);
+			block.SetOptions(grammar,opts);
 		}
 	;
 
@@ -482,11 +482,11 @@ tree_
 atom[GrammarAST scope_]
 	:	^( rr=RULE_REF (rarg=ARG_ACTION)? )
 		{
-			grammar.altReferencesRule( currentRuleName, $scope_, $rr, this.outerAltNum );
+			grammar.AltReferencesRule( currentRuleName, $scope_, $rr, this.outerAltNum );
 			if ( $rarg != null )
 			{
 				$rarg.outerAltNum = this.outerAltNum;
-				trackInlineAction($rarg);
+				TrackInlineAction($rarg);
 			}
 		}
 	|	^( t=TOKEN_REF (targ=ARG_ACTION )? )
@@ -494,33 +494,33 @@ atom[GrammarAST scope_]
 			if ( $targ != null )
 			{
 				$targ.outerAltNum = this.outerAltNum;
-				trackInlineAction($targ);
+				TrackInlineAction($targ);
 			}
 			if ( grammar.type == Grammar.LEXER )
 			{
-				grammar.altReferencesRule( currentRuleName, $scope_, $t, this.outerAltNum );
+				grammar.AltReferencesRule( currentRuleName, $scope_, $t, this.outerAltNum );
 			}
 			else
 			{
-				grammar.altReferencesTokenID( currentRuleName, $t, this.outerAltNum );
+				grammar.AltReferencesTokenID( currentRuleName, $t, this.outerAltNum );
 			}
 		}
 	|	c=CHAR_LITERAL
 		{
 			if ( grammar.type != Grammar.LEXER )
 			{
-				Rule rule = grammar.getRule(currentRuleName);
+				Rule rule = grammar.GetRule(currentRuleName);
 				if ( rule != null )
-					rule.trackTokenReferenceInAlt($c, outerAltNum);
+					rule.TrackTokenReferenceInAlt($c, outerAltNum);
 			}
 		}
 	|	s=STRING_LITERAL 
 		{
 			if ( grammar.type != Grammar.LEXER )
 			{
-				Rule rule = grammar.getRule(currentRuleName);
+				Rule rule = grammar.GetRule(currentRuleName);
 				if ( rule!=null )
-					rule.trackTokenReferenceInAlt($s, outerAltNum);
+					rule.TrackTokenReferenceInAlt($s, outerAltNum);
 			}
 		}
 	|	WILDCARD
@@ -548,7 +548,7 @@ rewrite
 				if ( $pred != null )
 				{
 					$pred.outerAltNum = this.outerAltNum;
-					trackInlineAction($pred);
+					TrackInlineAction($pred);
 				}
 			}
 		)*
@@ -608,8 +608,8 @@ rewrite_atom
 {
 	if ( state.backtracking == 0 )
 	{
-		Rule r = grammar.getRule(currentRuleName);
-		var tokenRefsInAlt = r.getTokenRefsInAlt(outerAltNum);
+		Rule r = grammar.GetRule(currentRuleName);
+		var tokenRefsInAlt = r.GetTokenRefsInAlt(outerAltNum);
 		boolean imaginary =
 			$start.Type==TOKEN_REF &&
 			!tokenRefsInAlt.Contains($start.Text);
@@ -635,7 +635,7 @@ rewrite_atom
 				(	ARG_ACTION
 					{
 						$ARG_ACTION.outerAltNum = this.outerAltNum;
-						trackInlineAction($ARG_ACTION);
+						TrackInlineAction($ARG_ACTION);
 					}
 				)?
 			)
@@ -646,7 +646,7 @@ rewrite_atom
 	|	ACTION
 		{
 			$ACTION.outerAltNum = this.outerAltNum;
-			trackInlineAction($ACTION);
+			TrackInlineAction($ACTION);
 		}
 	;
 
@@ -657,7 +657,7 @@ rewrite_template
 				(	^( ARG arg=ID a=ACTION )
 					{
 						$a.outerAltNum = this.outerAltNum;
-						trackInlineAction($a);
+						TrackInlineAction($a);
 					}
 				)*
 			)
@@ -665,7 +665,7 @@ rewrite_template
 				if ( $ind!=null )
 				{
 					$ind.outerAltNum = this.outerAltNum;
-					trackInlineAction($ind);
+					TrackInlineAction($ind);
 				}
 			}
 			(	DOUBLE_QUOTE_STRING_LITERAL
@@ -675,6 +675,6 @@ rewrite_template
 	|	act=ACTION
 		{
 			$act.outerAltNum = this.outerAltNum;
-			trackInlineAction($act);
+			TrackInlineAction($act);
 		}
 	;

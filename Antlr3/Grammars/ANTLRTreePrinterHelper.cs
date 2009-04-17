@@ -45,12 +45,12 @@ namespace Antlr3.Grammars
         protected bool showActions;
         protected StringBuilder buf = new StringBuilder( 300 );
 
-        public ANTLRTreePrinter.block_return block( GrammarAST t, bool forceParens )
+        public ANTLRTreePrinter.block_return Block( GrammarAST t, bool forceParens )
         {
             ANTLRTreePrinter other = new ANTLRTreePrinter( new CommonTreeNodeStream( t ) );
             return other.block( forceParens );
         }
-        public int countAltsForBlock(GrammarAST t)
+        public int CountAltsForBlock(GrammarAST t)
         {
             int n = 0;
             for ( int i = 0; i < t.ChildCount; i++ )
@@ -78,7 +78,7 @@ namespace Antlr3.Grammars
             {
                 token = ( (NoViableAltException)ex ).token;
             }
-            ErrorManager.syntaxError(
+            ErrorManager.SyntaxError(
                 ErrorManager.MSG_SYNTAX_ERROR,
                 grammar,
                 token,
@@ -95,7 +95,7 @@ namespace Antlr3.Grammars
          *
          *  ( A | B | C )*
          */
-        public static string normalize( string g )
+        public static string Normalize( string g )
         {
             // the trim appears to take just the last \n off
             return string.Join( " ", g.Split( new char[] { ' ' }, System.StringSplitOptions.RemoveEmptyEntries ) ).Trim();

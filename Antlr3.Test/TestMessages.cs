@@ -55,7 +55,7 @@ namespace AntlrUnitTests
         {
             string action = "$other.tree = null;";
             ErrorQueue equeue = new ErrorQueue();
-            ErrorManager.setErrorListener( equeue );
+            ErrorManager.SetErrorListener( equeue );
             Grammar g = new Grammar(
                 "grammar a;\n" +
                 "options { output = AST;}" +
@@ -66,13 +66,13 @@ namespace AntlrUnitTests
                 "    ;" );
             AntlrTool antlr = newTool();
             CodeGenerator generator = new CodeGenerator( antlr, g, "Java" );
-            g.setCodeGenerator( generator );
+            g.CodeGenerator = generator;
             generator.GenRecognizer(); // forces load of templates
             ActionTranslator translator = new ActionTranslator( generator,
                                                                         "rule",
                                                                         new CommonToken( ANTLRParser.ACTION, action ), 1 );
             string rawTranslation =
-                translator.translate();
+                translator.Translate();
 
             int expectedMsgID = ErrorManager.MSG_WRITE_TO_READONLY_ATTR;
             object expectedArg = "other";

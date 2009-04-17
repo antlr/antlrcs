@@ -271,16 +271,16 @@ namespace AntlrUnitTests
 
             DecisionProbe.verbose = true; // make sure we get all error info
             ErrorQueue equeue = new ErrorQueue();
-            ErrorManager.setErrorListener( equeue );
+            ErrorManager.SetErrorListener( equeue );
             CodeGenerator generator = new CodeGenerator( newTool(), g, "Java" );
-            g.setCodeGenerator( generator );
+            g.CodeGenerator = generator;
             if ( g.NumberOfDecisions == 0 )
             {
-                g.buildNFA();
-                g.createLookaheadDFAs( false );
+                g.BuildNFA();
+                g.CreateLookaheadDFAs( false );
             }
 
-            DFA dfa = g.getLookaheadDFA( 1 );
+            DFA dfa = g.GetLookaheadDFA( 1 );
             assertEquals( null, dfa ); // can't analyze.
 
             /*
@@ -390,13 +390,13 @@ namespace AntlrUnitTests
                 ".s4-{p2}?->:s3=>2\n";
             DecisionProbe.verbose = true; // make sure we get all error info
             ErrorQueue equeue = new ErrorQueue();
-            ErrorManager.setErrorListener( equeue );
+            ErrorManager.SetErrorListener( equeue );
             CodeGenerator generator = new CodeGenerator( newTool(), g, "Java" );
-            g.setCodeGenerator( generator );
+            g.CodeGenerator = generator;
             if ( g.NumberOfDecisions == 0 )
             {
-                g.buildNFA();
-                g.createLookaheadDFAs( false );
+                g.BuildNFA();
+                g.CreateLookaheadDFAs( false );
             }
 
             assertEquals( "unexpected number of expected problems", 0, equeue.size() );
@@ -426,13 +426,13 @@ namespace AntlrUnitTests
                 ".s6-':'->:s4=>2\n";
             DecisionProbe.verbose = true; // make sure we get all error info
             ErrorQueue equeue = new ErrorQueue();
-            ErrorManager.setErrorListener( equeue );
+            ErrorManager.SetErrorListener( equeue );
             CodeGenerator generator = new CodeGenerator( newTool(), g, "Java" );
-            g.setCodeGenerator( generator );
+            g.CodeGenerator = generator;
             if ( g.NumberOfDecisions == 0 )
             {
-                g.buildNFA();
-                g.createLookaheadDFAs( false );
+                g.BuildNFA();
+                g.CreateLookaheadDFAs( false );
             }
 
             assertEquals( "unexpected number of expected problems", 0, equeue.size() );
@@ -599,7 +599,7 @@ namespace AntlrUnitTests
         [TestMethod]
         public void TestIncompleteSemanticHoistedContext() /*throws Exception*/ {
             ErrorQueue equeue = new ErrorQueue();
-            ErrorManager.setErrorListener( equeue );
+            ErrorManager.SetErrorListener( equeue );
             Grammar g = new Grammar(
                 "parser grammar t;\n" +
                 "a : b | B;\n" +
@@ -613,7 +613,7 @@ namespace AntlrUnitTests
         [TestMethod]
         public void TestIncompleteSemanticHoistedContextk2() /*throws Exception*/ {
             ErrorQueue equeue = new ErrorQueue();
-            ErrorManager.setErrorListener( equeue );
+            ErrorManager.SetErrorListener( equeue );
             Grammar g = new Grammar(
                 "parser grammar t;\n" +
                 "a : b | A B;\n" +
@@ -628,7 +628,7 @@ namespace AntlrUnitTests
         [TestMethod]
         public void TestIncompleteSemanticHoistedContextInFOLLOW() /*throws Exception*/ {
             ErrorQueue equeue = new ErrorQueue();
-            ErrorManager.setErrorListener( equeue );
+            ErrorManager.SetErrorListener( equeue );
             Grammar g = new Grammar(
                 "parser grammar t;\n" +
                 "options {k=1;}\n" + // limit to k=1 because it's LL(2); force pred hoist
@@ -643,7 +643,7 @@ namespace AntlrUnitTests
         [TestMethod]
         public void TestIncompleteSemanticHoistedContextInFOLLOWk2() /*throws Exception*/ {
             ErrorQueue equeue = new ErrorQueue();
-            ErrorManager.setErrorListener( equeue );
+            ErrorManager.SetErrorListener( equeue );
             Grammar g = new Grammar(
                 "parser grammar t;\n" +
                 "a : (A B)? ;\n" + // need FOLLOW
@@ -659,7 +659,7 @@ namespace AntlrUnitTests
         [TestMethod]
         public void TestIncompleteSemanticHoistedContextInFOLLOWDueToHiddenPred() /*throws Exception*/ {
             ErrorQueue equeue = new ErrorQueue();
-            ErrorManager.setErrorListener( equeue );
+            ErrorManager.SetErrorListener( equeue );
             Grammar g = new Grammar(
                 "parser grammar t;\n" +
                 "a : (A B)? ;\n" + // need FOLLOW
@@ -685,7 +685,7 @@ namespace AntlrUnitTests
         [TestMethod]
         public void TestIncompleteSemanticHoistedContext2() /*throws Exception*/ {
             ErrorQueue equeue = new ErrorQueue();
-            ErrorManager.setErrorListener( equeue );
+            ErrorManager.SetErrorListener( equeue );
             Grammar g = new Grammar(
                 "parser grammar t;\n" +
                 "a : b | B;\n" +
@@ -846,14 +846,14 @@ namespace AntlrUnitTests
         {
             DecisionProbe.verbose = true; // make sure we get all error info
             ErrorQueue equeue = new ErrorQueue();
-            ErrorManager.setErrorListener( equeue );
+            ErrorManager.SetErrorListener( equeue );
             CodeGenerator generator = new CodeGenerator( newTool(), g, "Java" );
-            g.setCodeGenerator( generator );
+            g.CodeGenerator = generator;
             // mimic actions of org.antlr.Tool first time for grammar g
             if ( g.NumberOfDecisions == 0 )
             {
-                g.buildNFA();
-                g.createLookaheadDFAs( false );
+                g.BuildNFA();
+                g.CreateLookaheadDFAs( false );
             }
 
             if ( equeue.size() != expectingNumWarnings )
@@ -864,9 +864,9 @@ namespace AntlrUnitTests
             assertEquals( "unexpected number of expected problems",
                        expectingNumWarnings, equeue.size() );
 
-            DFA dfa = g.getLookaheadDFA( decision );
+            DFA dfa = g.GetLookaheadDFA( decision );
             FASerializer serializer = new FASerializer( g );
-            string result = serializer.serialize( dfa.startState );
+            string result = serializer.Serialize( dfa.startState );
             //System.out.print(result);
             var unreachableAlts = dfa.UnreachableAlts;
 

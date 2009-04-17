@@ -72,7 +72,7 @@ namespace AntlrUnitTests
                                                                          new CommonToken( ANTLRParser.ACTION, action ), 0 );
             string expecting = action;
             string rawTranslation =
-                translator.translate();
+                translator.Translate();
             StringTemplateGroup templates =
                 new StringTemplateGroup( ".", typeof( AngleBracketTemplateLexer ) );
             StringTemplate actionST = new StringTemplate( templates, "<action>" );
@@ -93,14 +93,14 @@ namespace AntlrUnitTests
                 "        ;" );
             AntlrTool antlr = newTool();
             CodeGenerator generator = new CodeGenerator( antlr, g, "Java" );
-            g.setCodeGenerator( generator );
+            g.CodeGenerator = generator;
             generator.GenRecognizer(); // forces load of templates
             ActionTranslator translator =
                 new ActionTranslator( generator,
                                           "a",
                                           new CommonToken( ANTLRParser.ACTION, action ), 0 );
             string rawTranslation =
-                translator.translate();
+                translator.Translate();
             StringTemplateGroup templates =
                 new StringTemplateGroup( ".", typeof( AngleBracketTemplateLexer ) );
             StringTemplate actionST = new StringTemplate( templates, rawTranslation );
@@ -114,7 +114,7 @@ namespace AntlrUnitTests
             string expecting = "i; i.x; u; u.x";
 
             ErrorQueue equeue = new ErrorQueue();
-            ErrorManager.setErrorListener( equeue );
+            ErrorManager.SetErrorListener( equeue );
             Grammar g = new Grammar(
                 "parser grammar t;\n" +
                 "a[User u, int i]\n" +
@@ -122,12 +122,12 @@ namespace AntlrUnitTests
                 "        ;" );
             AntlrTool antlr = newTool();
             CodeGenerator generator = new CodeGenerator( antlr, g, "Java" );
-            g.setCodeGenerator( generator );
+            g.CodeGenerator = generator;
             generator.GenRecognizer(); // forces load of templates
             ActionTranslator translator = new ActionTranslator( generator, "a",
                                                                          new CommonToken( ANTLRParser.ACTION, action ), 1 );
             string rawTranslation =
-                translator.translate();
+                translator.Translate();
             StringTemplateGroup templates =
                 new StringTemplateGroup( ".", typeof( AngleBracketTemplateLexer ) );
             StringTemplate actionST = new StringTemplate( templates, rawTranslation );
@@ -144,7 +144,7 @@ namespace AntlrUnitTests
             string expecting = "x, (*a).foo(21,33), 3.2+1, '\\n', \"a,oo\\nick\", {bl, \"fdkj\"eck}";
 
             ErrorQueue equeue = new ErrorQueue();
-            ErrorManager.setErrorListener( equeue );
+            ErrorManager.SetErrorListener( equeue );
 
             // now check in actual grammar.
             Grammar g = new Grammar(
@@ -154,11 +154,11 @@ namespace AntlrUnitTests
                 "        ;" );
             AntlrTool antlr = newTool();
             CodeGenerator generator = new CodeGenerator( antlr, g, "Java" );
-            g.setCodeGenerator( generator );
+            g.CodeGenerator = generator;
             generator.GenRecognizer(); // forces load of templates
             ActionTranslator translator = new ActionTranslator( generator, "a",
                                                                          new CommonToken( ANTLRParser.ACTION, action ), 1 );
-            string rawTranslation = translator.translate();
+            string rawTranslation = translator.Translate();
             assertEquals( expecting, rawTranslation );
 
             assertEquals( "unexpected errors: " + equeue, 0, equeue.errors.Count );
@@ -167,7 +167,7 @@ namespace AntlrUnitTests
         [TestMethod]
         public void TestBracketArgParsing() /*throws Exception*/ {
             ErrorQueue equeue = new ErrorQueue();
-            ErrorManager.setErrorListener( equeue );
+            ErrorManager.SetErrorListener( equeue );
 
             // now check in actual grammar.
             Grammar g = new Grammar(
@@ -177,9 +177,9 @@ namespace AntlrUnitTests
                 "        ;" );
             AntlrTool antlr = newTool();
             CodeGenerator generator = new CodeGenerator( antlr, g, "Java" );
-            g.setCodeGenerator( generator );
+            g.CodeGenerator = generator;
             generator.GenRecognizer(); // forces load of templates
-            Rule r = g.getRule( "a" );
+            Rule r = g.GetRule( "a" );
             AttributeScope parameters = r.parameterScope;
             var attrs = parameters.Attributes;
             assertEquals( "attribute mismatch", "String[] ick", attrs.ElementAt( 0 ).Decl.ToString() );
@@ -199,7 +199,7 @@ namespace AntlrUnitTests
             string expecting = "34, '{', \"it's<\", '\"', \"\\\"\", 19";
 
             ErrorQueue equeue = new ErrorQueue();
-            ErrorManager.setErrorListener( equeue );
+            ErrorManager.SetErrorListener( equeue );
 
             // now check in actual grammar.
             Grammar g = new Grammar(
@@ -209,11 +209,11 @@ namespace AntlrUnitTests
                 "        ;" );
             AntlrTool antlr = newTool();
             CodeGenerator generator = new CodeGenerator( antlr, g, "Java" );
-            g.setCodeGenerator( generator );
+            g.CodeGenerator = generator;
             generator.GenRecognizer(); // forces load of templates
             ActionTranslator translator = new ActionTranslator( generator, "a",
                                                                          new CommonToken( ANTLRParser.ACTION, action ), 1 );
-            string rawTranslation = translator.translate();
+            string rawTranslation = translator.Translate();
             assertEquals( expecting, rawTranslation );
 
             //IList<String> expectArgs = new List<String>() {
@@ -247,7 +247,7 @@ namespace AntlrUnitTests
             string expecting = "(*a).foo(21,33,\",\")";
 
             ErrorQueue equeue = new ErrorQueue();
-            ErrorManager.setErrorListener( equeue );
+            ErrorManager.SetErrorListener( equeue );
 
             // now check in actual grammar.
             Grammar g = new Grammar(
@@ -257,11 +257,11 @@ namespace AntlrUnitTests
                 "        ;" );
             AntlrTool antlr = newTool();
             CodeGenerator generator = new CodeGenerator( antlr, g, "Java" );
-            g.setCodeGenerator( generator );
+            g.CodeGenerator = generator;
             generator.GenRecognizer(); // forces load of templates
             ActionTranslator translator = new ActionTranslator( generator, "a",
                                                                          new CommonToken( ANTLRParser.ACTION, action ), 1 );
-            string rawTranslation = translator.translate();
+            string rawTranslation = translator.Translate();
             assertEquals( expecting, rawTranslation );
 
             assertEquals( "unexpected errors: " + equeue, 0, equeue.errors.Count );
@@ -273,7 +273,7 @@ namespace AntlrUnitTests
             string expecting = "34<50";
 
             ErrorQueue equeue = new ErrorQueue();
-            ErrorManager.setErrorListener( equeue );
+            ErrorManager.SetErrorListener( equeue );
 
             // now check in actual grammar.
             Grammar g = new Grammar(
@@ -283,12 +283,12 @@ namespace AntlrUnitTests
                 "        ;" );
             AntlrTool antlr = newTool();
             CodeGenerator generator = new CodeGenerator( antlr, g, "Java" );
-            g.setCodeGenerator( generator );
+            g.CodeGenerator = generator;
             generator.GenRecognizer(); // forces load of templates
             ActionTranslator translator = new ActionTranslator( generator, "a",
                                                                          new CommonToken( ANTLRParser.ACTION, action ), 1 );
             string rawTranslation =
-                translator.translate();
+                translator.Translate();
             assertEquals( expecting, rawTranslation );
 
             assertEquals( "unexpected errors: " + equeue, 0, equeue.errors.Count );
@@ -300,14 +300,14 @@ namespace AntlrUnitTests
             string expecting = "foo.get(\"ick\");";
 
             ErrorQueue equeue = new ErrorQueue();
-            ErrorManager.setErrorListener( equeue );
+            ErrorManager.SetErrorListener( equeue );
             string grammar =
                 "parser grammar T;\n" +
                 "a[HashMap<String,String> foo]\n" +
                 "        : {" + action + "}\n" +
                 "        ;";
             Grammar g = new Grammar( grammar );
-            Rule ra = g.getRule( "a" );
+            Rule ra = g.GetRule( "a" );
             var attrs = ra.parameterScope.Attributes;
             assertEquals( "attribute mismatch", "HashMap<String,String> foo", attrs.ElementAt( 0 ).Decl.ToString() );
             assertEquals( "parameter name mismatch", "foo", attrs.ElementAt( 0 ).Name );
@@ -315,12 +315,12 @@ namespace AntlrUnitTests
 
             AntlrTool antlr = newTool();
             CodeGenerator generator = new CodeGenerator( antlr, g, "Java" );
-            g.setCodeGenerator( generator );
+            g.CodeGenerator = generator;
             generator.GenRecognizer(); // forces load of templates
             ActionTranslator translator = new ActionTranslator( generator, "a",
                                                                          new CommonToken( ANTLRParser.ACTION, action ), 1 );
             string rawTranslation =
-                translator.translate();
+                translator.Translate();
             StringTemplateGroup templates =
                 new StringTemplateGroup( ".", typeof( AngleBracketTemplateLexer ) );
             StringTemplate actionST = new StringTemplate( templates, rawTranslation );
@@ -336,14 +336,14 @@ namespace AntlrUnitTests
             string expecting = "foo.get(\"ick\"); x=3;";
 
             ErrorQueue equeue = new ErrorQueue();
-            ErrorManager.setErrorListener( equeue );
+            ErrorManager.SetErrorListener( equeue );
             string grammar =
                 "parser grammar T;\n" +
                 "a[HashMap<String,String> foo, int x, List<String> duh]\n" +
                 "        : {" + action + "}\n" +
                 "        ;";
             Grammar g = new Grammar( grammar );
-            Rule ra = g.getRule( "a" );
+            Rule ra = g.GetRule( "a" );
             var attrs = ra.parameterScope.Attributes;
 
             assertEquals( "attribute mismatch", "HashMap<String,String> foo", attrs.ElementAt( 0 ).Decl.ToString().Trim() );
@@ -360,12 +360,12 @@ namespace AntlrUnitTests
 
             AntlrTool antlr = newTool();
             CodeGenerator generator = new CodeGenerator( antlr, g, "Java" );
-            g.setCodeGenerator( generator );
+            g.CodeGenerator = generator;
             generator.GenRecognizer(); // forces load of templates
             ActionTranslator translator = new ActionTranslator( generator, "a",
                                                                          new CommonToken( ANTLRParser.ACTION, action ), 1 );
             string rawTranslation =
-                translator.translate();
+                translator.Translate();
             StringTemplateGroup templates =
                 new StringTemplateGroup( ".", typeof( AngleBracketTemplateLexer ) );
             StringTemplate actionST = new StringTemplate( templates, rawTranslation );
@@ -378,12 +378,12 @@ namespace AntlrUnitTests
         [TestMethod]
         public void TestGenericsAsReturnValue() /*throws Exception*/ {
             ErrorQueue equeue = new ErrorQueue();
-            ErrorManager.setErrorListener( equeue );
+            ErrorManager.SetErrorListener( equeue );
             string grammar =
                 "parser grammar T;\n" +
                 "a returns [HashMap<String,String> foo] : ;\n";
             Grammar g = new Grammar( grammar );
-            Rule ra = g.getRule( "a" );
+            Rule ra = g.GetRule( "a" );
             var attrs = ra.returnScope.Attributes;
             assertEquals( "attribute mismatch", "HashMap<String,String> foo", attrs.ElementAt( 0 ).Decl.ToString() );
             assertEquals( "parameter name mismatch", "foo", attrs.ElementAt( 0 ).Name );
@@ -399,7 +399,7 @@ namespace AntlrUnitTests
             string expecting = "x, (A1!=null?A1.getText():null)+\"3242\", (*A1).foo(21,33), 3.2+1, '\\n', \"a,oo\\nick\", {bl, \"fdkj\"eck}";
 
             ErrorQueue equeue = new ErrorQueue();
-            ErrorManager.setErrorListener( equeue );
+            ErrorManager.SetErrorListener( equeue );
 
             // now check in actual grammar.
             Grammar g = new Grammar(
@@ -409,12 +409,12 @@ namespace AntlrUnitTests
                 "        ;" );
             AntlrTool antlr = newTool();
             CodeGenerator generator = new CodeGenerator( antlr, g, "Java" );
-            g.setCodeGenerator( generator );
+            g.CodeGenerator = generator;
             generator.GenRecognizer(); // forces load of templates
             ActionTranslator translator = new ActionTranslator( generator, "a",
                                                                          new CommonToken( ANTLRParser.ACTION, action ), 1 );
             string rawTranslation =
-                translator.translate();
+                translator.Translate();
             StringTemplateGroup templates =
                 new StringTemplateGroup( ".", typeof( AngleBracketTemplateLexer ) );
             StringTemplate actionST = new StringTemplate( templates, rawTranslation );
@@ -436,19 +436,19 @@ namespace AntlrUnitTests
             string expecting = "(x!=null?x.foo:0)";
 
             ErrorQueue equeue = new ErrorQueue();
-            ErrorManager.setErrorListener( equeue );
+            ErrorManager.SetErrorListener( equeue );
             Grammar g = new Grammar(
                 "parser grammar t;\n" +
                 "a : x=b {" + action + "} ;\n" +
                 "b returns [int foo] : B {$b.start} ;\n" );
             AntlrTool antlr = newTool();
             CodeGenerator generator = new CodeGenerator( antlr, g, "Java" );
-            g.setCodeGenerator( generator );
+            g.CodeGenerator = generator;
             generator.GenRecognizer(); // forces load of templates
             ActionTranslator translator = new ActionTranslator( generator, "a",
                                                                          new CommonToken( ANTLRParser.ACTION, action ), 1 );
             string rawTranslation =
-                translator.translate();
+                translator.Translate();
             StringTemplateGroup templates =
                 new StringTemplateGroup( ".", typeof( AngleBracketTemplateLexer ) );
             StringTemplate actionST = new StringTemplate( templates, rawTranslation );
@@ -468,19 +468,19 @@ namespace AntlrUnitTests
             string expecting = "(x!=null?input.toString(x.start,x.stop):null)";
 
             ErrorQueue equeue = new ErrorQueue();
-            ErrorManager.setErrorListener( equeue );
+            ErrorManager.SetErrorListener( equeue );
             Grammar g = new Grammar(
                 "parser grammar t;\n" +
                 "a : x=b {" + action + "} ;\n" +
                 "b : B ;\n" );
             AntlrTool antlr = newTool();
             CodeGenerator generator = new CodeGenerator( antlr, g, "Java" );
-            g.setCodeGenerator( generator );
+            g.CodeGenerator = generator;
             generator.GenRecognizer(); // forces load of templates
             ActionTranslator translator = new ActionTranslator( generator, "a",
                                                                          new CommonToken( ANTLRParser.ACTION, action ), 1 );
             string rawTranslation =
-                translator.translate();
+                translator.Translate();
             StringTemplateGroup templates =
                 new StringTemplateGroup( ".", typeof( AngleBracketTemplateLexer ) );
             StringTemplate actionST = new StringTemplate( templates, rawTranslation );
@@ -496,7 +496,7 @@ namespace AntlrUnitTests
             string expecting = action;
 
             ErrorQueue equeue = new ErrorQueue();
-            ErrorManager.setErrorListener( equeue );
+            ErrorManager.SetErrorListener( equeue );
             Grammar g = new Grammar(
                 "parser grammar t;\n" +
                 "a[User u, int i]\n" +
@@ -508,7 +508,7 @@ namespace AntlrUnitTests
                                                                          "a",
                                                                          new CommonToken( ANTLRParser.ACTION, action ), 1 );
             string rawTranslation =
-                translator.translate();
+                translator.Translate();
             StringTemplateGroup templates =
                 new StringTemplateGroup( ".", typeof( AngleBracketTemplateLexer ) );
             StringTemplate actionST = new StringTemplate( templates, rawTranslation );
@@ -528,7 +528,7 @@ namespace AntlrUnitTests
             string expecting = "x";
 
             ErrorQueue equeue = new ErrorQueue();
-            ErrorManager.setErrorListener( equeue );
+            ErrorManager.SetErrorListener( equeue );
             Grammar g = new Grammar(
                 "grammar t;\n" +
                 "a returns [int i]\n" +
@@ -537,14 +537,14 @@ namespace AntlrUnitTests
                 "b : x=a {" + action + "} ;\n" );
             AntlrTool antlr = newTool();
             CodeGenerator generator = new CodeGenerator( antlr, g, "Java" );
-            g.setCodeGenerator( generator );
+            g.CodeGenerator = generator;
             generator.GenRecognizer(); // forces load of templates
             ActionTranslator translator =
                 new ActionTranslator( generator,
                                           "b",
                                           new CommonToken( ANTLRParser.ACTION, action ), 1 );
             string rawTranslation =
-                translator.translate();
+                translator.Translate();
             StringTemplateGroup templates =
                 new StringTemplateGroup( ".", typeof( AngleBracketTemplateLexer ) );
             StringTemplate actionST = new StringTemplate( templates, rawTranslation );
@@ -560,7 +560,7 @@ namespace AntlrUnitTests
             string expecting = "x";
 
             ErrorQueue equeue = new ErrorQueue();
-            ErrorManager.setErrorListener( equeue );
+            ErrorManager.SetErrorListener( equeue );
             Grammar g = new Grammar(
                 "grammar t;\n" +
                 "a returns [int i1]\n" +
@@ -569,14 +569,14 @@ namespace AntlrUnitTests
                 "b : x=a {" + action + "} ;\n" );
             AntlrTool antlr = newTool();
             CodeGenerator generator = new CodeGenerator( antlr, g, "Java" );
-            g.setCodeGenerator( generator );
+            g.CodeGenerator = generator;
             generator.GenRecognizer(); // forces load of templates
             ActionTranslator translator =
                 new ActionTranslator( generator,
                                           "b",
                                           new CommonToken( ANTLRParser.ACTION, action ), 1 );
             string rawTranslation =
-                translator.translate();
+                translator.Translate();
             StringTemplateGroup templates =
                 new StringTemplateGroup( ".", typeof( AngleBracketTemplateLexer ) );
             StringTemplate actionST = new StringTemplate( templates, rawTranslation );
@@ -592,7 +592,7 @@ namespace AntlrUnitTests
             string expecting = "retval.i; retval.i.x; retval.u; retval.u.x";
 
             ErrorQueue equeue = new ErrorQueue();
-            ErrorManager.setErrorListener( equeue );
+            ErrorManager.SetErrorListener( equeue );
             Grammar g = new Grammar(
                 "parser grammar t;\n" +
                 "a returns [User u, int i]\n" +
@@ -600,12 +600,12 @@ namespace AntlrUnitTests
                 "        ;" );
             AntlrTool antlr = newTool();
             CodeGenerator generator = new CodeGenerator( antlr, g, "Java" );
-            g.setCodeGenerator( generator );
+            g.CodeGenerator = generator;
             generator.GenRecognizer(); // forces load of templates
             ActionTranslator translator = new ActionTranslator( generator, "a",
                                                                          new CommonToken( ANTLRParser.ACTION, action ), 1 );
             string rawTranslation =
-                translator.translate();
+                translator.Translate();
             StringTemplateGroup templates =
                 new StringTemplateGroup( ".", typeof( AngleBracketTemplateLexer ) );
             StringTemplate actionST = new StringTemplate( templates, rawTranslation );
@@ -624,7 +624,7 @@ namespace AntlrUnitTests
             string expecting2 = "obj = rule32;";
 
             ErrorQueue equeue = new ErrorQueue();
-            ErrorManager.setErrorListener( equeue );
+            ErrorManager.SetErrorListener( equeue );
             Grammar g = new Grammar(
                 "grammar t;\n" +
                 "rule1 returns [ Object obj ]\n" +
@@ -639,7 +639,7 @@ namespace AntlrUnitTests
                 ";" );
             AntlrTool antlr = newTool();
             CodeGenerator generator = new CodeGenerator( antlr, g, "Java" );
-            g.setCodeGenerator( generator );
+            g.CodeGenerator = generator;
             generator.GenRecognizer(); // forces load of templates
             int i = 0;
             string action = action1;
@@ -649,7 +649,7 @@ namespace AntlrUnitTests
                 ActionTranslator translator = new ActionTranslator( generator, "rule1",
                                                                              new CommonToken( ANTLRParser.ACTION, action ), i + 1 );
                 string rawTranslation =
-                        translator.translate();
+                        translator.Translate();
                 StringTemplateGroup templates =
                         new StringTemplateGroup( ".", typeof( AngleBracketTemplateLexer ) );
                 StringTemplate actionST = new StringTemplate( templates, rawTranslation );
@@ -667,7 +667,7 @@ namespace AntlrUnitTests
             string expecting = action;
 
             ErrorQueue equeue = new ErrorQueue();
-            ErrorManager.setErrorListener( equeue );
+            ErrorManager.SetErrorListener( equeue );
             Grammar g = new Grammar(
                 "parser grammar t;\n" +
                 "a returns [User u, int i]\n" +
@@ -678,7 +678,7 @@ namespace AntlrUnitTests
             ActionTranslator translator = new ActionTranslator( generator, "a",
                                                                          new CommonToken( ANTLRParser.ACTION, action ), 1 );
             string rawTranslation =
-                translator.translate();
+                translator.Translate();
             StringTemplateGroup templates =
                 new StringTemplateGroup( ".", typeof( AngleBracketTemplateLexer ) );
             StringTemplate actionST = new StringTemplate( templates, rawTranslation );
@@ -700,19 +700,19 @@ namespace AntlrUnitTests
             string expecting = "id; f; (id!=null?id.getText():null); id.getText(); id.dork (id!=null?id.getType():0); (id!=null?id.getLine():0); (id!=null?id.getCharPositionInLine():0); (id!=null?id.getChannel():0); (id!=null?id.getTokenIndex():0);";
 
             ErrorQueue equeue = new ErrorQueue();
-            ErrorManager.setErrorListener( equeue );
+            ErrorManager.SetErrorListener( equeue );
             Grammar g = new Grammar(
                 "parser grammar t;\n" +
                 "a : id=ID f=FLOAT {" + action + "}\n" +
                 "  ;" );
             AntlrTool antlr = newTool();
             CodeGenerator generator = new CodeGenerator( antlr, g, "Java" );
-            g.setCodeGenerator( generator );
+            g.CodeGenerator = generator;
             generator.GenRecognizer(); // forces load of templates
             ActionTranslator translator = new ActionTranslator( generator, "a",
                                                                          new CommonToken( ANTLRParser.ACTION, action ), 1 );
             string rawTranslation =
-                translator.translate();
+                translator.Translate();
             StringTemplateGroup templates =
                 new StringTemplateGroup( ".", typeof( AngleBracketTemplateLexer ) );
             StringTemplate actionST = new StringTemplate( templates, rawTranslation );
@@ -730,7 +730,7 @@ namespace AntlrUnitTests
                                "             (r!=null?((Object)r.tree):null); (r!=null?r.x:0); (r!=null?((Token)r.stop):null);";
 
             ErrorQueue equeue = new ErrorQueue();
-            ErrorManager.setErrorListener( equeue );
+            ErrorManager.SetErrorListener( equeue );
             Grammar g = new Grammar(
                 "parser grammar t;\n" +
                 "a returns [int x]\n" +
@@ -741,7 +741,7 @@ namespace AntlrUnitTests
             AntlrTool antlr = newTool();
             antlr.SetOutputDirectory( null ); // write to /dev/null
             CodeGenerator generator = new CodeGenerator( antlr, g, "Java" );
-            g.setCodeGenerator( generator );
+            g.CodeGenerator = generator;
             generator.GenRecognizer(); // codegen phase sets some vars we need
             StringTemplate codeST = generator.RecognizerST;
             string code = codeST.ToString();
@@ -754,14 +754,14 @@ namespace AntlrUnitTests
         [TestMethod]
         public void TestAmbiguRuleRef() /*throws Exception*/ {
             ErrorQueue equeue = new ErrorQueue();
-            ErrorManager.setErrorListener( equeue );
+            ErrorManager.SetErrorListener( equeue );
             Grammar g = new Grammar(
                 "parser grammar t;\n" +
                 "a : A a {$a.text} | B ;" );
             AntlrTool antlr = newTool();
             antlr.SetOutputDirectory( null ); // write to /dev/null
             CodeGenerator generator = new CodeGenerator( antlr, g, "Java" );
-            g.setCodeGenerator( generator );
+            g.CodeGenerator = generator;
             generator.GenRecognizer();
 
             // error(132): <string>:2:9: reference $a is ambiguous; rule a is enclosing rule and referenced in the production
@@ -774,7 +774,7 @@ namespace AntlrUnitTests
             string expecting = "(r!=null?r.x:0); (r!=null?((MYTOKEN)r.start):null); (r!=null?((MYTOKEN)r.stop):null); (r!=null?((Object)r.tree):null); (r!=null?r.x:0); (r!=null?((MYTOKEN)r.stop):null);";
 
             ErrorQueue equeue = new ErrorQueue();
-            ErrorManager.setErrorListener( equeue );
+            ErrorManager.SetErrorListener( equeue );
             Grammar g = new Grammar(
                 "parser grammar t;\n" +
                 "options {TokenLabelType=MYTOKEN;}\n" +
@@ -786,7 +786,7 @@ namespace AntlrUnitTests
             AntlrTool antlr = newTool();
             antlr.SetOutputDirectory( null ); // write to /dev/null
             CodeGenerator generator = new CodeGenerator( antlr, g, "Java" );
-            g.setCodeGenerator( generator );
+            g.CodeGenerator = generator;
             generator.GenRecognizer(); // codegen phase sets some vars we need
 
             StringTemplate codeST = generator.RecognizerST;
@@ -803,7 +803,7 @@ namespace AntlrUnitTests
             string expecting = "(r!=null?r.x:0); (r!=null?((Token)r.start):null); (r!=null?((Token)r.stop):null); (r!=null?((Object)r.tree):null); (r!=null?r.x:0); (r!=null?((Object)r.tree):null);";
 
             ErrorQueue equeue = new ErrorQueue();
-            ErrorManager.setErrorListener( equeue );
+            ErrorManager.SetErrorListener( equeue );
             Grammar g = new Grammar(
                 "parser grammar t;\n" +
                 "b : r=a {###" + action + "!!!}\n" +
@@ -813,7 +813,7 @@ namespace AntlrUnitTests
             AntlrTool antlr = newTool();
             antlr.SetOutputDirectory( null ); // write to /dev/null
             CodeGenerator generator = new CodeGenerator( antlr, g, "Java" );
-            g.setCodeGenerator( generator );
+            g.CodeGenerator = generator;
             generator.GenRecognizer(); // codegen phase sets some vars we need
 
             StringTemplate codeST = generator.RecognizerST;
@@ -830,7 +830,7 @@ namespace AntlrUnitTests
             string expecting = action;
 
             ErrorQueue equeue = new ErrorQueue();
-            ErrorManager.setErrorListener( equeue );
+            ErrorManager.SetErrorListener( equeue );
             Grammar g = new Grammar(
                 "parser grammar t;\n" +
                 "a[int z] returns [int x]\n" +
@@ -843,7 +843,7 @@ namespace AntlrUnitTests
             ActionTranslator translator = new ActionTranslator( generator, "b",
                                                                          new CommonToken( ANTLRParser.ACTION, action ), 1 );
             string rawTranslation =
-                translator.translate();
+                translator.Translate();
             StringTemplateGroup templates =
                 new StringTemplateGroup( ".", typeof( AngleBracketTemplateLexer ) );
             StringTemplate actionST = new StringTemplate( templates, rawTranslation );
@@ -864,7 +864,7 @@ namespace AntlrUnitTests
             string expecting = action;
 
             ErrorQueue equeue = new ErrorQueue();
-            ErrorManager.setErrorListener( equeue );
+            ErrorManager.SetErrorListener( equeue );
             Grammar g = new Grammar(
                 "parser grammar t;\n" +
                 "a\n" +
@@ -878,7 +878,7 @@ namespace AntlrUnitTests
             ActionTranslator translator = new ActionTranslator( generator, "b",
                                                                          new CommonToken( ANTLRParser.ACTION, action ), 1 );
             string rawTranslation =
-                translator.translate();
+                translator.Translate();
             StringTemplateGroup templates =
                 new StringTemplateGroup( ".", typeof( AngleBracketTemplateLexer ) );
             StringTemplate actionST = new StringTemplate( templates, rawTranslation );
@@ -899,7 +899,7 @@ namespace AntlrUnitTests
             string expecting = action;
 
             ErrorQueue equeue = new ErrorQueue();
-            ErrorManager.setErrorListener( equeue );
+            ErrorManager.SetErrorListener( equeue );
             Grammar g = new Grammar(
                 "parser grammar t;\n" +
                 "a[int z] returns [int x]\n" +
@@ -912,7 +912,7 @@ namespace AntlrUnitTests
             ActionTranslator translator = new ActionTranslator( generator, "b",
                                                                          new CommonToken( ANTLRParser.ACTION, action ), 1 );
             string rawTranslation =
-                translator.translate();
+                translator.Translate();
             StringTemplateGroup templates =
                 new StringTemplateGroup( ".", typeof( AngleBracketTemplateLexer ) );
             StringTemplate actionST = new StringTemplate( templates, rawTranslation );
@@ -933,7 +933,7 @@ namespace AntlrUnitTests
             string expecting = action;
 
             ErrorQueue equeue = new ErrorQueue();
-            ErrorManager.setErrorListener( equeue );
+            ErrorManager.SetErrorListener( equeue );
             Grammar g = new Grammar(
                 "parser grammar t;\n" +
                 "a[int z] returns [int x]\n" +
@@ -946,7 +946,7 @@ namespace AntlrUnitTests
             ActionTranslator translator = new ActionTranslator( generator, "b",
                                                                          new CommonToken( ANTLRParser.ACTION, action ), 1 );
             string rawTranslation =
-                translator.translate();
+                translator.Translate();
 
             int expectedMsgID = ErrorManager.MSG_ISOLATED_RULE_SCOPE;
             object expectedArg = "r";
@@ -962,7 +962,7 @@ namespace AntlrUnitTests
             string expecting = action;
 
             ErrorQueue equeue = new ErrorQueue();
-            ErrorManager.setErrorListener( equeue );
+            ErrorManager.SetErrorListener( equeue );
             Grammar g = new Grammar(
                 "parser grammar t;\n" +
                 "a returns [int x]:\n" +
@@ -974,7 +974,7 @@ namespace AntlrUnitTests
             ActionTranslator translator = new ActionTranslator( generator, "b",
                                                                          new CommonToken( ANTLRParser.ACTION, action ), 1 );
             string rawTranslation =
-                translator.translate();
+                translator.Translate();
 
             int expectedMsgID = ErrorManager.MSG_ISOLATED_RULE_SCOPE;
             object expectedArg = "a";
@@ -989,7 +989,7 @@ namespace AntlrUnitTests
             string expecting = action;
 
             ErrorQueue equeue = new ErrorQueue();
-            ErrorManager.setErrorListener( equeue );
+            ErrorManager.SetErrorListener( equeue );
             Grammar g = new Grammar(
                 "parser grammar t;\n" +
                 "@members {'+action+'}\n" +
@@ -1000,7 +1000,7 @@ namespace AntlrUnitTests
                                                                          null,
                                                                          new CommonToken( ANTLRParser.ACTION, action ), 0 );
             string rawTranslation =
-                translator.translate();
+                translator.Translate();
             StringTemplateGroup templates =
                 new StringTemplateGroup( ".", typeof( AngleBracketTemplateLexer ) );
             StringTemplate actionST = new StringTemplate( templates, rawTranslation );
@@ -1020,7 +1020,7 @@ namespace AntlrUnitTests
             string expecting = action;
 
             ErrorQueue equeue = new ErrorQueue();
-            ErrorManager.setErrorListener( equeue );
+            ErrorManager.SetErrorListener( equeue );
             Grammar g = new Grammar(
                 "parser grammar t;\n" +
                 "@members {'+action+'}\n" +
@@ -1031,7 +1031,7 @@ namespace AntlrUnitTests
                                                                          null,
                                                                          new CommonToken( ANTLRParser.ACTION, action ), 0 );
             string rawTranslation =
-                translator.translate();
+                translator.Translate();
             StringTemplateGroup templates =
                 new StringTemplateGroup( ".", typeof( AngleBracketTemplateLexer ) );
             StringTemplate actionST = new StringTemplate( templates, rawTranslation );
@@ -1054,7 +1054,7 @@ namespace AntlrUnitTests
             string expecting = "((Symbols_scope)Symbols_stack.peek()).names.add((id!=null?id.getText():null));";
 
             ErrorQueue equeue = new ErrorQueue();
-            ErrorManager.setErrorListener( equeue );
+            ErrorManager.SetErrorListener( equeue );
             Grammar g = new Grammar(
                 "grammar t;\n" +
                 "scope Symbols {\n" +
@@ -1066,12 +1066,12 @@ namespace AntlrUnitTests
                 "ID : 'a';\n" );
             AntlrTool antlr = newTool();
             CodeGenerator generator = new CodeGenerator( antlr, g, "Java" );
-            g.setCodeGenerator( generator );
+            g.CodeGenerator = generator;
             generator.GenRecognizer(); // forces load of templates
             ActionTranslator translator = new ActionTranslator( generator, "a",
                                                                          new CommonToken( ANTLRParser.ACTION, action ), 1 );
             string rawTranslation =
-                translator.translate();
+                translator.Translate();
             StringTemplateGroup templates =
                 new StringTemplateGroup( ".", typeof( AngleBracketTemplateLexer ) );
             StringTemplate actionST = new StringTemplate( templates, rawTranslation );
@@ -1086,7 +1086,7 @@ namespace AntlrUnitTests
             string action = "$Symbols::names.add($id.text);";
 
             ErrorQueue equeue = new ErrorQueue();
-            ErrorManager.setErrorListener( equeue );
+            ErrorManager.SetErrorListener( equeue );
             Grammar g = new Grammar(
                 "grammar t;\n" +
                 "a scope Symbols; : (id=ID ';' {" + action + "} )+\n" +
@@ -1094,7 +1094,7 @@ namespace AntlrUnitTests
                 "ID : 'a';\n" );
             AntlrTool antlr = newTool();
             CodeGenerator generator = new CodeGenerator( antlr, g, "Java" );
-            g.setCodeGenerator( generator );
+            g.CodeGenerator = generator;
             generator.GenRecognizer(); // forces load of templates
             ActionTranslator translator = new ActionTranslator( generator, "a",
                                                                          new CommonToken( ANTLRParser.ACTION, action ), 1 );
@@ -1115,7 +1115,7 @@ namespace AntlrUnitTests
                 "((Symbols_scope)Symbols_stack.elementAt(Symbols_stack.size()-1-1)).names.add((id!=null?id.getText():null));";
 
             ErrorQueue equeue = new ErrorQueue();
-            ErrorManager.setErrorListener( equeue );
+            ErrorManager.SetErrorListener( equeue );
             Grammar g = new Grammar(
                 "grammar t;\n" +
                 "scope Symbols {\n" +
@@ -1127,12 +1127,12 @@ namespace AntlrUnitTests
                 "ID : 'a';\n" );
             AntlrTool antlr = newTool();
             CodeGenerator generator = new CodeGenerator( antlr, g, "Java" );
-            g.setCodeGenerator( generator );
+            g.CodeGenerator = generator;
             generator.GenRecognizer(); // forces load of templates
             ActionTranslator translator = new ActionTranslator( generator, "a",
                                                                          new CommonToken( ANTLRParser.ACTION, action ), 1 );
             string rawTranslation =
-                translator.translate();
+                translator.Translate();
             StringTemplateGroup templates =
                 new StringTemplateGroup( ".", typeof( AngleBracketTemplateLexer ) );
             StringTemplate actionST = new StringTemplate( templates, rawTranslation );
@@ -1149,7 +1149,7 @@ namespace AntlrUnitTests
                 "((Symbols_scope)Symbols_stack.elementAt(0)).names.add((id!=null?id.getText():null));";
 
             ErrorQueue equeue = new ErrorQueue();
-            ErrorManager.setErrorListener( equeue );
+            ErrorManager.SetErrorListener( equeue );
             Grammar g = new Grammar(
                 "grammar t;\n" +
                 "scope Symbols {\n" +
@@ -1161,12 +1161,12 @@ namespace AntlrUnitTests
                 "ID : 'a';\n" );
             AntlrTool antlr = newTool();
             CodeGenerator generator = new CodeGenerator( antlr, g, "Java" );
-            g.setCodeGenerator( generator );
+            g.CodeGenerator = generator;
             generator.GenRecognizer(); // forces load of templates
             ActionTranslator translator = new ActionTranslator( generator, "a",
                                                                          new CommonToken( ANTLRParser.ACTION, action ), 1 );
             string rawTranslation =
-                translator.translate();
+                translator.Translate();
             StringTemplateGroup templates =
                 new StringTemplateGroup( ".", typeof( AngleBracketTemplateLexer ) );
             assertEquals( expecting, rawTranslation );
@@ -1181,7 +1181,7 @@ namespace AntlrUnitTests
                 "((Symbols_scope)Symbols_stack.elementAt(3)).names.add((id!=null?id.getText():null));";
 
             ErrorQueue equeue = new ErrorQueue();
-            ErrorManager.setErrorListener( equeue );
+            ErrorManager.SetErrorListener( equeue );
             Grammar g = new Grammar(
                 "grammar t;\n" +
                 "scope Symbols {\n" +
@@ -1193,12 +1193,12 @@ namespace AntlrUnitTests
                 "ID : 'a';\n" );
             AntlrTool antlr = newTool();
             CodeGenerator generator = new CodeGenerator( antlr, g, "Java" );
-            g.setCodeGenerator( generator );
+            g.CodeGenerator = generator;
             generator.GenRecognizer(); // forces load of templates
             ActionTranslator translator = new ActionTranslator( generator, "a",
                                                                          new CommonToken( ANTLRParser.ACTION, action ), 1 );
             string rawTranslation =
-                translator.translate();
+                translator.Translate();
             StringTemplateGroup templates =
                 new StringTemplateGroup( ".", typeof( AngleBracketTemplateLexer ) );
             assertEquals( expecting, rawTranslation );
@@ -1212,7 +1212,7 @@ namespace AntlrUnitTests
             string expecting = "((foo_bar_scope)foo_bar_stack.peek()).a_b;";
 
             ErrorQueue equeue = new ErrorQueue();
-            ErrorManager.setErrorListener( equeue );
+            ErrorManager.SetErrorListener( equeue );
             Grammar g = new Grammar(
                 "grammar t;\n" +
                 "scope foo_bar {\n" +
@@ -1223,12 +1223,12 @@ namespace AntlrUnitTests
                 "ID : 'a';\n" );
             AntlrTool antlr = newTool();
             CodeGenerator generator = new CodeGenerator( antlr, g, "Java" );
-            g.setCodeGenerator( generator );
+            g.CodeGenerator = generator;
             generator.GenRecognizer(); // forces load of templates
             ActionTranslator translator = new ActionTranslator( generator, "a",
                                                                          new CommonToken( ANTLRParser.ACTION, action ), 1 );
             string rawTranslation =
-                translator.translate();
+                translator.Translate();
             StringTemplateGroup templates =
                 new StringTemplateGroup( ".", typeof( AngleBracketTemplateLexer ) );
             StringTemplate actionST = new StringTemplate( templates, rawTranslation );
@@ -1245,7 +1245,7 @@ namespace AntlrUnitTests
             string expecting = "((Symbols_scope)Symbols_stack.peek()).x;";
 
             ErrorQueue equeue = new ErrorQueue();
-            ErrorManager.setErrorListener( equeue );
+            ErrorManager.SetErrorListener( equeue );
             Grammar g = new Grammar(
                 "grammar t;\n" +
                 "scope Symbols {\n" +
@@ -1260,12 +1260,12 @@ namespace AntlrUnitTests
                 "ID : 'a';\n" );
             AntlrTool antlr = newTool();
             CodeGenerator generator = new CodeGenerator( antlr, g, "Java" );
-            g.setCodeGenerator( generator );
+            g.CodeGenerator = generator;
             generator.GenRecognizer(); // forces load of templates
             ActionTranslator translator = new ActionTranslator( generator, "a",
                                                                          new CommonToken( ANTLRParser.ACTION, action ), 1 );
             string rawTranslation =
-                translator.translate();
+                translator.Translate();
             StringTemplateGroup templates =
                 new StringTemplateGroup( ".", typeof( AngleBracketTemplateLexer ) );
             StringTemplate actionST = new StringTemplate( templates, rawTranslation );
@@ -1281,7 +1281,7 @@ namespace AntlrUnitTests
             string expecting = "public void foo() {((Symbols_scope)Symbols_stack.peek()).names.add('foo');}";
 
             ErrorQueue equeue = new ErrorQueue();
-            ErrorManager.setErrorListener( equeue );
+            ErrorManager.SetErrorListener( equeue );
             Grammar g = new Grammar(
                 "grammar t;\n" +
                 "scope Symbols {\n" +
@@ -1293,12 +1293,12 @@ namespace AntlrUnitTests
                 "  ;\n" );
             AntlrTool antlr = newTool();
             CodeGenerator generator = new CodeGenerator( antlr, g, "Java" );
-            g.setCodeGenerator( generator );
+            g.CodeGenerator = generator;
             generator.GenRecognizer(); // forces load of templates
             ActionTranslator translator = new ActionTranslator( generator, "a",
                                                                          new CommonToken( ANTLRParser.ACTION, action ), 1 );
             string rawTranslation =
-                translator.translate();
+                translator.Translate();
             StringTemplateGroup templates =
                 new StringTemplateGroup( ".", typeof( AngleBracketTemplateLexer ) );
             StringTemplate actionST = new StringTemplate( templates, rawTranslation );
@@ -1314,7 +1314,7 @@ namespace AntlrUnitTests
             string expecting = "public void foo() {((a_scope)a_stack.peek()).name;}";
 
             ErrorQueue equeue = new ErrorQueue();
-            ErrorManager.setErrorListener( equeue );
+            ErrorManager.SetErrorListener( equeue );
             Grammar g = new Grammar(
                 "grammar t;\n" +
                 "@members {" + action + "}\n" +
@@ -1324,13 +1324,13 @@ namespace AntlrUnitTests
                 "  ;\n" );
             AntlrTool antlr = newTool();
             CodeGenerator generator = new CodeGenerator( antlr, g, "Java" );
-            g.setCodeGenerator( generator );
+            g.CodeGenerator = generator;
             generator.GenRecognizer(); // forces load of templates
             ActionTranslator translator = new ActionTranslator( generator,
                                                                          null,
                                                                          new CommonToken( ANTLRParser.ACTION, action ), 0 );
             string rawTranslation =
-                translator.translate();
+                translator.Translate();
             StringTemplateGroup templates =
                 new StringTemplateGroup( ".", typeof( AngleBracketTemplateLexer ) );
             StringTemplate actionST = new StringTemplate( templates, rawTranslation );
@@ -1346,7 +1346,7 @@ namespace AntlrUnitTests
             string expecting = "((a_scope)a_stack.peek()).n;";
 
             ErrorQueue equeue = new ErrorQueue();
-            ErrorManager.setErrorListener( equeue );
+            ErrorManager.SetErrorListener( equeue );
             Grammar g = new Grammar(
                 "grammar t;\n" +
                 "a\n" +
@@ -1356,12 +1356,12 @@ namespace AntlrUnitTests
                 "  ;\n" );
             AntlrTool antlr = newTool();
             CodeGenerator generator = new CodeGenerator( antlr, g, "Java" );
-            g.setCodeGenerator( generator );
+            g.CodeGenerator = generator;
             generator.GenRecognizer(); // forces load of templates
             ActionTranslator translator = new ActionTranslator( generator, "a",
                                                                          new CommonToken( ANTLRParser.ACTION, action ), 1 );
             string rawTranslation =
-                translator.translate();
+                translator.Translate();
             StringTemplateGroup templates =
                 new StringTemplateGroup( ".", typeof( AngleBracketTemplateLexer ) );
             StringTemplate actionST = new StringTemplate( templates, rawTranslation );
@@ -1377,7 +1377,7 @@ namespace AntlrUnitTests
             string expecting = action;
 
             ErrorQueue equeue = new ErrorQueue();
-            ErrorManager.setErrorListener( equeue );
+            ErrorManager.SetErrorListener( equeue );
             Grammar g = new Grammar(
                 "grammar t;\n" +
                 "a\n" +
@@ -1387,7 +1387,7 @@ namespace AntlrUnitTests
                 "  ;\n" );
             AntlrTool antlr = newTool();
             CodeGenerator generator = new CodeGenerator( antlr, g, "Java" );
-            g.setCodeGenerator( generator );
+            g.CodeGenerator = generator;
             generator.GenRecognizer(); // forces load of templates
 
             int expectedMsgID = ErrorManager.MSG_ISOLATED_RULE_ATTRIBUTE;
@@ -1405,7 +1405,7 @@ namespace AntlrUnitTests
             string expecting = "a_stack;";
 
             ErrorQueue equeue = new ErrorQueue();
-            ErrorManager.setErrorListener( equeue );
+            ErrorManager.SetErrorListener( equeue );
             Grammar g = new Grammar(
                 "grammar t;\n" +
                 "a\n" +
@@ -1416,12 +1416,12 @@ namespace AntlrUnitTests
                 "  ;\n" );
             AntlrTool antlr = newTool();
             CodeGenerator generator = new CodeGenerator( antlr, g, "Java" );
-            g.setCodeGenerator( generator );
+            g.CodeGenerator = generator;
             generator.GenRecognizer(); // forces load of templates
             ActionTranslator translator = new ActionTranslator( generator, "b",
                                                                          new CommonToken( ANTLRParser.ACTION, action ), 1 );
             string rawTranslation =
-                translator.translate();
+                translator.Translate();
             StringTemplateGroup templates =
                 new StringTemplateGroup( ".", typeof( AngleBracketTemplateLexer ) );
             StringTemplate actionST = new StringTemplate( templates, rawTranslation );
@@ -1437,7 +1437,7 @@ namespace AntlrUnitTests
             string expecting = "((a_scope)a_stack.peek()).n;";
 
             ErrorQueue equeue = new ErrorQueue();
-            ErrorManager.setErrorListener( equeue );
+            ErrorManager.SetErrorListener( equeue );
             Grammar g = new Grammar(
                 "grammar t;\n" +
                 "a\n" +
@@ -1448,12 +1448,12 @@ namespace AntlrUnitTests
                 "  ;\n" );
             AntlrTool antlr = newTool();
             CodeGenerator generator = new CodeGenerator( antlr, g, "Java" );
-            g.setCodeGenerator( generator );
+            g.CodeGenerator = generator;
             generator.GenRecognizer(); // forces load of templates
             ActionTranslator translator = new ActionTranslator( generator, "b",
                                                                          new CommonToken( ANTLRParser.ACTION, action ), 1 );
             string rawTranslation =
-                translator.translate();
+                translator.Translate();
             StringTemplateGroup templates =
                 new StringTemplateGroup( ".", typeof( AngleBracketTemplateLexer ) );
             StringTemplate actionST = new StringTemplate( templates, rawTranslation );
@@ -1469,7 +1469,7 @@ namespace AntlrUnitTests
             string expecting = "Symbols_stack;";
 
             ErrorQueue equeue = new ErrorQueue();
-            ErrorManager.setErrorListener( equeue );
+            ErrorManager.SetErrorListener( equeue );
             Grammar g = new Grammar(
                 "grammar t;\n" +
                 "scope Symbols {\n" +
@@ -1484,12 +1484,12 @@ namespace AntlrUnitTests
                 "ID : 'a';\n" );
             AntlrTool antlr = newTool();
             CodeGenerator generator = new CodeGenerator( antlr, g, "Java" );
-            g.setCodeGenerator( generator );
+            g.CodeGenerator = generator;
             generator.GenRecognizer(); // forces load of templates
             ActionTranslator translator = new ActionTranslator( generator, "a",
                                                                          new CommonToken( ANTLRParser.ACTION, action ), 1 );
             string rawTranslation =
-                translator.translate();
+                translator.Translate();
             StringTemplateGroup templates =
                 new StringTemplateGroup( ".", typeof( AngleBracketTemplateLexer ) );
             StringTemplate actionST = new StringTemplate( templates, rawTranslation );
@@ -1505,7 +1505,7 @@ namespace AntlrUnitTests
             string expecting = "((a_scope)a_stack.peek()).n;";
 
             ErrorQueue equeue = new ErrorQueue();
-            ErrorManager.setErrorListener( equeue );
+            ErrorManager.SetErrorListener( equeue );
             Grammar g = new Grammar(
                 "grammar t;\n" +
                 "a\n" +
@@ -1517,12 +1517,12 @@ namespace AntlrUnitTests
                 "  ;\n" );
             AntlrTool antlr = newTool();
             CodeGenerator generator = new CodeGenerator( antlr, g, "Java" );
-            g.setCodeGenerator( generator );
+            g.CodeGenerator = generator;
             generator.GenRecognizer(); // forces load of templates
             ActionTranslator translator = new ActionTranslator( generator, "b",
                                                                          new CommonToken( ANTLRParser.ACTION, action ), 1 );
             string rawTranslation =
-                translator.translate();
+                translator.Translate();
             StringTemplateGroup templates =
                 new StringTemplateGroup( ".", typeof( AngleBracketTemplateLexer ) );
             StringTemplate actionST = new StringTemplate( templates, rawTranslation );
@@ -1538,19 +1538,19 @@ namespace AntlrUnitTests
             string expecting = "i;";
 
             ErrorQueue equeue = new ErrorQueue();
-            ErrorManager.setErrorListener( equeue );
+            ErrorManager.SetErrorListener( equeue );
             Grammar g = new Grammar(
                 "grammar t;\n" +
                 "a[int i]: {" + action + "}\n" +
                 "  ;\n" );
             AntlrTool antlr = newTool();
             CodeGenerator generator = new CodeGenerator( antlr, g, "Java" );
-            g.setCodeGenerator( generator );
+            g.CodeGenerator = generator;
             generator.GenRecognizer(); // forces load of templates
             ActionTranslator translator = new ActionTranslator( generator, "a",
                                                                          new CommonToken( ANTLRParser.ACTION, action ), 1 );
             string rawTranslation =
-                translator.translate();
+                translator.Translate();
             StringTemplateGroup templates =
                 new StringTemplateGroup( ".", typeof( AngleBracketTemplateLexer ) );
             StringTemplate actionST = new StringTemplate( templates, rawTranslation );
@@ -1566,19 +1566,19 @@ namespace AntlrUnitTests
             string expecting = "retval.i;";
 
             ErrorQueue equeue = new ErrorQueue();
-            ErrorManager.setErrorListener( equeue );
+            ErrorManager.SetErrorListener( equeue );
             Grammar g = new Grammar(
                 "grammar t;\n" +
                 "a returns [int i, int j]: {" + action + "}\n" +
                 "  ;\n" );
             AntlrTool antlr = newTool();
             CodeGenerator generator = new CodeGenerator( antlr, g, "Java" );
-            g.setCodeGenerator( generator );
+            g.CodeGenerator = generator;
             generator.GenRecognizer(); // forces load of templates
             ActionTranslator translator = new ActionTranslator( generator, "a",
                                                                          new CommonToken( ANTLRParser.ACTION, action ), 1 );
             string rawTranslation =
-                translator.translate();
+                translator.Translate();
             StringTemplateGroup templates =
                 new StringTemplateGroup( ".", typeof( AngleBracketTemplateLexer ) );
             StringTemplate actionST = new StringTemplate( templates, rawTranslation );
@@ -1594,19 +1594,19 @@ namespace AntlrUnitTests
             string expecting = "retval.i = 1;";
 
             ErrorQueue equeue = new ErrorQueue();
-            ErrorManager.setErrorListener( equeue );
+            ErrorManager.SetErrorListener( equeue );
             Grammar g = new Grammar(
                 "grammar t;\n" +
                 "a returns [int i, int j]: {" + action + "}\n" +
                 "  ;\n" );
             AntlrTool antlr = newTool();
             CodeGenerator generator = new CodeGenerator( antlr, g, "Java" );
-            g.setCodeGenerator( generator );
+            g.CodeGenerator = generator;
             generator.GenRecognizer(); // forces load of templates
             ActionTranslator translator = new ActionTranslator( generator, "a",
                                                                          new CommonToken( ANTLRParser.ACTION, action ), 1 );
             string rawTranslation =
-                translator.translate();
+                translator.Translate();
             StringTemplateGroup templates =
                 new StringTemplateGroup( ".", typeof( AngleBracketTemplateLexer ) );
             StringTemplate actionST = new StringTemplate( templates, rawTranslation );
@@ -1622,14 +1622,14 @@ namespace AntlrUnitTests
             //String expecting = "";
 
             ErrorQueue equeue = new ErrorQueue();
-            ErrorManager.setErrorListener( equeue );
+            ErrorManager.SetErrorListener( equeue );
             Grammar g = new Grammar(
                 "grammar t;\n" +
                 "a : 'a' {" + action + "}\n" +
                 "  ;\n" );
             AntlrTool antlr = newTool();
             CodeGenerator generator = new CodeGenerator( antlr, g, "Java" );
-            g.setCodeGenerator( generator );
+            g.CodeGenerator = generator;
             generator.GenRecognizer(); // forces load of templates
 
             int expectedMsgID = ErrorManager.MSG_ISOLATED_RULE_SCOPE;
@@ -1646,7 +1646,7 @@ namespace AntlrUnitTests
             string action = "$x;";
 
             ErrorQueue equeue = new ErrorQueue();
-            ErrorManager.setErrorListener( equeue );
+            ErrorManager.SetErrorListener( equeue );
             Grammar g = new Grammar(
                 "grammar t;\n" +
                 "a : x=b {" + action + "}\n" +
@@ -1654,7 +1654,7 @@ namespace AntlrUnitTests
                 "b : 'b' ;\n" );
             AntlrTool antlr = newTool();
             CodeGenerator generator = new CodeGenerator( antlr, g, "Java" );
-            g.setCodeGenerator( generator );
+            g.CodeGenerator = generator;
             generator.GenRecognizer(); // forces load of templates
 
             int expectedMsgID = ErrorManager.MSG_ISOLATED_RULE_SCOPE;
@@ -1684,7 +1684,7 @@ namespace AntlrUnitTests
                 ActionTranslator translator = new ActionTranslator(generator,"a",
                                                                    new CommonToken(ANTLRParser.ACTION,action),1);
                 String rawTranslation =
-                    translator.translate();
+                    translator.Translate();
                 StringTemplateGroup templates =
                     new StringTemplateGroup(".", typeof(AngleBracketTemplateLexer));
                 StringTemplate actionST = new StringTemplate(templates, rawTranslation);
@@ -1713,7 +1713,7 @@ namespace AntlrUnitTests
             ActionTranslator translator = new ActionTranslator(generator,"a",
                                                                new CommonToken(ANTLRParser.ACTION,action),1);
             String rawTranslation =
-                translator.translate();
+                translator.Translate();
             StringTemplateGroup templates =
                 new StringTemplateGroup(".", typeof(AngleBracketTemplateLexer));
             StringTemplate actionST = new StringTemplate(templates, rawTranslation);
@@ -1729,7 +1729,7 @@ namespace AntlrUnitTests
             string expecting = "retval.st;";
 
             ErrorQueue equeue = new ErrorQueue();
-            ErrorManager.setErrorListener( equeue );
+            ErrorManager.SetErrorListener( equeue );
             Grammar g = new Grammar(
                 "parser grammar t;\n" +
                 "options {output=template;}\n" +
@@ -1737,12 +1737,12 @@ namespace AntlrUnitTests
                 "  ;\n" );
             AntlrTool antlr = newTool();
             CodeGenerator generator = new CodeGenerator( antlr, g, "Java" );
-            g.setCodeGenerator( generator );
+            g.CodeGenerator = generator;
             generator.GenRecognizer(); // forces load of templates
             ActionTranslator translator = new ActionTranslator( generator, "a",
                                                                          new CommonToken( ANTLRParser.ACTION, action ), 1 );
             string rawTranslation =
-                translator.translate();
+                translator.Translate();
             StringTemplateGroup templates =
                 new StringTemplateGroup( ".", typeof( AngleBracketTemplateLexer ) );
             StringTemplate actionST = new StringTemplate( templates, rawTranslation );
@@ -1758,7 +1758,7 @@ namespace AntlrUnitTests
             string expecting = "(b1!=null?((Token)b1.start):null);";
 
             ErrorQueue equeue = new ErrorQueue();
-            ErrorManager.setErrorListener( equeue );
+            ErrorManager.SetErrorListener( equeue );
             Grammar g = new Grammar(
                 "grammar t;\n" +
                 "a : b {###" + action + "!!!} ;\n" +
@@ -1769,7 +1769,7 @@ namespace AntlrUnitTests
                 "  ;\n" );
             AntlrTool antlr = newTool();
             CodeGenerator generator = new CodeGenerator( antlr, g, "Java" );
-            g.setCodeGenerator( generator );
+            g.CodeGenerator = generator;
             generator.GenRecognizer(); // forces load of templates
 
             StringTemplate codeST = generator.RecognizerST;
@@ -1786,7 +1786,7 @@ namespace AntlrUnitTests
             string expecting = "((b_scope)b_stack.peek()).n;";
 
             ErrorQueue equeue = new ErrorQueue();
-            ErrorManager.setErrorListener( equeue );
+            ErrorManager.SetErrorListener( equeue );
             Grammar g = new Grammar(
                 "grammar t;\n" +
                 "s : b ;\n" +
@@ -1797,12 +1797,12 @@ namespace AntlrUnitTests
                 "  ;\n" );
             AntlrTool antlr = newTool();
             CodeGenerator generator = new CodeGenerator( antlr, g, "Java" );
-            g.setCodeGenerator( generator );
+            g.CodeGenerator = generator;
             generator.GenRecognizer(); // forces load of templates
             ActionTranslator translator = new ActionTranslator( generator, "b",
                                                                          new CommonToken( ANTLRParser.ACTION, action ), 1 );
             string rawTranslation =
-                translator.translate();
+                translator.Translate();
             StringTemplateGroup templates =
                 new StringTemplateGroup( ".", typeof( AngleBracketTemplateLexer ) );
             StringTemplate actionST = new StringTemplate( templates, rawTranslation );
@@ -1818,7 +1818,7 @@ namespace AntlrUnitTests
             string expecting = "retval.st =null;";
 
             ErrorQueue equeue = new ErrorQueue();
-            ErrorManager.setErrorListener( equeue );
+            ErrorManager.SetErrorListener( equeue );
             Grammar g = new Grammar(
                 "parser grammar t;\n" +
                 "options {output=template;}\n" +
@@ -1826,12 +1826,12 @@ namespace AntlrUnitTests
                 "  ;\n" );
             AntlrTool antlr = newTool();
             CodeGenerator generator = new CodeGenerator( antlr, g, "Java" );
-            g.setCodeGenerator( generator );
+            g.CodeGenerator = generator;
             generator.GenRecognizer(); // forces load of templates
             ActionTranslator translator = new ActionTranslator( generator, "a",
                                                                          new CommonToken( ANTLRParser.ACTION, action ), 1 );
             string rawTranslation =
-                translator.translate();
+                translator.Translate();
             StringTemplateGroup templates =
                 new StringTemplateGroup( ".", typeof( AngleBracketTemplateLexer ) );
             StringTemplate actionST = new StringTemplate( templates, rawTranslation );
@@ -1847,7 +1847,7 @@ namespace AntlrUnitTests
             string expecting = "input.toString(retval.start,input.LT(-1))";
 
             ErrorQueue equeue = new ErrorQueue();
-            ErrorManager.setErrorListener( equeue );
+            ErrorManager.SetErrorListener( equeue );
             Grammar g = new Grammar(
                 "parser grammar t;\n" +
                 "options {output=template;}\n" +
@@ -1855,12 +1855,12 @@ namespace AntlrUnitTests
                 "  ;\n" );
             AntlrTool antlr = newTool();
             CodeGenerator generator = new CodeGenerator( antlr, g, "Java" );
-            g.setCodeGenerator( generator );
+            g.CodeGenerator = generator;
             generator.GenRecognizer(); // forces load of templates
             ActionTranslator translator = new ActionTranslator( generator, "a",
                                                                          new CommonToken( ANTLRParser.ACTION, action ), 1 );
             string rawTranslation =
-                translator.translate();
+                translator.Translate();
             StringTemplateGroup templates =
                 new StringTemplateGroup( ".", typeof( AngleBracketTemplateLexer ) );
             StringTemplate actionST = new StringTemplate( templates, rawTranslation );
@@ -1876,14 +1876,14 @@ namespace AntlrUnitTests
             string expecting = "((Token)retval.start);";
 
             ErrorQueue equeue = new ErrorQueue();
-            ErrorManager.setErrorListener( equeue );
+            ErrorManager.SetErrorListener( equeue );
             Grammar g = new Grammar(
                 "parser grammar t;\n" +
                 "a : {###" + action + "!!!}\n" +
                 "  ;\n" );
             AntlrTool antlr = newTool();
             CodeGenerator generator = new CodeGenerator( antlr, g, "Java" );
-            g.setCodeGenerator( generator );
+            g.CodeGenerator = generator;
             generator.GenRecognizer(); // forces load of templates
             ActionTranslator translator = new ActionTranslator( generator, "a",
                                                                          new CommonToken( ANTLRParser.ACTION, action ), 1 );
@@ -1903,7 +1903,7 @@ namespace AntlrUnitTests
             string expecting2 = "(INT2!=null?INT2.getText():null);";
 
             ErrorQueue equeue = new ErrorQueue();
-            ErrorManager.setErrorListener( equeue );
+            ErrorManager.SetErrorListener( equeue );
             Grammar g = new Grammar(
                 "grammar t;\n" +
                 "a : ID {" + action + "}\n" +
@@ -1913,12 +1913,12 @@ namespace AntlrUnitTests
                 "INT : '0';\n" );
             AntlrTool antlr = newTool();
             CodeGenerator generator = new CodeGenerator( antlr, g, "Java" );
-            g.setCodeGenerator( generator );
+            g.CodeGenerator = generator;
             generator.GenRecognizer(); // forces load of templates
             ActionTranslator translator = new ActionTranslator( generator, "a",
                                                                          new CommonToken( ANTLRParser.ACTION, action ), 1 );
             string rawTranslation =
-                translator.translate();
+                translator.Translate();
             StringTemplateGroup templates =
                 new StringTemplateGroup( ".", typeof( AngleBracketTemplateLexer ) );
             StringTemplate actionST = new StringTemplate( templates, rawTranslation );
@@ -1930,7 +1930,7 @@ namespace AntlrUnitTests
                                                    "a",
                                                    new CommonToken( ANTLRParser.ACTION, action2 ), 2 );
             rawTranslation =
-                translator.translate();
+                translator.Translate();
             templates =
                 new StringTemplateGroup( ".", typeof( AngleBracketTemplateLexer ) );
             actionST = new StringTemplate( templates, rawTranslation );
@@ -1949,7 +1949,7 @@ namespace AntlrUnitTests
             string expecting2 = "(c2!=null?input.toString(c2.start,c2.stop):null);";
 
             ErrorQueue equeue = new ErrorQueue();
-            ErrorManager.setErrorListener( equeue );
+            ErrorManager.SetErrorListener( equeue );
             Grammar g = new Grammar(
                 "grammar t;\n" +
                 "a : b {" + action + "}\n" +
@@ -1959,12 +1959,12 @@ namespace AntlrUnitTests
                 "c : '0';\n" );
             AntlrTool antlr = newTool();
             CodeGenerator generator = new CodeGenerator( antlr, g, "Java" );
-            g.setCodeGenerator( generator );
+            g.CodeGenerator = generator;
             generator.GenRecognizer(); // forces load of templates
             ActionTranslator translator = new ActionTranslator( generator, "a",
                                                                          new CommonToken( ANTLRParser.ACTION, action ), 1 );
             string rawTranslation =
-                translator.translate();
+                translator.Translate();
             StringTemplateGroup templates =
                 new StringTemplateGroup( ".", typeof( AngleBracketTemplateLexer ) );
             StringTemplate actionST = new StringTemplate( templates, rawTranslation );
@@ -1976,7 +1976,7 @@ namespace AntlrUnitTests
                                                    "a",
                                                    new CommonToken( ANTLRParser.ACTION, action2 ), 2 );
             rawTranslation =
-                translator.translate();
+                translator.Translate();
             templates =
                 new StringTemplateGroup( ".", typeof( AngleBracketTemplateLexer ) );
             actionST = new StringTemplate( templates, rawTranslation );
@@ -1993,7 +1993,7 @@ namespace AntlrUnitTests
             string expecting = action;
 
             ErrorQueue equeue = new ErrorQueue();
-            ErrorManager.setErrorListener( equeue );
+            ErrorManager.SetErrorListener( equeue );
             Grammar g = new Grammar(
                 "grammar t;\n" +
                 "a\n" +
@@ -2003,14 +2003,14 @@ namespace AntlrUnitTests
                 "  ;\n" );
             AntlrTool antlr = newTool();
             CodeGenerator generator = new CodeGenerator( antlr, g, "Java" );
-            g.setCodeGenerator( generator );
+            g.CodeGenerator = generator;
             generator.GenRecognizer(); // forces load of templates
             ActionTranslator translator =
                 new ActionTranslator( generator,
                                           "a",
                                           new CommonToken( ANTLRParser.ACTION, action ), 1 );
             string rawTranslation =
-                translator.translate();
+                translator.Translate();
             StringTemplateGroup templates =
                 new StringTemplateGroup( ".", typeof( AngleBracketTemplateLexer ) );
             StringTemplate actionST = new StringTemplate( templates, rawTranslation );
@@ -2031,7 +2031,7 @@ namespace AntlrUnitTests
             string expecting = action;
 
             ErrorQueue equeue = new ErrorQueue();
-            ErrorManager.setErrorListener( equeue );
+            ErrorManager.SetErrorListener( equeue );
             Grammar g = new Grammar(
                 "grammar t;\n" +
                 "scope Symbols {\n" +
@@ -2041,14 +2041,14 @@ namespace AntlrUnitTests
                 "  ;\n" );
             AntlrTool antlr = newTool();
             CodeGenerator generator = new CodeGenerator( antlr, g, "Java" );
-            g.setCodeGenerator( generator );
+            g.CodeGenerator = generator;
             generator.GenRecognizer(); // forces load of templates
             ActionTranslator translator =
                 new ActionTranslator( generator,
                                           "a",
                                           new CommonToken( ANTLRParser.ACTION, action ), 1 );
             string rawTranslation =
-                translator.translate();
+                translator.Translate();
             StringTemplateGroup templates =
                 new StringTemplateGroup( ".", typeof( AngleBracketTemplateLexer ) );
             StringTemplate actionST = new StringTemplate( templates, rawTranslation );
@@ -2069,7 +2069,7 @@ namespace AntlrUnitTests
             string expecting = "$n;";
 
             ErrorQueue equeue = new ErrorQueue();
-            ErrorManager.setErrorListener( equeue );
+            ErrorManager.SetErrorListener( equeue );
             Grammar g = new Grammar(
                 "grammar t;\n" +
                 "a\n" +
@@ -2086,7 +2086,7 @@ namespace AntlrUnitTests
                                           "b",
                                           new CommonToken( ANTLRParser.ACTION, action ), 1 );
             string rawTranslation =
-                translator.translate();
+                translator.Translate();
             StringTemplateGroup templates =
                 new StringTemplateGroup( ".", typeof( AngleBracketTemplateLexer ) );
             StringTemplate actionST = new StringTemplate( templates, rawTranslation );
@@ -2104,7 +2104,7 @@ namespace AntlrUnitTests
         [TestMethod]
         public void TestRuleAndTokenLabelTypeMismatch() /*throws Exception*/ {
             ErrorQueue equeue = new ErrorQueue();
-            ErrorManager.setErrorListener( equeue );
+            ErrorManager.SetErrorListener( equeue );
             Grammar g = new Grammar(
                 "grammar t;\n" +
                 "a : id='foo' id=b\n" +
@@ -2121,7 +2121,7 @@ namespace AntlrUnitTests
         [TestMethod]
         public void TestListAndTokenLabelTypeMismatch() /*throws Exception*/ {
             ErrorQueue equeue = new ErrorQueue();
-            ErrorManager.setErrorListener( equeue );
+            ErrorManager.SetErrorListener( equeue );
             Grammar g = new Grammar(
                 "grammar t;\n" +
                 "a : ids+='a' ids='b'\n" +
@@ -2138,7 +2138,7 @@ namespace AntlrUnitTests
         [TestMethod]
         public void TestListAndRuleLabelTypeMismatch() /*throws Exception*/ {
             ErrorQueue equeue = new ErrorQueue();
-            ErrorManager.setErrorListener( equeue );
+            ErrorManager.SetErrorListener( equeue );
             Grammar g = new Grammar(
                 "grammar t;\n" +
                 "options {output=AST;}\n" +
@@ -2156,7 +2156,7 @@ namespace AntlrUnitTests
         [TestMethod]
         public void TestArgReturnValueMismatch() /*throws Exception*/ {
             ErrorQueue equeue = new ErrorQueue();
-            ErrorManager.setErrorListener( equeue );
+            ErrorManager.SetErrorListener( equeue );
             Grammar g = new Grammar(
                 "grammar t;\n" +
                 "a[int i] returns [int x, int i]\n" +
@@ -2177,20 +2177,20 @@ namespace AntlrUnitTests
             string expecting = "list_ids.size();";
 
             ErrorQueue equeue = new ErrorQueue();
-            ErrorManager.setErrorListener( equeue );
+            ErrorManager.SetErrorListener( equeue );
             Grammar g = new Grammar(
                 "parser grammar t;\n" +
                 "a : ids+=ID ( COMMA ids+=ID {" + action + "})* ;\n" );
             AntlrTool antlr = newTool();
             CodeGenerator generator = new CodeGenerator( antlr, g, "Java" );
-            g.setCodeGenerator( generator );
+            g.CodeGenerator = generator;
             generator.GenRecognizer(); // forces load of templates
             ActionTranslator translator =
                 new ActionTranslator( generator,
                                           "a",
                                           new CommonToken( ANTLRParser.ACTION, action ), 1 );
             string rawTranslation =
-                translator.translate();
+                translator.Translate();
             StringTemplateGroup templates =
                 new StringTemplateGroup( ".", typeof( AngleBracketTemplateLexer ) );
             StringTemplate actionST = new StringTemplate( templates, rawTranslation );
@@ -2206,21 +2206,21 @@ namespace AntlrUnitTests
             string expecting = "list_ids.size();";
 
             ErrorQueue equeue = new ErrorQueue();
-            ErrorManager.setErrorListener( equeue );
+            ErrorManager.SetErrorListener( equeue );
             Grammar g = new Grammar(
                 "grammar t;\n" +
                 "a : ids+='if' ( ',' ids+=ID {" + action + "})* ;" +
                 "ID : 'a';\n" );
             AntlrTool antlr = newTool();
             CodeGenerator generator = new CodeGenerator( antlr, g, "Java" );
-            g.setCodeGenerator( generator );
+            g.CodeGenerator = generator;
             generator.GenRecognizer(); // forces load of templates
             ActionTranslator translator =
                 new ActionTranslator( generator,
                                           "a",
                                           new CommonToken( ANTLRParser.ACTION, action ), 1 );
             string rawTranslation =
-                translator.translate();
+                translator.Translate();
             StringTemplateGroup templates =
                 new StringTemplateGroup( ".", typeof( AngleBracketTemplateLexer ) );
             StringTemplate actionST = new StringTemplate( templates, rawTranslation );
@@ -2236,21 +2236,21 @@ namespace AntlrUnitTests
             string expecting = "list_ids.size();";
 
             ErrorQueue equeue = new ErrorQueue();
-            ErrorManager.setErrorListener( equeue );
+            ErrorManager.SetErrorListener( equeue );
             Grammar g = new Grammar(
                 "grammar t;\n" +
                 "a : ids+=('a'|'b') ( ',' ids+=ID {" + action + "})* ;" +
                 "ID : 'a';\n" );
             AntlrTool antlr = newTool();
             CodeGenerator generator = new CodeGenerator( antlr, g, "Java" );
-            g.setCodeGenerator( generator );
+            g.CodeGenerator = generator;
             generator.GenRecognizer(); // forces load of templates
             ActionTranslator translator =
                 new ActionTranslator( generator,
                                           "a",
                                           new CommonToken( ANTLRParser.ACTION, action ), 1 );
             string rawTranslation =
-                translator.translate();
+                translator.Translate();
             StringTemplateGroup templates =
                 new StringTemplateGroup( ".", typeof( AngleBracketTemplateLexer ) );
             StringTemplate actionST = new StringTemplate( templates, rawTranslation );
@@ -2266,7 +2266,7 @@ namespace AntlrUnitTests
             string expecting = "list_ids.size();";
 
             ErrorQueue equeue = new ErrorQueue();
-            ErrorManager.setErrorListener( equeue );
+            ErrorManager.SetErrorListener( equeue );
             Grammar g = new Grammar(
                 "grammar t;\n" +
                 "a : ids+=. ( ',' ids+=ID {" + action + "})* ;" +
@@ -2277,10 +2277,10 @@ namespace AntlrUnitTests
                 new ActionTranslator( generator,
                                           "a",
                                           new CommonToken( ANTLRParser.ACTION, action ), 1 );
-            g.setCodeGenerator( generator );
+            g.CodeGenerator = generator;
             generator.GenRecognizer(); // forces load of templates
             string rawTranslation =
-                translator.translate();
+                translator.Translate();
             StringTemplateGroup templates =
                 new StringTemplateGroup( ".", typeof( AngleBracketTemplateLexer ) );
             StringTemplate actionST = new StringTemplate( templates, rawTranslation );
@@ -2296,7 +2296,7 @@ namespace AntlrUnitTests
             string expecting = "ID1; (ID1!=null?ID1.getText():null); ID1.getText()";
 
             ErrorQueue equeue = new ErrorQueue();
-            ErrorManager.setErrorListener( equeue );
+            ErrorManager.SetErrorListener( equeue );
             Grammar g = new Grammar(
                 "grammar t;\n" +
                 "a : ID {" + action + "} ;" +
@@ -2309,10 +2309,10 @@ namespace AntlrUnitTests
                 new ActionTranslator( generator,
                                           "a",
                                           new CommonToken( ANTLRParser.ACTION, action ), 1 );
-            g.setCodeGenerator( generator );
+            g.CodeGenerator = generator;
             generator.GenRecognizer(); // forces load of templates
             string rawTranslation =
-                translator.translate();
+                translator.Translate();
             StringTemplateGroup templates =
                 new StringTemplateGroup( ".", typeof( AngleBracketTemplateLexer ) );
             StringTemplate actionST = new StringTemplate( templates, rawTranslation );
@@ -2328,7 +2328,7 @@ namespace AntlrUnitTests
             string expecting = "(r1!=null?((Token)r1.start):null);";
 
             ErrorQueue equeue = new ErrorQueue();
-            ErrorManager.setErrorListener( equeue );
+            ErrorManager.SetErrorListener( equeue );
             Grammar g = new Grammar(
                 "grammar t;\n" +
                 "a : r {###" + action + "!!!} ;" +
@@ -2336,7 +2336,7 @@ namespace AntlrUnitTests
             AntlrTool antlr = newTool();
             antlr.SetOutputDirectory( null ); // write to /dev/null
             CodeGenerator generator = new CodeGenerator( antlr, g, "Java" );
-            g.setCodeGenerator( generator );
+            g.CodeGenerator = generator;
             generator.GenRecognizer();
 
             StringTemplate codeST = generator.RecognizerST;
@@ -2353,7 +2353,7 @@ namespace AntlrUnitTests
             string expecting = "(x!=null?((Token)x.start):null);";
 
             ErrorQueue equeue = new ErrorQueue();
-            ErrorManager.setErrorListener( equeue );
+            ErrorManager.SetErrorListener( equeue );
             Grammar g = new Grammar(
                 "grammar t;\n" +
                 "a : x=r {###" + action + "!!!} ;" +
@@ -2361,7 +2361,7 @@ namespace AntlrUnitTests
             AntlrTool antlr = newTool();
             antlr.SetOutputDirectory( null ); // write to /dev/null
             CodeGenerator generator = new CodeGenerator( antlr, g, "Java" );
-            g.setCodeGenerator( generator );
+            g.CodeGenerator = generator;
             generator.GenRecognizer();
 
             StringTemplate codeST = generator.RecognizerST;
@@ -2378,7 +2378,7 @@ namespace AntlrUnitTests
             string expecting = "(x!=null?((Token)x.start):null);";
 
             ErrorQueue equeue = new ErrorQueue();
-            ErrorManager.setErrorListener( equeue );
+            ErrorManager.SetErrorListener( equeue );
             Grammar g = new Grammar(
                 "grammar t;\n" +
                 "options {output=AST;}\n" +
@@ -2387,7 +2387,7 @@ namespace AntlrUnitTests
             AntlrTool antlr = newTool();
             antlr.SetOutputDirectory( null ); // write to /dev/null
             CodeGenerator generator = new CodeGenerator( antlr, g, "Java" );
-            g.setCodeGenerator( generator );
+            g.CodeGenerator = generator;
             generator.GenRecognizer();
 
             StringTemplate codeST = generator.RecognizerST;
@@ -2404,7 +2404,7 @@ namespace AntlrUnitTests
             string expecting = "(x!=null?x.getText():null);";
 
             ErrorQueue equeue = new ErrorQueue();
-            ErrorManager.setErrorListener( equeue );
+            ErrorManager.SetErrorListener( equeue );
             Grammar g = new Grammar(
                 "grammar t;\n" +
                 "a : x=ID {" + action + "} ;" +
@@ -2412,13 +2412,13 @@ namespace AntlrUnitTests
             AntlrTool antlr = newTool();
             antlr.SetOutputDirectory( null ); // write to /dev/null
             CodeGenerator generator = new CodeGenerator( antlr, g, "Java" );
-            g.setCodeGenerator( generator );
+            g.CodeGenerator = generator;
             generator.GenRecognizer();
 
             ActionTranslator translator = new ActionTranslator( generator, "a",
                                                                          new CommonToken( ANTLRParser.ACTION, action ), 1 );
             string rawTranslation =
-                translator.translate();
+                translator.Translate();
             StringTemplateGroup templates =
                 new StringTemplateGroup( ".", typeof( AngleBracketTemplateLexer ) );
             StringTemplate actionST = new StringTemplate( templates, rawTranslation );
@@ -2434,7 +2434,7 @@ namespace AntlrUnitTests
             string expecting = "(x!=null?x.getText():null);";
 
             ErrorQueue equeue = new ErrorQueue();
-            ErrorManager.setErrorListener( equeue );
+            ErrorManager.SetErrorListener( equeue );
             Grammar g = new Grammar(
                 "grammar t;\n" +
                 "a : x+=ID {" + action + "} ;" +
@@ -2442,13 +2442,13 @@ namespace AntlrUnitTests
             AntlrTool antlr = newTool();
             antlr.SetOutputDirectory( null ); // write to /dev/null
             CodeGenerator generator = new CodeGenerator( antlr, g, "Java" );
-            g.setCodeGenerator( generator );
+            g.CodeGenerator = generator;
             generator.GenRecognizer();
 
             ActionTranslator translator = new ActionTranslator( generator, "a",
                                                                          new CommonToken( ANTLRParser.ACTION, action ), 1 );
             string rawTranslation =
-                translator.translate();
+                translator.Translate();
             StringTemplateGroup templates =
                 new StringTemplateGroup( ".", typeof( AngleBracketTemplateLexer ) );
             StringTemplate actionST = new StringTemplate( templates, rawTranslation );
@@ -2461,7 +2461,7 @@ namespace AntlrUnitTests
         [TestMethod]
         public void TestRuleLabelWithoutOutputOption() /*throws Exception*/ {
             ErrorQueue equeue = new ErrorQueue();
-            ErrorManager.setErrorListener( equeue );
+            ErrorManager.SetErrorListener( equeue );
             Grammar g = new Grammar(
                 "grammar T;\n" +
                 "s : x+=a ;" +
@@ -2471,7 +2471,7 @@ namespace AntlrUnitTests
             AntlrTool antlr = newTool();
             antlr.SetOutputDirectory( null ); // write to /dev/null
             CodeGenerator generator = new CodeGenerator( antlr, g, "Java" );
-            g.setCodeGenerator( generator );
+            g.CodeGenerator = generator;
             generator.GenRecognizer();
 
             int expectedMsgID = ErrorManager.MSG_LIST_LABEL_INVALID_UNLESS_RETVAL_STRUCT;
@@ -2517,7 +2517,7 @@ namespace AntlrUnitTests
         [TestMethod]
         public void TestMissingArgs() /*throws Exception*/ {
             ErrorQueue equeue = new ErrorQueue();
-            ErrorManager.setErrorListener( equeue );
+            ErrorManager.SetErrorListener( equeue );
             Grammar g = new Grammar(
                 "grammar t;\n" +
                 "a : r ;" +
@@ -2525,7 +2525,7 @@ namespace AntlrUnitTests
             AntlrTool antlr = newTool();
             antlr.SetOutputDirectory( null ); // write to /dev/null
             CodeGenerator generator = new CodeGenerator( antlr, g, "Java" );
-            g.setCodeGenerator( generator );
+            g.CodeGenerator = generator;
             generator.GenRecognizer();
 
             int expectedMsgID = ErrorManager.MSG_MISSING_RULE_ARGS;
@@ -2539,7 +2539,7 @@ namespace AntlrUnitTests
         [TestMethod]
         public void TestArgsWhenNoneDefined() /*throws Exception*/ {
             ErrorQueue equeue = new ErrorQueue();
-            ErrorManager.setErrorListener( equeue );
+            ErrorManager.SetErrorListener( equeue );
             Grammar g = new Grammar(
                 "grammar t;\n" +
                 "a : r[32,34] ;" +
@@ -2547,7 +2547,7 @@ namespace AntlrUnitTests
             AntlrTool antlr = newTool();
             antlr.SetOutputDirectory( null ); // write to /dev/null
             CodeGenerator generator = new CodeGenerator( antlr, g, "Java" );
-            g.setCodeGenerator( generator );
+            g.CodeGenerator = generator;
             generator.GenRecognizer();
 
             int expectedMsgID = ErrorManager.MSG_RULE_HAS_NO_ARGS;
@@ -2561,14 +2561,14 @@ namespace AntlrUnitTests
         [TestMethod]
         public void TestReturnInitValue() /*throws Exception*/ {
             ErrorQueue equeue = new ErrorQueue();
-            ErrorManager.setErrorListener( equeue );
+            ErrorManager.SetErrorListener( equeue );
             Grammar g = new Grammar(
                 "grammar t;\n" +
                 "a : r ;\n" +
                 "r returns [int x=0] : 'a' {$x = 4;} ;\n" );
             assertEquals( "unexpected errors: " + equeue, 0, equeue.errors.Count );
 
-            Rule r = g.getRule( "r" );
+            Rule r = g.GetRule( "r" );
             AttributeScope retScope = r.returnScope;
             var parameters = retScope.Attributes;
             assertNotNull( "missing return action", parameters );
@@ -2581,14 +2581,14 @@ namespace AntlrUnitTests
         [TestMethod]
         public void TestMultipleReturnInitValue() /*throws Exception*/ {
             ErrorQueue equeue = new ErrorQueue();
-            ErrorManager.setErrorListener( equeue );
+            ErrorManager.SetErrorListener( equeue );
             Grammar g = new Grammar(
                 "grammar t;\n" +
                 "a : r ;\n" +
                 "r returns [int x=0, int y, String s=new String(\"foo\")] : 'a' {$x = 4;} ;\n" );
             assertEquals( "unexpected errors: " + equeue, 0, equeue.errors.Count );
 
-            Rule r = g.getRule( "r" );
+            Rule r = g.GetRule( "r" );
             AttributeScope retScope = r.returnScope;
             var parameters = retScope.Attributes;
             assertNotNull( "missing return action", parameters );
@@ -2601,14 +2601,14 @@ namespace AntlrUnitTests
         [TestMethod]
         public void TestCStyleReturnInitValue() /*throws Exception*/ {
             ErrorQueue equeue = new ErrorQueue();
-            ErrorManager.setErrorListener( equeue );
+            ErrorManager.SetErrorListener( equeue );
             Grammar g = new Grammar(
                 "grammar t;\n" +
                 "a : r ;\n" +
                 "r returns [int (*x)()=NULL] : 'a' ;\n" );
             assertEquals( "unexpected errors: " + equeue, 0, equeue.errors.Count );
 
-            Rule r = g.getRule( "r" );
+            Rule r = g.GetRule( "r" );
             AttributeScope retScope = r.returnScope;
             var parameters = retScope.Attributes;
             assertNotNull( "missing return action", parameters );
@@ -2621,7 +2621,7 @@ namespace AntlrUnitTests
         [TestMethod]
         public void TestArgsWithInitValues() /*throws Exception*/ {
             ErrorQueue equeue = new ErrorQueue();
-            ErrorManager.setErrorListener( equeue );
+            ErrorManager.SetErrorListener( equeue );
             Grammar g = new Grammar(
                 "grammar t;\n" +
                 "a : r[32,34] ;" +
@@ -2629,7 +2629,7 @@ namespace AntlrUnitTests
             AntlrTool antlr = newTool();
             antlr.SetOutputDirectory( null ); // write to /dev/null
             CodeGenerator generator = new CodeGenerator( antlr, g, "Java" );
-            g.setCodeGenerator( generator );
+            g.CodeGenerator = generator;
             generator.GenRecognizer();
 
             int expectedMsgID = ErrorManager.MSG_ARG_INIT_VALUES_ILLEGAL;
@@ -2643,7 +2643,7 @@ namespace AntlrUnitTests
         [TestMethod]
         public void TestArgsOnToken() /*throws Exception*/ {
             ErrorQueue equeue = new ErrorQueue();
-            ErrorManager.setErrorListener( equeue );
+            ErrorManager.SetErrorListener( equeue );
             Grammar g = new Grammar(
                 "grammar t;\n" +
                 "a : ID[32,34] ;" +
@@ -2651,7 +2651,7 @@ namespace AntlrUnitTests
             AntlrTool antlr = newTool();
             antlr.SetOutputDirectory( null ); // write to /dev/null
             CodeGenerator generator = new CodeGenerator( antlr, g, "Java" );
-            g.setCodeGenerator( generator );
+            g.CodeGenerator = generator;
             generator.GenRecognizer();
 
             int expectedMsgID = ErrorManager.MSG_ARGS_ON_TOKEN_REF;
@@ -2665,7 +2665,7 @@ namespace AntlrUnitTests
         [TestMethod]
         public void TestArgsOnTokenInLexer() /*throws Exception*/ {
             ErrorQueue equeue = new ErrorQueue();
-            ErrorManager.setErrorListener( equeue );
+            ErrorManager.SetErrorListener( equeue );
             Grammar g = new Grammar(
                 "lexer grammar t;\n" +
                 "R : 'z' ID[32,34] ;" +
@@ -2673,7 +2673,7 @@ namespace AntlrUnitTests
             AntlrTool antlr = newTool();
             antlr.SetOutputDirectory( null ); // write to /dev/null
             CodeGenerator generator = new CodeGenerator( antlr, g, "Java" );
-            g.setCodeGenerator( generator );
+            g.CodeGenerator = generator;
             generator.GenRecognizer();
 
             int expectedMsgID = ErrorManager.MSG_RULE_HAS_NO_ARGS;
@@ -2689,21 +2689,21 @@ namespace AntlrUnitTests
             string action = "$i.text";
             string expecting = "(i!=null?i.getText():null)";
             ErrorQueue equeue = new ErrorQueue();
-            ErrorManager.setErrorListener( equeue );
+            ErrorManager.SetErrorListener( equeue );
             Grammar g = new Grammar(
                 "lexer grammar t;\n" +
                 "R : 'z' i=ID {" + action + "};" +
                 "fragment ID : 'a';\n" );
             AntlrTool antlr = newTool();
             CodeGenerator generator = new CodeGenerator( antlr, g, "Java" );
-            g.setCodeGenerator( generator );
+            g.CodeGenerator = generator;
             generator.GenRecognizer(); // forces load of templates
             ActionTranslator translator =
                 new ActionTranslator( generator,
                                           "R",
                                           new CommonToken( ANTLRParser.ACTION, action ), 1 );
             string rawTranslation =
-                translator.translate();
+                translator.Translate();
             StringTemplateGroup templates =
                 new StringTemplateGroup( ".", typeof( AngleBracketTemplateLexer ) );
             StringTemplate actionST = new StringTemplate( templates, rawTranslation );
@@ -2719,21 +2719,21 @@ namespace AntlrUnitTests
             string action = "$ID.text";
             string expecting = "(ID1!=null?ID1.getText():null)";
             ErrorQueue equeue = new ErrorQueue();
-            ErrorManager.setErrorListener( equeue );
+            ErrorManager.SetErrorListener( equeue );
             Grammar g = new Grammar(
                 "lexer grammar t;\n" +
                 "R : 'z' ID {" + action + "};" +
                 "ID : 'a';\n" );
             AntlrTool antlr = newTool();
             CodeGenerator generator = new CodeGenerator( antlr, g, "Java" );
-            g.setCodeGenerator( generator );
+            g.CodeGenerator = generator;
             generator.GenRecognizer(); // forces load of templates
             ActionTranslator translator =
                 new ActionTranslator( generator,
                                           "R",
                                           new CommonToken( ANTLRParser.ACTION, action ), 1 );
             string rawTranslation =
-                translator.translate();
+                translator.Translate();
             StringTemplateGroup templates =
                 new StringTemplateGroup( ".", typeof( AngleBracketTemplateLexer ) );
             StringTemplate actionST = new StringTemplate( templates, rawTranslation );
@@ -2749,21 +2749,21 @@ namespace AntlrUnitTests
             string action = "$ID";
             string expecting = "ID1";
             ErrorQueue equeue = new ErrorQueue();
-            ErrorManager.setErrorListener( equeue );
+            ErrorManager.SetErrorListener( equeue );
             Grammar g = new Grammar(
                 "lexer grammar t;\n" +
                 "R : 'z' ID {" + action + "};" +
                 "ID : 'a';\n" );
             AntlrTool antlr = newTool();
             CodeGenerator generator = new CodeGenerator( antlr, g, "Java" );
-            g.setCodeGenerator( generator );
+            g.CodeGenerator = generator;
             generator.GenRecognizer(); // forces load of templates
             ActionTranslator translator =
                 new ActionTranslator( generator,
                                           "R",
                                           new CommonToken( ANTLRParser.ACTION, action ), 1 );
             string rawTranslation =
-                translator.translate();
+                translator.Translate();
             StringTemplateGroup templates =
                 new StringTemplateGroup( ".", typeof( AngleBracketTemplateLexer ) );
             StringTemplate actionST = new StringTemplate( templates, rawTranslation );
@@ -2777,14 +2777,14 @@ namespace AntlrUnitTests
         [TestMethod]
         public void TestCharLabelInLexer() /*throws Exception*/ {
             ErrorQueue equeue = new ErrorQueue();
-            ErrorManager.setErrorListener( equeue );
+            ErrorManager.SetErrorListener( equeue );
             Grammar g = new Grammar(
                 "lexer grammar t;\n" +
                 "R : x='z' ;\n" );
 
             AntlrTool antlr = newTool();
             CodeGenerator generator = new CodeGenerator( antlr, g, "Java" );
-            g.setCodeGenerator( generator );
+            g.CodeGenerator = generator;
             generator.GenRecognizer(); // forces load of templates
 
             assertEquals( "unexpected errors: " + equeue, 0, equeue.errors.Count );
@@ -2793,14 +2793,14 @@ namespace AntlrUnitTests
         [TestMethod]
         public void TestCharListLabelInLexer() /*throws Exception*/ {
             ErrorQueue equeue = new ErrorQueue();
-            ErrorManager.setErrorListener( equeue );
+            ErrorManager.SetErrorListener( equeue );
             Grammar g = new Grammar(
                 "lexer grammar t;\n" +
                 "R : x+='z' ;\n" );
 
             AntlrTool antlr = newTool();
             CodeGenerator generator = new CodeGenerator( antlr, g, "Java" );
-            g.setCodeGenerator( generator );
+            g.CodeGenerator = generator;
             generator.GenRecognizer(); // forces load of templates
             assertEquals( "unexpected errors: " + equeue, 0, equeue.errors.Count );
         }
@@ -2808,14 +2808,14 @@ namespace AntlrUnitTests
         [TestMethod]
         public void TestWildcardCharLabelInLexer() /*throws Exception*/ {
             ErrorQueue equeue = new ErrorQueue();
-            ErrorManager.setErrorListener( equeue );
+            ErrorManager.SetErrorListener( equeue );
             Grammar g = new Grammar(
                 "lexer grammar t;\n" +
                 "R : x=. ;\n" );
 
             AntlrTool antlr = newTool();
             CodeGenerator generator = new CodeGenerator( antlr, g, "Java" );
-            g.setCodeGenerator( generator );
+            g.CodeGenerator = generator;
             generator.GenRecognizer(); // forces load of templates
             assertEquals( "unexpected errors: " + equeue, 0, equeue.errors.Count );
         }
@@ -2823,14 +2823,14 @@ namespace AntlrUnitTests
         [TestMethod]
         public void TestWildcardCharListLabelInLexer() /*throws Exception*/ {
             ErrorQueue equeue = new ErrorQueue();
-            ErrorManager.setErrorListener( equeue );
+            ErrorManager.SetErrorListener( equeue );
             Grammar g = new Grammar(
                 "lexer grammar t;\n" +
                 "R : x+=. ;\n" );
 
             AntlrTool antlr = newTool();
             CodeGenerator generator = new CodeGenerator( antlr, g, "Java" );
-            g.setCodeGenerator( generator );
+            g.CodeGenerator = generator;
             generator.GenRecognizer(); // forces load of templates
             assertEquals( "unexpected errors: " + equeue, 0, equeue.errors.Count );
         }
@@ -2838,7 +2838,7 @@ namespace AntlrUnitTests
         [TestMethod]
         public void TestMissingArgsInLexer() /*throws Exception*/ {
             ErrorQueue equeue = new ErrorQueue();
-            ErrorManager.setErrorListener( equeue );
+            ErrorManager.SetErrorListener( equeue );
             Grammar g = new Grammar(
                 "lexer grammar t;\n" +
                 "A : R ;" +
@@ -2846,7 +2846,7 @@ namespace AntlrUnitTests
             AntlrTool antlr = newTool();
             antlr.SetOutputDirectory( null ); // write to /dev/null
             CodeGenerator generator = new CodeGenerator( antlr, g, "Java" );
-            g.setCodeGenerator( generator );
+            g.CodeGenerator = generator;
             generator.GenRecognizer();
 
             int expectedMsgID = ErrorManager.MSG_MISSING_RULE_ARGS;
@@ -2863,20 +2863,20 @@ namespace AntlrUnitTests
             string action = "$text $type $line $pos $channel $index $start $stop";
             string expecting = "getText() _type state.tokenStartLine state.tokenStartCharPositionInLine _channel -1 state.tokenStartCharIndex (getCharIndex()-1)";
             ErrorQueue equeue = new ErrorQueue();
-            ErrorManager.setErrorListener( equeue );
+            ErrorManager.SetErrorListener( equeue );
             Grammar g = new Grammar(
                 "lexer grammar t;\n" +
                 "R : 'r' {" + action + "};\n" );
             AntlrTool antlr = newTool();
             CodeGenerator generator = new CodeGenerator( antlr, g, "Java" );
-            g.setCodeGenerator( generator );
+            g.CodeGenerator = generator;
             generator.GenRecognizer(); // forces load of templates
             ActionTranslator translator =
                 new ActionTranslator( generator,
                                           "R",
                                           new CommonToken( ANTLRParser.ACTION, action ), 1 );
             string rawTranslation =
-                translator.translate();
+                translator.Translate();
             StringTemplateGroup templates =
                 new StringTemplateGroup( ".", typeof( AngleBracketTemplateLexer ) );
             StringTemplate actionST = new StringTemplate( templates, rawTranslation );
@@ -2892,21 +2892,21 @@ namespace AntlrUnitTests
             string action = "$a $b.text $c $d.text";
             string expecting = "a (b!=null?b.getText():null) c (d!=null?d.getText():null)";
             ErrorQueue equeue = new ErrorQueue();
-            ErrorManager.setErrorListener( equeue );
+            ErrorManager.SetErrorListener( equeue );
             Grammar g = new Grammar(
                 "lexer grammar t;\n" +
                 "R : a='c' b='hi' c=. d=DUH {" + action + "};\n" +
                 "DUH : 'd' ;\n" );
             AntlrTool antlr = newTool();
             CodeGenerator generator = new CodeGenerator( antlr, g, "Java" );
-            g.setCodeGenerator( generator );
+            g.CodeGenerator = generator;
             generator.GenRecognizer(); // forces load of templates
             ActionTranslator translator =
                 new ActionTranslator( generator,
                                           "R",
                                           new CommonToken( ANTLRParser.ACTION, action ), 1 );
             string rawTranslation =
-                translator.translate();
+                translator.Translate();
             StringTemplateGroup templates =
                 new StringTemplateGroup( ".", typeof( AngleBracketTemplateLexer ) );
             StringTemplate actionST = new StringTemplate( templates, rawTranslation );
@@ -2922,20 +2922,20 @@ namespace AntlrUnitTests
             string action = "$text $type=1 $line=1 $pos=1 $channel=1 $index";
             string expecting = "getText() _type=1 state.tokenStartLine=1 state.tokenStartCharPositionInLine=1 _channel=1 -1";
             ErrorQueue equeue = new ErrorQueue();
-            ErrorManager.setErrorListener( equeue );
+            ErrorManager.SetErrorListener( equeue );
             Grammar g = new Grammar(
                 "lexer grammar t;\n" +
                 "R : 'r' {" + action + "};\n" );
             AntlrTool antlr = newTool();
             CodeGenerator generator = new CodeGenerator( antlr, g, "Java" );
-            g.setCodeGenerator( generator );
+            g.CodeGenerator = generator;
             generator.GenRecognizer(); // forces load of templates
             ActionTranslator translator =
                 new ActionTranslator( generator,
                                           "R",
                                           new CommonToken( ANTLRParser.ACTION, action ), 1 );
             string rawTranslation =
-                translator.translate();
+                translator.Translate();
             StringTemplateGroup templates =
                 new StringTemplateGroup( ".", typeof( AngleBracketTemplateLexer ) );
             StringTemplate actionST = new StringTemplate( templates, rawTranslation );
@@ -2949,27 +2949,27 @@ namespace AntlrUnitTests
         [TestMethod]
         public void TestArgsOnTokenInLexerRuleOfCombined() /*throws Exception*/ {
             ErrorQueue equeue = new ErrorQueue();
-            ErrorManager.setErrorListener( equeue );
+            ErrorManager.SetErrorListener( equeue );
             Grammar g = new Grammar(
                 "grammar t;\n" +
                 "a : R;\n" +
                 "R : 'z' ID[32] ;\n" +
                 "ID : 'a';\n" );
 
-            string lexerGrammarStr = g.getLexerGrammar();
+            string lexerGrammarStr = g.GetLexerGrammar();
             System.IO.StringReader sr = new System.IO.StringReader( lexerGrammarStr );
             Grammar lexerGrammar = new Grammar();
             lexerGrammar.FileName = "<internally-generated-lexer>";
-            lexerGrammar.importTokenVocabulary( g );
-            lexerGrammar.parseAndBuildAST( sr );
-            lexerGrammar.defineGrammarSymbols();
-            lexerGrammar.checkNameSpaceAndActions();
+            lexerGrammar.ImportTokenVocabulary( g );
+            lexerGrammar.ParseAndBuildAST( sr );
+            lexerGrammar.DefineGrammarSymbols();
+            lexerGrammar.CheckNameSpaceAndActions();
             sr.Close();
 
             AntlrTool antlr = newTool();
             antlr.SetOutputDirectory( null ); // write to /dev/null
             CodeGenerator generator = new CodeGenerator( antlr, lexerGrammar, "Java" );
-            lexerGrammar.setCodeGenerator( generator );
+            lexerGrammar.CodeGenerator = generator;
             generator.GenRecognizer();
 
             int expectedMsgID = ErrorManager.MSG_RULE_HAS_NO_ARGS;
@@ -2983,27 +2983,27 @@ namespace AntlrUnitTests
         [TestMethod]
         public void TestMissingArgsOnTokenInLexerRuleOfCombined() /*throws Exception*/ {
             ErrorQueue equeue = new ErrorQueue();
-            ErrorManager.setErrorListener( equeue );
+            ErrorManager.SetErrorListener( equeue );
             Grammar g = new Grammar(
                 "grammar t;\n" +
                 "a : R;\n" +
                 "R : 'z' ID ;\n" +
                 "ID[int i] : 'a';\n" );
 
-            string lexerGrammarStr = g.getLexerGrammar();
+            string lexerGrammarStr = g.GetLexerGrammar();
             StringReader sr = new StringReader( lexerGrammarStr );
             Grammar lexerGrammar = new Grammar();
             lexerGrammar.FileName = "<internally-generated-lexer>";
-            lexerGrammar.importTokenVocabulary( g );
-            lexerGrammar.parseAndBuildAST( sr );
-            lexerGrammar.defineGrammarSymbols();
-            lexerGrammar.checkNameSpaceAndActions();
+            lexerGrammar.ImportTokenVocabulary( g );
+            lexerGrammar.ParseAndBuildAST( sr );
+            lexerGrammar.DefineGrammarSymbols();
+            lexerGrammar.CheckNameSpaceAndActions();
             sr.Close();
 
             AntlrTool antlr = newTool();
             antlr.SetOutputDirectory( null ); // write to /dev/null
             CodeGenerator generator = new CodeGenerator( antlr, lexerGrammar, "Java" );
-            lexerGrammar.setCodeGenerator( generator );
+            lexerGrammar.CodeGenerator = generator;
             generator.GenRecognizer();
 
             int expectedMsgID = ErrorManager.MSG_MISSING_RULE_ARGS;
@@ -3022,7 +3022,7 @@ namespace AntlrUnitTests
             string expecting = "id_tree;";
 
             ErrorQueue equeue = new ErrorQueue();
-            ErrorManager.setErrorListener( equeue );
+            ErrorManager.SetErrorListener( equeue );
             Grammar g = new Grammar(
                 "grammar t;\n" +
                 "a : id=ID {" + action + "} ;\n" +
@@ -3035,10 +3035,10 @@ namespace AntlrUnitTests
                 new ActionTranslator( generator,
                                           "a",
                                           new CommonToken( ANTLRParser.ACTION, action ), 1 );
-            g.setCodeGenerator( generator );
+            g.CodeGenerator = generator;
             generator.GenRecognizer(); // forces load of templates
             string rawTranslation =
-                translator.translate();
+                translator.Translate();
             StringTemplateGroup templates =
                 new StringTemplateGroup( ".", typeof( AngleBracketTemplateLexer ) );
             StringTemplate actionST = new StringTemplate( templates, rawTranslation );
@@ -3054,7 +3054,7 @@ namespace AntlrUnitTests
             string expecting = "ID1_tree;";
 
             ErrorQueue equeue = new ErrorQueue();
-            ErrorManager.setErrorListener( equeue );
+            ErrorManager.SetErrorListener( equeue );
             Grammar g = new Grammar(
                 "grammar t;\n" +
                 "a : ID {" + action + "} ;" +
@@ -3062,13 +3062,13 @@ namespace AntlrUnitTests
             AntlrTool antlr = newTool();
             antlr.SetOutputDirectory( null ); // write to /dev/null
             CodeGenerator generator = new CodeGenerator( antlr, g, "Java" );
-            g.setCodeGenerator( generator );
+            g.CodeGenerator = generator;
             generator.GenRecognizer();
 
             ActionTranslator translator = new ActionTranslator( generator, "a",
                                                                          new CommonToken( ANTLRParser.ACTION, action ), 1 );
             string rawTranslation =
-                translator.translate();
+                translator.Translate();
             StringTemplateGroup templates =
                 new StringTemplateGroup( ".", typeof( AngleBracketTemplateLexer ) );
             StringTemplate actionST = new StringTemplate( templates, rawTranslation );
@@ -3082,7 +3082,7 @@ namespace AntlrUnitTests
             //String expecting = "";
 
             ErrorQueue equeue = new ErrorQueue();
-            ErrorManager.setErrorListener( equeue );
+            ErrorManager.SetErrorListener( equeue );
             Grammar g = new Grammar(
                 "grammar t;\n" +
                 "a : ID ID {" + action + "};" +
@@ -3090,7 +3090,7 @@ namespace AntlrUnitTests
             AntlrTool antlr = newTool();
             antlr.SetOutputDirectory( null ); // write to /dev/null
             CodeGenerator generator = new CodeGenerator( antlr, g, "Java" );
-            g.setCodeGenerator( generator );
+            g.CodeGenerator = generator;
             generator.GenRecognizer();
 
             int expectedMsgID = ErrorManager.MSG_NONUNIQUE_REF;
@@ -3106,7 +3106,7 @@ namespace AntlrUnitTests
             //String expecting = "";
 
             ErrorQueue equeue = new ErrorQueue();
-            ErrorManager.setErrorListener( equeue );
+            ErrorManager.SetErrorListener( equeue );
             Grammar g = new Grammar(
                 "grammar t;\n" +
                 "a : ID ID {" + action + "};" +
@@ -3114,7 +3114,7 @@ namespace AntlrUnitTests
             AntlrTool antlr = newTool();
             antlr.SetOutputDirectory( null ); // write to /dev/null
             CodeGenerator generator = new CodeGenerator( antlr, g, "Java" );
-            g.setCodeGenerator( generator );
+            g.CodeGenerator = generator;
             generator.GenRecognizer();
 
             int expectedMsgID = ErrorManager.MSG_NONUNIQUE_REF;
@@ -3130,7 +3130,7 @@ namespace AntlrUnitTests
             string expecting = "((field_scope)field_stack.peek()).x = retval.st;";
 
             ErrorQueue equeue = new ErrorQueue();
-            ErrorManager.setErrorListener( equeue );
+            ErrorManager.SetErrorListener( equeue );
             Grammar g = new Grammar(
                 "grammar a;\n" +
                 "field\n" +
@@ -3139,13 +3139,13 @@ namespace AntlrUnitTests
                 "    ;\n" );
             AntlrTool antlr = newTool();
             CodeGenerator generator = new CodeGenerator( antlr, g, "Java" );
-            g.setCodeGenerator( generator );
+            g.CodeGenerator = generator;
             generator.GenRecognizer(); // forces load of templates
             ActionTranslator translator = new ActionTranslator( generator,
                                                                          "field",
                                                                          new CommonToken( ANTLRParser.ACTION, action ), 1 );
             string rawTranslation =
-                translator.translate();
+                translator.Translate();
             StringTemplateGroup templates =
                 new StringTemplateGroup( ".", typeof( AngleBracketTemplateLexer ) );
             StringTemplate actionST = new StringTemplate( templates, rawTranslation );
@@ -3160,7 +3160,7 @@ namespace AntlrUnitTests
             string action = "$rule.tree = null;";
             string expecting = "retval.tree = null;";
             ErrorQueue equeue = new ErrorQueue();
-            ErrorManager.setErrorListener( equeue );
+            ErrorManager.SetErrorListener( equeue );
             Grammar g = new Grammar(
                 "grammar a;\n" +
                 "rule\n" +
@@ -3168,13 +3168,13 @@ namespace AntlrUnitTests
                 "    ;" );
             AntlrTool antlr = newTool();
             CodeGenerator generator = new CodeGenerator( antlr, g, "Java" );
-            g.setCodeGenerator( generator );
+            g.CodeGenerator = generator;
             generator.GenRecognizer(); // forces load of templates
             ActionTranslator translator = new ActionTranslator( generator,
                                                                          "rule",
                                                                          new CommonToken( ANTLRParser.ACTION, action ), 1 );
             string rawTranslation =
-                translator.translate();
+                translator.Translate();
             StringTemplateGroup templates =
                 new StringTemplateGroup( ".", typeof( AngleBracketTemplateLexer ) );
             StringTemplate actionST = new StringTemplate( templates, rawTranslation );
@@ -3189,7 +3189,7 @@ namespace AntlrUnitTests
             string action = "$rule.i = 42; $i = 23;";
             string expecting = "i = 42; i = 23;";
             ErrorQueue equeue = new ErrorQueue();
-            ErrorManager.setErrorListener( equeue );
+            ErrorManager.SetErrorListener( equeue );
             Grammar g = new Grammar(
                 "grammar a;\n" +
                 "rule[int i]\n" +
@@ -3197,13 +3197,13 @@ namespace AntlrUnitTests
                 "    ;" );
             AntlrTool antlr = newTool();
             CodeGenerator generator = new CodeGenerator( antlr, g, "Java" );
-            g.setCodeGenerator( generator );
+            g.CodeGenerator = generator;
             generator.GenRecognizer(); // forces load of templates
             ActionTranslator translator = new ActionTranslator( generator,
                                                                          "rule",
                                                                          new CommonToken( ANTLRParser.ACTION, action ), 1 );
             string rawTranslation =
-                translator.translate();
+                translator.Translate();
             StringTemplateGroup templates =
                 new StringTemplateGroup( ".", typeof( AngleBracketTemplateLexer ) );
             StringTemplate actionST = new StringTemplate( templates, rawTranslation );
@@ -3217,7 +3217,7 @@ namespace AntlrUnitTests
         public void TestIllegalAssignToOwnRulenameAttr() /*throws Exception*/ {
             string action = "$rule.stop = 0;";
             ErrorQueue equeue = new ErrorQueue();
-            ErrorManager.setErrorListener( equeue );
+            ErrorManager.SetErrorListener( equeue );
             Grammar g = new Grammar(
                 "grammar a;\n" +
                 "rule\n" +
@@ -3225,13 +3225,13 @@ namespace AntlrUnitTests
                 "    ;" );
             AntlrTool antlr = newTool();
             CodeGenerator generator = new CodeGenerator( antlr, g, "Java" );
-            g.setCodeGenerator( generator );
+            g.CodeGenerator = generator;
             generator.GenRecognizer(); // forces load of templates
             ActionTranslator translator = new ActionTranslator( generator,
                                                                          "rule",
                                                                          new CommonToken( ANTLRParser.ACTION, action ), 1 );
             string rawTranslation =
-                translator.translate();
+                translator.Translate();
 
             int expectedMsgID = ErrorManager.MSG_WRITE_TO_READONLY_ATTR;
             object expectedArg = "rule";
@@ -3246,7 +3246,7 @@ namespace AntlrUnitTests
             string action = "$tree = null; $st = null; $start = 0; $stop = 0; $text = 0;";
             string expecting = "retval.tree = null; retval.st = null;   ";
             ErrorQueue equeue = new ErrorQueue();
-            ErrorManager.setErrorListener( equeue );
+            ErrorManager.SetErrorListener( equeue );
             Grammar g = new Grammar(
                 "grammar a;\n" +
                 "rule\n" +
@@ -3254,13 +3254,13 @@ namespace AntlrUnitTests
                 "    ;" );
             AntlrTool antlr = newTool();
             CodeGenerator generator = new CodeGenerator( antlr, g, "Java" );
-            g.setCodeGenerator( generator );
+            g.CodeGenerator = generator;
             generator.GenRecognizer(); // forces load of templates
             ActionTranslator translator = new ActionTranslator( generator,
                                                                          "rule",
                                                                          new CommonToken( ANTLRParser.ACTION, action ), 1 );
             string rawTranslation =
-                translator.translate();
+                translator.Translate();
 
             int expectedMsgID = ErrorManager.MSG_WRITE_TO_READONLY_ATTR;
             var expectedErrors = new List<object>( 3 );
@@ -3286,7 +3286,7 @@ namespace AntlrUnitTests
         public void TestIllegalAssignRuleRefAttr() /*throws Exception*/ {
             string action = "$other.tree = null;";
             ErrorQueue equeue = new ErrorQueue();
-            ErrorManager.setErrorListener( equeue );
+            ErrorManager.SetErrorListener( equeue );
             Grammar g = new Grammar(
                 "grammar a;\n" +
                 "options { output = AST;}" +
@@ -3297,13 +3297,13 @@ namespace AntlrUnitTests
                 "    ;" );
             AntlrTool antlr = newTool();
             CodeGenerator generator = new CodeGenerator( antlr, g, "Java" );
-            g.setCodeGenerator( generator );
+            g.CodeGenerator = generator;
             generator.GenRecognizer(); // forces load of templates
             ActionTranslator translator = new ActionTranslator( generator,
                                                                          "rule",
                                                                          new CommonToken( ANTLRParser.ACTION, action ), 1 );
             string rawTranslation =
-                translator.translate();
+                translator.Translate();
 
             int expectedMsgID = ErrorManager.MSG_WRITE_TO_READONLY_ATTR;
             object expectedArg = "other";
@@ -3317,7 +3317,7 @@ namespace AntlrUnitTests
         public void TestIllegalAssignTokenRefAttr() /*throws Exception*/ {
             string action = "$ID.text = \"test\";";
             ErrorQueue equeue = new ErrorQueue();
-            ErrorManager.setErrorListener( equeue );
+            ErrorManager.SetErrorListener( equeue );
             Grammar g = new Grammar(
                 "grammar a;\n" +
                 "ID\n" +
@@ -3327,13 +3327,13 @@ namespace AntlrUnitTests
                 "    ;" );
             AntlrTool antlr = newTool();
             CodeGenerator generator = new CodeGenerator( antlr, g, "Java" );
-            g.setCodeGenerator( generator );
+            g.CodeGenerator = generator;
             generator.GenRecognizer(); // forces load of templates
             ActionTranslator translator = new ActionTranslator( generator,
                                                                          "rule",
                                                                          new CommonToken( ANTLRParser.ACTION, action ), 1 );
             string rawTranslation =
-                translator.translate();
+                translator.Translate();
 
             int expectedMsgID = ErrorManager.MSG_WRITE_TO_READONLY_ATTR;
             object expectedArg = "ID";
@@ -3348,7 +3348,7 @@ namespace AntlrUnitTests
             string action = "$tree.scope = localScope;";
             string expecting = "(()retval.tree).scope = localScope;";
             ErrorQueue equeue = new ErrorQueue();
-            ErrorManager.setErrorListener( equeue );
+            ErrorManager.SetErrorListener( equeue );
             Grammar g = new Grammar(
                 "grammar a;\n" +
                 "options { output=AST; }" +
@@ -3363,13 +3363,13 @@ namespace AntlrUnitTests
                 ";" );
             AntlrTool antlr = newTool();
             CodeGenerator generator = new CodeGenerator( antlr, g, "Java" );
-            g.setCodeGenerator( generator );
+            g.CodeGenerator = generator;
             generator.GenRecognizer(); // forces load of templates
             ActionTranslator translator = new ActionTranslator( generator,
                                                                          "rule",
                                                                          new CommonToken( ANTLRParser.ACTION, action ), 1 );
             string rawTranslation =
-                translator.translate();
+                translator.Translate();
             StringTemplateGroup templates =
                 new StringTemplateGroup( ".", typeof( AngleBracketTemplateLexer ) );
             StringTemplate actionST = new StringTemplate( templates, rawTranslation );
@@ -3383,7 +3383,7 @@ namespace AntlrUnitTests
             string action = "$a.line == $b.line";
             string expecting = "(a!=null?a.getLine():0) == (b!=null?b.getLine():0)";
             ErrorQueue equeue = new ErrorQueue();
-            ErrorManager.setErrorListener( equeue );
+            ErrorManager.SetErrorListener( equeue );
             Grammar g = new Grammar(
                     "lexer grammar a;\n" +
                     "RULE:\n" +
@@ -3393,13 +3393,13 @@ namespace AntlrUnitTests
             );
             AntlrTool antlr = newTool();
             CodeGenerator generator = new CodeGenerator( antlr, g, "Java" );
-            g.setCodeGenerator( generator );
+            g.CodeGenerator = generator;
             generator.GenRecognizer();
             ActionTranslator translator = new ActionTranslator( generator,
                                                                          "RULE",
                                                                          new CommonToken( ANTLRParser.ACTION, action ), 1 );
             string rawTranslation =
-                translator.translate();
+                translator.Translate();
             StringTemplateGroup templates =
                 new StringTemplateGroup( ".", typeof( AngleBracketTemplateLexer ) );
             StringTemplate actionST = new StringTemplate( templates, rawTranslation );
@@ -3413,7 +3413,7 @@ namespace AntlrUnitTests
             string action = "if ($rule::foo == \"foo\" || 1) { System.out.println(\"ouch\"); }";
             string expecting = "if (((rule_scope)rule_stack.peek()).foo == \"foo\" || 1) { System.out.println(\"ouch\"); }";
             ErrorQueue equeue = new ErrorQueue();
-            ErrorManager.setErrorListener( equeue );
+            ErrorManager.SetErrorListener( equeue );
             Grammar g = new Grammar(
                     "grammar a;\n" +
                     "rule\n" +
@@ -3429,13 +3429,13 @@ namespace AntlrUnitTests
             );
             AntlrTool antlr = newTool();
             CodeGenerator generator = new CodeGenerator( antlr, g, "Java" );
-            g.setCodeGenerator( generator );
+            g.CodeGenerator = generator;
             generator.GenRecognizer();
             ActionTranslator translator = new ActionTranslator( generator,
                                                                          "twoIDs",
                                                                          new CommonToken( ANTLRParser.ACTION, action ), 1 );
             string rawTranslation =
-                translator.translate();
+                translator.Translate();
             // check that we didn't use scopeSetAttributeRef int translation!
             bool foundScopeSetAttributeRef = false;
             for ( int i = 0; i < translator.chunks.Count; i++ )
@@ -3464,7 +3464,7 @@ namespace AntlrUnitTests
             string expecting = "(r!=null?r.x:0); (r!=null?((CommonTree)r.start):null); $r.stop";
 
             ErrorQueue equeue = new ErrorQueue();
-            ErrorManager.setErrorListener( equeue );
+            ErrorManager.SetErrorListener( equeue );
             Grammar g = new Grammar(
                 "tree grammar t;\n" +
                 "options {ASTLabelType=CommonTree;}\n" +
@@ -3476,7 +3476,7 @@ namespace AntlrUnitTests
             AntlrTool antlr = newTool();
             antlr.SetOutputDirectory( null ); // write to /dev/null
             CodeGenerator generator = new CodeGenerator( antlr, g, "Java" );
-            g.setCodeGenerator( generator );
+            g.CodeGenerator = generator;
             generator.GenRecognizer(); // codegen phase sets some vars we need
             StringTemplate codeST = generator.RecognizerST;
             string code = codeST.ToString();
@@ -3500,7 +3500,7 @@ namespace AntlrUnitTests
                                "              input.getTreeAdaptor().getTokenStopIndex(retval.start))";
 
             ErrorQueue equeue = new ErrorQueue();
-            ErrorManager.setErrorListener( equeue );
+            ErrorManager.SetErrorListener( equeue );
             Grammar g = new Grammar(
                 "tree grammar t;\n" +
                 "options {ASTLabelType=CommonTree;}\n" +
@@ -3510,7 +3510,7 @@ namespace AntlrUnitTests
             AntlrTool antlr = newTool();
             antlr.SetOutputDirectory( null ); // write to /dev/null
             CodeGenerator generator = new CodeGenerator( antlr, g, "Java" );
-            g.setCodeGenerator( generator );
+            g.CodeGenerator = generator;
             generator.GenRecognizer(); // codegen phase sets some vars we need
             StringTemplate codeST = generator.RecognizerST;
             string code = codeST.ToString();
@@ -3526,7 +3526,7 @@ namespace AntlrUnitTests
             string expecting = "int x = ((b_scope)b_stack.peek()).n;";
 
             ErrorQueue equeue = new ErrorQueue();
-            ErrorManager.setErrorListener( equeue );
+            ErrorManager.SetErrorListener( equeue );
             Grammar g = new Grammar(
                 "grammar t;\n" +
                 "s : b ;\n" +
@@ -3537,12 +3537,12 @@ namespace AntlrUnitTests
                 "  ;\n" );
             AntlrTool antlr = newTool();
             CodeGenerator generator = new CodeGenerator( antlr, g, "Java" );
-            g.setCodeGenerator( generator );
+            g.CodeGenerator = generator;
             generator.GenRecognizer(); // forces load of templates
             ActionTranslator translator = new ActionTranslator( generator, "b",
                                                                          new CommonToken( ANTLRParser.ACTION, action ), 1 );
             string rawTranslation =
-                translator.translate();
+                translator.Translate();
             StringTemplateGroup templates =
                 new StringTemplateGroup( ".", typeof( AngleBracketTemplateLexer ) );
             StringTemplate actionST = new StringTemplate( templates, rawTranslation );

@@ -249,7 +249,7 @@ namespace AntlrUnitTests
         public void TestNoWildcardAsRootError() /*throws Exception*/
         {
             ErrorQueue equeue = new ErrorQueue();
-            ErrorManager.setErrorListener( equeue );
+            ErrorManager.SetErrorListener( equeue );
 
             string treeGrammar =
                 "tree grammar TP;\n" +
@@ -261,7 +261,7 @@ namespace AntlrUnitTests
             AntlrTool antlr = newTool();
             antlr.SetOutputDirectory( null ); // write to /dev/null
             CodeGenerator generator = new CodeGenerator( antlr, g, "Java" );
-            g.setCodeGenerator( generator );
+            g.CodeGenerator = generator;
             generator.GenRecognizer();
 
             assertEquals( "unexpected errors: " + equeue, 1, equeue.errors.Count );

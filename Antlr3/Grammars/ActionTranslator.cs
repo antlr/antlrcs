@@ -1,4 +1,4 @@
-// $ANTLR 3.1.2 Grammars\\ActionTranslator.g3 2009-04-16 18:07:28
+// $ANTLR 3.1.2 Grammars\\ActionTranslator.g3 2009-04-16 21:08:59
 
 // The variable 'variable' is assigned but its value is never used.
 #pragma warning disable 219
@@ -207,29 +207,29 @@ public partial class ActionTranslator : Lexer
 			Match(';'); if (state.failed) return ;
 			if ( !((enclosingRule!=null &&
 				                         (x!=null?x.Text:null).Equals(enclosingRule.name) &&
-				                         enclosingRule.getLocalAttributeScope((y!=null?y.Text:null))!=null)) )
+				                         enclosingRule.GetLocalAttributeScope((y!=null?y.Text:null))!=null)) )
 			{
 				if (state.backtracking>0) {state.failed=true; return ;}
-				throw new FailedPredicateException(input, "SET_ENCLOSING_RULE_SCOPE_ATTR", "enclosingRule!=null &&\r\n\t                         $x.text.Equals(enclosingRule.name) &&\r\n\t                         enclosingRule.getLocalAttributeScope($y.text)!=null");
+				throw new FailedPredicateException(input, "SET_ENCLOSING_RULE_SCOPE_ATTR", "enclosingRule!=null &&\r\n\t                         $x.text.Equals(enclosingRule.name) &&\r\n\t                         enclosingRule.GetLocalAttributeScope($y.text)!=null");
 			}
 			if ( state.backtracking==1 )
 			{
 
 							StringTemplate st = null;
-							AttributeScope scope = enclosingRule.getLocalAttributeScope((y!=null?y.Text:null));
+							AttributeScope scope = enclosingRule.GetLocalAttributeScope((y!=null?y.Text:null));
 							if ( scope.isPredefinedRuleScope )
 							{
 								if ( (y!=null?y.Text:null).Equals("st") || (y!=null?y.Text:null).Equals("tree") )
 								{
-									st = template("ruleSetPropertyRef_"+(y!=null?y.Text:null));
-									grammar.referenceRuleLabelPredefinedAttribute((x!=null?x.Text:null));
+									st = Template("ruleSetPropertyRef_"+(y!=null?y.Text:null));
+									grammar.ReferenceRuleLabelPredefinedAttribute((x!=null?x.Text:null));
 									st.SetAttribute("scope", (x!=null?x.Text:null));
 									st.SetAttribute("attr", (y!=null?y.Text:null));
-									st.SetAttribute("expr", translateAction((expr!=null?expr.Text:null)));
+									st.SetAttribute("expr", TranslateAction((expr!=null?expr.Text:null)));
 								}
 								else
 								{
-									ErrorManager.grammarError(ErrorManager.MSG_WRITE_TO_READONLY_ATTR,
+									ErrorManager.GrammarError(ErrorManager.MSG_WRITE_TO_READONLY_ATTR,
 															  grammar,
 															  actionToken,
 															  (x!=null?x.Text:null),
@@ -239,7 +239,7 @@ public partial class ActionTranslator : Lexer
 							else if ( scope.isPredefinedLexerRuleScope )
 							{
 					    		// this is a better message to emit than the previous one...
-								ErrorManager.grammarError(ErrorManager.MSG_WRITE_TO_READONLY_ATTR,
+								ErrorManager.GrammarError(ErrorManager.MSG_WRITE_TO_READONLY_ATTR,
 														  grammar,
 														  actionToken,
 														  (x!=null?x.Text:null),
@@ -247,16 +247,16 @@ public partial class ActionTranslator : Lexer
 							}
 							else if ( scope.isParameterScope )
 							{
-								st = template("parameterSetAttributeRef");
-								st.SetAttribute("attr", scope.getAttribute((y!=null?y.Text:null)));
-								st.SetAttribute("expr", translateAction((expr!=null?expr.Text:null)));
+								st = Template("parameterSetAttributeRef");
+								st.SetAttribute("attr", scope.GetAttribute((y!=null?y.Text:null)));
+								st.SetAttribute("expr", TranslateAction((expr!=null?expr.Text:null)));
 							}
 							else
 							{ // must be return value
-								st = template("returnSetAttributeRef");
+								st = Template("returnSetAttributeRef");
 								st.SetAttribute("ruleDescriptor", enclosingRule);
-								st.SetAttribute("attr", scope.getAttribute((y!=null?y.Text:null)));
-								st.SetAttribute("expr", translateAction((expr!=null?expr.Text:null)));
+								st.SetAttribute("attr", scope.GetAttribute((y!=null?y.Text:null)));
+								st.SetAttribute("expr", TranslateAction((expr!=null?expr.Text:null)));
 							}
 						
 			}
@@ -295,48 +295,48 @@ public partial class ActionTranslator : Lexer
 			y = new CommonToken(input, TokenConstants.InvalidTokenType, TokenConstants.DefaultChannel, yStart113, GetCharIndex()-1);
 			if ( !((enclosingRule!=null &&
 				                         (x!=null?x.Text:null).Equals(enclosingRule.name) &&
-				                         enclosingRule.getLocalAttributeScope((y!=null?y.Text:null))!=null)) )
+				                         enclosingRule.GetLocalAttributeScope((y!=null?y.Text:null))!=null)) )
 			{
 				if (state.backtracking>0) {state.failed=true; return ;}
-				throw new FailedPredicateException(input, "ENCLOSING_RULE_SCOPE_ATTR", "enclosingRule!=null &&\r\n\t                         $x.text.Equals(enclosingRule.name) &&\r\n\t                         enclosingRule.getLocalAttributeScope($y.text)!=null");
+				throw new FailedPredicateException(input, "ENCLOSING_RULE_SCOPE_ATTR", "enclosingRule!=null &&\r\n\t                         $x.text.Equals(enclosingRule.name) &&\r\n\t                         enclosingRule.GetLocalAttributeScope($y.text)!=null");
 			}
 			if ( state.backtracking==1 )
 			{
 
-							if ( isRuleRefInAlt((x!=null?x.Text:null)) )
+							if ( IsRuleRefInAlt((x!=null?x.Text:null)) )
 							{
-								ErrorManager.grammarError(ErrorManager.MSG_RULE_REF_AMBIG_WITH_RULE_IN_ALT,
+								ErrorManager.GrammarError(ErrorManager.MSG_RULE_REF_AMBIG_WITH_RULE_IN_ALT,
 														  grammar,
 														  actionToken,
 														  (x!=null?x.Text:null));
 							}
 							StringTemplate st = null;
-							AttributeScope scope = enclosingRule.getLocalAttributeScope((y!=null?y.Text:null));
+							AttributeScope scope = enclosingRule.GetLocalAttributeScope((y!=null?y.Text:null));
 							if ( scope.isPredefinedRuleScope )
 							{
-								st = template("rulePropertyRef_"+(y!=null?y.Text:null));
-								grammar.referenceRuleLabelPredefinedAttribute((x!=null?x.Text:null));
+								st = Template("rulePropertyRef_"+(y!=null?y.Text:null));
+								grammar.ReferenceRuleLabelPredefinedAttribute((x!=null?x.Text:null));
 								st.SetAttribute("scope", (x!=null?x.Text:null));
 								st.SetAttribute("attr", (y!=null?y.Text:null));
 							}
 							else if ( scope.isPredefinedLexerRuleScope )
 							{
 								// perhaps not the most precise error message to use, but...
-								ErrorManager.grammarError(ErrorManager.MSG_RULE_HAS_NO_ARGS,
+								ErrorManager.GrammarError(ErrorManager.MSG_RULE_HAS_NO_ARGS,
 														  grammar,
 														  actionToken,
 														  (x!=null?x.Text:null));
 							}
 							else if ( scope.isParameterScope )
 							{
-								st = template("parameterAttributeRef");
-								st.SetAttribute("attr", scope.getAttribute((y!=null?y.Text:null)));
+								st = Template("parameterAttributeRef");
+								st.SetAttribute("attr", scope.GetAttribute((y!=null?y.Text:null)));
 							}
 							else
 							{ // must be return value
-								st = template("returnAttributeRef");
+								st = Template("returnAttributeRef");
 								st.SetAttribute("ruleDescriptor", enclosingRule);
-								st.SetAttribute("attr", scope.getAttribute((y!=null?y.Text:null)));
+								st.SetAttribute("attr", scope.GetAttribute((y!=null?y.Text:null)));
 							}
 						
 			}
@@ -395,17 +395,17 @@ public partial class ActionTranslator : Lexer
 
 			Match('='); if (state.failed) return ;
 			if ( !((enclosingRule!=null && input.LA(1)!='=' &&
-				                         (enclosingRule.getTokenLabel((x!=null?x.Text:null))!=null||
-				                          isTokenRefInAlt((x!=null?x.Text:null))) &&
-				                         AttributeScope.tokenScope.getAttribute((y!=null?y.Text:null))!=null)) )
+				                         (enclosingRule.GetTokenLabel((x!=null?x.Text:null))!=null||
+				                          IsTokenRefInAlt((x!=null?x.Text:null))) &&
+				                         AttributeScope.tokenScope.GetAttribute((y!=null?y.Text:null))!=null)) )
 			{
 				if (state.backtracking>0) {state.failed=true; return ;}
-				throw new FailedPredicateException(input, "SET_TOKEN_SCOPE_ATTR", "enclosingRule!=null && input.LA(1)!='=' &&\r\n\t                         (enclosingRule.getTokenLabel($x.text)!=null||\r\n\t                          isTokenRefInAlt($x.text)) &&\r\n\t                         AttributeScope.tokenScope.getAttribute($y.text)!=null");
+				throw new FailedPredicateException(input, "SET_TOKEN_SCOPE_ATTR", "enclosingRule!=null && input.LA(1)!='=' &&\r\n\t                         (enclosingRule.GetTokenLabel($x.text)!=null||\r\n\t                          IsTokenRefInAlt($x.text)) &&\r\n\t                         AttributeScope.tokenScope.GetAttribute($y.text)!=null");
 			}
 			if ( state.backtracking==1 )
 			{
 
-							ErrorManager.grammarError(ErrorManager.MSG_WRITE_TO_READONLY_ATTR,
+							ErrorManager.GrammarError(ErrorManager.MSG_WRITE_TO_READONLY_ATTR,
 													  grammar,
 													  actionToken,
 													  (x!=null?x.Text:null),
@@ -446,37 +446,37 @@ public partial class ActionTranslator : Lexer
 			mID(); if (state.failed) return ;
 			y = new CommonToken(input, TokenConstants.InvalidTokenType, TokenConstants.DefaultChannel, yStart190, GetCharIndex()-1);
 			if ( !((enclosingRule!=null &&
-				                         (enclosingRule.getTokenLabel((x!=null?x.Text:null))!=null||
-				                          isTokenRefInAlt((x!=null?x.Text:null))) &&
-				                         AttributeScope.tokenScope.getAttribute((y!=null?y.Text:null))!=null &&
+				                         (enclosingRule.GetTokenLabel((x!=null?x.Text:null))!=null||
+				                          IsTokenRefInAlt((x!=null?x.Text:null))) &&
+				                         AttributeScope.tokenScope.GetAttribute((y!=null?y.Text:null))!=null &&
 				                         (grammar.type!=Grammar.LEXER ||
-				                         getElementLabel((x!=null?x.Text:null)).elementRef.token.Type==ANTLRParser.TOKEN_REF ||
-				                         getElementLabel((x!=null?x.Text:null)).elementRef.token.Type==ANTLRParser.STRING_LITERAL))) )
+				                         GetElementLabel((x!=null?x.Text:null)).elementRef.token.Type==ANTLRParser.TOKEN_REF ||
+				                         GetElementLabel((x!=null?x.Text:null)).elementRef.token.Type==ANTLRParser.STRING_LITERAL))) )
 			{
 				if (state.backtracking>0) {state.failed=true; return ;}
-				throw new FailedPredicateException(input, "TOKEN_SCOPE_ATTR", "enclosingRule!=null &&\r\n\t                         (enclosingRule.getTokenLabel($x.text)!=null||\r\n\t                          isTokenRefInAlt($x.text)) &&\r\n\t                         AttributeScope.tokenScope.getAttribute($y.text)!=null &&\r\n\t                         (grammar.type!=Grammar.LEXER ||\r\n\t                         getElementLabel($x.text).elementRef.token.Type==ANTLRParser.TOKEN_REF ||\r\n\t                         getElementLabel($x.text).elementRef.token.Type==ANTLRParser.STRING_LITERAL)");
+				throw new FailedPredicateException(input, "TOKEN_SCOPE_ATTR", "enclosingRule!=null &&\r\n\t                         (enclosingRule.GetTokenLabel($x.text)!=null||\r\n\t                          IsTokenRefInAlt($x.text)) &&\r\n\t                         AttributeScope.tokenScope.GetAttribute($y.text)!=null &&\r\n\t                         (grammar.type!=Grammar.LEXER ||\r\n\t                         GetElementLabel($x.text).elementRef.token.Type==ANTLRParser.TOKEN_REF ||\r\n\t                         GetElementLabel($x.text).elementRef.token.Type==ANTLRParser.STRING_LITERAL)");
 			}
 			if ( state.backtracking==1 )
 			{
 
 							string label = (x!=null?x.Text:null);
-							if ( enclosingRule.getTokenLabel((x!=null?x.Text:null))==null )
+							if ( enclosingRule.GetTokenLabel((x!=null?x.Text:null))==null )
 							{
 								// $tokenref.attr  gotta get old label or compute new one
-								checkElementRefUniqueness((x!=null?x.Text:null), true);
-								label = enclosingRule.getElementLabel((x!=null?x.Text:null), outerAltNum, generator);
+								CheckElementRefUniqueness((x!=null?x.Text:null), true);
+								label = enclosingRule.GetElementLabel((x!=null?x.Text:null), outerAltNum, generator);
 								if ( label==null )
 								{
-									ErrorManager.grammarError(ErrorManager.MSG_FORWARD_ELEMENT_REF,
+									ErrorManager.GrammarError(ErrorManager.MSG_FORWARD_ELEMENT_REF,
 															  grammar,
 															  actionToken,
 															  "$"+(x!=null?x.Text:null)+"."+(y!=null?y.Text:null));
 									label = (x!=null?x.Text:null);
 								}
 							}
-							StringTemplate st = template("tokenLabelPropertyRef_"+(y!=null?y.Text:null));
+							StringTemplate st = Template("tokenLabelPropertyRef_"+(y!=null?y.Text:null));
 							st.SetAttribute("scope", label);
-							st.SetAttribute("attr", AttributeScope.tokenScope.getAttribute((y!=null?y.Text:null)));
+							st.SetAttribute("attr", AttributeScope.tokenScope.GetAttribute((y!=null?y.Text:null)));
 						
 			}
 
@@ -545,7 +545,7 @@ public partial class ActionTranslator : Lexer
 			if ( state.backtracking==1 )
 			{
 
-							pair = enclosingRule.getRuleLabel((x!=null?x.Text:null));
+							pair = enclosingRule.GetRuleLabel((x!=null?x.Text:null));
 							refdRuleName = (x!=null?x.Text:null);
 							if ( pair!=null )
 							{
@@ -553,16 +553,16 @@ public partial class ActionTranslator : Lexer
 							}
 						
 			}
-			if ( !(((enclosingRule.getRuleLabel((x!=null?x.Text:null))!=null || isRuleRefInAlt((x!=null?x.Text:null))) &&
-				      getRuleLabelAttribute(enclosingRule.getRuleLabel((x!=null?x.Text:null))!=null?enclosingRule.getRuleLabel((x!=null?x.Text:null)).referencedRuleName:(x!=null?x.Text:null),(y!=null?y.Text:null))!=null)) )
+			if ( !(((enclosingRule.GetRuleLabel((x!=null?x.Text:null))!=null || IsRuleRefInAlt((x!=null?x.Text:null))) &&
+				      GetRuleLabelAttribute(enclosingRule.GetRuleLabel((x!=null?x.Text:null))!=null?enclosingRule.GetRuleLabel((x!=null?x.Text:null)).referencedRuleName:(x!=null?x.Text:null),(y!=null?y.Text:null))!=null)) )
 			{
 				if (state.backtracking>0) {state.failed=true; return ;}
-				throw new FailedPredicateException(input, "SET_RULE_SCOPE_ATTR", "(enclosingRule.getRuleLabel($x.text)!=null || isRuleRefInAlt($x.text)) &&\r\n\t      getRuleLabelAttribute(enclosingRule.getRuleLabel($x.text)!=null?enclosingRule.getRuleLabel($x.text).referencedRuleName:$x.text,$y.text)!=null");
+				throw new FailedPredicateException(input, "SET_RULE_SCOPE_ATTR", "(enclosingRule.GetRuleLabel($x.text)!=null || IsRuleRefInAlt($x.text)) &&\r\n\t      GetRuleLabelAttribute(enclosingRule.GetRuleLabel($x.text)!=null?enclosingRule.GetRuleLabel($x.text).referencedRuleName:$x.text,$y.text)!=null");
 			}
 			if ( state.backtracking==1 )
 			{
 
-							ErrorManager.grammarError(ErrorManager.MSG_WRITE_TO_READONLY_ATTR,
+							ErrorManager.GrammarError(ErrorManager.MSG_WRITE_TO_READONLY_ATTR,
 													  grammar,
 													  actionToken,
 													  (x!=null?x.Text:null),
@@ -614,18 +614,18 @@ public partial class ActionTranslator : Lexer
 			if ( state.backtracking==1 )
 			{
 
-						pair = enclosingRule.getRuleLabel((x!=null?x.Text:null));
+						pair = enclosingRule.GetRuleLabel((x!=null?x.Text:null));
 						refdRuleName = (x!=null?x.Text:null);
 						if ( pair!=null ) {
 							refdRuleName = pair.referencedRuleName;
 						}
 						
 			}
-			if ( !(((enclosingRule.getRuleLabel((x!=null?x.Text:null))!=null || isRuleRefInAlt((x!=null?x.Text:null))) &&
-				      getRuleLabelAttribute(enclosingRule.getRuleLabel((x!=null?x.Text:null))!=null?enclosingRule.getRuleLabel((x!=null?x.Text:null)).referencedRuleName:(x!=null?x.Text:null),(y!=null?y.Text:null))!=null)) )
+			if ( !(((enclosingRule.GetRuleLabel((x!=null?x.Text:null))!=null || IsRuleRefInAlt((x!=null?x.Text:null))) &&
+				      GetRuleLabelAttribute(enclosingRule.GetRuleLabel((x!=null?x.Text:null))!=null?enclosingRule.GetRuleLabel((x!=null?x.Text:null)).referencedRuleName:(x!=null?x.Text:null),(y!=null?y.Text:null))!=null)) )
 			{
 				if (state.backtracking>0) {state.failed=true; return ;}
-				throw new FailedPredicateException(input, "RULE_SCOPE_ATTR", "(enclosingRule.getRuleLabel($x.text)!=null || isRuleRefInAlt($x.text)) &&\r\n\t      getRuleLabelAttribute(enclosingRule.getRuleLabel($x.text)!=null?enclosingRule.getRuleLabel($x.text).referencedRuleName:$x.text,$y.text)!=null");
+				throw new FailedPredicateException(input, "RULE_SCOPE_ATTR", "(enclosingRule.GetRuleLabel($x.text)!=null || IsRuleRefInAlt($x.text)) &&\r\n\t      GetRuleLabelAttribute(enclosingRule.GetRuleLabel($x.text)!=null?enclosingRule.GetRuleLabel($x.text).referencedRuleName:$x.text,$y.text)!=null");
 			}
 			if ( state.backtracking==1 )
 			{
@@ -634,11 +634,11 @@ public partial class ActionTranslator : Lexer
 							if ( pair==null )
 							{
 								// $ruleref.attr  gotta get old label or compute new one
-								checkElementRefUniqueness((x!=null?x.Text:null), false);
-								label = enclosingRule.getElementLabel((x!=null?x.Text:null), outerAltNum, generator);
+								CheckElementRefUniqueness((x!=null?x.Text:null), false);
+								label = enclosingRule.GetElementLabel((x!=null?x.Text:null), outerAltNum, generator);
 								if ( label==null )
 								{
-									ErrorManager.grammarError(ErrorManager.MSG_FORWARD_ELEMENT_REF,
+									ErrorManager.GrammarError(ErrorManager.MSG_FORWARD_ELEMENT_REF,
 															  grammar,
 															  actionToken,
 															  "$"+(x!=null?x.Text:null)+"."+(y!=null?y.Text:null));
@@ -646,19 +646,19 @@ public partial class ActionTranslator : Lexer
 								}
 							}
 							StringTemplate st;
-							Rule refdRule = grammar.getRule(refdRuleName);
-							AttributeScope scope = refdRule.getLocalAttributeScope((y!=null?y.Text:null));
+							Rule refdRule = grammar.GetRule(refdRuleName);
+							AttributeScope scope = refdRule.GetLocalAttributeScope((y!=null?y.Text:null));
 							if ( scope.isPredefinedRuleScope )
 							{
-								st = template("ruleLabelPropertyRef_"+(y!=null?y.Text:null));
-								grammar.referenceRuleLabelPredefinedAttribute(refdRuleName);
+								st = Template("ruleLabelPropertyRef_"+(y!=null?y.Text:null));
+								grammar.ReferenceRuleLabelPredefinedAttribute(refdRuleName);
 								st.SetAttribute("scope", label);
 								st.SetAttribute("attr", (y!=null?y.Text:null));
 							}
 							else if ( scope.isPredefinedLexerRuleScope )
 							{
-								st = template("lexerRuleLabelPropertyRef_"+(y!=null?y.Text:null));
-								grammar.referenceRuleLabelPredefinedAttribute(refdRuleName);
+								st = Template("lexerRuleLabelPropertyRef_"+(y!=null?y.Text:null));
+								grammar.ReferenceRuleLabelPredefinedAttribute(refdRuleName);
 								st.SetAttribute("scope", label);
 								st.SetAttribute("attr", (y!=null?y.Text:null));
 							}
@@ -668,10 +668,10 @@ public partial class ActionTranslator : Lexer
 							}
 							else
 							{
-								st = template("ruleLabelRef");
+								st = Template("ruleLabelRef");
 								st.SetAttribute("referencedRule", refdRule);
 								st.SetAttribute("scope", label);
-								st.SetAttribute("attr", scope.getAttribute((y!=null?y.Text:null)));
+								st.SetAttribute("attr", scope.GetAttribute((y!=null?y.Text:null)));
 							}
 						
 			}
@@ -704,26 +704,26 @@ public partial class ActionTranslator : Lexer
 			mID(); if (state.failed) return ;
 			ID1 = new CommonToken(input, TokenConstants.InvalidTokenType, TokenConstants.DefaultChannel, ID1Start328, GetCharIndex()-1);
 			if ( !((enclosingRule!=null &&
-				            getElementLabel((ID1!=null?ID1.Text:null))!=null &&
-					        enclosingRule.getRuleLabel((ID1!=null?ID1.Text:null))==null)) )
+				            GetElementLabel((ID1!=null?ID1.Text:null))!=null &&
+					        enclosingRule.GetRuleLabel((ID1!=null?ID1.Text:null))==null)) )
 			{
 				if (state.backtracking>0) {state.failed=true; return ;}
-				throw new FailedPredicateException(input, "LABEL_REF", "enclosingRule!=null &&\r\n\t            getElementLabel($ID.text)!=null &&\r\n\t\t        enclosingRule.getRuleLabel($ID.text)==null");
+				throw new FailedPredicateException(input, "LABEL_REF", "enclosingRule!=null &&\r\n\t            GetElementLabel($ID.text)!=null &&\r\n\t\t        enclosingRule.GetRuleLabel($ID.text)==null");
 			}
 			if ( state.backtracking==1 )
 			{
 
 							StringTemplate st;
-							Grammar.LabelElementPair pair = getElementLabel((ID1!=null?ID1.Text:null));
+							Grammar.LabelElementPair pair = GetElementLabel((ID1!=null?ID1.Text:null));
 							if ( pair.type==Grammar.RULE_LIST_LABEL ||
 								  pair.type==Grammar.TOKEN_LIST_LABEL ||
 								  pair.type == Grammar.WILDCARD_TREE_LIST_LABEL )
 							{
-								st = template("listLabelRef");
+								st = Template("listLabelRef");
 							}
 							else
 							{
-								st = template("tokenLabelRef");
+								st = Template("tokenLabelRef");
 							}
 							st.SetAttribute("label", (ID1!=null?ID1.Text:null));
 						
@@ -756,26 +756,26 @@ public partial class ActionTranslator : Lexer
 			int ID2Start352 = GetCharIndex();
 			mID(); if (state.failed) return ;
 			ID2 = new CommonToken(input, TokenConstants.InvalidTokenType, TokenConstants.DefaultChannel, ID2Start352, GetCharIndex()-1);
-			if ( !((grammar.type!=Grammar.LEXER && enclosingRule!=null && isTokenRefInAlt((ID2!=null?ID2.Text:null)))) )
+			if ( !((grammar.type!=Grammar.LEXER && enclosingRule!=null && IsTokenRefInAlt((ID2!=null?ID2.Text:null)))) )
 			{
 				if (state.backtracking>0) {state.failed=true; return ;}
-				throw new FailedPredicateException(input, "ISOLATED_TOKEN_REF", "grammar.type!=Grammar.LEXER && enclosingRule!=null && isTokenRefInAlt($ID.text)");
+				throw new FailedPredicateException(input, "ISOLATED_TOKEN_REF", "grammar.type!=Grammar.LEXER && enclosingRule!=null && IsTokenRefInAlt($ID.text)");
 			}
 			if ( state.backtracking==1 )
 			{
 
-							string label = enclosingRule.getElementLabel((ID2!=null?ID2.Text:null), outerAltNum, generator);
-							checkElementRefUniqueness((ID2!=null?ID2.Text:null), true);
+							string label = enclosingRule.GetElementLabel((ID2!=null?ID2.Text:null), outerAltNum, generator);
+							CheckElementRefUniqueness((ID2!=null?ID2.Text:null), true);
 							if ( label==null )
 							{
-								ErrorManager.grammarError(ErrorManager.MSG_FORWARD_ELEMENT_REF,
+								ErrorManager.GrammarError(ErrorManager.MSG_FORWARD_ELEMENT_REF,
 														  grammar,
 														  actionToken,
 														  (ID2!=null?ID2.Text:null));
 							}
 							else
 							{
-								StringTemplate st = template("tokenLabelRef");
+								StringTemplate st = Template("tokenLabelRef");
 								st.SetAttribute("label", label);
 							}
 						
@@ -810,26 +810,26 @@ public partial class ActionTranslator : Lexer
 			ID3 = new CommonToken(input, TokenConstants.InvalidTokenType, TokenConstants.DefaultChannel, ID3Start376, GetCharIndex()-1);
 			if ( !((grammar.type==Grammar.LEXER &&
 				             enclosingRule!=null &&
-				             isRuleRefInAlt((ID3!=null?ID3.Text:null)))) )
+				             IsRuleRefInAlt((ID3!=null?ID3.Text:null)))) )
 			{
 				if (state.backtracking>0) {state.failed=true; return ;}
-				throw new FailedPredicateException(input, "ISOLATED_LEXER_RULE_REF", "grammar.type==Grammar.LEXER &&\r\n\t             enclosingRule!=null &&\r\n\t             isRuleRefInAlt($ID.text)");
+				throw new FailedPredicateException(input, "ISOLATED_LEXER_RULE_REF", "grammar.type==Grammar.LEXER &&\r\n\t             enclosingRule!=null &&\r\n\t             IsRuleRefInAlt($ID.text)");
 			}
 			if ( state.backtracking==1 )
 			{
 
-							string label = enclosingRule.getElementLabel((ID3!=null?ID3.Text:null), outerAltNum, generator);
-							checkElementRefUniqueness((ID3!=null?ID3.Text:null), false);
+							string label = enclosingRule.GetElementLabel((ID3!=null?ID3.Text:null), outerAltNum, generator);
+							CheckElementRefUniqueness((ID3!=null?ID3.Text:null), false);
 							if ( label==null )
 							{
-								ErrorManager.grammarError(ErrorManager.MSG_FORWARD_ELEMENT_REF,
+								ErrorManager.GrammarError(ErrorManager.MSG_FORWARD_ELEMENT_REF,
 														  grammar,
 														  actionToken,
 														  (ID3!=null?ID3.Text:null));
 							}
 							else
 							{
-								StringTemplate st = template("lexerRuleLabel");
+								StringTemplate st = Template("lexerRuleLabel");
 								st.SetAttribute("label", label);
 							}
 						
@@ -889,30 +889,30 @@ public partial class ActionTranslator : Lexer
 			expr = new CommonToken(input, TokenConstants.InvalidTokenType, TokenConstants.DefaultChannel, exprStart409, GetCharIndex()-1);
 			Match(';'); if (state.failed) return ;
 			if ( !((enclosingRule!=null
-																&& enclosingRule.getLocalAttributeScope((ID4!=null?ID4.Text:null))!=null
-																&& !enclosingRule.getLocalAttributeScope((ID4!=null?ID4.Text:null)).isPredefinedLexerRuleScope)) )
+																&& enclosingRule.GetLocalAttributeScope((ID4!=null?ID4.Text:null))!=null
+																&& !enclosingRule.GetLocalAttributeScope((ID4!=null?ID4.Text:null)).isPredefinedLexerRuleScope)) )
 			{
 				if (state.backtracking>0) {state.failed=true; return ;}
-				throw new FailedPredicateException(input, "SET_LOCAL_ATTR", "enclosingRule!=null\r\n\t\t\t\t\t\t\t\t\t\t\t\t\t&& enclosingRule.getLocalAttributeScope($ID.text)!=null\r\n\t\t\t\t\t\t\t\t\t\t\t\t\t&& !enclosingRule.getLocalAttributeScope($ID.text).isPredefinedLexerRuleScope");
+				throw new FailedPredicateException(input, "SET_LOCAL_ATTR", "enclosingRule!=null\r\n\t\t\t\t\t\t\t\t\t\t\t\t\t&& enclosingRule.GetLocalAttributeScope($ID.text)!=null\r\n\t\t\t\t\t\t\t\t\t\t\t\t\t&& !enclosingRule.GetLocalAttributeScope($ID.text).isPredefinedLexerRuleScope");
 			}
 			if ( state.backtracking==1 )
 			{
 
 							StringTemplate st;
-							AttributeScope scope = enclosingRule.getLocalAttributeScope((ID4!=null?ID4.Text:null));
+							AttributeScope scope = enclosingRule.GetLocalAttributeScope((ID4!=null?ID4.Text:null));
 							if ( scope.isPredefinedRuleScope )
 							{
 								if ((ID4!=null?ID4.Text:null).Equals("tree") || (ID4!=null?ID4.Text:null).Equals("st"))
 								{
-									st = template("ruleSetPropertyRef_"+(ID4!=null?ID4.Text:null));
-									grammar.referenceRuleLabelPredefinedAttribute(enclosingRule.name);
+									st = Template("ruleSetPropertyRef_"+(ID4!=null?ID4.Text:null));
+									grammar.ReferenceRuleLabelPredefinedAttribute(enclosingRule.name);
 									st.SetAttribute("scope", enclosingRule.name);
 									st.SetAttribute("attr", (ID4!=null?ID4.Text:null));
-									st.SetAttribute("expr", translateAction((expr!=null?expr.Text:null)));
+									st.SetAttribute("expr", TranslateAction((expr!=null?expr.Text:null)));
 								}
 								else
 								{
-									ErrorManager.grammarError(ErrorManager.MSG_WRITE_TO_READONLY_ATTR,
+									ErrorManager.GrammarError(ErrorManager.MSG_WRITE_TO_READONLY_ATTR,
 															 grammar,
 															 actionToken,
 															 (ID4!=null?ID4.Text:null),
@@ -921,16 +921,16 @@ public partial class ActionTranslator : Lexer
 							}
 							else if ( scope.isParameterScope )
 							{
-								st = template("parameterSetAttributeRef");
-								st.SetAttribute("attr", scope.getAttribute((ID4!=null?ID4.Text:null)));
-								st.SetAttribute("expr", translateAction((expr!=null?expr.Text:null)));
+								st = Template("parameterSetAttributeRef");
+								st.SetAttribute("attr", scope.GetAttribute((ID4!=null?ID4.Text:null)));
+								st.SetAttribute("expr", TranslateAction((expr!=null?expr.Text:null)));
 							}
 							else
 							{
-								st = template("returnSetAttributeRef");
+								st = Template("returnSetAttributeRef");
 								st.SetAttribute("ruleDescriptor", enclosingRule);
-								st.SetAttribute("attr", scope.getAttribute((ID4!=null?ID4.Text:null)));
-								st.SetAttribute("expr", translateAction((expr!=null?expr.Text:null)));
+								st.SetAttribute("attr", scope.GetAttribute((ID4!=null?ID4.Text:null)));
+								st.SetAttribute("expr", TranslateAction((expr!=null?expr.Text:null)));
 							}
 						
 			}
@@ -962,39 +962,39 @@ public partial class ActionTranslator : Lexer
 			int ID5Start432 = GetCharIndex();
 			mID(); if (state.failed) return ;
 			ID5 = new CommonToken(input, TokenConstants.InvalidTokenType, TokenConstants.DefaultChannel, ID5Start432, GetCharIndex()-1);
-			if ( !((enclosingRule!=null && enclosingRule.getLocalAttributeScope((ID5!=null?ID5.Text:null))!=null)) )
+			if ( !((enclosingRule!=null && enclosingRule.GetLocalAttributeScope((ID5!=null?ID5.Text:null))!=null)) )
 			{
 				if (state.backtracking>0) {state.failed=true; return ;}
-				throw new FailedPredicateException(input, "LOCAL_ATTR", "enclosingRule!=null && enclosingRule.getLocalAttributeScope($ID.text)!=null");
+				throw new FailedPredicateException(input, "LOCAL_ATTR", "enclosingRule!=null && enclosingRule.GetLocalAttributeScope($ID.text)!=null");
 			}
 			if ( state.backtracking==1 )
 			{
 
 							StringTemplate st;
-							AttributeScope scope = enclosingRule.getLocalAttributeScope((ID5!=null?ID5.Text:null));
+							AttributeScope scope = enclosingRule.GetLocalAttributeScope((ID5!=null?ID5.Text:null));
 							if ( scope.isPredefinedRuleScope )
 							{
-								st = template("rulePropertyRef_"+(ID5!=null?ID5.Text:null));
-								grammar.referenceRuleLabelPredefinedAttribute(enclosingRule.name);
+								st = Template("rulePropertyRef_"+(ID5!=null?ID5.Text:null));
+								grammar.ReferenceRuleLabelPredefinedAttribute(enclosingRule.name);
 								st.SetAttribute("scope", enclosingRule.name);
 								st.SetAttribute("attr", (ID5!=null?ID5.Text:null));
 							}
 							else if ( scope.isPredefinedLexerRuleScope )
 							{
-								st = template("lexerRulePropertyRef_"+(ID5!=null?ID5.Text:null));
+								st = Template("lexerRulePropertyRef_"+(ID5!=null?ID5.Text:null));
 								st.SetAttribute("scope", enclosingRule.name);
 								st.SetAttribute("attr", (ID5!=null?ID5.Text:null));
 							}
 							else if ( scope.isParameterScope )
 							{
-								st = template("parameterAttributeRef");
-								st.SetAttribute("attr", scope.getAttribute((ID5!=null?ID5.Text:null)));
+								st = Template("parameterAttributeRef");
+								st.SetAttribute("attr", scope.GetAttribute((ID5!=null?ID5.Text:null)));
 							}
 							else
 							{
-								st = template("returnAttributeRef");
+								st = Template("returnAttributeRef");
 								st.SetAttribute("ruleDescriptor", enclosingRule);
-								st.SetAttribute("attr", scope.getAttribute((ID5!=null?ID5.Text:null)));
+								st.SetAttribute("attr", scope.GetAttribute((ID5!=null?ID5.Text:null)));
 							}
 						
 			}
@@ -1058,22 +1058,22 @@ public partial class ActionTranslator : Lexer
 			mATTR_VALUE_EXPR(); if (state.failed) return ;
 			expr = new CommonToken(input, TokenConstants.InvalidTokenType, TokenConstants.DefaultChannel, exprStart473, GetCharIndex()-1);
 			Match(';'); if (state.failed) return ;
-			if ( !((resolveDynamicScope((x!=null?x.Text:null))!=null &&
-									     resolveDynamicScope((x!=null?x.Text:null)).getAttribute((y!=null?y.Text:null))!=null)) )
+			if ( !((ResolveDynamicScope((x!=null?x.Text:null))!=null &&
+									     ResolveDynamicScope((x!=null?x.Text:null)).GetAttribute((y!=null?y.Text:null))!=null)) )
 			{
 				if (state.backtracking>0) {state.failed=true; return ;}
-				throw new FailedPredicateException(input, "SET_DYNAMIC_SCOPE_ATTR", "resolveDynamicScope($x.text)!=null &&\r\n\t\t\t\t\t\t     resolveDynamicScope($x.text).getAttribute($y.text)!=null");
+				throw new FailedPredicateException(input, "SET_DYNAMIC_SCOPE_ATTR", "ResolveDynamicScope($x.text)!=null &&\r\n\t\t\t\t\t\t     ResolveDynamicScope($x.text).GetAttribute($y.text)!=null");
 			}
 			if ( state.backtracking==1 )
 			{
 
-							AttributeScope scope = resolveDynamicScope((x!=null?x.Text:null));
+							AttributeScope scope = ResolveDynamicScope((x!=null?x.Text:null));
 							if ( scope!=null )
 							{
-								StringTemplate st = template("scopeSetAttributeRef");
+								StringTemplate st = Template("scopeSetAttributeRef");
 								st.SetAttribute("scope", (x!=null?x.Text:null));
-								st.SetAttribute("attr",  scope.getAttribute((y!=null?y.Text:null)));
-								st.SetAttribute("expr",  translateAction((expr!=null?expr.Text:null)));
+								st.SetAttribute("attr",  scope.GetAttribute((y!=null?y.Text:null)));
+								st.SetAttribute("expr",  TranslateAction((expr!=null?expr.Text:null)));
 							}
 							else
 							{
@@ -1115,21 +1115,21 @@ public partial class ActionTranslator : Lexer
 			int yStart514 = GetCharIndex();
 			mID(); if (state.failed) return ;
 			y = new CommonToken(input, TokenConstants.InvalidTokenType, TokenConstants.DefaultChannel, yStart514, GetCharIndex()-1);
-			if ( !((resolveDynamicScope((x!=null?x.Text:null))!=null &&
-									     resolveDynamicScope((x!=null?x.Text:null)).getAttribute((y!=null?y.Text:null))!=null)) )
+			if ( !((ResolveDynamicScope((x!=null?x.Text:null))!=null &&
+									     ResolveDynamicScope((x!=null?x.Text:null)).GetAttribute((y!=null?y.Text:null))!=null)) )
 			{
 				if (state.backtracking>0) {state.failed=true; return ;}
-				throw new FailedPredicateException(input, "DYNAMIC_SCOPE_ATTR", "resolveDynamicScope($x.text)!=null &&\r\n\t\t\t\t\t\t     resolveDynamicScope($x.text).getAttribute($y.text)!=null");
+				throw new FailedPredicateException(input, "DYNAMIC_SCOPE_ATTR", "ResolveDynamicScope($x.text)!=null &&\r\n\t\t\t\t\t\t     ResolveDynamicScope($x.text).GetAttribute($y.text)!=null");
 			}
 			if ( state.backtracking==1 )
 			{
 
-							AttributeScope scope = resolveDynamicScope((x!=null?x.Text:null));
+							AttributeScope scope = ResolveDynamicScope((x!=null?x.Text:null));
 							if ( scope!=null )
 							{
-								StringTemplate st = template("scopeAttributeRef");
+								StringTemplate st = Template("scopeAttributeRef");
 								st.SetAttribute("scope", (x!=null?x.Text:null));
-								st.SetAttribute("attr",  scope.getAttribute((y!=null?y.Text:null)));
+								st.SetAttribute("attr",  scope.GetAttribute((y!=null?y.Text:null)));
 							}
 							else
 							{
@@ -1224,9 +1224,9 @@ public partial class ActionTranslator : Lexer
 			if ( state.backtracking==1 )
 			{
 
-							StringTemplate st = template("scopeAttributeRef");
+							StringTemplate st = Template("scopeAttributeRef");
 							st.SetAttribute("scope",    (x!=null?x.Text:null));
-							st.SetAttribute("attr",     resolveDynamicScope((x!=null?x.Text:null)).getAttribute((y!=null?y.Text:null)));
+							st.SetAttribute("attr",     ResolveDynamicScope((x!=null?x.Text:null)).GetAttribute((y!=null?y.Text:null)));
 							st.SetAttribute("negIndex", (expr!=null?expr.Text:null));
 						
 			}
@@ -1273,9 +1273,9 @@ public partial class ActionTranslator : Lexer
 			if ( state.backtracking==1 )
 			{
 
-							StringTemplate st = template("scopeAttributeRef");
+							StringTemplate st = Template("scopeAttributeRef");
 							st.SetAttribute("scope", (x!=null?x.Text:null));
-							st.SetAttribute("attr",  resolveDynamicScope((x!=null?x.Text:null)).getAttribute((y!=null?y.Text:null)));
+							st.SetAttribute("attr",  ResolveDynamicScope((x!=null?x.Text:null)).GetAttribute((y!=null?y.Text:null)));
 							st.SetAttribute("index", (expr!=null?expr.Text:null));
 						
 			}
@@ -1363,15 +1363,15 @@ public partial class ActionTranslator : Lexer
 			int ID6Start673 = GetCharIndex();
 			mID(); if (state.failed) return ;
 			ID6 = new CommonToken(input, TokenConstants.InvalidTokenType, TokenConstants.DefaultChannel, ID6Start673, GetCharIndex()-1);
-			if ( !((resolveDynamicScope((ID6!=null?ID6.Text:null))!=null)) )
+			if ( !((ResolveDynamicScope((ID6!=null?ID6.Text:null))!=null)) )
 			{
 				if (state.backtracking>0) {state.failed=true; return ;}
-				throw new FailedPredicateException(input, "ISOLATED_DYNAMIC_SCOPE", "resolveDynamicScope($ID.text)!=null");
+				throw new FailedPredicateException(input, "ISOLATED_DYNAMIC_SCOPE", "ResolveDynamicScope($ID.text)!=null");
 			}
 			if ( state.backtracking==1 )
 			{
 
-							StringTemplate st = template("isolatedDynamicScopeRef");
+							StringTemplate st = Template("isolatedDynamicScopeRef");
 							st.SetAttribute("scope", (ID6!=null?ID6.Text:null));
 						
 			}
@@ -1768,12 +1768,12 @@ public partial class ActionTranslator : Lexer
 			if ( state.backtracking==1 )
 			{
 
-							StringTemplate st = template("actionSetAttribute");
+							StringTemplate st = Template("actionSetAttribute");
 							string action = (a!=null?a.Text:null);
 							action = action.Substring( 1, action.Length - 2 ); // stuff inside {...}
-							st.SetAttribute("st", translateAction(action));
+							st.SetAttribute("st", TranslateAction(action));
 							st.SetAttribute("attrName", (ID7!=null?ID7.Text:null));
-							st.SetAttribute("expr", translateAction((expr!=null?expr.Text:null)));
+							st.SetAttribute("expr", TranslateAction((expr!=null?expr.Text:null)));
 						
 			}
 
@@ -1838,10 +1838,10 @@ public partial class ActionTranslator : Lexer
 			if ( state.backtracking==1 )
 			{
 
-							StringTemplate st = template("actionSetAttribute");
+							StringTemplate st = Template("actionSetAttribute");
 							st.SetAttribute("st", (x!=null?x.Text:null));
 							st.SetAttribute("attrName", (y!=null?y.Text:null));
-							st.SetAttribute("expr", translateAction((expr!=null?expr.Text:null)));
+							st.SetAttribute("expr", TranslateAction((expr!=null?expr.Text:null)));
 						
 			}
 
@@ -1937,10 +1937,10 @@ public partial class ActionTranslator : Lexer
 			if ( state.backtracking==1 )
 			{
 
-							StringTemplate st = template("actionStringConstructor");
+							StringTemplate st = Template("actionStringConstructor");
 							string action = (a!=null?a.Text:null);
 							action = action.Substring( 1, action.Length - 2 ); // stuff inside {...}
-							st.SetAttribute("stringExpr", translateAction(action));
+							st.SetAttribute("stringExpr", TranslateAction(action));
 						
 			}
 
@@ -2304,7 +2304,7 @@ public partial class ActionTranslator : Lexer
 				{
 
 								chunks.Add(Text);
-								ErrorManager.grammarError(ErrorManager.MSG_INVALID_TEMPLATE_ACTION,
+								ErrorManager.GrammarError(ErrorManager.MSG_INVALID_TEMPLATE_ACTION,
 														  grammar,
 														  actionToken,
 														  Text);

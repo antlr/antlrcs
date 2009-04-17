@@ -87,13 +87,13 @@ namespace AntlrUnitTests
             Grammar g = new Grammar(
                     "lexer grammar t;\n" +
                     "A : 'a' | 'b' | 'c';" );
-            int Atype = g.getTokenType( "A" );
+            int Atype = g.GetTokenType( "A" );
             Interpreter engine = new Interpreter( g, new ANTLRStringStream( "a" ) );
             engine = new Interpreter( g, new ANTLRStringStream( "b" ) );
-            IToken result = engine.scan( "A" );
+            IToken result = engine.Scan( "A" );
             assertEquals( result.Type, Atype );
             engine = new Interpreter( g, new ANTLRStringStream( "c" ) );
-            result = engine.scan( "A" );
+            result = engine.Scan( "A" );
             assertEquals( result.Type, Atype );
         }
 
@@ -103,9 +103,9 @@ namespace AntlrUnitTests
                     "lexer grammar t;\n" +
                     "A : 'a' B 'c' ;\n" +
                     "B : 'b' ;\n" );
-            int Atype = g.getTokenType( "A" );
+            int Atype = g.GetTokenType( "A" );
             Interpreter engine = new Interpreter( g, new ANTLRStringStream( "abc" ) ); // should ignore the x
-            IToken result = engine.scan( "A" );
+            IToken result = engine.Scan( "A" );
             assertEquals( result.Type, Atype );
         }
 
@@ -115,12 +115,12 @@ namespace AntlrUnitTests
                     "lexer grammar t;\n" +
                     "INT : (DIGIT)+ ;\n" +
                     "fragment DIGIT : '0'..'9';\n" );
-            int INTtype = g.getTokenType( "INT" );
+            int INTtype = g.GetTokenType( "INT" );
             Interpreter engine = new Interpreter( g, new ANTLRStringStream( "12x" ) ); // should ignore the x
-            IToken result = engine.scan( "INT" );
+            IToken result = engine.Scan( "INT" );
             assertEquals( result.Type, INTtype );
             engine = new Interpreter( g, new ANTLRStringStream( "1234" ) );
-            result = engine.scan( "INT" );
+            result = engine.Scan( "INT" );
             assertEquals( result.Type, INTtype );
         }
 
@@ -129,26 +129,26 @@ namespace AntlrUnitTests
             Grammar g = new Grammar(
                     "lexer grammar t;\n" +
                     "A : ('0'..'9'|'a'|'b')+ ;\n" );
-            int Atype = g.getTokenType( "A" );
+            int Atype = g.GetTokenType( "A" );
             Interpreter engine = new Interpreter( g, new ANTLRStringStream( "a" ) );
-            IToken result = engine.scan( "A" );
+            IToken result = engine.Scan( "A" );
             engine = new Interpreter( g, new ANTLRStringStream( "a" ) );
-            result = engine.scan( "A" );
+            result = engine.Scan( "A" );
             assertEquals( result.Type, Atype );
             engine = new Interpreter( g, new ANTLRStringStream( "1234" ) );
-            result = engine.scan( "A" );
+            result = engine.Scan( "A" );
             assertEquals( result.Type, Atype );
             engine = new Interpreter( g, new ANTLRStringStream( "aaa" ) );
-            result = engine.scan( "A" );
+            result = engine.Scan( "A" );
             assertEquals( result.Type, Atype );
             engine = new Interpreter( g, new ANTLRStringStream( "aaaa9" ) );
-            result = engine.scan( "A" );
+            result = engine.Scan( "A" );
             assertEquals( result.Type, Atype );
             engine = new Interpreter( g, new ANTLRStringStream( "b" ) );
-            result = engine.scan( "A" );
+            result = engine.Scan( "A" );
             assertEquals( result.Type, Atype );
             engine = new Interpreter( g, new ANTLRStringStream( "baa" ) );
-            result = engine.scan( "A" );
+            result = engine.Scan( "A" );
             assertEquals( result.Type, Atype );
         }
 
@@ -157,10 +157,10 @@ namespace AntlrUnitTests
             Grammar g = new Grammar(
                     "lexer grammar t;\n" +
                     "A : ('0'..'9')+ '.' ('0'..'9')* | ('0'..'9')+ ;\n" );
-            int Atype = g.getTokenType( "A" );
+            int Atype = g.GetTokenType( "A" );
             ICharStream input = new ANTLRStringStream( "1234.5" );
             Interpreter engine = new Interpreter( g, input );
-            IToken result = engine.scan( "A" );
+            IToken result = engine.Scan( "A" );
             assertEquals( result.Type, Atype );
         }
 
@@ -170,9 +170,9 @@ namespace AntlrUnitTests
                 "grammar p;\n" +
                 "a : (INT|FLOAT|WS)+;\n" );
             Grammar g = new Grammar();
-            g.importTokenVocabulary( pg );
+            g.ImportTokenVocabulary( pg );
             g.FileName = "<string>";
-            g.setGrammarContent(
+            g.SetGrammarContent(
                 "lexer grammar t;\n" +
                 "INT : (DIGIT)+ ;\n" +
                 "FLOAT : (DIGIT)+ '.' (DIGIT)* ;\n" +

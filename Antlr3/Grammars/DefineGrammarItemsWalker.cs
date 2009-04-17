@@ -1,4 +1,4 @@
-// $ANTLR 3.1.2 Grammars\\DefineGrammarItemsWalker.g3 2009-04-10 17:46:17
+// $ANTLR 3.1.2 Grammars\\DefineGrammarItemsWalker.g3 2009-04-16 21:27:02
 
 // The variable 'variable' is assigned but its value is never used.
 #pragma warning disable 219
@@ -335,7 +335,7 @@ public partial class DefineGrammarItemsWalker : TreeParser
 			if ( state.backtracking == 0 )
 			{
 
-				finish();
+				Finish();
 
 			}
 		}
@@ -414,9 +414,9 @@ public partial class DefineGrammarItemsWalker : TreeParser
 			if ( state.backtracking == 0 )
 			{
 
-							AttributeScope scope = grammar.defineGlobalScope((name!=null?name.Text:null),attrs.token);
+							AttributeScope scope = grammar.DefineGlobalScope((name!=null?name.Text:null),attrs.token);
 							scope.isDynamicGlobalScope = true;
-							scope.addAttributes((attrs!=null?attrs.Text:null), ';');
+							scope.AddAttributes((attrs!=null?attrs.Text:null), ';');
 							foreach ( var action in ((AttributeScopeActions_scope)AttributeScopeActions_stack.Peek()).actions )
 								scope.DefineNamedAction( action.Key, action.Value );
 						
@@ -810,7 +810,7 @@ public partial class DefineGrammarItemsWalker : TreeParser
 			if ( state.backtracking == 0 )
 			{
 
-						 grammar.defineNamedAction(amp,scope,nameAST,actionAST);
+						 grammar.DefineNamedAction(amp,scope,nameAST,actionAST);
 						 
 			}
 
@@ -1371,22 +1371,22 @@ public partial class DefineGrammarItemsWalker : TreeParser
 								if ( Character.isUpperCase(name[0]) && grammar.type==Grammar.COMBINED )
 								{
 									// a merged grammar spec, track lexer rules and send to another grammar
-									grammar.defineLexerRuleFoundInParser(id.token, ((GrammarAST)retval.start));
+									grammar.DefineLexerRuleFoundInParser(id.token, ((GrammarAST)retval.start));
 								}
 								else
 								{
-									int numAlts = countAltsForRule(((GrammarAST)retval.start));
-									grammar.defineRule(id.Token, (modifier4!=null?modifier4.mod:default(string)), opts, ((GrammarAST)retval.start), args, numAlts);
-									r = grammar.getRule(name);
+									int numAlts = CountAltsForRule(((GrammarAST)retval.start));
+									grammar.DefineRule(id.Token, (modifier4!=null?modifier4.mod:default(string)), opts, ((GrammarAST)retval.start), args, numAlts);
+									r = grammar.GetRule(name);
 									if ( args!=null )
 									{
-										r.parameterScope = grammar.createParameterScope(name,args.Token);
-										r.parameterScope.addAttributes((args!=null?args.Text:null), ',');
+										r.parameterScope = grammar.CreateParameterScope(name,args.Token);
+										r.parameterScope.AddAttributes((args!=null?args.Text:null), ',');
 									}
 									if ( ret!=null )
 									{
-										r.returnScope = grammar.createReturnScope(name,ret.token);
-										r.returnScope.addAttributes((ret!=null?ret.Text:null), ',');
+										r.returnScope = grammar.CreateReturnScope(name,ret.token);
+										r.returnScope.AddAttributes((ret!=null?ret.Text:null), ',');
 									}
 									if ( throwsSpec5 != null )
 									{
@@ -1494,7 +1494,7 @@ public partial class DefineGrammarItemsWalker : TreeParser
 
 								// copy rule options into the block AST, which is where
 								// the analysis will look for k option etc...
-								(b!=null?((GrammarAST)b.start):null).setBlockOptions( opts );
+								(b!=null?((GrammarAST)b.start):null).BlockOptions = opts;
 							
 			}
 
@@ -1538,7 +1538,7 @@ public partial class DefineGrammarItemsWalker : TreeParser
 			Match(input, TokenConstants.Up, null); if (state.failed) return ;
 			if ( state.backtracking == 0 )
 			{
-				if (r!=null) r.defineNamedAction(amp,id,a);
+				if (r!=null) r.DefineNamedAction(amp,id,a);
 			}
 
 			}
@@ -1759,9 +1759,9 @@ public partial class DefineGrammarItemsWalker : TreeParser
 					if ( state.backtracking == 0 )
 					{
 
-											r.ruleScope = grammar.createRuleScope(r.name,attrs.token);
+											r.ruleScope = grammar.CreateRuleScope(r.name,attrs.token);
 											r.ruleScope.isDynamicRuleScope = true;
-											r.ruleScope.addAttributes((attrs!=null?attrs.Text:null), ';');
+											r.ruleScope.AddAttributes((attrs!=null?attrs.Text:null), ';');
 											foreach ( var action in ((AttributeScopeActions_scope)AttributeScopeActions_stack.Peek()).actions )
 												r.ruleScope.DefineNamedAction( action.Key, action.Value );
 										
@@ -1793,8 +1793,8 @@ public partial class DefineGrammarItemsWalker : TreeParser
 						if ( state.backtracking == 0 )
 						{
 
-												if ( grammar.getGlobalScope((uses!=null?uses.Text:null))==null ) {
-												ErrorManager.grammarError(ErrorManager.MSG_UNKNOWN_DYNAMIC_SCOPE,
+												if ( grammar.GetGlobalScope((uses!=null?uses.Text:null))==null ) {
+												ErrorManager.GrammarError(ErrorManager.MSG_UNKNOWN_DYNAMIC_SCOPE,
 												grammar,
 												uses.token,
 												(uses!=null?uses.Text:null));
@@ -2044,9 +2044,9 @@ public partial class DefineGrammarItemsWalker : TreeParser
 
 			if ( state.backtracking == 0 )
 			{
-				if ( grammar.type!=Grammar.LEXER && grammar.getOption("output")!=null && blockLevel==1 )
+				if ( grammar.type!=Grammar.LEXER && grammar.GetOption("output")!=null && blockLevel==1 )
 				{
-					GrammarAST aRewriteNode = ((GrammarAST)retval.start).findFirstType(REWRITE); // alt itself has rewrite?
+					GrammarAST aRewriteNode = ((GrammarAST)retval.start).FindFirstType(REWRITE); // alt itself has rewrite?
 					GrammarAST rewriteAST = (GrammarAST)((GrammarAST)retval.start).Parent.GetChild(((GrammarAST)retval.start).ChildIndex + 1);
 					// we have a rewrite if alt uses it inside subrule or this alt has one
 					// but don't count -> ... rewrites, which mean "do default auto construction"
@@ -2056,8 +2056,8 @@ public partial class DefineGrammarItemsWalker : TreeParser
 						  rewriteAST.GetChild(0)!=null &&
 						  rewriteAST.GetChild(0).Type!=ETC) )
 					{
-						Rule r = grammar.getRule(currentRuleName);
-						r.trackAltsWithRewrites(((GrammarAST)retval.start),this.outerAltNum);
+						Rule r = grammar.GetRule(currentRuleName);
+						r.TrackAltsWithRewrites(((GrammarAST)retval.start),this.outerAltNum);
 					}
 				}
 			}
@@ -2276,7 +2276,7 @@ public partial class DefineGrammarItemsWalker : TreeParser
 			Match(input, TokenConstants.Up, null); if (state.failed) return ;
 			if ( state.backtracking == 0 )
 			{
-				trackInlineAction(ACTION7);
+				TrackInlineAction(ACTION7);
 			}
 
 			}
@@ -2314,7 +2314,7 @@ public partial class DefineGrammarItemsWalker : TreeParser
 			Match(input, TokenConstants.Up, null); if (state.failed) return ;
 			if ( state.backtracking == 0 )
 			{
-				trackInlineAction(ACTION8);
+				TrackInlineAction(ACTION8);
 			}
 
 			}
@@ -2484,15 +2484,15 @@ public partial class DefineGrammarItemsWalker : TreeParser
 									}
 									if ( e.Type==RULE_REF)
 									{
-										grammar.defineRuleRefLabel(currentRuleName,id.token,e);
+										grammar.DefineRuleRefLabel(currentRuleName,id.token,e);
 									}
 									else if ( e.Type==WILDCARD && grammar.type==Grammar.TREE_PARSER )
 									{
-										grammar.defineWildcardTreeLabel(currentRuleName,id.token,e);
+										grammar.DefineWildcardTreeLabel(currentRuleName,id.token,e);
 									}
 									else
 									{
-										grammar.defineTokenRefLabel(currentRuleName,id.Token,e);
+										grammar.DefineTokenRefLabel(currentRuleName,id.Token,e);
 									}
 								
 				}
@@ -2521,15 +2521,15 @@ public partial class DefineGrammarItemsWalker : TreeParser
 									}
 									if ( a.Type==RULE_REF )
 									{
-										grammar.defineRuleListLabel(currentRuleName,id2.Token,a);
+										grammar.DefineRuleListLabel(currentRuleName,id2.Token,a);
 									}
 									else if ( a.Type == WILDCARD && grammar.type == Grammar.TREE_PARSER )
 									{
-										grammar.defineWildcardTreeListLabel( currentRuleName, id2.token, a );
+										grammar.DefineWildcardTreeListLabel( currentRuleName, id2.token, a );
 									}
 									else
 									{
-										grammar.defineTokenListLabel(currentRuleName,id2.Token,a);
+										grammar.DefineTokenListLabel(currentRuleName,id2.Token,a);
 									}
 								
 				}
@@ -2584,7 +2584,7 @@ public partial class DefineGrammarItemsWalker : TreeParser
 				{
 
 								act.outerAltNum = this.outerAltNum;
-								trackInlineAction(act);
+								TrackInlineAction(act);
 							
 				}
 
@@ -2598,7 +2598,7 @@ public partial class DefineGrammarItemsWalker : TreeParser
 				{
 
 								act2.outerAltNum = this.outerAltNum;
-								trackInlineAction(act2);
+								TrackInlineAction(act2);
 							
 				}
 
@@ -2612,7 +2612,7 @@ public partial class DefineGrammarItemsWalker : TreeParser
 				{
 
 								SEMPRED9.outerAltNum = this.outerAltNum;
-								trackInlineAction(SEMPRED9);
+								TrackInlineAction(SEMPRED9);
 							
 				}
 
@@ -2682,7 +2682,7 @@ public partial class DefineGrammarItemsWalker : TreeParser
 				{
 
 								GATED_SEMPRED10.outerAltNum = this.outerAltNum;
-								trackInlineAction(GATED_SEMPRED10);
+								TrackInlineAction(GATED_SEMPRED10);
 							
 				}
 
@@ -2892,7 +2892,7 @@ public partial class DefineGrammarItemsWalker : TreeParser
 								// otherwise they (analysis?) look til EOF!
 								opts["k"] = 1;
 							}
-							block.setOptions(grammar,opts);
+							block.SetOptions(grammar,opts);
 						
 			}
 
@@ -3116,11 +3116,11 @@ public partial class DefineGrammarItemsWalker : TreeParser
 				if ( state.backtracking == 0 )
 				{
 
-								grammar.altReferencesRule( currentRuleName, scope_, rr, this.outerAltNum );
+								grammar.AltReferencesRule( currentRuleName, scope_, rr, this.outerAltNum );
 								if ( rarg != null )
 								{
 									rarg.outerAltNum = this.outerAltNum;
-									trackInlineAction(rarg);
+									TrackInlineAction(rarg);
 								}
 							
 				}
@@ -3164,15 +3164,15 @@ public partial class DefineGrammarItemsWalker : TreeParser
 								if ( targ != null )
 								{
 									targ.outerAltNum = this.outerAltNum;
-									trackInlineAction(targ);
+									TrackInlineAction(targ);
 								}
 								if ( grammar.type == Grammar.LEXER )
 								{
-									grammar.altReferencesRule( currentRuleName, scope_, t, this.outerAltNum );
+									grammar.AltReferencesRule( currentRuleName, scope_, t, this.outerAltNum );
 								}
 								else
 								{
-									grammar.altReferencesTokenID( currentRuleName, t, this.outerAltNum );
+									grammar.AltReferencesTokenID( currentRuleName, t, this.outerAltNum );
 								}
 							
 				}
@@ -3188,9 +3188,9 @@ public partial class DefineGrammarItemsWalker : TreeParser
 
 								if ( grammar.type != Grammar.LEXER )
 								{
-									Rule rule = grammar.getRule(currentRuleName);
+									Rule rule = grammar.GetRule(currentRuleName);
 									if ( rule != null )
-										rule.trackTokenReferenceInAlt(c, outerAltNum);
+										rule.TrackTokenReferenceInAlt(c, outerAltNum);
 								}
 							
 				}
@@ -3206,9 +3206,9 @@ public partial class DefineGrammarItemsWalker : TreeParser
 
 								if ( grammar.type != Grammar.LEXER )
 								{
-									Rule rule = grammar.getRule(currentRuleName);
+									Rule rule = grammar.GetRule(currentRuleName);
 									if ( rule!=null )
-										rule.trackTokenReferenceInAlt(s, outerAltNum);
+										rule.TrackTokenReferenceInAlt(s, outerAltNum);
 								}
 							
 				}
@@ -3371,7 +3371,7 @@ public partial class DefineGrammarItemsWalker : TreeParser
 										if ( pred != null )
 										{
 											pred.outerAltNum = this.outerAltNum;
-											trackInlineAction(pred);
+											TrackInlineAction(pred);
 										}
 									
 					}
@@ -3990,8 +3990,8 @@ public partial class DefineGrammarItemsWalker : TreeParser
 
 			if ( state.backtracking == 0 )
 			{
-				Rule r = grammar.getRule(currentRuleName);
-				var tokenRefsInAlt = r.getTokenRefsInAlt(outerAltNum);
+				Rule r = grammar.GetRule(currentRuleName);
+				var tokenRefsInAlt = r.GetTokenRefsInAlt(outerAltNum);
 				boolean imaginary =
 					((GrammarAST)retval.start).Type==TOKEN_REF &&
 					!tokenRefsInAlt.Contains(((GrammarAST)retval.start).Text);
@@ -4117,7 +4117,7 @@ public partial class DefineGrammarItemsWalker : TreeParser
 							{
 
 														ARG_ACTION12.outerAltNum = this.outerAltNum;
-														trackInlineAction(ARG_ACTION12);
+														TrackInlineAction(ARG_ACTION12);
 													
 							}
 
@@ -4167,7 +4167,7 @@ public partial class DefineGrammarItemsWalker : TreeParser
 				{
 
 								ACTION13.outerAltNum = this.outerAltNum;
-								trackInlineAction(ACTION13);
+								TrackInlineAction(ACTION13);
 							
 				}
 
@@ -4321,7 +4321,7 @@ public partial class DefineGrammarItemsWalker : TreeParser
 							{
 
 														a.outerAltNum = this.outerAltNum;
-														trackInlineAction(a);
+														TrackInlineAction(a);
 													
 							}
 
@@ -4346,7 +4346,7 @@ public partial class DefineGrammarItemsWalker : TreeParser
 									if ( ind!=null )
 									{
 										ind.outerAltNum = this.outerAltNum;
-										trackInlineAction(ind);
+										TrackInlineAction(ind);
 									}
 								
 				}
@@ -4394,7 +4394,7 @@ public partial class DefineGrammarItemsWalker : TreeParser
 				{
 
 								act.outerAltNum = this.outerAltNum;
-								trackInlineAction(act);
+								TrackInlineAction(act);
 							
 				}
 

@@ -67,7 +67,7 @@ namespace Antlr3.Tool
             }
             var labels = probe.GetSampleNonDeterministicInputSequence( problemState );
             string input = probe.GetInputSequenceDisplay( labels );
-            StringTemplate st = getMessageTemplate();
+            StringTemplate st = GetMessageTemplate();
             List<int> alts = new List<int>();
             alts.addAll( problemState.AltSet );
             alts.Sort();

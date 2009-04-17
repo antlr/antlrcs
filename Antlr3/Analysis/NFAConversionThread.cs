@@ -57,10 +57,10 @@ namespace Antlr3.Analysis
         {
             for ( int decision = i; decision <= j; decision++ )
             {
-                NFAState decisionStartState = grammar.getDecisionNFAStartState( decision );
+                NFAState decisionStartState = grammar.GetDecisionNFAStartState( decision );
                 if ( decisionStartState.NumberOfTransitions > 1 )
                 {
-                    grammar.createLookaheadDFA( decision, true );
+                    grammar.CreateLookaheadDFA( decision, true );
                 }
             }
             // now wait for others to finish
@@ -70,7 +70,7 @@ namespace Antlr3.Analysis
             }
             catch ( OperationCanceledException e )
             {
-                ErrorManager.internalError( "what the hell? DFA interruptus", e );
+                ErrorManager.InternalError( "what the hell? DFA interruptus", e );
             }
         }
     }

@@ -65,7 +65,7 @@ namespace Antlr3.Tool
             {
                 file = fileName;
             }
-            StringTemplate st = getMessageTemplate();
+            StringTemplate st = GetMessageTemplate();
             // convert to string key to avoid 3.1 ST bug
             var altToLocationsWithStringKey = new SortedList<string, ICollection<IToken>>();
             List<int> alts = new List<int>();

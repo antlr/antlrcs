@@ -54,7 +54,7 @@ namespace Antlr3.Tool
 
         public override String ToString()
         {
-            StringTemplate st = getMessageTemplate();
+            StringTemplate st = GetMessageTemplate();
             st.SetAttribute( "listOfCycles", cycles );
             return base.ToString( st );
         }

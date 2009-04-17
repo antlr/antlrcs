@@ -94,7 +94,7 @@ namespace Antlr3.Tool
             this.tool = tool;
             this.grammarFileName = grammarFileName;
             grammar = tool.GetRootGrammar( grammarFileName );
-            string language = (string)grammar.getOption( "language" );
+            string language = (string)grammar.GetOption( "language" );
             generator = new CodeGenerator( tool, grammar, language );
             generator.LoadTemplates( language );
         }
@@ -118,7 +118,7 @@ namespace Antlr3.Tool
         /** From T.g return a list of File objects that
          *  name files ANTLR will emit from T.g.
          */
-        public virtual IList<string> getGeneratedFileList()
+        public virtual IList<string> GetGeneratedFileList()
         {
             List<FileInfo> files = new List<FileInfo>();
             System.IO.DirectoryInfo outputDir = tool.GetOutputDirectory( grammarFileName );
@@ -170,11 +170,11 @@ namespace Antlr3.Tool
 
             // handle generated files for imported grammars
             IList<Grammar> imports =
-                grammar.composite.getDelegates( grammar.composite.RootGrammar );
+                grammar.composite.GetDelegates( grammar.composite.RootGrammar );
             foreach ( Grammar g in imports )
             {
                 outputDir = tool.GetOutputDirectory( g.FileName );
-                string fname = groomQualifiedFileName( outputDir.ToString(), g.getRecognizerName() + extST.ToString() );
+                string fname = GroomQualifiedFileName( outputDir.ToString(), g.GetRecognizerName() + extST.ToString() );
                 files.Add( new FileInfo( fname ) );
             }
 
@@ -190,20 +190,20 @@ namespace Antlr3.Tool
          *  to process T.g; This can be .tokens files if the grammar uses the tokenVocab option
          *  as well as any imported grammar files.
          */
-        public virtual IList<string> getDependenciesFileList()
+        public virtual IList<string> GetDependenciesFileList()
         {
             // Find all things other than imported grammars
             //
-            IList<string> files = getNonImportDependenciesFileList();
+            IList<string> files = GetNonImportDependenciesFileList();
 
             // Handle imported grammars
             //
             IList<Grammar> imports =
-                grammar.composite.getDelegates( grammar.composite.RootGrammar );
+                grammar.composite.GetDelegates( grammar.composite.RootGrammar );
             foreach ( Grammar g in imports )
             {
                 string libdir = tool.LibraryDirectory;
-                string fileName = groomQualifiedFileName( libdir, g.fileName );
+                string fileName = GroomQualifiedFileName( libdir, g.fileName );
                 files.Add( fileName );
             }
 
@@ -221,12 +221,12 @@ namespace Antlr3.Tool
          *
          * @return List of dependencies other than imported grammars
          */
-        public virtual List<string> getNonImportDependenciesFileList()
+        public virtual List<string> GetNonImportDependenciesFileList()
         {
             List<string> files = new List<string>();
 
             // handle token vocabulary loads
-            tokenVocab = (string)grammar.getOption( "tokenVocab" );
+            tokenVocab = (string)grammar.GetOption( "tokenVocab" );
             if ( tokenVocab != null )
             {
                 FileInfo vocabFile = tool.GetImportedVocabFile( tokenVocab );
@@ -236,17 +236,17 @@ namespace Antlr3.Tool
             return files;
         }
 
-        public virtual StringTemplate getDependencies()
+        public virtual StringTemplate GetDependencies()
         {
-            loadDependencyTemplates();
+            LoadDependencyTemplates();
             StringTemplate dependenciesST = templates.GetInstanceOf( "dependencies" );
-            dependenciesST.SetAttribute( "in", getDependenciesFileList() );
-            dependenciesST.SetAttribute( "out", getGeneratedFileList() );
+            dependenciesST.SetAttribute( "in", GetDependenciesFileList() );
+            dependenciesST.SetAttribute( "out", GetGeneratedFileList() );
             dependenciesST.SetAttribute( "grammarFileName", grammar.fileName );
             return dependenciesST;
         }
 
-        public virtual void loadDependencyTemplates()
+        public virtual void LoadDependencyTemplates()
         {
             throw new NotImplementedException();
             //if ( templates != null )
@@ -294,7 +294,7 @@ namespace Antlr3.Tool
             //}
         }
 
-        public virtual string groomQualifiedFileName( string outputDir, string fileName )
+        public virtual string GroomQualifiedFileName( string outputDir, string fileName )
         {
             if ( outputDir.Equals( "." ) )
             {

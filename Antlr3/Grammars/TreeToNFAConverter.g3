@@ -88,7 +88,7 @@ public
 grammar_
 @after
 {
-	finish();
+	Finish();
 }
 	:	(	^( LEXER_GRAMMAR grammarSpec )
 		|	^( PARSER_GRAMMAR grammarSpec )
@@ -120,7 +120,7 @@ rule
 	:	^(	RULE id=ID
 			{
 				currentRuleName = $id.text;
-				factory.CurrentRule = grammar.getLocallyDefinedRule( currentRuleName );
+				factory.CurrentRule = grammar.GetLocallyDefinedRule( currentRuleName );
 			}
 			(modifier)?
 			^(ARG (ARG_ACTION)?)
@@ -138,25 +138,25 @@ rule
 				{
 					// if block comes back as a set not BLOCK, make it
 					// a single ALT block
-					g = factory.build_AlternativeBlockFromSet(g);
+					g = factory.BuildAlternativeBlockFromSet(g);
 				}
 				if ( char.IsLower(currentRuleName[0]) ||
 					 grammar.type==Grammar.LEXER )
 				{
 					// attach start node to block for this rule
-					Rule thisR = grammar.getLocallyDefinedRule(currentRuleName);
+					Rule thisR = grammar.GetLocallyDefinedRule(currentRuleName);
 					NFAState start = thisR.startState;
 					start.associatedASTNode = $id;
 					start.AddTransition(new Transition(Label.EPSILON, g.left));
 
 					// track decision if > 1 alts
-					if ( grammar.getNumberOfAltsForDecisionNFA(g.left)>1 )
+					if ( grammar.GetNumberOfAltsForDecisionNFA(g.left)>1 )
 					{
-						g.left.Description = grammar.grammarTreeToString($start,false);
+						g.left.Description = grammar.GrammarTreeToString($start,false);
 						g.left.SetDecisionASTNode($b.start);
-						int d = grammar.assignDecisionNumber( g.left );
-						grammar.setDecisionNFA( d, g.left );
-						grammar.setDecisionBlockAST(d, $b.start);
+						int d = grammar.AssignDecisionNumber( g.left );
+						grammar.SetDecisionNFA( d, g.left );
+						grammar.SetDecisionBlockAST(d, $b.start);
 					}
 
 					// hook to end of rule node
@@ -190,7 +190,7 @@ block returns [StateCluster g = null]
 	if ( this.blockLevel==1 )
 		this.outerAltNum=1;
 }
-	:	{grammar.isValidSet(this,$start) &&
+	:	{grammar.IsValidSet(this,$start) &&
 		 !currentRuleName.Equals(Grammar.ARTIFICIAL_TOKENS_RULENAME)}? =>
 		set {$g = $set.g;}
 
@@ -206,18 +206,18 @@ block returns [StateCluster g = null]
 			)+
 			EOB
 		)
-		{$g = factory.build_AlternativeBlock(alts);}
+		{$g = factory.BuildAlternativeBlock(alts);}
 	;
 finally { blockLevel--; }
 
 alternative returns [StateCluster g=null]
-	:	^( ALT (e=element {$g = factory.build_AB($g,$e.g);} )+ EOA )
+	:	^( ALT (e=element {$g = factory.BuildAB($g,$e.g);} )+ EOA )
 		{
 			if ($g==null) { // if alt was a list of actions or whatever
-				$g = factory.build_Epsilon();
+				$g = factory.BuildEpsilon();
 			}
 			else {
-				factory.optimizeAlternative($g);
+				factory.OptimizeAlternative($g);
 			}
 		}
 	;
@@ -238,9 +238,9 @@ finallyClause
 rewrite
 	:	(
 			{
-				if ( grammar.getOption("output")==null )
+				if ( grammar.GetOption("output")==null )
 				{
-					ErrorManager.grammarError(ErrorManager.MSG_REWRITE_OR_OP_WITH_NO_OUTPUT_OPTION,
+					ErrorManager.GrammarError(ErrorManager.MSG_REWRITE_OR_OP_WITH_NO_OUTPUT_OPTION,
 											  grammar, $start.Token, currentRuleName);
 				}
 			}
@@ -254,25 +254,25 @@ element returns [StateCluster g=null]
 	|	^(ASSIGN ID e=element {$g = $e.g;})
 	|	^(PLUS_ASSIGN ID e=element {$g = $e.g;})
 	|   ^(RANGE a=atom[null] b=atom[null])
-		{$g = factory.build_Range(grammar.getTokenType($a.text),
-								 grammar.getTokenType($b.text));}
+		{$g = factory.BuildRange(grammar.GetTokenType($a.text),
+								 grammar.GetTokenType($b.text));}
 	|   ^(CHAR_RANGE c1=CHAR_LITERAL c2=CHAR_LITERAL)
 		{
 		if ( grammar.type==Grammar.LEXER ) {
-			$g = factory.build_CharRange($c1.text, $c2.text);
+			$g = factory.BuildCharRange($c1.text, $c2.text);
 		}
 		}
 	|   atom_or_notatom {$g = $atom_or_notatom.g;}
 	|   ebnf {$g = $ebnf.g;}
 	|   tree_ {$g = $tree_.g;}
 	|   ^( SYNPRED block )
-	|   ACTION {$g = factory.build_Action($ACTION);}
-	|   FORCED_ACTION {$g = factory.build_Action($FORCED_ACTION);}
-	|   pred=SEMPRED {$g = factory.build_SemanticPredicate($pred);}
-	|   spred=SYN_SEMPRED {$g = factory.build_SemanticPredicate($spred);}
-	|   ^(bpred=BACKTRACK_SEMPRED .*) {$g = factory.build_SemanticPredicate($bpred);}
-	|   gpred=GATED_SEMPRED {$g = factory.build_SemanticPredicate($gpred);}
-	|   EPSILON {$g = factory.build_Epsilon();}
+	|   ACTION {$g = factory.BuildAction($ACTION);}
+	|   FORCED_ACTION {$g = factory.BuildAction($FORCED_ACTION);}
+	|   pred=SEMPRED {$g = factory.BuildSemanticPredicate($pred);}
+	|   spred=SYN_SEMPRED {$g = factory.BuildSemanticPredicate($spred);}
+	|   ^(bpred=BACKTRACK_SEMPRED .*) {$g = factory.BuildSemanticPredicate($bpred);}
+	|   gpred=GATED_SEMPRED {$g = factory.BuildSemanticPredicate($gpred);}
+	|   EPSILON {$g = factory.BuildEpsilon();}
 	;
 
 ebnf returns [StateCluster g=null]
@@ -284,18 +284,18 @@ ebnf returns [StateCluster g=null]
 	}
 	GrammarAST eob = blk.LastChild;
 }
-	:	{grammar.isValidSet(this,$start)}? => set {$g = $set.g;}
+	:	{grammar.IsValidSet(this,$start)}? => set {$g = $set.g;}
 
 	|	b=block
 		{
 			// track decision if > 1 alts
-			if ( grammar.getNumberOfAltsForDecisionNFA($b.g.left)>1 )
+			if ( grammar.GetNumberOfAltsForDecisionNFA($b.g.left)>1 )
 			{
-				$b.g.left.Description = grammar.grammarTreeToString(blk,false);
+				$b.g.left.Description = grammar.GrammarTreeToString(blk,false);
 				$b.g.left.SetDecisionASTNode(blk);
-				int d = grammar.assignDecisionNumber( $b.g.left );
-				grammar.setDecisionNFA( d, $b.g.left );
-				grammar.setDecisionBlockAST(d, blk);
+				int d = grammar.AssignDecisionNumber( $b.g.left );
+				grammar.SetDecisionNFA( d, $b.g.left );
+				grammar.SetDecisionBlockAST(d, blk);
 			}
 			$g = $b.g;
 		}
@@ -306,14 +306,14 @@ ebnf returns [StateCluster g=null]
 			{
 				// if block comes back SET not BLOCK, make it
 				// a single ALT block
-				bg = factory.build_AlternativeBlockFromSet(bg);
+				bg = factory.BuildAlternativeBlockFromSet(bg);
 			}
-			$g = factory.build_Aoptional(bg);
-			$g.left.Description = grammar.grammarTreeToString($start,false);
+			$g = factory.BuildAoptional(bg);
+			$g.left.Description = grammar.GrammarTreeToString($start,false);
 			// there is always at least one alt even if block has just 1 alt
-			int d = grammar.assignDecisionNumber( $g.left );
-			grammar.setDecisionNFA(d, $g.left);
-			grammar.setDecisionBlockAST(d, blk);
+			int d = grammar.AssignDecisionNumber( $g.left );
+			grammar.SetDecisionNFA(d, $g.left);
+			grammar.SetDecisionBlockAST(d, blk);
 			$g.left.SetDecisionASTNode($start);
 		}
 	|	^( CLOSURE b=block )
@@ -321,14 +321,14 @@ ebnf returns [StateCluster g=null]
 			StateCluster bg = $b.g;
 			if ( blk.SetValue!=null )
 			{
-				bg = factory.build_AlternativeBlockFromSet(bg);
+				bg = factory.BuildAlternativeBlockFromSet(bg);
 			}
-			$g = factory.build_Astar(bg);
+			$g = factory.BuildAstar(bg);
 			// track the loop back / exit decision point
-			bg.right.Description = "()* loopback of "+grammar.grammarTreeToString($start,false);
-			int d = grammar.assignDecisionNumber( bg.right );
-			grammar.setDecisionNFA(d, bg.right);
-			grammar.setDecisionBlockAST(d, blk);
+			bg.right.Description = "()* loopback of "+grammar.GrammarTreeToString($start,false);
+			int d = grammar.AssignDecisionNumber( bg.right );
+			grammar.SetDecisionNFA(d, bg.right);
+			grammar.SetDecisionBlockAST(d, blk);
 			bg.right.SetDecisionASTNode(eob);
 			// make block entry state also have same decision for interpreting grammar
 			NFAState altBlockState = (NFAState)$g.left.GetTransition(0).target;
@@ -342,15 +342,15 @@ ebnf returns [StateCluster g=null]
 			StateCluster bg = $b.g;
 			if ( blk.SetValue!=null )
 			{
-				bg = factory.build_AlternativeBlockFromSet(bg);
+				bg = factory.BuildAlternativeBlockFromSet(bg);
 			}
-			$g = factory.build_Aplus(bg);
+			$g = factory.BuildAplus(bg);
 			// don't make a decision on left edge, can reuse loop end decision
 			// track the loop back / exit decision point
-			bg.right.Description = "()+ loopback of "+grammar.grammarTreeToString($start,false);
-			int d = grammar.assignDecisionNumber( bg.right );
-			grammar.setDecisionNFA(d, bg.right);
-			grammar.setDecisionBlockAST(d, blk);
+			bg.right.Description = "()+ loopback of "+grammar.GrammarTreeToString($start,false);
+			int d = grammar.AssignDecisionNumber( bg.right );
+			grammar.SetDecisionNFA(d, bg.right);
+			grammar.SetDecisionBlockAST(d, blk);
 			bg.right.SetDecisionASTNode(eob);
 			// make block entry state also have same decision for interpreting grammar
 			NFAState altBlockState = (NFAState)$g.left.GetTransition(0).target;
@@ -367,16 +367,16 @@ tree_ returns [StateCluster g=null]
 	:	^(	TREE_BEGIN
 			e=element { $g = $e.g; }
 			{
-				down = factory.build_Atom(Label.DOWN, $e.start);
+				down = factory.BuildAtom(Label.DOWN, $e.start);
 				// TODO set following states for imaginary nodes?
 				//el.followingNFAState = down.right;
-				$g = factory.build_AB($g,down);
+				$g = factory.BuildAB($g,down);
 			}
-			( e=element {$g = factory.build_AB($g,$e.g);} )*
+			( e=element {$g = factory.BuildAB($g,$e.g);} )*
 			{
-				up = factory.build_Atom(Label.UP, $e.start);
+				up = factory.BuildAtom(Label.UP, $e.start);
 				//el.followingNFAState = up.right;
-				$g = factory.build_AB($g,up);
+				$g = factory.BuildAB($g,up);
 				// tree roots point at right edge of DOWN for LOOK computation later
 				$start.NFATreeDownState = down.left;
 			}
@@ -391,22 +391,22 @@ atom_or_notatom returns [StateCluster g=null]
 					int ttype=0;
 					if ( grammar.type==Grammar.LEXER )
 					{
-						ttype = Grammar.getCharValueFromGrammarCharLiteral($c.text);
+						ttype = Grammar.GetCharValueFromGrammarCharLiteral($c.text);
 					}
 					else
 					{
-						ttype = grammar.getTokenType($c.text);
+						ttype = grammar.GetTokenType($c.text);
 					}
-					IIntSet notAtom = grammar.complement(ttype);
+					IIntSet notAtom = grammar.Complement(ttype);
 					if ( notAtom.IsNil )
 					{
-						ErrorManager.grammarError(
+						ErrorManager.GrammarError(
 							ErrorManager.MSG_EMPTY_COMPLEMENT,
 							grammar,
 							$c.Token,
 							$c.text);
 					}
-					$g=factory.build_Set(notAtom,$n);
+					$g=factory.BuildSet(notAtom,$n);
 				}
 			|	t=TOKEN_REF (ast3=ast_suffix)?
 				{
@@ -414,10 +414,10 @@ atom_or_notatom returns [StateCluster g=null]
 					IIntSet notAtom = null;
 					if ( grammar.type==Grammar.LEXER )
 					{
-						notAtom = grammar.getSetFromRule(this,$t.text);
+						notAtom = grammar.GetSetFromRule(this,$t.text);
 						if ( notAtom==null )
 						{
-							ErrorManager.grammarError(
+							ErrorManager.GrammarError(
 								ErrorManager.MSG_RULE_INVALID_SET,
 								grammar,
 								$t.Token,
@@ -425,42 +425,42 @@ atom_or_notatom returns [StateCluster g=null]
 						}
 						else
 						{
-							notAtom = grammar.complement(notAtom);
+							notAtom = grammar.Complement(notAtom);
 						}
 					}
 					else
 					{
-						ttype = grammar.getTokenType($t.text);
-						notAtom = grammar.complement(ttype);
+						ttype = grammar.GetTokenType($t.text);
+						notAtom = grammar.Complement(ttype);
 					}
 					if ( notAtom==null || notAtom.IsNil )
 					{
-						ErrorManager.grammarError(
+						ErrorManager.GrammarError(
 							ErrorManager.MSG_EMPTY_COMPLEMENT,
 							grammar,
 							$t.Token,
 							$t.text);
 					}
-					$g=factory.build_Set(notAtom,$n);
+					$g=factory.BuildSet(notAtom,$n);
 				}
 			|	set {$g = $set.g;}
 				{
 					GrammarAST stNode = (GrammarAST)$n.GetChild(0);
-					//IIntSet notSet = grammar.complement(stNode.SetValue);
+					//IIntSet notSet = grammar.Complement(stNode.SetValue);
 					// let code generator complement the sets
 					IIntSet s = stNode.SetValue;
 					stNode.SetValue = s;
 					// let code gen do the complement again; here we compute
 					// for NFA construction
-					s = grammar.complement(s);
+					s = grammar.Complement(s);
 					if ( s.IsNil )
 					{
-						ErrorManager.grammarError(
+						ErrorManager.GrammarError(
 							ErrorManager.MSG_EMPTY_COMPLEMENT,
 							grammar,
 							$n.Token);
 					}
-					$g=factory.build_Set(s,$n);
+					$g=factory.BuildSet(s,$n);
 				}
 			)
 			{$n.followingNFAState = $g.right;}
@@ -470,17 +470,17 @@ atom_or_notatom returns [StateCluster g=null]
 atom[string scopeName] returns [StateCluster g=null]
 	:	^( r=RULE_REF (rarg=ARG_ACTION)? (as1=ast_suffix)? )
 		{
-			NFAState start = grammar.getRuleStartState(scopeName,$r.text);
+			NFAState start = grammar.GetRuleStartState(scopeName,$r.text);
 			if ( start!=null )
 			{
-				Rule rr = grammar.getRule(scopeName,$r.text);
-				$g = factory.build_RuleRef(rr, start);
+				Rule rr = grammar.GetRule(scopeName,$r.text);
+				$g = factory.BuildRuleRef(rr, start);
 				r.followingNFAState = $g.right;
 				r._nfaStartState = $g.left;
 				if ( $g.left.GetTransition(0) is RuleClosureTransition
 					&& grammar.type!=Grammar.LEXER )
 				{
-					addFollowTransition($r.text, $g.right);
+					AddFollowTransition($r.text, $g.right);
 				}
 				// else rule ref got inlined to a set
 			}
@@ -490,11 +490,11 @@ atom[string scopeName] returns [StateCluster g=null]
 		{
 			if ( grammar.type==Grammar.LEXER )
 			{
-				NFAState start = grammar.getRuleStartState(scopeName,$t.text);
+				NFAState start = grammar.GetRuleStartState(scopeName,$t.text);
 				if ( start!=null )
 				{
-					Rule rr = grammar.getRule(scopeName,t.Text);
-					$g = factory.build_RuleRef(rr, start);
+					Rule rr = grammar.GetRule(scopeName,t.Text);
+					$g = factory.BuildRuleRef(rr, start);
 					t._nfaStartState = $g.left;
 					// don't add FOLLOW transitions in the lexer;
 					// only exact context should be used.
@@ -502,7 +502,7 @@ atom[string scopeName] returns [StateCluster g=null]
 			}
 			else
 			{
-				$g = factory.build_Atom(t);
+				$g = factory.BuildAtom(t);
 				t.followingNFAState = $g.right;
 			}
 		}
@@ -511,11 +511,11 @@ atom[string scopeName] returns [StateCluster g=null]
 		{
 			if ( grammar.type==Grammar.LEXER )
 			{
-				$g = factory.build_CharLiteralAtom(c);
+				$g = factory.BuildCharLiteralAtom(c);
 			}
 			else
 			{
-				$g = factory.build_Atom(c);
+				$g = factory.BuildAtom(c);
 				c.followingNFAState = $g.right;
 			}
 		}
@@ -524,11 +524,11 @@ atom[string scopeName] returns [StateCluster g=null]
 		{
 			if ( grammar.type==Grammar.LEXER )
 			{
-				$g = factory.build_StringLiteralAtom(s);
+				$g = factory.BuildStringLiteralAtom(s);
 			}
 			else
 			{
-				$g = factory.build_Atom(s);
+				$g = factory.BuildAtom(s);
 				s.followingNFAState = $g.right;
 			}
 		}
@@ -538,11 +538,11 @@ atom[string scopeName] returns [StateCluster g=null]
 				if ( nfa.grammar.type == Grammar.TREE_PARSER
 					&& (w.ChildIndex > 0 || w.Parent.GetChild(1).Type == EOA) )
 				{
-					$g = factory.build_WildcardTree( $w );
+					$g = factory.BuildWildcardTree( $w );
 				}
 				else
 				{
-					$g = factory.build_Wildcard( $w );
+					$g = factory.BuildWildcard( $w );
 				}
 			}
 
@@ -566,7 +566,7 @@ set returns [StateCluster g=null]
 		   EOB
 		 )
 		{
-		$g = factory.build_Set(elements,$b);
+		$g = factory.BuildSet(elements,$b);
 		$b.followingNFAState = $g.right;
 		$b.SetValue = elements; // track set value of this block
 		}
@@ -600,15 +600,15 @@ setElement[IIntSet elements]
 		{
 			if ( grammar.type==Grammar.LEXER )
 			{
-				ttype = Grammar.getCharValueFromGrammarCharLiteral($c.text);
+				ttype = Grammar.GetCharValueFromGrammarCharLiteral($c.text);
 			}
 			else
 			{
-				ttype = grammar.getTokenType($c.text);
+				ttype = grammar.GetTokenType($c.text);
 			}
 			if ( elements.Contains(ttype) )
 			{
-				ErrorManager.grammarError(
+				ErrorManager.GrammarError(
 					ErrorManager.MSG_DUPLICATE_SET_ENTRY,
 					grammar,
 					$c.Token,
@@ -621,10 +621,10 @@ setElement[IIntSet elements]
 			if ( grammar.type==Grammar.LEXER )
 			{
 				// recursively will invoke this rule to match elements in target rule ref
-				IIntSet ruleSet = grammar.getSetFromRule(this,$t.text);
+				IIntSet ruleSet = grammar.GetSetFromRule(this,$t.text);
 				if ( ruleSet==null )
 				{
-					ErrorManager.grammarError(
+					ErrorManager.GrammarError(
 						ErrorManager.MSG_RULE_INVALID_SET,
 						grammar,
 						$t.Token,
@@ -637,10 +637,10 @@ setElement[IIntSet elements]
 			}
 			else
 			{
-				ttype = grammar.getTokenType($t.text);
+				ttype = grammar.GetTokenType($t.text);
 				if ( elements.Contains(ttype) )
 				{
-					ErrorManager.grammarError(
+					ErrorManager.GrammarError(
 						ErrorManager.MSG_DUPLICATE_SET_ENTRY,
 						grammar,
 						$t.Token,
@@ -652,10 +652,10 @@ setElement[IIntSet elements]
 
 	|	s=STRING_LITERAL
 		{
-			ttype = grammar.getTokenType($s.text);
+			ttype = grammar.GetTokenType($s.text);
 			if ( elements.Contains(ttype) )
 			{
-				ErrorManager.grammarError(
+				ErrorManager.GrammarError(
 					ErrorManager.MSG_DUPLICATE_SET_ENTRY,
 					grammar,
 					$s.Token,
@@ -667,8 +667,8 @@ setElement[IIntSet elements]
 		{
 			if ( grammar.type==Grammar.LEXER )
 			{
-				int a = Grammar.getCharValueFromGrammarCharLiteral($c1.text);
-				int b = Grammar.getCharValueFromGrammarCharLiteral($c2.text);
+				int a = Grammar.GetCharValueFromGrammarCharLiteral($c1.text);
+				int b = Grammar.GetCharValueFromGrammarCharLiteral($c2.text);
 				elements.AddAll(IntervalSet.Of(a,b));
 			}
 		}
@@ -682,7 +682,7 @@ setElement[IIntSet elements]
 	|	^(	NOT {ns=new IntervalSet();}
 			setElement[ns]
 			{
-				IIntSet not = grammar.complement(ns);
+				IIntSet not = grammar.Complement(ns);
 				elements.AddAll(not);
 			}
 		)
@@ -736,19 +736,19 @@ testSetElement returns [int alts=1]
 		{{
 			if ( grammar.type==Grammar.LEXER )
 			{
-				Rule rule = grammar.getRule($t.text);
+				Rule rule = grammar.GetRule($t.text);
 				if ( rule==null )
 				{
 					//throw new RecognitionException("invalid rule");
 					throw new RecognitionException();
 				}
 				// recursively will invoke this rule to match elements in target rule ref
-				$alts += testSetRule(rule.tree);
+				$alts += TestSetRule(rule.tree);
 			}
 		}}
 	|   {grammar.type!=Grammar.LEXER}? => s=STRING_LITERAL
 	|	^(CHAR_RANGE c1=CHAR_LITERAL c2=CHAR_LITERAL)
-		{{ $alts = IntervalSet.Of( Grammar.getCharValueFromGrammarCharLiteral($c1.text), Grammar.getCharValueFromGrammarCharLiteral($c2.text) ).Count; }}
+		{{ $alts = IntervalSet.Of( Grammar.GetCharValueFromGrammarCharLiteral($c1.text), Grammar.GetCharValueFromGrammarCharLiteral($c2.text) ).Count; }}
 	|   testBlockAsSet
 		{{ $alts = $testBlockAsSet.alts; }}
 	|   ^( NOT tse=testSetElement )

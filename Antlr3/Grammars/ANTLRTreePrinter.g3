@@ -99,7 +99,7 @@ toString[Grammar g, bool showActions] returns [string s=null]
 		|	single_rewrite
 		|	EOR {s="EOR";}
 		)
-		{return normalize(buf.ToString());}
+		{return Normalize(buf.ToString());}
 	;
 
 // --------------
@@ -245,7 +245,7 @@ ruleScopeSpec
 block[bool forceParens]
 @init
 {
-int numAlts = countAltsForBlock($start);
+int numAlts = CountAltsForBlock($start);
 }
 	:	^(	BLOCK
 			{
@@ -350,8 +350,8 @@ element
 	|	spred=SYN_SEMPRED
 		{
 			string name = $spred.text;
-			GrammarAST predAST=grammar.getSyntacticPredicate(name);
-			block(predAST, true);
+			GrammarAST predAST=grammar.GetSyntacticPredicate(name);
+			Block(predAST, true);
 			@out("=>");
 		}
 	|	^(BACKTRACK_SEMPRED .*) // don't print anything (auto backtrack stuff)

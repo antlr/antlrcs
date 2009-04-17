@@ -69,13 +69,13 @@ namespace Antlr3.Tool
             this.grammar = grammar;
         }
 
-        public virtual string serialize( State s )
+        public virtual string Serialize( State s )
         {
             if ( s == null )
             {
                 return "<no automaton>";
             }
-            return serialize( s, true );
+            return Serialize( s, true );
         }
 
         /** Return a string representation of a state machine.  Two identical
@@ -86,24 +86,24 @@ namespace Antlr3.Tool
          *  will be identical.  Accept states are distinguished from regular
          *  states.
          */
-        public virtual string serialize( State s, bool renumber )
+        public virtual string Serialize( State s, bool renumber )
         {
             markedStates = new HashSet<State>();
             stateCounter = 0;
             if ( renumber )
             {
                 stateNumberTranslator = new Dictionary<State, int>();
-                walkFANormalizingStateNumbers( s );
+                WalkFANormalizingStateNumbers( s );
             }
             List<string> lines = new List<string>();
             if ( s.NumberOfTransitions > 0 )
             {
-                walkSerializingFA( lines, s );
+                WalkSerializingFA( lines, s );
             }
             else
             {
                 // special case: s0 is an accept
-                string s0 = getStateString( 0, s );
+                string s0 = GetStateString( 0, s );
                 lines.Add( s0 + "\n" );
             }
             StringBuilder buf = new StringBuilder( 0 );
@@ -122,11 +122,11 @@ namespace Antlr3.Tool
          *  state number.  Used by walkSerializingFA to make sure any two
          *  identical state machines will serialize the same way.
          */
-        protected virtual void walkFANormalizingStateNumbers( State s )
+        protected virtual void WalkFANormalizingStateNumbers( State s )
         {
             if ( s == null )
             {
-                ErrorManager.internalError( "null state s" );
+                ErrorManager.InternalError( "null state s" );
                 return;
             }
             if ( stateNumberTranslator.ContainsKey( s ) )
@@ -141,18 +141,18 @@ namespace Antlr3.Tool
             for ( int i = 0; i < s.NumberOfTransitions; i++ )
             {
                 Transition edge = (Transition)s.GetTransition( i );
-                walkFANormalizingStateNumbers( edge.target ); // keep walkin'
+                WalkFANormalizingStateNumbers( edge.target ); // keep walkin'
                 // if this transition is a rule reference, the node "following" this state
                 // will not be found and appear to be not in graph.  Must explicitly jump
                 // to it, but don't "draw" an edge.
                 if ( edge is RuleClosureTransition )
                 {
-                    walkFANormalizingStateNumbers( ( (RuleClosureTransition)edge ).followState );
+                    WalkFANormalizingStateNumbers( ( (RuleClosureTransition)edge ).followState );
                 }
             }
         }
 
-        protected virtual void walkSerializingFA( IList lines, State s )
+        protected virtual void WalkSerializingFA( IList lines, State s )
         {
             if ( markedStates.Contains( s ) )
             {
@@ -167,7 +167,7 @@ namespace Antlr3.Tool
                 normalizedStateNumber = stateNumberTranslator[s];
             }
 
-            string stateStr = getStateString( normalizedStateNumber, s );
+            string stateStr = GetStateString( normalizedStateNumber, s );
 
             // depth first walk each transition, printing its edge first
             for ( int i = 0; i < s.NumberOfTransitions; i++ )
@@ -211,25 +211,25 @@ namespace Antlr3.Tool
                 {
                     normalizedTargetStateNumber = stateNumberTranslator[edge.target];
                 }
-                buf.Append( getStateString( normalizedTargetStateNumber, edge.target ) );
+                buf.Append( GetStateString( normalizedTargetStateNumber, edge.target ) );
                 buf.Append( "\n" );
                 lines.Add( buf.ToString() );
 
                 // walk this transition
-                walkSerializingFA( lines, edge.target );
+                WalkSerializingFA( lines, edge.target );
 
                 // if this transition is a rule reference, the node "following" this state
                 // will not be found and appear to be not in graph.  Must explicitly jump
                 // to it, but don't "draw" an edge.
                 if ( edge is RuleClosureTransition )
                 {
-                    walkSerializingFA( lines, ( (RuleClosureTransition)edge ).followState );
+                    WalkSerializingFA( lines, ( (RuleClosureTransition)edge ).followState );
                 }
             }
 
         }
 
-        private string getStateString( int n, State s )
+        private string GetStateString( int n, State s )
         {
             string stateStr = ".s" + n;
             if ( s.IsAcceptState )

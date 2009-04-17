@@ -56,14 +56,14 @@ namespace Antlr3.Tool
 
         static AttributeScope()
         {
-            tokenScope.addAttribute( "text", null );
-            tokenScope.addAttribute( "type", null );
-            tokenScope.addAttribute( "line", null );
-            tokenScope.addAttribute( "index", null );
-            tokenScope.addAttribute( "pos", null );
-            tokenScope.addAttribute( "channel", null );
-            tokenScope.addAttribute( "tree", null );
-            tokenScope.addAttribute( "int", null );
+            tokenScope.AddAttribute( "text", null );
+            tokenScope.AddAttribute( "type", null );
+            tokenScope.AddAttribute( "line", null );
+            tokenScope.AddAttribute( "index", null );
+            tokenScope.AddAttribute( "pos", null );
+            tokenScope.AddAttribute( "channel", null );
+            tokenScope.AddAttribute( "tree", null );
+            tokenScope.AddAttribute( "int", null );
         }
 
         /** This scope is associated with which input token (for error handling)? */
@@ -120,26 +120,26 @@ namespace Antlr3.Tool
         {
             get
             {
-                return getAttributes();
+                return GetAttributes();
             }
         }
         public int Count
         {
             get
             {
-                return size();
+                return Size();
             }
         }
         public string Name
         {
             get
             {
-                return getName();
+                return GetName();
             }
         }
         #endregion
 
-        public virtual string getName()
+        public virtual string GetName()
         {
             if ( isParameterScope )
             {
@@ -165,7 +165,7 @@ namespace Antlr3.Tool
          *  would pass in definitions equal to the text in between {...} and
          *  separator=';'.  It results in two Attribute objects.
          */
-        public virtual void addAttributes( string definitions, int separator )
+        public virtual void AddAttributes( string definitions, int separator )
         {
             IList<string> attrs = new List<string>();
             CodeGenerator.GetListOfArgumentsFromAction( definitions, 0, -1, separator, attrs );
@@ -174,7 +174,7 @@ namespace Antlr3.Tool
                 Attribute attr = new Attribute( a );
                 if ( !isReturnScope && attr.InitValue != null )
                 {
-                    ErrorManager.grammarError( ErrorManager.MSG_ARG_INIT_VALUES_ILLEGAL,
+                    ErrorManager.GrammarError( ErrorManager.MSG_ARG_INIT_VALUES_ILLEGAL,
                                               grammar,
                                               derivedFromToken,
                                               attr.Name );
@@ -201,7 +201,7 @@ namespace Antlr3.Tool
             }
         }
 
-        public virtual void addAttribute( string name, string decl )
+        public virtual void AddAttribute( string name, string decl )
         {
             Attribute attr = new Attribute( name, decl );
             for ( int i = 0; i <= attributes.Count; i++ )
@@ -233,7 +233,7 @@ namespace Antlr3.Tool
             GrammarAST a;
             if ( Actions.TryGetValue( actionName, out a ) && a != null )
             {
-                ErrorManager.grammarError(
+                ErrorManager.GrammarError(
                     ErrorManager.MSG_ACTION_REDEFINITION, grammar,
                     nameAST.Token, nameAST.Text );
             }
@@ -243,13 +243,13 @@ namespace Antlr3.Tool
             }
         }
 
-        public virtual Attribute getAttribute( string name )
+        public virtual Attribute GetAttribute( string name )
         {
             return attributes.FirstOrDefault( attr => attr.Name == name );
         }
 
         /** Used by templates to get all attributes */
-        public virtual IList<Attribute> getAttributes()
+        public virtual IList<Attribute> GetAttributes()
         {
             return attributes.ToArray();
         }
@@ -257,7 +257,7 @@ namespace Antlr3.Tool
         /** Return the set of keys that collide from
          *  this and other.
          */
-        public virtual HashSet<object> intersection( AttributeScope other )
+        public virtual HashSet<object> Intersection( AttributeScope other )
         {
             if ( other == null || other.Count == 0 || Count == 0 )
             {
@@ -267,7 +267,7 @@ namespace Antlr3.Tool
             foreach ( Attribute attr in attributes )
             {
                 string key = attr.Name;
-                if ( other.getAttribute( key ) != null )
+                if ( other.GetAttribute( key ) != null )
                 {
                     inter.Add( key );
                 }
@@ -279,7 +279,7 @@ namespace Antlr3.Tool
             return inter;
         }
 
-        public virtual int size()
+        public virtual int Size()
         {
             return attributes == null ? 0 : attributes.Count;
         }

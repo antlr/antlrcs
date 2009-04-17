@@ -172,7 +172,7 @@ namespace Antlr3.Analysis
                      _dfa.NFADecisionStartState.decisionStateType == NFAState.LOOPBACK )
                 {
                     int numAltsIncludingExitBranch = _dfa.nfa.grammar
-                        .getNumberOfAltsForDecisionNFA( _dfa.NFADecisionStartState );
+                        .GetNumberOfAltsForDecisionNFA( _dfa.NFADecisionStartState );
                     altNum = numAltsIncludingExitBranch;
                     Closure( (NFAState)alt.transition[0].target,
                             altNum,
@@ -794,7 +794,7 @@ namespace Antlr3.Analysis
                         int walkAlt =
                             _dfa.NFADecisionStartState.TranslateDisplayAltToWalkAlt( alt );
                         NFAState altLeftEdge =
-                            _dfa.nfa.grammar.getNFAStateForAltOfDecision( _dfa.NFADecisionStartState, walkAlt );
+                            _dfa.nfa.grammar.GetNFAStateForAltOfDecision( _dfa.NFADecisionStartState, walkAlt );
                         /*
                         JSystem.@out.println("state "+p.stateNumber+" alt "+alt+" walkAlt "+walkAlt+" trans to "+transition0.target);
                         JSystem.@out.println("DFA start state "+dfa.decisionNFAStartState.stateNumber);
@@ -1556,7 +1556,7 @@ namespace Antlr3.Analysis
                         // notify grammar that we've used the preds contained in semCtx
                         if ( semCtx.IsSyntacticPredicate )
                         {
-                            _dfa.nfa.grammar.synPredUsedInDFA( _dfa, semCtx );
+                            _dfa.nfa.grammar.SynPredUsedInDFA( _dfa, semCtx );
                         }
                     }
                     else if ( nondeterministicAlts.Contains( configuration.alt ) )
@@ -1723,7 +1723,7 @@ namespace Antlr3.Analysis
                         {
                             if ( s.associatedASTNode == null || s.associatedASTNode.token == null )
                             {
-                                ErrorManager.internalError( "no AST/token for nonepsilon target w/o predicate" );
+                                ErrorManager.InternalError( "no AST/token for nonepsilon target w/o predicate" );
                             }
                             else
                             {

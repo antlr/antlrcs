@@ -57,7 +57,7 @@ namespace Antlr3.Tool
             // flip msg ID if alts are actually token refs in Tokens rule
             if ( probe.dfa.IsTokensRuleDecision )
             {
-                setMessageID( ErrorManager.MSG_TOKEN_NONDETERMINISM );
+                MessageID = ErrorManager.MSG_TOKEN_NONDETERMINISM;
             }
         }
 
@@ -72,7 +72,7 @@ namespace Antlr3.Tool
                 file = fileName;
             }
 
-            StringTemplate st = getMessageTemplate();
+            StringTemplate st = GetMessageTemplate();
             // Now fill template with information about problemState
             var labels = probe.GetSampleNonDeterministicInputSequence( problemState );
             string input = probe.GetInputSequenceDisplay( labels );
@@ -87,7 +87,7 @@ namespace Antlr3.Tool
                         probe.GetTokenNameForTokensRuleAlt( (int)altI );
                     // reset the line/col to the token definition (pick last one)
                     NFAState ruleStart =
-                        probe.dfa.nfa.grammar.getRuleStartState( tokenName );
+                        probe.dfa.nfa.grammar.GetRuleStartState( tokenName );
                     line = ruleStart.associatedASTNode.Line;
                     charPositionInLine = ruleStart.associatedASTNode.CharPositionInLine;
                     st.SetAttribute( "disabled", tokenName );

@@ -85,7 +85,7 @@ namespace Antlr3.Tool
             {
                 file = g.FileName;
             }
-            StringTemplate st = getMessageTemplate();
+            StringTemplate st = GetMessageTemplate();
             if ( arg != null )
             {
                 st.SetAttribute( "arg", arg );

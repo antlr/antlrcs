@@ -97,34 +97,34 @@ X_Y
 			{
 				// ref to enclosing rule.
 				refdRuleName = $x.text;
-				scope = enclosingRule.getLocalAttributeScope($y.text);
+				scope = enclosingRule.GetLocalAttributeScope($y.text);
 			}
-			else if ( enclosingRule.getRuleLabel($x.text)!=null )
+			else if ( enclosingRule.GetRuleLabel($x.text)!=null )
 			{
 				// ref to rule label
-				Grammar.LabelElementPair pair = enclosingRule.getRuleLabel($x.text);
+				Grammar.LabelElementPair pair = enclosingRule.GetRuleLabel($x.text);
 				pair.actionReferencesLabel = true;
 				refdRuleName = pair.referencedRuleName;
-				Rule refdRule = grammar.getRule(refdRuleName);
+				Rule refdRule = grammar.GetRule(refdRuleName);
 				if ( refdRule!=null )
 				{
-					scope = refdRule.getLocalAttributeScope($y.text);
+					scope = refdRule.GetLocalAttributeScope($y.text);
 				}
 			}
-			else if ( enclosingRule.getRuleRefsInAlt(x.Text, outerAltNum)!=null )
+			else if ( enclosingRule.GetRuleRefsInAlt(x.Text, outerAltNum)!=null )
 			{
 				// ref to rule referenced in this alt
 				refdRuleName = $x.text;
-				Rule refdRule = grammar.getRule(refdRuleName);
+				Rule refdRule = grammar.GetRule(refdRuleName);
 				if ( refdRule!=null )
 				{
-					scope = refdRule.getLocalAttributeScope($y.text);
+					scope = refdRule.GetLocalAttributeScope($y.text);
 				}
 			}
 			if ( scope!=null &&
 				 (scope.isPredefinedRuleScope||scope.isPredefinedLexerRuleScope) )
 			{
-				grammar.referenceRuleLabelPredefinedAttribute(refdRuleName);
+				grammar.ReferenceRuleLabelPredefinedAttribute(refdRuleName);
 				//System.out.println("referenceRuleLabelPredefinedAttribute for "+refdRuleName);
 			}
 		}
@@ -132,22 +132,22 @@ X_Y
 
 /** $x	x is an isolated rule label.  Just record that the label was referenced */
 X
-	:	'$' ID {enclosingRule!=null && enclosingRule.getRuleLabel($ID.text)!=null}?
+	:	'$' ID {enclosingRule!=null && enclosingRule.GetRuleLabel($ID.text)!=null}?
 		{
-			Grammar.LabelElementPair pair = enclosingRule.getRuleLabel($ID.text);
+			Grammar.LabelElementPair pair = enclosingRule.GetRuleLabel($ID.text);
 			pair.actionReferencesLabel = true;
 		}
 	;
 	
 /** $y	y is a return value, parameter, or predefined property of current rule */
 Y
-	:	'$' ID {enclosingRule!=null && enclosingRule.getLocalAttributeScope($ID.text)!=null}?
+	:	'$' ID {enclosingRule!=null && enclosingRule.GetLocalAttributeScope($ID.text)!=null}?
 		{
-			AttributeScope scope = enclosingRule.getLocalAttributeScope($ID.text);
+			AttributeScope scope = enclosingRule.GetLocalAttributeScope($ID.text);
 			if ( scope!=null &&
 				 (scope.isPredefinedRuleScope||scope.isPredefinedLexerRuleScope) )
 			{
-				grammar.referenceRuleLabelPredefinedAttribute(enclosingRule.name);
+				grammar.ReferenceRuleLabelPredefinedAttribute(enclosingRule.name);
 				//System.out.println("referenceRuleLabelPredefinedAttribute for "+$ID.text);
 			}
 		}

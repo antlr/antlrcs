@@ -74,7 +74,7 @@ namespace Antlr3.Tool
         }
         public override string ToString()
         {
-            StringTemplate st = getMessageTemplate();
+            StringTemplate st = GetMessageTemplate();
             if ( arg != null )
             {
                 st.SetAttribute( "arg", arg );

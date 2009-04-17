@@ -190,7 +190,7 @@ namespace Antlr3.Analysis
                 {
                     if ( ( (NFAState)e.target ).incidentEdgeLabel != null )
                     {
-                        ErrorManager.internalError( "Clobbered incident edge" );
+                        ErrorManager.InternalError( "Clobbered incident edge" );
                     }
                     ( (NFAState)e.target ).incidentEdgeLabel = e.label;
                 }
@@ -259,7 +259,7 @@ namespace Antlr3.Analysis
                 ErrorManager.internalError("can't get DFA for decision "+decisionNumber);
             }
             */
-            int nAlts = nfa.grammar.getNumberOfAltsForDecisionNFA( nfaStart );
+            int nAlts = nfa.grammar.GetNumberOfAltsForDecisionNFA( nfaStart );
             switch ( nfaStart.decisionStateType )
             {
             case LOOPBACK:

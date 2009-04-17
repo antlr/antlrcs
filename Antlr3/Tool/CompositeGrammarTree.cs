@@ -48,7 +48,7 @@ namespace Antlr3.Tool
             grammar = g;
         }
 
-        public virtual void addChild( CompositeGrammarTree t )
+        public virtual void AddChild( CompositeGrammarTree t )
         {
             //Console.Out.WriteLine("add "+t.toStringTree()+" as child to "+this.toStringTree());
             if ( t == null )
@@ -66,33 +66,33 @@ namespace Antlr3.Tool
         /** Find a rule by looking in current grammar then down towards the
          *  delegate grammars.
          */
-        public virtual Rule getRule( string ruleName )
+        public virtual Rule GetRule( string ruleName )
         {
-            Rule r = grammar.getLocallyDefinedRule( ruleName );
+            Rule r = grammar.GetLocallyDefinedRule( ruleName );
             for ( int i = 0; r == null && children != null && i < children.Count; i++ )
             {
                 CompositeGrammarTree child = children[i];
-                r = child.getRule( ruleName );
+                r = child.GetRule( ruleName );
             }
             return r;
         }
 
         /** Find an option by looking up towards the root grammar rather than down */
-        public virtual object getOption( string key )
+        public virtual object GetOption( string key )
         {
-            object o = grammar.getLocallyDefinedOption( key );
+            object o = grammar.GetLocallyDefinedOption( key );
             if ( o != null )
             {
                 return o;
             }
             if ( parent != null )
             {
-                return parent.getOption( key );
+                return parent.GetOption( key );
             }
             return null; // not found
         }
 
-        public virtual CompositeGrammarTree findNode( Grammar g )
+        public virtual CompositeGrammarTree FindNode( Grammar g )
         {
             if ( g == null )
             {
@@ -106,12 +106,12 @@ namespace Antlr3.Tool
             for ( int i = 0; n == null && children != null && i < children.Count; i++ )
             {
                 CompositeGrammarTree child = children[i];
-                n = child.findNode( g );
+                n = child.FindNode( g );
             }
             return n;
         }
 
-        public virtual CompositeGrammarTree findNode( string grammarName )
+        public virtual CompositeGrammarTree FindNode( string grammarName )
         {
             if ( grammarName == null )
             {
@@ -125,49 +125,49 @@ namespace Antlr3.Tool
             for ( int i = 0; n == null && children != null && i < children.Count; i++ )
             {
                 CompositeGrammarTree child = children[i];
-                n = child.findNode( grammarName );
+                n = child.FindNode( grammarName );
             }
             return n;
         }
 
         /** Return a postorder list of grammars; root is last in list */
-        public virtual IList<Grammar> getPostOrderedGrammarList()
+        public IList<Grammar> GetPostOrderedGrammarList()
         {
             IList<Grammar> grammars = new List<Grammar>();
-            _getPostOrderedGrammarList( grammars );
+            GetPostOrderedGrammarListCore( grammars );
             return grammars;
         }
 
         /** work for getPostOrderedGrammarList */
-        protected virtual void _getPostOrderedGrammarList( IList<Grammar> grammars )
+        protected virtual void GetPostOrderedGrammarListCore( IList<Grammar> grammars )
         {
             for ( int i = 0; children != null && i < children.Count; i++ )
             {
                 CompositeGrammarTree child = children[i];
-                child._getPostOrderedGrammarList( grammars );
+                child.GetPostOrderedGrammarListCore( grammars );
             }
             grammars.Add( this.grammar );
         }
 
         /** Return a postorder list of grammars; root is last in list */
-        public virtual IList<Grammar> getPreOrderedGrammarList()
+        public IList<Grammar> GetPreOrderedGrammarList()
         {
             IList<Grammar> grammars = new List<Grammar>();
-            _getPreOrderedGrammarList( grammars );
+            GetPreOrderedGrammarListCore( grammars );
             return grammars;
         }
 
-        protected virtual void _getPreOrderedGrammarList( IList<Grammar> grammars )
+        protected virtual void GetPreOrderedGrammarListCore( IList<Grammar> grammars )
         {
             grammars.Add( this.grammar );
             for ( int i = 0; children != null && i < children.Count; i++ )
             {
                 CompositeGrammarTree child = children[i];
-                child._getPostOrderedGrammarList( grammars );
+                child.GetPostOrderedGrammarListCore( grammars );
             }
         }
 
-        public virtual void trimLexerImportsIntoCombined()
+        public virtual void TrimLexerImportsIntoCombined()
         {
             CompositeGrammarTree p = this;
             if ( p.grammar.type == Grammar.LEXER && p.parent != null &&
@@ -179,7 +179,7 @@ namespace Antlr3.Tool
             for ( int i = 0; children != null && i < children.Count; i++ )
             {
                 CompositeGrammarTree child = children[i];
-                child.trimLexerImportsIntoCombined();
+                child.TrimLexerImportsIntoCombined();
             }
         }
     }

@@ -144,7 +144,7 @@ namespace AntlrUnitTests
                 "" + NewLine +
                 "// $ANTLR src \"<string>\" 3" + NewLine +
                 "E: 'x' '0' ;";
-            assertEquals( implicitLexer, g.getLexerGrammar() );
+            assertEquals( implicitLexer, g.GetLexerGrammar() );
         }
 
         [TestMethod]
@@ -243,7 +243,7 @@ namespace AntlrUnitTests
         [TestMethod]
         public void TestRefToRuleWithNoReturnValue() /*throws Exception*/ {
             ErrorQueue equeue = new ErrorQueue();
-            ErrorManager.setErrorListener( equeue );
+            ErrorManager.SetErrorListener( equeue );
 
             string grammarStr =
                 "grammar P;\n" +
@@ -254,7 +254,7 @@ namespace AntlrUnitTests
 
             AntlrTool antlr = newTool();
             CodeGenerator generator = new CodeGenerator( antlr, g, "Java" );
-            g.setCodeGenerator( generator );
+            g.CodeGenerator = generator;
             StringTemplate recogST = generator.GenRecognizer();
             string code = recogST.ToString();
             assertTrue( "not expecting label", code.IndexOf( "x=b();" ) < 0 );
@@ -267,7 +267,7 @@ namespace AntlrUnitTests
         [TestMethod]
         public void TestParserStringLiterals() /*throws Exception*/ {
             ErrorQueue equeue = new ErrorQueue();
-            ErrorManager.setErrorListener( equeue );
+            ErrorManager.SetErrorListener( equeue );
             Grammar g = new Grammar(
                     "parser grammar t;\n" +
                     "a : 'begin' b ;\n" +
@@ -282,7 +282,7 @@ namespace AntlrUnitTests
         [TestMethod]
         public void TestParserCharLiterals() /*throws Exception*/ {
             ErrorQueue equeue = new ErrorQueue();
-            ErrorManager.setErrorListener( equeue );
+            ErrorManager.SetErrorListener( equeue );
             Grammar g = new Grammar(
                     "parser grammar t;\n" +
                     "a : '(' b ;\n" +
@@ -297,11 +297,11 @@ namespace AntlrUnitTests
         [TestMethod]
         public void TestEmptyNotChar() /*throws Exception*/ {
             ErrorQueue equeue = new ErrorQueue();
-            ErrorManager.setErrorListener( equeue );
+            ErrorManager.SetErrorListener( equeue );
             Grammar g = new Grammar(
                     "grammar foo;\n" +
                     "a : (~'x')+ ;\n" );
-            g.buildNFA();
+            g.BuildNFA();
             object expectedArg = "'x'";
             int expectedMsgID = ErrorManager.MSG_EMPTY_COMPLEMENT;
             GrammarSemanticsMessage expectedMessage =
@@ -312,11 +312,11 @@ namespace AntlrUnitTests
         [TestMethod]
         public void TestEmptyNotToken() /*throws Exception*/ {
             ErrorQueue equeue = new ErrorQueue();
-            ErrorManager.setErrorListener( equeue );
+            ErrorManager.SetErrorListener( equeue );
             Grammar g = new Grammar(
                     "grammar foo;\n" +
                     "a : (~A)+ ;\n" );
-            g.buildNFA();
+            g.BuildNFA();
             object expectedArg = "A";
             int expectedMsgID = ErrorManager.MSG_EMPTY_COMPLEMENT;
             GrammarSemanticsMessage expectedMessage =
@@ -327,11 +327,11 @@ namespace AntlrUnitTests
         [TestMethod]
         public void TestEmptyNotSet() /*throws Exception*/ {
             ErrorQueue equeue = new ErrorQueue();
-            ErrorManager.setErrorListener( equeue );
+            ErrorManager.SetErrorListener( equeue );
             Grammar g = new Grammar(
                     "grammar foo;\n" +
                     "a : (~(A|B))+ ;\n" );
-            g.buildNFA();
+            g.BuildNFA();
             object expectedArg = null;
             int expectedMsgID = ErrorManager.MSG_EMPTY_COMPLEMENT;
             GrammarSemanticsMessage expectedMessage =
@@ -342,7 +342,7 @@ namespace AntlrUnitTests
         [TestMethod]
         public void TestStringLiteralInParserTokensSection() /*throws Exception*/ {
             ErrorQueue equeue = new ErrorQueue();
-            ErrorManager.setErrorListener( equeue ); // unique listener per thread
+            ErrorManager.SetErrorListener( equeue ); // unique listener per thread
             Grammar g = new Grammar(
                     "parser grammar t;\n" +
                     "tokens {\n" +
@@ -360,7 +360,7 @@ namespace AntlrUnitTests
         [TestMethod]
         public void TestCharLiteralInParserTokensSection() /*throws Exception*/ {
             ErrorQueue equeue = new ErrorQueue();
-            ErrorManager.setErrorListener( equeue ); // unique listener per thread
+            ErrorManager.SetErrorListener( equeue ); // unique listener per thread
             Grammar g = new Grammar(
                     "parser grammar t;\n" +
                     "tokens {\n" +
@@ -378,7 +378,7 @@ namespace AntlrUnitTests
         [TestMethod]
         public void TestCharLiteralInLexerTokensSection() /*throws Exception*/ {
             ErrorQueue equeue = new ErrorQueue();
-            ErrorManager.setErrorListener( equeue ); // unique listener per thread
+            ErrorManager.SetErrorListener( equeue ); // unique listener per thread
             Grammar g = new Grammar(
                     "lexer grammar t;\n" +
                     "tokens {\n" +
@@ -395,7 +395,7 @@ namespace AntlrUnitTests
         [TestMethod]
         public void TestRuleRedefinition() /*throws Exception*/ {
             ErrorQueue equeue = new ErrorQueue();
-            ErrorManager.setErrorListener( equeue ); // unique listener per thread
+            ErrorManager.SetErrorListener( equeue ); // unique listener per thread
             Grammar g = new Grammar(
                     "parser grammar t;\n" +
                     "a : A | B;\n" +
@@ -411,7 +411,7 @@ namespace AntlrUnitTests
         [TestMethod]
         public void TestLexerRuleRedefinition() /*throws Exception*/ {
             ErrorQueue equeue = new ErrorQueue();
-            ErrorManager.setErrorListener( equeue ); // unique listener per thread
+            ErrorManager.SetErrorListener( equeue ); // unique listener per thread
             Grammar g = new Grammar(
                     "lexer grammar t;\n" +
                     "ID : 'a' ;\n" +
@@ -427,7 +427,7 @@ namespace AntlrUnitTests
         [TestMethod]
         public void TestCombinedRuleRedefinition() /*throws Exception*/ {
             ErrorQueue equeue = new ErrorQueue();
-            ErrorManager.setErrorListener( equeue ); // unique listener per thread
+            ErrorManager.SetErrorListener( equeue ); // unique listener per thread
             Grammar g = new Grammar(
                     "grammar t;\n" +
                     "x : ID ;\n" +
@@ -444,7 +444,7 @@ namespace AntlrUnitTests
         [TestMethod]
         public void TestUndefinedToken() /*throws Exception*/ {
             ErrorQueue equeue = new ErrorQueue();
-            ErrorManager.setErrorListener( equeue ); // unique listener per thread
+            ErrorManager.SetErrorListener( equeue ); // unique listener per thread
             Grammar g = new Grammar(
                     "grammar t;\n" +
                     "x : ID ;" );
@@ -459,7 +459,7 @@ namespace AntlrUnitTests
         [TestMethod]
         public void TestUndefinedTokenOkInParser() /*throws Exception*/ {
             ErrorQueue equeue = new ErrorQueue();
-            ErrorManager.setErrorListener( equeue ); // unique listener per thread
+            ErrorManager.SetErrorListener( equeue ); // unique listener per thread
             Grammar g = new Grammar(
                     "parser grammar t;\n" +
                     "x : ID ;" );
@@ -469,7 +469,7 @@ namespace AntlrUnitTests
         [TestMethod]
         public void TestUndefinedRule() /*throws Exception*/ {
             ErrorQueue equeue = new ErrorQueue();
-            ErrorManager.setErrorListener( equeue ); // unique listener per thread
+            ErrorManager.SetErrorListener( equeue ); // unique listener per thread
             Grammar g = new Grammar(
                     "grammar t;\n" +
                     "x : r ;" );
@@ -484,7 +484,7 @@ namespace AntlrUnitTests
         [TestMethod]
         public void TestLexerRuleInParser() /*throws Exception*/ {
             ErrorQueue equeue = new ErrorQueue();
-            ErrorManager.setErrorListener( equeue ); // unique listener per thread
+            ErrorManager.SetErrorListener( equeue ); // unique listener per thread
             Grammar g = new Grammar(
                     "parser grammar t;\n" +
                     "X : ;" );
@@ -499,7 +499,7 @@ namespace AntlrUnitTests
         [TestMethod]
         public void TestParserRuleInLexer() /*throws Exception*/ {
             ErrorQueue equeue = new ErrorQueue();
-            ErrorManager.setErrorListener( equeue ); // unique listener per thread
+            ErrorManager.SetErrorListener( equeue ); // unique listener per thread
             Grammar g = new Grammar(
                     "lexer grammar t;\n" +
                     "a : ;" );
@@ -514,7 +514,7 @@ namespace AntlrUnitTests
         [TestMethod]
         public void TestRuleScopeConflict() /*throws Exception*/ {
             ErrorQueue equeue = new ErrorQueue();
-            ErrorManager.setErrorListener( equeue ); // unique listener per thread
+            ErrorManager.SetErrorListener( equeue ); // unique listener per thread
             Grammar g = new Grammar(
                 "grammar t;\n" +
                 "scope a {\n" +
@@ -533,7 +533,7 @@ namespace AntlrUnitTests
         [TestMethod]
         public void TestTokenRuleScopeConflict() /*throws Exception*/ {
             ErrorQueue equeue = new ErrorQueue();
-            ErrorManager.setErrorListener( equeue ); // unique listener per thread
+            ErrorManager.SetErrorListener( equeue ); // unique listener per thread
             Grammar g = new Grammar(
                 "grammar t;\n" +
                 "scope ID {\n" +
@@ -552,7 +552,7 @@ namespace AntlrUnitTests
         [TestMethod]
         public void TestTokenScopeConflict() /*throws Exception*/ {
             ErrorQueue equeue = new ErrorQueue();
-            ErrorManager.setErrorListener( equeue ); // unique listener per thread
+            ErrorManager.SetErrorListener( equeue ); // unique listener per thread
             Grammar g = new Grammar(
                 "grammar t;\n" +
                 "tokens { ID; }\n" +
@@ -572,7 +572,7 @@ namespace AntlrUnitTests
         [TestMethod]
         public void TestTokenRuleScopeConflictInLexerGrammar() /*throws Exception*/ {
             ErrorQueue equeue = new ErrorQueue();
-            ErrorManager.setErrorListener( equeue ); // unique listener per thread
+            ErrorManager.SetErrorListener( equeue ); // unique listener per thread
             Grammar g = new Grammar(
                 "lexer grammar t;\n" +
                 "scope ID {\n" +
@@ -591,7 +591,7 @@ namespace AntlrUnitTests
         [TestMethod]
         public void TestTokenLabelScopeConflict() /*throws Exception*/ {
             ErrorQueue equeue = new ErrorQueue();
-            ErrorManager.setErrorListener( equeue ); // unique listener per thread
+            ErrorManager.SetErrorListener( equeue ); // unique listener per thread
             Grammar g = new Grammar(
                 "parser grammar t;\n" +
                 "scope s {\n" +
@@ -610,7 +610,7 @@ namespace AntlrUnitTests
         [TestMethod]
         public void TestRuleLabelScopeConflict() /*throws Exception*/ {
             ErrorQueue equeue = new ErrorQueue();
-            ErrorManager.setErrorListener( equeue ); // unique listener per thread
+            ErrorManager.SetErrorListener( equeue ); // unique listener per thread
             Grammar g = new Grammar(
                 "parser grammar t;\n" +
                 "scope s {\n" +
@@ -630,7 +630,7 @@ namespace AntlrUnitTests
         [TestMethod]
         public void TestLabelAndRuleNameConflict() /*throws Exception*/ {
             ErrorQueue equeue = new ErrorQueue();
-            ErrorManager.setErrorListener( equeue ); // unique listener per thread
+            ErrorManager.SetErrorListener( equeue ); // unique listener per thread
             Grammar g = new Grammar(
                 "parser grammar t;\n" +
                 "a : c=b \n" +
@@ -648,7 +648,7 @@ namespace AntlrUnitTests
         [TestMethod]
         public void TestLabelAndTokenNameConflict() /*throws Exception*/ {
             ErrorQueue equeue = new ErrorQueue();
-            ErrorManager.setErrorListener( equeue ); // unique listener per thread
+            ErrorManager.SetErrorListener( equeue ); // unique listener per thread
             Grammar g = new Grammar(
                 "parser grammar t;\n" +
                 "a : ID=b \n" +
@@ -666,7 +666,7 @@ namespace AntlrUnitTests
         [TestMethod]
         public void TestLabelAndArgConflict() /*throws Exception*/ {
             ErrorQueue equeue = new ErrorQueue();
-            ErrorManager.setErrorListener( equeue ); // unique listener per thread
+            ErrorManager.SetErrorListener( equeue ); // unique listener per thread
             Grammar g = new Grammar(
                 "parser grammar t;\n" +
                 "a[int i] returns [int x]: i=ID \n" +
@@ -682,7 +682,7 @@ namespace AntlrUnitTests
         [TestMethod]
         public void TestLabelAndParameterConflict() /*throws Exception*/ {
             ErrorQueue equeue = new ErrorQueue();
-            ErrorManager.setErrorListener( equeue ); // unique listener per thread
+            ErrorManager.SetErrorListener( equeue ); // unique listener per thread
             Grammar g = new Grammar(
                 "parser grammar t;\n" +
                 "a[int i] returns [int x]: x=ID \n" +
@@ -698,7 +698,7 @@ namespace AntlrUnitTests
         [TestMethod]
         public void TestLabelRuleScopeConflict() /*throws Exception*/ {
             ErrorQueue equeue = new ErrorQueue();
-            ErrorManager.setErrorListener( equeue ); // unique listener per thread
+            ErrorManager.SetErrorListener( equeue ); // unique listener per thread
             Grammar g = new Grammar(
                 "parser grammar t;\n" +
                 "a\n" +
@@ -719,7 +719,7 @@ namespace AntlrUnitTests
         [TestMethod]
         public void TestRuleScopeArgConflict() /*throws Exception*/ {
             ErrorQueue equeue = new ErrorQueue();
-            ErrorManager.setErrorListener( equeue ); // unique listener per thread
+            ErrorManager.SetErrorListener( equeue ); // unique listener per thread
             Grammar g = new Grammar(
                 "parser grammar t;\n" +
                 "a[int n]\n" +
@@ -740,7 +740,7 @@ namespace AntlrUnitTests
         [TestMethod]
         public void TestRuleScopeReturnValueConflict() /*throws Exception*/ {
             ErrorQueue equeue = new ErrorQueue();
-            ErrorManager.setErrorListener( equeue ); // unique listener per thread
+            ErrorManager.SetErrorListener( equeue ); // unique listener per thread
             Grammar g = new Grammar(
                 "parser grammar t;\n" +
                 "a returns [int n]\n" +
@@ -761,7 +761,7 @@ namespace AntlrUnitTests
         [TestMethod]
         public void TestRuleScopeRuleNameConflict() /*throws Exception*/ {
             ErrorQueue equeue = new ErrorQueue();
-            ErrorManager.setErrorListener( equeue ); // unique listener per thread
+            ErrorManager.SetErrorListener( equeue ); // unique listener per thread
             Grammar g = new Grammar(
                 "parser grammar t;\n" +
                 "a\n" +
@@ -782,7 +782,7 @@ namespace AntlrUnitTests
         [TestMethod]
         public void TestBadGrammarOption() /*throws Exception*/ {
             ErrorQueue equeue = new ErrorQueue();
-            ErrorManager.setErrorListener( equeue ); // unique listener per thread
+            ErrorManager.SetErrorListener( equeue ); // unique listener per thread
             AntlrTool antlr = newTool();
             Grammar g = new Grammar( antlr,
                                     "grammar t;\n" +
@@ -799,7 +799,7 @@ namespace AntlrUnitTests
         [TestMethod]
         public void TestBadRuleOption() /*throws Exception*/ {
             ErrorQueue equeue = new ErrorQueue();
-            ErrorManager.setErrorListener( equeue ); // unique listener per thread
+            ErrorManager.SetErrorListener( equeue ); // unique listener per thread
             Grammar g = new Grammar(
                     "grammar t;\n" +
                     "a\n" +
@@ -816,7 +816,7 @@ namespace AntlrUnitTests
         [TestMethod]
         public void TestBadSubRuleOption() /*throws Exception*/ {
             ErrorQueue equeue = new ErrorQueue();
-            ErrorManager.setErrorListener( equeue ); // unique listener per thread
+            ErrorManager.SetErrorListener( equeue ); // unique listener per thread
             Grammar g = new Grammar(
                     "grammar t;\n" +
                     "a : ( options {k=3; language=Java;}\n" +
@@ -834,7 +834,7 @@ namespace AntlrUnitTests
         [TestMethod]
         public void TestTokenVocabStringUsedInLexer() /*throws Exception*/ {
             ErrorQueue equeue = new ErrorQueue();
-            ErrorManager.setErrorListener( equeue );
+            ErrorManager.SetErrorListener( equeue );
             string tokens =
                 "';'=4\n";
             mkdir( tmpdir );
@@ -848,8 +848,8 @@ namespace AntlrUnitTests
             AntlrTool antlr = newTool( new string[] { "-lib", tmpdir } );
             CompositeGrammar composite = new CompositeGrammar();
             Grammar g = new Grammar( antlr, tmpdir + "/B.g", composite );
-            g.parseAndBuildAST();
-            g.composite.assignTokenTypes();
+            g.ParseAndBuildAST();
+            g.composite.AssignTokenTypes();
 
             string expectedTokenIDToTypeMap = "[SEMI=4]";
             string expectedStringLiteralToTypeMap = "{';'=4}";
@@ -867,7 +867,7 @@ namespace AntlrUnitTests
         [TestMethod]
         public void TestTokenVocabStringUsedInCombined() /*throws Exception*/ {
             ErrorQueue equeue = new ErrorQueue();
-            ErrorManager.setErrorListener( equeue );
+            ErrorManager.SetErrorListener( equeue );
             string tokens =
                 "';'=4\n";
             mkdir( tmpdir );
@@ -881,8 +881,8 @@ namespace AntlrUnitTests
             AntlrTool antlr = newTool( new string[] { "-lib", tmpdir } );
             CompositeGrammar composite = new CompositeGrammar();
             Grammar g = new Grammar( antlr, tmpdir + "/B.g", composite );
-            g.parseAndBuildAST();
-            g.composite.assignTokenTypes();
+            g.ParseAndBuildAST();
+            g.composite.AssignTokenTypes();
 
             string expectedTokenIDToTypeMap = "[SEMI=4]";
             string expectedStringLiteralToTypeMap = "{';'=4}";
@@ -904,7 +904,7 @@ namespace AntlrUnitTests
         //throws Exception
         {
             // make sure expected += labels are there
-            Rule r = g.getRule( ruleName );
+            Rule r = g.GetRule( ruleName );
             StringTokenizer st = new StringTokenizer( tokenLabelsStr, ", " );
             ICollection<string> tokenLabels = null;
             while ( st.hasMoreTokens() )
@@ -948,7 +948,7 @@ namespace AntlrUnitTests
                                     string tokensStr )
         //throws Exception
         {
-            var tokens = g.getTokenDisplayNames();
+            var tokens = g.GetTokenDisplayNames();
 
             // make sure expected tokens are there
             //StringTokenizer st = new StringTokenizer( tokensStr, ", " );
@@ -957,13 +957,13 @@ namespace AntlrUnitTests
             {
                 //String tokenName = st.nextToken();
                 assertTrue( "token " + tokenName + " expected",
-                           g.getTokenType( tokenName ) != Label.INVALID );
+                           g.GetTokenType( tokenName ) != Label.INVALID );
                 tokens.Remove( tokenName );
             }
             // make sure there are not any others (other than <EOF> etc...)
             foreach ( string tokenName in tokens )
             {
-                Assert.IsTrue( g.getTokenType( tokenName ) < Label.MIN_TOKEN_TYPE, "unexpected token name " + tokenName );
+                Assert.IsTrue( g.GetTokenType( tokenName ) < Label.MIN_TOKEN_TYPE, "unexpected token name " + tokenName );
             }
 
             // make sure all expected rules are there
@@ -973,7 +973,7 @@ namespace AntlrUnitTests
             foreach ( string ruleName in rulesStr.Split( new string[] { ", " }, StringSplitOptions.RemoveEmptyEntries ) )
             {
                 //String ruleName = st.nextToken();
-                assertNotNull( "rule " + ruleName + " expected", g.getRule( ruleName ) );
+                assertNotNull( "rule " + ruleName + " expected", g.GetRule( ruleName ) );
                 n++;
             }
             var rules = g.Rules;

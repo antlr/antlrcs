@@ -213,7 +213,7 @@ namespace Antlr3.Grammars
             TreeAdaptor = new grammar_Adaptor( this );
         }
 
-        protected virtual GrammarAST setToBlockWithSet( GrammarAST b )
+        protected virtual GrammarAST SetToBlockWithSet( GrammarAST b )
         {
             /*
              * alt = ^(ALT["ALT"] {b} EOA["EOA"])
@@ -224,7 +224,7 @@ namespace Antlr3.Grammars
             adaptor.AddChild( alt, b );
             adaptor.AddChild( alt, adaptor.Create( EOA, "<end-of-alt>" ) );
 
-            prefixWithSynPred( alt );
+            PrefixWithSynPred( alt );
 
             GrammarAST block = (GrammarAST)adaptor.Create( BLOCK, "BLOCK" );
             adaptor.AddChild( block, alt );
@@ -236,12 +236,12 @@ namespace Antlr3.Grammars
         /** Create a copy of the alt and make it into a BLOCK; all actions,
          *  labels, tree operators, rewrites are removed.
          */
-        protected virtual GrammarAST createBlockFromDupAlt( GrammarAST alt )
+        protected virtual GrammarAST CreateBlockFromDupAlt( GrammarAST alt )
         {
             /*
              * ^(BLOCK["BLOCK"] {GrammarAST.dupTreeNoActions(alt)} EOB["<end-of-block>"])
              */
-            GrammarAST nalt = GrammarAST.dupTreeNoActions( alt, null );
+            GrammarAST nalt = GrammarAST.DupTreeNoActions( alt, null );
 
             GrammarAST block = (GrammarAST)adaptor.Create( BLOCK, "BLOCK" );
             adaptor.AddChild( block, nalt );
@@ -254,13 +254,13 @@ namespace Antlr3.Grammars
          *  (xxx)=>xxx
          *  but only if they didn't specify one manually.
          */
-        protected virtual void prefixWithSynPred( GrammarAST alt )
+        protected virtual void PrefixWithSynPred( GrammarAST alt )
         {
             // if they want backtracking and it's not a lexer rule in combined grammar
-            string autoBacktrack = (string)Grammar.getBlockOption( currentBlockAST, "backtrack" );
+            string autoBacktrack = (string)Grammar.GetBlockOption( currentBlockAST, "backtrack" );
             if ( autoBacktrack == null )
             {
-                autoBacktrack = (string)Grammar.getOption( "backtrack" );
+                autoBacktrack = (string)Grammar.GetOption( "backtrack" );
             }
             if ( autoBacktrack != null && autoBacktrack.Equals( "true" ) &&
                  !( GrammarType == COMBINED_GRAMMAR &&
@@ -268,18 +268,18 @@ namespace Antlr3.Grammars
                  alt.GetChild( 0 ).Type != SYN_SEMPRED )
             {
                 // duplicate alt and make a synpred block around that dup'd alt
-                GrammarAST synpredBlockAST = createBlockFromDupAlt( alt );
+                GrammarAST synpredBlockAST = CreateBlockFromDupAlt( alt );
 
                 // Create a BACKTRACK_SEMPRED node as if user had typed this in
                 // Effectively we replace (xxx)=>xxx with {synpredxxx}? xxx
-                GrammarAST synpredAST = createSynSemPredFromBlock( synpredBlockAST,
+                GrammarAST synpredAST = CreateSynSemPredFromBlock( synpredBlockAST,
                                                                   BACKTRACK_SEMPRED );
 
                 // insert BACKTRACK_SEMPRED as first element of alt
                 //synpredAST.getLastSibling().setNextSibling( alt.getFirstChild() );
                 //synpredAST.addChild( alt.getFirstChild() );
                 //alt.setFirstChild( synpredAST );
-                GrammarAST[] children = alt.getChildrenAsArray();
+                GrammarAST[] children = alt.GetChildrenAsArray();
                 adaptor.SetChild( alt, 0, synpredAST );
                 for ( int i = 0; i < children.Length; i++ )
                 {
@@ -291,10 +291,10 @@ namespace Antlr3.Grammars
             }
         }
 
-        protected virtual GrammarAST createSynSemPredFromBlock( GrammarAST synpredBlockAST, int synpredTokenType )
+        protected virtual GrammarAST CreateSynSemPredFromBlock( GrammarAST synpredBlockAST, int synpredTokenType )
         {
             // add grammar fragment to a list so we can make fake rules for them later.
-            string predName = Grammar.defineSyntacticPredicate( synpredBlockAST, currentRuleName );
+            string predName = Grammar.DefineSyntacticPredicate( synpredBlockAST, currentRuleName );
             // convert (alpha)=> into {synpredN}? where N is some pred count
             // during code gen we convert to function call with templates
             string synpredinvoke = predName;
@@ -304,7 +304,7 @@ namespace Antlr3.Grammars
             return p;
         }
 
-        public virtual GrammarAST createSimpleRuleAST( string name, GrammarAST block, bool fragment )
+        public virtual GrammarAST CreateSimpleRuleAST( string name, GrammarAST block, bool fragment )
         {
             GrammarAST modifier = null;
             if ( fragment )
@@ -342,7 +342,7 @@ namespace Antlr3.Grammars
             //    ErrorManager.internalError( "can't get token???", tse );
             //}
             IToken token = ex.token;
-            ErrorManager.syntaxError(
+            ErrorManager.SyntaxError(
                 ErrorManager.MSG_SYNTAX_ERROR,
                 Grammar,
                 token,
@@ -350,16 +350,16 @@ namespace Antlr3.Grammars
                 ex );
         }
 
-        public virtual void cleanup( GrammarAST root )
+        public virtual void Cleanup( GrammarAST root )
         {
             if ( GrammarType == LEXER_GRAMMAR )
             {
-                string filter = (string)Grammar.getOption( "filter" );
+                string filter = (string)Grammar.GetOption( "filter" );
                 GrammarAST tokensRuleAST =
-                    Grammar.addArtificialMatchTokensRule(
+                    Grammar.AddArtificialMatchTokensRule(
                         root,
                         Grammar.lexerRuleNamesInCombined,
-                        Grammar.getDelegateNames(),
+                        Grammar.GetDelegateNames(),
                         filter != null && filter.Equals( "true" ) );
             }
         }

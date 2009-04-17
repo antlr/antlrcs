@@ -1,4 +1,4 @@
-// $ANTLR 3.1.2 Grammars\\AssignTokenTypesWalker.g3 2009-03-23 17:54:01
+// $ANTLR 3.1.2 Grammars\\AssignTokenTypesWalker.g3 2009-04-16 21:09:05
 
 // The variable 'variable' is assigned but its value is never used.
 #pragma warning disable 219
@@ -236,7 +236,7 @@ public partial class AssignTokenTypesWalker : TreeParser
 	{
 
 			if ( state.backtracking == 0 )
-				init(g);
+				Init(g);
 
 		try
 		{
@@ -805,7 +805,7 @@ public partial class AssignTokenTypesWalker : TreeParser
 						// check for grammar-level option to import vocabulary
 						if ( currentRuleName==null && key.Equals("tokenVocab") )
 						{
-							grammar.importTokenVocabulary(ID1,(string)(optionValue2!=null?optionValue2.value:default(Object)));
+							grammar.ImportTokenVocabulary(ID1,(string)(optionValue2!=null?optionValue2.value:default(Object)));
 						}
 					
 
@@ -1233,7 +1233,7 @@ public partial class AssignTokenTypesWalker : TreeParser
 				// Grammars\\AssignTokenTypesWalker.g3:221:4: t= TOKEN_REF
 				{
 				t=(GrammarAST)Match(input,TOKEN_REF,Follow._TOKEN_REF_in_tokenSpec438); 
-				trackToken(t);
+				TrackToken(t);
 
 				}
 				break;
@@ -1244,7 +1244,7 @@ public partial class AssignTokenTypesWalker : TreeParser
 
 				Match(input, TokenConstants.Down, null); 
 				t2=(GrammarAST)Match(input,TOKEN_REF,Follow._TOKEN_REF_in_tokenSpec465); 
-				trackToken(t2);
+				TrackToken(t2);
 				// Grammars\\AssignTokenTypesWalker.g3:224:4: (s= STRING_LITERAL |c= CHAR_LITERAL )
 				int alt16=2;
 				int LA16_0 = input.LA(1);
@@ -1269,7 +1269,7 @@ public partial class AssignTokenTypesWalker : TreeParser
 					// Grammars\\AssignTokenTypesWalker.g3:224:6: s= STRING_LITERAL
 					{
 					s=(GrammarAST)Match(input,STRING_LITERAL,Follow._STRING_LITERAL_in_tokenSpec482); 
-					trackString(s); alias(t2,s);
+					TrackString(s); Alias(t2,s);
 
 					}
 					break;
@@ -1277,7 +1277,7 @@ public partial class AssignTokenTypesWalker : TreeParser
 					// Grammars\\AssignTokenTypesWalker.g3:225:6: c= CHAR_LITERAL
 					{
 					c=(GrammarAST)Match(input,CHAR_LITERAL,Follow._CHAR_LITERAL_in_tokenSpec493); 
-					trackString(c); alias(t2,c);
+					TrackString(c); Alias(t2,c);
 
 					}
 					break;
@@ -1644,7 +1644,7 @@ public partial class AssignTokenTypesWalker : TreeParser
 			}
 
 			Match(input,EOR,Follow._EOR_in_rule630); 
-			trackTokenRule(id,(m!=null?((GrammarAST)m.start):null),(b!=null?((GrammarAST)b.start):null));
+			TrackTokenRule(id,(m!=null?((GrammarAST)m.start):null),(b!=null?((GrammarAST)b.start):null));
 
 			Match(input, TokenConstants.Up, null); 
 
@@ -3101,7 +3101,7 @@ public partial class AssignTokenTypesWalker : TreeParser
 
 					Match(input, TokenConstants.Up, null); 
 				}
-				trackToken(t);
+				TrackToken(t);
 
 				}
 				break;
@@ -3109,7 +3109,7 @@ public partial class AssignTokenTypesWalker : TreeParser
 				// Grammars\\AssignTokenTypesWalker.g3:329:4: c= CHAR_LITERAL
 				{
 				c=(GrammarAST)Match(input,CHAR_LITERAL,Follow._CHAR_LITERAL_in_atom1112); 
-				trackString(c);
+				TrackString(c);
 
 				}
 				break;
@@ -3117,7 +3117,7 @@ public partial class AssignTokenTypesWalker : TreeParser
 				// Grammars\\AssignTokenTypesWalker.g3:330:4: s= STRING_LITERAL
 				{
 				s=(GrammarAST)Match(input,STRING_LITERAL,Follow._STRING_LITERAL_in_atom1123); 
-				trackString(s);
+				TrackString(s);
 
 				}
 				break;
@@ -3197,6 +3197,7 @@ public partial class AssignTokenTypesWalker : TreeParser
 	}
 	// $ANTLR end "ast_suffix"
 	#endregion Rules
+
 
 	#region Follow sets
 	public static class Follow

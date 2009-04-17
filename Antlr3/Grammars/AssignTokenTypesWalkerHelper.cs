@@ -58,7 +58,7 @@ namespace Antlr3.Grammars
             {
                 token = ( (NoViableAltException)ex ).token;
             }
-            ErrorManager.syntaxError(
+            ErrorManager.SyntaxError(
                 ErrorManager.MSG_SYNTAX_ERROR,
                 grammar,
                 token,
@@ -67,7 +67,7 @@ namespace Antlr3.Grammars
         }
 
 
-        protected void initASTPatterns()
+        protected void InitASTPatterns()
         {
             ITreeAdaptor adaptor = new ANTLRParser.grammar_Adaptor( null );
 
@@ -123,37 +123,37 @@ namespace Antlr3.Grammars
         }
 
         // Behavior moved to AssignTokenTypesBehavior
-        protected virtual void trackString( GrammarAST t )
+        protected virtual void TrackString( GrammarAST t )
         {
         }
-        protected virtual void trackToken( GrammarAST t )
+        protected virtual void TrackToken( GrammarAST t )
         {
         }
-        protected virtual void trackTokenRule( GrammarAST t, GrammarAST modifier, GrammarAST block )
+        protected virtual void TrackTokenRule( GrammarAST t, GrammarAST modifier, GrammarAST block )
         {
         }
-        protected virtual void alias( GrammarAST t, GrammarAST s )
+        protected virtual void Alias( GrammarAST t, GrammarAST s )
         {
         }
-        protected internal virtual void defineTokens( Grammar root )
+        protected internal virtual void DefineTokens( Grammar root )
         {
         }
-        protected virtual void defineStringLiteralsFromDelegates()
+        protected virtual void DefineStringLiteralsFromDelegates()
         {
         }
-        protected virtual void assignStringTypes( Grammar root )
+        protected virtual void AssignStringTypes( Grammar root )
         {
         }
-        protected virtual void aliasTokenIDsAndLiterals( Grammar root )
+        protected virtual void AliasTokenIDsAndLiterals( Grammar root )
         {
         }
-        protected virtual void assignTokenIDTypes( Grammar root )
+        protected virtual void AssignTokenIDTypes( Grammar root )
         {
         }
-        protected virtual void defineTokenNamesAndLiteralsInGrammar( Grammar root )
+        protected virtual void DefineTokenNamesAndLiteralsInGrammar( Grammar root )
         {
         }
-        protected virtual void init( Grammar root )
+        protected virtual void Init( Grammar root )
         {
         }
     }

@@ -138,12 +138,12 @@ namespace Antlr3.Tool
 
         public GrammarAST( int t, string txt )
         {
-            initialize( t, txt );
+            Initialize( t, txt );
         }
 
         public GrammarAST( IToken token )
         {
-            initialize( token );
+            Initialize( token );
         }
 
         #region Properties
@@ -151,11 +151,11 @@ namespace Antlr3.Tool
         {
             get
             {
-                return getBlockOptions();
+                return blockOptions;
             }
             set
             {
-                setBlockOptions( value );
+                blockOptions = value;
             }
         }
         public GrammarAST LastChild
@@ -212,22 +212,12 @@ namespace Antlr3.Tool
         }
         #endregion
 
-        public IDictionary<string, object> getBlockOptions()
-        {
-            return blockOptions;
-        }
-
-        public void setBlockOptions( IDictionary<string, object> value )
-        {
-            blockOptions = value;
-        }
-
-        public virtual void initialize( int i, string s )
+        public virtual void Initialize( int i, string s )
         {
             token = new CommonToken( i, s );
         }
 
-        public virtual void initialize( ITree ast )
+        public virtual void Initialize( ITree ast )
         {
             GrammarAST t = ( (GrammarAST)ast );
             this.token = t.token;
@@ -239,61 +229,37 @@ namespace Antlr3.Tool
             this.outerAltNum = t.outerAltNum;
         }
 
-        public virtual void initialize( IToken token )
+        public virtual void Initialize( IToken token )
         {
             this.token = token;
-        }
-
-        [Obsolete]
-        public virtual DFA getLookaheadDFA()
-        {
-            return LookaheadDFA;
-        }
-
-        [Obsolete]
-        public virtual void setLookaheadDFA( DFA lookaheadDFA )
-        {
-            LookaheadDFA = lookaheadDFA;
-        }
-
-        [Obsolete]
-        public virtual NFAState getNFAStartState()
-        {
-            return NFAStartState;
-        }
-
-        [Obsolete]
-        public virtual void setNFAStartState( NFAState nfaStartState )
-        {
-            NFAStartState = nfaStartState;
         }
 
         /** Save the option key/value pair and process it; return the key
          *  or null if invalid option.
          */
-        public virtual string setBlockOption( Grammar grammar, string key, object value )
+        public virtual string SetBlockOption( Grammar grammar, string key, object value )
         {
             if ( blockOptions == null )
             {
                 blockOptions = new Dictionary<string, object>();
             }
-            return setOption( blockOptions, Grammar.legalBlockOptions, grammar, key, value );
+            return SetOption( blockOptions, Grammar.legalBlockOptions, grammar, key, value );
         }
 
-        public virtual string setTerminalOption( Grammar grammar, string key, object value )
+        public virtual string SetTerminalOption( Grammar grammar, string key, object value )
         {
             if ( terminalOptions == null )
             {
                 terminalOptions = new Dictionary<string, object>();
             }
-            return setOption( terminalOptions, Grammar.legalTokenOptions, grammar, key, value );
+            return SetOption( terminalOptions, Grammar.legalTokenOptions, grammar, key, value );
         }
 
-        public virtual string setOption( IDictionary<string, object> options, HashSet<string> legalOptions, Grammar grammar, string key, object value )
+        public virtual string SetOption( IDictionary<string, object> options, HashSet<string> legalOptions, Grammar grammar, string key, object value )
         {
             if ( !legalOptions.Contains( key ) )
             {
-                ErrorManager.grammarError( ErrorManager.MSG_ILLEGAL_OPTION,
+                ErrorManager.GrammarError( ErrorManager.MSG_ILLEGAL_OPTION,
                                           grammar,
                                           token,
                                           key );
@@ -313,13 +279,13 @@ namespace Antlr3.Tool
             }
             if ( key == "backtrack" && value.ToString() == "true" )
             {
-                grammar.composite.getRootGrammar().atLeastOneBacktrackOption = true;
+                grammar.composite.GetRootGrammar().atLeastOneBacktrackOption = true;
             }
             options[key] = value;
             return key;
         }
 
-        public virtual object getBlockOption( string key )
+        public virtual object GetBlockOption( string key )
         {
             object value = null;
             if ( blockOptions != null )
@@ -329,7 +295,7 @@ namespace Antlr3.Tool
             return value;
         }
 
-        public virtual void setOptions( Grammar grammar, IDictionary<string, object> options )
+        public virtual void SetOptions( Grammar grammar, IDictionary<string, object> options )
         {
             if ( options == null )
             {
@@ -338,7 +304,7 @@ namespace Antlr3.Tool
             }
             foreach ( string optionName in options.Keys.ToArray() )
             {
-                string stored = setBlockOption( grammar, optionName, options.get( optionName ) );
+                string stored = SetBlockOption( grammar, optionName, options.get( optionName ) );
                 if ( stored == null )
                     options.Remove( optionName );
             }
@@ -421,31 +387,7 @@ namespace Antlr3.Tool
             }
         }
 
-        [Obsolete]
-        public virtual IIntSet getSetValue()
-        {
-            return SetValue;
-        }
-
-        [Obsolete]
-        public virtual void setSetValue( IIntSet setValue )
-        {
-            SetValue = setValue;
-        }
-
-        [Obsolete]
-        public virtual GrammarAST getLastChild()
-        {
-            return LastChild;
-        }
-
-        [Obsolete]
-        public virtual GrammarAST getLastSibling()
-        {
-            return LastSibling;
-        }
-
-        public virtual GrammarAST[] getChildrenAsArray()
+        public virtual GrammarAST[] GetChildrenAsArray()
         {
             return Children.CastListDown<GrammarAST, ITree>().ToArray();
         }
@@ -495,7 +437,7 @@ namespace Antlr3.Tool
          *  token type ttype.  Assume 'this' is a root node; don't visit siblings
          *  of root.  Return null if no node found with ttype.
          */
-        public GrammarAST findFirstType( int ttype )
+        public GrammarAST FindFirstType( int ttype )
         {
             // check this node (the root) first
             if ( this.Type == ttype )
@@ -532,7 +474,7 @@ namespace Antlr3.Tool
         }
 
         /** See if tree has exact token types and structure; no text */
-        public bool hasSameTreeStructure( ITree other )
+        public bool HasSameTreeStructure( ITree other )
         {
             // check roots first.
             if ( Type != other.Type )
@@ -542,20 +484,20 @@ namespace Antlr3.Tool
             return Descendants( this, true ).SequenceEqual( Descendants( other, true ), ( a, b ) => a.Type == b.Type );
         }
 
-        public static GrammarAST dup( ITree t )
+        public static GrammarAST Dup( ITree t )
         {
             if ( t == null )
             {
                 return null;
             }
             GrammarAST dup_t = new GrammarAST();
-            dup_t.initialize( t );
+            dup_t.Initialize( t );
             return dup_t;
         }
 
         public override ITree DupNode()
         {
-            return dup( this );
+            return Dup( this );
         }
 
         static IEnumerable<GrammarAST> GetChildrenForDupTree( GrammarAST t )
@@ -583,16 +525,16 @@ namespace Antlr3.Tool
         /**Duplicate a tree, assuming this is a root node of a tree--
          * duplicate that node and what's below; ignore siblings of root node.
          */
-        public static GrammarAST dupTreeNoActions( GrammarAST t, GrammarAST parent )
+        public static GrammarAST DupTreeNoActions( GrammarAST t, GrammarAST parent )
         {
             GrammarAST d = (GrammarAST)t.DupNode();
             foreach ( GrammarAST subchild in GetChildrenForDupTree( t ) )
-                d.AddChild( dupTreeNoActions( subchild, d ) );
+                d.AddChild( DupTreeNoActions( subchild, d ) );
 
             return d;
         }
 
-        public void setTreeEnclosingRuleNameDeeply( string rname )
+        public void SetTreeEnclosingRuleNameDeeply( string rname )
         {
             enclosingRuleName = rname;
             foreach ( GrammarAST child in Descendants( this ).OfType<GrammarAST>() )

@@ -58,7 +58,7 @@ namespace AntlrUnitTests
             Grammar g = new Grammar(
                 "lexer grammar t;\n" +
                 "A : 'a'..'z' '@' | 'k' '$' ;" );
-            g.createLookaheadDFAs();
+            g.CreateLookaheadDFAs();
             string expecting =
                 ".s0-'k'->.s1\n" +
                 ".s0-{'a'..'j', 'l'..'z'}->:s2=>1\n" +
@@ -74,7 +74,7 @@ namespace AntlrUnitTests
                 "A : 'a'..'z' '@'\n" +
                 "  | ('k'|'9'|'p') '$'\n" +
                 "  ;\n" );
-            g.createLookaheadDFAs();
+            g.CreateLookaheadDFAs();
             // must break up a..z into {'a'..'j', 'l'..'o', 'q'..'z'}
             string expecting =
                 ".s0-'9'->:s3=>2\n" +
@@ -92,7 +92,7 @@ namespace AntlrUnitTests
                 "A : ('a'..'z'|'0'..'9') '@'\n" +
                 "  | ('k'|'9'|'p') '$'\n" +
                 "  ;\n" );
-            g.createLookaheadDFAs( false );
+            g.CreateLookaheadDFAs( false );
             // must break up a..z into {'a'..'j', 'l'..'o', 'q'..'z'} and 0..9
             // into 0..8
             string expecting =
@@ -178,7 +178,7 @@ namespace AntlrUnitTests
                 ".s1-<EOT>->:s2=>1\n";
 
             ErrorQueue equeue = new ErrorQueue();
-            ErrorManager.setErrorListener( equeue );
+            ErrorManager.SetErrorListener( equeue );
 
             checkDecision( g, 1, expecting, new int[] { 2 } );
 
@@ -240,8 +240,8 @@ namespace AntlrUnitTests
             DFAOptimizer optimizer = new DFAOptimizer( g );
             optimizer.Optimize();
             FASerializer serializer = new FASerializer( g );
-            DFA dfa = g.getLookaheadDFA( 1 );
-            string result = serializer.serialize( dfa.startState );
+            DFA dfa = g.GetLookaheadDFA( 1 );
+            string result = serializer.Serialize( dfa.startState );
             expecting = ".s0-'x'->:s1=>1\n";
             assertEquals( expecting, result );
         }
@@ -371,7 +371,7 @@ namespace AntlrUnitTests
                 ":s0=>2\n";
 
             ErrorQueue equeue = new ErrorQueue();
-            ErrorManager.setErrorListener( equeue );
+            ErrorManager.SetErrorListener( equeue );
 
             checkDecision( g, 1, expecting, new int[] { 1 } );
 
@@ -399,7 +399,7 @@ namespace AntlrUnitTests
                 "        ;\n" +
                 "fragment\n" +
                 "ESC     :       '\\\\' . ;" );
-            g.createLookaheadDFAs();
+            g.CreateLookaheadDFAs();
             string expecting =
                 ".s0-'\\\\'->:s2=>2\n" +
                 ".s0-'{'->:s1=>1\n" +
@@ -424,7 +424,7 @@ namespace AntlrUnitTests
                 "        ;\n" +
                 "fragment\n" +
                 "ESC     :       '\\\\' . ;" );
-            g.createLookaheadDFAs();
+            g.CreateLookaheadDFAs();
             string expecting =
                 ".s0-'\\\\'->.s3\n" +
                 ".s0-'{'->:s2=>1\n" +
@@ -445,7 +445,7 @@ namespace AntlrUnitTests
                 "lexer grammar T;\n" +
                 "A : 'a' | ~B {;} ;\n" +
                 "fragment B : 'a' ;\n" );
-            g.createLookaheadDFAs();
+            g.CreateLookaheadDFAs();
             string expecting =
                 ".s0-'a'->:s1=>1\n" +
                 ".s0-{'\\u0000'..'`', 'b'..'\\uFFFF'}->:s2=>2\n";
@@ -458,7 +458,7 @@ namespace AntlrUnitTests
                 "lexer grammar T;\n" +
                 "A : B | ~B {;} ;\n" +
                 "fragment B : 'a'|'b' ;\n" );
-            g.createLookaheadDFAs();
+            g.CreateLookaheadDFAs();
             string expecting =
                 ".s0-'a'..'b'->:s1=>1\n" +
                 ".s0-{'\\u0000'..'`', 'c'..'\\uFFFF'}->:s2=>2\n";
@@ -471,7 +471,7 @@ namespace AntlrUnitTests
                 "lexer grammar T;\n" +
                 "A : 'x' ('a' | ~B {;}) ;\n" +
                 "B : 'a' ;\n" );
-            g.createLookaheadDFAs();
+            g.CreateLookaheadDFAs();
             string expecting =
                 ".s0-'a'->:s1=>1\n" +
                 ".s0-{'\\u0000'..'`', 'b'..'\\uFFFF'}->:s2=>2\n";
@@ -556,15 +556,15 @@ namespace AntlrUnitTests
             if ( g.CodeGenerator == null )
             {
                 CodeGenerator generator = new CodeGenerator( null, g, "Java" );
-                g.setCodeGenerator( generator );
-                g.buildNFA();
-                g.createLookaheadDFAs( false );
+                g.CodeGenerator = generator;
+                g.BuildNFA();
+                g.CreateLookaheadDFAs( false );
             }
 
-            DFA dfa = g.getLookaheadDFA( decision );
+            DFA dfa = g.GetLookaheadDFA( decision );
             assertNotNull( "unknown decision #" + decision, dfa );
             FASerializer serializer = new FASerializer( g );
-            string result = serializer.serialize( dfa.startState );
+            string result = serializer.Serialize( dfa.startState );
             //System.out.print(result);
             var nonDetAlts = dfa.UnreachableAlts;
             //System.out.println("alts w/o predict state="+nonDetAlts);

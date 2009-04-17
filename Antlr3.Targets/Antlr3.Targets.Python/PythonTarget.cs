@@ -61,7 +61,7 @@ namespace Antlr3.Targets
                 return ttype.ToString();
             }
 
-            string name = generator.grammar.getTokenDisplayName( ttype );
+            string name = generator.grammar.GetTokenDisplayName( ttype );
 
             // If name is a literal, return the token type instead
             if ( name[0] == '\'' )
@@ -76,7 +76,7 @@ namespace Antlr3.Targets
                 CodeGenerator generator,
                 string literal )
         {
-            int c = Grammar.getCharValueFromGrammarCharLiteral( literal );
+            int c = Grammar.GetCharValueFromGrammarCharLiteral( literal );
             return ( (char)c ).ToString();
         }
 

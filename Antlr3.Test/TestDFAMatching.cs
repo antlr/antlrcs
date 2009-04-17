@@ -53,9 +53,9 @@ namespace AntlrUnitTests
             Grammar g = new Grammar(
                     "lexer grammar t;\n" +
                     "A : {;}'a' | 'b' | 'c';" );
-            g.buildNFA();
-            g.createLookaheadDFAs( false );
-            DFA dfa = g.getLookaheadDFA( 1 );
+            g.BuildNFA();
+            g.CreateLookaheadDFAs( false );
+            DFA dfa = g.GetLookaheadDFA( 1 );
             checkPrediction( dfa, "a", 1 );
             checkPrediction( dfa, "b", 2 );
             checkPrediction( dfa, "c", 3 );
@@ -67,9 +67,9 @@ namespace AntlrUnitTests
             Grammar g = new Grammar(
                     "lexer grammar t;\n" +
                     "A : {;}'a'..'z' | ';' | '0'..'9' ;" );
-            g.buildNFA();
-            g.createLookaheadDFAs( false );
-            DFA dfa = g.getLookaheadDFA( 1 );
+            g.BuildNFA();
+            g.CreateLookaheadDFAs( false );
+            DFA dfa = g.GetLookaheadDFA( 1 );
             checkPrediction( dfa, "a", 1 );
             checkPrediction( dfa, "q", 1 );
             checkPrediction( dfa, "z", 1 );
@@ -82,9 +82,9 @@ namespace AntlrUnitTests
             Grammar g = new Grammar(
                     "lexer grammar t;\n" +
                     "A : 'a' 'b' | 'a' 'c' | 'd' 'e' ;" );
-            g.buildNFA();
-            g.createLookaheadDFAs( false );
-            DFA dfa = g.getLookaheadDFA( 1 );
+            g.BuildNFA();
+            g.CreateLookaheadDFAs( false );
+            DFA dfa = g.GetLookaheadDFA( 1 );
             checkPrediction( dfa, "ab", 1 );
             checkPrediction( dfa, "ac", 2 );
             checkPrediction( dfa, "de", 3 );
@@ -97,9 +97,9 @@ namespace AntlrUnitTests
                     "lexer grammar t;\n" +
                     "A : (DIGIT)+ '.' DIGIT | (DIGIT)+ ;\n" +
                     "fragment DIGIT : '0'..'9' ;\n" );
-            g.buildNFA();
-            g.createLookaheadDFAs( false );
-            DFA dfa = g.getLookaheadDFA( 3 );
+            g.BuildNFA();
+            g.CreateLookaheadDFAs( false );
+            DFA dfa = g.GetLookaheadDFA( 3 );
             checkPrediction( dfa, "32", 2 );
             checkPrediction( dfa, "999.2", 1 );
             checkPrediction( dfa, ".2", NFA.INVALID_ALT_NUMBER );

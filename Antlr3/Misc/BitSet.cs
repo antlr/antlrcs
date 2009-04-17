@@ -602,7 +602,7 @@ namespace Antlr3.Misc
                     }
                     if ( g != null )
                     {
-                        buf.Append( g.getTokenDisplayName( i ) );
+                        buf.Append( g.GetTokenDisplayName( i ) );
                     }
                     else
                     {

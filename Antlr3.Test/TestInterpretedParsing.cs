@@ -56,9 +56,9 @@ namespace AntlrUnitTests
                 "assign : ID ASSIGN expr SEMI ;\n" +
                 "expr : INT | FLOAT | ID ;\n" );
             Grammar g = new Grammar();
-            g.importTokenVocabulary( pg );
+            g.ImportTokenVocabulary( pg );
             g.FileName = Grammar.IGNORE_STRING_IN_GRAMMAR_FILE_NAME + "string";
-            g.setGrammarContent(
+            g.SetGrammarContent(
                 "lexer grammar t;\n" +
                 "WHILE : 'while';\n" +
                 "LCURLY : '{';\n" +
@@ -74,10 +74,10 @@ namespace AntlrUnitTests
             Interpreter lexEngine = new Interpreter( g, input );
 
             CommonTokenStream tokens = new CommonTokenStream( lexEngine );
-            tokens.SetTokenTypeChannel( g.getTokenType( "WS" ), 99 );
+            tokens.SetTokenTypeChannel( g.GetTokenType( "WS" ), 99 );
             //System.out.println("tokens="+tokens.toString());
             Interpreter parseEngine = new Interpreter( pg, tokens );
-            ParseTree t = parseEngine.parse( "prog" );
+            ParseTree t = parseEngine.Parse( "prog" );
             string result = t.ToStringTree();
             string expecting =
                 "(<grammar p> (prog while x { (assign i = (expr 1) ;) (assign y = (expr 3.42) ;) (assign z = (expr y) ;) } <EOF>))";
@@ -94,8 +94,8 @@ namespace AntlrUnitTests
                 "expr : INT | FLOAT | ID ;\n" );
             Grammar g = new Grammar();
             g.FileName = Grammar.IGNORE_STRING_IN_GRAMMAR_FILE_NAME + "string";
-            g.importTokenVocabulary( pg );
-            g.setGrammarContent(
+            g.ImportTokenVocabulary( pg );
+            g.SetGrammarContent(
                 "lexer grammar t;\n" +
                 "WHILE : 'while';\n" +
                 "LCURLY : '{';\n" +
@@ -111,10 +111,10 @@ namespace AntlrUnitTests
             Interpreter lexEngine = new Interpreter( g, input );
 
             CommonTokenStream tokens = new CommonTokenStream( lexEngine );
-            tokens.SetTokenTypeChannel( g.getTokenType( "WS" ), 99 );
+            tokens.SetTokenTypeChannel( g.GetTokenType( "WS" ), 99 );
             //System.out.println("tokens="+tokens.toString());
             Interpreter parseEngine = new Interpreter( pg, tokens );
-            ParseTree t = parseEngine.parse( "prog" );
+            ParseTree t = parseEngine.Parse( "prog" );
             string result = t.ToStringTree();
             string expecting =
                 "(<grammar p> (prog while x { (assign i = (expr 1) MismatchedTokenException(5!=9))))";
@@ -130,9 +130,9 @@ namespace AntlrUnitTests
                 "assign : ID ASSIGN expr SEMI ;\n" +
                 "expr : INT | FLOAT | ID ;\n" );
             Grammar g = new Grammar();
-            g.importTokenVocabulary( pg );
+            g.ImportTokenVocabulary( pg );
             g.FileName = "<string>";
-            g.setGrammarContent(
+            g.SetGrammarContent(
                 "lexer grammar t;\n" +
                 "WHILE : 'while';\n" +
                 "LCURLY : '{';\n" +
@@ -148,10 +148,10 @@ namespace AntlrUnitTests
             Interpreter lexEngine = new Interpreter( g, input );
 
             CommonTokenStream tokens = new CommonTokenStream( lexEngine );
-            tokens.SetTokenTypeChannel( g.getTokenType( "WS" ), 99 );
+            tokens.SetTokenTypeChannel( g.GetTokenType( "WS" ), 99 );
             //System.out.println("tokens="+tokens.toString());
             Interpreter parseEngine = new Interpreter( pg, tokens );
-            ParseTree t = parseEngine.parse( "prog" );
+            ParseTree t = parseEngine.Parse( "prog" );
             string result = t.ToStringTree();
             string expecting =
                 "(<grammar p> (prog while x { (assign i = (expr MismatchedSetException(9!={5,10,11})))))";
@@ -167,9 +167,9 @@ namespace AntlrUnitTests
                 "assign : ID ASSIGN expr SEMI ;\n" +
                 "expr : {;}INT | FLOAT | ID ;\n" );
             Grammar g = new Grammar();
-            g.importTokenVocabulary( pg );
+            g.ImportTokenVocabulary( pg );
             g.FileName = "<string>";
-            g.setGrammarContent(
+            g.SetGrammarContent(
                 "lexer grammar t;\n" +
                 "WHILE : 'while';\n" +
                 "LCURLY : '{';\n" +
@@ -185,10 +185,10 @@ namespace AntlrUnitTests
             Interpreter lexEngine = new Interpreter( g, input );
 
             CommonTokenStream tokens = new CommonTokenStream( lexEngine );
-            tokens.SetTokenTypeChannel( g.getTokenType( "WS" ), 99 );
+            tokens.SetTokenTypeChannel( g.GetTokenType( "WS" ), 99 );
             //System.out.println("tokens="+tokens.toString());
             Interpreter parseEngine = new Interpreter( pg, tokens );
-            ParseTree t = parseEngine.parse( "prog" );
+            ParseTree t = parseEngine.Parse( "prog" );
             string result = t.ToStringTree();
             string expecting =
                 "(<grammar p> (prog while x { (assign i = (expr NoViableAltException(9@[4:1: expr : ( INT | FLOAT | ID );])))))";

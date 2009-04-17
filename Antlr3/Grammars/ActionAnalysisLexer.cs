@@ -1,4 +1,4 @@
-// $ANTLR 3.1.2 Grammars\\ActionAnalysisLexer.g3 2009-04-10 15:22:12
+// $ANTLR 3.1.2 Grammars\\ActionAnalysisLexer.g3 2009-04-16 20:58:18
 
 // The variable 'variable' is assigned but its value is never used.
 #pragma warning disable 219
@@ -169,34 +169,34 @@ public partial class ActionAnalysisLexer : Lexer
 							{
 								// ref to enclosing rule.
 								refdRuleName = (x!=null?x.Text:null);
-								scope = enclosingRule.getLocalAttributeScope((y!=null?y.Text:null));
+								scope = enclosingRule.GetLocalAttributeScope((y!=null?y.Text:null));
 							}
-							else if ( enclosingRule.getRuleLabel((x!=null?x.Text:null))!=null )
+							else if ( enclosingRule.GetRuleLabel((x!=null?x.Text:null))!=null )
 							{
 								// ref to rule label
-								Grammar.LabelElementPair pair = enclosingRule.getRuleLabel((x!=null?x.Text:null));
+								Grammar.LabelElementPair pair = enclosingRule.GetRuleLabel((x!=null?x.Text:null));
 								pair.actionReferencesLabel = true;
 								refdRuleName = pair.referencedRuleName;
-								Rule refdRule = grammar.getRule(refdRuleName);
+								Rule refdRule = grammar.GetRule(refdRuleName);
 								if ( refdRule!=null )
 								{
-									scope = refdRule.getLocalAttributeScope((y!=null?y.Text:null));
+									scope = refdRule.GetLocalAttributeScope((y!=null?y.Text:null));
 								}
 							}
-							else if ( enclosingRule.getRuleRefsInAlt(x.Text, outerAltNum)!=null )
+							else if ( enclosingRule.GetRuleRefsInAlt(x.Text, outerAltNum)!=null )
 							{
 								// ref to rule referenced in this alt
 								refdRuleName = (x!=null?x.Text:null);
-								Rule refdRule = grammar.getRule(refdRuleName);
+								Rule refdRule = grammar.GetRule(refdRuleName);
 								if ( refdRule!=null )
 								{
-									scope = refdRule.getLocalAttributeScope((y!=null?y.Text:null));
+									scope = refdRule.GetLocalAttributeScope((y!=null?y.Text:null));
 								}
 							}
 							if ( scope!=null &&
 								 (scope.isPredefinedRuleScope||scope.isPredefinedLexerRuleScope) )
 							{
-								grammar.referenceRuleLabelPredefinedAttribute(refdRuleName);
+								grammar.ReferenceRuleLabelPredefinedAttribute(refdRuleName);
 								//System.out.println("referenceRuleLabelPredefinedAttribute for "+refdRuleName);
 							}
 						
@@ -229,15 +229,15 @@ public partial class ActionAnalysisLexer : Lexer
 			int ID1Start84 = GetCharIndex();
 			mID(); if (state.failed) return ;
 			ID1 = new CommonToken(input, TokenConstants.InvalidTokenType, TokenConstants.DefaultChannel, ID1Start84, GetCharIndex()-1);
-			if ( !((enclosingRule!=null && enclosingRule.getRuleLabel((ID1!=null?ID1.Text:null))!=null)) )
+			if ( !((enclosingRule!=null && enclosingRule.GetRuleLabel((ID1!=null?ID1.Text:null))!=null)) )
 			{
 				if (state.backtracking>0) {state.failed=true; return ;}
-				throw new FailedPredicateException(input, "X", "enclosingRule!=null && enclosingRule.getRuleLabel($ID.text)!=null");
+				throw new FailedPredicateException(input, "X", "enclosingRule!=null && enclosingRule.GetRuleLabel($ID.text)!=null");
 			}
 			if ( state.backtracking==1 )
 			{
 
-							Grammar.LabelElementPair pair = enclosingRule.getRuleLabel((ID1!=null?ID1.Text:null));
+							Grammar.LabelElementPair pair = enclosingRule.GetRuleLabel((ID1!=null?ID1.Text:null));
 							pair.actionReferencesLabel = true;
 						
 			}
@@ -269,19 +269,19 @@ public partial class ActionAnalysisLexer : Lexer
 			int ID2Start106 = GetCharIndex();
 			mID(); if (state.failed) return ;
 			ID2 = new CommonToken(input, TokenConstants.InvalidTokenType, TokenConstants.DefaultChannel, ID2Start106, GetCharIndex()-1);
-			if ( !((enclosingRule!=null && enclosingRule.getLocalAttributeScope((ID2!=null?ID2.Text:null))!=null)) )
+			if ( !((enclosingRule!=null && enclosingRule.GetLocalAttributeScope((ID2!=null?ID2.Text:null))!=null)) )
 			{
 				if (state.backtracking>0) {state.failed=true; return ;}
-				throw new FailedPredicateException(input, "Y", "enclosingRule!=null && enclosingRule.getLocalAttributeScope($ID.text)!=null");
+				throw new FailedPredicateException(input, "Y", "enclosingRule!=null && enclosingRule.GetLocalAttributeScope($ID.text)!=null");
 			}
 			if ( state.backtracking==1 )
 			{
 
-							AttributeScope scope = enclosingRule.getLocalAttributeScope((ID2!=null?ID2.Text:null));
+							AttributeScope scope = enclosingRule.GetLocalAttributeScope((ID2!=null?ID2.Text:null));
 							if ( scope!=null &&
 								 (scope.isPredefinedRuleScope||scope.isPredefinedLexerRuleScope) )
 							{
-								grammar.referenceRuleLabelPredefinedAttribute(enclosingRule.name);
+								grammar.ReferenceRuleLabelPredefinedAttribute(enclosingRule.name);
 								//System.out.println("referenceRuleLabelPredefinedAttribute for "+(ID2!=null?ID2.Text:null));
 							}
 						

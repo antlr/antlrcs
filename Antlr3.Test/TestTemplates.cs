@@ -57,7 +57,7 @@ namespace AntlrUnitTests
                 LINE_SEP + "  new STAttrMap().put(\"name\", (ID1!=null?ID1.getText():null)));";
 
             ErrorQueue equeue = new ErrorQueue();
-            ErrorManager.setErrorListener( equeue );
+            ErrorManager.SetErrorListener( equeue );
             Grammar g = new Grammar(
                 "grammar t;\n" +
                 "options {\n" +
@@ -70,14 +70,14 @@ namespace AntlrUnitTests
                 "ID : 'a';\n" );
             AntlrTool antlr = newTool();
             CodeGenerator generator = new CodeGenerator( antlr, g, "Java" );
-            g.setCodeGenerator( generator );
+            g.CodeGenerator = generator;
             generator.GenRecognizer(); // forces load of templates
             ActionTranslator translator =
                 new ActionTranslator( generator,
                                             "a",
                                             new CommonToken( ANTLRParser.ACTION, action ), 1 );
             string rawTranslation =
-                translator.translate();
+                translator.Translate();
             StringTemplateGroup templates =
                 new StringTemplateGroup( ".", typeof( AngleBracketTemplateLexer ) );
             StringTemplate actionST = new StringTemplate( templates, rawTranslation );
@@ -94,7 +94,7 @@ namespace AntlrUnitTests
             string expecting = "x = templateLib.getInstanceOf(\"foo\");";
 
             ErrorQueue equeue = new ErrorQueue();
-            ErrorManager.setErrorListener( equeue );
+            ErrorManager.SetErrorListener( equeue );
             Grammar g = new Grammar(
                 "grammar t;\n" +
                 "options {\n" +
@@ -107,14 +107,14 @@ namespace AntlrUnitTests
                 "ID : 'a';\n" );
             AntlrTool antlr = newTool();
             CodeGenerator generator = new CodeGenerator( antlr, g, "Java" );
-            g.setCodeGenerator( generator );
+            g.CodeGenerator = generator;
             generator.GenRecognizer(); // forces load of templates
             ActionTranslator translator =
                 new ActionTranslator( generator,
                                             "a",
                                             new CommonToken( ANTLRParser.ACTION, action ), 1 );
             string rawTranslation =
-                translator.translate();
+                translator.Translate();
             StringTemplateGroup templates =
                 new StringTemplateGroup( ".", typeof( AngleBracketTemplateLexer ) );
             StringTemplate actionST = new StringTemplate( templates, rawTranslation );
@@ -132,7 +132,7 @@ namespace AntlrUnitTests
                 LINE_SEP + "  new STAttrMap().put(\"name\", (ID1!=null?ID1.getText():null)));";
 
             ErrorQueue equeue = new ErrorQueue();
-            ErrorManager.setErrorListener( equeue );
+            ErrorManager.SetErrorListener( equeue );
             Grammar g = new Grammar(
                 "grammar t;\n" +
                 "options {\n" +
@@ -145,14 +145,14 @@ namespace AntlrUnitTests
                 "ID : 'a';\n" );
             AntlrTool antlr = newTool();
             CodeGenerator generator = new CodeGenerator( antlr, g, "Java" );
-            g.setCodeGenerator( generator );
+            g.CodeGenerator = generator;
             generator.GenRecognizer(); // forces load of templates
             ActionTranslator translator =
                 new ActionTranslator( generator,
                                             "a",
                                             new CommonToken( ANTLRParser.ACTION, action ), 1 );
             string rawTranslation =
-                translator.translate();
+                translator.Translate();
             StringTemplateGroup templates =
                 new StringTemplateGroup( ".", typeof( AngleBracketTemplateLexer ) );
             StringTemplate actionST = new StringTemplate( templates, rawTranslation );
@@ -169,7 +169,7 @@ namespace AntlrUnitTests
             string expecting = "x = new StringTemplate(templateLib,(ID1!=null?ID1.getText():null));";
 
             ErrorQueue equeue = new ErrorQueue();
-            ErrorManager.setErrorListener( equeue );
+            ErrorManager.SetErrorListener( equeue );
             Grammar g = new Grammar(
                 "grammar t;\n" +
                 "options {\n" +
@@ -182,13 +182,13 @@ namespace AntlrUnitTests
                 "ID : 'a';\n" );
             AntlrTool antlr = newTool();
             CodeGenerator generator = new CodeGenerator( antlr, g, "Java" );
-            g.setCodeGenerator( generator );
+            g.CodeGenerator = generator;
             generator.GenRecognizer(); // forces load of templates
             ActionTranslator translator = new ActionTranslator( generator,
                                                                          "a",
                                                                          new CommonToken( ANTLRParser.ACTION, action ), 1 );
             string rawTranslation =
-                translator.translate();
+                translator.Translate();
             StringTemplateGroup templates =
                 new StringTemplateGroup( ".", typeof( AngleBracketTemplateLexer ) );
             StringTemplate actionST = new StringTemplate( templates, rawTranslation );
@@ -205,7 +205,7 @@ namespace AntlrUnitTests
             string expecting = "(x).setAttribute(\"y\", z);";
 
             ErrorQueue equeue = new ErrorQueue();
-            ErrorManager.setErrorListener( equeue );
+            ErrorManager.SetErrorListener( equeue );
             Grammar g = new Grammar(
                 "grammar t;\n" +
                 "options {\n" +
@@ -218,14 +218,14 @@ namespace AntlrUnitTests
                 "ID : 'a';\n" );
             AntlrTool antlr = newTool();
             CodeGenerator generator = new CodeGenerator( antlr, g, "Java" );
-            g.setCodeGenerator( generator );
+            g.CodeGenerator = generator;
             generator.GenRecognizer(); // forces load of templates
             ActionTranslator translator =
                 new ActionTranslator( generator,
                                             "a",
                                             new CommonToken( ANTLRParser.ACTION, action ), 1 );
             string rawTranslation =
-                translator.translate();
+                translator.Translate();
             StringTemplateGroup templates =
                 new StringTemplateGroup( ".", typeof( AngleBracketTemplateLexer ) );
             StringTemplate actionST = new StringTemplate( templates, rawTranslation );
@@ -242,7 +242,7 @@ namespace AntlrUnitTests
             string expecting = "(foo((ID1!=null?ID1.getText():null)).getST()).setAttribute(\"y\", z);";
 
             ErrorQueue equeue = new ErrorQueue();
-            ErrorManager.setErrorListener( equeue );
+            ErrorManager.SetErrorListener( equeue );
             Grammar g = new Grammar(
                 "grammar t;\n" +
                 "options {\n" +
@@ -255,13 +255,13 @@ namespace AntlrUnitTests
                 "ID : 'a';\n" );
             AntlrTool antlr = newTool();
             CodeGenerator generator = new CodeGenerator( antlr, g, "Java" );
-            g.setCodeGenerator( generator );
+            g.CodeGenerator = generator;
             generator.GenRecognizer(); // forces load of templates
             ActionTranslator translator = new ActionTranslator( generator,
                                                                          "a",
                                                                          new CommonToken( ANTLRParser.ACTION, action ), 1 );
             string rawTranslation =
-                translator.translate();
+                translator.Translate();
             StringTemplateGroup templates =
                 new StringTemplateGroup( ".", typeof( AngleBracketTemplateLexer ) );
             StringTemplate actionST = new StringTemplate( templates, rawTranslation );
@@ -275,7 +275,7 @@ namespace AntlrUnitTests
         [TestMethod]
         public void TestSetAttrOfExprInMembers() /*throws Exception*/ {
             ErrorQueue equeue = new ErrorQueue();
-            ErrorManager.setErrorListener( equeue );
+            ErrorManager.SetErrorListener( equeue );
             Grammar g = new Grammar(
                 "grammar t;\n" +
                 "options {\n" +
@@ -290,7 +290,7 @@ namespace AntlrUnitTests
                 "ID : 'a';\n" );
             AntlrTool antlr = newTool();
             CodeGenerator generator = new CodeGenerator( antlr, g, "Java" );
-            g.setCodeGenerator( generator );
+            g.CodeGenerator = generator;
             generator.GenRecognizer(); // forces load of templates
 
             assertNoErrors( equeue );
@@ -302,7 +302,7 @@ namespace AntlrUnitTests
             //String expecting = null;
 
             ErrorQueue equeue = new ErrorQueue();
-            ErrorManager.setErrorListener( equeue );
+            ErrorManager.SetErrorListener( equeue );
             Grammar g = new Grammar(
                 "grammar t;\n" +
                 "options {\n" +
@@ -315,7 +315,7 @@ namespace AntlrUnitTests
                 "ID : 'a';\n" );
             AntlrTool antlr = newTool();
             CodeGenerator generator = new CodeGenerator( antlr, g, "Java" );
-            g.setCodeGenerator( generator );
+            g.CodeGenerator = generator;
             generator.GenRecognizer(); // forces load of templates
 
             int expectedMsgID = ErrorManager.MSG_INVALID_TEMPLATE_ACTION;
@@ -331,7 +331,7 @@ namespace AntlrUnitTests
             //String expecting = null;
 
             ErrorQueue equeue = new ErrorQueue();
-            ErrorManager.setErrorListener( equeue );
+            ErrorManager.SetErrorListener( equeue );
             Grammar g = new Grammar(
                 "grammar t;\n" +
                 "options {\n" +
@@ -344,7 +344,7 @@ namespace AntlrUnitTests
                 "ID : 'a';\n" );
             AntlrTool antlr = newTool();
             CodeGenerator generator = new CodeGenerator( antlr, g, "Java" );
-            g.setCodeGenerator( generator );
+            g.CodeGenerator = generator;
             generator.GenRecognizer(); // forces load of templates
 
             int expectedMsgID = ErrorManager.MSG_INVALID_TEMPLATE_ACTION;

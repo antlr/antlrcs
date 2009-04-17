@@ -58,7 +58,7 @@ namespace Antlr3.Analysis
             DFAState s0 = NewState();
             startState = s0;
             nfa = decisionStartState.nfa;
-            NumberOfAlts = nfa.grammar.getNumberOfAltsForDecisionNFA( decisionStartState );
+            NumberOfAlts = nfa.grammar.GetNumberOfAltsForDecisionNFA( decisionStartState );
             this.decisionNumber = decisionNumber;
             this.NFADecisionStartState = decisionStartState;
             InitAltRelatedInfo();
@@ -85,7 +85,7 @@ namespace Antlr3.Analysis
             DFAState s0 = NewState();
             startState = s0;
             nfa = decisionStartState.nfa;
-            NumberOfAlts = nfa.grammar.getNumberOfAltsForDecisionNFA( decisionStartState );
+            NumberOfAlts = nfa.grammar.GetNumberOfAltsForDecisionNFA( decisionStartState );
             this.decisionNumber = decisionNumber;
             this.NFADecisionStartState = decisionStartState;
             InitAltRelatedInfo();
@@ -172,7 +172,7 @@ namespace Antlr3.Analysis
             int walkAlt =
                 decisionStartState.TranslateDisplayAltToWalkAlt( alt );
             NFAState altLeftEdge =
-                nfa.grammar.getNFAStateForAltOfDecision( decisionStartState, walkAlt );
+                nfa.grammar.GetNFAStateForAltOfDecision( decisionStartState, walkAlt );
             NFAState altStartState = (NFAState)altLeftEdge.transition[0].target;
             //JSystem.@out.println("alt "+alt+" start state = "+altStartState.stateNumber);
             if ( altStartState.transition[0].IsSemanticPredicate )
@@ -189,7 +189,7 @@ namespace Antlr3.Analysis
                         */
                         if ( ctx.IsSyntacticPredicate )
                         {
-                            nfa.grammar.synPredUsedInDFA( this, ctx );
+                            nfa.grammar.SynPredUsedInDFA( this, ctx );
                         }
                         return (SemanticContext.Predicate)altStartState.transition[0].label.SemanticContext;
                     }
