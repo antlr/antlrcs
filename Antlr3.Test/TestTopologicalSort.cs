@@ -56,6 +56,7 @@ namespace AntlrUnitTests
             g.AddEdge( "D", "F" );
             g.AddEdge( "F", "H" );
             g.AddEdge( "E", "F" );
+            g.AddEdge( "G", "A" );
 
             string expecting = "[H, F, E, D, A, G, B, C]";
             var nodes = g.Sort();

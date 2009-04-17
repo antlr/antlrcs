@@ -36,7 +36,7 @@ namespace Antlr3.Misc
 
     public class Graph<T>
     {
-        public class Node
+        protected class Node
         {
             internal T _payload;
             internal List<Node> _edges; // points at which nodes?
@@ -111,7 +111,7 @@ namespace Antlr3.Misc
             return sorted;
         }
 
-        public virtual void DFS( Node n, HashSet<Node> visited, List<T> sorted )
+        protected virtual void DFS( Node n, HashSet<Node> visited, List<T> sorted )
         {
             if ( visited.Contains( n ) )
                 return;
