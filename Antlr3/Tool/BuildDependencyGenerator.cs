@@ -93,7 +93,7 @@ namespace Antlr3.Tool
         {
             this.tool = tool;
             this.grammarFileName = grammarFileName;
-            grammar = tool.getRootGrammar( grammarFileName );
+            grammar = tool.GetRootGrammar( grammarFileName );
             string language = (string)grammar.getOption( "language" );
             generator = new CodeGenerator( tool, grammar, language );
             generator.LoadTemplates( language );
@@ -121,7 +121,7 @@ namespace Antlr3.Tool
         public virtual IList<string> getGeneratedFileList()
         {
             List<FileInfo> files = new List<FileInfo>();
-            System.IO.DirectoryInfo outputDir = tool.getOutputDirectory( grammarFileName );
+            System.IO.DirectoryInfo outputDir = tool.GetOutputDirectory( grammarFileName );
             if ( outputDir.Name.Equals( "." ) )
             {
                 outputDir = null;
@@ -173,7 +173,7 @@ namespace Antlr3.Tool
                 grammar.composite.getDelegates( grammar.composite.RootGrammar );
             foreach ( Grammar g in imports )
             {
-                outputDir = tool.getOutputDirectory( g.FileName );
+                outputDir = tool.GetOutputDirectory( g.FileName );
                 string fname = groomQualifiedFileName( outputDir.ToString(), g.getRecognizerName() + extST.ToString() );
                 files.Add( new FileInfo( fname ) );
             }
@@ -229,7 +229,7 @@ namespace Antlr3.Tool
             tokenVocab = (string)grammar.getOption( "tokenVocab" );
             if ( tokenVocab != null )
             {
-                FileInfo vocabFile = tool.getImportedVocabFile( tokenVocab );
+                FileInfo vocabFile = tool.GetImportedVocabFile( tokenVocab );
                 files.Add( vocabFile.FullName );
             }
 

@@ -626,7 +626,7 @@ namespace Antlr3.Tool
                 {
                     return charVocabulary;
                 }
-                IIntSet allChar = IntervalSet.of( Label.MIN_CHAR_VALUE, MaxCharValue );
+                IIntSet allChar = IntervalSet.Of( Label.MIN_CHAR_VALUE, MaxCharValue );
                 return allChar;
             }
         }
@@ -874,7 +874,7 @@ namespace Antlr3.Tool
                 {
                     return AllCharValues;
                 }
-                return IntervalSet.of( Label.MIN_TOKEN_TYPE, MaxTokenType );
+                return IntervalSet.Of( Label.MIN_TOKEN_TYPE, MaxTokenType );
             }
         }
         public AntlrTool Tool
@@ -1661,9 +1661,9 @@ namespace Antlr3.Tool
                 for ( int alt = 1; alt < altLook.Length; alt++ )
                 {
                     LookaheadSet look = altLook[alt];
-                    if ( !ds.and( look.tokenTypeSet ).IsNil )
+                    if ( !ds.And( look.tokenTypeSet ).IsNil )
                     {
-                        edgeMap.map( ds, alt );
+                        edgeMap.Map( ds, alt );
                     }
                 }
             }
@@ -1704,12 +1704,12 @@ namespace Antlr3.Tool
 
                 // compare t with set i for disjointness
                 IntervalSet remainder = t; // remainder starts out as whole set to add
-                int numDisjointElements = disjointSets.size();
+                int numDisjointElements = disjointSets.Size();
                 for ( int i = 0; i < numDisjointElements; i++ )
                 {
-                    IntervalSet s_i = (IntervalSet)disjointSets.get( i );
+                    IntervalSet s_i = (IntervalSet)disjointSets.Get( i );
 
-                    if ( t.and( s_i ).IsNil )
+                    if ( t.And( s_i ).IsNil )
                     { // nothing in common
                         continue;
                     }
@@ -1720,21 +1720,21 @@ namespace Antlr3.Tool
 
                     // Replace existing s_i with intersection since we
                     // know that will always be a non nil character class
-                    IntervalSet intersection = (IntervalSet)s_i.and( t );
-                    disjointSets.set( i, intersection );
+                    IntervalSet intersection = (IntervalSet)s_i.And( t );
+                    disjointSets.Set( i, intersection );
 
                     // Compute s_i-t to see what is in current set and not in incoming
-                    IIntSet existingMinusNewElements = s_i.subtract( t );
+                    IIntSet existingMinusNewElements = s_i.Subtract( t );
                     //JSystem.@out.println(s_i+"-"+t+"="+existingMinusNewElements);
                     if ( !existingMinusNewElements.IsNil )
                     {
                         // found a new character class, add to the end (doesn't affect
                         // outer loop duration due to n computation a priori.
-                        disjointSets.add( existingMinusNewElements );
+                        disjointSets.Add( existingMinusNewElements );
                     }
 
                     // anything left to add to the reachableLabels?
-                    remainder = (IntervalSet)t.subtract( s_i );
+                    remainder = (IntervalSet)t.Subtract( s_i );
                     if ( remainder.IsNil )
                     {
                         break; // nothing left to add to set.  done!
@@ -1744,10 +1744,10 @@ namespace Antlr3.Tool
                 }
                 if ( !remainder.IsNil )
                 {
-                    disjointSets.add( remainder );
+                    disjointSets.Add( remainder );
                 }
             }
-            return disjointSets.getElements();
+            return disjointSets.GetElements();
         }
 
         public virtual DFA createLookaheadDFA( int decision, bool wackTempStructures )
@@ -2808,7 +2808,7 @@ namespace Antlr3.Tool
             TextReader br = null;
             try
             {
-                string fullName = tool.getLibraryFile( gname );
+                string fullName = tool.GetLibraryFile( gname );
                 //FileReader fr = new FileReader( fullName );
                 //br = new BufferedReader( fr );
                 br = new StringReader( System.IO.File.ReadAllText( fullName ) );
@@ -2900,7 +2900,7 @@ namespace Antlr3.Tool
                 return composite.maxTokenType;
             }
 
-            System.IO.FileInfo fullFile = tool.getImportedVocabFile( vocabName );
+            System.IO.FileInfo fullFile = tool.GetImportedVocabFile( vocabName );
             try
             {
                 FileReader fr = new FileReader( fullFile.FullName );
@@ -3660,14 +3660,14 @@ namespace Antlr3.Tool
         {
             //JSystem.@out.println("complement "+set.toString(this));
             //JSystem.@out.println("vocabulary "+getTokenTypes().toString(this));
-            IIntSet c = set.complement( TokenTypes );
+            IIntSet c = set.Complement( TokenTypes );
             //JSystem.@out.println("result="+c.toString(this));
             return c;
         }
 
         public virtual IIntSet complement( int atom )
         {
-            return complement( IntervalSet.of( atom ) );
+            return complement( IntervalSet.Of( atom ) );
         }
 
         /** Given set tree like ( SET A B ), check that A and B

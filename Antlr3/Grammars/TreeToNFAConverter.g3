@@ -570,7 +570,7 @@ set returns [StateCluster g=null]
 		$b.followingNFAState = $g.right;
 		$b.SetValue = elements; // track set value of this block
 		}
-		//{System.out.println("set elements="+elements.toString(grammar));}
+		//{System.out.println("set elements="+elements.ToString(grammar));}
 	;
 
 setRule returns [IIntSet elements=new IntervalSet()]
@@ -606,7 +606,7 @@ setElement[IIntSet elements]
 			{
 				ttype = grammar.getTokenType($c.text);
 			}
-			if ( elements.member(ttype) )
+			if ( elements.Contains(ttype) )
 			{
 				ErrorManager.grammarError(
 					ErrorManager.MSG_DUPLICATE_SET_ENTRY,
@@ -632,13 +632,13 @@ setElement[IIntSet elements]
 				}
 				else
 				{
-					elements.addAll(ruleSet);
+					elements.AddAll(ruleSet);
 				}
 			}
 			else
 			{
 				ttype = grammar.getTokenType($t.text);
-				if ( elements.member(ttype) )
+				if ( elements.Contains(ttype) )
 				{
 					ErrorManager.grammarError(
 						ErrorManager.MSG_DUPLICATE_SET_ENTRY,
@@ -653,7 +653,7 @@ setElement[IIntSet elements]
 	|	s=STRING_LITERAL
 		{
 			ttype = grammar.getTokenType($s.text);
-			if ( elements.member(ttype) )
+			if ( elements.Contains(ttype) )
 			{
 				ErrorManager.grammarError(
 					ErrorManager.MSG_DUPLICATE_SET_ENTRY,
@@ -669,21 +669,21 @@ setElement[IIntSet elements]
 			{
 				int a = Grammar.getCharValueFromGrammarCharLiteral($c1.text);
 				int b = Grammar.getCharValueFromGrammarCharLiteral($c2.text);
-				elements.addAll(IntervalSet.of(a,b));
+				elements.AddAll(IntervalSet.Of(a,b));
 			}
 		}
 
 	|	gset=set
 		{
 			Transition setTrans = $gset.g.left.GetTransition(0);
-			elements.addAll(setTrans.label.Set);
+			elements.AddAll(setTrans.label.Set);
 		}
 
 	|	^(	NOT {ns=new IntervalSet();}
 			setElement[ns]
 			{
 				IIntSet not = grammar.complement(ns);
-				elements.addAll(not);
+				elements.AddAll(not);
 			}
 		)
 	;
@@ -748,10 +748,10 @@ testSetElement returns [int alts=1]
 		}}
 	|   {grammar.type!=Grammar.LEXER}? => s=STRING_LITERAL
 	|	^(CHAR_RANGE c1=CHAR_LITERAL c2=CHAR_LITERAL)
-		{{ $alts = IntervalSet.of( Grammar.getCharValueFromGrammarCharLiteral($c1.text), Grammar.getCharValueFromGrammarCharLiteral($c2.text) ).size(); }}
+		{{ $alts = IntervalSet.Of( Grammar.getCharValueFromGrammarCharLiteral($c1.text), Grammar.getCharValueFromGrammarCharLiteral($c2.text) ).Count; }}
 	|   testBlockAsSet
 		{{ $alts = $testBlockAsSet.alts; }}
 	|   ^( NOT tse=testSetElement )
-		{{ $alts = grammar.TokenTypes.size() - $tse.alts; }}
+		{{ $alts = grammar.TokenTypes.Count - $tse.alts; }}
 	;
 catch[RecognitionException re] { throw re; }

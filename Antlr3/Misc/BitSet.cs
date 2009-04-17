@@ -46,6 +46,7 @@ namespace Antlr3.Misc
     using Label = Antlr3.Analysis.Label;
     using Math = System.Math;
     using NotImplementedException = System.NotImplementedException;
+    using Obsolete = System.ObsoleteAttribute;
     using StringBuilder = System.Text.StringBuilder;
 
     /**A BitSet to replace java.util.BitSet.
@@ -63,7 +64,7 @@ namespace Antlr3.Misc
      *
      * @author Terence Parr
      */
-    public class BitSet : IIntSet, ICloneable
+    public class BitSet : IIntSet, ICloneable, ICollection<int>
     {
         const int Bits = 64;    // number of bits / long
         const int LogBits = 6; // 2^6 == 64
@@ -111,25 +112,44 @@ namespace Antlr3.Misc
                 return true;
             }
         }
+        /** return how much space is being used by the bits array not
+         *  how many actually have member bits on.
+         */
         public int LengthInLongWords
         {
             get
             {
-                return lengthInLongWords();
+                return _bits.Length;
             }
         }
         public int NumBits
         {
             get
             {
-                return numBits();
+                // num words * bits per word
+                return _bits.Length << LogBits;
             }
         }
-        public int Size
+        public int Count
         {
             get
             {
-                return size();
+                int deg = 0;
+                for ( int i = _bits.Length - 1; i >= 0; i-- )
+                {
+                    ulong word = _bits[i];
+                    if ( word != 0L )
+                    {
+                        for ( int bit = Bits - 1; bit >= 0; bit-- )
+                        {
+                            if ( ( word & ( 1UL << bit ) ) != 0 )
+                            {
+                                deg++;
+                            }
+                        }
+                    }
+                }
+                return deg;
             }
         }
         #endregion
@@ -138,21 +158,21 @@ namespace Antlr3.Misc
         public virtual void Add( int el )
         {
             //System.Console.Out.WriteLine( "add(" + el + ")" );
-            int n = wordNumber( el );
+            int n = WordNumber( el );
             //System.Console.Out.WriteLine( "word number is " + n );
             //System.Console.Out.WriteLine( "bits.length " + _bits.Length );
             if ( n >= _bits.Length )
             {
-                growToInclude( el );
+                GrowToInclude( el );
             }
-            _bits[n] |= bitMask( el );
+            _bits[n] |= BitMask( el );
         }
 
-        public virtual void addAll( IIntSet set )
+        public virtual void AddAll( IIntSet set )
         {
             if ( set is BitSet )
             {
-                this.orInPlace( (BitSet)set );
+                this.OrInPlace( (BitSet)set );
             }
             else if ( set is IntervalSet )
             {
@@ -160,7 +180,7 @@ namespace Antlr3.Misc
                 // walk set and add each interval
                 foreach ( Interval I in other.intervals )
                 {
-                    this.orInPlace( BitSet.range( I.a, I.b ) );
+                    this.OrInPlace( BitSet.Range( I.a, I.b ) );
                 }
             }
             else
@@ -171,7 +191,7 @@ namespace Antlr3.Misc
             }
         }
 
-        public virtual void addAll( int[] elements )
+        public virtual void AddAll( int[] elements )
         {
             if ( elements == null )
             {
@@ -184,7 +204,7 @@ namespace Antlr3.Misc
             }
         }
 
-        public virtual void addAll( IEnumerable elements )
+        public virtual void AddAll( IEnumerable elements )
         {
             if ( elements == null )
             {
@@ -201,14 +221,14 @@ namespace Antlr3.Misc
             }
         }
 
-        public virtual IIntSet and( IIntSet a )
+        public virtual IIntSet And( IIntSet a )
         {
             BitSet s = (BitSet)this.Clone();
-            s.andInPlace( (BitSet)a );
+            s.AndInPlace( (BitSet)a );
             return s;
         }
 
-        public virtual void andInPlace( BitSet a )
+        public virtual void AndInPlace( BitSet a )
         {
             int min = Math.Min( _bits.Length, a._bits.Length );
             for ( int i = min - 1; i >= 0; i-- )
@@ -222,13 +242,13 @@ namespace Antlr3.Misc
             }
         }
 
-        private static ulong bitMask( int bitNumber )
+        private static ulong BitMask( int bitNumber )
         {
             int bitPosition = bitNumber & ModMask; // bitNumber mod BITS
             return 1UL << bitPosition;
         }
 
-        public virtual void clear()
+        public virtual void Clear()
         {
             for ( int i = _bits.Length - 1; i >= 0; i-- )
             {
@@ -236,39 +256,19 @@ namespace Antlr3.Misc
             }
         }
 
-        public virtual void clear( int el )
+        public virtual void Clear( int el )
         {
-            int n = wordNumber( el );
+            int n = WordNumber( el );
             if ( n >= _bits.Length )
             {	// grow as necessary to accommodate
-                growToInclude( el );
+                GrowToInclude( el );
             }
-            _bits[n] &= ~bitMask( el );
+            _bits[n] &= ~BitMask( el );
         }
 
         public virtual object Clone()
         {
             return new BitSet( (ulong[])_bits.Clone() );
-        }
-
-        public virtual int size()
-        {
-            int deg = 0;
-            for ( int i = _bits.Length - 1; i >= 0; i-- )
-            {
-                ulong word = _bits[i];
-                if ( word != 0L )
-                {
-                    for ( int bit = Bits - 1; bit >= 0; bit-- )
-                    {
-                        if ( ( word & ( 1UL << bit ) ) != 0 )
-                        {
-                            deg++;
-                        }
-                    }
-                }
-            }
-            return deg;
         }
 
         public override int GetHashCode()
@@ -326,30 +326,30 @@ namespace Antlr3.Misc
          * Grows the set to a larger number of bits.
          * @param bit element that must fit in set
          */
-        public virtual void growToInclude( int bit )
+        public virtual void GrowToInclude( int bit )
         {
-            int newSize = Math.Max( _bits.Length << 1, numWordsToHold( bit ) );
+            int newSize = Math.Max( _bits.Length << 1, NumWordsToHold( bit ) );
             ulong[] newbits = new ulong[newSize];
             Array.Copy( _bits, newbits, _bits.Length );
             _bits = newbits;
         }
 
-        public virtual bool member( int el )
+        public virtual bool Contains( int el )
         {
-            int n = wordNumber( el );
+            int n = WordNumber( el );
             if ( n >= _bits.Length )
                 return false;
-            return ( _bits[n] & bitMask( el ) ) != 0;
+            return ( _bits[n] & BitMask( el ) ) != 0;
         }
 
         /** Get the first element you find and return it.  Return Label.INVALID
          *  otherwise.
          */
-        public virtual int getSingleElement()
+        public virtual int GetSingleElement()
         {
             for ( int i = 0; i < ( _bits.Length << LogBits ); i++ )
             {
-                if ( member( i ) )
+                if ( Contains( i ) )
                 {
                     return i;
                 }
@@ -357,23 +357,23 @@ namespace Antlr3.Misc
             return Label.INVALID;
         }
 
-        public virtual IIntSet complement()
+        public virtual IIntSet Complement()
         {
             BitSet s = (BitSet)this.Clone();
-            s.notInPlace();
+            s.NotInPlace();
             return s;
         }
 
-        public virtual IIntSet complement( IIntSet set )
+        public virtual IIntSet Complement( IIntSet set )
         {
             if ( set == null )
             {
-                return this.complement();
+                return this.Complement();
             }
-            return set.subtract( this );
+            return set.Subtract( this );
         }
 
-        public virtual void notInPlace()
+        public virtual void NotInPlace()
         {
             for ( int i = _bits.Length - 1; i >= 0; i-- )
             {
@@ -382,36 +382,36 @@ namespace Antlr3.Misc
         }
 
         /** complement bits in the range 0..maxBit. */
-        public virtual void notInPlace( int maxBit )
+        public virtual void NotInPlace( int maxBit )
         {
-            notInPlace( 0, maxBit );
+            NotInPlace( 0, maxBit );
         }
 
         /** complement bits in the range minBit..maxBit.*/
-        public virtual void notInPlace( int minBit, int maxBit )
+        public virtual void NotInPlace( int minBit, int maxBit )
         {
             // make sure that we have room for maxBit
-            growToInclude( maxBit );
+            GrowToInclude( maxBit );
             for ( int i = minBit; i <= maxBit; i++ )
             {
-                int n = wordNumber( i );
-                _bits[n] ^= bitMask( i );
+                int n = WordNumber( i );
+                _bits[n] ^= BitMask( i );
             }
         }
 
-        private /*final*/ int numWordsToHold( int el )
+        private int NumWordsToHold( int el )
         {
             return ( el >> LogBits ) + 1;
         }
 
-        public static BitSet of( int el )
+        public static BitSet Of( int el )
         {
             BitSet s = new BitSet( el + 1 );
             s.Add( el );
             return s;
         }
 
-        public static BitSet of<T>( T elements )
+        public static BitSet Of<T>( T elements )
             where T : IEnumerable<int>
         {
             BitSet s = new BitSet();
@@ -422,11 +422,11 @@ namespace Antlr3.Misc
             return s;
         }
 
-        public static BitSet of( IntervalSet set )
+        public static BitSet Of( IntervalSet set )
         {
-            return of( (IIntSet)set );
+            return Of( (IIntSet)set );
         }
-        public static BitSet of( IIntSet set )
+        public static BitSet Of( IIntSet set )
         {
             if ( set == null )
             {
@@ -440,46 +440,46 @@ namespace Antlr3.Misc
             if ( set is IntervalSet )
             {
                 BitSet s = new BitSet();
-                s.addAll( set );
+                s.AddAll( set );
                 return s;
             }
             throw new ArgumentException( "can't create BitSet from " + set.GetType().Name );
         }
 
-        public static BitSet of( IDictionary elements )
+        public static BitSet Of( IDictionary elements )
         {
-            return BitSet.of( elements.Keys.Cast<int>() );
+            return BitSet.Of( elements.Keys.Cast<int>() );
         }
 
-        public static BitSet of<TKey, TValue>( System.Collections.Generic.IDictionary<TKey, TValue> elements )
+        public static BitSet Of<TKey, TValue>( System.Collections.Generic.IDictionary<TKey, TValue> elements )
         {
-            return BitSet.of( elements.Keys.Cast<int>() );
+            return BitSet.Of( elements.Keys.Cast<int>() );
         }
 
-        public static BitSet range( int a, int b )
+        public static BitSet Range( int a, int b )
         {
             BitSet s = new BitSet( b + 1 );
             for ( int i = a; i <= b; i++ )
             {
-                int n = wordNumber( i );
-                s._bits[n] |= bitMask( i );
+                int n = WordNumber( i );
+                s._bits[n] |= BitMask( i );
             }
             return s;
         }
 
         /** return this | a in a new set */
-        public virtual IIntSet or( IIntSet a )
+        public virtual IIntSet Or( IIntSet a )
         {
             if ( a == null )
             {
                 return this;
             }
             BitSet s = (BitSet)this.Clone();
-            s.orInPlace( (BitSet)a );
+            s.OrInPlace( (BitSet)a );
             return s;
         }
 
-        public virtual void orInPlace( BitSet a )
+        public virtual void OrInPlace( BitSet a )
         {
             if ( a == null )
             {
@@ -488,7 +488,7 @@ namespace Antlr3.Misc
             // If this is smaller than a, grow this first
             if ( a._bits.Length > _bits.Length )
             {
-                setSize( a._bits.Length );
+                SetSize( a._bits.Length );
             }
             int min = Math.Min( _bits.Length, a._bits.Length );
             for ( int i = min - 1; i >= 0; i-- )
@@ -498,21 +498,21 @@ namespace Antlr3.Misc
         }
 
         // remove this element from this set
-        public virtual void remove( int el )
+        public virtual void Remove( int el )
         {
-            int n = wordNumber( el );
+            int n = WordNumber( el );
             if ( n >= _bits.Length )
             {
-                growToInclude( el );
+                GrowToInclude( el );
             }
-            _bits[n] &= ~bitMask( el );
+            _bits[n] &= ~BitMask( el );
         }
 
         /**
          * Sets the size of a set.
          * @param nwords how many words the new set should be
          */
-        private void setSize( int nwords )
+        private void SetSize( int nwords )
         {
             ulong[] newbits = new ulong[nwords];
             int n = Math.Min( nwords, _bits.Length );
@@ -520,31 +520,18 @@ namespace Antlr3.Misc
             _bits = newbits;
         }
 
-        public virtual int numBits()
-        {
-            return _bits.Length << LogBits; // num words * bits per word
-        }
-
-        /** return how much space is being used by the bits array not
-         *  how many actually have member bits on.
-         */
-        public virtual int lengthInLongWords()
-        {
-            return _bits.Length;
-        }
-
         /**Is this contained within a? */
-        public virtual bool subset( BitSet a )
+        public virtual bool Subset( BitSet a )
         {
             if ( a == null )
                 return false;
-            return this.and( a ).Equals( this );
+            return this.And( a ).Equals( this );
         }
 
         /**Subtract the elements of 'a' from 'this' in-place.
          * Basically, just turn off all bits of 'this' that are in 'a'.
          */
-        public virtual void subtractInPlace( BitSet a )
+        public virtual void SubtractInPlace( BitSet a )
         {
             if ( a == null )
                 return;
@@ -555,28 +542,28 @@ namespace Antlr3.Misc
             }
         }
 
-        public virtual IIntSet subtract( IIntSet a )
+        public virtual IIntSet Subtract( IIntSet a )
         {
             if ( a == null || !( a is BitSet ) )
                 return null;
 
             BitSet s = (BitSet)this.Clone();
-            s.subtractInPlace( (BitSet)a );
+            s.SubtractInPlace( (BitSet)a );
             return s;
         }
 
         public virtual List<int> ToList()
         {
-            throw new NotImplementedException( "BitSet.toList() unimplemented" );
+            return new List<int>( ToArray() );
         }
 
-        public virtual int[] toArray()
+        public virtual int[] ToArray()
         {
-            int[] elems = new int[size()];
+            int[] elems = new int[Count];
             int en = 0;
             for ( int i = 0; i < ( _bits.Length << LogBits ); i++ )
             {
-                if ( member( i ) )
+                if ( Contains( i ) )
                 {
                     elems[en++] = i;
                 }
@@ -584,7 +571,7 @@ namespace Antlr3.Misc
             return elems;
         }
 
-        public virtual ulong[] toPackedArray()
+        public virtual ulong[] ToPackedArray()
         {
             return _bits;
         }
@@ -607,7 +594,7 @@ namespace Antlr3.Misc
 
             for ( int i = 0; i < ( _bits.Length << LogBits ); i++ )
             {
-                if ( member( i ) )
+                if ( Contains( i ) )
                 {
                     if ( i > 0 && havePrintedAnElement )
                     {
@@ -643,7 +630,7 @@ namespace Antlr3.Misc
             string str = "";
             for ( int i = 0; i < ( _bits.Length << LogBits ); i++ )
             {
-                if ( member( i ) )
+                if ( Contains( i ) )
                 {
                     if ( str.Length > 0 )
                     {
@@ -713,56 +700,40 @@ namespace Antlr3.Misc
             return ToString();
         }
 
-        private static int wordNumber( int bit )
+        private static int WordNumber( int bit )
         {
             return bit >> LogBits; // bit / BITS
         }
 
         #region ICollection<int> Members
 
-        void ICollection<int>.Clear()
-        {
-            throw new System.NotImplementedException();
-        }
-
-        bool ICollection<int>.Contains( int item )
-        {
-            throw new System.NotImplementedException();
-        }
-
         void ICollection<int>.CopyTo( int[] array, int arrayIndex )
         {
             throw new System.NotImplementedException();
-        }
-
-        int ICollection<int>.Count
-        {
-            get
-            {
-                throw new System.NotImplementedException();
-            }
         }
 
         bool ICollection<int>.IsReadOnly
         {
             get
             {
-                throw new System.NotImplementedException();
+                return false;
             }
         }
 
         bool ICollection<int>.Remove( int item )
         {
-            throw new System.NotImplementedException();
+            bool removed = Contains( item );
+            Remove( item );
+            return removed;
         }
 
         #endregion
 
         #region IEnumerable<int> Members
 
-        IEnumerator<int> IEnumerable<int>.GetEnumerator()
+        public IEnumerator<int> GetEnumerator()
         {
-            throw new System.NotImplementedException();
+            return ToArray().Cast<int>().GetEnumerator();
         }
 
         #endregion
@@ -771,7 +742,7 @@ namespace Antlr3.Misc
 
         System.Collections.IEnumerator IEnumerable.GetEnumerator()
         {
-            throw new System.NotImplementedException();
+            return GetEnumerator();
         }
 
         #endregion

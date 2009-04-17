@@ -53,18 +53,18 @@ namespace Antlr3.Analysis
         public LookaheadSet( IIntSet s )
             : this()
         {
-            tokenTypeSet.addAll( s );
+            tokenTypeSet.AddAll( s );
         }
 
         public LookaheadSet( int atom )
         {
-            tokenTypeSet = IntervalSet.of( atom );
+            tokenTypeSet = IntervalSet.Of( atom );
         }
 
         public LookaheadSet( LookaheadSet other )
             : this()
         {
-            this.tokenTypeSet.addAll( other.tokenTypeSet );
+            this.tokenTypeSet.AddAll( other.tokenTypeSet );
         }
 
         #region Properties
@@ -79,34 +79,34 @@ namespace Antlr3.Analysis
 
         public virtual void OrInPlace( LookaheadSet other )
         {
-            this.tokenTypeSet.addAll( other.tokenTypeSet );
+            this.tokenTypeSet.AddAll( other.tokenTypeSet );
         }
 
         public virtual LookaheadSet Or( LookaheadSet other )
         {
-            return new LookaheadSet( tokenTypeSet.or( other.tokenTypeSet ) );
+            return new LookaheadSet( tokenTypeSet.Or( other.tokenTypeSet ) );
         }
 
         public virtual LookaheadSet Subtract( LookaheadSet other )
         {
-            return new LookaheadSet( this.tokenTypeSet.subtract( other.tokenTypeSet ) );
+            return new LookaheadSet( this.tokenTypeSet.Subtract( other.tokenTypeSet ) );
         }
 
         public virtual bool Member( int a )
         {
-            return tokenTypeSet.member( a );
+            return tokenTypeSet.Contains( a );
         }
 
         public virtual LookaheadSet Intersection( LookaheadSet s )
         {
-            IIntSet i = this.tokenTypeSet.and( s.tokenTypeSet );
+            IIntSet i = this.tokenTypeSet.And( s.tokenTypeSet );
             LookaheadSet intersection = new LookaheadSet( i );
             return intersection;
         }
 
         public virtual void Remove( int a )
         {
-            tokenTypeSet = (IntervalSet)tokenTypeSet.subtract( IntervalSet.of( a ) );
+            tokenTypeSet = (IntervalSet)tokenTypeSet.Subtract( IntervalSet.Of( a ) );
         }
 
         public override int GetHashCode()

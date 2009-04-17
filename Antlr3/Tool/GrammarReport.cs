@@ -155,7 +155,7 @@ namespace Antlr3.Tool
             buf.Append( '\t' );
             buf.Append( cyclicDFAStates.Sum() );
             buf.Append( '\t' );
-            buf.Append( grammar.TokenTypes.size() );
+            buf.Append( grammar.TokenTypes.Count );
             buf.Append( '\t' );
             buf.Append( grammar.DFACreationWallClockTimeInMS );
             buf.Append( '\t' );

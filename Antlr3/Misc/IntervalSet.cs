@@ -58,7 +58,7 @@ namespace Antlr3.Misc
      */
     public class IntervalSet : IIntSet
     {
-        public static readonly IntervalSet COMPLETE_SET = IntervalSet.of( 0, Label.MAX_CHAR_VALUE );
+        public static readonly IntervalSet COMPLETE_SET = IntervalSet.Of( 0, Label.MAX_CHAR_VALUE );
 
         /** The list of sorted, disjoint intervals. */
         //protected List<Interval> intervals;
@@ -77,65 +77,65 @@ namespace Antlr3.Misc
         }
 
         #region Properties
+        public int Count
+        {
+            get
+            {
+                return intervals.Sum( interval => interval.b - interval.a + 1 );
+            }
+        }
         public ICollection<Interval> Intervals
         {
             get
             {
-                return getIntervals();
+                return GetIntervals();
             }
         }
         public int MaxElement
         {
             get
             {
-                return getMaxElement();
+                return GetMaxElement();
             }
         }
         public int MinElement
         {
             get
             {
-                return getMinElement();
+                return GetMinElement();
             }
         }
         public int SingleElement
         {
             get
             {
-                return getSingleElement();
-            }
-        }
-        public int Size
-        {
-            get
-            {
-                return size();
+                return GetSingleElement();
             }
         }
         #endregion
 
         /** Create a set with a single element, el. */
-        public static IntervalSet of( int a )
+        public static IntervalSet Of( int a )
         {
             IntervalSet s = new IntervalSet();
-            s.add( a );
+            s.Add( a );
             return s;
         }
 
         /** Create a set with all ints within range [a..b] (inclusive) */
-        public static IntervalSet of( int a, int b )
+        public static IntervalSet Of( int a, int b )
         {
             IntervalSet s = new IntervalSet();
-            s.add( a, b );
+            s.Add( a, b );
             return s;
         }
 
         /** Add a single element to the set.  An isolated element is stored
          *  as a range el..el.
          */
-        public virtual void add( int el )
+        public virtual void Add( int el )
         {
-            add( el, el );
+            Add( el, el );
         }
 
         /** Add interval; i.e., add all integers from a to b to set.
@@ -145,13 +145,13 @@ namespace Antlr3.Misc
          *  If this is {1..5, 10..20}, adding 6..7 yields
          *  {1..5, 6..7, 10..20}.  Adding 4..8 yields {1..8, 10..20}.
          */
-        public virtual void add( int a, int b )
+        public virtual void Add( int a, int b )
         {
-            add( Interval.create( a, b ) );
+            Add( Interval.Create( a, b ) );
         }
 
         // copy on write so we can cache a..a intervals and sets of that
-        protected virtual void add( Interval addition )
+        protected virtual void Add( Interval addition )
         {
             //JSystem.@out.println("add "+addition+" to "+intervals.toString());
             if ( addition.b < addition.a )
@@ -169,10 +169,10 @@ namespace Antlr3.Misc
                 {
                     return;
                 }
-                if ( addition.adjacent( r ) || !addition.disjoint( r ) )
+                if ( addition.Adjacent( r ) || !addition.Disjoint( r ) )
                 {
                     // next to each other, make a single larger interval
-                    Interval bigger = addition.union( r );
+                    Interval bigger = addition.Union( r );
                     intervals[i] = bigger;
                     // make sure we didn't just create an interval that
                     // should be merged with next interval in list
@@ -181,7 +181,7 @@ namespace Antlr3.Misc
                         i++;
                         Interval next = intervals[i];
                         //Interval next = (Interval)iter.next();
-                        if ( bigger.adjacent( next ) || !bigger.disjoint( next ) )
+                        if ( bigger.Adjacent( next ) || !bigger.Disjoint( next ) )
                         {
                             // if we bump up against or overlap next, merge
                             //iter.remove();   // remove this one
@@ -189,12 +189,12 @@ namespace Antlr3.Misc
                             //iter.previous(); // move backwards to what we just set
                             i--;
                             //iter.set( bigger.union( next ) ); // set to 3 merged ones
-                            intervals[i] = bigger.union( next );
+                            intervals[i] = bigger.Union( next );
                         }
                     }
                     return;
                 }
-                if ( addition.startsBeforeDisjoint( r ) )
+                if ( addition.StartsBeforeDisjoint( r ) )
                 {
                     // insert before r
                     //iter.previous();
@@ -210,7 +210,7 @@ namespace Antlr3.Misc
         }
 
 #if false
-        protected virtual void add( Interval addition )
+        protected virtual void Add( Interval addition )
         {
             //JSystem.@out.println("add "+addition+" to "+intervals.toString());
             if ( addition.b < addition.a )
@@ -262,7 +262,7 @@ namespace Antlr3.Misc
         }
 #endif
 
-        public virtual void addAll( IIntSet set )
+        public virtual void AddAll( IIntSet set )
         {
             if ( set == null )
             {
@@ -280,13 +280,13 @@ namespace Antlr3.Misc
             for ( int i = 0; i < n; i++ )
             {
                 Interval I = (Interval)other.intervals[i];
-                this.add( I.a, I.b );
+                this.Add( I.a, I.b );
             }
         }
 
-        public virtual IIntSet complement( int minElement, int maxElement )
+        public virtual IIntSet Complement( int minElement, int maxElement )
         {
-            return this.complement( IntervalSet.of( minElement, maxElement ) );
+            return this.Complement( IntervalSet.Of( minElement, maxElement ) );
         }
 
         /** Given the set of possible values (rather than, say UNICODE or MAXINT),
@@ -295,7 +295,7 @@ namespace Antlr3.Misc
          *
          *  'this' is assumed to be either a subset or equal to vocabulary.
          */
-        public virtual IIntSet complement( IIntSet vocabulary )
+        public virtual IIntSet Complement( IIntSet vocabulary )
         {
             if ( vocabulary == null )
             {
@@ -307,7 +307,7 @@ namespace Antlr3.Misc
                                                    vocabulary.GetType().Name + ")" );
             }
             IntervalSet vocabularyIS = ( (IntervalSet)vocabulary );
-            int maxElement = vocabularyIS.getMaxElement();
+            int maxElement = vocabularyIS.GetMaxElement();
 
             IntervalSet compl = new IntervalSet();
             int n = intervals.Count;
@@ -319,25 +319,25 @@ namespace Antlr3.Misc
             // add a range from 0 to first.a constrained to vocab
             if ( first.a > 0 )
             {
-                IntervalSet s = IntervalSet.of( 0, first.a - 1 );
-                IntervalSet a = (IntervalSet)s.and( vocabularyIS );
-                compl.addAll( a );
+                IntervalSet s = IntervalSet.Of( 0, first.a - 1 );
+                IntervalSet a = (IntervalSet)s.And( vocabularyIS );
+                compl.AddAll( a );
             }
             for ( int i = 1; i < n; i++ )
             { // from 2nd interval .. nth
                 Interval previous = (Interval)intervals[i - 1];
                 Interval current = (Interval)intervals[i];
-                IntervalSet s = IntervalSet.of( previous.b + 1, current.a - 1 );
-                IntervalSet a = (IntervalSet)s.and( vocabularyIS );
-                compl.addAll( a );
+                IntervalSet s = IntervalSet.Of( previous.b + 1, current.a - 1 );
+                IntervalSet a = (IntervalSet)s.And( vocabularyIS );
+                compl.AddAll( a );
             }
             Interval last = (Interval)intervals[n - 1];
             // add a range from last.b to maxElement constrained to vocab
             if ( last.b < maxElement )
             {
-                IntervalSet s = IntervalSet.of( last.b + 1, maxElement );
-                IntervalSet a = (IntervalSet)s.and( vocabularyIS );
-                compl.addAll( a );
+                IntervalSet s = IntervalSet.Of( last.b + 1, maxElement );
+                IntervalSet a = (IntervalSet)s.And( vocabularyIS );
+                compl.AddAll( a );
             }
             return compl;
         }
@@ -347,7 +347,7 @@ namespace Antlr3.Misc
          *  other is assumed to be a subset of this;
          *  anything that is in other but not in this will be ignored.
          */
-        public virtual IIntSet subtract( IIntSet other )
+        public virtual IIntSet Subtract( IIntSet other )
         {
             // assume the whole unicode range here for the complement
             // because it doesn't matter.  Anything beyond the max of this' set
@@ -355,7 +355,7 @@ namespace Antlr3.Misc
             // will be empty.  The only problem would be when this' set max value
             // goes beyond MAX_CHAR_VALUE, but hopefully the constant MAX_CHAR_VALUE
             // will prevent this.
-            return this.and( ( (IntervalSet)other ).complement( COMPLETE_SET ) );
+            return this.And( ( (IntervalSet)other ).Complement( COMPLETE_SET ) );
         }
 
 #if false
@@ -367,7 +367,7 @@ namespace Antlr3.Misc
          *  Keep around, but 10-20-2005, I decided to make complement work w/o
          *  subtract and so then subtract can simply be a&~b
          */
-        public IIntSet subtract( IIntSet other )
+        public IIntSet Subtract( IIntSet other )
         {
             if ( other == null || !( other is IntervalSet ) )
             {
@@ -501,11 +501,11 @@ namespace Antlr3.Misc
 #endif
 
         /** TODO: implement this! */
-        public IIntSet or( IIntSet a )
+        public IIntSet Or( IIntSet a )
         {
             IntervalSet o = new IntervalSet();
-            o.addAll( this );
-            o.addAll( a );
+            o.AddAll( this );
+            o.AddAll( a );
             //throw new NoSuchMethodError();
             return o;
         }
@@ -515,7 +515,7 @@ namespace Antlr3.Misc
          *  just walk them together.  This is roughly O(min(n,m)) for interval
          *  list lengths n and m.
          */
-        public IIntSet and( IIntSet other )
+        public IIntSet And( IIntSet other )
         {
             if ( other == null )
             { //|| !(other instanceof IntervalSet) ) {
@@ -535,44 +535,44 @@ namespace Antlr3.Misc
                 Interval mine = (Interval)myIntervals[i];
                 Interval theirs = (Interval)theirIntervals[j];
                 //JSystem.@out.println("mine="+mine+" and theirs="+theirs);
-                if ( mine.startsBeforeDisjoint( theirs ) )
+                if ( mine.StartsBeforeDisjoint( theirs ) )
                 {
                     // move this iterator looking for interval that might overlap
                     i++;
                 }
-                else if ( theirs.startsBeforeDisjoint( mine ) )
+                else if ( theirs.StartsBeforeDisjoint( mine ) )
                 {
                     // move other iterator looking for interval that might overlap
                     j++;
                 }
-                else if ( mine.properlyContains( theirs ) )
+                else if ( mine.ProperlyContains( theirs ) )
                 {
                     // overlap, add intersection, get next theirs
                     if ( intersection == null )
                     {
                         intersection = new IntervalSet();
                     }
-                    intersection.add( mine.intersection( theirs ) );
+                    intersection.Add( mine.Intersection( theirs ) );
                     j++;
                 }
-                else if ( theirs.properlyContains( mine ) )
+                else if ( theirs.ProperlyContains( mine ) )
                 {
                     // overlap, add intersection, get next mine
                     if ( intersection == null )
                     {
                         intersection = new IntervalSet();
                     }
-                    intersection.add( mine.intersection( theirs ) );
+                    intersection.Add( mine.Intersection( theirs ) );
                     i++;
                 }
-                else if ( !mine.disjoint( theirs ) )
+                else if ( !mine.Disjoint( theirs ) )
                 {
                     // overlap, add intersection
                     if ( intersection == null )
                     {
                         intersection = new IntervalSet();
                     }
-                    intersection.add( mine.intersection( theirs ) );
+                    intersection.Add( mine.Intersection( theirs ) );
                     // Move the iterator of lower range [a..b], but not
                     // the upper range as it may contain elements that will collide
                     // with the next iterator. So, if mine=[0..115] and
@@ -580,11 +580,11 @@ namespace Antlr3.Misc
                     // but not theirs as theirs may collide with the next range
                     // in thisIter.
                     // move both iterators to next ranges
-                    if ( mine.startsAfterNonDisjoint( theirs ) )
+                    if ( mine.StartsAfterNonDisjoint( theirs ) )
                     {
                         j++;
                     }
-                    else if ( theirs.startsAfterNonDisjoint( mine ) )
+                    else if ( theirs.StartsAfterNonDisjoint( mine ) )
                     {
                         i++;
                     }
@@ -598,7 +598,7 @@ namespace Antlr3.Misc
         }
 
         /** Is el in any range of this set? */
-        public virtual bool member( int el )
+        public virtual bool Contains( int el )
         {
             int n = intervals.Count;
             for ( int i = 0; i < n; i++ )
@@ -640,7 +640,7 @@ namespace Antlr3.Misc
         }
 
         /** If this set is a single integer, return it otherwise Label.INVALID */
-        public virtual int getSingleElement()
+        public virtual int GetSingleElement()
         {
             if ( intervals != null && intervals.Count == 1 )
             {
@@ -653,7 +653,7 @@ namespace Antlr3.Misc
             return Label.INVALID;
         }
 
-        public virtual int getMaxElement()
+        public virtual int GetMaxElement()
         {
             if ( IsNil )
             {
@@ -664,7 +664,7 @@ namespace Antlr3.Misc
         }
 
         /** Return minimum element >= 0 */
-        public virtual int getMinElement()
+        public virtual int GetMinElement()
         {
             if ( IsNil )
             {
@@ -686,7 +686,7 @@ namespace Antlr3.Misc
         }
 
         /** Return a list of Interval objects. */
-        public virtual IList<Interval> getIntervals()
+        public virtual IList<Interval> GetIntervals()
         {
             return intervals;
         }
@@ -766,11 +766,6 @@ namespace Antlr3.Misc
             return buf.ToString();
         }
 
-        public virtual int size()
-        {
-            return intervals.Sum( interval => interval.b - interval.a + 1 );
-        }
-
         public List<int> ToList()
         {
             int count = ( (IIntSet)this ).Count;
@@ -789,7 +784,7 @@ namespace Antlr3.Misc
          *  don't bother to implement if you're not doing that for a new
          *  ANTLR code gen target.
          */
-        public virtual int get( int i )
+        public virtual int Get( int i )
         {
             int n = intervals.Count;
             int index = 0;
@@ -810,9 +805,9 @@ namespace Antlr3.Misc
             return -1;
         }
 
-        public int[] toArray()
+        public int[] ToArray()
         {
-            int[] values = new int[size()];
+            int[] values = new int[Count];
             int n = intervals.Count;
             int j = 0;
             for ( int i = 0; i < n; i++ )
@@ -829,10 +824,10 @@ namespace Antlr3.Misc
             return values;
         }
 
-        public Antlr.Runtime.BitSet toRuntimeBitSet()
+        public Antlr.Runtime.BitSet ToRuntimeBitSet()
         {
             Antlr.Runtime.BitSet s =
-                new Antlr.Runtime.BitSet( getMaxElement() + 1 );
+                new Antlr.Runtime.BitSet( GetMaxElement() + 1 );
             int n = intervals.Count;
             for ( int i = 0; i < n; i++ )
             {
@@ -847,7 +842,7 @@ namespace Antlr3.Misc
             return s;
         }
 
-        public virtual void remove( int el )
+        public virtual void Remove( int el )
         {
             throw new NotImplementedException();
         }
@@ -864,7 +859,7 @@ namespace Antlr3.Misc
 
         void ICollection<int>.Add( int item )
         {
-            add( item );
+            Add( item );
         }
 
         void ICollection<int>.Clear()
@@ -874,20 +869,12 @@ namespace Antlr3.Misc
 
         bool ICollection<int>.Contains( int item )
         {
-            return member( item );
+            return Contains( item );
         }
 
         void ICollection<int>.CopyTo( int[] array, int arrayIndex )
         {
             throw new NotImplementedException();
-        }
-
-        int ICollection<int>.Count
-        {
-            get
-            {
-                return intervals.Sum( interval => interval.b - interval.a + 1 );
-            }
         }
 
         bool ICollection<int>.IsReadOnly
@@ -900,7 +887,7 @@ namespace Antlr3.Misc
 
         bool ICollection<int>.Remove( int item )
         {
-            remove( item );
+            Remove( item );
             return true;
         }
 

@@ -1,4 +1,4 @@
-// $ANTLR 3.1.2 Grammars\\TreeToNFAConverter.g3 2009-04-16 17:19:06
+// $ANTLR 3.1.2 Grammars\\TreeToNFAConverter.g3 2009-04-16 19:02:09
 
 // The variable 'variable' is assigned but its value is never used.
 #pragma warning disable 219
@@ -4174,7 +4174,7 @@ public partial class TreeToNFAConverter : TreeParser
 								{
 									ttype = grammar.getTokenType((c!=null?c.Text:null));
 								}
-								if ( elements.member(ttype) )
+								if ( elements.Contains(ttype) )
 								{
 									ErrorManager.grammarError(
 										ErrorManager.MSG_DUPLICATE_SET_ENTRY,
@@ -4209,13 +4209,13 @@ public partial class TreeToNFAConverter : TreeParser
 									}
 									else
 									{
-										elements.addAll(ruleSet);
+										elements.AddAll(ruleSet);
 									}
 								}
 								else
 								{
 									ttype = grammar.getTokenType((t!=null?t.Text:null));
-									if ( elements.member(ttype) )
+									if ( elements.Contains(ttype) )
 									{
 										ErrorManager.grammarError(
 											ErrorManager.MSG_DUPLICATE_SET_ENTRY,
@@ -4238,7 +4238,7 @@ public partial class TreeToNFAConverter : TreeParser
 				{
 
 								ttype = grammar.getTokenType((s!=null?s.Text:null));
-								if ( elements.member(ttype) )
+								if ( elements.Contains(ttype) )
 								{
 									ErrorManager.grammarError(
 										ErrorManager.MSG_DUPLICATE_SET_ENTRY,
@@ -4269,7 +4269,7 @@ public partial class TreeToNFAConverter : TreeParser
 								{
 									int a = Grammar.getCharValueFromGrammarCharLiteral((c1!=null?c1.Text:null));
 									int b = Grammar.getCharValueFromGrammarCharLiteral((c2!=null?c2.Text:null));
-									elements.addAll(IntervalSet.of(a,b));
+									elements.AddAll(IntervalSet.Of(a,b));
 								}
 							
 				}
@@ -4288,7 +4288,7 @@ public partial class TreeToNFAConverter : TreeParser
 				{
 
 								Transition setTrans = (gset!=null?gset.g:default(StateCluster)).left.GetTransition(0);
-								elements.addAll(setTrans.label.Set);
+								elements.AddAll(setTrans.label.Set);
 							
 				}
 
@@ -4314,7 +4314,7 @@ public partial class TreeToNFAConverter : TreeParser
 				{
 
 									IIntSet not = grammar.complement(ns);
-									elements.addAll(not);
+									elements.AddAll(not);
 								
 				}
 
@@ -4874,7 +4874,7 @@ public partial class TreeToNFAConverter : TreeParser
 				c2=(GrammarAST)Match(input,CHAR_LITERAL,Follow._CHAR_LITERAL_in_testSetElement1938); if (state.failed) return alts;
 
 				Match(input, TokenConstants.Up, null); if (state.failed) return alts;
-				 alts = IntervalSet.of( Grammar.getCharValueFromGrammarCharLiteral((c1!=null?c1.Text:null)), Grammar.getCharValueFromGrammarCharLiteral((c2!=null?c2.Text:null)) ).size(); 
+				 alts = IntervalSet.Of( Grammar.getCharValueFromGrammarCharLiteral((c1!=null?c1.Text:null)), Grammar.getCharValueFromGrammarCharLiteral((c2!=null?c2.Text:null)) ).Count; 
 
 				}
 				break;
@@ -4903,7 +4903,7 @@ public partial class TreeToNFAConverter : TreeParser
 				if (state.failed) return alts;
 
 				Match(input, TokenConstants.Up, null); if (state.failed) return alts;
-				 alts = grammar.TokenTypes.size() - tse; 
+				 alts = grammar.TokenTypes.Count - tse; 
 
 				}
 				break;

@@ -75,7 +75,6 @@
     <Compile Include="Codegen\Target.cs" />
     <Compile Include="Misc\Barrier.cs" />
     <Compile Include="Misc\BitSet.cs" />
-    <Compile Include="Misc\IntArrayList.cs" />
     <Compile Include="Misc\Interval.cs" />
     <Compile Include="Misc\IntervalSet.cs" />
     <Compile Include="Misc\IntSet.cs" />

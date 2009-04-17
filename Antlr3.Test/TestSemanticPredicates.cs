@@ -874,9 +874,9 @@ namespace AntlrUnitTests
             if ( expectingUnreachableAlts != null )
             {
                 BitSet s = new BitSet();
-                s.addAll( expectingUnreachableAlts );
+                s.AddAll( expectingUnreachableAlts );
                 BitSet s2 = new BitSet();
-                s2.addAll( unreachableAlts );
+                s2.AddAll( unreachableAlts );
                 assertEquals( "unreachable alts mismatch", s, s2 );
             }
             else
@@ -912,9 +912,9 @@ namespace AntlrUnitTests
                     nondetMsg.probe.GetNonDeterministicAltsForState( nondetMsg.problemState );
                 // compare nonDetAlts with expectingNonDetAlts
                 BitSet s = new BitSet();
-                s.addAll( expectingNonDetAlts );
+                s.AddAll( expectingNonDetAlts );
                 BitSet s2 = new BitSet();
-                s2.addAll( nonDetAlts );
+                s2.AddAll( nonDetAlts );
                 assertEquals( "nondet alts mismatch", s, s2 );
                 assertEquals( "mismatch between expected hasPredHiddenByAction", hasPredHiddenByAction,
                              nondetMsg.problemState.dfa.hasPredicateBlockedByAction );
@@ -936,9 +936,9 @@ namespace AntlrUnitTests
                 var locations = insuffPredMsg.altToLocations;
                 var actualAlts = locations.Keys;
                 BitSet s = new BitSet();
-                s.addAll( expectingInsufficientPredAlts );
+                s.AddAll( expectingInsufficientPredAlts );
                 BitSet s2 = new BitSet();
-                s2.addAll( actualAlts );
+                s2.AddAll( actualAlts );
                 assertEquals( "mismatch between insufficiently covered alts", s, s2 );
                 assertEquals( "mismatch between expected hasPredHiddenByAction", hasPredHiddenByAction,
                              insuffPredMsg.problemState.dfa.hasPredicateBlockedByAction );

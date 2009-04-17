@@ -739,7 +739,7 @@ namespace AntlrUnitTests
                 "b : r=a {###" + action + "!!!}\n" +
                 "  ;" );
             AntlrTool antlr = newTool();
-            antlr.setOutputDirectory( null ); // write to /dev/null
+            antlr.SetOutputDirectory( null ); // write to /dev/null
             CodeGenerator generator = new CodeGenerator( antlr, g, "Java" );
             g.setCodeGenerator( generator );
             generator.GenRecognizer(); // codegen phase sets some vars we need
@@ -759,7 +759,7 @@ namespace AntlrUnitTests
                 "parser grammar t;\n" +
                 "a : A a {$a.text} | B ;" );
             AntlrTool antlr = newTool();
-            antlr.setOutputDirectory( null ); // write to /dev/null
+            antlr.SetOutputDirectory( null ); // write to /dev/null
             CodeGenerator generator = new CodeGenerator( antlr, g, "Java" );
             g.setCodeGenerator( generator );
             generator.GenRecognizer();
@@ -784,7 +784,7 @@ namespace AntlrUnitTests
                 "b : r=a {###" + action + "!!!}\n" +
                 "  ;" );
             AntlrTool antlr = newTool();
-            antlr.setOutputDirectory( null ); // write to /dev/null
+            antlr.SetOutputDirectory( null ); // write to /dev/null
             CodeGenerator generator = new CodeGenerator( antlr, g, "Java" );
             g.setCodeGenerator( generator );
             generator.GenRecognizer(); // codegen phase sets some vars we need
@@ -811,7 +811,7 @@ namespace AntlrUnitTests
                 "a returns [int x]\n" +
                 "  : ;\n" );
             AntlrTool antlr = newTool();
-            antlr.setOutputDirectory( null ); // write to /dev/null
+            antlr.SetOutputDirectory( null ); // write to /dev/null
             CodeGenerator generator = new CodeGenerator( antlr, g, "Java" );
             g.setCodeGenerator( generator );
             generator.GenRecognizer(); // codegen phase sets some vars we need
@@ -2302,7 +2302,7 @@ namespace AntlrUnitTests
                 "a : ID {" + action + "} ;" +
                 "ID : 'a';\n" );
             AntlrTool antlr = newTool();
-            antlr.setOutputDirectory( null ); // write to /dev/null
+            antlr.SetOutputDirectory( null ); // write to /dev/null
             CodeGenerator generator = new CodeGenerator( antlr, g, "Java" );
 
             ActionTranslator translator =
@@ -2334,7 +2334,7 @@ namespace AntlrUnitTests
                 "a : r {###" + action + "!!!} ;" +
                 "r : 'a';\n" );
             AntlrTool antlr = newTool();
-            antlr.setOutputDirectory( null ); // write to /dev/null
+            antlr.SetOutputDirectory( null ); // write to /dev/null
             CodeGenerator generator = new CodeGenerator( antlr, g, "Java" );
             g.setCodeGenerator( generator );
             generator.GenRecognizer();
@@ -2359,7 +2359,7 @@ namespace AntlrUnitTests
                 "a : x=r {###" + action + "!!!} ;" +
                 "r : 'a';\n" );
             AntlrTool antlr = newTool();
-            antlr.setOutputDirectory( null ); // write to /dev/null
+            antlr.SetOutputDirectory( null ); // write to /dev/null
             CodeGenerator generator = new CodeGenerator( antlr, g, "Java" );
             g.setCodeGenerator( generator );
             generator.GenRecognizer();
@@ -2385,7 +2385,7 @@ namespace AntlrUnitTests
                 "a : x+=r {###" + action + "!!!} ;" +
                 "r : 'a';\n" );
             AntlrTool antlr = newTool();
-            antlr.setOutputDirectory( null ); // write to /dev/null
+            antlr.SetOutputDirectory( null ); // write to /dev/null
             CodeGenerator generator = new CodeGenerator( antlr, g, "Java" );
             g.setCodeGenerator( generator );
             generator.GenRecognizer();
@@ -2410,7 +2410,7 @@ namespace AntlrUnitTests
                 "a : x=ID {" + action + "} ;" +
                 "ID : 'a';\n" );
             AntlrTool antlr = newTool();
-            antlr.setOutputDirectory( null ); // write to /dev/null
+            antlr.SetOutputDirectory( null ); // write to /dev/null
             CodeGenerator generator = new CodeGenerator( antlr, g, "Java" );
             g.setCodeGenerator( generator );
             generator.GenRecognizer();
@@ -2440,7 +2440,7 @@ namespace AntlrUnitTests
                 "a : x+=ID {" + action + "} ;" +
                 "ID : 'a';\n" );
             AntlrTool antlr = newTool();
-            antlr.setOutputDirectory( null ); // write to /dev/null
+            antlr.SetOutputDirectory( null ); // write to /dev/null
             CodeGenerator generator = new CodeGenerator( antlr, g, "Java" );
             g.setCodeGenerator( generator );
             generator.GenRecognizer();
@@ -2469,7 +2469,7 @@ namespace AntlrUnitTests
                 "b : 'b';\n" +
                 "WS : ' '|'\n';\n" );
             AntlrTool antlr = newTool();
-            antlr.setOutputDirectory( null ); // write to /dev/null
+            antlr.SetOutputDirectory( null ); // write to /dev/null
             CodeGenerator generator = new CodeGenerator( antlr, g, "Java" );
             g.setCodeGenerator( generator );
             generator.GenRecognizer();
@@ -2523,7 +2523,7 @@ namespace AntlrUnitTests
                 "a : r ;" +
                 "r[int i] : 'a';\n" );
             AntlrTool antlr = newTool();
-            antlr.setOutputDirectory( null ); // write to /dev/null
+            antlr.SetOutputDirectory( null ); // write to /dev/null
             CodeGenerator generator = new CodeGenerator( antlr, g, "Java" );
             g.setCodeGenerator( generator );
             generator.GenRecognizer();
@@ -2545,7 +2545,7 @@ namespace AntlrUnitTests
                 "a : r[32,34] ;" +
                 "r : 'a';\n" );
             AntlrTool antlr = newTool();
-            antlr.setOutputDirectory( null ); // write to /dev/null
+            antlr.SetOutputDirectory( null ); // write to /dev/null
             CodeGenerator generator = new CodeGenerator( antlr, g, "Java" );
             g.setCodeGenerator( generator );
             generator.GenRecognizer();
@@ -2627,7 +2627,7 @@ namespace AntlrUnitTests
                 "a : r[32,34] ;" +
                 "r[int x, int y=3] : 'a';\n" );
             AntlrTool antlr = newTool();
-            antlr.setOutputDirectory( null ); // write to /dev/null
+            antlr.SetOutputDirectory( null ); // write to /dev/null
             CodeGenerator generator = new CodeGenerator( antlr, g, "Java" );
             g.setCodeGenerator( generator );
             generator.GenRecognizer();
@@ -2649,7 +2649,7 @@ namespace AntlrUnitTests
                 "a : ID[32,34] ;" +
                 "ID : 'a';\n" );
             AntlrTool antlr = newTool();
-            antlr.setOutputDirectory( null ); // write to /dev/null
+            antlr.SetOutputDirectory( null ); // write to /dev/null
             CodeGenerator generator = new CodeGenerator( antlr, g, "Java" );
             g.setCodeGenerator( generator );
             generator.GenRecognizer();
@@ -2671,7 +2671,7 @@ namespace AntlrUnitTests
                 "R : 'z' ID[32,34] ;" +
                 "ID : 'a';\n" );
             AntlrTool antlr = newTool();
-            antlr.setOutputDirectory( null ); // write to /dev/null
+            antlr.SetOutputDirectory( null ); // write to /dev/null
             CodeGenerator generator = new CodeGenerator( antlr, g, "Java" );
             g.setCodeGenerator( generator );
             generator.GenRecognizer();
@@ -2844,7 +2844,7 @@ namespace AntlrUnitTests
                 "A : R ;" +
                 "R[int i] : 'a';\n" );
             AntlrTool antlr = newTool();
-            antlr.setOutputDirectory( null ); // write to /dev/null
+            antlr.SetOutputDirectory( null ); // write to /dev/null
             CodeGenerator generator = new CodeGenerator( antlr, g, "Java" );
             g.setCodeGenerator( generator );
             generator.GenRecognizer();
@@ -2967,7 +2967,7 @@ namespace AntlrUnitTests
             sr.Close();
 
             AntlrTool antlr = newTool();
-            antlr.setOutputDirectory( null ); // write to /dev/null
+            antlr.SetOutputDirectory( null ); // write to /dev/null
             CodeGenerator generator = new CodeGenerator( antlr, lexerGrammar, "Java" );
             lexerGrammar.setCodeGenerator( generator );
             generator.GenRecognizer();
@@ -3001,7 +3001,7 @@ namespace AntlrUnitTests
             sr.Close();
 
             AntlrTool antlr = newTool();
-            antlr.setOutputDirectory( null ); // write to /dev/null
+            antlr.SetOutputDirectory( null ); // write to /dev/null
             CodeGenerator generator = new CodeGenerator( antlr, lexerGrammar, "Java" );
             lexerGrammar.setCodeGenerator( generator );
             generator.GenRecognizer();
@@ -3029,7 +3029,7 @@ namespace AntlrUnitTests
                 "ID : 'a';\n" );
 
             AntlrTool antlr = newTool();
-            antlr.setOutputDirectory( null ); // write to /dev/null
+            antlr.SetOutputDirectory( null ); // write to /dev/null
             CodeGenerator generator = new CodeGenerator( antlr, g, "Java" );
             ActionTranslator translator =
                 new ActionTranslator( generator,
@@ -3060,7 +3060,7 @@ namespace AntlrUnitTests
                 "a : ID {" + action + "} ;" +
                 "ID : 'a';\n" );
             AntlrTool antlr = newTool();
-            antlr.setOutputDirectory( null ); // write to /dev/null
+            antlr.SetOutputDirectory( null ); // write to /dev/null
             CodeGenerator generator = new CodeGenerator( antlr, g, "Java" );
             g.setCodeGenerator( generator );
             generator.GenRecognizer();
@@ -3088,7 +3088,7 @@ namespace AntlrUnitTests
                 "a : ID ID {" + action + "};" +
                 "ID : 'a';\n" );
             AntlrTool antlr = newTool();
-            antlr.setOutputDirectory( null ); // write to /dev/null
+            antlr.SetOutputDirectory( null ); // write to /dev/null
             CodeGenerator generator = new CodeGenerator( antlr, g, "Java" );
             g.setCodeGenerator( generator );
             generator.GenRecognizer();
@@ -3112,7 +3112,7 @@ namespace AntlrUnitTests
                 "a : ID ID {" + action + "};" +
                 "ID : 'a';\n" );
             AntlrTool antlr = newTool();
-            antlr.setOutputDirectory( null ); // write to /dev/null
+            antlr.SetOutputDirectory( null ); // write to /dev/null
             CodeGenerator generator = new CodeGenerator( antlr, g, "Java" );
             g.setCodeGenerator( generator );
             generator.GenRecognizer();
@@ -3474,7 +3474,7 @@ namespace AntlrUnitTests
                 "b : r=a {###" + action + "!!!}\n" +
                 "  ;" );
             AntlrTool antlr = newTool();
-            antlr.setOutputDirectory( null ); // write to /dev/null
+            antlr.SetOutputDirectory( null ); // write to /dev/null
             CodeGenerator generator = new CodeGenerator( antlr, g, "Java" );
             g.setCodeGenerator( generator );
             generator.GenRecognizer(); // codegen phase sets some vars we need
@@ -3508,7 +3508,7 @@ namespace AntlrUnitTests
                 "  ;\n" );
 
             AntlrTool antlr = newTool();
-            antlr.setOutputDirectory( null ); // write to /dev/null
+            antlr.SetOutputDirectory( null ); // write to /dev/null
             CodeGenerator generator = new CodeGenerator( antlr, g, "Java" );
             g.setCodeGenerator( generator );
             generator.GenRecognizer(); // codegen phase sets some vars we need

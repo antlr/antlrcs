@@ -154,7 +154,7 @@ namespace Antlr3.Analysis
         protected virtual Label GetLabelForSet( IntervalSet edgeSet )
         {
             Label e = null;
-            int atom = edgeSet.getSingleElement();
+            int atom = edgeSet.GetSingleElement();
             if ( atom != Label.INVALID )
             {
                 e = new Label( atom );

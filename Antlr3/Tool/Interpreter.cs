@@ -405,7 +405,7 @@ namespace Antlr3.Tool
                     else if ( label.IsSet )
                     {
                         MismatchedSetException mse =
-                            new MismatchedSetException( ( (IntervalSet)label.Set ).toRuntimeBitSet(),
+                            new MismatchedSetException( ( (IntervalSet)label.Set ).ToRuntimeBitSet(),
                                                        input );
                         if ( actions != null )
                         {

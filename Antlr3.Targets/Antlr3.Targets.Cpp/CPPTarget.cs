@@ -104,7 +104,7 @@ namespace Antlr3.Targets
                                                StringTemplate headerFileST,
                                                string extName )
         {
-            StringTemplateGroup templates = generator.GetTemplates();
+            StringTemplateGroup templates = generator.Templates;
             generator.Write( headerFileST, grammar.name + extName );
         }
 

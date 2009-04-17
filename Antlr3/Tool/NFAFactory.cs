@@ -202,7 +202,7 @@ namespace Antlr3.Tool
         {
             NFAState left = newState();
             NFAState right = newState();
-            Label label = new Label( IntervalSet.of( a, b ) );
+            Label label = new Label( IntervalSet.Of( a, b ) );
             Transition e = new Transition( label, right );
             left.AddTransition( e );
             StateCluster g = new StateCluster( left, right );

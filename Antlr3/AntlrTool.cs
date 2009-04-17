@@ -108,7 +108,7 @@ namespace Antlr3
             AntlrTool antlr = new AntlrTool( args );
             if ( !exitNow )
             {
-                antlr.process();
+                antlr.Process();
                 Environment.ExitCode = ( ErrorManager.getNumErrors() > 0 ) ? 1 : 0;
             }
         }
@@ -119,10 +119,10 @@ namespace Antlr3
 
         public AntlrTool( string[] args )
         {
-            processArgs( args );
+            ProcessArgs( args );
         }
 
-        public virtual void processArgs( string[] args )
+        public virtual void ProcessArgs( string[] args )
         {
             if ( verbose )
             {
@@ -132,7 +132,7 @@ namespace Antlr3
 
             if ( args == null || args.Length == 0 )
             {
-                help();
+                Help();
                 return;
             }
 
@@ -225,7 +225,7 @@ namespace Antlr3
                 }
                 else if ( args[i] == "-version" )
                 {
-                    version();
+                    Version();
                     exitNow = true;
                 }
                 else if ( args[i] == "-make" )
@@ -338,21 +338,21 @@ namespace Antlr3
                 }
                 else if ( args[i] == "-X" )
                 {
-                    Xhelp();
+                    ExtendedHelp();
                 }
                 else
                 {
                     if ( args[i][0] != '-' )
                     {
                         // Must be the grammar file
-                        addGrammarFile( args[i] );
+                        AddGrammarFile( args[i] );
                     }
                 }
             }
         }
 
 #if false
-        protected virtual void checkForInvalidArguments( string[] args, Antlr.Runtime.BitSet cmdLineArgValid )
+        protected virtual void CheckForInvalidArguments( string[] args, Antlr.Runtime.BitSet cmdLineArgValid )
         {
             // check for invalid command line args
             for ( int a = 0; a < args.Length; a++ )
@@ -376,7 +376,7 @@ namespace Antlr3
          * @param outputFiles
          * @return
          */
-        public virtual bool buildRequired( string grammarFileName )
+        public virtual bool BuildRequired( string grammarFileName )
         {
             BuildDependencyGenerator bd = new BuildDependencyGenerator( this, grammarFileName );
             IList<string> outputFiles = bd.getGeneratedFileList();
@@ -411,7 +411,7 @@ namespace Antlr3
             return false;
         }
 
-        public virtual void process()
+        public virtual void Process()
         {
             bool exceptionWhenWritingLexerFile = false;
             string lexerGrammarFileName = null;		// necessary at this scope to have access in the catch below
@@ -426,7 +426,7 @@ namespace Antlr3
 
             try
             {
-                sortGrammarFiles(); // update grammarFileNames
+                SortGrammarFiles(); // update grammarFileNames
             }
             catch ( Exception e )
             {
@@ -442,7 +442,7 @@ namespace Antlr3
                 {
                     try
                     {
-                        if ( !buildRequired( grammarFileName ) )
+                        if ( !BuildRequired( grammarFileName ) )
                             continue;
                     }
                     catch ( Exception e )
@@ -470,14 +470,14 @@ namespace Antlr3
                         continue;
                     }
 
-                    Grammar grammar = getRootGrammar( grammarFileName );
+                    Grammar grammar = GetRootGrammar( grammarFileName );
                     // we now have all grammars read in as ASTs
                     // (i.e., root and all delegates)
                     grammar.composite.assignTokenTypes();
                     grammar.composite.defineGrammarSymbols();
                     grammar.composite.createNFAs();
 
-                    generateRecognizer( grammar );
+                    GenerateRecognizer( grammar );
 
                     if ( PrintGrammar )
                     {
@@ -508,7 +508,7 @@ namespace Antlr3
                         lexerGrammarFileName = grammar.ImplicitlyGeneratedLexerFileName;
                         try
                         {
-                            TextWriter w = getOutputFile( grammar, lexerGrammarFileName );
+                            TextWriter w = GetOutputFile( grammar, lexerGrammarFileName );
                             w.Write( lexerGrammarStr );
                             w.Close();
                         }
@@ -528,7 +528,7 @@ namespace Antlr3
                             lexerGrammar.Tool = this;
                             if ( TestMode )
                                 lexerGrammar.DefaultRuleModifier = "public";
-                            FileInfo lexerGrammarFullFile = new FileInfo( System.IO.Path.Combine( getFileDirectory( lexerGrammarFileName ), lexerGrammarFileName ) );
+                            FileInfo lexerGrammarFullFile = new FileInfo( System.IO.Path.Combine( GetFileDirectory( lexerGrammarFileName ), lexerGrammarFileName ) );
                             lexerGrammar.FileName = lexerGrammarFullFile.ToString();
 
                             lexerGrammar.importTokenVocabulary( grammar );
@@ -540,14 +540,14 @@ namespace Antlr3
                             lexerGrammar.composite.defineGrammarSymbols();
                             lexerGrammar.composite.createNFAs();
 
-                            generateRecognizer( lexerGrammar );
+                            GenerateRecognizer( lexerGrammar );
                         }
                         finally
                         {
                             // make sure we clean up
                             if ( deleteTempLexer )
                             {
-                                System.IO.DirectoryInfo outputDir = getOutputDirectory( lexerGrammarFileName );
+                                System.IO.DirectoryInfo outputDir = GetOutputDirectory( lexerGrammarFileName );
                                 FileInfo outputFile = new FileInfo( System.IO.Path.Combine( outputDir.FullName, lexerGrammarFileName ) );
                                 outputFile.Delete();
                             }
@@ -583,7 +583,7 @@ namespace Antlr3
             }
         }
 
-        public virtual void sortGrammarFiles()
+        public virtual void SortGrammarFiles()
         {
             //Console.Out.WriteLine( "Grammar names " + GrammarFileNames );
             Graph<string> g = new Graph<string>();
@@ -606,13 +606,13 @@ namespace Antlr3
             {
                 string f = (string)sorted[i];
                 if ( GrammarExtensions.Any( ext => f.EndsWith( ext, StringComparison.OrdinalIgnoreCase ) ) )
-                    addGrammarFile( f );
+                    AddGrammarFile( f );
             }
             //Console.Out.WriteLine( "new grammars=" + grammarFileNames );
         }
 
         /** Get a grammar mentioned on the command-line and any delegates */
-        public virtual Grammar getRootGrammar( string grammarFileName )
+        public virtual Grammar GetRootGrammar( string grammarFileName )
         {
             //StringTemplate.setLintMode(true);
             // grammars mentioned on command line are either roots or single grammars.
@@ -663,21 +663,21 @@ namespace Antlr3
          *  After all NFA, comes DFA conversion for root grammar then code gen for
          *  root grammar.  DFA and code gen for delegates comes next.
          */
-        protected virtual void generateRecognizer( Grammar grammar )
+        protected virtual void GenerateRecognizer( Grammar grammar )
         {
             string language = (string)grammar.getOption( "language" );
             if ( language != null )
             {
                 CodeGenerator generator = new CodeGenerator( this, grammar, language );
                 grammar.setCodeGenerator( generator );
-                generator.SetDebug( Debug );
-                generator.SetProfile( Profile );
-                generator.SetTrace( Trace );
+                generator.Debug = Debug;
+                generator.Profile = Profile;
+                generator.Trace = Trace;
 
                 // generate NFA early in case of crash later (for debugging)
                 if ( Generate_NFA_dot )
                 {
-                    generateNFAs( grammar );
+                    GenerateNFAs( grammar );
                 }
 
                 // GENERATE CODE
@@ -685,7 +685,7 @@ namespace Antlr3
 
                 if ( Generate_DFA_dot )
                 {
-                    generateDFAs( grammar );
+                    GenerateDFAs( grammar );
                 }
 
                 IList<Grammar> delegates = grammar.getDirectDelegates();
@@ -695,13 +695,13 @@ namespace Antlr3
                     if ( @delegate != grammar )
                     {
                         // already processing this one
-                        generateRecognizer( @delegate );
+                        GenerateRecognizer( @delegate );
                     }
                 }
             }
         }
 
-        public virtual void generateDFAs( Grammar g )
+        public virtual void GenerateDFAs( Grammar g )
         {
             for ( int d = 1; d <= g.NumberOfDecisions; d++ )
             {
@@ -719,7 +719,7 @@ namespace Antlr3
                 }
                 try
                 {
-                    writeDOTFile( g, dotFileName, dot );
+                    WriteDOTFile( g, dotFileName, dot );
                 }
                 catch ( IOException ioe )
                 {
@@ -730,7 +730,7 @@ namespace Antlr3
             }
         }
 
-        protected virtual void generateNFAs( Grammar g )
+        protected virtual void GenerateNFAs( Grammar g )
         {
             DOTGenerator dotGenerator = new DOTGenerator( g );
             ICollection<Rule> rules = g.getAllImportedRules();
@@ -743,7 +743,7 @@ namespace Antlr3
                     string dot = dotGenerator.getDOT( r.startState );
                     if ( dot != null )
                     {
-                        writeDOTFile( g, r, dot );
+                        WriteDOTFile( g, r, dot );
                     }
                 }
                 catch ( IOException ioe )
@@ -753,26 +753,26 @@ namespace Antlr3
             }
         }
 
-        protected virtual void writeDOTFile( Grammar g, Rule r, string dot )
+        protected virtual void WriteDOTFile( Grammar g, Rule r, string dot )
         {
-            writeDOTFile( g, r.grammar.name + "." + r.name, dot );
+            WriteDOTFile( g, r.grammar.name + "." + r.name, dot );
         }
 
-        protected virtual void writeDOTFile( Grammar g, string name, string dot )
+        protected virtual void WriteDOTFile( Grammar g, string name, string dot )
         {
-            TextWriter fw = getOutputFile( g, name + ".dot" );
+            TextWriter fw = GetOutputFile( g, name + ".dot" );
             fw.Write( dot );
             fw.Close();
         }
 
-        private static void version()
+        private static void Version()
         {
             ErrorManager.info( "ANTLR Parser Generator  Version " + new AntlrTool().VERSION );
         }
 
-        private static void help()
+        private static void Help()
         {
-            version();
+            Version();
             Console.Error.WriteLine( "usage: java org.antlr.Tool [args] file.g [file2.g file3.g ...]" );
             Console.Error.WriteLine( "  -o outputDir          specify output directory where all output is generated" );
             Console.Error.WriteLine( "  -fo outputDir         same as -o but force even files with relative paths to dir" );
@@ -792,9 +792,9 @@ namespace Antlr3
             Console.Error.WriteLine( "  -X                    display extended argument list" );
         }
 
-        private static void Xhelp()
+        private static void ExtendedHelp()
         {
-            version();
+            Version();
             Console.Error.WriteLine( "  -Xgrtree               print the grammar AST" );
             Console.Error.WriteLine( "  -Xdfa                  print DFA as text " );
             Console.Error.WriteLine( "  -Xnoprune              test lookahead against EBNF block exit branches" );
@@ -816,7 +816,7 @@ namespace Antlr3
         /// Set the location (base directory) where output files should be produced by the ANTLR tool.
         /// </summary>
         /// <param name="outputDirectory"></param>
-        public virtual void setOutputDirectory( string outputDirectory )
+        public virtual void SetOutputDirectory( string outputDirectory )
         {
             haveOutputDir = true;
             this.outputDirectory = outputDirectory;
@@ -831,7 +831,7 @@ namespace Antlr3
          *
          * @param forceRelativeOutput true if output files hould always be relative to base output directory
          */
-        public virtual void setForceRelativeOutput( bool forceRelativeOutput )
+        public virtual void SetForceRelativeOutput( bool forceRelativeOutput )
         {
             this.forceRelativeOutput = forceRelativeOutput;
         }
@@ -847,13 +847,13 @@ namespace Antlr3
          *
          * @param inputDirectory Input source base directory
          */
-        public virtual void setInputDirectory( string inputDirectory )
+        public virtual void SetInputDirectory( string inputDirectory )
         {
             this.inputDirectory = inputDirectory;
             haveInputDir = true;
         }
 
-        public virtual TextWriter getOutputFile( Grammar g, string fileName )
+        public virtual TextWriter GetOutputFile( Grammar g, string fileName )
         {
             if ( OutputDirectory == null )
                 return new StringWriter();
@@ -881,7 +881,7 @@ namespace Antlr3
                 outputDir = getOutputDirectory( g.FileName );
             }
 #else
-            System.IO.DirectoryInfo outputDir = getOutputDirectory( g.FileName );
+            System.IO.DirectoryInfo outputDir = GetOutputDirectory( g.FileName );
 #endif
             FileInfo outputFile = new FileInfo( System.IO.Path.Combine( outputDir.FullName, fileName ) );
 
@@ -903,7 +903,7 @@ namespace Antlr3
          * @param fileNameWithPath path to input source
          * @return
          */
-        public virtual System.IO.DirectoryInfo getOutputDirectory( string fileNameWithPath )
+        public virtual System.IO.DirectoryInfo GetOutputDirectory( string fileNameWithPath )
         {
             string outputDir = OutputDirectory;
 
@@ -983,7 +983,7 @@ namespace Antlr3
          *
          * @throws java.io.IOException
          */
-        public virtual string getLibraryFile( string fileName )
+        public virtual string GetLibraryFile( string fileName )
         {
             // First, see if we can find the file in the library directory
             //
@@ -1013,7 +1013,7 @@ namespace Antlr3
          *  we must find the directory relative to this directory, unless the
          *  file name is given to us in absolute terms.
          */
-        public virtual string getFileDirectory( string fileName )
+        public virtual string GetFileDirectory( string fileName )
         {
             string f;
             if ( haveInputDir && !( fileName.StartsWith( Path.DirectorySeparatorChar.ToString() ) || fileName.StartsWith( Path.AltDirectorySeparatorChar.ToString() ) ) )
@@ -1039,7 +1039,7 @@ namespace Antlr3
          *  directory, which means the current directory for the command line tool if there
          *  was no output directory specified.
          */
-        public virtual FileInfo getImportedVocabFile( string vocabName )
+        public virtual FileInfo GetImportedVocabFile( string vocabName )
         {
             string path = System.IO.Path.Combine( LibraryDirectory, vocabName + CodeGenerator.VOCAB_FILE_EXTENSION );
             if ( System.IO.File.Exists( path ) )
@@ -1063,7 +1063,7 @@ namespace Antlr3
 
         /** If the tool needs to panic/exit, how do we do that?
          */
-        public virtual void panic()
+        public virtual void Panic()
         {
             throw new Exception( "ANTLR panic" );
         }
@@ -1071,7 +1071,7 @@ namespace Antlr3
         /// <summary>
         /// Return a time stamp string accurate to sec: yyyy-mm-dd hh:mm:ss
         /// </summary>
-        public static string getCurrentTimeStamp()
+        public static string GetCurrentTimeStamp()
         {
             return DateTime.Now.ToString( "yyyy\\-MM\\-dd HH\\:mm\\:ss" );
         }
@@ -1391,7 +1391,7 @@ namespace Antlr3
             }
         }
 
-        public virtual void addGrammarFile( string grammarFileName )
+        public virtual void AddGrammarFile( string grammarFileName )
         {
             if ( !GrammarFileNames.Contains( grammarFileName ) )
                 GrammarFileNames.Add( grammarFileName );

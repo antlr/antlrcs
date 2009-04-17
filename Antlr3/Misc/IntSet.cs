@@ -50,23 +50,18 @@ namespace Antlr3.Misc
         /** Add all elements from incoming set to this set.  Can limit
          *  to set of its own type.
          */
-        void addAll( IIntSet set );
+        void AddAll( IIntSet set );
 
         /** Return the intersection of this set with the argument, creating
          *  a new set.
          */
-        IIntSet and( IIntSet a );
+        IIntSet And( IIntSet a );
 
-        IIntSet complement( IIntSet elements );
+        IIntSet Complement( IIntSet elements );
 
-        IIntSet or( IIntSet a );
+        IIntSet Or( IIntSet a );
 
-        IIntSet subtract( IIntSet a );
-
-        /** Return the size of this set (not the underlying implementation's
-         *  allocated memory size, for example).
-         */
-        int size();
+        IIntSet Subtract( IIntSet a );
 
         bool IsNil
         {
@@ -75,12 +70,7 @@ namespace Antlr3.Misc
 
         bool Equals( object obj );
 
-        int getSingleElement();
-
-        bool member( int el );
-
-        /** remove this element from this set */
-        void remove( int el );
+        int GetSingleElement();
 
         List<int> ToList();
 

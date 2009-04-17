@@ -306,7 +306,7 @@ namespace Antlr3.Analysis
                 return;
             }
 
-            nfaConfigurations.add( c );
+            nfaConfigurations.Add( c );
 
             // track min alt rather than compute later
             if ( c.alt < minAltInConfigurations )
@@ -408,11 +408,11 @@ namespace Antlr3.Analysis
             }
             IIntSet t = label.Set;
             IIntSet remainder = t; // remainder starts out as whole set to add
-            int n = _reachableLabels.size(); // only look at initial elements
+            int n = _reachableLabels.Size(); // only look at initial elements
             // walk the existing list looking for the collision
             for ( int i = 0; i < n; i++ )
             {
-                Label rl = _reachableLabels.get( i );
+                Label rl = _reachableLabels.Get( i );
                 /*
                 JSystem.@out.println("comparing ["+i+"]: "+label.toString(dfa.nfa.grammar)+" & "+
                         rl.toString(dfa.nfa.grammar)+"="+
@@ -430,18 +430,18 @@ namespace Antlr3.Analysis
                 // Replace existing s_i with intersection since we
                 // know that will always be a non nil character class
                 IIntSet s_i = rl.Set;
-                IIntSet intersection = s_i.and( t );
-                _reachableLabels.set( i, new Label( intersection ) );
+                IIntSet intersection = s_i.And( t );
+                _reachableLabels.Set( i, new Label( intersection ) );
 
                 // Compute s_i-t to see what is in current set and not in incoming
-                IIntSet existingMinusNewElements = s_i.subtract( t );
+                IIntSet existingMinusNewElements = s_i.Subtract( t );
                 //JSystem.@out.println(s_i+"-"+t+"="+existingMinusNewElements);
                 if ( !existingMinusNewElements.IsNil )
                 {
                     // found a new character class, add to the end (doesn't affect
                     // outer loop duration due to n computation a priori.
                     Label newLabel = new Label( existingMinusNewElements );
-                    _reachableLabels.add( newLabel );
+                    _reachableLabels.Add( newLabel );
                 }
 
                 /*
@@ -450,7 +450,7 @@ namespace Antlr3.Analysis
                         */
 
                 // anything left to add to the reachableLabels?
-                remainder = t.subtract( s_i );
+                remainder = t.Subtract( s_i );
                 if ( remainder.IsNil )
                 {
                     break; // nothing left to add to set.  done!
@@ -466,7 +466,7 @@ namespace Antlr3.Analysis
                 JSystem.@out.println("remainder state "+dfa.decisionNumber+"."+stateNumber+": "+remainder.toString(dfa.nfa.grammar));
                 */
                 Label newLabel = new Label( remainder );
-                _reachableLabels.add( newLabel );
+                _reachableLabels.Add( newLabel );
             }
             /*
             JSystem.@out.println("#END of add to state "+dfa.decisionNumber+"."+stateNumber+": " +
@@ -541,10 +541,10 @@ namespace Antlr3.Analysis
                 return cachedUniquelyPredicatedAlt;
             }
             int alt = NFA.INVALID_ALT_NUMBER;
-            int numConfigs = nfaConfigurations.size();
+            int numConfigs = nfaConfigurations.Size();
             for ( int i = 0; i < numConfigs; i++ )
             {
-                NFAConfiguration configuration = (NFAConfiguration)nfaConfigurations.get( i );
+                NFAConfiguration configuration = (NFAConfiguration)nfaConfigurations.Get( i );
                 // ignore anything we resolved; predicates will still result
                 // in transitions out of this state, so must count those
                 // configurations; i.e., don't ignore resolveWithPredicate configs
@@ -572,10 +572,10 @@ namespace Antlr3.Analysis
         public virtual int GetUniqueAlt()
         {
             int alt = NFA.INVALID_ALT_NUMBER;
-            int numConfigs = nfaConfigurations.size();
+            int numConfigs = nfaConfigurations.Size();
             for ( int i = 0; i < numConfigs; i++ )
             {
-                NFAConfiguration configuration = (NFAConfiguration)nfaConfigurations.get( i );
+                NFAConfiguration configuration = (NFAConfiguration)nfaConfigurations.Get( i );
                 if ( alt == NFA.INVALID_ALT_NUMBER )
                 {
                     alt = configuration.alt; // found first alt
@@ -603,10 +603,10 @@ namespace Antlr3.Analysis
         public virtual ICollection<int> GetDisabledAlternatives()
         {
             HashSet<int> disabled = new HashSet<int>();
-            int numConfigs = nfaConfigurations.size();
+            int numConfigs = nfaConfigurations.Size();
             for ( int i = 0; i < numConfigs; i++ )
             {
-                NFAConfiguration configuration = (NFAConfiguration)nfaConfigurations.get( i );
+                NFAConfiguration configuration = (NFAConfiguration)nfaConfigurations.Get( i );
                 if ( configuration.resolved )
                 {
                     disabled.Add( configuration.alt );
@@ -661,7 +661,7 @@ namespace Antlr3.Analysis
             // save the overhead.  There are many o-a->o NFA transitions
             // and so we save a hash map and iterator creation for each
             // state.
-            int numConfigs = nfaConfigurations.size();
+            int numConfigs = nfaConfigurations.Size();
             if ( numConfigs <= 1 )
             {
                 return null;
@@ -673,9 +673,9 @@ namespace Antlr3.Analysis
                 new MultiMap<int, NFAConfiguration>();
             for ( int i = 0; i < numConfigs; i++ )
             {
-                NFAConfiguration configuration = (NFAConfiguration)nfaConfigurations.get( i );
+                NFAConfiguration configuration = (NFAConfiguration)nfaConfigurations.Get( i );
                 int stateI = configuration.state;
-                stateToConfigListMap.map( stateI, configuration );
+                stateToConfigListMap.Map( stateI, configuration );
             }
             // potential conflicts are states with > 1 configuration and diff alts
             ICollection<int> states = stateToConfigListMap.Keys.ToArray();
@@ -785,11 +785,11 @@ namespace Antlr3.Analysis
          */
         public virtual HashSet<int> GetAltSet()
         {
-            int numConfigs = nfaConfigurations.size();
+            int numConfigs = nfaConfigurations.Size();
             HashSet<int> alts = new HashSet<int>();
             for ( int i = 0; i < numConfigs; i++ )
             {
-                NFAConfiguration configuration = (NFAConfiguration)nfaConfigurations.get( i );
+                NFAConfiguration configuration = (NFAConfiguration)nfaConfigurations.Get( i );
                 alts.Add( configuration.alt );
             }
             if ( alts.Count == 0 )
@@ -801,11 +801,11 @@ namespace Antlr3.Analysis
 
         public virtual HashSet<SemanticContext> GetGatedSyntacticPredicatesInNFAConfigurations()
         {
-            int numConfigs = nfaConfigurations.size();
+            int numConfigs = nfaConfigurations.Size();
             HashSet<SemanticContext> synpreds = new HashSet<SemanticContext>();
             for ( int i = 0; i < numConfigs; i++ )
             {
-                NFAConfiguration configuration = (NFAConfiguration)nfaConfigurations.get( i );
+                NFAConfiguration configuration = (NFAConfiguration)nfaConfigurations.Get( i );
                 SemanticContext gatedPredExpr =
                     configuration.semanticContext.GatedPredicateContext;
                 // if this is a manual syn pred (gated and syn pred), add
@@ -851,10 +851,10 @@ namespace Antlr3.Analysis
         public virtual SemanticContext GetGatedPredicatesInNFAConfigurations()
         {
             SemanticContext unionOfPredicatesFromAllAlts = null;
-            int numConfigs = nfaConfigurations.size();
+            int numConfigs = nfaConfigurations.Size();
             for ( int i = 0; i < numConfigs; i++ )
             {
-                NFAConfiguration configuration = (NFAConfiguration)nfaConfigurations.get( i );
+                NFAConfiguration configuration = (NFAConfiguration)nfaConfigurations.Get( i );
                 SemanticContext gatedPredExpr =
                     configuration.semanticContext.GatedPredicateContext;
                 if ( gatedPredExpr == null )
@@ -894,9 +894,9 @@ namespace Antlr3.Analysis
         {
             StringBuilder buf = new StringBuilder();
             buf.Append( stateNumber + ":{" );
-            for ( int i = 0; i < nfaConfigurations.size(); i++ )
+            for ( int i = 0; i < nfaConfigurations.Size(); i++ )
             {
-                NFAConfiguration configuration = (NFAConfiguration)nfaConfigurations.get( i );
+                NFAConfiguration configuration = (NFAConfiguration)nfaConfigurations.Get( i );
                 if ( i > 0 )
                 {
                     buf.Append( ", " );

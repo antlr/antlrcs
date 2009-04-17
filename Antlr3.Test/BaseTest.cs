@@ -184,7 +184,7 @@ namespace AntlrUnitTests
         protected AntlrTool newTool( string[] args )
         {
             AntlrTool tool = new AntlrTool( args );
-            tool.setOutputDirectory( tmpdir );
+            tool.SetOutputDirectory( tmpdir );
             tool.TestMode = true;
             return tool;
         }
@@ -192,7 +192,7 @@ namespace AntlrUnitTests
         protected AntlrTool newTool()
         {
             AntlrTool tool = new AntlrTool();
-            tool.setOutputDirectory( tmpdir );
+            tool.SetOutputDirectory( tmpdir );
             tool.TestMode = true;
             return tool;
         }
@@ -322,7 +322,7 @@ namespace AntlrUnitTests
                 ErrorManager.setErrorListener(equeue);
                 */
                 AntlrTool antlr = new AntlrTool( optionsA );
-                antlr.process();
+                antlr.Process();
                 IANTLRErrorListener listener = ErrorManager.getErrorListener();
                 if ( listener is ErrorQueue )
                 {

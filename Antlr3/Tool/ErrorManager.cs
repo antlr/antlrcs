@@ -575,11 +575,11 @@ namespace Antlr3.Tool
         }
         public static String getMessageType( int msgID )
         {
-            if ( getErrorState().warningMsgIDs.member( msgID ) )
+            if ( getErrorState().warningMsgIDs.Contains( msgID ) )
             {
                 return messages.GetInstanceOf( "warning" ).ToString();
             }
-            else if ( getErrorState().errorMsgIDs.member( msgID ) )
+            else if ( getErrorState().errorMsgIDs.Contains( msgID ) )
             {
                 return messages.GetInstanceOf( "error" ).ToString();
             }
@@ -868,13 +868,13 @@ namespace Antlr3.Tool
 
         public static bool doNotAttemptAnalysis()
         {
-            return !getErrorState().errorMsgIDs.and( ERRORS_FORCING_NO_ANALYSIS ).IsNil;
+            return !getErrorState().errorMsgIDs.And( ERRORS_FORCING_NO_ANALYSIS ).IsNil;
         }
 
         public static bool doNotAttemptCodeGen()
         {
             return doNotAttemptAnalysis() ||
-                   !getErrorState().errorMsgIDs.and( ERRORS_FORCING_NO_CODEGEN ).IsNil;
+                   !getErrorState().errorMsgIDs.And( ERRORS_FORCING_NO_CODEGEN ).IsNil;
         }
 
         /** Return first non ErrorManager code location for generating messages */
@@ -1031,7 +1031,7 @@ namespace Antlr3.Tool
             }
             else
             {
-                tool.panic();
+                tool.Panic();
             }
         }
     }

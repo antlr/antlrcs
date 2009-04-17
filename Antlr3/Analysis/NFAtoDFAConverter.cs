@@ -98,7 +98,7 @@ namespace Antlr3.Analysis
                 if ( _dfa.nfa.grammar.composite.watchNFAConversion )
                 {
                     Console.Out.WriteLine( "convert DFA state " + d.stateNumber +
-                                       " (" + d.nfaConfigurations.size() + " nfa states)" );
+                                       " (" + d.nfaConfigurations.Size() + " nfa states)" );
                 }
                 int k = _dfa.UserMaxLookahead;
                 if ( k > 0 && k == d.LookaheadDepth )
@@ -684,7 +684,7 @@ namespace Antlr3.Analysis
                 if ( depth == 1 && d.dfa.UserMaxLookahead == 0 )
                 { // k=* only
                     d.dfa.recursiveAltSet.Add( alt ); // indicate that this alt is recursive
-                    if ( d.dfa.recursiveAltSet.size() > 1 )
+                    if ( d.dfa.recursiveAltSet.Count > 1 )
                     {
                         //JSystem.@out.println("recursive alts: "+d.dfa.recursiveAltSet.toString());
                         d.abortedDueToMultipleRecursiveAlts = true;
@@ -958,7 +958,7 @@ namespace Antlr3.Analysis
                         c.semanticContext );
                 }
             }
-            if ( labelDFATarget.nfaConfigurations.size() == 0 )
+            if ( labelDFATarget.nfaConfigurations.Size() == 0 )
             {
                 // kill; it's empty
                 _dfa.SetState( labelDFATarget.stateNumber, null );
@@ -981,10 +981,10 @@ namespace Antlr3.Analysis
         protected virtual void ConvertToEOTAcceptState( DFAState d )
         {
             Label eot = new Label( Label.EOT );
-            int numConfigs = d.nfaConfigurations.size();
+            int numConfigs = d.nfaConfigurations.Size();
             for ( int i = 0; i < numConfigs; i++ )
             {
-                NFAConfiguration c = (NFAConfiguration)d.nfaConfigurations.get( i );
+                NFAConfiguration c = (NFAConfiguration)d.nfaConfigurations.Get( i );
                 if ( c.resolved || c.resolveWithPredicate )
                 {
                     continue; // the conflict resolver indicates we must leave alone
@@ -997,7 +997,7 @@ namespace Antlr3.Analysis
                     //JSystem.@out.println("config with EOT: "+c);
                     d.IsAcceptState = true;
                     //JSystem.@out.println("d goes from "+d);
-                    d.nfaConfigurations.clear();
+                    d.nfaConfigurations.Clear();
                     d.AddNFAConfiguration( p, c.alt, c.context, c.semanticContext );
                     //JSystem.@out.println("to "+d);
                     return; // assume only one EOT transition
@@ -1259,7 +1259,7 @@ namespace Antlr3.Analysis
             // transition on EOT to get to this DFA state as well so all
             // states in d must be targets of EOT.  These are the end states
             // created in NFAFactory.build_EOFState
-            NFAConfiguration anyConfig = d.nfaConfigurations.get( 0 );
+            NFAConfiguration anyConfig = d.nfaConfigurations.Get( 0 );
             NFAState anyState = _dfa.nfa.GetState( anyConfig.state );
 
             // if d is target of EOT and more than one predicted alt
@@ -1393,10 +1393,10 @@ namespace Antlr3.Analysis
          */
         protected static void TurnOffOtherAlts( DFAState d, int min, ICollection<int> nondeterministicAlts )
         {
-            int numConfigs = d.nfaConfigurations.size();
+            int numConfigs = d.nfaConfigurations.Size();
             for ( int i = 0; i < numConfigs; i++ )
             {
-                NFAConfiguration configuration = (NFAConfiguration)d.nfaConfigurations.get( i );
+                NFAConfiguration configuration = (NFAConfiguration)d.nfaConfigurations.Get( i );
                 if ( configuration.alt != min )
                 {
                     if ( nondeterministicAlts == null ||
@@ -1486,9 +1486,9 @@ namespace Antlr3.Analysis
             if ( altToPredMap.Count == nondeterministicAlts.Count - 1 )
             {
                 // if there are n-1 predicates for n nondeterministic alts, can fix
-                BitSet ndSet = BitSet.of( nondeterministicAlts );
-                BitSet predSet = BitSet.of( altToPredMap.Keys );
-                int nakedAlt = ndSet.subtract( predSet ).getSingleElement();
+                BitSet ndSet = BitSet.Of( nondeterministicAlts );
+                BitSet predSet = BitSet.Of( altToPredMap.Keys );
+                int nakedAlt = ndSet.Subtract( predSet ).GetSingleElement();
                 SemanticContext nakedAltPred = null;
                 if ( nakedAlt == Max( nondeterministicAlts ) )
                 {
@@ -1518,10 +1518,10 @@ namespace Antlr3.Analysis
 
                 altToPredMap[nakedAlt] = nakedAltPred;
                 // set all config with alt=nakedAlt to have the computed predicate
-                int numConfigs = d.nfaConfigurations.size();
+                int numConfigs = d.nfaConfigurations.Size();
                 for ( int i = 0; i < numConfigs; i++ )
                 {
-                    NFAConfiguration configuration = (NFAConfiguration)d.nfaConfigurations.get( i );
+                    NFAConfiguration configuration = (NFAConfiguration)d.nfaConfigurations.Get( i );
                     if ( configuration.alt == nakedAlt )
                     {
                         configuration.semanticContext = nakedAltPred;
@@ -1539,10 +1539,10 @@ namespace Antlr3.Analysis
                 {
                     d.dfa.probe.RemoveRecursiveOverflowState( d );
                 }
-                int numConfigs = d.nfaConfigurations.size();
+                int numConfigs = d.nfaConfigurations.Size();
                 for ( int i = 0; i < numConfigs; i++ )
                 {
-                    NFAConfiguration configuration = (NFAConfiguration)d.nfaConfigurations.get( i );
+                    NFAConfiguration configuration = (NFAConfiguration)d.nfaConfigurations.Get( i );
                     SemanticContext semCtx = (SemanticContext)
                             altToPredMap.get( configuration.alt );
                     if ( semCtx != null )
@@ -1619,10 +1619,10 @@ namespace Antlr3.Analysis
             //JSystem.@out.println("configs="+d.nfaConfigurations);
             //JSystem.@out.println("configs with preds?"+d.atLeastOneConfigurationHasAPredicate);
             //JSystem.@out.println("configs with preds="+d.configurationsWithPredicateEdges);
-            int numConfigs = d.nfaConfigurations.size();
+            int numConfigs = d.nfaConfigurations.Size();
             for ( int i = 0; i < numConfigs; i++ )
             {
-                NFAConfiguration configuration = (NFAConfiguration)d.nfaConfigurations.get( i );
+                NFAConfiguration configuration = (NFAConfiguration)d.nfaConfigurations.Get( i );
                 int altI = configuration.alt;
                 // if alt is nondeterministic, combine its predicates
                 if ( nondeterministicAlts.Contains( altI ) )
@@ -1703,7 +1703,7 @@ namespace Antlr3.Analysis
                 */
                 for ( int i = 0; i < numConfigs; i++ )
                 {
-                    NFAConfiguration configuration = (NFAConfiguration)d.nfaConfigurations.get( i );
+                    NFAConfiguration configuration = (NFAConfiguration)d.nfaConfigurations.Get( i );
                     int altI = configuration.alt;
                     if ( incompletelyCoveredAlts.Contains( altI ) &&
                          configuration.semanticContext == SemanticContext.EmptySemanticContext )
@@ -1791,10 +1791,10 @@ namespace Antlr3.Analysis
         {
             List<NFAConfiguration> configsWithPreds = new List<NFAConfiguration>();
             // get a list of all configs with predicates
-            int numConfigs = d.nfaConfigurations.size();
+            int numConfigs = d.nfaConfigurations.Size();
             for ( int i = 0; i < numConfigs; i++ )
             {
-                NFAConfiguration c = (NFAConfiguration)d.nfaConfigurations.get( i );
+                NFAConfiguration c = (NFAConfiguration)d.nfaConfigurations.Get( i );
                 if ( c.resolveWithPredicate )
                 {
                     configsWithPreds.Add( c );

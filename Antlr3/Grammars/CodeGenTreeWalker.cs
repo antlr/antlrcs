@@ -1,4 +1,4 @@
-// $ANTLR 3.1.2 Grammars\\CodeGenTreeWalker.g3 2009-04-16 18:07:30
+// $ANTLR 3.1.2 Grammars\\CodeGenTreeWalker.g3 2009-04-16 19:01:29
 
 // The variable 'variable' is assigned but its value is never used.
 #pragma warning disable 219
@@ -1034,7 +1034,7 @@ public partial class CodeGenTreeWalker : TreeParser
 			StringTemplateGroup saveGroup = templates;
 			if ( ruleDescr.isSynPred )
 			{
-				templates = generator.GetBaseTemplates();
+				templates = generator.BaseTemplates;
 			}
 
 			string description = string.Empty;

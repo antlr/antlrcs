@@ -259,7 +259,7 @@ namespace AntlrUnitTests
 
             Grammar g = new Grammar( treeGrammar );
             AntlrTool antlr = newTool();
-            antlr.setOutputDirectory( null ); // write to /dev/null
+            antlr.SetOutputDirectory( null ); // write to /dev/null
             CodeGenerator generator = new CodeGenerator( antlr, g, "Java" );
             g.setCodeGenerator( generator );
             generator.GenRecognizer();

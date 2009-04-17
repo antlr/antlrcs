@@ -208,7 +208,7 @@ rule returns [StringTemplate code=null]
 	StringTemplateGroup saveGroup = templates;
 	if ( ruleDescr.isSynPred )
 	{
-		templates = generator.GetBaseTemplates();
+		templates = generator.BaseTemplates;
 	}
 
 	string description = string.Empty;

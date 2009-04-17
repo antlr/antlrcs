@@ -141,10 +141,10 @@ namespace Antlr3.Analysis
             if ( labelSet == null )
             {
                 this.label = SET;
-                this._labelSet = IntervalSet.of( INVALID );
+                this._labelSet = IntervalSet.Of( INVALID );
                 return;
             }
-            int singleAtom = labelSet.getSingleElement();
+            int singleAtom = labelSet.GetSingleElement();
             if ( singleAtom != INVALID )
             {
                 // convert back to a single atomic element if |labelSet|==1
@@ -217,7 +217,7 @@ namespace Antlr3.Analysis
                 if ( label != SET )
                 {
                     // convert single element to a set if they ask for it.
-                    return IntervalSet.of( label );
+                    return IntervalSet.Of( label );
                 }
                 return _labelSet;
             }
@@ -238,7 +238,7 @@ namespace Antlr3.Analysis
                 l = new Label( label );
                 l.label = this.label;
                 l._labelSet = new IntervalSet();
-                l._labelSet.addAll( this._labelSet );
+                l._labelSet.AddAll( this._labelSet );
             //}
             //catch ( CloneNotSupportedException e )
             //{
@@ -251,7 +251,7 @@ namespace Antlr3.Analysis
         {
             if ( IsAtom )
             {
-                _labelSet = IntervalSet.of( label );
+                _labelSet = IntervalSet.Of( label );
                 label = SET;
                 if ( a.IsAtom )
                 {
@@ -259,7 +259,7 @@ namespace Antlr3.Analysis
                 }
                 else if ( a.IsSet )
                 {
-                    _labelSet.addAll( a.Set );
+                    _labelSet.AddAll( a.Set );
                 }
                 else
                 {
@@ -275,7 +275,7 @@ namespace Antlr3.Analysis
                 }
                 else if ( a.IsSet )
                 {
-                    _labelSet.addAll( a.Set );
+                    _labelSet.AddAll( a.Set );
                 }
                 else
                 {
@@ -294,7 +294,7 @@ namespace Antlr3.Analysis
             }
             if ( IsSet )
             {
-                return _labelSet.member( atom );
+                return _labelSet.Contains( atom );
             }
             return false;
         }
@@ -303,12 +303,12 @@ namespace Antlr3.Analysis
         {
             if ( IsAtom )
             {
-                return set.member( Atom );
+                return set.Contains( Atom );
             }
             if ( IsSet )
             {
                 // matches if intersection non-nil
-                return !Set.and( set ).IsNil;
+                return !Set.And( set ).IsNil;
             }
             return false;
         }
@@ -445,17 +445,17 @@ namespace Antlr3.Analysis
                 hasIntersection = true;
             }
             else if ( labelIsSet && edgeIsSet &&
-                      !edgeLabel.Set.and( label.Set ).IsNil )
+                      !edgeLabel.Set.And( label.Set ).IsNil )
             {
                 hasIntersection = true;
             }
             else if ( labelIsSet && !edgeIsSet &&
-                      label.Set.member( edgeLabel.label ) )
+                      label.Set.Contains( edgeLabel.label ) )
             {
                 hasIntersection = true;
             }
             else if ( !labelIsSet && edgeIsSet &&
-                      edgeLabel.Set.member( label.label ) )
+                      edgeLabel.Set.Contains( label.label ) )
             {
                 hasIntersection = true;
             }

@@ -269,7 +269,7 @@ namespace AntlrUnitTests
                 " ;\n"
             );
             AntlrTool antlr = newTool();
-            antlr.setOutputDirectory( null ); // write to /dev/null
+            antlr.SetOutputDirectory( null ); // write to /dev/null
             CodeGenerator generator = new CodeGenerator( antlr, g, "Java" );
             g.setCodeGenerator( generator );
             generator.GenRecognizer();
@@ -292,7 +292,7 @@ namespace AntlrUnitTests
                 " ;\n"
             );
             AntlrTool antlr = newTool();
-            antlr.setOutputDirectory( null ); // write to /dev/null
+            antlr.SetOutputDirectory( null ); // write to /dev/null
             CodeGenerator generator = new CodeGenerator( antlr, g, "Java" );
             g.setCodeGenerator( generator );
             generator.GenRecognizer();
@@ -312,7 +312,7 @@ namespace AntlrUnitTests
                 "   ;\n"
             );
             AntlrTool antlr = newTool();
-            antlr.setOutputDirectory( null ); // write to /dev/null
+            antlr.SetOutputDirectory( null ); // write to /dev/null
             CodeGenerator generator = new CodeGenerator( antlr, g, "Java" );
             g.setCodeGenerator( generator );
             generator.GenRecognizer();
@@ -333,7 +333,7 @@ namespace AntlrUnitTests
                 "b  : B ;\n"
             );
             AntlrTool antlr = newTool();
-            antlr.setOutputDirectory( null ); // write to /dev/null
+            antlr.SetOutputDirectory( null ); // write to /dev/null
             CodeGenerator generator = new CodeGenerator( antlr, g, "Java" );
             g.setCodeGenerator( generator );
             generator.GenRecognizer();

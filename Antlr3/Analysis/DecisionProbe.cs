@@ -760,7 +760,7 @@ namespace Antlr3.Analysis
             if ( d.stateNumber > 0 )
             {
                 int stateI = d.stateNumber;
-                _stateToRecursionOverflowConfigurationsMap.map( stateI, recursionNFAConfiguration );
+                _stateToRecursionOverflowConfigurationsMap.Map( stateI, recursionNFAConfiguration );
             }
         }
 

@@ -766,7 +766,7 @@ namespace AntlrUnitTests
                 "a : A a | X;" ); // single rule 'a' refers to itself; no start rule
 
             AntlrTool antlr = newTool();
-            antlr.setOutputDirectory( null ); // write to /dev/null
+            antlr.SetOutputDirectory( null ); // write to /dev/null
             CodeGenerator generator = new CodeGenerator( antlr, g, "Java" );
             g.setCodeGenerator( generator );
             generator.GenRecognizer();
@@ -1654,9 +1654,9 @@ namespace AntlrUnitTests
             if ( expectingUnreachableAlts != null )
             {
                 BitSet s = new BitSet();
-                s.addAll( expectingUnreachableAlts );
+                s.AddAll( expectingUnreachableAlts );
                 BitSet s2 = new BitSet();
-                s2.addAll( unreachableAlts );
+                s2.AddAll( unreachableAlts );
                 assertEquals( "unreachable alts mismatch", s, s2 );
             }
             else
@@ -1702,9 +1702,9 @@ namespace AntlrUnitTests
                 }
                 // compare nonDetAlts with expectingNonDetAlts
                 BitSet s = new BitSet();
-                s.addAll( expectingNonDetAlts );
+                s.AddAll( expectingNonDetAlts );
                 BitSet s2 = new BitSet();
-                s2.addAll( nonDetAlts );
+                s2.AddAll( nonDetAlts );
                 assertEquals( "nondet alts mismatch", s, s2 );
                 assertTrue( "found no nondet alts; expecting: " +
                             str( expectingNonDetAlts ),

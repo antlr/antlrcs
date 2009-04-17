@@ -791,15 +791,15 @@ namespace Antlr3.Analysis
                 else if ( label.IsSet )
                 {
                     IntervalSet labels = (IntervalSet)label.Set;
-                    int lmin = labels.getMinElement();
+                    int lmin = labels.GetMinElement();
                     // if valid char (don't do EOF) and less than current min
                     if ( lmin < smin && lmin >= Label.MIN_CHAR_VALUE )
                     {
-                        smin = labels.getMinElement();
+                        smin = labels.GetMinElement();
                     }
-                    if ( labels.getMaxElement() > smax )
+                    if ( labels.GetMaxElement() > smax )
                     {
-                        smax = labels.getMaxElement();
+                        smax = labels.GetMaxElement();
                     }
                 }
             }
@@ -894,12 +894,12 @@ namespace Antlr3.Analysis
                 }
                 else if ( label.IsSet )
                 {
-                    if ( label.Set.member( Label.EOT ) )
+                    if ( label.Set.Contains( Label.EOT ) )
                     {
                         _eot[s.stateNumber] = edge.target.stateNumber;
                     }
 
-                    if ( label.Set.member( Label.EOF ) )
+                    if ( label.Set.Contains( Label.EOF ) )
                     {
                         _eof[s.stateNumber] = edge.target.stateNumber;
                     }

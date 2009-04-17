@@ -48,7 +48,7 @@ namespace Antlr3.Misc
 
         protected HashSet<T> _elementSet = new HashSet<T>();
 
-        public T get( int i )
+        public T Get( int i )
         {
             return _elements[i];
         }
@@ -56,7 +56,7 @@ namespace Antlr3.Misc
         /** Replace an existing value with a new value; updates the element
          *  list and the hash table, but not the key as that has not changed.
          */
-        public T set( int i, T value )
+        public T Set( int i, T value )
         {
             T oldElement = _elements[i];
             _elements[i] = value; // update list
@@ -74,7 +74,7 @@ namespace Antlr3.Misc
          *  Key is object itself.  Good for say asking if a certain string is in
          *  a list of strings.
          */
-        public bool add( T value )
+        public bool Add( T value )
         {
             if ( _elementSet.Add( value ) )
             {
@@ -92,7 +92,7 @@ namespace Antlr3.Misc
             //return result;
         }
 
-        public bool remove( T o )
+        public bool Remove( T o )
         {
             throw new NotSupportedException();
             /*
@@ -101,7 +101,7 @@ namespace Antlr3.Misc
             */
         }
 
-        public void clear()
+        public void Clear()
         {
             _elements.Clear();
             _elementSet.Clear();
@@ -110,12 +110,12 @@ namespace Antlr3.Misc
         /** Return the List holding list of table elements.  Note that you are
          *  NOT getting a copy so don't write to the list.
          */
-        public IList<T> getElements()
+        public IList<T> GetElements()
         {
             return _elements;
         }
 
-        public int size()
+        public int Size()
         {
             /*
             if ( elements.size()!=super.size() ) {
@@ -133,14 +133,9 @@ namespace Antlr3.Misc
 
         #region ICollection<T> Members
 
-        public void Add( T item )
+        void ICollection<T>.Add( T item )
         {
-            this.add( item );
-        }
-
-        public void Clear()
-        {
-            this.clear();
+            this.Add( item );
         }
 
         public bool Contains( T item )
@@ -167,11 +162,6 @@ namespace Antlr3.Misc
             {
                 throw new System.NotImplementedException();
             }
-        }
-
-        public bool Remove( T item )
-        {
-            throw new System.NotImplementedException();
         }
 
         #endregion

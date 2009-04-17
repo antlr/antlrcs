@@ -69,7 +69,6 @@ namespace Antlr3.Codegen
     using MethodImpl = System.Runtime.CompilerServices.MethodImplAttribute;
     using MethodImplOptions = System.Runtime.CompilerServices.MethodImplOptions;
     using NFAState = Antlr3.Analysis.NFAState;
-    using Obsolete = System.ObsoleteAttribute;
     using RecognitionException = Antlr.Runtime.RecognitionException;
     using Rule = Antlr3.Tool.Rule;
     using StringTemplate = Antlr3.ST.StringTemplate;
@@ -197,21 +196,21 @@ namespace Antlr3.Codegen
         {
             get
             {
-                return GetBaseTemplates();
+                return baseTemplates;
             }
         }
         public StringTemplate RecognizerST
         {
             get
             {
-                return GetRecognizerST();
+                return outputFileST;
             }
         }
         public StringTemplateGroup Templates
         {
             get
             {
-                return GetTemplates();
+                return templates;
             }
         }
         public string VocabFileName
@@ -227,6 +226,10 @@ namespace Antlr3.Codegen
             {
                 return debug;
             }
+            set
+            {
+                debug = value;
+            }
         }
         public bool Profile
         {
@@ -234,12 +237,25 @@ namespace Antlr3.Codegen
             {
                 return profile;
             }
+            set
+            {
+                profile = value;
+                if ( profile )
+                {
+                    // requires debug events
+                    Debug = true;
+                }
+            }
         }
         public bool Trace
         {
             get
             {
                 return trace;
+            }
+            set
+            {
+                trace = value;
             }
         }
         #endregion
@@ -549,8 +565,8 @@ namespace Antlr3.Codegen
             headerFileST.SetAttribute( "fileName", targetAppropriateFileNameString );
             outputFileST.SetAttribute( "ANTLRVersion", tool.VERSION );
             headerFileST.SetAttribute( "ANTLRVersion", tool.VERSION );
-            outputFileST.SetAttribute( "generatedTimestamp", AntlrTool.getCurrentTimeStamp() );
-            headerFileST.SetAttribute( "generatedTimestamp", AntlrTool.getCurrentTimeStamp() );
+            outputFileST.SetAttribute( "generatedTimestamp", AntlrTool.GetCurrentTimeStamp() );
+            headerFileST.SetAttribute( "generatedTimestamp", AntlrTool.GetCurrentTimeStamp() );
 
             {
                 // GENERATE RECOGNIZER
@@ -743,8 +759,8 @@ namespace Antlr3.Codegen
             }
             else
             {
-                BitSet bits = BitSet.of( follow.tokenTypeSet );
-                words = bits.toPackedArray();
+                BitSet bits = BitSet.Of( follow.tokenTypeSet );
+                words = bits.ToPackedArray();
                 tokenTypeList = follow.tokenTypeSet.ToList();
             }
             // use the target to convert to hex strings (typically)
@@ -944,7 +960,7 @@ namespace Antlr3.Codegen
             }
             StringTemplate setST = templates.GetInstanceOf( "setTest" );
             int rangeNumber = 1;
-            foreach ( Interval I in iset.getIntervals() )
+            foreach ( Interval I in iset.GetIntervals() )
             {
                 int a = I.a;
                 int b = I.b;
@@ -1425,46 +1441,6 @@ namespace Antlr3.Codegen
 
         // M I S C
 
-        [Obsolete]
-        public virtual StringTemplateGroup GetTemplates()
-        {
-            return templates;
-        }
-
-        [Obsolete]
-        public virtual StringTemplateGroup GetBaseTemplates()
-        {
-            return baseTemplates;
-        }
-
-        [Obsolete]
-        public virtual void SetDebug( bool debug )
-        {
-            this.debug = debug;
-        }
-
-        [Obsolete]
-        public virtual void SetTrace( bool trace )
-        {
-            this.trace = trace;
-        }
-
-        [Obsolete]
-        public virtual void SetProfile( bool profile )
-        {
-            this.profile = profile;
-            if ( profile )
-            {
-                SetDebug( true ); // requires debug events
-            }
-        }
-
-        [Obsolete]
-        public virtual StringTemplate GetRecognizerST()
-        {
-            return outputFileST;
-        }
-
         /** Generate TParser.java and TLexer.java from T.g if combined, else
          *  just use T.java as output regardless of type.
          */
@@ -1499,7 +1475,7 @@ namespace Antlr3.Codegen
         public virtual void Write( StringTemplate code, string fileName )
         {
             DateTime start = DateTime.Now;
-            TextWriter w = tool.getOutputFile( grammar, fileName );
+            TextWriter w = tool.GetOutputFile( grammar, fileName );
             // Write the output to a StringWriter
             IStringTemplateWriter wr = templates.GetStringTemplateWriter( w );
             wr.SetLineWidth( lineWidth );
@@ -1545,7 +1521,7 @@ namespace Antlr3.Codegen
                 {
                     return false;
                 }
-                size += edge.label.Set.size();
+                size += edge.label.Set.Count;
             }
             if ( s.NumberOfTransitions < MIN_SWITCH_ALTS ||
                  size > MAX_SWITCH_CASE_LABELS )

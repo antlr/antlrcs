@@ -45,11 +45,11 @@ namespace Antlr3.Misc
         {
             foreach ( var pair in collection )
             {
-                map( pair.Key, pair.Value );
+                Map( pair.Key, pair.Value );
             }
         }
 
-        public void map( K key, V value )
+        public void Map( K key, V value )
         {
             IList<V> elementsForKey = this.get( key );
             if ( elementsForKey == null )
@@ -61,7 +61,7 @@ namespace Antlr3.Misc
         }
         public void Add( K key, V value )
         {
-            map( key, value );
+            Map( key, value );
         }
     }
 }
