@@ -1,4 +1,4 @@
-// $ANTLR 3.1.2 Language\\ActionEvaluator.g3 2009-04-17 13:33:35
+// $ANTLR 3.1.2 Language\\ActionEvaluator.g3 2009-04-18 02:24:06
 
 // The variable 'variable' is assigned but its value is never used.
 #pragma warning disable 219
@@ -117,7 +117,7 @@ public partial class ActionEvaluator : TreeParser
 	}
 		
 
-	public override string[] GetTokenNames() { return ActionEvaluator.tokenNames; }
+	public override string[] TokenNames { get { return ActionEvaluator.tokenNames; } }
 	public override string GrammarFileName { get { return "Language\\ActionEvaluator.g3"; } }
 
 

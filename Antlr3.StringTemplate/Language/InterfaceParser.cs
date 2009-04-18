@@ -1,4 +1,4 @@
-// $ANTLR 3.1.2 Language\\Interface.g3 2009-03-20 14:32:35
+// $ANTLR 3.1.2 Language\\Interface.g3 2009-04-18 02:24:02
 
 // The variable 'variable' is assigned but its value is never used.
 #pragma warning disable 219
@@ -78,7 +78,7 @@ public partial class InterfaceParser : Parser
 	}
 		
 
-	public override string[] GetTokenNames() { return InterfaceParser.tokenNames; }
+	public override string[] TokenNames { get { return InterfaceParser.tokenNames; } }
 	public override string GrammarFileName { get { return "Language\\Interface.g3"; } }
 
 
@@ -314,6 +314,7 @@ public partial class InterfaceParser : Parser
 	}
 	// $ANTLR end "args"
 	#endregion Rules
+
 
 	#region Follow sets
 	public static class Follow

@@ -1,4 +1,4 @@
-// $ANTLR 3.1.2 Grammars\\AssignTokenTypesWalker.g3 2009-04-17 13:33:46
+// $ANTLR 3.1.2 Grammars\\AssignTokenTypesWalker.g3 2009-04-18 02:22:45
 
 // The variable 'variable' is assigned but its value is never used.
 #pragma warning disable 219
@@ -224,7 +224,7 @@ public partial class AssignTokenTypesWalker : TreeParser
 	}
 		
 
-	public override string[] GetTokenNames() { return AssignTokenTypesWalker.tokenNames; }
+	public override string[] TokenNames { get { return AssignTokenTypesWalker.tokenNames; } }
 	public override string GrammarFileName { get { return "Grammars\\AssignTokenTypesWalker.g3"; } }
 
 

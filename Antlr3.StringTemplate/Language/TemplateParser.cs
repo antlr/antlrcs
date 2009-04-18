@@ -1,4 +1,4 @@
-// $ANTLR 3.1.2 Language\\Template.g3 2009-03-23 20:35:08
+// $ANTLR 3.1.2 Language\\Template.g3 2009-04-18 02:24:00
 
 // The variable 'variable' is assigned but its value is never used.
 #pragma warning disable 219
@@ -87,7 +87,7 @@ public partial class TemplateParser : Parser
 	}
 		
 
-	public override string[] GetTokenNames() { return TemplateParser.tokenNames; }
+	public override string[] TokenNames { get { return TemplateParser.tokenNames; } }
 	public override string GrammarFileName { get { return "Language\\Template.g3"; } }
 
 
@@ -468,6 +468,7 @@ public partial class TemplateParser : Parser
 	}
 	// $ANTLR end "action"
 	#endregion Rules
+
 
 	#region Follow sets
 	public static class Follow

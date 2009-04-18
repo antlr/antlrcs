@@ -182,6 +182,7 @@ namespace AntlrUnitTests
             Interpreter lexEngine = new Interpreter( g, input );
 
             CommonTokenStream tokens = new CommonTokenStream( lexEngine );
+            tokens.FillBuffer();
             string result = tokens.ToString();
             //System.out.println(result);
             string expecting = "123 139.52";

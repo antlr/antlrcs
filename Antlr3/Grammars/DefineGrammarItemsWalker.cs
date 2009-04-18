@@ -1,4 +1,4 @@
-// $ANTLR 3.1.2 Grammars\\DefineGrammarItemsWalker.g3 2009-04-17 13:36:45
+// $ANTLR 3.1.2 Grammars\\DefineGrammarItemsWalker.g3 2009-04-18 02:22:46
 
 // The variable 'variable' is assigned but its value is never used.
 #pragma warning disable 219
@@ -180,7 +180,7 @@ public partial class DefineGrammarItemsWalker : TreeParser
 	}
 		
 
-	public override string[] GetTokenNames() { return DefineGrammarItemsWalker.tokenNames; }
+	public override string[] TokenNames { get { return DefineGrammarItemsWalker.tokenNames; } }
 	public override string GrammarFileName { get { return "Grammars\\DefineGrammarItemsWalker.g3"; } }
 
 

@@ -96,7 +96,7 @@ namespace Antlr3.Grammars
                         int j = ( (IToken)stop ).TokenIndex;
                         if ( ( (IToken)stop ).Type == TokenTypes.EndOfFile )
                         {
-                            j = ( (ITokenStream)input ).Size();
+                            j = ( (ITokenStream)input ).Count;
                         }
                         badText = ( (ITokenStream)input ).ToString( i, j );
                     }

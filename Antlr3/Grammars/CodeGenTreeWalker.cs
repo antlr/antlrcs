@@ -1,4 +1,4 @@
-// $ANTLR 3.1.2 Grammars\\CodeGenTreeWalker.g3 2009-04-17 13:33:39
+// $ANTLR 3.1.2 Grammars\\CodeGenTreeWalker.g3 2009-04-18 02:21:59
 
 // The variable 'variable' is assigned but its value is never used.
 #pragma warning disable 219
@@ -182,7 +182,7 @@ public partial class CodeGenTreeWalker : TreeParser
 	}
 		
 
-	public override string[] GetTokenNames() { return CodeGenTreeWalker.tokenNames; }
+	public override string[] TokenNames { get { return CodeGenTreeWalker.tokenNames; } }
 	public override string GrammarFileName { get { return "Grammars\\CodeGenTreeWalker.g3"; } }
 
 

@@ -1,4 +1,4 @@
-// $ANTLR 3.1.2 Language\\Action.g3 2009-04-11 17:03:15
+// $ANTLR 3.1.2 Language\\Action.g3 2009-04-18 02:24:05
 
 // The variable 'variable' is assigned but its value is never used.
 #pragma warning disable 219
@@ -131,7 +131,7 @@ public partial class ActionParser : Parser
 		}
 	}
 
-	public override string[] GetTokenNames() { return ActionParser.tokenNames; }
+	public override string[] TokenNames { get { return ActionParser.tokenNames; } }
 	public override string GrammarFileName { get { return "Language\\Action.g3"; } }
 
 

@@ -1,4 +1,4 @@
-// $ANTLR 3.1.2 Language\\Group.g3 2009-03-23 20:35:09
+// $ANTLR 3.1.2 Language\\Group.g3 2009-04-18 02:24:03
 
 // The variable 'variable' is assigned but its value is never used.
 #pragma warning disable 219
@@ -94,7 +94,7 @@ public partial class GroupParser : Parser
 	}
 		
 
-	public override string[] GetTokenNames() { return GroupParser.tokenNames; }
+	public override string[] TokenNames { get { return GroupParser.tokenNames; } }
 	public override string GrammarFileName { get { return "Language\\Group.g3"; } }
 
 
@@ -1094,6 +1094,7 @@ public partial class GroupParser : Parser
 	}
 	// $ANTLR end "keyValue"
 	#endregion Rules
+
 
 	#region Follow sets
 	public static class Follow

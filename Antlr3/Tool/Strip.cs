@@ -95,7 +95,7 @@ namespace Antlr3.Tool
             CommonTree t = (CommonTree)r.Tree;
             if ( tree_option )
                 Console.Out.WriteLine( t.ToStringTree() );
-            Rewrite( g.TreeAdaptor, t, g.GetTokenNames() );
+            Rewrite( g.TreeAdaptor, t, g.TokenNames );
         }
 
         public virtual void Rewrite( ITreeAdaptor adaptor, CommonTree t, string[] tokenNames )

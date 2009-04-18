@@ -2057,7 +2057,7 @@ namespace Antlr3.Tool
             buf.Append( ruleAST.Line );
             buf.Append( "\n" );
             for ( int i = ruleAST.TokenStartIndex;
-                 i <= ruleAST.TokenStopIndex && i < tokenBuffer.Size();
+                 i <= ruleAST.TokenStopIndex && i < tokenBuffer.Count;
                  i++ )
             {
                 CommonToken t = (CommonToken)tokenBuffer.Get( i );

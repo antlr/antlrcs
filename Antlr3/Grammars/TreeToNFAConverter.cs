@@ -1,4 +1,4 @@
-// $ANTLR 3.1.2 Grammars\\TreeToNFAConverter.g3 2009-04-17 13:33:49
+// $ANTLR 3.1.2 Grammars\\TreeToNFAConverter.g3 2009-04-18 02:22:48
 
 // The variable 'variable' is assigned but its value is never used.
 #pragma warning disable 219
@@ -173,7 +173,7 @@ public partial class TreeToNFAConverter : TreeParser
 	}
 		
 
-	public override string[] GetTokenNames() { return TreeToNFAConverter.tokenNames; }
+	public override string[] TokenNames { get { return TreeToNFAConverter.tokenNames; } }
 	public override string GrammarFileName { get { return "Grammars\\TreeToNFAConverter.g3"; } }
 
 

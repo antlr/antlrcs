@@ -1,4 +1,4 @@
-// $ANTLR 3.1.2 Grammars\\ANTLR.g3 2009-04-17 13:46:20
+// $ANTLR 3.1.2 Grammars\\ANTLR.g3 2009-04-18 02:22:01
 
 // The variable 'variable' is assigned but its value is never used.
 #pragma warning disable 219
@@ -209,7 +209,7 @@ public partial class ANTLRParser : Parser
 		}
 	}
 
-	public override string[] GetTokenNames() { return ANTLRParser.tokenNames; }
+	public override string[] TokenNames { get { return ANTLRParser.tokenNames; } }
 	public override string GrammarFileName { get { return "Grammars\\ANTLR.g3"; } }
 
 

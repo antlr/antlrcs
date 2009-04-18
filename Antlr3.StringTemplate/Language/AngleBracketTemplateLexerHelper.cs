@@ -52,9 +52,12 @@ namespace Antlr3.ST.Language
             self.Error( "<...> chunk lexer error", e );
         }
 
-        public override string[] GetTokenNames()
+        public override string[] TokenNames
         {
-            return TemplateParser.tokenNames;
+            get
+            {
+                return TemplateParser.tokenNames;
+            }
         }
 
         bool UpcomingAtEND( int i )
