@@ -41,6 +41,14 @@ namespace Antlr3.ST.Language
         protected string currentIndent = null;
         protected StringTemplate self;
 
+        public override string[] TokenNames
+        {
+            get
+            {
+                return TemplateParser.tokenNames;
+            }
+        }
+
         public TemplateLexer( StringTemplate self, TextReader r )
             : this( new ANTLRReaderStream( r ) )
         {
@@ -49,7 +57,10 @@ namespace Antlr3.ST.Language
 
         public override void ReportError( RecognitionException e )
         {
-            self.Error( "$...$ chunk lexer error", e );
+            string header = GetErrorHeader( e );
+            string message = GetErrorMessage( e, TokenNames );
+            message = string.Format( "{0}: {1}: {2}", "$...$ chunk lexer error", header, message );
+            self.Error( message, e );
         }
 
         bool UpcomingAtEND( int i )

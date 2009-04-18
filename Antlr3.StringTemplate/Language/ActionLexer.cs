@@ -1,4 +1,4 @@
-// $ANTLR 3.1.2 Language\\Action.g3 2009-04-17 13:45:46
+// $ANTLR 3.1.2 Language\\Action.g3 2009-04-18 13:36:20
 
 // The variable 'variable' is assigned but its value is never used.
 #pragma warning disable 219
@@ -690,9 +690,9 @@ public partial class ActionLexer : Lexer
 				case 3:
 					// Language\\Action.g3:379:5: ESC_CHAR[out uc, false]
 					{
-					int ESC_CHAR1Start300 = GetCharIndex();
+					int ESC_CHAR1Start300 = CharIndex;
 					mESC_CHAR(out uc, false); if (state.failed) return ;
-					ESC_CHAR1 = new CommonToken(input, TokenTypes.Invalid, TokenChannels.Default, ESC_CHAR1Start300, GetCharIndex()-1);
+					ESC_CHAR1 = new CommonToken(input, TokenTypes.Invalid, TokenChannels.Default, ESC_CHAR1Start300, CharIndex-1);
 					if ( state.backtracking == 0 )
 					{
 						builder.Append( (ESC_CHAR1!=null?ESC_CHAR1.Text:null) );
@@ -790,9 +790,9 @@ public partial class ActionLexer : Lexer
 
 			}
 
-			int aStart368 = GetCharIndex();
+			int aStart368 = CharIndex;
 			mID(); if (state.failed) return ;
-			a = new CommonToken(input, TokenTypes.Invalid, TokenChannels.Default, aStart368, GetCharIndex()-1);
+			a = new CommonToken(input, TokenTypes.Invalid, TokenChannels.Default, aStart368, CharIndex-1);
 			if ( state.backtracking == 0 )
 			{
 				args.Add((a!=null?a.Text:null));
@@ -916,9 +916,9 @@ public partial class ActionLexer : Lexer
 
 					}
 
-					int a2Start390 = GetCharIndex();
+					int a2Start390 = CharIndex;
 					mID(); if (state.failed) return ;
-					a2 = new CommonToken(input, TokenTypes.Invalid, TokenChannels.Default, a2Start390, GetCharIndex()-1);
+					a2 = new CommonToken(input, TokenTypes.Invalid, TokenChannels.Default, a2Start390, CharIndex-1);
 					if ( state.backtracking == 0 )
 					{
 						args.Add((a2!=null?a2.Text:null));
@@ -1025,9 +1025,9 @@ public partial class ActionLexer : Lexer
 				case 3:
 					// Language\\Action.g3:417:5: ESC_CHAR[out uc, false]
 					{
-					int ESC_CHAR2Start460 = GetCharIndex();
+					int ESC_CHAR2Start460 = CharIndex;
 					mESC_CHAR(out uc, false); if (state.failed) return ;
-					ESC_CHAR2 = new CommonToken(input, TokenTypes.Invalid, TokenChannels.Default, ESC_CHAR2Start460, GetCharIndex()-1);
+					ESC_CHAR2 = new CommonToken(input, TokenTypes.Invalid, TokenChannels.Default, ESC_CHAR2Start460, CharIndex-1);
 					if ( state.backtracking == 0 )
 					{
 						builder.Append((ESC_CHAR2!=null?ESC_CHAR2.Text:null));

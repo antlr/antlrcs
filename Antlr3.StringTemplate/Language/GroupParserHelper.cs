@@ -45,7 +45,10 @@ namespace Antlr3.ST.Language
         {
             if ( _group != null )
             {
-                _group.Error( "template group parse error", e );
+                string header = GetErrorHeader( e );
+                string message = GetErrorMessage( e, TokenNames );
+                message = string.Format( "{0}: {1}: {2}", "template group parse error", header, message );
+                _group.Error( message, e );
             }
             else
             {

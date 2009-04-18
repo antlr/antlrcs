@@ -1,4 +1,4 @@
-// $ANTLR 3.1.2 Language\\Group.g3 2009-03-23 18:22:46
+// $ANTLR 3.1.2 Language\\Group.g3 2009-04-18 13:37:02
 
 // The variable 'variable' is assigned but its value is never used.
 #pragma warning disable 219
@@ -444,7 +444,7 @@ public partial class GroupLexer : Lexer
 			Match(">>"); 
 
 
-						System.Text.StringBuilder builder = new System.Text.StringBuilder( input.substring( state.tokenStartCharIndex + 2, GetCharIndex() - 3 ) );
+						System.Text.StringBuilder builder = new System.Text.StringBuilder( input.substring( state.tokenStartCharIndex + 2, CharIndex - 3 ) );
 						Text = ProcessBigString( builder );
 					
 
@@ -536,7 +536,7 @@ public partial class GroupLexer : Lexer
 
 			Match('}'); 
 
-						System.Text.StringBuilder builder = new System.Text.StringBuilder( input.substring( state.tokenStartCharIndex + 1, GetCharIndex() - 2 ) );
+						System.Text.StringBuilder builder = new System.Text.StringBuilder( input.substring( state.tokenStartCharIndex + 1, CharIndex - 2 ) );
 						Text = ProcessAnonymousTemplate( builder );
 					
 

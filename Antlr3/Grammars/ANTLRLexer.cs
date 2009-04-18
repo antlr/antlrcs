@@ -1,4 +1,4 @@
-// $ANTLR 3.1.2 Grammars\\ANTLR.g3 2009-04-17 13:46:21
+// $ANTLR 3.1.2 Grammars\\ANTLR.g3 2009-04-18 13:36:25
 
 // The variable 'variable' is assigned but its value is never used.
 #pragma warning disable 219
@@ -2142,9 +2142,9 @@ public partial class ANTLRLexer : Lexer
 				case 3:
 					// Grammars\\ANTLR.g3:997:5: ACTION_STRING_LITERAL
 					{
-					int ACTION_STRING_LITERAL1Start857 = GetCharIndex();
+					int ACTION_STRING_LITERAL1Start857 = CharIndex;
 					mACTION_STRING_LITERAL(); if (state.failed) return ;
-					ACTION_STRING_LITERAL1 = new CommonToken(input, TokenTypes.Invalid, TokenChannels.Default, ACTION_STRING_LITERAL1Start857, GetCharIndex()-1);
+					ACTION_STRING_LITERAL1 = new CommonToken(input, TokenTypes.Invalid, TokenChannels.Default, ACTION_STRING_LITERAL1Start857, CharIndex-1);
 					if ( state.backtracking == 0 )
 					{
 						builder.Append((ACTION_STRING_LITERAL1!=null?ACTION_STRING_LITERAL1.Text:null));
@@ -2155,9 +2155,9 @@ public partial class ANTLRLexer : Lexer
 				case 4:
 					// Grammars\\ANTLR.g3:998:5: ACTION_CHAR_LITERAL
 					{
-					int ACTION_CHAR_LITERAL2Start865 = GetCharIndex();
+					int ACTION_CHAR_LITERAL2Start865 = CharIndex;
 					mACTION_CHAR_LITERAL(); if (state.failed) return ;
-					ACTION_CHAR_LITERAL2 = new CommonToken(input, TokenTypes.Invalid, TokenChannels.Default, ACTION_CHAR_LITERAL2Start865, GetCharIndex()-1);
+					ACTION_CHAR_LITERAL2 = new CommonToken(input, TokenTypes.Invalid, TokenChannels.Default, ACTION_CHAR_LITERAL2Start865, CharIndex-1);
 					if ( state.backtracking == 0 )
 					{
 						builder.Append((ACTION_CHAR_LITERAL2!=null?ACTION_CHAR_LITERAL2.Text:null));
@@ -2867,13 +2867,13 @@ public partial class ANTLRLexer : Lexer
 			Match("src"); if (state.failed) return ;
 
 			Match(' '); if (state.failed) return ;
-			int fileStart1270 = GetCharIndex();
+			int fileStart1270 = CharIndex;
 			mACTION_STRING_LITERAL(); if (state.failed) return ;
-			file = new CommonToken(input, TokenTypes.Invalid, TokenChannels.Default, fileStart1270, GetCharIndex()-1);
+			file = new CommonToken(input, TokenTypes.Invalid, TokenChannels.Default, fileStart1270, CharIndex-1);
 			Match(' '); if (state.failed) return ;
-			int lineStart1276 = GetCharIndex();
+			int lineStart1276 = CharIndex;
 			mINT(); if (state.failed) return ;
-			line = new CommonToken(input, TokenTypes.Invalid, TokenChannels.Default, lineStart1276, GetCharIndex()-1);
+			line = new CommonToken(input, TokenTypes.Invalid, TokenChannels.Default, lineStart1276, CharIndex-1);
 			if ( state.backtracking == 0 )
 			{
 

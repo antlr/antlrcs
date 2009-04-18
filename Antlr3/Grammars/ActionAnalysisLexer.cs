@@ -1,4 +1,4 @@
-// $ANTLR 3.1.2 Grammars\\ActionAnalysisLexer.g3 2009-04-17 13:46:13
+// $ANTLR 3.1.2 Grammars\\ActionAnalysisLexer.g3 2009-04-18 13:36:23
 
 // The variable 'variable' is assigned but its value is never used.
 #pragma warning disable 219
@@ -148,13 +148,13 @@ public partial class ActionAnalysisLexer : Lexer
 			// Grammars\\ActionAnalysisLexer.g3:92:4: '$' x= ID '.' y= ID {...}?
 			{
 			Match('$'); if (state.failed) return ;
-			int xStart57 = GetCharIndex();
+			int xStart57 = CharIndex;
 			mID(); if (state.failed) return ;
-			x = new CommonToken(input, TokenTypes.Invalid, TokenChannels.Default, xStart57, GetCharIndex()-1);
+			x = new CommonToken(input, TokenTypes.Invalid, TokenChannels.Default, xStart57, CharIndex-1);
 			Match('.'); if (state.failed) return ;
-			int yStart63 = GetCharIndex();
+			int yStart63 = CharIndex;
 			mID(); if (state.failed) return ;
-			y = new CommonToken(input, TokenTypes.Invalid, TokenChannels.Default, yStart63, GetCharIndex()-1);
+			y = new CommonToken(input, TokenTypes.Invalid, TokenChannels.Default, yStart63, CharIndex-1);
 			if ( !((enclosingRule!=null)) )
 			{
 				if (state.backtracking>0) {state.failed=true; return ;}
@@ -226,9 +226,9 @@ public partial class ActionAnalysisLexer : Lexer
 			// Grammars\\ActionAnalysisLexer.g3:135:4: '$' ID {...}?
 			{
 			Match('$'); if (state.failed) return ;
-			int ID1Start84 = GetCharIndex();
+			int ID1Start84 = CharIndex;
 			mID(); if (state.failed) return ;
-			ID1 = new CommonToken(input, TokenTypes.Invalid, TokenChannels.Default, ID1Start84, GetCharIndex()-1);
+			ID1 = new CommonToken(input, TokenTypes.Invalid, TokenChannels.Default, ID1Start84, CharIndex-1);
 			if ( !((enclosingRule!=null && enclosingRule.GetRuleLabel((ID1!=null?ID1.Text:null))!=null)) )
 			{
 				if (state.backtracking>0) {state.failed=true; return ;}
@@ -266,9 +266,9 @@ public partial class ActionAnalysisLexer : Lexer
 			// Grammars\\ActionAnalysisLexer.g3:144:4: '$' ID {...}?
 			{
 			Match('$'); if (state.failed) return ;
-			int ID2Start106 = GetCharIndex();
+			int ID2Start106 = CharIndex;
 			mID(); if (state.failed) return ;
-			ID2 = new CommonToken(input, TokenTypes.Invalid, TokenChannels.Default, ID2Start106, GetCharIndex()-1);
+			ID2 = new CommonToken(input, TokenTypes.Invalid, TokenChannels.Default, ID2Start106, CharIndex-1);
 			if ( !((enclosingRule!=null && enclosingRule.GetLocalAttributeScope((ID2!=null?ID2.Text:null))!=null)) )
 			{
 				if (state.backtracking>0) {state.failed=true; return ;}

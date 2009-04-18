@@ -311,7 +311,7 @@ STRING
 BIGSTRING
 	:	'<<' ('\\>' | '\\' ~'>' | '>' ~'>' | ~('\\'|'>'))* '>>'
 		{
-			System.Text.StringBuilder builder = new System.Text.StringBuilder( input.substring( state.tokenStartCharIndex + 2, GetCharIndex() - 3 ) );
+			System.Text.StringBuilder builder = new System.Text.StringBuilder( input.substring( state.tokenStartCharIndex + 2, CharIndex - 3 ) );
 			$text = ProcessBigString( builder );
 		}
 	;
@@ -324,7 +324,7 @@ ANONYMOUS_TEMPLATE
 		)*
 		'}'
 		{
-			System.Text.StringBuilder builder = new System.Text.StringBuilder( input.substring( state.tokenStartCharIndex + 1, GetCharIndex() - 2 ) );
+			System.Text.StringBuilder builder = new System.Text.StringBuilder( input.substring( state.tokenStartCharIndex + 1, CharIndex - 2 ) );
 			$text = ProcessAnonymousTemplate( builder );
 		}
 	;

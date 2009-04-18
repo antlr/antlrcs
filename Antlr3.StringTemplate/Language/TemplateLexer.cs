@@ -1,4 +1,4 @@
-// $ANTLR 3.1.2 Language\\Template.g3 2009-04-17 13:45:38
+// $ANTLR 3.1.2 Language\\Template.g3 2009-04-18 13:36:17
 
 // The variable 'variable' is assigned but its value is never used.
 #pragma warning disable 219
@@ -465,9 +465,9 @@ public partial class TemplateLexer : Lexer
 
 
 					Match('('); if (state.failed) return ;
-					int expStart206 = GetCharIndex();
+					int expStart206 = CharIndex;
 					mIF_EXPR(); if (state.failed) return ;
-					exp = new CommonToken(input, TokenTypes.Invalid, TokenChannels.Default, expStart206, GetCharIndex()-1);
+					exp = new CommonToken(input, TokenTypes.Invalid, TokenChannels.Default, expStart206, CharIndex-1);
 					Match(")$"); if (state.failed) return ;
 
 					if ( state.backtracking == 0 )
@@ -558,9 +558,9 @@ public partial class TemplateLexer : Lexer
 
 
 					Match('('); if (state.failed) return ;
-					int expStart265 = GetCharIndex();
+					int expStart265 = CharIndex;
 					mIF_EXPR(); if (state.failed) return ;
-					exp = new CommonToken(input, TokenTypes.Invalid, TokenChannels.Default, expStart265, GetCharIndex()-1);
+					exp = new CommonToken(input, TokenTypes.Invalid, TokenChannels.Default, expStart265, CharIndex-1);
 					Match(")$"); if (state.failed) return ;
 
 					if ( state.backtracking == 0 )
@@ -1399,9 +1399,9 @@ public partial class TemplateLexer : Lexer
 				case 2:
 					// Language\\Template.g3:375:5: ind= INDENT
 					{
-					int indStart759 = GetCharIndex();
+					int indStart759 = CharIndex;
 					mINDENT(); if (state.failed) return ;
-					ind = new CommonToken(input, TokenTypes.Invalid, TokenChannels.Default, indStart759, GetCharIndex()-1);
+					ind = new CommonToken(input, TokenTypes.Invalid, TokenChannels.Default, indStart759, CharIndex-1);
 					if ( state.backtracking == 0 )
 					{
 
@@ -1520,9 +1520,9 @@ public partial class TemplateLexer : Lexer
 				case 1:
 					// Language\\Template.g3:408:6: ESC
 					{
-					int ESC1Start821 = GetCharIndex();
+					int ESC1Start821 = CharIndex;
 					mESC(); if (state.failed) return ;
-					ESC1 = new CommonToken(input, TokenTypes.Invalid, TokenChannels.Default, ESC1Start821, GetCharIndex()-1);
+					ESC1 = new CommonToken(input, TokenTypes.Invalid, TokenChannels.Default, ESC1Start821, CharIndex-1);
 					if ( state.backtracking == 0 )
 					{
 						builder.Append((ESC1!=null?ESC1.Text:null));
@@ -1533,9 +1533,9 @@ public partial class TemplateLexer : Lexer
 				case 2:
 					// Language\\Template.g3:409:5: st= SUBTEMPLATE
 					{
-					int stStart837 = GetCharIndex();
+					int stStart837 = CharIndex;
 					mSUBTEMPLATE(); if (state.failed) return ;
-					st = new CommonToken(input, TokenTypes.Invalid, TokenChannels.Default, stStart837, GetCharIndex()-1);
+					st = new CommonToken(input, TokenTypes.Invalid, TokenChannels.Default, stStart837, CharIndex-1);
 					if ( state.backtracking == 0 )
 					{
 						builder.Append((st!=null?st.Text:null));
@@ -1631,9 +1631,9 @@ public partial class TemplateLexer : Lexer
 					case 2:
 						// Language\\Template.g3:414:6: st= SUBTEMPLATE
 						{
-						int stStart895 = GetCharIndex();
+						int stStart895 = CharIndex;
 						mSUBTEMPLATE(); if (state.failed) return ;
-						st = new CommonToken(input, TokenTypes.Invalid, TokenChannels.Default, stStart895, GetCharIndex()-1);
+						st = new CommonToken(input, TokenTypes.Invalid, TokenChannels.Default, stStart895, CharIndex-1);
 						if ( state.backtracking == 0 )
 						{
 							builder.Append((st!=null?st.Text:null));
@@ -1764,9 +1764,9 @@ public partial class TemplateLexer : Lexer
 					case 1:
 						// Language\\Template.g3:431:5: ESC
 						{
-						int ESC2Start981 = GetCharIndex();
+						int ESC2Start981 = CharIndex;
 						mESC(); if (state.failed) return ;
-						ESC2 = new CommonToken(input, TokenTypes.Invalid, TokenChannels.Default, ESC2Start981, GetCharIndex()-1);
+						ESC2 = new CommonToken(input, TokenTypes.Invalid, TokenChannels.Default, ESC2Start981, CharIndex-1);
 						if ( state.backtracking == 0 )
 						{
 							builder.Append((ESC2!=null?ESC2.Text:null));
@@ -2223,18 +2223,18 @@ public partial class TemplateLexer : Lexer
 				{
 				Match("\\u"); if (state.failed) return ;
 
-				int aStart1192 = GetCharIndex();
+				int aStart1192 = CharIndex;
 				mHEX(); if (state.failed) return ;
-				a = new CommonToken(input, TokenTypes.Invalid, TokenChannels.Default, aStart1192, GetCharIndex()-1);
-				int bStart1196 = GetCharIndex();
+				a = new CommonToken(input, TokenTypes.Invalid, TokenChannels.Default, aStart1192, CharIndex-1);
+				int bStart1196 = CharIndex;
 				mHEX(); if (state.failed) return ;
-				b = new CommonToken(input, TokenTypes.Invalid, TokenChannels.Default, bStart1196, GetCharIndex()-1);
-				int cStart1200 = GetCharIndex();
+				b = new CommonToken(input, TokenTypes.Invalid, TokenChannels.Default, bStart1196, CharIndex-1);
+				int cStart1200 = CharIndex;
 				mHEX(); if (state.failed) return ;
-				c = new CommonToken(input, TokenTypes.Invalid, TokenChannels.Default, cStart1200, GetCharIndex()-1);
-				int dStart1204 = GetCharIndex();
+				c = new CommonToken(input, TokenTypes.Invalid, TokenChannels.Default, cStart1200, CharIndex-1);
+				int dStart1204 = CharIndex;
 				mHEX(); if (state.failed) return ;
-				d = new CommonToken(input, TokenTypes.Invalid, TokenChannels.Default, dStart1204, GetCharIndex()-1);
+				d = new CommonToken(input, TokenTypes.Invalid, TokenChannels.Default, dStart1204, CharIndex-1);
 				if ( state.backtracking == 0 )
 				{
 					uc = (char)int.Parse((a!=null?a.Text:null)+(b!=null?b.Text:null)+(c!=null?c.Text:null)+(d!=null?d.Text:null), System.Globalization.NumberStyles.AllowHexSpecifier);

@@ -1362,15 +1362,11 @@ namespace AntlrUnitTests
             IStringTemplateErrorListener errors = new ErrorBuffer();
             group.ErrorListener = errors;
             StringTemplate t = new StringTemplate( group, "stuff $a then more junk etc..." );
-            string expectingError = "problem parsing template 'anonymous': line 1:31: expecting '$', found '<EOF>'";
+            //string expectingError = "problem parsing template 'anonymous': line 1:31: expecting '$', found '<EOF>'";
+            string expectingError = "$...$ chunk lexer error: line 1:31: mismatched character '<EOF>' expecting '$':";
             //System.out.println("error: '"+errors+"'");
             //System.out.println("expecting: '"+expectingError+"'");
-#if false
             Assert.IsTrue( errors.ToString().StartsWith( expectingError ) );
-#else
-            if ( !errors.ToString().StartsWith( expectingError ) )
-                Assert.Inconclusive( "Antlr v3 parse errors are in a different format." );
-#endif
         }
 
         [TestMethod]
@@ -5357,13 +5353,9 @@ namespace AntlrUnitTests
                 new StringTemplateGroup( new StringReader( templates ),
                                         typeof( DefaultTemplateLexer ),
                                         errors );
-            string expecting = "template group parse error: line 2:1: unexpected token:";
-#if false
+            //string expecting = "template group parse error: line 2:1: unexpected token:";
+            string expecting = "template group parse error: line 2:1: required (...)+ loop did not match anything at input 'a':";
             Assert.IsTrue( errors.ToString().StartsWith( expecting ) );
-#else
-            if ( !errors.ToString().StartsWith( expecting ) )
-                Assert.Inconclusive( "Antlr v3 parse errors are in a different format." );
-#endif
         }
 
         [TestMethod]
