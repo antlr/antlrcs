@@ -58,7 +58,7 @@ namespace Antlr3.Grammars
             do
             {
                 t = NextToken();
-            } while ( t.Type != TokenConstants.Eof );
+            } while ( t.Type != TokenTypes.EndOfFile );
         }
     }
 }

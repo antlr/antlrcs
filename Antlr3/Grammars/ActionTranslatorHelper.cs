@@ -47,7 +47,7 @@ namespace Antlr3.Grammars
     using Rule = Antlr3.Tool.Rule;
     using StringBuilder = System.Text.StringBuilder;
     using StringTemplate = Antlr3.ST.StringTemplate;
-    using TokenConstants = Antlr.Runtime.TokenConstants;
+    using TokenTypes = Antlr.Runtime.TokenTypes;
 
     partial class ActionTranslator
     {
@@ -93,7 +93,7 @@ namespace Antlr3.Grammars
             do
             {
                 t = NextToken();
-            } while ( t.Type != TokenConstants.Eof );
+            } while ( t.Type != TokenTypes.EndOfFile );
             return chunks;
         }
 

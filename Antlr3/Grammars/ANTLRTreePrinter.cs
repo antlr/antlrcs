@@ -1,4 +1,4 @@
-// $ANTLR 3.1.2 Grammars\\ANTLRTreePrinter.g3 2009-04-16 20:58:22
+// $ANTLR 3.1.2 Grammars\\ANTLRTreePrinter.g3 2009-04-17 13:33:44
 
 // The variable 'variable' is assigned but its value is never used.
 #pragma warning disable 219
@@ -396,14 +396,14 @@ public partial class ANTLRTreePrinter : TreeParser
 				{
 				Match(input,LEXER_GRAMMAR,Follow._LEXER_GRAMMAR_in_grammar_127); 
 
-				Match(input, TokenConstants.Down, null); 
+				Match(input, TokenTypes.Down, null); 
 				PushFollow(Follow._grammarSpec_in_grammar_129);
 				grammarSpec("lexer ");
 
 				state._fsp--;
 
 
-				Match(input, TokenConstants.Up, null); 
+				Match(input, TokenTypes.Up, null); 
 
 				}
 				break;
@@ -412,14 +412,14 @@ public partial class ANTLRTreePrinter : TreeParser
 				{
 				Match(input,PARSER_GRAMMAR,Follow._PARSER_GRAMMAR_in_grammar_139); 
 
-				Match(input, TokenConstants.Down, null); 
+				Match(input, TokenTypes.Down, null); 
 				PushFollow(Follow._grammarSpec_in_grammar_141);
 				grammarSpec("parser ");
 
 				state._fsp--;
 
 
-				Match(input, TokenConstants.Up, null); 
+				Match(input, TokenTypes.Up, null); 
 
 				}
 				break;
@@ -428,14 +428,14 @@ public partial class ANTLRTreePrinter : TreeParser
 				{
 				Match(input,TREE_GRAMMAR,Follow._TREE_GRAMMAR_in_grammar_151); 
 
-				Match(input, TokenConstants.Down, null); 
+				Match(input, TokenTypes.Down, null); 
 				PushFollow(Follow._grammarSpec_in_grammar_153);
 				grammarSpec("tree ");
 
 				state._fsp--;
 
 
-				Match(input, TokenConstants.Up, null); 
+				Match(input, TokenTypes.Up, null); 
 
 				}
 				break;
@@ -444,14 +444,14 @@ public partial class ANTLRTreePrinter : TreeParser
 				{
 				Match(input,COMBINED_GRAMMAR,Follow._COMBINED_GRAMMAR_in_grammar_163); 
 
-				Match(input, TokenConstants.Down, null); 
+				Match(input, TokenTypes.Down, null); 
 				PushFollow(Follow._grammarSpec_in_grammar_165);
 				grammarSpec("");
 
 				state._fsp--;
 
 
-				Match(input, TokenConstants.Up, null); 
+				Match(input, TokenTypes.Up, null); 
 
 				}
 				break;
@@ -482,7 +482,7 @@ public partial class ANTLRTreePrinter : TreeParser
 			{
 			Match(input,SCOPE,Follow._SCOPE_in_attrScope181); 
 
-			Match(input, TokenConstants.Down, null); 
+			Match(input, TokenTypes.Down, null); 
 			Match(input,ID,Follow._ID_in_attrScope183); 
 			// Grammars\\ANTLRTreePrinter.g3:115:18: ( ruleAction )*
 			for ( ; ; )
@@ -521,7 +521,7 @@ public partial class ANTLRTreePrinter : TreeParser
 
 			Match(input,ACTION,Follow._ACTION_in_attrScope188); 
 
-			Match(input, TokenConstants.Up, null); 
+			Match(input, TokenTypes.Up, null); 
 
 			}
 
@@ -814,7 +814,7 @@ public partial class ANTLRTreePrinter : TreeParser
 			{
 			Match(input,AMPERSAND,Follow._AMPERSAND_in_action293); 
 
-			Match(input, TokenConstants.Down, null); 
+			Match(input, TokenTypes.Down, null); 
 			id1=(GrammarAST)Match(input,ID,Follow._ID_in_action297); 
 			// Grammars\\ANTLRTreePrinter.g3:140:4: (id2= ID a1= ACTION |a2= ACTION )
 			int alt11=2;
@@ -857,7 +857,7 @@ public partial class ANTLRTreePrinter : TreeParser
 			}
 
 
-			Match(input, TokenConstants.Up, null); 
+			Match(input, TokenTypes.Up, null); 
 
 						if ( showActions )
 						{
@@ -894,7 +894,7 @@ public partial class ANTLRTreePrinter : TreeParser
 
 			@out(" options {");
 
-			Match(input, TokenConstants.Down, null); 
+			Match(input, TokenTypes.Down, null); 
 			// Grammars\\ANTLRTreePrinter.g3:156:4: ( option )+
 			int cnt12=0;
 			for ( ; ; )
@@ -938,7 +938,7 @@ public partial class ANTLRTreePrinter : TreeParser
 
 			@out("} ");
 
-			Match(input, TokenConstants.Up, null); 
+			Match(input, TokenTypes.Up, null); 
 
 			}
 
@@ -969,7 +969,7 @@ public partial class ANTLRTreePrinter : TreeParser
 			{
 			Match(input,ASSIGN,Follow._ASSIGN_in_option391); 
 
-			Match(input, TokenConstants.Down, null); 
+			Match(input, TokenTypes.Down, null); 
 			id=(GrammarAST)Match(input,ID,Follow._ID_in_option395); 
 			@out((id!=null?id.Text:null)+"=");
 			PushFollow(Follow._optionValue_in_option399);
@@ -978,7 +978,7 @@ public partial class ANTLRTreePrinter : TreeParser
 			state._fsp--;
 
 
-			Match(input, TokenConstants.Up, null); 
+			Match(input, TokenTypes.Up, null); 
 
 			}
 
@@ -1100,7 +1100,7 @@ public partial class ANTLRTreePrinter : TreeParser
 			{
 			Match(input,IMPORT,Follow._IMPORT_in_delegateGrammars484); 
 
-			Match(input, TokenConstants.Down, null); 
+			Match(input, TokenTypes.Down, null); 
 			// Grammars\\ANTLRTreePrinter.g3:186:16: ( ^( ASSIGN ID ID ) | ID )+
 			int cnt14=0;
 			for ( ; ; )
@@ -1125,11 +1125,11 @@ public partial class ANTLRTreePrinter : TreeParser
 					{
 					Match(input,ASSIGN,Follow._ASSIGN_in_delegateGrammars489); 
 
-					Match(input, TokenConstants.Down, null); 
+					Match(input, TokenTypes.Down, null); 
 					Match(input,ID,Follow._ID_in_delegateGrammars491); 
 					Match(input,ID,Follow._ID_in_delegateGrammars493); 
 
-					Match(input, TokenConstants.Up, null); 
+					Match(input, TokenTypes.Up, null); 
 
 					}
 					break;
@@ -1155,7 +1155,7 @@ public partial class ANTLRTreePrinter : TreeParser
 
 
 
-			Match(input, TokenConstants.Up, null); 
+			Match(input, TokenTypes.Up, null); 
 
 			}
 
@@ -1184,7 +1184,7 @@ public partial class ANTLRTreePrinter : TreeParser
 			{
 			Match(input,TOKENS,Follow._TOKENS_in_tokensSpec516); 
 
-			Match(input, TokenConstants.Down, null); 
+			Match(input, TokenTypes.Down, null); 
 			// Grammars\\ANTLRTreePrinter.g3:190:14: ( tokenSpec )+
 			int cnt15=0;
 			for ( ; ; )
@@ -1226,7 +1226,7 @@ public partial class ANTLRTreePrinter : TreeParser
 
 
 
-			Match(input, TokenConstants.Up, null); 
+			Match(input, TokenTypes.Up, null); 
 
 			}
 
@@ -1282,7 +1282,7 @@ public partial class ANTLRTreePrinter : TreeParser
 				{
 				Match(input,ASSIGN,Follow._ASSIGN_in_tokenSpec543); 
 
-				Match(input, TokenConstants.Down, null); 
+				Match(input, TokenTypes.Down, null); 
 				Match(input,TOKEN_REF,Follow._TOKEN_REF_in_tokenSpec545); 
 				if ( input.LA(1)==CHAR_LITERAL||input.LA(1)==STRING_LITERAL )
 				{
@@ -1296,7 +1296,7 @@ public partial class ANTLRTreePrinter : TreeParser
 				}
 
 
-				Match(input, TokenConstants.Up, null); 
+				Match(input, TokenTypes.Up, null); 
 
 				}
 				break;
@@ -1398,7 +1398,7 @@ public partial class ANTLRTreePrinter : TreeParser
 			{
 			Match(input,RULE,Follow._RULE_in_rule582); 
 
-			Match(input, TokenConstants.Down, null); 
+			Match(input, TokenTypes.Down, null); 
 			id=(GrammarAST)Match(input,ID,Follow._ID_in_rule586); 
 			// Grammars\\ANTLRTreePrinter.g3:204:4: ( modifier )?
 			int alt18=2;
@@ -1427,9 +1427,9 @@ public partial class ANTLRTreePrinter : TreeParser
 			@out((id!=null?id.Text:null));
 			Match(input,ARG,Follow._ARG_in_rule605); 
 
-			if ( input.LA(1)==TokenConstants.Down )
+			if ( input.LA(1)==TokenTypes.Down )
 			{
-				Match(input, TokenConstants.Down, null); 
+				Match(input, TokenTypes.Down, null); 
 				// Grammars\\ANTLRTreePrinter.g3:206:10: (arg= ARG_ACTION )?
 				int alt19=2;
 				int LA19_0 = input.LA(1);
@@ -1452,13 +1452,13 @@ public partial class ANTLRTreePrinter : TreeParser
 				}
 
 
-				Match(input, TokenConstants.Up, null); 
+				Match(input, TokenTypes.Up, null); 
 			}
 			Match(input,RET,Follow._RET_in_rule623); 
 
-			if ( input.LA(1)==TokenConstants.Down )
+			if ( input.LA(1)==TokenTypes.Down )
 			{
-				Match(input, TokenConstants.Down, null); 
+				Match(input, TokenTypes.Down, null); 
 				// Grammars\\ANTLRTreePrinter.g3:207:10: (ret= ARG_ACTION )?
 				int alt20=2;
 				int LA20_0 = input.LA(1);
@@ -1481,7 +1481,7 @@ public partial class ANTLRTreePrinter : TreeParser
 				}
 
 
-				Match(input, TokenConstants.Up, null); 
+				Match(input, TokenTypes.Up, null); 
 			}
 			// Grammars\\ANTLRTreePrinter.g3:208:4: ( throwsSpec )?
 			int alt21=2;
@@ -1627,7 +1627,7 @@ public partial class ANTLRTreePrinter : TreeParser
 			Match(input,EOR,Follow._EOR_in_rule698); 
 			@out(";\n");
 
-			Match(input, TokenConstants.Up, null); 
+			Match(input, TokenTypes.Up, null); 
 
 			}
 
@@ -1659,11 +1659,11 @@ public partial class ANTLRTreePrinter : TreeParser
 			{
 			Match(input,AMPERSAND,Follow._AMPERSAND_in_ruleAction716); 
 
-			Match(input, TokenConstants.Down, null); 
+			Match(input, TokenTypes.Down, null); 
 			id=(GrammarAST)Match(input,ID,Follow._ID_in_ruleAction720); 
 			a=(GrammarAST)Match(input,ACTION,Follow._ACTION_in_ruleAction724); 
 
-			Match(input, TokenConstants.Up, null); 
+			Match(input, TokenTypes.Up, null); 
 			if ( showActions ) @out("@"+(id!=null?id.Text:null)+"{"+(a!=null?a.Text:null)+"}");
 
 			}
@@ -1737,7 +1737,7 @@ public partial class ANTLRTreePrinter : TreeParser
 			{
 			Match(input,THROWS,Follow._THROWS_in_throwsSpec773); 
 
-			Match(input, TokenConstants.Down, null); 
+			Match(input, TokenTypes.Down, null); 
 			// Grammars\\ANTLRTreePrinter.g3:238:15: ( ID )+
 			int cnt26=0;
 			for ( ; ; )
@@ -1775,7 +1775,7 @@ public partial class ANTLRTreePrinter : TreeParser
 
 
 
-			Match(input, TokenConstants.Up, null); 
+			Match(input, TokenTypes.Up, null); 
 
 			}
 
@@ -1804,9 +1804,9 @@ public partial class ANTLRTreePrinter : TreeParser
 			{
 			Match(input,SCOPE,Follow._SCOPE_in_ruleScopeSpec790); 
 
-			if ( input.LA(1)==TokenConstants.Down )
+			if ( input.LA(1)==TokenTypes.Down )
 			{
-				Match(input, TokenConstants.Down, null); 
+				Match(input, TokenTypes.Down, null); 
 				// Grammars\\ANTLRTreePrinter.g3:242:15: ( ruleAction )*
 				for ( ; ; )
 				{
@@ -1894,7 +1894,7 @@ public partial class ANTLRTreePrinter : TreeParser
 
 
 
-				Match(input, TokenConstants.Up, null); 
+				Match(input, TokenTypes.Up, null); 
 			}
 
 			}
@@ -1948,7 +1948,7 @@ public partial class ANTLRTreePrinter : TreeParser
 							}
 						
 
-			Match(input, TokenConstants.Down, null); 
+			Match(input, TokenTypes.Down, null); 
 			// Grammars\\ANTLRTreePrinter.g3:265:4: ( optionsSpec )?
 			int alt30=2;
 			int LA30_0 = input.LA(1);
@@ -2028,7 +2028,7 @@ public partial class ANTLRTreePrinter : TreeParser
 			Match(input,EOB,Follow._EOB_in_block865); 
 			if ( forceParens||numAlts>1 ) @out(")");
 
-			Match(input, TokenConstants.Up, null); 
+			Match(input, TokenTypes.Up, null); 
 
 			}
 
@@ -2057,7 +2057,7 @@ public partial class ANTLRTreePrinter : TreeParser
 			{
 			Match(input,ALT,Follow._ALT_in_alternative887); 
 
-			Match(input, TokenConstants.Down, null); 
+			Match(input, TokenTypes.Down, null); 
 			// Grammars\\ANTLRTreePrinter.g3:272:11: ( element )+
 			int cnt32=0;
 			for ( ; ; )
@@ -2100,7 +2100,7 @@ public partial class ANTLRTreePrinter : TreeParser
 
 			Match(input,EOA,Follow._EOA_in_alternative894); 
 
-			Match(input, TokenConstants.Up, null); 
+			Match(input, TokenTypes.Up, null); 
 
 			}
 
@@ -2252,11 +2252,11 @@ public partial class ANTLRTreePrinter : TreeParser
 			{
 			Match(input,CATCH,Follow._CATCH_in_exceptionHandler934); 
 
-			Match(input, TokenConstants.Down, null); 
+			Match(input, TokenTypes.Down, null); 
 			Match(input,ARG_ACTION,Follow._ARG_ACTION_in_exceptionHandler936); 
 			Match(input,ACTION,Follow._ACTION_in_exceptionHandler938); 
 
-			Match(input, TokenConstants.Up, null); 
+			Match(input, TokenTypes.Up, null); 
 
 			}
 
@@ -2285,10 +2285,10 @@ public partial class ANTLRTreePrinter : TreeParser
 			{
 			Match(input,FINALLY,Follow._FINALLY_in_finallyClause951); 
 
-			Match(input, TokenConstants.Down, null); 
+			Match(input, TokenTypes.Down, null); 
 			Match(input,ACTION,Follow._ACTION_in_finallyClause953); 
 
-			Match(input, TokenConstants.Up, null); 
+			Match(input, TokenTypes.Up, null); 
 
 			}
 
@@ -2322,7 +2322,7 @@ public partial class ANTLRTreePrinter : TreeParser
 
 			@out(" ->");
 
-			Match(input, TokenConstants.Down, null); 
+			Match(input, TokenTypes.Down, null); 
 			// Grammars\\ANTLRTreePrinter.g3:290:4: ( SEMPRED )?
 			int alt36=2;
 			int LA36_0 = input.LA(1);
@@ -2420,7 +2420,7 @@ public partial class ANTLRTreePrinter : TreeParser
 			}
 
 
-			Match(input, TokenConstants.Up, null); 
+			Match(input, TokenTypes.Up, null); 
 
 			}
 
@@ -2456,7 +2456,7 @@ public partial class ANTLRTreePrinter : TreeParser
 			{
 			Match(input,TEMPLATE,Follow._TEMPLATE_in_rewrite_template1038); 
 
-			Match(input, TokenConstants.Down, null); 
+			Match(input, TokenTypes.Down, null); 
 			// Grammars\\ANTLRTreePrinter.g3:302:4: (id= ID |ind= ACTION )
 			int alt38=2;
 			int LA38_0 = input.LA(1);
@@ -2500,9 +2500,9 @@ public partial class ANTLRTreePrinter : TreeParser
 
 			@out("(");
 
-			if ( input.LA(1)==TokenConstants.Down )
+			if ( input.LA(1)==TokenTypes.Down )
 			{
-				Match(input, TokenConstants.Down, null); 
+				Match(input, TokenTypes.Down, null); 
 				// Grammars\\ANTLRTreePrinter.g3:307:5: ( ^( ARG arg= ID a= ACTION ) )*
 				for ( ; ; )
 				{
@@ -2522,13 +2522,13 @@ public partial class ANTLRTreePrinter : TreeParser
 						{
 						Match(input,ARG,Follow._ARG_in_rewrite_template1088); 
 
-						Match(input, TokenConstants.Down, null); 
+						Match(input, TokenTypes.Down, null); 
 						arg=(GrammarAST)Match(input,ID,Follow._ID_in_rewrite_template1092); 
 						@out((arg!=null?arg.Text:null)+"=");
 						a=(GrammarAST)Match(input,ACTION,Follow._ACTION_in_rewrite_template1104); 
 						@out((a!=null?a.Text:null));
 
-						Match(input, TokenConstants.Up, null); 
+						Match(input, TokenTypes.Up, null); 
 
 						}
 						break;
@@ -2544,7 +2544,7 @@ public partial class ANTLRTreePrinter : TreeParser
 
 				@out(")");
 
-				Match(input, TokenConstants.Up, null); 
+				Match(input, TokenTypes.Up, null); 
 			}
 			// Grammars\\ANTLRTreePrinter.g3:313:4: ( DOUBLE_QUOTE_STRING_LITERAL | DOUBLE_ANGLE_STRING_LITERAL )?
 			int alt40=3;
@@ -2580,7 +2580,7 @@ public partial class ANTLRTreePrinter : TreeParser
 			}
 
 
-			Match(input, TokenConstants.Up, null); 
+			Match(input, TokenTypes.Up, null); 
 
 			}
 
@@ -2791,14 +2791,14 @@ public partial class ANTLRTreePrinter : TreeParser
 				{
 				Match(input,ROOT,Follow._ROOT_in_element1187); 
 
-				Match(input, TokenConstants.Down, null); 
+				Match(input, TokenTypes.Down, null); 
 				PushFollow(Follow._element_in_element1189);
 				element();
 
 				state._fsp--;
 
 
-				Match(input, TokenConstants.Up, null); 
+				Match(input, TokenTypes.Up, null); 
 
 				}
 				break;
@@ -2807,14 +2807,14 @@ public partial class ANTLRTreePrinter : TreeParser
 				{
 				Match(input,BANG,Follow._BANG_in_element1196); 
 
-				Match(input, TokenConstants.Down, null); 
+				Match(input, TokenTypes.Down, null); 
 				PushFollow(Follow._element_in_element1198);
 				element();
 
 				state._fsp--;
 
 
-				Match(input, TokenConstants.Up, null); 
+				Match(input, TokenTypes.Up, null); 
 
 				}
 				break;
@@ -2836,14 +2836,14 @@ public partial class ANTLRTreePrinter : TreeParser
 
 				@out("~");
 
-				Match(input, TokenConstants.Down, null); 
+				Match(input, TokenTypes.Down, null); 
 				PushFollow(Follow._element_in_element1214);
 				element();
 
 				state._fsp--;
 
 
-				Match(input, TokenConstants.Up, null); 
+				Match(input, TokenTypes.Up, null); 
 
 				}
 				break;
@@ -2852,7 +2852,7 @@ public partial class ANTLRTreePrinter : TreeParser
 				{
 				Match(input,RANGE,Follow._RANGE_in_element1221); 
 
-				Match(input, TokenConstants.Down, null); 
+				Match(input, TokenTypes.Down, null); 
 				PushFollow(Follow._atom_in_element1223);
 				atom();
 
@@ -2865,7 +2865,7 @@ public partial class ANTLRTreePrinter : TreeParser
 				state._fsp--;
 
 
-				Match(input, TokenConstants.Up, null); 
+				Match(input, TokenTypes.Up, null); 
 
 				}
 				break;
@@ -2874,7 +2874,7 @@ public partial class ANTLRTreePrinter : TreeParser
 				{
 				Match(input,CHAR_RANGE,Follow._CHAR_RANGE_in_element1234); 
 
-				Match(input, TokenConstants.Down, null); 
+				Match(input, TokenTypes.Down, null); 
 				PushFollow(Follow._atom_in_element1236);
 				atom();
 
@@ -2887,7 +2887,7 @@ public partial class ANTLRTreePrinter : TreeParser
 				state._fsp--;
 
 
-				Match(input, TokenConstants.Up, null); 
+				Match(input, TokenTypes.Up, null); 
 
 				}
 				break;
@@ -2896,7 +2896,7 @@ public partial class ANTLRTreePrinter : TreeParser
 				{
 				Match(input,ASSIGN,Follow._ASSIGN_in_element1247); 
 
-				Match(input, TokenConstants.Down, null); 
+				Match(input, TokenTypes.Down, null); 
 				id=(GrammarAST)Match(input,ID,Follow._ID_in_element1251); 
 				@out((id!=null?id.Text:null)+"=");
 				PushFollow(Follow._element_in_element1255);
@@ -2905,7 +2905,7 @@ public partial class ANTLRTreePrinter : TreeParser
 				state._fsp--;
 
 
-				Match(input, TokenConstants.Up, null); 
+				Match(input, TokenTypes.Up, null); 
 
 				}
 				break;
@@ -2914,7 +2914,7 @@ public partial class ANTLRTreePrinter : TreeParser
 				{
 				Match(input,PLUS_ASSIGN,Follow._PLUS_ASSIGN_in_element1262); 
 
-				Match(input, TokenConstants.Down, null); 
+				Match(input, TokenTypes.Down, null); 
 				id2=(GrammarAST)Match(input,ID,Follow._ID_in_element1266); 
 				@out((id2!=null?id2.Text:null)+"+=");
 				PushFollow(Follow._element_in_element1270);
@@ -2923,7 +2923,7 @@ public partial class ANTLRTreePrinter : TreeParser
 				state._fsp--;
 
 
-				Match(input, TokenConstants.Up, null); 
+				Match(input, TokenTypes.Up, null); 
 
 				}
 				break;
@@ -2954,14 +2954,14 @@ public partial class ANTLRTreePrinter : TreeParser
 				{
 				Match(input,SYNPRED,Follow._SYNPRED_in_element1288); 
 
-				Match(input, TokenConstants.Down, null); 
+				Match(input, TokenTypes.Down, null); 
 				PushFollow(Follow._block_in_element1290);
 				block(true);
 
 				state._fsp--;
 
 
-				Match(input, TokenConstants.Up, null); 
+				Match(input, TokenTypes.Up, null); 
 				@out("=>");
 
 				}
@@ -3019,9 +3019,9 @@ public partial class ANTLRTreePrinter : TreeParser
 				{
 				Match(input,BACKTRACK_SEMPRED,Follow._BACKTRACK_SEMPRED_in_element1343); 
 
-				if ( input.LA(1)==TokenConstants.Down )
+				if ( input.LA(1)==TokenTypes.Down )
 				{
-					Match(input, TokenConstants.Down, null); 
+					Match(input, TokenTypes.Down, null); 
 					// Grammars\\ANTLRTreePrinter.g3:357:24: ( . )*
 					for ( ; ; )
 					{
@@ -3058,7 +3058,7 @@ public partial class ANTLRTreePrinter : TreeParser
 
 
 
-					Match(input, TokenConstants.Up, null); 
+					Match(input, TokenTypes.Up, null); 
 				}
 
 				}
@@ -3154,14 +3154,14 @@ public partial class ANTLRTreePrinter : TreeParser
 				{
 				Match(input,OPTIONAL,Follow._OPTIONAL_in_ebnf1385); 
 
-				Match(input, TokenConstants.Down, null); 
+				Match(input, TokenTypes.Down, null); 
 				PushFollow(Follow._block_in_ebnf1387);
 				block(true);
 
 				state._fsp--;
 
 
-				Match(input, TokenConstants.Up, null); 
+				Match(input, TokenTypes.Up, null); 
 				@out("? ");
 
 				}
@@ -3171,14 +3171,14 @@ public partial class ANTLRTreePrinter : TreeParser
 				{
 				Match(input,CLOSURE,Follow._CLOSURE_in_ebnf1399); 
 
-				Match(input, TokenConstants.Down, null); 
+				Match(input, TokenTypes.Down, null); 
 				PushFollow(Follow._block_in_ebnf1401);
 				block(true);
 
 				state._fsp--;
 
 
-				Match(input, TokenConstants.Up, null); 
+				Match(input, TokenTypes.Up, null); 
 				@out("* ");
 
 				}
@@ -3188,14 +3188,14 @@ public partial class ANTLRTreePrinter : TreeParser
 				{
 				Match(input,POSITIVE_CLOSURE,Follow._POSITIVE_CLOSURE_in_ebnf1414); 
 
-				Match(input, TokenConstants.Down, null); 
+				Match(input, TokenTypes.Down, null); 
 				PushFollow(Follow._block_in_ebnf1416);
 				block(true);
 
 				state._fsp--;
 
 
-				Match(input, TokenConstants.Up, null); 
+				Match(input, TokenTypes.Up, null); 
 				@out("+ ");
 
 				}
@@ -3229,7 +3229,7 @@ public partial class ANTLRTreePrinter : TreeParser
 
 			@out(" ^(");
 
-			Match(input, TokenConstants.Down, null); 
+			Match(input, TokenTypes.Down, null); 
 			PushFollow(Follow._element_in_tree_1437);
 			element();
 
@@ -3272,7 +3272,7 @@ public partial class ANTLRTreePrinter : TreeParser
 
 			@out(") ");
 
-			Match(input, TokenConstants.Up, null); 
+			Match(input, TokenTypes.Up, null); 
 
 			}
 
@@ -3390,9 +3390,9 @@ public partial class ANTLRTreePrinter : TreeParser
 
 					@out(((GrammarAST)retval.start).ToString());
 
-					if ( input.LA(1)==TokenConstants.Down )
+					if ( input.LA(1)==TokenTypes.Down )
 					{
-						Match(input, TokenConstants.Down, null); 
+						Match(input, TokenTypes.Down, null); 
 						// Grammars\\ANTLRTreePrinter.g3:381:5: (rarg= ARG_ACTION )?
 						int alt46=2;
 						int LA46_0 = input.LA(1);
@@ -3439,7 +3439,7 @@ public partial class ANTLRTreePrinter : TreeParser
 						}
 
 
-						Match(input, TokenConstants.Up, null); 
+						Match(input, TokenTypes.Up, null); 
 					}
 
 					}
@@ -3451,9 +3451,9 @@ public partial class ANTLRTreePrinter : TreeParser
 
 					@out(((GrammarAST)retval.start).ToString());
 
-					if ( input.LA(1)==TokenConstants.Down )
+					if ( input.LA(1)==TokenTypes.Down )
 					{
-						Match(input, TokenConstants.Down, null); 
+						Match(input, TokenTypes.Down, null); 
 						// Grammars\\ANTLRTreePrinter.g3:385:5: (targ= ARG_ACTION )?
 						int alt48=2;
 						int LA48_0 = input.LA(1);
@@ -3500,7 +3500,7 @@ public partial class ANTLRTreePrinter : TreeParser
 						}
 
 
-						Match(input, TokenConstants.Up, null); 
+						Match(input, TokenTypes.Up, null); 
 					}
 
 					}
@@ -3512,9 +3512,9 @@ public partial class ANTLRTreePrinter : TreeParser
 
 					@out(((GrammarAST)retval.start).ToString());
 
-					if ( input.LA(1)==TokenConstants.Down )
+					if ( input.LA(1)==TokenTypes.Down )
 					{
-						Match(input, TokenConstants.Down, null); 
+						Match(input, TokenTypes.Down, null); 
 						// Grammars\\ANTLRTreePrinter.g3:389:5: ( ast_suffix )?
 						int alt50=2;
 						int LA50_0 = input.LA(1);
@@ -3540,7 +3540,7 @@ public partial class ANTLRTreePrinter : TreeParser
 						}
 
 
-						Match(input, TokenConstants.Up, null); 
+						Match(input, TokenTypes.Up, null); 
 					}
 
 					}
@@ -3552,9 +3552,9 @@ public partial class ANTLRTreePrinter : TreeParser
 
 					@out(((GrammarAST)retval.start).ToString());
 
-					if ( input.LA(1)==TokenConstants.Down )
+					if ( input.LA(1)==TokenTypes.Down )
 					{
-						Match(input, TokenConstants.Down, null); 
+						Match(input, TokenTypes.Down, null); 
 						// Grammars\\ANTLRTreePrinter.g3:392:5: ( ast_suffix )?
 						int alt51=2;
 						int LA51_0 = input.LA(1);
@@ -3580,7 +3580,7 @@ public partial class ANTLRTreePrinter : TreeParser
 						}
 
 
-						Match(input, TokenConstants.Up, null); 
+						Match(input, TokenTypes.Up, null); 
 					}
 
 					}
@@ -3592,9 +3592,9 @@ public partial class ANTLRTreePrinter : TreeParser
 
 					@out(((GrammarAST)retval.start).ToString());
 
-					if ( input.LA(1)==TokenConstants.Down )
+					if ( input.LA(1)==TokenTypes.Down )
 					{
-						Match(input, TokenConstants.Down, null); 
+						Match(input, TokenTypes.Down, null); 
 						// Grammars\\ANTLRTreePrinter.g3:395:5: ( ast_suffix )?
 						int alt52=2;
 						int LA52_0 = input.LA(1);
@@ -3620,7 +3620,7 @@ public partial class ANTLRTreePrinter : TreeParser
 						}
 
 
-						Match(input, TokenConstants.Up, null); 
+						Match(input, TokenTypes.Up, null); 
 					}
 
 					}
@@ -3645,7 +3645,7 @@ public partial class ANTLRTreePrinter : TreeParser
 				{
 				Match(input,DOT,Follow._DOT_in_atom1631); 
 
-				Match(input, TokenConstants.Down, null); 
+				Match(input, TokenTypes.Down, null); 
 				ID6=(GrammarAST)Match(input,ID,Follow._ID_in_atom1633); 
 				@out((ID6!=null?ID6.Text:null)+".");
 				PushFollow(Follow._atom_in_atom1637);
@@ -3654,7 +3654,7 @@ public partial class ANTLRTreePrinter : TreeParser
 				state._fsp--;
 
 
-				Match(input, TokenConstants.Up, null); 
+				Match(input, TokenTypes.Up, null); 
 
 				}
 				break;

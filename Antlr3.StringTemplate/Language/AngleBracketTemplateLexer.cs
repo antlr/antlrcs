@@ -1,4 +1,4 @@
-// $ANTLR 3.1.2 Language\\AngleBracketTemplateLexer.g3 2009-04-10 15:18:31
+// $ANTLR 3.1.2 Language\\AngleBracketTemplateLexer.g3 2009-04-17 13:45:31
 
 // The variable 'variable' is assigned but its value is never used.
 #pragma warning disable 219
@@ -359,7 +359,7 @@ public partial class AngleBracketTemplateLexer : Lexer
 					Match('('); if (state.failed) return ;
 					int expStart171 = GetCharIndex();
 					mIF_EXPR(); if (state.failed) return ;
-					exp = new CommonToken(input, TokenConstants.InvalidTokenType, TokenConstants.DefaultChannel, expStart171, GetCharIndex()-1);
+					exp = new CommonToken(input, TokenTypes.Invalid, TokenChannels.Default, expStart171, GetCharIndex()-1);
 					Match(")>"); if (state.failed) return ;
 
 					// Language\\AngleBracketTemplateLexer.g3:110:4: ( ( '\\r' )? '\\n' )?
@@ -452,7 +452,7 @@ public partial class AngleBracketTemplateLexer : Lexer
 					Match('('); if (state.failed) return ;
 					int expStart220 = GetCharIndex();
 					mIF_EXPR(); if (state.failed) return ;
-					exp = new CommonToken(input, TokenConstants.InvalidTokenType, TokenConstants.DefaultChannel, expStart220, GetCharIndex()-1);
+					exp = new CommonToken(input, TokenTypes.Invalid, TokenChannels.Default, expStart220, GetCharIndex()-1);
 					Match(")>"); if (state.failed) return ;
 
 					// Language\\AngleBracketTemplateLexer.g3:117:4: ( ( '\\r' )? '\\n' )?
@@ -1311,7 +1311,7 @@ public partial class AngleBracketTemplateLexer : Lexer
 					{
 					int indStart686 = GetCharIndex();
 					mINDENT(); if (state.failed) return ;
-					ind = new CommonToken(input, TokenConstants.InvalidTokenType, TokenConstants.DefaultChannel, indStart686, GetCharIndex()-1);
+					ind = new CommonToken(input, TokenTypes.Invalid, TokenChannels.Default, indStart686, GetCharIndex()-1);
 					if ( state.backtracking == 0 )
 					{
 
@@ -1489,7 +1489,7 @@ public partial class AngleBracketTemplateLexer : Lexer
 					{
 					int ESC1Start766 = GetCharIndex();
 					mESC(); if (state.failed) return ;
-					ESC1 = new CommonToken(input, TokenConstants.InvalidTokenType, TokenConstants.DefaultChannel, ESC1Start766, GetCharIndex()-1);
+					ESC1 = new CommonToken(input, TokenTypes.Invalid, TokenChannels.Default, ESC1Start766, GetCharIndex()-1);
 					if ( state.backtracking == 0 )
 					{
 						builder.Append((ESC1!=null?ESC1.Text:null));
@@ -1502,7 +1502,7 @@ public partial class AngleBracketTemplateLexer : Lexer
 					{
 					int stStart784 = GetCharIndex();
 					mSUBTEMPLATE(); if (state.failed) return ;
-					st = new CommonToken(input, TokenConstants.InvalidTokenType, TokenConstants.DefaultChannel, stStart784, GetCharIndex()-1);
+					st = new CommonToken(input, TokenTypes.Invalid, TokenChannels.Default, stStart784, GetCharIndex()-1);
 					if ( state.backtracking == 0 )
 					{
 						builder.Append((st!=null?st.Text:null));
@@ -1600,7 +1600,7 @@ public partial class AngleBracketTemplateLexer : Lexer
 						{
 						int stStart850 = GetCharIndex();
 						mSUBTEMPLATE(); if (state.failed) return ;
-						st = new CommonToken(input, TokenConstants.InvalidTokenType, TokenConstants.DefaultChannel, stStart850, GetCharIndex()-1);
+						st = new CommonToken(input, TokenTypes.Invalid, TokenChannels.Default, stStart850, GetCharIndex()-1);
 						if ( state.backtracking == 0 )
 						{
 							builder.Append((st!=null?st.Text:null));
@@ -1733,7 +1733,7 @@ public partial class AngleBracketTemplateLexer : Lexer
 						{
 						int ESC2Start943 = GetCharIndex();
 						mESC(); if (state.failed) return ;
-						ESC2 = new CommonToken(input, TokenConstants.InvalidTokenType, TokenConstants.DefaultChannel, ESC2Start943, GetCharIndex()-1);
+						ESC2 = new CommonToken(input, TokenTypes.Invalid, TokenChannels.Default, ESC2Start943, GetCharIndex()-1);
 						if ( state.backtracking == 0 )
 						{
 							builder.Append((ESC2!=null?ESC2.Text:null));
@@ -2121,16 +2121,16 @@ public partial class AngleBracketTemplateLexer : Lexer
 				Match('u'); if (state.failed) return ;
 				int aStart1191 = GetCharIndex();
 				mHEX(); if (state.failed) return ;
-				a = new CommonToken(input, TokenConstants.InvalidTokenType, TokenConstants.DefaultChannel, aStart1191, GetCharIndex()-1);
+				a = new CommonToken(input, TokenTypes.Invalid, TokenChannels.Default, aStart1191, GetCharIndex()-1);
 				int bStart1195 = GetCharIndex();
 				mHEX(); if (state.failed) return ;
-				b = new CommonToken(input, TokenConstants.InvalidTokenType, TokenConstants.DefaultChannel, bStart1195, GetCharIndex()-1);
+				b = new CommonToken(input, TokenTypes.Invalid, TokenChannels.Default, bStart1195, GetCharIndex()-1);
 				int cStart1199 = GetCharIndex();
 				mHEX(); if (state.failed) return ;
-				c = new CommonToken(input, TokenConstants.InvalidTokenType, TokenConstants.DefaultChannel, cStart1199, GetCharIndex()-1);
+				c = new CommonToken(input, TokenTypes.Invalid, TokenChannels.Default, cStart1199, GetCharIndex()-1);
 				int dStart1203 = GetCharIndex();
 				mHEX(); if (state.failed) return ;
-				d = new CommonToken(input, TokenConstants.InvalidTokenType, TokenConstants.DefaultChannel, dStart1203, GetCharIndex()-1);
+				d = new CommonToken(input, TokenTypes.Invalid, TokenChannels.Default, dStart1203, GetCharIndex()-1);
 				if ( state.backtracking == 0 )
 				{
 					 uc = (char)int.Parse((a!=null?a.Text:null)+(b!=null?b.Text:null)+(c!=null?c.Text:null)+(d!=null?d.Text:null), System.Globalization.NumberStyles.AllowHexSpecifier); 

@@ -81,7 +81,7 @@ namespace Antlr3.Tool
                 if ( !ruleName.Equals( Grammar.ARTIFICIAL_TOKENS_RULENAME ) )
                 {
                     int type = g.GetTokenType( ruleName );
-                    int channel = TokenConstants.DefaultChannel;
+                    int channel = TokenChannels.Default;
                     token = new CommonToken( (ICharStream)outer.input, type, channel, 0, 0 );
                 }
             }
@@ -107,14 +107,14 @@ namespace Antlr3.Tool
             {
                 return null;
             }
-            if ( input.LA( 1 ) == CharStreamConstants.Eof )
+            if ( input.LA( 1 ) == CharStreamConstants.EndOfFile )
             {
-                return TokenConstants.EofToken;
+                return Tokens.EndOfFile;
             }
             int start = input.Index;
             int charPos = ( (ICharStream)input ).CharPositionInLine;
             CommonToken token = null;
-            while ( input.LA( 1 ) != CharStreamConstants.Eof )
+            while ( input.LA( 1 ) != CharStreamConstants.EndOfFile )
             {
                 try
                 {
@@ -133,7 +133,7 @@ namespace Antlr3.Tool
             int stop = input.Index - 1;
             if ( token == null )
             {
-                return TokenConstants.EofToken;
+                return Tokens.EndOfFile;
             }
             token.Line = ( ( (ICharStream)input ).Line );
             token.StartIndex = start;

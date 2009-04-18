@@ -63,7 +63,6 @@ namespace Antlr3.Tool
     using TextReader = System.IO.TextReader;
     using TextWriter = System.IO.TextWriter;
     using TimeSpan = System.TimeSpan;
-    using TokenConstants = Antlr.Runtime.TokenConstants;
     using Tool = Antlr3.AntlrTool;
 
     /** Represents a grammar in memory. */
@@ -1845,7 +1844,7 @@ namespace Antlr3.Tool
         public virtual void DefineToken( string text, int tokenType )
         {
             //JSystem.@out.println("defineToken("+text+", "+tokenType+")");
-            if ( composite.tokenIDToTypeMap.ContainsKey( text ) && composite.tokenIDToTypeMap[text] < TokenConstants.MinTokenType )
+            if ( composite.tokenIDToTypeMap.ContainsKey( text ) && composite.tokenIDToTypeMap[text] < Antlr.Runtime.TokenTypes.Min )
             {
                 // already defined?  Must be predefined one like EOF;
                 // do nothing

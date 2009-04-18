@@ -1,4 +1,4 @@
-// $ANTLR 3.1.2 Grammars\\CodeGenTreeWalker.g3 2009-04-16 21:13:39
+// $ANTLR 3.1.2 Grammars\\CodeGenTreeWalker.g3 2009-04-17 13:33:39
 
 // The variable 'variable' is assigned but its value is never used.
 #pragma warning disable 219
@@ -264,14 +264,14 @@ public partial class CodeGenTreeWalker : TreeParser
 				{
 				Match(input,LEXER_GRAMMAR,Follow._LEXER_GRAMMAR_in_grammar_66); if (state.failed) return ;
 
-				Match(input, TokenConstants.Down, null); if (state.failed) return ;
+				Match(input, TokenTypes.Down, null); if (state.failed) return ;
 				PushFollow(Follow._grammarSpec_in_grammar_68);
 				grammarSpec();
 
 				state._fsp--;
 				if (state.failed) return ;
 
-				Match(input, TokenConstants.Up, null); if (state.failed) return ;
+				Match(input, TokenTypes.Up, null); if (state.failed) return ;
 
 				}
 				break;
@@ -280,14 +280,14 @@ public partial class CodeGenTreeWalker : TreeParser
 				{
 				Match(input,PARSER_GRAMMAR,Follow._PARSER_GRAMMAR_in_grammar_78); if (state.failed) return ;
 
-				Match(input, TokenConstants.Down, null); if (state.failed) return ;
+				Match(input, TokenTypes.Down, null); if (state.failed) return ;
 				PushFollow(Follow._grammarSpec_in_grammar_80);
 				grammarSpec();
 
 				state._fsp--;
 				if (state.failed) return ;
 
-				Match(input, TokenConstants.Up, null); if (state.failed) return ;
+				Match(input, TokenTypes.Up, null); if (state.failed) return ;
 
 				}
 				break;
@@ -296,14 +296,14 @@ public partial class CodeGenTreeWalker : TreeParser
 				{
 				Match(input,TREE_GRAMMAR,Follow._TREE_GRAMMAR_in_grammar_90); if (state.failed) return ;
 
-				Match(input, TokenConstants.Down, null); if (state.failed) return ;
+				Match(input, TokenTypes.Down, null); if (state.failed) return ;
 				PushFollow(Follow._grammarSpec_in_grammar_92);
 				grammarSpec();
 
 				state._fsp--;
 				if (state.failed) return ;
 
-				Match(input, TokenConstants.Up, null); if (state.failed) return ;
+				Match(input, TokenTypes.Up, null); if (state.failed) return ;
 
 				}
 				break;
@@ -312,14 +312,14 @@ public partial class CodeGenTreeWalker : TreeParser
 				{
 				Match(input,COMBINED_GRAMMAR,Follow._COMBINED_GRAMMAR_in_grammar_102); if (state.failed) return ;
 
-				Match(input, TokenConstants.Down, null); if (state.failed) return ;
+				Match(input, TokenTypes.Down, null); if (state.failed) return ;
 				PushFollow(Follow._grammarSpec_in_grammar_104);
 				grammarSpec();
 
 				state._fsp--;
 				if (state.failed) return ;
 
-				Match(input, TokenConstants.Up, null); if (state.failed) return ;
+				Match(input, TokenTypes.Up, null); if (state.failed) return ;
 
 				}
 				break;
@@ -354,7 +354,7 @@ public partial class CodeGenTreeWalker : TreeParser
 			{
 			Match(input,SCOPE,Follow._SCOPE_in_attrScope123); if (state.failed) return ;
 
-			Match(input, TokenConstants.Down, null); if (state.failed) return ;
+			Match(input, TokenTypes.Down, null); if (state.failed) return ;
 			Match(input,ID,Follow._ID_in_attrScope125); if (state.failed) return ;
 			// Grammars\\CodeGenTreeWalker.g3:137:18: ( ^( AMPERSAND ( . )* ) )*
 			for ( ; ; )
@@ -375,9 +375,9 @@ public partial class CodeGenTreeWalker : TreeParser
 					{
 					Match(input,AMPERSAND,Follow._AMPERSAND_in_attrScope130); if (state.failed) return ;
 
-					if ( input.LA(1)==TokenConstants.Down )
+					if ( input.LA(1)==TokenTypes.Down )
 					{
-						Match(input, TokenConstants.Down, null); if (state.failed) return ;
+						Match(input, TokenTypes.Down, null); if (state.failed) return ;
 						// Grammars\\CodeGenTreeWalker.g3:137:32: ( . )*
 						for ( ; ; )
 						{
@@ -414,7 +414,7 @@ public partial class CodeGenTreeWalker : TreeParser
 
 
 
-						Match(input, TokenConstants.Up, null); if (state.failed) return ;
+						Match(input, TokenTypes.Up, null); if (state.failed) return ;
 					}
 
 					}
@@ -431,7 +431,7 @@ public partial class CodeGenTreeWalker : TreeParser
 
 			Match(input,ACTION,Follow._ACTION_in_attrScope139); if (state.failed) return ;
 
-			Match(input, TokenConstants.Up, null); if (state.failed) return ;
+			Match(input, TokenTypes.Up, null); if (state.failed) return ;
 
 			}
 
@@ -514,9 +514,9 @@ public partial class CodeGenTreeWalker : TreeParser
 				{
 				Match(input,OPTIONS,Follow._OPTIONS_in_grammarSpec185); if (state.failed) return ;
 
-				if ( input.LA(1)==TokenConstants.Down )
+				if ( input.LA(1)==TokenTypes.Down )
 				{
-					Match(input, TokenConstants.Down, null); if (state.failed) return ;
+					Match(input, TokenTypes.Down, null); if (state.failed) return ;
 					// Grammars\\CodeGenTreeWalker.g3:155:15: ( . )*
 					for ( ; ; )
 					{
@@ -553,7 +553,7 @@ public partial class CodeGenTreeWalker : TreeParser
 
 
 
-					Match(input, TokenConstants.Up, null); if (state.failed) return ;
+					Match(input, TokenTypes.Up, null); if (state.failed) return ;
 				}
 
 				}
@@ -576,9 +576,9 @@ public partial class CodeGenTreeWalker : TreeParser
 				{
 				Match(input,IMPORT,Follow._IMPORT_in_grammarSpec199); if (state.failed) return ;
 
-				if ( input.LA(1)==TokenConstants.Down )
+				if ( input.LA(1)==TokenTypes.Down )
 				{
-					Match(input, TokenConstants.Down, null); if (state.failed) return ;
+					Match(input, TokenTypes.Down, null); if (state.failed) return ;
 					// Grammars\\CodeGenTreeWalker.g3:156:14: ( . )*
 					for ( ; ; )
 					{
@@ -615,7 +615,7 @@ public partial class CodeGenTreeWalker : TreeParser
 
 
 
-					Match(input, TokenConstants.Up, null); if (state.failed) return ;
+					Match(input, TokenTypes.Up, null); if (state.failed) return ;
 				}
 
 				}
@@ -638,9 +638,9 @@ public partial class CodeGenTreeWalker : TreeParser
 				{
 				Match(input,TOKENS,Follow._TOKENS_in_grammarSpec213); if (state.failed) return ;
 
-				if ( input.LA(1)==TokenConstants.Down )
+				if ( input.LA(1)==TokenTypes.Down )
 				{
-					Match(input, TokenConstants.Down, null); if (state.failed) return ;
+					Match(input, TokenTypes.Down, null); if (state.failed) return ;
 					// Grammars\\CodeGenTreeWalker.g3:157:14: ( . )*
 					for ( ; ; )
 					{
@@ -677,7 +677,7 @@ public partial class CodeGenTreeWalker : TreeParser
 
 
 
-					Match(input, TokenConstants.Up, null); if (state.failed) return ;
+					Match(input, TokenTypes.Up, null); if (state.failed) return ;
 				}
 
 				}
@@ -739,9 +739,9 @@ public partial class CodeGenTreeWalker : TreeParser
 					{
 					Match(input,AMPERSAND,Follow._AMPERSAND_in_grammarSpec234); if (state.failed) return ;
 
-					if ( input.LA(1)==TokenConstants.Down )
+					if ( input.LA(1)==TokenTypes.Down )
 					{
-						Match(input, TokenConstants.Down, null); if (state.failed) return ;
+						Match(input, TokenTypes.Down, null); if (state.failed) return ;
 						// Grammars\\CodeGenTreeWalker.g3:159:17: ( . )*
 						for ( ; ; )
 						{
@@ -778,7 +778,7 @@ public partial class CodeGenTreeWalker : TreeParser
 
 
 
-						Match(input, TokenConstants.Up, null); if (state.failed) return ;
+						Match(input, TokenTypes.Up, null); if (state.failed) return ;
 					}
 
 					}
@@ -913,9 +913,9 @@ public partial class CodeGenTreeWalker : TreeParser
 						{
 						Match(input,RULE,Follow._RULE_in_rules304); if (state.failed) return ;
 
-						if ( input.LA(1)==TokenConstants.Down )
+						if ( input.LA(1)==TokenTypes.Down )
 						{
-							Match(input, TokenConstants.Down, null); if (state.failed) return ;
+							Match(input, TokenTypes.Down, null); if (state.failed) return ;
 							// Grammars\\CodeGenTreeWalker.g3:180:13: ( . )*
 							for ( ; ; )
 							{
@@ -952,7 +952,7 @@ public partial class CodeGenTreeWalker : TreeParser
 
 
 
-							Match(input, TokenConstants.Up, null); if (state.failed) return ;
+							Match(input, TokenTypes.Up, null); if (state.failed) return ;
 						}
 
 						}
@@ -1046,7 +1046,7 @@ public partial class CodeGenTreeWalker : TreeParser
 			{
 			Match(input,RULE,Follow._RULE_in_rule345); if (state.failed) return retval;
 
-			Match(input, TokenConstants.Down, null); if (state.failed) return retval;
+			Match(input, TokenTypes.Down, null); if (state.failed) return retval;
 			id=(GrammarAST)Match(input,ID,Follow._ID_in_rule349); if (state.failed) return retval;
 			if ( state.backtracking == 0 )
 			{
@@ -1078,9 +1078,9 @@ public partial class CodeGenTreeWalker : TreeParser
 
 			Match(input,ARG,Follow._ARG_in_rule370); if (state.failed) return retval;
 
-			if ( input.LA(1)==TokenConstants.Down )
+			if ( input.LA(1)==TokenTypes.Down )
 			{
-				Match(input, TokenConstants.Down, null); if (state.failed) return retval;
+				Match(input, TokenTypes.Down, null); if (state.failed) return retval;
 				// Grammars\\CodeGenTreeWalker.g3:219:10: ( ARG_ACTION )?
 				int alt18=2;
 				int LA18_0 = input.LA(1);
@@ -1102,13 +1102,13 @@ public partial class CodeGenTreeWalker : TreeParser
 				}
 
 
-				Match(input, TokenConstants.Up, null); if (state.failed) return retval;
+				Match(input, TokenTypes.Up, null); if (state.failed) return retval;
 			}
 			Match(input,RET,Follow._RET_in_rule382); if (state.failed) return retval;
 
-			if ( input.LA(1)==TokenConstants.Down )
+			if ( input.LA(1)==TokenTypes.Down )
 			{
-				Match(input, TokenConstants.Down, null); if (state.failed) return retval;
+				Match(input, TokenTypes.Down, null); if (state.failed) return retval;
 				// Grammars\\CodeGenTreeWalker.g3:220:10: ( ARG_ACTION )?
 				int alt19=2;
 				int LA19_0 = input.LA(1);
@@ -1130,7 +1130,7 @@ public partial class CodeGenTreeWalker : TreeParser
 				}
 
 
-				Match(input, TokenConstants.Up, null); if (state.failed) return retval;
+				Match(input, TokenTypes.Up, null); if (state.failed) return retval;
 			}
 			// Grammars\\CodeGenTreeWalker.g3:221:4: ( throwsSpec )?
 			int alt20=2;
@@ -1171,9 +1171,9 @@ public partial class CodeGenTreeWalker : TreeParser
 				{
 				Match(input,OPTIONS,Follow._OPTIONS_in_rule404); if (state.failed) return retval;
 
-				if ( input.LA(1)==TokenConstants.Down )
+				if ( input.LA(1)==TokenTypes.Down )
 				{
-					Match(input, TokenConstants.Down, null); if (state.failed) return retval;
+					Match(input, TokenTypes.Down, null); if (state.failed) return retval;
 					// Grammars\\CodeGenTreeWalker.g3:222:16: ( . )*
 					for ( ; ; )
 					{
@@ -1210,7 +1210,7 @@ public partial class CodeGenTreeWalker : TreeParser
 
 
 
-					Match(input, TokenConstants.Up, null); if (state.failed) return retval;
+					Match(input, TokenTypes.Up, null); if (state.failed) return retval;
 				}
 
 				}
@@ -1261,9 +1261,9 @@ public partial class CodeGenTreeWalker : TreeParser
 					{
 					Match(input,AMPERSAND,Follow._AMPERSAND_in_rule427); if (state.failed) return retval;
 
-					if ( input.LA(1)==TokenConstants.Down )
+					if ( input.LA(1)==TokenTypes.Down )
 					{
-						Match(input, TokenConstants.Down, null); if (state.failed) return retval;
+						Match(input, TokenTypes.Down, null); if (state.failed) return retval;
 						// Grammars\\CodeGenTreeWalker.g3:224:18: ( . )*
 						for ( ; ; )
 						{
@@ -1300,7 +1300,7 @@ public partial class CodeGenTreeWalker : TreeParser
 
 
 
-						Match(input, TokenConstants.Up, null); if (state.failed) return retval;
+						Match(input, TokenTypes.Up, null); if (state.failed) return retval;
 					}
 
 					}
@@ -1398,7 +1398,7 @@ public partial class CodeGenTreeWalker : TreeParser
 
 			Match(input,EOR,Follow._EOR_in_rule462); if (state.failed) return retval;
 
-			Match(input, TokenConstants.Up, null); if (state.failed) return retval;
+			Match(input, TokenTypes.Up, null); if (state.failed) return retval;
 			if ( state.backtracking == 0 )
 			{
 
@@ -1504,7 +1504,7 @@ public partial class CodeGenTreeWalker : TreeParser
 			{
 			Match(input,THROWS,Follow._THROWS_in_throwsSpec512); if (state.failed) return ;
 
-			Match(input, TokenConstants.Down, null); if (state.failed) return ;
+			Match(input, TokenTypes.Down, null); if (state.failed) return ;
 			// Grammars\\CodeGenTreeWalker.g3:319:15: ( ID )+
 			int cnt27=0;
 			for ( ; ; )
@@ -1543,7 +1543,7 @@ public partial class CodeGenTreeWalker : TreeParser
 
 
 
-			Match(input, TokenConstants.Up, null); if (state.failed) return ;
+			Match(input, TokenTypes.Up, null); if (state.failed) return ;
 
 			}
 
@@ -1572,9 +1572,9 @@ public partial class CodeGenTreeWalker : TreeParser
 			{
 			Match(input,SCOPE,Follow._SCOPE_in_ruleScopeSpec529); if (state.failed) return ;
 
-			if ( input.LA(1)==TokenConstants.Down )
+			if ( input.LA(1)==TokenTypes.Down )
 			{
-				Match(input, TokenConstants.Down, null); if (state.failed) return ;
+				Match(input, TokenTypes.Down, null); if (state.failed) return ;
 				// Grammars\\CodeGenTreeWalker.g3:323:15: ( ^( AMPERSAND ( . )* ) )*
 				for ( ; ; )
 				{
@@ -1594,9 +1594,9 @@ public partial class CodeGenTreeWalker : TreeParser
 						{
 						Match(input,AMPERSAND,Follow._AMPERSAND_in_ruleScopeSpec534); if (state.failed) return ;
 
-						if ( input.LA(1)==TokenConstants.Down )
+						if ( input.LA(1)==TokenTypes.Down )
 						{
-							Match(input, TokenConstants.Down, null); if (state.failed) return ;
+							Match(input, TokenTypes.Down, null); if (state.failed) return ;
 							// Grammars\\CodeGenTreeWalker.g3:323:29: ( . )*
 							for ( ; ; )
 							{
@@ -1633,7 +1633,7 @@ public partial class CodeGenTreeWalker : TreeParser
 
 
 
-							Match(input, TokenConstants.Up, null); if (state.failed) return ;
+							Match(input, TokenTypes.Up, null); if (state.failed) return ;
 						}
 
 						}
@@ -1700,7 +1700,7 @@ public partial class CodeGenTreeWalker : TreeParser
 
 
 
-				Match(input, TokenConstants.Up, null); if (state.failed) return ;
+				Match(input, TokenTypes.Up, null); if (state.failed) return ;
 			}
 
 			}
@@ -1824,7 +1824,7 @@ public partial class CodeGenTreeWalker : TreeParser
 				{
 				Match(input,BLOCK,Follow._BLOCK_in_block604); if (state.failed) return retval;
 
-				Match(input, TokenConstants.Down, null); if (state.failed) return retval;
+				Match(input, TokenTypes.Down, null); if (state.failed) return retval;
 				// Grammars\\CodeGenTreeWalker.g3:364:4: ( ^( OPTIONS ( . )* ) )?
 				int alt33=2;
 				int LA33_0 = input.LA(1);
@@ -1840,9 +1840,9 @@ public partial class CodeGenTreeWalker : TreeParser
 					{
 					Match(input,OPTIONS,Follow._OPTIONS_in_block612); if (state.failed) return retval;
 
-					if ( input.LA(1)==TokenConstants.Down )
+					if ( input.LA(1)==TokenTypes.Down )
 					{
-						Match(input, TokenConstants.Down, null); if (state.failed) return retval;
+						Match(input, TokenTypes.Down, null); if (state.failed) return retval;
 						// Grammars\\CodeGenTreeWalker.g3:364:16: ( . )*
 						for ( ; ; )
 						{
@@ -1879,7 +1879,7 @@ public partial class CodeGenTreeWalker : TreeParser
 
 
 
-						Match(input, TokenConstants.Up, null); if (state.failed) return retval;
+						Match(input, TokenTypes.Up, null); if (state.failed) return retval;
 					}
 
 					}
@@ -1960,7 +1960,7 @@ public partial class CodeGenTreeWalker : TreeParser
 
 				Match(input,EOB,Follow._EOB_in_block650); if (state.failed) return retval;
 
-				Match(input, TokenConstants.Up, null); if (state.failed) return retval;
+				Match(input, TokenTypes.Up, null); if (state.failed) return retval;
 
 				}
 				break;
@@ -2016,9 +2016,9 @@ public partial class CodeGenTreeWalker : TreeParser
 			{
 			s=(GrammarAST)Match(input,BLOCK,Follow._BLOCK_in_setBlock682); if (state.failed) return retval;
 
-			if ( input.LA(1)==TokenConstants.Down )
+			if ( input.LA(1)==TokenTypes.Down )
 			{
-				Match(input, TokenConstants.Down, null); if (state.failed) return retval;
+				Match(input, TokenTypes.Down, null); if (state.failed) return retval;
 				// Grammars\\CodeGenTreeWalker.g3:411:14: ( . )*
 				for ( ; ; )
 				{
@@ -2055,7 +2055,7 @@ public partial class CodeGenTreeWalker : TreeParser
 
 
 
-				Match(input, TokenConstants.Up, null); if (state.failed) return retval;
+				Match(input, TokenTypes.Up, null); if (state.failed) return retval;
 			}
 			if ( state.backtracking == 0 )
 			{
@@ -2120,7 +2120,7 @@ public partial class CodeGenTreeWalker : TreeParser
 			{
 			Match(input,ALT,Follow._ALT_in_setAlternative702); if (state.failed) return ;
 
-			Match(input, TokenConstants.Down, null); if (state.failed) return ;
+			Match(input, TokenTypes.Down, null); if (state.failed) return ;
 			// Grammars\\CodeGenTreeWalker.g3:447:10: ( setElement )+
 			int cnt37=0;
 			for ( ; ; )
@@ -2164,7 +2164,7 @@ public partial class CodeGenTreeWalker : TreeParser
 
 			Match(input,EOA,Follow._EOA_in_setAlternative707); if (state.failed) return ;
 
-			Match(input, TokenConstants.Up, null); if (state.failed) return ;
+			Match(input, TokenTypes.Up, null); if (state.failed) return ;
 
 			}
 
@@ -2321,11 +2321,11 @@ public partial class CodeGenTreeWalker : TreeParser
 			{
 			Match(input,CATCH,Follow._CATCH_in_exceptionHandler751); if (state.failed) return ;
 
-			Match(input, TokenConstants.Down, null); if (state.failed) return ;
+			Match(input, TokenTypes.Down, null); if (state.failed) return ;
 			ARG_ACTION3=(GrammarAST)Match(input,ARG_ACTION,Follow._ARG_ACTION_in_exceptionHandler753); if (state.failed) return ;
 			ACTION2=(GrammarAST)Match(input,ACTION,Follow._ACTION_in_exceptionHandler755); if (state.failed) return ;
 
-			Match(input, TokenConstants.Up, null); if (state.failed) return ;
+			Match(input, TokenTypes.Up, null); if (state.failed) return ;
 			if ( state.backtracking == 0 )
 			{
 
@@ -2363,10 +2363,10 @@ public partial class CodeGenTreeWalker : TreeParser
 			{
 			Match(input,FINALLY,Follow._FINALLY_in_finallyClause773); if (state.failed) return ;
 
-			Match(input, TokenConstants.Down, null); if (state.failed) return ;
+			Match(input, TokenTypes.Down, null); if (state.failed) return ;
 			ACTION4=(GrammarAST)Match(input,ACTION,Follow._ACTION_in_finallyClause775); if (state.failed) return ;
 
-			Match(input, TokenConstants.Up, null); if (state.failed) return ;
+			Match(input, TokenTypes.Up, null); if (state.failed) return ;
 			if ( state.backtracking == 0 )
 			{
 
@@ -2447,7 +2447,7 @@ public partial class CodeGenTreeWalker : TreeParser
 			{
 			a=(GrammarAST)Match(input,ALT,Follow._ALT_in_alternative804); if (state.failed) return retval;
 
-			Match(input, TokenConstants.Down, null); if (state.failed) return retval;
+			Match(input, TokenTypes.Down, null); if (state.failed) return retval;
 			// Grammars\\CodeGenTreeWalker.g3:509:4: (e= element[null,null] )+
 			int cnt41=0;
 			for ( ; ; )
@@ -2504,7 +2504,7 @@ public partial class CodeGenTreeWalker : TreeParser
 
 			Match(input,EOA,Follow._EOA_in_alternative835); if (state.failed) return retval;
 
-			Match(input, TokenConstants.Up, null); if (state.failed) return retval;
+			Match(input, TokenTypes.Up, null); if (state.failed) return retval;
 
 			}
 
@@ -2564,14 +2564,14 @@ public partial class CodeGenTreeWalker : TreeParser
 				{
 				ROOT5=(GrammarAST)Match(input,ROOT,Follow._ROOT_in_element870); if (state.failed) return retval;
 
-				Match(input, TokenConstants.Down, null); if (state.failed) return retval;
+				Match(input, TokenTypes.Down, null); if (state.failed) return retval;
 				PushFollow(Follow._element_in_element874);
 				e=element(label, ROOT5);
 
 				state._fsp--;
 				if (state.failed) return retval;
 
-				Match(input, TokenConstants.Up, null); if (state.failed) return retval;
+				Match(input, TokenTypes.Up, null); if (state.failed) return retval;
 				if ( state.backtracking == 0 )
 				{
 					 retval.code = (e!=null?e.code:default(StringTemplate)); 
@@ -2584,14 +2584,14 @@ public partial class CodeGenTreeWalker : TreeParser
 				{
 				BANG6=(GrammarAST)Match(input,BANG,Follow._BANG_in_element887); if (state.failed) return retval;
 
-				Match(input, TokenConstants.Down, null); if (state.failed) return retval;
+				Match(input, TokenTypes.Down, null); if (state.failed) return retval;
 				PushFollow(Follow._element_in_element891);
 				e=element(label, BANG6);
 
 				state._fsp--;
 				if (state.failed) return retval;
 
-				Match(input, TokenConstants.Up, null); if (state.failed) return retval;
+				Match(input, TokenTypes.Up, null); if (state.failed) return retval;
 				if ( state.backtracking == 0 )
 				{
 					 retval.code = (e!=null?e.code:default(StringTemplate)); 
@@ -2604,14 +2604,14 @@ public partial class CodeGenTreeWalker : TreeParser
 				{
 				n=(GrammarAST)Match(input,NOT,Follow._NOT_in_element907); if (state.failed) return retval;
 
-				Match(input, TokenConstants.Down, null); if (state.failed) return retval;
+				Match(input, TokenTypes.Down, null); if (state.failed) return retval;
 				PushFollow(Follow._notElement_in_element909);
 				notElement7=notElement(n, label, astSuffix);
 
 				state._fsp--;
 				if (state.failed) return retval;
 
-				Match(input, TokenConstants.Up, null); if (state.failed) return retval;
+				Match(input, TokenTypes.Up, null); if (state.failed) return retval;
 				if ( state.backtracking == 0 )
 				{
 					 retval.code = notElement7; 
@@ -2624,7 +2624,7 @@ public partial class CodeGenTreeWalker : TreeParser
 				{
 				Match(input,ASSIGN,Follow._ASSIGN_in_element924); if (state.failed) return retval;
 
-				Match(input, TokenConstants.Down, null); if (state.failed) return retval;
+				Match(input, TokenTypes.Down, null); if (state.failed) return retval;
 				alabel=(GrammarAST)Match(input,ID,Follow._ID_in_element928); if (state.failed) return retval;
 				PushFollow(Follow._element_in_element932);
 				e=element(alabel, astSuffix);
@@ -2632,7 +2632,7 @@ public partial class CodeGenTreeWalker : TreeParser
 				state._fsp--;
 				if (state.failed) return retval;
 
-				Match(input, TokenConstants.Up, null); if (state.failed) return retval;
+				Match(input, TokenTypes.Up, null); if (state.failed) return retval;
 				if ( state.backtracking == 0 )
 				{
 					 retval.code = (e!=null?e.code:default(StringTemplate)); 
@@ -2645,7 +2645,7 @@ public partial class CodeGenTreeWalker : TreeParser
 				{
 				Match(input,PLUS_ASSIGN,Follow._PLUS_ASSIGN_in_element947); if (state.failed) return retval;
 
-				Match(input, TokenConstants.Down, null); if (state.failed) return retval;
+				Match(input, TokenTypes.Down, null); if (state.failed) return retval;
 				label2=(GrammarAST)Match(input,ID,Follow._ID_in_element951); if (state.failed) return retval;
 				PushFollow(Follow._element_in_element955);
 				e=element(label2, astSuffix);
@@ -2653,7 +2653,7 @@ public partial class CodeGenTreeWalker : TreeParser
 				state._fsp--;
 				if (state.failed) return retval;
 
-				Match(input, TokenConstants.Up, null); if (state.failed) return retval;
+				Match(input, TokenTypes.Up, null); if (state.failed) return retval;
 				if ( state.backtracking == 0 )
 				{
 					 retval.code = (e!=null?e.code:default(StringTemplate)); 
@@ -2666,11 +2666,11 @@ public partial class CodeGenTreeWalker : TreeParser
 				{
 				Match(input,CHAR_RANGE,Follow._CHAR_RANGE_in_element969); if (state.failed) return retval;
 
-				Match(input, TokenConstants.Down, null); if (state.failed) return retval;
+				Match(input, TokenTypes.Down, null); if (state.failed) return retval;
 				a=(GrammarAST)Match(input,CHAR_LITERAL,Follow._CHAR_LITERAL_in_element973); if (state.failed) return retval;
 				b=(GrammarAST)Match(input,CHAR_LITERAL,Follow._CHAR_LITERAL_in_element977); if (state.failed) return retval;
 
-				Match(input, TokenConstants.Up, null); if (state.failed) return retval;
+				Match(input, TokenTypes.Up, null); if (state.failed) return retval;
 				if ( state.backtracking == 0 )
 				{
 
@@ -2814,9 +2814,9 @@ public partial class CodeGenTreeWalker : TreeParser
 				{
 				Match(input,SYNPRED,Follow._SYNPRED_in_element1075); if (state.failed) return retval;
 
-				if ( input.LA(1)==TokenConstants.Down )
+				if ( input.LA(1)==TokenTypes.Down )
 				{
-					Match(input, TokenConstants.Down, null); if (state.failed) return retval;
+					Match(input, TokenTypes.Down, null); if (state.failed) return retval;
 					// Grammars\\CodeGenTreeWalker.g3:583:14: ( . )*
 					for ( ; ; )
 					{
@@ -2853,7 +2853,7 @@ public partial class CodeGenTreeWalker : TreeParser
 
 
 
-					Match(input, TokenConstants.Up, null); if (state.failed) return retval;
+					Match(input, TokenTypes.Up, null); if (state.failed) return retval;
 				}
 
 				}
@@ -2863,9 +2863,9 @@ public partial class CodeGenTreeWalker : TreeParser
 				{
 				Match(input,BACKTRACK_SEMPRED,Follow._BACKTRACK_SEMPRED_in_element1086); if (state.failed) return retval;
 
-				if ( input.LA(1)==TokenConstants.Down )
+				if ( input.LA(1)==TokenTypes.Down )
 				{
-					Match(input, TokenConstants.Down, null); if (state.failed) return retval;
+					Match(input, TokenTypes.Down, null); if (state.failed) return retval;
 					// Grammars\\CodeGenTreeWalker.g3:585:24: ( . )*
 					for ( ; ; )
 					{
@@ -2902,7 +2902,7 @@ public partial class CodeGenTreeWalker : TreeParser
 
 
 
-					Match(input, TokenConstants.Up, null); if (state.failed) return retval;
+					Match(input, TokenTypes.Up, null); if (state.failed) return retval;
 				}
 
 				}
@@ -3134,9 +3134,9 @@ public partial class CodeGenTreeWalker : TreeParser
 				{
 				assign_st=(GrammarAST)Match(input,BLOCK,Follow._BLOCK_in_notElement1195); if (state.failed) return code;
 
-				if ( input.LA(1)==TokenConstants.Down )
+				if ( input.LA(1)==TokenTypes.Down )
 				{
-					Match(input, TokenConstants.Down, null); if (state.failed) return code;
+					Match(input, TokenTypes.Down, null); if (state.failed) return code;
 					// Grammars\\CodeGenTreeWalker.g3:644:23: ( . )*
 					for ( ; ; )
 					{
@@ -3173,7 +3173,7 @@ public partial class CodeGenTreeWalker : TreeParser
 
 
 
-					Match(input, TokenConstants.Up, null); if (state.failed) return code;
+					Match(input, TokenTypes.Up, null); if (state.failed) return code;
 				}
 				if ( state.backtracking == 0 )
 				{
@@ -3308,14 +3308,14 @@ public partial class CodeGenTreeWalker : TreeParser
 				}
 				Match(input,OPTIONAL,Follow._OPTIONAL_in_ebnf1260); if (state.failed) return retval;
 
-				Match(input, TokenConstants.Down, null); if (state.failed) return retval;
+				Match(input, TokenTypes.Down, null); if (state.failed) return retval;
 				PushFollow(Follow._block_in_ebnf1264);
 				blk=block("optionalBlock", dfa);
 
 				state._fsp--;
 				if (state.failed) return retval;
 
-				Match(input, TokenConstants.Up, null); if (state.failed) return retval;
+				Match(input, TokenTypes.Up, null); if (state.failed) return retval;
 				if ( state.backtracking == 0 )
 				{
 					 retval.code = (blk!=null?blk.code:default(StringTemplate)); 
@@ -3332,14 +3332,14 @@ public partial class CodeGenTreeWalker : TreeParser
 				}
 				Match(input,CLOSURE,Follow._CLOSURE_in_ebnf1285); if (state.failed) return retval;
 
-				Match(input, TokenConstants.Down, null); if (state.failed) return retval;
+				Match(input, TokenTypes.Down, null); if (state.failed) return retval;
 				PushFollow(Follow._block_in_ebnf1289);
 				blk=block("closureBlock", dfa);
 
 				state._fsp--;
 				if (state.failed) return retval;
 
-				Match(input, TokenConstants.Up, null); if (state.failed) return retval;
+				Match(input, TokenTypes.Up, null); if (state.failed) return retval;
 				if ( state.backtracking == 0 )
 				{
 					 retval.code = (blk!=null?blk.code:default(StringTemplate)); 
@@ -3356,14 +3356,14 @@ public partial class CodeGenTreeWalker : TreeParser
 				}
 				Match(input,POSITIVE_CLOSURE,Follow._POSITIVE_CLOSURE_in_ebnf1310); if (state.failed) return retval;
 
-				Match(input, TokenConstants.Down, null); if (state.failed) return retval;
+				Match(input, TokenTypes.Down, null); if (state.failed) return retval;
 				PushFollow(Follow._block_in_ebnf1314);
 				blk=block("positiveClosureBlock", dfa);
 
 				state._fsp--;
 				if (state.failed) return retval;
 
-				Match(input, TokenConstants.Up, null); if (state.failed) return retval;
+				Match(input, TokenTypes.Up, null); if (state.failed) return retval;
 				if ( state.backtracking == 0 )
 				{
 					 retval.code = (blk!=null?blk.code:default(StringTemplate)); 
@@ -3442,7 +3442,7 @@ public partial class CodeGenTreeWalker : TreeParser
 			{
 			Match(input,TREE_BEGIN,Follow._TREE_BEGIN_in_tree_1352); if (state.failed) return retval;
 
-			Match(input, TokenConstants.Down, null); if (state.failed) return retval;
+			Match(input, TokenTypes.Down, null); if (state.failed) return retval;
 			PushFollow(Follow._element_in_tree_1359);
 			el=element(null, rootSuffix);
 
@@ -3568,7 +3568,7 @@ public partial class CodeGenTreeWalker : TreeParser
 
 
 
-			Match(input, TokenConstants.Up, null); if (state.failed) return retval;
+			Match(input, TokenTypes.Up, null); if (state.failed) return retval;
 
 			}
 
@@ -3691,9 +3691,9 @@ public partial class CodeGenTreeWalker : TreeParser
 				{
 				r=(GrammarAST)Match(input,RULE_REF,Follow._RULE_REF_in_atom1469); if (state.failed) return retval;
 
-				if ( input.LA(1)==TokenConstants.Down )
+				if ( input.LA(1)==TokenTypes.Down )
 				{
-					Match(input, TokenConstants.Down, null); if (state.failed) return retval;
+					Match(input, TokenTypes.Down, null); if (state.failed) return retval;
 					// Grammars\\CodeGenTreeWalker.g3:780:20: (rarg= ARG_ACTION )?
 					int alt52=2;
 					int LA52_0 = input.LA(1);
@@ -3715,7 +3715,7 @@ public partial class CodeGenTreeWalker : TreeParser
 					}
 
 
-					Match(input, TokenConstants.Up, null); if (state.failed) return retval;
+					Match(input, TokenTypes.Up, null); if (state.failed) return retval;
 				}
 				if ( state.backtracking == 0 )
 				{
@@ -3771,9 +3771,9 @@ public partial class CodeGenTreeWalker : TreeParser
 				{
 				t=(GrammarAST)Match(input,TOKEN_REF,Follow._TOKEN_REF_in_atom1492); if (state.failed) return retval;
 
-				if ( input.LA(1)==TokenConstants.Down )
+				if ( input.LA(1)==TokenTypes.Down )
 				{
-					Match(input, TokenConstants.Down, null); if (state.failed) return retval;
+					Match(input, TokenTypes.Down, null); if (state.failed) return retval;
 					// Grammars\\CodeGenTreeWalker.g3:825:19: (targ= ARG_ACTION )?
 					int alt53=2;
 					int LA53_0 = input.LA(1);
@@ -3795,7 +3795,7 @@ public partial class CodeGenTreeWalker : TreeParser
 					}
 
 
-					Match(input, TokenConstants.Up, null); if (state.failed) return retval;
+					Match(input, TokenTypes.Up, null); if (state.failed) return retval;
 				}
 				if ( state.backtracking == 0 )
 				{
@@ -3958,7 +3958,7 @@ public partial class CodeGenTreeWalker : TreeParser
 				{
 				Match(input,DOT,Follow._DOT_in_atom1549); if (state.failed) return retval;
 
-				Match(input, TokenConstants.Down, null); if (state.failed) return retval;
+				Match(input, TokenTypes.Down, null); if (state.failed) return retval;
 				ID12=(GrammarAST)Match(input,ID,Follow._ID_in_atom1551); if (state.failed) return retval;
 				PushFollow(Follow._atom_in_atom1555);
 				a=atom(ID12, label, astSuffix);
@@ -3966,7 +3966,7 @@ public partial class CodeGenTreeWalker : TreeParser
 				state._fsp--;
 				if (state.failed) return retval;
 
-				Match(input, TokenConstants.Up, null); if (state.failed) return retval;
+				Match(input, TokenTypes.Up, null); if (state.failed) return retval;
 				if ( state.backtracking == 0 )
 				{
 					 retval.code = (a!=null?a.code:default(StringTemplate)); 
@@ -4066,9 +4066,9 @@ public partial class CodeGenTreeWalker : TreeParser
 			{
 			s=(GrammarAST)Match(input,BLOCK,Follow._BLOCK_in_set1613); if (state.failed) return code;
 
-			if ( input.LA(1)==TokenConstants.Down )
+			if ( input.LA(1)==TokenTypes.Down )
 			{
-				Match(input, TokenConstants.Down, null); if (state.failed) return code;
+				Match(input, TokenTypes.Down, null); if (state.failed) return code;
 				// Grammars\\CodeGenTreeWalker.g3:974:14: ( . )*
 				for ( ; ; )
 				{
@@ -4105,7 +4105,7 @@ public partial class CodeGenTreeWalker : TreeParser
 
 
 
-				Match(input, TokenConstants.Up, null); if (state.failed) return code;
+				Match(input, TokenTypes.Up, null); if (state.failed) return code;
 			}
 			if ( state.backtracking == 0 )
 			{
@@ -4204,11 +4204,11 @@ public partial class CodeGenTreeWalker : TreeParser
 				{
 				Match(input,CHAR_RANGE,Follow._CHAR_RANGE_in_setElement1649); if (state.failed) return ;
 
-				Match(input, TokenConstants.Down, null); if (state.failed) return ;
+				Match(input, TokenTypes.Down, null); if (state.failed) return ;
 				Match(input,CHAR_LITERAL,Follow._CHAR_LITERAL_in_setElement1651); if (state.failed) return ;
 				Match(input,CHAR_LITERAL,Follow._CHAR_LITERAL_in_setElement1653); if (state.failed) return ;
 
-				Match(input, TokenConstants.Up, null); if (state.failed) return ;
+				Match(input, TokenTypes.Up, null); if (state.failed) return ;
 
 				}
 				break;
@@ -4319,7 +4319,7 @@ public partial class CodeGenTreeWalker : TreeParser
 					}
 					r=(GrammarAST)Match(input,REWRITE,Follow._REWRITE_in_rewrite1690); if (state.failed) return retval;
 
-					Match(input, TokenConstants.Down, null); if (state.failed) return retval;
+					Match(input, TokenTypes.Down, null); if (state.failed) return retval;
 					// Grammars\\CodeGenTreeWalker.g3:1048:17: (pred= SEMPRED )?
 					int alt57=2;
 					int LA57_0 = input.LA(1);
@@ -4346,7 +4346,7 @@ public partial class CodeGenTreeWalker : TreeParser
 					state._fsp--;
 					if (state.failed) return retval;
 
-					Match(input, TokenConstants.Up, null); if (state.failed) return retval;
+					Match(input, TokenTypes.Up, null); if (state.failed) return retval;
 					if ( state.backtracking == 0 )
 					{
 
@@ -4434,7 +4434,7 @@ public partial class CodeGenTreeWalker : TreeParser
 							
 			}
 
-			Match(input, TokenConstants.Down, null); if (state.failed) return code;
+			Match(input, TokenTypes.Down, null); if (state.failed) return code;
 			PushFollow(Follow._rewrite_alternative_in_rewrite_block1748);
 			alt=rewrite_alternative();
 
@@ -4442,7 +4442,7 @@ public partial class CodeGenTreeWalker : TreeParser
 			if (state.failed) return code;
 			Match(input,EOB,Follow._EOB_in_rewrite_block1753); if (state.failed) return code;
 
-			Match(input, TokenConstants.Up, null); if (state.failed) return code;
+			Match(input, TokenTypes.Up, null); if (state.failed) return code;
 			if ( state.backtracking == 0 )
 			{
 
@@ -4594,7 +4594,7 @@ public partial class CodeGenTreeWalker : TreeParser
 					code =templates.GetInstanceOf("rewriteElementList");
 				}
 
-				Match(input, TokenConstants.Down, null); if (state.failed) return code;
+				Match(input, TokenTypes.Down, null); if (state.failed) return code;
 				// Grammars\\CodeGenTreeWalker.g3:1100:4: ( (el= rewrite_element )+ | EPSILON )
 				int alt60=2;
 				int LA60_0 = input.LA(1);
@@ -4693,7 +4693,7 @@ public partial class CodeGenTreeWalker : TreeParser
 
 				Match(input,EOA,Follow._EOA_in_rewrite_alternative1843); if (state.failed) return code;
 
-				Match(input, TokenConstants.Up, null); if (state.failed) return code;
+				Match(input, TokenTypes.Up, null); if (state.failed) return code;
 
 				}
 				break;
@@ -4911,14 +4911,14 @@ public partial class CodeGenTreeWalker : TreeParser
 				{
 				Match(input,OPTIONAL,Follow._OPTIONAL_in_rewrite_ebnf1929); if (state.failed) return retval;
 
-				Match(input, TokenConstants.Down, null); if (state.failed) return retval;
+				Match(input, TokenTypes.Down, null); if (state.failed) return retval;
 				PushFollow(Follow._rewrite_block_in_rewrite_ebnf1931);
 				rewrite_block19=rewrite_block("rewriteOptionalBlock");
 
 				state._fsp--;
 				if (state.failed) return retval;
 
-				Match(input, TokenConstants.Up, null); if (state.failed) return retval;
+				Match(input, TokenTypes.Up, null); if (state.failed) return retval;
 				if ( state.backtracking == 0 )
 				{
 					 retval.code = rewrite_block19; 
@@ -4939,14 +4939,14 @@ public partial class CodeGenTreeWalker : TreeParser
 				{
 				Match(input,CLOSURE,Follow._CLOSURE_in_rewrite_ebnf1949); if (state.failed) return retval;
 
-				Match(input, TokenConstants.Down, null); if (state.failed) return retval;
+				Match(input, TokenTypes.Down, null); if (state.failed) return retval;
 				PushFollow(Follow._rewrite_block_in_rewrite_ebnf1951);
 				rewrite_block20=rewrite_block("rewriteClosureBlock");
 
 				state._fsp--;
 				if (state.failed) return retval;
 
-				Match(input, TokenConstants.Up, null); if (state.failed) return retval;
+				Match(input, TokenTypes.Up, null); if (state.failed) return retval;
 				if ( state.backtracking == 0 )
 				{
 					 retval.code = rewrite_block20; 
@@ -4967,14 +4967,14 @@ public partial class CodeGenTreeWalker : TreeParser
 				{
 				Match(input,POSITIVE_CLOSURE,Follow._POSITIVE_CLOSURE_in_rewrite_ebnf1969); if (state.failed) return retval;
 
-				Match(input, TokenConstants.Down, null); if (state.failed) return retval;
+				Match(input, TokenTypes.Down, null); if (state.failed) return retval;
 				PushFollow(Follow._rewrite_block_in_rewrite_ebnf1971);
 				rewrite_block21=rewrite_block("rewritePositiveClosureBlock");
 
 				state._fsp--;
 				if (state.failed) return retval;
 
-				Match(input, TokenConstants.Up, null); if (state.failed) return retval;
+				Match(input, TokenTypes.Up, null); if (state.failed) return retval;
 				if ( state.backtracking == 0 )
 				{
 					 retval.code = rewrite_block21; 
@@ -5036,7 +5036,7 @@ public partial class CodeGenTreeWalker : TreeParser
 			{
 			Match(input,TREE_BEGIN,Follow._TREE_BEGIN_in_rewrite_tree2004); if (state.failed) return retval;
 
-			Match(input, TokenConstants.Down, null); if (state.failed) return retval;
+			Match(input, TokenTypes.Down, null); if (state.failed) return retval;
 			PushFollow(Follow._rewrite_atom_in_rewrite_tree2011);
 			r=rewrite_atom(true);
 
@@ -5098,7 +5098,7 @@ public partial class CodeGenTreeWalker : TreeParser
 
 
 
-			Match(input, TokenConstants.Up, null); if (state.failed) return retval;
+			Match(input, TokenTypes.Up, null); if (state.failed) return retval;
 			if ( state.backtracking == 0 )
 			{
 
@@ -5266,9 +5266,9 @@ public partial class CodeGenTreeWalker : TreeParser
 					{
 					tk=(GrammarAST)Match(input,TOKEN_REF,Follow._TOKEN_REF_in_rewrite_atom2093); if (state.failed) return retval;
 
-					if ( input.LA(1)==TokenConstants.Down )
+					if ( input.LA(1)==TokenTypes.Down )
 					{
-						Match(input, TokenConstants.Down, null); if (state.failed) return retval;
+						Match(input, TokenTypes.Down, null); if (state.failed) return retval;
 						// Grammars\\CodeGenTreeWalker.g3:1243:20: (arg= ARG_ACTION )?
 						int alt65=2;
 						int LA65_0 = input.LA(1);
@@ -5290,7 +5290,7 @@ public partial class CodeGenTreeWalker : TreeParser
 						}
 
 
-						Match(input, TokenConstants.Up, null); if (state.failed) return retval;
+						Match(input, TokenTypes.Up, null); if (state.failed) return retval;
 					}
 
 					}
@@ -5512,11 +5512,11 @@ public partial class CodeGenTreeWalker : TreeParser
 				{
 				Match(input,ALT,Follow._ALT_in_rewrite_template2164); if (state.failed) return code;
 
-				Match(input, TokenConstants.Down, null); if (state.failed) return code;
+				Match(input, TokenTypes.Down, null); if (state.failed) return code;
 				Match(input,EPSILON,Follow._EPSILON_in_rewrite_template2166); if (state.failed) return code;
 				Match(input,EOA,Follow._EOA_in_rewrite_template2168); if (state.failed) return code;
 
-				Match(input, TokenConstants.Up, null); if (state.failed) return code;
+				Match(input, TokenTypes.Up, null); if (state.failed) return code;
 				if ( state.backtracking == 0 )
 				{
 					code =templates.GetInstanceOf("rewriteEmptyTemplate");
@@ -5529,7 +5529,7 @@ public partial class CodeGenTreeWalker : TreeParser
 				{
 				Match(input,TEMPLATE,Follow._TEMPLATE_in_rewrite_template2179); if (state.failed) return code;
 
-				Match(input, TokenConstants.Down, null); if (state.failed) return code;
+				Match(input, TokenTypes.Down, null); if (state.failed) return code;
 				// Grammars\\CodeGenTreeWalker.g3:1362:16: (id= ID |ind= ACTION )
 				int alt68=2;
 				int LA68_0 = input.LA(1);
@@ -5590,9 +5590,9 @@ public partial class CodeGenTreeWalker : TreeParser
 				}
 				Match(input,ARGLIST,Follow._ARGLIST_in_rewrite_template2201); if (state.failed) return code;
 
-				if ( input.LA(1)==TokenConstants.Down )
+				if ( input.LA(1)==TokenTypes.Down )
 				{
-					Match(input, TokenConstants.Down, null); if (state.failed) return code;
+					Match(input, TokenTypes.Down, null); if (state.failed) return code;
 					// Grammars\\CodeGenTreeWalker.g3:1381:5: ( ^( ARG arg= ID a= ACTION ) )*
 					for ( ; ; )
 					{
@@ -5612,7 +5612,7 @@ public partial class CodeGenTreeWalker : TreeParser
 							{
 							Match(input,ARG,Follow._ARG_in_rewrite_template2211); if (state.failed) return code;
 
-							Match(input, TokenConstants.Down, null); if (state.failed) return code;
+							Match(input, TokenTypes.Down, null); if (state.failed) return code;
 							arg=(GrammarAST)Match(input,ID,Follow._ID_in_rewrite_template2215); if (state.failed) return code;
 							a=(GrammarAST)Match(input,ACTION,Follow._ACTION_in_rewrite_template2219); if (state.failed) return code;
 							if ( state.backtracking == 0 )
@@ -5627,7 +5627,7 @@ public partial class CodeGenTreeWalker : TreeParser
 													
 							}
 
-							Match(input, TokenConstants.Up, null); if (state.failed) return code;
+							Match(input, TokenTypes.Up, null); if (state.failed) return code;
 
 							}
 							break;
@@ -5642,7 +5642,7 @@ public partial class CodeGenTreeWalker : TreeParser
 
 
 
-					Match(input, TokenConstants.Up, null); if (state.failed) return code;
+					Match(input, TokenTypes.Up, null); if (state.failed) return code;
 				}
 				// Grammars\\CodeGenTreeWalker.g3:1393:4: ( DOUBLE_QUOTE_STRING_LITERAL | DOUBLE_ANGLE_STRING_LITERAL )?
 				int alt70=3;
@@ -5694,7 +5694,7 @@ public partial class CodeGenTreeWalker : TreeParser
 				}
 
 
-				Match(input, TokenConstants.Up, null); if (state.failed) return code;
+				Match(input, TokenTypes.Up, null); if (state.failed) return code;
 
 				}
 				break;

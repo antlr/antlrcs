@@ -393,8 +393,8 @@ namespace Antlr3.Tool
         }
 
         // used in enumerating the descendants of a node
-        static readonly GrammarAST DescendantDownNode = new GrammarAST( Antlr.Runtime.TokenConstants.Down, "DOWN" );
-        static readonly GrammarAST DescendantUpNode = new GrammarAST( Antlr.Runtime.TokenConstants.Up, "UP" );
+        static readonly GrammarAST DescendantDownNode = new GrammarAST( Antlr.Runtime.TokenTypes.Down, "DOWN" );
+        static readonly GrammarAST DescendantUpNode = new GrammarAST( Antlr.Runtime.TokenTypes.Up, "UP" );
 
         public static IEnumerable<ITree> Descendants( ITree root )
         {

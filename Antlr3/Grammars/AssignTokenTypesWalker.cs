@@ -1,4 +1,4 @@
-// $ANTLR 3.1.2 Grammars\\AssignTokenTypesWalker.g3 2009-04-16 21:09:05
+// $ANTLR 3.1.2 Grammars\\AssignTokenTypesWalker.g3 2009-04-17 13:33:46
 
 // The variable 'variable' is assigned but its value is never used.
 #pragma warning disable 219
@@ -282,14 +282,14 @@ public partial class AssignTokenTypesWalker : TreeParser
 				{
 				Match(input,LEXER_GRAMMAR,Follow._LEXER_GRAMMAR_in_grammar_68); 
 
-				Match(input, TokenConstants.Down, null); 
+				Match(input, TokenTypes.Down, null); 
 				PushFollow(Follow._grammarSpec_in_grammar_73);
 				grammarSpec();
 
 				state._fsp--;
 
 
-				Match(input, TokenConstants.Up, null); 
+				Match(input, TokenTypes.Up, null); 
 
 				}
 				break;
@@ -298,14 +298,14 @@ public partial class AssignTokenTypesWalker : TreeParser
 				{
 				Match(input,PARSER_GRAMMAR,Follow._PARSER_GRAMMAR_in_grammar_83); 
 
-				Match(input, TokenConstants.Down, null); 
+				Match(input, TokenTypes.Down, null); 
 				PushFollow(Follow._grammarSpec_in_grammar_87);
 				grammarSpec();
 
 				state._fsp--;
 
 
-				Match(input, TokenConstants.Up, null); 
+				Match(input, TokenTypes.Up, null); 
 
 				}
 				break;
@@ -314,14 +314,14 @@ public partial class AssignTokenTypesWalker : TreeParser
 				{
 				Match(input,TREE_GRAMMAR,Follow._TREE_GRAMMAR_in_grammar_97); 
 
-				Match(input, TokenConstants.Down, null); 
+				Match(input, TokenTypes.Down, null); 
 				PushFollow(Follow._grammarSpec_in_grammar_103);
 				grammarSpec();
 
 				state._fsp--;
 
 
-				Match(input, TokenConstants.Up, null); 
+				Match(input, TokenTypes.Up, null); 
 
 				}
 				break;
@@ -330,14 +330,14 @@ public partial class AssignTokenTypesWalker : TreeParser
 				{
 				Match(input,COMBINED_GRAMMAR,Follow._COMBINED_GRAMMAR_in_grammar_113); 
 
-				Match(input, TokenConstants.Down, null); 
+				Match(input, TokenTypes.Down, null); 
 				PushFollow(Follow._grammarSpec_in_grammar_115);
 				grammarSpec();
 
 				state._fsp--;
 
 
-				Match(input, TokenConstants.Up, null); 
+				Match(input, TokenTypes.Up, null); 
 
 				}
 				break;
@@ -520,9 +520,9 @@ public partial class AssignTokenTypesWalker : TreeParser
 					{
 					Match(input,AMPERSAND,Follow._AMPERSAND_in_grammarSpec178); 
 
-					if ( input.LA(1)==TokenConstants.Down )
+					if ( input.LA(1)==TokenTypes.Down )
 					{
-						Match(input, TokenConstants.Down, null); 
+						Match(input, TokenTypes.Down, null); 
 						// Grammars\\AssignTokenTypesWalker.g3:159:17: ( . )*
 						for ( ; ; )
 						{
@@ -559,7 +559,7 @@ public partial class AssignTokenTypesWalker : TreeParser
 
 
 
-						Match(input, TokenConstants.Up, null); 
+						Match(input, TokenTypes.Up, null); 
 					}
 
 					}
@@ -607,7 +607,7 @@ public partial class AssignTokenTypesWalker : TreeParser
 			{
 			Match(input,SCOPE,Follow._SCOPE_in_attrScope203); 
 
-			Match(input, TokenConstants.Down, null); 
+			Match(input, TokenTypes.Down, null); 
 			Match(input,ID,Follow._ID_in_attrScope205); 
 			// Grammars\\AssignTokenTypesWalker.g3:164:18: ( ^( AMPERSAND ( . )* ) )*
 			for ( ; ; )
@@ -628,9 +628,9 @@ public partial class AssignTokenTypesWalker : TreeParser
 					{
 					Match(input,AMPERSAND,Follow._AMPERSAND_in_attrScope210); 
 
-					if ( input.LA(1)==TokenConstants.Down )
+					if ( input.LA(1)==TokenTypes.Down )
 					{
-						Match(input, TokenConstants.Down, null); 
+						Match(input, TokenTypes.Down, null); 
 						// Grammars\\AssignTokenTypesWalker.g3:164:32: ( . )*
 						for ( ; ; )
 						{
@@ -667,7 +667,7 @@ public partial class AssignTokenTypesWalker : TreeParser
 
 
 
-						Match(input, TokenConstants.Up, null); 
+						Match(input, TokenTypes.Up, null); 
 					}
 
 					}
@@ -684,7 +684,7 @@ public partial class AssignTokenTypesWalker : TreeParser
 
 			Match(input,ACTION,Follow._ACTION_in_attrScope219); 
 
-			Match(input, TokenConstants.Up, null); 
+			Match(input, TokenTypes.Up, null); 
 
 			}
 
@@ -716,7 +716,7 @@ public partial class AssignTokenTypesWalker : TreeParser
 			{
 			Match(input,OPTIONS,Follow._OPTIONS_in_optionsSpec238); 
 
-			Match(input, TokenConstants.Down, null); 
+			Match(input, TokenTypes.Down, null); 
 			// Grammars\\AssignTokenTypesWalker.g3:168:15: ( option[$opts] )+
 			int cnt11=0;
 			for ( ; ; )
@@ -758,7 +758,7 @@ public partial class AssignTokenTypesWalker : TreeParser
 
 
 
-			Match(input, TokenConstants.Up, null); 
+			Match(input, TokenTypes.Up, null); 
 
 			}
 
@@ -790,7 +790,7 @@ public partial class AssignTokenTypesWalker : TreeParser
 			{
 			Match(input,ASSIGN,Follow._ASSIGN_in_option260); 
 
-			Match(input, TokenConstants.Down, null); 
+			Match(input, TokenTypes.Down, null); 
 			ID1=(GrammarAST)Match(input,ID,Follow._ID_in_option262); 
 			PushFollow(Follow._optionValue_in_option264);
 			optionValue2=optionValue();
@@ -798,7 +798,7 @@ public partial class AssignTokenTypesWalker : TreeParser
 			state._fsp--;
 
 
-			Match(input, TokenConstants.Up, null); 
+			Match(input, TokenTypes.Up, null); 
 
 						string key = (ID1!=null?ID1.Text:null);
 						opts[key] = (optionValue2!=null?optionValue2.value:default(Object));
@@ -934,14 +934,14 @@ public partial class AssignTokenTypesWalker : TreeParser
 			{
 			Match(input,CHARSET,Follow._CHARSET_in_charSet323); 
 
-			Match(input, TokenConstants.Down, null); 
+			Match(input, TokenTypes.Down, null); 
 			PushFollow(Follow._charSetElement_in_charSet325);
 			charSetElement();
 
 			state._fsp--;
 
 
-			Match(input, TokenConstants.Up, null); 
+			Match(input, TokenTypes.Up, null); 
 
 			}
 
@@ -1006,11 +1006,11 @@ public partial class AssignTokenTypesWalker : TreeParser
 				{
 				Match(input,OR,Follow._OR_in_charSetElement345); 
 
-				Match(input, TokenConstants.Down, null); 
+				Match(input, TokenTypes.Down, null); 
 				Match(input,CHAR_LITERAL,Follow._CHAR_LITERAL_in_charSetElement347); 
 				Match(input,CHAR_LITERAL,Follow._CHAR_LITERAL_in_charSetElement349); 
 
-				Match(input, TokenConstants.Up, null); 
+				Match(input, TokenTypes.Up, null); 
 
 				}
 				break;
@@ -1019,11 +1019,11 @@ public partial class AssignTokenTypesWalker : TreeParser
 				{
 				Match(input,RANGE,Follow._RANGE_in_charSetElement358); 
 
-				Match(input, TokenConstants.Down, null); 
+				Match(input, TokenTypes.Down, null); 
 				Match(input,CHAR_LITERAL,Follow._CHAR_LITERAL_in_charSetElement360); 
 				Match(input,CHAR_LITERAL,Follow._CHAR_LITERAL_in_charSetElement362); 
 
-				Match(input, TokenConstants.Up, null); 
+				Match(input, TokenTypes.Up, null); 
 
 				}
 				break;
@@ -1054,7 +1054,7 @@ public partial class AssignTokenTypesWalker : TreeParser
 			{
 			Match(input,IMPORT,Follow._IMPORT_in_delegateGrammars377); 
 
-			Match(input, TokenConstants.Down, null); 
+			Match(input, TokenTypes.Down, null); 
 			// Grammars\\AssignTokenTypesWalker.g3:210:4: ( ^( ASSIGN ID ID ) | ID )+
 			int cnt14=0;
 			for ( ; ; )
@@ -1079,11 +1079,11 @@ public partial class AssignTokenTypesWalker : TreeParser
 					{
 					Match(input,ASSIGN,Follow._ASSIGN_in_delegateGrammars385); 
 
-					Match(input, TokenConstants.Down, null); 
+					Match(input, TokenTypes.Down, null); 
 					Match(input,ID,Follow._ID_in_delegateGrammars387); 
 					Match(input,ID,Follow._ID_in_delegateGrammars389); 
 
-					Match(input, TokenConstants.Up, null); 
+					Match(input, TokenTypes.Up, null); 
 
 					}
 					break;
@@ -1109,7 +1109,7 @@ public partial class AssignTokenTypesWalker : TreeParser
 
 
 
-			Match(input, TokenConstants.Up, null); 
+			Match(input, TokenTypes.Up, null); 
 
 			}
 
@@ -1138,7 +1138,7 @@ public partial class AssignTokenTypesWalker : TreeParser
 			{
 			Match(input,TOKENS,Follow._TOKENS_in_tokensSpec420); 
 
-			Match(input, TokenConstants.Down, null); 
+			Match(input, TokenTypes.Down, null); 
 			// Grammars\\AssignTokenTypesWalker.g3:217:14: ( tokenSpec )+
 			int cnt15=0;
 			for ( ; ; )
@@ -1180,7 +1180,7 @@ public partial class AssignTokenTypesWalker : TreeParser
 
 
 
-			Match(input, TokenConstants.Up, null); 
+			Match(input, TokenTypes.Up, null); 
 
 			}
 
@@ -1242,7 +1242,7 @@ public partial class AssignTokenTypesWalker : TreeParser
 				{
 				Match(input,ASSIGN,Follow._ASSIGN_in_tokenSpec458); 
 
-				Match(input, TokenConstants.Down, null); 
+				Match(input, TokenTypes.Down, null); 
 				t2=(GrammarAST)Match(input,TOKEN_REF,Follow._TOKEN_REF_in_tokenSpec465); 
 				TrackToken(t2);
 				// Grammars\\AssignTokenTypesWalker.g3:224:4: (s= STRING_LITERAL |c= CHAR_LITERAL )
@@ -1285,7 +1285,7 @@ public partial class AssignTokenTypesWalker : TreeParser
 				}
 
 
-				Match(input, TokenConstants.Up, null); 
+				Match(input, TokenTypes.Up, null); 
 
 				}
 				break;
@@ -1386,7 +1386,7 @@ public partial class AssignTokenTypesWalker : TreeParser
 			{
 			Match(input,RULE,Follow._RULE_in_rule531); 
 
-			Match(input, TokenConstants.Down, null); 
+			Match(input, TokenTypes.Down, null); 
 			id=(GrammarAST)Match(input,ID,Follow._ID_in_rule535); 
 			currentRuleName=(id!=null?id.Text:null);
 			// Grammars\\AssignTokenTypesWalker.g3:236:4: (m= modifier )?
@@ -1415,9 +1415,9 @@ public partial class AssignTokenTypesWalker : TreeParser
 
 			Match(input,ARG,Follow._ARG_in_rule553); 
 
-			if ( input.LA(1)==TokenConstants.Down )
+			if ( input.LA(1)==TokenTypes.Down )
 			{
-				Match(input, TokenConstants.Down, null); 
+				Match(input, TokenTypes.Down, null); 
 				// Grammars\\AssignTokenTypesWalker.g3:237:10: ( ARG_ACTION )?
 				int alt20=2;
 				int LA20_0 = input.LA(1);
@@ -1439,13 +1439,13 @@ public partial class AssignTokenTypesWalker : TreeParser
 				}
 
 
-				Match(input, TokenConstants.Up, null); 
+				Match(input, TokenTypes.Up, null); 
 			}
 			Match(input,RET,Follow._RET_in_rule565); 
 
-			if ( input.LA(1)==TokenConstants.Down )
+			if ( input.LA(1)==TokenTypes.Down )
 			{
-				Match(input, TokenConstants.Down, null); 
+				Match(input, TokenTypes.Down, null); 
 				// Grammars\\AssignTokenTypesWalker.g3:238:10: ( ARG_ACTION )?
 				int alt21=2;
 				int LA21_0 = input.LA(1);
@@ -1467,7 +1467,7 @@ public partial class AssignTokenTypesWalker : TreeParser
 				}
 
 
-				Match(input, TokenConstants.Up, null); 
+				Match(input, TokenTypes.Up, null); 
 			}
 			// Grammars\\AssignTokenTypesWalker.g3:239:4: ( throwsSpec )?
 			int alt22=2;
@@ -1560,9 +1560,9 @@ public partial class AssignTokenTypesWalker : TreeParser
 					{
 					Match(input,AMPERSAND,Follow._AMPERSAND_in_rule603); 
 
-					if ( input.LA(1)==TokenConstants.Down )
+					if ( input.LA(1)==TokenTypes.Down )
 					{
-						Match(input, TokenConstants.Down, null); 
+						Match(input, TokenTypes.Down, null); 
 						// Grammars\\AssignTokenTypesWalker.g3:242:18: ( . )*
 						for ( ; ; )
 						{
@@ -1599,7 +1599,7 @@ public partial class AssignTokenTypesWalker : TreeParser
 
 
 
-						Match(input, TokenConstants.Up, null); 
+						Match(input, TokenTypes.Up, null); 
 					}
 
 					}
@@ -1646,7 +1646,7 @@ public partial class AssignTokenTypesWalker : TreeParser
 			Match(input,EOR,Follow._EOR_in_rule630); 
 			TrackTokenRule(id,(m!=null?((GrammarAST)m.start):null),(b!=null?((GrammarAST)b.start):null));
 
-			Match(input, TokenConstants.Up, null); 
+			Match(input, TokenTypes.Up, null); 
 
 			}
 
@@ -1718,7 +1718,7 @@ public partial class AssignTokenTypesWalker : TreeParser
 			{
 			Match(input,THROWS,Follow._THROWS_in_throwsSpec677); 
 
-			Match(input, TokenConstants.Down, null); 
+			Match(input, TokenTypes.Down, null); 
 			// Grammars\\AssignTokenTypesWalker.g3:258:15: ( ID )+
 			int cnt28=0;
 			for ( ; ; )
@@ -1756,7 +1756,7 @@ public partial class AssignTokenTypesWalker : TreeParser
 
 
 
-			Match(input, TokenConstants.Up, null); 
+			Match(input, TokenTypes.Up, null); 
 
 			}
 
@@ -1785,9 +1785,9 @@ public partial class AssignTokenTypesWalker : TreeParser
 			{
 			Match(input,SCOPE,Follow._SCOPE_in_ruleScopeSpec694); 
 
-			if ( input.LA(1)==TokenConstants.Down )
+			if ( input.LA(1)==TokenTypes.Down )
 			{
-				Match(input, TokenConstants.Down, null); 
+				Match(input, TokenTypes.Down, null); 
 				// Grammars\\AssignTokenTypesWalker.g3:262:15: ( ^( AMPERSAND ( . )* ) )*
 				for ( ; ; )
 				{
@@ -1807,9 +1807,9 @@ public partial class AssignTokenTypesWalker : TreeParser
 						{
 						Match(input,AMPERSAND,Follow._AMPERSAND_in_ruleScopeSpec699); 
 
-						if ( input.LA(1)==TokenConstants.Down )
+						if ( input.LA(1)==TokenTypes.Down )
 						{
-							Match(input, TokenConstants.Down, null); 
+							Match(input, TokenTypes.Down, null); 
 							// Grammars\\AssignTokenTypesWalker.g3:262:29: ( . )*
 							for ( ; ; )
 							{
@@ -1846,7 +1846,7 @@ public partial class AssignTokenTypesWalker : TreeParser
 
 
 
-							Match(input, TokenConstants.Up, null); 
+							Match(input, TokenTypes.Up, null); 
 						}
 
 						}
@@ -1913,7 +1913,7 @@ public partial class AssignTokenTypesWalker : TreeParser
 
 
 
-				Match(input, TokenConstants.Up, null); 
+				Match(input, TokenTypes.Up, null); 
 			}
 
 			}
@@ -1949,7 +1949,7 @@ public partial class AssignTokenTypesWalker : TreeParser
 			{
 			Match(input,BLOCK,Follow._BLOCK_in_block733); 
 
-			Match(input, TokenConstants.Down, null); 
+			Match(input, TokenTypes.Down, null); 
 			// Grammars\\AssignTokenTypesWalker.g3:267:4: ( optionsSpec )?
 			int alt33=2;
 			int LA33_0 = input.LA(1);
@@ -2021,7 +2021,7 @@ public partial class AssignTokenTypesWalker : TreeParser
 
 			Match(input,EOB,Follow._EOB_in_block758); 
 
-			Match(input, TokenConstants.Up, null); 
+			Match(input, TokenTypes.Up, null); 
 
 			}
 
@@ -2050,7 +2050,7 @@ public partial class AssignTokenTypesWalker : TreeParser
 			{
 			Match(input,ALT,Follow._ALT_in_alternative775); 
 
-			Match(input, TokenConstants.Down, null); 
+			Match(input, TokenTypes.Down, null); 
 			// Grammars\\AssignTokenTypesWalker.g3:274:11: ( element )+
 			int cnt35=0;
 			for ( ; ; )
@@ -2093,7 +2093,7 @@ public partial class AssignTokenTypesWalker : TreeParser
 
 			Match(input,EOA,Follow._EOA_in_alternative782); 
 
-			Match(input, TokenConstants.Up, null); 
+			Match(input, TokenTypes.Up, null); 
 
 			}
 
@@ -2245,11 +2245,11 @@ public partial class AssignTokenTypesWalker : TreeParser
 			{
 			Match(input,CATCH,Follow._CATCH_in_exceptionHandler822); 
 
-			Match(input, TokenConstants.Down, null); 
+			Match(input, TokenTypes.Down, null); 
 			Match(input,ARG_ACTION,Follow._ARG_ACTION_in_exceptionHandler824); 
 			Match(input,ACTION,Follow._ACTION_in_exceptionHandler826); 
 
-			Match(input, TokenConstants.Up, null); 
+			Match(input, TokenTypes.Up, null); 
 
 			}
 
@@ -2278,10 +2278,10 @@ public partial class AssignTokenTypesWalker : TreeParser
 			{
 			Match(input,FINALLY,Follow._FINALLY_in_finallyClause839); 
 
-			Match(input, TokenConstants.Down, null); 
+			Match(input, TokenTypes.Down, null); 
 			Match(input,ACTION,Follow._ACTION_in_finallyClause841); 
 
-			Match(input, TokenConstants.Up, null); 
+			Match(input, TokenTypes.Up, null); 
 
 			}
 
@@ -2327,9 +2327,9 @@ public partial class AssignTokenTypesWalker : TreeParser
 					{
 					Match(input,REWRITE,Follow._REWRITE_in_rewrite856); 
 
-					if ( input.LA(1)==TokenConstants.Down )
+					if ( input.LA(1)==TokenTypes.Down )
 					{
-						Match(input, TokenConstants.Down, null); 
+						Match(input, TokenTypes.Down, null); 
 						// Grammars\\AssignTokenTypesWalker.g3:291:16: ( . )*
 						for ( ; ; )
 						{
@@ -2366,7 +2366,7 @@ public partial class AssignTokenTypesWalker : TreeParser
 
 
 
-						Match(input, TokenConstants.Up, null); 
+						Match(input, TokenTypes.Up, null); 
 					}
 
 					}
@@ -2521,14 +2521,14 @@ public partial class AssignTokenTypesWalker : TreeParser
 				{
 				Match(input,ROOT,Follow._ROOT_in_element875); 
 
-				Match(input, TokenConstants.Down, null); 
+				Match(input, TokenTypes.Down, null); 
 				PushFollow(Follow._element_in_element877);
 				element();
 
 				state._fsp--;
 
 
-				Match(input, TokenConstants.Up, null); 
+				Match(input, TokenTypes.Up, null); 
 
 				}
 				break;
@@ -2537,14 +2537,14 @@ public partial class AssignTokenTypesWalker : TreeParser
 				{
 				Match(input,BANG,Follow._BANG_in_element884); 
 
-				Match(input, TokenConstants.Down, null); 
+				Match(input, TokenTypes.Down, null); 
 				PushFollow(Follow._element_in_element886);
 				element();
 
 				state._fsp--;
 
 
-				Match(input, TokenConstants.Up, null); 
+				Match(input, TokenTypes.Up, null); 
 
 				}
 				break;
@@ -2564,14 +2564,14 @@ public partial class AssignTokenTypesWalker : TreeParser
 				{
 				Match(input,NOT,Follow._NOT_in_element898); 
 
-				Match(input, TokenConstants.Down, null); 
+				Match(input, TokenTypes.Down, null); 
 				PushFollow(Follow._element_in_element900);
 				element();
 
 				state._fsp--;
 
 
-				Match(input, TokenConstants.Up, null); 
+				Match(input, TokenTypes.Up, null); 
 
 				}
 				break;
@@ -2580,7 +2580,7 @@ public partial class AssignTokenTypesWalker : TreeParser
 				{
 				Match(input,RANGE,Follow._RANGE_in_element907); 
 
-				Match(input, TokenConstants.Down, null); 
+				Match(input, TokenTypes.Down, null); 
 				PushFollow(Follow._atom_in_element909);
 				atom();
 
@@ -2592,7 +2592,7 @@ public partial class AssignTokenTypesWalker : TreeParser
 				state._fsp--;
 
 
-				Match(input, TokenConstants.Up, null); 
+				Match(input, TokenTypes.Up, null); 
 
 				}
 				break;
@@ -2601,7 +2601,7 @@ public partial class AssignTokenTypesWalker : TreeParser
 				{
 				Match(input,CHAR_RANGE,Follow._CHAR_RANGE_in_element918); 
 
-				Match(input, TokenConstants.Down, null); 
+				Match(input, TokenTypes.Down, null); 
 				PushFollow(Follow._atom_in_element920);
 				atom();
 
@@ -2613,7 +2613,7 @@ public partial class AssignTokenTypesWalker : TreeParser
 				state._fsp--;
 
 
-				Match(input, TokenConstants.Up, null); 
+				Match(input, TokenTypes.Up, null); 
 
 				}
 				break;
@@ -2622,7 +2622,7 @@ public partial class AssignTokenTypesWalker : TreeParser
 				{
 				Match(input,ASSIGN,Follow._ASSIGN_in_element929); 
 
-				Match(input, TokenConstants.Down, null); 
+				Match(input, TokenTypes.Down, null); 
 				Match(input,ID,Follow._ID_in_element931); 
 				PushFollow(Follow._element_in_element933);
 				element();
@@ -2630,7 +2630,7 @@ public partial class AssignTokenTypesWalker : TreeParser
 				state._fsp--;
 
 
-				Match(input, TokenConstants.Up, null); 
+				Match(input, TokenTypes.Up, null); 
 
 				}
 				break;
@@ -2639,7 +2639,7 @@ public partial class AssignTokenTypesWalker : TreeParser
 				{
 				Match(input,PLUS_ASSIGN,Follow._PLUS_ASSIGN_in_element940); 
 
-				Match(input, TokenConstants.Down, null); 
+				Match(input, TokenTypes.Down, null); 
 				Match(input,ID,Follow._ID_in_element942); 
 				PushFollow(Follow._element_in_element944);
 				element();
@@ -2647,7 +2647,7 @@ public partial class AssignTokenTypesWalker : TreeParser
 				state._fsp--;
 
 
-				Match(input, TokenConstants.Up, null); 
+				Match(input, TokenTypes.Up, null); 
 
 				}
 				break;
@@ -2678,14 +2678,14 @@ public partial class AssignTokenTypesWalker : TreeParser
 				{
 				Match(input,SYNPRED,Follow._SYNPRED_in_element962); 
 
-				Match(input, TokenConstants.Down, null); 
+				Match(input, TokenTypes.Down, null); 
 				PushFollow(Follow._block_in_element964);
 				block();
 
 				state._fsp--;
 
 
-				Match(input, TokenConstants.Up, null); 
+				Match(input, TokenTypes.Up, null); 
 
 				}
 				break;
@@ -2722,9 +2722,9 @@ public partial class AssignTokenTypesWalker : TreeParser
 				{
 				Match(input,BACKTRACK_SEMPRED,Follow._BACKTRACK_SEMPRED_in_element992); 
 
-				if ( input.LA(1)==TokenConstants.Down )
+				if ( input.LA(1)==TokenTypes.Down )
 				{
-					Match(input, TokenConstants.Down, null); 
+					Match(input, TokenTypes.Down, null); 
 					// Grammars\\AssignTokenTypesWalker.g3:310:24: ( . )*
 					for ( ; ; )
 					{
@@ -2761,7 +2761,7 @@ public partial class AssignTokenTypesWalker : TreeParser
 
 
 
-					Match(input, TokenConstants.Up, null); 
+					Match(input, TokenTypes.Up, null); 
 				}
 
 				}
@@ -2852,14 +2852,14 @@ public partial class AssignTokenTypesWalker : TreeParser
 				{
 				Match(input,OPTIONAL,Follow._OPTIONAL_in_ebnf1024); 
 
-				Match(input, TokenConstants.Down, null); 
+				Match(input, TokenTypes.Down, null); 
 				PushFollow(Follow._block_in_ebnf1026);
 				block();
 
 				state._fsp--;
 
 
-				Match(input, TokenConstants.Up, null); 
+				Match(input, TokenTypes.Up, null); 
 
 				}
 				break;
@@ -2868,14 +2868,14 @@ public partial class AssignTokenTypesWalker : TreeParser
 				{
 				Match(input,CLOSURE,Follow._CLOSURE_in_ebnf1035); 
 
-				Match(input, TokenConstants.Down, null); 
+				Match(input, TokenTypes.Down, null); 
 				PushFollow(Follow._block_in_ebnf1037);
 				block();
 
 				state._fsp--;
 
 
-				Match(input, TokenConstants.Up, null); 
+				Match(input, TokenTypes.Up, null); 
 
 				}
 				break;
@@ -2884,14 +2884,14 @@ public partial class AssignTokenTypesWalker : TreeParser
 				{
 				Match(input,POSITIVE_CLOSURE,Follow._POSITIVE_CLOSURE_in_ebnf1046); 
 
-				Match(input, TokenConstants.Down, null); 
+				Match(input, TokenTypes.Down, null); 
 				PushFollow(Follow._block_in_ebnf1048);
 				block();
 
 				state._fsp--;
 
 
-				Match(input, TokenConstants.Up, null); 
+				Match(input, TokenTypes.Up, null); 
 
 				}
 				break;
@@ -2922,7 +2922,7 @@ public partial class AssignTokenTypesWalker : TreeParser
 			{
 			Match(input,TREE_BEGIN,Follow._TREE_BEGIN_in_tree_1062); 
 
-			Match(input, TokenConstants.Down, null); 
+			Match(input, TokenTypes.Down, null); 
 			// Grammars\\AssignTokenTypesWalker.g3:323:17: ( element )+
 			int cnt44=0;
 			for ( ; ; )
@@ -2964,7 +2964,7 @@ public partial class AssignTokenTypesWalker : TreeParser
 
 
 
-			Match(input, TokenConstants.Up, null); 
+			Match(input, TokenTypes.Up, null); 
 
 			}
 
@@ -3041,9 +3041,9 @@ public partial class AssignTokenTypesWalker : TreeParser
 				{
 				Match(input,RULE_REF,Follow._RULE_REF_in_atom1079); 
 
-				if ( input.LA(1)==TokenConstants.Down )
+				if ( input.LA(1)==TokenTypes.Down )
 				{
-					Match(input, TokenConstants.Down, null); 
+					Match(input, TokenTypes.Down, null); 
 					// Grammars\\AssignTokenTypesWalker.g3:327:16: ( ARG_ACTION )?
 					int alt45=2;
 					int LA45_0 = input.LA(1);
@@ -3065,7 +3065,7 @@ public partial class AssignTokenTypesWalker : TreeParser
 					}
 
 
-					Match(input, TokenConstants.Up, null); 
+					Match(input, TokenTypes.Up, null); 
 				}
 
 				}
@@ -3075,9 +3075,9 @@ public partial class AssignTokenTypesWalker : TreeParser
 				{
 				t=(GrammarAST)Match(input,TOKEN_REF,Follow._TOKEN_REF_in_atom1095); 
 
-				if ( input.LA(1)==TokenConstants.Down )
+				if ( input.LA(1)==TokenTypes.Down )
 				{
-					Match(input, TokenConstants.Down, null); 
+					Match(input, TokenTypes.Down, null); 
 					// Grammars\\AssignTokenTypesWalker.g3:328:19: ( ARG_ACTION )?
 					int alt46=2;
 					int LA46_0 = input.LA(1);
@@ -3099,7 +3099,7 @@ public partial class AssignTokenTypesWalker : TreeParser
 					}
 
 
-					Match(input, TokenConstants.Up, null); 
+					Match(input, TokenTypes.Up, null); 
 				}
 				TrackToken(t);
 
@@ -3133,7 +3133,7 @@ public partial class AssignTokenTypesWalker : TreeParser
 				{
 				Match(input,DOT,Follow._DOT_in_atom1136); 
 
-				Match(input, TokenConstants.Down, null); 
+				Match(input, TokenTypes.Down, null); 
 				Match(input,ID,Follow._ID_in_atom1138); 
 				PushFollow(Follow._atom_in_atom1140);
 				atom();
@@ -3141,7 +3141,7 @@ public partial class AssignTokenTypesWalker : TreeParser
 				state._fsp--;
 
 
-				Match(input, TokenConstants.Up, null); 
+				Match(input, TokenTypes.Up, null); 
 
 				}
 				break;

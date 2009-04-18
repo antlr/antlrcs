@@ -1,4 +1,4 @@
-// $ANTLR 3.1.2 Language\\Action.g3 2009-04-11 17:03:16
+// $ANTLR 3.1.2 Language\\Action.g3 2009-04-17 13:45:46
 
 // The variable 'variable' is assigned but its value is never used.
 #pragma warning disable 219
@@ -692,7 +692,7 @@ public partial class ActionLexer : Lexer
 					{
 					int ESC_CHAR1Start300 = GetCharIndex();
 					mESC_CHAR(out uc, false); if (state.failed) return ;
-					ESC_CHAR1 = new CommonToken(input, TokenConstants.InvalidTokenType, TokenConstants.DefaultChannel, ESC_CHAR1Start300, GetCharIndex()-1);
+					ESC_CHAR1 = new CommonToken(input, TokenTypes.Invalid, TokenChannels.Default, ESC_CHAR1Start300, GetCharIndex()-1);
 					if ( state.backtracking == 0 )
 					{
 						builder.Append( (ESC_CHAR1!=null?ESC_CHAR1.Text:null) );
@@ -792,7 +792,7 @@ public partial class ActionLexer : Lexer
 
 			int aStart368 = GetCharIndex();
 			mID(); if (state.failed) return ;
-			a = new CommonToken(input, TokenConstants.InvalidTokenType, TokenConstants.DefaultChannel, aStart368, GetCharIndex()-1);
+			a = new CommonToken(input, TokenTypes.Invalid, TokenChannels.Default, aStart368, GetCharIndex()-1);
 			if ( state.backtracking == 0 )
 			{
 				args.Add((a!=null?a.Text:null));
@@ -918,7 +918,7 @@ public partial class ActionLexer : Lexer
 
 					int a2Start390 = GetCharIndex();
 					mID(); if (state.failed) return ;
-					a2 = new CommonToken(input, TokenConstants.InvalidTokenType, TokenConstants.DefaultChannel, a2Start390, GetCharIndex()-1);
+					a2 = new CommonToken(input, TokenTypes.Invalid, TokenChannels.Default, a2Start390, GetCharIndex()-1);
 					if ( state.backtracking == 0 )
 					{
 						args.Add((a2!=null?a2.Text:null));
@@ -1027,7 +1027,7 @@ public partial class ActionLexer : Lexer
 					{
 					int ESC_CHAR2Start460 = GetCharIndex();
 					mESC_CHAR(out uc, false); if (state.failed) return ;
-					ESC_CHAR2 = new CommonToken(input, TokenConstants.InvalidTokenType, TokenConstants.DefaultChannel, ESC_CHAR2Start460, GetCharIndex()-1);
+					ESC_CHAR2 = new CommonToken(input, TokenTypes.Invalid, TokenChannels.Default, ESC_CHAR2Start460, GetCharIndex()-1);
 					if ( state.backtracking == 0 )
 					{
 						builder.Append((ESC_CHAR2!=null?ESC_CHAR2.Text:null));

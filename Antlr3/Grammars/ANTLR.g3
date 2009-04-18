@@ -440,25 +440,14 @@ altList[IDictionary<string, object> opts]
 finally { currentBlockAST = save; }
 
 alternative
-@init
-{
-	GrammarAST eoa = null;
-	GrammarAST altRoot = null;
-}
-	:	( -> EOA["<end-of-alt>"] )
-		{ eoa = $tree; }
-		( -> ALT[$start,"ALT"] )
-		{ altRoot = $tree; }
-
-		(	( el+=element )+
-			-> ^({altRoot} $el+ {eoa})
-		|
-			-> ^({altRoot} EPSILON[$start,"epsilon"] {eoa})
-		)
+	:	element+
+		-> ^(ALT[$start,"ALT"] element+ EOA["<end-of-alt>"])
+	|	// epsilon alt
+		-> ^(ALT[$start,"ALT"] EPSILON[$start,"epsilon"] EOA["<end-of-alt>"])
 	;
 
 exceptionGroup
-	:	( exceptionHandler )+ ( finallyClause )?
+	:	exceptionHandler+ finallyClause?
 	|	finallyClause
 	;
 
@@ -512,7 +501,7 @@ atom
 	;
 
 ruleref
-	:	rr=RULE_REF^ ( ARG_ACTION )? (ROOT^|BANG^)?
+	:	RULE_REF^ ARG_ACTION? (ROOT^|BANG^)?
 	;
 
 notSet
@@ -523,17 +512,16 @@ notSet
 	;
 
 treeRoot
-	:	{atTreeRoot=true;}
-		(	id (ASSIGN^|PLUS_ASSIGN^) (atom|block)
-		|	atom
-		|	block
-		)
-		{atTreeRoot=false;}
+@init{atTreeRoot=true;}
+@after{atTreeRoot=false;}
+	:	id (ASSIGN^|PLUS_ASSIGN^) (atom|block)
+	|	atom
+	|	block
 	;
 
 tree_
 	:	TREE_BEGIN^
-		treeRoot ( element )+
+		treeRoot element+
 		RPAREN!
 	;
 
@@ -640,8 +628,8 @@ currentBlockAST = save;
 	;
 
 notTerminal
-	:	cl=CHAR_LITERAL
-	|	tr=TOKEN_REF
+	:	CHAR_LITERAL
+	|	TOKEN_REF
 	|	STRING_LITERAL
 	;
 
@@ -742,7 +730,7 @@ rewrite_ebnf
 
 rewrite_tree
 	:	TREE_BEGIN^
-			rewrite_atom ( rewrite_element )*
+			rewrite_atom rewrite_element*
 		RPAREN!
 	;
 

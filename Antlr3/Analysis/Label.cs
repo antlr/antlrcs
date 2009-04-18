@@ -38,7 +38,7 @@ namespace Antlr3.Analysis
     using IIntSet = Antlr3.Misc.IIntSet;
     using InvalidOperationException = System.InvalidOperationException;
     using IntervalSet = Antlr3.Misc.IntervalSet;
-    using TokenConstants = Antlr.Runtime.TokenConstants;
+    using TokenTypes = Antlr.Runtime.TokenTypes;
 
     /** A state machine transition label.  A label can be either a simple
      *  label such as a token or character.  A label can be a set of char or
@@ -111,14 +111,13 @@ namespace Antlr3.Analysis
          *  this issue.
          */
         public const int EOR_TOKEN_TYPE =
-            TokenConstants.EorTokenType;
+            TokenTypes.EndOfRule;
 
-        public const int DOWN = TokenConstants.Down;
-        public const int UP = TokenConstants.Up;
+        public const int DOWN = TokenTypes.Down;
+        public const int UP = TokenTypes.Up;
 
         /** tokens and char range overlap; tokens are MIN_TOKEN_TYPE..n */
-        public const int MIN_TOKEN_TYPE =
-            TokenConstants.MinTokenType;
+        public const int MIN_TOKEN_TYPE = TokenTypes.Min;
 
         /** The wildcard '.' char atom implies all valid characters==UNICODE */
         //public static readonly IIntSet ALLCHAR = IntervalSet.of( MIN_CHAR_VALUE, MAX_CHAR_VALUE );
