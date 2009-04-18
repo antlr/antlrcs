@@ -42,6 +42,7 @@ namespace Antlr3.ST
     using Assembly = System.Reflection.Assembly;
     using CommonTokenStream = Antlr.Runtime.CommonTokenStream;
     using ConstructorInfo = System.Reflection.ConstructorInfo;
+    using DebuggerDisplay = System.Diagnostics.DebuggerDisplayAttribute;
     using DefaultTemplateLexer = Antlr3.ST.Language.TemplateLexer;
     using Encoding = System.Text.Encoding;
     using GroupLexer = Antlr3.ST.Language.GroupLexer;
@@ -83,6 +84,7 @@ namespace Antlr3.ST
      *  within a group and have it load that group automatically.
      *  </remarks>
      */
+    [DebuggerDisplay( "TODO: StringTemplateGroup debugger display" )]
     public class StringTemplateGroup
     {
         /** <summary>What is the group name</summary> */

@@ -42,6 +42,7 @@ namespace Antlr3.ST
     using CommonTokenStream = Antlr.Runtime.CommonTokenStream;
     using CommonTree = Antlr.Runtime.Tree.CommonTree;
     using ConstructorInfo = System.Reflection.ConstructorInfo;
+    using DebuggerDisplay = System.Diagnostics.DebuggerDisplayAttribute;
     using ICollection = System.Collections.ICollection;
     using IDictionary = System.Collections.IDictionary;
     using IList = System.Collections.IList;
@@ -63,6 +64,7 @@ namespace Antlr3.ST
      *  out when you call <tt>StringTemplate.toString()</tt>.
      *  </summary>
      */
+    [DebuggerDisplay( "TODO: StringTemplate debugger display" )]
     public class StringTemplate
     {
         public const string VERSION = "3.3a"; // August 11, 2008

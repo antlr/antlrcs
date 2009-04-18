@@ -38,6 +38,7 @@ namespace Antlr3.ST
     using Antlr.Runtime.JavaExtensions;
     using Antlr3.ST.Language;
 
+    using DebuggerDisplay = System.Diagnostics.DebuggerDisplayAttribute;
     using IList = System.Collections.IList;
     using StringBuilder = System.Text.StringBuilder;
     using TextReader = System.IO.TextReader;
@@ -52,6 +53,7 @@ namespace Antlr3.ST
      *  method(name,args,body);
      *  </remarks>
      */
+    [DebuggerDisplay( "TODO: StringTemplateGroupInterface debugger display" )]
     public class StringTemplateGroupInterface
     {
         /** <summary>What is the group name</summary> */
