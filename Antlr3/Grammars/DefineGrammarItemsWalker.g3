@@ -80,8 +80,6 @@ scope AttributeScopeActions
 using System;
 
 using Antlr3.Tool;
-using boolean = System.Boolean;
-using Character = java.lang.Character;
 #if DEBUG
 using Utils = Antlr3.Misc.Utils;
 #endif
@@ -204,7 +202,7 @@ rule
 			{
 				name = $id.text;
 				currentRuleName = name;
-				if ( Character.isUpperCase(name[0]) && grammar.type==Grammar.COMBINED )
+				if ( char.IsUpper(name[0]) && grammar.type==Grammar.COMBINED )
 				{
 					// a merged grammar spec, track lexer rules and send to another grammar
 					grammar.DefineLexerRuleFoundInParser($id.token, $start);
@@ -610,7 +608,7 @@ rewrite_atom
 	{
 		Rule r = grammar.GetRule(currentRuleName);
 		var tokenRefsInAlt = r.GetTokenRefsInAlt(outerAltNum);
-		boolean imaginary =
+		bool imaginary =
 			$start.Type==TOKEN_REF &&
 			!tokenRefsInAlt.Contains($start.Text);
 		if ( !imaginary && grammar.BuildAST &&

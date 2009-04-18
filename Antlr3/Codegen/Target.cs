@@ -35,7 +35,7 @@ namespace Antlr3.Codegen
     using Antlr.Runtime.JavaExtensions;
 
     using AntlrTool = Antlr3.AntlrTool;
-    using Character = java.lang.Character;
+    using ArgumentException = System.ArgumentException;
     using Grammar = Antlr3.Tool.Grammar;
     using IList = System.Collections.IList;
     using IToken = Antlr.Runtime.IToken;
@@ -199,9 +199,7 @@ namespace Antlr3.Codegen
             {
                 buf.Append( targetCharValueEscape[c] );
             }
-            else if ( Character.UnicodeBlock.of( (char)c ) ==
-                      Character.UnicodeBlock.BASIC_LATIN &&
-                      !Character.isISOControl( (char)c ) )
+            else if ( c <= 0x7f && !char.IsControl( (char)c ) )
             {
                 // normal char
                 buf.Append( (char)c );
@@ -387,11 +385,30 @@ namespace Antlr3.Codegen
             return buf.ToString();
         }
 
+        public string ToOctalString( int value )
+        {
+            if ( value < 0 )
+                throw new ArgumentException( "The value cannot be negative", "value" );
+
+            if ( value == 0 )
+                return "0";
+
+            StringBuilder builder = new StringBuilder( "           " );
+            int index = builder.Length - 1;
+            while ( value > 0 )
+            {
+                builder[index] = (char)( '0' + ( value % 8 ) );
+                value /= 8;
+                index--;
+            }
+            return builder.ToString().Trim();
+        }
+
         public virtual string EncodeIntAsCharEscape( int v )
         {
             if ( v <= 127 )
             {
-                return "\\" + java.lang.Integer.toOctalString( v );
+                return "\\" + ToOctalString( v );
             }
             //String hex = Integer.toHexString( v | 0x10000 ).substring( 1, 5 );
             string hex = v.ToString( "x4" );

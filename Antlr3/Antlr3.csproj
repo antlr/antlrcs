@@ -44,7 +44,6 @@
     <Reference Include="System.Core">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
-    <Reference Include="vjslib" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Analysis\ActionLabel.cs" />

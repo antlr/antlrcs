@@ -1027,7 +1027,7 @@ namespace Antlr3.Tool
             if ( tool == null )
             {
                 // no tool registered, exit
-                throw new java.lang.Error( "ANTLR ErrorManager panic" );
+                throw new Exception( "ANTLR ErrorManager panic" );
             }
             else
             {

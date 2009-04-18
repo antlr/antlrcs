@@ -40,23 +40,22 @@ namespace Antlr3.Tool
     using Antlr3.Misc;
 
     using AngleBracketTemplateLexer = Antlr3.ST.Language.AngleBracketTemplateLexer;
-    using Character = java.lang.Character;
     using CodeGenerator = Antlr3.Codegen.CodeGenerator;
     using CommonToken = Antlr.Runtime.CommonToken;
     using Console = System.Console;
     using DateTime = System.DateTime;
     using Exception = System.Exception;
-    using FileReader = java.io.FileReader;
-    using ICollection = System.Collections.ICollection;
+    using File = System.IO.File;
     using IDictionary = System.Collections.IDictionary;
     using IList = System.Collections.IList;
     using IOException = System.IO.IOException;
     using IToken = Antlr.Runtime.IToken;
     using ITree = Antlr.Runtime.Tree.ITree;
-    using LinkedHashMap = System.Collections.Generic.SortedList<object, object>;
     using Math = System.Math;
+    using Path = System.IO.Path;
     using RecognitionException = Antlr.Runtime.RecognitionException;
-    using StreamTokenizer = java.io.StreamTokenizer;
+    using Regex = System.Text.RegularExpressions.Regex;
+    using RegexOptions = System.Text.RegularExpressions.RegexOptions;
     using StringBuilder = System.Text.StringBuilder;
     using StringReader = System.IO.StringReader;
     using StringTemplate = Antlr3.ST.StringTemplate;
@@ -2865,111 +2864,46 @@ namespace Antlr3.Tool
                 return composite.maxTokenType;
             }
 
-            System.IO.FileInfo fullFile = tool.GetImportedVocabFile( vocabName );
-            try
+            Regex vocabLine = new Regex( @"^(?<tokenID>'(?:\\'|.)+'|\w+)\s*=\s*(?<tokenType>\d+)$", RegexOptions.Compiled );
+            string fileName = Path.GetFullPath( tool.GetImportedVocabFile( vocabName ) );
+            if ( File.Exists( fileName ) )
             {
-                FileReader fr = new FileReader( fullFile.FullName );
-                java.io.BufferedReader br = new java.io.BufferedReader( fr );
-                StreamTokenizer tokenizer = new StreamTokenizer( br );
-                tokenizer.parseNumbers();
-                tokenizer.wordChars( '_', '_' );
-                tokenizer.eolIsSignificant( true );
-                tokenizer.slashSlashComments( true );
-                tokenizer.slashStarComments( true );
-                tokenizer.ordinaryChar( '=' );
-                tokenizer.quoteChar( '\'' );
-                tokenizer.whitespaceChars( ' ', ' ' );
-                tokenizer.whitespaceChars( '\t', '\t' );
-                int lineNum = 1;
-                int token = tokenizer.nextToken();
-                while ( token != StreamTokenizer.TT_EOF )
+                try
                 {
-                    string tokenID;
-                    if ( token == StreamTokenizer.TT_WORD )
+                    string[] lines = File.ReadAllLines( fileName );
+                    for ( int lineNum = 0; lineNum < lines.Length; lineNum++ )
                     {
-                        tokenID = tokenizer.sval;
-                    }
-                    else if ( token == '\'' )
-                    {
-                        tokenID = "'" + tokenizer.sval + "'";
-                    }
-                    else
-                    {
-                        ErrorManager.Error( ErrorManager.MSG_TOKENS_FILE_SYNTAX_ERROR,
-                                           vocabName + CodeGenerator.VOCAB_FILE_EXTENSION,
-                                           lineNum );
-                        while ( tokenizer.nextToken() != StreamTokenizer.TT_EOL )
+                        string line = lines[lineNum].Trim();
+                        int commentStart = line.IndexOf( "//" );
+                        if ( commentStart >= 0 )
+                            line = line.Substring( 0, commentStart );
+
+                        var match = vocabLine.Match( line );
+                        if ( !match.Success )
                         {
-                            ;
+                            ErrorManager.Error( ErrorManager.MSG_TOKENS_FILE_SYNTAX_ERROR,
+                                               vocabName + CodeGenerator.VOCAB_FILE_EXTENSION,
+                                               lineNum );
+                            continue;
                         }
-                        token = tokenizer.nextToken();
-                        continue;
+
+                        DefineToken( match.Groups["tokenID"].Value, int.Parse( match.Groups["tokenType"].Value ) );
                     }
-                    token = tokenizer.nextToken();
-                    if ( token != '=' )
-                    {
-                        ErrorManager.Error( ErrorManager.MSG_TOKENS_FILE_SYNTAX_ERROR,
-                                           vocabName + CodeGenerator.VOCAB_FILE_EXTENSION,
-                                           lineNum );
-                        while ( tokenizer.nextToken() != StreamTokenizer.TT_EOL )
-                        {
-                            ;
-                        }
-                        token = tokenizer.nextToken();
-                        continue;
-                    }
-                    token = tokenizer.nextToken(); // skip '='
-                    if ( token != StreamTokenizer.TT_NUMBER )
-                    {
-                        ErrorManager.Error( ErrorManager.MSG_TOKENS_FILE_SYNTAX_ERROR,
-                                           vocabName + CodeGenerator.VOCAB_FILE_EXTENSION,
-                                           lineNum );
-                        while ( tokenizer.nextToken() != StreamTokenizer.TT_EOL )
-                        {
-                            ;
-                        }
-                        token = tokenizer.nextToken();
-                        continue;
-                    }
-                    int tokenType = (int)tokenizer.nval;
-                    token = tokenizer.nextToken();
-                    //JSystem.@out.println("import "+tokenID+"="+tokenType);
-                    composite.maxTokenType = Math.Max( composite.maxTokenType, tokenType );
-                    DefineToken( tokenID, tokenType );
-                    lineNum++;
-                    if ( token != StreamTokenizer.TT_EOL )
-                    {
-                        ErrorManager.Error( ErrorManager.MSG_TOKENS_FILE_SYNTAX_ERROR,
-                                           vocabName + CodeGenerator.VOCAB_FILE_EXTENSION,
-                                           lineNum );
-                        while ( tokenizer.nextToken() != StreamTokenizer.TT_EOL )
-                        {
-                            ;
-                        }
-                        token = tokenizer.nextToken();
-                        continue;
-                    }
-                    token = tokenizer.nextToken(); // skip newline
                 }
-                br.close();
+                catch ( IOException ioe )
+                {
+                    ErrorManager.Error( ErrorManager.MSG_ERROR_READING_TOKENS_FILE, fileName, ioe );
+                }
+                catch ( Exception e )
+                {
+                    ErrorManager.Error( ErrorManager.MSG_ERROR_READING_TOKENS_FILE, fileName, e );
+                }
             }
-            catch ( java.io.FileNotFoundException /*fnfe*/ )
+            else
             {
-                ErrorManager.Error( ErrorManager.MSG_CANNOT_FIND_TOKENS_FILE,
-                                   fullFile );
+                ErrorManager.Error( ErrorManager.MSG_CANNOT_FIND_TOKENS_FILE, fileName );
             }
-            catch ( IOException ioe )
-            {
-                ErrorManager.Error( ErrorManager.MSG_ERROR_READING_TOKENS_FILE,
-                                   fullFile,
-                                   ioe );
-            }
-            catch ( Exception e )
-            {
-                ErrorManager.Error( ErrorManager.MSG_ERROR_READING_TOKENS_FILE,
-                                   fullFile,
-                                   e );
-            }
+
             return composite.maxTokenType;
         }
 
@@ -3501,8 +3435,7 @@ namespace Antlr3.Tool
             {
                 return '\'' + ANTLRLiteralCharValueEscape[c] + '\'';
             }
-            if ( Character.UnicodeBlock.of( (char)c ) == Character.UnicodeBlock.BASIC_LATIN &&
-                 !Character.isISOControl( (char)c ) )
+            if ( c <= 0x7f && !char.IsControl( (char)c ) )
             {
                 if ( c == '\\' )
                 {

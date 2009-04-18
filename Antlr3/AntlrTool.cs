@@ -1039,11 +1039,11 @@ namespace Antlr3
          *  directory, which means the current directory for the command line tool if there
          *  was no output directory specified.
          */
-        public virtual FileInfo GetImportedVocabFile( string vocabName )
+        public virtual string GetImportedVocabFile( string vocabName )
         {
-            string path = System.IO.Path.Combine( LibraryDirectory, vocabName + CodeGenerator.VOCAB_FILE_EXTENSION );
-            if ( System.IO.File.Exists( path ) )
-                return new FileInfo( path );
+            string path = Path.Combine( LibraryDirectory, vocabName + CodeGenerator.VOCAB_FILE_EXTENSION );
+            if ( File.Exists( path ) )
+                return path;
 
             // We did not find the vocab file in the lib directory, so we need
             // to look for it in the output directory which is where .tokens
@@ -1058,7 +1058,7 @@ namespace Antlr3
             {
                 path = vocabName + CodeGenerator.VOCAB_FILE_EXTENSION;
             }
-            return new FileInfo( path );
+            return path;
         }
 
         /** If the tool needs to panic/exit, how do we do that?

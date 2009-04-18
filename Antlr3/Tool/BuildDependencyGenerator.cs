@@ -40,6 +40,7 @@ namespace Antlr3.Tool
     using CodeGenerator = Antlr3.Codegen.CodeGenerator;
     using FileInfo = System.IO.FileInfo;
     using IList = System.Collections.IList;
+    using Path = System.IO.Path;
     using StringTemplate = Antlr3.ST.StringTemplate;
     using StringTemplateGroup = Antlr3.ST.StringTemplateGroup;
     using Tool = Antlr3.AntlrTool;
@@ -229,8 +230,8 @@ namespace Antlr3.Tool
             tokenVocab = (string)grammar.GetOption( "tokenVocab" );
             if ( tokenVocab != null )
             {
-                FileInfo vocabFile = tool.GetImportedVocabFile( tokenVocab );
-                files.Add( vocabFile.FullName );
+                string vocabFile = tool.GetImportedVocabFile( tokenVocab );
+                files.Add( Path.GetFullPath( vocabFile ) );
             }
 
             return files;
