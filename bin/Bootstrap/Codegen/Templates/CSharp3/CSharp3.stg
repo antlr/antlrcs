@@ -159,12 +159,12 @@ public override IToken NextToken()
 {
 	for ( ; ;)
 	{
-		if ( input.LA(1)==CharStreamConstants.Eof )
+		if ( input.LA(1)==CharStreamConstants.EndOfFile )
 		{
-			return TokenConstants.EofToken;
+			return Tokens.EndOfFile;
 		}
 		state.token = null;
-		state.channel = TokenConstants.DefaultChannel;
+		state.channel = TokenChannels.Default;
 		state.tokenStartCharIndex = input.Index;
 		state.tokenStartCharPositionInLine = input.CharPositionInLine;
 		state.tokenStartLine = input.Line;
@@ -257,7 +257,7 @@ public <grammar.recognizerName>( <inputStreamType> input, RecognizerSharedState 
 }
 	<@end>
 
-	public override string[] GetTokenNames() { return <grammar.composite.rootGrammar.recognizerName>.tokenNames; }
+	public override string[] TokenNames { get { return <grammar.composite.rootGrammar.recognizerName>.tokenNames; } }
 	public override string GrammarFileName { get { return "<fileName>"; } }
 
 	<members>
@@ -482,13 +482,13 @@ int <ruleDescriptor.name>_StartIndex = input.Index;
 >>
 
 ruleScopeSetUp() ::= <<
-<ruleDescriptor.useScopes:{<it>_scope.PushScope(this);}; separator="\n">
-<ruleDescriptor.ruleScope:{<it.name>_scope.PushScope(this);}; separator="\n">
+<ruleDescriptor.useScopes:{<it>_stack.Push(new <it>_scope());<it>_scopeInit(<it>_stack.Peek());}; separator="\n">
+<ruleDescriptor.ruleScope:{<it.name>_stack.Push(new <it.name>_scope());<it.name>_scopeInit(<it.name>_stack.Peek());}; separator="\n">
 >>
 
 ruleScopeCleanUp() ::= <<
-<ruleDescriptor.useScopes:{<it>_scope.PopScope(this);}; separator="\n">
-<ruleDescriptor.ruleScope:{<it.name>_scope.PopScope(this);}; separator="\n">
+<ruleDescriptor.useScopes:{<it>_scopeAfter(<it>_stack.Peek());<it>_stack.Pop();}; separator="\n">
+<ruleDescriptor.ruleScope:{<it.name>_scopeAfter(<it.name>_stack.Peek());<it.name>_stack.Pop();}; separator="\n">
 >>
 
 ruleLabelDefs() ::= <<
@@ -838,9 +838,9 @@ matchSetAndListLabel(s,label,elementIndex,postmatchCode) ::= <<
 /** Match a string literal */
 lexerStringRef(string,label) ::= <<
 <if(label)>
-int <label>Start = GetCharIndex();
+int <label>Start = CharIndex;
 Match(<string>); <checkRuleBacktrackFailure()>
-<label> = new CommonToken(input, TokenConstants.InvalidTokenType, TokenConstants.DefaultChannel, <label>Start, GetCharIndex()-1);
+<label> = new CommonToken(input, TokenTypes.Invalid, TokenChannels.Default, <label>Start, CharIndex-1);
 <else>
 Match(<string>); <checkRuleBacktrackFailure()><\n>
 <endif>
@@ -898,9 +898,9 @@ ruleRefAndListLabel(rule,label,elementIndex,args,scope) ::= <<
  */
 lexerRuleRef(rule,label,args,elementIndex,scope) ::= <<
 <if(label)>
-int <label>Start<elementIndex> = GetCharIndex();
+int <label>Start<elementIndex> = CharIndex;
 <if(scope)><scope:delegateName()>.<endif>m<rule.name>(<args; separator=", ">); <checkRuleBacktrackFailure()>
-<label> = new CommonToken(input, TokenConstants.InvalidTokenType, TokenConstants.DefaultChannel, <label>Start<elementIndex>, GetCharIndex()-1);
+<label> = new CommonToken(input, TokenTypes.Invalid, TokenChannels.Default, <label>Start<elementIndex>, CharIndex-1);
 <else>
 <if(scope)><scope:delegateName()>.<endif>m<rule.name>(<args; separator=", ">); <checkRuleBacktrackFailure()>
 <endif>
@@ -915,11 +915,11 @@ lexerRuleRefAndListLabel(rule,label,args,elementIndex,scope) ::= <<
 /** EOF in the lexer */
 lexerMatchEOF(label,elementIndex) ::= <<
 <if(label)>
-int <label>Start<elementIndex> = GetCharIndex();
-Match(Eof); <checkRuleBacktrackFailure()>
-<labelType> <label> = new CommonToken(input, Eof, TokenConstants.DefaultChannel, <label>Start<elementIndex>, GetCharIndex()-1);
+int <label>Start<elementIndex> = CharIndex;
+Match(EndOfFile); <checkRuleBacktrackFailure()>
+<labelType> <label> = new CommonToken(input, EndOfFile, TokenChannels.Default, <label>Start<elementIndex>, CharIndex-1);
 <else>
-Match(Eof); <checkRuleBacktrackFailure()>
+Match(EndOfFile); <checkRuleBacktrackFailure()>
 <endif>
 >>
 
@@ -929,16 +929,16 @@ tree(root, actionsAfterRoot, children, nullableChildList,
 <root:element()>
 <actionsAfterRoot:element()>
 <if(nullableChildList)>
-if ( input.LA(1)==TokenConstants.Down )
+if ( input.LA(1)==TokenTypes.Down )
 {
-	Match(input, TokenConstants.Down, null); <checkRuleBacktrackFailure()>
+	Match(input, TokenTypes.Down, null); <checkRuleBacktrackFailure()>
 	<children:element()>
-	Match(input, TokenConstants.Up, null); <checkRuleBacktrackFailure()>
+	Match(input, TokenTypes.Up, null); <checkRuleBacktrackFailure()>
 }
 <else>
-Match(input, TokenConstants.Down, null); <checkRuleBacktrackFailure()>
+Match(input, TokenTypes.Down, null); <checkRuleBacktrackFailure()>
 <children:element()>
-Match(input, TokenConstants.Up, null); <checkRuleBacktrackFailure()>
+Match(input, TokenTypes.Up, null); <checkRuleBacktrackFailure()>
 <endif>
 >>
 
@@ -1240,29 +1240,24 @@ attributeScope(scope) ::= <<
 <if(scope.attributes)>
 protected class <scope.name>_scope
 {
-<if(scope.actions.scopeinit)>
-	public <scope.name>_scope()
-	{
-		<scope.actions.scopeinit>
-	}<\n>
-<endif>
-<if(scope.actions.scopeafter)>
-	void CleanUpScope()
-	{
-		<scope.actions.scopeafter>
-	}<\n>
-<endif>
-	public static void PushScope( <scope.grammar.recognizerName> grammar )
-	{
-		grammar.<scope.name>_stack.Push( new <scope.name>_scope() );
-	}
-	public static void PopScope( <scope.grammar.recognizerName> grammar )
-	{
-		grammar.<scope.name>_stack.Pop()<if(scope.actions.scopeafter)>.CleanUpScope()<endif>;
-	}
-
 	<scope.attributes:{public <it.decl>;}; separator="\n">
 }
+<if(scope.actions.scopeinit)>
+protected void <scope.name>_scopeInit( <scope.name>_scope scope )
+{
+	<scope.actions.scopeinit>
+}<\n>
+<else>
+partial void <scope.name>_scopeInit( <scope.name>_scope scope );
+<endif>
+<if(scope.actions.scopeafter)>
+protected void <scope.name>_scopeAfter( <scope.name>_scope scope )
+{
+	<scope.actions.scopeafter>
+}<\n>
+<else>
+partial void <scope.name>_scopeAfter( <scope.name>_scope scope );
+<endif>
 protected Stack\<<scope.name>_scope\> <scope.name>_stack = new Stack\<<scope.name>_scope\>();<\n>
 <endif>
 >>
@@ -1475,7 +1470,7 @@ lexerRulePropertyRef_pos(scope,attr) ::= "state.tokenStartCharPositionInLine"
 lexerRulePropertyRef_index(scope,attr) ::= "-1" // undefined token index in lexer
 lexerRulePropertyRef_channel(scope,attr) ::= "_channel"
 lexerRulePropertyRef_start(scope,attr) ::= "state.tokenStartCharIndex"
-lexerRulePropertyRef_stop(scope,attr) ::= "(GetCharIndex()-1)"
+lexerRulePropertyRef_stop(scope,attr) ::= "(CharIndex-1)"
 lexerRulePropertyRef_int(scope,attr) ::= "int.Parse(<scope>.Text)"
 
 // setting $st and $tree is allowed in local rule. everything else

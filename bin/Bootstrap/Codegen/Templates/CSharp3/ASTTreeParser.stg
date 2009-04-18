@@ -86,15 +86,15 @@ if ( _first_<enclosingTreeLevel>==null ) _first_<enclosingTreeLevel> = <root.el.
 <endif>
 <actionsAfterRoot:element()>
 <if(nullableChildList)>
-if ( input.LA(1)==TokenConstants.Down ) {
-    Match(input, TokenConstants.Down, null); <checkRuleBacktrackFailure()>
+if ( input.LA(1)==TokenTypes.Down ) {
+    Match(input, TokenTypes.Down, null); <checkRuleBacktrackFailure()>
     <children:element()>
-    Match(input, TokenConstants.Up, null); <checkRuleBacktrackFailure()>
+    Match(input, TokenTypes.Up, null); <checkRuleBacktrackFailure()>
 }
 <else>
-Match(input, TokenConstants.Down, null); <checkRuleBacktrackFailure()>
+Match(input, TokenTypes.Down, null); <checkRuleBacktrackFailure()>
 <children:element()>
-Match(input, TokenConstants.Up, null); <checkRuleBacktrackFailure()>
+Match(input, TokenTypes.Up, null); <checkRuleBacktrackFailure()>
 <endif>
 <if(!rewriteMode)>
 adaptor.AddChild(root_<enclosingTreeLevel>, root_<treeLevel>);
