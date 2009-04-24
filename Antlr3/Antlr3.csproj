@@ -76,13 +76,11 @@
     <Compile Include="Misc\BitSet.cs" />
     <Compile Include="Misc\Interval.cs" />
     <Compile Include="Misc\IntervalSet.cs" />
-    <Compile Include="Misc\IntSet.cs" />
     <Compile Include="Misc\MultiMap.cs" />
     <Compile Include="Misc\OrderedHashSet.cs" />
     <Compile Include="Misc\Utils.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="AntlrTool.cs" />
-    <Compile Include="Tool\ANTLRErrorListener.cs" />
     <Compile Include="Tool\ErrorManager.cs" />
     <Compile Include="Tool\Grammar.cs" />
     <Compile Include="Tool\GrammarAST.cs" />
@@ -204,6 +202,7 @@
     <Compile Include="Extensions\FuncEqualityComparer.cs" />
     <Compile Include="Extensions\ListExtensions.cs" />
     <Compile Include="Misc\Graph.cs" />
+    <Compile Include="Misc\IIntSet.cs" />
     <Compile Include="Tool\AssignTokenTypesBehavior.cs" />
     <Compile Include="Tool\BuildDependencyGenerator.cs" />
     <Compile Include="Tool\DOTGenerator.cs" />
@@ -217,6 +216,7 @@
     <Compile Include="Tool\GrammarSpelunker.cs" />
     <Compile Include="Tool\GrammarSyntaxMessage.cs" />
     <Compile Include="Tool\GrammarUnreachableAltsMessage.cs" />
+    <Compile Include="Tool\IAntlrErrorListener.cs" />
     <Compile Include="Tool\Interpreter.cs" />
     <Compile Include="Tool\LeftRecursionCyclesMessage.cs" />
     <Compile Include="Tool\NonRegularDecisionMessage.cs" />
