@@ -33,7 +33,6 @@
 namespace Antlr3.Misc
 {
     using System.Collections.Generic;
-    using Antlr.Runtime.JavaExtensions;
 
     /** A hash table that maps a key to a list of elements not just a single. */
     public class MultiMap<K, V> : Dictionary<K, IList<V>>
@@ -51,8 +50,8 @@ namespace Antlr3.Misc
 
         public void Map( K key, V value )
         {
-            IList<V> elementsForKey = this.get( key );
-            if ( elementsForKey == null )
+            IList<V> elementsForKey;
+            if ( !TryGetValue( key, out elementsForKey ) )
             {
                 elementsForKey = new List<V>();
                 this[key] = elementsForKey;
