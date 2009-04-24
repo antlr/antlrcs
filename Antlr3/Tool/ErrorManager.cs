@@ -173,7 +173,7 @@ namespace Antlr3.Tool
         public const int MAX_MESSAGE_NUMBER = 211;
 
         /** Do not do perform analysis if one of these happens */
-        public static readonly BitSet ERRORS_FORCING_NO_ANALYSIS =
+        public static readonly BitSet ErrorsForcingNoAnalysis =
             new BitSet()
             {
                 MSG_CANNOT_CREATE_TARGET_GENERATOR,
@@ -189,7 +189,7 @@ namespace Antlr3.Tool
             };
 
         /** Do not do code gen if one of these happens */
-        public static readonly BitSet ERRORS_FORCING_NO_CODEGEN =
+        public static readonly BitSet ErrorsForcingNoCodegen =
             new BitSet()
             {
                 MSG_NONREGULAR_DECISION,
@@ -868,13 +868,13 @@ namespace Antlr3.Tool
 
         public static bool DoNotAttemptAnalysis()
         {
-            return !GetErrorState().errorMsgIDs.And( ERRORS_FORCING_NO_ANALYSIS ).IsNil;
+            return !GetErrorState().errorMsgIDs.And( ErrorsForcingNoAnalysis ).IsNil;
         }
 
         public static bool DoNotAttemptCodeGen()
         {
             return DoNotAttemptAnalysis() ||
-                   !GetErrorState().errorMsgIDs.And( ERRORS_FORCING_NO_CODEGEN ).IsNil;
+                   !GetErrorState().errorMsgIDs.And( ErrorsForcingNoCodegen ).IsNil;
         }
 
         /** Return first non ErrorManager code location for generating messages */

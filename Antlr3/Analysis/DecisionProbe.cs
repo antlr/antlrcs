@@ -42,6 +42,7 @@ namespace Antlr3.Analysis
     using ErrorManager = Antlr3.Tool.ErrorManager;
     using Grammar = Antlr3.Tool.Grammar;
     using GrammarAST = Antlr3.Tool.GrammarAST;
+    using GrammarType = Antlr3.Tool.GrammarType;
     using IList = System.Collections.IList;
     using IToken = Antlr.Runtime.IToken;
     using Obsolete = System.ObsoleteAttribute;
@@ -399,14 +400,14 @@ namespace Antlr3.Analysis
             foreach ( Label label in labels )
             {
                 buf.Append( label.ToString( g ) );
-                if ( /*it.hasNext() &&*/ g.type != Grammar.LEXER )
+                if ( /*it.hasNext() &&*/ g.type != GrammarType.Lexer )
                 {
                     buf.Append( ' ' );
                 }
             }
 
             // remove the final appended space
-            if ( g.type != Grammar.LEXER )
+            if ( g.type != GrammarType.Lexer )
                 buf.Length = buf.Length - 1;
 
             return buf.ToString();

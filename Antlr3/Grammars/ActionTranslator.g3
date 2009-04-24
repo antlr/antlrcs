@@ -208,7 +208,7 @@ TOKEN_SCOPE_ATTR
 	                         (enclosingRule.GetTokenLabel($x.text)!=null||
 	                          IsTokenRefInAlt($x.text)) &&
 	                         AttributeScope.tokenScope.GetAttribute($y.text)!=null &&
-	                         (grammar.type!=Grammar.LEXER ||
+	                         (grammar.type!=GrammarType.Lexer ||
 	                         GetElementLabel($x.text).elementRef.token.Type==ANTLRParser.TOKEN_REF ||
 	                         GetElementLabel($x.text).elementRef.token.Type==ANTLRParser.STRING_LITERAL)}?
 		// {JSystem.@out.println("found \$tokenlabel.attr or \$tokenref.attr");}
@@ -347,9 +347,9 @@ LABEL_REF
 		{
 			StringTemplate st;
 			Grammar.LabelElementPair pair = GetElementLabel($ID.text);
-			if ( pair.type==Grammar.RULE_LIST_LABEL ||
-				  pair.type==Grammar.TOKEN_LIST_LABEL ||
-				  pair.type == Grammar.WILDCARD_TREE_LIST_LABEL )
+			if ( pair.type==LabelType.RuleList ||
+				  pair.type==LabelType.TokenList ||
+				  pair.type == LabelType.WildcardTreeList )
 			{
 				st = Template("listLabelRef");
 			}
@@ -363,7 +363,7 @@ LABEL_REF
 
 /** $tokenref in a non-lexer grammar */
 ISOLATED_TOKEN_REF
-	:	'$' ID	{grammar.type!=Grammar.LEXER && enclosingRule!=null && IsTokenRefInAlt($ID.text)}?
+	:	'$' ID	{grammar.type!=GrammarType.Lexer && enclosingRule!=null && IsTokenRefInAlt($ID.text)}?
 		//{JSystem.@out.println("found \$tokenref");}
 		{
 			string label = enclosingRule.GetElementLabel($ID.text, outerAltNum, generator);
@@ -385,7 +385,7 @@ ISOLATED_TOKEN_REF
 
 /** $lexerruleref from within the lexer */
 ISOLATED_LEXER_RULE_REF
-	:	'$' ID	{grammar.type==Grammar.LEXER &&
+	:	'$' ID	{grammar.type==GrammarType.Lexer &&
 	             enclosingRule!=null &&
 	             IsRuleRefInAlt($ID.text)}?
 		//{JSystem.@out.println("found \$lexerruleref");}

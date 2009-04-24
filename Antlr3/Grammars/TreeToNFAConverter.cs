@@ -1,4 +1,4 @@
-// $ANTLR 3.1.2 Grammars\\TreeToNFAConverter.g3 2009-04-18 02:22:48
+// $ANTLR 3.1.2 Grammars\\TreeToNFAConverter.g3 2009-04-24 11:05:59
 
 // The variable 'variable' is assigned but its value is never used.
 #pragma warning disable 219
@@ -1167,7 +1167,7 @@ public partial class TreeToNFAConverter : TreeParser
 									g = factory.BuildAlternativeBlockFromSet(g);
 								}
 								if ( char.IsLower(currentRuleName[0]) ||
-									 grammar.type==Grammar.LEXER )
+									 grammar.type==GrammarType.Lexer )
 								{
 									// attach start node to block for this rule
 									Rule thisR = grammar.GetLocallyDefinedRule(currentRuleName);
@@ -1505,7 +1505,7 @@ public partial class TreeToNFAConverter : TreeParser
 				int LA33_1 = input.LA(2);
 
 				if ( ((grammar.IsValidSet(this,((GrammarAST)retval.start)) &&
-						 !currentRuleName.Equals(Grammar.ARTIFICIAL_TOKENS_RULENAME))) )
+						 !currentRuleName.Equals(Grammar.ArtificialTokensRuleName))) )
 				{
 					alt33=1;
 				}
@@ -1534,10 +1534,10 @@ public partial class TreeToNFAConverter : TreeParser
 				// Grammars\\TreeToNFAConverter.g3:193:4: {...}? => set
 				{
 				if ( !((grammar.IsValidSet(this,((GrammarAST)retval.start)) &&
-						 !currentRuleName.Equals(Grammar.ARTIFICIAL_TOKENS_RULENAME))) )
+						 !currentRuleName.Equals(Grammar.ArtificialTokensRuleName))) )
 				{
 					if (state.backtracking>0) {state.failed=true; return retval;}
-					throw new FailedPredicateException(input, "block", "grammar.IsValidSet(this,$start) &&\r\n\t\t !currentRuleName.Equals(Grammar.ARTIFICIAL_TOKENS_RULENAME)");
+					throw new FailedPredicateException(input, "block", "grammar.IsValidSet(this,$start) &&\r\n\t\t !currentRuleName.Equals(Grammar.ArtificialTokensRuleName)");
 				}
 				PushFollow(Follow._set_in_block480);
 				set1=set();
@@ -2258,7 +2258,7 @@ public partial class TreeToNFAConverter : TreeParser
 				if ( state.backtracking == 0 )
 				{
 
-							if ( grammar.type==Grammar.LEXER ) {
+							if ( grammar.type==GrammarType.Lexer ) {
 								retval.g = factory.BuildCharRange((c1!=null?c1.Text:null), (c2!=null?c2.Text:null));
 							}
 							
@@ -2939,7 +2939,7 @@ public partial class TreeToNFAConverter : TreeParser
 					{
 
 											int ttype=0;
-											if ( grammar.type==Grammar.LEXER )
+											if ( grammar.type==GrammarType.Lexer )
 											{
 												ttype = Grammar.GetCharValueFromGrammarCharLiteral((c!=null?c.Text:null));
 											}
@@ -2995,7 +2995,7 @@ public partial class TreeToNFAConverter : TreeParser
 
 											int ttype=0;
 											IIntSet notAtom = null;
-											if ( grammar.type==Grammar.LEXER )
+											if ( grammar.type==GrammarType.Lexer )
 											{
 												notAtom = grammar.GetSetFromRule(this,(t!=null?t.Text:null));
 												if ( notAtom==null )
@@ -3228,7 +3228,7 @@ public partial class TreeToNFAConverter : TreeParser
 									r.followingNFAState = retval.g.right;
 									r._nfaStartState = retval.g.left;
 									if ( retval.g.left.GetTransition(0) is RuleClosureTransition
-										&& grammar.type!=Grammar.LEXER )
+										&& grammar.type!=GrammarType.Lexer )
 									{
 										AddFollowTransition((r!=null?r.Text:null), retval.g.right);
 									}
@@ -3297,7 +3297,7 @@ public partial class TreeToNFAConverter : TreeParser
 				if ( state.backtracking == 0 )
 				{
 
-								if ( grammar.type==Grammar.LEXER )
+								if ( grammar.type==GrammarType.Lexer )
 								{
 									NFAState start = grammar.GetRuleStartState(scopeName,(t!=null?t.Text:null));
 									if ( start!=null )
@@ -3357,7 +3357,7 @@ public partial class TreeToNFAConverter : TreeParser
 				if ( state.backtracking == 0 )
 				{
 
-								if ( grammar.type==Grammar.LEXER )
+								if ( grammar.type==GrammarType.Lexer )
 								{
 									retval.g = factory.BuildCharLiteralAtom(c);
 								}
@@ -3409,7 +3409,7 @@ public partial class TreeToNFAConverter : TreeParser
 				if ( state.backtracking == 0 )
 				{
 
-								if ( grammar.type==Grammar.LEXER )
+								if ( grammar.type==GrammarType.Lexer )
 								{
 									retval.g = factory.BuildStringLiteralAtom(s);
 								}
@@ -3461,7 +3461,7 @@ public partial class TreeToNFAConverter : TreeParser
 				if ( state.backtracking == 0 )
 				{
 
-									if ( nfa.grammar.type == Grammar.TREE_PARSER
+									if ( nfa.grammar.type == GrammarType.TreeParser
 										&& (w.ChildIndex > 0 || w.Parent.GetChild(1).Type == EOA) )
 									{
 										retval.g = factory.BuildWildcardTree( w );
@@ -4166,7 +4166,7 @@ public partial class TreeToNFAConverter : TreeParser
 				if ( state.backtracking == 0 )
 				{
 
-								if ( grammar.type==Grammar.LEXER )
+								if ( grammar.type==GrammarType.Lexer )
 								{
 									ttype = Grammar.GetCharValueFromGrammarCharLiteral((c!=null?c.Text:null));
 								}
@@ -4195,7 +4195,7 @@ public partial class TreeToNFAConverter : TreeParser
 				if ( state.backtracking == 0 )
 				{
 
-								if ( grammar.type==Grammar.LEXER )
+								if ( grammar.type==GrammarType.Lexer )
 								{
 									// recursively will invoke this rule to match elements in target rule ref
 									IIntSet ruleSet = grammar.GetSetFromRule(this,(t!=null?t.Text:null));
@@ -4265,7 +4265,7 @@ public partial class TreeToNFAConverter : TreeParser
 				if ( state.backtracking == 0 )
 				{
 
-								if ( grammar.type==Grammar.LEXER )
+								if ( grammar.type==GrammarType.Lexer )
 								{
 									int a = Grammar.GetCharValueFromGrammarCharLiteral((c1!=null?c1.Text:null));
 									int b = Grammar.GetCharValueFromGrammarCharLiteral((c2!=null?c2.Text:null));
@@ -4800,7 +4800,7 @@ public partial class TreeToNFAConverter : TreeParser
 			{
 				alt82=2;
 			}
-			else if ( (LA82_0==STRING_LITERAL) && ((grammar.type!=Grammar.LEXER)))
+			else if ( (LA82_0==STRING_LITERAL) && ((grammar.type!=GrammarType.Lexer)))
 			{
 				alt82=3;
 			}
@@ -4837,7 +4837,7 @@ public partial class TreeToNFAConverter : TreeParser
 				{
 				t=(GrammarAST)Match(input,TOKEN_REF,Follow._TOKEN_REF_in_testSetElement1907); if (state.failed) return alts;
 
-							if ( grammar.type==Grammar.LEXER )
+							if ( grammar.type==GrammarType.Lexer )
 							{
 								Rule rule = grammar.GetRule((t!=null?t.Text:null));
 								if ( rule==null )
@@ -4855,10 +4855,10 @@ public partial class TreeToNFAConverter : TreeParser
 			case 3:
 				// Grammars\\TreeToNFAConverter.g3:749:6: {...}? =>s= STRING_LITERAL
 				{
-				if ( !((grammar.type!=Grammar.LEXER)) )
+				if ( !((grammar.type!=GrammarType.Lexer)) )
 				{
 					if (state.backtracking>0) {state.failed=true; return alts;}
-					throw new FailedPredicateException(input, "testSetElement", "grammar.type!=Grammar.LEXER");
+					throw new FailedPredicateException(input, "testSetElement", "grammar.type!=GrammarType.Lexer");
 				}
 				s=(GrammarAST)Match(input,STRING_LITERAL,Follow._STRING_LITERAL_in_testSetElement1924); if (state.failed) return alts;
 

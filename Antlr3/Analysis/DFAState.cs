@@ -4,7 +4,7 @@
  * All rights reserved.
  *
  * Conversion to C#:
- * Copyright (c) 2008 Sam Harwell, Pixel Mine, Inc.
+ * Copyright (c) 2008-2009 Sam Harwell, Pixel Mine, Inc.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -39,6 +39,7 @@ namespace Antlr3.Analysis
     using Antlr3.Misc;
 
     using Grammar = Antlr3.Tool.Grammar;
+    using GrammarType = Antlr3.Tool.GrammarType;
     using StringBuilder = System.Text.StringBuilder;
 
     /** A DFA state represents a set of possible NFA configurations.
@@ -709,8 +710,8 @@ namespace Antlr3.Analysis
                         // for example would terminate at state s1 and test predicate
                         // meaning input "ab" would test preds to decide what to
                         // do but it should match rule C w/o testing preds.
-                        if ( dfa.nfa.grammar.type != Grammar.LEXER ||
-                             !dfa.NFADecisionStartState.enclosingRule.name.Equals( Grammar.ARTIFICIAL_TOKENS_RULENAME ) )
+                        if ( dfa.nfa.grammar.type != GrammarType.Lexer ||
+                             !dfa.NFADecisionStartState.enclosingRule.name.Equals( Grammar.ArtificialTokensRuleName ) )
                         {
                             numPotentialConflicts++;
                             thisStateHasPotentialProblem = true;

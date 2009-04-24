@@ -181,6 +181,7 @@ using StringBuffer = System.Text.StringBuilder;
 using ErrorManager = Antlr3.Tool.ErrorManager;
 using Grammar = Antlr3.Tool.Grammar;
 using GrammarAST = Antlr3.Tool.GrammarAST;
+using GrammarType = Antlr3.Tool.GrammarType;
 using IntSet = Antlr3.Misc.IIntSet;
 using StringBuffer = System.Text.StringBuilder;
 using TokenWithIndex = Antlr.Runtime.CommonToken;
@@ -216,13 +217,13 @@ grammar_![Grammar g]
 	;
 
 grammarType
-	:	(	'lexer'  gr='grammar' {GrammarType=LEXER_GRAMMAR; Grammar.type = Grammar.LEXER;}       // pure lexer
+	:	(	'lexer'  gr='grammar' {GrammarType=GrammarType.Lexer; Grammar.type = GrammarType.Lexer;}       // pure lexer
 			-> LEXER_GRAMMAR[$gr]
-		|	'parser' gr='grammar' {GrammarType=PARSER_GRAMMAR; Grammar.type = Grammar.PARSER;}     // pure parser
+		|	'parser' gr='grammar' {GrammarType=GrammarType.Parser; Grammar.type = GrammarType.Parser;}     // pure parser
 			-> PARSER_GRAMMAR[$gr]
-		|	'tree'   gr='grammar' {GrammarType=TREE_GRAMMAR; Grammar.type = Grammar.TREE_PARSER;}  // a tree parser
+		|	'tree'   gr='grammar' {GrammarType=GrammarType.TreeParser; Grammar.type = GrammarType.TreeParser;}  // a tree parser
 			-> TREE_GRAMMAR[$gr]
-		|			 gr='grammar' {GrammarType=COMBINED_GRAMMAR; Grammar.type = Grammar.COMBINED;} // merged parser/lexer
+		|			 gr='grammar' {GrammarType=GrammarType.Combined; Grammar.type = GrammarType.Combined;} // merged parser/lexer
 			-> COMBINED_GRAMMAR[$gr]
 		)
 	;
@@ -323,7 +324,7 @@ rule
 		ruleName=id
 		{
 			currentRuleName=$ruleName.text;
-			if ( GrammarType==LEXER_GRAMMAR && $p4==null )
+			if ( GrammarType==GrammarType.Lexer && $p4==null )
 				Grammar.lexerRuleNamesInCombined.Add(currentRuleName);
 		}
 		( BANG )?
@@ -536,7 +537,7 @@ ebnf
 			-> ^(POSITIVE_CLOSURE[$start,"+"] block)
 		|	IMPLIES // syntactic predicate
 			// ignore for lexer rules in combined
-			-> {GrammarType == COMBINED_GRAMMAR && char.IsUpper(currentRuleName[0])}? ^(SYNPRED[$start,"=>"] block)
+			-> {GrammarType == GrammarType.Combined && char.IsUpper(currentRuleName[0])}? ^(SYNPRED[$start,"=>"] block)
 			// create manually specified (...)=> predicate; convert to sempred
 			-> {CreateSynSemPredFromBlock($block.tree, SYN_SEMPRED)}
 		|	ROOT

@@ -50,7 +50,7 @@ namespace Antlr3.Tool
 
         public virtual void CheckConflicts()
         {
-            for ( int i = CompositeGrammar.MIN_RULE_INDEX; i < grammar.composite.ruleIndexToRuleList.Count; i++ )
+            for ( int i = CompositeGrammar.MinRuleIndex; i < grammar.composite.ruleIndexToRuleList.Count; i++ )
             {
                 Rule r = grammar.composite.ruleIndexToRuleList[i];
                 if ( r == null )
@@ -112,12 +112,12 @@ namespace Antlr3.Tool
             string ruleName = r.name;
             IToken ruleToken = r.tree.Token;
             int msgID = 0;
-            if ( ( grammar.type == Grammar.PARSER || grammar.type == Grammar.TREE_PARSER ) &&
+            if ( ( grammar.type == GrammarType.Parser || grammar.type == GrammarType.TreeParser ) &&
                  char.IsUpper( ruleName[0] ) )
             {
                 msgID = ErrorManager.MSG_LEXER_RULES_NOT_ALLOWED;
             }
-            else if ( grammar.type == Grammar.LEXER &&
+            else if ( grammar.type == GrammarType.Lexer &&
                       char.IsLower( ruleName[0] ) &&
                       !r.isSynPred )
             {
@@ -162,7 +162,7 @@ namespace Antlr3.Tool
                                               ruleName );
                 }
             }
-            if ( grammar.type == Grammar.COMBINED )
+            if ( grammar.type == GrammarType.Combined )
             {
                 // if we're a combined grammar, we know which token IDs have no
                 // associated lexer rule.
@@ -283,7 +283,7 @@ namespace Antlr3.Tool
 
         /** If type of previous label differs from new label's type, that's an error.
          */
-        public virtual bool CheckForLabelTypeMismatch( Rule r, IToken label, int type )
+        public virtual bool CheckForLabelTypeMismatch( Rule r, IToken label, LabelType type )
         {
             Grammar.LabelElementPair prevLabelPair =
                 (Grammar.LabelElementPair)r.labelNameSpace.get( label.Text );
@@ -293,8 +293,8 @@ namespace Antlr3.Tool
                 if ( prevLabelPair.type != type )
                 {
                     string typeMismatchExpr =
-                        Grammar.LabelTypeToString[type] + "!=" +
-                        Grammar.LabelTypeToString[prevLabelPair.type];
+                        Grammar.LabelTypeToString[(int)type] + "!=" +
+                        Grammar.LabelTypeToString[(int)prevLabelPair.type];
                     ErrorManager.GrammarError(
                         ErrorManager.MSG_LABEL_TYPE_CONFLICT,
                         grammar,

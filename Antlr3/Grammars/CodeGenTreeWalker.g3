@@ -109,16 +109,16 @@ grammar_[Grammar g,
 		string superClass = (string)g.GetOption("superClass");
 		outputOption = (string)g.GetOption("output");
 		recognizerST.SetAttribute("superClass", superClass);
-		if ( g.type!=Grammar.LEXER ) {
+		if ( g.type!=GrammarType.Lexer ) {
 			recognizerST.SetAttribute("ASTLabelType", g.GetOption("ASTLabelType"));
 		}
-		if ( g.type==Grammar.TREE_PARSER && g.GetOption("ASTLabelType")==null ) {
+		if ( g.type==GrammarType.TreeParser && g.GetOption("ASTLabelType")==null ) {
 			ErrorManager.GrammarWarning(ErrorManager.MSG_MISSING_AST_TYPE_IN_TREE_GRAMMAR,
 									   g,
 									   null,
 									   g.name);
 		}
-		if ( g.type!=Grammar.TREE_PARSER ) {
+		if ( g.type!=GrammarType.TreeParser ) {
 			recognizerST.SetAttribute("labelType", g.GetOption("TokenLabelType"));
 		}
 		$recognizerST.SetAttribute("numRules", grammar.Rules.Count);
@@ -236,9 +236,9 @@ rule returns [StringTemplate code=null]
 				{
 					stName = "synpredRule";
 				}
-				else if ( grammar.type==Grammar.LEXER )
+				else if ( grammar.type==GrammarType.Lexer )
 				{
-					if ( currentRuleName.Equals(Grammar.ARTIFICIAL_TOKENS_RULENAME) )
+					if ( currentRuleName.Equals(Grammar.ArtificialTokensRuleName) )
 					{
 						stName = "tokensRule";
 					}
@@ -249,7 +249,7 @@ rule returns [StringTemplate code=null]
 				}
 				else
 				{
-					if ( !(grammar.type==Grammar.COMBINED &&
+					if ( !(grammar.type==GrammarType.Combined &&
 						 char.IsUpper(currentRuleName[0])) )
 					{
 						stName = "rule";
@@ -279,11 +279,11 @@ rule returns [StringTemplate code=null]
 		{
 			if ( $code!=null )
 			{
-				if ( grammar.type==Grammar.LEXER )
+				if ( grammar.type==GrammarType.Lexer )
 				{
 					bool naked =
-						currentRuleName.Equals(Grammar.ARTIFICIAL_TOKENS_RULENAME) ||
-						($mod.start!=null&&$mod.start.Text.Equals(Grammar.FRAGMENT_RULE_MODIFIER));
+						currentRuleName.Equals(Grammar.ArtificialTokensRuleName) ||
+						($mod.start!=null&&$mod.start.Text.Equals(Grammar.FragmentRuleModifier));
 					$code.SetAttribute("nakedBlock", naked);
 				}
 				else
@@ -420,7 +420,7 @@ setBlock returns [StringTemplate code=null]
 				setcode = GetTokenElementST("matchSet", "set", $s, null, null);
 			}
 			setcode.SetAttribute("elementIndex", i);
-			if ( grammar.type!=Grammar.LEXER )
+			if ( grammar.type!=GrammarType.Lexer )
 			{
 				generator.GenerateLocalFollow($s,"set",currentRuleName,i);
 			}
@@ -613,7 +613,7 @@ notElement[GrammarAST n, GrammarAST label, GrammarAST astSuffix] returns [String
 	:	(	assign_c=CHAR_LITERAL
 			{
 				int ttype=0;
-				if ( grammar.type==Grammar.LEXER )
+				if ( grammar.type==GrammarType.Lexer )
 				{
 					ttype = Grammar.GetCharValueFromGrammarCharLiteral($assign_c.text);
 				}
@@ -626,7 +626,7 @@ notElement[GrammarAST n, GrammarAST label, GrammarAST astSuffix] returns [String
 		|	assign_s=STRING_LITERAL
 			{
 				int ttype=0;
-				if ( grammar.type==Grammar.LEXER )
+				if ( grammar.type==GrammarType.Lexer )
 				{
 					// TODO: error!
 				}
@@ -656,7 +656,7 @@ notElement[GrammarAST n, GrammarAST label, GrammarAST astSuffix] returns [String
 			$code.SetAttribute("s",generator.GenSetExpr(templates,elements,1,false));
 			int i = ((TokenWithIndex)n.Token).TokenIndex;
 			$code.SetAttribute("elementIndex", i);
-			if ( grammar.type!=Grammar.LEXER )
+			if ( grammar.type!=GrammarType.Lexer )
 			{
 				generator.GenerateLocalFollow(n,"set",currentRuleName,i);
 			}
@@ -760,7 +760,7 @@ atom[GrammarAST scope, GrammarAST label, GrammarAST astSuffix]
 		{
 			labelText = label.Text;
 		}
-		if ( grammar.type!=Grammar.LEXER &&
+		if ( grammar.type!=GrammarType.Lexer &&
 			 ($start.Type==RULE_REF||$start.Type==TOKEN_REF||
 			  $start.Type==CHAR_LITERAL||$start.Type==STRING_LITERAL) )
 		{
@@ -833,7 +833,7 @@ atom[GrammarAST scope, GrammarAST label, GrammarAST astSuffix]
 										$t.text);
 			}
 			grammar.CheckRuleReference(scope, $t, $targ, currentRuleName);
-			if ( grammar.type==Grammar.LEXER )
+			if ( grammar.type==GrammarType.Lexer )
 			{
 				if ( grammar.GetTokenType($t.text)==Label.EOF )
 				{
@@ -893,7 +893,7 @@ atom[GrammarAST scope, GrammarAST label, GrammarAST astSuffix]
 
 	|	c=CHAR_LITERAL 
 		{
-			if ( grammar.type==Grammar.LEXER )
+			if ( grammar.type==GrammarType.Lexer )
 			{
 				$code = templates.GetInstanceOf("charRef");
 				$code.SetAttribute("char",
@@ -918,7 +918,7 @@ atom[GrammarAST scope, GrammarAST label, GrammarAST astSuffix]
 
 	|	s=STRING_LITERAL
 		{
-			if ( grammar.type==Grammar.LEXER )
+			if ( grammar.type==GrammarType.Lexer )
 			{
 				$code = templates.GetInstanceOf("lexerStringRef");
 				$code.SetAttribute("string",
@@ -976,7 +976,7 @@ set[GrammarAST label, GrammarAST astSuffix] returns [StringTemplate code=null]
 			$code = GetTokenElementST("matchSet", "set", $s, astSuffix, labelText);
 			int i = ((TokenWithIndex)$s.Token).TokenIndex;
 			$code.SetAttribute("elementIndex", i);
-			if ( grammar.type!=Grammar.LEXER )
+			if ( grammar.type!=GrammarType.Lexer )
 			{
 				generator.GenerateLocalFollow($s,"set",currentRuleName,i);
 			}
@@ -1012,17 +1012,17 @@ rewrite returns [StringTemplate code=null]
 				$code.SetAttribute("referencedElementsDeep",
 								  GetTokenTypesAsTargetLabels($start.rewriteRefsDeep));
 				HashSet<string> tokenLabels =
-					grammar.GetLabels($start.rewriteRefsDeep, Grammar.TOKEN_LABEL);
+					grammar.GetLabels($start.rewriteRefsDeep, LabelType.Token);
 				HashSet<string> tokenListLabels =
-					grammar.GetLabels($start.rewriteRefsDeep, Grammar.TOKEN_LIST_LABEL);
+					grammar.GetLabels($start.rewriteRefsDeep, LabelType.TokenList);
 				HashSet<string> ruleLabels =
-					grammar.GetLabels($start.rewriteRefsDeep, Grammar.RULE_LABEL);
+					grammar.GetLabels($start.rewriteRefsDeep, LabelType.Rule);
 				HashSet<string> ruleListLabels =
-					grammar.GetLabels($start.rewriteRefsDeep, Grammar.RULE_LIST_LABEL);
+					grammar.GetLabels($start.rewriteRefsDeep, LabelType.RuleList);
 				HashSet<string> wildcardLabels =
-					grammar.GetLabels($start.rewriteRefsDeep, Grammar.WILDCARD_TREE_LABEL);
+					grammar.GetLabels($start.rewriteRefsDeep, LabelType.WildcardTree);
 				HashSet<string> wildcardListLabels =
-					grammar.GetLabels($start.rewriteRefsDeep, Grammar.WILDCARD_TREE_LIST_LABEL);
+					grammar.GetLabels($start.rewriteRefsDeep, LabelType.WildcardTreeList);
 				// just in case they ref $r for "previous value", make a stream
 				// from retval.tree
 				StringTemplate retvalST = templates.GetInstanceOf("prevRuleRootRef");
@@ -1318,22 +1318,22 @@ rewrite_atom[bool isRoot] returns [StringTemplate code=null]
 				string stName = null;
 				switch ( pair.type )
 				{
-				case Grammar.TOKEN_LABEL :
+				case LabelType.Token :
 					stName = "rewriteTokenLabelRef";
 					break;
-				case Grammar.WILDCARD_TREE_LABEL :
+				case LabelType.WildcardTree :
 					stName = "rewriteWildcardLabelRef";
 					break;
-				case Grammar.WILDCARD_TREE_LIST_LABEL:
+				case LabelType.WildcardTreeList:
 					stName = "rewriteRuleListLabelRef"; // acts like rule ref list for ref
 					break;
-				case Grammar.RULE_LABEL :
+				case LabelType.Rule :
 					stName = "rewriteRuleLabelRef";
 					break;
-				case Grammar.TOKEN_LIST_LABEL :
+				case LabelType.TokenList :
 					stName = "rewriteTokenListLabelRef";
 					break;
-				case Grammar.RULE_LIST_LABEL :
+				case LabelType.RuleList :
 					stName = "rewriteRuleListLabelRef";
 					break;
 				}

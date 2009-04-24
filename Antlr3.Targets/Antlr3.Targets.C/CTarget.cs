@@ -36,6 +36,7 @@ namespace Antlr3.Targets
 
     using CodeGenerator = Antlr3.Codegen.CodeGenerator;
     using Grammar = Antlr3.Tool.Grammar;
+    using GrammarType = Antlr3.Tool.GrammarType;
     using StringBuilder = System.Text.StringBuilder;
     using StringTemplate = Antlr3.ST.StringTemplate;
     using Target = Antlr3.Codegen.Target;
@@ -80,11 +81,11 @@ namespace Antlr3.Targets
          *  moment so targets can add template actions w/o having to recompile
          *  ANTLR.
          */
-        public override bool IsValidActionScope( int grammarType, string scope )
+        public override bool IsValidActionScope( GrammarType grammarType, string scope )
         {
             switch ( grammarType )
             {
-            case Grammar.LEXER:
+            case GrammarType.Lexer:
                 switch ( scope )
                 {
                 case "lexer":
@@ -97,7 +98,7 @@ namespace Antlr3.Targets
 
                 break;
 
-            case Grammar.PARSER:
+            case GrammarType.Parser:
                 switch ( scope )
                 {
                 case "parser":
@@ -110,7 +111,7 @@ namespace Antlr3.Targets
 
                 break;
 
-            case Grammar.COMBINED:
+            case GrammarType.Combined:
                 switch ( scope )
                 {
                 case "parser":
@@ -124,7 +125,7 @@ namespace Antlr3.Targets
 
                 break;
 
-            case Grammar.TREE_PARSER:
+            case GrammarType.TreeParser:
                 switch ( scope )
                 {
                 case "treeparser":

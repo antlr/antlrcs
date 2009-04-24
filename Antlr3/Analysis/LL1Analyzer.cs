@@ -4,7 +4,7 @@
  * All rights reserved.
  *
  * Conversion to C#:
- * Copyright (c) 2008 Sam Harwell, Pixel Mine, Inc.
+ * Copyright (c) 2008-2009 Sam Harwell, Pixel Mine, Inc.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -38,6 +38,7 @@ namespace Antlr3.Analysis
     using ANTLRParser = Antlr3.Grammars.ANTLRParser;
     using Console = System.Console;
     using Grammar = Antlr3.Tool.Grammar;
+    using GrammarType = Antlr3.Tool.GrammarType;
     using IIntSet = Antlr3.Misc.IIntSet;
     using IntervalSet = Antlr3.Misc.IntervalSet;
     using Rule = Antlr3.Tool.Rule;
@@ -189,7 +190,7 @@ namespace Antlr3.Analysis
             _lookBusy.Clear();
             LookaheadSet look = FirstCore( s, true );
             // FOLLOW makes no sense (at the moment!) for lexical rules.
-            if ( _grammar.type != Grammar.LEXER && look.Member( Label.EOR_TOKEN_TYPE ) )
+            if ( _grammar.type != GrammarType.Lexer && look.Member( Label.EOR_TOKEN_TYPE ) )
             {
                 // avoid altering FIRST reset as it is cached
                 LookaheadSet f = Follow( s.enclosingRule );
@@ -198,7 +199,7 @@ namespace Antlr3.Analysis
                 look = f;
                 //look.orInPlace(FOLLOW(s.enclosingRule));
             }
-            else if ( _grammar.type == Grammar.LEXER && look.Member( Label.EOT ) )
+            else if ( _grammar.type == GrammarType.Lexer && look.Member( Label.EOT ) )
             {
                 // if this has EOT, lookahead is all char (all char can follow rule)
                 //look = new LookaheadSet(Label.EOT);
@@ -221,7 +222,7 @@ namespace Antlr3.Analysis
             */
             if ( !chaseFollowTransitions && s.IsAcceptState )
             {
-                if ( _grammar.type == Grammar.LEXER )
+                if ( _grammar.type == GrammarType.Lexer )
                 {
                     // FOLLOW makes no sense (at the moment!) for lexical rules.
                     // assume all char can follow
@@ -278,7 +279,7 @@ namespace Antlr3.Analysis
             }
 
             // did we fall off the end?
-            if ( _grammar.type != Grammar.LEXER && tset.Member( Label.EOR_TOKEN_TYPE ) )
+            if ( _grammar.type != GrammarType.Lexer && tset.Member( Label.EOR_TOKEN_TYPE ) )
             {
                 if ( transition0 is RuleClosureTransition )
                 {
@@ -331,7 +332,7 @@ namespace Antlr3.Analysis
             //JSystem.@out.println("_detectNonAutobacktrackPredicates("+s+")");
             if ( !chaseFollowTransitions && s.IsAcceptState )
             {
-                if ( _grammar.type == Grammar.LEXER )
+                if ( _grammar.type == GrammarType.Lexer )
                 {
                     // FOLLOW makes no sense (at the moment!) for lexical rules.
                     // assume all char can follow

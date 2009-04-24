@@ -43,8 +43,8 @@ namespace Antlr3.Tool
     /** Move all of the functionality from assign.types.g grammar file. */
     public class AssignTokenTypesBehavior : AssignTokenTypesWalker
     {
-        protected const int UNASSIGNED = -1;
-        protected const int UNASSIGNED_IN_PARSER_RULE = -2;
+        protected const int Unassigned = -1;
+        protected const int UnassignedInParserRule = -2;
 
         protected IDictionary<string, int> stringLiterals = new SortedList<string, int>();
         protected IDictionary<string, int> tokens = new SortedList<string, int>();
@@ -76,7 +76,7 @@ namespace Antlr3.Tool
         protected override void TrackString( GrammarAST t )
         {
             // if lexer, don't allow aliasing in tokens section
-            if ( currentRuleName == null && grammar.type == Grammar.LEXER )
+            if ( currentRuleName == null && grammar.type == GrammarType.Lexer )
             {
                 ErrorManager.GrammarError( ErrorManager.MSG_CANNOT_ALIAS_TOKENS_IN_LEXER,
                                           grammar,
@@ -88,7 +88,7 @@ namespace Antlr3.Tool
             // (unless defined previously via tokenVocab option)
             // don't warn until we hit root grammar as may be defined there.
             if ( grammar.IsRoot &&
-                 grammar.type == Grammar.PARSER &&
+                 grammar.type == GrammarType.Parser &&
                  grammar.GetTokenType( t.Text ) == Label.INVALID )
             {
                 ErrorManager.GrammarError( ErrorManager.MSG_LITERAL_NOT_ASSOCIATED_WITH_LEXER_RULE,
@@ -97,7 +97,7 @@ namespace Antlr3.Tool
                                           t.Text );
             }
             // Don't record literals for lexers, they are things to match not tokens
-            if ( grammar.type == Grammar.LEXER )
+            if ( grammar.type == GrammarType.Lexer )
             {
                 return;
             }
@@ -107,7 +107,7 @@ namespace Antlr3.Tool
                   char.IsLower( currentRuleName[0] ) ) &&
                                                                     grammar.GetTokenType( t.Text ) == Label.INVALID )
             {
-                stringLiterals[t.Text] = UNASSIGNED_IN_PARSER_RULE;
+                stringLiterals[t.Text] = UnassignedInParserRule;
             }
         }
 
@@ -119,7 +119,7 @@ namespace Antlr3.Tool
             if ( grammar.GetTokenType( t.Text ) == Label.INVALID &&
                  !tokens.ContainsKey( t.Text ) )
             {
-                tokens[t.Text] = UNASSIGNED;
+                tokens[t.Text] = Unassigned;
             }
         }
 
@@ -128,13 +128,13 @@ namespace Antlr3.Tool
                                       GrammarAST block )
         {
             // imported token names might exist, only add if new
-            if ( grammar.type == Grammar.LEXER || grammar.type == Grammar.COMBINED )
+            if ( grammar.type == GrammarType.Lexer || grammar.type == GrammarType.Combined )
             {
                 if ( !char.IsUpper( t.Text[0] ) )
                 {
                     return;
                 }
-                if ( t.Text.Equals( Grammar.ARTIFICIAL_TOKENS_RULENAME ) )
+                if ( t.Text.Equals( Grammar.ArtificialTokensRuleName ) )
                 {
                     // don't add Tokens rule
                     return;
@@ -147,7 +147,7 @@ namespace Antlr3.Tool
                 int existing = grammar.GetTokenType( t.Text );
                 if ( existing == Label.INVALID )
                 {
-                    tokens[t.Text] = UNASSIGNED;
+                    tokens[t.Text] = Unassigned;
                 }
                 // look for "<TOKEN> : <literal> ;" pattern
                 // (can have optional action last)
@@ -161,9 +161,9 @@ namespace Antlr3.Tool
                 Grammar parent = grammar.composite.getDelegator(grammar);
                 boolean importedByParserOrCombined =
                     parent!=null &&
-                    (parent.type==Grammar.LEXER||parent.type==Grammar.PARSER);
+                    (parent.type==GrammarType.Lexer||parent.type==GrammarType.Parser);
                     */
-                    if ( grammar.type == Grammar.COMBINED || grammar.type == Grammar.LEXER )
+                    if ( grammar.type == GrammarType.Combined || grammar.type == GrammarType.Lexer )
                     {
                         // only call this rule an alias if combined or lexer
                         Alias( t, (GrammarAST)block.GetChild( 0 ).GetChild( 0 ) );
@@ -243,7 +243,7 @@ namespace Antlr3.Tool
 #if false
         protected virtual void defineStringLiteralsFromDelegates()
         {
-            if ( grammar.IsRoot && grammar.type == Grammar.COMBINED )
+            if ( grammar.IsRoot && grammar.type == GrammarType.Combined )
             {
                 IList<Grammar> delegates = grammar.getDelegates();
                 System.Console.Out.WriteLine( "delegates in master combined: " + delegates );
@@ -277,7 +277,7 @@ namespace Antlr3.Tool
 
         protected override void AliasTokenIDsAndLiterals( Grammar root )
         {
-            if ( root.type == Grammar.LEXER )
+            if ( root.type == GrammarType.Lexer )
             {
                 return; // strings/chars are never token types in LEXER
             }
@@ -303,7 +303,7 @@ namespace Antlr3.Tool
         protected override void AssignTokenIDTypes( Grammar root )
         {
             // walk token names, assigning values if unassigned
-            foreach ( var token in tokens.Where( pair => pair.Value == UNASSIGNED ).ToArray() )
+            foreach ( var token in tokens.Where( pair => pair.Value == Unassigned ).ToArray() )
             {
                 tokens[token.Key] = root.GetNewTokenType();
             }

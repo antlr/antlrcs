@@ -1,4 +1,4 @@
-// $ANTLR 3.1.2 Grammars\\DefineGrammarItemsWalker.g3 2009-04-18 12:57:28
+// $ANTLR 3.1.2 Grammars\\DefineGrammarItemsWalker.g3 2009-04-24 11:05:57
 
 // The variable 'variable' is assigned but its value is never used.
 #pragma warning disable 219
@@ -242,7 +242,7 @@ public partial class DefineGrammarItemsWalker : TreeParser
 
 				if ( state.backtracking == 0 )
 				{
-					grammar.type = Grammar.LEXER;
+					grammar.type = GrammarType.Lexer;
 				}
 
 				Match(input, TokenTypes.Down, null); if (state.failed) return retval;
@@ -263,7 +263,7 @@ public partial class DefineGrammarItemsWalker : TreeParser
 
 				if ( state.backtracking == 0 )
 				{
-					grammar.type = Grammar.PARSER;
+					grammar.type = GrammarType.Parser;
 				}
 
 				Match(input, TokenTypes.Down, null); if (state.failed) return retval;
@@ -284,7 +284,7 @@ public partial class DefineGrammarItemsWalker : TreeParser
 
 				if ( state.backtracking == 0 )
 				{
-					grammar.type = Grammar.TREE_PARSER;
+					grammar.type = GrammarType.TreeParser;
 				}
 
 				Match(input, TokenTypes.Down, null); if (state.failed) return retval;
@@ -305,7 +305,7 @@ public partial class DefineGrammarItemsWalker : TreeParser
 
 				if ( state.backtracking == 0 )
 				{
-					grammar.type = Grammar.COMBINED;
+					grammar.type = GrammarType.Combined;
 				}
 
 				Match(input, TokenTypes.Down, null); if (state.failed) return retval;
@@ -1357,7 +1357,7 @@ public partial class DefineGrammarItemsWalker : TreeParser
 
 								name = (id!=null?id.Text:null);
 								currentRuleName = name;
-								if ( char.IsUpper(name[0]) && grammar.type==Grammar.COMBINED )
+								if ( char.IsUpper(name[0]) && grammar.type==GrammarType.Combined )
 								{
 									// a merged grammar spec, track lexer rules and send to another grammar
 									grammar.DefineLexerRuleFoundInParser(id.token, ((GrammarAST)retval.start));
@@ -2033,7 +2033,7 @@ public partial class DefineGrammarItemsWalker : TreeParser
 
 			if ( state.backtracking == 0 )
 			{
-				if ( grammar.type!=Grammar.LEXER && grammar.GetOption("output")!=null && blockLevel==1 )
+				if ( grammar.type!=GrammarType.Lexer && grammar.GetOption("output")!=null && blockLevel==1 )
 				{
 					GrammarAST aRewriteNode = ((GrammarAST)retval.start).FindFirstType(REWRITE); // alt itself has rewrite?
 					GrammarAST rewriteAST = (GrammarAST)((GrammarAST)retval.start).Parent.GetChild(((GrammarAST)retval.start).ChildIndex + 1);
@@ -2475,7 +2475,7 @@ public partial class DefineGrammarItemsWalker : TreeParser
 									{
 										grammar.DefineRuleRefLabel(currentRuleName,id.token,e);
 									}
-									else if ( e.Type==WILDCARD && grammar.type==Grammar.TREE_PARSER )
+									else if ( e.Type==WILDCARD && grammar.type==GrammarType.TreeParser )
 									{
 										grammar.DefineWildcardTreeLabel(currentRuleName,id.token,e);
 									}
@@ -2512,7 +2512,7 @@ public partial class DefineGrammarItemsWalker : TreeParser
 									{
 										grammar.DefineRuleListLabel(currentRuleName,id2.Token,a);
 									}
-									else if ( a.Type == WILDCARD && grammar.type == Grammar.TREE_PARSER )
+									else if ( a.Type == WILDCARD && grammar.type == GrammarType.TreeParser )
 									{
 										grammar.DefineWildcardTreeListLabel( currentRuleName, id2.token, a );
 									}
@@ -2875,7 +2875,7 @@ public partial class DefineGrammarItemsWalker : TreeParser
 							GrammarAST block = (GrammarAST)((GrammarAST)retval.start).GetChild(0);
 							IDictionary<string, object> opts=new Dictionary<string, object>();
 							opts["greedy"] = "false";
-							if ( grammar.type!=Grammar.LEXER )
+							if ( grammar.type!=GrammarType.Lexer )
 							{
 								// parser grammars assume k=1 for .* loops
 								// otherwise they (analysis?) look til EOF!
@@ -3155,7 +3155,7 @@ public partial class DefineGrammarItemsWalker : TreeParser
 									targ.outerAltNum = this.outerAltNum;
 									TrackInlineAction(targ);
 								}
-								if ( grammar.type == Grammar.LEXER )
+								if ( grammar.type == GrammarType.Lexer )
 								{
 									grammar.AltReferencesRule( currentRuleName, scope_, t, this.outerAltNum );
 								}
@@ -3175,7 +3175,7 @@ public partial class DefineGrammarItemsWalker : TreeParser
 				if ( state.backtracking == 0 )
 				{
 
-								if ( grammar.type != Grammar.LEXER )
+								if ( grammar.type != GrammarType.Lexer )
 								{
 									Rule rule = grammar.GetRule(currentRuleName);
 									if ( rule != null )
@@ -3193,7 +3193,7 @@ public partial class DefineGrammarItemsWalker : TreeParser
 				if ( state.backtracking == 0 )
 				{
 
-								if ( grammar.type != Grammar.LEXER )
+								if ( grammar.type != GrammarType.Lexer )
 								{
 									Rule rule = grammar.GetRule(currentRuleName);
 									if ( rule!=null )

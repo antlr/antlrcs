@@ -73,7 +73,7 @@ namespace Antlr3.Grammars
         /** Remove any lexer rules from a COMBINED; already passed to lexer */
         protected void TrimGrammar()
         {
-            if ( grammar.type != Grammar.COMBINED )
+            if ( grammar.type != GrammarType.Combined )
             {
                 return;
             }

@@ -41,7 +41,9 @@ namespace Antlr3.Grammars
     using ErrorManager = Antlr3.Tool.ErrorManager;
     using Grammar = Antlr3.Tool.Grammar;
     using GrammarAST = Antlr3.Tool.GrammarAST;
+    using GrammarType = Antlr3.Tool.GrammarType;
     using IToken = Antlr.Runtime.IToken;
+    using LabelType = Antlr3.Tool.LabelType;
     using MismatchedTokenException = Antlr.Runtime.MismatchedTokenException;
     using NoViableAltException = Antlr.Runtime.NoViableAltException;
     using RecognitionException = Antlr.Runtime.RecognitionException;
@@ -104,7 +106,7 @@ namespace Antlr3.Grammars
         protected StringTemplate GetWildcardST( GrammarAST elementAST, GrammarAST ast_suffix, string label )
         {
             string name = "wildcard";
-            if ( grammar.type == Grammar.LEXER )
+            if ( grammar.type == GrammarType.Lexer )
             {
                 name = "wildcardChar";
             }
@@ -194,9 +196,9 @@ namespace Antlr3.Grammars
                 {
                     Grammar.LabelElementPair pair = r.GetLabel( label );
                     if ( pair != null &&
-                         ( pair.type == Grammar.TOKEN_LIST_LABEL ||
-                          pair.type == Grammar.RULE_LIST_LABEL ||
-                          pair.type == Grammar.WILDCARD_TREE_LIST_LABEL ) )
+                         ( pair.type == LabelType.TokenList ||
+                          pair.type == LabelType.RuleList ||
+                          pair.type == LabelType.WildcardTreeList ) )
                     {
                         hasListLabel = true;
                     }
@@ -210,7 +212,7 @@ namespace Antlr3.Grammars
          */
         protected string GetSTSuffix( GrammarAST elementAST, GrammarAST ast_suffix, string label )
         {
-            if ( grammar.type == Grammar.LEXER )
+            if ( grammar.type == GrammarType.Lexer )
             {
                 return "";
             }

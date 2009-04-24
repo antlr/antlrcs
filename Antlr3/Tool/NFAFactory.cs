@@ -4,7 +4,7 @@
  * All rights reserved.
  *
  * Conversion to C#:
- * Copyright (c) 2008 Sam Harwell, Pixel Mine, Inc.
+ * Copyright (c) 2008-2009 Sam Harwell, Pixel Mine, Inc.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -225,7 +225,7 @@ namespace Antlr3.Tool
          */
         public virtual StateCluster BuildStringLiteralAtom( GrammarAST stringLiteralAST )
         {
-            if ( nfa.grammar.type == Grammar.LEXER )
+            if ( nfa.grammar.type == GrammarType.Lexer )
             {
                 StringBuilder chars =
                     Grammar.GetUnescapedStringFromGrammarStringLiteral( stringLiteralAST.Text );
@@ -292,7 +292,7 @@ namespace Antlr3.Tool
         public virtual StateCluster BuildSemanticPredicate( GrammarAST pred )
         {
             // don't count syn preds
-            if ( !pred.Text.StartsWith( Grammar.SYNPRED_RULE_PREFIX, StringComparison.OrdinalIgnoreCase ) )
+            if ( !pred.Text.StartsWith( Grammar.SynpredRulePrefix, StringComparison.OrdinalIgnoreCase ) )
             {
                 nfa.grammar.numberOfSemanticPredicates++;
             }
@@ -353,7 +353,7 @@ namespace Antlr3.Tool
         {
             NFAState end = NewState();
             int label = Label.EOF;
-            if ( nfa.grammar.type == Grammar.LEXER )
+            if ( nfa.grammar.type == GrammarType.Lexer )
             {
                 label = Label.EOT;
                 end.IsEOTTargetState = true;

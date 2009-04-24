@@ -262,14 +262,14 @@ namespace Antlr3.Tool
         }
         #endregion
 
-        public virtual void DefineLabel( IToken label, GrammarAST elementRef, int type )
+        public virtual void DefineLabel( IToken label, GrammarAST elementRef, LabelType type )
         {
             Grammar.LabelElementPair pair = new Grammar.LabelElementPair( grammar, label, elementRef );
             pair.type = type;
             labelNameSpace[label.Text] = pair;
             switch ( type )
             {
-            case Grammar.TOKEN_LABEL:
+            case LabelType.Token:
                 if ( tokenLabels == null )
                 {
                     tokenLabels = new Dictionary<string, Grammar.LabelElementPair>();
@@ -277,40 +277,40 @@ namespace Antlr3.Tool
                 tokenLabels[label.Text] = pair;
                 break;
 
-            case Grammar.WILDCARD_TREE_LABEL:
+            case LabelType.WildcardTree:
                 if ( wildcardTreeLabels == null )
                     wildcardTreeLabels = new Dictionary<string, Grammar.LabelElementPair>();
                 wildcardTreeLabels[label.Text] = pair;
                 break;
 
-            case Grammar.WILDCARD_TREE_LIST_LABEL:
+            case LabelType.WildcardTreeList:
                 if ( wildcardTreeListLabels == null )
                     wildcardTreeListLabels = new Dictionary<string, Grammar.LabelElementPair>();
                 wildcardTreeListLabels[label.Text] = pair;
                 break;
 
-            case Grammar.RULE_LABEL:
+            case LabelType.Rule:
                 if ( ruleLabels == null )
                 {
                     ruleLabels = new Dictionary<string, Grammar.LabelElementPair>();
                 }
                 ruleLabels[label.Text] = pair;
                 break;
-            case Grammar.TOKEN_LIST_LABEL:
+            case LabelType.TokenList:
                 if ( tokenListLabels == null )
                 {
                     tokenListLabels = new Dictionary<string, Grammar.LabelElementPair>();
                 }
                 tokenListLabels[label.Text] = pair;
                 break;
-            case Grammar.RULE_LIST_LABEL:
+            case LabelType.RuleList:
                 if ( ruleListLabels == null )
                 {
                     ruleListLabels = new Dictionary<string, Grammar.LabelElementPair>();
                 }
                 ruleListLabels[label.Text] = pair;
                 break;
-            case Grammar.CHAR_LABEL:
+            case LabelType.Char:
                 if ( charLabels == null )
                 {
                     charLabels = new Dictionary<string, Grammar.LabelElementPair>();
@@ -498,7 +498,7 @@ namespace Antlr3.Tool
          */
         public virtual void TrackAltsWithRewrites( GrammarAST altAST, int outerAltNum )
         {
-            if ( grammar.type == Grammar.TREE_PARSER &&
+            if ( grammar.type == GrammarType.TreeParser &&
                  grammar.BuildTemplate &&
                  grammar.GetOption( "rewrite" ) != null &&
                  grammar.GetOption( "rewrite" ).Equals( "true" )
@@ -542,7 +542,7 @@ namespace Antlr3.Tool
             else
             {
                 AttributeScope rulePropertiesScope =
-                    RuleLabelScope.grammarTypeToRulePropertiesScope[grammar.type];
+                    RuleLabelScope.grammarTypeToRulePropertiesScope[(int)grammar.type];
                 if ( rulePropertiesScope.GetAttribute( name ) != null )
                 {
                     scope = rulePropertiesScope;
@@ -560,7 +560,7 @@ namespace Antlr3.Tool
                                       CodeGenerator generator )
         {
             GrammarAST uniqueRefAST;
-            if ( grammar.type != Grammar.LEXER &&
+            if ( grammar.type != GrammarType.Lexer &&
                  char.IsUpper( refdSymbol[0] ) )
             {
                 // symbol is a token
@@ -591,7 +591,7 @@ namespace Antlr3.Tool
                 // else create new label
                 labelName = generator.CreateUniqueLabel( refdSymbol );
                 CommonToken label = new CommonToken( ANTLRParser.ID, labelName );
-                if ( grammar.type != Grammar.LEXER &&
+                if ( grammar.type != GrammarType.Lexer &&
                      char.IsUpper( refdSymbol[0] ) )
                 {
                     grammar.DefineTokenRefLabel( name, label, uniqueRefAST );

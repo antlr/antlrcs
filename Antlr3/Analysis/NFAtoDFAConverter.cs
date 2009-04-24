@@ -271,7 +271,7 @@ namespace Antlr3.Analysis
             //  be an option for the future, but this was wrong soluion for
             //  filtering.]
 #if false
-            if ( dfa.nfa.grammar.type==Antlr3.Tool.Grammar.LEXER && containsEOT ) {
+            if ( dfa.nfa.grammar.type==Antlr3.Tool.GrammarType.Lexer && containsEOT ) {
                 string filterOption = (string)dfa.nfa.grammar.getOption("filter");
                 bool filterMode = filterOption!=null && filterOption.Equals("true");
                 if ( filterMode && d.dfa.isTokensRuleDecision() ) {
@@ -1063,7 +1063,7 @@ namespace Antlr3.Analysis
             // context!
             // Later, the error reporting may want to trace the path from
             // the start state to the nondet state
-            if ( DFAOptimizer.MERGE_STOP_STATES &&
+            if ( DFAOptimizer.MergeStopStates &&
                 d.GetNonDeterministicAlts() == null &&
                 !d.abortedDueToRecursionOverflow &&
                 !d.abortedDueToMultipleRecursiveAlts )

@@ -141,7 +141,7 @@ rule
 					g = factory.BuildAlternativeBlockFromSet(g);
 				}
 				if ( char.IsLower(currentRuleName[0]) ||
-					 grammar.type==Grammar.LEXER )
+					 grammar.type==GrammarType.Lexer )
 				{
 					// attach start node to block for this rule
 					Rule thisR = grammar.GetLocallyDefinedRule(currentRuleName);
@@ -191,7 +191,7 @@ block returns [StateCluster g = null]
 		this.outerAltNum=1;
 }
 	:	{grammar.IsValidSet(this,$start) &&
-		 !currentRuleName.Equals(Grammar.ARTIFICIAL_TOKENS_RULENAME)}? =>
+		 !currentRuleName.Equals(Grammar.ArtificialTokensRuleName)}? =>
 		set {$g = $set.g;}
 
 	|	^(	BLOCK ( ^(OPTIONS .*) )?
@@ -258,7 +258,7 @@ element returns [StateCluster g=null]
 								 grammar.GetTokenType($b.text));}
 	|   ^(CHAR_RANGE c1=CHAR_LITERAL c2=CHAR_LITERAL)
 		{
-		if ( grammar.type==Grammar.LEXER ) {
+		if ( grammar.type==GrammarType.Lexer ) {
 			$g = factory.BuildCharRange($c1.text, $c2.text);
 		}
 		}
@@ -389,7 +389,7 @@ atom_or_notatom returns [StateCluster g=null]
 			(	c=CHAR_LITERAL (ast1=ast_suffix)?
 				{
 					int ttype=0;
-					if ( grammar.type==Grammar.LEXER )
+					if ( grammar.type==GrammarType.Lexer )
 					{
 						ttype = Grammar.GetCharValueFromGrammarCharLiteral($c.text);
 					}
@@ -412,7 +412,7 @@ atom_or_notatom returns [StateCluster g=null]
 				{
 					int ttype=0;
 					IIntSet notAtom = null;
-					if ( grammar.type==Grammar.LEXER )
+					if ( grammar.type==GrammarType.Lexer )
 					{
 						notAtom = grammar.GetSetFromRule(this,$t.text);
 						if ( notAtom==null )
@@ -478,7 +478,7 @@ atom[string scopeName] returns [StateCluster g=null]
 				r.followingNFAState = $g.right;
 				r._nfaStartState = $g.left;
 				if ( $g.left.GetTransition(0) is RuleClosureTransition
-					&& grammar.type!=Grammar.LEXER )
+					&& grammar.type!=GrammarType.Lexer )
 				{
 					AddFollowTransition($r.text, $g.right);
 				}
@@ -488,7 +488,7 @@ atom[string scopeName] returns [StateCluster g=null]
 
 	|	^( t=TOKEN_REF  (targ=ARG_ACTION)? (as2=ast_suffix)? )
 		{
-			if ( grammar.type==Grammar.LEXER )
+			if ( grammar.type==GrammarType.Lexer )
 			{
 				NFAState start = grammar.GetRuleStartState(scopeName,$t.text);
 				if ( start!=null )
@@ -509,7 +509,7 @@ atom[string scopeName] returns [StateCluster g=null]
 
 	|	^( c=CHAR_LITERAL  (as3=ast_suffix)? )
 		{
-			if ( grammar.type==Grammar.LEXER )
+			if ( grammar.type==GrammarType.Lexer )
 			{
 				$g = factory.BuildCharLiteralAtom(c);
 			}
@@ -522,7 +522,7 @@ atom[string scopeName] returns [StateCluster g=null]
 
 	|	^( s=STRING_LITERAL  (as4=ast_suffix)? )
 		{
-			if ( grammar.type==Grammar.LEXER )
+			if ( grammar.type==GrammarType.Lexer )
 			{
 				$g = factory.BuildStringLiteralAtom(s);
 			}
@@ -535,7 +535,7 @@ atom[string scopeName] returns [StateCluster g=null]
 
 	|	^(	w=WILDCARD (as5=ast_suffix)? )
 			{
-				if ( nfa.grammar.type == Grammar.TREE_PARSER
+				if ( nfa.grammar.type == GrammarType.TreeParser
 					&& (w.ChildIndex > 0 || w.Parent.GetChild(1).Type == EOA) )
 				{
 					$g = factory.BuildWildcardTree( $w );
@@ -598,7 +598,7 @@ setElement[IIntSet elements]
 }
 	:	c=CHAR_LITERAL
 		{
-			if ( grammar.type==Grammar.LEXER )
+			if ( grammar.type==GrammarType.Lexer )
 			{
 				ttype = Grammar.GetCharValueFromGrammarCharLiteral($c.text);
 			}
@@ -618,7 +618,7 @@ setElement[IIntSet elements]
 		}
 	|	t=TOKEN_REF
 		{
-			if ( grammar.type==Grammar.LEXER )
+			if ( grammar.type==GrammarType.Lexer )
 			{
 				// recursively will invoke this rule to match elements in target rule ref
 				IIntSet ruleSet = grammar.GetSetFromRule(this,$t.text);
@@ -665,7 +665,7 @@ setElement[IIntSet elements]
 		}
 	|	^(CHAR_RANGE c1=CHAR_LITERAL c2=CHAR_LITERAL)
 		{
-			if ( grammar.type==Grammar.LEXER )
+			if ( grammar.type==GrammarType.Lexer )
 			{
 				int a = Grammar.GetCharValueFromGrammarCharLiteral($c1.text);
 				int b = Grammar.GetCharValueFromGrammarCharLiteral($c2.text);
@@ -734,7 +734,7 @@ testSetElement returns [int alts=1]
 	:	c=CHAR_LITERAL
 	|	t=TOKEN_REF
 		{{
-			if ( grammar.type==Grammar.LEXER )
+			if ( grammar.type==GrammarType.Lexer )
 			{
 				Rule rule = grammar.GetRule($t.text);
 				if ( rule==null )
@@ -746,7 +746,7 @@ testSetElement returns [int alts=1]
 				$alts += TestSetRule(rule.tree);
 			}
 		}}
-	|   {grammar.type!=Grammar.LEXER}? => s=STRING_LITERAL
+	|   {grammar.type!=GrammarType.Lexer}? => s=STRING_LITERAL
 	|	^(CHAR_RANGE c1=CHAR_LITERAL c2=CHAR_LITERAL)
 		{{ $alts = IntervalSet.Of( Grammar.GetCharValueFromGrammarCharLiteral($c1.text), Grammar.GetCharValueFromGrammarCharLiteral($c2.text) ).Count; }}
 	|   testBlockAsSet

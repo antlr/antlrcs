@@ -40,6 +40,7 @@ namespace Antlr3.Grammars
     using ErrorManager = Antlr3.Tool.ErrorManager;
     using Grammar = Antlr3.Tool.Grammar;
     using GrammarAST = Antlr3.Tool.GrammarAST;
+    using GrammarType = Antlr3.Tool.GrammarType;
     using IToken = Antlr.Runtime.IToken;
     using RecognitionException = Antlr.Runtime.RecognitionException;
 
@@ -186,7 +187,7 @@ namespace Antlr3.Grammars
             set;
         }
 
-        public int GrammarType
+        public GrammarType GrammarType
         {
             get;
             set;
@@ -263,7 +264,7 @@ namespace Antlr3.Grammars
                 autoBacktrack = (string)Grammar.GetOption( "backtrack" );
             }
             if ( autoBacktrack != null && autoBacktrack.Equals( "true" ) &&
-                 !( GrammarType == COMBINED_GRAMMAR &&
+                 !( GrammarType == GrammarType.Combined &&
                  char.IsUpper( currentRuleName[0] ) ) &&
                  alt.GetChild( 0 ).Type != SYN_SEMPRED )
             {
@@ -352,7 +353,7 @@ namespace Antlr3.Grammars
 
         public virtual void Cleanup( GrammarAST root )
         {
-            if ( GrammarType == LEXER_GRAMMAR )
+            if ( GrammarType == GrammarType.Lexer )
             {
                 string filter = (string)Grammar.GetOption( "filter" );
                 GrammarAST tokensRuleAST =

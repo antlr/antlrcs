@@ -98,10 +98,10 @@ root = $start;
 {
 Finish();
 }
-	:	^( LEXER_GRAMMAR	{grammar.type = Grammar.LEXER;} 		grammarSpec )
-	|	^( PARSER_GRAMMAR	{grammar.type = Grammar.PARSER;}		grammarSpec )
-	|	^( TREE_GRAMMAR		{grammar.type = Grammar.TREE_PARSER;}	grammarSpec )
-	|	^( COMBINED_GRAMMAR	{grammar.type = Grammar.COMBINED;}		grammarSpec )
+	:	^( LEXER_GRAMMAR	{grammar.type = GrammarType.Lexer;} 		grammarSpec )
+	|	^( PARSER_GRAMMAR	{grammar.type = GrammarType.Parser;}		grammarSpec )
+	|	^( TREE_GRAMMAR		{grammar.type = GrammarType.TreeParser;}	grammarSpec )
+	|	^( COMBINED_GRAMMAR	{grammar.type = GrammarType.Combined;}		grammarSpec )
 	;
 
 attrScope
@@ -202,7 +202,7 @@ rule
 			{
 				name = $id.text;
 				currentRuleName = name;
-				if ( char.IsUpper(name[0]) && grammar.type==Grammar.COMBINED )
+				if ( char.IsUpper(name[0]) && grammar.type==GrammarType.Combined )
 				{
 					// a merged grammar spec, track lexer rules and send to another grammar
 					grammar.DefineLexerRuleFoundInParser($id.token, $start);
@@ -331,7 +331,7 @@ alternative
 {
 	if ( state.backtracking == 0 )
 	{
-		if ( grammar.type!=Grammar.LEXER && grammar.GetOption("output")!=null && blockLevel==1 )
+		if ( grammar.type!=GrammarType.Lexer && grammar.GetOption("output")!=null && blockLevel==1 )
 		{
 			GrammarAST aRewriteNode = $start.FindFirstType(REWRITE); // alt itself has rewrite?
 			GrammarAST rewriteAST = (GrammarAST)$start.Parent.GetChild($start.ChildIndex + 1);
@@ -383,7 +383,7 @@ element
 				{
 					grammar.DefineRuleRefLabel(currentRuleName,$id.token,e);
 				}
-				else if ( e.Type==WILDCARD && grammar.type==Grammar.TREE_PARSER )
+				else if ( e.Type==WILDCARD && grammar.type==GrammarType.TreeParser )
 				{
 					grammar.DefineWildcardTreeLabel(currentRuleName,$id.token,e);
 				}
@@ -403,7 +403,7 @@ element
 				{
 					grammar.DefineRuleListLabel(currentRuleName,$id2.Token,a);
 				}
-				else if ( a.Type == WILDCARD && grammar.type == Grammar.TREE_PARSER )
+				else if ( a.Type == WILDCARD && grammar.type == GrammarType.TreeParser )
 				{
 					grammar.DefineWildcardTreeListLabel( currentRuleName, $id2.token, a );
 				}
@@ -459,7 +459,7 @@ dotLoop
 			GrammarAST block = (GrammarAST)$start.GetChild(0);
 			IDictionary<string, object> opts=new Dictionary<string, object>();
 			opts["greedy"] = "false";
-			if ( grammar.type!=Grammar.LEXER )
+			if ( grammar.type!=GrammarType.Lexer )
 			{
 				// parser grammars assume k=1 for .* loops
 				// otherwise they (analysis?) look til EOF!
@@ -494,7 +494,7 @@ atom[GrammarAST scope_]
 				$targ.outerAltNum = this.outerAltNum;
 				TrackInlineAction($targ);
 			}
-			if ( grammar.type == Grammar.LEXER )
+			if ( grammar.type == GrammarType.Lexer )
 			{
 				grammar.AltReferencesRule( currentRuleName, $scope_, $t, this.outerAltNum );
 			}
@@ -505,7 +505,7 @@ atom[GrammarAST scope_]
 		}
 	|	c=CHAR_LITERAL
 		{
-			if ( grammar.type != Grammar.LEXER )
+			if ( grammar.type != GrammarType.Lexer )
 			{
 				Rule rule = grammar.GetRule(currentRuleName);
 				if ( rule != null )
@@ -514,7 +514,7 @@ atom[GrammarAST scope_]
 		}
 	|	s=STRING_LITERAL 
 		{
-			if ( grammar.type != Grammar.LEXER )
+			if ( grammar.type != GrammarType.Lexer )
 			{
 				Rule rule = grammar.GetRule(currentRuleName);
 				if ( rule!=null )

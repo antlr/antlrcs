@@ -4,7 +4,7 @@
  * All rights reserved.
  *
  * Conversion to C#:
- * Copyright (c) 2008 Sam Harwell, Pixel Mine, Inc.
+ * Copyright (c) 2008-2009 Sam Harwell, Pixel Mine, Inc.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -37,6 +37,7 @@ namespace Antlr3.Codegen
     using AntlrTool = Antlr3.AntlrTool;
     using ArgumentException = System.ArgumentException;
     using Grammar = Antlr3.Tool.Grammar;
+    using GrammarType = Antlr3.Tool.GrammarType;
     using IList = System.Collections.IList;
     using IToken = Antlr.Runtime.IToken;
     using Label = Antlr3.Analysis.Label;
@@ -126,23 +127,23 @@ namespace Antlr3.Codegen
          *  moment so targets can add template actions w/o having to recompile
          *  ANTLR.
          */
-        public virtual bool IsValidActionScope( int grammarType, string scope )
+        public virtual bool IsValidActionScope( GrammarType grammarType, string scope )
         {
             switch ( grammarType )
             {
-            case Grammar.LEXER:
+            case GrammarType.Lexer:
                 if ( scope.Equals( "lexer" ) )
                 {
                     return true;
                 }
                 break;
-            case Grammar.PARSER:
+            case GrammarType.Parser:
                 if ( scope.Equals( "parser" ) )
                 {
                     return true;
                 }
                 break;
-            case Grammar.COMBINED:
+            case GrammarType.Combined:
                 if ( scope.Equals( "parser" ) )
                 {
                     return true;
@@ -152,7 +153,7 @@ namespace Antlr3.Codegen
                     return true;
                 }
                 break;
-            case Grammar.TREE_PARSER:
+            case GrammarType.TreeParser:
                 if ( scope.Equals( "treeparser" ) )
                 {
                     return true;

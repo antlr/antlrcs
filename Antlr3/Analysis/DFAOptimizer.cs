@@ -4,7 +4,7 @@
  * All rights reserved.
  *
  * Conversion to C#:
- * Copyright (c) 2008 Sam Harwell, Pixel Mine, Inc.
+ * Copyright (c) 2008-2009 Sam Harwell, Pixel Mine, Inc.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -122,7 +122,7 @@ namespace Antlr3.Analysis
         public static bool PRUNE_EBNF_EXIT_BRANCHES = true;
         public static bool PRUNE_TOKENS_RULE_SUPERFLUOUS_EOT_EDGES = true;
         public static bool COLLAPSE_ALL_PARALLEL_EDGES = true;
-        public static bool MERGE_STOP_STATES = true;
+        public static bool MergeStopStates = true;
 
         /** Used by DFA state machine generator to avoid infinite recursion
          *  resulting from cycles int the DFA.  This is a set of int state #s.

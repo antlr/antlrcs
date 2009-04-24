@@ -47,7 +47,7 @@ namespace Antlr3.Targets
                                                StringTemplate headerFileST,
                                                string extName )
         {
-            generator.Write( headerFileST, grammar.name + Grammar.grammarTypeToFileNameSuffix[grammar.type] + extName );
+            generator.Write( headerFileST, grammar.name + Grammar.grammarTypeToFileNameSuffix[(int)grammar.type] + extName );
         }
 
         public override string GetTargetCharLiteralFromANTLRCharLiteral( CodeGenerator generator,
@@ -95,7 +95,7 @@ namespace Antlr3.Targets
             {
                 return ttype.ToString();
             }
-            return generator.grammar.name + Grammar.grammarTypeToFileNameSuffix[generator.grammar.type] + "_" + name;
+            return generator.grammar.name + Grammar.grammarTypeToFileNameSuffix[(int)generator.grammar.type] + "_" + name;
             //return super.getTokenTypeAsTargetLabel(generator, ttype);
             //return this.getTokenTextAndTypeAsTargetLabel(generator, null, ttype);
         }
@@ -116,7 +116,7 @@ namespace Antlr3.Targets
             }
             else
             {
-                return generator.grammar.name + Grammar.grammarTypeToFileNameSuffix[generator.grammar.type] + "_" + textEquivalent;
+                return generator.grammar.name + Grammar.grammarTypeToFileNameSuffix[(int)generator.grammar.type] + "_" + textEquivalent;
             }
         }
 

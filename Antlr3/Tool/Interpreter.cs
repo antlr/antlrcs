@@ -78,7 +78,7 @@ namespace Antlr3.Tool
 
             public override void ExitRule( String grammarFileName, String ruleName )
             {
-                if ( !ruleName.Equals( Grammar.ARTIFICIAL_TOKENS_RULENAME ) )
+                if ( !ruleName.Equals( Grammar.ArtificialTokensRuleName ) )
                 {
                     int type = g.GetTokenType( ruleName );
                     int channel = TokenChannels.Default;
@@ -103,7 +103,7 @@ namespace Antlr3.Tool
 
         public virtual IToken NextToken()
         {
-            if ( grammar.type != Grammar.LEXER )
+            if ( grammar.type != GrammarType.Lexer )
             {
                 return null;
             }
@@ -118,7 +118,7 @@ namespace Antlr3.Tool
             {
                 try
                 {
-                    token = Scan( Grammar.ARTIFICIAL_TOKENS_RULENAME, null );
+                    token = Scan( Grammar.ArtificialTokensRuleName, null );
                     break;
                 }
                 catch ( RecognitionException re )
@@ -156,7 +156,7 @@ namespace Antlr3.Tool
                          IDebugEventListener actions,
                          IList visitedStates )
         {
-            if ( grammar.type != Grammar.LEXER )
+            if ( grammar.type != GrammarType.Lexer )
             {
                 return;
             }
@@ -266,7 +266,7 @@ namespace Antlr3.Tool
                 {
                     // decision point, must predict and jump to alt
                     DFA dfa = s.nfa.grammar.GetLookaheadDFA( s.DecisionNumber );
-                    //if ( s.nfa.grammar.type != Grammar.LEXER )
+                    //if ( s.nfa.grammar.type != GrammarType.Lexer )
                     //{
                     //    Console.Out.WriteLine( "decision: " +
                     //                   dfa.getNFADecisionStartState().Description +
@@ -292,7 +292,7 @@ namespace Antlr3.Tool
                     input.Rewind( m );
                     int parseAlt =
                         s.TranslateDisplayAltToWalkAlt( predictedAlt );
-                    //if ( s.nfa.grammar.type != Grammar.LEXER )
+                    //if ( s.nfa.grammar.type != GrammarType.Lexer )
                     //{
                     //    Console.Out.WriteLine( "predicted alt " + predictedAlt + ", parseAlt " + parseAlt );
                     //}
@@ -377,8 +377,8 @@ namespace Antlr3.Tool
                 {
                     if ( actions != null )
                     {
-                        if ( s.nfa.grammar.type == Grammar.PARSER ||
-                             s.nfa.grammar.type == Grammar.COMBINED )
+                        if ( s.nfa.grammar.type == GrammarType.Parser ||
+                             s.nfa.grammar.type == GrammarType.Combined )
                         {
                             actions.ConsumeToken( ( (ITokenStream)input ).LT( 1 ) );
                         }

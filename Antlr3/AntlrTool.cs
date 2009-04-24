@@ -4,7 +4,7 @@
  * All rights reserved.
  *
  * Conversion to C#:
- * Copyright (c) 2008 Sam Harwell, Pixel Mine, Inc.
+ * Copyright (c) 2008-2009 Sam Harwell, Pixel Mine, Inc.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -53,8 +53,9 @@ namespace Antlr3
 
     public class AntlrTool
     {
-        public string VERSION = "3.1.2";
-        public const string UNINITIALIZED_DIR = "<unset-dir>";
+        public const string AssemblyVersion = "3.1.2";
+        public const string UninitializedDir = "<unset-dir>";
+
         private IList<string> grammarFileNames = new List<string>();
         private bool generate_NFA_dot = false;
         private bool generate_DFA_dot = false;
@@ -126,7 +127,7 @@ namespace Antlr3
         {
             if ( verbose )
             {
-                ErrorManager.Info( "ANTLR Parser Generator  Version " + VERSION );
+                ErrorManager.Info( "ANTLR Parser Generator  Version " + AssemblyVersion );
                 showBanner = false;
             }
 
@@ -266,11 +267,12 @@ namespace Antlr3
                 }
                 else if ( args[i] == "-Xmultithreaded" )
                 {
-                    NFAToDFAConverter.SINGLE_THREADED_NFA_CONVERSION = false;
+                    //NFAToDFAConverter.SINGLE_THREADED_NFA_CONVERSION = false;
+                    Console.Error.WriteLine( "Multithreaded NFA conversion is not currently supported." );
                 }
                 else if ( args[i] == "-Xnomergestopstates" )
                 {
-                    DFAOptimizer.MERGE_STOP_STATES = false;
+                    DFAOptimizer.MergeStopStates = false;
                 }
                 else if ( args[i] == "-Xdfaverbose" )
                 {
@@ -282,7 +284,7 @@ namespace Antlr3
                 }
                 else if ( args[i] == "-XdbgST" )
                 {
-                    CodeGenerator.EMIT_TEMPLATE_DELIMITERS = true;
+                    CodeGenerator.EmitTemplateDelimiters = true;
                 }
                 else if ( args[i] == "-Xmaxinlinedfastates" )
                 {
@@ -293,7 +295,7 @@ namespace Antlr3
                     else
                     {
                         i++;
-                        CodeGenerator.MAX_ACYCLIC_DFA_STATES_INLINE = int.Parse( args[i] );
+                        CodeGenerator.MaxAcyclicDfaStatesInline = int.Parse( args[i] );
                     }
                 }
                 else if ( args[i] == "-Xm" )
@@ -420,7 +422,7 @@ namespace Antlr3
             // before setting options. The banner won't display that way!
             if ( Verbose && showBanner )
             {
-                ErrorManager.Info( "ANTLR Parser Generator  Version " + VERSION );
+                ErrorManager.Info( "ANTLR Parser Generator  Version " + AssemblyVersion );
                 showBanner = false;
             }
 
@@ -503,7 +505,7 @@ namespace Antlr3
                     // now handle the lexer if one was created for a merged spec
                     string lexerGrammarStr = grammar.GetLexerGrammar();
                     //JSystem.@out.println("lexer grammar:\n"+lexerGrammarStr);
-                    if ( grammar.type == Grammar.COMBINED && lexerGrammarStr != null )
+                    if ( grammar.type == GrammarType.Combined && lexerGrammarStr != null )
                     {
                         lexerGrammarFileName = grammar.ImplicitlyGeneratedLexerFileName;
                         try
@@ -595,9 +597,9 @@ namespace Antlr3
                 string grammarName = grammar.GrammarName;
                 // Make all grammars depend on any tokenVocab options
                 if ( vocabName != null )
-                    g.AddEdge( gfile, vocabName + CodeGenerator.VOCAB_FILE_EXTENSION );
+                    g.AddEdge( gfile, vocabName + CodeGenerator.VocabFileExtension );
                 // Make all generated tokens files depend on their grammars
-                g.AddEdge( grammarName + CodeGenerator.VOCAB_FILE_EXTENSION, gfile );
+                g.AddEdge( grammarName + CodeGenerator.VocabFileExtension, gfile );
             }
             List<string> sorted = g.Sort();
             //Console.Out.WriteLine( "sorted=" + sorted );
@@ -715,7 +717,7 @@ namespace Antlr3
                 string dotFileName = g.name + "." + "dec-" + d;
                 if ( g.implicitLexer )
                 {
-                    dotFileName = g.name + Grammar.grammarTypeToFileNameSuffix[g.type] + "." + "dec-" + d;
+                    dotFileName = g.name + Grammar.grammarTypeToFileNameSuffix[(int)g.type] + "." + "dec-" + d;
                 }
                 try
                 {
@@ -767,7 +769,7 @@ namespace Antlr3
 
         private static void Version()
         {
-            ErrorManager.Info( "ANTLR Parser Generator  Version " + new AntlrTool().VERSION );
+            ErrorManager.Info( "ANTLR Parser Generator  Version " + AntlrTool.AssemblyVersion );
         }
 
         private static void Help()
@@ -1041,7 +1043,7 @@ namespace Antlr3
          */
         public virtual string GetImportedVocabFile( string vocabName )
         {
-            string path = Path.Combine( LibraryDirectory, vocabName + CodeGenerator.VOCAB_FILE_EXTENSION );
+            string path = Path.Combine( LibraryDirectory, vocabName + CodeGenerator.VocabFileExtension );
             if ( File.Exists( path ) )
                 return path;
 
@@ -1052,11 +1054,11 @@ namespace Antlr3
             //
             if ( haveOutputDir )
             {
-                path = Path.Combine( OutputDirectory, vocabName + CodeGenerator.VOCAB_FILE_EXTENSION );
+                path = Path.Combine( OutputDirectory, vocabName + CodeGenerator.VocabFileExtension );
             }
             else
             {
-                path = vocabName + CodeGenerator.VOCAB_FILE_EXTENSION;
+                path = vocabName + CodeGenerator.VocabFileExtension;
             }
             return path;
         }

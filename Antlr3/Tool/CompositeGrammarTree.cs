@@ -4,7 +4,7 @@
  * All rights reserved.
  *
  * Conversion to C#:
- * Copyright (c) 2008 Sam Harwell, Pixel Mine, Inc.
+ * Copyright (c) 2008-2009 Sam Harwell, Pixel Mine, Inc.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -170,8 +170,8 @@ namespace Antlr3.Tool
         public virtual void TrimLexerImportsIntoCombined()
         {
             CompositeGrammarTree p = this;
-            if ( p.grammar.type == Grammar.LEXER && p.parent != null &&
-                 p.parent.grammar.type == Grammar.COMBINED )
+            if ( p.grammar.type == GrammarType.Lexer && p.parent != null &&
+                 p.parent.grammar.type == GrammarType.Combined )
             {
                 //System.Console.Out.WriteLine( "wacking " + p.grammar.name + " from " + p.parent.grammar.name );
                 p.parent.children.Remove( this );

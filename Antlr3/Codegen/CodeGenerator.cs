@@ -4,7 +4,7 @@
  * All rights reserved.
  *
  * Conversion to C#:
- * Copyright (c) 2008 Sam Harwell, Pixel Mine, Inc.
+ * Copyright (c) 2008-2009 Sam Harwell, Pixel Mine, Inc.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -55,6 +55,7 @@ namespace Antlr3.Codegen
     using Exception = System.Exception;
     using Grammar = Antlr3.Tool.Grammar;
     using GrammarAST = Antlr3.Tool.GrammarAST;
+    using GrammarType = Antlr3.Tool.GrammarType;
     using IDictionary = System.Collections.IDictionary;
     using IIntSet = Antlr3.Misc.IIntSet;
     using IList = System.Collections.IList;
@@ -69,6 +70,7 @@ namespace Antlr3.Codegen
     using MethodImpl = System.Runtime.CompilerServices.MethodImplAttribute;
     using MethodImplOptions = System.Runtime.CompilerServices.MethodImplOptions;
     using NFAState = Antlr3.Analysis.NFAState;
+    using Path = System.IO.Path;
     using RecognitionException = Antlr.Runtime.RecognitionException;
     using Rule = Antlr3.Tool.Rule;
     using StringTemplate = Antlr3.ST.StringTemplate;
@@ -106,17 +108,17 @@ namespace Antlr3.Codegen
          *  limit will be hit only for lexers where wildcard in a UNICODE
          *  vocabulary environment would generate a SWITCH with 65000 labels.
          */
-        public int MAX_SWITCH_CASE_LABELS = 300;
-        public int MIN_SWITCH_ALTS = 3;
-        public bool GENERATE_SWITCHES_WHEN_POSSIBLE = true;
-        //public static boolean GEN_ACYCLIC_DFA_INLINE = true;
-        public static bool EMIT_TEMPLATE_DELIMITERS = false;
-        public static int MAX_ACYCLIC_DFA_STATES_INLINE = 10;
+        public int MaxSwitchCaseLabels = 300;
+        public int MinSwitchAlts = 3;
+        public bool GenerateSwitchesWhenPossible = true;
+        //public static bool GenAcyclicDfaInline = true;
+        public static bool EmitTemplateDelimiters = false;
+        public static int MaxAcyclicDfaStatesInline = 10;
 
         //public string classpathTemplateRootDirectoryName = "org/antlr/codegen/templates";
         //public string classpathTemplateRootDirectoryName = "Antlr3.Codegen.Templates";
         public string classpathTemplateRootDirectoryName =
-            System.IO.Path.Combine( System.IO.Path.GetDirectoryName( typeof( CodeGenerator ).Assembly.Location ), @"Codegen\Templates" );
+            Path.Combine( Path.GetDirectoryName( typeof( CodeGenerator ).Assembly.Location ), @"Codegen\Templates" );
 
         /** Which grammar are we generating code for?  Each generator
          *  is attached to a specific grammar.
@@ -175,7 +177,7 @@ namespace Antlr3.Codegen
             new CyclicDFACodeGenerator(this);
             */
 
-        public const string VOCAB_FILE_EXTENSION = ".tokens";
+        public const string VocabFileExtension = ".tokens";
         protected const string vocabFilePattern =
             "<tokens:{<attr.name>=<attr.type>\n}>" +
             "<literals:{<attr.name>=<attr.type>\n}>";
@@ -338,7 +340,7 @@ namespace Antlr3.Codegen
             string outputOption = (string)grammar.GetOption( "output" );
             if ( outputOption != null && outputOption.Equals( "AST" ) )
             {
-                if ( debug && grammar.type != Grammar.LEXER )
+                if ( debug && grammar.type != GrammarType.Lexer )
                 {
                     StringTemplateGroup dbgTemplates =
                         StringTemplateGroup.LoadGroup( "Dbg", coreTemplates );
@@ -347,7 +349,7 @@ namespace Antlr3.Codegen
                         StringTemplateGroup.LoadGroup( "AST", dbgTemplates );
                     StringTemplateGroup astParserTemplates = astTemplates;
                     //if ( !grammar.rewriteMode() ) {
-                    if ( grammar.type == Grammar.TREE_PARSER )
+                    if ( grammar.type == GrammarType.TreeParser )
                     {
                         astParserTemplates =
                             StringTemplateGroup.LoadGroup( "ASTTreeParser", astTemplates );
@@ -368,7 +370,7 @@ namespace Antlr3.Codegen
                         StringTemplateGroup.LoadGroup( "AST", coreTemplates );
                     StringTemplateGroup astParserTemplates = astTemplates;
                     //if ( !grammar.rewriteMode() ) {
-                    if ( grammar.type == Grammar.TREE_PARSER )
+                    if ( grammar.type == GrammarType.TreeParser )
                     {
                         astParserTemplates =
                             StringTemplateGroup.LoadGroup( "ASTTreeParser", astTemplates );
@@ -384,7 +386,7 @@ namespace Antlr3.Codegen
             }
             else if ( outputOption != null && outputOption.Equals( "template" ) )
             {
-                if ( debug && grammar.type != Grammar.LEXER )
+                if ( debug && grammar.type != GrammarType.Lexer )
                 {
                     StringTemplateGroup dbgTemplates =
                         StringTemplateGroup.LoadGroup( "Dbg", coreTemplates );
@@ -398,7 +400,7 @@ namespace Antlr3.Codegen
                     templates = StringTemplateGroup.LoadGroup( "ST", coreTemplates );
                 }
             }
-            else if ( debug && grammar.type != Grammar.LEXER )
+            else if ( debug && grammar.type != GrammarType.Lexer )
             {
                 templates = StringTemplateGroup.LoadGroup( "Dbg", coreTemplates );
                 baseTemplates = templates;
@@ -408,7 +410,7 @@ namespace Antlr3.Codegen
                 templates = coreTemplates;
             }
 
-            if ( EMIT_TEMPLATE_DELIMITERS )
+            if ( EmitTemplateDelimiters )
             {
                 templates.EmitDebugStartStopStrings( true );
                 templates.DoNotEmitDebugStringsForTemplate( "codeFileExtension" );
@@ -531,15 +533,15 @@ namespace Antlr3.Codegen
             headerFileST.SetAttribute( "profile", profile );
 
             // RECOGNIZER
-            if ( grammar.type == Grammar.LEXER )
+            if ( grammar.type == GrammarType.Lexer )
             {
                 recognizerST = templates.GetInstanceOf( "lexer" );
                 outputFileST.SetAttribute( "LEXER", true );
                 headerFileST.SetAttribute( "LEXER", true );
                 recognizerST.SetAttribute( "filterMode", filterMode );
             }
-            else if ( grammar.type == Grammar.PARSER ||
-                grammar.type == Grammar.COMBINED )
+            else if ( grammar.type == GrammarType.Parser ||
+                grammar.type == GrammarType.Combined )
             {
                 recognizerST = templates.GetInstanceOf( "parser" );
                 outputFileST.SetAttribute( "PARSER", true );
@@ -563,8 +565,8 @@ namespace Antlr3.Codegen
                 target.GetTargetStringLiteralFromString( grammar.FileName );
             outputFileST.SetAttribute( "fileName", targetAppropriateFileNameString );
             headerFileST.SetAttribute( "fileName", targetAppropriateFileNameString );
-            outputFileST.SetAttribute( "ANTLRVersion", tool.VERSION );
-            headerFileST.SetAttribute( "ANTLRVersion", tool.VERSION );
+            outputFileST.SetAttribute( "ANTLRVersion", AntlrTool.AssemblyVersion );
+            headerFileST.SetAttribute( "ANTLRVersion", AntlrTool.AssemblyVersion );
             outputFileST.SetAttribute( "generatedTimestamp", AntlrTool.GetCurrentTimeStamp() );
             headerFileST.SetAttribute( "generatedTimestamp", AntlrTool.GetCurrentTimeStamp() );
 
@@ -592,7 +594,7 @@ namespace Antlr3.Codegen
             GenTokenTypeConstants( outputFileST );
             GenTokenTypeConstants( headerFileST );
 
-            if ( grammar.type != Grammar.LEXER )
+            if ( grammar.type != GrammarType.Lexer )
             {
                 GenTokenTypeNames( recognizerST );
                 GenTokenTypeNames( outputFileST );
@@ -1037,7 +1039,7 @@ namespace Antlr3.Codegen
          */
         public virtual string GetTokenTypeAsTargetLabel( int ttype )
         {
-            if ( grammar.type == Grammar.LEXER )
+            if ( grammar.type == GrammarType.Lexer )
             {
                 string name = grammar.GetTokenDisplayName( ttype );
                 return target.GetTargetCharLiteralFromANTLRCharLiteral( this, name );
@@ -1444,15 +1446,15 @@ namespace Antlr3.Codegen
         /** Generate TParser.java and TLexer.java from T.g if combined, else
          *  just use T.java as output regardless of type.
          */
-        public virtual string GetRecognizerFileName( string name, int type )
+        public virtual string GetRecognizerFileName( string name, GrammarType type )
         {
             StringTemplate extST = templates.GetInstanceOf( "codeFileExtension" );
             string recognizerName = grammar.GetRecognizerName();
             return recognizerName + extST.ToString();
             /*
             String suffix = "";
-            if ( type==Grammar.COMBINED ||
-                 (type==Grammar.LEXER && !grammar.implicitLexer) )
+            if ( type==GrammarType.Combined ||
+                 (type==GrammarType.Lexer && !grammar.implicitLexer) )
             {
                 suffix = Grammar.grammarTypeToFileNameSuffix[type];
             }
@@ -1469,7 +1471,7 @@ namespace Antlr3.Codegen
             {
                 return null;
             }
-            return grammar.name + VOCAB_FILE_EXTENSION;
+            return grammar.name + VocabFileExtension;
         }
 
         public virtual void Write( StringTemplate code, string fileName )
@@ -1493,7 +1495,7 @@ namespace Antlr3.Codegen
          */
         protected internal virtual bool CanGenerateSwitch( DFAState s )
         {
-            if ( !GENERATE_SWITCHES_WHEN_POSSIBLE )
+            if ( !GenerateSwitchesWhenPossible )
             {
                 return false;
             }
@@ -1523,8 +1525,8 @@ namespace Antlr3.Codegen
                 }
                 size += edge.label.Set.Count;
             }
-            if ( s.NumberOfTransitions < MIN_SWITCH_ALTS ||
-                 size > MAX_SWITCH_CASE_LABELS )
+            if ( s.NumberOfTransitions < MinSwitchAlts ||
+                 size > MaxSwitchCaseLabels )
             {
                 return false;
             }

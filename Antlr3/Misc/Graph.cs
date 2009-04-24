@@ -46,7 +46,7 @@ namespace Antlr3.Misc
                 _payload = payload;
             }
 
-            public virtual void AddEdge( Node n )
+            public void AddEdge( Node n )
             {
                 if ( _edges == null )
                     _edges = new List<Node>();
@@ -61,9 +61,9 @@ namespace Antlr3.Misc
         }
 
         /** Map from node payload to node containing it */
-        protected Dictionary<object, Node> nodes = new Dictionary<object, Node>();
+        Dictionary<object, Node> nodes = new Dictionary<object, Node>();
 
-        public virtual void AddEdge( T a, T b )
+        public void AddEdge( T a, T b )
         {
             //System.Console.Out.WriteLine( "add edge " + a + " to " + b );
             Node a_node = GetNode( a );
@@ -71,7 +71,7 @@ namespace Antlr3.Misc
             a_node.AddEdge( b_node );
         }
 
-        protected virtual Node GetNode( T a )
+        private Node GetNode( T a )
         {
             Node existing;
             if ( nodes.TryGetValue( a, out existing ) && existing != null )
@@ -92,7 +92,7 @@ namespace Antlr3.Misc
          *  So if this gives nonreversed postorder traversal, I get the order
          *  I want.
          */
-        public virtual List<T> Sort()
+        public List<T> Sort()
         {
             HashSet<Node> visited = new HashSet<Node>();
             List<T> sorted = new List<T>();
@@ -106,12 +106,12 @@ namespace Antlr3.Misc
                     if ( !visited.Contains( n ) )
                         break;
                 }
-                DFS( n, visited, sorted );
+                DepthFirstSort( n, visited, sorted );
             }
             return sorted;
         }
 
-        protected virtual void DFS( Node n, HashSet<Node> visited, List<T> sorted )
+        private void DepthFirstSort( Node n, HashSet<Node> visited, List<T> sorted )
         {
             if ( visited.Contains( n ) )
                 return;
@@ -120,7 +120,7 @@ namespace Antlr3.Misc
             {
                 foreach ( var target in n._edges )
                 {
-                    DFS( target, visited, sorted );
+                    DepthFirstSort( target, visited, sorted );
                 }
             }
             sorted.Add( n._payload );

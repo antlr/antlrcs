@@ -215,9 +215,11 @@
     <Compile Include="Tool\GrammarSemanticsMessage.cs" />
     <Compile Include="Tool\GrammarSpelunker.cs" />
     <Compile Include="Tool\GrammarSyntaxMessage.cs" />
+    <Compile Include="Tool\GrammarType.cs" />
     <Compile Include="Tool\GrammarUnreachableAltsMessage.cs" />
     <Compile Include="Tool\IAntlrErrorListener.cs" />
     <Compile Include="Tool\Interpreter.cs" />
+    <Compile Include="Tool\LabelType.cs" />
     <Compile Include="Tool\LeftRecursionCyclesMessage.cs" />
     <Compile Include="Tool\NonRegularDecisionMessage.cs" />
     <Compile Include="Tool\RecursionOverflowMessage.cs" />

@@ -4,7 +4,7 @@
  * All rights reserved.
  *
  * Conversion to C#:
- * Copyright (c) 2008 Sam Harwell, Pixel Mine, Inc.
+ * Copyright (c) 2008-2009 Sam Harwell, Pixel Mine, Inc.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -300,7 +300,7 @@ namespace Antlr3.Analysis
             {
                 return !IsCyclic &&
                     !probe.IsNonLLStarDecision &&
-                    NumberOfStates < CodeGenerator.MAX_ACYCLIC_DFA_STATES_INLINE;
+                    NumberOfStates < CodeGenerator.MaxAcyclicDfaStatesInline;
             }
         }
         public bool AutoBacktrackMode
@@ -1005,12 +1005,12 @@ namespace Antlr3.Analysis
         /** Is this DFA derived from the NFA for the Tokens rule? */
         public virtual bool GetIsTokensRuleDecision()
         {
-            if ( nfa.grammar.type != Grammar.LEXER )
+            if ( nfa.grammar.type != GrammarType.Lexer )
             {
                 return false;
             }
             NFAState nfaStart = NFADecisionStartState;
-            Rule r = nfa.grammar.GetLocallyDefinedRule( Grammar.ARTIFICIAL_TOKENS_RULENAME );
+            Rule r = nfa.grammar.GetLocallyDefinedRule( Grammar.ArtificialTokensRuleName );
             NFAState TokensRuleStart = r.startState;
             NFAState TokensDecisionStart =
                 (NFAState)TokensRuleStart.transition[0].target;

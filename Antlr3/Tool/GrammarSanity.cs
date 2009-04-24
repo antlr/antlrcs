@@ -239,7 +239,7 @@ namespace Antlr3.Tool
             }
             else if ( refAST.Type == ANTLRParser.TOKEN_REF )
             {
-                if ( grammar.type != Grammar.LEXER )
+                if ( grammar.type != GrammarType.Lexer )
                 {
                     if ( argsAST != null )
                     {

@@ -1,4 +1,4 @@
-// $ANTLR 3.1.2 Grammars\\CodeGenTreeWalker.g3 2009-04-18 02:21:59
+// $ANTLR 3.1.2 Grammars\\CodeGenTreeWalker.g3 2009-04-24 11:05:41
 
 // The variable 'variable' is assigned but its value is never used.
 #pragma warning disable 219
@@ -202,16 +202,16 @@ public partial class CodeGenTreeWalker : TreeParser
 				string superClass = (string)g.GetOption("superClass");
 				outputOption = (string)g.GetOption("output");
 				recognizerST.SetAttribute("superClass", superClass);
-				if ( g.type!=Grammar.LEXER ) {
+				if ( g.type!=GrammarType.Lexer ) {
 					recognizerST.SetAttribute("ASTLabelType", g.GetOption("ASTLabelType"));
 				}
-				if ( g.type==Grammar.TREE_PARSER && g.GetOption("ASTLabelType")==null ) {
+				if ( g.type==GrammarType.TreeParser && g.GetOption("ASTLabelType")==null ) {
 					ErrorManager.GrammarWarning(ErrorManager.MSG_MISSING_AST_TYPE_IN_TREE_GRAMMAR,
 											   g,
 											   null,
 											   g.name);
 				}
-				if ( g.type!=Grammar.TREE_PARSER ) {
+				if ( g.type!=GrammarType.TreeParser ) {
 					recognizerST.SetAttribute("labelType", g.GetOption("TokenLabelType"));
 				}
 				recognizerST.SetAttribute("numRules", grammar.Rules.Count);
@@ -1335,9 +1335,9 @@ public partial class CodeGenTreeWalker : TreeParser
 								{
 									stName = "synpredRule";
 								}
-								else if ( grammar.type==Grammar.LEXER )
+								else if ( grammar.type==GrammarType.Lexer )
 								{
-									if ( currentRuleName.Equals(Grammar.ARTIFICIAL_TOKENS_RULENAME) )
+									if ( currentRuleName.Equals(Grammar.ArtificialTokensRuleName) )
 									{
 										stName = "tokensRule";
 									}
@@ -1348,7 +1348,7 @@ public partial class CodeGenTreeWalker : TreeParser
 								}
 								else
 								{
-									if ( !(grammar.type==Grammar.COMBINED &&
+									if ( !(grammar.type==GrammarType.Combined &&
 										 char.IsUpper(currentRuleName[0])) )
 									{
 										stName = "rule";
@@ -1404,11 +1404,11 @@ public partial class CodeGenTreeWalker : TreeParser
 
 							if ( retval.code!=null )
 							{
-								if ( grammar.type==Grammar.LEXER )
+								if ( grammar.type==GrammarType.Lexer )
 								{
 									bool naked =
-										currentRuleName.Equals(Grammar.ARTIFICIAL_TOKENS_RULENAME) ||
-										((mod!=null?((GrammarAST)mod.start):null)!=null&&(mod!=null?((GrammarAST)mod.start):null).Text.Equals(Grammar.FRAGMENT_RULE_MODIFIER));
+										currentRuleName.Equals(Grammar.ArtificialTokensRuleName) ||
+										((mod!=null?((GrammarAST)mod.start):null)!=null&&(mod!=null?((GrammarAST)mod.start):null).Text.Equals(Grammar.FragmentRuleModifier));
 									retval.code.SetAttribute("nakedBlock", naked);
 								}
 								else
@@ -2070,7 +2070,7 @@ public partial class CodeGenTreeWalker : TreeParser
 								setcode = GetTokenElementST("matchSet", "set", s, null, null);
 							}
 							setcode.SetAttribute("elementIndex", i);
-							if ( grammar.type!=Grammar.LEXER )
+							if ( grammar.type!=GrammarType.Lexer )
 							{
 								generator.GenerateLocalFollow(s,"set",currentRuleName,i);
 							}
@@ -3079,7 +3079,7 @@ public partial class CodeGenTreeWalker : TreeParser
 				{
 
 									int ttype=0;
-									if ( grammar.type==Grammar.LEXER )
+									if ( grammar.type==GrammarType.Lexer )
 									{
 										ttype = Grammar.GetCharValueFromGrammarCharLiteral((assign_c!=null?assign_c.Text:null));
 									}
@@ -3101,7 +3101,7 @@ public partial class CodeGenTreeWalker : TreeParser
 				{
 
 									int ttype=0;
-									if ( grammar.type==Grammar.LEXER )
+									if ( grammar.type==GrammarType.Lexer )
 									{
 										// TODO: error!
 									}
@@ -3199,7 +3199,7 @@ public partial class CodeGenTreeWalker : TreeParser
 							code.SetAttribute("s",generator.GenSetExpr(templates,elements,1,false));
 							int i = ((TokenWithIndex)n.Token).TokenIndex;
 							code.SetAttribute("elementIndex", i);
-							if ( grammar.type!=Grammar.LEXER )
+							if ( grammar.type!=GrammarType.Lexer )
 							{
 								generator.GenerateLocalFollow(n,"set",currentRuleName,i);
 							}
@@ -3617,7 +3617,7 @@ public partial class CodeGenTreeWalker : TreeParser
 				{
 					labelText = label.Text;
 				}
-				if ( grammar.type!=Grammar.LEXER &&
+				if ( grammar.type!=GrammarType.Lexer &&
 					 (((GrammarAST)retval.start).Type==RULE_REF||((GrammarAST)retval.start).Type==TOKEN_REF||
 					  ((GrammarAST)retval.start).Type==CHAR_LITERAL||((GrammarAST)retval.start).Type==STRING_LITERAL) )
 				{
@@ -3809,7 +3809,7 @@ public partial class CodeGenTreeWalker : TreeParser
 															(t!=null?t.Text:null));
 								}
 								grammar.CheckRuleReference(scope, t, targ, currentRuleName);
-								if ( grammar.type==Grammar.LEXER )
+								if ( grammar.type==GrammarType.Lexer )
 								{
 									if ( grammar.GetTokenType((t!=null?t.Text:null))==Label.EOF )
 									{
@@ -3877,7 +3877,7 @@ public partial class CodeGenTreeWalker : TreeParser
 				if ( state.backtracking == 0 )
 				{
 
-								if ( grammar.type==Grammar.LEXER )
+								if ( grammar.type==GrammarType.Lexer )
 								{
 									retval.code = templates.GetInstanceOf("charRef");
 									retval.code.SetAttribute("char",
@@ -3910,7 +3910,7 @@ public partial class CodeGenTreeWalker : TreeParser
 				if ( state.backtracking == 0 )
 				{
 
-								if ( grammar.type==Grammar.LEXER )
+								if ( grammar.type==GrammarType.Lexer )
 								{
 									retval.code = templates.GetInstanceOf("lexerStringRef");
 									retval.code.SetAttribute("string",
@@ -4113,7 +4113,7 @@ public partial class CodeGenTreeWalker : TreeParser
 							code = GetTokenElementST("matchSet", "set", s, astSuffix, labelText);
 							int i = ((TokenWithIndex)s.Token).TokenIndex;
 							code.SetAttribute("elementIndex", i);
-							if ( grammar.type!=Grammar.LEXER )
+							if ( grammar.type!=GrammarType.Lexer )
 							{
 								generator.GenerateLocalFollow(s,"set",currentRuleName,i);
 							}
@@ -4260,17 +4260,17 @@ public partial class CodeGenTreeWalker : TreeParser
 						retval.code.SetAttribute("referencedElementsDeep",
 										  GetTokenTypesAsTargetLabels(((GrammarAST)retval.start).rewriteRefsDeep));
 						HashSet<string> tokenLabels =
-							grammar.GetLabels(((GrammarAST)retval.start).rewriteRefsDeep, Grammar.TOKEN_LABEL);
+							grammar.GetLabels(((GrammarAST)retval.start).rewriteRefsDeep, LabelType.Token);
 						HashSet<string> tokenListLabels =
-							grammar.GetLabels(((GrammarAST)retval.start).rewriteRefsDeep, Grammar.TOKEN_LIST_LABEL);
+							grammar.GetLabels(((GrammarAST)retval.start).rewriteRefsDeep, LabelType.TokenList);
 						HashSet<string> ruleLabels =
-							grammar.GetLabels(((GrammarAST)retval.start).rewriteRefsDeep, Grammar.RULE_LABEL);
+							grammar.GetLabels(((GrammarAST)retval.start).rewriteRefsDeep, LabelType.Rule);
 						HashSet<string> ruleListLabels =
-							grammar.GetLabels(((GrammarAST)retval.start).rewriteRefsDeep, Grammar.RULE_LIST_LABEL);
+							grammar.GetLabels(((GrammarAST)retval.start).rewriteRefsDeep, LabelType.RuleList);
 						HashSet<string> wildcardLabels =
-							grammar.GetLabels(((GrammarAST)retval.start).rewriteRefsDeep, Grammar.WILDCARD_TREE_LABEL);
+							grammar.GetLabels(((GrammarAST)retval.start).rewriteRefsDeep, LabelType.WildcardTree);
 						HashSet<string> wildcardListLabels =
-							grammar.GetLabels(((GrammarAST)retval.start).rewriteRefsDeep, Grammar.WILDCARD_TREE_LIST_LABEL);
+							grammar.GetLabels(((GrammarAST)retval.start).rewriteRefsDeep, LabelType.WildcardTreeList);
 						// just in case they ref r for "previous value", make a stream
 						// from retval.tree
 						StringTemplate retvalST = templates.GetInstanceOf("prevRuleRootRef");
@@ -5396,22 +5396,22 @@ public partial class CodeGenTreeWalker : TreeParser
 									string stName = null;
 									switch ( pair.type )
 									{
-									case Grammar.TOKEN_LABEL :
+									case LabelType.Token :
 										stName = "rewriteTokenLabelRef";
 										break;
-									case Grammar.WILDCARD_TREE_LABEL :
+									case LabelType.WildcardTree :
 										stName = "rewriteWildcardLabelRef";
 										break;
-									case Grammar.WILDCARD_TREE_LIST_LABEL:
+									case LabelType.WildcardTreeList:
 										stName = "rewriteRuleListLabelRef"; // acts like rule ref list for ref
 										break;
-									case Grammar.RULE_LABEL :
+									case LabelType.Rule :
 										stName = "rewriteRuleLabelRef";
 										break;
-									case Grammar.TOKEN_LIST_LABEL :
+									case LabelType.TokenList :
 										stName = "rewriteTokenListLabelRef";
 										break;
-									case Grammar.RULE_LIST_LABEL :
+									case LabelType.RuleList :
 										stName = "rewriteRuleListLabelRef";
 										break;
 									}

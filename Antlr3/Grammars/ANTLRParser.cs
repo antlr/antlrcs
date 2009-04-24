@@ -1,4 +1,4 @@
-// $ANTLR 3.1.2 Grammars\\ANTLR.g3 2009-04-18 02:22:01
+// $ANTLR 3.1.2 Grammars\\ANTLR.g3 2009-04-24 11:17:04
 
 // The variable 'variable' is assigned but its value is never used.
 #pragma warning disable 219
@@ -41,6 +41,7 @@
 using ErrorManager = Antlr3.Tool.ErrorManager;
 using Grammar = Antlr3.Tool.Grammar;
 using GrammarAST = Antlr3.Tool.GrammarAST;
+using GrammarType = Antlr3.Tool.GrammarType;
 using IntSet = Antlr3.Misc.IIntSet;
 using StringBuffer = System.Text.StringBuilder;
 using TokenWithIndex = Antlr.Runtime.CommonToken;
@@ -221,7 +222,7 @@ public partial class ANTLRParser : Parser
 	}
 
 	// $ANTLR start "grammar_"
-	// Grammars\\ANTLR.g3:193:0: public grammar_[Grammar g] : ( ACTION )? (cmt= DOC_COMMENT )? gr= grammarType gid= id SEMI ( optionsSpec )? (ig= delegateGrammars )? (ts= tokensSpec )? scopes= attrScopes (a= actions )? r= rules EOF -> ^( $gr $gid ( $cmt)? ( optionsSpec )? ( $ig)? ( $ts)? ( $scopes)? ( $a)? $r) ;
+	// Grammars\\ANTLR.g3:194:0: public grammar_[Grammar g] : ( ACTION )? (cmt= DOC_COMMENT )? gr= grammarType gid= id SEMI ( optionsSpec )? (ig= delegateGrammars )? (ts= tokensSpec )? scopes= attrScopes (a= actions )? r= rules EOF -> ^( $gr $gid ( $cmt)? ( optionsSpec )? ( $ig)? ( $ts)? ( $scopes)? ( $a)? $r) ;
 	public ANTLRParser.grammar__return grammar_( Grammar g )
 	{
 		ANTLRParser.grammar__return retval = new ANTLRParser.grammar__return();
@@ -264,10 +265,10 @@ public partial class ANTLRParser : Parser
 
 		try
 		{
-			// Grammars\\ANTLR.g3:204:3: ( ( ACTION )? (cmt= DOC_COMMENT )? gr= grammarType gid= id SEMI ( optionsSpec )? (ig= delegateGrammars )? (ts= tokensSpec )? scopes= attrScopes (a= actions )? r= rules EOF -> ^( $gr $gid ( $cmt)? ( optionsSpec )? ( $ig)? ( $ts)? ( $scopes)? ( $a)? $r) )
-			// Grammars\\ANTLR.g3:204:3: ( ACTION )? (cmt= DOC_COMMENT )? gr= grammarType gid= id SEMI ( optionsSpec )? (ig= delegateGrammars )? (ts= tokensSpec )? scopes= attrScopes (a= actions )? r= rules EOF
+			// Grammars\\ANTLR.g3:205:3: ( ( ACTION )? (cmt= DOC_COMMENT )? gr= grammarType gid= id SEMI ( optionsSpec )? (ig= delegateGrammars )? (ts= tokensSpec )? scopes= attrScopes (a= actions )? r= rules EOF -> ^( $gr $gid ( $cmt)? ( optionsSpec )? ( $ig)? ( $ts)? ( $scopes)? ( $a)? $r) )
+			// Grammars\\ANTLR.g3:205:3: ( ACTION )? (cmt= DOC_COMMENT )? gr= grammarType gid= id SEMI ( optionsSpec )? (ig= delegateGrammars )? (ts= tokensSpec )? scopes= attrScopes (a= actions )? r= rules EOF
 			{
-			// Grammars\\ANTLR.g3:204:3: ( ACTION )?
+			// Grammars\\ANTLR.g3:205:3: ( ACTION )?
 			int alt1=2;
 			int LA1_0 = input.LA(1);
 
@@ -278,7 +279,7 @@ public partial class ANTLRParser : Parser
 			switch ( alt1 )
 			{
 			case 1:
-				// Grammars\\ANTLR.g3:204:5: ACTION
+				// Grammars\\ANTLR.g3:205:5: ACTION
 				{
 				ACTION1=(IToken)Match(input,ACTION,Follow._ACTION_in_grammar_308); if (state.failed) return retval; 
 				if ( state.backtracking == 0 ) stream_ACTION.Add(ACTION1);
@@ -289,7 +290,7 @@ public partial class ANTLRParser : Parser
 
 			}
 
-			// Grammars\\ANTLR.g3:205:3: (cmt= DOC_COMMENT )?
+			// Grammars\\ANTLR.g3:206:3: (cmt= DOC_COMMENT )?
 			int alt2=2;
 			int LA2_0 = input.LA(1);
 
@@ -300,7 +301,7 @@ public partial class ANTLRParser : Parser
 			switch ( alt2 )
 			{
 			case 1:
-				// Grammars\\ANTLR.g3:205:5: cmt= DOC_COMMENT
+				// Grammars\\ANTLR.g3:206:5: cmt= DOC_COMMENT
 				{
 				cmt=(IToken)Match(input,DOC_COMMENT,Follow._DOC_COMMENT_in_grammar_319); if (state.failed) return retval; 
 				if ( state.backtracking == 0 ) stream_DOC_COMMENT.Add(cmt);
@@ -330,7 +331,7 @@ public partial class ANTLRParser : Parser
 			SEMI2=(IToken)Match(input,SEMI,Follow._SEMI_in_grammar_337); if (state.failed) return retval; 
 			if ( state.backtracking == 0 ) stream_SEMI.Add(SEMI2);
 
-			// Grammars\\ANTLR.g3:207:3: ( optionsSpec )?
+			// Grammars\\ANTLR.g3:208:3: ( optionsSpec )?
 			int alt3=2;
 			int LA3_0 = input.LA(1);
 
@@ -341,7 +342,7 @@ public partial class ANTLRParser : Parser
 			switch ( alt3 )
 			{
 			case 1:
-				// Grammars\\ANTLR.g3:207:5: optionsSpec
+				// Grammars\\ANTLR.g3:208:5: optionsSpec
 				{
 				PushFollow(Follow._optionsSpec_in_grammar_343);
 				optionsSpec3=optionsSpec();
@@ -359,7 +360,7 @@ public partial class ANTLRParser : Parser
 
 			}
 
-			// Grammars\\ANTLR.g3:209:3: (ig= delegateGrammars )?
+			// Grammars\\ANTLR.g3:210:3: (ig= delegateGrammars )?
 			int alt4=2;
 			int LA4_0 = input.LA(1);
 
@@ -370,7 +371,7 @@ public partial class ANTLRParser : Parser
 			switch ( alt4 )
 			{
 			case 1:
-				// Grammars\\ANTLR.g3:209:4: ig= delegateGrammars
+				// Grammars\\ANTLR.g3:210:4: ig= delegateGrammars
 				{
 				PushFollow(Follow._delegateGrammars_in_grammar_357);
 				ig=delegateGrammars();
@@ -384,7 +385,7 @@ public partial class ANTLRParser : Parser
 
 			}
 
-			// Grammars\\ANTLR.g3:210:3: (ts= tokensSpec )?
+			// Grammars\\ANTLR.g3:211:3: (ts= tokensSpec )?
 			int alt5=2;
 			int LA5_0 = input.LA(1);
 
@@ -395,7 +396,7 @@ public partial class ANTLRParser : Parser
 			switch ( alt5 )
 			{
 			case 1:
-				// Grammars\\ANTLR.g3:210:4: ts= tokensSpec
+				// Grammars\\ANTLR.g3:211:4: ts= tokensSpec
 				{
 				PushFollow(Follow._tokensSpec_in_grammar_366);
 				ts=tokensSpec();
@@ -415,7 +416,7 @@ public partial class ANTLRParser : Parser
 			state._fsp--;
 			if (state.failed) return retval;
 			if ( state.backtracking == 0 ) stream_attrScopes.Add(scopes.Tree);
-			// Grammars\\ANTLR.g3:212:3: (a= actions )?
+			// Grammars\\ANTLR.g3:213:3: (a= actions )?
 			int alt6=2;
 			int LA6_0 = input.LA(1);
 
@@ -426,7 +427,7 @@ public partial class ANTLRParser : Parser
 			switch ( alt6 )
 			{
 			case 1:
-				// Grammars\\ANTLR.g3:212:4: a= actions
+				// Grammars\\ANTLR.g3:213:4: a= actions
 				{
 				PushFollow(Follow._actions_in_grammar_381);
 				a=actions();
@@ -472,50 +473,50 @@ public partial class ANTLRParser : Parser
 			RewriteRuleSubtreeStream stream_retval=new RewriteRuleSubtreeStream(adaptor,"rule retval",retval!=null?retval.tree:null);
 
 			root_0 = (GrammarAST)adaptor.Nil();
-			// 215:3: -> ^( $gr $gid ( $cmt)? ( optionsSpec )? ( $ig)? ( $ts)? ( $scopes)? ( $a)? $r)
+			// 216:3: -> ^( $gr $gid ( $cmt)? ( optionsSpec )? ( $ig)? ( $ts)? ( $scopes)? ( $a)? $r)
 			{
-				// Grammars\\ANTLR.g3:215:6: ^( $gr $gid ( $cmt)? ( optionsSpec )? ( $ig)? ( $ts)? ( $scopes)? ( $a)? $r)
+				// Grammars\\ANTLR.g3:216:6: ^( $gr $gid ( $cmt)? ( optionsSpec )? ( $ig)? ( $ts)? ( $scopes)? ( $a)? $r)
 				{
 				GrammarAST root_1 = (GrammarAST)adaptor.Nil();
 				root_1 = (GrammarAST)adaptor.BecomeRoot(stream_gr.NextNode(), root_1);
 
 				adaptor.AddChild(root_1, stream_gid.NextTree());
-				// Grammars\\ANTLR.g3:215:18: ( $cmt)?
+				// Grammars\\ANTLR.g3:216:18: ( $cmt)?
 				if ( stream_cmt.HasNext )
 				{
 					adaptor.AddChild(root_1, stream_cmt.NextNode());
 
 				}
 				stream_cmt.Reset();
-				// Grammars\\ANTLR.g3:215:23: ( optionsSpec )?
+				// Grammars\\ANTLR.g3:216:23: ( optionsSpec )?
 				if ( stream_optionsSpec.HasNext )
 				{
 					adaptor.AddChild(root_1, stream_optionsSpec.NextTree());
 
 				}
 				stream_optionsSpec.Reset();
-				// Grammars\\ANTLR.g3:215:37: ( $ig)?
+				// Grammars\\ANTLR.g3:216:37: ( $ig)?
 				if ( stream_ig.HasNext )
 				{
 					adaptor.AddChild(root_1, stream_ig.NextTree());
 
 				}
 				stream_ig.Reset();
-				// Grammars\\ANTLR.g3:215:42: ( $ts)?
+				// Grammars\\ANTLR.g3:216:42: ( $ts)?
 				if ( stream_ts.HasNext )
 				{
 					adaptor.AddChild(root_1, stream_ts.NextTree());
 
 				}
 				stream_ts.Reset();
-				// Grammars\\ANTLR.g3:215:47: ( $scopes)?
+				// Grammars\\ANTLR.g3:216:47: ( $scopes)?
 				if ( stream_scopes.HasNext )
 				{
 					adaptor.AddChild(root_1, stream_scopes.NextTree());
 
 				}
 				stream_scopes.Reset();
-				// Grammars\\ANTLR.g3:215:56: ( $a)?
+				// Grammars\\ANTLR.g3:216:56: ( $a)?
 				if ( stream_a.HasNext )
 				{
 					adaptor.AddChild(root_1, stream_a.NextTree());
@@ -570,7 +571,7 @@ public partial class ANTLRParser : Parser
 	}
 
 	// $ANTLR start "grammarType"
-	// Grammars\\ANTLR.g3:218:0: grammarType : ( 'lexer' gr= 'grammar' -> LEXER_GRAMMAR[$gr] | 'parser' gr= 'grammar' -> PARSER_GRAMMAR[$gr] | 'tree' gr= 'grammar' -> TREE_GRAMMAR[$gr] |gr= 'grammar' -> COMBINED_GRAMMAR[$gr] ) ;
+	// Grammars\\ANTLR.g3:219:0: grammarType : ( 'lexer' gr= 'grammar' -> LEXER_GRAMMAR[$gr] | 'parser' gr= 'grammar' -> PARSER_GRAMMAR[$gr] | 'tree' gr= 'grammar' -> TREE_GRAMMAR[$gr] |gr= 'grammar' -> COMBINED_GRAMMAR[$gr] ) ;
 	private ANTLRParser.grammarType_return grammarType(  )
 	{
 		ANTLRParser.grammarType_return retval = new ANTLRParser.grammarType_return();
@@ -594,10 +595,10 @@ public partial class ANTLRParser : Parser
 
 		try
 		{
-			// Grammars\\ANTLR.g3:219:4: ( ( 'lexer' gr= 'grammar' -> LEXER_GRAMMAR[$gr] | 'parser' gr= 'grammar' -> PARSER_GRAMMAR[$gr] | 'tree' gr= 'grammar' -> TREE_GRAMMAR[$gr] |gr= 'grammar' -> COMBINED_GRAMMAR[$gr] ) )
-			// Grammars\\ANTLR.g3:219:4: ( 'lexer' gr= 'grammar' -> LEXER_GRAMMAR[$gr] | 'parser' gr= 'grammar' -> PARSER_GRAMMAR[$gr] | 'tree' gr= 'grammar' -> TREE_GRAMMAR[$gr] |gr= 'grammar' -> COMBINED_GRAMMAR[$gr] )
+			// Grammars\\ANTLR.g3:220:4: ( ( 'lexer' gr= 'grammar' -> LEXER_GRAMMAR[$gr] | 'parser' gr= 'grammar' -> PARSER_GRAMMAR[$gr] | 'tree' gr= 'grammar' -> TREE_GRAMMAR[$gr] |gr= 'grammar' -> COMBINED_GRAMMAR[$gr] ) )
+			// Grammars\\ANTLR.g3:220:4: ( 'lexer' gr= 'grammar' -> LEXER_GRAMMAR[$gr] | 'parser' gr= 'grammar' -> PARSER_GRAMMAR[$gr] | 'tree' gr= 'grammar' -> TREE_GRAMMAR[$gr] |gr= 'grammar' -> COMBINED_GRAMMAR[$gr] )
 			{
-			// Grammars\\ANTLR.g3:219:4: ( 'lexer' gr= 'grammar' -> LEXER_GRAMMAR[$gr] | 'parser' gr= 'grammar' -> PARSER_GRAMMAR[$gr] | 'tree' gr= 'grammar' -> TREE_GRAMMAR[$gr] |gr= 'grammar' -> COMBINED_GRAMMAR[$gr] )
+			// Grammars\\ANTLR.g3:220:4: ( 'lexer' gr= 'grammar' -> LEXER_GRAMMAR[$gr] | 'parser' gr= 'grammar' -> PARSER_GRAMMAR[$gr] | 'tree' gr= 'grammar' -> TREE_GRAMMAR[$gr] |gr= 'grammar' -> COMBINED_GRAMMAR[$gr] )
 			int alt7=4;
 			switch ( input.LA(1) )
 			{
@@ -633,7 +634,7 @@ public partial class ANTLRParser : Parser
 			switch ( alt7 )
 			{
 			case 1:
-				// Grammars\\ANTLR.g3:219:6: 'lexer' gr= 'grammar'
+				// Grammars\\ANTLR.g3:220:6: 'lexer' gr= 'grammar'
 				{
 				string_literal5=(IToken)Match(input,LEXER,Follow._LEXER_in_grammarType444); if (state.failed) return retval; 
 				if ( state.backtracking == 0 ) stream_LEXER.Add(string_literal5);
@@ -643,7 +644,7 @@ public partial class ANTLRParser : Parser
 
 				if ( state.backtracking == 0 )
 				{
-					GrammarType=LEXER_GRAMMAR; Grammar.type = Grammar.LEXER;
+					GrammarType=GrammarType.Lexer; Grammar.type = GrammarType.Lexer;
 				}
 
 
@@ -660,7 +661,7 @@ public partial class ANTLRParser : Parser
 				RewriteRuleSubtreeStream stream_retval=new RewriteRuleSubtreeStream(adaptor,"rule retval",retval!=null?retval.tree:null);
 
 				root_0 = (GrammarAST)adaptor.Nil();
-				// 220:4: -> LEXER_GRAMMAR[$gr]
+				// 221:4: -> LEXER_GRAMMAR[$gr]
 				{
 					adaptor.AddChild(root_0, (GrammarAST)adaptor.Create(LEXER_GRAMMAR, gr));
 
@@ -673,7 +674,7 @@ public partial class ANTLRParser : Parser
 				}
 				break;
 			case 2:
-				// Grammars\\ANTLR.g3:221:5: 'parser' gr= 'grammar'
+				// Grammars\\ANTLR.g3:222:5: 'parser' gr= 'grammar'
 				{
 				string_literal6=(IToken)Match(input,PARSER,Follow._PARSER_in_grammarType472); if (state.failed) return retval; 
 				if ( state.backtracking == 0 ) stream_PARSER.Add(string_literal6);
@@ -683,7 +684,7 @@ public partial class ANTLRParser : Parser
 
 				if ( state.backtracking == 0 )
 				{
-					GrammarType=PARSER_GRAMMAR; Grammar.type = Grammar.PARSER;
+					GrammarType=GrammarType.Parser; Grammar.type = GrammarType.Parser;
 				}
 
 
@@ -700,7 +701,7 @@ public partial class ANTLRParser : Parser
 				RewriteRuleSubtreeStream stream_retval=new RewriteRuleSubtreeStream(adaptor,"rule retval",retval!=null?retval.tree:null);
 
 				root_0 = (GrammarAST)adaptor.Nil();
-				// 222:4: -> PARSER_GRAMMAR[$gr]
+				// 223:4: -> PARSER_GRAMMAR[$gr]
 				{
 					adaptor.AddChild(root_0, (GrammarAST)adaptor.Create(PARSER_GRAMMAR, gr));
 
@@ -713,7 +714,7 @@ public partial class ANTLRParser : Parser
 				}
 				break;
 			case 3:
-				// Grammars\\ANTLR.g3:223:5: 'tree' gr= 'grammar'
+				// Grammars\\ANTLR.g3:224:5: 'tree' gr= 'grammar'
 				{
 				string_literal7=(IToken)Match(input,TREE,Follow._TREE_in_grammarType497); if (state.failed) return retval; 
 				if ( state.backtracking == 0 ) stream_TREE.Add(string_literal7);
@@ -723,7 +724,7 @@ public partial class ANTLRParser : Parser
 
 				if ( state.backtracking == 0 )
 				{
-					GrammarType=TREE_GRAMMAR; Grammar.type = Grammar.TREE_PARSER;
+					GrammarType=GrammarType.TreeParser; Grammar.type = GrammarType.TreeParser;
 				}
 
 
@@ -740,7 +741,7 @@ public partial class ANTLRParser : Parser
 				RewriteRuleSubtreeStream stream_retval=new RewriteRuleSubtreeStream(adaptor,"rule retval",retval!=null?retval.tree:null);
 
 				root_0 = (GrammarAST)adaptor.Nil();
-				// 224:4: -> TREE_GRAMMAR[$gr]
+				// 225:4: -> TREE_GRAMMAR[$gr]
 				{
 					adaptor.AddChild(root_0, (GrammarAST)adaptor.Create(TREE_GRAMMAR, gr));
 
@@ -753,14 +754,14 @@ public partial class ANTLRParser : Parser
 				}
 				break;
 			case 4:
-				// Grammars\\ANTLR.g3:225:8: gr= 'grammar'
+				// Grammars\\ANTLR.g3:226:8: gr= 'grammar'
 				{
 				gr=(IToken)Match(input,GRAMMAR,Follow._GRAMMAR_in_grammarType526); if (state.failed) return retval; 
 				if ( state.backtracking == 0 ) stream_GRAMMAR.Add(gr);
 
 				if ( state.backtracking == 0 )
 				{
-					GrammarType=COMBINED_GRAMMAR; Grammar.type = Grammar.COMBINED;
+					GrammarType=GrammarType.Combined; Grammar.type = GrammarType.Combined;
 				}
 
 
@@ -777,7 +778,7 @@ public partial class ANTLRParser : Parser
 				RewriteRuleSubtreeStream stream_retval=new RewriteRuleSubtreeStream(adaptor,"rule retval",retval!=null?retval.tree:null);
 
 				root_0 = (GrammarAST)adaptor.Nil();
-				// 226:4: -> COMBINED_GRAMMAR[$gr]
+				// 227:4: -> COMBINED_GRAMMAR[$gr]
 				{
 					adaptor.AddChild(root_0, (GrammarAST)adaptor.Create(COMBINED_GRAMMAR, gr));
 
@@ -824,7 +825,7 @@ public partial class ANTLRParser : Parser
 	}
 
 	// $ANTLR start "actions"
-	// Grammars\\ANTLR.g3:230:0: actions : ( action )+ ;
+	// Grammars\\ANTLR.g3:231:0: actions : ( action )+ ;
 	private ANTLRParser.actions_return actions(  )
 	{
 		ANTLRParser.actions_return retval = new ANTLRParser.actions_return();
@@ -837,12 +838,12 @@ public partial class ANTLRParser : Parser
 
 		try
 		{
-			// Grammars\\ANTLR.g3:231:4: ( ( action )+ )
-			// Grammars\\ANTLR.g3:231:4: ( action )+
+			// Grammars\\ANTLR.g3:232:4: ( ( action )+ )
+			// Grammars\\ANTLR.g3:232:4: ( action )+
 			{
 			root_0 = (GrammarAST)adaptor.Nil();
 
-			// Grammars\\ANTLR.g3:231:4: ( action )+
+			// Grammars\\ANTLR.g3:232:4: ( action )+
 			int cnt8=0;
 			for ( ; ; )
 			{
@@ -858,7 +859,7 @@ public partial class ANTLRParser : Parser
 				switch ( alt8 )
 				{
 				case 1:
-					// Grammars\\ANTLR.g3:231:5: action
+					// Grammars\\ANTLR.g3:232:5: action
 					{
 					PushFollow(Follow._action_in_actions553);
 					action8=action();
@@ -916,7 +917,7 @@ public partial class ANTLRParser : Parser
 	}
 
 	// $ANTLR start "action"
-	// Grammars\\ANTLR.g3:235:0: action : AMPERSAND ( actionScopeName COLON COLON )? id ACTION ;
+	// Grammars\\ANTLR.g3:236:0: action : AMPERSAND ( actionScopeName COLON COLON )? id ACTION ;
 	private ANTLRParser.action_return action(  )
 	{
 		ANTLRParser.action_return retval = new ANTLRParser.action_return();
@@ -938,8 +939,8 @@ public partial class ANTLRParser : Parser
 
 		try
 		{
-			// Grammars\\ANTLR.g3:236:4: ( AMPERSAND ( actionScopeName COLON COLON )? id ACTION )
-			// Grammars\\ANTLR.g3:236:4: AMPERSAND ( actionScopeName COLON COLON )? id ACTION
+			// Grammars\\ANTLR.g3:237:4: ( AMPERSAND ( actionScopeName COLON COLON )? id ACTION )
+			// Grammars\\ANTLR.g3:237:4: AMPERSAND ( actionScopeName COLON COLON )? id ACTION
 			{
 			root_0 = (GrammarAST)adaptor.Nil();
 
@@ -948,7 +949,7 @@ public partial class ANTLRParser : Parser
 			AMPERSAND9_tree = (GrammarAST)adaptor.Create(AMPERSAND9);
 			root_0 = (GrammarAST)adaptor.BecomeRoot(AMPERSAND9_tree, root_0);
 			}
-			// Grammars\\ANTLR.g3:236:15: ( actionScopeName COLON COLON )?
+			// Grammars\\ANTLR.g3:237:15: ( actionScopeName COLON COLON )?
 			int alt9=2;
 			switch ( input.LA(1) )
 			{
@@ -983,7 +984,7 @@ public partial class ANTLRParser : Parser
 			switch ( alt9 )
 			{
 			case 1:
-				// Grammars\\ANTLR.g3:236:16: actionScopeName COLON COLON
+				// Grammars\\ANTLR.g3:237:16: actionScopeName COLON COLON
 				{
 				PushFollow(Follow._actionScopeName_in_action572);
 				actionScopeName10=actionScopeName();
@@ -1042,7 +1043,7 @@ public partial class ANTLRParser : Parser
 	}
 
 	// $ANTLR start "actionScopeName"
-	// Grammars\\ANTLR.g3:242:0: actionScopeName : ( id |l= 'lexer' -> ID[l] |p= 'parser' -> ID[p] );
+	// Grammars\\ANTLR.g3:243:0: actionScopeName : ( id |l= 'lexer' -> ID[l] |p= 'parser' -> ID[p] );
 	private ANTLRParser.actionScopeName_return actionScopeName(  )
 	{
 		ANTLRParser.actionScopeName_return retval = new ANTLRParser.actionScopeName_return();
@@ -1061,7 +1062,7 @@ public partial class ANTLRParser : Parser
 
 		try
 		{
-			// Grammars\\ANTLR.g3:243:4: ( id |l= 'lexer' -> ID[l] |p= 'parser' -> ID[p] )
+			// Grammars\\ANTLR.g3:244:4: ( id |l= 'lexer' -> ID[l] |p= 'parser' -> ID[p] )
 			int alt10=3;
 			switch ( input.LA(1) )
 			{
@@ -1093,7 +1094,7 @@ public partial class ANTLRParser : Parser
 			switch ( alt10 )
 			{
 			case 1:
-				// Grammars\\ANTLR.g3:243:4: id
+				// Grammars\\ANTLR.g3:244:4: id
 				{
 				root_0 = (GrammarAST)adaptor.Nil();
 
@@ -1107,7 +1108,7 @@ public partial class ANTLRParser : Parser
 				}
 				break;
 			case 2:
-				// Grammars\\ANTLR.g3:244:4: l= 'lexer'
+				// Grammars\\ANTLR.g3:245:4: l= 'lexer'
 				{
 				l=(IToken)Match(input,LEXER,Follow._LEXER_in_actionScopeName604); if (state.failed) return retval; 
 				if ( state.backtracking == 0 ) stream_LEXER.Add(l);
@@ -1127,7 +1128,7 @@ public partial class ANTLRParser : Parser
 				RewriteRuleSubtreeStream stream_retval=new RewriteRuleSubtreeStream(adaptor,"rule retval",retval!=null?retval.tree:null);
 
 				root_0 = (GrammarAST)adaptor.Nil();
-				// 245:3: -> ID[l]
+				// 246:3: -> ID[l]
 				{
 					adaptor.AddChild(root_0, (GrammarAST)adaptor.Create(ID, l));
 
@@ -1140,7 +1141,7 @@ public partial class ANTLRParser : Parser
 				}
 				break;
 			case 3:
-				// Grammars\\ANTLR.g3:246:4: p= 'parser'
+				// Grammars\\ANTLR.g3:247:4: p= 'parser'
 				{
 				p=(IToken)Match(input,PARSER,Follow._PARSER_in_actionScopeName618); if (state.failed) return retval; 
 				if ( state.backtracking == 0 ) stream_PARSER.Add(p);
@@ -1160,7 +1161,7 @@ public partial class ANTLRParser : Parser
 				RewriteRuleSubtreeStream stream_retval=new RewriteRuleSubtreeStream(adaptor,"rule retval",retval!=null?retval.tree:null);
 
 				root_0 = (GrammarAST)adaptor.Nil();
-				// 247:3: -> ID[p]
+				// 248:3: -> ID[p]
 				{
 					adaptor.AddChild(root_0, (GrammarAST)adaptor.Create(ID, p));
 
@@ -1204,7 +1205,7 @@ public partial class ANTLRParser : Parser
 	}
 
 	// $ANTLR start "optionsSpec"
-	// Grammars\\ANTLR.g3:250:0: optionsSpec returns [IDictionary<string, object> opts=new Dictionary<string, object>()] : OPTIONS ( option[$opts] SEMI )+ RCURLY ;
+	// Grammars\\ANTLR.g3:251:0: optionsSpec returns [IDictionary<string, object> opts=new Dictionary<string, object>()] : OPTIONS ( option[$opts] SEMI )+ RCURLY ;
 	private ANTLRParser.optionsSpec_return optionsSpec(  )
 	{
 		ANTLRParser.optionsSpec_return retval = new ANTLRParser.optionsSpec_return();
@@ -1223,8 +1224,8 @@ public partial class ANTLRParser : Parser
 
 		try
 		{
-			// Grammars\\ANTLR.g3:251:4: ( OPTIONS ( option[$opts] SEMI )+ RCURLY )
-			// Grammars\\ANTLR.g3:251:4: OPTIONS ( option[$opts] SEMI )+ RCURLY
+			// Grammars\\ANTLR.g3:252:4: ( OPTIONS ( option[$opts] SEMI )+ RCURLY )
+			// Grammars\\ANTLR.g3:252:4: OPTIONS ( option[$opts] SEMI )+ RCURLY
 			{
 			root_0 = (GrammarAST)adaptor.Nil();
 
@@ -1233,7 +1234,7 @@ public partial class ANTLRParser : Parser
 			OPTIONS16_tree = (GrammarAST)adaptor.Create(OPTIONS16);
 			root_0 = (GrammarAST)adaptor.BecomeRoot(OPTIONS16_tree, root_0);
 			}
-			// Grammars\\ANTLR.g3:251:13: ( option[$opts] SEMI )+
+			// Grammars\\ANTLR.g3:252:13: ( option[$opts] SEMI )+
 			int cnt11=0;
 			for ( ; ; )
 			{
@@ -1249,7 +1250,7 @@ public partial class ANTLRParser : Parser
 				switch ( alt11 )
 				{
 				case 1:
-					// Grammars\\ANTLR.g3:251:14: option[$opts] SEMI
+					// Grammars\\ANTLR.g3:252:14: option[$opts] SEMI
 					{
 					PushFollow(Follow._option_in_optionsSpec644);
 					option17=option(retval.opts);
@@ -1309,7 +1310,7 @@ public partial class ANTLRParser : Parser
 	}
 
 	// $ANTLR start "option"
-	// Grammars\\ANTLR.g3:254:0: option[IDictionary<string, object> opts] : id ASSIGN optionValue ;
+	// Grammars\\ANTLR.g3:255:0: option[IDictionary<string, object> opts] : id ASSIGN optionValue ;
 	private ANTLRParser.option_return option( IDictionary<string, object> opts )
 	{
 		ANTLRParser.option_return retval = new ANTLRParser.option_return();
@@ -1325,8 +1326,8 @@ public partial class ANTLRParser : Parser
 
 		try
 		{
-			// Grammars\\ANTLR.g3:255:4: ( id ASSIGN optionValue )
-			// Grammars\\ANTLR.g3:255:4: id ASSIGN optionValue
+			// Grammars\\ANTLR.g3:256:4: ( id ASSIGN optionValue )
+			// Grammars\\ANTLR.g3:256:4: id ASSIGN optionValue
 			{
 			root_0 = (GrammarAST)adaptor.Nil();
 
@@ -1386,7 +1387,7 @@ public partial class ANTLRParser : Parser
 	}
 
 	// $ANTLR start "optionValue"
-	// Grammars\\ANTLR.g3:261:0: optionValue returns [object value=null] : (x= id |s= STRING_LITERAL |c= CHAR_LITERAL |i= INT |ss= STAR -> STRING_LITERAL[$ss] );
+	// Grammars\\ANTLR.g3:262:0: optionValue returns [object value=null] : (x= id |s= STRING_LITERAL |c= CHAR_LITERAL |i= INT |ss= STAR -> STRING_LITERAL[$ss] );
 	private ANTLRParser.optionValue_return optionValue(  )
 	{
 		ANTLRParser.optionValue_return retval = new ANTLRParser.optionValue_return();
@@ -1408,7 +1409,7 @@ public partial class ANTLRParser : Parser
 
 		try
 		{
-			// Grammars\\ANTLR.g3:262:4: (x= id |s= STRING_LITERAL |c= CHAR_LITERAL |i= INT |ss= STAR -> STRING_LITERAL[$ss] )
+			// Grammars\\ANTLR.g3:263:4: (x= id |s= STRING_LITERAL |c= CHAR_LITERAL |i= INT |ss= STAR -> STRING_LITERAL[$ss] )
 			int alt12=5;
 			switch ( input.LA(1) )
 			{
@@ -1450,7 +1451,7 @@ public partial class ANTLRParser : Parser
 			switch ( alt12 )
 			{
 			case 1:
-				// Grammars\\ANTLR.g3:262:4: x= id
+				// Grammars\\ANTLR.g3:263:4: x= id
 				{
 				root_0 = (GrammarAST)adaptor.Nil();
 
@@ -1468,7 +1469,7 @@ public partial class ANTLRParser : Parser
 				}
 				break;
 			case 2:
-				// Grammars\\ANTLR.g3:263:4: s= STRING_LITERAL
+				// Grammars\\ANTLR.g3:264:4: s= STRING_LITERAL
 				{
 				root_0 = (GrammarAST)adaptor.Nil();
 
@@ -1487,7 +1488,7 @@ public partial class ANTLRParser : Parser
 				}
 				break;
 			case 3:
-				// Grammars\\ANTLR.g3:266:4: c= CHAR_LITERAL
+				// Grammars\\ANTLR.g3:267:4: c= CHAR_LITERAL
 				{
 				root_0 = (GrammarAST)adaptor.Nil();
 
@@ -1506,7 +1507,7 @@ public partial class ANTLRParser : Parser
 				}
 				break;
 			case 4:
-				// Grammars\\ANTLR.g3:269:4: i= INT
+				// Grammars\\ANTLR.g3:270:4: i= INT
 				{
 				root_0 = (GrammarAST)adaptor.Nil();
 
@@ -1523,7 +1524,7 @@ public partial class ANTLRParser : Parser
 				}
 				break;
 			case 5:
-				// Grammars\\ANTLR.g3:270:4: ss= STAR
+				// Grammars\\ANTLR.g3:271:4: ss= STAR
 				{
 				ss=(IToken)Match(input,STAR,Follow._STAR_in_optionValue743); if (state.failed) return retval; 
 				if ( state.backtracking == 0 ) stream_STAR.Add(ss);
@@ -1547,7 +1548,7 @@ public partial class ANTLRParser : Parser
 				RewriteRuleSubtreeStream stream_retval=new RewriteRuleSubtreeStream(adaptor,"rule retval",retval!=null?retval.tree:null);
 
 				root_0 = (GrammarAST)adaptor.Nil();
-				// 271:3: -> STRING_LITERAL[$ss]
+				// 272:3: -> STRING_LITERAL[$ss]
 				{
 					adaptor.AddChild(root_0, (GrammarAST)adaptor.Create(STRING_LITERAL, ss));
 
@@ -1590,7 +1591,7 @@ public partial class ANTLRParser : Parser
 	}
 
 	// $ANTLR start "delegateGrammars"
-	// Grammars\\ANTLR.g3:275:0: delegateGrammars : 'import' delegateGrammar ( COMMA delegateGrammar )* SEMI ;
+	// Grammars\\ANTLR.g3:276:0: delegateGrammars : 'import' delegateGrammar ( COMMA delegateGrammar )* SEMI ;
 	private ANTLRParser.delegateGrammars_return delegateGrammars(  )
 	{
 		ANTLRParser.delegateGrammars_return retval = new ANTLRParser.delegateGrammars_return();
@@ -1610,8 +1611,8 @@ public partial class ANTLRParser : Parser
 
 		try
 		{
-			// Grammars\\ANTLR.g3:276:4: ( 'import' delegateGrammar ( COMMA delegateGrammar )* SEMI )
-			// Grammars\\ANTLR.g3:276:4: 'import' delegateGrammar ( COMMA delegateGrammar )* SEMI
+			// Grammars\\ANTLR.g3:277:4: ( 'import' delegateGrammar ( COMMA delegateGrammar )* SEMI )
+			// Grammars\\ANTLR.g3:277:4: 'import' delegateGrammar ( COMMA delegateGrammar )* SEMI
 			{
 			root_0 = (GrammarAST)adaptor.Nil();
 
@@ -1626,7 +1627,7 @@ public partial class ANTLRParser : Parser
 			state._fsp--;
 			if (state.failed) return retval;
 			if ( state.backtracking == 0 ) adaptor.AddChild(root_0, delegateGrammar24.Tree);
-			// Grammars\\ANTLR.g3:276:30: ( COMMA delegateGrammar )*
+			// Grammars\\ANTLR.g3:277:30: ( COMMA delegateGrammar )*
 			for ( ; ; )
 			{
 				int alt13=2;
@@ -1641,7 +1642,7 @@ public partial class ANTLRParser : Parser
 				switch ( alt13 )
 				{
 				case 1:
-					// Grammars\\ANTLR.g3:276:31: COMMA delegateGrammar
+					// Grammars\\ANTLR.g3:277:31: COMMA delegateGrammar
 					{
 					COMMA25=(IToken)Match(input,COMMA,Follow._COMMA_in_delegateGrammars774); if (state.failed) return retval;
 					PushFollow(Follow._delegateGrammar_in_delegateGrammars777);
@@ -1696,7 +1697,7 @@ public partial class ANTLRParser : Parser
 	}
 
 	// $ANTLR start "delegateGrammar"
-	// Grammars\\ANTLR.g3:279:0: delegateGrammar : (lab= id ASSIGN g= id |g2= id );
+	// Grammars\\ANTLR.g3:280:0: delegateGrammar : (lab= id ASSIGN g= id |g2= id );
 	private ANTLRParser.delegateGrammar_return delegateGrammar(  )
 	{
 		ANTLRParser.delegateGrammar_return retval = new ANTLRParser.delegateGrammar_return();
@@ -1713,7 +1714,7 @@ public partial class ANTLRParser : Parser
 
 		try
 		{
-			// Grammars\\ANTLR.g3:280:4: (lab= id ASSIGN g= id |g2= id )
+			// Grammars\\ANTLR.g3:281:4: (lab= id ASSIGN g= id |g2= id )
 			int alt14=2;
 			int LA14_0 = input.LA(1);
 
@@ -1767,7 +1768,7 @@ public partial class ANTLRParser : Parser
 			switch ( alt14 )
 			{
 			case 1:
-				// Grammars\\ANTLR.g3:280:4: lab= id ASSIGN g= id
+				// Grammars\\ANTLR.g3:281:4: lab= id ASSIGN g= id
 				{
 				root_0 = (GrammarAST)adaptor.Nil();
 
@@ -1796,7 +1797,7 @@ public partial class ANTLRParser : Parser
 				}
 				break;
 			case 2:
-				// Grammars\\ANTLR.g3:281:4: g2= id
+				// Grammars\\ANTLR.g3:282:4: g2= id
 				{
 				root_0 = (GrammarAST)adaptor.Nil();
 
@@ -1844,7 +1845,7 @@ public partial class ANTLRParser : Parser
 	}
 
 	// $ANTLR start "tokensSpec"
-	// Grammars\\ANTLR.g3:284:0: tokensSpec : TOKENS ( tokenSpec )+ RCURLY ;
+	// Grammars\\ANTLR.g3:285:0: tokensSpec : TOKENS ( tokenSpec )+ RCURLY ;
 	private ANTLRParser.tokensSpec_return tokensSpec(  )
 	{
 		ANTLRParser.tokensSpec_return retval = new ANTLRParser.tokensSpec_return();
@@ -1861,8 +1862,8 @@ public partial class ANTLRParser : Parser
 
 		try
 		{
-			// Grammars\\ANTLR.g3:285:4: ( TOKENS ( tokenSpec )+ RCURLY )
-			// Grammars\\ANTLR.g3:285:4: TOKENS ( tokenSpec )+ RCURLY
+			// Grammars\\ANTLR.g3:286:4: ( TOKENS ( tokenSpec )+ RCURLY )
+			// Grammars\\ANTLR.g3:286:4: TOKENS ( tokenSpec )+ RCURLY
 			{
 			root_0 = (GrammarAST)adaptor.Nil();
 
@@ -1871,7 +1872,7 @@ public partial class ANTLRParser : Parser
 			TOKENS29_tree = (GrammarAST)adaptor.Create(TOKENS29);
 			root_0 = (GrammarAST)adaptor.BecomeRoot(TOKENS29_tree, root_0);
 			}
-			// Grammars\\ANTLR.g3:286:4: ( tokenSpec )+
+			// Grammars\\ANTLR.g3:287:4: ( tokenSpec )+
 			int cnt15=0;
 			for ( ; ; )
 			{
@@ -1887,7 +1888,7 @@ public partial class ANTLRParser : Parser
 				switch ( alt15 )
 				{
 				case 1:
-					// Grammars\\ANTLR.g3:286:6: tokenSpec
+					// Grammars\\ANTLR.g3:287:6: tokenSpec
 					{
 					PushFollow(Follow._tokenSpec_in_tokensSpec846);
 					tokenSpec30=tokenSpec();
@@ -1946,7 +1947,7 @@ public partial class ANTLRParser : Parser
 	}
 
 	// $ANTLR start "tokenSpec"
-	// Grammars\\ANTLR.g3:290:0: tokenSpec : TOKEN_REF ( ASSIGN ( STRING_LITERAL | CHAR_LITERAL ) )? SEMI ;
+	// Grammars\\ANTLR.g3:291:0: tokenSpec : TOKEN_REF ( ASSIGN ( STRING_LITERAL | CHAR_LITERAL ) )? SEMI ;
 	private ANTLRParser.tokenSpec_return tokenSpec(  )
 	{
 		ANTLRParser.tokenSpec_return retval = new ANTLRParser.tokenSpec_return();
@@ -1966,8 +1967,8 @@ public partial class ANTLRParser : Parser
 
 		try
 		{
-			// Grammars\\ANTLR.g3:291:4: ( TOKEN_REF ( ASSIGN ( STRING_LITERAL | CHAR_LITERAL ) )? SEMI )
-			// Grammars\\ANTLR.g3:291:4: TOKEN_REF ( ASSIGN ( STRING_LITERAL | CHAR_LITERAL ) )? SEMI
+			// Grammars\\ANTLR.g3:292:4: ( TOKEN_REF ( ASSIGN ( STRING_LITERAL | CHAR_LITERAL ) )? SEMI )
+			// Grammars\\ANTLR.g3:292:4: TOKEN_REF ( ASSIGN ( STRING_LITERAL | CHAR_LITERAL ) )? SEMI
 			{
 			root_0 = (GrammarAST)adaptor.Nil();
 
@@ -1976,7 +1977,7 @@ public partial class ANTLRParser : Parser
 			TOKEN_REF32_tree = (GrammarAST)adaptor.Create(TOKEN_REF32);
 			adaptor.AddChild(root_0, TOKEN_REF32_tree);
 			}
-			// Grammars\\ANTLR.g3:291:14: ( ASSIGN ( STRING_LITERAL | CHAR_LITERAL ) )?
+			// Grammars\\ANTLR.g3:292:14: ( ASSIGN ( STRING_LITERAL | CHAR_LITERAL ) )?
 			int alt16=2;
 			int LA16_0 = input.LA(1);
 
@@ -1987,7 +1988,7 @@ public partial class ANTLRParser : Parser
 			switch ( alt16 )
 			{
 			case 1:
-				// Grammars\\ANTLR.g3:291:16: ASSIGN ( STRING_LITERAL | CHAR_LITERAL )
+				// Grammars\\ANTLR.g3:292:16: ASSIGN ( STRING_LITERAL | CHAR_LITERAL )
 				{
 				ASSIGN33=(IToken)Match(input,ASSIGN,Follow._ASSIGN_in_tokenSpec869); if (state.failed) return retval;
 				if ( state.backtracking == 0 ) {
@@ -2047,7 +2048,7 @@ public partial class ANTLRParser : Parser
 	}
 
 	// $ANTLR start "attrScopes"
-	// Grammars\\ANTLR.g3:294:0: attrScopes : ( attrScope )* ;
+	// Grammars\\ANTLR.g3:295:0: attrScopes : ( attrScope )* ;
 	private ANTLRParser.attrScopes_return attrScopes(  )
 	{
 		ANTLRParser.attrScopes_return retval = new ANTLRParser.attrScopes_return();
@@ -2060,12 +2061,12 @@ public partial class ANTLRParser : Parser
 
 		try
 		{
-			// Grammars\\ANTLR.g3:295:4: ( ( attrScope )* )
-			// Grammars\\ANTLR.g3:295:4: ( attrScope )*
+			// Grammars\\ANTLR.g3:296:4: ( ( attrScope )* )
+			// Grammars\\ANTLR.g3:296:4: ( attrScope )*
 			{
 			root_0 = (GrammarAST)adaptor.Nil();
 
-			// Grammars\\ANTLR.g3:295:4: ( attrScope )*
+			// Grammars\\ANTLR.g3:296:4: ( attrScope )*
 			for ( ; ; )
 			{
 				int alt17=2;
@@ -2080,7 +2081,7 @@ public partial class ANTLRParser : Parser
 				switch ( alt17 )
 				{
 				case 1:
-					// Grammars\\ANTLR.g3:295:5: attrScope
+					// Grammars\\ANTLR.g3:296:5: attrScope
 					{
 					PushFollow(Follow._attrScope_in_attrScopes894);
 					attrScope36=attrScope();
@@ -2133,7 +2134,7 @@ public partial class ANTLRParser : Parser
 	}
 
 	// $ANTLR start "attrScope"
-	// Grammars\\ANTLR.g3:298:0: attrScope : 'scope' id ( ruleActions )? ACTION ;
+	// Grammars\\ANTLR.g3:299:0: attrScope : 'scope' id ( ruleActions )? ACTION ;
 	private ANTLRParser.attrScope_return attrScope(  )
 	{
 		ANTLRParser.attrScope_return retval = new ANTLRParser.attrScope_return();
@@ -2151,8 +2152,8 @@ public partial class ANTLRParser : Parser
 
 		try
 		{
-			// Grammars\\ANTLR.g3:299:4: ( 'scope' id ( ruleActions )? ACTION )
-			// Grammars\\ANTLR.g3:299:4: 'scope' id ( ruleActions )? ACTION
+			// Grammars\\ANTLR.g3:300:4: ( 'scope' id ( ruleActions )? ACTION )
+			// Grammars\\ANTLR.g3:300:4: 'scope' id ( ruleActions )? ACTION
 			{
 			root_0 = (GrammarAST)adaptor.Nil();
 
@@ -2167,7 +2168,7 @@ public partial class ANTLRParser : Parser
 			state._fsp--;
 			if (state.failed) return retval;
 			if ( state.backtracking == 0 ) adaptor.AddChild(root_0, id38.Tree);
-			// Grammars\\ANTLR.g3:299:16: ( ruleActions )?
+			// Grammars\\ANTLR.g3:300:16: ( ruleActions )?
 			int alt18=2;
 			int LA18_0 = input.LA(1);
 
@@ -2178,7 +2179,7 @@ public partial class ANTLRParser : Parser
 			switch ( alt18 )
 			{
 			case 1:
-				// Grammars\\ANTLR.g3:299:0: ruleActions
+				// Grammars\\ANTLR.g3:300:0: ruleActions
 				{
 				PushFollow(Follow._ruleActions_in_attrScope912);
 				ruleActions39=ruleActions();
@@ -2229,7 +2230,7 @@ public partial class ANTLRParser : Parser
 	}
 
 	// $ANTLR start "rules"
-	// Grammars\\ANTLR.g3:302:0: rules : ( rule )+ ;
+	// Grammars\\ANTLR.g3:303:0: rules : ( rule )+ ;
 	private ANTLRParser.rules_return rules(  )
 	{
 		ANTLRParser.rules_return retval = new ANTLRParser.rules_return();
@@ -2242,12 +2243,12 @@ public partial class ANTLRParser : Parser
 
 		try
 		{
-			// Grammars\\ANTLR.g3:303:4: ( ( rule )+ )
-			// Grammars\\ANTLR.g3:303:4: ( rule )+
+			// Grammars\\ANTLR.g3:304:4: ( ( rule )+ )
+			// Grammars\\ANTLR.g3:304:4: ( rule )+
 			{
 			root_0 = (GrammarAST)adaptor.Nil();
 
-			// Grammars\\ANTLR.g3:303:4: ( rule )+
+			// Grammars\\ANTLR.g3:304:4: ( rule )+
 			int cnt19=0;
 			for ( ; ; )
 			{
@@ -2263,7 +2264,7 @@ public partial class ANTLRParser : Parser
 				switch ( alt19 )
 				{
 				case 1:
-					// Grammars\\ANTLR.g3:303:6: rule
+					// Grammars\\ANTLR.g3:304:6: rule
 					{
 					PushFollow(Follow._rule_in_rules928);
 					rule41=rule();
@@ -2321,7 +2322,7 @@ public partial class ANTLRParser : Parser
 	}
 
 	// $ANTLR start "rule"
-	// Grammars\\ANTLR.g3:308:0: public rule : ( (d= DOC_COMMENT )? (p1= 'protected' |p2= 'public' |p3= 'private' |p4= 'fragment' )? ruleName= id ( BANG )? (aa= ARG_ACTION )? ( 'returns' rt= ARG_ACTION )? ( throwsSpec )? ( optionsSpec )? scopes= ruleScopeSpec ( ruleActions )? COLON altList[$optionsSpec.opts] SEMI (ex= exceptionGroup )? -> ^( RULE[\"rule\"] ^( $ruleName) ( $p1)? ( $p2)? ( $p3)? ( $p4)? ^( ARG[\"ARG\"] ( $aa)? ) ^( RET[\"RET\"] ( $rt)? ) ( throwsSpec )? ( optionsSpec )? ^( $scopes) ( ruleActions )? altList ( $ex)? EOR[$SEMI,\"<end-of-rule>\"] ) ) ;
+	// Grammars\\ANTLR.g3:309:0: public rule : ( (d= DOC_COMMENT )? (p1= 'protected' |p2= 'public' |p3= 'private' |p4= 'fragment' )? ruleName= id ( BANG )? (aa= ARG_ACTION )? ( 'returns' rt= ARG_ACTION )? ( throwsSpec )? ( optionsSpec )? scopes= ruleScopeSpec ( ruleActions )? COLON altList[$optionsSpec.opts] SEMI (ex= exceptionGroup )? -> ^( RULE[\"rule\"] ^( $ruleName) ( $p1)? ( $p2)? ( $p3)? ( $p4)? ^( ARG[\"ARG\"] ( $aa)? ) ^( RET[\"RET\"] ( $rt)? ) ( throwsSpec )? ( optionsSpec )? ^( $scopes) ( ruleActions )? altList ( $ex)? EOR[$SEMI,\"<end-of-rule>\"] ) ) ;
 	public ANTLRParser.rule_return rule(  )
 	{
 		ANTLRParser.rule_return retval = new ANTLRParser.rule_return();
@@ -2383,13 +2384,13 @@ public partial class ANTLRParser : Parser
 
 		try
 		{
-			// Grammars\\ANTLR.g3:316:2: ( ( (d= DOC_COMMENT )? (p1= 'protected' |p2= 'public' |p3= 'private' |p4= 'fragment' )? ruleName= id ( BANG )? (aa= ARG_ACTION )? ( 'returns' rt= ARG_ACTION )? ( throwsSpec )? ( optionsSpec )? scopes= ruleScopeSpec ( ruleActions )? COLON altList[$optionsSpec.opts] SEMI (ex= exceptionGroup )? -> ^( RULE[\"rule\"] ^( $ruleName) ( $p1)? ( $p2)? ( $p3)? ( $p4)? ^( ARG[\"ARG\"] ( $aa)? ) ^( RET[\"RET\"] ( $rt)? ) ( throwsSpec )? ( optionsSpec )? ^( $scopes) ( ruleActions )? altList ( $ex)? EOR[$SEMI,\"<end-of-rule>\"] ) ) )
-			// Grammars\\ANTLR.g3:316:2: ( (d= DOC_COMMENT )? (p1= 'protected' |p2= 'public' |p3= 'private' |p4= 'fragment' )? ruleName= id ( BANG )? (aa= ARG_ACTION )? ( 'returns' rt= ARG_ACTION )? ( throwsSpec )? ( optionsSpec )? scopes= ruleScopeSpec ( ruleActions )? COLON altList[$optionsSpec.opts] SEMI (ex= exceptionGroup )? -> ^( RULE[\"rule\"] ^( $ruleName) ( $p1)? ( $p2)? ( $p3)? ( $p4)? ^( ARG[\"ARG\"] ( $aa)? ) ^( RET[\"RET\"] ( $rt)? ) ( throwsSpec )? ( optionsSpec )? ^( $scopes) ( ruleActions )? altList ( $ex)? EOR[$SEMI,\"<end-of-rule>\"] ) )
+			// Grammars\\ANTLR.g3:317:2: ( ( (d= DOC_COMMENT )? (p1= 'protected' |p2= 'public' |p3= 'private' |p4= 'fragment' )? ruleName= id ( BANG )? (aa= ARG_ACTION )? ( 'returns' rt= ARG_ACTION )? ( throwsSpec )? ( optionsSpec )? scopes= ruleScopeSpec ( ruleActions )? COLON altList[$optionsSpec.opts] SEMI (ex= exceptionGroup )? -> ^( RULE[\"rule\"] ^( $ruleName) ( $p1)? ( $p2)? ( $p3)? ( $p4)? ^( ARG[\"ARG\"] ( $aa)? ) ^( RET[\"RET\"] ( $rt)? ) ( throwsSpec )? ( optionsSpec )? ^( $scopes) ( ruleActions )? altList ( $ex)? EOR[$SEMI,\"<end-of-rule>\"] ) ) )
+			// Grammars\\ANTLR.g3:317:2: ( (d= DOC_COMMENT )? (p1= 'protected' |p2= 'public' |p3= 'private' |p4= 'fragment' )? ruleName= id ( BANG )? (aa= ARG_ACTION )? ( 'returns' rt= ARG_ACTION )? ( throwsSpec )? ( optionsSpec )? scopes= ruleScopeSpec ( ruleActions )? COLON altList[$optionsSpec.opts] SEMI (ex= exceptionGroup )? -> ^( RULE[\"rule\"] ^( $ruleName) ( $p1)? ( $p2)? ( $p3)? ( $p4)? ^( ARG[\"ARG\"] ( $aa)? ) ^( RET[\"RET\"] ( $rt)? ) ( throwsSpec )? ( optionsSpec )? ^( $scopes) ( ruleActions )? altList ( $ex)? EOR[$SEMI,\"<end-of-rule>\"] ) )
 			{
-			// Grammars\\ANTLR.g3:316:2: ( (d= DOC_COMMENT )? (p1= 'protected' |p2= 'public' |p3= 'private' |p4= 'fragment' )? ruleName= id ( BANG )? (aa= ARG_ACTION )? ( 'returns' rt= ARG_ACTION )? ( throwsSpec )? ( optionsSpec )? scopes= ruleScopeSpec ( ruleActions )? COLON altList[$optionsSpec.opts] SEMI (ex= exceptionGroup )? -> ^( RULE[\"rule\"] ^( $ruleName) ( $p1)? ( $p2)? ( $p3)? ( $p4)? ^( ARG[\"ARG\"] ( $aa)? ) ^( RET[\"RET\"] ( $rt)? ) ( throwsSpec )? ( optionsSpec )? ^( $scopes) ( ruleActions )? altList ( $ex)? EOR[$SEMI,\"<end-of-rule>\"] ) )
-			// Grammars\\ANTLR.g3:316:4: (d= DOC_COMMENT )? (p1= 'protected' |p2= 'public' |p3= 'private' |p4= 'fragment' )? ruleName= id ( BANG )? (aa= ARG_ACTION )? ( 'returns' rt= ARG_ACTION )? ( throwsSpec )? ( optionsSpec )? scopes= ruleScopeSpec ( ruleActions )? COLON altList[$optionsSpec.opts] SEMI (ex= exceptionGroup )?
+			// Grammars\\ANTLR.g3:317:2: ( (d= DOC_COMMENT )? (p1= 'protected' |p2= 'public' |p3= 'private' |p4= 'fragment' )? ruleName= id ( BANG )? (aa= ARG_ACTION )? ( 'returns' rt= ARG_ACTION )? ( throwsSpec )? ( optionsSpec )? scopes= ruleScopeSpec ( ruleActions )? COLON altList[$optionsSpec.opts] SEMI (ex= exceptionGroup )? -> ^( RULE[\"rule\"] ^( $ruleName) ( $p1)? ( $p2)? ( $p3)? ( $p4)? ^( ARG[\"ARG\"] ( $aa)? ) ^( RET[\"RET\"] ( $rt)? ) ( throwsSpec )? ( optionsSpec )? ^( $scopes) ( ruleActions )? altList ( $ex)? EOR[$SEMI,\"<end-of-rule>\"] ) )
+			// Grammars\\ANTLR.g3:317:4: (d= DOC_COMMENT )? (p1= 'protected' |p2= 'public' |p3= 'private' |p4= 'fragment' )? ruleName= id ( BANG )? (aa= ARG_ACTION )? ( 'returns' rt= ARG_ACTION )? ( throwsSpec )? ( optionsSpec )? scopes= ruleScopeSpec ( ruleActions )? COLON altList[$optionsSpec.opts] SEMI (ex= exceptionGroup )?
 			{
-			// Grammars\\ANTLR.g3:316:4: (d= DOC_COMMENT )?
+			// Grammars\\ANTLR.g3:317:4: (d= DOC_COMMENT )?
 			int alt20=2;
 			int LA20_0 = input.LA(1);
 
@@ -2400,7 +2401,7 @@ public partial class ANTLRParser : Parser
 			switch ( alt20 )
 			{
 			case 1:
-				// Grammars\\ANTLR.g3:316:6: d= DOC_COMMENT
+				// Grammars\\ANTLR.g3:317:6: d= DOC_COMMENT
 				{
 				d=(IToken)Match(input,DOC_COMMENT,Follow._DOC_COMMENT_in_rule958); if (state.failed) return retval; 
 				if ( state.backtracking == 0 ) stream_DOC_COMMENT.Add(d);
@@ -2411,7 +2412,7 @@ public partial class ANTLRParser : Parser
 
 			}
 
-			// Grammars\\ANTLR.g3:318:3: (p1= 'protected' |p2= 'public' |p3= 'private' |p4= 'fragment' )?
+			// Grammars\\ANTLR.g3:319:3: (p1= 'protected' |p2= 'public' |p3= 'private' |p4= 'fragment' )?
 			int alt21=5;
 			switch ( input.LA(1) )
 			{
@@ -2440,7 +2441,7 @@ public partial class ANTLRParser : Parser
 			switch ( alt21 )
 			{
 			case 1:
-				// Grammars\\ANTLR.g3:318:5: p1= 'protected'
+				// Grammars\\ANTLR.g3:319:5: p1= 'protected'
 				{
 				p1=(IToken)Match(input,PROTECTED,Follow._PROTECTED_in_rule971); if (state.failed) return retval; 
 				if ( state.backtracking == 0 ) stream_PROTECTED.Add(p1);
@@ -2449,7 +2450,7 @@ public partial class ANTLRParser : Parser
 				}
 				break;
 			case 2:
-				// Grammars\\ANTLR.g3:319:5: p2= 'public'
+				// Grammars\\ANTLR.g3:320:5: p2= 'public'
 				{
 				p2=(IToken)Match(input,PUBLIC,Follow._PUBLIC_in_rule980); if (state.failed) return retval; 
 				if ( state.backtracking == 0 ) stream_PUBLIC.Add(p2);
@@ -2458,7 +2459,7 @@ public partial class ANTLRParser : Parser
 				}
 				break;
 			case 3:
-				// Grammars\\ANTLR.g3:320:5: p3= 'private'
+				// Grammars\\ANTLR.g3:321:5: p3= 'private'
 				{
 				p3=(IToken)Match(input,PRIVATE,Follow._PRIVATE_in_rule990); if (state.failed) return retval; 
 				if ( state.backtracking == 0 ) stream_PRIVATE.Add(p3);
@@ -2467,7 +2468,7 @@ public partial class ANTLRParser : Parser
 				}
 				break;
 			case 4:
-				// Grammars\\ANTLR.g3:321:5: p4= 'fragment'
+				// Grammars\\ANTLR.g3:322:5: p4= 'fragment'
 				{
 				p4=(IToken)Match(input,FRAGMENT,Follow._FRAGMENT_in_rule999); if (state.failed) return retval; 
 				if ( state.backtracking == 0 ) stream_FRAGMENT.Add(p4);
@@ -2488,11 +2489,11 @@ public partial class ANTLRParser : Parser
 			{
 
 							currentRuleName=(ruleName!=null?input.ToString(ruleName.start,ruleName.stop):null);
-							if ( GrammarType==LEXER_GRAMMAR && p4==null )
+							if ( GrammarType==GrammarType.Lexer && p4==null )
 								Grammar.lexerRuleNamesInCombined.Add(currentRuleName);
 						
 			}
-			// Grammars\\ANTLR.g3:329:3: ( BANG )?
+			// Grammars\\ANTLR.g3:330:3: ( BANG )?
 			int alt22=2;
 			int LA22_0 = input.LA(1);
 
@@ -2503,7 +2504,7 @@ public partial class ANTLRParser : Parser
 			switch ( alt22 )
 			{
 			case 1:
-				// Grammars\\ANTLR.g3:329:5: BANG
+				// Grammars\\ANTLR.g3:330:5: BANG
 				{
 				BANG42=(IToken)Match(input,BANG,Follow._BANG_in_rule1021); if (state.failed) return retval; 
 				if ( state.backtracking == 0 ) stream_BANG.Add(BANG42);
@@ -2514,7 +2515,7 @@ public partial class ANTLRParser : Parser
 
 			}
 
-			// Grammars\\ANTLR.g3:330:3: (aa= ARG_ACTION )?
+			// Grammars\\ANTLR.g3:331:3: (aa= ARG_ACTION )?
 			int alt23=2;
 			int LA23_0 = input.LA(1);
 
@@ -2525,7 +2526,7 @@ public partial class ANTLRParser : Parser
 			switch ( alt23 )
 			{
 			case 1:
-				// Grammars\\ANTLR.g3:330:5: aa= ARG_ACTION
+				// Grammars\\ANTLR.g3:331:5: aa= ARG_ACTION
 				{
 				aa=(IToken)Match(input,ARG_ACTION,Follow._ARG_ACTION_in_rule1032); if (state.failed) return retval; 
 				if ( state.backtracking == 0 ) stream_ARG_ACTION.Add(aa);
@@ -2536,7 +2537,7 @@ public partial class ANTLRParser : Parser
 
 			}
 
-			// Grammars\\ANTLR.g3:331:3: ( 'returns' rt= ARG_ACTION )?
+			// Grammars\\ANTLR.g3:332:3: ( 'returns' rt= ARG_ACTION )?
 			int alt24=2;
 			int LA24_0 = input.LA(1);
 
@@ -2547,7 +2548,7 @@ public partial class ANTLRParser : Parser
 			switch ( alt24 )
 			{
 			case 1:
-				// Grammars\\ANTLR.g3:331:5: 'returns' rt= ARG_ACTION
+				// Grammars\\ANTLR.g3:332:5: 'returns' rt= ARG_ACTION
 				{
 				string_literal43=(IToken)Match(input,RETURNS,Follow._RETURNS_in_rule1041); if (state.failed) return retval; 
 				if ( state.backtracking == 0 ) stream_RETURNS.Add(string_literal43);
@@ -2561,7 +2562,7 @@ public partial class ANTLRParser : Parser
 
 			}
 
-			// Grammars\\ANTLR.g3:332:3: ( throwsSpec )?
+			// Grammars\\ANTLR.g3:333:3: ( throwsSpec )?
 			int alt25=2;
 			int LA25_0 = input.LA(1);
 
@@ -2572,7 +2573,7 @@ public partial class ANTLRParser : Parser
 			switch ( alt25 )
 			{
 			case 1:
-				// Grammars\\ANTLR.g3:332:5: throwsSpec
+				// Grammars\\ANTLR.g3:333:5: throwsSpec
 				{
 				PushFollow(Follow._throwsSpec_in_rule1055);
 				throwsSpec44=throwsSpec();
@@ -2586,7 +2587,7 @@ public partial class ANTLRParser : Parser
 
 			}
 
-			// Grammars\\ANTLR.g3:333:3: ( optionsSpec )?
+			// Grammars\\ANTLR.g3:334:3: ( optionsSpec )?
 			int alt26=2;
 			int LA26_0 = input.LA(1);
 
@@ -2597,7 +2598,7 @@ public partial class ANTLRParser : Parser
 			switch ( alt26 )
 			{
 			case 1:
-				// Grammars\\ANTLR.g3:333:5: optionsSpec
+				// Grammars\\ANTLR.g3:334:5: optionsSpec
 				{
 				PushFollow(Follow._optionsSpec_in_rule1064);
 				optionsSpec45=optionsSpec();
@@ -2617,7 +2618,7 @@ public partial class ANTLRParser : Parser
 			state._fsp--;
 			if (state.failed) return retval;
 			if ( state.backtracking == 0 ) stream_ruleScopeSpec.Add(scopes.Tree);
-			// Grammars\\ANTLR.g3:335:3: ( ruleActions )?
+			// Grammars\\ANTLR.g3:336:3: ( ruleActions )?
 			int alt27=2;
 			int LA27_0 = input.LA(1);
 
@@ -2628,7 +2629,7 @@ public partial class ANTLRParser : Parser
 			switch ( alt27 )
 			{
 			case 1:
-				// Grammars\\ANTLR.g3:335:4: ruleActions
+				// Grammars\\ANTLR.g3:336:4: ruleActions
 				{
 				PushFollow(Follow._ruleActions_in_rule1078);
 				ruleActions46=ruleActions();
@@ -2654,7 +2655,7 @@ public partial class ANTLRParser : Parser
 			SEMI49=(IToken)Match(input,SEMI,Follow._SEMI_in_rule1093); if (state.failed) return retval; 
 			if ( state.backtracking == 0 ) stream_SEMI.Add(SEMI49);
 
-			// Grammars\\ANTLR.g3:339:3: (ex= exceptionGroup )?
+			// Grammars\\ANTLR.g3:340:3: (ex= exceptionGroup )?
 			int alt28=2;
 			int LA28_0 = input.LA(1);
 
@@ -2665,7 +2666,7 @@ public partial class ANTLRParser : Parser
 			switch ( alt28 )
 			{
 			case 1:
-				// Grammars\\ANTLR.g3:339:5: ex= exceptionGroup
+				// Grammars\\ANTLR.g3:340:5: ex= exceptionGroup
 				{
 				PushFollow(Follow._exceptionGroup_in_rule1101);
 				ex=exceptionGroup();
@@ -2703,54 +2704,54 @@ public partial class ANTLRParser : Parser
 			RewriteRuleSubtreeStream stream_retval=new RewriteRuleSubtreeStream(adaptor,"rule retval",retval!=null?retval.tree:null);
 
 			root_0 = (GrammarAST)adaptor.Nil();
-			// 340:3: -> ^( RULE[\"rule\"] ^( $ruleName) ( $p1)? ( $p2)? ( $p3)? ( $p4)? ^( ARG[\"ARG\"] ( $aa)? ) ^( RET[\"RET\"] ( $rt)? ) ( throwsSpec )? ( optionsSpec )? ^( $scopes) ( ruleActions )? altList ( $ex)? EOR[$SEMI,\"<end-of-rule>\"] )
+			// 341:3: -> ^( RULE[\"rule\"] ^( $ruleName) ( $p1)? ( $p2)? ( $p3)? ( $p4)? ^( ARG[\"ARG\"] ( $aa)? ) ^( RET[\"RET\"] ( $rt)? ) ( throwsSpec )? ( optionsSpec )? ^( $scopes) ( ruleActions )? altList ( $ex)? EOR[$SEMI,\"<end-of-rule>\"] )
 			{
-				// Grammars\\ANTLR.g3:340:6: ^( RULE[\"rule\"] ^( $ruleName) ( $p1)? ( $p2)? ( $p3)? ( $p4)? ^( ARG[\"ARG\"] ( $aa)? ) ^( RET[\"RET\"] ( $rt)? ) ( throwsSpec )? ( optionsSpec )? ^( $scopes) ( ruleActions )? altList ( $ex)? EOR[$SEMI,\"<end-of-rule>\"] )
+				// Grammars\\ANTLR.g3:341:6: ^( RULE[\"rule\"] ^( $ruleName) ( $p1)? ( $p2)? ( $p3)? ( $p4)? ^( ARG[\"ARG\"] ( $aa)? ) ^( RET[\"RET\"] ( $rt)? ) ( throwsSpec )? ( optionsSpec )? ^( $scopes) ( ruleActions )? altList ( $ex)? EOR[$SEMI,\"<end-of-rule>\"] )
 				{
 				GrammarAST root_1 = (GrammarAST)adaptor.Nil();
 				root_1 = (GrammarAST)adaptor.BecomeRoot((GrammarAST)adaptor.Create(RULE, "rule"), root_1);
 
-				// Grammars\\ANTLR.g3:341:5: ^( $ruleName)
+				// Grammars\\ANTLR.g3:342:5: ^( $ruleName)
 				{
 				GrammarAST root_2 = (GrammarAST)adaptor.Nil();
 				root_2 = (GrammarAST)adaptor.BecomeRoot(stream_ruleName.NextNode(), root_2);
 
 				adaptor.AddChild(root_1, root_2);
 				}
-				// Grammars\\ANTLR.g3:343:6: ( $p1)?
+				// Grammars\\ANTLR.g3:344:6: ( $p1)?
 				if ( stream_p1.HasNext )
 				{
 					adaptor.AddChild(root_1, stream_p1.NextNode());
 
 				}
 				stream_p1.Reset();
-				// Grammars\\ANTLR.g3:343:11: ( $p2)?
+				// Grammars\\ANTLR.g3:344:11: ( $p2)?
 				if ( stream_p2.HasNext )
 				{
 					adaptor.AddChild(root_1, stream_p2.NextNode());
 
 				}
 				stream_p2.Reset();
-				// Grammars\\ANTLR.g3:343:16: ( $p3)?
+				// Grammars\\ANTLR.g3:344:16: ( $p3)?
 				if ( stream_p3.HasNext )
 				{
 					adaptor.AddChild(root_1, stream_p3.NextNode());
 
 				}
 				stream_p3.Reset();
-				// Grammars\\ANTLR.g3:343:21: ( $p4)?
+				// Grammars\\ANTLR.g3:344:21: ( $p4)?
 				if ( stream_p4.HasNext )
 				{
 					adaptor.AddChild(root_1, stream_p4.NextNode());
 
 				}
 				stream_p4.Reset();
-				// Grammars\\ANTLR.g3:344:5: ^( ARG[\"ARG\"] ( $aa)? )
+				// Grammars\\ANTLR.g3:345:5: ^( ARG[\"ARG\"] ( $aa)? )
 				{
 				GrammarAST root_2 = (GrammarAST)adaptor.Nil();
 				root_2 = (GrammarAST)adaptor.BecomeRoot((GrammarAST)adaptor.Create(ARG, "ARG"), root_2);
 
-				// Grammars\\ANTLR.g3:344:19: ( $aa)?
+				// Grammars\\ANTLR.g3:345:19: ( $aa)?
 				if ( stream_aa.HasNext )
 				{
 					adaptor.AddChild(root_2, stream_aa.NextNode());
@@ -2760,12 +2761,12 @@ public partial class ANTLRParser : Parser
 
 				adaptor.AddChild(root_1, root_2);
 				}
-				// Grammars\\ANTLR.g3:345:5: ^( RET[\"RET\"] ( $rt)? )
+				// Grammars\\ANTLR.g3:346:5: ^( RET[\"RET\"] ( $rt)? )
 				{
 				GrammarAST root_2 = (GrammarAST)adaptor.Nil();
 				root_2 = (GrammarAST)adaptor.BecomeRoot((GrammarAST)adaptor.Create(RET, "RET"), root_2);
 
-				// Grammars\\ANTLR.g3:345:19: ( $rt)?
+				// Grammars\\ANTLR.g3:346:19: ( $rt)?
 				if ( stream_rt.HasNext )
 				{
 					adaptor.AddChild(root_2, stream_rt.NextNode());
@@ -2775,28 +2776,28 @@ public partial class ANTLRParser : Parser
 
 				adaptor.AddChild(root_1, root_2);
 				}
-				// Grammars\\ANTLR.g3:346:5: ( throwsSpec )?
+				// Grammars\\ANTLR.g3:347:5: ( throwsSpec )?
 				if ( stream_throwsSpec.HasNext )
 				{
 					adaptor.AddChild(root_1, stream_throwsSpec.NextTree());
 
 				}
 				stream_throwsSpec.Reset();
-				// Grammars\\ANTLR.g3:347:5: ( optionsSpec )?
+				// Grammars\\ANTLR.g3:348:5: ( optionsSpec )?
 				if ( stream_optionsSpec.HasNext )
 				{
 					adaptor.AddChild(root_1, stream_optionsSpec.NextTree());
 
 				}
 				stream_optionsSpec.Reset();
-				// Grammars\\ANTLR.g3:348:5: ^( $scopes)
+				// Grammars\\ANTLR.g3:349:5: ^( $scopes)
 				{
 				GrammarAST root_2 = (GrammarAST)adaptor.Nil();
 				root_2 = (GrammarAST)adaptor.BecomeRoot(stream_scopes.NextNode(), root_2);
 
 				adaptor.AddChild(root_1, root_2);
 				}
-				// Grammars\\ANTLR.g3:349:5: ( ruleActions )?
+				// Grammars\\ANTLR.g3:350:5: ( ruleActions )?
 				if ( stream_ruleActions.HasNext )
 				{
 					adaptor.AddChild(root_1, stream_ruleActions.NextTree());
@@ -2804,7 +2805,7 @@ public partial class ANTLRParser : Parser
 				}
 				stream_ruleActions.Reset();
 				adaptor.AddChild(root_1, stream_altList.NextTree());
-				// Grammars\\ANTLR.g3:351:6: ( $ex)?
+				// Grammars\\ANTLR.g3:352:6: ( $ex)?
 				if ( stream_ex.HasNext )
 				{
 					adaptor.AddChild(root_1, stream_ex.NextTree());
@@ -2862,7 +2863,7 @@ public partial class ANTLRParser : Parser
 	}
 
 	// $ANTLR start "ruleActions"
-	// Grammars\\ANTLR.g3:359:0: ruleActions : ( ruleAction )+ ;
+	// Grammars\\ANTLR.g3:360:0: ruleActions : ( ruleAction )+ ;
 	private ANTLRParser.ruleActions_return ruleActions(  )
 	{
 		ANTLRParser.ruleActions_return retval = new ANTLRParser.ruleActions_return();
@@ -2875,12 +2876,12 @@ public partial class ANTLRParser : Parser
 
 		try
 		{
-			// Grammars\\ANTLR.g3:360:4: ( ( ruleAction )+ )
-			// Grammars\\ANTLR.g3:360:4: ( ruleAction )+
+			// Grammars\\ANTLR.g3:361:4: ( ( ruleAction )+ )
+			// Grammars\\ANTLR.g3:361:4: ( ruleAction )+
 			{
 			root_0 = (GrammarAST)adaptor.Nil();
 
-			// Grammars\\ANTLR.g3:360:4: ( ruleAction )+
+			// Grammars\\ANTLR.g3:361:4: ( ruleAction )+
 			int cnt29=0;
 			for ( ; ; )
 			{
@@ -2896,7 +2897,7 @@ public partial class ANTLRParser : Parser
 				switch ( alt29 )
 				{
 				case 1:
-					// Grammars\\ANTLR.g3:360:5: ruleAction
+					// Grammars\\ANTLR.g3:361:5: ruleAction
 					{
 					PushFollow(Follow._ruleAction_in_ruleActions1243);
 					ruleAction50=ruleAction();
@@ -2954,7 +2955,7 @@ public partial class ANTLRParser : Parser
 	}
 
 	// $ANTLR start "ruleAction"
-	// Grammars\\ANTLR.g3:364:0: ruleAction : AMPERSAND id ACTION ;
+	// Grammars\\ANTLR.g3:365:0: ruleAction : AMPERSAND id ACTION ;
 	private ANTLRParser.ruleAction_return ruleAction(  )
 	{
 		ANTLRParser.ruleAction_return retval = new ANTLRParser.ruleAction_return();
@@ -2971,8 +2972,8 @@ public partial class ANTLRParser : Parser
 
 		try
 		{
-			// Grammars\\ANTLR.g3:365:4: ( AMPERSAND id ACTION )
-			// Grammars\\ANTLR.g3:365:4: AMPERSAND id ACTION
+			// Grammars\\ANTLR.g3:366:4: ( AMPERSAND id ACTION )
+			// Grammars\\ANTLR.g3:366:4: AMPERSAND id ACTION
 			{
 			root_0 = (GrammarAST)adaptor.Nil();
 
@@ -3024,7 +3025,7 @@ public partial class ANTLRParser : Parser
 	}
 
 	// $ANTLR start "throwsSpec"
-	// Grammars\\ANTLR.g3:368:0: throwsSpec : 'throws' id ( COMMA id )* ;
+	// Grammars\\ANTLR.g3:369:0: throwsSpec : 'throws' id ( COMMA id )* ;
 	private ANTLRParser.throwsSpec_return throwsSpec(  )
 	{
 		ANTLRParser.throwsSpec_return retval = new ANTLRParser.throwsSpec_return();
@@ -3042,8 +3043,8 @@ public partial class ANTLRParser : Parser
 
 		try
 		{
-			// Grammars\\ANTLR.g3:369:4: ( 'throws' id ( COMMA id )* )
-			// Grammars\\ANTLR.g3:369:4: 'throws' id ( COMMA id )*
+			// Grammars\\ANTLR.g3:370:4: ( 'throws' id ( COMMA id )* )
+			// Grammars\\ANTLR.g3:370:4: 'throws' id ( COMMA id )*
 			{
 			root_0 = (GrammarAST)adaptor.Nil();
 
@@ -3058,7 +3059,7 @@ public partial class ANTLRParser : Parser
 			state._fsp--;
 			if (state.failed) return retval;
 			if ( state.backtracking == 0 ) adaptor.AddChild(root_0, id55.Tree);
-			// Grammars\\ANTLR.g3:369:17: ( COMMA id )*
+			// Grammars\\ANTLR.g3:370:17: ( COMMA id )*
 			for ( ; ; )
 			{
 				int alt30=2;
@@ -3073,7 +3074,7 @@ public partial class ANTLRParser : Parser
 				switch ( alt30 )
 				{
 				case 1:
-					// Grammars\\ANTLR.g3:369:19: COMMA id
+					// Grammars\\ANTLR.g3:370:19: COMMA id
 					{
 					COMMA56=(IToken)Match(input,COMMA,Follow._COMMA_in_throwsSpec1281); if (state.failed) return retval;
 					PushFollow(Follow._id_in_throwsSpec1284);
@@ -3127,7 +3128,7 @@ public partial class ANTLRParser : Parser
 	}
 
 	// $ANTLR start "ruleScopeSpec"
-	// Grammars\\ANTLR.g3:372:0: ruleScopeSpec : ( 'scope' ( ruleActions )? ACTION )? ( 'scope' idList SEMI )* -> ^( SCOPE[$start,\"scope\"] ( ruleActions )? ( ACTION )? ( idList )* ) ;
+	// Grammars\\ANTLR.g3:373:0: ruleScopeSpec : ( 'scope' ( ruleActions )? ACTION )? ( 'scope' idList SEMI )* -> ^( SCOPE[$start,\"scope\"] ( ruleActions )? ( ACTION )? ( idList )* ) ;
 	private ANTLRParser.ruleScopeSpec_return ruleScopeSpec(  )
 	{
 		ANTLRParser.ruleScopeSpec_return retval = new ANTLRParser.ruleScopeSpec_return();
@@ -3153,10 +3154,10 @@ public partial class ANTLRParser : Parser
 		RewriteRuleSubtreeStream stream_idList=new RewriteRuleSubtreeStream(adaptor,"rule idList");
 		try
 		{
-			// Grammars\\ANTLR.g3:373:4: ( ( 'scope' ( ruleActions )? ACTION )? ( 'scope' idList SEMI )* -> ^( SCOPE[$start,\"scope\"] ( ruleActions )? ( ACTION )? ( idList )* ) )
-			// Grammars\\ANTLR.g3:373:4: ( 'scope' ( ruleActions )? ACTION )? ( 'scope' idList SEMI )*
+			// Grammars\\ANTLR.g3:374:4: ( ( 'scope' ( ruleActions )? ACTION )? ( 'scope' idList SEMI )* -> ^( SCOPE[$start,\"scope\"] ( ruleActions )? ( ACTION )? ( idList )* ) )
+			// Grammars\\ANTLR.g3:374:4: ( 'scope' ( ruleActions )? ACTION )? ( 'scope' idList SEMI )*
 			{
-			// Grammars\\ANTLR.g3:373:4: ( 'scope' ( ruleActions )? ACTION )?
+			// Grammars\\ANTLR.g3:374:4: ( 'scope' ( ruleActions )? ACTION )?
 			int alt32=2;
 			int LA32_0 = input.LA(1);
 
@@ -3172,12 +3173,12 @@ public partial class ANTLRParser : Parser
 			switch ( alt32 )
 			{
 			case 1:
-				// Grammars\\ANTLR.g3:373:6: 'scope' ( ruleActions )? ACTION
+				// Grammars\\ANTLR.g3:374:6: 'scope' ( ruleActions )? ACTION
 				{
 				string_literal58=(IToken)Match(input,SCOPE,Follow._SCOPE_in_ruleScopeSpec1300); if (state.failed) return retval; 
 				if ( state.backtracking == 0 ) stream_SCOPE.Add(string_literal58);
 
-				// Grammars\\ANTLR.g3:373:14: ( ruleActions )?
+				// Grammars\\ANTLR.g3:374:14: ( ruleActions )?
 				int alt31=2;
 				int LA31_0 = input.LA(1);
 
@@ -3188,7 +3189,7 @@ public partial class ANTLRParser : Parser
 				switch ( alt31 )
 				{
 				case 1:
-					// Grammars\\ANTLR.g3:373:0: ruleActions
+					// Grammars\\ANTLR.g3:374:0: ruleActions
 					{
 					PushFollow(Follow._ruleActions_in_ruleScopeSpec1302);
 					ruleActions59=ruleActions();
@@ -3211,7 +3212,7 @@ public partial class ANTLRParser : Parser
 
 			}
 
-			// Grammars\\ANTLR.g3:374:3: ( 'scope' idList SEMI )*
+			// Grammars\\ANTLR.g3:375:3: ( 'scope' idList SEMI )*
 			for ( ; ; )
 			{
 				int alt33=2;
@@ -3226,7 +3227,7 @@ public partial class ANTLRParser : Parser
 				switch ( alt33 )
 				{
 				case 1:
-					// Grammars\\ANTLR.g3:374:5: 'scope' idList SEMI
+					// Grammars\\ANTLR.g3:375:5: 'scope' idList SEMI
 					{
 					string_literal61=(IToken)Match(input,SCOPE,Follow._SCOPE_in_ruleScopeSpec1314); if (state.failed) return retval; 
 					if ( state.backtracking == 0 ) stream_SCOPE.Add(string_literal61);
@@ -3268,28 +3269,28 @@ public partial class ANTLRParser : Parser
 			RewriteRuleSubtreeStream stream_retval=new RewriteRuleSubtreeStream(adaptor,"rule retval",retval!=null?retval.tree:null);
 
 			root_0 = (GrammarAST)adaptor.Nil();
-			// 375:3: -> ^( SCOPE[$start,\"scope\"] ( ruleActions )? ( ACTION )? ( idList )* )
+			// 376:3: -> ^( SCOPE[$start,\"scope\"] ( ruleActions )? ( ACTION )? ( idList )* )
 			{
-				// Grammars\\ANTLR.g3:375:6: ^( SCOPE[$start,\"scope\"] ( ruleActions )? ( ACTION )? ( idList )* )
+				// Grammars\\ANTLR.g3:376:6: ^( SCOPE[$start,\"scope\"] ( ruleActions )? ( ACTION )? ( idList )* )
 				{
 				GrammarAST root_1 = (GrammarAST)adaptor.Nil();
 				root_1 = (GrammarAST)adaptor.BecomeRoot((GrammarAST)adaptor.Create(SCOPE, ((IToken)retval.start), "scope"), root_1);
 
-				// Grammars\\ANTLR.g3:375:30: ( ruleActions )?
+				// Grammars\\ANTLR.g3:376:30: ( ruleActions )?
 				if ( stream_ruleActions.HasNext )
 				{
 					adaptor.AddChild(root_1, stream_ruleActions.NextTree());
 
 				}
 				stream_ruleActions.Reset();
-				// Grammars\\ANTLR.g3:375:43: ( ACTION )?
+				// Grammars\\ANTLR.g3:376:43: ( ACTION )?
 				if ( stream_ACTION.HasNext )
 				{
 					adaptor.AddChild(root_1, stream_ACTION.NextNode());
 
 				}
 				stream_ACTION.Reset();
-				// Grammars\\ANTLR.g3:375:51: ( idList )*
+				// Grammars\\ANTLR.g3:376:51: ( idList )*
 				while ( stream_idList.HasNext )
 				{
 					adaptor.AddChild(root_1, stream_idList.NextTree());
@@ -3337,7 +3338,7 @@ public partial class ANTLRParser : Parser
 	}
 
 	// $ANTLR start "block"
-	// Grammars\\ANTLR.g3:379:0: block : (lp= LPAREN -> BLOCK[$lp,\"BLOCK\"] ) ( ( optionsSpec )? ( ruleActions )? COLON | ACTION COLON )? a= alternative r= rewrite ( OR a= alternative r= rewrite )* rp= RPAREN -> ^( $block ( optionsSpec )? ( ruleActions )? ( ACTION )? ( alternative )+ EOB[$rp,\"<end-of-block>\"] ) ;
+	// Grammars\\ANTLR.g3:380:0: block : (lp= LPAREN -> BLOCK[$lp,\"BLOCK\"] ) ( ( optionsSpec )? ( ruleActions )? COLON | ACTION COLON )? a= alternative r= rewrite ( OR a= alternative r= rewrite )* rp= RPAREN -> ^( $block ( optionsSpec )? ( ruleActions )? ( ACTION )? ( alternative )+ EOB[$rp,\"<end-of-block>\"] ) ;
 	private ANTLRParser.block_return block(  )
 	{
 		ANTLRParser.block_return retval = new ANTLRParser.block_return();
@@ -3377,11 +3378,11 @@ public partial class ANTLRParser : Parser
 
 		try
 		{
-			// Grammars\\ANTLR.g3:385:4: ( (lp= LPAREN -> BLOCK[$lp,\"BLOCK\"] ) ( ( optionsSpec )? ( ruleActions )? COLON | ACTION COLON )? a= alternative r= rewrite ( OR a= alternative r= rewrite )* rp= RPAREN -> ^( $block ( optionsSpec )? ( ruleActions )? ( ACTION )? ( alternative )+ EOB[$rp,\"<end-of-block>\"] ) )
-			// Grammars\\ANTLR.g3:385:4: (lp= LPAREN -> BLOCK[$lp,\"BLOCK\"] ) ( ( optionsSpec )? ( ruleActions )? COLON | ACTION COLON )? a= alternative r= rewrite ( OR a= alternative r= rewrite )* rp= RPAREN
+			// Grammars\\ANTLR.g3:386:4: ( (lp= LPAREN -> BLOCK[$lp,\"BLOCK\"] ) ( ( optionsSpec )? ( ruleActions )? COLON | ACTION COLON )? a= alternative r= rewrite ( OR a= alternative r= rewrite )* rp= RPAREN -> ^( $block ( optionsSpec )? ( ruleActions )? ( ACTION )? ( alternative )+ EOB[$rp,\"<end-of-block>\"] ) )
+			// Grammars\\ANTLR.g3:386:4: (lp= LPAREN -> BLOCK[$lp,\"BLOCK\"] ) ( ( optionsSpec )? ( ruleActions )? COLON | ACTION COLON )? a= alternative r= rewrite ( OR a= alternative r= rewrite )* rp= RPAREN
 			{
-			// Grammars\\ANTLR.g3:385:4: (lp= LPAREN -> BLOCK[$lp,\"BLOCK\"] )
-			// Grammars\\ANTLR.g3:385:6: lp= LPAREN
+			// Grammars\\ANTLR.g3:386:4: (lp= LPAREN -> BLOCK[$lp,\"BLOCK\"] )
+			// Grammars\\ANTLR.g3:386:6: lp= LPAREN
 			{
 			lp=(IToken)Match(input,LPAREN,Follow._LPAREN_in_block1361); if (state.failed) return retval; 
 			if ( state.backtracking == 0 ) stream_LPAREN.Add(lp);
@@ -3401,7 +3402,7 @@ public partial class ANTLRParser : Parser
 			RewriteRuleSubtreeStream stream_retval=new RewriteRuleSubtreeStream(adaptor,"rule retval",retval!=null?retval.tree:null);
 
 			root_0 = (GrammarAST)adaptor.Nil();
-			// 386:4: -> BLOCK[$lp,\"BLOCK\"]
+			// 387:4: -> BLOCK[$lp,\"BLOCK\"]
 			{
 				adaptor.AddChild(root_0, (GrammarAST)adaptor.Create(BLOCK, lp, "BLOCK"));
 
@@ -3417,7 +3418,7 @@ public partial class ANTLRParser : Parser
 			{
 				currentBlockAST = (GrammarAST)((GrammarAST)retval.tree).GetChild(0);
 			}
-			// Grammars\\ANTLR.g3:389:3: ( ( optionsSpec )? ( ruleActions )? COLON | ACTION COLON )?
+			// Grammars\\ANTLR.g3:390:3: ( ( optionsSpec )? ( ruleActions )? COLON | ACTION COLON )?
 			int alt36=3;
 			int LA36_0 = input.LA(1);
 
@@ -3437,9 +3438,9 @@ public partial class ANTLRParser : Parser
 			switch ( alt36 )
 			{
 			case 1:
-				// Grammars\\ANTLR.g3:393:4: ( optionsSpec )? ( ruleActions )? COLON
+				// Grammars\\ANTLR.g3:394:4: ( optionsSpec )? ( ruleActions )? COLON
 				{
-				// Grammars\\ANTLR.g3:393:4: ( optionsSpec )?
+				// Grammars\\ANTLR.g3:394:4: ( optionsSpec )?
 				int alt34=2;
 				int LA34_0 = input.LA(1);
 
@@ -3450,7 +3451,7 @@ public partial class ANTLRParser : Parser
 				switch ( alt34 )
 				{
 				case 1:
-					// Grammars\\ANTLR.g3:393:5: optionsSpec
+					// Grammars\\ANTLR.g3:394:5: optionsSpec
 					{
 					PushFollow(Follow._optionsSpec_in_block1399);
 					optionsSpec64=optionsSpec();
@@ -3468,7 +3469,7 @@ public partial class ANTLRParser : Parser
 
 				}
 
-				// Grammars\\ANTLR.g3:394:4: ( ruleActions )?
+				// Grammars\\ANTLR.g3:395:4: ( ruleActions )?
 				int alt35=2;
 				int LA35_0 = input.LA(1);
 
@@ -3479,7 +3480,7 @@ public partial class ANTLRParser : Parser
 				switch ( alt35 )
 				{
 				case 1:
-					// Grammars\\ANTLR.g3:394:6: ruleActions
+					// Grammars\\ANTLR.g3:395:6: ruleActions
 					{
 					PushFollow(Follow._ruleActions_in_block1410);
 					ruleActions65=ruleActions();
@@ -3500,7 +3501,7 @@ public partial class ANTLRParser : Parser
 				}
 				break;
 			case 2:
-				// Grammars\\ANTLR.g3:396:5: ACTION COLON
+				// Grammars\\ANTLR.g3:397:5: ACTION COLON
 				{
 				ACTION67=(IToken)Match(input,ACTION,Follow._ACTION_in_block1424); if (state.failed) return retval; 
 				if ( state.backtracking == 0 ) stream_ACTION.Add(ACTION67);
@@ -3534,7 +3535,7 @@ public partial class ANTLRParser : Parser
 								PrefixWithSynPred((a!=null?((GrammarAST)a.tree):null));
 						
 			}
-			// Grammars\\ANTLR.g3:405:3: ( OR a= alternative r= rewrite )*
+			// Grammars\\ANTLR.g3:406:3: ( OR a= alternative r= rewrite )*
 			for ( ; ; )
 			{
 				int alt37=2;
@@ -3549,7 +3550,7 @@ public partial class ANTLRParser : Parser
 				switch ( alt37 )
 				{
 				case 1:
-					// Grammars\\ANTLR.g3:405:5: OR a= alternative r= rewrite
+					// Grammars\\ANTLR.g3:406:5: OR a= alternative r= rewrite
 					{
 					OR69=(IToken)Match(input,OR,Follow._OR_in_block1452); if (state.failed) return retval; 
 					if ( state.backtracking == 0 ) stream_OR.Add(OR69);
@@ -3605,28 +3606,28 @@ public partial class ANTLRParser : Parser
 			RewriteRuleSubtreeStream stream_retval=new RewriteRuleSubtreeStream(adaptor,"rule retval",retval!=null?retval.tree:null);
 
 			root_0 = (GrammarAST)adaptor.Nil();
-			// 414:3: -> ^( $block ( optionsSpec )? ( ruleActions )? ( ACTION )? ( alternative )+ EOB[$rp,\"<end-of-block>\"] )
+			// 415:3: -> ^( $block ( optionsSpec )? ( ruleActions )? ( ACTION )? ( alternative )+ EOB[$rp,\"<end-of-block>\"] )
 			{
-				// Grammars\\ANTLR.g3:414:6: ^( $block ( optionsSpec )? ( ruleActions )? ( ACTION )? ( alternative )+ EOB[$rp,\"<end-of-block>\"] )
+				// Grammars\\ANTLR.g3:415:6: ^( $block ( optionsSpec )? ( ruleActions )? ( ACTION )? ( alternative )+ EOB[$rp,\"<end-of-block>\"] )
 				{
 				GrammarAST root_1 = (GrammarAST)adaptor.Nil();
 				root_1 = (GrammarAST)adaptor.BecomeRoot(stream_retval.NextNode(), root_1);
 
-				// Grammars\\ANTLR.g3:414:15: ( optionsSpec )?
+				// Grammars\\ANTLR.g3:415:15: ( optionsSpec )?
 				if ( stream_optionsSpec.HasNext )
 				{
 					adaptor.AddChild(root_1, stream_optionsSpec.NextTree());
 
 				}
 				stream_optionsSpec.Reset();
-				// Grammars\\ANTLR.g3:414:28: ( ruleActions )?
+				// Grammars\\ANTLR.g3:415:28: ( ruleActions )?
 				if ( stream_ruleActions.HasNext )
 				{
 					adaptor.AddChild(root_1, stream_ruleActions.NextTree());
 
 				}
 				stream_ruleActions.Reset();
-				// Grammars\\ANTLR.g3:414:41: ( ACTION )?
+				// Grammars\\ANTLR.g3:415:41: ( ACTION )?
 				if ( stream_ACTION.HasNext )
 				{
 					adaptor.AddChild(root_1, stream_ACTION.NextNode());
@@ -3686,7 +3687,7 @@ public partial class ANTLRParser : Parser
 	}
 
 	// $ANTLR start "altList"
-	// Grammars\\ANTLR.g3:418:0: altList[IDictionary<string, object> opts] : ( -> BLOCK[$start,\"BLOCK\"] ) (a1= alternative r1= rewrite -> $a1 ( $r1)? ) ( OR a2= alternative r2= rewrite -> $altList $a2 ( $r2)? )* -> ^( $altList EOB[\"<end-of-block>\"] ) ;
+	// Grammars\\ANTLR.g3:419:0: altList[IDictionary<string, object> opts] : ( -> BLOCK[$start,\"BLOCK\"] ) (a1= alternative r1= rewrite -> $a1 ( $r1)? ) ( OR a2= alternative r2= rewrite -> $altList $a2 ( $r2)? )* -> ^( $altList EOB[\"<end-of-block>\"] ) ;
 	private ANTLRParser.altList_return altList( IDictionary<string, object> opts )
 	{
 		ANTLRParser.altList_return retval = new ANTLRParser.altList_return();
@@ -3710,11 +3711,11 @@ public partial class ANTLRParser : Parser
 
 		try
 		{
-			// Grammars\\ANTLR.g3:424:4: ( ( -> BLOCK[$start,\"BLOCK\"] ) (a1= alternative r1= rewrite -> $a1 ( $r1)? ) ( OR a2= alternative r2= rewrite -> $altList $a2 ( $r2)? )* -> ^( $altList EOB[\"<end-of-block>\"] ) )
-			// Grammars\\ANTLR.g3:424:4: ( -> BLOCK[$start,\"BLOCK\"] ) (a1= alternative r1= rewrite -> $a1 ( $r1)? ) ( OR a2= alternative r2= rewrite -> $altList $a2 ( $r2)? )*
+			// Grammars\\ANTLR.g3:425:4: ( ( -> BLOCK[$start,\"BLOCK\"] ) (a1= alternative r1= rewrite -> $a1 ( $r1)? ) ( OR a2= alternative r2= rewrite -> $altList $a2 ( $r2)? )* -> ^( $altList EOB[\"<end-of-block>\"] ) )
+			// Grammars\\ANTLR.g3:425:4: ( -> BLOCK[$start,\"BLOCK\"] ) (a1= alternative r1= rewrite -> $a1 ( $r1)? ) ( OR a2= alternative r2= rewrite -> $altList $a2 ( $r2)? )*
 			{
-			// Grammars\\ANTLR.g3:424:4: ( -> BLOCK[$start,\"BLOCK\"] )
-			// Grammars\\ANTLR.g3:424:6: 
+			// Grammars\\ANTLR.g3:425:4: ( -> BLOCK[$start,\"BLOCK\"] )
+			// Grammars\\ANTLR.g3:425:6: 
 			{
 
 
@@ -3732,7 +3733,7 @@ public partial class ANTLRParser : Parser
 			RewriteRuleSubtreeStream stream_retval=new RewriteRuleSubtreeStream(adaptor,"rule retval",retval!=null?retval.tree:null);
 
 			root_0 = (GrammarAST)adaptor.Nil();
-			// 424:6: -> BLOCK[$start,\"BLOCK\"]
+			// 425:6: -> BLOCK[$start,\"BLOCK\"]
 			{
 				adaptor.AddChild(root_0, (GrammarAST)adaptor.Create(BLOCK, ((IToken)retval.start), "BLOCK"));
 
@@ -3752,8 +3753,8 @@ public partial class ANTLRParser : Parser
 							currentBlockAST = blkRoot;
 						
 			}
-			// Grammars\\ANTLR.g3:430:3: (a1= alternative r1= rewrite -> $a1 ( $r1)? )
-			// Grammars\\ANTLR.g3:430:5: a1= alternative r1= rewrite
+			// Grammars\\ANTLR.g3:431:3: (a1= alternative r1= rewrite -> $a1 ( $r1)? )
+			// Grammars\\ANTLR.g3:431:5: a1= alternative r1= rewrite
 			{
 			PushFollow(Follow._alternative_in_altList1541);
 			a1=alternative();
@@ -3788,10 +3789,10 @@ public partial class ANTLRParser : Parser
 			RewriteRuleSubtreeStream stream_retval=new RewriteRuleSubtreeStream(adaptor,"rule retval",retval!=null?retval.tree:null);
 
 			root_0 = (GrammarAST)adaptor.Nil();
-			// 432:4: -> $a1 ( $r1)?
+			// 433:4: -> $a1 ( $r1)?
 			{
 				adaptor.AddChild(root_0, stream_a1.NextTree());
-				// Grammars\\ANTLR.g3:432:12: ( $r1)?
+				// Grammars\\ANTLR.g3:433:12: ( $r1)?
 				if ( stream_r1.HasNext )
 				{
 					adaptor.AddChild(root_0, stream_r1.NextTree());
@@ -3807,7 +3808,7 @@ public partial class ANTLRParser : Parser
 
 			}
 
-			// Grammars\\ANTLR.g3:434:3: ( OR a2= alternative r2= rewrite -> $altList $a2 ( $r2)? )*
+			// Grammars\\ANTLR.g3:435:3: ( OR a2= alternative r2= rewrite -> $altList $a2 ( $r2)? )*
 			for ( ; ; )
 			{
 				int alt38=2;
@@ -3822,7 +3823,7 @@ public partial class ANTLRParser : Parser
 				switch ( alt38 )
 				{
 				case 1:
-					// Grammars\\ANTLR.g3:434:5: OR a2= alternative r2= rewrite
+					// Grammars\\ANTLR.g3:435:5: OR a2= alternative r2= rewrite
 					{
 					OR70=(IToken)Match(input,OR,Follow._OR_in_altList1572); if (state.failed) return retval; 
 					if ( state.backtracking == 0 ) stream_OR.Add(OR70);
@@ -3860,11 +3861,11 @@ public partial class ANTLRParser : Parser
 					RewriteRuleSubtreeStream stream_retval=new RewriteRuleSubtreeStream(adaptor,"rule retval",retval!=null?retval.tree:null);
 
 					root_0 = (GrammarAST)adaptor.Nil();
-					// 436:4: -> $altList $a2 ( $r2)?
+					// 437:4: -> $altList $a2 ( $r2)?
 					{
 						adaptor.AddChild(root_0, stream_retval.NextTree());
 						adaptor.AddChild(root_0, stream_a2.NextTree());
-						// Grammars\\ANTLR.g3:436:21: ( $r2)?
+						// Grammars\\ANTLR.g3:437:21: ( $r2)?
 						if ( stream_r2.HasNext )
 						{
 							adaptor.AddChild(root_0, stream_r2.NextTree());
@@ -3905,9 +3906,9 @@ public partial class ANTLRParser : Parser
 			RewriteRuleSubtreeStream stream_retval=new RewriteRuleSubtreeStream(adaptor,"rule retval",retval!=null?retval.tree:null);
 
 			root_0 = (GrammarAST)adaptor.Nil();
-			// 438:3: -> ^( $altList EOB[\"<end-of-block>\"] )
+			// 439:3: -> ^( $altList EOB[\"<end-of-block>\"] )
 			{
-				// Grammars\\ANTLR.g3:438:6: ^( $altList EOB[\"<end-of-block>\"] )
+				// Grammars\\ANTLR.g3:439:6: ^( $altList EOB[\"<end-of-block>\"] )
 				{
 				GrammarAST root_1 = (GrammarAST)adaptor.Nil();
 				root_1 = (GrammarAST)adaptor.BecomeRoot(blkRoot, root_1);
@@ -3956,7 +3957,7 @@ public partial class ANTLRParser : Parser
 	}
 
 	// $ANTLR start "alternative"
-	// Grammars\\ANTLR.g3:442:0: alternative : ( ( element )+ -> ^( ALT[$start,\"ALT\"] ( element )+ EOA[\"<end-of-alt>\"] ) | -> ^( ALT[$start,\"ALT\"] EPSILON[$start,\"epsilon\"] EOA[\"<end-of-alt>\"] ) );
+	// Grammars\\ANTLR.g3:443:0: alternative : ( ( element )+ -> ^( ALT[$start,\"ALT\"] ( element )+ EOA[\"<end-of-alt>\"] ) | -> ^( ALT[$start,\"ALT\"] EPSILON[$start,\"epsilon\"] EOA[\"<end-of-alt>\"] ) );
 	private ANTLRParser.alternative_return alternative(  )
 	{
 		ANTLRParser.alternative_return retval = new ANTLRParser.alternative_return();
@@ -3969,7 +3970,7 @@ public partial class ANTLRParser : Parser
 		RewriteRuleSubtreeStream stream_element=new RewriteRuleSubtreeStream(adaptor,"rule element");
 		try
 		{
-			// Grammars\\ANTLR.g3:443:4: ( ( element )+ -> ^( ALT[$start,\"ALT\"] ( element )+ EOA[\"<end-of-alt>\"] ) | -> ^( ALT[$start,\"ALT\"] EPSILON[$start,\"epsilon\"] EOA[\"<end-of-alt>\"] ) )
+			// Grammars\\ANTLR.g3:444:4: ( ( element )+ -> ^( ALT[$start,\"ALT\"] ( element )+ EOA[\"<end-of-alt>\"] ) | -> ^( ALT[$start,\"ALT\"] EPSILON[$start,\"epsilon\"] EOA[\"<end-of-alt>\"] ) )
 			int alt40=2;
 			int LA40_0 = input.LA(1);
 
@@ -3991,9 +3992,9 @@ public partial class ANTLRParser : Parser
 			switch ( alt40 )
 			{
 			case 1:
-				// Grammars\\ANTLR.g3:443:4: ( element )+
+				// Grammars\\ANTLR.g3:444:4: ( element )+
 				{
-				// Grammars\\ANTLR.g3:443:4: ( element )+
+				// Grammars\\ANTLR.g3:444:4: ( element )+
 				int cnt39=0;
 				for ( ; ; )
 				{
@@ -4009,7 +4010,7 @@ public partial class ANTLRParser : Parser
 					switch ( alt39 )
 					{
 					case 1:
-						// Grammars\\ANTLR.g3:443:0: element
+						// Grammars\\ANTLR.g3:444:0: element
 						{
 						PushFollow(Follow._element_in_alternative1634);
 						element71=element();
@@ -4050,9 +4051,9 @@ public partial class ANTLRParser : Parser
 				RewriteRuleSubtreeStream stream_retval=new RewriteRuleSubtreeStream(adaptor,"rule retval",retval!=null?retval.tree:null);
 
 				root_0 = (GrammarAST)adaptor.Nil();
-				// 444:3: -> ^( ALT[$start,\"ALT\"] ( element )+ EOA[\"<end-of-alt>\"] )
+				// 445:3: -> ^( ALT[$start,\"ALT\"] ( element )+ EOA[\"<end-of-alt>\"] )
 				{
-					// Grammars\\ANTLR.g3:444:6: ^( ALT[$start,\"ALT\"] ( element )+ EOA[\"<end-of-alt>\"] )
+					// Grammars\\ANTLR.g3:445:6: ^( ALT[$start,\"ALT\"] ( element )+ EOA[\"<end-of-alt>\"] )
 					{
 					GrammarAST root_1 = (GrammarAST)adaptor.Nil();
 					root_1 = (GrammarAST)adaptor.BecomeRoot((GrammarAST)adaptor.Create(ALT, ((IToken)retval.start), "ALT"), root_1);
@@ -4081,7 +4082,7 @@ public partial class ANTLRParser : Parser
 				}
 				break;
 			case 2:
-				// Grammars\\ANTLR.g3:446:3: 
+				// Grammars\\ANTLR.g3:447:3: 
 				{
 
 
@@ -4099,9 +4100,9 @@ public partial class ANTLRParser : Parser
 				RewriteRuleSubtreeStream stream_retval=new RewriteRuleSubtreeStream(adaptor,"rule retval",retval!=null?retval.tree:null);
 
 				root_0 = (GrammarAST)adaptor.Nil();
-				// 446:3: -> ^( ALT[$start,\"ALT\"] EPSILON[$start,\"epsilon\"] EOA[\"<end-of-alt>\"] )
+				// 447:3: -> ^( ALT[$start,\"ALT\"] EPSILON[$start,\"epsilon\"] EOA[\"<end-of-alt>\"] )
 				{
-					// Grammars\\ANTLR.g3:446:6: ^( ALT[$start,\"ALT\"] EPSILON[$start,\"epsilon\"] EOA[\"<end-of-alt>\"] )
+					// Grammars\\ANTLR.g3:447:6: ^( ALT[$start,\"ALT\"] EPSILON[$start,\"epsilon\"] EOA[\"<end-of-alt>\"] )
 					{
 					GrammarAST root_1 = (GrammarAST)adaptor.Nil();
 					root_1 = (GrammarAST)adaptor.BecomeRoot((GrammarAST)adaptor.Create(ALT, ((IToken)retval.start), "ALT"), root_1);
@@ -4151,7 +4152,7 @@ public partial class ANTLRParser : Parser
 	}
 
 	// $ANTLR start "exceptionGroup"
-	// Grammars\\ANTLR.g3:449:0: exceptionGroup : ( ( exceptionHandler )+ ( finallyClause )? | finallyClause );
+	// Grammars\\ANTLR.g3:450:0: exceptionGroup : ( ( exceptionHandler )+ ( finallyClause )? | finallyClause );
 	private ANTLRParser.exceptionGroup_return exceptionGroup(  )
 	{
 		ANTLRParser.exceptionGroup_return retval = new ANTLRParser.exceptionGroup_return();
@@ -4166,7 +4167,7 @@ public partial class ANTLRParser : Parser
 
 		try
 		{
-			// Grammars\\ANTLR.g3:450:4: ( ( exceptionHandler )+ ( finallyClause )? | finallyClause )
+			// Grammars\\ANTLR.g3:451:4: ( ( exceptionHandler )+ ( finallyClause )? | finallyClause )
 			int alt43=2;
 			int LA43_0 = input.LA(1);
 
@@ -4188,11 +4189,11 @@ public partial class ANTLRParser : Parser
 			switch ( alt43 )
 			{
 			case 1:
-				// Grammars\\ANTLR.g3:450:4: ( exceptionHandler )+ ( finallyClause )?
+				// Grammars\\ANTLR.g3:451:4: ( exceptionHandler )+ ( finallyClause )?
 				{
 				root_0 = (GrammarAST)adaptor.Nil();
 
-				// Grammars\\ANTLR.g3:450:4: ( exceptionHandler )+
+				// Grammars\\ANTLR.g3:451:4: ( exceptionHandler )+
 				int cnt41=0;
 				for ( ; ; )
 				{
@@ -4208,7 +4209,7 @@ public partial class ANTLRParser : Parser
 					switch ( alt41 )
 					{
 					case 1:
-						// Grammars\\ANTLR.g3:450:0: exceptionHandler
+						// Grammars\\ANTLR.g3:451:0: exceptionHandler
 						{
 						PushFollow(Follow._exceptionHandler_in_exceptionGroup1680);
 						exceptionHandler72=exceptionHandler();
@@ -4234,7 +4235,7 @@ public partial class ANTLRParser : Parser
 					;
 
 
-				// Grammars\\ANTLR.g3:450:22: ( finallyClause )?
+				// Grammars\\ANTLR.g3:451:22: ( finallyClause )?
 				int alt42=2;
 				int LA42_0 = input.LA(1);
 
@@ -4245,7 +4246,7 @@ public partial class ANTLRParser : Parser
 				switch ( alt42 )
 				{
 				case 1:
-					// Grammars\\ANTLR.g3:450:0: finallyClause
+					// Grammars\\ANTLR.g3:451:0: finallyClause
 					{
 					PushFollow(Follow._finallyClause_in_exceptionGroup1683);
 					finallyClause73=finallyClause();
@@ -4263,7 +4264,7 @@ public partial class ANTLRParser : Parser
 				}
 				break;
 			case 2:
-				// Grammars\\ANTLR.g3:451:4: finallyClause
+				// Grammars\\ANTLR.g3:452:4: finallyClause
 				{
 				root_0 = (GrammarAST)adaptor.Nil();
 
@@ -4307,7 +4308,7 @@ public partial class ANTLRParser : Parser
 	}
 
 	// $ANTLR start "exceptionHandler"
-	// Grammars\\ANTLR.g3:454:0: exceptionHandler : 'catch' ARG_ACTION ACTION ;
+	// Grammars\\ANTLR.g3:455:0: exceptionHandler : 'catch' ARG_ACTION ACTION ;
 	private ANTLRParser.exceptionHandler_return exceptionHandler(  )
 	{
 		ANTLRParser.exceptionHandler_return retval = new ANTLRParser.exceptionHandler_return();
@@ -4325,8 +4326,8 @@ public partial class ANTLRParser : Parser
 
 		try
 		{
-			// Grammars\\ANTLR.g3:455:4: ( 'catch' ARG_ACTION ACTION )
-			// Grammars\\ANTLR.g3:455:4: 'catch' ARG_ACTION ACTION
+			// Grammars\\ANTLR.g3:456:4: ( 'catch' ARG_ACTION ACTION )
+			// Grammars\\ANTLR.g3:456:4: 'catch' ARG_ACTION ACTION
 			{
 			root_0 = (GrammarAST)adaptor.Nil();
 
@@ -4377,7 +4378,7 @@ public partial class ANTLRParser : Parser
 	}
 
 	// $ANTLR start "finallyClause"
-	// Grammars\\ANTLR.g3:458:0: finallyClause : 'finally' ACTION ;
+	// Grammars\\ANTLR.g3:459:0: finallyClause : 'finally' ACTION ;
 	private ANTLRParser.finallyClause_return finallyClause(  )
 	{
 		ANTLRParser.finallyClause_return retval = new ANTLRParser.finallyClause_return();
@@ -4393,8 +4394,8 @@ public partial class ANTLRParser : Parser
 
 		try
 		{
-			// Grammars\\ANTLR.g3:459:4: ( 'finally' ACTION )
-			// Grammars\\ANTLR.g3:459:4: 'finally' ACTION
+			// Grammars\\ANTLR.g3:460:4: ( 'finally' ACTION )
+			// Grammars\\ANTLR.g3:460:4: 'finally' ACTION
 			{
 			root_0 = (GrammarAST)adaptor.Nil();
 
@@ -4440,7 +4441,7 @@ public partial class ANTLRParser : Parser
 	}
 
 	// $ANTLR start "element"
-	// Grammars\\ANTLR.g3:462:0: element : elementNoOptionSpec ;
+	// Grammars\\ANTLR.g3:463:0: element : elementNoOptionSpec ;
 	private ANTLRParser.element_return element(  )
 	{
 		ANTLRParser.element_return retval = new ANTLRParser.element_return();
@@ -4453,8 +4454,8 @@ public partial class ANTLRParser : Parser
 
 		try
 		{
-			// Grammars\\ANTLR.g3:463:4: ( elementNoOptionSpec )
-			// Grammars\\ANTLR.g3:463:4: elementNoOptionSpec
+			// Grammars\\ANTLR.g3:464:4: ( elementNoOptionSpec )
+			// Grammars\\ANTLR.g3:464:4: elementNoOptionSpec
 			{
 			root_0 = (GrammarAST)adaptor.Nil();
 
@@ -4496,7 +4497,7 @@ public partial class ANTLRParser : Parser
 	}
 
 	// $ANTLR start "elementNoOptionSpec"
-	// Grammars\\ANTLR.g3:466:0: elementNoOptionSpec : ( ( id ( ASSIGN | PLUS_ASSIGN ) ( atom | block ) ) (sub= ebnfSuffix[root_0,false] )? |a= atom (sub2= ebnfSuffix[$a.tree,false] )? | ebnf | FORCED_ACTION | ACTION |p= SEMPRED ( IMPLIES )? |t3= tree_ ) ;
+	// Grammars\\ANTLR.g3:467:0: elementNoOptionSpec : ( ( id ( ASSIGN | PLUS_ASSIGN ) ( atom | block ) ) (sub= ebnfSuffix[root_0,false] )? |a= atom (sub2= ebnfSuffix[$a.tree,false] )? | ebnf | FORCED_ACTION | ACTION |p= SEMPRED ( IMPLIES )? |t3= tree_ ) ;
 	private ANTLRParser.elementNoOptionSpec_return elementNoOptionSpec(  )
 	{
 		ANTLRParser.elementNoOptionSpec_return retval = new ANTLRParser.elementNoOptionSpec_return();
@@ -4531,21 +4532,21 @@ public partial class ANTLRParser : Parser
 
 		try
 		{
-			// Grammars\\ANTLR.g3:471:4: ( ( ( id ( ASSIGN | PLUS_ASSIGN ) ( atom | block ) ) (sub= ebnfSuffix[root_0,false] )? |a= atom (sub2= ebnfSuffix[$a.tree,false] )? | ebnf | FORCED_ACTION | ACTION |p= SEMPRED ( IMPLIES )? |t3= tree_ ) )
-			// Grammars\\ANTLR.g3:471:4: ( ( id ( ASSIGN | PLUS_ASSIGN ) ( atom | block ) ) (sub= ebnfSuffix[root_0,false] )? |a= atom (sub2= ebnfSuffix[$a.tree,false] )? | ebnf | FORCED_ACTION | ACTION |p= SEMPRED ( IMPLIES )? |t3= tree_ )
+			// Grammars\\ANTLR.g3:472:4: ( ( ( id ( ASSIGN | PLUS_ASSIGN ) ( atom | block ) ) (sub= ebnfSuffix[root_0,false] )? |a= atom (sub2= ebnfSuffix[$a.tree,false] )? | ebnf | FORCED_ACTION | ACTION |p= SEMPRED ( IMPLIES )? |t3= tree_ ) )
+			// Grammars\\ANTLR.g3:472:4: ( ( id ( ASSIGN | PLUS_ASSIGN ) ( atom | block ) ) (sub= ebnfSuffix[root_0,false] )? |a= atom (sub2= ebnfSuffix[$a.tree,false] )? | ebnf | FORCED_ACTION | ACTION |p= SEMPRED ( IMPLIES )? |t3= tree_ )
 			{
 			root_0 = (GrammarAST)adaptor.Nil();
 
-			// Grammars\\ANTLR.g3:471:4: ( ( id ( ASSIGN | PLUS_ASSIGN ) ( atom | block ) ) (sub= ebnfSuffix[root_0,false] )? |a= atom (sub2= ebnfSuffix[$a.tree,false] )? | ebnf | FORCED_ACTION | ACTION |p= SEMPRED ( IMPLIES )? |t3= tree_ )
+			// Grammars\\ANTLR.g3:472:4: ( ( id ( ASSIGN | PLUS_ASSIGN ) ( atom | block ) ) (sub= ebnfSuffix[root_0,false] )? |a= atom (sub2= ebnfSuffix[$a.tree,false] )? | ebnf | FORCED_ACTION | ACTION |p= SEMPRED ( IMPLIES )? |t3= tree_ )
 			int alt49=7;
 			alt49 = dfa49.Predict(input);
 			switch ( alt49 )
 			{
 			case 1:
-				// Grammars\\ANTLR.g3:471:6: ( id ( ASSIGN | PLUS_ASSIGN ) ( atom | block ) ) (sub= ebnfSuffix[root_0,false] )?
+				// Grammars\\ANTLR.g3:472:6: ( id ( ASSIGN | PLUS_ASSIGN ) ( atom | block ) ) (sub= ebnfSuffix[root_0,false] )?
 				{
-				// Grammars\\ANTLR.g3:471:6: ( id ( ASSIGN | PLUS_ASSIGN ) ( atom | block ) )
-				// Grammars\\ANTLR.g3:471:8: id ( ASSIGN | PLUS_ASSIGN ) ( atom | block )
+				// Grammars\\ANTLR.g3:472:6: ( id ( ASSIGN | PLUS_ASSIGN ) ( atom | block ) )
+				// Grammars\\ANTLR.g3:472:8: id ( ASSIGN | PLUS_ASSIGN ) ( atom | block )
 				{
 				PushFollow(Follow._id_in_elementNoOptionSpec1750);
 				id81=id();
@@ -4553,7 +4554,7 @@ public partial class ANTLRParser : Parser
 				state._fsp--;
 				if (state.failed) return retval;
 				if ( state.backtracking == 0 ) adaptor.AddChild(root_0, id81.Tree);
-				// Grammars\\ANTLR.g3:471:11: ( ASSIGN | PLUS_ASSIGN )
+				// Grammars\\ANTLR.g3:472:11: ( ASSIGN | PLUS_ASSIGN )
 				int alt44=2;
 				int LA44_0 = input.LA(1);
 
@@ -4575,7 +4576,7 @@ public partial class ANTLRParser : Parser
 				switch ( alt44 )
 				{
 				case 1:
-					// Grammars\\ANTLR.g3:471:12: ASSIGN
+					// Grammars\\ANTLR.g3:472:12: ASSIGN
 					{
 					ASSIGN82=(IToken)Match(input,ASSIGN,Follow._ASSIGN_in_elementNoOptionSpec1753); if (state.failed) return retval;
 					if ( state.backtracking == 0 ) {
@@ -4586,7 +4587,7 @@ public partial class ANTLRParser : Parser
 					}
 					break;
 				case 2:
-					// Grammars\\ANTLR.g3:471:20: PLUS_ASSIGN
+					// Grammars\\ANTLR.g3:472:20: PLUS_ASSIGN
 					{
 					PLUS_ASSIGN83=(IToken)Match(input,PLUS_ASSIGN,Follow._PLUS_ASSIGN_in_elementNoOptionSpec1756); if (state.failed) return retval;
 					if ( state.backtracking == 0 ) {
@@ -4599,7 +4600,7 @@ public partial class ANTLRParser : Parser
 
 				}
 
-				// Grammars\\ANTLR.g3:471:34: ( atom | block )
+				// Grammars\\ANTLR.g3:472:34: ( atom | block )
 				int alt45=2;
 				int LA45_0 = input.LA(1);
 
@@ -4621,7 +4622,7 @@ public partial class ANTLRParser : Parser
 				switch ( alt45 )
 				{
 				case 1:
-					// Grammars\\ANTLR.g3:471:35: atom
+					// Grammars\\ANTLR.g3:472:35: atom
 					{
 					PushFollow(Follow._atom_in_elementNoOptionSpec1761);
 					atom84=atom();
@@ -4633,7 +4634,7 @@ public partial class ANTLRParser : Parser
 					}
 					break;
 				case 2:
-					// Grammars\\ANTLR.g3:471:40: block
+					// Grammars\\ANTLR.g3:472:40: block
 					{
 					PushFollow(Follow._block_in_elementNoOptionSpec1763);
 					block85=block();
@@ -4650,7 +4651,7 @@ public partial class ANTLRParser : Parser
 
 				}
 
-				// Grammars\\ANTLR.g3:473:4: (sub= ebnfSuffix[root_0,false] )?
+				// Grammars\\ANTLR.g3:474:4: (sub= ebnfSuffix[root_0,false] )?
 				int alt46=2;
 				int LA46_0 = input.LA(1);
 
@@ -4661,7 +4662,7 @@ public partial class ANTLRParser : Parser
 				switch ( alt46 )
 				{
 				case 1:
-					// Grammars\\ANTLR.g3:473:6: sub= ebnfSuffix[root_0,false]
+					// Grammars\\ANTLR.g3:474:6: sub= ebnfSuffix[root_0,false]
 					{
 					PushFollow(Follow._ebnfSuffix_in_elementNoOptionSpec1778);
 					sub=ebnfSuffix(root_0, false);
@@ -4682,7 +4683,7 @@ public partial class ANTLRParser : Parser
 				}
 				break;
 			case 2:
-				// Grammars\\ANTLR.g3:475:5: a= atom (sub2= ebnfSuffix[$a.tree,false] )?
+				// Grammars\\ANTLR.g3:476:5: a= atom (sub2= ebnfSuffix[$a.tree,false] )?
 				{
 				PushFollow(Follow._atom_in_elementNoOptionSpec1796);
 				a=atom();
@@ -4690,7 +4691,7 @@ public partial class ANTLRParser : Parser
 				state._fsp--;
 				if (state.failed) return retval;
 				if ( state.backtracking == 0 ) adaptor.AddChild(root_0, a.Tree);
-				// Grammars\\ANTLR.g3:476:4: (sub2= ebnfSuffix[$a.tree,false] )?
+				// Grammars\\ANTLR.g3:477:4: (sub2= ebnfSuffix[$a.tree,false] )?
 				int alt47=2;
 				int LA47_0 = input.LA(1);
 
@@ -4701,7 +4702,7 @@ public partial class ANTLRParser : Parser
 				switch ( alt47 )
 				{
 				case 1:
-					// Grammars\\ANTLR.g3:476:6: sub2= ebnfSuffix[$a.tree,false]
+					// Grammars\\ANTLR.g3:477:6: sub2= ebnfSuffix[$a.tree,false]
 					{
 					PushFollow(Follow._ebnfSuffix_in_elementNoOptionSpec1805);
 					sub2=ebnfSuffix((a!=null?((GrammarAST)a.tree):null), false);
@@ -4722,7 +4723,7 @@ public partial class ANTLRParser : Parser
 				}
 				break;
 			case 3:
-				// Grammars\\ANTLR.g3:478:5: ebnf
+				// Grammars\\ANTLR.g3:479:5: ebnf
 				{
 				PushFollow(Follow._ebnf_in_elementNoOptionSpec1821);
 				ebnf86=ebnf();
@@ -4734,7 +4735,7 @@ public partial class ANTLRParser : Parser
 				}
 				break;
 			case 4:
-				// Grammars\\ANTLR.g3:479:5: FORCED_ACTION
+				// Grammars\\ANTLR.g3:480:5: FORCED_ACTION
 				{
 				FORCED_ACTION87=(IToken)Match(input,FORCED_ACTION,Follow._FORCED_ACTION_in_elementNoOptionSpec1827); if (state.failed) return retval;
 				if ( state.backtracking==0 ) {
@@ -4745,7 +4746,7 @@ public partial class ANTLRParser : Parser
 				}
 				break;
 			case 5:
-				// Grammars\\ANTLR.g3:480:5: ACTION
+				// Grammars\\ANTLR.g3:481:5: ACTION
 				{
 				ACTION88=(IToken)Match(input,ACTION,Follow._ACTION_in_elementNoOptionSpec1833); if (state.failed) return retval;
 				if ( state.backtracking==0 ) {
@@ -4756,14 +4757,14 @@ public partial class ANTLRParser : Parser
 				}
 				break;
 			case 6:
-				// Grammars\\ANTLR.g3:481:5: p= SEMPRED ( IMPLIES )?
+				// Grammars\\ANTLR.g3:482:5: p= SEMPRED ( IMPLIES )?
 				{
 				p=(IToken)Match(input,SEMPRED,Follow._SEMPRED_in_elementNoOptionSpec1841); if (state.failed) return retval;
 				if ( state.backtracking==0 ) {
 				p_tree = (GrammarAST)adaptor.Create(p);
 				adaptor.AddChild(root_0, p_tree);
 				}
-				// Grammars\\ANTLR.g3:481:15: ( IMPLIES )?
+				// Grammars\\ANTLR.g3:482:15: ( IMPLIES )?
 				int alt48=2;
 				int LA48_0 = input.LA(1);
 
@@ -4774,7 +4775,7 @@ public partial class ANTLRParser : Parser
 				switch ( alt48 )
 				{
 				case 1:
-					// Grammars\\ANTLR.g3:481:17: IMPLIES
+					// Grammars\\ANTLR.g3:482:17: IMPLIES
 					{
 					IMPLIES89=(IToken)Match(input,IMPLIES,Follow._IMPLIES_in_elementNoOptionSpec1845); if (state.failed) return retval;
 					if ( state.backtracking == 0 )
@@ -4797,7 +4798,7 @@ public partial class ANTLRParser : Parser
 				}
 				break;
 			case 7:
-				// Grammars\\ANTLR.g3:485:5: t3= tree_
+				// Grammars\\ANTLR.g3:486:5: t3= tree_
 				{
 				PushFollow(Follow._tree__in_elementNoOptionSpec1864);
 				t3=tree_();
@@ -4843,7 +4844,7 @@ public partial class ANTLRParser : Parser
 	}
 
 	// $ANTLR start "atom"
-	// Grammars\\ANTLR.g3:489:0: atom : ( range ( ROOT | BANG )? | (=> id w= WILDCARD ( terminal | ruleref ) | terminal | ruleref ) | notSet ( ROOT | BANG )? );
+	// Grammars\\ANTLR.g3:490:0: atom : ( range ( ROOT | BANG )? | (=> id w= WILDCARD ( terminal | ruleref ) | terminal | ruleref ) | notSet ( ROOT | BANG )? );
 	private ANTLRParser.atom_return atom(  )
 	{
 		ANTLRParser.atom_return retval = new ANTLRParser.atom_return();
@@ -4872,7 +4873,7 @@ public partial class ANTLRParser : Parser
 
 		try
 		{
-			// Grammars\\ANTLR.g3:490:4: ( range ( ROOT | BANG )? | (=> id w= WILDCARD ( terminal | ruleref ) | terminal | ruleref ) | notSet ( ROOT | BANG )? )
+			// Grammars\\ANTLR.g3:491:4: ( range ( ROOT | BANG )? | (=> id w= WILDCARD ( terminal | ruleref ) | terminal | ruleref ) | notSet ( ROOT | BANG )? )
 			int alt54=3;
 			switch ( input.LA(1) )
 			{
@@ -4922,7 +4923,7 @@ public partial class ANTLRParser : Parser
 			switch ( alt54 )
 			{
 			case 1:
-				// Grammars\\ANTLR.g3:490:4: range ( ROOT | BANG )?
+				// Grammars\\ANTLR.g3:491:4: range ( ROOT | BANG )?
 				{
 				root_0 = (GrammarAST)adaptor.Nil();
 
@@ -4932,7 +4933,7 @@ public partial class ANTLRParser : Parser
 				state._fsp--;
 				if (state.failed) return retval;
 				if ( state.backtracking == 0 ) adaptor.AddChild(root_0, range90.Tree);
-				// Grammars\\ANTLR.g3:490:10: ( ROOT | BANG )?
+				// Grammars\\ANTLR.g3:491:10: ( ROOT | BANG )?
 				int alt50=3;
 				int LA50_0 = input.LA(1);
 
@@ -4947,7 +4948,7 @@ public partial class ANTLRParser : Parser
 				switch ( alt50 )
 				{
 				case 1:
-					// Grammars\\ANTLR.g3:490:11: ROOT
+					// Grammars\\ANTLR.g3:491:11: ROOT
 					{
 					ROOT91=(IToken)Match(input,ROOT,Follow._ROOT_in_atom1882); if (state.failed) return retval;
 					if ( state.backtracking == 0 ) {
@@ -4958,7 +4959,7 @@ public partial class ANTLRParser : Parser
 					}
 					break;
 				case 2:
-					// Grammars\\ANTLR.g3:490:17: BANG
+					// Grammars\\ANTLR.g3:491:17: BANG
 					{
 					BANG92=(IToken)Match(input,BANG,Follow._BANG_in_atom1885); if (state.failed) return retval;
 					if ( state.backtracking == 0 ) {
@@ -4975,17 +4976,17 @@ public partial class ANTLRParser : Parser
 				}
 				break;
 			case 2:
-				// Grammars\\ANTLR.g3:491:4: (=> id w= WILDCARD ( terminal | ruleref ) | terminal | ruleref )
+				// Grammars\\ANTLR.g3:492:4: (=> id w= WILDCARD ( terminal | ruleref ) | terminal | ruleref )
 				{
 				root_0 = (GrammarAST)adaptor.Nil();
 
-				// Grammars\\ANTLR.g3:491:4: (=> id w= WILDCARD ( terminal | ruleref ) | terminal | ruleref )
+				// Grammars\\ANTLR.g3:492:4: (=> id w= WILDCARD ( terminal | ruleref ) | terminal | ruleref )
 				int alt52=3;
 				alt52 = dfa52.Predict(input);
 				switch ( alt52 )
 				{
 				case 1:
-					// Grammars\\ANTLR.g3:494:4: => id w= WILDCARD ( terminal | ruleref )
+					// Grammars\\ANTLR.g3:495:4: => id w= WILDCARD ( terminal | ruleref )
 					{
 
 					PushFollow(Follow._id_in_atom1925);
@@ -4999,7 +5000,7 @@ public partial class ANTLRParser : Parser
 					w_tree = (GrammarAST)adaptor.Create(w);
 					root_0 = (GrammarAST)adaptor.BecomeRoot(w_tree, root_0);
 					}
-					// Grammars\\ANTLR.g3:496:19: ( terminal | ruleref )
+					// Grammars\\ANTLR.g3:497:19: ( terminal | ruleref )
 					int alt51=2;
 					int LA51_0 = input.LA(1);
 
@@ -5021,7 +5022,7 @@ public partial class ANTLRParser : Parser
 					switch ( alt51 )
 					{
 					case 1:
-						// Grammars\\ANTLR.g3:496:20: terminal
+						// Grammars\\ANTLR.g3:497:20: terminal
 						{
 						PushFollow(Follow._terminal_in_atom1933);
 						terminal94=terminal();
@@ -5033,7 +5034,7 @@ public partial class ANTLRParser : Parser
 						}
 						break;
 					case 2:
-						// Grammars\\ANTLR.g3:496:29: ruleref
+						// Grammars\\ANTLR.g3:497:29: ruleref
 						{
 						PushFollow(Follow._ruleref_in_atom1935);
 						ruleref95=ruleref();
@@ -5055,7 +5056,7 @@ public partial class ANTLRParser : Parser
 					}
 					break;
 				case 2:
-					// Grammars\\ANTLR.g3:497:5: terminal
+					// Grammars\\ANTLR.g3:498:5: terminal
 					{
 					PushFollow(Follow._terminal_in_atom1944);
 					terminal96=terminal();
@@ -5067,7 +5068,7 @@ public partial class ANTLRParser : Parser
 					}
 					break;
 				case 3:
-					// Grammars\\ANTLR.g3:498:5: ruleref
+					// Grammars\\ANTLR.g3:499:5: ruleref
 					{
 					PushFollow(Follow._ruleref_in_atom1950);
 					ruleref97=ruleref();
@@ -5085,7 +5086,7 @@ public partial class ANTLRParser : Parser
 				}
 				break;
 			case 3:
-				// Grammars\\ANTLR.g3:500:4: notSet ( ROOT | BANG )?
+				// Grammars\\ANTLR.g3:501:4: notSet ( ROOT | BANG )?
 				{
 				root_0 = (GrammarAST)adaptor.Nil();
 
@@ -5095,7 +5096,7 @@ public partial class ANTLRParser : Parser
 				state._fsp--;
 				if (state.failed) return retval;
 				if ( state.backtracking == 0 ) adaptor.AddChild(root_0, notSet98.Tree);
-				// Grammars\\ANTLR.g3:500:11: ( ROOT | BANG )?
+				// Grammars\\ANTLR.g3:501:11: ( ROOT | BANG )?
 				int alt53=3;
 				int LA53_0 = input.LA(1);
 
@@ -5110,7 +5111,7 @@ public partial class ANTLRParser : Parser
 				switch ( alt53 )
 				{
 				case 1:
-					// Grammars\\ANTLR.g3:500:12: ROOT
+					// Grammars\\ANTLR.g3:501:12: ROOT
 					{
 					ROOT99=(IToken)Match(input,ROOT,Follow._ROOT_in_atom1962); if (state.failed) return retval;
 					if ( state.backtracking == 0 ) {
@@ -5121,7 +5122,7 @@ public partial class ANTLRParser : Parser
 					}
 					break;
 				case 2:
-					// Grammars\\ANTLR.g3:500:18: BANG
+					// Grammars\\ANTLR.g3:501:18: BANG
 					{
 					BANG100=(IToken)Match(input,BANG,Follow._BANG_in_atom1965); if (state.failed) return retval;
 					if ( state.backtracking == 0 ) {
@@ -5168,7 +5169,7 @@ public partial class ANTLRParser : Parser
 	}
 
 	// $ANTLR start "ruleref"
-	// Grammars\\ANTLR.g3:503:0: ruleref : RULE_REF ( ARG_ACTION )? ( ROOT | BANG )? ;
+	// Grammars\\ANTLR.g3:504:0: ruleref : RULE_REF ( ARG_ACTION )? ( ROOT | BANG )? ;
 	private ANTLRParser.ruleref_return ruleref(  )
 	{
 		ANTLRParser.ruleref_return retval = new ANTLRParser.ruleref_return();
@@ -5188,8 +5189,8 @@ public partial class ANTLRParser : Parser
 
 		try
 		{
-			// Grammars\\ANTLR.g3:504:4: ( RULE_REF ( ARG_ACTION )? ( ROOT | BANG )? )
-			// Grammars\\ANTLR.g3:504:4: RULE_REF ( ARG_ACTION )? ( ROOT | BANG )?
+			// Grammars\\ANTLR.g3:505:4: ( RULE_REF ( ARG_ACTION )? ( ROOT | BANG )? )
+			// Grammars\\ANTLR.g3:505:4: RULE_REF ( ARG_ACTION )? ( ROOT | BANG )?
 			{
 			root_0 = (GrammarAST)adaptor.Nil();
 
@@ -5198,7 +5199,7 @@ public partial class ANTLRParser : Parser
 			RULE_REF101_tree = (GrammarAST)adaptor.Create(RULE_REF101);
 			root_0 = (GrammarAST)adaptor.BecomeRoot(RULE_REF101_tree, root_0);
 			}
-			// Grammars\\ANTLR.g3:504:14: ( ARG_ACTION )?
+			// Grammars\\ANTLR.g3:505:14: ( ARG_ACTION )?
 			int alt55=2;
 			int LA55_0 = input.LA(1);
 
@@ -5209,7 +5210,7 @@ public partial class ANTLRParser : Parser
 			switch ( alt55 )
 			{
 			case 1:
-				// Grammars\\ANTLR.g3:504:0: ARG_ACTION
+				// Grammars\\ANTLR.g3:505:0: ARG_ACTION
 				{
 				ARG_ACTION102=(IToken)Match(input,ARG_ACTION,Follow._ARG_ACTION_in_ruleref1982); if (state.failed) return retval;
 				if ( state.backtracking==0 ) {
@@ -5222,7 +5223,7 @@ public partial class ANTLRParser : Parser
 
 			}
 
-			// Grammars\\ANTLR.g3:504:26: ( ROOT | BANG )?
+			// Grammars\\ANTLR.g3:505:26: ( ROOT | BANG )?
 			int alt56=3;
 			int LA56_0 = input.LA(1);
 
@@ -5237,7 +5238,7 @@ public partial class ANTLRParser : Parser
 			switch ( alt56 )
 			{
 			case 1:
-				// Grammars\\ANTLR.g3:504:27: ROOT
+				// Grammars\\ANTLR.g3:505:27: ROOT
 				{
 				ROOT103=(IToken)Match(input,ROOT,Follow._ROOT_in_ruleref1986); if (state.failed) return retval;
 				if ( state.backtracking == 0 ) {
@@ -5248,7 +5249,7 @@ public partial class ANTLRParser : Parser
 				}
 				break;
 			case 2:
-				// Grammars\\ANTLR.g3:504:33: BANG
+				// Grammars\\ANTLR.g3:505:33: BANG
 				{
 				BANG104=(IToken)Match(input,BANG,Follow._BANG_in_ruleref1989); if (state.failed) return retval;
 				if ( state.backtracking == 0 ) {
@@ -5293,7 +5294,7 @@ public partial class ANTLRParser : Parser
 	}
 
 	// $ANTLR start "notSet"
-	// Grammars\\ANTLR.g3:507:0: notSet : NOT ( notTerminal | block ) ;
+	// Grammars\\ANTLR.g3:508:0: notSet : NOT ( notTerminal | block ) ;
 	private ANTLRParser.notSet_return notSet(  )
 	{
 		ANTLRParser.notSet_return retval = new ANTLRParser.notSet_return();
@@ -5309,8 +5310,8 @@ public partial class ANTLRParser : Parser
 
 		try
 		{
-			// Grammars\\ANTLR.g3:508:4: ( NOT ( notTerminal | block ) )
-			// Grammars\\ANTLR.g3:508:4: NOT ( notTerminal | block )
+			// Grammars\\ANTLR.g3:509:4: ( NOT ( notTerminal | block ) )
+			// Grammars\\ANTLR.g3:509:4: NOT ( notTerminal | block )
 			{
 			root_0 = (GrammarAST)adaptor.Nil();
 
@@ -5319,7 +5320,7 @@ public partial class ANTLRParser : Parser
 			NOT105_tree = (GrammarAST)adaptor.Create(NOT105);
 			root_0 = (GrammarAST)adaptor.BecomeRoot(NOT105_tree, root_0);
 			}
-			// Grammars\\ANTLR.g3:509:3: ( notTerminal | block )
+			// Grammars\\ANTLR.g3:510:3: ( notTerminal | block )
 			int alt57=2;
 			int LA57_0 = input.LA(1);
 
@@ -5341,7 +5342,7 @@ public partial class ANTLRParser : Parser
 			switch ( alt57 )
 			{
 			case 1:
-				// Grammars\\ANTLR.g3:509:5: notTerminal
+				// Grammars\\ANTLR.g3:510:5: notTerminal
 				{
 				PushFollow(Follow._notTerminal_in_notSet2010);
 				notTerminal106=notTerminal();
@@ -5353,7 +5354,7 @@ public partial class ANTLRParser : Parser
 				}
 				break;
 			case 2:
-				// Grammars\\ANTLR.g3:510:5: block
+				// Grammars\\ANTLR.g3:511:5: block
 				{
 				PushFollow(Follow._block_in_notSet2016);
 				block107=block();
@@ -5399,7 +5400,7 @@ public partial class ANTLRParser : Parser
 	}
 
 	// $ANTLR start "treeRoot"
-	// Grammars\\ANTLR.g3:514:0: treeRoot : ( id ( ASSIGN | PLUS_ASSIGN ) ( atom | block ) | atom | block );
+	// Grammars\\ANTLR.g3:515:0: treeRoot : ( id ( ASSIGN | PLUS_ASSIGN ) ( atom | block ) | atom | block );
 	private ANTLRParser.treeRoot_return treeRoot(  )
 	{
 		ANTLRParser.treeRoot_return retval = new ANTLRParser.treeRoot_return();
@@ -5421,7 +5422,7 @@ public partial class ANTLRParser : Parser
 		atTreeRoot=true;
 		try
 		{
-			// Grammars\\ANTLR.g3:517:4: ( id ( ASSIGN | PLUS_ASSIGN ) ( atom | block ) | atom | block )
+			// Grammars\\ANTLR.g3:518:4: ( id ( ASSIGN | PLUS_ASSIGN ) ( atom | block ) | atom | block )
 			int alt60=3;
 			switch ( input.LA(1) )
 			{
@@ -5492,7 +5493,7 @@ public partial class ANTLRParser : Parser
 			switch ( alt60 )
 			{
 			case 1:
-				// Grammars\\ANTLR.g3:517:4: id ( ASSIGN | PLUS_ASSIGN ) ( atom | block )
+				// Grammars\\ANTLR.g3:518:4: id ( ASSIGN | PLUS_ASSIGN ) ( atom | block )
 				{
 				root_0 = (GrammarAST)adaptor.Nil();
 
@@ -5502,7 +5503,7 @@ public partial class ANTLRParser : Parser
 				state._fsp--;
 				if (state.failed) return retval;
 				if ( state.backtracking == 0 ) adaptor.AddChild(root_0, id108.Tree);
-				// Grammars\\ANTLR.g3:517:7: ( ASSIGN | PLUS_ASSIGN )
+				// Grammars\\ANTLR.g3:518:7: ( ASSIGN | PLUS_ASSIGN )
 				int alt58=2;
 				int LA58_0 = input.LA(1);
 
@@ -5524,7 +5525,7 @@ public partial class ANTLRParser : Parser
 				switch ( alt58 )
 				{
 				case 1:
-					// Grammars\\ANTLR.g3:517:8: ASSIGN
+					// Grammars\\ANTLR.g3:518:8: ASSIGN
 					{
 					ASSIGN109=(IToken)Match(input,ASSIGN,Follow._ASSIGN_in_treeRoot2042); if (state.failed) return retval;
 					if ( state.backtracking == 0 ) {
@@ -5535,7 +5536,7 @@ public partial class ANTLRParser : Parser
 					}
 					break;
 				case 2:
-					// Grammars\\ANTLR.g3:517:16: PLUS_ASSIGN
+					// Grammars\\ANTLR.g3:518:16: PLUS_ASSIGN
 					{
 					PLUS_ASSIGN110=(IToken)Match(input,PLUS_ASSIGN,Follow._PLUS_ASSIGN_in_treeRoot2045); if (state.failed) return retval;
 					if ( state.backtracking == 0 ) {
@@ -5548,7 +5549,7 @@ public partial class ANTLRParser : Parser
 
 				}
 
-				// Grammars\\ANTLR.g3:517:30: ( atom | block )
+				// Grammars\\ANTLR.g3:518:30: ( atom | block )
 				int alt59=2;
 				int LA59_0 = input.LA(1);
 
@@ -5570,7 +5571,7 @@ public partial class ANTLRParser : Parser
 				switch ( alt59 )
 				{
 				case 1:
-					// Grammars\\ANTLR.g3:517:31: atom
+					// Grammars\\ANTLR.g3:518:31: atom
 					{
 					PushFollow(Follow._atom_in_treeRoot2050);
 					atom111=atom();
@@ -5582,7 +5583,7 @@ public partial class ANTLRParser : Parser
 					}
 					break;
 				case 2:
-					// Grammars\\ANTLR.g3:517:36: block
+					// Grammars\\ANTLR.g3:518:36: block
 					{
 					PushFollow(Follow._block_in_treeRoot2052);
 					block112=block();
@@ -5600,7 +5601,7 @@ public partial class ANTLRParser : Parser
 				}
 				break;
 			case 2:
-				// Grammars\\ANTLR.g3:518:4: atom
+				// Grammars\\ANTLR.g3:519:4: atom
 				{
 				root_0 = (GrammarAST)adaptor.Nil();
 
@@ -5614,7 +5615,7 @@ public partial class ANTLRParser : Parser
 				}
 				break;
 			case 3:
-				// Grammars\\ANTLR.g3:519:4: block
+				// Grammars\\ANTLR.g3:520:4: block
 				{
 				root_0 = (GrammarAST)adaptor.Nil();
 
@@ -5662,7 +5663,7 @@ public partial class ANTLRParser : Parser
 	}
 
 	// $ANTLR start "tree_"
-	// Grammars\\ANTLR.g3:522:0: tree_ : TREE_BEGIN treeRoot ( element )+ RPAREN ;
+	// Grammars\\ANTLR.g3:523:0: tree_ : TREE_BEGIN treeRoot ( element )+ RPAREN ;
 	private ANTLRParser.tree__return tree_(  )
 	{
 		ANTLRParser.tree__return retval = new ANTLRParser.tree__return();
@@ -5680,8 +5681,8 @@ public partial class ANTLRParser : Parser
 
 		try
 		{
-			// Grammars\\ANTLR.g3:523:4: ( TREE_BEGIN treeRoot ( element )+ RPAREN )
-			// Grammars\\ANTLR.g3:523:4: TREE_BEGIN treeRoot ( element )+ RPAREN
+			// Grammars\\ANTLR.g3:524:4: ( TREE_BEGIN treeRoot ( element )+ RPAREN )
+			// Grammars\\ANTLR.g3:524:4: TREE_BEGIN treeRoot ( element )+ RPAREN
 			{
 			root_0 = (GrammarAST)adaptor.Nil();
 
@@ -5696,7 +5697,7 @@ public partial class ANTLRParser : Parser
 			state._fsp--;
 			if (state.failed) return retval;
 			if ( state.backtracking == 0 ) adaptor.AddChild(root_0, treeRoot116.Tree);
-			// Grammars\\ANTLR.g3:524:12: ( element )+
+			// Grammars\\ANTLR.g3:525:12: ( element )+
 			int cnt61=0;
 			for ( ; ; )
 			{
@@ -5712,7 +5713,7 @@ public partial class ANTLRParser : Parser
 				switch ( alt61 )
 				{
 				case 1:
-					// Grammars\\ANTLR.g3:524:0: element
+					// Grammars\\ANTLR.g3:525:0: element
 					{
 					PushFollow(Follow._element_in_tree_2081);
 					element117=element();
@@ -5771,7 +5772,7 @@ public partial class ANTLRParser : Parser
 	}
 
 	// $ANTLR start "ebnf"
-	// Grammars\\ANTLR.g3:529:0: ebnf : block ( QUESTION -> ^( OPTIONAL[$start,\"?\"] block ) | STAR -> ^( CLOSURE[$start,\"*\"] block ) | PLUS -> ^( POSITIVE_CLOSURE[$start,\"+\"] block ) | IMPLIES -> {GrammarType == COMBINED_GRAMMAR && char.IsUpper(currentRuleName[0])}? ^( SYNPRED[$start,\"=>\"] block ) ->| ROOT -> ^( ROOT block ) | BANG -> ^( BANG block ) | -> block ) ;
+	// Grammars\\ANTLR.g3:530:0: ebnf : block ( QUESTION -> ^( OPTIONAL[$start,\"?\"] block ) | STAR -> ^( CLOSURE[$start,\"*\"] block ) | PLUS -> ^( POSITIVE_CLOSURE[$start,\"+\"] block ) | IMPLIES -> {GrammarType == GrammarType.Combined && char.IsUpper(currentRuleName[0])}? ^( SYNPRED[$start,\"=>\"] block ) ->| ROOT -> ^( ROOT block ) | BANG -> ^( BANG block ) | -> block ) ;
 	private ANTLRParser.ebnf_return ebnf(  )
 	{
 		ANTLRParser.ebnf_return retval = new ANTLRParser.ebnf_return();
@@ -5802,8 +5803,8 @@ public partial class ANTLRParser : Parser
 		RewriteRuleSubtreeStream stream_block=new RewriteRuleSubtreeStream(adaptor,"rule block");
 		try
 		{
-			// Grammars\\ANTLR.g3:530:4: ( block ( QUESTION -> ^( OPTIONAL[$start,\"?\"] block ) | STAR -> ^( CLOSURE[$start,\"*\"] block ) | PLUS -> ^( POSITIVE_CLOSURE[$start,\"+\"] block ) | IMPLIES -> {GrammarType == COMBINED_GRAMMAR && char.IsUpper(currentRuleName[0])}? ^( SYNPRED[$start,\"=>\"] block ) ->| ROOT -> ^( ROOT block ) | BANG -> ^( BANG block ) | -> block ) )
-			// Grammars\\ANTLR.g3:530:4: block ( QUESTION -> ^( OPTIONAL[$start,\"?\"] block ) | STAR -> ^( CLOSURE[$start,\"*\"] block ) | PLUS -> ^( POSITIVE_CLOSURE[$start,\"+\"] block ) | IMPLIES -> {GrammarType == COMBINED_GRAMMAR && char.IsUpper(currentRuleName[0])}? ^( SYNPRED[$start,\"=>\"] block ) ->| ROOT -> ^( ROOT block ) | BANG -> ^( BANG block ) | -> block )
+			// Grammars\\ANTLR.g3:531:4: ( block ( QUESTION -> ^( OPTIONAL[$start,\"?\"] block ) | STAR -> ^( CLOSURE[$start,\"*\"] block ) | PLUS -> ^( POSITIVE_CLOSURE[$start,\"+\"] block ) | IMPLIES -> {GrammarType == GrammarType.Combined && char.IsUpper(currentRuleName[0])}? ^( SYNPRED[$start,\"=>\"] block ) ->| ROOT -> ^( ROOT block ) | BANG -> ^( BANG block ) | -> block ) )
+			// Grammars\\ANTLR.g3:531:4: block ( QUESTION -> ^( OPTIONAL[$start,\"?\"] block ) | STAR -> ^( CLOSURE[$start,\"*\"] block ) | PLUS -> ^( POSITIVE_CLOSURE[$start,\"+\"] block ) | IMPLIES -> {GrammarType == GrammarType.Combined && char.IsUpper(currentRuleName[0])}? ^( SYNPRED[$start,\"=>\"] block ) ->| ROOT -> ^( ROOT block ) | BANG -> ^( BANG block ) | -> block )
 			{
 			PushFollow(Follow._block_in_ebnf2100);
 			block119=block();
@@ -5811,7 +5812,7 @@ public partial class ANTLRParser : Parser
 			state._fsp--;
 			if (state.failed) return retval;
 			if ( state.backtracking == 0 ) stream_block.Add(block119.Tree);
-			// Grammars\\ANTLR.g3:531:3: ( QUESTION -> ^( OPTIONAL[$start,\"?\"] block ) | STAR -> ^( CLOSURE[$start,\"*\"] block ) | PLUS -> ^( POSITIVE_CLOSURE[$start,\"+\"] block ) | IMPLIES -> {GrammarType == COMBINED_GRAMMAR && char.IsUpper(currentRuleName[0])}? ^( SYNPRED[$start,\"=>\"] block ) ->| ROOT -> ^( ROOT block ) | BANG -> ^( BANG block ) | -> block )
+			// Grammars\\ANTLR.g3:532:3: ( QUESTION -> ^( OPTIONAL[$start,\"?\"] block ) | STAR -> ^( CLOSURE[$start,\"*\"] block ) | PLUS -> ^( POSITIVE_CLOSURE[$start,\"+\"] block ) | IMPLIES -> {GrammarType == GrammarType.Combined && char.IsUpper(currentRuleName[0])}? ^( SYNPRED[$start,\"=>\"] block ) ->| ROOT -> ^( ROOT block ) | BANG -> ^( BANG block ) | -> block )
 			int alt62=7;
 			switch ( input.LA(1) )
 			{
@@ -5876,7 +5877,7 @@ public partial class ANTLRParser : Parser
 			switch ( alt62 )
 			{
 			case 1:
-				// Grammars\\ANTLR.g3:531:5: QUESTION
+				// Grammars\\ANTLR.g3:532:5: QUESTION
 				{
 				QUESTION120=(IToken)Match(input,QUESTION,Follow._QUESTION_in_ebnf2106); if (state.failed) return retval; 
 				if ( state.backtracking == 0 ) stream_QUESTION.Add(QUESTION120);
@@ -5896,9 +5897,9 @@ public partial class ANTLRParser : Parser
 				RewriteRuleSubtreeStream stream_retval=new RewriteRuleSubtreeStream(adaptor,"rule retval",retval!=null?retval.tree:null);
 
 				root_0 = (GrammarAST)adaptor.Nil();
-				// 532:4: -> ^( OPTIONAL[$start,\"?\"] block )
+				// 533:4: -> ^( OPTIONAL[$start,\"?\"] block )
 				{
-					// Grammars\\ANTLR.g3:532:7: ^( OPTIONAL[$start,\"?\"] block )
+					// Grammars\\ANTLR.g3:533:7: ^( OPTIONAL[$start,\"?\"] block )
 					{
 					GrammarAST root_1 = (GrammarAST)adaptor.Nil();
 					root_1 = (GrammarAST)adaptor.BecomeRoot((GrammarAST)adaptor.Create(OPTIONAL, ((IToken)retval.start), "?"), root_1);
@@ -5917,7 +5918,7 @@ public partial class ANTLRParser : Parser
 				}
 				break;
 			case 2:
-				// Grammars\\ANTLR.g3:533:5: STAR
+				// Grammars\\ANTLR.g3:534:5: STAR
 				{
 				STAR121=(IToken)Match(input,STAR,Follow._STAR_in_ebnf2124); if (state.failed) return retval; 
 				if ( state.backtracking == 0 ) stream_STAR.Add(STAR121);
@@ -5937,9 +5938,9 @@ public partial class ANTLRParser : Parser
 				RewriteRuleSubtreeStream stream_retval=new RewriteRuleSubtreeStream(adaptor,"rule retval",retval!=null?retval.tree:null);
 
 				root_0 = (GrammarAST)adaptor.Nil();
-				// 534:4: -> ^( CLOSURE[$start,\"*\"] block )
+				// 535:4: -> ^( CLOSURE[$start,\"*\"] block )
 				{
-					// Grammars\\ANTLR.g3:534:7: ^( CLOSURE[$start,\"*\"] block )
+					// Grammars\\ANTLR.g3:535:7: ^( CLOSURE[$start,\"*\"] block )
 					{
 					GrammarAST root_1 = (GrammarAST)adaptor.Nil();
 					root_1 = (GrammarAST)adaptor.BecomeRoot((GrammarAST)adaptor.Create(CLOSURE, ((IToken)retval.start), "*"), root_1);
@@ -5958,7 +5959,7 @@ public partial class ANTLRParser : Parser
 				}
 				break;
 			case 3:
-				// Grammars\\ANTLR.g3:535:5: PLUS
+				// Grammars\\ANTLR.g3:536:5: PLUS
 				{
 				PLUS122=(IToken)Match(input,PLUS,Follow._PLUS_in_ebnf2142); if (state.failed) return retval; 
 				if ( state.backtracking == 0 ) stream_PLUS.Add(PLUS122);
@@ -5978,9 +5979,9 @@ public partial class ANTLRParser : Parser
 				RewriteRuleSubtreeStream stream_retval=new RewriteRuleSubtreeStream(adaptor,"rule retval",retval!=null?retval.tree:null);
 
 				root_0 = (GrammarAST)adaptor.Nil();
-				// 536:4: -> ^( POSITIVE_CLOSURE[$start,\"+\"] block )
+				// 537:4: -> ^( POSITIVE_CLOSURE[$start,\"+\"] block )
 				{
-					// Grammars\\ANTLR.g3:536:7: ^( POSITIVE_CLOSURE[$start,\"+\"] block )
+					// Grammars\\ANTLR.g3:537:7: ^( POSITIVE_CLOSURE[$start,\"+\"] block )
 					{
 					GrammarAST root_1 = (GrammarAST)adaptor.Nil();
 					root_1 = (GrammarAST)adaptor.BecomeRoot((GrammarAST)adaptor.Create(POSITIVE_CLOSURE, ((IToken)retval.start), "+"), root_1);
@@ -5999,7 +6000,7 @@ public partial class ANTLRParser : Parser
 				}
 				break;
 			case 4:
-				// Grammars\\ANTLR.g3:537:5: IMPLIES
+				// Grammars\\ANTLR.g3:538:5: IMPLIES
 				{
 				IMPLIES123=(IToken)Match(input,IMPLIES,Follow._IMPLIES_in_ebnf2160); if (state.failed) return retval; 
 				if ( state.backtracking == 0 ) stream_IMPLIES.Add(IMPLIES123);
@@ -6019,10 +6020,10 @@ public partial class ANTLRParser : Parser
 				RewriteRuleSubtreeStream stream_retval=new RewriteRuleSubtreeStream(adaptor,"rule retval",retval!=null?retval.tree:null);
 
 				root_0 = (GrammarAST)adaptor.Nil();
-				// 539:4: -> {GrammarType == COMBINED_GRAMMAR && char.IsUpper(currentRuleName[0])}? ^( SYNPRED[$start,\"=>\"] block )
-				if (GrammarType == COMBINED_GRAMMAR && char.IsUpper(currentRuleName[0]))
+				// 540:4: -> {GrammarType == GrammarType.Combined && char.IsUpper(currentRuleName[0])}? ^( SYNPRED[$start,\"=>\"] block )
+				if (GrammarType == GrammarType.Combined && char.IsUpper(currentRuleName[0]))
 				{
-					// Grammars\\ANTLR.g3:539:78: ^( SYNPRED[$start,\"=>\"] block )
+					// Grammars\\ANTLR.g3:540:82: ^( SYNPRED[$start,\"=>\"] block )
 					{
 					GrammarAST root_1 = (GrammarAST)adaptor.Nil();
 					root_1 = (GrammarAST)adaptor.BecomeRoot((GrammarAST)adaptor.Create(SYNPRED, ((IToken)retval.start), "=>"), root_1);
@@ -6033,7 +6034,7 @@ public partial class ANTLRParser : Parser
 					}
 
 				}
-				else // 541:4: ->
+				else // 542:4: ->
 				{
 					adaptor.AddChild(root_0, CreateSynSemPredFromBlock((block119!=null?((GrammarAST)block119.tree):null), SYN_SEMPRED));
 
@@ -6046,7 +6047,7 @@ public partial class ANTLRParser : Parser
 				}
 				break;
 			case 5:
-				// Grammars\\ANTLR.g3:542:5: ROOT
+				// Grammars\\ANTLR.g3:543:5: ROOT
 				{
 				ROOT124=(IToken)Match(input,ROOT,Follow._ROOT_in_ebnf2196); if (state.failed) return retval; 
 				if ( state.backtracking == 0 ) stream_ROOT.Add(ROOT124);
@@ -6066,9 +6067,9 @@ public partial class ANTLRParser : Parser
 				RewriteRuleSubtreeStream stream_retval=new RewriteRuleSubtreeStream(adaptor,"rule retval",retval!=null?retval.tree:null);
 
 				root_0 = (GrammarAST)adaptor.Nil();
-				// 543:4: -> ^( ROOT block )
+				// 544:4: -> ^( ROOT block )
 				{
-					// Grammars\\ANTLR.g3:543:7: ^( ROOT block )
+					// Grammars\\ANTLR.g3:544:7: ^( ROOT block )
 					{
 					GrammarAST root_1 = (GrammarAST)adaptor.Nil();
 					root_1 = (GrammarAST)adaptor.BecomeRoot(stream_ROOT.NextNode(), root_1);
@@ -6087,7 +6088,7 @@ public partial class ANTLRParser : Parser
 				}
 				break;
 			case 6:
-				// Grammars\\ANTLR.g3:544:5: BANG
+				// Grammars\\ANTLR.g3:545:5: BANG
 				{
 				BANG125=(IToken)Match(input,BANG,Follow._BANG_in_ebnf2213); if (state.failed) return retval; 
 				if ( state.backtracking == 0 ) stream_BANG.Add(BANG125);
@@ -6107,9 +6108,9 @@ public partial class ANTLRParser : Parser
 				RewriteRuleSubtreeStream stream_retval=new RewriteRuleSubtreeStream(adaptor,"rule retval",retval!=null?retval.tree:null);
 
 				root_0 = (GrammarAST)adaptor.Nil();
-				// 545:4: -> ^( BANG block )
+				// 546:4: -> ^( BANG block )
 				{
-					// Grammars\\ANTLR.g3:545:7: ^( BANG block )
+					// Grammars\\ANTLR.g3:546:7: ^( BANG block )
 					{
 					GrammarAST root_1 = (GrammarAST)adaptor.Nil();
 					root_1 = (GrammarAST)adaptor.BecomeRoot(stream_BANG.NextNode(), root_1);
@@ -6128,7 +6129,7 @@ public partial class ANTLRParser : Parser
 				}
 				break;
 			case 7:
-				// Grammars\\ANTLR.g3:547:4: 
+				// Grammars\\ANTLR.g3:548:4: 
 				{
 
 
@@ -6146,7 +6147,7 @@ public partial class ANTLRParser : Parser
 				RewriteRuleSubtreeStream stream_retval=new RewriteRuleSubtreeStream(adaptor,"rule retval",retval!=null?retval.tree:null);
 
 				root_0 = (GrammarAST)adaptor.Nil();
-				// 547:4: -> block
+				// 548:4: -> block
 				{
 					adaptor.AddChild(root_0, stream_block.NextTree());
 
@@ -6193,7 +6194,7 @@ public partial class ANTLRParser : Parser
 	}
 
 	// $ANTLR start "range"
-	// Grammars\\ANTLR.g3:551:0: range : c1= CHAR_LITERAL RANGE c2= CHAR_LITERAL -> ^( CHAR_RANGE[$c1,\"..\"] $c1 $c2) ;
+	// Grammars\\ANTLR.g3:552:0: range : c1= CHAR_LITERAL RANGE c2= CHAR_LITERAL -> ^( CHAR_RANGE[$c1,\"..\"] $c1 $c2) ;
 	private ANTLRParser.range_return range(  )
 	{
 		ANTLRParser.range_return retval = new ANTLRParser.range_return();
@@ -6213,8 +6214,8 @@ public partial class ANTLRParser : Parser
 
 		try
 		{
-			// Grammars\\ANTLR.g3:552:4: (c1= CHAR_LITERAL RANGE c2= CHAR_LITERAL -> ^( CHAR_RANGE[$c1,\"..\"] $c1 $c2) )
-			// Grammars\\ANTLR.g3:552:4: c1= CHAR_LITERAL RANGE c2= CHAR_LITERAL
+			// Grammars\\ANTLR.g3:553:4: (c1= CHAR_LITERAL RANGE c2= CHAR_LITERAL -> ^( CHAR_RANGE[$c1,\"..\"] $c1 $c2) )
+			// Grammars\\ANTLR.g3:553:4: c1= CHAR_LITERAL RANGE c2= CHAR_LITERAL
 			{
 			c1=(IToken)Match(input,CHAR_LITERAL,Follow._CHAR_LITERAL_in_range2252); if (state.failed) return retval; 
 			if ( state.backtracking == 0 ) stream_CHAR_LITERAL.Add(c1);
@@ -6242,9 +6243,9 @@ public partial class ANTLRParser : Parser
 			RewriteRuleSubtreeStream stream_retval=new RewriteRuleSubtreeStream(adaptor,"rule retval",retval!=null?retval.tree:null);
 
 			root_0 = (GrammarAST)adaptor.Nil();
-			// 553:3: -> ^( CHAR_RANGE[$c1,\"..\"] $c1 $c2)
+			// 554:3: -> ^( CHAR_RANGE[$c1,\"..\"] $c1 $c2)
 			{
-				// Grammars\\ANTLR.g3:553:6: ^( CHAR_RANGE[$c1,\"..\"] $c1 $c2)
+				// Grammars\\ANTLR.g3:554:6: ^( CHAR_RANGE[$c1,\"..\"] $c1 $c2)
 				{
 				GrammarAST root_1 = (GrammarAST)adaptor.Nil();
 				root_1 = (GrammarAST)adaptor.BecomeRoot((GrammarAST)adaptor.Create(CHAR_RANGE, c1, ".."), root_1);
@@ -6292,7 +6293,7 @@ public partial class ANTLRParser : Parser
 	}
 
 	// $ANTLR start "terminal"
-	// Grammars\\ANTLR.g3:556:0: terminal : (cl= CHAR_LITERAL ( elementOptions[$cl.tree] )? ( ROOT | BANG )? |tr= TOKEN_REF ( elementOptions[$tr.tree] )? ( ARG_ACTION )? ( ROOT | BANG )? |sl= STRING_LITERAL ( elementOptions[$sl.tree] )? ( ROOT | BANG )? |wi= WILDCARD ( ROOT | BANG )? );
+	// Grammars\\ANTLR.g3:557:0: terminal : (cl= CHAR_LITERAL ( elementOptions[$cl.tree] )? ( ROOT | BANG )? |tr= TOKEN_REF ( elementOptions[$tr.tree] )? ( ARG_ACTION )? ( ROOT | BANG )? |sl= STRING_LITERAL ( elementOptions[$sl.tree] )? ( ROOT | BANG )? |wi= WILDCARD ( ROOT | BANG )? );
 	private ANTLRParser.terminal_return terminal(  )
 	{
 		ANTLRParser.terminal_return retval = new ANTLRParser.terminal_return();
@@ -6333,7 +6334,7 @@ public partial class ANTLRParser : Parser
 
 		try
 		{
-			// Grammars\\ANTLR.g3:557:4: (cl= CHAR_LITERAL ( elementOptions[$cl.tree] )? ( ROOT | BANG )? |tr= TOKEN_REF ( elementOptions[$tr.tree] )? ( ARG_ACTION )? ( ROOT | BANG )? |sl= STRING_LITERAL ( elementOptions[$sl.tree] )? ( ROOT | BANG )? |wi= WILDCARD ( ROOT | BANG )? )
+			// Grammars\\ANTLR.g3:558:4: (cl= CHAR_LITERAL ( elementOptions[$cl.tree] )? ( ROOT | BANG )? |tr= TOKEN_REF ( elementOptions[$tr.tree] )? ( ARG_ACTION )? ( ROOT | BANG )? |sl= STRING_LITERAL ( elementOptions[$sl.tree] )? ( ROOT | BANG )? |wi= WILDCARD ( ROOT | BANG )? )
 			int alt71=4;
 			switch ( input.LA(1) )
 			{
@@ -6369,7 +6370,7 @@ public partial class ANTLRParser : Parser
 			switch ( alt71 )
 			{
 			case 1:
-				// Grammars\\ANTLR.g3:557:4: cl= CHAR_LITERAL ( elementOptions[$cl.tree] )? ( ROOT | BANG )?
+				// Grammars\\ANTLR.g3:558:4: cl= CHAR_LITERAL ( elementOptions[$cl.tree] )? ( ROOT | BANG )?
 				{
 				root_0 = (GrammarAST)adaptor.Nil();
 
@@ -6378,7 +6379,7 @@ public partial class ANTLRParser : Parser
 				cl_tree = (GrammarAST)adaptor.Create(cl);
 				root_0 = (GrammarAST)adaptor.BecomeRoot(cl_tree, root_0);
 				}
-				// Grammars\\ANTLR.g3:557:21: ( elementOptions[$cl.tree] )?
+				// Grammars\\ANTLR.g3:558:21: ( elementOptions[$cl.tree] )?
 				int alt63=2;
 				int LA63_0 = input.LA(1);
 
@@ -6389,7 +6390,7 @@ public partial class ANTLRParser : Parser
 				switch ( alt63 )
 				{
 				case 1:
-					// Grammars\\ANTLR.g3:557:23: elementOptions[$cl.tree]
+					// Grammars\\ANTLR.g3:558:23: elementOptions[$cl.tree]
 					{
 					PushFollow(Follow._elementOptions_in_terminal2291);
 					elementOptions127=elementOptions(cl_tree);
@@ -6402,7 +6403,7 @@ public partial class ANTLRParser : Parser
 
 				}
 
-				// Grammars\\ANTLR.g3:557:52: ( ROOT | BANG )?
+				// Grammars\\ANTLR.g3:558:52: ( ROOT | BANG )?
 				int alt64=3;
 				int LA64_0 = input.LA(1);
 
@@ -6417,7 +6418,7 @@ public partial class ANTLRParser : Parser
 				switch ( alt64 )
 				{
 				case 1:
-					// Grammars\\ANTLR.g3:557:53: ROOT
+					// Grammars\\ANTLR.g3:558:53: ROOT
 					{
 					ROOT128=(IToken)Match(input,ROOT,Follow._ROOT_in_terminal2299); if (state.failed) return retval;
 					if ( state.backtracking == 0 ) {
@@ -6428,7 +6429,7 @@ public partial class ANTLRParser : Parser
 					}
 					break;
 				case 2:
-					// Grammars\\ANTLR.g3:557:59: BANG
+					// Grammars\\ANTLR.g3:558:59: BANG
 					{
 					BANG129=(IToken)Match(input,BANG,Follow._BANG_in_terminal2302); if (state.failed) return retval;
 					if ( state.backtracking == 0 ) {
@@ -6445,7 +6446,7 @@ public partial class ANTLRParser : Parser
 				}
 				break;
 			case 2:
-				// Grammars\\ANTLR.g3:559:4: tr= TOKEN_REF ( elementOptions[$tr.tree] )? ( ARG_ACTION )? ( ROOT | BANG )?
+				// Grammars\\ANTLR.g3:560:4: tr= TOKEN_REF ( elementOptions[$tr.tree] )? ( ARG_ACTION )? ( ROOT | BANG )?
 				{
 				root_0 = (GrammarAST)adaptor.Nil();
 
@@ -6454,7 +6455,7 @@ public partial class ANTLRParser : Parser
 				tr_tree = (GrammarAST)adaptor.Create(tr);
 				root_0 = (GrammarAST)adaptor.BecomeRoot(tr_tree, root_0);
 				}
-				// Grammars\\ANTLR.g3:560:3: ( elementOptions[$tr.tree] )?
+				// Grammars\\ANTLR.g3:561:3: ( elementOptions[$tr.tree] )?
 				int alt65=2;
 				int LA65_0 = input.LA(1);
 
@@ -6465,7 +6466,7 @@ public partial class ANTLRParser : Parser
 				switch ( alt65 )
 				{
 				case 1:
-					// Grammars\\ANTLR.g3:560:5: elementOptions[$tr.tree]
+					// Grammars\\ANTLR.g3:561:5: elementOptions[$tr.tree]
 					{
 					PushFollow(Follow._elementOptions_in_terminal2320);
 					elementOptions130=elementOptions(tr_tree);
@@ -6478,7 +6479,7 @@ public partial class ANTLRParser : Parser
 
 				}
 
-				// Grammars\\ANTLR.g3:561:3: ( ARG_ACTION )?
+				// Grammars\\ANTLR.g3:562:3: ( ARG_ACTION )?
 				int alt66=2;
 				int LA66_0 = input.LA(1);
 
@@ -6489,7 +6490,7 @@ public partial class ANTLRParser : Parser
 				switch ( alt66 )
 				{
 				case 1:
-					// Grammars\\ANTLR.g3:561:5: ARG_ACTION
+					// Grammars\\ANTLR.g3:562:5: ARG_ACTION
 					{
 					ARG_ACTION131=(IToken)Match(input,ARG_ACTION,Follow._ARG_ACTION_in_terminal2331); if (state.failed) return retval;
 					if ( state.backtracking==0 ) {
@@ -6502,7 +6503,7 @@ public partial class ANTLRParser : Parser
 
 				}
 
-				// Grammars\\ANTLR.g3:562:3: ( ROOT | BANG )?
+				// Grammars\\ANTLR.g3:563:3: ( ROOT | BANG )?
 				int alt67=3;
 				int LA67_0 = input.LA(1);
 
@@ -6517,7 +6518,7 @@ public partial class ANTLRParser : Parser
 				switch ( alt67 )
 				{
 				case 1:
-					// Grammars\\ANTLR.g3:562:4: ROOT
+					// Grammars\\ANTLR.g3:563:4: ROOT
 					{
 					ROOT132=(IToken)Match(input,ROOT,Follow._ROOT_in_terminal2340); if (state.failed) return retval;
 					if ( state.backtracking == 0 ) {
@@ -6528,7 +6529,7 @@ public partial class ANTLRParser : Parser
 					}
 					break;
 				case 2:
-					// Grammars\\ANTLR.g3:562:10: BANG
+					// Grammars\\ANTLR.g3:563:10: BANG
 					{
 					BANG133=(IToken)Match(input,BANG,Follow._BANG_in_terminal2343); if (state.failed) return retval;
 					if ( state.backtracking == 0 ) {
@@ -6545,7 +6546,7 @@ public partial class ANTLRParser : Parser
 				}
 				break;
 			case 3:
-				// Grammars\\ANTLR.g3:564:4: sl= STRING_LITERAL ( elementOptions[$sl.tree] )? ( ROOT | BANG )?
+				// Grammars\\ANTLR.g3:565:4: sl= STRING_LITERAL ( elementOptions[$sl.tree] )? ( ROOT | BANG )?
 				{
 				root_0 = (GrammarAST)adaptor.Nil();
 
@@ -6554,7 +6555,7 @@ public partial class ANTLRParser : Parser
 				sl_tree = (GrammarAST)adaptor.Create(sl);
 				root_0 = (GrammarAST)adaptor.BecomeRoot(sl_tree, root_0);
 				}
-				// Grammars\\ANTLR.g3:564:23: ( elementOptions[$sl.tree] )?
+				// Grammars\\ANTLR.g3:565:23: ( elementOptions[$sl.tree] )?
 				int alt68=2;
 				int LA68_0 = input.LA(1);
 
@@ -6565,7 +6566,7 @@ public partial class ANTLRParser : Parser
 				switch ( alt68 )
 				{
 				case 1:
-					// Grammars\\ANTLR.g3:564:25: elementOptions[$sl.tree]
+					// Grammars\\ANTLR.g3:565:25: elementOptions[$sl.tree]
 					{
 					PushFollow(Follow._elementOptions_in_terminal2359);
 					elementOptions134=elementOptions(sl_tree);
@@ -6578,7 +6579,7 @@ public partial class ANTLRParser : Parser
 
 				}
 
-				// Grammars\\ANTLR.g3:564:54: ( ROOT | BANG )?
+				// Grammars\\ANTLR.g3:565:54: ( ROOT | BANG )?
 				int alt69=3;
 				int LA69_0 = input.LA(1);
 
@@ -6593,7 +6594,7 @@ public partial class ANTLRParser : Parser
 				switch ( alt69 )
 				{
 				case 1:
-					// Grammars\\ANTLR.g3:564:55: ROOT
+					// Grammars\\ANTLR.g3:565:55: ROOT
 					{
 					ROOT135=(IToken)Match(input,ROOT,Follow._ROOT_in_terminal2367); if (state.failed) return retval;
 					if ( state.backtracking == 0 ) {
@@ -6604,7 +6605,7 @@ public partial class ANTLRParser : Parser
 					}
 					break;
 				case 2:
-					// Grammars\\ANTLR.g3:564:61: BANG
+					// Grammars\\ANTLR.g3:565:61: BANG
 					{
 					BANG136=(IToken)Match(input,BANG,Follow._BANG_in_terminal2370); if (state.failed) return retval;
 					if ( state.backtracking == 0 ) {
@@ -6621,7 +6622,7 @@ public partial class ANTLRParser : Parser
 				}
 				break;
 			case 4:
-				// Grammars\\ANTLR.g3:566:4: wi= WILDCARD ( ROOT | BANG )?
+				// Grammars\\ANTLR.g3:567:4: wi= WILDCARD ( ROOT | BANG )?
 				{
 				root_0 = (GrammarAST)adaptor.Nil();
 
@@ -6630,7 +6631,7 @@ public partial class ANTLRParser : Parser
 				wi_tree = (GrammarAST)adaptor.Create(wi);
 				adaptor.AddChild(root_0, wi_tree);
 				}
-				// Grammars\\ANTLR.g3:566:16: ( ROOT | BANG )?
+				// Grammars\\ANTLR.g3:567:16: ( ROOT | BANG )?
 				int alt70=3;
 				int LA70_0 = input.LA(1);
 
@@ -6645,7 +6646,7 @@ public partial class ANTLRParser : Parser
 				switch ( alt70 )
 				{
 				case 1:
-					// Grammars\\ANTLR.g3:566:17: ROOT
+					// Grammars\\ANTLR.g3:567:17: ROOT
 					{
 					ROOT137=(IToken)Match(input,ROOT,Follow._ROOT_in_terminal2384); if (state.failed) return retval;
 					if ( state.backtracking == 0 ) {
@@ -6656,7 +6657,7 @@ public partial class ANTLRParser : Parser
 					}
 					break;
 				case 2:
-					// Grammars\\ANTLR.g3:566:23: BANG
+					// Grammars\\ANTLR.g3:567:23: BANG
 					{
 					BANG138=(IToken)Match(input,BANG,Follow._BANG_in_terminal2387); if (state.failed) return retval;
 					if ( state.backtracking == 0 ) {
@@ -6713,7 +6714,7 @@ public partial class ANTLRParser : Parser
 	}
 
 	// $ANTLR start "elementOptions"
-	// Grammars\\ANTLR.g3:576:0: elementOptions[GrammarAST terminalAST] : ( OPEN_ELEMENT_OPTION defaultNodeOption[terminalAST] CLOSE_ELEMENT_OPTION | OPEN_ELEMENT_OPTION elementOption[terminalAST] ( SEMI elementOption[terminalAST] )* CLOSE_ELEMENT_OPTION );
+	// Grammars\\ANTLR.g3:577:0: elementOptions[GrammarAST terminalAST] : ( OPEN_ELEMENT_OPTION defaultNodeOption[terminalAST] CLOSE_ELEMENT_OPTION | OPEN_ELEMENT_OPTION elementOption[terminalAST] ( SEMI elementOption[terminalAST] )* CLOSE_ELEMENT_OPTION );
 	private ANTLRParser.elementOptions_return elementOptions( GrammarAST terminalAST )
 	{
 		ANTLRParser.elementOptions_return retval = new ANTLRParser.elementOptions_return();
@@ -6738,7 +6739,7 @@ public partial class ANTLRParser : Parser
 
 		try
 		{
-			// Grammars\\ANTLR.g3:577:4: ( OPEN_ELEMENT_OPTION defaultNodeOption[terminalAST] CLOSE_ELEMENT_OPTION | OPEN_ELEMENT_OPTION elementOption[terminalAST] ( SEMI elementOption[terminalAST] )* CLOSE_ELEMENT_OPTION )
+			// Grammars\\ANTLR.g3:578:4: ( OPEN_ELEMENT_OPTION defaultNodeOption[terminalAST] CLOSE_ELEMENT_OPTION | OPEN_ELEMENT_OPTION elementOption[terminalAST] ( SEMI elementOption[terminalAST] )* CLOSE_ELEMENT_OPTION )
 			int alt73=2;
 			int LA73_0 = input.LA(1);
 
@@ -6804,7 +6805,7 @@ public partial class ANTLRParser : Parser
 			switch ( alt73 )
 			{
 			case 1:
-				// Grammars\\ANTLR.g3:577:4: OPEN_ELEMENT_OPTION defaultNodeOption[terminalAST] CLOSE_ELEMENT_OPTION
+				// Grammars\\ANTLR.g3:578:4: OPEN_ELEMENT_OPTION defaultNodeOption[terminalAST] CLOSE_ELEMENT_OPTION
 				{
 				root_0 = (GrammarAST)adaptor.Nil();
 
@@ -6824,7 +6825,7 @@ public partial class ANTLRParser : Parser
 				}
 				break;
 			case 2:
-				// Grammars\\ANTLR.g3:578:4: OPEN_ELEMENT_OPTION elementOption[terminalAST] ( SEMI elementOption[terminalAST] )* CLOSE_ELEMENT_OPTION
+				// Grammars\\ANTLR.g3:579:4: OPEN_ELEMENT_OPTION elementOption[terminalAST] ( SEMI elementOption[terminalAST] )* CLOSE_ELEMENT_OPTION
 				{
 				root_0 = (GrammarAST)adaptor.Nil();
 
@@ -6839,7 +6840,7 @@ public partial class ANTLRParser : Parser
 				state._fsp--;
 				if (state.failed) return retval;
 				if ( state.backtracking == 0 ) adaptor.AddChild(root_0, elementOption143.Tree);
-				// Grammars\\ANTLR.g3:578:52: ( SEMI elementOption[terminalAST] )*
+				// Grammars\\ANTLR.g3:579:52: ( SEMI elementOption[terminalAST] )*
 				for ( ; ; )
 				{
 					int alt72=2;
@@ -6854,7 +6855,7 @@ public partial class ANTLRParser : Parser
 					switch ( alt72 )
 					{
 					case 1:
-						// Grammars\\ANTLR.g3:578:53: SEMI elementOption[terminalAST]
+						// Grammars\\ANTLR.g3:579:53: SEMI elementOption[terminalAST]
 						{
 						SEMI144=(IToken)Match(input,SEMI,Follow._SEMI_in_elementOptions2425); if (state.failed) return retval;
 						PushFollow(Follow._elementOption_in_elementOptions2428);
@@ -6911,7 +6912,7 @@ public partial class ANTLRParser : Parser
 	}
 
 	// $ANTLR start "defaultNodeOption"
-	// Grammars\\ANTLR.g3:581:0: defaultNodeOption[GrammarAST terminalAST] : i= id ( WILDCARD i2= id )* ;
+	// Grammars\\ANTLR.g3:582:0: defaultNodeOption[GrammarAST terminalAST] : i= id ( WILDCARD i2= id )* ;
 	private ANTLRParser.defaultNodeOption_return defaultNodeOption( GrammarAST terminalAST )
 	{
 		ANTLRParser.defaultNodeOption_return retval = new ANTLRParser.defaultNodeOption_return();
@@ -6930,8 +6931,8 @@ public partial class ANTLRParser : Parser
 
 		try
 		{
-			// Grammars\\ANTLR.g3:586:4: (i= id ( WILDCARD i2= id )* )
-			// Grammars\\ANTLR.g3:586:4: i= id ( WILDCARD i2= id )*
+			// Grammars\\ANTLR.g3:587:4: (i= id ( WILDCARD i2= id )* )
+			// Grammars\\ANTLR.g3:587:4: i= id ( WILDCARD i2= id )*
 			{
 			root_0 = (GrammarAST)adaptor.Nil();
 
@@ -6945,7 +6946,7 @@ public partial class ANTLRParser : Parser
 			{
 				buf.Append((i!=null?input.ToString(i.start,i.stop):null));
 			}
-			// Grammars\\ANTLR.g3:586:32: ( WILDCARD i2= id )*
+			// Grammars\\ANTLR.g3:587:32: ( WILDCARD i2= id )*
 			for ( ; ; )
 			{
 				int alt74=2;
@@ -6960,7 +6961,7 @@ public partial class ANTLRParser : Parser
 				switch ( alt74 )
 				{
 				case 1:
-					// Grammars\\ANTLR.g3:586:33: WILDCARD i2= id
+					// Grammars\\ANTLR.g3:587:33: WILDCARD i2= id
 					{
 					WILDCARD147=(IToken)Match(input,WILDCARD,Follow._WILDCARD_in_defaultNodeOption2458); if (state.failed) return retval;
 					if ( state.backtracking==0 ) {
@@ -7026,7 +7027,7 @@ public partial class ANTLRParser : Parser
 	}
 
 	// $ANTLR start "elementOption"
-	// Grammars\\ANTLR.g3:590:0: elementOption[GrammarAST terminalAST] : a= id ASSIGN (b= id |s= STRING_LITERAL ) ;
+	// Grammars\\ANTLR.g3:591:0: elementOption[GrammarAST terminalAST] : a= id ASSIGN (b= id |s= STRING_LITERAL ) ;
 	private ANTLRParser.elementOption_return elementOption( GrammarAST terminalAST )
 	{
 		ANTLRParser.elementOption_return retval = new ANTLRParser.elementOption_return();
@@ -7044,8 +7045,8 @@ public partial class ANTLRParser : Parser
 
 		try
 		{
-			// Grammars\\ANTLR.g3:591:4: (a= id ASSIGN (b= id |s= STRING_LITERAL ) )
-			// Grammars\\ANTLR.g3:591:4: a= id ASSIGN (b= id |s= STRING_LITERAL )
+			// Grammars\\ANTLR.g3:592:4: (a= id ASSIGN (b= id |s= STRING_LITERAL ) )
+			// Grammars\\ANTLR.g3:592:4: a= id ASSIGN (b= id |s= STRING_LITERAL )
 			{
 			root_0 = (GrammarAST)adaptor.Nil();
 
@@ -7060,7 +7061,7 @@ public partial class ANTLRParser : Parser
 			ASSIGN148_tree = (GrammarAST)adaptor.Create(ASSIGN148);
 			root_0 = (GrammarAST)adaptor.BecomeRoot(ASSIGN148_tree, root_0);
 			}
-			// Grammars\\ANTLR.g3:591:17: (b= id |s= STRING_LITERAL )
+			// Grammars\\ANTLR.g3:592:17: (b= id |s= STRING_LITERAL )
 			int alt75=2;
 			int LA75_0 = input.LA(1);
 
@@ -7082,7 +7083,7 @@ public partial class ANTLRParser : Parser
 			switch ( alt75 )
 			{
 			case 1:
-				// Grammars\\ANTLR.g3:591:18: b= id
+				// Grammars\\ANTLR.g3:592:18: b= id
 				{
 				PushFollow(Follow._id_in_elementOption2492);
 				b=id();
@@ -7094,7 +7095,7 @@ public partial class ANTLRParser : Parser
 				}
 				break;
 			case 2:
-				// Grammars\\ANTLR.g3:591:23: s= STRING_LITERAL
+				// Grammars\\ANTLR.g3:592:23: s= STRING_LITERAL
 				{
 				s=(IToken)Match(input,STRING_LITERAL,Follow._STRING_LITERAL_in_elementOption2496); if (state.failed) return retval;
 				if ( state.backtracking==0 ) {
@@ -7146,7 +7147,7 @@ public partial class ANTLRParser : Parser
 	}
 
 	// $ANTLR start "ebnfSuffix"
-	// Grammars\\ANTLR.g3:598:0: ebnfSuffix[GrammarAST elemAST, bool inRewrite] : ( -> BLOCK[\"BLOCK\"] ) ( -> ^( ALT[\"ALT\"] EOA[\"<end-of-alt>\"] ) ) ( QUESTION -> OPTIONAL[$elemAST.Token,\"?\"] | STAR -> CLOSURE[$elemAST.Token,\"*\"] | PLUS -> POSITIVE_CLOSURE[$elemAST.Token,\"+\"] ) -> ^( $ebnfSuffix ^( EOB[$elemAST.Token, \"<end-of-block>\"] ) ) ;
+	// Grammars\\ANTLR.g3:599:0: ebnfSuffix[GrammarAST elemAST, bool inRewrite] : ( -> BLOCK[\"BLOCK\"] ) ( -> ^( ALT[\"ALT\"] EOA[\"<end-of-alt>\"] ) ) ( QUESTION -> OPTIONAL[$elemAST.Token,\"?\"] | STAR -> CLOSURE[$elemAST.Token,\"*\"] | PLUS -> POSITIVE_CLOSURE[$elemAST.Token,\"+\"] ) -> ^( $ebnfSuffix ^( EOB[$elemAST.Token, \"<end-of-block>\"] ) ) ;
 	private ANTLRParser.ebnfSuffix_return ebnfSuffix( GrammarAST elemAST, bool inRewrite )
 	{
 		ANTLRParser.ebnfSuffix_return retval = new ANTLRParser.ebnfSuffix_return();
@@ -7172,11 +7173,11 @@ public partial class ANTLRParser : Parser
 
 		try
 		{
-			// Grammars\\ANTLR.g3:609:4: ( ( -> BLOCK[\"BLOCK\"] ) ( -> ^( ALT[\"ALT\"] EOA[\"<end-of-alt>\"] ) ) ( QUESTION -> OPTIONAL[$elemAST.Token,\"?\"] | STAR -> CLOSURE[$elemAST.Token,\"*\"] | PLUS -> POSITIVE_CLOSURE[$elemAST.Token,\"+\"] ) -> ^( $ebnfSuffix ^( EOB[$elemAST.Token, \"<end-of-block>\"] ) ) )
-			// Grammars\\ANTLR.g3:609:4: ( -> BLOCK[\"BLOCK\"] ) ( -> ^( ALT[\"ALT\"] EOA[\"<end-of-alt>\"] ) ) ( QUESTION -> OPTIONAL[$elemAST.Token,\"?\"] | STAR -> CLOSURE[$elemAST.Token,\"*\"] | PLUS -> POSITIVE_CLOSURE[$elemAST.Token,\"+\"] )
+			// Grammars\\ANTLR.g3:610:4: ( ( -> BLOCK[\"BLOCK\"] ) ( -> ^( ALT[\"ALT\"] EOA[\"<end-of-alt>\"] ) ) ( QUESTION -> OPTIONAL[$elemAST.Token,\"?\"] | STAR -> CLOSURE[$elemAST.Token,\"*\"] | PLUS -> POSITIVE_CLOSURE[$elemAST.Token,\"+\"] ) -> ^( $ebnfSuffix ^( EOB[$elemAST.Token, \"<end-of-block>\"] ) ) )
+			// Grammars\\ANTLR.g3:610:4: ( -> BLOCK[\"BLOCK\"] ) ( -> ^( ALT[\"ALT\"] EOA[\"<end-of-alt>\"] ) ) ( QUESTION -> OPTIONAL[$elemAST.Token,\"?\"] | STAR -> CLOSURE[$elemAST.Token,\"*\"] | PLUS -> POSITIVE_CLOSURE[$elemAST.Token,\"+\"] )
 			{
-			// Grammars\\ANTLR.g3:609:4: ( -> BLOCK[\"BLOCK\"] )
-			// Grammars\\ANTLR.g3:609:6: 
+			// Grammars\\ANTLR.g3:610:4: ( -> BLOCK[\"BLOCK\"] )
+			// Grammars\\ANTLR.g3:610:6: 
 			{
 
 
@@ -7194,7 +7195,7 @@ public partial class ANTLRParser : Parser
 			RewriteRuleSubtreeStream stream_retval=new RewriteRuleSubtreeStream(adaptor,"rule retval",retval!=null?retval.tree:null);
 
 			root_0 = (GrammarAST)adaptor.Nil();
-			// 609:6: -> BLOCK[\"BLOCK\"]
+			// 610:6: -> BLOCK[\"BLOCK\"]
 			{
 				adaptor.AddChild(root_0, (GrammarAST)adaptor.Create(BLOCK, "BLOCK"));
 
@@ -7210,8 +7211,8 @@ public partial class ANTLRParser : Parser
 			{
 				 blkRoot = (GrammarAST)((GrammarAST)retval.tree).GetChild(0); currentBlockAST = blkRoot; 
 			}
-			// Grammars\\ANTLR.g3:612:3: ( -> ^( ALT[\"ALT\"] EOA[\"<end-of-alt>\"] ) )
-			// Grammars\\ANTLR.g3:613:4: 
+			// Grammars\\ANTLR.g3:613:3: ( -> ^( ALT[\"ALT\"] EOA[\"<end-of-alt>\"] ) )
+			// Grammars\\ANTLR.g3:614:4: 
 			{
 
 
@@ -7229,9 +7230,9 @@ public partial class ANTLRParser : Parser
 			RewriteRuleSubtreeStream stream_retval=new RewriteRuleSubtreeStream(adaptor,"rule retval",retval!=null?retval.tree:null);
 
 			root_0 = (GrammarAST)adaptor.Nil();
-			// 613:4: -> ^( ALT[\"ALT\"] EOA[\"<end-of-alt>\"] )
+			// 614:4: -> ^( ALT[\"ALT\"] EOA[\"<end-of-alt>\"] )
 			{
-				// Grammars\\ANTLR.g3:613:7: ^( ALT[\"ALT\"] EOA[\"<end-of-alt>\"] )
+				// Grammars\\ANTLR.g3:614:7: ^( ALT[\"ALT\"] EOA[\"<end-of-alt>\"] )
 				{
 				GrammarAST root_1 = (GrammarAST)adaptor.Nil();
 				root_1 = (GrammarAST)adaptor.BecomeRoot((GrammarAST)adaptor.Create(ALT, "ALT"), root_1);
@@ -7258,7 +7259,7 @@ public partial class ANTLRParser : Parser
 								PrefixWithSynPred(alt);
 						
 			}
-			// Grammars\\ANTLR.g3:620:3: ( QUESTION -> OPTIONAL[$elemAST.Token,\"?\"] | STAR -> CLOSURE[$elemAST.Token,\"*\"] | PLUS -> POSITIVE_CLOSURE[$elemAST.Token,\"+\"] )
+			// Grammars\\ANTLR.g3:621:3: ( QUESTION -> OPTIONAL[$elemAST.Token,\"?\"] | STAR -> CLOSURE[$elemAST.Token,\"*\"] | PLUS -> POSITIVE_CLOSURE[$elemAST.Token,\"+\"] )
 			int alt76=3;
 			switch ( input.LA(1) )
 			{
@@ -7289,7 +7290,7 @@ public partial class ANTLRParser : Parser
 			switch ( alt76 )
 			{
 			case 1:
-				// Grammars\\ANTLR.g3:620:5: QUESTION
+				// Grammars\\ANTLR.g3:621:5: QUESTION
 				{
 				QUESTION149=(IToken)Match(input,QUESTION,Follow._QUESTION_in_ebnfSuffix2570); if (state.failed) return retval; 
 				if ( state.backtracking == 0 ) stream_QUESTION.Add(QUESTION149);
@@ -7309,7 +7310,7 @@ public partial class ANTLRParser : Parser
 				RewriteRuleSubtreeStream stream_retval=new RewriteRuleSubtreeStream(adaptor,"rule retval",retval!=null?retval.tree:null);
 
 				root_0 = (GrammarAST)adaptor.Nil();
-				// 621:4: -> OPTIONAL[$elemAST.Token,\"?\"]
+				// 622:4: -> OPTIONAL[$elemAST.Token,\"?\"]
 				{
 					adaptor.AddChild(root_0, (GrammarAST)adaptor.Create(OPTIONAL, elemAST.Token, "?"));
 
@@ -7322,7 +7323,7 @@ public partial class ANTLRParser : Parser
 				}
 				break;
 			case 2:
-				// Grammars\\ANTLR.g3:622:5: STAR
+				// Grammars\\ANTLR.g3:623:5: STAR
 				{
 				STAR150=(IToken)Match(input,STAR,Follow._STAR_in_ebnfSuffix2584); if (state.failed) return retval; 
 				if ( state.backtracking == 0 ) stream_STAR.Add(STAR150);
@@ -7342,7 +7343,7 @@ public partial class ANTLRParser : Parser
 				RewriteRuleSubtreeStream stream_retval=new RewriteRuleSubtreeStream(adaptor,"rule retval",retval!=null?retval.tree:null);
 
 				root_0 = (GrammarAST)adaptor.Nil();
-				// 623:4: -> CLOSURE[$elemAST.Token,\"*\"]
+				// 624:4: -> CLOSURE[$elemAST.Token,\"*\"]
 				{
 					adaptor.AddChild(root_0, (GrammarAST)adaptor.Create(CLOSURE, elemAST.Token, "*"));
 
@@ -7355,7 +7356,7 @@ public partial class ANTLRParser : Parser
 				}
 				break;
 			case 3:
-				// Grammars\\ANTLR.g3:624:5: PLUS
+				// Grammars\\ANTLR.g3:625:5: PLUS
 				{
 				PLUS151=(IToken)Match(input,PLUS,Follow._PLUS_in_ebnfSuffix2598); if (state.failed) return retval; 
 				if ( state.backtracking == 0 ) stream_PLUS.Add(PLUS151);
@@ -7375,7 +7376,7 @@ public partial class ANTLRParser : Parser
 				RewriteRuleSubtreeStream stream_retval=new RewriteRuleSubtreeStream(adaptor,"rule retval",retval!=null?retval.tree:null);
 
 				root_0 = (GrammarAST)adaptor.Nil();
-				// 625:4: -> POSITIVE_CLOSURE[$elemAST.Token,\"+\"]
+				// 626:4: -> POSITIVE_CLOSURE[$elemAST.Token,\"+\"]
 				{
 					adaptor.AddChild(root_0, (GrammarAST)adaptor.Create(POSITIVE_CLOSURE, elemAST.Token, "+"));
 
@@ -7405,14 +7406,14 @@ public partial class ANTLRParser : Parser
 			RewriteRuleSubtreeStream stream_retval=new RewriteRuleSubtreeStream(adaptor,"rule retval",retval!=null?retval.tree:null);
 
 			root_0 = (GrammarAST)adaptor.Nil();
-			// 627:3: -> ^( $ebnfSuffix ^( EOB[$elemAST.Token, \"<end-of-block>\"] ) )
+			// 628:3: -> ^( $ebnfSuffix ^( EOB[$elemAST.Token, \"<end-of-block>\"] ) )
 			{
-				// Grammars\\ANTLR.g3:627:6: ^( $ebnfSuffix ^( EOB[$elemAST.Token, \"<end-of-block>\"] ) )
+				// Grammars\\ANTLR.g3:628:6: ^( $ebnfSuffix ^( EOB[$elemAST.Token, \"<end-of-block>\"] ) )
 				{
 				GrammarAST root_1 = (GrammarAST)adaptor.Nil();
 				root_1 = (GrammarAST)adaptor.BecomeRoot(stream_retval.NextNode(), root_1);
 
-				// Grammars\\ANTLR.g3:627:20: ^( EOB[$elemAST.Token, \"<end-of-block>\"] )
+				// Grammars\\ANTLR.g3:628:20: ^( EOB[$elemAST.Token, \"<end-of-block>\"] )
 				{
 				GrammarAST root_2 = (GrammarAST)adaptor.Nil();
 				root_2 = (GrammarAST)adaptor.BecomeRoot(blkRoot, root_2);
@@ -7469,7 +7470,7 @@ public partial class ANTLRParser : Parser
 	}
 
 	// $ANTLR start "notTerminal"
-	// Grammars\\ANTLR.g3:630:0: notTerminal : ( CHAR_LITERAL | TOKEN_REF | STRING_LITERAL );
+	// Grammars\\ANTLR.g3:631:0: notTerminal : ( CHAR_LITERAL | TOKEN_REF | STRING_LITERAL );
 	private ANTLRParser.notTerminal_return notTerminal(  )
 	{
 		ANTLRParser.notTerminal_return retval = new ANTLRParser.notTerminal_return();
@@ -7483,7 +7484,7 @@ public partial class ANTLRParser : Parser
 
 		try
 		{
-			// Grammars\\ANTLR.g3:631:4: ( CHAR_LITERAL | TOKEN_REF | STRING_LITERAL )
+			// Grammars\\ANTLR.g3:632:4: ( CHAR_LITERAL | TOKEN_REF | STRING_LITERAL )
 			// Grammars\\ANTLR.g3:
 			{
 			root_0 = (GrammarAST)adaptor.Nil();
@@ -7534,7 +7535,7 @@ public partial class ANTLRParser : Parser
 	}
 
 	// $ANTLR start "idList"
-	// Grammars\\ANTLR.g3:636:0: idList : id ( COMMA id )* ;
+	// Grammars\\ANTLR.g3:637:0: idList : id ( COMMA id )* ;
 	private ANTLRParser.idList_return idList(  )
 	{
 		ANTLRParser.idList_return retval = new ANTLRParser.idList_return();
@@ -7550,8 +7551,8 @@ public partial class ANTLRParser : Parser
 
 		try
 		{
-			// Grammars\\ANTLR.g3:637:4: ( id ( COMMA id )* )
-			// Grammars\\ANTLR.g3:637:4: id ( COMMA id )*
+			// Grammars\\ANTLR.g3:638:4: ( id ( COMMA id )* )
+			// Grammars\\ANTLR.g3:638:4: id ( COMMA id )*
 			{
 			root_0 = (GrammarAST)adaptor.Nil();
 
@@ -7561,7 +7562,7 @@ public partial class ANTLRParser : Parser
 			state._fsp--;
 			if (state.failed) return retval;
 			if ( state.backtracking == 0 ) adaptor.AddChild(root_0, id153.Tree);
-			// Grammars\\ANTLR.g3:637:7: ( COMMA id )*
+			// Grammars\\ANTLR.g3:638:7: ( COMMA id )*
 			for ( ; ; )
 			{
 				int alt77=2;
@@ -7576,7 +7577,7 @@ public partial class ANTLRParser : Parser
 				switch ( alt77 )
 				{
 				case 1:
-					// Grammars\\ANTLR.g3:637:8: COMMA id
+					// Grammars\\ANTLR.g3:638:8: COMMA id
 					{
 					COMMA154=(IToken)Match(input,COMMA,Follow._COMMA_in_idList2663); if (state.failed) return retval;
 					PushFollow(Follow._id_in_idList2666);
@@ -7630,7 +7631,7 @@ public partial class ANTLRParser : Parser
 	}
 
 	// $ANTLR start "id"
-	// Grammars\\ANTLR.g3:640:0: id : ( TOKEN_REF -> ID[$TOKEN_REF] | RULE_REF -> ID[$RULE_REF] );
+	// Grammars\\ANTLR.g3:641:0: id : ( TOKEN_REF -> ID[$TOKEN_REF] | RULE_REF -> ID[$RULE_REF] );
 	private ANTLRParser.id_return id(  )
 	{
 		ANTLRParser.id_return retval = new ANTLRParser.id_return();
@@ -7648,7 +7649,7 @@ public partial class ANTLRParser : Parser
 
 		try
 		{
-			// Grammars\\ANTLR.g3:641:4: ( TOKEN_REF -> ID[$TOKEN_REF] | RULE_REF -> ID[$RULE_REF] )
+			// Grammars\\ANTLR.g3:642:4: ( TOKEN_REF -> ID[$TOKEN_REF] | RULE_REF -> ID[$RULE_REF] )
 			int alt78=2;
 			int LA78_0 = input.LA(1);
 
@@ -7670,7 +7671,7 @@ public partial class ANTLRParser : Parser
 			switch ( alt78 )
 			{
 			case 1:
-				// Grammars\\ANTLR.g3:641:4: TOKEN_REF
+				// Grammars\\ANTLR.g3:642:4: TOKEN_REF
 				{
 				TOKEN_REF156=(IToken)Match(input,TOKEN_REF,Follow._TOKEN_REF_in_id2679); if (state.failed) return retval; 
 				if ( state.backtracking == 0 ) stream_TOKEN_REF.Add(TOKEN_REF156);
@@ -7690,7 +7691,7 @@ public partial class ANTLRParser : Parser
 				RewriteRuleSubtreeStream stream_retval=new RewriteRuleSubtreeStream(adaptor,"rule retval",retval!=null?retval.tree:null);
 
 				root_0 = (GrammarAST)adaptor.Nil();
-				// 642:3: -> ID[$TOKEN_REF]
+				// 643:3: -> ID[$TOKEN_REF]
 				{
 					adaptor.AddChild(root_0, (GrammarAST)adaptor.Create(ID, TOKEN_REF156));
 
@@ -7703,7 +7704,7 @@ public partial class ANTLRParser : Parser
 				}
 				break;
 			case 2:
-				// Grammars\\ANTLR.g3:643:4: RULE_REF
+				// Grammars\\ANTLR.g3:644:4: RULE_REF
 				{
 				RULE_REF157=(IToken)Match(input,RULE_REF,Follow._RULE_REF_in_id2691); if (state.failed) return retval; 
 				if ( state.backtracking == 0 ) stream_RULE_REF.Add(RULE_REF157);
@@ -7723,7 +7724,7 @@ public partial class ANTLRParser : Parser
 				RewriteRuleSubtreeStream stream_retval=new RewriteRuleSubtreeStream(adaptor,"rule retval",retval!=null?retval.tree:null);
 
 				root_0 = (GrammarAST)adaptor.Nil();
-				// 644:3: -> ID[$RULE_REF]
+				// 645:3: -> ID[$RULE_REF]
 				{
 					adaptor.AddChild(root_0, (GrammarAST)adaptor.Create(ID, RULE_REF157));
 
@@ -7766,7 +7767,7 @@ public partial class ANTLRParser : Parser
 	}
 
 	// $ANTLR start "rewrite"
-	// Grammars\\ANTLR.g3:649:0: rewrite : ( ( rewrite_with_sempred )* REWRITE rewrite_alternative -> ( rewrite_with_sempred )* ^( REWRITE rewrite_alternative ) |);
+	// Grammars\\ANTLR.g3:650:0: rewrite : ( ( rewrite_with_sempred )* REWRITE rewrite_alternative -> ( rewrite_with_sempred )* ^( REWRITE rewrite_alternative ) |);
 	private ANTLRParser.rewrite_return rewrite(  )
 	{
 		ANTLRParser.rewrite_return retval = new ANTLRParser.rewrite_return();
@@ -7784,7 +7785,7 @@ public partial class ANTLRParser : Parser
 		RewriteRuleSubtreeStream stream_rewrite_alternative=new RewriteRuleSubtreeStream(adaptor,"rule rewrite_alternative");
 		try
 		{
-			// Grammars\\ANTLR.g3:650:4: ( ( rewrite_with_sempred )* REWRITE rewrite_alternative -> ( rewrite_with_sempred )* ^( REWRITE rewrite_alternative ) |)
+			// Grammars\\ANTLR.g3:651:4: ( ( rewrite_with_sempred )* REWRITE rewrite_alternative -> ( rewrite_with_sempred )* ^( REWRITE rewrite_alternative ) |)
 			int alt80=2;
 			int LA80_0 = input.LA(1);
 
@@ -7806,9 +7807,9 @@ public partial class ANTLRParser : Parser
 			switch ( alt80 )
 			{
 			case 1:
-				// Grammars\\ANTLR.g3:650:4: ( rewrite_with_sempred )* REWRITE rewrite_alternative
+				// Grammars\\ANTLR.g3:651:4: ( rewrite_with_sempred )* REWRITE rewrite_alternative
 				{
-				// Grammars\\ANTLR.g3:650:4: ( rewrite_with_sempred )*
+				// Grammars\\ANTLR.g3:651:4: ( rewrite_with_sempred )*
 				for ( ; ; )
 				{
 					int alt79=2;
@@ -7830,7 +7831,7 @@ public partial class ANTLRParser : Parser
 					switch ( alt79 )
 					{
 					case 1:
-						// Grammars\\ANTLR.g3:650:0: rewrite_with_sempred
+						// Grammars\\ANTLR.g3:651:0: rewrite_with_sempred
 						{
 						PushFollow(Follow._rewrite_with_sempred_in_rewrite2711);
 						rewrite_with_sempred158=rewrite_with_sempred();
@@ -7875,16 +7876,16 @@ public partial class ANTLRParser : Parser
 				RewriteRuleSubtreeStream stream_retval=new RewriteRuleSubtreeStream(adaptor,"rule retval",retval!=null?retval.tree:null);
 
 				root_0 = (GrammarAST)adaptor.Nil();
-				// 652:3: -> ( rewrite_with_sempred )* ^( REWRITE rewrite_alternative )
+				// 653:3: -> ( rewrite_with_sempred )* ^( REWRITE rewrite_alternative )
 				{
-					// Grammars\\ANTLR.g3:652:6: ( rewrite_with_sempred )*
+					// Grammars\\ANTLR.g3:653:6: ( rewrite_with_sempred )*
 					while ( stream_rewrite_with_sempred.HasNext )
 					{
 						adaptor.AddChild(root_0, stream_rewrite_with_sempred.NextTree());
 
 					}
 					stream_rewrite_with_sempred.Reset();
-					// Grammars\\ANTLR.g3:652:28: ^( REWRITE rewrite_alternative )
+					// Grammars\\ANTLR.g3:653:28: ^( REWRITE rewrite_alternative )
 					{
 					GrammarAST root_1 = (GrammarAST)adaptor.Nil();
 					root_1 = (GrammarAST)adaptor.BecomeRoot(stream_REWRITE.NextNode(), root_1);
@@ -7903,7 +7904,7 @@ public partial class ANTLRParser : Parser
 				}
 				break;
 			case 2:
-				// Grammars\\ANTLR.g3:654:2: 
+				// Grammars\\ANTLR.g3:655:2: 
 				{
 				root_0 = (GrammarAST)adaptor.Nil();
 
@@ -7942,7 +7943,7 @@ public partial class ANTLRParser : Parser
 	}
 
 	// $ANTLR start "rewrite_with_sempred"
-	// Grammars\\ANTLR.g3:656:0: rewrite_with_sempred : REWRITE SEMPRED rewrite_alternative ;
+	// Grammars\\ANTLR.g3:657:0: rewrite_with_sempred : REWRITE SEMPRED rewrite_alternative ;
 	private ANTLRParser.rewrite_with_sempred_return rewrite_with_sempred(  )
 	{
 		ANTLRParser.rewrite_with_sempred_return retval = new ANTLRParser.rewrite_with_sempred_return();
@@ -7959,8 +7960,8 @@ public partial class ANTLRParser : Parser
 
 		try
 		{
-			// Grammars\\ANTLR.g3:657:4: ( REWRITE SEMPRED rewrite_alternative )
-			// Grammars\\ANTLR.g3:657:4: REWRITE SEMPRED rewrite_alternative
+			// Grammars\\ANTLR.g3:658:4: ( REWRITE SEMPRED rewrite_alternative )
+			// Grammars\\ANTLR.g3:658:4: REWRITE SEMPRED rewrite_alternative
 			{
 			root_0 = (GrammarAST)adaptor.Nil();
 
@@ -8012,7 +8013,7 @@ public partial class ANTLRParser : Parser
 	}
 
 	// $ANTLR start "rewrite_block"
-	// Grammars\\ANTLR.g3:660:0: rewrite_block : LPAREN rewrite_alternative RPAREN -> ^( BLOCK[$LPAREN,\"BLOCK\"] rewrite_alternative EOB[$RPAREN,\"<end-of-block>\"] ) ;
+	// Grammars\\ANTLR.g3:661:0: rewrite_block : LPAREN rewrite_alternative RPAREN -> ^( BLOCK[$LPAREN,\"BLOCK\"] rewrite_alternative EOB[$RPAREN,\"<end-of-block>\"] ) ;
 	private ANTLRParser.rewrite_block_return rewrite_block(  )
 	{
 		ANTLRParser.rewrite_block_return retval = new ANTLRParser.rewrite_block_return();
@@ -8031,8 +8032,8 @@ public partial class ANTLRParser : Parser
 		RewriteRuleSubtreeStream stream_rewrite_alternative=new RewriteRuleSubtreeStream(adaptor,"rule rewrite_alternative");
 		try
 		{
-			// Grammars\\ANTLR.g3:661:4: ( LPAREN rewrite_alternative RPAREN -> ^( BLOCK[$LPAREN,\"BLOCK\"] rewrite_alternative EOB[$RPAREN,\"<end-of-block>\"] ) )
-			// Grammars\\ANTLR.g3:661:4: LPAREN rewrite_alternative RPAREN
+			// Grammars\\ANTLR.g3:662:4: ( LPAREN rewrite_alternative RPAREN -> ^( BLOCK[$LPAREN,\"BLOCK\"] rewrite_alternative EOB[$RPAREN,\"<end-of-block>\"] ) )
+			// Grammars\\ANTLR.g3:662:4: LPAREN rewrite_alternative RPAREN
 			{
 			LPAREN164=(IToken)Match(input,LPAREN,Follow._LPAREN_in_rewrite_block2761); if (state.failed) return retval; 
 			if ( state.backtracking == 0 ) stream_LPAREN.Add(LPAREN164);
@@ -8061,9 +8062,9 @@ public partial class ANTLRParser : Parser
 			RewriteRuleSubtreeStream stream_retval=new RewriteRuleSubtreeStream(adaptor,"rule retval",retval!=null?retval.tree:null);
 
 			root_0 = (GrammarAST)adaptor.Nil();
-			// 664:3: -> ^( BLOCK[$LPAREN,\"BLOCK\"] rewrite_alternative EOB[$RPAREN,\"<end-of-block>\"] )
+			// 665:3: -> ^( BLOCK[$LPAREN,\"BLOCK\"] rewrite_alternative EOB[$RPAREN,\"<end-of-block>\"] )
 			{
-				// Grammars\\ANTLR.g3:664:6: ^( BLOCK[$LPAREN,\"BLOCK\"] rewrite_alternative EOB[$RPAREN,\"<end-of-block>\"] )
+				// Grammars\\ANTLR.g3:665:6: ^( BLOCK[$LPAREN,\"BLOCK\"] rewrite_alternative EOB[$RPAREN,\"<end-of-block>\"] )
 				{
 				GrammarAST root_1 = (GrammarAST)adaptor.Nil();
 				root_1 = (GrammarAST)adaptor.BecomeRoot((GrammarAST)adaptor.Create(BLOCK, LPAREN164, "BLOCK"), root_1);
@@ -8111,7 +8112,7 @@ public partial class ANTLRParser : Parser
 	}
 
 	// $ANTLR start "rewrite_alternative"
-	// Grammars\\ANTLR.g3:667:0: rewrite_alternative options {k=1; } : ({...}? => rewrite_template |{...}? => ( rewrite_element )+ -> {!stream_rewrite_element.HasNext}? ^( ALT[LT(1),\"ALT\"] EPSILON[\"epsilon\"] EOA[\"<end-of-alt>\"] ) -> ^( ALT[LT(1),\"ALT\"] ( rewrite_element )+ EOA[\"<end-of-alt>\"] ) | -> ^( ALT[LT(1),\"ALT\"] EPSILON[\"epsilon\"] EOA[\"<end-of-alt>\"] ) |{...}? ETC );
+	// Grammars\\ANTLR.g3:668:0: rewrite_alternative options {k=1; } : ({...}? => rewrite_template |{...}? => ( rewrite_element )+ -> {!stream_rewrite_element.HasNext}? ^( ALT[LT(1),\"ALT\"] EPSILON[\"epsilon\"] EOA[\"<end-of-alt>\"] ) -> ^( ALT[LT(1),\"ALT\"] ( rewrite_element )+ EOA[\"<end-of-alt>\"] ) | -> ^( ALT[LT(1),\"ALT\"] EPSILON[\"epsilon\"] EOA[\"<end-of-alt>\"] ) |{...}? ETC );
 	private ANTLRParser.rewrite_alternative_return rewrite_alternative(  )
 	{
 		ANTLRParser.rewrite_alternative_return retval = new ANTLRParser.rewrite_alternative_return();
@@ -8127,13 +8128,13 @@ public partial class ANTLRParser : Parser
 		RewriteRuleSubtreeStream stream_rewrite_element=new RewriteRuleSubtreeStream(adaptor,"rule rewrite_element");
 		try
 		{
-			// Grammars\\ANTLR.g3:669:4: ({...}? => rewrite_template |{...}? => ( rewrite_element )+ -> {!stream_rewrite_element.HasNext}? ^( ALT[LT(1),\"ALT\"] EPSILON[\"epsilon\"] EOA[\"<end-of-alt>\"] ) -> ^( ALT[LT(1),\"ALT\"] ( rewrite_element )+ EOA[\"<end-of-alt>\"] ) | -> ^( ALT[LT(1),\"ALT\"] EPSILON[\"epsilon\"] EOA[\"<end-of-alt>\"] ) |{...}? ETC )
+			// Grammars\\ANTLR.g3:670:4: ({...}? => rewrite_template |{...}? => ( rewrite_element )+ -> {!stream_rewrite_element.HasNext}? ^( ALT[LT(1),\"ALT\"] EPSILON[\"epsilon\"] EOA[\"<end-of-alt>\"] ) -> ^( ALT[LT(1),\"ALT\"] ( rewrite_element )+ EOA[\"<end-of-alt>\"] ) | -> ^( ALT[LT(1),\"ALT\"] EPSILON[\"epsilon\"] EOA[\"<end-of-alt>\"] ) |{...}? ETC )
 			int alt82=4;
 			alt82 = dfa82.Predict(input);
 			switch ( alt82 )
 			{
 			case 1:
-				// Grammars\\ANTLR.g3:669:4: {...}? => rewrite_template
+				// Grammars\\ANTLR.g3:670:4: {...}? => rewrite_template
 				{
 				root_0 = (GrammarAST)adaptor.Nil();
 
@@ -8152,14 +8153,14 @@ public partial class ANTLRParser : Parser
 				}
 				break;
 			case 2:
-				// Grammars\\ANTLR.g3:671:4: {...}? => ( rewrite_element )+
+				// Grammars\\ANTLR.g3:672:4: {...}? => ( rewrite_element )+
 				{
 				if ( !((Grammar.BuildAST)) )
 				{
 					if (state.backtracking>0) {state.failed=true; return retval;}
 					throw new FailedPredicateException(input, "rewrite_alternative", "Grammar.BuildAST");
 				}
-				// Grammars\\ANTLR.g3:671:27: ( rewrite_element )+
+				// Grammars\\ANTLR.g3:672:27: ( rewrite_element )+
 				int cnt81=0;
 				for ( ; ; )
 				{
@@ -8175,7 +8176,7 @@ public partial class ANTLRParser : Parser
 					switch ( alt81 )
 					{
 					case 1:
-						// Grammars\\ANTLR.g3:671:29: rewrite_element
+						// Grammars\\ANTLR.g3:672:29: rewrite_element
 						{
 						PushFollow(Follow._rewrite_element_in_rewrite_alternative2817);
 						rewrite_element168=rewrite_element();
@@ -8216,10 +8217,10 @@ public partial class ANTLRParser : Parser
 				RewriteRuleSubtreeStream stream_retval=new RewriteRuleSubtreeStream(adaptor,"rule retval",retval!=null?retval.tree:null);
 
 				root_0 = (GrammarAST)adaptor.Nil();
-				// 672:3: -> {!stream_rewrite_element.HasNext}? ^( ALT[LT(1),\"ALT\"] EPSILON[\"epsilon\"] EOA[\"<end-of-alt>\"] )
+				// 673:3: -> {!stream_rewrite_element.HasNext}? ^( ALT[LT(1),\"ALT\"] EPSILON[\"epsilon\"] EOA[\"<end-of-alt>\"] )
 				if (!stream_rewrite_element.HasNext)
 				{
-					// Grammars\\ANTLR.g3:672:41: ^( ALT[LT(1),\"ALT\"] EPSILON[\"epsilon\"] EOA[\"<end-of-alt>\"] )
+					// Grammars\\ANTLR.g3:673:41: ^( ALT[LT(1),\"ALT\"] EPSILON[\"epsilon\"] EOA[\"<end-of-alt>\"] )
 					{
 					GrammarAST root_1 = (GrammarAST)adaptor.Nil();
 					root_1 = (GrammarAST)adaptor.BecomeRoot((GrammarAST)adaptor.Create(ALT, LT(1), "ALT"), root_1);
@@ -8231,9 +8232,9 @@ public partial class ANTLRParser : Parser
 					}
 
 				}
-				else // 673:3: -> ^( ALT[LT(1),\"ALT\"] ( rewrite_element )+ EOA[\"<end-of-alt>\"] )
+				else // 674:3: -> ^( ALT[LT(1),\"ALT\"] ( rewrite_element )+ EOA[\"<end-of-alt>\"] )
 				{
-					// Grammars\\ANTLR.g3:673:6: ^( ALT[LT(1),\"ALT\"] ( rewrite_element )+ EOA[\"<end-of-alt>\"] )
+					// Grammars\\ANTLR.g3:674:6: ^( ALT[LT(1),\"ALT\"] ( rewrite_element )+ EOA[\"<end-of-alt>\"] )
 					{
 					GrammarAST root_1 = (GrammarAST)adaptor.Nil();
 					root_1 = (GrammarAST)adaptor.BecomeRoot((GrammarAST)adaptor.Create(ALT, LT(1), "ALT"), root_1);
@@ -8262,7 +8263,7 @@ public partial class ANTLRParser : Parser
 				}
 				break;
 			case 3:
-				// Grammars\\ANTLR.g3:676:3: 
+				// Grammars\\ANTLR.g3:677:3: 
 				{
 
 
@@ -8280,9 +8281,9 @@ public partial class ANTLRParser : Parser
 				RewriteRuleSubtreeStream stream_retval=new RewriteRuleSubtreeStream(adaptor,"rule retval",retval!=null?retval.tree:null);
 
 				root_0 = (GrammarAST)adaptor.Nil();
-				// 676:3: -> ^( ALT[LT(1),\"ALT\"] EPSILON[\"epsilon\"] EOA[\"<end-of-alt>\"] )
+				// 677:3: -> ^( ALT[LT(1),\"ALT\"] EPSILON[\"epsilon\"] EOA[\"<end-of-alt>\"] )
 				{
-					// Grammars\\ANTLR.g3:676:6: ^( ALT[LT(1),\"ALT\"] EPSILON[\"epsilon\"] EOA[\"<end-of-alt>\"] )
+					// Grammars\\ANTLR.g3:677:6: ^( ALT[LT(1),\"ALT\"] EPSILON[\"epsilon\"] EOA[\"<end-of-alt>\"] )
 					{
 					GrammarAST root_1 = (GrammarAST)adaptor.Nil();
 					root_1 = (GrammarAST)adaptor.BecomeRoot((GrammarAST)adaptor.Create(ALT, LT(1), "ALT"), root_1);
@@ -8302,7 +8303,7 @@ public partial class ANTLRParser : Parser
 				}
 				break;
 			case 4:
-				// Grammars\\ANTLR.g3:677:4: {...}? ETC
+				// Grammars\\ANTLR.g3:678:4: {...}? ETC
 				{
 				root_0 = (GrammarAST)adaptor.Nil();
 
@@ -8350,7 +8351,7 @@ public partial class ANTLRParser : Parser
 	}
 
 	// $ANTLR start "rewrite_element"
-	// Grammars\\ANTLR.g3:680:0: rewrite_element : ( (t= rewrite_atom -> $t) (subrule= ebnfSuffix[$t.tree,true] -> $subrule)? | rewrite_ebnf | (tr= rewrite_tree -> $tr) (subrule= ebnfSuffix[$tr.tree,true] -> $subrule)? );
+	// Grammars\\ANTLR.g3:681:0: rewrite_element : ( (t= rewrite_atom -> $t) (subrule= ebnfSuffix[$t.tree,true] -> $subrule)? | rewrite_ebnf | (tr= rewrite_tree -> $tr) (subrule= ebnfSuffix[$tr.tree,true] -> $subrule)? );
 	private ANTLRParser.rewrite_element_return rewrite_element(  )
 	{
 		ANTLRParser.rewrite_element_return retval = new ANTLRParser.rewrite_element_return();
@@ -8368,7 +8369,7 @@ public partial class ANTLRParser : Parser
 		RewriteRuleSubtreeStream stream_rewrite_tree=new RewriteRuleSubtreeStream(adaptor,"rule rewrite_tree");
 		try
 		{
-			// Grammars\\ANTLR.g3:681:4: ( (t= rewrite_atom -> $t) (subrule= ebnfSuffix[$t.tree,true] -> $subrule)? | rewrite_ebnf | (tr= rewrite_tree -> $tr) (subrule= ebnfSuffix[$tr.tree,true] -> $subrule)? )
+			// Grammars\\ANTLR.g3:682:4: ( (t= rewrite_atom -> $t) (subrule= ebnfSuffix[$t.tree,true] -> $subrule)? | rewrite_ebnf | (tr= rewrite_tree -> $tr) (subrule= ebnfSuffix[$tr.tree,true] -> $subrule)? )
 			int alt85=3;
 			switch ( input.LA(1) )
 			{
@@ -8404,10 +8405,10 @@ public partial class ANTLRParser : Parser
 			switch ( alt85 )
 			{
 			case 1:
-				// Grammars\\ANTLR.g3:681:4: (t= rewrite_atom -> $t) (subrule= ebnfSuffix[$t.tree,true] -> $subrule)?
+				// Grammars\\ANTLR.g3:682:4: (t= rewrite_atom -> $t) (subrule= ebnfSuffix[$t.tree,true] -> $subrule)?
 				{
-				// Grammars\\ANTLR.g3:681:4: (t= rewrite_atom -> $t)
-				// Grammars\\ANTLR.g3:681:6: t= rewrite_atom
+				// Grammars\\ANTLR.g3:682:4: (t= rewrite_atom -> $t)
+				// Grammars\\ANTLR.g3:682:6: t= rewrite_atom
 				{
 				PushFollow(Follow._rewrite_atom_in_rewrite_element2893);
 				t=rewrite_atom();
@@ -8431,7 +8432,7 @@ public partial class ANTLRParser : Parser
 				RewriteRuleSubtreeStream stream_retval=new RewriteRuleSubtreeStream(adaptor,"rule retval",retval!=null?retval.tree:null);
 
 				root_0 = (GrammarAST)adaptor.Nil();
-				// 682:4: -> $t
+				// 683:4: -> $t
 				{
 					adaptor.AddChild(root_0, stream_t.NextTree());
 
@@ -8443,7 +8444,7 @@ public partial class ANTLRParser : Parser
 
 				}
 
-				// Grammars\\ANTLR.g3:684:3: (subrule= ebnfSuffix[$t.tree,true] -> $subrule)?
+				// Grammars\\ANTLR.g3:685:3: (subrule= ebnfSuffix[$t.tree,true] -> $subrule)?
 				int alt83=2;
 				int LA83_0 = input.LA(1);
 
@@ -8454,7 +8455,7 @@ public partial class ANTLRParser : Parser
 				switch ( alt83 )
 				{
 				case 1:
-					// Grammars\\ANTLR.g3:684:5: subrule= ebnfSuffix[$t.tree,true]
+					// Grammars\\ANTLR.g3:685:5: subrule= ebnfSuffix[$t.tree,true]
 					{
 					PushFollow(Follow._ebnfSuffix_in_rewrite_element2913);
 					subrule=ebnfSuffix((t!=null?((GrammarAST)t.tree):null), true);
@@ -8478,7 +8479,7 @@ public partial class ANTLRParser : Parser
 					RewriteRuleSubtreeStream stream_retval=new RewriteRuleSubtreeStream(adaptor,"rule retval",retval!=null?retval.tree:null);
 
 					root_0 = (GrammarAST)adaptor.Nil();
-					// 685:4: -> $subrule
+					// 686:4: -> $subrule
 					{
 						adaptor.AddChild(root_0, stream_subrule.NextTree());
 
@@ -8497,7 +8498,7 @@ public partial class ANTLRParser : Parser
 				}
 				break;
 			case 2:
-				// Grammars\\ANTLR.g3:687:4: rewrite_ebnf
+				// Grammars\\ANTLR.g3:688:4: rewrite_ebnf
 				{
 				root_0 = (GrammarAST)adaptor.Nil();
 
@@ -8511,10 +8512,10 @@ public partial class ANTLRParser : Parser
 				}
 				break;
 			case 3:
-				// Grammars\\ANTLR.g3:688:4: (tr= rewrite_tree -> $tr) (subrule= ebnfSuffix[$tr.tree,true] -> $subrule)?
+				// Grammars\\ANTLR.g3:689:4: (tr= rewrite_tree -> $tr) (subrule= ebnfSuffix[$tr.tree,true] -> $subrule)?
 				{
-				// Grammars\\ANTLR.g3:688:4: (tr= rewrite_tree -> $tr)
-				// Grammars\\ANTLR.g3:688:6: tr= rewrite_tree
+				// Grammars\\ANTLR.g3:689:4: (tr= rewrite_tree -> $tr)
+				// Grammars\\ANTLR.g3:689:6: tr= rewrite_tree
 				{
 				PushFollow(Follow._rewrite_tree_in_rewrite_element2941);
 				tr=rewrite_tree();
@@ -8538,7 +8539,7 @@ public partial class ANTLRParser : Parser
 				RewriteRuleSubtreeStream stream_retval=new RewriteRuleSubtreeStream(adaptor,"rule retval",retval!=null?retval.tree:null);
 
 				root_0 = (GrammarAST)adaptor.Nil();
-				// 689:4: -> $tr
+				// 690:4: -> $tr
 				{
 					adaptor.AddChild(root_0, stream_tr.NextTree());
 
@@ -8550,7 +8551,7 @@ public partial class ANTLRParser : Parser
 
 				}
 
-				// Grammars\\ANTLR.g3:691:3: (subrule= ebnfSuffix[$tr.tree,true] -> $subrule)?
+				// Grammars\\ANTLR.g3:692:3: (subrule= ebnfSuffix[$tr.tree,true] -> $subrule)?
 				int alt84=2;
 				int LA84_0 = input.LA(1);
 
@@ -8561,7 +8562,7 @@ public partial class ANTLRParser : Parser
 				switch ( alt84 )
 				{
 				case 1:
-					// Grammars\\ANTLR.g3:691:5: subrule= ebnfSuffix[$tr.tree,true]
+					// Grammars\\ANTLR.g3:692:5: subrule= ebnfSuffix[$tr.tree,true]
 					{
 					PushFollow(Follow._ebnfSuffix_in_rewrite_element2961);
 					subrule=ebnfSuffix((tr!=null?((GrammarAST)tr.tree):null), true);
@@ -8585,7 +8586,7 @@ public partial class ANTLRParser : Parser
 					RewriteRuleSubtreeStream stream_retval=new RewriteRuleSubtreeStream(adaptor,"rule retval",retval!=null?retval.tree:null);
 
 					root_0 = (GrammarAST)adaptor.Nil();
-					// 692:4: -> $subrule
+					// 693:4: -> $subrule
 					{
 						adaptor.AddChild(root_0, stream_subrule.NextTree());
 
@@ -8634,7 +8635,7 @@ public partial class ANTLRParser : Parser
 	}
 
 	// $ANTLR start "rewrite_atom"
-	// Grammars\\ANTLR.g3:696:0: rewrite_atom : ( (tr= TOKEN_REF -> $tr) ( elementOptions[(GrammarAST)$tree.GetChild(0)] )? ( ARG_ACTION )? -> ^( $rewrite_atom ( ARG_ACTION )? ) |rr= RULE_REF | (cl= CHAR_LITERAL -> $cl) ( elementOptions[(GrammarAST)$tree.GetChild(0)] )? | (sl= STRING_LITERAL -> $sl) (eo= elementOptions[(GrammarAST)$tree.GetChild(0)] )? |d= DOLLAR i= id -> LABEL[$i.start,$i.text] | ACTION );
+	// Grammars\\ANTLR.g3:697:0: rewrite_atom : ( (tr= TOKEN_REF -> $tr) ( elementOptions[(GrammarAST)$tree.GetChild(0)] )? ( ARG_ACTION )? -> ^( $rewrite_atom ( ARG_ACTION )? ) |rr= RULE_REF | (cl= CHAR_LITERAL -> $cl) ( elementOptions[(GrammarAST)$tree.GetChild(0)] )? | (sl= STRING_LITERAL -> $sl) (eo= elementOptions[(GrammarAST)$tree.GetChild(0)] )? |d= DOLLAR i= id -> LABEL[$i.start,$i.text] | ACTION );
 	private ANTLRParser.rewrite_atom_return rewrite_atom(  )
 	{
 		ANTLRParser.rewrite_atom_return retval = new ANTLRParser.rewrite_atom_return();
@@ -8673,7 +8674,7 @@ public partial class ANTLRParser : Parser
 
 		try
 		{
-			// Grammars\\ANTLR.g3:701:4: ( (tr= TOKEN_REF -> $tr) ( elementOptions[(GrammarAST)$tree.GetChild(0)] )? ( ARG_ACTION )? -> ^( $rewrite_atom ( ARG_ACTION )? ) |rr= RULE_REF | (cl= CHAR_LITERAL -> $cl) ( elementOptions[(GrammarAST)$tree.GetChild(0)] )? | (sl= STRING_LITERAL -> $sl) (eo= elementOptions[(GrammarAST)$tree.GetChild(0)] )? |d= DOLLAR i= id -> LABEL[$i.start,$i.text] | ACTION )
+			// Grammars\\ANTLR.g3:702:4: ( (tr= TOKEN_REF -> $tr) ( elementOptions[(GrammarAST)$tree.GetChild(0)] )? ( ARG_ACTION )? -> ^( $rewrite_atom ( ARG_ACTION )? ) |rr= RULE_REF | (cl= CHAR_LITERAL -> $cl) ( elementOptions[(GrammarAST)$tree.GetChild(0)] )? | (sl= STRING_LITERAL -> $sl) (eo= elementOptions[(GrammarAST)$tree.GetChild(0)] )? |d= DOLLAR i= id -> LABEL[$i.start,$i.text] | ACTION )
 			int alt90=6;
 			switch ( input.LA(1) )
 			{
@@ -8719,10 +8720,10 @@ public partial class ANTLRParser : Parser
 			switch ( alt90 )
 			{
 			case 1:
-				// Grammars\\ANTLR.g3:701:4: (tr= TOKEN_REF -> $tr) ( elementOptions[(GrammarAST)$tree.GetChild(0)] )? ( ARG_ACTION )?
+				// Grammars\\ANTLR.g3:702:4: (tr= TOKEN_REF -> $tr) ( elementOptions[(GrammarAST)$tree.GetChild(0)] )? ( ARG_ACTION )?
 				{
-				// Grammars\\ANTLR.g3:701:4: (tr= TOKEN_REF -> $tr)
-				// Grammars\\ANTLR.g3:701:6: tr= TOKEN_REF
+				// Grammars\\ANTLR.g3:702:4: (tr= TOKEN_REF -> $tr)
+				// Grammars\\ANTLR.g3:702:6: tr= TOKEN_REF
 				{
 				tr=(IToken)Match(input,TOKEN_REF,Follow._TOKEN_REF_in_rewrite_atom2995); if (state.failed) return retval; 
 				if ( state.backtracking == 0 ) stream_TOKEN_REF.Add(tr);
@@ -8743,7 +8744,7 @@ public partial class ANTLRParser : Parser
 				RewriteRuleSubtreeStream stream_retval=new RewriteRuleSubtreeStream(adaptor,"rule retval",retval!=null?retval.tree:null);
 
 				root_0 = (GrammarAST)adaptor.Nil();
-				// 702:4: -> $tr
+				// 703:4: -> $tr
 				{
 					adaptor.AddChild(root_0, stream_tr.NextNode());
 
@@ -8755,7 +8756,7 @@ public partial class ANTLRParser : Parser
 
 				}
 
-				// Grammars\\ANTLR.g3:704:3: ( elementOptions[(GrammarAST)$tree.GetChild(0)] )?
+				// Grammars\\ANTLR.g3:705:3: ( elementOptions[(GrammarAST)$tree.GetChild(0)] )?
 				int alt86=2;
 				int LA86_0 = input.LA(1);
 
@@ -8766,7 +8767,7 @@ public partial class ANTLRParser : Parser
 				switch ( alt86 )
 				{
 				case 1:
-					// Grammars\\ANTLR.g3:704:4: elementOptions[(GrammarAST)$tree.GetChild(0)]
+					// Grammars\\ANTLR.g3:705:4: elementOptions[(GrammarAST)$tree.GetChild(0)]
 					{
 					PushFollow(Follow._elementOptions_in_rewrite_atom3012);
 					elementOptions171=elementOptions((GrammarAST)((GrammarAST)retval.tree).GetChild(0));
@@ -8780,7 +8781,7 @@ public partial class ANTLRParser : Parser
 
 				}
 
-				// Grammars\\ANTLR.g3:704:52: ( ARG_ACTION )?
+				// Grammars\\ANTLR.g3:705:52: ( ARG_ACTION )?
 				int alt87=2;
 				int LA87_0 = input.LA(1);
 
@@ -8791,7 +8792,7 @@ public partial class ANTLRParser : Parser
 				switch ( alt87 )
 				{
 				case 1:
-					// Grammars\\ANTLR.g3:704:53: ARG_ACTION
+					// Grammars\\ANTLR.g3:705:53: ARG_ACTION
 					{
 					ARG_ACTION172=(IToken)Match(input,ARG_ACTION,Follow._ARG_ACTION_in_rewrite_atom3018); if (state.failed) return retval; 
 					if ( state.backtracking == 0 ) stream_ARG_ACTION.Add(ARG_ACTION172);
@@ -8817,14 +8818,14 @@ public partial class ANTLRParser : Parser
 				RewriteRuleSubtreeStream stream_retval=new RewriteRuleSubtreeStream(adaptor,"rule retval",retval!=null?retval.tree:null);
 
 				root_0 = (GrammarAST)adaptor.Nil();
-				// 705:3: -> ^( $rewrite_atom ( ARG_ACTION )? )
+				// 706:3: -> ^( $rewrite_atom ( ARG_ACTION )? )
 				{
-					// Grammars\\ANTLR.g3:705:6: ^( $rewrite_atom ( ARG_ACTION )? )
+					// Grammars\\ANTLR.g3:706:6: ^( $rewrite_atom ( ARG_ACTION )? )
 					{
 					GrammarAST root_1 = (GrammarAST)adaptor.Nil();
 					root_1 = (GrammarAST)adaptor.BecomeRoot(stream_retval.NextNode(), root_1);
 
-					// Grammars\\ANTLR.g3:705:22: ( ARG_ACTION )?
+					// Grammars\\ANTLR.g3:706:22: ( ARG_ACTION )?
 					if ( stream_ARG_ACTION.HasNext )
 					{
 						adaptor.AddChild(root_1, stream_ARG_ACTION.NextNode());
@@ -8844,7 +8845,7 @@ public partial class ANTLRParser : Parser
 				}
 				break;
 			case 2:
-				// Grammars\\ANTLR.g3:706:4: rr= RULE_REF
+				// Grammars\\ANTLR.g3:707:4: rr= RULE_REF
 				{
 				root_0 = (GrammarAST)adaptor.Nil();
 
@@ -8857,10 +8858,10 @@ public partial class ANTLRParser : Parser
 				}
 				break;
 			case 3:
-				// Grammars\\ANTLR.g3:707:4: (cl= CHAR_LITERAL -> $cl) ( elementOptions[(GrammarAST)$tree.GetChild(0)] )?
+				// Grammars\\ANTLR.g3:708:4: (cl= CHAR_LITERAL -> $cl) ( elementOptions[(GrammarAST)$tree.GetChild(0)] )?
 				{
-				// Grammars\\ANTLR.g3:707:4: (cl= CHAR_LITERAL -> $cl)
-				// Grammars\\ANTLR.g3:707:6: cl= CHAR_LITERAL
+				// Grammars\\ANTLR.g3:708:4: (cl= CHAR_LITERAL -> $cl)
+				// Grammars\\ANTLR.g3:708:6: cl= CHAR_LITERAL
 				{
 				cl=(IToken)Match(input,CHAR_LITERAL,Follow._CHAR_LITERAL_in_rewrite_atom3049); if (state.failed) return retval; 
 				if ( state.backtracking == 0 ) stream_CHAR_LITERAL.Add(cl);
@@ -8881,7 +8882,7 @@ public partial class ANTLRParser : Parser
 				RewriteRuleSubtreeStream stream_retval=new RewriteRuleSubtreeStream(adaptor,"rule retval",retval!=null?retval.tree:null);
 
 				root_0 = (GrammarAST)adaptor.Nil();
-				// 708:4: -> $cl
+				// 709:4: -> $cl
 				{
 					adaptor.AddChild(root_0, stream_cl.NextNode());
 
@@ -8893,7 +8894,7 @@ public partial class ANTLRParser : Parser
 
 				}
 
-				// Grammars\\ANTLR.g3:710:3: ( elementOptions[(GrammarAST)$tree.GetChild(0)] )?
+				// Grammars\\ANTLR.g3:711:3: ( elementOptions[(GrammarAST)$tree.GetChild(0)] )?
 				int alt88=2;
 				int LA88_0 = input.LA(1);
 
@@ -8904,7 +8905,7 @@ public partial class ANTLRParser : Parser
 				switch ( alt88 )
 				{
 				case 1:
-					// Grammars\\ANTLR.g3:710:4: elementOptions[(GrammarAST)$tree.GetChild(0)]
+					// Grammars\\ANTLR.g3:711:4: elementOptions[(GrammarAST)$tree.GetChild(0)]
 					{
 					PushFollow(Follow._elementOptions_in_rewrite_atom3066);
 					elementOptions173=elementOptions((GrammarAST)((GrammarAST)retval.tree).GetChild(0));
@@ -8922,10 +8923,10 @@ public partial class ANTLRParser : Parser
 				}
 				break;
 			case 4:
-				// Grammars\\ANTLR.g3:711:4: (sl= STRING_LITERAL -> $sl) (eo= elementOptions[(GrammarAST)$tree.GetChild(0)] )?
+				// Grammars\\ANTLR.g3:712:4: (sl= STRING_LITERAL -> $sl) (eo= elementOptions[(GrammarAST)$tree.GetChild(0)] )?
 				{
-				// Grammars\\ANTLR.g3:711:4: (sl= STRING_LITERAL -> $sl)
-				// Grammars\\ANTLR.g3:711:6: sl= STRING_LITERAL
+				// Grammars\\ANTLR.g3:712:4: (sl= STRING_LITERAL -> $sl)
+				// Grammars\\ANTLR.g3:712:6: sl= STRING_LITERAL
 				{
 				sl=(IToken)Match(input,STRING_LITERAL,Follow._STRING_LITERAL_in_rewrite_atom3078); if (state.failed) return retval; 
 				if ( state.backtracking == 0 ) stream_STRING_LITERAL.Add(sl);
@@ -8946,7 +8947,7 @@ public partial class ANTLRParser : Parser
 				RewriteRuleSubtreeStream stream_retval=new RewriteRuleSubtreeStream(adaptor,"rule retval",retval!=null?retval.tree:null);
 
 				root_0 = (GrammarAST)adaptor.Nil();
-				// 712:4: -> $sl
+				// 713:4: -> $sl
 				{
 					adaptor.AddChild(root_0, stream_sl.NextNode());
 
@@ -8958,7 +8959,7 @@ public partial class ANTLRParser : Parser
 
 				}
 
-				// Grammars\\ANTLR.g3:714:3: (eo= elementOptions[(GrammarAST)$tree.GetChild(0)] )?
+				// Grammars\\ANTLR.g3:715:3: (eo= elementOptions[(GrammarAST)$tree.GetChild(0)] )?
 				int alt89=2;
 				int LA89_0 = input.LA(1);
 
@@ -8969,7 +8970,7 @@ public partial class ANTLRParser : Parser
 				switch ( alt89 )
 				{
 				case 1:
-					// Grammars\\ANTLR.g3:714:4: eo= elementOptions[(GrammarAST)$tree.GetChild(0)]
+					// Grammars\\ANTLR.g3:715:4: eo= elementOptions[(GrammarAST)$tree.GetChild(0)]
 					{
 					PushFollow(Follow._elementOptions_in_rewrite_atom3097);
 					eo=elementOptions((GrammarAST)((GrammarAST)retval.tree).GetChild(0));
@@ -8987,7 +8988,7 @@ public partial class ANTLRParser : Parser
 				}
 				break;
 			case 5:
-				// Grammars\\ANTLR.g3:715:4: d= DOLLAR i= id
+				// Grammars\\ANTLR.g3:716:4: d= DOLLAR i= id
 				{
 				d=(IToken)Match(input,DOLLAR,Follow._DOLLAR_in_rewrite_atom3107); if (state.failed) return retval; 
 				if ( state.backtracking == 0 ) stream_DOLLAR.Add(d);
@@ -9013,7 +9014,7 @@ public partial class ANTLRParser : Parser
 				RewriteRuleSubtreeStream stream_retval=new RewriteRuleSubtreeStream(adaptor,"rule retval",retval!=null?retval.tree:null);
 
 				root_0 = (GrammarAST)adaptor.Nil();
-				// 716:3: -> LABEL[$i.start,$i.text]
+				// 717:3: -> LABEL[$i.start,$i.text]
 				{
 					adaptor.AddChild(root_0, (GrammarAST)adaptor.Create(LABEL, (i!=null?((IToken)i.start):null), (i!=null?input.ToString(i.start,i.stop):null)));
 
@@ -9026,7 +9027,7 @@ public partial class ANTLRParser : Parser
 				}
 				break;
 			case 6:
-				// Grammars\\ANTLR.g3:717:4: ACTION
+				// Grammars\\ANTLR.g3:718:4: ACTION
 				{
 				root_0 = (GrammarAST)adaptor.Nil();
 
@@ -9069,7 +9070,7 @@ public partial class ANTLRParser : Parser
 	}
 
 	// $ANTLR start "rewrite_ebnf"
-	// Grammars\\ANTLR.g3:720:0: rewrite_ebnf : b= rewrite_block ( QUESTION -> ^( OPTIONAL[$b.start,\"?\"] $b) | STAR -> ^( CLOSURE[$b.start,\"*\"] $b) | PLUS -> ^( POSITIVE_CLOSURE[$b.start,\"+\"] $b) ) ;
+	// Grammars\\ANTLR.g3:721:0: rewrite_ebnf : b= rewrite_block ( QUESTION -> ^( OPTIONAL[$b.start,\"?\"] $b) | STAR -> ^( CLOSURE[$b.start,\"*\"] $b) | PLUS -> ^( POSITIVE_CLOSURE[$b.start,\"+\"] $b) ) ;
 	private ANTLRParser.rewrite_ebnf_return rewrite_ebnf(  )
 	{
 		ANTLRParser.rewrite_ebnf_return retval = new ANTLRParser.rewrite_ebnf_return();
@@ -9091,8 +9092,8 @@ public partial class ANTLRParser : Parser
 		RewriteRuleSubtreeStream stream_rewrite_block=new RewriteRuleSubtreeStream(adaptor,"rule rewrite_block");
 		try
 		{
-			// Grammars\\ANTLR.g3:721:4: (b= rewrite_block ( QUESTION -> ^( OPTIONAL[$b.start,\"?\"] $b) | STAR -> ^( CLOSURE[$b.start,\"*\"] $b) | PLUS -> ^( POSITIVE_CLOSURE[$b.start,\"+\"] $b) ) )
-			// Grammars\\ANTLR.g3:721:4: b= rewrite_block ( QUESTION -> ^( OPTIONAL[$b.start,\"?\"] $b) | STAR -> ^( CLOSURE[$b.start,\"*\"] $b) | PLUS -> ^( POSITIVE_CLOSURE[$b.start,\"+\"] $b) )
+			// Grammars\\ANTLR.g3:722:4: (b= rewrite_block ( QUESTION -> ^( OPTIONAL[$b.start,\"?\"] $b) | STAR -> ^( CLOSURE[$b.start,\"*\"] $b) | PLUS -> ^( POSITIVE_CLOSURE[$b.start,\"+\"] $b) ) )
+			// Grammars\\ANTLR.g3:722:4: b= rewrite_block ( QUESTION -> ^( OPTIONAL[$b.start,\"?\"] $b) | STAR -> ^( CLOSURE[$b.start,\"*\"] $b) | PLUS -> ^( POSITIVE_CLOSURE[$b.start,\"+\"] $b) )
 			{
 			PushFollow(Follow._rewrite_block_in_rewrite_ebnf3137);
 			b=rewrite_block();
@@ -9100,7 +9101,7 @@ public partial class ANTLRParser : Parser
 			state._fsp--;
 			if (state.failed) return retval;
 			if ( state.backtracking == 0 ) stream_rewrite_block.Add(b.Tree);
-			// Grammars\\ANTLR.g3:722:3: ( QUESTION -> ^( OPTIONAL[$b.start,\"?\"] $b) | STAR -> ^( CLOSURE[$b.start,\"*\"] $b) | PLUS -> ^( POSITIVE_CLOSURE[$b.start,\"+\"] $b) )
+			// Grammars\\ANTLR.g3:723:3: ( QUESTION -> ^( OPTIONAL[$b.start,\"?\"] $b) | STAR -> ^( CLOSURE[$b.start,\"*\"] $b) | PLUS -> ^( POSITIVE_CLOSURE[$b.start,\"+\"] $b) )
 			int alt91=3;
 			switch ( input.LA(1) )
 			{
@@ -9131,7 +9132,7 @@ public partial class ANTLRParser : Parser
 			switch ( alt91 )
 			{
 			case 1:
-				// Grammars\\ANTLR.g3:722:5: QUESTION
+				// Grammars\\ANTLR.g3:723:5: QUESTION
 				{
 				QUESTION175=(IToken)Match(input,QUESTION,Follow._QUESTION_in_rewrite_ebnf3143); if (state.failed) return retval; 
 				if ( state.backtracking == 0 ) stream_QUESTION.Add(QUESTION175);
@@ -9152,9 +9153,9 @@ public partial class ANTLRParser : Parser
 				RewriteRuleSubtreeStream stream_retval=new RewriteRuleSubtreeStream(adaptor,"rule retval",retval!=null?retval.tree:null);
 
 				root_0 = (GrammarAST)adaptor.Nil();
-				// 723:4: -> ^( OPTIONAL[$b.start,\"?\"] $b)
+				// 724:4: -> ^( OPTIONAL[$b.start,\"?\"] $b)
 				{
-					// Grammars\\ANTLR.g3:723:7: ^( OPTIONAL[$b.start,\"?\"] $b)
+					// Grammars\\ANTLR.g3:724:7: ^( OPTIONAL[$b.start,\"?\"] $b)
 					{
 					GrammarAST root_1 = (GrammarAST)adaptor.Nil();
 					root_1 = (GrammarAST)adaptor.BecomeRoot((GrammarAST)adaptor.Create(OPTIONAL, (b!=null?((IToken)b.start):null), "?"), root_1);
@@ -9173,7 +9174,7 @@ public partial class ANTLRParser : Parser
 				}
 				break;
 			case 2:
-				// Grammars\\ANTLR.g3:724:5: STAR
+				// Grammars\\ANTLR.g3:725:5: STAR
 				{
 				STAR176=(IToken)Match(input,STAR,Follow._STAR_in_rewrite_ebnf3162); if (state.failed) return retval; 
 				if ( state.backtracking == 0 ) stream_STAR.Add(STAR176);
@@ -9194,9 +9195,9 @@ public partial class ANTLRParser : Parser
 				RewriteRuleSubtreeStream stream_retval=new RewriteRuleSubtreeStream(adaptor,"rule retval",retval!=null?retval.tree:null);
 
 				root_0 = (GrammarAST)adaptor.Nil();
-				// 725:4: -> ^( CLOSURE[$b.start,\"*\"] $b)
+				// 726:4: -> ^( CLOSURE[$b.start,\"*\"] $b)
 				{
-					// Grammars\\ANTLR.g3:725:7: ^( CLOSURE[$b.start,\"*\"] $b)
+					// Grammars\\ANTLR.g3:726:7: ^( CLOSURE[$b.start,\"*\"] $b)
 					{
 					GrammarAST root_1 = (GrammarAST)adaptor.Nil();
 					root_1 = (GrammarAST)adaptor.BecomeRoot((GrammarAST)adaptor.Create(CLOSURE, (b!=null?((IToken)b.start):null), "*"), root_1);
@@ -9215,7 +9216,7 @@ public partial class ANTLRParser : Parser
 				}
 				break;
 			case 3:
-				// Grammars\\ANTLR.g3:726:5: PLUS
+				// Grammars\\ANTLR.g3:727:5: PLUS
 				{
 				PLUS177=(IToken)Match(input,PLUS,Follow._PLUS_in_rewrite_ebnf3181); if (state.failed) return retval; 
 				if ( state.backtracking == 0 ) stream_PLUS.Add(PLUS177);
@@ -9236,9 +9237,9 @@ public partial class ANTLRParser : Parser
 				RewriteRuleSubtreeStream stream_retval=new RewriteRuleSubtreeStream(adaptor,"rule retval",retval!=null?retval.tree:null);
 
 				root_0 = (GrammarAST)adaptor.Nil();
-				// 727:4: -> ^( POSITIVE_CLOSURE[$b.start,\"+\"] $b)
+				// 728:4: -> ^( POSITIVE_CLOSURE[$b.start,\"+\"] $b)
 				{
-					// Grammars\\ANTLR.g3:727:7: ^( POSITIVE_CLOSURE[$b.start,\"+\"] $b)
+					// Grammars\\ANTLR.g3:728:7: ^( POSITIVE_CLOSURE[$b.start,\"+\"] $b)
 					{
 					GrammarAST root_1 = (GrammarAST)adaptor.Nil();
 					root_1 = (GrammarAST)adaptor.BecomeRoot((GrammarAST)adaptor.Create(POSITIVE_CLOSURE, (b!=null?((IToken)b.start):null), "+"), root_1);
@@ -9291,7 +9292,7 @@ public partial class ANTLRParser : Parser
 	}
 
 	// $ANTLR start "rewrite_tree"
-	// Grammars\\ANTLR.g3:731:0: rewrite_tree : TREE_BEGIN rewrite_atom ( rewrite_element )* RPAREN ;
+	// Grammars\\ANTLR.g3:732:0: rewrite_tree : TREE_BEGIN rewrite_atom ( rewrite_element )* RPAREN ;
 	private ANTLRParser.rewrite_tree_return rewrite_tree(  )
 	{
 		ANTLRParser.rewrite_tree_return retval = new ANTLRParser.rewrite_tree_return();
@@ -9309,8 +9310,8 @@ public partial class ANTLRParser : Parser
 
 		try
 		{
-			// Grammars\\ANTLR.g3:732:4: ( TREE_BEGIN rewrite_atom ( rewrite_element )* RPAREN )
-			// Grammars\\ANTLR.g3:732:4: TREE_BEGIN rewrite_atom ( rewrite_element )* RPAREN
+			// Grammars\\ANTLR.g3:733:4: ( TREE_BEGIN rewrite_atom ( rewrite_element )* RPAREN )
+			// Grammars\\ANTLR.g3:733:4: TREE_BEGIN rewrite_atom ( rewrite_element )* RPAREN
 			{
 			root_0 = (GrammarAST)adaptor.Nil();
 
@@ -9325,7 +9326,7 @@ public partial class ANTLRParser : Parser
 			state._fsp--;
 			if (state.failed) return retval;
 			if ( state.backtracking == 0 ) adaptor.AddChild(root_0, rewrite_atom179.Tree);
-			// Grammars\\ANTLR.g3:733:17: ( rewrite_element )*
+			// Grammars\\ANTLR.g3:734:17: ( rewrite_element )*
 			for ( ; ; )
 			{
 				int alt92=2;
@@ -9340,7 +9341,7 @@ public partial class ANTLRParser : Parser
 				switch ( alt92 )
 				{
 				case 1:
-					// Grammars\\ANTLR.g3:733:0: rewrite_element
+					// Grammars\\ANTLR.g3:734:0: rewrite_element
 					{
 					PushFollow(Follow._rewrite_element_in_rewrite_tree3217);
 					rewrite_element180=rewrite_element();
@@ -9394,7 +9395,7 @@ public partial class ANTLRParser : Parser
 	}
 
 	// $ANTLR start "rewrite_template"
-	// Grammars\\ANTLR.g3:749:0: public rewrite_template options {k=1; } : ({...}? => ( rewrite_template_head -> rewrite_template_head ) (st= DOUBLE_QUOTE_STRING_LITERAL |st= DOUBLE_ANGLE_STRING_LITERAL ) | rewrite_template_head | rewrite_indirect_template_head | ACTION );
+	// Grammars\\ANTLR.g3:750:0: public rewrite_template options {k=1; } : ({...}? => ( rewrite_template_head -> rewrite_template_head ) (st= DOUBLE_QUOTE_STRING_LITERAL |st= DOUBLE_ANGLE_STRING_LITERAL ) | rewrite_template_head | rewrite_indirect_template_head | ACTION );
 	public ANTLRParser.rewrite_template_return rewrite_template(  )
 	{
 		ANTLRParser.rewrite_template_return retval = new ANTLRParser.rewrite_template_return();
@@ -9415,7 +9416,7 @@ public partial class ANTLRParser : Parser
 		RewriteRuleSubtreeStream stream_rewrite_template_head=new RewriteRuleSubtreeStream(adaptor,"rule rewrite_template_head");
 		try
 		{
-			// Grammars\\ANTLR.g3:752:3: ({...}? => ( rewrite_template_head -> rewrite_template_head ) (st= DOUBLE_QUOTE_STRING_LITERAL |st= DOUBLE_ANGLE_STRING_LITERAL ) | rewrite_template_head | rewrite_indirect_template_head | ACTION )
+			// Grammars\\ANTLR.g3:753:3: ({...}? => ( rewrite_template_head -> rewrite_template_head ) (st= DOUBLE_QUOTE_STRING_LITERAL |st= DOUBLE_ANGLE_STRING_LITERAL ) | rewrite_template_head | rewrite_indirect_template_head | ACTION )
 			int alt94=4;
 			switch ( input.LA(1) )
 			{
@@ -9483,15 +9484,15 @@ public partial class ANTLRParser : Parser
 			switch ( alt94 )
 			{
 			case 1:
-				// Grammars\\ANTLR.g3:752:3: {...}? => ( rewrite_template_head -> rewrite_template_head ) (st= DOUBLE_QUOTE_STRING_LITERAL |st= DOUBLE_ANGLE_STRING_LITERAL )
+				// Grammars\\ANTLR.g3:753:3: {...}? => ( rewrite_template_head -> rewrite_template_head ) (st= DOUBLE_QUOTE_STRING_LITERAL |st= DOUBLE_ANGLE_STRING_LITERAL )
 				{
 				if ( !((LT(1).Text.Equals("template"))) )
 				{
 					if (state.backtracking>0) {state.failed=true; return retval;}
 					throw new FailedPredicateException(input, "rewrite_template", "LT(1).Text.Equals(\"template\")");
 				}
-				// Grammars\\ANTLR.g3:753:3: ( rewrite_template_head -> rewrite_template_head )
-				// Grammars\\ANTLR.g3:753:5: rewrite_template_head
+				// Grammars\\ANTLR.g3:754:3: ( rewrite_template_head -> rewrite_template_head )
+				// Grammars\\ANTLR.g3:754:5: rewrite_template_head
 				{
 				PushFollow(Follow._rewrite_template_head_in_rewrite_template3257);
 				rewrite_template_head182=rewrite_template_head();
@@ -9514,7 +9515,7 @@ public partial class ANTLRParser : Parser
 				RewriteRuleSubtreeStream stream_retval=new RewriteRuleSubtreeStream(adaptor,"rule retval",retval!=null?retval.tree:null);
 
 				root_0 = (GrammarAST)adaptor.Nil();
-				// 754:4: -> rewrite_template_head
+				// 755:4: -> rewrite_template_head
 				{
 					adaptor.AddChild(root_0, stream_rewrite_template_head.NextTree());
 
@@ -9526,7 +9527,7 @@ public partial class ANTLRParser : Parser
 
 				}
 
-				// Grammars\\ANTLR.g3:756:3: (st= DOUBLE_QUOTE_STRING_LITERAL |st= DOUBLE_ANGLE_STRING_LITERAL )
+				// Grammars\\ANTLR.g3:757:3: (st= DOUBLE_QUOTE_STRING_LITERAL |st= DOUBLE_ANGLE_STRING_LITERAL )
 				int alt93=2;
 				int LA93_0 = input.LA(1);
 
@@ -9548,7 +9549,7 @@ public partial class ANTLRParser : Parser
 				switch ( alt93 )
 				{
 				case 1:
-					// Grammars\\ANTLR.g3:756:5: st= DOUBLE_QUOTE_STRING_LITERAL
+					// Grammars\\ANTLR.g3:757:5: st= DOUBLE_QUOTE_STRING_LITERAL
 					{
 					st=(IToken)Match(input,DOUBLE_QUOTE_STRING_LITERAL,Follow._DOUBLE_QUOTE_STRING_LITERAL_in_rewrite_template3276); if (state.failed) return retval; 
 					if ( state.backtracking == 0 ) stream_DOUBLE_QUOTE_STRING_LITERAL.Add(st);
@@ -9557,7 +9558,7 @@ public partial class ANTLRParser : Parser
 					}
 					break;
 				case 2:
-					// Grammars\\ANTLR.g3:756:38: st= DOUBLE_ANGLE_STRING_LITERAL
+					// Grammars\\ANTLR.g3:757:38: st= DOUBLE_ANGLE_STRING_LITERAL
 					{
 					st=(IToken)Match(input,DOUBLE_ANGLE_STRING_LITERAL,Follow._DOUBLE_ANGLE_STRING_LITERAL_in_rewrite_template3282); if (state.failed) return retval; 
 					if ( state.backtracking == 0 ) stream_DOUBLE_ANGLE_STRING_LITERAL.Add(st);
@@ -9576,7 +9577,7 @@ public partial class ANTLRParser : Parser
 				}
 				break;
 			case 2:
-				// Grammars\\ANTLR.g3:760:3: rewrite_template_head
+				// Grammars\\ANTLR.g3:761:3: rewrite_template_head
 				{
 				root_0 = (GrammarAST)adaptor.Nil();
 
@@ -9590,7 +9591,7 @@ public partial class ANTLRParser : Parser
 				}
 				break;
 			case 3:
-				// Grammars\\ANTLR.g3:763:3: rewrite_indirect_template_head
+				// Grammars\\ANTLR.g3:764:3: rewrite_indirect_template_head
 				{
 				root_0 = (GrammarAST)adaptor.Nil();
 
@@ -9604,7 +9605,7 @@ public partial class ANTLRParser : Parser
 				}
 				break;
 			case 4:
-				// Grammars\\ANTLR.g3:766:3: ACTION
+				// Grammars\\ANTLR.g3:767:3: ACTION
 				{
 				root_0 = (GrammarAST)adaptor.Nil();
 
@@ -9647,7 +9648,7 @@ public partial class ANTLRParser : Parser
 	}
 
 	// $ANTLR start "rewrite_template_head"
-	// Grammars\\ANTLR.g3:770:0: rewrite_template_head : id lp= LPAREN rewrite_template_args RPAREN -> ^( TEMPLATE[$lp,\"TEMPLATE\"] id rewrite_template_args ) ;
+	// Grammars\\ANTLR.g3:771:0: rewrite_template_head : id lp= LPAREN rewrite_template_args RPAREN -> ^( TEMPLATE[$lp,\"TEMPLATE\"] id rewrite_template_args ) ;
 	private ANTLRParser.rewrite_template_head_return rewrite_template_head(  )
 	{
 		ANTLRParser.rewrite_template_head_return retval = new ANTLRParser.rewrite_template_head_return();
@@ -9668,8 +9669,8 @@ public partial class ANTLRParser : Parser
 		RewriteRuleSubtreeStream stream_rewrite_template_args=new RewriteRuleSubtreeStream(adaptor,"rule rewrite_template_args");
 		try
 		{
-			// Grammars\\ANTLR.g3:771:4: ( id lp= LPAREN rewrite_template_args RPAREN -> ^( TEMPLATE[$lp,\"TEMPLATE\"] id rewrite_template_args ) )
-			// Grammars\\ANTLR.g3:771:4: id lp= LPAREN rewrite_template_args RPAREN
+			// Grammars\\ANTLR.g3:772:4: ( id lp= LPAREN rewrite_template_args RPAREN -> ^( TEMPLATE[$lp,\"TEMPLATE\"] id rewrite_template_args ) )
+			// Grammars\\ANTLR.g3:772:4: id lp= LPAREN rewrite_template_args RPAREN
 			{
 			PushFollow(Follow._id_in_rewrite_template_head3328);
 			id186=id();
@@ -9704,9 +9705,9 @@ public partial class ANTLRParser : Parser
 			RewriteRuleSubtreeStream stream_retval=new RewriteRuleSubtreeStream(adaptor,"rule retval",retval!=null?retval.tree:null);
 
 			root_0 = (GrammarAST)adaptor.Nil();
-			// 774:3: -> ^( TEMPLATE[$lp,\"TEMPLATE\"] id rewrite_template_args )
+			// 775:3: -> ^( TEMPLATE[$lp,\"TEMPLATE\"] id rewrite_template_args )
 			{
-				// Grammars\\ANTLR.g3:774:6: ^( TEMPLATE[$lp,\"TEMPLATE\"] id rewrite_template_args )
+				// Grammars\\ANTLR.g3:775:6: ^( TEMPLATE[$lp,\"TEMPLATE\"] id rewrite_template_args )
 				{
 				GrammarAST root_1 = (GrammarAST)adaptor.Nil();
 				root_1 = (GrammarAST)adaptor.BecomeRoot((GrammarAST)adaptor.Create(TEMPLATE, lp, "TEMPLATE"), root_1);
@@ -9754,7 +9755,7 @@ public partial class ANTLRParser : Parser
 	}
 
 	// $ANTLR start "rewrite_indirect_template_head"
-	// Grammars\\ANTLR.g3:778:0: rewrite_indirect_template_head : lp= LPAREN ACTION RPAREN LPAREN rewrite_template_args RPAREN -> ^( TEMPLATE[$lp,\"TEMPLATE\"] ACTION rewrite_template_args ) ;
+	// Grammars\\ANTLR.g3:779:0: rewrite_indirect_template_head : lp= LPAREN ACTION RPAREN LPAREN rewrite_template_args RPAREN -> ^( TEMPLATE[$lp,\"TEMPLATE\"] ACTION rewrite_template_args ) ;
 	private ANTLRParser.rewrite_indirect_template_head_return rewrite_indirect_template_head(  )
 	{
 		ANTLRParser.rewrite_indirect_template_head_return retval = new ANTLRParser.rewrite_indirect_template_head_return();
@@ -9780,8 +9781,8 @@ public partial class ANTLRParser : Parser
 		RewriteRuleSubtreeStream stream_rewrite_template_args=new RewriteRuleSubtreeStream(adaptor,"rule rewrite_template_args");
 		try
 		{
-			// Grammars\\ANTLR.g3:779:4: (lp= LPAREN ACTION RPAREN LPAREN rewrite_template_args RPAREN -> ^( TEMPLATE[$lp,\"TEMPLATE\"] ACTION rewrite_template_args ) )
-			// Grammars\\ANTLR.g3:779:4: lp= LPAREN ACTION RPAREN LPAREN rewrite_template_args RPAREN
+			// Grammars\\ANTLR.g3:780:4: (lp= LPAREN ACTION RPAREN LPAREN rewrite_template_args RPAREN -> ^( TEMPLATE[$lp,\"TEMPLATE\"] ACTION rewrite_template_args ) )
+			// Grammars\\ANTLR.g3:780:4: lp= LPAREN ACTION RPAREN LPAREN rewrite_template_args RPAREN
 			{
 			lp=(IToken)Match(input,LPAREN,Follow._LPAREN_in_rewrite_indirect_template_head3368); if (state.failed) return retval; 
 			if ( state.backtracking == 0 ) stream_LPAREN.Add(lp);
@@ -9819,9 +9820,9 @@ public partial class ANTLRParser : Parser
 			RewriteRuleSubtreeStream stream_retval=new RewriteRuleSubtreeStream(adaptor,"rule retval",retval!=null?retval.tree:null);
 
 			root_0 = (GrammarAST)adaptor.Nil();
-			// 783:3: -> ^( TEMPLATE[$lp,\"TEMPLATE\"] ACTION rewrite_template_args )
+			// 784:3: -> ^( TEMPLATE[$lp,\"TEMPLATE\"] ACTION rewrite_template_args )
 			{
-				// Grammars\\ANTLR.g3:783:6: ^( TEMPLATE[$lp,\"TEMPLATE\"] ACTION rewrite_template_args )
+				// Grammars\\ANTLR.g3:784:6: ^( TEMPLATE[$lp,\"TEMPLATE\"] ACTION rewrite_template_args )
 				{
 				GrammarAST root_1 = (GrammarAST)adaptor.Nil();
 				root_1 = (GrammarAST)adaptor.BecomeRoot((GrammarAST)adaptor.Create(TEMPLATE, lp, "TEMPLATE"), root_1);
@@ -9869,7 +9870,7 @@ public partial class ANTLRParser : Parser
 	}
 
 	// $ANTLR start "rewrite_template_args"
-	// Grammars\\ANTLR.g3:786:0: rewrite_template_args : ( rewrite_template_arg ( COMMA rewrite_template_arg )* -> ^( ARGLIST[\"ARGLIST\"] ( rewrite_template_arg )+ ) | -> ARGLIST[\"ARGLIST\"] );
+	// Grammars\\ANTLR.g3:787:0: rewrite_template_args : ( rewrite_template_arg ( COMMA rewrite_template_arg )* -> ^( ARGLIST[\"ARGLIST\"] ( rewrite_template_arg )+ ) | -> ARGLIST[\"ARGLIST\"] );
 	private ANTLRParser.rewrite_template_args_return rewrite_template_args(  )
 	{
 		ANTLRParser.rewrite_template_args_return retval = new ANTLRParser.rewrite_template_args_return();
@@ -9886,7 +9887,7 @@ public partial class ANTLRParser : Parser
 		RewriteRuleSubtreeStream stream_rewrite_template_arg=new RewriteRuleSubtreeStream(adaptor,"rule rewrite_template_arg");
 		try
 		{
-			// Grammars\\ANTLR.g3:787:4: ( rewrite_template_arg ( COMMA rewrite_template_arg )* -> ^( ARGLIST[\"ARGLIST\"] ( rewrite_template_arg )+ ) | -> ARGLIST[\"ARGLIST\"] )
+			// Grammars\\ANTLR.g3:788:4: ( rewrite_template_arg ( COMMA rewrite_template_arg )* -> ^( ARGLIST[\"ARGLIST\"] ( rewrite_template_arg )+ ) | -> ARGLIST[\"ARGLIST\"] )
 			int alt96=2;
 			int LA96_0 = input.LA(1);
 
@@ -9908,7 +9909,7 @@ public partial class ANTLRParser : Parser
 			switch ( alt96 )
 			{
 			case 1:
-				// Grammars\\ANTLR.g3:787:4: rewrite_template_arg ( COMMA rewrite_template_arg )*
+				// Grammars\\ANTLR.g3:788:4: rewrite_template_arg ( COMMA rewrite_template_arg )*
 				{
 				PushFollow(Follow._rewrite_template_arg_in_rewrite_template_args3408);
 				rewrite_template_arg194=rewrite_template_arg();
@@ -9916,7 +9917,7 @@ public partial class ANTLRParser : Parser
 				state._fsp--;
 				if (state.failed) return retval;
 				if ( state.backtracking == 0 ) stream_rewrite_template_arg.Add(rewrite_template_arg194.Tree);
-				// Grammars\\ANTLR.g3:787:25: ( COMMA rewrite_template_arg )*
+				// Grammars\\ANTLR.g3:788:25: ( COMMA rewrite_template_arg )*
 				for ( ; ; )
 				{
 					int alt95=2;
@@ -9931,7 +9932,7 @@ public partial class ANTLRParser : Parser
 					switch ( alt95 )
 					{
 					case 1:
-						// Grammars\\ANTLR.g3:787:26: COMMA rewrite_template_arg
+						// Grammars\\ANTLR.g3:788:26: COMMA rewrite_template_arg
 						{
 						COMMA195=(IToken)Match(input,COMMA,Follow._COMMA_in_rewrite_template_args3411); if (state.failed) return retval; 
 						if ( state.backtracking == 0 ) stream_COMMA.Add(COMMA195);
@@ -9970,9 +9971,9 @@ public partial class ANTLRParser : Parser
 				RewriteRuleSubtreeStream stream_retval=new RewriteRuleSubtreeStream(adaptor,"rule retval",retval!=null?retval.tree:null);
 
 				root_0 = (GrammarAST)adaptor.Nil();
-				// 788:3: -> ^( ARGLIST[\"ARGLIST\"] ( rewrite_template_arg )+ )
+				// 789:3: -> ^( ARGLIST[\"ARGLIST\"] ( rewrite_template_arg )+ )
 				{
-					// Grammars\\ANTLR.g3:788:6: ^( ARGLIST[\"ARGLIST\"] ( rewrite_template_arg )+ )
+					// Grammars\\ANTLR.g3:789:6: ^( ARGLIST[\"ARGLIST\"] ( rewrite_template_arg )+ )
 					{
 					GrammarAST root_1 = (GrammarAST)adaptor.Nil();
 					root_1 = (GrammarAST)adaptor.BecomeRoot((GrammarAST)adaptor.Create(ARGLIST, "ARGLIST"), root_1);
@@ -10000,7 +10001,7 @@ public partial class ANTLRParser : Parser
 				}
 				break;
 			case 2:
-				// Grammars\\ANTLR.g3:790:3: 
+				// Grammars\\ANTLR.g3:791:3: 
 				{
 
 
@@ -10018,7 +10019,7 @@ public partial class ANTLRParser : Parser
 				RewriteRuleSubtreeStream stream_retval=new RewriteRuleSubtreeStream(adaptor,"rule retval",retval!=null?retval.tree:null);
 
 				root_0 = (GrammarAST)adaptor.Nil();
-				// 790:3: -> ARGLIST[\"ARGLIST\"]
+				// 791:3: -> ARGLIST[\"ARGLIST\"]
 				{
 					adaptor.AddChild(root_0, (GrammarAST)adaptor.Create(ARGLIST, "ARGLIST"));
 
@@ -10061,7 +10062,7 @@ public partial class ANTLRParser : Parser
 	}
 
 	// $ANTLR start "rewrite_template_arg"
-	// Grammars\\ANTLR.g3:793:0: rewrite_template_arg : id a= ASSIGN ACTION -> ^( ARG[$a,\"ARG\"] id ACTION ) ;
+	// Grammars\\ANTLR.g3:794:0: rewrite_template_arg : id a= ASSIGN ACTION -> ^( ARG[$a,\"ARG\"] id ACTION ) ;
 	private ANTLRParser.rewrite_template_arg_return rewrite_template_arg(  )
 	{
 		ANTLRParser.rewrite_template_arg_return retval = new ANTLRParser.rewrite_template_arg_return();
@@ -10080,8 +10081,8 @@ public partial class ANTLRParser : Parser
 		RewriteRuleSubtreeStream stream_id=new RewriteRuleSubtreeStream(adaptor,"rule id");
 		try
 		{
-			// Grammars\\ANTLR.g3:794:4: ( id a= ASSIGN ACTION -> ^( ARG[$a,\"ARG\"] id ACTION ) )
-			// Grammars\\ANTLR.g3:794:4: id a= ASSIGN ACTION
+			// Grammars\\ANTLR.g3:795:4: ( id a= ASSIGN ACTION -> ^( ARG[$a,\"ARG\"] id ACTION ) )
+			// Grammars\\ANTLR.g3:795:4: id a= ASSIGN ACTION
 			{
 			PushFollow(Follow._id_in_rewrite_template_arg3448);
 			id197=id();
@@ -10110,9 +10111,9 @@ public partial class ANTLRParser : Parser
 			RewriteRuleSubtreeStream stream_retval=new RewriteRuleSubtreeStream(adaptor,"rule retval",retval!=null?retval.tree:null);
 
 			root_0 = (GrammarAST)adaptor.Nil();
-			// 795:3: -> ^( ARG[$a,\"ARG\"] id ACTION )
+			// 796:3: -> ^( ARG[$a,\"ARG\"] id ACTION )
 			{
-				// Grammars\\ANTLR.g3:795:6: ^( ARG[$a,\"ARG\"] id ACTION )
+				// Grammars\\ANTLR.g3:796:6: ^( ARG[$a,\"ARG\"] id ACTION )
 				{
 				GrammarAST root_1 = (GrammarAST)adaptor.Nil();
 				root_1 = (GrammarAST)adaptor.BecomeRoot((GrammarAST)adaptor.Create(ARG, a, "ARG"), root_1);
@@ -10156,8 +10157,8 @@ public partial class ANTLRParser : Parser
 	// $ANTLR start synpred1_ANTLR
 	public void synpred1_ANTLR_fragment()
 	{
-		// Grammars\\ANTLR.g3:494:4: ({...}? id WILDCARD ( terminal | ruleref ) )
-		// Grammars\\ANTLR.g3:494:5: {...}? id WILDCARD ( terminal | ruleref )
+		// Grammars\\ANTLR.g3:495:4: ({...}? id WILDCARD ( terminal | ruleref ) )
+		// Grammars\\ANTLR.g3:495:5: {...}? id WILDCARD ( terminal | ruleref )
 		{
 		if ( !((LT(1).CharPositionInLine+LT(1).Text.Length==LT(2).CharPositionInLine&&
 					 LT(2).CharPositionInLine+1==LT(3).CharPositionInLine)) )
@@ -10171,7 +10172,7 @@ public partial class ANTLRParser : Parser
 		state._fsp--;
 		if (state.failed) return ;
 		Match(input,WILDCARD,Follow._WILDCARD_in_synpred1_ANTLR1911); if (state.failed) return ;
-		// Grammars\\ANTLR.g3:495:72: ( terminal | ruleref )
+		// Grammars\\ANTLR.g3:496:72: ( terminal | ruleref )
 		int alt97=2;
 		int LA97_0 = input.LA(1);
 
@@ -10193,7 +10194,7 @@ public partial class ANTLRParser : Parser
 		switch ( alt97 )
 		{
 		case 1:
-			// Grammars\\ANTLR.g3:495:73: terminal
+			// Grammars\\ANTLR.g3:496:73: terminal
 			{
 			PushFollow(Follow._terminal_in_synpred1_ANTLR1914);
 			terminal();
@@ -10204,7 +10205,7 @@ public partial class ANTLRParser : Parser
 			}
 			break;
 		case 2:
-			// Grammars\\ANTLR.g3:495:82: ruleref
+			// Grammars\\ANTLR.g3:496:82: ruleref
 			{
 			PushFollow(Follow._ruleref_in_synpred1_ANTLR1916);
 			ruleref();
@@ -10329,7 +10330,7 @@ public partial class ANTLRParser : Parser
 		}
 		public override string GetDescription()
 		{
-			return "471:4: ( ( id ( ASSIGN | PLUS_ASSIGN ) ( atom | block ) ) (sub= ebnfSuffix[root_0,false] )? |a= atom (sub2= ebnfSuffix[$a.tree,false] )? | ebnf | FORCED_ACTION | ACTION |p= SEMPRED ( IMPLIES )? |t3= tree_ )";
+			return "472:4: ( ( id ( ASSIGN | PLUS_ASSIGN ) ( atom | block ) ) (sub= ebnfSuffix[root_0,false] )? |a= atom (sub2= ebnfSuffix[$a.tree,false] )? | ebnf | FORCED_ACTION | ACTION |p= SEMPRED ( IMPLIES )? |t3= tree_ )";
 		}
 	}
 
@@ -10415,7 +10416,7 @@ public partial class ANTLRParser : Parser
 		}
 		public override string GetDescription()
 		{
-			return "491:4: (=> id w= WILDCARD ( terminal | ruleref ) | terminal | ruleref )";
+			return "492:4: (=> id w= WILDCARD ( terminal | ruleref ) | terminal | ruleref )";
 		}
 	}
 
@@ -10659,7 +10660,7 @@ public partial class ANTLRParser : Parser
 		}
 		public override string GetDescription()
 		{
-			return "667:0: rewrite_alternative options {k=1; } : ({...}? => rewrite_template |{...}? => ( rewrite_element )+ -> {!stream_rewrite_element.HasNext}? ^( ALT[LT(1),\"ALT\"] EPSILON[\"epsilon\"] EOA[\"<end-of-alt>\"] ) -> ^( ALT[LT(1),\"ALT\"] ( rewrite_element )+ EOA[\"<end-of-alt>\"] ) | -> ^( ALT[LT(1),\"ALT\"] EPSILON[\"epsilon\"] EOA[\"<end-of-alt>\"] ) |{...}? ETC );";
+			return "668:0: rewrite_alternative options {k=1; } : ({...}? => rewrite_template |{...}? => ( rewrite_element )+ -> {!stream_rewrite_element.HasNext}? ^( ALT[LT(1),\"ALT\"] EPSILON[\"epsilon\"] EOA[\"<end-of-alt>\"] ) -> ^( ALT[LT(1),\"ALT\"] ( rewrite_element )+ EOA[\"<end-of-alt>\"] ) | -> ^( ALT[LT(1),\"ALT\"] EPSILON[\"epsilon\"] EOA[\"<end-of-alt>\"] ) |{...}? ETC );";
 		}
 	}
 

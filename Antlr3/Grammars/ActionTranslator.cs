@@ -1,4 +1,4 @@
-// $ANTLR 3.1.2 Grammars\\ActionTranslator.g3 2009-04-18 13:36:22
+// $ANTLR 3.1.2 Grammars\\ActionTranslator.g3 2009-04-24 11:05:40
 
 // The variable 'variable' is assigned but its value is never used.
 #pragma warning disable 219
@@ -449,12 +449,12 @@ public partial class ActionTranslator : Lexer
 				                         (enclosingRule.GetTokenLabel((x!=null?x.Text:null))!=null||
 				                          IsTokenRefInAlt((x!=null?x.Text:null))) &&
 				                         AttributeScope.tokenScope.GetAttribute((y!=null?y.Text:null))!=null &&
-				                         (grammar.type!=Grammar.LEXER ||
+				                         (grammar.type!=GrammarType.Lexer ||
 				                         GetElementLabel((x!=null?x.Text:null)).elementRef.token.Type==ANTLRParser.TOKEN_REF ||
 				                         GetElementLabel((x!=null?x.Text:null)).elementRef.token.Type==ANTLRParser.STRING_LITERAL))) )
 			{
 				if (state.backtracking>0) {state.failed=true; return ;}
-				throw new FailedPredicateException(input, "TOKEN_SCOPE_ATTR", "enclosingRule!=null &&\r\n\t                         (enclosingRule.GetTokenLabel($x.text)!=null||\r\n\t                          IsTokenRefInAlt($x.text)) &&\r\n\t                         AttributeScope.tokenScope.GetAttribute($y.text)!=null &&\r\n\t                         (grammar.type!=Grammar.LEXER ||\r\n\t                         GetElementLabel($x.text).elementRef.token.Type==ANTLRParser.TOKEN_REF ||\r\n\t                         GetElementLabel($x.text).elementRef.token.Type==ANTLRParser.STRING_LITERAL)");
+				throw new FailedPredicateException(input, "TOKEN_SCOPE_ATTR", "enclosingRule!=null &&\r\n\t                         (enclosingRule.GetTokenLabel($x.text)!=null||\r\n\t                          IsTokenRefInAlt($x.text)) &&\r\n\t                         AttributeScope.tokenScope.GetAttribute($y.text)!=null &&\r\n\t                         (grammar.type!=GrammarType.Lexer ||\r\n\t                         GetElementLabel($x.text).elementRef.token.Type==ANTLRParser.TOKEN_REF ||\r\n\t                         GetElementLabel($x.text).elementRef.token.Type==ANTLRParser.STRING_LITERAL)");
 			}
 			if ( state.backtracking==1 )
 			{
@@ -715,9 +715,9 @@ public partial class ActionTranslator : Lexer
 
 							StringTemplate st;
 							Grammar.LabelElementPair pair = GetElementLabel((ID1!=null?ID1.Text:null));
-							if ( pair.type==Grammar.RULE_LIST_LABEL ||
-								  pair.type==Grammar.TOKEN_LIST_LABEL ||
-								  pair.type == Grammar.WILDCARD_TREE_LIST_LABEL )
+							if ( pair.type==LabelType.RuleList ||
+								  pair.type==LabelType.TokenList ||
+								  pair.type == LabelType.WildcardTreeList )
 							{
 								st = Template("listLabelRef");
 							}
@@ -756,10 +756,10 @@ public partial class ActionTranslator : Lexer
 			int ID2Start352 = CharIndex;
 			mID(); if (state.failed) return ;
 			ID2 = new CommonToken(input, TokenTypes.Invalid, TokenChannels.Default, ID2Start352, CharIndex-1);
-			if ( !((grammar.type!=Grammar.LEXER && enclosingRule!=null && IsTokenRefInAlt((ID2!=null?ID2.Text:null)))) )
+			if ( !((grammar.type!=GrammarType.Lexer && enclosingRule!=null && IsTokenRefInAlt((ID2!=null?ID2.Text:null)))) )
 			{
 				if (state.backtracking>0) {state.failed=true; return ;}
-				throw new FailedPredicateException(input, "ISOLATED_TOKEN_REF", "grammar.type!=Grammar.LEXER && enclosingRule!=null && IsTokenRefInAlt($ID.text)");
+				throw new FailedPredicateException(input, "ISOLATED_TOKEN_REF", "grammar.type!=GrammarType.Lexer && enclosingRule!=null && IsTokenRefInAlt($ID.text)");
 			}
 			if ( state.backtracking==1 )
 			{
@@ -808,12 +808,12 @@ public partial class ActionTranslator : Lexer
 			int ID3Start376 = CharIndex;
 			mID(); if (state.failed) return ;
 			ID3 = new CommonToken(input, TokenTypes.Invalid, TokenChannels.Default, ID3Start376, CharIndex-1);
-			if ( !((grammar.type==Grammar.LEXER &&
+			if ( !((grammar.type==GrammarType.Lexer &&
 				             enclosingRule!=null &&
 				             IsRuleRefInAlt((ID3!=null?ID3.Text:null)))) )
 			{
 				if (state.backtracking>0) {state.failed=true; return ;}
-				throw new FailedPredicateException(input, "ISOLATED_LEXER_RULE_REF", "grammar.type==Grammar.LEXER &&\r\n\t             enclosingRule!=null &&\r\n\t             IsRuleRefInAlt($ID.text)");
+				throw new FailedPredicateException(input, "ISOLATED_LEXER_RULE_REF", "grammar.type==GrammarType.Lexer &&\r\n\t             enclosingRule!=null &&\r\n\t             IsRuleRefInAlt($ID.text)");
 			}
 			if ( state.backtracking==1 )
 			{

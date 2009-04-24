@@ -67,64 +67,51 @@ namespace Antlr3.Tool
     /** Represents a grammar in memory. */
     public class Grammar
     {
-        public const string SYNPRED_RULE_PREFIX = "synpred";
+        public const string SynpredRulePrefix = "synpred";
 
-        public const string GRAMMAR_FILE_EXTENSION = ".g";
+        public const string GrammarFileExtension = ".g";
 
         /** used for generating lexer temp files */
-        public const string LEXER_GRAMMAR_FILE_EXTENSION = ".g";
+        public const string LexerGrammarFileExtension = ".g";
 
-        public const int INITIAL_DECISION_LIST_SIZE = 300;
-        public const int INVALID_RULE_INDEX = -1;
-
-        // the various kinds of labels. t=type, id=ID, types+=type ids+=ID
-        public const int RULE_LABEL = 1;
-        public const int TOKEN_LABEL = 2;
-        public const int RULE_LIST_LABEL = 3;
-        public const int TOKEN_LIST_LABEL = 4;
-        public const int CHAR_LABEL = 5; // used in lexer for x='a'
-        public const int WILDCARD_TREE_LABEL = 6; // Used in tree grammar x=.
-        public const int WILDCARD_TREE_LIST_LABEL = 7; // Used in tree grammar x+=.
+        public const int InitialDecisionListSize = 300;
+        public const int InvalidRuleIndex = -1;
 
         public static string[] LabelTypeToString = { "<invalid>", "rule", "token", "rule-list", "token-list", "wildcard-tree", "wildcard-tree-list" };
 
-        public const string ARTIFICIAL_TOKENS_RULENAME = "Tokens";
-        public const string FRAGMENT_RULE_MODIFIER = "fragment";
+        public const string ArtificialTokensRuleName = "Tokens";
+        public const string FragmentRuleModifier = "fragment";
 
-        public const string SYNPREDGATE_ACTION_NAME = "synpredgate";
+        public const string SynpredGateActionName = "synpredgate";
 
         /** When converting ANTLR char and string literals, here is the
          *  value set of escape chars.
          */
-        public static int[] ANTLRLiteralEscapedCharValue = new int[255];
+        public static int[] AntlrLiteralEscapedCharValue = new int[255];
 
         /** Given a char, we need to be able to show as an ANTLR literal.
          */
-        public static string[] ANTLRLiteralCharValueEscape = new string[255];
+        public static string[] AntlrLiteralCharValueEscape = new string[255];
 
         static Grammar()
         {
-            ANTLRLiteralEscapedCharValue['n'] = '\n';
-            ANTLRLiteralEscapedCharValue['r'] = '\r';
-            ANTLRLiteralEscapedCharValue['t'] = '\t';
-            ANTLRLiteralEscapedCharValue['b'] = '\b';
-            ANTLRLiteralEscapedCharValue['f'] = '\f';
-            ANTLRLiteralEscapedCharValue['\\'] = '\\';
-            ANTLRLiteralEscapedCharValue['\''] = '\'';
-            ANTLRLiteralEscapedCharValue['"'] = '"';
-            ANTLRLiteralCharValueEscape['\n'] = "\\n";
-            ANTLRLiteralCharValueEscape['\r'] = "\\r";
-            ANTLRLiteralCharValueEscape['\t'] = "\\t";
-            ANTLRLiteralCharValueEscape['\b'] = "\\b";
-            ANTLRLiteralCharValueEscape['\f'] = "\\f";
-            ANTLRLiteralCharValueEscape['\\'] = "\\\\";
-            ANTLRLiteralCharValueEscape['\''] = "\\'";
+            AntlrLiteralEscapedCharValue['n'] = '\n';
+            AntlrLiteralEscapedCharValue['r'] = '\r';
+            AntlrLiteralEscapedCharValue['t'] = '\t';
+            AntlrLiteralEscapedCharValue['b'] = '\b';
+            AntlrLiteralEscapedCharValue['f'] = '\f';
+            AntlrLiteralEscapedCharValue['\\'] = '\\';
+            AntlrLiteralEscapedCharValue['\''] = '\'';
+            AntlrLiteralEscapedCharValue['"'] = '"';
+            AntlrLiteralCharValueEscape['\n'] = "\\n";
+            AntlrLiteralCharValueEscape['\r'] = "\\r";
+            AntlrLiteralCharValueEscape['\t'] = "\\t";
+            AntlrLiteralCharValueEscape['\b'] = "\\b";
+            AntlrLiteralCharValueEscape['\f'] = "\\f";
+            AntlrLiteralCharValueEscape['\\'] = "\\\\";
+            AntlrLiteralCharValueEscape['\''] = "\\'";
         }
 
-        public const int LEXER = 1;
-        public const int PARSER = 2;
-        public const int TREE_PARSER = 3;
-        public const int COMBINED = 4;
         public static readonly string[] grammarTypeToString =
             new string[]
             {
@@ -150,19 +137,19 @@ namespace Antlr3.Tool
          *  validDelegations.get(LEXER) gives list of the kinds of delegators
          *  that can import lexers.
          */
-        public static MultiMap<int, int> validDelegations =
-            new MultiMap<int, int>()
+        public static MultiMap<GrammarType, GrammarType> validDelegations =
+            new MultiMap<GrammarType, GrammarType>()
             {
-                { LEXER, LEXER },
-                { LEXER, PARSER },
-                { LEXER, COMBINED },
+                { GrammarType.Lexer, GrammarType.Lexer },
+                { GrammarType.Lexer, GrammarType.Parser },
+                { GrammarType.Lexer, GrammarType.Combined },
 
-                { PARSER, PARSER },
-                { PARSER, COMBINED },
+                { GrammarType.Parser, GrammarType.Parser },
+                { GrammarType.Parser, GrammarType.Combined },
 
-                { TREE_PARSER, TREE_PARSER },
-                // allow COMBINED
-                //{ COMBINED, COMBINED }
+                { GrammarType.TreeParser, GrammarType.TreeParser },
+                // allow GrammarType.Combined
+                //{ GrammarType.Combined, GrammarType.Combined }
             };
 
         /** This is the buffer of *all* tokens found in the grammar file
@@ -191,7 +178,7 @@ namespace Antlr3.Tool
              *  Currently only set for rule labels.
              */
             public bool actionReferencesLabel;
-            public int type; // in {RULE_LABEL,TOKEN_LABEL,RULE_LIST_LABEL,TOKEN_LIST_LABEL}
+            public LabelType type; // in {RULE_LABEL,TOKEN_LABEL,RULE_LIST_LABEL,TOKEN_LIST_LABEL}
             public LabelElementPair( Grammar outer, IToken label, GrammarAST elementRef )
             {
                 this._outer = outer;
@@ -213,7 +200,7 @@ namespace Antlr3.Tool
         public string name;
 
         /** What type of grammar is this: lexer, parser, tree walker */
-        public int type;
+        public GrammarType type;
 
         /** A list of options specified at the grammar level such as language=Java.
          *  The value can be an AST for complicated values such as character sets.
@@ -447,7 +434,7 @@ namespace Antlr3.Tool
          *  all the rules, subrules, optional blocks, ()+, ()* etc...
          */
         protected List<Decision> indexToDecision =
-            new List<Decision>( INITIAL_DECISION_LIST_SIZE );
+            new List<Decision>( InitialDecisionListSize );
 
         /** If non-null, this is the code generator we will use to generate
          *  recognizers in the target language.
@@ -739,7 +726,7 @@ namespace Antlr3.Tool
         {
             get
             {
-                return grammarTypeToString[type];
+                return grammarTypeToString[(int)type];
             }
         }
         public string ImplicitlyGeneratedLexerFileName
@@ -748,7 +735,7 @@ namespace Antlr3.Tool
             {
                 return name +
                        IGNORE_STRING_IN_GRAMMAR_FILE_NAME +
-                       LEXER_GRAMMAR_FILE_EXTENSION;
+                       LexerGrammarFileExtension;
             }
         }
         public ICollection<Grammar> IndirectDelegates
@@ -883,7 +870,7 @@ namespace Antlr3.Tool
         {
             get
             {
-                if ( type == LEXER )
+                if ( type == GrammarType.Lexer )
                 {
                     return AllCharValues;
                 }
@@ -936,7 +923,7 @@ namespace Antlr3.Tool
                 if ( onlyFileNameNoSuffix == onlyFileName )
                 {
                     ErrorManager.Error( ErrorManager.MSG_FILENAME_EXTENSION_ERROR, fileName );
-                    onlyFileNameNoSuffix = onlyFileName + GRAMMAR_FILE_EXTENSION;
+                    onlyFileNameNoSuffix = onlyFileName + GrammarFileExtension;
                 }
                 else
                 {
@@ -1082,7 +1069,7 @@ namespace Antlr3.Tool
         protected virtual void DealWithTreeFilterMode()
         {
             object filterMode = (string)GetOption( "filter" );
-            if ( type == TREE_PARSER && filterMode != null && filterMode.ToString().Equals( "true" ) )
+            if ( type == GrammarType.TreeParser && filterMode != null && filterMode.ToString().Equals( "true" ) )
             {
                 // check for conflicting options
                 // filter => backtrack=true
@@ -1153,7 +1140,7 @@ namespace Antlr3.Tool
         /** Many imports are illegal such as lexer into a tree grammar */
         public virtual bool ValidImport( Grammar @delegate )
         {
-            IList<int> validDelegators = validDelegations.get( @delegate.type );
+            IList<GrammarType> validDelegators = validDelegations.get( @delegate.type );
             return validDelegators != null && validDelegators.Contains( this.type );
         }
 
@@ -1215,10 +1202,10 @@ namespace Antlr3.Tool
                 buf.Append( name );
                 qualifiedName = buf.ToString();
             }
-            if ( type == Grammar.COMBINED ||
-                 ( type == Grammar.LEXER && implicitLexer ) )
+            if ( type == GrammarType.Combined ||
+                 ( type == GrammarType.Lexer && implicitLexer ) )
             {
-                suffix = Grammar.grammarTypeToFileNameSuffix[type];
+                suffix = Grammar.grammarTypeToFileNameSuffix[(int)type];
             }
             return qualifiedName + suffix;
         }
@@ -1247,14 +1234,14 @@ namespace Antlr3.Tool
             if ( filterMode )
             {
                 matchTokenRuleST = new StringTemplate(
-                        ARTIFICIAL_TOKENS_RULENAME +
+                        ArtificialTokensRuleName +
                         " options {k=1; backtrack=true;} : <rules; separator=\"|\">;",
                         typeof( AngleBracketTemplateLexer ) );
             }
             else
             {
                 matchTokenRuleST = new StringTemplate(
-                        ARTIFICIAL_TOKENS_RULENAME + " : <rules; separator=\"|\">;",
+                        ArtificialTokensRuleName + " : <rules; separator=\"|\">;",
                         typeof( AngleBracketTemplateLexer ) );
             }
 
@@ -1286,7 +1273,7 @@ namespace Antlr3.Tool
             ANTLRParser parser = new ANTLRParser( new Antlr.Runtime.CommonTokenStream( tokbuf ) );
 
             parser.Grammar = this;
-            parser.GrammarType = ANTLRParser.LEXER_GRAMMAR;
+            parser.GrammarType = GrammarType.Lexer;
             ANTLRParser.rule_return result = null;
             try
             {
@@ -1898,7 +1885,7 @@ namespace Antlr3.Tool
                 return;
             }
 
-            if ( ( type == Grammar.PARSER || type == Grammar.TREE_PARSER ) &&
+            if ( ( type == GrammarType.Parser || type == GrammarType.TreeParser ) &&
                  char.IsUpper( ruleName[0] ) )
             {
                 ErrorManager.GrammarError( ErrorManager.MSG_LEXER_RULES_NOT_ALLOWED,
@@ -1919,7 +1906,7 @@ namespace Antlr3.Tool
             composite.ruleIndexToRuleList.setSize( composite.ruleIndex + 1 );
             composite.ruleIndexToRuleList[composite.ruleIndex] = r;
             composite.ruleIndex++;
-            if ( ruleName.StartsWith( SYNPRED_RULE_PREFIX ) )
+            if ( ruleName.StartsWith( SynpredRulePrefix ) )
             {
                 r.isSynPred = true;
             }
@@ -1936,7 +1923,7 @@ namespace Antlr3.Tool
                 nameToSynpredASTMap = new SortedList<string, GrammarAST>();
             }
             string predName =
-                SYNPRED_RULE_PREFIX + ( nameToSynpredASTMap.Count + 1 ) + "_" + name;
+                SynpredRulePrefix + ( nameToSynpredASTMap.Count + 1 ) + "_" + name;
             blockAST.SetTreeEnclosingRuleNameDeeply( predName );
             nameToSynpredASTMap[predName] = blockAST;
             return predName;
@@ -2010,14 +1997,14 @@ namespace Antlr3.Tool
             string scope = GetDefaultActionScope( type );
             var actionsForGrammarScope = actions.get( scope );
             // if no synpredgate action set by user then set
-            if ( actionsForGrammarScope == null || !actionsForGrammarScope.ContainsKey( Grammar.SYNPREDGATE_ACTION_NAME ) )
+            if ( actionsForGrammarScope == null || !actionsForGrammarScope.ContainsKey( Grammar.SynpredGateActionName ) )
             {
                 if ( actionsForGrammarScope == null )
                 {
                     actionsForGrammarScope = new Dictionary<string, object>();
                     actions[scope] = actionsForGrammarScope;
                 }
-                actionsForGrammarScope[Grammar.SYNPREDGATE_ACTION_NAME] = gateST;
+                actionsForGrammarScope[Grammar.SynpredGateActionName] = gateST;
             }
         }
 
@@ -2025,16 +2012,16 @@ namespace Antlr3.Tool
          *  If I say @members in a COMBINED grammar, for example, the
          *  default scope should be "parser".
          */
-        public virtual string GetDefaultActionScope( int grammarType )
+        public virtual string GetDefaultActionScope( GrammarType grammarType )
         {
             switch ( grammarType )
             {
-            case Grammar.LEXER:
+            case GrammarType.Lexer:
                 return "lexer";
-            case Grammar.PARSER:
-            case Grammar.COMBINED:
+            case GrammarType.Parser:
+            case GrammarType.Combined:
                 return "parser";
-            case Grammar.TREE_PARSER:
+            case GrammarType.TreeParser:
                 return "treeparser";
             }
             return null;
@@ -2178,7 +2165,7 @@ namespace Antlr3.Tool
             {
                 return r.index;
             }
-            return INVALID_RULE_INDEX;
+            return InvalidRuleIndex;
         }
 
         public virtual int GetRuleIndex( string ruleName )
@@ -2203,7 +2190,7 @@ namespace Antlr3.Tool
          */
         public virtual bool GenerateMethodForRule( string ruleName )
         {
-            if ( ruleName.Equals( ARTIFICIAL_TOKENS_RULENAME ) )
+            if ( ruleName.Equals( ArtificialTokensRuleName ) )
             {
                 // always generate Tokens rule to satisfy lexer interface
                 // but it may have no alternatives.
@@ -2257,7 +2244,7 @@ namespace Antlr3.Tool
         /** Define a label defined in a rule r; check the validity then ask the
          *  Rule object to actually define it.
          */
-        protected virtual void DefineLabel( Rule r, IToken label, GrammarAST element, int type )
+        protected virtual void DefineLabel( Rule r, IToken label, GrammarAST element, LabelType type )
         {
             bool err = nameSpaceChecker.CheckForLabelTypeMismatch( r, label, type );
             if ( err )
@@ -2274,18 +2261,18 @@ namespace Antlr3.Tool
             Rule r = GetLocallyDefinedRule( ruleName );
             if ( r != null )
             {
-                if ( type == LEXER &&
+                if ( type == GrammarType.Lexer &&
                      ( tokenRef.Type == ANTLRParser.CHAR_LITERAL ||
                       tokenRef.Type == ANTLRParser.BLOCK ||
                       tokenRef.Type == ANTLRParser.NOT ||
                       tokenRef.Type == ANTLRParser.CHAR_RANGE ||
                       tokenRef.Type == ANTLRParser.WILDCARD ) )
                 {
-                    DefineLabel( r, label, tokenRef, CHAR_LABEL );
+                    DefineLabel( r, label, tokenRef, LabelType.Char );
                 }
                 else
                 {
-                    DefineLabel( r, label, tokenRef, TOKEN_LABEL );
+                    DefineLabel( r, label, tokenRef, LabelType.Token );
                 }
             }
         }
@@ -2297,7 +2284,7 @@ namespace Antlr3.Tool
             Rule r = GetLocallyDefinedRule( ruleName );
             if ( r != null )
             {
-                DefineLabel( r, label, tokenRef, WILDCARD_TREE_LABEL );
+                DefineLabel( r, label, tokenRef, LabelType.WildcardTree );
             }
         }
 
@@ -2305,7 +2292,7 @@ namespace Antlr3.Tool
         {
             Rule r = GetLocallyDefinedRule( ruleName );
             if ( r != null )
-                DefineLabel( r, label, tokenRef, WILDCARD_TREE_LIST_LABEL );
+                DefineLabel( r, label, tokenRef, LabelType.WildcardTreeList );
         }
 
         public virtual void DefineRuleRefLabel( string ruleName,
@@ -2315,7 +2302,7 @@ namespace Antlr3.Tool
             Rule r = GetLocallyDefinedRule( ruleName );
             if ( r != null )
             {
-                DefineLabel( r, label, ruleRef, RULE_LABEL );
+                DefineLabel( r, label, ruleRef, LabelType.Rule );
             }
         }
 
@@ -2326,7 +2313,7 @@ namespace Antlr3.Tool
             Rule r = GetLocallyDefinedRule( ruleName );
             if ( r != null )
             {
-                DefineLabel( r, label, element, TOKEN_LIST_LABEL );
+                DefineLabel( r, label, element, LabelType.TokenList );
             }
         }
 
@@ -2343,7 +2330,7 @@ namespace Antlr3.Tool
                         ErrorManager.MSG_LIST_LABEL_INVALID_UNLESS_RETVAL_STRUCT, this,
                         label, label.Text );
                 }
-                DefineLabel( r, label, element, RULE_LIST_LABEL );
+                DefineLabel( r, label, element, LabelType.RuleList );
             }
         }
 
@@ -2351,7 +2338,7 @@ namespace Antlr3.Tool
          *  label types such as Grammar.TOKEN_LABEL, Grammar.TOKEN_LIST_LABEL, ...
          *  Return a displayable token type name computed from the GrammarAST.
          */
-        public virtual HashSet<string> GetLabels( HashSet<GrammarAST> rewriteElements, int labelType )
+        public virtual HashSet<string> GetLabels( HashSet<GrammarAST> rewriteElements, LabelType labelType )
         {
             HashSet<string> labels = new HashSet<string>();
             foreach ( GrammarAST el in rewriteElements )
@@ -2418,7 +2405,7 @@ namespace Antlr3.Tool
          */
         public virtual void CheckAllRulesForUselessLabels()
         {
-            if ( type == LEXER )
+            if ( type == GrammarType.Lexer )
                 return;
 
             foreach ( string ruleName in nameToRuleMap.Keys )
@@ -2509,7 +2496,7 @@ namespace Antlr3.Tool
         public virtual void ReferenceRuleLabelPredefinedAttribute( string ruleName )
         {
             Rule r = GetRule( ruleName );
-            if ( r != null && type != LEXER )
+            if ( r != null && type != GrammarType.Lexer )
             {
                 // indicate that an action ref'd an attr unless it's in a lexer
                 // so that $ID.text refs don't force lexer rules to define
@@ -2583,7 +2570,7 @@ namespace Antlr3.Tool
                    ttype == ANTLRParser.CHAR_RANGE ||
                    ttype == ANTLRParser.STRING_LITERAL ||
                    ttype == ANTLRParser.NOT ||
-                   ( type != LEXER && ttype == ANTLRParser.TOKEN_REF );
+                   ( type != GrammarType.Lexer && ttype == ANTLRParser.TOKEN_REF );
         }
 
         public virtual int GetTokenType( string tokenName )
@@ -2658,7 +2645,7 @@ namespace Antlr3.Tool
                     return -1;
                 }
                 int escChar = literal[2];
-                int charVal = ANTLRLiteralEscapedCharValue[escChar];
+                int charVal = AntlrLiteralEscapedCharValue[escChar];
                 if ( charVal == 0 )
                 {
                     // Unnecessary escapes like '\{' should just yield {
@@ -2721,7 +2708,7 @@ namespace Antlr3.Tool
                     }
                     else
                     {
-                        buf.Append( (char)ANTLRLiteralEscapedCharValue[c] ); // normal \x escape
+                        buf.Append( (char)AntlrLiteralEscapedCharValue[c] ); // normal \x escape
                     }
                 }
                 else
@@ -2768,7 +2755,7 @@ namespace Antlr3.Tool
         {
             string grammarName = grammarNameAST.Text;
             //JSystem.@out.println("import "+gfile.getName());
-            string gname = grammarName + GRAMMAR_FILE_EXTENSION;
+            string gname = grammarName + GrammarFileExtension;
             TextReader br = null;
             try
             {
@@ -2792,9 +2779,9 @@ namespace Antlr3.Tool
                                               delegateGrammar );
                     return;
                 }
-                if ( this.type == COMBINED &&
-                     ( delegateGrammar.name.Equals( this.name + grammarTypeToFileNameSuffix[LEXER] ) ||
-                      delegateGrammar.name.Equals( this.name + grammarTypeToFileNameSuffix[PARSER] ) ) )
+                if ( this.type == GrammarType.Combined &&
+                     ( delegateGrammar.name.Equals( this.name + grammarTypeToFileNameSuffix[(int)GrammarType.Lexer] ) ||
+                      delegateGrammar.name.Equals( this.name + grammarTypeToFileNameSuffix[(int)GrammarType.Parser] ) ) )
                 {
                     ErrorManager.GrammarError( ErrorManager.MSG_IMPORT_NAME_CLASH,
                                               this,
@@ -2807,7 +2794,7 @@ namespace Antlr3.Tool
                 {
                     // we have a valid grammar
                     // deal with combined grammars
-                    if ( delegateGrammar.type == LEXER && this.type == COMBINED )
+                    if ( delegateGrammar.type == GrammarType.Lexer && this.type == GrammarType.Combined )
                     {
                         // ooops, we wasted some effort; tell lexer to read it in
                         // later
@@ -2882,7 +2869,7 @@ namespace Antlr3.Tool
                         if ( !match.Success )
                         {
                             ErrorManager.Error( ErrorManager.MSG_TOKENS_FILE_SYNTAX_ERROR,
-                                               vocabName + CodeGenerator.VOCAB_FILE_EXTENSION,
+                                               vocabName + CodeGenerator.VocabFileExtension,
                                                lineNum );
                             continue;
                         }
@@ -2916,7 +2903,7 @@ namespace Antlr3.Tool
             string tokenName = null;
             int index = 0;
             // inside any target's char range and is lexer grammar?
-            if ( this.type == LEXER &&
+            if ( this.type == GrammarType.Lexer &&
                  ttype >= Label.MIN_CHAR_VALUE && ttype <= Label.MAX_CHAR_VALUE )
             {
                 return GetANTLRCharLiteralForChar( ttype );
@@ -3010,11 +2997,11 @@ namespace Antlr3.Tool
         {
             switch ( type )
             {
-            case LEXER:
+            case GrammarType.Lexer:
                 return !legalLexerOptions.Contains( key );
-            case PARSER:
+            case GrammarType.Parser:
                 return !legalParserOptions.Contains( key );
-            case TREE_PARSER:
+            case GrammarType.TreeParser:
                 return !legalTreeParserOptions.Contains( key );
             default:
                 return !legalParserOptions.Contains( key );
@@ -3064,7 +3051,7 @@ namespace Antlr3.Tool
             {
                 return v;
             }
-            if ( type == Grammar.LEXER )
+            if ( type == GrammarType.Lexer )
             {
                 return defaultLexerBlockOptions.get( key );
             }
@@ -3431,9 +3418,9 @@ namespace Antlr3.Tool
                 ErrorManager.InternalError( "invalid char value " + c );
                 return "'<INVALID>'";
             }
-            if ( c < ANTLRLiteralCharValueEscape.Length && ANTLRLiteralCharValueEscape[c] != null )
+            if ( c < AntlrLiteralCharValueEscape.Length && AntlrLiteralCharValueEscape[c] != null )
             {
-                return '\'' + ANTLRLiteralCharValueEscape[c] + '\'';
+                return '\'' + AntlrLiteralCharValueEscape[c] + '\'';
             }
             if ( c <= 0x7f && !char.IsControl( (char)c ) )
             {

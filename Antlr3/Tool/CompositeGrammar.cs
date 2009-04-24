@@ -4,7 +4,7 @@
  * All rights reserved.
  *
  * Conversion to C#:
- * Copyright (c) 2008 Sam Harwell, Pixel Mine, Inc.
+ * Copyright (c) 2008-2009 Sam Harwell, Pixel Mine, Inc.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -56,7 +56,7 @@ namespace Antlr3.Tool
      */
     public class CompositeGrammar
     {
-        public const int MIN_RULE_INDEX = 1;
+        public const int MinRuleIndex = 1;
 
         public CompositeGrammarTree delegateGrammarTreeRoot;
 
@@ -110,7 +110,7 @@ namespace Antlr3.Tool
         protected internal HashSet<string> lexerRules = new HashSet<string>();
 
         /** Rules are uniquely labeled from 1..n among all grammars */
-        protected internal int ruleIndex = MIN_RULE_INDEX;
+        protected internal int ruleIndex = MinRuleIndex;
 
         /** Map a rule index to its name; use a Vector on purpose as new
          *  collections stuff won't let me setSize and make it grow.  :(
@@ -470,7 +470,7 @@ namespace Antlr3.Tool
                 {
                     localRuleDefs.Add( r.name );
                 }
-                else if ( !r.name.Equals( Grammar.ARTIFICIAL_TOKENS_RULENAME ) )
+                else if ( !r.name.Equals( Grammar.ArtificialTokensRuleName ) )
                 {
                     // record any overridden rule 'cept tokens rule
                     overrides.Add( r.name );
