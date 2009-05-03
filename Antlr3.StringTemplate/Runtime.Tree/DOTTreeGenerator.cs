@@ -33,7 +33,7 @@
 namespace Antlr.Runtime.Tree
 {
     using System.Collections.Generic;
-    using StringTemplate = Antlr3.ST.StringTemplate;
+    using StringBuilder = System.Text.StringBuilder;
 
     /** A utility class to generate DOT diagrams (graphviz) from
      *  arbitrary trees.  You can pass in your own templates and
@@ -56,55 +56,26 @@ namespace Antlr.Runtime.Tree
      */
     public class DOTTreeGenerator
     {
-
-        public static StringTemplate _treeST =
-            new StringTemplate(
-                "digraph {\n\n" +
-                "\tordering=out;\n" +
-                "\tranksep=.4;\n" +
-                "\tbgcolor=\"lightgrey\"; node [shape=box, fixedsize=false, fontsize=12, fontname=\"Helvetica-bold\", fontcolor=\"blue\"\n" +
-                "\t\twidth=.25, height=.25, color=\"black\", fillcolor=\"white\", style=\"filled, solid, bold\"];\n" +
-                "\tedge [arrowsize=.5, color=\"black\", style=\"bold\"]\n\n" +
-                "  $nodes$\n" +
-                "  $edges$\n" +
-                "}\n" );
-
-        public static StringTemplate _nodeST =
-                new StringTemplate( "$name$ [label=\"$text$\"];\n" );
-
-        public static StringTemplate _edgeST =
-                new StringTemplate( "$parent$ -> $child$ // \"$parentText$\" -> \"$childText$\"\n" );
+        readonly string[] HeaderLines =
+            {
+                "digraph {",
+                "",
+                "\tordering=out;",
+                "\tranksep=.4;",
+                "\tbgcolor=\"lightgrey\"; node [shape=box, fixedsize=false, fontsize=12, fontname=\"Helvetica-bold\", fontcolor=\"blue\"",
+                "\t\twidth=.25, height=.25, color=\"black\", fillcolor=\"white\", style=\"filled, solid, bold\"];",
+                "\tedge [arrowsize=.5, color=\"black\", style=\"bold\"]",
+                ""
+            };
+        const string Footer = "}";
+        const string NodeFormat = "  {0} [label=\"{1}\"];";
+        const string EdgeFormat = "  {0} -> {1} // \"{2}\" -> \"{3}\"";
 
         /** Track node to number mapping so we can get proper node name back */
         Dictionary<object, int> nodeToNumberMap = new Dictionary<object, int>();
 
         /** Track node number so we can get unique node names */
         int nodeNumber = 0;
-
-        public virtual StringTemplate ToDOT( object tree,
-                                    ITreeAdaptor adaptor,
-                                    StringTemplate _treeST,
-                                    StringTemplate _edgeST )
-        {
-            StringTemplate treeST = _treeST.GetInstanceOf();
-            nodeNumber = 0;
-            ToDOTDefineNodes( tree, adaptor, treeST );
-            nodeNumber = 0;
-            ToDOTDefineEdges( tree, adaptor, treeST );
-            /*
-            if ( adaptor.getChildCount(tree)==0 ) {
-                // single node, don't do edge.
-                treeST.setAttribute("nodes", adaptor.getText(tree));
-            }
-            */
-            return treeST;
-        }
-
-        public virtual StringTemplate ToDOT( object tree,
-                                    ITreeAdaptor adaptor )
-        {
-            return ToDOT( tree, adaptor, _treeST, _edgeST );
-        }
 
         /** Generate DOT (graphviz) for a whole tree not just a node.
          *  For example, 3+4*5 should generate:
@@ -119,55 +90,74 @@ namespace Antlr.Runtime.Tree
          *   "*"->5
          * }
          *
-         * Return the ST not a string in case people want to alter.
-         *
          * Takes a Tree interface object.
          */
-        public virtual StringTemplate ToDOT( ITree tree )
+        public virtual string ToDot( object tree, ITreeAdaptor adaptor )
         {
-            return ToDOT( tree, new CommonTreeAdaptor() );
+            StringBuilder builder = new StringBuilder();
+            foreach ( string line in HeaderLines )
+                builder.AppendLine( line );
+
+            nodeNumber = 0;
+            var nodes = DefineNodes( tree, adaptor );
+            nodeNumber = 0;
+            var edges = DefineEdges( tree, adaptor );
+
+            foreach ( var s in nodes )
+                builder.AppendLine( s );
+
+            builder.AppendLine();
+
+            foreach ( var s in edges )
+                builder.AppendLine( s );
+
+            builder.AppendLine();
+
+            builder.AppendLine( Footer );
+            return builder.ToString();
         }
 
-        protected virtual void ToDOTDefineNodes( object tree, ITreeAdaptor adaptor, StringTemplate treeST )
+        public virtual string ToDot( ITree tree )
+        {
+            return ToDot( tree, new CommonTreeAdaptor() );
+        }
+        protected virtual IEnumerable<string> DefineNodes( object tree, ITreeAdaptor adaptor )
         {
             if ( tree == null )
-            {
-                return;
-            }
+                yield break;
+
             int n = adaptor.GetChildCount( tree );
             if ( n == 0 )
             {
                 // must have already dumped as child from previous
                 // invocation; do nothing
-                return;
+                yield break;
             }
 
             // define parent node
-            StringTemplate parentNodeST = GetNodeST( adaptor, tree );
-            treeST.SetAttribute( "nodes", parentNodeST );
+            yield return GetNodeText( adaptor, tree );
 
             // for each child, do a "<unique-name> [label=text]" node def
             for ( int i = 0; i < n; i++ )
             {
                 object child = adaptor.GetChild( tree, i );
-                StringTemplate nodeST = GetNodeST( adaptor, child );
-                treeST.SetAttribute( "nodes", nodeST );
-                ToDOTDefineNodes( child, adaptor, treeST );
+                yield return GetNodeText( adaptor, child );
+                foreach ( var t in DefineNodes( child, adaptor ) )
+                    yield return t;
             }
         }
 
-        protected virtual void ToDOTDefineEdges( object tree, ITreeAdaptor adaptor, StringTemplate treeST )
+        protected virtual IEnumerable<string> DefineEdges( object tree, ITreeAdaptor adaptor )
         {
             if ( tree == null )
-            {
-                return;
-            }
+                yield break;
+
             int n = adaptor.GetChildCount( tree );
             if ( n == 0 )
             {
                 // must have already dumped as child from previous
                 // invocation; do nothing
-                return;
+                yield break;
             }
 
             string parentName = "n" + GetNodeNumber( tree );
@@ -179,24 +169,17 @@ namespace Antlr.Runtime.Tree
                 object child = adaptor.GetChild( tree, i );
                 string childText = adaptor.GetText( child );
                 string childName = "n" + GetNodeNumber( child );
-                StringTemplate edgeST = _edgeST.GetInstanceOf();
-                edgeST.SetAttribute( "parent", parentName );
-                edgeST.SetAttribute( "child", childName );
-                edgeST.SetAttribute( "parentText", FixString( parentText ) );
-                edgeST.SetAttribute( "childText", FixString( childText ) );
-                treeST.SetAttribute( "edges", edgeST );
-                ToDOTDefineEdges( child, adaptor, treeST );
+                yield return string.Format( EdgeFormat, parentName, childName, FixString( parentText ), FixString( childText ) );
+                foreach ( var t in DefineEdges( child, adaptor ) )
+                    yield return t;
             }
         }
 
-        protected virtual StringTemplate GetNodeST( ITreeAdaptor adaptor, object t )
+        protected virtual string GetNodeText( ITreeAdaptor adaptor, object t )
         {
             string text = adaptor.GetText( t );
-            StringTemplate nodeST = _nodeST.GetInstanceOf();
             string uniqueName = "n" + GetNodeNumber( t );
-            nodeST.SetAttribute( "name", uniqueName );
-            nodeST.SetAttribute( "text", FixString( text ) );
-            return nodeST;
+            return string.Format( NodeFormat, uniqueName, FixString( text ) );
         }
 
         protected virtual int GetNodeNumber( object t )
