@@ -173,7 +173,6 @@
     <Compile Include="Language\ActionEvaluatorHelper.cs">
       <DependentUpon>ActionEvaluator.g3</DependentUpon>
     </Compile>
-    <Compile Include="Runtime.Tree\DOTTreeGenerator.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\..\antlr\main\runtime\CSharp3\Sources\Antlr3.Runtime.Debug\Antlr3.Runtime.Debug.csproj">
