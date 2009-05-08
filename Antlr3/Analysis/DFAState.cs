@@ -195,6 +195,13 @@ namespace Antlr3.Analysis
                 return GetAltSet();
             }
         }
+        public bool AtLeastOneConfigurationHasAPredicate
+        {
+            get
+            {
+                return _atLeastOneConfigurationHasAPredicate;
+            }
+        }
         public ICollection<int> DisabledAlternatives
         {
             get

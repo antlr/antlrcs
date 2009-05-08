@@ -302,7 +302,7 @@ namespace Antlr3.Tool
                 {
                     ErrorManager.GrammarWarning( ErrorManager.MSG_REWRITE_FOR_MULTI_ELEMENT_ALT,
                                                 grammar,
-                                                next.token,
+                                                next.Token,
                                                 outerAltNum );
                 }
                 return;
@@ -328,7 +328,7 @@ namespace Antlr3.Tool
             }
             ErrorManager.GrammarWarning( ErrorManager.MSG_REWRITE_FOR_MULTI_ELEMENT_ALT,
                                         grammar,
-                                        elementAST.token,
+                                        elementAST.Token,
                                         outerAltNum );
         }
 

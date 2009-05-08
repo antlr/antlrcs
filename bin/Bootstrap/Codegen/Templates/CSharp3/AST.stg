@@ -72,7 +72,7 @@ public ITreeAdaptor TreeAdaptor
 >>
 
 @returnScope.ruleReturnMembers() ::= <<
-public <ASTLabelType> tree;
+internal <ASTLabelType> tree;
 public override object Tree { get { return tree; } }
 >>
 

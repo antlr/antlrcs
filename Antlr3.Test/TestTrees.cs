@@ -51,29 +51,29 @@ namespace AntlrUnitTests
             public int x;
             public V( IToken t )
             {
-                this.token = t;
+                this.Token = t;
             }
             public V( int ttype, int x )
             {
                 this.x = x;
-                token = new CommonToken( ttype );
+                Token = new CommonToken( ttype );
             }
             public V( int ttype, IToken t, int x )
             {
-                token = t;
+                Token = t;
                 this.x = x;
             }
             public override string ToString()
             {
-                return ( token != null ? token.Text : "" ) + "<V>";
+                return ( Token != null ? Token.Text : "" ) + "<V>";
             }
         }
 
         [TestMethod]
         public void TestSingleNode() /*throws Exception*/ {
             CommonTree t = new CommonTree( new CommonToken( 101 ) );
-            assertNull( t.parent );
-            assertEquals( -1, t.childIndex );
+            assertNull( t.Parent );
+            assertEquals( -1, t.ChildIndex );
         }
 
         [TestMethod]
@@ -83,10 +83,10 @@ namespace AntlrUnitTests
             CommonTree u = new V( new CommonToken( 102, "102" ) );
             adaptor.AddChild( root_0, t );
             adaptor.AddChild( root_0, u );
-            assertNull( root_0.parent );
-            assertEquals( -1, root_0.childIndex );
-            assertEquals( 0, t.childIndex );
-            assertEquals( 1, u.childIndex );
+            assertNull( root_0.Parent );
+            assertEquals( -1, root_0.ChildIndex );
+            assertEquals( 0, t.ChildIndex );
+            assertEquals( 1, u.ChildIndex );
         }
 
         [TestMethod]
@@ -97,8 +97,8 @@ namespace AntlrUnitTests
             r0.GetChild( 0 ).AddChild( new CommonTree( new CommonToken( 103 ) ) );
             r0.AddChild( new CommonTree( new CommonToken( 104 ) ) );
 
-            assertNull( r0.parent );
-            assertEquals( -1, r0.childIndex );
+            assertNull( r0.Parent );
+            assertEquals( -1, r0.ChildIndex );
         }
 
         [TestMethod]
@@ -110,14 +110,14 @@ namespace AntlrUnitTests
             r0.AddChild( c1 = new CommonTree( new CommonToken( 102 ) ) );
             r0.AddChild( c2 = new CommonTree( new CommonToken( 103 ) ) );
 
-            assertNull( r0.parent );
-            assertEquals( -1, r0.childIndex );
-            assertEquals( r0, c0.parent );
-            assertEquals( 0, c0.childIndex );
-            assertEquals( r0, c1.parent );
-            assertEquals( 1, c1.childIndex );
-            assertEquals( r0, c2.parent );
-            assertEquals( 2, c2.childIndex );
+            assertNull( r0.Parent );
+            assertEquals( -1, r0.ChildIndex );
+            assertEquals( r0, c0.Parent );
+            assertEquals( 0, c0.ChildIndex );
+            assertEquals( r0, c1.Parent );
+            assertEquals( 1, c1.ChildIndex );
+            assertEquals( r0, c2.Parent );
+            assertEquals( 2, c2.ChildIndex );
         }
 
         [TestMethod]
@@ -135,15 +135,15 @@ namespace AntlrUnitTests
 
             root.AddChild( r0 );
 
-            assertNull( root.parent );
-            assertEquals( -1, root.childIndex );
+            assertNull( root.Parent );
+            assertEquals( -1, root.ChildIndex );
             // check children of root all point at root
-            assertEquals( root, c0.parent );
-            assertEquals( 0, c0.childIndex );
-            assertEquals( root, c0.parent );
-            assertEquals( 1, c1.childIndex );
-            assertEquals( root, c0.parent );
-            assertEquals( 2, c2.childIndex );
+            assertEquals( root, c0.Parent );
+            assertEquals( 0, c0.ChildIndex );
+            assertEquals( root, c0.Parent );
+            assertEquals( 1, c1.ChildIndex );
+            assertEquals( root, c0.Parent );
+            assertEquals( 2, c2.ChildIndex );
         }
 
         [TestMethod]
@@ -162,15 +162,15 @@ namespace AntlrUnitTests
 
             root.AddChild( r0 );
 
-            assertNull( root.parent );
-            assertEquals( -1, root.childIndex );
+            assertNull( root.Parent );
+            assertEquals( -1, root.ChildIndex );
             // check children of root all point at root
-            assertEquals( root, c0.parent );
-            assertEquals( 1, c0.childIndex );
-            assertEquals( root, c0.parent );
-            assertEquals( 2, c1.childIndex );
-            assertEquals( root, c0.parent );
-            assertEquals( 3, c2.childIndex );
+            assertEquals( root, c0.Parent );
+            assertEquals( 1, c0.ChildIndex );
+            assertEquals( root, c0.Parent );
+            assertEquals( 2, c1.ChildIndex );
+            assertEquals( root, c0.Parent );
+            assertEquals( 3, c2.ChildIndex );
         }
 
         [TestMethod]
@@ -188,8 +188,8 @@ namespace AntlrUnitTests
 
             CommonTree dup = (CommonTree)( new CommonTreeAdaptor() ).DupTree( r0 );
 
-            assertNull( dup.parent );
-            assertEquals( -1, dup.childIndex );
+            assertNull( dup.Parent );
+            assertEquals( -1, dup.ChildIndex );
             dup.SanityCheckParentAndChildIndexes();
         }
 

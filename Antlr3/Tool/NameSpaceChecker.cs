@@ -145,7 +145,7 @@ namespace Antlr3.Tool
             // for each rule ref, ask if there is a rule definition
             foreach ( GrammarAST refAST in grammar.ruleRefs )
             {
-                IToken tok = refAST.token;
+                IToken tok = refAST.Token;
                 string ruleName = tok.Text;
                 Rule localRule = grammar.GetLocallyDefinedRule( ruleName );
                 Rule rule = grammar.GetRule( ruleName );

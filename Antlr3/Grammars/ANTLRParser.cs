@@ -1,4 +1,4 @@
-// $ANTLR 3.1.2 Grammars\\ANTLR.g3 2009-04-24 11:17:04
+// $ANTLR 3.1.2 Grammars\\ANTLR.g3 2009-05-07 18:09:39
 
 // The variable 'variable' is assigned but its value is never used.
 #pragma warning disable 219
@@ -78,7 +78,7 @@ namespace Antlr3.Grammars
  */
 public partial class ANTLRParser : Parser
 {
-	public static readonly string[] tokenNames = new string[] {
+	internal static readonly string[] tokenNames = new string[] {
 		"<invalid>", "<EOR>", "<DOWN>", "<UP>", "ACTION", "ACTION_CHAR_LITERAL", "ACTION_ESC", "ACTION_STRING_LITERAL", "ALT", "AMPERSAND", "ARG", "ARG_ACTION", "ARGLIST", "ASSIGN", "BACKTRACK_SEMPRED", "BANG", "BLOCK", "CATCH", "CHAR_LITERAL", "CHAR_RANGE", "CLOSE_ELEMENT_OPTION", "CLOSURE", "COLON", "COMBINED_GRAMMAR", "COMMA", "COMMENT", "DIGIT", "DOC_COMMENT", "DOLLAR", "DOT", "DOUBLE_ANGLE_STRING_LITERAL", "DOUBLE_QUOTE_STRING_LITERAL", "EOA", "EOB", "EOR", "EPSILON", "ESC", "ETC", "FINALLY", "FORCED_ACTION", "FRAGMENT", "GATED_SEMPRED", "GRAMMAR", "ID", "IMPLIES", "IMPORT", "INITACTION", "INT", "LABEL", "LEXER", "LEXER_GRAMMAR", "LPAREN", "ML_COMMENT", "NESTED_ACTION", "NESTED_ARG_ACTION", "NOT", "OPEN_ELEMENT_OPTION", "OPTIONAL", "OPTIONS", "OR", "PARSER", "PARSER_GRAMMAR", "PLUS", "PLUS_ASSIGN", "POSITIVE_CLOSURE", "PRIVATE", "PROTECTED", "PUBLIC", "QUESTION", "RANGE", "RCURLY", "RET", "RETURNS", "REWRITE", "ROOT", "RPAREN", "RULE", "RULE_REF", "SCOPE", "SEMI", "SEMPRED", "SL_COMMENT", "SRC", "STAR", "STRAY_BRACKET", "STRING_LITERAL", "SYN_SEMPRED", "SYNPRED", "TEMPLATE", "THROWS", "TOKEN_REF", "TOKENS", "TREE", "TREE_BEGIN", "TREE_GRAMMAR", "WILDCARD", "WS", "WS_LOOP", "WS_OPT", "XDIGIT"
 	};
 	public const int EOF=-1;
@@ -217,7 +217,7 @@ public partial class ANTLRParser : Parser
 	#region Rules
 	public class grammar__return : ParserRuleReturnScope
 	{
-		public GrammarAST tree;
+		internal GrammarAST tree;
 		public override object Tree { get { return tree; } }
 	}
 
@@ -352,7 +352,7 @@ public partial class ANTLRParser : Parser
 				if ( state.backtracking == 0 ) stream_optionsSpec.Add(optionsSpec3.Tree);
 				if ( state.backtracking == 0 )
 				{
-					opts = (optionsSpec3!=null?optionsSpec3.opts:default(IDictionary<string, object>)); Grammar.SetOptions(opts, (optionsSpec3!=null?((IToken)optionsSpec3.start):null));
+					opts = (optionsSpec3!=null?optionsSpec3.opts:default(IDictionary<string, object>)); Grammar.SetOptions(opts, (optionsSpec3!=null?((IToken)optionsSpec3.Start):null));
 				}
 
 				}
@@ -546,7 +546,7 @@ public partial class ANTLRParser : Parser
 			if ( state.backtracking == 0 )
 			{
 
-					Cleanup( ((GrammarAST)retval.tree) );
+					Cleanup( ((GrammarAST)retval.Tree) );
 
 			}
 		}
@@ -566,7 +566,7 @@ public partial class ANTLRParser : Parser
 
 	public class grammarType_return : ParserRuleReturnScope
 	{
-		public GrammarAST tree;
+		internal GrammarAST tree;
 		public override object Tree { get { return tree; } }
 	}
 
@@ -820,7 +820,7 @@ public partial class ANTLRParser : Parser
 
 	public class actions_return : ParserRuleReturnScope
 	{
-		public GrammarAST tree;
+		internal GrammarAST tree;
 		public override object Tree { get { return tree; } }
 	}
 
@@ -912,7 +912,7 @@ public partial class ANTLRParser : Parser
 
 	public class action_return : ParserRuleReturnScope
 	{
-		public GrammarAST tree;
+		internal GrammarAST tree;
 		public override object Tree { get { return tree; } }
 	}
 
@@ -1038,7 +1038,7 @@ public partial class ANTLRParser : Parser
 
 	public class actionScopeName_return : ParserRuleReturnScope
 	{
-		public GrammarAST tree;
+		internal GrammarAST tree;
 		public override object Tree { get { return tree; } }
 	}
 
@@ -1200,7 +1200,7 @@ public partial class ANTLRParser : Parser
 	public class optionsSpec_return : ParserRuleReturnScope
 	{
 		public IDictionary<string, object> opts=new Dictionary<string, object>();
-		public GrammarAST tree;
+		internal GrammarAST tree;
 		public override object Tree { get { return tree; } }
 	}
 
@@ -1305,7 +1305,7 @@ public partial class ANTLRParser : Parser
 
 	public class option_return : ParserRuleReturnScope
 	{
-		public GrammarAST tree;
+		internal GrammarAST tree;
 		public override object Tree { get { return tree; } }
 	}
 
@@ -1382,7 +1382,7 @@ public partial class ANTLRParser : Parser
 	public class optionValue_return : ParserRuleReturnScope
 	{
 		public object value=null;
-		public GrammarAST tree;
+		internal GrammarAST tree;
 		public override object Tree { get { return tree; } }
 	}
 
@@ -1586,7 +1586,7 @@ public partial class ANTLRParser : Parser
 
 	public class delegateGrammars_return : ParserRuleReturnScope
 	{
-		public GrammarAST tree;
+		internal GrammarAST tree;
 		public override object Tree { get { return tree; } }
 	}
 
@@ -1692,7 +1692,7 @@ public partial class ANTLRParser : Parser
 
 	public class delegateGrammar_return : ParserRuleReturnScope
 	{
-		public GrammarAST tree;
+		internal GrammarAST tree;
 		public override object Tree { get { return tree; } }
 	}
 
@@ -1791,7 +1791,7 @@ public partial class ANTLRParser : Parser
 				if ( state.backtracking == 0 ) adaptor.AddChild(root_0, g.Tree);
 				if ( state.backtracking == 0 )
 				{
-					Grammar.ImportGrammar((g!=null?((GrammarAST)g.tree):null), (lab!=null?input.ToString(lab.start,lab.stop):null));
+					Grammar.ImportGrammar((g!=null?((GrammarAST)g.Tree):null), (lab!=null?input.ToString(lab.start,lab.stop):null));
 				}
 
 				}
@@ -1809,7 +1809,7 @@ public partial class ANTLRParser : Parser
 				if ( state.backtracking == 0 ) adaptor.AddChild(root_0, g2.Tree);
 				if ( state.backtracking == 0 )
 				{
-					Grammar.ImportGrammar((g2!=null?((GrammarAST)g2.tree):null),null);
+					Grammar.ImportGrammar((g2!=null?((GrammarAST)g2.Tree):null),null);
 				}
 
 				}
@@ -1840,7 +1840,7 @@ public partial class ANTLRParser : Parser
 
 	public class tokensSpec_return : ParserRuleReturnScope
 	{
-		public GrammarAST tree;
+		internal GrammarAST tree;
 		public override object Tree { get { return tree; } }
 	}
 
@@ -1942,7 +1942,7 @@ public partial class ANTLRParser : Parser
 
 	public class tokenSpec_return : ParserRuleReturnScope
 	{
-		public GrammarAST tree;
+		internal GrammarAST tree;
 		public override object Tree { get { return tree; } }
 	}
 
@@ -2043,7 +2043,7 @@ public partial class ANTLRParser : Parser
 
 	public class attrScopes_return : ParserRuleReturnScope
 	{
-		public GrammarAST tree;
+		internal GrammarAST tree;
 		public override object Tree { get { return tree; } }
 	}
 
@@ -2129,7 +2129,7 @@ public partial class ANTLRParser : Parser
 
 	public class attrScope_return : ParserRuleReturnScope
 	{
-		public GrammarAST tree;
+		internal GrammarAST tree;
 		public override object Tree { get { return tree; } }
 	}
 
@@ -2225,7 +2225,7 @@ public partial class ANTLRParser : Parser
 
 	public class rules_return : ParserRuleReturnScope
 	{
-		public GrammarAST tree;
+		internal GrammarAST tree;
 		public override object Tree { get { return tree; } }
 	}
 
@@ -2317,7 +2317,7 @@ public partial class ANTLRParser : Parser
 
 	public class rule_return : ParserRuleReturnScope
 	{
-		public GrammarAST tree;
+		internal GrammarAST tree;
 		public override object Tree { get { return tree; } }
 	}
 
@@ -2828,7 +2828,7 @@ public partial class ANTLRParser : Parser
 			if ( state.backtracking == 0 )
 			{
 
-						((GrammarAST)((GrammarAST)retval.tree).GetChild(0)).BlockOptions = (optionsSpec45!=null?optionsSpec45.opts:default(IDictionary<string, object>));
+						((GrammarAST)((GrammarAST)retval.Tree).GetChild(0)).BlockOptions = (optionsSpec45!=null?optionsSpec45.opts:default(IDictionary<string, object>));
 					
 			}
 
@@ -2858,7 +2858,7 @@ public partial class ANTLRParser : Parser
 
 	public class ruleActions_return : ParserRuleReturnScope
 	{
-		public GrammarAST tree;
+		internal GrammarAST tree;
 		public override object Tree { get { return tree; } }
 	}
 
@@ -2950,7 +2950,7 @@ public partial class ANTLRParser : Parser
 
 	public class ruleAction_return : ParserRuleReturnScope
 	{
-		public GrammarAST tree;
+		internal GrammarAST tree;
 		public override object Tree { get { return tree; } }
 	}
 
@@ -3020,7 +3020,7 @@ public partial class ANTLRParser : Parser
 
 	public class throwsSpec_return : ParserRuleReturnScope
 	{
-		public GrammarAST tree;
+		internal GrammarAST tree;
 		public override object Tree { get { return tree; } }
 	}
 
@@ -3123,7 +3123,7 @@ public partial class ANTLRParser : Parser
 
 	public class ruleScopeSpec_return : ParserRuleReturnScope
 	{
-		public GrammarAST tree;
+		internal GrammarAST tree;
 		public override object Tree { get { return tree; } }
 	}
 
@@ -3274,7 +3274,7 @@ public partial class ANTLRParser : Parser
 				// Grammars\\ANTLR.g3:376:6: ^( SCOPE[$start,\"scope\"] ( ruleActions )? ( ACTION )? ( idList )* )
 				{
 				GrammarAST root_1 = (GrammarAST)adaptor.Nil();
-				root_1 = (GrammarAST)adaptor.BecomeRoot((GrammarAST)adaptor.Create(SCOPE, ((IToken)retval.start), "scope"), root_1);
+				root_1 = (GrammarAST)adaptor.BecomeRoot((GrammarAST)adaptor.Create(SCOPE, ((IToken)retval.Start), "scope"), root_1);
 
 				// Grammars\\ANTLR.g3:376:30: ( ruleActions )?
 				if ( stream_ruleActions.HasNext )
@@ -3333,7 +3333,7 @@ public partial class ANTLRParser : Parser
 
 	public class block_return : ParserRuleReturnScope
 	{
-		public GrammarAST tree;
+		internal GrammarAST tree;
 		public override object Tree { get { return tree; } }
 	}
 
@@ -3416,7 +3416,7 @@ public partial class ANTLRParser : Parser
 
 			if ( state.backtracking == 0 )
 			{
-				currentBlockAST = (GrammarAST)((GrammarAST)retval.tree).GetChild(0);
+				currentBlockAST = (GrammarAST)((GrammarAST)retval.Tree).GetChild(0);
 			}
 			// Grammars\\ANTLR.g3:390:3: ( ( optionsSpec )? ( ruleActions )? COLON | ACTION COLON )?
 			int alt36=3;
@@ -3461,7 +3461,7 @@ public partial class ANTLRParser : Parser
 					if ( state.backtracking == 0 ) stream_optionsSpec.Add(optionsSpec64.Tree);
 					if ( state.backtracking == 0 )
 					{
-						((GrammarAST)((GrammarAST)retval.tree).GetChild(0)).SetOptions(Grammar,(optionsSpec64!=null?optionsSpec64.opts:default(IDictionary<string, object>)));
+						((GrammarAST)((GrammarAST)retval.Tree).GetChild(0)).SetOptions(Grammar,(optionsSpec64!=null?optionsSpec64.opts:default(IDictionary<string, object>)));
 					}
 
 					}
@@ -3530,9 +3530,9 @@ public partial class ANTLRParser : Parser
 			if ( state.backtracking == 0 )
 			{
 
-							stream_alternative.Add( (r!=null?((GrammarAST)r.tree):null) );
+							stream_alternative.Add( (r!=null?((GrammarAST)r.Tree):null) );
 							if ( LA(1)==OR || (LA(2)==QUESTION||LA(2)==PLUS||LA(2)==STAR) )
-								PrefixWithSynPred((a!=null?((GrammarAST)a.tree):null));
+								PrefixWithSynPred((a!=null?((GrammarAST)a.Tree):null));
 						
 			}
 			// Grammars\\ANTLR.g3:406:3: ( OR a= alternative r= rewrite )*
@@ -3570,9 +3570,9 @@ public partial class ANTLRParser : Parser
 					if ( state.backtracking == 0 )
 					{
 
-										stream_alternative.Add( (r!=null?((GrammarAST)r.tree):null) );
+										stream_alternative.Add( (r!=null?((GrammarAST)r.Tree):null) );
 										if (LA(1)==OR||(LA(2)==QUESTION||LA(2)==PLUS||LA(2)==STAR))
-											PrefixWithSynPred((a!=null?((GrammarAST)a.tree):null));
+											PrefixWithSynPred((a!=null?((GrammarAST)a.Tree):null));
 									
 					}
 
@@ -3682,7 +3682,7 @@ public partial class ANTLRParser : Parser
 
 	public class altList_return : ParserRuleReturnScope
 	{
-		public GrammarAST tree;
+		internal GrammarAST tree;
 		public override object Tree { get { return tree; } }
 	}
 
@@ -3735,7 +3735,7 @@ public partial class ANTLRParser : Parser
 			root_0 = (GrammarAST)adaptor.Nil();
 			// 425:6: -> BLOCK[$start,\"BLOCK\"]
 			{
-				adaptor.AddChild(root_0, (GrammarAST)adaptor.Create(BLOCK, ((IToken)retval.start), "BLOCK"));
+				adaptor.AddChild(root_0, (GrammarAST)adaptor.Create(BLOCK, ((IToken)retval.Start), "BLOCK"));
 
 			}
 
@@ -3748,7 +3748,7 @@ public partial class ANTLRParser : Parser
 			if ( state.backtracking == 0 )
 			{
 
-							blkRoot = (GrammarAST)((GrammarAST)retval.tree).GetChild(0);
+							blkRoot = (GrammarAST)((GrammarAST)retval.Tree).GetChild(0);
 							blkRoot.BlockOptions = opts;
 							currentBlockAST = blkRoot;
 						
@@ -3770,7 +3770,7 @@ public partial class ANTLRParser : Parser
 			if ( state.backtracking == 0 ) stream_rewrite.Add(r1.Tree);
 			if ( state.backtracking == 0 )
 			{
-				if (LA(1)==OR||(LA(2)==QUESTION||LA(2)==PLUS||LA(2)==STAR)) PrefixWithSynPred((a1!=null?((GrammarAST)a1.tree):null));
+				if (LA(1)==OR||(LA(2)==QUESTION||LA(2)==PLUS||LA(2)==STAR)) PrefixWithSynPred((a1!=null?((GrammarAST)a1.Tree):null));
 			}
 
 
@@ -3842,7 +3842,7 @@ public partial class ANTLRParser : Parser
 					if ( state.backtracking == 0 ) stream_rewrite.Add(r2.Tree);
 					if ( state.backtracking == 0 )
 					{
-						if (LA(1)==OR||(LA(2)==QUESTION||LA(2)==PLUS||LA(2)==STAR)) PrefixWithSynPred((a2!=null?((GrammarAST)a2.tree):null));
+						if (LA(1)==OR||(LA(2)==QUESTION||LA(2)==PLUS||LA(2)==STAR)) PrefixWithSynPred((a2!=null?((GrammarAST)a2.Tree):null));
 					}
 
 
@@ -3952,7 +3952,7 @@ public partial class ANTLRParser : Parser
 
 	public class alternative_return : ParserRuleReturnScope
 	{
-		public GrammarAST tree;
+		internal GrammarAST tree;
 		public override object Tree { get { return tree; } }
 	}
 
@@ -4056,7 +4056,7 @@ public partial class ANTLRParser : Parser
 					// Grammars\\ANTLR.g3:445:6: ^( ALT[$start,\"ALT\"] ( element )+ EOA[\"<end-of-alt>\"] )
 					{
 					GrammarAST root_1 = (GrammarAST)adaptor.Nil();
-					root_1 = (GrammarAST)adaptor.BecomeRoot((GrammarAST)adaptor.Create(ALT, ((IToken)retval.start), "ALT"), root_1);
+					root_1 = (GrammarAST)adaptor.BecomeRoot((GrammarAST)adaptor.Create(ALT, ((IToken)retval.Start), "ALT"), root_1);
 
 					if ( !(stream_element.HasNext) )
 					{
@@ -4105,9 +4105,9 @@ public partial class ANTLRParser : Parser
 					// Grammars\\ANTLR.g3:447:6: ^( ALT[$start,\"ALT\"] EPSILON[$start,\"epsilon\"] EOA[\"<end-of-alt>\"] )
 					{
 					GrammarAST root_1 = (GrammarAST)adaptor.Nil();
-					root_1 = (GrammarAST)adaptor.BecomeRoot((GrammarAST)adaptor.Create(ALT, ((IToken)retval.start), "ALT"), root_1);
+					root_1 = (GrammarAST)adaptor.BecomeRoot((GrammarAST)adaptor.Create(ALT, ((IToken)retval.Start), "ALT"), root_1);
 
-					adaptor.AddChild(root_1, (GrammarAST)adaptor.Create(EPSILON, ((IToken)retval.start), "epsilon"));
+					adaptor.AddChild(root_1, (GrammarAST)adaptor.Create(EPSILON, ((IToken)retval.Start), "epsilon"));
 					adaptor.AddChild(root_1, (GrammarAST)adaptor.Create(EOA, "<end-of-alt>"));
 
 					adaptor.AddChild(root_0, root_1);
@@ -4147,7 +4147,7 @@ public partial class ANTLRParser : Parser
 
 	public class exceptionGroup_return : ParserRuleReturnScope
 	{
-		public GrammarAST tree;
+		internal GrammarAST tree;
 		public override object Tree { get { return tree; } }
 	}
 
@@ -4303,7 +4303,7 @@ public partial class ANTLRParser : Parser
 
 	public class exceptionHandler_return : ParserRuleReturnScope
 	{
-		public GrammarAST tree;
+		internal GrammarAST tree;
 		public override object Tree { get { return tree; } }
 	}
 
@@ -4373,7 +4373,7 @@ public partial class ANTLRParser : Parser
 
 	public class finallyClause_return : ParserRuleReturnScope
 	{
-		public GrammarAST tree;
+		internal GrammarAST tree;
 		public override object Tree { get { return tree; } }
 	}
 
@@ -4436,7 +4436,7 @@ public partial class ANTLRParser : Parser
 
 	public class element_return : ParserRuleReturnScope
 	{
-		public GrammarAST tree;
+		internal GrammarAST tree;
 		public override object Tree { get { return tree; } }
 	}
 
@@ -4492,7 +4492,7 @@ public partial class ANTLRParser : Parser
 
 	public class elementNoOptionSpec_return : ParserRuleReturnScope
 	{
-		public GrammarAST tree;
+		internal GrammarAST tree;
 		public override object Tree { get { return tree; } }
 	}
 
@@ -4671,7 +4671,7 @@ public partial class ANTLRParser : Parser
 					if (state.failed) return retval;
 					if ( state.backtracking == 0 )
 					{
-						root_0 = (sub!=null?((GrammarAST)sub.tree):null);
+						root_0 = (sub!=null?((GrammarAST)sub.Tree):null);
 					}
 
 					}
@@ -4705,13 +4705,13 @@ public partial class ANTLRParser : Parser
 					// Grammars\\ANTLR.g3:477:6: sub2= ebnfSuffix[$a.tree,false]
 					{
 					PushFollow(Follow._ebnfSuffix_in_elementNoOptionSpec1805);
-					sub2=ebnfSuffix((a!=null?((GrammarAST)a.tree):null), false);
+					sub2=ebnfSuffix((a!=null?((GrammarAST)a.Tree):null), false);
 
 					state._fsp--;
 					if (state.failed) return retval;
 					if ( state.backtracking == 0 )
 					{
-						root_0=(sub2!=null?((GrammarAST)sub2.tree):null);
+						root_0=(sub2!=null?((GrammarAST)sub2.Tree):null);
 					}
 
 					}
@@ -4839,7 +4839,7 @@ public partial class ANTLRParser : Parser
 
 	public class atom_return : ParserRuleReturnScope
 	{
-		public GrammarAST tree;
+		internal GrammarAST tree;
 		public override object Tree { get { return tree; } }
 	}
 
@@ -5164,7 +5164,7 @@ public partial class ANTLRParser : Parser
 
 	public class ruleref_return : ParserRuleReturnScope
 	{
-		public GrammarAST tree;
+		internal GrammarAST tree;
 		public override object Tree { get { return tree; } }
 	}
 
@@ -5289,7 +5289,7 @@ public partial class ANTLRParser : Parser
 
 	public class notSet_return : ParserRuleReturnScope
 	{
-		public GrammarAST tree;
+		internal GrammarAST tree;
 		public override object Tree { get { return tree; } }
 	}
 
@@ -5395,7 +5395,7 @@ public partial class ANTLRParser : Parser
 
 	public class treeRoot_return : ParserRuleReturnScope
 	{
-		public GrammarAST tree;
+		internal GrammarAST tree;
 		public override object Tree { get { return tree; } }
 	}
 
@@ -5658,7 +5658,7 @@ public partial class ANTLRParser : Parser
 
 	public class tree__return : ParserRuleReturnScope
 	{
-		public GrammarAST tree;
+		internal GrammarAST tree;
 		public override object Tree { get { return tree; } }
 	}
 
@@ -5767,7 +5767,7 @@ public partial class ANTLRParser : Parser
 
 	public class ebnf_return : ParserRuleReturnScope
 	{
-		public GrammarAST tree;
+		internal GrammarAST tree;
 		public override object Tree { get { return tree; } }
 	}
 
@@ -5902,7 +5902,7 @@ public partial class ANTLRParser : Parser
 					// Grammars\\ANTLR.g3:533:7: ^( OPTIONAL[$start,\"?\"] block )
 					{
 					GrammarAST root_1 = (GrammarAST)adaptor.Nil();
-					root_1 = (GrammarAST)adaptor.BecomeRoot((GrammarAST)adaptor.Create(OPTIONAL, ((IToken)retval.start), "?"), root_1);
+					root_1 = (GrammarAST)adaptor.BecomeRoot((GrammarAST)adaptor.Create(OPTIONAL, ((IToken)retval.Start), "?"), root_1);
 
 					adaptor.AddChild(root_1, stream_block.NextTree());
 
@@ -5943,7 +5943,7 @@ public partial class ANTLRParser : Parser
 					// Grammars\\ANTLR.g3:535:7: ^( CLOSURE[$start,\"*\"] block )
 					{
 					GrammarAST root_1 = (GrammarAST)adaptor.Nil();
-					root_1 = (GrammarAST)adaptor.BecomeRoot((GrammarAST)adaptor.Create(CLOSURE, ((IToken)retval.start), "*"), root_1);
+					root_1 = (GrammarAST)adaptor.BecomeRoot((GrammarAST)adaptor.Create(CLOSURE, ((IToken)retval.Start), "*"), root_1);
 
 					adaptor.AddChild(root_1, stream_block.NextTree());
 
@@ -5984,7 +5984,7 @@ public partial class ANTLRParser : Parser
 					// Grammars\\ANTLR.g3:537:7: ^( POSITIVE_CLOSURE[$start,\"+\"] block )
 					{
 					GrammarAST root_1 = (GrammarAST)adaptor.Nil();
-					root_1 = (GrammarAST)adaptor.BecomeRoot((GrammarAST)adaptor.Create(POSITIVE_CLOSURE, ((IToken)retval.start), "+"), root_1);
+					root_1 = (GrammarAST)adaptor.BecomeRoot((GrammarAST)adaptor.Create(POSITIVE_CLOSURE, ((IToken)retval.Start), "+"), root_1);
 
 					adaptor.AddChild(root_1, stream_block.NextTree());
 
@@ -6026,7 +6026,7 @@ public partial class ANTLRParser : Parser
 					// Grammars\\ANTLR.g3:540:82: ^( SYNPRED[$start,\"=>\"] block )
 					{
 					GrammarAST root_1 = (GrammarAST)adaptor.Nil();
-					root_1 = (GrammarAST)adaptor.BecomeRoot((GrammarAST)adaptor.Create(SYNPRED, ((IToken)retval.start), "=>"), root_1);
+					root_1 = (GrammarAST)adaptor.BecomeRoot((GrammarAST)adaptor.Create(SYNPRED, ((IToken)retval.Start), "=>"), root_1);
 
 					adaptor.AddChild(root_1, stream_block.NextTree());
 
@@ -6036,7 +6036,7 @@ public partial class ANTLRParser : Parser
 				}
 				else // 542:4: ->
 				{
-					adaptor.AddChild(root_0, CreateSynSemPredFromBlock((block119!=null?((GrammarAST)block119.tree):null), SYN_SEMPRED));
+					adaptor.AddChild(root_0, CreateSynSemPredFromBlock((block119!=null?((GrammarAST)block119.Tree):null), SYN_SEMPRED));
 
 				}
 
@@ -6189,7 +6189,7 @@ public partial class ANTLRParser : Parser
 
 	public class range_return : ParserRuleReturnScope
 	{
-		public GrammarAST tree;
+		internal GrammarAST tree;
 		public override object Tree { get { return tree; } }
 	}
 
@@ -6288,7 +6288,7 @@ public partial class ANTLRParser : Parser
 
 	public class terminal_return : ParserRuleReturnScope
 	{
-		public GrammarAST tree;
+		internal GrammarAST tree;
 		public override object Tree { get { return tree; } }
 	}
 
@@ -6709,7 +6709,7 @@ public partial class ANTLRParser : Parser
 
 	public class elementOptions_return : ParserRuleReturnScope
 	{
-		public GrammarAST tree;
+		internal GrammarAST tree;
 		public override object Tree { get { return tree; } }
 	}
 
@@ -6907,7 +6907,7 @@ public partial class ANTLRParser : Parser
 
 	public class defaultNodeOption_return : ParserRuleReturnScope
 	{
-		public GrammarAST tree;
+		internal GrammarAST tree;
 		public override object Tree { get { return tree; } }
 	}
 
@@ -7022,7 +7022,7 @@ public partial class ANTLRParser : Parser
 
 	public class elementOption_return : ParserRuleReturnScope
 	{
-		public GrammarAST tree;
+		internal GrammarAST tree;
 		public override object Tree { get { return tree; } }
 	}
 
@@ -7111,7 +7111,7 @@ public partial class ANTLRParser : Parser
 			if ( state.backtracking == 0 )
 			{
 
-						object v = ((b!=null?((GrammarAST)b.tree):null)!=null)?(b!=null?input.ToString(b.start,b.stop):null):(s!=null?s.Text:null);
+						object v = ((b!=null?((GrammarAST)b.Tree):null)!=null)?(b!=null?input.ToString(b.start,b.stop):null):(s!=null?s.Text:null);
 						terminalAST.SetTerminalOption(Grammar,(a!=null?input.ToString(a.start,a.stop):null),v);
 						
 			}
@@ -7142,7 +7142,7 @@ public partial class ANTLRParser : Parser
 
 	public class ebnfSuffix_return : ParserRuleReturnScope
 	{
-		public GrammarAST tree;
+		internal GrammarAST tree;
 		public override object Tree { get { return tree; } }
 	}
 
@@ -7209,7 +7209,7 @@ public partial class ANTLRParser : Parser
 
 			if ( state.backtracking == 0 )
 			{
-				 blkRoot = (GrammarAST)((GrammarAST)retval.tree).GetChild(0); currentBlockAST = blkRoot; 
+				 blkRoot = (GrammarAST)((GrammarAST)retval.Tree).GetChild(0); currentBlockAST = blkRoot; 
 			}
 			// Grammars\\ANTLR.g3:613:3: ( -> ^( ALT[\"ALT\"] EOA[\"<end-of-alt>\"] ) )
 			// Grammars\\ANTLR.g3:614:4: 
@@ -7254,7 +7254,7 @@ public partial class ANTLRParser : Parser
 			if ( state.backtracking == 0 )
 			{
 
-							alt = (GrammarAST)((GrammarAST)retval.tree).GetChild(0);
+							alt = (GrammarAST)((GrammarAST)retval.Tree).GetChild(0);
 							if ( !inRewrite )
 								PrefixWithSynPred(alt);
 						
@@ -7465,7 +7465,7 @@ public partial class ANTLRParser : Parser
 
 	public class notTerminal_return : ParserRuleReturnScope
 	{
-		public GrammarAST tree;
+		internal GrammarAST tree;
 		public override object Tree { get { return tree; } }
 	}
 
@@ -7530,7 +7530,7 @@ public partial class ANTLRParser : Parser
 
 	public class idList_return : ParserRuleReturnScope
 	{
-		public GrammarAST tree;
+		internal GrammarAST tree;
 		public override object Tree { get { return tree; } }
 	}
 
@@ -7626,7 +7626,7 @@ public partial class ANTLRParser : Parser
 
 	public class id_return : ParserRuleReturnScope
 	{
-		public GrammarAST tree;
+		internal GrammarAST tree;
 		public override object Tree { get { return tree; } }
 	}
 
@@ -7762,7 +7762,7 @@ public partial class ANTLRParser : Parser
 
 	public class rewrite_return : ParserRuleReturnScope
 	{
-		public GrammarAST tree;
+		internal GrammarAST tree;
 		public override object Tree { get { return tree; } }
 	}
 
@@ -7938,7 +7938,7 @@ public partial class ANTLRParser : Parser
 
 	public class rewrite_with_sempred_return : ParserRuleReturnScope
 	{
-		public GrammarAST tree;
+		internal GrammarAST tree;
 		public override object Tree { get { return tree; } }
 	}
 
@@ -8008,7 +8008,7 @@ public partial class ANTLRParser : Parser
 
 	public class rewrite_block_return : ParserRuleReturnScope
 	{
-		public GrammarAST tree;
+		internal GrammarAST tree;
 		public override object Tree { get { return tree; } }
 	}
 
@@ -8107,7 +8107,7 @@ public partial class ANTLRParser : Parser
 
 	public class rewrite_alternative_return : ParserRuleReturnScope
 	{
-		public GrammarAST tree;
+		internal GrammarAST tree;
 		public override object Tree { get { return tree; } }
 	}
 
@@ -8346,7 +8346,7 @@ public partial class ANTLRParser : Parser
 
 	public class rewrite_element_return : ParserRuleReturnScope
 	{
-		public GrammarAST tree;
+		internal GrammarAST tree;
 		public override object Tree { get { return tree; } }
 	}
 
@@ -8458,7 +8458,7 @@ public partial class ANTLRParser : Parser
 					// Grammars\\ANTLR.g3:685:5: subrule= ebnfSuffix[$t.tree,true]
 					{
 					PushFollow(Follow._ebnfSuffix_in_rewrite_element2913);
-					subrule=ebnfSuffix((t!=null?((GrammarAST)t.tree):null), true);
+					subrule=ebnfSuffix((t!=null?((GrammarAST)t.Tree):null), true);
 
 					state._fsp--;
 					if (state.failed) return retval;
@@ -8565,7 +8565,7 @@ public partial class ANTLRParser : Parser
 					// Grammars\\ANTLR.g3:692:5: subrule= ebnfSuffix[$tr.tree,true]
 					{
 					PushFollow(Follow._ebnfSuffix_in_rewrite_element2961);
-					subrule=ebnfSuffix((tr!=null?((GrammarAST)tr.tree):null), true);
+					subrule=ebnfSuffix((tr!=null?((GrammarAST)tr.Tree):null), true);
 
 					state._fsp--;
 					if (state.failed) return retval;
@@ -8630,7 +8630,7 @@ public partial class ANTLRParser : Parser
 
 	public class rewrite_atom_return : ParserRuleReturnScope
 	{
-		public GrammarAST tree;
+		internal GrammarAST tree;
 		public override object Tree { get { return tree; } }
 	}
 
@@ -8770,7 +8770,7 @@ public partial class ANTLRParser : Parser
 					// Grammars\\ANTLR.g3:705:4: elementOptions[(GrammarAST)$tree.GetChild(0)]
 					{
 					PushFollow(Follow._elementOptions_in_rewrite_atom3012);
-					elementOptions171=elementOptions((GrammarAST)((GrammarAST)retval.tree).GetChild(0));
+					elementOptions171=elementOptions((GrammarAST)((GrammarAST)retval.Tree).GetChild(0));
 
 					state._fsp--;
 					if (state.failed) return retval;
@@ -8908,7 +8908,7 @@ public partial class ANTLRParser : Parser
 					// Grammars\\ANTLR.g3:711:4: elementOptions[(GrammarAST)$tree.GetChild(0)]
 					{
 					PushFollow(Follow._elementOptions_in_rewrite_atom3066);
-					elementOptions173=elementOptions((GrammarAST)((GrammarAST)retval.tree).GetChild(0));
+					elementOptions173=elementOptions((GrammarAST)((GrammarAST)retval.Tree).GetChild(0));
 
 					state._fsp--;
 					if (state.failed) return retval;
@@ -8973,7 +8973,7 @@ public partial class ANTLRParser : Parser
 					// Grammars\\ANTLR.g3:715:4: eo= elementOptions[(GrammarAST)$tree.GetChild(0)]
 					{
 					PushFollow(Follow._elementOptions_in_rewrite_atom3097);
-					eo=elementOptions((GrammarAST)((GrammarAST)retval.tree).GetChild(0));
+					eo=elementOptions((GrammarAST)((GrammarAST)retval.Tree).GetChild(0));
 
 					state._fsp--;
 					if (state.failed) return retval;
@@ -9016,7 +9016,7 @@ public partial class ANTLRParser : Parser
 				root_0 = (GrammarAST)adaptor.Nil();
 				// 717:3: -> LABEL[$i.start,$i.text]
 				{
-					adaptor.AddChild(root_0, (GrammarAST)adaptor.Create(LABEL, (i!=null?((IToken)i.start):null), (i!=null?input.ToString(i.start,i.stop):null)));
+					adaptor.AddChild(root_0, (GrammarAST)adaptor.Create(LABEL, (i!=null?((IToken)i.Start):null), (i!=null?input.ToString(i.start,i.stop):null)));
 
 				}
 
@@ -9065,7 +9065,7 @@ public partial class ANTLRParser : Parser
 
 	public class rewrite_ebnf_return : ParserRuleReturnScope
 	{
-		public GrammarAST tree;
+		internal GrammarAST tree;
 		public override object Tree { get { return tree; } }
 	}
 
@@ -9158,7 +9158,7 @@ public partial class ANTLRParser : Parser
 					// Grammars\\ANTLR.g3:724:7: ^( OPTIONAL[$b.start,\"?\"] $b)
 					{
 					GrammarAST root_1 = (GrammarAST)adaptor.Nil();
-					root_1 = (GrammarAST)adaptor.BecomeRoot((GrammarAST)adaptor.Create(OPTIONAL, (b!=null?((IToken)b.start):null), "?"), root_1);
+					root_1 = (GrammarAST)adaptor.BecomeRoot((GrammarAST)adaptor.Create(OPTIONAL, (b!=null?((IToken)b.Start):null), "?"), root_1);
 
 					adaptor.AddChild(root_1, stream_b.NextTree());
 
@@ -9200,7 +9200,7 @@ public partial class ANTLRParser : Parser
 					// Grammars\\ANTLR.g3:726:7: ^( CLOSURE[$b.start,\"*\"] $b)
 					{
 					GrammarAST root_1 = (GrammarAST)adaptor.Nil();
-					root_1 = (GrammarAST)adaptor.BecomeRoot((GrammarAST)adaptor.Create(CLOSURE, (b!=null?((IToken)b.start):null), "*"), root_1);
+					root_1 = (GrammarAST)adaptor.BecomeRoot((GrammarAST)adaptor.Create(CLOSURE, (b!=null?((IToken)b.Start):null), "*"), root_1);
 
 					adaptor.AddChild(root_1, stream_b.NextTree());
 
@@ -9242,7 +9242,7 @@ public partial class ANTLRParser : Parser
 					// Grammars\\ANTLR.g3:728:7: ^( POSITIVE_CLOSURE[$b.start,\"+\"] $b)
 					{
 					GrammarAST root_1 = (GrammarAST)adaptor.Nil();
-					root_1 = (GrammarAST)adaptor.BecomeRoot((GrammarAST)adaptor.Create(POSITIVE_CLOSURE, (b!=null?((IToken)b.start):null), "+"), root_1);
+					root_1 = (GrammarAST)adaptor.BecomeRoot((GrammarAST)adaptor.Create(POSITIVE_CLOSURE, (b!=null?((IToken)b.Start):null), "+"), root_1);
 
 					adaptor.AddChild(root_1, stream_b.NextTree());
 
@@ -9287,7 +9287,7 @@ public partial class ANTLRParser : Parser
 
 	public class rewrite_tree_return : ParserRuleReturnScope
 	{
-		public GrammarAST tree;
+		internal GrammarAST tree;
 		public override object Tree { get { return tree; } }
 	}
 
@@ -9390,7 +9390,7 @@ public partial class ANTLRParser : Parser
 
 	public class rewrite_template_return : ParserRuleReturnScope
 	{
-		public GrammarAST tree;
+		internal GrammarAST tree;
 		public override object Tree { get { return tree; } }
 	}
 
@@ -9571,7 +9571,7 @@ public partial class ANTLRParser : Parser
 
 				if ( state.backtracking == 0 )
 				{
-					 adaptor.AddChild( ((GrammarAST)retval.tree).GetChild(0), adaptor.Create(st) ); 
+					 adaptor.AddChild( ((GrammarAST)retval.Tree).GetChild(0), adaptor.Create(st) ); 
 				}
 
 				}
@@ -9643,7 +9643,7 @@ public partial class ANTLRParser : Parser
 
 	public class rewrite_template_head_return : ParserRuleReturnScope
 	{
-		public GrammarAST tree;
+		internal GrammarAST tree;
 		public override object Tree { get { return tree; } }
 	}
 
@@ -9750,7 +9750,7 @@ public partial class ANTLRParser : Parser
 
 	public class rewrite_indirect_template_head_return : ParserRuleReturnScope
 	{
-		public GrammarAST tree;
+		internal GrammarAST tree;
 		public override object Tree { get { return tree; } }
 	}
 
@@ -9865,7 +9865,7 @@ public partial class ANTLRParser : Parser
 
 	public class rewrite_template_args_return : ParserRuleReturnScope
 	{
-		public GrammarAST tree;
+		internal GrammarAST tree;
 		public override object Tree { get { return tree; } }
 	}
 
@@ -10057,7 +10057,7 @@ public partial class ANTLRParser : Parser
 
 	public class rewrite_template_arg_return : ParserRuleReturnScope
 	{
-		public GrammarAST tree;
+		internal GrammarAST tree;
 		public override object Tree { get { return tree; } }
 	}
 
@@ -10770,7 +10770,7 @@ public partial class ANTLRParser : Parser
 	#endregion DFA
 
 	#region Follow sets
-	public static class Follow
+	static class Follow
 	{
 		public static readonly BitSet _ACTION_in_grammar_308 = new BitSet(new ulong[]{0x1002040008000000UL,0x10000000UL});
 		public static readonly BitSet _DOC_COMMENT_in_grammar_319 = new BitSet(new ulong[]{0x1002040008000000UL,0x10000000UL});

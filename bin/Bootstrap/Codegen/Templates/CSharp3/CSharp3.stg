@@ -225,7 +225,7 @@ genericParser(grammar, name, scopes, tokens, tokenNames, rules, numRules,
 public partial class <grammar.recognizerName> : <@superClassName><superClass><@end>
 {
 <if(grammar.grammarIsRoot)>
-	public static readonly string[] tokenNames = new string[] {
+	internal static readonly string[] tokenNames = new string[] {
 		"\<invalid>", "\<EOR>", "\<DOWN>", "\<UP>", <tokenNames; separator=", ">
 	};<\n>
 <endif>
@@ -293,7 +293,7 @@ public <grammar.recognizerName>( <inputStreamType> input, RecognizerSharedState 
 
 <if(bitsets)>
 	#region Follow sets
-	public static class Follow
+	static class Follow
 	{
 		<bitsets:bitset(name={_<it.name>_in_<it.inName><it.tokenIndex>},
 							words64=it.bits)>
@@ -1409,14 +1409,14 @@ tokenLabelPropertyRef_index(scope,attr) ::= "(<scope>!=null?<scope>.TokenIndex:0
 tokenLabelPropertyRef_tree(scope,attr) ::= "<scope>_tree"
 tokenLabelPropertyRef_int(scope,attr) ::= "(<scope>!=null?Integer.valueOf(<scope>.Text):0)"
 
-ruleLabelPropertyRef_start(scope,attr) ::= "(<scope>!=null?((<labelType>)<scope>.start):null)"
-ruleLabelPropertyRef_stop(scope,attr) ::= "(<scope>!=null?((<labelType>)<scope>.stop):null)"
-ruleLabelPropertyRef_tree(scope,attr) ::= "(<scope>!=null?((<ASTLabelType>)<scope>.tree):null)"
+ruleLabelPropertyRef_start(scope,attr) ::= "(<scope>!=null?((<labelType>)<scope>.Start):null)"
+ruleLabelPropertyRef_stop(scope,attr) ::= "(<scope>!=null?((<labelType>)<scope>.Stop):null)"
+ruleLabelPropertyRef_tree(scope,attr) ::= "(<scope>!=null?((<ASTLabelType>)<scope>.Tree):null)"
 ruleLabelPropertyRef_text(scope,attr) ::= <<
 <if(TREE_PARSER)>
 (<scope>!=null?(input.TokenStream.ToString(
-  input.TreeAdaptor.GetTokenStartIndex(<scope>.start),
-  input.TreeAdaptor.GetTokenStopIndex(<scope>.start))):null)
+  input.TreeAdaptor.GetTokenStartIndex(<scope>.Start),
+  input.TreeAdaptor.GetTokenStopIndex(<scope>.Start))):null)
 <else>
 (<scope>!=null?input.ToString(<scope>.start,<scope>.stop):null)
 <endif>
@@ -1449,16 +1449,16 @@ lexerRuleLabelPropertyRef_int(scope,attr) ::=
     "(<scope>!=null?Integer.valueOf(<scope>.Text):0)"
 
 // Somebody may ref $template or $tree or $stop within a rule:
-rulePropertyRef_start(scope,attr) ::= "((<labelType>)retval.start)"
-rulePropertyRef_stop(scope,attr) ::= "((<labelType>)retval.stop)"
-rulePropertyRef_tree(scope,attr) ::= "((<ASTLabelType>)retval.tree)"
+rulePropertyRef_start(scope,attr) ::= "((<labelType>)retval.Start)"
+rulePropertyRef_stop(scope,attr) ::= "((<labelType>)retval.Stop)"
+rulePropertyRef_tree(scope,attr) ::= "((<ASTLabelType>)retval.Tree)"
 rulePropertyRef_text(scope,attr) ::= <<
 <if(TREE_PARSER)>
 input.TokenStream.ToString(
-  input.TreeAdaptor.GetTokenStartIndex(retval.start),
-  input.TreeAdaptor.GetTokenStopIndex(retval.start))
+  input.TreeAdaptor.GetTokenStartIndex(retval.Start),
+  input.TreeAdaptor.GetTokenStopIndex(retval.Start))
 <else>
-input.ToString(retval.start,input.LT(-1))
+input.ToString(retval.Start,input.LT(-1))
 <endif>
 >>
 rulePropertyRef_st(scope,attr) ::= "retval.st"

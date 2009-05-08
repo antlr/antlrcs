@@ -2774,7 +2774,7 @@ namespace Antlr3.Tool
                 {
                     ErrorManager.GrammarError( ErrorManager.MSG_INVALID_IMPORT,
                                               this,
-                                              grammarNameAST.token,
+                                              grammarNameAST.Token,
                                               this,
                                               delegateGrammar );
                     return;
@@ -2785,7 +2785,7 @@ namespace Antlr3.Tool
                 {
                     ErrorManager.GrammarError( ErrorManager.MSG_IMPORT_NAME_CLASH,
                                               this,
-                                              grammarNameAST.token,
+                                              grammarNameAST.Token,
                                               this,
                                               delegateGrammar );
                     return;
@@ -2846,7 +2846,7 @@ namespace Antlr3.Tool
             {
                 ErrorManager.GrammarWarning( ErrorManager.MSG_TOKEN_VOCAB_IN_DELEGATE,
                                             this,
-                                            tokenVocabOptionAST.token,
+                                            tokenVocabOptionAST.Token,
                                             name );
                 return composite.maxTokenType;
             }

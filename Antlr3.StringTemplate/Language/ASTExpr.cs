@@ -404,10 +404,10 @@ namespace Antlr3.ST.Language
                 int numEmpty = 0;
                 for ( int a = 0; a < numAttributes; a++ )
                 {
-                    Iterator it = (Iterator)attributes[a];
+                    Iterator it = attributes[a] as Iterator;
                     if ( it != null && it.hasNext() )
                     {
-                        string argName = (string)formalArgumentNames[a];
+                        string argName = formalArgumentNames[a];
                         object iteratedValue = it.next();
                         argumentContext[argName] = iteratedValue;
                     }
@@ -448,11 +448,11 @@ namespace Antlr3.ST.Language
             attributeValue = ConvertArrayToList( attributeValue );
             attributeValue = ConvertAnythingIteratableToIterator( attributeValue );
 
-            if ( attributeValue is Iterator )
+            Iterator iter = attributeValue as Iterator;
+            if ( iter != null )
             {
                 // results can be treated list an attribute, indicate ST created list
                 IList resultVector = new StringTemplate.STAttributeList();
-                Iterator iter = (Iterator)attributeValue;
                 int i = 0;
                 while ( iter.hasNext() )
                 {
@@ -466,7 +466,7 @@ namespace Antlr3.ST.Language
                         ithValue = _nullValue;
                     }
                     int templateIndex = i % templatesToApply.Count; // rotate through
-                    embedded = (StringTemplate)templatesToApply[templateIndex];
+                    embedded = templatesToApply[templateIndex];
                     // template to apply is an actual StringTemplate (created in
                     // eval.g), but that is used as the examplar.  We must create
                     // a new instance of the embedded template to apply each time
@@ -511,7 +511,7 @@ namespace Antlr3.ST.Language
                 embedded.getName()+
                 " to "+attributeValue);
                 */
-                embedded = (StringTemplate)templatesToApply[0];
+                embedded = templatesToApply[0];
                 argumentContext = new Dictionary<string, object>();
                 var formalArgs = embedded.FormalArguments;
                 StringTemplateAST args = embedded.ArgumentsAST;
@@ -576,7 +576,8 @@ namespace Antlr3.ST.Language
 
             if ( propertyName == null )
             {
-                if ( o is IDictionary && ( (IDictionary)o ).Contains( DefaultMapValueName ) )
+                IDictionary dictionary = o as IDictionary;
+                if ( dictionary != null && dictionary.Contains( DefaultMapValueName ) )
                     propertyName = DefaultMapValueName;
                 else
                     return null;
@@ -602,73 +603,76 @@ namespace Antlr3.ST.Language
             return value;
         }
 
-        [MethodImpl( MethodImplOptions.Synchronized )]
         static Func<object, object> FindMember( Type type, string name )
         {
             if ( type == null || name == null )
                 throw new ArgumentNullException();
 
-            Dictionary<string, Func<object, object>> members;
-            Func<object, object> accessor = null;
+            lock ( _memberAccessors )
+            {
+                Dictionary<string, Func<object, object>> members;
+                Func<object, object> accessor = null;
 
-            if ( _memberAccessors.TryGetValue( type, out members ) )
-            {
-                if ( members.TryGetValue( name, out accessor ) )
-                    return accessor;
-            }
-            else
-            {
-                members = new Dictionary<string, Func<object, object>>();
-                _memberAccessors[type] = members;
-            }
+                if ( _memberAccessors.TryGetValue( type, out members ) )
+                {
+                    if ( members.TryGetValue( name, out accessor ) )
+                        return accessor;
+                }
+                else
+                {
+                    members = new Dictionary<string, Func<object, object>>();
+                    _memberAccessors[type] = members;
+                }
 
-            // must look up using reflection
-            string methodSuffix = char.ToUpperInvariant( name[0] ) + name.Substring( 1 );
+                // must look up using reflection
+                string methodSuffix = char.ToUpperInvariant( name[0] ) + name.Substring( 1 );
 
-            // BEGIN ADDED FOR C#
-            MethodInfo method = null;
-            if ( method == null )
-            {
-                System.Reflection.PropertyInfo p = type.GetProperty( methodSuffix );
-                if ( p != null )
-                    method = p.GetGetMethod();
-            }
-            if ( method == null )
-            {
-                method = GetMethod( type, "Get" + methodSuffix );
-            }
-            if ( method == null )
-            {
-                method = GetMethod( type, "Is" + methodSuffix );
-            }
-            // END ADDED
-            if ( method == null )
-            {
-                method = GetMethod( type, "get" + methodSuffix );
-            }
-            if ( method == null )
-            {
-                method = GetMethod( type, "is" + methodSuffix );
-            }
+                // BEGIN ADDED FOR C#
+                MethodInfo method = null;
+                if ( method == null )
+                {
+                    System.Reflection.PropertyInfo p = type.GetProperty( methodSuffix );
+                    if ( p != null )
+                        method = p.GetGetMethod();
+                }
+                if ( method == null )
+                {
+                    method = GetMethod( type, "Get" + methodSuffix );
+                }
+                if ( method == null )
+                {
+                    method = GetMethod( type, "Is" + methodSuffix );
+                }
+                // END ADDED
+                if ( method == null )
+                {
+                    method = GetMethod( type, "get" + methodSuffix );
+                }
+                if ( method == null )
+                {
+                    method = GetMethod( type, "is" + methodSuffix );
+                }
 
-            if ( method != null )
-            {
-                accessor = BuildAccessor( method );
-            }
-            else
-            {
-                // try for a visible field
-                FieldInfo field = type.GetField( name );
-                // also check .NET naming convention for fields
-                if ( field == null )
-                    field = type.GetField( "_" + name );
+                if ( method != null )
+                {
+                    accessor = BuildAccessor( method );
+                }
+                else
+                {
+                    // try for a visible field
+                    FieldInfo field = type.GetField( name );
+                    // also check .NET naming convention for fields
+                    if ( field == null )
+                        field = type.GetField( "_" + name );
 
-                if ( field != null )
-                    accessor = BuildAccessor( field );
-            }
+                    if ( field != null )
+                        accessor = BuildAccessor( field );
+                }
 
-            members[name] = accessor;
-            return accessor;
+                members[name] = accessor;
+
+                return accessor;
+            }
         }
 
         static Func<object, object> BuildAccessor( MethodInfo method )
@@ -730,12 +734,11 @@ namespace Antlr3.ST.Language
                 value = ( (StringTemplate.Aggregate)o ).Get( (string)propertyName2 );
                 return value;
             }
-
-            // Special case: if it's a template, pull property from
-            // it's attribute table.
-            // TODO: TJP just asked himself why we can't do inherited attr here?
             else if ( c == typeof( StringTemplate ) )
             {
+                // Special case: if it's a template, pull property from
+                // it's attribute table.
+                // TODO: TJP just asked himself why we can't do inherited attr here?
                 var attributes = ( (StringTemplate)o ).Attributes;
                 if ( attributes != null )
                 {
@@ -747,9 +750,9 @@ namespace Antlr3.ST.Language
 
             // Special case: if it's a Map then pull using
             // key not the property method.
-            if ( o is IDictionary )
+            IDictionary map = o as IDictionary;
+            if ( map != null )
             {
-                IDictionary map = (IDictionary)o;
                 if ( property.Equals( "keys" ) )
                 {
                     value = map.Keys;
@@ -837,27 +840,33 @@ namespace Antlr3.ST.Language
             {
                 return false;
             }
-            if ( a is Boolean )
+            if ( a is bool )
             {
                 return (bool)a;
             }
-            if ( a is ICollection )
-            {
-                return ( (ICollection)a ).Count > 0;
-            }
-            if ( a is IDictionary )
-            {
-                return ( (IDictionary)a ).Count > 0;
-            }
-            if ( a is IEnumerable && !( a is string ) )
-            {
-                return ( (IEnumerable)a ).GetEnumerator().MoveNext();
-            }
-            if ( a is Iterator )
-            {
-                return ( (Iterator)a ).hasNext();
-            }
-            return true; // any other non-null object, return true--it's present
+
+            string str = a as string;
+            if ( str != null )
+                return true;
+
+            ICollection collection = a as ICollection;
+            if ( collection != null )
+                return collection.Count > 0;
+
+            IDictionary dictionary = a as IDictionary;
+            if ( dictionary != null )
+                return dictionary.Count > 0;
+
+            IEnumerable enumerable = a as IEnumerable;
+            if ( enumerable != null )
+                return enumerable.GetEnumerator().MoveNext();
+
+            Iterator iterator = a as Iterator;
+            if ( iterator != null )
+                return iterator.hasNext();
+
+            // any other non-null object, return true--it's present
+            return true;
         }
 
         /** <summary>
@@ -868,7 +877,8 @@ namespace Antlr3.ST.Language
         public virtual object Add( object a, object b )
         {
             if ( a == null )
-            { // a null value means don't do cat, just return other value
+            {
+                // a null value means don't do cat, just return other value
                 return b;
             }
             else if ( b == null )
@@ -943,9 +953,9 @@ namespace Antlr3.ST.Language
             int n = 0;
             try
             {
-                if ( o is StringTemplate )
+                StringTemplate stToWrite = o as StringTemplate;
+                if ( stToWrite != null )
                 {
-                    StringTemplate stToWrite = (StringTemplate)o;
                     // failsafe: perhaps enclosing instance not set
                     // Or, it could be set to another context!  This occurs
                     // when you store a template instance as an attribute of more
@@ -1078,7 +1088,9 @@ namespace Antlr3.ST.Language
             {
                 return null;
             }
-            if ( expr is StringTemplateAST )
+
+            StringTemplateAST exprAST = expr as StringTemplateAST;
+            if ( exprAST != null )
             {
 #if COMPILE_EXPRESSIONS
                 System.Func<StringTemplate, IStringTemplateWriter, int> value;
@@ -1086,14 +1098,11 @@ namespace Antlr3.ST.Language
                 if ( !_evaluators.TryGetValue( expr, out value ) )
 #endif
                 {
-                    StringTemplateAST exprAST = (StringTemplateAST)expr;
                     value = GetEvaluator( this, exprAST );
 #if CACHE_FUNCTORS
                     _evaluators[expr] = value;
 #endif
                 }
-#else
-                StringTemplateAST exprAST = (StringTemplateAST)expr;
 #endif
                 // must evaluate, writing to a string so we can hang on to it
                 StringWriter buf = new StringWriter();
@@ -1191,65 +1200,50 @@ namespace Antlr3.ST.Language
          */
         public static object ConvertArrayToList( object value )
         {
-            if ( value == null )
-            {
-                return null;
-            }
-            if ( value.GetType().IsArray )
-            {
-                if ( value.GetType().GetElementType().IsPrimitive )
-                {
-                    return (IList)value;
-                }
-                return (IList)(object[])value;
-            }
+            // .NET arrays implement IList
             return value;
         }
 
         protected internal static object ConvertAnythingIteratableToIterator( object o )
         {
-            Iterator iter = null;
-            if ( o is IDictionary )
-            {
-                iter = ( (IDictionary)o ).Values.iterator();
-            }
-            else if ( o is System.Collections.IEnumerable && !(o is string) )
-            {
-                iter = ( (System.Collections.IEnumerable)o ).Cast<object>().iterator();
-            }
-            else if ( o is Iterator )
-            {
-                iter = (Iterator)o;
-            }
-            if ( iter == null )
-            {
-                return o;
-            }
-            return iter;
+            if ( o == null )
+                return null;
+
+            string str = o as string;
+            if ( str != null )
+                return str;
+
+            IDictionary dictionary = o as IDictionary;
+            if ( dictionary != null )
+                return dictionary.Values.iterator();
+
+            ICollection collection = o as ICollection;
+            if ( collection != null )
+                return collection.iterator();
+
+            IEnumerable enumerable = o as IEnumerable;
+            if ( enumerable != null )
+                return enumerable.Cast<object>().iterator();
+
+            //// This code is implied in the last line
+            //Iterator iterator = o as Iterator;
+            //if ( iterator != null )
+            //    return iterator;
+
+            return o;
         }
 
         protected static Iterator ConvertAnythingToIterator( object o )
         {
-            Iterator iter = null;
-            if ( o is ICollection )
-            {
-                iter = ( (ICollection)o ).iterator();
-            }
-            else if ( o is IDictionary )
-            {
-                iter = ( (IDictionary)o ).Values.iterator();
-            }
-            else if ( o is Iterator )
-            {
-                iter = (Iterator)o;
-            }
-            if ( iter == null )
-            {
-                IList singleton = new StringTemplate.STAttributeList( 1 );
-                singleton.Add( o );
-                return singleton.iterator();
-            }
-            return iter;
+            o = ConvertAnythingIteratableToIterator( o );
+
+            Iterator iter = o as Iterator;
+            if ( iter != null )
+                return iter;
+
+            var singleton = new StringTemplate.STAttributeList( 1 );
+            singleton.Add( o );
+            return singleton.iterator();
         }
 
         /** <summary>
@@ -1265,9 +1259,9 @@ namespace Antlr3.ST.Language
             }
             object f = attribute;
             attribute = ConvertAnythingIteratableToIterator( attribute );
-            if ( attribute is Iterator )
+            Iterator it = attribute as Iterator;
+            if ( it != null )
             {
-                Iterator it = (Iterator)attribute;
                 if ( it.hasNext() )
                 {
                     f = it.next();
@@ -1290,10 +1284,10 @@ namespace Antlr3.ST.Language
             }
             object theRest = attribute;
             attribute = ConvertAnythingIteratableToIterator( attribute );
-            if ( attribute is Iterator )
+            Iterator it = attribute as Iterator;
+            if ( it != null )
             {
                 IList a = new List<object>();
-                Iterator it = (Iterator)attribute;
                 if ( !it.hasNext() )
                 {
                     return null; // if not even one value return null
@@ -1301,7 +1295,7 @@ namespace Antlr3.ST.Language
                 it.next(); // ignore first value
                 while ( it.hasNext() )
                 {
-                    object o = (object)it.next();
+                    object o = it.next();
                     if ( o != null )
                         a.Add( o );
                 }
@@ -1330,9 +1324,9 @@ namespace Antlr3.ST.Language
             }
             object last = attribute;
             attribute = ConvertAnythingIteratableToIterator( attribute );
-            if ( attribute is Iterator )
+            Iterator it = attribute as Iterator;
+            if ( it != null )
             {
-                Iterator it = (Iterator)attribute;
                 while ( it.hasNext() )
                 {
                     last = it.next();
@@ -1350,13 +1344,13 @@ namespace Antlr3.ST.Language
                 return null;
             }
             attribute = ConvertAnythingIteratableToIterator( attribute );
-            if ( attribute is Iterator )
+            Iterator it = attribute as Iterator;
+            if ( it != null )
             {
-                IList a = new List<object>();
-                Iterator it = (Iterator)attribute;
+                var a = new List<object>();
                 while ( it.hasNext() )
                 {
-                    object o = (object)it.next();
+                    object o = it.next();
                     if ( o != null )
                         a.Add( o );
                 }
@@ -1373,10 +1367,10 @@ namespace Antlr3.ST.Language
                 return null;
             }
             attribute = ConvertAnythingIteratableToIterator( attribute );
-            if ( attribute is Iterator )
+            Iterator it = attribute as Iterator;
+            if ( it != null )
             {
-                IList a = new List<object>();
-                Iterator it = (Iterator)attribute;
+                var a = new List<object>();
                 while ( it.hasNext() )
                 {
                     object o = (object)it.next();
@@ -1398,54 +1392,37 @@ namespace Antlr3.ST.Language
         public virtual object Length( object attribute )
         {
             if ( attribute == null )
-            {
                 return 0;
-            }
-            int i = 1;		// we have at least one of something. Iterator and arrays might be empty.
-            if ( attribute is IDictionary )
+
+            string str = attribute as string;
+            if ( str != null )
+                return 1;
+
+            ICollection collection = attribute as ICollection;
+            if ( collection != null )
+                return collection.Count;
+
+            IDictionary dictionary = attribute as IDictionary;
+            if ( dictionary != null )
+                return dictionary.Count;
+
+            IEnumerable enumerable = attribute as IEnumerable;
+            if ( enumerable != null )
+                return enumerable.Cast<object>().Count();
+
+            Iterator iterator = attribute as Iterator;
+            if ( iterator != null )
             {
-                i = ( (IDictionary)attribute ).Count;
-            }
-            else if ( attribute is ICollection )
-            {
-                i = ( (ICollection)attribute ).Count;
-            }
-            else if ( attribute is object[] )
-            {
-                object[] list = (object[])attribute;
-                i = list.Length;
-            }
-            else if ( attribute is int[] )
-            {
-                int[] list = (int[])attribute;
-                i = list.Length;
-            }
-            else if ( attribute is long[] )
-            {
-                long[] list = (long[])attribute;
-                i = list.Length;
-            }
-            else if ( attribute is float[] )
-            {
-                float[] list = (float[])attribute;
-                i = list.Length;
-            }
-            else if ( attribute is double[] )
-            {
-                double[] list = (double[])attribute;
-                i = list.Length;
-            }
-            else if ( attribute is Iterator )
-            {
-                Iterator it = (Iterator)attribute;
-                i = 0;
-                while ( it.hasNext() )
+                int i = 0;
+                while ( iterator.hasNext() )
                 {
-                    it.next();
+                    iterator.next();
                     i++;
                 }
+                return i;
             }
-            return i;
+
+            return 1;
         }
 
         public object GetOption( string name )
@@ -1456,7 +1433,7 @@ namespace Antlr3.ST.Language
                 if ( _options.TryGetValue( name, out value ) )
                 {
                     string s = value as string;
-                    if ( s != null && s == EmptyOption )
+                    if ( s == EmptyOption )
                     {
                         StringTemplateAST st;
                         if ( _defaultOptionValues.TryGetValue( name, out st ) )

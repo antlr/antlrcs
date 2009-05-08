@@ -39,7 +39,9 @@ namespace AntlrUnitTests
     using Microsoft.VisualStudio.TestTools.UnitTesting;
 
     using AntlrTool = Antlr3.AntlrTool;
+    using BindingFlags = System.Reflection.BindingFlags;
     using ErrorManager = Antlr3.Tool.ErrorManager;
+    using FieldInfo = System.Reflection.FieldInfo;
     using GrammarSemanticsMessage = Antlr3.Tool.GrammarSemanticsMessage;
     using IANTLRErrorListener = Antlr3.Tool.IANTLRErrorListener;
     using IList = System.Collections.IList;
@@ -133,8 +135,8 @@ namespace AntlrUnitTests
 
         private void VerifyImportedTokens( Type source, Type target )
         {
-            System.Reflection.FieldInfo namesField = source.GetField( "tokenNames" );
-            System.Reflection.FieldInfo targetNamesField = target.GetField( "tokenNames" );
+            FieldInfo namesField = source.GetField( "tokenNames", BindingFlags.Static | BindingFlags.NonPublic | BindingFlags.Public );
+            FieldInfo targetNamesField = target.GetField( "tokenNames", BindingFlags.Static | BindingFlags.NonPublic | BindingFlags.Public );
             Assert.IsNotNull( namesField, string.Format( "No tokenNames field was found in grammar {0}.", source.Name ) );
 
             string[] sourceNames = namesField.GetValue( null ) as string[];
@@ -166,8 +168,8 @@ namespace AntlrUnitTests
                     }
                 }
 
-                System.Reflection.FieldInfo sourceToken = source.GetField( tokenName );
-                System.Reflection.FieldInfo targetToken = target.GetField( tokenName );
+                FieldInfo sourceToken = source.GetField( tokenName );
+                FieldInfo targetToken = target.GetField( tokenName );
                 if ( source != null && target != null )
                 {
                     int sourceValue = (int)sourceToken.GetValue( null );

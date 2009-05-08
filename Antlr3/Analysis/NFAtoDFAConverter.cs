@@ -1721,7 +1721,7 @@ namespace Antlr3.Analysis
                         // incoming label, unless it's EOF, w/o a predicate.
                         if ( s.incidentEdgeLabel != null && s.incidentEdgeLabel.label != Label.EOF )
                         {
-                            if ( s.associatedASTNode == null || s.associatedASTNode.token == null )
+                            if ( s.associatedASTNode == null || s.associatedASTNode.Token == null )
                             {
                                 ErrorManager.InternalError( "no AST/token for nonepsilon target w/o predicate" );
                             }
@@ -1733,7 +1733,7 @@ namespace Antlr3.Analysis
                                     locations = new HashSet<IToken>();
                                     altToLocationsReachableWithoutPredicate[altI] = locations;
                                 }
-                                locations.Add( s.associatedASTNode.token );
+                                locations.Add( s.associatedASTNode.Token );
                             }
                         }
                     }

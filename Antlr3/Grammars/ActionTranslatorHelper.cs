@@ -61,12 +61,12 @@ namespace Antlr3.Grammars
         public ActionTranslator( CodeGenerator generator,
                                      string ruleName,
                                      GrammarAST actionAST )
-            : this( new ANTLRStringStream( actionAST.token.Text ) )
+            : this( new ANTLRStringStream( actionAST.Token.Text ) )
         {
             this.generator = generator;
             this.grammar = generator.grammar;
             this.enclosingRule = grammar.GetLocallyDefinedRule( ruleName );
-            this.actionToken = actionAST.token;
+            this.actionToken = actionAST.Token;
             this.outerAltNum = actionAST.outerAltNum;
         }
 

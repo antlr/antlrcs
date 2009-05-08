@@ -1092,7 +1092,7 @@ namespace Antlr3.Codegen
             }
             ActionTranslator translator = new ActionTranslator( this, ruleName, actionTree );
             IList chunks = translator.TranslateToChunks();
-            chunks = target.PostProcessAction( chunks, actionTree.token );
+            chunks = target.PostProcessAction( chunks, actionTree.Token );
             return chunks;
         }
 
@@ -1104,7 +1104,7 @@ namespace Antlr3.Codegen
         public virtual List<StringTemplate> TranslateArgAction( string ruleName,
                                                GrammarAST actionTree )
         {
-            string actionText = actionTree.token.Text;
+            string actionText = actionTree.Token.Text;
             List<string> args = GetListOfArgumentsFromAction( actionText, ',' );
             List<StringTemplate> translatedArgs = new List<StringTemplate>();
             foreach ( string arg in args )
