@@ -254,6 +254,9 @@ namespace Antlr3.ST.Language
                     s.NativeGroup = self.NativeGroup;
                     n = s.Write( @out );
                 }
+                // cond==false and no else => Missing output not empty
+                if (!testedTrue && _elseSubtemplate == null)
+                    n = Missing;
             }
             catch ( RecognitionException re )
             {

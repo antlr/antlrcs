@@ -178,7 +178,7 @@ namespace AntlrUnitTests
                 "bold(item) ::= <<foo>>" + newline +
                 "duh(a,b,c) ::= <<foo>>" + newline;
 
-            writeFile( tmpdir, "testG.stg", templates );
+            WriteFile( tmpdir, "testG.stg", templates );
 
             /*StringTemplateGroup group =*/
             new StringTemplateGroup( new StreamReader( System.IO.File.OpenRead( tmpdir + "/testG.stg" ) ), errors );
@@ -201,7 +201,7 @@ namespace AntlrUnitTests
                 "bold(item) ::= <<foo>>" + newline +
                 "duh(a,b,c) ::= <<foo>>" + newline;
 
-            writeFile( tmpdir, "testG.stg", templates );
+            WriteFile( tmpdir, "testG.stg", templates );
 
             StringTemplateGroup group =
                 new StringTemplateGroup( new StreamReader( tmpdir + "/testG.stg" ), errors );
@@ -238,7 +238,7 @@ namespace AntlrUnitTests
                 "bold(item) ::= <<foo>>" + newline +
                 "duh(a,b,c) ::= <<foo>>" + newline;
 
-            writeFile( tmpdir + "/sub", "testG2.stg", templates );
+            WriteFile( tmpdir + "/sub", "testG2.stg", templates );
 
             StringTemplateGroup group =
                 StringTemplateGroup.LoadGroup( "testG2" );
@@ -261,7 +261,7 @@ namespace AntlrUnitTests
                     "t();" + newline +
                     "bold(item);" + newline +
                     "optional duh(a,b,c);" + newline;
-            writeFile( tmpdir, "testI.sti", groupI );
+            WriteFile( tmpdir, "testI.sti", groupI );
 
             string templates =
                 "group testG implements testI;" + newline +
@@ -269,7 +269,7 @@ namespace AntlrUnitTests
                 "bold(item) ::= <<foo>>" + newline +
                 "duh(a,b,c) ::= <<foo>>" + newline;
 
-            writeFile( tmpdir, "testG.stg", templates );
+            WriteFile( tmpdir, "testG.stg", templates );
 
             StringTemplateGroup group =
                     new StringTemplateGroup( new StreamReader( tmpdir + "/testG.stg" ), errors );
@@ -290,13 +290,13 @@ namespace AntlrUnitTests
             string superGroup =
                     "group superG;" + newline +
                     "bold(item) ::= <<*$item$*>>;\n" + newline;
-            writeFile( tmpdir, "superG.stg", superGroup );
+            WriteFile( tmpdir, "superG.stg", superGroup );
 
             string templates =
                 "group testG : superG;" + newline +
                 "main(x) ::= <<$bold(x)$>>" + newline;
 
-            writeFile( tmpdir, "testG.stg", templates );
+            WriteFile( tmpdir, "testG.stg", templates );
 
             StringTemplateGroup group =
                     new StringTemplateGroup( new StreamReader( tmpdir + "/testG.stg" ),
@@ -321,13 +321,13 @@ namespace AntlrUnitTests
             string superGroup =
                     "group superG;" + newline +
                     "bold(item) ::= <<*<item>*>>;\n" + newline;
-            writeFile( tmpdir, "superG.stg", superGroup );
+            WriteFile( tmpdir, "superG.stg", superGroup );
 
             string templates =
                 "group testG : superG;" + newline +
                 "main(x) ::= \"<bold(x)>\"" + newline;
 
-            writeFile( tmpdir, "testG.stg", templates );
+            WriteFile( tmpdir, "testG.stg", templates );
 
             StringTemplateGroup group =
                     new StringTemplateGroup( new StreamReader( tmpdir + "/testG.stg" ),
@@ -351,14 +351,14 @@ namespace AntlrUnitTests
                     "t();" + newline +
                     "bold(item);" + newline +
                     "optional duh(a,b,c);" + newline;
-            writeFile( tmpdir, "testI.sti", groupI );
+            WriteFile( tmpdir, "testI.sti", groupI );
 
             string templates =
                 "group testG implements testI;" + newline +
                 "t() ::= <<foo>>" + newline +
                 "duh(a,b,c) ::= <<foo>>" + newline;
 
-            writeFile( tmpdir, "testG.stg", templates );
+            WriteFile( tmpdir, "testG.stg", templates );
 
             StringTemplateGroup group =
                     new StringTemplateGroup( new StreamReader( tmpdir + "/testG.stg" ), errors );
@@ -379,14 +379,14 @@ namespace AntlrUnitTests
                     "t();" + newline +
                     "bold(item);" + newline +
                     "optional duh(a,b,c);" + newline;
-            writeFile( tmpdir, "testI.sti", groupI );
+            WriteFile( tmpdir, "testI.sti", groupI );
 
             string templates =
                 "group testG implements testI;" + newline +
                 "t() ::= <<foo>>" + newline +
                 "bold(item) ::= <<foo>>";
 
-            writeFile( tmpdir, "testG.stg", templates );
+            WriteFile( tmpdir, "testG.stg", templates );
 
             StringTemplateGroup group =
                 new StringTemplateGroup( new StreamReader( tmpdir + "/testG.stg" ), errors );
@@ -407,7 +407,7 @@ namespace AntlrUnitTests
                     "t();" + newline +
                     "bold(item);" + newline +
                     "optional duh(a,b,c);" + newline;
-            writeFile( tmpdir, "testI.sti", groupI );
+            WriteFile( tmpdir, "testI.sti", groupI );
 
             string templates =
                 "group testG implements testI;" + newline +
@@ -415,7 +415,7 @@ namespace AntlrUnitTests
                 "bold(item) ::= <<foo>>" + newline +
                 "duh(a,c) ::= <<foo>>" + newline;
 
-            writeFile( tmpdir, "testG.stg", templates );
+            WriteFile( tmpdir, "testG.stg", templates );
 
             StringTemplateGroup group =
                 new StringTemplateGroup( new StreamReader( tmpdir + "/testG.stg" ), errors );
@@ -2975,8 +2975,8 @@ namespace AntlrUnitTests
             string templates =
                     "group dork;" + newline +
                     "" + newline +
-                    "test(names) ::= <<" +
-                    "<names:(ind)()>" + newline +
+                    "test(names,t) ::= <<" +
+                    "<names:(t)()>" + newline + // t null be must be defined else error: null attr w/o formal def
                     ">>" + newline +
                     "ind() ::= \"[<it>]\"" + newline;
             ;
@@ -3137,6 +3137,96 @@ namespace AntlrUnitTests
         }
 
         [TestMethod]
+        public void TestLineBreak()
+        {
+            StringTemplate st = new StringTemplate(
+                    "Foo <\\\\>" + newline +
+                    "  \t  bar" + newline,
+                    typeof(AngleBracketTemplateLexer)
+                    );
+            StringWriter sw = new StringWriter();
+            st.Write(new AutoIndentWriter(sw, "\n")); // force \n as newline
+            string result = sw.ToString();
+            string expecting = "Foo bar\n";     // expect \n in output
+            Assert.AreEqual(expecting, result);
+        }
+
+        [TestMethod]
+        public void TestLineBreak2()
+        {
+            StringTemplate st = new StringTemplate(
+                    "Foo <\\\\>       " + newline +
+                    "  \t  bar" + newline,
+                    typeof(AngleBracketTemplateLexer)
+                    );
+            StringWriter sw = new StringWriter();
+            st.Write(new AutoIndentWriter(sw, "\n")); // force \n as newline
+            string result = sw.ToString();
+            string expecting = "Foo bar\n";     // expect \n in output
+            Assert.AreEqual(expecting, result);
+        }
+
+        [TestMethod]
+        public void TestLineBreakNoWhiteSpace()
+        {
+            StringTemplate st = new StringTemplate(
+                    "Foo <\\\\>" + newline +
+                    "bar" + newline,
+                    typeof(AngleBracketTemplateLexer)
+                    );
+            StringWriter sw = new StringWriter();
+            st.Write(new AutoIndentWriter(sw, "\n")); // force \n as newline
+            string result = sw.ToString();
+            string expecting = "Foo bar\n";     // expect \n in output
+            Assert.AreEqual(expecting, result);
+        }
+
+        [TestMethod]
+        public void TestLineBreakDollar()
+        {
+            StringTemplate st = new StringTemplate(
+                    "Foo $\\\\$" + newline +
+                    "  \t  bar" + newline,
+                    typeof(DefaultTemplateLexer)
+                    );
+            StringWriter sw = new StringWriter();
+            st.Write(new AutoIndentWriter(sw, "\n")); // force \n as newline
+            string result = sw.ToString();
+            string expecting = "Foo bar\n";     // expect \n in output
+            Assert.AreEqual(expecting, result);
+        }
+
+        [TestMethod]
+        public void TestLineBreakDollar2()
+        {
+            StringTemplate st = new StringTemplate(
+                    "Foo $\\\\$          " + newline +
+                    "  \t  bar" + newline,
+                    typeof(DefaultTemplateLexer)
+                    );
+            StringWriter sw = new StringWriter();
+            st.Write(new AutoIndentWriter(sw, "\n")); // force \n as newline
+            string result = sw.ToString();
+            string expecting = "Foo bar\n";     // expect \n in output
+            Assert.AreEqual(expecting, result);
+        }
+
+        [TestMethod]
+        public void TestLineBreakNoWhiteSpaceDollar()
+        {
+            StringTemplate st = new StringTemplate(
+                    "Foo $\\\\$" + newline +
+                    "bar" + newline,
+                    typeof(DefaultTemplateLexer)
+                    );
+            StringWriter sw = new StringWriter();
+            st.Write(new AutoIndentWriter(sw, "\n")); // force \n as newline
+            string result = sw.ToString();
+            string expecting = "Foo bar\n";     // expect \n in output
+            Assert.AreEqual(expecting, result);
+        }
+
+        [TestMethod]
         public void TestCharLiterals()
         {
             StringTemplate st = new StringTemplate(
@@ -3258,7 +3348,7 @@ namespace AntlrUnitTests
         }
 
         [TestMethod]
-        public void TestEmptyIteratedConditionalValueGetsSeparator()
+        public void TestMissingIteratedConditionalValueGetsNoSeparator()
         {
             StringTemplateGroup group =
                     new StringTemplateGroup( "test" );
@@ -3271,13 +3361,47 @@ namespace AntlrUnitTests
             t.SetAttribute( "users.{name,ok}", "Frank", ( true ) );
             t.SetAttribute( "users.{name,ok}", "Johnny", ( false ) );
             // empty conditional values get no separator
-            string expecting = "Terence,,Frank,";
+            string expecting = "Terence,Frank";
             string result = t.ToString();
             Assert.AreEqual( expecting, result );
         }
 
         [TestMethod]
-        public void TestEmptyIteratedConditionalWithElseValueGetsSeparator()
+        public void TestMissingIteratedConditionalValueGetsNoSeparator2()
+        {
+            StringTemplateGroup group = new StringTemplateGroup("test");
+            IStringTemplateErrorListener errors = new ErrorBuffer();
+            group.ErrorListener = errors;
+            StringTemplate t = new StringTemplate(group, "$users:{$if(it.ok)$$it.name$$endif$}; separator=\",\"$");
+            t.SetAttribute("users.{name,ok}", "Terence", true);
+            t.SetAttribute("users.{name,ok}", "Tom", false);
+            t.SetAttribute("users.{name,ok}", "Frank", false);
+            t.SetAttribute("users.{name,ok}", "Johnny", false);
+            // empty conditional values get no separator
+            string expecting = "Terence";
+            string result = t.ToString();
+            Assert.AreEqual(expecting, result);
+        }
+
+        [TestMethod]
+        public void TestMissingIteratedDoubleConditionalValueGetsNoSeparator()
+        {
+            StringTemplateGroup group = new StringTemplateGroup("test");
+            IStringTemplateErrorListener errors = new ErrorBuffer();
+            group.ErrorListener = errors;
+            StringTemplate t = new StringTemplate(group, "$users:{$if(it.ok)$$it.name$$endif$$if(it.ok)$$it.name$$endif$}; separator=\",\"$");
+            t.SetAttribute("users.{name,ok}", "Terence", false);
+            t.SetAttribute("users.{name,ok}", "Tom", true);
+            t.SetAttribute("users.{name,ok}", "Frank", true);
+            t.SetAttribute("users.{name,ok}", "Johnny", true);
+            // empty conditional values get no separator
+            string expecting = "TomTom,FrankFrank,JohnnyJohnny";
+            string result = t.ToString();
+            Assert.AreEqual(expecting, result);
+        }
+
+        [TestMethod]
+        public void TestIteratedConditionalWithEmptyElseValueGetsSeparator()
         {
             StringTemplateGroup group =
                     new StringTemplateGroup( "test" );
@@ -3610,6 +3734,85 @@ namespace AntlrUnitTests
             Assert.AreEqual( expecting, result );
         }
 
+        public class Field
+        {
+            public string name = "parrt";
+            public int n = 0;
+
+            public override string ToString()
+            {
+                return "Field";
+            }
+        }
+
+        [TestMethod]
+        public void TestDefaultArgumentManuallySet()
+        {
+            string templates =
+                    "group test;" + newline +
+                    "method(fields) ::= <<" + newline +
+                    "<fields:{f | <stat(f=f)>}>" + newline +
+                    ">>" + newline +
+                    "stat(f,value={<f.name>}) ::= \"x=<value>; // <f.name>\"" + newline
+                    ;
+
+            StringTemplateGroup group = new StringTemplateGroup(new StringReader(templates));
+            StringTemplate m = group.GetInstanceOf("method");
+            m.SetAttribute("fields", new Field());
+            string expecting = "x=parrt; // parrt";
+            string result = m.ToString();
+            Assert.AreEqual(expecting, result);
+        }
+
+        /** This fails because checkNullAttributeAgainstFormalArguments looks
+         *  for a formal argument at the current level not of the original embedded
+         *  template. We have defined it all the way in the embedded, but there is
+         *  no value so we try to look upwards ala dynamic scoping. When it reaches
+         *  the top, it doesn't find a value but it will miss the
+         *  formal argument down in the embedded.
+         *
+         *  By definition, though, the formal parameter exists if we have
+         *  a default value. look up the value to see if it's null without
+         *  checking checkNullAttributeAgainstFormalArguments.
+         */
+        [TestMethod]
+        public void TestDefaultArgumentImplicitlySet()
+        {
+            string templates =
+                    "group test;" + newline +
+                    "method(fields) ::= <<" + newline +
+                    "<fields:{f | <stat(...)>}>" + newline +
+                    ">>" + newline +
+                    "stat(f,value={<f.name>}) ::= \"x=<value>; // <f.name>\"" + newline
+                    ;
+
+            StringTemplateGroup group = new StringTemplateGroup(new StringReader(templates));
+            StringTemplate m = group.GetInstanceOf("method");
+            m.SetAttribute("fields", new Field());
+            string expecting = "x=parrt; // parrt";
+            string result = m.ToString();
+            Assert.AreEqual(expecting, result);
+        }
+
+        [TestMethod]
+        public void TestDefaultArgumentImplicitlySet2()
+        {
+            string templates =
+                    "group test;" + newline +
+                    "method(fields) ::= <<" + newline +
+                    "<fields:{f | <f:stat()>}>" + newline +  // THIS SHOULD BE ERROR; >1 arg?
+                    ">>" + newline +
+                    "stat(f,value={<f.name>}) ::= \"x=<value>; // <f.name>\"" + newline
+                    ;
+
+            StringTemplateGroup group = new StringTemplateGroup(new StringReader(templates));
+            StringTemplate m = group.GetInstanceOf("method");
+            m.SetAttribute("fields", new Field());
+            string expecting = "x=parrt; // parrt";
+            string result = m.ToString();
+            Assert.AreEqual(expecting, result);
+        }
+
         [TestMethod]
         public void TestDefaultArgumentAsTemplate()
         {
@@ -3641,8 +3844,7 @@ namespace AntlrUnitTests
                     ">>" + newline +
                     "stat(name,value={ [<name>] }) ::= \"x=<value>; // <name>\"" + newline
                     ;
-            StringTemplateGroup group =
-                    new StringTemplateGroup( new StringReader( templates ) );
+            StringTemplateGroup group = new StringTemplateGroup( new StringReader( templates ) );
             StringTemplate b = group.GetInstanceOf( "method" );
             b.SetAttribute( "name", "foo" );
             b.SetAttribute( "size", "2" );
@@ -3669,6 +3871,33 @@ namespace AntlrUnitTests
             string expecting = "x=34; // foo";
             string result = b.ToString();
             Assert.AreEqual( expecting, result );
+        }
+
+        private class Counter
+        {
+            int n = 0;
+            public override string ToString()
+            {
+                return (n++).ToString();
+            }
+        }
+
+        [TestMethod]
+        public void TestDefaultArgumentInParensToEvalEarly()
+        {
+            string templates =
+                    "group test;" + newline +
+                    "A(x) ::= \"<B()>\"" + newline +
+                    "B(y={<(x)>}) ::= \"<y> <x> <x> <y>\"" + newline
+                    ;
+
+            StringTemplateGroup group = new StringTemplateGroup(new StringReader(templates));
+            StringTemplate b = group.GetInstanceOf("A");
+            b.SetAttribute("x", new Counter());
+            string expecting = "0 1 2 0";
+            string result = b.ToString();
+            //Console.Error.WriteLine("result='" + result + "'");
+            Assert.AreEqual(expecting, result);
         }
 
         [TestMethod]
@@ -5770,6 +5999,24 @@ namespace AntlrUnitTests
         }
 
         [TestMethod]
+        public void TestBackslash()
+        {
+            StringTemplateGroup group = new StringTemplateGroup("test");
+            StringTemplate t = group.DefineTemplate("t", "\\");
+            string expecting = "\\";
+            Assert.AreEqual(expecting, t.ToString());
+        }
+
+        [TestMethod]
+        public void TestBackslash2()
+        {
+            StringTemplateGroup group = new StringTemplateGroup("test");
+            StringTemplate t = group.DefineTemplate("t", "\\ ");
+            string expecting = "\\ ";
+            Assert.AreEqual(expecting, t.ToString());
+        }
+
+        [TestMethod]
         public void TestEscapeEscape()
         {
             StringTemplateGroup group =
@@ -6350,7 +6597,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( expecting, st.ToString() );
         }
 
-        public static void writeFile( string dir, string fileName, string content )
+        public static void WriteFile( string dir, string fileName, string content )
         {
             try
             {

@@ -147,7 +147,7 @@ action returns [IDictionary<string, object> opts=null]
 		|	'if'^ LPAREN! ifCondition RPAREN!
 		|	'elseif'! LPAREN! ifCondition RPAREN! // return just conditional
 		)
-		EOF
+		EOF!
 	;
 
 optionList! returns [IDictionary<string, object> opts=new Dictionary<string, object>()]

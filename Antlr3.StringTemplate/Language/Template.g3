@@ -278,7 +278,8 @@ ACTION
 	string t = null;
 }
 	:	(	options { k = 1; } :
-			('$\\') =>
+			(LINE_BREAK) => LINE_BREAK {$channel = Hidden;}
+		|	('$\\') =>
 			// Match escapes not in a string like <\n\ufea5>
 			'$' (ESC_CHAR[out uc] {builder.Append(uc);} )+ '$'
 			{
@@ -368,9 +369,11 @@ LITERAL
 	System.Text.StringBuilder builder = new System.Text.StringBuilder();
 }
 	:	(	'\\'
-			(	'$'				{builder.Append("$");}  // allow escaped delimiter
-			|	'\\'			{builder.Append("\\");} // always replace \\ with \
-			|	ch=~('$'|'\\')	{builder.Append("\\" + (char)$ch);}  // otherwise ignore escape char
+			(	(EOF) => EOF		{builder.Append("\\");}  // Allow a template that just has a single backslash
+			|	(	'$'				{builder.Append("$");}  // allow escaped delimiter
+				|	'\\'			{builder.Append("\\");} // always replace \\ with \
+				|	ch=~('$'|'\\')	{builder.Append("\\" + (char)$ch);}  // otherwise ignore escape char
+				)
 			)
 		|	ind=INDENT
 			{
@@ -516,4 +519,9 @@ COMMENT
 	int startCol = CharPositionInLine;
 }
 	:	'$!' .* '!$' ( {startCol==0}? => ('\r')? '\n' )?
+	;
+
+fragment
+LINE_BREAK
+	:	'$\\\\$' INDENT? '\r'? '\n' INDENT?
 	;

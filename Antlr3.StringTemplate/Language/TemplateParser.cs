@@ -1,4 +1,4 @@
-// $ANTLR 3.1.2 Language\\Template.g3 2009-04-18 02:24:00
+// $ANTLR 3.1.2 Language\\Template.g3 2009-07-30 16:39:08
 
 // The variable 'variable' is assigned but its value is never used.
 #pragma warning disable 219
@@ -50,8 +50,8 @@ namespace Antlr3.ST.Language
 {
 public partial class TemplateParser : Parser
 {
-	public static readonly string[] tokenNames = new string[] {
-		"<invalid>", "<EOR>", "<DOWN>", "<UP>", "ACTION", "COMMENT", "ELSE", "ELSEIF", "ENDIF", "ESC", "ESC_CHAR", "EXPR", "HEX", "IF", "IF_EXPR", "INDENT", "LITERAL", "NESTED_PARENS", "NEWLINE", "REGION_DEF", "REGION_REF", "SUBTEMPLATE", "TEMPLATE"
+	internal static readonly string[] tokenNames = new string[] {
+		"<invalid>", "<EOR>", "<DOWN>", "<UP>", "ACTION", "COMMENT", "ELSE", "ELSEIF", "ENDIF", "ESC", "ESC_CHAR", "EXPR", "HEX", "IF", "IF_EXPR", "INDENT", "LINE_BREAK", "LITERAL", "NESTED_PARENS", "NEWLINE", "REGION_DEF", "REGION_REF", "SUBTEMPLATE", "TEMPLATE"
 	};
 	public const int EOF=-1;
 	public const int ACTION=4;
@@ -66,13 +66,14 @@ public partial class TemplateParser : Parser
 	public const int IF=13;
 	public const int IF_EXPR=14;
 	public const int INDENT=15;
-	public const int LITERAL=16;
-	public const int NESTED_PARENS=17;
-	public const int NEWLINE=18;
-	public const int REGION_DEF=19;
-	public const int REGION_REF=20;
-	public const int SUBTEMPLATE=21;
-	public const int TEMPLATE=22;
+	public const int LINE_BREAK=16;
+	public const int LITERAL=17;
+	public const int NESTED_PARENS=18;
+	public const int NEWLINE=19;
+	public const int REGION_DEF=20;
+	public const int REGION_REF=21;
+	public const int SUBTEMPLATE=22;
+	public const int TEMPLATE=23;
 
 	// delegates
 	// delegators
@@ -471,18 +472,18 @@ public partial class TemplateParser : Parser
 
 
 	#region Follow sets
-	public static class Follow
+	static class Follow
 	{
-		public static readonly BitSet _LITERAL_in_template71 = new BitSet(new ulong[]{0x1D2012UL});
-		public static readonly BitSet _NEWLINE_in_template82 = new BitSet(new ulong[]{0x1D2012UL});
-		public static readonly BitSet _action_in_template93 = new BitSet(new ulong[]{0x1D2012UL});
+		public static readonly BitSet _LITERAL_in_template71 = new BitSet(new ulong[]{0x3A2012UL});
+		public static readonly BitSet _NEWLINE_in_template82 = new BitSet(new ulong[]{0x3A2012UL});
+		public static readonly BitSet _action_in_template93 = new BitSet(new ulong[]{0x3A2012UL});
 		public static readonly BitSet _EOF_in_template103 = new BitSet(new ulong[]{0x2UL});
 		public static readonly BitSet _ACTION_in_action118 = new BitSet(new ulong[]{0x2UL});
-		public static readonly BitSet _IF_in_action130 = new BitSet(new ulong[]{0x1D2010UL});
+		public static readonly BitSet _IF_in_action130 = new BitSet(new ulong[]{0x3A2010UL});
 		public static readonly BitSet _template_in_action139 = new BitSet(new ulong[]{0x1C0UL});
-		public static readonly BitSet _ELSEIF_in_action151 = new BitSet(new ulong[]{0x1D2010UL});
+		public static readonly BitSet _ELSEIF_in_action151 = new BitSet(new ulong[]{0x3A2010UL});
 		public static readonly BitSet _template_in_action162 = new BitSet(new ulong[]{0x1C0UL});
-		public static readonly BitSet _ELSE_in_action181 = new BitSet(new ulong[]{0x1D2010UL});
+		public static readonly BitSet _ELSE_in_action181 = new BitSet(new ulong[]{0x3A2010UL});
 		public static readonly BitSet _template_in_action192 = new BitSet(new ulong[]{0x100UL});
 		public static readonly BitSet _ENDIF_in_action208 = new BitSet(new ulong[]{0x2UL});
 		public static readonly BitSet _REGION_REF_in_action216 = new BitSet(new ulong[]{0x2UL});

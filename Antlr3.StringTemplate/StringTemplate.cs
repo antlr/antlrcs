@@ -962,7 +962,11 @@ namespace Antlr3.ST
 
         public virtual object GetAttribute( string name )
         {
-            return Get( this, name );
+            object v = Get(this, name);
+            if (v == null)
+                CheckNullAttributeAgainstFormalArguments(this, name);
+
+            return v;
         }
 
         /** <summary>
@@ -980,6 +984,7 @@ namespace Antlr3.ST
                 _group.EmitTemplateStartDebugString( this, writer );
             }
             int n = 0;
+            bool missing = true;
             SetPredefinedAttributes();
             SetDefaultArgumentValues();
             int chunkCount = _chunks != null ? _chunks.Count : 0;
@@ -988,7 +993,7 @@ namespace Antlr3.ST
                 Expr a = _chunks[i];
                 int chunkN = a.Write( this, writer );
                 // expr-on-first-line-with-no-output NEWLINE => NEWLINE
-                if ( chunkN == 0 && i == 0 && ( i + 1 ) < chunkCount &&
+                if ( chunkN <= 0 && i == 0 && ( i + 1 ) < chunkCount &&
                      _chunks[i + 1] is NewlineRef )
                 {
                     //System.out.println("found pure first-line-blank \\n pattern");
@@ -998,23 +1003,29 @@ namespace Antlr3.ST
                 // NEWLINE expr-with-no-output NEWLINE => NEWLINE
                 // Indented $...$ have the indent stored with the ASTExpr
                 // so the indent does not come out as a StringRef
-                if ( chunkN == 0 &&
+                if ( chunkN <= 0 &&
                     ( i - 1 ) >= 0 && _chunks[i - 1] is NewlineRef &&
                     ( i + 1 ) < chunkCount && _chunks[i + 1] is NewlineRef )
                 {
                     //System.out.println("found pure \\n blank \\n pattern");
                     i++; // make it skip over the next chunk, the NEWLINE
                 }
-                n += chunkN;
+                if (chunkN != ASTExpr.Missing)
+                {
+                    n += chunkN;
+                    missing = false;
+                }
             }
+
             if ( _group.debugTemplateOutput )
-            {
                 _group.EmitTemplateStopDebugString( this, writer );
-            }
+
             if ( LintMode )
-            {
                 CheckForTrouble();
-            }
+
+            if (missing && _chunks != null && _chunks.Count > 0)
+                return ASTExpr.Missing;
+
             return n;
         }
 
@@ -1050,9 +1061,9 @@ namespace Antlr3.ST
          */
         public virtual object Get( StringTemplate self, string attribute )
         {
-            //Console.Out.WriteLine( "### get(" + self.GetEnclosingInstanceStackString() + ", " + attribute + ")" );
-            //Console.Out.WriteLine( "attributes=" + ( self.Attributes != null ? self.Attributes.keySet().ToString() : "none" ) );
-            if ( self == null )
+            //Console.WriteLine("### get("+self.GetEnclosingInstanceStackString()+", "+attribute+")");
+            //Console.WriteLine("attributes="+(self.Attributes!=null?self.Attributes.Keys.ToString():"none"));
+            if (self == null)
             {
                 return null;
             }
@@ -1095,10 +1106,10 @@ namespace Antlr3.ST
             {
                 //Console.Out.WriteLine( "looking for " + Name + "." + attribute + " in super=" + _enclosingInstance.Name );
                 object valueFromEnclosing = Get( self._enclosingInstance, attribute );
-                if ( valueFromEnclosing == null )
-                {
-                    CheckNullAttributeAgainstFormalArguments( self, attribute );
-                }
+                //if ( valueFromEnclosing == null )
+                //{
+                //    CheckNullAttributeAgainstFormalArguments( self, attribute );
+                //}
                 o = valueFromEnclosing;
             }
 
@@ -1210,6 +1221,7 @@ namespace Antlr3.ST
          */
         public virtual void SetDefaultArgumentValues()
         {
+            //Console.WriteLine("setDefaultArgumentValues; " + _name + ": argctx=" + _argumentContext + ", n=" + _numberOfDefaultArgumentValues);
             if ( _numberOfDefaultArgumentValues == 0 )
             {
                 return;
@@ -1220,20 +1232,47 @@ namespace Antlr3.ST
             }
             if ( _formalArguments != FormalArgument.UNKNOWN )
             {
+                //Console.WriteLine("formal args=" + _formalArguments);
                 foreach ( var arg in _formalArguments )
                 {
                     string argName = arg.name;
                     // use the default value then
                     if ( arg.defaultValueST != null )
                     {
-                        object existingValue = GetAttribute( argName );
-                        if ( existingValue == null )
-                        { // value unset?
+                        //Console.WriteLine("default value=" + arg.defaultValueST.Chunks);
+                        //Console.WriteLine(GetEnclosingInstanceStackString() + ": get " + argName + " argctx=" + ArgumentContext);
+                        object existingValue = GetAttribute(argName);
+                        //Console.WriteLine("existing value=" + existingValue);
+                        if (existingValue == null)
+                        {
+                            // value unset?
+                            object defaultValue = arg.defaultValueST;
                             // if no value for attribute, set arg context
                             // to the default value.  We don't need an instance
                             // here because no attributes can be set in
                             // the arg templates by the user.
-                            _argumentContext[argName] = arg.defaultValueST;
+
+                            int nchunks = 0;
+                            if (arg.defaultValueST.Chunks != null)
+                                nchunks = arg.defaultValueST.Chunks.Count;
+
+                            if (nchunks == 1)
+                            {
+                                // If default arg is template with single expression
+                                // wrapped in parens, x={<(...)>}, then eval to string
+                                // rather than setting x to the template for later
+                                // eval.
+                                object a = arg.defaultValueST.Chunks[0];
+                                ASTExpr e = a as ASTExpr;
+                                if (e != null)
+                                {
+                                    if (e.AST.Type == ActionEvaluator.VALUE)
+                                    {
+                                        defaultValue = e.EvaluateExpression(this, e.AST);
+                                    }
+                                }
+                            }
+                            _argumentContext[argName] = defaultValue;
                         }
                     }
                 }
@@ -1290,7 +1329,9 @@ namespace Antlr3.ST
 
         public virtual void DefineFormalArgument( string name, StringTemplate defaultValue )
         {
-            if ( defaultValue != null )
+            //Console.WriteLine("define formal arg "+this.Name+"."+name+
+            //                   ", def value="+(defaultValue!=null?defaultValue.Chunks.ToString():"null"));
+            if (defaultValue != null)
             {
                 _numberOfDefaultArgumentValues++;
             }

@@ -92,7 +92,8 @@ options { k = 1; }
 	bool atLeft = false;
 	string t = null;
 }
-	:	('<\\') =>
+	:	(LINE_BREAK) => LINE_BREAK {$channel = Hidden;}
+	|	('<\\') =>
 		// Match escapes not in a string like <\n\ufea5>
 		{
 			buf = new System.Text.StringBuilder();
@@ -222,7 +223,7 @@ LITERAL
 	;
 
 fragment
-INDENT // done
+INDENT
 	:	(' ' | '\t')+
 	;
 
@@ -345,4 +346,9 @@ COMMENT
 }
 	:	'<!' .* '!>'
 		( {startCol==0}? => ('\r')? '\n' )?
+	;
+
+fragment
+LINE_BREAK
+	:	'<\\\\>' INDENT? '\r'? '\n' INDENT?
 	;

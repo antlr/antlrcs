@@ -64,6 +64,8 @@ namespace Antlr3.ST.Language
      */
     public class ASTExpr : Expr
     {
+        // writing -1 char means missing, not empty
+        public const int Missing = -1;
         public const string DefaultAttributeName = "it";
         public const string DefaultAttributeNameDeprecated = "attr";
         public const string DefaultIndexVariableName = "i";
@@ -946,126 +948,205 @@ namespace Antlr3.ST.Language
             {
                 if ( _nullValue == null )
                 {
-                    return 0;
+                    return Missing;
                 }
                 o = _nullValue; // continue with null option if specified
             }
-            int n = 0;
+
             try
             {
                 StringTemplate stToWrite = o as StringTemplate;
-                if ( stToWrite != null )
-                {
-                    // failsafe: perhaps enclosing instance not set
-                    // Or, it could be set to another context!  This occurs
-                    // when you store a template instance as an attribute of more
-                    // than one template (like both a header file and C file when
-                    // generating C code).  It must execute within the context of
-                    // the enclosing template.
-                    stToWrite.EnclosingInstance = self;
-                    // if self is found up the enclosing instance chain, then
-                    // infinite recursion
-                    if ( StringTemplate.LintMode &&
-                         StringTemplate.IsRecursiveEnclosingInstance( stToWrite ) )
-                    {
-                        // throw exception since sometimes eval keeps going
-                        // even after I ignore this write of o.
-                        throw new InvalidOperationException( "infinite recursion to " +
-                                stToWrite.GetTemplateDeclaratorString() + " referenced in " +
-                                stToWrite.EnclosingInstance.GetTemplateDeclaratorString() +
-                                "; stack trace:" + Environment.NewLine + stToWrite.GetEnclosingInstanceStackTrace() );
-                    }
-                    else
-                    {
-                        // if we have a wrap string, then inform writer it
-                        // might need to wrap
-                        if ( _wrapString != null )
-                        {
-                            n = @out.WriteWrapSeparator( _wrapString );
-                        }
-                        // check if formatting needs to be applied to the stToWrite
-                        if ( _formatString != null )
-                        {
-                            IAttributeRenderer renderer =
-                                self.GetAttributeRenderer( typeof( string ) );
-                            if ( renderer != null )
-                            {
-                                // you pay a penalty for applying format option to a template
-                                // because the template must be written to a temp StringWriter so it can
-                                // be formatted before being written to the real output.
-                                StringWriter buf = new StringWriter();
-                                IStringTemplateWriter sw =
-                                    self.Group.GetStringTemplateWriter( buf );
-                                stToWrite.Write( sw );
-                                n = @out.Write( renderer.ToString( buf.ToString(), _formatString ) );
-                                return n;
-                            }
-                        }
-                        n = stToWrite.Write( @out );
-                    }
-                    return n;
-                }
-                // normalize anything iteratable to iterator
-                o = ConvertAnythingIteratableToIterator( o );
-                if ( o is Iterator )
-                {
-                    Iterator iter = (Iterator)o;
-                    bool seenPrevValue = false;
-                    while ( iter.hasNext() )
-                    {
-                        object iterValue = iter.next();
-                        if ( iterValue == null )
-                        {
-                            iterValue = _nullValue;
-                        }
-                        if ( iterValue != null )
-                        {
-                            if ( seenPrevValue /*prevIterValue!=null*/
-                                && _separatorString != null )
-                            {
-                                n += @out.WriteSeparator( _separatorString );
-                            }
-                            seenPrevValue = true;
-                            int nw = Write( self, iterValue, @out );
-                            n += nw;
-                        }
-                    }
-                }
-                else
-                {
-                    IAttributeRenderer renderer =
-                        self.GetAttributeRenderer( o.GetType() );
-                    string v = null;
-                    if ( renderer != null )
-                    {
-                        if ( _formatString != null )
-                        {
-                            v = renderer.ToString( o, _formatString );
-                        }
-                        else
-                        {
-                            v = renderer.ToString( o );
-                        }
-                    }
-                    else
-                    {
-                        v = o.ToString();
-                    }
-                    if ( _wrapString != null )
-                    {
-                        n = @out.Write( v, _wrapString );
-                    }
-                    else
-                    {
-                        n = @out.Write( v );
-                    }
-                    return n;
-                }
+                if (stToWrite != null)
+                    return WriteTemplate(self, stToWrite, @out);
+
+                // normalize
+                o = ConvertAnythingIteratableToIterator(o);
+                Iterator iter = o as Iterator;
+                if (iter != null)
+                    return WriteIterableValue(self, iter, @out);
+
+                return WriteObject(self, o, @out);
             }
             catch ( IOException io )
             {
                 self.Error( "problem writing object: " + o, io );
+                return 0;
             }
+        }
+
+        protected virtual int WriteObject(StringTemplate self, object o, IStringTemplateWriter @out)
+        {
+            int n = 0;
+            IAttributeRenderer renderer = self.GetAttributeRenderer(o.GetType());
+            string v = null;
+            if (renderer != null)
+            {
+                if (_formatString != null)
+                    v = renderer.ToString(o, _formatString);
+                else
+                    v = renderer.ToString(o);
+            }
+            else
+            {
+                v = o.ToString();
+            }
+
+            if (_wrapString != null)
+                n = @out.Write(v, _wrapString);
+            else
+                n = @out.Write(v);
+
+            return n;
+        }
+
+        protected virtual int WriteTemplate(StringTemplate self, StringTemplate stToWrite, IStringTemplateWriter @out)
+        {
+            int n = 0;
+            /* failsafe: perhaps enclosing instance not set
+             * Or, it could be set to another context!  This occurs
+             * when you store a template instance as an attribute of more
+             * than one template (like both a header file and C file when
+             * generating C code).  It must execute within the context of
+             * the enclosing template.
+             */
+            stToWrite.EnclosingInstance = self;
+            // if self is found up the enclosing instance chain, then infinite recursion
+            if (StringTemplate.LintMode && StringTemplate.IsRecursiveEnclosingInstance(stToWrite))
+            {
+                // throw exception since sometimes eval keeps going even after I ignore this write of o.
+                throw new InvalidOperationException("infinite recursion to " +
+                        stToWrite.GetTemplateDeclaratorString() + " referenced in " +
+                        stToWrite.EnclosingInstance.TemplateDeclaratorString +
+                        "; stack trace:" + Environment.NewLine + stToWrite.GetEnclosingInstanceStackTrace());
+            }
+            else
+            {
+                // if we have a wrap string, then inform writer it might need to wrap
+                if (_wrapString != null)
+                {
+                    n = @out.WriteWrapSeparator(_wrapString);
+                }
+
+                // check if formatting needs to be applied to the stToWrite
+                if (_formatString != null)
+                {
+                    IAttributeRenderer renderer = self.GetAttributeRenderer(typeof(string));
+                    if (renderer != null)
+                    {
+                        /* you pay a penalty for applying format option to a template
+                         * because the template must be written to a temp StringWriter so it can
+                         * be formatted before being written to the real output.
+                         */
+                        StringWriter buf = new StringWriter();
+                        IStringTemplateWriter sw = self.Group.GetStringTemplateWriter(buf);
+                        stToWrite.Write(sw);
+                        n = @out.Write(renderer.ToString(buf.ToString(), _formatString));
+                        return n;
+                    }
+                }
+
+                n = stToWrite.Write(@out);
+            }
+
+            return n;
+        }
+
+        protected virtual int WriteIterableValue(StringTemplate self, Iterator iter, IStringTemplateWriter @out)
+        {
+            int n = 0;
+            bool seenAValue = false;
+            while (iter.hasNext())
+            {
+                object iterValue = iter.next() ?? _nullValue;
+
+                if (iterValue != null)
+                {
+                    // if no separator or separator but iterValue isn't a single IF condition template
+                    if (_separatorString == null)
+                    {
+                        // if no separator, don't waste time writing to temp buffer
+                        int nw = Write(self, iterValue, @out);
+                        if (nw != Missing)
+                            n += nw;
+
+                        continue;
+                    }
+
+                    /* if value to emit is a template, only buffer its
+                     * value if it's nullable (can eval to missing).
+                     * Only a sequence of IF can eval to missing.
+                     */
+                    StringTemplate st = iterValue as StringTemplate;
+                    if (st != null)
+                    {
+                        int nchunks = st.Chunks != null ? st.Chunks.Count : 0;
+                        bool nullable = true;
+                        for (int i = 0; i < nchunks; i++)
+                        {
+                            Expr a = st.Chunks[i];
+                            if (!(a is ConditionalExpr))
+                                nullable = false;
+                        }
+
+                        // if not all IF, not nullable, spit out w/o buffering
+                        if (!nullable)
+                        {
+                            if (seenAValue && _separatorString != null)
+                            {
+                                n += @out.WriteSeparator(_separatorString);
+                            }
+
+                            int nw = Write(self, iterValue, @out);
+                            n += nw;
+                            seenAValue = true;
+                            continue;
+                        }
+                    }
+                    else if (!(iterValue is Iterator))
+                    {
+                        // if not possible to be missing, don't waste time
+                        // writing to temp buffer; might need separator though
+                        if (seenAValue && _separatorString != null)
+                        {
+                            n += @out.WriteSeparator(_separatorString);
+                        }
+
+                        int nw = Write(self, iterValue, @out);
+                        seenAValue = true;
+                        n += nw;
+                        continue;
+                    }
+
+                    /* if separator exists, write iterated value to a
+                     * tmp buffer in case we don't need a separator.
+                     * Can't generate separator then test next expr value
+                     * as we can't undo separator emit.
+                     * Write to dummy buffer to if it is MISSING
+                     * but eval/write value again to real out so
+                     * we get proper autowrap etc...
+                     * Ack: you pay a penalty now for a separator
+                     * Later, i can optimze to check if one chunk and
+                     * it's a conditional
+                     */
+                    StringWriter buf = new StringWriter();
+                    IStringTemplateWriter sw = self.Group.GetStringTemplateWriter(buf);
+                    int tmpsize = Write(self, iterValue, sw);
+
+                    if (tmpsize != Missing)
+                    {
+                        if (seenAValue && _separatorString != null)
+                        {
+                            n += @out.WriteSeparator(_separatorString);
+                        }
+
+                        // do it to real output stream now
+                        int nw = Write(self, iterValue, @out);
+                        n += nw;
+                        seenAValue = true;
+                    }
+                }
+            }
+
             return n;
         }
 
@@ -1081,7 +1162,7 @@ namespace Antlr3.ST.Language
          *  all the time; must precompute w/o writing to output buffer.
          *  </summary>
          */
-        protected virtual string EvaluateExpression( StringTemplate self,
+        public virtual string EvaluateExpression( StringTemplate self,
                                             object expr )
         {
             if ( expr == null )
