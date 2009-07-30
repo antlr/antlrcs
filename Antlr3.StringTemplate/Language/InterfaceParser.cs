@@ -47,6 +47,8 @@ using ArrayList = System.Collections.Generic.List<object>;
 
 namespace Antlr3.ST.Language
 {
+[System.CodeDom.Compiler.GeneratedCode("ANTLR", "3.1.2")]
+[System.CLSCompliant(false)]
 public partial class InterfaceParser : Parser
 {
 	public static readonly string[] tokenNames = new string[] {
@@ -317,7 +319,7 @@ public partial class InterfaceParser : Parser
 
 
 	#region Follow sets
-	public static class Follow
+	private static class Follow
 	{
 		public static readonly BitSet _INTERFACE_in_groupInterface88 = new BitSet(new ulong[]{0x40UL});
 		public static readonly BitSet _ID_in_groupInterface92 = new BitSet(new ulong[]{0x1000UL});

@@ -56,6 +56,8 @@ using ArrayList = System.Collections.Generic.List<object>;
 
 namespace Antlr3.ST.Language
 {
+[System.CodeDom.Compiler.GeneratedCode("ANTLR", "3.1.2")]
+[System.CLSCompliant(false)]
 public partial class ActionEvaluator : TreeParser
 {
 	public static readonly string[] tokenNames = new string[] {
@@ -4270,7 +4272,7 @@ public partial class ActionEvaluator : TreeParser
 
 
 	#region Follow sets
-	public static class Follow
+	private static class Follow
 	{
 		public static readonly BitSet _expr_in_action56 = new BitSet(new ulong[]{0x2UL});
 		public static readonly BitSet _PLUS_in_expr79 = new BitSet(new ulong[]{0x4UL});

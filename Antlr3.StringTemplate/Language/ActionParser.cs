@@ -52,6 +52,8 @@ using RewriteRuleITokenStream = Antlr.Runtime.Tree.RewriteRuleTokenStream;
 
 namespace  Antlr3.ST.Language 
 {
+[System.CodeDom.Compiler.GeneratedCode("ANTLR", "3.1.2")]
+[System.CLSCompliant(false)]
 public partial class ActionParser : Parser
 {
 	internal static readonly string[] tokenNames = new string[] {
@@ -3774,7 +3776,7 @@ public partial class ActionParser : Parser
 	#endregion DFA
 
 	#region Follow sets
-	static class Follow
+	private static class Follow
 	{
 		public static readonly BitSet _templatesExpr_in_action192 = new BitSet(new ulong[]{0x400000000UL});
 		public static readonly BitSet _SEMI_in_action195 = new BitSet(new ulong[]{0x20000UL});

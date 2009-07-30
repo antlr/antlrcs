@@ -73,7 +73,7 @@ namespace Antlr3.ST
         protected override TextReader Locate( string name )
         {
             // check for templates on disk first
-            foreach ( string dir in _dirs )
+            foreach ( string dir in Directories )
             {
                 string fileName = System.IO.Path.Combine( dir, name );
                 if ( System.IO.File.Exists( fileName ) )
@@ -84,9 +84,8 @@ namespace Antlr3.ST
                                select frame.GetMethod().DeclaringType.Assembly )
                              .Distinct();
 
-            for ( int i = 0; i < _dirs.Length; i++ )
+            foreach (string dir in Directories)
             {
-                string dir = _dirs[i];
                 string fileName = dir + "." + name;
 
                 System.IO.Stream @is =

@@ -123,12 +123,10 @@ namespace Antlr3.ST
         Assembly _rootAssembly;
 
         /** <summary>Track all groups by name; maps name to StringTemplateGroup</summary> */
-        //static Map _nameToGroupMap = System.Collections.Hashtable.Synchronized( new System.Collections.Hashtable() );
-        public static IDictionary<string, StringTemplateGroup> _nameToGroupMap = new Dictionary<string, StringTemplateGroup>();
+        private static readonly IDictionary<string, StringTemplateGroup> _nameToGroupMap = new Dictionary<string, StringTemplateGroup>();
 
         /** <summary>Track all interfaces by name; maps name to StringTemplateGroupInterface</summary> */
-        //static Map _nameToInterfaceMap = System.Collections.Hashtable.Synchronized( new System.Collections.Hashtable() );
-        public static IDictionary<string, StringTemplateGroupInterface> _nameToInterfaceMap = new Dictionary<string, StringTemplateGroupInterface>();
+        private static readonly IDictionary<string, StringTemplateGroupInterface> _nameToInterfaceMap = new Dictionary<string, StringTemplateGroupInterface>();
 
         /** <summary>
          *  Are we derived from another group?  Templates not found in this group
@@ -270,8 +268,8 @@ namespace Antlr3.ST
             this._rootDir = rootDir;
             this._rootAssembly = rootAssembly;
             _lastCheckedDisk = DateTime.Now;
-            _nameToGroupMap[name] = this;
             TemplateLexerClass = lexer;
+            StringTemplateGroup._nameToGroupMap[name] = this;
         }
 
         /** <summary>
@@ -491,6 +489,12 @@ namespace Antlr3.ST
             }
 
             return result;
+        }
+
+        public static void ResetNameMaps()
+        {
+            _nameToGroupMap.Clear();
+            _nameToInterfaceMap.Clear();
         }
 
         public Antlr.Runtime.Lexer CreateLexer( StringTemplate template, TextReader reader )

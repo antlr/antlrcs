@@ -50,6 +50,8 @@ using ArrayList = System.Collections.Generic.List<object>;
 
 namespace Antlr3.ST.Language
 {
+[System.CodeDom.Compiler.GeneratedCode("ANTLR", "3.1.2")]
+[System.CLSCompliant(false)]
 public partial class GroupParser : Parser
 {
 	public static readonly string[] tokenNames = new string[] {
@@ -1097,7 +1099,7 @@ public partial class GroupParser : Parser
 
 
 	#region Follow sets
-	public static class Follow
+	private static class Follow
 	{
 		public static readonly BitSet _KWGROUP_in_group93 = new BitSet(new ulong[]{0x1000UL});
 		public static readonly BitSet _ID_in_group97 = new BitSet(new ulong[]{0x808100UL});

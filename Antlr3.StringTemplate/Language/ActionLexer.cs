@@ -48,6 +48,8 @@ using Map = System.Collections.IDictionary;
 using HashMap = System.Collections.Generic.Dictionary<object, object>;
 namespace  Antlr3.ST.Language 
 {
+[System.CodeDom.Compiler.GeneratedCode("ANTLR", "3.1.2")]
+[System.CLSCompliant(false)]
 public partial class ActionLexer : Lexer
 {
 	public const int EOF=-1;

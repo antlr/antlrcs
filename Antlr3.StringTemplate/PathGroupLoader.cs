@@ -33,6 +33,7 @@
 namespace Antlr3.ST
 {
     using System;
+    using System.Collections.ObjectModel;
     using Antlr.Runtime.JavaExtensions;
     using Antlr3.ST.Language;
 
@@ -41,6 +42,7 @@ namespace Antlr3.ST
     using Stream = System.IO.Stream;
     using StreamReader = System.IO.StreamReader;
     using TextReader = System.IO.TextReader;
+    using Path = System.IO.Path;
 
     /** <summary>
      *  A brain dead loader that looks only in the directory(ies) you
@@ -55,17 +57,14 @@ namespace Antlr3.ST
      */
     public class PathGroupLoader : IStringTemplateGroupLoader
     {
-        /** <summary>List of ':' separated dirs to pull groups from</summary> */
-        protected string[] _dirs = null;
-
-        IStringTemplateErrorListener _errors = null;
+        private IStringTemplateErrorListener _errors = null;
 
         /** <summary>
          *  How are the files encoded (ascii, UTF8, ...)?  You might want to read
          *  UTF8 for example on an ascii machine.
          *  </summary>
          */
-        Encoding _fileCharEncoding = Encoding.Default;
+        private Encoding _fileCharEncoding = Encoding.Default;
 
         public PathGroupLoader( IStringTemplateErrorListener errors )
         {
@@ -80,7 +79,14 @@ namespace Antlr3.ST
         public PathGroupLoader( string dirStr, IStringTemplateErrorListener errors )
         {
             _errors = errors;
-            _dirs = dirStr.Split( ':' );
+            Directories = new ReadOnlyCollection<string>(dirStr.Split(':'));
+        }
+
+        /** <summary>Gets a list of directories to pull groups from</summary> */
+        public ReadOnlyCollection<string> Directories
+        {
+            get;
+            private set;
         }
 
         /** <summary>
@@ -168,10 +174,9 @@ namespace Antlr3.ST
         /** <summary>Look in each directory for the file called 'name'.</summary> */
         protected virtual TextReader Locate( string name )
         {
-            for ( int i = 0; i < _dirs.Length; i++ )
+            foreach (string dir in Directories)
             {
-                string dir = _dirs[i];
-                string fileName = dir + "/" + name;
+                string fileName = Path.Combine(dir, name);
                 if ( System.IO.File.Exists( fileName ) )
                 {
                     System.IO.FileStream fis = System.IO.File.OpenRead( fileName );

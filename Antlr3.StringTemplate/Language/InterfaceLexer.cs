@@ -47,6 +47,8 @@ using ArrayList = System.Collections.Generic.List<object>;
 
 namespace Antlr3.ST.Language
 {
+[System.CodeDom.Compiler.GeneratedCode("ANTLR", "3.1.2")]
+[System.CLSCompliant(false)]
 public partial class InterfaceLexer : Lexer
 {
 	public const int EOF=-1;
