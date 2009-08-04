@@ -35,6 +35,7 @@ namespace Antlr3.ST.Language
     using System;
     using System.Collections.Generic;
     using System.Linq;
+    using System.Linq.Expressions;
     using Antlr.Runtime.JavaExtensions;
 
     using FieldInfo = System.Reflection.FieldInfo;
@@ -679,48 +680,30 @@ namespace Antlr3.ST.Language
 
         static Func<object, object> BuildAccessor( MethodInfo method )
         {
-            System.Reflection.Emit.DynamicMethod dm = new System.Reflection.Emit.DynamicMethod( method.DeclaringType.Name + method.Name + "MethodAccessor", typeof( object ), new Type[] { typeof( object ) }, method.DeclaringType );
-            var gen = dm.GetILGenerator();
+            ParameterExpression obj = Expression.Parameter(typeof(object), "obj");
+            Expression<Func<object, object>> expr = Expression.Lambda<Func<object, object>>(
+                Expression.Convert(
+                    Expression.Call(
+                        Expression.Convert(obj, method.DeclaringType),
+                        method),
+                    typeof(object)),
+                obj);
 
-            if ( !method.IsStatic )
-            {
-                gen.Emit( System.Reflection.Emit.OpCodes.Ldarg_0 );
-                gen.Emit( System.Reflection.Emit.OpCodes.Castclass, method.DeclaringType );
-            }
-
-            if ( method.IsVirtual && !method.IsFinal )
-                gen.EmitCall( System.Reflection.Emit.OpCodes.Callvirt, method, null );
-            else
-                gen.EmitCall( System.Reflection.Emit.OpCodes.Call, method, null );
-
-            if ( method.ReturnType.IsValueType )
-                gen.Emit( System.Reflection.Emit.OpCodes.Box, method.ReturnType );
-
-            gen.Emit( System.Reflection.Emit.OpCodes.Ret );
-            return (Func<object, object>)dm.CreateDelegate( typeof( Func<object, object> ) );
+            return expr.Compile();
         }
 
         static Func<object, object> BuildAccessor( FieldInfo field )
         {
-            System.Reflection.Emit.DynamicMethod dm = new System.Reflection.Emit.DynamicMethod( field.DeclaringType.Name + field.Name + "FieldAccessor", typeof( object ), new Type[] { typeof( object ) }, field.DeclaringType );
+            ParameterExpression obj = Expression.Parameter(typeof(object), "obj");
+            Expression<Func<object, object>> expr = Expression.Lambda<Func<object, object>>(
+                Expression.Convert(
+                    Expression.Field(
+                        Expression.Convert(obj, field.DeclaringType),
+                        field),
+                    typeof(object)),
+                obj);
 
-            var gen = dm.GetILGenerator();
-            if ( field.IsStatic )
-            {
-                gen.Emit( System.Reflection.Emit.OpCodes.Ldsfld, field );
-            }
-            else
-            {
-                gen.Emit( System.Reflection.Emit.OpCodes.Ldarg_0 );
-                gen.Emit( System.Reflection.Emit.OpCodes.Castclass, field.DeclaringType );
-                gen.Emit( System.Reflection.Emit.OpCodes.Ldfld, field );
-            }
-
-            if ( field.FieldType.IsValueType )
-                gen.Emit( System.Reflection.Emit.OpCodes.Box, field.FieldType );
-
-            gen.Emit( System.Reflection.Emit.OpCodes.Ret );
-            return (Func<object, object>)dm.CreateDelegate( typeof( Func<object, object> ) );
+            return expr.Compile();
         }
 
         protected virtual object RawGetObjectProperty( StringTemplate self, object o, object property )
