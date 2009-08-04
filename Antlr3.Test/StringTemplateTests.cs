@@ -6597,6 +6597,22 @@ namespace AntlrUnitTests
             Assert.AreEqual( expecting, st.ToString() );
         }
 
+        #region C# port tests only
+
+        [TestMethod]
+        public void TestDateTimeFormatting()
+        {
+            StringTemplate e = new StringTemplate(
+                    "<p>&copy; 2008- $Today.Year$ . All rights reserved.</p>"
+                );
+            e = e.GetInstanceOf();
+            e.SetAttribute("Today", new DateTime(2009, 8, 4));
+            string expecting = "<p>&copy; 2008- 2009 . All rights reserved.</p>";
+            Assert.AreEqual(expecting, e.ToString());
+        }
+
+        #endregion
+
         public static void WriteFile( string dir, string fileName, string content )
         {
             try

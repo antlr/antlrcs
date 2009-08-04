@@ -97,15 +97,7 @@ namespace AntlrUnitTests
             ErrorManager.ResetErrorState();
 
             // force reset of static caches
-            new StringTemplateGroup( "" );
-            try
-            {
-                StringTemplateGroup._nameToGroupMap = new Dictionary<string, StringTemplateGroup>();
-                StringTemplateGroup._nameToInterfaceMap = new Dictionary<string, StringTemplateGroupInterface>();
-            }
-            catch ( FieldAccessException )
-            {
-            }
+            StringTemplateGroup.ResetNameMaps();
 
             StringTemplate.ResetTemplateCounter();
             StringTemplate.defaultGroup = new StringTemplateGroup( "defaultGroup", "." );
