@@ -48,6 +48,7 @@ problem reading token vocabulary file <arg>: <exception>
 DIR_NOT_FOUND(arg,exception,stackTrace) ::= "directory not found: <arg>"
 OUTPUT_DIR_IS_FILE(arg,exception,stackTrace) ::= "output directory is a file: <arg>"
 CANNOT_OPEN_FILE(arg,exception,stackTrace) ::= "cannot find or open file: <arg><if(exception)>; reason: <exception><endif>"
+CIRCULAR_DEPENDENCY() ::= "your grammars contain a circular dependency and cannot be sorted into a valid build order."
 
 INTERNAL_ERROR(arg,arg2,exception,stackTrace) ::= <<
 internal error: <arg> <arg2><if(exception)>: <exception><endif>

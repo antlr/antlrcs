@@ -89,8 +89,10 @@ namespace <actions.(actionScope).namespace>
 <endif>
 >>
 
-lexer(grammar, name, tokens, scopes, rules, numRules, labelType="IToken",
+lexer(grammar, name, tokens, scopes, rules, numRules, labelType="CommonToken",
       filterMode, superClass="Lexer") ::= <<
+[System.CodeDom.Compiler.GeneratedCode("ANTLR", "<ANTLRVersion>")]
+[System.CLSCompliant(false)]
 public partial class <grammar.recognizerName> : <@superClassName><superClass><@end>
 {
 	<tokens:{public const int <it.name>=<it.type>;}; separator="\n">
@@ -222,6 +224,8 @@ genericParser(grammar, name, scopes, tokens, tokenNames, rules, numRules,
               bitsets, inputStreamType, superClass,
               ASTLabelType="object", labelType, members, rewriteElementType,
               filterMode) ::= <<
+[System.CodeDom.Compiler.GeneratedCode("ANTLR", "<ANTLRVersion>")]
+[System.CLSCompliant(false)]
 public partial class <grammar.recognizerName> : <@superClassName><superClass><@end>
 {
 <if(grammar.grammarIsRoot)>
@@ -293,7 +297,7 @@ public <grammar.recognizerName>( <inputStreamType> input, RecognizerSharedState 
 
 <if(bitsets)>
 	#region Follow sets
-	static class Follow
+	private static class Follow
 	{
 		<bitsets:bitset(name={_<it.name>_in_<it.inName><it.tokenIndex>},
 							words64=it.bits)>
@@ -840,7 +844,7 @@ lexerStringRef(string,label) ::= <<
 <if(label)>
 int <label>Start = CharIndex;
 Match(<string>); <checkRuleBacktrackFailure()>
-<label> = new CommonToken(input, TokenTypes.Invalid, TokenChannels.Default, <label>Start, CharIndex-1);
+<label> = new <labelType>(input, TokenTypes.Invalid, TokenChannels.Default, <label>Start, CharIndex-1);
 <else>
 Match(<string>); <checkRuleBacktrackFailure()><\n>
 <endif>
@@ -900,7 +904,7 @@ lexerRuleRef(rule,label,args,elementIndex,scope) ::= <<
 <if(label)>
 int <label>Start<elementIndex> = CharIndex;
 <if(scope)><scope:delegateName()>.<endif>m<rule.name>(<args; separator=", ">); <checkRuleBacktrackFailure()>
-<label> = new CommonToken(input, TokenTypes.Invalid, TokenChannels.Default, <label>Start<elementIndex>, CharIndex-1);
+<label> = new <labelType>(input, TokenTypes.Invalid, TokenChannels.Default, <label>Start<elementIndex>, CharIndex-1);
 <else>
 <if(scope)><scope:delegateName()>.<endif>m<rule.name>(<args; separator=", ">); <checkRuleBacktrackFailure()>
 <endif>
@@ -916,10 +920,10 @@ lexerRuleRefAndListLabel(rule,label,args,elementIndex,scope) ::= <<
 lexerMatchEOF(label,elementIndex) ::= <<
 <if(label)>
 int <label>Start<elementIndex> = CharIndex;
-Match(EndOfFile); <checkRuleBacktrackFailure()>
-<labelType> <label> = new CommonToken(input, EndOfFile, TokenChannels.Default, <label>Start<elementIndex>, CharIndex-1);
+Match(EOF); <checkRuleBacktrackFailure()>
+<labelType> <label> = new <labelType>(input, EOF, TokenChannels.Default, <label>Start<elementIndex>, CharIndex-1);
 <else>
-Match(EndOfFile); <checkRuleBacktrackFailure()>
+Match(EOF); <checkRuleBacktrackFailure()>
 <endif>
 >>
 
