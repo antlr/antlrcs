@@ -33,6 +33,7 @@
  */
 namespace Antlr3.Targets
 {
+    using CLSCompliant = System.CLSCompliantAttribute;
     using CodeGenerator = Antlr3.Codegen.CodeGenerator;
     using Grammar = Antlr3.Tool.Grammar;
     using Label = Antlr3.Analysis.Label;
@@ -123,7 +124,8 @@ namespace Antlr3.Targets
             return buf.ToString();
         }
 
-        public override string GetTarget64BitStringFromValue( ulong word )
+        [CLSCompliant(false)]
+        public override string GetTarget64BitStringFromValue(ulong word)
         {
             int numHexDigits = 8 * 2;
             StringBuilder buf = new StringBuilder( numHexDigits + 2 );

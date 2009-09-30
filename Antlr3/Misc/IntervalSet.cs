@@ -36,6 +36,7 @@ namespace Antlr3.Misc
     using System.Linq;
 
     using ArgumentException = System.ArgumentException;
+    using CLSCompliant = System.CLSCompliantAttribute;
     using Grammar = Antlr3.Tool.Grammar;
     using Label = Antlr3.Analysis.Label;
     using NotImplementedException = System.NotImplementedException;
@@ -84,6 +85,7 @@ namespace Antlr3.Misc
                 return intervals.Sum( interval => interval.b - interval.a + 1 );
             }
         }
+        [CLSCompliant(false)]
         public ICollection<Interval> Intervals
         {
             get

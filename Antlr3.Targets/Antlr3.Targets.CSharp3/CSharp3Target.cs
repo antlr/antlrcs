@@ -31,6 +31,7 @@
  */
 namespace Antlr3.Targets
 {
+    using CLSCompliant = System.CLSCompliantAttribute;
     using Target = Antlr3.Codegen.Target;
 
     public class CSharp3Target : Target
@@ -40,7 +41,8 @@ namespace Antlr3.Targets
             return "\\x" + v.ToString( "X" );
         }
 
-        public override string GetTarget64BitStringFromValue( ulong word )
+        [CLSCompliant(false)]
+        public override string GetTarget64BitStringFromValue(ulong word)
         {
             return "0x" + word.ToString( "X" );
         }

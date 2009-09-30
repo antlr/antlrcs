@@ -38,15 +38,18 @@ namespace Antlr3.Tool
     using Antlr.Runtime.Tree;
     using Antlr3.Grammars;
 
+    using CLSCompliant = System.CLSCompliantAttribute;
     using Label = Antlr3.Analysis.Label;
 
     /** Move all of the functionality from assign.types.g grammar file. */
+    [CLSCompliant(false)]
     public class AssignTokenTypesBehavior : AssignTokenTypesWalker
     {
         protected const int Unassigned = -1;
         protected const int UnassignedInParserRule = -2;
 
         protected IDictionary<string, int> stringLiterals = new SortedList<string, int>();
+        [CLSCompliant(false)]
         protected IDictionary<string, int> tokens = new SortedList<string, int>();
         protected IDictionary<string, string> aliases = new SortedList<string, string>();
         protected IDictionary<string, string> aliasesReverseIndex = new Dictionary<string, string>();

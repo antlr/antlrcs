@@ -32,6 +32,7 @@
 
 namespace Antlr3.Analysis
 {
+    using CLSCompliant = System.CLSCompliantAttribute;
     using Grammar = Antlr3.Tool.Grammar;
     using ICloneable = System.ICloneable;
     using IComparable = System.IComparable;
@@ -209,6 +210,7 @@ namespace Antlr3.Analysis
                 return null;
             }
         }
+        [CLSCompliant(false)]
         public virtual IIntSet Set
         {
             get

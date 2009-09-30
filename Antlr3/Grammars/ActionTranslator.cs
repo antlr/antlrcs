@@ -1,4 +1,4 @@
-// $ANTLR 3.1.2 Grammars\\ActionTranslator.g3 2009-04-24 11:05:40
+// $ANTLR 3.1.2 Grammars\\ActionTranslator.g3 2009-09-30 13:28:35
 
 // The variable 'variable' is assigned but its value is never used.
 #pragma warning disable 219
@@ -51,6 +51,8 @@ using Map = System.Collections.IDictionary;
 using HashMap = System.Collections.Generic.Dictionary<object, object>;
 namespace Antlr3.Grammars
 {
+[System.CodeDom.Compiler.GeneratedCode("ANTLR", "3.1.2")]
+[System.CLSCompliant(false)]
 public partial class ActionTranslator : Lexer
 {
 	public const int EOF=-1;
@@ -165,9 +167,9 @@ public partial class ActionTranslator : Lexer
 		{
 			int _type = SET_ENCLOSING_RULE_SCOPE_ATTR;
 			int _channel = DefaultTokenChannel;
-			IToken x=null;
-			IToken y=null;
-			IToken expr=null;
+			CommonToken x=null;
+			CommonToken y=null;
+			CommonToken expr=null;
 
 			// Grammars\\ActionTranslator.g3:91:4: ( '$' x= ID '.' y= ID ( WS )? '=' expr= ATTR_VALUE_EXPR ';' {...}?)
 			// Grammars\\ActionTranslator.g3:91:4: '$' x= ID '.' y= ID ( WS )? '=' expr= ATTR_VALUE_EXPR ';' {...}?
@@ -279,8 +281,8 @@ public partial class ActionTranslator : Lexer
 		{
 			int _type = ENCLOSING_RULE_SCOPE_ATTR;
 			int _channel = DefaultTokenChannel;
-			IToken x=null;
-			IToken y=null;
+			CommonToken x=null;
+			CommonToken y=null;
 
 			// Grammars\\ActionTranslator.g3:143:4: ( '$' x= ID '.' y= ID {...}?)
 			// Grammars\\ActionTranslator.g3:143:4: '$' x= ID '.' y= ID {...}?
@@ -359,8 +361,8 @@ public partial class ActionTranslator : Lexer
 		{
 			int _type = SET_TOKEN_SCOPE_ATTR;
 			int _channel = DefaultTokenChannel;
-			IToken x=null;
-			IToken y=null;
+			CommonToken x=null;
+			CommonToken y=null;
 
 			// Grammars\\ActionTranslator.g3:188:4: ( '$' x= ID '.' y= ID ( WS )? '=' {...}?)
 			// Grammars\\ActionTranslator.g3:188:4: '$' x= ID '.' y= ID ( WS )? '=' {...}?
@@ -431,8 +433,8 @@ public partial class ActionTranslator : Lexer
 		{
 			int _type = TOKEN_SCOPE_ATTR;
 			int _channel = DefaultTokenChannel;
-			IToken x=null;
-			IToken y=null;
+			CommonToken x=null;
+			CommonToken y=null;
 
 			// Grammars\\ActionTranslator.g3:207:4: ( '$' x= ID '.' y= ID {...}?)
 			// Grammars\\ActionTranslator.g3:207:4: '$' x= ID '.' y= ID {...}?
@@ -498,8 +500,8 @@ public partial class ActionTranslator : Lexer
 		{
 			int _type = SET_RULE_SCOPE_ATTR;
 			int _channel = DefaultTokenChannel;
-			IToken x=null;
-			IToken y=null;
+			CommonToken x=null;
+			CommonToken y=null;
 
 
 			Grammar.LabelElementPair pair=null;
@@ -588,8 +590,8 @@ public partial class ActionTranslator : Lexer
 		{
 			int _type = RULE_SCOPE_ATTR;
 			int _channel = DefaultTokenChannel;
-			IToken x=null;
-			IToken y=null;
+			CommonToken x=null;
+			CommonToken y=null;
 
 
 				Grammar.LabelElementPair pair=null;
@@ -694,7 +696,7 @@ public partial class ActionTranslator : Lexer
 		{
 			int _type = LABEL_REF;
 			int _channel = DefaultTokenChannel;
-			IToken ID1=null;
+			CommonToken ID1=null;
 
 			// Grammars\\ActionTranslator.g3:343:4: ( '$' ID {...}?)
 			// Grammars\\ActionTranslator.g3:343:4: '$' ID {...}?
@@ -747,7 +749,7 @@ public partial class ActionTranslator : Lexer
 		{
 			int _type = ISOLATED_TOKEN_REF;
 			int _channel = DefaultTokenChannel;
-			IToken ID2=null;
+			CommonToken ID2=null;
 
 			// Grammars\\ActionTranslator.g3:366:4: ( '$' ID {...}?)
 			// Grammars\\ActionTranslator.g3:366:4: '$' ID {...}?
@@ -799,7 +801,7 @@ public partial class ActionTranslator : Lexer
 		{
 			int _type = ISOLATED_LEXER_RULE_REF;
 			int _channel = DefaultTokenChannel;
-			IToken ID3=null;
+			CommonToken ID3=null;
 
 			// Grammars\\ActionTranslator.g3:388:4: ( '$' ID {...}?)
 			// Grammars\\ActionTranslator.g3:388:4: '$' ID {...}?
@@ -853,8 +855,8 @@ public partial class ActionTranslator : Lexer
 		{
 			int _type = SET_LOCAL_ATTR;
 			int _channel = DefaultTokenChannel;
-			IToken expr=null;
-			IToken ID4=null;
+			CommonToken expr=null;
+			CommonToken ID4=null;
 
 			// Grammars\\ActionTranslator.g3:422:4: ( '$' ID ( WS )? '=' expr= ATTR_VALUE_EXPR ';' {...}?)
 			// Grammars\\ActionTranslator.g3:422:4: '$' ID ( WS )? '=' expr= ATTR_VALUE_EXPR ';' {...}?
@@ -953,7 +955,7 @@ public partial class ActionTranslator : Lexer
 		{
 			int _type = LOCAL_ATTR;
 			int _channel = DefaultTokenChannel;
-			IToken ID5=null;
+			CommonToken ID5=null;
 
 			// Grammars\\ActionTranslator.g3:464:4: ( '$' ID {...}?)
 			// Grammars\\ActionTranslator.g3:464:4: '$' ID {...}?
@@ -1017,9 +1019,9 @@ public partial class ActionTranslator : Lexer
 		{
 			int _type = SET_DYNAMIC_SCOPE_ATTR;
 			int _channel = DefaultTokenChannel;
-			IToken x=null;
-			IToken y=null;
-			IToken expr=null;
+			CommonToken x=null;
+			CommonToken y=null;
+			CommonToken expr=null;
 
 			// Grammars\\ActionTranslator.g3:509:4: ( '$' x= ID '::' y= ID ( WS )? '=' expr= ATTR_VALUE_EXPR ';' {...}?)
 			// Grammars\\ActionTranslator.g3:509:4: '$' x= ID '::' y= ID ( WS )? '=' expr= ATTR_VALUE_EXPR ';' {...}?
@@ -1100,8 +1102,8 @@ public partial class ActionTranslator : Lexer
 		{
 			int _type = DYNAMIC_SCOPE_ATTR;
 			int _channel = DefaultTokenChannel;
-			IToken x=null;
-			IToken y=null;
+			CommonToken x=null;
+			CommonToken y=null;
 
 			// Grammars\\ActionTranslator.g3:530:4: ( '$' x= ID '::' y= ID {...}?)
 			// Grammars\\ActionTranslator.g3:530:4: '$' x= ID '::' y= ID {...}?
@@ -1156,8 +1158,8 @@ public partial class ActionTranslator : Lexer
 		{
 			int _type = ERROR_SCOPED_XY;
 			int _channel = DefaultTokenChannel;
-			IToken x=null;
-			IToken y=null;
+			CommonToken x=null;
+			CommonToken y=null;
 
 			// Grammars\\ActionTranslator.g3:551:4: ( '$' x= ID '::' y= ID )
 			// Grammars\\ActionTranslator.g3:551:4: '$' x= ID '::' y= ID
@@ -1199,9 +1201,9 @@ public partial class ActionTranslator : Lexer
 		{
 			int _type = DYNAMIC_NEGATIVE_INDEXED_SCOPE_ATTR;
 			int _channel = DefaultTokenChannel;
-			IToken x=null;
-			IToken expr=null;
-			IToken y=null;
+			CommonToken x=null;
+			CommonToken expr=null;
+			CommonToken y=null;
 
 			// Grammars\\ActionTranslator.g3:569:4: ( '$' x= ID '[' '-' expr= SCOPE_INDEX_EXPR ']' '::' y= ID )
 			// Grammars\\ActionTranslator.g3:569:4: '$' x= ID '[' '-' expr= SCOPE_INDEX_EXPR ']' '::' y= ID
@@ -1249,9 +1251,9 @@ public partial class ActionTranslator : Lexer
 		{
 			int _type = DYNAMIC_ABSOLUTE_INDEXED_SCOPE_ATTR;
 			int _channel = DefaultTokenChannel;
-			IToken x=null;
-			IToken expr=null;
-			IToken y=null;
+			CommonToken x=null;
+			CommonToken expr=null;
+			CommonToken y=null;
 
 			// Grammars\\ActionTranslator.g3:580:4: ( '$' x= ID '[' expr= SCOPE_INDEX_EXPR ']' '::' y= ID )
 			// Grammars\\ActionTranslator.g3:580:4: '$' x= ID '[' expr= SCOPE_INDEX_EXPR ']' '::' y= ID
@@ -1354,7 +1356,7 @@ public partial class ActionTranslator : Lexer
 		{
 			int _type = ISOLATED_DYNAMIC_SCOPE;
 			int _channel = DefaultTokenChannel;
-			IToken ID6=null;
+			CommonToken ID6=null;
 
 			// Grammars\\ActionTranslator.g3:601:4: ( '$' ID {...}?)
 			// Grammars\\ActionTranslator.g3:601:4: '$' ID {...}?
@@ -1725,9 +1727,9 @@ public partial class ActionTranslator : Lexer
 		{
 			int _type = SET_EXPR_ATTRIBUTE;
 			int _channel = DefaultTokenChannel;
-			IToken a=null;
-			IToken expr=null;
-			IToken ID7=null;
+			CommonToken a=null;
+			CommonToken expr=null;
+			CommonToken ID7=null;
 
 			// Grammars\\ActionTranslator.g3:656:4: ( '%' a= ACTION '.' ID ( WS )? '=' expr= ATTR_VALUE_EXPR ';' )
 			// Grammars\\ActionTranslator.g3:656:4: '%' a= ACTION '.' ID ( WS )? '=' expr= ATTR_VALUE_EXPR ';'
@@ -1795,9 +1797,9 @@ public partial class ActionTranslator : Lexer
 		{
 			int _type = SET_ATTRIBUTE;
 			int _channel = DefaultTokenChannel;
-			IToken x=null;
-			IToken y=null;
-			IToken expr=null;
+			CommonToken x=null;
+			CommonToken y=null;
+			CommonToken expr=null;
 
 			// Grammars\\ActionTranslator.g3:673:4: ( '%' x= ID '.' y= ID ( WS )? '=' expr= ATTR_VALUE_EXPR ';' )
 			// Grammars\\ActionTranslator.g3:673:4: '%' x= ID '.' y= ID ( WS )? '=' expr= ATTR_VALUE_EXPR ';'
@@ -1925,7 +1927,7 @@ public partial class ActionTranslator : Lexer
 		{
 			int _type = TEMPLATE_EXPR;
 			int _channel = DefaultTokenChannel;
-			IToken a=null;
+			CommonToken a=null;
 
 			// Grammars\\ActionTranslator.g3:691:4: ( '%' a= ACTION )
 			// Grammars\\ActionTranslator.g3:691:4: '%' a= ACTION
@@ -2109,8 +2111,8 @@ public partial class ActionTranslator : Lexer
 		{
 			int _type = ERROR_XY;
 			int _channel = DefaultTokenChannel;
-			IToken x=null;
-			IToken y=null;
+			CommonToken x=null;
+			CommonToken y=null;
 
 			// Grammars\\ActionTranslator.g3:713:4: ( '$' x= ID '.' y= ID )
 			// Grammars\\ActionTranslator.g3:713:4: '$' x= ID '.' y= ID
@@ -2151,7 +2153,7 @@ public partial class ActionTranslator : Lexer
 		{
 			int _type = ERROR_X;
 			int _channel = DefaultTokenChannel;
-			IToken x=null;
+			CommonToken x=null;
 
 			// Grammars\\ActionTranslator.g3:723:4: ( '$' x= ID )
 			// Grammars\\ActionTranslator.g3:723:4: '$' x= ID
@@ -3281,7 +3283,6 @@ public partial class ActionTranslator : Lexer
 		int _s = s;
 		switch ( s )
 		{
-
 			case 0:
 				int LA28_0 = input.LA(1);
 
@@ -3296,7 +3297,6 @@ public partial class ActionTranslator : Lexer
 
 				if ( s>=0 ) return s;
 				break;
-
 			case 1:
 				int LA28_1 = input.LA(1);
 
@@ -3348,7 +3348,6 @@ public partial class ActionTranslator : Lexer
 				input.Seek(index28_1);
 				if ( s>=0 ) return s;
 				break;
-
 			case 2:
 				int LA28_22 = input.LA(1);
 

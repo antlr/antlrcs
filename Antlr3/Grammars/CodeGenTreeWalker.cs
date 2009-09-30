@@ -1,4 +1,4 @@
-// $ANTLR 3.1.2 Grammars\\CodeGenTreeWalker.g3 2009-04-24 11:05:41
+// $ANTLR 3.1.2 Grammars\\CodeGenTreeWalker.g3 2009-09-30 13:28:37
 
 // The variable 'variable' is assigned but its value is never used.
 #pragma warning disable 219
@@ -66,9 +66,11 @@ namespace Antlr3.Grammars
  *  University of San Francisco
  *  June 15, 2004
  */
+[System.CodeDom.Compiler.GeneratedCode("ANTLR", "3.1.2")]
+[System.CLSCompliant(false)]
 public partial class CodeGenTreeWalker : TreeParser
 {
-	public static readonly string[] tokenNames = new string[] {
+	internal static readonly string[] tokenNames = new string[] {
 		"<invalid>", "<EOR>", "<DOWN>", "<UP>", "ACTION", "ACTION_CHAR_LITERAL", "ACTION_ESC", "ACTION_STRING_LITERAL", "ALT", "AMPERSAND", "ARG", "ARG_ACTION", "ARGLIST", "ASSIGN", "BACKTRACK_SEMPRED", "BANG", "BLOCK", "CATCH", "CHAR_LITERAL", "CHAR_RANGE", "CLOSE_ELEMENT_OPTION", "CLOSURE", "COLON", "COMBINED_GRAMMAR", "COMMA", "COMMENT", "DIGIT", "DOC_COMMENT", "DOLLAR", "DOT", "DOUBLE_ANGLE_STRING_LITERAL", "DOUBLE_QUOTE_STRING_LITERAL", "EOA", "EOB", "EOR", "EPSILON", "ESC", "ETC", "FINALLY", "FORCED_ACTION", "FRAGMENT", "GATED_SEMPRED", "GRAMMAR", "ID", "IMPLIES", "IMPORT", "INITACTION", "INT", "LABEL", "LEXER", "LEXER_GRAMMAR", "LPAREN", "ML_COMMENT", "NESTED_ACTION", "NESTED_ARG_ACTION", "NOT", "OPEN_ELEMENT_OPTION", "OPTIONAL", "OPTIONS", "OR", "PARSER", "PARSER_GRAMMAR", "PLUS", "PLUS_ASSIGN", "POSITIVE_CLOSURE", "PRIVATE", "PROTECTED", "PUBLIC", "QUESTION", "RANGE", "RCURLY", "RET", "RETURNS", "REWRITE", "ROOT", "RPAREN", "RULE", "RULE_REF", "SCOPE", "SEMI", "SEMPRED", "SL_COMMENT", "SRC", "STAR", "STRAY_BRACKET", "STRING_LITERAL", "SYN_SEMPRED", "SYNPRED", "TEMPLATE", "THROWS", "TOKEN_REF", "TOKENS", "TREE", "TREE_BEGIN", "TREE_GRAMMAR", "WILDCARD", "WS", "WS_LOOP", "WS_OPT", "XDIGIT"
 	};
 	public const int EOF=-1;
@@ -1021,13 +1023,13 @@ public partial class CodeGenTreeWalker : TreeParser
 
 			string initAction = null;
 			// get the dfa for the BLOCK
-			GrammarAST block2=(GrammarAST)((GrammarAST)retval.start).GetFirstChildWithType(BLOCK);
+			GrammarAST block2=(GrammarAST)((GrammarAST)retval.Start).GetFirstChildWithType(BLOCK);
 			Antlr3.Analysis.DFA dfa=block2.LookaheadDFA;
 			// init blockNestingLevel so it's block level RULE_BLOCK_NESTING_LEVEL
 			// for alts of rule
 			blockNestingLevel = RULE_BLOCK_NESTING_LEVEL-1;
-			Rule ruleDescr = grammar.GetRule(((GrammarAST)retval.start).GetChild(0).Text);
-			currentRuleName = ((GrammarAST)retval.start).GetChild(0).Text;
+			Rule ruleDescr = grammar.GetRule(((GrammarAST)retval.Start).GetChild(0).Text);
+			currentRuleName = ((GrammarAST)retval.Start).GetChild(0).Text;
 
 			// For syn preds, we don't want any AST code etc... in there.
 			// Save old templates ptr and restore later.  Base templates include Dbg.
@@ -1324,7 +1326,7 @@ public partial class CodeGenTreeWalker : TreeParser
 			{
 
 								description =
-									grammar.GrammarTreeToString((GrammarAST)((GrammarAST)retval.start).GetFirstChildWithType(BLOCK),
+									grammar.GrammarTreeToString((GrammarAST)((GrammarAST)retval.Start).GetFirstChildWithType(BLOCK),
 																false);
 								description =
 									generator.target.GetTargetStringLiteralFromString(description);
@@ -1360,7 +1362,7 @@ public partial class CodeGenTreeWalker : TreeParser
 									retval.code.SetAttribute("emptyRule", grammar.IsEmptyRule(block2));
 								}
 								retval.code.SetAttribute("ruleDescriptor", ruleDescr);
-								string memo = (string)grammar.GetBlockOption(((GrammarAST)retval.start),"memoize");
+								string memo = (string)grammar.GetBlockOption(((GrammarAST)retval.Start),"memoize");
 								if ( memo==null )
 								{
 									memo = (string)grammar.GetOption("memoize");
@@ -1408,12 +1410,12 @@ public partial class CodeGenTreeWalker : TreeParser
 								{
 									bool naked =
 										currentRuleName.Equals(Grammar.ArtificialTokensRuleName) ||
-										((mod!=null?((GrammarAST)mod.start):null)!=null&&(mod!=null?((GrammarAST)mod.start):null).Text.Equals(Grammar.FragmentRuleModifier));
+										((mod!=null?((GrammarAST)mod.Start):null)!=null&&(mod!=null?((GrammarAST)mod.Start):null).Text.Equals(Grammar.FragmentRuleModifier));
 									retval.code.SetAttribute("nakedBlock", naked);
 								}
 								else
 								{
-									description = grammar.GrammarTreeToString(((GrammarAST)retval.start),false);
+									description = grammar.GrammarTreeToString(((GrammarAST)retval.Start),false);
 									description = generator.target.GetTargetStringLiteralFromString(description);
 									retval.code.SetAttribute("description", description);
 								}
@@ -1772,7 +1774,7 @@ public partial class CodeGenTreeWalker : TreeParser
 			{
 				int LA35_1 = input.LA(2);
 
-				if ( ((((GrammarAST)retval.start).SetValue!=null)) )
+				if ( ((((GrammarAST)retval.Start).SetValue!=null)) )
 				{
 					alt35=1;
 				}
@@ -1800,7 +1802,7 @@ public partial class CodeGenTreeWalker : TreeParser
 			case 1:
 				// Grammars\\CodeGenTreeWalker.g3:358:4: {...}? => setBlock
 				{
-				if ( !((((GrammarAST)retval.start).SetValue!=null)) )
+				if ( !((((GrammarAST)retval.Start).SetValue!=null)) )
 				{
 					if (state.backtracking>0) {state.failed=true; return retval;}
 					throw new FailedPredicateException(input, "block", "$start.SetValue!=null");
@@ -1926,9 +1928,9 @@ public partial class CodeGenTreeWalker : TreeParser
 												// (unless it's a " -> ..." rewrite
 												// ( -> ... )
 												bool etc =
-													(rew!=null?((GrammarAST)rew.start):null).Type==REWRITE &&
-													(rew!=null?((GrammarAST)rew.start):null).GetChild(0)!=null &&
-													(rew!=null?((GrammarAST)rew.start):null).GetChild(0).Type==ETC;
+													(rew!=null?((GrammarAST)rew.Start):null).Type==REWRITE &&
+													(rew!=null?((GrammarAST)rew.Start):null).GetChild(0)!=null &&
+													(rew!=null?((GrammarAST)rew.Start):null).GetChild(0).Type==ETC;
 												if ( (rew!=null?rew.code:default(StringTemplate))!=null && !etc )
 												{
 													(alt!=null?alt.code:default(StringTemplate)).SetAttribute("rew", (rew!=null?rew.code:default(StringTemplate)));
@@ -2004,7 +2006,7 @@ public partial class CodeGenTreeWalker : TreeParser
 					currentAltHasASTRewrite = r.HasRewrite(outerAltNum);
 					if ( currentAltHasASTRewrite )
 					{
-						r.TrackTokenReferenceInAlt(((GrammarAST)retval.start), outerAltNum);
+						r.TrackTokenReferenceInAlt(((GrammarAST)retval.Start), outerAltNum);
 					}
 				}
 			}
@@ -2430,7 +2432,7 @@ public partial class CodeGenTreeWalker : TreeParser
 					Rule r = grammar.GetRule(currentRuleName);
 					currentAltHasASTRewrite = r.HasRewrite(outerAltNum);
 				}
-				string description = grammar.GrammarTreeToString(((GrammarAST)retval.start), false);
+				string description = grammar.GrammarTreeToString(((GrammarAST)retval.Start), false);
 				description = generator.target.GetTargetStringLiteralFromString(description);
 				retval.code.SetAttribute("description", description);
 				retval.code.SetAttribute("treeLevel", rewriteTreeNestingLevel);
@@ -2478,8 +2480,8 @@ public partial class CodeGenTreeWalker : TreeParser
 											{
 												retval.code.SetAttribute("elements.{el,line,pos}",
 																  (e!=null?e.code:default(StringTemplate)),
-																  (e!=null?((GrammarAST)e.start):null).Line,
-																  (e!=null?((GrammarAST)e.start):null).CharPositionInLine
+																  (e!=null?((GrammarAST)e.Start):null).Line,
+																  (e!=null?((GrammarAST)e.Start):null).CharPositionInLine
 																 );
 											}
 										
@@ -3015,7 +3017,6 @@ public partial class CodeGenTreeWalker : TreeParser
 	// Grammars\\CodeGenTreeWalker.g3:603:0: notElement[GrammarAST n, GrammarAST label, GrammarAST astSuffix] returns [StringTemplate code=null] : (assign_c= CHAR_LITERAL |assign_s= STRING_LITERAL |assign_t= TOKEN_REF | ^(assign_st= BLOCK ( . )* ) ) ;
 	private StringTemplate notElement( GrammarAST n, GrammarAST label, GrammarAST astSuffix )
 	{
-
 		StringTemplate code = null;
 
 		GrammarAST assign_c=null;
@@ -3237,7 +3238,7 @@ public partial class CodeGenTreeWalker : TreeParser
 
 
 			Antlr3.Analysis.DFA dfa=null;
-			GrammarAST b = (GrammarAST)((GrammarAST)retval.start).GetChild(0);
+			GrammarAST b = (GrammarAST)((GrammarAST)retval.Start).GetChild(0);
 			GrammarAST eob = (GrammarAST)b.LastChild; // loops will use EOB DFA
 
 		try
@@ -3285,7 +3286,7 @@ public partial class CodeGenTreeWalker : TreeParser
 				{
 				if ( state.backtracking == 0 )
 				{
-					 dfa = ((GrammarAST)retval.start).LookaheadDFA; 
+					 dfa = ((GrammarAST)retval.Start).LookaheadDFA; 
 				}
 				PushFollow(Follow._block_in_ebnf1241);
 				blk=block("block", dfa);
@@ -3304,7 +3305,7 @@ public partial class CodeGenTreeWalker : TreeParser
 				{
 				if ( state.backtracking == 0 )
 				{
-					 dfa = ((GrammarAST)retval.start).LookaheadDFA; 
+					 dfa = ((GrammarAST)retval.Start).LookaheadDFA; 
 				}
 				Match(input,OPTIONAL,Follow._OPTIONAL_in_ebnf1260); if (state.failed) return retval;
 
@@ -3377,7 +3378,7 @@ public partial class CodeGenTreeWalker : TreeParser
 			if ( state.backtracking == 0 )
 			{
 
-							string description = grammar.GrammarTreeToString(((GrammarAST)retval.start), false);
+							string description = grammar.GrammarTreeToString(((GrammarAST)retval.Start), false);
 							description = generator.target.GetTargetStringLiteralFromString(description);
 							retval.code.SetAttribute("description", description);
 						
@@ -3419,7 +3420,7 @@ public partial class CodeGenTreeWalker : TreeParser
 			if ( state.backtracking == 0 )
 			{
 				retval.code = templates.GetInstanceOf("tree");
-				NFAState afterDOWN = (NFAState)((GrammarAST)retval.start).NFATreeDownState.GetTransition(0).target;
+				NFAState afterDOWN = (NFAState)((GrammarAST)retval.Start).NFATreeDownState.GetTransition(0).target;
 				LookaheadSet s = grammar.Look(afterDOWN);
 				if ( s.Member(Label.UP) ) {
 					// nullable child list if we can see the UP as the next token
@@ -3453,8 +3454,8 @@ public partial class CodeGenTreeWalker : TreeParser
 
 								retval.code.SetAttribute("root.{el,line,pos}",
 												  (el!=null?el.code:default(StringTemplate)),
-												  (el!=null?((GrammarAST)el.start):null).Line,
-												  (el!=null?((GrammarAST)el.start):null).CharPositionInLine
+												  (el!=null?((GrammarAST)el.Start):null).Line,
+												  (el!=null?((GrammarAST)el.Start):null).CharPositionInLine
 												  );
 							
 			}
@@ -3504,8 +3505,8 @@ public partial class CodeGenTreeWalker : TreeParser
 
 											retval.code.SetAttribute("actionsAfterRoot.{el,line,pos}",
 															  (act!=null?act.code:default(StringTemplate)),
-															  (act!=null?((GrammarAST)act.start):null).Line,
-															  (act!=null?((GrammarAST)act.start):null).CharPositionInLine
+															  (act!=null?((GrammarAST)act.Start):null).Line,
+															  (act!=null?((GrammarAST)act.Start):null).CharPositionInLine
 															);
 										
 					}
@@ -3549,8 +3550,8 @@ public partial class CodeGenTreeWalker : TreeParser
 
 										 retval.code.SetAttribute("children.{el,line,pos}",
 														  (el!=null?el.code:default(StringTemplate)),
-														  (el!=null?((GrammarAST)el.start):null).Line,
-														  (el!=null?((GrammarAST)el.start):null).CharPositionInLine
+														  (el!=null?((GrammarAST)el.Start):null).Line,
+														  (el!=null?((GrammarAST)el.Start):null).CharPositionInLine
 														  );
 										 
 					}
@@ -3618,16 +3619,16 @@ public partial class CodeGenTreeWalker : TreeParser
 					labelText = label.Text;
 				}
 				if ( grammar.type!=GrammarType.Lexer &&
-					 (((GrammarAST)retval.start).Type==RULE_REF||((GrammarAST)retval.start).Type==TOKEN_REF||
-					  ((GrammarAST)retval.start).Type==CHAR_LITERAL||((GrammarAST)retval.start).Type==STRING_LITERAL) )
+					 (((GrammarAST)retval.Start).Type==RULE_REF||((GrammarAST)retval.Start).Type==TOKEN_REF||
+					  ((GrammarAST)retval.Start).Type==CHAR_LITERAL||((GrammarAST)retval.Start).Type==STRING_LITERAL) )
 				{
-					Rule encRule = grammar.GetRule(((GrammarAST)((GrammarAST)retval.start)).enclosingRuleName);
+					Rule encRule = grammar.GetRule(((GrammarAST)((GrammarAST)retval.Start)).enclosingRuleName);
 					if ( encRule!=null && encRule.HasRewrite(outerAltNum) && astSuffix!=null )
 					{
 						ErrorManager.GrammarError(ErrorManager.MSG_AST_OP_IN_ALT_WITH_REWRITE,
 												  grammar,
-												  ((GrammarAST)((GrammarAST)retval.start)).Token,
-												  ((GrammarAST)((GrammarAST)retval.start)).enclosingRuleName,
+												  ((GrammarAST)((GrammarAST)retval.Start)).Token,
+												  ((GrammarAST)((GrammarAST)retval.Start)).enclosingRuleName,
 												  outerAltNum);
 						astSuffix = null;
 					}
@@ -4047,7 +4048,6 @@ public partial class CodeGenTreeWalker : TreeParser
 	// Grammars\\CodeGenTreeWalker.g3:965:0: set[GrammarAST label, GrammarAST astSuffix] returns [StringTemplate code=null] : ^(s= BLOCK ( . )* ) ;
 	private StringTemplate set( GrammarAST label, GrammarAST astSuffix )
 	{
-
 		StringTemplate code = null;
 
 		GrammarAST s=null;
@@ -4246,7 +4246,7 @@ public partial class CodeGenTreeWalker : TreeParser
 
 			if ( state.backtracking == 0 )
 			{
-				if ( ((GrammarAST)retval.start).Type==REWRITE )
+				if ( ((GrammarAST)retval.Start).Type==REWRITE )
 				{
 					if ( generator.grammar.BuildTemplate )
 					{
@@ -4258,19 +4258,19 @@ public partial class CodeGenTreeWalker : TreeParser
 						retval.code.SetAttribute("treeLevel", OUTER_REWRITE_NESTING_LEVEL);
 						retval.code.SetAttribute("rewriteBlockLevel", OUTER_REWRITE_NESTING_LEVEL);
 						retval.code.SetAttribute("referencedElementsDeep",
-										  GetTokenTypesAsTargetLabels(((GrammarAST)retval.start).rewriteRefsDeep));
+										  GetTokenTypesAsTargetLabels(((GrammarAST)retval.Start).rewriteRefsDeep));
 						HashSet<string> tokenLabels =
-							grammar.GetLabels(((GrammarAST)retval.start).rewriteRefsDeep, LabelType.Token);
+							grammar.GetLabels(((GrammarAST)retval.Start).rewriteRefsDeep, LabelType.Token);
 						HashSet<string> tokenListLabels =
-							grammar.GetLabels(((GrammarAST)retval.start).rewriteRefsDeep, LabelType.TokenList);
+							grammar.GetLabels(((GrammarAST)retval.Start).rewriteRefsDeep, LabelType.TokenList);
 						HashSet<string> ruleLabels =
-							grammar.GetLabels(((GrammarAST)retval.start).rewriteRefsDeep, LabelType.Rule);
+							grammar.GetLabels(((GrammarAST)retval.Start).rewriteRefsDeep, LabelType.Rule);
 						HashSet<string> ruleListLabels =
-							grammar.GetLabels(((GrammarAST)retval.start).rewriteRefsDeep, LabelType.RuleList);
+							grammar.GetLabels(((GrammarAST)retval.Start).rewriteRefsDeep, LabelType.RuleList);
 						HashSet<string> wildcardLabels =
-							grammar.GetLabels(((GrammarAST)retval.start).rewriteRefsDeep, LabelType.WildcardTree);
+							grammar.GetLabels(((GrammarAST)retval.Start).rewriteRefsDeep, LabelType.WildcardTree);
 						HashSet<string> wildcardListLabels =
-							grammar.GetLabels(((GrammarAST)retval.start).rewriteRefsDeep, LabelType.WildcardTreeList);
+							grammar.GetLabels(((GrammarAST)retval.Start).rewriteRefsDeep, LabelType.WildcardTreeList);
 						// just in case they ref r for "previous value", make a stream
 						// from retval.tree
 						StringTemplate retvalST = templates.GetInstanceOf("prevRuleRootRef");
@@ -4401,7 +4401,6 @@ public partial class CodeGenTreeWalker : TreeParser
 	// Grammars\\CodeGenTreeWalker.g3:1069:0: rewrite_block[string blockTemplateName] returns [StringTemplate code=null] : ^( BLOCK alt= rewrite_alternative EOB ) ;
 	private StringTemplate rewrite_block( string blockTemplateName )
 	{
-
 		StringTemplate code = null;
 
 		GrammarAST BLOCK14=null;
@@ -4471,7 +4470,6 @@ public partial class CodeGenTreeWalker : TreeParser
 	// Grammars\\CodeGenTreeWalker.g3:1097:0: rewrite_alternative returns [StringTemplate code=null] : ({...}? ^(a= ALT ( (el= rewrite_element )+ | EPSILON ) EOA ) |{...}? rewrite_template | ETC );
 	private StringTemplate rewrite_alternative(  )
 	{
-
 		StringTemplate code = null;
 
 		GrammarAST a=null;
@@ -4646,8 +4644,8 @@ public partial class CodeGenTreeWalker : TreeParser
 							{
 								code.SetAttribute("elements.{el,line,pos}",
 																		(el!=null?el.code:default(StringTemplate)),
-																		(el!=null?((GrammarAST)el.start):null).Line,
-																		(el!=null?((GrammarAST)el.start):null).CharPositionInLine
+																		(el!=null?((GrammarAST)el.Start):null).Line,
+																		(el!=null?((GrammarAST)el.Start):null).CharPositionInLine
 																		);
 													
 							}
@@ -4926,7 +4924,7 @@ public partial class CodeGenTreeWalker : TreeParser
 				if ( state.backtracking == 0 )
 				{
 
-								string description = grammar.GrammarTreeToString(((GrammarAST)retval.start), false);
+								string description = grammar.GrammarTreeToString(((GrammarAST)retval.Start), false);
 								description = generator.target.GetTargetStringLiteralFromString(description);
 								retval.code.SetAttribute("description", description);
 							
@@ -4954,7 +4952,7 @@ public partial class CodeGenTreeWalker : TreeParser
 				if ( state.backtracking == 0 )
 				{
 
-								string description = grammar.GrammarTreeToString(((GrammarAST)retval.start), false);
+								string description = grammar.GrammarTreeToString(((GrammarAST)retval.Start), false);
 								description = generator.target.GetTargetStringLiteralFromString(description);
 								retval.code.SetAttribute("description", description);
 							
@@ -4982,7 +4980,7 @@ public partial class CodeGenTreeWalker : TreeParser
 				if ( state.backtracking == 0 )
 				{
 
-								string description = grammar.GrammarTreeToString(((GrammarAST)retval.start), false);
+								string description = grammar.GrammarTreeToString(((GrammarAST)retval.Start), false);
 								description = generator.target.GetTargetStringLiteralFromString(description);
 								retval.code.SetAttribute("description", description);
 							
@@ -5047,8 +5045,8 @@ public partial class CodeGenTreeWalker : TreeParser
 
 								retval.code.SetAttribute("root.{el,line,pos}",
 												   (r!=null?r.code:default(StringTemplate)),
-												   (r!=null?((GrammarAST)r.start):null).Line,
-												   (r!=null?((GrammarAST)r.start):null).CharPositionInLine
+												   (r!=null?((GrammarAST)r.Start):null).Line,
+												   (r!=null?((GrammarAST)r.Start):null).CharPositionInLine
 												  );
 							
 			}
@@ -5079,8 +5077,8 @@ public partial class CodeGenTreeWalker : TreeParser
 
 										retval.code.SetAttribute("children.{el,line,pos}",
 															(el!=null?el.code:default(StringTemplate)),
-															(el!=null?((GrammarAST)el.start):null).Line,
-															(el!=null?((GrammarAST)el.start):null).CharPositionInLine
+															(el!=null?((GrammarAST)el.Start):null).Line,
+															(el!=null?((GrammarAST)el.Start):null).CharPositionInLine
 															);
 									  
 					}
@@ -5102,7 +5100,7 @@ public partial class CodeGenTreeWalker : TreeParser
 			if ( state.backtracking == 0 )
 			{
 
-							string description = grammar.GrammarTreeToString(((GrammarAST)retval.start), false);
+							string description = grammar.GrammarTreeToString(((GrammarAST)retval.Start), false);
 							description = generator.target.GetTargetStringLiteralFromString(description);
 							retval.code.SetAttribute("description", description);
 						
@@ -5316,7 +5314,7 @@ public partial class CodeGenTreeWalker : TreeParser
 				{
 
 								GrammarAST term = (tk) ?? (cl) ?? (sl);
-								string tokenName = ((GrammarAST)retval.start).Token.Text;
+								string tokenName = ((GrammarAST)retval.Start).Token.Text;
 								string stName = "rewriteTokenRef";
 								Rule rule = grammar.GetRule(currentRuleName);
 								ICollection<string> tokenRefsInAlt = rule.GetTokenRefsInAlt(outerAltNum);
@@ -5341,7 +5339,7 @@ public partial class CodeGenTreeWalker : TreeParser
 									List args = generator.TranslateAction(currentRuleName,arg);
 									retval.code.SetAttribute("args", args);
 								}
-								retval.code.SetAttribute("elementIndex", ((TokenWithIndex)((GrammarAST)retval.start).Token).TokenIndex);
+								retval.code.SetAttribute("elementIndex", ((TokenWithIndex)((GrammarAST)retval.Start).Token).TokenIndex);
 								int ttype = grammar.GetTokenType(tokenName);
 								string tok = generator.GetTokenTypeAsTargetLabel(ttype);
 								retval.code.SetAttribute("token", tok);
@@ -5349,7 +5347,7 @@ public partial class CodeGenTreeWalker : TreeParser
 								{
 									ErrorManager.GrammarError(ErrorManager.MSG_UNDEFINED_TOKEN_REF_IN_REWRITE,
 															  grammar,
-															  ((GrammarAST)(((GrammarAST)retval.start))).Token,
+															  ((GrammarAST)(((GrammarAST)retval.Start))).Token,
 															  tokenName);
 									retval.code = new StringTemplate(); // blank; no code gen
 								}
@@ -5464,7 +5462,6 @@ public partial class CodeGenTreeWalker : TreeParser
 	// Grammars\\CodeGenTreeWalker.g3:1360:0: public rewrite_template returns [StringTemplate code=null] : ( ^( ALT EPSILON EOA ) | ^( TEMPLATE (id= ID |ind= ACTION ) ^( ARGLIST ( ^( ARG arg= ID a= ACTION ) )* ) ( DOUBLE_QUOTE_STRING_LITERAL | DOUBLE_ANGLE_STRING_LITERAL )? ) |act= ACTION );
 	public StringTemplate rewrite_template(  )
 	{
-
 		StringTemplate code = null;
 
 		GrammarAST id=null;
@@ -5898,7 +5895,6 @@ public partial class CodeGenTreeWalker : TreeParser
 		int _s = s;
 		switch ( s )
 		{
-
 			case 0:
 				int LA45_0 = input.LA(1);
 
@@ -5946,7 +5942,6 @@ public partial class CodeGenTreeWalker : TreeParser
 				input.Seek(index45_0);
 				if ( s>=0 ) return s;
 				break;
-
 			case 1:
 				int LA45_7 = input.LA(1);
 
@@ -5972,7 +5967,7 @@ public partial class CodeGenTreeWalker : TreeParser
 	#endregion DFA
 
 	#region Follow sets
-	public static class Follow
+	private static class Follow
 	{
 		public static readonly BitSet _LEXER_GRAMMAR_in_grammar_66 = new BitSet(new ulong[]{0x4UL});
 		public static readonly BitSet _grammarSpec_in_grammar_68 = new BitSet(new ulong[]{0x8UL});

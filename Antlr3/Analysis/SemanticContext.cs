@@ -36,6 +36,7 @@ namespace Antlr3.Analysis
     using Antlr.Runtime.JavaExtensions;
 
     using ANTLRParser = Antlr3.Grammars.ANTLRParser;
+    using CLSCompliant = System.CLSCompliantAttribute;
     using CodeGenerator = Antlr3.Codegen.CodeGenerator;
     using Grammar = Antlr3.Tool.Grammar;
     using GrammarAST = Antlr3.Tool.GrammarAST;
@@ -539,7 +540,8 @@ namespace Antlr3.Analysis
             }
         }
 
-        public static SemanticContext And( SemanticContext a, SemanticContext b )
+        [CLSCompliant(false)]
+        public static SemanticContext And(SemanticContext a, SemanticContext b)
         {
             //System.Console.Out.WriteLine( "AND: " + a + "&&" + b );
             if ( a == EmptySemanticContext || a == null )
@@ -558,7 +560,8 @@ namespace Antlr3.Analysis
             return new AND( a, b );
         }
 
-        public static SemanticContext Or( SemanticContext a, SemanticContext b )
+        [CLSCompliant(false)]
+        public static SemanticContext Or(SemanticContext a, SemanticContext b)
         {
             //System.Console.Out.WriteLine( "OR: " + a + "||" + b );
             if ( a == EmptySemanticContext || a == null )
@@ -603,7 +606,8 @@ namespace Antlr3.Analysis
             return new OR( a, b );
         }
 
-        public static SemanticContext Not( SemanticContext a )
+        [CLSCompliant(false)]
+        public static SemanticContext Not(SemanticContext a)
         {
             NOT nota = a as NOT;
             if ( nota != null )

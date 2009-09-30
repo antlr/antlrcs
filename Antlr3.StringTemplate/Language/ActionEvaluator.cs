@@ -1,4 +1,4 @@
-// $ANTLR 3.1.2 Language\\ActionEvaluator.g3 2009-04-18 02:24:06
+// $ANTLR 3.1.2 Language\\ActionEvaluator.g3 2009-09-30 13:27:21
 
 // The variable 'variable' is assigned but its value is never used.
 #pragma warning disable 219
@@ -60,7 +60,7 @@ namespace Antlr3.ST.Language
 [System.CLSCompliant(false)]
 public partial class ActionEvaluator : TreeParser
 {
-	public static readonly string[] tokenNames = new string[] {
+	internal static readonly string[] tokenNames = new string[] {
 		"<invalid>", "<EOR>", "<DOWN>", "<UP>", "ANONYMOUS_TEMPLATE", "APPLY", "ARGS", "ASSIGN", "COLON", "COMMA", "CONDITIONAL", "DOT", "DOTDOTDOT", "ELSEIF", "ESC_CHAR", "FIRST", "FUNCTION", "ID", "INCLUDE", "INT", "LAST", "LBRACK", "LENGTH", "LIST", "LPAREN", "MULTI_APPLY", "NESTED_ANONYMOUS_TEMPLATE", "NEWLINE", "NOT", "NOTHING", "PLUS", "RBRACK", "REST", "RPAREN", "SEMI", "SINGLEVALUEARG", "STRING", "STRIP", "SUPER", "TEMPLATE", "TEMPLATE_ARGS", "TRUNC", "VALUE", "WS", "WS_CHAR"
 	};
 	public const int EOF=-1;
@@ -129,7 +129,6 @@ public partial class ActionEvaluator : TreeParser
 	// Language\\ActionEvaluator.g3:87:0: public action returns [int numCharsWritten=0] : expr ;
 	public int action(  )
 	{
-
 		int numCharsWritten = 0;
 
 		object expr1 = default(object);
@@ -166,7 +165,6 @@ public partial class ActionEvaluator : TreeParser
 	// Language\\ActionEvaluator.g3:91:0: expr returns [object value] : ( ^( PLUS a= expr b= expr ) | templateApplication | attribute | templateInclude | function | list | ^( VALUE e= expr ) );
 	private object expr(  )
 	{
-
 		object value = default(object);
 
 		object a = default(object);
@@ -365,7 +363,6 @@ public partial class ActionEvaluator : TreeParser
 	// Language\\ActionEvaluator.g3:117:0: list returns [object value=null] : ^( LIST ( expr | NOTHING )+ ) ;
 	private object list(  )
 	{
-
 		object value = null;
 
 		object expr7 = default(object);
@@ -466,7 +463,6 @@ public partial class ActionEvaluator : TreeParser
 	// Language\\ActionEvaluator.g3:140:0: templateInclude returns [object value=null] : ^( INCLUDE (id= ID a1= . | ^( VALUE n= expr a2= . ) ) ) ;
 	private object templateInclude(  )
 	{
-
 		object value = null;
 
 		StringTemplateAST id=null;
@@ -567,7 +563,6 @@ public partial class ActionEvaluator : TreeParser
 	// Language\\ActionEvaluator.g3:167:0: templateApplication returns [object value] : ( ^( APPLY a= expr ( template[templatesToApply] )+ ) | ^( MULTI_APPLY (a= expr )+ COLON anon= ANONYMOUS_TEMPLATE ) );
 	private object templateApplication(  )
 	{
-
 		object value = default(object);
 
 		StringTemplateAST anon=null;
@@ -737,7 +732,6 @@ public partial class ActionEvaluator : TreeParser
 	// Language\\ActionEvaluator.g3:189:0: function returns [object value] : ^( FUNCTION ( 'first' a= singleFunctionArg | 'rest' a= singleFunctionArg | 'last' a= singleFunctionArg | 'length' a= singleFunctionArg | 'strip' a= singleFunctionArg | 'trunc' a= singleFunctionArg ) ) ;
 	private object function(  )
 	{
-
 		object value = default(object);
 
 		object a = default(object);
@@ -898,7 +892,6 @@ public partial class ActionEvaluator : TreeParser
 	// Language\\ActionEvaluator.g3:201:0: singleFunctionArg returns [object value=null] : ^( SINGLEVALUEARG expr ) ;
 	private object singleFunctionArg(  )
 	{
-
 		object value = null;
 
 		object expr8 = default(object);
@@ -1077,7 +1070,6 @@ public partial class ActionEvaluator : TreeParser
 	// Language\\ActionEvaluator.g3:253:0: public ifCondition returns [bool value] : (a= ifAtom | ^( NOT a= ifAtom ) );
 	public bool ifCondition(  )
 	{
-
 		bool value = default(bool);
 
 		object a = default(object);
@@ -1153,7 +1145,6 @@ public partial class ActionEvaluator : TreeParser
 	// Language\\ActionEvaluator.g3:258:0: ifAtom returns [object value] : expr ;
 	private object ifAtom(  )
 	{
-
 		object value = default(object);
 
 		object expr10 = default(object);
@@ -1190,7 +1181,6 @@ public partial class ActionEvaluator : TreeParser
 	// Language\\ActionEvaluator.g3:262:0: attribute returns [object value] : ( ^( DOT obj= expr (prop= ID | ^( VALUE e= expr ) ) ) |i3= ID |i= INT |s= STRING |at= ANONYMOUS_TEMPLATE );
 	private object attribute(  )
 	{
-
 		object value = default(object);
 
 		StringTemplateAST prop=null;
@@ -1375,7 +1365,6 @@ public partial class ActionEvaluator : TreeParser
 	// Language\\ActionEvaluator.g3:309:0: public argList[StringTemplate embedded, System.Collections.Generic.Dictionary<string, object> initialContext] returns [System.Collections.Generic.Dictionary<string, object> argumentContext=null] : ( ^( ARGS ( argumentAssignment[$embedded,$argumentContext] )* ) | singleTemplateArg[$embedded,$argumentContext] );
 	public System.Collections.Generic.Dictionary<string, object> argList( StringTemplate embedded, System.Collections.Generic.Dictionary<string, object> initialContext )
 	{
-
 		System.Collections.Generic.Dictionary<string, object> argumentContext = null;
 
 
@@ -1673,7 +1662,6 @@ public partial class ActionEvaluator : TreeParser
 	// Language\\ActionEvaluator.g3:385:0: public actionFunctional returns [System.Func<ASTExpr,StringTemplate,IStringTemplateWriter,int> func] : exprFunctional ;
 	public System.Func<ASTExpr,StringTemplate,IStringTemplateWriter,int> actionFunctional(  )
 	{
-
 		System.Func<ASTExpr,StringTemplate,IStringTemplateWriter,int> func = default(System.Func<ASTExpr,StringTemplate,IStringTemplateWriter,int>);
 
 		System.Func<ASTExpr,StringTemplate,IStringTemplateWriter,object> exprFunctional12 = default(System.Func<ASTExpr,StringTemplate,IStringTemplateWriter,object>);
@@ -1788,7 +1776,6 @@ public partial class ActionEvaluator : TreeParser
 	// Language\\ActionEvaluator.g3:406:0: public ifConditionFunctional returns [System.Func<ASTExpr,StringTemplate,IStringTemplateWriter,bool> func] : ( ifAtomFunctional | ^( NOT ifAtomFunctional ) );
 	public System.Func<ASTExpr,StringTemplate,IStringTemplateWriter,bool> ifConditionFunctional(  )
 	{
-
 		System.Func<ASTExpr,StringTemplate,IStringTemplateWriter,bool> func = default(System.Func<ASTExpr,StringTemplate,IStringTemplateWriter,bool>);
 
 		System.Func<ASTExpr,StringTemplate,IStringTemplateWriter,bool> ifAtomFunctional13 = default(System.Func<ASTExpr,StringTemplate,IStringTemplateWriter,bool>);
@@ -1909,7 +1896,6 @@ public partial class ActionEvaluator : TreeParser
 	// Language\\ActionEvaluator.g3:430:0: ifAtomFunctional returns [System.Func<ASTExpr,StringTemplate,IStringTemplateWriter,bool> func] : exprFunctional ;
 	private System.Func<ASTExpr,StringTemplate,IStringTemplateWriter,bool> ifAtomFunctional(  )
 	{
-
 		System.Func<ASTExpr,StringTemplate,IStringTemplateWriter,bool> func = default(System.Func<ASTExpr,StringTemplate,IStringTemplateWriter,bool>);
 
 		System.Func<ASTExpr,StringTemplate,IStringTemplateWriter,object> exprFunctional15 = default(System.Func<ASTExpr,StringTemplate,IStringTemplateWriter,object>);
@@ -2128,7 +2114,6 @@ public partial class ActionEvaluator : TreeParser
 	// Language\\ActionEvaluator.g3:459:0: exprFunctional returns [System.Func<ASTExpr,StringTemplate,IStringTemplateWriter,object> func] : ( ^( PLUS a= exprFunctional b= exprFunctional ) | templateApplicationFunctional | attributeFunctional | templateIncludeFunctional | functionFunctional | listFunctional | ^( VALUE a= exprFunctional ) );
 	private System.Func<ASTExpr,StringTemplate,IStringTemplateWriter,object> exprFunctional(  )
 	{
-
 		System.Func<ASTExpr,StringTemplate,IStringTemplateWriter,object> func = default(System.Func<ASTExpr,StringTemplate,IStringTemplateWriter,object>);
 
 		System.Func<ASTExpr,StringTemplate,IStringTemplateWriter,object> a = default(System.Func<ASTExpr,StringTemplate,IStringTemplateWriter,object>);
@@ -2541,7 +2526,6 @@ public partial class ActionEvaluator : TreeParser
 	// Language\\ActionEvaluator.g3:563:0: templateApplicationFunctional returns [System.Func<ASTExpr,StringTemplate,IStringTemplateWriter,object> func] : ( ^( APPLY a= exprFunctional ( templateFunctional[templateApplicators] )+ ) | ^( MULTI_APPLY (a= exprFunctional )+ COLON ANONYMOUS_TEMPLATE ) );
 	private System.Func<ASTExpr,StringTemplate,IStringTemplateWriter,object> templateApplicationFunctional(  )
 	{
-
 		System.Func<ASTExpr,StringTemplate,IStringTemplateWriter,object> func = default(System.Func<ASTExpr,StringTemplate,IStringTemplateWriter,object>);
 
 		StringTemplateAST ANONYMOUS_TEMPLATE22=null;
@@ -2919,7 +2903,6 @@ public partial class ActionEvaluator : TreeParser
 	// Language\\ActionEvaluator.g3:656:0: attributeFunctional returns [System.Func<ASTExpr,StringTemplate,IStringTemplateWriter,object> func] : ( ^( DOT a= exprFunctional (id= ID | ^( VALUE b= exprFunctional ) ) ) |id= ID | INT | STRING | ANONYMOUS_TEMPLATE );
 	private System.Func<ASTExpr,StringTemplate,IStringTemplateWriter,object> attributeFunctional(  )
 	{
-
 		System.Func<ASTExpr,StringTemplate,IStringTemplateWriter,object> func = default(System.Func<ASTExpr,StringTemplate,IStringTemplateWriter,object>);
 
 		StringTemplateAST id=null;
@@ -3221,7 +3204,6 @@ public partial class ActionEvaluator : TreeParser
 	// Language\\ActionEvaluator.g3:737:0: templateIncludeFunctional returns [System.Func<ASTExpr,StringTemplate,IStringTemplateWriter,object> func] : ^( INCLUDE ( ID args= . | ^( VALUE exprFunctional args= . ) ) ) ;
 	private System.Func<ASTExpr,StringTemplate,IStringTemplateWriter,object> templateIncludeFunctional(  )
 	{
-
 		System.Func<ASTExpr,StringTemplate,IStringTemplateWriter,object> func = default(System.Func<ASTExpr,StringTemplate,IStringTemplateWriter,object>);
 
 		StringTemplateAST ID30=null;
@@ -3524,7 +3506,6 @@ public partial class ActionEvaluator : TreeParser
 	// Language\\ActionEvaluator.g3:822:0: functionFunctional returns [System.Func<ASTExpr,StringTemplate,IStringTemplateWriter,object> func] : ^( FUNCTION ( 'first' a= singleFunctionArgFunctional | 'rest' a= singleFunctionArgFunctional | 'last' a= singleFunctionArgFunctional | 'length' a= singleFunctionArgFunctional | 'strip' a= singleFunctionArgFunctional | 'trunc' a= singleFunctionArgFunctional ) ) ;
 	private System.Func<ASTExpr,StringTemplate,IStringTemplateWriter,object> functionFunctional(  )
 	{
-
 		System.Func<ASTExpr,StringTemplate,IStringTemplateWriter,object> func = default(System.Func<ASTExpr,StringTemplate,IStringTemplateWriter,object>);
 
 		System.Func<ASTExpr,StringTemplate,IStringTemplateWriter,object> a = default(System.Func<ASTExpr,StringTemplate,IStringTemplateWriter,object>);
@@ -3811,7 +3792,6 @@ public partial class ActionEvaluator : TreeParser
 	// Language\\ActionEvaluator.g3:893:0: listFunctional returns [System.Func<ASTExpr,StringTemplate,IStringTemplateWriter,object> func] : ^( LIST ( exprFunctional | NOTHING )+ ) ;
 	private System.Func<ASTExpr,StringTemplate,IStringTemplateWriter,object> listFunctional(  )
 	{
-
 		System.Func<ASTExpr,StringTemplate,IStringTemplateWriter,object> func = default(System.Func<ASTExpr,StringTemplate,IStringTemplateWriter,object>);
 
 		System.Func<ASTExpr,StringTemplate,IStringTemplateWriter,object> exprFunctional32 = default(System.Func<ASTExpr,StringTemplate,IStringTemplateWriter,object>);
@@ -3958,7 +3938,6 @@ public partial class ActionEvaluator : TreeParser
 	// Language\\ActionEvaluator.g3:930:0: singleFunctionArgFunctional returns [System.Func<ASTExpr,StringTemplate,IStringTemplateWriter,object> func] : ^( SINGLEVALUEARG exprFunctional ) ;
 	private System.Func<ASTExpr,StringTemplate,IStringTemplateWriter,object> singleFunctionArgFunctional(  )
 	{
-
 		System.Func<ASTExpr,StringTemplate,IStringTemplateWriter,object> func = default(System.Func<ASTExpr,StringTemplate,IStringTemplateWriter,object>);
 
 		System.Func<ASTExpr,StringTemplate,IStringTemplateWriter,object> exprFunctional33 = default(System.Func<ASTExpr,StringTemplate,IStringTemplateWriter,object>);

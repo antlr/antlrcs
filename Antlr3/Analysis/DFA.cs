@@ -321,6 +321,7 @@ namespace Antlr3.Analysis
                 return _decisionNFAStartState.associatedASTNode;
             }
         }
+        [CLSCompliant(false)]
         public int DecisionNumber
         {
             get

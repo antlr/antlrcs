@@ -1,4 +1,4 @@
-// $ANTLR 3.1.2 Language\\Template.g3 2009-07-30 16:39:08
+// $ANTLR 3.1.2 Language\\Template.g3 2009-09-30 13:26:48
 
 // The variable 'variable' is assigned but its value is never used.
 #pragma warning disable 219
@@ -474,7 +474,7 @@ public partial class TemplateParser : Parser
 
 
 	#region Follow sets
-	static class Follow
+	private static class Follow
 	{
 		public static readonly BitSet _LITERAL_in_template71 = new BitSet(new ulong[]{0x3A2012UL});
 		public static readonly BitSet _NEWLINE_in_template82 = new BitSet(new ulong[]{0x3A2012UL});

@@ -38,6 +38,7 @@ namespace Antlr3.Tool
     using Antlr3.Extensions;
 
     using ANTLRParser = Antlr3.Grammars.ANTLRParser;
+    using CLSCompliant = System.CLSCompliantAttribute;
     using CommonToken = Antlr.Runtime.CommonToken;
     using DFA = Antlr3.Analysis.DFA;
     using IIntSet = Antlr3.Misc.IIntSet;
@@ -76,6 +77,7 @@ namespace Antlr3.Tool
         public DFA lookaheadDFA = null;
 
         /** What NFA start state was built from this node? */
+        [CLSCompliant(false)]
         public NFAState _nfaStartState = null;
 
         /** This is used for TREE_BEGIN nodes to point into
@@ -147,6 +149,7 @@ namespace Antlr3.Tool
         }
 
         #region Properties
+        [CLSCompliant(false)]
         public IDictionary<string, object> BlockOptions
         {
             get
@@ -177,6 +180,7 @@ namespace Antlr3.Tool
                 return (GrammarAST)parent.GetChild( parent.ChildCount - 1 );
             }
         }
+        [CLSCompliant(false)]
         public DFA LookaheadDFA
         {
             get
@@ -199,6 +203,7 @@ namespace Antlr3.Tool
                 _nfaStartState = value;
             }
         }
+        [CLSCompliant(false)]
         public IIntSet SetValue
         {
             get

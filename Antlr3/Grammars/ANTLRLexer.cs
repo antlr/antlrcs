@@ -1,4 +1,4 @@
-// $ANTLR 3.1.2 Grammars\\ANTLR.g3 2009-04-24 11:17:05
+// $ANTLR 3.1.2 Grammars\\ANTLR.g3 2009-09-30 13:27:50
 
 // The variable 'variable' is assigned but its value is never used.
 #pragma warning disable 219
@@ -52,6 +52,8 @@ using Map = System.Collections.IDictionary;
 using HashMap = System.Collections.Generic.Dictionary<object, object>;
 namespace Antlr3.Grammars
 {
+[System.CodeDom.Compiler.GeneratedCode("ANTLR", "3.1.2")]
+[System.CLSCompliant(false)]
 public partial class ANTLRLexer : Lexer
 {
 	public const int EOF=-1;
@@ -2064,8 +2066,8 @@ public partial class ANTLRLexer : Lexer
 	{
 		try
 		{
-			IToken ACTION_STRING_LITERAL1=null;
-			IToken ACTION_CHAR_LITERAL2=null;
+			CommonToken ACTION_STRING_LITERAL1=null;
+			CommonToken ACTION_CHAR_LITERAL2=null;
 			int c;
 
 
@@ -2858,8 +2860,8 @@ public partial class ANTLRLexer : Lexer
 	{
 		try
 		{
-			IToken file=null;
-			IToken line=null;
+			CommonToken file=null;
+			CommonToken line=null;
 
 			// Grammars\\ANTLR.g3:1111:4: ( 'src' ' ' file= ACTION_STRING_LITERAL ' ' line= INT )
 			// Grammars\\ANTLR.g3:1111:4: 'src' ' ' file= ACTION_STRING_LITERAL ' ' line= INT
@@ -3492,7 +3494,6 @@ public partial class ANTLRLexer : Lexer
 		int _s = s;
 		switch ( s )
 		{
-
 			case 0:
 				int LA9_14 = input.LA(1);
 
@@ -3511,7 +3512,6 @@ public partial class ANTLRLexer : Lexer
 
 				if ( s>=0 ) return s;
 				break;
-
 			case 1:
 				int LA9_15 = input.LA(1);
 
@@ -3530,7 +3530,6 @@ public partial class ANTLRLexer : Lexer
 
 				if ( s>=0 ) return s;
 				break;
-
 			case 2:
 				int LA9_16 = input.LA(1);
 
@@ -3550,7 +3549,6 @@ public partial class ANTLRLexer : Lexer
 				input.Seek(index9_16);
 				if ( s>=0 ) return s;
 				break;
-
 			case 3:
 				int LA9_18 = input.LA(1);
 
@@ -3570,7 +3568,6 @@ public partial class ANTLRLexer : Lexer
 				input.Seek(index9_18);
 				if ( s>=0 ) return s;
 				break;
-
 			case 4:
 				int LA9_19 = input.LA(1);
 
@@ -3589,7 +3586,6 @@ public partial class ANTLRLexer : Lexer
 
 				if ( s>=0 ) return s;
 				break;
-
 			case 5:
 				int LA9_20 = input.LA(1);
 
@@ -3608,7 +3604,6 @@ public partial class ANTLRLexer : Lexer
 
 				if ( s>=0 ) return s;
 				break;
-
 			case 6:
 				int LA9_21 = input.LA(1);
 
@@ -3627,7 +3622,6 @@ public partial class ANTLRLexer : Lexer
 
 				if ( s>=0 ) return s;
 				break;
-
 			case 7:
 				int LA9_22 = input.LA(1);
 
@@ -3647,7 +3641,6 @@ public partial class ANTLRLexer : Lexer
 				input.Seek(index9_22);
 				if ( s>=0 ) return s;
 				break;
-
 			case 8:
 				int LA9_23 = input.LA(1);
 
@@ -3667,7 +3660,6 @@ public partial class ANTLRLexer : Lexer
 				input.Seek(index9_23);
 				if ( s>=0 ) return s;
 				break;
-
 			case 9:
 				int LA9_24 = input.LA(1);
 
@@ -3686,7 +3678,6 @@ public partial class ANTLRLexer : Lexer
 
 				if ( s>=0 ) return s;
 				break;
-
 			case 10:
 				int LA9_29 = input.LA(1);
 

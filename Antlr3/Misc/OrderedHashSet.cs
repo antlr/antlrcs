@@ -34,6 +34,7 @@ namespace Antlr3.Misc
 {
     using System.Collections.Generic;
 
+    using CLSCompliant = System.CLSCompliantAttribute;
     using NotSupportedException = System.NotSupportedException;
 
     /** A HashMap that remembers the order that the elements were added.
@@ -44,8 +45,10 @@ namespace Antlr3.Misc
     public class OrderedHashSet<T> : ICollection<T>
     {
         /** Track the elements as they are added to the set */
+        [CLSCompliant(false)]
         protected IList<T> _elements = new List<T>();
 
+        [CLSCompliant(false)]
         protected HashSet<T> _elementSet = new HashSet<T>();
 
         public T Get( int i )

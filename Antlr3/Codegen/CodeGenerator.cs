@@ -45,6 +45,7 @@ namespace Antlr3.Codegen
     using ArgumentException = System.ArgumentException;
     using AttributeScope = Antlr3.Tool.AttributeScope;
     using BitSet = Antlr3.Misc.BitSet;
+    using CLSCompliant = System.CLSCompliantAttribute;
     using CommonGroupLoader = Antlr3.ST.CommonGroupLoader;
     using CommonToken = Antlr.Runtime.CommonToken;
     using DateTime = System.DateTime;
@@ -194,6 +195,7 @@ namespace Antlr3.Codegen
         }
 
         #region Properties
+        [CLSCompliant(false)]
         public StringTemplateGroup BaseTemplates
         {
             get
@@ -201,6 +203,7 @@ namespace Antlr3.Codegen
                 return baseTemplates;
             }
         }
+        [CLSCompliant(false)]
         public StringTemplate RecognizerST
         {
             get
@@ -208,6 +211,7 @@ namespace Antlr3.Codegen
                 return outputFileST;
             }
         }
+        [CLSCompliant(false)]
         public StringTemplateGroup Templates
         {
             get
@@ -222,6 +226,7 @@ namespace Antlr3.Codegen
                 return GetVocabFileName();
             }
         }
+        [CLSCompliant(false)]
         public bool Debug
         {
             get
@@ -233,6 +238,7 @@ namespace Antlr3.Codegen
                 debug = value;
             }
         }
+        [CLSCompliant(false)]
         public bool Profile
         {
             get
@@ -249,6 +255,7 @@ namespace Antlr3.Codegen
                 }
             }
         }
+        [CLSCompliant(false)]
         public bool Trace
         {
             get

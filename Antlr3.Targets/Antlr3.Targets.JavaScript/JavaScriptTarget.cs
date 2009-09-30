@@ -31,6 +31,7 @@
  */
 namespace Antlr3.Targets
 {
+    using CLSCompliant = System.CLSCompliantAttribute;
     using StringBuilder = System.Text.StringBuilder;
     using Target = Antlr3.Codegen.Target;
 
@@ -60,6 +61,7 @@ namespace Antlr3.Targets
          *
          *  Note: stole the following two methods from the ActionScript target.
          */
+        [CLSCompliant(false)]
         public override string GetTarget64BitStringFromValue( ulong word )
         {
             StringBuilder buf = new StringBuilder( 22 ); // enough for the two "0x", "," and " "

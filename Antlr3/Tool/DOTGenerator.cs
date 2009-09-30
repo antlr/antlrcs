@@ -87,6 +87,7 @@ namespace Antlr3.Tool
                 arrowhead = value;
             }
         }
+        [CLSCompliant(false)]
         public string RankDir
         {
             get

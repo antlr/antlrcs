@@ -1,4 +1,4 @@
-// $ANTLR 3.1.2 Language\\Action.g3 2009-07-30 16:11:23
+// $ANTLR 3.1.2 Language\\Action.g3 2009-09-30 13:22:27
 
 // The variable 'variable' is assigned but its value is never used.
 #pragma warning disable 219
@@ -3710,7 +3710,6 @@ public partial class ActionParser : Parser
 		int _s = s;
 		switch ( s )
 		{
-
 			case 0:
 				int LA15_0 = input.LA(1);
 
@@ -3734,7 +3733,6 @@ public partial class ActionParser : Parser
 				input.Seek(index15_0);
 				if ( s>=0 ) return s;
 				break;
-
 			case 1:
 				int LA15_1 = input.LA(1);
 
@@ -3750,7 +3748,6 @@ public partial class ActionParser : Parser
 				input.Seek(index15_1);
 				if ( s>=0 ) return s;
 				break;
-
 			case 2:
 				int LA15_3 = input.LA(1);
 

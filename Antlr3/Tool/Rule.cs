@@ -37,6 +37,7 @@ namespace Antlr3.Tool
     using Antlr.Runtime.JavaExtensions;
 
     using ANTLRParser = Antlr3.Grammars.ANTLRParser;
+    using CLSCompliant = System.CLSCompliantAttribute;
     using CodeGenerator = Antlr3.Codegen.CodeGenerator;
     using CommonToken = Antlr.Runtime.CommonToken;
     using IDictionary = System.Collections.IDictionary;
@@ -232,6 +233,7 @@ namespace Antlr3.Tool
                 return GetInlineActions();
             }
         }
+        [CLSCompliant(false)]
         public IDictionary RuleLabels
         {
             get
@@ -239,6 +241,7 @@ namespace Antlr3.Tool
                 return GetRuleLabels();
             }
         }
+        [CLSCompliant(false)]
         public IDictionary RuleListLabels
         {
             get

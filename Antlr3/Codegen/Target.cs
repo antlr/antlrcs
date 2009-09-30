@@ -36,6 +36,7 @@ namespace Antlr3.Codegen
 
     using AntlrTool = Antlr3.AntlrTool;
     using ArgumentException = System.ArgumentException;
+    using CLSCompliant = System.CLSCompliantAttribute;
     using Grammar = Antlr3.Tool.Grammar;
     using GrammarType = Antlr3.Tool.GrammarType;
     using IList = System.Collections.IList;
@@ -368,6 +369,7 @@ namespace Antlr3.Codegen
         /** Convert long to 0xNNNNNNNNNNNNNNNN by default for spitting out
          *  with bitsets.  I.e., convert bytes to hex string.
          */
+        [CLSCompliant(false)]
         public virtual string GetTarget64BitStringFromValue( ulong word )
         {
             int numHexDigits = 8 * 2;

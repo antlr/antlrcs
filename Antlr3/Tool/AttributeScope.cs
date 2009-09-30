@@ -36,6 +36,7 @@ namespace Antlr3.Tool
     using System.Linq;
     using Antlr.Runtime.JavaExtensions;
 
+    using CLSCompliant = System.CLSCompliantAttribute;
     using CodeGenerator = Antlr3.Codegen.CodeGenerator;
     using IToken = Antlr.Runtime.IToken;
 
@@ -116,6 +117,7 @@ namespace Antlr3.Tool
                 return actions;
             }
         }
+        [CLSCompliant(false)]
         public ICollection<Attribute> Attributes
         {
             get

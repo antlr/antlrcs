@@ -1,4 +1,4 @@
-// $ANTLR 3.1.2 Language\\Group.g3 2009-04-18 02:24:03
+// $ANTLR 3.1.2 Language\\Group.g3 2009-09-30 13:27:19
 
 // The variable 'variable' is assigned but its value is never used.
 #pragma warning disable 219
@@ -54,7 +54,7 @@ namespace Antlr3.ST.Language
 [System.CLSCompliant(false)]
 public partial class GroupParser : Parser
 {
-	public static readonly string[] tokenNames = new string[] {
+	internal static readonly string[] tokenNames = new string[] {
 		"<invalid>", "<EOR>", "<DOWN>", "<UP>", "ANONYMOUS_TEMPLATE", "ASSIGN", "AT", "BIGSTRING", "COLON", "COMMA", "DEFINED_TO_BE", "DOT", "ID", "KWDEFAULT", "KWGROUP", "KWIMPLEMENTS", "LBRACK", "LPAREN", "ML_COMMENT", "OPTIONAL", "PLUS", "RBRACK", "RPAREN", "SEMI", "SL_COMMENT", "STAR", "STRING", "WS"
 	};
 	public const int EOF=-1;
@@ -761,7 +761,6 @@ public partial class GroupParser : Parser
 	// Language\\Group.g3:257:0: map returns [Map mapping=new HashMap()] : LBRACK mapPairs[mapping] RBRACK ;
 	private Map map(  )
 	{
-
 		Map mapping = new HashMap();
 
 		try
@@ -1002,7 +1001,6 @@ public partial class GroupParser : Parser
 	// Language\\Group.g3:276:0: keyValue returns [StringTemplate value=null] : (s1= BIGSTRING |s2= STRING |k= ID {...}?|);
 	private StringTemplate keyValue(  )
 	{
-
 		StringTemplate value = null;
 
 		IToken s1=null;

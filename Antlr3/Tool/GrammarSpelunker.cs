@@ -37,6 +37,7 @@ namespace Antlr3.Tool
 #if BUILD_SPELUNKER
     using Console = System.Console;
 #endif
+    using CLSCompliant = System.CLSCompliantAttribute;
     using Exception = System.Exception;
     using Path = System.IO.Path;
     using StringBuilder = System.Text.StringBuilder;
@@ -59,6 +60,7 @@ namespace Antlr3.Tool
     {
         protected string grammarFileName;
         protected string token;
+        [CLSCompliant(false)]
         protected Scanner scanner;
 
         // grammar info / properties
@@ -176,6 +178,7 @@ namespace Antlr3.Tool
                 importedGrammars = null;
         }
 
+        [CLSCompliant(false)]
         public virtual string GrammarModifier
         {
             get
@@ -183,6 +186,7 @@ namespace Antlr3.Tool
                 return grammarModifier;
             }
         }
+        [CLSCompliant(false)]
         public virtual string GrammarName
         {
             get
@@ -190,6 +194,7 @@ namespace Antlr3.Tool
                 return grammarName;
             }
         }
+        [CLSCompliant(false)]
         public virtual string TokenVocab
         {
             get
@@ -197,6 +202,7 @@ namespace Antlr3.Tool
                 return tokenVocab;
             }
         }
+        [CLSCompliant(false)]
         public virtual string Language
         {
             get
@@ -204,6 +210,7 @@ namespace Antlr3.Tool
                 return language;
             }
         }
+        [CLSCompliant(false)]
         public virtual List<string> ImportedGrammars
         {
             get

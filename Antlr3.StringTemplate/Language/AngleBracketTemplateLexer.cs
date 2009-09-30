@@ -1,4 +1,4 @@
-// $ANTLR 3.1.2 Language\\AngleBracketTemplateLexer.g3 2009-07-30 15:53:49
+// $ANTLR 3.1.2 Language\\AngleBracketTemplateLexer.g3 2009-09-30 13:27:15
 
 // The variable 'variable' is assigned but its value is never used.
 #pragma warning disable 219
@@ -145,7 +145,7 @@ public partial class AngleBracketTemplateLexer : Lexer
 		{
 			int _type = ACTION;
 			int _channel = DefaultTokenChannel;
-			IToken exp=null;
+			CommonToken exp=null;
 			int ch;
 
 
@@ -1200,7 +1200,7 @@ public partial class AngleBracketTemplateLexer : Lexer
 		{
 			int _type = LITERAL;
 			int _channel = DefaultTokenChannel;
-			IToken ind=null;
+			CommonToken ind=null;
 			int ch;
 
 
@@ -1464,8 +1464,8 @@ public partial class AngleBracketTemplateLexer : Lexer
 	{
 		try
 		{
-			IToken st=null;
-			IToken ESC1=null;
+			CommonToken st=null;
+			CommonToken ESC1=null;
 			int ch;
 
 
@@ -1693,7 +1693,7 @@ public partial class AngleBracketTemplateLexer : Lexer
 	{
 		try
 		{
-			IToken ESC2=null;
+			CommonToken ESC2=null;
 			int ch;
 
 
@@ -2038,10 +2038,10 @@ public partial class AngleBracketTemplateLexer : Lexer
 	{
 		try
 		{
-			IToken a=null;
-			IToken b=null;
-			IToken c=null;
-			IToken d=null;
+			CommonToken a=null;
+			CommonToken b=null;
+			CommonToken c=null;
+			CommonToken d=null;
 
 
 				uc = '\0';
@@ -3027,7 +3027,6 @@ public partial class AngleBracketTemplateLexer : Lexer
 		int _s = s;
 		switch ( s )
 		{
-
 			case 0:
 				int LA18_0 = input.LA(1);
 
@@ -3042,7 +3041,6 @@ public partial class AngleBracketTemplateLexer : Lexer
 
 				if ( s>=0 ) return s;
 				break;
-
 			case 1:
 				int LA18_1 = input.LA(1);
 
@@ -3058,7 +3056,6 @@ public partial class AngleBracketTemplateLexer : Lexer
 				input.Seek(index18_1);
 				if ( s>=0 ) return s;
 				break;
-
 			case 2:
 				int LA18_2 = input.LA(1);
 
@@ -3074,7 +3071,6 @@ public partial class AngleBracketTemplateLexer : Lexer
 				input.Seek(index18_2);
 				if ( s>=0 ) return s;
 				break;
-
 			case 3:
 				int LA18_3 = input.LA(1);
 
@@ -3096,7 +3092,6 @@ public partial class AngleBracketTemplateLexer : Lexer
 				input.Seek(index18_3);
 				if ( s>=0 ) return s;
 				break;
-
 			case 4:
 				int LA18_4 = input.LA(1);
 
@@ -3116,7 +3111,6 @@ public partial class AngleBracketTemplateLexer : Lexer
 				input.Seek(index18_4);
 				if ( s>=0 ) return s;
 				break;
-
 			case 5:
 				int LA18_7 = input.LA(1);
 
@@ -3132,7 +3126,6 @@ public partial class AngleBracketTemplateLexer : Lexer
 				input.Seek(index18_7);
 				if ( s>=0 ) return s;
 				break;
-
 			case 6:
 				int LA18_8 = input.LA(1);
 
@@ -3148,7 +3141,6 @@ public partial class AngleBracketTemplateLexer : Lexer
 				input.Seek(index18_8);
 				if ( s>=0 ) return s;
 				break;
-
 			case 7:
 				int LA18_9 = input.LA(1);
 
@@ -3164,7 +3156,6 @@ public partial class AngleBracketTemplateLexer : Lexer
 				input.Seek(index18_9);
 				if ( s>=0 ) return s;
 				break;
-
 			case 8:
 				int LA18_10 = input.LA(1);
 
@@ -3180,7 +3171,6 @@ public partial class AngleBracketTemplateLexer : Lexer
 				input.Seek(index18_10);
 				if ( s>=0 ) return s;
 				break;
-
 			case 9:
 				int LA18_11 = input.LA(1);
 
@@ -3196,7 +3186,6 @@ public partial class AngleBracketTemplateLexer : Lexer
 				input.Seek(index18_11);
 				if ( s>=0 ) return s;
 				break;
-
 			case 10:
 				int LA18_12 = input.LA(1);
 
@@ -3212,7 +3201,6 @@ public partial class AngleBracketTemplateLexer : Lexer
 				input.Seek(index18_12);
 				if ( s>=0 ) return s;
 				break;
-
 			case 11:
 				int LA18_13 = input.LA(1);
 
@@ -3314,7 +3302,6 @@ public partial class AngleBracketTemplateLexer : Lexer
 		int _s = s;
 		switch ( s )
 		{
-
 			case 0:
 				int LA37_0 = input.LA(1);
 
@@ -3334,7 +3321,6 @@ public partial class AngleBracketTemplateLexer : Lexer
 				input.Seek(index37_0);
 				if ( s>=0 ) return s;
 				break;
-
 			case 1:
 				int LA37_1 = input.LA(1);
 
@@ -3354,7 +3340,6 @@ public partial class AngleBracketTemplateLexer : Lexer
 				input.Seek(index37_1);
 				if ( s>=0 ) return s;
 				break;
-
 			case 2:
 				int LA37_2 = input.LA(1);
 
@@ -3370,7 +3355,6 @@ public partial class AngleBracketTemplateLexer : Lexer
 				input.Seek(index37_2);
 				if ( s>=0 ) return s;
 				break;
-
 			case 3:
 				int LA37_3 = input.LA(1);
 
@@ -3386,7 +3370,6 @@ public partial class AngleBracketTemplateLexer : Lexer
 				input.Seek(index37_3);
 				if ( s>=0 ) return s;
 				break;
-
 			case 4:
 				int LA37_5 = input.LA(1);
 

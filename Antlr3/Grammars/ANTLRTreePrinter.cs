@@ -1,4 +1,4 @@
-// $ANTLR 3.1.2 Grammars\\ANTLRTreePrinter.g3 2009-04-18 02:22:43
+// $ANTLR 3.1.2 Grammars\\ANTLRTreePrinter.g3 2009-09-30 13:28:41
 
 // The variable 'variable' is assigned but its value is never used.
 #pragma warning disable 219
@@ -56,9 +56,11 @@ namespace Antlr3.Grammars
  *  University of San Francisco
  *  August 19, 2003
  */
+[System.CodeDom.Compiler.GeneratedCode("ANTLR", "3.1.2")]
+[System.CLSCompliant(false)]
 public partial class ANTLRTreePrinter : TreeParser
 {
-	public static readonly string[] tokenNames = new string[] {
+	internal static readonly string[] tokenNames = new string[] {
 		"<invalid>", "<EOR>", "<DOWN>", "<UP>", "ACTION", "ACTION_CHAR_LITERAL", "ACTION_ESC", "ACTION_STRING_LITERAL", "ALT", "AMPERSAND", "ARG", "ARG_ACTION", "ARGLIST", "ASSIGN", "BACKTRACK_SEMPRED", "BANG", "BLOCK", "CATCH", "CHAR_LITERAL", "CHAR_RANGE", "CLOSE_ELEMENT_OPTION", "CLOSURE", "COLON", "COMBINED_GRAMMAR", "COMMA", "COMMENT", "DIGIT", "DOC_COMMENT", "DOLLAR", "DOT", "DOUBLE_ANGLE_STRING_LITERAL", "DOUBLE_QUOTE_STRING_LITERAL", "EOA", "EOB", "EOR", "EPSILON", "ESC", "ETC", "FINALLY", "FORCED_ACTION", "FRAGMENT", "GATED_SEMPRED", "GRAMMAR", "ID", "IMPLIES", "IMPORT", "INITACTION", "INT", "LABEL", "LEXER", "LEXER_GRAMMAR", "LPAREN", "ML_COMMENT", "NESTED_ACTION", "NESTED_ARG_ACTION", "NOT", "OPEN_ELEMENT_OPTION", "OPTIONAL", "OPTIONS", "OR", "PARSER", "PARSER_GRAMMAR", "PLUS", "PLUS_ASSIGN", "POSITIVE_CLOSURE", "PRIVATE", "PROTECTED", "PUBLIC", "QUESTION", "RANGE", "RCURLY", "RET", "RETURNS", "REWRITE", "ROOT", "RPAREN", "RULE", "RULE_REF", "SCOPE", "SEMI", "SEMPRED", "SL_COMMENT", "SRC", "STAR", "STRAY_BRACKET", "STRING_LITERAL", "SYN_SEMPRED", "SYNPRED", "TEMPLATE", "THROWS", "TOKEN_REF", "TOKENS", "TREE", "TREE_BEGIN", "TREE_GRAMMAR", "WILDCARD", "WS", "WS_LOOP", "WS_OPT", "XDIGIT"
 	};
 	public const int EOF=-1;
@@ -182,7 +184,6 @@ public partial class ANTLRTreePrinter : TreeParser
 	// Grammars\\ANTLRTreePrinter.g3:89:0: public toString[Grammar g, bool showActions] returns [string s=null] : ( grammar_ | rule | alternative | element | single_rewrite | EOR ) ;
 	public string toString( Grammar g, bool showActions )
 	{
-
 		string s = null;
 
 
@@ -1692,7 +1693,7 @@ public partial class ANTLRTreePrinter : TreeParser
 		ANTLRTreePrinter.modifier_return retval = new ANTLRTreePrinter.modifier_return();
 		retval.start = input.LT(1);
 
-		@out(((GrammarAST)retval.start).Text); @out(" ");
+		@out(((GrammarAST)retval.Start).Text); @out(" ");
 		try
 		{
 			// Grammars\\ANTLRTreePrinter.g3:231:4: ( 'protected' | 'public' | 'private' | 'fragment' )
@@ -1924,7 +1925,7 @@ public partial class ANTLRTreePrinter : TreeParser
 		retval.start = input.LT(1);
 
 
-		int numAlts = CountAltsForBlock(((GrammarAST)retval.start));
+		int numAlts = CountAltsForBlock(((GrammarAST)retval.Start));
 
 		try
 		{
@@ -1936,7 +1937,7 @@ public partial class ANTLRTreePrinter : TreeParser
 
 							if ( forceParens||numAlts>1 )
 							{
-								//for ( Antlr.Runtime.Tree.Tree parent = ((GrammarAST)retval.start).getParent(); parent != null && parent.getType() != RULE; parent = parent.getParent() )
+								//for ( Antlr.Runtime.Tree.Tree parent = ((GrammarAST)retval.Start).getParent(); parent != null && parent.getType() != RULE; parent = parent.getParent() )
 								//{
 								//	if ( parent.getType() == BLOCK && countAltsForBlock((GrammarAST)parent) > 1 )
 								//	{
@@ -3388,7 +3389,7 @@ public partial class ANTLRTreePrinter : TreeParser
 					{
 					Match(input,RULE_REF,Follow._RULE_REF_in_atom1466); 
 
-					@out(((GrammarAST)retval.start).ToString());
+					@out(((GrammarAST)retval.Start).ToString());
 
 					if ( input.LA(1)==TokenTypes.Down )
 					{
@@ -3449,7 +3450,7 @@ public partial class ANTLRTreePrinter : TreeParser
 					{
 					Match(input,TOKEN_REF,Follow._TOKEN_REF_in_atom1504); 
 
-					@out(((GrammarAST)retval.start).ToString());
+					@out(((GrammarAST)retval.Start).ToString());
 
 					if ( input.LA(1)==TokenTypes.Down )
 					{
@@ -3510,7 +3511,7 @@ public partial class ANTLRTreePrinter : TreeParser
 					{
 					Match(input,CHAR_LITERAL,Follow._CHAR_LITERAL_in_atom1544); 
 
-					@out(((GrammarAST)retval.start).ToString());
+					@out(((GrammarAST)retval.Start).ToString());
 
 					if ( input.LA(1)==TokenTypes.Down )
 					{
@@ -3550,7 +3551,7 @@ public partial class ANTLRTreePrinter : TreeParser
 					{
 					Match(input,STRING_LITERAL,Follow._STRING_LITERAL_in_atom1568); 
 
-					@out(((GrammarAST)retval.start).ToString());
+					@out(((GrammarAST)retval.Start).ToString());
 
 					if ( input.LA(1)==TokenTypes.Down )
 					{
@@ -3590,7 +3591,7 @@ public partial class ANTLRTreePrinter : TreeParser
 					{
 					Match(input,WILDCARD,Follow._WILDCARD_in_atom1592); 
 
-					@out(((GrammarAST)retval.start).ToString());
+					@out(((GrammarAST)retval.Start).ToString());
 
 					if ( input.LA(1)==TokenTypes.Down )
 					{
@@ -3734,7 +3735,7 @@ public partial class ANTLRTreePrinter : TreeParser
 
 
 	#region Follow sets
-	public static class Follow
+	private static class Follow
 	{
 		public static readonly BitSet _grammar__in_toString72 = new BitSet(new ulong[]{0x2UL});
 		public static readonly BitSet _rule_in_toString78 = new BitSet(new ulong[]{0x2UL});

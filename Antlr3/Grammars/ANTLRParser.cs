@@ -1,4 +1,4 @@
-// $ANTLR 3.1.2 Grammars\\ANTLR.g3 2009-05-07 18:09:39
+// $ANTLR 3.1.2 Grammars\\ANTLR.g3 2009-09-30 13:27:49
 
 // The variable 'variable' is assigned but its value is never used.
 #pragma warning disable 219
@@ -76,6 +76,8 @@ namespace Antlr3.Grammars
  *  University of San Francisco
  *  2005
  */
+[System.CodeDom.Compiler.GeneratedCode("ANTLR", "3.1.2")]
+[System.CLSCompliant(false)]
 public partial class ANTLRParser : Parser
 {
 	internal static readonly string[] tokenNames = new string[] {
@@ -10164,7 +10166,7 @@ public partial class ANTLRParser : Parser
 					 LT(2).CharPositionInLine+1==LT(3).CharPositionInLine)) )
 		{
 			if (state.backtracking>0) {state.failed=true; return ;}
-			throw new FailedPredicateException(input, "synpred1_ANTLR", "LT(1).CharPositionInLine+LT(1).Text.Length==LT(2).CharPositionInLine&&\n\t\t\t LT(2).CharPositionInLine+1==LT(3).CharPositionInLine");
+			throw new FailedPredicateException(input, "synpred1_ANTLR", "LT(1).CharPositionInLine+LT(1).Text.Length==LT(2).CharPositionInLine&&\r\n\t\t\t LT(2).CharPositionInLine+1==LT(3).CharPositionInLine");
 		}
 		PushFollow(Follow._id_in_synpred1_ANTLR1909);
 		id();
@@ -10426,7 +10428,6 @@ public partial class ANTLRParser : Parser
 		int _s = s;
 		switch ( s )
 		{
-
 			case 0:
 				int LA52_7 = input.LA(1);
 
@@ -10442,7 +10443,6 @@ public partial class ANTLRParser : Parser
 				input.Seek(index52_7);
 				if ( s>=0 ) return s;
 				break;
-
 			case 1:
 				int LA52_8 = input.LA(1);
 
@@ -10458,7 +10458,6 @@ public partial class ANTLRParser : Parser
 				input.Seek(index52_8);
 				if ( s>=0 ) return s;
 				break;
-
 			case 2:
 				int LA52_9 = input.LA(1);
 
@@ -10474,7 +10473,6 @@ public partial class ANTLRParser : Parser
 				input.Seek(index52_9);
 				if ( s>=0 ) return s;
 				break;
-
 			case 3:
 				int LA52_10 = input.LA(1);
 
@@ -10490,7 +10488,6 @@ public partial class ANTLRParser : Parser
 				input.Seek(index52_10);
 				if ( s>=0 ) return s;
 				break;
-
 			case 4:
 				int LA52_11 = input.LA(1);
 
@@ -10506,7 +10503,6 @@ public partial class ANTLRParser : Parser
 				input.Seek(index52_11);
 				if ( s>=0 ) return s;
 				break;
-
 			case 5:
 				int LA52_12 = input.LA(1);
 
@@ -10522,7 +10518,6 @@ public partial class ANTLRParser : Parser
 				input.Seek(index52_12);
 				if ( s>=0 ) return s;
 				break;
-
 			case 6:
 				int LA52_13 = input.LA(1);
 
@@ -10538,7 +10533,6 @@ public partial class ANTLRParser : Parser
 				input.Seek(index52_13);
 				if ( s>=0 ) return s;
 				break;
-
 			case 7:
 				int LA52_14 = input.LA(1);
 
@@ -10554,7 +10548,6 @@ public partial class ANTLRParser : Parser
 				input.Seek(index52_14);
 				if ( s>=0 ) return s;
 				break;
-
 			case 8:
 				int LA52_15 = input.LA(1);
 
@@ -10570,7 +10563,6 @@ public partial class ANTLRParser : Parser
 				input.Seek(index52_15);
 				if ( s>=0 ) return s;
 				break;
-
 			case 9:
 				int LA52_16 = input.LA(1);
 
@@ -10670,7 +10662,6 @@ public partial class ANTLRParser : Parser
 		int _s = s;
 		switch ( s )
 		{
-
 			case 0:
 				int LA82_0 = input.LA(1);
 
@@ -10696,7 +10687,6 @@ public partial class ANTLRParser : Parser
 				input.Seek(index82_0);
 				if ( s>=0 ) return s;
 				break;
-
 			case 1:
 				int LA82_1 = input.LA(1);
 
@@ -10712,7 +10702,6 @@ public partial class ANTLRParser : Parser
 				input.Seek(index82_1);
 				if ( s>=0 ) return s;
 				break;
-
 			case 2:
 				int LA82_2 = input.LA(1);
 
@@ -10728,7 +10717,6 @@ public partial class ANTLRParser : Parser
 				input.Seek(index82_2);
 				if ( s>=0 ) return s;
 				break;
-
 			case 3:
 				int LA82_3 = input.LA(1);
 
@@ -10744,7 +10732,6 @@ public partial class ANTLRParser : Parser
 				input.Seek(index82_3);
 				if ( s>=0 ) return s;
 				break;
-
 			case 4:
 				int LA82_4 = input.LA(1);
 
@@ -10770,7 +10757,7 @@ public partial class ANTLRParser : Parser
 	#endregion DFA
 
 	#region Follow sets
-	static class Follow
+	private static class Follow
 	{
 		public static readonly BitSet _ACTION_in_grammar_308 = new BitSet(new ulong[]{0x1002040008000000UL,0x10000000UL});
 		public static readonly BitSet _DOC_COMMENT_in_grammar_319 = new BitSet(new ulong[]{0x1002040008000000UL,0x10000000UL});

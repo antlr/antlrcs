@@ -32,6 +32,7 @@
 
 namespace Antlr3.Tool
 {
+    using CLSCompliant = System.CLSCompliantAttribute;
     using StringTemplate = Antlr3.ST.StringTemplate;
     using Exception = System.Exception;
 
@@ -78,6 +79,7 @@ namespace Antlr3.Tool
             this.arg2 = arg2;
         }
 
+        [CLSCompliant(false)]
         public virtual int Line
         {
             get

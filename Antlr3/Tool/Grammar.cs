@@ -40,6 +40,7 @@ namespace Antlr3.Tool
     using Antlr3.Misc;
 
     using AngleBracketTemplateLexer = Antlr3.ST.Language.AngleBracketTemplateLexer;
+    using CLSCompliant = System.CLSCompliantAttribute;
     using CodeGenerator = Antlr3.Codegen.CodeGenerator;
     using CommonToken = Antlr.Runtime.CommonToken;
     using Console = System.Console;
@@ -170,6 +171,7 @@ namespace Antlr3.Tool
 
         public class LabelElementPair
         {
+            [CLSCompliant(false)]
             public Grammar _outer;
             public IToken label;
             public GrammarAST elementRef;
@@ -593,6 +595,7 @@ namespace Antlr3.Tool
         }
 
         #region Properties
+        [CLSCompliant(false)]
         public IDictionary<string, IDictionary<string, object>> Actions
         {
             get
@@ -668,6 +671,7 @@ namespace Antlr3.Tool
                 defaultRuleModifier = value;
             }
         }
+        [CLSCompliant(false)]
         public ICollection<Rule> DelegatedRuleReferences
         {
             get
@@ -704,6 +708,7 @@ namespace Antlr3.Tool
                 return GetDirectDelegates();
             }
         }
+        [CLSCompliant(false)]
         public string FileName
         {
             get
@@ -877,6 +882,7 @@ namespace Antlr3.Tool
                 return IntervalSet.Of( Label.MIN_TOKEN_TYPE, MaxTokenType );
             }
         }
+        [CLSCompliant(false)]
         public AntlrTool Tool
         {
             get
@@ -1300,7 +1306,8 @@ namespace Antlr3.Tool
         /** for any syntactic predicates, we need to define rules for them; they will get
          *  defined automatically like any other rule. :)
          */
-        protected virtual IList<GrammarAST> GetArtificialRulesForSyntacticPredicates( ANTLRParser parser,
+        [CLSCompliant(false)]
+        protected virtual IList<GrammarAST> GetArtificialRulesForSyntacticPredicates(ANTLRParser parser,
                                                                 IDictionary<string, GrammarAST> nameToSynpredASTMap )
         {
             IList<GrammarAST> rules = new List<GrammarAST>();
@@ -3462,7 +3469,8 @@ namespace Antlr3.Tool
         /** Given set tree like ( SET A B ), check that A and B
          *  are both valid sets themselves, else we must tree like a BLOCK
          */
-        public virtual bool IsValidSet( TreeToNFAConverter nfabuilder, GrammarAST t )
+        [CLSCompliant(false)]
+        public virtual bool IsValidSet(TreeToNFAConverter nfabuilder, GrammarAST t)
         {
             bool valid = true;
             try
@@ -3489,7 +3497,8 @@ namespace Antlr3.Tool
          *
          *		^( RULE ID modifier ARG RET SCOPE block EOR )
          */
-        public virtual IIntSet GetSetFromRule( TreeToNFAConverter nfabuilder, string ruleName )
+        [CLSCompliant(false)]
+        public virtual IIntSet GetSetFromRule(TreeToNFAConverter nfabuilder, string ruleName)
         {
             Rule r = GetRule( ruleName );
             if ( r == null )

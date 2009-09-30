@@ -100,6 +100,7 @@ namespace Antlr3.Tool
             generator.LoadTemplates( language );
         }
 
+        [CLSCompliant(false)]
         public virtual string TokenVocab
         {
             get
@@ -108,6 +109,7 @@ namespace Antlr3.Tool
             }
         }
 
+        [CLSCompliant(false)]
         public virtual CodeGenerator Generator
         {
             get

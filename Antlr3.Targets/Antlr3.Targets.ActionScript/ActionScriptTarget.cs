@@ -31,6 +31,7 @@
  */
 namespace Antlr3.Targets
 {
+    using CLSCompliant = System.CLSCompliantAttribute;
     using CodeGenerator = Antlr3.Codegen.CodeGenerator;
     using Console = System.Console;
     using Grammar = Antlr3.Tool.Grammar;
@@ -118,7 +119,8 @@ namespace Antlr3.Targets
          *  This is to match how the BitSet constructor works, where the bits are
          *  passed in in 32-bit chunks with low-order bits coming first.
          */
-        public override string GetTarget64BitStringFromValue( ulong word )
+        [CLSCompliant(false)]
+        public override string GetTarget64BitStringFromValue(ulong word)
         {
             StringBuilder buf = new StringBuilder( 22 ); // enough for the two "0x", "," and " "
             buf.Append( "0x" );

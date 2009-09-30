@@ -1,4 +1,4 @@
-// $ANTLR 3.1.2 Grammars\\ActionAnalysisLexer.g3 2009-04-18 13:36:23
+// $ANTLR 3.1.2 Grammars\\ActionAnalysisLexer.g3 2009-09-30 13:28:39
 
 // The variable 'variable' is assigned but its value is never used.
 #pragma warning disable 219
@@ -57,6 +57,8 @@ namespace Antlr3.Grammars
  *  remove unusued labels.  This also tracks, for labeled rules,
  *  which are referenced by actions.
  */
+[System.CodeDom.Compiler.GeneratedCode("ANTLR", "3.1.2")]
+[System.CLSCompliant(false)]
 public partial class ActionAnalysisLexer : Lexer
 {
 	public const int EOF=-1;
@@ -141,8 +143,8 @@ public partial class ActionAnalysisLexer : Lexer
 		{
 			int _type = X_Y;
 			int _channel = DefaultTokenChannel;
-			IToken x=null;
-			IToken y=null;
+			CommonToken x=null;
+			CommonToken y=null;
 
 			// Grammars\\ActionAnalysisLexer.g3:92:4: ( '$' x= ID '.' y= ID {...}?)
 			// Grammars\\ActionAnalysisLexer.g3:92:4: '$' x= ID '.' y= ID {...}?
@@ -220,7 +222,7 @@ public partial class ActionAnalysisLexer : Lexer
 		{
 			int _type = X;
 			int _channel = DefaultTokenChannel;
-			IToken ID1=null;
+			CommonToken ID1=null;
 
 			// Grammars\\ActionAnalysisLexer.g3:135:4: ( '$' ID {...}?)
 			// Grammars\\ActionAnalysisLexer.g3:135:4: '$' ID {...}?
@@ -260,7 +262,7 @@ public partial class ActionAnalysisLexer : Lexer
 		{
 			int _type = Y;
 			int _channel = DefaultTokenChannel;
-			IToken ID2=null;
+			CommonToken ID2=null;
 
 			// Grammars\\ActionAnalysisLexer.g3:144:4: ( '$' ID {...}?)
 			// Grammars\\ActionAnalysisLexer.g3:144:4: '$' ID {...}?

@@ -38,6 +38,7 @@ namespace Antlr3.Misc
 
     using ArgumentException = System.ArgumentException;
     using Array = System.Array;
+    using CLSCompliant = System.CLSCompliantAttribute;
     using Grammar = Antlr3.Tool.Grammar;
     using ICloneable = System.ICloneable;
     using IDictionary = System.Collections.IDictionary;
@@ -86,7 +87,8 @@ namespace Antlr3.Misc
         }
 
         /** Construction from a static array of longs */
-        public BitSet( ulong[] bits )
+        [CLSCompliant(false)]
+        public BitSet(ulong[] bits)
         {
             _bits = bits;
         }
@@ -571,6 +573,7 @@ namespace Antlr3.Misc
             return elems;
         }
 
+        [CLSCompliant(false)]
         public virtual ulong[] ToPackedArray()
         {
             return _bits;

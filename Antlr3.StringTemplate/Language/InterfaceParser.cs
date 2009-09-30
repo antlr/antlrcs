@@ -1,4 +1,4 @@
-// $ANTLR 3.1.2 Language\\Interface.g3 2009-04-18 02:24:02
+// $ANTLR 3.1.2 Language\\Interface.g3 2009-09-30 13:27:17
 
 // The variable 'variable' is assigned but its value is never used.
 #pragma warning disable 219
@@ -51,7 +51,7 @@ namespace Antlr3.ST.Language
 [System.CLSCompliant(false)]
 public partial class InterfaceParser : Parser
 {
-	public static readonly string[] tokenNames = new string[] {
+	internal static readonly string[] tokenNames = new string[] {
 		"<invalid>", "<EOR>", "<DOWN>", "<UP>", "COLON", "COMMA", "ID", "INTERFACE", "LPAREN", "ML_COMMENT", "OPTIONAL", "RPAREN", "SEMI", "SL_COMMENT", "WS"
 	};
 	public const int EOF=-1;
@@ -251,7 +251,6 @@ public partial class InterfaceParser : Parser
 	// Language\\Interface.g3:142:0: args returns [System.Collections.Generic.SortedList<string, FormalArgument> args] : a= ID ( COMMA b= ID )* ;
 	private System.Collections.Generic.SortedList<string, FormalArgument> args(  )
 	{
-
 		System.Collections.Generic.SortedList<string, FormalArgument> args = default(System.Collections.Generic.SortedList<string, FormalArgument>);
 
 		IToken a=null;

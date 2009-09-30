@@ -62,6 +62,7 @@ namespace Antlr3.Analysis
         }
 
         #region Properties
+        [CLSCompliant(false)]
         public Label Label
         {
             get
@@ -69,6 +70,7 @@ namespace Antlr3.Analysis
                 return label;
             }
         }
+        [CLSCompliant(false)]
         public State Target
         {
             get

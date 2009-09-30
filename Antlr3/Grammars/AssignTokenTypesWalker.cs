@@ -1,4 +1,4 @@
-// $ANTLR 3.1.2 Grammars\\AssignTokenTypesWalker.g3 2009-04-18 02:22:45
+// $ANTLR 3.1.2 Grammars\\AssignTokenTypesWalker.g3 2009-09-30 13:28:43
 
 // The variable 'variable' is assigned but its value is never used.
 #pragma warning disable 219
@@ -107,9 +107,11 @@ namespace Antlr3.Grammars
  *     g.defineToken(<tokenID>, ttype);
  *     where some of the ttype values will be the same for aliases tokens.
  */
+[System.CodeDom.Compiler.GeneratedCode("ANTLR", "3.1.2")]
+[System.CLSCompliant(false)]
 public partial class AssignTokenTypesWalker : TreeParser
 {
-	public static readonly string[] tokenNames = new string[] {
+	internal static readonly string[] tokenNames = new string[] {
 		"<invalid>", "<EOR>", "<DOWN>", "<UP>", "ACTION", "ACTION_CHAR_LITERAL", "ACTION_ESC", "ACTION_STRING_LITERAL", "ALT", "AMPERSAND", "ARG", "ARG_ACTION", "ARGLIST", "ASSIGN", "BACKTRACK_SEMPRED", "BANG", "BLOCK", "CATCH", "CHAR_LITERAL", "CHAR_RANGE", "CLOSE_ELEMENT_OPTION", "CLOSURE", "COLON", "COMBINED_GRAMMAR", "COMMA", "COMMENT", "DIGIT", "DOC_COMMENT", "DOLLAR", "DOT", "DOUBLE_ANGLE_STRING_LITERAL", "DOUBLE_QUOTE_STRING_LITERAL", "EOA", "EOB", "EOR", "EPSILON", "ESC", "ETC", "FINALLY", "FORCED_ACTION", "FRAGMENT", "GATED_SEMPRED", "GRAMMAR", "ID", "IMPLIES", "IMPORT", "INITACTION", "INT", "LABEL", "LEXER", "LEXER_GRAMMAR", "LPAREN", "ML_COMMENT", "NESTED_ACTION", "NESTED_ARG_ACTION", "NOT", "OPEN_ELEMENT_OPTION", "OPTIONAL", "OPTIONS", "OR", "PARSER", "PARSER_GRAMMAR", "PLUS", "PLUS_ASSIGN", "POSITIVE_CLOSURE", "PRIVATE", "PROTECTED", "PUBLIC", "QUESTION", "RANGE", "RCURLY", "RET", "RETURNS", "REWRITE", "ROOT", "RPAREN", "RULE", "RULE_REF", "SCOPE", "SEMI", "SEMPRED", "SL_COMMENT", "SRC", "STAR", "STRAY_BRACKET", "STRING_LITERAL", "SYN_SEMPRED", "SYNPRED", "TEMPLATE", "THROWS", "TOKEN_REF", "TOKENS", "TREE", "TREE_BEGIN", "TREE_GRAMMAR", "WILDCARD", "WS", "WS_LOOP", "WS_OPT", "XDIGIT", "CHARSET"
 	};
 	public const int EOF=-1;
@@ -706,7 +708,6 @@ public partial class AssignTokenTypesWalker : TreeParser
 	// Grammars\\AssignTokenTypesWalker.g3:167:0: optionsSpec returns [Map opts=new HashMap()] : ^( OPTIONS ( option[$opts] )+ ) ;
 	private Map optionsSpec(  )
 	{
-
 		Map opts = new HashMap();
 
 		try
@@ -840,7 +841,7 @@ public partial class AssignTokenTypesWalker : TreeParser
 
 
 			if ( state.backtracking == 0 )
-				retval.value = ((GrammarAST)retval.start).Text;
+				retval.value = ((GrammarAST)retval.Start).Text;
 
 		try
 		{
@@ -1644,7 +1645,7 @@ public partial class AssignTokenTypesWalker : TreeParser
 			}
 
 			Match(input,EOR,Follow._EOR_in_rule630); 
-			TrackTokenRule(id,(m!=null?((GrammarAST)m.start):null),(b!=null?((GrammarAST)b.start):null));
+			TrackTokenRule(id,(m!=null?((GrammarAST)m.Start):null),(b!=null?((GrammarAST)b.Start):null));
 
 			Match(input, TokenTypes.Up, null); 
 
@@ -3200,7 +3201,7 @@ public partial class AssignTokenTypesWalker : TreeParser
 
 
 	#region Follow sets
-	public static class Follow
+	private static class Follow
 	{
 		public static readonly BitSet _LEXER_GRAMMAR_in_grammar_68 = new BitSet(new ulong[]{0x4UL});
 		public static readonly BitSet _grammarSpec_in_grammar_73 = new BitSet(new ulong[]{0x8UL});

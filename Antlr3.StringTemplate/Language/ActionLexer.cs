@@ -1,4 +1,4 @@
-// $ANTLR 3.1.2 Language\\Action.g3 2009-04-18 13:36:20
+// $ANTLR 3.1.2 Language\\Action.g3 2009-09-30 13:22:28
 
 // The variable 'variable' is assigned but its value is never used.
 #pragma warning disable 219
@@ -547,7 +547,7 @@ public partial class ActionLexer : Lexer
 		{
 			int _type = ANONYMOUS_TEMPLATE;
 			int _channel = DefaultTokenChannel;
-			IToken ESC_CHAR1=null;
+			CommonToken ESC_CHAR1=null;
 			int ch;
 
 
@@ -762,8 +762,8 @@ public partial class ActionLexer : Lexer
 	{
 		try
 		{
-			IToken a=null;
-			IToken a2=null;
+			CommonToken a=null;
+			CommonToken a2=null;
 
 
 				_text = string.Empty; // this template is empty text
@@ -974,7 +974,7 @@ public partial class ActionLexer : Lexer
 	{
 		try
 		{
-			IToken ESC_CHAR2=null;
+			CommonToken ESC_CHAR2=null;
 			int ch;
 
 
@@ -2135,7 +2135,6 @@ public partial class ActionLexer : Lexer
 		int _s = s;
 		switch ( s )
 		{
-
 			case 0:
 				int LA5_0 = input.LA(1);
 
@@ -2154,7 +2153,6 @@ public partial class ActionLexer : Lexer
 
 				if ( s>=0 ) return s;
 				break;
-
 			case 1:
 				int LA5_1 = input.LA(1);
 
@@ -2165,7 +2163,6 @@ public partial class ActionLexer : Lexer
 
 				if ( s>=0 ) return s;
 				break;
-
 			case 2:
 				int LA5_2 = input.LA(1);
 
@@ -2176,7 +2173,6 @@ public partial class ActionLexer : Lexer
 
 				if ( s>=0 ) return s;
 				break;
-
 			case 3:
 				int LA5_3 = input.LA(1);
 
@@ -2189,7 +2185,6 @@ public partial class ActionLexer : Lexer
 
 				if ( s>=0 ) return s;
 				break;
-
 			case 4:
 				int LA5_4 = input.LA(1);
 
@@ -2200,7 +2195,6 @@ public partial class ActionLexer : Lexer
 
 				if ( s>=0 ) return s;
 				break;
-
 			case 5:
 				int LA5_5 = input.LA(1);
 
@@ -2223,7 +2217,6 @@ public partial class ActionLexer : Lexer
 
 				if ( s>=0 ) return s;
 				break;
-
 			case 6:
 				int LA5_7 = input.LA(1);
 
@@ -2234,7 +2227,6 @@ public partial class ActionLexer : Lexer
 
 				if ( s>=0 ) return s;
 				break;
-
 			case 7:
 				int LA5_8 = input.LA(1);
 
@@ -2257,7 +2249,6 @@ public partial class ActionLexer : Lexer
 
 				if ( s>=0 ) return s;
 				break;
-
 			case 8:
 				int LA5_9 = input.LA(1);
 
@@ -2270,7 +2261,6 @@ public partial class ActionLexer : Lexer
 
 				if ( s>=0 ) return s;
 				break;
-
 			case 9:
 				int LA5_10 = input.LA(1);
 
@@ -2283,7 +2273,6 @@ public partial class ActionLexer : Lexer
 
 				if ( s>=0 ) return s;
 				break;
-
 			case 10:
 				int LA5_11 = input.LA(1);
 
@@ -2298,7 +2287,6 @@ public partial class ActionLexer : Lexer
 
 				if ( s>=0 ) return s;
 				break;
-
 			case 11:
 				int LA5_12 = input.LA(1);
 
@@ -2311,7 +2299,6 @@ public partial class ActionLexer : Lexer
 
 				if ( s>=0 ) return s;
 				break;
-
 			case 12:
 				int LA5_13 = input.LA(1);
 
@@ -2330,7 +2317,6 @@ public partial class ActionLexer : Lexer
 
 				if ( s>=0 ) return s;
 				break;
-
 			case 13:
 				int LA5_14 = input.LA(1);
 
@@ -2346,7 +2332,6 @@ public partial class ActionLexer : Lexer
 				input.Seek(index5_14);
 				if ( s>=0 ) return s;
 				break;
-
 			case 14:
 				int LA5_15 = input.LA(1);
 
@@ -2359,7 +2344,6 @@ public partial class ActionLexer : Lexer
 
 				if ( s>=0 ) return s;
 				break;
-
 			case 15:
 				int LA5_16 = input.LA(1);
 
@@ -2370,7 +2354,6 @@ public partial class ActionLexer : Lexer
 
 				if ( s>=0 ) return s;
 				break;
-
 			case 16:
 				int LA5_17 = input.LA(1);
 
@@ -2381,7 +2364,6 @@ public partial class ActionLexer : Lexer
 
 				if ( s>=0 ) return s;
 				break;
-
 			case 17:
 				int LA5_18 = input.LA(1);
 
@@ -2394,7 +2376,6 @@ public partial class ActionLexer : Lexer
 
 				if ( s>=0 ) return s;
 				break;
-
 			case 18:
 				int LA5_19 = input.LA(1);
 
@@ -2405,7 +2386,6 @@ public partial class ActionLexer : Lexer
 
 				if ( s>=0 ) return s;
 				break;
-
 			case 19:
 				int LA5_20 = input.LA(1);
 
@@ -2428,7 +2408,6 @@ public partial class ActionLexer : Lexer
 
 				if ( s>=0 ) return s;
 				break;
-
 			case 20:
 				int LA5_22 = input.LA(1);
 
@@ -2439,7 +2418,6 @@ public partial class ActionLexer : Lexer
 
 				if ( s>=0 ) return s;
 				break;
-
 			case 21:
 				int LA5_23 = input.LA(1);
 
@@ -2462,7 +2440,6 @@ public partial class ActionLexer : Lexer
 
 				if ( s>=0 ) return s;
 				break;
-
 			case 22:
 				int LA5_24 = input.LA(1);
 
@@ -2475,7 +2452,6 @@ public partial class ActionLexer : Lexer
 
 				if ( s>=0 ) return s;
 				break;
-
 			case 23:
 				int LA5_25 = input.LA(1);
 
@@ -2488,7 +2464,6 @@ public partial class ActionLexer : Lexer
 
 				if ( s>=0 ) return s;
 				break;
-
 			case 24:
 				int LA5_26 = input.LA(1);
 
@@ -2503,7 +2478,6 @@ public partial class ActionLexer : Lexer
 
 				if ( s>=0 ) return s;
 				break;
-
 			case 25:
 				int LA5_27 = input.LA(1);
 
@@ -2516,7 +2490,6 @@ public partial class ActionLexer : Lexer
 
 				if ( s>=0 ) return s;
 				break;
-
 			case 26:
 				int LA5_28 = input.LA(1);
 
@@ -2606,7 +2579,6 @@ public partial class ActionLexer : Lexer
 		int _s = s;
 		switch ( s )
 		{
-
 			case 0:
 				int LA6_0 = input.LA(1);
 
@@ -2621,7 +2593,6 @@ public partial class ActionLexer : Lexer
 
 				if ( s>=0 ) return s;
 				break;
-
 			case 1:
 				int LA6_2 = input.LA(1);
 
@@ -2634,7 +2605,6 @@ public partial class ActionLexer : Lexer
 
 				if ( s>=0 ) return s;
 				break;
-
 			case 2:
 				int LA6_5 = input.LA(1);
 
@@ -2650,7 +2620,6 @@ public partial class ActionLexer : Lexer
 				input.Seek(index6_5);
 				if ( s>=0 ) return s;
 				break;
-
 			case 3:
 				int LA6_6 = input.LA(1);
 
@@ -2743,7 +2712,6 @@ public partial class ActionLexer : Lexer
 		int _s = s;
 		switch ( s )
 		{
-
 			case 0:
 				int LA12_0 = input.LA(1);
 
@@ -2758,7 +2726,6 @@ public partial class ActionLexer : Lexer
 
 				if ( s>=0 ) return s;
 				break;
-
 			case 1:
 				int LA12_2 = input.LA(1);
 
@@ -2771,7 +2738,6 @@ public partial class ActionLexer : Lexer
 
 				if ( s>=0 ) return s;
 				break;
-
 			case 2:
 				int LA12_5 = input.LA(1);
 
@@ -2787,7 +2753,6 @@ public partial class ActionLexer : Lexer
 				input.Seek(index12_5);
 				if ( s>=0 ) return s;
 				break;
-
 			case 3:
 				int LA12_6 = input.LA(1);
 

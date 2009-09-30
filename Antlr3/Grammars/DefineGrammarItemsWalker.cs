@@ -1,4 +1,4 @@
-// $ANTLR 3.1.2 Grammars\\DefineGrammarItemsWalker.g3 2009-04-24 11:05:57
+// $ANTLR 3.1.2 Grammars\\DefineGrammarItemsWalker.g3 2009-09-30 13:28:45
 
 // The variable 'variable' is assigned but its value is never used.
 #pragma warning disable 219
@@ -56,9 +56,11 @@ using Map = System.Collections.IDictionary;
 using HashMap = System.Collections.Generic.Dictionary<object, object>;
 namespace Antlr3.Grammars
 {
+[System.CodeDom.Compiler.GeneratedCode("ANTLR", "3.1.2")]
+[System.CLSCompliant(false)]
 public partial class DefineGrammarItemsWalker : TreeParser
 {
-	public static readonly string[] tokenNames = new string[] {
+	internal static readonly string[] tokenNames = new string[] {
 		"<invalid>", "<EOR>", "<DOWN>", "<UP>", "ACTION", "ACTION_CHAR_LITERAL", "ACTION_ESC", "ACTION_STRING_LITERAL", "ALT", "AMPERSAND", "ARG", "ARG_ACTION", "ARGLIST", "ASSIGN", "BACKTRACK_SEMPRED", "BANG", "BLOCK", "CATCH", "CHAR_LITERAL", "CHAR_RANGE", "CLOSE_ELEMENT_OPTION", "CLOSURE", "COLON", "COMBINED_GRAMMAR", "COMMA", "COMMENT", "DIGIT", "DOC_COMMENT", "DOLLAR", "DOT", "DOUBLE_ANGLE_STRING_LITERAL", "DOUBLE_QUOTE_STRING_LITERAL", "EOA", "EOB", "EOR", "EPSILON", "ESC", "ETC", "FINALLY", "FORCED_ACTION", "FRAGMENT", "GATED_SEMPRED", "GRAMMAR", "ID", "IMPLIES", "IMPORT", "INITACTION", "INT", "LABEL", "LEXER", "LEXER_GRAMMAR", "LPAREN", "ML_COMMENT", "NESTED_ACTION", "NESTED_ARG_ACTION", "NOT", "OPEN_ELEMENT_OPTION", "OPTIONAL", "OPTIONS", "OR", "PARSER", "PARSER_GRAMMAR", "PLUS", "PLUS_ASSIGN", "POSITIVE_CLOSURE", "PRIVATE", "PROTECTED", "PUBLIC", "QUESTION", "RANGE", "RCURLY", "RET", "RETURNS", "REWRITE", "ROOT", "RPAREN", "RULE", "RULE_REF", "SCOPE", "SEMI", "SEMPRED", "SL_COMMENT", "SRC", "STAR", "STRAY_BRACKET", "STRING_LITERAL", "SYN_SEMPRED", "SYNPRED", "TEMPLATE", "THROWS", "TOKEN_REF", "TOKENS", "TREE", "TREE_BEGIN", "TREE_GRAMMAR", "WILDCARD", "WS", "WS_LOOP", "WS_OPT", "XDIGIT"
 	};
 	public const int EOF=-1;
@@ -196,7 +198,7 @@ public partial class DefineGrammarItemsWalker : TreeParser
 
 
 		grammar = g;
-		root = ((GrammarAST)retval.start);
+		root = ((GrammarAST)retval.Start);
 
 		try
 		{
@@ -1360,12 +1362,12 @@ public partial class DefineGrammarItemsWalker : TreeParser
 								if ( char.IsUpper(name[0]) && grammar.type==GrammarType.Combined )
 								{
 									// a merged grammar spec, track lexer rules and send to another grammar
-									grammar.DefineLexerRuleFoundInParser(id.token, ((GrammarAST)retval.start));
+									grammar.DefineLexerRuleFoundInParser(id.token, ((GrammarAST)retval.Start));
 								}
 								else
 								{
-									int numAlts = CountAltsForRule(((GrammarAST)retval.start));
-									grammar.DefineRule(id.Token, (modifier4!=null?modifier4.mod:default(string)), opts, ((GrammarAST)retval.start), args, numAlts);
+									int numAlts = CountAltsForRule(((GrammarAST)retval.Start));
+									grammar.DefineRule(id.Token, (modifier4!=null?modifier4.mod:default(string)), opts, ((GrammarAST)retval.Start), args, numAlts);
 									r = grammar.GetRule(name);
 									if ( args!=null )
 									{
@@ -1483,7 +1485,7 @@ public partial class DefineGrammarItemsWalker : TreeParser
 
 								// copy rule options into the block AST, which is where
 								// the analysis will look for k option etc...
-								(b!=null?((GrammarAST)b.start):null).BlockOptions = opts;
+								(b!=null?((GrammarAST)b.Start):null).BlockOptions = opts;
 							
 			}
 
@@ -1558,7 +1560,7 @@ public partial class DefineGrammarItemsWalker : TreeParser
 		retval.start = input.LT(1);
 
 
-			retval.mod = ((GrammarAST)retval.start).Token.Text;
+			retval.mod = ((GrammarAST)retval.Start).Token.Text;
 
 		try
 		{
@@ -1598,7 +1600,6 @@ public partial class DefineGrammarItemsWalker : TreeParser
 	// Grammars\\DefineGrammarItemsWalker.g3:261:0: throwsSpec returns [HashSet<string> exceptions] : ^( 'throws' ( ID )+ ) ;
 	private HashSet<string> throwsSpec(  )
 	{
-
 		HashSet<string> exceptions = default(HashSet<string>);
 
 		GrammarAST ID6=null;
@@ -2035,8 +2036,8 @@ public partial class DefineGrammarItemsWalker : TreeParser
 			{
 				if ( grammar.type!=GrammarType.Lexer && grammar.GetOption("output")!=null && blockLevel==1 )
 				{
-					GrammarAST aRewriteNode = ((GrammarAST)retval.start).FindFirstType(REWRITE); // alt itself has rewrite?
-					GrammarAST rewriteAST = (GrammarAST)((GrammarAST)retval.start).Parent.GetChild(((GrammarAST)retval.start).ChildIndex + 1);
+					GrammarAST aRewriteNode = ((GrammarAST)retval.Start).FindFirstType(REWRITE); // alt itself has rewrite?
+					GrammarAST rewriteAST = (GrammarAST)((GrammarAST)retval.Start).Parent.GetChild(((GrammarAST)retval.Start).ChildIndex + 1);
 					// we have a rewrite if alt uses it inside subrule or this alt has one
 					// but don't count -> ... rewrites, which mean "do default auto construction"
 					if ( aRewriteNode!=null||
@@ -2046,7 +2047,7 @@ public partial class DefineGrammarItemsWalker : TreeParser
 						  rewriteAST.GetChild(0).Type!=ETC) )
 					{
 						Rule r = grammar.GetRule(currentRuleName);
-						r.TrackAltsWithRewrites(((GrammarAST)retval.start),this.outerAltNum);
+						r.TrackAltsWithRewrites(((GrammarAST)retval.Start),this.outerAltNum);
 					}
 				}
 			}
@@ -2466,7 +2467,7 @@ public partial class DefineGrammarItemsWalker : TreeParser
 				if ( state.backtracking == 0 )
 				{
 
-									GrammarAST e = (el!=null?((GrammarAST)el.start):null);
+									GrammarAST e = (el!=null?((GrammarAST)el.Start):null);
 									if ( e.Type==ANTLRParser.ROOT || e.Type==ANTLRParser.BANG )
 									{
 										e = (GrammarAST)e.GetChild(0);
@@ -2503,7 +2504,7 @@ public partial class DefineGrammarItemsWalker : TreeParser
 				if ( state.backtracking == 0 )
 				{
 
-									GrammarAST a = (a2!=null?((GrammarAST)a2.start):null);
+									GrammarAST a = (a2!=null?((GrammarAST)a2.Start):null);
 									if ( a.Type==ANTLRParser.ROOT || a.Type==ANTLRParser.BANG )
 									{
 										a = (GrammarAST)a.GetChild(0);
@@ -2872,7 +2873,7 @@ public partial class DefineGrammarItemsWalker : TreeParser
 			if ( state.backtracking == 0 )
 			{
 
-							GrammarAST block = (GrammarAST)((GrammarAST)retval.start).GetChild(0);
+							GrammarAST block = (GrammarAST)((GrammarAST)retval.Start).GetChild(0);
 							IDictionary<string, object> opts=new Dictionary<string, object>();
 							opts["greedy"] = "false";
 							if ( grammar.type!=GrammarType.Lexer )
@@ -3295,11 +3296,11 @@ public partial class DefineGrammarItemsWalker : TreeParser
 		GrammarAST pred=null;
 
 
-			currentRewriteRule = ((GrammarAST)retval.start); // has to execute during backtracking
+			currentRewriteRule = ((GrammarAST)retval.Start); // has to execute during backtracking
 			if ( state.backtracking == 0 )
 			{
 				if ( grammar.BuildAST )
-					((GrammarAST)retval.start).rewriteRefsDeep = new HashSet<GrammarAST>();
+					((GrammarAST)retval.Start).rewriteRefsDeep = new HashSet<GrammarAST>();
 			}
 
 		try
@@ -3409,7 +3410,7 @@ public partial class DefineGrammarItemsWalker : TreeParser
 			if ( state.backtracking == 0 )
 			{
 				// don't do if guessing
-				currentRewriteBlock=((GrammarAST)retval.start); // pts to BLOCK node
+				currentRewriteBlock=((GrammarAST)retval.Start); // pts to BLOCK node
 				currentRewriteBlock.rewriteRefsShallow = new HashSet<GrammarAST>();
 				currentRewriteBlock.rewriteRefsDeep = new HashSet<GrammarAST>();
 			}
@@ -3982,22 +3983,22 @@ public partial class DefineGrammarItemsWalker : TreeParser
 				Rule r = grammar.GetRule(currentRuleName);
 				var tokenRefsInAlt = r.GetTokenRefsInAlt(outerAltNum);
 				bool imaginary =
-					((GrammarAST)retval.start).Type==TOKEN_REF &&
-					!tokenRefsInAlt.Contains(((GrammarAST)retval.start).Text);
+					((GrammarAST)retval.Start).Type==TOKEN_REF &&
+					!tokenRefsInAlt.Contains(((GrammarAST)retval.Start).Text);
 				if ( !imaginary && grammar.BuildAST &&
-					 (((GrammarAST)retval.start).Type==RULE_REF ||
-					  ((GrammarAST)retval.start).Type==LABEL ||
-					  ((GrammarAST)retval.start).Type==TOKEN_REF ||
-					  ((GrammarAST)retval.start).Type==CHAR_LITERAL ||
-					  ((GrammarAST)retval.start).Type==STRING_LITERAL) )
+					 (((GrammarAST)retval.Start).Type==RULE_REF ||
+					  ((GrammarAST)retval.Start).Type==LABEL ||
+					  ((GrammarAST)retval.Start).Type==TOKEN_REF ||
+					  ((GrammarAST)retval.Start).Type==CHAR_LITERAL ||
+					  ((GrammarAST)retval.Start).Type==STRING_LITERAL) )
 				{
 					// track per block and for entire rewrite rule
 					if ( currentRewriteBlock!=null )
 					{
-						currentRewriteBlock.rewriteRefsShallow.Add(((GrammarAST)retval.start));
-						currentRewriteBlock.rewriteRefsDeep.Add(((GrammarAST)retval.start));
+						currentRewriteBlock.rewriteRefsShallow.Add(((GrammarAST)retval.Start));
+						currentRewriteBlock.rewriteRefsDeep.Add(((GrammarAST)retval.Start));
 					}
-					currentRewriteRule.rewriteRefsDeep.Add(((GrammarAST)retval.start));
+					currentRewriteRule.rewriteRefsDeep.Add(((GrammarAST)retval.Start));
 				}
 			}
 
@@ -4640,7 +4641,6 @@ public partial class DefineGrammarItemsWalker : TreeParser
 		int _s = s;
 		switch ( s )
 		{
-
 			case 0:
 				int LA37_27 = input.LA(1);
 
@@ -4656,7 +4656,6 @@ public partial class DefineGrammarItemsWalker : TreeParser
 				input.Seek(index37_27);
 				if ( s>=0 ) return s;
 				break;
-
 			case 1:
 				int LA37_28 = input.LA(1);
 
@@ -4682,7 +4681,7 @@ public partial class DefineGrammarItemsWalker : TreeParser
 	#endregion DFA
 
 	#region Follow sets
-	public static class Follow
+	private static class Follow
 	{
 		public static readonly BitSet _LEXER_GRAMMAR_in_grammar_77 = new BitSet(new ulong[]{0x4UL});
 		public static readonly BitSet _grammarSpec_in_grammar_83 = new BitSet(new ulong[]{0x8UL});
