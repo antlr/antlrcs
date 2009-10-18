@@ -519,7 +519,7 @@ namespace Antlr3
                             // emit different error message when creating the implicit lexer fails
                             // due to write permission error
                             exceptionWhenWritingLexerFile = true;
-                            throw e;
+                            throw;
                         }
                         try
                         {
