@@ -108,12 +108,12 @@ public partial class <grammar.recognizerName> : <@superClassName><superClass><@e
     <last(grammar.delegators):{g|public <g.recognizerName> gParent;}>
 
 	public <grammar.recognizerName>() {}<! needed by subclasses !>
-	public <grammar.recognizerName>( ICharStream input<grammar.delegators:{g|, <g.recognizerName> <g:delegateName()>}> )
-		: this( input, new RecognizerSharedState()<grammar.delegators:{g|, <g:delegateName()>}> )
+	public <grammar.recognizerName>(ICharStream input<grammar.delegators:{g|, <g.recognizerName> <g:delegateName()>}> )
+		: this(input, new RecognizerSharedState()<grammar.delegators:{g|, <g:delegateName()>}>)
 	{
 	}
-	public <grammar.recognizerName>( ICharStream input, RecognizerSharedState state<grammar.delegators:{g|, <g.recognizerName> <g:delegateName()>}> )
-		: base( input, state )
+	public <grammar.recognizerName>(ICharStream input, RecognizerSharedState state<grammar.delegators:{g|, <g.recognizerName> <g:delegateName()>}>)
+		: base(input, state)
 	{
 <if(memoize)>
 <if(grammar.grammarIsRoot)>
@@ -141,7 +141,7 @@ public partial class <grammar.recognizerName> : <@superClassName><superClass><@e
 	protected override void InitDFAs()
 	{
 		base.InitDFAs();
-		<cyclicDFAs:{dfa | dfa<dfa.decisionNumber> = new DFA<dfa.decisionNumber>( this<if(dfa.specialStateSTs)>, new SpecialStateTransitionHandler( specialStateTransition<dfa.decisionNumber> )<endif> );}; separator="\n">
+		<cyclicDFAs:{dfa | dfa<dfa.decisionNumber> = new DFA<dfa.decisionNumber>(this<if(dfa.specialStateSTs)>, SpecialStateTransition<dfa.decisionNumber><endif>);}; separator="\n">
 	}
 
 	<cyclicDFAs:cyclicDFA()> <! dump tables for all DFA !>
@@ -159,9 +159,9 @@ public partial class <grammar.recognizerName> : <@superClassName><superClass><@e
 filteringNextToken() ::= <<
 public override IToken NextToken()
 {
-	for ( ; ;)
+	while (true)
 	{
-		if ( input.LA(1)==CharStreamConstants.EndOfFile )
+		if (input.LA(1) == CharStreamConstants.EndOfFile)
 		{
 			return Tokens.EndOfFile;
 		}
@@ -180,10 +180,10 @@ public override IToken NextToken()
 			state.backtracking=0;
 			<! mTokens backtracks with synpred at backtracking==2
 			   and we set the synpredgate to allow actions at level 1. !>
-			if ( state.failed )
+			if (state.failed)
 			{
 				input.Rewind(m);
-				input.Consume(); <! advance one char and try again !>
+				input.Consume();<! advance one char and try again !>
 			}
 			else
 			{
@@ -191,7 +191,7 @@ public override IToken NextToken()
 				return state.token;
 			}
 		}
-		catch ( RecognitionException re )
+		catch (RecognitionException re)
 		{
 			// shouldn't happen in backtracking mode, but...
 			ReportError(re);
@@ -200,15 +200,15 @@ public override IToken NextToken()
 	}
 }
 
-public override void Memoize( IIntStream input, int ruleIndex, int ruleStartIndex )
+public override void Memoize(IIntStream input, int ruleIndex, int ruleStartIndex)
 {
-	if ( state.backtracking > 1 )
-		base.Memoize( input, ruleIndex, ruleStartIndex );
+	if (state.backtracking > 1)
+		base.Memoize(input, ruleIndex, ruleStartIndex);
 }
 
 public override bool AlreadyParsedRule(IIntStream input, int ruleIndex)
 {
-	if ( state.backtracking > 1 )
+	if (state.backtracking > 1)
 		return base.AlreadyParsedRule(input, ruleIndex);
 
 	return false;
@@ -250,8 +250,8 @@ public <grammar.recognizerName>( <inputStreamType> input<grammar.delegators:{g|,
 	: this( input, new RecognizerSharedState()<grammar.delegators:{g|, <g:delegateName()>}> )
 {
 }
-public <grammar.recognizerName>( <inputStreamType> input, RecognizerSharedState state<grammar.delegators:{g|, <g.recognizerName> <g:delegateName()>}> )
-	: base( input, state )
+public <grammar.recognizerName>(<inputStreamType> input, RecognizerSharedState state<grammar.delegators:{g|, <g.recognizerName> <g:delegateName()>}>)
+	: base(input, state)
 {
 	<parserCtorBody()>
 	<grammar.directDelegates:
@@ -288,7 +288,7 @@ public <grammar.recognizerName>( <inputStreamType> input, RecognizerSharedState 
 	protected override void InitDFAs()
 	{
 		base.InitDFAs();
-		<cyclicDFAs:{dfa | dfa<dfa.decisionNumber> = new DFA<dfa.decisionNumber>( this<if(dfa.specialStateSTs)>, new SpecialStateTransitionHandler( specialStateTransition<dfa.decisionNumber> )<endif> );}; separator="\n">
+		<cyclicDFAs:{dfa | dfa<dfa.decisionNumber> = new DFA<dfa.decisionNumber>( this<if(dfa.specialStateSTs)>, SpecialStateTransition<dfa.decisionNumber><endif> );}; separator="\n">
 	}
 
 	<cyclicDFAs:cyclicDFA()><! dump tables for all DFA !>
@@ -344,7 +344,7 @@ treeParser(grammar, name, scopes, tokens, tokenNames, globalAction, rules,
 synpredRule(ruleName, ruleDescriptor, block, description, nakedBlock) ::=
 <<
 // $ANTLR start <ruleName>
-public <!final !>void <ruleName>_fragment(<ruleDescriptor.parameterScope:parameterScope(scope=it)>)<! throws RecognitionException!>
+public <!final !>void <ruleName>_fragment(<ruleDescriptor.parameterScope:parameterScope(scope=it)>)
 {
 	<ruleLabelDefs()>
 <if(trace)>
@@ -371,7 +371,7 @@ insertLexerSynpreds(synpreds) ::= <<
 insertSynpreds(synpreds) ::= <<
 <if(synpreds)>
 #region Synpreds
-bool EvaluatePredicate( System.Action fragment )
+private bool EvaluatePredicate(System.Action fragment)
 {
 	state.backtracking++;
 	<@start()>
@@ -397,18 +397,18 @@ bool EvaluatePredicate( System.Action fragment )
 
 ruleMemoization(name) ::= <<
 <if(memoize)>
-if ( state.backtracking>0 && AlreadyParsedRule(input, <ruleDescriptor.index>) ) { return <ruleReturnValue()>; }
+if (state.backtracking > 0 && AlreadyParsedRule(input, <ruleDescriptor.index>)) { <returnFromRule()> }
 <endif>
 >>
 
 /** How to test for failure and return from rule */
 checkRuleBacktrackFailure() ::= <<
-<if(backtracking)>if (state.failed) return <ruleReturnValue()>;<endif>
+<if(backtracking)>if (state.failed) <returnFromRule()><endif>
 >>
 
 /** This rule has failed, exit indicating failure during backtrack */
 ruleBacktrackFailure() ::= <<
-<if(backtracking)>if (state.backtracking>0) {state.failed=true; return <ruleReturnValue()>;}<endif>
+<if(backtracking)>if (state.backtracking>0) {state.failed=true; <returnFromRule()>}<endif>
 >>
 
 /** How to generate code for a rule.  This includes any return type
@@ -420,7 +420,7 @@ rule(ruleName,ruleDescriptor,block,emptyRule,description,exceptions,finally,memo
 
 // $ANTLR start "<ruleName>"
 // <fileName>:<description>
-<csharpVisibilityMap.(ruleDescriptor.modifier)> <returnType()> <ruleName>( <ruleDescriptor.parameterScope:parameterScope(scope=it)> )<! throws RecognitionException!>
+<csharpVisibilityMap.(ruleDescriptor.modifier)> <returnType()> <ruleName>(<ruleDescriptor.parameterScope:parameterScope(scope=it)>)
 {
 	<if(trace)>traceIn("<ruleName>", <ruleDescriptor.index>);<endif>
 	<ruleScopeSetUp()>
@@ -442,7 +442,7 @@ rule(ruleName,ruleDescriptor,block,emptyRule,description,exceptions,finally,memo
 <if(actions.(actionScope).rulecatch)>
 	<actions.(actionScope).rulecatch>
 <else>
-	catch ( RecognitionException re )
+	catch (RecognitionException re)
 	{
 		ReportError(re);
 		Recover(input,re);
@@ -459,13 +459,13 @@ rule(ruleName,ruleDescriptor,block,emptyRule,description,exceptions,finally,memo
 		<finally>
 	}
 	<@postamble()>
-	return <ruleReturnValue()>;
+	<returnFromRule()><\n>
 }
 // $ANTLR end "<ruleName>"
 >>
 
 catch(decl,action) ::= <<
-catch ( <e.decl> )
+catch (<e.decl>)
 {
 	<e.action>
 }
@@ -519,16 +519,17 @@ lexerRuleLabelDefs() ::= <<
 >
 >>
 
-ruleReturnValue() ::= <<
-<if(!ruleDescriptor.isSynPred)>
+returnFromRule() ::= <<
+return<if(!ruleDescriptor.isSynPred)>
 <if(ruleDescriptor.hasReturnValue)>
 <if(ruleDescriptor.hasSingleReturnValue)>
-<ruleDescriptor.singleValueReturnName>
+ <ruleDescriptor.singleValueReturnName>
 <else>
-retval
+ retval
 <endif>
 <endif>
 <endif>
+;
 >>
 
 ruleCleanUp() ::= <<
@@ -542,7 +543,7 @@ retval.stop = input.LT(-1);<\n>
 memoize() ::= <<
 <if(memoize)>
 <if(backtracking)>
-if ( state.backtracking>0 ) { Memoize(input, <ruleDescriptor.index>, <ruleDescriptor.name>_StartIndex); }
+if (state.backtracking > 0) { Memoize(input, <ruleDescriptor.index>, <ruleDescriptor.name>_StartIndex); }
 <endif>
 <endif>
 >>
@@ -591,7 +592,7 @@ lexerRule(ruleName,nakedBlock,ruleDescriptor,block,memoize) ::= <<
  *  that chooses between lexer rules.
  */
 tokensRule(ruleName,nakedBlock,args,block,ruleDescriptor) ::= <<
-public override void mTokens()<! throws RecognitionException!>
+public override void mTokens()
 {
 	<block><\n>
 }
@@ -608,7 +609,7 @@ int alt<decisionNumber>=<maxAlt>;
 <decision>
 <@postdecision()>
 <@prebranch()>
-switch ( alt<decisionNumber> )
+switch (alt<decisionNumber>)
 {
 <alts:altSwitchCase()>
 }
@@ -623,7 +624,7 @@ int alt<decisionNumber>=<maxAlt>;
 <@predecision()>
 <decision>
 <@postdecision()>
-switch ( alt<decisionNumber> )
+switch (alt<decisionNumber>)
 {
 <alts:altSwitchCase()>
 }
@@ -652,17 +653,17 @@ positiveClosureBlock(alts,decls,decision,enclosingBlockLevel,blockLevel,decision
 int cnt<decisionNumber>=0;
 <decls>
 <@preloop()>
-for ( ; ; )
+while (true)
 {
 	int alt<decisionNumber>=<maxAlt>;
 	<@predecision()>
 	<decision>
 	<@postdecision()>
-	switch ( alt<decisionNumber> )
+	switch (alt<decisionNumber>)
 	{
 	<alts:altSwitchCase()>
 	default:
-		if ( cnt<decisionNumber> >= 1 )
+		if (cnt<decisionNumber> >= 1)
 			goto loop<decisionNumber>;
 
 		<ruleBacktrackFailure()>
@@ -685,7 +686,7 @@ closureBlock(alts,decls,decision,enclosingBlockLevel,blockLevel,decisionNumber,m
 // <fileName>:<description>
 <decls>
 <@preloop()>
-for ( ; ; )
+while (true)
 {
 	int alt<decisionNumber>=<maxAlt>;
 	<@predecision()>
@@ -790,7 +791,7 @@ matchSet(s,label,elementIndex,postmatchCode="") ::= <<
 <label>=(<labelType>)input.LT(1);<\n>
 <endif>
 <endif>
-if ( <s> )
+if (<s>)
 {
 	input.Consume();
 	<postmatchCode>
@@ -883,8 +884,8 @@ wildcardCharListLabel(label, elementIndex) ::= <<
  */
 ruleRef(rule,label,elementIndex,args,scope) ::= <<
 PushFollow(Follow._<rule.name>_in_<ruleName><elementIndex>);
-<if(label)><label>=<endif><if(scope)><scope:delegateName()>.<endif><rule.name>(<args; separator=", ">);<\n>
-state._fsp--;
+<if(label)><label>=<endif><if(scope)><scope:delegateName()>.<endif><rule.name>(<args; separator=", ">);
+PopFollow();
 <checkRuleBacktrackFailure()>
 >>
 
@@ -933,7 +934,7 @@ tree(root, actionsAfterRoot, children, nullableChildList,
 <root:element()>
 <actionsAfterRoot:element()>
 <if(nullableChildList)>
-if ( input.LA(1)==TokenTypes.Down )
+if (input.LA(1) == TokenTypes.Down)
 {
 	Match(input, TokenTypes.Down, null); <checkRuleBacktrackFailure()>
 	<children:element()>
@@ -950,7 +951,7 @@ Match(input, TokenTypes.Up, null); <checkRuleBacktrackFailure()>
  *  also hoisted into a prediction expression).
  */
 validateSemanticPredicate(pred,description) ::= <<
-if ( !(<evalPredicate(...)>) )
+if (!(<evalPredicate(...)>))
 {
 	<ruleBacktrackFailure()>
 	throw new FailedPredicateException(input, "<ruleName>", "<description>");
@@ -1014,7 +1015,7 @@ dfaAcceptState(alt) ::= "alt<decisionNumber>=<alt>;"
  *  have to evaluate some predicates for this edge.
  */
 dfaEdge(labelExpr, targetState, predicates) ::= <<
-if ( (<labelExpr>) <if(predicates)>&& (<predicates>)<endif>)
+if ((<labelExpr>)<if(predicates)> && (<predicates>)<endif>)
 {
 	<targetState>
 }
@@ -1026,7 +1027,7 @@ if ( (<labelExpr>) <if(predicates)>&& (<predicates>)<endif>)
  *  decides if this is possible: CodeGenerator.canGenerateSwitch().
  */
 dfaStateSwitch(k,edges,eotPredictsAlt,description,stateNumber,semPredState) ::= <<
-switch ( input.LA(<k>) )
+switch (input.LA(<k>))
 {
 <edges; separator="\n">
 default:
@@ -1045,14 +1046,14 @@ default:
 >>
 
 dfaOptionalBlockStateSwitch(k,edges,eotPredictsAlt,description,stateNumber,semPredState) ::= <<
-switch ( input.LA(<k>) )
+switch (input.LA(<k>))
 {
 <edges; separator="\n">
 }<\n>
 >>
 
 dfaLoopbackStateSwitch(k, edges,eotPredictsAlt,description,stateNumber,semPredState) ::= <<
-switch ( input.LA(<k>) )
+switch (input.LA(<k>))
 {
 <edges; separator="\n"><\n>
 <if(eotPredictsAlt)>
@@ -1090,35 +1091,34 @@ alt<decisionNumber> = dfa<decisionNumber>.Predict(input);
  * the encoding methods.
  */
 cyclicDFA(dfa) ::= <<
-class DFA<dfa.decisionNumber> : DFA
+private class DFA<dfa.decisionNumber> : DFA
 {
-
-	const string DFA<dfa.decisionNumber>_eotS =
+	private const string DFA<dfa.decisionNumber>_eotS =
 		"<dfa.javaCompressedEOT; wrap="\"+\n\t\t\"">";
-	const string DFA<dfa.decisionNumber>_eofS =
+	private const string DFA<dfa.decisionNumber>_eofS =
 		"<dfa.javaCompressedEOF; wrap="\"+\n\t\t\"">";
-	const string DFA<dfa.decisionNumber>_minS =
+	private const string DFA<dfa.decisionNumber>_minS =
 		"<dfa.javaCompressedMin; wrap="\"+\n\t\t\"">";
-	const string DFA<dfa.decisionNumber>_maxS =
+	private const string DFA<dfa.decisionNumber>_maxS =
 		"<dfa.javaCompressedMax; wrap="\"+\n\t\t\"">";
-	const string DFA<dfa.decisionNumber>_acceptS =
+	private const string DFA<dfa.decisionNumber>_acceptS =
 		"<dfa.javaCompressedAccept; wrap="\"+\n\t\t\"">";
-	const string DFA<dfa.decisionNumber>_specialS =
+	private const string DFA<dfa.decisionNumber>_specialS =
 		"<dfa.javaCompressedSpecial; wrap="\"+\n\t\t\"">}>";
-	static readonly string[] DFA<dfa.decisionNumber>_transitionS =
+	private static readonly string[] DFA<dfa.decisionNumber>_transitionS =
 		{
 			<dfa.javaCompressedTransition:{s|"<s; wrap="\"+\n\"">"}; separator=",\n">
 		};
 
-	static readonly short[] DFA<dfa.decisionNumber>_eot = DFA.UnpackEncodedString(DFA<dfa.decisionNumber>_eotS);
-	static readonly short[] DFA<dfa.decisionNumber>_eof = DFA.UnpackEncodedString(DFA<dfa.decisionNumber>_eofS);
-	static readonly char[] DFA<dfa.decisionNumber>_min = DFA.UnpackEncodedStringToUnsignedChars(DFA<dfa.decisionNumber>_minS);
-	static readonly char[] DFA<dfa.decisionNumber>_max = DFA.UnpackEncodedStringToUnsignedChars(DFA<dfa.decisionNumber>_maxS);
-	static readonly short[] DFA<dfa.decisionNumber>_accept = DFA.UnpackEncodedString(DFA<dfa.decisionNumber>_acceptS);
-	static readonly short[] DFA<dfa.decisionNumber>_special = DFA.UnpackEncodedString(DFA<dfa.decisionNumber>_specialS);
-	static readonly short[][] DFA<dfa.decisionNumber>_transition;
+	private static readonly short[] DFA<dfa.decisionNumber>_eot = DFA.UnpackEncodedString(DFA<dfa.decisionNumber>_eotS);
+	private static readonly short[] DFA<dfa.decisionNumber>_eof = DFA.UnpackEncodedString(DFA<dfa.decisionNumber>_eofS);
+	private static readonly char[] DFA<dfa.decisionNumber>_min = DFA.UnpackEncodedStringToUnsignedChars(DFA<dfa.decisionNumber>_minS);
+	private static readonly char[] DFA<dfa.decisionNumber>_max = DFA.UnpackEncodedStringToUnsignedChars(DFA<dfa.decisionNumber>_maxS);
+	private static readonly short[] DFA<dfa.decisionNumber>_accept = DFA.UnpackEncodedString(DFA<dfa.decisionNumber>_acceptS);
+	private static readonly short[] DFA<dfa.decisionNumber>_special = DFA.UnpackEncodedString(DFA<dfa.decisionNumber>_specialS);
+	private static readonly short[][] DFA<dfa.decisionNumber>_transition;
 
-	static DFA<dfa.decisionNumber>()
+	private static DFA<dfa.decisionNumber>()
 	{
 		int numStates = DFA<dfa.decisionNumber>_transitionS.Length;
 		DFA<dfa.decisionNumber>_transition = new short[numStates][];
@@ -1130,7 +1130,7 @@ class DFA<dfa.decisionNumber> : DFA
 
 	public DFA<dfa.decisionNumber>( BaseRecognizer recognizer<if(dfa.specialStateSTs)>, SpecialStateTransitionHandler specialStateTransition<endif> )
 <if(dfa.specialStateSTs)>
-		: base( specialStateTransition )
+		: base(specialStateTransition)<\n>
 <endif>
 	{
 		this.recognizer = recognizer;
@@ -1150,7 +1150,7 @@ class DFA<dfa.decisionNumber> : DFA
 	<@errorMethod()>
 }<\n>
 <if(dfa.specialStateSTs)>
-int specialStateTransition<dfa.decisionNumber>( DFA dfa, int s, IIntStream _input )<! throws NoViableAltException!>
+private int SpecialStateTransition<dfa.decisionNumber>(DFA dfa, int s, IIntStream _input)<! throws NoViableAltException!>
 {
 	<if(LEXER)>
 	IIntStream input = _input;
@@ -1162,14 +1162,14 @@ int specialStateTransition<dfa.decisionNumber>( DFA dfa, int s, IIntStream _inpu
 	ITreeNodeStream input = (ITreeNodeStream)_input;
 	<endif>
 	int _s = s;
-	switch ( s )
+	switch (s)
 	{
 	<dfa.specialStateSTs:{state |
 	case <i0>:<! compressed special state numbers 0..n-1 !>
 		<state>}; separator="\n">
 	}
 <if(backtracking)>
-	if (state.backtracking>0) {state.failed=true; return -1;}<\n>
+	if (state.backtracking > 0) {state.failed=true; return -1;}<\n>
 <endif>
 	NoViableAltException nvae = new NoViableAltException(dfa.GetDescription(), <dfa.decisionNumber>, _s, input);
 	dfa.Error(nvae);

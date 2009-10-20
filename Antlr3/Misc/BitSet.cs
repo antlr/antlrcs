@@ -331,9 +331,7 @@ namespace Antlr3.Misc
         public virtual void GrowToInclude( int bit )
         {
             int newSize = Math.Max( _bits.Length << 1, NumWordsToHold( bit ) );
-            ulong[] newbits = new ulong[newSize];
-            Array.Copy( _bits, newbits, _bits.Length );
-            _bits = newbits;
+            Array.Resize(ref _bits, newSize);
         }
 
         public virtual bool Contains( int el )
@@ -516,10 +514,7 @@ namespace Antlr3.Misc
          */
         private void SetSize( int nwords )
         {
-            ulong[] newbits = new ulong[nwords];
-            int n = Math.Min( nwords, _bits.Length );
-            Array.Copy( _bits, newbits, n );
-            _bits = newbits;
+            Array.Resize(ref _bits, nwords);
         }
 
         /**Is this contained within a? */
