@@ -523,7 +523,8 @@ returnFromRule() ::= <<
 return<if(!ruleDescriptor.isSynPred)>
 <if(ruleDescriptor.hasReturnValue)>
 <if(ruleDescriptor.hasSingleReturnValue)>
- <ruleDescriptor.singleValueReturnName>
+<! This comment is a hack to make sure the following
+   single space appears in the output. !> <ruleDescriptor.singleValueReturnName>
 <else>
  retval
 <endif>
@@ -1118,7 +1119,7 @@ private class DFA<dfa.decisionNumber> : DFA
 	private static readonly short[] DFA<dfa.decisionNumber>_special = DFA.UnpackEncodedString(DFA<dfa.decisionNumber>_specialS);
 	private static readonly short[][] DFA<dfa.decisionNumber>_transition;
 
-	private static DFA<dfa.decisionNumber>()
+	static DFA<dfa.decisionNumber>()
 	{
 		int numStates = DFA<dfa.decisionNumber>_transitionS.Length;
 		DFA<dfa.decisionNumber>_transition = new short[numStates][];
