@@ -58,8 +58,7 @@ namespace Antlr3.Tool
         public static StringTemplateGroup stlib =
                 new StringTemplateGroup( "toollib", typeof( AngleBracketTemplateLexer ) );
 
-        public string dfaTemplateDirectoryName =
-            Path.Combine( Path.GetDirectoryName( typeof( DOTGenerator ).Assembly.Location ), @"Tool\Templates\dot" );
+        public string dfaTemplateDirectoryName;
 
         /** To prevent infinite recursion when walking state machines, record
          *  which states we've visited.  Make a new set every time you start
@@ -73,6 +72,7 @@ namespace Antlr3.Tool
         public DOTGenerator( Grammar grammar )
         {
             this.grammar = grammar;
+            this.dfaTemplateDirectoryName = Path.Combine(AntlrTool.ToolPathRoot, @"Tool\Templates\dot");
         }
 
         #region Properties

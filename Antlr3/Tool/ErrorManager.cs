@@ -57,6 +57,7 @@ namespace Antlr3.Tool
     using TargetInvocationException = System.Reflection.TargetInvocationException;
     using Thread = System.Threading.Thread;
     using Tool = Antlr3.AntlrTool;
+    using TraceListener = System.Diagnostics.TraceListener;
 
     public static class ErrorManager
     {
@@ -250,7 +251,13 @@ namespace Antlr3.Tool
          */
         private static String[] idToMessageTemplateName = new String[MAX_MESSAGE_NUMBER + 1];
 
-        class DefaultErrorListener : IANTLRErrorListener
+        public static TraceListener ExternalListener
+        {
+            get;
+            set;
+        }
+
+        private class DefaultErrorListener : IANTLRErrorListener
         {
             public virtual void Info( String msg )
             {
@@ -259,6 +266,9 @@ namespace Antlr3.Tool
                     msg = msg.replaceAll( "\n", " " );
                 }
                 Console.Error.WriteLine( msg );
+
+                if (ExternalListener != null)
+                    ExternalListener.WriteLine(msg);
             }
 
             public virtual void Error( Message msg )
@@ -269,6 +279,9 @@ namespace Antlr3.Tool
                     outputMsg = outputMsg.replaceAll( "\n", " " );
                 }
                 Console.Error.WriteLine( outputMsg );
+
+                if (ExternalListener != null)
+                    ExternalListener.WriteLine(outputMsg);
             }
 
             public virtual void Warning( Message msg )
@@ -279,6 +292,9 @@ namespace Antlr3.Tool
                     outputMsg = outputMsg.replaceAll( "\n", " " );
                 }
                 Console.Error.WriteLine( outputMsg );
+
+                if (ExternalListener != null)
+                    ExternalListener.WriteLine(outputMsg);
             }
 
             public virtual void Error( ToolMessage msg )
@@ -289,6 +305,9 @@ namespace Antlr3.Tool
                     outputMsg = outputMsg.replaceAll( "\n", " " );
                 }
                 Console.Error.WriteLine( outputMsg );
+
+                if (ExternalListener != null)
+                    ExternalListener.WriteLine(outputMsg);
             }
         }
 
@@ -393,7 +412,7 @@ namespace Antlr3.Tool
             //String fileName = "org/antlr/tool/templates/messages/languages/"+language+".stg";
             string fileName = @"Tool\Templates\messages\languages\" + language + ".stg";
             string streamName = "Antlr3." + fileName.Replace( '\\', '.' );
-            fileName = System.IO.Path.Combine( System.IO.Path.GetDirectoryName( typeof( ErrorManager ).Assembly.Location ), fileName );
+            fileName = System.IO.Path.Combine(AntlrTool.ToolPathRoot, fileName);
             //ClassLoader cl = Thread.currentThread().getContextClassLoader();
             //InputStream @is = cl.getResourceAsStream(fileName);
             System.IO.Stream @is;
@@ -456,7 +475,7 @@ namespace Antlr3.Tool
             //String fileName = "org/antlr/tool/templates/messages/formats/"+formatName+".stg";
             string fileName = @"Tool\Templates\messages\formats\" + formatName + ".stg";
             string streamName = "Antlr3." + fileName.Replace( '\\', '.' );
-            fileName = System.IO.Path.Combine( System.IO.Path.GetDirectoryName( typeof( ErrorManager ).Assembly.Location ), fileName );
+            fileName = System.IO.Path.Combine(AntlrTool.ToolPathRoot, fileName);
             //ClassLoader cl = Thread.currentThread().getContextClassLoader();
             //InputStream is = cl.getResourceAsStream(fileName);
             System.IO.Stream @is;
@@ -557,6 +576,11 @@ namespace Antlr3.Tool
         public static void RemoveErrorListener()
         {
             threadToListenerMap.Remove( Thread.CurrentThread );
+        }
+
+        public static Tool GetTool()
+        {
+            return threadToToolMap[Thread.CurrentThread];
         }
 
         public static void SetTool( Tool tool )

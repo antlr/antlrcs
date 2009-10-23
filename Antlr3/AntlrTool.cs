@@ -57,6 +57,7 @@ namespace Antlr3
         public const string UninitializedDir = "<unset-dir>";
 
         private IList<string> grammarFileNames = new List<string>();
+        private List<string> generatedFiles = new List<string>();
         private bool generate_NFA_dot = false;
         private bool generate_DFA_dot = false;
         private string outputDirectory = ".";
@@ -115,12 +116,39 @@ namespace Antlr3
         }
 
         public AntlrTool()
+            : this(Path.GetDirectoryName(typeof(CodeGenerator).Assembly.Location))
         {
         }
 
+        public AntlrTool(string toolPathRoot)
+        {
+            ToolPathRoot = toolPathRoot;
+            TargetsDirectory = Path.Combine(toolPathRoot, @"Targets");
+            TemplatesDirectory = Path.Combine(toolPathRoot, @"Codegen\Templates");
+        }
+
         public AntlrTool( string[] args )
+            : this()
         {
             ProcessArgs( args );
+        }
+
+        public static string ToolPathRoot
+        {
+            get;
+            set;
+        }
+
+        public string TargetsDirectory
+        {
+            get;
+            set;
+        }
+
+        public string TemplatesDirectory
+        {
+            get;
+            set;
         }
 
         public virtual void ProcessArgs( string[] args )
@@ -893,6 +921,7 @@ namespace Antlr3
             if ( outputFile.Exists )
                 outputFile.Delete();
 
+            GeneratedFiles.Add(outputFile.FullName);
             return new System.IO.StreamWriter( new System.IO.BufferedStream( outputFile.OpenWrite() ) );
         }
 
@@ -1089,6 +1118,14 @@ namespace Antlr3
             get
             {
                 return grammarFileNames;
+            }
+        }
+
+        public IList<string> GeneratedFiles
+        {
+            get
+            {
+                return generatedFiles;
             }
         }
 

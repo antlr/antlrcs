@@ -33,6 +33,7 @@
 namespace Antlr3.Codegen
 {
     using System.Collections.Generic;
+    using System.Collections.ObjectModel;
     using System.Linq;
     using Antlr.Runtime.JavaExtensions;
     using Antlr3.Analysis;
@@ -74,9 +75,11 @@ namespace Antlr3.Codegen
     using Path = System.IO.Path;
     using RecognitionException = Antlr.Runtime.RecognitionException;
     using Rule = Antlr3.Tool.Rule;
+    using Stopwatch = System.Diagnostics.Stopwatch;
     using StringTemplate = Antlr3.ST.StringTemplate;
     using StringTemplateGroup = Antlr3.ST.StringTemplateGroup;
     using TextWriter = System.IO.TextWriter;
+    using TimeSpan = System.TimeSpan;
 
     /** ANTLR's code generator.
      *
@@ -115,11 +118,6 @@ namespace Antlr3.Codegen
         //public static bool GenAcyclicDfaInline = true;
         public static bool EmitTemplateDelimiters = false;
         public static int MaxAcyclicDfaStatesInline = 10;
-
-        //public string classpathTemplateRootDirectoryName = "org/antlr/codegen/templates";
-        //public string classpathTemplateRootDirectoryName = "Antlr3.Codegen.Templates";
-        public string classpathTemplateRootDirectoryName =
-            Path.Combine( Path.GetDirectoryName( typeof( CodeGenerator ).Assembly.Location ), @"Codegen\Templates" );
 
         /** Which grammar are we generating code for?  Each generator
          *  is attached to a specific grammar.
@@ -195,6 +193,7 @@ namespace Antlr3.Codegen
         }
 
         #region Properties
+
         [CLSCompliant(false)]
         public StringTemplateGroup BaseTemplates
         {
@@ -203,6 +202,7 @@ namespace Antlr3.Codegen
                 return baseTemplates;
             }
         }
+
         [CLSCompliant(false)]
         public StringTemplate RecognizerST
         {
@@ -211,6 +211,7 @@ namespace Antlr3.Codegen
                 return outputFileST;
             }
         }
+
         [CLSCompliant(false)]
         public StringTemplateGroup Templates
         {
@@ -219,6 +220,7 @@ namespace Antlr3.Codegen
                 return templates;
             }
         }
+
         public string VocabFileName
         {
             get
@@ -226,6 +228,7 @@ namespace Antlr3.Codegen
                 return GetVocabFileName();
             }
         }
+
         [CLSCompliant(false)]
         public bool Debug
         {
@@ -238,6 +241,7 @@ namespace Antlr3.Codegen
                 debug = value;
             }
         }
+
         [CLSCompliant(false)]
         public bool Profile
         {
@@ -255,6 +259,7 @@ namespace Antlr3.Codegen
                 }
             }
         }
+
         [CLSCompliant(false)]
         public bool Trace
         {
@@ -267,6 +272,7 @@ namespace Antlr3.Codegen
                 trace = value;
             }
         }
+
         #endregion
 
         [MethodImpl( MethodImplOptions.Synchronized )]
@@ -276,9 +282,8 @@ namespace Antlr3.Codegen
             {
                 // first try to load the target via a satellite DLL
                 string assembly = "Antlr3.Targets." + language + ".dll";
-                string path1 = System.IO.Path.Combine( System.IO.Path.GetDirectoryName( typeof( CodeGenerator ).Assembly.Location ), "Targets" );
-                string path2 = System.IO.Path.GetDirectoryName( typeof( CodeGenerator ).Assembly.Location );
-                string[] paths = { path1, path2 };
+                string path1 = tool.TargetsDirectory;
+                string[] paths = { path1 };
 
                 System.Reflection.Assembly targetAssembly = null;
                 System.Type targetType = null;
@@ -291,7 +296,7 @@ namespace Antlr3.Codegen
                     {
                         try
                         {
-                            targetAssembly = System.Reflection.Assembly.LoadFile( filename );
+                            targetAssembly = System.Reflection.Assembly.LoadFrom( filename );
                             targetType = targetAssembly.GetType( targetName, false );
                         }
                         catch
@@ -322,8 +327,8 @@ namespace Antlr3.Codegen
         {
             // get a group loader containing main templates dir and target subdir
             string templateDirs =
-                classpathTemplateRootDirectoryName + ":" +
-                classpathTemplateRootDirectoryName + @"\" + language;
+                tool.TemplatesDirectory + ":" +
+                Path.Combine(tool.TemplatesDirectory, language);
             //JSystem.@out.println("targets="+templateDirs.toString());
             IStringTemplateGroupLoader loader =
                 new CommonGroupLoader( templateDirs,
@@ -1483,14 +1488,14 @@ namespace Antlr3.Codegen
 
         public virtual void Write( StringTemplate code, string fileName )
         {
-            DateTime start = DateTime.Now;
+            Stopwatch watch = Stopwatch.StartNew();
             TextWriter w = tool.GetOutputFile( grammar, fileName );
             // Write the output to a StringWriter
             IStringTemplateWriter wr = templates.GetStringTemplateWriter( w );
             wr.SetLineWidth( lineWidth );
             code.Write( wr );
             w.Close();
-            DateTime stop = DateTime.Now;
+            TimeSpan duration = watch.Elapsed;
             //JSystem.@out.println("render time for "+fileName+": "+(int)(stop-start)+"ms");
         }
 
