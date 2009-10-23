@@ -115,16 +115,23 @@ namespace Antlr3
             }
         }
 
+        static AntlrTool()
+        {
+            ToolPathRoot = Path.GetDirectoryName(typeof(CodeGenerator).Assembly.Location);
+        }
+
         public AntlrTool()
-            : this(Path.GetDirectoryName(typeof(CodeGenerator).Assembly.Location))
+            : this((string)null)
         {
         }
 
         public AntlrTool(string toolPathRoot)
         {
-            ToolPathRoot = toolPathRoot;
-            TargetsDirectory = Path.Combine(toolPathRoot, @"Targets");
-            TemplatesDirectory = Path.Combine(toolPathRoot, @"Codegen\Templates");
+            if (!string.IsNullOrEmpty(toolPathRoot))
+                ToolPathRoot = toolPathRoot;
+
+            TargetsDirectory = Path.Combine(ToolPathRoot, @"Targets");
+            TemplatesDirectory = Path.Combine(ToolPathRoot, @"Codegen\Templates");
         }
 
         public AntlrTool( string[] args )
