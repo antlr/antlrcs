@@ -40,6 +40,8 @@ namespace AntlrUnitTests
 
     using AntlrTool = Antlr3.AntlrTool;
     using BindingFlags = System.Reflection.BindingFlags;
+    using Debugger = System.Diagnostics.Debugger;
+    using Directory = System.IO.Directory;
     using ErrorManager = Antlr3.Tool.ErrorManager;
     using FieldInfo = System.Reflection.FieldInfo;
     using GrammarSemanticsMessage = Antlr3.Tool.GrammarSemanticsMessage;
@@ -49,10 +51,12 @@ namespace AntlrUnitTests
     using Label = Antlr3.Analysis.Label;
     using Message = Antlr3.Tool.Message;
     using Path = System.IO.Path;
+    using Registry = Microsoft.Win32.Registry;
+    using RegistryKey = Microsoft.Win32.RegistryKey;
+    using RegistryValueOptions = Microsoft.Win32.RegistryValueOptions;
     using StringBuilder = System.Text.StringBuilder;
     using StringTemplate = Antlr3.ST.StringTemplate;
     using StringTemplateGroup = Antlr3.ST.StringTemplateGroup;
-    using StringTemplateGroupInterface = Antlr3.ST.StringTemplateGroupInterface;
 
     public abstract class BaseTest
     {
@@ -61,6 +65,8 @@ namespace AntlrUnitTests
         public readonly string RuntimeJar = Path.Combine( Environment.CurrentDirectory, @"..\..\antlr-3.1.1-runtime.jar" );
         public readonly string Runtime2Jar = Path.Combine( Environment.CurrentDirectory, @"..\..\antlr-2.7.7.jar" );
         public readonly string StringTemplateJar = Path.Combine( Environment.CurrentDirectory, @"..\..\stringtemplate-3.1b1.jar" );
+
+        private static string javaHome;
 
         public string tmpdir;
 
@@ -175,28 +181,66 @@ namespace AntlrUnitTests
             }
         }
 
-        protected AntlrTool newTool( string[] args )
+        protected AntlrTool newTool(params string[] args)
         {
-            AntlrTool tool = new AntlrTool( args );
+            AntlrTool tool = (args == null || args.Length == 0) ? new AntlrTool() : new AntlrTool(args);
             tool.SetOutputDirectory( tmpdir );
             tool.TestMode = true;
             return tool;
         }
 
-        protected AntlrTool newTool()
-        {
-            AntlrTool tool = new AntlrTool();
-            tool.SetOutputDirectory( tmpdir );
-            tool.TestMode = true;
-            return tool;
-        }
-
-        protected string JavaHome
+        protected static string JavaHome
         {
             get
             {
-                return Environment.GetEnvironmentVariable( "JAVA_HOME" );
+                string home = javaHome;
+                bool debugger = Debugger.IsAttached;
+                if (home == null || debugger)
+                {
+                    home = Environment.GetEnvironmentVariable("JAVA_HOME");
+                    if (string.IsNullOrEmpty(home) || !Directory.Exists(home))
+                    {
+                        home = CheckForJavaHome(Registry.CurrentUser);
+                        if (home == null)
+                            home = CheckForJavaHome(Registry.LocalMachine);
+                    }
+
+                    if (home != null && !Directory.Exists(home))
+                        home = null;
+
+                    if (!debugger)
+                    {
+                        javaHome = home;
+                    }
+                }
+
+                return home;
             }
+        }
+
+        protected static string CheckForJavaHome(RegistryKey key)
+        {
+            using (RegistryKey subkey = key.OpenSubKey(@"SOFTWARE\JavaSoft\Java Development Kit"))
+            {
+                if (subkey == null)
+                    return null;
+
+                object value = subkey.GetValue("CurrentVersion", null, RegistryValueOptions.None);
+                if (value != null)
+                {
+                    using (RegistryKey currentHomeKey = subkey.OpenSubKey(value.ToString()))
+                    {
+                        if (currentHomeKey == null)
+                            return null;
+
+                        value = currentHomeKey.GetValue("JavaHome", null, RegistryValueOptions.None);
+                        if (value != null)
+                            return value.ToString();
+                    }
+                }
+            }
+
+            return null;
         }
 
         protected string ClassPath
