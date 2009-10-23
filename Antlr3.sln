@@ -64,12 +64,14 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Antlr3.Runtime.JavaExtensio
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Antlr3.Runtime.Test", "..\..\antlr\main\runtime\CSharp3\Sources\Antlr3.Runtime.Test\Antlr3.Runtime.Test.csproj", "{19B965DE-5100-4064-A580-159644F6980E}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AntlrBuildTask", "AntlrBuildTask\AntlrBuildTask.csproj", "{60F8B554-5C53-4DE2-B868-A0BFEF4EF80E}"
+EndProject
 Global
 	GlobalSection(TestCaseManagementSettings) = postSolution
 		CategoryFile = Antlr3.vsmdi
 	EndGlobalSection
 	GlobalSection(SourceCodeControl) = preSolution
-		SccNumberOfProjects = 21
+		SccNumberOfProjects = 22
 		SccProjectName0 = Perforce\u0020Project
 		SccLocalPath0 = ..\\..
 		SccProvider0 = MSSCCI:Perforce\u0020SCM
@@ -147,6 +149,9 @@ Global
 		SccProjectUniqueName20 = ..\\..\\antlr\\main\\runtime\\CSharp3\\Sources\\Antlr3.Runtime.JavaExtensions\\Antlr3.Runtime.JavaExtensions.csproj
 		SccLocalPath20 = ..\\..
 		SccProjectFilePathRelativizedFromConnection20 = antlr\\main\\runtime\\CSharp3\\Sources\\Antlr3.Runtime.JavaExtensions\\
+		SccProjectUniqueName21 = AntlrBuildTask\\AntlrBuildTask.csproj
+		SccLocalPath21 = ..\\..
+		SccProjectFilePathRelativizedFromConnection21 = antlrcs\\main\\AntlrBuildTask\\
 	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -233,6 +238,9 @@ Global
 		{19B965DE-5100-4064-A580-159644F6980E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{19B965DE-5100-4064-A580-159644F6980E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{19B965DE-5100-4064-A580-159644F6980E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{60F8B554-5C53-4DE2-B868-A0BFEF4EF80E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{60F8B554-5C53-4DE2-B868-A0BFEF4EF80E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{60F8B554-5C53-4DE2-B868-A0BFEF4EF80E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

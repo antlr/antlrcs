@@ -89,9 +89,7 @@
     <Compile Include="Tool\ToolMessage.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Antlr3 Include="Grammars\ActionTranslator.g3">
-      <OutputFiles>Grammars\ActionTranslator.cs;Grammars\ActionTranslator.tokens</OutputFiles>
-    </Antlr3>
+    <Antlr3 Include="Grammars\ActionTranslator.g3" />
     <Compile Include="Codegen\ACyclicDFACodeGenerator.cs" />
     <Compile Include="Tool\Attribute.cs" />
     <Compile Include="Tool\AttributeScope.cs" />
@@ -100,55 +98,23 @@
     <Compile Include="Tool\GrammarSanity.cs" />
     <Compile Include="Tool\NameSpaceChecker.cs" />
     <Compile Include="Tool\NFAFactory.cs" />
-    <Compile Include="Grammars\ActionTranslator.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>ActionTranslator.g3</DependentUpon>
-    </Compile>
     <Compile Include="Grammars\ActionTranslatorHelper.cs">
       <DependentUpon>ActionTranslator.g3</DependentUpon>
     </Compile>
-    <Antlr3 Include="Grammars\CodeGenTreeWalker.g3">
-      <OutputFiles>Grammars\CodeGenTreeWalker.cs;Grammars\CodeGenTreeWalker.tokens</OutputFiles>
-    </Antlr3>
-    <Compile Include="Grammars\CodeGenTreeWalker.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>CodeGenTreeWalker.g3</DependentUpon>
-    </Compile>
+    <Antlr3 Include="Grammars\CodeGenTreeWalker.g3" />
     <Compile Include="Grammars\CodeGenTreeWalkerHelper.cs">
       <DependentUpon>CodeGenTreeWalker.g3</DependentUpon>
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Antlr3 Include="Grammars\ActionAnalysisLexer.g3">
-      <OutputFiles>Grammars\ActionAnalysisLexer.cs;Grammars\ActionAnalysisLexer.tokens</OutputFiles>
-    </Antlr3>
-    <Compile Include="Grammars\ActionAnalysisLexer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>ActionAnalysisLexer.g3</DependentUpon>
-    </Compile>
+    <Antlr3 Include="Grammars\ActionAnalysisLexer.g3" />
     <Compile Include="Grammars\ActionAnalysisLexerHelper.cs">
       <DependentUpon>ActionAnalysisLexer.g3</DependentUpon>
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Antlr3 Include="Grammars\ANTLR.g3">
-      <OutputFiles>Grammars\ANTLRParser.cs;Grammars\ANTLRLexer.cs;Grammars\ANTLR.tokens</OutputFiles>
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Antlr3>
-    <Compile Include="Grammars\ANTLRParser.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>ANTLR.g3</DependentUpon>
-    </Compile>
+    <Antlr3 Include="Grammars\ANTLR.g3" />
     <Compile Include="Grammars\ANTLRParserHelper.cs">
-      <DependentUpon>ANTLR.g3</DependentUpon>
-    </Compile>
-    <Compile Include="Grammars\ANTLRLexer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
       <DependentUpon>ANTLR.g3</DependentUpon>
     </Compile>
     <Compile Include="Grammars\ANTLRLexerHelper.cs">
@@ -156,48 +122,25 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Antlr3 Include="Grammars\ANTLRTreePrinter.g3">
-      <OutputFiles>Grammars\ANTLRTreePrinter.cs;Grammars\ANTLRTreePrinter.tokens</OutputFiles>
-    </Antlr3>
-    <Compile Include="Grammars\ANTLRTreePrinter.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>ANTLRTreePrinter.g3</DependentUpon>
-    </Compile>
+    <Antlr3 Include="Grammars\ANTLRTreePrinter.g3" />
     <Compile Include="Grammars\ANTLRTreePrinterHelper.cs">
       <DependentUpon>ANTLRTreePrinter.g3</DependentUpon>
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Antlr3 Include="Grammars\AssignTokenTypesWalker.g3">
-      <OutputFiles>Grammars\AssignTokenTypesWalker.cs;Grammars\AssignTokenTypesWalker.tokens</OutputFiles>
-    </Antlr3>
-    <Compile Include="Grammars\AssignTokenTypesWalker.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>AssignTokenTypesWalker.g3</DependentUpon>
-    </Compile>
+    <Antlr3 Include="Grammars\AssignTokenTypesWalker.g3" />
     <Compile Include="Grammars\AssignTokenTypesWalkerHelper.cs">
       <DependentUpon>AssignTokenTypesWalker.g3</DependentUpon>
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Antlr3 Include="Grammars\DefineGrammarItemsWalker.g3">
-      <OutputFiles>Grammars\DefineGrammarItemsWalker.cs;Grammars\DefineGrammarItemsWalker.tokens</OutputFiles>
-    </Antlr3>
-    <Compile Include="Grammars\DefineGrammarItemsWalker.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>DefineGrammarItemsWalker.g3</DependentUpon>
-    </Compile>
+    <Antlr3 Include="Grammars\DefineGrammarItemsWalker.g3" />
     <Compile Include="Grammars\DefineGrammarItemsWalkerHelper.cs">
       <DependentUpon>DefineGrammarItemsWalker.g3</DependentUpon>
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Antlr3 Include="Grammars\TreeToNFAConverter.g3">
-      <OutputFiles>Grammars\TreeToNFAConverter.cs;Grammars\TreeToNFAConverter.tokens</OutputFiles>
-    </Antlr3>
+    <Antlr3 Include="Grammars\TreeToNFAConverter.g3" />
     <Compile Include="Extensions\EnumerableExtensions.cs" />
     <Compile Include="Extensions\FuncEqualityComparer.cs" />
     <Compile Include="Extensions\ListExtensions.cs" />
@@ -224,11 +167,6 @@
     <Compile Include="Tool\NonRegularDecisionMessage.cs" />
     <Compile Include="Tool\RecursionOverflowMessage.cs" />
     <Compile Include="Tool\RuleLabelScope.cs" />
-    <Compile Include="Grammars\TreeToNFAConverter.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>TreeToNFAConverter.g3</DependentUpon>
-    </Compile>
     <Compile Include="Grammars\TreeToNFAConverterHelper.cs">
       <DependentUpon>TreeToNFAConverter.g3</DependentUpon>
     </Compile>
@@ -561,29 +499,17 @@
       <Name>Antlr3.StringTemplate</Name>
     </ProjectReference>
   </ItemGroup>
+
   <PropertyGroup>
-    <UseHostCompilerIfAvailable>False</UseHostCompilerIfAvailable>
+    <!-- Folder containing AntlrBuildTask.dll -->
+    <AntlrBuildTaskPath>$(SolutionDir)bin\Bootstrap</AntlrBuildTaskPath>
+    <!-- Path to the ANTLR Tool itself. -->
+    <AntlrToolPath>$(SolutionDir)bin\Bootstrap\Antlr3.exe</AntlrToolPath>
   </PropertyGroup>
+
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <PropertyGroup>
-    <Antlr3ToolPath>$(MSBuildProjectDirectory)\..\bin\Bootstrap</Antlr3ToolPath>
-    <CoreCompileDependsOn>$(CoreCompileDependsOn);GenerateAntlrCode</CoreCompileDependsOn>
-    <CoreCleanDependsOn>$(CoreCleanDependsOn);CleanAntlrCode</CoreCleanDependsOn>
-    <PostBuildEvent>
-    </PostBuildEvent>
-  </PropertyGroup>
-  <Target Name="GenerateAntlrCode" Inputs="@(Antlr3)" Outputs="%(OutputFiles)">
-    <Message Importance="normal" Text="Antlr: Transforming '@(Antlr3)' to '%(Antlr3.OutputFiles)'" />
-    <!--<Exec Command="java -cp %22$(Antlr3ToolPath)\antlr3.jar;$(Antlr3ToolPath)\antlr-2.7.7.jar;$(Antlr3ToolPath)\stringtemplate-3.1b1.jar%22 org.antlr.Tool -lib %22%(RootDir)%(Directory).%22 -message-format vs2005 @(Antlr3)" Outputs="%(OutputFiles)" />-->
-    <Exec Command="%22$(Antlr3ToolPath)\Antlr3.exe%22 -Xconversiontimeout 60000 -lib %22%(RootDir)%(Directory).%22 -message-format vs2005 @(Antlr3)" Outputs="%(OutputFiles)" />
-  </Target>
-  <Target Name="CleanAntlrCode">
-    <ItemGroup>
-      <_CleanAntlrFileWrites Include="@(Antlr3->'%(RelativeDir)%(Filename).tokens')" />
-    </ItemGroup>
-    <Message Importance="normal" Text="Antlr: Deleting output files '@(_CleanAntlrFileWrites)'" />
-    <!--<Delete Files="@(_CleanAntlrFileWrites)" />-->
-  </Target>
+  <Import Project="$(SolutionDir)bin\Bootstrap\Antlr3.targets" />
+
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">
