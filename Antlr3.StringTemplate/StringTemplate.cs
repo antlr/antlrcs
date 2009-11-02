@@ -319,6 +319,8 @@ namespace Antlr3.ST
           */
         Dictionary<Type, IAttributeRenderer> _attributeRenderers;
 
+        Dictionary<Type, IAttributeRenderer> _interfaceRenderers;
+
         /** <summary>
          *  A list of alternating string and ASTExpr references.
          *  This is compiled to when the template is loaded/defined and walked to
@@ -646,6 +648,7 @@ namespace Antlr3.ST
         protected virtual void Dup( StringTemplate from, StringTemplate to )
         {
             to._attributeRenderers = from._attributeRenderers;
+            to._interfaceRenderers = from._interfaceRenderers;
             to._pattern = from._pattern;
             to._chunks = from._chunks;
             to._formalArguments = from._formalArguments;
@@ -1358,27 +1361,30 @@ namespace Antlr3.ST
         }
 
         /** <summary>
-         *  Specify a complete map of what object classes should map to which
-         *  renderer objects.
-         *  </summary>
-         */
-        public virtual void SetAttributeRenderers( Dictionary<Type, IAttributeRenderer> renderers )
-        {
-            this._attributeRenderers = renderers;
-        }
-
-        /** <summary>
          *  Register a renderer for all objects of a particular type.  This
          *  overrides any renderer set in the group for this class type.
          *  </summary>
          */
         public virtual void RegisterRenderer( Type attributeClassType, IAttributeRenderer renderer )
         {
-            if ( _attributeRenderers == null )
+            Dictionary<Type, IAttributeRenderer> renderers;
+            // renderers for interface types are kept separately due to their performance implications
+            if (!attributeClassType.IsInterface)
             {
-                _attributeRenderers = new Dictionary<Type, IAttributeRenderer>();
+                if (_attributeRenderers == null)
+                    _attributeRenderers = new Dictionary<Type, IAttributeRenderer>();
+
+                renderers = _attributeRenderers;
             }
-            _attributeRenderers[attributeClassType] = renderer;
+            else
+            {
+                if (_interfaceRenderers == null)
+                    _interfaceRenderers = new Dictionary<Type, IAttributeRenderer>();
+
+                renderers = _interfaceRenderers;
+            }
+
+            renderers[attributeClassType] = renderer;
         }
 
         /** <summary>
@@ -1394,6 +1400,13 @@ namespace Antlr3.ST
                 if ( !_attributeRenderers.TryGetValue( attributeClassType, out renderer ) )
                     renderer = null;
             }
+
+            // Only need to perform the expensive interface checks if the user registered a renderer for an interface type
+            if (renderer == null && _interfaceRenderers != null)
+            {
+                renderer = _interfaceRenderers.FirstOrDefault(pair => pair.Key.IsAssignableFrom(attributeClassType)).Value;
+            }
+
             if ( renderer != null )
             {
                 // found it!
