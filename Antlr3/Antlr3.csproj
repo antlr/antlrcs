@@ -249,34 +249,6 @@
       <Link>Codegen\Templates\CSharp2\ST.stg</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="..\..\..\antlr\main\tool\src\main\resources\org\antlr\codegen\templates\CSharp\AST.stg">
-      <Link>Codegen\Templates\CSharp\AST.stg</Link>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="..\..\..\antlr\main\tool\src\main\resources\org\antlr\codegen\templates\CSharp\ASTDbg.stg">
-      <Link>Codegen\Templates\CSharp\ASTDbg.stg</Link>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="..\..\..\antlr\main\tool\src\main\resources\org\antlr\codegen\templates\CSharp\ASTParser.stg">
-      <Link>Codegen\Templates\CSharp\ASTParser.stg</Link>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="..\..\..\antlr\main\tool\src\main\resources\org\antlr\codegen\templates\CSharp\ASTTreeParser.stg">
-      <Link>Codegen\Templates\CSharp\ASTTreeParser.stg</Link>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="..\..\..\antlr\main\tool\src\main\resources\org\antlr\codegen\templates\CSharp\CSharp.stg">
-      <Link>Codegen\Templates\CSharp\CSharp.stg</Link>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="..\..\..\antlr\main\tool\src\main\resources\org\antlr\codegen\templates\CSharp\Dbg.stg">
-      <Link>Codegen\Templates\CSharp\Dbg.stg</Link>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="..\..\..\antlr\main\tool\src\main\resources\org\antlr\codegen\templates\CSharp\ST.stg">
-      <Link>Codegen\Templates\CSharp\ST.stg</Link>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
     <Content Include="..\..\..\antlr\main\tool\src\main\resources\org\antlr\codegen\templates\C\AST.stg">
       <Link>Codegen\Templates\C\AST.stg</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
@@ -499,17 +471,14 @@
       <Name>Antlr3.StringTemplate</Name>
     </ProjectReference>
   </ItemGroup>
-
   <PropertyGroup>
     <!-- Folder containing AntlrBuildTask.dll -->
     <AntlrBuildTaskPath>$(SolutionDir)bin\Bootstrap</AntlrBuildTaskPath>
     <!-- Path to the ANTLR Tool itself. -->
     <AntlrToolPath>$(SolutionDir)bin\Bootstrap\Antlr3.exe</AntlrToolPath>
   </PropertyGroup>
-
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)bin\Bootstrap\Antlr3.targets" />
-
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">
