@@ -112,12 +112,17 @@ namespace Antlr3.Codegen
          *  limit will be hit only for lexers where wildcard in a UNICODE
          *  vocabulary environment would generate a SWITCH with 65000 labels.
          */
-        public int MaxSwitchCaseLabels = 300;
-        public int MinSwitchAlts = 3;
-        public bool GenerateSwitchesWhenPossible = true;
-        //public static bool GenAcyclicDfaInline = true;
+
+        public static readonly int DefaultMaxSwitchCaseLabels = 300;
+        public static readonly int DefaultMinSwitchAlts = 3;
+        public static readonly int DefaultMaxAcyclicDfaStatesInline = 10;
+
+        public static int MaxSwitchCaseLabels = DefaultMaxSwitchCaseLabels;
+        public static int MinSwitchAlts = DefaultMinSwitchAlts;
+        public static int MaxAcyclicDfaStatesInline = DefaultMaxAcyclicDfaStatesInline;
         public static bool EmitTemplateDelimiters = false;
-        public static int MaxAcyclicDfaStatesInline = 10;
+
+        public bool GenerateSwitchesWhenPossible = true;
 
         /** Which grammar are we generating code for?  Each generator
          *  is attached to a specific grammar.

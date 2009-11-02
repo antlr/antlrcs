@@ -333,56 +333,88 @@ namespace Antlr3
                         CodeGenerator.MaxAcyclicDfaStatesInline = int.Parse( args[i] );
                     }
                 }
-                else if ( args[i] == "-Xm" )
+                else if (args[i] == "-Xmaxswitchcaselabels")
                 {
-                    if ( i + 1 >= args.Length )
+                    if (i + 1 >= args.Length)
                     {
-                        Console.Error.WriteLine( "missing max recursion with -Xm option; ignoring" );
+                        Console.Error.WriteLine("missing max switch case labels -Xmaxswitchcaselabels option; ignoring");
                     }
                     else
                     {
                         i++;
-                        NFAContext.MAX_SAME_RULE_INVOCATIONS_PER_NFA_CONFIG_STACK = int.Parse( args[i] );
+                        int value;
+                        if (int.TryParse(args[i], out value))
+                            CodeGenerator.MaxSwitchCaseLabels = value;
+                        else
+                            Console.Error.WriteLine(string.Format("invalid value '{0}' for max switch case labels -Xmaxswitchcaselabels option; ignoring", args[i]));
                     }
                 }
-                else if ( args[i] == "-Xmaxdfaedges" )
+                else if (args[i] == "-Xminswitchalts")
                 {
-                    if ( i + 1 >= args.Length )
+                    if (i + 1 >= args.Length)
                     {
-                        Console.Error.WriteLine( "missing max number of edges with -Xmaxdfaedges option; ignoring" );
+                        Console.Error.WriteLine("missing min switch alternatives -Xminswitchalts option; ignoring");
                     }
                     else
                     {
                         i++;
-                        DFA.MAX_STATE_TRANSITIONS_FOR_TABLE = int.Parse( args[i] );
+                        int value;
+                        if (int.TryParse(args[i], out value))
+                            CodeGenerator.MinSwitchAlts = value;
+                        else
+                            Console.Error.WriteLine(string.Format("invalid value '{0}' for min switch alternatives -Xminswitchalts option; ignoring", args[i]));
                     }
                 }
-                else if ( args[i] == "-Xconversiontimeout" )
+                else if (args[i] == "-Xm")
                 {
-                    if ( i + 1 >= args.Length )
+                    if (i + 1 >= args.Length)
                     {
-                        Console.Error.WriteLine( "missing max time in ms -Xconversiontimeout option; ignoring" );
+                        Console.Error.WriteLine("missing max recursion with -Xm option; ignoring");
                     }
                     else
                     {
                         i++;
-                        DFA.MAX_TIME_PER_DFA_CREATION = TimeSpan.FromMilliseconds( int.Parse( args[i] ) );
+                        NFAContext.MAX_SAME_RULE_INVOCATIONS_PER_NFA_CONFIG_STACK = int.Parse(args[i]);
                     }
                 }
-                else if ( args[i] == "-Xnfastates" )
+                else if (args[i] == "-Xmaxdfaedges")
+                {
+                    if (i + 1 >= args.Length)
+                    {
+                        Console.Error.WriteLine("missing max number of edges with -Xmaxdfaedges option; ignoring");
+                    }
+                    else
+                    {
+                        i++;
+                        DFA.MAX_STATE_TRANSITIONS_FOR_TABLE = int.Parse(args[i]);
+                    }
+                }
+                else if (args[i] == "-Xconversiontimeout")
+                {
+                    if (i + 1 >= args.Length)
+                    {
+                        Console.Error.WriteLine("missing max time in ms -Xconversiontimeout option; ignoring");
+                    }
+                    else
+                    {
+                        i++;
+                        DFA.MAX_TIME_PER_DFA_CREATION = TimeSpan.FromMilliseconds(int.Parse(args[i]));
+                    }
+                }
+                else if (args[i] == "-Xnfastates")
                 {
                     DecisionProbe.verbose = true;
                 }
-                else if ( args[i] == "-X" )
+                else if (args[i] == "-X")
                 {
                     ExtendedHelp();
                 }
                 else
                 {
-                    if ( args[i][0] != '-' )
+                    if (args[i][0] != '-')
                     {
                         // Must be the grammar file
-                        AddGrammarFile( args[i] );
+                        AddGrammarFile(args[i]);
                     }
                 }
             }
@@ -832,21 +864,23 @@ namespace Antlr3
         private static void ExtendedHelp()
         {
             Version();
-            Console.Error.WriteLine( "  -Xgrtree               print the grammar AST" );
-            Console.Error.WriteLine( "  -Xdfa                  print DFA as text " );
-            Console.Error.WriteLine( "  -Xnoprune              test lookahead against EBNF block exit branches" );
-            Console.Error.WriteLine( "  -Xnocollapse           collapse incident edges into DFA states" );
-            Console.Error.WriteLine( "  -Xdbgconversion        dump lots of info during NFA conversion" );
-            Console.Error.WriteLine( "  -Xmultithreaded        run the analysis in 2 threads" );
-            Console.Error.WriteLine( "  -Xnomergestopstates    do not merge stop states" );
-            Console.Error.WriteLine( "  -Xdfaverbose           generate DFA states in DOT with NFA configs" );
-            Console.Error.WriteLine( "  -Xwatchconversion      print a message for each NFA before converting" );
-            Console.Error.WriteLine( "  -XdbgST                put tags at start/stop of all templates in output" );
-            Console.Error.WriteLine( "  -Xm m                  max number of rule invocations during conversion" );
-            Console.Error.WriteLine( "  -Xmaxdfaedges m        max \"comfortable\" number of edges for single DFA state" );
-            Console.Error.WriteLine( "  -Xconversiontimeout t  set NFA conversion timeout for each decision" );
-            Console.Error.WriteLine( "  -Xmaxinlinedfastates m max DFA states before table used rather than inlining" );
-            Console.Error.WriteLine( "  -Xnfastates            for nondeterminisms, list NFA states for each path" );
+            Console.Error.WriteLine("  -Xgrtree                print the grammar AST");
+            Console.Error.WriteLine("  -Xdfa                   print DFA as text ");
+            Console.Error.WriteLine("  -Xnoprune               test lookahead against EBNF block exit branches");
+            Console.Error.WriteLine("  -Xnocollapse            collapse incident edges into DFA states");
+            Console.Error.WriteLine("  -Xdbgconversion         dump lots of info during NFA conversion");
+            Console.Error.WriteLine("  -Xmultithreaded         run the analysis in 2 threads");
+            Console.Error.WriteLine("  -Xnomergestopstates     do not merge stop states");
+            Console.Error.WriteLine("  -Xdfaverbose            generate DFA states in DOT with NFA configs");
+            Console.Error.WriteLine("  -Xwatchconversion       print a message for each NFA before converting");
+            Console.Error.WriteLine("  -XdbgST                 put tags at start/stop of all templates in output");
+            Console.Error.WriteLine("  -Xnfastates             for nondeterminisms, list NFA states for each path");
+            Console.Error.WriteLine("  -Xm m                   max number of rule invocations during conversion           [" + NFAContext.MAX_SAME_RULE_INVOCATIONS_PER_NFA_CONFIG_STACK + "]");
+            Console.Error.WriteLine("  -Xmaxdfaedges m         max \"comfortable\" number of edges for single DFA state     [" + DFA.MAX_STATE_TRANSITIONS_FOR_TABLE + "]");
+            Console.Error.WriteLine("  -Xconversiontimeout t   set NFA conversion timeout for each decision               [" + DFA.MAX_TIME_PER_DFA_CREATION + "]");
+            Console.Error.WriteLine("  -Xmaxinlinedfastates m  max DFA states before table used rather than inlining      [" + CodeGenerator.DefaultMaxSwitchCaseLabels + "]");
+            Console.Error.WriteLine("  -Xmaxswitchcaselabels m don't generate switch() statements for dfas bigger than m  [" + CodeGenerator.DefaultMaxSwitchCaseLabels + "]");
+            Console.Error.WriteLine("  -Xminswitchalts m       don't generate switch() statements for dfas smaller than m [" + CodeGenerator.DefaultMinSwitchAlts + "]");
         }
 
         /// <summary>
