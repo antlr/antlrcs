@@ -357,7 +357,7 @@ namespace Antlr3.ST.Language
             }
             Dictionary<string, object> argumentContext = null;
             // indicate it's an ST-created list
-            IList results = new StringTemplate.STAttributeList();
+            var results = new StringTemplate.STAttributeList();
 
             // convert all attributes to iterators even if just one value
             for ( int a = 0; a < attributes.Count; a++ )
@@ -455,7 +455,7 @@ namespace Antlr3.ST.Language
             if ( iter != null )
             {
                 // results can be treated list an attribute, indicate ST created list
-                IList resultVector = new StringTemplate.STAttributeList();
+                var resultVector = new StringTemplate.STAttributeList();
                 int i = 0;
                 while ( iter.hasNext() )
                 {
@@ -1351,7 +1351,7 @@ namespace Antlr3.ST.Language
             Iterator it = attribute as Iterator;
             if ( it != null )
             {
-                IList a = new List<object>();
+                var a = new List<object>();
                 if ( !it.hasNext() )
                 {
                     return null; // if not even one value return null
