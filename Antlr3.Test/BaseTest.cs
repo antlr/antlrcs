@@ -97,6 +97,14 @@ namespace AntlrUnitTests
         [TestInitialize]
         public void setUp()
         {
+#if DEBUG
+            string configuration = "Debug";
+#else
+            string configuration = "Release";
+#endif
+            System.IO.DirectoryInfo currentAssemblyDirectory = new System.IO.FileInfo(typeof(BaseTest).Assembly.Location).Directory;
+            AntlrTool.ToolPathRoot = Path.Combine(currentAssemblyDirectory.Parent.Parent.Parent.FullName, @"bin\" + configuration);
+
             // new output dir for each test
             tmpdir = Path.GetFullPath( Path.Combine( Path.GetTempPath(), "antlr-" + currentTimeMillis() ) );
 
