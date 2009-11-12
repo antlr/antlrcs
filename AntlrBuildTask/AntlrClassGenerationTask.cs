@@ -37,6 +37,8 @@ namespace Antlr3.Build.Tasks
     using System.Threading;
     using Microsoft.Build.Framework;
     using Microsoft.Build.Utilities;
+    using File = System.IO.File;
+    using Path = System.IO.Path;
 
     public class AntlrClassGenerationTask
         : Task
@@ -77,6 +79,12 @@ namespace Antlr3.Build.Tasks
         }
 
         public ITaskItem[] SourceCodeFiles
+        {
+            get;
+            set;
+        }
+
+        public ITaskItem[] TokensFiles
         {
             get;
             set;
@@ -186,6 +194,36 @@ namespace Antlr3.Build.Tasks
                 sourceCodeFiles = new List<string>(SourceCodeFiles.Length);
                 foreach (ITaskItem taskItem in SourceCodeFiles)
                     sourceCodeFiles.Add(taskItem.ItemSpec);
+            }
+
+            if (this.TokensFiles != null && this.TokensFiles.Length > 0)
+            {
+                HashSet<string> copied = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+                foreach (ITaskItem taskItem in TokensFiles)
+                {
+                    string fileName = taskItem.ItemSpec;
+                    if (!File.Exists(fileName))
+                    {
+                        Log.LogError("The tokens file '{0}' does not exist.", fileName);
+                        continue;
+                    }
+
+                    string vocabName = Path.GetFileNameWithoutExtension(fileName);
+                    if (!copied.Add(vocabName))
+                    {
+                        Log.LogWarning("The tokens file '{0}' conflicts with another tokens file in the same project.", fileName);
+                        continue;
+                    }
+
+                    string target = Path.Combine(OutputPath, Path.GetFileName(fileName));
+                    if (!Path.GetExtension(target).Equals(".tokens", StringComparison.OrdinalIgnoreCase))
+                    {
+                        Log.LogError("The destination for the tokens file '{0}' did not have the correct extension '.tokens'.", target);
+                        continue;
+                    }
+
+                    File.Copy(fileName, target, true);
+                }
             }
 
             wrapper.AntlrToolPath = AntlrToolPath;
