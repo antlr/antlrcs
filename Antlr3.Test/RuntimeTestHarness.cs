@@ -1,14 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using Antlr3.ST;
-
-using File = System.IO.File;
-using Path = System.IO.Path;
-
-namespace AntlrUnitTests
+﻿namespace AntlrUnitTests
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Text;
+    using Antlr3.ST;
+
+    using File = System.IO.File;
+    using Path = System.IO.Path;
+
     public abstract class RuntimeTestHarness : IRuntimeTestHarness
     {
         public bool Debug

@@ -1,11 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using Antlr3.ST;
-
-namespace AntlrUnitTests
+﻿namespace AntlrUnitTests
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Text;
+    using Antlr3.ST;
+
     public class JavaRuntimeTestHarness : RuntimeTestHarness
     {
         public override string TestFileName

@@ -50,7 +50,7 @@ namespace Antlr3.Grammars
         protected GrammarAST currentBlockAST = null;
         protected bool atTreeRoot; // are we matching a tree root in tree grammar?
 
-        class GrammarASTErrorNode : GrammarAST
+        private class GrammarASTErrorNode : GrammarAST
         {
             public IIntStream input;
             public IToken start;

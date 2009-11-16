@@ -181,7 +181,8 @@ namespace Antlr3.Codegen
             new CyclicDFACodeGenerator(this);
             */
 
-        public const string VocabFileExtension = ".tokens";
+        public static readonly string VocabFileExtension = ".tokens";
+
         protected const string vocabFilePattern =
             "<tokens:{<attr.name>=<attr.type>\n}>" +
             "<literals:{<attr.name>=<attr.type>\n}>";
