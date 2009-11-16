@@ -80,6 +80,7 @@
 
   <ItemGroup Condition="'$(BuildingInsideVisualStudio)'=='true'">
     <AvailableItemName Include="Antlr3" />
+    <AvailableItemName Include="AntlrTokens" />
   </ItemGroup>
 
   <Target Name="AntlrCompileReadGeneratedFileList">
@@ -92,7 +93,7 @@
   <Target Name="AntlrCompile"
           DependsOnTargets="$(AntlrCompileDependsOn)"
           Condition="'@(Antlr3)' != ''"
-          Inputs="@(Antlr3)"
+          Inputs="@(Antlr3);@(AntlrTokens)"
           Outputs="@(AntlrOutputCodeFilesList);
                   $(IntermediateOutputPath)$(AntlrGenCodeFileNames);">
 
@@ -105,7 +106,8 @@
       BuildTaskPath="$(AntlrBuildTaskLocation)"
       OutputPath="$(IntermediateOutputPath)"
       Language="$(Language)"
-      SourceCodeFiles="@(Antlr3)">
+      SourceCodeFiles="@(Antlr3)"
+      TokensFiles="@(AntlrTokens)">
 
       <Output ItemName="AntlrGeneratedCodeFiles" TaskParameter="GeneratedCodeFiles" />
     </AntlrClassGenerationTask>
