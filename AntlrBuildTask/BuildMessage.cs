@@ -29,22 +29,56 @@
 namespace Antlr3.Build.Tasks
 {
     using System;
+    using System.Diagnostics;
+    using System.Text.RegularExpressions;
 
     [Serializable]
     internal struct BuildMessage
     {
+        private static readonly Regex BuildMessageFormat = new Regex(@"^\s*(?<FILE>.*)\((?<LINE>[0-9]+),(?<COLUMN>[0-9]+)\) : (?<SEVERITY>[a-z]+)\s*(?<CODE>[0-9]+) : (?<MESSAGE>.*)$", RegexOptions.Compiled);
+
         public BuildMessage(string message)
-            : this(message, null, 0, 0)
+            : this(TraceLevel.Error, message, null, 0, 0)
         {
+            Match match = BuildMessageFormat.Match(message);
+            if (match.Success)
+            {
+                FileName = match.Groups["FILE"].Value;
+                LineNumber = int.Parse(match.Groups["LINE"].Value);
+                ColumnNumber = int.Parse(match.Groups["COLUMN"].Value);
+
+                switch (match.Groups["SEVERITY"].Value)
+                {
+                case "warning":
+                    Severity = TraceLevel.Warning;
+                    break;
+                case "error":
+                    Severity = TraceLevel.Error;
+                    break;
+                default:
+                    Severity = TraceLevel.Info;
+                    break;
+                }
+
+                int code = int.Parse(match.Groups["CODE"].Value);
+                Message = string.Format("AC{0:0000}: {1}", code, match.Groups["MESSAGE"].Value);
+            }
         }
 
-        public BuildMessage(string message, string fileName, int lineNumber, int columnNumber)
+        public BuildMessage(TraceLevel severity, string message, string fileName, int lineNumber, int columnNumber)
             : this()
         {
+            Severity = severity;
             Message = message;
             FileName = fileName;
             LineNumber = lineNumber;
             ColumnNumber = columnNumber;
+        }
+
+        public TraceLevel Severity
+        {
+            get;
+            set;
         }
 
         public string Message

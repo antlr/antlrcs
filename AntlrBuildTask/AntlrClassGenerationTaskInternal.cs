@@ -128,16 +128,16 @@ namespace Antlr3.Build.Tasks
 
                 args.AddRange(SourceCodeFiles);
 
-                LoggingTraceListener traceListener = new LoggingTraceListener(_buildMessages);
-                SetTraceListener(traceListener);
-                ProcessArgs(args.ToArray());
-                process();
+                using (LoggingTraceListener traceListener = new LoggingTraceListener(_buildMessages))
+                {
+                    SetTraceListener(traceListener);
+                    ProcessArgs(args.ToArray());
+                    process();
+                }
+
                 _generatedCodeFiles.AddRange(GetGeneratedFiles().Where(file => Path.GetExtension(file).Equals(".cs", StringComparison.OrdinalIgnoreCase)));
 
                 int errorCount = GetNumErrors();
-                if (errorCount > 0)
-                    _buildMessages.Add(new BuildMessage(errorCount + " errors occurred."));
-
                 return errorCount == 0;
             }
             catch (Exception e)
@@ -158,6 +158,14 @@ namespace Antlr3.Build.Tasks
                 _currentLine = new StringBuilder();
             }
 
+            protected override void Dispose(bool disposing)
+            {
+                if (disposing)
+                    WriteLine(string.Empty);
+
+                base.Dispose(disposing);
+            }
+
             public override void Write(string message)
             {
                 _currentLine.Append(message);
@@ -167,7 +175,7 @@ namespace Antlr3.Build.Tasks
             {
                 if (_currentLine.Length > 0)
                 {
-                    _buildMessages.Add(new BuildMessage(_currentLine.ToString(), null, 0, 0));
+                    _buildMessages.Add(new BuildMessage(_currentLine.ToString()));
                     _currentLine.Length = 0;
                 }
 

@@ -30,6 +30,7 @@ namespace Antlr3.Build.Tasks
 {
     using System;
     using System.Collections.Generic;
+    using System.Diagnostics;
     using System.Linq;
     using System.Reflection;
     using System.Security;
@@ -138,12 +139,10 @@ namespace Antlr3.Build.Tasks
                 {
                     _generatedCodeFiles.AddRange(wrapper.GeneratedCodeFiles.Select(file => (ITaskItem)new TaskItem(file)));
                 }
-                else
+
+                foreach (BuildMessage message in wrapper.BuildMessages)
                 {
-                    foreach (BuildMessage message in wrapper.BuildMessages)
-                    {
-                        ProcessBuildMessage(message);
-                    }
+                    ProcessBuildMessage(message);
                 }
             }
             catch (Exception exception)
@@ -181,7 +180,22 @@ namespace Antlr3.Build.Tasks
 
             string subcategory = null;
             string helpKeyword = null;
-            this.Log.LogError(subcategory, errorCode, helpKeyword, message.FileName, message.LineNumber, message.ColumnNumber, 0, 0, logMessage, null);
+
+            switch (message.Severity)
+            {
+            case TraceLevel.Error:
+                this.Log.LogError(subcategory, errorCode, helpKeyword, message.FileName, message.LineNumber, message.ColumnNumber, 0, 0, logMessage);
+                break;
+            case TraceLevel.Warning:
+                this.Log.LogWarning(subcategory, errorCode, helpKeyword, message.FileName, message.LineNumber, message.ColumnNumber, 0, 0, logMessage);
+                break;
+            case TraceLevel.Info:
+                this.Log.LogMessage(MessageImportance.Normal, logMessage);
+                break;
+            case TraceLevel.Verbose:
+                this.Log.LogMessage(MessageImportance.Low, logMessage);
+                break;
+            }
         }
 
         private AntlrClassGenerationTaskInternal CreateBuildTaskWrapper(AppDomain domain)
