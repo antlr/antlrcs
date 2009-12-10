@@ -45,6 +45,24 @@
     <Compile Include="JavaRuntimeTestHarness.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RuntimeTestHarness.cs" />
+    <Compile Include="ST4\ErrorBuffer.cs" />
+    <Compile Include="ST4\StringTemplateTestBase.cs" />
+    <Compile Include="ST4\TestCompiler.cs" />
+    <Compile Include="ST4\TestCoreBasics.cs" />
+    <Compile Include="ST4\TestDictionaries.cs" />
+    <Compile Include="ST4\TestDollarDelimiters.cs" />
+    <Compile Include="ST4\TestFunctions.cs" />
+    <Compile Include="ST4\TestGroups.cs" />
+    <Compile Include="ST4\TestGroupSyntax.cs" />
+    <Compile Include="ST4\TestIndentation.cs" />
+    <Compile Include="ST4\TestIndirectionAndEarlyEvaluation.cs" />
+    <Compile Include="ST4\TestLexer.cs" />
+    <Compile Include="ST4\TestLists.cs" />
+    <Compile Include="ST4\TestNullAndEmptyValues.cs" />
+    <Compile Include="ST4\TestOptions.cs" />
+    <Compile Include="ST4\TestSubtemplates.cs" />
+    <Compile Include="ST4\TestSyntaxErrors.cs" />
+    <Compile Include="ST4\TestWhitespace.cs" />
     <Compile Include="StringTemplateTests.cs" />
     <Compile Include="TestASTConstruction.cs" />
     <Compile Include="TestAttributes.cs" />
@@ -120,6 +138,10 @@
       <Project>{2AB8CAED-C046-4F05-8B18-6948100D2FE7}</Project>
       <Name>Antlr3</Name>
       <Private>True</Private>
+    </ProjectReference>
+    <ProjectReference Include="..\StringTemplate4\StringTemplate4.csproj">
+      <Project>{BBE5D9E6-2F4C-46EF-8CDB-17F886A36837}</Project>
+      <Name>StringTemplate4</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />

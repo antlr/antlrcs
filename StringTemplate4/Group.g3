@@ -1,0 +1,216 @@
+﻿/*
+ [The "BSD licence"]
+ Copyright (c) 2003-2009 Terence Parr
+ All rights reserved.
+
+ Redistribution and use in source and binary forms, with or without
+ modification, are permitted provided that the following conditions
+ are met:
+ 1. Redistributions of source code must retain the above copyright
+    notice, this list of conditions and the following disclaimer.
+ 2. Redistributions in binary form must reproduce the above copyright
+    notice, this list of conditions and the following disclaimer in the
+    documentation and/or other materials provided with the distribution.
+ 3. The name of the author may not be used to endorse or promote products
+    derived from this software without specific prior written permission.
+
+ THIS SOFTWARE IS PROVIDED BY THE AUTHOR ``AS IS'' AND ANY EXPRESS OR
+ IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
+ OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.
+ IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT,
+ INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+ NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+ DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
+ THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+ (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
+ THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+*/
+
+/** Match a group of template definitions beginning
+ *  with a group name declaration.  Templates are enclosed
+ *  in double-quotes or <<...>> quotes for multi-line templates.
+ *  Template names have arg lists that indicate the cardinality
+ *  of the attribute: present, optional, zero-or-more, one-or-more.
+ *  Here is a sample group file:
+
+	group nfa;
+
+	// an NFA has edges and states
+	nfa(states,edges) ::= <<
+	digraph NFA {
+	rankdir=LR;
+	<states; separator="\\n">
+	<edges; separator="\\n">
+	}
+	>>
+
+	state(name) ::= "node [shape = circle]; <name>;"
+
+ */
+grammar Group;
+
+options {
+	language=CSharp3;
+}
+
+@lexer::namespace{StringTemplate}
+@parser::namespace{StringTemplate}
+
+@header
+{
+using Console = System.Console;
+}
+
+public
+group[TemplateGroup group]
+@init {
+this._group = $group;
+GroupLexer lexer = (GroupLexer)input.TokenSource;
+lexer._group = $group;
+}
+	:	//'group' name=ID {$group.name = $name.text;}
+		//( ':' s=ID {$group.supergroup = $s.text;} )?
+	    //';'
+	    ( templateDef | dictDef )+
+    ;
+
+public
+templateDef
+@init {
+    string template=null;
+    int n=0; // num char to strip from left, right of template def
+}
+	:	(	'@' ID '.' region=ID
+		|	name=ID 
+		)
+	    '(' formalArgs? ')' '::='
+	    {IToken templateToken = input.LT(1);}
+	    (	STRING     {template=$STRING.text; n=1;}
+	    |	BIGSTRING  {template=$BIGSTRING.text; n=2;}
+	    )
+	    {
+	    template = Misc.Strip(template, n);
+   		if ( templateToken.Type==BIGSTRING ) {
+   			template = Misc.TrimOneStartingWS(template);
+   		}
+	    try {
+		    this._group.DefineTemplate($name.text, $formalArgs.args, template);
+		}
+        catch (TemplateRecognitionException e) {
+        	RecognitionException re = (RecognitionException)e.InnerException;
+        	int charPosition =
+        		re.charPositionInLine+templateToken.CharPositionInLine+n;
+	        this._group.listener.Error(templateToken.Line+":"+
+                    	  		 charPosition+
+	                             ": "+e.Message, null);
+        }		
+	    }
+	|   alias=ID '::=' target=ID	    
+	;
+
+formalArgs returns[IDictionary<string,FormalArgument> args]
+@init {$args = new Dictionary<string,FormalArgument>();}
+    :	formalArg[$args] ( ',' formalArg[$args] )*
+	;
+
+formalArg[IDictionary<string,FormalArgument> args]
+@init {string defvalue = null;}
+	:	ID
+		(	'=' STRING				{defvalue = $STRING.text;}
+		|	'=' ANONYMOUS_TEMPLATE	{defvalue = $ANONYMOUS_TEMPLATE.text;}
+		)?
+		{$args[$ID.text] = new FormalArgument($ID.text, defvalue);}
+    ;
+
+/*
+suffix returns [int cardinality=FormalArgument.REQUIRED]
+    :   OPTIONAL 
+    |   STAR     
+    |   PLUS     
+	|
+    ;
+    */
+
+dictDef
+	:	ID '::=' dict
+        {
+        if ( this._group.dictionaries.ContainsKey($ID.text) ) {
+            Console.Error.WriteLine("redefinition of map: "+$ID.text);
+        }
+        else if ( this._group.templates.ContainsKey($ID.text) ) {
+            Console.Error.WriteLine("redefinition of template as map: "+$ID.text);
+        }
+        else {
+            this._group.DefineDictionary($ID.text, $dict.mapping);
+        }
+        }
+	;
+
+dict returns [IDictionary<string, object> mapping]
+@init {mapping=new Dictionary<string, object>();}
+	:   '[' dictPairs[mapping] ']'
+	;
+	
+dictPairs[IDictionary<string, object> mapping]
+    :	keyValuePair[mapping]
+    	(',' keyValuePair[mapping])* (',' defaultValuePair[mapping])?
+    |	defaultValuePair[mapping] 
+    ;	
+	
+defaultValuePair[IDictionary<string,object> mapping]
+	:	'default' ':' keyValue {mapping[TemplateGroup.DEFAULT_KEY] = $keyValue.value;}
+	;
+
+keyValuePair[IDictionary<string,object> mapping]
+	:	STRING ':' keyValue {mapping[Misc.Strip($STRING.text, 1)] = $keyValue.value;}
+	;
+
+keyValue returns [object value]
+	:	BIGSTRING			{$value = new Template(this._group, Misc.Strip($BIGSTRING.text,2));}
+	|	ANONYMOUS_TEMPLATE	{$value = new Template(this._group, Misc.Strip($ANONYMOUS_TEMPLATE.text,1));}
+	|	STRING				{$value = Misc.Strip($STRING.text, 1);}
+	|	{input.LT(1).Text.Equals("key")}?=> ID
+							{$value = TemplateGroup.DICT_KEY;}
+	|						{$value = null;}
+	;
+
+ID	:	('a'..'z'|'A'..'Z'|'_') ('a'..'z'|'A'..'Z'|'0'..'9'|'-'|'_')*
+	;
+
+STRING
+	:	'"' ( '\\' '"' | '\\' ~'"' | ~('\\'|'"') )* '"'
+	;
+
+BIGSTRING
+	:	'<<'
+		(	options {greedy=false;}
+		:	'\\' '>'  // \> escape
+		|	'\\' ~'>'
+		|	~'\\'
+		)*
+        '>>'
+	;
+
+ANONYMOUS_TEMPLATE
+    :	'{'
+    	{
+		TemplateLexer lexer =
+			new TemplateLexer(input, this._group.delimiterStartChar, this._group.delimiterStopChar);
+		lexer.subtemplateDepth = 1;
+		//CommonTokenStream tokens = new CommonTokenStream(lexer);
+		CommonTokenStream tokens = new CommonTokenStream(lexer);
+        TemplateParser parser = new TemplateParser(tokens, (ICodeGenerator)null);
+		parser.template();
+		}
+    	// don't match '}' here; subparser matches it to terminate
+    ;
+
+COMMENT
+    :   '/*' ( options {greedy=false;} : . )* '*/' {Skip();}
+    ;
+
+LINE_COMMENT
+    :	'//' ~('\n'|'\r')* '\r'? '\n' {Skip();}
+    ;
+
+WS  :	(' '|'\r'|'\t'|'\n') {Skip();} ;

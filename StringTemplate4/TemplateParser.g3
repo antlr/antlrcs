@@ -1,0 +1,298 @@
+﻿/*
+ [The "BSD licence"]
+ Copyright (c) 2009 Terence Parr
+ All rights reserved.
+
+ Redistribution and use in source and binary forms, with or without
+ modification, are permitted provided that the following conditions
+ are met:
+ 1. Redistributions of source code must retain the above copyright
+    notice, this list of conditions and the following disclaimer.
+ 2. Redistributions in binary form must reproduce the above copyright
+    notice, this list of conditions and the following disclaimer in the
+    documentation and/or other materials provided with the distribution.
+ 3. The name of the author may not be used to endorse or promote products
+    derived from this software without specific prior written permission.
+
+ THIS SOFTWARE IS PROVIDED BY THE AUTHOR ``AS IS'' AND ANY EXPRESS OR
+ IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
+ OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.
+ IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT,
+ INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+ NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+ DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
+ THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+ (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
+ THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+*/
+
+/** Recognize a single StringTemplate template text, expressions, and conditionals */
+parser grammar TemplateParser;
+
+options {
+	language=CSharp3;
+	tokenVocab=TemplateLexer;
+}
+
+@namespace{StringTemplate}
+
+@rulecatch {
+   catch (RecognitionException) { throw; }
+}
+
+public
+templateAndEOF
+	:	template EOF
+	;
+
+public
+template
+	:	(	options {backtrack=true; k=2;}
+		:	i=INDENT         {Indent($i.text);}
+			ifOnOneLine      {gen.Emit(Bytecode.INSTR_DEDENT);}
+		|	i=INDENT {PushIFIndentation($i.text);} ifOnMultiLines {PopIFIndentation();}
+		|	ifOnMultiLines
+		|	i=INDENT       	 {Indent($i.text);}
+			exprTag          {gen.Emit(Bytecode.INSTR_DEDENT);}
+		|	exprTag
+		|	i=INDENT         {Indent($i.text);}
+			text             {gen.Emit(Bytecode.INSTR_DEDENT);}
+		|	text
+		|	i=INDENT         {Indent($i.text);}
+		 	NEWLINE          {gen.Emit(Bytecode.INSTR_NEWLINE);} 
+		 	                 {gen.Emit(Bytecode.INSTR_DEDENT);}
+		|	NEWLINE          {gen.Emit(Bytecode.INSTR_NEWLINE);}
+		)*
+	;
+
+text
+	:	TEXT
+		{
+		if ( $TEXT.text.Length>0 ) {
+			gen.Emit(Bytecode.INSTR_LOAD_STR, $TEXT.text);
+			gen.Emit(Bytecode.INSTR_WRITE);
+		}
+		}
+	;
+
+exprTag
+	:	LDELIM expr
+		(	';' exprOptions {gen.Emit(Bytecode.INSTR_WRITE_OPT);}
+		|	                {gen.Emit(Bytecode.INSTR_WRITE);}
+		)
+		RDELIM
+	;
+
+subtemplate returns [string name]
+	:	'{' ( ids+=ID (',' ids+=ID)* '|' )?
+		{{ // force exec even when backtracking
+		$name = gen.CompileAnonTemplate(input, $ids, state);
+        }}
+        '}'
+    ;
+
+/** The (...)* loop in rule template doesn't think '}' can follow it because
+ *  we call template in an action (via compileAnonTemplate).  To avoid
+ *  syntax errors upon '}' in rule templatee, we force '}' into FOLLOW set.
+ *  I hope to make ANTLR ignore FOLLOW set for (...)* in future.
+ */
+addRcurlyToFollowOfTemplateRule : template '}' ;
+
+ifOnMultiLines
+@init {
+    /** Tracks address of branch operand (in code block).  It's how
+     *  we backpatch forward references when generating code for IFs.
+     */
+    int prevBranchOperand = -1;
+    /** Branch instruction operands that are forward refs to end of IF.
+     *  We need to update them once we see the endif.
+     */
+    List<int> endRefs = new List<int>();
+}
+	:	LDELIM 'if' '(' conditional ')' RDELIM
+		{
+        prevBranchOperand = gen.Address()+1;
+        gen.Emit(Bytecode.INSTR_BRF, -1); // write placeholder as branch target
+		}
+		template
+		(	INDENT? LDELIM 'elseif'
+			{
+			endRefs.Add(gen.Address()+1);
+			gen.Emit(Bytecode.INSTR_BR, -1); // br end
+			// update previous branch instruction
+			gen.Write(prevBranchOperand, (short)gen.Address());
+			prevBranchOperand = -1;
+			}
+			'(' conditional ')' RDELIM
+			{
+        	prevBranchOperand = gen.Address()+1;
+        	gen.Emit(Bytecode.INSTR_BRF, -1); // write placeholder as branch target
+			}
+			template
+		)*
+		(	INDENT? LDELIM 'else' RDELIM
+			{
+			endRefs.Add(gen.Address()+1);
+			gen.Emit(Bytecode.INSTR_BR, -1); // br end
+			// update previous branch instruction
+			gen.Write(prevBranchOperand, (short)gen.Address());
+			prevBranchOperand = -1;
+			}
+			template
+		)?
+		INDENT? endif=LDELIM 'endif' RDELIM
+		( {true}? NEWLINE )? // kill \on for <endif> on line by itself
+		{
+		if ( prevBranchOperand>=0 ) {
+			gen.Write(prevBranchOperand, (short)gen.Address());
+		}
+        foreach (int opnd in endRefs) gen.Write(opnd, (short)gen.Address());
+		}
+	;
+
+// TODO: code dup but need to call elementsForIfOnOneLine not template inside :(
+ifOnOneLine
+@init {
+    /** Tracks address of branch operand (in code block).  It's how
+     *  we backpatch forward references when generating code for IFs.
+     */
+    int prevBranchOperand = -1;
+    /** Branch instruction operands that are forward refs to end of IF.
+     *  We need to update them once we see the endif.
+     */
+    List<int> endRefs = new List<int>();
+}
+	:	LDELIM 'if' '(' conditional ')' RDELIM
+		{
+        prevBranchOperand = gen.Address()+1;
+        gen.Emit(Bytecode.INSTR_BRF, -1); // write placeholder as branch target
+		}
+		elementsForIfOnOneLine*
+		(	LDELIM 'elseif'
+			{
+			endRefs.Add(gen.Address()+1);
+			gen.Emit(Bytecode.INSTR_BR, -1); // br end
+			// update previous branch instruction
+			gen.Write(prevBranchOperand, (short)gen.Address());
+			prevBranchOperand = -1;
+			}
+			'(' conditional ')' RDELIM
+			{
+        	prevBranchOperand = gen.Address()+1;
+        	gen.Emit(Bytecode.INSTR_BRF, -1); // write placeholder as branch target
+			}
+			elementsForIfOnOneLine*
+		)*
+		(	LDELIM 'else' RDELIM
+			{
+			endRefs.Add(gen.Address()+1);
+			gen.Emit(Bytecode.INSTR_BR, -1); // br end
+			// update previous branch instruction
+			gen.Write(prevBranchOperand, (short)gen.Address());
+			prevBranchOperand = -1;
+			}
+			elementsForIfOnOneLine*
+		)?
+		endif=LDELIM 'endif' RDELIM
+		{
+		if ( prevBranchOperand>=0 ) {
+			gen.Write(prevBranchOperand, (short)gen.Address());
+		}
+        foreach (int opnd in endRefs) gen.Write(opnd, (short)gen.Address());
+		}
+	;
+		
+elementsForIfOnOneLine
+	:	exprTag
+	|	text
+	|	ifOnOneLine
+	;
+	
+conditional
+	:	andConditional ('||' andConditional {gen.Emit(Bytecode.INSTR_OR);})*
+	;
+	
+andConditional
+	:	notConditional ('&&' notConditional {gen.Emit(Bytecode.INSTR_AND);})*
+	;
+
+notConditional
+	:	'!' primary  {gen.Emit(Bytecode.INSTR_NOT);}
+	|	primary
+	;
+	
+exprOptions
+	:	{gen.Emit(Bytecode.INSTR_OPTIONS);} option (',' option)*
+	;
+
+option
+	:	ID ( '=' exprNoComma | {DefaultOption($ID);} )
+		{SetOption($ID);}
+	;
+	
+exprNoComma
+	:	memberExpr ( ':' templateRef {gen.Emit(Bytecode.INSTR_MAP);} )?
+	|	subtemplate {gen.Emit(Bytecode.INSTR_NEW, $subtemplate.name);}
+	;
+
+expr : mapExpr ;
+
+mapExpr
+@init {int nt=1, ne=1;}
+	:	memberExpr (c=',' memberExpr {ne++;} )*
+		(	':' templateRef
+			(	(',' templateRef {nt++;})+  {gen.Emit(Bytecode.INSTR_ROT_MAP, nt);}
+			|	{if ( $c!=null ) gen.Emit(Bytecode.INSTR_PAR_MAP, ne);
+				 else gen.Emit(Bytecode.INSTR_MAP);}
+			)
+		)*
+	;
+
+memberExpr
+	:	callExpr
+		(	'.' ID {gen.Emit(Bytecode.INSTR_LOAD_PROP, $ID.text);}
+		|	'.' '(' mapExpr ')' {gen.Emit(Bytecode.INSTR_LOAD_PROP_IND);}
+		)*
+	;
+	
+callExpr
+options {k=2;} // prevent full LL(*) which fails, falling back on k=1; need k=2
+	:	{Compiler.funcs.ContainsKey(input.LT(1).Text)}?
+		ID '(' expr ')' {Func($ID);}
+	|	ID {gen.Emit(Bytecode.INSTR_NEW, $ID.text);} '(' args? ')'
+	|	primary
+	;
+	
+primary
+	:	'super'
+	|	o=ID	  {RefAttr($o);}
+/*		(	'.' p=ID {gen.Emit(Bytecode.INSTR_LOAD_PROP, $p.text);}
+		|	'.' '(' mapExpr ')' {gen.Emit(Bytecode.INSTR_LOAD_PROP_IND);}
+		)*
+		*/
+	|	STRING    {gen.Emit(Bytecode.INSTR_LOAD_STR, Strip($STRING.text,1));}
+	|	list
+	|	'(' expr ')' {gen.Emit(Bytecode.INSTR_TOSTR);}
+		( {gen.Emit(Bytecode.INSTR_NEW_IND);} '(' args? ')' )? // indirect call
+	;
+
+args:	arg (',' arg)* ;
+
+arg :	ID '=' exprNoComma {gen.Emit(Bytecode.INSTR_STORE_ATTR, $ID.text);}
+	|	exprNoComma        {gen.Emit(Bytecode.INSTR_STORE_SOLE_ARG);}
+	|	elip='...'		   {gen.Emit(Bytecode.INSTR_SET_PASS_THRU);}
+	;
+
+templateRef
+	:	ID			{gen.Emit(Bytecode.INSTR_LOAD_STR, $ID.text);}
+	|	subtemplate {gen.Emit(Bytecode.INSTR_LOAD_STR, $subtemplate.name);}
+	|	'(' mapExpr ')' {gen.Emit(Bytecode.INSTR_TOSTR);}
+	;
+	
+list:	{gen.Emit(Bytecode.INSTR_LIST);} '[' listElement (',' listElement)* ']'
+	|	{gen.Emit(Bytecode.INSTR_LIST);} '[' ']'
+	;
+
+listElement
+    :   exprNoComma {gen.Emit(Bytecode.INSTR_ADD);}
+    ;
