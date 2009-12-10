@@ -118,7 +118,7 @@ namespace StringTemplate
         {
             get
             {
-                Console.WriteLine("GetTemplatePathFromRoot root=" + (root != null ? root.GetName() : null) + " this=" + this.GetName());
+                //Console.WriteLine("GetTemplatePathFromRoot root=" + (root != null ? root.GetName() : null) + " this=" + this.GetName());
                 IList<string> elems = new List<string>();
                 TemplateGroup p = this;
                 while (p != root)
@@ -128,7 +128,7 @@ namespace StringTemplate
                 }
 
                 string s = "/" + string.Join("/", elems.ToArray());
-                Console.WriteLine("; template path=" + s);
+                //Console.WriteLine("; template path=" + s);
                 return s;
             }
         }
@@ -143,7 +143,7 @@ namespace StringTemplate
          */
         public virtual Template GetInstanceOf(string name)
         {
-            Console.WriteLine("GetInstanceOf(" + name + ") resolves to " + AbsoluteTemplatePath + "/" + name);
+            //Console.WriteLine("GetInstanceOf(" + name + ") resolves to " + AbsoluteTemplatePath + "/" + name);
             CompiledTemplate c = LookupTemplate(name);
             if (c != null)
             {
