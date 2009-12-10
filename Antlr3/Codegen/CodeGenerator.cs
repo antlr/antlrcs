@@ -44,6 +44,7 @@ namespace Antlr3.Codegen
     using ANTLRParser = Antlr3.Grammars.ANTLRParser;
     using AntlrTool = Antlr3.AntlrTool;
     using ArgumentException = System.ArgumentException;
+    using ArgumentOutOfRangeException = System.ArgumentOutOfRangeException;
     using AttributeScope = Antlr3.Tool.AttributeScope;
     using BitSet = Antlr3.Misc.BitSet;
     using CLSCompliant = System.CLSCompliantAttribute;
@@ -741,6 +742,11 @@ namespace Antlr3.Codegen
                                         string enclosingRuleName,
                                         int elementIndex )
         {
+            if (elementIndex < 0)
+            {
+                throw new ArgumentOutOfRangeException("elementIndex", "elementIndex cannot be less than zero.");
+            }
+
             /*
             JSystem.@out.println("compute FOLLOW "+grammar.name+"."+referencedElementNode.toString()+
                              " for "+referencedElementName+"#"+elementIndex +" in "+

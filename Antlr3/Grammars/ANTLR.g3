@@ -607,7 +607,7 @@ GrammarAST save = currentBlockAST;
 {
 currentBlockAST = save;
 }
-	:	(	-> BLOCK["BLOCK"]
+	:	(	-> BLOCK[$elemAST.Token, "BLOCK"]
 		)
 		{ blkRoot = (GrammarAST)$tree.GetChild(0); currentBlockAST = blkRoot; }
 		(	// create alt
