@@ -69,14 +69,19 @@ namespace StringTemplate
         public static readonly ITemplateErrorListener DefaultErrorListener = new DefaultErrorListenerImpl();
 
         /** The topmost group of templates in the template tree.
-         *  If null, implies this is the root
+         *  Point to yourself if group is root; but parent will be null.
          */
         public TemplateGroup root;
+
+        public TemplateGroupDirectory parent; // Are we a subdir or group file in dir?
+
+        public string fullyQualifiedRootDirName; // if we're root
 
         /** Load files using what encoding? */
         public Encoding encoding;
 
-        //public String supergroup;
+        // only in root
+        public IList<TemplateGroup> imports; // OR, supergroups;???
 
         public List<string> interfaces;
 
@@ -109,11 +114,24 @@ namespace StringTemplate
         {
         }
 
-        /*
-        public TemplateGroup(String name) {
-            this.name = name;
+        public string AbsoluteTemplatePath
+        {
+            get
+            {
+                Console.WriteLine("GetTemplatePathFromRoot root=" + (root != null ? root.GetName() : null) + " this=" + this.GetName());
+                IList<string> elems = new List<string>();
+                TemplateGroup p = this;
+                while (p != root)
+                {
+                    elems.Insert(0, p.GetName());
+                    p = p.parent;
+                }
+
+                string s = "/" + string.Join("/", elems.ToArray());
+                Console.WriteLine("; template path=" + s);
+                return s;
+            }
         }
-        */
 
         // TODO: for dirs, should this load everything in dir and below?
         public virtual void Load()
@@ -125,6 +143,7 @@ namespace StringTemplate
          */
         public virtual Template GetInstanceOf(string name)
         {
+            Console.WriteLine("GetInstanceOf(" + name + ") resolves to " + AbsoluteTemplatePath + "/" + name);
             CompiledTemplate c = LookupTemplate(name);
             if (c != null)
             {
@@ -196,7 +215,6 @@ namespace StringTemplate
                 throw new ArgumentException("cannot have '.' in template names");
             }
             Compiler c = new Compiler();
-            //template = Misc.trimOneStartingWS(template);
             CompiledTemplate code = c.Compile(template);
             code.name = name;
             code.formalArguments = args;
@@ -252,9 +270,14 @@ namespace StringTemplate
             return "<no name>;";
         }
 
+        public string GetPathFromRoot()
+        {
+            return root.fullyQualifiedRootDirName + AbsoluteTemplatePath;
+        }
+
         public override string ToString()
         {
-            return Show();
+            return GetName();
         }
 
         public virtual string Show()

@@ -33,13 +33,9 @@
 namespace AntlrUnitTests.ST4
 {
     using Microsoft.VisualStudio.TestTools.UnitTesting;
+    using StringTemplate;
     using ArgumentException = System.ArgumentException;
     using Path = System.IO.Path;
-    using ST = StringTemplate.Template;
-    using STGroup = StringTemplate.TemplateGroup;
-    using STGroupDir = StringTemplate.TemplateGroupDirectory;
-    using STGroupFile = StringTemplate.TemplateGroupFile;
-    using String = System.String;
 
     [TestClass]
     public class TestGroups : StringTemplateTestBase
@@ -47,36 +43,36 @@ namespace AntlrUnitTests.ST4
         [TestMethod]
         public void TestSimpleGroup()
         {
-            String dir = GetRandomDir();
-            String a =
+            string dir = GetRandomDir();
+            string a =
                 "a(x) ::= <<" + newline +
                 "foo" + newline +
                 ">>" + newline;
             WriteFile(dir, "a.st", a);
-            STGroup group = new STGroupDir(dir);
-            ST st = group.GetInstanceOf("a");
-            String expected = "foo" + newline;
-            String result = st.Render();
+            TemplateGroup group = new TemplateGroupDirectory(dir);
+            Template st = group.GetInstanceOf("a");
+            string expected = "foo" + newline;
+            string result = st.Render();
             Assert.AreEqual(expected, result);
         }
 
         [TestMethod]
         public void TestGroupWithTwoTemplates()
         {
-            String dir = GetRandomDir();
-            String a =
+            string dir = GetRandomDir();
+            string a =
                 "a(x) ::= <<" + newline +
                 "foo" + newline +
                 ">>" + newline;
             WriteFile(dir, "a.st", a);
-            String b =
+            string b =
                 "b() ::= \"bar\"" + newline;
             WriteFile(dir, "b.st", b);
-            STGroup group = new STGroupDir(dir);
-            ST st1 = group.GetInstanceOf("a");
-            ST st2 = group.GetInstanceOf("b");
-            String expected = "foo" + newline + "bar";
-            String result = st1.Render() + st2.Render();
+            TemplateGroup group = new TemplateGroupDirectory(dir);
+            Template st1 = group.GetInstanceOf("a");
+            Template st2 = group.GetInstanceOf("b");
+            string expected = "foo" + newline + "bar";
+            string result = st1.Render() + st2.Render();
             Assert.AreEqual(expected, result);
         }
 
@@ -84,20 +80,20 @@ namespace AntlrUnitTests.ST4
         public void TestSubdir()
         {
             // /randomdir/a and /randomdir/subdir/b
-            String dir = GetRandomDir();
-            String a =
+            string dir = GetRandomDir();
+            string a =
                 "a(x) ::= <<" + newline +
                 "foo" + newline +
                 ">>" + newline;
             WriteFile(dir, "a.st", a);
-            String b =
+            string b =
                 "b() ::= \"bar\"" + newline;
             WriteFile(Path.Combine(dir, "subdir"), "b.st", b);
-            STGroup group = new STGroupDir(dir);
-            ST st1 = group.GetInstanceOf("a");
-            ST st2 = group.GetInstanceOf("subdir/b");
-            String expected = "foo" + newline + "bar";
-            String result = st1.Render() + st2.Render();
+            TemplateGroup group = new TemplateGroupDirectory(dir);
+            Template st1 = group.GetInstanceOf("a");
+            Template st2 = group.GetInstanceOf("subdir/b");
+            string expected = "foo" + newline + "bar";
+            string result = st1.Render() + st2.Render();
             Assert.AreEqual(expected, result);
         }
 
@@ -105,22 +101,22 @@ namespace AntlrUnitTests.ST4
         public void TestGroupFileInDir()
         {
             // /randomdir/a and /randomdir/group.stg with b and c templates
-            String dir = GetRandomDir();
-            String a =
+            string dir = GetRandomDir();
+            string a =
                 "a(x) ::= <<\n" +
                 "foo\n" +
                 ">>\n";
             WriteFile(dir, "a.st", a);
-            String groupFile =
+            string groupFile =
                 "b() ::= \"bar\"\n" +
                 "c() ::= \"duh\"\n";
             WriteFile(dir, "group.stg", groupFile);
-            STGroup group = new STGroupDir(dir);
-            ST st1 = group.GetInstanceOf("a");
-            ST st2 = group.GetInstanceOf("group/b");
-            ST st3 = group.GetInstanceOf("group/c");
-            String expected = "foo" + newline + "barduh";
-            String result = st1.Render() + st2.Render() + st3.Render();
+            TemplateGroup group = new TemplateGroupDirectory(dir);
+            Template st1 = group.GetInstanceOf("a");
+            Template st2 = group.GetInstanceOf("group/b");
+            Template st3 = group.GetInstanceOf("group/c");
+            string expected = "foo" + newline + "barduh";
+            string result = st1.Render() + st2.Render() + st3.Render();
             Assert.AreEqual(expected, result);
         }
 
@@ -128,20 +124,20 @@ namespace AntlrUnitTests.ST4
         public void TestSubSubdir()
         {
             // /randomdir/a and /randomdir/subdir/b
-            String dir = GetRandomDir();
-            String a =
+            string dir = GetRandomDir();
+            string a =
                 "a(x) ::= <<" + newline +
                 "foo" + newline +
                 ">>" + newline;
             WriteFile(dir, "a.st", a);
-            String b =
+            string b =
                 "b() ::= \"bar\"" + newline;
             WriteFile(Path.Combine(Path.Combine(dir, "sub1"), "sub2"), "b.st", b);
-            STGroup group = new STGroupDir(dir);
-            ST st1 = group.GetInstanceOf("a");
-            ST st2 = group.GetInstanceOf("sub1/sub2/b");
-            String expected = "foo" + newline + "bar";
-            String result = st1.Render() + st2.Render();
+            TemplateGroup group = new TemplateGroupDirectory(dir);
+            Template st1 = group.GetInstanceOf("a");
+            Template st2 = group.GetInstanceOf("sub1/sub2/b");
+            string expected = "foo" + newline + "bar";
+            string result = st1.Render() + st2.Render();
             Assert.AreEqual(expected, result);
         }
 
@@ -149,34 +145,34 @@ namespace AntlrUnitTests.ST4
         public void TestGroupFileInSubDir()
         {
             // /randomdir/a and /randomdir/group.stg with b and c templates
-            String dir = GetRandomDir();
-            String a =
+            string dir = GetRandomDir();
+            string a =
                 "a(x) ::= <<\n" +
                 "foo\n" +
                 ">>\n";
             WriteFile(dir, "a.st", a);
-            String groupFile =
+            string groupFile =
                 "b() ::= \"bar\"\n" +
                 "c() ::= \"duh\"\n";
             WriteFile(dir, Path.Combine("subdir", "group.stg"), groupFile);
-            STGroup group = new STGroupDir(dir);
-            ST st1 = group.GetInstanceOf("a");
-            ST st2 = group.GetInstanceOf("subdir/group/b");
-            ST st3 = group.GetInstanceOf("subdir/group/c");
-            String expected = "foo" + newline + "barduh";
-            String result = st1.Render() + st2.Render() + st3.Render();
+            TemplateGroup group = new TemplateGroupDirectory(dir);
+            Template st1 = group.GetInstanceOf("a");
+            Template st2 = group.GetInstanceOf("subdir/group/b");
+            Template st3 = group.GetInstanceOf("subdir/group/c");
+            string expected = "foo" + newline + "barduh";
+            string result = st1.Render() + st2.Render() + st3.Render();
             Assert.AreEqual(expected, result);
         }
 
         [TestMethod]
         public void TestAttemptToAccessTemplateUnderGroupFile()
         {
-            String dir = GetRandomDir();
-            String groupFile =
+            string dir = GetRandomDir();
+            string groupFile =
                 "a() ::= \"bar\"\n";
             WriteFile(dir, "group.stg", groupFile);
-            STGroup group = new STGroupFile(Path.Combine(dir, "group.stg"));
-            String error = null;
+            TemplateGroup group = new TemplateGroupFile(Path.Combine(dir, "group.stg"));
+            string error = null;
             try
             {
                 group.GetInstanceOf("sub/b"); // can't have sub under group file
@@ -185,20 +181,20 @@ namespace AntlrUnitTests.ST4
             {
                 error = iae.Message;
             }
-            String expected = "can't use relative template name sub/b";
-            String result = error;
+            string expected = "can't use relative template name sub/b";
+            string result = error;
             Assert.AreEqual(expected, result);
         }
 
         [TestMethod]
         public void TestAttemptToUseWrongGroupFileNameFromRoot()
         {
-            String dir = GetRandomDir();
-            String groupFile =
+            string dir = GetRandomDir();
+            string groupFile =
                 "a() ::= \"bar\"\n";
             WriteFile(dir, "group.stg", groupFile);
-            STGroup group = new STGroupFile(Path.Combine(dir, "group.stg"));
-            String error = null;
+            TemplateGroup group = new TemplateGroupFile(Path.Combine(dir, "group.stg"));
+            string error = null;
             try
             {
                 group.GetInstanceOf("/sub/a"); // can't have sub under group file
@@ -207,42 +203,42 @@ namespace AntlrUnitTests.ST4
             {
                 error = iae.Message;
             }
-            String expected = "name must be of form /group/templatename: /sub/a";
-            String result = error;
+            string expected = "name must be of form /group/templatename: /sub/a";
+            string result = error;
             Assert.AreEqual(expected, result);
         }
 
         [TestMethod]
         public void TestAttemptToGoTooDeepUsingGroupFileNameFromRoot()
         {
-            String dir = GetRandomDir();
-            String groupFile =
+            string dir = GetRandomDir();
+            string groupFile =
                 "a() ::= \"bar\"\n";
             WriteFile(dir, "group.stg", groupFile);
-            STGroup group = new STGroupFile(Path.Combine(dir, "group.stg"));
-            String error = null;
+            TemplateGroup group = new TemplateGroupFile(Path.Combine(dir, "group.stg"));
+            string error = null;
             try
             {
-                group.GetInstanceOf("/gropu/b/b"); // can't have sub under group file
+                group.GetInstanceOf("/group/b/b"); // can't have sub under group file
             }
             catch (ArgumentException iae)
             {
                 error = iae.Message;
             }
-            String expected = "name must be of form /group/templatename: /gropu/b/b";
-            String result = error;
+            string expected = "name must be of form /group/templatename: /group/b/b";
+            string result = error;
             Assert.AreEqual(expected, result);
         }
 
         [TestMethod]
         public void TestAttemptToAccessDirWithSameNameAsTemplate()
         {
-            String dir = GetRandomDir();
-            String a =
+            string dir = GetRandomDir();
+            string a =
                 "a(x) ::= <<foo>>\n";
             WriteFile(dir, "a.st", a);
-            STGroup group = new STGroupDir(dir);
-            String error = null;
+            TemplateGroup group = new TemplateGroupDirectory(dir);
+            string error = null;
             try
             {
                 group.GetInstanceOf("a/b"); // 'a' is a template 
@@ -251,20 +247,20 @@ namespace AntlrUnitTests.ST4
             {
                 error = iae.Message;
             }
-            String expected = "a is a template not a dir or group file";
-            String result = error;
+            string expected = "a is a template not a dir or group file";
+            string result = error;
             Assert.AreEqual(expected, result);
         }
 
         [TestMethod]
         public void TestAttemptToAccessSubDirWithWrongRootName()
         {
-            String dir = GetRandomDir();
-            String a =
+            string dir = GetRandomDir();
+            string a =
                 "a(x) ::= <<foo>>\n";
             WriteFile(dir + "/subdir", "a.st", a);
-            STGroup group = new STGroupDir(Path.Combine(dir, "subdir"));
-            String error = null;
+            TemplateGroup group = new TemplateGroupDirectory(Path.Combine(dir, "subdir"));
+            string error = null;
             try
             {
                 group.GetInstanceOf("/x/b"); // name is subdir not x
@@ -273,8 +269,39 @@ namespace AntlrUnitTests.ST4
             {
                 error = iae.Message;
             }
-            String expected = "x doesn't match directory name subdir";
-            String result = error;
+            string expected = "no such subdirectory or group file: x";
+            string result = error;
+            Assert.AreEqual(expected, result);
+        }
+
+        [TestMethod]
+        public void TestRefToAnotherTemplateInSameGroup()
+        {
+            string dir = GetRandomDir();
+            string a = "a() ::= << <b()> >>\n";
+            string b = "b() ::= <<bar>>\n";
+            WriteFile(dir, "a.st", a);
+            WriteFile(dir, "b.st", b);
+            TemplateGroup group = new TemplateGroupDirectory(dir);
+            Template st = group.GetInstanceOf("a");
+            string expected = " bar ";
+            string result = st.Render();
+            Assert.AreEqual(expected, result);
+        }
+
+        [TestMethod]
+        public void TestRefToAnotherTemplateInSameSubdir()
+        {
+            // /randomdir/a and /randomdir/subdir/b
+            string dir = GetRandomDir();
+            string a = "a() ::= << <b()> >>\n";
+            string b = "b() ::= <<bar>>\n";
+            WriteFile(dir + "/subdir", "a.st", a);
+            WriteFile(dir + "/subdir", "b.st", b);
+            TemplateGroup group = new TemplateGroupDirectory(dir);
+            Template st = group.GetInstanceOf("subdir/a");
+            string expected = " bar ";
+            string result = st.Render();
             Assert.AreEqual(expected, result);
         }
     }
