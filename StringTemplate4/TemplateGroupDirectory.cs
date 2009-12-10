@@ -42,34 +42,39 @@ namespace StringTemplate
     using Exception = System.Exception;
     using File = System.IO.File;
     using Path = System.IO.Path;
+    using System.Collections.Generic;
 
     public class TemplateGroupDirectory : TemplateGroup
     {
         public string dirName;
+        public IList<TemplateGroup> children;
 
         public TemplateGroupDirectory(string fullyQualifiedRootDirName)
         {
             this.parent = null;
             this.root = this;
             this.fullyQualifiedRootDirName = fullyQualifiedRootDirName;
+            this.dirName = "/"; // it's the root
             if (!Directory.Exists(fullyQualifiedRootDirName))
             {
                 throw new ArgumentException("No such directory: " + fullyQualifiedRootDirName);
             }
         }
 
-        public TemplateGroupDirectory(TemplateGroupDirectory parent, string dirName)
+        public TemplateGroupDirectory(TemplateGroupDirectory parent, string relativeDirName)
         {
             if (parent == null)
-                throw new ArgumentNullException("parent", "Relative dir " + dirName + " can't have a null parent.");
+                throw new ArgumentNullException("parent", "Relative dir " + relativeDirName + " can't have a null parent.");
 
+            // doubly-link this node; we point at the parent and it has us as child
             this.parent = parent;
+            parent.AddChild(this);
             this.root = parent.root;
-            this.dirName = dirName;
-            string dir = GetPathFromRoot();
-            if (!Directory.Exists(dir))
+            this.dirName = relativeDirName;
+            string absoluteDirName = Path.Combine(root.fullyQualifiedRootDirName, AbsoluteTemplatePath.Substring(1));
+            if (!Directory.Exists(absoluteDirName))
             {
-                throw new ArgumentException("No such directory: " + dir);
+                throw new ArgumentException("No such directory: " + absoluteDirName);
             }
         }
 
@@ -77,6 +82,17 @@ namespace StringTemplate
             : this(parent, dirName)
         {
             this.encoding = encoding;
+        }
+
+        public override string Name
+        {
+            get
+            {
+                if (parent == null)
+                    return "/";
+
+                return dirName;
+            }
         }
 
         public override CompiledTemplate LookupTemplate(string name)
@@ -98,32 +114,51 @@ namespace StringTemplate
             if (templates.TryGetValue(name, out code))
                 return code;
 
-            return LookupTemplateFile(name); // try to load then
+            code = LookupTemplateFile(name); // try to load then
+            if (code == null)
+            {
+                Console.WriteLine("look for " + name + " in " + imports);
+                foreach (TemplateGroup g in imports)
+                {
+                    code = g.LookupTemplate(Path.Combine(AbsoluteTemplatePath, name));
+                }
+
+                if (code == null)
+                {
+                    throw new ArgumentException("no such template: " + Path.Combine(AbsoluteTemplatePath, name));
+                }
+            }
+
+            return code;
         }
 
         /** Look up template name with '/' anywhere but first char */
         protected virtual CompiledTemplate LookupQualifiedTemplate(string name)
         {
             // TODO: slow to load a template!
-            string d = GetPathFromRoot();
+            string absoluteDirName = Path.Combine(root.fullyQualifiedRootDirName, AbsoluteTemplatePath.Substring(1));
             string[] names = name.Split(new char[] { Path.DirectorySeparatorChar, Path.AltDirectorySeparatorChar });
-            string templateFile = Path.Combine(d, names[0] + ".st");
+            string templateFile = Path.Combine(absoluteDirName, names[0] + ".st");
             if (templates.ContainsKey(names[0]) || File.Exists(templateFile))
             {
                 throw new ArgumentException(names[0] + " is a template not a dir or group file");
             }
             // look for a directory or group file called names[0]
             TemplateGroup sub = null;
-            string group = Path.Combine(d, names[0]);
+            string group = Path.Combine(absoluteDirName, names[0]);
             if (Directory.Exists(group))
             {
                 sub = new TemplateGroupDirectory(this, names[0]);
             }
-            else if (File.Exists(Path.Combine(d, names[0] + ".stg")))
+            else if (File.Exists(Path.Combine(absoluteDirName, names[0] + ".stg")))
             {
                 try
                 {
                     sub = new TemplateGroupFile(this, names[0] + ".stg");
+                    if (children == null)
+                        children = new List<TemplateGroup>();
+
+                    children.Add(sub);
                 }
                 catch (Exception e)
                 {
@@ -147,12 +182,12 @@ namespace StringTemplate
         // load from disk
         public virtual CompiledTemplate LookupTemplateFile(string name)
         {
-            string d = GetPathFromRoot();
-            string f = Path.Combine(d, name + ".st");
+            string absoluteDirName = Path.Combine(root.fullyQualifiedRootDirName, AbsoluteTemplatePath.Substring(1));
+            string f = Path.Combine(absoluteDirName, name + ".st");
             if (!File.Exists(f))
             {
                 // TODO: add tolerance check here
-                throw new ArgumentException("no such template: /" + AbsoluteTemplatePath + "/" + name);
+                return null;
             }
             try
             {
@@ -171,13 +206,12 @@ namespace StringTemplate
             return null;
         }
 
-        public override string GetName()
+        public void AddChild(TemplateGroup g)
         {
-            if (parent == null)
-                return "/";
+            if (children == null)
+                children = new List<TemplateGroup>();
 
-            return dirName;
+            children.Add(g);
         }
-
     }
 }

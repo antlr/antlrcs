@@ -50,10 +50,10 @@ namespace StringTemplate
                 throw new ArgumentException("Group file names must end in .stg: " + fullyQualifiedFileName);
             }
 
+            this.fullyQualifiedRootDirName = Path.GetFullPath(Path.GetDirectoryName(fullyQualifiedRootDirName));
             this.fileName = Path.GetFileName(fullyQualifiedFileName);
             this.parent = null;
             this.root = this;
-            this.fullyQualifiedRootDirName = Path.GetFullPath(Path.GetDirectoryName(fullyQualifiedRootDirName));
         }
 
         public TemplateGroupFile(TemplateGroupDirectory parent, string fileName)
@@ -64,7 +64,9 @@ namespace StringTemplate
             }
 
             this.fileName = fileName;
+            // doubly-link this node; we point at parent and it has us as child
             this.parent = parent;
+            parent.AddChild(this);
             this.root = parent.root;
         }
 
@@ -74,9 +76,24 @@ namespace StringTemplate
             this.encoding = encoding;
         }
 
-        public override string GetName()
+        // /group if this is root, else /dir1/dir2/group if in subdir of TemplateGroupDirectory
+        public override string AbsoluteTemplatePath
         {
-            return Path.GetFileNameWithoutExtension(fileName);
+            get
+            {
+                if (this == root)
+                    return "/" + Name;
+
+                return base.AbsoluteTemplatePath;
+            }
+        }
+
+        public override string Name
+        {
+            get
+            {
+                return Path.GetFileNameWithoutExtension(fileName);
+            }
         }
 
         public override CompiledTemplate LookupTemplate(string name)
@@ -87,12 +104,13 @@ namespace StringTemplate
                     return root.LookupTemplate(name);
                 // if no root, name must be "/groupfile/templatename"
                 string[] names = name.Split(new char[] { Path.DirectorySeparatorChar, Path.AltDirectorySeparatorChar });
-                string fname = Path.GetFileName(fileName);
-                string @base = fname.Substring(0, fname.LastIndexOf('.'));
-                if (names.Length > 2 || !names[0].Equals(@base))
+                //string fname = Path.GetFileName(fileName);
+                //string @base = fname.Substring(0, fname.LastIndexOf('.'));
+                if (names.Length > 2 || !names[0].Equals(Name))
                 {
-                    throw new ArgumentException("name must be of form /" + @base + "/templatename: " + name);
+                    throw new ArgumentException("name must be of form /" + Name + "/templatename: " + name);
                 }
+                name = names[1]; // toss out group part; just get template name
             }
             if (name.IndexOfAny(new char[] { Path.DirectorySeparatorChar, Path.AltDirectorySeparatorChar }) >= 0)
             {
@@ -115,11 +133,11 @@ namespace StringTemplate
             if (alreadyLoaded)
                 return;
 
-            string fullFileName = GetPathFromRoot() + ".stg";
+            string absoluteFileName = Path.Combine(root.fullyQualifiedRootDirName, AbsoluteTemplatePath.Substring(1) + ".stg");
 
             try
             {
-                ANTLRFileStream fs = new ANTLRFileStream(fullFileName, encoding);
+                ANTLRFileStream fs = new ANTLRFileStream(absoluteFileName, encoding);
                 GroupLexer lexer = new GroupLexer(fs);
                 UnbufferedTokenStream tokens = new UnbufferedTokenStream(lexer);
                 GroupParser parser = new GroupParser(tokens);
@@ -128,7 +146,7 @@ namespace StringTemplate
             }
             catch (Exception e)
             {
-                listener.Error("can't load group file: " + fullFileName, e);
+                listener.Error("can't load group file: " + absoluteFileName, e);
             }
         }
 

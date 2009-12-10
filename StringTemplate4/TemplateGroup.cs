@@ -81,7 +81,7 @@ namespace StringTemplate
         public Encoding encoding;
 
         // only in root
-        public IList<TemplateGroup> imports; // OR, supergroups;???
+        protected IList<TemplateGroup> imports; // OR, supergroups;???
 
         public List<string> interfaces;
 
@@ -114,7 +114,7 @@ namespace StringTemplate
         {
         }
 
-        public string AbsoluteTemplatePath
+        public virtual string AbsoluteTemplatePath
         {
             get
             {
@@ -123,13 +123,21 @@ namespace StringTemplate
                 TemplateGroup p = this;
                 while (p != root)
                 {
-                    elems.Insert(0, p.GetName());
+                    elems.Insert(0, p.Name);
                     p = p.parent;
                 }
 
                 string s = "/" + string.Join("/", elems.ToArray());
                 //Console.WriteLine("; template path=" + s);
                 return s;
+            }
+        }
+
+        public virtual string Name
+        {
+            get
+            {
+                return "<no name>;";
             }
         }
 
@@ -258,6 +266,17 @@ namespace StringTemplate
             dictionaries[name] = mapping;
         }
 
+        public void ImportTemplates(TemplateGroup g)
+        {
+            if (parent != null || g.parent != null)
+                throw new ArgumentException("can only import tempaltes into/from root groups");
+
+            if (imports == null)
+                imports = new List<TemplateGroup>();
+
+            imports.Add(g);
+        }
+
         /** StringTemplate object factory; each group can have its own. */
         public virtual Template CreateStringTemplate()
         {
@@ -265,19 +284,14 @@ namespace StringTemplate
             return st;
         }
 
-        public virtual string GetName()
-        {
-            return "<no name>;";
-        }
-
-        public string GetPathFromRoot()
-        {
-            return root.fullyQualifiedRootDirName + AbsoluteTemplatePath;
-        }
+        //public string GetPathFromRoot()
+        //{
+        //    return root.fullyQualifiedRootDirName + AbsoluteTemplatePath;
+        //}
 
         public override string ToString()
         {
-            return GetName();
+            return Name;
         }
 
         public virtual string Show()
