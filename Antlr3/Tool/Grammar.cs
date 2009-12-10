@@ -734,6 +734,13 @@ namespace Antlr3.Tool
                 return grammarTypeToString[(int)type];
             }
         }
+        public bool HasDelegates
+        {
+            get
+            {
+                return GetDelegates().Any();
+            }
+        }
         public string ImplicitlyGeneratedLexerFileName
         {
             get
