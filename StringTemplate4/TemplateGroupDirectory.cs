@@ -140,7 +140,7 @@ namespace StringTemplate
             {
                 ANTLRFileStream fs = new ANTLRFileStream(f, encoding);
                 GroupLexer lexer = new GroupLexer(fs);
-                CommonTokenStream tokens = new CommonTokenStream(lexer);
+                UnbufferedTokenStream tokens = new UnbufferedTokenStream(lexer);
                 GroupParser parser = new GroupParser(tokens);
                 parser._group = this;
                 parser.templateDef();

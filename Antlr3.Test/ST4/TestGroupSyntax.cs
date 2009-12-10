@@ -138,8 +138,8 @@ namespace AntlrUnitTests.ST4
             WriteFile(tmpdir, "t.stg", templates);
             STGroup group = new STGroupFile(Path.Combine(tmpdir, "t.stg"));
             String expected =
-                "t(a) ::= <<\n" +
-                "<a:{x | <x:{<it>}>}>\n" +
+                "t(a) ::= <<" + newline +
+                "<a:{x | <x:{<it>}>}>" + newline +
                 ">>" + newline;
             String result = group.Show();
             Assert.AreEqual(expected, result);
@@ -154,8 +154,8 @@ namespace AntlrUnitTests.ST4
             WriteFile(tmpdir, "t.stg", templates);
             STGroup group = new STGroupFile(Path.Combine(tmpdir, "t.stg"));
             String expected =
-                "t(a={x | <x:{<it>}>}) ::= <<\n" +
-                "ick\n" +
+                "t(a={x | <x:{<it>}>}) ::= <<" + newline +
+                "ick" + newline +
                 ">>" + newline;
             String result = group.Show();
             Assert.AreEqual(expected, result);

@@ -674,7 +674,7 @@ namespace StringTemplate
                 IList elems = (IList)v;
                 if (elems.Count <= 1)
                     return null;
-                return elems.Cast<object>().Skip(1);
+                return elems.Cast<object>().Skip(1).ToArray();
             }
             object theRest = v; // else iterate and copy 
             v = ConvertAnythingIteratableToIterator(v);
@@ -711,7 +711,7 @@ namespace StringTemplate
                 IList elems = (IList)v;
                 if (elems.Count <= 1)
                     return null;
-                return elems.Cast<object>().Take(elems.Count - 1);
+                return elems.Cast<object>().Take(elems.Count - 1).ToArray();
             }
             v = ConvertAnythingIteratableToIterator(v);
             if (v is Iterator)

@@ -105,10 +105,8 @@ namespace StringTemplate
             instrs = new byte[initialSize];
             code.template = template;
 
-            TemplateLexer lexer =
-                new TemplateLexer(new ANTLRStringStream(template), delimiterStartChar, delimiterStopChar);
-            //CommonTokenStream tokens = new CommonTokenStream(lexer);
-            CommonTokenStream tokens = new CommonTokenStream(lexer);
+            TemplateLexer lexer = new TemplateLexer(new ANTLRStringStream(template), delimiterStartChar, delimiterStopChar);
+            UnbufferedTokenStream tokens = new UnbufferedTokenStream(lexer);
             TemplateParser parser = new TemplateParser(tokens, this);
             try
             {

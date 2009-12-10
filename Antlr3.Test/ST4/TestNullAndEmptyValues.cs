@@ -112,7 +112,7 @@ namespace AntlrUnitTests.ST4
                 "end\n");
             ST t = group.GetInstanceOf("test");
             t.Add("users", null);
-            String expecting = "begin\nend" + newline;
+            String expecting = "begin" + newline + "end" + newline;
             String result = t.Render();
             Assert.AreEqual(expecting, result);
         }
@@ -129,7 +129,7 @@ namespace AntlrUnitTests.ST4
                 "end\n");
             ST t = group.GetInstanceOf("test");
             //t.setAttribute("users", new Duh());
-            String expecting = "begin\nend" + newline;
+            String expecting = "begin" + newline + "end" + newline;
             String result = t.Render();
             Assert.AreEqual(expecting, result);
         }
@@ -146,7 +146,7 @@ namespace AntlrUnitTests.ST4
                 "end\n");
             ST t = group.GetInstanceOf("test");
             t.Add("users", new ArrayList());
-            String expecting = "begin\nend" + newline;
+            String expecting = "begin" + newline + "end" + newline;
             String result = t.Render();
             Assert.AreEqual(expecting, result);
         }

@@ -39,6 +39,7 @@ namespace StringTemplate
     using Exception = System.Exception;
     using IList = System.Collections.IList;
     using IOException = System.IO.IOException;
+    using StringBuilder = System.Text.StringBuilder;
     using StringWriter = System.IO.StringWriter;
 
     public class Template
@@ -61,7 +62,7 @@ namespace StringTemplate
         //public STGroup nativeGroup = STGroup.defaultGroup;
 
         /** Map an attribute name to its value(s). */
-        internal IDictionary<string, object> attributes;
+        protected internal IDictionary<string, object> attributes;
 
         public class AddEvent
         {
@@ -128,6 +129,22 @@ namespace StringTemplate
         public Template(TemplateGroup nativeGroup, string template)
         {
             code = nativeGroup.DefineTemplate(UnknownName, template);
+        }
+
+        public IDictionary<string, object> Attributes
+        {
+            get
+            {
+                return this.attributes;
+            }
+        }
+
+        public string Name
+        {
+            get
+            {
+                return code.name;
+            }
         }
 
         public virtual void Add(string name, object value)
@@ -273,15 +290,32 @@ namespace StringTemplate
          */
         public virtual string GetEnclosingInstanceStackString()
         {
-            var names = new LinkedList<string>();
+            IList<Template> templates = GetEnclosingInstanceStack();
+            StringBuilder builder = new StringBuilder();
+            int i = 0;
+            foreach (var st in templates)
+            {
+                if (i > 0)
+                    builder.Append(", ");
+
+                builder.Append(st.Name);
+                i++;
+            }
+
+            return builder.ToString();
+        }
+
+        public IList<Template> GetEnclosingInstanceStack()
+        {
+            var stack = new List<Template>();
             Template p = this;
             while (p != null)
             {
-                string name = p.name;
-                names.AddFirst(name);
+                stack.Insert(0, p);
                 p = p.enclosingInstance;
             }
-            return names.ToString().Replace(",", "");
+
+            return stack;
         }
 
         public virtual int Write(ITemplateWriter @out)
