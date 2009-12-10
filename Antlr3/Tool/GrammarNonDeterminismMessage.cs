@@ -32,8 +32,6 @@
 
 namespace Antlr3.Tool
 {
-    using Antlr.Runtime.JavaExtensions;
-
     using DecisionProbe = Antlr3.Analysis.DecisionProbe;
     using DFAState = Antlr3.Analysis.DFAState;
     using IList = System.Collections.IList;

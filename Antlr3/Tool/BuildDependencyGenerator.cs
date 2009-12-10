@@ -36,7 +36,6 @@ namespace Antlr3.Tool
     using System.Collections.Generic;
     using System.Linq;
 
-    using ArrayList = System.Collections.Generic.List<object>;
     using CodeGenerator = Antlr3.Codegen.CodeGenerator;
     using FileInfo = System.IO.FileInfo;
     using IList = System.Collections.IList;

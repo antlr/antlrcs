@@ -32,7 +32,6 @@
 
 namespace Antlr3.Tool
 {
-    using System;
     using System.Collections.Generic;
     using Antlr.Runtime.JavaExtensions;
 
@@ -52,19 +51,19 @@ namespace Antlr3.Tool
             this.altsWithRecursion = altsWithRecursion;
         }
 
-        public override String ToString()
+        public override string ToString()
         {
             GrammarAST decisionASTNode = probe.dfa.DecisionASTNode;
             line = decisionASTNode.Line;
             charPositionInLine = decisionASTNode.CharPositionInLine;
-            String fileName = probe.dfa.nfa.grammar.FileName;
+            string fileName = probe.dfa.nfa.grammar.FileName;
             if ( fileName != null )
             {
                 file = fileName;
             }
 
             StringTemplate st = GetMessageTemplate();
-            String ruleName = probe.dfa.NFADecisionStartState.enclosingRule.name;
+            string ruleName = probe.dfa.NFADecisionStartState.enclosingRule.name;
             st.SetAttribute( "ruleName", ruleName );
             List<int> sortedAlts = new List<int>();
             sortedAlts.addAll( altsWithRecursion );
