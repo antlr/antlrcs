@@ -39,6 +39,7 @@ namespace Antlr3.Build.Tasks
     using Microsoft.Build.Framework;
     using Microsoft.Build.Utilities;
     using File = System.IO.File;
+    using FileAttributes = System.IO.FileAttributes;
     using Path = System.IO.Path;
 
     public class AntlrClassGenerationTask
@@ -237,6 +238,7 @@ namespace Antlr3.Build.Tasks
                     }
 
                     File.Copy(fileName, target, true);
+                    File.SetAttributes(target, File.GetAttributes(target) & ~FileAttributes.ReadOnly);
                 }
             }
 
