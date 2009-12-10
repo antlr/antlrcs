@@ -338,17 +338,20 @@ namespace StringTemplate
             return n;
         }
 
-        protected int WriteObject(ITemplateWriter @out, Template self, object o, object[] options) {
-        // precompute all option values (render all the way to strings) 
-        string[] optionStrings = null;
-        if ( options!=null ) {
-            optionStrings = new string[options.Length];
-            for (int i=0; i<Compiler.NUM_OPTIONS; i++) {
-                optionStrings[i] = ToString(self, options[i]);
+        protected int WriteObject(ITemplateWriter @out, Template self, object o, object[] options)
+        {
+            // precompute all option values (render all the way to strings) 
+            string[] optionStrings = null;
+            if (options != null)
+            {
+                optionStrings = new string[options.Length];
+                for (int i = 0; i < Compiler.NUM_OPTIONS; i++)
+                {
+                    optionStrings[i] = ToString(self, options[i]);
+                }
             }
+            return WriteObject(@out, self, o, optionStrings);
         }
-        return WriteObject(@out, self, o, optionStrings);
-    }
 
         protected int WriteObject(ITemplateWriter @out, Template self, object o, string[] options)
         {
