@@ -36,6 +36,7 @@ namespace StringTemplate
     using ArgumentException = System.ArgumentException;
     using ArrayList = System.Collections.ArrayList;
     using Console = System.Console;
+    using CultureInfo = System.Globalization.CultureInfo;
     using Exception = System.Exception;
     using IList = System.Collections.IList;
     using IOException = System.IO.IOException;
@@ -45,13 +46,20 @@ namespace StringTemplate
     public class Template
     {
         public const string UnknownName = "unknown";
-        public string name = UnknownName;
-
+        public static readonly Template Blank = new BlankTemplate();
 
         /** The code to interpret; it pulls from attributes and this template's
          *  group of templates to evaluate to string.
          */
         public CompiledTemplate code; // TODO: is this the right name?
+
+        /** Map an attribute name to its value(s). */
+        protected internal IDictionary<string, object> attributes;
+
+        /** Enclosing instance if I'm embedded within another template.
+         *  IF-subtemplates are considered embedded as well.
+         */
+        internal Template enclosingInstance; // who's your daddy?
 
         /** Created as instance of which group? We need this to init interpreter
          *  via render.  So, we create st and then it needs to know which
@@ -62,27 +70,6 @@ namespace StringTemplate
          */
         public TemplateGroup groupThatCreatedThisInstance;
 
-        public static readonly Template Blank = new BlankTemplate();
-
-        /** Map an attribute name to its value(s). */
-        protected internal IDictionary<string, object> attributes;
-
-        public class AddEvent
-        {
-            string name;
-            object value;
-            Exception source;
-            public AddEvent(string name, object value)
-            {
-                this.name = name;
-                this.value = value;
-                this.source = new Exception();
-            }
-        }
-
-        /** Track add attribute "events"; used for ST user-level debugging */
-        IList<AddEvent> addEvents;
-
         /** Normally, formal parameters hide any attributes inherited from the
          *  enclosing template with the same name.  This is normally what you
          *  want, but makes it hard to invoke another template passing in all
@@ -90,11 +77,6 @@ namespace StringTemplate
          *  all data".  Works great.  Can also say <otherTemplate(foo="xxx",...)>
          */
         protected internal bool passThroughAttributes = false;
-
-        /** Enclosing instance if I'm embedded within another template.
-         *  IF-subtemplates are considered embedded as well.
-         */
-        internal Template enclosingInstance; // who's your daddy?
 
         /** Just an alias for ArrayList, but this way I can track whether a
          *  list is something ST created or it's an incoming list.
@@ -150,13 +132,6 @@ namespace StringTemplate
             if (name.IndexOf('.') >= 0)
             {
                 throw new ArgumentException("cannot have '.' in attribute names");
-            }
-
-            if (code.nativeGroup.Detects(ErrorTolerance.DETECT_ADD_ATTR))
-            {
-                if (addEvents == null)
-                    addEvents = new List<AddEvent>();
-                addEvents.Add(new AddEvent(name, value));
             }
 
             if (value is Template)
@@ -319,13 +294,24 @@ namespace StringTemplate
             return interp.Exec(@out, this);
         }
 
-        public virtual string Render()
+        public virtual int Write(ITemplateWriter @out, CultureInfo culture)
+        {
+            Interpreter interp = new Interpreter(groupThatCreatedThisInstance, culture);
+            return interp.Exec(@out, this);
+        }
+
+        public string Render()
+        {
+            return Render(CultureInfo.CurrentCulture);
+        }
+
+        public virtual string Render(CultureInfo culture)
         {
             StringWriter @out = new StringWriter();
             ITemplateWriter wr = new AutoIndentWriter(@out);
             try
             {
-                Write(wr);
+                Write(wr, culture);
                 /*
                 System.err.println("template size = "+code.template.length()+
                                    ", code size = "+code.instrs.length+", ratio = "+
@@ -341,7 +327,7 @@ namespace StringTemplate
 
         public override string ToString()
         {
-            return name + "()";
+            return code.name + "()";
         }
     }
 }

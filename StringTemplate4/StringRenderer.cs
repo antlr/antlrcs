@@ -33,45 +33,38 @@
 namespace StringTemplate
 {
     using CultureInfo = System.Globalization.CultureInfo;
+    using HttpUtility = System.Web.HttpUtility;
+    using SecurityElement = System.Security.SecurityElement;
 
-    public class BlankTemplate : Template
+    public class StringRenderer : IAttributeRenderer
     {
-        public BlankTemplate()
+        // trim(s) and strlen(s) built-in funcs; these are format options
+        public string ToString(object o, string formatString, CultureInfo culture)
         {
-            code = new CompiledTemplate();
-        }
+            string s = o.ToString();
+            if (formatString == null || string.IsNullOrEmpty(s))
+                return s;
 
-        public BlankTemplate(string template)
-            : this()
-        {
-        }
+            switch (formatString)
+            {
+            case "upper":
+                return s.ToUpper(culture);
 
-        public override void Add(string name, object value)
-        {
-        }
+            case "lower":
+                return s.ToLower(culture);
 
-        protected internal override void RawSetAttribute(string name, object value)
-        {
-        }
+            case "cap":
+                return char.ToUpper(s[0], culture) + s.Substring(1);
 
-        public override object GetAttribute(string name)
-        {
-            return null;
-        }
+            case "url-encode":
+                return HttpUtility.UrlEncode(s);
 
-        public override string GetEnclosingInstanceStackString()
-        {
-            return null;
-        }
+            case "xml-encode":
+                return SecurityElement.Escape(s);
 
-        public override int Write(ITemplateWriter @out)
-        {
-            return 0;
-        }
-
-        public override string Render(CultureInfo culture)
-        {
-            return string.Empty;
+            default:
+                return s;
+            }
         }
     }
 }

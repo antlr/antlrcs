@@ -33,45 +33,17 @@
 namespace StringTemplate
 {
     using CultureInfo = System.Globalization.CultureInfo;
+    using IFormattable = System.IFormattable;
 
-    public class BlankTemplate : Template
+    public class NumberRenderer : IAttributeRenderer
     {
-        public BlankTemplate()
+        public string ToString(object o, string formatString, CultureInfo culture)
         {
-            code = new CompiledTemplate();
-        }
+            IFormattable formattable = o as IFormattable;
+            if (formattable != null)
+                return formattable.ToString(formatString, culture);
 
-        public BlankTemplate(string template)
-            : this()
-        {
-        }
-
-        public override void Add(string name, object value)
-        {
-        }
-
-        protected internal override void RawSetAttribute(string name, object value)
-        {
-        }
-
-        public override object GetAttribute(string name)
-        {
-            return null;
-        }
-
-        public override string GetEnclosingInstanceStackString()
-        {
-            return null;
-        }
-
-        public override int Write(ITemplateWriter @out)
-        {
-            return 0;
-        }
-
-        public override string Render(CultureInfo culture)
-        {
-            return string.Empty;
+            return o.ToString();
         }
     }
 }

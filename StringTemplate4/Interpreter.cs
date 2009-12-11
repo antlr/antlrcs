@@ -37,6 +37,7 @@ namespace StringTemplate
     using Array = System.Array;
     using ArrayList = System.Collections.ArrayList;
     using Console = System.Console;
+    using CultureInfo = System.Globalization.CultureInfo;
     using Environment = System.Environment;
     using FieldInfo = System.Reflection.FieldInfo;
     using ICollection = System.Collections.ICollection;
@@ -78,11 +79,19 @@ namespace StringTemplate
          */
         TemplateGroup group;
 
+        CultureInfo culture;
+
         public bool trace = false;
 
         public Interpreter(TemplateGroup group)
+            : this(group, CultureInfo.CurrentCulture)
+        {
+        }
+
+        public Interpreter(TemplateGroup group, CultureInfo culture)
         {
             this.group = group;
+            this.culture = culture;
         }
 
         public int Exec(ITemplateWriter @out, Template self)
@@ -427,10 +436,7 @@ namespace StringTemplate
             string v = null;
             if (r != null)
             {
-                if (formatString != null)
-                    v = r.ToString(o, formatString);
-                else
-                    v = r.ToString(o);
+                v = r.ToString(o, formatString, culture);
             }
             else
             {
@@ -565,42 +571,6 @@ namespace StringTemplate
                 }
                 return results;
             }
-
-            /*
-            if ( attr is Iterator ) {
-                List<Template> mapped = new ArrayList<Template>();
-                Iterator iter = (Iterator)attr;
-                int i0 = 0;
-                int i = 1;
-                int ti = 0;
-                while ( iter.hasNext() ) {
-                    object iterValue = iter.next();
-                    if ( iterValue == null ) continue;
-                    int templateIndex = ti % templates.size(); // rotate through
-                    ti++;
-                    string name = templates.get(templateIndex);
-                    Template st = group.getEmbeddedInstanceOf(self, name);
-                    for (FormalArgument arg : st.code.formalArguments.values()) {
-                        st.rawSetAttribute(arg.name, iterValue);
-                    }
-                    st.rawSetAttribute("i0", i0);
-                    st.rawSetAttribute("i", i);
-                    mapped.add(st);
-                    i0++;
-                    i++;
-                }
-                operands[++sp] = mapped;
-                //Console.WriteLine("mapped="+mapped);
-            }
-            else { // if only single value, just apply first template to attribute
-                Template st = group.getInstanceOf(templates.get(0));
-                setSoleArgument(st, attr);
-                st.rawSetAttribute("i0", 0);
-                st.rawSetAttribute("i", 1);
-                operands[++sp] = st;
-    //            map(self, attr, templates.get(1));
-            }
-            */
         }
 
         protected void SetSoleArgument(Template st, object attr)
@@ -1017,8 +987,8 @@ namespace StringTemplate
                                                                 self.code.strings);
             StringBuilder buf = new StringBuilder();
             dis.DisassembleInstruction(buf, ip);
-            string name = self.name + ":";
-            if (self.name == Template.UnknownName)
+            string name = self.code.name + ":";
+            if (self.code.name == Template.UnknownName)
                 name = "";
             Console.Write(string.Format("{0:-40s}", name + buf));
             Console.Write("\tstack=[");
@@ -1037,7 +1007,7 @@ namespace StringTemplate
         {
             if (o is Template)
             {
-                Console.Write(" " + ((Template)o).name + "()");
+                Console.Write(" " + ((Template)o).code.name + "()");
                 return;
             }
             o = ConvertAnythingIteratableToIterator(o);

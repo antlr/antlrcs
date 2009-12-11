@@ -42,6 +42,7 @@
     <Reference Include="System.Core">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
+    <Reference Include="System.Web" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AutoIndentWriter.cs" />
@@ -51,6 +52,7 @@
     <Compile Include="CompiledTemplate.cs" />
     <Compile Include="Compiler.cs" />
     <Compile Include="DateTimeRenderer.cs" />
+    <Compile Include="DebugTemplate.cs" />
     <Compile Include="ErrorTolerance.cs" />
     <Compile Include="FormalArgument.cs" />
     <Compile Include="GroupLexerHelper.cs" />
@@ -62,7 +64,9 @@
     <Compile Include="ITemplateWriter.cs" />
     <Compile Include="Misc.cs" />
     <Compile Include="NoIndentWriter.cs" />
+    <Compile Include="NumberRenderer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="StringRenderer.cs" />
     <Compile Include="StringTable.cs" />
     <Compile Include="Template.cs" />
     <Compile Include="TemplateException.cs" />

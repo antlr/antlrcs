@@ -35,85 +35,24 @@ namespace AntlrUnitTests.ST4
     using Microsoft.VisualStudio.TestTools.UnitTesting;
     using StringTemplate;
     using ArrayList = System.Collections.ArrayList;
+    using CultureInfo = System.Globalization.CultureInfo;
     using DateTime = System.DateTime;
     using IList = System.Collections.IList;
 
     [TestClass]
     public class TestRenderers : StringTemplateTestBase
     {
-#if false
-        public class DateRenderer : IAttributeRenderer
-        {
-            public string ToString(object o)
-            {
-                DateTime dateTime = (DateTime)o;
-                return dateTime.ToString("yyyy.MM.dd");
-            }
-
-            public string ToString(object o, string formatString)
-            {
-                return ToString(o);
-            }
-        }
-
-        public class DateRenderer2 : IAttributeRenderer
-        {
-            public string ToString(object o)
-            {
-                DateTime dateTime = (DateTime)o;
-                return dateTime.ToString("yyyy/MM/dd");
-            }
-
-            public string ToString(object o, string formatString)
-            {
-                return ToString(o);
-            }
-        }
-
-        public class DateRenderer3 : IAttributeRenderer
-        {
-            public string ToString(object o)
-            {
-                DateTime dateTime = (DateTime)o;
-                return dateTime.ToString("yyyy/MM/dd");
-            }
-
-            public string ToString(object o, string formatString)
-            {
-                DateTime dateTime = (DateTime)o;
-                return dateTime.ToString(formatString);
-            }
-        }
-#endif
-
-        public class StringRenderer : IAttributeRenderer
-        {
-            public string ToString(object o)
-            {
-                return (string)o;
-            }
-
-            public string ToString(object o, string formatString)
-            {
-                if (formatString.Equals("upper"))
-                {
-                    return ((string)o).ToUpperInvariant();
-                }
-                return ToString(o);
-            }
-        }
-
         [TestMethod]
         public void TestRendererForGroup()
         {
             string templates =
-                    "dateThing(created) ::= \"date: <created>\"\n";
+                    "dateThing(created) ::= \"datetime: <created>\"\n";
             WriteFile(tmpdir, "t.stg", templates);
             TemplateGroup group = new TemplateGroupFile(tmpdir + "/t.stg");
             group.RegisterRenderer(typeof(DateTime), new DateTimeRenderer());
             Template st = group.GetInstanceOf("dateThing");
             st.Add("created", new DateTime(2005, 7, 5));
-            string expecting = "date: 7/5/2005 12:00 AM";
+            string expecting = "datetime: 7/5/2005 12:00 AM";
             string result = st.Render();
             Assert.AreEqual(expecting, result);
         }
@@ -130,6 +69,121 @@ namespace AntlrUnitTests.ST4
             st.Add("created", new DateTime(2005, 7, 5));
             string expecting = " date: 2005.07.05 ";
             string result = st.Render();
+            Assert.AreEqual(expecting, result);
+        }
+
+        [TestMethod]
+        public void TestRendererWithPredefinedFormat()
+        {
+            string templates =
+                    "dateThing(created) ::= << datetime: <created; format=\"short\"> >>\n";
+            WriteFile(tmpdir, "t.stg", templates);
+            TemplateGroup group = new TemplateGroupFile(tmpdir + "/t.stg");
+            group.RegisterRenderer(typeof(DateTime), new DateTimeRenderer());
+            Template st = group.GetInstanceOf("dateThing");
+            st.Add("created", new DateTime(2005, 7, 5));
+            string expecting = " datetime: 7/5/2005 12:00 AM ";
+            string result = st.Render();
+            Assert.AreEqual(expecting, result);
+        }
+
+        [TestMethod]
+        public void TestRendererWithPredefinedFormat2()
+        {
+            string templates =
+                    "dateThing(created) ::= << datetime: <created; format=\"full\"> >>\n";
+            WriteFile(tmpdir, "t.stg", templates);
+            TemplateGroup group = new TemplateGroupFile(tmpdir + "/t.stg");
+            group.RegisterRenderer(typeof(DateTime), new DateTimeRenderer());
+            Template st = group.GetInstanceOf("dateThing");
+            st.Add("created", new DateTime(2005, 7, 5));
+            string expecting = " datetime: Tuesday, July 5, 2005 12:00:00 AM PDT ";
+            string result = st.Render();
+            Assert.AreEqual(expecting, result);
+        }
+
+        [TestMethod]
+        public void TestRendererWithPredefinedFormat3()
+        {
+            string templates =
+                    "dateThing(created) ::= << date: <created; format=\"date:medium\"> >>\n";
+
+            WriteFile(tmpdir, "t.stg", templates);
+            TemplateGroup group = new TemplateGroupFile(tmpdir + "/t.stg");
+            group.RegisterRenderer(typeof(DateTime), new DateTimeRenderer());
+            Template st = group.GetInstanceOf("dateThing");
+            st.Add("created", new DateTime(2005, 7, 5));
+            string expecting = " date: Jul 5, 2005 ";
+            string result = st.Render();
+            Assert.AreEqual(expecting, result);
+        }
+
+        [TestMethod]
+        public void TestRendererWithPredefinedFormat4()
+        {
+            string templates =
+                    "dateThing(created) ::= << time: <created; format=\"time:medium\"> >>\n";
+
+            WriteFile(tmpdir, "t.stg", templates);
+            TemplateGroup group = new TemplateGroupFile(tmpdir + "/t.stg");
+            group.RegisterRenderer(typeof(DateTime), new DateTimeRenderer());
+            Template st = group.GetInstanceOf("dateThing");
+            st.Add("created", new DateTime(2005, 7, 5));
+            string expecting = " time: 12:00:00 AM ";
+            string result = st.Render();
+            Assert.AreEqual(expecting, result);
+        }
+
+        [TestMethod]
+        public void TestStringRendererWithPrintfFormat()
+        {
+            string templates =
+                    "foo(x) ::= << <x; format=\"%6s\"> >>\n";
+
+            WriteFile(tmpdir, "t.stg", templates);
+            TemplateGroup group = new TemplateGroupFile(tmpdir + "/t.stg");
+            group.RegisterRenderer(typeof(string), new StringRenderer());
+            Template st = group.GetInstanceOf("foo");
+            st.Add("x", "hi");
+            string expecting = "     hi ";
+            string result = st.Render();
+            Assert.AreEqual(expecting, result);
+        }
+
+        [TestMethod]
+        public void TestNumberRendererWithPrintfFormat()
+        {
+            string templates =
+                    "foo(x,y) ::= << <x; format=\"F0\"> <y; format=\"0.000\"> >>\n";
+
+            WriteFile(tmpdir, "t.stg", templates);
+            TemplateGroup group = new TemplateGroupFile(tmpdir + "/t.stg");
+            group.RegisterRenderer(typeof(int), new NumberRenderer());
+            group.RegisterRenderer(typeof(double), new NumberRenderer());
+            Template st = group.GetInstanceOf("foo");
+            st.Add("x", -2100);
+            st.Add("y", 3.14159);
+            string expecting = " -2100 3.142 ";
+            string result = st.Render();
+            Assert.AreEqual(expecting, result);
+        }
+
+        [TestMethod]
+        public void TestLocaleWithNumberRenderer()
+        {
+            string templates =
+                    "foo(x,y) ::= << <x; format=\"N0\"> <y; format=\"0.000\"> >>\n";
+
+            WriteFile(tmpdir, "t.stg", templates);
+            TemplateGroup group = new TemplateGroupFile(tmpdir + "/t.stg");
+            group.RegisterRenderer(typeof(int), new NumberRenderer());
+            group.RegisterRenderer(typeof(double), new NumberRenderer());
+            Template st = group.GetInstanceOf("foo");
+            st.Add("x", -2100);
+            st.Add("y", 3.14159);
+            // Polish uses ' ' for ',' and ',' for '.'
+            string expecting = " -2 100 3,142 ";
+            string result = st.Render(CultureInfo.GetCultureInfo("pl-PL"));
             Assert.AreEqual(expecting, result);
         }
 

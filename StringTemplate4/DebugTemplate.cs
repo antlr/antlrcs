@@ -32,46 +32,42 @@
 
 namespace StringTemplate
 {
-    using CultureInfo = System.Globalization.CultureInfo;
+    using Exception = System.Exception;
+    using System.Collections.Generic;
 
-    public class BlankTemplate : Template
+    public class DebugTemplate : Template
     {
-        public BlankTemplate()
+        public class AddEvent
         {
-            code = new CompiledTemplate();
+            string name;
+            object value;
+            Exception source;
+
+            public AddEvent(string name, object value)
+            {
+                this.name = name;
+                this.value = value;
+                this.source = new Exception();
+            }
         }
 
-        public BlankTemplate(string template)
-            : this()
-        {
-        }
+        /** Track add attribute "events"; used for ST user-level debugging */
+        IList<AddEvent> addEvents; // TODO: put this in a subclass; alter factor in STGroup
 
         public override void Add(string name, object value)
         {
-        }
+            if (name == null)
+                return; // allow null value
 
-        protected internal override void RawSetAttribute(string name, object value)
-        {
-        }
+            base.Add(name, value);
 
-        public override object GetAttribute(string name)
-        {
-            return null;
-        }
+            if (code.nativeGroup.Detects(ErrorTolerance.DETECT_ADD_ATTR))
+            {
+                if (addEvents == null)
+                    addEvents = new List<AddEvent>();
 
-        public override string GetEnclosingInstanceStackString()
-        {
-            return null;
-        }
-
-        public override int Write(ITemplateWriter @out)
-        {
-            return 0;
-        }
-
-        public override string Render(CultureInfo culture)
-        {
-            return string.Empty;
+                addEvents.Add(new AddEvent(name, value));
+            }
         }
     }
 }

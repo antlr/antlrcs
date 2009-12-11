@@ -145,7 +145,6 @@ namespace StringTemplate
             {
                 Template instanceST = CreateStringTemplate();
                 instanceST.groupThatCreatedThisInstance = this;
-                instanceST.name = name;
                 instanceST.code = c;
                 return instanceST;
             }

@@ -33,6 +33,7 @@
 namespace StringTemplate
 {
     using System.Collections.Generic;
+    using CultureInfo = System.Globalization.CultureInfo;
     using DateTime = System.DateTime;
 
     public class DateTimeRenderer : IAttributeRenderer
@@ -51,25 +52,21 @@ namespace StringTemplate
                 {"date:full", ""},
 
                 {"time:short", "t"},
-                {"time:medium", "t"},
+                {"time:medium", "T"},
                 {"time:long", "T"},
                 {"time:full", "T"},
             };
 
-        public string ToString(object o)
-        {
-            return ToString(o, "short");
-        }
-
-        public string ToString(object o, string formatString)
+        public string ToString(object o, string formatString, CultureInfo culture)
         {
             DateTime d = (DateTime)o;
+            formatString = formatString ?? "short";
 
             string format;
             if (!StandardFormats.TryGetValue(formatString, out format))
                 format = formatString;
 
-            return d.ToString(format);
+            return d.ToString(format, culture);
         }
     }
 }
