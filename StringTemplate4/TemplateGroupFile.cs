@@ -50,7 +50,8 @@ namespace StringTemplate
                 throw new ArgumentException("Group file names must end in .stg: " + fullyQualifiedFileName);
             }
 
-            this.fullyQualifiedRootDirName = Path.GetFullPath(Path.GetDirectoryName(fullyQualifiedFileName));
+            string absoluteFileName = Path.GetFullPath(fullyQualifiedFileName);
+            this.fullyQualifiedRootDirName = Path.GetDirectoryName(absoluteFileName);
             this.fileName = Path.GetFileName(fullyQualifiedFileName);
         }
 

@@ -41,6 +41,7 @@ namespace StringTemplate
     using Exception = System.Exception;
     using Path = System.IO.Path;
     using StringBuilder = System.Text.StringBuilder;
+    using Type = System.Type;
     using Antlr.Runtime;
 
     public class TemplateGroup
@@ -71,7 +72,7 @@ namespace StringTemplate
 
         public static readonly ITemplateErrorListener DefaultErrorListener = new DefaultErrorListenerImpl();
 
-        public string fullyQualifiedRootDirName; // if we're root
+        public string fullyQualifiedRootDirName;
 
         /** Load files using what encoding? */
         public Encoding encoding;
@@ -95,6 +96,16 @@ namespace StringTemplate
          */
         protected internal IDictionary<string, IDictionary<string, object>> dictionaries =
             new Dictionary<string, IDictionary<string, object>>();
+
+        /** A dictionary that allows people to register a renderer for
+         *  a particular kind of object for any template evaluated relative to this
+         *  group.  For example, a date should be formatted differently depending
+         *  on the locale.  You can set Date.class to an object whose
+         *  toString(Object) method properly formats a Date attribute
+         *  according to locale.  Or you can have a different renderer object
+         *  for each locale.
+         */
+        protected IDictionary<Type, IAttributeRenderer> renderers;
 
         protected bool alreadyLoaded = false;
 
@@ -297,6 +308,29 @@ namespace StringTemplate
             {
                 listener.Error("can't load group file: " + absoluteFileName, e);
             }
+        }
+
+        /** Register a renderer for all objects of a particular type for all
+         *  templates evaluated relative to this group.
+         */
+        public void RegisterRenderer(Type attributeType, IAttributeRenderer r)
+        {
+            if (renderers == null)
+                renderers = new Dictionary<Type, IAttributeRenderer>();
+
+            renderers[attributeType] = r;
+        }
+
+        public IAttributeRenderer GetAttributeRenderer(Type attributeType)
+        {
+            if (renderers == null)
+                return null;
+
+            IAttributeRenderer renderer;
+            if (!renderers.TryGetValue(attributeType, out renderer))
+                return null;
+
+            return renderer;
         }
 
         /// <summary>

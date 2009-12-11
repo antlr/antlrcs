@@ -60,6 +60,7 @@
     <Compile Include="ST4\TestLists.cs" />
     <Compile Include="ST4\TestNullAndEmptyValues.cs" />
     <Compile Include="ST4\TestOptions.cs" />
+    <Compile Include="ST4\TestRenderers.cs" />
     <Compile Include="ST4\TestSubtemplates.cs" />
     <Compile Include="ST4\TestSyntaxErrors.cs" />
     <Compile Include="ST4\TestWhitespace.cs" />

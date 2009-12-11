@@ -192,7 +192,7 @@ namespace StringTemplate
                     break;
                 case Bytecode.INSTR_WRITE:
                     o = operands[sp--];
-                    nw = WriteObject(@out, self, o, null);
+                    nw = WriteObject(@out, self, o, (string[])null);
                     n += nw;
                     break;
                 case Bytecode.INSTR_WRITE_OPT:
@@ -362,11 +362,11 @@ namespace StringTemplate
                 {
                     try
                     {
-                        n = @out.Write(options[OPTION_NULL]);
+                        n = WritePlainObject(@out, options[OPTION_NULL], options);
                     }
                     catch (IOException)
                     {
-                        Console.Error.WriteLine("can't write " + o);
+                        Console.Error.WriteLine("can't write null option " + options[OPTION_NULL]);
                     }
                 }
                 return n;
@@ -383,7 +383,7 @@ namespace StringTemplate
                 if (o is Iterator)
                     n = WriteIterator(@out, self, o, options);
                 else
-                    n = @out.Write(o.ToString());
+                    n = WritePlainObject(@out, o, options);
             }
             catch (IOException)
             {
@@ -420,6 +420,27 @@ namespace StringTemplate
                 i++;
             }
             return n;
+        }
+
+        protected int WritePlainObject(ITemplateWriter @out, object o, string[] options)
+        {
+            string formatString = null;
+            if (options != null)
+                formatString = options[OPTION_FORMAT];
+            IAttributeRenderer r = group.GetAttributeRenderer(o.GetType());
+            string v = null;
+            if (r != null)
+            {
+                if (formatString != null)
+                    v = r.ToString(o, formatString);
+                else
+                    v = r.ToString(o);
+            }
+            else
+            {
+                v = o.ToString();
+            }
+            return @out.Write(v);
         }
 
         protected void Map(Template self, object attr, string name)
