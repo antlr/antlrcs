@@ -16,7 +16,7 @@
         public void TestAttr()
         {
             string template = "hi <name>";
-            CompiledTemplate code = new Compiler().Compile(template);
+            CompiledTemplate code = new Compiler().Compile(null, template);
             string asmExpected =
                 "load_str 0, " +
                 "write, " +
@@ -33,7 +33,7 @@
         public void TestInclude()
         {
             string template = "hi <foo()>";
-            CompiledTemplate code = new Compiler().Compile(template);
+            CompiledTemplate code = new Compiler().Compile(null, template);
             string asmExpected =
                 "load_str 0, write, new 1, write";
             string asmResult = code.Instructions();
@@ -47,7 +47,7 @@
         public void TestProp()
         {
             string template = "hi <a.b>";
-            CompiledTemplate code = new Compiler().Compile(template);
+            CompiledTemplate code = new Compiler().Compile(null, template);
             string asmExpected =
                 "load_str 0, write, load_attr 1, load_prop 2, write";
             string asmResult = code.Instructions();
@@ -61,7 +61,7 @@
         public void TestProp2()
         {
             string template = "<u.id>: <u.name>";
-            CompiledTemplate code = new Compiler().Compile(template);
+            CompiledTemplate code = new Compiler().Compile(null, template);
             string asmExpected =
                 "load_attr 0, load_prop 1, write, load_str 2, write, " +
                 "load_attr 0, load_prop 3, write";
@@ -76,7 +76,7 @@
         public void TestMap()
         {
             string template = "hi <name:bold>";
-            CompiledTemplate code = new Compiler().Compile(template);
+            CompiledTemplate code = new Compiler().Compile(null, template);
             string asmExpected =
                 "load_str 0, write, load_attr 1, load_str 2, map, write";
             string asmResult = code.Instructions();
@@ -90,7 +90,7 @@
         public void TestRepeatedMap()
         {
             string template = "hi <name:bold:italics>";
-            CompiledTemplate code = new Compiler().Compile(template);
+            CompiledTemplate code = new Compiler().Compile(null, template);
             string asmExpected =
                 "load_str 0, " +
                 "write, " +
@@ -111,7 +111,7 @@
         public void TestRotMap()
         {
             string template = "hi <name:bold,italics>";
-            CompiledTemplate code = new Compiler().Compile(template);
+            CompiledTemplate code = new Compiler().Compile(null, template);
             string asmExpected =
                 "load_str 0, write, load_attr 1, load_str 2, load_str 3, rot_map 2, write";
             string asmResult = code.Instructions();
@@ -125,7 +125,7 @@
         public void TestAnonMap()
         {
             string template = "hi <name:{n | <n>}>";
-            CompiledTemplate code = new Compiler().Compile(template);
+            CompiledTemplate code = new Compiler().Compile(null, template);
             string asmExpected =
                 "load_str 0, write, load_attr 1, load_str 2, map, write";
             string asmResult = code.Instructions();
@@ -139,7 +139,7 @@
         public void TestIf()
         {
             string template = "go: <if(name)>hi, foo<endif>";
-            CompiledTemplate code = new Compiler().Compile(template);
+            CompiledTemplate code = new Compiler().Compile(null, template);
             string asmExpected =
                 "load_str 0, write, load_attr 1, brf 14, load_str 2, write";
             string asmResult = code.Instructions();
@@ -153,7 +153,7 @@
         public void TestIfElse()
         {
             string template = "go: <if(name)>hi, foo<else>bye<endif>";
-            CompiledTemplate code = new Compiler().Compile(template);
+            CompiledTemplate code = new Compiler().Compile(null, template);
             string asmExpected =
                 "load_str 0, " +
                 "write, " +
@@ -175,7 +175,7 @@
         public void TestElseIf()
         {
             string template = "go: <if(name)>hi, foo<elseif(user)>a user<endif>";
-            CompiledTemplate code = new Compiler().Compile(template);
+            CompiledTemplate code = new Compiler().Compile(null, template);
             string asmExpected =
                 "load_str 0, " +
                 "write, " +
@@ -199,7 +199,7 @@
         public void TestElseIfElse()
         {
             string template = "go: <if(name)>hi, foo<elseif(user)>a user<else>bye<endif>";
-            CompiledTemplate code = new Compiler().Compile(template);
+            CompiledTemplate code = new Compiler().Compile(null, template);
             string asmExpected =
                 "load_str 0, " +
                 "write, " +
@@ -226,7 +226,7 @@
         public void TestOption()
         {
             string template = "hi <name; separator=\"x\">";
-            CompiledTemplate code = new Compiler().Compile(template);
+            CompiledTemplate code = new Compiler().Compile(null, template);
             string asmExpected =
                 "load_str 0, write, load_attr 1, options, load_str 2, store_option 3, write_opt";
             string asmResult = code.Instructions();
@@ -240,7 +240,7 @@
         public void TestOptionAsTemplate()
         {
             string template = "hi <name; separator={, }>";
-            CompiledTemplate code = new Compiler().Compile(template);
+            CompiledTemplate code = new Compiler().Compile(null, template);
             string asmExpected =
                 "load_str 0, write, load_attr 1, options, new 2, store_option 3, write_opt";
             string asmResult = code.Instructions();
@@ -254,7 +254,7 @@
         public void TestOptions()
         {
             string template = "hi <name; anchor, wrap=foo(), separator=\", \">";
-            CompiledTemplate code = new Compiler().Compile(template);
+            CompiledTemplate code = new Compiler().Compile(null, template);
             string asmExpected =
                 "load_str 0, write, load_attr 1, options, load_str 2, " +
                 "store_option 0, new 3, store_option 4, load_str 4, " +
@@ -271,7 +271,7 @@
         public void TestEmptyList()
         {
             string template = "<[]>";
-            CompiledTemplate code = new Compiler().Compile(template);
+            CompiledTemplate code = new Compiler().Compile(null, template);
             string asmExpected = "list, write";
             string asmResult = code.Instructions();
             Assert.AreEqual(asmExpected, asmResult);
@@ -284,7 +284,7 @@
         public void TestList()
         {
             string template = "<[a,b]>";
-            CompiledTemplate code = new Compiler().Compile(template);
+            CompiledTemplate code = new Compiler().Compile(null, template);
             string asmExpected = "list, load_attr 0, add, load_attr 1, add, write";
             string asmResult = code.Instructions();
             Assert.AreEqual(asmExpected, asmResult);

@@ -35,6 +35,7 @@ options {
 }
 
 @namespace{StringTemplate}
+@header{using System.Linq;}
 
 @rulecatch {
    catch (RecognitionException) { throw; }
@@ -45,6 +46,7 @@ templateAndEOF
 	:	template EOF
 	;
 
+// TODO: remove backtracking
 public
 template
 	:	(	options {backtrack=true; k=2;}
@@ -58,6 +60,7 @@ template
 		|	i=INDENT         {Indent($i.text);}
 			text             {gen.Emit(Bytecode.INSTR_DEDENT);}
 		|	text
+		|   (i=INDENT {Indent($i.text);})? region
 		|	i=INDENT         {Indent($i.text);}
 		 	NEWLINE          {gen.Emit(Bytecode.INSTR_NEWLINE);} 
 		 	                 {gen.Emit(Bytecode.INSTR_DEDENT);}
@@ -83,10 +86,21 @@ exprTag
 		RDELIM
 	;
 
+region // match $@foo$...$@end$
+	:	'@' ID 
+		{{ // force exec even when backtracking
+		gen.CompileRegion(_enclosingTemplateName, $ID.text, input, state);
+        }}
+		'@end'
+	;
+
 subtemplate returns [string name]
 	:	'{' ( ids+=ID (',' ids+=ID)* '|' )?
 		{{ // force exec even when backtracking
-		$name = gen.CompileAnonTemplate(input, $ids, state);
+		List<IToken> idTokens = null;
+		if ($ids != null)
+			idTokens = new List<IToken>($ids.Cast<IToken>());
+		$name = gen.CompileAnonTemplate(_enclosingTemplateName, input, idTokens, state);
         }}
         '}'
     ;
@@ -287,8 +301,13 @@ templateRef
 	:	ID			{gen.Emit(Bytecode.INSTR_LOAD_STR, PrefixedName($ID.text));}
 	|	subtemplate {gen.Emit(Bytecode.INSTR_LOAD_STR, PrefixedName($subtemplate.name));}
 	|	'(' mapExpr ')' {gen.Emit(Bytecode.INSTR_TOSTR);}
+	|	'@' ID '(' ')'	// convert <@r()> to <region__enclosingTemplate__r()>
+		{
+		string mangled = TemplateGroup.GetMangledRegionName(_enclosingTemplateName, $ID.text);
+		gen.Emit(Bytecode.INSTR_LOAD_STR, PrefixedName(mangled));
+		}
 	;
-	
+
 list:	{gen.Emit(Bytecode.INSTR_LIST);} '[' listElement (',' listElement)* ']'
 	|	{gen.Emit(Bytecode.INSTR_LIST);} '[' ']'
 	;

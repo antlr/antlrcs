@@ -329,5 +329,13 @@ namespace StringTemplate
         {
             return code.name + "()";
         }
+
+        /** &lt;@r()&gt;, &lt;@r&gt;...&lt;@end&gt;, and @t.r() ::= "..." defined manually by coder */
+        public enum RegionType
+        {
+            Implicit,
+            Embedded,
+            Explicit
+        }
     }
 }

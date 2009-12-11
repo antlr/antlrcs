@@ -32,9 +32,11 @@
 
 namespace StringTemplate
 {
+    using System.Collections.Generic;
     using Antlr.Runtime;
     using IList = System.Collections.IList;
 
+    // TODO: maybe rename; more than code gen now; break into two interfaces?
     public interface ICodeGenerator
     {
         /// <summary>
@@ -52,8 +54,12 @@ namespace StringTemplate
         /** Return address where next instruction will be written */
         int Address();
 
-        string CompileAnonTemplate(ITokenStream input,
-                                   IList ids,
+        /** Compile a subtemplate. It's the '...' in this &lt;names:{p | ...}&gt; */
+        string CompileAnonTemplate(string enclosingTemplateName,
+                                   ITokenStream input,
+                                   IList<IToken> ids,
                                    RecognizerSharedState state);
+
+        void CompileRegion(string enclosingTemplateName, string regionName, ITokenStream input, RecognizerSharedState state);
     }
 }

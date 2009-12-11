@@ -73,6 +73,8 @@ namespace StringTemplate
             }
         }
 
+        // TODO: try an enum here
+
         // INSTRUCTION BYTECODES (byte is signed; use a short to keep 0..255)
         public const short INSTR_LOAD_STR = 1;
         public const short INSTR_LOAD_ATTR = 2;

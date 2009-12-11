@@ -91,6 +91,8 @@ templateDef[string prefix]
    		}
 	    try {
 		    this._group.DefineTemplate(prefix, $name.text, $formalArgs.args, template);
+		    GroupLexer lexer = (GroupLexer)input.TokenSource;
+		    lexer._enclosingTemplateName = $name.text;
 		}
         catch (TemplateRecognitionException e) {
         	RecognitionException re = (RecognitionException)e.InnerException;
@@ -194,7 +196,7 @@ ANONYMOUS_TEMPLATE
 			new TemplateLexer(input, this._group.delimiterStartChar, this._group.delimiterStopChar);
 		lexer.subtemplateDepth = 1;
 		UnbufferedTokenStream tokens = new UnbufferedTokenStream(lexer);
-        TemplateParser parser = new TemplateParser(tokens, (ICodeGenerator)null);
+        TemplateParser parser = new TemplateParser(tokens, (ICodeGenerator)null, this._enclosingTemplateName);
 		parser.template();
 		}
     	// don't match '}' here; subparser matches it to terminate

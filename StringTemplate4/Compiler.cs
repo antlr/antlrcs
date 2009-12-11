@@ -110,14 +110,15 @@ namespace StringTemplate
             }
         }
 
-        public CompiledTemplate Compile(string template)
+        public CompiledTemplate Compile(string enclosingTemplateName, string template)
         {
-            return Compile(template, '<', '>');
+            return Compile(enclosingTemplateName, template, '<', '>');
         }
 
-        public CompiledTemplate Compile(string template,
-                                  char delimiterStartChar,
-                                  char delimiterStopChar)
+        public CompiledTemplate Compile(string enclosingTemplateName,
+                                        string template,
+                                        char delimiterStartChar,
+                                        char delimiterStopChar)
         {
             int initialSize = Math.Max(5, (int)(template.Length / CODE_SIZE_FACTOR));
             instrs = new byte[initialSize];
@@ -125,7 +126,7 @@ namespace StringTemplate
 
             TemplateLexer lexer = new TemplateLexer(new ANTLRStringStream(template), delimiterStartChar, delimiterStopChar);
             UnbufferedTokenStream tokens = new UnbufferedTokenStream(lexer);
-            TemplateParser parser = new TemplateParser(tokens, this);
+            TemplateParser parser = new TemplateParser(tokens, this, enclosingTemplateName);
             try
             {
                 parser.templateAndEOF(); // parse, trigger compile actions for single expr
@@ -144,10 +145,10 @@ namespace StringTemplate
             return code;
         }
 
-        public CompiledTemplate Compile(ITokenStream tokens, RecognizerSharedState state)
+        public CompiledTemplate Compile(string enclosingTemplateName, ITokenStream tokens, RecognizerSharedState state)
         {
             instrs = new byte[SUBTEMPLATE_INITIAL_CODE_SIZE];
-            TemplateParser parser = new TemplateParser(tokens, state, this);
+            TemplateParser parser = new TemplateParser(tokens, state, this, enclosingTemplateName);
             try
             {
                 parser.template(); // parse, trigger compile actions for single expr
@@ -203,14 +204,18 @@ namespace StringTemplate
             return ip;
         }
 
-        public string CompileAnonTemplate(ITokenStream input,
-                                   IList ids,
-                                   RecognizerSharedState state)
+        public string CompileAnonTemplate(string enclosingTemplateName,
+                                          ITokenStream input,
+                                          IList<IToken> ids,
+                                          RecognizerSharedState state)
         {
             subtemplateCount++;
             string name = prefix + "_sub" + subtemplateCount;
             Compiler c = new Compiler(prefix);
-            CompiledTemplate sub = c.Compile(input, state);
+            CompiledTemplate sub = c.Compile(enclosingTemplateName, input, state);
+            if (code.implicitlyDefinedTemplates == null)
+                code.implicitlyDefinedTemplates = new List<CompiledTemplate>();
+            code.implicitlyDefinedTemplates.Add(sub);
             sub.name = name;
             if (ids != null)
             {
@@ -221,12 +226,22 @@ namespace StringTemplate
                     sub.formalArguments[argName] = new FormalArgument(argName);
                 }
             }
-            if (code.compiledSubtemplates == null)
-            {
-                code.compiledSubtemplates = new List<CompiledTemplate>();
-            }
-            code.compiledSubtemplates.Add(sub);
             return name;
+        }
+
+        public void CompileRegion(string enclosingTemplateName,
+                                  string regionName,
+                                  ITokenStream input,
+                                  RecognizerSharedState state)
+        {
+            Compiler c = new Compiler(prefix);
+            CompiledTemplate sub = c.Compile(enclosingTemplateName, input, state);
+            sub.name = regionName;
+            if (code.implicitlyDefinedTemplates == null)
+            {
+                code.implicitlyDefinedTemplates = new List<CompiledTemplate>();
+            }
+            code.implicitlyDefinedTemplates.Add(sub);
         }
 
         protected void EnsureCapacity()

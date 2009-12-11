@@ -40,21 +40,24 @@ namespace StringTemplate
     partial class TemplateParser
     {
         List<string> IFindents = new List<string>();
+        /** Is this template a subtemplate or region of an enclosing template? */
+        private string _enclosingTemplateName;
 
         ICodeGenerator gen = new CodeGenerator();
 
-        public TemplateParser(ITokenStream input, ICodeGenerator gen)
-            : this(input, new RecognizerSharedState(), gen)
+        public TemplateParser(ITokenStream input, ICodeGenerator gen, string enclosingTemplateName)
+            : this(input, new RecognizerSharedState(), gen, enclosingTemplateName)
         {
         }
 
-        public TemplateParser(ITokenStream input, RecognizerSharedState state, ICodeGenerator gen)
+        public TemplateParser(ITokenStream input, RecognizerSharedState state, ICodeGenerator gen, string enclosingTemplateName)
             : base(null, null) // overcome bug in ANTLR 3.2
         {
             this.input = input;
             this.state = state;
             if (gen != null)
                 this.gen = gen;
+            this._enclosingTemplateName = enclosingTemplateName;
         }
         protected override object RecoverFromMismatchedToken(IIntStream input, int ttype, BitSet follow)
         {
@@ -173,11 +176,15 @@ namespace StringTemplate
                 return 0;
             }
 
-            public string CompileAnonTemplate(ITokenStream input, IList ids, RecognizerSharedState state)
+            public string CompileAnonTemplate(string enclosingTemplateName, ITokenStream input, IList<IToken> ids, RecognizerSharedState state)
             {
                 Compiler c = new Compiler();
-                c.Compile(input, state);
+                c.Compile(null, input, state);
                 return null;
+            }
+
+            public void CompileRegion(string enclosingTemplateName, string regionName, ITokenStream input, RecognizerSharedState state)
+            {
             }
         }
     }

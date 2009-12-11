@@ -230,7 +230,7 @@ namespace StringTemplate
                 throw new ArgumentException("cannot have '.' in template names");
             }
             Compiler c = new Compiler(prefix);
-            CompiledTemplate code = c.Compile(template);
+            CompiledTemplate code = c.Compile(name, template);
             code.name = name;
             code.formalArguments = args;
             code.nativeGroup = this;
@@ -243,7 +243,7 @@ namespace StringTemplate
                     if (fa.defaultValue != null)
                     {
                         Compiler c2 = new Compiler(prefix);
-                        fa.compiledDefaultValue = c2.Compile(template);
+                        fa.compiledDefaultValue = c2.Compile(null, template);
                     }
                 }
             }
@@ -255,14 +255,43 @@ namespace StringTemplate
 
         protected virtual void DefineAnonSubtemplates(CompiledTemplate code)
         {
-            if (code.compiledSubtemplates != null)
+            if (code.implicitlyDefinedTemplates != null)
             {
-                foreach (CompiledTemplate sub in code.compiledSubtemplates)
+                foreach (CompiledTemplate sub in code.implicitlyDefinedTemplates)
                 {
                     templates[sub.name] = sub;
                     DefineAnonSubtemplates(sub);
                 }
             }
+        }
+
+        /** Track all references to regions &lt;@foo&gt;...&lt;@end&gt; or &lt;@foo()&gt;.  */
+        public CompiledTemplate DefineRegionTemplate(string enclosingTemplateName,
+                                               string regionName,
+                                               string template,
+                                               Template.RegionType type)
+        {
+            string mangledName =
+                GetMangledRegionName(enclosingTemplateName, regionName);
+            CompiledTemplate regionST = DefineTemplate(mangledName, template);
+            regionST.isRegion = true;
+            regionST.regionDefType = type;
+            return regionST;
+        }
+
+        /** The "foo" of t() ::= "&lt;@foo()&gt;" is mangled to "region#t#foo" */
+        public static string GetMangledRegionName(string enclosingTemplateName,
+                                                  string name)
+        {
+            return "region__" + enclosingTemplateName + "__" + name;
+        }
+
+        /** Return "t" from "region__t__foo" */
+        public static string getUnMangledTemplateName(string mangledName)
+        {
+            int start = "region__".Length;
+            int end = mangledName.LastIndexOf("__");
+            return mangledName.Substring(start, end - start);
         }
 
         /** Define a map for this group; not thread safe...do not keep adding

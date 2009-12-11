@@ -110,6 +110,8 @@ namespace StringTemplate
         public const int AND = 30;
         public const int INDENT = 31;
         public const int NEWLINE = 32;
+        public const int AT = 33;
+        public const int REGION_END = 34;
 
         char delimiterStartChar = '<';
         char delimiterStopChar = '>';
@@ -280,6 +282,16 @@ namespace StringTemplate
                 case '!':
                     Consume();
                     return NewToken(BANG);
+                case '@':
+                    Consume();
+                    if (c == 'e' && input.LA(2) == 'n' && input.LA(3) == 'd')
+                    {
+                        Consume();
+                        Consume();
+                        Consume();
+                        return NewToken(REGION_END);
+                    }
+                    return NewToken(AT);
                 case '"':
                     return mSTRING();
                 case '&':
