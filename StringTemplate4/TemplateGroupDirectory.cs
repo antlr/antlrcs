@@ -47,7 +47,6 @@ namespace StringTemplate
     public class TemplateGroupDirectory : TemplateGroup
     {
         public string dirName;
-        public IList<TemplateGroup> children;
 
         public TemplateGroupDirectory(string fullyQualifiedRootDirName)
         {
@@ -73,22 +72,23 @@ namespace StringTemplate
             }
         }
 
+        /// <summary>
+        /// walk dir and all subdir to load templates, group files
+        /// </summary>
         public override void Load()
         {
-            // walk dir and all subdir to load templates, group files
-            _load("/");
+            _Load("/");
             alreadyLoaded = true;
         }
 
-        protected void _load(string prefix)
+        protected void _Load(string prefix)
         {
-            // walk dir and all subdir to load templates, group files
             string dir = Path.Combine(fullyQualifiedRootDirName, prefix);
             Console.WriteLine("load dir '" + prefix + "' under " + fullyQualifiedRootDirName);
 
             foreach (var d in Directory.GetDirectories(dir))
             {
-                _load(Path.Combine(prefix, Path.GetFileName(d)) + "/");
+                _Load(Path.Combine(prefix, Path.GetFileName(d)) + "/");
             }
 
             foreach (var f in Directory.GetFiles(dir))
@@ -131,14 +131,6 @@ namespace StringTemplate
                 Console.Error.WriteLine(e.StackTrace);
             }
             return null;
-        }
-
-        public void AddChild(TemplateGroup g)
-        {
-            if (children == null)
-                children = new List<TemplateGroup>();
-
-            children.Add(g);
         }
     }
 }

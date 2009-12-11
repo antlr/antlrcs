@@ -71,13 +71,6 @@ namespace StringTemplate
 
         public static readonly ITemplateErrorListener DefaultErrorListener = new DefaultErrorListenerImpl();
 
-        /** The topmost group of templates in the template tree.
-         *  Point to yourself if group is root; but parent will be null.
-         */
-        //public TemplateGroup root;
-
-        //public TemplateGroupDirectory parent; // Are we a subdir or group file in dir?
-
         public string fullyQualifiedRootDirName; // if we're root
 
         /** Load files using what encoding? */
@@ -118,15 +111,6 @@ namespace StringTemplate
         public TemplateGroup()
         {
         }
-
-#if false
-        public TemplateGroup(string fullyQualifiedRootDirName)
-        {
-            this.fullyQualifiedRootDirName = fullyQualifiedRootDirName;
-            if (Directory.Exists(fullyQualifiedRootDirName))
-                throw new ArgumentException("No such directory: " + fullyQualifiedRootDirName);
-        }
-#endif
 
         public virtual string Name
         {
@@ -185,7 +169,7 @@ namespace StringTemplate
 
         protected CompiledTemplate LookupImportedTemplate(string name)
         {
-            Console.WriteLine("look for " + name + " in " + imports);
+            //Console.WriteLine("look for " + name + " in " + imports);
 
             if (imports == null)
                 return null;
@@ -300,7 +284,7 @@ namespace StringTemplate
         public virtual void LoadGroupFile(string prefix, string fileName)
         {
             string absoluteFileName = Path.Combine(fullyQualifiedRootDirName, fileName);
-            Console.WriteLine("load group file " + absoluteFileName);
+            //Console.WriteLine("load group file " + absoluteFileName);
             try
             {
                 ANTLRFileStream fs = new ANTLRFileStream(absoluteFileName, encoding);
@@ -315,60 +299,6 @@ namespace StringTemplate
             }
         }
 
-#if false
-        protected virtual void _load(string prefix)
-        {
-            // walk dir and all subdir to load templates, group files
-            string dir = Path.Combine(fullyQualifiedRootDirName, prefix);
-            Console.WriteLine("load dir '" + prefix + "' under " + fullyQualifiedRootDirName);
-
-            foreach (var d in Directory.GetDirectories(dir))
-            {
-                _load(prefix + Path.GetFileName(d) + "/");
-            }
-
-            foreach (var f in Directory.GetFiles(dir))
-            {
-                if (Path.GetExtension(f).Equals(".st", System.StringComparison.OrdinalIgnoreCase))
-                    loadTemplateFile(prefix, Path.GetFileName(f));
-                else if (Path.GetExtension(f).Equals(".stg", System.StringComparison.OrdinalIgnoreCase))
-                    LoadGroupFile(Path.Combine(prefix, Path.GetFileNameWithoutExtension(f)) + Path.DirectorySeparatorChar);
-            }
-        }
-
-        public virtual CompiledTemplate loadTemplateFile(string prefix, string fileName)
-        {
-            // load from disk
-            string absoluteFileName = Path.Combine(Path.Combine(fullyQualifiedRootDirName, prefix), fileName);
-            Console.WriteLine("load " + absoluteFileName);
-            if (!File.Exists(absoluteFileName))
-            { // TODO: add tolerance check here
-                return null;
-            }
-            try
-            {
-                ANTLRFileStream fs = new ANTLRFileStream(absoluteFileName, encoding);
-                GroupLexer lexer = new GroupLexer(fs);
-                UnbufferedTokenStream tokens = new UnbufferedTokenStream(lexer);
-                GroupParser parser = new GroupParser(tokens);
-                parser._group = this;
-                parser.templateDef(prefix);
-
-                CompiledTemplate code;
-                if (!templates.TryGetValue("/" + Path.Combine(prefix, Path.GetFileNameWithoutExtension(fileName)), out code))
-                    return null;
-
-                return code;
-            }
-            catch (Exception e)
-            {
-                Console.Error.WriteLine("can't load template file: " + absoluteFileName);
-                Console.Error.WriteLine(e.StackTrace);
-            }
-            return null;
-        }
-#endif
-
         /// <summary>
         /// StringTemplate object factory; each group can have its own.
         /// </summary>
@@ -378,20 +308,6 @@ namespace StringTemplate
             return st;
         }
 
-        public override bool Equals(object obj)
-        {
-            TemplateGroup group = obj as TemplateGroup;
-            if (group != null)
-                return this.Name == group.Name;
-
-            return false;
-        }
-
-        public override int GetHashCode()
-        {
-            return this.Name.GetHashCode();
-        }
-
         public override string ToString()
         {
             return Name;
@@ -399,6 +315,9 @@ namespace StringTemplate
 
         public virtual string Show()
         {
+            if (!alreadyLoaded)
+                Load();
+
             StringBuilder buf = new StringBuilder();
             //if ( supergroup!=null ) buf.append(" : "+supergroup);
             foreach (string name in templates.Keys)

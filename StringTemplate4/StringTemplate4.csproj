@@ -54,6 +54,7 @@
     <Compile Include="FormalArgument.cs" />
     <Compile Include="GroupLexerHelper.cs" />
     <Compile Include="GroupParserHelper.cs" />
+    <Compile Include="IAttributeRenderer.cs" />
     <Compile Include="ICodeGenerator.cs" />
     <Compile Include="Interpreter.cs" />
     <Compile Include="ITemplateErrorListener.cs" />
