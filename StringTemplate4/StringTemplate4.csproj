@@ -72,7 +72,6 @@
     <Compile Include="TemplateLexer.cs" />
     <Compile Include="TemplateParserHelper.cs" />
     <Compile Include="TemplateRecognitionException.cs" />
-    <Compile Include="TemplateTree.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\Antlr3\Key.snk">
