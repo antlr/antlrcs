@@ -74,25 +74,32 @@ public
 templateDef[string prefix]
 @init {
     string template=null;
+    string fullName = null;
     int n=0; // num char to strip from left, right of template def
 }
-	:	(	'@' ID '.' region=ID
-		|	name=ID 
+	:	(	'@' enclosing=ID '.' region=ID '(' ')'
+			{fullName = TemplateGroup.GetMangledRegionName($enclosing.text, $region.text);}
+		|	name=ID '(' formalArgs? ')' {fullName = $name.text;}
 		)
-	    '(' formalArgs? ')' '::='
-	    {IToken templateToken = input.LT(1);}
-	    (	STRING     {template=$STRING.text; n=1;}
-	    |	BIGSTRING  {template=$BIGSTRING.text; n=2;}
-	    )
-	    {
-	    template = Misc.Strip(template, n);
-   		if ( templateToken.Type==BIGSTRING ) {
-   			template = Misc.TrimOneStartingWS(template);
-   		}
+		'::='
+		{IToken templateToken = input.LT(1);}
+		(	STRING     {template=$STRING.text; n=1;}
+		|	BIGSTRING  {template=$BIGSTRING.text; n=2;}
+		)
+		{
+		template = Misc.Strip(template, n);
+		if ( templateToken.Type==BIGSTRING ) {
+			template = Misc.TrimOneStartingWS(template);
+		}
 	    try {
-		    this._group.DefineTemplate(prefix, $name.text, $formalArgs.args, template);
-		    GroupLexer lexer = (GroupLexer)input.TokenSource;
-		    lexer._enclosingTemplateName = $name.text;
+			CompiledTemplate st = null;
+			if ($enclosing != null)
+				st = this._group.DefineRegion(prefix, $enclosing.text, $region.text, template);
+			else
+				st = this._group.DefineTemplate(prefix, $name.text, $formalArgs.args, template);
+
+			GroupLexer lexer = (GroupLexer)input.TokenSource;
+			lexer._enclosingTemplateName = fullName;
 		}
         catch (TemplateRecognitionException e) {
         	RecognitionException re = (RecognitionException)e.InnerException;

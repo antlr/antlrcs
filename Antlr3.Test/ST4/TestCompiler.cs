@@ -293,6 +293,36 @@
             Assert.AreEqual(stringsExpected, stringsResult);
         }
 
+        [TestMethod]
+        public void TestEmbeddedRegion()
+        {
+            string template = "<@r>foo<@end>";
+            // compile as if in root dir and in template 'a'
+            CompiledTemplate code = new Compiler("/", "a").Compile(template);
+            string asmExpected =
+                "new 0, write";
+            string asmResult = code.Instructions();
+            Assert.AreEqual(asmExpected, asmResult);
+            string stringsExpected = "[/region__a__r]";
+            string stringsResult = Arrays.toString(code.strings);
+            Assert.AreEqual(stringsExpected, stringsResult);
+        }
+
+        [TestMethod]
+        public void TestRegion()
+        {
+            string template = "x:<@r()>";
+            // compile as if in root dir and in template 'a'
+            CompiledTemplate code = new Compiler("/", "a").Compile(template);
+            string asmExpected =
+                "load_str 0, write, new 1, write";
+            string asmResult = code.Instructions();
+            Assert.AreEqual(asmExpected, asmResult);
+            string stringsExpected = "[x:, /region__a__r]";
+            string stringsResult = Arrays.toString(code.strings);
+            Assert.AreEqual(stringsExpected, stringsResult);
+        }
+
         private static class Arrays
         {
             public static string toString(string[] array)

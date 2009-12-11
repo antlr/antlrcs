@@ -61,6 +61,8 @@ namespace StringTemplate
                                    IList<IToken> ids,
                                    RecognizerSharedState state);
 
-        void CompileRegion(string enclosingTemplateName, string regionName, ITokenStream input, RecognizerSharedState state);
+        string CompileRegion(string enclosingTemplateName, string regionName, ITokenStream input, RecognizerSharedState state);
+
+        void DefineBlankRegion(string fullyQualifiedName);
     }
 }

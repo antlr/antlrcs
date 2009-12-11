@@ -45,7 +45,8 @@ namespace StringTemplate
          */
         private string _enclosingTemplateName;
 
-        ICodeGenerator gen = new CodeGenerator();
+        private static ICodeGenerator NoopGen = new CodeGenerator();
+        private ICodeGenerator gen = NoopGen;
 
         public TemplateParser(ITokenStream input, ICodeGenerator gen, string enclosingTemplateName)
             : this(input, new RecognizerSharedState(), gen, enclosingTemplateName)
@@ -129,6 +130,9 @@ namespace StringTemplate
             gen.Emit(Bytecode.INSTR_INDENT, indent);
         }
 
+        /// <summary>
+        /// used to parse w/o compilation side-effects
+        /// </summary>
         private sealed class CodeGenerator : ICodeGenerator
         {
             public string TemplateReferencePrefix
@@ -167,7 +171,14 @@ namespace StringTemplate
                 return null;
             }
 
-            public void CompileRegion(string enclosingTemplateName, string regionName, ITokenStream input, RecognizerSharedState state)
+            public string CompileRegion(string enclosingTemplateName, string regionName, ITokenStream input, RecognizerSharedState state)
+            {
+                Compiler c = new Compiler();
+                c.Compile(input, state);
+                return null;
+            }
+
+            public void DefineBlankRegion(string fullyQualifiedName)
             {
             }
         }

@@ -44,6 +44,12 @@ namespace StringTemplate
     using Type = System.Type;
     using Antlr.Runtime;
 
+    /** A directory or directory tree of .st template files and/or group files.
+     *  Individual template files contain formal template definitions. In a sense,
+     *  it's like a single group file broken into multiple files, one for each template.
+     *  ST v3 had just the pure template inside, not the template name and header.
+     *  Name inside must match filename (minus suffix).
+     */
     public class TemplateGroup
     {
         /** When we use key as a value in a dictionary, this is how we signify. */
@@ -128,6 +134,14 @@ namespace StringTemplate
             get
             {
                 return "<no name>;";
+            }
+        }
+
+        public IDictionary<string, CompiledTemplate> Templates
+        {
+            get
+            {
+                return templates;
             }
         }
 
@@ -229,12 +243,10 @@ namespace StringTemplate
             {
                 throw new ArgumentException("cannot have '.' in template names");
             }
-            Compiler c = new Compiler(prefix, name);
-            CompiledTemplate code = c.Compile(template);
-            code.name = name;
+
+            CompiledTemplate code = Compile(prefix, name, template);
             code.formalArguments = args;
-            code.nativeGroup = this;
-            templates[prefix + name] = code;
+            RawDefineTemplate(prefix + name, code);
             if (args != null)
             { // compile any default args
                 foreach (string a in args.Keys)
@@ -247,36 +259,68 @@ namespace StringTemplate
                     }
                 }
             }
+
             // define any anonymous subtemplates
-            DefineAnonSubtemplates(code);
+            DefineImplicitlyDefinedTemplates(code);
 
             return code;
         }
 
-        protected virtual void DefineAnonSubtemplates(CompiledTemplate code)
+        public CompiledTemplate DefineRegion(string prefix,
+                                             string enclosingTemplateName,
+                                             string name,
+                                             string template)
+        {
+            CompiledTemplate code = Compile(prefix, name, template);
+            code.isRegion = true;
+            code.regionDefType = Template.RegionType.Explicit;
+            RawDefineTemplate(prefix + GetMangledRegionName(enclosingTemplateName, name), code);
+            return code;
+        }
+
+        protected void DefineImplicitlyDefinedTemplates(CompiledTemplate code)
         {
             if (code.implicitlyDefinedTemplates != null)
             {
                 foreach (CompiledTemplate sub in code.implicitlyDefinedTemplates)
                 {
-                    templates[sub.name] = sub;
-                    DefineAnonSubtemplates(sub);
+                    RawDefineTemplate(sub.name, sub);
+                    DefineImplicitlyDefinedTemplates(sub);
                 }
             }
         }
 
-        /** Track all references to regions &lt;@foo&gt;...&lt;@end&gt; or &lt;@foo()&gt;.  */
-        public CompiledTemplate DefineRegionTemplate(string enclosingTemplateName,
-                                               string regionName,
-                                               string template,
-                                               Template.RegionType type)
+        protected void RawDefineTemplate(string name, CompiledTemplate code)
         {
-            string mangledName =
-                GetMangledRegionName(enclosingTemplateName, regionName);
-            CompiledTemplate regionST = DefineTemplate(mangledName, template);
-            regionST.isRegion = true;
-            regionST.regionDefType = type;
-            return regionST;
+            CompiledTemplate prev;
+            if (templates.TryGetValue(name, out prev))
+            {
+                if (!prev.isRegion)
+                {
+                    listener.Error("redefinition of " + name);
+                    return;
+                }
+                if (prev.isRegion && prev.regionDefType == Template.RegionType.Embedded)
+                {
+                    listener.Error("can't redefine embedded region " + name);
+                    return;
+                }
+                else if (prev.isRegion && prev.regionDefType == Template.RegionType.Explicit)
+                {
+                    listener.Error("can't redefine region in same group: " + name);
+                    return;
+                }
+            }
+            templates[name] = code;
+        }
+
+        protected CompiledTemplate Compile(string prefix, string name, string template)
+        {
+            Compiler c = new Compiler(prefix, name);
+            CompiledTemplate code = c.Compile(template);
+            code.name = name;
+            code.nativeGroup = this;
+            return code;
         }
 
         /** The "foo" of t() ::= "&lt;@foo()&gt;" is mangled to "region#t#foo" */
@@ -382,7 +426,8 @@ namespace StringTemplate
                 Load();
 
             StringBuilder buf = new StringBuilder();
-            //if ( supergroup!=null ) buf.append(" : "+supergroup);
+            if (imports != null)
+                buf.Append(" : " + imports);
             foreach (string name in templates.Keys)
             {
                 if (name.StartsWith("/_sub"))

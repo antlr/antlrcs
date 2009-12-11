@@ -1,8 +1,8 @@
 ﻿namespace AntlrUnitTests.ST4
 {
     using Microsoft.VisualStudio.TestTools.UnitTesting;
-    using ArrayList = System.Collections.ArrayList;
     using StringTemplate;
+    using ArrayList = System.Collections.ArrayList;
     using StringWriter = System.IO.StringWriter;
 
     [TestClass]

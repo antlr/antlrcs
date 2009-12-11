@@ -30,6 +30,12 @@
             TestContext = testContext;
         }
 
+        [TestInitialize]
+        public void TestInitialize()
+        {
+            TemplateGroup.defaultGroup = new TemplateGroup();
+        }
+
         public void WriteFile(string dir, string fileName, string content)
         {
             try

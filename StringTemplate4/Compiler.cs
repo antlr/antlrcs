@@ -213,7 +213,7 @@ namespace StringTemplate
 
         public string CompileAnonTemplate(string enclosingTemplateName,
                                           ITokenStream input,
-                                          IList<IToken> ids,
+                                          IList<IToken> argIDs,
                                           RecognizerSharedState state)
         {
             subtemplateCount++;
@@ -224,10 +224,10 @@ namespace StringTemplate
                 code.implicitlyDefinedTemplates = new List<CompiledTemplate>();
             code.implicitlyDefinedTemplates.Add(sub);
             sub.name = name;
-            if (ids != null)
+            if (argIDs != null)
             {
                 sub.formalArguments = new Dictionary<string, FormalArgument>();
-                foreach (IToken arg in ids)
+                foreach (IToken arg in argIDs)
                 {
                     string argName = arg.Text;
                     sub.formalArguments[argName] = new FormalArgument(argName);
@@ -236,19 +236,37 @@ namespace StringTemplate
             return name;
         }
 
-        public void CompileRegion(string enclosingTemplateName,
-                                  string regionName,
-                                  ITokenStream input,
-                                  RecognizerSharedState state)
+        public string CompileRegion(string enclosingTemplateName,
+                                    string regionName,
+                                    ITokenStream input,
+                                    RecognizerSharedState state)
         {
             Compiler c = new Compiler(templatePathPrefix, enclosingTemplateName);
             CompiledTemplate sub = c.Compile(input, state);
-            sub.name = regionName;
+            string fullName = templatePathPrefix + TemplateGroup.GetMangledRegionName(enclosingTemplateName, regionName);
+            sub.name = fullName;
             if (code.implicitlyDefinedTemplates == null)
             {
                 code.implicitlyDefinedTemplates = new List<CompiledTemplate>();
             }
             code.implicitlyDefinedTemplates.Add(sub);
+            return fullName;
+        }
+
+        public void DefineBlankRegion(string fullyQualifiedName)
+        {
+            // TODO: combine with CompileRegion
+            CompiledTemplate blank = new CompiledTemplate()
+            {
+                isRegion = true,
+                regionDefType = Template.RegionType.Implicit,
+                name = fullyQualifiedName
+            };
+
+            if (code.implicitlyDefinedTemplates == null)
+                code.implicitlyDefinedTemplates = new List<CompiledTemplate>();
+
+            code.implicitlyDefinedTemplates.Add(blank);
         }
 
         protected void EnsureCapacity()

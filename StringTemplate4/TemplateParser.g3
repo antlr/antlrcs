@@ -61,6 +61,10 @@ template
 			text             {gen.Emit(Bytecode.INSTR_DEDENT);}
 		|	text
 		|   (i=INDENT {Indent($i.text);})? region
+							 {
+							 gen.Emit(Bytecode.INSTR_NEW, $region.name);
+							 gen.Emit(Bytecode.INSTR_WRITE);
+							 }
 		|	i=INDENT         {Indent($i.text);}
 		 	NEWLINE          {gen.Emit(Bytecode.INSTR_NEWLINE);} 
 		 	                 {gen.Emit(Bytecode.INSTR_DEDENT);}
@@ -86,12 +90,16 @@ exprTag
 		RDELIM
 	;
 
-region // match $@foo$...$@end$
-	:	'@' ID 
+region returns [string name] // match $@foo$...$@end$
+	:	LDELIM '@' ID RDELIM
 		{{ // force exec even when backtracking
+		if (state.backtracking == 0)
+			$name = gen.CompileRegion(_enclosingTemplateName, $ID.text, input, state);
+		else
+			$name = NoopGen.CompileRegion(_enclosingTemplateName, $ID.text, input, state);
 		gen.CompileRegion(_enclosingTemplateName, $ID.text, input, state);
         }}
-		'@end'
+		LDELIM '@end' RDELIM
 	;
 
 subtemplate returns [string name]
@@ -100,7 +108,10 @@ subtemplate returns [string name]
 		List<IToken> idTokens = null;
 		if ($ids != null)
 			idTokens = new List<IToken>($ids.Cast<IToken>());
-		$name = gen.CompileAnonTemplate(_enclosingTemplateName, input, idTokens, state);
+		if (state.backtracking == 0)
+			$name = gen.CompileAnonTemplate(_enclosingTemplateName, input, idTokens, state);
+		else
+			$name = NoopGen.CompileAnonTemplate(_enclosingTemplateName, input, idTokens, state);
         }}
         '}'
     ;
@@ -110,7 +121,7 @@ subtemplate returns [string name]
  *  syntax errors upon '}' in rule templatee, we force '}' into FOLLOW set.
  *  I hope to make ANTLR ignore FOLLOW set for (...)* in future.
  */
-addRcurlyToFollowOfTemplateRule : template '}' ;
+addTemplateEndTokensToFollowOfTemplateRule : template ('}' | LDELIM '@end') ;
 
 ifOnMultiLines
 @init {
@@ -274,6 +285,12 @@ options {k=2;} // prevent full LL(*) which fails, falling back on k=1; need k=2
 	:	{Compiler.funcs.ContainsKey(input.LT(1).Text)}?
 		ID '(' expr ')' {Func($ID);}
 	|	ID {gen.Emit(Bytecode.INSTR_NEW, PrefixedName($ID.text));} '(' args? ')'
+	|	'@' ID '(' ')'	// convert <@r()> to <region__enclosingTemplate__r()>
+		{
+		string mangled = TemplateGroup.GetMangledRegionName(_enclosingTemplateName, $ID.text);
+		gen.DefineBlankRegion(PrefixedName(mangled));
+		gen.Emit(Bytecode.INSTR_NEW, PrefixedName(mangled));
+		}
 	|	primary
 	;
 	
@@ -301,11 +318,6 @@ templateRef
 	:	ID			{gen.Emit(Bytecode.INSTR_LOAD_STR, PrefixedName($ID.text));}
 	|	subtemplate {gen.Emit(Bytecode.INSTR_LOAD_STR, PrefixedName($subtemplate.name));}
 	|	'(' mapExpr ')' {gen.Emit(Bytecode.INSTR_TOSTR);}
-	|	'@' ID '(' ')'	// convert <@r()> to <region__enclosingTemplate__r()>
-		{
-		string mangled = TemplateGroup.GetMangledRegionName(_enclosingTemplateName, $ID.text);
-		gen.Emit(Bytecode.INSTR_LOAD_STR, PrefixedName(mangled));
-		}
 	;
 
 list:	{gen.Emit(Bytecode.INSTR_LIST);} '[' listElement (',' listElement)* ']'

@@ -84,7 +84,7 @@ namespace StringTemplate
         protected void _Load(string prefix)
         {
             string dir = Path.Combine(fullyQualifiedRootDirName, prefix);
-            Console.WriteLine("load dir '" + prefix + "' under " + fullyQualifiedRootDirName);
+            //Console.WriteLine("load dir '" + prefix + "' under " + fullyQualifiedRootDirName);
 
             foreach (var d in Directory.GetDirectories(dir))
             {
@@ -104,7 +104,7 @@ namespace StringTemplate
         {
             // load from disk
             string absoluteFileName = Path.Combine(Path.Combine(fullyQualifiedRootDirName, prefix), fileName);
-            Console.WriteLine("load " + absoluteFileName);
+            //Console.WriteLine("load " + absoluteFileName);
             if (!File.Exists(absoluteFileName))
             {
                 // TODO: add tolerance check here

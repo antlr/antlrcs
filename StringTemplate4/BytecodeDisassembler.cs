@@ -106,7 +106,7 @@ namespace StringTemplate
             ip++;
             if (I.n == 0)
             {
-                buf.Append(string.Format("  "));
+                buf.Append("  ");
                 return ip;
             }
             List<string> operands = new List<string>();

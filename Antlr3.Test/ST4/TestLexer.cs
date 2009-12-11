@@ -229,5 +229,26 @@ namespace AntlrUnitTests.ST4
                 "[@20,47:47='>',<RDELIM>,1:47]]";
             CheckTokens(template, expected);
         }
+
+        [TestMethod]
+        public void TestEmbeddedRegion()
+        {
+            string template = "<@r>foo<@end>";
+            string expected =
+                "[[@0,0:0='<',<LDELIM>,1:0], [@1,1:1='@',<AT>,1:1], [@2,2:2='r',<ID>,1:2], " +
+                "[@3,3:3='>',<RDELIM>,1:3], [@4,4:6='foo',<TEXT>,1:4], [@5,7:7='<',<LDELIM>,1:7], " +
+                "[@6,8:11='@end',<END>,1:8], [@7,12:12='>',<RDELIM>,1:12]]";
+            CheckTokens(template, expected);
+        }
+
+        [TestMethod]
+        public void TestRegion()
+        {
+            string template = "<@r()>";
+            string expected =
+                "[[@0,0:0='<',<LDELIM>,1:0], [@1,1:1='@',<AT>,1:1], [@2,2:2='r',<ID>,1:2], " +
+                 "[@3,3:3='(',<LPAREN>,1:3], [@4,4:4=')',<RPAREN>,1:4], [@5,5:5='>',<RDELIM>,1:5]]";
+            CheckTokens(template, expected);
+        }
     }
 }
