@@ -40,7 +40,8 @@ namespace StringTemplate
     public interface ICodeGenerator
     {
         /// <summary>
-        /// If we're compiling templates in subdir or group file under root, what's the prefix to add?
+        /// If we're compiling templates in subdir or group file under root,
+        /// what's the templatePathPrefix to add?
         /// </summary>
         string TemplateReferencePrefix
         {

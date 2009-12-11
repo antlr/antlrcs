@@ -40,9 +40,11 @@ namespace StringTemplate
     using Math = System.Math;
     using Path = System.IO.Path;
 
+    /// <summary>
+    /// A compiler for a single template
+    /// </summary>
     public class Compiler : ICodeGenerator
     {
-        public static readonly string ATTR_NAME_REGEX = "[a-zA-Z/][a-zA-Z0-9_/]*";
         /** Given a template of length n, how much code will result?
          *  For now, let's assume n/5. Later, we can test in practice.
          */
@@ -87,36 +89,41 @@ namespace StringTemplate
         int ip = 0;
         CompiledTemplate code = new CompiledTemplate();
 
-        // subdir context -- template reference prefix
-        private string prefix;
+        /** subdir context.  If we're compiling templates in subdir a/b/c, then
+         *  /a/b/c is the path prefix to add to all ID refs; it fully qualifies them.
+         *  It's like resolving x to this.x in Java for field x. 
+         */
+        private string templatePathPrefix;
+
+        private string nameOrEnclosingTemplateName;
 
         public static int subtemplateCount = 0; // public for testing access
 
         public Compiler()
-            : this("/")
+            : this("/", "<unknown>")
         {
         }
 
-        public Compiler(string prefix)
+        public Compiler(string templatePathPrefix, string enclosingTemplateName)
         {
-            this.prefix = prefix;
+            this.templatePathPrefix = templatePathPrefix;
+            this.nameOrEnclosingTemplateName = enclosingTemplateName;
         }
 
         public string TemplateReferencePrefix
         {
             get
             {
-                return this.prefix;
+                return this.templatePathPrefix;
             }
         }
 
-        public CompiledTemplate Compile(string enclosingTemplateName, string template)
+        public CompiledTemplate Compile(string template)
         {
-            return Compile(enclosingTemplateName, template, '<', '>');
+            return Compile(template, '<', '>');
         }
 
-        public CompiledTemplate Compile(string enclosingTemplateName,
-                                        string template,
+        public CompiledTemplate Compile(string template,
                                         char delimiterStartChar,
                                         char delimiterStopChar)
         {
@@ -126,7 +133,7 @@ namespace StringTemplate
 
             TemplateLexer lexer = new TemplateLexer(new ANTLRStringStream(template), delimiterStartChar, delimiterStopChar);
             UnbufferedTokenStream tokens = new UnbufferedTokenStream(lexer);
-            TemplateParser parser = new TemplateParser(tokens, this, enclosingTemplateName);
+            TemplateParser parser = new TemplateParser(tokens, this, nameOrEnclosingTemplateName);
             try
             {
                 parser.templateAndEOF(); // parse, trigger compile actions for single expr
@@ -145,10 +152,10 @@ namespace StringTemplate
             return code;
         }
 
-        public CompiledTemplate Compile(string enclosingTemplateName, ITokenStream tokens, RecognizerSharedState state)
+        public CompiledTemplate Compile(ITokenStream tokens, RecognizerSharedState state)
         {
             instrs = new byte[SUBTEMPLATE_INITIAL_CODE_SIZE];
-            TemplateParser parser = new TemplateParser(tokens, state, this, enclosingTemplateName);
+            TemplateParser parser = new TemplateParser(tokens, state, this, nameOrEnclosingTemplateName);
             try
             {
                 parser.template(); // parse, trigger compile actions for single expr
@@ -210,9 +217,9 @@ namespace StringTemplate
                                           RecognizerSharedState state)
         {
             subtemplateCount++;
-            string name = prefix + "_sub" + subtemplateCount;
-            Compiler c = new Compiler(prefix);
-            CompiledTemplate sub = c.Compile(enclosingTemplateName, input, state);
+            string name = templatePathPrefix + "_sub" + subtemplateCount;
+            Compiler c = new Compiler(templatePathPrefix, enclosingTemplateName);
+            CompiledTemplate sub = c.Compile(input, state);
             if (code.implicitlyDefinedTemplates == null)
                 code.implicitlyDefinedTemplates = new List<CompiledTemplate>();
             code.implicitlyDefinedTemplates.Add(sub);
@@ -234,8 +241,8 @@ namespace StringTemplate
                                   ITokenStream input,
                                   RecognizerSharedState state)
         {
-            Compiler c = new Compiler(prefix);
-            CompiledTemplate sub = c.Compile(enclosingTemplateName, input, state);
+            Compiler c = new Compiler(templatePathPrefix, enclosingTemplateName);
+            CompiledTemplate sub = c.Compile(input, state);
             sub.name = regionName;
             if (code.implicitlyDefinedTemplates == null)
             {

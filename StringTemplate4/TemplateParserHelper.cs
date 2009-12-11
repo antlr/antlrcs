@@ -39,8 +39,10 @@ namespace StringTemplate
 
     partial class TemplateParser
     {
-        List<string> IFindents = new List<string>();
-        /** Is this template a subtemplate or region of an enclosing template? */
+        /** The name of the template we are compiling or the name of the
+         *  enclosing template.  This template could be a subtemplate or region of
+         *  an enclosing template.
+         */
         private string _enclosingTemplateName;
 
         ICodeGenerator gen = new CodeGenerator();
@@ -122,26 +124,8 @@ namespace StringTemplate
             gen.Emit(funcBytecode);
         }
 
-        public void PushIFIndentation(string indent)
-        {
-            IFindents.Add(indent);
-        }
-
-        public string PopIFIndentation()
-        {
-            var result = IFindents[IFindents.Count - 1];
-            IFindents.RemoveAt(IFindents.Count - 1);
-            return result;
-        }
-
         public void Indent(string indent)
         {
-            /*
-                    if ( IFindents.size()>0 ) {
-                        String ifIndent = IFindents.get(IFindents.size()-1);
-                        if ( indent.startsWith(ifIndent) ) indent = indent.substring(ifIndent.length());
-                    }
-                    */
             gen.Emit(Bytecode.INSTR_INDENT, indent);
         }
 
@@ -179,7 +163,7 @@ namespace StringTemplate
             public string CompileAnonTemplate(string enclosingTemplateName, ITokenStream input, IList<IToken> ids, RecognizerSharedState state)
             {
                 Compiler c = new Compiler();
-                c.Compile(null, input, state);
+                c.Compile(input, state);
                 return null;
             }
 

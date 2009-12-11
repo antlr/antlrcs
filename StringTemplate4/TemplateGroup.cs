@@ -229,8 +229,8 @@ namespace StringTemplate
             {
                 throw new ArgumentException("cannot have '.' in template names");
             }
-            Compiler c = new Compiler(prefix);
-            CompiledTemplate code = c.Compile(name, template);
+            Compiler c = new Compiler(prefix, name);
+            CompiledTemplate code = c.Compile(template);
             code.name = name;
             code.formalArguments = args;
             code.nativeGroup = this;
@@ -242,8 +242,8 @@ namespace StringTemplate
                     FormalArgument fa = args[a];
                     if (fa.defaultValue != null)
                     {
-                        Compiler c2 = new Compiler(prefix);
-                        fa.compiledDefaultValue = c2.Compile(null, template);
+                        Compiler c2 = new Compiler(prefix, name);
+                        fa.compiledDefaultValue = c2.Compile(template);
                     }
                 }
             }

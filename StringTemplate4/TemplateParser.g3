@@ -52,7 +52,7 @@ template
 	:	(	options {backtrack=true; k=2;}
 		:	i=INDENT         {Indent($i.text);}
 			ifOnOneLine      {gen.Emit(Bytecode.INSTR_DEDENT);}
-		|	i=INDENT {PushIFIndentation($i.text);} ifOnMultiLines {PopIFIndentation();}
+		|	i=INDENT ifOnMultiLines
 		|	ifOnMultiLines
 		|	i=INDENT       	 {Indent($i.text);}
 			exprTag          {gen.Emit(Bytecode.INSTR_DEDENT);}
