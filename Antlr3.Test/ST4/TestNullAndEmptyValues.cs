@@ -104,8 +104,6 @@ namespace AntlrUnitTests.ST4
         public void TestSizeZeroButNonNullListGetsNoOutput()
         {
             STGroup group = new STGroup();
-            STErrorListener errors = new ErrorBuffer();
-            group.SetErrorListener(errors);
             group.DefineTemplate("test",
                 "begin\n" +
                 "<users>\n" +
@@ -121,8 +119,6 @@ namespace AntlrUnitTests.ST4
         public void TestNullListGetsNoOutput()
         {
             STGroup group = new STGroup();
-            STErrorListener errors = new ErrorBuffer();
-            group.SetErrorListener(errors);
             group.DefineTemplate("test",
                 "begin\n" +
                 "<users:{name: <it>}; separator=\", \">\n" +
@@ -138,8 +134,6 @@ namespace AntlrUnitTests.ST4
         public void TestEmptyListGetsNoOutput()
         {
             STGroup group = new STGroup();
-            STErrorListener errors = new ErrorBuffer();
-            group.SetErrorListener(errors);
             group.DefineTemplate("test",
                 "begin\n" +
                 "<users:{name: <it>}; separator=\", \">\n" +

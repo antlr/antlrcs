@@ -177,11 +177,7 @@ namespace AntlrUnitTests.ST4
         [TestMethod]
         public void TestNullListGetsNoOutput()
         {
-            STGroup group =
-                    new STGroup();
-            STErrorListener errors = new ErrorBuffer();
-            group.SetErrorListener(errors);
-            ST t = new ST(group,
+            ST t = new ST(
                 "begin\n" +
                 "$users:{name: $it$}; separator=\", \"$\n" +
                 "end\n");
@@ -194,11 +190,7 @@ namespace AntlrUnitTests.ST4
         [TestMethod]
         public void TestEmptyListGetsNoOutput()
         {
-            STGroup group =
-                    new STGroup();
-            STErrorListener errors = new ErrorBuffer();
-            group.SetErrorListener(errors);
-            ST t = new ST(group,
+            ST t = new ST(
                 "begin\n" +
                 "$users:{name: $it$}; separator=\", \"$\n" +
                 "end\n");
@@ -211,11 +203,7 @@ namespace AntlrUnitTests.ST4
         [TestMethod]
         public void TestEmptyListNoIteratorGetsNoOutput()
         {
-            STGroup group =
-                    new STGroup();
-            STErrorListener errors = new ErrorBuffer();
-            group.SetErrorListener(errors);
-            ST t = new ST(group,
+            ST t = new ST(
                 "begin\n" +
                 "$users; separator=\", \"$\n" +
                 "end\n");

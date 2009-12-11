@@ -61,9 +61,12 @@ namespace StringTemplate
             throw new MismatchedTokenException(ttype, input);
         }
 
-        public static string Strip(string s, int n)
+        public string PrefixedName(string t)
         {
-            return s.Substring(n, s.Length - 2 * n);
+            if (t != null && t[0] == '/')
+                return gen.TemplateReferencePrefix + t.Substring(1);
+
+            return gen.TemplateReferencePrefix + t;
         }
 
         public void RefAttr(IToken id)
@@ -141,6 +144,14 @@ namespace StringTemplate
 
         private sealed class CodeGenerator : ICodeGenerator
         {
+            public string TemplateReferencePrefix
+            {
+                get
+                {
+                    return null;
+                }
+            }
+
             public void Emit(short opcode)
             {
             }

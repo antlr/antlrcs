@@ -37,12 +37,21 @@ namespace StringTemplate
 
     public interface ICodeGenerator
     {
+        /// <summary>
+        /// If we're compiling templates in subdir or group file under root, what's the prefix to add?
+        /// </summary>
+        string TemplateReferencePrefix
+        {
+            get;
+        }
+
         void Emit(short opcode);
         void Emit(short opcode, int arg);
         void Emit(short opcode, string s);
         void Write(int addr, short value);
         /** Return address where next instruction will be written */
         int Address();
+
         string CompileAnonTemplate(ITokenStream input,
                                    IList ids,
                                    RecognizerSharedState state);

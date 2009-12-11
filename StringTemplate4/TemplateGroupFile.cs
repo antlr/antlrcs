@@ -52,8 +52,6 @@ namespace StringTemplate
 
             this.fullyQualifiedRootDirName = Path.GetFullPath(Path.GetDirectoryName(fullyQualifiedFileName));
             this.fileName = Path.GetFileName(fullyQualifiedFileName);
-            this.parent = null;
-            this.root = this;
         }
 
         public TemplateGroupFile(TemplateGroupDirectory parent, string fileName)
@@ -65,24 +63,13 @@ namespace StringTemplate
 
             this.fileName = fileName;
             // doubly-link this node; we point at parent and it has us as child
-            this.parent = parent;
             parent.AddChild(this);
-            this.root = parent.root;
         }
 
         public TemplateGroupFile(TemplateGroupDirectory parent, string fileName, Encoding encoding)
             : this(parent, fileName)
         {
             this.encoding = encoding;
-        }
-
-        // /group if this is root, else /dir1/dir2/group if in subdir of TemplateGroupDirectory
-        public override string AbsoluteTemplatePath
-        {
-            get
-            {
-                return base.AbsoluteTemplatePath;
-            }
         }
 
         public override string Name
@@ -93,12 +80,27 @@ namespace StringTemplate
             }
         }
 
+#if false
+        public override Template GetInstanceOf(string name)
+        {
+            if (name[0] != '/')
+                name = "/" + name;
+
+            return base.GetInstanceOf(name);
+        }
+#endif
+
+        public override void Load()
+        {
+            LoadGroupFile("/", fileName);
+            alreadyLoaded = true;
+        }
+
+#if false
         public override CompiledTemplate LookupTemplate(string name)
         {
             if (name.Length > 0 && (name[0] == Path.DirectorySeparatorChar || name[0] == Path.AltDirectorySeparatorChar))
             {
-                if (this != root)
-                    return root.LookupTemplate(name);
                 // if no root, name must be "/groupfile/templatename"
                 string[] names = name.Substring(1).Split(new char[] { Path.DirectorySeparatorChar, Path.AltDirectorySeparatorChar });
                 if (names.Length > 1)
@@ -129,37 +131,13 @@ namespace StringTemplate
 
             return code;
         }
-
-        public override void Load()
-        {
-            if (alreadyLoaded)
-                return;
-
-            string absoluteFileName = Path.Combine(root.fullyQualifiedRootDirName, fileName);
-            if (this != root)
-            {
-                absoluteFileName = Path.Combine(root.fullyQualifiedRootDirName, AbsoluteTemplatePath.Substring(1) + ".stg");
-            }
-
-            try
-            {
-                ANTLRFileStream fs = new ANTLRFileStream(absoluteFileName, encoding);
-                GroupLexer lexer = new GroupLexer(fs);
-                UnbufferedTokenStream tokens = new UnbufferedTokenStream(lexer);
-                GroupParser parser = new GroupParser(tokens);
-                parser.group(this);
-                alreadyLoaded = true;
-            }
-            catch (Exception e)
-            {
-                listener.Error("can't load group file: " + absoluteFileName, e);
-            }
-        }
+#endif
 
         public override string Show()
         {
             if (!alreadyLoaded)
                 Load();
+
             return base.Show();
         }
     }

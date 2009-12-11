@@ -62,20 +62,16 @@ using Console = System.Console;
 }
 
 public
-group[TemplateGroup group]
+group[TemplateGroup group, string prefix]
 @init {
-this._group = $group;
 GroupLexer lexer = (GroupLexer)input.TokenSource;
-lexer._group = $group;
+this._group = lexer._group = $group;
 }
-	:	//'group' name=ID {$group.name = $name.text;}
-		//( ':' s=ID {$group.supergroup = $s.text;} )?
-	    //';'
-	    ( templateDef | dictDef )+
+	:	( templateDef[prefix] | dictDef )+
     ;
 
 public
-templateDef
+templateDef[string prefix]
 @init {
     string template=null;
     int n=0; // num char to strip from left, right of template def
@@ -94,7 +90,7 @@ templateDef
    			template = Misc.TrimOneStartingWS(template);
    		}
 	    try {
-		    this._group.DefineTemplate($name.text, $formalArgs.args, template);
+		    this._group.DefineTemplate(prefix, $name.text, $formalArgs.args, template);
 		}
         catch (TemplateRecognitionException e) {
         	RecognitionException re = (RecognitionException)e.InnerException;
@@ -166,8 +162,8 @@ keyValuePair[IDictionary<string,object> mapping]
 	;
 
 keyValue returns [object value]
-	:	BIGSTRING			{$value = new Template(this._group, Misc.Strip($BIGSTRING.text,2));}
-	|	ANONYMOUS_TEMPLATE	{$value = new Template(this._group, Misc.Strip($ANONYMOUS_TEMPLATE.text,1));}
+	:	BIGSTRING			{$value = new Template(Misc.Strip($BIGSTRING.text,2));}
+	|	ANONYMOUS_TEMPLATE	{$value = new Template(Misc.Strip($ANONYMOUS_TEMPLATE.text,1));}
 	|	STRING				{$value = Misc.Strip($STRING.text, 1);}
 	|	{input.LT(1).Text.Equals("key")}?=> ID
 							{$value = TemplateGroup.DICT_KEY;}

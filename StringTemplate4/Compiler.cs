@@ -38,6 +38,7 @@ namespace StringTemplate
     using Console = System.Console;
     using IList = System.Collections.IList;
     using Math = System.Math;
+    using Path = System.IO.Path;
 
     public class Compiler : ICodeGenerator
     {
@@ -50,13 +51,13 @@ namespace StringTemplate
 
         public static readonly IDictionary<string, int> supportedOptions =
             new Dictionary<string, int>()
-        {
-            {        "anchor",       Interpreter.OPTION_ANCHOR},
-            {        "format",       Interpreter.OPTION_FORMAT},
-            {        "null",         Interpreter.OPTION_NULL},
-            {       "separator",    Interpreter.OPTION_SEPARATOR},
-            {"wrap",         Interpreter.OPTION_WRAP}
-        };
+            {
+                { "anchor",    Interpreter.OPTION_ANCHOR},
+                { "format",    Interpreter.OPTION_FORMAT},
+                { "null",      Interpreter.OPTION_NULL},
+                { "separator", Interpreter.OPTION_SEPARATOR},
+                { "wrap",      Interpreter.OPTION_WRAP}
+            };
 
         public static readonly int NUM_OPTIONS = supportedOptions.Count;
 
@@ -86,10 +87,27 @@ namespace StringTemplate
         int ip = 0;
         CompiledTemplate code = new CompiledTemplate();
 
+        // subdir context -- template reference prefix
+        private string prefix;
+
         public static int subtemplateCount = 0; // public for testing access
 
         public Compiler()
+            : this("/")
         {
+        }
+
+        public Compiler(string prefix)
+        {
+            this.prefix = prefix;
+        }
+
+        public string TemplateReferencePrefix
+        {
+            get
+            {
+                return this.prefix;
+            }
         }
 
         public CompiledTemplate Compile(string template)
@@ -190,8 +208,8 @@ namespace StringTemplate
                                    RecognizerSharedState state)
         {
             subtemplateCount++;
-            string name = "_sub" + subtemplateCount;
-            Compiler c = new Compiler();
+            string name = prefix + "_sub" + subtemplateCount;
+            Compiler c = new Compiler(prefix);
             CompiledTemplate sub = c.Compile(input, state);
             sub.name = name;
             if (ids != null)

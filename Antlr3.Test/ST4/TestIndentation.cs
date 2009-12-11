@@ -53,8 +53,6 @@ namespace AntlrUnitTests.ST4
 
             WriteFile(tmpdir, "t.stg", templates);
             STGroup group = new STGroupFile(Path.Combine(tmpdir, "t.stg"));
-            STErrorListener errors = new ErrorBuffer();
-            group.SetErrorListener(errors);
             Template t = group.GetInstanceOf("list");
             t.Add("names", "Terence");
             t.Add("names", "Jim");
@@ -75,8 +73,6 @@ namespace AntlrUnitTests.ST4
                     ">>" + newline;
             WriteFile(tmpdir, "t.stg", templates);
             STGroup group = new STGroupFile(Path.Combine(tmpdir, "t.stg"));
-            STErrorListener errors = new ErrorBuffer();
-            group.SetErrorListener(errors);
             Template t = group.GetInstanceOf("list");
             t.Add("names", "Terence\nis\na\nmaniac");
             t.Add("names", "Jim");
@@ -102,8 +98,6 @@ namespace AntlrUnitTests.ST4
                     ">>" + newline;
             WriteFile(tmpdir, "t.stg", templates);
             STGroup group = new STGroupFile(Path.Combine(tmpdir, "t.stg"));
-            STErrorListener errors = new ErrorBuffer();
-            group.SetErrorListener(errors);
             Template t = group.GetInstanceOf("list");
             t.Add("names", "Terence\n\nis a maniac");
             String expecting =
@@ -124,8 +118,6 @@ namespace AntlrUnitTests.ST4
                     ">>" + newline;
             WriteFile(tmpdir, "t.stg", templates);
             STGroup group = new STGroupFile(Path.Combine(tmpdir, "t.stg"));
-            STErrorListener errors = new ErrorBuffer();
-            group.SetErrorListener(errors);
             Template t = group.GetInstanceOf("list");
             t.Add("names", "Terence");
             t.Add("names", "Jim");
@@ -157,9 +149,6 @@ namespace AntlrUnitTests.ST4
                     ;
             WriteFile(tmpdir, "t.stg", templates);
             STGroup group = new STGroupFile(Path.Combine(tmpdir, "t.stg"));
-            STErrorListener errors = new ErrorBuffer();
-            group.SetErrorListener(errors);
-
             Template t = group.GetInstanceOf("method");
             t.Add("name", "foo");
             Template s1 = group.GetInstanceOf("assign");
@@ -191,11 +180,7 @@ namespace AntlrUnitTests.ST4
         [TestMethod]
         public void TestIndentedIFWithValueExpr()
         {
-            STGroup group =
-                    new STGroup();
-            STErrorListener errors = new ErrorBuffer();
-            group.SetErrorListener(errors);
-            Template t = new Template(group,
+            Template t = new Template(
                 "begin" + newline +
                 "    <if(x)>foo<endif>" + newline +
                 "end" + newline);
@@ -208,11 +193,7 @@ namespace AntlrUnitTests.ST4
         [TestMethod]
         public void TestIFWithIndentOnMultipleLines()
         {
-            STGroup group =
-                    new STGroup();
-            STErrorListener errors = new ErrorBuffer();
-            group.SetErrorListener(errors);
-            Template t = new Template(group,
+            Template t = new Template(
                 "begin" + newline +
                 "   <if(x)>" + newline +
                 "   foo" + newline +
@@ -228,11 +209,7 @@ namespace AntlrUnitTests.ST4
         [TestMethod]
         public void TestIFWithIndentAndExprOnMultipleLines()
         {
-            STGroup group =
-                    new STGroup();
-            STErrorListener errors = new ErrorBuffer();
-            group.SetErrorListener(errors);
-            Template t = new Template(group,
+            Template t = new Template(
                 "begin" + newline +
                 "   <if(x)>" + newline +
                 "   <x>" + newline +
@@ -249,11 +226,7 @@ namespace AntlrUnitTests.ST4
         [TestMethod]
         public void TestIFWithIndentAndExprWithIndentOnMultipleLines()
         {
-            STGroup group =
-                    new STGroup();
-            STErrorListener errors = new ErrorBuffer();
-            group.SetErrorListener(errors);
-            Template t = new Template(group,
+            Template t = new Template(
                 "begin" + newline +
                 "   <if(x)>" + newline +
                 "     <x>" + newline +
@@ -270,11 +243,7 @@ namespace AntlrUnitTests.ST4
         [TestMethod]
         public void TestNestedIFWithIndentOnMultipleLines()
         {
-            STGroup group =
-                    new STGroup();
-            STErrorListener errors = new ErrorBuffer();
-            group.SetErrorListener(errors);
-            Template t = new Template(group,
+            Template t = new Template(
                 "begin" + newline +
                 "   <if(x)>" + newline +
                 "      <if(y)>" + newline +
@@ -296,10 +265,7 @@ namespace AntlrUnitTests.ST4
         [TestMethod]
         public void TestIFInSubtemplate()
         {
-            STGroup group = new STGroup();
-            STErrorListener errors = new ErrorBuffer();
-            group.SetErrorListener(errors);
-            Template t = new Template(group,
+            Template t = new Template(
                 "<names:{n |" + newline +
                 "   <if(x)>" + newline +
                 "   <x>" + newline +

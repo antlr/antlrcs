@@ -38,7 +38,7 @@
                 "load_str 0, write, new 1, write";
             string asmResult = code.Instructions();
             Assert.AreEqual(asmExpected, asmResult);
-            string stringsExpected = "[hi , foo]";
+            string stringsExpected = "[hi , /foo]";
             string stringsResult = Arrays.toString(code.strings);
             Assert.AreEqual(stringsExpected, stringsResult);
         }
@@ -81,7 +81,7 @@
                 "load_str 0, write, load_attr 1, load_str 2, map, write";
             string asmResult = code.Instructions();
             Assert.AreEqual(asmExpected, asmResult);
-            string stringsExpected = "[hi , name, bold]";
+            string stringsExpected = "[hi , name, /bold]";
             string stringsResult = Arrays.toString(code.strings);
             Assert.AreEqual(stringsExpected, stringsResult);
         }
@@ -102,7 +102,7 @@
                 "write";
             string asmResult = code.Instructions();
             Assert.AreEqual(asmExpected, asmResult);
-            string stringsExpected = "[hi , name, bold, italics]";
+            string stringsExpected = "[hi , name, /bold, /italics]";
             string stringsResult = Arrays.toString(code.strings);
             Assert.AreEqual(stringsExpected, stringsResult);
         }
@@ -116,7 +116,7 @@
                 "load_str 0, write, load_attr 1, load_str 2, load_str 3, rot_map 2, write";
             string asmResult = code.Instructions();
             Assert.AreEqual(asmExpected, asmResult);
-            string stringsExpected = "[hi , name, bold, italics]";
+            string stringsExpected = "[hi , name, /bold, /italics]";
             string stringsResult = Arrays.toString(code.strings);
             Assert.AreEqual(stringsExpected, stringsResult);
         }
@@ -130,7 +130,7 @@
                 "load_str 0, write, load_attr 1, load_str 2, map, write";
             string asmResult = code.Instructions();
             Assert.AreEqual(asmExpected, asmResult);
-            string stringsExpected = "[hi , name, _sub1]";
+            string stringsExpected = "[hi , name, /_sub1]";
             string stringsResult = Arrays.toString(code.strings);
             Assert.AreEqual(stringsExpected, stringsResult);
         }
@@ -245,7 +245,7 @@
                 "load_str 0, write, load_attr 1, options, new 2, store_option 3, write_opt";
             string asmResult = code.Instructions();
             Assert.AreEqual(asmExpected, asmResult);
-            string stringsExpected = "[hi , name, _sub1]";
+            string stringsExpected = "[hi , name, /_sub1]";
             string stringsResult = Arrays.toString(code.strings);
             Assert.AreEqual(stringsExpected, stringsResult);
         }
@@ -260,7 +260,7 @@
                 "store_option 0, new 3, store_option 4, load_str 4, " +
                 "store_option 3, write_opt";
             string stringsExpected = // the ", , ," is the ", " separator string
-                "[hi , name, true, foo, , ]";
+                "[hi , name, true, /foo, , ]";
             string stringsResult = Arrays.toString(code.strings);
             Assert.AreEqual(stringsExpected, stringsResult);
             string asmResult = code.Instructions();

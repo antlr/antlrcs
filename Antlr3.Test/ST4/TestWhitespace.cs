@@ -105,11 +105,7 @@ namespace AntlrUnitTests.ST4
         [TestMethod]
         public void TestEmptyExprAsFirstLineGetsNoOutput()
         {
-            STGroup group =
-                    new STGroup();
-            STErrorListener errors = new ErrorBuffer();
-            group.SetErrorListener(errors);
-            ST t = new ST(group,
+            ST t = new ST(
                 "<users>\n" +
                 "end\n");
             String expecting = "end" + newline;
@@ -120,11 +116,7 @@ namespace AntlrUnitTests.ST4
         [TestMethod]
         public void TestEmptyLineWithIndent()
         {
-            STGroup group =
-                    new STGroup();
-            STErrorListener errors = new ErrorBuffer();
-            group.SetErrorListener(errors);
-            ST t = new ST(group,
+            ST t = new ST(
                 "begin\n" +
                 "    \n" +
                 "end\n");
@@ -136,11 +128,7 @@ namespace AntlrUnitTests.ST4
         [TestMethod]
         public void TestSizeZeroOnLineByItselfGetsNoOutput()
         {
-            STGroup group =
-                    new STGroup();
-            STErrorListener errors = new ErrorBuffer();
-            group.SetErrorListener(errors);
-            ST t = new ST(group,
+            ST t = new ST(
                 "begin\n" +
                 "<name>\n" +
                 "<users>\n" +
@@ -154,11 +142,7 @@ namespace AntlrUnitTests.ST4
         [TestMethod]
         public void TestSizeZeroOnLineWithIndentGetsNoOutput()
         {
-            STGroup group =
-                    new STGroup();
-            STErrorListener errors = new ErrorBuffer();
-            group.SetErrorListener(errors);
-            ST t = new ST(group,
+            ST t = new ST(
                 "begin\n" +
                 "  <name>\n" +
                 "	<users>\n" +
@@ -172,11 +156,7 @@ namespace AntlrUnitTests.ST4
         [TestMethod]
         public void TestSizeZeroOnLineWithMultipleExpr()
         {
-            STGroup group =
-                    new STGroup();
-            STErrorListener errors = new ErrorBuffer();
-            group.SetErrorListener(errors);
-            ST t = new ST(group,
+            ST t = new ST(
                 "begin\n" +
                 "  <name>\n" +
                 "	<users><users>\n" +
@@ -189,11 +169,7 @@ namespace AntlrUnitTests.ST4
         [TestMethod]
         public void TestIFExpr()
         {
-            STGroup group =
-                    new STGroup();
-            STErrorListener errors = new ErrorBuffer();
-            group.SetErrorListener(errors);
-            ST t = new ST(group,
+            ST t = new ST(
                 "begin\n" +
                 "<if(x)><endif>\n" +
                 "end\n");
@@ -205,11 +181,7 @@ namespace AntlrUnitTests.ST4
         [TestMethod]
         public void TestIndentedIFExpr()
         {
-            STGroup group =
-                    new STGroup();
-            STErrorListener errors = new ErrorBuffer();
-            group.SetErrorListener(errors);
-            ST t = new ST(group,
+            ST t = new ST(
                 "begin\n" +
                 "    <if(x)><endif>\n" +
                 "end\n");
@@ -221,11 +193,7 @@ namespace AntlrUnitTests.ST4
         [TestMethod]
         public void TestIFElseExpr()
         {
-            STGroup group =
-                    new STGroup();
-            STErrorListener errors = new ErrorBuffer();
-            group.SetErrorListener(errors);
-            ST t = new ST(group,
+            ST t = new ST(
                 "begin\n" +
                 "<if(users)><else><endif>\n" +
                 "end\n");
@@ -237,11 +205,7 @@ namespace AntlrUnitTests.ST4
         [TestMethod]
         public void TestIFOnMultipleLines()
         {
-            STGroup group =
-                    new STGroup();
-            STErrorListener errors = new ErrorBuffer();
-            group.SetErrorListener(errors);
-            ST t = new ST(group,
+            ST t = new ST(
                 "begin\n" +
                 "<if(users)>\n" +
                 "foo\n" +
@@ -257,11 +221,7 @@ namespace AntlrUnitTests.ST4
         [TestMethod]
         public void TestNestedIFOnMultipleLines()
         {
-            STGroup group =
-                    new STGroup();
-            STErrorListener errors = new ErrorBuffer();
-            group.SetErrorListener(errors);
-            ST t = new ST(group,
+            ST t = new ST(
                 "begin\n" +
                 "<if(x)>\n" +
                 "<if(y)>\n" +

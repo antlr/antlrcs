@@ -259,7 +259,7 @@ callExpr
 options {k=2;} // prevent full LL(*) which fails, falling back on k=1; need k=2
 	:	{Compiler.funcs.ContainsKey(input.LT(1).Text)}?
 		ID '(' expr ')' {Func($ID);}
-	|	ID {gen.Emit(Bytecode.INSTR_NEW, $ID.text);} '(' args? ')'
+	|	ID {gen.Emit(Bytecode.INSTR_NEW, PrefixedName($ID.text));} '(' args? ')'
 	|	primary
 	;
 	
@@ -270,7 +270,7 @@ primary
 		|	'.' '(' mapExpr ')' {gen.Emit(Bytecode.INSTR_LOAD_PROP_IND);}
 		)*
 		*/
-	|	STRING    {gen.Emit(Bytecode.INSTR_LOAD_STR, Strip($STRING.text,1));}
+	|	STRING    {gen.Emit(Bytecode.INSTR_LOAD_STR, Misc.Strip($STRING.text,1));}
 	|	list
 	|	'(' expr ')' {gen.Emit(Bytecode.INSTR_TOSTR);}
 		( {gen.Emit(Bytecode.INSTR_NEW_IND);} '(' args? ')' )? // indirect call
@@ -284,8 +284,8 @@ arg :	ID '=' exprNoComma {gen.Emit(Bytecode.INSTR_STORE_ATTR, $ID.text);}
 	;
 
 templateRef
-	:	ID			{gen.Emit(Bytecode.INSTR_LOAD_STR, $ID.text);}
-	|	subtemplate {gen.Emit(Bytecode.INSTR_LOAD_STR, $subtemplate.name);}
+	:	ID			{gen.Emit(Bytecode.INSTR_LOAD_STR, PrefixedName($ID.text));}
+	|	subtemplate {gen.Emit(Bytecode.INSTR_LOAD_STR, PrefixedName($subtemplate.name));}
 	|	'(' mapExpr ')' {gen.Emit(Bytecode.INSTR_TOSTR);}
 	;
 	

@@ -463,7 +463,7 @@ namespace StringTemplate
                 return NewToken(TEXT);
         }
 
-        /** ID  :   ('a'..'z'|'A'..'Z'|'_') ('a'..'z'|'A'..'Z'|'0'..'9'|'_'|'/')* ; */
+        /** ID  :   ('a'..'z'|'A'..'Z'|'_'|'/') ('a'..'z'|'A'..'Z'|'0'..'9'|'_'|'/')* ; */
         private IToken mID()
         {
             // called from subTemplate; so keep resetting position during speculation
@@ -552,12 +552,12 @@ namespace StringTemplate
 
         public static bool IsIDStartLetter(char c)
         {
-            return c >= 'a' && c <= 'z' || c >= 'A' && c <= 'Z';
+            return c >= 'a' && c <= 'z' || c >= 'A' && c <= 'Z' || c == '/';
         }
 
         public static bool IsIDLetter(char c)
         {
-            return c >= 'a' && c <= 'z' || c >= 'A' && c <= 'Z' || c >= '0' && c <= '9';
+            return c >= 'a' && c <= 'z' || c >= 'A' && c <= 'Z' || c >= '0' && c <= '9' || c == '/';
         }
 
         public static bool IsWS(char c)

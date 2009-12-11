@@ -36,10 +36,12 @@ namespace StringTemplate
     using System.Linq;
     using ArgumentException = System.ArgumentException;
     using Console = System.Console;
+    using Directory = System.IO.Directory;
     using Encoding = System.Text.Encoding;
     using Exception = System.Exception;
     using Path = System.IO.Path;
     using StringBuilder = System.Text.StringBuilder;
+    using Antlr.Runtime;
 
     public class TemplateGroup
     {
@@ -72,9 +74,9 @@ namespace StringTemplate
         /** The topmost group of templates in the template tree.
          *  Point to yourself if group is root; but parent will be null.
          */
-        public TemplateGroup root;
+        //public TemplateGroup root;
 
-        public TemplateGroupDirectory parent; // Are we a subdir or group file in dir?
+        //public TemplateGroupDirectory parent; // Are we a subdir or group file in dir?
 
         public string fullyQualifiedRootDirName; // if we're root
 
@@ -117,24 +119,14 @@ namespace StringTemplate
         {
         }
 
-        public virtual string AbsoluteTemplatePath
+#if false
+        public TemplateGroup(string fullyQualifiedRootDirName)
         {
-            get
-            {
-                //Console.WriteLine("GetTemplatePathFromRoot root=" + (root != null ? root.GetName() : null) + " this=" + this.GetName());
-                IList<string> elems = new List<string>();
-                TemplateGroup p = this;
-                while (p != root)
-                {
-                    elems.Insert(0, p.Name);
-                    p = p.parent;
-                }
-
-                string s = "/" + string.Join("/", elems.ToArray());
-                //Console.WriteLine("; template path=" + s);
-                return s;
-            }
+            this.fullyQualifiedRootDirName = fullyQualifiedRootDirName;
+            if (Directory.Exists(fullyQualifiedRootDirName))
+                throw new ArgumentException("No such directory: " + fullyQualifiedRootDirName);
         }
+#endif
 
         public virtual string Name
         {
@@ -144,22 +136,20 @@ namespace StringTemplate
             }
         }
 
-        // TODO: for dirs, should this load everything in dir and below?
-        public virtual void Load()
-        {
-        } // nothing to do unless it's a group file
-
         /** The primary means of getting an instance of a template from this
-         *  group.
+         *  group. Must be absolute name like /a/b
          */
         public virtual Template GetInstanceOf(string name)
         {
-            //Console.WriteLine("GetInstanceOf(" + name + ") resolves to " + AbsoluteTemplatePath + "/" + name);
+            if (name[0] != '/')
+                name = '/' + name;
+
+            //Console.WriteLine("GetInstanceOf(" + name + ")");
             CompiledTemplate c = LookupTemplate(name);
             if (c != null)
             {
                 Template instanceST = CreateStringTemplate();
-                //instanceST.group = this;  leave it as nativeGroup
+                instanceST.groupThatCreatedThisInstance = this;
                 instanceST.name = name;
                 instanceST.code = c;
                 return instanceST;
@@ -181,23 +171,22 @@ namespace StringTemplate
 
         public virtual CompiledTemplate LookupTemplate(string name)
         {
-            CompiledTemplate template;
-            if (!templates.TryGetValue(name, out template))
-                return null;
+            if (!alreadyLoaded)
+                Load();
 
-            return template;
+            CompiledTemplate code;
+            if (!templates.TryGetValue(name, out code))
+            {
+                code = LookupImportedTemplate(name);
+            }
+
+            return code;
         }
 
         protected CompiledTemplate LookupImportedTemplate(string name)
         {
             Console.WriteLine("look for " + name + " in " + imports);
-            if (this != root)
-            {
-                // look for absolute template name from root
-                return root.LookupImportedTemplate(GetAbsoluteTemplateName(name));
-            }
 
-            // if we're the root, look for name in imports
             if (imports == null)
                 return null;
 
@@ -214,7 +203,7 @@ namespace StringTemplate
         // TODO: send in start/stop char or line/col so errors can be relative
         public CompiledTemplate DefineTemplate(string name, string template)
         {
-            return DefineTemplate(name, (IDictionary<string, FormalArgument>)null, template);
+            return DefineTemplate("/", name, (IDictionary<string, FormalArgument>)null, template);
         }
 
         public virtual CompiledTemplate DefineTemplate(string name,
@@ -225,7 +214,7 @@ namespace StringTemplate
                 new Dictionary<string, FormalArgument>();
             foreach (string a in args)
                 margs[a] = new FormalArgument(a);
-            return DefineTemplate(name, margs, template);
+            return DefineTemplate("/", name, margs, template);
         }
 
         public virtual CompiledTemplate DefineTemplate(string name,
@@ -236,24 +225,22 @@ namespace StringTemplate
                 new Dictionary<string, FormalArgument>();
             foreach (string a in args)
                 margs[a] = new FormalArgument(a);
-            return DefineTemplate(name, margs, template);
+            return DefineTemplate("/", name, margs, template);
         }
 
         // can't trap recog errors here; don't know where in file template is defined
-        public virtual CompiledTemplate DefineTemplate(string name,
-                                         IDictionary<string, FormalArgument> args,
-                                         string template)
+        public virtual CompiledTemplate DefineTemplate(string prefix, string name, IDictionary<string, FormalArgument> args, string template)
         {
             if (name != null && (name.Length == 0 || name.IndexOf('.') >= 0))
             {
                 throw new ArgumentException("cannot have '.' in template names");
             }
-            Compiler c = new Compiler();
+            Compiler c = new Compiler(prefix);
             CompiledTemplate code = c.Compile(template);
             code.name = name;
             code.formalArguments = args;
             code.nativeGroup = this;
-            templates[name] = code;
+            templates[prefix + name] = code;
             if (args != null)
             { // compile any default args
                 foreach (string a in args.Keys)
@@ -261,7 +248,7 @@ namespace StringTemplate
                     FormalArgument fa = args[a];
                     if (fa.defaultValue != null)
                     {
-                        Compiler c2 = new Compiler();
+                        Compiler c2 = new Compiler(prefix);
                         fa.compiledDefaultValue = c2.Compile(template);
                     }
                 }
@@ -306,6 +293,82 @@ namespace StringTemplate
             imports.Add(g);
         }
 
+        public virtual void Load()
+        {
+        }
+
+        public virtual void LoadGroupFile(string prefix, string fileName)
+        {
+            string absoluteFileName = Path.Combine(fullyQualifiedRootDirName, fileName);
+            Console.WriteLine("load group file " + absoluteFileName);
+            try
+            {
+                ANTLRFileStream fs = new ANTLRFileStream(absoluteFileName, encoding);
+                GroupLexer lexer = new GroupLexer(fs);
+                UnbufferedTokenStream tokens = new UnbufferedTokenStream(lexer);
+                GroupParser parser = new GroupParser(tokens);
+                parser.group(this, prefix);
+            }
+            catch (Exception e)
+            {
+                listener.Error("can't load group file: " + absoluteFileName, e);
+            }
+        }
+
+#if false
+        protected virtual void _load(string prefix)
+        {
+            // walk dir and all subdir to load templates, group files
+            string dir = Path.Combine(fullyQualifiedRootDirName, prefix);
+            Console.WriteLine("load dir '" + prefix + "' under " + fullyQualifiedRootDirName);
+
+            foreach (var d in Directory.GetDirectories(dir))
+            {
+                _load(prefix + Path.GetFileName(d) + "/");
+            }
+
+            foreach (var f in Directory.GetFiles(dir))
+            {
+                if (Path.GetExtension(f).Equals(".st", System.StringComparison.OrdinalIgnoreCase))
+                    loadTemplateFile(prefix, Path.GetFileName(f));
+                else if (Path.GetExtension(f).Equals(".stg", System.StringComparison.OrdinalIgnoreCase))
+                    LoadGroupFile(Path.Combine(prefix, Path.GetFileNameWithoutExtension(f)) + Path.DirectorySeparatorChar);
+            }
+        }
+
+        public virtual CompiledTemplate loadTemplateFile(string prefix, string fileName)
+        {
+            // load from disk
+            string absoluteFileName = Path.Combine(Path.Combine(fullyQualifiedRootDirName, prefix), fileName);
+            Console.WriteLine("load " + absoluteFileName);
+            if (!File.Exists(absoluteFileName))
+            { // TODO: add tolerance check here
+                return null;
+            }
+            try
+            {
+                ANTLRFileStream fs = new ANTLRFileStream(absoluteFileName, encoding);
+                GroupLexer lexer = new GroupLexer(fs);
+                UnbufferedTokenStream tokens = new UnbufferedTokenStream(lexer);
+                GroupParser parser = new GroupParser(tokens);
+                parser._group = this;
+                parser.templateDef(prefix);
+
+                CompiledTemplate code;
+                if (!templates.TryGetValue("/" + Path.Combine(prefix, Path.GetFileNameWithoutExtension(fileName)), out code))
+                    return null;
+
+                return code;
+            }
+            catch (Exception e)
+            {
+                Console.Error.WriteLine("can't load template file: " + absoluteFileName);
+                Console.Error.WriteLine(e.StackTrace);
+            }
+            return null;
+        }
+#endif
+
         /// <summary>
         /// StringTemplate object factory; each group can have its own.
         /// </summary>
@@ -313,15 +376,6 @@ namespace StringTemplate
         {
             Template st = new Template();
             return st;
-        }
-
-        public string GetAbsoluteTemplateName(string name)
-        {
-            string p = AbsoluteTemplatePath;
-            if (p.Equals("/"))
-                return "/" + name;
-
-            return Path.Combine(p, name);
         }
 
         public override bool Equals(object obj)
@@ -349,10 +403,12 @@ namespace StringTemplate
             //if ( supergroup!=null ) buf.append(" : "+supergroup);
             foreach (string name in templates.Keys)
             {
-                if (name.StartsWith("_"))
+                if (name.StartsWith("/_sub"))
                     continue;
                 CompiledTemplate c = templates[name];
-                buf.Append(name);
+                int slash = name.LastIndexOfAny(new char[] { Path.DirectorySeparatorChar, Path.AltDirectorySeparatorChar });
+                string effectiveName = name.Substring(slash + 1);
+                buf.Append(effectiveName);
                 buf.Append('(');
                 if (c.formalArguments != null)
                 {

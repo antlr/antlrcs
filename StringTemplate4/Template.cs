@@ -53,13 +53,16 @@ namespace StringTemplate
          */
         public CompiledTemplate code; // TODO: is this the right name?
 
-        public static readonly Template Blank = new BlankTemplate();
-
-        /** The group that holds this ST definition.  We use it to initiate
-         *  interpretation via ST.toString().  From there, it becomes group field
-         *  in interpreter and is fixed until rendering completes.
+        /** Created as instance of which group? We need this to init interpreter
+         *  via render.  So, we create st and then it needs to know which
+         *  group created it for sake of polymorphism:
+         *
+         *  st = skin1.getInstanceOf("searchbox");
+         *  result = st.render(); // knows skin1 created it
          */
-        //public STGroup nativeGroup = STGroup.defaultGroup;
+        public TemplateGroup groupThatCreatedThisInstance;
+
+        public static readonly Template Blank = new BlankTemplate();
 
         /** Map an attribute name to its value(s). */
         protected internal IDictionary<string, object> attributes;
@@ -113,22 +116,14 @@ namespace StringTemplate
         }
 
         public Template(string template)
+            : this(TemplateGroup.defaultGroup, template)
         {
-            code = TemplateGroup.defaultGroup.DefineTemplate(UnknownName, template);
-            /*
-                    try {
-                        code = group.defineTemplate(UNKNOWN_NAME, template);
-                    }
-                    catch (STRecognitionException e) {
-                        int i = group.getCharPositionInLine(null, e);
-                        group.listener.error(e.msg, null);
-                    }
-                     */
         }
 
         public Template(TemplateGroup nativeGroup, string template)
         {
             code = nativeGroup.DefineTemplate(UnknownName, template);
+            groupThatCreatedThisInstance = nativeGroup;
         }
 
         public IDictionary<string, object> Attributes
@@ -320,7 +315,7 @@ namespace StringTemplate
 
         public virtual int Write(ITemplateWriter @out)
         {
-            Interpreter interp = new Interpreter(code.nativeGroup);
+            Interpreter interp = new Interpreter(groupThatCreatedThisInstance);
             return interp.Exec(@out, this);
         }
 
