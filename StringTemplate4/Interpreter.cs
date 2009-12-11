@@ -360,16 +360,12 @@ namespace StringTemplate
             {
                 if (options != null && options[OPTION_NULL] != null)
                 {
-                    try
-                    {
-                        n = WritePlainObject(@out, options[OPTION_NULL], options);
-                    }
-                    catch (IOException)
-                    {
-                        Console.Error.WriteLine("can't write null option " + options[OPTION_NULL]);
-                    }
+                    o = options[OPTION_NULL];
                 }
-                return n;
+                else
+                {
+                    return 0;
+                }
             }
             if (o is Template)
             {
