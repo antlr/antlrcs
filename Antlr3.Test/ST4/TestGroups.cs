@@ -203,7 +203,7 @@ namespace AntlrUnitTests.ST4
             {
                 error = iae.Message;
             }
-            string expected = "name must be of form /group/templatename: /sub/a";
+            string expected = "name must be of form /templatename: /sub/a";
             string result = error;
             Assert.AreEqual(expected, result);
         }
@@ -225,7 +225,7 @@ namespace AntlrUnitTests.ST4
             {
                 error = iae.Message;
             }
-            string expected = "name must be of form /group/templatename: /group/b/b";
+            string expected = "name must be of form /templatename: /group/b/b";
             string result = error;
             Assert.AreEqual(expected, result);
         }
@@ -322,6 +322,117 @@ namespace AntlrUnitTests.ST4
             group2.ImportTemplates(group1);
             Template st = group2.GetInstanceOf("b");
             string expected = "dir1 b";
+            string result = st.Render();
+            Assert.AreEqual(expected, result);
+
+            // do it again, but make a template ref imported template
+            st = group2.GetInstanceOf("a");
+            expected = " dir1 b ";
+            result = st.Render();
+            Assert.AreEqual(expected, result);
+        }
+
+        [TestMethod]
+        public void TestImportTemplateInGroupFileFromDir()
+        {
+            string dir = GetRandomDir();
+            string a = "a() ::= << <b()> >>\n";
+            WriteFile(dir, "a.st", a);
+
+            string groupFile =
+                "b() ::= \"group file b\"\n" +
+                "c() ::= \"group file c\"\n";
+            WriteFile(dir, "group.stg", groupFile);
+
+            TemplateGroup group1 = new TemplateGroupDirectory(dir);
+            TemplateGroup group2 = new TemplateGroupFile(dir + "/group.stg");
+            group1.ImportTemplates(group2);
+            Template st = group1.GetInstanceOf("a");
+            string expected = " group file b ";
+            string result = st.Render();
+            Assert.AreEqual(expected, result);
+        }
+
+        [TestMethod]
+        public void TestImportTemplateInDirFromGroupFile()
+        {
+            string dir = GetRandomDir();
+            string a = "a() ::= <<dir1 a>>\n";
+            WriteFile(dir, "a.st", a);
+
+            string groupFile =
+                "b() ::= \"<a()>\"\n";
+            WriteFile(dir, "group.stg", groupFile);
+
+            TemplateGroup group1 = new TemplateGroupDirectory(dir);
+            TemplateGroup group2 = new TemplateGroupFile(dir + "/group.stg");
+            group2.ImportTemplates(group1);
+            Template st = group2.GetInstanceOf("b");
+            string expected = "dir1 a";
+            string result = st.Render();
+            Assert.AreEqual(expected, result);
+        }
+
+        [TestMethod]
+        public void TestImportTemplateInGroupFileFromGroupFile()
+        {
+            string dir = GetRandomDir();
+            string groupFile =
+                "a() ::= \"g1 a\"\n" +
+                "b() ::= \"<c()>\"\n";
+            WriteFile(dir, "group1.stg", groupFile);
+
+            groupFile =
+                "b() ::= \"g2 b\"\n" +
+                "c() ::= \"g2 c\"\n";
+            WriteFile(dir, "group2.stg", groupFile);
+
+            TemplateGroup group1 = new TemplateGroupFile(dir + "/group1.stg");
+            TemplateGroup group2 = new TemplateGroupFile(dir + "/group2.stg");
+            group1.ImportTemplates(group2);
+            Template st = group1.GetInstanceOf("b");
+            string expected = "g2 c";
+            string result = st.Render();
+            Assert.AreEqual(expected, result);
+        }
+
+        [TestMethod]
+        public void TestImportTemplateFromSubdir()
+        {
+            // /randomdir/x/subdir/a and /randomdir/y/subdir/b
+            string dir = GetRandomDir();
+            string a = "a() ::= << <b()> >>\n";
+            string b = "b() ::= <<x/subdir/b>>\n";
+            WriteFile(dir, "x/subdir/a.st", a);
+            WriteFile(dir, "y/subdir/b.st", b);
+
+            TemplateGroup group1 = new TemplateGroupDirectory(dir + "/x");
+            TemplateGroup group2 = new TemplateGroupDirectory(dir + "/y");
+            group1.ImportTemplates(group2);
+            Template st = group1.GetInstanceOf("/subdir/a");
+            string expected = " x/subdir/b ";
+            string result = st.Render();
+            Assert.AreEqual(expected, result);
+        }
+
+        [TestMethod]
+        public void TestImportTemplateFromGroupFile()
+        {
+            // /randomdir/x/subdir/a and /randomdir/y/subdir.stg which has a and b
+            string dir = GetRandomDir();
+            string a = "a() ::= << <b()> >>\n"; // get b imported from subdir.stg
+            WriteFile(dir, "x/subdir/a.st", a);
+
+            string groupFile =
+                "a() ::= \"group file a\"\n" +
+                "b() ::= \"group file b\"\n";
+            WriteFile(dir, "y/subdir.stg", groupFile);
+
+            TemplateGroup group1 = new TemplateGroupDirectory(dir + "/x");
+            TemplateGroup group2 = new TemplateGroupDirectory(dir + "/y");
+            group1.ImportTemplates(group2);
+            Template st = group1.GetInstanceOf("/subdir/a");
+            string expected = " group file b ";
             string result = st.Render();
             Assert.AreEqual(expected, result);
         }

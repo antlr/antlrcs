@@ -117,15 +117,11 @@ namespace StringTemplate
             code = LookupTemplateFile(name); // try to load then
             if (code == null)
             {
-                Console.WriteLine("look for " + name + " in " + imports);
-                foreach (TemplateGroup g in imports)
-                {
-                    code = g.LookupTemplate(Path.Combine(AbsoluteTemplatePath, name));
-                }
-
+                code = LookupImportedTemplate(name);
                 if (code == null)
                 {
-                    throw new ArgumentException("no such template: " + Path.Combine(AbsoluteTemplatePath, name));
+                    // TODO: tolerance?
+                    throw new ArgumentException("no such template: " + GetAbsoluteTemplateName(name));
                 }
             }
 
@@ -170,13 +166,7 @@ namespace StringTemplate
                 throw new ArgumentException("no such subdirectory or group file: " + names[0]);
             }
             string allButFirstName = string.Join(Path.DirectorySeparatorChar.ToString(), names.Skip(1).ToArray());
-            CompiledTemplate st = sub.LookupTemplate(allButFirstName);
-            // try list of imports at root
-            if (st == null)
-            {
-                Console.WriteLine("look for " + name + " in " + imports);
-            }
-            return st;
+            return sub.LookupTemplate(allButFirstName);
         }
 
         // load from disk
@@ -204,6 +194,38 @@ namespace StringTemplate
                 listener.Error("can't load template file: " + Path.Combine(Path.GetFullPath(f), name), e);
             }
             return null;
+        }
+
+        /// <summary>
+        /// Make this group import tempaltes/dictionaries from <paramref name="g"/>.
+        /// If this group has children, make them import stuff from the children of
+        /// <paramref name="g"/>.
+        /// </summary>
+        public override void ImportTemplates(TemplateGroup g)
+        {
+            if (g == null)
+                return;
+
+            if (imports == null)
+                imports = new List<TemplateGroup>();
+
+            imports.Add(g);
+
+            // now, hook up children. if this has group called x, then look for x in
+            // g's children. if found, then make our x import from g's x.
+#if false
+            TemplateGroupDirectory groupDir = g as TemplateGroupDirectory;
+            if (groupDir != null)
+            {
+                foreach (TemplateGroup child in groupDir)
+                {
+                    CompiledTemplate importedTemplate = groupDir.LookupTemplate(child.Name);
+                    int i = groupDir.children.IndexOf(child);
+                    if (i >= 0)
+                        child.ImportTemplates(groupDir.children[i]);
+                }
+            }
+#endif
         }
 
         public void AddChild(TemplateGroup g)

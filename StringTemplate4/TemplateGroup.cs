@@ -38,6 +38,7 @@ namespace StringTemplate
     using Console = System.Console;
     using Encoding = System.Text.Encoding;
     using Exception = System.Exception;
+    using Path = System.IO.Path;
     using StringBuilder = System.Text.StringBuilder;
 
     public class TemplateGroup
@@ -80,8 +81,10 @@ namespace StringTemplate
         /** Load files using what encoding? */
         public Encoding encoding;
 
-        // only in root
-        protected IList<TemplateGroup> imports; // OR, supergroups;???
+        /// <summary>
+        /// Every group can import templates/dictionaries from other groups
+        /// </summary>
+        protected IList<TemplateGroup> imports;
 
         public List<string> interfaces;
 
@@ -185,6 +188,29 @@ namespace StringTemplate
             return template;
         }
 
+        protected CompiledTemplate LookupImportedTemplate(string name)
+        {
+            Console.WriteLine("look for " + name + " in " + imports);
+            if (this != root)
+            {
+                // look for absolute template name from root
+                return root.LookupImportedTemplate(GetAbsoluteTemplateName(name));
+            }
+
+            // if we're the root, look for name in imports
+            if (imports == null)
+                return null;
+
+            foreach (var g in imports)
+            {
+                CompiledTemplate code = g.LookupTemplate(name);
+                if (code != null)
+                    return code;
+            }
+
+            return null;
+        }
+
         // TODO: send in start/stop char or line/col so errors can be relative
         public CompiledTemplate DefineTemplate(string name, string template)
         {
@@ -266,10 +292,13 @@ namespace StringTemplate
             dictionaries[name] = mapping;
         }
 
-        public void ImportTemplates(TemplateGroup g)
+        /// <summary>
+        /// Make this group import templates/dictionaries from <paramref name="g"/>.
+        /// </summary>
+        public virtual void ImportTemplates(TemplateGroup g)
         {
-            if (parent != null || g.parent != null)
-                throw new ArgumentException("can only import tempaltes into/from root groups");
+            if (g == null)
+                return;
 
             if (imports == null)
                 imports = new List<TemplateGroup>();
@@ -277,17 +306,37 @@ namespace StringTemplate
             imports.Add(g);
         }
 
-        /** StringTemplate object factory; each group can have its own. */
+        /// <summary>
+        /// StringTemplate object factory; each group can have its own.
+        /// </summary>
         public virtual Template CreateStringTemplate()
         {
             Template st = new Template();
             return st;
         }
 
-        //public string GetPathFromRoot()
-        //{
-        //    return root.fullyQualifiedRootDirName + AbsoluteTemplatePath;
-        //}
+        public string GetAbsoluteTemplateName(string name)
+        {
+            string p = AbsoluteTemplatePath;
+            if (p.Equals("/"))
+                return "/" + name;
+
+            return Path.Combine(p, name);
+        }
+
+        public override bool Equals(object obj)
+        {
+            TemplateGroup group = obj as TemplateGroup;
+            if (group != null)
+                return this.Name == group.Name;
+
+            return false;
+        }
+
+        public override int GetHashCode()
+        {
+            return this.Name.GetHashCode();
+        }
 
         public override string ToString()
         {

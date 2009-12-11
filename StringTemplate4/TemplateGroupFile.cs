@@ -45,12 +45,12 @@ namespace StringTemplate
 
         public TemplateGroupFile(string fullyQualifiedFileName)
         {
-            if (!Path.GetExtension(fileName).Equals(".stg", StringComparison.OrdinalIgnoreCase))
+            if (!Path.GetExtension(fullyQualifiedFileName).Equals(".stg", StringComparison.OrdinalIgnoreCase))
             {
                 throw new ArgumentException("Group file names must end in .stg: " + fullyQualifiedFileName);
             }
 
-            this.fullyQualifiedRootDirName = Path.GetFullPath(Path.GetDirectoryName(fullyQualifiedRootDirName));
+            this.fullyQualifiedRootDirName = Path.GetFullPath(Path.GetDirectoryName(fullyQualifiedFileName));
             this.fileName = Path.GetFileName(fullyQualifiedFileName);
             this.parent = null;
             this.root = this;
@@ -81,9 +81,6 @@ namespace StringTemplate
         {
             get
             {
-                if (this == root)
-                    return "/" + Name;
-
                 return base.AbsoluteTemplatePath;
             }
         }
@@ -103,14 +100,12 @@ namespace StringTemplate
                 if (this != root)
                     return root.LookupTemplate(name);
                 // if no root, name must be "/groupfile/templatename"
-                string[] names = name.Split(new char[] { Path.DirectorySeparatorChar, Path.AltDirectorySeparatorChar });
-                //string fname = Path.GetFileName(fileName);
-                //string @base = fname.Substring(0, fname.LastIndexOf('.'));
-                if (names.Length > 2 || !names[0].Equals(Name))
+                string[] names = name.Substring(1).Split(new char[] { Path.DirectorySeparatorChar, Path.AltDirectorySeparatorChar });
+                if (names.Length > 1)
                 {
-                    throw new ArgumentException("name must be of form /" + Name + "/templatename: " + name);
+                    throw new ArgumentException("name must be of form /templatename: " + name);
                 }
-                name = names[1]; // toss out group part; just get template name
+                name = names[0];
             }
             if (name.IndexOfAny(new char[] { Path.DirectorySeparatorChar, Path.AltDirectorySeparatorChar }) >= 0)
             {
@@ -121,11 +116,18 @@ namespace StringTemplate
             if (!alreadyLoaded)
                 Load();
 
-            CompiledTemplate template;
-            if (!templates.TryGetValue(name, out template))
-                return null;
+            CompiledTemplate code;
+            if (!templates.TryGetValue(name, out code))
+            {
+                code = LookupImportedTemplate(name);
+                if (code == null)
+                {
+                    // TODO: tolerance?
+                    throw new ArgumentException("no such template: /" + GetAbsoluteTemplateName(name));
+                }
+            }
 
-            return template;
+            return code;
         }
 
         public override void Load()
@@ -133,7 +135,11 @@ namespace StringTemplate
             if (alreadyLoaded)
                 return;
 
-            string absoluteFileName = Path.Combine(root.fullyQualifiedRootDirName, AbsoluteTemplatePath.Substring(1) + ".stg");
+            string absoluteFileName = Path.Combine(root.fullyQualifiedRootDirName, fileName);
+            if (this != root)
+            {
+                absoluteFileName = Path.Combine(root.fullyQualifiedRootDirName, AbsoluteTemplatePath.Substring(1) + ".stg");
+            }
 
             try
             {
