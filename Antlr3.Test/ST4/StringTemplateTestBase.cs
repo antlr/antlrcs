@@ -1,13 +1,15 @@
 ﻿namespace AntlrUnitTests.ST4
 {
-    using Console = System.Console;
+    using Antlr.Runtime;
+    using Microsoft.VisualStudio.TestTools.UnitTesting;
+    using StringTemplate;
     using Directory = System.IO.Directory;
     using Environment = System.Environment;
     using File = System.IO.File;
     using IOException = System.IO.IOException;
     using Path = System.IO.Path;
     using Random = System.Random;
-    using Microsoft.VisualStudio.TestTools.UnitTesting;
+    using StringBuilder = System.Text.StringBuilder;
 
     public abstract class StringTemplateTestBase
     {
@@ -43,6 +45,33 @@
                 TestContext.WriteLine("can't write file");
                 TestContext.WriteLine(ioe.StackTrace);
             }
+        }
+
+        public void CheckTokens(string template, string expected)
+        {
+            CheckTokens(template, expected, '<', '>');
+        }
+
+
+        public void CheckTokens(string template, string expected, char delimiterStartChar, char delimiterStopChar)
+        {
+            TemplateLexer lexer = new TemplateLexer(new ANTLRStringStream(template), delimiterStartChar, delimiterStopChar);
+            UnbufferedTokenStream tokens = new UnbufferedTokenStream(lexer);
+            StringBuilder buf = new StringBuilder();
+            buf.Append("[");
+            int i = 1;
+            IToken t = tokens.LT(i);
+            while (t.Type != CharStreamConstants.EndOfFile)
+            {
+                if (i > 1)
+                    buf.Append(", ");
+                buf.Append(t);
+                i++;
+                t = tokens.LT(i);
+            }
+            buf.Append("]");
+            string result = buf.ToString();
+            Assert.AreEqual(expected, result);
         }
 
         public class User

@@ -295,7 +295,15 @@
       <TestLink id="d91387b8-07ea-e9b6-7401-8c929cac5355" name="TestLabeledNotSetsInLexer" storage="antlr3.test\bin\debug\antlrunittests.dll" type="Microsoft.VisualStudio.TestTools.TestTypes.Unit.UnitTestElement, Microsoft.VisualStudio.QualityTools.Tips.UnitTest.ObjectModel,   PublicKeyToken=b03f5f7f11d50a3a" />
     </TestLinks>
   </TestList>
-  <TestList name="Dollar Delimiters" id="249ced62-20e1-4998-9a49-3f6c94330743" parentListId="4adbb104-d28d-4362-8420-a9fefe69c167" />
+  <TestList name="Dollar Delimiters" id="249ced62-20e1-4998-9a49-3f6c94330743" parentListId="4adbb104-d28d-4362-8420-a9fefe69c167">
+    <TestLinks>
+      <TestLink id="fd3235a0-0c5f-26ac-5630-fddb973c7405" name="TestEscInString" storage="antlr3.test\bin\debug\antlrunittests.dll" type="Microsoft.VisualStudio.TestTools.TestTypes.Unit.UnitTestElement, Microsoft.VisualStudio.QualityTools.Tips.UnitTest.ObjectModel,   PublicKeyToken=b03f5f7f11d50a3a" />
+      <TestLink id="0ed21c7c-9771-66f3-472f-ce6dd7d14e1f" name="TestNestedSubtemplate" storage="antlr3.test\bin\debug\antlrunittests.dll" type="Microsoft.VisualStudio.TestTools.TestTypes.Unit.UnitTestElement, Microsoft.VisualStudio.QualityTools.Tips.UnitTest.ObjectModel,   PublicKeyToken=b03f5f7f11d50a3a" />
+      <TestLink id="8a638168-a023-e7f0-466b-8622442b351b" name="TestString" storage="antlr3.test\bin\debug\antlrunittests.dll" type="Microsoft.VisualStudio.TestTools.TestTypes.Unit.UnitTestElement, Microsoft.VisualStudio.QualityTools.Tips.UnitTest.ObjectModel,   PublicKeyToken=b03f5f7f11d50a3a" />
+      <TestLink id="0bff8755-5911-c552-edd2-bece76d4ab80" name="TestSimpleAttr" storage="antlr3.test\bin\debug\antlrunittests.dll" type="Microsoft.VisualStudio.TestTools.TestTypes.Unit.UnitTestElement, Microsoft.VisualStudio.QualityTools.Tips.UnitTest.ObjectModel,   PublicKeyToken=b03f5f7f11d50a3a" />
+      <TestLink id="0472ac85-5868-bac6-14c5-442d03c993ce" name="TestSubtemplate" storage="antlr3.test\bin\debug\antlrunittests.dll" type="Microsoft.VisualStudio.TestTools.TestTypes.Unit.UnitTestElement, Microsoft.VisualStudio.QualityTools.Tips.UnitTest.ObjectModel,   PublicKeyToken=b03f5f7f11d50a3a" />
+    </TestLinks>
+  </TestList>
   <TestList name="Templates" id="24fbf8dd-7c87-4dac-ab4d-7fbcb52b5177" parentListId="8c43106b-9dc1-4907-a29f-aa66a61bf5b6">
     <TestLinks>
       <TestLink id="c60bf111-c68e-a2f1-9208-f0ae4e3e80dd" name="TestTemplateConstructorNoArgs" storage="antlr3.test\bin\debug\antlrunittests.dll" type="Microsoft.VisualStudio.TestTools.TestTypes.Unit.UnitTestElement, Microsoft.VisualStudio.QualityTools.Tips.UnitTest.ObjectModel,   PublicKeyToken=b03f5f7f11d50a3a" />
