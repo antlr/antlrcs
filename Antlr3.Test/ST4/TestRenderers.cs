@@ -41,6 +41,7 @@ namespace AntlrUnitTests.ST4
     [TestClass]
     public class TestRenderers : StringTemplateTestBase
     {
+#if false
         public class DateRenderer : IAttributeRenderer
         {
             public string ToString(object o)
@@ -83,6 +84,7 @@ namespace AntlrUnitTests.ST4
                 return dateTime.ToString(formatString);
             }
         }
+#endif
 
         public class StringRenderer : IAttributeRenderer
         {
@@ -108,10 +110,10 @@ namespace AntlrUnitTests.ST4
                     "dateThing(created) ::= \"date: <created>\"\n";
             WriteFile(tmpdir, "t.stg", templates);
             TemplateGroup group = new TemplateGroupFile(tmpdir + "/t.stg");
-            group.RegisterRenderer(typeof(DateTime), new DateRenderer());
+            group.RegisterRenderer(typeof(DateTime), new DateTimeRenderer());
             Template st = group.GetInstanceOf("dateThing");
             st.Add("created", new DateTime(2005, 7, 5));
-            string expecting = "date: 2005.07.05";
+            string expecting = "date: 7/5/2005 12:00 AM";
             string result = st.Render();
             Assert.AreEqual(expecting, result);
         }
@@ -123,7 +125,7 @@ namespace AntlrUnitTests.ST4
                     "dateThing(created) ::= << date: <created; format=\"yyyy.MM.dd\"> >>\n";
             WriteFile(tmpdir, "t.stg", templates);
             TemplateGroup group = new TemplateGroupFile(tmpdir + "/t.stg");
-            group.RegisterRenderer(typeof(DateTime), new DateRenderer3());
+            group.RegisterRenderer(typeof(DateTime), new DateTimeRenderer());
             Template st = group.GetInstanceOf("dateThing");
             st.Add("created", new DateTime(2005, 7, 5));
             string expecting = " date: 2005.07.05 ";

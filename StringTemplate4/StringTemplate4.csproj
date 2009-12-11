@@ -50,6 +50,7 @@
     <Compile Include="BytecodeDisassembler.cs" />
     <Compile Include="CompiledTemplate.cs" />
     <Compile Include="Compiler.cs" />
+    <Compile Include="DateTimeRenderer.cs" />
     <Compile Include="ErrorTolerance.cs" />
     <Compile Include="FormalArgument.cs" />
     <Compile Include="GroupLexerHelper.cs" />
