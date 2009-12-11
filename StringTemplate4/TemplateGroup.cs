@@ -197,7 +197,7 @@ namespace StringTemplate
         // TODO: send in start/stop char or line/col so errors can be relative
         public CompiledTemplate DefineTemplate(string name, string template)
         {
-            return DefineTemplate("/", name, (IDictionary<string, FormalArgument>)null, template);
+            return DefineTemplate("/", name, null, template);
         }
 
         public virtual CompiledTemplate DefineTemplate(string name,
@@ -253,7 +253,7 @@ namespace StringTemplate
             return code;
         }
 
-        public virtual void DefineAnonSubtemplates(CompiledTemplate code)
+        protected virtual void DefineAnonSubtemplates(CompiledTemplate code)
         {
             if (code.compiledSubtemplates != null)
             {
@@ -291,6 +291,7 @@ namespace StringTemplate
         {
         }
 
+        // TODO: make this happen in background then flip ptr to new list of templates/dictionaries?
         public virtual void LoadGroupFile(string prefix, string fileName)
         {
             string absoluteFileName = Path.Combine(fullyQualifiedRootDirName, fileName);
