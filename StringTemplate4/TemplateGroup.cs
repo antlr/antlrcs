@@ -44,6 +44,7 @@ namespace StringTemplate
     using Path = System.IO.Path;
     using StringBuilder = System.Text.StringBuilder;
     using Type = System.Type;
+    using ArgumentNullException = System.ArgumentNullException;
 
     /** A directory or directory tree of .st template files and/or group files.
      *  Individual template files contain formal template definitions. In a sense,
@@ -73,8 +74,8 @@ namespace StringTemplate
         public char delimiterStopChar = '>';
 
         /** Maps template name to StringTemplate object */
-        protected internal IDictionary<string, CompiledTemplate> templates =
-            new Dictionary<string, CompiledTemplate>();
+        protected internal IDictionary<TemplateName, CompiledTemplate> templates =
+            new Dictionary<TemplateName, CompiledTemplate>();
 
         /** Maps dict names to HashMap objects.  This is the list of dictionaries
          *  defined by the user like typeInitMap ::= ["int":"0"]
@@ -114,7 +115,7 @@ namespace StringTemplate
             }
         }
 
-        public IDictionary<string, CompiledTemplate> Templates
+        public IDictionary<TemplateName, CompiledTemplate> Templates
         {
             get
             {
@@ -122,13 +123,18 @@ namespace StringTemplate
             }
         }
 
+        public Template GetInstanceOf(string name)
+        {
+            return GetInstanceOf(new TemplateName(name));
+        }
+
         /** The primary means of getting an instance of a template from this
          *  group. Must be absolute name like /a/b
          */
-        public virtual Template GetInstanceOf(string name)
+        public virtual Template GetInstanceOf(TemplateName name)
         {
-            if (name[0] != '/')
-                name = '/' + name;
+            if (!name.IsRooted)
+                name = TemplateName.Combine(TemplateName.Root, name);
 
             //Console.WriteLine("GetInstanceOf(" + name + ")");
             CompiledTemplate c = LookupTemplate(name);
@@ -142,19 +148,19 @@ namespace StringTemplate
             return null;
         }
 
-        public virtual Template GetEmbeddedInstanceOf(Template enclosingInstance, string name)
+        public virtual Template GetEmbeddedInstanceOf(Template enclosingInstance, TemplateName name)
         {
             Template st = GetInstanceOf(name);
             if (st == null)
             {
-                ErrorManager.RuntimeError(enclosingInstance, ErrorType.NoSuchTemplate, name);
+                ErrorManager.RuntimeError(enclosingInstance, ErrorType.NoSuchTemplate, name.Name);
                 return Template.Blank;
             }
             st.enclosingInstance = enclosingInstance;
             return st;
         }
 
-        public virtual CompiledTemplate LookupTemplate(string name)
+        public virtual CompiledTemplate LookupTemplate(TemplateName name)
         {
             if (!alreadyLoaded)
                 Load();
@@ -168,7 +174,7 @@ namespace StringTemplate
             return code;
         }
 
-        protected internal CompiledTemplate LookupImportedTemplate(string name)
+        protected internal CompiledTemplate LookupImportedTemplate(TemplateName name)
         {
             //Console.WriteLine("look for " + name + " in " + imports);
 
@@ -185,7 +191,7 @@ namespace StringTemplate
             return null;
         }
 
-        public CompiledTemplate RawGetTemplate(string name)
+        public CompiledTemplate RawGetTemplate(TemplateName name)
         {
             CompiledTemplate template;
             if (!templates.TryGetValue(name, out template))
@@ -204,12 +210,12 @@ namespace StringTemplate
         }
 
         // TODO: send in start/stop char or line/col so errors can be relative
-        public CompiledTemplate DefineTemplate(string name, string template)
+        public CompiledTemplate DefineTemplate(TemplateName name, string template)
         {
-            return DefineTemplate("/", name, null, template);
+            return DefineTemplate(TemplateName.Root, name, null, template);
         }
 
-        public virtual CompiledTemplate DefineTemplate(string name,
+        public virtual CompiledTemplate DefineTemplate(TemplateName name,
                                          List<string> args,
                                          string template)
         {
@@ -217,10 +223,10 @@ namespace StringTemplate
                 new Dictionary<string, FormalArgument>();
             foreach (string a in args)
                 margs[a] = new FormalArgument(a);
-            return DefineTemplate("/", name, margs, template);
+            return DefineTemplate(TemplateName.Root, name, margs, template);
         }
 
-        public virtual CompiledTemplate DefineTemplate(string name,
+        public virtual CompiledTemplate DefineTemplate(TemplateName name,
                                          string[] args,
                                          string template)
         {
@@ -228,21 +234,19 @@ namespace StringTemplate
                 new Dictionary<string, FormalArgument>();
             foreach (string a in args)
                 margs[a] = new FormalArgument(a);
-            return DefineTemplate("/", name, margs, template);
+            return DefineTemplate(TemplateName.Root, name, margs, template);
         }
 
         // can't trap recog errors here; don't know where in file template is defined
-        public virtual CompiledTemplate DefineTemplate(string prefix, string name, IDictionary<string, FormalArgument> args, string template)
+        public virtual CompiledTemplate DefineTemplate(TemplateName prefix, TemplateName name, IDictionary<string, FormalArgument> args, string template)
         {
-            if (name != null && (name.Length == 0 || name.IndexOf('.') >= 0))
-            {
-                throw new ArgumentException("cannot have '.' in template names");
-            }
+            if (name == null)
+                throw new ArgumentNullException("name");
 
             CompiledTemplate code = Compile(prefix, name, template);
-            code.name = name;
+            code.Name = name;
             code.formalArguments = args;
-            RawDefineTemplate(prefix + name, code);
+            RawDefineTemplate(TemplateName.Combine(prefix, name), code);
             if (args != null)
             { // compile any default args
                 foreach (string a in args.Keys)
@@ -251,7 +255,9 @@ namespace StringTemplate
                     if (fa.defaultValueToken != null)
                     {
                         TemplateCompiler c2 = new TemplateCompiler(prefix, name);
-                        fa.compiledDefaultValue = c2.Compile(template);
+                        string defArgTemplate = Misc.Strip(fa.defaultValueToken.Text, 1);
+                        fa.compiledDefaultValue = c2.Compile(defArgTemplate);
+                        fa.compiledDefaultValue.Name = new TemplateName(fa.name + "-default-value");
                     }
                 }
             }
@@ -262,16 +268,16 @@ namespace StringTemplate
             return code;
         }
 
-        public CompiledTemplate DefineRegion(string prefix,
-                                             string enclosingTemplateName,
+        public CompiledTemplate DefineRegion(TemplateName prefix,
+                                             TemplateName enclosingTemplateName,
                                              string name,
                                              string template)
         {
             CompiledTemplate code = Compile(prefix, enclosingTemplateName, template);
-            code.name = prefix + GetMangledRegionName(enclosingTemplateName, name);
+            code.Name = TemplateName.Combine(prefix, GetMangledRegionName(enclosingTemplateName, name));
             code.isRegion = true;
             code.regionDefType = Template.RegionType.Explicit;
-            RawDefineTemplate(code.name, code);
+            RawDefineTemplate(code.Name, code);
             return code;
         }
 
@@ -281,13 +287,13 @@ namespace StringTemplate
             {
                 foreach (CompiledTemplate sub in code.implicitlyDefinedTemplates)
                 {
-                    RawDefineTemplate(sub.name, sub);
+                    RawDefineTemplate(sub.Name, sub);
                     DefineImplicitlyDefinedTemplates(sub);
                 }
             }
         }
 
-        protected void RawDefineTemplate(string name, CompiledTemplate code)
+        protected void RawDefineTemplate(TemplateName name, CompiledTemplate code)
         {
             CompiledTemplate prev;
             if (templates.TryGetValue(name, out prev))
@@ -311,7 +317,7 @@ namespace StringTemplate
             templates[name] = code;
         }
 
-        protected CompiledTemplate Compile(string prefix, string enclosingTemplateName, string template)
+        protected CompiledTemplate Compile(TemplateName prefix, TemplateName enclosingTemplateName, string template)
         {
             TemplateCompiler c = new TemplateCompiler(prefix, enclosingTemplateName);
             CompiledTemplate code = c.Compile(template);
@@ -321,19 +327,20 @@ namespace StringTemplate
         }
 
         /** The "foo" of t() ::= "&lt;@foo()&gt;" is mangled to "region#t#foo" */
-        public static string GetMangledRegionName(string enclosingTemplateName,
+        public static TemplateName GetMangledRegionName(TemplateName enclosingTemplateName,
                                                   string name)
         {
-            return "region__" + enclosingTemplateName + "__" + name;
+            return new TemplateName("region__" + enclosingTemplateName + "__" + name);
         }
 
         /// <summary>
         /// Return "t.foo" from "region__t__foo"
         /// </summary>
-        public static string GetUnmangledTemplateName(string mangledName)
+        public static string GetUnmangledTemplateName(TemplateName mangledName)
         {
-            string t = mangledName.Substring("region__".Length, mangledName.LastIndexOf("__") - "region__".Length + 1);
-            string r = mangledName.Substring(mangledName.LastIndexOf("__") + 2, mangledName.Length - mangledName.LastIndexOf("__") + 2 + 1);
+            string name = mangledName.Name;
+            string t = name.Substring("region__".Length, name.LastIndexOf("__") - "region__".Length + 1);
+            string r = name.Substring(name.LastIndexOf("__") + 2, name.Length - name.LastIndexOf("__") + 2 + 1);
             return t + '.' + r;
         }
 
@@ -364,7 +371,7 @@ namespace StringTemplate
         }
 
         // TODO: make this happen in background then flip ptr to new list of templates/dictionaries?
-        public virtual void LoadGroupFile(string prefix, string fileName)
+        public virtual void LoadGroupFile(TemplateName prefix, string fileName)
         {
             string absoluteFileName = Path.Combine(fullyQualifiedRootDirName, fileName);
             //Console.WriteLine("load group file " + absoluteFileName);
@@ -378,6 +385,9 @@ namespace StringTemplate
             }
             catch (Exception e)
             {
+                if (ErrorManager.IsCriticalException(e))
+                    throw;
+
                 ErrorManager.IOError(null, ErrorType.CantLoadGroupFile, e, absoluteFileName);
             }
         }
@@ -430,15 +440,13 @@ namespace StringTemplate
             StringBuilder buf = new StringBuilder();
             if (imports != null)
                 buf.Append(" : " + imports);
-            foreach (string name in templates.Keys)
+            foreach (TemplateName name in templates.Keys)
             {
                 CompiledTemplate c = templates[name];
                 if (c.IsSubtemplate)
                     continue;
 
-                int slash = name.LastIndexOfAny(new char[] { Path.DirectorySeparatorChar, Path.AltDirectorySeparatorChar });
-                string effectiveName = name.Substring(slash + 1);
-                buf.Append(effectiveName);
+                buf.Append(name.Name);
                 buf.Append('(');
                 if (c.formalArguments != null)
                 {

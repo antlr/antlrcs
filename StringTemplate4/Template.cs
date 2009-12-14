@@ -45,7 +45,7 @@ namespace StringTemplate
     public class Template
     {
         public const string SubtemplatePrefix = "_sub";
-        public const string UnknownName = "unknown";
+        public static readonly TemplateName UnknownName = new TemplateName("anonymous");
         public static readonly Template Blank = new BlankTemplate();
 
         /** The code to interpret; it pulls from attributes and this template's
@@ -141,11 +141,11 @@ namespace StringTemplate
             }
         }
 
-        public string Name
+        public TemplateName Name
         {
             get
             {
-                return code.name;
+                return code.Name;
             }
         }
 
@@ -318,12 +318,14 @@ namespace StringTemplate
         public virtual int Write(ITemplateWriter @out)
         {
             Interpreter interp = new Interpreter(groupThatCreatedThisInstance);
+            interp.SetDefaultArguments(this);
             return interp.Exec(@out, this);
         }
 
         public virtual int Write(ITemplateWriter @out, CultureInfo culture)
         {
             Interpreter interp = new Interpreter(groupThatCreatedThisInstance, culture);
+            interp.SetDefaultArguments(this);
             return interp.Exec(@out, this);
         }
 
@@ -353,7 +355,10 @@ namespace StringTemplate
 
         public override string ToString()
         {
-            return code.name + "()";
+            if (code == null)
+                return "bad-template()";
+
+            return code.Name + "()";
         }
 
         /** &lt;@r()&gt;, &lt;@r&gt;...&lt;@end&gt;, and @t.r() ::= "..." defined manually by coder */

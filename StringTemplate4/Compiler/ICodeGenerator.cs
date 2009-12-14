@@ -42,7 +42,7 @@ namespace StringTemplate.Compiler
         /// If we're compiling templates in subdir or group file under root,
         /// what's the templatePathPrefix to add?
         /// </summary>
-        string TemplateReferencePrefix
+        TemplateName TemplateReferencePrefix
         {
             get;
         }
@@ -56,13 +56,13 @@ namespace StringTemplate.Compiler
         int Address();
 
         /** Compile a subtemplate. It's the '...' in this &lt;names:{p | ...}&gt; */
-        string CompileAnonTemplate(string enclosingTemplateName,
+        TemplateName CompileAnonTemplate(TemplateName enclosingTemplateName,
                                    ITokenStream input,
                                    IList<IToken> ids,
                                    RecognizerSharedState state);
 
-        string CompileRegion(string enclosingTemplateName, string regionName, ITokenStream input, RecognizerSharedState state);
+        TemplateName CompileRegion(TemplateName enclosingTemplateName, string regionName, ITokenStream input, RecognizerSharedState state);
 
-        void DefineBlankRegion(string fullyQualifiedName);
+        void DefineBlankRegion(TemplateName name);
     }
 }

@@ -71,7 +71,7 @@ namespace StringTemplate
 
         public override void Load()
         {
-            LoadGroupFile("/", fileName);
+            LoadGroupFile(TemplateName.Root, fileName);
             alreadyLoaded = true;
         }
     }

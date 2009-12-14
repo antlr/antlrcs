@@ -67,7 +67,7 @@ options {backtrack=true; k=2;}
 	|	text
 	|   (i=INDENT {Indent($i.text);})? region
 						 {
-						 gen.Emit(Bytecode.INSTR_NEW, $region.name);
+						 gen.Emit(Bytecode.INSTR_NEW, $region.name.FullName);
 						 gen.Emit(Bytecode.INSTR_WRITE, $region.start.StartIndex, $region.stop.StartIndex);
 						 }
 	|	i=INDENT         {Indent($i.text);}
@@ -95,7 +95,7 @@ exprTag
 		RDELIM
 	;
 
-region returns [string name] // match $@foo$...$@end$
+region returns [TemplateName name] // match $@foo$...$@end$
 	:	LDELIM '@' ID RDELIM
 		{{ // force exec even when backtracking
 		if (state.backtracking == 0)
@@ -107,7 +107,7 @@ region returns [string name] // match $@foo$...$@end$
 		LDELIM '@end' RDELIM
 	;
 
-subtemplate returns [string name]
+subtemplate returns [TemplateName name]
 	:	'{' ( ids+=ID (',' ids+=ID)* '|' )?
 		{{ // force exec even when backtracking
 		List<IToken> idTokens = null;
@@ -262,14 +262,16 @@ option
 	
 exprNoComma
 	:	memberExpr ( ':' templateRef {gen.Emit(Bytecode.INSTR_MAP);} )?
-	|	subtemplate {gen.Emit(Bytecode.INSTR_NEW, $subtemplate.name);}
+	|	subtemplate {gen.Emit(Bytecode.INSTR_NEW, $subtemplate.name.FullName);}
 	;
 
 expr
 	:	mapExpr
 	|	// <{...}>
 		subtemplate
-		{gen.Emit(Bytecode.INSTR_NEW, PrefixedName($subtemplate.name));}
+		{
+		var prefixed = PrefixedName($subtemplate.name);
+		gen.Emit(Bytecode.INSTR_NEW, prefixed != null ? prefixed.FullName : null);}
 	;
 
 mapExpr
@@ -295,13 +297,17 @@ options {k=2;} // prevent full LL(*), which fails, falling back on k=1; need k=2
 	:	{TemplateCompiler.funcs.ContainsKey(input.LT(1).Text)}?
 		ID '(' expr ')' {Func($ID);}
 	|	(s='super' '.')? ID
-		{gen.Emit($s!=null?Bytecode.INSTR_SUPER_NEW:Bytecode.INSTR_NEW, PrefixedName($ID.text));}
+		{
+		var prefixed = PrefixedName(new TemplateName($ID.text));
+		gen.Emit($s!=null?Bytecode.INSTR_SUPER_NEW:Bytecode.INSTR_NEW, prefixed != null ? prefixed.FullName : null);
+		}
 		'(' args? ')'
 	|	'@' (s='super' '.')? ID '(' ')'	// convert <@r()> to <region__enclosingTemplate__r()>
 		{
-		string mangled = TemplateGroup.GetMangledRegionName(_enclosingTemplateName, $ID.text);
+		TemplateName mangled = TemplateGroup.GetMangledRegionName(_enclosingTemplateName, $ID.text);
 		gen.DefineBlankRegion(PrefixedName(mangled));
-		gen.Emit($s!=null?Bytecode.INSTR_SUPER_NEW:Bytecode.INSTR_NEW, PrefixedName(mangled));
+		var prefixed = PrefixedName(mangled);
+		gen.Emit($s!=null?Bytecode.INSTR_SUPER_NEW:Bytecode.INSTR_NEW, prefixed != null ? prefixed.FullName : null);
 		}
 	|	primary
 	;
@@ -322,8 +328,14 @@ arg :	ID '=' exprNoComma {gen.Emit(Bytecode.INSTR_STORE_ATTR, $ID.text);}
 	;
 
 templateRef
-	:	ID			{gen.Emit(Bytecode.INSTR_LOAD_STR, PrefixedName($ID.text));}
-	|	subtemplate {gen.Emit(Bytecode.INSTR_LOAD_STR, PrefixedName($subtemplate.name));}
+	:	ID			{
+					var prefixed = PrefixedName(new TemplateName($ID.text));
+					gen.Emit(Bytecode.INSTR_LOAD_STR, prefixed != null ? prefixed.FullName : null);
+					}
+	|	subtemplate {
+					var prefixed = PrefixedName($subtemplate.name);
+					gen.Emit(Bytecode.INSTR_LOAD_STR, prefixed != null ? prefixed.FullName : null);
+					}
 	|	'(' mapExpr ')' {gen.Emit(Bytecode.INSTR_TOSTR);}
 	;
 

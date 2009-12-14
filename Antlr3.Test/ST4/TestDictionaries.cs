@@ -181,7 +181,7 @@
             Template st = group.GetInstanceOf("var");
             st.Add("type", "UserRecord");
             st.Add("name", "x");
-            string expecting = "UserRecord x = UserRecord;";
+            string expecting = "UserRecord x = key;";
             string result = st.Render();
             Assert.AreEqual(expecting, result);
         }

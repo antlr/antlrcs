@@ -37,10 +37,8 @@ namespace StringTemplate
         // RUNTIME SEMANTIC ERRORS
         public static readonly ErrorType NoSuchTemplate = new ErrorType("no such template: {0}");
         public static readonly ErrorType NoImportedTemplate = new ErrorType("no such template: super.{0}");
-        public static readonly ErrorType CantAccessPropertyMethod = new ErrorType("can't access property {0} via method");
-        public static readonly ErrorType CantAccessPropertyField = new ErrorType("can't access property {0} as field");
-        public static readonly ErrorType NoSuchProperty = new ErrorType("{0} doesn't have a {1} property");
-        public static readonly ErrorType ExpectingSingleArgument = new ErrorType("expecting single arg in template {0}, not {1} args");
+        //public static readonly ErrorType NoSuchProperty = new ErrorType("{0} doesn't have a {1} property");
+        public static readonly ErrorType ExpectingSingleArgument = new ErrorType("expecting single arg in template reference {0} (not {1})");
         public static readonly ErrorType MissingFormalArguments = new ErrorType("missing argument definitions");
         public static readonly ErrorType ArgumentCountMismatch = new ErrorType("template {0}'s actual and formal argument count does not match");
         public static readonly ErrorType ExpectingString = new ErrorType("function {0} expects a string not {1}");

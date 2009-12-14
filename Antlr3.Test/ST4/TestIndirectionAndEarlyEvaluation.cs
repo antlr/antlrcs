@@ -37,6 +37,7 @@ namespace AntlrUnitTests.ST4
     using ST = StringTemplate.Template;
     using STGroup = StringTemplate.TemplateGroup;
     using String = System.String;
+    using StringTemplate;
 
     [TestClass]
     public class TestIndirectionAndEarlyEvaluation : StringTemplateTestBase
@@ -56,9 +57,9 @@ namespace AntlrUnitTests.ST4
         public void TestIndirectTemplateInclude()
         {
             STGroup group = new STGroup();
-            group.DefineTemplate("foo", "bar");
+            group.DefineTemplate(new TemplateName("foo"), "bar");
             String template = "<(name)()>";
-            group.DefineTemplate("test", template);
+            group.DefineTemplate(new TemplateName("test"), template);
             ST st = group.GetInstanceOf("test");
             st.Add("name", "foo");
             String expected = "bar";
@@ -70,10 +71,10 @@ namespace AntlrUnitTests.ST4
         public void TestIndirectTemplateIncludeViaTemplate()
         {
             STGroup group = new STGroup();
-            group.DefineTemplate("foo", "bar");
-            group.DefineTemplate("tname", "foo");
+            group.DefineTemplate(new TemplateName("foo"), "bar");
+            group.DefineTemplate(new TemplateName("tname"), "foo");
             String template = "<(tname())()>";
-            group.DefineTemplate("test", template);
+            group.DefineTemplate(new TemplateName("test"), template);
             ST st = group.GetInstanceOf("test");
             String expected = "bar";
             String result = st.Render();
@@ -96,8 +97,8 @@ namespace AntlrUnitTests.ST4
         public void TestIndirectMap()
         {
             STGroup group = new STGroup();
-            group.DefineTemplate("a", "[<it>]");
-            group.DefineTemplate("test", "hi <names:(templateName)>!");
+            group.DefineTemplate(new TemplateName("a"), "[<it>]");
+            group.DefineTemplate(new TemplateName("test"), "hi <names:(templateName)>!");
             ST st = group.GetInstanceOf("test");
             st.Add("names", "Ter");
             st.Add("names", "Tom");

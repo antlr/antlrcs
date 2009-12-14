@@ -89,7 +89,7 @@
         {
             string template = "load <box()>;";
             Template st = new Template(template);
-            st.code.nativeGroup.DefineTemplate("box",
+            st.code.nativeGroup.DefineTemplate(new TemplateName("box"),
                                     "kewl" + newline +
                                     "daddy"
                                     );
@@ -106,7 +106,7 @@
         {
             string template = "load <box(x=\"arg\")>;";
             Template st = new Template(template);
-            st.code.nativeGroup.DefineTemplate("box", "kewl <x> daddy");
+            st.code.nativeGroup.DefineTemplate(new TemplateName("box"), "kewl <x> daddy");
             st.Add("name", "Ter");
             string expected = "load kewl arg daddy;";
             string result = st.Render();
@@ -118,7 +118,7 @@
         {
             string template = "load <box(\"arg\")>;";
             Template st = new Template(template);
-            st.code.nativeGroup.DefineTemplate("box", new string[] { "x" }, "kewl <x> daddy");
+            st.code.nativeGroup.DefineTemplate(new TemplateName("box"), new string[] { "x" }, "kewl <x> daddy");
             st.Add("name", "Ter");
             string expected = "load kewl arg daddy;";
             string result = st.Render();
@@ -130,8 +130,8 @@
         {
             string template = "load <box(x=\"arg\", y=foo())>;";
             Template st = new Template(template);
-            st.code.nativeGroup.DefineTemplate("box", "kewl <x> <y> daddy");
-            st.code.nativeGroup.DefineTemplate("foo", "blech");
+            st.code.nativeGroup.DefineTemplate(new TemplateName("box"), "kewl <x> <y> daddy");
+            st.code.nativeGroup.DefineTemplate(new TemplateName("foo"), "blech");
             st.Add("name", "Ter");
             string expected = "load kewl arg blech daddy;";
             string result = st.Render();
@@ -143,8 +143,8 @@
         {
             string template = "load <box(y=foo(x=\"arg\"))>;";
             Template st = new Template(template);
-            st.code.nativeGroup.DefineTemplate("box", "kewl <y> daddy");
-            st.code.nativeGroup.DefineTemplate("foo", "blech <x>");
+            st.code.nativeGroup.DefineTemplate(new TemplateName("box"), "kewl <y> daddy");
+            st.code.nativeGroup.DefineTemplate(new TemplateName("foo"), "blech <x>");
             st.Add("name", "Ter");
             string expected = "load kewl blech arg daddy;";
             string result = st.Render();
@@ -155,8 +155,8 @@
         public void TestDefineTemplate()
         {
             TemplateGroup group = new TemplateGroup();
-            group.DefineTemplate("inc", "<it>+1");
-            group.DefineTemplate("test", "hi <name>!");
+            group.DefineTemplate(new TemplateName("inc"), "<it>+1");
+            group.DefineTemplate(new TemplateName("test"), "hi <name>!");
             Template st = group.GetInstanceOf("test");
             st.Add("name", "Ter");
             st.Add("name", "Tom");
@@ -171,8 +171,8 @@
         public void TestMap()
         {
             TemplateGroup group = new TemplateGroup();
-            group.DefineTemplate("inc", "[<it>]");
-            group.DefineTemplate("test", "hi <name:inc>!");
+            group.DefineTemplate(new TemplateName("inc"), "[<it>]");
+            group.DefineTemplate(new TemplateName("test"), "hi <name:inc>!");
             Template st = group.GetInstanceOf("test");
             st.Add("name", "Ter");
             st.Add("name", "Tom");
@@ -187,7 +187,7 @@
         public void TestParallelMap()
         {
             TemplateGroup group = new TemplateGroup();
-            group.DefineTemplate("test", "hi <names,phones:{n,p | <n>:<p>;}>");
+            group.DefineTemplate(new TemplateName("test"), "hi <names,phones:{n,p | <n>:<p>;}>");
             Template st = group.GetInstanceOf("test");
             st.Add("names", "Ter");
             st.Add("names", "Tom");
@@ -205,7 +205,7 @@
         public void TestParallelMapWith3Versus2Elements()
         {
             TemplateGroup group = new TemplateGroup();
-            group.DefineTemplate("test", "hi <names,phones:{n,p | <n>:<p>;}>");
+            group.DefineTemplate(new TemplateName("test"), "hi <names,phones:{n,p | <n>:<p>;}>");
             Template st = group.GetInstanceOf("test");
             st.Add("names", "Ter");
             st.Add("names", "Tom");
@@ -222,8 +222,8 @@
         public void TestMapIndexes()
         {
             TemplateGroup group = new TemplateGroup();
-            group.DefineTemplate("inc", "<i>:<it>");
-            group.DefineTemplate("test", "<name:inc; separator=\", \">");
+            group.DefineTemplate(new TemplateName("inc"), "<i>:<it>");
+            group.DefineTemplate(new TemplateName("test"), "<name:inc; separator=\", \">");
             Template st = group.GetInstanceOf("test");
             st.Add("name", "Ter");
             st.Add("name", "Tom");
@@ -239,8 +239,8 @@
         public void TestMapSingleValue()
         {
             TemplateGroup group = new TemplateGroup();
-            group.DefineTemplate("a", "[<it>]");
-            group.DefineTemplate("test", "hi <name:a>!");
+            group.DefineTemplate(new TemplateName("a"), "[<it>]");
+            group.DefineTemplate(new TemplateName("test"), "hi <name:a>!");
             Template st = group.GetInstanceOf("test");
             st.Add("name", "Ter");
             string expected = "hi [Ter]!";
@@ -252,9 +252,9 @@
         public void TestRepeatedMap()
         {
             TemplateGroup group = new TemplateGroup();
-            group.DefineTemplate("a", "[<it>]");
-            group.DefineTemplate("b", "(<it>)");
-            group.DefineTemplate("test", "hi <name:a:b>!");
+            group.DefineTemplate(new TemplateName("a"), "[<it>]");
+            group.DefineTemplate(new TemplateName("b"), "(<it>)");
+            group.DefineTemplate(new TemplateName("test"), "hi <name:a:b>!");
             Template st = group.GetInstanceOf("test");
             st.Add("name", "Ter");
             st.Add("name", "Tom");
@@ -269,9 +269,9 @@
         public void TestRoundRobinMap()
         {
             TemplateGroup group = new TemplateGroup();
-            group.DefineTemplate("a", "[<it>]");
-            group.DefineTemplate("b", "(<it>)");
-            group.DefineTemplate("test", "hi <name:a,b>!");
+            group.DefineTemplate(new TemplateName("a"), "[<it>]");
+            group.DefineTemplate(new TemplateName("b"), "(<it>)");
+            group.DefineTemplate(new TemplateName("test"), "hi <name:a,b>!");
             Template st = group.GetInstanceOf("test");
             st.Add("name", "Ter");
             st.Add("name", "Tom");
@@ -413,9 +413,9 @@
         public void TestITDoesntPropagate()
         {
             TemplateGroup group = new TemplateGroup();
-            group.DefineTemplate("foo", "<it>");   // <it> not visible
+            group.DefineTemplate(new TemplateName("foo"), "<it>");   // <it> not visible
             string template = "<names:{<foo()>}>"; // <it> visible only to {...} here
-            group.DefineTemplate("test", template);
+            group.DefineTemplate(new TemplateName("test"), template);
             Template st = group.GetInstanceOf("test");
             st.Add("names", "Ter");
             st.Add("names", "Tom");

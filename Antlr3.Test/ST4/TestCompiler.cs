@@ -308,7 +308,7 @@
         {
             string template = "<@r>foo<@end>";
             // compile as if in root dir and in template 'a'
-            CompiledTemplate code = new TemplateCompiler("/", "a").Compile(template);
+            CompiledTemplate code = new TemplateCompiler(TemplateName.Root, new TemplateName("a")).Compile(template);
             string asmExpected =
                 "new 0, write 0 12";
             string asmResult = code.Instructions();
@@ -323,7 +323,7 @@
         {
             string template = "x:<@r()>";
             // compile as if in root dir and in template 'a'
-            CompiledTemplate code = new TemplateCompiler("/", "a").Compile(template);
+            CompiledTemplate code = new TemplateCompiler(TemplateName.Root, new TemplateName("a")).Compile(template);
             string asmExpected =
                 "load_str 0, write 0 1, new 1, write 2 7";
             string asmResult = code.Instructions();

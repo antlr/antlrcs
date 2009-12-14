@@ -34,8 +34,12 @@ namespace AntlrUnitTests.ST4
 {
     using Microsoft.VisualStudio.TestTools.UnitTesting;
     using ST = StringTemplate.Template;
+    using STErrorListener = StringTemplate.ITemplateErrorListener;
     using STGroup = StringTemplate.TemplateGroup;
+    using STGroupDir = StringTemplate.TemplateGroupDirectory;
+    using STGroupFile = StringTemplate.TemplateGroupFile;
     using String = System.String;
+    using StringTemplate;
 
     [TestClass]
     public class TestSubtemplates : StringTemplateTestBase
@@ -44,7 +48,7 @@ namespace AntlrUnitTests.ST4
         public void TestSimpleIteration()
         {
             STGroup group = new STGroup();
-            group.DefineTemplate("test", "<names:{<it>}>!");
+            group.DefineTemplate(new TemplateName("test"), "<names:{<it>}>!");
             ST st = group.GetInstanceOf("test");
             st.Add("names", "Ter");
             st.Add("names", "Tom");
@@ -58,7 +62,7 @@ namespace AntlrUnitTests.ST4
         public void TestSimpleIterationWithArg()
         {
             STGroup group = new STGroup();
-            group.DefineTemplate("test", "<names:{n | <n>}>!");
+            group.DefineTemplate(new TemplateName("test"), "<names:{n | <n>}>!");
             ST st = group.GetInstanceOf("test");
             st.Add("names", "Ter");
             st.Add("names", "Tom");
@@ -72,7 +76,7 @@ namespace AntlrUnitTests.ST4
         public void Test_it_NotDefinedWithArg()
         {
             STGroup group = new STGroup();
-            group.DefineTemplate("test", "<names:{n | <it>}>!");
+            group.DefineTemplate(new TemplateName("test"), "<names:{n | <it>}>!");
             ST st = group.GetInstanceOf("test");
             st.Add("names", "Ter");
             st.Add("names", "Tom");
@@ -86,7 +90,7 @@ namespace AntlrUnitTests.ST4
         public void Test_it_NotDefinedWithArgSingleValue()
         {
             STGroup group = new STGroup();
-            group.DefineTemplate("test", "<names:{n | <it>}>!");
+            group.DefineTemplate(new TemplateName("test"), "<names:{n | <it>}>!");
             ST st = group.GetInstanceOf("test");
             st.Add("names", "Ter");
             String expected = "!";
@@ -98,7 +102,7 @@ namespace AntlrUnitTests.ST4
         public void TestNestedIterationWithArg()
         {
             STGroup group = new STGroup();
-            group.DefineTemplate("test", "<users:{u | <u.id:{id | <id>=}><u.name>}>!");
+            group.DefineTemplate(new TemplateName("test"), "<users:{u | <u.id:{id | <id>=}><u.name>}>!");
             ST st = group.GetInstanceOf("test");
             st.Add("users", new TestCoreBasics.User(1, "parrt"));
             st.Add("users", new TestCoreBasics.User(2, "tombu"));
@@ -106,6 +110,141 @@ namespace AntlrUnitTests.ST4
             String expected = "1=parrt2=tombu3=sri!";
             String result = st.Render();
             Assert.AreEqual(expected, result);
+        }
+
+        [TestMethod]
+        public void TestParallelAttributeIteration()
+        {
+            ST e = new ST(
+                    "<names,phones,salaries:{n,p,s | <n>@<p>: <s>\n}>"
+                );
+            e.Add("names", "Ter");
+            e.Add("names", "Tom");
+            e.Add("phones", "1");
+            e.Add("phones", "2");
+            e.Add("salaries", "big");
+            e.Add("salaries", "huge");
+            String expecting = "Ter@1: big" + newline + "Tom@2: huge" + newline;
+            Assert.AreEqual(expecting, e.Render());
+        }
+
+        [TestMethod]
+        public void TestParallelAttributeIterationWithNullValue(){
+        ST e = new ST(
+                "<names,phones,salaries:{n,p,s | <n>@<p>: <s>\n}>"
+            );
+        e.Add("names", "Ter");
+        e.Add("names", "Tom");
+        e.Add("names", "Sriram");
+        e.Add("phones", new object[] { "1", null, "3" });
+        e.Add("salaries", "big");
+        e.Add("salaries", "huge");
+        e.Add("salaries", "enormous");
+        String expecting = "Ter@1: big"+newline+
+                           "Tom@: huge"+newline+
+                           "Sriram@3: enormous"+newline;
+        Assert.AreEqual(expecting, e.Render());
+    }
+
+        [TestMethod]
+        public void TestParallelAttributeIterationHasI()
+        {
+            ST e = new ST(
+                    "<names,phones,salaries:{n,p,s | <i0>. <n>@<p>: <s>\n}>"
+                );
+            e.Add("names", "Ter");
+            e.Add("names", "Tom");
+            e.Add("phones", "1");
+            e.Add("phones", "2");
+            e.Add("salaries", "big");
+            e.Add("salaries", "huge");
+            String expecting = "0. Ter@1: big" + newline + "1. Tom@2: huge" + newline;
+            Assert.AreEqual(expecting, e.Render());
+        }
+
+        [TestMethod]
+        public void TestParallelAttributeIterationWithDifferentSizes()
+        {
+            ST e = new ST(
+                    "<names,phones,salaries:{n,p,s | <n>@<p>: <s>}; separator=\", \">"
+                );
+            e.Add("names", "Ter");
+            e.Add("names", "Tom");
+            e.Add("names", "Sriram");
+            e.Add("phones", "1");
+            e.Add("phones", "2");
+            e.Add("salaries", "big");
+            String expecting = "Ter@1: big, Tom@2: , Sriram@: ";
+            Assert.AreEqual(expecting, e.Render());
+        }
+
+        [TestMethod]
+        public void TestParallelAttributeIterationWithSingletons()
+        {
+            ST e = new ST(
+                    "<names,phones,salaries:{n,p,s | <n>@<p>: <s>}; separator=\", \">"
+                );
+            e.Add("names", "Ter");
+            e.Add("phones", "1");
+            e.Add("salaries", "big");
+            String expecting = "Ter@1: big";
+            Assert.AreEqual(expecting, e.Render());
+        }
+
+        [TestMethod]
+        public void TestParallelAttributeIterationWithMismatchArgListSizes()
+        {
+            ErrorBuffer errors = new ErrorBuffer();
+            ErrorManager.ErrorListener = errors;
+            ST e = new ST(
+                    "<names,phones,salaries:{n,p | <n>@<p>}; separator=\", \">"
+                );
+            e.Add("names", "Ter");
+            e.Add("names", "Tom");
+            e.Add("phones", "1");
+            e.Add("phones", "2");
+            e.Add("salaries", "big");
+            String expecting = "Ter@1, Tom@2";
+            Assert.AreEqual(expecting, e.Render());
+            String errorExpecting = "template _sub13's actual and formal argument count does not match in context anonymous" + newline;
+            Assert.AreEqual(errorExpecting, errors.ToString());
+        }
+
+        [TestMethod]
+        public void TestParallelAttributeIterationWithMissingArgs()
+        {
+            ErrorBuffer errors = new ErrorBuffer();
+            ErrorManager.ErrorListener = errors;
+            ST e = new ST(
+                    "<names,phones,salaries:{<n>@<p>}; separator=\", \">"
+                );
+            e.Add("names", "Tom");
+            e.Add("phones", "2");
+            e.Add("salaries", "big");
+            e.Render(); // generate the error
+            String errorExpecting = "missing argument definitions in context anonymous" + newline;
+            Assert.AreEqual(errorExpecting, errors.ToString());
+        }
+
+        [TestMethod]
+        public void TestParallelAttributeIterationWithDifferentSizesTemplateRefInsideToo()
+        {
+            String templates =
+                    "page(names,phones,salaries) ::= " + newline +
+                    "	<< <names,phones,salaries:{n,p,s | <value(n)>@<value(p)>: <value(s)>}; separator=\", \"> >>" + newline +
+                    "value(x=\"n/a\") ::= \"<x>\"" + newline;
+            WriteFile(tmpdir, "g.stg", templates);
+
+            STGroup group = new STGroupFile(tmpdir + "/g.stg");
+            ST p = group.GetInstanceOf("page");
+            p.Add("names", "Ter");
+            p.Add("names", "Tom");
+            p.Add("names", "Sriram");
+            p.Add("phones", "1");
+            p.Add("phones", "2");
+            p.Add("salaries", "big");
+            String expecting = "Ter@1: big, Tom@2: n/a, Sriram@n/a: n/a";
+            Assert.AreEqual(expecting, p.Render());
         }
     }
 }

@@ -39,8 +39,6 @@ namespace StringTemplate.Compiler
 
     public class CompiledTemplate
     {
-        protected internal string name;
-
         /** The original, immutable pattern (not really used again after
          *  initial "compilation"). Useful for debugging.
          */
@@ -93,6 +91,12 @@ namespace StringTemplate.Compiler
             }
         }
 
+        public TemplateName Name
+        {
+            get;
+            internal set;
+        }
+
         public string Template
         {
             get
@@ -105,7 +109,7 @@ namespace StringTemplate.Compiler
         {
             get
             {
-                return name.StartsWith("/" + StringTemplate.Template.SubtemplatePrefix);
+                return Name.FullName.StartsWith(TemplateName.TemplateDirectorySeparator + StringTemplate.Template.SubtemplatePrefix);
             }
         }
 

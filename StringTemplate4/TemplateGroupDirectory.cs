@@ -41,6 +41,7 @@ namespace StringTemplate
     using Exception = System.Exception;
     using File = System.IO.File;
     using Path = System.IO.Path;
+    using ArgumentNullException = System.ArgumentNullException;
 
     public class TemplateGroupDirectory : TemplateGroup
     {
@@ -75,18 +76,25 @@ namespace StringTemplate
         /// </summary>
         public override void Load()
         {
-            _Load("/");
+            _Load(TemplateName.Root);
             alreadyLoaded = true;
         }
 
-        protected void _Load(string prefix)
+        protected void _Load(TemplateName prefix)
         {
-            string dir = Path.Combine(fullyQualifiedRootDirName, prefix);
+            if (prefix == null)
+                throw new ArgumentNullException("prefix");
+            if (!prefix.IsRooted)
+                throw new ArgumentException();
+
+            string relativePrefix = prefix.FullName.Substring(1);
+
+            string dir = Path.Combine(fullyQualifiedRootDirName, relativePrefix);
             //Console.WriteLine("load dir '" + prefix + "' under " + fullyQualifiedRootDirName);
 
             foreach (var d in Directory.GetDirectories(dir))
             {
-                _Load(Path.Combine(prefix, Path.GetFileName(d)) + "/");
+                _Load(TemplateName.Combine(prefix, Path.GetFileName(d)));
             }
 
             foreach (var f in Directory.GetFiles(dir))
@@ -94,14 +102,24 @@ namespace StringTemplate
                 if (Path.GetExtension(f).Equals(".st", System.StringComparison.OrdinalIgnoreCase))
                     LoadTemplateFile(prefix, Path.GetFileName(f));
                 else if (Path.GetExtension(f).Equals(".stg", System.StringComparison.OrdinalIgnoreCase))
-                    LoadGroupFile(Path.Combine(prefix, Path.GetFileNameWithoutExtension(f)) + "/", Path.Combine(prefix, Path.GetFileName(f)));
+                    LoadGroupFile(TemplateName.Combine(prefix, Path.GetFileNameWithoutExtension(f)), Path.Combine(relativePrefix, Path.GetFileName(f)));
             }
         }
 
-        public virtual CompiledTemplate LoadTemplateFile(string prefix, string fileName)
+        public CompiledTemplate LoadTemplateFile(TemplateName prefix, string fileName)
         {
+            if (prefix == null)
+                throw new ArgumentNullException("prefix");
+            if (fileName == null)
+                throw new ArgumentNullException("fileName");
+            if (!prefix.IsRooted)
+                throw new ArgumentException("Expected the prefix to be a rooted name.", "prefix");
+
+            TemplateName templateName = TemplateName.Combine(prefix, new TemplateName(Path.GetFileNameWithoutExtension(fileName)));
+
             // load from disk
-            string absoluteFileName = Path.Combine(Path.Combine(fullyQualifiedRootDirName, prefix), fileName);
+            string absoluteFileName = Path.Combine(Path.Combine(fullyQualifiedRootDirName, prefix.FullName.Substring(1)), fileName);
+
             //Console.WriteLine("load " + absoluteFileName);
             if (!File.Exists(absoluteFileName))
             {
@@ -118,13 +136,16 @@ namespace StringTemplate
                 parser.templateDef(prefix);
 
                 CompiledTemplate code;
-                if (!templates.TryGetValue("/" + Path.Combine(prefix, Path.GetFileNameWithoutExtension(fileName)), out code))
+                if (!templates.TryGetValue(templateName, out code))
                     return null;
 
                 return code;
             }
             catch (Exception e)
             {
+                if (ErrorManager.IsCriticalException(e))
+                    throw;
+
                 ErrorManager.IOError(null, ErrorType.CantLoadTemplateFile, e, absoluteFileName);
                 Console.Error.WriteLine(e.StackTrace);
             }

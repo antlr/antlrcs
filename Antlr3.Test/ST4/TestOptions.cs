@@ -36,6 +36,7 @@ namespace AntlrUnitTests.ST4
     using ST = StringTemplate.Template;
     using STGroup = StringTemplate.TemplateGroup;
     using String = System.String;
+    using StringTemplate;
 
     [TestClass]
     public class TestOptions : StringTemplateTestBase
@@ -44,7 +45,7 @@ namespace AntlrUnitTests.ST4
         public void TestSeparator()
         {
             STGroup group = new STGroup();
-            group.DefineTemplate("test", "hi <name; separator=\", \">!");
+            group.DefineTemplate(new TemplateName("test"), "hi <name; separator=\", \">!");
             ST st = group.GetInstanceOf("test");
             st.Add("name", "Ter");
             st.Add("name", "Tom");
@@ -58,7 +59,7 @@ namespace AntlrUnitTests.ST4
         public void TestAttrSeparator()
         {
             STGroup group = new STGroup();
-            group.DefineTemplate("test", "hi <name; separator=sep>!");
+            group.DefineTemplate(new TemplateName("test"), "hi <name; separator=sep>!");
             ST st = group.GetInstanceOf("test");
             st.Add("sep", ", ");
             st.Add("name", "Ter");
@@ -73,8 +74,8 @@ namespace AntlrUnitTests.ST4
         public void TestIncludeSeparator()
         {
             STGroup group = new STGroup();
-            group.DefineTemplate("foo", "|");
-            group.DefineTemplate("test", "hi <name; separator=foo()>!");
+            group.DefineTemplate(new TemplateName("foo"), "|");
+            group.DefineTemplate(new TemplateName("test"), "hi <name; separator=foo()>!");
             ST st = group.GetInstanceOf("test");
             st.Add("sep", ", ");
             st.Add("name", "Ter");
@@ -89,7 +90,7 @@ namespace AntlrUnitTests.ST4
         public void TestSubtemplateSeparator()
         {
             STGroup group = new STGroup();
-            group.DefineTemplate("test", "hi <name; separator={<sep> _}>!");
+            group.DefineTemplate(new TemplateName("test"), "hi <name; separator={<sep> _}>!");
             ST st = group.GetInstanceOf("test");
             st.Add("sep", ",");
             st.Add("name", "Ter");
@@ -104,7 +105,7 @@ namespace AntlrUnitTests.ST4
         public void TestSeparatorWithNullFirstValueAndNullOption()
         {
             STGroup group = new STGroup();
-            group.DefineTemplate("test", "hi <name; null=\"n/a\", separator=\", \">!");
+            group.DefineTemplate(new TemplateName("test"), "hi <name; null=\"n/a\", separator=\", \">!");
             ST st = group.GetInstanceOf("test");
             st.Add("name", null);
             st.Add("name", "Tom");
@@ -118,7 +119,7 @@ namespace AntlrUnitTests.ST4
         public void TestSeparatorWithNull2ndValueAndNullOption()
         {
             STGroup group = new STGroup();
-            group.DefineTemplate("test", "hi <name; null=\"n/a\", separator=\", \">!");
+            group.DefineTemplate(new TemplateName("test"), "hi <name; null=\"n/a\", separator=\", \">!");
             ST st = group.GetInstanceOf("test");
             st.Add("name", "Ter");
             st.Add("name", null);
@@ -132,7 +133,7 @@ namespace AntlrUnitTests.ST4
         public void TestNullValueAndNullOption()
         {
             STGroup group = new STGroup();
-            group.DefineTemplate("test", "<name; null=\"n/a\">");
+            group.DefineTemplate(new TemplateName("test"), "<name; null=\"n/a\">");
             ST st = group.GetInstanceOf("test");
             st.Add("name", null);
             String expected = "n/a";
@@ -144,7 +145,7 @@ namespace AntlrUnitTests.ST4
         public void TestMissingValueAndNullOption()
         {
             STGroup group = new STGroup();
-            group.DefineTemplate("test", "<name; null=\"n/a\">");
+            group.DefineTemplate(new TemplateName("test"), "<name; null=\"n/a\">");
             ST st = group.GetInstanceOf("test");
             String expected = "n/a";
             String result = st.Render();
@@ -155,8 +156,8 @@ namespace AntlrUnitTests.ST4
         public void TestOptionDoesntApplyToNestedTemplate()
         {
             STGroup group = new STGroup();
-            group.DefineTemplate("foo", "<zippo>");
-            group.DefineTemplate("test", "<foo(); null=\"n/a\">");
+            group.DefineTemplate(new TemplateName("foo"), "<zippo>");
+            group.DefineTemplate(new TemplateName("test"), "<foo(); null=\"n/a\">");
             ST st = group.GetInstanceOf("test");
             st.Add("zippo", null);
             String expected = "";

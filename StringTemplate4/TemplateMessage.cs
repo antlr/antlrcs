@@ -95,12 +95,15 @@ namespace StringTemplate
 
         public override string ToString()
         {
-            StringBuilder builder = new StringBuilder();
+            StringBuilder builder = new StringBuilder(Message);
 
             if (Template != null)
-                builder.Append(Template.GetEnclosingInstanceStackString() + " ");
+            {
+                builder.Append(" in context ");
+                builder.Append(Template.GetEnclosingInstanceStackString());
+            }
 
-            builder.AppendLine(Message);
+            builder.AppendLine();
 
             if (Source != null)
             {

@@ -89,6 +89,7 @@
       <DependentUpon>TemplateParser.g3</DependentUpon>
     </Compile>
     <Compile Include="TemplateMessage.cs" />
+    <Compile Include="TemplateName.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\Antlr3\Key.snk">

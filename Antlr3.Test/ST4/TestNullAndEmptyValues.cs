@@ -38,6 +38,7 @@ namespace AntlrUnitTests.ST4
     using STErrorListener = StringTemplate.ITemplateErrorListener;
     using STGroup = StringTemplate.TemplateGroup;
     using String = System.String;
+    using StringTemplate;
 
     [TestClass]
     public class TestNullAndEmptyValues : StringTemplateTestBase
@@ -46,7 +47,7 @@ namespace AntlrUnitTests.ST4
         public void TestSeparatorWithNullFirstValue()
         {
             STGroup group = new STGroup();
-            group.DefineTemplate("test", "hi <name; separator=\", \">!");
+            group.DefineTemplate(new TemplateName("test"), "hi <name; separator=\", \">!");
             ST st = group.GetInstanceOf("test");
             st.Add("name", null); // null is added to list, but ignored in iteration
             st.Add("name", "Tom");
@@ -60,7 +61,7 @@ namespace AntlrUnitTests.ST4
         public void TestSeparatorWithNull2ndValue()
         {
             STGroup group = new STGroup();
-            group.DefineTemplate("test", "hi <name; separator=\", \">!");
+            group.DefineTemplate(new TemplateName("test"), "hi <name; separator=\", \">!");
             ST st = group.GetInstanceOf("test");
             st.Add("name", "Ter");
             st.Add("name", null);
@@ -74,7 +75,7 @@ namespace AntlrUnitTests.ST4
         public void TestSeparatorWithNullLastValue()
         {
             STGroup group = new STGroup();
-            group.DefineTemplate("test", "hi <name; separator=\", \">!");
+            group.DefineTemplate(new TemplateName("test"), "hi <name; separator=\", \">!");
             ST st = group.GetInstanceOf("test");
             st.Add("name", "Ter");
             st.Add("name", "Tom");
@@ -88,7 +89,7 @@ namespace AntlrUnitTests.ST4
         public void TestSeparatorWithTwoNullValuesInRow()
         {
             STGroup group = new STGroup();
-            group.DefineTemplate("test", "hi <name; separator=\", \">!");
+            group.DefineTemplate(new TemplateName("test"), "hi <name; separator=\", \">!");
             ST st = group.GetInstanceOf("test");
             st.Add("name", "Ter");
             st.Add("name", "Tom");
@@ -104,7 +105,7 @@ namespace AntlrUnitTests.ST4
         public void TestSizeZeroButNonNullListGetsNoOutput()
         {
             STGroup group = new STGroup();
-            group.DefineTemplate("test",
+            group.DefineTemplate(new TemplateName("test"),
                 "begin\n" +
                 "<users>\n" +
                 "end\n");
@@ -119,7 +120,7 @@ namespace AntlrUnitTests.ST4
         public void TestNullListGetsNoOutput()
         {
             STGroup group = new STGroup();
-            group.DefineTemplate("test",
+            group.DefineTemplate(new TemplateName("test"),
                 "begin\n" +
                 "<users:{name: <it>}; separator=\", \">\n" +
                 "end\n");
@@ -134,7 +135,7 @@ namespace AntlrUnitTests.ST4
         public void TestEmptyListGetsNoOutput()
         {
             STGroup group = new STGroup();
-            group.DefineTemplate("test",
+            group.DefineTemplate(new TemplateName("test"),
                 "begin\n" +
                 "<users:{name: <it>}; separator=\", \">\n" +
                 "end\n");

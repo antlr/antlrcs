@@ -47,7 +47,7 @@ namespace AntlrUnitTests.ST4
         public void TestTrimmedSubtemplates()
         {
             STGroup group = new STGroup();
-            group.DefineTemplate("test", "<names:{n | <n>}>!");
+            group.DefineTemplate(new TemplateName("test"), "<names:{n | <n>}>!");
             ST st = group.GetInstanceOf("test");
             st.Add("names", "Ter");
             st.Add("names", "Tom");
@@ -61,7 +61,7 @@ namespace AntlrUnitTests.ST4
         public void TestTrimJustOneWSInSubtemplates()
         {
             STGroup group = new STGroup();
-            group.DefineTemplate("test", "<names:{n |  <n> }>!");
+            group.DefineTemplate(new TemplateName("test"), "<names:{n |  <n> }>!");
             ST st = group.GetInstanceOf("test");
             st.Add("names", "Ter");
             st.Add("names", "Tom");
@@ -75,7 +75,7 @@ namespace AntlrUnitTests.ST4
         public void TestTrimNewlineInSubtemplates()
         {
             STGroup group = new STGroup();
-            group.DefineTemplate("test", "<names:{n |\n" +
+            group.DefineTemplate(new TemplateName("test"), "<names:{n |\n" +
                                          "<n>}>!");
             ST st = group.GetInstanceOf("test");
             st.Add("names", "Ter");
@@ -90,7 +90,7 @@ namespace AntlrUnitTests.ST4
         public void TestLeaveNewlineOnEndInSubtemplates()
         {
             STGroup group = new STGroup();
-            group.DefineTemplate("test", "<names:{n |\n" +
+            group.DefineTemplate(new TemplateName("test"), "<names:{n |\n" +
                                          "<n>\n" +
                                          "}>!");
             ST st = group.GetInstanceOf("test");

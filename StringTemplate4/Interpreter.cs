@@ -172,20 +172,20 @@ namespace StringTemplate
                     nameIndex = GetShort(code, ip);
                     ip += 2;
                     name = self.code.strings[nameIndex];
-                    st = group.GetEmbeddedInstanceOf(self, name);
+                    st = group.GetEmbeddedInstanceOf(self, new TemplateName(name));
                     if (st == null)
                     {
-                        ErrorManager.RuntimeError(self, ErrorType.NoSuchTemplate, name);
+                        ErrorManager.RuntimeError(self, ErrorType.NoSuchTemplate, new TemplateName(name).Name);
                         st = Template.Blank;
                     }
                     operands[++sp] = st;
                     break;
                 case Bytecode.INSTR_NEW_IND:
                     name = (string)operands[sp--];
-                    st = group.GetEmbeddedInstanceOf(self, name);
+                    st = group.GetEmbeddedInstanceOf(self, new TemplateName(name));
                     if (st == null)
                     {
-                        ErrorManager.RuntimeError(self, ErrorType.NoSuchTemplate, name);
+                        ErrorManager.RuntimeError(self, ErrorType.NoSuchTemplate, new TemplateName(name).Name);
                         st = Template.Blank;
                     }
                     operands[++sp] = st;
@@ -194,10 +194,10 @@ namespace StringTemplate
                     nameIndex = GetShort(code, ip);
                     ip += 2;
                     name = self.code.strings[nameIndex];
-                    CompiledTemplate imported = group.LookupImportedTemplate(name);
+                    CompiledTemplate imported = group.LookupImportedTemplate(new TemplateName(name));
                     if (imported == null)
                     {
-                        ErrorManager.RuntimeError(self, ErrorType.NoImportedTemplate, name);
+                        ErrorManager.RuntimeError(self, ErrorType.NoImportedTemplate, new TemplateName(name).Name);
                         operands[++sp] = Template.Blank;
                         break;
                     }
@@ -267,14 +267,14 @@ namespace StringTemplate
                 case Bytecode.INSTR_MAP:
                     name = (string)operands[sp--];
                     o = operands[sp--];
-                    Map(self, o, name);
+                    Map(self, o, new TemplateName(name));
                     break;
                 case Bytecode.INSTR_ROT_MAP:
                     int nmaps = GetShort(code, ip);
                     ip += 2;
-                    List<string> templates = new List<string>();
+                    List<TemplateName> templates = new List<TemplateName>();
                     for (int i = nmaps - 1; i >= 0; i--)
-                        templates.Add((string)operands[sp - i]);
+                        templates.Add(new TemplateName((string)operands[sp - i]));
                     sp -= nmaps;
                     o = operands[sp--];
                     if (o != null)
@@ -288,7 +288,7 @@ namespace StringTemplate
                     for (int i = nmaps - 1; i >= 0; i--)
                         exprs.Add(operands[sp - i]);
                     sp -= nmaps;
-                    operands[++sp] = Par_map(self, exprs, name);
+                    operands[++sp] = Par_map(self, exprs, new TemplateName(name));
                     break;
                 case Bytecode.INSTR_BR:
                     ip = GetShort(code, ip);
@@ -481,6 +481,7 @@ namespace StringTemplate
             if (o is Template)
             {
                 ((Template)o).enclosingInstance = self;
+                SetDefaultArguments((Template)o);
                 if (options != null && options[OPTION_WRAP] != null)
                 {
                     // if we have a wrap string, then inform writer it might need to wrap
@@ -567,13 +568,13 @@ namespace StringTemplate
             return n;
         }
 
-        protected void Map(Template self, object attr, string name)
+        protected void Map(Template self, object attr, TemplateName name)
         {
-            Rot_map(self, attr, new List<string>() { name });
+            Rot_map(self, attr, new TemplateName[] { name });
         }
 
         // <names:a,b>
-        protected void Rot_map(Template self, object attr, List<string> templates)
+        protected void Rot_map(Template self, object attr, IList<TemplateName> templates)
         {
             if (attr == null)
             {
@@ -595,7 +596,7 @@ namespace StringTemplate
                         continue;
                     int templateIndex = ti % templates.Count; // rotate through
                     ti++;
-                    string name = templates[templateIndex];
+                    TemplateName name = templates[templateIndex];
                     Template st = group.GetEmbeddedInstanceOf(self, name);
                     SetSoleArgument(st, iterValue);
                     st.RawSetAttribute("i0", i0);
@@ -619,7 +620,7 @@ namespace StringTemplate
         }
 
         // <names,phones:{n,p | ...}>
-        protected Template.AttributeList Par_map(Template self, List<object> exprs, string template)
+        protected Template.AttributeList Par_map(Template self, List<object> exprs, TemplateName template)
         {
             if (exprs == null || template == null || exprs.Count == 0)
             {
@@ -646,7 +647,7 @@ namespace StringTemplate
             object[] formalArgumentNames = formalArguments.Keys.ToArray();
             if (formalArgumentNames.Length != numAttributes)
             {
-                ErrorManager.RuntimeError(self, ErrorType.ArgumentCountMismatch, template);
+                ErrorManager.RuntimeError(self, ErrorType.ArgumentCountMismatch, template.Name);
                 // truncate arg list to match smaller size
                 int shorterSize = Math.Min(formalArgumentNames.Length, numAttributes);
                 numAttributes = shorterSize;
@@ -1050,7 +1051,10 @@ namespace StringTemplate
                 }
                 catch (Exception e)
                 {
-                    ErrorManager.RuntimeError(self, ErrorType.CantAccessPropertyMethod, e, m);
+                    if (ErrorManager.IsCriticalException(e))
+                        throw;
+
+                    //ErrorManager.RuntimeError(self, ErrorType.CantAccessPropertyMethod, e, m);
                 }
             }
             else
@@ -1066,12 +1070,18 @@ namespace StringTemplate
                     }
                     catch (Exception e)
                     {
-                        ErrorManager.RuntimeError(self, ErrorType.CantAccessPropertyField, e, m);
+                        if (ErrorManager.IsCriticalException(e))
+                            throw;
+
+                        //ErrorManager.RuntimeError(self, ErrorType.CantAccessPropertyField, e, m);
                     }
                 }
-                catch
+                catch (Exception e)
                 {
-                    ErrorManager.RuntimeError(self, ErrorType.NoSuchProperty, c, propertyName);
+                    if (ErrorManager.IsCriticalException(e))
+                        throw;
+
+                    //ErrorManager.RuntimeError(self, ErrorType.NoSuchProperty, c, propertyName);
                 }
             }
 
@@ -1097,11 +1107,53 @@ namespace StringTemplate
             {
                 m = c.GetMethod(methodName, (Type[])null);
             }
-            catch
+            catch (Exception e)
             {
+                if (ErrorManager.IsCriticalException(e))
+                    throw;
+
                 m = null;
             }
             return m;
+        }
+
+        /** Set any default argument values that were not set by the
+         *  invoking template or by setAttribute directly.  Note
+         *  that the default values may be templates.  Their evaluation
+         *  context is the template itself and, hence, can see attributes
+         *  within the template, any arguments, and any values inherited
+         *  by the template.
+         */
+        public void SetDefaultArguments(Template invokedST)
+        {
+            if (invokedST.code.formalArguments == null || invokedST.code.formalArguments.Count == 0)
+                return;
+
+            foreach (FormalArgument arg in invokedST.code.formalArguments.Values)
+            {
+                // if no value for attribute and default arg, inject default arg into self
+                object attributeValue;
+                if ((invokedST.attributes == null || !invokedST.attributes.TryGetValue(arg.name, out attributeValue) || attributeValue == null) && arg.compiledDefaultValue != null)
+                {
+                    Template defaultArgST = group.CreateStringTemplate();
+                    defaultArgST.groupThatCreatedThisInstance = group;
+                    defaultArgST.code = arg.compiledDefaultValue;
+                    Console.WriteLine("setting def arg " + arg.name + " to " + defaultArgST);
+                    // If default arg is template with single expression
+                    // wrapped in parens, x={<(...)>}, then eval to string
+                    // rather than setting x to the template for later
+                    // eval.
+                    string defArgTemplate = arg.defaultValueToken.Text;
+                    if (defArgTemplate.StartsWith("{<(") && defArgTemplate.EndsWith(")>}"))
+                    {
+                        invokedST.RawSetAttribute(arg.name, ToString(invokedST, defaultArgST));
+                    }
+                    else
+                    {
+                        invokedST.RawSetAttribute(arg.name, defaultArgST);
+                    }
+                }
+            }
         }
 
         protected void Trace(Template self, int ip)
@@ -1111,8 +1163,8 @@ namespace StringTemplate
                                                                 self.code.strings);
             StringBuilder buf = new StringBuilder();
             dis.DisassembleInstruction(buf, ip);
-            string name = self.code.name + ":";
-            if (self.code.name == Template.UnknownName)
+            string name = self.code.Name + ":";
+            if (self.code.Name == Template.UnknownName)
                 name = "";
             Console.Write(string.Format("{0:-40s}", name + buf));
             Console.Write("\tstack=[");
@@ -1131,7 +1183,10 @@ namespace StringTemplate
         {
             if (o is Template)
             {
-                Console.Write(" " + ((Template)o).code.name + "()");
+                if (((Template)o).code == null)
+                    Console.Write("bad-template()");
+                else
+                    Console.Write(" " + ((Template)o).code.Name + "()");
                 return;
             }
             o = ConvertAnythingIteratableToIterator(o);

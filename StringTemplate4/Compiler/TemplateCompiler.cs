@@ -37,6 +37,8 @@ namespace StringTemplate.Compiler
     using Array = System.Array;
     using Console = System.Console;
     using Math = System.Math;
+    using ArgumentException = System.ArgumentException;
+    using ArgumentNullException = System.ArgumentNullException;
 
     /// <summary>
     /// A compiler for a single template
@@ -91,24 +93,24 @@ namespace StringTemplate.Compiler
          *  /a/b/c is the path prefix to add to all ID refs; it fully qualifies them.
          *  It's like resolving x to this.x in Java for field x. 
          */
-        private string templatePathPrefix;
+        private TemplateName templatePathPrefix;
 
-        private string enclosingTemplateName;
+        private TemplateName enclosingTemplateName;
 
         public static int subtemplateCount = 0; // public for testing access
 
         public TemplateCompiler()
-            : this("/", "<unknown>")
+            : this(TemplateName.Root, new TemplateName("unknown"))
         {
         }
 
-        public TemplateCompiler(string templatePathPrefix, string enclosingTemplateName)
+        public TemplateCompiler(TemplateName templatePathPrefix, TemplateName enclosingTemplateName)
         {
             this.templatePathPrefix = templatePathPrefix;
             this.enclosingTemplateName = enclosingTemplateName;
         }
 
-        public string TemplateReferencePrefix
+        public TemplateName TemplateReferencePrefix
         {
             get
             {
@@ -217,13 +219,13 @@ namespace StringTemplate.Compiler
             return ip;
         }
 
-        public string CompileAnonTemplate(string enclosingTemplateName,
+        public TemplateName CompileAnonTemplate(TemplateName enclosingTemplateName,
                                           ITokenStream input,
                                           IList<IToken> argIDs,
                                           RecognizerSharedState state)
         {
             subtemplateCount++;
-            string name = templatePathPrefix + Template.SubtemplatePrefix + subtemplateCount;
+            TemplateName name = TemplateName.Combine(templatePathPrefix, Template.SubtemplatePrefix + subtemplateCount);
             ITokenSource tokenSource = input.TokenSource;
             TemplateLexer lexer = tokenSource as TemplateLexer;
             int start = -1;
@@ -232,7 +234,7 @@ namespace StringTemplate.Compiler
                 start = lexer.input.Index;
             TemplateCompiler c = new TemplateCompiler(templatePathPrefix, enclosingTemplateName);
             CompiledTemplate sub = c.Compile(input, state);
-            sub.name = name;
+            sub.Name = name;
             if (lexer != null)
             {
                 stop = lexer.input.Index;
@@ -257,15 +259,15 @@ namespace StringTemplate.Compiler
             return name;
         }
 
-        public string CompileRegion(string enclosingTemplateName,
+        public TemplateName CompileRegion(TemplateName enclosingTemplateName,
                                     string regionName,
                                     ITokenStream input,
                                     RecognizerSharedState state)
         {
             TemplateCompiler c = new TemplateCompiler(templatePathPrefix, enclosingTemplateName);
             CompiledTemplate sub = c.Compile(input, state);
-            string fullName = templatePathPrefix + TemplateGroup.GetMangledRegionName(enclosingTemplateName, regionName);
-            sub.name = fullName;
+            TemplateName fullName = TemplateName.Combine(templatePathPrefix, TemplateGroup.GetMangledRegionName(enclosingTemplateName, regionName));
+            sub.Name = fullName;
             if (code.implicitlyDefinedTemplates == null)
             {
                 code.implicitlyDefinedTemplates = new List<CompiledTemplate>();
@@ -274,14 +276,19 @@ namespace StringTemplate.Compiler
             return fullName;
         }
 
-        public void DefineBlankRegion(string fullyQualifiedName)
+        public void DefineBlankRegion(TemplateName name)
         {
+            if (name == null)
+                throw new ArgumentNullException();
+            if (!name.IsRooted)
+                throw new ArgumentException();
+
             // TODO: combine with CompileRegion
             CompiledTemplate blank = new CompiledTemplate()
             {
                 isRegion = true,
                 regionDefType = Template.RegionType.Implicit,
-                name = fullyQualifiedName
+                Name = name
             };
 
             if (code.implicitlyDefinedTemplates == null)

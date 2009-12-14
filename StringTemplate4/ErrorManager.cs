@@ -37,19 +37,20 @@ namespace StringTemplate
     using IOException = System.IO.IOException;
     using ThreadStatic = System.ThreadStaticAttribute;
     using StringTemplate.Compiler;
+    using Type = System.Type;
 
     public static class ErrorManager
     {
         public static readonly ITemplateErrorListener DefaultErrorListener = new DefaultErrorListenerImpl();
 
         [ThreadStatic]
-        private static ITemplateErrorListener listener = DefaultErrorListener;
+        private static ITemplateErrorListener listener;
 
         public static ITemplateErrorListener ErrorListener
         {
             get
             {
-                return listener;
+                return listener ?? DefaultErrorListener;
             }
             set
             {
@@ -57,59 +58,87 @@ namespace StringTemplate
             }
         }
 
+        private static Type[] CriticalExceptions =
+            {
+                typeof(System.StackOverflowException),
+                typeof(System.OutOfMemoryException),
+                typeof(System.Threading.ThreadAbortException),
+                typeof(System.Runtime.InteropServices.SEHException),
+                typeof(System.Security.SecurityException),
+                typeof(System.ExecutionEngineException),
+                typeof(System.AccessViolationException),
+                typeof(System.BadImageFormatException),
+                typeof(System.AppDomainUnloadedException),
+            };
+
+        public static bool IsCriticalException(Exception ex)
+        {
+            if (ex == null)
+                return false;
+
+            var exceptionType = ex.GetType();
+            foreach (Type t in CriticalExceptions)
+            {
+                if (t.IsAssignableFrom(exceptionType))
+                    return true;
+            }
+
+            return false;
+        }
+
         public static void CompileTimeError(ErrorType error, object arg)
         {
-            listener.CompileTimeError(new TemplateMessage(error, null, null, arg));
+            ErrorListener.CompileTimeError(new TemplateMessage(error, null, null, arg));
         }
 
         public static void CompileTimeError(ErrorType error, object arg1, object arg2)
         {
-            listener.CompileTimeError(new TemplateMessage(error, null, null, arg1, arg2));
+            ErrorListener.CompileTimeError(new TemplateMessage(error, null, null, arg1, arg2));
         }
 
         public static void RuntimeError(Template template, ErrorType error)
         {
-            listener.RuntimeError(new TemplateMessage(error, template));
+            ErrorListener.RuntimeError(new TemplateMessage(error, template));
         }
 
         public static void RuntimeError(Template template, ErrorType error, object arg)
         {
-            listener.RuntimeError(new TemplateMessage(error, template, null, arg));
+            ErrorListener.RuntimeError(new TemplateMessage(error, template, null, arg));
         }
 
         public static void RuntimeError(Template template, ErrorType error, Exception source, object arg)
         {
-            listener.RuntimeError(new TemplateMessage(error, template, source, arg));
+            ErrorListener.RuntimeError(new TemplateMessage(error, template, source, arg));
         }
 
         public static void RuntimeError(Template template, ErrorType error, object arg1, object arg2)
         {
-            listener.RuntimeError(new TemplateMessage(error, template, null, arg1, arg2));
+            ErrorListener.RuntimeError(new TemplateMessage(error, template, null, arg1, arg2));
         }
 
         public static void IOError(Template template, ErrorType error, Exception source)
         {
-            listener.IOError(new TemplateMessage(error, template, source));
+            ErrorListener.IOError(new TemplateMessage(error, template, source));
         }
 
         public static void IOError(Template template, ErrorType error, Exception source, object arg)
         {
-            listener.IOError(new TemplateMessage(error, template, source, arg));
+            ErrorListener.IOError(new TemplateMessage(error, template, source, arg));
         }
 
         public static void InternalError(Template template, ErrorType error, Exception source)
         {
-            listener.InternalError(new TemplateMessage(error, template, source));
+            ErrorListener.InternalError(new TemplateMessage(error, template, source));
         }
 
         public static void InternalError(Template template, ErrorType error, Exception source, object arg)
         {
-            listener.InternalError(new TemplateMessage(error, template, source, arg));
+            ErrorListener.InternalError(new TemplateMessage(error, template, source, arg));
         }
 
         public static void InternalError(Template template, ErrorType error, Exception source, object arg1, object arg2)
         {
-            listener.InternalError(new TemplateMessage(error, template, source, arg1, arg2));
+            ErrorListener.InternalError(new TemplateMessage(error, template, source, arg1, arg2));
         }
 
         private class DefaultErrorListenerImpl : ITemplateErrorListener

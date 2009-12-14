@@ -62,7 +62,7 @@ using Console = System.Console;
 }
 
 public
-group[TemplateGroup group, string prefix]
+group[TemplateGroup group, TemplateName prefix]
 @init {
 GroupLexer lexer = (GroupLexer)input.TokenSource;
 this._group = lexer._group = $group;
@@ -71,15 +71,15 @@ this._group = lexer._group = $group;
     ;
 
 public
-templateDef[string prefix]
+templateDef[TemplateName prefix]
 @init {
     string template=null;
-    string fullName = null;
+    TemplateName fullName = null;
     int n=0; // num char to strip from left, right of template def
 }
 	:	(	'@' enclosing=ID '.' region=ID '(' ')'
-			{fullName = TemplateGroup.GetMangledRegionName($enclosing.text, $region.text);}
-		|	name=ID '(' formalArgs? ')' {fullName = $name.text;}
+			{fullName = TemplateGroup.GetMangledRegionName(new TemplateName($enclosing.text), $region.text);}
+		|	name=ID '(' formalArgs? ')' {fullName = new TemplateName($name.text);}
 		)
 		'::='
 		{IToken templateToken = input.LT(1);}
@@ -93,9 +93,9 @@ templateDef[string prefix]
 		}
 	    try {
 			if ($enclosing != null)
-				this._group.DefineRegion(prefix, $enclosing.text, $region.text, template);
+				this._group.DefineRegion(prefix, new TemplateName($enclosing.text), $region.text, template);
 			else
-				this._group.DefineTemplate(prefix, $name.text, $formalArgs.args, template);
+				this._group.DefineTemplate(prefix, new TemplateName($name.text), $formalArgs.args, template);
 		}
         catch (TemplateRecognitionException e) {
         	RecognitionException re = (RecognitionException)e.InnerException;
@@ -135,7 +135,7 @@ dictDef
         if ( this._group.dictionaries.ContainsKey($ID.text) ) {
             ErrorManager.CompileTimeError(ErrorType.MapRedefinition, "redefinition of map: "+$ID.text);
         }
-        else if ( this._group.templates.ContainsKey($ID.text) ) {
+        else if ( this._group.templates.ContainsKey(new TemplateName($ID.text)) ) {
             ErrorManager.CompileTimeError(ErrorType.TemplateRedefinitionAsMap, "redefinition of template as map: "+$ID.text);
         }
         else {

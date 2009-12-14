@@ -35,6 +35,7 @@ namespace StringTemplate.Compiler
     using System.Collections.Generic;
     using Antlr.Runtime;
     using Console = System.Console;
+    using ArgumentNullException = System.ArgumentNullException;
 
     partial class TemplateParser
     {
@@ -42,17 +43,17 @@ namespace StringTemplate.Compiler
          *  enclosing template.  This template could be a subtemplate or region of
          *  an enclosing template.
          */
-        private string _enclosingTemplateName;
+        private TemplateName _enclosingTemplateName;
 
         private static ICodeGenerator NoopGen = new CodeGenerator();
         private ICodeGenerator gen = NoopGen;
 
-        public TemplateParser(ITokenStream input, ICodeGenerator gen, string enclosingTemplateName)
+        public TemplateParser(ITokenStream input, ICodeGenerator gen, TemplateName enclosingTemplateName)
             : this(input, new RecognizerSharedState(), gen, enclosingTemplateName)
         {
         }
 
-        public TemplateParser(ITokenStream input, RecognizerSharedState state, ICodeGenerator gen, string enclosingTemplateName)
+        public TemplateParser(ITokenStream input, RecognizerSharedState state, ICodeGenerator gen, TemplateName enclosingTemplateName)
             : base(null, null) // overcome bug in ANTLR 3.2
         {
             this.input = input;
@@ -66,12 +67,12 @@ namespace StringTemplate.Compiler
             throw new MismatchedTokenException(ttype, input);
         }
 
-        public string PrefixedName(string t)
+        public TemplateName PrefixedName(TemplateName t)
         {
-            if (t != null && t[0] == '/')
-                return gen.TemplateReferencePrefix + t.Substring(1);
+            if (t == null)
+                return null;
 
-            return gen.TemplateReferencePrefix + t;
+            return TemplateName.Combine(gen.TemplateReferencePrefix, t);
         }
 
         public void RefAttr(IToken id)
@@ -134,7 +135,7 @@ namespace StringTemplate.Compiler
         /// </summary>
         private sealed class CodeGenerator : ICodeGenerator
         {
-            public string TemplateReferencePrefix
+            public TemplateName TemplateReferencePrefix
             {
                 get
                 {
@@ -167,21 +168,21 @@ namespace StringTemplate.Compiler
                 return 0;
             }
 
-            public string CompileAnonTemplate(string enclosingTemplateName, ITokenStream input, IList<IToken> ids, RecognizerSharedState state)
+            public TemplateName CompileAnonTemplate(TemplateName enclosingTemplateName, ITokenStream input, IList<IToken> ids, RecognizerSharedState state)
             {
                 TemplateCompiler c = new TemplateCompiler();
                 c.Compile(input, state);
                 return null;
             }
 
-            public string CompileRegion(string enclosingTemplateName, string regionName, ITokenStream input, RecognizerSharedState state)
+            public TemplateName CompileRegion(TemplateName enclosingTemplateName, string regionName, ITokenStream input, RecognizerSharedState state)
             {
                 TemplateCompiler c = new TemplateCompiler();
                 c.Compile(input, state);
                 return null;
             }
 
-            public void DefineBlankRegion(string fullyQualifiedName)
+            public void DefineBlankRegion(TemplateName fullyQualifiedName)
             {
             }
         }

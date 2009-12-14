@@ -50,7 +50,7 @@ namespace AntlrUnitTests.ST4
             string result = null;
             try
             {
-                group.DefineTemplate("test", template);
+                group.DefineTemplate(new TemplateName("test"), template);
             }
             catch (TemplateException se)
             {
@@ -69,7 +69,7 @@ namespace AntlrUnitTests.ST4
             string result = null;
             try
             {
-                group.DefineTemplate("test", template);
+                group.DefineTemplate(new TemplateName("test"), template);
             }
             catch (TemplateException se)
             {
