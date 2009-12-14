@@ -32,26 +32,31 @@
 
 namespace StringTemplate
 {
+    using ThreadStatic = System.ThreadStaticAttribute;
+
     public class ErrorTolerance
     {
         // bit set values telling ST what to care about
+        public static readonly int DETECT_UNKNOWN_ATTRIBUTE = 1;
         public static readonly int DETECT_UNKNOWN_PROPERTY = 2;
-        public static readonly int DETECT_UNKNOWN_ATTRIBUTE = 4;
+        public static readonly int DETECT_UNKNOWN_TEMPLATE = 4;
         public static readonly int DETECT_MALFORMED_TEMPLATE_NAME = 8;
-        public static readonly int DETECT_UNKNOWN_TEMPLATE = 16;
 
-        public static readonly int DEFAULT_TOLERANCE = 0;
+        public static readonly int DEFAULT_TOLERANCE = DETECT_UNKNOWN_TEMPLATE | DETECT_MALFORMED_TEMPLATE_NAME;
 
-        public int detect = DEFAULT_TOLERANCE;
+        [ThreadStatic]
+        public static int detect = DEFAULT_TOLERANCE;
 
         public bool Detects(int x)
         {
             return (detect & x) != 0;
         }
+
         public void Detect(int x)
         {
             detect |= x;
         }
+
         public void Ignore(int x)
         {
             detect &= ~x;

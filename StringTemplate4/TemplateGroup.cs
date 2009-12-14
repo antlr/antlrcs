@@ -57,28 +57,6 @@ namespace StringTemplate
         public static readonly string DICT_KEY = "key";
         public static readonly string DEFAULT_KEY = "default";
 
-        //private class DefaultErrorListenerImpl : ITemplateErrorListener
-        //{
-        //    public void Error(string message, Exception e)
-        //    {
-        //        Console.Error.WriteLine(message);
-        //        if (e != null)
-        //            Console.Error.WriteLine(e.StackTrace);
-        //    }
-
-        //    public void Error(string message)
-        //    {
-        //        Error(message, null);
-        //    }
-
-        //    public void Warning(string message)
-        //    {
-        //        Console.WriteLine(message);
-        //    }
-        //}
-
-        //public static readonly ITemplateErrorListener DefaultErrorListener = new DefaultErrorListenerImpl();
-
         public string fullyQualifiedRootDirName;
 
         /** Load files using what encoding? */
@@ -116,14 +94,6 @@ namespace StringTemplate
 
         protected bool alreadyLoaded = false;
 
-        /** Where to report errors.  All string templates in this group
-         *  use this error handler by default.
-         */
-        //public ITemplateErrorListener listener = DefaultErrorListener;
-
-        public static ErrorTolerance DEFAULT_ERROR_TOLERANCE = new ErrorTolerance();
-        public ErrorTolerance tolerance = DEFAULT_ERROR_TOLERANCE;
-
         public static TemplateGroup defaultGroup = new TemplateGroup();
 
         public TemplateGroup()
@@ -134,18 +104,6 @@ namespace StringTemplate
         {
             get;
             set;
-        }
-
-        public ErrorTolerance ErrorTolerance
-        {
-            get
-            {
-                return this.tolerance;
-            }
-            set
-            {
-                this.tolerance = value;
-            }
         }
 
         public virtual string Name
@@ -490,21 +448,6 @@ namespace StringTemplate
                 buf.AppendLine(">>");
             }
             return buf.ToString();
-        }
-
-        public virtual bool Detects(int x)
-        {
-            return tolerance.Detects(x);
-        }
-
-        public virtual void Detect(int x)
-        {
-            tolerance.Detect(x);
-        }
-
-        public virtual void Ignore(int x)
-        {
-            tolerance.Ignore(x);
         }
     }
 }
