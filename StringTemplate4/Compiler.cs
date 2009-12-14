@@ -226,12 +226,27 @@ namespace StringTemplate
         {
             subtemplateCount++;
             string name = templatePathPrefix + "_sub" + subtemplateCount;
+            ITokenSource tokenSource = input.TokenSource;
+            TemplateLexer lexer = tokenSource as TemplateLexer;
+            int start = -1;
+            int stop = -1;
+            if (tokenSource != null)
+                start = lexer.input.Index;
             Compiler c = new Compiler(templatePathPrefix, enclosingTemplateName);
             CompiledTemplate sub = c.Compile(input, state);
+            sub.name = name;
+            if (lexer != null)
+            {
+                stop = lexer.input.Index;
+                //sub.template = lexer.input.Substring(start, stop - start - 1);
+                Console.WriteLine(start + ".." + stop);
+                sub.embeddedStart = start;
+                sub.embeddedStop = stop - 1;
+                sub.template = lexer.input.Substring(0, lexer.input.Count - 1);
+            }
             if (code.implicitlyDefinedTemplates == null)
                 code.implicitlyDefinedTemplates = new List<CompiledTemplate>();
             code.implicitlyDefinedTemplates.Add(sub);
-            sub.name = name;
             if (argIDs != null)
             {
                 sub.formalArguments = new Dictionary<string, FormalArgument>();

@@ -322,6 +322,7 @@ namespace StringTemplate
             Compiler c = new Compiler(prefix, enclosingTemplateName);
             CompiledTemplate code = c.Compile(template);
             code.nativeGroup = this;
+            code.template = template;
             return code;
         }
 

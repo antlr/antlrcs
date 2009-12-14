@@ -42,6 +42,7 @@ namespace StringTemplate
     using IOException = System.IO.IOException;
     using StringBuilder = System.Text.StringBuilder;
     using StringWriter = System.IO.StringWriter;
+    using System.Diagnostics;
 
     public class Template
     {
@@ -55,6 +56,9 @@ namespace StringTemplate
 
         /** Map an attribute name to its value(s). */
         internal IDictionary<string, object> attributes;
+
+        // TEMPORARY! TODO move to DebugTemplate
+        public IList<Interpreter.DebugEvent> events = new List<Interpreter.DebugEvent>();
 
         /** Enclosing instance if I'm embedded within another template.
          *  IF-subtemplates are considered embedded as well.
@@ -113,6 +117,31 @@ namespace StringTemplate
             get
             {
                 return this.attributes;
+            }
+        }
+
+        public CompiledTemplate CompiledTemplate
+        {
+            get
+            {
+                return code;
+            }
+        }
+
+        [DebuggerHidden]
+        public IEnumerable<Template> EnclosingInstanceStack
+        {
+            get
+            {
+                return GetEnclosingInstanceStack(false);
+            }
+        }
+
+        public ICollection<Interpreter.DebugEvent> Events
+        {
+            get
+            {
+                return this.events;
             }
         }
 
@@ -260,7 +289,7 @@ namespace StringTemplate
          */
         public virtual string GetEnclosingInstanceStackString()
         {
-            IList<Template> templates = GetEnclosingInstanceStack();
+            IList<Template> templates = GetEnclosingInstanceStack(true);
             StringBuilder builder = new StringBuilder();
             int i = 0;
             foreach (var st in templates)
@@ -275,13 +304,17 @@ namespace StringTemplate
             return builder.ToString();
         }
 
-        public IList<Template> GetEnclosingInstanceStack()
+        public IList<Template> GetEnclosingInstanceStack(bool topdown)
         {
             var stack = new List<Template>();
             Template p = this;
             while (p != null)
             {
-                stack.Insert(0, p);
+                if (topdown)
+                    stack.Insert(0, p);
+                else
+                    stack.Add(p);
+
                 p = p.enclosingInstance;
             }
 

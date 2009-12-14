@@ -44,6 +44,10 @@ namespace StringTemplate
          */
         public string template;
 
+        // for subtemplates:
+        public int embeddedStart = -1;
+        public int embeddedStop = -1;
+
         protected internal IDictionary<string, FormalArgument> formalArguments;
 
         protected internal List<CompiledTemplate> implicitlyDefinedTemplates;
@@ -72,6 +76,17 @@ namespace StringTemplate
         public string[] strings;
         public byte[] instrs;        // byte-addressable code memory.
         public int codeSize;
+
+        public string Template
+        {
+            get
+            {
+                if (embeddedStart >= 0)
+                    return template.Substring(embeddedStart, embeddedStop - embeddedStart);
+
+                return template;
+            }
+        }
 
         public virtual string Instructions()
         {

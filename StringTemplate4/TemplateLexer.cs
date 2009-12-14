@@ -118,7 +118,7 @@ namespace StringTemplate
         bool scanningInsideExpr = false;
         internal int subtemplateDepth = 0; // start out *not* in a {...} subtemplate 
 
-        ICharStream input;
+        internal ICharStream input;
         char c;        // current character
         int startCharIndex;
         int startLine;

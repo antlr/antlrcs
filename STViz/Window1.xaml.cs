@@ -47,16 +47,33 @@ namespace STViz
             InitializeComponent();
 
             string templates =
-                "t(x) ::= <<[<u()>]>>\n" +
-                "u() ::= << <x> >>\n";
+                "method(type,name,args,stats) ::= <<\n" +
+                "public <type> <name>(<args:{a| int <a>}; separator=\", \">) {\n" +
+                "    <stats;separator=\"\\n\">\n" +
+                "}\n" +
+                ">>\n" +
+                "assign(a,b) ::= \"<a> = <b>;\"\n" +
+                "return(x) ::= <<return <x>;>>\n";
 
             string tmpdir = Path.GetTempPath();
             File.WriteAllText(Path.Combine(tmpdir, "t.stg"), templates);
             TemplateGroup group = new TemplateGroupFile(Path.Combine(tmpdir, "t.stg"));
-            Template st = group.GetInstanceOf("t");
+            Template st = group.GetInstanceOf("method");
             st.code.Dump();
-            st.Add("x", "foo");
-            st.Add("y", "bar");
+            st.Add("type", "float");
+            st.Add("name", "foo");
+            st.Add("args", new String[] { "x", "y", "z" });
+            Template s1 = group.GetInstanceOf("assign");
+            s1.Add("a", "x");
+            s1.Add("b", "y");
+            Template s2 = group.GetInstanceOf("assign");
+            s2.Add("a", "y");
+            s2.Add("b", "z");
+            Template s3 = group.GetInstanceOf("return");
+            s3.Add("x", "3.14159");
+            st.Add("stats", s1);
+            st.Add("stats", s2);
+            st.Add("stats", s3);
 
             StringWriter sw = new StringWriter();
             Interpreter interp = new Interpreter(group, new AutoIndentWriter(sw));
@@ -64,31 +81,8 @@ namespace STViz
             interp.Exec(st);
             IList<Interpreter.DebugEvent> events = interp.Events;
 
-            //STViewFrame m = new STViewFrame();
-            //DefaultListModel stackModel = new DefaultListModel();
-            //IList<Template> stack = st.GetEnclosingInstanceStack();
-            //foreach (ST s in stack) stackModel.addElement(s.getName());
-            //m.stack.setModel(stackModel);
-            //m.stack.addListSelectionListener(
-            //    new ListSelectionListener() {
-            //        public void valueChanged(ListSelectionEvent e) {
-            //            System.out.println("touched "+e.getFirstIndex());
-            //        }
-            //    }
-            //);
-
-            //DefaultListModel attrModel = new DefaultListModel();
-            //IDictionary<string, object> attrs = st.Attributes;
-            //foreach (var pair in attrs)
-            //{
-            //    attrModel.addElement(a + " = " + attrs.get(a));
-            //}
-            //m.attributes.setModel(attrModel);
-
-            lstStack.DataContext = st.GetEnclosingInstanceStack();
-            lstAttributes.DataContext = st.Attributes;
+            templatesTree.Items.Add(st);
             txtOutput.Text = sw.ToString();
-            txtTemplate.Text = st.code.template;
         }
     }
 }

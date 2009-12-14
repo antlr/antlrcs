@@ -85,5 +85,27 @@ namespace AntlrUnitTests.ST4
             String result = events.ToString();
             Assert.AreEqual(expected, result);
         }
+
+        [TestMethod]
+        public void TestTemplateCall()
+        {
+            String templates =
+                "t(x) ::= <<[<u()>]>>\n" +
+                "u() ::= << <x> >>\n";
+
+            WriteFile(tmpdir, "t.stg", templates);
+            STGroup group = new STGroupFile(tmpdir + "/" + "t.stg");
+            ST st = group.GetInstanceOf("t");
+            st.code.Dump();
+            st.Add("x", "foo");
+            StringWriter sw = new StringWriter();
+            Interpreter interp = new Interpreter(group, new AutoIndentWriter(sw));
+            interp.Debug = true;
+            interp.Exec(st);
+            String expected = "";
+            IList<Interpreter.DebugEvent> events = interp.Events;
+            String result = events.ToString();
+            Assert.AreEqual(expected, result);
+        }
     }
 }

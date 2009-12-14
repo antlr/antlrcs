@@ -72,7 +72,7 @@ Global
 		CategoryFile = Antlr3.vsmdi
 	EndGlobalSection
 	GlobalSection(SourceCodeControl) = preSolution
-		SccNumberOfProjects = 22
+		SccNumberOfProjects = 23
 		SccProjectName0 = Perforce\u0020Project
 		SccLocalPath0 = ..\\..
 		SccProvider0 = MSSCCI:Perforce\u0020SCM
@@ -152,6 +152,9 @@ Global
 		SccProjectUniqueName21 = StringTemplate4\\StringTemplate4.csproj
 		SccLocalPath21 = ..\\..
 		SccProjectFilePathRelativizedFromConnection21 = antlrcs\\main\\StringTemplate4\\
+		SccProjectUniqueName22 = STViz\\STViz.csproj
+		SccLocalPath22 = ..\\..
+		SccProjectFilePathRelativizedFromConnection22 = antlrcs\\main\\STViz\\
 	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU

@@ -402,6 +402,8 @@ namespace StringTemplate
             if (debug)
             {
                 events.Add(new EvalTemplateEvent(self, start, @out.Index));
+                if (self.enclosingInstance != null)
+                    self.enclosingInstance.events.Add(new EvalTemplateEvent(self, start, @out.Index));
             }
 
             return n;
@@ -413,7 +415,10 @@ namespace StringTemplate
             int n = WriteObject(@out, self, o, (string[])null);
 
             if (debug)
+            {
                 events.Add(new EvalExprEvent(self, start, @out.Index, exprStart, exprStop));
+                //self.events.Add(new EvalExprEvent(self, start, @out.Index, exprStart, exprStop));
+            }
 
             return n;
         }
@@ -441,7 +446,10 @@ namespace StringTemplate
                 @out.PopAnchorPoint();
 
             if (debug)
+            {
                 events.Add(new EvalTemplateEvent(self, start, @out.Index));
+                //self.events.Add(new EvalTemplateEvent(self, start, @out.Index));
+            }
 
             return n;
         }
@@ -1159,21 +1167,26 @@ namespace StringTemplate
 
         public class DebugEvent
         {
-            protected Template self;
             // output location
             protected int start;
             protected int stop;
 
             public DebugEvent(Template self, int start, int stop)
             {
-                this.self = self;
+                this.Template = self;
                 this.start = start;
                 this.stop = stop;
             }
 
+            public Template Template
+            {
+                get;
+                private set;
+            }
+
             public override string ToString()
             {
-                return string.Format("{0}{{self={1},attr={2},start={3},stop={4}}}", GetType().Name, self, self.attributes, start, stop);
+                return string.Format("{0}{{self={1},attr={2},start={3},stop={4}}}", GetType().Name, Template, Template.Attributes, start, stop);
             }
         }
 
@@ -1202,7 +1215,7 @@ namespace StringTemplate
 
             public override string ToString()
             {
-                return string.Format("{0}{{self={1},attr={2},start={3},stop={4},expr={5}}}", GetType().Name, self, self.attributes, start, stop, expr);
+                return string.Format("{0}{{self={1},attr={2},start={3},stop={4},expr={5}}}", GetType().Name, Template, Template.Attributes, start, stop, expr);
             }
         }
     }
