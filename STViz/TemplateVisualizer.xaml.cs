@@ -50,13 +50,13 @@ namespace STViz
         {
         }
 
-        public TemplateVisualizer(Template template)
+        public TemplateVisualizer(DebugTemplate template)
         {
             InitializeComponent();
 
             StringWriter sw = new StringWriter();
-            Interpreter interp = new Interpreter(template.groupThatCreatedThisInstance, new AutoIndentWriter(sw));
-            interp.Exec(template);
+            Interpreter interp = new Interpreter(template.groupThatCreatedThisInstance);
+            interp.Exec(new AutoIndentWriter(sw), template);
             IList<InterpEvent> events = interp.Events;
 
             string text = sw.ToString();
@@ -64,7 +64,7 @@ namespace STViz
             txtOutput.Document = new FlowDocument(new Paragraph(new Run(text)));
         }
 
-        private static Template CreateDefaultTemplate()
+        private static DebugTemplate CreateDefaultTemplate()
         {
             string templates =
                 "method(type,name,args,stats) ::= <<\n" +
@@ -81,7 +81,7 @@ namespace STViz
             File.WriteAllText(Path.Combine(tmpdir, "t.stg"), templates);
             TemplateGroup group = new TemplateGroupFile(Path.Combine(tmpdir, "t.stg"));
             group.Debug = true;
-            Template st = group.GetInstanceOf("method");
+            DebugTemplate st = (DebugTemplate)group.GetInstanceOf("method");
             st.code.Dump();
             st.Add("type", "float");
             st.Add("name", "foo");
@@ -142,7 +142,7 @@ namespace STViz
 
         private class RootEvent : InterpEvent
         {
-            public RootEvent(Template template, int start, int stop)
+            public RootEvent(DebugTemplate template, int start, int stop)
                 : base(template, start, stop)
             {
             }

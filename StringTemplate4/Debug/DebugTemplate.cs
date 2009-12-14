@@ -34,29 +34,21 @@ namespace StringTemplate.Debug
 {
     using System.Collections.Generic;
 
-    public class TemplateDebugInfo
+    public class DebugTemplate : Template
     {
-        public TemplateDebugInfo()
+        public DebugTemplate()
         {
             this.InterpreterEvents = new List<InterpEvent>();
             this.AddAttributeEvents = new Dictionary<string, ICollection<AddAttributeEvent>>();
             this.TemplateConstructionEvent = new ConstructionEvent();
         }
 
-        /** Track all events that occur during rendering.  Create room
-         *  for each new ST, but make sure to wipe this list
-         *  upon creation of interpreter to reset.  The construction-time
-         *  events like "new ST" and "add attribute" can stay, of course.
-         */
         public IList<InterpEvent> InterpreterEvents
         {
             get;
             private set;
         }
 
-        /** Track add attribute "events"; used for ST user-level debugging;
-         *  Avoid polluting ST with this field when not debugging.
-         */
         public IDictionary<string, ICollection<AddAttributeEvent>> AddAttributeEvents
         {
             get;
@@ -67,6 +59,23 @@ namespace StringTemplate.Debug
         {
             get;
             private set;
+        }
+
+        public override void Add(string name, object value)
+        {
+            if (groupThatCreatedThisInstance.Debug)
+            {
+                ICollection<AddAttributeEvent> collection;
+                if (!AddAttributeEvents.TryGetValue(name, out collection))
+                {
+                    collection = new List<AddAttributeEvent>();
+                    AddAttributeEvents[name] = collection;
+                }
+
+                collection.Add(new AddAttributeEvent(name, value));
+            }
+
+            base.Add(name, value);
         }
     }
 }

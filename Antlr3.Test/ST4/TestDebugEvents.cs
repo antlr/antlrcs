@@ -58,8 +58,8 @@ namespace AntlrUnitTests.ST4
             ST st = group.GetInstanceOf("t");
             st.code.Dump();
             StringWriter sw = new StringWriter();
-            Interpreter interp = new Interpreter(group, new AutoIndentWriter(sw));
-            interp.Exec(st);
+            Interpreter interp = new Interpreter(group);
+            interp.Exec(new AutoIndentWriter(sw), st);
             String expected = "";
             IList<InterpEvent> events = interp.Events;
             String result = events.ToString();
@@ -79,8 +79,8 @@ namespace AntlrUnitTests.ST4
             st.code.Dump();
             st.Add("x", "foo");
             StringWriter sw = new StringWriter();
-            Interpreter interp = new Interpreter(group, new AutoIndentWriter(sw));
-            interp.Exec(st);
+            Interpreter interp = new Interpreter(group);
+            interp.Exec(new AutoIndentWriter(sw), st);
             String expected = "";
             IList<InterpEvent> events = interp.Events;
             String result = events.ToString();
@@ -101,8 +101,8 @@ namespace AntlrUnitTests.ST4
             st.code.Dump();
             st.Add("x", "foo");
             StringWriter sw = new StringWriter();
-            Interpreter interp = new Interpreter(group, new AutoIndentWriter(sw));
-            interp.Exec(st);
+            Interpreter interp = new Interpreter(group);
+            interp.Exec(new AutoIndentWriter(sw), st);
             String expected = "";
             IList<InterpEvent> events = interp.Events;
             String result = events.ToString();

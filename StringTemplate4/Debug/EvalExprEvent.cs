@@ -38,7 +38,7 @@ namespace StringTemplate.Debug
         int exprStop; // template pattern location
         string expr;
 
-        public EvalExprEvent(Template self, int start, int stop, int exprStart, int exprStop)
+        public EvalExprEvent(DebugTemplate self, int start, int stop, int exprStart, int exprStop)
             : base(self, start, stop)
         {
             this.exprStart = exprStart;

@@ -61,11 +61,6 @@ namespace StringTemplate
         public static readonly int OPTION_SEPARATOR = 3;
         public static readonly int OPTION_WRAP = 4;
 
-        /// <summary>
-        /// Track everything happening in interp if debug
-        /// </summary>
-        protected internal IList<InterpEvent> events;
-
         public static readonly int DEFAULT_OPERAND_STACK_SIZE = 100;
 
         public static readonly HashSet<string> predefinedAttributes =
@@ -81,8 +76,6 @@ namespace StringTemplate
         int sp = -1;  // stack pointer register
         int nw = 0;   // how many char written on this template line so far? ("number written" register)
 
-        ITemplateWriter @out;
-
         /** Exec st with respect to this group. Once set in Template.toString(),
          *  it should be fixed.  Template has group also.
          */
@@ -92,26 +85,24 @@ namespace StringTemplate
 
         public bool trace = false;
 
-        public Interpreter(TemplateGroup group, ITemplateWriter @out)
-            : this(group, @out, CultureInfo.CurrentCulture)
+        /// <summary>
+        /// Track everything happening in interp if debug
+        /// </summary>
+        protected internal IList<InterpEvent> events;
+
+        public Interpreter(TemplateGroup group)
+            : this(group, CultureInfo.CurrentCulture)
         {
         }
 
-        public Interpreter(TemplateGroup group, ITemplateWriter @out, CultureInfo culture)
+        // TODO: remove out and move back to exec; must avoid creating new interp when deugging same st tree 
+        public Interpreter(TemplateGroup group, CultureInfo culture)
         {
             this.group = group;
-            this.@out = @out;
             this.culture = culture;
             if (group.Debug)
             {
                 events = new List<InterpEvent>();
-                if (group.DebugInfo != null)
-                {
-                    foreach (TemplateDebugInfo info in group.DebugInfo.Values)
-                    {
-                        info.InterpreterEvents.Clear();
-                    }
-                }
             }
         }
 
@@ -123,7 +114,7 @@ namespace StringTemplate
             }
         }
 
-        public int Exec(Template self)
+        public int Exec(ITemplateWriter @out, Template self)
         {
             int start = @out.Index; // track char we're about to write
             int prevOpcode = 0;
@@ -252,7 +243,7 @@ namespace StringTemplate
                     int exprStop = GetShort(code, ip);
                     ip += 2;
                     o = operands[sp--];
-                    nw = WriteObjectNoOptions(self, o, exprStart, exprStop);
+                    nw = WriteObjectNoOptions(@out, self, o, exprStart, exprStop);
                     n += nw;
                     break;
                 case Bytecode.INSTR_WRITE_OPT:
@@ -262,7 +253,7 @@ namespace StringTemplate
                     ip += 2;
                     options = (object[])operands[sp--]; // get options
                     o = operands[sp--];                 // get option to write
-                    nw = WriteObjectWithOptions(self, o, options, exprStart, exprStop);
+                    nw = WriteObjectWithOptions(@out, self, o, options, exprStart, exprStop);
                     n += nw;
                     break;
                 case Bytecode.INSTR_MAP:
@@ -403,20 +394,19 @@ namespace StringTemplate
             if (group.Debug)
             {
                 int stop = @out.Index - 1;
-                EvalTemplateEvent e = new EvalTemplateEvent(self, start, stop);
+                EvalTemplateEvent e = new EvalTemplateEvent((DebugTemplate)self, start, stop);
                 Console.WriteLine(e);
                 events.Add(e);
                 if (self.enclosingInstance != null)
                 {
-                    TemplateDebugInfo info = self.enclosingInstance.DebugInfo;
-                    info.InterpreterEvents.Add(e);
+                    ((DebugTemplate)self.enclosingInstance).InterpreterEvents.Add(e);
                 }
             }
 
             return n;
         }
 
-        protected int WriteObjectNoOptions(Template self, object o, int exprStart, int exprStop)
+        protected int WriteObjectNoOptions(ITemplateWriter @out, Template self, object o, int exprStart, int exprStop)
         {
             //int start = @out.Index; // track char we're about to write
             int n = WriteObject(@out, self, o, null);
@@ -430,7 +420,7 @@ namespace StringTemplate
             return n;
         }
 
-        protected int WriteObjectWithOptions(Template self, object o, object[] options, int exprStart, int exprStop)
+        protected int WriteObjectWithOptions(ITemplateWriter @out, Template self, object o, object[] options, int exprStart, int exprStop)
         {
             //int start = @out.Index; // track char we're about to write
             // precompute all option values (render all the way to strings)
@@ -491,7 +481,7 @@ namespace StringTemplate
                         group.listener.Error("Can't write wrap string");
                     }
                 }
-                n = Exec((Template)o);
+                n = Exec(@out, (Template)o);
             }
             else
             {
@@ -942,8 +932,9 @@ namespace StringTemplate
 
                 // if not string already, must evaluate it
                 StringWriter sw = new StringWriter();
-                Interpreter interp = new Interpreter(group, new NoIndentWriter(sw), culture);
-                interp.WriteObjectNoOptions(self, value, -1, -1);
+                //Interpreter interp = new Interpreter(group, new NoIndentWriter(sw), culture);
+                //interp.WriteObjectNoOptions(self, value, -1, -1);
+                WriteObjectNoOptions(new NoIndentWriter(sw), self, value, -1, -1);
                 return sw.ToString();
             }
             return null;

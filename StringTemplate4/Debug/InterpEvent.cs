@@ -34,7 +34,7 @@ namespace StringTemplate.Debug
 {
     public class InterpEvent
     {
-        public InterpEvent(Template self, int start, int stop)
+        public InterpEvent(DebugTemplate self, int start, int stop)
         {
             this.Template = self;
             this.Start = start;

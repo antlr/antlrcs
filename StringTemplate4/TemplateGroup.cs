@@ -80,11 +80,6 @@ namespace StringTemplate
 
         public static readonly ITemplateErrorListener DefaultErrorListener = new DefaultErrorListenerImpl();
 
-        /** To avoid polluting ST instances with debug info when not debugging,
-         *  we map ST instances to associated debug objects in group.
-         */
-        protected IDictionary<Template, TemplateDebugInfo> debugInfoMap;
-
         public string fullyQualifiedRootDirName;
 
         /** Load files using what encoding? */
@@ -132,35 +127,14 @@ namespace StringTemplate
 
         public static TemplateGroup defaultGroup = new TemplateGroup();
 
-        private bool _debug;
-
         public TemplateGroup()
         {
         }
 
         public bool Debug
         {
-            get
-            {
-                return _debug;
-            }
-            set
-            {
-                if (_debug == value)
-                    return;
-
-                _debug = value;
-                if (_debug)
-                    debugInfoMap = new Dictionary<Template, TemplateDebugInfo>();
-            }
-        }
-
-        public IDictionary<Template, TemplateDebugInfo> DebugInfo
-        {
-            get
-            {
-                return debugInfoMap;
-            }
+            get;
+            set;
         }
 
         public virtual string Name
@@ -442,29 +416,16 @@ namespace StringTemplate
             return renderer;
         }
 
-        public TemplateDebugInfo GetDebugInfo(Template template)
-        {
-            if (!Debug)
-                return null;
-
-            TemplateDebugInfo debugInfo;
-            if (!debugInfoMap.TryGetValue(template, out debugInfo))
-                return null;
-
-            return debugInfo;
-        }
-
         /// <summary>
         /// StringTemplate object factory; each group can have its own.
         /// </summary>
         public virtual Template CreateStringTemplate()
         {
             // TODO: try making a mem pool
-            Template template = new Template();
             if (Debug)
-                debugInfoMap[template] = new TemplateDebugInfo();
+                return new DebugTemplate();
 
-            return template;
+            return new Template();
         }
 
         public override string ToString()

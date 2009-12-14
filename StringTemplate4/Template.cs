@@ -127,14 +127,6 @@ namespace StringTemplate
             }
         }
 
-        public TemplateDebugInfo DebugInfo
-        {
-            get
-            {
-                return groupThatCreatedThisInstance.GetDebugInfo(this);
-            }
-        }
-
         [DebuggerHidden]
         public IEnumerable<Template> EnclosingInstanceStack
         {
@@ -172,22 +164,6 @@ namespace StringTemplate
 
             if (value is Template)
                 ((Template)value).enclosingInstance = this;
-
-            if (groupThatCreatedThisInstance.Debug)
-            {
-                TemplateDebugInfo info;
-                if (groupThatCreatedThisInstance.DebugInfo.TryGetValue(this, out info) && info != null)
-                {
-                    ICollection<AddAttributeEvent> collection;
-                    if (!info.AddAttributeEvents.TryGetValue(name, out collection))
-                    {
-                        collection = new List<AddAttributeEvent>();
-                        info.AddAttributeEvents[name] = collection;
-                    }
-
-                    collection.Add(new AddAttributeEvent(name, value));
-                }
-            }
 
             object curvalue = null;
             if (attributes == null || !attributes.ContainsKey(name))
@@ -346,14 +322,14 @@ namespace StringTemplate
 
         public virtual int Write(ITemplateWriter @out)
         {
-            Interpreter interp = new Interpreter(groupThatCreatedThisInstance, @out);
-            return interp.Exec(this);
+            Interpreter interp = new Interpreter(groupThatCreatedThisInstance);
+            return interp.Exec(@out, this);
         }
 
         public virtual int Write(ITemplateWriter @out, CultureInfo culture)
         {
-            Interpreter interp = new Interpreter(groupThatCreatedThisInstance, @out, culture);
-            return interp.Exec(this);
+            Interpreter interp = new Interpreter(groupThatCreatedThisInstance, culture);
+            return interp.Exec(@out, this);
         }
 
         public string Render()
@@ -376,14 +352,7 @@ namespace StringTemplate
             StringWriter @out = new StringWriter();
             ITemplateWriter wr = new AutoIndentWriter(@out);
             wr.SetLineWidth(lineWidth);
-            try
-            {
-                Write(wr, culture);
-            }
-            catch (IOException)
-            {
-                Console.Error.WriteLine("Got IOException writing to writer");
-            }
+            Write(wr, culture);
             return @out.ToString();
         }
 
