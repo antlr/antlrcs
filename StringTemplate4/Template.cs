@@ -61,6 +61,12 @@ namespace StringTemplate
         // TEMPORARY! TODO move to DebugTemplate
         public IList<Interpreter.DebugEvent> events = new List<Interpreter.DebugEvent>();
 
+        /** Track add attribute "events"; used for ST user-level debugging;
+         *  Avoid polluting ST with this field when not debugging.
+         */
+        public IDictionary<string, ICollection<AddAttributeEvent>> addEvents;
+        //public List<AddAttributeEvent> addEvents;
+
         /** Enclosing instance if I'm embedded within another template.
          *  IF-subtemplates are considered embedded as well.
          */
@@ -174,6 +180,21 @@ namespace StringTemplate
 
             if (value is Template)
                 ((Template)value).enclosingInstance = this;
+
+            if (true)
+            {
+                if (addEvents == null)
+                    addEvents = new Dictionary<string, ICollection<AddAttributeEvent>>();
+
+                ICollection<AddAttributeEvent> collection;
+                if (!addEvents.TryGetValue(name, out collection))
+                {
+                    collection = new List<AddAttributeEvent>();
+                    addEvents[name] = collection;
+                }
+
+                collection.Add(new AddAttributeEvent(this, name, value));
+            }
 
             object curvalue = null;
             if (attributes == null || !attributes.ContainsKey(name))
@@ -384,6 +405,30 @@ namespace StringTemplate
             Implicit,
             Embedded,
             Explicit
+        }
+
+        public class AddAttributeEvent : Event
+        {
+            Template self;
+            string name;
+            object value;
+
+            public AddAttributeEvent(Template self, string name, object value)
+            {
+                this.self = self;
+                this.name = name;
+                this.value = value;
+            }
+
+            public override string ToString()
+            {
+                return "addEvent{" +
+                    "self=" + self +
+                    ", name='" + name + '\'' +
+                    ", value=" + value +
+                    ", location=" + FileName + ":" + Line +
+                    '}';
+            }
         }
     }
 }

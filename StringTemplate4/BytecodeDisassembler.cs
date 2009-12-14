@@ -42,7 +42,6 @@ namespace StringTemplate
         byte[] code;
         int codeSize;
         protected object[] strings;
-        Bytecode def;
 
         public BytecodeDisassembler(byte[] code,
                                     int codeSize,
@@ -102,7 +101,7 @@ namespace StringTemplate
                     " at address " + ip);
             }
             string instrName = I.name;
-            buf.Append(string.Format("%04d:\t%-14s", ip, instrName));
+            buf.Append(string.Format("{0:0000}:\t{1}", ip, instrName));
             ip++;
             if (I.n == 0)
             {
@@ -181,11 +180,11 @@ namespace StringTemplate
                 {
                     string s = (string)o;
                     s = Misc.ReplaceEscapes(s);
-                    buf.Append(string.Format("%04d: \"%s\"\n", addr, s));
+                    buf.Append(string.Format("{0:0000}: \"{1}\"\n", addr, s));
                 }
                 else
                 {
-                    buf.Append(string.Format("%04d: %s\n", addr, o));
+                    buf.Append(string.Format("{0:0000}: {1}\n", addr, o));
                 }
                 addr++;
             }

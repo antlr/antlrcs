@@ -27,19 +27,28 @@
             </MenuItem>
         </Menu>
         <Grid Name="grid1">
-            <RichTextBox Height="159" Margin="0,0,6,6" Name="txtTemplate" VerticalAlignment="Bottom" IsReadOnly="True" HorizontalAlignment="Right" Width="201" VerticalScrollBarVisibility="Auto" DataContextChanged="OnTextTemplateDataContextChanged">
-                <RichTextBox.DataContext>
-                    <Binding ElementName="templatesTree" Path="SelectedItem" Mode="OneWay" />
-                    <!--<Binding ElementName="templatesTree" Path="SelectedValue" />-->
-                </RichTextBox.DataContext>
-                <!--<RichTextBox.>
+            <RichTextBox Margin="204,6,6,171" Name="txtOutput" IsReadOnly="True" Height="285" Width="359" />
+            <ListBox Margin="6,0,0,6" Name="lstAttributes" DataContext="{Binding ElementName=templatesTree, Path=SelectedItem, Mode=OneWay}" ItemsSource="{Binding Path=Template.Attributes}" ItemTemplate="{StaticResource AttributeListItemTemplate}" Height="217" VerticalAlignment="Bottom" HorizontalAlignment="Left" Width="192" />
+            <TreeView Margin="6,6,0,229" Name="templatesTree" ItemsSource="{Binding}" ItemTemplate="{StaticResource TemplateEventsItemTemplate}" HorizontalAlignment="Left" Width="192" SelectedItemChanged="OnTemplatesTreeSelectedItemChanged" />
+            <TabControl Height="159" Margin="204,0,6,6" Name="tabControl1" VerticalAlignment="Bottom">
+                <TabItem Header="template" Name="tabItem1">
+                        <RichTextBox Name="txtTemplate" IsReadOnly="True" VerticalScrollBarVisibility="Auto" DataContextChanged="OnTextTemplateDataContextChanged">
+                            <RichTextBox.DataContext>
+                                <Binding ElementName="templatesTree" Path="SelectedItem" Mode="OneWay" />
+                                <!--<Binding ElementName="templatesTree" Path="SelectedValue" />-->
+                            </RichTextBox.DataContext>
+                            <!--<RichTextBox.>
                     <Binding Path="CompiledTemplate.Template" Mode="OneWay"/>
                 </RichTextBox.Text>-->
-            </RichTextBox>
-            <RichTextBox Margin="164,6,6,171" Name="txtOutput" IsReadOnly="True" />
-            <ListBox Margin="6,0,0,6" Name="lstStack" DataContext="{Binding ElementName=templatesTree, Path=SelectedItem, Mode=OneWay}" ItemsSource="{Binding Path=Template.EnclosingInstanceStack}" ItemTemplate="{StaticResource TemplateStackListItemTemplate}" HorizontalAlignment="Left" Width="152" Height="217" VerticalAlignment="Bottom" />
-            <ListBox Margin="164,0,213,6" Name="lstAttributes" DataContext="{Binding ElementName=templatesTree, Path=SelectedItem, Mode=OneWay}" ItemsSource="{Binding Path=Template.Attributes}" ItemTemplate="{StaticResource AttributeListItemTemplate}" Height="159" VerticalAlignment="Bottom" />
-            <TreeView Margin="6,6,0,229" Name="templatesTree" ItemsSource="{Binding}" ItemTemplate="{StaticResource TemplateEventsItemTemplate}" HorizontalAlignment="Left" Width="152" SelectedItemChanged="OnTemplatesTreeSelectedItemChanged" />
+                        </RichTextBox>
+                </TabItem>
+                <TabItem Header="stack trace" >
+                    <ListBox Name="lstStack" DataContext="{Binding ElementName=templatesTree, Path=SelectedItem, Mode=OneWay}" ItemsSource="{Binding Path=Template.EnclosingInstanceStack}" ItemTemplate="{StaticResource TemplateStackListItemTemplate}" />
+                </TabItem>
+                <TabItem Header="bytecode">
+                    <TextBox DataContext="{Binding ElementName=templatesTree, Path=SelectedItem, Mode=OneWay}" Text="{Binding Mode=OneWay, Path=Template.CompiledTemplate.Disassembly}" IsReadOnly="True" VerticalScrollBarVisibility="Auto" />
+                </TabItem>
+            </TabControl>
         </Grid>
     </DockPanel>
 </Window>

@@ -40,7 +40,43 @@ namespace StringTemplate
 
         public Event()
         {
-            this.stack = new StackTrace();
+            this.stack = new StackTrace(true);
+        }
+
+        public string FileName
+        {
+            get
+            {
+                return TemplateEntryPoint.GetFileName();
+            }
+        }
+
+        public int Line
+        {
+            get
+            {
+                return TemplateEntryPoint.GetFileLineNumber();
+            }
+        }
+
+        public StackFrame TemplateEntryPoint
+        {
+            get
+            {
+                var frames = stack.GetFrames();
+                foreach (var frame in frames)
+                {
+                    var method = frame.GetMethod();
+
+                    if (method.Name == "Main")
+                        return frame;
+
+                    if (!method.DeclaringType.Namespace.StartsWith("StringTemplate"))
+                        return frame;
+                }
+
+                return frames[0];
+            }
         }
     }
 }

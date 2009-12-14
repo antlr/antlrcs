@@ -52,7 +52,7 @@
     <Compile Include="CompiledTemplate.cs" />
     <Compile Include="Compiler.cs" />
     <Compile Include="DateTimeRenderer.cs" />
-    <Compile Include="Debug\DebugTemplate.cs" />
+    <None Include="Debug\DebugTemplate.cs" />
     <Compile Include="Debug\Event.cs" />
     <Compile Include="ErrorTolerance.cs" />
     <Compile Include="FormalArgument.cs" />

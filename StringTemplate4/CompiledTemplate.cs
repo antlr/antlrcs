@@ -33,7 +33,9 @@
 namespace StringTemplate
 {
     using System.Collections.Generic;
+    using System.Diagnostics;
     using Console = System.Console;
+    using StringBuilder = System.Text.StringBuilder;
 
     public class CompiledTemplate
     {
@@ -76,6 +78,20 @@ namespace StringTemplate
         public string[] strings;
         public byte[] instrs;        // byte-addressable code memory.
         public int codeSize;
+
+        [DebuggerHidden]
+        public string Disassembly
+        {
+            get
+            {
+                BytecodeDisassembler dis = new BytecodeDisassembler(instrs, codeSize, strings);
+                StringBuilder buffer = new StringBuilder();
+                buffer.AppendLine(dis.Disassemble());
+                buffer.AppendLine("Strings:");
+                buffer.AppendLine(dis.Strings());
+                return buffer.ToString();
+            }
+        }
 
         public string Template
         {
