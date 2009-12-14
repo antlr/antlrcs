@@ -45,11 +45,7 @@ namespace StringTemplate.Debug
 
         public override string ToString()
         {
-            return "addEvent{" +
-                ", name='" + name + '\'' +
-                ", value=" + value +
-                ", location=" + FileName + ":" + Line +
-                '}';
+            return string.Format("{0}{{name='{1}',value='{2}',location={3}:{4}}}", GetType().Name, name, value, FileName, Line);
         }
     }
 }

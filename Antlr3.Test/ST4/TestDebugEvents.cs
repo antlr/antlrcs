@@ -42,6 +42,8 @@ namespace AntlrUnitTests.ST4
     using STGroupFile = StringTemplate.TemplateGroupFile;
     using String = System.String;
     using StringWriter = System.IO.StringWriter;
+    using Antlr.Runtime.JavaExtensions;
+    using IList = System.Collections.IList;
 
     [TestClass]
     public class TestDebugEvents : StringTemplateTestBase
@@ -55,14 +57,12 @@ namespace AntlrUnitTests.ST4
             WriteFile(tmpdir, "t.stg", templates);
             STGroup group = new STGroupFile(tmpdir + "/" + "t.stg");
             group.Debug = true;
-            ST st = group.GetInstanceOf("t");
-            st.code.Dump();
-            StringWriter sw = new StringWriter();
-            Interpreter interp = new Interpreter(group);
-            interp.Exec(new AutoIndentWriter(sw), st);
-            String expected = "";
-            IList<InterpEvent> events = interp.Events;
-            String result = events.ToString();
+            DebugTemplate template = (DebugTemplate)group.GetInstanceOf("t");
+            IList<InterpEvent> events = template.GetEvents();
+            String expected =
+                "[EvalExprEvent{self=t(),start=0,stop=2,expr=foo}," +
+                " EvalTemplateEvent{self=t(),start=0,stop=2}]";
+            String result = ((IList)events).ToElementString();
             Assert.AreEqual(expected, result);
         }
 
@@ -75,15 +75,13 @@ namespace AntlrUnitTests.ST4
             WriteFile(tmpdir, "t.stg", templates);
             STGroup group = new STGroupFile(tmpdir + "/" + "t.stg");
             group.Debug = true;
-            ST st = group.GetInstanceOf("t");
-            st.code.Dump();
-            st.Add("x", "foo");
-            StringWriter sw = new StringWriter();
-            Interpreter interp = new Interpreter(group);
-            interp.Exec(new AutoIndentWriter(sw), st);
-            String expected = "";
-            IList<InterpEvent> events = interp.Events;
-            String result = events.ToString();
+            DebugTemplate template = (DebugTemplate)group.GetInstanceOf("t");
+            IList<InterpEvent> events = template.GetEvents();
+            String expected =
+                "[EvalExprEvent{self=t(),start=0,stop=-1,expr=<x>}," +
+                " EvalExprEvent{self=t(),start=0,stop=0,expr= }," +
+                " EvalTemplateEvent{self=t(),start=0,stop=0}]";
+            String result = ((IList)events).ToElementString();
             Assert.AreEqual(expected, result);
         }
 
@@ -97,15 +95,17 @@ namespace AntlrUnitTests.ST4
             WriteFile(tmpdir, "t.stg", templates);
             STGroup group = new STGroupFile(tmpdir + "/" + "t.stg");
             group.Debug = true;
-            ST st = group.GetInstanceOf("t");
-            st.code.Dump();
-            st.Add("x", "foo");
-            StringWriter sw = new StringWriter();
-            Interpreter interp = new Interpreter(group);
-            interp.Exec(new AutoIndentWriter(sw), st);
-            String expected = "";
-            IList<InterpEvent> events = interp.Events;
-            String result = events.ToString();
+            DebugTemplate template = (DebugTemplate)group.GetInstanceOf("t");
+            IList<InterpEvent> events = template.GetEvents();
+            String expected =
+                "[EvalExprEvent{self=t(),start=0,stop=0,expr=[}," +
+                " EvalExprEvent{self=u(),start=1,stop=0,expr=<x>}," +
+                " EvalExprEvent{self=u(),start=1,stop=1,expr= }," +
+                " EvalTemplateEvent{self=u(),start=1,stop=1}," +
+                " EvalExprEvent{self=t(),start=1,stop=1,expr=<u()>}," +
+                " EvalExprEvent{self=t(),start=2,stop=2,expr=]}," +
+                " EvalTemplateEvent{self=t(),start=0,stop=2}]";
+            String result = ((IList)events).ToElementString();
             Assert.AreEqual(expected, result);
         }
     }

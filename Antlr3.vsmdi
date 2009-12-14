@@ -402,6 +402,13 @@
       <TestLink id="035d62d1-8c9e-2c14-bb45-b6e9f46036f6" name="TestNotTrueCond" storage="antlr3.test\bin\debug\antlrunittests.dll" type="Microsoft.VisualStudio.TestTools.TestTypes.Unit.UnitTestElement, Microsoft.VisualStudio.QualityTools.Tips.UnitTest.ObjectModel,   PublicKeyToken=b03f5f7f11d50a3a" />
     </TestLinks>
   </TestList>
+  <TestList name="Debug events" id="32744eeb-e23b-4a91-948c-a18809949b64" parentListId="4adbb104-d28d-4362-8420-a9fefe69c167">
+    <TestLinks>
+      <TestLink id="e63126b6-f7f5-a35f-d4ba-f8d4331edd25" name="TestTemplateCall" storage="antlr3.test\bin\debug\antlrunittests.dll" type="Microsoft.VisualStudio.TestTools.TestTypes.Unit.UnitTestElement, Microsoft.VisualStudio.QualityTools.Tips.UnitTest.ObjectModel,   PublicKeyToken=b03f5f7f11d50a3a" />
+      <TestLink id="9b6f3c9f-1015-9236-f758-fc8ec81db942" name="TestString" storage="antlr3.test\bin\debug\antlrunittests.dll" type="Microsoft.VisualStudio.TestTools.TestTypes.Unit.UnitTestElement, Microsoft.VisualStudio.QualityTools.Tips.UnitTest.ObjectModel,   PublicKeyToken=b03f5f7f11d50a3a" />
+      <TestLink id="47fef3ad-ce99-dc4d-07f2-6bc975456b25" name="TestAttribute" storage="antlr3.test\bin\debug\antlrunittests.dll" type="Microsoft.VisualStudio.TestTools.TestTypes.Unit.UnitTestElement, Microsoft.VisualStudio.QualityTools.Tips.UnitTest.ObjectModel,   PublicKeyToken=b03f5f7f11d50a3a" />
+    </TestLinks>
+  </TestList>
   <TestList name="DFA matching" id="3c885cce-ffa3-4ee4-baa8-8a9c03a14e0e" parentListId="8c43106b-9dc1-4907-a29f-aa66a61bf5b6">
     <TestLinks>
       <TestLink id="ce60fa3d-c350-a12f-5aa6-43189e37b763" name="TestSimpleLoops" storage="antlr3.test\bin\debug\antlrunittests.dll" type="Microsoft.VisualStudio.TestTools.TestTypes.Unit.UnitTestElement, Microsoft.VisualStudio.QualityTools.Tips.UnitTest.ObjectModel,   PublicKeyToken=b03f5f7f11d50a3a" />

@@ -408,21 +408,20 @@ namespace StringTemplate
 
         protected int WriteObjectNoOptions(ITemplateWriter @out, Template self, object o, int exprStart, int exprStop)
         {
-            //int start = @out.Index; // track char we're about to write
+            int start = @out.Index; // track char we're about to write
             int n = WriteObject(@out, self, o, null);
 
-            //if (debug)
-            //{
-            //    events.Add(new EvalExprEvent(self, start, @out.Index - 1, exprStart, exprStop));
-            //    //self.events.Add(new EvalExprEvent(self, start, @out.Index, exprStart, exprStop));
-            //}
+            if (group.Debug)
+            {
+                events.Add(new EvalExprEvent((DebugTemplate)self, start, @out.Index - 1, exprStart, exprStop));
+            }
 
             return n;
         }
 
         protected int WriteObjectWithOptions(ITemplateWriter @out, Template self, object o, object[] options, int exprStart, int exprStop)
         {
-            //int start = @out.Index; // track char we're about to write
+            int start = @out.Index; // track char we're about to write
             // precompute all option values (render all the way to strings)
             string[] optionStrings = null;
             if (options != null)
@@ -442,11 +441,10 @@ namespace StringTemplate
             if (options != null && options[OPTION_ANCHOR] != null)
                 @out.PopAnchorPoint();
 
-            //if (debug)
-            //{
-            //    events.Add(new EvalTemplateEvent(self, start, @out.Index - 1));
-            //    //self.events.Add(new EvalTemplateEvent(self, start, @out.Index));
-            //}
+            if (group.Debug)
+            {
+                events.Add(new EvalTemplateEvent((DebugTemplate)self, start, @out.Index - 1));
+            }
 
             return n;
         }

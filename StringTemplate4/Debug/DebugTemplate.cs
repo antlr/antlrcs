@@ -33,6 +33,8 @@
 namespace StringTemplate.Debug
 {
     using System.Collections.Generic;
+    using CultureInfo = System.Globalization.CultureInfo;
+    using StringWriter = System.IO.StringWriter;
 
     public class DebugTemplate : Template
     {
@@ -76,6 +78,31 @@ namespace StringTemplate.Debug
             }
 
             base.Add(name, value);
+        }
+
+        public IList<InterpEvent> GetEvents()
+        {
+            return GetEvents(CultureInfo.CurrentCulture, AutoIndentWriter.NoWrap);
+        }
+
+        public IList<InterpEvent> GetEvents(int lineWidth)
+        {
+            return GetEvents(CultureInfo.CurrentCulture, lineWidth);
+        }
+
+        public IList<InterpEvent> GetEvents(CultureInfo culture)
+        {
+            return GetEvents(CultureInfo.CurrentCulture, AutoIndentWriter.NoWrap);
+        }
+
+        public IList<InterpEvent> GetEvents(CultureInfo culture, int lineWidth)
+        {
+            StringWriter stream = new StringWriter();
+            ITemplateWriter writer = new AutoIndentWriter(stream);
+            writer.SetLineWidth(lineWidth);
+            Interpreter interp = new Interpreter(groupThatCreatedThisInstance, culture);
+            interp.Exec(writer, this);
+            return interp.Events;
         }
     }
 }

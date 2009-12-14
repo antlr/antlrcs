@@ -43,18 +43,13 @@ namespace StringTemplate.Debug
         {
             this.exprStart = exprStart;
             this.exprStop = exprStop;
-            expr = self.code.template.Substring(exprStart, exprStop - exprStart + 2);
+            expr = self.code.template.Substring(exprStart, exprStop - exprStart + 1);
         }
 
         public override string ToString()
         {
-            return GetType().Name + "{" +
-                   "self=" + Template +
-                   //", attr=" + Template.Attributes +
-                   ", start=" + Start +
-                   ", stop=" + Stop +
-                   ", expr=" + expr +
-                   '}';
+            return string.Format("{0}{{self={1},start={2},stop={3},expr={4}}}", GetType().Name, Template, Start, Stop, expr);
+
         }
     }
 }
