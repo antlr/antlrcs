@@ -30,31 +30,26 @@
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-namespace StringTemplate
+namespace StringTemplate.Debug
 {
-    public class ErrorTolerance
+    public class AddAttributeEvent : ConstructionEvent
     {
-        // bit set values telling ST what to care about
-        public static readonly int DETECT_UNKNOWN_PROPERTY = 2;
-        public static readonly int DETECT_UNKNOWN_ATTRIBUTE = 4;
-        public static readonly int DETECT_MALFORMED_TEMPLATE_NAME = 8;
-        public static readonly int DETECT_UNKNOWN_TEMPLATE = 16;
+        private string name;
+        private object value; // unused really; leave for future
 
-        public static readonly int DEFAULT_TOLERANCE = 0;
-
-        public int detect = DEFAULT_TOLERANCE;
-
-        public bool Detects(int x)
+        public AddAttributeEvent(string name, object value)
         {
-            return (detect & x) != 0;
+            this.name = name;
+            this.value = value;
         }
-        public void Detect(int x)
+
+        public override string ToString()
         {
-            detect |= x;
-        }
-        public void Ignore(int x)
-        {
-            detect &= ~x;
+            return "addEvent{" +
+                ", name='" + name + '\'' +
+                ", value=" + value +
+                ", location=" + FileName + ":" + Line +
+                '}';
         }
     }
 }

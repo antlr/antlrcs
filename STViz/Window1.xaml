@@ -12,7 +12,7 @@
             <TextBlock Text="{Binding Name}" />
         </DataTemplate>
         
-        <HierarchicalDataTemplate x:Key="TemplateEventsItemTemplate" ItemsSource="{Binding Path=Template.Events}">
+        <HierarchicalDataTemplate x:Key="TemplateEventsItemTemplate" ItemsSource="{Binding Path=Template.DebugInfo.InterpreterEvents}">
             <TextBlock Text="{Binding Template.Name}" />
         </HierarchicalDataTemplate>
     </Window.Resources>

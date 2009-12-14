@@ -30,45 +30,38 @@
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-namespace StringTemplate
+namespace StringTemplate.Debug
 {
-    using Exception = System.Exception;
-    using System.Collections.Generic;
-
-    public class DebugTemplate : Template
+    public class InterpEvent
     {
-        /// <summary>
-        /// Track add attribute "events"; used for ST user-level debugging;
-        /// Avoid polluting Template with this field when not debugging.
-        /// </summary>
-        IList<AddAttributeEvent> addEvents;
-
-        public override void Add(string name, object value)
+        public InterpEvent(Template self, int start, int stop)
         {
-            if (name == null)
-                return; // allow null value
-
-            base.Add(name, value);
-
-            if (code.nativeGroup.Detects(ErrorTolerance.DETECT_ADD_ATTR))
-            {
-                if (addEvents == null)
-                    addEvents = new List<AddAttributeEvent>();
-
-                addEvents.Add(new AddAttributeEvent(name, value));
-            }
+            this.Template = self;
+            this.Start = start;
+            this.Stop = stop;
         }
 
-        public class AddAttributeEvent : Event
+        public Template Template
         {
-            string name;
-            object value;
+            get;
+            private set;
+        }
 
-            public AddAttributeEvent(string name, object value)
-            {
-                this.name = name;
-                this.value = value;
-            }
+        public int Start
+        {
+            get;
+            private set;
+        }
+
+        public int Stop
+        {
+            get;
+            private set;
+        }
+
+        public override string ToString()
+        {
+            return string.Format("{0}{{self={1},start={2},stop={3}}}", GetType().Name, Template, Start, Stop);
         }
     }
 }

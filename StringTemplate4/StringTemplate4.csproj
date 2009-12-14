@@ -52,8 +52,12 @@
     <Compile Include="CompiledTemplate.cs" />
     <Compile Include="Compiler.cs" />
     <Compile Include="DateTimeRenderer.cs" />
-    <None Include="Debug\DebugTemplate.cs" />
-    <Compile Include="Debug\Event.cs" />
+    <Compile Include="Debug\AddAttributeEvent.cs" />
+    <Compile Include="Debug\ConstructionEvent.cs" />
+    <Compile Include="Debug\EvalExprEvent.cs" />
+    <Compile Include="Debug\EvalTemplateEvent.cs" />
+    <Compile Include="Debug\InterpEvent.cs" />
+    <Compile Include="Debug\TemplateDebugInfo.cs" />
     <Compile Include="ErrorTolerance.cs" />
     <Compile Include="FormalArgument.cs" />
     <Compile Include="GroupLexerHelper.cs" />

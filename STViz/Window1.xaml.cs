@@ -41,6 +41,7 @@ namespace STViz
     using StringWriter = System.IO.StringWriter;
     using System.Windows.Documents;
     using System.Windows.Media;
+    using StringTemplate.Debug;
 
     public partial class Window1 : Window
     {
@@ -62,6 +63,7 @@ namespace STViz
             string tmpdir = Path.GetTempPath();
             File.WriteAllText(Path.Combine(tmpdir, "t.stg"), templates);
             TemplateGroup group = new TemplateGroupFile(Path.Combine(tmpdir, "t.stg"));
+            group.Debug = true;
             Template st = group.GetInstanceOf("method");
             st.code.Dump();
             st.Add("type", "float");
@@ -84,9 +86,8 @@ namespace STViz
 
             StringWriter sw = new StringWriter();
             Interpreter interp = new Interpreter(group, new AutoIndentWriter(sw));
-            interp.Debug = true;
             interp.Exec(st);
-            IList<Interpreter.DebugEvent> events = interp.Events;
+            IList<InterpEvent> events = interp.Events;
 
             string text = sw.ToString();
             templatesTree.Items.Add(new RootEvent(st, 0, text.Length));
@@ -97,7 +98,7 @@ namespace STViz
         {
             txtTemplate.Document.Blocks.Clear();
 
-            Interpreter.DebugEvent templateEvent = e.NewValue as Interpreter.DebugEvent;
+            InterpEvent templateEvent = e.NewValue as InterpEvent;
             if (templateEvent == null)
                 return;
 
@@ -122,14 +123,14 @@ namespace STViz
 
         private void OnTemplatesTreeSelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
         {
-            Interpreter.DebugEvent debugEvent = e.NewValue as Interpreter.DebugEvent;
+            InterpEvent debugEvent = e.NewValue as InterpEvent;
             if (debugEvent == null)
                 return;
 
             Highlight(txtOutput.Document, debugEvent.Start, debugEvent.Stop - debugEvent.Start + 1);
         }
 
-        private class RootEvent : Interpreter.DebugEvent
+        private class RootEvent : InterpEvent
         {
             public RootEvent(Template template, int start, int stop)
                 : base(template, start, stop)

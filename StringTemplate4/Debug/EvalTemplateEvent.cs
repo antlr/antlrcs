@@ -30,31 +30,13 @@
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-namespace StringTemplate
+namespace StringTemplate.Debug
 {
-    public class ErrorTolerance
+    public class EvalTemplateEvent : InterpEvent
     {
-        // bit set values telling ST what to care about
-        public static readonly int DETECT_UNKNOWN_PROPERTY = 2;
-        public static readonly int DETECT_UNKNOWN_ATTRIBUTE = 4;
-        public static readonly int DETECT_MALFORMED_TEMPLATE_NAME = 8;
-        public static readonly int DETECT_UNKNOWN_TEMPLATE = 16;
-
-        public static readonly int DEFAULT_TOLERANCE = 0;
-
-        public int detect = DEFAULT_TOLERANCE;
-
-        public bool Detects(int x)
+        public EvalTemplateEvent(Template template, int start, int stop)
+            : base(template, start, stop)
         {
-            return (detect & x) != 0;
-        }
-        public void Detect(int x)
-        {
-            detect |= x;
-        }
-        public void Ignore(int x)
-        {
-            detect &= ~x;
         }
     }
 }

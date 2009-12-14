@@ -30,31 +30,31 @@
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-namespace StringTemplate
+namespace StringTemplate.Debug
 {
-    public class ErrorTolerance
+    public class EvalExprEvent : InterpEvent
     {
-        // bit set values telling ST what to care about
-        public static readonly int DETECT_UNKNOWN_PROPERTY = 2;
-        public static readonly int DETECT_UNKNOWN_ATTRIBUTE = 4;
-        public static readonly int DETECT_MALFORMED_TEMPLATE_NAME = 8;
-        public static readonly int DETECT_UNKNOWN_TEMPLATE = 16;
+        int exprStart;
+        int exprStop; // template pattern location
+        string expr;
 
-        public static readonly int DEFAULT_TOLERANCE = 0;
-
-        public int detect = DEFAULT_TOLERANCE;
-
-        public bool Detects(int x)
+        public EvalExprEvent(Template self, int start, int stop, int exprStart, int exprStop)
+            : base(self, start, stop)
         {
-            return (detect & x) != 0;
+            this.exprStart = exprStart;
+            this.exprStop = exprStop;
+            expr = self.code.template.Substring(exprStart, exprStop - exprStart + 2);
         }
-        public void Detect(int x)
+
+        public override string ToString()
         {
-            detect |= x;
-        }
-        public void Ignore(int x)
-        {
-            detect &= ~x;
+            return GetType().Name + "{" +
+                   "self=" + Template +
+                   //", attr=" + Template.Attributes +
+                   ", start=" + Start +
+                   ", stop=" + Stop +
+                   ", expr=" + expr +
+                   '}';
         }
     }
 }

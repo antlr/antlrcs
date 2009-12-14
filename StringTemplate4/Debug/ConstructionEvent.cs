@@ -32,29 +32,51 @@
 
 namespace StringTemplate
 {
-    public class ErrorTolerance
+    using System.Diagnostics;
+
+    public class ConstructionEvent
     {
-        // bit set values telling ST what to care about
-        public static readonly int DETECT_UNKNOWN_PROPERTY = 2;
-        public static readonly int DETECT_UNKNOWN_ATTRIBUTE = 4;
-        public static readonly int DETECT_MALFORMED_TEMPLATE_NAME = 8;
-        public static readonly int DETECT_UNKNOWN_TEMPLATE = 16;
+        private StackTrace stack;
 
-        public static readonly int DEFAULT_TOLERANCE = 0;
-
-        public int detect = DEFAULT_TOLERANCE;
-
-        public bool Detects(int x)
+        public ConstructionEvent()
         {
-            return (detect & x) != 0;
+            this.stack = new StackTrace(true);
         }
-        public void Detect(int x)
+
+        public string FileName
         {
-            detect |= x;
+            get
+            {
+                return TemplateEntryPoint.GetFileName();
+            }
         }
-        public void Ignore(int x)
+
+        public int Line
         {
-            detect &= ~x;
+            get
+            {
+                return TemplateEntryPoint.GetFileLineNumber();
+            }
+        }
+
+        public StackFrame TemplateEntryPoint
+        {
+            get
+            {
+                var frames = stack.GetFrames();
+                foreach (var frame in frames)
+                {
+                    var method = frame.GetMethod();
+
+                    if (method.Name == "Main")
+                        return frame;
+
+                    if (!method.DeclaringType.Namespace.StartsWith("StringTemplate"))
+                        return frame;
+                }
+
+                return frames[0];
+            }
         }
     }
 }

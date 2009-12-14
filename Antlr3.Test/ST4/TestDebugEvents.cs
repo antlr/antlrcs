@@ -35,6 +35,7 @@ namespace AntlrUnitTests.ST4
     using System.Collections.Generic;
     using Microsoft.VisualStudio.TestTools.UnitTesting;
     using StringTemplate;
+    using StringTemplate.Debug;
     using Interpreter = StringTemplate.Interpreter;
     using ST = StringTemplate.Template;
     using STGroup = StringTemplate.TemplateGroup;
@@ -53,14 +54,14 @@ namespace AntlrUnitTests.ST4
 
             WriteFile(tmpdir, "t.stg", templates);
             STGroup group = new STGroupFile(tmpdir + "/" + "t.stg");
+            group.Debug = true;
             ST st = group.GetInstanceOf("t");
             st.code.Dump();
             StringWriter sw = new StringWriter();
             Interpreter interp = new Interpreter(group, new AutoIndentWriter(sw));
-            interp.Debug = true;
             interp.Exec(st);
             String expected = "";
-            IList<Interpreter.DebugEvent> events = interp.Events;
+            IList<InterpEvent> events = interp.Events;
             String result = events.ToString();
             Assert.AreEqual(expected, result);
         }
@@ -73,15 +74,15 @@ namespace AntlrUnitTests.ST4
 
             WriteFile(tmpdir, "t.stg", templates);
             STGroup group = new STGroupFile(tmpdir + "/" + "t.stg");
+            group.Debug = true;
             ST st = group.GetInstanceOf("t");
             st.code.Dump();
             st.Add("x", "foo");
             StringWriter sw = new StringWriter();
             Interpreter interp = new Interpreter(group, new AutoIndentWriter(sw));
-            interp.Debug = true;
             interp.Exec(st);
             String expected = "";
-            IList<Interpreter.DebugEvent> events = interp.Events;
+            IList<InterpEvent> events = interp.Events;
             String result = events.ToString();
             Assert.AreEqual(expected, result);
         }
@@ -95,15 +96,15 @@ namespace AntlrUnitTests.ST4
 
             WriteFile(tmpdir, "t.stg", templates);
             STGroup group = new STGroupFile(tmpdir + "/" + "t.stg");
+            group.Debug = true;
             ST st = group.GetInstanceOf("t");
             st.code.Dump();
             st.Add("x", "foo");
             StringWriter sw = new StringWriter();
             Interpreter interp = new Interpreter(group, new AutoIndentWriter(sw));
-            interp.Debug = true;
             interp.Exec(st);
             String expected = "";
-            IList<Interpreter.DebugEvent> events = interp.Events;
+            IList<InterpEvent> events = interp.Events;
             String result = events.ToString();
             Assert.AreEqual(expected, result);
         }

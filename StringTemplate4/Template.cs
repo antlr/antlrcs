@@ -43,6 +43,7 @@ namespace StringTemplate
     using StringBuilder = System.Text.StringBuilder;
     using StringWriter = System.IO.StringWriter;
     using System.Diagnostics;
+    using StringTemplate.Debug;
 
     public class Template
     {
@@ -57,15 +58,6 @@ namespace StringTemplate
 
         /** Map an attribute name to its value(s). */
         internal IDictionary<string, object> attributes;
-
-        // TEMPORARY! TODO move to DebugTemplate
-        public IList<Interpreter.DebugEvent> events = new List<Interpreter.DebugEvent>();
-
-        /** Track add attribute "events"; used for ST user-level debugging;
-         *  Avoid polluting ST with this field when not debugging.
-         */
-        public IDictionary<string, ICollection<AddAttributeEvent>> addEvents;
-        //public List<AddAttributeEvent> addEvents;
 
         /** Enclosing instance if I'm embedded within another template.
          *  IF-subtemplates are considered embedded as well.
@@ -135,20 +127,20 @@ namespace StringTemplate
             }
         }
 
+        public TemplateDebugInfo DebugInfo
+        {
+            get
+            {
+                return groupThatCreatedThisInstance.GetDebugInfo(this);
+            }
+        }
+
         [DebuggerHidden]
         public IEnumerable<Template> EnclosingInstanceStack
         {
             get
             {
                 return GetEnclosingInstanceStack(false);
-            }
-        }
-
-        public ICollection<Interpreter.DebugEvent> Events
-        {
-            get
-            {
-                return this.events;
             }
         }
 
@@ -181,19 +173,20 @@ namespace StringTemplate
             if (value is Template)
                 ((Template)value).enclosingInstance = this;
 
-            if (true)
+            if (groupThatCreatedThisInstance.Debug)
             {
-                if (addEvents == null)
-                    addEvents = new Dictionary<string, ICollection<AddAttributeEvent>>();
-
-                ICollection<AddAttributeEvent> collection;
-                if (!addEvents.TryGetValue(name, out collection))
+                TemplateDebugInfo info;
+                if (groupThatCreatedThisInstance.DebugInfo.TryGetValue(this, out info) && info != null)
                 {
-                    collection = new List<AddAttributeEvent>();
-                    addEvents[name] = collection;
-                }
+                    ICollection<AddAttributeEvent> collection;
+                    if (!info.AddAttributeEvents.TryGetValue(name, out collection))
+                    {
+                        collection = new List<AddAttributeEvent>();
+                        info.AddAttributeEvents[name] = collection;
+                    }
 
-                collection.Add(new AddAttributeEvent(this, name, value));
+                    collection.Add(new AddAttributeEvent(name, value));
+                }
             }
 
             object curvalue = null;
@@ -405,30 +398,6 @@ namespace StringTemplate
             Implicit,
             Embedded,
             Explicit
-        }
-
-        public class AddAttributeEvent : Event
-        {
-            Template self;
-            string name;
-            object value;
-
-            public AddAttributeEvent(Template self, string name, object value)
-            {
-                this.self = self;
-                this.name = name;
-                this.value = value;
-            }
-
-            public override string ToString()
-            {
-                return "addEvent{" +
-                    "self=" + self +
-                    ", name='" + name + '\'' +
-                    ", value=" + value +
-                    ", location=" + FileName + ":" + Line +
-                    '}';
-            }
         }
     }
 }

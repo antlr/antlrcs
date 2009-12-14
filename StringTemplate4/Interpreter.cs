@@ -50,6 +50,7 @@ namespace StringTemplate
     using StringBuilder = System.Text.StringBuilder;
     using StringWriter = System.IO.StringWriter;
     using Type = System.Type;
+    using StringTemplate.Debug;
 
     public class Interpreter
     {
@@ -60,7 +61,10 @@ namespace StringTemplate
         public static readonly int OPTION_SEPARATOR = 3;
         public static readonly int OPTION_WRAP = 4;
 
-        protected internal IList<DebugEvent> events;
+        /// <summary>
+        /// Track everything happening in interp if debug
+        /// </summary>
+        protected internal IList<InterpEvent> events;
 
         public static readonly int DEFAULT_OPERAND_STACK_SIZE = 100;
 
@@ -87,7 +91,6 @@ namespace StringTemplate
         CultureInfo culture;
 
         public bool trace = false;
-        public bool debug = false;
 
         public Interpreter(TemplateGroup group, ITemplateWriter @out)
             : this(group, @out, CultureInfo.CurrentCulture)
@@ -99,26 +102,24 @@ namespace StringTemplate
             this.group = group;
             this.@out = @out;
             this.culture = culture;
+            if (group.Debug)
+            {
+                events = new List<InterpEvent>();
+                if (group.DebugInfo != null)
+                {
+                    foreach (TemplateDebugInfo info in group.DebugInfo.Values)
+                    {
+                        info.InterpreterEvents.Clear();
+                    }
+                }
+            }
         }
 
-        public IList<DebugEvent> Events
+        public IList<InterpEvent> Events
         {
             get
             {
                 return events;
-            }
-        }
-
-        public bool Debug
-        {
-            get
-            {
-                return debug;
-            }
-            set
-            {
-                debug = value;
-                events = new List<DebugEvent>();
             }
         }
 
@@ -399,14 +400,17 @@ namespace StringTemplate
                 prevOpcode = opcode;
             }
 
-            if (debug)
+            if (group.Debug)
             {
                 int stop = @out.Index - 1;
                 EvalTemplateEvent e = new EvalTemplateEvent(self, start, stop);
                 Console.WriteLine(e);
                 events.Add(e);
                 if (self.enclosingInstance != null)
-                    self.enclosingInstance.events.Add(e);
+                {
+                    TemplateDebugInfo info = self.enclosingInstance.DebugInfo;
+                    info.InterpreterEvents.Add(e);
+                }
             }
 
             return n;
@@ -414,21 +418,21 @@ namespace StringTemplate
 
         protected int WriteObjectNoOptions(Template self, object o, int exprStart, int exprStop)
         {
-            int start = @out.Index; // track char we're about to write
+            //int start = @out.Index; // track char we're about to write
             int n = WriteObject(@out, self, o, null);
 
-            if (debug)
-            {
-                events.Add(new EvalExprEvent(self, start, @out.Index - 1, exprStart, exprStop));
-                //self.events.Add(new EvalExprEvent(self, start, @out.Index, exprStart, exprStop));
-            }
+            //if (debug)
+            //{
+            //    events.Add(new EvalExprEvent(self, start, @out.Index - 1, exprStart, exprStop));
+            //    //self.events.Add(new EvalExprEvent(self, start, @out.Index, exprStart, exprStop));
+            //}
 
             return n;
         }
 
         protected int WriteObjectWithOptions(Template self, object o, object[] options, int exprStart, int exprStop)
         {
-            int start = @out.Index; // track char we're about to write
+            //int start = @out.Index; // track char we're about to write
             // precompute all option values (render all the way to strings)
             string[] optionStrings = null;
             if (options != null)
@@ -448,11 +452,11 @@ namespace StringTemplate
             if (options != null && options[OPTION_ANCHOR] != null)
                 @out.PopAnchorPoint();
 
-            if (debug)
-            {
-                events.Add(new EvalTemplateEvent(self, start, @out.Index - 1));
-                //self.events.Add(new EvalTemplateEvent(self, start, @out.Index));
-            }
+            //if (debug)
+            //{
+            //    events.Add(new EvalTemplateEvent(self, start, @out.Index - 1));
+            //    //self.events.Add(new EvalTemplateEvent(self, start, @out.Index));
+            //}
 
             return n;
         }
@@ -1166,68 +1170,6 @@ namespace StringTemplate
             int b2 = memory[index++] & 0xFF;
             int word = b1 << (8 * 1) | b2;
             return word;
-        }
-
-        public class DebugEvent
-        {
-            public DebugEvent(Template self, int start, int stop)
-            {
-                this.Template = self;
-                this.Start = start;
-                this.Stop = stop;
-            }
-
-            public Template Template
-            {
-                get;
-                private set;
-            }
-
-            public int Start
-            {
-                get;
-                private set;
-            }
-
-            public int Stop
-            {
-                get;
-                private set;
-            }
-
-            public override string ToString()
-            {
-                return string.Format("{0}{{self={1},attr={2},start={3},stop={4}}}", GetType().Name, Template, Template.Attributes, Start, Stop);
-            }
-        }
-
-        public class EvalTemplateEvent : DebugEvent
-        {
-            public EvalTemplateEvent(Template self, int start, int stop)
-                : base(self, start, stop)
-            {
-            }
-        }
-
-        public class EvalExprEvent : DebugEvent
-        {
-            // template pattern location
-            protected int exprStart;
-            protected int exprStop;
-            protected string expr;
-
-            public EvalExprEvent(Template self, int start, int stop, int exprStart, int exprStop)
-                : base(self, start, stop)
-            {
-                this.exprStart = exprStart;
-                this.exprStop = exprStop;
-                this.expr = self.code.template.Substring(exprStart, exprStop - exprStart + 1);
-            }
-
-            public override string ToString()
-            {
-                return string.Format("{0}{{self={1},attr={2},start={3},stop={4},expr={5}}}", GetType().Name, Template, Template.Attributes, Start, Stop, expr);
-            }
         }
     }
 }

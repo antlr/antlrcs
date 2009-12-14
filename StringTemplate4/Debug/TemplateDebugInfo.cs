@@ -30,53 +30,43 @@
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-namespace StringTemplate
+namespace StringTemplate.Debug
 {
-    using System.Diagnostics;
+    using System.Collections.Generic;
 
-    public class Event
+    public class TemplateDebugInfo
     {
-        private StackTrace stack;
-
-        public Event()
+        public TemplateDebugInfo()
         {
-            this.stack = new StackTrace(true);
+            this.InterpreterEvents = new List<InterpEvent>();
+            this.AddAttributeEvents = new Dictionary<string, ICollection<AddAttributeEvent>>();
+            this.TemplateConstructionEvent = new ConstructionEvent();
         }
 
-        public string FileName
+        /** Track all events that occur during rendering.  Create room
+         *  for each new ST, but make sure to wipe this list
+         *  upon creation of interpreter to reset.  The construction-time
+         *  events like "new ST" and "add attribute" can stay, of course.
+         */
+        public IList<InterpEvent> InterpreterEvents
         {
-            get
-            {
-                return TemplateEntryPoint.GetFileName();
-            }
+            get;
+            private set;
         }
 
-        public int Line
+        /** Track add attribute "events"; used for ST user-level debugging;
+         *  Avoid polluting ST with this field when not debugging.
+         */
+        public IDictionary<string, ICollection<AddAttributeEvent>> AddAttributeEvents
         {
-            get
-            {
-                return TemplateEntryPoint.GetFileLineNumber();
-            }
+            get;
+            private set;
         }
 
-        public StackFrame TemplateEntryPoint
+        public ConstructionEvent TemplateConstructionEvent
         {
-            get
-            {
-                var frames = stack.GetFrames();
-                foreach (var frame in frames)
-                {
-                    var method = frame.GetMethod();
-
-                    if (method.Name == "Main")
-                        return frame;
-
-                    if (!method.DeclaringType.Namespace.StartsWith("StringTemplate"))
-                        return frame;
-                }
-
-                return frames[0];
-            }
+            get;
+            private set;
         }
     }
 }
