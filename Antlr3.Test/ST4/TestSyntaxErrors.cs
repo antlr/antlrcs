@@ -35,7 +35,7 @@ namespace AntlrUnitTests.ST4
     using Antlr.Runtime;
     using Microsoft.VisualStudio.TestTools.UnitTesting;
     using StringTemplate;
-
+    using StringTemplate.Compiler;
     using Path = System.IO.Path;
     using String = System.String;
 
