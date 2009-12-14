@@ -64,6 +64,7 @@
     <Compile Include="Debug\EvalExprEvent.cs" />
     <Compile Include="Debug\EvalTemplateEvent.cs" />
     <Compile Include="Debug\InterpEvent.cs" />
+    <Compile Include="ErrorManager.cs" />
     <Compile Include="ErrorTolerance.cs" />
     <Compile Include="Compiler\GroupLexerHelper.cs">
       <DependentUpon>Group.g3</DependentUpon>

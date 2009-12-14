@@ -237,7 +237,7 @@ namespace StringTemplate.Compiler
             {
                 stop = lexer.input.Index;
                 //sub.template = lexer.input.Substring(start, stop - start - 1);
-                Console.WriteLine(start + ".." + stop);
+                //Console.WriteLine(start + ".." + stop);
                 sub.embeddedStart = start;
                 sub.embeddedStop = stop - 1;
                 sub.template = lexer.input.Substring(0, lexer.input.Count - 1);

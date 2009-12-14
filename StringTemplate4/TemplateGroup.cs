@@ -57,27 +57,27 @@ namespace StringTemplate
         public static readonly string DICT_KEY = "key";
         public static readonly string DEFAULT_KEY = "default";
 
-        private class DefaultErrorListenerImpl : ITemplateErrorListener
-        {
-            public void Error(string message, Exception e)
-            {
-                Console.Error.WriteLine(message);
-                if (e != null)
-                    Console.Error.WriteLine(e.StackTrace);
-            }
+        //private class DefaultErrorListenerImpl : ITemplateErrorListener
+        //{
+        //    public void Error(string message, Exception e)
+        //    {
+        //        Console.Error.WriteLine(message);
+        //        if (e != null)
+        //            Console.Error.WriteLine(e.StackTrace);
+        //    }
 
-            public void Error(string message)
-            {
-                Error(message, null);
-            }
+        //    public void Error(string message)
+        //    {
+        //        Error(message, null);
+        //    }
 
-            public void Warning(string message)
-            {
-                Console.WriteLine(message);
-            }
-        }
+        //    public void Warning(string message)
+        //    {
+        //        Console.WriteLine(message);
+        //    }
+        //}
 
-        public static readonly ITemplateErrorListener DefaultErrorListener = new DefaultErrorListenerImpl();
+        //public static readonly ITemplateErrorListener DefaultErrorListener = new DefaultErrorListenerImpl();
 
         public string fullyQualifiedRootDirName;
 
@@ -119,7 +119,7 @@ namespace StringTemplate
         /** Where to report errors.  All string templates in this group
          *  use this error handler by default.
          */
-        public ITemplateErrorListener listener = DefaultErrorListener;
+        //public ITemplateErrorListener listener = DefaultErrorListener;
 
         public static ErrorTolerance DEFAULT_ERROR_TOLERANCE = new ErrorTolerance();
         public ErrorTolerance tolerance = DEFAULT_ERROR_TOLERANCE;
@@ -134,6 +134,18 @@ namespace StringTemplate
         {
             get;
             set;
+        }
+
+        public ErrorTolerance ErrorTolerance
+        {
+            get
+            {
+                return this.tolerance;
+            }
+            set
+            {
+                this.tolerance = value;
+            }
         }
 
         public virtual string Name
@@ -177,7 +189,7 @@ namespace StringTemplate
             Template st = GetInstanceOf(name);
             if (st == null)
             {
-                Console.Error.WriteLine("no such template: " + name);
+                ErrorManager.Error("no such template: " + name);
                 return Template.Blank;
             }
             st.enclosingInstance = enclosingInstance;
@@ -324,17 +336,17 @@ namespace StringTemplate
             {
                 if (!prev.isRegion)
                 {
-                    listener.Error("redefinition of " + name);
+                    ErrorManager.Error("redefinition of " + name);
                     return;
                 }
                 if (prev.isRegion && prev.regionDefType == Template.RegionType.Embedded)
                 {
-                    listener.Error("can't redefine embedded region " + name);
+                    ErrorManager.Error("can't redefine embedded region " + name);
                     return;
                 }
                 else if (prev.isRegion && prev.regionDefType == Template.RegionType.Explicit)
                 {
-                    listener.Error("can't redefine region in same group: " + name);
+                    ErrorManager.Error("can't redefine region in same group: " + name);
                     return;
                 }
             }
@@ -406,7 +418,7 @@ namespace StringTemplate
             }
             catch (Exception e)
             {
-                listener.Error("can't load group file: " + absoluteFileName, e);
+                ErrorManager.Error("can't load group file: " + absoluteFileName, e);
             }
         }
 
@@ -478,16 +490,6 @@ namespace StringTemplate
                 buf.AppendLine(">>");
             }
             return buf.ToString();
-        }
-
-        public virtual void SetErrorListener(ITemplateErrorListener listener)
-        {
-            this.listener = listener;
-        }
-
-        public virtual void SetErrorTolerance(ErrorTolerance errors)
-        {
-            this.tolerance = errors;
         }
 
         public virtual bool Detects(int x)

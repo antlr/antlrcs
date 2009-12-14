@@ -125,7 +125,7 @@ namespace StringTemplate
             }
             catch (Exception e)
             {
-                Console.Error.WriteLine("can't load template file: " + absoluteFileName);
+                ErrorManager.Error("can't load template file: " + absoluteFileName);
                 Console.Error.WriteLine(e.StackTrace);
             }
             return null;

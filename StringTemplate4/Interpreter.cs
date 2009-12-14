@@ -173,14 +173,20 @@ namespace StringTemplate
                     name = self.code.strings[nameIndex];
                     st = group.GetEmbeddedInstanceOf(self, name);
                     if (st == null)
-                        Console.Error.WriteLine("no such template " + name);
+                    {
+                        ErrorManager.Error("no such template " + name);
+                        st = Template.Blank;
+                    }
                     operands[++sp] = st;
                     break;
                 case Bytecode.INSTR_NEW_IND:
                     name = (string)operands[sp--];
                     st = group.GetEmbeddedInstanceOf(self, name);
                     if (st == null)
-                        Console.Error.WriteLine("no such template " + name);
+                    {
+                        ErrorManager.Error("no such template " + name);
+                        st = Template.Blank;
+                    }
                     operands[++sp] = st;
                     break;
                 case Bytecode.INSTR_SUPER_NEW:
@@ -190,8 +196,8 @@ namespace StringTemplate
                     CompiledTemplate imported = group.LookupImportedTemplate(name);
                     if (imported == null)
                     {
-                        group.listener.Error("no imported template for " + name);
-                        operands[++sp] = new BlankTemplate();
+                        ErrorManager.Error("no imported template for " + name);
+                        operands[++sp] = Template.Blank;
                         break;
                     }
                     // TODO: factor into STGroup
@@ -219,7 +225,7 @@ namespace StringTemplate
                     }
                     if (nargs != 1)
                     {
-                        Console.Error.WriteLine("arg mismatch; expecting 1, found " + nargs);
+                        ErrorManager.Error("arg mismatch; expecting 1, found " + nargs);
                     }
                     else
                     {
@@ -321,7 +327,7 @@ namespace StringTemplate
                     operands[sp] = Trunc(operands[sp]);
                     break;
                 case Bytecode.INSTR_STRIP:
-                    operands[sp] = Strip(operands[sp]);
+                    operands[sp] = Strip(operands[sp]); // TODO: should strip work on strings?
                     break;
                 case Bytecode.INSTR_TRIM:
                     o = operands[sp--];
@@ -330,7 +336,10 @@ namespace StringTemplate
                         operands[++sp] = ((string)o).Trim();
                     }
                     else
-                        Console.Error.WriteLine("strlen(non string)");
+                    {
+                        ErrorManager.Error("trim(non string): " + o);
+                        operands[++sp] = o;
+                    }
                     break;
                 case Bytecode.INSTR_LENGTH:
                     operands[sp] = Length(operands[sp]);
@@ -342,7 +351,10 @@ namespace StringTemplate
                         operands[++sp] = ((string)o).Length;
                     }
                     else
-                        Console.Error.WriteLine("strlen(non string)");
+                    {
+                        ErrorManager.Error("strlen(non string): " + o);
+                        operands[++sp] = 0;
+                    }
                     break;
                 case Bytecode.INSTR_REVERSE:
                     operands[sp] = Reverse(operands[sp]);
@@ -381,11 +393,11 @@ namespace StringTemplate
                     }
                     catch (IOException)
                     {
-                        Console.Error.WriteLine("can't write newline");
+                        ErrorManager.Error("[internal]: can't write newline");
                     }
                     break;
                 default:
-                    Console.Error.WriteLine("Invalid bytecode: " + opcode + " @ ip=" + (ip - 1));
+                    ErrorManager.Error("[internal]: Invalid bytecode: " + opcode + " @ ip=" + (ip - 1));
                     self.code.Dump();
                     break;
                 }
@@ -396,7 +408,7 @@ namespace StringTemplate
             {
                 int stop = @out.Index - 1;
                 EvalTemplateEvent e = new EvalTemplateEvent((DebugTemplate)self, start, stop);
-                Console.WriteLine(e);
+                //Console.WriteLine(e);
                 events.Add(e);
                 if (self.enclosingInstance != null)
                 {
@@ -477,7 +489,7 @@ namespace StringTemplate
                     }
                     catch (IOException)
                     {
-                        group.listener.Error("Can't write wrap string");
+                        ErrorManager.Error("Can't write wrap string");
                     }
                 }
                 n = Exec(@out, (Template)o);
@@ -494,7 +506,7 @@ namespace StringTemplate
                 }
                 catch (IOException)
                 {
-                    Console.Error.WriteLine("can't write " + o);
+                    ErrorManager.Error("can't write " + o);
                 }
             }
 
@@ -626,7 +638,7 @@ namespace StringTemplate
             var formalArguments = code.formalArguments;
             if (formalArguments == null || formalArguments.Count == 0)
             {
-                group.listener.Error("missing formal arguments in anonymous" +
+                ErrorManager.Error("missing formal arguments in anonymous" +
                            " template in context " + self.GetEnclosingInstanceStackString(), null);
                 return null;
             }
@@ -634,7 +646,7 @@ namespace StringTemplate
             object[] formalArgumentNames = formalArguments.Keys.ToArray();
             if (formalArgumentNames.Length != numAttributes)
             {
-                group.listener.Error("number of arguments " + formalArguments.Keys +
+                ErrorManager.Error("number of arguments " + formalArguments.Keys +
                            " mismatch between attribute list and anonymous" +
                            " template in context " + self.GetEnclosingInstanceStackString(), null);
                 // truncate arg list to match smaller size
@@ -1040,7 +1052,7 @@ namespace StringTemplate
                 }
                 catch
                 {
-                    Console.Error.WriteLine("Can't get property " + propertyName + " using method get/is" + methodSuffix +
+                    ErrorManager.Error("Can't get property " + propertyName + " using method get/is" + methodSuffix +
                         " from " + c.Name + " instance");
                 }
             }
@@ -1057,13 +1069,13 @@ namespace StringTemplate
                     }
                     catch
                     {
-                        Console.Error.WriteLine("Can't access property " + propertyName + " using method get/is" + methodSuffix +
+                        ErrorManager.Error("Can't access property " + propertyName + " using method get/is" + methodSuffix +
                             " or direct field access from " + c.Name + " instance");
                     }
                 }
                 catch
                 {
-                    Console.Error.WriteLine("Class " + c.Name + " has no such attribute: " + propertyName +
+                    ErrorManager.Error("Class " + c.Name + " has no such attribute: " + propertyName +
                         " in template context " + "PUT CALLSTACK HERE");
                 }
             }

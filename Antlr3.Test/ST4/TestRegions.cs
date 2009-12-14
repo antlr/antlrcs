@@ -149,7 +149,7 @@ namespace AntlrUnitTests.ST4
 
             TemplateGroup group = new TemplateGroupFile(dir + "/g.stg");
             ErrorBuffer errors = new ErrorBuffer();
-            group.SetErrorListener(errors);
+            ErrorManager.ErrorListener = errors;
             group.Load();
             string expected = "redefinition of /region__a__r";
             string result = errors.ToString();

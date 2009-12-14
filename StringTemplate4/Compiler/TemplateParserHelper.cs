@@ -92,7 +92,7 @@ namespace StringTemplate.Compiler
             int i;
             if (!TemplateCompiler.supportedOptions.TryGetValue(id.Text, out i))
             {
-                Console.Error.WriteLine("no such option: " + id.Text);
+                ErrorManager.Error("no such option: " + id.Text);
                 return;
             }
 
@@ -104,7 +104,7 @@ namespace StringTemplate.Compiler
             string v;
             if (!TemplateCompiler.defaultOptionValues.TryGetValue(id.Text, out v))
             {
-                Console.Error.WriteLine("no def value for " + id.Text);
+                ErrorManager.Error("no def value for " + id.Text);
                 return;
             }
 
@@ -116,7 +116,7 @@ namespace StringTemplate.Compiler
             short funcBytecode;
             if (!TemplateCompiler.funcs.TryGetValue(id.Text, out funcBytecode))
             {
-                Console.Error.WriteLine("no such fun: " + id);
+                ErrorManager.Error("no such fun: " + id);
                 gen.Emit(Bytecode.INSTR_NOOP);
                 return;
             }

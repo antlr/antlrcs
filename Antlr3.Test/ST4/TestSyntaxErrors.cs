@@ -90,7 +90,7 @@ namespace AntlrUnitTests.ST4
 
             ITemplateErrorListener errors = new ErrorBuffer();
             TemplateGroup group = new TemplateGroupFile(Path.Combine(tmpdir, "t.stg"));
-            group.listener = errors;
+            ErrorManager.ErrorListener = errors;
             group.Load(); // force load
             string expected = "2:15: mismatched input '<' expecting EOF";
             string result = errors.ToString();
@@ -108,7 +108,7 @@ namespace AntlrUnitTests.ST4
 
             ITemplateErrorListener errors = new ErrorBuffer();
             TemplateGroup group = new TemplateGroupFile(Path.Combine(tmpdir, "t.stg"));
-            group.listener = errors;
+            ErrorManager.ErrorListener = errors;
             group.Load(); // force load
             string expected = "2:14: mismatched input '<' expecting EOF"; // TODO: terrible err message
             string result = errors.ToString();
@@ -126,7 +126,7 @@ namespace AntlrUnitTests.ST4
             TemplateGroup group = null;
             ITemplateErrorListener errors = new ErrorBuffer();
             group = new TemplateGroupFile(Path.Combine(tmpdir, "t.stg"));
-            group.listener = errors;
+            ErrorManager.ErrorListener = errors;
             group.Load(); // force load
             string expected = "2:29: no viable alternative at input '!'";
             string result = errors.ToString();
