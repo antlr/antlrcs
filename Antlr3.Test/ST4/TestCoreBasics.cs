@@ -475,5 +475,16 @@
             result = st.Render();
             Assert.AreEqual(expecting, result);
         }
+
+        [TestMethod]
+        public void TestSubtemplateExpr()
+        {
+            string template = "<{name\n}>";
+            Template st = new Template(template);
+            string expected =
+                "name" + newline;
+            string result = st.Render();
+            Assert.AreEqual(expected, result);
+        }
     }
 }

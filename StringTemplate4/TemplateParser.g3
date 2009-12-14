@@ -260,7 +260,12 @@ exprNoComma
 	|	subtemplate {gen.Emit(Bytecode.INSTR_NEW, $subtemplate.name);}
 	;
 
-expr : mapExpr ;
+expr
+	:	mapExpr
+	|	// <{...}>
+		subtemplate
+		{gen.Emit(Bytecode.INSTR_NEW, PrefixedName($subtemplate.name));}
+	;
 
 mapExpr
 @init {int nt=1, ne=1;}
@@ -298,10 +303,6 @@ options {k=2;} // prevent full LL(*), which fails, falling back on k=1; need k=2
 	
 primary
 	:	o=ID	  {RefAttr($o);}
-/*		(	'.' p=ID {gen.Emit(Bytecode.INSTR_LOAD_PROP, $p.text);}
-		|	'.' '(' mapExpr ')' {gen.Emit(Bytecode.INSTR_LOAD_PROP_IND);}
-		)*
-		*/
 	|	STRING    {gen.Emit(Bytecode.INSTR_LOAD_STR, Misc.Strip($STRING.text,1));}
 	|	list
 	|	'(' expr ')' {gen.Emit(Bytecode.INSTR_TOSTR);}
