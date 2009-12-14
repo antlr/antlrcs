@@ -49,6 +49,7 @@
     <Compile Include="ST4\StringTemplateTestBase.cs" />
     <Compile Include="ST4\TestCompiler.cs" />
     <Compile Include="ST4\TestCoreBasics.cs" />
+    <Compile Include="ST4\TestDebugEvents.cs" />
     <Compile Include="ST4\TestDictionaries.cs" />
     <Compile Include="ST4\TestDollarDelimiters.cs" />
     <Compile Include="ST4\TestFunctions.cs" />

@@ -151,6 +151,10 @@ namespace StringTemplate
             {
             }
 
+            public void Emit(short opcode, int arg1, int arg2)
+            {
+            }
+
             public void Emit(short opcode, string s)
             {
             }

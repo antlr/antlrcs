@@ -42,11 +42,11 @@ namespace StringTemplate
         /** The original, immutable pattern (not really used again after
          *  initial "compilation"). Useful for debugging.
          */
-        protected internal string template;
+        public string template;
 
         protected internal IDictionary<string, FormalArgument> formalArguments;
 
-        internal List<CompiledTemplate> implicitlyDefinedTemplates;
+        protected internal List<CompiledTemplate> implicitlyDefinedTemplates;
 
         /** The group that holds this ST definition.  We use it to initiate
          *  interpretation via ST.toString().  From there, it becomes field 'group'

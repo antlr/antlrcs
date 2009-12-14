@@ -32,6 +32,7 @@ parser grammar TemplateParser;
 options {
 	language=CSharp3;
 	tokenVocab=TemplateLexer;
+	TokenLabelType=CommonToken;
 }
 
 @namespace{StringTemplate}
@@ -67,7 +68,7 @@ options {backtrack=true; k=2;}
 	|   (i=INDENT {Indent($i.text);})? region
 						 {
 						 gen.Emit(Bytecode.INSTR_NEW, $region.name);
-						 gen.Emit(Bytecode.INSTR_WRITE);
+						 gen.Emit(Bytecode.INSTR_WRITE, $region.start.StartIndex, $region.stop.StartIndex);
 						 }
 	|	i=INDENT         {Indent($i.text);}
 	 	NEWLINE          {gen.Emit(Bytecode.INSTR_NEWLINE);} 
@@ -80,15 +81,16 @@ text
 		{
 		if ( $TEXT.text.Length>0 ) {
 			gen.Emit(Bytecode.INSTR_LOAD_STR, $TEXT.text);
-			gen.Emit(Bytecode.INSTR_WRITE);
+			gen.Emit(Bytecode.INSTR_WRITE, $TEXT.StartIndex, $TEXT.StopIndex);
 		}
 		}
 	;
 
 exprTag
-	:	LDELIM expr
-		(	';' exprOptions {gen.Emit(Bytecode.INSTR_WRITE_OPT);}
-		|	                {gen.Emit(Bytecode.INSTR_WRITE);}
+	:	LDELIM
+		expr
+		(	';' exprOptions {gen.Emit(Bytecode.INSTR_WRITE_OPT,$LDELIM.StartIndex,input.LT(1).StartIndex);}
+		|	                {gen.Emit(Bytecode.INSTR_WRITE,$LDELIM.StartIndex,input.LT(1).StartIndex);}
 		)
 		RDELIM
 	;

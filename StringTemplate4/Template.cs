@@ -290,14 +290,14 @@ namespace StringTemplate
 
         public virtual int Write(ITemplateWriter @out)
         {
-            Interpreter interp = new Interpreter(groupThatCreatedThisInstance);
-            return interp.Exec(@out, this);
+            Interpreter interp = new Interpreter(groupThatCreatedThisInstance, @out);
+            return interp.Exec(this);
         }
 
         public virtual int Write(ITemplateWriter @out, CultureInfo culture)
         {
-            Interpreter interp = new Interpreter(groupThatCreatedThisInstance, culture);
-            return interp.Exec(@out, this);
+            Interpreter interp = new Interpreter(groupThatCreatedThisInstance, @out, culture);
+            return interp.Exec(this);
         }
 
         public string Render()
@@ -323,11 +323,6 @@ namespace StringTemplate
             try
             {
                 Write(wr, culture);
-                /*
-                System.err.println("template size = "+code.template.length()+
-                                   ", code size = "+code.instrs.length+", ratio = "+
-                                   ((float)code.instrs.length/code.template.length()));
-                                   */
             }
             catch (IOException)
             {

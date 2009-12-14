@@ -183,15 +183,23 @@ namespace StringTemplate
 
         public void Emit(short opcode)
         {
-            EnsureCapacity();
+            EnsureCapacity(1);
             instrs[ip++] = (byte)opcode;
         }
 
         public void Emit(short opcode, int arg)
         {
-            EnsureCapacity();
-            instrs[ip++] = (byte)opcode;
+            Emit(opcode);
+            EnsureCapacity(2);
             WriteShort(instrs, ip, (short)arg);
+            ip += 2;
+        }
+
+        public void Emit(short opcode, int arg1, int arg2)
+        {
+            Emit(opcode, arg1);
+            EnsureCapacity(2);
+            WriteShort(instrs, ip, (short)arg2);
             ip += 2;
         }
 
@@ -269,10 +277,11 @@ namespace StringTemplate
             code.implicitlyDefinedTemplates.Add(blank);
         }
 
-        protected void EnsureCapacity()
+        protected void EnsureCapacity(int n)
         {
-            if ((ip + 3) >= instrs.Length)
-            { // ensure room for full instruction
+            if ((ip + n) >= instrs.Length)
+            {
+                // ensure room for full instruction
                 byte[] c = new byte[instrs.Length * 2];
                 Array.Copy(instrs, 0, c, 0, instrs.Length);
                 instrs = c;

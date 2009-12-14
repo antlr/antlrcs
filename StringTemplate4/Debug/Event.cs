@@ -32,38 +32,15 @@
 
 namespace StringTemplate
 {
-    using System.Collections.Generic;
-    using Antlr.Runtime;
-    using IList = System.Collections.IList;
+    using System.Diagnostics;
 
-    // TODO: maybe rename; more than code gen now; break into two interfaces?
-    public interface ICodeGenerator
+    public class Event
     {
-        /// <summary>
-        /// If we're compiling templates in subdir or group file under root,
-        /// what's the templatePathPrefix to add?
-        /// </summary>
-        string TemplateReferencePrefix
+        private StackTrace stack;
+
+        public Event()
         {
-            get;
+            this.stack = new StackTrace();
         }
-
-        void Emit(short opcode);
-        void Emit(short opcode, int arg);
-        void Emit(short opcode, int arg1, int arg2);
-        void Emit(short opcode, string s);
-        void Write(int addr, short value);
-        /** Return address where next instruction will be written */
-        int Address();
-
-        /** Compile a subtemplate. It's the '...' in this &lt;names:{p | ...}&gt; */
-        string CompileAnonTemplate(string enclosingTemplateName,
-                                   ITokenStream input,
-                                   IList<IToken> ids,
-                                   RecognizerSharedState state);
-
-        string CompileRegion(string enclosingTemplateName, string regionName, ITokenStream input, RecognizerSharedState state);
-
-        void DefineBlankRegion(string fullyQualifiedName);
     }
 }

@@ -34,6 +34,7 @@ namespace StringTemplate
 {
     public class Bytecode
     {
+        public const int MaxOperands = 3;
         public const int OPND_SIZE_IN_BYTES = 2;
         public const int STRING = 1;
         public const int ADDR = 2;
@@ -42,7 +43,7 @@ namespace StringTemplate
         public class Instruction
         {
             internal string name; // E.g., "load_str", "new"
-            internal int[] type = new int[3];
+            internal int[] type = new int[MaxOperands];
             internal int n = 0;
 
             public Instruction(string name)
@@ -137,8 +138,8 @@ namespace StringTemplate
                 new Instruction("new",STRING),
                 new Instruction("new_ind"),
                 new Instruction("super_new",STRING),
-                new Instruction("write"),
-                new Instruction("write_opt"),
+                new Instruction("write", INT, INT), // write delimiter-start-in-template, stop
+                new Instruction("write_opt", INT, INT),
                 new Instruction("map"),
                 new Instruction("rot_map", INT),
                 new Instruction("par_map", INT),

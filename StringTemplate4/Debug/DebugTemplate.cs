@@ -37,22 +37,11 @@ namespace StringTemplate
 
     public class DebugTemplate : Template
     {
-        public class AddEvent
-        {
-            string name;
-            object value;
-            Exception source;
-
-            public AddEvent(string name, object value)
-            {
-                this.name = name;
-                this.value = value;
-                this.source = new Exception();
-            }
-        }
-
-        /** Track add attribute "events"; used for ST user-level debugging */
-        IList<AddEvent> addEvents; // TODO: put this in a subclass; alter factor in STGroup
+        /// <summary>
+        /// Track add attribute "events"; used for ST user-level debugging;
+        /// Avoid polluting Template with this field when not debugging.
+        /// </summary>
+        IList<AddAttributeEvent> addEvents;
 
         public override void Add(string name, object value)
         {
@@ -64,9 +53,21 @@ namespace StringTemplate
             if (code.nativeGroup.Detects(ErrorTolerance.DETECT_ADD_ATTR))
             {
                 if (addEvents == null)
-                    addEvents = new List<AddEvent>();
+                    addEvents = new List<AddAttributeEvent>();
 
-                addEvents.Add(new AddEvent(name, value));
+                addEvents.Add(new AddAttributeEvent(name, value));
+            }
+        }
+
+        public class AddAttributeEvent : Event
+        {
+            string name;
+            object value;
+
+            public AddAttributeEvent(string name, object value)
+            {
+                this.name = name;
+                this.value = value;
             }
         }
     }

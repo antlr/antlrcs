@@ -65,6 +65,12 @@ namespace StringTemplate
          *  last written to.
          */
         protected int charPosition = 0;
+
+        /// <summary>
+        /// The absolute char index into the output of the last char written.
+        /// </summary>
+        protected int charIndex = -1;
+
         protected int lineWidth = NoWrap;
 
         protected int charPositionOfStartOfExpr = 0;
@@ -81,36 +87,21 @@ namespace StringTemplate
         {
         }
 
+        public int Index
+        {
+            get
+            {
+                return charIndex;
+            }
+        }
+
         public virtual void SetLineWidth(int lineWidth)
         {
             this.lineWidth = lineWidth;
         }
 
-        /** Push even blank (null) indents as they are like scopes; must
-         *  be able to pop them back off stack.
-         *
-         *  To deal with combined anchors and indentation, force indents to
-         *  include any current anchor point.  If current anchor is beyond
-         *  current indent width, add the difference to the indent to be added.
-         *
-         *  This prevents a check later to deal with anchors when starting new line.
-         */
         public virtual void PushIndentation(string indent)
         {
-#if false
-            int indentWidth = GetIndentationWidth();
-            int lastAnchor = 0;
-            // If current anchor is beyond current indent width, add in difference
-            if (anchors_sp >= 0 && anchors[anchors_sp] > indentWidth)
-            {
-                lastAnchor = anchors[anchors_sp];
-                StringBuilder buf = GetIndentString(lastAnchor - indentWidth);
-                if (indent != null)
-                    buf.Append(indent); // don't add if null
-                indents.Add(buf.ToString());
-                return;
-            }
-#endif
             indents.Add(indent);
         }
 
@@ -170,6 +161,7 @@ namespace StringTemplate
                     n += newline.Length;
                     @out.Write(newline);
                     charPosition += n; // wrote n more char
+                    charIndex += n;
                     continue;
                 }
                 // normal character
@@ -182,6 +174,7 @@ namespace StringTemplate
                 n++;
                 @out.Write(c);
                 charPosition++;
+                charIndex++;
             }
             return n;
         }
@@ -223,6 +216,7 @@ namespace StringTemplate
                         @out.Write(newline);
                         n += newline.Length;
                         charPosition = 0;
+                        charIndex += newline.Length;
                         n += Indent();
                         // continue writing any chars out
                     }
@@ -231,6 +225,7 @@ namespace StringTemplate
                         n++;
                         @out.Write(c);
                         charPosition++;
+                        charIndex++;
                     }
                 }
             }
@@ -262,6 +257,7 @@ namespace StringTemplate
             }
 
             charPosition += n;
+            charIndex += n;
             return n;
         }
 

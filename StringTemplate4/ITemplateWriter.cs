@@ -34,6 +34,14 @@ namespace StringTemplate
 {
     public interface ITemplateWriter
     {
+        /// <summary>
+        /// Get the absolute char index into the output of the last char we wrote. Returns -1 if no char written.
+        /// </summary>
+        int Index
+        {
+            get;
+        }
+
         void PushIndentation(string indent);
 
         string PopIndentation();

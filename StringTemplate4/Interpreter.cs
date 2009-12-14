@@ -53,11 +53,14 @@ namespace StringTemplate
 
     public class Interpreter
     {
+        // TODO: enum?
         public static readonly int OPTION_ANCHOR = 0;
         public static readonly int OPTION_FORMAT = 1;
         public static readonly int OPTION_NULL = 2;
         public static readonly int OPTION_SEPARATOR = 3;
         public static readonly int OPTION_WRAP = 4;
+
+        protected internal IList<DebugEvent> events;
 
         public static readonly int DEFAULT_OPERAND_STACK_SIZE = 100;
 
@@ -74,6 +77,8 @@ namespace StringTemplate
         int sp = -1;  // stack pointer register
         int nw = 0;   // how many char written on this template line so far? ("number written" register)
 
+        ITemplateWriter @out;
+
         /** Exec st with respect to this group. Once set in Template.toString(),
          *  it should be fixed.  Template has group also.
          */
@@ -82,20 +87,44 @@ namespace StringTemplate
         CultureInfo culture;
 
         public bool trace = false;
+        public bool debug = false;
 
-        public Interpreter(TemplateGroup group)
-            : this(group, CultureInfo.CurrentCulture)
+        public Interpreter(TemplateGroup group, ITemplateWriter @out)
+            : this(group, @out, CultureInfo.CurrentCulture)
         {
         }
 
-        public Interpreter(TemplateGroup group, CultureInfo culture)
+        public Interpreter(TemplateGroup group, ITemplateWriter @out, CultureInfo culture)
         {
             this.group = group;
+            this.@out = @out;
             this.culture = culture;
         }
 
-        public int Exec(ITemplateWriter @out, Template self)
+        public IList<DebugEvent> Events
         {
+            get
+            {
+                return events;
+            }
+        }
+
+        public bool Debug
+        {
+            get
+            {
+                return debug;
+            }
+            set
+            {
+                debug = value;
+                events = new List<DebugEvent>();
+            }
+        }
+
+        public int Exec(Template self)
+        {
+            int start = @out.Index + 1; // track char we're about to write
             int prevOpcode = 0;
             int n = 0; // how many char we write out
             int nameIndex = 0;
@@ -217,14 +246,22 @@ namespace StringTemplate
                     options[optionIndex] = o; // store value into options on stack
                     break;
                 case Bytecode.INSTR_WRITE:
+                    int exprStart = GetShort(code, ip);
+                    ip += 2;
+                    int exprStop = GetShort(code, ip);
+                    ip += 2;
                     o = operands[sp--];
-                    nw = WriteObjectNoOptions(@out, self, o);
+                    nw = WriteObjectNoOptions(self, o, exprStart, exprStop);
                     n += nw;
                     break;
                 case Bytecode.INSTR_WRITE_OPT:
+                    exprStart = GetShort(code, ip);
+                    ip += 2;
+                    exprStop = GetShort(code, ip);
+                    ip += 2;
                     options = (object[])operands[sp--]; // get options
                     o = operands[sp--];                 // get option to write
-                    nw = WriteObjectWithOptions(@out, self, o, options);
+                    nw = WriteObjectWithOptions(self, o, options, exprStart, exprStop);
                     n += nw;
                     break;
                 case Bytecode.INSTR_MAP:
@@ -361,12 +398,30 @@ namespace StringTemplate
                 }
                 prevOpcode = opcode;
             }
+
+            if (debug)
+            {
+                events.Add(new EvalTemplateEvent(self, start, @out.Index));
+            }
+
             return n;
         }
 
-        protected int WriteObjectWithOptions(ITemplateWriter @out, Template self, object o, object[] options)
+        protected int WriteObjectNoOptions(Template self, object o, int exprStart, int exprStop)
         {
-            // precompute all option values (render all the way to strings) 
+            int start = @out.Index + 1; // track char we're about to write
+            int n = WriteObject(@out, self, o, (string[])null);
+
+            if (debug)
+                events.Add(new EvalExprEvent(self, start, @out.Index, exprStart, exprStop));
+
+            return n;
+        }
+
+        protected int WriteObjectWithOptions(Template self, object o, object[] options, int exprStart, int exprStop)
+        {
+            int start = @out.Index + 1; // track char we're about to write
+            // precompute all option values (render all the way to strings)
             string[] optionStrings = null;
             if (options != null)
             {
@@ -385,12 +440,10 @@ namespace StringTemplate
             if (options != null && options[OPTION_ANCHOR] != null)
                 @out.PopAnchorPoint();
 
-            return n;
-        }
+            if (debug)
+                events.Add(new EvalTemplateEvent(self, start, @out.Index));
 
-        protected int WriteObjectNoOptions(ITemplateWriter @out, Template self, object o)
-        {
-            return WriteObject(@out, self, o, (string[])null);
+            return n;
         }
 
         protected int WriteObject(ITemplateWriter @out, Template self, object o, string[] options)
@@ -423,7 +476,7 @@ namespace StringTemplate
                         group.listener.Error("Can't write wrap string");
                     }
                 }
-                n = Exec(@out, (Template)o);
+                n = Exec((Template)o);
             }
             else
             {
@@ -854,21 +907,28 @@ namespace StringTemplate
 
         public object Strlen(object v)
         {
-            return null;
+            //return null;
+            // TODO: impl
+            throw new System.NotImplementedException();
         }
 
         protected string ToString(Template self, object value)
         {
             if (value != null)
             {
-                if (value.GetType() == typeof(string))
-                    return (string)value;
+                string s = value as string;
+                if (s != null)
+                    return s;
+
                 // if Template, make sure it evaluates with enclosing template as self
-                if (value.GetType() == typeof(Template))
-                    ((Template)value).enclosingInstance = self;
+                Template t = value as Template;
+                if (t != null)
+                    t.enclosingInstance = self;
+
                 // if not string already, must evaluate it
                 StringWriter sw = new StringWriter();
-                WriteObject(new NoIndentWriter(sw), self, value, null);
+                Interpreter interp = new Interpreter(group, new NoIndentWriter(sw), culture);
+                interp.WriteObjectNoOptions(self, value, -1, -1);
                 return sw.ToString();
             }
             return null;
@@ -1095,6 +1155,55 @@ namespace StringTemplate
             int b2 = memory[index++] & 0xFF;
             int word = b1 << (8 * 1) | b2;
             return word;
+        }
+
+        public class DebugEvent
+        {
+            protected Template self;
+            // output location
+            protected int start;
+            protected int stop;
+
+            public DebugEvent(Template self, int start, int stop)
+            {
+                this.self = self;
+                this.start = start;
+                this.stop = stop;
+            }
+
+            public override string ToString()
+            {
+                return string.Format("{0}{{self={1},attr={2},start={3},stop={4}}}", GetType().Name, self, self.attributes, start, stop);
+            }
+        }
+
+        public class EvalTemplateEvent : DebugEvent
+        {
+            public EvalTemplateEvent(Template self, int start, int stop)
+                : base(self, start, stop)
+            {
+            }
+        }
+
+        public class EvalExprEvent : DebugEvent
+        {
+            // template pattern location
+            protected int exprStart;
+            protected int exprStop;
+            protected string expr;
+
+            public EvalExprEvent(Template self, int start, int stop, int exprStart, int exprStop)
+                : base(self, start, stop)
+            {
+                this.exprStart = exprStart;
+                this.exprStop = exprStop;
+                this.expr = self.code.template.Substring(exprStart, exprStop - exprStart + 2);
+            }
+
+            public override string ToString()
+            {
+                return string.Format("{0}{{self={1},attr={2},start={3},stop={4},expr={5}}}", GetType().Name, self, self.attributes, start, stop, expr);
+            }
         }
     }
 }
