@@ -418,11 +418,6 @@ namespace StringTemplate
             return st;
         }
 
-        public ITemplateWriter GetStringTemplateWriter(TextWriter w)
-        {
-            return new AutoIndentWriter(w);
-        }
-
         public override string ToString()
         {
             return Name;

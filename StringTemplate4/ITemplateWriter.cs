@@ -55,12 +55,19 @@ namespace StringTemplate
          */
         int Write(string str, string wrap);
 
-        /** Because we might need to wrap at a non-atomic string boundary
-         *  (such as when we wrap in between template applications
-         *   <data:{v|[<v>]}; wrap>) we need to expose the wrap string
-         *  writing just like for the separator.
+        /** Because we evaluate ST instance by invoking exec() again, we
+         *  can't pass options in.  So the WRITE instruction of an applied
+         *  template (such as when we wrap in between template applications
+         *  like &lt;data:{v|[&lt;v&gt;]}; wrap&gt;) we need to write the wrap string
+         *  before calling exec().  We expose just like for the separator.
+         *  See Interpreter.writeObject where it checks for ST instance.
+         *  If POJO, writePOJO passes wrap to STWriter's
+         *
+         *     write(String str, String wrap)
+         *
+         *  method.  Can't pass to exec(). 
          */
-        int WriteWrapSeparator(string wrap);
+        int WriteWrap(string wrap);
 
         /** Write a separator.  Same as write() except that a \n cannot
          *  be inserted before emitting a separator.

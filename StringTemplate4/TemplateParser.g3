@@ -49,27 +49,30 @@ templateAndEOF
 // TODO: remove backtracking
 public
 template
-	:	(	options {backtrack=true; k=2;}
-		:	i=INDENT         {Indent($i.text);}
-			ifOnOneLine      {gen.Emit(Bytecode.INSTR_DEDENT);}
-		|	i=INDENT ifOnMultiLines
-		|	ifOnMultiLines
-		|	i=INDENT       	 {Indent($i.text);}
-			exprTag          {gen.Emit(Bytecode.INSTR_DEDENT);}
-		|	exprTag
-		|	i=INDENT         {Indent($i.text);}
-			text             {gen.Emit(Bytecode.INSTR_DEDENT);}
-		|	text
-		|   (i=INDENT {Indent($i.text);})? region
-							 {
-							 gen.Emit(Bytecode.INSTR_NEW, $region.name);
-							 gen.Emit(Bytecode.INSTR_WRITE);
-							 }
-		|	i=INDENT         {Indent($i.text);}
-		 	NEWLINE          {gen.Emit(Bytecode.INSTR_NEWLINE);} 
-		 	                 {gen.Emit(Bytecode.INSTR_DEDENT);}
-		|	NEWLINE          {gen.Emit(Bytecode.INSTR_NEWLINE);}
-		)*
+	:	element*
+	;
+
+element
+options {backtrack=true; k=2;}
+	:	i=INDENT         {Indent($i.text);}
+		ifOnOneLine      {gen.Emit(Bytecode.INSTR_DEDENT);}
+	|	i=INDENT ifOnMultiLines
+	|	ifOnMultiLines
+	|	i=INDENT       	 {Indent($i.text);}
+		exprTag          {gen.Emit(Bytecode.INSTR_DEDENT);}
+	|	exprTag
+	|	i=INDENT         {Indent($i.text);}
+		text             {gen.Emit(Bytecode.INSTR_DEDENT);}
+	|	text
+	|   (i=INDENT {Indent($i.text);})? region
+						 {
+						 gen.Emit(Bytecode.INSTR_NEW, $region.name);
+						 gen.Emit(Bytecode.INSTR_WRITE);
+						 }
+	|	i=INDENT         {Indent($i.text);}
+	 	NEWLINE          {gen.Emit(Bytecode.INSTR_NEWLINE);} 
+	 	                 {gen.Emit(Bytecode.INSTR_DEDENT);}
+	|	NEWLINE          {gen.Emit(Bytecode.INSTR_NEWLINE);}
 	;
 
 text

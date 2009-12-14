@@ -190,6 +190,9 @@ BIGSTRING
 		|	~'\\'
 		)*
         '>>'
+        {
+        $text = $text.Replace(@"\>", ">");
+        }
 	;
 
 ANONYMOUS_TEMPLATE

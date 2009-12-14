@@ -318,7 +318,7 @@ namespace StringTemplate
         public virtual string Render(CultureInfo culture, int lineWidth)
         {
             StringWriter @out = new StringWriter();
-            ITemplateWriter wr = groupThatCreatedThisInstance.GetStringTemplateWriter(@out);
+            ITemplateWriter wr = new AutoIndentWriter(@out);
             wr.SetLineWidth(lineWidth);
             try
             {

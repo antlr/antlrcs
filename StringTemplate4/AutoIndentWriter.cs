@@ -97,8 +97,9 @@ namespace StringTemplate
          */
         public virtual void PushIndentation(string indent)
         {
-            int lastAnchor = 0;
+#if false
             int indentWidth = GetIndentationWidth();
+            int lastAnchor = 0;
             // If current anchor is beyond current indent width, add in difference
             if (anchors_sp >= 0 && anchors[anchors_sp] > indentWidth)
             {
@@ -109,6 +110,7 @@ namespace StringTemplate
                 indents.Add(buf.ToString());
                 return;
             }
+#endif
             indents.Add(indent);
         }
 
@@ -158,18 +160,16 @@ namespace StringTemplate
             {
                 char c = str[i];
                 // found \n or \r\n newline?
-                if (c == '\r' || c == '\n')
+                if (c == '\r')
+                    continue;
+
+                if (c == '\n')
                 {
                     atStartOfLine = true;
                     charPosition = -1; // set so the write below sets to 0
                     n += newline.Length;
                     @out.Write(newline);
-                    charPosition += n; // wrote n more char 
-                    // skip an extra char upon \r\n
-                    if ((c == '\r' && (i + 1) < str.Length && str[i + 1] == '\n'))
-                    {
-                        i++; // loop iteration i++ takes care of skipping 2nd char
-                    }
+                    charPosition += n; // wrote n more char
                     continue;
                 }
                 // normal character
@@ -199,11 +199,11 @@ namespace StringTemplate
          */
         public virtual int Write(string str, string wrap)
         {
-            int n = WriteWrapSeparator(wrap);
+            int n = WriteWrap(wrap);
             return n + Write(str);
         }
 
-        public virtual int WriteWrapSeparator(string wrap)
+        public virtual int WriteWrap(string wrap)
         {
             int n = 0;
             // if want wrap and not already at start of line (last char was \n)
@@ -220,8 +220,8 @@ namespace StringTemplate
                     char c = wrap[i];
                     if (c == '\n')
                     {
-                        n++;
-                        @out.Write(c);
+                        @out.Write(newline);
+                        n += newline.Length;
                         charPosition = 0;
                         n += Indent();
                         // continue writing any chars out
@@ -249,18 +249,20 @@ namespace StringTemplate
                     @out.Write(ind);
                 }
             }
+
+            // If current anchor is beyond current indent width, indent to anchor
+            // *after* doing indents (might tabs in there or whatever)
+            int indentWidth = n;
+            if (anchors_sp >= 0 && anchors[anchors_sp] > indentWidth)
+            {
+                int remainder = anchors[anchors_sp] - indentWidth;
+                for (int i = 1; i <= remainder; i++)
+                    @out.Write(' ');
+                n += remainder;
+            }
+
             charPosition += n;
             return n;
-        }
-
-        public virtual int Indent(int spaces)
-        {
-            for (int i = 1; i <= spaces; i++)
-            {
-                @out.Write(' ');
-            }
-            charPosition += spaces;
-            return spaces;
         }
 
         protected virtual StringBuilder GetIndentString(int spaces)

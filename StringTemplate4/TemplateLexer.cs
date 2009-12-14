@@ -216,6 +216,7 @@ namespace StringTemplate
             }
             if (c == '\r')
             {
+                // \r\n -> \n
                 Consume();
                 Consume();
                 return NewToken(NEWLINE);

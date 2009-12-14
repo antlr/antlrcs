@@ -218,13 +218,13 @@ namespace StringTemplate
                     break;
                 case Bytecode.INSTR_WRITE:
                     o = operands[sp--];
-                    nw = WriteObject(@out, self, o, (string[])null);
+                    nw = WriteObjectNoOptions(@out, self, o);
                     n += nw;
                     break;
                 case Bytecode.INSTR_WRITE_OPT:
                     options = (object[])operands[sp--]; // get options
                     o = operands[sp--];                 // get option to write
-                    nw = WriteObject(@out, self, o, options);
+                    nw = WriteObjectWithOptions(@out, self, o, options);
                     n += nw;
                     break;
                 case Bytecode.INSTR_MAP:
@@ -364,7 +364,7 @@ namespace StringTemplate
             return n;
         }
 
-        protected int WriteObject(ITemplateWriter @out, Template self, object o, object[] options)
+        protected int WriteObjectWithOptions(ITemplateWriter @out, Template self, object o, object[] options)
         {
             // precompute all option values (render all the way to strings) 
             string[] optionStrings = null;
@@ -376,7 +376,21 @@ namespace StringTemplate
                     optionStrings[i] = ToString(self, options[i]);
                 }
             }
-            return WriteObject(@out, self, o, optionStrings);
+
+            if (options != null && options[OPTION_ANCHOR] != null)
+                @out.PushAnchorPoint();
+
+            int n = WriteObject(@out, self, o, optionStrings);
+
+            if (options != null && options[OPTION_ANCHOR] != null)
+                @out.PopAnchorPoint();
+
+            return n;
+        }
+
+        protected int WriteObjectNoOptions(ITemplateWriter @out, Template self, object o)
+        {
+            return WriteObject(@out, self, o, (string[])null);
         }
 
         protected int WriteObject(ITemplateWriter @out, Template self, object o, string[] options)
@@ -394,11 +408,6 @@ namespace StringTemplate
                 }
             }
 
-            if (options != null && options[OPTION_ANCHOR] != null)
-                @out.PushAnchorPoint();
-
-            @out.PushIndentation(null);
-
             if (o is Template)
             {
                 ((Template)o).enclosingInstance = self;
@@ -407,7 +416,7 @@ namespace StringTemplate
                     // if we have a wrap string, then inform writer it might need to wrap
                     try
                     {
-                        @out.WriteWrapSeparator(options[OPTION_WRAP]);
+                        @out.WriteWrap(options[OPTION_WRAP]);
                     }
                     catch (IOException)
                     {
@@ -432,10 +441,6 @@ namespace StringTemplate
                 }
             }
 
-            if (options != null && options[OPTION_ANCHOR] != null)
-                @out.PopAnchorPoint();
-
-            @out.PopIndentation();
             return n;
         }
 
@@ -449,7 +454,6 @@ namespace StringTemplate
             if (options != null)
                 separator = options[OPTION_SEPARATOR];
             bool seenAValue = false;
-            int i = 0;
             while (it.MoveNext())
             {
                 object iterValue = it.Current;
@@ -464,7 +468,6 @@ namespace StringTemplate
                 if (nw > 0)
                     seenAValue = true;
                 n += nw;
-                i++;
             }
             return n;
         }
