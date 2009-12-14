@@ -43,6 +43,7 @@ namespace StringTemplate
     using StringBuilder = System.Text.StringBuilder;
     using Type = System.Type;
     using Antlr.Runtime;
+    using TextWriter = System.IO.TextWriter;
 
     /** A directory or directory tree of .st template files and/or group files.
      *  Individual template files contain formal template definitions. In a sense,
@@ -332,7 +333,7 @@ namespace StringTemplate
         }
 
         /** Return "t" from "region__t__foo" */
-        public static string getUnMangledTemplateName(string mangledName)
+        public static string GetUnmangledTemplateName(string mangledName)
         {
             int start = "region__".Length;
             int end = mangledName.LastIndexOf("__");
@@ -415,6 +416,11 @@ namespace StringTemplate
             // TODO: try making a mem pool
             Template st = new Template();
             return st;
+        }
+
+        public ITemplateWriter GetStringTemplateWriter(TextWriter w)
+        {
+            return new AutoIndentWriter(w);
         }
 
         public override string ToString()

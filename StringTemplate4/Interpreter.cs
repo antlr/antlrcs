@@ -393,24 +393,49 @@ namespace StringTemplate
                     return 0;
                 }
             }
+
+            if (options != null && options[OPTION_ANCHOR] != null)
+                @out.PushAnchorPoint();
+
+            @out.PushIndentation(null);
+
             if (o is Template)
             {
                 ((Template)o).enclosingInstance = self;
+                if (options != null && options[OPTION_WRAP] != null)
+                {
+                    // if we have a wrap string, then inform writer it might need to wrap
+                    try
+                    {
+                        @out.WriteWrapSeparator(options[OPTION_WRAP]);
+                    }
+                    catch (IOException)
+                    {
+                        group.listener.Error("Can't write wrap string");
+                    }
+                }
                 n = Exec(@out, (Template)o);
-                return n;
             }
-            o = ConvertAnythingIteratableToIterator(o); // normalize
-            try
+            else
             {
-                if (o is Iterator)
-                    n = WriteIterator(@out, self, o, options);
-                else
-                    n = WritePlainObject(@out, o, options);
+                o = ConvertAnythingIteratableToIterator(o); // normalize
+                try
+                {
+                    if (o is Iterator)
+                        n = WriteIterator(@out, self, o, options);
+                    else
+                        n = WritePlainObject(@out, o, options);
+                }
+                catch (IOException)
+                {
+                    Console.Error.WriteLine("can't write " + o);
+                }
             }
-            catch (IOException)
-            {
-                Console.Error.WriteLine("can't write " + o);
-            }
+
+            if (options != null && options[OPTION_ANCHOR] != null)
+                @out.PopAnchorPoint();
+
+            @out.PopIndentation();
             return n;
         }
 
@@ -459,7 +484,14 @@ namespace StringTemplate
             {
                 v = o.ToString();
             }
-            return @out.Write(v);
+
+            int n = 0;
+            if (options != null && options[OPTION_WRAP] != null)
+                n = @out.Write(v, options[OPTION_WRAP]);
+            else
+                n = @out.Write(v);
+
+            return n;
         }
 
         protected void Map(Template self, object attr, string name)

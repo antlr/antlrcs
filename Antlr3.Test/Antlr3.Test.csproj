@@ -58,6 +58,7 @@
     <Compile Include="ST4\TestIndentation.cs" />
     <Compile Include="ST4\TestIndirectionAndEarlyEvaluation.cs" />
     <Compile Include="ST4\TestLexer.cs" />
+    <Compile Include="ST4\TestLineWrap.cs" />
     <Compile Include="ST4\TestLists.cs" />
     <Compile Include="ST4\TestNullAndEmptyValues.cs" />
     <Compile Include="ST4\TestOptions.cs" />

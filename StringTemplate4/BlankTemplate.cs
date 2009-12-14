@@ -69,7 +69,7 @@ namespace StringTemplate
             return 0;
         }
 
-        public override string Render(CultureInfo culture)
+        public override string Render(CultureInfo culture, int lineWidth)
         {
             return string.Empty;
         }

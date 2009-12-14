@@ -305,10 +305,21 @@ namespace StringTemplate
             return Render(CultureInfo.CurrentCulture);
         }
 
-        public virtual string Render(CultureInfo culture)
+        public string Render(int lineWidth)
+        {
+            return Render(CultureInfo.CurrentCulture, lineWidth);
+        }
+
+        public string Render(CultureInfo culture)
+        {
+            return Render(culture, AutoIndentWriter.NoWrap);
+        }
+
+        public virtual string Render(CultureInfo culture, int lineWidth)
         {
             StringWriter @out = new StringWriter();
-            ITemplateWriter wr = new AutoIndentWriter(@out);
+            ITemplateWriter wr = groupThatCreatedThisInstance.GetStringTemplateWriter(@out);
+            wr.SetLineWidth(lineWidth);
             try
             {
                 Write(wr, culture);
