@@ -147,7 +147,7 @@ namespace StringTemplate
             Template st = GetInstanceOf(name);
             if (st == null)
             {
-                ErrorManager.Error("no such template: " + name);
+                ErrorManager.RuntimeError(enclosingInstance, ErrorType.NoSuchTemplate, name);
                 return Template.Blank;
             }
             st.enclosingInstance = enclosingInstance;
@@ -294,17 +294,17 @@ namespace StringTemplate
             {
                 if (!prev.isRegion)
                 {
-                    ErrorManager.Error("redefinition of " + name);
+                    ErrorManager.CompileTimeError(ErrorType.TemplateRedefinition, name);
                     return;
                 }
                 if (prev.isRegion && prev.regionDefType == Template.RegionType.Embedded)
                 {
-                    ErrorManager.Error("can't redefine embedded region " + name);
+                    ErrorManager.CompileTimeError(ErrorType.EmbeddedRegionRedefinition, GetUnmangledTemplateName(name));
                     return;
                 }
                 else if (prev.isRegion && prev.regionDefType == Template.RegionType.Explicit)
                 {
-                    ErrorManager.Error("can't redefine region in same group: " + name);
+                    ErrorManager.CompileTimeError(ErrorType.RegionRedefinition, GetUnmangledTemplateName(name));
                     return;
                 }
             }
@@ -327,12 +327,14 @@ namespace StringTemplate
             return "region__" + enclosingTemplateName + "__" + name;
         }
 
-        /** Return "t" from "region__t__foo" */
+        /// <summary>
+        /// Return "t.foo" from "region__t__foo"
+        /// </summary>
         public static string GetUnmangledTemplateName(string mangledName)
         {
-            int start = "region__".Length;
-            int end = mangledName.LastIndexOf("__");
-            return mangledName.Substring(start, end - start);
+            string t = mangledName.Substring("region__".Length, mangledName.LastIndexOf("__") - "region__".Length + 1);
+            string r = mangledName.Substring(mangledName.LastIndexOf("__") + 2, mangledName.Length - mangledName.LastIndexOf("__") + 2 + 1);
+            return t + '.' + r;
         }
 
         /** Define a map for this group; not thread safe...do not keep adding
@@ -376,7 +378,7 @@ namespace StringTemplate
             }
             catch (Exception e)
             {
-                ErrorManager.Error("can't load group file: " + absoluteFileName, e);
+                ErrorManager.IOError(null, ErrorType.CantLoadGroupFile, e, absoluteFileName);
             }
         }
 

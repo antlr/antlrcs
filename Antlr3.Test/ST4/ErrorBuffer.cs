@@ -1,60 +1,41 @@
 ﻿namespace AntlrUnitTests.ST4
 {
+    using System.Collections.Generic;
     using StringTemplate;
-    using Exception = System.Exception;
     using StringBuilder = System.Text.StringBuilder;
-    using StringWriter = System.IO.StringWriter;
 
     public class ErrorBuffer : ITemplateErrorListener
     {
-        StringBuilder errorOutput = new StringBuilder(500);
-        int n = 0;
+        private List<TemplateMessage> errors = new List<TemplateMessage>();
 
-        public void Error(string msg)
+        public void CompileTimeError(TemplateMessage msg)
         {
-            Error(msg, null);
+            errors.Add(msg);
         }
 
-        public void Error(string msg, Exception e)
+        public void RuntimeError(TemplateMessage msg)
         {
-            n++;
-            if (n > 1)
-            {
-                errorOutput.Append('\n');
-            }
-            if (e != null)
-            {
-                StringWriter duh = new StringWriter();
-                duh.WriteLine(e.StackTrace);
-                errorOutput.Append(msg + ": " + duh.ToString());
-            }
-            else
-            {
-                errorOutput.Append(msg);
-            }
+            errors.Add(msg);
         }
 
-        public void Warning(string msg)
+        public void IOError(TemplateMessage msg)
         {
-            n++;
-            errorOutput.Append(msg);
+            errors.Add(msg);
         }
 
-        public override bool Equals(object o)
+        public void InternalError(TemplateMessage msg)
         {
-            string me = ToString();
-            string them = o.ToString();
-            return me.Equals(them);
-        }
-
-        public override int GetHashCode()
-        {
-            return ToString().GetHashCode();
+            errors.Add(msg);
         }
 
         public override string ToString()
         {
-            return errorOutput.ToString();
+            StringBuilder buf = new StringBuilder();
+            foreach (TemplateMessage m in errors)
+            {
+                buf.Append(m.ToString());
+            }
+            return buf.ToString();
         }
     }
 }

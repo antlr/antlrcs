@@ -65,13 +65,13 @@
     <Compile Include="Debug\EvalTemplateEvent.cs" />
     <Compile Include="Debug\InterpEvent.cs" />
     <Compile Include="ErrorManager.cs" />
-    <Compile Include="ErrorTolerance.cs" />
     <Compile Include="Compiler\GroupLexerHelper.cs">
       <DependentUpon>Group.g3</DependentUpon>
     </Compile>
     <Compile Include="Compiler\GroupParserHelper.cs">
       <DependentUpon>Group.g3</DependentUpon>
     </Compile>
+    <Compile Include="ErrorType.cs" />
     <Compile Include="IAttributeRenderer.cs" />
     <Compile Include="Interpreter.cs" />
     <Compile Include="ITemplateErrorListener.cs" />
@@ -88,6 +88,7 @@
     <Compile Include="Compiler\TemplateParserHelper.cs">
       <DependentUpon>TemplateParser.g3</DependentUpon>
     </Compile>
+    <Compile Include="TemplateMessage.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\Antlr3\Key.snk">

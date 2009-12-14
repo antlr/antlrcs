@@ -408,7 +408,7 @@ namespace StringTemplate.Compiler
                 t = UNICODE();
                 break;
             default:
-                ErrorManager.Error("bad \\ char");
+                ErrorManager.CompileTimeError(ErrorType.LexerError, c);
                 break;
             }
             Consume();
@@ -421,19 +421,19 @@ namespace StringTemplate.Compiler
             Consume();
             char[] chars = new char[4];
             if (!IsUnicodeLetter(c))
-                ErrorManager.Error("bad unicode char: " + c);
+                ErrorManager.CompileTimeError(ErrorType.LexerError, c);
             chars[0] = c;
             Consume();
             if (!IsUnicodeLetter(c))
-                ErrorManager.Error("bad unicode char: " + c);
+                ErrorManager.CompileTimeError(ErrorType.LexerError, c);
             chars[1] = c;
             Consume();
             if (!IsUnicodeLetter(c))
-                ErrorManager.Error("bad unicode char: " + c);
+                ErrorManager.CompileTimeError(ErrorType.LexerError, c);
             chars[2] = c;
             Consume();
             if (!IsUnicodeLetter(c))
-                ErrorManager.Error("bad unicode char: " + c);
+                ErrorManager.CompileTimeError(ErrorType.LexerError, c);
             chars[3] = c;
             // ESCAPE kills final char and >
             char uc = (char)int.Parse(new string(chars), NumberStyles.HexNumber);

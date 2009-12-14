@@ -36,8 +36,9 @@ namespace StringTemplate
 
     public interface ITemplateErrorListener
     {
-        void Error(string message, Exception e);
-        void Error(string message);
-        void Warning(string message);
+        void CompileTimeError(TemplateMessage message);
+        void RuntimeError(TemplateMessage message);
+        void IOError(TemplateMessage message);
+        void InternalError(TemplateMessage message);
     }
 }

@@ -41,6 +41,7 @@ namespace StringTemplate
     using Console = System.Console;
     using CultureInfo = System.Globalization.CultureInfo;
     using Environment = System.Environment;
+    using Exception = System.Exception;
     using FieldInfo = System.Reflection.FieldInfo;
     using ICollection = System.Collections.ICollection;
     using IDictionary = System.Collections.IDictionary;
@@ -174,7 +175,7 @@ namespace StringTemplate
                     st = group.GetEmbeddedInstanceOf(self, name);
                     if (st == null)
                     {
-                        ErrorManager.Error("no such template " + name);
+                        ErrorManager.RuntimeError(self, ErrorType.NoSuchTemplate, name);
                         st = Template.Blank;
                     }
                     operands[++sp] = st;
@@ -184,7 +185,7 @@ namespace StringTemplate
                     st = group.GetEmbeddedInstanceOf(self, name);
                     if (st == null)
                     {
-                        ErrorManager.Error("no such template " + name);
+                        ErrorManager.RuntimeError(self, ErrorType.NoSuchTemplate, name);
                         st = Template.Blank;
                     }
                     operands[++sp] = st;
@@ -196,7 +197,7 @@ namespace StringTemplate
                     CompiledTemplate imported = group.LookupImportedTemplate(name);
                     if (imported == null)
                     {
-                        ErrorManager.Error("no imported template for " + name);
+                        ErrorManager.RuntimeError(self, ErrorType.NoImportedTemplate, name);
                         operands[++sp] = Template.Blank;
                         break;
                     }
@@ -225,7 +226,7 @@ namespace StringTemplate
                     }
                     if (nargs != 1)
                     {
-                        ErrorManager.Error("arg mismatch; expecting 1, found " + nargs);
+                        ErrorManager.RuntimeError(self, ErrorType.ExpectingSingleArgument, st, nargs);
                     }
                     else
                     {
@@ -337,7 +338,7 @@ namespace StringTemplate
                     }
                     else
                     {
-                        ErrorManager.Error("trim(non string): " + o);
+                        ErrorManager.RuntimeError(self, ErrorType.ExpectingString, "trim", o);
                         operands[++sp] = o;
                     }
                     break;
@@ -352,7 +353,7 @@ namespace StringTemplate
                     }
                     else
                     {
-                        ErrorManager.Error("strlen(non string): " + o);
+                        ErrorManager.RuntimeError(self, ErrorType.ExpectingString, "strlen", o);
                         operands[++sp] = 0;
                     }
                     break;
@@ -391,13 +392,13 @@ namespace StringTemplate
                         }
                         nw = -1; // indicate nothing written but no WRITE yet
                     }
-                    catch (IOException)
+                    catch (IOException ioe)
                     {
-                        ErrorManager.Error("[internal]: can't write newline");
+                        ErrorManager.IOError(self, ErrorType.WriteIoError, ioe);
                     }
                     break;
                 default:
-                    ErrorManager.Error("[internal]: Invalid bytecode: " + opcode + " @ ip=" + (ip - 1));
+                    ErrorManager.InternalError(self, ErrorType.InvalidBytecode, null, opcode, ip - 1);
                     self.code.Dump();
                     break;
                 }
@@ -487,9 +488,9 @@ namespace StringTemplate
                     {
                         @out.WriteWrap(options[OPTION_WRAP]);
                     }
-                    catch (IOException)
+                    catch (IOException ioe)
                     {
-                        ErrorManager.Error("Can't write wrap string");
+                        ErrorManager.IOError(self, ErrorType.WriteIoError, ioe);
                     }
                 }
                 n = Exec(@out, (Template)o);
@@ -504,9 +505,9 @@ namespace StringTemplate
                     else
                         n = WritePlainObject(@out, o, options);
                 }
-                catch (IOException)
+                catch (IOException ioe)
                 {
-                    ErrorManager.Error("can't write " + o);
+                    ErrorManager.IOError(self, ErrorType.WriteIoError, ioe, o);
                 }
             }
 
@@ -638,17 +639,14 @@ namespace StringTemplate
             var formalArguments = code.formalArguments;
             if (formalArguments == null || formalArguments.Count == 0)
             {
-                ErrorManager.Error("missing formal arguments in anonymous" +
-                           " template in context " + self.GetEnclosingInstanceStackString(), null);
+                ErrorManager.RuntimeError(self, ErrorType.MissingFormalArguments);
                 return null;
             }
 
             object[] formalArgumentNames = formalArguments.Keys.ToArray();
             if (formalArgumentNames.Length != numAttributes)
             {
-                ErrorManager.Error("number of arguments " + formalArguments.Keys +
-                           " mismatch between attribute list and anonymous" +
-                           " template in context " + self.GetEnclosingInstanceStackString(), null);
+                ErrorManager.RuntimeError(self, ErrorType.ArgumentCountMismatch, template);
                 // truncate arg list to match smaller size
                 int shorterSize = Math.Min(formalArgumentNames.Length, numAttributes);
                 numAttributes = shorterSize;
@@ -1050,10 +1048,9 @@ namespace StringTemplate
                 {
                     value = InvokeMethod(m, o, value);
                 }
-                catch
+                catch (Exception e)
                 {
-                    ErrorManager.Error("Can't get property " + propertyName + " using method get/is" + methodSuffix +
-                        " from " + c.Name + " instance");
+                    ErrorManager.RuntimeError(self, ErrorType.CantAccessPropertyMethod, e, m);
                 }
             }
             else
@@ -1067,16 +1064,14 @@ namespace StringTemplate
                     {
                         value = AccessField(f, o, value);
                     }
-                    catch
+                    catch (Exception e)
                     {
-                        ErrorManager.Error("Can't access property " + propertyName + " using method get/is" + methodSuffix +
-                            " or direct field access from " + c.Name + " instance");
+                        ErrorManager.RuntimeError(self, ErrorType.CantAccessPropertyField, e, m);
                     }
                 }
                 catch
                 {
-                    ErrorManager.Error("Class " + c.Name + " has no such attribute: " + propertyName +
-                        " in template context " + "PUT CALLSTACK HERE");
+                    ErrorManager.RuntimeError(self, ErrorType.NoSuchProperty, c, propertyName);
                 }
             }
 

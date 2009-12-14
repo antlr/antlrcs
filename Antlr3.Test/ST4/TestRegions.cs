@@ -151,7 +151,7 @@ namespace AntlrUnitTests.ST4
             ErrorBuffer errors = new ErrorBuffer();
             ErrorManager.ErrorListener = errors;
             group.Load();
-            string expected = "redefinition of /region__a__r";
+            string expected = "redefinition of template /region__a__r" + newline;
             string result = errors.ToString();
             Assert.AreEqual(expected, result);
         }

@@ -101,9 +101,7 @@ templateDef[string prefix]
         	RecognitionException re = (RecognitionException)e.InnerException;
         	int charPosition =
         		re.charPositionInLine+templateToken.CharPositionInLine+n;
-	        ErrorManager.Error(templateToken.Line+":"+
-                    	  		 charPosition+
-	                             ": "+e.Message, null);
+	        ErrorManager.CompileTimeError(ErrorType.SyntaxError, e.Message, templateToken.Line + ":" + charPosition);
         }		
 	    }
 	|   alias=ID '::=' target=ID	    
@@ -135,10 +133,10 @@ dictDef
 	:	ID '::=' dict
         {
         if ( this._group.dictionaries.ContainsKey($ID.text) ) {
-            ErrorManager.Error("redefinition of map: "+$ID.text);
+            ErrorManager.CompileTimeError(ErrorType.MapRedefinition, "redefinition of map: "+$ID.text);
         }
         else if ( this._group.templates.ContainsKey($ID.text) ) {
-            ErrorManager.Error("redefinition of template as map: "+$ID.text);
+            ErrorManager.CompileTimeError(ErrorType.TemplateRedefinitionAsMap, "redefinition of template as map: "+$ID.text);
         }
         else {
             this._group.DefineDictionary($ID.text, $dict.mapping);
