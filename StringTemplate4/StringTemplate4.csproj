@@ -50,10 +50,10 @@
     <Compile Include="Compiler\Bytecode.cs" />
     <Compile Include="Compiler\BytecodeDisassembler.cs" />
     <Compile Include="Compiler\CompiledTemplate.cs" />
-    <Compile Include="Compiler\Compiler.cs" />
     <Compile Include="Compiler\FormalArgument.cs" />
     <Compile Include="Compiler\ICodeGenerator.cs" />
     <Compile Include="Compiler\StringTable.cs" />
+    <Compile Include="Compiler\TemplateCompiler.cs" />
     <Compile Include="Compiler\TemplateLexer.cs" />
     <Compile Include="Compiler\TemplateRecognitionException.cs" />
     <Compile Include="DateTimeRenderer.cs" />

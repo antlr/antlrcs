@@ -215,6 +215,24 @@ namespace StringTemplate
             return null;
         }
 
+        public CompiledTemplate RawGetTemplate(string name)
+        {
+            CompiledTemplate template;
+            if (!templates.TryGetValue(name, out template))
+                return null;
+
+            return template;
+        }
+
+        public IDictionary<string, object> RawGetDictionary(string name)
+        {
+            IDictionary<string, object> dictionary;
+            if (!dictionaries.TryGetValue(name, out dictionary))
+                return null;
+
+            return dictionary;
+        }
+
         // TODO: send in start/stop char or line/col so errors can be relative
         public CompiledTemplate DefineTemplate(string name, string template)
         {

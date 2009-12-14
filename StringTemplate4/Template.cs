@@ -236,9 +236,7 @@ namespace StringTemplate
             if (code.formalArguments == null || !code.formalArguments.ContainsKey(name))
             {
                 // if not hidden by formal args, return any dictionary
-                IDictionary<string, object> dictionary;
-                if (code.nativeGroup.dictionaries.TryGetValue(name, out dictionary))
-                    return dictionary;
+                return code.nativeGroup.RawGetDictionary(name);
             }
             return null;
         }
