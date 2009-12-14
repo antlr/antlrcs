@@ -81,10 +81,15 @@ namespace StringTemplate
         {
             get
             {
-                if (embeddedStart >= 0)
-                    return template.Substring(embeddedStart, embeddedStop - embeddedStart);
-
                 return template;
+            }
+        }
+
+        public bool IsSubtemplate
+        {
+            get
+            {
+                return name.StartsWith("/" + StringTemplate.Template.SubtemplatePrefix);
             }
         }
 

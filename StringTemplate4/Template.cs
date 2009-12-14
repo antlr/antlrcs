@@ -46,6 +46,7 @@ namespace StringTemplate
 
     public class Template
     {
+        public const string SubtemplatePrefix = "_sub";
         public const string UnknownName = "unknown";
         public static readonly Template Blank = new BlankTemplate();
 
@@ -142,6 +143,14 @@ namespace StringTemplate
             get
             {
                 return this.events;
+            }
+        }
+
+        public bool IsSubtemplate
+        {
+            get
+            {
+                return CompiledTemplate.IsSubtemplate;
             }
         }
 

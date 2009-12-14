@@ -225,7 +225,7 @@ namespace StringTemplate
                                           RecognizerSharedState state)
         {
             subtemplateCount++;
-            string name = templatePathPrefix + "_sub" + subtemplateCount;
+            string name = templatePathPrefix + Template.SubtemplatePrefix + subtemplateCount;
             ITokenSource tokenSource = input.TokenSource;
             TemplateLexer lexer = tokenSource as TemplateLexer;
             int start = -1;

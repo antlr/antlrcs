@@ -39,6 +39,8 @@ namespace STViz
     using File = System.IO.File;
     using Path = System.IO.Path;
     using StringWriter = System.IO.StringWriter;
+    using System.Windows.Documents;
+    using System.Windows.Media;
 
     public partial class Window1 : Window
     {
@@ -49,11 +51,13 @@ namespace STViz
             string templates =
                 "method(type,name,args,stats) ::= <<\n" +
                 "public <type> <name>(<args:{a| int <a>}; separator=\", \">) {\n" +
+                "    <if(locals)>int locals[<locals>];<endif>\n" +
                 "    <stats;separator=\"\\n\">\n" +
                 "}\n" +
                 ">>\n" +
                 "assign(a,b) ::= \"<a> = <b>;\"\n" +
-                "return(x) ::= <<return <x>;>>\n";
+                "return(x) ::= <<return <x>;>>\n" +
+                "paren(x) ::= \"(<x>)\"\n";
 
             string tmpdir = Path.GetTempPath();
             File.WriteAllText(Path.Combine(tmpdir, "t.stg"), templates);
@@ -62,9 +66,12 @@ namespace STViz
             st.code.Dump();
             st.Add("type", "float");
             st.Add("name", "foo");
+            st.Add("locals", 3);
             st.Add("args", new String[] { "x", "y", "z" });
             Template s1 = group.GetInstanceOf("assign");
-            s1.Add("a", "x");
+            Template paren = group.GetInstanceOf("paren");
+            paren.Add("x", "x");
+            s1.Add("a", paren);
             s1.Add("b", "y");
             Template s2 = group.GetInstanceOf("assign");
             s2.Add("a", "y");
@@ -81,8 +88,53 @@ namespace STViz
             interp.Exec(st);
             IList<Interpreter.DebugEvent> events = interp.Events;
 
-            templatesTree.Items.Add(st);
-            txtOutput.Text = sw.ToString();
+            string text = sw.ToString();
+            templatesTree.Items.Add(new RootEvent(st, 0, text.Length));
+            txtOutput.Document = new FlowDocument(new Paragraph(new Run(text)));
+        }
+
+        private void OnTextTemplateDataContextChanged(object sender, DependencyPropertyChangedEventArgs e)
+        {
+            txtTemplate.Document.Blocks.Clear();
+
+            Interpreter.DebugEvent templateEvent = e.NewValue as Interpreter.DebugEvent;
+            if (templateEvent == null)
+                return;
+
+            Template template = templateEvent.Template;
+            if (template != null)
+            {
+                txtTemplate.Document.Blocks.Add(new Paragraph(new Run(template.CompiledTemplate.Template)));
+                if (template.IsSubtemplate)
+                {
+                    Highlight(txtTemplate.Document, template.CompiledTemplate.embeddedStart, template.CompiledTemplate.embeddedStop - template.CompiledTemplate.embeddedStart + 1);
+                }
+            }
+        }
+
+        private static void Highlight(FlowDocument document, int start, int length)
+        {
+            var range = new TextRange(document.ContentStart, document.ContentEnd);
+            range.ClearAllProperties();
+            range = new TextRange(document.ContentStart.GetPositionAtOffset(start), document.ContentStart.GetPositionAtOffset(start + length));
+            range.ApplyPropertyValue(TextElement.BackgroundProperty, Brushes.LightGray);
+        }
+
+        private void OnTemplatesTreeSelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
+        {
+            Interpreter.DebugEvent debugEvent = e.NewValue as Interpreter.DebugEvent;
+            if (debugEvent == null)
+                return;
+
+            Highlight(txtOutput.Document, debugEvent.Start, debugEvent.Stop - debugEvent.Start + 1);
+        }
+
+        private class RootEvent : Interpreter.DebugEvent
+        {
+            public RootEvent(Template template, int start, int stop)
+                : base(template, start, stop)
+            {
+            }
         }
     }
 }

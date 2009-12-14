@@ -35,7 +35,8 @@ namespace StringTemplate
     public interface ITemplateWriter
     {
         /// <summary>
-        /// Get the absolute char index into the output of the last char we wrote. Returns -1 if no char written.
+        /// Get the absolute char index into the output of the char we're about to write.
+        /// Returns 0 if no char written yet.
         /// </summary>
         int Index
         {

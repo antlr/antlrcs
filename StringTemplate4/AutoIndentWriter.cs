@@ -60,16 +60,16 @@ namespace StringTemplate
         protected bool atStartOfLine = true;
 
         /** Track char position in the line (later we can think about tabs).
-         *  Indexed from 0.  We want to keep charPosition <= lineWidth.
+         *  Indexed from 0.  We want to keep charPosition &lt;= lineWidth.
          *  This is the position we are *about* to write not the position
          *  last written to.
          */
         protected int charPosition = 0;
 
         /// <summary>
-        /// The absolute char index into the output of the last char written.
+        /// The absolute char index into the output of the next char to be written.
         /// </summary>
-        protected int charIndex = -1;
+        protected int charIndex = 0;
 
         protected int lineWidth = NoWrap;
 
@@ -158,10 +158,10 @@ namespace StringTemplate
                 {
                     atStartOfLine = true;
                     charPosition = -1; // set so the write below sets to 0
-                    n += newline.Length;
                     @out.Write(newline);
+                    n += newline.Length;
+                    charIndex += newline.Length;
                     charPosition += n; // wrote n more char
-                    charIndex += n;
                     continue;
                 }
                 // normal character

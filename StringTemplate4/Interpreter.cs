@@ -124,7 +124,7 @@ namespace StringTemplate
 
         public int Exec(Template self)
         {
-            int start = @out.Index + 1; // track char we're about to write
+            int start = @out.Index; // track char we're about to write
             int prevOpcode = 0;
             int n = 0; // how many char we write out
             int nameIndex = 0;
@@ -401,9 +401,12 @@ namespace StringTemplate
 
             if (debug)
             {
-                events.Add(new EvalTemplateEvent(self, start, @out.Index));
+                int stop = @out.Index - 1;
+                EvalTemplateEvent e = new EvalTemplateEvent(self, start, stop);
+                Console.WriteLine(e);
+                events.Add(e);
                 if (self.enclosingInstance != null)
-                    self.enclosingInstance.events.Add(new EvalTemplateEvent(self, start, @out.Index));
+                    self.enclosingInstance.events.Add(e);
             }
 
             return n;
@@ -411,12 +414,12 @@ namespace StringTemplate
 
         protected int WriteObjectNoOptions(Template self, object o, int exprStart, int exprStop)
         {
-            int start = @out.Index + 1; // track char we're about to write
-            int n = WriteObject(@out, self, o, (string[])null);
+            int start = @out.Index; // track char we're about to write
+            int n = WriteObject(@out, self, o, null);
 
             if (debug)
             {
-                events.Add(new EvalExprEvent(self, start, @out.Index, exprStart, exprStop));
+                events.Add(new EvalExprEvent(self, start, @out.Index - 1, exprStart, exprStop));
                 //self.events.Add(new EvalExprEvent(self, start, @out.Index, exprStart, exprStop));
             }
 
@@ -425,7 +428,7 @@ namespace StringTemplate
 
         protected int WriteObjectWithOptions(Template self, object o, object[] options, int exprStart, int exprStop)
         {
-            int start = @out.Index + 1; // track char we're about to write
+            int start = @out.Index; // track char we're about to write
             // precompute all option values (render all the way to strings)
             string[] optionStrings = null;
             if (options != null)
@@ -447,7 +450,7 @@ namespace StringTemplate
 
             if (debug)
             {
-                events.Add(new EvalTemplateEvent(self, start, @out.Index));
+                events.Add(new EvalTemplateEvent(self, start, @out.Index - 1));
                 //self.events.Add(new EvalTemplateEvent(self, start, @out.Index));
             }
 
@@ -1167,15 +1170,11 @@ namespace StringTemplate
 
         public class DebugEvent
         {
-            // output location
-            protected int start;
-            protected int stop;
-
             public DebugEvent(Template self, int start, int stop)
             {
                 this.Template = self;
-                this.start = start;
-                this.stop = stop;
+                this.Start = start;
+                this.Stop = stop;
             }
 
             public Template Template
@@ -1184,9 +1183,21 @@ namespace StringTemplate
                 private set;
             }
 
+            public int Start
+            {
+                get;
+                private set;
+            }
+
+            public int Stop
+            {
+                get;
+                private set;
+            }
+
             public override string ToString()
             {
-                return string.Format("{0}{{self={1},attr={2},start={3},stop={4}}}", GetType().Name, Template, Template.Attributes, start, stop);
+                return string.Format("{0}{{self={1},attr={2},start={3},stop={4}}}", GetType().Name, Template, Template.Attributes, Start, Stop);
             }
         }
 
@@ -1215,7 +1226,7 @@ namespace StringTemplate
 
             public override string ToString()
             {
-                return string.Format("{0}{{self={1},attr={2},start={3},stop={4},expr={5}}}", GetType().Name, Template, Template.Attributes, start, stop, expr);
+                return string.Format("{0}{{self={1},attr={2},start={3},stop={4},expr={5}}}", GetType().Name, Template, Template.Attributes, Start, Stop, expr);
             }
         }
     }

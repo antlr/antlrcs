@@ -434,9 +434,10 @@ namespace StringTemplate
                 buf.Append(" : " + imports);
             foreach (string name in templates.Keys)
             {
-                if (name.StartsWith("/_sub"))
-                    continue;
                 CompiledTemplate c = templates[name];
+                if (c.IsSubtemplate)
+                    continue;
+
                 int slash = name.LastIndexOfAny(new char[] { Path.DirectorySeparatorChar, Path.AltDirectorySeparatorChar });
                 string effectiveName = name.Substring(slash + 1);
                 buf.Append(effectiveName);

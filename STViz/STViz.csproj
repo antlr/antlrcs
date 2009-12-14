@@ -75,7 +75,6 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="DebugEventToTemplateEnumerationConverter.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
