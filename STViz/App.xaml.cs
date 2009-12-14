@@ -41,5 +41,10 @@ namespace STViz
 
     public partial class App : Application
     {
+        protected override void OnStartup(StartupEventArgs e)
+        {
+            MainWindow = new TemplateVisualizer();
+            MainWindow.Show();
+        }
     }
 }

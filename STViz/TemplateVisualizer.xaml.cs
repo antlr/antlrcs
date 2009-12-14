@@ -43,12 +43,29 @@ namespace STViz
     using System.Windows.Media;
     using StringTemplate.Debug;
 
-    public partial class Window1 : Window
+    public partial class TemplateVisualizer : Window
     {
-        public Window1()
+        internal TemplateVisualizer()
+            : this(CreateDefaultTemplate())
+        {
+        }
+
+        public TemplateVisualizer(Template template)
         {
             InitializeComponent();
 
+            StringWriter sw = new StringWriter();
+            Interpreter interp = new Interpreter(template.groupThatCreatedThisInstance, new AutoIndentWriter(sw));
+            interp.Exec(template);
+            IList<InterpEvent> events = interp.Events;
+
+            string text = sw.ToString();
+            templatesTree.Items.Add(new RootEvent(template, 0, text.Length));
+            txtOutput.Document = new FlowDocument(new Paragraph(new Run(text)));
+        }
+
+        private static Template CreateDefaultTemplate()
+        {
             string templates =
                 "method(type,name,args,stats) ::= <<\n" +
                 "public <type> <name>(<args:{a| int <a>}; separator=\", \">) {\n" +
@@ -84,14 +101,7 @@ namespace STViz
             st.Add("stats", s2);
             st.Add("stats", s3);
 
-            StringWriter sw = new StringWriter();
-            Interpreter interp = new Interpreter(group, new AutoIndentWriter(sw));
-            interp.Exec(st);
-            IList<InterpEvent> events = interp.Events;
-
-            string text = sw.ToString();
-            templatesTree.Items.Add(new RootEvent(st, 0, text.Length));
-            txtOutput.Document = new FlowDocument(new Paragraph(new Run(text)));
+            return st;
         }
 
         private void OnTextTemplateDataContextChanged(object sender, DependencyPropertyChangedEventArgs e)

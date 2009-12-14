@@ -1,4 +1,4 @@
-﻿<Window x:Class="STViz.Window1"
+﻿<Window x:Class="STViz.TemplateVisualizer"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     Title="StringTemplate Visualizer" Height="522" Width="591">
