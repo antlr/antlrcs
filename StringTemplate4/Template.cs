@@ -54,7 +54,7 @@ namespace StringTemplate
         public CompiledTemplate code; // TODO: is this the right name?
 
         /** Map an attribute name to its value(s). */
-        protected internal IDictionary<string, object> attributes;
+        internal IDictionary<string, object> attributes;
 
         /** Enclosing instance if I'm embedded within another template.
          *  IF-subtemplates are considered embedded as well.

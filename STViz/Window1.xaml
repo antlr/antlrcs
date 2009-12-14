@@ -1,0 +1,32 @@
+﻿<Window x:Class="STViz.Window1"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    Title="StringTemplate Visualizer" Height="522" Width="591">
+    
+    <Window.Resources>
+        <DataTemplate x:Key="AttributeListItemTemplate">
+            <TextBlock><TextBlock Text="{Binding Key}" /><Run> = </Run><TextBlock Text="{Binding Value}" /></TextBlock>
+        </DataTemplate>
+        
+        <DataTemplate x:Key="TemplateStackListItemTemplate">
+            <TextBlock Text="{Binding Name}" />
+        </DataTemplate>
+    </Window.Resources>
+    
+    <DockPanel>
+        <Menu Height="22" Name="menu1" VerticalAlignment="Top" DockPanel.Dock="Top">
+            <MenuItem Header="File">
+                <MenuItem Header="Save" />
+            </MenuItem>
+            <MenuItem Header="Edit">
+                <MenuItem Header="Copy" />
+            </MenuItem>
+        </Menu>
+        <Grid Name="grid1">
+            <TextBox Height="159" Margin="237,0,44,69" Name="txtTemplate" VerticalAlignment="Bottom" IsReadOnly="True">Template</TextBox>
+            <TextBox Height="140" Margin="237,21,30,0" Name="txtOutput" VerticalAlignment="Top" IsReadOnly="True">Output</TextBox>
+            <ListBox Margin="16,21,0,224" Name="lstStack" ItemsSource="{Binding}" ItemTemplate="{StaticResource TemplateStackListItemTemplate}" HorizontalAlignment="Left" Width="201" />
+            <ListBox Margin="24,0,0,31" Name="lstAttributes" ItemsSource="{Binding}" ItemTemplate="{StaticResource AttributeListItemTemplate}" HorizontalAlignment="Left" Width="193" Height="151" VerticalAlignment="Bottom" />
+        </Grid>
+    </DockPanel>
+</Window>

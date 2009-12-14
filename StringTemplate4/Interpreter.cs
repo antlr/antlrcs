@@ -1197,7 +1197,7 @@ namespace StringTemplate
             {
                 this.exprStart = exprStart;
                 this.exprStop = exprStop;
-                this.expr = self.code.template.Substring(exprStart, exprStop - exprStart + 2);
+                this.expr = self.code.template.Substring(exprStart, exprStop - exprStart + 1);
             }
 
             public override string ToString()
