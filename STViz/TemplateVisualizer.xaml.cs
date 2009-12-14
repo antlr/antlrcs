@@ -127,7 +127,7 @@ namespace STViz
         {
             var range = new TextRange(document.ContentStart, document.ContentEnd);
             range.ClearAllProperties();
-            range = new TextRange(document.ContentStart.GetPositionAtOffset(start), document.ContentStart.GetPositionAtOffset(start + length));
+            range = new TextRange(document.ContentStart.GetPositionAtOffset(start + 2), document.ContentStart.GetPositionAtOffset(start + length + 2));
             range.ApplyPropertyValue(TextElement.BackgroundProperty, Brushes.LightGray);
         }
 
