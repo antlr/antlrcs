@@ -153,9 +153,7 @@ namespace StringTemplate
                     s = strings[poolIndex].ToString();
                     if (strings[poolIndex] is string)
                     {
-                        s = s.Replace("\n", "\\\\n");
-                        s = s.Replace("\r", "\\\\r");
-                        s = s.Replace("\t", "\\\\t");
+                        s = Misc.ReplaceEscapes(s);
                         s = '"' + s + '"';
                     }
                 }
@@ -182,9 +180,7 @@ namespace StringTemplate
                 if (o is string)
                 {
                     string s = (string)o;
-                    s = s.Replace("\n", "\\\\n");
-                    s = s.Replace("\r", "\\\\r");
-                    s = s.Replace("\t", "\\\\t");
+                    s = Misc.ReplaceEscapes(s);
                     buf.Append(string.Format("%04d: \"%s\"\n", addr, s));
                 }
                 else

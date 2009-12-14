@@ -52,5 +52,13 @@ namespace StringTemplate
              */
             return s;
         }
+
+        public static string ReplaceEscapes(string s)
+        {
+            s = s.Replace("\n", @"\\n");
+            s = s.Replace("\r", @"\\r");
+            s = s.Replace("\t", @"\\t");
+            return s;
+        }
     }
 }

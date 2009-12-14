@@ -66,9 +66,7 @@ namespace StringTemplate
                 string txt = Text;
                 if (txt != null)
                 {
-                    txt = txt.Replace("\n", "\\\\n");
-                    txt = txt.Replace("\r", "\\\\r");
-                    txt = txt.Replace("\t", "\\\\t");
+                    txt = Misc.ReplaceEscapes(txt);
                 }
                 else
                 {

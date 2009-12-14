@@ -254,7 +254,7 @@ namespace StringTemplate
                 foreach (string a in args.Keys)
                 {
                     FormalArgument fa = args[a];
-                    if (fa.defaultValue != null)
+                    if (fa.defaultValueToken != null)
                     {
                         Compiler c2 = new Compiler(prefix, name);
                         fa.compiledDefaultValue = c2.Compile(template);

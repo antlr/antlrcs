@@ -32,6 +32,8 @@
 
 namespace StringTemplate
 {
+    using Antlr.Runtime;
+
     public class FormalArgument
     {
         // the following represent bit positions emulating a cardinality bitset.
@@ -56,7 +58,7 @@ namespace StringTemplate
         //protected int cardinality = REQUIRED;
 
         /** If they specified name="value", store the template here */
-        public string defaultValue;
+        public IToken defaultValueToken;
         public CompiledTemplate compiledDefaultValue;
 
         public FormalArgument(string name)
@@ -64,10 +66,10 @@ namespace StringTemplate
             this.name = name;
         }
 
-        public FormalArgument(string name, string defaultValue)
+        public FormalArgument(string name, IToken defaultValueToken)
         {
             this.name = name;
-            this.defaultValue = defaultValue;
+            this.defaultValueToken = defaultValueToken;
         }
 
         /*
@@ -84,7 +86,7 @@ namespace StringTemplate
 
         public override int GetHashCode()
         {
-            return name.GetHashCode() + defaultValue.GetHashCode();
+            return name.GetHashCode() + defaultValueToken.GetHashCode();
         }
 
         public override bool Equals(object o)
@@ -99,8 +101,8 @@ namespace StringTemplate
                 return false;
             }
             // only check if there is a default value; that's all
-            if ((this.defaultValue != null && other.defaultValue == null) ||
-                 (this.defaultValue == null && other.defaultValue != null))
+            if ((this.defaultValueToken != null && other.defaultValueToken == null) ||
+                 (this.defaultValueToken == null && other.defaultValueToken != null))
             {
                 return false;
             }
@@ -109,9 +111,9 @@ namespace StringTemplate
 
         public override string ToString()
         {
-            if (defaultValue != null)
+            if (defaultValueToken != null)
             {
-                return name + "=" + defaultValue;
+                return name + "=" + defaultValueToken.Text;
             }
             return name;
         }

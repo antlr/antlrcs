@@ -115,12 +115,11 @@ formalArgs returns[IDictionary<string,FormalArgument> args]
 	;
 
 formalArg[IDictionary<string,FormalArgument> args]
-@init {string defvalue = null;}
 	:	ID
-		(	'=' STRING				{defvalue = $STRING.text;}
-		|	'=' ANONYMOUS_TEMPLATE	{defvalue = $ANONYMOUS_TEMPLATE.text;}
+		(	'=' a=STRING
+		|	'=' a=ANONYMOUS_TEMPLATE
 		)?
-		{$args[$ID.text] = new FormalArgument($ID.text, defvalue);}
+		{$args[$ID.text] = new FormalArgument($ID.text, $a);}
     ;
 
 /*
@@ -163,13 +162,13 @@ defaultValuePair[IDictionary<string,object> mapping]
 	;
 
 keyValuePair[IDictionary<string,object> mapping]
-	:	STRING ':' keyValue {mapping[Misc.Strip($STRING.text, 1)] = $keyValue.value;}
+	:	STRING ':' keyValue {mapping[Misc.ReplaceEscapes(Misc.Strip($STRING.text, 1))] = $keyValue.value;}
 	;
 
 keyValue returns [object value]
 	:	BIGSTRING			{$value = new Template(Misc.Strip($BIGSTRING.text,2));}
 	|	ANONYMOUS_TEMPLATE	{$value = new Template(Misc.Strip($ANONYMOUS_TEMPLATE.text,1));}
-	|	STRING				{$value = Misc.Strip($STRING.text, 1);}
+	|	STRING				{$value = Misc.ReplaceEscapes(Misc.Strip($STRING.text, 1));}
 	|	{input.LT(1).Text.Equals("key")}?=> ID
 							{$value = TemplateGroup.DICT_KEY;}
 	|						{$value = null;}
