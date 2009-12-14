@@ -199,5 +199,26 @@ namespace AntlrUnitTests.ST4
             result = st.Render();
             Assert.AreEqual(expected, result);
         }
+
+        [TestMethod]
+        public void TestSuper()
+        {
+            string dir1 = GetRandomDir();
+            string a = "a() ::= <<dir1 a>>\n";
+            string b = "b() ::= <<dir1 b>>\n";
+            WriteFile(dir1, "a.st", a);
+            WriteFile(dir1, "b.st", b);
+            string dir2 = GetRandomDir();
+            a = "a() ::= << [<super.a()>] >>\n";
+            WriteFile(dir2, "a.st", a);
+
+            TemplateGroup group1 = new TemplateGroupDirectory(dir1);
+            TemplateGroup group2 = new TemplateGroupDirectory(dir2);
+            group2.ImportTemplates(group1);
+            Template st = group2.GetInstanceOf("a");
+            string expected = " [dir1 a] ";
+            string result = st.Render();
+            Assert.AreEqual(expected, result);
+        }
     }
 }

@@ -76,7 +76,7 @@ namespace AntlrUnitTests.ST4
             string dir = GetRandomDir();
             string g1 = "a() ::= <<[<@r()>]>>\n";
             WriteFile(dir, "g1.stg", g1);
-            string g2 = "@a.r() ::= <<foo>>>\n";
+            string g2 = "@a.r() ::= <<foo>>\n";
             WriteFile(dir, "g2.stg", g2);
 
             TemplateGroup group1 = new TemplateGroupFile(dir + "/g1.stg");
@@ -84,6 +84,24 @@ namespace AntlrUnitTests.ST4
             group2.ImportTemplates(group1); // define r in g2
             Template st = group2.GetInstanceOf("a");
             string expected = "[foo]";
+            string result = st.Render();
+            Assert.AreEqual(expected, result);
+        }
+
+        [TestMethod]
+        public void TestDefineRegionInSubgroupThatRefsSuper()
+        {
+            string dir = GetRandomDir();
+            string g1 = "a() ::= <<[<@r>foo<@end>]>>\n";
+            WriteFile(dir, "g1.stg", g1);
+            string g2 = "@a.r() ::= <<(<@super.r()>)>>\n";
+            WriteFile(dir, "g2.stg", g2);
+
+            TemplateGroup group1 = new TemplateGroupFile(dir + "/g1.stg");
+            TemplateGroup group2 = new TemplateGroupFile(dir + "/g2.stg");
+            group2.ImportTemplates(group1); // define r in g2
+            Template st = group2.GetInstanceOf("a");
+            string expected = "[(foo)]";
             string result = st.Render();
             Assert.AreEqual(expected, result);
         }
@@ -130,9 +148,11 @@ namespace AntlrUnitTests.ST4
             WriteFile(dir, "g.stg", g);
 
             TemplateGroup group = new TemplateGroupFile(dir + "/g.stg");
-            Template st = group.GetInstanceOf("a");
-            string expected = "[foo]";
-            string result = st.Render();
+            ErrorBuffer errors = new ErrorBuffer();
+            group.SetErrorListener(errors);
+            group.Load();
+            string expected = "redefinition of /region__a__r";
+            string result = errors.ToString();
             Assert.AreEqual(expected, result);
         }
     }

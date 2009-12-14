@@ -80,6 +80,7 @@ namespace StringTemplate
 
         public static readonly IToken SKIP = new TemplateToken(-1, "<skip>");
 
+        // TODO: enum?
         // pasted from STParser
         public const int RBRACK = 17;
         public const int LBRACK = 16;

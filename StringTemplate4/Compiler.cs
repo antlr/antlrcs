@@ -95,7 +95,7 @@ namespace StringTemplate
          */
         private string templatePathPrefix;
 
-        private string nameOrEnclosingTemplateName;
+        private string enclosingTemplateName;
 
         public static int subtemplateCount = 0; // public for testing access
 
@@ -107,7 +107,7 @@ namespace StringTemplate
         public Compiler(string templatePathPrefix, string enclosingTemplateName)
         {
             this.templatePathPrefix = templatePathPrefix;
-            this.nameOrEnclosingTemplateName = enclosingTemplateName;
+            this.enclosingTemplateName = enclosingTemplateName;
         }
 
         public string TemplateReferencePrefix
@@ -133,7 +133,7 @@ namespace StringTemplate
 
             TemplateLexer lexer = new TemplateLexer(new ANTLRStringStream(template), delimiterStartChar, delimiterStopChar);
             UnbufferedTokenStream tokens = new UnbufferedTokenStream(lexer);
-            TemplateParser parser = new TemplateParser(tokens, this, nameOrEnclosingTemplateName);
+            TemplateParser parser = new TemplateParser(tokens, this, enclosingTemplateName);
             try
             {
                 parser.templateAndEOF(); // parse, trigger compile actions for single expr
@@ -155,7 +155,7 @@ namespace StringTemplate
         public CompiledTemplate Compile(ITokenStream tokens, RecognizerSharedState state)
         {
             instrs = new byte[SUBTEMPLATE_INITIAL_CODE_SIZE];
-            TemplateParser parser = new TemplateParser(tokens, state, this, nameOrEnclosingTemplateName);
+            TemplateParser parser = new TemplateParser(tokens, state, this, enclosingTemplateName);
             try
             {
                 parser.template(); // parse, trigger compile actions for single expr

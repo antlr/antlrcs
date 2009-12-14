@@ -87,36 +87,37 @@ namespace StringTemplate
         public const short INSTR_STORE_OPTION = 9;
         public const short INSTR_NEW = 10;  // create new template instance
         public const short INSTR_NEW_IND = 11;  // create new template instance using value on stack
-        public const short INSTR_WRITE = 12;
-        public const short INSTR_WRITE_OPT = 13;
-        public const short INSTR_MAP = 14;  // <a:b()>, <a:b():c()>, <a:{...}>
-        public const short INSTR_ROT_MAP = 15;  // <a:b(),c()>
-        public const short INSTR_PAR_MAP = 16;  // <names,phones:{n,p | ...}>
-        public const short INSTR_BR = 17;
-        public const short INSTR_BRF = 18;
-        public const short INSTR_OPTIONS = 19;  // push options block
-        public const short INSTR_LIST = 20;
-        public const short INSTR_ADD = 21;
-        public const short INSTR_TOSTR = 22;
+        public const short INSTR_SUPER_NEW = 12;  // create new template instance using value on stack
+        public const short INSTR_WRITE = 13;
+        public const short INSTR_WRITE_OPT = 14;
+        public const short INSTR_MAP = 15;  // <a:b()>, <a:b():c()>, <a:{...}>
+        public const short INSTR_ROT_MAP = 16;  // <a:b(),c()>
+        public const short INSTR_PAR_MAP = 17;  // <names,phones:{n,p | ...}>
+        public const short INSTR_BR = 18;
+        public const short INSTR_BRF = 19;
+        public const short INSTR_OPTIONS = 20;  // push options block
+        public const short INSTR_LIST = 21;
+        public const short INSTR_ADD = 22;
+        public const short INSTR_TOSTR = 23;
         // Predefined functions
-        public const short INSTR_NOOP = 23; // do nothing
-        public const short INSTR_FIRST = 24;
-        public const short INSTR_LAST = 25;
-        public const short INSTR_REST = 26;
-        public const short INSTR_TRUNC = 27;
-        public const short INSTR_STRIP = 28;
-        public const short INSTR_TRIM = 29;
-        public const short INSTR_LENGTH = 30;
-        public const short INSTR_STRLEN = 31;
-        public const short INSTR_REVERSE = 32;
+        public const short INSTR_NOOP = 24; // do nothing
+        public const short INSTR_FIRST = 25;
+        public const short INSTR_LAST = 26;
+        public const short INSTR_REST = 27;
+        public const short INSTR_TRUNC = 28;
+        public const short INSTR_STRIP = 29;
+        public const short INSTR_TRIM = 30;
+        public const short INSTR_LENGTH = 31;
+        public const short INSTR_STRLEN = 32;
+        public const short INSTR_REVERSE = 33;
 
-        public const short INSTR_NOT = 33;
-        public const short INSTR_OR = 34;
-        public const short INSTR_AND = 35;
+        public const short INSTR_NOT = 34;
+        public const short INSTR_OR = 35;
+        public const short INSTR_AND = 36;
 
-        public const short INSTR_INDENT = 36;
-        public const short INSTR_DEDENT = 37;
-        public const short INSTR_NEWLINE = 38;
+        public const short INSTR_INDENT = 37;
+        public const short INSTR_DEDENT = 38;
+        public const short INSTR_NEWLINE = 39;
 
         /** Used for assembly/disassembly; describes instruction set */
         // START: instr
@@ -135,6 +136,7 @@ namespace StringTemplate
                 new Instruction("store_option",INT),
                 new Instruction("new",STRING),
                 new Instruction("new_ind"),
+                new Instruction("super_new",STRING),
                 new Instruction("write"),
                 new Instruction("write_opt"),
                 new Instruction("map"),

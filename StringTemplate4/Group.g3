@@ -92,14 +92,10 @@ templateDef[string prefix]
 			template = Misc.TrimOneStartingWS(template);
 		}
 	    try {
-			CompiledTemplate st = null;
 			if ($enclosing != null)
-				st = this._group.DefineRegion(prefix, $enclosing.text, $region.text, template);
+				this._group.DefineRegion(prefix, $enclosing.text, $region.text, template);
 			else
-				st = this._group.DefineTemplate(prefix, $name.text, $formalArgs.args, template);
-
-			GroupLexer lexer = (GroupLexer)input.TokenSource;
-			lexer._enclosingTemplateName = fullName;
+				this._group.DefineTemplate(prefix, $name.text, $formalArgs.args, template);
 		}
         catch (TemplateRecognitionException e) {
         	RecognitionException re = (RecognitionException)e.InnerException;
@@ -203,7 +199,7 @@ ANONYMOUS_TEMPLATE
 			new TemplateLexer(input, this._group.delimiterStartChar, this._group.delimiterStopChar);
 		lexer.subtemplateDepth = 1;
 		UnbufferedTokenStream tokens = new UnbufferedTokenStream(lexer);
-        TemplateParser parser = new TemplateParser(tokens, (ICodeGenerator)null, this._enclosingTemplateName);
+        TemplateParser parser = new TemplateParser(tokens, (ICodeGenerator)null, null);
 		parser.template();
 		}
     	// don't match '}' here; subparser matches it to terminate

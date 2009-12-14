@@ -161,6 +161,23 @@ namespace StringTemplate
                         Console.Error.WriteLine("no such template " + name);
                     operands[++sp] = st;
                     break;
+                case Bytecode.INSTR_SUPER_NEW:
+                    nameIndex = GetShort(code, ip);
+                    ip += 2;
+                    name = self.code.strings[nameIndex];
+                    CompiledTemplate imported = group.LookupImportedTemplate(name);
+                    if (imported == null)
+                    {
+                        group.listener.Error("no imported template for " + name);
+                        operands[++sp] = new BlankTemplate();
+                        break;
+                    }
+                    // TODO: factor into STGroup
+                    st = imported.nativeGroup.CreateStringTemplate();
+                    st.groupThatCreatedThisInstance = group;
+                    st.code = imported;
+                    operands[++sp] = st;
+                    break;
                 case Bytecode.INSTR_STORE_ATTR:
                     nameIndex = GetShort(code, ip);
                     name = self.code.strings[nameIndex];

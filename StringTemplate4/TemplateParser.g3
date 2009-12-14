@@ -281,22 +281,23 @@ memberExpr
 	;
 	
 callExpr
-options {k=2;} // prevent full LL(*) which fails, falling back on k=1; need k=2
+options {k=2;} // prevent full LL(*), which fails, falling back on k=1; need k=2
 	:	{Compiler.funcs.ContainsKey(input.LT(1).Text)}?
 		ID '(' expr ')' {Func($ID);}
-	|	ID {gen.Emit(Bytecode.INSTR_NEW, PrefixedName($ID.text));} '(' args? ')'
-	|	'@' ID '(' ')'	// convert <@r()> to <region__enclosingTemplate__r()>
+	|	(s='super' '.')? ID
+		{gen.Emit($s!=null?Bytecode.INSTR_SUPER_NEW:Bytecode.INSTR_NEW, PrefixedName($ID.text));}
+		'(' args? ')'
+	|	'@' (s='super' '.')? ID '(' ')'	// convert <@r()> to <region__enclosingTemplate__r()>
 		{
 		string mangled = TemplateGroup.GetMangledRegionName(_enclosingTemplateName, $ID.text);
 		gen.DefineBlankRegion(PrefixedName(mangled));
-		gen.Emit(Bytecode.INSTR_NEW, PrefixedName(mangled));
+		gen.Emit($s!=null?Bytecode.INSTR_SUPER_NEW:Bytecode.INSTR_NEW, PrefixedName(mangled));
 		}
 	|	primary
 	;
 	
 primary
-	:	'super'
-	|	o=ID	  {RefAttr($o);}
+	:	o=ID	  {RefAttr($o);}
 /*		(	'.' p=ID {gen.Emit(Bytecode.INSTR_LOAD_PROP, $p.text);}
 		|	'.' '(' mapExpr ')' {gen.Emit(Bytecode.INSTR_LOAD_PROP_IND);}
 		)*

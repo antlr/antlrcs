@@ -34,7 +34,6 @@ namespace StringTemplate
 {
     partial class GroupLexer
     {
-        protected internal string _enclosingTemplateName;
         protected internal TemplateGroup _group;
     }
 }

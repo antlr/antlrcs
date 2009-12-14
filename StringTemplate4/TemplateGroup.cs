@@ -191,7 +191,7 @@ namespace StringTemplate
             return code;
         }
 
-        protected CompiledTemplate LookupImportedTemplate(string name)
+        protected internal CompiledTemplate LookupImportedTemplate(string name)
         {
             //Console.WriteLine("look for " + name + " in " + imports);
 
@@ -245,6 +245,7 @@ namespace StringTemplate
             }
 
             CompiledTemplate code = Compile(prefix, name, template);
+            code.name = name;
             code.formalArguments = args;
             RawDefineTemplate(prefix + name, code);
             if (args != null)
@@ -271,10 +272,11 @@ namespace StringTemplate
                                              string name,
                                              string template)
         {
-            CompiledTemplate code = Compile(prefix, name, template);
+            CompiledTemplate code = Compile(prefix, enclosingTemplateName, template);
+            code.name = prefix + GetMangledRegionName(enclosingTemplateName, name);
             code.isRegion = true;
             code.regionDefType = Template.RegionType.Explicit;
-            RawDefineTemplate(prefix + GetMangledRegionName(enclosingTemplateName, name), code);
+            RawDefineTemplate(code.name, code);
             return code;
         }
 
@@ -314,11 +316,10 @@ namespace StringTemplate
             templates[name] = code;
         }
 
-        protected CompiledTemplate Compile(string prefix, string name, string template)
+        protected CompiledTemplate Compile(string prefix, string enclosingTemplateName, string template)
         {
-            Compiler c = new Compiler(prefix, name);
+            Compiler c = new Compiler(prefix, enclosingTemplateName);
             CompiledTemplate code = c.Compile(template);
-            code.name = name;
             code.nativeGroup = this;
             return code;
         }
@@ -411,6 +412,7 @@ namespace StringTemplate
         /// </summary>
         public virtual Template CreateStringTemplate()
         {
+            // TODO: try making a mem pool
             Template st = new Template();
             return st;
         }
