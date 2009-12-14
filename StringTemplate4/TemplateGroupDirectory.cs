@@ -32,17 +32,15 @@
 
 namespace StringTemplate
 {
-    using System.Linq;
     using Antlr.Runtime;
+    using StringTemplate.Compiler;
     using ArgumentException = System.ArgumentException;
-    using ArgumentNullException = System.ArgumentNullException;
     using Console = System.Console;
     using Directory = System.IO.Directory;
     using Encoding = System.Text.Encoding;
     using Exception = System.Exception;
     using File = System.IO.File;
     using Path = System.IO.Path;
-    using System.Collections.Generic;
 
     public class TemplateGroupDirectory : TemplateGroup
     {

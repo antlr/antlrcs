@@ -32,6 +32,7 @@
 
 namespace StringTemplate
 {
+    using StringTemplate.Compiler;
     using CultureInfo = System.Globalization.CultureInfo;
 
     public class BlankTemplate : Template

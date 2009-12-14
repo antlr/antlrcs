@@ -34,6 +34,8 @@ namespace StringTemplate
 {
     using System.Collections.Generic;
     using System.Linq;
+    using StringTemplate.Compiler;
+    using StringTemplate.Debug;
     using Array = System.Array;
     using ArrayList = System.Collections.ArrayList;
     using Console = System.Console;
@@ -50,7 +52,6 @@ namespace StringTemplate
     using StringBuilder = System.Text.StringBuilder;
     using StringWriter = System.IO.StringWriter;
     using Type = System.Type;
-    using StringTemplate.Debug;
 
     public class Interpreter
     {
@@ -293,7 +294,7 @@ namespace StringTemplate
                         ip = addr; // jump
                     break;
                 case Bytecode.INSTR_OPTIONS:
-                    operands[++sp] = new object[Compiler.NUM_OPTIONS];
+                    operands[++sp] = new object[TemplateCompiler.NUM_OPTIONS];
                     break;
                 case Bytecode.INSTR_LIST:
                     operands[++sp] = new List<object>();
@@ -427,7 +428,7 @@ namespace StringTemplate
             if (options != null)
             {
                 optionStrings = new string[options.Length];
-                for (int i = 0; i < Compiler.NUM_OPTIONS; i++)
+                for (int i = 0; i < TemplateCompiler.NUM_OPTIONS; i++)
                 {
                     optionStrings[i] = ToString(self, options[i]);
                 }

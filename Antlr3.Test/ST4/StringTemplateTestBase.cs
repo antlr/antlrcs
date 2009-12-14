@@ -10,6 +10,7 @@
     using Path = System.IO.Path;
     using Random = System.Random;
     using StringBuilder = System.Text.StringBuilder;
+    using StringTemplate.Compiler;
 
     public abstract class StringTemplateTestBase
     {

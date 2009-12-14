@@ -30,20 +30,18 @@
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-namespace StringTemplate
+namespace StringTemplate.Compiler
 {
     using System.Collections.Generic;
     using Antlr.Runtime;
     using Array = System.Array;
     using Console = System.Console;
-    using IList = System.Collections.IList;
     using Math = System.Math;
-    using Path = System.IO.Path;
 
     /// <summary>
     /// A compiler for a single template
     /// </summary>
-    public class Compiler : ICodeGenerator
+    public class TemplateCompiler : ICodeGenerator
     {
         /** Given a template of length n, how much code will result?
          *  For now, let's assume n/5. Later, we can test in practice.
@@ -99,12 +97,12 @@ namespace StringTemplate
 
         public static int subtemplateCount = 0; // public for testing access
 
-        public Compiler()
+        public TemplateCompiler()
             : this("/", "<unknown>")
         {
         }
 
-        public Compiler(string templatePathPrefix, string enclosingTemplateName)
+        public TemplateCompiler(string templatePathPrefix, string enclosingTemplateName)
         {
             this.templatePathPrefix = templatePathPrefix;
             this.enclosingTemplateName = enclosingTemplateName;
@@ -232,7 +230,7 @@ namespace StringTemplate
             int stop = -1;
             if (tokenSource != null)
                 start = lexer.input.Index;
-            Compiler c = new Compiler(templatePathPrefix, enclosingTemplateName);
+            TemplateCompiler c = new TemplateCompiler(templatePathPrefix, enclosingTemplateName);
             CompiledTemplate sub = c.Compile(input, state);
             sub.name = name;
             if (lexer != null)
@@ -264,7 +262,7 @@ namespace StringTemplate
                                     ITokenStream input,
                                     RecognizerSharedState state)
         {
-            Compiler c = new Compiler(templatePathPrefix, enclosingTemplateName);
+            TemplateCompiler c = new TemplateCompiler(templatePathPrefix, enclosingTemplateName);
             CompiledTemplate sub = c.Compile(input, state);
             string fullName = templatePathPrefix + TemplateGroup.GetMangledRegionName(enclosingTemplateName, regionName);
             sub.name = fullName;

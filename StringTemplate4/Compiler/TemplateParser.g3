@@ -35,7 +35,7 @@ options {
 	TokenLabelType=CommonToken;
 }
 
-@namespace{StringTemplate}
+@namespace{StringTemplate.Compiler}
 @header{using System.Linq;}
 
 @rulecatch {
@@ -292,7 +292,7 @@ memberExpr
 	
 callExpr
 options {k=2;} // prevent full LL(*), which fails, falling back on k=1; need k=2
-	:	{Compiler.funcs.ContainsKey(input.LT(1).Text)}?
+	:	{TemplateCompiler.funcs.ContainsKey(input.LT(1).Text)}?
 		ID '(' expr ')' {Func($ID);}
 	|	(s='super' '.')? ID
 		{gen.Emit($s!=null?Bytecode.INSTR_SUPER_NEW:Bytecode.INSTR_NEW, PrefixedName($ID.text));}

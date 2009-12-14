@@ -34,17 +34,16 @@ namespace StringTemplate
 {
     using System.Collections.Generic;
     using System.Linq;
+    using Antlr.Runtime;
+    using StringTemplate.Compiler;
+    using StringTemplate.Debug;
     using ArgumentException = System.ArgumentException;
     using Console = System.Console;
-    using Directory = System.IO.Directory;
     using Encoding = System.Text.Encoding;
     using Exception = System.Exception;
     using Path = System.IO.Path;
     using StringBuilder = System.Text.StringBuilder;
     using Type = System.Type;
-    using Antlr.Runtime;
-    using TextWriter = System.IO.TextWriter;
-    using StringTemplate.Debug;
 
     /** A directory or directory tree of .st template files and/or group files.
      *  Individual template files contain formal template definitions. In a sense,
@@ -263,7 +262,7 @@ namespace StringTemplate
                     FormalArgument fa = args[a];
                     if (fa.defaultValueToken != null)
                     {
-                        Compiler c2 = new Compiler(prefix, name);
+                        TemplateCompiler c2 = new TemplateCompiler(prefix, name);
                         fa.compiledDefaultValue = c2.Compile(template);
                     }
                 }
@@ -326,7 +325,7 @@ namespace StringTemplate
 
         protected CompiledTemplate Compile(string prefix, string enclosingTemplateName, string template)
         {
-            Compiler c = new Compiler(prefix, enclosingTemplateName);
+            TemplateCompiler c = new TemplateCompiler(prefix, enclosingTemplateName);
             CompiledTemplate code = c.Compile(template);
             code.nativeGroup = this;
             code.template = template;

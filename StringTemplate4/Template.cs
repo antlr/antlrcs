@@ -33,17 +33,14 @@
 namespace StringTemplate
 {
     using System.Collections.Generic;
+    using System.Diagnostics;
+    using StringTemplate.Compiler;
     using ArgumentException = System.ArgumentException;
     using ArrayList = System.Collections.ArrayList;
-    using Console = System.Console;
     using CultureInfo = System.Globalization.CultureInfo;
-    using Exception = System.Exception;
     using IList = System.Collections.IList;
-    using IOException = System.IO.IOException;
     using StringBuilder = System.Text.StringBuilder;
     using StringWriter = System.IO.StringWriter;
-    using System.Diagnostics;
-    using StringTemplate.Debug;
 
     public class Template
     {

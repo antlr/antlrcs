@@ -53,8 +53,8 @@ options {
 	language=CSharp3;
 }
 
-@lexer::namespace{StringTemplate}
-@parser::namespace{StringTemplate}
+@lexer::namespace{StringTemplate.Compiler}
+@parser::namespace{StringTemplate.Compiler}
 
 @header
 {

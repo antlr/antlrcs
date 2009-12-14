@@ -30,11 +30,10 @@
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-namespace StringTemplate
+namespace StringTemplate.Compiler
 {
     using System.Collections.Generic;
     using Antlr.Runtime;
-    using IList = System.Collections.IList;
 
     // TODO: maybe rename; more than code gen now; break into two interfaces?
     public interface ICodeGenerator

@@ -30,12 +30,11 @@
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-namespace StringTemplate
+namespace StringTemplate.Compiler
 {
     using System.Collections.Generic;
     using Antlr.Runtime;
     using Console = System.Console;
-    using IList = System.Collections.IList;
 
     partial class TemplateParser
     {
@@ -91,7 +90,7 @@ namespace StringTemplate
         public void SetOption(IToken id)
         {
             int i;
-            if (!Compiler.supportedOptions.TryGetValue(id.Text, out i))
+            if (!TemplateCompiler.supportedOptions.TryGetValue(id.Text, out i))
             {
                 Console.Error.WriteLine("no such option: " + id.Text);
                 return;
@@ -103,7 +102,7 @@ namespace StringTemplate
         public void DefaultOption(IToken id)
         {
             string v;
-            if (!Compiler.defaultOptionValues.TryGetValue(id.Text, out v))
+            if (!TemplateCompiler.defaultOptionValues.TryGetValue(id.Text, out v))
             {
                 Console.Error.WriteLine("no def value for " + id.Text);
                 return;
@@ -115,7 +114,7 @@ namespace StringTemplate
         public void Func(IToken id)
         {
             short funcBytecode;
-            if (!Compiler.funcs.TryGetValue(id.Text, out funcBytecode))
+            if (!TemplateCompiler.funcs.TryGetValue(id.Text, out funcBytecode))
             {
                 Console.Error.WriteLine("no such fun: " + id);
                 gen.Emit(Bytecode.INSTR_NOOP);
@@ -170,14 +169,14 @@ namespace StringTemplate
 
             public string CompileAnonTemplate(string enclosingTemplateName, ITokenStream input, IList<IToken> ids, RecognizerSharedState state)
             {
-                Compiler c = new Compiler();
+                TemplateCompiler c = new TemplateCompiler();
                 c.Compile(input, state);
                 return null;
             }
 
             public string CompileRegion(string enclosingTemplateName, string regionName, ITokenStream input, RecognizerSharedState state)
             {
-                Compiler c = new Compiler();
+                TemplateCompiler c = new TemplateCompiler();
                 c.Compile(input, state);
                 return null;
             }
