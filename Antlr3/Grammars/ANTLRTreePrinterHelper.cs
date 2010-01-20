@@ -72,11 +72,11 @@ namespace Antlr3.Grammars
             IToken token = null;
             if ( ex is MismatchedTokenException )
             {
-                token = ( (MismatchedTokenException)ex ).token;
+                token = ( (MismatchedTokenException)ex ).Token;
             }
             else if ( ex is NoViableAltException )
             {
-                token = ( (NoViableAltException)ex ).token;
+                token = ( (NoViableAltException)ex ).Token;
             }
             ErrorManager.SyntaxError(
                 ErrorManager.MSG_SYNTAX_ERROR,

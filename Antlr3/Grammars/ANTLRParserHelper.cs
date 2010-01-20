@@ -135,7 +135,7 @@ namespace Antlr3.Grammars
                 if ( trappedException is MissingTokenException )
                 {
                     return "<missing type: " +
-                           ( (MissingTokenException)trappedException ).GetMissingType() +
+                           ( (MissingTokenException)trappedException ).MissingType +
                            ">";
                 }
                 else if ( trappedException is UnwantedTokenException )
@@ -146,11 +146,11 @@ namespace Antlr3.Grammars
                 }
                 else if ( trappedException is MismatchedTokenException )
                 {
-                    return "<mismatched token: " + trappedException.token + ", resync=" + Text + ">";
+                    return "<mismatched token: " + trappedException.Token + ", resync=" + Text + ">";
                 }
                 else if ( trappedException is NoViableAltException )
                 {
-                    return "<unexpected: " + trappedException.token +
+                    return "<unexpected: " + trappedException.Token +
                            ", resync=" + Text + ">";
                 }
                 return "<error: " + Text + ">";
@@ -227,7 +227,7 @@ namespace Antlr3.Grammars
 
             PrefixWithSynPred( alt );
 
-            GrammarAST block = (GrammarAST)adaptor.Create( BLOCK, "BLOCK" );
+            GrammarAST block = (GrammarAST)adaptor.Create( BLOCK, b.Token, "BLOCK" );
             adaptor.AddChild( block, alt );
             adaptor.AddChild( alt, adaptor.Create( EOB, "<end-of-block>" ) );
 
@@ -244,7 +244,7 @@ namespace Antlr3.Grammars
              */
             GrammarAST nalt = GrammarAST.DupTreeNoActions( alt, null );
 
-            GrammarAST block = (GrammarAST)adaptor.Create( BLOCK, "BLOCK" );
+            GrammarAST block = (GrammarAST)adaptor.Create( BLOCK, alt.Token, "BLOCK" );
             adaptor.AddChild( block, nalt );
             adaptor.AddChild( block, adaptor.Create( EOB, "<end-of-block>" ) );
 
@@ -342,7 +342,7 @@ namespace Antlr3.Grammars
             //{
             //    ErrorManager.internalError( "can't get token???", tse );
             //}
-            IToken token = ex.token;
+            IToken token = ex.Token;
             ErrorManager.SyntaxError(
                 ErrorManager.MSG_SYNTAX_ERROR,
                 Grammar,

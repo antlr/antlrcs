@@ -55,7 +55,7 @@ namespace AntlrUnitTests.ST4
             catch (TemplateException se)
             {
                 RecognitionException re = (RecognitionException)se.InnerException;
-                result = 1 + ":" + re.charPositionInLine + ": " + se.Message;
+                result = 1 + ":" + re.CharPositionInLine + ": " + se.Message;
             }
             string expected = "1:1: mismatched input '<' expecting EOF";
             Assert.AreEqual(expected, result);
@@ -74,7 +74,7 @@ namespace AntlrUnitTests.ST4
             catch (TemplateException se)
             {
                 RecognitionException re = (RecognitionException)se.InnerException;
-                result = 1 + ":" + re.charPositionInLine + ": " + se.Message;
+                result = 1 + ":" + re.CharPositionInLine + ": " + se.Message;
             }
             string expected = "1:4: invalid character: *";
             Assert.AreEqual(expected, result);
