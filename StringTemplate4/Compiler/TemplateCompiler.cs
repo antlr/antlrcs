@@ -183,11 +183,21 @@ namespace StringTemplate.Compiler
 
         public void Emit(short opcode)
         {
+            Emit(opcode, -1, -1);
+        }
+
+        public void Emit(short opcode, int sourceStart, int sourceStop)
+        {
             EnsureCapacity(1);
             instrs[ip++] = (byte)opcode;
         }
 
         public void Emit(short opcode, int arg)
+        {
+            Emit(opcode, arg, -1, -1);
+        }
+
+        public void Emit(short opcode, int arg, int sourceStart, int sourceStop)
         {
             Emit(opcode);
             EnsureCapacity(2);
@@ -195,7 +205,7 @@ namespace StringTemplate.Compiler
             ip += 2;
         }
 
-        public void Emit(short opcode, int arg1, int arg2)
+        public void Emit(short opcode, int arg1, int arg2, int sourceStart, int sourceStop)
         {
             Emit(opcode, arg1);
             EnsureCapacity(2);
@@ -204,6 +214,11 @@ namespace StringTemplate.Compiler
         }
 
         public void Emit(short opcode, string s)
+        {
+            Emit(opcode, s, -1, -1);
+        }
+
+        public void Emit(short opcode, string s, int sourceStart, int sourceStop)
         {
             int i = DefineString(s);
             Emit(opcode, i);

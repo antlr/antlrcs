@@ -32,40 +32,25 @@
 
 namespace StringTemplate.Compiler
 {
-    using System.Collections.Generic;
-    using Antlr.Runtime;
-
-    // TODO: maybe rename; more than code gen now; break into two interfaces?
-    public interface ICodeGenerator
+    public struct Interval
     {
-        /// <summary>
-        /// If we're compiling templates in subdir or group file under root,
-        /// what's the templatePathPrefix to add?
-        /// </summary>
-        TemplateName TemplateReferencePrefix
+        public Interval(int a, int b)
+            : this()
         {
-            get;
+            this.A = a;
+            this.B = b;
         }
 
-        void Emit(short opcode);
-        void Emit(short opcode, int sourceStart, int sourceStop);
-        void Emit(short opcode, int arg);
-        void Emit(short opcode, int arg, int sourceStart, int sourceStop);
-        void Emit(short opcode, int arg1, int arg2, int sourceStart, int sourceStop);
-        void Emit(short opcode, string s);
-        void Emit(short opcode, string s, int sourceStart, int sourceStop);
-        void Write(int addr, short value);
-        /** Return address where next instruction will be written */
-        int Address();
+        public int A
+        {
+            get;
+            private set;
+        }
 
-        /** Compile a subtemplate. It's the '...' in this &lt;names:{p | ...}&gt; */
-        TemplateName CompileAnonTemplate(TemplateName enclosingTemplateName,
-                                   ITokenStream input,
-                                   IList<IToken> ids,
-                                   RecognizerSharedState state);
-
-        TemplateName CompileRegion(TemplateName enclosingTemplateName, string regionName, ITokenStream input, RecognizerSharedState state);
-
-        void DefineBlankRegion(TemplateName name);
+        public int B
+        {
+            get;
+            private set;
+        }
     }
 }

@@ -8,12 +8,6 @@
     [TestClass]
     public class TestCompiler : StringTemplateTestBase
     {
-        [TestInitialize]
-        public void setUp()
-        {
-            TemplateCompiler.subtemplateCount = 0;
-        }
-
         [TestMethod]
         public void TestAttr()
         {
@@ -21,9 +15,9 @@
             CompiledTemplate code = new TemplateCompiler().Compile(template);
             string asmExpected =
                 "load_str 0, " +
-                "write 0 2, " +
+                "write, " +
                 "load_attr 1, " +
-                "write 3 8";
+                "write";
             string asmResult = code.Instructions();
             Assert.AreEqual(asmExpected, asmResult);
             string stringsExpected = "[hi , name]";
@@ -37,7 +31,7 @@
             string template = "hi <foo()>";
             CompiledTemplate code = new TemplateCompiler().Compile(template);
             string asmExpected =
-                "load_str 0, write 0 2, new 1, write 3 9";
+                "load_str 0, write, new 1, write";
             string asmResult = code.Instructions();
             Assert.AreEqual(asmExpected, asmResult);
             string stringsExpected = "[hi , /foo]";
@@ -51,7 +45,7 @@
             string template = "hi <a.b>";
             CompiledTemplate code = new TemplateCompiler().Compile(template);
             string asmExpected =
-                "load_str 0, write 0 2, load_attr 1, load_prop 2, write 3 7";
+                "load_str 0, write, load_attr 1, load_prop 2, write";
             string asmResult = code.Instructions();
             Assert.AreEqual(asmExpected, asmResult);
             string stringsExpected = "[hi , a, b]";
@@ -65,8 +59,8 @@
             string template = "<u.id>: <u.name>";
             CompiledTemplate code = new TemplateCompiler().Compile(template);
             string asmExpected =
-                "load_attr 0, load_prop 1, write 0 5, load_str 2, write 6 7, " +
-                "load_attr 0, load_prop 3, write 8 15";
+                "load_attr 0, load_prop 1, write, load_str 2, write, " +
+                "load_attr 0, load_prop 3, write";
             string asmResult = code.Instructions();
             Assert.AreEqual(asmExpected, asmResult);
             string stringsExpected = "[u, id, : , name]";
@@ -80,7 +74,7 @@
             string template = "hi <name:bold>";
             CompiledTemplate code = new TemplateCompiler().Compile(template);
             string asmExpected =
-                "load_str 0, write 0 2, load_attr 1, load_str 2, map, write 3 13";
+                "load_str 0, write, load_attr 1, load_str 2, map, write";
             string asmResult = code.Instructions();
             Assert.AreEqual(asmExpected, asmResult);
             string stringsExpected = "[hi , name, /bold]";
@@ -95,13 +89,13 @@
             CompiledTemplate code = new TemplateCompiler().Compile(template);
             string asmExpected =
                 "load_str 0, " +
-                "write 0 2, " +
+                "write, " +
                 "load_attr 1, " +
                 "load_str 2, " +
                 "map, " +
                 "load_str 3, " +
                 "map, " +
-                "write 3 21";
+                "write";
             string asmResult = code.Instructions();
             Assert.AreEqual(asmExpected, asmResult);
             string stringsExpected = "[hi , name, /bold, /italics]";
@@ -115,7 +109,7 @@
             string template = "hi <name:bold,italics>";
             CompiledTemplate code = new TemplateCompiler().Compile(template);
             string asmExpected =
-                "load_str 0, write 0 2, load_attr 1, load_str 2, load_str 3, rot_map 2, write 3 21";
+                "load_str 0, write, load_attr 1, load_str 2, load_str 3, rot_map 2, write";
             string asmResult = code.Instructions();
             Assert.AreEqual(asmExpected, asmResult);
             string stringsExpected = "[hi , name, /bold, /italics]";
@@ -129,7 +123,7 @@
             string template = "hi <name:{n | <n>}>";
             CompiledTemplate code = new TemplateCompiler().Compile(template);
             string asmExpected =
-                "load_str 0, write 0 2, load_attr 1, load_str 2, map, write 3 18";
+                "load_str 0, write, load_attr 1, load_str 2, map, write";
             string asmResult = code.Instructions();
             Assert.AreEqual(asmExpected, asmResult);
             string stringsExpected = "[hi , name, /_sub1]";
@@ -143,7 +137,7 @@
             string template = "go: <if(name)>hi, foo<endif>";
             CompiledTemplate code = new TemplateCompiler().Compile(template);
             string asmExpected =
-                "load_str 0, write 0 3, load_attr 1, brf 22, load_str 2, write 14 20";
+                "load_str 0, write, load_attr 1, brf 14, load_str 2, write";
             string asmResult = code.Instructions();
             Assert.AreEqual(asmExpected, asmResult);
             string stringsExpected = "[go: , name, hi, foo]";
@@ -158,14 +152,14 @@
             CompiledTemplate code = new TemplateCompiler().Compile(template);
             string asmExpected =
                 "load_str 0, " +
-                "write 0 3, " +
+                "write, " +
                 "load_attr 1, " +
-                "brf 25, " +
+                "brf 17, " +
                 "load_str 2, " +
-                "write 14 20, " +
-                "br 33, " +
+                "write, " +
+                "br 21, " +
                 "load_str 3, " +
-                "write 27 29";
+                "write";
             string asmResult = code.Instructions();
             Assert.AreEqual(asmExpected, asmResult);
             string stringsExpected = "[go: , name, hi, foo, bye]";
@@ -180,16 +174,16 @@
             CompiledTemplate code = new TemplateCompiler().Compile(template);
             string asmExpected =
                 "load_str 0, " +
-                "write 0 3, " +
+                "write, " +
                 "load_attr 1, " +
-                "brf 25, " +
+                "brf 17, " +
                 "load_str 2, " +
-                "write 14 20, " +
-                "br 39, " +
+                "write, " +
+                "br 27, " +
                 "load_attr 3, " +
-                "brf 39, " +
+                "brf 27, " +
                 "load_str 4, " +
-                "write 35 40";
+                "write";
             string asmResult = code.Instructions();
             Assert.AreEqual(asmExpected, asmResult);
             string stringsExpected = "[go: , name, hi, foo, user, a user]";
@@ -204,19 +198,19 @@
             CompiledTemplate code = new TemplateCompiler().Compile(template);
             string asmExpected =
                 "load_str 0, " +
-                "write 0 3, " +
+                "write, " +
                 "load_attr 1, " +
-                "brf 25, " +
+                "brf 17, " +
                 "load_str 2, " +
-                "write 14 20, " +
-                "br 50, " +
+                "write, " +
+                "br 34, " +
                 "load_attr 3, " +
-                "brf 42, " +
+                "brf 30, " +
                 "load_str 4, " +
-                "write 35 40, " +
-                "br 50, " +
+                "write, " +
+                "br 34, " +
                 "load_str 5, " +
-                "write 47 49";
+                "write";
             string asmResult = code.Instructions();
             Assert.AreEqual(asmExpected, asmResult);
             string stringsExpected = "[go: , name, hi, foo, user, a user, bye]";
@@ -230,7 +224,7 @@
             string template = "hi <name; separator=\"x\">";
             CompiledTemplate code = new TemplateCompiler().Compile(template);
             string asmExpected =
-                "load_str 0, write 0 2, load_attr 1, options, load_str 2, store_option 3, write_opt 3 23";
+                "load_str 0, write, load_attr 1, options, load_str 2, store_option 3, write_opt";
             string asmResult = code.Instructions();
             Assert.AreEqual(asmExpected, asmResult);
             string stringsExpected = "[hi , name, x]";
@@ -244,7 +238,7 @@
             string template = "hi <name; separator={, }>";
             CompiledTemplate code = new TemplateCompiler().Compile(template);
             string asmExpected =
-                "load_str 0, write 0 2, load_attr 1, options, new 2, store_option 3, write_opt 3 24";
+                "load_str 0, write, load_attr 1, options, new 2, store_option 3, write_opt";
             string asmResult = code.Instructions();
             Assert.AreEqual(asmExpected, asmResult);
             string stringsExpected = "[hi , name, /_sub1]";
@@ -259,7 +253,7 @@
             CompiledTemplate code = new TemplateCompiler().Compile(template);
             string asmExpected =
                 "load_str 0, " +
-                "write 0 2, " +
+                "write, " +
                 "load_attr 1, " +
                 "options, " +
                 "load_str 2, " +
@@ -268,7 +262,7 @@
                 "store_option 4, " +
                 "load_str 4, " +
                 "store_option 3, " +
-                "write_opt 3 44";
+                "write_opt";
             string stringsExpected = // the ", , ," is the ", " separator string
                 "[hi , name, true, /foo, , ]";
             string stringsResult = code.strings.ToElementString();
@@ -282,7 +276,7 @@
         {
             string template = "<[]>";
             CompiledTemplate code = new TemplateCompiler().Compile(template);
-            string asmExpected = "list, write 0 3";
+            string asmExpected = "list, write";
             string asmResult = code.Instructions();
             Assert.AreEqual(asmExpected, asmResult);
             string stringsExpected = "[]";
@@ -295,7 +289,7 @@
         {
             string template = "<[a,b]>";
             CompiledTemplate code = new TemplateCompiler().Compile(template);
-            string asmExpected = "list, load_attr 0, add, load_attr 1, add, write 0 6";
+            string asmExpected = "list, load_attr 0, add, load_attr 1, add, write";
             string asmResult = code.Instructions();
             Assert.AreEqual(asmExpected, asmResult);
             string stringsExpected = "[a, b]";
@@ -310,7 +304,7 @@
             // compile as if in root dir and in template 'a'
             CompiledTemplate code = new TemplateCompiler(TemplateName.Root, new TemplateName("a")).Compile(template);
             string asmExpected =
-                "new 0, write 0 12";
+                "new 0, write";
             string asmResult = code.Instructions();
             Assert.AreEqual(asmExpected, asmResult);
             string stringsExpected = "[/region__a__r]";
@@ -325,7 +319,7 @@
             // compile as if in root dir and in template 'a'
             CompiledTemplate code = new TemplateCompiler(TemplateName.Root, new TemplateName("a")).Compile(template);
             string asmExpected =
-                "load_str 0, write 0 1, new 1, write 2 7";
+                "load_str 0, write, new 1, write";
             string asmResult = code.Instructions();
             Assert.AreEqual(asmExpected, asmResult);
             string stringsExpected = "[x:, /region__a__r]";

@@ -80,11 +80,11 @@ namespace StringTemplate.Compiler
             string name = id.Text;
             if (Interpreter.predefinedAttributes.Contains(name))
             {
-                gen.Emit(Bytecode.INSTR_LOAD_LOCAL, name);
+                gen.Emit(Bytecode.INSTR_LOAD_LOCAL, name, id.StartIndex, id.StopIndex);
             }
             else
             {
-                gen.Emit(Bytecode.INSTR_LOAD_ATTR, name);
+                gen.Emit(Bytecode.INSTR_LOAD_ATTR, name, id.StartIndex, id.StopIndex);
             }
         }
 
@@ -97,7 +97,7 @@ namespace StringTemplate.Compiler
                 return;
             }
 
-            gen.Emit(Bytecode.INSTR_STORE_OPTION, i);
+            gen.Emit(Bytecode.INSTR_STORE_OPTION, i, id.StartIndex, id.StopIndex);
         }
 
         public void DefaultOption(IToken id)
@@ -109,7 +109,7 @@ namespace StringTemplate.Compiler
                 return;
             }
 
-            gen.Emit(Bytecode.INSTR_LOAD_STR, v);
+            gen.Emit(Bytecode.INSTR_LOAD_STR, v, id.StartIndex, id.StopIndex);
         }
 
         public void Func(IToken id)
@@ -118,11 +118,11 @@ namespace StringTemplate.Compiler
             if (!TemplateCompiler.funcs.TryGetValue(id.Text, out funcBytecode))
             {
                 ErrorManager.CompileTimeError(ErrorType.NoSuchFunction, id);
-                gen.Emit(Bytecode.INSTR_NOOP);
+                gen.Emit(Bytecode.INSTR_NOOP, id.StartIndex, id.StopIndex);
                 return;
             }
 
-            gen.Emit(funcBytecode);
+            gen.Emit(funcBytecode, id.StartIndex, id.StopIndex);
         }
 
         public void Indent(string indent)
@@ -147,15 +147,27 @@ namespace StringTemplate.Compiler
             {
             }
 
+            public void Emit(short opcode, int startIndex, int stopIndex)
+            {
+            }
+
             public void Emit(short opcode, int arg)
             {
             }
 
-            public void Emit(short opcode, int arg1, int arg2)
+            public void Emit(short opcode, int arg, int startIndex, int stopIndex)
+            {
+            }
+
+            public void Emit(short opcode, int arg1, int arg2, int startIndex, int stopIndex)
             {
             }
 
             public void Emit(short opcode, string s)
+            {
+            }
+
+            public void Emit(short opcode, string s, int startIndex, int stopIndex)
             {
             }
 

@@ -246,22 +246,26 @@ namespace StringTemplate
                     options[optionIndex] = o; // store value into options on stack
                     break;
                 case Bytecode.INSTR_WRITE:
+#if false
                     int exprStart = GetShort(code, ip);
                     ip += 2;
                     int exprStop = GetShort(code, ip);
                     ip += 2;
+#endif
                     o = operands[sp--];
-                    nw = WriteObjectNoOptions(@out, self, o, exprStart, exprStop);
+                    nw = WriteObjectNoOptions(@out, self, o);
                     n += nw;
                     break;
                 case Bytecode.INSTR_WRITE_OPT:
+#if false
                     exprStart = GetShort(code, ip);
                     ip += 2;
                     exprStop = GetShort(code, ip);
                     ip += 2;
+#endif
                     options = (object[])operands[sp--]; // get options
                     o = operands[sp--];                 // get option to write
-                    nw = WriteObjectWithOptions(@out, self, o, options, exprStart, exprStop);
+                    nw = WriteObjectWithOptions(@out, self, o, options);
                     n += nw;
                     break;
                 case Bytecode.INSTR_MAP:
@@ -420,20 +424,22 @@ namespace StringTemplate
             return n;
         }
 
-        protected int WriteObjectNoOptions(ITemplateWriter @out, Template self, object o, int exprStart, int exprStop)
+        protected int WriteObjectNoOptions(ITemplateWriter @out, Template self, object o)
         {
             int start = @out.Index; // track char we're about to write
             int n = WriteObject(@out, self, o, null);
 
             if (group.Debug)
             {
+                int exprStart = -1;
+                int exprStop = -1;
                 events.Add(new EvalExprEvent((DebugTemplate)self, start, @out.Index - 1, exprStart, exprStop));
             }
 
             return n;
         }
 
-        protected int WriteObjectWithOptions(ITemplateWriter @out, Template self, object o, object[] options, int exprStart, int exprStop)
+        protected int WriteObjectWithOptions(ITemplateWriter @out, Template self, object o, object[] options)
         {
             int start = @out.Index; // track char we're about to write
             // precompute all option values (render all the way to strings)
@@ -457,7 +463,9 @@ namespace StringTemplate
 
             if (group.Debug)
             {
-                events.Add(new EvalTemplateEvent((DebugTemplate)self, start, @out.Index - 1));
+                int exprStart = -1;
+                int exprStop = -1;
+                events.Add(new EvalExprEvent((DebugTemplate)self, start, @out.Index - 1, exprStart, exprStop));
             }
 
             return n;
@@ -944,7 +952,7 @@ namespace StringTemplate
                 StringWriter sw = new StringWriter();
                 //Interpreter interp = new Interpreter(group, new NoIndentWriter(sw), culture);
                 //interp.WriteObjectNoOptions(self, value, -1, -1);
-                WriteObjectNoOptions(new NoIndentWriter(sw), self, value, -1, -1);
+                WriteObjectNoOptions(new NoIndentWriter(sw), self, value);
                 return sw.ToString();
             }
             return null;

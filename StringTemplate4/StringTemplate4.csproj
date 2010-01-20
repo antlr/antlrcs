@@ -52,6 +52,7 @@
     <Compile Include="Compiler\CompiledTemplate.cs" />
     <Compile Include="Compiler\FormalArgument.cs" />
     <Compile Include="Compiler\ICodeGenerator.cs" />
+    <Compile Include="Compiler\Interval.cs" />
     <Compile Include="Compiler\StringTable.cs" />
     <Compile Include="Compiler\TemplateCompiler.cs" />
     <Compile Include="Compiler\TemplateException.cs" />

@@ -76,6 +76,7 @@ namespace StringTemplate.Compiler
         public string[] strings;
         public byte[] instrs;        // byte-addressable code memory.
         public int codeSize;
+        public Interval[] sourceMap; // maps IP to range in template pattern
 
         [DebuggerHidden]
         public string Disassembly

@@ -67,7 +67,7 @@ options {backtrack=true; k=2;}
 	|	text
 	|   (i=INDENT {Indent($i.text);})? region
 						 {
-						 gen.Emit(Bytecode.INSTR_NEW, $region.name.FullName);
+						 gen.Emit(Bytecode.INSTR_NEW, $region.name.FullName, $region.start.StartIndex, $region.start.StopIndex);
 						 gen.Emit(Bytecode.INSTR_WRITE, $region.start.StartIndex, $region.stop.StartIndex);
 						 }
 	|	i=INDENT         {Indent($i.text);}
@@ -80,7 +80,7 @@ text
 	:	TEXT
 		{
 		if ( $TEXT.text.Length>0 ) {
-			gen.Emit(Bytecode.INSTR_LOAD_STR, $TEXT.text);
+			gen.Emit(Bytecode.INSTR_LOAD_STR, $TEXT.text, $TEXT.StartIndex, $TEXT.StopIndex);
 			gen.Emit(Bytecode.INSTR_WRITE, $TEXT.StartIndex, $TEXT.StopIndex);
 		}
 		}
@@ -89,8 +89,8 @@ text
 exprTag
 	:	LDELIM
 		expr
-		(	';' exprOptions {gen.Emit(Bytecode.INSTR_WRITE_OPT,$LDELIM.StartIndex,input.LT(1).StartIndex);}
-		|	                {gen.Emit(Bytecode.INSTR_WRITE,$LDELIM.StartIndex,input.LT(1).StartIndex);}
+		(	';' exprOptions {gen.Emit(Bytecode.INSTR_WRITE_OPT, $LDELIM.StartIndex, input.LT(1).StartIndex);}
+		|	                {gen.Emit(Bytecode.INSTR_WRITE, $LDELIM.StartIndex, input.LT(1).StartIndex);}
 		)
 		RDELIM
 	;
@@ -261,8 +261,8 @@ option
 	;
 	
 exprNoComma
-	:	memberExpr ( ':' templateRef {gen.Emit(Bytecode.INSTR_MAP);} )?
-	|	subtemplate {gen.Emit(Bytecode.INSTR_NEW, $subtemplate.name.FullName);}
+	:	memberExpr ( ':' templateRef {gen.Emit(Bytecode.INSTR_MAP, $templateRef.start.StartIndex, $templateRef.start.StopIndex);} )?
+	|	subtemplate {gen.Emit(Bytecode.INSTR_NEW, $subtemplate.name.FullName, $subtemplate.start.StartIndex, $subtemplate.start.StopIndex);}
 	;
 
 expr
@@ -271,7 +271,7 @@ expr
 		subtemplate
 		{
 		var prefixed = PrefixedName($subtemplate.name);
-		gen.Emit(Bytecode.INSTR_NEW, prefixed != null ? prefixed.FullName : null);}
+		gen.Emit(Bytecode.INSTR_NEW, prefixed != null ? prefixed.FullName : null, $subtemplate.start.StartIndex, $subtemplate.stop.StopIndex);}
 	;
 
 mapExpr
@@ -287,8 +287,8 @@ mapExpr
 
 memberExpr
 	:	callExpr
-		(	'.' ID {gen.Emit(Bytecode.INSTR_LOAD_PROP, $ID.text);}
-		|	'.' '(' mapExpr ')' {gen.Emit(Bytecode.INSTR_LOAD_PROP_IND);}
+		(	'.' ID {gen.Emit(Bytecode.INSTR_LOAD_PROP, $ID.text, $ID.StartIndex, $ID.StopIndex);}
+		|	'.' lp='(' mapExpr rp=')' {gen.Emit(Bytecode.INSTR_LOAD_PROP_IND, $lp.StartIndex, $rp.StopIndex);}
 		)*
 	;
 	
@@ -299,44 +299,44 @@ options {k=2;} // prevent full LL(*), which fails, falling back on k=1; need k=2
 	|	(s='super' '.')? ID
 		{
 		var prefixed = PrefixedName(new TemplateName($ID.text));
-		gen.Emit($s!=null?Bytecode.INSTR_SUPER_NEW:Bytecode.INSTR_NEW, prefixed != null ? prefixed.FullName : null);
+		gen.Emit($s!=null?Bytecode.INSTR_SUPER_NEW:Bytecode.INSTR_NEW, prefixed != null ? prefixed.FullName : null, $start.StartIndex, $ID.StopIndex);
 		}
 		'(' args? ')'
-	|	'@' (s='super' '.')? ID '(' ')'	// convert <@r()> to <region__enclosingTemplate__r()>
+	|	'@' (s='super' '.')? ID '(' rp=')'	// convert <@r()> to <region__enclosingTemplate__r()>
 		{
 		TemplateName mangled = TemplateGroup.GetMangledRegionName(_enclosingTemplateName, $ID.text);
 		gen.DefineBlankRegion(PrefixedName(mangled));
 		var prefixed = PrefixedName(mangled);
-		gen.Emit($s!=null?Bytecode.INSTR_SUPER_NEW:Bytecode.INSTR_NEW, prefixed != null ? prefixed.FullName : null);
+		gen.Emit($s!=null?Bytecode.INSTR_SUPER_NEW:Bytecode.INSTR_NEW, prefixed != null ? prefixed.FullName : null, $start.StartIndex, $rp.StartIndex);
 		}
 	|	primary
 	;
 	
 primary
 	:	o=ID	  {RefAttr($o);}
-	|	STRING    {gen.Emit(Bytecode.INSTR_LOAD_STR, Misc.Strip($STRING.text,1));}
+	|	STRING    {gen.Emit(Bytecode.INSTR_LOAD_STR, Misc.Strip($STRING.text,1), $STRING.StartIndex, $STRING.StopIndex);}
 	|	list
-	|	'(' expr ')' {gen.Emit(Bytecode.INSTR_TOSTR);}
-		( {gen.Emit(Bytecode.INSTR_NEW_IND);} '(' args? ')' )? // indirect call
+	|	lp='(' expr rp=')' {gen.Emit(Bytecode.INSTR_TOSTR);}
+		( {gen.Emit(Bytecode.INSTR_NEW_IND, $lp.StartIndex, $rp.StartIndex);} '(' args? ')' )? // indirect call
 	;
 
 args:	arg (',' arg)* ;
 
-arg :	ID '=' exprNoComma {gen.Emit(Bytecode.INSTR_STORE_ATTR, $ID.text);}
-	|	exprNoComma        {gen.Emit(Bytecode.INSTR_STORE_SOLE_ARG);}
+arg :	ID '=' exprNoComma {gen.Emit(Bytecode.INSTR_STORE_ATTR, $ID.text, $ID.StartIndex, $exprNoComma.stop.StopIndex);}
+	|	exprNoComma        {gen.Emit(Bytecode.INSTR_STORE_SOLE_ARG, $exprNoComma.start.StartIndex, $exprNoComma.stop.StopIndex);}
 	|	elip='...'		   {gen.Emit(Bytecode.INSTR_SET_PASS_THRU);}
 	;
 
 templateRef
 	:	ID			{
 					var prefixed = PrefixedName(new TemplateName($ID.text));
-					gen.Emit(Bytecode.INSTR_LOAD_STR, prefixed != null ? prefixed.FullName : null);
+					gen.Emit(Bytecode.INSTR_LOAD_STR, prefixed != null ? prefixed.FullName : null, $ID.StartIndex, $ID.StopIndex);
 					}
 	|	subtemplate {
 					var prefixed = PrefixedName($subtemplate.name);
-					gen.Emit(Bytecode.INSTR_LOAD_STR, prefixed != null ? prefixed.FullName : null);
+					gen.Emit(Bytecode.INSTR_LOAD_STR, prefixed != null ? prefixed.FullName : null, $subtemplate.start.StartIndex, $subtemplate.start.StopIndex);
 					}
-	|	'(' mapExpr ')' {gen.Emit(Bytecode.INSTR_TOSTR);}
+	|	lp='(' mapExpr rp=')' {gen.Emit(Bytecode.INSTR_TOSTR, $lp.StartIndex, $rp.StartIndex);}
 	;
 
 list:	{gen.Emit(Bytecode.INSTR_LIST);} '[' listElement (',' listElement)* ']'
@@ -344,5 +344,5 @@ list:	{gen.Emit(Bytecode.INSTR_LIST);} '[' listElement (',' listElement)* ']'
 	;
 
 listElement
-    :   exprNoComma {gen.Emit(Bytecode.INSTR_ADD);}
+    :   exprNoComma {gen.Emit(Bytecode.INSTR_ADD, $exprNoComma.start.StartIndex, $exprNoComma.stop.StopIndex);}
     ;

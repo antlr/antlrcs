@@ -27,6 +27,7 @@
             st.Add("name", "Ter");
             string expected = "hi Ter!";
             string result = st.Render();
+            st.code.Dump();
             Assert.AreEqual(expected, result);
         }
 
