@@ -148,6 +148,22 @@ namespace AntlrUnitTests.ST4
         }
 
         [TestMethod]
+        public void TestStripOp()
+        {
+            var e = new Template(
+                    "<strip(names); null=\"n/a\">"
+                );
+            e.Add("names", null);
+            e.Add("names", "Tom");
+            e.Add("names", null);
+            e.Add("names", null);
+            e.Add("names", "Sriram");
+            e.Add("names", null);
+            string expecting = "TomSriram";
+            Assert.AreEqual(expecting, e.Render());
+        }
+
+        [TestMethod]
         public void TestCombinedOp()
         {
             // replace first of yours with first of mine

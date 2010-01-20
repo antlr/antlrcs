@@ -128,12 +128,20 @@ namespace StringTemplate
             }
             try
             {
-                ANTLRFileStream fs = new ANTLRFileStream(absoluteFileName, encoding);
-                GroupLexer lexer = new GroupLexer(fs);
-                UnbufferedTokenStream tokens = new UnbufferedTokenStream(lexer);
-                GroupParser parser = new GroupParser(tokens);
-                parser._group = this;
-                parser.templateDef(prefix);
+                if (ErrorManager.CompatibilityMode)
+                {
+                    string template = File.ReadAllText(absoluteFileName);
+                    DefineTemplate(prefix, templateName, null, template);
+                }
+                else
+                {
+                    ANTLRFileStream fs = new ANTLRFileStream(absoluteFileName, encoding);
+                    GroupLexer lexer = new GroupLexer(fs);
+                    UnbufferedTokenStream tokens = new UnbufferedTokenStream(lexer);
+                    GroupParser parser = new GroupParser(tokens);
+                    parser._group = this;
+                    parser.templateDef(prefix);
+                }
 
                 CompiledTemplate code;
                 if (!templates.TryGetValue(templateName, out code))

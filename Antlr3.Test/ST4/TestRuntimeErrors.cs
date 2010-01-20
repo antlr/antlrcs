@@ -192,6 +192,52 @@ namespace AntlrUnitTests.ST4
         }
 
         [TestMethod]
+        public void TestUndefinedArg()
+        {
+            ErrorBuffer errors = new ErrorBuffer();
+            ErrorManager.ErrorListener = errors;
+
+            string templates =
+                "t() ::= \"<u()>\"\n" +
+                "u() ::= \"<x>\"\n";
+
+            WriteFile(tmpdir, "t.stg", templates);
+            STGroup group = new STGroupFile(Path.Combine(tmpdir, "t.stg"));
+            ST st = group.GetInstanceOf("t");
+            st.Render();
+            String expected = "context [t, u] 1:1 attribute x isn't defined" + newline;
+            String result = errors.ToString();
+            Assert.AreEqual(expected, result);
+        }
+
+        [TestMethod]
+        public void TestUndefinedArgNoProblemInCompatibilityMode()
+        {
+            ErrorBuffer errors = new ErrorBuffer();
+            ErrorManager.ErrorListener = errors;
+            ErrorManager.CompatibilityMode = true;
+
+            try
+            {
+                string templates =
+                    "t() ::= \"<u()>\"\n" +
+                    "u() ::= \"<x>\"\n";
+
+                WriteFile(tmpdir, "t.stg", templates);
+                STGroup group = new STGroupFile(tmpdir + "/" + "t.stg");
+                ST st = group.GetInstanceOf("t");
+                st.Render();
+                String expected = "";
+                String result = errors.ToString();
+                Assert.AreEqual(expected, result);
+            }
+            finally
+            {
+                ErrorManager.CompatibilityMode = false;
+            }
+        }
+
+        [TestMethod]
         public void TestParallelAttributeIterationWithMismatchArgListSizes()
         {
             ErrorBuffer errors = new ErrorBuffer();
@@ -224,6 +270,30 @@ namespace AntlrUnitTests.ST4
             e.Add("salaries", "big");
             e.Render(); // generate the error
             string errorExpecting = "context [anonymous] 1:1 missing argument definitions" + newline;
+            Assert.AreEqual(errorExpecting, errors.ToString());
+        }
+
+        [TestMethod]
+        public void TestStringTypeMismatch()
+        {
+            ErrorBuffer errors = new ErrorBuffer();
+            ErrorManager.ErrorListener = errors;
+            ST e = new ST("<trim(s)>");
+            e.Add("s", 34);
+            e.Render(); // generate the error
+            String errorExpecting = "context [anonymous] 1:1 function trim expects a string not System.Int32" + newline;
+            Assert.AreEqual(errorExpecting, errors.ToString());
+        }
+
+        [TestMethod]
+        public void TestStringTypeMismatch2()
+        {
+            ErrorBuffer errors = new ErrorBuffer();
+            ErrorManager.ErrorListener = errors;
+            ST e = new ST("<strlen(s)>");
+            e.Add("s", 34);
+            e.Render(); // generate the error
+            String errorExpecting = "context [anonymous] 1:1 function strlen expects a string not System.Int32" + newline;
             Assert.AreEqual(errorExpecting, errors.ToString());
         }
     }

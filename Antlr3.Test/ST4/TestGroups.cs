@@ -421,6 +421,32 @@ namespace AntlrUnitTests.ST4
             Assert.AreEqual(expecting, result);
         }
 
+        [TestMethod]
+        public void TestCompatibilityMode()
+        {
+            ErrorManager.CompatibilityMode = true;
+
+            try
+            {
+                string dir = GetRandomDir();
+                string a =
+                    "foo\n" +
+                    "bar\n";
+                WriteFile(dir, "a.st", a);
+                STGroup group = new STGroupDir(dir);
+                ST st = group.GetInstanceOf("a");
+                string expected =
+                    "foo" + newline +
+                    "bar" + newline;
+                string result = st.Render();
+                Assert.AreEqual(expected, result);
+            }
+            finally
+            {
+                ErrorManager.CompatibilityMode = false;
+            }
+        }
+
         private class Field
         {
             public string name = "parrt";

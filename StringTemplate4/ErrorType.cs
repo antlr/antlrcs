@@ -37,7 +37,7 @@ namespace StringTemplate
         // RUNTIME SEMANTIC ERRORS
         public static readonly ErrorType NoSuchTemplate = new ErrorType("no such template: {0}");
         public static readonly ErrorType NoImportedTemplate = new ErrorType("no such template: super.{0}");
-        //public static readonly ErrorType NoSuchProperty = new ErrorType("{0} doesn't have a {1} property");
+        public static readonly ErrorType NO_ATTRIBUTE_DEFINITION = new ErrorType("attribute {0} isn't defined");
         public static readonly ErrorType ExpectingSingleArgument = new ErrorType("expecting single arg in template reference {0} (not {1} args)");
         public static readonly ErrorType MissingFormalArguments = new ErrorType("missing argument definitions");
         public static readonly ErrorType ArgumentCountMismatch = new ErrorType("iterating through {0} arguments but parallel map has {1} formal arguments");
@@ -56,7 +56,7 @@ namespace StringTemplate
         public static readonly ErrorType NoSuchOption = new ErrorType("no such option: {0}");
 
         // IO ERRORS
-        public static readonly ErrorType WriteIoError = new ErrorType("error writing output");
+        public static readonly ErrorType WriteIoError = new ErrorType("error writing output caused by");
         public static readonly ErrorType CantLoadGroupFile = new ErrorType("can't load group file {0}");
         public static readonly ErrorType CantLoadTemplateFile = new ErrorType("can't load template file {0}");
         public static readonly ErrorType InvalidBytecode = new ErrorType("invalid bytecode {0} at IP {1}");

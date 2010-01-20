@@ -148,7 +148,10 @@ namespace StringTemplate
                     nameIndex = GetShort(code, ip);
                     ip += 2;
                     name = self.code.strings[nameIndex];
-                    operands[++sp] = self.GetAttribute(name);
+                    o = self.GetAttribute(name);
+                    operands[++sp] = o;
+                    if (o == null)
+                        CheckNullAttributeAgainstFormalArguments(self, name);
                     break;
                 case Bytecode.INSTR_LOAD_LOCAL:
                     nameIndex = GetShort(code, ip);
@@ -332,7 +335,7 @@ namespace StringTemplate
                     }
                     else
                     {
-                        ErrorManager.RuntimeError(self, current_ip, ErrorType.ExpectingString, "trim", o);
+                        ErrorManager.RuntimeError(self, current_ip, ErrorType.ExpectingString, "trim", o.GetType().FullName);
                         operands[++sp] = o;
                     }
                     break;
@@ -347,7 +350,7 @@ namespace StringTemplate
                     }
                     else
                     {
-                        ErrorManager.RuntimeError(self, current_ip, ErrorType.ExpectingString, "strlen", o);
+                        ErrorManager.RuntimeError(self, current_ip, ErrorType.ExpectingString, "strlen", o.GetType().FullName);
                         operands[++sp] = 0;
                     }
                     break;
@@ -924,13 +927,6 @@ namespace StringTemplate
             return i;
         }
 
-        public object Strlen(object v)
-        {
-            //return null;
-            // TODO: impl
-            throw new System.NotImplementedException();
-        }
-
         protected string ToString(Template self, object value)
         {
             if (value != null)
@@ -1158,6 +1154,32 @@ namespace StringTemplate
                     }
                 }
             }
+        }
+
+        /** A reference to an attribute with no value must be compared against
+         *  the formal parameters up the enclosing chain to see if it exists;
+         *  if it exists all is well, but if not, record an error.
+         *
+         *  Don't do the check if tombu mode. (i.e., don't check if no formal
+         *  parameters exist).
+         */
+        protected void CheckNullAttributeAgainstFormalArguments(Template self, string name)
+        {
+            if (ErrorManager.CompatibilityMode)
+                return; // ignore unknown args in tombu mode
+
+            Template p = self;
+            while (p != null)
+            {
+                if (p.code.formalArguments != null && p.code.formalArguments.ContainsKey(name))
+                {
+                    // found it; no problems, just return
+                    return;
+                }
+                p = p.enclosingInstance;
+            }
+
+            ErrorManager.RuntimeError(self, current_ip, ErrorType.NO_ATTRIBUTE_DEFINITION, name);
         }
 
         protected void Trace(Template self, int ip)

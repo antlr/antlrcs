@@ -46,6 +46,16 @@ namespace StringTemplate
         [ThreadStatic]
         private static ITemplateErrorListener listener;
 
+        /** Backward compatibility for tombu, co-designer.  Don't check missing
+         *  args against formal arg lists and don't require template headers in .st
+         *  files.
+         */
+        public static bool CompatibilityMode
+        {
+            get;
+            set;
+        }
+
         public static ITemplateErrorListener ErrorListener
         {
             get
