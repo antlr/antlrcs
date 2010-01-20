@@ -127,8 +127,8 @@ namespace StringTemplate
             object o = null, left = null, right = null;
             Template st = null;
             object[] options = null;
-            int ip = 0;
             byte[] code = self.code.instrs;        // which code block are we executing
+            int ip = 0;
             while (ip < self.code.codeSize)
             {
                 if (trace)
@@ -246,23 +246,11 @@ namespace StringTemplate
                     options[optionIndex] = o; // store value into options on stack
                     break;
                 case Bytecode.INSTR_WRITE:
-#if false
-                    int exprStart = GetShort(code, ip);
-                    ip += 2;
-                    int exprStop = GetShort(code, ip);
-                    ip += 2;
-#endif
                     o = operands[sp--];
                     nw = WriteObjectNoOptions(@out, self, o);
                     n += nw;
                     break;
                 case Bytecode.INSTR_WRITE_OPT:
-#if false
-                    exprStart = GetShort(code, ip);
-                    ip += 2;
-                    exprStop = GetShort(code, ip);
-                    ip += 2;
-#endif
                     options = (object[])operands[sp--]; // get options
                     o = operands[sp--];                 // get option to write
                     nw = WriteObjectWithOptions(@out, self, o, options);
@@ -429,12 +417,15 @@ namespace StringTemplate
             int start = @out.Index; // track char we're about to write
             int n = WriteObject(@out, self, o, null);
 
+#if false
             if (group.Debug)
             {
-                int exprStart = -1;
-                int exprStop = -1;
+                Interval templateLocation = self.code.sourceMap[ip];
+                int exprStart = templateLocation.A;
+                int exprStop = templateLocation.B;
                 events.Add(new EvalExprEvent((DebugTemplate)self, start, @out.Index - 1, exprStart, exprStop));
             }
+#endif
 
             return n;
         }
@@ -461,12 +452,15 @@ namespace StringTemplate
             if (options != null && options[OPTION_ANCHOR] != null)
                 @out.PopAnchorPoint();
 
+#if false
             if (group.Debug)
             {
-                int exprStart = -1;
-                int exprStop = -1;
+                Interval templateLocation = self.code.sourceMap[ip];
+                int exprStart = templateLocation.A;
+                int exprStop = templateLocation.B;
                 events.Add(new EvalExprEvent((DebugTemplate)self, start, @out.Index - 1, exprStart, exprStop));
             }
+#endif
 
             return n;
         }
@@ -1166,9 +1160,7 @@ namespace StringTemplate
 
         protected void Trace(Template self, int ip)
         {
-            BytecodeDisassembler dis = new BytecodeDisassembler(self.code.instrs,
-                                                                self.code.instrs.Length,
-                                                                self.code.strings);
+            BytecodeDisassembler dis = new BytecodeDisassembler(self.code);
             StringBuilder buf = new StringBuilder();
             dis.DisassembleInstruction(buf, ip);
             string name = self.code.Name + ":";

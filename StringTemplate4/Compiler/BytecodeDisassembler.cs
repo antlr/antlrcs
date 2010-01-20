@@ -41,40 +41,38 @@ namespace StringTemplate.Compiler
     public class BytecodeDisassembler
     {
         // TODO: make disassembler point at compiledST code?
+        CompiledTemplate code;
+#if false
         private readonly byte[] code;
         private readonly int codeSize;
         private readonly string[] strings;
+        private readonly Interval[] sourceMap;
+#endif
 
-        public BytecodeDisassembler(byte[] code,
-                                    int codeSize,
-                                    string[] strings)
+        public BytecodeDisassembler(CompiledTemplate code)
         {
             if (code == null)
                 throw new ArgumentNullException("code");
-            if (strings == null)
-                throw new ArgumentNullException("strings");
 
             this.code = code;
-            this.codeSize = codeSize;
-            this.strings = strings;
         }
 
         public virtual string Instructions()
         {
             StringBuilder buf = new StringBuilder();
             int ip = 0;
-            while (ip < codeSize)
+            while (ip < code.codeSize)
             {
                 if (ip > 0)
                     buf.Append(", ");
-                int opcode = code[ip];
+                int opcode = code.instrs[ip];
                 Bytecode.Instruction I = Bytecode.instructions[opcode];
                 buf.Append(I.name);
                 ip++;
                 for (int opnd = 0; opnd < I.n; opnd++)
                 {
                     buf.Append(' ');
-                    buf.Append(GetShort(code, ip));
+                    buf.Append(GetShort(code.instrs, ip));
                     ip += Bytecode.OPND_SIZE_IN_BYTES;
                 }
             }
@@ -85,7 +83,7 @@ namespace StringTemplate.Compiler
         {
             StringBuilder buf = new StringBuilder();
             int i = 0;
-            while (i < codeSize)
+            while (i < code.codeSize)
             {
                 i = DisassembleInstruction(buf, i);
                 buf.Append('\n');
@@ -100,8 +98,8 @@ namespace StringTemplate.Compiler
             if (ip < 0)
                 throw new ArgumentOutOfRangeException("ip");
 
-            int opcode = code[ip];
-            if (ip >= codeSize)
+            int opcode = code.instrs[ip];
+            if (ip >= code.codeSize)
             {
                 throw new ArgumentException("ip out of range: " + ip);
             }
@@ -123,7 +121,7 @@ namespace StringTemplate.Compiler
             List<string> operands = new List<string>();
             for (int i = 0; i < I.n; i++)
             {
-                int opnd = GetShort(code, ip);
+                int opnd = GetShort(code.instrs, ip);
                 ip += Bytecode.OPND_SIZE_IN_BYTES;
                 switch (I.type[i])
                 {
@@ -155,14 +153,14 @@ namespace StringTemplate.Compiler
             buf.Append("#");
             buf.Append(poolIndex);
             string s = "<bad string index>";
-            if (poolIndex > 0 && poolIndex < strings.Length)
+            if (poolIndex > 0 && poolIndex < code.strings.Length)
             {
-                if (strings[poolIndex] == null)
+                if (code.strings[poolIndex] == null)
                     s = "null";
                 else
                 {
-                    s = strings[poolIndex].ToString();
-                    if (strings[poolIndex] is string)
+                    s = code.strings[poolIndex].ToString();
+                    if (code.strings[poolIndex] is string)
                     {
                         s = Misc.ReplaceEscapes(s);
                         s = '"' + s + '"';
@@ -193,7 +191,7 @@ namespace StringTemplate.Compiler
         {
             StringBuilder buf = new StringBuilder();
             int addr = 0;
-            foreach (object o in strings)
+            foreach (object o in code.strings)
             {
                 if (o is string)
                 {
@@ -207,6 +205,20 @@ namespace StringTemplate.Compiler
                 }
                 addr++;
             }
+            return buf.ToString();
+        }
+
+        public string SourceMap()
+        {
+            StringBuilder buf = new StringBuilder();
+            int addr = 0;
+            foreach (Interval i in code.sourceMap)
+            {
+                string chunk = code.template.Substring(i.A, i.B + 1);
+                buf.Append(string.Format("{0:0000}: {1}\t\"{2}\"\n", addr, i, chunk));
+            }
+            addr++;
+
             return buf.ToString();
         }
     }

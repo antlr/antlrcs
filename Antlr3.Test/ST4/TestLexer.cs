@@ -64,7 +64,7 @@ namespace AntlrUnitTests.ST4
         public void TestEscDelim()
         {
             string template = "hi \\<name>";
-            string expected = "[[@0,0:0='hi <name>',<TEXT>,1:0]]";
+            string expected = "[[@0,0:9='hi <name>',<TEXT>,1:0]]";
             CheckTokens(template, expected);
         }
 
@@ -74,7 +74,7 @@ namespace AntlrUnitTests.ST4
             string template = "<a>\\<dog";
             string expected =
                 "[[@0,0:0='<',<LDELIM>,1:0], [@1,1:1='a',<ID>,1:1], [@2,2:2='>',<RDELIM>,1:2], " +
-                "[@3,3:0='<dog',<TEXT>,1:3]]";
+                "[@3,3:7='<dog',<TEXT>,1:3]]";
             CheckTokens(template, expected);
         }
 
@@ -105,7 +105,7 @@ namespace AntlrUnitTests.ST4
             string expected =
                 "[[@0,0:2='hi ',<TEXT>,1:0], [@1,3:3='<',<LDELIM>,1:3], [@2,4:6='foo',<ID>,1:4], " +
                 "[@3,7:7='(',<LPAREN>,1:7], [@4,8:8='a',<ID>,1:8], [@5,9:9='=',<EQUALS>,1:9], " +
-                "[@6,10:0='\">\"\"',<STRING>,1:10], [@7,15:15=')',<RPAREN>,1:15], " +
+                "[@6,10:14='\">\"\"',<STRING>,1:10], [@7,15:15=')',<RPAREN>,1:15], " +
                 "[@8,16:16='>',<RDELIM>,1:16]]";
             CheckTokens(template, expected);
         }

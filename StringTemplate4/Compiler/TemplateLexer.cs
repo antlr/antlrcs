@@ -596,7 +596,6 @@ namespace StringTemplate.Compiler
             TemplateToken t =
                 new TemplateToken(input, ttype, Lexer.DefaultTokenChannel,
                     input.Index - 1, input.Index - 1);
-            t.StartIndex = input.Index - 1;
             t.Line = input.Line;
             t.CharPositionInLine = input.CharPositionInLine - 1;
             return t;
@@ -614,6 +613,7 @@ namespace StringTemplate.Compiler
         {
             TemplateToken t = new TemplateToken(ttype, text);
             t.StartIndex = startCharIndex;
+            t.StopIndex = input.Index - 1;
             t.Line = startLine;
             t.CharPositionInLine = startCharPositionInLine;
             return t;

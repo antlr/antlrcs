@@ -52,5 +52,33 @@ namespace StringTemplate.Compiler
             get;
             private set;
         }
+
+        public static bool operator ==(Interval x, Interval y)
+        {
+            return x.A == y.A && x.B == y.B;
+        }
+
+        public static bool operator !=(Interval x, Interval y)
+        {
+            return !(x == y);
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (!(obj is Interval))
+                return false;
+
+            return this == (Interval)obj;
+        }
+
+        public override int GetHashCode()
+        {
+            return A ^ B;
+        }
+
+        public override string ToString()
+        {
+            return A.ToString() + ".." + B.ToString();
+        }
     }
 }

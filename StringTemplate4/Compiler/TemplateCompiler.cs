@@ -86,6 +86,7 @@ namespace StringTemplate.Compiler
 
         StringTable strings = new StringTable();
         byte[] instrs;
+        Interval[] sourceMap;
         int ip = 0;
         CompiledTemplate code = new CompiledTemplate();
 
@@ -129,6 +130,7 @@ namespace StringTemplate.Compiler
         {
             int initialSize = Math.Max(5, (int)(template.Length / CODE_SIZE_FACTOR));
             instrs = new byte[initialSize];
+            sourceMap = new Interval[initialSize];
             code.template = template;
 
             TemplateLexer lexer = new TemplateLexer(new ANTLRStringStream(template), delimiterStartChar, delimiterStopChar);
@@ -147,14 +149,18 @@ namespace StringTemplate.Compiler
 
             if (strings != null)
                 code.strings = strings.ToArray();
-            code.instrs = instrs;
             code.codeSize = ip;
+            code.instrs = new byte[code.codeSize];
+            code.sourceMap = new Interval[code.codeSize];
+            Array.Copy(instrs, 0, code.instrs, 0, code.codeSize);
+            Array.Copy(sourceMap, 0, code.sourceMap, 0, code.codeSize);
             return code;
         }
 
         public CompiledTemplate Compile(ITokenStream tokens, RecognizerSharedState state)
         {
             instrs = new byte[SUBTEMPLATE_INITIAL_CODE_SIZE];
+            sourceMap = new Interval[SUBTEMPLATE_INITIAL_CODE_SIZE];
             TemplateParser parser = new TemplateParser(tokens, state, this, enclosingTemplateName);
             try
             {
@@ -169,8 +175,11 @@ namespace StringTemplate.Compiler
 
             if (strings != null)
                 code.strings = strings.ToArray();
-            code.instrs = instrs;
             code.codeSize = ip;
+            code.instrs = new byte[code.codeSize];
+            code.sourceMap = new Interval[code.codeSize];
+            Array.Copy(instrs, 0, code.instrs, 0, code.codeSize);
+            Array.Copy(sourceMap, 0, code.sourceMap, 0, code.codeSize);
             return code;
         }
 
@@ -189,6 +198,8 @@ namespace StringTemplate.Compiler
         public void Emit(short opcode, int sourceStart, int sourceStop)
         {
             EnsureCapacity(1);
+            if (!(sourceStart < 0 || sourceStop < 0))
+                sourceMap[ip] = new Interval(sourceStart, sourceStop);
             instrs[ip++] = (byte)opcode;
         }
 
@@ -199,7 +210,7 @@ namespace StringTemplate.Compiler
 
         public void Emit(short opcode, int arg, int sourceStart, int sourceStop)
         {
-            Emit(opcode);
+            Emit(opcode, sourceStart, sourceStop);
             EnsureCapacity(2);
             WriteShort(instrs, ip, (short)arg);
             ip += 2;
@@ -207,7 +218,7 @@ namespace StringTemplate.Compiler
 
         public void Emit(short opcode, int arg1, int arg2, int sourceStart, int sourceStop)
         {
-            Emit(opcode, arg1);
+            Emit(opcode, arg1, sourceStart, sourceStop);
             EnsureCapacity(2);
             WriteShort(instrs, ip, (short)arg2);
             ip += 2;
@@ -221,7 +232,7 @@ namespace StringTemplate.Compiler
         public void Emit(short opcode, string s, int sourceStart, int sourceStop)
         {
             int i = DefineString(s);
-            Emit(opcode, i);
+            Emit(opcode, i, sourceStart, sourceStop);
         }
 
         public void Write(int addr, short value)
@@ -320,6 +331,9 @@ namespace StringTemplate.Compiler
                 byte[] c = new byte[instrs.Length * 2];
                 Array.Copy(instrs, 0, c, 0, instrs.Length);
                 instrs = c;
+                Interval[] sm = new Interval[sourceMap.Length * 2];
+                Array.Copy(sourceMap, 0, sm, 0, sourceMap.Length);
+                sourceMap = sm;
             }
         }
 

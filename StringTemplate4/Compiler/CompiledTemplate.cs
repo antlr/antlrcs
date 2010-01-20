@@ -83,11 +83,13 @@ namespace StringTemplate.Compiler
         {
             get
             {
-                BytecodeDisassembler dis = new BytecodeDisassembler(instrs, codeSize, strings);
+                BytecodeDisassembler dis = new BytecodeDisassembler(this);
                 StringBuilder buffer = new StringBuilder();
                 buffer.AppendLine(dis.Disassemble());
                 buffer.AppendLine("Strings:");
                 buffer.AppendLine(dis.Strings());
+                buffer.AppendLine("Bytecode to template map:");
+                buffer.AppendLine(dis.SourceMap());
                 return buffer.ToString();
             }
         }
@@ -119,13 +121,13 @@ namespace StringTemplate.Compiler
 
         public virtual string Instructions()
         {
-            var disassembler = new BytecodeDisassembler(instrs, codeSize, strings);
+            var disassembler = new BytecodeDisassembler(this);
             return disassembler.Instructions();
         }
 
         public virtual void Dump()
         {
-            var disassembler = new BytecodeDisassembler(instrs, codeSize, strings);
+            var disassembler = new BytecodeDisassembler(this);
             Console.WriteLine(disassembler.Disassemble());
             Console.WriteLine("Strings:");
             Console.WriteLine(disassembler.Strings());
