@@ -437,7 +437,7 @@ namespace AntlrUnitTests.ST4
                 ST st = group.GetInstanceOf("a");
                 string expected =
                     "foo" + newline +
-                    "bar" + newline;
+                    "bar";
                 string result = st.Render();
                 Assert.AreEqual(expected, result);
             }

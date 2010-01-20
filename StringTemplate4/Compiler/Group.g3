@@ -198,7 +198,7 @@ ANONYMOUS_TEMPLATE
 		TemplateLexer lexer =
 			new TemplateLexer(input, this._group.delimiterStartChar, this._group.delimiterStopChar);
 		lexer.subtemplateDepth = 1;
-		UnbufferedTokenStream tokens = new UnbufferedTokenStream(lexer);
+		CommonTokenStream tokens = new CommonTokenStream(lexer);
         TemplateParser parser = new TemplateParser(tokens, (ICodeGenerator)null, null);
 		parser.template();
 		}

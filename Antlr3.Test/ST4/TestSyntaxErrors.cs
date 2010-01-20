@@ -57,7 +57,7 @@ namespace AntlrUnitTests.ST4
                 RecognitionException re = (RecognitionException)se.InnerException;
                 result = 1 + ":" + re.CharPositionInLine + ": " + se.Message;
             }
-            string expected = "1:1: mismatched input '<' expecting EOF";
+            string expected = "1:0: is this a template? parser says: mismatched input ' ' expecting EndOfFile";
             Assert.AreEqual(expected, result);
         }
 
@@ -84,7 +84,6 @@ namespace AntlrUnitTests.ST4
         public void TestValidButOutOfPlaceChar()
         {
             String templates =
-                "group t;\n" +
                 "foo() ::= <<hi <.> mom>>\n";
             WriteFile(tmpdir, "t.stg", templates);
 
@@ -101,7 +100,6 @@ namespace AntlrUnitTests.ST4
         public void TestValidButOutOfPlaceCharOnDifferentLine()
         {
             String templates =
-                "group t;\n" +
                     "foo() ::= \"hi <\n" +
                     ".> mom\"\n";
             WriteFile(tmpdir, "t.stg", templates);
@@ -119,7 +117,6 @@ namespace AntlrUnitTests.ST4
         public void TestErrorInNestedTemplate()
         {
             String templates =
-                "group t;\n" +
                 "foo() ::= \"hi <name:{[<aaa.bb!>]}> mom\"\n";
             WriteFile(tmpdir, "t.stg", templates);
 

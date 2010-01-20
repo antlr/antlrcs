@@ -131,13 +131,14 @@ namespace StringTemplate
                 if (ErrorManager.CompatibilityMode)
                 {
                     string template = File.ReadAllText(absoluteFileName);
+                    template = template.Trim();
                     DefineTemplate(prefix, templateName, null, template);
                 }
                 else
                 {
                     ANTLRFileStream fs = new ANTLRFileStream(absoluteFileName, encoding);
                     GroupLexer lexer = new GroupLexer(fs);
-                    UnbufferedTokenStream tokens = new UnbufferedTokenStream(lexer);
+                    CommonTokenStream tokens = new CommonTokenStream(lexer);
                     GroupParser parser = new GroupParser(tokens);
                     parser._group = this;
                     parser.templateDef(prefix);

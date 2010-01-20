@@ -64,7 +64,7 @@
         public void CheckTokens(string template, string expected, char delimiterStartChar, char delimiterStopChar)
         {
             TemplateLexer lexer = new TemplateLexer(new ANTLRStringStream(template), delimiterStartChar, delimiterStopChar);
-            UnbufferedTokenStream tokens = new UnbufferedTokenStream(lexer);
+            CommonTokenStream tokens = new CommonTokenStream(lexer);
             StringBuilder buf = new StringBuilder();
             buf.Append("[");
             int i = 1;

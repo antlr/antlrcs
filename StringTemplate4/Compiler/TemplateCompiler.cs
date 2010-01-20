@@ -134,7 +134,7 @@ namespace StringTemplate.Compiler
             code.template = template;
 
             TemplateLexer lexer = new TemplateLexer(new ANTLRStringStream(template), delimiterStartChar, delimiterStopChar);
-            UnbufferedTokenStream tokens = new UnbufferedTokenStream(lexer);
+            CommonTokenStream tokens = new CommonTokenStream(lexer);
             TemplateParser parser = new TemplateParser(tokens, this, enclosingTemplateName);
             try
             {
@@ -143,8 +143,10 @@ namespace StringTemplate.Compiler
             catch (RecognitionException re)
             {
                 string msg = parser.GetErrorMessage(re, parser.TokenNames);
-                Console.Error.WriteLine(re.StackTrace);
-                throw new TemplateRecognitionException(msg, re);
+                if (tokens.LA(1) != TemplateLexer.LDELIM)
+                    throw new TemplateRecognitionException("is this a template? parser says: " + msg, re);
+                else
+                    throw new TemplateRecognitionException(msg, re);
             }
 
             if (strings != null)
