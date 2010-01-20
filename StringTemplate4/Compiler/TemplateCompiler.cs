@@ -34,11 +34,11 @@ namespace StringTemplate.Compiler
 {
     using System.Collections.Generic;
     using Antlr.Runtime;
+    using ArgumentException = System.ArgumentException;
+    using ArgumentNullException = System.ArgumentNullException;
     using Array = System.Array;
     using Console = System.Console;
     using Math = System.Math;
-    using ArgumentException = System.ArgumentException;
-    using ArgumentNullException = System.ArgumentNullException;
 
     /// <summary>
     /// A compiler for a single template
@@ -261,6 +261,7 @@ namespace StringTemplate.Compiler
             TemplateCompiler c = new TemplateCompiler(templatePathPrefix, enclosingTemplateName);
             CompiledTemplate sub = c.Compile(input, state);
             sub.Name = name;
+            sub.IsSubtemplate = true;
             if (lexer != null)
             {
                 stop = lexer.input.Index;

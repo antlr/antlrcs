@@ -110,13 +110,8 @@ namespace StringTemplate.Compiler
 
         public bool IsSubtemplate
         {
-            get
-            {
-                if (Name == null)
-                    return false;
-
-                return Name.FullName.StartsWith(TemplateName.TemplateDirectorySeparator + StringTemplate.Template.SubtemplatePrefix);
-            }
+            get;
+            set;
         }
 
         public virtual string Instructions()

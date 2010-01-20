@@ -33,10 +33,13 @@
 namespace StringTemplate
 {
     using StringTemplate.Compiler;
+    using StringTemplate.Debug;
     using CultureInfo = System.Globalization.CultureInfo;
 
-    public class BlankTemplate : Template
+    public class BlankTemplate : DebugTemplate
     {
+        // derive from DebugTemplate not just Template in case we're debugging
+
         public BlankTemplate()
         {
             code = new CompiledTemplate();

@@ -45,7 +45,6 @@
     <Compile Include="JavaRuntimeTestHarness.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RuntimeTestHarness.cs" />
-    <Compile Include="ST4\ErrorBuffer.cs" />
     <Compile Include="ST4\StringTemplateTestBase.cs" />
     <Compile Include="ST4\TestCompiler.cs" />
     <Compile Include="ST4\TestCoreBasics.cs" />

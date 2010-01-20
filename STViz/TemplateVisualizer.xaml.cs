@@ -46,15 +46,11 @@ namespace STViz
     public partial class TemplateVisualizer : Window
     {
         internal TemplateVisualizer()
-            : this(CreateDefaultTemplate())
-        {
-        }
-
-        public TemplateVisualizer(DebugTemplate template)
         {
             InitializeComponent();
 
             StringWriter sw = new StringWriter();
+            var template = CreateDefaultTemplate();
             Interpreter interp = new Interpreter(template.groupThatCreatedThisInstance);
             interp.Exec(new AutoIndentWriter(sw), template);
             IList<InterpEvent> events = interp.Events;
@@ -64,16 +60,24 @@ namespace STViz
             txtOutput.Document = new FlowDocument(new Paragraph(new Run(text)));
         }
 
+        public TemplateVisualizer(DebugTemplate template, string output, List<InterpEvent> allEvents, List<TemplateMessage> errors)
+        {
+            InitializeComponent();
+
+            templatesTree.Items.Add(new RootEvent(template, 0, output.Length));
+            txtOutput.Document = new FlowDocument(new Paragraph(new Run(output)));
+        }
+
         private static DebugTemplate CreateDefaultTemplate()
         {
             string templates =
                 "method(type,name,args,stats) ::= <<\n" +
-                "public <type> <name>(<args:{a| int <a>}; separator=\", \">) {\n" +
+                "public <type> <ick()> <name>(<args:{a| int <a>}; separator=\", \">) {\n" +
                 "    <if(locals)>int locals[<locals>];<endif>\n" +
                 "    <stats;separator=\"\\n\">\n" +
                 "}\n" +
                 ">>\n" +
-                "assign(a,b) ::= \"<a> = <b>;\"\n" +
+                "assign(a,b) ::= \"<a> = <b> <a,b:{foo}>;\"\n" +
                 "return(x) ::= <<return <x>;>>\n" +
                 "paren(x) ::= \"(<x>)\"\n";
 

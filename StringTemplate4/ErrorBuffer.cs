@@ -1,7 +1,6 @@
-﻿namespace AntlrUnitTests.ST4
+﻿namespace StringTemplate
 {
     using System.Collections.Generic;
-    using StringTemplate;
     using StringBuilder = System.Text.StringBuilder;
 
     public class ErrorBuffer : ITemplateErrorListener
