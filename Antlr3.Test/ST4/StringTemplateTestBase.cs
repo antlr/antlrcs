@@ -26,13 +26,13 @@
         }
 
         [ClassInitialize]
-        public void ClassSetUp(TestContext testContext)
+        public virtual void ClassSetUp(TestContext testContext)
         {
             TestContext = testContext;
         }
 
         [TestInitialize]
-        public void TestInitialize()
+        public virtual void TestInitialize()
         {
             TemplateGroup.defaultGroup = new TemplateGroup();
         }
