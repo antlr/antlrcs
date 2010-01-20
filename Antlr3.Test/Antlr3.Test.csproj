@@ -74,6 +74,7 @@
     <Compile Include="TestAutoAST.cs" />
     <Compile Include="TestBufferedTreeNodeStream.cs" />
     <Compile Include="TestCharDFAConversion.cs" />
+    <Compile Include="TestCommonTokenStream.cs" />
     <Compile Include="TestCompositeGrammars.cs" />
     <Compile Include="TestDFAConversion.cs" />
     <Compile Include="TestDFAMatching.cs" />

@@ -35,6 +35,7 @@ namespace AntlrUnitTests
     using System;
     using System.Collections.Generic;
     using System.Linq;
+    using Antlr.Runtime;
     using Antlr.Runtime.JavaExtensions;
     using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -1168,6 +1169,28 @@ namespace AntlrUnitTests
         protected static void assertNull( string message, object value )
         {
             Assert.IsNull( value, message );
+        }
+
+        public class FilteringTokenStream : CommonTokenStream
+        {
+            private HashSet<int> _hide = new HashSet<int>();
+
+            public FilteringTokenStream(ITokenSource tokenSource)
+                : base(tokenSource)
+            {
+            }
+
+            protected override void Sync(int i)
+            {
+                base.Sync(i);
+                if (_hide.Contains(Get(i).Type))
+                    Get(i).Channel = TokenChannels.Hidden;
+            }
+
+            public void SetTokenTypeChannel(int ttype, int channel)
+            {
+                _hide.Add(ttype);
+            }
         }
     }
 }

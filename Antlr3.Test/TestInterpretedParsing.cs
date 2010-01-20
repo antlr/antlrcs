@@ -42,21 +42,16 @@ namespace AntlrUnitTests
     [TestClass]
     public class TestInterpretedParsing : BaseTest
     {
-
-        /** Public default constructor used by TestRig */
-        public TestInterpretedParsing()
-        {
-        }
-
         [TestMethod]
-        public void TestSimpleParse() /*throws Exception*/ {
+        public void TestSimpleParse()
+        {
             Grammar pg = new Grammar(
                 "parser grammar p;\n" +
                 "prog : WHILE ID LCURLY (assign)* RCURLY EOF;\n" +
                 "assign : ID ASSIGN expr SEMI ;\n" +
-                "expr : INT | FLOAT | ID ;\n" );
+                "expr : INT | FLOAT | ID ;\n");
             Grammar g = new Grammar();
-            g.ImportTokenVocabulary( pg );
+            g.ImportTokenVocabulary(pg);
             g.FileName = Grammar.IGNORE_STRING_IN_GRAMMAR_FILE_NAME + "string";
             g.SetGrammarContent(
                 "lexer grammar t;\n" +
@@ -69,32 +64,33 @@ namespace AntlrUnitTests
                 "INT : (DIGIT)+ ;\n" +
                 "FLOAT : (DIGIT)+ '.' (DIGIT)* ;\n" +
                 "fragment DIGIT : '0'..'9';\n" +
-                "WS : (' ')+ ;\n" );
-            ICharStream input = new ANTLRStringStream( "while x { i=1; y=3.42; z=y; }" );
-            Interpreter lexEngine = new Interpreter( g, input );
+                "WS : (' ')+ ;\n");
+            ICharStream input = new ANTLRStringStream("while x { i=1; y=3.42; z=y; }");
+            Interpreter lexEngine = new Interpreter(g, input);
 
-            CommonTokenStream tokens = new CommonTokenStream( lexEngine );
-            tokens.SetTokenTypeChannel( g.GetTokenType( "WS" ), 99 );
+            FilteringTokenStream tokens = new FilteringTokenStream(lexEngine);
+            tokens.SetTokenTypeChannel(g.GetTokenType("WS"), 99);
             //System.out.println("tokens="+tokens.toString());
-            Interpreter parseEngine = new Interpreter( pg, tokens );
-            ParseTree t = parseEngine.Parse( "prog" );
+            Interpreter parseEngine = new Interpreter(pg, tokens);
+            ParseTree t = parseEngine.Parse("prog");
             string result = t.ToStringTree();
             string expecting =
                 "(<grammar p> (prog while x { (assign i = (expr 1) ;) (assign y = (expr 3.42) ;) (assign z = (expr y) ;) } <EOF>))";
-            assertEquals( expecting, result );
+            assertEquals(expecting, result);
         }
 
         [TestMethod]
-        public void TestMismatchedTokenError() /*throws Exception*/ {
-            Assert.Inconclusive( "May be failing on just my port..." );
+        public void TestMismatchedTokenError()
+        {
+            Assert.Inconclusive("May be failing on just my port...");
             Grammar pg = new Grammar(
                 "parser grammar p;\n" +
                 "prog : WHILE ID LCURLY (assign)* RCURLY;\n" +
                 "assign : ID ASSIGN expr SEMI ;\n" +
-                "expr : INT | FLOAT | ID ;\n" );
+                "expr : INT | FLOAT | ID ;\n");
             Grammar g = new Grammar();
             g.FileName = Grammar.IGNORE_STRING_IN_GRAMMAR_FILE_NAME + "string";
-            g.ImportTokenVocabulary( pg );
+            g.ImportTokenVocabulary(pg);
             g.SetGrammarContent(
                 "lexer grammar t;\n" +
                 "WHILE : 'while';\n" +
@@ -106,31 +102,32 @@ namespace AntlrUnitTests
                 "INT : (DIGIT)+ ;\n" +
                 "FLOAT : (DIGIT)+ '.' (DIGIT)* ;\n" +
                 "fragment DIGIT : '0'..'9';\n" +
-                "WS : (' ')+ ;\n" );
-            ICharStream input = new ANTLRStringStream( "while x { i=1 y=3.42; z=y; }" );
-            Interpreter lexEngine = new Interpreter( g, input );
+                "WS : (' ')+ ;\n");
+            ICharStream input = new ANTLRStringStream("while x { i=1 y=3.42; z=y; }");
+            Interpreter lexEngine = new Interpreter(g, input);
 
-            CommonTokenStream tokens = new CommonTokenStream( lexEngine );
-            tokens.SetTokenTypeChannel( g.GetTokenType( "WS" ), 99 );
+            FilteringTokenStream tokens = new FilteringTokenStream(lexEngine);
+            tokens.SetTokenTypeChannel(g.GetTokenType("WS"), 99);
             //System.out.println("tokens="+tokens.toString());
-            Interpreter parseEngine = new Interpreter( pg, tokens );
-            ParseTree t = parseEngine.Parse( "prog" );
+            Interpreter parseEngine = new Interpreter(pg, tokens);
+            ParseTree t = parseEngine.Parse("prog");
             string result = t.ToStringTree();
             string expecting =
                 "(<grammar p> (prog while x { (assign i = (expr 1) MismatchedTokenException(5!=9))))";
-            assertEquals( expecting, result );
+            assertEquals(expecting, result);
         }
 
         [TestMethod]
-        public void TestMismatchedSetError() /*throws Exception*/ {
-            Assert.Inconclusive( "May be failing on just my port..." );
+        public void TestMismatchedSetError()
+        {
+            Assert.Inconclusive("May be failing on just my port...");
             Grammar pg = new Grammar(
                 "parser grammar p;\n" +
                 "prog : WHILE ID LCURLY (assign)* RCURLY;\n" +
                 "assign : ID ASSIGN expr SEMI ;\n" +
-                "expr : INT | FLOAT | ID ;\n" );
+                "expr : INT | FLOAT | ID ;\n");
             Grammar g = new Grammar();
-            g.ImportTokenVocabulary( pg );
+            g.ImportTokenVocabulary(pg);
             g.FileName = "<string>";
             g.SetGrammarContent(
                 "lexer grammar t;\n" +
@@ -143,31 +140,32 @@ namespace AntlrUnitTests
                 "INT : (DIGIT)+ ;\n" +
                 "FLOAT : (DIGIT)+ '.' (DIGIT)* ;\n" +
                 "fragment DIGIT : '0'..'9';\n" +
-                "WS : (' ')+ ;\n" );
-            ICharStream input = new ANTLRStringStream( "while x { i=; y=3.42; z=y; }" );
-            Interpreter lexEngine = new Interpreter( g, input );
+                "WS : (' ')+ ;\n");
+            ICharStream input = new ANTLRStringStream("while x { i=; y=3.42; z=y; }");
+            Interpreter lexEngine = new Interpreter(g, input);
 
-            CommonTokenStream tokens = new CommonTokenStream( lexEngine );
-            tokens.SetTokenTypeChannel( g.GetTokenType( "WS" ), 99 );
+            FilteringTokenStream tokens = new FilteringTokenStream(lexEngine);
+            tokens.SetTokenTypeChannel(g.GetTokenType("WS"), 99);
             //System.out.println("tokens="+tokens.toString());
-            Interpreter parseEngine = new Interpreter( pg, tokens );
-            ParseTree t = parseEngine.Parse( "prog" );
+            Interpreter parseEngine = new Interpreter(pg, tokens);
+            ParseTree t = parseEngine.Parse("prog");
             string result = t.ToStringTree();
             string expecting =
                 "(<grammar p> (prog while x { (assign i = (expr MismatchedSetException(9!={5,10,11})))))";
-            assertEquals( expecting, result );
+            assertEquals(expecting, result);
         }
 
         [TestMethod]
-        public void TestNoViableAltError() /*throws Exception*/ {
-            Assert.Inconclusive( "May be failing on just my port..." );
+        public void TestNoViableAltError()
+        {
+            Assert.Inconclusive("May be failing on just my port...");
             Grammar pg = new Grammar(
                 "parser grammar p;\n" +
                 "prog : WHILE ID LCURLY (assign)* RCURLY;\n" +
                 "assign : ID ASSIGN expr SEMI ;\n" +
-                "expr : {;}INT | FLOAT | ID ;\n" );
+                "expr : {;}INT | FLOAT | ID ;\n");
             Grammar g = new Grammar();
-            g.ImportTokenVocabulary( pg );
+            g.ImportTokenVocabulary(pg);
             g.FileName = "<string>";
             g.SetGrammarContent(
                 "lexer grammar t;\n" +
@@ -180,20 +178,19 @@ namespace AntlrUnitTests
                 "INT : (DIGIT)+ ;\n" +
                 "FLOAT : (DIGIT)+ '.' (DIGIT)* ;\n" +
                 "fragment DIGIT : '0'..'9';\n" +
-                "WS : (' ')+ ;\n" );
-            ICharStream input = new ANTLRStringStream( "while x { i=; y=3.42; z=y; }" );
-            Interpreter lexEngine = new Interpreter( g, input );
+                "WS : (' ')+ ;\n");
+            ICharStream input = new ANTLRStringStream("while x { i=; y=3.42; z=y; }");
+            Interpreter lexEngine = new Interpreter(g, input);
 
-            CommonTokenStream tokens = new CommonTokenStream( lexEngine );
-            tokens.SetTokenTypeChannel( g.GetTokenType( "WS" ), 99 );
+            FilteringTokenStream tokens = new FilteringTokenStream(lexEngine);
+            tokens.SetTokenTypeChannel(g.GetTokenType("WS"), 99);
             //System.out.println("tokens="+tokens.toString());
-            Interpreter parseEngine = new Interpreter( pg, tokens );
-            ParseTree t = parseEngine.Parse( "prog" );
+            Interpreter parseEngine = new Interpreter(pg, tokens);
+            ParseTree t = parseEngine.Parse("prog");
             string result = t.ToStringTree();
             string expecting =
                 "(<grammar p> (prog while x { (assign i = (expr NoViableAltException(9@[4:1: expr : ( INT | FLOAT | ID );])))))";
-            assertEquals( expecting, result );
+            assertEquals(expecting, result);
         }
-
     }
 }

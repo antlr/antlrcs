@@ -45,12 +45,6 @@ namespace AntlrUnitTests
     [TestClass]
     public class TestTokenRewriteStream : BaseTest
     {
-
-        /** Public default constructor used by TestRig */
-        public TestTokenRewriteStream()
-        {
-        }
-
         [TestMethod]
         public void TestInsertBeforeIndex0() /*throws Exception*/ {
             Grammar g = new Grammar(
@@ -61,7 +55,6 @@ namespace AntlrUnitTests
             ICharStream input = new ANTLRStringStream( "abc" );
             Interpreter lexEngine = new Interpreter( g, input );
             TokenRewriteStream tokens = new TokenRewriteStream( lexEngine );
-            tokens.LT( 1 ); // fill buffer
             tokens.InsertBefore( 0, "0" );
             string result = tokens.ToString();
             string expecting = "0abc";
@@ -78,7 +71,6 @@ namespace AntlrUnitTests
             ICharStream input = new ANTLRStringStream( "abc" );
             Interpreter lexEngine = new Interpreter( g, input );
             TokenRewriteStream tokens = new TokenRewriteStream( lexEngine );
-            tokens.LT( 1 ); // fill buffer
             tokens.InsertAfter( 2, "x" );
             string result = tokens.ToString();
             string expecting = "abcx";
@@ -95,7 +87,7 @@ namespace AntlrUnitTests
             ICharStream input = new ANTLRStringStream( "abc" );
             Interpreter lexEngine = new Interpreter( g, input );
             TokenRewriteStream tokens = new TokenRewriteStream( lexEngine );
-            tokens.LT( 1 ); // fill buffer
+            tokens.Fill();
             tokens.InsertBefore( 1, "x" );
             tokens.InsertAfter( 1, "x" );
             string result = tokens.ToString();
@@ -113,7 +105,7 @@ namespace AntlrUnitTests
             ICharStream input = new ANTLRStringStream( "abc" );
             Interpreter lexEngine = new Interpreter( g, input );
             TokenRewriteStream tokens = new TokenRewriteStream( lexEngine );
-            tokens.LT( 1 ); // fill buffer
+            tokens.Fill();
             tokens.Replace( 0, "x" );
             string result = tokens.ToString();
             string expecting = "xbc";
@@ -130,7 +122,7 @@ namespace AntlrUnitTests
             ICharStream input = new ANTLRStringStream( "abc" );
             Interpreter lexEngine = new Interpreter( g, input );
             TokenRewriteStream tokens = new TokenRewriteStream( lexEngine );
-            tokens.LT( 1 ); // fill buffer
+            tokens.Fill();
             tokens.Replace( 2, "x" );
             string result = tokens.ToString();
             string expecting = "abx";
@@ -147,7 +139,7 @@ namespace AntlrUnitTests
             ICharStream input = new ANTLRStringStream( "abc" );
             Interpreter lexEngine = new Interpreter( g, input );
             TokenRewriteStream tokens = new TokenRewriteStream( lexEngine );
-            tokens.LT( 1 ); // fill buffer
+            tokens.Fill();
             tokens.Replace( 1, "x" );
             string result = tokens.ToString();
             string expecting = "axc";
@@ -169,7 +161,7 @@ namespace AntlrUnitTests
             ICharStream input = new ANTLRStringStream( "x = 3 * 0;" );
             Interpreter lexEngine = new Interpreter( g, input );
             TokenRewriteStream tokens = new TokenRewriteStream( lexEngine );
-            tokens.LT( 1 ); // fill buffer
+            tokens.Fill();
             tokens.Replace( 4, 8, "0" ); // replace 3 * 0 with 0
 
             string result = tokens.ToOriginalString();
@@ -205,7 +197,7 @@ namespace AntlrUnitTests
             ICharStream input = new ANTLRStringStream( "x = 3 * 0 + 2 * 0;" );
             Interpreter lexEngine = new Interpreter( g, input );
             TokenRewriteStream tokens = new TokenRewriteStream( lexEngine );
-            tokens.LT( 1 ); // fill buffer
+            tokens.Fill();
 
             string result = tokens.ToOriginalString();
             string expecting = "x = 3 * 0 + 2 * 0;";
@@ -233,7 +225,7 @@ namespace AntlrUnitTests
             assertEquals( expecting, result );
 
             tokens.InsertAfter( 17, "// comment" );
-            result = tokens.ToString( 12, 17 );
+            result = tokens.ToString( 12, 18 );
             expecting = "2 * 0;// comment";
             assertEquals( expecting, result );
 
@@ -253,7 +245,7 @@ namespace AntlrUnitTests
             ICharStream input = new ANTLRStringStream( "abc" );
             Interpreter lexEngine = new Interpreter( g, input );
             TokenRewriteStream tokens = new TokenRewriteStream( lexEngine );
-            tokens.LT( 1 ); // fill buffer
+            tokens.Fill();
             tokens.Replace( 1, "x" );
             tokens.Replace( 1, "y" );
             string result = tokens.ToString();
@@ -271,7 +263,7 @@ namespace AntlrUnitTests
             ICharStream input = new ANTLRStringStream( "abc" );
             Interpreter lexEngine = new Interpreter( g, input );
             TokenRewriteStream tokens = new TokenRewriteStream( lexEngine );
-            tokens.LT( 1 ); // fill buffer
+            tokens.Fill();
             tokens.InsertBefore( 0, "_" );
             tokens.Replace( 1, "x" );
             tokens.Replace( 1, "y" );
@@ -290,7 +282,7 @@ namespace AntlrUnitTests
             ICharStream input = new ANTLRStringStream( "abc" );
             Interpreter lexEngine = new Interpreter( g, input );
             TokenRewriteStream tokens = new TokenRewriteStream( lexEngine );
-            tokens.LT( 1 ); // fill buffer
+            tokens.Fill();
             tokens.Replace( 1, "x" );
             tokens.Delete( 1 );
             string result = tokens.ToString();
@@ -308,7 +300,7 @@ namespace AntlrUnitTests
             ICharStream input = new ANTLRStringStream( "abc" );
             Interpreter lexEngine = new Interpreter( g, input );
             TokenRewriteStream tokens = new TokenRewriteStream( lexEngine );
-            tokens.LT( 1 ); // fill buffer
+            tokens.Fill();
             tokens.Replace( 0, 2, "x" );
             tokens.InsertBefore( 1, "0" );
             Exception exc = null;
@@ -335,7 +327,7 @@ namespace AntlrUnitTests
             ICharStream input = new ANTLRStringStream( "abc" );
             Interpreter lexEngine = new Interpreter( g, input );
             TokenRewriteStream tokens = new TokenRewriteStream( lexEngine );
-            tokens.LT( 1 ); // fill buffer
+            tokens.Fill();
             tokens.InsertBefore( 0, "0" );
             tokens.Replace( 0, "x" ); // supercedes insert at 0
             string result = tokens.ToString();
@@ -353,7 +345,7 @@ namespace AntlrUnitTests
             ICharStream input = new ANTLRStringStream( "abc" );
             Interpreter lexEngine = new Interpreter( g, input );
             TokenRewriteStream tokens = new TokenRewriteStream( lexEngine );
-            tokens.LT( 1 ); // fill buffer
+            tokens.Fill();
             tokens.InsertBefore( 1, "x" );
             tokens.InsertBefore( 1, "y" );
             string result = tokens.ToString();
@@ -371,7 +363,7 @@ namespace AntlrUnitTests
             ICharStream input = new ANTLRStringStream( "abc" );
             Interpreter lexEngine = new Interpreter( g, input );
             TokenRewriteStream tokens = new TokenRewriteStream( lexEngine );
-            tokens.LT( 1 ); // fill buffer
+            tokens.Fill();
             tokens.InsertBefore( 0, "x" );
             tokens.InsertBefore( 0, "y" );
             tokens.Replace( 0, "z" );
@@ -390,7 +382,7 @@ namespace AntlrUnitTests
             ICharStream input = new ANTLRStringStream( "abc" );
             Interpreter lexEngine = new Interpreter( g, input );
             TokenRewriteStream tokens = new TokenRewriteStream( lexEngine );
-            tokens.LT( 1 ); // fill buffer
+            tokens.Fill();
             tokens.Replace( 2, "x" );
             tokens.InsertBefore( 2, "y" );
             string result = tokens.ToString();
@@ -408,7 +400,7 @@ namespace AntlrUnitTests
             ICharStream input = new ANTLRStringStream( "abc" );
             Interpreter lexEngine = new Interpreter( g, input );
             TokenRewriteStream tokens = new TokenRewriteStream( lexEngine );
-            tokens.LT( 1 ); // fill buffer
+            tokens.Fill();
             tokens.InsertBefore( 2, "y" );
             tokens.Replace( 2, "x" );
             string result = tokens.ToString();
@@ -426,7 +418,7 @@ namespace AntlrUnitTests
             ICharStream input = new ANTLRStringStream( "abc" );
             Interpreter lexEngine = new Interpreter( g, input );
             TokenRewriteStream tokens = new TokenRewriteStream( lexEngine );
-            tokens.LT( 1 ); // fill buffer
+            tokens.Fill();
             tokens.Replace( 2, "x" );
             tokens.InsertAfter( 2, "y" );
             string result = tokens.ToString();
@@ -444,7 +436,7 @@ namespace AntlrUnitTests
             ICharStream input = new ANTLRStringStream( "abcccba" );
             Interpreter lexEngine = new Interpreter( g, input );
             TokenRewriteStream tokens = new TokenRewriteStream( lexEngine );
-            tokens.LT( 1 ); // fill buffer
+            tokens.Fill();
             tokens.Replace( 2, 4, "x" );
             tokens.InsertBefore( 2, "y" );
             string result = tokens.ToString();
@@ -462,7 +454,7 @@ namespace AntlrUnitTests
             ICharStream input = new ANTLRStringStream( "abcccba" );
             Interpreter lexEngine = new Interpreter( g, input );
             TokenRewriteStream tokens = new TokenRewriteStream( lexEngine );
-            tokens.LT( 1 ); // fill buffer
+            tokens.Fill();
             tokens.Replace( 2, 4, "x" );
             tokens.InsertBefore( 4, "y" ); // no effect; within range of a replace
             Exception exc = null;
@@ -489,7 +481,7 @@ namespace AntlrUnitTests
             ICharStream input = new ANTLRStringStream( "abcccba" );
             Interpreter lexEngine = new Interpreter( g, input );
             TokenRewriteStream tokens = new TokenRewriteStream( lexEngine );
-            tokens.LT( 1 ); // fill buffer
+            tokens.Fill();
             tokens.Replace( 2, 4, "x" );
             tokens.InsertAfter( 4, "y" );
             string result = tokens.ToString();
@@ -507,7 +499,7 @@ namespace AntlrUnitTests
             ICharStream input = new ANTLRStringStream( "abcccba" );
             Interpreter lexEngine = new Interpreter( g, input );
             TokenRewriteStream tokens = new TokenRewriteStream( lexEngine );
-            tokens.LT( 1 ); // fill buffer
+            tokens.Fill();
             tokens.Replace( 0, 6, "x" );
             string result = tokens.ToString();
             string expecting = "x";
@@ -524,7 +516,7 @@ namespace AntlrUnitTests
             ICharStream input = new ANTLRStringStream( "abcccba" );
             Interpreter lexEngine = new Interpreter( g, input );
             TokenRewriteStream tokens = new TokenRewriteStream( lexEngine );
-            tokens.LT( 1 ); // fill buffer
+            tokens.Fill();
             tokens.Replace( 2, 4, "xyz" );
             string result = tokens.ToString( 0, 6 );
             string expecting = "abxyzba";
@@ -541,7 +533,7 @@ namespace AntlrUnitTests
             ICharStream input = new ANTLRStringStream( "abcccba" );
             Interpreter lexEngine = new Interpreter( g, input );
             TokenRewriteStream tokens = new TokenRewriteStream( lexEngine );
-            tokens.LT( 1 ); // fill buffer
+            tokens.Fill();
             tokens.Replace( 2, 4, "xyz" );
             tokens.Replace( 3, 5, "foo" ); // overlaps, error
             Exception exc = null;
@@ -568,7 +560,7 @@ namespace AntlrUnitTests
             ICharStream input = new ANTLRStringStream( "abcccba" );
             Interpreter lexEngine = new Interpreter( g, input );
             TokenRewriteStream tokens = new TokenRewriteStream( lexEngine );
-            tokens.LT( 1 ); // fill buffer
+            tokens.Fill();
             tokens.Replace( 2, 4, "xyz" );
             tokens.Replace( 1, 3, "foo" ); // overlap, error
             Exception exc = null;
@@ -595,7 +587,7 @@ namespace AntlrUnitTests
             ICharStream input = new ANTLRStringStream( "abcba" );
             Interpreter lexEngine = new Interpreter( g, input );
             TokenRewriteStream tokens = new TokenRewriteStream( lexEngine );
-            tokens.LT( 1 ); // fill buffer
+            tokens.Fill();
             tokens.Replace( 2, 2, "xyz" );
             tokens.Replace( 0, 3, "foo" );
             string result = tokens.ToString();
@@ -615,7 +607,7 @@ namespace AntlrUnitTests
             ICharStream input = new ANTLRStringStream( "abc" );
             Interpreter lexEngine = new Interpreter( g, input );
             TokenRewriteStream tokens = new TokenRewriteStream( lexEngine );
-            tokens.LT( 1 ); // fill buffer
+            tokens.Fill();
             tokens.InsertBefore( 0, "x" );
             tokens.InsertBefore( 0, "y" );
             string result = tokens.ToString();
@@ -633,7 +625,7 @@ namespace AntlrUnitTests
             ICharStream input = new ANTLRStringStream( "abc" );
             Interpreter lexEngine = new Interpreter( g, input );
             TokenRewriteStream tokens = new TokenRewriteStream( lexEngine );
-            tokens.LT( 1 ); // fill buffer
+            tokens.Fill();
             tokens.InsertBefore( 1, "x" );
             tokens.InsertBefore( 0, "y" );
             tokens.InsertBefore( 1, "z" );
@@ -652,7 +644,7 @@ namespace AntlrUnitTests
             ICharStream input = new ANTLRStringStream( "abc" );
             Interpreter lexEngine = new Interpreter( g, input );
             TokenRewriteStream tokens = new TokenRewriteStream( lexEngine );
-            tokens.LT( 1 ); // fill buffer
+            tokens.Fill();
             tokens.Replace( 0, 2, "foo" );
             tokens.InsertBefore( 0, "z" ); // combine with left edge of rewrite
             string result = tokens.ToString();
@@ -670,7 +662,7 @@ namespace AntlrUnitTests
             ICharStream input = new ANTLRStringStream( "abc" );
             Interpreter lexEngine = new Interpreter( g, input );
             TokenRewriteStream tokens = new TokenRewriteStream( lexEngine );
-            tokens.LT( 1 ); // fill buffer
+            tokens.Fill();
             tokens.Delete( 0, 2 );
             tokens.InsertBefore( 0, "z" ); // combine with left edge of rewrite
             string result = tokens.ToString();
@@ -688,7 +680,7 @@ namespace AntlrUnitTests
             ICharStream input = new ANTLRStringStream( "abc" );
             Interpreter lexEngine = new Interpreter( g, input );
             TokenRewriteStream tokens = new TokenRewriteStream( lexEngine );
-            tokens.LT( 1 ); // fill buffer
+            tokens.Fill();
             tokens.InsertBefore( 1, "x" );
             tokens.InsertBefore( 2, "y" );
             tokens.InsertBefore( 0, "z" );
@@ -707,7 +699,7 @@ namespace AntlrUnitTests
             ICharStream input = new ANTLRStringStream( "abcc" );
             Interpreter lexEngine = new Interpreter( g, input );
             TokenRewriteStream tokens = new TokenRewriteStream( lexEngine );
-            tokens.LT( 1 ); // fill buffer
+            tokens.Fill();
             tokens.Replace( 1, 2, "foo" );
             tokens.Replace( 0, 3, "bar" ); // wipes prior nested replace
             string result = tokens.ToString();
@@ -725,7 +717,7 @@ namespace AntlrUnitTests
             ICharStream input = new ANTLRStringStream( "abcc" );
             Interpreter lexEngine = new Interpreter( g, input );
             TokenRewriteStream tokens = new TokenRewriteStream( lexEngine );
-            tokens.LT( 1 ); // fill buffer
+            tokens.Fill();
             tokens.Replace( 0, 3, "bar" );
             tokens.Replace( 1, 2, "foo" ); // cannot split earlier replace
             Exception exc = null;
@@ -752,7 +744,7 @@ namespace AntlrUnitTests
             ICharStream input = new ANTLRStringStream( "abcc" );
             Interpreter lexEngine = new Interpreter( g, input );
             TokenRewriteStream tokens = new TokenRewriteStream( lexEngine );
-            tokens.LT( 1 ); // fill buffer
+            tokens.Fill();
             tokens.Replace( 1, 2, "foo" );
             tokens.Replace( 0, 2, "bar" ); // wipes prior nested replace
             string result = tokens.ToString();
@@ -770,7 +762,7 @@ namespace AntlrUnitTests
             ICharStream input = new ANTLRStringStream( "abcc" );
             Interpreter lexEngine = new Interpreter( g, input );
             TokenRewriteStream tokens = new TokenRewriteStream( lexEngine );
-            tokens.LT( 1 ); // fill buffer
+            tokens.Fill();
             tokens.Replace( 1, 2, "foo" );
             tokens.Replace( 1, 3, "bar" ); // wipes prior nested replace
             string result = tokens.ToString();
@@ -788,7 +780,7 @@ namespace AntlrUnitTests
             ICharStream input = new ANTLRStringStream( "abcc" );
             Interpreter lexEngine = new Interpreter( g, input );
             TokenRewriteStream tokens = new TokenRewriteStream( lexEngine );
-            tokens.LT( 1 ); // fill buffer
+            tokens.Fill();
             tokens.Replace( 1, 2, "foo" );
             tokens.Replace( 1, 2, "foo" ); // drop previous, identical
             string result = tokens.ToString();
@@ -806,7 +798,7 @@ namespace AntlrUnitTests
             ICharStream input = new ANTLRStringStream( "abcc" );
             Interpreter lexEngine = new Interpreter( g, input );
             TokenRewriteStream tokens = new TokenRewriteStream( lexEngine );
-            tokens.LT( 1 ); // fill buffer
+            tokens.Fill();
             tokens.InsertBefore( 1, "foo" );
             tokens.Replace( 1, 2, "foo" ); // kill prev insert
             string result = tokens.ToString();
@@ -824,7 +816,7 @@ namespace AntlrUnitTests
             ICharStream input = new ANTLRStringStream( "abcc" );
             Interpreter lexEngine = new Interpreter( g, input );
             TokenRewriteStream tokens = new TokenRewriteStream( lexEngine );
-            tokens.LT( 1 ); // fill buffer
+            tokens.Fill();
             tokens.InsertBefore( 1, "x" );
             tokens.Replace( 2, 3, "foo" );
             string result = tokens.ToString();
@@ -842,7 +834,7 @@ namespace AntlrUnitTests
             ICharStream input = new ANTLRStringStream( "abcc" );
             Interpreter lexEngine = new Interpreter( g, input );
             TokenRewriteStream tokens = new TokenRewriteStream( lexEngine );
-            tokens.LT( 1 ); // fill buffer
+            tokens.Fill();
             tokens.Replace( 2, 3, "foo" );
             tokens.InsertBefore( 1, "x" );
             string result = tokens.ToString();

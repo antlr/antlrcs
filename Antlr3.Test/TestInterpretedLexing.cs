@@ -161,13 +161,13 @@ namespace AntlrUnitTests
             ICharStream input = new ANTLRStringStream( "1234.5" );
             Interpreter engine = new Interpreter( g, input );
             IToken result = engine.Scan( "A" );
-            assertEquals( result.Type, Atype );
+            Assert.AreEqual( Atype, result.Type );
         }
 
         [TestMethod]
         public void TestTokensRules() /*throws Exception*/ {
             Grammar pg = new Grammar(
-                "grammar p;\n" +
+                "parser grammar p;\n" +
                 "a : (INT|FLOAT|WS)+;\n" );
             Grammar g = new Grammar();
             g.ImportTokenVocabulary( pg );
@@ -182,11 +182,11 @@ namespace AntlrUnitTests
             Interpreter lexEngine = new Interpreter( g, input );
 
             CommonTokenStream tokens = new CommonTokenStream( lexEngine );
-            tokens.FillBuffer();
+            tokens.LT(5); // make sure it grabs all tokens
             string result = tokens.ToString();
             //System.out.println(result);
             string expecting = "123 139.52";
-            assertEquals( result, expecting );
+            Assert.AreEqual( expecting, result );
         }
 
     }

@@ -111,11 +111,11 @@ namespace AntlrUnitTests
             {
                 q.Dequeue();
             }
-            catch ( ArgumentException nsee )
+            catch (IndexOutOfRangeException nsee)
             {
                 msg = nsee.Message;
             }
-            string expecting = "queue index 0 > size 0";
+            string expecting = "queue index 0 > last index -1";
             string found = msg;
             Assert.AreEqual( expecting, found );
         }
@@ -133,16 +133,15 @@ namespace AntlrUnitTests
             {
                 q.Dequeue();
             }
-            catch ( ArgumentException nsee )
+            catch (IndexOutOfRangeException nsee)
             {
                 msg = nsee.Message;
             }
-            string expecting = "queue index 0 > size 0";
+            string expecting = "queue index 0 > last index -1";
             string found = msg;
             Assert.AreEqual( expecting, found );
         }
 
-#if false
         [TestMethod]
         public void TestGetFromEmptyQueueAfterClear()
         {
@@ -155,14 +154,13 @@ namespace AntlrUnitTests
             {
                 q.Dequeue();
             }
-            catch ( ArgumentException nsee )
+            catch ( IndexOutOfRangeException nsee )
             {
                 msg = nsee.Message;
             }
-            string expecting = "queue index 0 > size 0";
+            string expecting = "queue index 0 > last index -1";
             string found = msg;
             Assert.AreEqual( expecting, found );
         }
-#endif
     }
 }

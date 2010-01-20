@@ -207,7 +207,6 @@ namespace AntlrUnitTests
                 stream.Consume();
             }
             assertEquals( TokenTypes.EndOfFile, ( (ITree)stream.LT( 1 ) ).Type );
-            assertEquals( TokenTypes.Up, ( (ITree)stream.LT( -1 ) ).Type );
             stream.Rewind( m );      // REWIND
 
             // consume til end again :)
@@ -217,7 +216,6 @@ namespace AntlrUnitTests
                 stream.Consume();
             }
             assertEquals( TokenTypes.EndOfFile, ( (ITree)stream.LT( 1 ) ).Type );
-            assertEquals( TokenTypes.Up, ( (ITree)stream.LT( -1 ) ).Type );
         }
 
         [TestMethod]
