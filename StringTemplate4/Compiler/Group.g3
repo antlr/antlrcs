@@ -100,7 +100,7 @@ templateDef[TemplateName prefix]
         catch (TemplateRecognitionException e) {
         	RecognitionException re = (RecognitionException)e.InnerException;
         	int charPosition =
-        		re.charPositionInLine+templateToken.CharPositionInLine+n;
+        		re.CharPositionInLine+templateToken.CharPositionInLine+n;
 	        ErrorManager.CompileTimeError(ErrorType.SyntaxError, e.Message, templateToken.Line + ":" + charPosition);
         }		
 	    }
