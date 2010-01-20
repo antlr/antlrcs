@@ -76,6 +76,7 @@ namespace StringTemplate
         /** Operand stack, grows upwards */
         object[] operands = new object[DEFAULT_OPERAND_STACK_SIZE];
         int sp = -1;  // stack pointer register
+        int current_ip = 0;
         int nw = 0;   // how many char written on this template line so far? ("number written" register)
 
         /** Exec st with respect to this group. Once set in Template.toString(),
@@ -134,6 +135,7 @@ namespace StringTemplate
                 if (trace)
                     Trace(self, ip);
                 short opcode = code[ip];
+                current_ip = ip;
                 ip++; //jump to next instruction or first byte of operand
                 switch (opcode)
                 {
@@ -172,20 +174,20 @@ namespace StringTemplate
                     nameIndex = GetShort(code, ip);
                     ip += 2;
                     name = self.code.strings[nameIndex];
-                    st = group.GetEmbeddedInstanceOf(self, new TemplateName(name));
+                    st = group.GetEmbeddedInstanceOf(self, ip, new TemplateName(name));
                     if (st == null)
                     {
-                        ErrorManager.RuntimeError(self, ErrorType.NoSuchTemplate, new TemplateName(name).Name);
+                        ErrorManager.RuntimeError(self, current_ip, ErrorType.NoSuchTemplate, new TemplateName(name).Name);
                         st = Template.Blank;
                     }
                     operands[++sp] = st;
                     break;
                 case Bytecode.INSTR_NEW_IND:
                     name = (string)operands[sp--];
-                    st = group.GetEmbeddedInstanceOf(self, new TemplateName(name));
+                    st = group.GetEmbeddedInstanceOf(self, ip, new TemplateName(name));
                     if (st == null)
                     {
-                        ErrorManager.RuntimeError(self, ErrorType.NoSuchTemplate, new TemplateName(name).Name);
+                        ErrorManager.RuntimeError(self, current_ip, ErrorType.NoSuchTemplate, new TemplateName(name).Name);
                         st = Template.Blank;
                     }
                     operands[++sp] = st;
@@ -197,7 +199,7 @@ namespace StringTemplate
                     CompiledTemplate imported = group.LookupImportedTemplate(new TemplateName(name));
                     if (imported == null)
                     {
-                        ErrorManager.RuntimeError(self, ErrorType.NoImportedTemplate, new TemplateName(name).Name);
+                        ErrorManager.RuntimeError(self, current_ip, ErrorType.NoImportedTemplate, new TemplateName(name).Name);
                         operands[++sp] = Template.Blank;
                         break;
                     }
@@ -226,7 +228,7 @@ namespace StringTemplate
                     }
                     if (nargs != 1)
                     {
-                        ErrorManager.RuntimeError(self, ErrorType.ExpectingSingleArgument, st, nargs);
+                        ErrorManager.RuntimeError(self, current_ip, ErrorType.ExpectingSingleArgument, st, nargs);
                     }
                     else
                     {
@@ -330,7 +332,7 @@ namespace StringTemplate
                     }
                     else
                     {
-                        ErrorManager.RuntimeError(self, ErrorType.ExpectingString, "trim", o);
+                        ErrorManager.RuntimeError(self, current_ip, ErrorType.ExpectingString, "trim", o);
                         operands[++sp] = o;
                     }
                     break;
@@ -345,7 +347,7 @@ namespace StringTemplate
                     }
                     else
                     {
-                        ErrorManager.RuntimeError(self, ErrorType.ExpectingString, "strlen", o);
+                        ErrorManager.RuntimeError(self, current_ip, ErrorType.ExpectingString, "strlen", o);
                         operands[++sp] = 0;
                     }
                     break;
@@ -599,7 +601,7 @@ namespace StringTemplate
                     int templateIndex = ti % templates.Count; // rotate through
                     ti++;
                     TemplateName name = templates[templateIndex];
-                    Template st = group.GetEmbeddedInstanceOf(self, name);
+                    Template st = group.GetEmbeddedInstanceOf(self, current_ip, name);
                     SetSoleArgument(st, iterValue);
                     st.RawSetAttribute("i0", i0);
                     st.RawSetAttribute("i", i);
@@ -642,14 +644,14 @@ namespace StringTemplate
             var formalArguments = code.formalArguments;
             if (formalArguments == null || formalArguments.Count == 0)
             {
-                ErrorManager.RuntimeError(self, ErrorType.MissingFormalArguments);
+                ErrorManager.RuntimeError(self, current_ip, ErrorType.MissingFormalArguments);
                 return null;
             }
 
             object[] formalArgumentNames = formalArguments.Keys.ToArray();
             if (formalArgumentNames.Length != numAttributes)
             {
-                ErrorManager.RuntimeError(self, ErrorType.ArgumentCountMismatch, numAttributes, formalArgumentNames.Length);
+                ErrorManager.RuntimeError(self, current_ip, ErrorType.ArgumentCountMismatch, numAttributes, formalArgumentNames.Length);
                 // truncate arg list to match smaller size
                 int shorterSize = Math.Min(formalArgumentNames.Length, numAttributes);
                 numAttributes = shorterSize;
@@ -669,7 +671,7 @@ namespace StringTemplate
                 {
                     // get a value for each attribute in list; put into Template instance
                     int numEmpty = 0;
-                    Template embedded = group.GetEmbeddedInstanceOf(self, template);
+                    Template embedded = group.GetEmbeddedInstanceOf(self, current_ip, template);
                     embedded.RawSetAttribute("i0", i);
                     embedded.RawSetAttribute("i", i + 1);
                     for (int a = 0; a < numAttributes; a++)

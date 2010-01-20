@@ -96,24 +96,24 @@ namespace StringTemplate
             ErrorListener.CompileTimeError(new TemplateMessage(error, null, null, arg1, arg2));
         }
 
-        public static void RuntimeError(Template template, ErrorType error)
+        public static void RuntimeError(Template template, int ip, ErrorType error)
         {
-            ErrorListener.RuntimeError(new TemplateMessage(error, template));
+            ErrorListener.RuntimeError(new TemplateRuntimeMessage(error, ip, template));
         }
 
-        public static void RuntimeError(Template template, ErrorType error, object arg)
+        public static void RuntimeError(Template template, int ip, ErrorType error, object arg)
         {
-            ErrorListener.RuntimeError(new TemplateMessage(error, template, null, arg));
+            ErrorListener.RuntimeError(new TemplateRuntimeMessage(error, ip, template, null, arg));
         }
 
-        public static void RuntimeError(Template template, ErrorType error, Exception source, object arg)
+        public static void RuntimeError(Template template, int ip, ErrorType error, Exception source, object arg)
         {
-            ErrorListener.RuntimeError(new TemplateMessage(error, template, source, arg));
+            ErrorListener.RuntimeError(new TemplateRuntimeMessage(error, ip, template, source, arg));
         }
 
-        public static void RuntimeError(Template template, ErrorType error, object arg1, object arg2)
+        public static void RuntimeError(Template template, int ip, ErrorType error, object arg1, object arg2)
         {
-            ErrorListener.RuntimeError(new TemplateMessage(error, template, null, arg1, arg2));
+            ErrorListener.RuntimeError(new TemplateRuntimeMessage(error, ip, template, null, arg1, arg2));
         }
 
         public static void IOError(Template template, ErrorType error, Exception source)

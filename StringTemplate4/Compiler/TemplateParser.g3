@@ -47,17 +47,18 @@ templateAndEOF
 	:	template EOF
 	;
 
-// TODO: remove backtracking
 public
 template
 	:	element*
 	;
 
 element
-options {backtrack=true; k=2;}
-	:	i=INDENT         {Indent($i.text);}
-		ifOnOneLine      {gen.Emit(Bytecode.INSTR_DEDENT);}
-	|	i=INDENT ifOnMultiLines
+	:	(	// TODO: remove backtracking
+			options {backtrack=true; k=2;}
+		:	i=INDENT         {Indent($i.text);}
+			ifOnOneLine      {gen.Emit(Bytecode.INSTR_DEDENT);}
+		|	i=INDENT ifOnMultiLines
+		)
 	|	ifOnMultiLines
 	|	i=INDENT       	 {Indent($i.text);}
 		exprTag          {gen.Emit(Bytecode.INSTR_DEDENT);}

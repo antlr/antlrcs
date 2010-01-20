@@ -77,5 +77,32 @@ namespace StringTemplate
             s = s.Replace("\t", @"\\t");
             return s;
         }
+
+        /// <summary>
+        /// Given index into string, compute the line and char position in line
+        /// </summary>
+        public static Coordinate GetLineCharPosition(string s, int index)
+        {
+            int line = 1;
+            int charPos = 0;
+            int p = 0;
+            while (p < index)
+            {
+                // don't care about s[index] itself; count before
+                if (s[p] == '\n')
+                {
+                    line++;
+                    charPos = 0;
+                }
+                else
+                {
+                    charPos++;
+                }
+
+                p++;
+            }
+
+            return new Coordinate(line, charPos);
+        }
     }
 }

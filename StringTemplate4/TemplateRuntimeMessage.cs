@@ -32,78 +32,69 @@
 
 namespace StringTemplate
 {
+    using StringTemplate.Compiler;
     using Exception = System.Exception;
     using StringBuilder = System.Text.StringBuilder;
 
-    public class TemplateMessage
+    public class TemplateRuntimeMessage : TemplateMessage
     {
-        /** if in debug mode, has create instance, add attr events and eval
-         *  template events.
+        /** Where error occurred in bytecode memory */
+        private int ip;
+
+        public TemplateRuntimeMessage(ErrorType error, int ip)
+            : this(error, ip, null)
+        {
+        }
+
+        public TemplateRuntimeMessage(ErrorType error, int ip, Template template)
+            : this(error, ip, template, null)
+        {
+        }
+
+        public TemplateRuntimeMessage(ErrorType error, int ip, Template template, Exception source)
+            : this(error, ip, template, source, null)
+        {
+        }
+
+        public TemplateRuntimeMessage(ErrorType error, int ip, Template template, Exception source, object arg)
+            : this(error, ip, template, source, arg, null)
+        {
+        }
+
+        public TemplateRuntimeMessage(ErrorType error, int ip, Template template, Exception source, object arg, object arg2)
+            : base(error, template, source, arg, arg2)
+        {
+            this.ip = ip;
+        }
+
+        /** Given an ip (code location), get it's range in source template then
+         *  return it's template line:col.
          */
-        private ErrorType error;
-        private object arg1;
-        private object arg2;
-
-        public TemplateMessage(ErrorType error)
-            : this(error, null, null, null, null)
+        public string GetSourceLocation()
         {
-        }
-
-        public TemplateMessage(ErrorType error, Template template)
-            : this(error, template, null, null, null)
-        {
-        }
-
-        public TemplateMessage(ErrorType error, Template template, Exception source)
-            : this(error, template, source, null, null)
-        {
-        }
-
-        public TemplateMessage(ErrorType error, Template template, Exception source, object arg)
-            : this(error, template, source, arg, null)
-        {
-        }
-
-        public TemplateMessage(ErrorType error, Template template, Exception source, object arg1, object arg2)
-        {
-            this.error = error;
-            this.Template = template;
-            this.Source = source;
-            this.arg1 = arg1;
-            this.arg2 = arg2;
-        }
-
-        public Template Template
-        {
-            get;
-            private set;
-        }
-
-        public string Message
-        {
-            get
-            {
-                return string.Format(error.MessageFormat, arg1, arg2);
-            }
-        }
-
-        public Exception Source
-        {
-            get;
-            private set;
+            Interval I = Template.code.sourceMap[ip];
+            if (I == null)
+                return null;
+            // get left edge and get line/col
+            int i = I.A;
+            Coordinate loc = Misc.GetLineCharPosition(Template.code.template, i);
+            return loc.ToString();
         }
 
         public override string ToString()
         {
-            StringBuilder builder = new StringBuilder(Message);
-            builder.AppendLine();
-
-            if (Source != null)
+            StringBuilder buf = new StringBuilder();
+            string loc = GetSourceLocation();
+            if (Template != null)
             {
-                builder.AppendLine(Source.StackTrace);
+                buf.Append("context [");
+                buf.Append(Template.GetEnclosingInstanceStackString());
+                buf.Append("]");
             }
-
-            return builder.ToString();
+            if (loc != null)
+                buf.Append(" " + loc);
+            buf.Append(" " + base.ToString());
+            return buf.ToString();
         }
     }
 }

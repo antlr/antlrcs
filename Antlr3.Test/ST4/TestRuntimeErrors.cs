@@ -86,7 +86,7 @@ namespace AntlrUnitTests.ST4
             STGroup group = new STGroupFile(Path.Combine(tmpdir, "t.stg"));
             ST st = group.GetInstanceOf("t");
             st.Render();
-            String expected = "no such template: foo in context t" + newline;
+            String expected = "context [t] 1:0 no such template: foo" + newline;
             String result = errors.ToString();
             Assert.AreEqual(expected, result);
         }
@@ -110,7 +110,7 @@ namespace AntlrUnitTests.ST4
             group.ImportTemplates(group2);
             ST st = group.GetInstanceOf("t");
             st.Render();
-            String expected = "no such template: super.t in context t" + newline;
+            String expected = "context [t] 1:1 no such template: super.t" + newline;
             String result = errors.ToString();
             Assert.AreEqual(expected, result);
         }
@@ -186,9 +186,45 @@ namespace AntlrUnitTests.ST4
             STGroup group = new STGroupFile(Path.Combine(tmpdir, "t.stg"));
             ST st = group.GetInstanceOf("t");
             st.Render();
-            string expected = "expecting single arg in template reference u() (not 2) in context t" + newline;
+            string expected = "context [t] 1:3 expecting single arg in template reference u() (not 2 args)" + newline;
             string result = errors.ToString();
             Assert.AreEqual(expected, result);
+        }
+
+        [TestMethod]
+        public void TestParallelAttributeIterationWithMismatchArgListSizes()
+        {
+            ErrorBuffer errors = new ErrorBuffer();
+            ErrorManager.ErrorListener = errors;
+            Template e = new Template(
+                    "<names,phones,salaries:{n,p | <n>@<p>}; separator=\", \">"
+                );
+            e.Add("names", "Ter");
+            e.Add("names", "Tom");
+            e.Add("phones", "1");
+            e.Add("phones", "2");
+            e.Add("salaries", "big");
+            e.Render();
+            string errorExpecting = "context [anonymous] 1:1 iterating through 3 arguments but parallel map has 2 formal arguments" + newline;
+            Assert.AreEqual(errorExpecting, errors.ToString());
+            string expecting = "Ter@1, Tom@2";
+            Assert.AreEqual(expecting, e.Render());
+        }
+
+        [TestMethod]
+        public void TestParallelAttributeIterationWithMissingArgs()
+        {
+            ErrorBuffer errors = new ErrorBuffer();
+            ErrorManager.ErrorListener = errors;
+            Template e = new Template(
+                    "<names,phones,salaries:{<n>@<p>}; separator=\", \">"
+                );
+            e.Add("names", "Tom");
+            e.Add("phones", "2");
+            e.Add("salaries", "big");
+            e.Render(); // generate the error
+            string errorExpecting = "context [anonymous] 1:1 missing argument definitions" + newline;
+            Assert.AreEqual(errorExpecting, errors.ToString());
         }
     }
 }

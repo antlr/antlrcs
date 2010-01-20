@@ -194,42 +194,6 @@ namespace AntlrUnitTests.ST4
         }
 
         [TestMethod]
-        public void TestParallelAttributeIterationWithMismatchArgListSizes()
-        {
-            ErrorBuffer errors = new ErrorBuffer();
-            ErrorManager.ErrorListener = errors;
-            ST e = new ST(
-                    "<names,phones,salaries:{n,p | <n>@<p>}; separator=\", \">"
-                );
-            e.Add("names", "Ter");
-            e.Add("names", "Tom");
-            e.Add("phones", "1");
-            e.Add("phones", "2");
-            e.Add("salaries", "big");
-            e.Render();
-            String errorExpecting = "iterating through 3 arguments but parallel map has 2 formal arguments in context anonymous" + newline;
-            Assert.AreEqual(errorExpecting, errors.ToString());
-            String expecting = "Ter@1, Tom@2";
-            Assert.AreEqual(expecting, e.Render());
-        }
-
-        [TestMethod]
-        public void TestParallelAttributeIterationWithMissingArgs()
-        {
-            ErrorBuffer errors = new ErrorBuffer();
-            ErrorManager.ErrorListener = errors;
-            ST e = new ST(
-                    "<names,phones,salaries:{<n>@<p>}; separator=\", \">"
-                );
-            e.Add("names", "Tom");
-            e.Add("phones", "2");
-            e.Add("salaries", "big");
-            e.Render(); // generate the error
-            String errorExpecting = "missing argument definitions in context anonymous" + newline;
-            Assert.AreEqual(errorExpecting, errors.ToString());
-        }
-
-        [TestMethod]
         public void TestParallelAttributeIterationWithDifferentSizesTemplateRefInsideToo()
         {
             String templates =

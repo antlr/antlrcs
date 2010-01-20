@@ -32,78 +32,53 @@
 
 namespace StringTemplate
 {
-    using Exception = System.Exception;
-    using StringBuilder = System.Text.StringBuilder;
-
-    public class TemplateMessage
+    public struct Coordinate
     {
-        /** if in debug mode, has create instance, add attr events and eval
-         *  template events.
-         */
-        private ErrorType error;
-        private object arg1;
-        private object arg2;
-
-        public TemplateMessage(ErrorType error)
-            : this(error, null, null, null, null)
+        public Coordinate(int line, int charPosition)
+            : this()
         {
+            this.Line = line;
+            this.CharPosition = charPosition;
         }
 
-        public TemplateMessage(ErrorType error, Template template)
-            : this(error, template, null, null, null)
-        {
-        }
-
-        public TemplateMessage(ErrorType error, Template template, Exception source)
-            : this(error, template, source, null, null)
-        {
-        }
-
-        public TemplateMessage(ErrorType error, Template template, Exception source, object arg)
-            : this(error, template, source, arg, null)
-        {
-        }
-
-        public TemplateMessage(ErrorType error, Template template, Exception source, object arg1, object arg2)
-        {
-            this.error = error;
-            this.Template = template;
-            this.Source = source;
-            this.arg1 = arg1;
-            this.arg2 = arg2;
-        }
-
-        public Template Template
+        public int Line
         {
             get;
             private set;
         }
 
-        public string Message
-        {
-            get
-            {
-                return string.Format(error.MessageFormat, arg1, arg2);
-            }
-        }
-
-        public Exception Source
+        public int CharPosition
         {
             get;
             private set;
+        }
+
+        public static bool operator ==(Coordinate x, Coordinate y)
+        {
+            return x.Line == y.Line && x.CharPosition == y.CharPosition;
+        }
+
+        public static bool operator !=(Coordinate x, Coordinate y)
+        {
+            return !(x == y);
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (!(obj is Coordinate))
+                return false;
+
+            return this == (Coordinate)obj;
+        }
+
+        public override int GetHashCode()
+        {
+            return Line ^ CharPosition;
         }
 
         public override string ToString()
         {
-            StringBuilder builder = new StringBuilder(Message);
-            builder.AppendLine();
-
-            if (Source != null)
-            {
-                builder.AppendLine(Source.StackTrace);
-            }
-
-            return builder.ToString();
+            return Line.ToString() + ":" + CharPosition.ToString();
         }
     }
 }

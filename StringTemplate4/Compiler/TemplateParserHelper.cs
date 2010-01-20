@@ -62,10 +62,6 @@ namespace StringTemplate.Compiler
                 this.gen = gen;
             this._enclosingTemplateName = enclosingTemplateName;
         }
-        protected override object RecoverFromMismatchedToken(IIntStream input, int ttype, BitSet follow)
-        {
-            throw new MismatchedTokenException(ttype, input);
-        }
 
         public TemplateName PrefixedName(TemplateName t)
         {
@@ -128,6 +124,11 @@ namespace StringTemplate.Compiler
         public void Indent(string indent)
         {
             gen.Emit(Bytecode.INSTR_INDENT, indent);
+        }
+
+        protected override object RecoverFromMismatchedToken(IIntStream input, int ttype, BitSet follow)
+        {
+            throw new MismatchedTokenException(ttype, input);
         }
 
         /// <summary>

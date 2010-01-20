@@ -148,12 +148,12 @@ namespace StringTemplate
             return null;
         }
 
-        public virtual Template GetEmbeddedInstanceOf(Template enclosingInstance, TemplateName name)
+        public virtual Template GetEmbeddedInstanceOf(Template enclosingInstance, int ip, TemplateName name)
         {
             Template st = GetInstanceOf(name);
             if (st == null)
             {
-                ErrorManager.RuntimeError(enclosingInstance, ErrorType.NoSuchTemplate, name.Name);
+                ErrorManager.RuntimeError(enclosingInstance, ip, ErrorType.NoSuchTemplate, name.Name);
                 return Template.Blank;
             }
             st.enclosingInstance = enclosingInstance;
@@ -375,14 +375,24 @@ namespace StringTemplate
         {
             string absoluteFileName = Path.Combine(fullyQualifiedRootDirName, fileName);
             //Console.WriteLine("load group file " + absoluteFileName);
+            GroupParser parser = null;
             try
             {
                 ANTLRFileStream fs = new ANTLRFileStream(absoluteFileName, encoding);
                 GroupLexer lexer = new GroupLexer(fs);
-                UnbufferedTokenStream tokens = new UnbufferedTokenStream(lexer);
-                GroupParser parser = new GroupParser(tokens);
+                CommonTokenStream tokens = new CommonTokenStream(lexer);
+                parser = new GroupParser(tokens);
                 parser.group(this, prefix);
             }
+#if false
+            catch (RecognitionException e)
+            {
+                if (e.Token.Type == TemplateLexer.EOF_TYPE)
+                    ErrorManager.SyntaxError(ErrorType.SyntaxError, e, "premature EOF", absoluteFileName);
+                else
+                    ErrorManager.SyntaxError(ErrorType.SyntaxError, e, absoluteFileName);
+            }
+#endif
             catch (Exception e)
             {
                 if (ErrorManager.IsCriticalException(e))
