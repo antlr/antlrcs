@@ -32,6 +32,8 @@
 
 namespace StringTemplate.Debug
 {
+    using ArgumentNullException = System.ArgumentNullException;
+
     public class EvalExprEvent : InterpEvent
     {
         int exprStart;
@@ -41,6 +43,9 @@ namespace StringTemplate.Debug
         public EvalExprEvent(DebugTemplate self, int start, int stop, int exprStart, int exprStop)
             : base(self, start, stop)
         {
+            if (self == null)
+                throw new ArgumentNullException("self");
+
             this.exprStart = exprStart;
             this.exprStop = exprStop;
             expr = self.code.template.Substring(exprStart, exprStop - exprStart + 1);

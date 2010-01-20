@@ -32,11 +32,19 @@
 
 namespace StringTemplate.Debug
 {
+    using ArgumentException = System.ArgumentException;
+    using ArgumentNullException = System.ArgumentNullException;
+
     public class InterpEvent
     {
-        public InterpEvent(DebugTemplate self, int start, int stop)
+        public InterpEvent(DebugTemplate template, int start, int stop)
         {
-            this.Template = self;
+            if (template == null)
+                throw new ArgumentNullException("template");
+            if (start > stop)
+                throw new ArgumentException();
+
+            this.Template = template;
             this.Start = start;
             this.Stop = stop;
         }

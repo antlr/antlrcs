@@ -43,6 +43,9 @@ namespace StringTemplate
 
         public override int Write(string str)
         {
+            if (string.IsNullOrEmpty(str))
+                return 0;
+
             @out.Write(str);
             return str.Length;
         }

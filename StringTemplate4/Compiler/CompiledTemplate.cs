@@ -109,6 +109,9 @@ namespace StringTemplate.Compiler
         {
             get
             {
+                if (Name == null)
+                    return false;
+
                 return Name.FullName.StartsWith(TemplateName.TemplateDirectorySeparator + StringTemplate.Template.SubtemplatePrefix);
             }
         }

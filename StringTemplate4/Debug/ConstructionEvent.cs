@@ -36,7 +36,7 @@ namespace StringTemplate
 
     public class ConstructionEvent
     {
-        private StackTrace stack;
+        private readonly StackTrace stack;
 
         public ConstructionEvent()
         {
@@ -47,7 +47,11 @@ namespace StringTemplate
         {
             get
             {
-                return TemplateEntryPoint.GetFileName();
+                var entry = TemplateEntryPoint;
+                if (entry == null)
+                    return string.Empty;
+
+                return entry.GetFileName();
             }
         }
 
@@ -55,7 +59,11 @@ namespace StringTemplate
         {
             get
             {
-                return TemplateEntryPoint.GetFileLineNumber();
+                var entry = TemplateEntryPoint;
+                if (entry == null)
+                    return 0;
+
+                return entry.GetFileLineNumber();
             }
         }
 
@@ -64,14 +72,23 @@ namespace StringTemplate
             get
             {
                 var frames = stack.GetFrames();
+                if (frames == null || frames.Length == 0)
+                    return null;
+
                 foreach (var frame in frames)
                 {
                     var method = frame.GetMethod();
+                    if (method == null)
+                        continue;
 
                     if (method.Name == "Main")
                         return frame;
 
-                    if (!method.DeclaringType.Namespace.StartsWith("StringTemplate"))
+                    var ns = method.DeclaringType.Namespace;
+                    if (ns == null)
+                        return frame;
+
+                    if (!ns.StartsWith("StringTemplate"))
                         return frame;
                 }
 

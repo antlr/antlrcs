@@ -34,19 +34,26 @@ namespace StringTemplate.Compiler
 {
     using System.Collections.Generic;
     using ArgumentException = System.ArgumentException;
+    using ArgumentNullException = System.ArgumentNullException;
+    using ArgumentOutOfRangeException = System.ArgumentOutOfRangeException;
     using StringBuilder = System.Text.StringBuilder;
 
     public class BytecodeDisassembler
     {
         // TODO: make disassembler point at compiledST code?
-        byte[] code;
-        int codeSize;
-        protected object[] strings;
+        private readonly byte[] code;
+        private readonly int codeSize;
+        private readonly string[] strings;
 
         public BytecodeDisassembler(byte[] code,
                                     int codeSize,
                                     string[] strings)
         {
+            if (code == null)
+                throw new ArgumentNullException("code");
+            if (strings == null)
+                throw new ArgumentNullException("strings");
+
             this.code = code;
             this.codeSize = codeSize;
             this.strings = strings;
@@ -88,6 +95,11 @@ namespace StringTemplate.Compiler
 
         public virtual int DisassembleInstruction(StringBuilder buf, int ip)
         {
+            if (buf == null)
+                throw new ArgumentNullException("buf");
+            if (ip < 0)
+                throw new ArgumentOutOfRangeException("ip");
+
             int opcode = code[ip];
             if (ip >= codeSize)
             {
@@ -143,7 +155,7 @@ namespace StringTemplate.Compiler
             buf.Append("#");
             buf.Append(poolIndex);
             string s = "<bad string index>";
-            if (poolIndex < strings.Length)
+            if (poolIndex > 0 && poolIndex < strings.Length)
             {
                 if (strings[poolIndex] == null)
                     s = "null";
@@ -164,6 +176,13 @@ namespace StringTemplate.Compiler
 
         public static int GetShort(byte[] memory, int index)
         {
+            if (memory == null)
+                throw new ArgumentNullException("memory");
+            if (index < 0)
+                throw new ArgumentOutOfRangeException("index");
+            if (index + 1 >= memory.Length)
+                throw new ArgumentException();
+
             int b1 = memory[index++] & 0xFF; // mask off sign-extended bits
             int b2 = memory[index++] & 0xFF;
             int word = b1 << (8 * 1) | b2;

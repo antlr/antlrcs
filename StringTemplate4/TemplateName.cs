@@ -43,7 +43,7 @@ namespace StringTemplate
 
         private static readonly Regex FullNameValidator = new Regex(@"^(?:[a-z_][a-z0-9_\-]*)?(?:/[a-z_][a-z0-9_\-]*)*$", RegexOptions.Compiled | RegexOptions.IgnoreCase);
 
-        private string _name;
+        private readonly string _name;
 
         public TemplateName(string name)
         {

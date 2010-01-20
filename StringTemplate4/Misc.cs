@@ -32,15 +32,29 @@
 
 namespace StringTemplate
 {
+    using ArgumentException = System.ArgumentException;
+    using ArgumentNullException = System.ArgumentNullException;
+    using ArgumentOutOfRangeException = System.ArgumentOutOfRangeException;
+
     internal static class Misc
     {
         public static string Strip(string s, int n)
         {
+            if (s == null)
+                throw new ArgumentNullException("s");
+            if (n < 0)
+                throw new ArgumentOutOfRangeException("n");
+            if (s.Length - 2 * n < 0)
+                throw new ArgumentException();
+
             return s.Substring(n, s.Length - 2 * n);
         }
 
         public static string TrimOneStartingWS(string s)
         {
+            if (s == null)
+                throw new ArgumentNullException("s");
+
             // strip newline from front and back, but just one
             if (s.StartsWith("\r\n"))
                 s = s.Substring(2);
@@ -55,6 +69,9 @@ namespace StringTemplate
 
         public static string ReplaceEscapes(string s)
         {
+            if (s == null)
+                throw new ArgumentNullException("s");
+
             s = s.Replace("\n", @"\\n");
             s = s.Replace("\r", @"\\r");
             s = s.Replace("\t", @"\\t");

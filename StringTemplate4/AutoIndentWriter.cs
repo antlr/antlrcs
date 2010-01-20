@@ -37,6 +37,8 @@ namespace StringTemplate
     using Environment = System.Environment;
     using StringBuilder = System.Text.StringBuilder;
     using TextWriter = System.IO.TextWriter;
+    using InvalidOperationException = System.InvalidOperationException;
+    using ArgumentNullException = System.ArgumentNullException;
 
     public class AutoIndentWriter : ITemplateWriter
     {
@@ -45,7 +47,7 @@ namespace StringTemplate
         /** stack of indents; use List as it's much faster than Stack. Grows
          *  from 0..n-1.
          */
-        protected IList<string> indents = new List<string>();
+        protected readonly IList<string> indents = new List<string>();
 
         /** Stack of integer anchors (char positions in line); avoid Integer
          *  creation overhead.
@@ -54,9 +56,9 @@ namespace StringTemplate
         protected int anchors_sp = -1;
 
         /** \n or \r\n? */
-        protected string newline;
+        protected readonly string newline;
 
-        protected TextWriter @out = null;
+        protected readonly TextWriter @out = null;
         protected bool atStartOfLine = true;
 
         /** Track char position in the line (later we can think about tabs).
@@ -77,9 +79,12 @@ namespace StringTemplate
 
         public AutoIndentWriter(TextWriter @out, string newline)
         {
+            if (@out == null)
+                throw new ArgumentNullException("out");
+
             this.@out = @out;
             indents.Add(null); // s oftart with no indent
-            this.newline = newline;
+            this.newline = newline ?? Environment.NewLine;
         }
 
         public AutoIndentWriter(TextWriter @out)
@@ -107,6 +112,9 @@ namespace StringTemplate
 
         public virtual string PopIndentation()
         {
+            if (indents.Count == 0)
+                throw new InvalidOperationException();
+
             var result = indents[indents.Count - 1];
             indents.RemoveAt(indents.Count - 1);
             return result;
@@ -116,9 +124,7 @@ namespace StringTemplate
         {
             if ((anchors_sp + 1) >= anchors.Length)
             {
-                int[] a = new int[anchors.Length * 2];
-                Array.Copy(anchors, 0, a, 0, anchors.Length - 1);
-                anchors = a;
+                Array.Resize(ref anchors, anchors.Length * 2);
             }
             anchors_sp++;
             anchors[anchors_sp] = charPosition;
@@ -126,6 +132,9 @@ namespace StringTemplate
 
         public virtual void PopAnchorPoint()
         {
+            if (anchors_sp == -1)
+                throw new InvalidOperationException();
+
             anchors_sp--;
         }
 
@@ -146,6 +155,9 @@ namespace StringTemplate
         /** Write out a string literal or attribute expression or expression element.*/
         public virtual int Write(string str)
         {
+            if (str == null)
+                return 0;
+
             int n = 0;
             for (int i = 0; i < str.Length; i++)
             {

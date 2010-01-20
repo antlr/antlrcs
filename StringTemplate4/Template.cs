@@ -83,8 +83,8 @@ namespace StringTemplate
          */
         public sealed class AttributeList : ArrayList
         {
-            public AttributeList(int size)
-                : base(size)
+            public AttributeList(int capacity)
+                : base(capacity)
             {
             }
 
