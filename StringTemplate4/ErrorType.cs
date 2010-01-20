@@ -40,7 +40,7 @@ namespace StringTemplate
         //public static readonly ErrorType NoSuchProperty = new ErrorType("{0} doesn't have a {1} property");
         public static readonly ErrorType ExpectingSingleArgument = new ErrorType("expecting single arg in template reference {0} (not {1})");
         public static readonly ErrorType MissingFormalArguments = new ErrorType("missing argument definitions");
-        public static readonly ErrorType ArgumentCountMismatch = new ErrorType("template {0}'s actual and formal argument count does not match");
+        public static readonly ErrorType ArgumentCountMismatch = new ErrorType("iterating through {0} arguments but parallel map has {1} formal arguments");
         public static readonly ErrorType ExpectingString = new ErrorType("function {0} expects a string not {1}");
 
         // COMPILE-TIME SYNTAX/SEMANTIC ERRORS

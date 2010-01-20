@@ -35,6 +35,7 @@
         public virtual void TestInitialize()
         {
             TemplateGroup.defaultGroup = new TemplateGroup();
+            StringTemplate.Compiler.TemplateCompiler.subtemplateCount = 0;
         }
 
         public void WriteFile(string dir, string fileName, string content)

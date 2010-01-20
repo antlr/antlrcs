@@ -647,7 +647,7 @@ namespace StringTemplate
             object[] formalArgumentNames = formalArguments.Keys.ToArray();
             if (formalArgumentNames.Length != numAttributes)
             {
-                ErrorManager.RuntimeError(self, ErrorType.ArgumentCountMismatch, template.Name);
+                ErrorManager.RuntimeError(self, ErrorType.ArgumentCountMismatch, numAttributes, formalArgumentNames.Length);
                 // truncate arg list to match smaller size
                 int shorterSize = Math.Min(formalArgumentNames.Length, numAttributes);
                 numAttributes = shorterSize;

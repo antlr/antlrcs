@@ -45,12 +45,6 @@ namespace AntlrUnitTests.ST4
     [TestClass]
     public class TestRuntimeErrors : StringTemplateTestBase
     {
-        public override void TestInitialize()
-        {
-            StringTemplate.Compiler.TemplateCompiler.subtemplateCount = 0;
-            base.TestInitialize();
-        }
-
         public class UserHiddenName
         {
             private string name;

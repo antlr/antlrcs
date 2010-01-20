@@ -158,7 +158,9 @@ namespace AntlrUnitTests.ST4
             e.Add("phones", "2");
             e.Add("salaries", "big");
             e.Add("salaries", "huge");
-            String expecting = "0. Ter@1: big" + newline + "1. Tom@2: huge" + newline;
+            String expecting =
+                "0. Ter@1: big" + newline +
+                "1. Tom@2: huge" + newline;
             Assert.AreEqual(expecting, e.Render());
         }
 
@@ -204,10 +206,11 @@ namespace AntlrUnitTests.ST4
             e.Add("phones", "1");
             e.Add("phones", "2");
             e.Add("salaries", "big");
+            e.Render();
+            String errorExpecting = "iterating through 3 arguments but parallel map has 2 formal arguments in context anonymous" + newline;
+            Assert.AreEqual(errorExpecting, errors.ToString());
             String expecting = "Ter@1, Tom@2";
             Assert.AreEqual(expecting, e.Render());
-            String errorExpecting = "template _sub13's actual and formal argument count does not match in context anonymous" + newline;
-            Assert.AreEqual(errorExpecting, errors.ToString());
         }
 
         [TestMethod]
