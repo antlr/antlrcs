@@ -50,6 +50,14 @@ namespace StringTemplate
         {
         }
 
+        public string Name
+        {
+            get
+            {
+                return "blank";
+            }
+        }
+
         public override void Add(string name, object value)
         {
         }

@@ -59,7 +59,10 @@ def[TemplateName prefix]
 	;
 catch[RecognitionException re]
 {
-	sync("garbled template definition starting at '" + input.LT(1).Text + "'");
+	// kill at least current token; it's garbage.
+	// pretend we already saw an error here
+	state.lastErrorIndex = input.Index;
+	Error("garbled template definition starting at '" + input.LT(1).Text + "'");
 }
 
 public
@@ -86,8 +89,11 @@ templateDef[TemplateName prefix]
 		)
 		{
 		template = Misc.Strip(template, n);
-		if ( templateToken.Type==BIGSTRING ) {
-			template = Misc.TrimOneStartingWS(template);
+		bool removedNewline = false;
+		if (templateToken.Type == BIGSTRING && template[0] == '\n')
+		{
+			removedNewline = true;
+			template = Misc.TrimOneStartingNewline(template);
 		}
 	    try {
 			if ($enclosing != null)
@@ -98,8 +104,15 @@ templateDef[TemplateName prefix]
 		catch (TemplateException e)
 		{
 			RecognitionException re = (RecognitionException)e.InnerException;
-			re.Token.CharPositionInLine = re.CharPositionInLine + templateToken.CharPositionInLine + n;
-			re.Token.Line = re.Line + templateToken.Line - 1;
+			if (removedNewline)
+			{
+				re.Line += templateToken.Line;
+			}
+			else
+			{
+				re.Token.CharPositionInLine = re.CharPositionInLine + templateToken.CharPositionInLine + n;
+				re.Token.Line = re.Line + templateToken.Line - 1;
+			}
 			ErrorManager.SyntaxError(ErrorType.SyntaxError, re, e.Message);
 		}
 	    }
@@ -153,7 +166,11 @@ dictPairs[IDictionary<string, object> mapping]
     	(',' keyValuePair[mapping])* (',' defaultValuePair[mapping])?
     |	defaultValuePair[mapping] 
     ;	
-	
+catch[RecognitionException re]
+{
+	Error("missing dictionary entry at '" + input.LT(1).Text + "'");
+}
+
 defaultValuePair[IDictionary<string,object> mapping]
 	:	'default' ':' keyValue {mapping[TemplateGroup.DEFAULT_KEY] = $keyValue.value;}
 	;
@@ -170,33 +187,27 @@ keyValue returns [object value]
 							{$value = TemplateGroup.DICT_KEY;}
 	|						{$value = null;}
 	;
-
-sync[string msg]
-@init
+catch[RecognitionException re]
 {
-	// Consume any garbled tokens that come before the next statement
-	// or the end of the block.
-	int mark = input.Index;
-	IToken t = input.LT(1);
-	Recover(input, null);
-	if (input.Index != mark)
-	{
-		// we consumed bad tokens
-		NoViableAltException e = new NoViableAltException("", 0, 0, input);
-		e.Token = t;
-		ErrorManager.SyntaxError(ErrorType.SyntaxError, e, msg, SourceName);
-		Recover(input, null);
-	}
+	Error("missing value for key at '" + input.LT(1).Text + "'");
 }
-	:	// Deliberately match nothing, causing this rule always to be 
-		// entered.
-	;
 
 ID	:	('a'..'z'|'A'..'Z'|'_') ('a'..'z'|'A'..'Z'|'0'..'9'|'-'|'_')*
 	;
 
 STRING
-	:	'"' ( '\\' '"' | '\\' ~'"' | ~('\\'|'"') )* '"'
+	:	'"'
+		(	'\\' '"'
+		|	'\\' ~'"'
+		|	{
+			string msg = "\\n in string";
+			NoViableAltException e = new NoViableAltException("", 0, 0, input);
+			ErrorManager.SyntaxError(ErrorType.SyntaxError, e, msg, SourceName);
+			}
+			'\n'
+		|	~('\\'|'"'|'\n')
+		)*
+		'"'
 	;
 
 BIGSTRING

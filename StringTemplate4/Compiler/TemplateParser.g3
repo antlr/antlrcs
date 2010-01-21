@@ -328,16 +328,22 @@ arg :	ID '=' exprNoComma {gen.Emit(Bytecode.INSTR_STORE_ATTR, $ID.text, $ID.Star
 	|	elip='...'		   {gen.Emit(Bytecode.INSTR_SET_PASS_THRU);}
 	;
 
+/**
+expr:template()      apply template to expr
+expr:{arg | ...}     apply subtemplate to expr
+expr:(e)()           convert e to a string template name and apply to expr
+*/
 templateRef
-	:	ID			{
-					var prefixed = PrefixedName(new TemplateName($ID.text));
-					gen.Emit(Bytecode.INSTR_LOAD_STR, prefixed != null ? prefixed.FullName : null, $ID.StartIndex, $ID.StopIndex);
-					}
+	:	ID '(' ')'
+		{
+			var prefixed = PrefixedName(new TemplateName($ID.text));
+			gen.Emit(Bytecode.INSTR_LOAD_STR, prefixed != null ? prefixed.FullName : null, $ID.StartIndex, $ID.StopIndex);
+		}
 	|	subtemplate {
 					var prefixed = PrefixedName($subtemplate.name);
 					gen.Emit(Bytecode.INSTR_LOAD_STR, prefixed != null ? prefixed.FullName : null, $subtemplate.start.StartIndex, $subtemplate.start.StopIndex);
 					}
-	|	lp='(' mapExpr rp=')' {gen.Emit(Bytecode.INSTR_TOSTR, $lp.StartIndex, $rp.StartIndex);}
+	|	lp='(' mapExpr rp=')' '(' ')' {gen.Emit(Bytecode.INSTR_TOSTR, $lp.StartIndex, $rp.StartIndex);}
 	;
 
 list:	{gen.Emit(Bytecode.INSTR_LIST);} '[' listElement (',' listElement)* ']'

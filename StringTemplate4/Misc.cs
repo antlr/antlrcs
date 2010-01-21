@@ -50,20 +50,16 @@ namespace StringTemplate
             return s.Substring(n, s.Length - 2 * n);
         }
 
-        public static string TrimOneStartingWS(string s)
+        public static string TrimOneStartingNewline(string s)
         {
             if (s == null)
                 throw new ArgumentNullException("s");
 
-            // strip newline from front and back, but just one
+            // strip newline from front but just one
             if (s.StartsWith("\r\n"))
                 s = s.Substring(2);
             else if (s.StartsWith("\n"))
                 s = s.Substring(1);
-            /*
-            if ( s.endsWith("\r\n") ) s = s.substring(0,s.length()-2);
-            else if ( s.endsWith("\n") ) s = s.substring(0,s.length()-1);
-             */
             return s;
         }
 

@@ -54,5 +54,12 @@ namespace StringTemplate.Compiler
             string message = GetErrorMessage(e, tokenNames);
             ErrorManager.SyntaxError(ErrorType.SyntaxError, e, message, SourceName);
         }
+
+        public void Error(string msg)
+        {
+            NoViableAltException e = new NoViableAltException("", 0, 0, input);
+            ErrorManager.SyntaxError(ErrorType.SyntaxError, e, msg, SourceName);
+            Recover(input, null);
+        }
     }
 }

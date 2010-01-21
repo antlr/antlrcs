@@ -59,16 +59,14 @@ namespace StringTemplate
         public TemplateCompileTimeMessage(ErrorType error, IToken token, Exception innerException, string message, object arg)
             : base(error, null, innerException, arg)
         {
-            if (token == null)
-                throw new ArgumentNullException("token");
-
             this._token = token;
             this._message = message;
         }
 
         public override string ToString()
         {
-            string header = _token.Line + ":" + _token.CharPositionInLine;
+            RecognitionException re = (RecognitionException)Source;
+            string header = re.Line + ":" + re.CharPositionInLine;
             if (Argument1 == null)
                 return string.Format(ErrorType.MessageFormat, header + ": " + _message);
 

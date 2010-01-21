@@ -166,10 +166,12 @@ namespace StringTemplate
         {
             public void CompileTimeError(TemplateMessage message)
             {
+                Console.Error.WriteLine(message);
             }
 
             public void RuntimeError(TemplateMessage message)
             {
+                Console.Error.WriteLine(message);
             }
 
             public void IOError(TemplateMessage message)

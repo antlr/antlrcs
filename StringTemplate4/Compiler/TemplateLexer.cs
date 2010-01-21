@@ -332,12 +332,12 @@ namespace StringTemplate.Compiler
                         return id;
                     }
                     RecognitionException re = new NoViableAltException("", 0, 0, input);
+                    re.Line = startLine;
+                    re.CharPositionInLine = startCharPositionInLine;
                     if (c == EOF)
                     {
-                        re.Token = NewToken(EOF);
                         throw new TemplateException("EOF inside ST expression", re);
                     }
-                    re.Token = NewToken(TokenTypes.Invalid);
                     throw new TemplateException("invalid character: " + c, re);
                 }
             }

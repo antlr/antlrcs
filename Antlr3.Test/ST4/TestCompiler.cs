@@ -71,7 +71,7 @@
         [TestMethod]
         public void TestMap()
         {
-            string template = "hi <name:bold>";
+            string template = "hi <name:bold()>";
             CompiledTemplate code = new TemplateCompiler().Compile(template);
             string asmExpected =
                 "load_str 0, write, load_attr 1, load_str 2, map, write";
@@ -85,7 +85,7 @@
         [TestMethod]
         public void TestRepeatedMap()
         {
-            string template = "hi <name:bold:italics>";
+            string template = "hi <name:bold():italics()>";
             CompiledTemplate code = new TemplateCompiler().Compile(template);
             string asmExpected =
                 "load_str 0, " +
@@ -106,7 +106,7 @@
         [TestMethod]
         public void TestRotMap()
         {
-            string template = "hi <name:bold,italics>";
+            string template = "hi <name:bold(),italics()>";
             CompiledTemplate code = new TemplateCompiler().Compile(template);
             string asmExpected =
                 "load_str 0, write, load_attr 1, load_str 2, load_str 3, rot_map 2, write";

@@ -77,6 +77,23 @@ namespace AntlrUnitTests.ST4
         }
 
         [TestMethod]
+        public void TestNewlineInString()
+        {
+            String templates =
+                "foo() ::= \"\nfoo\"\n";
+            WriteFile(tmpdir, "t.stg", templates);
+
+            STGroup group = null;
+            var errors = new ErrorBuffer();
+            group = new STGroupFile(tmpdir + "/" + "t.stg");
+            ErrorManager.ErrorListener = errors;
+            group.Load(); // force load
+            String expected = "t.stg 1:11: \\n in string" + newline;
+            String result = errors.ToString();
+            Assert.AreEqual(expected, result);
+        }
+
+        [TestMethod]
         public void TestParen2()
         {
             String templates =
@@ -159,6 +176,74 @@ namespace AntlrUnitTests.ST4
             ErrorManager.ErrorListener = errors;
             group.Load(); // force load
             String expected = "1:15: 'b' came as a complete surprise to me" + newline;
+            String result = errors.ToString();
+            Assert.AreEqual(expected, result);
+        }
+
+        [TestMethod]
+        public void TestMap()
+        {
+            String templates =
+                "d ::= []\n";
+            WriteFile(tmpdir, "t.stg", templates);
+
+            STGroup group = null;
+            ErrorBuffer errors = new ErrorBuffer();
+            group = new STGroupFile(tmpdir + "/" + "t.stg");
+            ErrorManager.ErrorListener = errors;
+            group.Load(); // force load
+            String expected = "t.stg 1:7: missing dictionary entry at ']'" + newline;
+            String result = errors.ToString();
+            Assert.AreEqual(expected, result);
+        }
+
+        [TestMethod]
+        public void TestMap2()
+        {
+            String templates =
+                "d ::= [\"k\":]\n";
+            WriteFile(tmpdir, "t.stg", templates);
+
+            STGroup group = null;
+            ErrorBuffer errors = new ErrorBuffer();
+            group = new STGroupFile(tmpdir + "/" + "t.stg");
+            ErrorManager.ErrorListener = errors;
+            group.Load(); // force load
+            String expected = "t.stg 1:11: missing value for key at ']'" + newline;
+            String result = errors.ToString();
+            Assert.AreEqual(expected, result);
+        }
+
+        [TestMethod]
+        public void TestMap3()
+        {
+            String templates =
+                "d ::= [\"k\":{dfkj}}]\n"; // extra }
+            WriteFile(tmpdir, "t.stg", templates);
+
+            STGroup group = null;
+            ErrorBuffer errors = new ErrorBuffer();
+            group = new STGroupFile(tmpdir + "/" + "t.stg");
+            ErrorManager.ErrorListener = errors;
+            group.Load(); // force load
+            String expected = "t.stg 1:17: invalid character '}'" + newline;
+            String result = errors.ToString();
+            Assert.AreEqual(expected, result);
+        }
+
+        [TestMethod]
+        public void TestUnterminatedString()
+        {
+            String templates =
+                "f() ::= \""; // extra }
+            WriteFile(tmpdir, "t.stg", templates);
+
+            STGroup group = null;
+            ErrorBuffer errors = new ErrorBuffer();
+            group = new STGroupFile(tmpdir + "/" + "t.stg");
+            ErrorManager.ErrorListener = errors;
+            group.Load(); // force load
+            String expected = "t.stg 1:9: unterminated string, t.stg 1:9: missing template at '<EOF>'" + newline;
             String result = errors.ToString();
             Assert.AreEqual(expected, result);
         }

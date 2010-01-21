@@ -38,6 +38,7 @@ namespace AntlrUnitTests.ST4
     using CultureInfo = System.Globalization.CultureInfo;
     using DateTime = System.DateTime;
     using IList = System.Collections.IList;
+    using Path = System.IO.Path;
 
     [TestClass]
     public class TestRenderers : StringTemplateTestBase
@@ -48,7 +49,7 @@ namespace AntlrUnitTests.ST4
             string templates =
                     "dateThing(created) ::= \"datetime: <created>\"\n";
             WriteFile(tmpdir, "t.stg", templates);
-            TemplateGroup group = new TemplateGroupFile(tmpdir + "/t.stg");
+            TemplateGroup group = new TemplateGroupFile(Path.Combine(tmpdir, "t.stg"));
             group.RegisterRenderer(typeof(DateTime), new DateTimeRenderer());
             Template st = group.GetInstanceOf("dateThing");
             st.Add("created", new DateTime(2005, 7, 5));
@@ -63,7 +64,7 @@ namespace AntlrUnitTests.ST4
             string templates =
                     "dateThing(created) ::= << date: <created; format=\"yyyy.MM.dd\"> >>\n";
             WriteFile(tmpdir, "t.stg", templates);
-            TemplateGroup group = new TemplateGroupFile(tmpdir + "/t.stg");
+            TemplateGroup group = new TemplateGroupFile(Path.Combine(tmpdir, "t.stg"));
             group.RegisterRenderer(typeof(DateTime), new DateTimeRenderer());
             Template st = group.GetInstanceOf("dateThing");
             st.Add("created", new DateTime(2005, 7, 5));
@@ -78,7 +79,7 @@ namespace AntlrUnitTests.ST4
             string templates =
                     "dateThing(created) ::= << datetime: <created; format=\"short\"> >>\n";
             WriteFile(tmpdir, "t.stg", templates);
-            TemplateGroup group = new TemplateGroupFile(tmpdir + "/t.stg");
+            TemplateGroup group = new TemplateGroupFile(Path.Combine(tmpdir, "t.stg"));
             group.RegisterRenderer(typeof(DateTime), new DateTimeRenderer());
             Template st = group.GetInstanceOf("dateThing");
             st.Add("created", new DateTime(2005, 7, 5));
@@ -93,7 +94,7 @@ namespace AntlrUnitTests.ST4
             string templates =
                     "dateThing(created) ::= << datetime: <created; format=\"full\"> >>\n";
             WriteFile(tmpdir, "t.stg", templates);
-            TemplateGroup group = new TemplateGroupFile(tmpdir + "/t.stg");
+            TemplateGroup group = new TemplateGroupFile(Path.Combine(tmpdir, "t.stg"));
             group.RegisterRenderer(typeof(DateTime), new DateTimeRenderer());
             Template st = group.GetInstanceOf("dateThing");
             st.Add("created", new DateTime(2005, 7, 5));
@@ -109,7 +110,7 @@ namespace AntlrUnitTests.ST4
                     "dateThing(created) ::= << date: <created; format=\"date:medium\"> >>\n";
 
             WriteFile(tmpdir, "t.stg", templates);
-            TemplateGroup group = new TemplateGroupFile(tmpdir + "/t.stg");
+            TemplateGroup group = new TemplateGroupFile(Path.Combine(tmpdir, "t.stg"));
             group.RegisterRenderer(typeof(DateTime), new DateTimeRenderer());
             Template st = group.GetInstanceOf("dateThing");
             st.Add("created", new DateTime(2005, 7, 5));
@@ -125,7 +126,7 @@ namespace AntlrUnitTests.ST4
                     "dateThing(created) ::= << time: <created; format=\"time:medium\"> >>\n";
 
             WriteFile(tmpdir, "t.stg", templates);
-            TemplateGroup group = new TemplateGroupFile(tmpdir + "/t.stg");
+            TemplateGroup group = new TemplateGroupFile(Path.Combine(tmpdir, "t.stg"));
             group.RegisterRenderer(typeof(DateTime), new DateTimeRenderer());
             Template st = group.GetInstanceOf("dateThing");
             st.Add("created", new DateTime(2005, 7, 5));
@@ -141,7 +142,7 @@ namespace AntlrUnitTests.ST4
                     "foo(x) ::= << <x; format=\"%6s\"> >>\n";
 
             WriteFile(tmpdir, "t.stg", templates);
-            TemplateGroup group = new TemplateGroupFile(tmpdir + "/t.stg");
+            TemplateGroup group = new TemplateGroupFile(Path.Combine(tmpdir, "t.stg"));
             group.RegisterRenderer(typeof(string), new StringRenderer());
             Template st = group.GetInstanceOf("foo");
             st.Add("x", "hi");
@@ -157,7 +158,7 @@ namespace AntlrUnitTests.ST4
                     "foo(x,y) ::= << <x; format=\"F0\"> <y; format=\"0.000\"> >>\n";
 
             WriteFile(tmpdir, "t.stg", templates);
-            TemplateGroup group = new TemplateGroupFile(tmpdir + "/t.stg");
+            TemplateGroup group = new TemplateGroupFile(Path.Combine(tmpdir, "t.stg"));
             group.RegisterRenderer(typeof(int), new NumberRenderer());
             group.RegisterRenderer(typeof(double), new NumberRenderer());
             Template st = group.GetInstanceOf("foo");
@@ -175,7 +176,7 @@ namespace AntlrUnitTests.ST4
                     "foo(x,y) ::= << <x; format=\"N0\"> <y; format=\"0.000\"> >>\n";
 
             WriteFile(tmpdir, "t.stg", templates);
-            TemplateGroup group = new TemplateGroupFile(tmpdir + "/t.stg");
+            TemplateGroup group = new TemplateGroupFile(Path.Combine(tmpdir, "t.stg"));
             group.RegisterRenderer(typeof(int), new NumberRenderer());
             group.RegisterRenderer(typeof(double), new NumberRenderer());
             Template st = group.GetInstanceOf("foo");

@@ -98,7 +98,7 @@ namespace AntlrUnitTests.ST4
         {
             STGroup group = new STGroup();
             group.DefineTemplate(new TemplateName("a"), "[<it>]");
-            group.DefineTemplate(new TemplateName("test"), "hi <names:(templateName)>!");
+            group.DefineTemplate(new TemplateName("test"), "hi <names:(templateName)()>!");
             ST st = group.GetInstanceOf("test");
             st.Add("names", "Ter");
             st.Add("names", "Tom");

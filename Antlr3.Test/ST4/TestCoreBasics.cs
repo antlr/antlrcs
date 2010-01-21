@@ -4,6 +4,7 @@
     using StringTemplate;
     using ArrayList = System.Collections.ArrayList;
     using StringWriter = System.IO.StringWriter;
+    using Path = System.IO.Path;
 
     [TestClass]
     public class TestCoreBasics : StringTemplateTestBase
@@ -173,13 +174,31 @@
         {
             TemplateGroup group = new TemplateGroup();
             group.DefineTemplate(new TemplateName("inc"), "[<it>]");
-            group.DefineTemplate(new TemplateName("test"), "hi <name:inc>!");
+            group.DefineTemplate(new TemplateName("test"), "hi <name:inc()>!");
             Template st = group.GetInstanceOf("test");
             st.Add("name", "Ter");
             st.Add("name", "Tom");
             st.Add("name", "Sumana");
             string expected =
                 "hi [Ter][Tom][Sumana]!";
+            string result = st.Render();
+            Assert.AreEqual(expected, result);
+        }
+
+        [TestMethod]
+        public void TestMapWithExprAsTemplateName()
+        {
+            string templates =
+                "d ::= [\"foo\":\"bold\"]\n" +
+                "test() ::= \"<name:(d.foo)()>\"\n" +
+                "bold() ::= <<*<it>*>>\n";
+            WriteFile(tmpdir, "t.stg", templates);
+            var group = new TemplateGroupFile(Path.Combine(tmpdir, "t.stg"));
+            var st = group.GetInstanceOf("test");
+            st.Add("name", "Ter");
+            st.Add("name", "Tom");
+            st.Add("name", "Sumana");
+            string expected = "*Ter**Tom**Sumana*";
             string result = st.Render();
             Assert.AreEqual(expected, result);
         }
@@ -224,7 +243,7 @@
         {
             TemplateGroup group = new TemplateGroup();
             group.DefineTemplate(new TemplateName("inc"), "<i>:<it>");
-            group.DefineTemplate(new TemplateName("test"), "<name:inc; separator=\", \">");
+            group.DefineTemplate(new TemplateName("test"), "<name:inc(); separator=\", \">");
             Template st = group.GetInstanceOf("test");
             st.Add("name", "Ter");
             st.Add("name", "Tom");
@@ -241,7 +260,7 @@
         {
             TemplateGroup group = new TemplateGroup();
             group.DefineTemplate(new TemplateName("a"), "[<it>]");
-            group.DefineTemplate(new TemplateName("test"), "hi <name:a>!");
+            group.DefineTemplate(new TemplateName("test"), "hi <name:a()>!");
             Template st = group.GetInstanceOf("test");
             st.Add("name", "Ter");
             string expected = "hi [Ter]!";
@@ -255,7 +274,7 @@
             TemplateGroup group = new TemplateGroup();
             group.DefineTemplate(new TemplateName("a"), "[<it>]");
             group.DefineTemplate(new TemplateName("b"), "(<it>)");
-            group.DefineTemplate(new TemplateName("test"), "hi <name:a:b>!");
+            group.DefineTemplate(new TemplateName("test"), "hi <name:a():b()>!");
             Template st = group.GetInstanceOf("test");
             st.Add("name", "Ter");
             st.Add("name", "Tom");
@@ -272,7 +291,7 @@
             TemplateGroup group = new TemplateGroup();
             group.DefineTemplate(new TemplateName("a"), "[<it>]");
             group.DefineTemplate(new TemplateName("b"), "(<it>)");
-            group.DefineTemplate(new TemplateName("test"), "hi <name:a,b>!");
+            group.DefineTemplate(new TemplateName("test"), "hi <name:a(),b()>!");
             Template st = group.GetInstanceOf("test");
             st.Add("name", "Ter");
             st.Add("name", "Tom");

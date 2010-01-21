@@ -618,10 +618,17 @@ namespace StringTemplate
             else
             { // if only single value, just apply first template to attribute
                 Template st = group.GetInstanceOf(templates[0]);
-                SetSoleArgument(st, attr);
-                st.RawSetAttribute("i0", 0);
-                st.RawSetAttribute("i", 1);
-                operands[++sp] = st;
+                if (st != null)
+                {
+                    SetSoleArgument(st, attr);
+                    st.RawSetAttribute("i0", 0);
+                    st.RawSetAttribute("i", 1);
+                    operands[++sp] = st;
+                }
+                else
+                {
+                    operands[++sp] = Template.Blank;
+                }
                 //            map(self, attr, templates.get(1));
             }
         }

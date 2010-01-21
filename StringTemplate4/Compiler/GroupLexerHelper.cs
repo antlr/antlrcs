@@ -32,8 +32,38 @@
 
 namespace StringTemplate.Compiler
 {
+    using Path = System.IO.Path;
+    using Antlr.Runtime;
+
     partial class GroupLexer
     {
         protected internal TemplateGroup _group;
+
+        public override string SourceName
+        {
+            get
+            {
+                string fullFileName = base.SourceName;
+                return Path.GetFileName(fullFileName);
+            }
+        }
+
+        public override void ReportError(RecognitionException e)
+        {
+            string msg = null;
+            if (e is NoViableAltException)
+            {
+                msg = "invalid character '" + (char)input.LA(1) + "'";
+            }
+            else if (e is MismatchedTokenException && ((MismatchedTokenException)e).expecting == '"')
+            {
+                msg = "unterminated string";
+            }
+            else
+            {
+                msg = GetErrorMessage(e, TokenNames);
+            }
+            ErrorManager.SyntaxError(ErrorType.SyntaxError, e, msg, SourceName);
+        }
     }
 }
