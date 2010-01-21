@@ -109,7 +109,7 @@ namespace Antlr3.Tool
             }
             if ( input.LA( 1 ) == CharStreamConstants.EndOfFile )
             {
-                return Tokens.EndOfFile;
+                return new CommonToken((ICharStream)input, CharStreamConstants.EndOfFile, TokenChannels.Default, input.Index, input.Index);
             }
             int start = input.Index;
             int charPos = ( (ICharStream)input ).CharPositionInLine;
@@ -133,7 +133,7 @@ namespace Antlr3.Tool
             int stop = input.Index - 1;
             if ( token == null )
             {
-                return Tokens.EndOfFile;
+                return new CommonToken((ICharStream)input, CharStreamConstants.EndOfFile, TokenChannels.Default, start, start);
             }
             token.Line = ( ( (ICharStream)input ).Line );
             token.StartIndex = start;
