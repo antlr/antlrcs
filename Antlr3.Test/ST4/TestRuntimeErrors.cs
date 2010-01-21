@@ -203,6 +203,7 @@ namespace AntlrUnitTests.ST4
 
             WriteFile(tmpdir, "t.stg", templates);
             STGroup group = new STGroupFile(Path.Combine(tmpdir, "t.stg"));
+            group.Debug = true;
             ST st = group.GetInstanceOf("t");
             st.Render();
             String expected = "context [t, u] 1:1 attribute x isn't defined" + newline;

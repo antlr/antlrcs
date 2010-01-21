@@ -1167,12 +1167,11 @@ namespace StringTemplate
          *  the formal parameters up the enclosing chain to see if it exists;
          *  if it exists all is well, but if not, record an error.
          *
-         *  Don't do the check if tombu mode. (i.e., don't check if no formal
-         *  parameters exist).
+         *  Don't do the check unless debugging and only if not tombu mode.
          */
         protected void CheckNullAttributeAgainstFormalArguments(Template self, string name)
         {
-            if (ErrorManager.CompatibilityMode)
+            if (!group.Debug || ErrorManager.CompatibilityMode)
                 return; // ignore unknown args in tombu mode
 
             Template p = self;
