@@ -26,27 +26,6 @@
  THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
-/** Match a group of template definitions beginning
- *  with a group name declaration.  Templates are enclosed
- *  in double-quotes or <<...>> quotes for multi-line templates.
- *  Template names have arg lists that indicate the cardinality
- *  of the attribute: present, optional, zero-or-more, one-or-more.
- *  Here is a sample group file:
-
-	group nfa;
-
-	// an NFA has edges and states
-	nfa(states,edges) ::= <<
-	digraph NFA {
-	rankdir=LR;
-	<states; separator="\\n">
-	<edges; separator="\\n">
-	}
-	>>
-
-	state(name) ::= "node [shape = circle]; <name>;"
-
- */
 grammar Group;
 
 options {
@@ -67,8 +46,21 @@ group[TemplateGroup group, TemplateName prefix]
 GroupLexer lexer = (GroupLexer)input.TokenSource;
 this._group = lexer._group = $group;
 }
-	:	( templateDef[prefix] | dictDef )+
+	:	def[prefix]+
     ;
+
+/** Match template and dictionary defs outside of (...)+ loop in group.
+ *  The key is catching while still in the loop; must keep prediction of
+ *  elements separate from "stay in loop" prediction.
+ */
+def[TemplateName prefix]
+	:	templateDef[prefix]
+	|	dictDef
+	;
+catch[RecognitionException re]
+{
+	sync("garbled template definition starting at '" + input.LT(1).Text + "'");
+}
 
 public
 templateDef[TemplateName prefix]
@@ -85,6 +77,12 @@ templateDef[TemplateName prefix]
 		{IToken templateToken = input.LT(1);}
 		(	STRING     {template=$STRING.text; n=1;}
 		|	BIGSTRING  {template=$BIGSTRING.text; n=2;}
+		|	{
+			template = "";
+			string msg = "missing template at '" + input.LT(1).Text + "'";
+			NoViableAltException e = new NoViableAltException("", 0, 0, input);
+			ErrorManager.SyntaxError(ErrorType.SyntaxError, e, msg, SourceName);
+			}
 		)
 		{
 		template = Misc.Strip(template, n);
@@ -97,12 +95,13 @@ templateDef[TemplateName prefix]
 			else
 				this._group.DefineTemplate(prefix, new TemplateName($name.text), $formalArgs.args, template);
 		}
-        catch (TemplateRecognitionException e) {
-        	RecognitionException re = (RecognitionException)e.InnerException;
-        	int charPosition =
-        		re.CharPositionInLine+templateToken.CharPositionInLine+n;
-	        ErrorManager.CompileTimeError(ErrorType.SyntaxError, e.Message, templateToken.Line + ":" + charPosition);
-        }		
+		catch (TemplateException e)
+		{
+			RecognitionException re = (RecognitionException)e.InnerException;
+			re.Token.CharPositionInLine = re.CharPositionInLine + templateToken.CharPositionInLine + n;
+			re.Token.Line = re.Line + templateToken.Line - 1;
+			ErrorManager.SyntaxError(ErrorType.SyntaxError, re, e.Message);
+		}
 	    }
 	|   alias=ID '::=' target=ID	    
 	;
@@ -170,6 +169,27 @@ keyValue returns [object value]
 	|	{input.LT(1).Text.Equals("key")}?=> ID
 							{$value = TemplateGroup.DICT_KEY;}
 	|						{$value = null;}
+	;
+
+sync[string msg]
+@init
+{
+	// Consume any garbled tokens that come before the next statement
+	// or the end of the block.
+	int mark = input.Index;
+	IToken t = input.LT(1);
+	Recover(input, null);
+	if (input.Index != mark)
+	{
+		// we consumed bad tokens
+		NoViableAltException e = new NoViableAltException("", 0, 0, input);
+		e.Token = t;
+		ErrorManager.SyntaxError(ErrorType.SyntaxError, e, msg, SourceName);
+		Recover(input, null);
+	}
+}
+	:	// Deliberately match nothing, causing this rule always to be 
+		// entered.
 	;
 
 ID	:	('a'..'z'|'A'..'Z'|'_') ('a'..'z'|'A'..'Z'|'0'..'9'|'-'|'_')*

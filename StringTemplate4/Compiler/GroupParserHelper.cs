@@ -32,8 +32,27 @@
 
 namespace StringTemplate.Compiler
 {
+    using Antlr.Runtime;
+    using Path = System.IO.Path;
+
     partial class GroupParser
     {
         protected internal TemplateGroup _group;
+
+        public override string SourceName
+        {
+            get
+            {
+                string fullFileName = base.SourceName;
+                // strip to simple name
+                return Path.GetFileName(fullFileName);
+            }
+        }
+
+        public override void DisplayRecognitionError(string[] tokenNames, RecognitionException e)
+        {
+            string message = GetErrorMessage(e, tokenNames);
+            ErrorManager.SyntaxError(ErrorType.SyntaxError, e, message, SourceName);
+        }
     }
 }

@@ -156,7 +156,7 @@ namespace StringTemplate.Compiler
             if (c == x)
                 Consume();
             else
-                throw new Exception("expecting " + x + "; found " + c);
+                throw new Exception(GetErrorHeader() + "expecting " + x + "; found " + c);
         }
 
         protected void Consume()
@@ -197,7 +197,11 @@ namespace StringTemplate.Compiler
             {
                 while (c == ' ' || c == '\t')
                     Consume(); // scarf indent
-                return NewToken(INDENT);
+
+                if (c != EOF)
+                    return NewToken(INDENT);
+
+                return NewToken(TEXT);
             }
             if (c == delimiterStartChar)
             {
@@ -330,9 +334,11 @@ namespace StringTemplate.Compiler
                     RecognitionException re = new NoViableAltException("", 0, 0, input);
                     if (c == EOF)
                     {
-                        throw new TemplateRecognitionException("EOF inside ST expression", re);
+                        re.Token = NewToken(EOF);
+                        throw new TemplateException("EOF inside ST expression", re);
                     }
-                    throw new TemplateRecognitionException("invalid character: " + c, re);
+                    re.Token = NewToken(TokenTypes.Invalid);
+                    throw new TemplateException("invalid character: " + c, re);
                 }
             }
         }
@@ -617,6 +623,11 @@ namespace StringTemplate.Compiler
             t.Line = startLine;
             t.CharPositionInLine = startCharPositionInLine;
             return t;
+        }
+
+        public string GetErrorHeader()
+        {
+            return startLine + ":" + startCharPositionInLine;
         }
 
         public string SourceName

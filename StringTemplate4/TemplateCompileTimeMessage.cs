@@ -30,15 +30,49 @@
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-namespace StringTemplate.Compiler
+namespace StringTemplate
 {
     using Antlr.Runtime;
+    using ArgumentNullException = System.ArgumentNullException;
+    using Exception = System.Exception;
 
-    public class TemplateRecognitionException : TemplateException
+    public class TemplateCompileTimeMessage : TemplateMessage
     {
-        public TemplateRecognitionException(string message, RecognitionException cause)
-            : base(message, cause)
+        private IToken _token;
+        private string _message;
+
+        public TemplateCompileTimeMessage(ErrorType error, IToken token)
+            : this(error, token, null)
         {
+        }
+
+        public TemplateCompileTimeMessage(ErrorType error, IToken token, Exception innerException)
+            : this(error, token, innerException, null)
+        {
+        }
+
+        public TemplateCompileTimeMessage(ErrorType error, IToken token, Exception innerException, string message)
+            : this(error, token, innerException, message, null)
+        {
+        }
+
+        public TemplateCompileTimeMessage(ErrorType error, IToken token, Exception innerException, string message, object arg)
+            : base(error, null, innerException, arg)
+        {
+            if (token == null)
+                throw new ArgumentNullException("token");
+
+            this._token = token;
+            this._message = message;
+        }
+
+        public override string ToString()
+        {
+            string header = _token.Line + ":" + _token.CharPositionInLine;
+            if (Argument1 == null)
+                return string.Format(ErrorType.MessageFormat, header + ": " + _message);
+
+            return string.Format(ErrorType.MessageFormat, Argument1 + " " + header + ": " + _message);
         }
     }
 }

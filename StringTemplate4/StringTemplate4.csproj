@@ -57,7 +57,6 @@
     <Compile Include="Compiler\TemplateCompiler.cs" />
     <Compile Include="Compiler\TemplateException.cs" />
     <Compile Include="Compiler\TemplateLexer.cs" />
-    <Compile Include="Compiler\TemplateRecognitionException.cs" />
     <Compile Include="Coordinate.cs" />
     <Compile Include="DateTimeRenderer.cs" />
     <Compile Include="Debug\AddAttributeEvent.cs" />
@@ -85,6 +84,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="StringRenderer.cs" />
     <Compile Include="Template.cs" />
+    <Compile Include="TemplateCompileTimeMessage.cs" />
     <Compile Include="TemplateGroup.cs" />
     <Compile Include="TemplateGroupDirectory.cs" />
     <Compile Include="TemplateGroupFile.cs" />

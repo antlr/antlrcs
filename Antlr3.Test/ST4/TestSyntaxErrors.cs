@@ -55,9 +55,28 @@ namespace AntlrUnitTests.ST4
             catch (TemplateException se)
             {
                 RecognitionException re = (RecognitionException)se.InnerException;
-                result = 1 + ":" + re.CharPositionInLine + ": " + se.Message;
+                result = new TemplateCompileTimeMessage(ErrorType.SyntaxError, re.Token, se, se.Message).ToString();
             }
-            string expected = "1:0: is this a template? parser says: mismatched input ' ' expecting EndOfFile";
+            string expected = "1:0: this doesn't look like a template: \" <> \"";
+            Assert.AreEqual(expected, result);
+        }
+
+        [TestMethod]
+        public void TestEmptyExpr2()
+        {
+            String template = "hi <> ";
+            TemplateGroup group = new TemplateGroup();
+            String result = null;
+            try
+            {
+                group.DefineTemplate(new TemplateName("test"), template);
+            }
+            catch (TemplateException se)
+            {
+                RecognitionException re = (RecognitionException)se.InnerException;
+                result = new TemplateCompileTimeMessage(ErrorType.SyntaxError, re.Token, se, se.Message).ToString();
+            }
+            String expected = "1:3: doesn't look like an expression";
             Assert.AreEqual(expected, result);
         }
 
@@ -74,7 +93,7 @@ namespace AntlrUnitTests.ST4
             catch (TemplateException se)
             {
                 RecognitionException re = (RecognitionException)se.InnerException;
-                result = 1 + ":" + re.CharPositionInLine + ": " + se.Message;
+                result = new TemplateCompileTimeMessage(ErrorType.SyntaxError, re.Token, se, se.Message).ToString();
             }
             string expected = "1:4: invalid character: *";
             Assert.AreEqual(expected, result);
@@ -91,7 +110,7 @@ namespace AntlrUnitTests.ST4
             TemplateGroup group = new TemplateGroupFile(Path.Combine(tmpdir, "t.stg"));
             ErrorManager.ErrorListener = errors;
             group.Load(); // force load
-            string expected = "2:15: mismatched input '<' expecting EOF";
+            String expected = "1:15: doesn't look like an expression" + newline;
             string result = errors.ToString();
             Assert.AreEqual(expected, result);
         }
@@ -108,7 +127,7 @@ namespace AntlrUnitTests.ST4
             TemplateGroup group = new TemplateGroupFile(Path.Combine(tmpdir, "t.stg"));
             ErrorManager.ErrorListener = errors;
             group.Load(); // force load
-            string expected = "2:14: mismatched input '<' expecting EOF"; // TODO: terrible err message
+            String expected = "1:14: doesn't look like an expression" + newline;
             string result = errors.ToString();
             Assert.AreEqual(expected, result);
         }
@@ -125,8 +144,42 @@ namespace AntlrUnitTests.ST4
             group = new TemplateGroupFile(Path.Combine(tmpdir, "t.stg"));
             ErrorManager.ErrorListener = errors;
             group.Load(); // force load
-            string expected = "2:29: no viable alternative at input '!'";
+            String expected = "1:29: '!' came as a complete surprise to me" + newline;
             string result = errors.ToString();
+            Assert.AreEqual(expected, result);
+        }
+
+        [TestMethod]
+        public void TestEOFInExpr()
+        {
+            String templates =
+                "foo() ::= \"hi <name:{[<aaa.bb>]}\"\n";
+            WriteFile(tmpdir, "t.stg", templates);
+
+            TemplateGroup group = null;
+            var errors = new ErrorBuffer();
+            group = new TemplateGroupFile(Path.Combine(tmpdir, "t.stg"));
+            ErrorManager.ErrorListener = errors;
+            group.Load(); // force load
+            String expected = "1:32: premature EOF" + newline;
+            String result = errors.ToString();
+            Assert.AreEqual(expected, result);
+        }
+
+        [TestMethod]
+        public void TestMissingRPAREN()
+        {
+            String templates =
+                "foo() ::= \"hi <foo(>\"\n";
+            WriteFile(tmpdir, "t.stg", templates);
+
+            TemplateGroup group = null;
+            var errors = new ErrorBuffer();
+            group = new TemplateGroupFile(Path.Combine(tmpdir, "t.stg"));
+            ErrorManager.ErrorListener = errors;
+            group.Load(); // force load
+            String expected = "1:19: mismatched input '>' expecting RPAREN" + newline;
+            String result = errors.ToString();
             Assert.AreEqual(expected, result);
         }
     }

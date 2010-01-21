@@ -32,7 +32,7 @@
             StringBuilder buf = new StringBuilder();
             foreach (TemplateMessage m in errors)
             {
-                buf.Append(m.ToString());
+                buf.AppendLine(m.ToString());
             }
             return buf.ToString();
         }

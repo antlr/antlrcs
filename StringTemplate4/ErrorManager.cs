@@ -38,6 +38,7 @@ namespace StringTemplate
     using ThreadStatic = System.ThreadStaticAttribute;
     using StringTemplate.Compiler;
     using Type = System.Type;
+    using Antlr.Runtime;
 
     public static class ErrorManager
     {
@@ -104,6 +105,16 @@ namespace StringTemplate
         public static void CompileTimeError(ErrorType error, object arg1, object arg2)
         {
             ErrorListener.CompileTimeError(new TemplateMessage(error, null, null, arg1, arg2));
+        }
+
+        public static void SyntaxError(ErrorType error, RecognitionException e, string msg)
+        {
+            ErrorListener.CompileTimeError(new TemplateCompileTimeMessage(error, e.Token, e, msg));
+        }
+
+        public static void SyntaxError(ErrorType error, RecognitionException e, string msg, object arg)
+        {
+            ErrorListener.CompileTimeError(new TemplateCompileTimeMessage(error, e.Token, e, msg, arg));
         }
 
         public static void RuntimeError(Template template, int ip, ErrorType error)

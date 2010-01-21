@@ -142,11 +142,7 @@ namespace StringTemplate.Compiler
             }
             catch (RecognitionException re)
             {
-                string msg = parser.GetErrorMessage(re, parser.TokenNames);
-                if (tokens.LA(1) != TemplateLexer.LDELIM)
-                    throw new TemplateRecognitionException("is this a template? parser says: " + msg, re);
-                else
-                    throw new TemplateRecognitionException(msg, re);
+                ThrowTemplateException(tokens, parser, re);
             }
 
             if (strings != null)
@@ -170,9 +166,7 @@ namespace StringTemplate.Compiler
             }
             catch (RecognitionException re)
             {
-                string msg = parser.GetErrorMessage(re, parser.TokenNames);
-                Console.Error.WriteLine(re.StackTrace);
-                throw new TemplateRecognitionException(msg, re);
+                ThrowTemplateException(tokens, parser, re);
             }
 
             if (strings != null)
@@ -183,6 +177,34 @@ namespace StringTemplate.Compiler
             Array.Copy(instrs, 0, code.instrs, 0, code.codeSize);
             Array.Copy(sourceMap, 0, code.sourceMap, 0, code.codeSize);
             return code;
+        }
+
+        protected void ThrowTemplateException(ITokenStream tokens, TemplateParser parser, RecognitionException re)
+        {
+            string msg = parser.GetErrorMessage(re, parser.TokenNames);
+            //String hdr = parser.getErrorHeader(re);
+            if (re.Token.Type == TemplateLexer.EOF_TYPE)
+            {
+                throw new TemplateException("premature EOF", re);
+            }
+            else if (re is NoViableAltException)
+            {
+                throw new TemplateException("'" + re.Token.Text + "' came as a complete surprise to me", re);
+            }
+            else if (tokens.Index == 0)
+            {
+                // couldn't parse anything
+                throw new TemplateException("this doesn't look like a template: \"" + tokens + "\"", re);
+            }
+            else if (tokens.LA(1) == TemplateLexer.LDELIM)
+            {
+                // couldn't parse anything
+                throw new TemplateException("doesn't look like an expression", re);
+            }
+            else
+            {
+                throw new TemplateException(msg, re);
+            }
         }
 
         public int DefineString(string s)

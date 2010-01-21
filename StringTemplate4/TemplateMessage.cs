@@ -40,9 +40,6 @@ namespace StringTemplate
         /** if in debug mode, has create instance, add attr events and eval
          *  template events.
          */
-        private ErrorType error;
-        private object arg1;
-        private object arg2;
 
         public TemplateMessage(ErrorType error)
             : this(error, null, null, null, null)
@@ -66,11 +63,29 @@ namespace StringTemplate
 
         public TemplateMessage(ErrorType error, Template template, Exception source, object arg1, object arg2)
         {
-            this.error = error;
+            this.ErrorType = error;
             this.Template = template;
             this.Source = source;
-            this.arg1 = arg1;
-            this.arg2 = arg2;
+            this.Argument1 = arg1;
+            this.Argument2 = arg2;
+        }
+
+        public ErrorType ErrorType
+        {
+            get;
+            private set;
+        }
+
+        public object Argument1
+        {
+            get;
+            private set;
+        }
+
+        public object Argument2
+        {
+            get;
+            private set;
         }
 
         public Template Template
@@ -83,7 +98,7 @@ namespace StringTemplate
         {
             get
             {
-                return string.Format(error.MessageFormat, arg1, arg2);
+                return string.Format(ErrorType.MessageFormat, Argument1, Argument2);
             }
         }
 
@@ -96,7 +111,6 @@ namespace StringTemplate
         public override string ToString()
         {
             StringBuilder builder = new StringBuilder(Message);
-            builder.AppendLine();
 
             if (Source != null)
             {

@@ -54,6 +54,7 @@
     <Compile Include="ST4\TestFunctions.cs" />
     <Compile Include="ST4\TestGroups.cs" />
     <Compile Include="ST4\TestGroupSyntax.cs" />
+    <Compile Include="ST4\TestGroupSyntaxErrors.cs" />
     <Compile Include="ST4\TestImports.cs" />
     <Compile Include="ST4\TestIndentation.cs" />
     <Compile Include="ST4\TestIndirectionAndEarlyEvaluation.cs" />
