@@ -103,7 +103,8 @@ namespace AntlrUnitTests.ST4
             WriteFile(tmpdir, "t.stg", templates);
             STGroup group = new STGroupFile(Path.Combine(tmpdir, "t.stg"));
 
-            ST x = new ST(group, "<\\n>{ <stuff; anchor, separator=\",\\n\"> }<\\n>");
+            ST x = new ST("<\\n>{ <stuff; anchor, separator=\",\\n\"> }<\\n>");
+            x.groupThatCreatedThisInstance = group;
             x.Add("stuff", "1");
             x.Add("stuff", "2");
             x.Add("stuff", "3");

@@ -243,7 +243,9 @@ namespace AntlrUnitTests.ST4
             group = new STGroupFile(tmpdir + "/" + "t.stg");
             ErrorManager.ErrorListener = errors;
             group.Load(); // force load
-            String expected = "t.stg 1:9: unterminated string, t.stg 1:9: missing template at '<EOF>'" + newline;
+            String expected =
+                "t.stg 1:9: unterminated string" + newline +
+                "t.stg 1:9: missing template at '<EOF>'" + newline;
             String result = errors.ToString();
             Assert.AreEqual(expected, result);
         }

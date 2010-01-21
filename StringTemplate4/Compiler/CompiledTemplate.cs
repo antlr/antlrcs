@@ -48,7 +48,7 @@ namespace StringTemplate.Compiler
         public int embeddedStart = -1;
         public int embeddedStop = -1;
 
-        protected internal IDictionary<string, FormalArgument> formalArguments;
+        protected internal IDictionary<string, FormalArgument> formalArguments = FormalArgument.Unknown;
 
         protected internal List<CompiledTemplate> implicitlyDefinedTemplates;
 

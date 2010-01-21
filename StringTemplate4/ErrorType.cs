@@ -36,6 +36,7 @@ namespace StringTemplate
     {
         // RUNTIME SEMANTIC ERRORS
         public static readonly ErrorType NoSuchTemplate = new ErrorType("no such template: {0}");
+        public static readonly ErrorType CantSetAttribute = new ErrorType("can't set attribute {0}; template {1} has no such attribute");
         public static readonly ErrorType NoImportedTemplate = new ErrorType("no such template: super.{0}");
         public static readonly ErrorType NO_ATTRIBUTE_DEFINITION = new ErrorType("attribute {0} isn't defined");
         public static readonly ErrorType ExpectingSingleArgument = new ErrorType("expecting single arg in template reference {0} (not {1} args)");

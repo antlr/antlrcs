@@ -43,7 +43,7 @@ namespace AntlrUnitTests.ST4
     using StringTemplate;
 
     [TestClass]
-    public class TestRuntimeErrors : StringTemplateTestBase
+    public class TestInterptimeErrors : StringTemplateTestBase
     {
         public class UserHiddenName
         {

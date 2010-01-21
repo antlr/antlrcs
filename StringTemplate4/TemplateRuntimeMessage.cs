@@ -39,7 +39,7 @@ namespace StringTemplate
     public class TemplateRuntimeMessage : TemplateMessage
     {
         /** Where error occurred in bytecode memory */
-        private int ip;
+        private int ip = -1;
 
         public TemplateRuntimeMessage(ErrorType error, int ip)
             : this(error, ip, null)
@@ -72,6 +72,9 @@ namespace StringTemplate
          */
         public string GetSourceLocation()
         {
+            if (ip < 0)
+                return string.Empty;
+
             Interval I = Template.code.sourceMap[ip];
             if (I == null)
                 return null;

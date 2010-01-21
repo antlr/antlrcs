@@ -50,11 +50,11 @@ namespace StringTemplate
         {
         }
 
-        public string Name
+        public override TemplateName Name
         {
             get
             {
-                return "blank";
+                return new TemplateName("blank");
             }
         }
 

@@ -33,6 +33,27 @@
         }
 
         [TestMethod]
+        public void TestSetUnknownAttr()
+        {
+            string templates =
+                "t() ::= <<hi <name>!>>\n";
+            ErrorBuffer errors = new ErrorBuffer();
+            ErrorManager.ErrorListener = errors;
+            WriteFile(tmpdir, "t.stg", templates);
+            TemplateGroup group = new TemplateGroupFile(Path.Combine(tmpdir, "t.stg"));
+            var st = group.GetInstanceOf("t");
+            st.Add("name", "Ter");
+            string expected = "hi Ter!";
+            string result = st.Render();
+            Assert.AreEqual(expected, result);
+
+            // check error now
+            expected = "context [t]  can't set attribute name; template t has no such attribute" + newline;
+            result = errors.ToString();
+            Assert.AreEqual(expected, result);
+        }
+
+        [TestMethod]
         public void TestMultiAttr()
         {
             string template = "hi <name>!";

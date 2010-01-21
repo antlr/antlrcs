@@ -98,15 +98,22 @@ namespace StringTemplate
         }
 
         public Template(string template)
-            : this(TemplateGroup.defaultGroup, template)
+            //: this(TemplateGroup.defaultGroup, template)
         {
+            //code = TemplateGroup.defaultGroup.DefineTemplate(UnknownName, template);
+            groupThatCreatedThisInstance = TemplateGroup.defaultGroup;
+            code = groupThatCreatedThisInstance.Compile(TemplateName.Root, null, template);
+            code.Name = UnknownName;
+            groupThatCreatedThisInstance.DefineImplicitlyDefinedTemplates(code);
         }
 
+#if false
         public Template(TemplateGroup nativeGroup, string template)
         {
             code = nativeGroup.DefineTemplate(UnknownName, template);
             groupThatCreatedThisInstance = nativeGroup;
         }
+#endif
 
         public IDictionary<string, object> Attributes
         {
@@ -141,7 +148,7 @@ namespace StringTemplate
             }
         }
 
-        public TemplateName Name
+        public virtual TemplateName Name
         {
             get
             {
@@ -164,7 +171,9 @@ namespace StringTemplate
 
             object curvalue = null;
             if (attributes == null || !attributes.ContainsKey(name))
-            { // new attribute
+            {
+                // new attribute
+                CheckAttributeExists(name);
                 RawSetAttribute(name, value);
                 return;
             }
@@ -199,6 +208,15 @@ namespace StringTemplate
                 attributes = new Dictionary<string, object>();
 
             attributes[name] = value;
+        }
+
+        protected internal void CheckAttributeExists(string name)
+        {
+            if (code.formalArguments == FormalArgument.Unknown)
+                return;
+
+            if (code.formalArguments == null || !code.formalArguments.ContainsKey(name))
+                ErrorManager.RuntimeError(this, -1, ErrorType.CantSetAttribute, name, Name);
         }
 
         /** Find an attr with dynamic scoping up enclosing ST chain.
@@ -289,7 +307,7 @@ namespace StringTemplate
             foreach (var st in templates)
             {
                 if (i > 0)
-                    builder.Append(", ");
+                    builder.Append(" ");
 
                 builder.Append(st.Name);
                 i++;

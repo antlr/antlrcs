@@ -212,17 +212,17 @@ namespace StringTemplate
         // TODO: send in start/stop char or line/col so errors can be relative
         public CompiledTemplate DefineTemplate(TemplateName name, string template)
         {
-            return DefineTemplate(TemplateName.Root, name, null, template);
+            return DefineTemplate(TemplateName.Root, name, FormalArgument.Unknown, template);
         }
 
         public virtual CompiledTemplate DefineTemplate(TemplateName name,
                                          List<string> args,
                                          string template)
         {
-            IDictionary<string, FormalArgument> margs =
-                new Dictionary<string, FormalArgument>();
-            foreach (string a in args)
-                margs[a] = new FormalArgument(a);
+            IDictionary<string, FormalArgument> margs = null;
+            if (args != null)
+                margs = args.ToDictionary(arg => arg, arg => new FormalArgument(arg));
+
             return DefineTemplate(TemplateName.Root, name, margs, template);
         }
 
@@ -230,10 +230,10 @@ namespace StringTemplate
                                          string[] args,
                                          string template)
         {
-            IDictionary<string, FormalArgument> margs =
-                new Dictionary<string, FormalArgument>();
-            foreach (string a in args)
-                margs[a] = new FormalArgument(a);
+            IDictionary<string, FormalArgument> margs = null;
+            if (args != null)
+                margs = args.ToDictionary(arg => arg, arg => new FormalArgument(arg));
+
             return DefineTemplate(TemplateName.Root, name, margs, template);
         }
 
@@ -281,7 +281,7 @@ namespace StringTemplate
             return code;
         }
 
-        protected void DefineImplicitlyDefinedTemplates(CompiledTemplate code)
+        protected internal void DefineImplicitlyDefinedTemplates(CompiledTemplate code)
         {
             if (code.implicitlyDefinedTemplates != null)
             {
@@ -317,7 +317,7 @@ namespace StringTemplate
             templates[name] = code;
         }
 
-        protected CompiledTemplate Compile(TemplateName prefix, TemplateName enclosingTemplateName, string template)
+        protected internal CompiledTemplate Compile(TemplateName prefix, TemplateName enclosingTemplateName, string template)
         {
             TemplateCompiler c = new TemplateCompiler(prefix, enclosingTemplateName);
             CompiledTemplate code = c.Compile(template);

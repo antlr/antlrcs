@@ -33,10 +33,12 @@
 namespace StringTemplate.Compiler
 {
     using Antlr.Runtime;
+    using System.Collections.Generic;
 
     public class FormalArgument
     {
         // the following represent bit positions emulating a cardinality bitset.
+#if false
         public static readonly int OPTIONAL = 1;     // a?
         public static readonly int REQUIRED = 2;     // a
         public static readonly int ZERO_OR_MORE = 4; // a*
@@ -53,9 +55,17 @@ namespace StringTemplate.Compiler
         null,
         "+"
     };
+        //protected int cardinality = REQUIRED;
+#endif
+
+        /** When template arguments are not available such as when the user
+         *  uses "new ST(...)", then the list of formal arguments
+         *  must be distinguished from the case where a template can specify
+         *  args and there just aren't any such as the t() template above.
+         */
+        public static readonly IDictionary<string, FormalArgument> Unknown = new Dictionary<string, FormalArgument>();
 
         public string name;
-        //protected int cardinality = REQUIRED;
 
         /** If they specified name="value", store the template here */
         public IToken defaultValueToken;

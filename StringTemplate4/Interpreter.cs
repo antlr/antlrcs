@@ -218,26 +218,14 @@ namespace StringTemplate
                     ip += 2;
                     o = operands[sp--];    // value to store
                     st = (Template)operands[sp]; // store arg in Template on top of stack
+                    st.CheckAttributeExists(name);
                     st.RawSetAttribute(name, o);
                     break;
                 case Bytecode.INSTR_STORE_SOLE_ARG:
                     // unnamed arg, set to sole arg (or first if multiple)
                     o = operands[sp--];    // value to store
                     st = (Template)operands[sp]; // store arg in Template on top of stack
-                    int nargs = 0;
-                    if (st.code.formalArguments != null)
-                    {
-                        nargs = st.code.formalArguments.Count;
-                    }
-                    if (nargs != 1)
-                    {
-                        ErrorManager.RuntimeError(self, current_ip, ErrorType.ExpectingSingleArgument, st, nargs);
-                    }
-                    else
-                    {
-                        name = st.code.formalArguments.Keys.First();
-                        st.RawSetAttribute(name, o);
-                    }
+                    SetSoleArgument(self, st, o);
                     break;
                 case Bytecode.INSTR_SET_PASS_THRU:
                     st = (Template)operands[sp]; // Template on top of stack
@@ -605,7 +593,7 @@ namespace StringTemplate
                     ti++;
                     TemplateName name = templates[templateIndex];
                     Template st = group.GetEmbeddedInstanceOf(self, current_ip, name);
-                    SetSoleArgument(st, iterValue);
+                    SetSoleArgument(self, st, iterValue);
                     st.RawSetAttribute("i0", i0);
                     st.RawSetAttribute("i", i);
                     mapped.Add(st);
@@ -620,7 +608,7 @@ namespace StringTemplate
                 Template st = group.GetInstanceOf(templates[0]);
                 if (st != null)
                 {
-                    SetSoleArgument(st, attr);
+                    SetSoleArgument(self, st, attr);
                     st.RawSetAttribute("i0", 0);
                     st.RawSetAttribute("i", 1);
                     operands[++sp] = st;
@@ -691,6 +679,7 @@ namespace StringTemplate
                         {
                             string argName = (string)formalArgumentNames[a];
                             object iteratedValue = it.Current;
+                            embedded.CheckAttributeExists(argName);
                             embedded.RawSetAttribute(argName, iteratedValue);
                         }
                         else
@@ -707,17 +696,24 @@ namespace StringTemplate
             }
         }
 
-        protected void SetSoleArgument(Template st, object attr)
+        protected void SetSoleArgument(Template self, Template st, object attr)
         {
+            string name = "it";
+            int nargs = 0;
             if (st.code.formalArguments != null)
             {
-                string arg = st.code.formalArguments.Keys.First();
-                st.RawSetAttribute(arg, attr);
+                nargs = st.code.formalArguments.Count;
             }
-            else
+
+            if (nargs > 0)
             {
-                st.RawSetAttribute("it", attr);
+                if (nargs != 1)
+                    ErrorManager.RuntimeError(self, current_ip, ErrorType.ExpectingSingleArgument, st, nargs);
+
+                name = st.code.formalArguments.Keys.First();
             }
+
+            st.RawSetAttribute(name, attr);
         }
 
         protected void AddToList(List<object> list, object o)
@@ -1167,11 +1163,11 @@ namespace StringTemplate
          *  the formal parameters up the enclosing chain to see if it exists;
          *  if it exists all is well, but if not, record an error.
          *
-         *  Don't do the check unless debugging and only if not tombu mode.
+         *  Don't generate error if template has no formal arguments.
          */
         protected void CheckNullAttributeAgainstFormalArguments(Template self, string name)
         {
-            if (!group.Debug || ErrorManager.CompatibilityMode)
+            if (self.code.formalArguments == FormalArgument.Unknown)
                 return; // ignore unknown args in tombu mode
 
             Template p = self;

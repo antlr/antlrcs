@@ -58,6 +58,7 @@
     <Compile Include="ST4\TestImports.cs" />
     <Compile Include="ST4\TestIndentation.cs" />
     <Compile Include="ST4\TestIndirectionAndEarlyEvaluation.cs" />
+    <Compile Include="ST4\TestInterptimeErrors.cs" />
     <Compile Include="ST4\TestLexer.cs" />
     <Compile Include="ST4\TestLineWrap.cs" />
     <Compile Include="ST4\TestLists.cs" />
@@ -65,7 +66,6 @@
     <Compile Include="ST4\TestOptions.cs" />
     <Compile Include="ST4\TestRegions.cs" />
     <Compile Include="ST4\TestRenderers.cs" />
-    <Compile Include="ST4\TestRuntimeErrors.cs" />
     <Compile Include="ST4\TestSubtemplates.cs" />
     <Compile Include="ST4\TestSyntaxErrors.cs" />
     <Compile Include="ST4\TestWhitespace.cs" />

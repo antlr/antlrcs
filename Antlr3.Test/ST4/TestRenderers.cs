@@ -195,7 +195,8 @@ namespace AntlrUnitTests.ST4
                     "The names: <names; format=\"upper\">";
             TemplateGroup group = new TemplateGroup();
             group.RegisterRenderer(typeof(string), new StringRenderer());
-            Template st = new Template(group, template);
+            Template st = new Template(template);
+            st.groupThatCreatedThisInstance = group;
             st.Add("names", "ter");
             st.Add("names", "tom");
             st.Add("names", "sriram");
@@ -211,7 +212,8 @@ namespace AntlrUnitTests.ST4
                     "The names: <names; separator=\" and \", format=\"upper\">";
             TemplateGroup group = new TemplateGroup();
             group.RegisterRenderer(typeof(string), new StringRenderer());
-            Template st = new Template(group, template);
+            Template st = new Template(template);
+            st.groupThatCreatedThisInstance = group;
             st.Add("names", "ter");
             st.Add("names", "tom");
             st.Add("names", "sriram");
@@ -227,7 +229,8 @@ namespace AntlrUnitTests.ST4
                     "The names: <names; separator=\" and \", null=\"n/a\", format=\"upper\">";
             TemplateGroup group = new TemplateGroup();
             group.RegisterRenderer(typeof(string), new StringRenderer());
-            Template st = new Template(group, template);
+            Template st = new Template(template);
+            st.groupThatCreatedThisInstance = group;
             IList names = new ArrayList();
             names.Add("ter");
             names.Add(null);
