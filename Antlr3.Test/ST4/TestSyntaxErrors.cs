@@ -55,7 +55,7 @@ namespace AntlrUnitTests.ST4
             catch (TemplateException se)
             {
                 RecognitionException re = (RecognitionException)se.InnerException;
-                result = new TemplateCompileTimeMessage(ErrorType.SyntaxError, re.Token, re, se.Message).ToString();
+                result = new TemplateSyntaxErrorMessage(ErrorType.SyntaxError, re.Token, re, se.Message).ToString();
             }
             string expected = "1:0: this doesn't look like a template: \" <> \"";
             Assert.AreEqual(expected, result);
@@ -74,7 +74,7 @@ namespace AntlrUnitTests.ST4
             catch (TemplateException se)
             {
                 RecognitionException re = (RecognitionException)se.InnerException;
-                result = new TemplateCompileTimeMessage(ErrorType.SyntaxError, re.Token, re, se.Message).ToString();
+                result = new TemplateSyntaxErrorMessage(ErrorType.SyntaxError, re.Token, re, se.Message).ToString();
             }
             String expected = "1:3: doesn't look like an expression";
             Assert.AreEqual(expected, result);
@@ -93,7 +93,7 @@ namespace AntlrUnitTests.ST4
             catch (TemplateException se)
             {
                 RecognitionException re = (RecognitionException)se.InnerException;
-                result = new TemplateCompileTimeMessage(ErrorType.SyntaxError, re.Token, re, se.Message).ToString();
+                result = new TemplateSyntaxErrorMessage(ErrorType.SyntaxError, re.Token, re, se.Message).ToString();
             }
             string expected = "1:4: invalid character: *";
             Assert.AreEqual(expected, result);

@@ -101,24 +101,26 @@ namespace StringTemplate.Compiler
         public const short INSTR_ADD = 22;
         public const short INSTR_TOSTR = 23;
         // Predefined functions
-        public const short INSTR_NOOP = 24; // do nothing
-        public const short INSTR_FIRST = 25;
-        public const short INSTR_LAST = 26;
-        public const short INSTR_REST = 27;
-        public const short INSTR_TRUNC = 28;
-        public const short INSTR_STRIP = 29;
-        public const short INSTR_TRIM = 30;
-        public const short INSTR_LENGTH = 31;
-        public const short INSTR_STRLEN = 32;
-        public const short INSTR_REVERSE = 33;
+        public const short INSTR_FIRST = 24;
+        public const short INSTR_LAST = 25;
+        public const short INSTR_REST = 26;
+        public const short INSTR_TRUNC = 27;
+        public const short INSTR_STRIP = 28;
+        public const short INSTR_TRIM = 29;
+        public const short INSTR_LENGTH = 30;
+        public const short INSTR_STRLEN = 31;
+        public const short INSTR_REVERSE = 32;
 
-        public const short INSTR_NOT = 34;
-        public const short INSTR_OR = 35;
-        public const short INSTR_AND = 36;
+        public const short INSTR_NOT = 33;
+        public const short INSTR_OR = 34;
+        public const short INSTR_AND = 35;
 
-        public const short INSTR_INDENT = 37;
-        public const short INSTR_DEDENT = 38;
-        public const short INSTR_NEWLINE = 39;
+        public const short INSTR_INDENT = 36;
+        public const short INSTR_DEDENT = 37;
+        public const short INSTR_NEWLINE = 38;
+
+        public const short INSTR_NOOP = 39; // do nothing
+        public const short INSTR_POP = 40;
 
         /** Used for assembly/disassembly; describes instruction set */
         // START: instr
@@ -149,7 +151,6 @@ namespace StringTemplate.Compiler
                 new Instruction("list"),
                 new Instruction("add"),
                 new Instruction("tostr"),
-                new Instruction("noop"),
                 new Instruction("first"),
                 new Instruction("last"),
                 new Instruction("rest"),
@@ -164,7 +165,9 @@ namespace StringTemplate.Compiler
                 new Instruction("and"),
                 new Instruction("indent", STRING),
                 new Instruction("dedent"),
-                new Instruction("newline")
+                new Instruction("newline"),
+                new Instruction("noop"),
+                new Instruction("pop")
             };
         // END: instr
     }

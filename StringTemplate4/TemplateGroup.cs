@@ -209,12 +209,13 @@ namespace StringTemplate
             return dictionary;
         }
 
-        // TODO: send in start/stop char or line/col so errors can be relative
+        // for testing
         public CompiledTemplate DefineTemplate(TemplateName name, string template)
         {
-            return DefineTemplate(TemplateName.Root, name, FormalArgument.Unknown, template);
+            return DefineTemplate(TemplateName.Root, new CommonToken(GroupParser.ID, name.Name), FormalArgument.Unknown, template);
         }
 
+#if false
         public virtual CompiledTemplate DefineTemplate(TemplateName name,
                                          List<string> args,
                                          string template)
@@ -226,7 +227,7 @@ namespace StringTemplate
             return DefineTemplate(TemplateName.Root, name, margs, template);
         }
 
-        public virtual CompiledTemplate DefineTemplate(TemplateName name,
+        public virtual CompiledTemplate DefineTemplate(IToken nameToken,
                                          string[] args,
                                          string template)
         {
@@ -234,19 +235,21 @@ namespace StringTemplate
             if (args != null)
                 margs = args.ToDictionary(arg => arg, arg => new FormalArgument(arg));
 
-            return DefineTemplate(TemplateName.Root, name, margs, template);
+            return DefineTemplate(TemplateName.Root, nameToken, margs, template);
         }
+#endif
 
         // can't trap recog errors here; don't know where in file template is defined
-        public virtual CompiledTemplate DefineTemplate(TemplateName prefix, TemplateName name, IDictionary<string, FormalArgument> args, string template)
+        public virtual CompiledTemplate DefineTemplate(TemplateName prefix, IToken nameToken, IDictionary<string, FormalArgument> args, string template)
         {
-            if (name == null)
-                throw new ArgumentNullException("name");
+            if (nameToken == null)
+                throw new ArgumentNullException("nameToken");
 
+            TemplateName name = new TemplateName(nameToken.Text);
             CompiledTemplate code = Compile(prefix, name, template);
             code.Name = name;
             code.formalArguments = args;
-            RawDefineTemplate(TemplateName.Combine(prefix, name), code);
+            RawDefineTemplate(TemplateName.Combine(prefix, name), code, nameToken);
             if (args != null)
             { // compile any default args
                 foreach (string a in args.Keys)
@@ -268,16 +271,33 @@ namespace StringTemplate
             return code;
         }
 
+        /** Make name and alias for target.  Replace any previous def of name */
+        public CompiledTemplate DefineTemplateAlias(IToken aliasToken, IToken targetToken)
+        {
+            TemplateName alias = new TemplateName(aliasToken.Text);
+            TemplateName target = new TemplateName(targetToken.Text);
+            CompiledTemplate targetCode;
+            if (!templates.TryGetValue(target, out targetCode))
+            {
+                NoViableAltException e = null;
+                ErrorManager.SyntaxError(ErrorType.AliasTargetUndefined, e, alias.Name, target.Name);
+                return null;
+            }
+            templates[alias] = targetCode;
+            return targetCode;
+        }
+
         public CompiledTemplate DefineRegion(TemplateName prefix,
                                              TemplateName enclosingTemplateName,
-                                             string name,
+                                             IToken regionToken,
                                              string template)
         {
+            string name = regionToken.Text;
             CompiledTemplate code = Compile(prefix, enclosingTemplateName, template);
             code.Name = TemplateName.Combine(prefix, GetMangledRegionName(enclosingTemplateName, name));
             code.isRegion = true;
             code.regionDefType = Template.RegionType.Explicit;
-            RawDefineTemplate(code.Name, code);
+            RawDefineTemplate(code.Name, code, regionToken);
             return code;
         }
 
@@ -287,30 +307,30 @@ namespace StringTemplate
             {
                 foreach (CompiledTemplate sub in code.implicitlyDefinedTemplates)
                 {
-                    RawDefineTemplate(sub.Name, sub);
+                    RawDefineTemplate(sub.Name, sub, null);
                     DefineImplicitlyDefinedTemplates(sub);
                 }
             }
         }
 
-        protected void RawDefineTemplate(TemplateName name, CompiledTemplate code)
+        protected void RawDefineTemplate(TemplateName name, CompiledTemplate code, IToken definingToken)
         {
             CompiledTemplate prev;
             if (templates.TryGetValue(name, out prev))
             {
                 if (!prev.isRegion)
                 {
-                    ErrorManager.CompileTimeError(ErrorType.TemplateRedefinition, name);
+                    ErrorManager.CompileTimeError(ErrorType.TemplateRedefinition, definingToken);
                     return;
                 }
                 if (prev.isRegion && prev.regionDefType == Template.RegionType.Embedded)
                 {
-                    ErrorManager.CompileTimeError(ErrorType.EmbeddedRegionRedefinition, GetUnmangledTemplateName(name));
+                    ErrorManager.CompileTimeError(ErrorType.EmbeddedRegionRedefinition, definingToken, GetUnmangledTemplateName(name));
                     return;
                 }
                 else if (prev.isRegion && prev.regionDefType == Template.RegionType.Explicit)
                 {
-                    ErrorManager.CompileTimeError(ErrorType.RegionRedefinition, GetUnmangledTemplateName(name));
+                    ErrorManager.CompileTimeError(ErrorType.RegionRedefinition, definingToken, GetUnmangledTemplateName(name));
                     return;
                 }
             }
@@ -339,8 +359,8 @@ namespace StringTemplate
         public static string GetUnmangledTemplateName(TemplateName mangledName)
         {
             string name = mangledName.Name;
-            string t = name.Substring("region__".Length, name.LastIndexOf("__") - "region__".Length + 1);
-            string r = name.Substring(name.LastIndexOf("__") + 2, name.Length - name.LastIndexOf("__") + 2 + 1);
+            string t = name.Substring("region__".Length, name.LastIndexOf("__") - "region__".Length);
+            string r = name.Substring(name.LastIndexOf("__") + 2);
             return t + '.' + r;
         }
 

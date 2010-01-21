@@ -318,6 +318,8 @@ namespace StringTemplate.Compiler
             TemplateCompiler c = new TemplateCompiler(templatePathPrefix, enclosingTemplateName);
             CompiledTemplate sub = c.Compile(input, state);
             TemplateName fullName = TemplateName.Combine(templatePathPrefix, TemplateGroup.GetMangledRegionName(enclosingTemplateName, regionName));
+            sub.isRegion = true;
+            sub.regionDefType = Template.RegionType.Embedded;
             sub.Name = fullName;
             if (code.implicitlyDefinedTemplates == null)
             {

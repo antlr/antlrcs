@@ -94,6 +94,7 @@
     <Compile Include="TemplateMessage.cs" />
     <Compile Include="TemplateName.cs" />
     <Compile Include="TemplateRuntimeMessage.cs" />
+    <Compile Include="TemplateSyntaxErrorMessage.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\Antlr3\Key.snk">

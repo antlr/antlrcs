@@ -97,9 +97,9 @@ templateDef[TemplateName prefix]
 		}
 	    try {
 			if ($enclosing != null)
-				this._group.DefineRegion(prefix, new TemplateName($enclosing.text), $region.text, template);
+				this._group.DefineRegion(prefix, new TemplateName($enclosing.text), $region, template);
 			else
-				this._group.DefineTemplate(prefix, new TemplateName($name.text), $formalArgs.args, template);
+				this._group.DefineTemplate(prefix, $name, $formalArgs.args, template);
 		}
 		catch (TemplateException e)
 		{
@@ -116,7 +116,7 @@ templateDef[TemplateName prefix]
 			ErrorManager.SyntaxError(ErrorType.SyntaxError, re, e.Message);
 		}
 	    }
-	|   alias=ID '::=' target=ID	    
+	|   alias=ID '::=' target=ID	{this._group.DefineTemplateAlias($alias, $target);}
 	;
 
 formalArgs returns[IDictionary<string,FormalArgument> args]
@@ -145,10 +145,10 @@ dictDef
 	:	ID '::=' dict
         {
         if ( this._group.dictionaries.ContainsKey($ID.text) ) {
-            ErrorManager.CompileTimeError(ErrorType.MapRedefinition, "redefinition of map: "+$ID.text);
+            ErrorManager.CompileTimeError(ErrorType.MapRedefinition, $ID);
         }
         else if ( this._group.templates.ContainsKey(new TemplateName($ID.text)) ) {
-            ErrorManager.CompileTimeError(ErrorType.TemplateRedefinitionAsMap, "redefinition of template as map: "+$ID.text);
+            ErrorManager.CompileTimeError(ErrorType.TemplateRedefinitionAsMap, $ID);
         }
         else {
             this._group.DefineDictionary($ID.text, $dict.mapping);

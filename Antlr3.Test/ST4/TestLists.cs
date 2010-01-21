@@ -173,44 +173,5 @@ namespace AntlrUnitTests.ST4
             String result = e.Render();
             Assert.AreEqual(expecting, result);
         }
-
-        [TestMethod]
-        public void TestNullListGetsNoOutput()
-        {
-            ST t = new ST(
-                "begin\n" +
-                "$users:{name: $it$}; separator=\", \"$\n" +
-                "end\n");
-            //t.setAttribute("users", new Duh());
-            String expecting = "begin\nend\n";
-            String result = t.Render();
-            Assert.AreEqual(expecting, result);
-        }
-
-        [TestMethod]
-        public void TestEmptyListGetsNoOutput()
-        {
-            ST t = new ST(
-                "begin\n" +
-                "$users:{name: $it$}; separator=\", \"$\n" +
-                "end\n");
-            t.Add("users", new ArrayList());
-            String expecting = "begin\nend\n";
-            String result = t.Render();
-            Assert.AreEqual(expecting, result);
-        }
-
-        [TestMethod]
-        public void TestEmptyListNoIteratorGetsNoOutput()
-        {
-            ST t = new ST(
-                "begin\n" +
-                "$users; separator=\", \"$\n" +
-                "end\n");
-            t.Add("users", new ArrayList());
-            String expecting = "begin\nend\n";
-            String result = t.Render();
-            Assert.AreEqual(expecting, result);
-        }
     }
 }

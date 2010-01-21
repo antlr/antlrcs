@@ -50,6 +50,7 @@ namespace StringTemplate
         public static readonly ErrorType EmbeddedRegionRedefinition = new ErrorType("region {0} is embedded and thus already implicitly defined");
         public static readonly ErrorType RegionRedefinition = new ErrorType("redefinition of region {0}");
         public static readonly ErrorType MapRedefinition = new ErrorType("redefinition of dictionary {0}");
+        public static readonly ErrorType AliasTargetUndefined = new ErrorType("cannot alias {0} to undefined template: {1}");
         public static readonly ErrorType TemplateRedefinitionAsMap = new ErrorType("redefinition of template {0} as a map");
         public static readonly ErrorType LexerError = new ErrorType("lexer there are add character {0}");
         public static readonly ErrorType NoDefaultValue = new ErrorType("missing dictionary default value");

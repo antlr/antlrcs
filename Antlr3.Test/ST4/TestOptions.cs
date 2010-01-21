@@ -164,5 +164,21 @@ namespace AntlrUnitTests.ST4
             String result = st.Render();
             Assert.AreEqual(expected, result);
         }
+
+        [TestMethod]
+        public void TestIllegalOption()
+        {
+            ErrorBuffer errors = new ErrorBuffer();
+            ErrorManager.ErrorListener = errors;
+            STGroup group = new STGroup();
+            group.DefineTemplate(new TemplateName("test"), "<name; bad=\"ugly\">");
+            ST st = group.GetInstanceOf("test");
+            st.Add("name", "Ter");
+            String expected = "Ter";
+            String result = st.Render();
+            Assert.AreEqual(expected, result);
+            expected = "1:7: no such option: bad" + newline;
+            Assert.AreEqual(expected, errors.ToString());
+        }
     }
 }

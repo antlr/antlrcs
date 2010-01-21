@@ -34,6 +34,7 @@ namespace AntlrUnitTests.ST4
 {
     using Microsoft.VisualStudio.TestTools.UnitTesting;
     using StringTemplate;
+    using Path = System.IO.Path;
 
     [TestClass]
     public class TestRegions : StringTemplateTestBase
@@ -147,11 +148,11 @@ namespace AntlrUnitTests.ST4
                        "@a.r() ::= <<bar>>\n"; // error; dup
             WriteFile(dir, "g.stg", g);
 
-            TemplateGroup group = new TemplateGroupFile(dir + "/g.stg");
+            TemplateGroup group = new TemplateGroupFile(Path.Combine(dir, "g.stg"));
             ErrorBuffer errors = new ErrorBuffer();
             ErrorManager.ErrorListener = errors;
             group.Load();
-            string expected = "redefinition of template /region__a__r" + newline;
+            string expected = "2:3: region a.r is embedded and thus already implicitly defined" + newline;
             string result = errors.ToString();
             Assert.AreEqual(expected, result);
         }

@@ -382,6 +382,11 @@ namespace StringTemplate
                         ErrorManager.IOError(self, ErrorType.WriteIoError, ioe);
                     }
                     break;
+                case Bytecode.INSTR_NOOP:
+                    break;
+                case Bytecode.INSTR_POP:
+                    sp--; // throw away top item on stack
+                    break;
                 default:
                     ErrorManager.InternalError(self, ErrorType.InvalidBytecode, null, opcode, ip - 1);
                     self.code.Dump();

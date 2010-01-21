@@ -90,6 +90,7 @@ namespace StringTemplate.Compiler
             if (!TemplateCompiler.supportedOptions.TryGetValue(id.Text, out i))
             {
                 ErrorManager.CompileTimeError(ErrorType.NoSuchOption, id);
+                gen.Emit(Bytecode.INSTR_POP, id.StartIndex, id.StopIndex);
                 return;
             }
 
@@ -102,7 +103,7 @@ namespace StringTemplate.Compiler
             if (!TemplateCompiler.defaultOptionValues.TryGetValue(id.Text, out v))
             {
                 ErrorManager.CompileTimeError(ErrorType.NoDefaultValue, id);
-                return;
+                gen.Emit(Bytecode.INSTR_POP, id.StartIndex, id.StopIndex);
             }
 
             gen.Emit(Bytecode.INSTR_LOAD_STR, v, id.StartIndex, id.StopIndex);
@@ -114,7 +115,7 @@ namespace StringTemplate.Compiler
             if (!TemplateCompiler.funcs.TryGetValue(id.Text, out funcBytecode))
             {
                 ErrorManager.CompileTimeError(ErrorType.NoSuchFunction, id);
-                gen.Emit(Bytecode.INSTR_NOOP, id.StartIndex, id.StopIndex);
+                gen.Emit(Bytecode.INSTR_POP, id.StartIndex, id.StopIndex);
                 return;
             }
 

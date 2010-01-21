@@ -97,24 +97,36 @@ namespace StringTemplate
             return false;
         }
 
-        public static void CompileTimeError(ErrorType error, object arg)
+        public static void CompileTimeError(ErrorType error, IToken t)
         {
-            ErrorListener.CompileTimeError(new TemplateMessage(error, null, null, arg));
+            ErrorListener.CompileTimeError(new TemplateCompileTimeMessage(error, t, null, t.Text));
         }
 
+        public static void CompileTimeError(ErrorType error, object arg)
+        {
+            ErrorListener.CompileTimeError(new TemplateCompileTimeMessage(error, null, null, arg));
+        }
+
+        public static void CompileTimeError(ErrorType error, IToken t, object arg)
+        {
+            ErrorListener.CompileTimeError(new TemplateCompileTimeMessage(error, t, null, arg));
+        }
+
+#if false
         public static void CompileTimeError(ErrorType error, object arg1, object arg2)
         {
             ErrorListener.CompileTimeError(new TemplateMessage(error, null, null, arg1, arg2));
         }
+#endif
 
         public static void SyntaxError(ErrorType error, RecognitionException e, string msg)
         {
-            ErrorListener.CompileTimeError(new TemplateCompileTimeMessage(error, e.Token, e, msg));
+            ErrorListener.CompileTimeError(new TemplateSyntaxErrorMessage(error, e.Token, e, msg));
         }
 
         public static void SyntaxError(ErrorType error, RecognitionException e, string msg, object arg)
         {
-            ErrorListener.CompileTimeError(new TemplateCompileTimeMessage(error, e.Token, e, msg, arg));
+            ErrorListener.CompileTimeError(new TemplateSyntaxErrorMessage(error, e.Token, e, msg, arg));
         }
 
         public static void RuntimeError(Template template, int ip, ErrorType error)

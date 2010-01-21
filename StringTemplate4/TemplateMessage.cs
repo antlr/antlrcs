@@ -34,6 +34,7 @@ namespace StringTemplate
 {
     using Exception = System.Exception;
     using StringBuilder = System.Text.StringBuilder;
+    using Antlr.Runtime;
 
     public class TemplateMessage
     {
@@ -56,9 +57,21 @@ namespace StringTemplate
         {
         }
 
+        public TemplateMessage(ErrorType error, Template template, Exception source, IToken token)
+            : this(error, template, source, null, null)
+        {
+            this.Token = token;
+        }
+
         public TemplateMessage(ErrorType error, Template template, Exception source, object arg)
             : this(error, template, source, arg, null)
         {
+        }
+
+        public TemplateMessage(ErrorType error, Template template, Exception source, IToken token, object arg)
+            : this(error, template, source, arg, null)
+        {
+            this.Token = token;
         }
 
         public TemplateMessage(ErrorType error, Template template, Exception source, object arg1, object arg2)
@@ -89,6 +102,12 @@ namespace StringTemplate
         }
 
         public Template Template
+        {
+            get;
+            private set;
+        }
+
+        public IToken Token
         {
             get;
             private set;

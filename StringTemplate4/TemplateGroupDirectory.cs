@@ -132,7 +132,7 @@ namespace StringTemplate
                 {
                     string template = File.ReadAllText(absoluteFileName);
                     template = template.Trim();
-                    DefineTemplate(prefix, templateName, null, template);
+                    DefineTemplate(prefix, new CommonToken(GroupParser.ID, templateName.Name), null, template);
                 }
                 else
                 {

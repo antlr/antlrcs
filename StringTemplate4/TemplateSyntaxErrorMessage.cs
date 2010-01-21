@@ -36,34 +36,39 @@ namespace StringTemplate
     using ArgumentNullException = System.ArgumentNullException;
     using Exception = System.Exception;
 
-    public class TemplateCompileTimeMessage : TemplateMessage
+    public class TemplateSyntaxErrorMessage : TemplateMessage
     {
-        private IToken _token;
+        private string _message;
 
-        public TemplateCompileTimeMessage(ErrorType error, IToken token)
+        public TemplateSyntaxErrorMessage(ErrorType error, IToken token)
             : this(error, token, null)
         {
         }
 
-        public TemplateCompileTimeMessage(ErrorType error, IToken token, Exception innerException)
+        public TemplateSyntaxErrorMessage(ErrorType error, IToken token, Exception innerException)
             : this(error, token, innerException, null)
         {
         }
 
-        public TemplateCompileTimeMessage(ErrorType error, IToken token, Exception innerException, object arg)
-            : base(error, null, innerException, arg)
+        public TemplateSyntaxErrorMessage(ErrorType error, IToken token, Exception innerException, string message)
+            : this(error, token, innerException, message, null)
         {
-            this._token = token;
         }
 
-        //public override string ToString()
-        //{
-        //    RecognitionException re = (RecognitionException)Source;
-        //    string header = re.Line + ":" + re.CharPositionInLine;
-        //    if (Argument1 == null)
-        //        return string.Format(ErrorType.MessageFormat, header + ": " + "??");
+        public TemplateSyntaxErrorMessage(ErrorType error, IToken token, Exception innerException, string message, object arg)
+            : base(error, null, innerException, arg)
+        {
+            this._message = message;
+        }
 
-        //    return string.Format(ErrorType.MessageFormat, Argument1 + " " + header + ": " + "??");
-        //}
+        public override string ToString()
+        {
+            RecognitionException re = (RecognitionException)Source;
+            string header = re.Line + ":" + re.CharPositionInLine;
+            if (Argument1 == null)
+                return string.Format(ErrorType.MessageFormat, header + ": " + _message);
+
+            return string.Format(ErrorType.MessageFormat, Argument1 + " " + header + ": " + _message);
+        }
     }
 }

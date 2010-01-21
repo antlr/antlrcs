@@ -5,6 +5,9 @@
     using ArrayList = System.Collections.ArrayList;
     using StringWriter = System.IO.StringWriter;
     using Path = System.IO.Path;
+    using StringTemplate.Compiler;
+    using System.Collections.Generic;
+    using Antlr.Runtime;
 
     [TestClass]
     public class TestCoreBasics : StringTemplateTestBase
@@ -141,7 +144,12 @@
         {
             string template = "load <box(\"arg\")>;";
             Template st = new Template(template);
-            st.code.nativeGroup.DefineTemplate(new TemplateName("box"), new string[] { "x" }, "kewl <x> daddy");
+            IDictionary<string, FormalArgument> args =
+                new Dictionary<string, FormalArgument>();
+            args["x"] = new FormalArgument("x");
+            st.code.nativeGroup.DefineTemplate(TemplateName.Root,
+                                               new CommonToken(GroupParser.ID, "box"),
+                                               args, "kewl <x> daddy");
             st.Add("name", "Ter");
             string expected = "load kewl arg daddy;";
             string result = st.Render();

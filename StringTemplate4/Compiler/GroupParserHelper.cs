@@ -35,7 +35,7 @@ namespace StringTemplate.Compiler
     using Antlr.Runtime;
     using Path = System.IO.Path;
 
-    partial class GroupParser
+    public partial class GroupParser
     {
         protected internal TemplateGroup _group;
 
