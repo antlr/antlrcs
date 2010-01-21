@@ -263,16 +263,16 @@ option
 	
 exprNoComma
 	:	memberExpr ( ':' templateRef {gen.Emit(Bytecode.INSTR_MAP, $templateRef.start.StartIndex, $templateRef.start.StopIndex);} )?
-	|	subtemplate {gen.Emit(Bytecode.INSTR_NEW, $subtemplate.name.FullName, $subtemplate.start.StartIndex, $subtemplate.start.StopIndex);}
+	//|	subtemplate {gen.Emit(Bytecode.INSTR_NEW, $subtemplate.name.FullName, $subtemplate.start.StartIndex, $subtemplate.start.StopIndex);}
 	;
 
 expr
 	:	mapExpr
-	|	// <{...}>
-		subtemplate
-		{
-		var prefixed = PrefixedName($subtemplate.name);
-		gen.Emit(Bytecode.INSTR_NEW, prefixed != null ? prefixed.FullName : null, $subtemplate.start.StartIndex, $subtemplate.stop.StopIndex);}
+	//|	// <{...}>
+	//	subtemplate
+	//	{
+	//	var prefixed = PrefixedName($subtemplate.name);
+	//	gen.Emit(Bytecode.INSTR_NEW, prefixed != null ? prefixed.FullName : null, $subtemplate.start.StartIndex, $subtemplate.stop.StopIndex);}
 	;
 
 mapExpr
@@ -314,8 +314,9 @@ options {k=2;} // prevent full LL(*), which fails, falling back on k=1; need k=2
 	;
 	
 primary
-	:	o=ID	  {RefAttr($o);}
-	|	STRING    {gen.Emit(Bytecode.INSTR_LOAD_STR, Misc.Strip($STRING.text,1), $STRING.StartIndex, $STRING.StopIndex);}
+	:	o=ID		{RefAttr($o);}
+	|	STRING		{gen.Emit(Bytecode.INSTR_LOAD_STR, Misc.Strip($STRING.text,1), $STRING.StartIndex, $STRING.StopIndex);}
+	|	subtemplate	{gen.Emit(Bytecode.INSTR_NEW, $subtemplate.name.FullName, $subtemplate.start.StartIndex, $subtemplate.stop.StopIndex);}
 	|	list
 	|	lp='(' expr rp=')' {gen.Emit(Bytecode.INSTR_TOSTR);}
 		( {gen.Emit(Bytecode.INSTR_NEW_IND, $lp.StartIndex, $rp.StartIndex);} '(' args? ')' )? // indirect call

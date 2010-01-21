@@ -94,7 +94,7 @@ namespace StringTemplate
                 buf.Append(Template.GetEnclosingInstanceStackString());
                 buf.Append("]");
             }
-            if (loc != null)
+            if (!string.IsNullOrEmpty(loc))
                 buf.Append(" " + loc);
             buf.Append(" " + base.ToString());
             return buf.ToString();

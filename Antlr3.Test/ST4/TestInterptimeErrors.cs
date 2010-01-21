@@ -173,6 +173,27 @@ namespace AntlrUnitTests.ST4
         }
 
         [TestMethod]
+        public void TestPassUnknownAttr()
+        {
+            String templates =
+                "t() ::= \"<u(x={Ter})>\"\n" +
+                "u(y) ::= <<hi <x>!>>\n";
+            ErrorBuffer errors = new ErrorBuffer();
+            ErrorManager.ErrorListener = errors;
+            WriteFile(tmpdir, "t.stg", templates);
+            STGroup group = new STGroupFile(Path.Combine(tmpdir, "t.stg"));
+            ST st = group.GetInstanceOf("t");
+            String expected = "hi Ter!";
+            String result = st.Render();
+            Assert.AreEqual(expected, result);
+
+            // check error now
+            expected = "context [t u] can't set attribute x; template u has no such attribute" + newline;
+            result = errors.ToString();
+            Assert.AreEqual(expected, result);
+        }
+
+        [TestMethod]
         public void TestSoleArg()
         {
             ErrorBuffer errors = new ErrorBuffer();
@@ -188,6 +209,28 @@ namespace AntlrUnitTests.ST4
             st.Render();
             string expected = "context [t] 1:3 expecting single arg in template reference u() (not 2 args)" + newline;
             string result = errors.ToString();
+            Assert.AreEqual(expected, result);
+        }
+
+        [TestMethod]
+        public void TestSoleArgUsingApplySyntax()
+        {
+            ErrorBuffer errors = new ErrorBuffer();
+            ErrorManager.ErrorListener = errors;
+
+            String templates =
+                "t() ::= \"<{9}:u()>\"\n" +
+                "u(x,y) ::= \"<x>\"\n";
+
+            WriteFile(tmpdir, "t.stg", templates);
+            STGroup group = new STGroupFile(Path.Combine(tmpdir, "t.stg"));
+            ST st = group.GetInstanceOf("t");
+            String expected = "9";
+            String result = st.Render();
+            Assert.AreEqual(expected, result);
+
+            expected = "context [t] 1:1 expecting single arg in template reference u() (not 2 args)" + newline;
+            result = errors.ToString();
             Assert.AreEqual(expected, result);
         }
 
