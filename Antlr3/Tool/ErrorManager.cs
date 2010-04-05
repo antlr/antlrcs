@@ -805,7 +805,7 @@ namespace Antlr3.Tool
             GetErrorState().errors++;
             Message msg = new LeftRecursionCyclesMessage( cycles );
             GetErrorState().errorMsgIDs.Add( msg.msgID );
-            GetErrorListener().Warning( msg );
+            GetErrorListener().Error( msg );
         }
 
         public static void GrammarError( int msgID,
