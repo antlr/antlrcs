@@ -141,6 +141,7 @@
   </ItemGroup>
   <ItemGroup>
     <Antlr3 Include="Grammars\TreeToNFAConverter.g3" />
+    <Compile Include="Analysis\MachineProbe.cs" />
     <Compile Include="Extensions\EnumerableExtensions.cs" />
     <Compile Include="Extensions\FuncEqualityComparer.cs" />
     <Compile Include="Extensions\ListExtensions.cs" />
