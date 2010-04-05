@@ -341,6 +341,17 @@ namespace AntlrUnitTests
         }
 
         [TestMethod]
+        public void TestParseWithText2()
+        {
+            TreeWizard wiz = new TreeWizard(adaptor, tokens);
+            CommonTree t = (CommonTree)wiz.Create("(A B[T__32] (C (D E[a])))");
+            // C pattern has no text arg so despite [bar] in t, no need
+            // to match text--check structure only.
+            bool valid = wiz.Parse(t, "(A B[foo] C)");
+            Assert.AreEqual("(A T__32 (C (D a)))", t.ToStringTree());
+        }
+
+        [TestMethod]
         public void TestParseWithTextFails() /*throws Exception*/ {
             TreeWizard wiz = new TreeWizard( adaptor, tokens );
             CommonTree t = (CommonTree)wiz.Create( "(A B C)" );
