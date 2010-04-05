@@ -21,6 +21,7 @@
     </StartupObject>
     <SignAssembly>true</SignAssembly>
     <AssemblyOriginatorKeyFile>Key.snk</AssemblyOriginatorKeyFile>
+    <TargetFrameworkSubset>Client</TargetFrameworkSubset>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -456,6 +457,31 @@
       <Link>Tool\Templates\dot\stopstate.st</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="..\..\..\antlr\main\tool\src\main\resources\org\antlr\codegen\templates\Ruby\AST.stg">
+      <Link>Codegen\Templates\Ruby\AST.stg</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\..\antlr\main\tool\src\main\resources\org\antlr\codegen\templates\Ruby\ASTDbg.stg">
+      <Link>Codegen\Templates\Ruby\ASTDbg.stg</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\..\antlr\main\tool\src\main\resources\org\antlr\codegen\templates\Ruby\ASTParser.stg">
+      <Link>Codegen\Templates\Ruby\ASTParser.stg</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\..\antlr\main\tool\src\main\resources\org\antlr\codegen\templates\Ruby\ASTTreeParser.stg">
+      <Link>Codegen\Templates\Ruby\ASTTreeParser.stg</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\..\antlr\main\tool\src\main\resources\org\antlr\codegen\templates\Ruby\Dbg.stg">
+      <Link>Codegen\Templates\Ruby\Dbg.stg</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\..\antlr\main\tool\src\main\resources\org\antlr\codegen\templates\Ruby\ST.stg">
+      <Link>Codegen\Templates\Ruby\ST.stg</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <None Include="app.config" />
     <None Include="Key.snk" />
   </ItemGroup>
   <ItemGroup>
