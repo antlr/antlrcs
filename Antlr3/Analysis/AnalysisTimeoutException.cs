@@ -32,16 +32,24 @@
 
 namespace Antlr3.Analysis
 {
-    using Exception = System.Exception;
+    using TimeoutException = System.TimeoutException;
+    using SerializationInfo = System.Runtime.Serialization.SerializationInfo;
+    using StreamingContext = System.Runtime.Serialization.StreamingContext;
 
     /** Analysis took too long; bail out of entire DFA construction. */
-    public class AnalysisTimeoutException : Exception
+    [System.Serializable]
+    public class AnalysisTimeoutException : TimeoutException
     {
-        DFA _abortedDFA;
+        private readonly DFA _abortedDFA;
 
-        public AnalysisTimeoutException( DFA abortedDFA )
+        public AnalysisTimeoutException(DFA abortedDFA)
         {
             _abortedDFA = abortedDFA;
+        }
+
+        protected AnalysisTimeoutException(SerializationInfo info, StreamingContext context)
+            : base(info, context)
+        {
         }
     }
 }

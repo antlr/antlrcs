@@ -33,17 +33,25 @@
 namespace Antlr3.Analysis
 {
     using Exception = System.Exception;
+    using SerializationInfo = System.Runtime.Serialization.SerializationInfo;
+    using StreamingContext = System.Runtime.Serialization.StreamingContext;
 
     /** Used to abort DFA construction when we find non-LL(*) decision; i.e.,
      *  a decision that has recursion in more than a single alt.
      */
+    [System.Serializable]
     public class NonLLStarDecisionException : Exception
     {
-        DFA _abortedDFA;
+        private readonly DFA _abortedDFA;
 
-        public NonLLStarDecisionException( DFA abortedDFA )
+        public NonLLStarDecisionException(DFA abortedDFA)
         {
             _abortedDFA = abortedDFA;
+        }
+
+        protected NonLLStarDecisionException(SerializationInfo info, StreamingContext context)
+            : base(info, context)
+        {
         }
     }
 }

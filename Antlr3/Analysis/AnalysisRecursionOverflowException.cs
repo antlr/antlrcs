@@ -33,17 +33,25 @@
 namespace Antlr3.Analysis
 {
     using Exception = System.Exception;
+    using SerializationInfo = System.Runtime.Serialization.SerializationInfo;
+    using StreamingContext = System.Runtime.Serialization.StreamingContext;
 
     /** An NFA configuration context stack overflowed. */
+    [System.Serializable]
     public class AnalysisRecursionOverflowException : Exception
     {
-        DFAState _ovfState;
-        NFAConfiguration _proposedNFAConfiguration;
+        private readonly DFAState _ovfState;
+        private readonly NFAConfiguration _proposedNFAConfiguration;
 
-        public AnalysisRecursionOverflowException( DFAState ovfState, NFAConfiguration proposedNFAConfiguration )
+        public AnalysisRecursionOverflowException(DFAState ovfState, NFAConfiguration proposedNFAConfiguration)
         {
             _ovfState = ovfState;
             _proposedNFAConfiguration = proposedNFAConfiguration;
+        }
+
+        protected AnalysisRecursionOverflowException(SerializationInfo info, StreamingContext context)
+            : base(info, context)
+        {
         }
     }
 }
