@@ -637,7 +637,7 @@ namespace Antlr3.Analysis
         {
             if ( debug )
             {
-                Console.Out.WriteLine( "closure at " + p.enclosingRule.name + " state " + p.stateNumber + "|" +
+                Console.Out.WriteLine( "closure at " + p.enclosingRule.Name + " state " + p.stateNumber + "|" +
                                    alt + " filling DFA state " + d.stateNumber + " with context " + context
                                    );
             }
@@ -662,7 +662,7 @@ namespace Antlr3.Analysis
                 if ( debug )
                 {
                     Console.Out.WriteLine( "avoid visiting exact closure computation NFA config: " +
-                                       proposedNFAConfiguration + " in " + p.enclosingRule.name );
+                                       proposedNFAConfiguration + " in " + p.enclosingRule.Name );
                     Console.Out.WriteLine( "state is " + d.dfa.decisionNumber + "." + d.stateNumber );
                 }
                 return;

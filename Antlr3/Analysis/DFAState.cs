@@ -718,7 +718,7 @@ namespace Antlr3.Analysis
                         // meaning input "ab" would test preds to decide what to
                         // do but it should match rule C w/o testing preds.
                         if ( dfa.nfa.grammar.type != GrammarType.Lexer ||
-                             !dfa.NFADecisionStartState.enclosingRule.name.Equals( Grammar.ArtificialTokensRuleName ) )
+                             !dfa.NFADecisionStartState.enclosingRule.Name.Equals( Grammar.ArtificialTokensRuleName ) )
                         {
                             numPotentialConflicts++;
                             thisStateHasPotentialProblem = true;

@@ -680,7 +680,7 @@ namespace Antlr3.Analysis
                     NFAState ruleInvocationState = dfa.nfa.GetState( c.state );
                     Transition transition0 = ruleInvocationState.transition[0];
                     RuleClosureTransition @ref = (RuleClosureTransition)transition0;
-                    String targetRule = ( (NFAState)@ref.target ).enclosingRule.name;
+                    String targetRule = ( (NFAState)@ref.target ).enclosingRule.Name;
                     int altI = c.alt;
                     IDictionary<string, ICollection<NFAState>> targetToCallSiteMap =
                         altToTargetToCallSitesMap.get( altI );
@@ -1046,7 +1046,7 @@ namespace Antlr3.Analysis
                 (RuleClosureTransition)decisionLeft.transition[0];
             NFAState ruleStartState = (NFAState)ruleCallEdge.target;
             //JSystem.@out.println("alt = "+decisionLeft.getEnclosingRule());
-            return ruleStartState.enclosingRule.name;
+            return ruleStartState.enclosingRule.Name;
         }
 
         public virtual void Reset()

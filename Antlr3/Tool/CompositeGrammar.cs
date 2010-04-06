@@ -308,7 +308,7 @@ namespace Antlr3.Tool
             HashSet<Rule> rules = GetAllImportedRules( g );
             foreach ( Rule r in rules.ToArray() )
             {
-                Rule localRule = g.GetLocallyDefinedRule( r.name );
+                Rule localRule = g.GetLocallyDefinedRule( r.Name );
                 // if locally defined or it's not local but synpred, don't make a delegation method
                 if ( localRule != null || r.isSynPred )
                 {
@@ -335,9 +335,9 @@ namespace Antlr3.Tool
                 // name as been seen.  (can't use removeAll; wrong hashcode/equals on Rule)
                 foreach ( Rule r in grammar.Rules )
                 {
-                    if ( !ruleNames.Contains( r.name ) )
+                    if ( !ruleNames.Contains( r.Name ) )
                     {
-                        ruleNames.Add( r.name ); // track that we've seen this
+                        ruleNames.Add( r.Name ); // track that we've seen this
                         rules.Add( r );
                     }
                 }
@@ -466,14 +466,14 @@ namespace Antlr3.Tool
             // compute set of non-overridden rules for this delegate
             foreach ( Rule r in p.grammar.Rules )
             {
-                if ( !ruleDefs.Contains( r.name ) )
+                if ( !ruleDefs.Contains( r.Name ) )
                 {
-                    localRuleDefs.Add( r.name );
+                    localRuleDefs.Add( r.Name );
                 }
-                else if ( !r.name.Equals( Grammar.ArtificialTokensRuleName ) )
+                else if ( !r.Name.Equals( Grammar.ArtificialTokensRuleName ) )
                 {
                     // record any overridden rule 'cept tokens rule
-                    overrides.Add( r.name );
+                    overrides.Add( r.Name );
                 }
             }
             //System.Console.Out.WriteLine( "rule defs for " + p.grammar.name + ": " + localRuleDefs );

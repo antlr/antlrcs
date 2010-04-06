@@ -250,7 +250,7 @@ rule returns [StringTemplate code=null]
 				else
 				{
 					if ( !(grammar.type==GrammarType.Combined &&
-						 char.IsUpper(currentRuleName[0])) )
+						 Rule.GetRuleType(currentRuleName) == RuleType.Lexer) )
 					{
 						stName = "rule";
 					}

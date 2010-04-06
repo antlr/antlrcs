@@ -140,8 +140,7 @@ rule
 					// a single ALT block
 					g = factory.BuildAlternativeBlockFromSet(g);
 				}
-				if ( char.IsLower(currentRuleName[0]) ||
-					 grammar.type==GrammarType.Lexer )
+				if (Rule.GetRuleType(currentRuleName) == RuleType.Parser || grammar.type==GrammarType.Lexer)
 				{
 					// attach start node to block for this rule
 					Rule thisR = grammar.GetLocallyDefinedRule(currentRuleName);

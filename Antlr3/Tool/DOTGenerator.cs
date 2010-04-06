@@ -273,11 +273,11 @@ namespace Antlr3.Tool
                     edgeST = stlib.GetInstanceOf( Path.Combine( dfaTemplateDirectoryName, "edge" ) );
                     if ( rr.rule.grammar != grammar )
                     {
-                        edgeST.SetAttribute( "label", "<" + rr.rule.grammar.name + "." + rr.rule.name + ">" );
+                        edgeST.SetAttribute( "label", "<" + rr.rule.grammar.name + "." + rr.rule.Name + ">" );
                     }
                     else
                     {
-                        edgeST.SetAttribute( "label", "<" + rr.rule.name + ">" );
+                        edgeST.SetAttribute( "label", "<" + rr.rule.Name + ">" );
                     }
                     edgeST.SetAttribute( "src", GetStateLabel( s ) );
                     edgeST.SetAttribute( "target", GetStateLabel( rr.followState ) );

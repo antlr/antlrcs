@@ -91,7 +91,7 @@ namespace Antlr3.Grammars
 
                 string ruleName = p.GetChild( i ).GetChild( 0 ).Text;
                 //Console.Out.WriteLine( "rule " + ruleName + " prev=" + prev.getText() );
-                if ( char.IsUpper( ruleName[0] ) )
+                if (Rule.GetRuleType(ruleName) == RuleType.Lexer)
                 {
                     // remove lexer rule
                     p.DeleteChild( i );

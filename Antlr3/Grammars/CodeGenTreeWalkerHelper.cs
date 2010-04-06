@@ -48,6 +48,7 @@ namespace Antlr3.Grammars
     using NoViableAltException = Antlr.Runtime.NoViableAltException;
     using RecognitionException = Antlr.Runtime.RecognitionException;
     using Rule = Antlr3.Tool.Rule;
+    using RuleType = Antlr3.Tool.RuleType;
     using StringTemplate = Antlr3.ST.StringTemplate;
     using StringTemplateGroup = Antlr3.ST.StringTemplateGroup;
 
@@ -147,7 +148,7 @@ namespace Antlr3.Grammars
                                                    string label )
         {
             bool tryUnchecked = false;
-            if ( name == "matchSet" && !string.IsNullOrEmpty( elementAST.enclosingRuleName ) && char.IsUpper( elementAST.enclosingRuleName[0] ) )
+            if (name == "matchSet" && !string.IsNullOrEmpty(elementAST.enclosingRuleName) && Rule.GetRuleType(elementAST.enclosingRuleName) == RuleType.Lexer)
             {
                 if ( ( elementAST.Parent.Type == ANTLRLexer.ALT && elementAST.Parent.Parent.Parent.Type == RULE && elementAST.Parent.Parent.ChildCount == 2 )
                     || ( elementAST.Parent.Type == ANTLRLexer.NOT && elementAST.Parent.Parent.Parent.Parent.Type == RULE && elementAST.Parent.Parent.Parent.ChildCount == 2 ) )

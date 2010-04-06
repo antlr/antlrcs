@@ -183,6 +183,8 @@ using Grammar = Antlr3.Tool.Grammar;
 using GrammarAST = Antlr3.Tool.GrammarAST;
 using GrammarType = Antlr3.Tool.GrammarType;
 using IntSet = Antlr3.Misc.IIntSet;
+using Rule = Antlr3.Tool.Rule;
+using RuleType = Antlr3.Tool.RuleType;
 using StringBuffer = System.Text.StringBuilder;
 using TokenWithIndex = Antlr.Runtime.CommonToken;
 }
@@ -537,7 +539,7 @@ ebnf
 			-> ^(POSITIVE_CLOSURE[$start,"+"] block)
 		|	IMPLIES // syntactic predicate
 			// ignore for lexer rules in combined
-			-> {GrammarType == GrammarType.Combined && char.IsUpper(currentRuleName[0])}? ^(SYNPRED[$start,"=>"] block)
+			-> {GrammarType == GrammarType.Combined && Rule.GetRuleType(currentRuleName) == RuleType.Lexer}? ^(SYNPRED[$start,"=>"] block)
 			// create manually specified (...)=> predicate; convert to sempred
 			-> {CreateSynSemPredFromBlock($block.tree, SYN_SEMPRED)}
 		|	ROOT

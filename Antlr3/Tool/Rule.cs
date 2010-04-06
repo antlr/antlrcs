@@ -49,7 +49,7 @@ namespace Antlr3.Tool
     /** Combine the info associated with a rule. */
     public class Rule
     {
-        public string name;
+        private readonly string _name;
         public int index;
         public string modifier;
         public NFAState startState;
@@ -131,14 +131,14 @@ namespace Antlr3.Tool
          *  for errors.  A better name is probably namedActions, but I don't
          *  want everyone to have to change their code gen templates now.
          */
-        IDictionary<string, object> actions = new Dictionary<string, object>();
+        private IDictionary<string, object> actions = new Dictionary<string, object>();
 
         /** Track all executable actions other than named actions like @init.
          *  Also tracks exception handlers, predicates, and rewrite rewrites.
          *  We need to examine these actions before code generation so
          *  that we can detect refs to $rule.attr etc...
          */
-        IList<GrammarAST> inlineActions = new List<GrammarAST>();
+        private IList<GrammarAST> inlineActions = new List<GrammarAST>();
 
         public int numberOfAlts;
 
@@ -153,7 +153,7 @@ namespace Antlr3.Tool
          *
          *  Rewrite rules force tracking of all tokens.
          */
-        IDictionary<string, IList<GrammarAST>>[] altToTokenRefMap;
+        private IDictionary<string, IList<GrammarAST>>[] altToTokenRefMap;
 
         /** Each alt has a Map&lt;ruleRefName,List&lt;ruleRefAST&gt;&gt;; range 1..numberOfAlts
          *  So, if there are 3 expr refs in a rule's alt number 2, you'll have
@@ -163,10 +163,10 @@ namespace Antlr3.Tool
          *
          *  Rewrite rules force tracking of all rule result ASTs. 1..n
          */
-        IDictionary<string, IList<GrammarAST>>[] altToRuleRefMap;
+        private IDictionary<string, IList<GrammarAST>>[] altToRuleRefMap;
 
         /** Track which alts have rewrite rules associated with them. 1..n */
-        bool[] altsWithRewrites;
+        private bool[] altsWithRewrites;
 
         /** Do not generate start, stop etc... in a return value struct unless
          *  somebody references $r.start somewhere.
@@ -182,7 +182,7 @@ namespace Antlr3.Tool
                     int ruleIndex,
                     int numberOfAlts )
         {
-            this.name = ruleName;
+            this._name = ruleName;
             this.index = ruleIndex;
             this.numberOfAlts = numberOfAlts;
             this.grammar = grammar;
@@ -198,6 +198,7 @@ namespace Antlr3.Tool
         }
 
         #region Properties
+
         public IDictionary<string, object> Actions
         {
             get
@@ -205,6 +206,7 @@ namespace Antlr3.Tool
                 return actions;
             }
         }
+
         public bool HasMultipleReturnValues
         {
             get
@@ -212,6 +214,7 @@ namespace Antlr3.Tool
                 return GetHasMultipleReturnValues();
             }
         }
+
         public bool HasReturnValue
         {
             get
@@ -219,6 +222,7 @@ namespace Antlr3.Tool
                 return GetHasReturnValue();
             }
         }
+
         public bool HasSingleReturnValue
         {
             get
@@ -226,6 +230,7 @@ namespace Antlr3.Tool
                 return GetHasSingleReturnValue();
             }
         }
+
         public ICollection<GrammarAST> InlineActions
         {
             get
@@ -233,22 +238,41 @@ namespace Antlr3.Tool
                 return GetInlineActions();
             }
         }
+
+        public string Name
+        {
+            get
+            {
+                return _name;
+            }
+        }
+
         [CLSCompliant(false)]
-        public IDictionary RuleLabels
+        public IDictionary<string, Grammar.LabelElementPair> RuleLabels
         {
             get
             {
                 return GetRuleLabels();
             }
         }
+
         [CLSCompliant(false)]
-        public IDictionary RuleListLabels
+        public IDictionary<string, Grammar.LabelElementPair> RuleListLabels
         {
             get
             {
                 return GetRuleListLabels();
             }
         }
+
+        public RuleType RuleType
+        {
+            get
+            {
+                return GetRuleType(Name);
+            }
+        }
+
         public string SingleValueReturnName
         {
             get
@@ -256,6 +280,7 @@ namespace Antlr3.Tool
                 return GetSingleValueReturnName();
             }
         }
+
         public string SingleValueReturnType
         {
             get
@@ -263,7 +288,13 @@ namespace Antlr3.Tool
                 return GetSingleValueReturnType();
             }
         }
+
         #endregion
+
+        public static RuleType GetRuleType(string name)
+        {
+            return char.IsUpper(name[0]) ? RuleType.Lexer : RuleType.Parser;
+        }
 
         public virtual void DefineLabel( IToken label, GrammarAST elementRef, LabelType type )
         {
@@ -338,12 +369,12 @@ namespace Antlr3.Tool
             return pair;
         }
 
-        public virtual IDictionary GetRuleLabels()
+        public virtual IDictionary<string, Grammar.LabelElementPair> GetRuleLabels()
         {
             return ruleLabels;
         }
 
-        public virtual IDictionary GetRuleListLabels()
+        public virtual IDictionary<string, Grammar.LabelElementPair> GetRuleListLabels()
         {
             return ruleListLabels;
         }
@@ -488,7 +519,7 @@ namespace Antlr3.Tool
         {
             if ( i >= altsWithRewrites.Length )
             {
-                ErrorManager.InternalError( "alt " + i + " exceeds number of " + name +
+                ErrorManager.InternalError( "alt " + i + " exceeds number of " + Name +
                                            "'s alts (" + altsWithRewrites.Length + ")" );
                 return false;
             }
@@ -597,11 +628,11 @@ namespace Antlr3.Tool
                 if ( grammar.type != GrammarType.Lexer &&
                      char.IsUpper( refdSymbol[0] ) )
                 {
-                    grammar.DefineTokenRefLabel( name, label, uniqueRefAST );
+                    grammar.DefineTokenRefLabel( Name, label, uniqueRefAST );
                 }
                 else
                 {
-                    grammar.DefineRuleRefLabel( name, label, uniqueRefAST );
+                    grammar.DefineRuleRefLabel( Name, label, uniqueRefAST );
                 }
                 uniqueRefAST.code.SetAttribute( "label", labelName );
             }
@@ -757,7 +788,7 @@ namespace Antlr3.Tool
         public override string ToString()
         {
             // used for testing
-            return "[" + grammar.name + "." + name + ",index=" + index + ",line=" + tree.Token.Line + "]";
+            return "[" + grammar.name + "." + Name + ",index=" + index + ",line=" + tree.Token.Line + "]";
         }
     }
 }

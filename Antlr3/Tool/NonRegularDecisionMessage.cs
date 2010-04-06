@@ -63,7 +63,7 @@ namespace Antlr3.Tool
             }
 
             StringTemplate st = GetMessageTemplate();
-            string ruleName = probe.dfa.NFADecisionStartState.enclosingRule.name;
+            string ruleName = probe.dfa.NFADecisionStartState.enclosingRule.Name;
             st.SetAttribute( "ruleName", ruleName );
             List<int> sortedAlts = new List<int>();
             sortedAlts.addAll( altsWithRecursion );

@@ -1806,7 +1806,7 @@ namespace AntlrUnitTests
             HashSet<string> x = new HashSet<string>();
             foreach ( Rule r in rules )
             {
-                x.Add( r.name );
+                x.Add( r.Name );
             }
             return x;
         }

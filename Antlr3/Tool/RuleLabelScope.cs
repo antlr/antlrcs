@@ -91,7 +91,7 @@ namespace Antlr3.Tool
         public Rule referencedRule;
 
         public RuleLabelScope( Rule referencedRule, IToken actionToken )
-            : base( "ref_" + referencedRule.name, actionToken )
+            : base( "ref_" + referencedRule.Name, actionToken )
         {
             this.referencedRule = referencedRule;
         }

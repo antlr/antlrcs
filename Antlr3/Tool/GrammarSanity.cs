@@ -220,7 +220,7 @@ namespace Antlr3.Tool
                             ErrorManager.MSG_RULE_HAS_NO_ARGS,
                             grammar,
                             argsAST.Token,
-                            r.name );
+                            r.Name );
                     }
                 }
                 else
@@ -233,7 +233,7 @@ namespace Antlr3.Tool
                             ErrorManager.MSG_MISSING_RULE_ARGS,
                             grammar,
                             refAST.Token,
-                            r.name );
+                            r.Name );
                     }
                 }
             }
@@ -262,7 +262,7 @@ namespace Antlr3.Tool
                             ErrorManager.MSG_RULE_HAS_NO_ARGS,
                             grammar,
                             argsAST.Token,
-                            r.name );
+                            r.Name );
                     }
                 }
                 else
@@ -275,7 +275,7 @@ namespace Antlr3.Tool
                             ErrorManager.MSG_MISSING_RULE_ARGS,
                             grammar,
                             refAST.Token,
-                            r.name );
+                            r.Name );
                     }
                 }
             }

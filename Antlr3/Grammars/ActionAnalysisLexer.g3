@@ -93,7 +93,7 @@ X_Y
 		{
 			AttributeScope scope = null;
 			string refdRuleName = null;
-			if ( $x.text.Equals(enclosingRule.name) )
+			if ( $x.text.Equals(enclosingRule.Name) )
 			{
 				// ref to enclosing rule.
 				refdRuleName = $x.text;
@@ -147,7 +147,7 @@ Y
 			if ( scope!=null &&
 				 (scope.isPredefinedRuleScope||scope.isPredefinedLexerRuleScope) )
 			{
-				grammar.ReferenceRuleLabelPredefinedAttribute(enclosingRule.name);
+				grammar.ReferenceRuleLabelPredefinedAttribute(enclosingRule.Name);
 				//System.out.println("referenceRuleLabelPredefinedAttribute for "+$ID.text);
 			}
 		}

@@ -101,7 +101,7 @@ namespace Antlr3.Tool
                             grammar,
                             r.tree.Token,
                             key,
-                            r.name );
+                            r.Name );
                     }
                 }
             }
@@ -109,16 +109,16 @@ namespace Antlr3.Tool
 
         protected virtual void CheckForRuleDefinitionProblems( Rule r )
         {
-            string ruleName = r.name;
+            string ruleName = r.Name;
             IToken ruleToken = r.tree.Token;
             int msgID = 0;
             if ( ( grammar.type == GrammarType.Parser || grammar.type == GrammarType.TreeParser ) &&
-                 char.IsUpper( ruleName[0] ) )
+                 Rule.GetRuleType(ruleName) == RuleType.Lexer)
             {
                 msgID = ErrorManager.MSG_LEXER_RULES_NOT_ALLOWED;
             }
             else if ( grammar.type == GrammarType.Lexer &&
-                      char.IsLower( ruleName[0] ) &&
+                      Rule.GetRuleType(ruleName) == RuleType.Parser &&
                       !r.isSynPred )
             {
                 msgID = ErrorManager.MSG_PARSER_RULES_NOT_ALLOWED;
@@ -226,16 +226,16 @@ namespace Antlr3.Tool
             int msgID = 0;
             object arg2 = null;
             string attrName = attribute.Name;
-            if ( r.name.Equals( attrName ) )
+            if ( r.Name.Equals( attrName ) )
             {
                 msgID = ErrorManager.MSG_ATTRIBUTE_CONFLICTS_WITH_RULE;
-                arg2 = r.name;
+                arg2 = r.Name;
             }
             else if ( ( r.returnScope != null && r.returnScope.GetAttribute( attrName ) != null ) ||
                       ( r.parameterScope != null && r.parameterScope.GetAttribute( attrName ) != null ) )
             {
                 msgID = ErrorManager.MSG_ATTRIBUTE_CONFLICTS_WITH_RULE_ARG_RETVAL;
-                arg2 = r.name;
+                arg2 = r.Name;
             }
             if ( msgID != 0 )
             {
@@ -267,13 +267,13 @@ namespace Antlr3.Tool
             else if ( r.ruleScope != null && r.ruleScope.GetAttribute( label.Text ) != null )
             {
                 msgID = ErrorManager.MSG_LABEL_CONFLICTS_WITH_RULE_SCOPE_ATTRIBUTE;
-                arg2 = r.name;
+                arg2 = r.Name;
             }
             else if ( ( r.returnScope != null && r.returnScope.GetAttribute( label.Text ) != null ) ||
                       ( r.parameterScope != null && r.parameterScope.GetAttribute( label.Text ) != null ) )
             {
                 msgID = ErrorManager.MSG_LABEL_CONFLICTS_WITH_RULE_ARG_RETVAL;
-                arg2 = r.name;
+                arg2 = r.Name;
             }
             if ( msgID != 0 )
             {

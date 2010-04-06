@@ -90,7 +90,7 @@ using StringTemplate = Antlr3.ST.StringTemplate;
 SET_ENCLOSING_RULE_SCOPE_ATTR
 	:	'$' x=ID '.' y=ID WS? '=' expr=ATTR_VALUE_EXPR ';'
 							{enclosingRule!=null &&
-	                         $x.text.Equals(enclosingRule.name) &&
+	                         $x.text.Equals(enclosingRule.Name) &&
 	                         enclosingRule.GetLocalAttributeScope($y.text)!=null}?
 		//{JSystem.@out.println("found \$rule.attr");}
 		{
@@ -141,7 +141,7 @@ SET_ENCLOSING_RULE_SCOPE_ATTR
 	;
 ENCLOSING_RULE_SCOPE_ATTR
 	:	'$' x=ID '.' y=ID	{enclosingRule!=null &&
-	                         $x.text.Equals(enclosingRule.name) &&
+	                         $x.text.Equals(enclosingRule.Name) &&
 	                         enclosingRule.GetLocalAttributeScope($y.text)!=null}?
 		//{JSystem.@out.println("found \$rule.attr");}
 		{
@@ -431,8 +431,8 @@ SET_LOCAL_ATTR
 				if ($ID.text.Equals("tree") || $ID.text.Equals("st"))
 				{
 					st = Template("ruleSetPropertyRef_"+$ID.text);
-					grammar.ReferenceRuleLabelPredefinedAttribute(enclosingRule.name);
-					st.SetAttribute("scope", enclosingRule.name);
+					grammar.ReferenceRuleLabelPredefinedAttribute(enclosingRule.Name);
+					st.SetAttribute("scope", enclosingRule.Name);
 					st.SetAttribute("attr", $ID.text);
 					st.SetAttribute("expr", TranslateAction($expr.text));
 				}
@@ -469,14 +469,14 @@ LOCAL_ATTR
 			if ( scope.isPredefinedRuleScope )
 			{
 				st = Template("rulePropertyRef_"+$ID.text);
-				grammar.ReferenceRuleLabelPredefinedAttribute(enclosingRule.name);
-				st.SetAttribute("scope", enclosingRule.name);
+				grammar.ReferenceRuleLabelPredefinedAttribute(enclosingRule.Name);
+				st.SetAttribute("scope", enclosingRule.Name);
 				st.SetAttribute("attr", $ID.text);
 			}
 			else if ( scope.isPredefinedLexerRuleScope )
 			{
 				st = Template("lexerRulePropertyRef_"+$ID.text);
-				st.SetAttribute("scope", enclosingRule.name);
+				st.SetAttribute("scope", enclosingRule.Name);
 				st.SetAttribute("attr", $ID.text);
 			}
 			else if ( scope.isParameterScope )
@@ -618,7 +618,7 @@ TEMPLATE_INSTANCE
 			string ruleName = "<outside-of-rule>";
 			if ( enclosingRule!=null )
 			{
-				ruleName = enclosingRule.name;
+				ruleName = enclosingRule.Name;
 			}
 			StringTemplate st =
 				generator.TranslateTemplateConstructor(ruleName,
@@ -639,7 +639,7 @@ INDIRECT_TEMPLATE_INSTANCE
 		{
 			string action = $text.Substring( 1, $text.Length - 1 );
 			StringTemplate st =
-				generator.TranslateTemplateConstructor(enclosingRule.name,
+				generator.TranslateTemplateConstructor(enclosingRule.Name,
 													   outerAltNum,
 													   actionToken,
 													   action);

@@ -581,7 +581,7 @@ namespace Antlr3
                             w.Write( lexerGrammarStr );
                             w.Close();
                         }
-                        catch ( IOException e )
+                        catch (IOException)
                         {
                             // emit different error message when creating the implicit lexer fails
                             // due to write permission error
@@ -824,7 +824,7 @@ namespace Antlr3
 
         protected virtual void WriteDOTFile( Grammar g, Rule r, string dot )
         {
-            WriteDOTFile( g, r.grammar.name + "." + r.name, dot );
+            WriteDOTFile( g, r.grammar.name + "." + r.Name, dot );
         }
 
         protected virtual void WriteDOTFile( Grammar g, string name, string dot )

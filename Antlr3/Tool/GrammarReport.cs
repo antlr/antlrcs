@@ -39,6 +39,7 @@ namespace Antlr3.Tool
     using DFA = Antlr3.Analysis.DFA;
     using Stats = Antlr.Runtime.Misc.Stats;
     using StringBuilder = System.Text.StringBuilder;
+    using StringComparison = System.StringComparison;
 
     public class GrammarReport
     {
@@ -75,8 +76,7 @@ namespace Antlr3.Tool
             int totalNonSynPredRules = 0;
             foreach ( Rule r in grammar.Rules )
             {
-                if ( !r.name.ToUpperInvariant()
-                    .StartsWith( Grammar.SynpredRulePrefix.ToUpperInvariant() ) )
+                if ( !r.Name.StartsWith( Grammar.SynpredRulePrefix, StringComparison.InvariantCultureIgnoreCase ) )
                 {
                     totalNonSynPredProductions += r.numberOfAlts;
                     totalNonSynPredRules++;
@@ -247,7 +247,7 @@ namespace Antlr3.Tool
                 }
                 decisions.Add( dfa.decisionNumber );
                 buf.Append( "Rule " );
-                buf.Append( dfa.NFADecisionStartState.enclosingRule.name );
+                buf.Append( dfa.NFADecisionStartState.enclosingRule.Name );
                 buf.Append( " decision " );
                 buf.Append( dfa.decisionNumber );
                 buf.Append( " location " );

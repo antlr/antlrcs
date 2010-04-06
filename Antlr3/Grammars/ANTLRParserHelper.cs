@@ -43,6 +43,8 @@ namespace Antlr3.Grammars
     using GrammarType = Antlr3.Tool.GrammarType;
     using IToken = Antlr.Runtime.IToken;
     using RecognitionException = Antlr.Runtime.RecognitionException;
+    using Rule = Antlr3.Tool.Rule;
+    using RuleType = Antlr3.Tool.RuleType;
 
     partial class ANTLRParser
     {
@@ -265,7 +267,7 @@ namespace Antlr3.Grammars
             }
             if ( autoBacktrack != null && autoBacktrack.Equals( "true" ) &&
                  !( GrammarType == GrammarType.Combined &&
-                 char.IsUpper( currentRuleName[0] ) ) &&
+                 Rule.GetRuleType(currentRuleName) == RuleType.Lexer) &&
                  alt.GetChild( 0 ).Type != SYN_SEMPRED )
             {
                 // duplicate alt and make a synpred block around that dup'd alt

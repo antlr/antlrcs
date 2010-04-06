@@ -1374,7 +1374,7 @@ namespace Antlr3.Tool
 
             foreach ( Rule r in Rules )
             {
-                string ruleName = r.name;
+                string ruleName = r.Name;
                 NFAState ruleBeginState = factory.NewState();
                 ruleBeginState.Description = "rule " + ruleName + " start";
                 ruleBeginState.enclosingRule = r;
@@ -1467,14 +1467,14 @@ namespace Antlr3.Tool
                         if ( composite.watchNFAConversion )
                         {
                             Console.Out.WriteLine( "ignoring decision " + decision +
-                                               " within left-recursive rule " + decisionStartState.enclosingRule.name );
+                                               " within left-recursive rule " + decisionStartState.enclosingRule.Name );
                         }
                         continue;
                     }
                     if ( !externalAnalysisAbort && decisionStartState.NumberOfTransitions > 1 )
                     {
                         Rule r = decisionStartState.enclosingRule;
-                        if ( r.isSynPred && !synPredNamesUsedInDFA.Contains( r.name ) )
+                        if ( r.isSynPred && !synPredNamesUsedInDFA.Contains( r.Name ) )
                         {
                             continue;
                         }
@@ -1553,7 +1553,7 @@ namespace Antlr3.Tool
         public virtual DFA CreateLL_1_LookaheadDFA( int decision )
         {
             Decision d = GetDecision( decision );
-            string enclosingRule = d.startState.enclosingRule.name;
+            string enclosingRule = d.startState.enclosingRule.Name;
             Rule r = d.startState.enclosingRule;
             NFAState decisionStartState = GetDecisionNFAStartState( decision );
 
@@ -1749,7 +1749,7 @@ namespace Antlr3.Tool
         public virtual DFA CreateLookaheadDFA( int decision, bool wackTempStructures )
         {
             Decision d = GetDecision( decision );
-            string enclosingRule = d.startState.enclosingRule.name;
+            string enclosingRule = d.startState.enclosingRule.Name;
             Rule r = d.startState.enclosingRule;
 
             //JSystem.@out.println("createLookaheadDFA(): "+enclosingRule+" dec "+decision+"; synprednames prev used "+synPredNamesUsedInDFA);
@@ -1900,7 +1900,7 @@ namespace Antlr3.Tool
             }
 
             if ( ( type == GrammarType.Parser || type == GrammarType.TreeParser ) &&
-                 char.IsUpper( ruleName[0] ) )
+                 Rule.GetRuleType(ruleName) == RuleType.Lexer)
             {
                 ErrorManager.GrammarError( ErrorManager.MSG_LEXER_RULES_NOT_ALLOWED,
                                           this, ruleToken, ruleName );
@@ -2192,7 +2192,7 @@ namespace Antlr3.Tool
             Rule r = composite.ruleIndexToRuleList[ruleIndex];
             if ( r != null )
             {
-                return r.name;
+                return r.Name;
             }
             return null;
         }
@@ -2401,14 +2401,14 @@ namespace Antlr3.Tool
                 var actions = r.InlineActions;
                 foreach ( GrammarAST actionAST in actions )
                 {
-                    ActionAnalysisLexer sniffer = new ActionAnalysisLexer( this, r.name, actionAST );
+                    ActionAnalysisLexer sniffer = new ActionAnalysisLexer( this, r.Name, actionAST );
                     sniffer.Analyze();
                 }
                 // walk any named actions like @init, @after
                 IEnumerable<GrammarAST> namedActions = r.Actions.Values.Cast<GrammarAST>();
                 foreach ( GrammarAST actionAST in namedActions )
                 {
-                    ActionAnalysisLexer sniffer = new ActionAnalysisLexer( this, r.name, actionAST );
+                    ActionAnalysisLexer sniffer = new ActionAnalysisLexer( this, r.Name, actionAST );
                     sniffer.Analyze();
                 }
             }
@@ -2433,12 +2433,12 @@ namespace Antlr3.Tool
         /** A label on a rule is useless if the rule has no return value, no
          *  tree or template output, and it is not referenced in an action.
          */
-        protected virtual void RemoveUselessLabels( IDictionary ruleToElementLabelPairMap )
+        protected virtual void RemoveUselessLabels( IDictionary<string, LabelElementPair> ruleToElementLabelPairMap )
         {
             if ( ruleToElementLabelPairMap == null )
                 return;
 
-            var tokill = from pair in ruleToElementLabelPairMap.Values.Cast<LabelElementPair>()
+            var tokill = from pair in ruleToElementLabelPairMap.Values
                          let rule = GetRule( pair.elementRef.Text )
                          where rule != null && !rule.HasReturnValue && !pair.actionReferencesLabel
                          select pair.label.Text;

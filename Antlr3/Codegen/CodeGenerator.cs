@@ -708,7 +708,7 @@ namespace Antlr3.Codegen
             string ruleName = null;
             if ( r != null )
             {
-                ruleName = r.name;
+                ruleName = r.Name;
             }
             ICollection<string> actionNameSet = scopeActions.Keys.ToArray();
             foreach ( string name in actionNameSet )
@@ -1442,7 +1442,7 @@ namespace Antlr3.Codegen
 
             if ( label != null ||
                  enclosingRule.GetRuleRefsInAlt( x, outerAltNum ) != null ||
-                 enclosingRule.name.Equals( x ) )
+                 enclosingRule.Name.Equals( x ) )
             {
                 ErrorManager.GrammarError( ErrorManager.MSG_ISOLATED_RULE_SCOPE,
                                               grammar,

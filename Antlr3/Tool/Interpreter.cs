@@ -251,7 +251,7 @@ namespace Antlr3.Tool
             NFAState s = start;
             if ( actions != null )
             {
-                actions.EnterRule( s.nfa.grammar.FileName, start.enclosingRule.name );
+                actions.EnterRule( s.nfa.grammar.FileName, start.enclosingRule.Name );
             }
             int t = input.LA( 1 );
             while ( s != stop )
@@ -315,7 +315,7 @@ namespace Antlr3.Tool
                 { // end of rule node
                     if ( actions != null )
                     {
-                        actions.ExitRule( s.nfa.grammar.FileName, s.enclosingRule.name );
+                        actions.ExitRule( s.nfa.grammar.FileName, s.enclosingRule.Name );
                     }
                     if ( ruleInvocationStack.Count == 0 )
                     {
@@ -338,7 +338,7 @@ namespace Antlr3.Tool
                 {
                     FailedPredicateException fpe =
                         new FailedPredicateException( input,
-                                                     s.enclosingRule.name,
+                                                     s.enclosingRule.Name,
                                                      "can't deal with predicates yet" );
                     if ( actions != null )
                     {
@@ -357,7 +357,7 @@ namespace Antlr3.Tool
                         //Console.Out.WriteLine( "call " + s.enclosingRule.name + " from " + s.nfa.grammar.getFileName() );
                         if ( actions != null )
                         {
-                            actions.EnterRule( s.nfa.grammar.FileName, s.enclosingRule.name );
+                            actions.EnterRule( s.nfa.grammar.FileName, s.enclosingRule.Name );
                         }
                         // could be jumping to new grammar, make sure DFA created
                         if ( !s.nfa.grammar.AllDecisionDFAHaveBeenCreated )
@@ -418,7 +418,7 @@ namespace Antlr3.Tool
                     {
                         FailedPredicateException fpe =
                             new FailedPredicateException( input,
-                                                         s.enclosingRule.name,
+                                                         s.enclosingRule.Name,
                                                          label.SemanticContext.ToString() );
                         if ( actions != null )
                         {
@@ -436,7 +436,7 @@ namespace Antlr3.Tool
             //Console.Out.WriteLine( "hit stop state for " + stop.enclosingRule );
             if ( actions != null )
             {
-                actions.ExitRule( s.nfa.grammar.FileName, stop.enclosingRule.name );
+                actions.ExitRule( s.nfa.grammar.FileName, stop.enclosingRule.Name );
             }
         }
 

@@ -116,7 +116,7 @@ namespace Antlr3.Grammars
             string rname = null;
             if ( enclosingRule != null )
             {
-                rname = enclosingRule.name;
+                rname = enclosingRule.Name;
             }
             ActionTranslator translator =
                 new ActionTranslator( generator,

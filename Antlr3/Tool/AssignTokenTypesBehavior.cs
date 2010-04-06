@@ -107,7 +107,7 @@ namespace Antlr3.Tool
             // otherwise add literal to token types if referenced from parser rule
             // or in the tokens{} section
             if ( ( currentRuleName == null ||
-                  char.IsLower( currentRuleName[0] ) ) &&
+                  Rule.GetRuleType(currentRuleName) == RuleType.Parser) &&
                                                                     grammar.GetTokenType( t.Text ) == Label.INVALID )
             {
                 stringLiterals[t.Text] = UnassignedInParserRule;
@@ -133,7 +133,7 @@ namespace Antlr3.Tool
             // imported token names might exist, only add if new
             if ( grammar.type == GrammarType.Lexer || grammar.type == GrammarType.Combined )
             {
-                if ( !char.IsUpper( t.Text[0] ) )
+                if (Rule.GetRuleType(t.Text) == RuleType.Parser)
                 {
                     return;
                 }

@@ -202,7 +202,7 @@ rule
 			{
 				name = $id.text;
 				currentRuleName = name;
-				if ( char.IsUpper(name[0]) && grammar.type==GrammarType.Combined )
+				if ( Rule.GetRuleType(name) == RuleType.Lexer && grammar.type==GrammarType.Combined )
 				{
 					// a merged grammar spec, track lexer rules and send to another grammar
 					grammar.DefineLexerRuleFoundInParser($id.token, $start);
@@ -275,7 +275,7 @@ scope AttributeScopeActions;
 	:	^(	'scope'
 			(	attrScopeAction* attrs=ACTION
 				{
-					r.ruleScope = grammar.CreateRuleScope(r.name,$attrs.token);
+					r.ruleScope = grammar.CreateRuleScope(r.Name,$attrs.token);
 					r.ruleScope.isDynamicRuleScope = true;
 					r.ruleScope.AddAttributes($attrs.text, ';');
 					foreach ( var action in $AttributeScopeActions::actions )
