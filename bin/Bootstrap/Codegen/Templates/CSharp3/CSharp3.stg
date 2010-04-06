@@ -90,7 +90,7 @@ namespace <actions.(actionScope).namespace>
 >>
 
 lexer(grammar, name, tokens, scopes, rules, numRules, labelType="CommonToken",
-      filterMode, superClass="Lexer") ::= <<
+      filterMode, superClass={<if(actions.(actionScope).superClass)><actions.(actionScope).superClass><else>Antlr.Runtime.Lexer<endif>}) ::= <<
 [System.CodeDom.Compiler.GeneratedCode("ANTLR", "<ANTLRVersion>")]
 [System.CLSCompliant(false)]
 public partial class <grammar.recognizerName> : <@superClassName><superClass><@end>
@@ -121,13 +121,32 @@ public partial class <grammar.recognizerName> : <@superClassName><superClass><@e
 <endif>
 <endif>
 		<grammar.directDelegates:
-		 {g|<g:delegateName()> = new <g.recognizerName>(input, state<trunc(g.delegators):{p|, <p:delegateName()>}>, this);}; separator="\n">
+		 {g|<g:delegateName()> = new <g.recognizerName>(input, this.state<trunc(g.delegators):{p|, <p:delegateName()>}>, this);}; separator="\n">
 		<grammar.delegators:
 		 {g|this.<g:delegateName()> = <g:delegateName()>;}; separator="\n">
 		<last(grammar.delegators):{g|gParent = <g:delegateName()>;}>
 	}
 	public override string GrammarFileName { get { return "<fileName>"; } }
 
+<if(grammar.hasDelegates)>
+	public override ICharStream CharStream
+	{
+		get
+		{
+			return base.CharStream;
+		}
+		set
+		{
+			base.CharStream = value;
+			<grammar.directDelegates:
+			 {g|<g:delegateName()> = new <g.recognizerName>(input, state<trunc(g.delegators):{p|, <p:delegateName()>}>, this);}; separator="\n">
+			<grammar.delegators:
+			 {g|this.<g:delegateName()> = <g:delegateName()>;}; separator="\n">
+			<last(grammar.delegators):{g|gParent = <g:delegateName()>;}>
+		}
+	}
+
+<endif>
 <if(filterMode)>
 	<filteringNextToken()>
 <endif>
@@ -163,7 +182,10 @@ public override IToken NextToken()
 	{
 		if (input.LA(1) == CharStreamConstants.EndOfFile)
 		{
-			return Tokens.EndOfFile;
+			IToken eof = new CommonToken((ICharStream)input, CharStreamConstants.EndOfFile, TokenChannels.Default, input.Index, input.Index);
+			eof.Line = Line;
+			eof.CharPositionInLine = CharPositionInLine;
+			return eof;
 		}
 		state.token = null;
 		state.channel = TokenChannels.Default;
@@ -318,7 +340,7 @@ this.state.ruleMemo = new System.Collections.Generic.Dictionary\<int, int>[<leng
 >>
 
 parser(grammar, name, scopes, tokens, tokenNames, rules, numRules, bitsets,
-       ASTLabelType="object", superClass="Parser", labelType="IToken",
+       ASTLabelType="object", superClass={<if(actions.(actionScope).superClass)><actions.(actionScope).superClass><else>Antlr.Runtime.Parser<endif>}, labelType="IToken",
        members={<actions.parser.members>}) ::= <<
 <genericParser(inputStreamType="ITokenStream", rewriteElementType="IToken", ...)>
 >>
@@ -328,7 +350,7 @@ parser(grammar, name, scopes, tokens, tokenNames, rules, numRules, bitsets,
  */
 treeParser(grammar, name, scopes, tokens, tokenNames, globalAction, rules,
            numRules, bitsets, labelType={<ASTLabelType>}, ASTLabelType="object",
-           superClass={<if(filterMode)><if(buildAST)>TreeRewriter<else>TreeFilter<endif><else>TreeParser<endif>},
+           superClass={<if(actions.(actionScope).superClass)><actions.(actionScope).superClass><else>Antlr.Runtime.Tree.<if(filterMode)><if(buildAST)>TreeRewriter<else>TreeFilter<endif><else>TreeParser<endif><endif>},
            members={<actions.treeparser.members>},
            filterMode) ::= <<
 <genericParser(inputStreamType="ITreeNodeStream", rewriteElementType="Node", ...)>
@@ -846,7 +868,11 @@ lexerStringRef(string,label) ::= <<
 <if(label)>
 int <label>Start = CharIndex;
 Match(<string>); <checkRuleBacktrackFailure()>
+int <label>StartLine<elementIndex> = Line;
+int <label>StartCharPos<elementIndex> = CharPositionInLine;
 <label> = new <labelType>(input, TokenTypes.Invalid, TokenChannels.Default, <label>Start, CharIndex-1);
+<label>.Line = <label>StartLine<elementIndex>;
+<label>.CharPositionInLine = <label>StartCharPos<elementIndex>;
 <else>
 Match(<string>); <checkRuleBacktrackFailure()><\n>
 <endif>
@@ -905,8 +931,12 @@ ruleRefAndListLabel(rule,label,elementIndex,args,scope) ::= <<
 lexerRuleRef(rule,label,args,elementIndex,scope) ::= <<
 <if(label)>
 int <label>Start<elementIndex> = CharIndex;
+int <label>StartLine<elementIndex> = Line;
+int <label>StartCharPos<elementIndex> = CharPositionInLine;
 <if(scope)><scope:delegateName()>.<endif>m<rule.name>(<args; separator=", ">); <checkRuleBacktrackFailure()>
 <label> = new <labelType>(input, TokenTypes.Invalid, TokenChannels.Default, <label>Start<elementIndex>, CharIndex-1);
+<label>.Line = <label>StartLine<elementIndex>;
+<label>.CharPositionInLine = <label>StartCharPos<elementIndex>;
 <else>
 <if(scope)><scope:delegateName()>.<endif>m<rule.name>(<args; separator=", ">); <checkRuleBacktrackFailure()>
 <endif>
@@ -922,8 +952,12 @@ lexerRuleRefAndListLabel(rule,label,args,elementIndex,scope) ::= <<
 lexerMatchEOF(label,elementIndex) ::= <<
 <if(label)>
 int <label>Start<elementIndex> = CharIndex;
+int <label>StartLine<elementIndex> = Line;
+int <label>StartCharPos<elementIndex> = CharPositionInLine;
 Match(EOF); <checkRuleBacktrackFailure()>
 <labelType> <label> = new <labelType>(input, EOF, TokenChannels.Default, <label>Start<elementIndex>, CharIndex-1);
+<label>.Line = <label>StartLine<elementIndex>;
+<label>.CharPositionInLine = <label>StartCharPos<elementIndex>;
 <else>
 Match(EOF); <checkRuleBacktrackFailure()>
 <endif>
