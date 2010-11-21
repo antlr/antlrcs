@@ -75,6 +75,7 @@ namespace Antlr3.Codegen
     using Path = System.IO.Path;
     using RecognitionException = Antlr.Runtime.RecognitionException;
     using Rule = Antlr3.Tool.Rule;
+    using RuntimeHelpers = System.Runtime.CompilerServices.RuntimeHelpers;
     using Stopwatch = System.Diagnostics.Stopwatch;
     using StringTemplate = Antlr3.ST.StringTemplate;
     using StringTemplateGroup = Antlr3.ST.StringTemplateGroup;
@@ -284,146 +285,163 @@ namespace Antlr3.Codegen
 
         #endregion
 
-        [MethodImpl( MethodImplOptions.Synchronized )]
         protected virtual void LoadLanguageTarget( string language )
         {
-            if ( !_targets.TryGetValue( language, out target ) )
+            lock (_targets)
             {
-                // first try to load the target via a satellite DLL
-                string assembly = "Antlr3.Targets." + language + ".dll";
-                string path1 = tool.TargetsDirectory;
-                string[] paths = { path1 };
-
-                System.Reflection.Assembly targetAssembly = null;
-                System.Type targetType = null;
-                string targetName = "Antlr3.Targets." + language + "Target";
-
-                foreach ( string path in paths )
+                if (!_targets.TryGetValue(language, out target))
                 {
-                    string filename = System.IO.Path.Combine( path, assembly );
-                    if ( System.IO.File.Exists( filename ) )
+                    // first try to load the target via a satellite DLL
+                    string assembly = "Antlr3.Targets." + language + ".dll";
+                    string path1 = tool.TargetsDirectory;
+                    string[] paths = { path1 };
+
+                    System.Reflection.Assembly targetAssembly = null;
+                    System.Type targetType = null;
+                    string targetName = "Antlr3.Targets." + language + "Target";
+
+                    foreach (string path in paths)
                     {
-                        try
+                        string filename = System.IO.Path.Combine(path, assembly);
+                        if (System.IO.File.Exists(filename))
                         {
-                            targetAssembly = System.Reflection.Assembly.LoadFrom( filename );
-                            targetType = targetAssembly.GetType( targetName, false );
-                        }
-                        catch
-                        {
+                            try
+                            {
+                                targetAssembly = System.Reflection.Assembly.LoadFrom(filename);
+                                targetType = targetAssembly.GetType(targetName, false);
+                            }
+                            catch
+                            {
+                            }
                         }
                     }
-                }
 
-                // then try to load from the current file
-                if ( targetType == null )
-                {
-                    targetType = System.Type.GetType( targetName );
-
-                    if ( targetType == null )
+                    // then try to load from the current file
+                    if (targetType == null)
                     {
-                        ErrorManager.Error( ErrorManager.MSG_CANNOT_CREATE_TARGET_GENERATOR, targetName );
-                        return;
-                    }
-                }
+                        targetType = System.Type.GetType(targetName);
 
-                target = (Target)Activator.CreateInstance(targetType);
-                _targets[language] = target;
+                        if (targetType == null)
+                        {
+                            ErrorManager.Error(ErrorManager.MSG_CANNOT_CREATE_TARGET_GENERATOR, targetName);
+                            return;
+                        }
+                    }
+
+                    target = (Target)Activator.CreateInstance(targetType);
+                    _targets[language] = target;
+                }
             }
         }
 
         /** load the main language.stg template group file */
         public virtual void LoadTemplates( string language )
         {
-            // get a group loader containing main templates dir and target subdir
-            string templateDirs =
-                tool.TemplatesDirectory + ":" +
-                Path.Combine(tool.TemplatesDirectory, language);
-            //JSystem.@out.println("targets="+templateDirs.toString());
-            IStringTemplateGroupLoader loader =
-                new CommonGroupLoader( templateDirs,
-                                      ErrorManager.GetStringTemplateErrorListener() );
-            StringTemplateGroup.RegisterGroupLoader( loader );
-            StringTemplateGroup.RegisterDefaultLexer( typeof( AngleBracketTemplateLexer ) );
+            string outputOption = (string)this.grammar.GetOption("output") ?? string.Empty;
+            LoadTemplates(tool, language, grammar.type, outputOption, debug, out baseTemplates, out templates);
+        }
 
-            // first load main language template
-            StringTemplateGroup coreTemplates =
-                StringTemplateGroup.LoadGroup( language );
-            baseTemplates = coreTemplates;
-            if ( coreTemplates == null )
+        private static readonly Dictionary<string, IStringTemplateGroupLoader> _templateLoaders = new Dictionary<string, IStringTemplateGroupLoader>();
+        private static readonly Dictionary<string, StringTemplateGroup> _coreTemplates = new Dictionary<string, StringTemplateGroup>();
+        private static readonly Dictionary<StringTemplateGroup, Dictionary<string, StringTemplateGroup>> _languageTemplates = new Dictionary<StringTemplateGroup, Dictionary<string, StringTemplateGroup>>(ObjectReferenceEqualityComparer<StringTemplateGroup>.Default);
+
+        private sealed class ObjectReferenceEqualityComparer<T> : EqualityComparer<T>
+            where T : class
+        {
+            private static readonly ObjectReferenceEqualityComparer<T> _default = new ObjectReferenceEqualityComparer<T>();
+
+            private ObjectReferenceEqualityComparer()
             {
-                ErrorManager.Error( ErrorManager.MSG_MISSING_CODE_GEN_TEMPLATES,
-                                   language );
+            }
+
+            public static new ObjectReferenceEqualityComparer<T> Default
+            {
+                get
+                {
+                    return _default;
+                }
+            }
+
+            public override bool Equals(T x, T y)
+            {
+                return object.ReferenceEquals(x, y);
+            }
+
+            public override int GetHashCode(T obj)
+            {
+                return RuntimeHelpers.GetHashCode(obj);
+            }
+        }
+
+        private static void LoadTemplates(AntlrTool tool, string language, GrammarType grammarType, string outputOption, bool debug, out StringTemplateGroup baseTemplates, out StringTemplateGroup templates)
+        {
+            // first load main language template
+            StringTemplateGroup coreTemplates = GetOrCacheTemplateGroup(tool, language, null, null);
+            baseTemplates = coreTemplates;
+            if (coreTemplates == null)
+            {
+                ErrorManager.Error(ErrorManager.MSG_MISSING_CODE_GEN_TEMPLATES, language);
+                baseTemplates = null;
+                templates = null;
                 return;
             }
 
+            outputOption = outputOption ?? string.Empty;
             // dynamically add subgroups that act like filters to apply to
             // their supergroup.  E.g., Java:Dbg:AST:ASTParser::ASTDbg.
-            string outputOption = (string)grammar.GetOption( "output" );
-            if ( outputOption != null && outputOption.Equals( "AST" ) )
+            if (outputOption.Equals("AST"))
             {
-                if ( debug && grammar.type != GrammarType.Lexer )
+                if (debug && grammarType != GrammarType.Lexer)
                 {
-                    StringTemplateGroup dbgTemplates =
-                        StringTemplateGroup.LoadGroup( "Dbg", coreTemplates );
+                    StringTemplateGroup dbgTemplates = GetOrCacheTemplateGroup(tool, language, "Dbg", coreTemplates);
                     baseTemplates = dbgTemplates;
-                    StringTemplateGroup astTemplates =
-                        StringTemplateGroup.LoadGroup( "AST", dbgTemplates );
+                    StringTemplateGroup astTemplates = GetOrCacheTemplateGroup(tool, language, "AST", dbgTemplates);
                     StringTemplateGroup astParserTemplates = astTemplates;
-                    //if ( !grammar.rewriteMode() ) {
-                    if ( grammar.type == GrammarType.TreeParser )
+                    if (grammarType == GrammarType.TreeParser)
                     {
-                        astParserTemplates =
-                            StringTemplateGroup.LoadGroup( "ASTTreeParser", astTemplates );
+                        astParserTemplates = GetOrCacheTemplateGroup(tool, language, "ASTTreeParser", astTemplates);
                     }
                     else
                     {
-                        astParserTemplates =
-                            StringTemplateGroup.LoadGroup( "ASTParser", astTemplates );
+                        astParserTemplates = GetOrCacheTemplateGroup(tool, language, "ASTParser", astTemplates);
                     }
-                    //}
-                    StringTemplateGroup astDbgTemplates =
-                        StringTemplateGroup.LoadGroup( "ASTDbg", astParserTemplates );
+
+                    StringTemplateGroup astDbgTemplates = GetOrCacheTemplateGroup(tool, language, "ASTDbg", astParserTemplates);
                     templates = astDbgTemplates;
                 }
                 else
                 {
-                    StringTemplateGroup astTemplates =
-                        StringTemplateGroup.LoadGroup( "AST", coreTemplates );
+                    StringTemplateGroup astTemplates = GetOrCacheTemplateGroup(tool, language, "AST", coreTemplates);
                     StringTemplateGroup astParserTemplates = astTemplates;
-                    //if ( !grammar.rewriteMode() ) {
-                    if ( grammar.type == GrammarType.TreeParser )
+                    if (grammarType == GrammarType.TreeParser)
                     {
-                        astParserTemplates =
-                            StringTemplateGroup.LoadGroup( "ASTTreeParser", astTemplates );
+                        astParserTemplates = GetOrCacheTemplateGroup(tool, language, "ASTTreeParser", astTemplates);
                     }
                     else
                     {
-                        astParserTemplates =
-                            StringTemplateGroup.LoadGroup( "ASTParser", astTemplates );
+                        astParserTemplates = GetOrCacheTemplateGroup(tool, language, "ASTParser", astTemplates);
                     }
-                    //}
+
                     templates = astParserTemplates;
                 }
             }
-            else if ( outputOption != null && outputOption.Equals( "template" ) )
+            else if (outputOption.Equals("template"))
             {
-                if ( debug && grammar.type != GrammarType.Lexer )
+                if (debug && grammarType != GrammarType.Lexer)
                 {
-                    StringTemplateGroup dbgTemplates =
-                        StringTemplateGroup.LoadGroup( "Dbg", coreTemplates );
+                    StringTemplateGroup dbgTemplates = GetOrCacheTemplateGroup(tool, language, "Dbg", coreTemplates);
                     baseTemplates = dbgTemplates;
-                    StringTemplateGroup stTemplates =
-                        StringTemplateGroup.LoadGroup( "ST", dbgTemplates );
+                    StringTemplateGroup stTemplates = GetOrCacheTemplateGroup(tool, language, "ST", dbgTemplates);
                     templates = stTemplates;
                 }
                 else
                 {
-                    templates = StringTemplateGroup.LoadGroup( "ST", coreTemplates );
+                    templates = GetOrCacheTemplateGroup(tool, language, "ST", coreTemplates);
                 }
             }
-            else if ( debug && grammar.type != GrammarType.Lexer )
+            else if (debug && grammarType != GrammarType.Lexer)
             {
-                templates = StringTemplateGroup.LoadGroup( "Dbg", coreTemplates );
+                templates = GetOrCacheTemplateGroup(tool, language, "Dbg", coreTemplates);
                 baseTemplates = templates;
             }
             else
@@ -431,11 +449,89 @@ namespace Antlr3.Codegen
                 templates = coreTemplates;
             }
 
-            if ( EmitTemplateDelimiters )
+            if (CodeGenerator.EmitTemplateDelimiters)
             {
-                templates.EmitDebugStartStopStrings( true );
-                templates.DoNotEmitDebugStringsForTemplate( "codeFileExtension" );
-                templates.DoNotEmitDebugStringsForTemplate( "headerFileExtension" );
+                templates.EmitDebugStartStopStrings(true);
+                templates.DoNotEmitDebugStringsForTemplate("codeFileExtension");
+                templates.DoNotEmitDebugStringsForTemplate("headerFileExtension");
+            }
+        }
+
+        private static StringTemplateGroup GetOrCacheTemplateGroup(AntlrTool tool, string language, string name, StringTemplateGroup superGroup)
+        {
+#if true // <-- Caching
+            return GetOrCacheTemplateGroup(tool, null, language, name, superGroup);
+#else
+            // get or create the template loader
+            IStringTemplateGroupLoader loader;
+            if (!_templateLoaders.TryGetValue(language, out loader))
+            {
+                string templateDirs =
+                    tool.TemplatesDirectory + ":" +
+                    Path.Combine(tool.TemplatesDirectory, language);
+                loader = new CommonGroupLoader(templateDirs, ErrorManager.GetStringTemplateErrorListener());
+                _templateLoaders[language] = loader;
+            }
+
+            return CacheTemplateGroup(loader, language, name, superGroup);
+#endif
+        }
+
+        private static StringTemplateGroup GetOrCacheTemplateGroup(AntlrTool tool, IStringTemplateGroupLoader loader, string language, string name, StringTemplateGroup superGroup)
+        {
+            if (string.IsNullOrEmpty(name) && superGroup == null)
+            {
+                StringTemplateGroup group;
+                if (_coreTemplates.TryGetValue(language, out group))
+                    return group;
+            }
+            else
+            {
+                Dictionary<string, StringTemplateGroup> languageTemplates;
+                if (_languageTemplates.TryGetValue(superGroup, out languageTemplates))
+                {
+                    StringTemplateGroup group;
+                    if (languageTemplates.TryGetValue(name, out group))
+                        return group;
+                }
+            }
+
+            // get or create the template loader
+            if (loader == null && !_templateLoaders.TryGetValue(language, out loader))
+            {
+                string templateDirs =
+                    tool.TemplatesDirectory + ":" +
+                    Path.Combine(tool.TemplatesDirectory, language);
+                loader = new CommonGroupLoader(templateDirs, ErrorManager.GetStringTemplateErrorListener());
+                _templateLoaders[language] = loader;
+            }
+
+            return CacheTemplateGroup(loader, language, name, superGroup);
+        }
+
+        private static StringTemplateGroup CacheTemplateGroup(IStringTemplateGroupLoader loader, string language, string name, StringTemplateGroup superGroup)
+        {
+            StringTemplateGroup.RegisterGroupLoader(loader, true, true);
+            StringTemplateGroup.RegisterDefaultLexer(typeof(AngleBracketTemplateLexer));
+
+            if (string.IsNullOrEmpty(name) && superGroup == null)
+            {
+                StringTemplateGroup group = StringTemplateGroup.LoadGroup(language);
+                _coreTemplates[language] = group;
+                return group;
+            }
+            else
+            {
+                StringTemplateGroup group = StringTemplateGroup.LoadGroup(name, superGroup);
+                Dictionary<string, StringTemplateGroup> groups;
+                if (!_languageTemplates.TryGetValue(superGroup, out groups))
+                {
+                    groups = new Dictionary<string, StringTemplateGroup>();
+                    _languageTemplates[superGroup] = groups;
+                }
+
+                groups[name] = group;
+                return group;
             }
         }
 

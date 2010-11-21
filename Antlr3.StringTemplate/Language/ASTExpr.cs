@@ -106,7 +106,7 @@ namespace Antlr3.ST.Language
 
         static readonly Dictionary<Type, Dictionary<string, Func<object, object>>> _memberAccessors = new Dictionary<Type, Dictionary<string, Func<object, object>>>();
 
-        ITree _exprTree;
+        private readonly ITree _exprTree;
 
         /** <summary>store separator etc...</summary> */
         IDictionary<string, object> _options;
@@ -147,6 +147,11 @@ namespace Antlr3.ST.Language
         {
             public System.Func<ASTExpr, StringTemplate, IStringTemplateWriter, int> func;
             public ASTExpr chunk;
+
+            internal int Evaluate(StringTemplate template, IStringTemplateWriter writer)
+            {
+                return func(chunk, template, writer);
+            }
         }
         public static bool EnableDynamicMethods = false;
         public static bool EnableFunctionalMethods = true;
@@ -176,12 +181,20 @@ namespace Antlr3.ST.Language
         }
         #endregion
 
-#if COMPILE_EXPRESSIONS
-        public static int CallFunctionalActionEvaluator( HoldsActionFuncAndChunk data, StringTemplate self, IStringTemplateWriter writer )
+        public static int EvaluatorCacheHits
         {
-            return data.func( data.chunk, self, writer );
+            get;
+            private set;
         }
-        static System.Func<StringTemplate, IStringTemplateWriter, int> GetEvaluator( ASTExpr chunk, ITree condition )
+
+        public static int EvaluatorCacheMisses
+        {
+            get;
+            private set;
+        }
+
+#if COMPILE_EXPRESSIONS
+        private static System.Func<StringTemplate, IStringTemplateWriter, int> GetEvaluator( ASTExpr chunk, ITree condition )
         {
             if ( EnableDynamicMethods )
             {
@@ -228,7 +241,7 @@ namespace Antlr3.ST.Language
                         func = functionalEvaluator,
                         chunk = chunk
                     };
-                    return (System.Func<StringTemplate, IStringTemplateWriter, int>)System.Delegate.CreateDelegate( typeof( System.Func<StringTemplate, IStringTemplateWriter, int> ), holder, typeof( ASTExpr ).GetMethod( "CallFunctionalActionEvaluator" ) );
+                    return holder.Evaluate;
                 }
                 catch
                 {
@@ -273,22 +286,46 @@ namespace Antlr3.ST.Language
             @out.PushIndentation( Indentation );
             HandleExprOptions( self );
             //System.out.println("evaluating tree: "+exprTree.toStringList());
+            ActionEvaluator eval = null;
 #if COMPILE_EXPRESSIONS
-            if ( EvaluateAction == null )
-                EvaluateAction = GetEvaluator( this, AST );
-#else
-            ActionEvaluator eval =
-                    new ActionEvaluator( self, this, @out, _exprTree );
+            bool compile = self.Group != null && self.Group.EnableCompiledExpressions;
+            bool cache = compile && self.Group.EnableCachedExpressions;
+            System.Func<StringTemplate, IStringTemplateWriter, int> evaluator = EvaluateAction;
+            if (compile)
+            {
+                if (!cache || EvaluateAction == null)
+                {
+                    // caching won't help here because AST is read only
+                    EvaluatorCacheMisses++;
+                    evaluator = GetEvaluator(this, AST);
+                    if (cache)
+                        EvaluateAction = evaluator;
+                }
+                else
+                {
+                    EvaluatorCacheHits++;
+                }
+            }
+            else
 #endif
+            {
+                eval = new ActionEvaluator(self, this, @out, _exprTree);
+            }
+
             int n = 0;
             try
             {
                 // eval and write out tree
 #if COMPILE_EXPRESSIONS
-                n = EvaluateAction( self, @out );
-#else
-                n = eval.action();
+                if (compile)
+                {
+                    n = evaluator(self, @out);
+                }
+                else
 #endif
+                {
+                    n = eval.action();
+                }
             }
             catch ( RecognitionException re )
             {
@@ -1190,14 +1227,27 @@ namespace Antlr3.ST.Language
             if ( exprAST != null )
             {
 #if COMPILE_EXPRESSIONS
-                System.Func<StringTemplate, IStringTemplateWriter, int> value;
-#if CACHE_FUNCTORS
-                if ( !_evaluators.TryGetValue( expr, out value ) )
-#endif
+                System.Func<StringTemplate, IStringTemplateWriter, int> value = null;
+                bool compile = self.Group != null && self.Group.EnableCompiledExpressions;
+                bool cache = compile && self.Group.EnableCachedExpressions;
+                if (compile)
                 {
-                    value = GetEvaluator( this, exprAST );
 #if CACHE_FUNCTORS
-                    _evaluators[expr] = value;
+                    if (!cache || !_evaluators.TryGetValue(expr, out value))
+#endif
+                    {
+                        value = GetEvaluator(this, exprAST);
+#if CACHE_FUNCTORS
+                        EvaluatorCacheMisses++;
+                        if (cache)
+                            _evaluators[expr] = value;
+#endif
+                    }
+#if CACHE_FUNCTORS
+                    else
+                    {
+                        EvaluatorCacheHits++;
+                    }
 #endif
                 }
 #endif
@@ -1209,12 +1259,17 @@ namespace Antlr3.ST.Language
                     try
                     {
 #if COMPILE_EXPRESSIONS
-                        value( self, sw );
-#else
-                        ActionEvaluator eval = new ActionEvaluator( self, this, sw, exprAST );
-                        // eval tree
-                        eval.action();
+                        if (compile)
+                        {
+                            value(self, sw);
+                        }
+                        else
 #endif
+                        {
+                            ActionEvaluator eval = new ActionEvaluator(self, this, sw, exprAST);
+                            // eval tree
+                            eval.action();
+                        }
                     }
                     catch ( RecognitionException re )
                     {
