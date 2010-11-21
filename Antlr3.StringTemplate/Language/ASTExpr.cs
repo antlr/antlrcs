@@ -43,6 +43,7 @@ namespace Antlr3.ST.Language
     using IDictionary = System.Collections.IDictionary;
     using IEnumerable = System.Collections.IEnumerable;
     using IList = System.Collections.IList;
+    using IndexerNameAttribute = System.Runtime.CompilerServices.IndexerNameAttribute;
     using InvalidOperationException = System.InvalidOperationException;
     using IOException = System.IO.IOException;
     using ITree = Antlr.Runtime.Tree.ITree;
@@ -50,6 +51,7 @@ namespace Antlr3.ST.Language
     using MethodImpl = System.Runtime.CompilerServices.MethodImplAttribute;
     using MethodImplOptions = System.Runtime.CompilerServices.MethodImplOptions;
     using MethodInfo = System.Reflection.MethodInfo;
+    using PropertyInfo = System.Reflection.PropertyInfo;
     using RecognitionException = Antlr.Runtime.RecognitionException;
     using StringWriter = System.IO.StringWriter;
 #if COMPILE_EXPRESSIONS
@@ -606,10 +608,12 @@ namespace Antlr3.ST.Language
             return value;
         }
 
-        static Func<object, object> FindMember( Type type, string name )
+        private static Func<object, object> FindMember( Type type, string name )
         {
-            if ( type == null || name == null )
-                throw new ArgumentNullException();
+            if (type == null)
+                throw new ArgumentNullException("type");
+            if (name == null)
+                throw new ArgumentNullException("name");
 
             lock ( _memberAccessors )
             {
@@ -630,7 +634,6 @@ namespace Antlr3.ST.Language
                 // must look up using reflection
                 string methodSuffix = char.ToUpperInvariant( name[0] ) + name.Substring( 1 );
 
-                // BEGIN ADDED FOR C#
                 MethodInfo method = null;
                 if ( method == null )
                 {
@@ -640,20 +643,11 @@ namespace Antlr3.ST.Language
                 }
                 if ( method == null )
                 {
-                    method = GetMethod( type, "Get" + methodSuffix );
+                    method = type.GetMethod("Get" + methodSuffix, Type.EmptyTypes);
                 }
                 if ( method == null )
                 {
-                    method = GetMethod( type, "Is" + methodSuffix );
-                }
-                // END ADDED
-                if ( method == null )
-                {
-                    method = GetMethod( type, "get" + methodSuffix );
-                }
-                if ( method == null )
-                {
-                    method = GetMethod( type, "is" + methodSuffix );
+                    method = type.GetMethod("Is" + methodSuffix, Type.EmptyTypes);
                 }
 
                 if ( method != null )
@@ -662,14 +656,30 @@ namespace Antlr3.ST.Language
                 }
                 else
                 {
-                    // try for a visible field
-                    FieldInfo field = type.GetField( name );
-                    // also check .NET naming convention for fields
-                    if ( field == null )
-                        field = type.GetField( "_" + name );
+                    // try for an indexer
+                    method = type.GetMethod("get_Item", new Type[] { typeof(string) });
+                    if (method == null)
+                    {
+                        var property = type.GetProperties().FirstOrDefault(IsIndexer);
+                        if (property != null)
+                            method = property.GetGetMethod();
+                    }
 
-                    if ( field != null )
-                        accessor = BuildAccessor( field );
+                    if (method != null)
+                    {
+                        accessor = BuildAccessor(method, name);
+                    }
+                    else
+                    {
+                        // try for a visible field
+                        FieldInfo field = type.GetField(name);
+                        // also check .NET naming convention for fields
+                        if (field == null)
+                            field = type.GetField("_" + name);
+
+                        if (field != null)
+                            accessor = BuildAccessor(field);
+                    }
                 }
 
                 members[name] = accessor;
@@ -678,7 +688,18 @@ namespace Antlr3.ST.Language
             }
         }
 
-        static Func<object, object> BuildAccessor( MethodInfo method )
+        private static bool IsIndexer(PropertyInfo propertyInfo)
+        {
+            if (propertyInfo == null)
+                throw new ArgumentNullException("propertyInfo");
+
+            var indexParameters = propertyInfo.GetIndexParameters();
+            return indexParameters != null
+                && indexParameters.Length > 0
+                && indexParameters[0].ParameterType == typeof(string);
+        }
+
+        private static Func<object, object> BuildAccessor( MethodInfo method )
         {
             ParameterExpression obj = Expression.Parameter(typeof(object), "obj");
             Expression<Func<object, object>> expr = Expression.Lambda<Func<object, object>>(
@@ -692,7 +713,25 @@ namespace Antlr3.ST.Language
             return expr.Compile();
         }
 
-        static Func<object, object> BuildAccessor( FieldInfo field )
+        /// <summary>
+        /// Builds an accessor for an indexer property that returns a takes a string argument.
+        /// </summary>
+        private static Func<object, object> BuildAccessor(MethodInfo method, string argument)
+        {
+            ParameterExpression obj = Expression.Parameter(typeof(object), "obj");
+            Expression<Func<object, object>> expr = Expression.Lambda<Func<object, object>>(
+                Expression.Convert(
+                    Expression.Call(
+                        Expression.Convert(obj, method.DeclaringType),
+                        method,
+                        Expression.Constant(argument)),
+                    typeof(object)),
+                obj);
+
+            return expr.Compile();
+        }
+
+        private static Func<object, object> BuildAccessor( FieldInfo field )
         {
             ParameterExpression obj = Expression.Parameter(typeof(object), "obj");
             Expression<Func<object, object>> expr = Expression.Lambda<Func<object, object>>(
@@ -790,12 +829,6 @@ namespace Antlr3.ST.Language
             }
 
             return value;
-        }
-
-        protected static MethodInfo GetMethod( Type c, string methodName )
-        {
-            // we want a getter method
-            return c.GetMethod( methodName, new Type[0] );
         }
 
         /** <summary>
