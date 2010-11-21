@@ -1009,8 +1009,9 @@ namespace Antlr3.ST
         /** <summary>Return "t" from "region__t__foo"</summary> */
         public virtual string GetUnMangledTemplateName( string mangledName )
         {
-            return mangledName.substring( "region__".Length,
-                                         mangledName.LastIndexOf( "__" ) );
+            int regionLength = "region__".Length;
+            return mangledName.Substring( regionLength,
+                                         mangledName.LastIndexOf( "__" ) - regionLength );
         }
 
         /** <summary>Make name and alias for target.  Replace any previous def of name</summary> */

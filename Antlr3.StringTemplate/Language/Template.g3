@@ -188,10 +188,11 @@ action[StringTemplate self]
 			bool err = false;
 			// watch out for <@super.r()>; that does NOT def implicit region
 			// convert to <super.region__enclosingTemplate__r()>
-			if ( regionName.StartsWith("super.") )
+			string regionNamePrefix = "super.";
+			if ( regionName.StartsWith(regionNamePrefix) )
 			{
 				//System.Console.Out.WriteLine( "super region ref " + regionName );
-				string regionRef = regionName.substring("super.".Length,regionName.Length);
+				string regionRef = regionName.Substring(regionNamePrefix.Length, regionName.Length - regionNamePrefix.Length);
 				string templateScope = self.Group.GetUnMangledTemplateName(self.Name);
 				StringTemplate scopeST = self.Group.LookupTemplate(templateScope);
 				if ( scopeST==null )
@@ -233,8 +234,9 @@ action[StringTemplate self]
 			int indexOfDefSymbol = combinedNameTemplateStr.IndexOf("::=");
 			if ( indexOfDefSymbol>=1 )
 			{
-				string regionName = combinedNameTemplateStr.substring(0,indexOfDefSymbol);
-				string template = combinedNameTemplateStr.substring(indexOfDefSymbol+3, combinedNameTemplateStr.Length);
+				string regionName = combinedNameTemplateStr.Substring(0, indexOfDefSymbol);
+				int startIndex = indexOfDefSymbol + 3;
+				string template = combinedNameTemplateStr.Substring(startIndex, combinedNameTemplateStr.Length - startIndex);
 				StringTemplate regionST = self.Group.DefineRegionTemplate(self,regionName,template,RegionType.Embedded);
 				// treat as regular action: mangled template include
 				string indent = ((ChunkToken)$rd).Indentation;

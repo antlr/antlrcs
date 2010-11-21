@@ -745,7 +745,9 @@ namespace AntlrUnitTests
             generator.GenRecognizer(); // codegen phase sets some vars we need
             StringTemplate codeST = generator.RecognizerST;
             string code = codeST.ToString();
-            string found = code.substring( code.IndexOf( "###" ) + 3, code.IndexOf( "!!!" ) );
+            int startIndex = code.IndexOf("###") + 3;
+            int endIndex = code.IndexOf("!!!");
+            string found = code.Substring( startIndex, endIndex - startIndex );
             assertEquals( expecting, found );
 
             assertEquals( "unexpected errors: " + equeue, 0, equeue.errors.Count );
@@ -791,7 +793,9 @@ namespace AntlrUnitTests
 
             StringTemplate codeST = generator.RecognizerST;
             string code = codeST.ToString();
-            string found = code.substring( code.IndexOf( "###" ) + 3, code.IndexOf( "!!!" ) );
+            int startIndex = code.IndexOf("###") + 3;
+            int endIndex = code.IndexOf("!!!");
+            string found = code.Substring( startIndex, endIndex - startIndex );
             assertEquals( expecting, found );
 
             assertEquals( "unexpected errors: " + equeue, 0, equeue.errors.Count );
@@ -818,7 +822,9 @@ namespace AntlrUnitTests
 
             StringTemplate codeST = generator.RecognizerST;
             string code = codeST.ToString();
-            string found = code.substring( code.IndexOf( "###" ) + 3, code.IndexOf( "!!!" ) );
+            int startIndex = code.IndexOf("###") + 3;
+            int endIndex = code.IndexOf("!!!");
+            string found = code.Substring(startIndex, endIndex - startIndex);
             assertEquals( expecting, found );
 
             assertEquals( "unexpected errors: " + equeue, 0, equeue.errors.Count );
@@ -1774,7 +1780,9 @@ namespace AntlrUnitTests
 
             StringTemplate codeST = generator.RecognizerST;
             string code = codeST.ToString();
-            string found = code.substring( code.IndexOf( "###" ) + 3, code.IndexOf( "!!!" ) );
+            int startIndex = code.IndexOf("###") + 3;
+            int endIndex = code.IndexOf("!!!");
+            string found = code.Substring(startIndex, endIndex - startIndex);
             assertEquals( expecting, found );
 
             assertEquals( "unexpected errors: " + equeue, 0, equeue.errors.Count );
@@ -1889,7 +1897,9 @@ namespace AntlrUnitTests
                                                                          new CommonToken( ANTLRParser.ACTION, action ), 1 );
             StringTemplate codeST = generator.RecognizerST;
             string code = codeST.ToString();
-            string found = code.substring( code.IndexOf( "###" ) + 3, code.IndexOf( "!!!" ) );
+            int startIndex = code.IndexOf("###") + 3;
+            int endIndex = code.IndexOf("!!!");
+            string found = code.Substring(startIndex, endIndex - startIndex);
             assertEquals( expecting, found );
 
             assertEquals( "unexpected errors: " + equeue, 0, equeue.errors.Count );
@@ -2341,7 +2351,9 @@ namespace AntlrUnitTests
 
             StringTemplate codeST = generator.RecognizerST;
             string code = codeST.ToString();
-            string found = code.substring( code.IndexOf( "###" ) + 3, code.IndexOf( "!!!" ) );
+            int startIndex = code.IndexOf("###") + 3;
+            int endIndex = code.IndexOf("!!!");
+            string found = code.Substring(startIndex, endIndex - startIndex);
             assertEquals( expecting, found );
 
             assertEquals( "unexpected errors: " + equeue, 0, equeue.errors.Count );
@@ -2366,7 +2378,9 @@ namespace AntlrUnitTests
 
             StringTemplate codeST = generator.RecognizerST;
             string code = codeST.ToString();
-            string found = code.substring( code.IndexOf( "###" ) + 3, code.IndexOf( "!!!" ) );
+            int startIndex = code.IndexOf("###") + 3;
+            int endIndex = code.IndexOf("!!!");
+            string found = code.Substring(startIndex, endIndex - startIndex);
             assertEquals( expecting, found );
 
             assertEquals( "unexpected errors: " + equeue, 0, equeue.errors.Count );
@@ -2392,7 +2406,9 @@ namespace AntlrUnitTests
 
             StringTemplate codeST = generator.RecognizerST;
             string code = codeST.ToString();
-            string found = code.substring( code.IndexOf( "###" ) + 3, code.IndexOf( "!!!" ) );
+            int startIndex = code.IndexOf("###") + 3;
+            int endIndex = code.IndexOf("!!!");
+            string found = code.Substring(startIndex, endIndex - startIndex);
             assertEquals( expecting, found );
 
             assertEquals( "unexpected errors: " + equeue, 0, equeue.errors.Count );
@@ -3480,7 +3496,9 @@ namespace AntlrUnitTests
             generator.GenRecognizer(); // codegen phase sets some vars we need
             StringTemplate codeST = generator.RecognizerST;
             string code = codeST.ToString();
-            string found = code.substring( code.IndexOf( "###" ) + 3, code.IndexOf( "!!!" ) );
+            int startIndex = code.IndexOf("###") + 3;
+            int endIndex = code.IndexOf("!!!");
+            string found = code.Substring(startIndex, endIndex - startIndex);
             assertEquals( expecting, found );
 
             int expectedMsgID = ErrorManager.MSG_UNKNOWN_RULE_ATTRIBUTE;
@@ -3514,7 +3532,9 @@ namespace AntlrUnitTests
             generator.GenRecognizer(); // codegen phase sets some vars we need
             StringTemplate codeST = generator.RecognizerST;
             string code = codeST.ToString();
-            string found = code.substring( code.IndexOf( "###" ) + 3, code.IndexOf( "!!!" ) );
+            int startIndex = code.IndexOf("###") + 3;
+            int endIndex = code.IndexOf("!!!");
+            string found = code.Substring(startIndex, endIndex - startIndex);
             assertEquals( expecting, found );
 
             assertEquals( "unexpected errors: " + equeue, 0, equeue.errors.Count );

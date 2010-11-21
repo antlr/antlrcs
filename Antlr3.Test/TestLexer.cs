@@ -279,7 +279,7 @@ namespace AntlrUnitTests
             StringTemplate codeST = generator.RecognizerST;
             string code = codeST.ToString();
             int m = code.IndexOf( "match(\"" );
-            string found = code.substring( m, m + expecting.Length );
+            string found = code.Substring( m, expecting.Length );
 
             assertEquals( expecting, found );
         }
