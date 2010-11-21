@@ -57,7 +57,7 @@ noRewrite(rewriteBlockLevel, treeLevel) ::= <<
 <if(backtracking)>if ( <actions.(actionScope).synpredgate> ) {<endif>
 <if(rewriteMode)>
 retval.tree = (<ASTLabelType>)_first_0;
-if ( adaptor.GetParent(retval.tree)!=null && adaptor.IsNil( adaptor.getParent(retval.tree) ) )
+if (adaptor.GetParent(retval.tree)!=null && adaptor.IsNil(adaptor.GetParent(retval.tree)))
     retval.tree = (<ASTLabelType>)adaptor.GetParent(retval.tree);
 <endif>
 <if(backtracking)>}<endif>

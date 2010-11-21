@@ -97,4 +97,4 @@ TreeAdaptor = adap;<\n>
 <endif>
 >>
 
-@rewriteElement.pregen() ::= "dbg.Location( <e.line>, <e.pos> );"
+//@rewriteElement.pregen() ::= "dbg.Location( <e.line>, <e.pos> );"

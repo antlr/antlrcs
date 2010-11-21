@@ -146,7 +146,7 @@ matchSet(s,label,elementIndex,postmatchCode);
 matchSetAndListLabel(s,label,elementIndex,postmatchCode);
 
 /** Match a string literal */
-lexerStringRef(string,label);
+lexerStringRef(string,label,elementIndex);
 
 wildcard(label,elementIndex);
 
