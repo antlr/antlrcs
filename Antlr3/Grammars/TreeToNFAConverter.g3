@@ -77,6 +77,7 @@ options
 using Antlr3.Analysis;
 using Antlr3.Misc;
 using Antlr3.Tool;
+using Antlr3.Extensions;
 
 using BitSet = Antlr.Runtime.BitSet;
 using DFA = Antlr.Runtime.DFA;
@@ -587,7 +588,7 @@ setRule returns [IIntSet elements=new IntervalSet()]
 			EOR
 		 )
 	;
-catch[RecognitionException re] { throw re; }
+catch[RecognitionException re] { re.PreserveStackTrace(); throw; }
 
 setElement[IIntSet elements]
 @init
@@ -706,7 +707,7 @@ options { backtrack = true; }
 			EOB
 		)
 	;
-catch[RecognitionException re] { throw re; }
+catch[RecognitionException re] { re.PreserveStackTrace(); throw; }
 finally { inTest--; }
 
 testSetRule returns [int alts=0]
@@ -725,7 +726,7 @@ testSetRule returns [int alts=0]
 			EOR
 		)
 	;
-catch[RecognitionException re] { throw re; }
+catch[RecognitionException re] { re.PreserveStackTrace(); throw; }
 finally { inTest--; }
 
 /** Match just an element; no ast suffix etc.. */
@@ -753,4 +754,4 @@ testSetElement returns [int alts=1]
 	|   ^( NOT tse=testSetElement )
 		{{ $alts = grammar.TokenTypes.Count - $tse.alts; }}
 	;
-catch[RecognitionException re] { throw re; }
+catch[RecognitionException re] { re.PreserveStackTrace(); throw; }
