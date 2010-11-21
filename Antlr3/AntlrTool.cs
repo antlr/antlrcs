@@ -53,7 +53,6 @@ namespace Antlr3
 
     public class AntlrTool
     {
-        public const string AssemblyVersion = "3.1.2";
         public const string UninitializedDir = "<unset-dir>";
 
         private IList<string> grammarFileNames = new List<string>();
@@ -140,6 +139,15 @@ namespace Antlr3
             ProcessArgs( args );
         }
 
+        public static Version AssemblyVersion
+        {
+            get
+            {
+                var assembly = typeof(AntlrTool).Assembly;
+                return assembly.GetName().Version;
+            }
+        }
+
         public static string ToolPathRoot
         {
             get;
@@ -162,7 +170,7 @@ namespace Antlr3
         {
             if ( verbose )
             {
-                ErrorManager.Info( "ANTLR Parser Generator  Version " + AssemblyVersion );
+                ErrorManager.Info( "ANTLR Parser Generator  Version " + AssemblyVersion.ToString(4) );
                 showBanner = false;
             }
 
@@ -493,7 +501,7 @@ namespace Antlr3
             // before setting options. The banner won't display that way!
             if ( Verbose && showBanner )
             {
-                ErrorManager.Info( "ANTLR Parser Generator  Version " + AssemblyVersion );
+                ErrorManager.Info( "ANTLR Parser Generator  Version " + AssemblyVersion.ToString(4) );
                 showBanner = false;
             }
 
@@ -837,7 +845,7 @@ namespace Antlr3
 
         private static void Version()
         {
-            ErrorManager.Info( "ANTLR Parser Generator  Version " + AntlrTool.AssemblyVersion );
+            ErrorManager.Info( "ANTLR Parser Generator  Version " + AntlrTool.AssemblyVersion.ToString(4) );
         }
 
         private static void Help()
