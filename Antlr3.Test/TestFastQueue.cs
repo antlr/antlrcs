@@ -111,7 +111,7 @@ namespace AntlrUnitTests
             {
                 q.Dequeue();
             }
-            catch (IndexOutOfRangeException nsee)
+            catch (InvalidOperationException nsee)
             {
                 msg = nsee.Message;
             }
@@ -133,7 +133,7 @@ namespace AntlrUnitTests
             {
                 q.Dequeue();
             }
-            catch (IndexOutOfRangeException nsee)
+            catch (InvalidOperationException nsee)
             {
                 msg = nsee.Message;
             }
@@ -154,7 +154,7 @@ namespace AntlrUnitTests
             {
                 q.Dequeue();
             }
-            catch ( IndexOutOfRangeException nsee )
+            catch ( InvalidOperationException nsee )
             {
                 msg = nsee.Message;
             }
