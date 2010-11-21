@@ -348,7 +348,7 @@ rule
 				^(RET["RET"] $rt?)
 				throwsSpec?
 				optionsSpec?
-				^($scopes)
+				$scopes
 				ruleActions?
 				altList
 				$ex?
