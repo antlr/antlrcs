@@ -1,0 +1,5 @@
+1. Rebuild solution
+2. Compress existing files in the bootstrap directory
+3. Copy fresh build files to the bootstrap directory
+4. Rebuild solution
+5. Copy fresh build files to the bootstrap directory
