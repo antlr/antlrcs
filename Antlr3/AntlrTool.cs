@@ -405,6 +405,10 @@ namespace Antlr3
                 {
                     DecisionProbe.verbose = true;
                 }
+                else if (args[i] == "-Xsavelexer")
+                {
+                    deleteTempLexer = false;
+                }
                 else if (args[i] == "-X")
                 {
                     ExtendedHelp();
@@ -881,6 +885,7 @@ namespace Antlr3
             Console.Error.WriteLine("  -Xmaxinlinedfastates m  max DFA states before table used rather than inlining      [" + CodeGenerator.DefaultMaxSwitchCaseLabels + "]");
             Console.Error.WriteLine("  -Xmaxswitchcaselabels m don't generate switch() statements for dfas bigger than m  [" + CodeGenerator.DefaultMaxSwitchCaseLabels + "]");
             Console.Error.WriteLine("  -Xminswitchalts m       don't generate switch() statements for dfas smaller than m [" + CodeGenerator.DefaultMinSwitchAlts + "]");
+            Console.Error.WriteLine("  -Xsavelexer             don't delete temporary lexers generated from combined grammars");
         }
 
         /// <summary>
@@ -1113,7 +1118,16 @@ namespace Antlr3
          */
         public virtual string GetImportedVocabFile( string vocabName )
         {
-            string path = Path.Combine( LibraryDirectory, vocabName + CodeGenerator.VocabFileExtension );
+            // first look at files we're generating
+            string path = (from file in GeneratedFiles
+                           where Path.GetFileName(file).Equals(vocabName + CodeGenerator.VocabFileExtension)
+                             && File.Exists(file)
+                           select file)
+                          .FirstOrDefault();
+            if (path != null)
+                return path;
+
+            path = Path.Combine( LibraryDirectory, vocabName + CodeGenerator.VocabFileExtension );
             if ( File.Exists( path ) )
                 return path;
 
