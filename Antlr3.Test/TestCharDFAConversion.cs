@@ -551,11 +551,11 @@ namespace AntlrUnitTests
                                      int[] expectingUnreachableAlts )
         //throws Exception
         {
-
+            Antlr3.AntlrTool tool = new Antlr3.AntlrTool();
             // mimic actions of org.antlr.Tool first time for grammar g
             if ( g.CodeGenerator == null )
             {
-                CodeGenerator generator = new CodeGenerator( null, g, "Java" );
+                CodeGenerator generator = new CodeGenerator( tool, g, "Java" );
                 g.CodeGenerator = generator;
                 g.BuildNFA();
                 g.CreateLookaheadDFAs( false );

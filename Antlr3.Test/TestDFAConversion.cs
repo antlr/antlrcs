@@ -552,7 +552,7 @@ namespace AntlrUnitTests
 
             g.CreateLookaheadDFAs( false );
 
-            Message msg = (Message)equeue.warnings[0];
+            Message msg = (Message)equeue.errors[0];
             assertTrue( "expecting left recursion cycles; found " + msg.GetType().Name,
                         msg is LeftRecursionCyclesMessage );
             LeftRecursionCyclesMessage cyclesMsg = (LeftRecursionCyclesMessage)msg;
@@ -588,7 +588,7 @@ namespace AntlrUnitTests
 
             g.CreateLookaheadDFAs( false );
 
-            Message msg = (Message)equeue.warnings[0];
+            Message msg = (Message)equeue.errors[0];
             assertTrue( "expecting left recursion cycles; found " + msg.GetType().Name,
                         msg is LeftRecursionCyclesMessage );
             LeftRecursionCyclesMessage cyclesMsg = (LeftRecursionCyclesMessage)msg;
@@ -623,7 +623,7 @@ namespace AntlrUnitTests
 
             assertTrue( expectedRules.SequenceEqual( ruleNames( leftRecursive ) ) );
 
-            Message msg = (Message)equeue.warnings[0];
+            Message msg = (Message)equeue.errors[0];
             assertTrue( "expecting left recursion cycles; found " + msg.GetType().Name,
                         msg is LeftRecursionCyclesMessage );
             LeftRecursionCyclesMessage cyclesMsg = (LeftRecursionCyclesMessage)msg;
