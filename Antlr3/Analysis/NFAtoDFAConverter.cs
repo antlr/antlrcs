@@ -680,7 +680,7 @@ namespace Antlr3.Analysis
             {
                 int depth = context.RecursionDepthEmanatingFromState( p.stateNumber );
                 // Detect recursion by more than a single alt, which indicates
-                // that the decision's lookahead language is non-regular; terminate
+                // that the decision's lookahead language is potentially non-regular; terminate
                 if ( depth == 1 && d.dfa.UserMaxLookahead == 0 )
                 { // k=* only
                     d.dfa.recursiveAltSet.Add( alt ); // indicate that this alt is recursive

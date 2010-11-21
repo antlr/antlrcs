@@ -875,7 +875,7 @@ namespace Antlr3.Analysis
                 else if ( acceptState || !configuration.semanticContext.IsSyntacticPredicate )
                 {
                     // at this point we have a gated predicate and, due to elseif,
-                    // we know it's an accept and not a syn pred.  In this case,
+                    // we know it's an accept or not a syn pred.  In this case,
                     // it's safe to add the gated predicate to the union.  We
                     // only want to add syn preds if it's an accept state.  Other
                     // gated preds can be used with edges leading to accept states.
