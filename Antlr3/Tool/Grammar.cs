@@ -64,6 +64,7 @@ namespace Antlr3.Tool
     using TextWriter = System.IO.TextWriter;
     using TimeSpan = System.TimeSpan;
     using Tool = Antlr3.AntlrTool;
+    using System.Collections.ObjectModel;
 
     /** Represents a grammar in memory. */
     public class Grammar
@@ -163,6 +164,7 @@ namespace Antlr3.Tool
 
         public class Decision
         {
+            public Grammar grammar;
             public int decision;
             public NFAState startState;
             public GrammarAST blockAST;
@@ -380,6 +382,8 @@ namespace Antlr3.Tool
          */
         protected bool externalAnalysisAbort;
 
+        public int numNonLLStar = 0; // hack to track for -report	
+
         /** When we read in a grammar, we track the list of syntactic predicates
          *  and build faux rules for them later.  See my blog entry Dec 2, 2005:
          *  http://www.antlr.org/blog/antlr3/lookahead.tml
@@ -411,7 +415,7 @@ namespace Antlr3.Tool
          *  in the recognizer for this file; only those that are affected by rule
          *  definitions in this grammar.  I am not sure the Java target will need
          *  this but I'm leaving in case other targets need it.
-         *  @see NameSpaceChecker.lookForReferencesToUndefinedSymbols()
+         *  see NameSpaceChecker.lookForReferencesToUndefinedSymbols()
          */
         protected internal HashSet<Rule> delegatedRuleReferences = new HashSet<Rule>();
 
@@ -499,7 +503,6 @@ namespace Antlr3.Tool
         public HashSet<int> setOfNondeterministicDecisionNumbers = new HashSet<int>();
         public HashSet<int> setOfNondeterministicDecisionNumbersResolvedWithPredicates =
             new HashSet<int>();
-        public HashSet<DFA> setOfDFAWhoseAnalysisTimedOut = new HashSet<DFA>();
 
         /** Track decisions with syn preds specified for reporting.
          *  This is the a set of BLOCK type AST nodes.
@@ -660,6 +663,15 @@ namespace Antlr3.Tool
                 generator = value;
             }
         }
+
+        public virtual ReadOnlyCollection<Decision> Decisions
+        {
+            get
+            {
+                return indexToDecision.AsReadOnly();
+            }
+        }
+
         public string DefaultRuleModifier
         {
             get
@@ -1768,7 +1780,6 @@ namespace Antlr3.Tool
             // Retry to create a simpler DFA if analysis failed (non-LL(*),
             // recursion overflow, or time out).
             bool failed =
-                lookaheadDFA.AnalysisTimedOut ||
                 lookaheadDFA.probe.IsNonLLStarDecision ||
                 lookaheadDFA.probe.AnalysisOverflowed;
             if ( failed && lookaheadDFA.OkToRetryWithK1 )
@@ -1787,13 +1798,6 @@ namespace Antlr3.Tool
                 lookaheadDFA = null; // make sure other memory is "free" before redoing
                 lookaheadDFA = new DFA( decision, decisionStartState );
             }
-            if ( lookaheadDFA.AnalysisTimedOut )
-            { // did analysis bug out?
-                ErrorManager.InternalError( "could not even do k=1 for decision " +
-                                           decision + "; reason: " +
-                                           lookaheadDFA.ReasonForFailure );
-            }
-
 
             SetLookaheadDFA( decision, lookaheadDFA );
 
@@ -3252,7 +3256,7 @@ namespace Antlr3.Tool
             {
                 return null;
             }
-            Decision d = (Decision)indexToDecision[index];
+            Decision d = indexToDecision[index];
             return d;
         }
 
@@ -3265,6 +3269,7 @@ namespace Antlr3.Tool
             }
             Decision d = new Decision();
             d.decision = decision;
+            d.grammar = this;
             indexToDecision.setSize( NumberOfDecisions );
             indexToDecision[index] = d;
             return d;

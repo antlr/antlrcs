@@ -157,6 +157,7 @@
     <Compile Include="Tool\GrammarInsufficientPredicatesMessage.cs" />
     <Compile Include="Tool\GrammarNonDeterminismMessage.cs" />
     <Compile Include="Tool\GrammarReport.cs" />
+    <Compile Include="Tool\GrammarReport2.cs" />
     <Compile Include="Tool\GrammarSemanticsMessage.cs" />
     <Compile Include="Tool\GrammarSpelunker.cs" />
     <Compile Include="Tool\GrammarSyntaxMessage.cs" />

@@ -238,6 +238,53 @@ namespace AntlrUnitTests
         }
 
         [TestMethod]
+        public void TestSynPredMissingInMiddle()
+        {
+            Grammar g = new Grammar(
+                "parser grammar t;\n" +
+                "x   : (A)=> X\n" +
+                "    | X\n" +  // assume missing synpred is true also
+                "	 | (C)=> X" +
+                "    ;\n");
+            string expecting =
+                ".s0-X->.s1\n" +
+                ".s1-{synpred1_t}?->:s2=>1\n" +
+                ".s1-{synpred2_t}?->:s4=>3\n" +
+                ".s1-{true}?->:s3=>2\n";
+            int[] unreachableAlts = null;
+            int[] nonDetAlts = null;
+            string ambigInput = null;
+            int[] danglingAlts = null;
+            int numWarnings = 0;
+            checkDecision(g, 1, expecting, unreachableAlts,
+                          nonDetAlts, ambigInput, danglingAlts, numWarnings);
+        }
+
+        [TestMethod]
+        public void TestAutoBacktrackAndPredMissingInMiddle()
+        {
+            Grammar g = new Grammar(
+                "parser grammar t;\n" +
+                "options {backtrack=true;}\n" +
+                "x   : (A)=> X\n" +
+                "    | X\n" +  // assume missing synpred is true also
+                "	 | (C)=> X" +
+                "    ;\n");
+            string expecting =
+                ".s0-X->.s1\n" +
+                ".s1-{synpred1_t}?->:s2=>1\n" +  // gen code should have this as (A)=>
+                ".s1-{synpred2_t}?->:s3=>2\n" + // gen code should have this as (X)=>
+                ".s1-{synpred3_t}?->:s4=>3\n"; // gen code should have this as (C)=>
+            int[] unreachableAlts = null;
+            int[] nonDetAlts = null;
+            string ambigInput = null;
+            int[] danglingAlts = null;
+            int numWarnings = 0;
+            checkDecision(g, 1, expecting, unreachableAlts,
+                          nonDetAlts, ambigInput, danglingAlts, numWarnings);
+        }
+
+        [TestMethod]
         public void TestSemPredResolvesRecursion() /*throws Exception*/ {
             Grammar g = new Grammar(
                 "parser grammar t;\n" +
@@ -550,9 +597,8 @@ namespace AntlrUnitTests
 
             assertTrue( expectedRules.SequenceEqual( ruleNames( leftRecursive ) ) );
 
-            g.CreateLookaheadDFAs( false );
-
-            Message msg = (Message)equeue.errors[0];
+            Assert.AreEqual(1, equeue.errors.Count);
+            Message msg = equeue.errors[0];
             assertTrue( "expecting left recursion cycles; found " + msg.GetType().Name,
                         msg is LeftRecursionCyclesMessage );
             LeftRecursionCyclesMessage cyclesMsg = (LeftRecursionCyclesMessage)msg;
@@ -586,10 +632,9 @@ namespace AntlrUnitTests
             expectedRules.Add( "b" );
             assertTrue( expectedRules.SequenceEqual( ruleNames( leftRecursive ) ) );
 
-            g.CreateLookaheadDFAs( false );
-
-            Message msg = (Message)equeue.errors[0];
-            assertTrue( "expecting left recursion cycles; found " + msg.GetType().Name,
+            Assert.AreEqual(1, equeue.errors.Count);
+            Message msg = equeue.errors[0];
+            assertTrue("expecting left recursion cycles; found " + msg.GetType().Name,
                         msg is LeftRecursionCyclesMessage );
             LeftRecursionCyclesMessage cyclesMsg = (LeftRecursionCyclesMessage)msg;
 
@@ -623,8 +668,9 @@ namespace AntlrUnitTests
 
             assertTrue( expectedRules.SequenceEqual( ruleNames( leftRecursive ) ) );
 
-            Message msg = (Message)equeue.errors[0];
-            assertTrue( "expecting left recursion cycles; found " + msg.GetType().Name,
+            Assert.AreEqual(1, equeue.errors.Count);
+            Message msg = equeue.errors[0];
+            assertTrue("expecting left recursion cycles; found " + msg.GetType().Name,
                         msg is LeftRecursionCyclesMessage );
             LeftRecursionCyclesMessage cyclesMsg = (LeftRecursionCyclesMessage)msg;
 
@@ -932,12 +978,13 @@ namespace AntlrUnitTests
             // should look the same as A+ since no ambiguity
             string expecting =
                 ".s0-A->:s1=>1\n"; // always chooses to enter loop upon A
+            // turns off 1 of warnings. A can never exit loop now
             int[] unreachableAlts = new int[] { 2 };
-            int[] nonDetAlts = new int[] { 1, 2 };
-            string ambigInput = "A";
+            int[] nonDetAlts = null;
+            string ambigInput = null;
             int[] danglingAlts = null;
-            int numWarnings = 2;
-            checkDecision( g, 1, expecting, unreachableAlts,
+            int numWarnings = 1;
+            checkDecision(g, 1, expecting, unreachableAlts,
                           nonDetAlts, ambigInput, danglingAlts, numWarnings );
         }
 
@@ -1477,28 +1524,107 @@ namespace AntlrUnitTests
         }
 
         [TestMethod]
-        public void TestHoistedGatedSynPred() /*throws Exception*/ {
+        public void TestHoistedGatedSynPred()
+        {
             Grammar g = new Grammar(
                 "parser grammar t;\n" +
                 "x   : (X)=> X\n" +
                 "    | X\n" +
-                "    ;\n" );
+                "    ;\n");
             string expecting =
                 ".s0-X->.s1\n" +
                 ".s1-{synpred1_t}?->:s2=>1\n" + // hoists into decision
-                ".s1-{true}?->:s3=>2\n";
+            ".s1-{true}?->:s3=>2\n";
             int[] unreachableAlts = null;
             int[] nonDetAlts = null;
             string ambigInput = null;
             int[] danglingAlts = null;
             int numWarnings = 0;
-            checkDecision( g, 1, expecting, unreachableAlts,
-                          nonDetAlts, ambigInput, danglingAlts, numWarnings );
+            checkDecision(g, 1, expecting, unreachableAlts,
+                          nonDetAlts, ambigInput, danglingAlts, numWarnings);
+
+            HashSet<string> preds = g.synPredNamesUsedInDFA;
+            HashSet<string> expectedPreds = new HashSet<string>() { "synpred1_t" };
+            assertEquals("predicate names not recorded properly in grammar", expectedPreds, preds);
+        }
+
+        [TestMethod]
+        public void TestHoistedGatedSynPred2()
+        {
+            Grammar g = new Grammar(
+                "parser grammar t;\n" +
+                "x   : (X)=> (X|Y)\n" +
+                "    | X\n" +
+                "    ;\n");
+            string expecting =
+                ".s0-X->.s1\n" +
+                ".s0-Y&&{synpred1_t}?->:s2=>1\n" +
+                ".s1-{synpred1_t}?->:s2=>1\n" +
+                    ".s1-{true}?->:s3=>2\n";
+            int[] unreachableAlts = null;
+            int[] nonDetAlts = null;
+            string ambigInput = null;
+            int[] danglingAlts = null;
+            int numWarnings = 0;
+            checkDecision(g, 1, expecting, unreachableAlts,
+                          nonDetAlts, ambigInput, danglingAlts, numWarnings);
 
             HashSet<string> preds = g.synPredNamesUsedInDFA;
             HashSet<string> expectedPreds = new HashSet<string>(); //{{add("synpred1_t");}};
-            expectedPreds.Add( "synpred1_t" );
-            assertTrue( "predicate names not recorded properly in grammar", expectedPreds.SequenceEqual( preds ) );
+            expectedPreds.Add("synpred1_t");
+            assertTrue("predicate names not recorded properly in grammar", expectedPreds.SequenceEqual(preds));
+        }
+
+        [TestMethod]
+        public void TestGreedyGetsNoErrorForAmbig()
+        {
+            Grammar g = new Grammar(
+                "parser grammar t;\n" +
+                "s : IF s (options {greedy=true;} : E s)? | B;\n" +
+                "slist: s SEMI ;");
+            string expecting =
+                ".s0-E->:s1=>1\n" +
+                ".s0-SEMI->:s2=>2\n";
+            int[] unreachableAlts = null;
+            int[] nonDetAlts = null;
+            string ambigInput = null;
+            int[] danglingAlts = null;
+            int numWarnings = 0;
+            checkDecision(g, 1, expecting, unreachableAlts,
+                          nonDetAlts, ambigInput, danglingAlts, numWarnings);
+            expecting =
+                ".s0-B->:s2=>2\n" +
+                ".s0-IF->:s1=>1\n";
+            checkDecision(g, 2, expecting, null, null, null, null, 0);
+        }
+
+        [TestMethod]
+        public void TestGreedyNonLLStarStillGetsError()
+        {
+            Grammar g = new Grammar(
+                "parser grammar t;\n" +
+                "x   : ( options {greedy=true;}\n" +
+                "	   : y X\n" +
+                "      | y Y\n" +
+                "	   )\n" +
+                "    ;\n" +
+                "y   : L y R\n" +
+                "    | B\n" +
+                "    ;");
+            IList<int> altsWithRecursion = new int[] { 1, 2 };
+            assertNonLLStar(g, altsWithRecursion);
+        }
+
+        [TestMethod]
+        public void TestGreedyRecOverflowStillGetsError()
+        {
+            Grammar g = new Grammar(
+                "parser grammar t;\n" +
+                "s : (options {greedy=true;} : a Y | A A A A A X) ;\n" + // force recursion past m=4
+                "a : A a | Q;");
+            IList expectedTargetRules = new string[] { "a" };
+            int expectedAlt = 1;
+            assertRecursionOverflow(g, expectedTargetRules, expectedAlt);
         }
 
         // Check state table creation

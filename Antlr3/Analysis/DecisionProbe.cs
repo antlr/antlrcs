@@ -130,7 +130,7 @@ namespace Antlr3.Analysis
          */
         ICollection<int> _altsWithProblem = new HashSet<int>();
 
-        /** If decision with > 1 alt has recursion in > 1 alt, it's nonregular
+        /** If decision with > 1 alt has recursion in > 1 alt, it's (likely) nonregular
          *  lookahead.  The decision cannot be made with a DFA.
          *  the alts are stored in altsWithProblem.
          */
@@ -154,9 +154,6 @@ namespace Antlr3.Analysis
         protected IDictionary<int, List<NFAConfiguration>> stateToLeftRecursiveConfigurationsMap =
             new Dictionary<int, List<NFAConfiguration>>();
 #endif
-
-        /** Did ANTLR have to terminate early on the analysis of this decision? */
-        bool _timedOut = false;
 
         /** Used to find paths through syntactically ambiguous DFA. If we've
          *  seen statement number before, what did we learn?
@@ -194,14 +191,7 @@ namespace Antlr3.Analysis
                 return _stateToRecursionOverflowConfigurationsMap.Count > 0;
             }
         }
-        /** Did the analysis complete it's work? */
-        public bool AnalysisTimedOut
-        {
-            get
-            {
-                return _timedOut;
-            }
-        }
+
         /** return set of states w/o emanating edges and w/o resolving sem preds.
          *  These states come about because the analysis algorithm had to
          *  terminate early to avoid infinite recursion for example (due to
@@ -500,17 +490,6 @@ namespace Antlr3.Analysis
                 ErrorManager.NonLLStarDecision( this );
             }
 
-            if ( AnalysisTimedOut )
-            {
-                // only report early termination errors if !backtracking
-                if ( !dfa.AutoBacktrackMode )
-                {
-                    ErrorManager.AnalysisAborted( this );
-                }
-                // now just return...if we bailed out, don't spew other messages
-                return;
-            }
-
             IssueRecursionWarnings();
 
             // generate a separate message for each problem state in DFA
@@ -537,7 +516,19 @@ namespace Antlr3.Analysis
                         StripWildCardAlts( disabledAlts );
                         if ( disabledAlts.Count > 0 )
                         {
-                            ErrorManager.Nondeterminism( this, d );
+                            // nondeterminism; same input predicts multiple alts.
+                            // but don't emit error if greedy=true explicitly set
+                            bool explicitlyGreedy = false;
+                            GrammarAST blockAST = d.dfa.nfa.grammar.GetDecisionBlockAST(d.dfa.decisionNumber);
+                            if (blockAST != null)
+                            {
+                                String greedyS = (String)blockAST.GetBlockOption("greedy");
+                                if (greedyS != null && greedyS.Equals("true"))
+                                    explicitlyGreedy = true;
+                            }
+
+                            if (!explicitlyGreedy)
+                                ErrorManager.Nondeterminism(this, d);
                         }
                     }
                 }
@@ -729,12 +720,6 @@ namespace Antlr3.Analysis
             _danglingStates.Add( d );
         }
 
-        public virtual void ReportAnalysisTimeout()
-        {
-            _timedOut = true;
-            dfa.nfa.grammar.setOfDFAWhoseAnalysisTimedOut.Add( dfa );
-        }
-
         /** Report that at least 2 alts have recursive constructs.  There is
          *  no way to build a DFA so we terminated.
          */
@@ -745,6 +730,7 @@ namespace Antlr3.Analysis
                                dfa.recursiveAltSet.toList());
                                */
             _nonLLStarDecision = true;
+            dfa.nfa.grammar.numNonLLStar++;
             _altsWithProblem.addAll( dfa.recursiveAltSet.ToList() );
         }
 

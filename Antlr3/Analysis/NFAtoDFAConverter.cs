@@ -41,6 +41,7 @@ namespace Antlr3.Analysis
     using ErrorManager = Antlr3.Tool.ErrorManager;
     using IList = System.Collections.IList;
     using IToken = Antlr.Runtime.IToken;
+    using Antlr3.Misc;
 
     /** Code that embodies the NFA conversion to DFA. A new object is needed
      *  per DFA (also required for thread safety if multiple conversions
@@ -85,7 +86,7 @@ namespace Antlr3.Analysis
 
         public virtual void Convert()
         {
-            _dfa.conversionStartTime = System.DateTime.Now;
+            //_dfa.conversionStartTime = System.DateTime.Now;
 
             // create the DFA start state
             _dfa.startState = ComputeStartState();
@@ -343,7 +344,6 @@ namespace Antlr3.Analysis
             }
 
             //JSystem.@out.println("DFA after reach / closures:\n"+dfa);
-
             if ( !d.IsResolvedWithPredicates && numberOfEdgesEmanating == 0 )
             {
                 //JSystem.@out.println("dangling DFA state "+d+"\nAfter reach / closures:\n"+dfa);
@@ -364,6 +364,7 @@ namespace Antlr3.Analysis
             }
 
             // Check to see if we need to add any semantic predicate transitions
+            // might have both token and predicated edges from d
             if ( d.IsResolvedWithPredicates )
             {
                 AddPredicateTransitions( d );
@@ -642,13 +643,13 @@ namespace Antlr3.Analysis
                                    );
             }
 
-            if ( DFA.MAX_TIME_PER_DFA_CREATION > System.TimeSpan.Zero &&
-                 System.DateTime.Now - d.dfa.conversionStartTime >=
-                 DFA.MAX_TIME_PER_DFA_CREATION )
-            {
-                // bail way out; we've blown up somehow
-                throw new AnalysisTimeoutException( d.dfa );
-            }
+            //if ( DFA.MAX_TIME_PER_DFA_CREATION > System.TimeSpan.Zero &&
+            //     System.DateTime.Now - d.dfa.conversionStartTime >=
+            //     DFA.MAX_TIME_PER_DFA_CREATION )
+            //{
+            //    // bail way out; we've blown up somehow
+            //    throw new AnalysisTimeoutException( d.dfa );
+            //}
 
             NFAConfiguration proposedNFAConfiguration =
                     new NFAConfiguration( p.stateNumber,
@@ -1467,7 +1468,6 @@ namespace Antlr3.Analysis
             if ( nondeterministicAlts.Count - altToPredMap.Count > 1 )
             {
                 // too few predicates to resolve; just return
-                // TODO: actually do we need to gen error here?
                 return false;
             }
 
@@ -1498,8 +1498,13 @@ namespace Antlr3.Analysis
                 else
                 {
                     // pretend naked alternative is covered with !(union other preds)
-                    // unless it's a synpred since those have precedence same
-                    // as alt order
+                    // unless one of preds from other alts is a manually specified synpred
+                    // since those have precedence same as alt order.  Missing synpred
+                    // is true so that alt wins (or is at least attempted).
+                    // Note: can't miss any preds on alts (can't be here) if auto backtrack
+                    // since it prefixes all.
+                    // In LL(*) paper, i'll just have algorithm emit warning about uncovered
+                    // pred
                     SemanticContext unionOfPredicatesFromAllAlts =
                         GetUnionOfPredicates( altToPredMap );
                     //JSystem.@out.println("all predicates "+unionOfPredicatesFromAllAlts);
@@ -1521,6 +1526,8 @@ namespace Antlr3.Analysis
                 int numConfigs = d.nfaConfigurations.Size();
                 for ( int i = 0; i < numConfigs; i++ )
                 {
+                    // TODO: I don't think we need to do this; altToPredMap has it
+                    //7/27/10  theok, I removed it and it still seems to work with everything; leave in anyway just in case
                     NFAConfiguration configuration = (NFAConfiguration)d.nfaConfigurations.Get( i );
                     if ( configuration.alt == nakedAlt )
                     {
@@ -1540,6 +1547,7 @@ namespace Antlr3.Analysis
                     d.dfa.probe.RemoveRecursiveOverflowState( d );
                 }
                 int numConfigs = d.nfaConfigurations.Size();
+                //System.out.println("pred map="+altToPredMap);
                 for ( int i = 0; i < numConfigs; i++ )
                 {
                     NFAConfiguration configuration = (NFAConfiguration)d.nfaConfigurations.Get( i );
@@ -1549,7 +1557,9 @@ namespace Antlr3.Analysis
                     {
                         // resolve (first found) with pred
                         // and remove alt from problem list
+                        //System.out.println("c="+configuration);
                         configuration.resolveWithPredicate = true;
+                        // altToPredMap has preds from all alts; store into "annointed" config
                         configuration.semanticContext = semCtx; // reset to combined
                         altToPredMap.Remove( configuration.alt );
 
@@ -1598,11 +1608,11 @@ namespace Antlr3.Analysis
             IDictionary<int, SemanticContext> altToPredicateContextMap =
                 new Dictionary<int, SemanticContext>();
             // init the alt to predicate set map
-            IDictionary<int, HashSet<SemanticContext>> altToSetOfContextsMap =
-                new Dictionary<int, HashSet<SemanticContext>>();
+            IDictionary<int, OrderedHashSet<SemanticContext>> altToSetOfContextsMap =
+                new Dictionary<int, OrderedHashSet<SemanticContext>>();
             foreach ( int altI in nondeterministicAlts )
             {
-                altToSetOfContextsMap[altI] = new HashSet<SemanticContext>();
+                altToSetOfContextsMap[altI] = new OrderedHashSet<SemanticContext>();
             }
 
             /*
@@ -1631,7 +1641,7 @@ namespace Antlr3.Analysis
                     if ( configuration.semanticContext !=
                          SemanticContext.EmptySemanticContext )
                     {
-                        HashSet<SemanticContext> predSet = altToSetOfContextsMap.get( altI );
+                        OrderedHashSet<SemanticContext> predSet = altToSetOfContextsMap.get( altI );
                         predSet.Add( configuration.semanticContext );
                     }
                     else
@@ -1671,7 +1681,7 @@ namespace Antlr3.Analysis
             IList<int> incompletelyCoveredAlts = new List<int>();
             foreach ( int altI in nondeterministicAlts )
             {
-                HashSet<SemanticContext> contextsForThisAlt = altToSetOfContextsMap.get( altI );
+                OrderedHashSet<SemanticContext> contextsForThisAlt = altToSetOfContextsMap.get( altI );
                 if ( nondetAltsWithUncoveredConfiguration.Contains( altI ) )
                 { // >= 1 config has no ctx
                     if ( contextsForThisAlt.Count > 0 )

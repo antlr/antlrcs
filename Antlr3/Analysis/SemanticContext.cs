@@ -89,6 +89,12 @@ namespace Antlr3.Analysis
                                                StringTemplateGroup templates,
                                                DFA dfa );
 
+        // user-specified sempred {}? or {}?=>
+        public abstract bool HasUserSemanticPredicate
+        {
+            get;
+        }
+
         public abstract bool IsSyntacticPredicate
         {
             get;
@@ -235,6 +241,17 @@ namespace Antlr3.Analysis
                 }
             }
 
+            public override bool HasUserSemanticPredicate
+            {
+                get
+                {
+                    // user-specified sempred
+                    return predicateAST != null &&
+                           (predicateAST.Type == ANTLRParser.GATED_SEMPRED ||
+                             predicateAST.Type == ANTLRParser.SEMPRED);
+                }
+            }
+
             public override bool IsSyntacticPredicate
             {
                 get
@@ -279,6 +296,14 @@ namespace Antlr3.Analysis
                     return templates.GetInstanceOf( "true" );
                 }
                 return new StringTemplate( "true" );
+            }
+
+            public override bool HasUserSemanticPredicate
+            {
+                get
+                {
+                    return false;
+                }
             }
 
             public override string ToString()
@@ -355,6 +380,15 @@ namespace Antlr3.Analysis
                     return new AND( gatedLeft, gatedRight );
                 }
             }
+
+            public override bool HasUserSemanticPredicate
+            {
+                get
+                {
+                    return _left.HasUserSemanticPredicate || _right.HasUserSemanticPredicate;
+                }
+            }
+
             public override bool IsSyntacticPredicate
             {
                 get
@@ -433,6 +467,22 @@ namespace Antlr3.Analysis
                     return result;
                 }
             }
+
+            public override bool HasUserSemanticPredicate
+            {
+                get
+                {
+                    for (Iterator it = _operands.iterator(); it.hasNext(); )
+                    {
+                        SemanticContext semctx = (SemanticContext)it.next();
+                        if (semctx.HasUserSemanticPredicate)
+                            return true;
+                    }
+
+                    return false;
+                }
+            }
+
             public override bool IsSyntacticPredicate
             {
                 get
@@ -508,6 +558,15 @@ namespace Antlr3.Analysis
                     return new NOT( p );
                 }
             }
+
+            public override bool HasUserSemanticPredicate
+            {
+                get
+                {
+                    return ctx.HasUserSemanticPredicate;
+                }
+            }
+
             public override bool IsSyntacticPredicate
             {
                 get

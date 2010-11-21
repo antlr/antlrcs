@@ -557,20 +557,17 @@ namespace Antlr3
                         grammar.PrintGrammar( Console.Out );
                     }
 
-                    if ( Report )
+                    if (Report)
                     {
-                        GrammarReport report2 = new GrammarReport( grammar );
-                        Console.Out.WriteLine( report2.ToString() );
-                        // print out a backtracking report too (that is not encoded into log)
-                        Console.Out.WriteLine( report2.GetBacktrackingReport() );
-                        // same for aborted NFA->DFA conversions
-                        Console.Out.WriteLine( report2.GetAnalysisTimeoutReport() );
+                        GrammarReport2 greport = new GrammarReport2(grammar);
+                        Console.WriteLine(greport.ToString());
+                    }
 
-                        if ( Profile )
-                        {
-                            Stats.WriteReport( GrammarReport.GRAMMAR_STATS_FILENAME,
-                                              report2.ToNotifyString() );
-                        }
+                    if ( Profile )
+                    {
+                        GrammarReport report = new GrammarReport(grammar);
+                        Stats.WriteReport( GrammarReport.GRAMMAR_STATS_FILENAME,
+                                          report.ToNotifyString() );
                     }
 
                     // now handle the lexer if one was created for a merged spec
@@ -855,6 +852,7 @@ namespace Antlr3
             Console.Error.WriteLine( "  -report               print out a report about the grammar(s) processed" );
             Console.Error.WriteLine( "  -print                print out the grammar without actions" );
             Console.Error.WriteLine( "  -debug                generate a parser that emits debugging events" );
+            Console.Error.WriteLine( "  -trace                generate a recognizer that traces rule entry/exit" );
             Console.Error.WriteLine( "  -profile              generate a parser that computes profiling information" );
             Console.Error.WriteLine( "  -nfa                  generate an NFA for each rule" );
             Console.Error.WriteLine( "  -dfa                  generate a DFA for each decision point" );
@@ -881,7 +879,6 @@ namespace Antlr3
             Console.Error.WriteLine("  -Xnfastates             for nondeterminisms, list NFA states for each path");
             Console.Error.WriteLine("  -Xm m                   max number of rule invocations during conversion           [" + NFAContext.MAX_SAME_RULE_INVOCATIONS_PER_NFA_CONFIG_STACK + "]");
             Console.Error.WriteLine("  -Xmaxdfaedges m         max \"comfortable\" number of edges for single DFA state     [" + DFA.MAX_STATE_TRANSITIONS_FOR_TABLE + "]");
-            Console.Error.WriteLine("  -Xconversiontimeout t   set NFA conversion timeout for each decision               [" + DFA.MAX_TIME_PER_DFA_CREATION + "]");
             Console.Error.WriteLine("  -Xmaxinlinedfastates m  max DFA states before table used rather than inlining      [" + CodeGenerator.DefaultMaxSwitchCaseLabels + "]");
             Console.Error.WriteLine("  -Xmaxswitchcaselabels m don't generate switch() statements for dfas bigger than m  [" + CodeGenerator.DefaultMaxSwitchCaseLabels + "]");
             Console.Error.WriteLine("  -Xminswitchalts m       don't generate switch() statements for dfas smaller than m [" + CodeGenerator.DefaultMinSwitchAlts + "]");
@@ -1411,23 +1408,6 @@ namespace Antlr3
             set
             {
                 verbose = value;
-            }
-        }
-
-        /**
-         * Gets or sets the current setting of the conversion timeout on DFA creation.
-         *
-         * @return DFA creation timeout value in milliseconds
-         */
-        public virtual TimeSpan ConversionTimeout
-        {
-            get
-            {
-                return DFA.MAX_TIME_PER_DFA_CREATION;
-            }
-            set
-            {
-                DFA.MAX_TIME_PER_DFA_CREATION = value;
             }
         }
 

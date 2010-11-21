@@ -57,6 +57,10 @@ namespace Antlr3.Analysis
         public const int REACHABLE_NO = 0;
         public const int REACHABLE_YES = 1;
 
+        public const int CYCLIC_UNKNOWN = -2;
+        public const int CYCLIC_BUSY = -1; // in process of computing
+        public const int CYCLIC_DONE = 0;
+
 #if false
         /** Prevent explosion of DFA states during conversion. The max number
          *  of states per alt in a single decision's DFA.
@@ -170,12 +174,6 @@ namespace Antlr3.Analysis
          */
         public DecisionProbe probe;
 
-        /** Track absolute time of the conversion so we can have a failsafe:
-         *  if it takes too long, then terminate.  Assume bugs are in the
-         *  analysis engine.
-         */
-        internal DateTime conversionStartTime;
-
         /** Map an edge transition table to a unique set number; ordered so
          *  we can push into the output template as an ordered list of sets
          *  and then ref them from within the transition[][] table.  Like this
@@ -267,14 +265,6 @@ namespace Antlr3.Analysis
                 //long stop = JSystem.currentTimeMillis();
                 //JSystem.@out.println("verify cost: "+(int)(stop-start)+" ms");
             }
-            catch ( AnalysisTimeoutException /*at*/ )
-            {
-                probe.ReportAnalysisTimeout();
-                if ( !OkToRetryWithK1 )
-                {
-                    probe.IssueWarnings();
-                }
-            }
             catch ( NonLLStarDecisionException /*nonLL*/ )
             {
                 probe.ReportNonLLStarDecision( this );
@@ -287,13 +277,7 @@ namespace Antlr3.Analysis
         }
 
         #region Properties
-        public bool AnalysisTimedOut
-        {
-            get
-            {
-                return probe.AnalysisTimedOut;
-            }
-        }
+
         public bool CanInlineDecision
         {
             get
@@ -349,6 +333,17 @@ namespace Antlr3.Analysis
                 return _cyclic && UserMaxLookahead == 0;
             }
         }
+
+        public bool IsClassicDFA
+        {
+            get
+            {
+                return !IsCyclic &&
+                       !nfa.grammar.decisionsWhoseDFAsUsesSemPreds.Contains(this) &&
+                       !nfa.grammar.decisionsWhoseDFAsUsesSynPreds.Contains(this);
+            }
+        }
+
         public bool IsGreedy
         {
             get
@@ -375,18 +370,20 @@ namespace Antlr3.Analysis
                 return GetIsTokensRuleDecision();
             }
         }
-        /** Return k if decision is LL(k) for some k else return max int */
+
+        /** Return k if decision is LL(k) for some k else return max int
+         */
         public int MaxLookaheadDepth
         {
             get
             {
-                if ( IsCyclic )
-                {
+                if (HasCycle)
                     return int.MaxValue;
-                }
-                return max_k;
+                // compute to be sure
+                return CalculateMaxLookaheadDepth(startState, 0);
             }
         }
+
         /** What is the max state number ever created?  This may be beyond
          *  getNumberOfStates().
          */
@@ -482,6 +479,138 @@ namespace Antlr3.Analysis
             }
         }
         #endregion
+
+        private int CalculateMaxLookaheadDepth(DFAState d, int depth)
+        {
+            // not cyclic; don't worry about termination
+            // fail if pred edge.
+            int max = depth;
+            for (int i = 0; i < d.NumberOfTransitions; i++)
+            {
+                Transition t = d.Transition(i);
+                //			if ( t.isSemanticPredicate() ) return Integer.MAX_VALUE;
+                if (!t.IsSemanticPredicate)
+                {
+                    // if pure pred not gated, it must target stop state; don't count
+                    DFAState edgeTarget = (DFAState)t.target;
+                    int m = CalculateMaxLookaheadDepth(edgeTarget, depth + 1);
+                    max = Math.Max(max, m);
+                }
+            }
+
+            return max;
+        }
+
+        /** Count all disambiguating syn preds (ignore synpred tests
+         *  for gated edges, which occur for nonambig input sequences).
+         *  E.g.,
+         *  x  : (X)=> (X|Y)\n" +
+         *     | X\n" +
+         *     ;
+         *
+         *  gives
+         * 
+         * .s0-X->.s1
+         * .s0-Y&&{synpred1_t}?->:s2=>1
+         * .s1-{synpred1_t}?->:s2=>1
+         * .s1-{true}?->:s3=>2
+         */
+        public bool HasSynPred
+        {
+            get
+            {
+                bool has = CalculateHasSynPred(startState, new HashSet<DFAState>());
+                //		if ( !has ) {
+                //			System.out.println("no synpred in dec "+decisionNumber);
+                //			FASerializer serializer = new FASerializer(nfa.grammar);
+                //			String result = serializer.serialize(startState);
+                //			System.out.println(result);
+                //		}
+                return has;
+            }
+        }
+
+        internal virtual bool CalculateHasSynPred(DFAState d, HashSet<DFAState> busy)
+        {
+            busy.Add(d);
+            for (int i = 0; i < d.NumberOfTransitions; i++)
+            {
+                Transition t = d.Transition(i);
+                if (t.IsSemanticPredicate)
+                {
+                    SemanticContext ctx = t.label.SemanticContext;
+                    //				if ( ctx.toString().indexOf("synpred")>=0 ) {
+                    //					System.out.println("has pred "+ctx.toString()+" "+ctx.isSyntacticPredicate());
+                    //					System.out.println(((SemanticContext.Predicate)ctx).predicateAST.token);
+                    //				}
+                    if (ctx.IsSyntacticPredicate)
+                        return true;
+                }
+                DFAState edgeTarget = (DFAState)t.target;
+                if (!busy.Contains(edgeTarget) &&CalculateHasSynPred(edgeTarget, busy))
+                    return true;
+            }
+
+            return false;
+        }
+
+        public virtual bool HasSemPred
+        {
+            get
+            { // has user-defined sempred
+                bool has = CalculateHasSemPred(startState, new HashSet<DFAState>());
+                return has;
+            }
+        }
+
+        internal virtual bool CalculateHasSemPred(DFAState d, HashSet<DFAState> busy)
+        {
+            busy.Add(d);
+            for (int i = 0; i < d.NumberOfTransitions; i++)
+            {
+                Transition t = d.Transition(i);
+                if (t.IsSemanticPredicate)
+                {
+                    SemanticContext ctx = t.label.SemanticContext;
+                    if (ctx.HasUserSemanticPredicate)
+                        return true;
+                }
+                DFAState edgeTarget = (DFAState)t.target;
+                if (!busy.Contains(edgeTarget) && CalculateHasSemPred(edgeTarget, busy))
+                    return true;
+            }
+
+            return false;
+        }
+
+        /** Compute cyclic w/o relying on state computed during analysis. just check. */
+        public virtual bool HasCycle
+        {
+            get
+            {
+                bool cyclic = CalculateHasCycle(startState, new Dictionary<DFAState, int>());
+                return cyclic;
+            }
+        }
+
+        internal virtual bool CalculateHasCycle(DFAState d, IDictionary<DFAState, int> busy)
+        {
+            busy[d] = CYCLIC_BUSY;
+            for (int i = 0; i < d.NumberOfTransitions; i++)
+            {
+                Transition t = d.Transition(i);
+                DFAState target = (DFAState)t.target;
+                int cond;
+                if (!busy.TryGetValue(target, out cond))
+                    cond = CYCLIC_UNKNOWN;
+                if (cond == CYCLIC_BUSY)
+                    return true;
+                if (cond != CYCLIC_DONE && CalculateHasCycle(target, busy))
+                    return true;
+            }
+            busy[d] = CYCLIC_DONE;
+            return false;
+        }
 
         /** Walk all states and reset their numbers to be a contiguous sequence
          *  of integers starting from 0.  Only cyclic DFA can have unused positions
@@ -1182,8 +1311,8 @@ namespace Antlr3.Analysis
             bool nonLLStarOrOverflowAndPredicateVisible =
                 ( probe.IsNonLLStarDecision || probe.AnalysisOverflowed ) &&
                 predicateVisible; // auto backtrack or manual sem/syn
-            return UserMaxLookahead != 1 &&
-                 ( AnalysisTimedOut || nonLLStarOrOverflowAndPredicateVisible );
+
+            return UserMaxLookahead != 1 && nonLLStarOrOverflowAndPredicateVisible;
         }
 
         public virtual string GetReasonForFailure()
@@ -1205,16 +1334,7 @@ namespace Antlr3.Analysis
                     buf.Append( " && predicate visible" );
                 }
             }
-            if ( AnalysisTimedOut )
-            {
-                if ( buf.Length > 0 )
-                {
-                    buf.Append( " && " );
-                }
-                buf.Append( "timed out (>" );
-                buf.Append( DFA.MAX_TIME_PER_DFA_CREATION );
-                buf.Append( "ms)" );
-            }
+
             buf.Append( "\n" );
             return buf.ToString();
         }

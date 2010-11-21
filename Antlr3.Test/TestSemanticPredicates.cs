@@ -293,7 +293,7 @@ namespace AntlrUnitTests
             */
 
             assertEquals( "unexpected number of expected problems", 1, equeue.size() );
-            Message msg = (Message)equeue.warnings[0];
+            Message msg = equeue.errors[0];
             assertTrue( "warning must be a left recursion msg",
                         msg is LeftRecursionCyclesMessage );
         }

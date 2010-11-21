@@ -40,13 +40,16 @@ namespace Antlr3.Tool
     using Stats = Antlr.Runtime.Misc.Stats;
     using StringBuilder = System.Text.StringBuilder;
     using StringComparison = System.StringComparison;
+    using System.Reflection;
+    using System;
+    using Antlr3.Grammars;
 
     public class GrammarReport
     {
-        /** Because I may change the stats, I need to track that for later
+        /** Because I may change the stats, I need to track version for later
          *  computations to be consistent.
          */
-        public const string Version = "4";
+        public const string Version = "5";
         public const string GRAMMAR_STATS_FILENAME = "grammar.stats";
         public const int NUM_GRAMMAR_STATS = 41;
 
@@ -59,154 +62,213 @@ namespace Antlr3.Tool
             this.grammar = grammar;
         }
 
+        public static ReportData GetReportData(Grammar g)
+        {
+            ReportData data = new ReportData();
+            data.version = Version;
+            data.gname = g.name;
+
+            data.gtype = g.GrammarTypeString;
+
+            data.language = (string)g.GetOption("language");
+            data.output = (string)g.GetOption("output");
+            if (data.output == null)
+            {
+                data.output = "none";
+            }
+
+            string k = (string)g.GetOption("k");
+            if (k == null)
+            {
+                k = "none";
+            }
+            data.grammarLevelk = k;
+
+            string backtrack = (string)g.GetOption("backtrack");
+            if (backtrack == null)
+            {
+                backtrack = "false";
+            }
+            data.grammarLevelBacktrack = backtrack;
+
+            int totalNonSynPredProductions = 0;
+            int totalNonSynPredRules = 0;
+            ICollection<Rule> rules = g.Rules;
+            for (Iterator it = rules.iterator(); it.hasNext(); )
+            {
+                Rule r = (Rule)it.next();
+                if (!r.Name.ToUpperInvariant()
+                    .StartsWith(Grammar.SynpredRulePrefix.ToUpperInvariant()))
+                {
+                    totalNonSynPredProductions += r.numberOfAlts;
+                    totalNonSynPredRules++;
+                }
+            }
+
+            data.numRules = totalNonSynPredRules;
+            data.numOuterProductions = totalNonSynPredProductions;
+
+            int numACyclicDecisions =
+                g.NumberOfDecisions - g.GetNumberOfCyclicDecisions();
+            List<int> depths = new List<int>();
+            int[] acyclicDFAStates = new int[numACyclicDecisions];
+            int[] cyclicDFAStates = new int[g.GetNumberOfCyclicDecisions()];
+            int acyclicIndex = 0;
+            int cyclicIndex = 0;
+            int numLL1 = 0;
+            int blocksWithSynPreds = 0;
+            int dfaWithSynPred = 0;
+            int numDecisions = 0;
+            int numCyclicDecisions = 0;
+            for (int i = 1; i <= g.NumberOfDecisions; i++)
+            {
+                Grammar.Decision d = g.GetDecision(i);
+                if (d.dfa == null)
+                {
+                    //System.out.println("dec "+d.decision+" has no AST");
+                    continue;
+                }
+                Rule r = d.dfa.NFADecisionStartState.enclosingRule;
+                if (r.Name.ToUpperInvariant()
+                    .StartsWith(Grammar.SynpredRulePrefix.ToUpperInvariant()))
+                {
+                    //System.out.println("dec "+d.decision+" is a synpred");
+                    continue;
+                }
+
+                numDecisions++;
+                if (BlockHasSynPred(d.blockAST))
+                    blocksWithSynPreds++;
+                //if (g.decisionsWhoseDFAsUsesSynPreds.contains(d.dfa))
+                //    dfaWithSynPred++;
+                if (d.dfa.HasSynPred)
+                    dfaWithSynPred++;
+                //			NFAState decisionStartState = g.getDecisionNFAStartState(d.decision);
+                //			int nalts = g.getNumberOfAltsForDecisionNFA(decisionStartState);
+                //			for (int alt = 1; alt <= nalts; alt++) {
+                //				int walkAlt =
+                //					decisionStartState.translateDisplayAltToWalkAlt(alt);
+                //				NFAState altLeftEdge = g.getNFAStateForAltOfDecision(decisionStartState, walkAlt);
+                //			}
+                //			int nalts = g.getNumberOfAltsForDecisionNFA(d.dfa.decisionNFAStartState);
+                //			for (int a=1; a<nalts; a++) {
+                //				NFAState altStart =
+                //					g.getNFAStateForAltOfDecision(d.dfa.decisionNFAStartState, a);
+                //			}
+                if (!d.dfa.IsCyclic)
+                {
+                    if (d.dfa.IsClassicDFA)
+                    {
+                        int maxk = d.dfa.MaxLookaheadDepth;
+                        //System.out.println("decision "+d.dfa.decisionNumber+" k="+maxk);
+                        if (maxk == 1)
+                            numLL1++;
+                        depths.Add(maxk);
+                    }
+                    else
+                    {
+                        acyclicDFAStates[acyclicIndex] = d.dfa.NumberOfStates;
+                        acyclicIndex++;
+                    }
+                }
+                else
+                {
+                    //System.out.println("CYCLIC decision "+d.dfa.decisionNumber);
+                    numCyclicDecisions++;
+                    cyclicDFAStates[cyclicIndex] = d.dfa.NumberOfStates;
+                    cyclicIndex++;
+                }
+            }
+
+            data.numLL1 = numLL1;
+            data.numberOfFixedKDecisions = depths.Count;
+            data.mink = depths.DefaultIfEmpty(int.MaxValue).Min();
+            data.maxk = depths.DefaultIfEmpty(int.MinValue).Max();
+            data.avgk = depths.DefaultIfEmpty(0).Average();
+
+            data.numberOfDecisionsInRealRules = numDecisions;
+            data.numberOfDecisions = g.NumberOfDecisions;
+            data.numberOfCyclicDecisions = numCyclicDecisions;
+
+            //		Map synpreds = g.getSyntacticPredicates();
+            //		int num_synpreds = synpreds!=null ? synpreds.Count : 0;
+            //		data.num_synpreds = num_synpreds;
+            data.blocksWithSynPreds = blocksWithSynPreds;
+            data.decisionsWhoseDFAsUsesSynPreds = dfaWithSynPred;
+
+            //
+            //		data. = Stats.stddev(depths);
+            //
+            //		data. = Stats.min(acyclicDFAStates);
+            //
+            //		data. = Stats.max(acyclicDFAStates);
+            //
+            //		data. = Stats.avg(acyclicDFAStates);
+            //
+            //		data. = Stats.stddev(acyclicDFAStates);
+            //
+            //		data. = Stats.sum(acyclicDFAStates);
+            //
+            //		data. = Stats.min(cyclicDFAStates);
+            //
+            //		data. = Stats.max(cyclicDFAStates);
+            //
+            //		data. = Stats.avg(cyclicDFAStates);
+            //
+            //		data. = Stats.stddev(cyclicDFAStates);
+            //
+            //		data. = Stats.sum(cyclicDFAStates);
+
+            data.numTokens = g.TokenTypes.Count;
+
+            data.DFACreationWallClockTimeInMS = g.DFACreationWallClockTimeInMS;
+
+            // includes true ones and preds in synpreds I think; strip out. 
+            data.numberOfSemanticPredicates = g.numberOfSemanticPredicates;
+
+            data.numberOfManualLookaheadOptions = g.numberOfManualLookaheadOptions;
+
+            data.numNonLLStarDecisions = g.numNonLLStar;
+            data.numNondeterministicDecisions = g.setOfNondeterministicDecisionNumbers.Count;
+            data.numNondeterministicDecisionNumbersResolvedWithPredicates =
+                g.setOfNondeterministicDecisionNumbersResolvedWithPredicates.Count;
+
+            data.errors = ErrorManager.GetErrorState().errors;
+            data.warnings = ErrorManager.GetErrorState().warnings;
+            data.infos = ErrorManager.GetErrorState().infos;
+
+            data.blocksWithSemPreds = g.blocksWithSemPreds.Count;
+
+            data.decisionsWhoseDFAsUsesSemPreds = g.decisionsWhoseDFAsUsesSemPreds.Count;
+
+            return data;
+        }
+
         /** Create a single-line stats report about this grammar suitable to
          *  send to the notify page at antlr.org
          */
         public virtual string ToNotifyString()
         {
             StringBuilder buf = new StringBuilder();
-            buf.Append( Version );
-            buf.Append( '\t' );
-            buf.Append( grammar.name );
-            buf.Append( '\t' );
-            buf.Append( grammar.GrammarTypeString );
-            buf.Append( '\t' );
-            buf.Append( grammar.GetOption( "language" ) );
-            int totalNonSynPredProductions = 0;
-            int totalNonSynPredRules = 0;
-            foreach ( Rule r in grammar.Rules )
+            ReportData data = GetReportData(grammar);
+            FieldInfo[] fields = typeof(ReportData).GetFields();
+            int i = 0;
+            foreach (FieldInfo f in fields)
             {
-                if ( !r.Name.StartsWith( Grammar.SynpredRulePrefix, StringComparison.InvariantCultureIgnoreCase ) )
+                try
                 {
-                    totalNonSynPredProductions += r.numberOfAlts;
-                    totalNonSynPredRules++;
+                    object v = f.GetValue(data);
+                    string s = v != null ? v.ToString() : "null";
+                    if (i > 0)
+                        buf.Append('\t');
+                    buf.Append(s);
                 }
-            }
-            buf.Append( '\t' );
-            buf.Append( totalNonSynPredRules );
-            buf.Append( '\t' );
-            buf.Append( totalNonSynPredProductions );
-            int numACyclicDecisions =
-                grammar.NumberOfDecisions - grammar.GetNumberOfCyclicDecisions();
-            int[] depths = new int[numACyclicDecisions];
-            int[] acyclicDFAStates = new int[numACyclicDecisions];
-            int[] cyclicDFAStates = new int[grammar.GetNumberOfCyclicDecisions()];
-            int acyclicIndex = 0;
-            int cyclicIndex = 0;
-            int numLL1 = 0;
-            int numDec = 0;
-            for ( int i = 1; i <= grammar.NumberOfDecisions; i++ )
-            {
-                Grammar.Decision d = grammar.GetDecision( i );
-                if ( d.dfa == null )
+                catch (Exception e)
                 {
-                    continue;
+                    ErrorManager.InternalError("Can't get data", e);
                 }
-                numDec++;
-                if ( !d.dfa.IsCyclic )
-                {
-                    int maxk = d.dfa.MaxLookaheadDepth;
-                    if ( maxk == 1 )
-                    {
-                        numLL1++;
-                    }
-                    depths[acyclicIndex] = maxk;
-                    acyclicDFAStates[acyclicIndex] = d.dfa.NumberOfStates;
-                    acyclicIndex++;
-                }
-                else
-                {
-                    cyclicDFAStates[cyclicIndex] = d.dfa.NumberOfStates;
-                    cyclicIndex++;
-                }
+                i++;
             }
-            buf.Append( '\t' );
-            buf.Append( numDec );
-            buf.Append( '\t' );
-            buf.Append( grammar.GetNumberOfCyclicDecisions() );
-            buf.Append( '\t' );
-            buf.Append( numLL1 );
-            buf.Append( '\t' );
-            buf.Append( depths.DefaultIfEmpty( int.MaxValue ).Min() );
-            buf.Append( '\t' );
-            buf.Append( depths.DefaultIfEmpty( int.MinValue ).Max() );
-            buf.Append( '\t' );
-            buf.Append( depths.DefaultIfEmpty( 0 ).Average() );
-            buf.Append( '\t' );
-            buf.Append( Stats.Stddev( depths ) );
-            buf.Append( '\t' );
-            buf.Append( acyclicDFAStates.DefaultIfEmpty( int.MaxValue ).Min() );
-            buf.Append( '\t' );
-            buf.Append( acyclicDFAStates.DefaultIfEmpty( int.MinValue ).Max() );
-            buf.Append( '\t' );
-            buf.Append( acyclicDFAStates.DefaultIfEmpty( 0 ).Average() );
-            buf.Append( '\t' );
-            buf.Append( Stats.Stddev( acyclicDFAStates ) );
-            buf.Append( '\t' );
-            buf.Append( acyclicDFAStates.Sum() );
-            buf.Append( '\t' );
-            buf.Append( cyclicDFAStates.DefaultIfEmpty( int.MaxValue ).Min() );
-            buf.Append( '\t' );
-            buf.Append( cyclicDFAStates.DefaultIfEmpty( int.MinValue ).Max() );
-            buf.Append( '\t' );
-            buf.Append( cyclicDFAStates.DefaultIfEmpty( 0 ).Average() );
-            buf.Append( '\t' );
-            buf.Append( Stats.Stddev( cyclicDFAStates ) );
-            buf.Append( '\t' );
-            buf.Append( cyclicDFAStates.Sum() );
-            buf.Append( '\t' );
-            buf.Append( grammar.TokenTypes.Count );
-            buf.Append( '\t' );
-            buf.Append( grammar.DFACreationWallClockTimeInMS );
-            buf.Append( '\t' );
-            buf.Append( grammar.numberOfSemanticPredicates );
-            buf.Append( '\t' );
-            buf.Append( grammar.numberOfManualLookaheadOptions );
-            buf.Append( '\t' );
-            buf.Append( grammar.setOfNondeterministicDecisionNumbers.Count );
-            buf.Append( '\t' );
-            buf.Append( grammar.setOfNondeterministicDecisionNumbersResolvedWithPredicates.Count );
-            buf.Append( '\t' );
-            buf.Append( grammar.setOfDFAWhoseAnalysisTimedOut.Count );
-            buf.Append( '\t' );
-            buf.Append( ErrorManager.GetErrorState().errors );
-            buf.Append( '\t' );
-            buf.Append( ErrorManager.GetErrorState().warnings );
-            buf.Append( '\t' );
-            buf.Append( ErrorManager.GetErrorState().infos );
-            buf.Append( '\t' );
-            var synpreds = grammar.SyntacticPredicates;
-            int num_synpreds = synpreds != null ? synpreds.Count : 0;
-            buf.Append( num_synpreds );
-            buf.Append( '\t' );
-            buf.Append( grammar.blocksWithSynPreds.Count );
-            buf.Append( '\t' );
-            buf.Append( grammar.decisionsWhoseDFAsUsesSynPreds.Count );
-            buf.Append( '\t' );
-            buf.Append( grammar.blocksWithSemPreds.Count );
-            buf.Append( '\t' );
-            buf.Append( grammar.decisionsWhoseDFAsUsesSemPreds.Count );
-            buf.Append( '\t' );
-            string output = (string)grammar.GetOption( "output" );
-            if ( output == null )
-            {
-                output = "none";
-            }
-            buf.Append( output );
-            buf.Append( '\t' );
-            object k = grammar.GetOption( "k" );
-            if ( k == null )
-            {
-                k = "none";
-            }
-            buf.Append( k );
-            buf.Append( '\t' );
-            string backtrack = (string)grammar.GetOption( "backtrack" );
-            if ( backtrack == null )
-            {
-                backtrack = "false";
-            }
-            buf.Append( backtrack );
             return buf.ToString();
         }
 
@@ -219,18 +281,6 @@ namespace Antlr3.Tool
             buf.Append( grammar.decisionsWhoseDFAsUsesSynPreds.Count );
             buf.Append( newline );
             buf.Append( GetDFALocations( grammar.decisionsWhoseDFAsUsesSynPreds ) );
-            return buf.ToString();
-        }
-
-        public virtual string GetAnalysisTimeoutReport()
-        {
-            StringBuilder buf = new StringBuilder();
-            buf.Append( "NFA conversion early termination report:" );
-            buf.Append( newline );
-            buf.Append( "Number of NFA conversions that terminated early: " );
-            buf.Append( grammar.setOfDFAWhoseAnalysisTimedOut.Count );
-            buf.Append( newline );
-            buf.Append( GetDFALocations( grammar.setOfDFAWhoseAnalysisTimedOut ) );
             return buf.ToString();
         }
 
@@ -270,156 +320,217 @@ namespace Antlr3.Tool
             return ToString( ToNotifyString() );
         }
 
-        protected static string[] DecodeReportData( string data )
+        protected static ReportData DecodeReportData(string dataS)
         {
-            string[] fields = new string[NUM_GRAMMAR_STATS];
-            StringTokenizer st = new StringTokenizer( data, "\t" );
-            int i = 0;
-            while ( st.hasMoreTokens() )
+            ReportData data = new ReportData();
+            StringTokenizer st = new StringTokenizer(dataS, "\t");
+            FieldInfo[] fields = typeof(ReportData).GetFields();
+            foreach (FieldInfo f in fields)
             {
-                fields[i] = st.nextToken();
-                i++;
+                string v = st.nextToken();
+                try
+                {
+                    if (f.FieldType == typeof(string))
+                    {
+                        f.SetValue(data, v);
+                    }
+                    else if (f.FieldType == typeof(double))
+                    {
+                        f.SetValue(data, double.Parse(v));
+                    }
+                    else
+                    {
+                        f.SetValue(data, int.Parse(v));
+                    }
+                }
+                catch (Exception e)
+                {
+                    ErrorManager.InternalError("Can't get data", e);
+                }
             }
-            if ( i != NUM_GRAMMAR_STATS )
-            {
-                return null;
-            }
-            return fields;
+            return data;
         }
 
-        public static string ToString( string notifyDataLine )
+        public static string ToString(string notifyDataLine)
         {
-            string[] fields = DecodeReportData( notifyDataLine );
-            if ( fields == null )
+            ReportData data = DecodeReportData(notifyDataLine);
+            if (data == null)
             {
                 return null;
             }
             StringBuilder buf = new StringBuilder();
-            buf.Append( "ANTLR Grammar Report; Stats Version " );
-            buf.Append( fields[0] );
-            buf.Append( '\n' );
-            buf.Append( "Grammar: " );
-            buf.Append( fields[1] );
-            buf.Append( '\n' );
-            buf.Append( "Type: " );
-            buf.Append( fields[2] );
-            buf.Append( '\n' );
-            buf.Append( "Target language: " );
-            buf.Append( fields[3] );
-            buf.Append( '\n' );
-            buf.Append( "Output: " );
-            buf.Append( fields[38] );
-            buf.Append( '\n' );
-            buf.Append( "Grammar option k: " );
-            buf.Append( fields[39] );
-            buf.Append( '\n' );
-            buf.Append( "Grammar option backtrack: " );
-            buf.Append( fields[40] );
-            buf.Append( '\n' );
-            buf.Append( "Rules: " );
-            buf.Append( fields[4] );
-            buf.Append( '\n' );
-            buf.Append( "Productions: " );
-            buf.Append( fields[5] );
-            buf.Append( '\n' );
-            buf.Append( "Decisions: " );
-            buf.Append( fields[6] );
-            buf.Append( '\n' );
-            buf.Append( "Cyclic DFA decisions: " );
-            buf.Append( fields[7] );
-            buf.Append( '\n' );
-            buf.Append( "LL(1) decisions: " );
-            buf.Append( fields[8] );
-            buf.Append( '\n' );
-            buf.Append( "Min fixed k: " );
-            buf.Append( fields[9] );
-            buf.Append( '\n' );
-            buf.Append( "Max fixed k: " );
-            buf.Append( fields[10] );
-            buf.Append( '\n' );
-            buf.Append( "Average fixed k: " );
-            buf.Append( fields[11] );
-            buf.Append( '\n' );
-            buf.Append( "Standard deviation of fixed k: " );
-            buf.Append( fields[12] );
-            buf.Append( '\n' );
-            buf.Append( "Min acyclic DFA states: " );
-            buf.Append( fields[13] );
-            buf.Append( '\n' );
-            buf.Append( "Max acyclic DFA states: " );
-            buf.Append( fields[14] );
-            buf.Append( '\n' );
-            buf.Append( "Average acyclic DFA states: " );
-            buf.Append( fields[15] );
-            buf.Append( '\n' );
-            buf.Append( "Standard deviation of acyclic DFA states: " );
-            buf.Append( fields[16] );
-            buf.Append( '\n' );
-            buf.Append( "Total acyclic DFA states: " );
-            buf.Append( fields[17] );
-            buf.Append( '\n' );
-            buf.Append( "Min cyclic DFA states: " );
-            buf.Append( fields[18] );
-            buf.Append( '\n' );
-            buf.Append( "Max cyclic DFA states: " );
-            buf.Append( fields[19] );
-            buf.Append( '\n' );
-            buf.Append( "Average cyclic DFA states: " );
-            buf.Append( fields[20] );
-            buf.Append( '\n' );
-            buf.Append( "Standard deviation of cyclic DFA states: " );
-            buf.Append( fields[21] );
-            buf.Append( '\n' );
-            buf.Append( "Total cyclic DFA states: " );
-            buf.Append( fields[22] );
-            buf.Append( '\n' );
-            buf.Append( "Vocabulary size: " );
-            buf.Append( fields[23] );
-            buf.Append( '\n' );
-            buf.Append( "DFA creation time in ms: " );
-            buf.Append( fields[24] );
-            buf.Append( '\n' );
-            buf.Append( "Number of semantic predicates found: " );
-            buf.Append( fields[25] );
-            buf.Append( '\n' );
-            buf.Append( "Number of manual fixed lookahead k=value options: " );
-            buf.Append( fields[26] );
-            buf.Append( '\n' );
-            buf.Append( "Number of nondeterministic decisions: " );
-            buf.Append( fields[27] );
-            buf.Append( '\n' );
-            buf.Append( "Number of nondeterministic decisions resolved with predicates: " );
-            buf.Append( fields[28] );
-            buf.Append( '\n' );
-            buf.Append( "Number of DFA conversions terminated early: " );
-            buf.Append( fields[29] );
-            buf.Append( '\n' );
-            buf.Append( "Number of errors: " );
-            buf.Append( fields[30] );
-            buf.Append( '\n' );
-            buf.Append( "Number of warnings: " );
-            buf.Append( fields[31] );
-            buf.Append( '\n' );
-            buf.Append( "Number of infos: " );
-            buf.Append( fields[32] );
-            buf.Append( '\n' );
-            buf.Append( "Number of syntactic predicates found: " );
-            buf.Append( fields[33] );
-            buf.Append( '\n' );
-            buf.Append( "Decisions with syntactic predicates: " );
-            buf.Append( fields[34] );
-            buf.Append( '\n' );
-            buf.Append( "Decision DFAs using syntactic predicates: " );
-            buf.Append( fields[35] );
-            buf.Append( '\n' );
-            buf.Append( "Decisions with semantic predicates: " );
-            buf.Append( fields[36] );
-            buf.Append( '\n' );
-            buf.Append( "Decision DFAs using semantic predicates: " );
-            buf.Append( fields[37] );
-            buf.Append( '\n' );
+            buf.Append("ANTLR Grammar Report; Stats Version ");
+            buf.Append(data.version);
+            buf.AppendLine();
+            buf.Append("Grammar: ");
+            buf.Append(data.gname);
+            buf.AppendLine();
+            buf.Append("Type: ");
+            buf.Append(data.gtype);
+            buf.AppendLine();
+            buf.Append("Target language: ");
+            buf.Append(data.language);
+            buf.AppendLine();
+            buf.Append("Output: ");
+            buf.Append(data.output);
+            buf.AppendLine();
+            buf.Append("Grammar option k: ");
+            buf.Append(data.grammarLevelk);
+            buf.AppendLine();
+            buf.Append("Grammar option backtrack: ");
+            buf.Append(data.grammarLevelBacktrack);
+            buf.AppendLine();
+            buf.Append("Rules: ");
+            buf.Append(data.numRules);
+            buf.AppendLine();
+            buf.Append("Outer productions: ");
+            buf.Append(data.numOuterProductions);
+            buf.AppendLine();
+            buf.Append("Decisions: ");
+            buf.Append(data.numberOfDecisions);
+            buf.AppendLine();
+            buf.Append("Decisions (ignoring decisions in synpreds): ");
+            buf.Append(data.numberOfDecisionsInRealRules);
+            buf.AppendLine();
+            buf.Append("Fixed k DFA decisions: ");
+            buf.Append(data.numberOfFixedKDecisions);
+            buf.AppendLine();
+            buf.Append("Cyclic DFA decisions: ");
+            buf.Append(data.numberOfCyclicDecisions);
+            buf.AppendLine();
+            buf.Append("LL(1) decisions: ");
+            buf.Append(data.numLL1);
+            buf.AppendLine();
+            buf.Append("Min fixed k: ");
+            buf.Append(data.mink);
+            buf.AppendLine();
+            buf.Append("Max fixed k: ");
+            buf.Append(data.maxk);
+            buf.AppendLine();
+            buf.Append("Average fixed k: ");
+            buf.Append(data.avgk);
+            buf.AppendLine();
+            //		buf.Append("Standard deviation of fixed k: "); buf.Append(fields[12]);
+            //		buf.AppendLine();
+            //		buf.Append("Min acyclic DFA states: "); buf.Append(fields[13]);
+            //		buf.AppendLine();
+            //		buf.Append("Max acyclic DFA states: "); buf.Append(fields[14]);
+            //		buf.AppendLine();
+            //		buf.Append("Average acyclic DFA states: "); buf.Append(fields[15]);
+            //		buf.AppendLine();
+            //		buf.Append("Standard deviation of acyclic DFA states: "); buf.Append(fields[16]);
+            //		buf.AppendLine();
+            //		buf.Append("Total acyclic DFA states: "); buf.Append(fields[17]);
+            //		buf.AppendLine();
+            //		buf.Append("Min cyclic DFA states: "); buf.Append(fields[18]);
+            //		buf.AppendLine();
+            //		buf.Append("Max cyclic DFA states: "); buf.Append(fields[19]);
+            //		buf.AppendLine();
+            //		buf.Append("Average cyclic DFA states: "); buf.Append(fields[20]);
+            //		buf.AppendLine();
+            //		buf.Append("Standard deviation of cyclic DFA states: "); buf.Append(fields[21]);
+            //		buf.AppendLine();
+            //		buf.Append("Total cyclic DFA states: "); buf.Append(fields[22]);
+            //		buf.AppendLine();
+            buf.Append("DFA creation time in ms: ");
+            buf.Append(data.DFACreationWallClockTimeInMS);
+            buf.AppendLine();
+
+            //		buf.Append("Number of syntactic predicates available (including synpred rules): ");
+            //		buf.Append(data.num_synpreds);
+            //		buf.AppendLine();
+            buf.Append("Decisions with available syntactic predicates (ignoring synpred rules): ");
+            buf.Append(data.blocksWithSynPreds);
+            buf.AppendLine();
+            buf.Append("Decision DFAs using syntactic predicates (ignoring synpred rules): ");
+            buf.Append(data.decisionsWhoseDFAsUsesSynPreds);
+            buf.AppendLine();
+
+            buf.Append("Number of semantic predicates found: ");
+            buf.Append(data.numberOfSemanticPredicates);
+            buf.AppendLine();
+            buf.Append("Decisions with semantic predicates: ");
+            buf.Append(data.blocksWithSemPreds);
+            buf.AppendLine();
+            buf.Append("Decision DFAs using semantic predicates: ");
+            buf.Append(data.decisionsWhoseDFAsUsesSemPreds);
+            buf.AppendLine();
+
+            buf.Append("Number of (likely) non-LL(*) decisions: ");
+            buf.Append(data.numNonLLStarDecisions);
+            buf.AppendLine();
+            buf.Append("Number of nondeterministic decisions: ");
+            buf.Append(data.numNondeterministicDecisions);
+            buf.AppendLine();
+            buf.Append("Number of nondeterministic decisions resolved with predicates: ");
+            buf.Append(data.numNondeterministicDecisionNumbersResolvedWithPredicates);
+            buf.AppendLine();
+
+            buf.Append("Number of manual or forced fixed lookahead k=value options: ");
+            buf.Append(data.numberOfManualLookaheadOptions);
+            buf.AppendLine();
+
+            buf.Append("Vocabulary size: ");
+            buf.Append(data.numTokens);
+            buf.AppendLine();
+            buf.Append("Number of errors: ");
+            buf.Append(data.errors);
+            buf.AppendLine();
+            buf.Append("Number of warnings: ");
+            buf.Append(data.warnings);
+            buf.AppendLine();
+            buf.Append("Number of infos: ");
+            buf.Append(data.infos);
+            buf.AppendLine();
             return buf.ToString();
         }
 
+        public static bool BlockHasSynPred(GrammarAST blockAST)
+        {
+            GrammarAST c1 = blockAST.FindFirstType(ANTLRParser.SYN_SEMPRED);
+            GrammarAST c2 = blockAST.FindFirstType(ANTLRParser.BACKTRACK_SEMPRED);
+            if (c1 != null || c2 != null)
+                return true;
+            //		System.out.println(blockAST.enclosingRuleName+
+            //						   " "+blockAST.getLine()+":"+blockAST.getColumn()+" no preds AST="+blockAST.toStringTree());
+
+            return false;
+        }
+
+        public class ReportData
+        {
+            internal string version;
+            internal string gname;
+            internal string gtype;
+            internal string language;
+            internal int numRules;
+            internal int numOuterProductions;
+            internal int numberOfDecisionsInRealRules;
+            internal int numberOfDecisions;
+            internal int numberOfCyclicDecisions;
+            internal int numberOfFixedKDecisions;
+            internal int numLL1;
+            internal int mink;
+            internal int maxk;
+            internal double avgk;
+            internal int numTokens;
+            internal TimeSpan DFACreationWallClockTimeInMS;
+            internal int numberOfSemanticPredicates;
+            internal int numberOfManualLookaheadOptions; // TODO: verify
+            internal int numNonLLStarDecisions;
+            internal int numNondeterministicDecisions;
+            internal int numNondeterministicDecisionNumbersResolvedWithPredicates;
+            internal int errors;
+            internal int warnings;
+            internal int infos;
+            //internal int num_synpreds;
+            internal int blocksWithSynPreds;
+            internal int decisionsWhoseDFAsUsesSynPreds;
+            internal int blocksWithSemPreds;
+            internal int decisionsWhoseDFAsUsesSemPreds;
+            internal string output;
+            internal string grammarLevelk;
+            internal string grammarLevelBacktrack;
+        }
     }
 }
