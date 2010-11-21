@@ -918,18 +918,21 @@ atom[GrammarAST scope, GrammarAST label, GrammarAST astSuffix]
 
 	|	s=STRING_LITERAL
 		{
+			int i = ((TokenWithIndex)$s.Token).TokenIndex;
 			if ( grammar.type==GrammarType.Lexer )
 			{
 				$code = templates.GetInstanceOf("lexerStringRef");
 				$code.SetAttribute("string",
 					generator.target.GetTargetStringLiteralFromANTLRStringLiteral(generator,$s.text));
+				$code.SetAttribute("elementIndex", i);
 				if ( label!=null )
 				{
 					$code.SetAttribute("label", labelText);
 				}
 			}
 			else
-			{ // else it's a token type reference
+			{
+				// else it's a token type reference
 				$code = GetTokenElementST("tokenRef", "string_literal", $s, astSuffix, labelText);
 				string tokenLabel =
 					generator.GetTokenTypeAsTargetLabel(grammar.GetTokenType($s.text));
@@ -938,7 +941,6 @@ atom[GrammarAST scope, GrammarAST label, GrammarAST astSuffix]
 				{
 					$code.SetAttribute("hetero",$s.terminalOptions[Grammar.defaultTokenOption]);
 				}
-				int i = ((TokenWithIndex)$s.Token).TokenIndex;
 				$code.SetAttribute("elementIndex", i);
 				generator.GenerateLocalFollow($s,tokenLabel,currentRuleName,i);
 			}
