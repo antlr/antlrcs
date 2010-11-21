@@ -58,6 +58,7 @@ namespace Antlr3.ST
     using StringBuilder = System.Text.StringBuilder;
     using TextReader = System.IO.TextReader;
     using TextWriter = System.IO.TextWriter;
+    using System.Linq.Expressions;
 
     /** <summary>
      *  Manages a group of named mutually-referential StringTemplate objects.
@@ -476,15 +477,11 @@ namespace Antlr3.ST
             Func<StringTemplate, TextReader, Antlr.Runtime.Lexer> result;
             if ( !_ctors.TryGetValue( lexerType, out result ) )
             {
-                ConstructorInfo ctor = lexerType.GetConstructor( new Type[] { typeof( StringTemplate ), typeof( TextReader ) } );
-
-                System.Reflection.Emit.DynamicMethod dm = new System.Reflection.Emit.DynamicMethod( lexerType.Name + "Ctor", typeof( Antlr.Runtime.Lexer ), new Type[] { typeof( StringTemplate ), typeof( TextReader ) } );
-                var gen = dm.GetILGenerator();
-                gen.Emit( System.Reflection.Emit.OpCodes.Ldarg_0 );
-                gen.Emit( System.Reflection.Emit.OpCodes.Ldarg_1 );
-                gen.Emit( System.Reflection.Emit.OpCodes.Newobj, ctor );
-                gen.Emit( System.Reflection.Emit.OpCodes.Ret );
-                result = (Func<StringTemplate, TextReader, Antlr.Runtime.Lexer>)dm.CreateDelegate( typeof( Func<StringTemplate, TextReader, Antlr.Runtime.Lexer> ) );
+                var template = Expression.Parameter(typeof(StringTemplate), "template");
+                var reader = Expression.Parameter(typeof(TextReader), "reader");
+                ConstructorInfo ctor = lexerType.GetConstructor(new Type[] { typeof(StringTemplate), typeof(TextReader) });
+                var expression = Expression.Lambda<Func<StringTemplate, TextReader, Antlr.Runtime.Lexer>>(Expression.New(ctor, template, reader), template, reader);
+                result = expression.Compile();
                 _ctors[lexerType] = result;
             }
 
@@ -1138,9 +1135,7 @@ namespace Antlr3.ST
             {
                 try
                 {
-                    ConstructorInfo ctor =
-                        _userSpecifiedWriter.GetConstructor( new Type[] { typeof( TextWriter ) } );
-                    stw = (IStringTemplateWriter)ctor.Invoke( new Object[] { w } );
+                    stw = (IStringTemplateWriter)Activator.CreateInstance(_userSpecifiedWriter, new object[] { typeof(TextWriter) });
                 }
                 catch ( Exception e )
                 {

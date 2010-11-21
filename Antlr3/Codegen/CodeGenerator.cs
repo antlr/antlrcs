@@ -33,24 +33,24 @@
 namespace Antlr3.Codegen
 {
     using System.Collections.Generic;
-    using System.Collections.ObjectModel;
     using System.Linq;
     using Antlr.Runtime.JavaExtensions;
     using Antlr3.Analysis;
     using Antlr3.Grammars;
 
+    using Activator = System.Activator;
     using AngleBracketTemplateLexer = Antlr3.ST.Language.AngleBracketTemplateLexer;
     using ANTLRLexer = Antlr3.Grammars.ANTLRLexer;
     using ANTLRParser = Antlr3.Grammars.ANTLRParser;
     using AntlrTool = Antlr3.AntlrTool;
     using ArgumentException = System.ArgumentException;
+    using ArgumentNullException = System.ArgumentNullException;
     using ArgumentOutOfRangeException = System.ArgumentOutOfRangeException;
     using AttributeScope = Antlr3.Tool.AttributeScope;
     using BitSet = Antlr3.Misc.BitSet;
     using CLSCompliant = System.CLSCompliantAttribute;
     using CommonGroupLoader = Antlr3.ST.CommonGroupLoader;
     using CommonToken = Antlr.Runtime.CommonToken;
-    using DateTime = System.DateTime;
     using DFA = Antlr3.Analysis.DFA;
     using DFAOptimizer = Antlr3.Analysis.DFAOptimizer;
     using DFAState = Antlr3.Analysis.DFAState;
@@ -59,7 +59,6 @@ namespace Antlr3.Codegen
     using Grammar = Antlr3.Tool.Grammar;
     using GrammarAST = Antlr3.Tool.GrammarAST;
     using GrammarType = Antlr3.Tool.GrammarType;
-    using IDictionary = System.Collections.IDictionary;
     using IIntSet = Antlr3.Misc.IIntSet;
     using IList = System.Collections.IList;
     using Interval = Antlr3.Misc.Interval;
@@ -158,7 +157,7 @@ namespace Antlr3.Codegen
         /** A reference to the ANTLR tool so we can learn about output directories
          *  and such.
          */
-        protected AntlrTool tool;
+        protected readonly AntlrTool tool;
 
         /** Generate debugging event method calls */
         protected bool debug;
@@ -190,6 +189,9 @@ namespace Antlr3.Codegen
 
         public CodeGenerator( AntlrTool tool, Grammar grammar, string language )
         {
+            if (tool == null)
+                throw new ArgumentNullException("tool");
+
             this.tool = tool;
             this.grammar = grammar;
             this.language = language;
@@ -324,7 +326,7 @@ namespace Antlr3.Codegen
                     }
                 }
 
-                target = (Target)targetType.GetConstructor( new System.Type[0] ).Invoke( new object[0] );
+                target = (Target)Activator.CreateInstance(targetType);
                 _targets[language] = target;
             }
         }
