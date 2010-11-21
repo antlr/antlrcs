@@ -1163,5 +1163,28 @@ namespace AntlrUnitTests
                                           treeGrammar, "TP", "TLexer", "a", "s", "1 2 3" );
             assertEquals( "(2 3) (2 3)" + NewLine, found );
         }
+
+        [TestMethod]
+        public void TestRuleResultAsRoot()
+        {
+            string grammar =
+                "grammar T;\n" +
+                "options {output=AST;}\n" +
+                "a : ID '=' INT -> ^('=' ID INT);\n" +
+                "ID : 'a'..'z'+ ;\n" +
+                "INT : '0'..'9'+;\n" +
+                "COLON : ':' ;\n" +
+                "WS : (' '|'\\n') {$channel=HIDDEN;} ;\n";
+
+            string treeGrammar =
+                "tree grammar TP;\n" +
+                "options {output=AST; rewrite=true; ASTLabelType=CommonTree; tokenVocab=T;}\n" +
+                "a : ^(eq e1=ID e2=.) -> ^(eq $e2 $e1) ;\n" +
+                "eq : '=' | ':' {;} ;\n";  // bug in set match, doesn't add to tree!! booh. force nonset.
+
+            string found = execTreeParser("T.g", grammar, "TParser", "TP.g",
+                                          treeGrammar, "TP", "TLexer", "a", "a", "abc = 34");
+            Assert.AreEqual("(= 34 abc)" + NewLine, found);
+        }
     }
 }
