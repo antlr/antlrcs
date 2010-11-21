@@ -33,6 +33,7 @@
 namespace Antlr3.ST.Language
 {
     using Antlr.Runtime;
+    using ITreeAdaptor = Antlr.Runtime.Tree.ITreeAdaptor;
 
     partial class ActionParser
     {
@@ -48,9 +49,9 @@ namespace Antlr3.ST.Language
             this.self = self;
         }
 
-        partial void InitializeTreeAdaptor()
+        partial void CreateTreeAdaptor(ref ITreeAdaptor adaptor)
         {
-            TreeAdaptor = new StringTemplateTreeAdaptor();
+            adaptor = new StringTemplateTreeAdaptor();
         }
 
         public override void ReportError( RecognitionException e )
