@@ -1,7 +1,7 @@
 /*
  * [The "BSD licence"]
- * Copyright (c) 2005-2008 Terence Parr
- * Copyright (c) 2006 Kay Roepke (Objective-C runtime)
+ *  Copyright (c) 2010 Terence Parr and Alan Condit
+ *  Copyright (c) 2006 Kay Roepke (Objective-C runtime)
  * All rights reserved.
  *
  * Conversion to C#:
@@ -95,7 +95,8 @@ namespace Antlr3.Targets
             {
                 return ttype.ToString();
             }
-            return generator.grammar.name + Grammar.grammarTypeToFileNameSuffix[(int)generator.grammar.type] + "_" + name;
+            return name;
+            //return generator.grammar.name + Grammar.grammarTypeToFileNameSuffix[(int)generator.grammar.type] + "_" + name;
             //return super.getTokenTypeAsTargetLabel(generator, ttype);
             //return this.getTokenTextAndTypeAsTargetLabel(generator, null, ttype);
         }
