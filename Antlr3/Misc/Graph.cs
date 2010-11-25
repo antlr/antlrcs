@@ -94,7 +94,7 @@ namespace Antlr3.Misc
          */
         public List<T> Sort()
         {
-            HashSet<Node> visited = new HashSet<Node>();
+            OrderedHashSet<Node> visited = new OrderedHashSet<Node>();
             List<T> sorted = new List<T>();
             while ( visited.Count < nodes.Count )
             {
@@ -111,7 +111,7 @@ namespace Antlr3.Misc
             return sorted;
         }
 
-        private void DepthFirstSort( Node n, HashSet<Node> visited, List<T> sorted )
+        private void DepthFirstSort( Node n, OrderedHashSet<Node> visited, List<T> sorted )
         {
             if ( visited.Contains( n ) )
                 return;
