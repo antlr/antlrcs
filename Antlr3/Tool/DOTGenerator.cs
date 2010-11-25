@@ -4,7 +4,7 @@
  * All rights reserved.
  *
  * Conversion to C#:
- * Copyright (c) 2008-2009 Sam Harwell, Pixel Mine, Inc.
+ * Copyright (c) 2008-2010 Sam Harwell, Pixel Mine, Inc.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -35,7 +35,6 @@ namespace Antlr3.Tool
     using System;
     using System.Collections.Generic;
     using System.Linq;
-    using Antlr.Runtime.JavaExtensions;
     using Antlr3.Analysis;
 
     using AngleBracketTemplateLexer = Antlr3.ST.Language.AngleBracketTemplateLexer;
@@ -47,7 +46,7 @@ namespace Antlr3.Tool
     using StringTemplateGroup = Antlr3.ST.StringTemplateGroup;
 
     /** The DOT (part of graphviz) generation aspect. */
-    public class DOTGenerator
+    public class DOTGenerator : IGraphGenerator
     {
         internal bool StripNonreducedStates = false;
 
@@ -76,17 +75,28 @@ namespace Antlr3.Tool
         }
 
         #region Properties
+
+        public string FileExtension
+        {
+            get
+            {
+                return ".dot";
+            }
+        }
+
         public string ArrowheadType
         {
             get
             {
                 return arrowhead;
             }
+
             set
             {
                 arrowhead = value;
             }
         }
+
         [CLSCompliant(false)]
         public string RankDir
         {
@@ -94,18 +104,20 @@ namespace Antlr3.Tool
             {
                 return rankdir;
             }
+
             set
             {
                 rankdir = value;
             }
         }
+
         #endregion
 
         /** Return a String containing a DOT description that, when displayed,
          *  will show the incoming state machine visually.  All nodes reachable
          *  from startState will be included.
          */
-        public virtual string GetDOT( State startState )
+        public virtual string GenerateGraph( State startState )
         {
             if ( startState == null )
             {

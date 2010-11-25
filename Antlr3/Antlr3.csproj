@@ -45,6 +45,10 @@
     <Reference Include="System.Core">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
+    <Reference Include="System.XML" />
+    <Reference Include="System.Xml.Linq">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Analysis\ActionLabel.cs" />
@@ -151,6 +155,7 @@
     <Compile Include="Misc\IIntSet.cs" />
     <Compile Include="Tool\AssignTokenTypesBehavior.cs" />
     <Compile Include="Tool\BuildDependencyGenerator.cs" />
+    <Compile Include="Tool\DgmlGenerator.cs" />
     <Compile Include="Tool\DOTGenerator.cs" />
     <Compile Include="Tool\FASerializer.cs" />
     <Compile Include="Tool\GrammarAnalysisAbortedMessage.cs" />
@@ -165,6 +170,7 @@
     <Compile Include="Tool\GrammarType.cs" />
     <Compile Include="Tool\GrammarUnreachableAltsMessage.cs" />
     <Compile Include="Tool\IAntlrErrorListener.cs" />
+    <Compile Include="Tool\IGraphGenerator.cs" />
     <Compile Include="Tool\Interpreter.cs" />
     <Compile Include="Tool\LabelType.cs" />
     <Compile Include="Tool\LeftRecursionCyclesMessage.cs" />
@@ -508,7 +514,7 @@
     <AntlrToolPath>$(SolutionDir)bin\Bootstrap\Antlr3.exe</AntlrToolPath>
   </PropertyGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <Import Project="$(SolutionDir)bin\Bootstrap\Antlr3.targets" />
+  <Import Project="$(ProjectDir)..\bin\Bootstrap\Antlr3.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

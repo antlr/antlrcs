@@ -4,7 +4,7 @@
  * All rights reserved.
  *
  * Conversion to C#:
- * Copyright (c) 2008-2009 Sam Harwell, Pixel Mine, Inc.
+ * Copyright (c) 2008-2010 Sam Harwell, Pixel Mine, Inc.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -35,7 +35,6 @@ namespace Antlr3
     using System;
     using System.Collections.Generic;
     using System.Linq;
-    using Antlr.Runtime.JavaExtensions;
     using Antlr3.Analysis;
     using Antlr3.Codegen;
     using Antlr3.Misc;
@@ -59,6 +58,7 @@ namespace Antlr3
         private List<string> generatedFiles = new List<string>();
         private bool generate_NFA_dot = false;
         private bool generate_DFA_dot = false;
+        private bool _generateDgmlGraphs = false;
         private string outputDirectory = ".";
         private bool haveOutputDir = false;
         private string inputDirectory;
@@ -234,6 +234,10 @@ namespace Antlr3
                 else if ( args[i] == "-dfa" )
                 {
                     Generate_DFA_dot = true;
+                }
+                else if ( args[i] == "-dgml" )
+                {
+                    GenerateDgmlGraphs = true;
                 }
                 else if ( args[i] == "-debug" )
                 {
@@ -788,21 +792,31 @@ namespace Antlr3
                 {
                     continue; // not there for some reason, ignore
                 }
-                DOTGenerator dotGenerator = new DOTGenerator( g );
-                string dot = dotGenerator.GetDOT( dfa.startState );
-                string dotFileName = g.name + "." + "dec-" + d;
+
+                IGraphGenerator generator;
+                if (GenerateDgmlGraphs)
+                {
+                    generator = new DgmlGenerator(g);
+                }
+                else
+                {
+                    generator = new DOTGenerator(g);
+                }
+
+                string graph = generator.GenerateGraph( dfa.startState );
+                string graphFileName = g.name + "." + "dec-" + d;
                 if ( g.implicitLexer )
                 {
-                    dotFileName = g.name + Grammar.grammarTypeToFileNameSuffix[(int)g.type] + "." + "dec-" + d;
+                    graphFileName = g.name + Grammar.grammarTypeToFileNameSuffix[(int)g.type] + "." + "dec-" + d;
                 }
                 try
                 {
-                    WriteDOTFile( g, dotFileName, dot );
+                    WriteGraphFile( g, graphFileName, graph, generator.FileExtension );
                 }
                 catch ( IOException ioe )
                 {
                     ErrorManager.Error( ErrorManager.MSG_CANNOT_GEN_DOT_FILE,
-                                       dotFileName,
+                                       graphFileName,
                                        ioe );
                 }
             }
@@ -810,18 +824,18 @@ namespace Antlr3
 
         protected virtual void GenerateNFAs( Grammar g )
         {
-            DOTGenerator dotGenerator = new DOTGenerator( g );
-            ICollection<Rule> rules = g.GetAllImportedRules();
-            rules.addAll( g.Rules );
+            IGraphGenerator generator = GenerateDgmlGraphs ? (IGraphGenerator)new DgmlGenerator(g) : new DOTGenerator(g);
+            HashSet<Rule> rules = g.GetAllImportedRules();
+            rules.UnionWith( g.Rules );
 
             foreach ( Rule r in rules )
             {
                 try
                 {
-                    string dot = dotGenerator.GetDOT( r.startState );
+                    string dot = generator.GenerateGraph( r.startState );
                     if ( dot != null )
                     {
-                        WriteDOTFile( g, r, dot );
+                        WriteGraphFile( g, r, dot, generator.FileExtension );
                     }
                 }
                 catch ( IOException ioe )
@@ -831,15 +845,15 @@ namespace Antlr3
             }
         }
 
-        protected virtual void WriteDOTFile( Grammar g, Rule r, string dot )
+        protected virtual void WriteGraphFile( Grammar g, Rule r, string graph, string formatExtension )
         {
-            WriteDOTFile( g, r.grammar.name + "." + r.Name, dot );
+            WriteGraphFile( g, r.grammar.name + "." + r.Name, graph, formatExtension );
         }
 
-        protected virtual void WriteDOTFile( Grammar g, string name, string dot )
+        protected virtual void WriteGraphFile( Grammar g, string name, string graph, string formatExtension )
         {
-            TextWriter fw = GetOutputFile( g, name + ".dot" );
-            fw.Write( dot );
+            TextWriter fw = GetOutputFile( g, name + formatExtension );
+            fw.Write( graph );
             fw.Close();
         }
 
@@ -864,6 +878,7 @@ namespace Antlr3
             Console.Error.WriteLine( "  -profile              generate a parser that computes profiling information" );
             Console.Error.WriteLine( "  -nfa                  generate an NFA for each rule" );
             Console.Error.WriteLine( "  -dfa                  generate a DFA for each decision point" );
+            Console.Error.WriteLine( "  -dgml                 generate graphs in DGML format." );
             Console.Error.WriteLine( "  -message-format name  specify output style for messages" );
             Console.Error.WriteLine( "  -verbose              generate ANTLR version and other information" );
             Console.Error.WriteLine( "  -make                 only build if generated files older than grammar" );
@@ -1222,6 +1237,19 @@ namespace Antlr3
             set
             {
                 this.generate_DFA_dot = value;
+            }
+        }
+
+        public virtual bool GenerateDgmlGraphs
+        {
+            get
+            {
+                return _generateDgmlGraphs;
+            }
+
+            set
+            {
+                _generateDgmlGraphs = value;
             }
         }
 
