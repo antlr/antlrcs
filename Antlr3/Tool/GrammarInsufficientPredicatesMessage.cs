@@ -37,6 +37,7 @@ namespace Antlr3.Tool
     using Antlr3.Analysis;
 
     using IToken = Antlr.Runtime.IToken;
+    using StringComparer = System.StringComparer;
     using StringTemplate = Antlr3.ST.StringTemplate;
 
     public class GrammarInsufficientPredicatesMessage : Message
@@ -67,7 +68,7 @@ namespace Antlr3.Tool
             }
             StringTemplate st = GetMessageTemplate();
             // convert to string key to avoid 3.1 ST bug
-            var altToLocationsWithStringKey = new SortedList<string, ICollection<IToken>>();
+            var altToLocationsWithStringKey = new SortedList<string, ICollection<IToken>>(StringComparer.Ordinal);
             List<int> alts = new List<int>();
             alts.addAll( altToLocations.Keys );
             alts.Sort();
