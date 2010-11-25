@@ -135,14 +135,14 @@ template[StringTemplateGroupInterface groupI]
 	:	(opt='optional')? name=ID LPAREN (formalArgs=args)? RPAREN SEMI
 		{
 			templateName = $name.text;
-			$groupI.DefineTemplate( templateName, $formalArgs.args ?? new System.Collections.Generic.SortedList<string, FormalArgument>(), opt!=null );
+			$groupI.DefineTemplate( templateName, $formalArgs.args ?? new System.Collections.Generic.SortedList<string, FormalArgument>(System.StringComparer.Ordinal), opt!=null );
 		}
 	;
 
 args returns[System.Collections.Generic.SortedList<string, FormalArgument> args]
 @init
 {
-	$args = new System.Collections.Generic.SortedList<string, FormalArgument>();
+	$args = new System.Collections.Generic.SortedList<string, FormalArgument>(System.StringComparer.Ordinal);
 }
 	:	a=ID {$args[$a.text] = new FormalArgument($a.text);}
 		( COMMA b=ID {$args[$b.text] = new FormalArgument($b.text);} )*

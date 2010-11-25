@@ -33,6 +33,7 @@
 namespace Antlr3.Tool
 {
     using System.Collections.Generic;
+    using System.Collections.ObjectModel;
     using System.Linq;
     using Antlr.Runtime.JavaExtensions;
     using Antlr3.Analysis;
@@ -58,13 +59,13 @@ namespace Antlr3.Tool
     using Regex = System.Text.RegularExpressions.Regex;
     using RegexOptions = System.Text.RegularExpressions.RegexOptions;
     using StringBuilder = System.Text.StringBuilder;
+    using StringComparer = System.StringComparer;
     using StringReader = System.IO.StringReader;
     using StringTemplate = Antlr3.ST.StringTemplate;
     using TextReader = System.IO.TextReader;
     using TextWriter = System.IO.TextWriter;
     using TimeSpan = System.TimeSpan;
     using Tool = Antlr3.AntlrTool;
-    using System.Collections.ObjectModel;
 
     /** Represents a grammar in memory. */
     public class Grammar
@@ -403,7 +404,7 @@ namespace Antlr3.Tool
         string defaultRuleModifier;
 
         /** Map a rule to it's Rule object */
-        protected SortedList<string, Rule> nameToRuleMap = new SortedList<string, Rule>();
+        protected readonly SortedList<string, Rule> nameToRuleMap = new SortedList<string, Rule>(StringComparer.Ordinal);
 
         /** If this rule is a delegate, some rules might be overridden; don't
          *  want to gen code for them.
@@ -1938,7 +1939,7 @@ namespace Antlr3.Tool
         {
             if ( nameToSynpredASTMap == null )
             {
-                nameToSynpredASTMap = new SortedList<string, GrammarAST>();
+                nameToSynpredASTMap = new SortedList<string, GrammarAST>(StringComparer.Ordinal);
             }
             string predName =
                 SynpredRulePrefix + ( nameToSynpredASTMap.Count + 1 ) + "_" + name;

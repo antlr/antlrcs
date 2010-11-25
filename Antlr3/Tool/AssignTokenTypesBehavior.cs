@@ -40,6 +40,7 @@ namespace Antlr3.Tool
 
     using CLSCompliant = System.CLSCompliantAttribute;
     using Label = Antlr3.Analysis.Label;
+    using StringComparer = System.StringComparer;
 
     /** Move all of the functionality from assign.types.g grammar file. */
     [CLSCompliant(false)]
@@ -48,10 +49,10 @@ namespace Antlr3.Tool
         protected const int Unassigned = -1;
         protected const int UnassignedInParserRule = -2;
 
-        protected IDictionary<string, int> stringLiterals = new SortedList<string, int>();
+        protected IDictionary<string, int> stringLiterals = new SortedList<string, int>(StringComparer.Ordinal);
         [CLSCompliant(false)]
-        protected IDictionary<string, int> tokens = new SortedList<string, int>();
-        protected IDictionary<string, string> aliases = new SortedList<string, string>();
+        protected IDictionary<string, int> tokens = new SortedList<string, int>(StringComparer.Ordinal);
+        protected IDictionary<string, string> aliases = new SortedList<string, string>(StringComparer.Ordinal);
         protected IDictionary<string, string> aliasesReverseIndex = new Dictionary<string, string>();
 
         public AssignTokenTypesBehavior( ITreeNodeStream input )

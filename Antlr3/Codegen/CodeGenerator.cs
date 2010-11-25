@@ -1121,15 +1121,10 @@ namespace Antlr3.Codegen
         protected virtual void GenTokenTypeConstants( StringTemplate code )
         {
             // make constants for the token types
-            foreach ( string tokenID in grammar.TokenIDs )
+            foreach (var token in grammar.composite.tokenIDToTypeMap.OrderBy(i => i.Value))
             {
-                int tokenType = grammar.GetTokenType( tokenID );
-                if ( tokenType == Label.EOF ||
-                     tokenType >= Label.MIN_TOKEN_TYPE )
-                {
-                    // don't do FAUX labels 'cept EOF
-                    code.SetAttribute( "tokens.{name,type}", tokenID, tokenType );
-                }
+                if (token.Value == Label.EOF || token.Value >= Label.MIN_TOKEN_TYPE)
+                    code.SetAttribute("tokens.{name,type}", token.Key, token.Value);
             }
         }
 
