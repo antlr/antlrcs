@@ -149,7 +149,7 @@ namespace Antlr3.Tool
             grammars.Add( this.grammar );
         }
 
-        /** Return a postorder list of grammars; root is last in list */
+        /** Return a preorder list of grammars; root is first in list */
         public IList<Grammar> GetPreOrderedGrammarList()
         {
             IList<Grammar> grammars = new List<Grammar>();
@@ -163,7 +163,7 @@ namespace Antlr3.Tool
             for ( int i = 0; children != null && i < children.Count; i++ )
             {
                 CompositeGrammarTree child = children[i];
-                child.GetPostOrderedGrammarListCore( grammars );
+                child.GetPreOrderedGrammarListCore( grammars );
             }
         }
 

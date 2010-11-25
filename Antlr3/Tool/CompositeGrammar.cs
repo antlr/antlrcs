@@ -327,8 +327,8 @@ namespace Antlr3.Tool
             HashSet<string> ruleNames = new HashSet<string>();
             HashSet<Rule> rules = new HashSet<Rule>();
             CompositeGrammarTree subtreeRoot = delegateGrammarTreeRoot.FindNode( g );
-            IList<Grammar> grammars = subtreeRoot.GetPostOrderedGrammarList();
-            // walk all grammars
+            IList<Grammar> grammars = subtreeRoot.GetPreOrderedGrammarList();
+            // walk all grammars preorder, priority given to grammar listed first.
             foreach ( Grammar grammar in grammars )
             {
                 // for each rule in grammar, add to rules if no rule with that
