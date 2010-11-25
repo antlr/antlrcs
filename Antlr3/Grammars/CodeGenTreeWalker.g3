@@ -430,7 +430,7 @@ setBlock returns [StringTemplate code=null]
 			altcode.SetAttribute("elements.{el,line,pos}",
 								 setcode,
 								 $s.Line,
-								 $s.CharPositionInLine
+								 $s.CharPositionInLine + 1
 								);
 			altcode.SetAttribute("altNum", 1);
 			altcode.SetAttribute("outerAlt", blockNestingLevel==RULE_BLOCK_NESTING_LEVEL);
@@ -514,7 +514,7 @@ alternative returns [StringTemplate code]
 						$code.SetAttribute("elements.{el,line,pos}",
 										  $e.code,
 										  $e.start.Line,
-										  $e.start.CharPositionInLine
+										  $e.start.CharPositionInLine + 1
 										 );
 					}
 				}
@@ -720,7 +720,7 @@ tree_ returns [StringTemplate code]
 				$code.SetAttribute("root.{el,line,pos}",
 								  $el.code,
 								  $el.start.Line,
-								  $el.start.CharPositionInLine
+								  $el.start.CharPositionInLine + 1
 								  );
 			}
 			// push all the immediately-following actions out before children
@@ -732,7 +732,7 @@ tree_ returns [StringTemplate code]
 					$code.SetAttribute("actionsAfterRoot.{el,line,pos}",
 									  $act.code,
 									  $act.start.Line,
-									  $act.start.CharPositionInLine
+									  $act.start.CharPositionInLine + 1
 									);
 				}
 			)*
@@ -741,7 +741,7 @@ tree_ returns [StringTemplate code]
 				 $code.SetAttribute("children.{el,line,pos}",
 								  $el.code,
 								  $el.start.Line,
-								  $el.start.CharPositionInLine
+								  $el.start.CharPositionInLine + 1
 								  );
 				 }
 			)*
@@ -1104,7 +1104,7 @@ rewrite_alternative returns [StringTemplate code=null]
 					{$code.SetAttribute("elements.{el,line,pos}",
 										$el.code,
 										$el.start.Line,
-										$el.start.CharPositionInLine
+										$el.start.CharPositionInLine + 1
 										);
 					}
 				)+
@@ -1112,7 +1112,7 @@ rewrite_alternative returns [StringTemplate code=null]
 				{$code.SetAttribute("elements.{el,line,pos}",
 								   templates.GetInstanceOf("rewriteEmptyAlt"),
 								   $a.Line,
-								   $a.CharPositionInLine
+								   $a.CharPositionInLine + 1
 								   );
 				}
 			)
@@ -1181,7 +1181,7 @@ rewrite_tree returns [StringTemplate code]
 				$code.SetAttribute("root.{el,line,pos}",
 								   $r.code,
 								   $r.start.Line,
-								   $r.start.CharPositionInLine
+								   $r.start.CharPositionInLine + 1
 								  );
 			}
 			(
@@ -1190,7 +1190,7 @@ rewrite_tree returns [StringTemplate code]
 				$code.SetAttribute("children.{el,line,pos}",
 									$el.code,
 									$el.start.Line,
-									$el.start.CharPositionInLine
+									$el.start.CharPositionInLine + 1
 									);
 			  }
 			)*

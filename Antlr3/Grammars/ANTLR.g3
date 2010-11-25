@@ -424,7 +424,7 @@ altList[IDictionary<string, object> opts]
 	GrammarAST blkRoot = null;
 	GrammarAST save = currentBlockAST;
 }
-	:	( -> BLOCK[$start,"BLOCK"] )
+	:	( -> BLOCK[input.LT(-1),"BLOCK"] )
 		{
 			blkRoot = (GrammarAST)$tree.GetChild(0);
 			blkRoot.BlockOptions = $opts;
@@ -446,7 +446,7 @@ alternative
 	:	element+
 		-> ^(ALT[$start,"ALT"] element+ EOA["<end-of-alt>"])
 	|	// epsilon alt
-		-> ^(ALT[$start,"ALT"] EPSILON[$start,"epsilon"] EOA["<end-of-alt>"])
+		-> ^(ALT[$start,"ALT"] EPSILON[input.LT(-1),"epsilon"] EOA["<end-of-alt>"])
 	;
 
 exceptionGroup
