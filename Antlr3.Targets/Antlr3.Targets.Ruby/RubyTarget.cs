@@ -1,6 +1,6 @@
 /*
  * [The "BSD licence"]
- * Copyright (c) 2005 Martin Traverso
+ * Copyright (c) 2010 Kyle Yetter
  * All rights reserved.
  *
  * Conversion to C#:
@@ -47,13 +47,17 @@ namespace Antlr3.Targets
     using StringTemplateGroup = Antlr3.ST.StringTemplateGroup;
     using Target = Antlr3.Codegen.Target;
     using TypeLoadException = System.TypeLoadException;
+    using NumberStyles = System.Globalization.NumberStyles;
 
     public class RubyTarget : Target
     {
+        /** A set of ruby keywords which are used to escape labels and method names
+         *  which will cause parse errors in the ruby source
+         */
         public static readonly HashSet<string> rubyKeywords =
             new HashSet<string>()
             {
-                "alias",    "end",     "retry", 
+                "alias",    "END",     "retry", 
                 "and",      "ensure",  "return",
                 "BEGIN",    "false",   "self",  
                 "begin",    "for",     "super", 
@@ -61,15 +65,39 @@ namespace Antlr3.Targets
                 "case",     "in",      "true",  
                 "class",    "module",  "undef", 
                 "def",      "next",    "unless",
-                "defined",  "nil",     "until", 
+                "defined?",  "nil",     "until", 
                 "do",       "not",     "when",  
                 "else",     "or",      "while", 
                 "elsif",    "redo",    "yield", 
-                "END",      "rescue",
+                "end",      "rescue",
             };
+
+        public static Dictionary<string, IDictionary<string, object>> sharedActionBlocks = new Dictionary<string, IDictionary<string, object>>();
 
         public class RubyRenderer : IAttributeRenderer
         {
+            private static readonly string[] rubyCharValueEscape = new string[256];
+
+            static RubyRenderer()
+            {
+                for (int i = 0; i < 16; i++)
+                    rubyCharValueEscape[i] = "\\x0" + i.ToString("x");
+                for (int i = 16; i < 32; i++)
+                    rubyCharValueEscape[i] = "\\x" + i.ToString("x");
+                for (char i = (char)32; i < 127; i++)
+                    rubyCharValueEscape[i] = i.ToString();
+                for (int i = 127; i < 256; i++)
+                    rubyCharValueEscape[i] = "\\x" + i.ToString("x");
+
+                rubyCharValueEscape['\n'] = "\\n";
+                rubyCharValueEscape['\r'] = "\\r";
+                rubyCharValueEscape['\t'] = "\\t";
+                rubyCharValueEscape['\b'] = "\\b";
+                rubyCharValueEscape['\f'] = "\\f";
+                rubyCharValueEscape['\\'] = "\\\\";
+                rubyCharValueEscape['"'] = "\\\"";
+            }
+
             public string ToString(object o)
             {
                 return o.ToString();
@@ -100,6 +128,8 @@ namespace Antlr3.Targets
                     return LexerRule(idString);
                 case "constantPath":
                     return ConstantPath(idString);
+                case "rubyString" :
+                    return RubyString(idString);
                 case "label":
                     return Label(idString);
                 case "symbol":
@@ -230,6 +260,20 @@ namespace Antlr3.Targets
                 return value.Replace(".", "::");
             }
 
+            private static string RubyString(string value)
+            {
+                StringBuilder outputBuffer = new StringBuilder();
+                int len = value.Length;
+
+                outputBuffer.Append('"');
+                for (int i = 0; i < len; i++)
+                {
+                    outputBuffer.Append(rubyCharValueEscape[value[i]]);
+                }
+                outputBuffer.Append('"');
+                return outputBuffer.ToString();
+            }
+
             private static string CamelCase(string value)
             {
                 if (string.IsNullOrEmpty(value))
@@ -312,6 +356,49 @@ namespace Antlr3.Targets
 
         protected override void GenRecognizerFile(AntlrTool tool, CodeGenerator generator, Grammar grammar, StringTemplate outputFileST)
         {
+            /*
+                Below is an experimental attempt at providing a few named action blocks
+                that are printed in both lexer and parser files from combined grammars.
+                ANTLR appears to first generate a parser, then generate an independent lexer,
+                and then generate code from that. It keeps the combo/parser grammar object
+                and the lexer grammar object, as well as their respective code generator and
+                target instances, completely independent. So, while a bit hack-ish, this is
+                a solution that should work without having to modify Terrence Parr's
+                core tool code.
+
+                - sharedActionBlocks is a class variable containing a hash map
+                - if this method is called with a combo grammar, and the action map
+                  in the grammar contains an entry for the named scope "all",
+                  add an entry to sharedActionBlocks mapping the grammar name to
+                  the "all" action map.
+                - if this method is called with an `implicit lexer'
+                  (one that's extracted from a combo grammar), check to see if
+                  there's an entry in sharedActionBlocks for the lexer's grammar name.
+                - if there is an action map entry, place it in the lexer's action map
+                - the recognizerFile template has code to place the
+                  "all" actions appropriately
+
+                problems:
+                  - This solution assumes that the parser will be generated
+                    before the lexer. If that changes at some point, this will
+                    not work.
+                  - I have not investigated how this works with delegation yet
+
+                Kyle Yetter - March 25, 2010
+            */
+            if (grammar.type == GrammarType.Combined)
+            {
+                IDictionary<string, object> all;
+                if (grammar.Actions.TryGetValue("all", out all))
+                    sharedActionBlocks[grammar.name] = all;
+            }
+            else if (grammar.implicitLexer)
+            {
+                IDictionary<string, object> shared;
+                if (sharedActionBlocks.TryGetValue(grammar.name, out shared))
+                    grammar.Actions["all"] = shared;
+            }
+
             generator.Templates.RegisterRenderer(typeof(string), new RubyRenderer());
             string fileName = generator.GetRecognizerFileName(grammar.name, grammar.type);
             generator.Write(outputFileST, fileName);
@@ -319,28 +406,51 @@ namespace Antlr3.Targets
 
         public override string GetTargetCharLiteralFromANTLRCharLiteral(CodeGenerator generator, string literal)
         {
+            int code_point = 0;
             literal = literal.Substring(1, literal.Length - 2);
 
-            string result = "?";
-
-            if (literal.Equals(@"\"))
+            if (literal[0] == '\\')
             {
-                result += @"\\";
+                switch (literal[1])
+                {
+                case '\\':
+                case '"':
+                case '\'':
+                    code_point = literal[1];
+                    break;
+                case 'n':
+                    code_point = 10;
+                    break;
+                case 'r':
+                    code_point = 13;
+                    break;
+                case 't':
+                    code_point = 9;
+                    break;
+                case 'b':
+                    code_point = 8;
+                    break;
+                case 'f':
+                    code_point = 12;
+                    break;
+                case 'u':    // Assume unnnn
+                    code_point = int.Parse(literal.Substring(2), NumberStyles.HexNumber);
+                    break;
+                default:
+                    Console.WriteLine("1: hey you didn't account for this: \"" + literal + "\"");
+                    break;
+                }
             }
-            else if (literal.Equals(" "))
+            else if (literal.Length == 1)
             {
-                result += @"\s";
-            }
-            else if (literal.StartsWith(@"\u"))
-            {
-                result = "0x" + literal.Substring(2);
+                code_point = literal[0];
             }
             else
             {
-                result += literal;
+                Console.WriteLine("2: hey you didn't account for this: \"" + literal + "\"");
             }
 
-            return result;
+            return ("0x" + code_point.ToString("x"));
         }
 
         public override int GetMaxCharValue(CodeGenerator generator)
@@ -360,91 +470,38 @@ namespace Antlr3.Targets
             return name;
         }
 
-        /** Is scope in @scope::name {action} valid for this kind of grammar?
-         *  Targets like C++ may want to allow new scopes like headerfile or
-         *  some such.  The action names themselves are not policed at the
-         *  moment so targets can add template actions w/o having to recompile
-         *  ANTLR.
-         */
         public override bool IsValidActionScope(GrammarType grammarType, string scope)
         {
+            switch (scope)
+            {
+            case "all":
+            case "token":
+            case "module":
+            case "overrides":
+                return true;
+
+            default:
+                break;
+            }
+
             switch (grammarType)
             {
             case GrammarType.Lexer:
-                switch (scope)
-                {
-                case "lexer":
-                case "token":
-                case "module":
-                case "overrides":
-                    return true;
-                }
-
-                break;
+                return scope == "lexer";
 
             case GrammarType.Parser:
-                switch (scope)
-                {
-                case "parser":
-                case "token":
-                case "module":
-                case "overrides":
-                    return true;
-                }
-
-                break;
+                return scope == "parser";
 
             case GrammarType.Combined:
-                switch (scope)
-                {
-                case "parser":
-                case "lexer":
-                case "token":
-                case "module":
-                case "overrides":
-                    return true;
-                }
-
-                break;
+                return (scope == "lexer") || (scope == "parser");
 
             case GrammarType.TreeParser:
-                switch (scope)
-                {
-                case "treeparser":
-                case "token":
-                case "module":
-                case "overrides":
-                    return true;
-                }
+                return scope == "treeparser";
 
-                break;
+            default:
+                return false;
             }
-            return false;
         }
-
-#if false
-        public override string GetTargetStringLiteralFromString(string s)
-        {
-            Console.Write(s + "\n");
-            return base.GetTargetStringLiteralFromString(s);
-        }
-
-        public override string GetTargetStringLiteralFromString(string s, bool quoted)
-        {
-            //Console.Write(s + "\n");
-            string ret_value = base.GetTargetStringLiteralFromString(s, quoted);
-            Console.Write(ret_value + "\n");
-            return ret_value;
-        }
-
-        public override string GetTarget64BitStringFromValue(ulong word)
-        {
-            Console.Write(word.ToString() + "\n");
-            string result = base.GetTarget64BitStringFromValue(word);
-            Console.Write(result + "\n");
-            return result;
-        }
-#endif
 
         public override string EncodeIntAsCharEscape(int v)
         {
