@@ -199,7 +199,7 @@ namespace Antlr3.Codegen
 
             acyclicDFAGenerator = new ACyclicDFACodeGenerator( this );
 
-            LoadLanguageTarget( language );
+            target = LoadLanguageTarget( language, tool.TargetsDirectory );
         }
 
         #region Properties
@@ -285,16 +285,16 @@ namespace Antlr3.Codegen
 
         #endregion
 
-        protected virtual void LoadLanguageTarget( string language )
+        public static Target LoadLanguageTarget( string language, string targetsDirectory )
         {
             lock (_targets)
             {
+                Target target;
                 if (!_targets.TryGetValue(language, out target))
                 {
                     // first try to load the target via a satellite DLL
                     string assembly = "Antlr3.Targets." + language + ".dll";
-                    string path1 = tool.TargetsDirectory;
-                    string[] paths = { path1 };
+                    string[] paths = { targetsDirectory };
 
                     System.Reflection.Assembly targetAssembly = null;
                     System.Type targetType = null;
@@ -324,13 +324,15 @@ namespace Antlr3.Codegen
                         if (targetType == null)
                         {
                             ErrorManager.Error(ErrorManager.MSG_CANNOT_CREATE_TARGET_GENERATOR, targetName);
-                            return;
+                            return null;
                         }
                     }
 
                     target = (Target)Activator.CreateInstance(targetType);
                     _targets[language] = target;
                 }
+
+                return target;
             }
         }
 

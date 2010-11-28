@@ -62,6 +62,7 @@ namespace Antlr3.Tool
     using StringComparer = System.StringComparer;
     using StringReader = System.IO.StringReader;
     using StringTemplate = Antlr3.ST.StringTemplate;
+    using Target = Antlr3.Codegen.Target;
     using TextReader = System.IO.TextReader;
     using TextWriter = System.IO.TextWriter;
     using TimeSpan = System.TimeSpan;
@@ -543,6 +544,9 @@ namespace Antlr3.Tool
         /** Factored out the sanity checking code; delegate to it. */
         internal GrammarSanity sanity;
 
+        /** Useful for asking questions about target during analysis */
+        private Target target;
+
         /** Create a grammar from file name.  */
         public Grammar( Tool tool, string fileName, CompositeGrammar composite )
         {
@@ -562,6 +566,7 @@ namespace Antlr3.Tool
             {
                 defaultRuleModifier = composite.delegateGrammarTreeRoot.grammar.DefaultRuleModifier;
             }
+            target = CodeGenerator.LoadLanguageTarget((string)GetOption("language"), tool.TargetsDirectory);
         }
 
         /** Useful for when you are sure that you are not part of a composite
@@ -575,6 +580,8 @@ namespace Antlr3.Tool
 
             builtFromString = true;
             composite = new CompositeGrammar( this );
+            string targetsDirectory = Path.Combine(AntlrTool.ToolPathRoot, "Targets");
+            target = CodeGenerator.LoadLanguageTarget((string)GetOption("language"), targetsDirectory);
         }
 
         /** Used for testing; only useful on noncomposite grammars.*/
@@ -2004,9 +2011,13 @@ namespace Antlr3.Tool
             if ( this == composite.RootGrammar && actionName.Equals( "header" ) )
             {
                 IList<Grammar> allgrammars = composite.RootGrammar.GetDelegates();
-                foreach ( Grammar g in allgrammars )
+                foreach ( Grammar @delegate in allgrammars )
                 {
-                    g.DefineNamedAction( ampersandAST, scope, nameAST, actionAST );
+                    if (target.IsValidActionScope(@delegate.type, scope))
+                    {
+                        //System.out.println("propogate to "+delegate.name);
+                        @delegate.DefineNamedAction(ampersandAST, scope, nameAST, actionAST);
+                    }
                 }
             }
         }
