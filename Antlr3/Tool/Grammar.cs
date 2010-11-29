@@ -1080,8 +1080,7 @@ namespace Antlr3.Tool
                 }
             }
 
-            //grammarTree = (GrammarAST)parser.getAST();
-            grammarTree = (GrammarAST)result.tree;
+            grammarTree = result.Tree;
             FileName = lexer.Filename; // the lexer #src might change name
             if ( grammarTree == null || grammarTree.FindFirstType( ANTLRParser.RULE ) == null )
             {
