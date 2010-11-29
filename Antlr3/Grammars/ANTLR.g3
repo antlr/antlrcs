@@ -340,8 +340,8 @@ rule
 		altList[$optionsSpec.opts]
 		SEMI
 		( ex=exceptionGroup )?
-		->	^(	RULE["rule"]
-				^($ruleName)
+		->	^(	RULE[$ruleName.start, "rule"]
+				$ruleName
 				// the modifier will be 0 or one of the modifiers:
 				$p1? $p2? $p3? $p4?
 				^(ARG["ARG"] $aa?)
@@ -613,7 +613,7 @@ currentBlockAST = save;
 		)
 		{ blkRoot = (GrammarAST)$tree.GetChild(0); currentBlockAST = blkRoot; }
 		(	// create alt
-			-> ^(ALT["ALT"] {$elemAST} EOA["<end-of-alt>"])
+			-> ^(ALT[$elemAST.Token, "ALT"] {$elemAST} EOA["<end-of-alt>"])
 		)
 		{
 			alt = (GrammarAST)$tree.GetChild(0);
