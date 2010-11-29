@@ -276,7 +276,7 @@ namespace Antlr3.Tool
         public static readonly IDictionary<string, object> defaultOptions =
             new Dictionary<string, object>()
             {
-                { "language", "Java" }
+                { "language", "CSharp3" }
             };
 
         public static readonly HashSet<string> legalBlockOptions =
