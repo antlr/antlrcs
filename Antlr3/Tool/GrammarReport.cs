@@ -97,8 +97,7 @@ namespace Antlr3.Tool
             for (Iterator it = rules.iterator(); it.hasNext(); )
             {
                 Rule r = (Rule)it.next();
-                if (!r.Name.ToUpperInvariant()
-                    .StartsWith(Grammar.SynpredRulePrefix.ToUpperInvariant()))
+                if (!r.Name.StartsWith(Grammar.SynpredRulePrefix, StringComparison.OrdinalIgnoreCase))
                 {
                     totalNonSynPredProductions += r.numberOfAlts;
                     totalNonSynPredRules++;
@@ -129,8 +128,7 @@ namespace Antlr3.Tool
                     continue;
                 }
                 Rule r = d.dfa.NFADecisionStartState.enclosingRule;
-                if (r.Name.ToUpperInvariant()
-                    .StartsWith(Grammar.SynpredRulePrefix.ToUpperInvariant()))
+                if (r.Name.StartsWith(Grammar.SynpredRulePrefix, StringComparison.OrdinalIgnoreCase))
                 {
                     //System.out.println("dec "+d.decision+" is a synpred");
                     continue;
