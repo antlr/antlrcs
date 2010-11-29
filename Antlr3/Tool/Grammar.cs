@@ -60,6 +60,7 @@ namespace Antlr3.Tool
     using RegexOptions = System.Text.RegularExpressions.RegexOptions;
     using StringBuilder = System.Text.StringBuilder;
     using StringComparer = System.StringComparer;
+    using StringComparison = System.StringComparison;
     using StringReader = System.IO.StringReader;
     using StringTemplate = Antlr3.ST.StringTemplate;
     using Target = Antlr3.Codegen.Target;
@@ -391,7 +392,7 @@ namespace Antlr3.Tool
          *  http://www.antlr.org/blog/antlr3/lookahead.tml
          *  This maps the name (we make up) for a pred to the AST grammar fragment.
          */
-        protected SortedList<string, GrammarAST> nameToSynpredASTMap;
+        protected List<KeyValuePair<string, GrammarAST>> nameToSynpredASTMap;
 
         /** At least one rule has memoize=true */
         public bool atLeastOneRuleMemoizes;
@@ -882,7 +883,7 @@ namespace Antlr3.Tool
                 return composite.stringLiteralToTypeMap.Keys;
             }
         }
-        public IDictionary<string, GrammarAST> SyntacticPredicates
+        public IList<KeyValuePair<string, GrammarAST>> SyntacticPredicates
         {
             get
             {
@@ -1335,7 +1336,7 @@ namespace Antlr3.Tool
          */
         [CLSCompliant(false)]
         protected virtual IList<GrammarAST> GetArtificialRulesForSyntacticPredicates(ANTLRParser parser,
-                                                                IDictionary<string, GrammarAST> nameToSynpredASTMap )
+                                                                IEnumerable<KeyValuePair<string, GrammarAST>> nameToSynpredASTMap )
         {
             IList<GrammarAST> rules = new List<GrammarAST>();
             if ( nameToSynpredASTMap == null )
@@ -1946,12 +1947,12 @@ namespace Antlr3.Tool
         {
             if ( nameToSynpredASTMap == null )
             {
-                nameToSynpredASTMap = new SortedList<string, GrammarAST>(StringComparer.Ordinal);
+                nameToSynpredASTMap = new List<KeyValuePair<string, GrammarAST>>();
             }
             string predName =
                 SynpredRulePrefix + ( nameToSynpredASTMap.Count + 1 ) + "_" + name;
             blockAST.SetTreeEnclosingRuleNameDeeply( predName );
-            nameToSynpredASTMap[predName] = blockAST;
+            nameToSynpredASTMap.Add(new KeyValuePair<string, GrammarAST>(predName, blockAST));
             return predName;
         }
 
@@ -1962,11 +1963,8 @@ namespace Antlr3.Tool
                 return null;
             }
 
-            GrammarAST tree;
-            if ( nameToSynpredASTMap.TryGetValue( name, out tree ) )
-                return tree;
-
-            return null;
+            KeyValuePair<string, GrammarAST> pred = nameToSynpredASTMap.FirstOrDefault(i => string.Equals(i.Key, name, StringComparison.Ordinal));
+            return pred.Value;
         }
 
         public virtual void SynPredUsedInDFA( DFA dfa, SemanticContext semCtx )
