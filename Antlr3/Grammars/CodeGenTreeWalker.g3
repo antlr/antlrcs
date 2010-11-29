@@ -509,7 +509,7 @@ alternative returns [StringTemplate code]
 			(
 				e=element[null,null]
 				{
-					if ( e!=null )
+					if (e != null && e.code != null)
 					{
 						$code.SetAttribute("elements.{el,line,pos}",
 										  $e.code,
