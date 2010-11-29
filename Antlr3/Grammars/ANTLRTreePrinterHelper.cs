@@ -47,7 +47,8 @@ namespace Antlr3.Grammars
 
         public ANTLRTreePrinter.block_return Block( GrammarAST t, bool forceParens )
         {
-            ANTLRTreePrinter other = new ANTLRTreePrinter( new CommonTreeNodeStream( t ) );
+            ANTLRTreePrinter other = new ANTLRTreePrinter(new CommonTreeNodeStream(t));
+            other.buf = buf;
             return other.block( forceParens );
         }
         public int CountAltsForBlock(GrammarAST t)
