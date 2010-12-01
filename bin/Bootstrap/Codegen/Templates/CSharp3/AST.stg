@@ -72,9 +72,13 @@ public ITreeAdaptor TreeAdaptor
 }
 >>
 
+@returnScope.ruleReturnInterfaces() ::= <<
+, IAstRuleReturnScope\<<ASTLabelType>\>
+>>
+
 @returnScope.ruleReturnMembers() ::= <<
-internal <ASTLabelType> tree;
-public override object Tree { get { return tree; } }
+private <ASTLabelType> _tree;
+public <ASTLabelType> Tree { get { return _tree; } set { _tree = value; } }
 >>
 
 /** Add a variable to track rule's return AST */
@@ -186,26 +190,26 @@ rewriteCode(
 <if(backtracking)>
 if ( <actions.(actionScope).synpredgate> ) {<\n>
 <endif>
-<prevRuleRootRef()>.tree = root_0;
+<prevRuleRootRef()>.Tree = root_0;
 <rewriteCodeLabels()>
 root_0 = (<ASTLabelType>)adaptor.Nil();
 <alts:rewriteAlt(); separator="else ">
 <! if tree parser and rewrite=true !>
 <if(TREE_PARSER)>
 <if(rewriteMode)>
-<prevRuleRootRef()>.tree = (<ASTLabelType>)adaptor.RulePostProcessing(root_0);
-input.ReplaceChildren(adaptor.GetParent(retval.start),
-                      adaptor.GetChildIndex(retval.start),
+<prevRuleRootRef()>.Tree = (<ASTLabelType>)adaptor.RulePostProcessing(root_0);
+input.ReplaceChildren(adaptor.GetParent(retval.Start),
+                      adaptor.GetChildIndex(retval.Start),
                       adaptor.GetChildIndex(_last),
-                      retval.tree);
+                      retval.Tree);
 <endif>
 <endif>
 <! if parser or tree-parser && rewrite!=true, we need to set result !>
 <if(!TREE_PARSER)>
-<prevRuleRootRef()>.tree = root_0;<\n>
+<prevRuleRootRef()>.Tree = root_0;<\n>
 <else>
 <if(!rewriteMode)>
-<prevRuleRootRef()>.tree = root_0;
+<prevRuleRootRef()>.Tree = root_0;
 <endif>
 <endif>
 <if(backtracking)>
@@ -233,7 +237,7 @@ rewriteCodeLabels() ::= <<
 	separator="\n"
 >
 <referencedRuleLabels
-    :{RewriteRuleSubtreeStream stream_<it>=new RewriteRuleSubtreeStream(adaptor,"rule <it>",<it>!=null?<it>.tree:null);};
+    :{RewriteRuleSubtreeStream stream_<it>=new RewriteRuleSubtreeStream(adaptor,"rule <it>",<it>!=null?<it>.Tree:null);};
     separator="\n"
 >
 <referencedRuleListLabels

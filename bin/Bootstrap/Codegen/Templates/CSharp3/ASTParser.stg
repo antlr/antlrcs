@@ -44,7 +44,7 @@
 group ASTParser;
 
 @rule.setErrorReturnValue() ::= <<
-retval.tree = (<ASTLabelType>)adaptor.ErrorNode(input, retval.start, input.LT(-1), re);
+retval.Tree = (<ASTLabelType>)adaptor.ErrorNode(input, retval.Start, input.LT(-1), re);
 <! System.out.WriteLine("<ruleName> returns "+((CommonTree)retval.tree).toStringTree()); !>
 >>
 
@@ -188,7 +188,7 @@ new <hetero>(<label>) <! new MethodNode(IDLabel) !>
 ruleCleanUp() ::= <<
 <super.ruleCleanUp()>
 <if(backtracking)>if ( <actions.(actionScope).synpredgate> ) {<\n><endif>
-retval.tree = (<ASTLabelType>)adaptor.RulePostProcessing(root_0);
-adaptor.SetTokenBoundaries(retval.tree, retval.start, retval.stop);
+retval.Tree = (<ASTLabelType>)adaptor.RulePostProcessing(root_0);
+adaptor.SetTokenBoundaries(retval.Tree, retval.Start, retval.Stop);
 <if(backtracking)>}<endif>
 >>

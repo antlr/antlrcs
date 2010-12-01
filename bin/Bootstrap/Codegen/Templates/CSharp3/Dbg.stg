@@ -68,7 +68,8 @@ public static readonly string[] ruleNames =
 <if(profile)>
 public override bool AlreadyParsedRule( IIntStream input, int ruleIndex )
 {
-	((Profiler)dbg).ExamineRuleMemoization(input, ruleIndex, <grammar.composite.rootGrammar.recognizerName>.ruleNames[ruleIndex]);
+	int stopIndex = GetRuleMemoization(ruleIndex, input.Index);
+	((Profiler)dbg).ExamineRuleMemoization(input, ruleIndex, stopIndex, <grammar.composite.rootGrammar.recognizerName>.ruleNames[ruleIndex]);
 	return base.AlreadyParsedRule(input, ruleIndex);
 }<\n>
 public override void Memoize( IIntStream input, int ruleIndex, int ruleStartIndex )

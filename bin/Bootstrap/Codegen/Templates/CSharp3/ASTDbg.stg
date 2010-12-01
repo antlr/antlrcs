@@ -85,7 +85,6 @@ proxy.TreeAdaptor = adap;
 @ctorForProfilingRootGrammar.finally() ::=<<
 ITreeAdaptor adap = new CommonTreeAdaptor();
 TreeAdaptor = adap;
-proxy.TreeAdaptor = adap;
 >>
 
 @ctorForPredefinedListener.superClassRef() ::= ": base( input, dbg )"

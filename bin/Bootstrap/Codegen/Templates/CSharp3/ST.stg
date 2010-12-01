@@ -42,9 +42,9 @@ using Antlr3.ST.Language;
 
 /** Add this to each rule's return value struct */
 @returnScope.ruleReturnMembers() ::= <<
-public StringTemplate st;
-public object Template { get { return st; } }
-public override string ToString() { return (st==null) ? string.Empty : st.ToString(); }
+private StringTemplate _st;
+public StringTemplate Template { get { return _st; } set { _st = value; } }
+public override string ToString() { return (Template==null) ? string.Empty : Template.ToString(); }
 >>
 
 @genericParser.members() ::= <<
@@ -82,14 +82,14 @@ if ( <actions.(actionScope).synpredgate> )
 replaceTextInLine() ::= <<
 <if(TREE_PARSER)>
 ((TokenRewriteStream)input.TokenStream).Replace(
-	input.TreeAdaptor.GetTokenStartIndex(retval.start),
-	input.TreeAdaptor.GetTokenStopIndex(retval.start),
-	retval.st );
+	input.TreeAdaptor.GetTokenStartIndex(retval.Start),
+	input.TreeAdaptor.GetTokenStopIndex(retval.Start),
+	retval.Template);
 <else>
 ((TokenRewriteStream)input).Replace(
-	((IToken)retval.start).TokenIndex,
+	retval.Start.TokenIndex,
 	input.LT(-1).TokenIndex,
-	retval.st );
+	retval.Template);
 <endif>
 >>
 
@@ -98,11 +98,11 @@ rewriteTemplateAlt() ::= <<
 <if(it.pred)>
 if (<it.pred>)
 {
-	retval.st = <it.alt>;
+	retval.Template = <it.alt>;
 }<\n>
 <else>
 {
-	retval.st = <it.alt>;
+	retval.Template = <it.alt>;
 }<\n>
 <endif>
 >>
