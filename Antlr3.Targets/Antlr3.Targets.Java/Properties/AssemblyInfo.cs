@@ -4,7 +4,7 @@
  * All rights reserved.
  *
  * Conversion to C#:
- * Copyright (c) 2008-2009 Sam Harwell, Pixel Mine, Inc.
+ * Copyright (c) 2008-2010 Sam Harwell, Pixel Mine, Inc.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -32,7 +32,6 @@
 
 using System;
 using System.Reflection;
-using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 
 // General Information about an assembly is controlled through the following 
@@ -43,7 +42,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyConfiguration( "" )]
 [assembly: AssemblyCompany( "Pixel Mine, Inc." )]
 [assembly: AssemblyProduct( "Antlr3.Targets.Java" )]
-[assembly: AssemblyCopyright( "Copyright © Pixel Mine 2009" )]
+[assembly: AssemblyCopyright( "Copyright © Pixel Mine 2010" )]
 [assembly: AssemblyTrademark( "" )]
 [assembly: AssemblyCulture( "" )]
 [assembly: CLSCompliant(true)]
@@ -56,15 +55,16 @@ using System.Runtime.InteropServices;
 // The following GUID is for the ID of the typelib if this project is exposed to COM
 [assembly: Guid( "2388a4ff-439f-48b3-80fd-364f7bccfb9d" )]
 
-// Version information for an assembly consists of the following four values:
-//
-//      Major Version
-//      Minor Version 
-//      Build Number
-//      Revision
-//
-// You can specify all the values or you can default the Build and Revision Numbers 
-// by using the '*' as shown below:
-// [assembly: AssemblyVersion("1.0.*")]
-[assembly: AssemblyVersion("3.2.0.6288")]
-[assembly: AssemblyFileVersion("3.2.0.6288")]
+/* Version information for an assembly consists of four values in the following order:
+ *
+ *   Major.Minor.Build.Revision
+ *
+ * These values are updated according to the following:
+ *   1. Major.Minor follows the ANTLR release schedule
+ *   2. Build is incremented each time the C# port is packaged for release (regardless
+ *      of whether it's an incremental or nightly). The value resets to zero whenever
+ *      the Major or Minor version is incremented.
+ *   3. Revision is the Perforce changelist number associated with the release.
+ */
+[assembly: AssemblyVersion("3.3.0.7239")]
+[assembly: AssemblyFileVersion("3.3.0.7239")]
