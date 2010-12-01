@@ -42,6 +42,8 @@ namespace Antlr3.Tool
         TokenList,
         // used in lexer for x='a'
         Char,
+        // used in lexer for x+='a' (or x+='a'..'z', x+=~'a'...)
+        CharList,
         // Used in tree grammar x=.
         WildcardTree,
         // Used in tree grammar x+=.

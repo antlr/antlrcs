@@ -37,6 +37,7 @@ namespace Antlr3.Tool
     using Antlr.Runtime.JavaExtensions;
 
     using ANTLRParser = Antlr3.Grammars.ANTLRParser;
+    using ArgumentException = System.ArgumentException;
     using CLSCompliant = System.CLSCompliantAttribute;
     using CodeGenerator = Antlr3.Codegen.CodeGenerator;
     using CommonToken = Antlr.Runtime.CommonToken;
@@ -108,6 +109,9 @@ namespace Antlr3.Tool
 
         /** A list of all LabelElementPair attached to single char literals like x='a' */
         public Dictionary<string, Grammar.LabelElementPair> charLabels;
+
+        /** A list of all LabelElementPair attached to char literals like x+='a' */
+        public Dictionary<string, Grammar.LabelElementPair> charListLabels;
 
         /** A list of all LabelElementPair attached to rule references like f=field */
         public Dictionary<string, Grammar.LabelElementPair> ruleLabels;
@@ -351,6 +355,14 @@ namespace Antlr3.Tool
                 }
                 charLabels[label.Text] = pair;
                 break;
+
+            case LabelType.CharList:
+                charListLabels = charListLabels ?? new Dictionary<string, Grammar.LabelElementPair>();
+                charListLabels[label.Text] = pair;
+                break;
+
+            default:
+                throw new ArgumentException(string.Format("Unexpected label type {0}.", type), "type");
             }
         }
 

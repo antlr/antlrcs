@@ -2340,7 +2340,19 @@ namespace Antlr3.Tool
             Rule r = GetLocallyDefinedRule( ruleName );
             if ( r != null )
             {
-                DefineLabel( r, label, element, LabelType.TokenList );
+                if (type == GrammarType.Lexer &&
+                     (element.Type == ANTLRParser.CHAR_LITERAL ||
+                      element.Type == ANTLRParser.BLOCK ||
+                      element.Type == ANTLRParser.NOT ||
+                      element.Type == ANTLRParser.CHAR_RANGE ||
+                      element.Type == ANTLRParser.WILDCARD))
+                {
+                    DefineLabel(r, label, element, LabelType.CharList);
+                }
+                else
+                {
+                    DefineLabel( r, label, element, LabelType.TokenList );
+                }
             }
         }
 
