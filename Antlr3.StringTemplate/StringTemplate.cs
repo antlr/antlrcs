@@ -4,7 +4,7 @@
  * All rights reserved.
  *
  * Conversion to C#:
- * Copyright (c) 2008-2009 Sam Harwell, Pixel Mine, Inc.
+ * Copyright (c) 2008-2010 Sam Harwell, Pixel Mine, Inc.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -41,7 +41,6 @@ namespace Antlr3.ST
     using CommonToken = Antlr.Runtime.CommonToken;
     using CommonTokenStream = Antlr.Runtime.CommonTokenStream;
     using CommonTree = Antlr.Runtime.Tree.CommonTree;
-    using ConstructorInfo = System.Reflection.ConstructorInfo;
     using DebuggerDisplay = System.Diagnostics.DebuggerDisplayAttribute;
     using ICollection = System.Collections.ICollection;
     using IDictionary = System.Collections.IDictionary;
@@ -54,7 +53,6 @@ namespace Antlr3.ST
     using StringReader = System.IO.StringReader;
     using StringWriter = System.IO.StringWriter;
     using TargetInvocationException = System.Reflection.TargetInvocationException;
-    using TextReader = System.IO.TextReader;
 
     /** <summary>
      *  A <tt>StringTemplate</tt> is a "document" with holes in it where you can stick
@@ -306,7 +304,7 @@ namespace Antlr3.ST
         IDictionary<string, object> _attributes;
 
         /** <summary>
-         *  A Map&lt;Class,Object> that allows people to register a renderer for
+         *  A TypeRegistry&lt;IAttributeRenderer&gt; that allows people to register a renderer for
          *  a particular kind of object to be displayed in this template.  This
          *  overrides any renderer set for this template's group.
          *  </summary>
@@ -317,9 +315,9 @@ namespace Antlr3.ST
          *  Sometimes though you want to override the group's renderers.
          *  </remarks>
           */
-        Dictionary<Type, IAttributeRenderer> _attributeRenderers;
+        private TypeRegistry<IAttributeRenderer> _attributeRenderers;
 
-        Dictionary<Type, IAttributeRenderer> _interfaceRenderers;
+        private TypeRegistry<ITypeProxyFactory> _proxyFactories;
 
         /** <summary>
          *  A list of alternating string and ASTExpr references.
@@ -648,7 +646,7 @@ namespace Antlr3.ST
         protected virtual void Dup( StringTemplate from, StringTemplate to )
         {
             to._attributeRenderers = from._attributeRenderers;
-            to._interfaceRenderers = from._interfaceRenderers;
+            to._proxyFactories = from._proxyFactories;
             to._pattern = from._pattern;
             to._chunks = from._chunks;
             to._formalArguments = from._formalArguments;
@@ -1365,26 +1363,12 @@ namespace Antlr3.ST
          *  overrides any renderer set in the group for this class type.
          *  </summary>
          */
-        public virtual void RegisterRenderer( Type attributeClassType, IAttributeRenderer renderer )
+        public virtual void RegisterRenderer( Type objectType, IAttributeRenderer renderer )
         {
-            Dictionary<Type, IAttributeRenderer> renderers;
-            // renderers for interface types are kept separately due to their performance implications
-            if (!attributeClassType.IsInterface)
-            {
-                if (_attributeRenderers == null)
-                    _attributeRenderers = new Dictionary<Type, IAttributeRenderer>();
+            if (_attributeRenderers == null)
+                _attributeRenderers = new TypeRegistry<IAttributeRenderer>();
 
-                renderers = _attributeRenderers;
-            }
-            else
-            {
-                if (_interfaceRenderers == null)
-                    _interfaceRenderers = new Dictionary<Type, IAttributeRenderer>();
-
-                renderers = _interfaceRenderers;
-            }
-
-            renderers[attributeClassType] = renderer;
+            _attributeRenderers[objectType] = renderer;
         }
 
         /** <summary>
@@ -1392,36 +1376,38 @@ namespace Antlr3.ST
          *  this template.  If not found, the template's group is queried.
          *  </summary>
          */
-        public virtual IAttributeRenderer GetAttributeRenderer( Type attributeClassType )
+        public virtual IAttributeRenderer GetAttributeRenderer( Type objectType )
         {
-            IAttributeRenderer renderer = null;
-            if ( _attributeRenderers != null )
-            {
-                if ( !_attributeRenderers.TryGetValue( attributeClassType, out renderer ) )
-                    renderer = null;
-            }
-
-            // Only need to perform the expensive interface checks if the user registered a renderer for an interface type
-            if (renderer == null && _interfaceRenderers != null)
-            {
-                renderer = _interfaceRenderers.FirstOrDefault(pair => pair.Key.IsAssignableFrom(attributeClassType)).Value;
-            }
-
-            if ( renderer != null )
-            {
-                // found it!
+            IAttributeRenderer renderer;
+            if (_attributeRenderers != null && _attributeRenderers.TryGetValue(objectType, out renderer))
                 return renderer;
-            }
 
-            // we have no renderer overrides for the template or none for class arg
-            // check parent template if we are embedded
-            if ( _enclosingInstance != null )
-            {
-                return _enclosingInstance.GetAttributeRenderer( attributeClassType );
-            }
-            // else check group
-            return _group.GetAttributeRenderer( attributeClassType );
+            if (_enclosingInstance != null)
+                return _enclosingInstance.GetAttributeRenderer(objectType);
+
+            return _group.GetAttributeRenderer(objectType);
         }
+
+        public virtual void RegisterProxy(Type originalObjectType, ITypeProxyFactory proxyFactory)
+        {
+            if (_proxyFactories == null)
+                _proxyFactories = new TypeRegistry<ITypeProxyFactory>();
+
+            _proxyFactories[originalObjectType] = proxyFactory;
+        }
+
+        public virtual ITypeProxyFactory GetProxy(Type originalObjectType)
+        {
+            ITypeProxyFactory proxyFactory;
+            if (_proxyFactories != null && _proxyFactories.TryGetValue(originalObjectType, out proxyFactory))
+                return proxyFactory;
+
+            if (_enclosingInstance != null)
+                return _enclosingInstance.GetProxy(originalObjectType);
+
+            return _group.GetProxy(originalObjectType);
+        }
+
 
         #region Utility routines
 

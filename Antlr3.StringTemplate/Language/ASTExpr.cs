@@ -43,13 +43,9 @@ namespace Antlr3.ST.Language
     using IDictionary = System.Collections.IDictionary;
     using IEnumerable = System.Collections.IEnumerable;
     using IList = System.Collections.IList;
-    using IndexerNameAttribute = System.Runtime.CompilerServices.IndexerNameAttribute;
     using InvalidOperationException = System.InvalidOperationException;
     using IOException = System.IO.IOException;
     using ITree = Antlr.Runtime.Tree.ITree;
-    using MemberInfo = System.Reflection.MemberInfo;
-    using MethodImpl = System.Runtime.CompilerServices.MethodImplAttribute;
-    using MethodImplOptions = System.Runtime.CompilerServices.MethodImplOptions;
     using MethodInfo = System.Reflection.MethodInfo;
     using PropertyInfo = System.Reflection.PropertyInfo;
     using RecognitionException = Antlr.Runtime.RecognitionException;
@@ -616,6 +612,10 @@ namespace Antlr3.ST.Language
             if ( o == null )
                 return null;
 
+            ITypeProxyFactory proxyFactory = self.GetProxy(o.GetType());
+            if (proxyFactory != null)
+                o = proxyFactory.CreateProxy(o);
+
             if ( propertyName == null )
             {
                 IDictionary dictionary = o as IDictionary;
@@ -1004,6 +1004,13 @@ namespace Antlr3.ST.Language
                     return Missing;
                 }
                 o = _nullValue; // continue with null option if specified
+            }
+
+            if (o != null)
+            {
+                ITypeProxyFactory proxyFactory = self.GetProxy(o.GetType());
+                if (proxyFactory != null)
+                    o = proxyFactory.CreateProxy(o);
             }
 
             try

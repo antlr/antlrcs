@@ -4,7 +4,7 @@
  * All rights reserved.
  *
  * Conversion to C#:
- * Copyright (c) 2008 Sam Harwell, Pixel Mine, Inc.
+ * Copyright (c) 2010 Sam Harwell, Pixel Mine, Inc.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -35,6 +35,7 @@ namespace Antlr3.ST
     using System;
     using System.Collections.Generic;
     using System.Linq;
+    using System.Linq.Expressions;
     using Antlr.Runtime.JavaExtensions;
 
     using AngleBracketTemplateLexer = Antlr3.ST.Language.AngleBracketTemplateLexer;
@@ -58,7 +59,6 @@ namespace Antlr3.ST
     using StringBuilder = System.Text.StringBuilder;
     using TextReader = System.IO.TextReader;
     using TextWriter = System.IO.TextWriter;
-    using System.Linq.Expressions;
 
     /** <summary>
      *  Manages a group of named mutually-referential StringTemplate objects.
@@ -184,7 +184,9 @@ namespace Antlr3.ST
          *  Synchronized at creation time.
          *  </remarks>
          */
-        Dictionary<Type, IAttributeRenderer> _attributeRenderers;
+        private TypeRegistry<IAttributeRenderer> _attributeRenderers;
+
+        private TypeRegistry<ITypeProxyFactory> _proxyFactories;
 
         /** <summary>
          *  If a group file indicates it derives from a supergroup, how do we
@@ -1191,28 +1193,16 @@ namespace Antlr3.ST
         }
 
         /** <summary>
-         *  Specify a complete map of what object classes should map to which
-         *  renderer objects for every template in this group (that doesn't
-         *  override it per template).
-         *  </summary>
-         */
-        public virtual void SetAttributeRenderers( Dictionary<Type, IAttributeRenderer> renderers )
-        {
-            this._attributeRenderers = renderers;
-        }
-
-        /** <summary>
          *  Register a renderer for all objects of a particular type for all
          *  templates in this group.
          *  </summary>
          */
-        public virtual void RegisterRenderer( Type attributeClassType, IAttributeRenderer renderer )
+        public virtual void RegisterRenderer( Type objectType, IAttributeRenderer renderer )
         {
-            if ( _attributeRenderers == null )
-            {
-                _attributeRenderers = new Dictionary<Type, IAttributeRenderer>();
-            }
-            _attributeRenderers[attributeClassType] = renderer;
+            if (_attributeRenderers == null)
+                _attributeRenderers = new TypeRegistry<IAttributeRenderer>();
+
+            _attributeRenderers[objectType] = renderer;
         }
 
         /** <summary>
@@ -1220,28 +1210,36 @@ namespace Antlr3.ST
          *  this group?  If not found, as superGroup if it has one.
          *  </summary>
          */
-        public virtual IAttributeRenderer GetAttributeRenderer( Type attributeClassType )
+        public virtual IAttributeRenderer GetAttributeRenderer( Type objectType )
         {
-            if ( _attributeRenderers == null )
-            {
-                if ( _superGroup == null )
-                {
-                    return null; // no renderers and no parent?  Stop.
-                }
-                // no renderers; consult super group
-                return _superGroup.GetAttributeRenderer( attributeClassType );
-            }
-
             IAttributeRenderer renderer;
-            if ( !_attributeRenderers.TryGetValue( attributeClassType, out renderer ) || renderer == null )
-            {
-                if ( _superGroup != null )
-                {
-                    // no renderer registered for this class, check super group
-                    renderer = _superGroup.GetAttributeRenderer( attributeClassType );
-                }
-            }
-            return renderer;
+            if (_attributeRenderers != null && _attributeRenderers.TryGetValue(objectType, out renderer))
+                return renderer;
+
+            if (_superGroup != null)
+                return _superGroup.GetAttributeRenderer(objectType);
+
+            return null;
+        }
+
+        public virtual void RegisterProxy(Type originalObjectType, ITypeProxyFactory proxyFactory)
+        {
+            if (_proxyFactories == null)
+                _proxyFactories = new TypeRegistry<ITypeProxyFactory>();
+
+            _proxyFactories[originalObjectType] = proxyFactory;
+        }
+
+        public virtual ITypeProxyFactory GetProxy(Type originalObjectType)
+        {
+            ITypeProxyFactory proxyFactory;
+            if (_proxyFactories != null && _proxyFactories.TryGetValue(originalObjectType, out proxyFactory))
+                return proxyFactory;
+
+            if (_superGroup != null)
+                return _superGroup.GetProxy(originalObjectType);
+
+            return null;
         }
 
         public virtual IDictionary GetMap( string name )

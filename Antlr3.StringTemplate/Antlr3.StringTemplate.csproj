@@ -61,6 +61,7 @@
   </ItemGroup>
   <ItemGroup>
     <Antlr3 Include="Language\AngleBracketTemplateLexer.g3" />
+    <Compile Include="ITypeProxyFactory.cs" />
     <Compile Include="JavaExtensions\AntlrJavaExtensions.cs" />
     <Compile Include="JavaExtensions\DictionaryExtensions.cs" />
     <Compile Include="JavaExtensions\ListExtensions.cs" />
@@ -111,6 +112,7 @@
     <Compile Include="Language\ActionEvaluatorHelper.cs">
       <DependentUpon>ActionEvaluator.g3</DependentUpon>
     </Compile>
+    <Compile Include="TypeRegistry`1.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\..\antlr\main\runtime\CSharp3\Sources\Antlr3.Runtime.Debug\Antlr3.Runtime.Debug.csproj">
