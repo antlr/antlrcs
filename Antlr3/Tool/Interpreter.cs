@@ -32,17 +32,15 @@
 
 namespace Antlr3.Tool
 {
-    using System;
     using System.Collections.Generic;
     using System.Linq;
     using Antlr.Runtime;
-    using Antlr.Runtime.JavaExtensions;
     using Antlr3.Analysis;
 
     using BlankDebugEventListener = Antlr.Runtime.Debug.BlankDebugEventListener;
-    using IDebugEventListener = Antlr.Runtime.Debug.IDebugEventListener;
+    using Console = System.Console;
     using DFA = Antlr3.Analysis.DFA;
-    using IList = System.Collections.IList;
+    using IDebugEventListener = Antlr.Runtime.Debug.IDebugEventListener;
     using IntervalSet = Antlr3.Misc.IntervalSet;
     using ParseTree = Antlr.Runtime.Tree.ParseTree;
     using ParseTreeBuilder = Antlr.Runtime.Debug.ParseTreeBuilder;
@@ -64,7 +62,7 @@ namespace Antlr3.Tool
          *  To get a stream of tokens, you must call scan() multiple times,
          *  recording the token object result after each call.
          */
-        class LexerActionGetTokenType : BlankDebugEventListener
+        private class LexerActionGetTokenType : BlankDebugEventListener
         {
             Interpreter outer;
             public CommonToken token;
@@ -76,7 +74,7 @@ namespace Antlr3.Tool
                 this.g = g;
             }
 
-            public override void ExitRule( String grammarFileName, String ruleName )
+            public override void ExitRule( string grammarFileName, string ruleName )
             {
                 if ( !ruleName.Equals( Grammar.ArtificialTokensRuleName ) )
                 {
@@ -152,9 +150,9 @@ namespace Antlr3.Tool
          *
          *  Return the token type associated with the final rule end state.
          */
-        public virtual void Scan( String startRule,
+        public virtual void Scan( string startRule,
                          IDebugEventListener actions,
-                         IList visitedStates )
+                         IList<NFAState> visitedStates )
         {
             if ( grammar.type != GrammarType.Lexer )
             {
@@ -182,22 +180,22 @@ namespace Antlr3.Tool
                         actions, visitedStates );
         }
 
-        public virtual CommonToken Scan( String startRule )
+        public virtual CommonToken Scan( string startRule )
         {
             return Scan( startRule, null );
         }
 
-        public virtual CommonToken Scan( String startRule,
-                                IList visitedStates )
+        public virtual CommonToken Scan( string startRule,
+                                IList<NFAState> visitedStates )
         {
             LexerActionGetTokenType actions = new LexerActionGetTokenType( this, grammar );
             Scan( startRule, actions, visitedStates );
             return actions.token;
         }
 
-        public virtual void Parse( String startRule,
+        public virtual void Parse( string startRule,
                           IDebugEventListener actions,
-                          IList visitedStates )
+                          IList<NFAState> visitedStates )
         {
             //Console.Out.WriteLine( "parse(" + startRule + ")" );
             // Build NFAs/DFAs from the grammar AST if NFAs haven't been built yet
@@ -218,12 +216,12 @@ namespace Antlr3.Tool
                         actions, visitedStates );
         }
 
-        public virtual ParseTree Parse( String startRule )
+        public virtual ParseTree Parse( string startRule )
         {
             return Parse( startRule, null );
         }
 
-        public virtual ParseTree Parse( String startRule, IList visitedStates )
+        public virtual ParseTree Parse( string startRule, IList<NFAState> visitedStates )
         {
             ParseTreeBuilder actions = new ParseTreeBuilder( grammar.name );
             try
@@ -236,17 +234,17 @@ namespace Antlr3.Tool
                 // Exceptions are used just to blast out of the parse engine
                 // The error will be in the parse tree.
             }
-            return actions.GetTree();
+            return actions.Tree;
         }
 
         /** Fill a list of all NFA states visited during the parse */
-        protected virtual void ParseEngine( String startRule,
+        protected virtual void ParseEngine( string startRule,
                                    NFAState start,
                                    NFAState stop,
                                    IIntStream input,
                                    Stack<object> ruleInvocationStack,
                                    IDebugEventListener actions,
-                                   IList visitedStates )
+                                   IList<NFAState> visitedStates )
         {
             NFAState s = start;
             if ( actions != null )
@@ -276,7 +274,7 @@ namespace Antlr3.Tool
                     int predictedAlt = Predict( dfa );
                     if ( predictedAlt == NFA.INVALID_ALT_NUMBER )
                     {
-                        String description = dfa.NFADecisionStartState.Description;
+                        string description = dfa.NFADecisionStartState.Description;
                         NoViableAltException nvae =
                             new NoViableAltException( description,
                                                           dfa.DecisionNumber,
@@ -501,7 +499,7 @@ namespace Antlr3.Tool
                 cs.Line + ":" + cs.CharPositionInLine + " " + re );
         }
 
-        public virtual String SourceName
+        public virtual string SourceName
         {
             get
             {

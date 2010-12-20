@@ -305,54 +305,40 @@ namespace Antlr3.Tool
             Grammar.LabelElementPair pair = new Grammar.LabelElementPair( grammar, label, elementRef );
             pair.type = type;
             labelNameSpace[label.Text] = pair;
-            switch ( type )
+            switch (type)
             {
             case LabelType.Token:
-                if ( tokenLabels == null )
-                {
-                    tokenLabels = new Dictionary<string, Grammar.LabelElementPair>();
-                }
+                tokenLabels = tokenLabels ?? new Dictionary<string, Grammar.LabelElementPair>();
                 tokenLabels[label.Text] = pair;
                 break;
 
             case LabelType.WildcardTree:
-                if ( wildcardTreeLabels == null )
-                    wildcardTreeLabels = new Dictionary<string, Grammar.LabelElementPair>();
+                wildcardTreeLabels = wildcardTreeLabels ?? new Dictionary<string, Grammar.LabelElementPair>();
                 wildcardTreeLabels[label.Text] = pair;
                 break;
 
             case LabelType.WildcardTreeList:
-                if ( wildcardTreeListLabels == null )
-                    wildcardTreeListLabels = new Dictionary<string, Grammar.LabelElementPair>();
+                wildcardTreeListLabels = wildcardTreeListLabels ?? new Dictionary<string, Grammar.LabelElementPair>();
                 wildcardTreeListLabels[label.Text] = pair;
                 break;
 
             case LabelType.Rule:
-                if ( ruleLabels == null )
-                {
-                    ruleLabels = new Dictionary<string, Grammar.LabelElementPair>();
-                }
+                ruleLabels = ruleLabels ?? new Dictionary<string, Grammar.LabelElementPair>();
                 ruleLabels[label.Text] = pair;
                 break;
+
             case LabelType.TokenList:
-                if ( tokenListLabels == null )
-                {
-                    tokenListLabels = new Dictionary<string, Grammar.LabelElementPair>();
-                }
+                tokenListLabels = tokenListLabels ?? new Dictionary<string, Grammar.LabelElementPair>();
                 tokenListLabels[label.Text] = pair;
                 break;
+
             case LabelType.RuleList:
-                if ( ruleListLabels == null )
-                {
-                    ruleListLabels = new Dictionary<string, Grammar.LabelElementPair>();
-                }
+                ruleListLabels = ruleListLabels ?? new Dictionary<string, Grammar.LabelElementPair>();
                 ruleListLabels[label.Text] = pair;
                 break;
+
             case LabelType.Char:
-                if ( charLabels == null )
-                {
-                    charLabels = new Dictionary<string, Grammar.LabelElementPair>();
-                }
+                charLabels = charLabels ?? new Dictionary<string, Grammar.LabelElementPair>();
                 charLabels[label.Text] = pair;
                 break;
 
