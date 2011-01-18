@@ -1,6 +1,6 @@
 ﻿<!--
    [The "BSD licence"]
-   Copyright (c) 2009 Sam Harwell
+   Copyright (c) 2011 Sam Harwell
    All rights reserved.
 
    Redistribution and use in source and binary forms, with or without
@@ -28,12 +28,12 @@
 <Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <BuildSystem>MSBuild</BuildSystem>
-    <TaskVersion>3.2.0.0</TaskVersion>
+    <TaskVersion>3.3.0.7239</TaskVersion>
     <TaskKeyToken>eb42632606e9261f</TaskKeyToken>
     <AntlrBuildTaskAssemblyName Condition="'$(AntlrBuildTaskAssemblyName)'==''">AntlrBuildTask, Version=$(TaskVersion), Culture=neutral, PublicKeyToken=$(TaskKeyToken)</AntlrBuildTaskAssemblyName>
   </PropertyGroup>
 
-  <PropertyGroup>
+  <!--<PropertyGroup>
     <LoadTimeSensitiveTargets>
       $(LoadTimeSensitiveTargets);
       AntlrCompile;
@@ -48,7 +48,7 @@
       AntlrCompile;
       $(PrepareResourcesDependsOn)
     </PrepareResourcesDependsOn>
-  </PropertyGroup>
+  </PropertyGroup>-->
 
   <PropertyGroup>
     <AntlrBuildTaskLocation Condition="'$(AntlrBuildTaskPath)'==''">$(MSBuildBinPath)</AntlrBuildTaskLocation>
@@ -84,10 +84,24 @@
   </ItemGroup>
 
   <Target Name="AntlrCompileReadGeneratedFileList">
-
     <ReadLinesFromFile File="$(IntermediateOutputPath)$(AntlrGenCodeFileNames)">
       <Output TaskParameter="Lines" ItemName="AntlrOutputCodeFilesList"/>
     </ReadLinesFromFile>
+  </Target>
+
+  <PropertyGroup>
+    <!-- Add grammar compilation to the CoreCompileDependsOn so that the IDE inproc compilers (particularly VB)
+         can "see" the generated source files. -->
+    <CoreCompileDependsOn Condition="'$(BuildingInsideVisualStudio)' == 'true' ">
+      DesignTimeGrammarCompilation;
+      $(CoreCompileDependsOn)
+    </CoreCompileDependsOn>
+  </PropertyGroup>
+
+  <Target Name="DesignTimeGrammarCompilation">
+    <!-- Only if we are not actually performing a compile i.e. we are in design mode -->
+    <CallTarget Condition="'$(BuildingProject)' != 'true'"
+                Targets="AntlrCompile" />
   </Target>
 
   <Target Name="AntlrCompile"
@@ -101,18 +115,25 @@
       <AntlrGeneratedCodeFiles Remove="@(AntlrGeneratedCodeFiles)" />
     </ItemGroup>
 
+    <PropertyGroup>
+      <_IntellisenseOnlyCompile>false</_IntellisenseOnlyCompile>
+      <_IntellisenseOnlyCompile Condition="'$(BuildingProject)' != 'true'">true</_IntellisenseOnlyCompile>
+    </PropertyGroup>
     <AntlrClassGenerationTask
       AntlrToolPath="$(AntlrToolLocation)"
       BuildTaskPath="$(AntlrBuildTaskLocation)"
       OutputPath="$(IntermediateOutputPath)"
       Language="$(Language)"
       SourceCodeFiles="@(Antlr3)"
+      ContinueOnError="$(_IntellisenseOnlyCompile)"
       TokensFiles="@(AntlrTokens)">
 
       <Output ItemName="AntlrGeneratedCodeFiles" TaskParameter="GeneratedCodeFiles" />
+      <Output ItemName="Compile" TaskParameter="GeneratedCodeFiles" />
     </AntlrClassGenerationTask>
 
     <WriteLinesToFile
+      Condition="'$(_IntellisenseOnlyCompile)' != 'true'"
       File="$(IntermediateOutputPath)$(AntlrGenCodeFileNames)"
       Lines="@(AntlrGeneratedCodeFiles)"
       Overwrite="true"/>
@@ -123,17 +144,17 @@
           Condition="'@(Antlr3)' != ''">
 
     <ItemGroup>
-      <AntlrGeneratedCodeFiles Condition="'@(AntlrGeneratedCodeFiles)' == ''"
-                               Include="@(AntlrOutputCodeFilesList)" />
+      <Compile Condition="'@(AntlrGeneratedCodeFiles)' == ''" Include="@(AntlrOutputCodeFilesList)" />
     </ItemGroup>
 
     <ItemGroup>
-      <FileWrites Include="@(AntlrGeneratedCodeFiles);
+      <_AntlrCodeGenFileWrites Condition="'@(AntlrGeneratedCodeFiles)' != ''" Include="@(AntlrGeneratedCodeFiles)" />
+      <_AntlrCodeGenFileWrites Condition="'@(AntlrGeneratedCodeFiles)' == ''" Include="@(AntlrOutputCodeFilesList)" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <FileWrites Include="@(_AntlrCodeGenFileWrites);
                            $(IntermediateOutputPath)$(AntlrGenCodeFileNames);" />
-    </ItemGroup>
-
-    <ItemGroup>
-      <Compile Include="@(AntlrGeneratedCodeFiles)" />
     </ItemGroup>
 
   </Target>
