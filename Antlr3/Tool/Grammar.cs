@@ -1,10 +1,10 @@
 ﻿/*
  * [The "BSD licence"]
- * Copyright (c) 2005-2008 Terence Parr
+ * Copyright (c) 2011 Terence Parr
  * All rights reserved.
  *
  * Conversion to C#:
- * Copyright (c) 2008-2009 Sam Harwell, Pixel Mine, Inc.
+ * Copyright (c) 2011 Sam Harwell, Pixel Mine, Inc.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -303,14 +303,16 @@ namespace Antlr3.Tool
 
         // Token options are here to avoid contaminating Token object in runtime
 
-        /** Legal options for terminal refs like ID<node=MyVarNode> */
+        /** Legal options for terminal refs like ID&lt;node=MyVarNode&gt; */
         public static readonly HashSet<string> legalTokenOptions =
             new HashSet<string>()
             {
-                defaultTokenOption
+                "class",
+                "type",
+                "text",
             };
 
-        public const string defaultTokenOption = "node";
+        public const string defaultTokenOption = "type";
 
         /** Is there a global fixed lookahead set for this grammar?
          *  If 0, nothing specified.  -1 implies we have not looked at

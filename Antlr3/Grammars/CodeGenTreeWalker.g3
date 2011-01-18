@@ -1,10 +1,10 @@
 /*
  [The "BSD licence"]
- Copyright (c) 2005-2008 Terence Parr
+ Copyright (c) 2011 Terence Parr
  All rights reserved.
 
  Grammar conversion to ANTLR v3 and C#:
- Copyright (c) 2008 Sam Harwell, Pixel Mine, Inc.
+ Copyright (c) 2011 Sam Harwell, Pixel Mine, Inc.
  All rights reserved.
 
  Redistribution and use in source and binary forms, with or without
@@ -882,7 +882,7 @@ atom[GrammarAST scope, GrammarAST label, GrammarAST astSuffix]
 				$code.SetAttribute("token",tokenLabel);
 				if ( !currentAltHasASTRewrite && $t.terminalOptions!=null )
 				{ 
-					$code.SetAttribute("hetero",$t.terminalOptions[Grammar.defaultTokenOption]);
+					$code.SetAttribute("terminalOptions", $t.terminalOptions);
 				}
 				int i = ((TokenWithIndex)$t.Token).TokenIndex;
 				$code.SetAttribute("elementIndex", i);
@@ -908,7 +908,7 @@ atom[GrammarAST scope, GrammarAST label, GrammarAST astSuffix]
 				string tokenLabel = generator.GetTokenTypeAsTargetLabel(grammar.GetTokenType($c.text));
 				$code.SetAttribute("token",tokenLabel);
 				if ( $c.terminalOptions!=null ) {
-					$code.SetAttribute("hetero",$c.terminalOptions[Grammar.defaultTokenOption]);
+					$code.SetAttribute("terminalOptions",$c.terminalOptions);
 				}
 				int i = ((TokenWithIndex)$c.Token).TokenIndex;
 				$code.SetAttribute("elementIndex", i);
@@ -939,7 +939,7 @@ atom[GrammarAST scope, GrammarAST label, GrammarAST astSuffix]
 				$code.SetAttribute("token",tokenLabel);
 				if ( $s.terminalOptions!=null )
 				{
-					$code.SetAttribute("hetero",$s.terminalOptions[Grammar.defaultTokenOption]);
+					$code.SetAttribute("terminalOptions",$s.terminalOptions);
 				}
 				$code.SetAttribute("elementIndex", i);
 				generator.GenerateLocalFollow($s,tokenLabel,currentRuleName,i);
@@ -1253,11 +1253,6 @@ rewrite_atom[bool isRoot] returns [StringTemplate code=null]
 			Rule rule = grammar.GetRule(currentRuleName);
 			ICollection<string> tokenRefsInAlt = rule.GetTokenRefsInAlt(outerAltNum);
 			bool createNewNode = !tokenRefsInAlt.Contains(tokenName) || $arg!=null;
-			object hetero = null;
-			if ( term.terminalOptions!=null )
-			{
-				hetero = term.terminalOptions[Grammar.defaultTokenOption];
-			}
 			if ( createNewNode )
 			{
 				stName = "rewriteImaginaryTokenRef";
@@ -1267,7 +1262,7 @@ rewrite_atom[bool isRoot] returns [StringTemplate code=null]
 				stName += "Root";
 			}
 			$code = templates.GetInstanceOf(stName);
-			$code.SetAttribute("hetero", hetero);
+			$code.SetAttribute("terminalOptions",term.terminalOptions);
 			if ( $arg!=null )
 			{
 				List args = generator.TranslateAction(currentRuleName,$arg);
