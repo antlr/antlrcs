@@ -245,9 +245,9 @@ action
 actionScopeName
 	:	id
 	|	l='lexer'
-		-> ID[l]
+		-> ID[$l]
 	|	p='parser'
-		-> ID[p]
+		-> ID[$p]
 	;
 
 optionsSpec returns [IDictionary<string, object> opts=new Dictionary<string, object>()]
