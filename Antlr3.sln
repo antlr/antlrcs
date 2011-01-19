@@ -66,14 +66,12 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AntlrBuildTask", "AntlrBuil
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StringTemplate4", "StringTemplate4\StringTemplate4.csproj", "{BBE5D9E6-2F4C-46EF-8CDB-17F886A36837}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "STViz", "STViz\STViz.csproj", "{C6D89C2E-A3AB-4E68-B6B6-C7AEF363BDFA}"
-EndProject
 Global
 	GlobalSection(TestCaseManagementSettings) = postSolution
 		CategoryFile = Antlr3.vsmdi
 	EndGlobalSection
 	GlobalSection(SourceCodeControl) = preSolution
-		SccNumberOfProjects = 23
+		SccNumberOfProjects = 22
 		SccProjectName0 = Perforce\u0020Project
 		SccLocalPath0 = ..\\..
 		SccProvider0 = MSSCCI:Perforce\u0020SCM
@@ -153,9 +151,6 @@ Global
 		SccProjectUniqueName21 = StringTemplate4\\StringTemplate4.csproj
 		SccLocalPath21 = ..\\..
 		SccProjectFilePathRelativizedFromConnection21 = antlrcs\\main\\StringTemplate4\\
-		SccProjectUniqueName22 = STViz\\STViz.csproj
-		SccLocalPath22 = ..\\..
-		SccProjectFilePathRelativizedFromConnection22 = antlrcs\\main\\STViz\\
 	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -245,10 +240,6 @@ Global
 		{BBE5D9E6-2F4C-46EF-8CDB-17F886A36837}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BBE5D9E6-2F4C-46EF-8CDB-17F886A36837}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BBE5D9E6-2F4C-46EF-8CDB-17F886A36837}.Release|Any CPU.Build.0 = Release|Any CPU
-		{C6D89C2E-A3AB-4E68-B6B6-C7AEF363BDFA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{C6D89C2E-A3AB-4E68-B6B6-C7AEF363BDFA}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{C6D89C2E-A3AB-4E68-B6B6-C7AEF363BDFA}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{C6D89C2E-A3AB-4E68-B6B6-C7AEF363BDFA}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
