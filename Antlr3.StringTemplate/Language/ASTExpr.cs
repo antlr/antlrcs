@@ -784,23 +784,25 @@ namespace Antlr3.ST.Language
 
         protected virtual object RawGetObjectProperty( StringTemplate self, object o, object property )
         {
-            Type c = o.GetType();
             object value = null;
 
             // Special case: our automatically created Aggregates via
             // attribute name: "{obj.{prop1,prop2}}"
-            if ( c == typeof( StringTemplate.Aggregate ) )
+            StringTemplate.Aggregate aggregate = o as StringTemplate.Aggregate;
+            if ( aggregate != null )
             {
                 string propertyName2 = (string)property;
-                value = ( (StringTemplate.Aggregate)o ).Get( (string)propertyName2 );
+                value = aggregate.Get( propertyName2 );
                 return value;
             }
-            else if ( c == typeof( StringTemplate ) )
+
+            StringTemplate template = o as StringTemplate;
+            if ( template != null )
             {
                 // Special case: if it's a template, pull property from
                 // it's attribute table.
                 // TODO: TJP just asked himself why we can't do inherited attr here?
-                var attributes = ( (StringTemplate)o ).Attributes;
+                var attributes = template.Attributes;
                 if ( attributes != null )
                 {
                     string propertyName2 = (string)property;
@@ -846,6 +848,7 @@ namespace Antlr3.ST.Language
             }
 
             string propertyName = (string)property;
+            Type c = o.GetType();
             var accessor = FindMember( c, propertyName );
             if ( accessor != null )
             {
