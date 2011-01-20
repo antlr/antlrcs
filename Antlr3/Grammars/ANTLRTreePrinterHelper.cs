@@ -45,7 +45,7 @@ namespace Antlr3.Grammars
         protected bool showActions;
         protected StringBuilder buf = new StringBuilder( 300 );
 
-        public ANTLRTreePrinter.block_return Block( GrammarAST t, bool forceParens )
+        private ANTLRTreePrinter.block_return Block( GrammarAST t, bool forceParens )
         {
             ANTLRTreePrinter other = new ANTLRTreePrinter(new CommonTreeNodeStream(t));
             other.buf = buf;

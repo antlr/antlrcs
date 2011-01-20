@@ -131,8 +131,7 @@ using Antlr3.Tool;
 
 using BitSet = Antlr.Runtime.BitSet;
 using DFA = Antlr.Runtime.DFA;
-using HashMap = System.Collections.Generic.Dictionary<object, object>;
-using Map = System.Collections.IDictionary;
+using IDictionary = System.Collections.IDictionary;
 }
 
 public
@@ -164,11 +163,11 @@ attrScope
 	:	^( 'scope' ID ( ^(AMPERSAND .*) )* ACTION )
 	;
 
-optionsSpec returns [Map opts=new HashMap()]
+optionsSpec returns [IDictionary opts = new Dictionary<object, object>()]
 	:	^( OPTIONS (option[$opts])+ )
 	;
 
-option[Map opts]
+option[IDictionary opts]
 	:	^( ASSIGN ID optionValue )
 		{
 			string key = $ID.text;

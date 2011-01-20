@@ -917,7 +917,7 @@ namespace Antlr3.ST.Language
 
             IEnumerable enumerable = a as IEnumerable;
             if ( enumerable != null )
-                return enumerable.GetEnumerator().MoveNext();
+                return enumerable.Cast<object>().Any();
 
             Iterator iterator = a as Iterator;
             if ( iterator != null )

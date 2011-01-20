@@ -113,7 +113,7 @@ KWDEFAULT = 'default';
 */
 
 using HashMap = System.Collections.Hashtable;
-using Map = System.Collections.IDictionary;
+using IDictionary = System.Collections.IDictionary;
 }
 
 @lexer::namespace {Antlr3.ST.Language}
@@ -138,7 +138,7 @@ this._group = g;
 template[StringTemplateGroup g]
 @init
 {
-	Map formalArgs = null;
+	IDictionary formalArgs = null;
 	StringTemplate st = null;
 	bool ignore = false;
 	string templateName=null;
@@ -254,22 +254,22 @@ mapdef[StringTemplateGroup g]
 		}
 	;
 
-map returns [Map mapping=new HashMap()]
+map returns [IDictionary mapping=new HashMap()]
 	:   LBRACK mapPairs[mapping] RBRACK
 	;
 
-mapPairs [Map mapping]
+mapPairs [IDictionary mapping]
 	:	keyValuePair[mapping] (COMMA keyValuePair[mapping])*
 		(COMMA defaultValuePair[mapping])?
 	|	defaultValuePair[mapping] 
 	;
 
-defaultValuePair[Map mapping]
+defaultValuePair[IDictionary mapping]
 	:	'default' COLON v=keyValue
 		{mapping[ASTExpr.DefaultMapValueName] = $v.value;}
 	;
 
-keyValuePair[Map mapping]
+keyValuePair[IDictionary mapping]
 	:	key=STRING COLON v=keyValue {mapping[$key.text] = $v.value;}
 	;
 

@@ -496,7 +496,7 @@ LOCAL_ATTR
 /**	$x::y	the only way to access the attributes within a dynamic scope
  * 			regardless of whether or not you are in the defining rule.
  *
- * 			scope Symbols { List names; }
+ * 			scope Symbols { List&lt;object&gt; names; }
  * 			r
  * 			scope {int i;}
  * 			scope Symbols;
