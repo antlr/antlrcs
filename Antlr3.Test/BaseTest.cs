@@ -59,6 +59,7 @@ namespace AntlrUnitTests
     using StringTemplate = Antlr3.ST.StringTemplate;
     using StringTemplateGroup = Antlr3.ST.StringTemplateGroup;
 
+    [TestClass]
     public abstract class BaseTest
     {
         public readonly string jikes = null;

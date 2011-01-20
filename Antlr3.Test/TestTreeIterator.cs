@@ -39,7 +39,8 @@ namespace AntlrUnitTests
     using Antlr.Runtime.Tree;
     using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-    class TestTreeIterator
+    [TestClass]
+    public class TestTreeIterator
     {
         static readonly string[] tokens = new string[]
             {
