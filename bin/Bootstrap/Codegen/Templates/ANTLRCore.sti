@@ -127,10 +127,10 @@ alt(elements,altNum,description,autoAST,outerAlt,treeLevel,rew);
 // E L E M E N T S
 
 /** match a token optionally with a label in front */
-tokenRef(token,label,elementIndex,hetero);
+tokenRef(token,label,elementIndex,terminalOptions);
 
 /** ids+=ID */
-tokenRefAndListLabel(token,label,elementIndex,hetero);
+tokenRefAndListLabel(token,label,elementIndex,terminalOptions);
 
 listLabel(label,elem);
 

@@ -1,10 +1,10 @@
 /*
  * [The "BSD licence"]
- * Copyright (c) 2005-2008 Terence Parr
+ * Copyright (c) 2011 Terence Parr
  * All rights reserved.
  *
  * Conversion to C#:
- * Copyright (c) 2008-2009 Sam Harwell, Pixel Mine, Inc.
+ * Copyright (c) 2011 Sam Harwell, Pixel Mine, Inc.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -51,9 +51,9 @@ retval.Tree = (<ASTLabelType>)adaptor.ErrorNode(input, retval.Start, input.LT(-1
 // TOKEN AST STUFF
 
 /** ID and output=AST */
-tokenRef(token,label,elementIndex,hetero) ::= <<
+tokenRef(token,label,elementIndex,terminalOptions) ::= <<
 <super.tokenRef(...)>
-<if(backtracking)>if ( state.backtracking==0 ) {<endif>
+<if(backtracking)>if (state.backtracking == 0) {<endif>
 <label>_tree = <createNodeFromToken(...)>;
 adaptor.AddChild(root_0, <label>_tree);
 <if(backtracking)>}<endif>
@@ -63,28 +63,28 @@ adaptor.AddChild(root_0, <label>_tree);
 tokenRefBang(token,label,elementIndex) ::= "<super.tokenRef(...)>"
 
 /** ID^ and output=AST */
-tokenRefRuleRoot(token,label,elementIndex,hetero) ::= <<
+tokenRefRuleRoot(token,label,elementIndex,terminalOptions) ::= <<
 <super.tokenRef(...)>
-<if(backtracking)>if ( <actions.(actionScope).synpredgate> ) {<endif>
+<if(backtracking)>if (<actions.(actionScope).synpredgate>) {<endif>
 <label>_tree = <createNodeFromToken(...)>;
 root_0 = (<ASTLabelType>)adaptor.BecomeRoot(<label>_tree, root_0);
 <if(backtracking)>}<endif>
 >>
 
 /** ids+=ID! and output=AST */
-tokenRefBangAndListLabel(token,label,elementIndex,hetero) ::= <<
+tokenRefBangAndListLabel(token,label,elementIndex,terminalOptions) ::= <<
 <tokenRefBang(...)>
 <listLabel(elem=label,...)>
 >>
 
 /** label+=TOKEN when output=AST but not rewrite alt */
-tokenRefAndListLabel(token,label,elementIndex,hetero) ::= <<
+tokenRefAndListLabel(token,label,elementIndex,terminalOptions) ::= <<
 <tokenRef(...)>
 <listLabel(elem=label,...)>
 >>
 
 /** Match label+=TOKEN^ when output=AST but not rewrite alt */
-tokenRefRuleRootAndListLabel(token,label,hetero,elementIndex) ::= <<
+tokenRefRuleRootAndListLabel(token,label,terminalOptions,elementIndex) ::= <<
 <tokenRefRuleRoot(...)>
 <listLabel(elem=label,...)>
 >>
@@ -102,11 +102,11 @@ tokenRefRuleRootAndListLabel(token,label,hetero,elementIndex) ::= <<
 // rather than just added on code.  Investigate that refactoring when
 // I have more time.
 
-matchSet(s,label,hetero,elementIndex,postmatchCode) ::= <<
-<super.matchSet(..., postmatchCode={<if(backtracking)>if ( <actions.(actionScope).synpredgate> ) <endif>adaptor.AddChild(root_0, <createNodeFromToken(...)>);})>
+matchSet(s,label,terminalOptions,elementIndex,postmatchCode) ::= <<
+<super.matchSet(..., postmatchCode={<if(backtracking)>if (<actions.(actionScope).synpredgate>) <endif>adaptor.AddChild(root_0, <createNodeFromToken(...)>);})>
 >>
 
-matchRuleBlockSet(s,label,hetero,elementIndex,postmatchCode,treeLevel="0") ::= <<
+matchRuleBlockSet(s,label,terminalOptions,elementIndex,postmatchCode,treeLevel="0") ::= <<
 <matchSet(...)>
 >>
 
@@ -115,11 +115,11 @@ matchSetBang(s,label,elementIndex,postmatchCode) ::= "<super.matchSet(...)>"
 // note there is no matchSetTrack because -> rewrites force sets to be
 // plain old blocks of alts: (A|B|...|C)
 
-matchSetRuleRoot(s,label,hetero,elementIndex,debug) ::= <<
+matchSetRuleRoot(s,label,terminalOptions,elementIndex,debug) ::= <<
 <if(label)>
 <label>=(<labelType>)input.LT(1);<\n>
 <endif>
-<super.matchSet(..., postmatchCode={<if(backtracking)>if ( <actions.(actionScope).synpredgate> ) <endif>root_0 = (<ASTLabelType>)adaptor.BecomeRoot(<createNodeFromToken(...)>, root_0);})>
+<super.matchSet(..., postmatchCode={<if(backtracking)>if (<actions.(actionScope).synpredgate>) <endif>root_0 = (<ASTLabelType>)adaptor.BecomeRoot(<createNodeFromToken(...)>, root_0);})>
 >>
 
 // RULE REF AST
@@ -127,7 +127,7 @@ matchSetRuleRoot(s,label,hetero,elementIndex,debug) ::= <<
 /** rule when output=AST */
 ruleRef(rule,label,elementIndex,args,scope) ::= <<
 <super.ruleRef(...)>
-<if(backtracking)>if ( <actions.(actionScope).synpredgate> ) <endif>adaptor.AddChild(root_0, <label>.Tree);
+<if(backtracking)>if (<actions.(actionScope).synpredgate>) <endif>adaptor.AddChild(root_0, <label>.Tree);
 >>
 
 /** rule! is same as normal rule ref */
@@ -136,7 +136,7 @@ ruleRefBang(rule,label,elementIndex,args,scope) ::= "<super.ruleRef(...)>"
 /** rule^ */
 ruleRefRuleRoot(rule,label,elementIndex,args,scope) ::= <<
 <super.ruleRef(...)>
-<if(backtracking)>if ( <actions.(actionScope).synpredgate> ) <endif>root_0 = (<ASTLabelType>)adaptor.BecomeRoot(<label>.Tree, root_0);
+<if(backtracking)>if (<actions.(actionScope).synpredgate>) <endif>root_0 = (<ASTLabelType>)adaptor.BecomeRoot(<label>.Tree, root_0);
 >>
 
 /** x+=rule when output=AST */
@@ -161,7 +161,7 @@ ruleRefRuleRootAndListLabel(rule,label,elementIndex,args,scope) ::= <<
 
 wildcard(label,elementIndex) ::= <<
 <super.wildcard(...)>
-<if(backtracking)>if ( <actions.(actionScope).synpredgate> ) {<endif>
+<if(backtracking)>if (<actions.(actionScope).synpredgate>) {<endif>
 <label>_tree = (<ASTLabelType>)adaptor.Create(<label>);
 adaptor.AddChild(root_0, <label>_tree);
 <if(backtracking)>}<endif>
@@ -171,23 +171,23 @@ wildcardBang(label,elementIndex) ::= "<super.wildcard(...)>"
 
 wildcardRuleRoot(label,elementIndex) ::= <<
 <super.wildcard(...)>
-<if(backtracking)>if ( <actions.(actionScope).synpredgate> ) {<endif>
+<if(backtracking)>if (<actions.(actionScope).synpredgate>) {<endif>
 <label>_tree = (<ASTLabelType>)adaptor.Create(<label>);
 root_0 = (<ASTLabelType>)adaptor.BecomeRoot(<label>_tree, root_0);
 <if(backtracking)>}<endif>
 >>
 
-createNodeFromToken(label,hetero) ::= <<
-<if(hetero)>
-new <hetero>(<label>) <! new MethodNode(IDLabel) !>
+createNodeFromToken(label,terminalOptions) ::= <<
+<if(terminalOptions.class)>
+new <terminalOptions.class>(<if(terminalOptions.type)><terminalOptions.type>,<endif><label><if(terminalOptions.text)>,<terminalOptions.text><endif>)
 <else>
-(<ASTLabelType>)adaptor.Create(<label>)
+(<ASTLabelType>)adaptor.Create(<if(terminalOptions.type)><terminalOptions.type>,<endif><label><if(terminalOptions.text)>,<terminalOptions.text><endif>)
 <endif>
 >>
 
 ruleCleanUp() ::= <<
 <super.ruleCleanUp()>
-<if(backtracking)>if ( <actions.(actionScope).synpredgate> ) {<\n><endif>
+<if(backtracking)>if (<actions.(actionScope).synpredgate>) {<endif>
 retval.Tree = (<ASTLabelType>)adaptor.RulePostProcessing(root_0);
 adaptor.SetTokenBoundaries(retval.Tree, retval.Start, retval.Stop);
 <if(backtracking)>}<endif>
