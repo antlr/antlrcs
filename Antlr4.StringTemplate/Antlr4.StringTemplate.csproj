@@ -1,0 +1,156 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{DE9B7DA2-35DD-46CC-B768-DAEE3C298660}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Antlr4.StringTemplate</RootNamespace>
+    <AssemblyName>Antlr4.StringTemplate</AssemblyName>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <SccProjectName>SAK</SccProjectName>
+    <SccLocalPath>SAK</SccLocalPath>
+    <SccAuxPath>SAK</SccAuxPath>
+    <SccProvider>SAK</SccProvider>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="IAttributeRenderer.cs" />
+    <Compile Include="AutoIndentWriter.cs" />
+    <None Include="..\Antlr3\Key.snk">
+      <Link>Key.snk</Link>
+    </None>
+    <None Include="DateRenderer.cs" />
+    <Compile Include="Misc\TypeRegistry`1.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Compiler\Bytecode.cs" />
+    <Compile Include="Compiler\BytecodeDisassembler.cs" />
+    <Compile Include="Compiler\CompilationState.cs" />
+    <Compile Include="Compiler\CompiledTemplate.cs" />
+    <Compile Include="Compiler\TemplateCompiler.cs" />
+    <Compile Include="Compiler\FormalArgument.cs" />
+    <Compile Include="Compiler\TemplateException.cs" />
+    <Compile Include="Compiler\TemplateLexer.cs" />
+    <Compile Include="Compiler\StringTable.cs" />
+    <Compile Include="Compiler\TestNewStuff.cs" />
+    <Compile Include="Debug\AddAttributeEvent.cs" />
+    <Compile Include="Debug\ConstructionEvent.cs" />
+    <Compile Include="Debug\DebugTemplate.cs" />
+    <Compile Include="Debug\EvalExprEvent.cs" />
+    <Compile Include="Debug\EvalTemplateEvent.cs" />
+    <Compile Include="Debug\InterpEvent.cs" />
+    <Compile Include="Interpreter.cs" />
+    <Compile Include="Misc\Coordinate.cs" />
+    <Compile Include="Misc\ErrorBuffer.cs" />
+    <Compile Include="Misc\ErrorManager.cs" />
+    <Compile Include="Misc\ErrorType.cs" />
+    <Compile Include="Misc\Interval.cs" />
+    <Compile Include="Misc\MapModelAdaptor.cs" />
+    <Compile Include="Misc\Utility.cs" />
+    <Compile Include="Misc\MultiMap.cs" />
+    <Compile Include="Misc\ObjectModelAdaptor.cs" />
+    <Compile Include="Misc\TemplateCompileTimeMessage.cs" />
+    <Compile Include="Misc\TemplateDump.cs" />
+    <Compile Include="Misc\TemplateGroupCompiletimeMessage.cs" />
+    <Compile Include="Misc\TemplateLexerMessage.cs" />
+    <Compile Include="Misc\TemplateMessage.cs" />
+    <Compile Include="Misc\TemplateModelAdaptor.cs" />
+    <Compile Include="Misc\TemplateNoSuchPropertyException.cs" />
+    <Compile Include="Misc\TemplateRuntimeMessage.cs" />
+    <Compile Include="IModelAdaptor.cs" />
+    <Compile Include="NoIndentWriter.cs" />
+    <None Include="NumberRenderer.cs" />
+    <Compile Include="Template.cs" />
+    <Compile Include="ITemplateErrorListener.cs" />
+    <Compile Include="TemplateGroup.cs" />
+    <Compile Include="TemplateGroupDirectory.cs" />
+    <Compile Include="TemplateGroupFile.cs" />
+    <Compile Include="StringRenderer.cs" />
+    <Compile Include="ITemplateWriter.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Antlr3 Include="Compiler\CodeGenerator.g3">
+      <Generator>MSBuild:Compile</Generator>
+    </Antlr3>
+    <Compile Include="Compiler\CodeGenerator.g3.cs">
+      <DependentUpon>CodeGenerator.g3</DependentUpon>
+    </Compile>
+    <Antlr3 Include="Compiler\Group.g3">
+      <Generator>MSBuild:Compile</Generator>
+    </Antlr3>
+    <Compile Include="Compiler\Group.g3.parser.cs">
+      <DependentUpon>Group.g3</DependentUpon>
+    </Compile>
+    <Compile Include="Compiler\Group.g3.lexer.cs">
+      <DependentUpon>Group.g3</DependentUpon>
+    </Compile>
+    <AntlrTokens Include="Compiler\TemplateLexer.tokens" />
+    <Antlr3 Include="Compiler\TemplateParser.g3">
+      <Generator>MSBuild:Compile</Generator>
+    </Antlr3>
+    <Compile Include="Compiler\TemplateParser.g3.cs">
+      <DependentUpon>TemplateParser.g3</DependentUpon>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\antlr\main\runtime\CSharp3\Sources\Antlr3.Runtime.Debug\Antlr3.Runtime.Debug.csproj">
+      <Project>{5EE27A90-B023-42C9-AAF1-52B0424C5D0B}</Project>
+      <Name>Antlr3.Runtime.Debug</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\antlr\main\runtime\CSharp3\Sources\Antlr3.Runtime\Antlr3.Runtime.csproj">
+      <Project>{8FDC0A87-9005-4D5A-AB75-E55CEB575559}</Project>
+      <Name>Antlr3.Runtime</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <PropertyGroup>
+    <!-- Folder containing AntlrBuildTask.dll -->
+    <AntlrBuildTaskPath>$(SolutionDir)bin\Bootstrap</AntlrBuildTaskPath>
+    <!-- Path to the ANTLR Tool itself. -->
+    <AntlrToolPath>$(SolutionDir)bin\Bootstrap\Antlr3.exe</AntlrToolPath>
+  </PropertyGroup>
+  <PropertyGroup>
+    <SignAssembly>true</SignAssembly>
+  </PropertyGroup>
+  <PropertyGroup>
+    <AssemblyOriginatorKeyFile>..\Antlr3\Key.snk</AssemblyOriginatorKeyFile>
+  </PropertyGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(ProjectDir)..\bin\Bootstrap\Antlr3.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

@@ -64,22 +64,26 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Antlr3.Runtime.Test", "..\.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AntlrBuildTask", "AntlrBuildTask\AntlrBuildTask.csproj", "{60F8B554-5C53-4DE2-B868-A0BFEF4EF80E}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Antlr4.StringTemplate", "Antlr4.StringTemplate\Antlr4.StringTemplate.csproj", "{DE9B7DA2-35DD-46CC-B768-DAEE3C298660}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Antlr4.Test.StringTemplate", "Antlr4.Test.StringTemplate\Antlr4.Test.StringTemplate.csproj", "{1B70CBF4-B592-4A9C-B7B3-AD1A087F4B9C}"
+EndProject
 Global
 	GlobalSection(TestCaseManagementSettings) = postSolution
 		CategoryFile = Antlr3.vsmdi
 	EndGlobalSection
 	GlobalSection(SourceCodeControl) = preSolution
-		SccNumberOfProjects = 21
-		SccProjectUniqueName0 = Antlr3\\Antlr3.csproj
+		SccNumberOfProjects = 23
+		SccProjectName0 = Perforce\u0020Project
 		SccLocalPath0 = ..\\..
-		SccProjectFilePathRelativizedFromConnection0 = antlrcs\\main\\Antlr3\\
-		SccProjectUniqueName1 = AntlrBuildTask\\AntlrBuildTask.csproj
+		SccProvider0 = MSSCCI:Perforce\u0020SCM
+		SccProjectFilePathRelativizedFromConnection0 = antlrcs\\main\\
+		SccProjectUniqueName1 = Antlr3\\Antlr3.csproj
 		SccLocalPath1 = ..\\..
-		SccProjectFilePathRelativizedFromConnection1 = antlrcs\\main\\AntlrBuildTask\\
-		SccProjectName2 = Perforce\u0020Project
+		SccProjectFilePathRelativizedFromConnection1 = antlrcs\\main\\Antlr3\\
+		SccProjectUniqueName2 = AntlrBuildTask\\AntlrBuildTask.csproj
 		SccLocalPath2 = ..\\..
-		SccProvider2 = MSSCCI:Perforce\u0020SCM
-		SccProjectFilePathRelativizedFromConnection2 = antlrcs\\main\\
+		SccProjectFilePathRelativizedFromConnection2 = antlrcs\\main\\AntlrBuildTask\\
 		SccProjectUniqueName3 = Antlr3.StringTemplate\\Antlr3.StringTemplate.csproj
 		SccLocalPath3 = ..\\..
 		SccProjectFilePathRelativizedFromConnection3 = antlrcs\\main\\Antlr3.StringTemplate\\
@@ -146,6 +150,12 @@ Global
 		SccProjectUniqueName20 = ..\\..\\antlr\\main\\runtime\\CSharp3\\Sources\\Antlr3.Runtime.Test\\Antlr3.Runtime.Test.csproj
 		SccLocalPath20 = ..\\..
 		SccProjectFilePathRelativizedFromConnection20 = antlr\\main\\runtime\\CSharp3\\Sources\\Antlr3.Runtime.Test\\
+		SccProjectUniqueName21 = Antlr4.StringTemplate\\Antlr4.StringTemplate.csproj
+		SccLocalPath21 = ..\\..
+		SccProjectFilePathRelativizedFromConnection21 = antlrcs\\main\\Antlr4.StringTemplate\\
+		SccProjectUniqueName22 = Antlr4.Test.StringTemplate\\Antlr4.Test.StringTemplate.csproj
+		SccLocalPath22 = ..\\..
+		SccProjectFilePathRelativizedFromConnection22 = antlrcs\\main\\Antlr4.Test.StringTemplate\\
 	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -231,6 +241,14 @@ Global
 		{60F8B554-5C53-4DE2-B868-A0BFEF4EF80E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{60F8B554-5C53-4DE2-B868-A0BFEF4EF80E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{60F8B554-5C53-4DE2-B868-A0BFEF4EF80E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DE9B7DA2-35DD-46CC-B768-DAEE3C298660}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DE9B7DA2-35DD-46CC-B768-DAEE3C298660}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DE9B7DA2-35DD-46CC-B768-DAEE3C298660}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DE9B7DA2-35DD-46CC-B768-DAEE3C298660}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1B70CBF4-B592-4A9C-B7B3-AD1A087F4B9C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1B70CBF4-B592-4A9C-B7B3-AD1A087F4B9C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1B70CBF4-B592-4A9C-B7B3-AD1A087F4B9C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1B70CBF4-B592-4A9C-B7B3-AD1A087F4B9C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

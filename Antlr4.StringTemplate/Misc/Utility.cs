@@ -1,0 +1,132 @@
+/*
+ * [The "BSD licence"]
+ * Copyright (c) 2011 Terence Parr
+ * All rights reserved.
+ *
+ * Conversion to C#:
+ * Copyright (c) 2011 Sam Harwell, Tunnel Vision Laboratories, LLC
+ * All rights reserved.
+ *
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions
+ * are met:
+ * 1. Redistributions of source code must retain the above copyright
+ *    notice, this list of conditions and the following disclaimer.
+ * 2. Redistributions in binary form must reproduce the above copyright
+ *    notice, this list of conditions and the following disclaimer in the
+ *    documentation and/or other materials provided with the distribution.
+ * 3. The name of the author may not be used to endorse or promote products
+ *    derived from this software without specific prior written permission.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE AUTHOR ``AS IS'' AND ANY EXPRESS OR
+ * IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
+ * OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.
+ * IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT,
+ * INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+ * NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+ * DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
+ * THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+ * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
+ * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ */
+
+namespace Antlr4.StringTemplate.Misc
+{
+    using MethodInfo = System.Reflection.MethodInfo;
+    using FieldInfo = System.Reflection.FieldInfo;
+    using Type = System.Type;
+
+    public static class Utility
+    {
+        public static string strip(string s, int n)
+        {
+            return s.Substring(n, s.Length - 2 * n);
+        }
+
+        //    public static String stripRight(String s, int n) {
+        //        return s.substring(0, s.length()-n);
+        //    }
+
+        // strip newline from front but just one
+        public static string trimOneStartingNewline(string s)
+        {
+            if (s.StartsWith("\r\n"))
+                s = s.Substring(2);
+            else if (s.StartsWith("\n"))
+                s = s.Substring(1);
+            return s;
+        }
+
+        // strip newline from end but just one
+        public static string trimOneTrailingNewline(string s)
+        {
+            if (s.EndsWith("\r\n"))
+                s = s.Substring(0, s.Length - 2);
+            else if (s.EndsWith("\n"))
+                s = s.Substring(0, s.Length - 1);
+            return s;
+        }
+
+        public static string getPrefix(string name)
+        {
+            //System.out.println("getParent("+name+")="+p);
+            if (name == null)
+                return null;
+
+            int lastSlash = name.LastIndexOf('/');
+            if (lastSlash > 0)
+                return name.Substring(0, lastSlash);
+
+            //System.out.println("getPrefix("+name+")="+p);
+            return "";
+        }
+
+        public static string replaceEscapes(string s)
+        {
+            s = s.Replace("\n", "\\\\n");
+            s = s.Replace("\r", "\\\\r");
+            s = s.Replace("\t", "\\\\t");
+            return s;
+        }
+
+        /** Given index into string, compute the line and char position in line */
+        public static Coordinate getLineCharPosition(string s, int index)
+        {
+            int line = 1;
+            int charPos = 0;
+            int p = 0;
+            while (p < index)
+            {
+                // don't care about s[index] itself; count before
+                if (s[p] == '\n')
+                {
+                    line++;
+                    charPos = 0;
+                }
+                else
+                {
+                    charPos++;
+                }
+
+                p++;
+            }
+
+            return new Coordinate(line, charPos);
+        }
+
+        public static object accessField(FieldInfo f, object obj)
+        {
+            return f.GetValue(obj);
+        }
+
+        public static object invokeMethod(MethodInfo m, object obj)
+        {
+            return m.Invoke(obj, null);
+        }
+
+        public static MethodInfo getMethod(Type c, string methodName)
+        {
+            return c.GetMethod(methodName, Type.EmptyTypes);
+        }
+    }
+}

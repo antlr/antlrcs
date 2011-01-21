@@ -1,0 +1,103 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>
+    </ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{1B70CBF4-B592-4A9C-B7B3-AD1A087F4B9C}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Antlr4.Test.StringTemplate</RootNamespace>
+    <AssemblyName>Antlr4.Test.StringTemplate</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <ProjectTypeGuids>{3AC096D0-A1C2-E12C-1390-A8335801FDAB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <SccProjectName>SAK</SccProjectName>
+    <SccLocalPath>SAK</SccLocalPath>
+    <SccAuxPath>SAK</SccAuxPath>
+    <SccProvider>SAK</SccProvider>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Microsoft.VisualStudio.QualityTools.UnitTestFramework, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
+    <Reference Include="System" />
+    <Reference Include="System.Core">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <CodeAnalysisDependentAssemblyPaths Condition=" '$(VS100COMNTOOLS)' != '' " Include="$(VS100COMNTOOLS)..\IDE\PrivateAssemblies">
+      <Visible>False</Visible>
+    </CodeAnalysisDependentAssemblyPaths>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Extensions\ListExtensions.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="BaseTest.cs" />
+    <Compile Include="ErrorBufferAllErrors.cs" />
+    <Compile Include="TestCompiler.cs" />
+    <Compile Include="TestCoreBasics.cs" />
+    <Compile Include="TestDebugEvents.cs" />
+    <Compile Include="TestDictionaries.cs" />
+    <Compile Include="TestDollarDelimiters.cs" />
+    <Compile Include="TestFunctions.cs" />
+    <Compile Include="TestGroups.cs" />
+    <Compile Include="TestGroupSyntax.cs" />
+    <Compile Include="TestGroupSyntaxErrors.cs" />
+    <Compile Include="TestImports.cs" />
+    <Compile Include="TestIndentation.cs" />
+    <Compile Include="TestIndirectionAndEarlyEval.cs" />
+    <Compile Include="TestInterptimeErrors.cs" />
+    <Compile Include="TestLexer.cs" />
+    <Compile Include="TestLineWrap.cs" />
+    <Compile Include="TestLists.cs" />
+    <Compile Include="TestModelAdaptors.cs" />
+    <Compile Include="TestNullAndEmptyValues.cs" />
+    <Compile Include="TestOptions.cs" />
+    <Compile Include="TestRegions.cs" />
+    <Compile Include="TestRenderers.cs" />
+    <Compile Include="TestScopes.cs" />
+    <Compile Include="TestSubtemplates.cs" />
+    <Compile Include="TestSyntaxErrors.cs" />
+    <Compile Include="TestTokensForDollarDelimiters.cs" />
+    <Compile Include="TestWhitespace.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\antlr\main\runtime\CSharp3\Sources\Antlr3.Runtime\Antlr3.Runtime.csproj">
+      <Project>{8FDC0A87-9005-4D5A-AB75-E55CEB575559}</Project>
+      <Name>Antlr3.Runtime</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Antlr4.StringTemplate\Antlr4.StringTemplate.csproj">
+      <Project>{DE9B7DA2-35DD-46CC-B768-DAEE3C298660}</Project>
+      <Name>Antlr4.StringTemplate</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

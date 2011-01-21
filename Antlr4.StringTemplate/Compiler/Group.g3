@@ -1,0 +1,248 @@
+/*
+ * [The "BSD licence"]
+ * Copyright (c) 2011 Terence Parr
+ * All rights reserved.
+ *
+ * Conversion to C#:
+ * Copyright (c) 2011 Sam Harwell, Tunnel Vision Laboratories, LLC
+ * All rights reserved.
+ *
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions
+ * are met:
+ * 1. Redistributions of source code must retain the above copyright
+ *    notice, this list of conditions and the following disclaimer.
+ * 2. Redistributions in binary form must reproduce the above copyright
+ *    notice, this list of conditions and the following disclaimer in the
+ *    documentation and/or other materials provided with the distribution.
+ * 3. The name of the author may not be used to endorse or promote products
+ *    derived from this software without specific prior written permission.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE AUTHOR ``AS IS'' AND ANY EXPRESS OR
+ * IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
+ * OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.
+ * IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT,
+ * INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+ * NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+ * DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
+ * THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+ * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
+ * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ */
+
+grammar Group;
+
+options {
+	language=CSharp3;
+}
+
+@lexer::namespace{Antlr4.StringTemplate.Compiler}
+@parser::namespace{Antlr4.StringTemplate.Compiler}
+
+@lexer::header{
+using Antlr4.StringTemplate.Misc;
+}
+
+@parser::header{
+using Antlr4.StringTemplate.Misc;
+using StringBuilder = System.Text.StringBuilder;
+// The variable 'name' is declared but never used
+#pragma warning disable 168
+}
+
+public
+group[STGroup group, string prefix]
+@init {
+GroupLexer lexer = (GroupLexer)input.TokenSource;
+this._group = lexer.group = $group;
+}
+	:	(	'import' STRING {_group.importTemplates($STRING);}
+		|	'import' // common error: name not in string
+			{
+			MismatchedTokenException e = new MismatchedTokenException(STRING, input);
+			ReportError(e);
+			}
+			ID ('.' ID)* // might be a.b.c.d
+		)*
+        def[prefix]+
+    ;
+    
+groupName returns [string name]
+@init {StringBuilder buf = new StringBuilder();}
+	:	a=ID {buf.Append($a.text);} ('.' a=ID {buf.Append($a.text);})*
+	;
+
+/** Match template and dictionary defs outside of (...)+ loop in group.
+ *  The key is catching while still in the loop; must keep prediction of
+ *  elements separate from "stay in loop" prediction.
+ */
+def[string prefix] : templateDef[prefix] | dictDef ;
+	catch[RecognitionException re] {
+		// pretend we already saw an error here
+		state.lastErrorIndex = input.Index;
+		error("garbled template definition starting at '"+input.LT(1).Text+"'");
+	}
+
+public
+templateDef[string prefix]
+@init {
+    string template=null;
+    int n=0; // num char to strip from left, right of template def
+}
+	:	(	'@' enclosing=ID '.' name=ID '(' ')'
+		|	name=ID '(' formalArgs ')'
+		)
+	    '::='
+	    {IToken templateToken = input.LT(1);}
+	    (	STRING     {template=$STRING.text; n=1;}
+	    |	BIGSTRING  {template=$BIGSTRING.text; n=2;}
+	    |	{
+	    	template = "";
+	    	string msg = "missing template at '"+input.LT(1).Text+"'";
+            NoViableAltException e = new NoViableAltException("", 0, 0, input);
+    	    _group.errMgr.groupSyntaxError(ErrorType.SYNTAX_ERROR, SourceName, e, msg);
+    	    }
+	    )
+	    {
+        template = Utility.strip(template, n);
+        string templateName = $name.text;
+        if (prefix.Length > 0) templateName = prefix+"/"+$name.text;
+	    _group.defineTemplateOrRegion(templateName, $enclosing.text, templateToken,
+	    							 template, $name, $formalArgs.args);
+	    }
+	|   alias=ID '::=' target=ID  {_group.defineTemplateAlias($alias, $target);}
+	;
+
+formalArgs returns[List<FormalArgument> args]
+@init {$args = new List<FormalArgument>();}
+    :	formalArg[$args]
+    	( ',' formalArg[$args] )*
+    	( ',' formalArgWithDefaultValue[$args] )*
+    |	formalArgWithDefaultValue[$args] ( ',' formalArgWithDefaultValue[$args] )*
+    |
+	;
+
+formalArg[List<FormalArgument> args]
+	:	ID
+		{$args.Add(new FormalArgument($ID.text));}
+    ;
+
+formalArgWithDefaultValue[List<FormalArgument> args]
+	:	ID
+		(	'=' a=STRING
+		|	'=' a=ANONYMOUS_TEMPLATE
+		)
+		{$args.Add(new FormalArgument($ID.text, $a));}
+    ;
+
+/*
+suffix returns [int cardinality=FormalArgument.REQUIRED]
+    :   OPTIONAL
+    |   STAR
+    |   PLUS
+	|
+    ;
+        */
+
+dictDef
+	:	ID '::=' dict
+        {
+        if ( _group.rawGetDictionary($ID.text)!=null ) {
+			_group.errMgr.compileTimeError(ErrorType.MAP_REDEFINITION, null, $ID);
+        }
+        else if ( _group.rawGetTemplate($ID.text)!=null ) {
+			_group.errMgr.compileTimeError(ErrorType.TEMPLATE_REDEFINITION_AS_MAP, null, $ID);
+        }
+        else {
+            _group.defineDictionary($ID.text, $dict.mapping);
+        }
+        }
+	;
+
+dict returns [IDictionary<string,object> mapping]
+@init {mapping=new Dictionary<string,object>();}
+	:   '[' dictPairs[mapping] ']'
+	;
+
+dictPairs[IDictionary<string,object> mapping]
+    :	keyValuePair[mapping]
+    	(',' keyValuePair[mapping])* (',' defaultValuePair[mapping])?
+    |	defaultValuePair[mapping]
+    ;
+ 	catch[RecognitionException re] {
+		error("missing dictionary entry at '"+input.LT(1).Text+"'");
+	}
+
+defaultValuePair[IDictionary<string,object> mapping]
+	:	'default' ':' keyValue {mapping[STGroup.DEFAULT_KEY] = $keyValue.value;}
+	;
+
+keyValuePair[IDictionary<string,object> mapping]
+	:	STRING ':' keyValue {mapping[Utility.replaceEscapes(Utility.strip($STRING.text, 1))] = $keyValue.value;}
+	;
+
+keyValue returns [object value]
+	:	BIGSTRING			{$value = _group.createSingleton($BIGSTRING);}
+	|	ANONYMOUS_TEMPLATE	{$value = _group.createSingleton($ANONYMOUS_TEMPLATE);}
+	|	STRING				{$value = Utility.replaceEscapes(Utility.strip($STRING.text, 1));}
+	|	{input.LT(1).Text.Equals("key")}?=> ID
+							{$value = STGroup.DICT_KEY;}
+	;
+ 	catch[RecognitionException re] {
+		error("missing value for key at '"+input.LT(1).Text+"'");
+	}
+
+ID	:	('a'..'z'|'A'..'Z'|'_') ('a'..'z'|'A'..'Z'|'0'..'9'|'-'|'_')*
+	;
+
+STRING
+	:	'"'
+		(	'\\' '"'
+		|	'\\' ~'"'
+		|	{
+			string msg = "\\n in string";
+    		NoViableAltException e = new NoViableAltException("", 0, 0, input);
+			group.errMgr.groupLexerError(ErrorType.SYNTAX_ERROR, SourceName, e, msg);
+			}
+			'\n'
+		|	~('\\'|'"'|'\n')
+		)*
+		'"'
+	;
+
+BIGSTRING
+	:	'<<'
+		(	options {greedy=false;}
+		:	'\\' '>'  // \> escape
+		|	'\\' ~'>'
+		|	~'\\'
+		)*
+        '>>'
+        {Text = Text.Replace("\\\\>",">");}
+	;
+
+ANONYMOUS_TEMPLATE
+    :	'{'
+    	{
+		IToken templateToken = new CommonToken(input, ANONYMOUS_TEMPLATE, 0, CharIndex, CharIndex);
+		STLexer lexer = new STLexer(group.errMgr, input, templateToken, group.delimiterStartChar, group.delimiterStopChar);
+		lexer.subtemplateDepth = 1;
+		IToken t = lexer.NextToken();
+		while ( lexer.subtemplateDepth>=1 || t.Type!=STLexer.RCURLY )
+			t = lexer.NextToken();
+		}
+    	// don't match '}' here; our little {...} scanner loop matches it
+    	// to terminate.
+    ;
+
+COMMENT
+    :   '/*' .* '*/' {Skip();}
+    ;
+
+LINE_COMMENT
+    :	'//' ~('\n'|'\r')* '\r'? '\n' {Skip();}
+    ;
+
+WS
+	:	(' '|'\r'|'\t'|'\n') {Skip();}
+	;
