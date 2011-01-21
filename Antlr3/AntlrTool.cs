@@ -96,20 +96,14 @@ namespace Antlr3
                 ".g3"
             };
 
-#if false
-        /**
-         * A list of dependency generators that are accumulated aaaas (and if) the
-         * tool is required to sort the provided grammars into build dependency order.
-         */
-        protected Dictionary<string, BuildDependencyGenerator> buildDependencyGenerators;
-#endif
-
         public static void Main( string[] args )
         {
             AntlrTool antlr = new AntlrTool( args );
             if ( !exitNow )
             {
+                //System.Diagnostics.Stopwatch timer = System.Diagnostics.Stopwatch.StartNew();
                 antlr.Process();
+                //Console.WriteLine("Total parse time: {0}", timer.ElapsedMilliseconds);
                 Environment.ExitCode = ( ErrorManager.GetNumErrors() > 0 ) ? 1 : 0;
             }
         }
