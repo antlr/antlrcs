@@ -574,7 +574,10 @@ ruleLabelDefs() ::= <<
 <[ruleDescriptor.tokenLabels,ruleDescriptor.tokenListLabels,ruleDescriptor.wildcardTreeLabels,ruleDescriptor.wildcardTreeListLabels]
     :{<labelType> <it.label.text> = default(<labelType>);}; separator="\n"
 >
-<[ruleDescriptor.tokenListLabels,ruleDescriptor.ruleListLabels,ruleDescriptor.wildcardTreeListLabels]
+<ruleDescriptor.tokenListLabels
+    :{List\<<labelType>\> list_<it.label.text> = null;}; separator="\n"
+>
+<[ruleDescriptor.ruleListLabels,ruleDescriptor.wildcardTreeListLabels]
     :{List\<<ASTLabelType>\> list_<it.label.text> = null;}; separator="\n"
 >
 <ruleDescriptor.ruleLabels:ruleLabelDef(label=it); separator="\n">
@@ -866,11 +869,15 @@ tokenRef(token,label,elementIndex,terminalOptions) ::= <<
 /** ids+=ID */
 tokenRefAndListLabel(token,label,elementIndex,terminalOptions) ::= <<
 <tokenRef(...)>
-<listLabel(elem=label,...)>
+<listLabelElem(elem=label,elemType=labelType,...)>
 >>
 
 listLabel(label,elem) ::= <<
-if (list_<label>==null) list_<label>=new List\<<labelType>\>();
+#error The listLabel template should not be used with this target.<\n>
+>>
+
+listLabelElem(label,elem,elemType) ::= <<
+if (list_<label>==null) list_<label>=new List\<<elemType; null={<labelType>}>\>();
 list_<label>.Add(<elem>);<\n>
 >>
 
@@ -946,7 +953,7 @@ matchRuleBlockSet ::= matchSet
 
 matchSetAndListLabel(s,label,elementIndex,postmatchCode) ::= <<
 <matchSet(...)>
-<listLabel(elem=label,...)>
+<listLabelElem(elem=label,elemType=labelType,...)>
 >>
 
 /** Match a string literal */
@@ -973,7 +980,7 @@ MatchAny(input); <checkRuleBacktrackFailure()>
 
 wildcardAndListLabel(label,elementIndex) ::= <<
 <wildcard(...)>
-<listLabel(elem=label,...)>
+<listLabelElem(elem=label,elemType=labelType,...)>
 >>
 
 /** Match . wildcard in lexer */
@@ -986,7 +993,7 @@ MatchAny(); <checkRuleBacktrackFailure()>
 
 wildcardCharListLabel(label, elementIndex) ::= <<
 <wildcardChar(...)>
-<listLabel(elem=label,...)>
+<listLabelElem(elem=label,elemType=labelType,...)>
 >>
 
 /** Match a rule reference by invoking it possibly with arguments
@@ -1005,7 +1012,7 @@ PopFollow();
 /** ids+=r */
 ruleRefAndListLabel(rule,label,elementIndex,args,scope) ::= <<
 <ruleRef(...)>
-<listLabel(elem=label,...)>
+<listLabelElem(elem=label,elemType={<ASTLabelType>},...)>
 >>
 
 /** A lexer rule reference.
@@ -1031,7 +1038,7 @@ int <label>StartCharPos<elementIndex> = CharPositionInLine;
 /** i+=INT in lexer */
 lexerRuleRefAndListLabel(rule,label,args,elementIndex,scope) ::= <<
 <lexerRuleRef(...)>
-<listLabel(elem=label,...)>
+<listLabelElem(elem=label,elemType=labelType,...)>
 >>
 
 /** EOF in the lexer */

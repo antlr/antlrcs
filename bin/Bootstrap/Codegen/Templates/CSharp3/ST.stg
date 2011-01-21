@@ -62,7 +62,7 @@ public StringTemplateGroup TemplateLib
 /** x+=rule when output=template */
 ruleRefAndListLabel(rule,label,elementIndex,args,scope) ::= <<
 <ruleRef(...)>
-<listLabel(elem=label+".getTemplate()",...)>
+<listLabelElem(elem=label+".Template",elemType="StringTemplate",...)>
 >>
 
 rewriteTemplate(alts) ::= <<

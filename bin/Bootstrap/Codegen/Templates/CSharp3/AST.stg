@@ -135,7 +135,7 @@ tokenRefTrack(token,label,elementIndex,terminalOptions) ::= <<
  */
 tokenRefTrackAndListLabel(token,label,elementIndex,terminalOptions) ::= <<
 <tokenRefTrack(...)>
-<listLabel(elem=label,...)>
+<listLabelElem(elem=label,elemType=labelType,...)>
 >>
 
 /** ^(ID ...) track for rewrite */
@@ -147,7 +147,7 @@ tokenRefRuleRootTrack(token,label,elementIndex,terminalOptions) ::= <<
 /** Match ^(label+=TOKEN ...) track for rewrite */
 tokenRefRuleRootTrackAndListLabel(token,label,elementIndex,terminalOptions) ::= <<
 <tokenRefRuleRootTrack(...)>
-<listLabel(elem=label,...)>
+<listLabelElem(elem=label,elemType=labelType,...)>
 >>
 
 /** rule when output=AST and tracking for rewrite */
@@ -159,7 +159,7 @@ ruleRefTrack(rule,label,elementIndex,args,scope) ::= <<
 /** x+=rule when output=AST and tracking for rewrite */
 ruleRefTrackAndListLabel(rule,label,elementIndex,args,scope) ::= <<
 <ruleRefTrack(...)>
-<listLabel(elem=label+".Tree",...)>
+<listLabelElem(elem=label+".Tree",elemType=ASTLabelType,...)>
 >>
 
 /** ^(rule ...) rewrite */
@@ -171,7 +171,7 @@ ruleRefRuleRootTrack(rule,label,elementIndex,args,scope) ::= <<
 /** ^(x+=rule ...) rewrite */
 ruleRefRuleRootTrackAndListLabel(rule,label,elementIndex,args,scope) ::= <<
 <ruleRefRuleRootTrack(...)>
-<listLabel(elem=label+".Tree",...)>
+<listLabelElem(elem=label+".Tree",elemType=ASTLabelType,...)>
 >>
 
 // R e w r i t e

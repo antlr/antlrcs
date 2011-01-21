@@ -135,7 +135,7 @@ if (_first_<treeLevel> == null) _first_<treeLevel> = <label>;
 /** label+=TOKEN auto construct */
 tokenRefAndListLabel(token,label,elementIndex,terminalOptions) ::= <<
 <tokenRef(...)>
-<listLabel(elem=label,...)>
+<listLabelElem(elem=label,...)>
 >>
 
 /** ^(ID ...) auto construct */
@@ -157,7 +157,7 @@ root_<treeLevel> = (<ASTLabelType>)adaptor.BecomeRoot(<label>_tree, root_<treeLe
 /** Match ^(label+=TOKEN ...) auto construct */
 tokenRefRuleRootAndListLabel(token,label,elementIndex,terminalOptions) ::= <<
 <tokenRefRuleRoot(...)>
-<listLabel(elem=label,...)>
+<listLabelElem(elem=label,...)>
 >>
 
 /** Match . wildcard and auto dup the node/subtree */
@@ -237,7 +237,7 @@ if (_first_<treeLevel> == null) _first_<treeLevel> = <label>.Tree;
 /** x+=rule auto construct */
 ruleRefAndListLabel(rule,label,elementIndex,args,scope) ::= <<
 <ruleRef(...)>
-<listLabel(elem=label+".Tree",...)>
+<listLabelElem(elem=label+".Tree",...)>
 >>
 
 /** ^(rule ...) auto construct */
@@ -252,7 +252,7 @@ _last = (<ASTLabelType>)input.LT(1);
 /** ^(x+=rule ...) auto construct */
 ruleRefRuleRootAndListLabel(rule,label,elementIndex,args,scope) ::= <<
 <ruleRefRuleRoot(...)>
-<listLabel(elem=label+".Tree",...)>
+<listLabelElem(elem=label+".Tree",...)>
 >>
 
 /** rule when output=AST and tracking for rewrite */

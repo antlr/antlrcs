@@ -74,19 +74,19 @@ root_0 = (<ASTLabelType>)adaptor.BecomeRoot(<label>_tree, root_0);
 /** ids+=ID! and output=AST */
 tokenRefBangAndListLabel(token,label,elementIndex,terminalOptions) ::= <<
 <tokenRefBang(...)>
-<listLabel(elem=label,...)>
+<listLabelElem(elem=label,elemType=labelType,...)>
 >>
 
 /** label+=TOKEN when output=AST but not rewrite alt */
 tokenRefAndListLabel(token,label,elementIndex,terminalOptions) ::= <<
 <tokenRef(...)>
-<listLabel(elem=label,...)>
+<listLabelElem(elem=label,elemType=labelType,...)>
 >>
 
 /** Match label+=TOKEN^ when output=AST but not rewrite alt */
 tokenRefRuleRootAndListLabel(token,label,terminalOptions,elementIndex) ::= <<
 <tokenRefRuleRoot(...)>
-<listLabel(elem=label,...)>
+<listLabelElem(elem=label,elemType=labelType,...)>
 >>
 
 // SET AST
@@ -142,19 +142,19 @@ ruleRefRuleRoot(rule,label,elementIndex,args,scope) ::= <<
 /** x+=rule when output=AST */
 ruleRefAndListLabel(rule,label,elementIndex,args,scope) ::= <<
 <ruleRef(...)>
-<listLabel(elem=label+".Tree",...)>
+<listLabelElem(elem=label+".Tree",elemType=ASTLabelType,...)>
 >>
 
 /** x+=rule! when output=AST is a rule ref with list addition */
 ruleRefBangAndListLabel(rule,label,elementIndex,args,scope) ::= <<
 <ruleRefBang(...)>
-<listLabel(elem=label+".Tree",...)>
+<listLabelElem(elem=label+".Tree",elemType=ASTLabelType,...)>
 >>
 
 /** x+=rule^ */
 ruleRefRuleRootAndListLabel(rule,label,elementIndex,args,scope) ::= <<
 <ruleRefRuleRoot(...)>
-<listLabel(elem=label+".Tree",...)>
+<listLabelElem(elem=label+".Tree",elemType=ASTLabelType,...)>
 >>
 
 // WILDCARD AST
