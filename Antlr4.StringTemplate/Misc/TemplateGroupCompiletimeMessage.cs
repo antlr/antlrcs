@@ -33,8 +33,8 @@
 namespace Antlr4.StringTemplate.Misc
 {
     using Exception = System.Exception;
-    using RecognitionException = Antlr.Runtime.RecognitionException;
     using IToken = Antlr.Runtime.IToken;
+    using RecognitionException = Antlr.Runtime.RecognitionException;
 
     public class STGroupCompiletimeMessage : STMessage
     {

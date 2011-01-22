@@ -32,8 +32,8 @@
 
 namespace Antlr4.StringTemplate.Misc
 {
-    using MethodInfo = System.Reflection.MethodInfo;
     using FieldInfo = System.Reflection.FieldInfo;
+    using MethodInfo = System.Reflection.MethodInfo;
     using Type = System.Type;
 
     public static class Utility

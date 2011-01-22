@@ -32,10 +32,10 @@
 
 namespace Antlr4.StringTemplate.Misc
 {
-    using IToken = Antlr.Runtime.IToken;
-    using Exception = System.Exception;
-    using RecognitionException = Antlr.Runtime.RecognitionException;
     using Antlr4.StringTemplate.Compiler;
+    using Exception = System.Exception;
+    using IToken = Antlr.Runtime.IToken;
+    using RecognitionException = Antlr.Runtime.RecognitionException;
 
     /** Used for semantic errors that occur at compile time not during
      *  interpretation. For ST parsing ONLY not group parsing.

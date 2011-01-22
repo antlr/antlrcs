@@ -33,9 +33,9 @@
 namespace Antlr4.StringTemplate.Misc
 {
     using Antlr.Runtime;
+    using Console = System.Console;
     using Exception = System.Exception;
     using Path = System.IO.Path;
-    using Console = System.Console;
 
     /** Track errors per thread; e.g., one server transaction's errors
      *  will go in one grouping since each has it's own thread.

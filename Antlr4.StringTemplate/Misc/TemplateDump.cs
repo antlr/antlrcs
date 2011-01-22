@@ -33,11 +33,11 @@
 namespace Antlr4.StringTemplate.Misc
 {
     using System.Collections.Generic;
-    using StringBuilder = System.Text.StringBuilder;
     using System.Linq;
-    using StringComparer = System.StringComparer;
-    using Environment = System.Environment;
     using Antlr.Runtime.JavaExtensions;
+    using Environment = System.Environment;
+    using StringBuilder = System.Text.StringBuilder;
+    using StringComparer = System.StringComparer;
 
     /** This class dumps out a hierarchy of templates in text form, indented
      *  to show the nested relationship.  Usage:

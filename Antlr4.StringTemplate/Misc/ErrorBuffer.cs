@@ -33,9 +33,8 @@
 namespace Antlr4.StringTemplate.Misc
 {
     using System.Collections.Generic;
-    using Environment = System.Environment;
-    using StringBuilder = System.Text.StringBuilder;
     using System.Collections.ObjectModel;
+    using StringBuilder = System.Text.StringBuilder;
 
     /** Used during tests to track all errors */
     public class ErrorBuffer : STErrorListener

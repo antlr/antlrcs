@@ -32,19 +32,19 @@
 
 namespace Antlr4.StringTemplate
 {
-    using System.Linq;
     using System.Collections.Generic;
+    using System.Linq;
     using System.Runtime.CompilerServices;
-    using Antlr4.StringTemplate.Misc;
-    using Antlr4.StringTemplate.Compiler;
-    using ArgumentException = System.ArgumentException;
-    using StringBuilder = System.Text.StringBuilder;
-    using CultureInfo = System.Globalization.CultureInfo;
-    using StringWriter = System.IO.StringWriter;
-    using Console = System.Console;
-    using IList = System.Collections.IList;
     using System.Text.RegularExpressions;
+    using Antlr4.StringTemplate.Compiler;
+    using Antlr4.StringTemplate.Misc;
+    using ArgumentException = System.ArgumentException;
     using Array = System.Array;
+    using Console = System.Console;
+    using CultureInfo = System.Globalization.CultureInfo;
+    using IList = System.Collections.IList;
+    using StringBuilder = System.Text.StringBuilder;
+    using StringWriter = System.IO.StringWriter;
 
     /** An instance of the StringTemplate. It consists primarily of
      *  a reference to its implementation (shared among all instances)

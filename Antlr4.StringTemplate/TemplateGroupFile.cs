@@ -33,15 +33,14 @@
 namespace Antlr4.StringTemplate
 {
     using System.Runtime.CompilerServices;
-    using ArgumentException = System.ArgumentException;
-    using Exception = System.Exception;
     using Antlr4.StringTemplate.Compiler;
-    using Antlr4.StringTemplate.Misc;
-    using Path = System.IO.Path;
+    using ArgumentException = System.ArgumentException;
+    using Encoding = System.Text.Encoding;
+    using Exception = System.Exception;
     using File = System.IO.File;
     using NotImplementedException = System.NotImplementedException;
+    using Path = System.IO.Path;
     using Uri = System.Uri;
-    using Encoding = System.Text.Encoding;
 
     /** The internal representation of a single group file (which must end in
      *  ".stg").  If we fail to find a group file, look for it via the

@@ -32,8 +32,8 @@
 
 namespace Antlr4.StringTemplate.Misc
 {
-    using Exception = System.Exception;
     using Antlr4.StringTemplate.Compiler;
+    using Exception = System.Exception;
 
     public class STNoSuchPropertyException : STException
     {

@@ -32,16 +32,14 @@
 
 namespace Antlr4.StringTemplate.Misc
 {
-    using Type = System.Type;
-    using MemberInfo = System.Reflection.MemberInfo;
-    using MethodInfo = System.Reflection.MethodInfo;
-    using FieldInfo = System.Reflection.FieldInfo;
-    using Exception = System.Exception;
-    using ArgumentNullException = System.ArgumentNullException;
     using System.Collections.Generic;
     using System.Linq;
-    using PropertyInfo = System.Reflection.PropertyInfo;
     using System.Linq.Expressions;
+    using ArgumentNullException = System.ArgumentNullException;
+    using FieldInfo = System.Reflection.FieldInfo;
+    using MethodInfo = System.Reflection.MethodInfo;
+    using PropertyInfo = System.Reflection.PropertyInfo;
+    using Type = System.Type;
 
     public class ObjectModelAdaptor : ModelAdaptor
     {

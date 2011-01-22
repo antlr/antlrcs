@@ -33,7 +33,6 @@
 namespace Antlr4.StringTemplate.Debug
 {
     using System.Diagnostics;
-    using Environment = System.Environment;
 
     /** An event that happens when building ST trees, adding attributes etc... */
     public class ConstructionEvent

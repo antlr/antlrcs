@@ -32,9 +32,9 @@
 
 namespace Antlr4.StringTemplate
 {
-    using Environment = System.Environment;
-    using Array = System.Array;
     using System.Collections.Generic;
+    using Array = System.Array;
+    using Environment = System.Environment;
     using TextWriter = System.IO.TextWriter;
 
     /** Essentially a char filter that knows how to auto-indent output

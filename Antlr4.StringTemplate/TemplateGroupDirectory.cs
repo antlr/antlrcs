@@ -32,22 +32,20 @@
 
 namespace Antlr4.StringTemplate
 {
-    using Antlr4.StringTemplate.Compiler;
-    using IOException = System.IO.IOException;
-    using ArgumentException = System.ArgumentException;
-    using Exception = System.Exception;
-    using Thread = System.Threading.Thread;
-    using Directory = System.IO.Directory;
-    using Uri = System.Uri;
-    using Path = System.IO.Path;
-    using FileNotFoundException = System.IO.FileNotFoundException;
-    using Antlr4.StringTemplate.Misc;
-    using UriFormatException = System.UriFormatException;
     using Antlr.Runtime;
+    using Antlr4.StringTemplate.Compiler;
+    using Antlr4.StringTemplate.Misc;
+    using ArgumentException = System.ArgumentException;
+    using Directory = System.IO.Directory;
     using Encoding = System.Text.Encoding;
-    using NotImplementedException = System.NotImplementedException;
-    using StreamReader = System.IO.StreamReader;
+    using Exception = System.Exception;
     using File = System.IO.File;
+    using IOException = System.IO.IOException;
+    using NotImplementedException = System.NotImplementedException;
+    using Path = System.IO.Path;
+    using StreamReader = System.IO.StreamReader;
+    using Uri = System.Uri;
+    using UriFormatException = System.UriFormatException;
 
     // TODO: caching?
 

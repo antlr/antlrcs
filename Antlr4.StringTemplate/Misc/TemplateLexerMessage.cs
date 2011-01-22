@@ -32,10 +32,10 @@
 
 namespace Antlr4.StringTemplate.Misc
 {
+    using Antlr4.StringTemplate.Compiler;
     using Exception = System.Exception;
     using IToken = Antlr.Runtime.IToken;
     using RecognitionException = Antlr.Runtime.RecognitionException;
-    using Antlr4.StringTemplate.Compiler;
 
     /** */
     public class STLexerMessage : STMessage

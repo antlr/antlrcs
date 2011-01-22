@@ -33,22 +33,21 @@
 namespace Antlr4.StringTemplate
 {
     using System.Collections.Generic;
-    using Antlr4.StringTemplate.Compiler;
-    using Type = System.Type;
-    using Antlr4.StringTemplate.Misc;
-    using Antlr.Runtime;
+    using System.Linq;
     using System.Runtime.CompilerServices;
+    using System.Text;
+    using Antlr.Runtime;
+    using Antlr4.StringTemplate.Compiler;
+    using Antlr4.StringTemplate.Debug;
+    using Antlr4.StringTemplate.Misc;
     using ArgumentException = System.ArgumentException;
     using Console = System.Console;
     using Environment = System.Environment;
-    using System.Linq;
-    using Antlr4.StringTemplate.Debug;
-    using Uri = System.Uri;
+    using Exception = System.Exception;
     using IDictionary = System.Collections.IDictionary;
     using StringBuilder = System.Text.StringBuilder;
-    using File=System.IO.File;
-    using Exception = System.Exception;
-    using System.Text;
+    using Type = System.Type;
+    using Uri = System.Uri;
 
     /** A directory or directory tree of .st template files and/or group files.
      *  Individual template files contain formal template definitions. In a sense,

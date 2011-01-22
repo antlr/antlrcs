@@ -33,7 +33,6 @@
 namespace Antlr4.StringTemplate.Misc
 {
     using IDictionary = System.Collections.IDictionary;
-    using Antlr.Runtime.JavaExtensions;
 
     public class MapModelAdaptor : ModelAdaptor
     {
