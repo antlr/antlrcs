@@ -142,6 +142,17 @@ namespace Antlr4.Test.StringTemplate
         }
 
         [TestMethod]
+        public void TestPropWithNoAttr()
+        {
+            string template = "<foo.a>: <ick>"; // checks field and method getter
+            ST st = new ST(template);
+            st.add("foo", new Dictionary<string, string>() { { "a", "b" } });
+            string expected = "b: ";
+            string result = st.render();
+            Assert.AreEqual(expected, result);
+        }
+
+        [TestMethod]
         public void TestSTProp()
         {
             string template = "<t.x>"; // get x attr of template t
@@ -551,6 +562,17 @@ namespace Antlr4.Test.StringTemplate
         }
 
         [TestMethod]
+        public void TestEmptyIFTemplate()
+        {
+            string template = "<if(x)>fail<elseif(name)><endif>";
+            ST st = new ST(template);
+            st.add("name", "Ter");
+            string expected = "";
+            string result = st.render();
+            Assert.AreEqual(expected, result);
+        }
+
+        [TestMethod]
         public void TestCondParens()
         {
             string template = "<if(!(x||y)&&!z)>works<endif>";
@@ -598,6 +620,30 @@ namespace Antlr4.Test.StringTemplate
             st.impl.dump();
             string expected = "foo" + newline +
                               "bar";
+            string result = st.render();
+            Assert.AreEqual(expected, result);
+        }
+
+        [TestMethod]
+        public void TestElseIf2()
+        {
+            string template =
+                "<if(x)>fail1<elseif(y)>fail2<elseif(z)>works<else>fail3<endif>";
+            ST st = new ST(template);
+            st.add("z", "blort");
+            string expected = "works";
+            string result = st.render();
+            Assert.AreEqual(expected, result);
+        }
+
+        [TestMethod]
+        public void TestElseIf3()
+        {
+            string template =
+                "<if(x)><elseif(y)><elseif(z)>works<else><endif>";
+            ST st = new ST(template);
+            st.add("z", "blort");
+            string expected = "works";
             string result = st.render();
             Assert.AreEqual(expected, result);
         }
