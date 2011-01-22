@@ -33,9 +33,10 @@
 namespace Antlr4.StringTemplate.Compiler
 {
     using System.Collections.Generic;
-    using StringBuilder = System.Text.StringBuilder;
     using Antlr4.StringTemplate.Misc;
     using ArgumentException = System.ArgumentException;
+    using BitConverter = System.BitConverter;
+    using StringBuilder = System.Text.StringBuilder;
 
     public class BytecodeDisassembler
     {
@@ -161,10 +162,7 @@ namespace Antlr4.StringTemplate.Compiler
 
         public static int getShort(byte[] memory, int index)
         {
-            int b1 = memory[index] & 0xFF; // mask off sign-extended bits
-            int b2 = memory[index + 1] & 0xFF;
-            int word = b1 << (8 * 1) | b2;
-            return word;
+            return BitConverter.ToInt16(memory, index);
         }
 
         public virtual string strings()
