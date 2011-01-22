@@ -76,12 +76,12 @@ namespace Antlr4.StringTemplate.Compiler
          */
         public STGroup nativeGroup = STGroup.defaultGroup;
 
-        /** Does this template come from a <@region>...<@end> embedded in
+        /** Does this template come from a &lt;@region&gt;...&lt;@end&gt; embedded in
          *  another template?
          */
         public bool isRegion;
 
-        /** If someone refs <@r()> in template t, an implicit
+        /** If someone refs &lt;@r()&gt; in template t, an implicit
          *
          *   @t.r() ::= ""
          *
@@ -100,9 +100,56 @@ namespace Antlr4.StringTemplate.Compiler
 
         public CompiledST()
         {
-            instrs = new byte[Compiler.TEMPLATE_INITIAL_CODE_SIZE];
-            sourceMap = new Interval[Compiler.TEMPLATE_INITIAL_CODE_SIZE];
+            instrs = new byte[Compiler.InitialCodeSize];
+            sourceMap = new Interval[Compiler.InitialCodeSize];
             template = "";
+        }
+
+        public virtual string TemplateSource
+        {
+            get
+            {
+                Interval r = TemplateRange;
+                return template.Substring(r.A, r.B + 1 - r.A);
+            }
+        }
+
+        public virtual Interval TemplateRange
+        {
+            get
+            {
+                if (isAnonSubtemplate)
+                {
+                    Interval start = sourceMap[0];
+                    Interval stop = null;
+                    for (int i = sourceMap.Length - 1; i > 0; i--)
+                    {
+                        Interval I = sourceMap[i];
+                        if (I != null)
+                        {
+                            stop = I;
+                            break;
+                        }
+                    }
+
+                    if (template != null)
+                        return new Interval(start.A, stop.B);
+                }
+
+                return new Interval(0, template.Length - 1);
+            }
+        }
+
+        public virtual int NumberOfArgsWithDefaultValues
+        {
+            get
+            {
+                if (formalArguments == null)
+                    return 0;
+
+                int n = formalArguments.Count(i => i.DefaultValueToken != null);
+                return n;
+            }
         }
 
         public virtual FormalArgument TryGetFormalArgument(string name)
@@ -112,7 +159,7 @@ namespace Antlr4.StringTemplate.Compiler
             if (formalArguments == null)
                 return null;
 
-            return formalArguments.FirstOrDefault(i => i.name == name);
+            return formalArguments.FirstOrDefault(i => i.Name == name);
         }
 
         public virtual void addImplicitlyDefinedTemplate(CompiledST sub)
@@ -123,15 +170,6 @@ namespace Antlr4.StringTemplate.Compiler
             implicitlyDefinedTemplates.Add(sub);
         }
 
-        public virtual int getNumberOfArgsWithDefaultValues()
-        {
-            if (formalArguments == null)
-                return 0;
-
-            int n = formalArguments.Count(i => i.defaultValueToken != null);
-            return n;
-        }
-
         public virtual void defineArgDefaultValueTemplates(STGroup group)
         {
             if (formalArguments == null)
@@ -139,18 +177,18 @@ namespace Antlr4.StringTemplate.Compiler
 
             foreach (FormalArgument fa in formalArguments)
             {
-                if (fa.defaultValueToken != null)
+                if (fa.DefaultValueToken != null)
                 {
-                    string argSTname = fa.name + "_default_value";
+                    string argSTname = fa.Name + "_default_value";
                     Compiler c2 = new Compiler(group.errMgr, group.delimiterStartChar, group.delimiterStopChar);
-                    string defArgTemplate = Utility.strip(fa.defaultValueToken.Text, 1);
-                    fa.compiledDefaultValue = c2.compile(nativeGroup.getFileName(), argSTname, null, defArgTemplate, fa.defaultValueToken);
-                    fa.compiledDefaultValue.name = argSTname;
+                    string defArgTemplate = Utility.strip(fa.DefaultValueToken.Text, 1);
+                    fa.CompiledDefaultValue = c2.compile(nativeGroup.getFileName(), argSTname, null, defArgTemplate, fa.DefaultValueToken);
+                    fa.CompiledDefaultValue.name = argSTname;
                 }
             }
         }
 
-        public virtual void defineFormalArgs(List<FormalArgument> args)
+        public virtual void defineFormalArgs(IEnumerable<FormalArgument> args)
         {
             hasFormalArgs = true; // even if no args; it's formally defined
             if (args == null)
@@ -170,7 +208,7 @@ namespace Antlr4.StringTemplate.Compiler
             if (formalArguments == null)
                 formalArguments = new List<FormalArgument>();
 
-            a.index = formalArguments.Count;
+            a.Index = formalArguments.Count;
             formalArguments.Add(a);
         }
 
@@ -186,34 +224,6 @@ namespace Antlr4.StringTemplate.Compiler
             }
         }
 
-        public virtual string getTemplateSource()
-        {
-            Interval r = getTemplateRange();
-            return template.Substring(r.A, r.B + 1 - r.A);
-        }
-
-        public virtual Interval getTemplateRange()
-        {
-            if (isAnonSubtemplate)
-            {
-                Interval start = sourceMap[0];
-                Interval stop = null;
-                for (int i = sourceMap.Length - 1; i > 0; i--)
-                {
-                    Interval I = sourceMap[i];
-                    if (I != null)
-                    {
-                        stop = I;
-                        break;
-                    }
-                }
-
-                if (template != null)
-                    return new Interval(start.A, stop.B);
-            }
-            return new Interval(0, template.Length - 1);
-        }
-
         public virtual string Instrs()
         {
             BytecodeDisassembler dis = new BytecodeDisassembler(this);
@@ -222,13 +232,7 @@ namespace Antlr4.StringTemplate.Compiler
 
         public virtual void dump()
         {
-            BytecodeDisassembler dis = new BytecodeDisassembler(this);
-            Console.WriteLine(name + ":");
-            Console.WriteLine(dis.disassemble());
-            Console.WriteLine("Strings:");
-            Console.WriteLine(dis.strings());
-            Console.WriteLine("Bytecode to template map:");
-            Console.WriteLine(dis.sourceMap());
+            Console.Write(disasm());
         }
 
         public virtual string disasm()

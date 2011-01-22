@@ -38,11 +38,14 @@ namespace Antlr4.StringTemplate.Compiler
 
     partial class CodeGenerator
     {
-        string outermostTemplateName;	// name of overall template
-        CompiledST outermostImpl;
-        IToken templateToken;			// overall template token
-        string _template;  				// overall template text
-        ErrorManager errMgr;
+        /// <summary>Name of overall template</summary>
+        private readonly string outermostTemplateName;
+        /// <summary>Overall template token</summary>
+        private readonly IToken templateToken;
+        /// <summary>Overall template text</summary>
+        private readonly string _template;
+        private readonly ErrorManager errMgr;
+        private CompiledST outermostImpl;
 
         public CodeGenerator(ITreeNodeStream input, ErrorManager errMgr, string name, string template, IToken templateToken)
             : this(input, new RecognizerSharedState())
@@ -56,37 +59,37 @@ namespace Antlr4.StringTemplate.Compiler
         // convience funcs to hide offensive sending of emit messages to
         // CompilationState temp data object.
 
-        public void emit1(CommonTree opAST, short opcode, int arg)
+        public void emit1(CommonTree opAST, Bytecode opcode, int arg)
         {
             template_stack.Peek().state.emit1(opAST, opcode, arg);
         }
 
-        public void emit1(CommonTree opAST, short opcode, string arg)
+        public void emit1(CommonTree opAST, Bytecode opcode, string arg)
         {
             template_stack.Peek().state.emit1(opAST, opcode, arg);
         }
 
-        public void emit2(CommonTree opAST, short opcode, int arg, int arg2)
+        public void emit2(CommonTree opAST, Bytecode opcode, int arg, int arg2)
         {
             template_stack.Peek().state.emit2(opAST, opcode, arg, arg2);
         }
 
-        public void emit2(CommonTree opAST, short opcode, string s, int arg2)
+        public void emit2(CommonTree opAST, Bytecode opcode, string s, int arg2)
         {
             template_stack.Peek().state.emit2(opAST, opcode, s, arg2);
         }
 
-        public void emit(short opcode)
+        public void emit(Bytecode opcode)
         {
             template_stack.Peek().state.emit(opcode);
         }
 
-        public void emit(CommonTree opAST, short opcode)
+        public void emit(CommonTree opAST, Bytecode opcode)
         {
             template_stack.Peek().state.emit(opAST, opcode);
         }
 
-        public void insert(int addr, short opcode, string s)
+        public void insert(int addr, Bytecode opcode, string s)
         {
             template_stack.Peek().state.insert(addr, opcode, s);
         }

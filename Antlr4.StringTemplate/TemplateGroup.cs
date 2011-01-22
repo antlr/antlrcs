@@ -372,7 +372,7 @@ namespace Antlr4.StringTemplate
 
             code.name = mangled;
             code.isRegion = true;
-            code.regionDefType = ST.RegionType.EXPLICIT;
+            code.regionDefType = ST.RegionType.Explicit;
 
             rawDefineTemplate(mangled, code, regionT);
             return code;
@@ -418,12 +418,12 @@ namespace Antlr4.StringTemplate
                     errMgr.compileTimeError(ErrorType.TEMPLATE_REDEFINITION, null, defT);
                     return;
                 }
-                if (prev.isRegion && prev.regionDefType == ST.RegionType.EMBEDDED)
+                if (prev.isRegion && prev.regionDefType == ST.RegionType.Embedded)
                 {
                     errMgr.compileTimeError(ErrorType.EMBEDDED_REGION_REDEFINITION, null, defT, getUnMangledTemplateName(name));
                     return;
                 }
-                else if (prev.isRegion && prev.regionDefType == ST.RegionType.EXPLICIT)
+                else if (prev.isRegion && prev.regionDefType == ST.RegionType.Explicit)
                 {
                     errMgr.compileTimeError(ErrorType.REGION_REDEFINITION, null, defT, getUnMangledTemplateName(name));
                     return;

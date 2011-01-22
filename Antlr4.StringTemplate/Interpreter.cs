@@ -147,7 +147,7 @@ namespace Antlr4.StringTemplate
             try
             {
                 int start = @out.index(); // track char we're about to write
-                int prevOpcode = 0;
+                Bytecode prevOpcode = Bytecode.Invalid;
                 int n = 0; // how many char we write out
                 int nargs;
                 int nameIndex;
@@ -163,20 +163,20 @@ namespace Antlr4.StringTemplate
                     if (trace || STGroup.debug)
                         Trace(self, ip);
 
-                    short opcode = code[ip];
+                    Bytecode opcode = (Bytecode)code[ip];
                     current_ip = ip;
                     ip++; //jump to next instruction or first byte of operand
                     switch (opcode)
                     {
                     case Bytecode.INSTR_LOAD_STR:
                         int strIndex = getShort(code, ip);
-                        ip += Bytecode.OPND_SIZE_IN_BYTES;
+                        ip += Instruction.OperandSizeInBytes;
                         operands[++sp] = self.impl.strings[strIndex];
                         break;
 
                     case Bytecode.INSTR_LOAD_ATTR:
                         nameIndex = getShort(code, ip);
-                        ip += Bytecode.OPND_SIZE_IN_BYTES;
+                        ip += Instruction.OperandSizeInBytes;
                         name = self.impl.strings[nameIndex];
                         try
                         {
@@ -192,7 +192,7 @@ namespace Antlr4.StringTemplate
 
                     case Bytecode.INSTR_LOAD_LOCAL:
                         int valueIndex = getShort(code, ip);
-                        ip += Bytecode.OPND_SIZE_IN_BYTES;
+                        ip += Instruction.OperandSizeInBytes;
                         o = self.locals[valueIndex];
                         if (o == ST.EMPTY_ATTR)
                             o = null;
@@ -201,7 +201,7 @@ namespace Antlr4.StringTemplate
 
                     case Bytecode.INSTR_LOAD_PROP:
                         nameIndex = getShort(code, ip);
-                        ip += Bytecode.OPND_SIZE_IN_BYTES;
+                        ip += Instruction.OperandSizeInBytes;
                         o = operands[sp--];
                         name = self.impl.strings[nameIndex];
                         operands[++sp] = getObjectProperty(self, o, name);
@@ -215,10 +215,10 @@ namespace Antlr4.StringTemplate
 
                     case Bytecode.INSTR_NEW:
                         nameIndex = getShort(code, ip);
-                        ip += Bytecode.OPND_SIZE_IN_BYTES;
+                        ip += Instruction.OperandSizeInBytes;
                         name = self.impl.strings[nameIndex];
                         nargs = getShort(code, ip);
-                        ip += Bytecode.OPND_SIZE_IN_BYTES;
+                        ip += Instruction.OperandSizeInBytes;
                         // look up in original hierarchy not enclosing template (variable group)
                         // see TestSubtemplates.testEvalSTFromAnotherGroup()
                         st = self.groupThatCreatedThisInstance.getEmbeddedInstanceOf(self, ip, name);
@@ -230,7 +230,7 @@ namespace Antlr4.StringTemplate
 
                     case Bytecode.INSTR_NEW_IND:
                         nargs = getShort(code, ip);
-                        ip += Bytecode.OPND_SIZE_IN_BYTES;
+                        ip += Instruction.OperandSizeInBytes;
                         name = (string)operands[sp - nargs];
                         st = self.groupThatCreatedThisInstance.getEmbeddedInstanceOf(self, ip, name);
                         storeArgs(self, nargs, st);
@@ -241,7 +241,7 @@ namespace Antlr4.StringTemplate
 
                     case Bytecode.INSTR_NEW_BOX_ARGS:
                         nameIndex = getShort(code, ip);
-                        ip += Bytecode.OPND_SIZE_IN_BYTES;
+                        ip += Instruction.OperandSizeInBytes;
                         name = self.impl.strings[nameIndex];
                         IDictionary<string, object> attrs = (IDictionary<string, object>)operands[sp--];
                         // look up in original hierarchy not enclosing template (variable group)
@@ -254,16 +254,16 @@ namespace Antlr4.StringTemplate
 
                     case Bytecode.INSTR_SUPER_NEW:
                         nameIndex = getShort(code, ip);
-                        ip += Bytecode.OPND_SIZE_IN_BYTES;
+                        ip += Instruction.OperandSizeInBytes;
                         name = self.impl.strings[nameIndex];
                         nargs = getShort(code, ip);
-                        ip += Bytecode.OPND_SIZE_IN_BYTES;
+                        ip += Instruction.OperandSizeInBytes;
                         super_new(self, name, nargs);
                         break;
 
                     case Bytecode.INSTR_SUPER_NEW_BOX_ARGS:
                         nameIndex = getShort(code, ip);
-                        ip += Bytecode.OPND_SIZE_IN_BYTES;
+                        ip += Instruction.OperandSizeInBytes;
                         name = self.impl.strings[nameIndex];
                         attrs = (IDictionary<string, object>)operands[sp--];
                         super_new(self, name, attrs);
@@ -271,7 +271,7 @@ namespace Antlr4.StringTemplate
 
                     case Bytecode.INSTR_STORE_OPTION:
                         int optionIndex = getShort(code, ip);
-                        ip += Bytecode.OPND_SIZE_IN_BYTES;
+                        ip += Instruction.OperandSizeInBytes;
                         o = operands[sp--];    // value to store
                         options = (object[])operands[sp]; // get options
                         options[optionIndex] = o; // store value into options on stack
@@ -280,7 +280,7 @@ namespace Antlr4.StringTemplate
                     case Bytecode.INSTR_STORE_ARG:
                         nameIndex = getShort(code, ip);
                         name = self.impl.strings[nameIndex];
-                        ip += Bytecode.OPND_SIZE_IN_BYTES;
+                        ip += Instruction.OperandSizeInBytes;
                         o = operands[sp--];
                         attrs = (IDictionary<string, object>)operands[sp];
                         attrs[name] = o; // leave attrs on stack
@@ -309,7 +309,7 @@ namespace Antlr4.StringTemplate
 
                     case Bytecode.INSTR_ROT_MAP:
                         int nmaps = getShort(code, ip);
-                        ip += Bytecode.OPND_SIZE_IN_BYTES;
+                        ip += Instruction.OperandSizeInBytes;
                         List<ST> templates = new List<ST>();
                         for (int i = nmaps - 1; i >= 0; i--)
                             templates.Add((ST)operands[sp - i]);
@@ -322,7 +322,7 @@ namespace Antlr4.StringTemplate
                     case Bytecode.INSTR_ZIP_MAP:
                         st = (ST)operands[sp--];
                         nmaps = getShort(code, ip);
-                        ip += Bytecode.OPND_SIZE_IN_BYTES;
+                        ip += Instruction.OperandSizeInBytes;
                         List<object> exprs = new List<object>();
                         for (int i = nmaps - 1; i >= 0; i--)
                             exprs.Add(operands[sp - i]);
@@ -337,7 +337,7 @@ namespace Antlr4.StringTemplate
 
                     case Bytecode.INSTR_BRF:
                         addr = getShort(code, ip);
-                        ip += Bytecode.OPND_SIZE_IN_BYTES;
+                        ip += Instruction.OperandSizeInBytes;
                         o = operands[sp--]; // <if(expr)>...<endif>
                         if (!testAttributeTrue(o))
                             ip = addr; // jump
@@ -439,7 +439,7 @@ namespace Antlr4.StringTemplate
 
                     case Bytecode.INSTR_INDENT:
                         strIndex = getShort(code, ip);
-                        ip += Bytecode.OPND_SIZE_IN_BYTES;
+                        ip += Instruction.OperandSizeInBytes;
                         @out.pushIndentation(self.impl.strings[strIndex]);
                         break;
 
@@ -562,7 +562,7 @@ namespace Antlr4.StringTemplate
             if (attrs != null)
                 nargs = attrs.Count;
 
-            if (nargs < (nformalArgs - st.impl.getNumberOfArgsWithDefaultValues()) || nargs > nformalArgs)
+            if (nargs < (nformalArgs - st.impl.NumberOfArgsWithDefaultValues) || nargs > nformalArgs)
             {
                 errMgr.runTimeError(self,
                                     current_ip,
@@ -575,7 +575,7 @@ namespace Antlr4.StringTemplate
             foreach (string argName in attrs.Keys)
             {
                 // don't let it throw an exception in rawSetAttribute
-                if (!st.impl.formalArguments.Any(i => i.name == argName))
+                if (!st.impl.formalArguments.Any(i => i.Name == argName))
                 {
                     errMgr.runTimeError(self, current_ip, ErrorType.NO_SUCH_ATTRIBUTE, argName);
                     continue;
@@ -596,7 +596,7 @@ namespace Antlr4.StringTemplate
             if (st.impl.isAnonSubtemplate)
                 nformalArgs -= predefinedAnonSubtemplateAttributes.Count;
 
-            if (nargs < (nformalArgs - st.impl.getNumberOfArgsWithDefaultValues()) ||
+            if (nargs < (nformalArgs - st.impl.NumberOfArgsWithDefaultValues) ||
                  nargs > nformalArgs)
             {
                 errMgr.runTimeError(self,
@@ -610,7 +610,7 @@ namespace Antlr4.StringTemplate
             if (st.impl.formalArguments == null)
                 return;
 
-            Iterator argNames = st.impl.formalArguments.Select(i => i.name).iterator();
+            Iterator argNames = st.impl.formalArguments.Select(i => i.Name).iterator();
             for (int i = 0; i < numToStore; i++)
             {
                 // value to store
@@ -883,7 +883,7 @@ namespace Antlr4.StringTemplate
             }
 
             // todo: track formal args not names for efficient filling of locals
-            object[] formalArgumentNames = formalArguments.Select(i => i.name).ToArray();
+            object[] formalArgumentNames = formalArguments.Select(i => i.Name).ToArray();
             int nformalArgs = formalArgumentNames.Length;
             if (prototype.isAnonSubtemplate())
                 nformalArgs -= predefinedAnonSubtemplateAttributes.Count;
@@ -1280,25 +1280,25 @@ namespace Antlr4.StringTemplate
             foreach (FormalArgument arg in invokedST.impl.formalArguments)
             {
                 // if no value for attribute and default arg, inject default arg into self
-                if (invokedST.locals[arg.index] == ST.EMPTY_ATTR && arg.compiledDefaultValue != null)
+                if (invokedST.locals[arg.Index] == ST.EMPTY_ATTR && arg.CompiledDefaultValue != null)
                 {
                     ST defaultArgST = group.createStringTemplate();
                     defaultArgST.enclosingInstance = invokedST.enclosingInstance;
                     defaultArgST.groupThatCreatedThisInstance = group;
-                    defaultArgST.impl = arg.compiledDefaultValue;
-                    Console.WriteLine("setting def arg " + arg.name + " to " + defaultArgST);
+                    defaultArgST.impl = arg.CompiledDefaultValue;
+                    Console.WriteLine("setting def arg " + arg.Name + " to " + defaultArgST);
                     // If default arg is template with single expression
                     // wrapped in parens, x={<(...)>}, then eval to string
                     // rather than setting x to the template for later
                     // eval.
-                    string defArgTemplate = arg.defaultValueToken.Text;
+                    string defArgTemplate = arg.DefaultValueToken.Text;
                     if (defArgTemplate.StartsWith("{<(") && defArgTemplate.EndsWith(")>}"))
                     {
-                        invokedST.rawSetAttribute(arg.name, toString(invokedST, defaultArgST));
+                        invokedST.rawSetAttribute(arg.Name, toString(invokedST, defaultArgST));
                     }
                     else
                     {
-                        invokedST.rawSetAttribute(arg.name, defaultArgST);
+                        invokedST.rawSetAttribute(arg.Name, defaultArgST);
                     }
                 }
             }

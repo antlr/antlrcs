@@ -55,14 +55,14 @@ namespace Antlr4.StringTemplate.Compiler
                 if (ip > 0)
                     buf.Append(", ");
                 int opcode = code.instrs[ip];
-                Bytecode.Instruction I = Bytecode.instructions[opcode];
+                Instruction I = Instruction.instructions[opcode];
                 buf.Append(I.name);
                 ip++;
                 for (int opnd = 0; opnd < I.nopnds; opnd++)
                 {
                     buf.Append(' ');
                     buf.Append(getShort(code.instrs, ip));
-                    ip += Bytecode.OPND_SIZE_IN_BYTES;
+                    ip += Instruction.OperandSizeInBytes;
                 }
             }
             return buf.ToString();
@@ -87,8 +87,7 @@ namespace Antlr4.StringTemplate.Compiler
             {
                 throw new ArgumentException("ip out of range: " + ip);
             }
-            Bytecode.Instruction I =
-                Bytecode.instructions[opcode];
+            Instruction I = Instruction.instructions[opcode];
             if (I == null)
             {
                 throw new ArgumentException("no such instruction " + opcode + " at address " + ip);
@@ -106,15 +105,15 @@ namespace Antlr4.StringTemplate.Compiler
             for (int i = 0; i < I.nopnds; i++)
             {
                 int opnd = getShort(code.instrs, ip);
-                ip += Bytecode.OPND_SIZE_IN_BYTES;
+                ip += Instruction.OperandSizeInBytes;
                 switch (I.type[i])
                 {
-                case Bytecode.OperandType.STRING:
+                case OperandType.String:
                     operands.Add(showConstPoolOperand(opnd));
                     break;
 
-                case Bytecode.OperandType.ADDR:
-                case Bytecode.OperandType.INT:
+                case OperandType.Address:
+                case OperandType.Int:
                     operands.Add(opnd.ToString());
                     break;
 

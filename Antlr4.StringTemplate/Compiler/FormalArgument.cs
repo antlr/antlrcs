@@ -76,13 +76,13 @@ namespace Antlr4.StringTemplate.Compiler
         //    public static final LinkedHashMap<String, FormalArgument> UNKNOWN =
         //        new LinkedHashMap<String, FormalArgument>();
 
-        public string name;
+        private readonly string name;
 
-        public int index; // which argument is it? from 0..n-1
+        private int index; // which argument is it? from 0..n-1
 
         /** If they specified name="value", store the template here */
-        public IToken defaultValueToken;
-        public CompiledST compiledDefaultValue;
+        private readonly IToken defaultValueToken;
+        private CompiledST compiledDefaultValue;
 
         public FormalArgument(string name)
         {
@@ -93,6 +93,48 @@ namespace Antlr4.StringTemplate.Compiler
         {
             this.name = name;
             this.defaultValueToken = defaultValueToken;
+        }
+
+        public string Name
+        {
+            get
+            {
+                return name;
+            }
+        }
+
+        public int Index
+        {
+            get
+            {
+                return index;
+            }
+
+            internal set
+            {
+                index = value;
+            }
+        }
+
+        public IToken DefaultValueToken
+        {
+            get
+            {
+                return defaultValueToken;
+            }
+        }
+
+        public CompiledST CompiledDefaultValue
+        {
+            get
+            {
+                return compiledDefaultValue;
+            }
+
+            internal set
+            {
+                compiledDefaultValue = value;
+            }
         }
 
         /*

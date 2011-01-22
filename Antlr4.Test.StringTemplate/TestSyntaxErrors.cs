@@ -47,9 +47,8 @@ namespace Antlr4.Test.StringTemplate
             {
                 group.defineTemplate("test", template);
             }
-            catch (STException se)
+            catch (STException)
             {
-                ;
             }
             string result = errors.ToString();
             string expected = "test 1:0: this doesn't look like a template: \" <> \"" + newline;
@@ -67,9 +66,8 @@ namespace Antlr4.Test.StringTemplate
             {
                 group.defineTemplate("test", template);
             }
-            catch (STException se)
+            catch (STException)
             {
-                ;
             }
             string result = errors.ToString();
             string expected = "test 1:3: doesn't look like an expression" + newline;

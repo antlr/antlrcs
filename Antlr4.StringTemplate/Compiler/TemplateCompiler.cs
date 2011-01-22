@@ -42,7 +42,7 @@ namespace Antlr4.StringTemplate.Compiler
     {
         public static readonly string SUBTEMPLATE_PREFIX = "_sub";
 
-        public const int TEMPLATE_INITIAL_CODE_SIZE = 15;
+        public const int InitialCodeSize = 15;
 
         public static readonly IDictionary<string, Interpreter.Option> supportedOptions =
             new Dictionary<string, Interpreter.Option>()
@@ -63,19 +63,19 @@ namespace Antlr4.StringTemplate.Compiler
             {"wrap",   "\n"},
         };
 
-        public static IDictionary<string, short> funcs =
-            new Dictionary<string, short>()
-        {
-            {"first", Bytecode.INSTR_FIRST},
-            {"last", Bytecode.INSTR_LAST},
-            {"rest", Bytecode.INSTR_REST},
-            {"trunc", Bytecode.INSTR_TRUNC},
-            {"strip", Bytecode.INSTR_STRIP},
-            {"trim", Bytecode.INSTR_TRIM},
-            {"length", Bytecode.INSTR_LENGTH},
-            {"strlen", Bytecode.INSTR_STRLEN},
-            {"reverse", Bytecode.INSTR_REVERSE},
-        };
+        public static IDictionary<string, Bytecode> funcs =
+            new Dictionary<string, Bytecode>()
+            {
+                {"first", Bytecode.INSTR_FIRST},
+                {"last", Bytecode.INSTR_LAST},
+                {"rest", Bytecode.INSTR_REST},
+                {"trunc", Bytecode.INSTR_TRUNC},
+                {"strip", Bytecode.INSTR_STRIP},
+                {"trim", Bytecode.INSTR_TRIM},
+                {"length", Bytecode.INSTR_LENGTH},
+                {"strlen", Bytecode.INSTR_STRLEN},
+                {"reverse", Bytecode.INSTR_REVERSE},
+            };
 
         /** Name subtemplates _sub1, _sub2, ... */
         public static int subtemplateCount = 0;
@@ -186,7 +186,7 @@ namespace Antlr4.StringTemplate.Compiler
             string mangled = STGroup.getMangledRegionName(outermostTemplateName, name);
             CompiledST blank = new CompiledST();
             blank.isRegion = true;
-            blank.regionDefType = ST.RegionType.IMPLICIT;
+            blank.regionDefType = ST.RegionType.Implicit;
             blank.name = mangled;
             outermostImpl.addImplicitlyDefinedTemplate(blank);
             return blank;

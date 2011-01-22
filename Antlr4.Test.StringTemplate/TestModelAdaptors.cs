@@ -65,7 +65,9 @@ namespace Antlr4.Test.StringTemplate
 
         private class SuperUser : User
         {
-            int bitmask;
+#pragma warning disable 414 // The field 'name' is assigned but its value is never used
+            private readonly int bitmask;
+#pragma warning restore 414
 
             public SuperUser(int id, string name)
                 : base(id, name)

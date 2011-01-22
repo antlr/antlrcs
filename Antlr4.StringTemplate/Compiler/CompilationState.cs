@@ -75,7 +75,7 @@ namespace Antlr4.StringTemplate.Compiler
             FormalArgument arg = impl.TryGetFormalArgument(name);
             if (arg != null)
             {
-                int index = arg.index;
+                int index = arg.Index;
                 emit1(id, Bytecode.INSTR_LOAD_LOCAL, index);
             }
             else
@@ -100,7 +100,7 @@ namespace Antlr4.StringTemplate.Compiler
 
         public virtual void func(IToken templateToken, CommonTree id)
         {
-            short funcBytecode;
+            Bytecode funcBytecode;
             if (!Compiler.funcs.TryGetValue(id.Text, out funcBytecode))
             {
                 errMgr.compileTimeError(ErrorType.NO_SUCH_FUNCTION, templateToken, id.token);
@@ -112,12 +112,12 @@ namespace Antlr4.StringTemplate.Compiler
             }
         }
 
-        public virtual void emit(short opcode)
+        public virtual void emit(Bytecode opcode)
         {
             emit(null, opcode);
         }
 
-        public virtual void emit(CommonTree opAST, short opcode)
+        public virtual void emit(CommonTree opAST, Bytecode opcode)
         {
             ensureCapacity(1);
             if (opAST != null)
@@ -132,41 +132,41 @@ namespace Antlr4.StringTemplate.Compiler
             impl.instrs[ip++] = (byte)opcode;
         }
 
-        public virtual void emit1(CommonTree opAST, short opcode, int arg)
+        public virtual void emit1(CommonTree opAST, Bytecode opcode, int arg)
         {
             emit(opAST, opcode);
-            ensureCapacity(Bytecode.OPND_SIZE_IN_BYTES);
+            ensureCapacity(Instruction.OperandSizeInBytes);
             writeShort(impl.instrs, ip, (short)arg);
-            ip += Bytecode.OPND_SIZE_IN_BYTES;
+            ip += Instruction.OperandSizeInBytes;
         }
 
-        public virtual void emit2(CommonTree opAST, short opcode, int arg, int arg2)
+        public virtual void emit2(CommonTree opAST, Bytecode opcode, int arg, int arg2)
         {
             emit(opAST, opcode);
-            ensureCapacity(Bytecode.OPND_SIZE_IN_BYTES * 2);
+            ensureCapacity(Instruction.OperandSizeInBytes * 2);
             writeShort(impl.instrs, ip, (short)arg);
-            ip += Bytecode.OPND_SIZE_IN_BYTES;
+            ip += Instruction.OperandSizeInBytes;
             writeShort(impl.instrs, ip, (short)arg2);
-            ip += Bytecode.OPND_SIZE_IN_BYTES;
+            ip += Instruction.OperandSizeInBytes;
         }
 
-        public virtual void emit2(CommonTree opAST, short opcode, string s, int arg2)
+        public virtual void emit2(CommonTree opAST, Bytecode opcode, string s, int arg2)
         {
             int i = defineString(s);
             emit2(opAST, opcode, i, arg2);
         }
 
-        public virtual void emit1(CommonTree opAST, short opcode, string s)
+        public virtual void emit1(CommonTree opAST, Bytecode opcode, string s)
         {
             int i = defineString(s);
             emit1(opAST, opcode, i);
         }
 
-        public virtual void insert(int addr, short opcode, string s)
+        public virtual void insert(int addr, Bytecode opcode, string s)
         {
             //System.out.println("before insert of "+opcode+"("+s+"):"+ Arrays.toString(impl.instrs));
-            ensureCapacity(1 + Bytecode.OPND_SIZE_IN_BYTES);
-            int instrSize = 1 + Bytecode.OPND_SIZE_IN_BYTES;
+            ensureCapacity(1 + Instruction.OperandSizeInBytes);
+            int instrSize = 1 + Instruction.OperandSizeInBytes;
             // make room for opcode, opnd
             Array.Copy(impl.instrs, addr, impl.instrs, addr + instrSize, ip - addr);
             int save = ip;
@@ -178,14 +178,14 @@ namespace Antlr4.StringTemplate.Compiler
             int a = addr + instrSize;
             while (a < ip)
             {
-                byte op = impl.instrs[a];
-                Bytecode.Instruction I = Bytecode.instructions[op];
+                Bytecode op = (Bytecode)impl.instrs[a];
+                Instruction I = Instruction.instructions[(int)op];
                 if (op == Bytecode.INSTR_BR || op == Bytecode.INSTR_BRF)
                 {
                     int opnd = BytecodeDisassembler.getShort(impl.instrs, a + 1);
                     writeShort(impl.instrs, a + 1, (short)(opnd + instrSize));
                 }
-                a += I.nopnds * Bytecode.OPND_SIZE_IN_BYTES + 1;
+                a += I.nopnds * Instruction.OperandSizeInBytes + 1;
             }
             //System.out.println("after  insert of "+opcode+"("+s+"):"+ Arrays.toString(impl.instrs));
         }

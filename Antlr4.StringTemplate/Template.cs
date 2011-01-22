@@ -61,9 +61,9 @@ namespace Antlr4.StringTemplate
         /** <@r()>, <@r>...<@end>, and @t.r() ::= "..." defined manually by coder */
         public enum RegionType
         {
-            IMPLICIT,
-            EMBEDDED,
-            EXPLICIT
+            Implicit,
+            Embedded,
+            Explicit
         }
 
         public static readonly string UNKNOWN_NAME = "anonymous";
@@ -200,18 +200,18 @@ namespace Antlr4.StringTemplate
                     else
                         Array.Resize(ref locals, impl.formalArguments.Count);
 
-                    locals[arg.index] = EMPTY_ATTR;
+                    locals[arg.Index] = EMPTY_ATTR;
                 }
             }
 
             if (value is ST)
                 ((ST)value).enclosingInstance = this;
 
-            object curvalue = locals[arg.index];
+            object curvalue = locals[arg.Index];
             if (curvalue == EMPTY_ATTR)
             {
                 // new attribute
-                locals[arg.index] = value;
+                locals[arg.Index] = value;
                 return;
             }
 
@@ -219,7 +219,7 @@ namespace Antlr4.StringTemplate
             // convert current attribute to list if not already
             // copy-on-write semantics; copy a list injected by user to add new value
             AttributeList multi = convertToAttributeList(curvalue);
-            locals[arg.index] = multi; // replace with list
+            locals[arg.Index] = multi; // replace with list
 
             // now, add incoming value to multi-valued attribute
             if (value is IList)
@@ -252,7 +252,7 @@ namespace Antlr4.StringTemplate
             if (arg == null)
                 throw new ArgumentException("no such attribute: " + name);
 
-            locals[arg.index] = EMPTY_ATTR; // reset value
+            locals[arg.Index] = EMPTY_ATTR; // reset value
         }
 
         /** Set this.locals attr value when you only know the name, not the index.
@@ -268,7 +268,7 @@ namespace Antlr4.StringTemplate
             if (arg == null)
                 throw new ArgumentException("no such attribute: " + name);
 
-            locals[arg.index] = value;
+            locals[arg.Index] = value;
         }
 
         /** Find an attr via dynamic scoping up enclosing ST chain.
@@ -283,7 +283,7 @@ namespace Antlr4.StringTemplate
                 FormalArgument localArg = p.impl.TryGetFormalArgument(name);
                 if (localArg != null)
                 {
-                    object o = p.locals[localArg.index];
+                    object o = p.locals[localArg.Index];
                     if (o == ST.EMPTY_ATTR)
                         o = null;
                     return o;
@@ -308,11 +308,11 @@ namespace Antlr4.StringTemplate
             IDictionary<string, object> attributes = new Dictionary<string, object>();
             foreach (FormalArgument a in impl.formalArguments)
             {
-                object o = locals[a.index];
+                object o = locals[a.Index];
                 if (o == ST.EMPTY_ATTR)
                     o = null;
 
-                attributes[a.name] = o;
+                attributes[a.Name] = o;
             }
 
             return attributes;

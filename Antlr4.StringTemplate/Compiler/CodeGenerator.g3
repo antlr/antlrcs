@@ -93,7 +93,7 @@ element
 	;
 
 exprElement
-@init { short op = Bytecode.INSTR_WRITE; }
+@init { Bytecode op = Bytecode.INSTR_WRITE; }
 	:	^( EXPR expr (exprOptions {op=Bytecode.INSTR_WRITE_OPT;})? )
 		{emit($EXPR, op);}
 	;
@@ -105,7 +105,7 @@ region returns [string name]
 			{
 			CompiledST sub = $template.impl;
 	        sub.isRegion = true;
-	        sub.regionDefType = ST.RegionType.EMBEDDED;
+	        sub.regionDefType = ST.RegionType.Embedded;
 			sub.dump();
 			outermostImpl.addImplicitlyDefinedTemplate(sub);
 			}
