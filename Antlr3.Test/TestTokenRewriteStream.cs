@@ -312,7 +312,7 @@ namespace AntlrUnitTests
             {
                 exc = iae;
             }
-            string expecting = "insert op <InsertBeforeOp@1:\"0\"> within boundaries of previous <ReplaceOp@0..2:\"x\">";
+            string expecting = "insert op <InsertBeforeOp@1(b):\"0\"> within boundaries of previous <ReplaceOp@0(a)..2(c):\"x\">";
             assertNotNull( exc );
             assertEquals( expecting, exc.Message );
         }
@@ -331,7 +331,7 @@ namespace AntlrUnitTests
             tokens.InsertBefore( 0, "0" );
             tokens.Replace( 0, "x" ); // supercedes insert at 0
             string result = tokens.ToString();
-            string expecting = "xbc";
+            string expecting = "0xbc";
             assertEquals( expecting, result );
         }
 
@@ -368,7 +368,7 @@ namespace AntlrUnitTests
             tokens.InsertBefore( 0, "y" );
             tokens.Replace( 0, "z" );
             string result = tokens.ToString();
-            string expecting = "zbc";
+            string expecting = "yxzbc";
             assertEquals( expecting, result );
         }
 
@@ -404,7 +404,7 @@ namespace AntlrUnitTests
             tokens.InsertBefore( 2, "y" );
             tokens.Replace( 2, "x" );
             string result = tokens.ToString();
-            string expecting = "abx";
+            string expecting = "abyx";
             assertEquals( expecting, result );
         }
 
@@ -466,7 +466,7 @@ namespace AntlrUnitTests
             {
                 exc = iae;
             }
-            string expecting = "insert op <InsertBeforeOp@4:\"y\"> within boundaries of previous <ReplaceOp@2..4:\"x\">";
+            string expecting = "insert op <InsertBeforeOp@4(c):\"y\"> within boundaries of previous <ReplaceOp@2(c)..4(c):\"x\">";
             assertNotNull( exc );
             assertEquals( expecting, exc.Message );
         }
@@ -545,7 +545,7 @@ namespace AntlrUnitTests
             {
                 exc = iae;
             }
-            string expecting = "replace op boundaries of <ReplaceOp@3..5:\"foo\"> overlap with previous <ReplaceOp@2..4:\"xyz\">";
+            string expecting = "replace op boundaries of <ReplaceOp@3(c)..5(b):\"foo\"> overlap with previous <ReplaceOp@2(c)..4(c):\"xyz\">";
             assertNotNull( exc );
             assertEquals( expecting, exc.Message );
         }
@@ -572,7 +572,7 @@ namespace AntlrUnitTests
             {
                 exc = iae;
             }
-            string expecting = "replace op boundaries of <ReplaceOp@1..3:\"foo\"> overlap with previous <ReplaceOp@2..4:\"xyz\">";
+            string expecting = "replace op boundaries of <ReplaceOp@1(b)..3(c):\"foo\"> overlap with previous <ReplaceOp@2(c)..4(c):\"xyz\">";
             assertNotNull( exc );
             assertEquals( expecting, exc.Message );
         }
@@ -729,7 +729,7 @@ namespace AntlrUnitTests
             {
                 exc = iae;
             }
-            string expecting = "replace op boundaries of <ReplaceOp@1..2:\"foo\"> overlap with previous <ReplaceOp@0..3:\"bar\">";
+            string expecting = "replace op boundaries of <ReplaceOp@1(b)..2(c):\"foo\"> overlap with previous <ReplaceOp@0(a)..3(c):\"bar\">";
             assertNotNull( exc );
             assertEquals( expecting, exc.Message );
         }
@@ -795,14 +795,14 @@ namespace AntlrUnitTests
                 "A : 'a';\n" +
                 "B : 'b';\n" +
                 "C : 'c';\n" );
-            ICharStream input = new ANTLRStringStream( "abcc" );
+            ICharStream input = new ANTLRStringStream( "abc" );
             Interpreter lexEngine = new Interpreter( g, input );
             TokenRewriteStream tokens = new TokenRewriteStream( lexEngine );
             tokens.Fill();
             tokens.InsertBefore( 1, "foo" );
             tokens.Replace( 1, 2, "foo" ); // kill prev insert
             string result = tokens.ToString();
-            string expecting = "afooc";
+            string expecting = "afoofoo";
             assertEquals( expecting, result );
         }
 
@@ -842,5 +842,23 @@ namespace AntlrUnitTests
             assertEquals( expecting, result );
         }
 
+        [TestMethod]
+        public void TestInsertBeforeTokenThenDeleteThatToken()
+        {
+            Grammar g = new Grammar(
+                "lexer grammar t;\n" +
+                "A : 'a';\n" +
+                "B : 'b';\n" +
+                "C : 'c';\n");
+            ICharStream input = new ANTLRStringStream("abc");
+            Interpreter lexEngine = new Interpreter(g, input);
+            TokenRewriteStream tokens = new TokenRewriteStream(lexEngine);
+            tokens.Fill();
+            tokens.InsertBefore(2, "y");
+            tokens.Delete(2);
+            string result = tokens.ToString();
+            string expecting = "aby";
+            assertEquals(expecting, result);
+        }
     }
 }
