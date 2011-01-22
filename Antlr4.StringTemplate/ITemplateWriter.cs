@@ -39,7 +39,7 @@ namespace Antlr4.StringTemplate
      *  handled specially when wrapping lines (we don't want to wrap
      *  in between an element and it's separator).
      */
-    public interface STWriter
+    public interface ITemplateWriter
     {
         void pushIndentation(string indent);
 
@@ -68,7 +68,7 @@ namespace Antlr4.StringTemplate
          *  like &lt;data:{v|[&lt;v&gt;]}; wrap&gt;) we need to write the wrap string
          *  before calling exec().  We expose just like for the separator.
          *  See Interpreter.writeObject where it checks for ST instance.
-         *  If POJO, writePOJO passes wrap to STWriter's
+         *  If POJO, writePOJO passes wrap to ITemplateWriter's
          *
          *     write(String str, String wrap)
          *

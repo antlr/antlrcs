@@ -227,7 +227,7 @@ namespace Antlr4.Test.StringTemplate
                 "b() ::= \"bar\"\n" +
                 "b() ::= \"duh\"\n";
             writeFile(dir, "group.stg", groupFile);
-            STErrorListener errors = new ErrorBuffer();
+            ITemplateErrorListener errors = new ErrorBuffer();
             STGroupFile group = new STGroupFile(Path.Combine(dir, "group.stg"));
             group.setListener(errors);
             group.load();

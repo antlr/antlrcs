@@ -402,28 +402,28 @@ namespace Antlr4.StringTemplate
             return impl.isAnonSubtemplate;
         }
 
-        public virtual int write(STWriter @out)
+        public virtual int write(ITemplateWriter @out)
         {
             Interpreter interp = new Interpreter(groupThatCreatedThisInstance, impl.nativeGroup.errMgr);
             interp.setDefaultArguments(this);
             return interp.Execute(@out, this);
         }
 
-        public virtual int write(STWriter @out, CultureInfo locale)
+        public virtual int write(ITemplateWriter @out, CultureInfo locale)
         {
             Interpreter interp = new Interpreter(groupThatCreatedThisInstance, locale, impl.nativeGroup.errMgr);
             interp.setDefaultArguments(this);
             return interp.Execute(@out, this);
         }
 
-        public virtual int write(STWriter @out, STErrorListener listener)
+        public virtual int write(ITemplateWriter @out, ITemplateErrorListener listener)
         {
             Interpreter interp = new Interpreter(groupThatCreatedThisInstance, new ErrorManager(listener));
             interp.setDefaultArguments(this);
             return interp.Execute(@out, this);
         }
 
-        public virtual int write(STWriter @out, CultureInfo locale, STErrorListener listener)
+        public virtual int write(ITemplateWriter @out, CultureInfo locale, ITemplateErrorListener listener)
         {
             Interpreter interp = new Interpreter(groupThatCreatedThisInstance, locale, new ErrorManager(listener));
             interp.setDefaultArguments(this);
@@ -448,7 +448,7 @@ namespace Antlr4.StringTemplate
         public virtual string render(CultureInfo locale, int lineWidth)
         {
             StringWriter @out = new StringWriter();
-            STWriter wr = new AutoIndentWriter(@out);
+            ITemplateWriter wr = new AutoIndentWriter(@out);
             wr.setLineWidth(lineWidth);
             write(wr, locale);
             return @out.ToString();

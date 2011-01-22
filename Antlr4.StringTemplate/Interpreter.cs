@@ -141,7 +141,7 @@ namespace Antlr4.StringTemplate
         }
 
         /** Execute template self and return how many characters it wrote to out */
-        public virtual int Execute(STWriter @out, ST self)
+        public virtual int Execute(ITemplateWriter @out, ST self)
         {
             int save_ip = current_ip;
             try
@@ -154,7 +154,7 @@ namespace Antlr4.StringTemplate
             }
         }
 
-        protected virtual int ExecuteImpl(STWriter @out, ST self)
+        protected virtual int ExecuteImpl(ITemplateWriter @out, ST self)
         {
             int start = @out.index(); // track char we're about to write
             Bytecode prevOpcode = Bytecode.Invalid;
@@ -626,7 +626,7 @@ namespace Antlr4.StringTemplate
         /** Write out an expression result that doesn't use expression options.
          *  E.g., <name>
          */
-        protected virtual int writeObjectNoOptions(STWriter @out, ST self, object o)
+        protected virtual int writeObjectNoOptions(ITemplateWriter @out, ST self, object o)
         {
             int start = @out.index(); // track char we're about to write
             int n = writeObject(@out, self, o, null);
@@ -651,7 +651,7 @@ namespace Antlr4.StringTemplate
         /** Write out an expression result that uses expression options.
          *  E.g., <names; separator=", ">
          */
-        protected virtual int writeObjectWithOptions(STWriter @out, ST self, object o,
+        protected virtual int writeObjectWithOptions(ITemplateWriter @out, ST self, object o,
                                              object[] options)
         {
             int start = @out.index(); // track char we're about to write
@@ -692,7 +692,7 @@ namespace Antlr4.StringTemplate
         /** Generic method to emit text for an object. It differentiates
          *  between templates, iterable objects, and plain old Java objects (POJOs)
          */
-        protected virtual int writeObject(STWriter @out, ST self, object o, string[] options)
+        protected virtual int writeObject(ITemplateWriter @out, ST self, object o, string[] options)
         {
             int n = 0;
             if (o == null)
@@ -741,7 +741,7 @@ namespace Antlr4.StringTemplate
             return n;
         }
 
-        protected virtual int writeIterator(STWriter @out, ST self, object o, string[] options)
+        protected virtual int writeIterator(ITemplateWriter @out, ST self, object o, string[] options)
         {
             if (o == null)
                 return 0;
@@ -769,12 +769,12 @@ namespace Antlr4.StringTemplate
             return n;
         }
 
-        protected virtual int writePOJO(STWriter @out, object o, string[] options)
+        protected virtual int writePOJO(ITemplateWriter @out, object o, string[] options)
         {
             string formatString = null;
             if (options != null)
                 formatString = options[(int)Option.Format];
-            AttributeRenderer r = group.getAttributeRenderer(o.GetType());
+            IAttributeRenderer r = group.getAttributeRenderer(o.GetType());
             string v;
             if (r != null)
                 v = r.toString(o, formatString, culture);
@@ -1259,7 +1259,7 @@ namespace Antlr4.StringTemplate
 
             try
             {
-                ModelAdaptor adap = self.groupThatCreatedThisInstance.getModelAdaptor(o.GetType());
+                IModelAdaptor adap = self.groupThatCreatedThisInstance.getModelAdaptor(o.GetType());
                 return adap.getProperty(self, o, property, toString(self, property));
             }
             catch (STNoSuchPropertyException e)

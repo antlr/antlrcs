@@ -35,7 +35,7 @@ namespace Antlr4.StringTemplate
     using Antlr4.StringTemplate.Misc;
 
     /** How to handle messages */
-    public interface STErrorListener
+    public interface ITemplateErrorListener
     {
         void compileTimeError(STMessage msg);
         void runTimeError(STMessage msg);

@@ -34,7 +34,7 @@ namespace Antlr4.StringTemplate.Misc
 {
     using IDictionary = System.Collections.IDictionary;
 
-    public class MapModelAdaptor : ModelAdaptor
+    public class MapModelAdaptor : IModelAdaptor
     {
         public virtual object getProperty(ST self, object o, object property, string propertyName)
         {

@@ -43,7 +43,7 @@ namespace Antlr4.StringTemplate
      *
      *  See unit tests.
      */
-    public interface ModelAdaptor
+    public interface IModelAdaptor
     {
         /** Lookup property name in o and return its value.  It's a good
          *  idea to cache a Method or Field reflection object to make

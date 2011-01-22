@@ -94,7 +94,7 @@ namespace Antlr4.StringTemplate.Debug
             ErrorBuffer errors = new ErrorBuffer();
             impl.nativeGroup.setListener(errors);
             StringWriter @out = new StringWriter();
-            STWriter wr = new AutoIndentWriter(@out);
+            ITemplateWriter wr = new AutoIndentWriter(@out);
             wr.setLineWidth(lineWidth);
             Interpreter interp = new Interpreter(groupThatCreatedThisInstance, locale);
             interp.Execute(wr, this); // render and track events
@@ -124,7 +124,7 @@ namespace Antlr4.StringTemplate.Debug
         public virtual List<InterpEvent> getEvents(CultureInfo locale, int lineWidth)
         {
             StringWriter @out = new StringWriter();
-            STWriter wr = new AutoIndentWriter(@out);
+            ITemplateWriter wr = new AutoIndentWriter(@out);
             wr.setLineWidth(lineWidth);
             Interpreter interp = new Interpreter(groupThatCreatedThisInstance, locale);
             interp.Execute(wr, this); // render and track events

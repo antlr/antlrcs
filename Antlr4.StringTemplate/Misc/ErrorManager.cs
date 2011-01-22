@@ -42,9 +42,9 @@ namespace Antlr4.StringTemplate.Misc
      */
     public class ErrorManager
     {
-        public static STErrorListener DEFAULT_ERROR_LISTENER = new DefaultErrorListener();
+        public static ITemplateErrorListener DEFAULT_ERROR_LISTENER = new DefaultErrorListener();
 
-        private class DefaultErrorListener : STErrorListener
+        private class DefaultErrorListener : ITemplateErrorListener
         {
             public virtual void compileTimeError(STMessage msg)
             {
@@ -100,19 +100,19 @@ namespace Antlr4.StringTemplate.Misc
          */
         //public Stack<Token> context = new Stack<Token>();
 
-        private readonly STErrorListener listener;
+        private readonly ITemplateErrorListener listener;
 
         public ErrorManager()
             : this(DEFAULT_ERROR_LISTENER)
         {
         }
 
-        public ErrorManager(STErrorListener listener)
+        public ErrorManager(ITemplateErrorListener listener)
         {
             this.listener = listener;
         }
 
-        public STErrorListener Listener
+        public ITemplateErrorListener Listener
         {
             get
             {

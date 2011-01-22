@@ -32,7 +32,7 @@
 
 namespace Antlr4.StringTemplate.Misc
 {
-    public class STModelAdaptor : ModelAdaptor
+    public class STModelAdaptor : IModelAdaptor
     {
         public virtual object getProperty(ST self, object o, object property, string propertyName)
         {

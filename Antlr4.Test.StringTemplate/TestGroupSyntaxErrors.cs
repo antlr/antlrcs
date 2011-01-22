@@ -48,7 +48,7 @@ namespace Antlr4.Test.StringTemplate
                 "foo() ::= <<>>\n";
             writeFile(tmpdir, "t.stg", templates);
 
-            STErrorListener errors = new ErrorBuffer();
+            ITemplateErrorListener errors = new ErrorBuffer();
             STGroup group = new STGroupFile(tmpdir + "/" + "t.stg");
             group.setListener(errors);
             group.load(); // force load
@@ -66,7 +66,7 @@ namespace Antlr4.Test.StringTemplate
                 "foo() ::= <<>>\n";
             writeFile(tmpdir, "t.stg", templates);
 
-            STErrorListener errors = new ErrorBuffer();
+            ITemplateErrorListener errors = new ErrorBuffer();
             STGroup group = new STGroupFile(tmpdir + "/" + "t.stg");
             group.setListener(errors);
             group.load(); // force load
@@ -83,7 +83,7 @@ namespace Antlr4.Test.StringTemplate
             writeFile(tmpdir, "t.stg", templates);
 
             STGroupFile group = null;
-            STErrorListener errors = new ErrorBuffer();
+            ITemplateErrorListener errors = new ErrorBuffer();
             group = new STGroupFile(tmpdir + "/" + "t.stg");
             group.setListener(errors);
             group.load(); // force load
@@ -100,7 +100,7 @@ namespace Antlr4.Test.StringTemplate
             writeFile(tmpdir, "t.stg", templates);
 
             STGroupFile group = null;
-            STErrorListener errors = new ErrorBuffer();
+            ITemplateErrorListener errors = new ErrorBuffer();
             group = new STGroupFile(tmpdir + "/" + "t.stg");
             group.setListener(errors);
             group.load(); // force load
@@ -117,7 +117,7 @@ namespace Antlr4.Test.StringTemplate
             writeFile(tmpdir, "t.stg", templates);
 
             STGroupFile group = null;
-            STErrorListener errors = new ErrorBuffer();
+            ITemplateErrorListener errors = new ErrorBuffer();
             group = new STGroupFile(tmpdir + "/" + "t.stg");
             group.setListener(errors);
             group.load(); // force load
@@ -135,7 +135,7 @@ namespace Antlr4.Test.StringTemplate
             writeFile(tmpdir, "t.stg", templates);
 
             STGroupFile group = null;
-            STErrorListener errors = new ErrorBuffer();
+            ITemplateErrorListener errors = new ErrorBuffer();
             group = new STGroupFile(tmpdir + "/" + "t.stg");
             group.setListener(errors);
             group.load(); // force load
@@ -152,7 +152,7 @@ namespace Antlr4.Test.StringTemplate
             writeFile(tmpdir, "t.stg", templates);
 
             STGroupFile group = null;
-            STErrorListener errors = new ErrorBuffer();
+            ITemplateErrorListener errors = new ErrorBuffer();
             group = new STGroupFile(tmpdir + "/" + "t.stg");
             group.setListener(errors);
             group.load(); // force load

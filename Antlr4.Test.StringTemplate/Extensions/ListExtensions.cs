@@ -52,7 +52,7 @@ namespace Antlr4.Test.StringTemplate.Extensions
             return st.render();
         }
 
-        private class CollectionRenderer : AttributeRenderer
+        private class CollectionRenderer : IAttributeRenderer
         {
             public string toString(object o, string formatString, CultureInfo culture)
             {

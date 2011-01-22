@@ -43,7 +43,7 @@ namespace Antlr4.StringTemplate
      *  For example, "%10d" emits a number as a decimal int padding to 10 char.
      *  This can even do long to date conversions using the format string.
      */
-    public class NumberRenderer : AttributeRenderer
+    public class NumberRenderer : IAttributeRenderer
     {
         public virtual string toString(object o, string formatString, CultureInfo locale)
         {

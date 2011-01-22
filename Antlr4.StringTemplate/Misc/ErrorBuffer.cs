@@ -37,7 +37,7 @@ namespace Antlr4.StringTemplate.Misc
     using StringBuilder = System.Text.StringBuilder;
 
     /** Used during tests to track all errors */
-    public class ErrorBuffer : STErrorListener
+    public class ErrorBuffer : ITemplateErrorListener
     {
         private readonly List<STMessage> errors = new List<STMessage>();
 

@@ -152,7 +152,7 @@ namespace Antlr4.Test.StringTemplate
         [TestMethod]
         public void TestAnonIncludeArgMismatch()
         {
-            STErrorListener errors = new ErrorBuffer();
+            ITemplateErrorListener errors = new ErrorBuffer();
             string template = "<a:{foo}>";
             CompiledST code = new Compiler(new ErrorManager(errors)).compile(template);
             string expected = "1:3: anonymous template has 0 arg(s) but mapped across 1 value(s)" + newline;
@@ -162,7 +162,7 @@ namespace Antlr4.Test.StringTemplate
         [TestMethod]
         public void TestAnonIncludeArgMismatch2()
         {
-            STErrorListener errors = new ErrorBuffer();
+            ITemplateErrorListener errors = new ErrorBuffer();
             string template = "<a,b:{x|foo}>";
             CompiledST code = new Compiler(new ErrorManager(errors)).compile(template);
             string expected = "1:5: anonymous template has 1 arg(s) but mapped across 2 value(s)" + newline;
@@ -172,7 +172,7 @@ namespace Antlr4.Test.StringTemplate
         [TestMethod]
         public void TestAnonIncludeArgMismatch3()
         {
-            STErrorListener errors = new ErrorBuffer();
+            ITemplateErrorListener errors = new ErrorBuffer();
             string template = "<a:{x|foo},{bar}>";
             CompiledST code = new Compiler(new ErrorManager(errors)).compile(template);
             string expected = "1:11: anonymous template has 0 arg(s) but mapped across 1 value(s)" + newline;

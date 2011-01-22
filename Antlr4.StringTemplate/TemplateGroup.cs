@@ -99,7 +99,7 @@ namespace Antlr4.StringTemplate
          *
          *  This structure is synchronized.
          */
-        protected TypeRegistry<AttributeRenderer> renderers;
+        protected TypeRegistry<IAttributeRenderer> renderers;
 
         /** A dictionary that allows people to register a model adaptor for
          *  a particular kind of object (subclass or implementation). Applies
@@ -108,8 +108,8 @@ namespace Antlr4.StringTemplate
          *  ST initializes with model adaptors that know how to pull
          *  properties out of Objects, Maps, and STs.
          */
-        protected TypeRegistry<ModelAdaptor> adaptors =
-            new TypeRegistry<ModelAdaptor>()
+        protected TypeRegistry<IModelAdaptor> adaptors =
+            new TypeRegistry<IModelAdaptor>()
             {
                 {typeof(object), new ObjectModelAdaptor()},
                 {typeof(ST), new STModelAdaptor()},
@@ -547,14 +547,14 @@ namespace Antlr4.StringTemplate
          *  This must invalidate cache entries, so set your adaptors up before
          *  render()ing your templates for efficiency.
          */
-        public virtual void registerModelAdaptor(Type attributeType, ModelAdaptor adaptor)
+        public virtual void registerModelAdaptor(Type attributeType, IModelAdaptor adaptor)
         {
             adaptors[attributeType] = adaptor;
         }
 
-        public virtual ModelAdaptor getModelAdaptor(Type attributeType)
+        public virtual IModelAdaptor getModelAdaptor(Type attributeType)
         {
-            ModelAdaptor adaptor;
+            IModelAdaptor adaptor;
             adaptors.TryGetValue(attributeType, out adaptor);
             return adaptor;
         }
@@ -563,18 +563,18 @@ namespace Antlr4.StringTemplate
          *  templates evaluated relative to this group.  Use r to render if
          *  object in question is instanceof(attributeType).
          */
-        public virtual void registerRenderer(Type attributeType, AttributeRenderer r)
+        public virtual void registerRenderer(Type attributeType, IAttributeRenderer r)
         {
-            renderers = renderers ?? new TypeRegistry<AttributeRenderer>();
+            renderers = renderers ?? new TypeRegistry<IAttributeRenderer>();
             renderers[attributeType] = r;
         }
 
-        public virtual AttributeRenderer getAttributeRenderer(Type attributeType)
+        public virtual IAttributeRenderer getAttributeRenderer(Type attributeType)
         {
             if (renderers == null)
                 return null;
 
-            AttributeRenderer renderer;
+            IAttributeRenderer renderer;
             renderers.TryGetValue(attributeType, out renderer);
             return renderer;
         }
@@ -641,12 +641,12 @@ namespace Antlr4.StringTemplate
             return buf.ToString();
         }
 
-        public virtual STErrorListener getListener()
+        public virtual ITemplateErrorListener getListener()
         {
             return errMgr.Listener;
         }
 
-        public virtual void setListener(STErrorListener listener)
+        public virtual void setListener(ITemplateErrorListener listener)
         {
             errMgr = new ErrorManager(listener);
         }

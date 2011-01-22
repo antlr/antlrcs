@@ -43,7 +43,7 @@ namespace Antlr4.StringTemplate
      *
      *  formatString can be null but locale will at least be Locale.getDefault()
      */
-    public interface AttributeRenderer
+    public interface IAttributeRenderer
     {
         string toString(object o, string formatString, CultureInfo culture);
     }

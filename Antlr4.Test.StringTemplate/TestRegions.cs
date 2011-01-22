@@ -253,7 +253,7 @@ namespace Antlr4.Test.StringTemplate
                     "X<@r()>Y" +
                     ">>\n" +
                     "@a.q() ::= \"foo\"" + newline;
-            STErrorListener errors = new ErrorBuffer();
+            ITemplateErrorListener errors = new ErrorBuffer();
             writeFile(dir, "g.stg", g);
             STGroupFile group = new STGroupFile(dir + "/g.stg");
             group.setListener(errors);
@@ -276,7 +276,7 @@ namespace Antlr4.Test.StringTemplate
 
             string sub =
                 "@a.r() ::= \"A<@super.q()>B\"" + newline; // allow this; trap at runtime
-            STErrorListener errors = new ErrorBuffer();
+            ITemplateErrorListener errors = new ErrorBuffer();
             group.setListener(errors);
             writeFile(dir, "sub.stg", sub);
             STGroupFile subGroup = new STGroupFile(dir + "/sub.stg");

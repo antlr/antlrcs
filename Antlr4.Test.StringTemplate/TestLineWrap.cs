@@ -62,7 +62,7 @@ namespace Antlr4.Test.StringTemplate
                 "32,5,6,77,888,1,6,32,5 };";
 
             StringWriter sw = new StringWriter();
-            STWriter stw = new AutoIndentWriter(sw, "\n"); // force \n as newline
+            ITemplateWriter stw = new AutoIndentWriter(sw, "\n"); // force \n as newline
             stw.setLineWidth(40);
             a.write(stw);
             string result = sw.ToString();

@@ -39,7 +39,7 @@ namespace Antlr4.StringTemplate
     /** This render knows to perform a few operations on String objects:
      *  upper, lower, cap, url-encode, xml-encode.
      */
-    public class StringRenderer : AttributeRenderer
+    public class StringRenderer : IAttributeRenderer
     {
         // trim(s) and strlen(s) built-in funcs; these are format options
         public virtual string toString(object o, string formatString, CultureInfo locale)

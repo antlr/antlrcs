@@ -55,7 +55,7 @@ namespace Antlr4.StringTemplate
      *  wrap="\n". ST will generate the right thing. Override the default (locale)
      *  newline by passing in a string to the constructor.
      */
-    public class AutoIndentWriter : STWriter
+    public class AutoIndentWriter : ITemplateWriter
     {
         public const int NO_WRAP = -1;
 

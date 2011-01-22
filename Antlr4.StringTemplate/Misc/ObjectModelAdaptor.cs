@@ -41,7 +41,7 @@ namespace Antlr4.StringTemplate.Misc
     using PropertyInfo = System.Reflection.PropertyInfo;
     using Type = System.Type;
 
-    public class ObjectModelAdaptor : ModelAdaptor
+    public class ObjectModelAdaptor : IModelAdaptor
     {
         private static readonly Dictionary<Type, Dictionary<string, System.Func<object, object>>> _memberAccessors =
             new Dictionary<Type, Dictionary<string, System.Func<object, object>>>();

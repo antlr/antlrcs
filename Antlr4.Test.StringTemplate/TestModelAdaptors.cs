@@ -39,7 +39,7 @@ namespace Antlr4.Test.StringTemplate
     [TestClass]
     public class TestModelAdaptors : BaseTest
     {
-        private class UserAdaptor : ModelAdaptor
+        private class UserAdaptor : IModelAdaptor
         {
             public object getProperty(ST self, object o, object property, string propertyName)
             {
@@ -51,7 +51,7 @@ namespace Antlr4.Test.StringTemplate
             }
         }
 
-        private class UserAdaptorConst : ModelAdaptor
+        private class UserAdaptorConst : IModelAdaptor
         {
             public object getProperty(ST self, object o, object property, string propertyName)
             {
