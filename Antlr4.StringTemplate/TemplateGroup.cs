@@ -83,10 +83,10 @@ namespace Antlr4.StringTemplate
         /** A dictionary that allows people to register a renderer for
          *  a particular kind of object for any template evaluated relative to this
          *  group.  For example, a date should be formatted differently depending
-         *  on the locale.  You can set Date.class to an object whose
+         *  on the culture.  You can set Date.class to an object whose
          *  toString(Object) method properly formats a Date attribute
-         *  according to locale.  Or you can have a different renderer object
-         *  for each locale.
+         *  according to culture.  Or you can have a different renderer object
+         *  for each culture.
          *
          *  Order of addition is recorded and matters.  If more than one
          *  renderer works for an object, the first registered has priority.

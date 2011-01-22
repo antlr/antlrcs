@@ -1,8 +1,9 @@
 ﻿namespace Antlr4.StringTemplate.Compiler
 {
+    using System.Linq;
+    using ArgumentNullException = System.ArgumentNullException;
     using Array = System.Array;
     using Enum = System.Enum;
-    using System.Linq;
 
     public sealed class Instruction
     {
@@ -21,7 +22,7 @@
         static Instruction()
         {
             Array values = Enum.GetValues(typeof(Bytecode));
-            instructions = new Instruction[values.Cast<int>().Max()];
+            instructions = new Instruction[values.Cast<byte>().Max() + 1];
 
             instructions[(int)Bytecode.Invalid] = null;
             instructions[(int)Bytecode.INSTR_LOAD_STR] = new Instruction("load_str", OperandType.String);
@@ -82,6 +83,9 @@
 
         public Instruction(string name, OperandType a, OperandType b)
         {
+            if (name == null)
+                throw new ArgumentNullException("name");
+
             this.name = name;
             type[0] = a;
             type[1] = b;

@@ -97,7 +97,7 @@ namespace Antlr4.StringTemplate.Debug
             STWriter wr = new AutoIndentWriter(@out);
             wr.setLineWidth(lineWidth);
             Interpreter interp = new Interpreter(groupThatCreatedThisInstance, locale);
-            interp.exec(wr, this); // render and track events
+            interp.Execute(wr, this); // render and track events
 #if false
             new STViz(errMgr, this, @out.ToString(), interp, interp.getExecutionTrace(), errors.Errors);
 #endif
@@ -127,7 +127,7 @@ namespace Antlr4.StringTemplate.Debug
             STWriter wr = new AutoIndentWriter(@out);
             wr.setLineWidth(lineWidth);
             Interpreter interp = new Interpreter(groupThatCreatedThisInstance, locale);
-            interp.exec(wr, this); // render and track events
+            interp.Execute(wr, this); // render and track events
             return interp.getEvents();
         }
     }

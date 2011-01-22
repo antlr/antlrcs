@@ -39,6 +39,7 @@ namespace Antlr4.StringTemplate
     using Antlr4.StringTemplate.Debug;
     using Antlr4.StringTemplate.Misc;
     using Array = System.Array;
+    using BitConverter = System.BitConverter;
     using Console = System.Console;
     using CultureInfo = System.Globalization.CultureInfo;
     using Environment = System.Environment;
@@ -72,52 +73,52 @@ namespace Antlr4.StringTemplate
     {
         public enum Option
         {
-            ANCHOR,
-            FORMAT,
-            NULL,
-            SEPARATOR,
-            WRAP
+            Anchor,
+            Format,
+            Null,
+            Separator,
+            Wrap
         }
 
-        public const int DEFAULT_OPERAND_STACK_SIZE = 100;
+        public const int DefaultOperandStackSize = 100;
 
         public static readonly HashSet<string> predefinedAnonSubtemplateAttributes = new HashSet<string>() { "i", "i0" };
-
-        /** Operand stack, grows upwards */
-        object[] operands = new object[DEFAULT_OPERAND_STACK_SIZE];
-        int sp = -1;        // stack pointer register
-        int current_ip = 0; // mirrors ip in exec(), but visible to all methods
-        int nwline = 0;     // how many char written on this template LINE so far?
-
-        /** Exec st with respect to this group. Once set in ST.toString(),
-         *  it should be fixed. ST has group also.
-         */
-        STGroup group;
-
-        /** For renderers, we have to pass in the locale */
-        CultureInfo locale;
-
-        ErrorManager errMgr;
 
         /** Dump bytecode instructions as we execute them? */
         public static bool trace = false;
 
+        /** Exec st with respect to this group. Once set in ST.toString(),
+         *  it should be fixed. ST has group also.
+         */
+        private readonly STGroup group;
+
+        /** For renderers, we have to pass in the culture */
+        private readonly CultureInfo culture;
+
+        private readonly ErrorManager errMgr;
+
+        /** Operand stack, grows upwards */
+        private object[] operands = new object[DefaultOperandStackSize];
+        private int sp = -1;        // stack pointer register
+        private int current_ip = 0; // mirrors ip in exec(), but visible to all methods
+        private int nwline = 0;     // how many char written on this template LINE so far?
+
         /** Track everything happening in interp if debug across all templates */
-        protected List<InterpEvent> events;
+        private List<InterpEvent> events;
 
         /** If debug mode, track trace here */
         // TODO: track the pieces not a string and track what it contributes to output
-        protected List<string> executeTrace;
+        private List<string> executeTrace;
 
-        IDictionary<ST, List<InterpEvent>> debugInfo;
+        private IDictionary<ST, List<InterpEvent>> debugInfo;
 
         public Interpreter(STGroup group)
             : this(group, CultureInfo.CurrentCulture, group.errMgr)
         {
         }
 
-        public Interpreter(STGroup group, CultureInfo locale)
-            : this(group, locale, group.errMgr)
+        public Interpreter(STGroup group, CultureInfo culture)
+            : this(group, culture, group.errMgr)
         {
         }
 
@@ -126,10 +127,10 @@ namespace Antlr4.StringTemplate
         {
         }
 
-        public Interpreter(STGroup group, CultureInfo locale, ErrorManager errMgr)
+        public Interpreter(STGroup group, CultureInfo culture, ErrorManager errMgr)
         {
             this.group = group;
-            this.locale = locale;
+            this.culture = culture;
             this.errMgr = errMgr;
             if (STGroup.debug)
             {
@@ -140,366 +141,370 @@ namespace Antlr4.StringTemplate
         }
 
         /** Execute template self and return how many characters it wrote to out */
-        public virtual int exec(STWriter @out, ST self)
+        public virtual int Execute(STWriter @out, ST self)
         {
-            int previous_current_ip = current_ip;
-
+            int save_ip = current_ip;
             try
             {
-                int start = @out.index(); // track char we're about to write
-                Bytecode prevOpcode = Bytecode.Invalid;
-                int n = 0; // how many char we write out
-                int nargs;
-                int nameIndex;
-                int addr;
-                string name;
-                object o, left, right;
-                ST st;
-                object[] options;
-                byte[] code = self.impl.instrs;        // which code block are we executing
-                int ip = 0;
-                while (ip < self.impl.codeSize)
-                {
-                    if (trace || STGroup.debug)
-                        Trace(self, ip);
-
-                    Bytecode opcode = (Bytecode)code[ip];
-                    current_ip = ip;
-                    ip++; //jump to next instruction or first byte of operand
-                    switch (opcode)
-                    {
-                    case Bytecode.INSTR_LOAD_STR:
-                        int strIndex = getShort(code, ip);
-                        ip += Instruction.OperandSizeInBytes;
-                        operands[++sp] = self.impl.strings[strIndex];
-                        break;
-
-                    case Bytecode.INSTR_LOAD_ATTR:
-                        nameIndex = getShort(code, ip);
-                        ip += Instruction.OperandSizeInBytes;
-                        name = self.impl.strings[nameIndex];
-                        try
-                        {
-                            o = self.getAttribute(name);
-                        }
-                        catch (STNoSuchPropertyException)
-                        {
-                            errMgr.runTimeError(self, current_ip, ErrorType.NO_SUCH_ATTRIBUTE, name);
-                            o = null;
-                        }
-                        operands[++sp] = o;
-                        break;
-
-                    case Bytecode.INSTR_LOAD_LOCAL:
-                        int valueIndex = getShort(code, ip);
-                        ip += Instruction.OperandSizeInBytes;
-                        o = self.locals[valueIndex];
-                        if (o == ST.EMPTY_ATTR)
-                            o = null;
-                        operands[++sp] = o;
-                        break;
-
-                    case Bytecode.INSTR_LOAD_PROP:
-                        nameIndex = getShort(code, ip);
-                        ip += Instruction.OperandSizeInBytes;
-                        o = operands[sp--];
-                        name = self.impl.strings[nameIndex];
-                        operands[++sp] = getObjectProperty(self, o, name);
-                        break;
-
-                    case Bytecode.INSTR_LOAD_PROP_IND:
-                        object propName = operands[sp--];
-                        o = operands[sp];
-                        operands[sp] = getObjectProperty(self, o, propName);
-                        break;
-
-                    case Bytecode.INSTR_NEW:
-                        nameIndex = getShort(code, ip);
-                        ip += Instruction.OperandSizeInBytes;
-                        name = self.impl.strings[nameIndex];
-                        nargs = getShort(code, ip);
-                        ip += Instruction.OperandSizeInBytes;
-                        // look up in original hierarchy not enclosing template (variable group)
-                        // see TestSubtemplates.testEvalSTFromAnotherGroup()
-                        st = self.groupThatCreatedThisInstance.getEmbeddedInstanceOf(self, ip, name);
-                        // get n args and store into st's attr list
-                        storeArgs(self, nargs, st);
-                        sp -= nargs;
-                        operands[++sp] = st;
-                        break;
-
-                    case Bytecode.INSTR_NEW_IND:
-                        nargs = getShort(code, ip);
-                        ip += Instruction.OperandSizeInBytes;
-                        name = (string)operands[sp - nargs];
-                        st = self.groupThatCreatedThisInstance.getEmbeddedInstanceOf(self, ip, name);
-                        storeArgs(self, nargs, st);
-                        sp -= nargs;
-                        sp--; // pop template name
-                        operands[++sp] = st;
-                        break;
-
-                    case Bytecode.INSTR_NEW_BOX_ARGS:
-                        nameIndex = getShort(code, ip);
-                        ip += Instruction.OperandSizeInBytes;
-                        name = self.impl.strings[nameIndex];
-                        IDictionary<string, object> attrs = (IDictionary<string, object>)operands[sp--];
-                        // look up in original hierarchy not enclosing template (variable group)
-                        // see TestSubtemplates.testEvalSTFromAnotherGroup()
-                        st = self.groupThatCreatedThisInstance.getEmbeddedInstanceOf(self, ip, name);
-                        // get n args and store into st's attr list
-                        storeArgs(self, attrs, st);
-                        operands[++sp] = st;
-                        break;
-
-                    case Bytecode.INSTR_SUPER_NEW:
-                        nameIndex = getShort(code, ip);
-                        ip += Instruction.OperandSizeInBytes;
-                        name = self.impl.strings[nameIndex];
-                        nargs = getShort(code, ip);
-                        ip += Instruction.OperandSizeInBytes;
-                        super_new(self, name, nargs);
-                        break;
-
-                    case Bytecode.INSTR_SUPER_NEW_BOX_ARGS:
-                        nameIndex = getShort(code, ip);
-                        ip += Instruction.OperandSizeInBytes;
-                        name = self.impl.strings[nameIndex];
-                        attrs = (IDictionary<string, object>)operands[sp--];
-                        super_new(self, name, attrs);
-                        break;
-
-                    case Bytecode.INSTR_STORE_OPTION:
-                        int optionIndex = getShort(code, ip);
-                        ip += Instruction.OperandSizeInBytes;
-                        o = operands[sp--];    // value to store
-                        options = (object[])operands[sp]; // get options
-                        options[optionIndex] = o; // store value into options on stack
-                        break;
-
-                    case Bytecode.INSTR_STORE_ARG:
-                        nameIndex = getShort(code, ip);
-                        name = self.impl.strings[nameIndex];
-                        ip += Instruction.OperandSizeInBytes;
-                        o = operands[sp--];
-                        attrs = (IDictionary<string, object>)operands[sp];
-                        attrs[name] = o; // leave attrs on stack
-                        break;
-
-                    case Bytecode.INSTR_WRITE:
-                        o = operands[sp--];
-                        int n1 = writeObjectNoOptions(@out, self, o);
-                        n += n1;
-                        nwline += n1;
-                        break;
-
-                    case Bytecode.INSTR_WRITE_OPT:
-                        options = (object[])operands[sp--]; // get options
-                        o = operands[sp--];                 // get option to write
-                        int n2 = writeObjectWithOptions(@out, self, o, options);
-                        n += n2;
-                        nwline += n2;
-                        break;
-
-                    case Bytecode.INSTR_MAP:
-                        st = (ST)operands[sp--]; // get prototype off stack
-                        o = operands[sp--];		 // get object to map prototype across
-                        map(self, o, st);
-                        break;
-
-                    case Bytecode.INSTR_ROT_MAP:
-                        int nmaps = getShort(code, ip);
-                        ip += Instruction.OperandSizeInBytes;
-                        List<ST> templates = new List<ST>();
-                        for (int i = nmaps - 1; i >= 0; i--)
-                            templates.Add((ST)operands[sp - i]);
-                        sp -= nmaps;
-                        o = operands[sp--];
-                        if (o != null)
-                            rot_map(self, o, templates);
-                        break;
-
-                    case Bytecode.INSTR_ZIP_MAP:
-                        st = (ST)operands[sp--];
-                        nmaps = getShort(code, ip);
-                        ip += Instruction.OperandSizeInBytes;
-                        List<object> exprs = new List<object>();
-                        for (int i = nmaps - 1; i >= 0; i--)
-                            exprs.Add(operands[sp - i]);
-
-                        sp -= nmaps;
-                        operands[++sp] = zip_map(self, exprs, st);
-                        break;
-
-                    case Bytecode.INSTR_BR:
-                        ip = getShort(code, ip);
-                        break;
-
-                    case Bytecode.INSTR_BRF:
-                        addr = getShort(code, ip);
-                        ip += Instruction.OperandSizeInBytes;
-                        o = operands[sp--]; // <if(expr)>...<endif>
-                        if (!testAttributeTrue(o))
-                            ip = addr; // jump
-
-                        break;
-
-                    case Bytecode.INSTR_OPTIONS:
-                        operands[++sp] = new object[Compiler.Compiler.NUM_OPTIONS];
-                        break;
-
-                    case Bytecode.INSTR_ARGS:
-                        operands[++sp] = new Dictionary<string, object>();
-                        break;
-
-                    case Bytecode.INSTR_LIST:
-                        operands[++sp] = new List<object>();
-                        break;
-
-                    case Bytecode.INSTR_ADD:
-                        o = operands[sp--];             // pop value
-                        List<object> list = (List<object>)operands[sp]; // don't pop list
-                        addToList(list, o);
-                        break;
-
-                    case Bytecode.INSTR_TOSTR:
-                        // replace with string value; early eval
-                        operands[sp] = toString(self, operands[sp]);
-                        break;
-
-                    case Bytecode.INSTR_FIRST:
-                        operands[sp] = first(operands[sp]);
-                        break;
-
-                    case Bytecode.INSTR_LAST:
-                        operands[sp] = last(operands[sp]);
-                        break;
-
-                    case Bytecode.INSTR_REST:
-                        operands[sp] = rest(operands[sp]);
-                        break;
-
-                    case Bytecode.INSTR_TRUNC:
-                        operands[sp] = trunc(operands[sp]);
-                        break;
-
-                    case Bytecode.INSTR_STRIP:
-                        operands[sp] = strip(operands[sp]);
-                        break;
-
-                    case Bytecode.INSTR_TRIM:
-                        o = operands[sp--];
-                        if (o.GetType() == typeof(string))
-                        {
-                            operands[++sp] = ((string)o).Trim();
-                        }
-                        else
-                        {
-                            errMgr.runTimeError(self, current_ip, ErrorType.EXPECTING_STRING, "trim", o.GetType());
-                            operands[++sp] = o;
-                        }
-                        break;
-
-                    case Bytecode.INSTR_LENGTH:
-                        operands[sp] = length(operands[sp]);
-                        break;
-
-                    case Bytecode.INSTR_STRLEN:
-                        o = operands[sp--];
-                        if (o.GetType() == typeof(string))
-                        {
-                            operands[++sp] = ((string)o).Length;
-                        }
-                        else
-                        {
-                            errMgr.runTimeError(self, current_ip, ErrorType.EXPECTING_STRING, "strlen", o.GetType());
-                            operands[++sp] = 0;
-                        }
-                        break;
-
-                    case Bytecode.INSTR_REVERSE:
-                        operands[sp] = reverse(operands[sp]);
-                        break;
-
-                    case Bytecode.INSTR_NOT:
-                        operands[sp] = !testAttributeTrue(operands[sp]);
-                        break;
-
-                    case Bytecode.INSTR_OR:
-                        right = operands[sp--];
-                        left = operands[sp--];
-                        operands[++sp] = testAttributeTrue(left) || testAttributeTrue(right);
-                        break;
-
-                    case Bytecode.INSTR_AND:
-                        right = operands[sp--];
-                        left = operands[sp--];
-                        operands[++sp] = testAttributeTrue(left) && testAttributeTrue(right);
-                        break;
-
-                    case Bytecode.INSTR_INDENT:
-                        strIndex = getShort(code, ip);
-                        ip += Instruction.OperandSizeInBytes;
-                        @out.pushIndentation(self.impl.strings[strIndex]);
-                        break;
-
-                    case Bytecode.INSTR_DEDENT:
-                        @out.popIndentation();
-                        break;
-
-                    case Bytecode.INSTR_NEWLINE:
-                        try
-                        {
-                            if (prevOpcode == Bytecode.INSTR_NEWLINE ||
-                                prevOpcode == Bytecode.INSTR_INDENT ||
-                                nwline > 0)
-                            {
-                                @out.write(Environment.NewLine);
-                            }
-                            nwline = 0;
-                        }
-                        catch (IOException ioe)
-                        {
-                            errMgr.IOError(self, ErrorType.WRITE_IO_ERROR, ioe);
-                        }
-                        break;
-
-                    case Bytecode.INSTR_NOOP:
-                        break;
-
-                    case Bytecode.INSTR_POP:
-                        sp--; // throw away top of stack
-                        break;
-
-                    case Bytecode.INSTR_NULL:
-                        operands[++sp] = null;
-                        break;
-
-                    default:
-                        errMgr.internalError(self, "invalid bytecode @ " + (ip - 1) + ": " + opcode, null);
-                        self.impl.dump();
-                        break;
-                    }
-                    prevOpcode = opcode;
-                }
-                if (STGroup.debug)
-                {
-                    int stop = @out.index() - 1;
-                    EvalTemplateEvent e = new EvalTemplateEvent((DebugST)self, start, stop);
-                    //System.out.println("eval template "+self+": "+e);
-                    events.Add(e);
-                    if (self.enclosingInstance != null)
-                    {
-                        DebugST parent = (DebugST)self.enclosingInstance;
-                        getEvents(parent).Add(e);
-                    }
-                }
-                return n;
+                return ExecuteImpl(@out, self);
             }
             finally
             {
-                current_ip = previous_current_ip;
+                current_ip = save_ip;
             }
+        }
+
+        protected virtual int ExecuteImpl(STWriter @out, ST self)
+        {
+            int start = @out.index(); // track char we're about to write
+            Bytecode prevOpcode = Bytecode.Invalid;
+            int n = 0; // how many char we write out
+            int nargs;
+            int nameIndex;
+            int addr;
+            string name;
+            object o, left, right;
+            ST st;
+            object[] options;
+            byte[] code = self.impl.instrs;        // which code block are we executing
+            int ip = 0;
+            while (ip < self.impl.codeSize)
+            {
+                if (trace || STGroup.debug)
+                    Trace(self, ip);
+
+                Bytecode opcode = (Bytecode)code[ip];
+                current_ip = ip;
+                ip++; //jump to next instruction or first byte of operand
+                switch (opcode)
+                {
+                case Bytecode.INSTR_LOAD_STR:
+                    int strIndex = getShort(code, ip);
+                    ip += Instruction.OperandSizeInBytes;
+                    operands[++sp] = self.impl.strings[strIndex];
+                    break;
+
+                case Bytecode.INSTR_LOAD_ATTR:
+                    nameIndex = getShort(code, ip);
+                    ip += Instruction.OperandSizeInBytes;
+                    name = self.impl.strings[nameIndex];
+                    try
+                    {
+                        o = self.getAttribute(name);
+                    }
+                    catch (STNoSuchPropertyException)
+                    {
+                        errMgr.runTimeError(self, current_ip, ErrorType.NO_SUCH_ATTRIBUTE, name);
+                        o = null;
+                    }
+                    operands[++sp] = o;
+                    break;
+
+                case Bytecode.INSTR_LOAD_LOCAL:
+                    int valueIndex = getShort(code, ip);
+                    ip += Instruction.OperandSizeInBytes;
+                    o = self.locals[valueIndex];
+                    if (o == ST.EMPTY_ATTR)
+                        o = null;
+                    operands[++sp] = o;
+                    break;
+
+                case Bytecode.INSTR_LOAD_PROP:
+                    nameIndex = getShort(code, ip);
+                    ip += Instruction.OperandSizeInBytes;
+                    o = operands[sp--];
+                    name = self.impl.strings[nameIndex];
+                    operands[++sp] = getObjectProperty(self, o, name);
+                    break;
+
+                case Bytecode.INSTR_LOAD_PROP_IND:
+                    object propName = operands[sp--];
+                    o = operands[sp];
+                    operands[sp] = getObjectProperty(self, o, propName);
+                    break;
+
+                case Bytecode.INSTR_NEW:
+                    nameIndex = getShort(code, ip);
+                    ip += Instruction.OperandSizeInBytes;
+                    name = self.impl.strings[nameIndex];
+                    nargs = getShort(code, ip);
+                    ip += Instruction.OperandSizeInBytes;
+                    // look up in original hierarchy not enclosing template (variable group)
+                    // see TestSubtemplates.testEvalSTFromAnotherGroup()
+                    st = self.groupThatCreatedThisInstance.getEmbeddedInstanceOf(self, ip, name);
+                    // get n args and store into st's attr list
+                    storeArgs(self, nargs, st);
+                    sp -= nargs;
+                    operands[++sp] = st;
+                    break;
+
+                case Bytecode.INSTR_NEW_IND:
+                    nargs = getShort(code, ip);
+                    ip += Instruction.OperandSizeInBytes;
+                    name = (string)operands[sp - nargs];
+                    st = self.groupThatCreatedThisInstance.getEmbeddedInstanceOf(self, ip, name);
+                    storeArgs(self, nargs, st);
+                    sp -= nargs;
+                    sp--; // pop template name
+                    operands[++sp] = st;
+                    break;
+
+                case Bytecode.INSTR_NEW_BOX_ARGS:
+                    nameIndex = getShort(code, ip);
+                    ip += Instruction.OperandSizeInBytes;
+                    name = self.impl.strings[nameIndex];
+                    IDictionary<string, object> attrs = (IDictionary<string, object>)operands[sp--];
+                    // look up in original hierarchy not enclosing template (variable group)
+                    // see TestSubtemplates.testEvalSTFromAnotherGroup()
+                    st = self.groupThatCreatedThisInstance.getEmbeddedInstanceOf(self, ip, name);
+                    // get n args and store into st's attr list
+                    storeArgs(self, attrs, st);
+                    operands[++sp] = st;
+                    break;
+
+                case Bytecode.INSTR_SUPER_NEW:
+                    nameIndex = getShort(code, ip);
+                    ip += Instruction.OperandSizeInBytes;
+                    name = self.impl.strings[nameIndex];
+                    nargs = getShort(code, ip);
+                    ip += Instruction.OperandSizeInBytes;
+                    super_new(self, name, nargs);
+                    break;
+
+                case Bytecode.INSTR_SUPER_NEW_BOX_ARGS:
+                    nameIndex = getShort(code, ip);
+                    ip += Instruction.OperandSizeInBytes;
+                    name = self.impl.strings[nameIndex];
+                    attrs = (IDictionary<string, object>)operands[sp--];
+                    super_new(self, name, attrs);
+                    break;
+
+                case Bytecode.INSTR_STORE_OPTION:
+                    int optionIndex = getShort(code, ip);
+                    ip += Instruction.OperandSizeInBytes;
+                    o = operands[sp--];    // value to store
+                    options = (object[])operands[sp]; // get options
+                    options[optionIndex] = o; // store value into options on stack
+                    break;
+
+                case Bytecode.INSTR_STORE_ARG:
+                    nameIndex = getShort(code, ip);
+                    name = self.impl.strings[nameIndex];
+                    ip += Instruction.OperandSizeInBytes;
+                    o = operands[sp--];
+                    attrs = (IDictionary<string, object>)operands[sp];
+                    attrs[name] = o; // leave attrs on stack
+                    break;
+
+                case Bytecode.INSTR_WRITE:
+                    o = operands[sp--];
+                    int n1 = writeObjectNoOptions(@out, self, o);
+                    n += n1;
+                    nwline += n1;
+                    break;
+
+                case Bytecode.INSTR_WRITE_OPT:
+                    options = (object[])operands[sp--]; // get options
+                    o = operands[sp--];                 // get option to write
+                    int n2 = writeObjectWithOptions(@out, self, o, options);
+                    n += n2;
+                    nwline += n2;
+                    break;
+
+                case Bytecode.INSTR_MAP:
+                    st = (ST)operands[sp--]; // get prototype off stack
+                    o = operands[sp--];		 // get object to map prototype across
+                    map(self, o, st);
+                    break;
+
+                case Bytecode.INSTR_ROT_MAP:
+                    int nmaps = getShort(code, ip);
+                    ip += Instruction.OperandSizeInBytes;
+                    List<ST> templates = new List<ST>();
+                    for (int i = nmaps - 1; i >= 0; i--)
+                        templates.Add((ST)operands[sp - i]);
+                    sp -= nmaps;
+                    o = operands[sp--];
+                    if (o != null)
+                        rot_map(self, o, templates);
+                    break;
+
+                case Bytecode.INSTR_ZIP_MAP:
+                    st = (ST)operands[sp--];
+                    nmaps = getShort(code, ip);
+                    ip += Instruction.OperandSizeInBytes;
+                    List<object> exprs = new List<object>();
+                    for (int i = nmaps - 1; i >= 0; i--)
+                        exprs.Add(operands[sp - i]);
+
+                    sp -= nmaps;
+                    operands[++sp] = zip_map(self, exprs, st);
+                    break;
+
+                case Bytecode.INSTR_BR:
+                    ip = getShort(code, ip);
+                    break;
+
+                case Bytecode.INSTR_BRF:
+                    addr = getShort(code, ip);
+                    ip += Instruction.OperandSizeInBytes;
+                    o = operands[sp--]; // <if(expr)>...<endif>
+                    if (!testAttributeTrue(o))
+                        ip = addr; // jump
+
+                    break;
+
+                case Bytecode.INSTR_OPTIONS:
+                    operands[++sp] = new object[Compiler.Compiler.NUM_OPTIONS];
+                    break;
+
+                case Bytecode.INSTR_ARGS:
+                    operands[++sp] = new Dictionary<string, object>();
+                    break;
+
+                case Bytecode.INSTR_LIST:
+                    operands[++sp] = new List<object>();
+                    break;
+
+                case Bytecode.INSTR_ADD:
+                    o = operands[sp--];             // pop value
+                    List<object> list = (List<object>)operands[sp]; // don't pop list
+                    addToList(list, o);
+                    break;
+
+                case Bytecode.INSTR_TOSTR:
+                    // replace with string value; early eval
+                    operands[sp] = toString(self, operands[sp]);
+                    break;
+
+                case Bytecode.INSTR_FIRST:
+                    operands[sp] = first(operands[sp]);
+                    break;
+
+                case Bytecode.INSTR_LAST:
+                    operands[sp] = last(operands[sp]);
+                    break;
+
+                case Bytecode.INSTR_REST:
+                    operands[sp] = rest(operands[sp]);
+                    break;
+
+                case Bytecode.INSTR_TRUNC:
+                    operands[sp] = trunc(operands[sp]);
+                    break;
+
+                case Bytecode.INSTR_STRIP:
+                    operands[sp] = strip(operands[sp]);
+                    break;
+
+                case Bytecode.INSTR_TRIM:
+                    o = operands[sp--];
+                    if (o.GetType() == typeof(string))
+                    {
+                        operands[++sp] = ((string)o).Trim();
+                    }
+                    else
+                    {
+                        errMgr.runTimeError(self, current_ip, ErrorType.EXPECTING_STRING, "trim", o.GetType());
+                        operands[++sp] = o;
+                    }
+                    break;
+
+                case Bytecode.INSTR_LENGTH:
+                    operands[sp] = length(operands[sp]);
+                    break;
+
+                case Bytecode.INSTR_STRLEN:
+                    o = operands[sp--];
+                    if (o.GetType() == typeof(string))
+                    {
+                        operands[++sp] = ((string)o).Length;
+                    }
+                    else
+                    {
+                        errMgr.runTimeError(self, current_ip, ErrorType.EXPECTING_STRING, "strlen", o.GetType());
+                        operands[++sp] = 0;
+                    }
+                    break;
+
+                case Bytecode.INSTR_REVERSE:
+                    operands[sp] = reverse(operands[sp]);
+                    break;
+
+                case Bytecode.INSTR_NOT:
+                    operands[sp] = !testAttributeTrue(operands[sp]);
+                    break;
+
+                case Bytecode.INSTR_OR:
+                    right = operands[sp--];
+                    left = operands[sp--];
+                    operands[++sp] = testAttributeTrue(left) || testAttributeTrue(right);
+                    break;
+
+                case Bytecode.INSTR_AND:
+                    right = operands[sp--];
+                    left = operands[sp--];
+                    operands[++sp] = testAttributeTrue(left) && testAttributeTrue(right);
+                    break;
+
+                case Bytecode.INSTR_INDENT:
+                    strIndex = getShort(code, ip);
+                    ip += Instruction.OperandSizeInBytes;
+                    @out.pushIndentation(self.impl.strings[strIndex]);
+                    break;
+
+                case Bytecode.INSTR_DEDENT:
+                    @out.popIndentation();
+                    break;
+
+                case Bytecode.INSTR_NEWLINE:
+                    try
+                    {
+                        if (prevOpcode == Bytecode.INSTR_NEWLINE ||
+                            prevOpcode == Bytecode.INSTR_INDENT ||
+                            nwline > 0)
+                        {
+                            @out.write(Environment.NewLine);
+                        }
+                        nwline = 0;
+                    }
+                    catch (IOException ioe)
+                    {
+                        errMgr.IOError(self, ErrorType.WRITE_IO_ERROR, ioe);
+                    }
+                    break;
+
+                case Bytecode.INSTR_NOOP:
+                    break;
+
+                case Bytecode.INSTR_POP:
+                    sp--; // throw away top of stack
+                    break;
+
+                case Bytecode.INSTR_NULL:
+                    operands[++sp] = null;
+                    break;
+
+                default:
+                    errMgr.internalError(self, "invalid bytecode @ " + (ip - 1) + ": " + opcode, null);
+                    self.impl.dump();
+                    break;
+                }
+                prevOpcode = opcode;
+            }
+            if (STGroup.debug)
+            {
+                int stop = @out.index() - 1;
+                EvalTemplateEvent e = new EvalTemplateEvent((DebugST)self, start, stop);
+                //System.out.println("eval template "+self+": "+e);
+                events.Add(e);
+                if (self.enclosingInstance != null)
+                {
+                    DebugST parent = (DebugST)self.enclosingInstance;
+                    getEvents(parent).Add(e);
+                }
+            }
+            return n;
         }
 
         // TODO: refactor to remove dup'd code
@@ -610,12 +615,10 @@ namespace Antlr4.StringTemplate
             if (st.impl.formalArguments == null)
                 return;
 
-            Iterator argNames = st.impl.formalArguments.Select(i => i.Name).iterator();
             for (int i = 0; i < numToStore; i++)
             {
-                // value to store
                 object o = operands[firstArg + i];
-                string argName = (string)argNames.next();
+                string argName = st.impl.formalArguments[i].Name;
                 st.rawSetAttribute(argName, o);
             }
         }
@@ -662,14 +665,14 @@ namespace Antlr4.StringTemplate
                     optionStrings[i] = toString(self, options[i]);
                 }
             }
-            if (options != null && options[(int)Option.ANCHOR] != null)
+            if (options != null && options[(int)Option.Anchor] != null)
             {
                 @out.pushAnchorPoint();
             }
 
             int n = writeObject(@out, self, o, optionStrings);
 
-            if (options != null && options[(int)Option.ANCHOR] != null)
+            if (options != null && options[(int)Option.Anchor] != null)
             {
                 @out.popAnchorPoint();
             }
@@ -694,9 +697,9 @@ namespace Antlr4.StringTemplate
             int n = 0;
             if (o == null)
             {
-                if (options != null && options[(int)Option.NULL] != null)
+                if (options != null && options[(int)Option.Null] != null)
                 {
-                    o = options[(int)Option.NULL];
+                    o = options[(int)Option.Null];
                 }
                 else
                     return 0;
@@ -705,20 +708,20 @@ namespace Antlr4.StringTemplate
             {
                 ((ST)o).enclosingInstance = self;
                 setDefaultArguments((ST)o);
-                if (options != null && options[(int)Option.WRAP] != null)
+                if (options != null && options[(int)Option.Wrap] != null)
                 {
                     // if we have a wrap string, then inform writer it
                     // might need to wrap
                     try
                     {
-                        @out.writeWrap(options[(int)Option.WRAP]);
+                        @out.writeWrap(options[(int)Option.Wrap]);
                     }
                     catch (IOException ioe)
                     {
                         errMgr.IOError(self, ErrorType.WRITE_IO_ERROR, ioe);
                     }
                 }
-                n = exec(@out, (ST)o);
+                n = Execute(@out, (ST)o);
             }
             else
             {
@@ -746,7 +749,7 @@ namespace Antlr4.StringTemplate
             Iterator it = (Iterator)o;
             string separator = null;
             if (options != null)
-                separator = options[(int)Option.SEPARATOR];
+                separator = options[(int)Option.Separator];
             bool seenAValue = false;
             while (it.hasNext())
             {
@@ -755,7 +758,7 @@ namespace Antlr4.StringTemplate
                 bool needSeparator = seenAValue &&
                     separator != null &&            // we have a separator and
                     (iterValue != null ||           // either we have a value
-                        options[(int)Option.NULL] != null); // or no value but null option
+                        options[(int)Option.Null] != null); // or no value but null option
                 if (needSeparator)
                     n += @out.writeSeparator(separator);
                 int nw = writeObject(@out, self, iterValue, options);
@@ -770,17 +773,17 @@ namespace Antlr4.StringTemplate
         {
             string formatString = null;
             if (options != null)
-                formatString = options[(int)Option.FORMAT];
+                formatString = options[(int)Option.Format];
             AttributeRenderer r = group.getAttributeRenderer(o.GetType());
             string v;
             if (r != null)
-                v = r.toString(o, formatString, locale);
+                v = r.toString(o, formatString, culture);
             else
                 v = o.ToString();
             int n;
-            if (options != null && options[(int)Option.WRAP] != null)
+            if (options != null && options[(int)Option.Wrap] != null)
             {
-                n = @out.write(v, options[(int)Option.WRAP]);
+                n = @out.write(v, options[(int)Option.Wrap]);
             }
             else
             {
@@ -961,7 +964,7 @@ namespace Antlr4.StringTemplate
         }
 
         /** Return the first attribute if multiple valued or the attribute
-         *  itself if single-valued.  Used in <names:first()>
+         *  itself if single-valued.  Used in &lt;names:first()&gt;
          */
         public virtual object first(object v)
         {
@@ -1161,7 +1164,7 @@ namespace Antlr4.StringTemplate
                 // if not string already, must evaluate it
                 StringWriter sw = new StringWriter();
                 /*
-                            Interpreter interp = new Interpreter(group, new NoIndentWriter(sw), locale);
+                            Interpreter interp = new Interpreter(group, new NoIndentWriter(sw), culture);
                             interp.writeObjectNoOptions(self, value, -1, -1);
                             */
                 writeObjectNoOptions(new NoIndentWriter(sw), self, value);
@@ -1369,10 +1372,11 @@ namespace Antlr4.StringTemplate
 
         public virtual List<InterpEvent> getEvents(ST st)
         {
-            if (debugInfo.get(st) == null)
-                debugInfo[st] = new List<InterpEvent>();
+            List<InterpEvent> events;
+            if (!debugInfo.TryGetValue(st, out events) || events == null)
+                debugInfo[st] = events = new List<InterpEvent>();
 
-            return debugInfo.get(st);
+            return events;
         }
 
         public virtual List<string> getExecutionTrace()
@@ -1380,12 +1384,9 @@ namespace Antlr4.StringTemplate
             return executeTrace;
         }
 
-        public static int getShort(byte[] memory, int index)
+        public static int getShort(byte[] value, int startIndex)
         {
-            int b1 = memory[index] & 0xFF; // mask off sign-extended bits
-            int b2 = memory[index + 1] & 0xFF;
-            return b1 << (8 * 1) | b2;
+            return BitConverter.ToInt16(value, startIndex);
         }
-
     }
 }

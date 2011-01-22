@@ -56,7 +56,7 @@ scope {
 	$impl = $template::state.impl;
  	if ($template.Count == 1) outermostImpl = $impl;
 	$impl.defineFormalArgs($args); // make sure args are defined prior to compilation
-	if ( name!=null && name.StartsWith(Compiler.SUBTEMPLATE_PREFIX) ) {
+	if ( name!=null && name.StartsWith(Compiler.SubtemplatePrefix) ) {
 	    $impl.addArg(new FormalArgument("i"));
 	    $impl.addArg(new FormalArgument("i0"));
     }

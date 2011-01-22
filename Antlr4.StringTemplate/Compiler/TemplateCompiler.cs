@@ -40,28 +40,28 @@ namespace Antlr4.StringTemplate.Compiler
     /** A compiler for a single template. */
     public class Compiler
     {
-        public static readonly string SUBTEMPLATE_PREFIX = "_sub";
+        public static readonly string SubtemplatePrefix = "_sub";
 
         public const int InitialCodeSize = 15;
 
         public static readonly IDictionary<string, Interpreter.Option> supportedOptions =
             new Dictionary<string, Interpreter.Option>()
-        {
-            {"anchor",       Interpreter.Option.ANCHOR},
-            {"format",       Interpreter.Option.FORMAT},
-            {"null",         Interpreter.Option.NULL},
-            {"separator",    Interpreter.Option.SEPARATOR},
-            {"wrap",         Interpreter.Option.WRAP},
-        };
+            {
+                {"anchor",       Interpreter.Option.Anchor},
+                {"format",       Interpreter.Option.Format},
+                {"null",         Interpreter.Option.Null},
+                {"separator",    Interpreter.Option.Separator},
+                {"wrap",         Interpreter.Option.Wrap},
+            };
 
         public static readonly int NUM_OPTIONS = supportedOptions.Count;
 
         public static readonly IDictionary<string, string> defaultOptionValues =
             new Dictionary<string, string>()
-        {
-            {"anchor", "true"},
-            {"wrap",   "\n"},
-        };
+            {
+                {"anchor", "true"},
+                {"wrap",   "\n"},
+            };
 
         public static IDictionary<string, Bytecode> funcs =
             new Dictionary<string, Bytecode>()
@@ -195,7 +195,7 @@ namespace Antlr4.StringTemplate.Compiler
         public static string getNewSubtemplateName()
         {
             subtemplateCount++;
-            return SUBTEMPLATE_PREFIX + subtemplateCount;
+            return SubtemplatePrefix + subtemplateCount;
         }
 
         protected virtual void reportMessageAndThrowSTException(ITokenStream tokens, IToken templateToken, Parser parser, RecognitionException re)

@@ -406,28 +406,28 @@ namespace Antlr4.StringTemplate
         {
             Interpreter interp = new Interpreter(groupThatCreatedThisInstance, impl.nativeGroup.errMgr);
             interp.setDefaultArguments(this);
-            return interp.exec(@out, this);
+            return interp.Execute(@out, this);
         }
 
         public virtual int write(STWriter @out, CultureInfo locale)
         {
             Interpreter interp = new Interpreter(groupThatCreatedThisInstance, locale, impl.nativeGroup.errMgr);
             interp.setDefaultArguments(this);
-            return interp.exec(@out, this);
+            return interp.Execute(@out, this);
         }
 
         public virtual int write(STWriter @out, STErrorListener listener)
         {
             Interpreter interp = new Interpreter(groupThatCreatedThisInstance, new ErrorManager(listener));
             interp.setDefaultArguments(this);
-            return interp.exec(@out, this);
+            return interp.Execute(@out, this);
         }
 
         public virtual int write(STWriter @out, CultureInfo locale, STErrorListener listener)
         {
             Interpreter interp = new Interpreter(groupThatCreatedThisInstance, locale, new ErrorManager(listener));
             interp.setDefaultArguments(this);
-            return interp.exec(@out, this);
+            return interp.Execute(@out, this);
         }
 
         public virtual string render()
