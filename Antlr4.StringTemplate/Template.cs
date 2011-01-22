@@ -182,18 +182,14 @@ namespace Antlr4.StringTemplate
             FormalArgument arg = null;
             if (impl.hasFormalArgs)
             {
-                if (impl.formalArguments != null)
-                    impl.formalArguments.TryGetValue(name, out arg);
-
+                arg = impl.TryGetFormalArgument(name);
                 if (arg == null)
                     throw new ArgumentException("no such attribute: " + name);
             }
             else
             {
                 // define and make room in locals (a hack to make new ST("simple template") work.)
-                if (impl.formalArguments != null)
-                    impl.formalArguments.TryGetValue(name, out arg);
-
+                arg = impl.TryGetFormalArgument(name);
                 if (arg == null)
                 {
                     // not defined
@@ -252,8 +248,7 @@ namespace Antlr4.StringTemplate
                 return;
             }
 
-            FormalArgument arg;
-            impl.formalArguments.TryGetValue(name, out arg);
+            FormalArgument arg = impl.TryGetFormalArgument(name);
             if (arg == null)
                 throw new ArgumentException("no such attribute: " + name);
 
@@ -269,8 +264,7 @@ namespace Antlr4.StringTemplate
             if (impl.formalArguments == null)
                 throw new ArgumentException("no such attribute: " + name);
 
-            FormalArgument arg;
-            impl.formalArguments.TryGetValue(name, out arg);
+            FormalArgument arg = impl.TryGetFormalArgument(name);
             if (arg == null)
                 throw new ArgumentException("no such attribute: " + name);
 
@@ -286,10 +280,7 @@ namespace Antlr4.StringTemplate
             ST p = this;
             while (p != null)
             {
-                FormalArgument localArg = null;
-                if (p.impl.formalArguments != null)
-                    p.impl.formalArguments.TryGetValue(name, out localArg);
-
+                FormalArgument localArg = p.impl.TryGetFormalArgument(name);
                 if (localArg != null)
                 {
                     object o = p.locals[localArg.index];
@@ -315,7 +306,7 @@ namespace Antlr4.StringTemplate
                 return null;
 
             IDictionary<string, object> attributes = new Dictionary<string, object>();
-            foreach (FormalArgument a in impl.formalArguments.Values)
+            foreach (FormalArgument a in impl.formalArguments)
             {
                 object o = locals[a.index];
                 if (o == ST.EMPTY_ATTR)

@@ -36,8 +36,10 @@ namespace Antlr4.StringTemplate.Compiler
     using Antlr.Runtime.Tree;
     using Antlr.Runtime;
     using Antlr4.StringTemplate.Misc;
+    using System.Linq;
     using StringWriter = System.IO.StringWriter;
     using Console = System.Console;
+    using ArgumentNullException = System.ArgumentNullException;
 
     /** The result of compiling an ST.  Contains all the bytecode instructions,
      *  string table, bytecode address to source code map, and other bookkeeping
@@ -61,7 +63,7 @@ namespace Antlr4.StringTemplate.Compiler
         public CommonTree ast;
 
         /** Must be non null map if !noFormalArgs */
-        public IDictionary<string, FormalArgument> formalArguments;
+        public List<FormalArgument> formalArguments;
 
         public bool hasFormalArgs;
 
@@ -103,6 +105,16 @@ namespace Antlr4.StringTemplate.Compiler
             template = "";
         }
 
+        public virtual FormalArgument TryGetFormalArgument(string name)
+        {
+            if (name == null)
+                throw new ArgumentNullException("name");
+            if (formalArguments == null)
+                return null;
+
+            return formalArguments.FirstOrDefault(i => i.name == name);
+        }
+
         public virtual void addImplicitlyDefinedTemplate(CompiledST sub)
         {
             if (implicitlyDefinedTemplates == null)
@@ -116,13 +128,7 @@ namespace Antlr4.StringTemplate.Compiler
             if (formalArguments == null)
                 return 0;
 
-            int n = 0;
-            foreach (string arg in formalArguments.Keys)
-            {
-                if (formalArguments[arg].defaultValueToken != null)
-                    n++;
-            }
-
+            int n = formalArguments.Count(i => i.defaultValueToken != null);
             return n;
         }
 
@@ -131,9 +137,8 @@ namespace Antlr4.StringTemplate.Compiler
             if (formalArguments == null)
                 return;
 
-            foreach (string a in formalArguments.Keys)
+            foreach (FormalArgument fa in formalArguments)
             {
-                FormalArgument fa = formalArguments[a];
                 if (fa.defaultValueToken != null)
                 {
                     string argSTname = fa.name + "_default_value";
@@ -163,10 +168,10 @@ namespace Antlr4.StringTemplate.Compiler
         public virtual void addArg(FormalArgument a)
         {
             if (formalArguments == null)
-                formalArguments = new Dictionary<string, FormalArgument>();
+                formalArguments = new List<FormalArgument>();
 
             a.index = formalArguments.Count;
-            formalArguments[a.name] = a;
+            formalArguments.Add(a);
         }
 
         public virtual void defineImplicitlyDefinedTemplates(STGroup group)

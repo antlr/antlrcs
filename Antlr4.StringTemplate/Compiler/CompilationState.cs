@@ -72,8 +72,8 @@ namespace Antlr4.StringTemplate.Compiler
         public virtual void refAttr(IToken templateToken, CommonTree id)
         {
             string name = id.Text;
-            FormalArgument arg;
-            if (impl.formalArguments != null && impl.formalArguments.TryGetValue(name, out arg) && arg != null)
+            FormalArgument arg = impl.TryGetFormalArgument(name);
+            if (arg != null)
             {
                 int index = arg.index;
                 emit1(id, Bytecode.INSTR_LOAD_LOCAL, index);
@@ -200,12 +200,8 @@ namespace Antlr4.StringTemplate.Compiler
             if ((ip + n) >= impl.instrs.Length)
             {
                 // ensure room for full instruction
-                byte[] c = new byte[impl.instrs.Length * 2];
-                Array.Copy(impl.instrs, 0, c, 0, impl.instrs.Length);
-                impl.instrs = c;
-                Interval[] sm = new Interval[impl.sourceMap.Length * 2];
-                Array.Copy(impl.sourceMap, 0, sm, 0, impl.sourceMap.Length);
-                impl.sourceMap = sm;
+                Array.Resize(ref impl.instrs, impl.instrs.Length * 2);
+                Array.Resize(ref impl.sourceMap, impl.sourceMap.Length * 2);
             }
         }
 

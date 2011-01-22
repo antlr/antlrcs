@@ -132,7 +132,7 @@ namespace Antlr4.StringTemplate.Misc
             buf.Append(self.getName());
             buf.Append("(");
             if (self.impl.formalArguments != null)
-                buf.Append(string.Join(",", self.impl.formalArguments.Keys.ToArray()));
+                buf.Append(string.Join(",", self.impl.formalArguments.Select(i => i.name).ToArray()));
             buf.Append(")@");
             buf.Append(GetHashCode());
             buf.Append(">");

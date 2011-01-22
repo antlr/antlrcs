@@ -631,7 +631,7 @@ namespace Antlr4.StringTemplate
                 buf.Append(name);
                 buf.Append('(');
                 if (c.formalArguments != null)
-                    buf.Append(string.Join(",", c.formalArguments.Values.Select(i => i.ToString()).ToArray()));
+                    buf.Append(string.Join(",", c.formalArguments.Select(i => i.ToString()).ToArray()));
 
                 buf.Append(')');
                 buf.Append(" ::= <<" + Environment.NewLine);

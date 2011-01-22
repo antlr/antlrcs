@@ -119,9 +119,7 @@ namespace Antlr4.StringTemplate
         {
             if ((anchors_sp + 1) >= anchors.Length)
             {
-                int[] a = new int[anchors.Length * 2];
-                Array.Copy(anchors, 0, a, 0, anchors.Length - 1);
-                anchors = a;
+                Array.Resize(ref anchors, anchors.Length * 2);
             }
             anchors_sp++;
             anchors[anchors_sp] = charPosition;

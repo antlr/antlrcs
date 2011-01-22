@@ -575,7 +575,7 @@ namespace Antlr4.StringTemplate
             foreach (string argName in attrs.Keys)
             {
                 // don't let it throw an exception in rawSetAttribute
-                if (!st.impl.formalArguments.ContainsKey(argName))
+                if (!st.impl.formalArguments.Any(i => i.name == argName))
                 {
                     errMgr.runTimeError(self, current_ip, ErrorType.NO_SUCH_ATTRIBUTE, argName);
                     continue;
@@ -610,7 +610,7 @@ namespace Antlr4.StringTemplate
             if (st.impl.formalArguments == null)
                 return;
 
-            Iterator argNames = st.impl.formalArguments.Keys.iterator();
+            Iterator argNames = st.impl.formalArguments.Select(i => i.name).iterator();
             for (int i = 0; i < numToStore; i++)
             {
                 // value to store
@@ -875,7 +875,7 @@ namespace Antlr4.StringTemplate
             // ensure arguments line up
             int numExprs = exprs.Count;
             CompiledST code = prototype.impl;
-            IDictionary<string, FormalArgument> formalArguments = code.formalArguments;
+            List<FormalArgument> formalArguments = code.formalArguments;
             if (!code.hasFormalArgs || formalArguments == null)
             {
                 errMgr.runTimeError(self, current_ip, ErrorType.MISSING_FORMAL_ARGUMENTS);
@@ -883,7 +883,7 @@ namespace Antlr4.StringTemplate
             }
 
             // todo: track formal args not names for efficient filling of locals
-            object[] formalArgumentNames = formalArguments.Keys.ToArray();
+            object[] formalArgumentNames = formalArguments.Select(i => i.name).ToArray();
             int nformalArgs = formalArgumentNames.Length;
             if (prototype.isAnonSubtemplate())
                 nformalArgs -= predefinedAnonSubtemplateAttributes.Count;
@@ -895,9 +895,7 @@ namespace Antlr4.StringTemplate
                 // truncate arg list to match smaller size
                 int shorterSize = Math.Min(formalArgumentNames.Length, numExprs);
                 numExprs = shorterSize;
-                object[] newFormalArgumentNames = new object[shorterSize];
-                Array.Copy(formalArgumentNames, 0, newFormalArgumentNames, 0, shorterSize);
-                formalArgumentNames = newFormalArgumentNames;
+                Array.Resize(ref formalArgumentNames, shorterSize);
             }
 
             // keep walking while at least one attribute has values
@@ -1279,7 +1277,7 @@ namespace Antlr4.StringTemplate
         {
             if (invokedST.impl.formalArguments == null)
                 return;
-            foreach (FormalArgument arg in invokedST.impl.formalArguments.Values)
+            foreach (FormalArgument arg in invokedST.impl.formalArguments)
             {
                 // if no value for attribute and default arg, inject default arg into self
                 if (invokedST.locals[arg.index] == ST.EMPTY_ATTR && arg.compiledDefaultValue != null)
