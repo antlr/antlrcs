@@ -34,6 +34,7 @@ namespace Antlr4.Test.StringTemplate
 {
     using Antlr4.StringTemplate;
     using Microsoft.VisualStudio.TestTools.UnitTesting;
+    using Path = System.IO.Path;
 
     [TestClass]
     public class TestIndentation : BaseTest
@@ -47,7 +48,7 @@ namespace Antlr4.Test.StringTemplate
                     ">>" + newline;
 
             writeFile(tmpdir, "t.stg", templates);
-            STGroup group = new STGroupFile(tmpdir + "/" + "t.stg");
+            STGroup group = new STGroupFile(Path.Combine(tmpdir, "t.stg"));
             ST t = group.getInstanceOf("list");
             t.impl.dump();
             t.add("a", "Terence");
@@ -66,7 +67,7 @@ namespace Antlr4.Test.StringTemplate
                     ">>" + newline;
 
             writeFile(tmpdir, "t.stg", templates);
-            STGroup group = new STGroupFile(tmpdir + "/" + "t.stg");
+            STGroup group = new STGroupFile(Path.Combine(tmpdir, "t.stg"));
             ST t = group.getInstanceOf("list");
             t.add("names", "Terence");
             t.add("names", "Jim");
@@ -86,7 +87,7 @@ namespace Antlr4.Test.StringTemplate
                     "  <names; separator=\"\n\">" + newline +
                     ">>" + newline;
             writeFile(tmpdir, "t.stg", templates);
-            STGroup group = new STGroupFile(tmpdir + "/" + "t.stg");
+            STGroup group = new STGroupFile(Path.Combine(tmpdir, "t.stg"));
             ST t = group.getInstanceOf("list");
             t.add("names", "Terence\nis\na\nmaniac");
             t.add("names", "Jim");
@@ -111,7 +112,7 @@ namespace Antlr4.Test.StringTemplate
                     "  <names>" + newline +
                     ">>" + newline;
             writeFile(tmpdir, "t.stg", templates);
-            STGroup group = new STGroupFile(tmpdir + "/" + "t.stg");
+            STGroup group = new STGroupFile(Path.Combine(tmpdir, "t.stg"));
             ST t = group.getInstanceOf("list");
             t.add("names", "Terence\n\nis a maniac");
             string expecting =
@@ -131,7 +132,7 @@ namespace Antlr4.Test.StringTemplate
                     "after" + newline +
                     ">>" + newline;
             writeFile(tmpdir, "t.stg", templates);
-            STGroup group = new STGroupFile(tmpdir + "/" + "t.stg");
+            STGroup group = new STGroupFile(Path.Combine(tmpdir, "t.stg"));
             ST t = group.getInstanceOf("list");
             t.add("names", "Terence");
             t.add("names", "Jim");
@@ -162,7 +163,7 @@ namespace Antlr4.Test.StringTemplate
                     "assign(lhs,expr) ::= <<<lhs>=<expr>;>>" + newline
                     ;
             writeFile(tmpdir, "t.stg", templates);
-            STGroup group = new STGroupFile(tmpdir + "/" + "t.stg");
+            STGroup group = new STGroupFile(Path.Combine(tmpdir, "t.stg"));
             ST t = group.getInstanceOf("method");
             t.add("name", "foo");
             ST s1 = group.getInstanceOf("assign");
@@ -199,7 +200,10 @@ namespace Antlr4.Test.StringTemplate
                 "    <if(x)>foo<endif>" + newline +
                 "end" + newline);
             t.add("x", "x");
-            string expecting = "begin" + newline + "    foo" + newline + "end" + newline;
+            string expecting =
+                "begin" + newline +
+                "    foo" + newline +
+                "end" + newline;
             string result = t.render();
             Assert.AreEqual(expecting, result);
         }
@@ -215,7 +219,10 @@ namespace Antlr4.Test.StringTemplate
                 "   bar" + newline +
                 "   <endif>" + newline +
                 "end" + newline);
-            string expecting = "begin" + newline + "   bar" + newline + "end" + newline;
+            string expecting =
+                "begin" + newline +
+                "   bar" + newline +
+                "end" + newline;
             string result = t.render();
             Assert.AreEqual(expecting, result);
         }
@@ -232,7 +239,10 @@ namespace Antlr4.Test.StringTemplate
                 "   <endif>" + newline +
                 "end" + newline);
             t.add("y", "y");
-            string expecting = "begin" + newline + "   y" + newline + "end" + newline;
+            string expecting =
+                "begin" + newline +
+                "   y" + newline +
+                "end" + newline;
             string result = t.render();
             Assert.AreEqual(expecting, result);
         }
@@ -249,7 +259,10 @@ namespace Antlr4.Test.StringTemplate
                 "   <endif>" + newline +
                 "end" + newline);
             t.add("y", "y");
-            string expecting = "begin" + newline + "     y" + newline + "end" + newline;
+            string expecting =
+                "begin" + newline +
+                "     y" + newline +
+                "end" + newline;
             string result = t.render();
             Assert.AreEqual(expecting, result);
         }
@@ -271,7 +284,10 @@ namespace Antlr4.Test.StringTemplate
                 "end" + newline);
             t.add("x", "x");
             t.add("y", "y");
-            string expecting = "begin" + newline + "      foo" + newline + "end" + newline; // no indent
+            string expecting =
+                "begin" + newline +
+                "      foo" + newline +
+                "end" + newline; // no indent
             string result = t.render();
             Assert.AreEqual(expecting, result);
         }

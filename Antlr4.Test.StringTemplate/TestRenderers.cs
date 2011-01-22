@@ -134,12 +134,11 @@ namespace Antlr4.Test.StringTemplate
         }
 #endif
 
-#if false
         [TestMethod]
         public void TestStringRendererWithPrintfFormat()
         {
             string templates =
-                    "foo(x) ::= << <x; format=\"%6s\"> >>\n";
+                    "foo(x) ::= << <x; format=\"{0,6}\"> >>\n";
 
             writeFile(tmpdir, "t.stg", templates);
             STGroup group = new STGroupFile(tmpdir + "/t.stg");
@@ -203,14 +202,12 @@ namespace Antlr4.Test.StringTemplate
             string result = st.render();
             Assert.AreEqual(expecting, result);
         }
-#endif
 
-#if false // number renderer
         [TestMethod]
         public void TestNumberRendererWithPrintfFormat()
         {
-            string templates =
-                    "foo(x,y) ::= << <x; format=\"%d\"> <y; format=\"%2.3f\"> >>\n";
+            //string templates = "foo(x,y) ::= << <x; format=\"%d\"> <y; format=\"%2.3f\"> >>\n";
+            string templates = "foo(x,y) ::= << <x; format=\"{0}\"> <y; format=\"{0:0.000}\"> >>\n";
 
             writeFile(tmpdir, "t.stg", templates);
             STGroup group = new STGroupFile(tmpdir + "/t.stg");
@@ -231,7 +228,8 @@ namespace Antlr4.Test.StringTemplate
                     "numberThing(x,y,z) ::= \"numbers: <x>, <y>; <z>\"\n";
             writeFile(tmpdir, "t.stg", templates);
             STGroup group = new STGroupFile(tmpdir + "/t.stg");
-            group.registerRenderer(typeof(Number), new NumberRenderer());
+            group.registerRenderer(typeof(int), new NumberRenderer());
+            group.registerRenderer(typeof(double), new NumberRenderer());
             ST st = group.getInstanceOf("numberThing");
             st.add("x", -2100);
             st.add("y", 3.14159);
@@ -244,8 +242,8 @@ namespace Antlr4.Test.StringTemplate
         [TestMethod]
         public void TestLocaleWithNumberRenderer()
         {
-            string templates =
-                    "foo(x,y) ::= << <x; format=\"%,d\"> <y; format=\"%,2.3f\"> >>\n";
+            //string templates = "foo(x,y) ::= << <x; format=\"%,d\"> <y; format=\"%,2.3f\"> >>\n";
+            string templates = "foo(x,y) ::= << <x; format=\"{0:#,#}\"> <y; format=\"{0:0.000}\"> >>\n";
 
             writeFile(tmpdir, "t.stg", templates);
             STGroup group = new STGroupFile(tmpdir + "/t.stg");
@@ -254,11 +252,10 @@ namespace Antlr4.Test.StringTemplate
             ST st = group.getInstanceOf("foo");
             st.add("x", -2100);
             st.add("y", 3.14159);
-            // Polish uses ' ' for ',' and ',' for '.'
-            string expecting = " -2Ê100 3,142 ";
+            // Polish uses ' ' (ASCII 160) for ',' and ',' for '.'
+            string expecting = " -2 100 3,142 "; // Ê
             string result = st.render(new CultureInfo("pl"));
             Assert.AreEqual(expecting, result);
         }
-#endif
     }
 }

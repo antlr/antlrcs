@@ -36,6 +36,7 @@ namespace Antlr4.Test.StringTemplate
     using Microsoft.VisualStudio.TestTools.UnitTesting;
     using Antlr4.StringTemplate.Misc;
     using System.Runtime.CompilerServices;
+    using Path = System.IO.Path;
 
     [TestClass]
     public class TestGroups : BaseTest
@@ -88,7 +89,7 @@ namespace Antlr4.Test.StringTemplate
             writeFile(dir, "a.st", a);
             string b =
                 "b() ::= \"bar\"" + newline;
-            writeFile(dir + "/subdir", "b.st", b);
+            writeFile(Path.Combine(dir, "subdir"), "b.st", b);
             STGroup group = new STGroupDir(dir);
             ST st1 = group.getInstanceOf("a");
             ST st2 = group.getInstanceOf("subdir/b");
@@ -227,7 +228,7 @@ namespace Antlr4.Test.StringTemplate
                 "b() ::= \"duh\"\n";
             writeFile(dir, "group.stg", groupFile);
             STErrorListener errors = new ErrorBuffer();
-            STGroupFile group = new STGroupFile(dir + "/group.stg");
+            STGroupFile group = new STGroupFile(Path.Combine(dir, "group.stg"));
             group.setListener(errors);
             group.load();
             string expected = "group.stg 2:0: redefinition of template b" + newline;
@@ -243,7 +244,7 @@ namespace Antlr4.Test.StringTemplate
                 "a() ::= \"bar\"\n" +
                 "b ::= a\n";
             writeFile(dir, "group.stg", groupFile);
-            STGroupFile group = new STGroupFile(dir + "/group.stg");
+            STGroupFile group = new STGroupFile(Path.Combine(dir, "group.stg"));
             ST st = group.getInstanceOf("b");
             string expected = "bar";
             string result = st.render();
@@ -258,7 +259,7 @@ namespace Antlr4.Test.StringTemplate
                 "a(x,y) ::= \"<x><y>\"\n" +
                 "b ::= a\n";
             writeFile(dir, "group.stg", groupFile);
-            STGroupFile group = new STGroupFile(dir + "/group.stg");
+            STGroupFile group = new STGroupFile(Path.Combine(dir, "group.stg"));
             ST st = group.getInstanceOf("b");
             st.add("x", 1);
             st.add("y", 2);
@@ -489,7 +490,7 @@ namespace Antlr4.Test.StringTemplate
                 "f(x,y) ::= \"<x><y>\"\n" +
                 "g() ::= \"<f(x={a},y={b})>\"";
             writeFile(dir, "group.stg", groupFile);
-            STGroupFile group = new STGroupFile(dir + "/group.stg");
+            STGroupFile group = new STGroupFile(Path.Combine(dir, "group.stg"));
             ST st = group.getInstanceOf("g");
             string expected = "ab";
             string result = st.render();
@@ -504,7 +505,7 @@ namespace Antlr4.Test.StringTemplate
                 "f(x,y) ::= \"<x><y>\"\n" +
                 "g() ::= \"<f(y={b},x={a})>\"";
             writeFile(dir, "group.stg", groupFile);
-            STGroupFile group = new STGroupFile(dir + "/group.stg");
+            STGroupFile group = new STGroupFile(Path.Combine(dir, "group.stg"));
             ST st = group.getInstanceOf("g");
             string expected = "ab";
             string result = st.render();
@@ -521,7 +522,7 @@ namespace Antlr4.Test.StringTemplate
             //012345678901234567
 
             writeFile(dir, "group.stg", groupFile);
-            STGroupFile group = new STGroupFile(dir + "/group.stg");
+            STGroupFile group = new STGroupFile(Path.Combine(dir, "group.stg"));
             ErrorBuffer errors = new ErrorBuffer();
             group.setListener(errors);
             ST st = group.getInstanceOf("g");
@@ -541,11 +542,11 @@ namespace Antlr4.Test.StringTemplate
             //012345678901234567
 
             writeFile(dir, "group.stg", groupFile);
-            STGroupFile group = new STGroupFile(dir + "/group.stg");
+            STGroupFile group = new STGroupFile(Path.Combine(dir, "group.stg"));
             ErrorBuffer errors = new ErrorBuffer();
             group.setListener(errors);
             group.load();
-            string expected = "group.stg 2:28: mismatched input '{' expecting ID" + newline;
+            string expected = "group.stg 2:18: mismatched input '{' expecting ID" + newline;
             string result = errors.ToString();
             Assert.AreEqual(expected, result);
         }
@@ -559,7 +560,7 @@ namespace Antlr4.Test.StringTemplate
                 "g(name) ::= \"<(name)(x={a},y={b})>\"";
             //0123456789012345678901234567890
             writeFile(dir, "group.stg", groupFile);
-            STGroupFile group = new STGroupFile(dir + "/group.stg");
+            STGroupFile group = new STGroupFile(Path.Combine(dir, "group.stg"));
             ErrorBuffer errors = new ErrorBuffer();
             group.setListener(errors);
             group.load();

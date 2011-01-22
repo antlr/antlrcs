@@ -35,6 +35,7 @@ namespace Antlr4.Test.StringTemplate
     using Antlr4.StringTemplate;
     using Microsoft.VisualStudio.TestTools.UnitTesting;
     using System.Runtime.CompilerServices;
+    using Path = System.IO.Path;
 
     [TestClass]
     public class TestImports : BaseTest
@@ -42,12 +43,12 @@ namespace Antlr4.Test.StringTemplate
         [TestMethod]
         public void TestImportTemplate()
         {
-            string dir1 = tmpdir;
+            string dir1 = Path.Combine(tmpdir, "d1");
             string a = "a() ::= <<dir1 a>>\n";
             string b = "b() ::= <<dir1 b>>\n";
             writeFile(dir1, "a.st", a);
             writeFile(dir1, "b.st", b);
-            string dir2 = tmpdir;
+            string dir2 = Path.Combine(tmpdir, "d2");
             a = "a() ::= << <b()> >>\n";
             writeFile(dir2, "a.st", a);
 
@@ -198,10 +199,10 @@ namespace Antlr4.Test.StringTemplate
         [TestMethod]
         public void TestPolymorphicTemplateReference()
         {
-            string dir1 = tmpdir;
+            string dir1 = Path.Combine(tmpdir, "d1");
             string b = "b() ::= <<dir1 b>>\n";
             writeFile(dir1, "b.st", b);
-            string dir2 = tmpdir;
+            string dir2 = Path.Combine(tmpdir, "d2");
             string a = "a() ::= << <b()> >>\n";
             b = "b() ::= <<dir2 b>>\n";
             writeFile(dir2, "a.st", a);
@@ -227,12 +228,12 @@ namespace Antlr4.Test.StringTemplate
         [TestMethod]
         public void TestSuper()
         {
-            string dir1 = tmpdir;
+            string dir1 = Path.Combine(tmpdir, "d1");
             string a = "a() ::= <<dir1 a>>\n";
             string b = "b() ::= <<dir1 b>>\n";
             writeFile(dir1, "a.st", a);
             writeFile(dir1, "b.st", b);
-            string dir2 = tmpdir;
+            string dir2 = Path.Combine(tmpdir, "d2");
             a = "a() ::= << [<super.a()>] >>\n";
             writeFile(dir2, "a.st", a);
 
@@ -248,12 +249,12 @@ namespace Antlr4.Test.StringTemplate
         [TestMethod]
         public void TestUnloadImportedTemplate()
         {
-            string dir1 = tmpdir;
+            string dir1 = Path.Combine(tmpdir, "d1");
             string a = "a() ::= <<dir1 a>>\n";
             string b = "b() ::= <<dir1 b>>\n";
             writeFile(dir1, "a.st", a);
             writeFile(dir1, "b.st", b);
-            string dir2 = tmpdir;
+            string dir2 = Path.Combine(tmpdir, "d2");
             a = "a() ::= << <b()> >>\n";
             writeFile(dir2, "a.st", a);
 

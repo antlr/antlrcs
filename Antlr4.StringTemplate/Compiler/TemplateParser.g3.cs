@@ -47,7 +47,7 @@ namespace Antlr4.StringTemplate.Compiler
             this.templateToken = templateToken;
         }
 
-        protected object recoverFromMismatchedToken(IIntStream input, int ttype, BitSet follow)
+        protected override object RecoverFromMismatchedToken(IIntStream input, int ttype, BitSet follow)
         {
             throw new MismatchedTokenException(ttype, input);
         }

@@ -50,11 +50,14 @@ namespace Antlr4.StringTemplate.Misc
 
         public virtual object getProperty(ST self, object o, object property, string propertyName)
         {
+            if (o == null)
+                throw new ArgumentNullException("o");
+
+            Type c = o.GetType();
             if (property == null)
-                throw new ArgumentNullException("property");
+                throw new STNoSuchPropertyException(string.Format("{0}.{1}", c.FullName, propertyName ?? "null"));
 
             object value = null;
-            Type c = o.GetType();
             var accessor = FindMember(c, propertyName);
             if (accessor != null)
             {
@@ -62,7 +65,7 @@ namespace Antlr4.StringTemplate.Misc
             }
             else
             {
-                throw new STNoSuchPropertyException(string.Format("{0}.{1}", c.Name, propertyName));
+                throw new STNoSuchPropertyException(string.Format("{0}.{1}", c.FullName, propertyName));
             }
 
             return value;
@@ -93,21 +96,31 @@ namespace Antlr4.StringTemplate.Misc
 
                 // must look up using reflection
                 string methodSuffix = char.ToUpperInvariant(name[0]) + name.Substring(1);
+                bool checkOriginalName = !string.Equals(methodSuffix, name);
 
                 MethodInfo method = null;
                 if (method == null)
                 {
-                    System.Reflection.PropertyInfo p = type.GetProperty(methodSuffix);
+                    PropertyInfo p = type.GetProperty(methodSuffix);
+                    if (p == null && checkOriginalName)
+                        p = type.GetProperty(name);
+
                     if (p != null)
                         method = p.GetGetMethod();
                 }
+
                 if (method == null)
                 {
                     method = type.GetMethod("Get" + methodSuffix, Type.EmptyTypes);
+                    if (method == null && checkOriginalName)
+                        method = type.GetMethod("Get" + name, Type.EmptyTypes);
                 }
+
                 if (method == null)
                 {
-                    method = type.GetMethod("Is" + methodSuffix, Type.EmptyTypes);
+                    method = type.GetMethod("get_" + methodSuffix, Type.EmptyTypes);
+                    if (method == null && checkOriginalName)
+                        method = type.GetMethod("get_" + name, Type.EmptyTypes);
                 }
 
                 if (method != null)

@@ -147,6 +147,7 @@ namespace Antlr4.StringTemplate.Compiler
                 reportMessageAndThrowSTException(tokens, templateToken, p, re);
                 return null;
             }
+
             if (p.NumberOfSyntaxErrors > 0 || r.Tree == null)
             {
                 CompiledST impl = new CompiledST();
@@ -210,12 +211,14 @@ namespace Antlr4.StringTemplate.Compiler
                 errMgr.compileTimeError(ErrorType.SYNTAX_ERROR, templateToken, re.Token, msg);
             }
             else if (tokens.Index == 0)
-            { // couldn't parse anything
+            {
+                // couldn't parse anything
                 string msg = "this doesn't look like a template: \"" + tokens + "\"";
                 errMgr.compileTimeError(ErrorType.SYNTAX_ERROR, templateToken, re.Token, msg);
             }
             else if (tokens.LA(1) == STLexer.LDELIM)
-            { // couldn't parse expr
+            {
+                // couldn't parse expr
                 string msg = "doesn't look like an expression";
                 errMgr.compileTimeError(ErrorType.SYNTAX_ERROR, templateToken, re.Token, msg);
             }

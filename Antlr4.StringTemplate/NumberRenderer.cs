@@ -51,9 +51,7 @@ namespace Antlr4.StringTemplate
             if (formatString == null)
                 return o.ToString();
 
-            Formatter f = new Formatter(locale);
-            f.format(formatString, o);
-            return f.toString();
+            return string.Format(locale, formatString, o);
         }
     }
 }

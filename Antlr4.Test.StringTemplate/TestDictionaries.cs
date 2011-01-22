@@ -36,6 +36,7 @@ namespace Antlr4.Test.StringTemplate
     using Microsoft.VisualStudio.TestTools.UnitTesting;
     using System.Collections.Generic;
     using Antlr4.StringTemplate.Misc;
+    using Antlr4.Test.StringTemplate.Extensions;
 
     [TestClass]
     public class TestDictionaries : BaseTest
@@ -233,7 +234,7 @@ namespace Antlr4.Test.StringTemplate
             group.setListener(errors);
             group.load();
             string expected = "[test.stg 1:33: missing value for key at ']']";
-            string result = errors.Errors.ToString();
+            string result = errors.Errors.ToListString();
             Assert.AreEqual(expected, result);
         }
 

@@ -85,12 +85,12 @@ namespace Antlr4.StringTemplate
                         cl = this.GetType().getClassLoader();
                         url = cl.getResource(fileName);
                     }
-
-                    if (url == null)
-                    {
-                        throw new ArgumentException("No such group file: " + fileName);
-                    }
 #endif
+                }
+
+                if (url == null)
+                {
+                    throw new ArgumentException("No such group file: " + fileName);
                 }
             }
             catch (Exception e)

@@ -32,9 +32,9 @@
 
 namespace Antlr4.StringTemplate
 {
-    using StringBuilder = System.Text.StringBuilder;
     using CultureInfo = System.Globalization.CultureInfo;
-    using NotImplementedException = System.NotImplementedException;
+    using HttpUtility = System.Web.HttpUtility;
+    using SecurityElement = System.Security.SecurityElement;
 
     /** This render knows to perform a few operations on String objects:
      *  upper, lower, cap, url-encode, xml-encode.
@@ -58,66 +58,12 @@ namespace Antlr4.StringTemplate
                 return char.ToUpper(s[0], locale) + s.Substring(1);
 
             if (formatString.Equals("url-encode"))
-                throw new NotImplementedException();
-#if false
-            if (formatString.Equals("url-encode"))
-                return URLEncoder.encode(s);
-#endif
+                return HttpUtility.UrlEncode(s);
 
             if (formatString.Equals("xml-encode"))
-                return escapeHTML(s);
+                return SecurityElement.Escape(s);
 
             return string.Format(formatString, s);
-        }
-
-        public static string escapeHTML(string s)
-        {
-            if (s == null)
-                return null;
-
-            StringBuilder buf = new StringBuilder(s.Length);
-            int len = s.Length;
-            for (int i = 0; i < len; i++)
-            {
-                char c = s[i];
-                switch (c)
-                {
-                case '&':
-                    buf.Append("&amp;");
-                    break;
-
-                case '<':
-                    buf.Append("&lt;");
-                    break;
-
-                case '>':
-                    buf.Append("&gt;");
-                    break;
-
-                case '\r':
-                case '\n':
-                case '\t':
-                    buf.Append(c);
-                    break;
-
-                default:
-                    bool control = c < ' '; // 32
-                    bool aboveASCII = c > 126;
-                    if (control || aboveASCII)
-                    {
-                        buf.Append("&#");
-                        buf.Append((int)c);
-                        buf.Append(";");
-                    }
-                    else
-                    {
-                        buf.Append(c);
-                    }
-                    break;
-                }
-            }
-
-            return buf.ToString();
         }
     }
 }

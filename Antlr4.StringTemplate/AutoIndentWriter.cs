@@ -150,7 +150,7 @@ namespace Antlr4.StringTemplate
                 if (c == '\n')
                 {
                     atStartOfLine = true;
-                    charPosition = -1; // set so the write below sets to 0
+                    charPosition = -newline.Length; // set so the write below sets to 0
                     @out.Write(newline);
                     n += newline.Length;
                     charIndex += newline.Length;
@@ -243,8 +243,7 @@ namespace Antlr4.StringTemplate
             if (anchors_sp >= 0 && anchors[anchors_sp] > indentWidth)
             {
                 int remainder = anchors[anchors_sp] - indentWidth;
-                for (int i = 1; i <= remainder; i++)
-                    @out.Write(' ');
+                @out.Write(new string(' ', remainder));
                 n += remainder;
             }
 

@@ -37,6 +37,7 @@ namespace Antlr4.Test.StringTemplate
     using StringWriter = System.IO.StringWriter;
     using System.Collections.Generic;
     using Environment = System.Environment;
+    using Path = System.IO.Path;
 
     [TestClass]
     public class TestLineWrap : BaseTest
@@ -47,7 +48,7 @@ namespace Antlr4.Test.StringTemplate
             string templates =
                     "array(values) ::= <<int[] a = { <values; wrap=\"\\n\", separator=\",\"> };>>" + newline;
             writeFile(tmpdir, "t.stg", templates);
-            STGroup group = new STGroupFile(tmpdir + "/" + "t.stg");
+            STGroup group = new STGroupFile(Path.Combine(tmpdir, "t.stg"));
 
             ST a = group.getInstanceOf("array");
             a.add("values",
@@ -74,7 +75,7 @@ namespace Antlr4.Test.StringTemplate
             string templates =
                 "array(values) ::= <<int[] a = { <values; anchor, wrap, separator=\",\"> };>>" + newline;
             writeFile(tmpdir, "t.stg", templates);
-            STGroup group = new STGroupFile(tmpdir + "/" + "t.stg");
+            STGroup group = new STGroupFile(Path.Combine(tmpdir, "t.stg"));
 
             ST a = group.getInstanceOf("array");
             a.add("values",
@@ -96,7 +97,7 @@ namespace Antlr4.Test.StringTemplate
             string templates =
                     "array(values) ::= <<{ <values; anchor, separator=\", \"> }>>" + newline;
             writeFile(tmpdir, "t.stg", templates);
-            STGroup group = new STGroupFile(tmpdir + "/" + "t.stg");
+            STGroup group = new STGroupFile(Path.Combine(tmpdir, "t.stg"));
 
             ST x = new ST("<\\n>{ <stuff; anchor, separator=\",\\n\"> }<\\n>");
             x.groupThatCreatedThisInstance = group;
@@ -120,7 +121,7 @@ namespace Antlr4.Test.StringTemplate
             string templates =
                     "func(args) ::= <<       FUNCTION line( <args; wrap=\"\\n      c\", separator=\",\"> )>>" + newline;
             writeFile(tmpdir, "t.stg", templates);
-            STGroup group = new STGroupFile(tmpdir + "/" + "t.stg");
+            STGroup group = new STGroupFile(Path.Combine(tmpdir, "t.stg"));
 
             ST a = group.getInstanceOf("func");
             a.add("args",
@@ -137,7 +138,7 @@ namespace Antlr4.Test.StringTemplate
             string templates =
                     "array(values) ::= <<int[] a = { <{1,9,2,<values; wrap, separator=\",\">}; anchor> };>>" + newline;
             writeFile(tmpdir, "t.stg", templates);
-            STGroup group = new STGroupFile(tmpdir + "/" + "t.stg");
+            STGroup group = new STGroupFile(Path.Combine(tmpdir, "t.stg"));
 
             ST a = group.getInstanceOf("array");
             a.add("values",
@@ -158,7 +159,7 @@ namespace Antlr4.Test.StringTemplate
             string templates =
                     "duh(chars) ::= <<<chars; wrap=\"\\n\"\\>>>" + newline;
             writeFile(tmpdir, "t.stg", templates);
-            STGroup group = new STGroupFile(tmpdir + "/" + "t.stg");
+            STGroup group = new STGroupFile(Path.Combine(tmpdir, "t.stg"));
 
             ST a = group.getInstanceOf("duh");
             a.add("chars", new string[] { "a", "b", "c", "d", "e" });
@@ -175,7 +176,7 @@ namespace Antlr4.Test.StringTemplate
             string templates =
                     "duh(chars) ::= <<<chars; wrap=\"\\n\"\\>>>" + newline;
             writeFile(tmpdir, "t.stg", templates);
-            STGroup group = new STGroupFile(tmpdir + "/" + "t.stg");
+            STGroup group = new STGroupFile(Path.Combine(tmpdir, "t.stg"));
 
             ST a = group.getInstanceOf("duh");
             a.add("chars", new string[] { "a", "b", "\n", "d", "e" });
@@ -192,7 +193,7 @@ namespace Antlr4.Test.StringTemplate
             string templates =
                     "duh(chars) ::= <<<chars; wrap=\"\\n\"\\>>>" + newline;
             writeFile(tmpdir, "t.stg", templates);
-            STGroup group = new STGroupFile(tmpdir + "/" + "t.stg");
+            STGroup group = new STGroupFile(Path.Combine(tmpdir, "t.stg"));
 
             ST a = group.getInstanceOf("duh");
             a.add("chars", new string[] { "a", "b", "c", "\n", "d", "e" });
@@ -212,7 +213,7 @@ namespace Antlr4.Test.StringTemplate
             string templates =
                     "duh(data) ::= <<!<data; wrap>!>>" + newline;
             writeFile(tmpdir, "t.stg", templates);
-            STGroup group = new STGroupFile(tmpdir + "/" + "t.stg");
+            STGroup group = new STGroupFile(Path.Combine(tmpdir, "t.stg"));
 
             ST a = group.getInstanceOf("duh");
             a.add("data", new int[] { 1, 2, 3, 4, 5, 6, 7, 8, 9 });
@@ -229,7 +230,7 @@ namespace Antlr4.Test.StringTemplate
             string templates =
                     "duh(data) ::= <<!<data:{v|[<v>]}; wrap>!>>" + newline;
             writeFile(tmpdir, "t.stg", templates);
-            STGroup group = new STGroupFile(tmpdir + "/" + "t.stg");
+            STGroup group = new STGroupFile(Path.Combine(tmpdir, "t.stg"));
 
             ST a = group.getInstanceOf("duh");
             a.add("data", new int[] { 1, 2, 3, 4, 5, 6, 7, 8, 9 });
@@ -246,7 +247,7 @@ namespace Antlr4.Test.StringTemplate
             string templates =
                     "duh(data) ::= <<!<data:{v|[<v>]}; anchor, wrap>!>>" + newline;
             writeFile(tmpdir, "t.stg", templates);
-            STGroup group = new STGroupFile(tmpdir + "/" + "t.stg");
+            STGroup group = new STGroupFile(Path.Combine(tmpdir, "t.stg"));
 
             ST a = group.getInstanceOf("duh");
             a.add("data", new int[] { 1, 2, 3, 4, 5, 6, 7, 8, 9 });
@@ -264,7 +265,7 @@ namespace Antlr4.Test.StringTemplate
                     "top(s) ::= <<  <s>.>>" +
                     "str(data) ::= <<!<data:{v|[<v>]}; wrap=\"!+\\n!\">!>>" + newline;
             writeFile(tmpdir, "t.stg", templates);
-            STGroup group = new STGroupFile(tmpdir + "/" + "t.stg");
+            STGroup group = new STGroupFile(Path.Combine(tmpdir, "t.stg"));
 
             ST t = group.getInstanceOf("top");
             ST s = group.getInstanceOf("str");
@@ -285,7 +286,7 @@ namespace Antlr4.Test.StringTemplate
             string templates =
                     "duh(chars) ::= <<    <chars; wrap=\"\\n\"\\>>>" + newline;
             writeFile(tmpdir, "t.stg", templates);
-            STGroup group = new STGroupFile(tmpdir + "/" + "t.stg");
+            STGroup group = new STGroupFile(Path.Combine(tmpdir, "t.stg"));
 
             ST a = group.getInstanceOf("duh");
             a.add("chars", new string[] { "a", "b", "c", "d", "e" });
@@ -305,7 +306,7 @@ namespace Antlr4.Test.StringTemplate
             string templates =
                     "duh(chars) ::= <<    <chars; wrap=\"\\n\"\\>>>" + newline;
             writeFile(tmpdir, "t.stg", templates);
-            STGroup group = new STGroupFile(tmpdir + "/" + "t.stg");
+            STGroup group = new STGroupFile(Path.Combine(tmpdir, "t.stg"));
 
             ST a = group.getInstanceOf("duh");
             a.add("chars", new string[] { "a", "b", "c", "d", "e" });
@@ -325,7 +326,7 @@ namespace Antlr4.Test.StringTemplate
                     "top(d) ::= <<  <d>!>>" + newline +
                     "duh(chars) ::= <<  <chars; wrap=\"\\n\"\\>>>" + newline;
             writeFile(tmpdir, "t.stg", templates);
-            STGroup group = new STGroupFile(tmpdir + "/" + "t.stg");
+            STGroup group = new STGroupFile(Path.Combine(tmpdir, "t.stg"));
 
             ST top = group.getInstanceOf("top");
             ST duh = group.getInstanceOf("duh");
@@ -346,7 +347,7 @@ namespace Antlr4.Test.StringTemplate
                     "top(d) ::= <<  <d>!>>" + newline +
                     "duh(chars) ::= <<x: <chars; anchor, wrap=\"\\n\"\\>>>" + newline;
             writeFile(tmpdir, "t.stg", templates);
-            STGroup group = new STGroupFile(tmpdir + "/" + "t.stg");
+            STGroup group = new STGroupFile(Path.Combine(tmpdir, "t.stg"));
 
             ST top = group.getInstanceOf("top");
             ST duh = group.getInstanceOf("duh");
@@ -366,7 +367,7 @@ namespace Antlr4.Test.StringTemplate
             string templates =
                     "m(args,body) ::= <<[TestMethod] public voidfoo(<args; wrap=\"\\n\",separator=\", \">) throws Ick { <body> }>>" + newline;
             writeFile(tmpdir, "t.stg", templates);
-            STGroup group = new STGroupFile(tmpdir + "/" + "t.stg");
+            STGroup group = new STGroupFile(Path.Combine(tmpdir, "t.stg"));
 
             ST a = group.getInstanceOf("m");
             a.add("args",
@@ -385,7 +386,7 @@ namespace Antlr4.Test.StringTemplate
             string templates =
                     "m(args,body) ::= <<{ <body; anchor, wrap=\"\\n\"> }>>" + newline;
             writeFile(tmpdir, "t.stg", templates);
-            STGroup group = new STGroupFile(tmpdir + "/" + "t.stg");
+            STGroup group = new STGroupFile(Path.Combine(tmpdir, "t.stg"));
 
             ST m = group.getInstanceOf("m");
             m.add("body", "i=3;");
@@ -403,7 +404,7 @@ namespace Antlr4.Test.StringTemplate
                     "top(arrays) ::= <<Arrays: <arrays>done>>" + newline +
                     "array(values) ::= <<int[] a = { <values; anchor, wrap=\"\\n\", separator=\",\"> };<\\n\\>>>" + newline;
             writeFile(tmpdir, "t.stg", templates);
-            STGroup group = new STGroupFile(tmpdir + "/" + "t.stg");
+            STGroup group = new STGroupFile(Path.Combine(tmpdir, "t.stg"));
 
             ST top = group.getInstanceOf("top");
             ST a = group.getInstanceOf("array");

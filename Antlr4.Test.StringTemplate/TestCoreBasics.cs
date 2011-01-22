@@ -157,10 +157,10 @@ namespace Antlr4.Test.StringTemplate
         [TestMethod]
         public void TestBooleanISProp()
         {
-            string template = "<t.manager>"; // call isManager
+            string template = "<t.isManager>"; // call isManager
             ST st = new ST(template);
             st.add("t", new User(32, "Ter"));
-            string expected = "true";
+            string expected = true.ToString();
             string result = st.render();
             Assert.AreEqual(expected, result);
         }
@@ -168,10 +168,10 @@ namespace Antlr4.Test.StringTemplate
         [TestMethod]
         public void TestBooleanHASProp()
         {
-            string template = "<t.parkingSpot>"; // call hasParkingSpot
+            string template = "<t.hasParkingSpot>"; // call hasParkingSpot
             ST st = new ST(template);
             st.add("t", new User(32, "Ter"));
-            string expected = "true";
+            string expected = true.ToString();
             string result = st.render();
             Assert.AreEqual(expected, result);
         }
@@ -200,7 +200,7 @@ namespace Antlr4.Test.StringTemplate
             Assert.AreEqual(expected, result);
             STRuntimeMessage msg = (STRuntimeMessage)errors.Errors[0];
             STNoSuchPropertyException e = (STNoSuchPropertyException)msg.Cause;
-            Assert.AreEqual("org.stringtemplate.v4.test.BaseTest$User.qqq", e.PropertyName);
+            Assert.AreEqual("Antlr4.Test.StringTemplate.BaseTest+User.qqq", e.PropertyName);
         }
 
         [TestMethod]
@@ -218,7 +218,7 @@ namespace Antlr4.Test.StringTemplate
             Assert.AreEqual(expected, result);
             STRuntimeMessage msg = (STRuntimeMessage)errors.Errors[0];
             STNoSuchPropertyException e = (STNoSuchPropertyException)msg.Cause;
-            Assert.AreEqual("org.stringtemplate.v4.test.BaseTest$User.null", e.PropertyName);
+            Assert.AreEqual("Antlr4.Test.StringTemplate.BaseTest+User.null", e.PropertyName);
         }
 
         [TestMethod]
@@ -236,7 +236,7 @@ namespace Antlr4.Test.StringTemplate
             Assert.AreEqual(expected, result);
             STRuntimeMessage msg = (STRuntimeMessage)errors.Errors[0];
             STNoSuchPropertyException e = (STNoSuchPropertyException)msg.Cause;
-            Assert.AreEqual("org.stringtemplate.v4.test.BaseTest$User.100", e.PropertyName);
+            Assert.AreEqual("Antlr4.Test.StringTemplate.BaseTest+User.100", e.PropertyName);
         }
 
         [TestMethod]
@@ -246,7 +246,7 @@ namespace Antlr4.Test.StringTemplate
             ST st = new ST(template);
             st.impl.nativeGroup.defineTemplate("box", "kewl\ndaddy");
             string expected =
-                "load kewl\n" +
+                "load kewl" + newline +
                 "daddy;";
             string result = st.render();
             Assert.AreEqual(expected, result);
@@ -596,7 +596,7 @@ namespace Antlr4.Test.StringTemplate
             STGroupFile group = new STGroupFile(dir + "/group.stg");
             ST st = group.getInstanceOf("a");
             st.impl.dump();
-            string expected = "foo\n" +
+            string expected = "foo" + newline +
                               "bar";
             string result = st.render();
             Assert.AreEqual(expected, result);

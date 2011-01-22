@@ -123,7 +123,7 @@ namespace Antlr4.StringTemplate.Misc
         {
             get
             {
-                return arg;
+                return arg2;
             }
         }
 
@@ -131,7 +131,7 @@ namespace Antlr4.StringTemplate.Misc
         {
             get
             {
-                return arg;
+                return arg3;
             }
         }
 

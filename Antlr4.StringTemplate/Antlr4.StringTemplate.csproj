@@ -37,6 +37,7 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Web" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="System.Data" />
@@ -89,7 +90,7 @@
     <Compile Include="Misc\TemplateRuntimeMessage.cs" />
     <Compile Include="IModelAdaptor.cs" />
     <Compile Include="NoIndentWriter.cs" />
-    <None Include="NumberRenderer.cs" />
+    <Compile Include="NumberRenderer.cs" />
     <Compile Include="Template.cs" />
     <Compile Include="ITemplateErrorListener.cs" />
     <Compile Include="TemplateGroup.cs" />

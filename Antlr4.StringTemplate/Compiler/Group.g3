@@ -218,7 +218,7 @@ BIGSTRING
 		|	~'\\'
 		)*
         '>>'
-        {Text = Text.Replace("\\\\>",">");}
+        {Text = Text.Replace("\\>",">");}
 	;
 
 ANONYMOUS_TEMPLATE

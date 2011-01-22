@@ -198,7 +198,8 @@ namespace Antlr4.StringTemplate.Compiler
         protected virtual void ensureCapacity(int n)
         {
             if ((ip + n) >= impl.instrs.Length)
-            { // ensure room for full instruction
+            {
+                // ensure room for full instruction
                 byte[] c = new byte[impl.instrs.Length * 2];
                 Array.Copy(impl.instrs, 0, c, 0, impl.instrs.Length);
                 impl.instrs = c;

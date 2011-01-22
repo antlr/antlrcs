@@ -40,7 +40,7 @@ namespace Antlr4.StringTemplate.Compiler
     {
         public STGroup group;
 
-        public void reportError(RecognitionException e)
+        public override void ReportError(RecognitionException e)
         {
             string msg = null;
             if (e is NoViableAltException)

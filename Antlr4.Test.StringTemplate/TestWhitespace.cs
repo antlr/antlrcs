@@ -137,7 +137,11 @@ namespace Antlr4.Test.StringTemplate
             st.add("names", "Ter");
             st.add("names", "Tom");
             st.add("names", "Sumana");
-            string expected = "    Ter" + newline + "    Tom" + newline + "    Sumana" + newline + "!";
+            string expected =
+                "    Ter" + newline +
+                "    Tom" + newline +
+                "    Sumana" + newline +
+                "!";
             string result = st.render();
             st.impl.dump();
             Assert.AreEqual(expected, result);

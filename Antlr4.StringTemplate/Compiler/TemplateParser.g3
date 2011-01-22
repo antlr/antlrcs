@@ -60,12 +60,12 @@ using Antlr4.StringTemplate.Misc;
 }
 
 public
-templateAndEOF : template EOF -> template? ;
+templateAndEOF : template EOF!;
 
 template : element* ;
 
 element
-	:	INDENT element -> ^(INDENT element)
+	:	INDENT^ element
 	|	ifstat
 	|	exprTag
 	|	text

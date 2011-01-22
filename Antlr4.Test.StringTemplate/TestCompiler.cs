@@ -41,10 +41,10 @@ namespace Antlr4.Test.StringTemplate
     [TestClass]
     public class TestCompiler : BaseTest
     {
-        public override void setUp()
+        protected override void setUpImpl()
         {
             Compiler.subtemplateCount = 0;
-            base.setUp();
+            base.setUpImpl();
         }
 
         [TestMethod]

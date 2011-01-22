@@ -32,14 +32,13 @@
 
 namespace Antlr4.StringTemplate.Compiler
 {
+    using System.Collections.Generic;
     using Antlr.Runtime;
     using Antlr4.StringTemplate.Misc;
-    using System.Collections.Generic;
+    using Exception = System.Exception;
+    using NumberStyles = System.Globalization.NumberStyles;
     using StringBuilder = System.Text.StringBuilder;
     using StringComparison = System.StringComparison;
-    using Exception = System.Exception;
-    using NotImplementedException = System.NotImplementedException;
-    using NumberStyles = System.Globalization.NumberStyles;
 
     /** This class represents the tokenizer for templates. It operates in two modes:
      *  inside and outside of expressions. It behaves like an ANTLR TokenSource,
@@ -763,7 +762,7 @@ namespace Antlr4.StringTemplate.Compiler
         {
             get
             {
-                throw new NotImplementedException();
+                return TemplateParser.tokenNames;
             }
         }
     }

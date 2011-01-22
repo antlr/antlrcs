@@ -42,6 +42,7 @@ namespace Antlr4.Test.StringTemplate
     using Antlr.Runtime;
     using DateTime = System.DateTime;
     using StringBuilder = System.Text.StringBuilder;
+    using ArgumentException = System.ArgumentException;
 
     [TestClass]
     public abstract class BaseTest
@@ -56,7 +57,12 @@ namespace Antlr4.Test.StringTemplate
         }
 
         [TestInitialize]
-        public virtual void setUp()
+        public void setUp()
+        {
+            setUpImpl();
+        }
+
+        protected virtual void setUpImpl()
         {
             STGroup.defaultGroup = new STGroup();
             Compiler.subtemplateCount = 0;
@@ -87,10 +93,15 @@ namespace Antlr4.Test.StringTemplate
 
         public static void writeFile(string dir, string fileName, string content)
         {
+            if (Path.IsPathRooted(fileName))
+                throw new ArgumentException();
+
+            string fullPath = Path.GetFullPath(Path.Combine(dir, fileName));
+            dir = Path.GetDirectoryName(fullPath);
             if (!Directory.Exists(dir))
                 Directory.CreateDirectory(dir);
 
-            File.WriteAllText(Path.Combine(dir, fileName), content);
+            File.WriteAllText(fullPath, content);
         }
 
         public void checkTokens(string template, string expected)
@@ -136,19 +147,28 @@ namespace Antlr4.Test.StringTemplate
                 this.name = name;
             }
 
-            public virtual bool isManager()
+            public virtual bool IsManager
             {
-                return true;
+                get
+                {
+                    return true;
+                }
             }
 
-            public virtual bool hasParkingSpot()
+            public virtual bool HasParkingSpot
             {
-                return true;
+                get
+                {
+                    return true;
+                }
             }
 
-            public virtual string getName()
+            public virtual string Name
             {
-                return name;
+                get
+                {
+                    return name;
+                }
             }
         }
 

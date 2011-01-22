@@ -46,7 +46,7 @@ namespace Antlr4.Test.StringTemplate
                 if (propertyName.Equals("id"))
                     return ((User)o).id;
                 if (propertyName.Equals("name"))
-                    return ((User)o).getName();
+                    return ((User)o).Name;
                 throw new STNoSuchPropertyException(null, "User." + propertyName);
             }
         }
@@ -73,9 +73,12 @@ namespace Antlr4.Test.StringTemplate
                 bitmask = 0x8080;
             }
 
-            public override string getName()
+            public override string Name
             {
-                return "super " + base.getName();
+                get
+                {
+                    return "super " + base.Name;
+                }
             }
         }
 

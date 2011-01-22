@@ -47,6 +47,7 @@ namespace Antlr4.StringTemplate
     using Encoding = System.Text.Encoding;
     using NotImplementedException = System.NotImplementedException;
     using StreamReader = System.IO.StreamReader;
+    using File = System.IO.File;
 
     // TODO: caching?
 
@@ -70,16 +71,15 @@ namespace Antlr4.StringTemplate
             this.groupDirName = dirName;
             try
             {
-                throw new NotImplementedException();
-#if false
-                //File dir = new File(dirName);
                 if (Directory.Exists(dirName))
                 {
                     // we found the directory and it'll be file based
-                    root = dir.toURI().toURL();
+                    root = new Uri(dirName);
                 }
                 else
                 {
+                    throw new NotImplementedException();
+#if false
                     ClassLoader cl = Thread.CurrentThread.getContextClassLoader();
                     root = cl.getResource(dirName);
                     if (root == null)
@@ -91,8 +91,8 @@ namespace Antlr4.StringTemplate
                     {
                         throw new ArgumentException("No such directory: " + dirName);
                     }
-                }
 #endif
+                }
             }
             catch (Exception e)
             {
@@ -125,18 +125,23 @@ namespace Antlr4.StringTemplate
         {
             string parent = Utility.getPrefix(name);
 
+            if (Path.IsPathRooted(parent))
+                throw new ArgumentException();
+
             Uri groupFileURL = null;
             try
-            { // see if parent of template name is a group file
-                groupFileURL = new Uri(root + parent + ".stg");
+            {
+                // see if parent of template name is a group file
+                groupFileURL = new Uri(Path.Combine(root.LocalPath, parent) + ".stg");
             }
             catch (UriFormatException e)
             {
-                errMgr.internalError(null, "bad URL: " + root + parent + ".stg", e);
+                errMgr.internalError(null, "bad URL: " + Path.Combine(root.LocalPath, parent) + ".stg", e);
                 return null;
             }
 
-            throw new NotImplementedException();
+            if (!File.Exists(groupFileURL.LocalPath))
+                return loadTemplateFile(parent, name + ".st");
 #if false
             InputStream @is = null;
             try
@@ -163,28 +168,31 @@ namespace Antlr4.StringTemplate
             {
                 errMgr.internalError(null, "can't close template file stream " + name, ioe);
             }
+#endif
 
-            loadGroupFile(parent, root + parent + ".stg");
+            loadGroupFile(parent, Path.Combine(root.LocalPath, parent) + ".stg");
 
             CompiledST template;
             templates.TryGetValue(name, out template);
             return template;
-#endif
         }
 
         /** Load full path name .st file relative to root by prefix */
         public virtual CompiledST loadTemplateFile(string prefix, string fileName)
         {
+            if (Path.IsPathRooted(fileName))
+                throw new ArgumentException();
+
             //System.out.println("load "+fileName+" from "+root+" prefix="+prefix);
-            string templateName = Path.GetFileNameWithoutExtension(fileName);
+            string templateName = Path.ChangeExtension(fileName, null);
             Uri f = null;
             try
             {
-                f = new Uri(root + fileName);
+                f = new Uri(Path.Combine(root.LocalPath, fileName));
             }
             catch (UriFormatException me)
             {
-                errMgr.runTimeError(null, 0, ErrorType.INVALID_TEMPLATE_NAME, me, root + fileName);
+                errMgr.runTimeError(null, 0, ErrorType.INVALID_TEMPLATE_NAME, me, Path.Combine(root.LocalPath, fileName));
                 return null;
             }
 
