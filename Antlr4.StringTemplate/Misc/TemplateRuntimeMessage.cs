@@ -73,6 +73,16 @@ namespace Antlr4.StringTemplate.Misc
             this.ip = ip;
         }
 
+        public Interval SourceInterval
+        {
+            get
+            {
+                if (ip < 0 || Self == null || Self.impl == null || Self.impl.sourceMap == null || ip >= Self.impl.sourceMap.Length)
+                    return null;
+
+                return Self.impl.sourceMap[ip];
+            }
+        }
 
         /** Given an ip (code location), get it's range in source template then
          *  return it's template line:col.

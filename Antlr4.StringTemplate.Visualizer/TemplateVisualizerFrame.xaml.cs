@@ -1,0 +1,309 @@
+﻿/*
+ * [The "BSD licence"]
+ * Copyright (c) 2011 Terence Parr
+ * All rights reserved.
+ *
+ * Conversion to C#:
+ * Copyright (c) 2011 Sam Harwell, Tunnel Vision Laboratories, LLC
+ * All rights reserved.
+ *
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions
+ * are met:
+ * 1. Redistributions of source code must retain the above copyright
+ *    notice, this list of conditions and the following disclaimer.
+ * 2. Redistributions in binary form must reproduce the above copyright
+ *    notice, this list of conditions and the following disclaimer in the
+ *    documentation and/or other materials provided with the distribution.
+ * 3. The name of the author may not be used to endorse or promote products
+ *    derived from this software without specific prior written permission.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE AUTHOR ``AS IS'' AND ANY EXPRESS OR
+ * IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
+ * OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.
+ * IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT,
+ * INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+ * NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+ * DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
+ * THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+ * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
+ * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ */
+
+namespace Antlr4.StringTemplate.Visualizer
+{
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Text;
+    using System.Windows;
+    using System.Windows.Controls;
+    using System.Windows.Documents;
+    using System.Windows.Media;
+    using Antlr.Runtime;
+    using Antlr.Runtime.Tree;
+    using Antlr4.StringTemplate.Debug;
+    using Antlr4.StringTemplate.Misc;
+    using Antlr4.StringTemplate.Visualizer.Extensions;
+    using IList = System.Collections.IList;
+    using Path = System.IO.Path;
+
+    public partial class TemplateVisualizerFrame : UserControl
+    {
+        private DebugST currentTemplate;
+
+        public TemplateVisualizerFrame()
+        {
+            InitializeComponent();
+        }
+
+        public TemplateVisualizerViewModel ViewModel
+        {
+            get
+            {
+                return DataContext as TemplateVisualizerViewModel;
+            }
+
+            set
+            {
+                DataContext = value;
+            }
+        }
+
+        protected override void OnPropertyChanged(DependencyPropertyChangedEventArgs e)
+        {
+            if (e.Property == DataContextProperty)
+            {
+                var viewModel = ViewModel;
+                if (viewModel == null)
+                    return;
+
+                currentTemplate = viewModel.Visualizer.RootTemplate;
+                OutputTextBox.Document = new FlowDocument(new Paragraph(new Run(viewModel.Output)
+                {
+                    FontFamily = new FontFamily("Consolas")
+                }));
+                UpdateCurrentTemplate();
+            }
+
+            base.OnPropertyChanged(e);
+        }
+
+        private void HandleErrorsListBoxSelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            int minIndex = ErrorsListBox.SelectedIndex;
+            STMessage message = ErrorsListBox.SelectedItem as STMessage;
+            STRuntimeMessage runtimeMessage = message as STRuntimeMessage;
+            if (runtimeMessage != null)
+            {
+                Interval interval = runtimeMessage.SourceInterval;
+                currentTemplate = (DebugST)message.Self;
+                UpdateCurrentTemplate();
+                Highlight(TemplateTextBox.Document, interval);
+            }
+        }
+
+        private void HandleAttributesListBoxSelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            // do nothing for now
+        }
+
+        private void HandleCallHierarchyTreeViewSelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
+        {
+            TemplateCallHierarchyViewModel selected = CallHierarchyTreeView.SelectedItem as TemplateCallHierarchyViewModel;
+            if (selected != null)
+            {
+                currentTemplate = selected.Template;
+                UpdateCurrentTemplate();
+            }
+        }
+
+        private void HandleAstTreeViewSelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
+        {
+            CommonTree node = AstTreeView.SelectedItem as CommonTree;
+            if (node == null)
+                return;
+
+            CommonToken a = (CommonToken)currentTemplate.impl.tokens.Get(node.TokenStartIndex);
+            CommonToken b = (CommonToken)currentTemplate.impl.tokens.Get(node.TokenStopIndex);
+            if (a == null || b == null)
+                return;
+
+            Highlight(TemplateTextBox.Document, new Interval(a.StartIndex, b.StopIndex));
+        }
+
+        private void HandleOutputTextBoxSelectionChanged(object sender, RoutedEventArgs e)
+        {
+            InterpEvent de = FindEventAtOutputLocation(ViewModel.AllEvents, OutputTextBox.Document.GetCharOffsetToPosition(OutputTextBox.CaretPosition));
+            if (de == null)
+                currentTemplate = ViewModel.Visualizer.RootTemplate;
+            else
+                currentTemplate = de.Self;
+            UpdateCurrentTemplate();
+        }
+
+        private static InterpEvent FindEventAtOutputLocation(List<InterpEvent> events, int position)
+        {
+            foreach (var e in events)
+            {
+                if (position >= e.Start && position <= e.Stop)
+                    return e;
+            }
+
+            return null;
+        }
+
+        private static void Highlight(FlowDocument document, Interval interval)
+        {
+            if (document == null)
+                throw new ArgumentNullException("document");
+
+            TextPointer contentStart = document.ContentStart;
+
+            // clear any existing highlight
+            TextRange documentRange = new TextRange(document.ContentStart, document.ContentEnd);
+            documentRange.ApplyPropertyValue(FlowDocument.BackgroundProperty, FlowDocument.BackgroundProperty.DefaultMetadata.DefaultValue);
+
+            // highlight the new text
+            if (interval != null)
+            {
+                int startOffset = interval.A;
+                int endOffset = interval.B + 1;
+                TextPointer highlightStart = document.GetPointerFromCharOffset(ref startOffset);
+                TextPointer highlightStop = document.GetPointerFromCharOffset(ref endOffset);
+                if (startOffset != 0 || endOffset != 0)
+                    return;
+
+                var textRange = new TextRange(highlightStart, highlightStop);
+                textRange.ApplyPropertyValue(FlowDocument.BackgroundProperty, Brushes.Yellow);
+            }
+        }
+
+        private static void SetSelectionPath(TemplateCallHierarchyViewModel treeView, ICollection<ST> selectionPath)
+        {
+            if (treeView == null || selectionPath.Count == 0 || treeView.Template != selectionPath.First())
+                return;
+
+            List<TemplateCallHierarchyViewModel> nodes = new List<TemplateCallHierarchyViewModel>();
+            nodes.Add(treeView);
+
+            TemplateCallHierarchyViewModel current = treeView;
+            foreach (var template in selectionPath.Skip(1))
+            {
+                current = current.Children.FirstOrDefault(i => i.Template == template);
+                if (current == null)
+                    return;
+            }
+
+            for (int i = 0; i < nodes.Count - 1; i++)
+                nodes[i].IsExpanded = true;
+
+            nodes[nodes.Count - 1].IsSelected = true;
+        }
+
+        private void UpdateCurrentTemplate()
+        {
+            var viewModel = ViewModel;
+            if (viewModel == null)
+                return;
+
+            UpdateStack();
+            UpdateAttributes();
+            viewModel.Bytecode = currentTemplate.impl.disasm();
+            viewModel.Ast = currentTemplate.impl.ast;
+
+            SetSelectionPath(viewModel.TemplateCallHierarchy[0], currentTemplate.getEnclosingInstanceStack(true));
+
+            TemplateTextBox.Document = new FlowDocument(new Paragraph(new Run(currentTemplate.impl.template)
+            {
+                FontFamily = new FontFamily("Consolas")
+            }));
+            Interval r = currentTemplate.impl.TemplateRange;
+            if (currentTemplate.enclosingInstance != null)
+            {
+                int i = GetIndexOfChild((DebugST)currentTemplate.enclosingInstance, currentTemplate);
+                if (i == -1)
+                {
+                    Highlight(OutputTextBox.Document, null);
+                    Highlight(TemplateTextBox.Document, r);
+                }
+                else
+                {
+                    InterpEvent e = ViewModel.Visualizer.Interpreter.getEvents(currentTemplate.enclosingInstance)[i];
+                    if (e is EvalTemplateEvent)
+                    {
+                        if (currentTemplate.isAnonSubtemplate())
+                            Highlight(TemplateTextBox.Document, r);
+
+                        Highlight(OutputTextBox.Document, new Interval(e.Start, e.Stop));
+                    }
+                }
+            }
+            else
+            {
+                Highlight(TemplateTextBox.Document, r);
+            }
+        }
+
+        private int GetIndexOfChild(DebugST parent, ST child)
+        {
+            TemplateCallHierarchyViewModel hierarchy = new TemplateCallHierarchyViewModel(ViewModel.Visualizer.Interpreter, parent);
+            List<TemplateCallHierarchyViewModel> children = hierarchy.Children;
+            return children.FindIndex(i => i.Template == child);
+        }
+
+        private void UpdateStack()
+        {
+            List<ST> stack = currentTemplate.getEnclosingInstanceStack(true);
+            ViewModel.Title = string.Format("STViz - [{0}]", string.Join(" ", stack.Select(i => i.ToString()).ToArray()));
+            //throw new NotImplementedException();
+        }
+
+        private void UpdateAttributes()
+        {
+            var viewModel = ViewModel;
+            if (viewModel == null)
+                return;
+
+            List<string> attributesList = new List<string>();
+            IDictionary<string, object> attributes = currentTemplate.getAttributes();
+            if (attributes != null)
+            {
+                foreach (var attribute in attributes)
+                {
+                    object value = attribute.Value;
+                    IList valueList = value as IList;
+                    if (valueList != null)
+                        value = valueList.ToListString();
+
+                    if (currentTemplate.addAttrEvents != null)
+                    {
+                        List<AddAttributeEvent> events;
+                        currentTemplate.addAttrEvents.TryGetValue(attribute.Key, out events);
+                        StringBuilder locations = new StringBuilder();
+                        int i = 0;
+                        if (events != null)
+                        {
+                            foreach (AddAttributeEvent ae in events)
+                            {
+                                if (i > 0)
+                                    locations.Append(", ");
+
+                                locations.AppendFormat("{0}:{1}", Path.GetFileName(ae.getFileName()), ae.getLine());
+                                i++;
+                            }
+                        }
+
+                        attributesList.Add(string.Format("{0} = {1} @ {2}", attribute.Key, value, locations));
+                    }
+                    else
+                    {
+                        attributesList.Add(string.Format("{0} = {1}", attribute.Key, value));
+                    }
+                }
+            }
+
+            viewModel.Attributes = attributesList;
+        }
+    }
+}

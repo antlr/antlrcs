@@ -1,4 +1,4 @@
-/*
+﻿/*
  * [The "BSD licence"]
  * Copyright (c) 2011 Terence Parr
  * All rights reserved.
@@ -30,73 +30,41 @@
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-namespace Antlr4.StringTemplate.Debug
+namespace Antlr4.StringTemplate.Visualizer.Extensions
 {
-    using System.Collections.Generic;
+    using Antlr4.StringTemplate.Debug;
     using Antlr4.StringTemplate.Misc;
     using CultureInfo = System.Globalization.CultureInfo;
     using StringWriter = System.IO.StringWriter;
 
-    /** To avoid polluting ST instances with debug info when not debugging.
-     *  Setting debug mode in STGroup makes it create these instead of STs.
-     */
-    public class DebugST : ST
+    public static class TemplateExtensions
     {
-        public class State
+        public static void Inspect(this DebugST template)
         {
-            /** Track all events that occur during rendering. */
-            public List<InterpEvent> interpEvents = new List<InterpEvent>();
+            Inspect(template, CultureInfo.CurrentCulture);
         }
 
-        /** Record who made us? ConstructionEvent creates Exception to grab stack */
-        public ConstructionEvent newSTEvent = new ConstructionEvent();
-
-        /** Track construction-time add attribute "events"; used for ST user-level debugging */
-        public MultiMap<string, AddAttributeEvent> addAttrEvents = new MultiMap<string, AddAttributeEvent>();
-
-        //public Interpreter interp; // set when we start interpreter in inspect()
-
-        public DebugST()
+        public static void Inspect(this DebugST template, int lineWidth)
         {
+            Inspect(template, template.impl.nativeGroup.errMgr, CultureInfo.CurrentCulture, lineWidth);
         }
 
-        public DebugST(ST proto) : base(proto)
+        public static void Inspect(this DebugST template, CultureInfo culture)
         {
+            Inspect(template, template.impl.nativeGroup.errMgr, culture, AutoIndentWriter.NO_WRAP);
         }
 
-        public override void add(string name, object value)
+        public static void Inspect(this DebugST template, ErrorManager errorManager, CultureInfo culture, int lineWidth)
         {
-            if (STGroup.debug)
-                addAttrEvents.map(name, new AddAttributeEvent(name, value));
-
-            base.add(name, value);
-        }
-
-        // TESTING SUPPORT
-
-        public virtual List<InterpEvent> getEvents()
-        {
-            return getEvents(CultureInfo.CurrentCulture);
-        }
-
-        public virtual List<InterpEvent> getEvents(int lineWidth)
-        {
-            return getEvents(CultureInfo.CurrentCulture, lineWidth);
-        }
-
-        public virtual List<InterpEvent> getEvents(CultureInfo locale)
-        {
-            return getEvents(locale, AutoIndentWriter.NO_WRAP);
-        }
-
-        public virtual List<InterpEvent> getEvents(CultureInfo locale, int lineWidth)
-        {
+            ErrorBuffer errors = new ErrorBuffer();
+            template.impl.nativeGroup.setListener(errors);
             StringWriter @out = new StringWriter();
             ITemplateWriter wr = new AutoIndentWriter(@out);
             wr.setLineWidth(lineWidth);
-            Interpreter interp = new Interpreter(groupThatCreatedThisInstance, locale);
-            interp.Execute(wr, this); // render and track events
-            return interp.getEvents();
+            Interpreter interp = new Interpreter(template.groupThatCreatedThisInstance, culture);
+            interp.Execute(wr, template); // render and track events
+            TemplateVisualizer visualizer = new TemplateVisualizer(errorManager, template, @out.ToString(), interp, interp.getExecutionTrace(), errors.Errors);
+            visualizer.Show();
         }
     }
 }
