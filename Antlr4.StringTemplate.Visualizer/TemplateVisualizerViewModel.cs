@@ -48,9 +48,9 @@ namespace Antlr4.StringTemplate.Visualizer
         private static readonly PropertyChangedEventArgs AttributesPropertyChangedEventArgs = new PropertyChangedEventArgs("Attributes");
         private static readonly PropertyChangedEventArgs TitlePropertyChangedEventArgs = new PropertyChangedEventArgs("Title");
 
-        private TemplateVisualizer _visualizer;
-        private List<TemplateCallHierarchyViewModel> _templateCallHierarchy;
-        private List<InterpEvent> _allEvents;
+        private readonly TemplateVisualizer _visualizer;
+        private readonly List<TemplateCallHierarchyViewModel> _templateCallHierarchy;
+        private readonly List<InterpEvent> _allEvents;
         private CommonTree _ast;
         private string _title;
         private string _bytecode;
@@ -93,6 +93,14 @@ namespace Antlr4.StringTemplate.Visualizer
             get
             {
                 return Visualizer.Errors;
+            }
+        }
+
+        public List<string> Trace
+        {
+            get
+            {
+                return _visualizer.Trace;
             }
         }
 
@@ -187,14 +195,6 @@ namespace Antlr4.StringTemplate.Visualizer
 
                 _attributes = value;
                 OnPropertyChanged(AttributesPropertyChangedEventArgs);
-            }
-        }
-
-        public List<string> Trace
-        {
-            get
-            {
-                return _visualizer.Trace;
             }
         }
 

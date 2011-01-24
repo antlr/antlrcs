@@ -51,7 +51,7 @@ namespace Antlr4.StringTemplate.Visualizer.Extensions
 
         public static void Inspect(this DebugST template, CultureInfo culture)
         {
-            Inspect(template, template.impl.nativeGroup.errMgr, culture, AutoIndentWriter.NO_WRAP);
+            Inspect(template, template.impl.nativeGroup.errMgr, culture, AutoIndentWriter.NoWrap);
         }
 
         public static void Inspect(this DebugST template, ErrorManager errorManager, CultureInfo culture, int lineWidth)

@@ -90,7 +90,7 @@ namespace Antlr4.StringTemplate.Compiler
         public ErrorManager errMgr;
 
         public Compiler()
-            : this(STGroup.DEFAULT_ERR_MGR)
+            : this(STGroup.DefaultErrorManager)
         {
         }
 
@@ -100,7 +100,7 @@ namespace Antlr4.StringTemplate.Compiler
         }
 
         public Compiler(char delimiterStartChar, char delimiterStopChar)
-            : this(STGroup.DEFAULT_ERR_MGR, delimiterStartChar, delimiterStopChar)
+            : this(STGroup.DefaultErrorManager, delimiterStartChar, delimiterStopChar)
         {
         }
 

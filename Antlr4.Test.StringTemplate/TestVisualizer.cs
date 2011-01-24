@@ -96,7 +96,7 @@ namespace Antlr4.Test.StringTemplate
 
         private void Inspect(DebugST template, CultureInfo culture)
         {
-            Inspect(template, template.impl.nativeGroup.errMgr, culture, AutoIndentWriter.NO_WRAP);
+            Inspect(template, template.impl.nativeGroup.errMgr, culture, AutoIndentWriter.NoWrap);
         }
 
         private void Inspect(DebugST template, ErrorManager errorManager, CultureInfo culture, int lineWidth)

@@ -36,18 +36,30 @@ namespace Antlr4.StringTemplate.Visualizer
     using System.Collections.ObjectModel;
     using Antlr4.StringTemplate.Debug;
     using Antlr4.StringTemplate.Misc;
+    using ArgumentNullException = System.ArgumentNullException;
 
     public class TemplateVisualizer
     {
-        private ErrorManager _errorManager;
-        private DebugST _root;
-        private string _output;
-        private Interpreter _interpreter;
-        private List<string> _trace;
-        private ReadOnlyCollection<STMessage> _errors;
+        private readonly ErrorManager _errorManager;
+        private readonly DebugST _root;
+        private readonly string _output;
+        private readonly Interpreter _interpreter;
+        private readonly List<string> _trace;
+        private readonly ReadOnlyCollection<STMessage> _errors;
 
         public TemplateVisualizer(ErrorManager errorManager, DebugST root, string output, Interpreter interpreter, List<string> trace, ReadOnlyCollection<STMessage> errors)
         {
+            if (errorManager == null)
+                throw new ArgumentNullException("errorManager");
+            if (root == null)
+                throw new ArgumentNullException("root");
+            if (interpreter == null)
+                throw new ArgumentNullException("interpreter");
+            if (trace == null)
+                throw new ArgumentNullException("trace");
+            if (errors == null)
+                throw new ArgumentNullException("errors");
+
             _errorManager = errorManager;
             _root = root;
             _output = output;

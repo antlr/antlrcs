@@ -144,6 +144,9 @@ namespace Antlr4.StringTemplate.Visualizer
 
         private static InterpEvent FindEventAtOutputLocation(List<InterpEvent> events, int position)
         {
+            if (events == null)
+                throw new ArgumentNullException("events");
+
             foreach (var e in events)
             {
                 if (position >= e.Start && position <= e.Stop)
@@ -181,7 +184,7 @@ namespace Antlr4.StringTemplate.Visualizer
 
         private static void SetSelectionPath(TemplateCallHierarchyViewModel treeView, ICollection<ST> selectionPath)
         {
-            if (treeView == null || selectionPath.Count == 0 || treeView.Template != selectionPath.First())
+            if (treeView == null || selectionPath == null || selectionPath.Count == 0 || treeView.Template != selectionPath.First())
                 return;
 
             List<TemplateCallHierarchyViewModel> nodes = new List<TemplateCallHierarchyViewModel>();
@@ -247,6 +250,12 @@ namespace Antlr4.StringTemplate.Visualizer
 
         private int GetIndexOfChild(DebugST parent, ST child)
         {
+            if (parent == null)
+                throw new ArgumentNullException("parent");
+            if (child == null)
+                throw new ArgumentNullException("child");
+
+
             TemplateCallHierarchyViewModel hierarchy = new TemplateCallHierarchyViewModel(ViewModel.Visualizer.Interpreter, parent);
             List<TemplateCallHierarchyViewModel> children = hierarchy.Children;
             return children.FindIndex(i => i.Template == child);
@@ -256,7 +265,6 @@ namespace Antlr4.StringTemplate.Visualizer
         {
             List<ST> stack = currentTemplate.getEnclosingInstanceStack(true);
             ViewModel.Title = string.Format("STViz - [{0}]", string.Join(" ", stack.Select(i => i.ToString()).ToArray()));
-            //throw new NotImplementedException();
         }
 
         private void UpdateAttributes()

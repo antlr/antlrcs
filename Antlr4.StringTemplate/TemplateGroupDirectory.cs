@@ -55,8 +55,8 @@ namespace Antlr4.StringTemplate
      */
     public class STGroupDir : STGroup
     {
-        public string groupDirName;
-        public Uri root;
+        public readonly string groupDirName;
+        public readonly Uri root;
 
         public STGroupDir(string dirName)
             : this(dirName, '<', '>')

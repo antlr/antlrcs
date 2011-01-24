@@ -87,7 +87,7 @@ namespace Antlr4.StringTemplate
         /** Dump bytecode instructions as we execute them? */
         public static bool trace = false;
 
-        /** Exec st with respect to this group. Once set in ST.toString(),
+        /** Exec st with respect to this group. Once set in ST.ToString(),
          *  it should be fixed. ST has group also.
          */
         private readonly STGroup group;
@@ -204,7 +204,7 @@ namespace Antlr4.StringTemplate
                     int valueIndex = getShort(code, ip);
                     ip += Instruction.OperandSizeInBytes;
                     o = self.locals[valueIndex];
-                    if (o == ST.EMPTY_ATTR)
+                    if (o == ST.EmptyAttribute)
                         o = null;
                     operands[++sp] = o;
                     break;
@@ -777,7 +777,7 @@ namespace Antlr4.StringTemplate
             IAttributeRenderer r = group.getAttributeRenderer(o.GetType());
             string v;
             if (r != null)
-                v = r.toString(o, formatString, culture);
+                v = r.ToString(o, formatString, culture);
             else
                 v = o.ToString();
             int n;
@@ -1260,7 +1260,7 @@ namespace Antlr4.StringTemplate
             try
             {
                 IModelAdaptor adap = self.groupThatCreatedThisInstance.getModelAdaptor(o.GetType());
-                return adap.getProperty(self, o, property, toString(self, property));
+                return adap.GetProperty(self, o, property, toString(self, property));
             }
             catch (STNoSuchPropertyException e)
             {
@@ -1283,7 +1283,7 @@ namespace Antlr4.StringTemplate
             foreach (FormalArgument arg in invokedST.impl.formalArguments)
             {
                 // if no value for attribute and default arg, inject default arg into self
-                if (invokedST.locals[arg.Index] == ST.EMPTY_ATTR && arg.CompiledDefaultValue != null)
+                if (invokedST.locals[arg.Index] == ST.EmptyAttribute && arg.CompiledDefaultValue != null)
                 {
                     ST defaultArgST = group.createStringTemplate();
                     defaultArgST.enclosingInstance = invokedST.enclosingInstance;
@@ -1314,7 +1314,7 @@ namespace Antlr4.StringTemplate
             StringBuilder buf = new StringBuilder();
             dis.disassembleInstruction(buf, ip);
             string name = self.impl.name + ":";
-            if (self.impl.name == ST.UNKNOWN_NAME)
+            if (self.impl.name == ST.UnknownName)
                 name = "";
 
             tr.Append(string.Format("{0,-40}", name + buf));

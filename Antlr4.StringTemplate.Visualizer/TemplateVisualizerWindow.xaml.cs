@@ -33,11 +33,15 @@
 namespace Antlr4.StringTemplate.Visualizer
 {
     using System.Windows;
+    using ArgumentNullException = System.ArgumentNullException;
 
     public partial class TemplateVisualizerWindow : Window
     {
         public TemplateVisualizerWindow(TemplateVisualizer visualizer)
         {
+            if (visualizer == null)
+                throw new ArgumentNullException("visualizer");
+
             InitializeComponent();
             DataContext = new TemplateVisualizerViewModel(visualizer);
         }

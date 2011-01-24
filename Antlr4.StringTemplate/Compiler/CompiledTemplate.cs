@@ -71,7 +71,7 @@ namespace Antlr4.StringTemplate.Compiler
         public List<CompiledST> implicitlyDefinedTemplates;
 
         /** The group that physically defines this ST definition.  We use it to initiate
-         *  interpretation via ST.toString().  From there, it becomes field 'group'
+         *  interpretation via ST.ToString().  From there, it becomes field 'group'
          *  in interpreter and is fixed until rendering completes.
          */
         public STGroup nativeGroup = STGroup.defaultGroup;

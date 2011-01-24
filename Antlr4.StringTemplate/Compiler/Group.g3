@@ -174,7 +174,7 @@ dictPairs[IDictionary<string,object> mapping]
 	}
 
 defaultValuePair[IDictionary<string,object> mapping]
-	:	'default' ':' keyValue {mapping[STGroup.DEFAULT_KEY] = $keyValue.value;}
+	:	'default' ':' keyValue {mapping[STGroup.DefaultKey] = $keyValue.value;}
 	;
 
 keyValuePair[IDictionary<string,object> mapping]
@@ -186,7 +186,7 @@ keyValue returns [object value]
 	|	ANONYMOUS_TEMPLATE	{$value = _group.createSingleton($ANONYMOUS_TEMPLATE);}
 	|	STRING				{$value = Utility.replaceEscapes(Utility.strip($STRING.text, 1));}
 	|	{input.LT(1).Text.Equals("key")}?=> ID
-							{$value = STGroup.DICT_KEY;}
+							{$value = STGroup.DictionaryKey;}
 	;
  	catch[RecognitionException re] {
 		error("missing value for key at '"+input.LT(1).Text+"'");

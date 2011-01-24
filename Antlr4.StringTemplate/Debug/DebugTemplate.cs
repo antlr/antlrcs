@@ -86,7 +86,7 @@ namespace Antlr4.StringTemplate.Debug
 
         public virtual List<InterpEvent> getEvents(CultureInfo locale)
         {
-            return getEvents(locale, AutoIndentWriter.NO_WRAP);
+            return getEvents(locale, AutoIndentWriter.NoWrap);
         }
 
         public virtual List<InterpEvent> getEvents(CultureInfo locale, int lineWidth)

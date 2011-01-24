@@ -57,7 +57,7 @@ namespace Antlr4.StringTemplate.Compiler
         public const int EOF_TYPE = CharStreamConstants.EndOfFile;  // EOF token type
 
         /** We build STToken tokens instead of relying on CommonToken so we
-         *  can override toString(). It just converts token types to
+         *  can override ToString(). It just converts token types to
          *  token names like 23 to LDELIM.
          */
         public class STToken : CommonToken
@@ -157,7 +157,7 @@ namespace Antlr4.StringTemplate.Compiler
          */
         private readonly Queue<IToken> tokens = new Queue<IToken>();
 
-        public STLexer(ICharStream input) : this(STGroup.DEFAULT_ERR_MGR, input, null, '<', '>')
+        public STLexer(ICharStream input) : this(STGroup.DefaultErrorManager, input, null, '<', '>')
         {
         }
 

@@ -46,7 +46,7 @@ namespace Antlr4.StringTemplate.Misc
         private static readonly Dictionary<Type, Dictionary<string, System.Func<object, object>>> _memberAccessors =
             new Dictionary<Type, Dictionary<string, System.Func<object, object>>>();
 
-        public virtual object getProperty(ST self, object o, object property, string propertyName)
+        public virtual object GetProperty(ST self, object o, object property, string propertyName)
         {
             if (o == null)
                 throw new ArgumentNullException("o");

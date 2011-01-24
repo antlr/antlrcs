@@ -48,8 +48,8 @@ namespace Antlr4.StringTemplate
      */
     public class STGroupFile : STGroup
     {
-        public string fileName;
-        public Uri url;
+        public readonly string fileName;
+        public readonly Uri url;
 
         protected bool alreadyLoaded = false;
 

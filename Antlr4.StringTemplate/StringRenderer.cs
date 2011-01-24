@@ -42,7 +42,7 @@ namespace Antlr4.StringTemplate
     public class StringRenderer : IAttributeRenderer
     {
         // trim(s) and strlen(s) built-in funcs; these are format options
-        public virtual string toString(object o, string formatString, CultureInfo locale)
+        public virtual string ToString(object o, string formatString, CultureInfo locale)
         {
             string s = (string)o;
             if (formatString == null)

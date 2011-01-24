@@ -44,7 +44,7 @@ namespace Antlr4.StringTemplate.Misc
      *
      *     ST st = ...;
      *     STDump d = new STDump(st);
-     *     System.out.println(d.toString());
+     *     System.out.println(d.ToString());
      */
     public class STDump
     {

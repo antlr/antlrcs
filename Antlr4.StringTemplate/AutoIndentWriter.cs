@@ -57,7 +57,7 @@ namespace Antlr4.StringTemplate
      */
     public class AutoIndentWriter : ITemplateWriter
     {
-        public const int NO_WRAP = -1;
+        public const int NoWrap = -1;
 
         /** stack of indents; use List as it's much faster than Stack. Grows
          *  from 0..n-1.
@@ -86,7 +86,7 @@ namespace Antlr4.StringTemplate
         /** The absolute char index into the output of the next char to be written. */
         protected int charIndex = 0;
 
-        protected int lineWidth = NO_WRAP;
+        protected int lineWidth = NoWrap;
 
         public AutoIndentWriter(TextWriter @out, string newline)
         {
@@ -192,7 +192,7 @@ namespace Antlr4.StringTemplate
             int n = 0;
             // if want wrap and not already at start of line (last char was \n)
             // and we have hit or exceeded the threshold
-            if (lineWidth != NO_WRAP && wrap != null && !atStartOfLine &&
+            if (lineWidth != NoWrap && wrap != null && !atStartOfLine &&
                  charPosition >= lineWidth)
             {
                 // ok to wrap

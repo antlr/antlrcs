@@ -34,7 +34,7 @@ namespace Antlr4.StringTemplate.Misc
 {
     public class STModelAdaptor : IModelAdaptor
     {
-        public virtual object getProperty(ST self, object o, object property, string propertyName)
+        public virtual object GetProperty(ST self, object o, object property, string propertyName)
         {
             ST st = (ST)o;
             return st.getAttribute(propertyName);

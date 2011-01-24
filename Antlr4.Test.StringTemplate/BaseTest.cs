@@ -113,7 +113,7 @@ namespace Antlr4.Test.StringTemplate
         public void checkTokens(string template, string expected, char delimiterStartChar, char delimiterStopChar)
         {
             STLexer lexer =
-                new STLexer(STGroup.DEFAULT_ERR_MGR,
+                new STLexer(STGroup.DefaultErrorManager,
                             new ANTLRStringStream(template),
                             null,
                             delimiterStartChar,

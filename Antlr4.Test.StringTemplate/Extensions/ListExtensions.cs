@@ -54,7 +54,7 @@ namespace Antlr4.Test.StringTemplate.Extensions
 
         private class CollectionRenderer : IAttributeRenderer
         {
-            public string toString(object o, string formatString, CultureInfo culture)
+            public string ToString(object o, string formatString, CultureInfo culture)
             {
                 return ((IList)o).ToListString();
             }

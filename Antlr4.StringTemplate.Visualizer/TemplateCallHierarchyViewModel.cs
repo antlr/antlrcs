@@ -37,14 +37,15 @@ namespace Antlr4.StringTemplate.Visualizer
     using System.Diagnostics;
     using Antlr4.StringTemplate.Debug;
     using Path = System.IO.Path;
+    using ArgumentNullException = System.ArgumentNullException;
 
     public class TemplateCallHierarchyViewModel : INotifyPropertyChanged
     {
         private static readonly PropertyChangedEventArgs IsExpandedPropertyChangedEventArgs = new PropertyChangedEventArgs("IsExpanded");
         private static readonly PropertyChangedEventArgs IsSelectedPropertyChangedEventArgs = new PropertyChangedEventArgs("IsSelected");
 
-        private Interpreter _interpreter;
-        private DebugST _template;
+        private readonly Interpreter _interpreter;
+        private readonly DebugST _template;
         private List<TemplateCallHierarchyViewModel> _children;
 
         private bool _isExpanded;
@@ -52,6 +53,11 @@ namespace Antlr4.StringTemplate.Visualizer
 
         public TemplateCallHierarchyViewModel(Interpreter interpreter, DebugST template)
         {
+            if (interpreter == null)
+                throw new ArgumentNullException("interpreter");
+            if (template == null)
+                throw new ArgumentNullException("template");
+
             this._interpreter = interpreter;
             this._template = template;
         }

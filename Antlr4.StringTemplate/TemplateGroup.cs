@@ -58,8 +58,8 @@ namespace Antlr4.StringTemplate
     public class STGroup
     {
         /** When we use key as a value in a dictionary, this is how we signify. */
-        public static readonly string DICT_KEY = "key";
-        public static readonly string DEFAULT_KEY = "default";
+        public static readonly string DictionaryKey = "key";
+        public static readonly string DefaultKey = "default";
 
         /** Load files using what encoding? */
         public Encoding encoding;
@@ -84,7 +84,7 @@ namespace Antlr4.StringTemplate
          *  a particular kind of object for any template evaluated relative to this
          *  group.  For example, a date should be formatted differently depending
          *  on the culture.  You can set Date.class to an object whose
-         *  toString(Object) method properly formats a Date attribute
+         *  ToString(Object) method properly formats a Date attribute
          *  according to culture.  Or you can have a different renderer object
          *  for each culture.
          *
@@ -121,16 +121,16 @@ namespace Antlr4.StringTemplate
         /** Used to indicate that the template doesn't exist.
          *  Prevents duplicate group file loads and unnecessary file checks.
          */
-        protected static readonly CompiledST NOT_FOUND_ST = new CompiledST();
+        protected static readonly CompiledST NotFoundTemplate = new CompiledST();
 
-        public static readonly ErrorManager DEFAULT_ERR_MGR = new ErrorManager();
+        public static readonly ErrorManager DefaultErrorManager = new ErrorManager();
 
         public static bool debug = false;
 
         /** The errMgr for entire group; all compilations and executions.
          *  This gets copied to parsers, walkers, and interpreters.
          */
-        public ErrorManager errMgr = STGroup.DEFAULT_ERR_MGR;
+        public ErrorManager errMgr = STGroup.DefaultErrorManager;
 
         public STGroup()
         {
@@ -160,7 +160,7 @@ namespace Antlr4.StringTemplate
                 {
                     instanceST.locals = new object[instanceST.impl.formalArguments.Count];
                     for (int i = 0; i < instanceST.locals.Length; i++)
-                        instanceST.locals[i] = ST.EMPTY_ATTR;
+                        instanceST.locals[i] = ST.EmptyAttribute;
                 }
                 return instanceST;
             }
@@ -197,7 +197,7 @@ namespace Antlr4.StringTemplate
             st.groupThatCreatedThisInstance = this;
             st.impl = compile(getFileName(), null, null, template, templateToken);
             st.impl.hasFormalArgs = false;
-            st.impl.name = ST.UNKNOWN_NAME;
+            st.impl.name = ST.UnknownName;
             st.impl.defineImplicitlyDefinedTemplates(this);
             return st;
         }
@@ -215,7 +215,7 @@ namespace Antlr4.StringTemplate
         {
             CompiledST code;
             templates.TryGetValue(name, out code);
-            if (code == NOT_FOUND_ST)
+            if (code == NotFoundTemplate)
                 return null;
 
             // try to load from disk and look up again
@@ -226,7 +226,7 @@ namespace Antlr4.StringTemplate
                 code = lookupImportedTemplate(name);
 
             if (code == null)
-                templates[name] = NOT_FOUND_ST;
+                templates[name] = NotFoundTemplate;
 
             return code;
         }
@@ -622,7 +622,7 @@ namespace Antlr4.StringTemplate
             {
                 string name = n;
                 CompiledST c = templates[name];
-                if (c.isAnonSubtemplate || c == NOT_FOUND_ST)
+                if (c.isAnonSubtemplate || c == NotFoundTemplate)
                     continue;
 
                 int slash = name.LastIndexOf('/');

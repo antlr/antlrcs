@@ -39,12 +39,12 @@ namespace Antlr4.StringTemplate
      *  group for a given Java type.
      *
      *  If the format string passed to the renderer is not recognized then simply
-     *  call toString().
+     *  call ToString().
      *
      *  formatString can be null but locale will at least be Locale.getDefault()
      */
     public interface IAttributeRenderer
     {
-        string toString(object o, string formatString, CultureInfo culture);
+        string ToString(object obj, string formatString, CultureInfo culture);
     }
 }

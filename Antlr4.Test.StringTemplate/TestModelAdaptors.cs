@@ -41,7 +41,7 @@ namespace Antlr4.Test.StringTemplate
     {
         private class UserAdaptor : IModelAdaptor
         {
-            public object getProperty(ST self, object o, object property, string propertyName)
+            public object GetProperty(ST self, object o, object property, string propertyName)
             {
                 if (propertyName.Equals("id"))
                     return ((User)o).id;
@@ -53,7 +53,7 @@ namespace Antlr4.Test.StringTemplate
 
         private class UserAdaptorConst : IModelAdaptor
         {
-            public object getProperty(ST self, object o, object property, string propertyName)
+            public object GetProperty(ST self, object o, object property, string propertyName)
             {
                 if (propertyName.Equals("id"))
                     return "const id value";

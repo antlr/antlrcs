@@ -53,6 +53,6 @@ namespace Antlr4.StringTemplate
          *  if o is Map, property could be any key type.  If we need to convert
          *  to string, then it's done by ST and passed in here.
          */
-        object getProperty(ST self, object o, object property, string propertyName);
+        object GetProperty(ST self, object obj, object property, string propertyName);
     }
 }

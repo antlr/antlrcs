@@ -45,7 +45,7 @@ namespace Antlr4.StringTemplate
      */
     public class NumberRenderer : IAttributeRenderer
     {
-        public virtual string toString(object o, string formatString, CultureInfo locale)
+        public virtual string ToString(object o, string formatString, CultureInfo locale)
         {
             // o will be instanceof Number
             if (formatString == null)

@@ -66,15 +66,15 @@ namespace Antlr4.StringTemplate
             Explicit
         }
 
-        public static readonly string UNKNOWN_NAME = "anonymous";
-        public static readonly object EMPTY_ATTR = new object();
+        public static readonly string UnknownName = "anonymous";
+        public static readonly object EmptyAttribute = new object();
 
         /** The implementation for this template among all instances of same tmpelate . */
         public CompiledST impl;
 
         /** Safe to simultaneously write via add, which is synchronized.  Reading
          *  during exec is, however, NOT synchronized.  So, not thread safe to
-         *  add attributes while it is being evaluated.  Initialized to EMPTY_ATTR
+         *  add attributes while it is being evaluated.  Initialized to EmptyAttribute
          *  to distinguish null from empty.
          */
         protected internal object[] locals;
@@ -146,7 +146,7 @@ namespace Antlr4.StringTemplate
             impl = groupThatCreatedThisInstance.compile(group.getFileName(), null,
                                                         null, template, null);
             impl.hasFormalArgs = false;
-            impl.name = UNKNOWN_NAME;
+            impl.name = UnknownName;
             impl.defineImplicitlyDefinedTemplates(groupThatCreatedThisInstance);
         }
 
@@ -200,7 +200,7 @@ namespace Antlr4.StringTemplate
                     else
                         Array.Resize(ref locals, impl.formalArguments.Count);
 
-                    locals[arg.Index] = EMPTY_ATTR;
+                    locals[arg.Index] = EmptyAttribute;
                 }
             }
 
@@ -208,7 +208,7 @@ namespace Antlr4.StringTemplate
                 ((ST)value).enclosingInstance = this;
 
             object curvalue = locals[arg.Index];
-            if (curvalue == EMPTY_ATTR)
+            if (curvalue == EmptyAttribute)
             {
                 // new attribute
                 locals[arg.Index] = value;
@@ -252,7 +252,7 @@ namespace Antlr4.StringTemplate
             if (arg == null)
                 throw new ArgumentException("no such attribute: " + name);
 
-            locals[arg.Index] = EMPTY_ATTR; // reset value
+            locals[arg.Index] = EmptyAttribute; // reset value
         }
 
         /** Set this.locals attr value when you only know the name, not the index.
@@ -284,7 +284,7 @@ namespace Antlr4.StringTemplate
                 if (localArg != null)
                 {
                     object o = p.locals[localArg.Index];
-                    if (o == ST.EMPTY_ATTR)
+                    if (o == ST.EmptyAttribute)
                         o = null;
                     return o;
                 }
@@ -309,7 +309,7 @@ namespace Antlr4.StringTemplate
             foreach (FormalArgument a in impl.formalArguments)
             {
                 object o = locals[a.Index];
-                if (o == ST.EMPTY_ATTR)
+                if (o == ST.EmptyAttribute)
                     o = null;
 
                 attributes[a.Name] = o;
@@ -442,7 +442,7 @@ namespace Antlr4.StringTemplate
 
         public virtual string render(CultureInfo locale)
         {
-            return render(locale, AutoIndentWriter.NO_WRAP);
+            return render(locale, AutoIndentWriter.NoWrap);
         }
 
         public virtual string render(CultureInfo locale, int lineWidth)
@@ -467,7 +467,7 @@ namespace Antlr4.StringTemplate
         // ST.format("<name>:<phone>", "name", x, "phone", y);
         public static string format(string template, params object[] attributes)
         {
-            return format(AutoIndentWriter.NO_WRAP, template, attributes);
+            return format(AutoIndentWriter.NoWrap, template, attributes);
         }
 
         public static string format(int lineWidth, string template, params object[] attributes)
