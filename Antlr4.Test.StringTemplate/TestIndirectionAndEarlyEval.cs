@@ -43,7 +43,7 @@ namespace Antlr4.Test.StringTemplate
         public void TestEarlyEval()
         {
             string template = "<(name)>";
-            ST st = new ST(template);
+            Template st = new Template(template);
             st.add("name", "Ter");
             string expected = "Ter";
             string result = st.render();
@@ -53,11 +53,11 @@ namespace Antlr4.Test.StringTemplate
         [TestMethod]
         public void TestIndirectTemplateInclude()
         {
-            STGroup group = new STGroup();
+            TemplateGroup group = new TemplateGroup();
             group.defineTemplate("foo", "bar");
             string template = "<(name)()>";
             group.defineTemplate("test", "name", template);
-            ST st = group.getInstanceOf("test");
+            Template st = group.getInstanceOf("test");
             st.add("name", "foo");
             string expected = "bar";
             string result = st.render();
@@ -67,11 +67,11 @@ namespace Antlr4.Test.StringTemplate
         [TestMethod]
         public void TestIndirectTemplateIncludeWithArgs()
         {
-            STGroup group = new STGroup();
+            TemplateGroup group = new TemplateGroup();
             group.defineTemplate("foo", "x,y", "<x><y>");
             string template = "<(name)({1},{2})>";
             group.defineTemplate("test", "name", template);
-            ST st = group.getInstanceOf("test");
+            Template st = group.getInstanceOf("test");
             st.add("name", "foo");
             string expected = "12";
             string result = st.render();
@@ -81,12 +81,12 @@ namespace Antlr4.Test.StringTemplate
         [TestMethod]
         public void TestIndirectTemplateIncludeViaTemplate()
         {
-            STGroup group = new STGroup();
+            TemplateGroup group = new TemplateGroup();
             group.defineTemplate("foo", "bar");
             group.defineTemplate("tname", "foo");
             string template = "<(tname())()>";
             group.defineTemplate("test", "name", template);
-            ST st = group.getInstanceOf("test");
+            Template st = group.getInstanceOf("test");
             string expected = "bar";
             string result = st.render();
             Assert.AreEqual(expected, result);
@@ -96,7 +96,7 @@ namespace Antlr4.Test.StringTemplate
         public void TestIndirectProp()
         {
             string template = "<u.(propname)>: <u.name>";
-            ST st = new ST(template);
+            Template st = new Template(template);
             st.add("u", new TestCoreBasics.User(1, "parrt"));
             st.add("propname", "id");
             string expected = "1: parrt";
@@ -107,10 +107,10 @@ namespace Antlr4.Test.StringTemplate
         [TestMethod]
         public void TestIndirectMap()
         {
-            STGroup group = new STGroup();
+            TemplateGroup group = new TemplateGroup();
             group.defineTemplate("a", "x", "[<x>]");
             group.defineTemplate("test", "names,templateName", "hi <names:(templateName)()>!");
-            ST st = group.getInstanceOf("test");
+            Template st = group.getInstanceOf("test");
             st.add("names", "Ter");
             st.add("names", "Tom");
             st.add("names", "Sumana");
@@ -125,7 +125,7 @@ namespace Antlr4.Test.StringTemplate
         public void TestNonStringDictLookup()
         {
             string template = "<m.(intkey)>";
-            ST st = new ST(template);
+            Template st = new Template(template);
             IDictionary<int, string> m = new Dictionary<int, string>();
             m[36] = "foo";
             st.add("m", m);

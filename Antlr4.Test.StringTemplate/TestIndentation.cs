@@ -48,8 +48,8 @@ namespace Antlr4.Test.StringTemplate
                     ">>" + newline;
 
             writeFile(tmpdir, "t.stg", templates);
-            STGroup group = new STGroupFile(Path.Combine(tmpdir, "t.stg"));
-            ST t = group.getInstanceOf("list");
+            TemplateGroup group = new TemplateGroupFile(Path.Combine(tmpdir, "t.stg"));
+            Template t = group.getInstanceOf("list");
             t.impl.dump();
             t.add("a", "Terence");
             t.add("b", "Jim");
@@ -67,8 +67,8 @@ namespace Antlr4.Test.StringTemplate
                     ">>" + newline;
 
             writeFile(tmpdir, "t.stg", templates);
-            STGroup group = new STGroupFile(Path.Combine(tmpdir, "t.stg"));
-            ST t = group.getInstanceOf("list");
+            TemplateGroup group = new TemplateGroupFile(Path.Combine(tmpdir, "t.stg"));
+            Template t = group.getInstanceOf("list");
             t.add("names", "Terence");
             t.add("names", "Jim");
             t.add("names", "Sriram");
@@ -87,8 +87,8 @@ namespace Antlr4.Test.StringTemplate
                     "  <names; separator=\"\n\">" + newline +
                     ">>" + newline;
             writeFile(tmpdir, "t.stg", templates);
-            STGroup group = new STGroupFile(Path.Combine(tmpdir, "t.stg"));
-            ST t = group.getInstanceOf("list");
+            TemplateGroup group = new TemplateGroupFile(Path.Combine(tmpdir, "t.stg"));
+            Template t = group.getInstanceOf("list");
             t.add("names", "Terence\nis\na\nmaniac");
             t.add("names", "Jim");
             t.add("names", "Sriram\nis\ncool");
@@ -112,8 +112,8 @@ namespace Antlr4.Test.StringTemplate
                     "  <names>" + newline +
                     ">>" + newline;
             writeFile(tmpdir, "t.stg", templates);
-            STGroup group = new STGroupFile(Path.Combine(tmpdir, "t.stg"));
-            ST t = group.getInstanceOf("list");
+            TemplateGroup group = new TemplateGroupFile(Path.Combine(tmpdir, "t.stg"));
+            Template t = group.getInstanceOf("list");
             t.add("names", "Terence\n\nis a maniac");
             string expecting =
                     "  Terence" + newline +
@@ -132,8 +132,8 @@ namespace Antlr4.Test.StringTemplate
                     "after" + newline +
                     ">>" + newline;
             writeFile(tmpdir, "t.stg", templates);
-            STGroup group = new STGroupFile(Path.Combine(tmpdir, "t.stg"));
-            ST t = group.getInstanceOf("list");
+            TemplateGroup group = new TemplateGroupFile(Path.Combine(tmpdir, "t.stg"));
+            Template t = group.getInstanceOf("list");
             t.add("names", "Terence");
             t.add("names", "Jim");
             t.add("names", "Sriram");
@@ -163,18 +163,18 @@ namespace Antlr4.Test.StringTemplate
                     "assign(lhs,expr) ::= <<<lhs>=<expr>;>>" + newline
                     ;
             writeFile(tmpdir, "t.stg", templates);
-            STGroup group = new STGroupFile(Path.Combine(tmpdir, "t.stg"));
-            ST t = group.getInstanceOf("method");
+            TemplateGroup group = new TemplateGroupFile(Path.Combine(tmpdir, "t.stg"));
+            Template t = group.getInstanceOf("method");
             t.add("name", "foo");
-            ST s1 = group.getInstanceOf("assign");
+            Template s1 = group.getInstanceOf("assign");
             s1.add("lhs", "x");
             s1.add("expr", "0");
-            ST s2 = group.getInstanceOf("ifstat");
+            Template s2 = group.getInstanceOf("ifstat");
             s2.add("expr", "x>0");
-            ST s2a = group.getInstanceOf("assign");
+            Template s2a = group.getInstanceOf("assign");
             s2a.add("lhs", "y");
             s2a.add("expr", "x+y");
-            ST s2b = group.getInstanceOf("assign");
+            Template s2b = group.getInstanceOf("assign");
             s2b.add("lhs", "z");
             s2b.add("expr", "4");
             s2.add("stats", s2a);
@@ -195,7 +195,7 @@ namespace Antlr4.Test.StringTemplate
         [TestMethod]
         public void TestIndentedIFWithValueExpr()
         {
-            ST t = new ST(
+            Template t = new Template(
                 "begin" + newline +
                 "    <if(x)>foo<endif>" + newline +
                 "end" + newline);
@@ -211,7 +211,7 @@ namespace Antlr4.Test.StringTemplate
         [TestMethod]
         public void TestIFWithIndentOnMultipleLines()
         {
-            ST t = new ST(
+            Template t = new Template(
                 "begin" + newline +
                 "   <if(x)>" + newline +
                 "   foo" + newline +
@@ -230,7 +230,7 @@ namespace Antlr4.Test.StringTemplate
         [TestMethod]
         public void TestIFWithIndentAndExprOnMultipleLines()
         {
-            ST t = new ST(
+            Template t = new Template(
                 "begin" + newline +
                 "   <if(x)>" + newline +
                 "   <x>" + newline +
@@ -250,7 +250,7 @@ namespace Antlr4.Test.StringTemplate
         [TestMethod]
         public void TestIFWithIndentAndExprWithIndentOnMultipleLines()
         {
-            ST t = new ST(
+            Template t = new Template(
                 "begin" + newline +
                 "   <if(x)>" + newline +
                 "     <x>" + newline +
@@ -270,7 +270,7 @@ namespace Antlr4.Test.StringTemplate
         [TestMethod]
         public void TestNestedIFWithIndentOnMultipleLines()
         {
-            ST t = new ST(
+            Template t = new Template(
                 "begin" + newline +
                 "   <if(x)>" + newline +
                 "      <if(y)>" + newline +
@@ -295,7 +295,7 @@ namespace Antlr4.Test.StringTemplate
         [TestMethod]
         public void TestIFInSubtemplate()
         {
-            ST t = new ST(
+            Template t = new Template(
                 "<names:{n |" + newline +
                 "   <if(x)>" + newline +
                 "   <x>" + newline +

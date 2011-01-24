@@ -41,25 +41,25 @@ namespace Antlr4.Test.StringTemplate
     {
         private class UserAdaptor : IModelAdaptor
         {
-            public object GetProperty(ST self, object o, object property, string propertyName)
+            public object GetProperty(Template self, object o, object property, string propertyName)
             {
                 if (propertyName.Equals("id"))
                     return ((User)o).id;
                 if (propertyName.Equals("name"))
                     return ((User)o).Name;
-                throw new STNoSuchPropertyException(null, "User." + propertyName);
+                throw new TemplateNoSuchPropertyException(null, "User." + propertyName);
             }
         }
 
         private class UserAdaptorConst : IModelAdaptor
         {
-            public object GetProperty(ST self, object o, object property, string propertyName)
+            public object GetProperty(Template self, object o, object property, string propertyName)
             {
                 if (propertyName.Equals("id"))
                     return "const id value";
                 if (propertyName.Equals("name"))
                     return "const name value";
-                throw new STNoSuchPropertyException(null, "User." + propertyName);
+                throw new TemplateNoSuchPropertyException(null, "User." + propertyName);
             }
         }
 
@@ -90,9 +90,9 @@ namespace Antlr4.Test.StringTemplate
             string templates =
                     "foo(x) ::= \"<x.id>: <x.name>\"\n";
             writeFile(tmpdir, "foo.stg", templates);
-            STGroup group = new STGroupFile(tmpdir + "/foo.stg");
+            TemplateGroup group = new TemplateGroupFile(tmpdir + "/foo.stg");
             group.registerModelAdaptor(typeof(User), new UserAdaptor());
-            ST st = group.getInstanceOf("foo");
+            Template st = group.getInstanceOf("foo");
             st.add("x", new User(100, "parrt"));
             string expecting = "100: parrt";
             string result = st.render();
@@ -106,17 +106,17 @@ namespace Antlr4.Test.StringTemplate
             string templates =
                     "foo(x) ::= \"<x.qqq>\"\n";
             writeFile(tmpdir, "foo.stg", templates);
-            STGroup group = new STGroupFile(tmpdir + "/foo.stg");
+            TemplateGroup group = new TemplateGroupFile(tmpdir + "/foo.stg");
             group.setListener(errors);
             group.registerModelAdaptor(typeof(User), new UserAdaptor());
-            ST st = group.getInstanceOf("foo");
+            Template st = group.getInstanceOf("foo");
             st.add("x", new User(100, "parrt"));
             string expecting = "";
             string result = st.render();
             Assert.AreEqual(expecting, result);
 
-            STRuntimeMessage msg = (STRuntimeMessage)errors.Errors[0];
-            STNoSuchPropertyException e = (STNoSuchPropertyException)msg.Cause;
+            TemplateRuntimeMessage msg = (TemplateRuntimeMessage)errors.Errors[0];
+            TemplateNoSuchPropertyException e = (TemplateNoSuchPropertyException)msg.Cause;
             Assert.AreEqual("User.qqq", e.PropertyName);
         }
 
@@ -126,9 +126,9 @@ namespace Antlr4.Test.StringTemplate
             string templates =
                     "foo(x) ::= \"<x.id>: <x.name>\"\n";
             writeFile(tmpdir, "foo.stg", templates);
-            STGroup group = new STGroupFile(tmpdir + "/foo.stg");
+            TemplateGroup group = new TemplateGroupFile(tmpdir + "/foo.stg");
             group.registerModelAdaptor(typeof(User), new UserAdaptor());
-            ST st = group.getInstanceOf("foo");
+            Template st = group.getInstanceOf("foo");
             st.add("x", new SuperUser(100, "parrt")); // create subclass of User
             string expecting = "100: super parrt";
             string result = st.render();
@@ -141,14 +141,14 @@ namespace Antlr4.Test.StringTemplate
             string templates =
                     "foo(x) ::= \"<x.id>: <x.name>\"\n";
             writeFile(tmpdir, "foo.stg", templates);
-            STGroup group = new STGroupFile(tmpdir + "/foo.stg");
+            TemplateGroup group = new TemplateGroupFile(tmpdir + "/foo.stg");
             group.registerModelAdaptor(typeof(User), new UserAdaptor());
             group.getModelAdaptor(typeof(User)); // get User, SuperUser into cache
             group.getModelAdaptor(typeof(SuperUser));
 
             group.registerModelAdaptor(typeof(User), new UserAdaptorConst());
             // cache should be reset so we see new adaptor
-            ST st = group.getInstanceOf("foo");
+            Template st = group.getInstanceOf("foo");
             st.add("x", new User(100, "parrt"));
             string expecting = "const id value: const name value"; // sees UserAdaptorConst
             string result = st.render();
@@ -161,10 +161,10 @@ namespace Antlr4.Test.StringTemplate
             string templates =
                     "foo(x) ::= \"<x.id>: <x.name>\"\n";
             writeFile(tmpdir, "foo.stg", templates);
-            STGroup group = new STGroupFile(tmpdir + "/foo.stg");
+            TemplateGroup group = new TemplateGroupFile(tmpdir + "/foo.stg");
             group.registerModelAdaptor(typeof(User), new UserAdaptor());
             group.registerModelAdaptor(typeof(SuperUser), new UserAdaptorConst()); // most specific
-            ST st = group.getInstanceOf("foo");
+            Template st = group.getInstanceOf("foo");
             st.add("x", new User(100, "parrt"));
             string expecting = "100: parrt";
             string result = st.render();

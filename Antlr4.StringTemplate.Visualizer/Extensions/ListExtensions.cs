@@ -40,10 +40,10 @@ namespace Antlr4.StringTemplate.Visualizer.Extensions
     {
         public static string ToListString(this IList list)
         {
-            STGroup group = new STGroup('$', '$');
+            TemplateGroup group = new TemplateGroup('$', '$');
             group.defineTemplate("listTemplate", "list", "[$list:{x|$x$}; separator=\", \"$]");
             group.registerRenderer(typeof(IList), new CollectionRenderer());
-            ST st = group.getInstanceOf("listTemplate");
+            Template st = group.getInstanceOf("listTemplate");
             st.add("list", list);
             return st.render();
         }

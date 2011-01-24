@@ -35,39 +35,39 @@ namespace Antlr4.StringTemplate.Misc
     using Exception = System.Exception;
     using StringBuilder = System.Text.StringBuilder;
 
-    /** Used to track errors that occur in the ST interpreter. */
-    public class STRuntimeMessage : STMessage
+    /** Used to track errors that occur in the Template interpreter. */
+    public class TemplateRuntimeMessage : TemplateMessage
     {
         /** Where error occurred in bytecode memory */
         private readonly int ip = -1;
 
-        public STRuntimeMessage(ErrorType error, int ip)
+        public TemplateRuntimeMessage(ErrorType error, int ip)
             : this(error, ip, null)
         {
         }
 
-        public STRuntimeMessage(ErrorType error, int ip, ST self)
+        public TemplateRuntimeMessage(ErrorType error, int ip, Template self)
             : this(error, ip, self, null)
         {
         }
 
-        public STRuntimeMessage(ErrorType error, int ip, ST self, object arg)
+        public TemplateRuntimeMessage(ErrorType error, int ip, Template self, object arg)
             : this(error, ip, self, null, arg, null)
         {
         }
 
-        public STRuntimeMessage(ErrorType error, int ip, ST self, Exception e, object arg)
+        public TemplateRuntimeMessage(ErrorType error, int ip, Template self, Exception e, object arg)
             : this(error, ip, self, e, arg, null)
         {
         }
 
-        public STRuntimeMessage(ErrorType error, int ip, ST self, Exception e, object arg, object arg2)
+        public TemplateRuntimeMessage(ErrorType error, int ip, Template self, Exception e, object arg, object arg2)
             : base(error, self, e, arg, arg2)
         {
             this.ip = ip;
         }
 
-        public STRuntimeMessage(ErrorType error, int ip, ST self, Exception e, object arg, object arg2, object arg3)
+        public TemplateRuntimeMessage(ErrorType error, int ip, Template self, Exception e, object arg, object arg2, object arg3)
             : base(error, self, e, arg, arg2, arg3)
         {
             this.ip = ip;

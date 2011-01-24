@@ -34,13 +34,13 @@ namespace Antlr4.StringTemplate.Compiler
 {
     using Exception = System.Exception;
 
-    public class STException : Exception
+    public class TemplateException : Exception
     {
-        public STException()
+        public TemplateException()
         {
         }
 
-        public STException(string message, Exception innerException)
+        public TemplateException(string message, Exception innerException)
             : base(message, innerException)
         {
         }

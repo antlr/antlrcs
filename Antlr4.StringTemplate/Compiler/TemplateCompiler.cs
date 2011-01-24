@@ -38,7 +38,7 @@ namespace Antlr4.StringTemplate.Compiler
     using Antlr.Runtime.Tree;
 
     /** A compiler for a single template. */
-    public class Compiler
+    public class TemplateCompiler
     {
         public static readonly string SubtemplatePrefix = "_sub";
 
@@ -81,7 +81,7 @@ namespace Antlr4.StringTemplate.Compiler
         public static int subtemplateCount = 0;
 
         /** The compiler needs to know how to delimit expressions.
-         *  The STGroup normally passes in this information, but we
+         *  The TemplateGroup normally passes in this information, but we
          *  can set some defaults.
          */
         public char delimiterStartChar = '<'; // Use <expr> by default
@@ -89,52 +89,52 @@ namespace Antlr4.StringTemplate.Compiler
 
         public ErrorManager errMgr;
 
-        public Compiler()
-            : this(STGroup.DefaultErrorManager)
+        public TemplateCompiler()
+            : this(TemplateGroup.DefaultErrorManager)
         {
         }
 
-        public Compiler(ErrorManager errMgr)
+        public TemplateCompiler(ErrorManager errMgr)
             : this(errMgr, '<', '>')
         {
         }
 
-        public Compiler(char delimiterStartChar, char delimiterStopChar)
-            : this(STGroup.DefaultErrorManager, delimiterStartChar, delimiterStopChar)
+        public TemplateCompiler(char delimiterStartChar, char delimiterStopChar)
+            : this(TemplateGroup.DefaultErrorManager, delimiterStartChar, delimiterStopChar)
         {
         }
 
         /** To compile a template, we need to know what the
          *  enclosing template is (if any) in case of regions.
          */
-        public Compiler(ErrorManager errMgr, char delimiterStartChar, char delimiterStopChar)
+        public TemplateCompiler(ErrorManager errMgr, char delimiterStartChar, char delimiterStopChar)
         {
             this.errMgr = errMgr;
             this.delimiterStartChar = delimiterStartChar;
             this.delimiterStopChar = delimiterStopChar;
         }
 
-        public virtual CompiledST compile(string template)
+        public virtual CompiledTemplate compile(string template)
         {
-            CompiledST code = compile(null, null, null, template, null);
+            CompiledTemplate code = compile(null, null, null, template, null);
             code.hasFormalArgs = false;
             return code;
         }
 
         /** Compile full template with unknown formal args. */
-        public virtual CompiledST compile(string name, string template)
+        public virtual CompiledTemplate compile(string name, string template)
         {
-            CompiledST code = compile(null, name, null, template, null);
+            CompiledTemplate code = compile(null, name, null, template, null);
             code.hasFormalArgs = false;
             return code;
         }
 
         /** Compile full template with respect to a list of formal args. */
-        public virtual CompiledST compile(string srcName, string name, List<FormalArgument> args, string template, IToken templateToken)
+        public virtual CompiledTemplate compile(string srcName, string name, List<FormalArgument> args, string template, IToken templateToken)
         {
             ANTLRStringStream @is = new ANTLRStringStream(template);
             @is.name = srcName != null ? srcName : name;
-            STLexer lexer = new STLexer(errMgr, @is, templateToken, delimiterStartChar, delimiterStopChar);
+            TemplateLexer lexer = new TemplateLexer(errMgr, @is, templateToken, delimiterStartChar, delimiterStopChar);
             CommonTokenStream tokens = new CommonTokenStream(lexer);
             TemplateParser p = new TemplateParser(tokens, errMgr, templateToken);
             TemplateParser.templateAndEOF_return r = null;
@@ -150,7 +150,7 @@ namespace Antlr4.StringTemplate.Compiler
 
             if (p.NumberOfSyntaxErrors > 0 || r.Tree == null)
             {
-                CompiledST impl = new CompiledST();
+                CompiledTemplate impl = new CompiledTemplate();
                 impl.defineFormalArgs(args);
                 return impl;
             }
@@ -160,12 +160,12 @@ namespace Antlr4.StringTemplate.Compiler
             nodes.TokenStream = tokens;
             CodeGenerator gen = new CodeGenerator(nodes, errMgr, name, template, templateToken);
 
-            CompiledST impl2 = null;
+            CompiledTemplate impl2 = null;
             try
             {
                 impl2 = gen.template(name, args);
                 // only save tree/token stream when debugging
-                if (STGroup.debug)
+                if (TemplateGroup.debug)
                 {
                     impl2.ast = (CommonTree)r.Tree;
                     impl2.ast.SetUnknownTokenBoundaries();
@@ -180,13 +180,13 @@ namespace Antlr4.StringTemplate.Compiler
             return impl2;
         }
 
-        public static CompiledST defineBlankRegion(CompiledST outermostImpl, string name)
+        public static CompiledTemplate defineBlankRegion(CompiledTemplate outermostImpl, string name)
         {
             string outermostTemplateName = outermostImpl.name;
-            string mangled = STGroup.getMangledRegionName(outermostTemplateName, name);
-            CompiledST blank = new CompiledST();
+            string mangled = TemplateGroup.getMangledRegionName(outermostTemplateName, name);
+            CompiledTemplate blank = new CompiledTemplate();
             blank.isRegion = true;
-            blank.regionDefType = ST.RegionType.Implicit;
+            blank.regionDefType = Template.RegionType.Implicit;
             blank.name = mangled;
             outermostImpl.addImplicitlyDefinedTemplate(blank);
             return blank;
@@ -200,7 +200,7 @@ namespace Antlr4.StringTemplate.Compiler
 
         protected virtual void reportMessageAndThrowSTException(ITokenStream tokens, IToken templateToken, Parser parser, RecognitionException re)
         {
-            if (re.Token.Type == STLexer.EOF_TYPE)
+            if (re.Token.Type == TemplateLexer.EOF_TYPE)
             {
                 string msg = "premature EOF";
                 errMgr.compileTimeError(ErrorType.SYNTAX_ERROR, templateToken, re.Token, msg);
@@ -216,7 +216,7 @@ namespace Antlr4.StringTemplate.Compiler
                 string msg = "this doesn't look like a template: \"" + tokens + "\"";
                 errMgr.compileTimeError(ErrorType.SYNTAX_ERROR, templateToken, re.Token, msg);
             }
-            else if (tokens.LA(1) == STLexer.LDELIM)
+            else if (tokens.LA(1) == TemplateLexer.LDELIM)
             {
                 // couldn't parse expr
                 string msg = "doesn't look like an expression";
@@ -228,7 +228,7 @@ namespace Antlr4.StringTemplate.Compiler
                 errMgr.compileTimeError(ErrorType.SYNTAX_ERROR, templateToken, re.Token, msg);
             }
 
-            throw new STException();
+            throw new TemplateException();
         }
     }
 }

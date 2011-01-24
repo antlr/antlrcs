@@ -53,17 +53,17 @@ namespace Antlr4.StringTemplate
      *  We load files on-demand. If we fail to find a file, we look for it via
      *  the CLASSPATH as a resource.  I track everything with URLs not file names.
      */
-    public class STGroupDir : STGroup
+    public class TemplateGroupDirectory : TemplateGroup
     {
         public readonly string groupDirName;
         public readonly Uri root;
 
-        public STGroupDir(string dirName)
+        public TemplateGroupDirectory(string dirName)
             : this(dirName, '<', '>')
         {
         }
 
-        public STGroupDir(string dirName, char delimiterStartChar, char delimiterStopChar)
+        public TemplateGroupDirectory(string dirName, char delimiterStartChar, char delimiterStopChar)
             : base(delimiterStartChar, delimiterStopChar)
         {
             this.groupDirName = dirName;
@@ -98,18 +98,18 @@ namespace Antlr4.StringTemplate
             }
         }
 
-        public STGroupDir(string dirName, Encoding encoding)
+        public TemplateGroupDirectory(string dirName, Encoding encoding)
             : this(dirName, encoding, '<', '>')
         {
         }
 
-        public STGroupDir(string dirName, Encoding encoding, char delimiterStartChar, char delimiterStopChar)
+        public TemplateGroupDirectory(string dirName, Encoding encoding, char delimiterStartChar, char delimiterStopChar)
             : this(dirName, delimiterStartChar, delimiterStopChar)
         {
             this.encoding = encoding;
         }
 
-        public STGroupDir(Uri root, Encoding encoding, char delimiterStartChar, char delimiterStopChar)
+        public TemplateGroupDirectory(Uri root, Encoding encoding, char delimiterStartChar, char delimiterStopChar)
             : base(delimiterStartChar, delimiterStopChar)
         {
             this.root = root;
@@ -119,7 +119,7 @@ namespace Antlr4.StringTemplate
         /** Load a template from dir or group file.  Group file is given
          *  precedence over dir with same name.
          */
-        protected override CompiledST load(string name)
+        protected override CompiledTemplate load(string name)
         {
             string parent = Utility.getPrefix(name);
 
@@ -170,13 +170,13 @@ namespace Antlr4.StringTemplate
 
             loadGroupFile(parent, Path.Combine(root.LocalPath, parent) + ".stg");
 
-            CompiledST template;
+            CompiledTemplate template;
             templates.TryGetValue(name, out template);
             return template;
         }
 
         /** Load full path name .st file relative to root by prefix */
-        public virtual CompiledST loadTemplateFile(string prefix, string fileName)
+        public virtual CompiledTemplate loadTemplateFile(string prefix, string fileName)
         {
             if (Path.IsPathRooted(fileName))
                 throw new ArgumentException();
@@ -220,7 +220,7 @@ namespace Antlr4.StringTemplate
                 errMgr.groupSyntaxError(ErrorType.SYNTAX_ERROR, Path.GetFileName(f.LocalPath), re, re.Message);
             }
 
-            CompiledST template;
+            CompiledTemplate template;
             templates.TryGetValue(templateName, out template);
             return template;
         }

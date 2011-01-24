@@ -52,7 +52,7 @@ namespace Antlr4.StringTemplate
      *
      *  \n is the proper way to say newline for options and templates.
      *  Templates can mix \r\n and \n them but use \n for sure in options like
-     *  wrap="\n". ST will generate the right thing. Override the default (locale)
+     *  wrap="\n". Template will generate the right thing. Override the default (locale)
      *  newline by passing in a string to the constructor.
      */
     public class AutoIndentWriter : ITemplateWriter

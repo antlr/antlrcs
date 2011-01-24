@@ -38,13 +38,13 @@ namespace Antlr4.StringTemplate.Misc
     using RecognitionException = Antlr.Runtime.RecognitionException;
 
     /** */
-    public class STLexerMessage : STMessage
+    public class TemplateLexerMessage : TemplateMessage
     {
         string msg;
         IToken templateToken; // overall token pulled from group file
         string srcName;
 
-        public STLexerMessage(string srcName, string msg, IToken templateToken, Exception cause)
+        public TemplateLexerMessage(string srcName, string msg, IToken templateToken, Exception cause)
             : base(ErrorType.LEXER_ERROR, null, cause, null)
         {
             this.msg = msg;

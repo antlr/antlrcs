@@ -42,22 +42,22 @@ namespace Antlr4.StringTemplate.Misc
     /** This class dumps out a hierarchy of templates in text form, indented
      *  to show the nested relationship.  Usage:
      *
-     *     ST st = ...;
-     *     STDump d = new STDump(st);
+     *     Template st = ...;
+     *     TemplateDump d = new TemplateDump(st);
      *     System.out.println(d.ToString());
      */
-    public class STDump
+    public class TemplateDump
     {
-        private readonly ST self;
+        private readonly Template self;
 
-        public STDump(ST self)
+        public TemplateDump(Template self)
         {
             this.self = self;
         }
 
-        public static string toString(ST self)
+        public static string toString(Template self)
         {
-            STDump d = new STDump(self);
+            TemplateDump d = new TemplateDump(self);
             return d.ToString();
         }
 
@@ -100,9 +100,9 @@ namespace Antlr4.StringTemplate.Misc
         {
             StringBuilder buf = new StringBuilder();
             value = Interpreter.convertAnythingIteratableToIterator(value);
-            if (value is ST)
+            if (value is Template)
             {
-                STDump d = new STDump((ST)value);
+                TemplateDump d = new TemplateDump((Template)value);
                 buf.Append(d.toString(n));
             }
             else if (value is Iterator)

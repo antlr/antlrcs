@@ -45,9 +45,9 @@ namespace Antlr4.StringTemplate.Visualizer
         private readonly string _output;
         private readonly Interpreter _interpreter;
         private readonly List<string> _trace;
-        private readonly ReadOnlyCollection<STMessage> _errors;
+        private readonly ReadOnlyCollection<TemplateMessage> _errors;
 
-        public TemplateVisualizer(ErrorManager errorManager, DebugST root, string output, Interpreter interpreter, List<string> trace, ReadOnlyCollection<STMessage> errors)
+        public TemplateVisualizer(ErrorManager errorManager, DebugST root, string output, Interpreter interpreter, List<string> trace, ReadOnlyCollection<TemplateMessage> errors)
         {
             if (errorManager == null)
                 throw new ArgumentNullException("errorManager");
@@ -108,7 +108,7 @@ namespace Antlr4.StringTemplate.Visualizer
             }
         }
 
-        public ReadOnlyCollection<STMessage> Errors
+        public ReadOnlyCollection<TemplateMessage> Errors
         {
             get
             {

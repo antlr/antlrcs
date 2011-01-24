@@ -92,8 +92,8 @@ namespace Antlr4.StringTemplate.Visualizer
         private void HandleErrorsListBoxSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             int minIndex = ErrorsListBox.SelectedIndex;
-            STMessage message = ErrorsListBox.SelectedItem as STMessage;
-            STRuntimeMessage runtimeMessage = message as STRuntimeMessage;
+            TemplateMessage message = ErrorsListBox.SelectedItem as TemplateMessage;
+            TemplateRuntimeMessage runtimeMessage = message as TemplateRuntimeMessage;
             if (runtimeMessage != null)
             {
                 Interval interval = runtimeMessage.SourceInterval;
@@ -182,7 +182,7 @@ namespace Antlr4.StringTemplate.Visualizer
             }
         }
 
-        private static void SetSelectionPath(TemplateCallHierarchyViewModel treeView, ICollection<ST> selectionPath)
+        private static void SetSelectionPath(TemplateCallHierarchyViewModel treeView, ICollection<Template> selectionPath)
         {
             if (treeView == null || selectionPath == null || selectionPath.Count == 0 || treeView.Template != selectionPath.First())
                 return;
@@ -248,7 +248,7 @@ namespace Antlr4.StringTemplate.Visualizer
             }
         }
 
-        private int GetIndexOfChild(DebugST parent, ST child)
+        private int GetIndexOfChild(DebugST parent, Template child)
         {
             if (parent == null)
                 throw new ArgumentNullException("parent");
@@ -263,7 +263,7 @@ namespace Antlr4.StringTemplate.Visualizer
 
         private void UpdateStack()
         {
-            List<ST> stack = currentTemplate.getEnclosingInstanceStack(true);
+            List<Template> stack = currentTemplate.getEnclosingInstanceStack(true);
             ViewModel.Title = string.Format("STViz - [{0}]", string.Join(" ", stack.Select(i => i.ToString()).ToArray()));
         }
 

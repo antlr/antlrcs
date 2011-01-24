@@ -71,9 +71,9 @@ namespace Antlr4.Test.StringTemplate
                 "t() ::= \"<foo()>\"" + Environment.NewLine;
 
             writeFile(tmpdir, "t.stg", templates);
-            STGroup group = new STGroupFile(tmpdir + "/" + "t.stg");
+            TemplateGroup group = new TemplateGroupFile(tmpdir + "/" + "t.stg");
             group.setListener(errors);
-            ST st = group.getInstanceOf("t");
+            Template st = group.getInstanceOf("t");
             st.render();
             string expected = "context [t] 1:0 no such template: foo" + newline;
             string result = errors.ToString();
@@ -89,15 +89,15 @@ namespace Antlr4.Test.StringTemplate
                 "t() ::= \"<super.t()>\"" + Environment.NewLine;
 
             writeFile(tmpdir, "t.stg", templates);
-            STGroup group = new STGroupFile(tmpdir + "/" + "t.stg");
+            TemplateGroup group = new TemplateGroupFile(tmpdir + "/" + "t.stg");
             group.setListener(errors);
             string templates2 =
                 "u() ::= \"blech\"" + Environment.NewLine;
 
             writeFile(tmpdir, "t2.stg", templates2);
-            STGroup group2 = new STGroupFile(tmpdir + "/" + "t2.stg");
+            TemplateGroup group2 = new TemplateGroupFile(tmpdir + "/" + "t2.stg");
             group.importTemplates(group2);
-            ST st = group.getInstanceOf("t");
+            Template st = group.getInstanceOf("t");
             st.render();
             string expected = "context [t] 1:1 no such template: super.t" + newline;
             string result = errors.ToString();
@@ -113,9 +113,9 @@ namespace Antlr4.Test.StringTemplate
                 "t(u) ::= \"<u.x>\"" + Environment.NewLine;
 
             writeFile(tmpdir, "t.stg", templates);
-            STGroup group = new STGroupFile(tmpdir + "/" + "t.stg");
+            TemplateGroup group = new TemplateGroupFile(tmpdir + "/" + "t.stg");
             group.setListener(errors);
-            ST st = group.getInstanceOf("t");
+            Template st = group.getInstanceOf("t");
             st.add("u", new User(32, "parrt"));
             st.render();
             string expected = "";
@@ -132,9 +132,9 @@ namespace Antlr4.Test.StringTemplate
                 "t(u) ::= \"<u.name>\"" + Environment.NewLine;
 
             writeFile(tmpdir, "t.stg", templates);
-            STGroup group = new STGroupFile(tmpdir + "/" + "t.stg");
+            TemplateGroup group = new TemplateGroupFile(tmpdir + "/" + "t.stg");
             group.setListener(errors);
-            ST st = group.getInstanceOf("t");
+            Template st = group.getInstanceOf("t");
             st.add("u", new UserHiddenName("parrt"));
             st.render();
             string expected = "";
@@ -151,9 +151,9 @@ namespace Antlr4.Test.StringTemplate
                 "t(u) ::= \"<u.name>\"" + Environment.NewLine;
 
             writeFile(tmpdir, "t.stg", templates);
-            STGroup group = new STGroupFile(tmpdir + "/" + "t.stg");
+            TemplateGroup group = new TemplateGroupFile(tmpdir + "/" + "t.stg");
             group.setListener(errors);
-            ST st = group.getInstanceOf("t");
+            Template st = group.getInstanceOf("t");
             st.add("u", new UserHiddenNameField("parrt"));
             st.render();
             string expected = "";
@@ -171,9 +171,9 @@ namespace Antlr4.Test.StringTemplate
                 "u(x,y) ::= \"<x>\"\n";
 
             writeFile(tmpdir, "t.stg", templates);
-            STGroup group = new STGroupFile(tmpdir + "/" + "t.stg");
+            TemplateGroup group = new TemplateGroupFile(tmpdir + "/" + "t.stg");
             group.setListener(errors);
-            ST st = group.getInstanceOf("t");
+            Template st = group.getInstanceOf("t");
             st.render();
             string expected = "context [t] 1:1 passed 1 arg(s) to template u with 2 declared arg(s)" + newline;
             string result = errors.ToString();
@@ -190,9 +190,9 @@ namespace Antlr4.Test.StringTemplate
                 "u(x,y) ::= \"<x>\"\n";
 
             writeFile(tmpdir, "t.stg", templates);
-            STGroup group = new STGroupFile(tmpdir + "/" + "t.stg");
+            TemplateGroup group = new TemplateGroupFile(tmpdir + "/" + "t.stg");
             group.setListener(errors);
-            ST st = group.getInstanceOf("t");
+            Template st = group.getInstanceOf("t");
             string expected = "9";
             string result = st.render();
             Assert.AreEqual(expected, result);
@@ -212,10 +212,10 @@ namespace Antlr4.Test.StringTemplate
                 "u() ::= \"<x>\"\n";
 
             writeFile(tmpdir, "t.stg", templates);
-            STGroup group = new STGroupFile(tmpdir + "/" + "t.stg");
+            TemplateGroup group = new TemplateGroupFile(tmpdir + "/" + "t.stg");
             group.setListener(errors);
-            STGroup.debug = true;
-            ST st = group.getInstanceOf("t");
+            TemplateGroup.debug = true;
+            Template st = group.getInstanceOf("t");
             st.render();
             string expected = "context [t u] 1:1 attribute x isn't defined" + newline;
             string result = errors.ToString();
@@ -226,9 +226,9 @@ namespace Antlr4.Test.StringTemplate
         public void TestParallelAttributeIterationWithMissingArgs()
         {
             ErrorBuffer errors = new ErrorBuffer();
-            STGroup group = new STGroup();
+            TemplateGroup group = new TemplateGroup();
             group.setListener(errors);
-            ST e = new ST(group,
+            Template e = new Template(group,
                     "<names,phones,salaries:{n,p | <n>@<p>}; separator=\", \">"
                 );
             e.add("names", "Ter");
@@ -250,9 +250,9 @@ namespace Antlr4.Test.StringTemplate
         public void TestStringTypeMismatch()
         {
             ErrorBuffer errors = new ErrorBuffer();
-            STGroup group = new STGroup();
+            TemplateGroup group = new TemplateGroup();
             group.setListener(errors);
-            ST e = new ST(group, "<trim(s)>");
+            Template e = new Template(group, "<trim(s)>");
             e.add("s", 34);
             e.render(); // generate the error
             string errorExpecting = "context [anonymous] 1:1 function trim expects a string not System.Int32" + newline;
@@ -263,9 +263,9 @@ namespace Antlr4.Test.StringTemplate
         public void TestStringTypeMismatch2()
         {
             ErrorBuffer errors = new ErrorBuffer();
-            STGroup group = new STGroup();
+            TemplateGroup group = new TemplateGroup();
             group.setListener(errors);
-            ST e = new ST(group, "<strlen(s)>");
+            Template e = new Template(group, "<strlen(s)>");
             e.add("s", 34);
             e.render(); // generate the error
             string errorExpecting = "context [anonymous] 1:1 function strlen expects a string not System.Int32" + newline;

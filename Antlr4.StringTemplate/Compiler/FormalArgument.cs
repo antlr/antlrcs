@@ -40,7 +40,7 @@ namespace Antlr4.StringTemplate.Compiler
      *
      *  Each template has a set of these formal arguments or uses
      *  a placeholder object: UNKNOWN (indicating that no arguments
-     *  were specified such as when we create a template with "new ST(...)").
+     *  were specified such as when we create a template with "new Template(...)").
      *
      *  Note: originally, I tracked cardinality as well as the name of an
      *  attribute.  I'm leaving the code here as I suspect something may come
@@ -69,7 +69,7 @@ namespace Antlr4.StringTemplate.Compiler
              */
 
         /** When template arguments are not available, when the user
-         *  uses "new ST(...)", then the list of formal arguments
+         *  uses "new Template(...)", then the list of formal arguments
          *  must be distinguished from the case where a template can specify
          *  args and there just aren't any such as the t() template above.
          */
@@ -82,7 +82,7 @@ namespace Antlr4.StringTemplate.Compiler
 
         /** If they specified name="value", store the template here */
         private readonly IToken defaultValueToken;
-        private CompiledST compiledDefaultValue;
+        private CompiledTemplate compiledDefaultValue;
 
         public FormalArgument(string name)
         {
@@ -124,7 +124,7 @@ namespace Antlr4.StringTemplate.Compiler
             }
         }
 
-        public CompiledST CompiledDefaultValue
+        public CompiledTemplate CompiledDefaultValue
         {
             get
             {

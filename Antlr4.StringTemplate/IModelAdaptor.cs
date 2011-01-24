@@ -51,8 +51,8 @@ namespace Antlr4.StringTemplate
          *
          *  property is normally a String but doesn't have to be. E.g.,
          *  if o is Map, property could be any key type.  If we need to convert
-         *  to string, then it's done by ST and passed in here.
+         *  to string, then it's done by Template and passed in here.
          */
-        object GetProperty(ST self, object obj, object property, string propertyName);
+        object GetProperty(Template self, object obj, object property, string propertyName);
     }
 }

@@ -38,7 +38,7 @@ namespace Antlr4.StringTemplate.Compiler
 
     partial class GroupLexer
     {
-        public STGroup group;
+        public TemplateGroup group;
 
         public override void ReportError(RecognitionException e)
         {

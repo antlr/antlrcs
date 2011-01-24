@@ -38,9 +38,9 @@ namespace Antlr4.StringTemplate.Compiler
 
     partial class GroupParser
     {
-        private STGroup _group;
+        private TemplateGroup _group;
 
-        public STGroup Group
+        public TemplateGroup Group
         {
             get
             {

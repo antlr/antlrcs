@@ -43,9 +43,9 @@ namespace Antlr4.Test.StringTemplate
         [TestMethod]
         public void TestSimpleIteration()
         {
-            STGroup group = new STGroup();
+            TemplateGroup group = new TemplateGroup();
             group.defineTemplate("test", "names", "<names:{n|<n>}>!");
-            ST st = group.getInstanceOf("test");
+            Template st = group.getInstanceOf("test");
             st.add("names", "Ter");
             st.add("names", "Tom");
             st.add("names", "Sumana");
@@ -57,9 +57,9 @@ namespace Antlr4.Test.StringTemplate
         [TestMethod]
         public void TestMapIterationIsByKeys()
         {
-            STGroup group = new STGroup();
+            TemplateGroup group = new TemplateGroup();
             group.defineTemplate("test", "emails", "<emails:{n|<n>}>!");
-            ST st = group.getInstanceOf("test");
+            Template st = group.getInstanceOf("test");
             IDictionary<string, string> emails = new Dictionary<string, string>();
             emails["parrt"] = "Ter";
             emails["tombu"] = "Tom";
@@ -73,9 +73,9 @@ namespace Antlr4.Test.StringTemplate
         [TestMethod]
         public void TestSimpleIterationWithArg()
         {
-            STGroup group = new STGroup();
+            TemplateGroup group = new TemplateGroup();
             group.defineTemplate("test", "names", "<names:{n | <n>}>!");
-            ST st = group.getInstanceOf("test");
+            Template st = group.getInstanceOf("test");
             st.add("names", "Ter");
             st.add("names", "Tom");
             st.add("names", "Sumana");
@@ -87,9 +87,9 @@ namespace Antlr4.Test.StringTemplate
         [TestMethod]
         public void TestNestedIterationWithArg()
         {
-            STGroup group = new STGroup();
+            TemplateGroup group = new TemplateGroup();
             group.defineTemplate("test", "users", "<users:{u | <u.id:{id | <id>=}><u.name>}>!");
-            ST st = group.getInstanceOf("test");
+            Template st = group.getInstanceOf("test");
             st.add("users", new TestCoreBasics.User(1, "parrt"));
             st.add("users", new TestCoreBasics.User(2, "tombu"));
             st.add("users", new TestCoreBasics.User(3, "sri"));
@@ -101,7 +101,7 @@ namespace Antlr4.Test.StringTemplate
         [TestMethod]
         public void TestParallelAttributeIteration()
         {
-            ST e = new ST(
+            Template e = new Template(
                     "<names,phones,salaries:{n,p,s | <n>@<p>: <s>\n}>"
                 );
             e.add("names", "Ter");
@@ -117,7 +117,7 @@ namespace Antlr4.Test.StringTemplate
         [TestMethod]
         public void TestParallelAttributeIterationWithNullValue()
         {
-            ST e = new ST(
+            Template e = new Template(
                     "<names,phones,salaries:{n,p,s | <n>@<p>: <s>\n}>"
                 );
             e.add("names", "Ter");
@@ -136,7 +136,7 @@ namespace Antlr4.Test.StringTemplate
         [TestMethod]
         public void TestParallelAttributeIterationHasI()
         {
-            ST e = new ST(
+            Template e = new Template(
                     "<names,phones,salaries:{n,p,s | <i0>. <n>@<p>: <s>\n}>"
                 );
             e.add("names", "Ter");
@@ -154,7 +154,7 @@ namespace Antlr4.Test.StringTemplate
         [TestMethod]
         public void TestParallelAttributeIterationWithDifferentSizes()
         {
-            ST e = new ST(
+            Template e = new Template(
                     "<names,phones,salaries:{n,p,s | <n>@<p>: <s>}; separator=\", \">"
                 );
             e.add("names", "Ter");
@@ -170,7 +170,7 @@ namespace Antlr4.Test.StringTemplate
         [TestMethod]
         public void TestParallelAttributeIterationWithSingletons()
         {
-            ST e = new ST(
+            Template e = new Template(
                     "<names,phones,salaries:{n,p,s | <n>@<p>: <s>}; separator=\", \">"
                 );
             e.add("names", "Ter");
@@ -189,8 +189,8 @@ namespace Antlr4.Test.StringTemplate
                     "value(x) ::= \"<if(!x)>n/a<else><x><endif>\"" + newline;
             writeFile(tmpdir, "g.stg", templates);
 
-            STGroup group = new STGroupFile(tmpdir + "/g.stg");
-            ST p = group.getInstanceOf("page");
+            TemplateGroup group = new TemplateGroupFile(tmpdir + "/g.stg");
+            Template p = group.getInstanceOf("page");
             p.add("names", "Ter");
             p.add("names", "Tom");
             p.add("names", "Sriram");
@@ -205,16 +205,16 @@ namespace Antlr4.Test.StringTemplate
         public void TestEvalSTIteratingSubtemplateInSTFromAnotherGroup()
         {
             ErrorBuffer errors = new ErrorBuffer();
-            STGroup innerGroup = new STGroup();
+            TemplateGroup innerGroup = new TemplateGroup();
             innerGroup.setListener(errors);
             innerGroup.defineTemplate("test", "m", "<m:samegroup()>");
             innerGroup.defineTemplate("samegroup", "x", "hi ");
-            ST st = innerGroup.getInstanceOf("test");
+            Template st = innerGroup.getInstanceOf("test");
             st.add("m", new int[] { 1, 2, 3 });
 
-            STGroup outerGroup = new STGroup();
+            TemplateGroup outerGroup = new TemplateGroup();
             outerGroup.defineTemplate("errorMessage", "x", "<x>");
-            ST outerST = outerGroup.getInstanceOf("errorMessage");
+            Template outerST = outerGroup.getInstanceOf("errorMessage");
             outerST.add("x", st);
 
             string expected = "hi hi hi ";
@@ -229,16 +229,16 @@ namespace Antlr4.Test.StringTemplate
         public void TestEvalSTIteratingSubtemplateInSTFromAnotherGroupSingleValue()
         {
             ErrorBuffer errors = new ErrorBuffer();
-            STGroup innerGroup = new STGroup();
+            TemplateGroup innerGroup = new TemplateGroup();
             innerGroup.setListener(errors);
             innerGroup.defineTemplate("test", "m", "<m:samegroup()>");
             innerGroup.defineTemplate("samegroup", "x", "hi ");
-            ST st = innerGroup.getInstanceOf("test");
+            Template st = innerGroup.getInstanceOf("test");
             st.add("m", 10);
 
-            STGroup outerGroup = new STGroup();
+            TemplateGroup outerGroup = new TemplateGroup();
             outerGroup.defineTemplate("errorMessage", "x", "<x>");
-            ST outerST = outerGroup.getInstanceOf("errorMessage");
+            Template outerST = outerGroup.getInstanceOf("errorMessage");
             outerST.add("x", st);
 
             string expected = "hi ";
@@ -253,16 +253,16 @@ namespace Antlr4.Test.StringTemplate
         public void TestEvalSTFromAnotherGroup()
         {
             ErrorBuffer errors = new ErrorBuffer();
-            STGroup innerGroup = new STGroup();
+            TemplateGroup innerGroup = new TemplateGroup();
             innerGroup.setListener(errors);
             innerGroup.defineTemplate("bob", "inner");
-            ST st = innerGroup.getInstanceOf("bob");
+            Template st = innerGroup.getInstanceOf("bob");
 
-            STGroup outerGroup = new STGroup();
+            TemplateGroup outerGroup = new TemplateGroup();
             outerGroup.setListener(errors);
             outerGroup.defineTemplate("errorMessage", "x", "<x>");
             outerGroup.defineTemplate("bob", "outer"); // should not be visible to test() in innerGroup
-            ST outerST = outerGroup.getInstanceOf("errorMessage");
+            Template outerST = outerGroup.getInstanceOf("errorMessage");
             outerST.add("x", st);
 
             string expected = "inner";

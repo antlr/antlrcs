@@ -40,7 +40,7 @@ namespace Antlr4.StringTemplate.Compiler
     {
         public static void main(string[] args)
         {
-            Compiler c = new Compiler();
+            TemplateCompiler c = new TemplateCompiler();
 
             string template = File.ReadAllText(args[0]);
             List<FormalArgument> a = new List<FormalArgument>();

@@ -36,66 +36,66 @@ namespace Antlr4.StringTemplate.Misc
     using IToken = Antlr.Runtime.IToken;
     using StringWriter = System.IO.StringWriter;
 
-    /** Upon error, ST creates an STMessage or subclass instance and notifies
+    /** Upon error, Template creates an TemplateMessage or subclass instance and notifies
      *  the listener.  This root class is used for IO and internal errors.
      *
-     *  @see STRuntimeMessage
-     *  @see STCompiletimeMessage
+     *  @see TemplateRuntimeMessage
+     *  @see TemplateCompiletimeMessage
      */
-    public class STMessage
+    public class TemplateMessage
     {
         /** if in debug mode, has created instance, add attr events and eval
          *  template events.
          */
-        private readonly ST self;
+        private readonly Template self;
         private readonly ErrorType error;
         private readonly object arg;
         private readonly object arg2;
         private readonly object arg3;
         private readonly Exception cause;
 
-        public STMessage(ErrorType error)
+        public TemplateMessage(ErrorType error)
         {
             this.error = error;
         }
 
-        public STMessage(ErrorType error, ST self)
+        public TemplateMessage(ErrorType error, Template self)
             : this(error)
         {
             this.self = self;
         }
 
-        public STMessage(ErrorType error, ST self, Exception cause)
+        public TemplateMessage(ErrorType error, Template self, Exception cause)
             : this(error, self)
         {
             this.cause = cause;
         }
 
-        public STMessage(ErrorType error, ST self, Exception cause, object arg)
+        public TemplateMessage(ErrorType error, Template self, Exception cause, object arg)
             : this(error, self, cause)
         {
             this.arg = arg;
         }
 
-        public STMessage(ErrorType error, ST self, Exception cause, IToken where, object arg)
+        public TemplateMessage(ErrorType error, Template self, Exception cause, IToken where, object arg)
             : this(error, self, cause, where)
         {
             this.arg = arg;
         }
 
-        public STMessage(ErrorType error, ST self, Exception cause, object arg, object arg2)
+        public TemplateMessage(ErrorType error, Template self, Exception cause, object arg, object arg2)
             : this(error, self, cause, arg)
         {
             this.arg2 = arg2;
         }
 
-        public STMessage(ErrorType error, ST self, Exception cause, object arg, object arg2, object arg3)
+        public TemplateMessage(ErrorType error, Template self, Exception cause, object arg, object arg2, object arg3)
             : this(error, self, cause, arg, arg2)
         {
             this.arg3 = arg3;
         }
 
-        public ST Self
+        public Template Self
         {
             get
             {

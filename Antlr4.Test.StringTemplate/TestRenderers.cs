@@ -141,9 +141,9 @@ namespace Antlr4.Test.StringTemplate
                     "foo(x) ::= << <x; format=\"{0,6}\"> >>\n";
 
             writeFile(tmpdir, "t.stg", templates);
-            STGroup group = new STGroupFile(tmpdir + "/t.stg");
+            TemplateGroup group = new TemplateGroupFile(tmpdir + "/t.stg");
             group.registerRenderer(typeof(string), new StringRenderer());
-            ST st = group.getInstanceOf("foo");
+            Template st = group.getInstanceOf("foo");
             st.add("x", "hi");
             string expecting = "     hi ";
             string result = st.render();
@@ -155,9 +155,9 @@ namespace Antlr4.Test.StringTemplate
         {
             string template =
                     "The names: <names; format=\"upper\">";
-            STGroup group = new STGroup();
+            TemplateGroup group = new TemplateGroup();
             group.registerRenderer(typeof(string), new StringRenderer());
-            ST st = new ST(template);
+            Template st = new Template(template);
             st.groupThatCreatedThisInstance = group;
             st.add("names", "ter");
             st.add("names", "tom");
@@ -172,9 +172,9 @@ namespace Antlr4.Test.StringTemplate
         {
             string template =
                     "The names: <names; separator=\" and \", format=\"upper\">";
-            STGroup group = new STGroup();
+            TemplateGroup group = new TemplateGroup();
             group.registerRenderer(typeof(string), new StringRenderer());
-            ST st = new ST(template);
+            Template st = new Template(template);
             st.groupThatCreatedThisInstance = group;
             st.add("names", "ter");
             st.add("names", "tom");
@@ -189,9 +189,9 @@ namespace Antlr4.Test.StringTemplate
         {
             string template =
                     "The names: <names; separator=\" and \", null=\"n/a\", format=\"upper\">";
-            STGroup group = new STGroup();
+            TemplateGroup group = new TemplateGroup();
             group.registerRenderer(typeof(string), new StringRenderer());
-            ST st = new ST(template);
+            Template st = new Template(template);
             st.groupThatCreatedThisInstance = group;
             List<string> names = new List<string>();
             names.Add("ter");
@@ -210,10 +210,10 @@ namespace Antlr4.Test.StringTemplate
             string templates = "foo(x,y) ::= << <x; format=\"{0}\"> <y; format=\"{0:0.000}\"> >>\n";
 
             writeFile(tmpdir, "t.stg", templates);
-            STGroup group = new STGroupFile(tmpdir + "/t.stg");
+            TemplateGroup group = new TemplateGroupFile(tmpdir + "/t.stg");
             group.registerRenderer(typeof(int), new NumberRenderer());
             group.registerRenderer(typeof(double), new NumberRenderer());
-            ST st = group.getInstanceOf("foo");
+            Template st = group.getInstanceOf("foo");
             st.add("x", -2100);
             st.add("y", 3.14159);
             string expecting = " -2100 3.142 ";
@@ -227,10 +227,10 @@ namespace Antlr4.Test.StringTemplate
             string templates =
                     "numberThing(x,y,z) ::= \"numbers: <x>, <y>; <z>\"\n";
             writeFile(tmpdir, "t.stg", templates);
-            STGroup group = new STGroupFile(tmpdir + "/t.stg");
+            TemplateGroup group = new TemplateGroupFile(tmpdir + "/t.stg");
             group.registerRenderer(typeof(int), new NumberRenderer());
             group.registerRenderer(typeof(double), new NumberRenderer());
-            ST st = group.getInstanceOf("numberThing");
+            Template st = group.getInstanceOf("numberThing");
             st.add("x", -2100);
             st.add("y", 3.14159);
             st.add("z", "hi");
@@ -246,10 +246,10 @@ namespace Antlr4.Test.StringTemplate
             string templates = "foo(x,y) ::= << <x; format=\"{0:#,#}\"> <y; format=\"{0:0.000}\"> >>\n";
 
             writeFile(tmpdir, "t.stg", templates);
-            STGroup group = new STGroupFile(tmpdir + "/t.stg");
+            TemplateGroup group = new TemplateGroupFile(tmpdir + "/t.stg");
             group.registerRenderer(typeof(int), new NumberRenderer());
             group.registerRenderer(typeof(double), new NumberRenderer());
-            ST st = group.getInstanceOf("foo");
+            Template st = group.getInstanceOf("foo");
             st.add("x", -2100);
             st.add("y", 3.14159);
             // Polish uses ' ' (ASCII 160) for ',' and ',' for '.'

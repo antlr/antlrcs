@@ -88,7 +88,7 @@ namespace Antlr4.StringTemplate.Visualizer
             }
         }
 
-        public ReadOnlyCollection<STMessage> Errors
+        public ReadOnlyCollection<TemplateMessage> Errors
         {
             get
             {

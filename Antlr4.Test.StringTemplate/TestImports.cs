@@ -52,10 +52,10 @@ namespace Antlr4.Test.StringTemplate
             a = "a() ::= << <b()> >>\n";
             writeFile(dir2, "a.st", a);
 
-            STGroup group1 = new STGroupDir(dir1);
-            STGroup group2 = new STGroupDir(dir2);
+            TemplateGroup group1 = new TemplateGroupDirectory(dir1);
+            TemplateGroup group2 = new TemplateGroupDirectory(dir2);
             group2.importTemplates(group1);
-            ST st = group2.getInstanceOf("b");
+            Template st = group2.getInstanceOf("b");
             string expected = "dir1 b";
             string result = st.render();
             Assert.AreEqual(expected, result);
@@ -82,8 +82,8 @@ namespace Antlr4.Test.StringTemplate
             writeFile(dir2, "a.st", a);
             writeFile(dir2, "b.st", b);
 
-            STGroup group = new STGroupFile(dir1 + "/a.stg");
-            ST st = group.getInstanceOf("b"); // visible only if import worked
+            TemplateGroup group = new TemplateGroupFile(dir1 + "/a.stg");
+            Template st = group.getInstanceOf("b"); // visible only if import worked
             string expected = "dir2 b";
             string result = st.render();
             Assert.AreEqual(expected, result);
@@ -103,8 +103,8 @@ namespace Antlr4.Test.StringTemplate
                 "c() ::= \"g2 c\"\n";
             writeFile(dir, "group2.stg", groupFile);
 
-            STGroup group1 = new STGroupFile(dir + "/group1.stg");
-            ST st = group1.getInstanceOf("c"); // should see c()
+            TemplateGroup group1 = new TemplateGroupFile(dir + "/group1.stg");
+            Template st = group1.getInstanceOf("c"); // should see c()
             string expected = "g2 c";
             string result = st.render();
             Assert.AreEqual(expected, result);
@@ -122,10 +122,10 @@ namespace Antlr4.Test.StringTemplate
                 "c() ::= \"group file c\"\n";
             writeFile(dir, "y/group.stg", groupFile);
 
-            STGroup group1 = new STGroupDir(dir + "/x");
-            STGroup group2 = new STGroupFile(dir + "/y/group.stg");
+            TemplateGroup group1 = new TemplateGroupDirectory(dir + "/x");
+            TemplateGroup group2 = new TemplateGroupFile(dir + "/y/group.stg");
             group1.importTemplates(group2);
-            ST st = group1.getInstanceOf("a");
+            Template st = group1.getInstanceOf("a");
             st.impl.dump();
             string expected = " group file b ";
             string result = st.render();
@@ -146,10 +146,10 @@ namespace Antlr4.Test.StringTemplate
                 "c() ::= \"g2 c\"\n";
             writeFile(dir, "y/group.stg", groupFile);
 
-            STGroup group1 = new STGroupFile(dir + "/x/group.stg");
-            STGroup group2 = new STGroupFile(dir + "/y/group.stg");
+            TemplateGroup group1 = new TemplateGroupFile(dir + "/x/group.stg");
+            TemplateGroup group2 = new TemplateGroupFile(dir + "/y/group.stg");
             group1.importTemplates(group2);
-            ST st = group1.getInstanceOf("b");
+            Template st = group1.getInstanceOf("b");
             string expected = "g2 c";
             string result = st.render();
             Assert.AreEqual(expected, result);
@@ -165,10 +165,10 @@ namespace Antlr4.Test.StringTemplate
             writeFile(dir, "x/subdir/a.st", a);
             writeFile(dir, "y/subdir/b.st", b);
 
-            STGroup group1 = new STGroupDir(dir + "/x");
-            STGroup group2 = new STGroupDir(dir + "/y");
+            TemplateGroup group1 = new TemplateGroupDirectory(dir + "/x");
+            TemplateGroup group2 = new TemplateGroupDirectory(dir + "/y");
             group1.importTemplates(group2);
-            ST st = group1.getInstanceOf("subdir/a");
+            Template st = group1.getInstanceOf("subdir/a");
             string expected = " x's subdir/b ";
             string result = st.render();
             Assert.AreEqual(expected, result);
@@ -187,10 +187,10 @@ namespace Antlr4.Test.StringTemplate
                 "b() ::= \"group file: b\"\n";
             writeFile(dir, "y/subdir.stg", groupFile);
 
-            STGroup group1 = new STGroupDir(dir + "/x");
-            STGroup group2 = new STGroupDir(dir + "/y");
+            TemplateGroup group1 = new TemplateGroupDirectory(dir + "/x");
+            TemplateGroup group2 = new TemplateGroupDirectory(dir + "/y");
             group1.importTemplates(group2);
-            ST st = group1.getInstanceOf("subdir/a");
+            Template st = group1.getInstanceOf("subdir/a");
             string expected = " group file: b ";
             string result = st.render();
             Assert.AreEqual(expected, result);
@@ -208,12 +208,12 @@ namespace Antlr4.Test.StringTemplate
             writeFile(dir2, "a.st", a);
             writeFile(dir2, "b.st", b);
 
-            STGroup group1 = new STGroupDir(dir1);
-            STGroup group2 = new STGroupDir(dir2);
+            TemplateGroup group1 = new TemplateGroupDirectory(dir1);
+            TemplateGroup group2 = new TemplateGroupDirectory(dir2);
             group1.importTemplates(group2);
 
             // normal lookup; a created from dir2 calls dir2.b
-            ST st = group2.getInstanceOf("a");
+            Template st = group2.getInstanceOf("a");
             string expected = " dir2 b ";
             string result = st.render();
             Assert.AreEqual(expected, result);
@@ -237,10 +237,10 @@ namespace Antlr4.Test.StringTemplate
             a = "a() ::= << [<super.a()>] >>\n";
             writeFile(dir2, "a.st", a);
 
-            STGroup group1 = new STGroupDir(dir1);
-            STGroup group2 = new STGroupDir(dir2);
+            TemplateGroup group1 = new TemplateGroupDirectory(dir1);
+            TemplateGroup group2 = new TemplateGroupDirectory(dir2);
             group2.importTemplates(group1);
-            ST st = group2.getInstanceOf("a");
+            Template st = group2.getInstanceOf("a");
             string expected = " [dir1 a] ";
             string result = st.render();
             Assert.AreEqual(expected, result);
@@ -258,12 +258,12 @@ namespace Antlr4.Test.StringTemplate
             a = "a() ::= << <b()> >>\n";
             writeFile(dir2, "a.st", a);
 
-            STGroup group1 = new STGroupDir(dir1);
-            STGroup group2 = new STGroupDir(dir2);
+            TemplateGroup group1 = new TemplateGroupDirectory(dir1);
+            TemplateGroup group2 = new TemplateGroupDirectory(dir2);
             group2.importTemplates(group1);
 
-            ST st = group2.getInstanceOf("a");
-            ST st2 = group2.getInstanceOf("b");
+            Template st = group2.getInstanceOf("a");
+            Template st2 = group2.getInstanceOf("b");
             int originalHashCode = RuntimeHelpers.GetHashCode(st);
             int originalHashCode2 = RuntimeHelpers.GetHashCode(st2);
             group1.unload(); // blast cache

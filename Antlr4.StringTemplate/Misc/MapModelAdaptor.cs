@@ -36,13 +36,13 @@ namespace Antlr4.StringTemplate.Misc
 
     public class MapModelAdaptor : IModelAdaptor
     {
-        public virtual object GetProperty(ST self, object o, object property, string propertyName)
+        public virtual object GetProperty(Template self, object o, object property, string propertyName)
         {
             object value;
             IDictionary map = (IDictionary)o;
 
             if (property == null)
-                value = map[STGroup.DefaultKey];
+                value = map[TemplateGroup.DefaultKey];
             else if (property.Equals("keys"))
                 value = map.Keys;
             else if (property.Equals("values"))
@@ -52,10 +52,10 @@ namespace Antlr4.StringTemplate.Misc
             else if (map.Contains(propertyName))
                 value = map[propertyName]; // if can't find the key, try ToString version
             else
-                value = map[STGroup.DefaultKey]; // not found, use default
+                value = map[TemplateGroup.DefaultKey]; // not found, use default
 
             string valueString = value as string;
-            if (valueString == STGroup.DictionaryKey)
+            if (valueString == TemplateGroup.DictionaryKey)
             {
                 value = property;
             }

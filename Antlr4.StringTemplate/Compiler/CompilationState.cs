@@ -38,14 +38,14 @@ namespace Antlr4.StringTemplate.Compiler
     using Antlr4.StringTemplate.Misc;
 
     /** temp data used during construction and functions that fill it / use it.
-     *  Result is impl CompiledST object.
+     *  Result is impl CompiledTemplate object.
      */
     public class CompilationState
     {
         /** The compiled code implementation to fill in. */
-        internal CompiledST impl = new CompiledST();
+        internal CompiledTemplate impl = new CompiledTemplate();
 
-        /** Track unique strings; copy into CompiledST's String[] after compilation */
+        /** Track unique strings; copy into CompiledTemplate's String[] after compilation */
         internal StringTable stringtable = new StringTable();
 
         /** Track instruction location within code.instrs array; this is
@@ -94,14 +94,14 @@ namespace Antlr4.StringTemplate.Compiler
 
         public virtual void setOption(CommonTree id)
         {
-            Interpreter.Option O = Compiler.supportedOptions[id.Text];
+            Interpreter.Option O = TemplateCompiler.supportedOptions[id.Text];
             emit1(id, Bytecode.INSTR_STORE_OPTION, (int)O);
         }
 
         public virtual void func(IToken templateToken, CommonTree id)
         {
             Bytecode funcBytecode;
-            if (!Compiler.funcs.TryGetValue(id.Text, out funcBytecode))
+            if (!TemplateCompiler.funcs.TryGetValue(id.Text, out funcBytecode))
             {
                 errMgr.compileTimeError(ErrorType.NO_SUCH_FUNCTION, templateToken, id.token);
                 emit(id, Bytecode.INSTR_POP);

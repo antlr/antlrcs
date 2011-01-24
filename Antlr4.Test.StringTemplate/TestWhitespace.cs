@@ -43,9 +43,9 @@ namespace Antlr4.Test.StringTemplate
         [TestMethod]
         public void TestTrimmedSubtemplates()
         {
-            STGroup group = new STGroup();
+            TemplateGroup group = new TemplateGroup();
             group.defineTemplate("test", "names", "<names:{n | <n>}>!");
-            ST st = group.getInstanceOf("test");
+            Template st = group.getInstanceOf("test");
             st.add("names", "Ter");
             st.add("names", "Tom");
             st.add("names", "Sumana");
@@ -57,10 +57,10 @@ namespace Antlr4.Test.StringTemplate
         [TestMethod]
         public void TestTrimmedSubtemplatesNoArgs()
         {
-            STGroup group = new STGroup();
+            TemplateGroup group = new TemplateGroup();
             group.defineTemplate("test", "[<foo({ foo })>]");
             group.defineTemplate("foo", "x", "<x>");
-            ST st = group.getInstanceOf("test");
+            Template st = group.getInstanceOf("test");
             string expected = "[ foo ]";
             string result = st.render();
             Assert.AreEqual(expected, result);
@@ -69,9 +69,9 @@ namespace Antlr4.Test.StringTemplate
         [TestMethod]
         public void TestTrimmedSubtemplatesArgs()
         {
-            STGroup group = new STGroup();
+            TemplateGroup group = new TemplateGroup();
             group.defineTemplate("test", "names", "<names:{x|  foo }>");
-            ST st = group.getInstanceOf("test");
+            Template st = group.getInstanceOf("test");
             st.add("names", "Ter");
             st.add("names", "Tom");
             st.add("names", "Sumana");
@@ -83,9 +83,9 @@ namespace Antlr4.Test.StringTemplate
         [TestMethod]
         public void TestTrimJustOneWSInSubtemplates()
         {
-            STGroup group = new STGroup();
+            TemplateGroup group = new TemplateGroup();
             group.defineTemplate("test", "names", "<names:{n |  <n> }>!");
-            ST st = group.getInstanceOf("test");
+            Template st = group.getInstanceOf("test");
             st.add("names", "Ter");
             st.add("names", "Tom");
             st.add("names", "Sumana");
@@ -97,10 +97,10 @@ namespace Antlr4.Test.StringTemplate
         [TestMethod]
         public void TestTrimNewlineInSubtemplates()
         {
-            STGroup group = new STGroup();
+            TemplateGroup group = new TemplateGroup();
             group.defineTemplate("test", "names", "<names:{n |\n" +
                                          "<n>}>!");
-            ST st = group.getInstanceOf("test");
+            Template st = group.getInstanceOf("test");
             st.add("names", "Ter");
             st.add("names", "Tom");
             st.add("names", "Sumana");
@@ -112,11 +112,11 @@ namespace Antlr4.Test.StringTemplate
         [TestMethod]
         public void TestLeaveNewlineOnEndInSubtemplates()
         {
-            STGroup group = new STGroup();
+            TemplateGroup group = new TemplateGroup();
             group.defineTemplate("test", "names", "<names:{n |\n" +
                                          "<n>\n" +
                                          "}>!");
-            ST st = group.getInstanceOf("test");
+            Template st = group.getInstanceOf("test");
             st.add("names", "Ter");
             st.add("names", "Tom");
             st.add("names", "Sumana");
@@ -129,11 +129,11 @@ namespace Antlr4.Test.StringTemplate
         public void TestTabBeforeEndInSubtemplates()
         {
             // fails since it counts indent from outer too
-            STGroup group = new STGroup();
+            TemplateGroup group = new TemplateGroup();
             group.defineTemplate("test", "names", "  <names:{n |\n" +
                                          "    <n>\n" +
                                          "  }>!");
-            ST st = group.getInstanceOf("test");
+            Template st = group.getInstanceOf("test");
             st.add("names", "Ter");
             st.add("names", "Tom");
             st.add("names", "Sumana");
@@ -150,7 +150,7 @@ namespace Antlr4.Test.StringTemplate
         [TestMethod]
         public void TestEmptyExprAsFirstLineGetsNoOutput()
         {
-            ST t = new ST(
+            Template t = new Template(
                 "<users>\n" +
                 "end\n");
             string expecting = "end" + newline;
@@ -161,7 +161,7 @@ namespace Antlr4.Test.StringTemplate
         [TestMethod]
         public void TestEmptyLineWithIndent()
         {
-            ST t = new ST(
+            Template t = new Template(
                 "begin\n" +
                 "    \n" +
                 "end\n");
@@ -173,7 +173,7 @@ namespace Antlr4.Test.StringTemplate
         [TestMethod]
         public void TestEmptyLine()
         {
-            ST t = new ST(
+            Template t = new Template(
                 "begin\n" +
                 "\n" +
                 "end\n");
@@ -185,7 +185,7 @@ namespace Antlr4.Test.StringTemplate
         [TestMethod]
         public void TestSizeZeroOnLineByItselfGetsNoOutput()
         {
-            ST t = new ST(
+            Template t = new Template(
                 "begin\n" +
                 "<name>\n" +
                 "<users>\n" +
@@ -199,7 +199,7 @@ namespace Antlr4.Test.StringTemplate
         [TestMethod]
         public void TestSizeZeroOnLineWithIndentGetsNoOutput()
         {
-            ST t = new ST(
+            Template t = new Template(
                 "begin\n" +
                 "  <name>\n" +
                 "	<users>\n" +
@@ -213,7 +213,7 @@ namespace Antlr4.Test.StringTemplate
         [TestMethod]
         public void TestSizeZeroOnLineWithMultipleExpr()
         {
-            ST t = new ST(
+            Template t = new Template(
                 "begin\n" +
                 "  <name>\n" +
                 "	<users><users>\n" +
@@ -226,7 +226,7 @@ namespace Antlr4.Test.StringTemplate
         [TestMethod]
         public void TestIFExpr()
         {
-            ST t = new ST(
+            Template t = new Template(
                 "begin\n" +
                 "<if(x)><endif>\n" +
                 "end\n");
@@ -238,7 +238,7 @@ namespace Antlr4.Test.StringTemplate
         [TestMethod]
         public void TestIndentedIFExpr()
         {
-            ST t = new ST(
+            Template t = new Template(
                 "begin\n" +
                 "    <if(x)><endif>\n" +
                 "end\n");
@@ -250,7 +250,7 @@ namespace Antlr4.Test.StringTemplate
         [TestMethod]
         public void TestIFElseExpr()
         {
-            ST t = new ST(
+            Template t = new Template(
                 "begin\n" +
                 "<if(users)><else><endif>\n" +
                 "end\n");
@@ -262,7 +262,7 @@ namespace Antlr4.Test.StringTemplate
         [TestMethod]
         public void TestIFOnMultipleLines()
         {
-            ST t = new ST(
+            Template t = new Template(
                 "begin\n" +
                 "<if(users)>\n" +
                 "foo\n" +
@@ -278,7 +278,7 @@ namespace Antlr4.Test.StringTemplate
         [TestMethod]
         public void TestNestedIFOnMultipleLines()
         {
-            ST t = new ST(
+            Template t = new Template(
                 "begin\n" +
                 "<if(x)>\n" +
                 "<if(y)>\n" +
@@ -297,7 +297,7 @@ namespace Antlr4.Test.StringTemplate
         [TestMethod]
         public void TestLineBreak()
         {
-            ST st = new ST(
+            Template st = new Template(
                     "Foo <\\\\>" + newline +
                     "  \t  bar" + newline
                     );
@@ -311,7 +311,7 @@ namespace Antlr4.Test.StringTemplate
         [TestMethod]
         public void TestLineBreak2()
         {
-            ST st = new ST(
+            Template st = new Template(
                     "Foo <\\\\>       " + newline +
                     "  \t  bar" + newline
                     );
@@ -325,7 +325,7 @@ namespace Antlr4.Test.StringTemplate
         [TestMethod]
         public void TestLineBreakNoWhiteSpace()
         {
-            ST st = new ST(
+            Template st = new Template(
                     "Foo <\\\\>" + newline +
                     "bar\n"
                     );
@@ -339,7 +339,7 @@ namespace Antlr4.Test.StringTemplate
         [TestMethod]
         public void TestNewlineNormalizationInTemplateString()
         {
-            ST st = new ST(
+            Template st = new Template(
                     "Foo\r\n" +
                     "Bar\n"
                     );
@@ -353,7 +353,7 @@ namespace Antlr4.Test.StringTemplate
         [TestMethod]
         public void TestNewlineNormalizationInTemplateStringPC()
         {
-            ST st = new ST(
+            Template st = new Template(
                     "Foo\r\n" +
                     "Bar\n"
                     );
@@ -367,7 +367,7 @@ namespace Antlr4.Test.StringTemplate
         [TestMethod]
         public void TestNewlineNormalizationInAttribute()
         {
-            ST st = new ST(
+            Template st = new Template(
                     "Foo\r\n" +
                     "<name>\n"
                     );

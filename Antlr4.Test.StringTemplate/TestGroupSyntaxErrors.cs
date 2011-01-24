@@ -49,7 +49,7 @@ namespace Antlr4.Test.StringTemplate
             writeFile(tmpdir, "t.stg", templates);
 
             ITemplateErrorListener errors = new ErrorBuffer();
-            STGroup group = new STGroupFile(tmpdir + "/" + "t.stg");
+            TemplateGroup group = new TemplateGroupFile(tmpdir + "/" + "t.stg");
             group.setListener(errors);
             group.load(); // force load
             string expected = "t.stg 2:0: mismatched input 'foo' expecting STRING" + newline +
@@ -67,7 +67,7 @@ namespace Antlr4.Test.StringTemplate
             writeFile(tmpdir, "t.stg", templates);
 
             ITemplateErrorListener errors = new ErrorBuffer();
-            STGroup group = new STGroupFile(tmpdir + "/" + "t.stg");
+            TemplateGroup group = new TemplateGroupFile(tmpdir + "/" + "t.stg");
             group.setListener(errors);
             group.load(); // force load
             string expected = "t.stg 1:7: mismatched input 'Super' expecting STRING" + newline;
@@ -82,9 +82,9 @@ namespace Antlr4.Test.StringTemplate
                 "foo() ::= \n";
             writeFile(tmpdir, "t.stg", templates);
 
-            STGroupFile group = null;
+            TemplateGroupFile group = null;
             ITemplateErrorListener errors = new ErrorBuffer();
-            group = new STGroupFile(tmpdir + "/" + "t.stg");
+            group = new TemplateGroupFile(tmpdir + "/" + "t.stg");
             group.setListener(errors);
             group.load(); // force load
             string expected = "t.stg 2:0: missing template at '<EOF>'" + newline;
@@ -99,9 +99,9 @@ namespace Antlr4.Test.StringTemplate
                 "foo( ::= << >>\n";
             writeFile(tmpdir, "t.stg", templates);
 
-            STGroupFile group = null;
+            TemplateGroupFile group = null;
             ITemplateErrorListener errors = new ErrorBuffer();
-            group = new STGroupFile(tmpdir + "/" + "t.stg");
+            group = new TemplateGroupFile(tmpdir + "/" + "t.stg");
             group.setListener(errors);
             group.load(); // force load
             string expected = "t.stg 1:5: no viable alternative at input '::='" + newline;
@@ -116,9 +116,9 @@ namespace Antlr4.Test.StringTemplate
                 "foo() ::= \"\nfoo\"\n";
             writeFile(tmpdir, "t.stg", templates);
 
-            STGroupFile group = null;
+            TemplateGroupFile group = null;
             ITemplateErrorListener errors = new ErrorBuffer();
-            group = new STGroupFile(tmpdir + "/" + "t.stg");
+            group = new TemplateGroupFile(tmpdir + "/" + "t.stg");
             group.setListener(errors);
             group.load(); // force load
             string expected = "t.stg 1:11: \\n in string" + newline;
@@ -134,9 +134,9 @@ namespace Antlr4.Test.StringTemplate
                 "bar() ::= <<bar>>\n";
             writeFile(tmpdir, "t.stg", templates);
 
-            STGroupFile group = null;
+            TemplateGroupFile group = null;
             ITemplateErrorListener errors = new ErrorBuffer();
-            group = new STGroupFile(tmpdir + "/" + "t.stg");
+            group = new TemplateGroupFile(tmpdir + "/" + "t.stg");
             group.setListener(errors);
             group.load(); // force load
             string expected = "t.stg 1:0: garbled template definition starting at 'foo'" + newline;
@@ -151,9 +151,9 @@ namespace Antlr4.Test.StringTemplate
                 "foo(a,) ::= << >>\n";
             writeFile(tmpdir, "t.stg", templates);
 
-            STGroupFile group = null;
+            TemplateGroupFile group = null;
             ITemplateErrorListener errors = new ErrorBuffer();
-            group = new STGroupFile(tmpdir + "/" + "t.stg");
+            group = new TemplateGroupFile(tmpdir + "/" + "t.stg");
             group.setListener(errors);
             group.load(); // force load
             string expected = "t.stg 1:6: mismatched input ')' expecting ID" + newline;
@@ -168,9 +168,9 @@ namespace Antlr4.Test.StringTemplate
                 "foo(a,,) ::= << >>\n";
             writeFile(tmpdir, "t.stg", templates);
 
-            STGroupFile group = null;
+            TemplateGroupFile group = null;
             ErrorBuffer errors = new ErrorBuffer();
-            group = new STGroupFile(tmpdir + "/" + "t.stg");
+            group = new TemplateGroupFile(tmpdir + "/" + "t.stg");
             group.setListener(errors);
             group.load(); // force load
             string expected =
@@ -187,9 +187,9 @@ namespace Antlr4.Test.StringTemplate
                 "foo(a b) ::= << >>\n";
             writeFile(tmpdir, "t.stg", templates);
 
-            STGroupFile group = null;
+            TemplateGroupFile group = null;
             ErrorBuffer errors = new ErrorBuffer();
-            group = new STGroupFile(tmpdir + "/" + "t.stg");
+            group = new TemplateGroupFile(tmpdir + "/" + "t.stg");
             group.setListener(errors);
             group.load(); // force load
             string expected =
@@ -206,9 +206,9 @@ namespace Antlr4.Test.StringTemplate
                 "foo(a) ::= \"<a b>\"\n";
             writeFile(tmpdir, "t.stg", templates);
 
-            STGroupFile group = null;
+            TemplateGroupFile group = null;
             ErrorBuffer errors = new ErrorBuffer();
-            group = new STGroupFile(tmpdir + "/" + "t.stg");
+            group = new TemplateGroupFile(tmpdir + "/" + "t.stg");
             group.setListener(errors);
             group.load(); // force load
             string expected = "[t.stg 1:15: 'b' came as a complete surprise to me]";
@@ -223,9 +223,9 @@ namespace Antlr4.Test.StringTemplate
                 "d ::= []\n";
             writeFile(tmpdir, "t.stg", templates);
 
-            STGroupFile group = null;
+            TemplateGroupFile group = null;
             ErrorBuffer errors = new ErrorBuffer();
-            group = new STGroupFile(tmpdir + "/" + "t.stg");
+            group = new TemplateGroupFile(tmpdir + "/" + "t.stg");
             group.setListener(errors);
             group.load(); // force load
             string expected = "[t.stg 1:7: missing dictionary entry at ']']";
@@ -240,9 +240,9 @@ namespace Antlr4.Test.StringTemplate
                 "d ::= [\"k\":]\n";
             writeFile(tmpdir, "t.stg", templates);
 
-            STGroupFile group = null;
+            TemplateGroupFile group = null;
             ErrorBuffer errors = new ErrorBuffer();
-            group = new STGroupFile(tmpdir + "/" + "t.stg");
+            group = new TemplateGroupFile(tmpdir + "/" + "t.stg");
             group.setListener(errors);
             group.load(); // force load
             string expected = "[t.stg 1:11: missing value for key at ']']";
@@ -257,9 +257,9 @@ namespace Antlr4.Test.StringTemplate
                 "d ::= [\"k\":{dfkj}}]\n"; // extra }
             writeFile(tmpdir, "t.stg", templates);
 
-            STGroupFile group = null;
+            TemplateGroupFile group = null;
             ErrorBuffer errors = new ErrorBuffer();
-            group = new STGroupFile(tmpdir + "/" + "t.stg");
+            group = new TemplateGroupFile(tmpdir + "/" + "t.stg");
             group.setListener(errors);
             group.load(); // force load
             string expected = "[t.stg 1:17: invalid character '}']";
@@ -274,9 +274,9 @@ namespace Antlr4.Test.StringTemplate
                 "f() ::= \""; // extra }
             writeFile(tmpdir, "t.stg", templates);
 
-            STGroupFile group = null;
+            TemplateGroupFile group = null;
             ErrorBuffer errors = new ErrorBuffer();
-            group = new STGroupFile(tmpdir + "/" + "t.stg");
+            group = new TemplateGroupFile(tmpdir + "/" + "t.stg");
             group.setListener(errors);
             group.load(); // force load
             string expected = "[t.stg 1:9: unterminated string, t.stg 1:9: missing template at '<EOF>']";

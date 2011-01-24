@@ -49,8 +49,8 @@ namespace Antlr4.Test.StringTemplate
                 "t() ::= <<foo>>" + Environment.NewLine;
 
             writeFile(tmpdir, "t.stg", templates);
-            STGroup group = new STGroupFile(tmpdir + "/" + "t.stg");
-            STGroup.debug = true;
+            TemplateGroup group = new TemplateGroupFile(tmpdir + "/" + "t.stg");
+            TemplateGroup.debug = true;
             DebugST st = (DebugST)group.getInstanceOf("t");
             List<InterpEvent> events = st.getEvents();
             string expected =
@@ -67,8 +67,8 @@ namespace Antlr4.Test.StringTemplate
                 "t(x) ::= << <x> >>" + Environment.NewLine;
 
             writeFile(tmpdir, "t.stg", templates);
-            STGroup group = new STGroupFile(tmpdir + "/" + "t.stg");
-            STGroup.debug = true;
+            TemplateGroup group = new TemplateGroupFile(tmpdir + "/" + "t.stg");
+            TemplateGroup.debug = true;
             DebugST st = (DebugST)group.getInstanceOf("t");
             List<InterpEvent> events = st.getEvents();
             string expected =
@@ -87,8 +87,8 @@ namespace Antlr4.Test.StringTemplate
                 "u() ::= << <x> >>\n";
 
             writeFile(tmpdir, "t.stg", templates);
-            STGroup group = new STGroupFile(tmpdir + "/" + "t.stg");
-            STGroup.debug = true;
+            TemplateGroup group = new TemplateGroupFile(tmpdir + "/" + "t.stg");
+            TemplateGroup.debug = true;
             DebugST st = (DebugST)group.getInstanceOf("t");
             List<InterpEvent> events = st.getEvents();
             string expected =

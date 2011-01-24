@@ -32,11 +32,11 @@
 
 namespace Antlr4.StringTemplate.Misc
 {
-    public class STModelAdaptor : IModelAdaptor
+    public class TemplateModelAdaptor : IModelAdaptor
     {
-        public virtual object GetProperty(ST self, object o, object property, string propertyName)
+        public virtual object GetProperty(Template self, object o, object property, string propertyName)
         {
-            ST st = (ST)o;
+            Template st = (Template)o;
             return st.getAttribute(propertyName);
         }
     }

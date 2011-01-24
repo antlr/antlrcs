@@ -37,10 +37,10 @@ namespace Antlr4.StringTemplate.Debug
     using CultureInfo = System.Globalization.CultureInfo;
     using StringWriter = System.IO.StringWriter;
 
-    /** To avoid polluting ST instances with debug info when not debugging.
-     *  Setting debug mode in STGroup makes it create these instead of STs.
+    /** To avoid polluting Template instances with debug info when not debugging.
+     *  Setting debug mode in TemplateGroup makes it create these instead of STs.
      */
-    public class DebugST : ST
+    public class DebugST : Template
     {
         public class State
         {
@@ -51,7 +51,7 @@ namespace Antlr4.StringTemplate.Debug
         /** Record who made us? ConstructionEvent creates Exception to grab stack */
         public ConstructionEvent newSTEvent = new ConstructionEvent();
 
-        /** Track construction-time add attribute "events"; used for ST user-level debugging */
+        /** Track construction-time add attribute "events"; used for Template user-level debugging */
         public MultiMap<string, AddAttributeEvent> addAttrEvents = new MultiMap<string, AddAttributeEvent>();
 
         //public Interpreter interp; // set when we start interpreter in inspect()
@@ -60,13 +60,13 @@ namespace Antlr4.StringTemplate.Debug
         {
         }
 
-        public DebugST(ST proto) : base(proto)
+        public DebugST(Template proto) : base(proto)
         {
         }
 
         public override void add(string name, object value)
         {
-            if (STGroup.debug)
+            if (TemplateGroup.debug)
                 addAttrEvents.map(name, new AddAttributeEvent(name, value));
 
             base.add(name, value);

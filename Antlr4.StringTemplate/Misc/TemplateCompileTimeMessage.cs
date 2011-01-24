@@ -38,30 +38,30 @@ namespace Antlr4.StringTemplate.Misc
     using RecognitionException = Antlr.Runtime.RecognitionException;
 
     /** Used for semantic errors that occur at compile time not during
-     *  interpretation. For ST parsing ONLY not group parsing.
+     *  interpretation. For Template parsing ONLY not group parsing.
      */
-    public class STCompiletimeMessage : STMessage
+    public class TemplateCompiletimeMessage : TemplateMessage
     {
         private readonly IToken templateToken; // overall token pulled from group file
         private readonly IToken token;         // token inside template
         private readonly string srcName;
 
-        public STCompiletimeMessage(ErrorType error, string srcName, IToken templateToken, IToken t)
+        public TemplateCompiletimeMessage(ErrorType error, string srcName, IToken templateToken, IToken t)
             : this(error, srcName, templateToken, t, null)
         {
         }
 
-        public STCompiletimeMessage(ErrorType error, string srcName, IToken templateToken, IToken t, Exception cause)
+        public TemplateCompiletimeMessage(ErrorType error, string srcName, IToken templateToken, IToken t, Exception cause)
             : this(error, srcName, templateToken, t, cause, null)
         {
         }
 
-        public STCompiletimeMessage(ErrorType error, string srcName, IToken templateToken, IToken t, Exception cause, object arg)
+        public TemplateCompiletimeMessage(ErrorType error, string srcName, IToken templateToken, IToken t, Exception cause, object arg)
             : this(error, srcName, templateToken, t, cause, arg, null)
         {
         }
 
-        public STCompiletimeMessage(ErrorType error, string srcName, IToken templateToken, IToken t, Exception cause, object arg, object arg2)
+        public TemplateCompiletimeMessage(ErrorType error, string srcName, IToken templateToken, IToken t, Exception cause, object arg, object arg2)
             : base(error, null, cause, arg, arg2)
         {
             this.templateToken = templateToken;

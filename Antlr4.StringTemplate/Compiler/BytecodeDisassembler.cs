@@ -40,9 +40,9 @@ namespace Antlr4.StringTemplate.Compiler
 
     public class BytecodeDisassembler
     {
-        private readonly CompiledST code;
+        private readonly CompiledTemplate code;
 
-        public BytecodeDisassembler(CompiledST code)
+        public BytecodeDisassembler(CompiledTemplate code)
         {
             this.code = code;
         }

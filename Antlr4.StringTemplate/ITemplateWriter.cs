@@ -62,12 +62,12 @@ namespace Antlr4.StringTemplate
          */
         int write(string str, string wrap);
 
-        /** Because we evaluate ST instance by invoking exec() again, we
+        /** Because we evaluate Template instance by invoking exec() again, we
          *  can't pass options in.  So the WRITE instruction of an applied
          *  template (such as when we wrap in between template applications
          *  like &lt;data:{v|[&lt;v&gt;]}; wrap&gt;) we need to write the wrap string
          *  before calling exec().  We expose just like for the separator.
-         *  See Interpreter.writeObject where it checks for ST instance.
+         *  See Interpreter.writeObject where it checks for Template instance.
          *  If POJO, writePOJO passes wrap to ITemplateWriter's
          *
          *     write(String str, String wrap)

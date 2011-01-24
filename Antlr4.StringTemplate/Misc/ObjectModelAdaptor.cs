@@ -46,14 +46,14 @@ namespace Antlr4.StringTemplate.Misc
         private static readonly Dictionary<Type, Dictionary<string, System.Func<object, object>>> _memberAccessors =
             new Dictionary<Type, Dictionary<string, System.Func<object, object>>>();
 
-        public virtual object GetProperty(ST self, object o, object property, string propertyName)
+        public virtual object GetProperty(Template self, object o, object property, string propertyName)
         {
             if (o == null)
                 throw new ArgumentNullException("o");
 
             Type c = o.GetType();
             if (property == null)
-                throw new STNoSuchPropertyException(string.Format("{0}.{1}", c.FullName, propertyName ?? "null"));
+                throw new TemplateNoSuchPropertyException(string.Format("{0}.{1}", c.FullName, propertyName ?? "null"));
 
             object value = null;
             var accessor = FindMember(c, propertyName);
@@ -63,7 +63,7 @@ namespace Antlr4.StringTemplate.Misc
             }
             else
             {
-                throw new STNoSuchPropertyException(string.Format("{0}.{1}", c.FullName, propertyName));
+                throw new TemplateNoSuchPropertyException(string.Format("{0}.{1}", c.FullName, propertyName));
             }
 
             return value;

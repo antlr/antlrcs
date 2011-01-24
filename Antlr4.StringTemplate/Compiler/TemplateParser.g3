@@ -119,9 +119,9 @@ option
 @init {
 	string id = input.LT(1).Text;
 	string defVal;
-	Compiler.defaultOptionValues.TryGetValue(id, out defVal);
+	TemplateCompiler.defaultOptionValues.TryGetValue(id, out defVal);
 	Interpreter.Option supportedOption;
-	bool validOption = Compiler.supportedOptions.TryGetValue(id, out supportedOption);
+	bool validOption = TemplateCompiler.supportedOptions.TryGetValue(id, out supportedOption);
 }
 	:	ID
 		{
@@ -185,7 +185,7 @@ memberExpr
 
 includeExpr
 options {k=2;} // prevent full LL(*), which fails, falling back on k=1; need k=2
-	:	{Compiler.funcs.ContainsKey(input.LT(1).Text)}? // predefined function
+	:	{TemplateCompiler.funcs.ContainsKey(input.LT(1).Text)}? // predefined function
 		ID '(' expr? ')'						-> ^(EXEC_FUNC ID expr?)
 	|	'super' '.' ID '(' args ')'				-> ^(INCLUDE_SUPER ID args?)
 	|	ID '(' args ')'							-> ^(INCLUDE ID args?)

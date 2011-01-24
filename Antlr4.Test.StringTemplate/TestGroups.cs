@@ -50,8 +50,8 @@ namespace Antlr4.Test.StringTemplate
                 "foo" + newline +
                 ">>" + newline;
             writeFile(dir, "a.st", a);
-            STGroup group = new STGroupDir(dir);
-            ST st = group.getInstanceOf("a");
+            TemplateGroup group = new TemplateGroupDirectory(dir);
+            Template st = group.getInstanceOf("a");
             string expected = "foo";
             string result = st.render();
             Assert.AreEqual(expected, result);
@@ -69,9 +69,9 @@ namespace Antlr4.Test.StringTemplate
             string b =
                 "b() ::= \"bar\"" + newline;
             writeFile(dir, "b.st", b);
-            STGroup group = new STGroupDir(dir);
-            ST st1 = group.getInstanceOf("a");
-            ST st2 = group.getInstanceOf("b");
+            TemplateGroup group = new TemplateGroupDirectory(dir);
+            Template st1 = group.getInstanceOf("a");
+            Template st2 = group.getInstanceOf("b");
             string expected = "foobar";
             string result = st1.render() + st2.render();
             Assert.AreEqual(expected, result);
@@ -90,9 +90,9 @@ namespace Antlr4.Test.StringTemplate
             string b =
                 "b() ::= \"bar\"" + newline;
             writeFile(Path.Combine(dir, "subdir"), "b.st", b);
-            STGroup group = new STGroupDir(dir);
-            ST st1 = group.getInstanceOf("a");
-            ST st2 = group.getInstanceOf("subdir/b");
+            TemplateGroup group = new TemplateGroupDirectory(dir);
+            Template st1 = group.getInstanceOf("a");
+            Template st2 = group.getInstanceOf("subdir/b");
             string expected = "foobar";
             string result = st1.render() + st2.render();
             Assert.AreEqual(expected, result);
@@ -113,8 +113,8 @@ namespace Antlr4.Test.StringTemplate
             string b =
                 "b() ::= <<bar>>\n";
             writeFile(dir + "/subdir", "b.st", b);
-            STGroup group = new STGroupDir(dir);
-            ST st = group.getInstanceOf("a");
+            TemplateGroup group = new TemplateGroupDirectory(dir);
+            Template st = group.getInstanceOf("a");
             string expected = " bar ";
             string result = st.render();
             Assert.AreEqual(expected, result);
@@ -134,10 +134,10 @@ namespace Antlr4.Test.StringTemplate
                 "b() ::= \"bar\"\n" +
                 "c() ::= \"duh\"\n";
             writeFile(dir, "group.stg", groupFile);
-            STGroup group = new STGroupDir(dir);
-            ST st1 = group.getInstanceOf("a");
-            ST st2 = group.getInstanceOf("group/b");
-            ST st3 = group.getInstanceOf("group/c");
+            TemplateGroup group = new TemplateGroupDirectory(dir);
+            Template st1 = group.getInstanceOf("a");
+            Template st2 = group.getInstanceOf("group/b");
+            Template st3 = group.getInstanceOf("group/c");
             string expected = "foobarduh";
             string result = st1.render() + st2.render() + st3.render();
             Assert.AreEqual(expected, result);
@@ -156,9 +156,9 @@ namespace Antlr4.Test.StringTemplate
             string b =
                 "b() ::= \"bar\"" + newline;
             writeFile(dir + "/sub1/sub2", "b.st", b);
-            STGroup group = new STGroupDir(dir);
-            ST st1 = group.getInstanceOf("a");
-            ST st2 = group.getInstanceOf("sub1/sub2/b");
+            TemplateGroup group = new TemplateGroupDirectory(dir);
+            Template st1 = group.getInstanceOf("a");
+            Template st2 = group.getInstanceOf("sub1/sub2/b");
             string expected = "foobar";
             string result = st1.render() + st2.render();
             Assert.AreEqual(expected, result);
@@ -178,10 +178,10 @@ namespace Antlr4.Test.StringTemplate
                 "b() ::= \"bar\"\n" +
                 "c() ::= \"duh\"\n";
             writeFile(dir, "subdir/group.stg", groupFile);
-            STGroup group = new STGroupDir(dir);
-            ST st1 = group.getInstanceOf("a");
-            ST st2 = group.getInstanceOf("subdir/group/b");
-            ST st3 = group.getInstanceOf("subdir/group/c");
+            TemplateGroup group = new TemplateGroupDirectory(dir);
+            Template st1 = group.getInstanceOf("a");
+            Template st2 = group.getInstanceOf("subdir/group/b");
+            Template st3 = group.getInstanceOf("subdir/group/c");
             string expected = "foobarduh";
             string result = st1.render() + st2.render() + st3.render();
             Assert.AreEqual(expected, result);
@@ -195,8 +195,8 @@ namespace Antlr4.Test.StringTemplate
             string b = "b() ::= <<bar>>\n";
             writeFile(dir, "a.st", a);
             writeFile(dir, "b.st", b);
-            STGroup group = new STGroupDir(dir);
-            ST st = group.getInstanceOf("a");
+            TemplateGroup group = new TemplateGroupDirectory(dir);
+            Template st = group.getInstanceOf("a");
             string expected = " bar ";
             string result = st.render();
             Assert.AreEqual(expected, result);
@@ -211,8 +211,8 @@ namespace Antlr4.Test.StringTemplate
             string b = "b() ::= <<bar>>\n";
             writeFile(dir + "/subdir", "a.st", a);
             writeFile(dir + "/subdir", "b.st", b);
-            STGroup group = new STGroupDir(dir);
-            ST st = group.getInstanceOf("subdir/a");
+            TemplateGroup group = new TemplateGroupDirectory(dir);
+            Template st = group.getInstanceOf("subdir/a");
             st.impl.dump();
             string expected = " bar ";
             string result = st.render();
@@ -228,7 +228,7 @@ namespace Antlr4.Test.StringTemplate
                 "b() ::= \"duh\"\n";
             writeFile(dir, "group.stg", groupFile);
             ITemplateErrorListener errors = new ErrorBuffer();
-            STGroupFile group = new STGroupFile(Path.Combine(dir, "group.stg"));
+            TemplateGroupFile group = new TemplateGroupFile(Path.Combine(dir, "group.stg"));
             group.setListener(errors);
             group.load();
             string expected = "group.stg 2:0: redefinition of template b" + newline;
@@ -244,8 +244,8 @@ namespace Antlr4.Test.StringTemplate
                 "a() ::= \"bar\"\n" +
                 "b ::= a\n";
             writeFile(dir, "group.stg", groupFile);
-            STGroupFile group = new STGroupFile(Path.Combine(dir, "group.stg"));
-            ST st = group.getInstanceOf("b");
+            TemplateGroupFile group = new TemplateGroupFile(Path.Combine(dir, "group.stg"));
+            Template st = group.getInstanceOf("b");
             string expected = "bar";
             string result = st.render();
             Assert.AreEqual(expected, result);
@@ -259,8 +259,8 @@ namespace Antlr4.Test.StringTemplate
                 "a(x,y) ::= \"<x><y>\"\n" +
                 "b ::= a\n";
             writeFile(dir, "group.stg", groupFile);
-            STGroupFile group = new STGroupFile(Path.Combine(dir, "group.stg"));
-            ST st = group.getInstanceOf("b");
+            TemplateGroupFile group = new TemplateGroupFile(Path.Combine(dir, "group.stg"));
+            Template st = group.getInstanceOf("b");
             st.add("x", 1);
             st.add("y", 2);
             string expected = "12";
@@ -276,8 +276,8 @@ namespace Antlr4.Test.StringTemplate
             string b = "b(x=\"foo\") ::= \"<x>\"\n";
             writeFile(dir, "a.st", a);
             writeFile(dir, "b.st", b);
-            STGroup group = new STGroupDir(dir);
-            ST st = group.getInstanceOf("a");
+            TemplateGroup group = new TemplateGroupDirectory(dir);
+            Template st = group.getInstanceOf("a");
             string expected = " foo ";
             string result = st.render();
             Assert.AreEqual(expected, result);
@@ -293,8 +293,8 @@ namespace Antlr4.Test.StringTemplate
                     "stat(name,value=\"99\") ::= \"x=<value>; // <name>\"" + newline
                     ;
             writeFile(tmpdir, "group.stg", templates);
-            STGroup group = new STGroupFile(tmpdir + "/group.stg");
-            ST b = group.getInstanceOf("method");
+            TemplateGroup group = new TemplateGroupFile(tmpdir + "/group.stg");
+            Template b = group.getInstanceOf("method");
             b.add("name", "foo");
             string expecting = "x=99; // foo";
             string result = b.render();
@@ -308,8 +308,8 @@ namespace Antlr4.Test.StringTemplate
                     "stat(name,value=\"99\") ::= \"x=<value>; // <name>\"" + newline
                     ;
             writeFile(tmpdir, "group.stg", templates);
-            STGroup group = new STGroupFile(tmpdir + "/group.stg");
-            ST b = group.getInstanceOf("stat");
+            TemplateGroup group = new TemplateGroupFile(tmpdir + "/group.stg");
+            Template b = group.getInstanceOf("stat");
             b.add("name", "foo");
             string expecting = "x=99; // foo";
             string result = b.render();
@@ -323,8 +323,8 @@ namespace Antlr4.Test.StringTemplate
                     "stat(name,value={99}) ::= \"x=<value>; // <name>\"" + newline
                     ;
             writeFile(tmpdir, "group.stg", templates);
-            STGroup group = new STGroupFile(tmpdir + "/group.stg");
-            ST b = group.getInstanceOf("stat");
+            TemplateGroup group = new TemplateGroupFile(tmpdir + "/group.stg");
+            Template b = group.getInstanceOf("stat");
             b.add("name", "foo");
             string expecting = "x=99; // foo";
             string result = b.render();
@@ -353,8 +353,8 @@ namespace Antlr4.Test.StringTemplate
                     "stat(f,value={<f.name>}) ::= \"x=<value>; // <f.name>\"" + newline
                     ;
             writeFile(tmpdir, "group.stg", templates);
-            STGroup group = new STGroupFile(tmpdir + "/group.stg");
-            ST m = group.getInstanceOf("method");
+            TemplateGroup group = new TemplateGroupFile(tmpdir + "/group.stg");
+            Template m = group.getInstanceOf("method");
             m.add("fields", new Field());
             string expecting = "x=parrt; // parrt";
             string result = m.render();
@@ -371,8 +371,8 @@ namespace Antlr4.Test.StringTemplate
                     "stat(value={<f.name>}) ::= \"x=<value>; // <f.name>\"" + newline
                     ;
             writeFile(tmpdir, "group.stg", templates);
-            STGroup group = new STGroupFile(tmpdir + "/group.stg");
-            ST m = group.getInstanceOf("method");
+            TemplateGroup group = new TemplateGroupFile(tmpdir + "/group.stg");
+            Template m = group.getInstanceOf("method");
             m.add("fields", new Field());
             string expecting = "x=parrt; // parrt";
             string result = m.render();
@@ -390,8 +390,8 @@ namespace Antlr4.Test.StringTemplate
                     "stat(f,value={<f.name>}) ::= \"x=<value>; // <f.name>\"" + newline
                     ;
             writeFile(tmpdir, "group.stg", templates);
-            STGroup group = new STGroupFile(tmpdir + "/group.stg");
-            ST m = group.getInstanceOf("method");
+            TemplateGroup group = new TemplateGroupFile(tmpdir + "/group.stg");
+            Template m = group.getInstanceOf("method");
             m.add("fields", new Field());
             string expecting = "x=parrt; // parrt";
             string result = m.render();
@@ -408,8 +408,8 @@ namespace Antlr4.Test.StringTemplate
                     "stat(name,value={<name>}) ::= \"x=<value>; // <name>\"" + newline
                     ;
             writeFile(tmpdir, "group.stg", templates);
-            STGroup group = new STGroupFile(tmpdir + "/group.stg");
-            ST b = group.getInstanceOf("method");
+            TemplateGroup group = new TemplateGroupFile(tmpdir + "/group.stg");
+            Template b = group.getInstanceOf("method");
             b.add("name", "foo");
             b.add("size", "2");
             string expecting = "x=foo; // foo";
@@ -428,8 +428,8 @@ namespace Antlr4.Test.StringTemplate
                     "stat(name,value={ [<name>] }) ::= \"x=<value>; // <name>\"" + newline
                     ;
             writeFile(tmpdir, "group.stg", templates);
-            STGroup group = new STGroupFile(tmpdir + "/group.stg");
-            ST b = group.getInstanceOf("method");
+            TemplateGroup group = new TemplateGroupFile(tmpdir + "/group.stg");
+            Template b = group.getInstanceOf("method");
             b.add("name", "foo");
             b.add("size", "2");
             string expecting = "x=[foo] ; // foo"; // won't see ' ' after '=' since it's an indent not simple string
@@ -448,8 +448,8 @@ namespace Antlr4.Test.StringTemplate
                     "stat(name,value=\"99\") ::= \"x=<value>; // <name>\"" + newline
                     ;
             writeFile(tmpdir, "group.stg", templates);
-            STGroup group = new STGroupFile(tmpdir + "/group.stg");
-            ST b = group.getInstanceOf("method");
+            TemplateGroup group = new TemplateGroupFile(tmpdir + "/group.stg");
+            Template b = group.getInstanceOf("method");
             b.add("name", "foo");
             string expecting = "x=34; // foo";
             string result = b.render();
@@ -473,8 +473,8 @@ namespace Antlr4.Test.StringTemplate
                     "B(y={<(x)>}) ::= \"<y> <x> <x> <y>\"" + newline
                     ;
             writeFile(tmpdir, "group.stg", templates);
-            STGroup group = new STGroupFile(tmpdir + "/group.stg");
-            ST a = group.getInstanceOf("A");
+            TemplateGroup group = new TemplateGroupFile(tmpdir + "/group.stg");
+            Template a = group.getInstanceOf("A");
             a.add("x", new Counter());
             string expecting = "0 1 2 0"; // trace must be false to get these numbers
             string result = a.render();
@@ -490,8 +490,8 @@ namespace Antlr4.Test.StringTemplate
                 "f(x,y) ::= \"<x><y>\"\n" +
                 "g() ::= \"<f(x={a},y={b})>\"";
             writeFile(dir, "group.stg", groupFile);
-            STGroupFile group = new STGroupFile(Path.Combine(dir, "group.stg"));
-            ST st = group.getInstanceOf("g");
+            TemplateGroupFile group = new TemplateGroupFile(Path.Combine(dir, "group.stg"));
+            Template st = group.getInstanceOf("g");
             string expected = "ab";
             string result = st.render();
             Assert.AreEqual(expected, result);
@@ -505,8 +505,8 @@ namespace Antlr4.Test.StringTemplate
                 "f(x,y) ::= \"<x><y>\"\n" +
                 "g() ::= \"<f(y={b},x={a})>\"";
             writeFile(dir, "group.stg", groupFile);
-            STGroupFile group = new STGroupFile(Path.Combine(dir, "group.stg"));
-            ST st = group.getInstanceOf("g");
+            TemplateGroupFile group = new TemplateGroupFile(Path.Combine(dir, "group.stg"));
+            Template st = group.getInstanceOf("g");
             string expected = "ab";
             string result = st.render();
             Assert.AreEqual(expected, result);
@@ -522,10 +522,10 @@ namespace Antlr4.Test.StringTemplate
             //012345678901234567
 
             writeFile(dir, "group.stg", groupFile);
-            STGroupFile group = new STGroupFile(Path.Combine(dir, "group.stg"));
+            TemplateGroupFile group = new TemplateGroupFile(Path.Combine(dir, "group.stg"));
             ErrorBuffer errors = new ErrorBuffer();
             group.setListener(errors);
-            ST st = group.getInstanceOf("g");
+            Template st = group.getInstanceOf("g");
             st.render();
             string expected = "context [g] 1:1 attribute z isn't defined" + newline;
             string result = errors.ToString();
@@ -542,7 +542,7 @@ namespace Antlr4.Test.StringTemplate
             //012345678901234567
 
             writeFile(dir, "group.stg", groupFile);
-            STGroupFile group = new STGroupFile(Path.Combine(dir, "group.stg"));
+            TemplateGroupFile group = new TemplateGroupFile(Path.Combine(dir, "group.stg"));
             ErrorBuffer errors = new ErrorBuffer();
             group.setListener(errors);
             group.load();
@@ -560,7 +560,7 @@ namespace Antlr4.Test.StringTemplate
                 "g(name) ::= \"<(name)(x={a},y={b})>\"";
             //0123456789012345678901234567890
             writeFile(dir, "group.stg", groupFile);
-            STGroupFile group = new STGroupFile(Path.Combine(dir, "group.stg"));
+            TemplateGroupFile group = new TemplateGroupFile(Path.Combine(dir, "group.stg"));
             ErrorBuffer errors = new ErrorBuffer();
             group.setListener(errors);
             group.load();
@@ -580,8 +580,8 @@ namespace Antlr4.Test.StringTemplate
                 "b() ::= \"group file b\"\n";
             writeFile(dir, "group.stg", groupFile);
 
-            STGroup group1 = new STGroupDir(dir);
-            ST st = group1.getInstanceOf("group/a"); // can't see
+            TemplateGroup group1 = new TemplateGroupDirectory(dir);
+            Template st = group1.getInstanceOf("group/a"); // can't see
             Assert.AreEqual(null, st);
         }
 
@@ -596,8 +596,8 @@ namespace Antlr4.Test.StringTemplate
                 "foo" + newline +
                 ">>" + newline;
             writeFile(dir, "a.st", a);
-            STGroup group = new STGroupDir(dir);
-            ST st = group.getInstanceOf("a");
+            TemplateGroup group = new TemplateGroupDirectory(dir);
+            Template st = group.getInstanceOf("a");
             string expected = "foo";
             string result = st.render();
             Assert.AreEqual(expected, result);
@@ -612,8 +612,8 @@ namespace Antlr4.Test.StringTemplate
             string b = "b() ::= <<bar>>\n";
             writeFile(dir + "/subdir", "a.st", a);
             writeFile(dir + "/subdir", "b.st", b);
-            STGroup group = new STGroupDir(dir);
-            ST st = group.getInstanceOf("subdir/a");
+            TemplateGroup group = new TemplateGroupDirectory(dir);
+            Template st = group.getInstanceOf("subdir/a");
             string expected = " bar ";
             string result = st.render();
             Assert.AreEqual(expected, result);
@@ -631,9 +631,9 @@ namespace Antlr4.Test.StringTemplate
                 "b() ::= \"bar\"\n" +
                 "c() ::= \"<a()>\"\n";
             writeFile(dir, "group.stg", groupFile);
-            STGroup group = new STGroupDir(dir);
-            ST st1 = group.getInstanceOf("a");
-            ST st2 = group.getInstanceOf("group/c"); // invokes /a
+            TemplateGroup group = new TemplateGroupDirectory(dir);
+            Template st1 = group.getInstanceOf("a");
+            Template st2 = group.getInstanceOf("group/c"); // invokes /a
             string expected = " bar  bar ";
             string result = st1.render() + st2.render();
             Assert.AreEqual(expected, result);
@@ -649,9 +649,9 @@ namespace Antlr4.Test.StringTemplate
                 "b() ::= <<bar>>\n";
             writeFile(dir, "a.st", a);
             writeFile(dir, "b.st", b);
-            STGroup group = new STGroupDir(dir);
+            TemplateGroup group = new TemplateGroupDirectory(dir);
             group.load(); // force load
-            ST st = group.getInstanceOf("a");
+            Template st = group.getInstanceOf("a");
             int originalHashCode = RuntimeHelpers.GetHashCode(st);
             group.unload(); // blast cache
             st = group.getInstanceOf("a");
@@ -674,9 +674,9 @@ namespace Antlr4.Test.StringTemplate
                 "a(x) ::= <<foo>>\n" +
                 "b() ::= <<bar>>\n";
             writeFile(dir, "a.stg", a);
-            STGroup group = new STGroupFile(dir + "/a.stg");
+            TemplateGroup group = new TemplateGroupFile(dir + "/a.stg");
             group.load(); // force load
-            ST st = group.getInstanceOf("a");
+            Template st = group.getInstanceOf("a");
             int originalHashCode = RuntimeHelpers.GetHashCode(st);
             group.unload(); // blast cache
             st = group.getInstanceOf("a");

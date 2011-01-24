@@ -41,12 +41,12 @@ namespace Antlr4.StringTemplate.Compiler
     using Console = System.Console;
     using ArgumentNullException = System.ArgumentNullException;
 
-    /** The result of compiling an ST.  Contains all the bytecode instructions,
+    /** The result of compiling an Template.  Contains all the bytecode instructions,
      *  string table, bytecode address to source code map, and other bookkeeping
-     *  info.  It's the implementation of an ST you might say.  All instances
+     *  info.  It's the implementation of an Template you might say.  All instances
      *  of the same template share a single implementation (impl field).
      */
-    public class CompiledST
+    public class CompiledTemplate
     {
         public string name;
 
@@ -68,13 +68,13 @@ namespace Antlr4.StringTemplate.Compiler
         public bool hasFormalArgs;
 
         /** A list of all regions and subtemplates */
-        public List<CompiledST> implicitlyDefinedTemplates;
+        public List<CompiledTemplate> implicitlyDefinedTemplates;
 
-        /** The group that physically defines this ST definition.  We use it to initiate
-         *  interpretation via ST.ToString().  From there, it becomes field 'group'
+        /** The group that physically defines this Template definition.  We use it to initiate
+         *  interpretation via Template.ToString().  From there, it becomes field 'group'
          *  in interpreter and is fixed until rendering completes.
          */
-        public STGroup nativeGroup = STGroup.defaultGroup;
+        public TemplateGroup nativeGroup = TemplateGroup.defaultGroup;
 
         /** Does this template come from a &lt;@region&gt;...&lt;@end&gt; embedded in
          *  another template?
@@ -89,7 +89,7 @@ namespace Antlr4.StringTemplate.Compiler
          *  own.  We need to prevent more than one manual def though.  Between
          *  this var and isEmbeddedRegion we can determine these cases.
          */
-        public ST.RegionType regionDefType;
+        public Template.RegionType regionDefType;
 
         public bool isAnonSubtemplate; // {...}
 
@@ -98,10 +98,10 @@ namespace Antlr4.StringTemplate.Compiler
         public int codeSize;
         public Interval[] sourceMap; // maps IP to range in template pattern
 
-        public CompiledST()
+        public CompiledTemplate()
         {
-            instrs = new byte[Compiler.InitialCodeSize];
-            sourceMap = new Interval[Compiler.InitialCodeSize];
+            instrs = new byte[TemplateCompiler.InitialCodeSize];
+            sourceMap = new Interval[TemplateCompiler.InitialCodeSize];
             template = "";
         }
 
@@ -162,15 +162,15 @@ namespace Antlr4.StringTemplate.Compiler
             return formalArguments.FirstOrDefault(i => i.Name == name);
         }
 
-        public virtual void addImplicitlyDefinedTemplate(CompiledST sub)
+        public virtual void addImplicitlyDefinedTemplate(CompiledTemplate sub)
         {
             if (implicitlyDefinedTemplates == null)
-                implicitlyDefinedTemplates = new List<CompiledST>();
+                implicitlyDefinedTemplates = new List<CompiledTemplate>();
 
             implicitlyDefinedTemplates.Add(sub);
         }
 
-        public virtual void defineArgDefaultValueTemplates(STGroup group)
+        public virtual void defineArgDefaultValueTemplates(TemplateGroup group)
         {
             if (formalArguments == null)
                 return;
@@ -180,7 +180,7 @@ namespace Antlr4.StringTemplate.Compiler
                 if (fa.DefaultValueToken != null)
                 {
                     string argSTname = fa.Name + "_default_value";
-                    Compiler c2 = new Compiler(group.errMgr, group.delimiterStartChar, group.delimiterStopChar);
+                    TemplateCompiler c2 = new TemplateCompiler(group.errMgr, group.delimiterStartChar, group.delimiterStopChar);
                     string defArgTemplate = Utility.strip(fa.DefaultValueToken.Text, 1);
                     fa.CompiledDefaultValue = c2.compile(nativeGroup.getFileName(), argSTname, null, defArgTemplate, fa.DefaultValueToken);
                     fa.CompiledDefaultValue.name = argSTname;
@@ -202,7 +202,7 @@ namespace Antlr4.StringTemplate.Compiler
             }
         }
 
-        /** Used by ST.add() to add args one by one w/o turning on full formal args definition signal */
+        /** Used by Template.add() to add args one by one w/o turning on full formal args definition signal */
         public virtual void addArg(FormalArgument a)
         {
             if (formalArguments == null)
@@ -212,11 +212,11 @@ namespace Antlr4.StringTemplate.Compiler
             formalArguments.Add(a);
         }
 
-        public virtual void defineImplicitlyDefinedTemplates(STGroup group)
+        public virtual void defineImplicitlyDefinedTemplates(TemplateGroup group)
         {
             if (implicitlyDefinedTemplates != null)
             {
-                foreach (CompiledST sub in implicitlyDefinedTemplates)
+                foreach (CompiledTemplate sub in implicitlyDefinedTemplates)
                 {
                     group.rawDefineTemplate(sub.name, sub, null);
                     sub.defineImplicitlyDefinedTemplates(group);

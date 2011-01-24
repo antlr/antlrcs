@@ -39,9 +39,9 @@ namespace Antlr4.StringTemplate.Misc
     /** Used during tests to track all errors */
     public class ErrorBuffer : ITemplateErrorListener
     {
-        private readonly List<STMessage> errors = new List<STMessage>();
+        private readonly List<TemplateMessage> errors = new List<TemplateMessage>();
 
-        public ReadOnlyCollection<STMessage> Errors
+        public ReadOnlyCollection<TemplateMessage> Errors
         {
             get
             {
@@ -49,7 +49,7 @@ namespace Antlr4.StringTemplate.Misc
             }
         }
 
-        protected List<STMessage> ErrorList
+        protected List<TemplateMessage> ErrorList
         {
             get
             {
@@ -57,24 +57,24 @@ namespace Antlr4.StringTemplate.Misc
             }
         }
 
-        public virtual void compileTimeError(STMessage msg)
+        public virtual void compileTimeError(TemplateMessage msg)
         {
             errors.Add(msg);
         }
 
-        public virtual void runTimeError(STMessage msg)
+        public virtual void runTimeError(TemplateMessage msg)
         {
             // ignore these
             if (msg.Error != ErrorType.NO_SUCH_PROPERTY)
                 errors.Add(msg);
         }
 
-        public virtual void IOError(STMessage msg)
+        public virtual void IOError(TemplateMessage msg)
         {
             errors.Add(msg);
         }
 
-        public virtual void internalError(STMessage msg)
+        public virtual void internalError(TemplateMessage msg)
         {
             errors.Add(msg);
         }
@@ -82,7 +82,7 @@ namespace Antlr4.StringTemplate.Misc
         public override string ToString()
         {
             StringBuilder buf = new StringBuilder();
-            foreach (STMessage m in errors)
+            foreach (TemplateMessage m in errors)
                 buf.AppendLine(m.ToString());
 
             return buf.ToString();

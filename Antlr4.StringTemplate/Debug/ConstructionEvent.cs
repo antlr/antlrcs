@@ -34,7 +34,7 @@ namespace Antlr4.StringTemplate.Debug
 {
     using System.Diagnostics;
 
-    /** An event that happens when building ST trees, adding attributes etc... */
+    /** An event that happens when building Template trees, adding attributes etc... */
     public class ConstructionEvent
     {
         private readonly StackTrace stack;

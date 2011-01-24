@@ -42,7 +42,7 @@ namespace Antlr4.Test.StringTemplate
         public void TestAttr()
         {
             string template = "hi $name$!";
-            ST st = new ST(template, '$', '$');
+            Template st = new Template(template, '$', '$');
             st.add("name", "Ter");
             string expected = "hi Ter!";
             string result = st.render();
@@ -52,9 +52,9 @@ namespace Antlr4.Test.StringTemplate
         [TestMethod]
         public void TestParallelMap()
         {
-            STGroup group = new STGroup('$', '$');
+            TemplateGroup group = new TemplateGroup('$', '$');
             group.defineTemplate("test", "names,phones", "hi $names,phones:{n,p | $n$:$p$;}$");
-            ST st = group.getInstanceOf("test");
+            Template st = group.getInstanceOf("test");
             st.add("names", "Ter");
             st.add("names", "Tom");
             st.add("names", "Sumana");
@@ -75,8 +75,8 @@ namespace Antlr4.Test.StringTemplate
             string b = "b() ::= <<bar>>\n";
             writeFile(dir, "a.st", a);
             writeFile(dir, "b.st", b);
-            STGroup group = new STGroupDir(dir, '$', '$');
-            ST st = group.getInstanceOf("a");
+            TemplateGroup group = new TemplateGroupDirectory(dir, '$', '$');
+            Template st = group.getInstanceOf("a");
             string expected = " bar ";
             string result = st.render();
             Assert.AreEqual(expected, result);
@@ -92,8 +92,8 @@ namespace Antlr4.Test.StringTemplate
                     "stat(name,value=\"99\") ::= \"x=$value$; // $name$\"" + newline
                     ;
             writeFile(tmpdir, "group.stg", templates);
-            STGroup group = new STGroupFile(tmpdir + "/group.stg", '$', '$');
-            ST b = group.getInstanceOf("method");
+            TemplateGroup group = new TemplateGroupFile(tmpdir + "/group.stg", '$', '$');
+            Template b = group.getInstanceOf("method");
             b.add("name", "foo");
             string expecting = "x=99; // foo";
             string result = b.render();

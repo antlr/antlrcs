@@ -41,7 +41,7 @@ namespace Antlr4.Test.StringTemplate
         [TestMethod]
         public void TestJustCat()
         {
-            ST e = new ST(
+            Template e = new Template(
                     "<[names,phones]>"
                 );
             e.add("names", "Ter");
@@ -55,7 +55,7 @@ namespace Antlr4.Test.StringTemplate
         [TestMethod]
         public void TestListLiteralWithEmptyElements()
         {
-            ST e = new ST(
+            Template e = new Template(
                 "<[\"Ter\",,\"Jesse\"]:{n | <i>:<n>}; separator=\", \", null={foo}>"
             );
             string expecting = "1:Ter, foo, 2:Jesse";
@@ -65,7 +65,7 @@ namespace Antlr4.Test.StringTemplate
         [TestMethod]
         public void TestListLiteralWithEmptyFirstElement()
         {
-            ST e = new ST(
+            Template e = new Template(
                 "<[,\"Ter\",\"Jesse\"]:{n | <i>:<n>}; separator=\", \", null={foo}>"
             );
             string expecting = "foo, 1:Ter, 2:Jesse";
@@ -75,7 +75,7 @@ namespace Antlr4.Test.StringTemplate
         [TestMethod]
         public void TestLength()
         {
-            ST e = new ST(
+            Template e = new Template(
                     "<length([names,phones])>"
                 );
             e.add("names", "Ter");
@@ -89,7 +89,7 @@ namespace Antlr4.Test.StringTemplate
         [TestMethod]
         public void TestCat2Attributes()
         {
-            ST e = new ST(
+            Template e = new Template(
                     "<[names,phones]; separator=\", \">"
                 );
             e.add("names", "Ter");
@@ -103,7 +103,7 @@ namespace Antlr4.Test.StringTemplate
         [TestMethod]
         public void TestCat2AttributesWithApply()
         {
-            ST e = new ST(
+            Template e = new Template(
                     "<[names,phones]:{a|<a>.}>"
                 );
             e.add("names", "Ter");
@@ -117,7 +117,7 @@ namespace Antlr4.Test.StringTemplate
         [TestMethod]
         public void TestCat3Attributes()
         {
-            ST e = new ST(
+            Template e = new Template(
                     "<[names,phones,salaries]; separator=\", \">"
                 );
             e.add("names", "Ter");
@@ -133,7 +133,7 @@ namespace Antlr4.Test.StringTemplate
         [TestMethod]
         public void TestCatWithTemplateApplicationAsElement()
         {
-            ST e = new ST(
+            Template e = new Template(
                     "<[names:{n|<n>!},phones]; separator=\", \">"
                 );
             e.add("names", "Ter");
@@ -147,7 +147,7 @@ namespace Antlr4.Test.StringTemplate
         [TestMethod]
         public void TestCatWithIFAsElement()
         {
-            ST e = new ST(
+            Template e = new Template(
                     "<[{<if(names)>doh<endif>},phones]; separator=\", \">"
                 );
             e.add("names", "Ter");
@@ -163,7 +163,7 @@ namespace Antlr4.Test.StringTemplate
         {
             // [a, b] must behave like <a><b>; if a==b==null, blank output
             // unless null argument.
-            ST e = new ST(
+            Template e = new Template(
                     "<[no,go]; null=\"foo\", separator=\", \">"
                 );
             e.add("phones", "1");
@@ -175,7 +175,7 @@ namespace Antlr4.Test.StringTemplate
         [TestMethod]
         public void TestCatWithNullTemplateApplicationAsElement()
         {
-            ST e = new ST(
+            Template e = new Template(
                     "<[names:{n|<n>!},\"foo\"]:{a|x}; separator=\", \">"
                 );
             e.add("phones", "1");
@@ -187,7 +187,7 @@ namespace Antlr4.Test.StringTemplate
         [TestMethod]
         public void TestCatWithNestedTemplateApplicationAsElement()
         {
-            ST e = new ST(
+            Template e = new Template(
                     "<[names, [\"foo\",\"bar\"]:{x | <x>!},phones]; separator=\", \">"
                 );
             e.add("names", "Ter");
@@ -206,8 +206,8 @@ namespace Antlr4.Test.StringTemplate
                     "foo(items) ::= \"<items:{a | *<a>*}>\"" + newline
                     ;
             writeFile(tmpdir, "t.stg", templates);
-            STGroup group = new STGroupFile(tmpdir + "/" + "t.stg");
-            ST e = group.getInstanceOf("test");
+            TemplateGroup group = new TemplateGroupFile(tmpdir + "/" + "t.stg");
+            Template e = group.getInstanceOf("test");
             e.add("names", "Ter");
             e.add("names", "Tom");
             e.add("phones", "1");

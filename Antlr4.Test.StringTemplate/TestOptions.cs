@@ -43,9 +43,9 @@ namespace Antlr4.Test.StringTemplate
         [TestMethod]
         public void TestSeparator()
         {
-            STGroup group = new STGroup();
+            TemplateGroup group = new TemplateGroup();
             group.defineTemplate("test", "name", "hi <name; separator=\", \">!");
-            ST st = group.getInstanceOf("test");
+            Template st = group.getInstanceOf("test");
             st.add("name", "Ter");
             st.add("name", "Tom");
             st.add("name", "Sumana");
@@ -57,9 +57,9 @@ namespace Antlr4.Test.StringTemplate
         [TestMethod]
         public void TestAttrSeparator()
         {
-            STGroup group = new STGroup();
+            TemplateGroup group = new TemplateGroup();
             group.defineTemplate("test", "name,sep", "hi <name; separator=sep>!");
-            ST st = group.getInstanceOf("test");
+            Template st = group.getInstanceOf("test");
             st.add("sep", ", ");
             st.add("name", "Ter");
             st.add("name", "Tom");
@@ -72,10 +72,10 @@ namespace Antlr4.Test.StringTemplate
         [TestMethod]
         public void TestIncludeSeparator()
         {
-            STGroup group = new STGroup();
+            TemplateGroup group = new TemplateGroup();
             group.defineTemplate("foo", "|");
             group.defineTemplate("test", "name,sep", "hi <name; separator=foo()>!");
-            ST st = group.getInstanceOf("test");
+            Template st = group.getInstanceOf("test");
             st.add("sep", ", ");
             st.add("name", "Ter");
             st.add("name", "Tom");
@@ -88,9 +88,9 @@ namespace Antlr4.Test.StringTemplate
         [TestMethod]
         public void TestSubtemplateSeparator()
         {
-            STGroup group = new STGroup();
+            TemplateGroup group = new TemplateGroup();
             group.defineTemplate("test", "name,sep", "hi <name; separator={<sep> _}>!");
-            ST st = group.getInstanceOf("test");
+            Template st = group.getInstanceOf("test");
             st.add("sep", ",");
             st.add("name", "Ter");
             st.add("name", "Tom");
@@ -103,9 +103,9 @@ namespace Antlr4.Test.StringTemplate
         [TestMethod]
         public void TestSeparatorWithNullFirstValueAndNullOption()
         {
-            STGroup group = new STGroup();
+            TemplateGroup group = new TemplateGroup();
             group.defineTemplate("test", "name", "hi <name; null=\"n/a\", separator=\", \">!");
-            ST st = group.getInstanceOf("test");
+            Template st = group.getInstanceOf("test");
             st.add("name", null);
             st.add("name", "Tom");
             st.add("name", "Sumana");
@@ -117,9 +117,9 @@ namespace Antlr4.Test.StringTemplate
         [TestMethod]
         public void TestSeparatorWithNull2ndValueAndNullOption()
         {
-            STGroup group = new STGroup();
+            TemplateGroup group = new TemplateGroup();
             group.defineTemplate("test", "name", "hi <name; null=\"n/a\", separator=\", \">!");
-            ST st = group.getInstanceOf("test");
+            Template st = group.getInstanceOf("test");
             st.impl.dump();
             st.add("name", "Ter");
             st.add("name", null);
@@ -132,9 +132,9 @@ namespace Antlr4.Test.StringTemplate
         [TestMethod]
         public void TestNullValueAndNullOption()
         {
-            STGroup group = new STGroup();
+            TemplateGroup group = new TemplateGroup();
             group.defineTemplate("test", "name", "<name; null=\"n/a\">");
-            ST st = group.getInstanceOf("test");
+            Template st = group.getInstanceOf("test");
             st.add("name", null);
             string expected = "n/a";
             string result = st.render();
@@ -144,9 +144,9 @@ namespace Antlr4.Test.StringTemplate
         [TestMethod]
         public void TestListApplyWithNullValueAndNullOption()
         {
-            STGroup group = new STGroup();
+            TemplateGroup group = new TemplateGroup();
             group.defineTemplate("test", "name", "<name:{n | <n>}; null=\"n/a\">");
-            ST st = group.getInstanceOf("test");
+            Template st = group.getInstanceOf("test");
             st.add("name", "Ter");
             st.add("name", null);
             st.add("name", "Sumana");
@@ -158,12 +158,12 @@ namespace Antlr4.Test.StringTemplate
         [TestMethod]
         public void TestDoubleListApplyWithNullValueAndNullOption()
         {
-            // first apply sends [ST, null, ST] to second apply, which puts [] around
+            // first apply sends [Template, null, Template] to second apply, which puts [] around
             // the value.  This verifies that null not blank comes out of first apply
             // since we don't get [null].
-            STGroup group = new STGroup();
+            TemplateGroup group = new TemplateGroup();
             group.defineTemplate("test", "name", "<name:{n | <n>}:{n | [<n>]}; null=\"n/a\">");
-            ST st = group.getInstanceOf("test");
+            Template st = group.getInstanceOf("test");
             st.add("name", "Ter");
             st.add("name", null);
             st.add("name", "Sumana");
@@ -175,9 +175,9 @@ namespace Antlr4.Test.StringTemplate
         [TestMethod]
         public void TestMissingValueAndNullOption()
         {
-            STGroup group = new STGroup();
+            TemplateGroup group = new TemplateGroup();
             group.defineTemplate("test", "name", "<name; null=\"n/a\">");
-            ST st = group.getInstanceOf("test");
+            Template st = group.getInstanceOf("test");
             string expected = "n/a";
             string result = st.render();
             Assert.AreEqual(expected, result);
@@ -186,10 +186,10 @@ namespace Antlr4.Test.StringTemplate
         [TestMethod]
         public void TestOptionDoesntApplyToNestedTemplate()
         {
-            STGroup group = new STGroup();
+            TemplateGroup group = new TemplateGroup();
             group.defineTemplate("foo", "<zippo>");
             group.defineTemplate("test", "zippo", "<foo(); null=\"n/a\">");
-            ST st = group.getInstanceOf("test");
+            Template st = group.getInstanceOf("test");
             st.add("zippo", null);
             string expected = "";
             string result = st.render();
@@ -200,10 +200,10 @@ namespace Antlr4.Test.StringTemplate
         public void TestIllegalOption()
         {
             ErrorBuffer errors = new ErrorBuffer();
-            STGroup group = new STGroup();
+            TemplateGroup group = new TemplateGroup();
             group.setListener(errors);
             group.defineTemplate("test", "name", "<name; bad=\"ugly\">");
-            ST st = group.getInstanceOf("test");
+            Template st = group.getInstanceOf("test");
             st.add("name", "Ter");
             string expected = "Ter";
             string result = st.render();

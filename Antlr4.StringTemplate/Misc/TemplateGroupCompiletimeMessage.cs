@@ -36,7 +36,7 @@ namespace Antlr4.StringTemplate.Misc
     using IToken = Antlr.Runtime.IToken;
     using RecognitionException = Antlr.Runtime.RecognitionException;
 
-    public class STGroupCompiletimeMessage : STMessage
+    public class TemplateGroupCompiletimeMessage : TemplateMessage
     {
         /// <summary>
         /// token inside group file
@@ -44,17 +44,17 @@ namespace Antlr4.StringTemplate.Misc
         private readonly IToken token;
         private readonly string srcName;
 
-        public STGroupCompiletimeMessage(ErrorType error, string srcName, IToken t, Exception cause)
+        public TemplateGroupCompiletimeMessage(ErrorType error, string srcName, IToken t, Exception cause)
             : this(error, srcName, t, cause, null)
         {
         }
 
-        public STGroupCompiletimeMessage(ErrorType error, string srcName, IToken t, Exception cause, object arg)
+        public TemplateGroupCompiletimeMessage(ErrorType error, string srcName, IToken t, Exception cause, object arg)
             : this(error, srcName, t, cause, arg, null)
         {
         }
 
-        public STGroupCompiletimeMessage(ErrorType error, string srcName, IToken t, Exception cause, object arg, object arg2)
+        public TemplateGroupCompiletimeMessage(ErrorType error, string srcName, IToken t, Exception cause, object arg, object arg2)
             : base(error, null, cause, arg, arg2)
         {
             this.token = t;

@@ -49,8 +49,8 @@ namespace Antlr4.Test.StringTemplate
                     "var(type,name) ::= \"<type> <name> = <typeInit.(type)>;\"" + newline
                     ;
             writeFile(tmpdir, "test.stg", templates);
-            STGroup group = new STGroupFile(tmpdir + "/" + "test.stg");
-            ST st = group.getInstanceOf("var");
+            TemplateGroup group = new TemplateGroupFile(tmpdir + "/" + "test.stg");
+            Template st = group.getInstanceOf("var");
             st.add("type", "int");
             st.add("name", "x");
             string expecting = "int x = 0;";
@@ -66,8 +66,8 @@ namespace Antlr4.Test.StringTemplate
                     "var(type,w,name) ::= \"<type> <name> = <typeInit.(type)>;\"" + newline
                     ;
             writeFile(tmpdir, "test.stg", templates);
-            STGroup group = new STGroupFile(tmpdir + "/" + "test.stg");
-            ST st = group.getInstanceOf("var");
+            TemplateGroup group = new TemplateGroupFile(tmpdir + "/" + "test.stg");
+            Template st = group.getInstanceOf("var");
             st.impl.dump();
             st.add("w", "L");
             st.add("type", "int");
@@ -86,10 +86,10 @@ namespace Antlr4.Test.StringTemplate
                     "var(type,w,name) ::= \"<type> <name> = <typeInit.(type)>;\"" + newline
                     ;
             writeFile(tmpdir, "test.stg", templates);
-            STGroup group = new STGroupFile(tmpdir + "/" + "test.stg");
-            ST st = group.getInstanceOf("var");
+            TemplateGroup group = new TemplateGroupFile(tmpdir + "/" + "test.stg");
+            Template st = group.getInstanceOf("var");
             st.add("w", "L");
-            st.add("type", new ST("int"));
+            st.add("type", new Template("int"));
             st.add("name", "x");
             string expecting = "int x = 0L;";
             string result = st.render();
@@ -104,8 +104,8 @@ namespace Antlr4.Test.StringTemplate
                     "foo(m,k) ::= \"<m.(k)>\"" + newline
                     ;
             writeFile(tmpdir, "test.stg", templates);
-            STGroup group = new STGroupFile(tmpdir + "/" + "test.stg");
-            ST st = group.getInstanceOf("foo");
+            TemplateGroup group = new TemplateGroupFile(tmpdir + "/" + "test.stg");
+            Template st = group.getInstanceOf("foo");
             IDictionary<HashableUser, string> m = new Dictionary<HashableUser, string>();
             m[new HashableUser(99, "parrt")] = "first";
             m[new HashableUser(172036, "tombu")] = "second";
@@ -125,8 +125,8 @@ namespace Antlr4.Test.StringTemplate
                     "var(type,w,name) ::= \"<type> <name> = <typeInit.(type)>;\"" + newline
                     ;
             writeFile(tmpdir, "test.stg", templates);
-            STGroup group = new STGroupFile(tmpdir + "/" + "test.stg");
-            ST st = group.getInstanceOf("var");
+            TemplateGroup group = new TemplateGroupFile(tmpdir + "/" + "test.stg");
+            Template st = group.getInstanceOf("var");
             st.add("w", "L");
             st.add("type", "double"); // double not in typeInit map
             st.add("name", "x");
@@ -143,8 +143,8 @@ namespace Antlr4.Test.StringTemplate
                     "var(type,w,name) ::= \"<type> <name> = <typeInit.(type)>;\"" + newline
                     ;
             writeFile(tmpdir, "test.stg", templates);
-            STGroup group = new STGroupFile(tmpdir + "/" + "test.stg");
-            ST st = group.getInstanceOf("var");
+            TemplateGroup group = new TemplateGroupFile(tmpdir + "/" + "test.stg");
+            Template st = group.getInstanceOf("var");
             st.add("w", "L");
             st.add("type", null); // double not in typeInit map
             st.add("name", "x");
@@ -161,8 +161,8 @@ namespace Antlr4.Test.StringTemplate
                     "var(typeInit,type,name) ::= \"<type> <name> = <typeInit.(type)>;\"" + newline
                     ;
             writeFile(tmpdir, "test.stg", templates);
-            STGroup group = new STGroupFile(tmpdir + "/" + "test.stg");
-            ST st = group.getInstanceOf("var");
+            TemplateGroup group = new TemplateGroupFile(tmpdir + "/" + "test.stg");
+            Template st = group.getInstanceOf("var");
             st.add("type", "int");
             st.add("name", "x");
             string expecting = "int x = ;";
@@ -178,8 +178,8 @@ namespace Antlr4.Test.StringTemplate
                     "var(type,name) ::= \"<type> <name> = <typeInit.(type)>;\"" + newline
                     ;
             writeFile(tmpdir, "test.stg", templates);
-            STGroup group = new STGroupFile(tmpdir + "/" + "test.stg");
-            ST st = group.getInstanceOf("var");
+            TemplateGroup group = new TemplateGroupFile(tmpdir + "/" + "test.stg");
+            Template st = group.getInstanceOf("var");
             st.add("type", "float");
             st.add("name", "x");
             string expecting = "float x = ;";
@@ -195,8 +195,8 @@ namespace Antlr4.Test.StringTemplate
                     "var(type,name) ::= \"<type> <name> = <typeInit.(type)>;\"" + newline
                     ;
             writeFile(tmpdir, "test.stg", templates);
-            STGroup group = new STGroupFile(tmpdir + "/" + "test.stg");
-            ST st = group.getInstanceOf("var");
+            TemplateGroup group = new TemplateGroupFile(tmpdir + "/" + "test.stg");
+            Template st = group.getInstanceOf("var");
             st.add("type", "UserRecord");
             st.add("name", "x");
             string expecting = "UserRecord x = null;";
@@ -212,8 +212,8 @@ namespace Antlr4.Test.StringTemplate
                     "var(type,name) ::= \"<type> <name> = <typeInit.(type)>;\"" + newline
                     ;
             writeFile(tmpdir, "test.stg", templates);
-            STGroup group = new STGroupFile(tmpdir + "/" + "test.stg");
-            ST st = group.getInstanceOf("var");
+            TemplateGroup group = new TemplateGroupFile(tmpdir + "/" + "test.stg");
+            Template st = group.getInstanceOf("var");
             // missing or set to null: st.add("type", null);
             st.add("name", "x");
             string expecting = " x = null;";
@@ -230,7 +230,7 @@ namespace Antlr4.Test.StringTemplate
                     ;
             writeFile(tmpdir, "test.stg", templates);
             ErrorBuffer errors = new ErrorBuffer();
-            STGroupFile group = new STGroupFile(tmpdir + "/" + "test.stg");
+            TemplateGroupFile group = new TemplateGroupFile(tmpdir + "/" + "test.stg");
             group.setListener(errors);
             group.load();
             string expected = "[test.stg 1:33: missing value for key at ']']";
@@ -246,8 +246,8 @@ namespace Antlr4.Test.StringTemplate
                     "var(type,name) ::= \"<type> <name> = <typeInit.(type)>;\"" + newline
                     ;
             writeFile(tmpdir, "test.stg", templates);
-            STGroup group = new STGroupFile(tmpdir + "/" + "test.stg");
-            ST st = group.getInstanceOf("var");
+            TemplateGroup group = new TemplateGroupFile(tmpdir + "/" + "test.stg");
+            Template st = group.getInstanceOf("var");
             st.add("type", "UserRecord");
             st.add("name", "x");
             string expecting = "UserRecord x = UserRecord;";
@@ -266,8 +266,8 @@ namespace Antlr4.Test.StringTemplate
                     "var(type,name) ::= \"<type> <name> = <typeInit.(type)>;\"" + newline
                     ;
             writeFile(tmpdir, "test.stg", templates);
-            STGroup group = new STGroupFile(tmpdir + "/" + "test.stg");
-            ST st = group.getInstanceOf("var");
+            TemplateGroup group = new TemplateGroupFile(tmpdir + "/" + "test.stg");
+            Template st = group.getInstanceOf("var");
             st.add("type", "default");
             st.add("name", "x");
             string expecting = "default x = foo;";
@@ -286,8 +286,8 @@ namespace Antlr4.Test.StringTemplate
                     "t() ::= << <map.(\"1\")> >>" + newline
                     ;
             writeFile(tmpdir, "test.stg", templates);
-            STGroup group = new STGroupFile(tmpdir + "/" + "test.stg");
-            ST st = group.getInstanceOf("t");
+            TemplateGroup group = new TemplateGroupFile(tmpdir + "/" + "test.stg");
+            Template st = group.getInstanceOf("t");
             string expecting = " default ";
             string result = st.render();
             Assert.AreEqual(expecting, result);
@@ -302,8 +302,8 @@ namespace Antlr4.Test.StringTemplate
                     "var(type,name) ::= \"<type> <name> = <typeInit.(type)>;\"" + newline
                     ;
             writeFile(tmpdir, "test.stg", templates);
-            STGroup group = new STGroupFile(tmpdir + "/" + "test.stg");
-            ST st = group.getInstanceOf("intermediate");
+            TemplateGroup group = new TemplateGroupFile(tmpdir + "/" + "test.stg");
+            Template st = group.getInstanceOf("intermediate");
             st.add("type", "int");
             st.add("name", "x");
             string expecting = "int x = 0;";
@@ -320,9 +320,9 @@ namespace Antlr4.Test.StringTemplate
                     "var(type,name) ::= \"<type> <name> = <typeInit.(type)>;\"" + newline
                     ;
             writeFile(tmpdir, "test.stg", templates);
-            STGroup group = new STGroupFile(tmpdir + "/" + "test.stg");
-            ST interm = group.getInstanceOf("intermediate");
-            ST var = group.getInstanceOf("var");
+            TemplateGroup group = new TemplateGroupFile(tmpdir + "/" + "test.stg");
+            Template interm = group.getInstanceOf("intermediate");
+            Template var = group.getInstanceOf("var");
             var.add("type", "int");
             var.add("name", "x");
             interm.add("stuff", var);

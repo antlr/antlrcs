@@ -48,8 +48,8 @@ namespace Antlr4.Test.StringTemplate
                 "[<@r>bar<@end>]\n" +
                 ">>\n";
             writeFile(dir, "group.stg", groupFile);
-            STGroup group = new STGroupFile(dir + "/group.stg");
-            ST st = group.getInstanceOf("a");
+            TemplateGroup group = new TemplateGroupFile(dir + "/group.stg");
+            Template st = group.getInstanceOf("a");
             string expected = "[bar]";
             string result = st.render();
             Assert.AreEqual(expected, result);
@@ -64,8 +64,8 @@ namespace Antlr4.Test.StringTemplate
                 "[<@r()>]\n" +
                 ">>\n";
             writeFile(dir, "group.stg", groupFile);
-            STGroup group = new STGroupFile(dir + "/group.stg");
-            ST st = group.getInstanceOf("a");
+            TemplateGroup group = new TemplateGroupFile(dir + "/group.stg");
+            Template st = group.getInstanceOf("a");
             string expected = "[]";
             string result = st.render();
             Assert.AreEqual(expected, result);
@@ -80,10 +80,10 @@ namespace Antlr4.Test.StringTemplate
             string g2 = "@a.r() ::= <<foo>>\n";
             writeFile(dir, "g2.stg", g2);
 
-            STGroup group1 = new STGroupFile(dir + "/g1.stg");
-            STGroup group2 = new STGroupFile(dir + "/g2.stg");
+            TemplateGroup group1 = new TemplateGroupFile(dir + "/g1.stg");
+            TemplateGroup group2 = new TemplateGroupFile(dir + "/g2.stg");
             group2.importTemplates(group1); // define r in g2
-            ST st = group2.getInstanceOf("a");
+            Template st = group2.getInstanceOf("a");
             string expected = "[foo]";
             string result = st.render();
             Assert.AreEqual(expected, result);
@@ -98,10 +98,10 @@ namespace Antlr4.Test.StringTemplate
             string g2 = "@a.r() ::= <<(<@super.r()>)>>\n";
             writeFile(dir, "g2.stg", g2);
 
-            STGroup group1 = new STGroupFile(dir + "/g1.stg");
-            STGroup group2 = new STGroupFile(dir + "/g2.stg");
+            TemplateGroup group1 = new TemplateGroupFile(dir + "/g1.stg");
+            TemplateGroup group2 = new TemplateGroupFile(dir + "/g2.stg");
             group2.importTemplates(group1); // define r in g2
-            ST st = group2.getInstanceOf("a");
+            Template st = group2.getInstanceOf("a");
             string expected = "[(foo)]";
             string result = st.render();
             Assert.AreEqual(expected, result);
@@ -116,10 +116,10 @@ namespace Antlr4.Test.StringTemplate
             string g2 = "@a.r() ::= <<foo>>>\n";
             writeFile(dir, "g2.stg", g2);
 
-            STGroup group1 = new STGroupFile(dir + "/g1.stg");
-            STGroup group2 = new STGroupFile(dir + "/g2.stg");
+            TemplateGroup group1 = new TemplateGroupFile(dir + "/g1.stg");
+            TemplateGroup group2 = new TemplateGroupFile(dir + "/g2.stg");
             group1.importTemplates(group2); // opposite of previous; g1 imports g2
-            ST st = group1.getInstanceOf("a");
+            Template st = group1.getInstanceOf("a");
             string expected = "[]"; // @a.r implicitly defined in g1; can't see g2's
             string result = st.render();
             Assert.AreEqual(expected, result);
@@ -133,8 +133,8 @@ namespace Antlr4.Test.StringTemplate
                        "@a.r() ::= <<foo>>\n";
             writeFile(dir, "g.stg", g);
 
-            STGroup group = new STGroupFile(dir + "/g.stg");
-            ST st = group.getInstanceOf("a");
+            TemplateGroup group = new TemplateGroupFile(dir + "/g.stg");
+            Template st = group.getInstanceOf("a");
             string expected = "[foo]";
             string result = st.render();
             Assert.AreEqual(expected, result);
@@ -148,7 +148,7 @@ namespace Antlr4.Test.StringTemplate
                        "@a.r() ::= <<bar>>\n"; // error; dup
             writeFile(dir, "g.stg", g);
 
-            STGroupFile group = new STGroupFile(dir + "/g.stg");
+            TemplateGroupFile group = new TemplateGroupFile(dir + "/g.stg");
             ErrorBuffer errors = new ErrorBuffer();
             group.setListener(errors);
             group.load();
@@ -167,15 +167,15 @@ namespace Antlr4.Test.StringTemplate
                     "a() ::= \"X<@r()>Y\"" +
                     "@a.r() ::= \"foo\"" + newline;
             writeFile(dir, "g.stg", g);
-            STGroupFile group = new STGroupFile(dir + "/g.stg");
+            TemplateGroupFile group = new TemplateGroupFile(dir + "/g.stg");
 
             string sub =
                     "@a.r() ::= \"A<@super.r()>B\"" + newline;
             writeFile(dir, "sub.stg", sub);
-            STGroupFile subGroup = new STGroupFile(dir + "/sub.stg");
+            TemplateGroupFile subGroup = new TemplateGroupFile(dir + "/sub.stg");
             subGroup.importTemplates(group);
 
-            ST st = subGroup.getInstanceOf("a");
+            Template st = subGroup.getInstanceOf("a");
             string result = st.render();
             string expecting = "XAfooBY";
             Assert.AreEqual(expecting, result);
@@ -202,21 +202,21 @@ namespace Antlr4.Test.StringTemplate
                     "a() ::= \"X<@r()>Y\"" +
                     "@a.r() ::= \"foo\"" + newline;
             writeFile(dir, "g.stg", g);
-            STGroupFile group = new STGroupFile(dir + "/g.stg");
+            TemplateGroupFile group = new TemplateGroupFile(dir + "/g.stg");
 
             string sub =
                     "@a.r() ::= \"<@super.r()>2\"" + newline;
             writeFile(dir, "sub.stg", sub);
-            STGroupFile subGroup = new STGroupFile(dir + "/sub.stg");
+            TemplateGroupFile subGroup = new TemplateGroupFile(dir + "/sub.stg");
             subGroup.importTemplates(group);
 
             string subsub =
                     "@a.r() ::= \"<@super.r()>3\"" + newline;
             writeFile(dir, "subsub.stg", subsub);
-            STGroupFile subSubGroup = new STGroupFile(dir + "/subsub.stg");
+            TemplateGroupFile subSubGroup = new TemplateGroupFile(dir + "/subsub.stg");
             subSubGroup.importTemplates(subGroup);
 
-            ST st = subSubGroup.getInstanceOf("a");
+            Template st = subSubGroup.getInstanceOf("a");
 
             string result = st.render();
             string expecting = "Xfoo23Y";
@@ -230,15 +230,15 @@ namespace Antlr4.Test.StringTemplate
             string g =
                     "a() ::= \"X<@r>foo<@end>Y\"" + newline;
             writeFile(dir, "g.stg", g);
-            STGroupFile group = new STGroupFile(dir + "/g.stg");
+            TemplateGroupFile group = new TemplateGroupFile(dir + "/g.stg");
 
             string sub =
                     "@a.r() ::= \"A<@super.r()>\"" + newline;
             writeFile(dir, "sub.stg", sub);
-            STGroupFile subGroup = new STGroupFile(dir + "/sub.stg");
+            TemplateGroupFile subGroup = new TemplateGroupFile(dir + "/sub.stg");
             subGroup.importTemplates(group);
 
-            ST st = subGroup.getInstanceOf("a");
+            Template st = subGroup.getInstanceOf("a");
             string result = st.render();
             string expecting = "XAfooY";
             Assert.AreEqual(expecting, result);
@@ -255,9 +255,9 @@ namespace Antlr4.Test.StringTemplate
                     "@a.q() ::= \"foo\"" + newline;
             ITemplateErrorListener errors = new ErrorBuffer();
             writeFile(dir, "g.stg", g);
-            STGroupFile group = new STGroupFile(dir + "/g.stg");
+            TemplateGroupFile group = new TemplateGroupFile(dir + "/g.stg");
             group.setListener(errors);
-            ST st = group.getInstanceOf("a");
+            Template st = group.getInstanceOf("a");
             st.render();
             string result = errors.ToString();
             string expecting = "g.stg 3:3: template a doesn't have a region called q" + newline;
@@ -272,17 +272,17 @@ namespace Antlr4.Test.StringTemplate
                 "a() ::= \"X<@r()>Y\"" +
                 "@a.r() ::= \"foo\"" + newline;
             writeFile(dir, "g.stg", g);
-            STGroupFile group = new STGroupFile(dir + "/g.stg");
+            TemplateGroupFile group = new TemplateGroupFile(dir + "/g.stg");
 
             string sub =
                 "@a.r() ::= \"A<@super.q()>B\"" + newline; // allow this; trap at runtime
             ITemplateErrorListener errors = new ErrorBuffer();
             group.setListener(errors);
             writeFile(dir, "sub.stg", sub);
-            STGroupFile subGroup = new STGroupFile(dir + "/sub.stg");
+            TemplateGroupFile subGroup = new TemplateGroupFile(dir + "/sub.stg");
             subGroup.importTemplates(group);
 
-            ST st = subGroup.getInstanceOf("a");
+            Template st = subGroup.getInstanceOf("a");
             string result = st.render();
             string expecting = "XABY";
             Assert.AreEqual(expecting, result);

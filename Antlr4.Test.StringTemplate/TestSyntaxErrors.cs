@@ -40,14 +40,14 @@ namespace Antlr4.Test.StringTemplate
         public void TestEmptyExpr()
         {
             string template = " <> ";
-            STGroup group = new STGroup();
+            TemplateGroup group = new TemplateGroup();
             ErrorBuffer errors = new ErrorBuffer();
             group.setListener(errors);
             try
             {
                 group.defineTemplate("test", template);
             }
-            catch (STException)
+            catch (TemplateException)
             {
             }
             string result = errors.ToString();
@@ -59,14 +59,14 @@ namespace Antlr4.Test.StringTemplate
         public void TestEmptyExpr2()
         {
             string template = "hi <> ";
-            STGroup group = new STGroup();
+            TemplateGroup group = new TemplateGroup();
             ErrorBuffer errors = new ErrorBuffer();
             group.setListener(errors);
             try
             {
                 group.defineTemplate("test", template);
             }
-            catch (STException)
+            catch (TemplateException)
             {
             }
             string result = errors.ToString();
@@ -78,14 +78,14 @@ namespace Antlr4.Test.StringTemplate
         public void TestWeirdChar()
         {
             string template = "   <*>";
-            STGroup group = new STGroup();
+            TemplateGroup group = new TemplateGroup();
             ErrorBuffer errors = new ErrorBuffer();
             group.setListener(errors);
             try
             {
                 group.defineTemplate("test", template);
             }
-            catch (STException)
+            catch (TemplateException)
             {
             }
             string result = errors.ToString();
@@ -102,7 +102,7 @@ namespace Antlr4.Test.StringTemplate
             writeFile(tmpdir, "t.stg", templates);
 
             ITemplateErrorListener errors = new ErrorBuffer();
-            STGroupFile group = new STGroupFile(tmpdir + "/" + "t.stg");
+            TemplateGroupFile group = new TemplateGroupFile(tmpdir + "/" + "t.stg");
             group.setListener(errors);
             group.load(); // force load
             string expected = "t.stg 1:15: doesn't look like an expression" + newline;
@@ -119,7 +119,7 @@ namespace Antlr4.Test.StringTemplate
             writeFile(tmpdir, "t.stg", templates);
 
             ErrorBuffer errors = new ErrorBuffer();
-            STGroupFile group = new STGroupFile(tmpdir + "/" + "t.stg");
+            TemplateGroupFile group = new TemplateGroupFile(tmpdir + "/" + "t.stg");
             group.setListener(errors);
             group.load(); // force load
             string expected = "[t.stg 1:15: \\n in string, t.stg 1:14: doesn't look like an expression]";
@@ -134,9 +134,9 @@ namespace Antlr4.Test.StringTemplate
                 "foo() ::= \"hi <name:{[<aaa.bb!>]}> mom\"\n";
             writeFile(tmpdir, "t.stg", templates);
 
-            STGroupFile group = null;
+            TemplateGroupFile group = null;
             ITemplateErrorListener errors = new ErrorBuffer();
-            group = new STGroupFile(tmpdir + "/" + "t.stg");
+            group = new TemplateGroupFile(tmpdir + "/" + "t.stg");
             group.setListener(errors);
             group.load(); // force load
             string expected = "t.stg 1:29: '!' came as a complete surprise to me" + newline;
@@ -151,9 +151,9 @@ namespace Antlr4.Test.StringTemplate
                 "foo() ::= \"hi <name:{x|[<aaa.bb>]}\"\n";
             writeFile(tmpdir, "t.stg", templates);
 
-            STGroupFile group = null;
+            TemplateGroupFile group = null;
             ITemplateErrorListener errors = new ErrorBuffer();
-            group = new STGroupFile(tmpdir + "/" + "t.stg");
+            group = new TemplateGroupFile(tmpdir + "/" + "t.stg");
             group.setListener(errors);
             group.load(); // force load
             string expected = "t.stg 1:34: premature EOF" + newline;
@@ -168,9 +168,9 @@ namespace Antlr4.Test.StringTemplate
                 "foo() ::= \"hi <foo(>\"\n";
             writeFile(tmpdir, "t.stg", templates);
 
-            STGroupFile group = null;
+            TemplateGroupFile group = null;
             ITemplateErrorListener errors = new ErrorBuffer();
-            group = new STGroupFile(tmpdir + "/" + "t.stg");
+            group = new TemplateGroupFile(tmpdir + "/" + "t.stg");
             group.setListener(errors);
             group.load(); // force load
             string expected = "t.stg 1:19: '>' came as a complete surprise to me" + newline;
@@ -185,9 +185,9 @@ namespace Antlr4.Test.StringTemplate
                 "foo() ::= \"<a,b:t(),u()>\"\n";
             writeFile(tmpdir, "t.stg", templates);
 
-            STGroupFile group = null;
+            TemplateGroupFile group = null;
             ITemplateErrorListener errors = new ErrorBuffer();
-            group = new STGroupFile(tmpdir + "/" + "t.stg");
+            group = new TemplateGroupFile(tmpdir + "/" + "t.stg");
             group.setListener(errors);
             group.load(); // force load
             string expected = "t.stg 1:19: mismatched input ',' expecting RDELIM" + newline;

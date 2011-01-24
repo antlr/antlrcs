@@ -43,7 +43,7 @@ namespace Antlr4.Test.StringTemplate
         public void TestFirst()
         {
             string template = "<first(names)>";
-            ST st = new ST(template);
+            Template st = new Template(template);
             List<string> names = new List<string>() { "Ter", "Tom" };
             st.add("names", names);
             string expected = "Ter";
@@ -55,7 +55,7 @@ namespace Antlr4.Test.StringTemplate
         public void TestLength()
         {
             string template = "<length(names)>";
-            ST st = new ST(template);
+            Template st = new Template(template);
             List<string> names = new List<string>() { "Ter", "Tom" };
             st.add("names", names);
             string expected = "2";
@@ -67,7 +67,7 @@ namespace Antlr4.Test.StringTemplate
         public void TestLengthWithNullValues()
         {
             string template = "<length(names)>";
-            ST st = new ST(template);
+            Template st = new Template(template);
             List<string> names = new List<string>() { "Ter", null, "Tom", null };
             st.add("names", names);
             string expected = "4";
@@ -78,7 +78,7 @@ namespace Antlr4.Test.StringTemplate
         [TestMethod]
         public void TestFirstOp()
         {
-            ST e = new ST(
+            Template e = new Template(
                     "<first(names)>"
                 );
             e.add("names", "Ter");
@@ -91,7 +91,7 @@ namespace Antlr4.Test.StringTemplate
         [TestMethod]
         public void TestTruncOp()
         {
-            ST e = new ST(
+            Template e = new Template(
                     "<trunc(names); separator=\", \">"
                 );
             e.add("names", "Ter");
@@ -104,7 +104,7 @@ namespace Antlr4.Test.StringTemplate
         [TestMethod]
         public void TestRestOp()
         {
-            ST e = new ST(
+            Template e = new Template(
                     "<rest(names); separator=\", \">"
                 );
             e.add("names", "Ter");
@@ -117,7 +117,7 @@ namespace Antlr4.Test.StringTemplate
         [TestMethod]
         public void TestRestOpEmptyList()
         {
-            ST e = new ST(
+            Template e = new Template(
                     "<rest(names); separator=\", \">"
                 );
             e.add("names", new List<string>());
@@ -133,8 +133,8 @@ namespace Antlr4.Test.StringTemplate
                 "b(x) ::= \"<x>, <x>\"" + newline
                 ;
             writeFile(tmpdir, "t.stg", templates);
-            STGroup group = new STGroupFile(tmpdir + "/" + "t.stg");
-            ST e = group.getInstanceOf("a");
+            TemplateGroup group = new TemplateGroupFile(tmpdir + "/" + "t.stg");
+            Template e = group.getInstanceOf("a");
             List<string> names = new List<string>();
             names.Add("Ter");
             names.Add("Tom");
@@ -146,7 +146,7 @@ namespace Antlr4.Test.StringTemplate
         [TestMethod]
         public void TestLastOp()
         {
-            ST e = new ST(
+            Template e = new Template(
                     "<last(names)>"
                 );
             e.add("names", "Ter");
@@ -159,7 +159,7 @@ namespace Antlr4.Test.StringTemplate
         [TestMethod]
         public void TestStripOp()
         {
-            ST e = new ST(
+            Template e = new Template(
                     "<strip(names); null=\"n/a\">"
                 );
             e.add("names", null);
@@ -175,7 +175,7 @@ namespace Antlr4.Test.StringTemplate
         [TestMethod]
         public void TestLengthStrip()
         {
-            ST e = new ST(
+            Template e = new Template(
                     "<length(strip(names))>"
                 );
             e.add("names", null);
@@ -192,7 +192,7 @@ namespace Antlr4.Test.StringTemplate
         public void TestCombinedOp()
         {
             // replace first of yours with first of mine
-            ST e = new ST(
+            Template e = new Template(
                     "<[first(mine),rest(yours)]; separator=\", \">"
                 );
             e.add("mine", "1");
@@ -208,7 +208,7 @@ namespace Antlr4.Test.StringTemplate
         public void TestCatListAndSingleAttribute()
         {
             // replace first of yours with first of mine
-            ST e = new ST(
+            Template e = new Template(
                     "<[mine,yours]; separator=\", \">"
                 );
             e.add("mine", "1");
@@ -227,8 +227,8 @@ namespace Antlr4.Test.StringTemplate
                 "b(x) ::= \"<x>, <x>\"" + newline
                 ;
             writeFile(tmpdir, "t.stg", templates);
-            STGroup group = new STGroupFile(tmpdir + "/" + "t.stg");
-            ST e = group.getInstanceOf("a");
+            TemplateGroup group = new TemplateGroupFile(tmpdir + "/" + "t.stg");
+            Template e = group.getInstanceOf("a");
             List<string> mine = new List<string>();
             mine.Add("Ter");
             mine.Add("Tom");
@@ -247,7 +247,7 @@ namespace Antlr4.Test.StringTemplate
             // two operands (from left to right) determine which way it
             // goes.  In this case, x+mine is a list so everything from their
             // to the right becomes list cat.
-            ST e = new ST(
+            Template e = new Template(
                     "<[x,mine,y,yours,z]; separator=\", \">"
                 );
             e.add("mine", "1");
@@ -261,7 +261,7 @@ namespace Antlr4.Test.StringTemplate
         [TestMethod]
         public void TestNestedOp()
         {
-            ST e = new ST(
+            Template e = new Template(
                     "<first(rest(names))>" // gets 2nd element
                 );
             e.add("names", "Ter");
@@ -274,7 +274,7 @@ namespace Antlr4.Test.StringTemplate
         [TestMethod]
         public void TestFirstWithOneAttributeOp()
         {
-            ST e = new ST(
+            Template e = new Template(
                     "<first(names)>"
                 );
             e.add("names", "Ter");
@@ -285,7 +285,7 @@ namespace Antlr4.Test.StringTemplate
         [TestMethod]
         public void TestLastWithOneAttributeOp()
         {
-            ST e = new ST(
+            Template e = new Template(
                     "<last(names)>"
                 );
             e.add("names", "Ter");
@@ -296,7 +296,7 @@ namespace Antlr4.Test.StringTemplate
         [TestMethod]
         public void TestLastWithLengthOneListAttributeOp()
         {
-            ST e = new ST(
+            Template e = new Template(
                     "<last(names)>"
                 );
             e.add("names", new List<string>() { "Ter" });
@@ -307,7 +307,7 @@ namespace Antlr4.Test.StringTemplate
         [TestMethod]
         public void TestRestWithOneAttributeOp()
         {
-            ST e = new ST(
+            Template e = new Template(
                     "<rest(names)>"
                 );
             e.add("names", "Ter");
@@ -318,7 +318,7 @@ namespace Antlr4.Test.StringTemplate
         [TestMethod]
         public void TestRestWithLengthOneListAttributeOp()
         {
-            ST e = new ST(
+            Template e = new Template(
                     "<rest(names)>"
                 );
             e.add("names", new List<string>() { "Ter" });
@@ -329,7 +329,7 @@ namespace Antlr4.Test.StringTemplate
         [TestMethod]
         public void TestRepeatedRestOp()
         {
-            ST e = new ST(
+            Template e = new Template(
                     "<rest(names)>, <rest(names)>" // gets 2nd element
                 );
             e.add("names", "Ter");
@@ -341,7 +341,7 @@ namespace Antlr4.Test.StringTemplate
         [TestMethod]
         public void TestIncomingLists()
         {
-            ST e = new ST(
+            Template e = new Template(
                     "<rest(names)>, <rest(names)>" // gets 2nd element
                 );
             e.add("names", "Ter");
@@ -353,7 +353,7 @@ namespace Antlr4.Test.StringTemplate
         [TestMethod]
         public void TestFirstWithCatAttribute()
         {
-            ST e = new ST(
+            Template e = new Template(
                     "<first([names,phones])>"
                 );
             e.add("names", "Ter");
@@ -367,7 +367,7 @@ namespace Antlr4.Test.StringTemplate
         [TestMethod]
         public void TestFirstWithListOfMaps()
         {
-            ST e = new ST(
+            Template e = new Template(
                     "<first(maps).Ter>"
                 );
             IDictionary<string, string> m1 = new Dictionary<string, string>();
@@ -388,7 +388,7 @@ namespace Antlr4.Test.StringTemplate
         [TestMethod]
         public void TestFirstWithListOfMaps2()
         {
-            ST e = new ST(
+            Template e = new Template(
                     "<first(maps):{ m | <m>!}>"
                 );
             IDictionary<string, string> m1 = new Dictionary<string, string>();
@@ -408,7 +408,7 @@ namespace Antlr4.Test.StringTemplate
         [TestMethod]
         public void TestTrim()
         {
-            ST e = new ST(
+            Template e = new Template(
                     "<trim(name)>"
                 );
             e.add("name", " Ter  \n");
@@ -419,7 +419,7 @@ namespace Antlr4.Test.StringTemplate
         [TestMethod]
         public void TestStrlen()
         {
-            ST e = new ST(
+            Template e = new Template(
                     "<strlen(name)>"
                 );
             e.add("name", "012345");
@@ -430,7 +430,7 @@ namespace Antlr4.Test.StringTemplate
         [TestMethod]
         public void TestReverse()
         {
-            ST e = new ST(
+            Template e = new Template(
                     "<reverse(names); separator=\", \">"
                 );
             e.add("names", "Ter");

@@ -45,7 +45,7 @@ namespace Antlr4.StringTemplate.Compiler
         /// <summary>Overall template text</summary>
         private readonly string _template;
         private readonly ErrorManager errMgr;
-        private CompiledST outermostImpl;
+        private CompiledTemplate outermostImpl;
 
         public CodeGenerator(ITreeNodeStream input, ErrorManager errMgr, string name, string template, IToken templateToken)
             : this(input, new RecognizerSharedState())

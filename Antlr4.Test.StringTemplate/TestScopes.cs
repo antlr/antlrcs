@@ -47,9 +47,9 @@ namespace Antlr4.Test.StringTemplate
                 "u() ::= \"<x><y>\"";
             ErrorBuffer errors = new ErrorBuffer();
             writeFile(tmpdir, "t.stg", templates);
-            STGroup group = new STGroupFile(tmpdir + "/" + "t.stg");
+            TemplateGroup group = new TemplateGroupFile(tmpdir + "/" + "t.stg");
             group.setListener(errors);
-            ST st = group.getInstanceOf("t");
+            Template st = group.getInstanceOf("t");
             st.add("x", "x");
             st.add("y", "y");
             string result = st.render();
@@ -69,9 +69,9 @@ namespace Antlr4.Test.StringTemplate
                 "u(z) ::= \"\"";
             ErrorBuffer errors = new ErrorBuffer();
             writeFile(tmpdir, "t.stg", templates);
-            STGroup group = new STGroupFile(tmpdir + "/" + "t.stg");
+            TemplateGroup group = new TemplateGroupFile(tmpdir + "/" + "t.stg");
             group.setListener(errors);
-            ST st = group.getInstanceOf("t");
+            Template st = group.getInstanceOf("t");
             string result = st.render();
 
             string expectedError = "context [t] 1:1 passed 0 arg(s) to template u with 1 declared arg(s)" + newline;
@@ -85,9 +85,9 @@ namespace Antlr4.Test.StringTemplate
                 "t() ::= \"<x>\"\n";
             ErrorBuffer errors = new ErrorBuffer();
             writeFile(tmpdir, "t.stg", templates);
-            STGroup group = new STGroupFile(tmpdir + "/" + "t.stg");
+            TemplateGroup group = new TemplateGroupFile(tmpdir + "/" + "t.stg");
             group.setListener(errors);
-            ST st = group.getInstanceOf("t");
+            Template st = group.getInstanceOf("t");
             string result = st.render();
 
             string expectedError = "context [t] 1:1 attribute x isn't defined" + newline;
@@ -102,9 +102,9 @@ namespace Antlr4.Test.StringTemplate
                 "u(y) ::= \"<x><y>\"";
             ErrorBuffer errors = new ErrorBuffer();
             writeFile(tmpdir, "t.stg", templates);
-            STGroup group = new STGroupFile(tmpdir + "/" + "t.stg");
+            TemplateGroup group = new TemplateGroupFile(tmpdir + "/" + "t.stg");
             group.setListener(errors);
-            ST st = group.getInstanceOf("t");
+            Template st = group.getInstanceOf("t");
             st.add("x", "x");
             st.add("y", "y");
             string result = st.render();
@@ -125,9 +125,9 @@ namespace Antlr4.Test.StringTemplate
                 "u(x) ::= \"<i>:<x>\"";
             ErrorBuffer errors = new ErrorBuffer();
             writeFile(tmpdir, "t.stg", templates);
-            STGroup group = new STGroupFile(tmpdir + "/" + "t.stg");
+            TemplateGroup group = new TemplateGroupFile(tmpdir + "/" + "t.stg");
             group.setListener(errors);
-            ST st = group.getInstanceOf("t");
+            Template st = group.getInstanceOf("t");
             st.add("names", "Ter");
             string result = st.render();
             group.getInstanceOf("u").impl.dump();

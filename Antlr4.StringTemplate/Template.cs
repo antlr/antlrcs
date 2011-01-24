@@ -53,10 +53,10 @@ namespace Antlr4.StringTemplate
      *  in a deeply nested template for an HTML page body, we could still reference
      *  the title attribute defined in the outermost page template.
      *
-     *  To use templates, you create one (usually via STGroup) and then inject
+     *  To use templates, you create one (usually via TemplateGroup) and then inject
      *  attributes using add(). To render its attacks, use render().
      */
-    public class ST
+    public class Template
     {
         /** <@r()>, <@r>...<@end>, and @t.r() ::= "..." defined manually by coder */
         public enum RegionType
@@ -70,7 +70,7 @@ namespace Antlr4.StringTemplate
         public static readonly object EmptyAttribute = new object();
 
         /** The implementation for this template among all instances of same tmpelate . */
-        public CompiledST impl;
+        public CompiledTemplate impl;
 
         /** Safe to simultaneously write via add, which is synchronized.  Reading
          *  during exec is, however, NOT synchronized.  So, not thread safe to
@@ -83,7 +83,7 @@ namespace Antlr4.StringTemplate
          *  IF-subtemplates are considered embedded as well. We look up
          *  dynamically scoped attributes with this ptr.
          */
-        public ST enclosingInstance; // who's your daddy?
+        public Template enclosingInstance; // who's your daddy?
 
         /** Created as instance of which group? We need this to init interpreter
          *  via render.  So, we create st and then it needs to know which
@@ -101,10 +101,10 @@ namespace Antlr4.StringTemplate
          *   v
          *   g2 = {t()}
          */
-        public STGroup groupThatCreatedThisInstance;
+        public TemplateGroup groupThatCreatedThisInstance;
 
         /** Just an alias for ArrayList, but this way I can track whether a
-         *  list is something ST created or it's an incoming list.
+         *  list is something Template created or it's an incoming list.
          */
         public sealed class AttributeList : List<object>
         {
@@ -119,28 +119,28 @@ namespace Antlr4.StringTemplate
         }
 
         /** Used by group creation routine, not by users */
-        public ST()
+        public Template()
         {
         }
 
         /** Used to make templates inline in code for simple things like SQL or log records.
          *  No formal args are set and there is no enclosing instance.
          */
-        public ST(string template)
-            : this(STGroup.defaultGroup, template)
+        public Template(string template)
+            : this(TemplateGroup.defaultGroup, template)
         {
         }
 
-        /** Create ST using non-default delimiters; each one of these will live
+        /** Create Template using non-default delimiters; each one of these will live
          *  in it's own group since you're overriding a default; don't want to
-         *  alter STGroup.defaultGroup.
+         *  alter TemplateGroup.defaultGroup.
          */
-        public ST(string template, char delimiterStartChar, char delimiterStopChar)
-            : this(new STGroup(delimiterStartChar, delimiterStopChar), template)
+        public Template(string template, char delimiterStartChar, char delimiterStopChar)
+            : this(new TemplateGroup(delimiterStartChar, delimiterStopChar), template)
         {
         }
 
-        public ST(STGroup group, string template)
+        public Template(TemplateGroup group, string template)
         {
             groupThatCreatedThisInstance = group;
             impl = groupThatCreatedThisInstance.compile(group.getFileName(), null,
@@ -151,7 +151,7 @@ namespace Antlr4.StringTemplate
         }
 
         /** Clone a prototype template for application in MAP operations; copy all fields */
-        public ST(ST proto)
+        public Template(Template proto)
         {
             this.impl = proto.impl;
             if (proto.locals != null)
@@ -188,7 +188,7 @@ namespace Antlr4.StringTemplate
             }
             else
             {
-                // define and make room in locals (a hack to make new ST("simple template") work.)
+                // define and make room in locals (a hack to make new Template("simple template") work.)
                 arg = impl.TryGetFormalArgument(name);
                 if (arg == null)
                 {
@@ -204,8 +204,8 @@ namespace Antlr4.StringTemplate
                 }
             }
 
-            if (value is ST)
-                ((ST)value).enclosingInstance = this;
+            if (value is Template)
+                ((Template)value).enclosingInstance = this;
 
             object curvalue = locals[arg.Index];
             if (curvalue == EmptyAttribute)
@@ -256,7 +256,7 @@ namespace Antlr4.StringTemplate
         }
 
         /** Set this.locals attr value when you only know the name, not the index.
-         *  This is ultimately invoked by calling ST.add() from outside so toss
+         *  This is ultimately invoked by calling Template.add() from outside so toss
          *  an exception to notify them.
          */
         protected internal virtual void rawSetAttribute(string name, object value)
@@ -271,20 +271,20 @@ namespace Antlr4.StringTemplate
             locals[arg.Index] = value;
         }
 
-        /** Find an attr via dynamic scoping up enclosing ST chain.
+        /** Find an attr via dynamic scoping up enclosing Template chain.
          *  If not found, look for a map.  So attributes sent in to a template
          *  override dictionary names.
          */
         public virtual object getAttribute(string name)
         {
-            ST p = this;
+            Template p = this;
             while (p != null)
             {
                 FormalArgument localArg = p.impl.TryGetFormalArgument(name);
                 if (localArg != null)
                 {
                     object o = p.locals[localArg.Index];
-                    if (o == ST.EmptyAttribute)
+                    if (o == Template.EmptyAttribute)
                         o = null;
                     return o;
                 }
@@ -297,7 +297,7 @@ namespace Antlr4.StringTemplate
                 return impl.nativeGroup.rawGetDictionary(name);
             }
 
-            throw new STNoSuchPropertyException(name);
+            throw new TemplateNoSuchPropertyException(name);
         }
 
         public virtual IDictionary<string, object> getAttributes()
@@ -309,7 +309,7 @@ namespace Antlr4.StringTemplate
             foreach (FormalArgument a in impl.formalArguments)
             {
                 object o = locals[a.Index];
-                if (o == ST.EmptyAttribute)
+                if (o == Template.EmptyAttribute)
                     o = null;
 
                 attributes[a.Name] = o;
@@ -328,13 +328,13 @@ namespace Antlr4.StringTemplate
             }
             else if (curvalue.GetType() == typeof(AttributeList))
             {
-                // already a list made by ST
+                // already a list made by Template
                 multi = (AttributeList)curvalue;
             }
             else if (curvalue is IList)
             {
-                // existing attribute is non-ST List
-                // must copy to an ST-managed list before adding new attribute
+                // existing attribute is non-Template List
+                // must copy to an Template-managed list before adding new attribute
                 // (can't alter incoming attributes)
                 IList listAttr = (IList)curvalue;
                 multi = new AttributeList(listAttr.Count);
@@ -362,10 +362,10 @@ namespace Antlr4.StringTemplate
          */
         public virtual string getEnclosingInstanceStackString()
         {
-            List<ST> templates = getEnclosingInstanceStack(true);
+            List<Template> templates = getEnclosingInstanceStack(true);
             StringBuilder buf = new StringBuilder();
             int i = 0;
-            foreach (ST st in templates)
+            foreach (Template st in templates)
             {
                 if (i > 0)
                     buf.Append(" ");
@@ -376,10 +376,10 @@ namespace Antlr4.StringTemplate
             return buf.ToString();
         }
 
-        public virtual List<ST> getEnclosingInstanceStack(bool topdown)
+        public virtual List<Template> getEnclosingInstanceStack(bool topdown)
         {
-            List<ST> stack = new List<ST>();
-            ST p = this;
+            List<Template> stack = new List<Template>();
+            Template p = this;
             while (p != null)
             {
                 if (topdown)
@@ -462,9 +462,9 @@ namespace Antlr4.StringTemplate
             return impl.name + "()";
         }
 
-        // ST.format("name, phone | <name>:<phone>", n, p);
-        // ST.format("<%1>:<%2>", n, p);
-        // ST.format("<name>:<phone>", "name", x, "phone", y);
+        // Template.format("name, phone | <name>:<phone>", n, p);
+        // Template.format("<%1>:<%2>", n, p);
+        // Template.format("<name>:<phone>", "name", x, "phone", y);
         public static string format(string template, params object[] attributes)
         {
             return format(AutoIndentWriter.NoWrap, template, attributes);
@@ -475,7 +475,7 @@ namespace Antlr4.StringTemplate
             template = Regex.Replace(template, "[0-9]+", @"arg\0");
             Console.WriteLine(template);
 
-            ST st = new ST(template);
+            Template st = new Template(template);
             int i = 1;
             foreach (object a in attributes)
             {

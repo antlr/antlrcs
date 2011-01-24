@@ -46,7 +46,7 @@ namespace Antlr4.StringTemplate
      *  ".stg").  If we fail to find a group file, look for it via the
      *  CLASSPATH as a resource.
      */
-    public class STGroupFile : STGroup
+    public class TemplateGroupFile : TemplateGroup
     {
         public readonly string fileName;
         public readonly Uri url;
@@ -54,12 +54,12 @@ namespace Antlr4.StringTemplate
         protected bool alreadyLoaded = false;
 
         /** Load a file relative to current dir or from root or via CLASSPATH. */
-        public STGroupFile(string fileName)
+        public TemplateGroupFile(string fileName)
             : this(fileName, '<', '>')
         {
         }
 
-        public STGroupFile(string fileName, char delimiterStartChar, char delimiterStopChar)
+        public TemplateGroupFile(string fileName, char delimiterStartChar, char delimiterStopChar)
             : base(delimiterStartChar, delimiterStopChar)
         {
             if (!fileName.EndsWith(".stg"))
@@ -100,18 +100,18 @@ namespace Antlr4.StringTemplate
             this.fileName = fileName;
         }
 
-        public STGroupFile(string fullyQualifiedFileName, Encoding encoding)
+        public TemplateGroupFile(string fullyQualifiedFileName, Encoding encoding)
             : this(fullyQualifiedFileName, encoding, '<', '>')
         {
         }
 
-        public STGroupFile(string fullyQualifiedFileName, Encoding encoding, char delimiterStartChar, char delimiterStopChar)
+        public TemplateGroupFile(string fullyQualifiedFileName, Encoding encoding, char delimiterStartChar, char delimiterStopChar)
             : this(fullyQualifiedFileName, delimiterStartChar, delimiterStopChar)
         {
             this.encoding = encoding;
         }
 
-        public STGroupFile(Uri url, Encoding encoding, char delimiterStartChar, char delimiterStopChar)
+        public TemplateGroupFile(Uri url, Encoding encoding, char delimiterStartChar, char delimiterStopChar)
             : base(delimiterStartChar, delimiterStopChar)
         {
             this.url = url;
@@ -132,12 +132,12 @@ namespace Antlr4.StringTemplate
             alreadyLoaded = false;
         }
 
-        protected override CompiledST load(string name)
+        protected override CompiledTemplate load(string name)
         {
             if (!alreadyLoaded)
                 load();
 
-            CompiledST template;
+            CompiledTemplate template;
             templates.TryGetValue(name, out template);
             return template;
         }

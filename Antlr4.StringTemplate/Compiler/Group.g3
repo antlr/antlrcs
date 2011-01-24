@@ -51,7 +51,7 @@ using StringBuilder = System.Text.StringBuilder;
 }
 
 public
-group[STGroup group, string prefix]
+group[TemplateGroup group, string prefix]
 @init {
 GroupLexer lexer = (GroupLexer)input.TokenSource;
 this._group = lexer.group = $group;
@@ -174,7 +174,7 @@ dictPairs[IDictionary<string,object> mapping]
 	}
 
 defaultValuePair[IDictionary<string,object> mapping]
-	:	'default' ':' keyValue {mapping[STGroup.DefaultKey] = $keyValue.value;}
+	:	'default' ':' keyValue {mapping[TemplateGroup.DefaultKey] = $keyValue.value;}
 	;
 
 keyValuePair[IDictionary<string,object> mapping]
@@ -186,7 +186,7 @@ keyValue returns [object value]
 	|	ANONYMOUS_TEMPLATE	{$value = _group.createSingleton($ANONYMOUS_TEMPLATE);}
 	|	STRING				{$value = Utility.replaceEscapes(Utility.strip($STRING.text, 1));}
 	|	{input.LT(1).Text.Equals("key")}?=> ID
-							{$value = STGroup.DictionaryKey;}
+							{$value = TemplateGroup.DictionaryKey;}
 	;
  	catch[RecognitionException re] {
 		error("missing value for key at '"+input.LT(1).Text+"'");
@@ -225,10 +225,10 @@ ANONYMOUS_TEMPLATE
     :	'{'
     	{
 		IToken templateToken = new CommonToken(input, ANONYMOUS_TEMPLATE, 0, CharIndex, CharIndex);
-		STLexer lexer = new STLexer(group.errMgr, input, templateToken, group.delimiterStartChar, group.delimiterStopChar);
+		TemplateLexer lexer = new TemplateLexer(group.errMgr, input, templateToken, group.delimiterStartChar, group.delimiterStopChar);
 		lexer.subtemplateDepth = 1;
 		IToken t = lexer.NextToken();
-		while ( lexer.subtemplateDepth>=1 || t.Type!=STLexer.RCURLY )
+		while ( lexer.subtemplateDepth>=1 || t.Type!=TemplateLexer.RCURLY )
 			t = lexer.NextToken();
 		}
     	// don't match '}' here; our little {...} scanner loop matches it

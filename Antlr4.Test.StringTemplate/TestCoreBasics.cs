@@ -46,7 +46,7 @@ namespace Antlr4.Test.StringTemplate
         public void TestNullAttr()
         {
             string template = "hi <name>!";
-            ST st = new ST(template);
+            Template st = new Template(template);
             string expected =
                 "hi !";
             string result = st.render();
@@ -57,7 +57,7 @@ namespace Antlr4.Test.StringTemplate
         public void TestAttr()
         {
             string template = "hi <name>!";
-            ST st = new ST(template);
+            Template st = new Template(template);
             st.add("name", "Ter");
             string expected = "hi Ter!";
             string result = st.render();
@@ -71,9 +71,9 @@ namespace Antlr4.Test.StringTemplate
                 "t() ::= <<hi <name>!>>\n";
             ErrorBuffer errors = new ErrorBuffer();
             writeFile(tmpdir, "t.stg", templates);
-            STGroup group = new STGroupFile(tmpdir + "/" + "t.stg");
+            TemplateGroup group = new TemplateGroupFile(tmpdir + "/" + "t.stg");
             group.setListener(errors);
-            ST st = group.getInstanceOf("t");
+            Template st = group.getInstanceOf("t");
             string result = null;
             try
             {
@@ -91,7 +91,7 @@ namespace Antlr4.Test.StringTemplate
         public void TestMultiAttr()
         {
             string template = "hi <name>!";
-            ST st = new ST(template);
+            Template st = new Template(template);
             st.add("name", "Ter");
             st.add("name", "Tom");
             string expected =
@@ -104,12 +104,12 @@ namespace Antlr4.Test.StringTemplate
         public void TestAttrIsList()
         {
             string template = "hi <name>!";
-            ST st = new ST(template);
+            Template st = new Template(template);
             List<string> names = new List<string>() { "Ter", "Tom" };
             st.add("name", names);
             st.add("name", "Sumana"); // shouldn't alter my version of names list!
             string expected =
-                "hi TerTomSumana!";  // ST sees 3 names
+                "hi TerTomSumana!";  // Template sees 3 names
             string result = st.render();
             Assert.AreEqual(expected, result);
 
@@ -120,12 +120,12 @@ namespace Antlr4.Test.StringTemplate
         public void TestAttrIsArray()
         {
             string template = "hi <name>!";
-            ST st = new ST(template);
+            Template st = new Template(template);
             string[] names = new string[] { "Ter", "Tom" };
             st.add("name", names);
             st.add("name", "Sumana"); // shouldn't alter my version of names list!
             string expected =
-                "hi TerTomSumana!";  // ST sees 3 names
+                "hi TerTomSumana!";  // Template sees 3 names
             string result = st.render();
             Assert.AreEqual(expected, result);
         }
@@ -134,7 +134,7 @@ namespace Antlr4.Test.StringTemplate
         public void TestProp()
         {
             string template = "<u.id>: <u.name>"; // checks field and method getter
-            ST st = new ST(template);
+            Template st = new Template(template);
             st.add("u", new User(1, "parrt"));
             string expected = "1: parrt";
             string result = st.render();
@@ -145,7 +145,7 @@ namespace Antlr4.Test.StringTemplate
         public void TestPropWithNoAttr()
         {
             string template = "<foo.a>: <ick>"; // checks field and method getter
-            ST st = new ST(template);
+            Template st = new Template(template);
             st.add("foo", new Dictionary<string, string>() { { "a", "b" } });
             string expected = "b: ";
             string result = st.render();
@@ -156,8 +156,8 @@ namespace Antlr4.Test.StringTemplate
         public void TestSTProp()
         {
             string template = "<t.x>"; // get x attr of template t
-            ST st = new ST(template);
-            ST t = new ST("<x>");
+            Template st = new Template(template);
+            Template t = new Template("<x>");
             t.add("x", "Ter");
             st.add("t", t);
             string expected = "Ter";
@@ -169,7 +169,7 @@ namespace Antlr4.Test.StringTemplate
         public void TestBooleanISProp()
         {
             string template = "<t.isManager>"; // call isManager
-            ST st = new ST(template);
+            Template st = new Template(template);
             st.add("t", new User(32, "Ter"));
             string expected = true.ToString();
             string result = st.render();
@@ -180,7 +180,7 @@ namespace Antlr4.Test.StringTemplate
         public void TestBooleanHASProp()
         {
             string template = "<t.hasParkingSpot>"; // call hasParkingSpot
-            ST st = new ST(template);
+            Template st = new Template(template);
             st.add("t", new User(32, "Ter"));
             string expected = true.ToString();
             string result = st.render();
@@ -191,7 +191,7 @@ namespace Antlr4.Test.StringTemplate
         public void TestNullAttrProp()
         {
             string template = "<u.id>: <u.name>";
-            ST st = new ST(template);
+            Template st = new Template(template);
             string expected = ": ";
             string result = st.render();
             Assert.AreEqual(expected, result);
@@ -202,15 +202,15 @@ namespace Antlr4.Test.StringTemplate
         {
             ErrorBufferAllErrors errors = new ErrorBufferAllErrors();
             string template = "<u.qqq>";
-            STGroup group = new STGroup();
+            TemplateGroup group = new TemplateGroup();
             group.setListener(errors);
-            ST st = new ST(group, template);
+            Template st = new Template(group, template);
             st.add("u", new User(1, "parrt"));
             string expected = "";
             string result = st.render();
             Assert.AreEqual(expected, result);
-            STRuntimeMessage msg = (STRuntimeMessage)errors.Errors[0];
-            STNoSuchPropertyException e = (STNoSuchPropertyException)msg.Cause;
+            TemplateRuntimeMessage msg = (TemplateRuntimeMessage)errors.Errors[0];
+            TemplateNoSuchPropertyException e = (TemplateNoSuchPropertyException)msg.Cause;
             Assert.AreEqual("Antlr4.Test.StringTemplate.BaseTest+User.qqq", e.PropertyName);
         }
 
@@ -218,17 +218,17 @@ namespace Antlr4.Test.StringTemplate
         public void TestNullIndirectProp()
         {
             ErrorBufferAllErrors errors = new ErrorBufferAllErrors();
-            STGroup group = new STGroup();
+            TemplateGroup group = new TemplateGroup();
             group.setListener(errors);
             string template = "<u.(qqq)>";
-            ST st = new ST(group, template);
+            Template st = new Template(group, template);
             st.add("u", new User(1, "parrt"));
             st.add("qqq", null);
             string expected = "";
             string result = st.render();
             Assert.AreEqual(expected, result);
-            STRuntimeMessage msg = (STRuntimeMessage)errors.Errors[0];
-            STNoSuchPropertyException e = (STNoSuchPropertyException)msg.Cause;
+            TemplateRuntimeMessage msg = (TemplateRuntimeMessage)errors.Errors[0];
+            TemplateNoSuchPropertyException e = (TemplateNoSuchPropertyException)msg.Cause;
             Assert.AreEqual("Antlr4.Test.StringTemplate.BaseTest+User.null", e.PropertyName);
         }
 
@@ -236,17 +236,17 @@ namespace Antlr4.Test.StringTemplate
         public void TestPropConvertsToString()
         {
             ErrorBufferAllErrors errors = new ErrorBufferAllErrors();
-            STGroup group = new STGroup();
+            TemplateGroup group = new TemplateGroup();
             group.setListener(errors);
             string template = "<u.(name)>";
-            ST st = new ST(group, template);
+            Template st = new Template(group, template);
             st.add("u", new User(1, "parrt"));
             st.add("name", 100);
             string expected = "";
             string result = st.render();
             Assert.AreEqual(expected, result);
-            STRuntimeMessage msg = (STRuntimeMessage)errors.Errors[0];
-            STNoSuchPropertyException e = (STNoSuchPropertyException)msg.Cause;
+            TemplateRuntimeMessage msg = (TemplateRuntimeMessage)errors.Errors[0];
+            TemplateNoSuchPropertyException e = (TemplateNoSuchPropertyException)msg.Cause;
             Assert.AreEqual("Antlr4.Test.StringTemplate.BaseTest+User.100", e.PropertyName);
         }
 
@@ -254,7 +254,7 @@ namespace Antlr4.Test.StringTemplate
         public void TestInclude()
         {
             string template = "load <box()>;";
-            ST st = new ST(template);
+            Template st = new Template(template);
             st.impl.nativeGroup.defineTemplate("box", "kewl\ndaddy");
             string expected =
                 "load kewl" + newline +
@@ -267,7 +267,7 @@ namespace Antlr4.Test.StringTemplate
         public void TestIncludeWithArg()
         {
             string template = "load <box(\"arg\")>;";
-            ST st = new ST(template);
+            Template st = new Template(template);
             st.impl.nativeGroup.defineTemplate("box", "x", "kewl <x> daddy");
             st.impl.dump();
             st.add("name", "Ter");
@@ -280,7 +280,7 @@ namespace Antlr4.Test.StringTemplate
         public void TestIncludeWithArg2()
         {
             string template = "load <box(\"arg\", foo())>;";
-            ST st = new ST(template);
+            Template st = new Template(template);
             st.impl.nativeGroup.defineTemplate("box", "x,y", "kewl <x> <y> daddy");
             st.impl.nativeGroup.defineTemplate("foo", "blech");
             st.add("name", "Ter");
@@ -293,7 +293,7 @@ namespace Antlr4.Test.StringTemplate
         public void TestIncludeWithNestedArgs()
         {
             string template = "load <box(foo(\"arg\"))>;";
-            ST st = new ST(template);
+            Template st = new Template(template);
             st.impl.nativeGroup.defineTemplate("box", "y", "kewl <y> daddy");
             st.impl.nativeGroup.defineTemplate("foo", "x", "blech <x>");
             st.add("name", "Ter");
@@ -305,10 +305,10 @@ namespace Antlr4.Test.StringTemplate
         [TestMethod]
         public void TestDefineTemplate()
         {
-            STGroup group = new STGroup();
+            TemplateGroup group = new TemplateGroup();
             group.defineTemplate("inc", "x", "<x>+1");
             group.defineTemplate("test", "name", "hi <name>!");
-            ST st = group.getInstanceOf("test");
+            Template st = group.getInstanceOf("test");
             st.add("name", "Ter");
             st.add("name", "Tom");
             st.add("name", "Sumana");
@@ -321,10 +321,10 @@ namespace Antlr4.Test.StringTemplate
         [TestMethod]
         public void TestMap()
         {
-            STGroup group = new STGroup();
+            TemplateGroup group = new TemplateGroup();
             group.defineTemplate("inc", "x", "[<x>]");
             group.defineTemplate("test", "name", "hi <name:inc()>!");
-            ST st = group.getInstanceOf("test");
+            Template st = group.getInstanceOf("test");
             st.add("name", "Ter");
             st.add("name", "Tom");
             st.add("name", "Sumana");
@@ -337,10 +337,10 @@ namespace Antlr4.Test.StringTemplate
         [TestMethod]
         public void TestIndirectMap()
         {
-            STGroup group = new STGroup();
+            TemplateGroup group = new TemplateGroup();
             group.defineTemplate("inc", "x", "[<x>]");
             group.defineTemplate("test", "t,name", "<name:(t)()>!");
-            ST st = group.getInstanceOf("test");
+            Template st = group.getInstanceOf("test");
             st.add("t", "inc");
             st.add("name", "Ter");
             st.add("name", "Tom");
@@ -359,8 +359,8 @@ namespace Antlr4.Test.StringTemplate
                 "test(name) ::= \"<name:(d.foo)()>\"\n" +
                 "bold(x) ::= <<*<x>*>>\n";
             writeFile(tmpdir, "t.stg", templates);
-            STGroup group = new STGroupFile(tmpdir + "/" + "t.stg");
-            ST st = group.getInstanceOf("test");
+            TemplateGroup group = new TemplateGroupFile(tmpdir + "/" + "t.stg");
+            Template st = group.getInstanceOf("test");
             st.add("name", "Ter");
             st.add("name", "Tom");
             st.add("name", "Sumana");
@@ -372,9 +372,9 @@ namespace Antlr4.Test.StringTemplate
         [TestMethod]
         public void TestParallelMap()
         {
-            STGroup group = new STGroup();
+            TemplateGroup group = new TemplateGroup();
             group.defineTemplate("test", "names,phones", "hi <names,phones:{n,p | <n>:<p>;}>");
-            ST st = group.getInstanceOf("test");
+            Template st = group.getInstanceOf("test");
             st.add("names", "Ter");
             st.add("names", "Tom");
             st.add("names", "Sumana");
@@ -390,9 +390,9 @@ namespace Antlr4.Test.StringTemplate
         [TestMethod]
         public void TestParallelMapWith3Versus2Elements()
         {
-            STGroup group = new STGroup();
+            TemplateGroup group = new TemplateGroup();
             group.defineTemplate("test", "names,phones", "hi <names,phones:{n,p | <n>:<p>;}>");
-            ST st = group.getInstanceOf("test");
+            Template st = group.getInstanceOf("test");
             st.add("names", "Ter");
             st.add("names", "Tom");
             st.add("names", "Sumana");
@@ -407,11 +407,11 @@ namespace Antlr4.Test.StringTemplate
         [TestMethod]
         public void TestParallelMapThenMap()
         {
-            STGroup group = new STGroup();
+            TemplateGroup group = new TemplateGroup();
             group.defineTemplate("bold", "x", "[<x>]");
             group.defineTemplate("test", "names,phones",
                                  "hi <names,phones:{n,p | <n>:<p>;}:bold()>");
-            ST st = group.getInstanceOf("test");
+            Template st = group.getInstanceOf("test");
             st.add("names", "Ter");
             st.add("names", "Tom");
             st.add("names", "Sumana");
@@ -426,11 +426,11 @@ namespace Antlr4.Test.StringTemplate
         [TestMethod]
         public void TestMapThenParallelMap()
         {
-            STGroup group = new STGroup();
+            TemplateGroup group = new TemplateGroup();
             group.defineTemplate("bold", "x", "[<x>]");
             group.defineTemplate("test", "names,phones",
                                  "hi <[names:bold()],phones:{n,p | <n>:<p>;}>");
-            ST st = group.getInstanceOf("test");
+            Template st = group.getInstanceOf("test");
             st.add("names", "Ter");
             st.add("names", "Tom");
             st.add("names", "Sumana");
@@ -445,10 +445,10 @@ namespace Antlr4.Test.StringTemplate
         [TestMethod]
         public void TestMapIndexes()
         {
-            STGroup group = new STGroup();
+            TemplateGroup group = new TemplateGroup();
             group.defineTemplate("inc", "x,i", "<i>:<x>");
             group.defineTemplate("test", "name", "<name:{n|<inc(n,i)>}; separator=\", \">");
-            ST st = group.getInstanceOf("test");
+            Template st = group.getInstanceOf("test");
             st.add("name", "Ter");
             st.add("name", "Tom");
             st.add("name", null); // don't count this one
@@ -462,9 +462,9 @@ namespace Antlr4.Test.StringTemplate
         [TestMethod]
         public void TestMapIndexes2()
         {
-            STGroup group = new STGroup();
+            TemplateGroup group = new TemplateGroup();
             group.defineTemplate("test", "name", "<name:{n | <i>:<n>}; separator=\", \">");
-            ST st = group.getInstanceOf("test");
+            Template st = group.getInstanceOf("test");
             st.add("name", "Ter");
             st.add("name", "Tom");
             st.add("name", null); // don't count this one. still can't apply subtemplate to null value
@@ -478,10 +478,10 @@ namespace Antlr4.Test.StringTemplate
         [TestMethod]
         public void TestMapSingleValue()
         {
-            STGroup group = new STGroup();
+            TemplateGroup group = new TemplateGroup();
             group.defineTemplate("a", "x", "[<x>]");
             group.defineTemplate("test", "name", "hi <name:a()>!");
-            ST st = group.getInstanceOf("test");
+            Template st = group.getInstanceOf("test");
             st.add("name", "Ter");
             string expected = "hi [Ter]!";
             string result = st.render();
@@ -491,10 +491,10 @@ namespace Antlr4.Test.StringTemplate
         [TestMethod]
         public void TestMapNullValue()
         {
-            STGroup group = new STGroup();
+            TemplateGroup group = new TemplateGroup();
             group.defineTemplate("a", "x", "[<x>]");
             group.defineTemplate("test", "name", "hi <name:a()>!");
-            ST st = group.getInstanceOf("test");
+            Template st = group.getInstanceOf("test");
             string expected = "hi !";
             string result = st.render();
             Assert.AreEqual(expected, result);
@@ -503,9 +503,9 @@ namespace Antlr4.Test.StringTemplate
         [TestMethod]
         public void TestMapNullValueInList()
         {
-            STGroup group = new STGroup();
+            TemplateGroup group = new TemplateGroup();
             group.defineTemplate("test", "name", "<name; separator=\", \">");
-            ST st = group.getInstanceOf("test");
+            Template st = group.getInstanceOf("test");
             st.add("name", "Ter");
             st.add("name", "Tom");
             st.add("name", null); // don't print this one
@@ -519,11 +519,11 @@ namespace Antlr4.Test.StringTemplate
         [TestMethod]
         public void TestRepeatedMap()
         {
-            STGroup group = new STGroup();
+            TemplateGroup group = new TemplateGroup();
             group.defineTemplate("a", "x", "[<x>]");
             group.defineTemplate("b", "x", "(<x>)");
             group.defineTemplate("test", "name", "hi <name:a():b()>!");
-            ST st = group.getInstanceOf("test");
+            Template st = group.getInstanceOf("test");
             st.add("name", "Ter");
             st.add("name", "Tom");
             st.add("name", "Sumana");
@@ -536,11 +536,11 @@ namespace Antlr4.Test.StringTemplate
         [TestMethod]
         public void TestRoundRobinMap()
         {
-            STGroup group = new STGroup();
+            TemplateGroup group = new TemplateGroup();
             group.defineTemplate("a", "x", "[<x>]");
             group.defineTemplate("b", "x", "(<x>)");
             group.defineTemplate("test", "name", "hi <name:a(),b()>!");
-            ST st = group.getInstanceOf("test");
+            Template st = group.getInstanceOf("test");
             st.add("name", "Ter");
             st.add("name", "Tom");
             st.add("name", "Sumana");
@@ -554,7 +554,7 @@ namespace Antlr4.Test.StringTemplate
         public void TestTrueCond()
         {
             string template = "<if(name)>works<endif>";
-            ST st = new ST(template);
+            Template st = new Template(template);
             st.add("name", "Ter");
             string expected = "works";
             string result = st.render();
@@ -565,7 +565,7 @@ namespace Antlr4.Test.StringTemplate
         public void TestEmptyIFTemplate()
         {
             string template = "<if(x)>fail<elseif(name)><endif>";
-            ST st = new ST(template);
+            Template st = new Template(template);
             st.add("name", "Ter");
             string expected = "";
             string result = st.render();
@@ -576,7 +576,7 @@ namespace Antlr4.Test.StringTemplate
         public void TestCondParens()
         {
             string template = "<if(!(x||y)&&!z)>works<endif>";
-            ST st = new ST(template);
+            Template st = new Template(template);
             string expected = "works";
             string result = st.render();
             Assert.AreEqual(expected, result);
@@ -586,7 +586,7 @@ namespace Antlr4.Test.StringTemplate
         public void TestFalseCond()
         {
             string template = "<if(name)>works<endif>";
-            ST st = new ST(template);
+            Template st = new Template(template);
             string expected = "";
             string result = st.render();
             Assert.AreEqual(expected, result);
@@ -596,7 +596,7 @@ namespace Antlr4.Test.StringTemplate
         public void TestFalseCond2()
         {
             string template = "<if(name)>works<endif>";
-            ST st = new ST(template);
+            Template st = new Template(template);
             st.add("name", null);
             string expected = "";
             string result = st.render();
@@ -615,8 +615,8 @@ namespace Antlr4.Test.StringTemplate
                 "bar\n" +
                 ">>\n";
             writeFile(dir, "group.stg", groupFile);
-            STGroupFile group = new STGroupFile(dir + "/group.stg");
-            ST st = group.getInstanceOf("a");
+            TemplateGroupFile group = new TemplateGroupFile(dir + "/group.stg");
+            Template st = group.getInstanceOf("a");
             st.impl.dump();
             string expected = "foo" + newline +
                               "bar";
@@ -629,7 +629,7 @@ namespace Antlr4.Test.StringTemplate
         {
             string template =
                 "<if(x)>fail1<elseif(y)>fail2<elseif(z)>works<else>fail3<endif>";
-            ST st = new ST(template);
+            Template st = new Template(template);
             st.add("z", "blort");
             string expected = "works";
             string result = st.render();
@@ -641,7 +641,7 @@ namespace Antlr4.Test.StringTemplate
         {
             string template =
                 "<if(x)><elseif(y)><elseif(z)>works<else><endif>";
-            ST st = new ST(template);
+            Template st = new Template(template);
             st.add("z", "blort");
             string expected = "works";
             string result = st.render();
@@ -652,7 +652,7 @@ namespace Antlr4.Test.StringTemplate
         public void TestNotTrueCond()
         {
             string template = "<if(!name)>works<endif>";
-            ST st = new ST(template);
+            Template st = new Template(template);
             st.add("name", "Ter");
             string expected = "";
             string result = st.render();
@@ -663,7 +663,7 @@ namespace Antlr4.Test.StringTemplate
         public void TestNotFalseCond()
         {
             string template = "<if(!name)>works<endif>";
-            ST st = new ST(template);
+            Template st = new Template(template);
             string expected = "works";
             string result = st.render();
             Assert.AreEqual(expected, result);
@@ -673,7 +673,7 @@ namespace Antlr4.Test.StringTemplate
         public void TestTrueCondWithElse()
         {
             string template = "<if(name)>works<else>fail<endif>";
-            ST st = new ST(template);
+            Template st = new Template(template);
             st.add("name", "Ter");
             string expected = "works";
             string result = st.render();
@@ -684,7 +684,7 @@ namespace Antlr4.Test.StringTemplate
         public void TestFalseCondWithElse()
         {
             string template = "<if(name)>fail<else>works<endif>";
-            ST st = new ST(template);
+            Template st = new Template(template);
             string expected = "works";
             string result = st.render();
             Assert.AreEqual(expected, result);
@@ -694,7 +694,7 @@ namespace Antlr4.Test.StringTemplate
         public void TestElseIf()
         {
             string template = "<if(name)>fail<elseif(id)>works<else>fail<endif>";
-            ST st = new ST(template);
+            Template st = new Template(template);
             st.add("id", "2DF3DF");
             string expected = "works";
             string result = st.render();
@@ -705,7 +705,7 @@ namespace Antlr4.Test.StringTemplate
         public void TestElseIfNoElseAllFalse()
         {
             string template = "<if(name)>fail<elseif(id)>fail<endif>";
-            ST st = new ST(template);
+            Template st = new Template(template);
             string expected = "";
             string result = st.render();
             Assert.AreEqual(expected, result);
@@ -715,7 +715,7 @@ namespace Antlr4.Test.StringTemplate
         public void TestElseIfAllExprFalse()
         {
             string template = "<if(name)>fail<elseif(id)>fail<else>works<endif>";
-            ST st = new ST(template);
+            Template st = new Template(template);
             string expected = "works";
             string result = st.render();
             Assert.AreEqual(expected, result);
@@ -725,7 +725,7 @@ namespace Antlr4.Test.StringTemplate
         public void TestOr()
         {
             string template = "<if(name||notThere)>works<else>fail<endif>";
-            ST st = new ST(template);
+            Template st = new Template(template);
             st.add("name", "Ter");
             string expected = "works";
             string result = st.render();
@@ -736,7 +736,7 @@ namespace Antlr4.Test.StringTemplate
         public void TestMapConditionAndEscapeInside()
         {
             string template = "<if(m.name)>works \\\\<endif>";
-            ST st = new ST(template);
+            Template st = new Template(template);
             IDictionary<string, string> m = new Dictionary<string, string>();
             m["name"] = "Ter";
             st.add("m", m);
@@ -749,7 +749,7 @@ namespace Antlr4.Test.StringTemplate
         public void TestAnd()
         {
             string template = "<if(name&&notThere)>fail<else>works<endif>";
-            ST st = new ST(template);
+            Template st = new Template(template);
             st.add("name", "Ter");
             string expected = "works";
             string result = st.render();
@@ -760,7 +760,7 @@ namespace Antlr4.Test.StringTemplate
         public void TestAndNot()
         {
             string template = "<if(name&&!notThere)>works<else>fail<endif>";
-            ST st = new ST(template);
+            Template st = new Template(template);
             st.add("name", "Ter");
             string expected = "works";
             string result = st.render();
@@ -770,7 +770,7 @@ namespace Antlr4.Test.StringTemplate
         [TestMethod]
         public void TestCharLiterals()
         {
-            ST st = new ST(
+            Template st = new Template(
                     "Foo <\\n><\\n><\\t> bar\n"
                     );
             StringWriter sw = new StringWriter();
@@ -779,7 +779,7 @@ namespace Antlr4.Test.StringTemplate
             string expecting = "Foo \n\n\t bar\n";     // expect \n in output
             Assert.AreEqual(expecting, result);
 
-            st = new ST(
+            st = new Template(
                     "Foo <\\n><\\t> bar" + newline);
             sw = new StringWriter();
             st.write(new AutoIndentWriter(sw, "\n")); // force \n as newline
@@ -787,7 +787,7 @@ namespace Antlr4.Test.StringTemplate
             result = sw.ToString();
             Assert.AreEqual(expecting, result);
 
-            st = new ST(
+            st = new Template(
                     "Foo<\\ >bar<\\n>");
             sw = new StringWriter();
             st.write(new AutoIndentWriter(sw, "\n")); // force \n as newline
@@ -799,20 +799,20 @@ namespace Antlr4.Test.StringTemplate
         [TestMethod]
         public void TestUnicodeLiterals()
         {
-            ST st = new ST(
+            Template st = new Template(
                     "Foo <\\uFEA5><\\n><\\u00C2> bar\n"
                     );
             string expecting = "Foo \ufea5" + newline + "\u00C2 bar" + newline;
             string result = st.render();
             Assert.AreEqual(expecting, result);
 
-            st = new ST(
+            st = new Template(
                     "Foo <\\uFEA5><\\n><\\u00C2> bar" + newline);
             expecting = "Foo \ufea5" + newline + "\u00C2 bar" + newline;
             result = st.render();
             Assert.AreEqual(expecting, result);
 
-            st = new ST(
+            st = new Template(
                     "Foo<\\ >bar<\\n>");
             expecting = "Foo bar" + newline;
             result = st.render();
@@ -823,7 +823,7 @@ namespace Antlr4.Test.StringTemplate
         public void TestSubtemplateExpr()
         {
             string template = "<{name\n}>";
-            ST st = new ST(template);
+            Template st = new Template(template);
             string expected =
                 "name" + newline;
             string result = st.render();
@@ -833,9 +833,9 @@ namespace Antlr4.Test.StringTemplate
         [TestMethod]
         public void TestSeparator()
         {
-            STGroup group = new STGroup();
+            TemplateGroup group = new TemplateGroup();
             group.defineTemplate("test", "names", "<names:{n | case <n>}; separator=\", \">");
-            ST st = group.getInstanceOf("test");
+            Template st = group.getInstanceOf("test");
             st.add("names", "Ter");
             st.add("names", "Tom");
             string expected =
@@ -847,9 +847,9 @@ namespace Antlr4.Test.StringTemplate
         [TestMethod]
         public void TestSeparatorInList()
         {
-            STGroup group = new STGroup();
+            TemplateGroup group = new TemplateGroup();
             group.defineTemplate("test", "names", "<names:{n | case <n>}; separator=\", \">");
-            ST st = group.getInstanceOf("test");
+            Template st = group.getInstanceOf("test");
             st.add("names", new List<string>() { "Ter", "Tom" });
             string expected =
                 "case Ter, case Tom";
@@ -861,7 +861,7 @@ namespace Antlr4.Test.StringTemplate
         public void Playing()
         {
             string template = "<a:t(x,y),u()>";
-            ST st = new ST(template);
+            Template st = new Template(template);
             st.impl.dump();
         }
     }

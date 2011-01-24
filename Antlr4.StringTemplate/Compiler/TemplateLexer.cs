@@ -49,9 +49,9 @@ namespace Antlr4.StringTemplate.Compiler
      *  template as a simple stream of elements.
      *
      *  This class defines the token types and communicates these values to STParser.g
-     *  via STLexer.tokens file (which must remain consistent).
+     *  via TemplateLexer.tokens file (which must remain consistent).
      */
-    public class STLexer : ITokenSource
+    public class TemplateLexer : ITokenSource
     {
         public const char EOF = char.MaxValue;            // EOF char
         public const int EOF_TYPE = CharStreamConstants.EndOfFile;  // EOF token type
@@ -90,7 +90,7 @@ namespace Antlr4.StringTemplate.Compiler
 
         public static readonly IToken SKIP = new STToken(-1, "<skip>");
 
-        // must follow STLexer.tokens file that STParser.g loads
+        // must follow TemplateLexer.tokens file that STParser.g loads
         public const int RBRACK = 17;
         public const int LBRACK = 16;
         public const int ELSE = 5;
@@ -127,7 +127,7 @@ namespace Antlr4.StringTemplate.Compiler
         char delimiterStopChar = '>';
 
         /** This keep track of the mode of the lexer. Are we inside or outside
-         *  an ST expression?
+         *  an Template expression?
          */
         bool scanningInsideExpr = false;
 
@@ -157,16 +157,16 @@ namespace Antlr4.StringTemplate.Compiler
          */
         private readonly Queue<IToken> tokens = new Queue<IToken>();
 
-        public STLexer(ICharStream input) : this(STGroup.DefaultErrorManager, input, null, '<', '>')
+        public TemplateLexer(ICharStream input) : this(TemplateGroup.DefaultErrorManager, input, null, '<', '>')
         {
         }
 
-        public STLexer(ErrorManager errMgr, ICharStream input, IToken templateToken)
+        public TemplateLexer(ErrorManager errMgr, ICharStream input, IToken templateToken)
             : this(errMgr, input, templateToken, '<', '>')
         {
         }
 
-        public STLexer(ErrorManager errMgr,
+        public TemplateLexer(ErrorManager errMgr,
                        ICharStream input,
                        IToken templateToken,
                        char delimiterStartChar,
@@ -402,7 +402,7 @@ namespace Antlr4.StringTemplate.Compiler
                     re.CharPositionInLine = startCharPositionInLine;
                     if (c == EOF)
                     {
-                        throw new STException("EOF inside ST expression at " + re.Line + ":" + re.CharPositionInLine, re);
+                        throw new TemplateException("EOF inside Template expression at " + re.Line + ":" + re.CharPositionInLine, re);
                     }
 
                     errMgr.lexerError(input.SourceName, "invalid character '" + c + "'", templateToken, re);
@@ -650,7 +650,7 @@ namespace Antlr4.StringTemplate.Compiler
                     RecognitionException re = new MismatchedTokenException((int)'"', input);
                     re.Line = input.Line;
                     re.CharPositionInLine = input.CharPositionInLine;
-                    throw new STException("EOF inside string/template at " + startLine + ":" + startCharPositionInLine, re);
+                    throw new TemplateException("EOF inside string/template at " + startLine + ":" + startCharPositionInLine, re);
                 }
             }
 

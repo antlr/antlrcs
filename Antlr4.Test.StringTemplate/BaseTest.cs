@@ -64,9 +64,9 @@ namespace Antlr4.Test.StringTemplate
 
         protected virtual void setUpImpl()
         {
-            STGroup.defaultGroup = new STGroup();
-            Compiler.subtemplateCount = 0;
-            STGroup.debug = false;
+            TemplateGroup.defaultGroup = new TemplateGroup();
+            TemplateCompiler.subtemplateCount = 0;
+            TemplateGroup.debug = false;
 
             // new output dir for each test
             tmpdir = Path.GetFullPath(Path.Combine(Path.GetTempPath(), "st4-" + currentTimeMillis()));
@@ -112,8 +112,8 @@ namespace Antlr4.Test.StringTemplate
 
         public void checkTokens(string template, string expected, char delimiterStartChar, char delimiterStopChar)
         {
-            STLexer lexer =
-                new STLexer(STGroup.DefaultErrorManager,
+            TemplateLexer lexer =
+                new TemplateLexer(TemplateGroup.DefaultErrorManager,
                             new ANTLRStringStream(template),
                             null,
                             delimiterStartChar,

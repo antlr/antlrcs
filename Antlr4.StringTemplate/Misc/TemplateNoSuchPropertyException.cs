@@ -35,20 +35,20 @@ namespace Antlr4.StringTemplate.Misc
     using Antlr4.StringTemplate.Compiler;
     using Exception = System.Exception;
 
-    public class STNoSuchPropertyException : STException
+    public class TemplateNoSuchPropertyException : TemplateException
     {
         private readonly string propertyName;
 
-        public STNoSuchPropertyException()
+        public TemplateNoSuchPropertyException()
         {
         }
 
-        public STNoSuchPropertyException(string propertyName)
+        public TemplateNoSuchPropertyException(string propertyName)
         {
             this.propertyName = propertyName;
         }
 
-        public STNoSuchPropertyException(Exception e, string propertyName)
+        public TemplateNoSuchPropertyException(Exception e, string propertyName)
             : base(null, e)
         {
             this.propertyName = propertyName;
