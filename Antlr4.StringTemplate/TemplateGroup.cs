@@ -101,6 +101,8 @@ namespace Antlr4.StringTemplate
          */
         protected TypeRegistry<IAttributeRenderer> renderers;
 
+        protected TypeRegistry<ITypeProxyFactory> _proxyFactories;
+
         /** A dictionary that allows people to register a model adaptor for
          *  a particular kind of object (subclass or implementation). Applies
          *  for any template evaluated relative to this group.
@@ -577,6 +579,22 @@ namespace Antlr4.StringTemplate
             IAttributeRenderer renderer;
             renderers.TryGetValue(attributeType, out renderer);
             return renderer;
+        }
+
+        public virtual void RegisterTypeProxyFactory(Type targetType, ITypeProxyFactory factory)
+        {
+            _proxyFactories = _proxyFactories ?? new TypeRegistry<ITypeProxyFactory>();
+            _proxyFactories[targetType] = factory;
+        }
+
+        public virtual ITypeProxyFactory GetTypeProxyFactory(Type targetType)
+        {
+            if (_proxyFactories == null)
+                return null;
+
+            ITypeProxyFactory factory;
+            _proxyFactories.TryGetValue(targetType, out factory);
+            return factory;
         }
 
         /** StringTemplate object factory; each group can have its own. */

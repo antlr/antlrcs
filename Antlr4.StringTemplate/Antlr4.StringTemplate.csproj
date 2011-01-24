@@ -51,6 +51,7 @@
     </None>
     <None Include="DateRenderer.cs" />
     <Compile Include="Compiler\Instruction.cs" />
+    <Compile Include="ITypeProxyFactory.cs" />
     <Compile Include="Misc\TypeRegistry`1.cs" />
     <Compile Include="Compiler\OperandType.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

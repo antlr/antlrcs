@@ -665,6 +665,7 @@ namespace Antlr4.StringTemplate
                     optionStrings[i] = ToString(self, options[i]);
                 }
             }
+
             if (options != null && options[(int)Option.Anchor] != null)
             {
                 @out.PushAnchorPoint();
@@ -676,6 +677,7 @@ namespace Antlr4.StringTemplate
             {
                 @out.PopAnchorPoint();
             }
+
             if (TemplateGroup.debug)
             {
                 Interval templateLocation = self.impl.sourceMap[current_ip];
@@ -686,6 +688,7 @@ namespace Antlr4.StringTemplate
                 Console.WriteLine(e);
                 events.Add(e);
             }
+
             return n;
         }
 
@@ -698,12 +701,15 @@ namespace Antlr4.StringTemplate
             if (o == null)
             {
                 if (options != null && options[(int)Option.Null] != null)
-                {
                     o = options[(int)Option.Null];
-                }
                 else
                     return 0;
             }
+
+            ITypeProxyFactory proxyFactory = self.groupThatCreatedThisInstance.GetTypeProxyFactory(o.GetType());
+            if (proxyFactory != null)
+                o = proxyFactory.CreateProxy(o);
+
             if (o is Template)
             {
                 ((Template)o).enclosingInstance = self;
@@ -738,6 +744,7 @@ namespace Antlr4.StringTemplate
                     errMgr.IOError(self, ErrorType.WRITE_IO_ERROR, ioe, o);
                 }
             }
+
             return n;
         }
 
@@ -1259,6 +1266,10 @@ namespace Antlr4.StringTemplate
 
             try
             {
+                ITypeProxyFactory proxyFactory = self.groupThatCreatedThisInstance.GetTypeProxyFactory(o.GetType());
+                if (proxyFactory != null)
+                    o = proxyFactory.CreateProxy(o);
+
                 IModelAdaptor adap = self.groupThatCreatedThisInstance.GetModelAdaptor(o.GetType());
                 return adap.GetProperty(self, o, property, ToString(self, property));
             }
