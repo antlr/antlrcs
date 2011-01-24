@@ -65,21 +65,21 @@ namespace Antlr4.Test.StringTemplate
             writeFile(tmpdir, "t.stg", templates);
             TemplateGroup group = new TemplateGroupFile(Path.Combine(tmpdir, "t.stg"));
             TemplateGroup.debug = true;
-            DebugST st = (DebugST)group.getInstanceOf("method");
-            st.impl.dump();
+            DebugST st = (DebugST)group.GetInstanceOf("method");
+            st.impl.Dump();
             st.Add("type", "float");
             st.Add("name", "foo");
             st.Add("locals", 3);
             st.Add("args", new String[] { "x", "y", "z" });
-            Template s1 = group.getInstanceOf("assign");
-            Template paren = group.getInstanceOf("paren");
+            Template s1 = group.GetInstanceOf("assign");
+            Template paren = group.GetInstanceOf("paren");
             paren.Add("x", "x");
             s1.Add("a", paren);
             s1.Add("b", "y");
-            Template s2 = group.getInstanceOf("assign");
+            Template s2 = group.GetInstanceOf("assign");
             s2.Add("a", "y");
             s2.Add("b", "z");
-            Template s3 = group.getInstanceOf("return");
+            Template s3 = group.GetInstanceOf("return");
             s3.Add("x", "3.14159");
             st.Add("stats", s1);
             st.Add("stats", s2);
@@ -102,13 +102,13 @@ namespace Antlr4.Test.StringTemplate
         private void Inspect(DebugST template, ErrorManager errorManager, CultureInfo culture, int lineWidth)
         {
             ErrorBuffer errors = new ErrorBuffer();
-            template.impl.nativeGroup.setListener(errors);
+            template.impl.nativeGroup.Listener = errors;
             StringWriter @out = new StringWriter();
             ITemplateWriter wr = new AutoIndentWriter(@out);
-            wr.setLineWidth(lineWidth);
+            wr.SetLineWidth(lineWidth);
             Interpreter interp = new Interpreter(template.groupThatCreatedThisInstance, culture);
             interp.Execute(wr, template); // Render and track events
-            TemplateVisualizer visualizer = new TemplateVisualizer(errorManager, template, @out.ToString(), interp, interp.getExecutionTrace(), errors.Errors);
+            TemplateVisualizer visualizer = new TemplateVisualizer(errorManager, template, @out.ToString(), interp, interp.GetExecutionTrace(), errors.Errors);
             visualizer.Show();
         }
     }

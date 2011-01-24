@@ -56,7 +56,7 @@ namespace Antlr4.StringTemplate.Compiler
                 msg = GetErrorMessage(e, TokenNames);
             }
 
-            group.errMgr.groupSyntaxError(ErrorType.SYNTAX_ERROR, SourceName, e, msg);
+            group.errMgr.GroupSyntaxError(ErrorType.SYNTAX_ERROR, SourceName, e, msg);
         }
 
         public override string SourceName

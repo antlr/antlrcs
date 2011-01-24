@@ -49,7 +49,7 @@ namespace Antlr4.Test.StringTemplate
                 ">>\n";
             writeFile(dir, "group.stg", groupFile);
             TemplateGroup group = new TemplateGroupFile(dir + "/group.stg");
-            Template st = group.getInstanceOf("a");
+            Template st = group.GetInstanceOf("a");
             string expected = "[bar]";
             string result = st.Render();
             Assert.AreEqual(expected, result);
@@ -65,7 +65,7 @@ namespace Antlr4.Test.StringTemplate
                 ">>\n";
             writeFile(dir, "group.stg", groupFile);
             TemplateGroup group = new TemplateGroupFile(dir + "/group.stg");
-            Template st = group.getInstanceOf("a");
+            Template st = group.GetInstanceOf("a");
             string expected = "[]";
             string result = st.Render();
             Assert.AreEqual(expected, result);
@@ -82,8 +82,8 @@ namespace Antlr4.Test.StringTemplate
 
             TemplateGroup group1 = new TemplateGroupFile(dir + "/g1.stg");
             TemplateGroup group2 = new TemplateGroupFile(dir + "/g2.stg");
-            group2.importTemplates(group1); // define r in g2
-            Template st = group2.getInstanceOf("a");
+            group2.ImportTemplates(group1); // define r in g2
+            Template st = group2.GetInstanceOf("a");
             string expected = "[foo]";
             string result = st.Render();
             Assert.AreEqual(expected, result);
@@ -100,8 +100,8 @@ namespace Antlr4.Test.StringTemplate
 
             TemplateGroup group1 = new TemplateGroupFile(dir + "/g1.stg");
             TemplateGroup group2 = new TemplateGroupFile(dir + "/g2.stg");
-            group2.importTemplates(group1); // define r in g2
-            Template st = group2.getInstanceOf("a");
+            group2.ImportTemplates(group1); // define r in g2
+            Template st = group2.GetInstanceOf("a");
             string expected = "[(foo)]";
             string result = st.Render();
             Assert.AreEqual(expected, result);
@@ -118,8 +118,8 @@ namespace Antlr4.Test.StringTemplate
 
             TemplateGroup group1 = new TemplateGroupFile(dir + "/g1.stg");
             TemplateGroup group2 = new TemplateGroupFile(dir + "/g2.stg");
-            group1.importTemplates(group2); // opposite of previous; g1 imports g2
-            Template st = group1.getInstanceOf("a");
+            group1.ImportTemplates(group2); // opposite of previous; g1 imports g2
+            Template st = group1.GetInstanceOf("a");
             string expected = "[]"; // @a.r implicitly defined in g1; can't see g2's
             string result = st.Render();
             Assert.AreEqual(expected, result);
@@ -134,7 +134,7 @@ namespace Antlr4.Test.StringTemplate
             writeFile(dir, "g.stg", g);
 
             TemplateGroup group = new TemplateGroupFile(dir + "/g.stg");
-            Template st = group.getInstanceOf("a");
+            Template st = group.GetInstanceOf("a");
             string expected = "[foo]";
             string result = st.Render();
             Assert.AreEqual(expected, result);
@@ -150,8 +150,8 @@ namespace Antlr4.Test.StringTemplate
 
             TemplateGroupFile group = new TemplateGroupFile(dir + "/g.stg");
             ErrorBuffer errors = new ErrorBuffer();
-            group.setListener(errors);
-            group.load();
+            group.Listener = errors;
+            group.Load();
             string expected = "g.stg 2:3: region a.r is embedded and thus already implicitly defined" + newline;
             string result = errors.ToString();
             Assert.AreEqual(expected, result);
@@ -173,9 +173,9 @@ namespace Antlr4.Test.StringTemplate
                     "@a.r() ::= \"A<@super.r()>B\"" + newline;
             writeFile(dir, "sub.stg", sub);
             TemplateGroupFile subGroup = new TemplateGroupFile(dir + "/sub.stg");
-            subGroup.importTemplates(group);
+            subGroup.ImportTemplates(group);
 
-            Template st = subGroup.getInstanceOf("a");
+            Template st = subGroup.GetInstanceOf("a");
             string result = st.Render();
             string expecting = "XAfooBY";
             Assert.AreEqual(expecting, result);
@@ -186,17 +186,17 @@ namespace Antlr4.Test.StringTemplate
         {
             string dir = tmpdir;
             // Bug: This was causing infinite recursion:
-            // getInstanceOf(super::a)
-            // getInstanceOf(sub::a)
-            // getInstanceOf(subsub::a)
-            // getInstanceOf(subsub::region__a__r)
-            // getInstanceOf(subsub::super.region__a__r)
-            // getInstanceOf(subsub::super.region__a__r)
-            // getInstanceOf(subsub::super.region__a__r)
+            // GetInstanceOf(super::a)
+            // GetInstanceOf(sub::a)
+            // GetInstanceOf(subsub::a)
+            // GetInstanceOf(subsub::region__a__r)
+            // GetInstanceOf(subsub::super.region__a__r)
+            // GetInstanceOf(subsub::super.region__a__r)
+            // GetInstanceOf(subsub::super.region__a__r)
             // ...
             // Somehow, the ref to super in subsub is not moving up the chain
             // to the @super.r(); oh, i introduced a bug when i put setGroup
-            // into STG.getInstanceOf()!
+            // into STG.GetInstanceOf()!
 
             string g =
                     "a() ::= \"X<@r()>Y\"" +
@@ -208,15 +208,15 @@ namespace Antlr4.Test.StringTemplate
                     "@a.r() ::= \"<@super.r()>2\"" + newline;
             writeFile(dir, "sub.stg", sub);
             TemplateGroupFile subGroup = new TemplateGroupFile(dir + "/sub.stg");
-            subGroup.importTemplates(group);
+            subGroup.ImportTemplates(group);
 
             string subsub =
                     "@a.r() ::= \"<@super.r()>3\"" + newline;
             writeFile(dir, "subsub.stg", subsub);
             TemplateGroupFile subSubGroup = new TemplateGroupFile(dir + "/subsub.stg");
-            subSubGroup.importTemplates(subGroup);
+            subSubGroup.ImportTemplates(subGroup);
 
-            Template st = subSubGroup.getInstanceOf("a");
+            Template st = subSubGroup.GetInstanceOf("a");
 
             string result = st.Render();
             string expecting = "Xfoo23Y";
@@ -236,9 +236,9 @@ namespace Antlr4.Test.StringTemplate
                     "@a.r() ::= \"A<@super.r()>\"" + newline;
             writeFile(dir, "sub.stg", sub);
             TemplateGroupFile subGroup = new TemplateGroupFile(dir + "/sub.stg");
-            subGroup.importTemplates(group);
+            subGroup.ImportTemplates(group);
 
-            Template st = subGroup.getInstanceOf("a");
+            Template st = subGroup.GetInstanceOf("a");
             string result = st.Render();
             string expecting = "XAfooY";
             Assert.AreEqual(expecting, result);
@@ -256,8 +256,8 @@ namespace Antlr4.Test.StringTemplate
             ITemplateErrorListener errors = new ErrorBuffer();
             writeFile(dir, "g.stg", g);
             TemplateGroupFile group = new TemplateGroupFile(dir + "/g.stg");
-            group.setListener(errors);
-            Template st = group.getInstanceOf("a");
+            group.Listener = errors;
+            Template st = group.GetInstanceOf("a");
             st.Render();
             string result = errors.ToString();
             string expecting = "g.stg 3:3: template a doesn't have a region called q" + newline;
@@ -277,12 +277,12 @@ namespace Antlr4.Test.StringTemplate
             string sub =
                 "@a.r() ::= \"A<@super.q()>B\"" + newline; // allow this; trap at runtime
             ITemplateErrorListener errors = new ErrorBuffer();
-            group.setListener(errors);
+            group.Listener = errors;
             writeFile(dir, "sub.stg", sub);
             TemplateGroupFile subGroup = new TemplateGroupFile(dir + "/sub.stg");
-            subGroup.importTemplates(group);
+            subGroup.ImportTemplates(group);
 
-            Template st = subGroup.getInstanceOf("a");
+            Template st = subGroup.GetInstanceOf("a");
             string result = st.Render();
             string expecting = "XABY";
             Assert.AreEqual(expecting, result);

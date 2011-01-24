@@ -207,7 +207,7 @@ namespace Antlr4.Test.StringTemplate
                     ;
             writeFile(tmpdir, "t.stg", templates);
             TemplateGroup group = new TemplateGroupFile(tmpdir + "/" + "t.stg");
-            Template e = group.getInstanceOf("test");
+            Template e = group.GetInstanceOf("test");
             e.Add("names", "Ter");
             e.Add("names", "Tom");
             e.Add("phones", "1");

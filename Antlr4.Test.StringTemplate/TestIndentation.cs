@@ -49,8 +49,8 @@ namespace Antlr4.Test.StringTemplate
 
             writeFile(tmpdir, "t.stg", templates);
             TemplateGroup group = new TemplateGroupFile(Path.Combine(tmpdir, "t.stg"));
-            Template t = group.getInstanceOf("list");
-            t.impl.dump();
+            Template t = group.GetInstanceOf("list");
+            t.impl.Dump();
             t.Add("a", "Terence");
             t.Add("b", "Jim");
             string expecting =
@@ -68,7 +68,7 @@ namespace Antlr4.Test.StringTemplate
 
             writeFile(tmpdir, "t.stg", templates);
             TemplateGroup group = new TemplateGroupFile(Path.Combine(tmpdir, "t.stg"));
-            Template t = group.getInstanceOf("list");
+            Template t = group.GetInstanceOf("list");
             t.Add("names", "Terence");
             t.Add("names", "Jim");
             t.Add("names", "Sriram");
@@ -88,7 +88,7 @@ namespace Antlr4.Test.StringTemplate
                     ">>" + newline;
             writeFile(tmpdir, "t.stg", templates);
             TemplateGroup group = new TemplateGroupFile(Path.Combine(tmpdir, "t.stg"));
-            Template t = group.getInstanceOf("list");
+            Template t = group.GetInstanceOf("list");
             t.Add("names", "Terence\nis\na\nmaniac");
             t.Add("names", "Jim");
             t.Add("names", "Sriram\nis\ncool");
@@ -113,7 +113,7 @@ namespace Antlr4.Test.StringTemplate
                     ">>" + newline;
             writeFile(tmpdir, "t.stg", templates);
             TemplateGroup group = new TemplateGroupFile(Path.Combine(tmpdir, "t.stg"));
-            Template t = group.getInstanceOf("list");
+            Template t = group.GetInstanceOf("list");
             t.Add("names", "Terence\n\nis a maniac");
             string expecting =
                     "  Terence" + newline +
@@ -133,7 +133,7 @@ namespace Antlr4.Test.StringTemplate
                     ">>" + newline;
             writeFile(tmpdir, "t.stg", templates);
             TemplateGroup group = new TemplateGroupFile(Path.Combine(tmpdir, "t.stg"));
-            Template t = group.getInstanceOf("list");
+            Template t = group.GetInstanceOf("list");
             t.Add("names", "Terence");
             t.Add("names", "Jim");
             t.Add("names", "Sriram");
@@ -164,17 +164,17 @@ namespace Antlr4.Test.StringTemplate
                     ;
             writeFile(tmpdir, "t.stg", templates);
             TemplateGroup group = new TemplateGroupFile(Path.Combine(tmpdir, "t.stg"));
-            Template t = group.getInstanceOf("method");
+            Template t = group.GetInstanceOf("method");
             t.Add("name", "foo");
-            Template s1 = group.getInstanceOf("assign");
+            Template s1 = group.GetInstanceOf("assign");
             s1.Add("lhs", "x");
             s1.Add("expr", "0");
-            Template s2 = group.getInstanceOf("ifstat");
+            Template s2 = group.GetInstanceOf("ifstat");
             s2.Add("expr", "x>0");
-            Template s2a = group.getInstanceOf("assign");
+            Template s2a = group.GetInstanceOf("assign");
             s2a.Add("lhs", "y");
             s2a.Add("expr", "x+y");
-            Template s2b = group.getInstanceOf("assign");
+            Template s2b = group.GetInstanceOf("assign");
             s2b.Add("lhs", "z");
             s2b.Add("expr", "4");
             s2.Add("stats", s2a);

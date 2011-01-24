@@ -46,7 +46,7 @@ namespace Antlr4.StringTemplate.Compiler
             List<FormalArgument> a = new List<FormalArgument>();
             a.Add(new FormalArgument("x"));
             string n = Path.GetFileNameWithoutExtension(args[0]);
-            c.compile(args[0], n, a, template, null);
+            c.Compile(args[0], n, a, template, null);
         }
     }
 }

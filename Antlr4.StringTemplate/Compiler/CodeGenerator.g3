@@ -55,10 +55,10 @@ scope {
  	$template::state = new CompilationState(errMgr, name, input.TokenStream);
 	$impl = $template::state.impl;
  	if ($template.Count == 1) outermostImpl = $impl;
-	$impl.defineFormalArgs($args); // make sure args are defined prior to compilation
+	$impl.DefineFormalArguments($args); // make sure args are defined prior to compilation
 	if ( name!=null && name.StartsWith(TemplateCompiler.SubtemplatePrefix) ) {
-	    $impl.addArg(new FormalArgument("i"));
-	    $impl.addArg(new FormalArgument("i0"));
+	    $impl.AddArgument(new FormalArgument("i"));
+	    $impl.AddArgument(new FormalArgument("i0"));
     }
 	$impl.template = _template; // always forget the entire template; char indexes are relative to it
 }
@@ -74,7 +74,7 @@ chunk
 	;
 	
 element
-	:	^(INDENT {$template::state.indent($INDENT.text);} element {$template::state.emit(Bytecode.INSTR_DEDENT);})
+	:	^(INDENT {$template::state.Indent($INDENT.text);} element {$template::state.Emit(Bytecode.INSTR_DEDENT);})
 	|	ifstat
 	|	exprElement
 	|	TEXT
@@ -100,21 +100,21 @@ exprElement
 
 region returns [string name]
 	:	^(	REGION ID
-			{$name = TemplateGroup.getMangledRegionName(outermostTemplateName, $ID.text);}
+			{$name = TemplateGroup.GetMangledRegionName(outermostTemplateName, $ID.text);}
 			template[$name,null]
 			{
 			CompiledTemplate sub = $template.impl;
 	        sub.isRegion = true;
 	        sub.regionDefType = Template.RegionType.Embedded;
-			sub.dump();
-			outermostImpl.addImplicitlyDefinedTemplate(sub);
+			sub.Dump();
+			outermostImpl.AddImplicitlyDefinedTemplate(sub);
 			}
 		 )
 	;
 
 subtemplate returns [string name, int nargs]
 @init {
-    $name = TemplateCompiler.getNewSubtemplateName();
+    $name = TemplateCompiler.GetNewSubtemplateName();
 	List<FormalArgument> args = new List<FormalArgument>();
 }
 	:	^(	SUBTEMPLATE
@@ -129,8 +129,8 @@ subtemplate returns [string name, int nargs]
 				sub.ast.SetUnknownTokenBoundaries();
 				sub.tokens = input.TokenStream;
 			}
-			sub.dump();
-			outermostImpl.addImplicitlyDefinedTemplate(sub);
+			sub.Dump();
+			outermostImpl.AddImplicitlyDefinedTemplate(sub);
 			}
 		 )
 	;
@@ -229,7 +229,7 @@ mapTemplateRef[int num_exprs]
 	|	subtemplate
 		{
 		if ($subtemplate.nargs != $num_exprs) {
-            errMgr.compileTimeError(ErrorType.ANON_ARGUMENT_MISMATCH, templateToken, $subtemplate.start.token, $subtemplate.nargs, $num_exprs);
+            errMgr.CompiletimeError(ErrorType.ANON_ARGUMENT_MISMATCH, templateToken, $subtemplate.start.token, $subtemplate.nargs, $num_exprs);
 		}
 		for (int i=1; i<=$num_exprs; i++) emit($subtemplate.start,Bytecode.INSTR_NULL);
         emit2($subtemplate.start, Bytecode.INSTR_NEW,
@@ -261,14 +261,14 @@ includeExpr
 		}
 	|	^(INCLUDE_REGION ID)		{
 									CompiledTemplate impl =
-										TemplateCompiler.defineBlankRegion(outermostImpl, $ID.text);
-									impl.dump();
+										TemplateCompiler.DefineBlankRegion(outermostImpl, $ID.text);
+									impl.Dump();
 									emit2($INCLUDE_REGION,Bytecode.INSTR_NEW,impl.name,0);
 									}
 	|	^(INCLUDE_SUPER_REGION ID)	{
 									CompiledTemplate impl =
-										TemplateCompiler.defineBlankRegion(outermostImpl, $ID.text);
-									impl.dump();
+										TemplateCompiler.DefineBlankRegion(outermostImpl, $ID.text);
+									impl.Dump();
 									emit2($INCLUDE_SUPER_REGION,Bytecode.INSTR_SUPER_NEW,impl.name,0);
 									}
 	|	primary
@@ -276,7 +276,7 @@ includeExpr
 
 primary
 	:	ID				{refAttr($ID);}
-	|	STRING			{emit1($STRING,Bytecode.INSTR_LOAD_STR, Utility.strip($STRING.text,1));}	
+	|	STRING			{emit1($STRING,Bytecode.INSTR_LOAD_STR, Utility.Strip($STRING.text,1));}	
 	|	subtemplate		// push a subtemplate but ignore args since we can't pass any to it here
 		                {emit2($start,Bytecode.INSTR_NEW, $subtemplate.name, 0);}
 	|	list

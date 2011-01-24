@@ -94,7 +94,7 @@ namespace Antlr4.StringTemplate
             }
             catch (Exception e)
             {
-                errMgr.internalError(null, "can't load group dir " + dirName, e);
+                errMgr.InternalError(null, "can't Load group dir " + dirName, e);
             }
         }
 
@@ -119,9 +119,9 @@ namespace Antlr4.StringTemplate
         /** Load a template from dir or group file.  Group file is given
          *  precedence over dir with same name.
          */
-        protected override CompiledTemplate load(string name)
+        protected override CompiledTemplate Load(string name)
         {
-            string parent = Utility.getPrefix(name);
+            string parent = Utility.GetPrefix(name);
 
             if (Path.IsPathRooted(parent))
                 throw new ArgumentException();
@@ -134,12 +134,12 @@ namespace Antlr4.StringTemplate
             }
             catch (UriFormatException e)
             {
-                errMgr.internalError(null, "bad URL: " + Path.Combine(root.LocalPath, parent) + ".stg", e);
+                errMgr.InternalError(null, "bad URL: " + Path.Combine(root.LocalPath, parent) + ".stg", e);
                 return null;
             }
 
             if (!File.Exists(groupFileURL.LocalPath))
-                return loadTemplateFile(parent, name + ".st");
+                return LoadTemplateFile(parent, name + ".st");
 #if false
             InputStream @is = null;
             try
@@ -168,7 +168,7 @@ namespace Antlr4.StringTemplate
             }
 #endif
 
-            loadGroupFile(parent, Path.Combine(root.LocalPath, parent) + ".stg");
+            LoadGroupFile(parent, Path.Combine(root.LocalPath, parent) + ".stg");
 
             CompiledTemplate template;
             templates.TryGetValue(name, out template);
@@ -176,7 +176,7 @@ namespace Antlr4.StringTemplate
         }
 
         /** Load full path name .st file relative to root by prefix */
-        public virtual CompiledTemplate loadTemplateFile(string prefix, string fileName)
+        public virtual CompiledTemplate LoadTemplateFile(string prefix, string fileName)
         {
             if (Path.IsPathRooted(fileName))
                 throw new ArgumentException();
@@ -190,7 +190,7 @@ namespace Antlr4.StringTemplate
             }
             catch (UriFormatException me)
             {
-                errMgr.runTimeError(null, 0, ErrorType.INVALID_TEMPLATE_NAME, me, Path.Combine(root.LocalPath, fileName));
+                errMgr.RuntimeError(null, 0, ErrorType.INVALID_TEMPLATE_NAME, me, Path.Combine(root.LocalPath, fileName));
                 return null;
             }
 
@@ -217,7 +217,7 @@ namespace Antlr4.StringTemplate
             }
             catch (RecognitionException re)
             {
-                errMgr.groupSyntaxError(ErrorType.SYNTAX_ERROR, Path.GetFileName(f.LocalPath), re, re.Message);
+                errMgr.GroupSyntaxError(ErrorType.SYNTAX_ERROR, Path.GetFileName(f.LocalPath), re, re.Message);
             }
 
             CompiledTemplate template;
@@ -225,14 +225,20 @@ namespace Antlr4.StringTemplate
             return template;
         }
 
-        public override string getName()
+        public override string Name
         {
-            return groupDirName;
+            get
+            {
+                return groupDirName;
+            }
         }
 
-        public override string getFileName()
+        public override string FileName
         {
-            return Path.GetFileName(root.LocalPath);
+            get
+            {
+                return Path.GetFileName(root.LocalPath);
+            }
         }
     }
 }

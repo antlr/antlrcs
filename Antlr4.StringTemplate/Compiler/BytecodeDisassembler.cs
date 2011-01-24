@@ -47,7 +47,7 @@ namespace Antlr4.StringTemplate.Compiler
             this.code = code;
         }
 
-        public virtual string instrs()
+        public virtual string GetInstructions()
         {
             StringBuilder buf = new StringBuilder();
             int ip = 0;
@@ -62,26 +62,26 @@ namespace Antlr4.StringTemplate.Compiler
                 for (int opnd = 0; opnd < I.nopnds; opnd++)
                 {
                     buf.Append(' ');
-                    buf.Append(getShort(code.instrs, ip));
+                    buf.Append(GetShort(code.instrs, ip));
                     ip += Instruction.OperandSizeInBytes;
                 }
             }
             return buf.ToString();
         }
 
-        public virtual string disassemble()
+        public virtual string Disassemble()
         {
             StringBuilder buf = new StringBuilder();
             int i = 0;
             while (i < code.codeSize)
             {
-                i = disassembleInstruction(buf, i);
+                i = DisassembleInstruction(buf, i);
                 buf.AppendLine();
             }
             return buf.ToString();
         }
 
-        public virtual int disassembleInstruction(StringBuilder buf, int ip)
+        public virtual int DisassembleInstruction(StringBuilder buf, int ip)
         {
             int opcode = code.instrs[ip];
             if (ip >= code.codeSize)
@@ -105,12 +105,12 @@ namespace Antlr4.StringTemplate.Compiler
             List<string> operands = new List<string>();
             for (int i = 0; i < I.nopnds; i++)
             {
-                int opnd = getShort(code.instrs, ip);
+                int opnd = GetShort(code.instrs, ip);
                 ip += Instruction.OperandSizeInBytes;
                 switch (I.type[i])
                 {
                 case OperandType.String:
-                    operands.Add(showConstPoolOperand(opnd));
+                    operands.Add(ShowConstantPoolOperand(opnd));
                     break;
 
                 case OperandType.Address:
@@ -135,7 +135,7 @@ namespace Antlr4.StringTemplate.Compiler
             return ip;
         }
 
-        private string showConstPoolOperand(int poolIndex)
+        private string ShowConstantPoolOperand(int poolIndex)
         {
             StringBuilder buf = new StringBuilder();
             buf.Append("#");
@@ -150,7 +150,7 @@ namespace Antlr4.StringTemplate.Compiler
                     s = code.strings[poolIndex].ToString();
                     if (code.strings[poolIndex] is string)
                     {
-                        s = Utility.replaceEscapes(s);
+                        s = Utility.ReplaceEscapes(s);
                         s = '"' + s + '"';
                     }
                 }
@@ -160,12 +160,12 @@ namespace Antlr4.StringTemplate.Compiler
             return buf.ToString();
         }
 
-        public static int getShort(byte[] memory, int index)
+        internal static int GetShort(byte[] memory, int index)
         {
             return BitConverter.ToInt16(memory, index);
         }
 
-        public virtual string strings()
+        public virtual string GetStrings()
         {
             StringBuilder buf = new StringBuilder();
             int addr = 0;
@@ -176,7 +176,7 @@ namespace Antlr4.StringTemplate.Compiler
                     if (o is string)
                     {
                         string s = (string)o;
-                        s = Utility.replaceEscapes(s);
+                        s = Utility.ReplaceEscapes(s);
                         buf.AppendLine(string.Format("{0:0000}: \"{1}\"", addr, s));
                     }
                     else
@@ -189,7 +189,7 @@ namespace Antlr4.StringTemplate.Compiler
             return buf.ToString();
         }
 
-        public virtual string sourceMap()
+        public virtual string GetSourceMap()
         {
             StringBuilder buf = new StringBuilder();
             int addr = 0;

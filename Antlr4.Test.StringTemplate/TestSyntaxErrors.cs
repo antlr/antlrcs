@@ -42,10 +42,10 @@ namespace Antlr4.Test.StringTemplate
             string template = " <> ";
             TemplateGroup group = new TemplateGroup();
             ErrorBuffer errors = new ErrorBuffer();
-            group.setListener(errors);
+            group.Listener = errors;
             try
             {
-                group.defineTemplate("test", template);
+                group.DefineTemplate("test", template);
             }
             catch (TemplateException)
             {
@@ -61,10 +61,10 @@ namespace Antlr4.Test.StringTemplate
             string template = "hi <> ";
             TemplateGroup group = new TemplateGroup();
             ErrorBuffer errors = new ErrorBuffer();
-            group.setListener(errors);
+            group.Listener = errors;
             try
             {
-                group.defineTemplate("test", template);
+                group.DefineTemplate("test", template);
             }
             catch (TemplateException)
             {
@@ -80,10 +80,10 @@ namespace Antlr4.Test.StringTemplate
             string template = "   <*>";
             TemplateGroup group = new TemplateGroup();
             ErrorBuffer errors = new ErrorBuffer();
-            group.setListener(errors);
+            group.Listener = errors;
             try
             {
-                group.defineTemplate("test", template);
+                group.DefineTemplate("test", template);
             }
             catch (TemplateException)
             {
@@ -103,8 +103,8 @@ namespace Antlr4.Test.StringTemplate
 
             ITemplateErrorListener errors = new ErrorBuffer();
             TemplateGroupFile group = new TemplateGroupFile(tmpdir + "/" + "t.stg");
-            group.setListener(errors);
-            group.load(); // force load
+            group.Listener = errors;
+            group.Load(); // force load
             string expected = "t.stg 1:15: doesn't look like an expression" + newline;
             string result = errors.ToString();
             Assert.AreEqual(expected, result);
@@ -120,8 +120,8 @@ namespace Antlr4.Test.StringTemplate
 
             ErrorBuffer errors = new ErrorBuffer();
             TemplateGroupFile group = new TemplateGroupFile(tmpdir + "/" + "t.stg");
-            group.setListener(errors);
-            group.load(); // force load
+            group.Listener = errors;
+            group.Load(); // force load
             string expected = "[t.stg 1:15: \\n in string, t.stg 1:14: doesn't look like an expression]";
             string result = errors.Errors.ToListString();
             Assert.AreEqual(expected, result);
@@ -137,8 +137,8 @@ namespace Antlr4.Test.StringTemplate
             TemplateGroupFile group = null;
             ITemplateErrorListener errors = new ErrorBuffer();
             group = new TemplateGroupFile(tmpdir + "/" + "t.stg");
-            group.setListener(errors);
-            group.load(); // force load
+            group.Listener = errors;
+            group.Load(); // force load
             string expected = "t.stg 1:29: '!' came as a complete surprise to me" + newline;
             string result = errors.ToString();
             Assert.AreEqual(expected, result);
@@ -154,8 +154,8 @@ namespace Antlr4.Test.StringTemplate
             TemplateGroupFile group = null;
             ITemplateErrorListener errors = new ErrorBuffer();
             group = new TemplateGroupFile(tmpdir + "/" + "t.stg");
-            group.setListener(errors);
-            group.load(); // force load
+            group.Listener = errors;
+            group.Load(); // force load
             string expected = "t.stg 1:34: premature EOF" + newline;
             string result = errors.ToString();
             Assert.AreEqual(expected, result);
@@ -171,8 +171,8 @@ namespace Antlr4.Test.StringTemplate
             TemplateGroupFile group = null;
             ITemplateErrorListener errors = new ErrorBuffer();
             group = new TemplateGroupFile(tmpdir + "/" + "t.stg");
-            group.setListener(errors);
-            group.load(); // force load
+            group.Listener = errors;
+            group.Load(); // force load
             string expected = "t.stg 1:19: '>' came as a complete surprise to me" + newline;
             string result = errors.ToString();
             Assert.AreEqual(expected, result);
@@ -188,8 +188,8 @@ namespace Antlr4.Test.StringTemplate
             TemplateGroupFile group = null;
             ITemplateErrorListener errors = new ErrorBuffer();
             group = new TemplateGroupFile(tmpdir + "/" + "t.stg");
-            group.setListener(errors);
-            group.load(); // force load
+            group.Listener = errors;
+            group.Load(); // force load
             string expected = "t.stg 1:19: mismatched input ',' expecting RDELIM" + newline;
             string result = errors.ToString();
             Assert.AreEqual(expected, result);

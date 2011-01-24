@@ -56,7 +56,7 @@ group[TemplateGroup group, string prefix]
 GroupLexer lexer = (GroupLexer)input.TokenSource;
 this._group = lexer.group = $group;
 }
-	:	(	'import' STRING {_group.importTemplates($STRING);}
+	:	(	'import' STRING {_group.ImportTemplates($STRING);}
 		|	'import' // common error: name not in string
 			{
 			MismatchedTokenException e = new MismatchedTokenException(STRING, input);
@@ -100,17 +100,17 @@ templateDef[string prefix]
 	    	template = "";
 	    	string msg = "missing template at '"+input.LT(1).Text+"'";
             NoViableAltException e = new NoViableAltException("", 0, 0, input);
-    	    _group.errMgr.groupSyntaxError(ErrorType.SYNTAX_ERROR, SourceName, e, msg);
+    	    _group.errMgr.GroupSyntaxError(ErrorType.SYNTAX_ERROR, SourceName, e, msg);
     	    }
 	    )
 	    {
-        template = Utility.strip(template, n);
+        template = Utility.Strip(template, n);
         string templateName = $name.text;
         if (prefix.Length > 0) templateName = prefix+"/"+$name.text;
-	    _group.defineTemplateOrRegion(templateName, $enclosing.text, templateToken,
+	    _group.DefineTemplateOrRegion(templateName, $enclosing.text, templateToken,
 	    							 template, $name, $formalArgs.args);
 	    }
-	|   alias=ID '::=' target=ID  {_group.defineTemplateAlias($alias, $target);}
+	|   alias=ID '::=' target=ID  {_group.DefineTemplateAlias($alias, $target);}
 	;
 
 formalArgs returns[List<FormalArgument> args]
@@ -147,14 +147,14 @@ suffix returns [int cardinality=FormalArgument.REQUIRED]
 dictDef
 	:	ID '::=' dict
         {
-        if ( _group.rawGetDictionary($ID.text)!=null ) {
-			_group.errMgr.compileTimeError(ErrorType.MAP_REDEFINITION, null, $ID);
+        if ( _group.RawGetDictionary($ID.text)!=null ) {
+			_group.errMgr.CompiletimeError(ErrorType.MAP_REDEFINITION, null, $ID);
         }
-        else if ( _group.rawGetTemplate($ID.text)!=null ) {
-			_group.errMgr.compileTimeError(ErrorType.TEMPLATE_REDEFINITION_AS_MAP, null, $ID);
+        else if ( _group.RawGetTemplate($ID.text)!=null ) {
+			_group.errMgr.CompiletimeError(ErrorType.TEMPLATE_REDEFINITION_AS_MAP, null, $ID);
         }
         else {
-            _group.defineDictionary($ID.text, $dict.mapping);
+            _group.DefineDictionary($ID.text, $dict.mapping);
         }
         }
 	;
@@ -178,13 +178,13 @@ defaultValuePair[IDictionary<string,object> mapping]
 	;
 
 keyValuePair[IDictionary<string,object> mapping]
-	:	STRING ':' keyValue {mapping[Utility.replaceEscapes(Utility.strip($STRING.text, 1))] = $keyValue.value;}
+	:	STRING ':' keyValue {mapping[Utility.ReplaceEscapes(Utility.Strip($STRING.text, 1))] = $keyValue.value;}
 	;
 
 keyValue returns [object value]
-	:	BIGSTRING			{$value = _group.createSingleton($BIGSTRING);}
-	|	ANONYMOUS_TEMPLATE	{$value = _group.createSingleton($ANONYMOUS_TEMPLATE);}
-	|	STRING				{$value = Utility.replaceEscapes(Utility.strip($STRING.text, 1));}
+	:	BIGSTRING			{$value = _group.CreateSingleton($BIGSTRING);}
+	|	ANONYMOUS_TEMPLATE	{$value = _group.CreateSingleton($ANONYMOUS_TEMPLATE);}
+	|	STRING				{$value = Utility.ReplaceEscapes(Utility.Strip($STRING.text, 1));}
 	|	{input.LT(1).Text.Equals("key")}?=> ID
 							{$value = TemplateGroup.DictionaryKey;}
 	;
@@ -202,7 +202,7 @@ STRING
 		|	{
 			string msg = "\\n in string";
     		NoViableAltException e = new NoViableAltException("", 0, 0, input);
-			group.errMgr.groupLexerError(ErrorType.SYNTAX_ERROR, SourceName, e, msg);
+			group.errMgr.GroupLexerError(ErrorType.SYNTAX_ERROR, SourceName, e, msg);
 			}
 			'\n'
 		|	~('\\'|'"'|'\n')

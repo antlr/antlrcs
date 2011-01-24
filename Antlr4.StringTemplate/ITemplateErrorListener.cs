@@ -37,9 +37,9 @@ namespace Antlr4.StringTemplate
     /** How to handle messages */
     public interface ITemplateErrorListener
     {
-        void compileTimeError(TemplateMessage msg);
-        void runTimeError(TemplateMessage msg);
+        void CompiletimeError(TemplateMessage msg);
+        void RuntimeError(TemplateMessage msg);
         void IOError(TemplateMessage msg);
-        void internalError(TemplateMessage msg);
+        void InternalError(TemplateMessage msg);
     }
 }

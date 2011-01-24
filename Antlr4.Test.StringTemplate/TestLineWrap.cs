@@ -50,7 +50,7 @@ namespace Antlr4.Test.StringTemplate
             writeFile(tmpdir, "t.stg", templates);
             TemplateGroup group = new TemplateGroupFile(Path.Combine(tmpdir, "t.stg"));
 
-            Template a = group.getInstanceOf("array");
+            Template a = group.GetInstanceOf("array");
             a.Add("values",
                            new int[] {3,9,20,2,1,4,6,32,5,6,77,888,2,1,6,32,5,6,77,
 						4,9,20,2,1,4,63,9,20,2,1,4,6,32,5,6,77,6,32,5,6,77,
@@ -63,7 +63,7 @@ namespace Antlr4.Test.StringTemplate
 
             StringWriter sw = new StringWriter();
             ITemplateWriter stw = new AutoIndentWriter(sw, "\n"); // force \n as newline
-            stw.setLineWidth(40);
+            stw.SetLineWidth(40);
             a.Write(stw);
             string result = sw.ToString();
             Assert.AreEqual(expecting, result);
@@ -77,7 +77,7 @@ namespace Antlr4.Test.StringTemplate
             writeFile(tmpdir, "t.stg", templates);
             TemplateGroup group = new TemplateGroupFile(Path.Combine(tmpdir, "t.stg"));
 
-            Template a = group.getInstanceOf("array");
+            Template a = group.GetInstanceOf("array");
             a.Add("values",
                 new int[] {3,9,20,2,1,4,6,32,5,6,77,888,2,1,6,32,5,6,77,
             4,9,20,2,1,4,63,9,20,2,1,4,6,32,5,6,77,6,32,5,6,77,
@@ -104,7 +104,7 @@ namespace Antlr4.Test.StringTemplate
             x.Add("stuff", "1");
             x.Add("stuff", "2");
             x.Add("stuff", "3");
-            Template a = group.getInstanceOf("array");
+            Template a = group.GetInstanceOf("array");
             a.Add("values", new List<object>() { "a", x, "b" });
             string expecting =
                 "{ a, " + Environment.NewLine +
@@ -119,11 +119,11 @@ namespace Antlr4.Test.StringTemplate
         public void TestFortranLineWrap()
         {
             string templates =
-                    "func(args) ::= <<       FUNCTION line( <args; wrap=\"\\n      c\", separator=\",\"> )>>" + newline;
+                    "Function(args) ::= <<       FUNCTION line( <args; wrap=\"\\n      c\", separator=\",\"> )>>" + newline;
             writeFile(tmpdir, "t.stg", templates);
             TemplateGroup group = new TemplateGroupFile(Path.Combine(tmpdir, "t.stg"));
 
-            Template a = group.getInstanceOf("func");
+            Template a = group.GetInstanceOf("Function");
             a.Add("args",
                            new string[] { "a", "b", "c", "d", "e", "f" });
             string expecting =
@@ -140,7 +140,7 @@ namespace Antlr4.Test.StringTemplate
             writeFile(tmpdir, "t.stg", templates);
             TemplateGroup group = new TemplateGroupFile(Path.Combine(tmpdir, "t.stg"));
 
-            Template a = group.getInstanceOf("array");
+            Template a = group.GetInstanceOf("array");
             a.Add("values",
                            new int[] {3,9,20,2,1,4,6,32,5,6,77,888,2,1,6,32,5,6,77,
 						4,9,20,2,1,4,63,9,20,2,1,4,6});
@@ -161,7 +161,7 @@ namespace Antlr4.Test.StringTemplate
             writeFile(tmpdir, "t.stg", templates);
             TemplateGroup group = new TemplateGroupFile(Path.Combine(tmpdir, "t.stg"));
 
-            Template a = group.getInstanceOf("duh");
+            Template a = group.GetInstanceOf("duh");
             a.Add("chars", new string[] { "a", "b", "c", "d", "e" });
             // lineWidth==3 implies that we can have 3 characters at most
             string expecting =
@@ -178,7 +178,7 @@ namespace Antlr4.Test.StringTemplate
             writeFile(tmpdir, "t.stg", templates);
             TemplateGroup group = new TemplateGroupFile(Path.Combine(tmpdir, "t.stg"));
 
-            Template a = group.getInstanceOf("duh");
+            Template a = group.GetInstanceOf("duh");
             a.Add("chars", new string[] { "a", "b", "\n", "d", "e" });
             // don't do \n if it's last element anyway
             string expecting =
@@ -195,7 +195,7 @@ namespace Antlr4.Test.StringTemplate
             writeFile(tmpdir, "t.stg", templates);
             TemplateGroup group = new TemplateGroupFile(Path.Combine(tmpdir, "t.stg"));
 
-            Template a = group.getInstanceOf("duh");
+            Template a = group.GetInstanceOf("duh");
             a.Add("chars", new string[] { "a", "b", "c", "\n", "d", "e" });
             // Once we wrap, we must dump chars as we see them.  A newline right
             // after a wrap is just an "unfortunate" event.  People will expect
@@ -215,7 +215,7 @@ namespace Antlr4.Test.StringTemplate
             writeFile(tmpdir, "t.stg", templates);
             TemplateGroup group = new TemplateGroupFile(Path.Combine(tmpdir, "t.stg"));
 
-            Template a = group.getInstanceOf("duh");
+            Template a = group.GetInstanceOf("duh");
             a.Add("data", new int[] { 1, 2, 3, 4, 5, 6, 7, 8, 9 });
             string expecting =
                 "!123" + Environment.NewLine +
@@ -232,7 +232,7 @@ namespace Antlr4.Test.StringTemplate
             writeFile(tmpdir, "t.stg", templates);
             TemplateGroup group = new TemplateGroupFile(Path.Combine(tmpdir, "t.stg"));
 
-            Template a = group.getInstanceOf("duh");
+            Template a = group.GetInstanceOf("duh");
             a.Add("data", new int[] { 1, 2, 3, 4, 5, 6, 7, 8, 9 });
             string expecting =
                 "![1][2][3]" + Environment.NewLine + // width=9 is the 3 char; don't break til after ]
@@ -249,7 +249,7 @@ namespace Antlr4.Test.StringTemplate
             writeFile(tmpdir, "t.stg", templates);
             TemplateGroup group = new TemplateGroupFile(Path.Combine(tmpdir, "t.stg"));
 
-            Template a = group.getInstanceOf("duh");
+            Template a = group.GetInstanceOf("duh");
             a.Add("data", new int[] { 1, 2, 3, 4, 5, 6, 7, 8, 9 });
             string expecting =
                 "![1][2][3]" + Environment.NewLine +
@@ -267,8 +267,8 @@ namespace Antlr4.Test.StringTemplate
             writeFile(tmpdir, "t.stg", templates);
             TemplateGroup group = new TemplateGroupFile(Path.Combine(tmpdir, "t.stg"));
 
-            Template t = group.getInstanceOf("top");
-            Template s = group.getInstanceOf("str");
+            Template t = group.GetInstanceOf("top");
+            Template s = group.GetInstanceOf("str");
             s.Add("data", new int[] { 1, 2, 3, 4, 5, 6, 7, 8, 9 });
             t.Add("s", s);
             string expecting =
@@ -288,7 +288,7 @@ namespace Antlr4.Test.StringTemplate
             writeFile(tmpdir, "t.stg", templates);
             TemplateGroup group = new TemplateGroupFile(Path.Combine(tmpdir, "t.stg"));
 
-            Template a = group.getInstanceOf("duh");
+            Template a = group.GetInstanceOf("duh");
             a.Add("chars", new string[] { "a", "b", "c", "d", "e" });
             //
             string expecting =
@@ -308,7 +308,7 @@ namespace Antlr4.Test.StringTemplate
             writeFile(tmpdir, "t.stg", templates);
             TemplateGroup group = new TemplateGroupFile(Path.Combine(tmpdir, "t.stg"));
 
-            Template a = group.getInstanceOf("duh");
+            Template a = group.GetInstanceOf("duh");
             a.Add("chars", new string[] { "a", "b", "c", "d", "e" });
             //
             string expecting =
@@ -328,8 +328,8 @@ namespace Antlr4.Test.StringTemplate
             writeFile(tmpdir, "t.stg", templates);
             TemplateGroup group = new TemplateGroupFile(Path.Combine(tmpdir, "t.stg"));
 
-            Template top = group.getInstanceOf("top");
-            Template duh = group.getInstanceOf("duh");
+            Template top = group.GetInstanceOf("top");
+            Template duh = group.GetInstanceOf("duh");
             duh.Add("chars", new string[] { "a", "b", "c", "d", "e" });
             top.Add("d", duh);
             string expecting =
@@ -349,8 +349,8 @@ namespace Antlr4.Test.StringTemplate
             writeFile(tmpdir, "t.stg", templates);
             TemplateGroup group = new TemplateGroupFile(Path.Combine(tmpdir, "t.stg"));
 
-            Template top = group.getInstanceOf("top");
-            Template duh = group.getInstanceOf("duh");
+            Template top = group.GetInstanceOf("top");
+            Template duh = group.GetInstanceOf("duh");
             duh.Add("chars", new string[] { "a", "b", "c", "d", "e" });
             top.Add("d", duh);
             //
@@ -369,7 +369,7 @@ namespace Antlr4.Test.StringTemplate
             writeFile(tmpdir, "t.stg", templates);
             TemplateGroup group = new TemplateGroupFile(Path.Combine(tmpdir, "t.stg"));
 
-            Template a = group.getInstanceOf("m");
+            Template a = group.GetInstanceOf("m");
             a.Add("args",
                            new string[] { "a", "b", "c" });
             a.Add("body", "i=3;");
@@ -388,7 +388,7 @@ namespace Antlr4.Test.StringTemplate
             writeFile(tmpdir, "t.stg", templates);
             TemplateGroup group = new TemplateGroupFile(Path.Combine(tmpdir, "t.stg"));
 
-            Template m = group.getInstanceOf("m");
+            Template m = group.GetInstanceOf("m");
             m.Add("body", "i=3;");
             // make it wrap because of ") throws Ick { " literal
             string expecting =
@@ -406,8 +406,8 @@ namespace Antlr4.Test.StringTemplate
             writeFile(tmpdir, "t.stg", templates);
             TemplateGroup group = new TemplateGroupFile(Path.Combine(tmpdir, "t.stg"));
 
-            Template top = group.getInstanceOf("top");
-            Template a = group.getInstanceOf("array");
+            Template top = group.GetInstanceOf("top");
+            Template a = group.GetInstanceOf("array");
             a.Add("values",
                            new int[] {3,9,20,2,1,4,6,32,5,6,77,888,2,1,6,32,5,6,77,
 						4,9,20,2,1,4,63,9,20,2,1,4,6,32,5,6,77,6,32,5,6,77,

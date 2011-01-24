@@ -44,17 +44,17 @@ namespace Antlr4.StringTemplate.Debug
             stack = new StackTrace(true);
         }
 
-        public virtual string getFileName()
+        public virtual string GetFileName()
         {
-            return getSTEntryPoint().GetFileName();
+            return GetTemplateEntryPoint().GetFileName();
         }
 
-        public virtual int getLine()
+        public virtual int GetLine()
         {
-            return getSTEntryPoint().GetFileLineNumber();
+            return GetTemplateEntryPoint().GetFileLineNumber();
         }
 
-        public virtual StackFrame getSTEntryPoint()
+        public virtual StackFrame GetTemplateEntryPoint()
         {
             StackFrame[] trace = stack.GetFrames();
             foreach (StackFrame e in trace)

@@ -80,7 +80,7 @@ namespace Antlr4.StringTemplate.Compiler
 
                 string txt = Text;
                 if (txt != null)
-                    txt = Utility.replaceEscapes(txt);
+                    txt = Utility.ReplaceEscapes(txt);
                 else
                     txt = "<no text>";
 
@@ -210,7 +210,7 @@ namespace Antlr4.StringTemplate.Compiler
 
         public virtual IToken _nextToken()
         {
-            //System.out.println("nextToken: c="+(char)c+"@"+input.index());
+            //System.out.println("nextToken: c="+(char)c+"@"+input.Index());
             while (true)
             { // lets us avoid recursion when skipping stuff
                 startCharIndex = input.Index;

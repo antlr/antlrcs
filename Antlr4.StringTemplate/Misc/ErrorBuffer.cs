@@ -57,12 +57,12 @@ namespace Antlr4.StringTemplate.Misc
             }
         }
 
-        public virtual void compileTimeError(TemplateMessage msg)
+        public virtual void CompiletimeError(TemplateMessage msg)
         {
             errors.Add(msg);
         }
 
-        public virtual void runTimeError(TemplateMessage msg)
+        public virtual void RuntimeError(TemplateMessage msg)
         {
             // ignore these
             if (msg.Error != ErrorType.NO_SUCH_PROPERTY)
@@ -74,7 +74,7 @@ namespace Antlr4.StringTemplate.Misc
             errors.Add(msg);
         }
 
-        public virtual void internalError(TemplateMessage msg)
+        public virtual void InternalError(TemplateMessage msg)
         {
             errors.Add(msg);
         }

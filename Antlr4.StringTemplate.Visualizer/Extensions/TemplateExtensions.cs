@@ -57,13 +57,13 @@ namespace Antlr4.StringTemplate.Visualizer.Extensions
         public static void Inspect(this DebugST template, ErrorManager errorManager, CultureInfo culture, int lineWidth)
         {
             ErrorBuffer errors = new ErrorBuffer();
-            template.impl.nativeGroup.setListener(errors);
+            template.impl.nativeGroup.Listener = errors;
             StringWriter @out = new StringWriter();
             ITemplateWriter wr = new AutoIndentWriter(@out);
-            wr.setLineWidth(lineWidth);
+            wr.SetLineWidth(lineWidth);
             Interpreter interp = new Interpreter(template.groupThatCreatedThisInstance, culture);
             interp.Execute(wr, template); // Render and track events
-            TemplateVisualizer visualizer = new TemplateVisualizer(errorManager, template, @out.ToString(), interp, interp.getExecutionTrace(), errors.Errors);
+            TemplateVisualizer visualizer = new TemplateVisualizer(errorManager, template, @out.ToString(), interp, interp.GetExecutionTrace(), errors.Errors);
             visualizer.Show();
         }
     }

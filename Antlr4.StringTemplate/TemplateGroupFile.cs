@@ -94,7 +94,7 @@ namespace Antlr4.StringTemplate
             }
             catch (Exception e)
             {
-                errMgr.internalError(null, "can't load group file " + fileName, e);
+                errMgr.InternalError(null, "can't Load group file " + fileName, e);
             }
 
             this.fileName = fileName;
@@ -118,31 +118,31 @@ namespace Antlr4.StringTemplate
             this.encoding = encoding;
         }
 
-        public override bool isDefined(string name)
+        public override bool IsDefined(string name)
         {
             if (!alreadyLoaded)
-                load();
-            return base.isDefined(name);
+                Load();
+            return base.IsDefined(name);
         }
 
         [MethodImpl(MethodImplOptions.Synchronized)]
-        public override void unload()
+        public override void Unload()
         {
-            base.unload();
+            base.Unload();
             alreadyLoaded = false;
         }
 
-        protected override CompiledTemplate load(string name)
+        protected override CompiledTemplate Load(string name)
         {
             if (!alreadyLoaded)
-                load();
+                Load();
 
             CompiledTemplate template;
             templates.TryGetValue(name, out template);
             return template;
         }
 
-        public override void load()
+        public override void Load()
         {
             if (alreadyLoaded)
                 return;
@@ -150,25 +150,31 @@ namespace Antlr4.StringTemplate
             alreadyLoaded = true; // do before actual load to say we're doing it
             // no prefix since this group file is the entire group, nothing lives
             // beneath it.
-            loadGroupFile("", url.ToString());
+            LoadGroupFile("", url.ToString());
         }
 
-        public override string show()
+        public override string Show()
         {
             if (!alreadyLoaded)
-                load();
+                Load();
 
-            return base.show();
+            return base.Show();
         }
 
-        public override string getName()
+        public override string Name
         {
-            return Path.GetFileNameWithoutExtension(fileName);
+            get
+            {
+                return Path.GetFileNameWithoutExtension(fileName);
+            }
         }
 
-        public override string getFileName()
+        public override string FileName
         {
-            return fileName;
+            get
+            {
+                return fileName;
+            }
         }
     }
 }

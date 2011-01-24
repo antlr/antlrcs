@@ -134,7 +134,7 @@ namespace Antlr4.Test.StringTemplate
                 ;
             writeFile(tmpdir, "t.stg", templates);
             TemplateGroup group = new TemplateGroupFile(tmpdir + "/" + "t.stg");
-            Template e = group.getInstanceOf("a");
+            Template e = group.GetInstanceOf("a");
             List<string> names = new List<string>();
             names.Add("Ter");
             names.Add("Tom");
@@ -228,7 +228,7 @@ namespace Antlr4.Test.StringTemplate
                 ;
             writeFile(tmpdir, "t.stg", templates);
             TemplateGroup group = new TemplateGroupFile(tmpdir + "/" + "t.stg");
-            Template e = group.getInstanceOf("a");
+            Template e = group.GetInstanceOf("a");
             List<string> mine = new List<string>();
             mine.Add("Ter");
             mine.Add("Tom");

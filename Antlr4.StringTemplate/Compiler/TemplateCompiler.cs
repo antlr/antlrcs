@@ -114,23 +114,23 @@ namespace Antlr4.StringTemplate.Compiler
             this.delimiterStopChar = delimiterStopChar;
         }
 
-        public virtual CompiledTemplate compile(string template)
+        public virtual CompiledTemplate Compile(string template)
         {
-            CompiledTemplate code = compile(null, null, null, template, null);
+            CompiledTemplate code = Compile(null, null, null, template, null);
             code.hasFormalArgs = false;
             return code;
         }
 
         /** Compile full template with unknown formal args. */
-        public virtual CompiledTemplate compile(string name, string template)
+        public virtual CompiledTemplate Compile(string name, string template)
         {
-            CompiledTemplate code = compile(null, name, null, template, null);
+            CompiledTemplate code = Compile(null, name, null, template, null);
             code.hasFormalArgs = false;
             return code;
         }
 
         /** Compile full template with respect to a list of formal args. */
-        public virtual CompiledTemplate compile(string srcName, string name, List<FormalArgument> args, string template, IToken templateToken)
+        public virtual CompiledTemplate Compile(string srcName, string name, List<FormalArgument> args, string template, IToken templateToken)
         {
             ANTLRStringStream @is = new ANTLRStringStream(template);
             @is.name = srcName != null ? srcName : name;
@@ -144,14 +144,14 @@ namespace Antlr4.StringTemplate.Compiler
             }
             catch (RecognitionException re)
             {
-                reportMessageAndThrowSTException(tokens, templateToken, p, re);
+                ReportMessageAndThrowTemplateException(tokens, templateToken, p, re);
                 return null;
             }
 
             if (p.NumberOfSyntaxErrors > 0 || r.Tree == null)
             {
                 CompiledTemplate impl = new CompiledTemplate();
-                impl.defineFormalArgs(args);
+                impl.DefineFormalArguments(args);
                 return impl;
             }
 
@@ -174,58 +174,58 @@ namespace Antlr4.StringTemplate.Compiler
             }
             catch (RecognitionException re)
             {
-                errMgr.internalError(null, "bad tree structure", re);
+                errMgr.InternalError(null, "bad tree structure", re);
             }
 
             return impl2;
         }
 
-        public static CompiledTemplate defineBlankRegion(CompiledTemplate outermostImpl, string name)
+        public static CompiledTemplate DefineBlankRegion(CompiledTemplate outermostImpl, string name)
         {
             string outermostTemplateName = outermostImpl.name;
-            string mangled = TemplateGroup.getMangledRegionName(outermostTemplateName, name);
+            string mangled = TemplateGroup.GetMangledRegionName(outermostTemplateName, name);
             CompiledTemplate blank = new CompiledTemplate();
             blank.isRegion = true;
             blank.regionDefType = Template.RegionType.Implicit;
             blank.name = mangled;
-            outermostImpl.addImplicitlyDefinedTemplate(blank);
+            outermostImpl.AddImplicitlyDefinedTemplate(blank);
             return blank;
         }
 
-        public static string getNewSubtemplateName()
+        public static string GetNewSubtemplateName()
         {
             subtemplateCount++;
             return SubtemplatePrefix + subtemplateCount;
         }
 
-        protected virtual void reportMessageAndThrowSTException(ITokenStream tokens, IToken templateToken, Parser parser, RecognitionException re)
+        protected virtual void ReportMessageAndThrowTemplateException(ITokenStream tokens, IToken templateToken, Parser parser, RecognitionException re)
         {
             if (re.Token.Type == TemplateLexer.EOF_TYPE)
             {
                 string msg = "premature EOF";
-                errMgr.compileTimeError(ErrorType.SYNTAX_ERROR, templateToken, re.Token, msg);
+                errMgr.CompiletimeError(ErrorType.SYNTAX_ERROR, templateToken, re.Token, msg);
             }
             else if (re is NoViableAltException)
             {
                 string msg = "'" + re.Token.Text + "' came as a complete surprise to me";
-                errMgr.compileTimeError(ErrorType.SYNTAX_ERROR, templateToken, re.Token, msg);
+                errMgr.CompiletimeError(ErrorType.SYNTAX_ERROR, templateToken, re.Token, msg);
             }
             else if (tokens.Index == 0)
             {
                 // couldn't parse anything
                 string msg = "this doesn't look like a template: \"" + tokens + "\"";
-                errMgr.compileTimeError(ErrorType.SYNTAX_ERROR, templateToken, re.Token, msg);
+                errMgr.CompiletimeError(ErrorType.SYNTAX_ERROR, templateToken, re.Token, msg);
             }
             else if (tokens.LA(1) == TemplateLexer.LDELIM)
             {
                 // couldn't parse expr
                 string msg = "doesn't look like an expression";
-                errMgr.compileTimeError(ErrorType.SYNTAX_ERROR, templateToken, re.Token, msg);
+                errMgr.CompiletimeError(ErrorType.SYNTAX_ERROR, templateToken, re.Token, msg);
             }
             else
             {
                 string msg = parser.GetErrorMessage(re, parser.TokenNames);
-                errMgr.compileTimeError(ErrorType.SYNTAX_ERROR, templateToken, re.Token, msg);
+                errMgr.CompiletimeError(ErrorType.SYNTAX_ERROR, templateToken, re.Token, msg);
             }
 
             throw new TemplateException();

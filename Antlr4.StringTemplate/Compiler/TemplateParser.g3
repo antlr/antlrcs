@@ -126,14 +126,14 @@ option
 	:	ID
 		{
 		if ( !validOption ) {
-            errMgr.compileTimeError(ErrorType.NO_SUCH_OPTION, templateToken, $ID, $ID.text);
+            errMgr.CompiletimeError(ErrorType.NO_SUCH_OPTION, templateToken, $ID, $ID.text);
 		}
 		}
 		(	'=' exprNoComma 					-> {validOption}? ^('=' ID exprNoComma)
 												->
 		|	{
 			if ( defVal==null ) {
-				errMgr.compileTimeError(ErrorType.NO_DEFAULT_VALUE, templateToken, $ID);
+				errMgr.CompiletimeError(ErrorType.NO_DEFAULT_VALUE, templateToken, $ID);
 			}
 			}
 												-> {validOption&&defVal!=null}?

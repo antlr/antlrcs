@@ -44,8 +44,8 @@ namespace Antlr4.Test.StringTemplate
         public void TestTrimmedSubtemplates()
         {
             TemplateGroup group = new TemplateGroup();
-            group.defineTemplate("test", "names", "<names:{n | <n>}>!");
-            Template st = group.getInstanceOf("test");
+            group.DefineTemplate("test", "names", "<names:{n | <n>}>!");
+            Template st = group.GetInstanceOf("test");
             st.Add("names", "Ter");
             st.Add("names", "Tom");
             st.Add("names", "Sumana");
@@ -58,9 +58,9 @@ namespace Antlr4.Test.StringTemplate
         public void TestTrimmedSubtemplatesNoArgs()
         {
             TemplateGroup group = new TemplateGroup();
-            group.defineTemplate("test", "[<foo({ foo })>]");
-            group.defineTemplate("foo", "x", "<x>");
-            Template st = group.getInstanceOf("test");
+            group.DefineTemplate("test", "[<foo({ foo })>]");
+            group.DefineTemplate("foo", "x", "<x>");
+            Template st = group.GetInstanceOf("test");
             string expected = "[ foo ]";
             string result = st.Render();
             Assert.AreEqual(expected, result);
@@ -70,8 +70,8 @@ namespace Antlr4.Test.StringTemplate
         public void TestTrimmedSubtemplatesArgs()
         {
             TemplateGroup group = new TemplateGroup();
-            group.defineTemplate("test", "names", "<names:{x|  foo }>");
-            Template st = group.getInstanceOf("test");
+            group.DefineTemplate("test", "names", "<names:{x|  foo }>");
+            Template st = group.GetInstanceOf("test");
             st.Add("names", "Ter");
             st.Add("names", "Tom");
             st.Add("names", "Sumana");
@@ -84,8 +84,8 @@ namespace Antlr4.Test.StringTemplate
         public void TestTrimJustOneWSInSubtemplates()
         {
             TemplateGroup group = new TemplateGroup();
-            group.defineTemplate("test", "names", "<names:{n |  <n> }>!");
-            Template st = group.getInstanceOf("test");
+            group.DefineTemplate("test", "names", "<names:{n |  <n> }>!");
+            Template st = group.GetInstanceOf("test");
             st.Add("names", "Ter");
             st.Add("names", "Tom");
             st.Add("names", "Sumana");
@@ -98,9 +98,9 @@ namespace Antlr4.Test.StringTemplate
         public void TestTrimNewlineInSubtemplates()
         {
             TemplateGroup group = new TemplateGroup();
-            group.defineTemplate("test", "names", "<names:{n |\n" +
+            group.DefineTemplate("test", "names", "<names:{n |\n" +
                                          "<n>}>!");
-            Template st = group.getInstanceOf("test");
+            Template st = group.GetInstanceOf("test");
             st.Add("names", "Ter");
             st.Add("names", "Tom");
             st.Add("names", "Sumana");
@@ -113,10 +113,10 @@ namespace Antlr4.Test.StringTemplate
         public void TestLeaveNewlineOnEndInSubtemplates()
         {
             TemplateGroup group = new TemplateGroup();
-            group.defineTemplate("test", "names", "<names:{n |\n" +
+            group.DefineTemplate("test", "names", "<names:{n |\n" +
                                          "<n>\n" +
                                          "}>!");
-            Template st = group.getInstanceOf("test");
+            Template st = group.GetInstanceOf("test");
             st.Add("names", "Ter");
             st.Add("names", "Tom");
             st.Add("names", "Sumana");
@@ -130,10 +130,10 @@ namespace Antlr4.Test.StringTemplate
         {
             // fails since it counts indent from outer too
             TemplateGroup group = new TemplateGroup();
-            group.defineTemplate("test", "names", "  <names:{n |\n" +
+            group.DefineTemplate("test", "names", "  <names:{n |\n" +
                                          "    <n>\n" +
                                          "  }>!");
-            Template st = group.getInstanceOf("test");
+            Template st = group.GetInstanceOf("test");
             st.Add("names", "Ter");
             st.Add("names", "Tom");
             st.Add("names", "Sumana");
@@ -143,7 +143,7 @@ namespace Antlr4.Test.StringTemplate
                 "    Sumana" + newline +
                 "!";
             string result = st.Render();
-            st.impl.dump();
+            st.impl.Dump();
             Assert.AreEqual(expected, result);
         }
 

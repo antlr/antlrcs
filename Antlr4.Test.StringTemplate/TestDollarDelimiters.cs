@@ -53,8 +53,8 @@ namespace Antlr4.Test.StringTemplate
         public void TestParallelMap()
         {
             TemplateGroup group = new TemplateGroup('$', '$');
-            group.defineTemplate("test", "names,phones", "hi $names,phones:{n,p | $n$:$p$;}$");
-            Template st = group.getInstanceOf("test");
+            group.DefineTemplate("test", "names,phones", "hi $names,phones:{n,p | $n$:$p$;}$");
+            Template st = group.GetInstanceOf("test");
             st.Add("names", "Ter");
             st.Add("names", "Tom");
             st.Add("names", "Sumana");
@@ -76,7 +76,7 @@ namespace Antlr4.Test.StringTemplate
             writeFile(dir, "a.st", a);
             writeFile(dir, "b.st", b);
             TemplateGroup group = new TemplateGroupDirectory(dir, '$', '$');
-            Template st = group.getInstanceOf("a");
+            Template st = group.GetInstanceOf("a");
             string expected = " bar ";
             string result = st.Render();
             Assert.AreEqual(expected, result);
@@ -93,7 +93,7 @@ namespace Antlr4.Test.StringTemplate
                     ;
             writeFile(tmpdir, "group.stg", templates);
             TemplateGroup group = new TemplateGroupFile(tmpdir + "/group.stg", '$', '$');
-            Template b = group.getInstanceOf("method");
+            Template b = group.GetInstanceOf("method");
             b.Add("name", "foo");
             string expecting = "x=99; // foo";
             string result = b.Render();

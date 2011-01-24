@@ -42,20 +42,20 @@ namespace Antlr4.StringTemplate
     public class StringRenderer : IAttributeRenderer
     {
         // trim(s) and strlen(s) built-in funcs; these are Format options
-        public virtual string ToString(object o, string formatString, CultureInfo locale)
+        public virtual string ToString(object o, string formatString, CultureInfo culture)
         {
             string s = (string)o;
             if (formatString == null)
                 return s;
 
             if (formatString.Equals("upper"))
-                return s.ToUpper(locale);
+                return s.ToUpper(culture);
 
             if (formatString.Equals("lower"))
-                return s.ToLower(locale);
+                return s.ToLower(culture);
 
             if (formatString.Equals("cap"))
-                return char.ToUpper(s[0], locale) + s.Substring(1);
+                return char.ToUpper(s[0], culture) + s.Substring(1);
 
             if (formatString.Equals("url-encode"))
                 return HttpUtility.UrlEncode(s);

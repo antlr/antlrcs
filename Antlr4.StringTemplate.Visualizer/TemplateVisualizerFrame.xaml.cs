@@ -212,7 +212,7 @@ namespace Antlr4.StringTemplate.Visualizer
 
             UpdateStack();
             UpdateAttributes();
-            viewModel.Bytecode = currentTemplate.impl.disasm();
+            viewModel.Bytecode = currentTemplate.impl.Disassemble();
             viewModel.Ast = currentTemplate.impl.ast;
 
             SetSelectionPath(viewModel.TemplateCallHierarchy[0], currentTemplate.GetEnclosingInstanceStack(true));
@@ -232,10 +232,10 @@ namespace Antlr4.StringTemplate.Visualizer
                 }
                 else
                 {
-                    InterpEvent e = ViewModel.Visualizer.Interpreter.getEvents(currentTemplate.enclosingInstance)[i];
+                    InterpEvent e = ViewModel.Visualizer.Interpreter.GetEvents(currentTemplate.enclosingInstance)[i];
                     if (e is EvalTemplateEvent)
                     {
-                        if (currentTemplate.IsAnonymousSubtemplate())
+                        if (currentTemplate.IsAnonymousSubtemplate)
                             Highlight(TemplateTextBox.Document, r);
 
                         Highlight(OutputTextBox.Document, new Interval(e.Start, e.Stop));
@@ -297,7 +297,7 @@ namespace Antlr4.StringTemplate.Visualizer
                                 if (i > 0)
                                     locations.Append(", ");
 
-                                locations.AppendFormat("{0}:{1}", Path.GetFileName(ae.getFileName()), ae.getLine());
+                                locations.AppendFormat("{0}:{1}", Path.GetFileName(ae.GetFileName()), ae.GetLine());
                                 i++;
                             }
                         }

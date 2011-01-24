@@ -51,7 +51,7 @@ namespace Antlr4.Test.StringTemplate
                 "t() ::= <<" + Environment.NewLine +
                 "foo" + Environment.NewLine +
                 ">>" + Environment.NewLine;
-            string result = group.show();
+            string result = group.Show();
             Assert.AreEqual(expected, result);
         }
 
@@ -75,7 +75,7 @@ namespace Antlr4.Test.StringTemplate
                 "wow() ::= <<" + Environment.NewLine +
                 "last" + Environment.NewLine +
                 ">>" + Environment.NewLine;
-            string result = group.show();
+            string result = group.Show();
             Assert.AreEqual(expected, result);
         }
 
@@ -91,7 +91,7 @@ namespace Antlr4.Test.StringTemplate
                 "t(a,b) ::= <<" + Environment.NewLine +
                 "[<a>]" + Environment.NewLine +
                 ">>" + Environment.NewLine;
-            string result = group.show();
+            string result = group.Show();
             Assert.AreEqual(expected, result);
         }
 
@@ -107,7 +107,7 @@ namespace Antlr4.Test.StringTemplate
                 "t(a={def1},b=\"def2\") ::= <<" + Environment.NewLine +
                 "[<a>]" + Environment.NewLine +
                 ">>" + Environment.NewLine;
-            string result = group.show();
+            string result = group.Show();
             Assert.AreEqual(expected, result);
         }
 
@@ -123,7 +123,7 @@ namespace Antlr4.Test.StringTemplate
                 "t(a={x | 2*<x>}) ::= <<" + Environment.NewLine +
                 "[<a>]" + Environment.NewLine +
                 ">>" + Environment.NewLine;
-            string result = group.show();
+            string result = group.Show();
             Assert.AreEqual(expected, result);
         }
 
@@ -139,7 +139,7 @@ namespace Antlr4.Test.StringTemplate
                 "t(a) ::= <<" + Environment.NewLine +
                 "<a:{x | <x:{y | <y>}>}>" + Environment.NewLine +
                 ">>" + Environment.NewLine;
-            string result = group.show();
+            string result = group.Show();
             Assert.AreEqual(expected, result);
         }
 
@@ -151,12 +151,12 @@ namespace Antlr4.Test.StringTemplate
 
             writeFile(tmpdir, "t.stg", templates);
             TemplateGroup group = new TemplateGroupFile(tmpdir + "/" + "t.stg");
-            group.load();
+            group.Load();
             string expected =
                 "t(a={x | <x:{y|<y>}>}) ::= <<" + Environment.NewLine +
                 "ick" + Environment.NewLine +
                 ">>" + Environment.NewLine;
-            string result = group.show();
+            string result = group.Show();
             Assert.AreEqual(expected, result);
         }
 
@@ -172,7 +172,7 @@ namespace Antlr4.Test.StringTemplate
                 "t(a={x | \\< <x:{y|<y>\\}}>}) ::= <<" + Environment.NewLine +
                 "[<a>]" + Environment.NewLine +
                 ">>" + Environment.NewLine;
-            string result = group.show();
+            string result = group.Show();
             Assert.AreEqual(expected, result);
         }
     }

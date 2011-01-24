@@ -65,7 +65,7 @@ namespace Antlr4.StringTemplate.Misc
         // INTERNAL ERRORS
         public static readonly ErrorType INTERNAL_ERROR = new ErrorType("{0}");
         public static readonly ErrorType WRITE_IO_ERROR = new ErrorType("error writing output caused by");
-        public static readonly ErrorType CANT_LOAD_GROUP_FILE = new ErrorType("can't load group file {0}");
+        public static readonly ErrorType CANT_LOAD_GROUP_FILE = new ErrorType("can't Load group file {0}");
 
         private readonly string _message;
 

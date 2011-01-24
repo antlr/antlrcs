@@ -91,8 +91,8 @@ namespace Antlr4.Test.StringTemplate
                     "foo(x) ::= \"<x.id>: <x.name>\"\n";
             writeFile(tmpdir, "foo.stg", templates);
             TemplateGroup group = new TemplateGroupFile(tmpdir + "/foo.stg");
-            group.registerModelAdaptor(typeof(User), new UserAdaptor());
-            Template st = group.getInstanceOf("foo");
+            group.RegisterModelAdaptor(typeof(User), new UserAdaptor());
+            Template st = group.GetInstanceOf("foo");
             st.Add("x", new User(100, "parrt"));
             string expecting = "100: parrt";
             string result = st.Render();
@@ -107,9 +107,9 @@ namespace Antlr4.Test.StringTemplate
                     "foo(x) ::= \"<x.qqq>\"\n";
             writeFile(tmpdir, "foo.stg", templates);
             TemplateGroup group = new TemplateGroupFile(tmpdir + "/foo.stg");
-            group.setListener(errors);
-            group.registerModelAdaptor(typeof(User), new UserAdaptor());
-            Template st = group.getInstanceOf("foo");
+            group.Listener = errors;
+            group.RegisterModelAdaptor(typeof(User), new UserAdaptor());
+            Template st = group.GetInstanceOf("foo");
             st.Add("x", new User(100, "parrt"));
             string expecting = "";
             string result = st.Render();
@@ -127,8 +127,8 @@ namespace Antlr4.Test.StringTemplate
                     "foo(x) ::= \"<x.id>: <x.name>\"\n";
             writeFile(tmpdir, "foo.stg", templates);
             TemplateGroup group = new TemplateGroupFile(tmpdir + "/foo.stg");
-            group.registerModelAdaptor(typeof(User), new UserAdaptor());
-            Template st = group.getInstanceOf("foo");
+            group.RegisterModelAdaptor(typeof(User), new UserAdaptor());
+            Template st = group.GetInstanceOf("foo");
             st.Add("x", new SuperUser(100, "parrt")); // create subclass of User
             string expecting = "100: super parrt";
             string result = st.Render();
@@ -142,13 +142,13 @@ namespace Antlr4.Test.StringTemplate
                     "foo(x) ::= \"<x.id>: <x.name>\"\n";
             writeFile(tmpdir, "foo.stg", templates);
             TemplateGroup group = new TemplateGroupFile(tmpdir + "/foo.stg");
-            group.registerModelAdaptor(typeof(User), new UserAdaptor());
-            group.getModelAdaptor(typeof(User)); // get User, SuperUser into cache
-            group.getModelAdaptor(typeof(SuperUser));
+            group.RegisterModelAdaptor(typeof(User), new UserAdaptor());
+            group.GetModelAdaptor(typeof(User)); // get User, SuperUser into cache
+            group.GetModelAdaptor(typeof(SuperUser));
 
-            group.registerModelAdaptor(typeof(User), new UserAdaptorConst());
+            group.RegisterModelAdaptor(typeof(User), new UserAdaptorConst());
             // cache should be reset so we see new adaptor
-            Template st = group.getInstanceOf("foo");
+            Template st = group.GetInstanceOf("foo");
             st.Add("x", new User(100, "parrt"));
             string expecting = "const id value: const name value"; // sees UserAdaptorConst
             string result = st.Render();
@@ -162,9 +162,9 @@ namespace Antlr4.Test.StringTemplate
                     "foo(x) ::= \"<x.id>: <x.name>\"\n";
             writeFile(tmpdir, "foo.stg", templates);
             TemplateGroup group = new TemplateGroupFile(tmpdir + "/foo.stg");
-            group.registerModelAdaptor(typeof(User), new UserAdaptor());
-            group.registerModelAdaptor(typeof(SuperUser), new UserAdaptorConst()); // most specific
-            Template st = group.getInstanceOf("foo");
+            group.RegisterModelAdaptor(typeof(User), new UserAdaptor());
+            group.RegisterModelAdaptor(typeof(SuperUser), new UserAdaptorConst()); // most specific
+            Template st = group.GetInstanceOf("foo");
             st.Add("x", new User(100, "parrt"));
             string expecting = "100: parrt";
             string result = st.Render();

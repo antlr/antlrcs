@@ -54,10 +54,10 @@ namespace Antlr4.Test.StringTemplate
         public void TestIndirectTemplateInclude()
         {
             TemplateGroup group = new TemplateGroup();
-            group.defineTemplate("foo", "bar");
+            group.DefineTemplate("foo", "bar");
             string template = "<(name)()>";
-            group.defineTemplate("test", "name", template);
-            Template st = group.getInstanceOf("test");
+            group.DefineTemplate("test", "name", template);
+            Template st = group.GetInstanceOf("test");
             st.Add("name", "foo");
             string expected = "bar";
             string result = st.Render();
@@ -68,10 +68,10 @@ namespace Antlr4.Test.StringTemplate
         public void TestIndirectTemplateIncludeWithArgs()
         {
             TemplateGroup group = new TemplateGroup();
-            group.defineTemplate("foo", "x,y", "<x><y>");
+            group.DefineTemplate("foo", "x,y", "<x><y>");
             string template = "<(name)({1},{2})>";
-            group.defineTemplate("test", "name", template);
-            Template st = group.getInstanceOf("test");
+            group.DefineTemplate("test", "name", template);
+            Template st = group.GetInstanceOf("test");
             st.Add("name", "foo");
             string expected = "12";
             string result = st.Render();
@@ -82,11 +82,11 @@ namespace Antlr4.Test.StringTemplate
         public void TestIndirectTemplateIncludeViaTemplate()
         {
             TemplateGroup group = new TemplateGroup();
-            group.defineTemplate("foo", "bar");
-            group.defineTemplate("tname", "foo");
+            group.DefineTemplate("foo", "bar");
+            group.DefineTemplate("tname", "foo");
             string template = "<(tname())()>";
-            group.defineTemplate("test", "name", template);
-            Template st = group.getInstanceOf("test");
+            group.DefineTemplate("test", "name", template);
+            Template st = group.GetInstanceOf("test");
             string expected = "bar";
             string result = st.Render();
             Assert.AreEqual(expected, result);
@@ -108,9 +108,9 @@ namespace Antlr4.Test.StringTemplate
         public void TestIndirectMap()
         {
             TemplateGroup group = new TemplateGroup();
-            group.defineTemplate("a", "x", "[<x>]");
-            group.defineTemplate("test", "names,templateName", "hi <names:(templateName)()>!");
-            Template st = group.getInstanceOf("test");
+            group.DefineTemplate("a", "x", "[<x>]");
+            group.DefineTemplate("test", "names,templateName", "hi <names:(templateName)()>!");
+            Template st = group.GetInstanceOf("test");
             st.Add("names", "Ter");
             st.Add("names", "Tom");
             st.Add("names", "Sumana");

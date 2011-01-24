@@ -51,8 +51,8 @@ namespace Antlr4.Test.StringTemplate
             writeFile(tmpdir, "t.stg", templates);
             TemplateGroup group = new TemplateGroupFile(tmpdir + "/" + "t.stg");
             TemplateGroup.debug = true;
-            DebugST st = (DebugST)group.getInstanceOf("t");
-            List<InterpEvent> events = st.getEvents();
+            DebugST st = (DebugST)group.GetInstanceOf("t");
+            List<InterpEvent> events = st.GetEvents();
             string expected =
                 "[EvalExprEvent{self=t(), start=0, stop=2, expr=foo}," +
                 " EvalTemplateEvent{self=t(), start=0, stop=2}]";
@@ -69,8 +69,8 @@ namespace Antlr4.Test.StringTemplate
             writeFile(tmpdir, "t.stg", templates);
             TemplateGroup group = new TemplateGroupFile(tmpdir + "/" + "t.stg");
             TemplateGroup.debug = true;
-            DebugST st = (DebugST)group.getInstanceOf("t");
-            List<InterpEvent> events = st.getEvents();
+            DebugST st = (DebugST)group.GetInstanceOf("t");
+            List<InterpEvent> events = st.GetEvents();
             string expected =
                 "[EvalExprEvent{self=t(), start=0, stop=-1, expr=<x>}," +
                 " EvalExprEvent{self=t(), start=0, stop=0, expr= }," +
@@ -89,8 +89,8 @@ namespace Antlr4.Test.StringTemplate
             writeFile(tmpdir, "t.stg", templates);
             TemplateGroup group = new TemplateGroupFile(tmpdir + "/" + "t.stg");
             TemplateGroup.debug = true;
-            DebugST st = (DebugST)group.getInstanceOf("t");
-            List<InterpEvent> events = st.getEvents();
+            DebugST st = (DebugST)group.GetInstanceOf("t");
+            List<InterpEvent> events = st.GetEvents();
             string expected =
                 "[EvalExprEvent{self=t(), start=0, stop=0, expr=[}," +
                 " EvalExprEvent{self=u(), start=1, stop=0, expr=<x>}," +

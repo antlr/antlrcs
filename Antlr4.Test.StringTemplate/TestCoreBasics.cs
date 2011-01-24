@@ -72,8 +72,8 @@ namespace Antlr4.Test.StringTemplate
             ErrorBuffer errors = new ErrorBuffer();
             writeFile(tmpdir, "t.stg", templates);
             TemplateGroup group = new TemplateGroupFile(tmpdir + "/" + "t.stg");
-            group.setListener(errors);
-            Template st = group.getInstanceOf("t");
+            group.Listener = errors;
+            Template st = group.GetInstanceOf("t");
             string result = null;
             try
             {
@@ -203,7 +203,7 @@ namespace Antlr4.Test.StringTemplate
             ErrorBufferAllErrors errors = new ErrorBufferAllErrors();
             string template = "<u.qqq>";
             TemplateGroup group = new TemplateGroup();
-            group.setListener(errors);
+            group.Listener = errors;
             Template st = new Template(group, template);
             st.Add("u", new User(1, "parrt"));
             string expected = "";
@@ -219,7 +219,7 @@ namespace Antlr4.Test.StringTemplate
         {
             ErrorBufferAllErrors errors = new ErrorBufferAllErrors();
             TemplateGroup group = new TemplateGroup();
-            group.setListener(errors);
+            group.Listener = errors;
             string template = "<u.(qqq)>";
             Template st = new Template(group, template);
             st.Add("u", new User(1, "parrt"));
@@ -237,7 +237,7 @@ namespace Antlr4.Test.StringTemplate
         {
             ErrorBufferAllErrors errors = new ErrorBufferAllErrors();
             TemplateGroup group = new TemplateGroup();
-            group.setListener(errors);
+            group.Listener = errors;
             string template = "<u.(name)>";
             Template st = new Template(group, template);
             st.Add("u", new User(1, "parrt"));
@@ -253,11 +253,11 @@ namespace Antlr4.Test.StringTemplate
         [TestMethod]
         public void TestInclude()
         {
-            string template = "load <box()>;";
+            string template = "Load <box()>;";
             Template st = new Template(template);
-            st.impl.nativeGroup.defineTemplate("box", "kewl\ndaddy");
+            st.impl.nativeGroup.DefineTemplate("box", "kewl\ndaddy");
             string expected =
-                "load kewl" + newline +
+                "Load kewl" + newline +
                 "daddy;";
             string result = st.Render();
             Assert.AreEqual(expected, result);
@@ -266,12 +266,12 @@ namespace Antlr4.Test.StringTemplate
         [TestMethod]
         public void TestIncludeWithArg()
         {
-            string template = "load <box(\"arg\")>;";
+            string template = "Load <box(\"arg\")>;";
             Template st = new Template(template);
-            st.impl.nativeGroup.defineTemplate("box", "x", "kewl <x> daddy");
-            st.impl.dump();
+            st.impl.nativeGroup.DefineTemplate("box", "x", "kewl <x> daddy");
+            st.impl.Dump();
             st.Add("name", "Ter");
-            string expected = "load kewl arg daddy;";
+            string expected = "Load kewl arg daddy;";
             string result = st.Render();
             Assert.AreEqual(expected, result);
         }
@@ -279,12 +279,12 @@ namespace Antlr4.Test.StringTemplate
         [TestMethod]
         public void TestIncludeWithArg2()
         {
-            string template = "load <box(\"arg\", foo())>;";
+            string template = "Load <box(\"arg\", foo())>;";
             Template st = new Template(template);
-            st.impl.nativeGroup.defineTemplate("box", "x,y", "kewl <x> <y> daddy");
-            st.impl.nativeGroup.defineTemplate("foo", "blech");
+            st.impl.nativeGroup.DefineTemplate("box", "x,y", "kewl <x> <y> daddy");
+            st.impl.nativeGroup.DefineTemplate("foo", "blech");
             st.Add("name", "Ter");
-            string expected = "load kewl arg blech daddy;";
+            string expected = "Load kewl arg blech daddy;";
             string result = st.Render();
             Assert.AreEqual(expected, result);
         }
@@ -292,12 +292,12 @@ namespace Antlr4.Test.StringTemplate
         [TestMethod]
         public void TestIncludeWithNestedArgs()
         {
-            string template = "load <box(foo(\"arg\"))>;";
+            string template = "Load <box(foo(\"arg\"))>;";
             Template st = new Template(template);
-            st.impl.nativeGroup.defineTemplate("box", "y", "kewl <y> daddy");
-            st.impl.nativeGroup.defineTemplate("foo", "x", "blech <x>");
+            st.impl.nativeGroup.DefineTemplate("box", "y", "kewl <y> daddy");
+            st.impl.nativeGroup.DefineTemplate("foo", "x", "blech <x>");
             st.Add("name", "Ter");
-            string expected = "load kewl blech arg daddy;";
+            string expected = "Load kewl blech arg daddy;";
             string result = st.Render();
             Assert.AreEqual(expected, result);
         }
@@ -306,9 +306,9 @@ namespace Antlr4.Test.StringTemplate
         public void TestDefineTemplate()
         {
             TemplateGroup group = new TemplateGroup();
-            group.defineTemplate("inc", "x", "<x>+1");
-            group.defineTemplate("test", "name", "hi <name>!");
-            Template st = group.getInstanceOf("test");
+            group.DefineTemplate("inc", "x", "<x>+1");
+            group.DefineTemplate("test", "name", "hi <name>!");
+            Template st = group.GetInstanceOf("test");
             st.Add("name", "Ter");
             st.Add("name", "Tom");
             st.Add("name", "Sumana");
@@ -322,9 +322,9 @@ namespace Antlr4.Test.StringTemplate
         public void TestMap()
         {
             TemplateGroup group = new TemplateGroup();
-            group.defineTemplate("inc", "x", "[<x>]");
-            group.defineTemplate("test", "name", "hi <name:inc()>!");
-            Template st = group.getInstanceOf("test");
+            group.DefineTemplate("inc", "x", "[<x>]");
+            group.DefineTemplate("test", "name", "hi <name:inc()>!");
+            Template st = group.GetInstanceOf("test");
             st.Add("name", "Ter");
             st.Add("name", "Tom");
             st.Add("name", "Sumana");
@@ -338,9 +338,9 @@ namespace Antlr4.Test.StringTemplate
         public void TestIndirectMap()
         {
             TemplateGroup group = new TemplateGroup();
-            group.defineTemplate("inc", "x", "[<x>]");
-            group.defineTemplate("test", "t,name", "<name:(t)()>!");
-            Template st = group.getInstanceOf("test");
+            group.DefineTemplate("inc", "x", "[<x>]");
+            group.DefineTemplate("test", "t,name", "<name:(t)()>!");
+            Template st = group.GetInstanceOf("test");
             st.Add("t", "inc");
             st.Add("name", "Ter");
             st.Add("name", "Tom");
@@ -360,7 +360,7 @@ namespace Antlr4.Test.StringTemplate
                 "bold(x) ::= <<*<x>*>>\n";
             writeFile(tmpdir, "t.stg", templates);
             TemplateGroup group = new TemplateGroupFile(tmpdir + "/" + "t.stg");
-            Template st = group.getInstanceOf("test");
+            Template st = group.GetInstanceOf("test");
             st.Add("name", "Ter");
             st.Add("name", "Tom");
             st.Add("name", "Sumana");
@@ -373,8 +373,8 @@ namespace Antlr4.Test.StringTemplate
         public void TestParallelMap()
         {
             TemplateGroup group = new TemplateGroup();
-            group.defineTemplate("test", "names,phones", "hi <names,phones:{n,p | <n>:<p>;}>");
-            Template st = group.getInstanceOf("test");
+            group.DefineTemplate("test", "names,phones", "hi <names,phones:{n,p | <n>:<p>;}>");
+            Template st = group.GetInstanceOf("test");
             st.Add("names", "Ter");
             st.Add("names", "Tom");
             st.Add("names", "Sumana");
@@ -391,8 +391,8 @@ namespace Antlr4.Test.StringTemplate
         public void TestParallelMapWith3Versus2Elements()
         {
             TemplateGroup group = new TemplateGroup();
-            group.defineTemplate("test", "names,phones", "hi <names,phones:{n,p | <n>:<p>;}>");
-            Template st = group.getInstanceOf("test");
+            group.DefineTemplate("test", "names,phones", "hi <names,phones:{n,p | <n>:<p>;}>");
+            Template st = group.GetInstanceOf("test");
             st.Add("names", "Ter");
             st.Add("names", "Tom");
             st.Add("names", "Sumana");
@@ -408,10 +408,10 @@ namespace Antlr4.Test.StringTemplate
         public void TestParallelMapThenMap()
         {
             TemplateGroup group = new TemplateGroup();
-            group.defineTemplate("bold", "x", "[<x>]");
-            group.defineTemplate("test", "names,phones",
+            group.DefineTemplate("bold", "x", "[<x>]");
+            group.DefineTemplate("test", "names,phones",
                                  "hi <names,phones:{n,p | <n>:<p>;}:bold()>");
-            Template st = group.getInstanceOf("test");
+            Template st = group.GetInstanceOf("test");
             st.Add("names", "Ter");
             st.Add("names", "Tom");
             st.Add("names", "Sumana");
@@ -427,10 +427,10 @@ namespace Antlr4.Test.StringTemplate
         public void TestMapThenParallelMap()
         {
             TemplateGroup group = new TemplateGroup();
-            group.defineTemplate("bold", "x", "[<x>]");
-            group.defineTemplate("test", "names,phones",
+            group.DefineTemplate("bold", "x", "[<x>]");
+            group.DefineTemplate("test", "names,phones",
                                  "hi <[names:bold()],phones:{n,p | <n>:<p>;}>");
-            Template st = group.getInstanceOf("test");
+            Template st = group.GetInstanceOf("test");
             st.Add("names", "Ter");
             st.Add("names", "Tom");
             st.Add("names", "Sumana");
@@ -446,9 +446,9 @@ namespace Antlr4.Test.StringTemplate
         public void TestMapIndexes()
         {
             TemplateGroup group = new TemplateGroup();
-            group.defineTemplate("inc", "x,i", "<i>:<x>");
-            group.defineTemplate("test", "name", "<name:{n|<inc(n,i)>}; separator=\", \">");
-            Template st = group.getInstanceOf("test");
+            group.DefineTemplate("inc", "x,i", "<i>:<x>");
+            group.DefineTemplate("test", "name", "<name:{n|<inc(n,i)>}; separator=\", \">");
+            Template st = group.GetInstanceOf("test");
             st.Add("name", "Ter");
             st.Add("name", "Tom");
             st.Add("name", null); // don't count this one
@@ -463,8 +463,8 @@ namespace Antlr4.Test.StringTemplate
         public void TestMapIndexes2()
         {
             TemplateGroup group = new TemplateGroup();
-            group.defineTemplate("test", "name", "<name:{n | <i>:<n>}; separator=\", \">");
-            Template st = group.getInstanceOf("test");
+            group.DefineTemplate("test", "name", "<name:{n | <i>:<n>}; separator=\", \">");
+            Template st = group.GetInstanceOf("test");
             st.Add("name", "Ter");
             st.Add("name", "Tom");
             st.Add("name", null); // don't count this one. still can't apply subtemplate to null value
@@ -479,9 +479,9 @@ namespace Antlr4.Test.StringTemplate
         public void TestMapSingleValue()
         {
             TemplateGroup group = new TemplateGroup();
-            group.defineTemplate("a", "x", "[<x>]");
-            group.defineTemplate("test", "name", "hi <name:a()>!");
-            Template st = group.getInstanceOf("test");
+            group.DefineTemplate("a", "x", "[<x>]");
+            group.DefineTemplate("test", "name", "hi <name:a()>!");
+            Template st = group.GetInstanceOf("test");
             st.Add("name", "Ter");
             string expected = "hi [Ter]!";
             string result = st.Render();
@@ -492,9 +492,9 @@ namespace Antlr4.Test.StringTemplate
         public void TestMapNullValue()
         {
             TemplateGroup group = new TemplateGroup();
-            group.defineTemplate("a", "x", "[<x>]");
-            group.defineTemplate("test", "name", "hi <name:a()>!");
-            Template st = group.getInstanceOf("test");
+            group.DefineTemplate("a", "x", "[<x>]");
+            group.DefineTemplate("test", "name", "hi <name:a()>!");
+            Template st = group.GetInstanceOf("test");
             string expected = "hi !";
             string result = st.Render();
             Assert.AreEqual(expected, result);
@@ -504,8 +504,8 @@ namespace Antlr4.Test.StringTemplate
         public void TestMapNullValueInList()
         {
             TemplateGroup group = new TemplateGroup();
-            group.defineTemplate("test", "name", "<name; separator=\", \">");
-            Template st = group.getInstanceOf("test");
+            group.DefineTemplate("test", "name", "<name; separator=\", \">");
+            Template st = group.GetInstanceOf("test");
             st.Add("name", "Ter");
             st.Add("name", "Tom");
             st.Add("name", null); // don't print this one
@@ -520,10 +520,10 @@ namespace Antlr4.Test.StringTemplate
         public void TestRepeatedMap()
         {
             TemplateGroup group = new TemplateGroup();
-            group.defineTemplate("a", "x", "[<x>]");
-            group.defineTemplate("b", "x", "(<x>)");
-            group.defineTemplate("test", "name", "hi <name:a():b()>!");
-            Template st = group.getInstanceOf("test");
+            group.DefineTemplate("a", "x", "[<x>]");
+            group.DefineTemplate("b", "x", "(<x>)");
+            group.DefineTemplate("test", "name", "hi <name:a():b()>!");
+            Template st = group.GetInstanceOf("test");
             st.Add("name", "Ter");
             st.Add("name", "Tom");
             st.Add("name", "Sumana");
@@ -537,10 +537,10 @@ namespace Antlr4.Test.StringTemplate
         public void TestRoundRobinMap()
         {
             TemplateGroup group = new TemplateGroup();
-            group.defineTemplate("a", "x", "[<x>]");
-            group.defineTemplate("b", "x", "(<x>)");
-            group.defineTemplate("test", "name", "hi <name:a(),b()>!");
-            Template st = group.getInstanceOf("test");
+            group.DefineTemplate("a", "x", "[<x>]");
+            group.DefineTemplate("b", "x", "(<x>)");
+            group.DefineTemplate("test", "name", "hi <name:a(),b()>!");
+            Template st = group.GetInstanceOf("test");
             st.Add("name", "Ter");
             st.Add("name", "Tom");
             st.Add("name", "Sumana");
@@ -616,8 +616,8 @@ namespace Antlr4.Test.StringTemplate
                 ">>\n";
             writeFile(dir, "group.stg", groupFile);
             TemplateGroupFile group = new TemplateGroupFile(dir + "/group.stg");
-            Template st = group.getInstanceOf("a");
-            st.impl.dump();
+            Template st = group.GetInstanceOf("a");
+            st.impl.Dump();
             string expected = "foo" + newline +
                               "bar";
             string result = st.Render();
@@ -834,8 +834,8 @@ namespace Antlr4.Test.StringTemplate
         public void TestSeparator()
         {
             TemplateGroup group = new TemplateGroup();
-            group.defineTemplate("test", "names", "<names:{n | case <n>}; separator=\", \">");
-            Template st = group.getInstanceOf("test");
+            group.DefineTemplate("test", "names", "<names:{n | case <n>}; separator=\", \">");
+            Template st = group.GetInstanceOf("test");
             st.Add("names", "Ter");
             st.Add("names", "Tom");
             string expected =
@@ -848,8 +848,8 @@ namespace Antlr4.Test.StringTemplate
         public void TestSeparatorInList()
         {
             TemplateGroup group = new TemplateGroup();
-            group.defineTemplate("test", "names", "<names:{n | case <n>}; separator=\", \">");
-            Template st = group.getInstanceOf("test");
+            group.DefineTemplate("test", "names", "<names:{n | case <n>}; separator=\", \">");
+            Template st = group.GetInstanceOf("test");
             st.Add("names", new List<string>() { "Ter", "Tom" });
             string expected =
                 "case Ter, case Tom";
@@ -862,7 +862,7 @@ namespace Antlr4.Test.StringTemplate
         {
             string template = "<a:t(x,y),u()>";
             Template st = new Template(template);
-            st.impl.dump();
+            st.impl.Dump();
         }
     }
 }

@@ -114,7 +114,7 @@ namespace Antlr4.StringTemplate.Visualizer
                 if (_children == null)
                 {
                     _children = new List<TemplateCallHierarchyViewModel>();
-                    foreach (var @event in _interpreter.getEvents(_template))
+                    foreach (var @event in _interpreter.GetEvents(_template))
                         _children.Add(new TemplateCallHierarchyViewModel(_interpreter, @event.Self));
                 }
 
@@ -124,10 +124,10 @@ namespace Antlr4.StringTemplate.Visualizer
 
         public override string ToString()
         {
-            if (_template.IsAnonymousSubtemplate())
+            if (_template.IsAnonymousSubtemplate)
                 return "{...}";
 
-            return string.Format("{0} @ {1}:{2}", _template, Path.GetFileName(_template.newSTEvent.getFileName()), _template.newSTEvent.getLine());
+            return string.Format("{0} @ {1}:{2}", _template, Path.GetFileName(_template.newSTEvent.GetFileName()), _template.newSTEvent.GetLine());
         }
 
         protected virtual void OnPropertyChanged(PropertyChangedEventArgs e)

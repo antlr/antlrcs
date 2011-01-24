@@ -38,17 +38,13 @@ namespace Antlr4.StringTemplate.Misc
 
     public static class Utility
     {
-        public static string strip(string s, int n)
+        public static string Strip(string s, int n)
         {
             return s.Substring(n, s.Length - 2 * n);
         }
 
-        //    public static String stripRight(String s, int n) {
-        //        return s.substring(0, s.length()-n);
-        //    }
-
         // strip newline from front but just one
-        public static string trimOneStartingNewline(string s)
+        public static string TrimOneStartingNewline(string s)
         {
             if (s.StartsWith("\r\n"))
                 s = s.Substring(2);
@@ -58,7 +54,7 @@ namespace Antlr4.StringTemplate.Misc
         }
 
         // strip newline from end but just one
-        public static string trimOneTrailingNewline(string s)
+        public static string TrimOneTrailingNewline(string s)
         {
             if (s.EndsWith("\r\n"))
                 s = s.Substring(0, s.Length - 2);
@@ -67,7 +63,7 @@ namespace Antlr4.StringTemplate.Misc
             return s;
         }
 
-        public static string getPrefix(string name)
+        public static string GetPrefix(string name)
         {
             //System.out.println("getParent("+name+")="+p);
             if (name == null)
@@ -77,11 +73,11 @@ namespace Antlr4.StringTemplate.Misc
             if (lastSlash > 0)
                 return name.Substring(0, lastSlash);
 
-            //System.out.println("getPrefix("+name+")="+p);
+            //System.out.println("GetPrefix("+name+")="+p);
             return "";
         }
 
-        public static string replaceEscapes(string s)
+        public static string ReplaceEscapes(string s)
         {
             s = s.Replace("\n", "\\\\n");
             s = s.Replace("\r", "\\\\r");
@@ -90,7 +86,7 @@ namespace Antlr4.StringTemplate.Misc
         }
 
         /** Given index into string, compute the line and char position in line */
-        public static Coordinate getLineCharPosition(string s, int index)
+        public static Coordinate GetLineCharPosition(string s, int index)
         {
             int line = 1;
             int charPos = 0;
@@ -112,21 +108,6 @@ namespace Antlr4.StringTemplate.Misc
             }
 
             return new Coordinate(line, charPos);
-        }
-
-        public static object accessField(FieldInfo f, object obj)
-        {
-            return f.GetValue(obj);
-        }
-
-        public static object invokeMethod(MethodInfo m, object obj)
-        {
-            return m.Invoke(obj, null);
-        }
-
-        public static MethodInfo getMethod(Type c, string methodName)
-        {
-            return c.GetMethod(methodName, Type.EmptyTypes);
         }
     }
 }

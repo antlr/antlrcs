@@ -42,7 +42,7 @@ namespace Antlr4.StringTemplate
         {
         }
 
-        public override int write(string str)
+        public override int Write(string str)
         {
             @out.Write(str);
             return str.Length;

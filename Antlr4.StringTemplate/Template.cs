@@ -89,11 +89,11 @@ namespace Antlr4.StringTemplate
          *  via Render.  So, we create st and then it needs to know which
          *  group created it for sake of polymorphism:
          *
-         *  st = skin1.getInstanceOf("searchbox");
+         *  st = skin1.GetInstanceOf("searchbox");
          *  result = st.Render(); // knows skin1 created it
          *
          *  Say we have a group, g1, with template t and import t and u templates from
-         *  another group, g2.  g1.getInstanceOf("u") finds u in g2 but remembers
+         *  another group, g2.  g1.GetInstanceOf("u") finds u in g2 but remembers
          *  that g1 created it.  If u includes t, it should create g1.t not g2.t.
          *
          *   g1 = {t(), u()}
@@ -143,11 +143,11 @@ namespace Antlr4.StringTemplate
         public Template(TemplateGroup group, string template)
         {
             groupThatCreatedThisInstance = group;
-            impl = groupThatCreatedThisInstance.compile(group.getFileName(), null,
+            impl = groupThatCreatedThisInstance.Compile(group.FileName, null,
                                                         null, template, null);
             impl.hasFormalArgs = false;
             impl.name = UnknownName;
-            impl.defineImplicitlyDefinedTemplates(groupThatCreatedThisInstance);
+            impl.DefineImplicitlyDefinedTemplates(groupThatCreatedThisInstance);
         }
 
         /** Clone a prototype template for application in MAP operations; copy all fields */
@@ -194,7 +194,7 @@ namespace Antlr4.StringTemplate
                 {
                     // not defined
                     arg = new FormalArgument(name);
-                    impl.addArg(arg);
+                    impl.AddArgument(arg);
                     if (locals == null)
                         locals = new object[1];
                     else
@@ -292,9 +292,9 @@ namespace Antlr4.StringTemplate
                 p = p.enclosingInstance;
             }
             // got to root template and no definition, try dictionaries in group
-            if (impl.nativeGroup.isDictionary(name))
+            if (impl.nativeGroup.IsDictionary(name))
             {
-                return impl.nativeGroup.rawGetDictionary(name);
+                return impl.nativeGroup.RawGetDictionary(name);
             }
 
             throw new TemplateNoSuchPropertyException(name);
@@ -369,7 +369,7 @@ namespace Antlr4.StringTemplate
             {
                 if (i > 0)
                     buf.Append(" ");
-                buf.Append(st.Name());
+                buf.Append(st.Name);
                 i++;
             }
 
@@ -392,41 +392,47 @@ namespace Antlr4.StringTemplate
             return stack;
         }
 
-        public virtual string Name()
+        public virtual string Name
         {
-            return impl.name;
+            get
+            {
+                return impl.name;
+            }
         }
 
-        public virtual bool IsAnonymousSubtemplate()
+        public virtual bool IsAnonymousSubtemplate
         {
-            return impl.isAnonSubtemplate;
+            get
+            {
+                return impl.isAnonSubtemplate;
+            }
         }
 
         public virtual int Write(ITemplateWriter @out)
         {
             Interpreter interp = new Interpreter(groupThatCreatedThisInstance, impl.nativeGroup.errMgr);
-            interp.setDefaultArguments(this);
+            interp.SetDefaultArguments(this);
             return interp.Execute(@out, this);
         }
 
         public virtual int Write(ITemplateWriter @out, CultureInfo locale)
         {
             Interpreter interp = new Interpreter(groupThatCreatedThisInstance, locale, impl.nativeGroup.errMgr);
-            interp.setDefaultArguments(this);
+            interp.SetDefaultArguments(this);
             return interp.Execute(@out, this);
         }
 
         public virtual int Write(ITemplateWriter @out, ITemplateErrorListener listener)
         {
             Interpreter interp = new Interpreter(groupThatCreatedThisInstance, new ErrorManager(listener));
-            interp.setDefaultArguments(this);
+            interp.SetDefaultArguments(this);
             return interp.Execute(@out, this);
         }
 
         public virtual int Write(ITemplateWriter @out, CultureInfo locale, ITemplateErrorListener listener)
         {
             Interpreter interp = new Interpreter(groupThatCreatedThisInstance, locale, new ErrorManager(listener));
-            interp.setDefaultArguments(this);
+            interp.SetDefaultArguments(this);
             return interp.Execute(@out, this);
         }
 
@@ -449,7 +455,7 @@ namespace Antlr4.StringTemplate
         {
             StringWriter @out = new StringWriter();
             ITemplateWriter wr = new AutoIndentWriter(@out);
-            wr.setLineWidth(lineWidth);
+            wr.SetLineWidth(lineWidth);
             Write(wr, locale);
             return @out.ToString();
         }

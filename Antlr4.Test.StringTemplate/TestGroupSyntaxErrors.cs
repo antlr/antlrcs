@@ -50,8 +50,8 @@ namespace Antlr4.Test.StringTemplate
 
             ITemplateErrorListener errors = new ErrorBuffer();
             TemplateGroup group = new TemplateGroupFile(tmpdir + "/" + "t.stg");
-            group.setListener(errors);
-            group.load(); // force load
+            group.Listener = errors;
+            group.Load(); // force load
             string expected = "t.stg 2:0: mismatched input 'foo' expecting STRING" + newline +
                 "t.stg 2:3: required (...)+ loop did not match anything at input '('" + newline;
             string result = errors.ToString();
@@ -68,8 +68,8 @@ namespace Antlr4.Test.StringTemplate
 
             ITemplateErrorListener errors = new ErrorBuffer();
             TemplateGroup group = new TemplateGroupFile(tmpdir + "/" + "t.stg");
-            group.setListener(errors);
-            group.load(); // force load
+            group.Listener = errors;
+            group.Load(); // force load
             string expected = "t.stg 1:7: mismatched input 'Super' expecting STRING" + newline;
             string result = errors.ToString();
             Assert.AreEqual(expected, result);
@@ -85,8 +85,8 @@ namespace Antlr4.Test.StringTemplate
             TemplateGroupFile group = null;
             ITemplateErrorListener errors = new ErrorBuffer();
             group = new TemplateGroupFile(tmpdir + "/" + "t.stg");
-            group.setListener(errors);
-            group.load(); // force load
+            group.Listener = errors;
+            group.Load(); // force load
             string expected = "t.stg 2:0: missing template at '<EOF>'" + newline;
             string result = errors.ToString();
             Assert.AreEqual(expected, result);
@@ -102,8 +102,8 @@ namespace Antlr4.Test.StringTemplate
             TemplateGroupFile group = null;
             ITemplateErrorListener errors = new ErrorBuffer();
             group = new TemplateGroupFile(tmpdir + "/" + "t.stg");
-            group.setListener(errors);
-            group.load(); // force load
+            group.Listener = errors;
+            group.Load(); // force load
             string expected = "t.stg 1:5: no viable alternative at input '::='" + newline;
             string result = errors.ToString();
             Assert.AreEqual(expected, result);
@@ -119,8 +119,8 @@ namespace Antlr4.Test.StringTemplate
             TemplateGroupFile group = null;
             ITemplateErrorListener errors = new ErrorBuffer();
             group = new TemplateGroupFile(tmpdir + "/" + "t.stg");
-            group.setListener(errors);
-            group.load(); // force load
+            group.Listener = errors;
+            group.Load(); // force load
             string expected = "t.stg 1:11: \\n in string" + newline;
             string result = errors.ToString();
             Assert.AreEqual(expected, result);
@@ -137,8 +137,8 @@ namespace Antlr4.Test.StringTemplate
             TemplateGroupFile group = null;
             ITemplateErrorListener errors = new ErrorBuffer();
             group = new TemplateGroupFile(tmpdir + "/" + "t.stg");
-            group.setListener(errors);
-            group.load(); // force load
+            group.Listener = errors;
+            group.Load(); // force load
             string expected = "t.stg 1:0: garbled template definition starting at 'foo'" + newline;
             string result = errors.ToString();
             Assert.AreEqual(expected, result);
@@ -154,8 +154,8 @@ namespace Antlr4.Test.StringTemplate
             TemplateGroupFile group = null;
             ITemplateErrorListener errors = new ErrorBuffer();
             group = new TemplateGroupFile(tmpdir + "/" + "t.stg");
-            group.setListener(errors);
-            group.load(); // force load
+            group.Listener = errors;
+            group.Load(); // force load
             string expected = "t.stg 1:6: mismatched input ')' expecting ID" + newline;
             string result = errors.ToString();
             Assert.AreEqual(expected, result);
@@ -171,8 +171,8 @@ namespace Antlr4.Test.StringTemplate
             TemplateGroupFile group = null;
             ErrorBuffer errors = new ErrorBuffer();
             group = new TemplateGroupFile(tmpdir + "/" + "t.stg");
-            group.setListener(errors);
-            group.load(); // force load
+            group.Listener = errors;
+            group.Load(); // force load
             string expected =
                 "[t.stg 1:6: mismatched input ',' expecting ID, " +
                 "t.stg 1:7: mismatched input ')' expecting ID]";
@@ -190,8 +190,8 @@ namespace Antlr4.Test.StringTemplate
             TemplateGroupFile group = null;
             ErrorBuffer errors = new ErrorBuffer();
             group = new TemplateGroupFile(tmpdir + "/" + "t.stg");
-            group.setListener(errors);
-            group.load(); // force load
+            group.Listener = errors;
+            group.Load(); // force load
             string expected =
                 "[t.stg 1:4: no viable alternative at input 'a', " +
                 "t.stg 1:6: garbled template definition starting at 'b']";
@@ -209,8 +209,8 @@ namespace Antlr4.Test.StringTemplate
             TemplateGroupFile group = null;
             ErrorBuffer errors = new ErrorBuffer();
             group = new TemplateGroupFile(tmpdir + "/" + "t.stg");
-            group.setListener(errors);
-            group.load(); // force load
+            group.Listener = errors;
+            group.Load(); // force load
             string expected = "[t.stg 1:15: 'b' came as a complete surprise to me]";
             string result = errors.Errors.ToListString();
             Assert.AreEqual(expected, result);
@@ -226,8 +226,8 @@ namespace Antlr4.Test.StringTemplate
             TemplateGroupFile group = null;
             ErrorBuffer errors = new ErrorBuffer();
             group = new TemplateGroupFile(tmpdir + "/" + "t.stg");
-            group.setListener(errors);
-            group.load(); // force load
+            group.Listener = errors;
+            group.Load(); // force load
             string expected = "[t.stg 1:7: missing dictionary entry at ']']";
             string result = errors.Errors.ToListString();
             Assert.AreEqual(expected, result);
@@ -243,8 +243,8 @@ namespace Antlr4.Test.StringTemplate
             TemplateGroupFile group = null;
             ErrorBuffer errors = new ErrorBuffer();
             group = new TemplateGroupFile(tmpdir + "/" + "t.stg");
-            group.setListener(errors);
-            group.load(); // force load
+            group.Listener = errors;
+            group.Load(); // force load
             string expected = "[t.stg 1:11: missing value for key at ']']";
             string result = errors.Errors.ToListString();
             Assert.AreEqual(expected, result);
@@ -260,8 +260,8 @@ namespace Antlr4.Test.StringTemplate
             TemplateGroupFile group = null;
             ErrorBuffer errors = new ErrorBuffer();
             group = new TemplateGroupFile(tmpdir + "/" + "t.stg");
-            group.setListener(errors);
-            group.load(); // force load
+            group.Listener = errors;
+            group.Load(); // force load
             string expected = "[t.stg 1:17: invalid character '}']";
             string result = errors.Errors.ToListString();
             Assert.AreEqual(expected, result);
@@ -277,8 +277,8 @@ namespace Antlr4.Test.StringTemplate
             TemplateGroupFile group = null;
             ErrorBuffer errors = new ErrorBuffer();
             group = new TemplateGroupFile(tmpdir + "/" + "t.stg");
-            group.setListener(errors);
-            group.load(); // force load
+            group.Listener = errors;
+            group.Load(); // force load
             string expected = "[t.stg 1:9: unterminated string, t.stg 1:9: missing template at '<EOF>']";
             string result = errors.Errors.ToListString();
             Assert.AreEqual(expected, result);

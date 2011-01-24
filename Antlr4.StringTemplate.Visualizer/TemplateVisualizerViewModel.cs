@@ -64,7 +64,7 @@ namespace Antlr4.StringTemplate.Visualizer
                 throw new ArgumentNullException("visualizer");
 
             _visualizer = visualizer;
-            _allEvents = visualizer.Interpreter.getEvents();
+            _allEvents = visualizer.Interpreter.GetEvents();
             _templateCallHierarchy =
                 new List<TemplateCallHierarchyViewModel>()
                 {

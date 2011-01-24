@@ -64,62 +64,62 @@ namespace Antlr4.StringTemplate.Compiler
             impl.name = name;
         }
 
-        public virtual int defineString(string s)
+        public virtual int DefineString(string s)
         {
             return stringtable.Add(s);
         }
 
-        public virtual void refAttr(IToken templateToken, CommonTree id)
+        public virtual void ReferenceAttribute(IToken templateToken, CommonTree id)
         {
             string name = id.Text;
             FormalArgument arg = impl.TryGetFormalArgument(name);
             if (arg != null)
             {
                 int index = arg.Index;
-                emit1(id, Bytecode.INSTR_LOAD_LOCAL, index);
+                Emit1(id, Bytecode.INSTR_LOAD_LOCAL, index);
             }
             else
             {
                 if (Interpreter.predefinedAnonSubtemplateAttributes.Contains(name))
                 {
-                    errMgr.compileTimeError(ErrorType.NO_SUCH_ATTRIBUTE, templateToken, id.token);
-                    emit(id, Bytecode.INSTR_NULL);
+                    errMgr.CompiletimeError(ErrorType.NO_SUCH_ATTRIBUTE, templateToken, id.token);
+                    Emit(id, Bytecode.INSTR_NULL);
                 }
                 else
                 {
-                    emit1(id, Bytecode.INSTR_LOAD_ATTR, name);
+                    Emit1(id, Bytecode.INSTR_LOAD_ATTR, name);
                 }
             }
         }
 
-        public virtual void setOption(CommonTree id)
+        public virtual void SetOption(CommonTree id)
         {
             Interpreter.Option O = TemplateCompiler.supportedOptions[id.Text];
-            emit1(id, Bytecode.INSTR_STORE_OPTION, (int)O);
+            Emit1(id, Bytecode.INSTR_STORE_OPTION, (int)O);
         }
 
-        public virtual void func(IToken templateToken, CommonTree id)
+        public virtual void Function(IToken templateToken, CommonTree id)
         {
             Bytecode funcBytecode;
             if (!TemplateCompiler.funcs.TryGetValue(id.Text, out funcBytecode))
             {
-                errMgr.compileTimeError(ErrorType.NO_SUCH_FUNCTION, templateToken, id.token);
-                emit(id, Bytecode.INSTR_POP);
+                errMgr.CompiletimeError(ErrorType.NO_SUCH_FUNCTION, templateToken, id.token);
+                Emit(id, Bytecode.INSTR_POP);
             }
             else
             {
-                emit(id, funcBytecode);
+                Emit(id, funcBytecode);
             }
         }
 
-        public virtual void emit(Bytecode opcode)
+        public virtual void Emit(Bytecode opcode)
         {
-            emit(null, opcode);
+            Emit(null, opcode);
         }
 
-        public virtual void emit(CommonTree opAST, Bytecode opcode)
+        public virtual void Emit(CommonTree opAST, Bytecode opcode)
         {
-            ensureCapacity(1);
+            EnsureCapacity(1);
             if (opAST != null)
             {
                 int i = opAST.TokenStartIndex;
@@ -132,46 +132,46 @@ namespace Antlr4.StringTemplate.Compiler
             impl.instrs[ip++] = (byte)opcode;
         }
 
-        public virtual void emit1(CommonTree opAST, Bytecode opcode, int arg)
+        public virtual void Emit1(CommonTree opAST, Bytecode opcode, int arg)
         {
-            emit(opAST, opcode);
-            ensureCapacity(Instruction.OperandSizeInBytes);
-            writeShort(impl.instrs, ip, (short)arg);
+            Emit(opAST, opcode);
+            EnsureCapacity(Instruction.OperandSizeInBytes);
+            WriteShort(impl.instrs, ip, (short)arg);
             ip += Instruction.OperandSizeInBytes;
         }
 
-        public virtual void emit2(CommonTree opAST, Bytecode opcode, int arg, int arg2)
+        public virtual void Emit2(CommonTree opAST, Bytecode opcode, int arg, int arg2)
         {
-            emit(opAST, opcode);
-            ensureCapacity(Instruction.OperandSizeInBytes * 2);
-            writeShort(impl.instrs, ip, (short)arg);
+            Emit(opAST, opcode);
+            EnsureCapacity(Instruction.OperandSizeInBytes * 2);
+            WriteShort(impl.instrs, ip, (short)arg);
             ip += Instruction.OperandSizeInBytes;
-            writeShort(impl.instrs, ip, (short)arg2);
+            WriteShort(impl.instrs, ip, (short)arg2);
             ip += Instruction.OperandSizeInBytes;
         }
 
-        public virtual void emit2(CommonTree opAST, Bytecode opcode, string s, int arg2)
+        public virtual void Emit2(CommonTree opAST, Bytecode opcode, string s, int arg2)
         {
-            int i = defineString(s);
-            emit2(opAST, opcode, i, arg2);
+            int i = DefineString(s);
+            Emit2(opAST, opcode, i, arg2);
         }
 
-        public virtual void emit1(CommonTree opAST, Bytecode opcode, string s)
+        public virtual void Emit1(CommonTree opAST, Bytecode opcode, string s)
         {
-            int i = defineString(s);
-            emit1(opAST, opcode, i);
+            int i = DefineString(s);
+            Emit1(opAST, opcode, i);
         }
 
-        public virtual void insert(int addr, Bytecode opcode, string s)
+        public virtual void Insert(int addr, Bytecode opcode, string s)
         {
             //System.out.println("before insert of "+opcode+"("+s+"):"+ Arrays.toString(impl.instrs));
-            ensureCapacity(1 + Instruction.OperandSizeInBytes);
+            EnsureCapacity(1 + Instruction.OperandSizeInBytes);
             int instrSize = 1 + Instruction.OperandSizeInBytes;
             // make room for opcode, opnd
             Array.Copy(impl.instrs, addr, impl.instrs, addr + instrSize, ip - addr);
             int save = ip;
             ip = addr;
-            emit1(null, opcode, s);
+            Emit1(null, opcode, s);
             ip = save + instrSize;
             //System.out.println("after  insert of "+opcode+"("+s+"):"+ Arrays.toString(impl.instrs));
             // adjust addresses for BR and BRF
@@ -182,20 +182,20 @@ namespace Antlr4.StringTemplate.Compiler
                 Instruction I = Instruction.instructions[(int)op];
                 if (op == Bytecode.INSTR_BR || op == Bytecode.INSTR_BRF)
                 {
-                    int opnd = BytecodeDisassembler.getShort(impl.instrs, a + 1);
-                    writeShort(impl.instrs, a + 1, (short)(opnd + instrSize));
+                    int opnd = BytecodeDisassembler.GetShort(impl.instrs, a + 1);
+                    WriteShort(impl.instrs, a + 1, (short)(opnd + instrSize));
                 }
                 a += I.nopnds * Instruction.OperandSizeInBytes + 1;
             }
             //System.out.println("after  insert of "+opcode+"("+s+"):"+ Arrays.toString(impl.instrs));
         }
 
-        public virtual void write(int addr, short value)
+        public virtual void Write(int addr, short value)
         {
-            writeShort(impl.instrs, addr, value);
+            WriteShort(impl.instrs, addr, value);
         }
 
-        protected virtual void ensureCapacity(int n)
+        protected virtual void EnsureCapacity(int n)
         {
             if ((ip + n) >= impl.instrs.Length)
             {
@@ -205,15 +205,15 @@ namespace Antlr4.StringTemplate.Compiler
             }
         }
 
-        public virtual void indent(string indent)
+        public virtual void Indent(string indent)
         {
-            emit1(null, Bytecode.INSTR_INDENT, indent);
+            Emit1(null, Bytecode.INSTR_INDENT, indent);
         }
 
         /** Write value at index into a byte array highest to lowest byte,
          *  left to right.
          */
-        public static void writeShort(byte[] memory, int index, short value)
+        public static void WriteShort(byte[] memory, int index, short value)
         {
             memory[index + 0] = (byte)(value & 0xFF);
             memory[index + 1] = (byte)((value >> (8 * 1)) & 0xFF);

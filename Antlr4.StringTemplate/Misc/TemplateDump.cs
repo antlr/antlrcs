@@ -55,7 +55,7 @@ namespace Antlr4.StringTemplate.Misc
             this.self = self;
         }
 
-        public static string toString(Template self)
+        public static string ToString(Template self)
         {
             TemplateDump d = new TemplateDump(self);
             return d.ToString();
@@ -63,13 +63,13 @@ namespace Antlr4.StringTemplate.Misc
 
         public override string ToString()
         {
-            return toString(0);
+            return ToString(0);
         }
 
-        protected virtual string toString(int n)
+        protected virtual string ToString(int n)
         {
             StringBuilder buf = new StringBuilder();
-            buf.Append(getTemplateDeclaratorString() + ":");
+            buf.Append(GetTemplateDeclaratorString() + ":");
             n++;
             if (self.GetAttributes() != null)
             {
@@ -81,29 +81,29 @@ namespace Antlr4.StringTemplate.Misc
                 {
                     string name = (string)attrName;
                     buf.Append(Environment.NewLine);
-                    indent(buf, n);
+                    Indent(buf, n);
                     buf.Append(string.Format("%-" + w + "s = ", name));
                     buf.Append(string.Format(string.Format("{{0,-{0}}} = ", w), name));
                     object value;
                     self.GetAttributes().TryGetValue(name, out value);
-                    buf.Append(getValueDebugString(value, n));
+                    buf.Append(GetValueDebugString(value, n));
                 }
             }
             buf.Append(Environment.NewLine);
             n--;
-            indent(buf, n);
+            Indent(buf, n);
             buf.Append("]");
             return buf.ToString();
         }
 
-        protected virtual string getValueDebugString(object value, int n)
+        protected virtual string GetValueDebugString(object value, int n)
         {
             StringBuilder buf = new StringBuilder();
-            value = Interpreter.convertAnythingIteratableToIterator(value);
+            value = Interpreter.ConvertAnythingIteratableToIterator(value);
             if (value is Template)
             {
                 TemplateDump d = new TemplateDump((Template)value);
-                buf.Append(d.toString(n));
+                buf.Append(d.ToString(n));
             }
             else if (value is Iterator)
             {
@@ -111,7 +111,7 @@ namespace Antlr4.StringTemplate.Misc
                 int na = 0;
                 while (it.hasNext())
                 {
-                    string v = getValueDebugString(it.next(), n);
+                    string v = GetValueDebugString(it.next(), n);
                     if (na > 0)
                         buf.Append(", ");
                     buf.Append(v);
@@ -125,11 +125,11 @@ namespace Antlr4.StringTemplate.Misc
             return buf.ToString();
         }
 
-        protected virtual string getTemplateDeclaratorString()
+        protected virtual string GetTemplateDeclaratorString()
         {
             StringBuilder buf = new StringBuilder();
             buf.Append("<");
-            buf.Append(self.Name());
+            buf.Append(self.Name);
             buf.Append("(");
             if (self.impl.formalArguments != null)
                 buf.Append(string.Join(",", self.impl.formalArguments.Select(i => i.Name).ToArray()));
@@ -139,7 +139,7 @@ namespace Antlr4.StringTemplate.Misc
             return buf.ToString();
         }
 
-        protected virtual void indent(StringBuilder buf, int n)
+        protected virtual void Indent(StringBuilder buf, int n)
         {
             for (int i = 1; i <= n; i++)
                 buf.Append("   ");

@@ -61,47 +61,47 @@ namespace Antlr4.StringTemplate.Compiler
 
         public void emit1(CommonTree opAST, Bytecode opcode, int arg)
         {
-            template_stack.Peek().state.emit1(opAST, opcode, arg);
+            template_stack.Peek().state.Emit1(opAST, opcode, arg);
         }
 
         public void emit1(CommonTree opAST, Bytecode opcode, string arg)
         {
-            template_stack.Peek().state.emit1(opAST, opcode, arg);
+            template_stack.Peek().state.Emit1(opAST, opcode, arg);
         }
 
         public void emit2(CommonTree opAST, Bytecode opcode, int arg, int arg2)
         {
-            template_stack.Peek().state.emit2(opAST, opcode, arg, arg2);
+            template_stack.Peek().state.Emit2(opAST, opcode, arg, arg2);
         }
 
         public void emit2(CommonTree opAST, Bytecode opcode, string s, int arg2)
         {
-            template_stack.Peek().state.emit2(opAST, opcode, s, arg2);
+            template_stack.Peek().state.Emit2(opAST, opcode, s, arg2);
         }
 
         public void emit(Bytecode opcode)
         {
-            template_stack.Peek().state.emit(opcode);
+            template_stack.Peek().state.Emit(opcode);
         }
 
         public void emit(CommonTree opAST, Bytecode opcode)
         {
-            template_stack.Peek().state.emit(opAST, opcode);
+            template_stack.Peek().state.Emit(opAST, opcode);
         }
 
         public void insert(int addr, Bytecode opcode, string s)
         {
-            template_stack.Peek().state.insert(addr, opcode, s);
+            template_stack.Peek().state.Insert(addr, opcode, s);
         }
 
         public void setOption(CommonTree id)
         {
-            template_stack.Peek().state.setOption(id);
+            template_stack.Peek().state.SetOption(id);
         }
 
         public void write(int addr, short value)
         {
-            template_stack.Peek().state.write(addr, value);
+            template_stack.Peek().state.Write(addr, value);
         }
 
         public int address()
@@ -111,17 +111,17 @@ namespace Antlr4.StringTemplate.Compiler
 
         public void func(CommonTree id)
         {
-            template_stack.Peek().state.func(templateToken, id);
+            template_stack.Peek().state.Function(templateToken, id);
         }
 
         public void refAttr(CommonTree id)
         {
-            template_stack.Peek().state.refAttr(templateToken, id);
+            template_stack.Peek().state.ReferenceAttribute(templateToken, id);
         }
 
         public int defineString(string s)
         {
-            return template_stack.Peek().state.defineString(s);
+            return template_stack.Peek().state.DefineString(s);
         }
     }
 }

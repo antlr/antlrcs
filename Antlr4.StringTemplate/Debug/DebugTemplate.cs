@@ -67,36 +67,36 @@ namespace Antlr4.StringTemplate.Debug
         public override void Add(string name, object value)
         {
             if (TemplateGroup.debug)
-                addAttrEvents.map(name, new AddAttributeEvent(name, value));
+                addAttrEvents.Add(name, new AddAttributeEvent(name, value));
 
             base.Add(name, value);
         }
 
         // TESTING SUPPORT
 
-        public virtual List<InterpEvent> getEvents()
+        public virtual List<InterpEvent> GetEvents()
         {
-            return getEvents(CultureInfo.CurrentCulture);
+            return GetEvents(CultureInfo.CurrentCulture);
         }
 
-        public virtual List<InterpEvent> getEvents(int lineWidth)
+        public virtual List<InterpEvent> GetEvents(int lineWidth)
         {
-            return getEvents(CultureInfo.CurrentCulture, lineWidth);
+            return GetEvents(CultureInfo.CurrentCulture, lineWidth);
         }
 
-        public virtual List<InterpEvent> getEvents(CultureInfo locale)
+        public virtual List<InterpEvent> GetEvents(CultureInfo locale)
         {
-            return getEvents(locale, AutoIndentWriter.NoWrap);
+            return GetEvents(locale, AutoIndentWriter.NoWrap);
         }
 
-        public virtual List<InterpEvent> getEvents(CultureInfo locale, int lineWidth)
+        public virtual List<InterpEvent> GetEvents(CultureInfo locale, int lineWidth)
         {
             StringWriter @out = new StringWriter();
             ITemplateWriter wr = new AutoIndentWriter(@out);
-            wr.setLineWidth(lineWidth);
+            wr.SetLineWidth(lineWidth);
             Interpreter interp = new Interpreter(groupThatCreatedThisInstance, locale);
             interp.Execute(wr, this); // Render and track events
-            return interp.getEvents();
+            return interp.GetEvents();
         }
     }
 }

@@ -143,8 +143,8 @@ namespace Antlr4.Test.StringTemplate
 
             writeFile(tmpdir, "t.stg", templates);
             TemplateGroup group = new TemplateGroupFile(Path.Combine(tmpdir, "t.stg"));
-            group.registerRenderer(typeof(string), new StringRenderer());
-            Template st = group.getInstanceOf("foo");
+            group.RegisterRenderer(typeof(string), new StringRenderer());
+            Template st = group.GetInstanceOf("foo");
             st.Add("x", "hi");
             string expecting = "     hi ";
             string result = st.Render();
@@ -157,7 +157,7 @@ namespace Antlr4.Test.StringTemplate
             string template =
                     "The names: <names; format=\"upper\">";
             TemplateGroup group = new TemplateGroup();
-            group.registerRenderer(typeof(string), new StringRenderer());
+            group.RegisterRenderer(typeof(string), new StringRenderer());
             Template st = new Template(template);
             st.groupThatCreatedThisInstance = group;
             st.Add("names", "ter");
@@ -174,7 +174,7 @@ namespace Antlr4.Test.StringTemplate
             string template =
                     "The names: <names; separator=\" and \", format=\"upper\">";
             TemplateGroup group = new TemplateGroup();
-            group.registerRenderer(typeof(string), new StringRenderer());
+            group.RegisterRenderer(typeof(string), new StringRenderer());
             Template st = new Template(template);
             st.groupThatCreatedThisInstance = group;
             st.Add("names", "ter");
@@ -191,7 +191,7 @@ namespace Antlr4.Test.StringTemplate
             string template =
                     "The names: <names; separator=\" and \", null=\"n/a\", format=\"upper\">";
             TemplateGroup group = new TemplateGroup();
-            group.registerRenderer(typeof(string), new StringRenderer());
+            group.RegisterRenderer(typeof(string), new StringRenderer());
             Template st = new Template(template);
             st.groupThatCreatedThisInstance = group;
             List<string> names = new List<string>();
@@ -212,9 +212,9 @@ namespace Antlr4.Test.StringTemplate
 
             writeFile(tmpdir, "t.stg", templates);
             TemplateGroup group = new TemplateGroupFile(tmpdir + "/t.stg");
-            group.registerRenderer(typeof(int), new NumberRenderer());
-            group.registerRenderer(typeof(double), new NumberRenderer());
-            Template st = group.getInstanceOf("foo");
+            group.RegisterRenderer(typeof(int), new NumberRenderer());
+            group.RegisterRenderer(typeof(double), new NumberRenderer());
+            Template st = group.GetInstanceOf("foo");
             st.Add("x", -2100);
             st.Add("y", 3.14159);
             string expecting = " -2100 3.142 ";
@@ -229,9 +229,9 @@ namespace Antlr4.Test.StringTemplate
                     "numberThing(x,y,z) ::= \"numbers: <x>, <y>; <z>\"\n";
             writeFile(tmpdir, "t.stg", templates);
             TemplateGroup group = new TemplateGroupFile(tmpdir + "/t.stg");
-            group.registerRenderer(typeof(int), new NumberRenderer());
-            group.registerRenderer(typeof(double), new NumberRenderer());
-            Template st = group.getInstanceOf("numberThing");
+            group.RegisterRenderer(typeof(int), new NumberRenderer());
+            group.RegisterRenderer(typeof(double), new NumberRenderer());
+            Template st = group.GetInstanceOf("numberThing");
             st.Add("x", -2100);
             st.Add("y", 3.14159);
             st.Add("z", "hi");
@@ -248,9 +248,9 @@ namespace Antlr4.Test.StringTemplate
 
             writeFile(tmpdir, "t.stg", templates);
             TemplateGroup group = new TemplateGroupFile(tmpdir + "/t.stg");
-            group.registerRenderer(typeof(int), new NumberRenderer());
-            group.registerRenderer(typeof(double), new NumberRenderer());
-            Template st = group.getInstanceOf("foo");
+            group.RegisterRenderer(typeof(int), new NumberRenderer());
+            group.RegisterRenderer(typeof(double), new NumberRenderer());
+            Template st = group.GetInstanceOf("foo");
             st.Add("x", -2100);
             st.Add("y", 3.14159);
             // Polish uses ' ' (ASCII 160) for ',' and ',' for '.'

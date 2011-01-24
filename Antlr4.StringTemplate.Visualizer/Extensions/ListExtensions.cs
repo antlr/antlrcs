@@ -41,9 +41,9 @@ namespace Antlr4.StringTemplate.Visualizer.Extensions
         public static string ToListString(this IList list)
         {
             TemplateGroup group = new TemplateGroup('$', '$');
-            group.defineTemplate("listTemplate", "list", "[$list:{x|$x$}; separator=\", \"$]");
-            group.registerRenderer(typeof(IList), new CollectionRenderer());
-            Template st = group.getInstanceOf("listTemplate");
+            group.DefineTemplate("listTemplate", "list", "[$list:{x|$x$}; separator=\", \"$]");
+            group.RegisterRenderer(typeof(IList), new CollectionRenderer());
+            Template st = group.GetInstanceOf("listTemplate");
             st.Add("list", list);
             return st.Render();
         }

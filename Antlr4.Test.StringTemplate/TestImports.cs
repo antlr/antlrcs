@@ -54,14 +54,14 @@ namespace Antlr4.Test.StringTemplate
 
             TemplateGroup group1 = new TemplateGroupDirectory(dir1);
             TemplateGroup group2 = new TemplateGroupDirectory(dir2);
-            group2.importTemplates(group1);
-            Template st = group2.getInstanceOf("b");
+            group2.ImportTemplates(group1);
+            Template st = group2.GetInstanceOf("b");
             string expected = "dir1 b";
             string result = st.Render();
             Assert.AreEqual(expected, result);
 
             // do it again, but make a template ref imported template
-            st = group2.getInstanceOf("a");
+            st = group2.GetInstanceOf("a");
             expected = " dir1 b ";
             result = st.Render();
             Assert.AreEqual(expected, result);
@@ -83,7 +83,7 @@ namespace Antlr4.Test.StringTemplate
             writeFile(dir2, "b.st", b);
 
             TemplateGroup group = new TemplateGroupFile(dir1 + "/a.stg");
-            Template st = group.getInstanceOf("b"); // visible only if import worked
+            Template st = group.GetInstanceOf("b"); // visible only if import worked
             string expected = "dir2 b";
             string result = st.Render();
             Assert.AreEqual(expected, result);
@@ -104,7 +104,7 @@ namespace Antlr4.Test.StringTemplate
             writeFile(dir, "group2.stg", groupFile);
 
             TemplateGroup group1 = new TemplateGroupFile(dir + "/group1.stg");
-            Template st = group1.getInstanceOf("c"); // should see c()
+            Template st = group1.GetInstanceOf("c"); // should see c()
             string expected = "g2 c";
             string result = st.Render();
             Assert.AreEqual(expected, result);
@@ -124,9 +124,9 @@ namespace Antlr4.Test.StringTemplate
 
             TemplateGroup group1 = new TemplateGroupDirectory(dir + "/x");
             TemplateGroup group2 = new TemplateGroupFile(dir + "/y/group.stg");
-            group1.importTemplates(group2);
-            Template st = group1.getInstanceOf("a");
-            st.impl.dump();
+            group1.ImportTemplates(group2);
+            Template st = group1.GetInstanceOf("a");
+            st.impl.Dump();
             string expected = " group file b ";
             string result = st.Render();
             Assert.AreEqual(expected, result);
@@ -148,8 +148,8 @@ namespace Antlr4.Test.StringTemplate
 
             TemplateGroup group1 = new TemplateGroupFile(dir + "/x/group.stg");
             TemplateGroup group2 = new TemplateGroupFile(dir + "/y/group.stg");
-            group1.importTemplates(group2);
-            Template st = group1.getInstanceOf("b");
+            group1.ImportTemplates(group2);
+            Template st = group1.GetInstanceOf("b");
             string expected = "g2 c";
             string result = st.Render();
             Assert.AreEqual(expected, result);
@@ -167,8 +167,8 @@ namespace Antlr4.Test.StringTemplate
 
             TemplateGroup group1 = new TemplateGroupDirectory(dir + "/x");
             TemplateGroup group2 = new TemplateGroupDirectory(dir + "/y");
-            group1.importTemplates(group2);
-            Template st = group1.getInstanceOf("subdir/a");
+            group1.ImportTemplates(group2);
+            Template st = group1.GetInstanceOf("subdir/a");
             string expected = " x's subdir/b ";
             string result = st.Render();
             Assert.AreEqual(expected, result);
@@ -189,8 +189,8 @@ namespace Antlr4.Test.StringTemplate
 
             TemplateGroup group1 = new TemplateGroupDirectory(dir + "/x");
             TemplateGroup group2 = new TemplateGroupDirectory(dir + "/y");
-            group1.importTemplates(group2);
-            Template st = group1.getInstanceOf("subdir/a");
+            group1.ImportTemplates(group2);
+            Template st = group1.GetInstanceOf("subdir/a");
             string expected = " group file: b ";
             string result = st.Render();
             Assert.AreEqual(expected, result);
@@ -210,16 +210,16 @@ namespace Antlr4.Test.StringTemplate
 
             TemplateGroup group1 = new TemplateGroupDirectory(dir1);
             TemplateGroup group2 = new TemplateGroupDirectory(dir2);
-            group1.importTemplates(group2);
+            group1.ImportTemplates(group2);
 
             // normal lookup; a created from dir2 calls dir2.b
-            Template st = group2.getInstanceOf("a");
+            Template st = group2.GetInstanceOf("a");
             string expected = " dir2 b ";
             string result = st.Render();
             Assert.AreEqual(expected, result);
 
             // polymorphic lookup; a created from dir1 calls dir2.a which calls dir1.b
-            st = group1.getInstanceOf("a");
+            st = group1.GetInstanceOf("a");
             expected = " dir1 b ";
             result = st.Render();
             Assert.AreEqual(expected, result);
@@ -239,8 +239,8 @@ namespace Antlr4.Test.StringTemplate
 
             TemplateGroup group1 = new TemplateGroupDirectory(dir1);
             TemplateGroup group2 = new TemplateGroupDirectory(dir2);
-            group2.importTemplates(group1);
-            Template st = group2.getInstanceOf("a");
+            group2.ImportTemplates(group1);
+            Template st = group2.GetInstanceOf("a");
             string expected = " [dir1 a] ";
             string result = st.Render();
             Assert.AreEqual(expected, result);
@@ -260,14 +260,14 @@ namespace Antlr4.Test.StringTemplate
 
             TemplateGroup group1 = new TemplateGroupDirectory(dir1);
             TemplateGroup group2 = new TemplateGroupDirectory(dir2);
-            group2.importTemplates(group1);
+            group2.ImportTemplates(group1);
 
-            Template st = group2.getInstanceOf("a");
-            Template st2 = group2.getInstanceOf("b");
+            Template st = group2.GetInstanceOf("a");
+            Template st2 = group2.GetInstanceOf("b");
             int originalHashCode = RuntimeHelpers.GetHashCode(st);
             int originalHashCode2 = RuntimeHelpers.GetHashCode(st2);
-            group1.unload(); // blast cache
-            st = group2.getInstanceOf("a");
+            group1.Unload(); // blast cache
+            st = group2.GetInstanceOf("a");
             int newHashCode = RuntimeHelpers.GetHashCode(st);
             Assert.AreEqual(originalHashCode == newHashCode, false); // diff objects
 
@@ -275,7 +275,7 @@ namespace Antlr4.Test.StringTemplate
             string result = st.Render();
             Assert.AreEqual(expected, result);
 
-            st = group2.getInstanceOf("b");
+            st = group2.GetInstanceOf("b");
             int newHashCode2 = RuntimeHelpers.GetHashCode(st);
             Assert.AreEqual(originalHashCode2 == newHashCode2, false); // diff objects
             result = st.Render();

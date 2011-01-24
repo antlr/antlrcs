@@ -87,25 +87,22 @@ namespace Antlr4.StringTemplate.Misc
         /** Given an ip (code location), get it's range in source template then
          *  return it's template line:col.
          */
-        public virtual string getSourceLocation()
+        public virtual string GetSourceLocation()
         {
-            if (ip < 0)
-                return null;
-
-            Interval I = Self.impl.sourceMap[ip];
-            if (I == null)
+            Interval interval = SourceInterval;
+            if (interval == null)
                 return null;
 
             // get left edge and get line/col
-            int i = I.A;
-            Coordinate loc = Utility.getLineCharPosition(Self.impl.template, i);
+            int i = interval.A;
+            Coordinate loc = Utility.GetLineCharPosition(Self.impl.template, i);
             return loc.ToString();
         }
 
         public override string ToString()
         {
             StringBuilder buf = new StringBuilder();
-            string loc = getSourceLocation();
+            string loc = GetSourceLocation();
             if (Self != null)
             {
                 buf.Append("context [");

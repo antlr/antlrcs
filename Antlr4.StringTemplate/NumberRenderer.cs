@@ -45,13 +45,13 @@ namespace Antlr4.StringTemplate
      */
     public class NumberRenderer : IAttributeRenderer
     {
-        public virtual string ToString(object o, string formatString, CultureInfo locale)
+        public virtual string ToString(object o, string formatString, CultureInfo culture)
         {
             // o will be instanceof Number
             if (formatString == null)
                 return o.ToString();
 
-            return string.Format(locale, formatString, o);
+            return string.Format(culture, formatString, o);
         }
     }
 }

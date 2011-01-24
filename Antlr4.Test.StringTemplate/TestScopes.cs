@@ -48,8 +48,8 @@ namespace Antlr4.Test.StringTemplate
             ErrorBuffer errors = new ErrorBuffer();
             writeFile(tmpdir, "t.stg", templates);
             TemplateGroup group = new TemplateGroupFile(tmpdir + "/" + "t.stg");
-            group.setListener(errors);
-            Template st = group.getInstanceOf("t");
+            group.Listener = errors;
+            Template st = group.GetInstanceOf("t");
             st.Add("x", "x");
             st.Add("y", "y");
             string result = st.Render();
@@ -70,8 +70,8 @@ namespace Antlr4.Test.StringTemplate
             ErrorBuffer errors = new ErrorBuffer();
             writeFile(tmpdir, "t.stg", templates);
             TemplateGroup group = new TemplateGroupFile(tmpdir + "/" + "t.stg");
-            group.setListener(errors);
-            Template st = group.getInstanceOf("t");
+            group.Listener = errors;
+            Template st = group.GetInstanceOf("t");
             string result = st.Render();
 
             string expectedError = "context [t] 1:1 passed 0 arg(s) to template u with 1 declared arg(s)" + newline;
@@ -86,8 +86,8 @@ namespace Antlr4.Test.StringTemplate
             ErrorBuffer errors = new ErrorBuffer();
             writeFile(tmpdir, "t.stg", templates);
             TemplateGroup group = new TemplateGroupFile(tmpdir + "/" + "t.stg");
-            group.setListener(errors);
-            Template st = group.getInstanceOf("t");
+            group.Listener = errors;
+            Template st = group.GetInstanceOf("t");
             string result = st.Render();
 
             string expectedError = "context [t] 1:1 attribute x isn't defined" + newline;
@@ -103,8 +103,8 @@ namespace Antlr4.Test.StringTemplate
             ErrorBuffer errors = new ErrorBuffer();
             writeFile(tmpdir, "t.stg", templates);
             TemplateGroup group = new TemplateGroupFile(tmpdir + "/" + "t.stg");
-            group.setListener(errors);
-            Template st = group.getInstanceOf("t");
+            group.Listener = errors;
+            Template st = group.GetInstanceOf("t");
             st.Add("x", "x");
             st.Add("y", "y");
             string result = st.Render();
@@ -114,7 +114,7 @@ namespace Antlr4.Test.StringTemplate
 
             string expected = "xx";
             Assert.AreEqual(expected, result);
-            group.setListener(ErrorManager.DEFAULT_ERROR_LISTENER);
+            group.Listener = ErrorManager.DEFAULT_ERROR_LISTENER;
         }
 
         [TestMethod]
@@ -126,18 +126,18 @@ namespace Antlr4.Test.StringTemplate
             ErrorBuffer errors = new ErrorBuffer();
             writeFile(tmpdir, "t.stg", templates);
             TemplateGroup group = new TemplateGroupFile(tmpdir + "/" + "t.stg");
-            group.setListener(errors);
-            Template st = group.getInstanceOf("t");
+            group.Listener = errors;
+            Template st = group.GetInstanceOf("t");
             st.Add("names", "Ter");
             string result = st.Render();
-            group.getInstanceOf("u").impl.dump();
+            group.GetInstanceOf("u").impl.Dump();
 
             string expectedError = "t.stg 2:11: attribute i isn't defined" + newline;
             Assert.AreEqual(expectedError, errors.ToString());
 
             string expected = ":Ter";
             Assert.AreEqual(expected, result);
-            group.setListener(ErrorManager.DEFAULT_ERROR_LISTENER);
+            group.Listener = ErrorManager.DEFAULT_ERROR_LISTENER;
         }
     }
 }

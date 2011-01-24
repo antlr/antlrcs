@@ -100,22 +100,22 @@ namespace Antlr4.StringTemplate
         {
         }
 
-        public virtual void setLineWidth(int lineWidth)
+        public virtual void SetLineWidth(int lineWidth)
         {
             this.lineWidth = lineWidth;
         }
 
-        public virtual void pushIndentation(string indent)
+        public virtual void PushIndentation(string indent)
         {
             indents.Push(indent);
         }
 
-        public virtual string popIndentation()
+        public virtual string PopIndentation()
         {
             return indents.Pop();
         }
 
-        public virtual void pushAnchorPoint()
+        public virtual void PushAnchorPoint()
         {
             if ((anchors_sp + 1) >= anchors.Length)
             {
@@ -125,18 +125,18 @@ namespace Antlr4.StringTemplate
             anchors[anchors_sp] = charPosition;
         }
 
-        public virtual void popAnchorPoint()
+        public virtual void PopAnchorPoint()
         {
             anchors_sp--;
         }
 
-        public virtual int index()
+        public virtual int Index()
         {
             return charIndex;
         }
 
         /** Write out a string literal or attribute expression or expression element.*/
-        public virtual int write(string str)
+        public virtual int Write(string str)
         {
             int n = 0;
             for (int i = 0; i < str.Length; i++)
@@ -159,7 +159,7 @@ namespace Antlr4.StringTemplate
                 // check to see if we are at the start of a line; need indent if so
                 if (atStartOfLine)
                 {
-                    n += indent();
+                    n += Indent();
                     atStartOfLine = false;
                 }
                 n++;
@@ -170,9 +170,9 @@ namespace Antlr4.StringTemplate
             return n;
         }
 
-        public virtual int writeSeparator(string str)
+        public virtual int WriteSeparator(string str)
         {
-            return write(str);
+            return Write(str);
         }
 
         /** Write out a string literal or attribute expression or expression element.
@@ -181,13 +181,13 @@ namespace Antlr4.StringTemplate
          *  at or beyond desired line width then emit a \n and any indentation
          *  before spitting out this str.
          */
-        public virtual int write(string str, string wrap)
+        public virtual int Write(string str, string wrap)
         {
-            int n = writeWrap(wrap);
-            return n + write(str);
+            int n = WriteWrap(wrap);
+            return n + Write(str);
         }
 
-        public virtual int writeWrap(string wrap)
+        public virtual int WriteWrap(string wrap)
         {
             int n = 0;
             // if want wrap and not already at start of line (last char was \n)
@@ -208,7 +208,7 @@ namespace Antlr4.StringTemplate
                         n += newline.Length;
                         charPosition = 0;
                         charIndex += newline.Length;
-                        n += indent();
+                        n += Indent();
                         // continue writing any chars out
                     }
                     else
@@ -223,7 +223,7 @@ namespace Antlr4.StringTemplate
             return n;
         }
 
-        public virtual int indent()
+        public virtual int Indent()
         {
             int n = 0;
             foreach (string ind in indents)

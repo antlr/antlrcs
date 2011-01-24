@@ -162,7 +162,7 @@ namespace Antlr4.StringTemplate.Compiler
             return formalArguments.FirstOrDefault(i => i.Name == name);
         }
 
-        public virtual void addImplicitlyDefinedTemplate(CompiledTemplate sub)
+        public virtual void AddImplicitlyDefinedTemplate(CompiledTemplate sub)
         {
             if (implicitlyDefinedTemplates == null)
                 implicitlyDefinedTemplates = new List<CompiledTemplate>();
@@ -170,7 +170,7 @@ namespace Antlr4.StringTemplate.Compiler
             implicitlyDefinedTemplates.Add(sub);
         }
 
-        public virtual void defineArgDefaultValueTemplates(TemplateGroup group)
+        public virtual void DefineArgumentDefaultValueTemplates(TemplateGroup group)
         {
             if (formalArguments == null)
                 return;
@@ -181,14 +181,14 @@ namespace Antlr4.StringTemplate.Compiler
                 {
                     string argSTname = fa.Name + "_default_value";
                     TemplateCompiler c2 = new TemplateCompiler(group.errMgr, group.delimiterStartChar, group.delimiterStopChar);
-                    string defArgTemplate = Utility.strip(fa.DefaultValueToken.Text, 1);
-                    fa.CompiledDefaultValue = c2.compile(nativeGroup.getFileName(), argSTname, null, defArgTemplate, fa.DefaultValueToken);
+                    string defArgTemplate = Utility.Strip(fa.DefaultValueToken.Text, 1);
+                    fa.CompiledDefaultValue = c2.Compile(nativeGroup.FileName, argSTname, null, defArgTemplate, fa.DefaultValueToken);
                     fa.CompiledDefaultValue.name = argSTname;
                 }
             }
         }
 
-        public virtual void defineFormalArgs(IEnumerable<FormalArgument> args)
+        public virtual void DefineFormalArguments(IEnumerable<FormalArgument> args)
         {
             hasFormalArgs = true; // even if no args; it's formally defined
             if (args == null)
@@ -198,12 +198,12 @@ namespace Antlr4.StringTemplate.Compiler
             else
             {
                 foreach (FormalArgument a in args)
-                    addArg(a);
+                    AddArgument(a);
             }
         }
 
         /** Used by Template.Add() to Add args one by one w/o turning on full formal args definition signal */
-        public virtual void addArg(FormalArgument a)
+        public virtual void AddArgument(FormalArgument a)
         {
             if (formalArguments == null)
                 formalArguments = new List<FormalArgument>();
@@ -212,39 +212,39 @@ namespace Antlr4.StringTemplate.Compiler
             formalArguments.Add(a);
         }
 
-        public virtual void defineImplicitlyDefinedTemplates(TemplateGroup group)
+        public virtual void DefineImplicitlyDefinedTemplates(TemplateGroup group)
         {
             if (implicitlyDefinedTemplates != null)
             {
                 foreach (CompiledTemplate sub in implicitlyDefinedTemplates)
                 {
-                    group.rawDefineTemplate(sub.name, sub, null);
-                    sub.defineImplicitlyDefinedTemplates(group);
+                    group.RawDefineTemplate(sub.name, sub, null);
+                    sub.DefineImplicitlyDefinedTemplates(group);
                 }
             }
         }
 
-        public virtual string Instrs()
+        public virtual string GetInstructions()
         {
             BytecodeDisassembler dis = new BytecodeDisassembler(this);
-            return dis.instrs();
+            return dis.GetInstructions();
         }
 
-        public virtual void dump()
+        public virtual void Dump()
         {
-            Console.Write(disasm());
+            Console.Write(Disassemble());
         }
 
-        public virtual string disasm()
+        public virtual string Disassemble()
         {
             BytecodeDisassembler dis = new BytecodeDisassembler(this);
             using (StringWriter sw = new StringWriter())
             {
-                sw.WriteLine(dis.disassemble());
+                sw.WriteLine(dis.Disassemble());
                 sw.WriteLine("Strings:");
-                sw.WriteLine(dis.strings());
+                sw.WriteLine(dis.GetStrings());
                 sw.WriteLine("Bytecode to template map:");
-                sw.WriteLine(dis.sourceMap());
+                sw.WriteLine(dis.GetSourceMap());
                 return sw.ToString();
             }
         }

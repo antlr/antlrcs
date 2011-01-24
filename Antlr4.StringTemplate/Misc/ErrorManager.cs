@@ -46,12 +46,12 @@ namespace Antlr4.StringTemplate.Misc
 
         private class DefaultErrorListener : ITemplateErrorListener
         {
-            public virtual void compileTimeError(TemplateMessage msg)
+            public virtual void CompiletimeError(TemplateMessage msg)
             {
                 Console.Error.WriteLine(msg);
             }
 
-            public virtual void runTimeError(TemplateMessage msg)
+            public virtual void RuntimeError(TemplateMessage msg)
             {
                 if (msg.Error != ErrorType.NO_SUCH_PROPERTY)
                 { // ignore these
@@ -64,18 +64,18 @@ namespace Antlr4.StringTemplate.Misc
                 Console.Error.WriteLine(msg);
             }
 
-            public virtual void internalError(TemplateMessage msg)
+            public virtual void InternalError(TemplateMessage msg)
             {
                 Console.Error.WriteLine(msg);
                 // throw new Error("internal error", msg.cause);
             }
 
-            public virtual void error(string s)
+            public virtual void Error(string s)
             {
-                error(s, null);
+                Error(s, null);
             }
 
-            public virtual void error(string s, Exception e)
+            public virtual void Error(string s, Exception e)
             {
                 Console.Error.WriteLine(s);
                 if (e != null)
@@ -120,70 +120,70 @@ namespace Antlr4.StringTemplate.Misc
             }
         }
 
-        public virtual void compileTimeError(ErrorType error, IToken templateToken, IToken t)
+        public virtual void CompiletimeError(ErrorType error, IToken templateToken, IToken t)
         {
             string srcName = t.InputStream.SourceName;
             if (srcName != null)
                 srcName = Path.GetFileName(srcName);
 
-            listener.compileTimeError(new TemplateCompiletimeMessage(error, srcName, templateToken, t, null, t.Text));
+            listener.CompiletimeError(new TemplateCompiletimeMessage(error, srcName, templateToken, t, null, t.Text));
         }
 
         public virtual void lexerError(string srcName, string msg, IToken templateToken, RecognitionException e)
         {
-            listener.compileTimeError(new TemplateLexerMessage(srcName, msg, templateToken, e));
+            listener.CompiletimeError(new TemplateLexerMessage(srcName, msg, templateToken, e));
         }
 
-        public virtual void compileTimeError(ErrorType error, IToken templateToken, IToken t, object arg)
+        public virtual void CompiletimeError(ErrorType error, IToken templateToken, IToken t, object arg)
         {
             string srcName = t.InputStream.SourceName;
             srcName = Path.GetFileName(srcName);
-            listener.compileTimeError(new TemplateCompiletimeMessage(error, srcName, templateToken, t, null, arg));
+            listener.CompiletimeError(new TemplateCompiletimeMessage(error, srcName, templateToken, t, null, arg));
         }
 
-        public virtual void compileTimeError(ErrorType error, IToken templateToken, IToken t, object arg, object arg2)
+        public virtual void CompiletimeError(ErrorType error, IToken templateToken, IToken t, object arg, object arg2)
         {
             string srcName = t.InputStream.SourceName;
             if (srcName != null)
                 srcName = Path.GetFileName(srcName);
 
-            listener.compileTimeError(new TemplateCompiletimeMessage(error, srcName, templateToken, t, null, arg, arg2));
+            listener.CompiletimeError(new TemplateCompiletimeMessage(error, srcName, templateToken, t, null, arg, arg2));
         }
 
-        public virtual void groupSyntaxError(ErrorType error, string srcName, RecognitionException e, string msg)
+        public virtual void GroupSyntaxError(ErrorType error, string srcName, RecognitionException e, string msg)
         {
             IToken t = e.Token;
-            listener.compileTimeError(new TemplateGroupCompiletimeMessage(error, srcName, e.Token, e, msg));
+            listener.CompiletimeError(new TemplateGroupCompiletimeMessage(error, srcName, e.Token, e, msg));
         }
 
-        public virtual void groupLexerError(ErrorType error, string srcName, RecognitionException e, string msg)
+        public virtual void GroupLexerError(ErrorType error, string srcName, RecognitionException e, string msg)
         {
-            listener.compileTimeError(new TemplateGroupCompiletimeMessage(error, srcName, e.Token, e, msg));
+            listener.CompiletimeError(new TemplateGroupCompiletimeMessage(error, srcName, e.Token, e, msg));
         }
 
-        public virtual void runTimeError(Template self, int ip, ErrorType error)
+        public virtual void RuntimeError(Template self, int ip, ErrorType error)
         {
-            listener.runTimeError(new TemplateRuntimeMessage(error, ip, self));
+            listener.RuntimeError(new TemplateRuntimeMessage(error, ip, self));
         }
 
-        public virtual void runTimeError(Template self, int ip, ErrorType error, object arg)
+        public virtual void RuntimeError(Template self, int ip, ErrorType error, object arg)
         {
-            listener.runTimeError(new TemplateRuntimeMessage(error, ip, self, arg));
+            listener.RuntimeError(new TemplateRuntimeMessage(error, ip, self, arg));
         }
 
-        public virtual void runTimeError(Template self, int ip, ErrorType error, Exception e, object arg)
+        public virtual void RuntimeError(Template self, int ip, ErrorType error, Exception e, object arg)
         {
-            listener.runTimeError(new TemplateRuntimeMessage(error, ip, self, e, arg));
+            listener.RuntimeError(new TemplateRuntimeMessage(error, ip, self, e, arg));
         }
 
-        public virtual void runTimeError(Template self, int ip, ErrorType error, object arg, object arg2)
+        public virtual void RuntimeError(Template self, int ip, ErrorType error, object arg, object arg2)
         {
-            listener.runTimeError(new TemplateRuntimeMessage(error, ip, self, null, arg, arg2));
+            listener.RuntimeError(new TemplateRuntimeMessage(error, ip, self, null, arg, arg2));
         }
 
-        public virtual void runTimeError(Template self, int ip, ErrorType error, object arg, object arg2, object arg3)
+        public virtual void RuntimeError(Template self, int ip, ErrorType error, object arg, object arg2, object arg3)
         {
-            listener.runTimeError(new TemplateRuntimeMessage(error, ip, self, null, arg, arg2, arg3));
+            listener.RuntimeError(new TemplateRuntimeMessage(error, ip, self, null, arg, arg2, arg3));
         }
 
         public virtual void IOError(Template self, ErrorType error, Exception e)
@@ -196,9 +196,9 @@ namespace Antlr4.StringTemplate.Misc
             listener.IOError(new TemplateMessage(error, self, e, arg));
         }
 
-        public virtual void internalError(Template self, string msg, Exception e)
+        public virtual void InternalError(Template self, string msg, Exception e)
         {
-            listener.internalError(new TemplateMessage(ErrorType.INTERNAL_ERROR, self, e, msg));
+            listener.InternalError(new TemplateMessage(ErrorType.INTERNAL_ERROR, self, e, msg));
         }
     }
 }

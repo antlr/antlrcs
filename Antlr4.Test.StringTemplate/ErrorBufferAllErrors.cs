@@ -38,7 +38,7 @@ namespace Antlr4.Test.StringTemplate
 
     public class ErrorBufferAllErrors : ErrorBuffer
     {
-        public override void runTimeError(TemplateMessage msg)
+        public override void RuntimeError(TemplateMessage msg)
         {
             ErrorList.Add(msg);
         }

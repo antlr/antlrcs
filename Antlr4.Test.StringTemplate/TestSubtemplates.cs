@@ -44,8 +44,8 @@ namespace Antlr4.Test.StringTemplate
         public void TestSimpleIteration()
         {
             TemplateGroup group = new TemplateGroup();
-            group.defineTemplate("test", "names", "<names:{n|<n>}>!");
-            Template st = group.getInstanceOf("test");
+            group.DefineTemplate("test", "names", "<names:{n|<n>}>!");
+            Template st = group.GetInstanceOf("test");
             st.Add("names", "Ter");
             st.Add("names", "Tom");
             st.Add("names", "Sumana");
@@ -58,8 +58,8 @@ namespace Antlr4.Test.StringTemplate
         public void TestMapIterationIsByKeys()
         {
             TemplateGroup group = new TemplateGroup();
-            group.defineTemplate("test", "emails", "<emails:{n|<n>}>!");
-            Template st = group.getInstanceOf("test");
+            group.DefineTemplate("test", "emails", "<emails:{n|<n>}>!");
+            Template st = group.GetInstanceOf("test");
             IDictionary<string, string> emails = new Dictionary<string, string>();
             emails["parrt"] = "Ter";
             emails["tombu"] = "Tom";
@@ -74,8 +74,8 @@ namespace Antlr4.Test.StringTemplate
         public void TestSimpleIterationWithArg()
         {
             TemplateGroup group = new TemplateGroup();
-            group.defineTemplate("test", "names", "<names:{n | <n>}>!");
-            Template st = group.getInstanceOf("test");
+            group.DefineTemplate("test", "names", "<names:{n | <n>}>!");
+            Template st = group.GetInstanceOf("test");
             st.Add("names", "Ter");
             st.Add("names", "Tom");
             st.Add("names", "Sumana");
@@ -88,8 +88,8 @@ namespace Antlr4.Test.StringTemplate
         public void TestNestedIterationWithArg()
         {
             TemplateGroup group = new TemplateGroup();
-            group.defineTemplate("test", "users", "<users:{u | <u.id:{id | <id>=}><u.name>}>!");
-            Template st = group.getInstanceOf("test");
+            group.DefineTemplate("test", "users", "<users:{u | <u.id:{id | <id>=}><u.name>}>!");
+            Template st = group.GetInstanceOf("test");
             st.Add("users", new TestCoreBasics.User(1, "parrt"));
             st.Add("users", new TestCoreBasics.User(2, "tombu"));
             st.Add("users", new TestCoreBasics.User(3, "sri"));
@@ -190,7 +190,7 @@ namespace Antlr4.Test.StringTemplate
             writeFile(tmpdir, "g.stg", templates);
 
             TemplateGroup group = new TemplateGroupFile(tmpdir + "/g.stg");
-            Template p = group.getInstanceOf("page");
+            Template p = group.GetInstanceOf("page");
             p.Add("names", "Ter");
             p.Add("names", "Tom");
             p.Add("names", "Sriram");
@@ -206,15 +206,15 @@ namespace Antlr4.Test.StringTemplate
         {
             ErrorBuffer errors = new ErrorBuffer();
             TemplateGroup innerGroup = new TemplateGroup();
-            innerGroup.setListener(errors);
-            innerGroup.defineTemplate("test", "m", "<m:samegroup()>");
-            innerGroup.defineTemplate("samegroup", "x", "hi ");
-            Template st = innerGroup.getInstanceOf("test");
+            innerGroup.Listener = errors;
+            innerGroup.DefineTemplate("test", "m", "<m:samegroup()>");
+            innerGroup.DefineTemplate("samegroup", "x", "hi ");
+            Template st = innerGroup.GetInstanceOf("test");
             st.Add("m", new int[] { 1, 2, 3 });
 
             TemplateGroup outerGroup = new TemplateGroup();
-            outerGroup.defineTemplate("errorMessage", "x", "<x>");
-            Template outerST = outerGroup.getInstanceOf("errorMessage");
+            outerGroup.DefineTemplate("errorMessage", "x", "<x>");
+            Template outerST = outerGroup.GetInstanceOf("errorMessage");
             outerST.Add("x", st);
 
             string expected = "hi hi hi ";
@@ -230,15 +230,15 @@ namespace Antlr4.Test.StringTemplate
         {
             ErrorBuffer errors = new ErrorBuffer();
             TemplateGroup innerGroup = new TemplateGroup();
-            innerGroup.setListener(errors);
-            innerGroup.defineTemplate("test", "m", "<m:samegroup()>");
-            innerGroup.defineTemplate("samegroup", "x", "hi ");
-            Template st = innerGroup.getInstanceOf("test");
+            innerGroup.Listener = errors;
+            innerGroup.DefineTemplate("test", "m", "<m:samegroup()>");
+            innerGroup.DefineTemplate("samegroup", "x", "hi ");
+            Template st = innerGroup.GetInstanceOf("test");
             st.Add("m", 10);
 
             TemplateGroup outerGroup = new TemplateGroup();
-            outerGroup.defineTemplate("errorMessage", "x", "<x>");
-            Template outerST = outerGroup.getInstanceOf("errorMessage");
+            outerGroup.DefineTemplate("errorMessage", "x", "<x>");
+            Template outerST = outerGroup.GetInstanceOf("errorMessage");
             outerST.Add("x", st);
 
             string expected = "hi ";
@@ -254,15 +254,15 @@ namespace Antlr4.Test.StringTemplate
         {
             ErrorBuffer errors = new ErrorBuffer();
             TemplateGroup innerGroup = new TemplateGroup();
-            innerGroup.setListener(errors);
-            innerGroup.defineTemplate("bob", "inner");
-            Template st = innerGroup.getInstanceOf("bob");
+            innerGroup.Listener = errors;
+            innerGroup.DefineTemplate("bob", "inner");
+            Template st = innerGroup.GetInstanceOf("bob");
 
             TemplateGroup outerGroup = new TemplateGroup();
-            outerGroup.setListener(errors);
-            outerGroup.defineTemplate("errorMessage", "x", "<x>");
-            outerGroup.defineTemplate("bob", "outer"); // should not be visible to test() in innerGroup
-            Template outerST = outerGroup.getInstanceOf("errorMessage");
+            outerGroup.Listener = errors;
+            outerGroup.DefineTemplate("errorMessage", "x", "<x>");
+            outerGroup.DefineTemplate("bob", "outer"); // should not be visible to test() in innerGroup
+            Template outerST = outerGroup.GetInstanceOf("errorMessage");
             outerST.Add("x", st);
 
             string expected = "inner";
