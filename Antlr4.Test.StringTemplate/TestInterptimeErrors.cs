@@ -74,7 +74,7 @@ namespace Antlr4.Test.StringTemplate
             TemplateGroup group = new TemplateGroupFile(tmpdir + "/" + "t.stg");
             group.setListener(errors);
             Template st = group.getInstanceOf("t");
-            st.render();
+            st.Render();
             string expected = "context [t] 1:0 no such template: foo" + newline;
             string result = errors.ToString();
             Assert.AreEqual(expected, result);
@@ -98,7 +98,7 @@ namespace Antlr4.Test.StringTemplate
             TemplateGroup group2 = new TemplateGroupFile(tmpdir + "/" + "t2.stg");
             group.importTemplates(group2);
             Template st = group.getInstanceOf("t");
-            st.render();
+            st.Render();
             string expected = "context [t] 1:1 no such template: super.t" + newline;
             string result = errors.ToString();
             Assert.AreEqual(expected, result);
@@ -116,8 +116,8 @@ namespace Antlr4.Test.StringTemplate
             TemplateGroup group = new TemplateGroupFile(tmpdir + "/" + "t.stg");
             group.setListener(errors);
             Template st = group.getInstanceOf("t");
-            st.add("u", new User(32, "parrt"));
-            st.render();
+            st.Add("u", new User(32, "parrt"));
+            st.Render();
             string expected = "";
             string result = errors.ToString();
             Assert.AreEqual(expected, result);
@@ -135,8 +135,8 @@ namespace Antlr4.Test.StringTemplate
             TemplateGroup group = new TemplateGroupFile(tmpdir + "/" + "t.stg");
             group.setListener(errors);
             Template st = group.getInstanceOf("t");
-            st.add("u", new UserHiddenName("parrt"));
-            st.render();
+            st.Add("u", new UserHiddenName("parrt"));
+            st.Render();
             string expected = "";
             string result = errors.ToString();
             Assert.AreEqual(expected, result);
@@ -154,8 +154,8 @@ namespace Antlr4.Test.StringTemplate
             TemplateGroup group = new TemplateGroupFile(tmpdir + "/" + "t.stg");
             group.setListener(errors);
             Template st = group.getInstanceOf("t");
-            st.add("u", new UserHiddenNameField("parrt"));
-            st.render();
+            st.Add("u", new UserHiddenNameField("parrt"));
+            st.Render();
             string expected = "";
             string result = errors.ToString();
             Assert.AreEqual(expected, result);
@@ -174,7 +174,7 @@ namespace Antlr4.Test.StringTemplate
             TemplateGroup group = new TemplateGroupFile(tmpdir + "/" + "t.stg");
             group.setListener(errors);
             Template st = group.getInstanceOf("t");
-            st.render();
+            st.Render();
             string expected = "context [t] 1:1 passed 1 arg(s) to template u with 2 declared arg(s)" + newline;
             string result = errors.ToString();
             Assert.AreEqual(expected, result);
@@ -194,7 +194,7 @@ namespace Antlr4.Test.StringTemplate
             group.setListener(errors);
             Template st = group.getInstanceOf("t");
             string expected = "9";
-            string result = st.render();
+            string result = st.Render();
             Assert.AreEqual(expected, result);
 
             expected = "context [t] 1:5 passed 1 arg(s) to template u with 2 declared arg(s)" + newline;
@@ -216,7 +216,7 @@ namespace Antlr4.Test.StringTemplate
             group.setListener(errors);
             TemplateGroup.debug = true;
             Template st = group.getInstanceOf("t");
-            st.render();
+            st.Render();
             string expected = "context [t u] 1:1 attribute x isn't defined" + newline;
             string result = errors.ToString();
             Assert.AreEqual(expected, result);
@@ -231,19 +231,19 @@ namespace Antlr4.Test.StringTemplate
             Template e = new Template(group,
                     "<names,phones,salaries:{n,p | <n>@<p>}; separator=\", \">"
                 );
-            e.add("names", "Ter");
-            e.add("names", "Tom");
-            e.add("phones", "1");
-            e.add("phones", "2");
-            e.add("salaries", "big");
-            e.render();
+            e.Add("names", "Ter");
+            e.Add("names", "Tom");
+            e.Add("phones", "1");
+            e.Add("phones", "2");
+            e.Add("salaries", "big");
+            e.Render();
             string errorExpecting =
                 "1:23: anonymous template has 2 arg(s) but mapped across 3 value(s)" + newline +
                 "context [anonymous] 1:23 passed 3 arg(s) to template _sub1 with 2 declared arg(s)" + newline +
                 "context [anonymous] 1:1 iterating through 3 values in zip map but template has 2 declared arguments" + newline;
             Assert.AreEqual(errorExpecting, errors.ToString());
             string expecting = "Ter@1, Tom@2";
-            Assert.AreEqual(expecting, e.render());
+            Assert.AreEqual(expecting, e.Render());
         }
 
         [TestMethod]
@@ -253,8 +253,8 @@ namespace Antlr4.Test.StringTemplate
             TemplateGroup group = new TemplateGroup();
             group.setListener(errors);
             Template e = new Template(group, "<trim(s)>");
-            e.add("s", 34);
-            e.render(); // generate the error
+            e.Add("s", 34);
+            e.Render(); // generate the error
             string errorExpecting = "context [anonymous] 1:1 function trim expects a string not System.Int32" + newline;
             Assert.AreEqual(errorExpecting, errors.ToString());
         }
@@ -266,8 +266,8 @@ namespace Antlr4.Test.StringTemplate
             TemplateGroup group = new TemplateGroup();
             group.setListener(errors);
             Template e = new Template(group, "<strlen(s)>");
-            e.add("s", 34);
-            e.render(); // generate the error
+            e.Add("s", 34);
+            e.Render(); // generate the error
             string errorExpecting = "context [anonymous] 1:1 function strlen expects a string not System.Int32" + newline;
             Assert.AreEqual(errorExpecting, errors.ToString());
         }

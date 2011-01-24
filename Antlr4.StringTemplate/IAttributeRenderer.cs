@@ -34,11 +34,11 @@ namespace Antlr4.StringTemplate
 {
     using CultureInfo = System.Globalization.CultureInfo;
 
-    /** This interface describes an object that knows how to format or otherwise
-     *  render an object appropriately.  There is one renderer registered per
+    /** This interface describes an object that knows how to Format or otherwise
+     *  Render an object appropriately.  There is one renderer registered per
      *  group for a given Java type.
      *
-     *  If the format string passed to the renderer is not recognized then simply
+     *  If the Format string passed to the renderer is not recognized then simply
      *  call ToString().
      *
      *  formatString can be null but locale will at least be Locale.getDefault()

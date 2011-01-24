@@ -124,7 +124,7 @@ namespace Antlr4.StringTemplate.Visualizer
 
         public override string ToString()
         {
-            if (_template.isAnonSubtemplate())
+            if (_template.IsAnonymousSubtemplate())
                 return "{...}";
 
             return string.Format("{0} @ {1}:{2}", _template, Path.GetFileName(_template.newSTEvent.getFileName()), _template.newSTEvent.getLine());

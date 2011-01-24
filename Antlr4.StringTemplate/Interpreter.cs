@@ -66,7 +66,7 @@ namespace Antlr4.StringTemplate
      *  These are used by STViz to pair up output chunks with the template
      *  expressions that generate them.
      *
-     *  We create a new interpreter for each Template.render(), DebugST.inspect, or
+     *  We create a new interpreter for each Template.Render(), DebugST.inspect, or
      *  DebugST.getEvents() invocation.
      */
     public class Interpreter
@@ -156,9 +156,9 @@ namespace Antlr4.StringTemplate
 
         protected virtual int ExecuteImpl(ITemplateWriter @out, Template self)
         {
-            int start = @out.index(); // track char we're about to write
+            int start = @out.index(); // track char we're about to Write
             Bytecode prevOpcode = Bytecode.Invalid;
-            int n = 0; // how many char we write out
+            int n = 0; // how many char we Write out
             int nargs;
             int nameIndex;
             int addr;
@@ -190,7 +190,7 @@ namespace Antlr4.StringTemplate
                     name = self.impl.strings[nameIndex];
                     try
                     {
-                        o = self.getAttribute(name);
+                        o = self.GetAttribute(name);
                     }
                     catch (TemplateNoSuchPropertyException)
                     {
@@ -305,7 +305,7 @@ namespace Antlr4.StringTemplate
 
                 case Bytecode.INSTR_WRITE_OPT:
                     options = (object[])operands[sp--]; // get options
-                    o = operands[sp--];                 // get option to write
+                    o = operands[sp--];                 // get option to Write
                     int n2 = writeObjectWithOptions(@out, self, o, options);
                     n += n2;
                     nwline += n2;
@@ -507,7 +507,7 @@ namespace Antlr4.StringTemplate
             return n;
         }
 
-        // TODO: refactor to remove dup'd code
+        // TODO: refactor to Remove dup'd code
 
         internal virtual void super_new(Template self, string name, int nargs)
         {
@@ -579,7 +579,7 @@ namespace Antlr4.StringTemplate
 
             foreach (string argName in attrs.Keys)
             {
-                // don't let it throw an exception in rawSetAttribute
+                // don't let it throw an exception in RawSetAttribute
                 if (!st.impl.formalArguments.Any(i => i.Name == argName))
                 {
                     errMgr.runTimeError(self, current_ip, ErrorType.NO_SUCH_ATTRIBUTE, argName);
@@ -587,7 +587,7 @@ namespace Antlr4.StringTemplate
                 }
 
                 object o = attrs[argName];
-                st.rawSetAttribute(argName, o);
+                st.RawSetAttribute(argName, o);
             }
         }
 
@@ -619,7 +619,7 @@ namespace Antlr4.StringTemplate
             {
                 object o = operands[firstArg + i];
                 string argName = st.impl.formalArguments[i].Name;
-                st.rawSetAttribute(argName, o);
+                st.RawSetAttribute(argName, o);
             }
         }
 
@@ -628,7 +628,7 @@ namespace Antlr4.StringTemplate
          */
         protected virtual int writeObjectNoOptions(ITemplateWriter @out, Template self, object o)
         {
-            int start = @out.index(); // track char we're about to write
+            int start = @out.index(); // track char we're about to Write
             int n = writeObject(@out, self, o, null);
             if (TemplateGroup.debug)
             {
@@ -654,8 +654,8 @@ namespace Antlr4.StringTemplate
         protected virtual int writeObjectWithOptions(ITemplateWriter @out, Template self, object o,
                                              object[] options)
         {
-            int start = @out.index(); // track char we're about to write
-            // precompute all option values (render all the way to strings)
+            int start = @out.index(); // track char we're about to Write
+            // precompute all option values (Render all the way to strings)
             string[] optionStrings = null;
             if (options != null)
             {
@@ -829,8 +829,8 @@ namespace Antlr4.StringTemplate
                     setFirstArgument(self, st, iterValue);
                     if (st.impl.isAnonSubtemplate)
                     {
-                        st.rawSetAttribute("i0", i0);
-                        st.rawSetAttribute("i", i);
+                        st.RawSetAttribute("i0", i0);
+                        st.RawSetAttribute("i", i);
                     }
                     mapped.Add(st);
                     i0++;
@@ -847,8 +847,8 @@ namespace Antlr4.StringTemplate
                     setFirstArgument(self, st, attr);
                     if (st.impl.isAnonSubtemplate)
                     {
-                        st.rawSetAttribute("i0", 0);
-                        st.rawSetAttribute("i", 1);
+                        st.RawSetAttribute("i0", 0);
+                        st.RawSetAttribute("i", 1);
                     }
                     operands[++sp] = st;
                 }
@@ -888,7 +888,7 @@ namespace Antlr4.StringTemplate
             // todo: track formal args not names for efficient filling of locals
             object[] formalArgumentNames = formalArguments.Select(i => i.Name).ToArray();
             int nformalArgs = formalArgumentNames.Length;
-            if (prototype.isAnonSubtemplate())
+            if (prototype.IsAnonymousSubtemplate())
                 nformalArgs -= predefinedAnonSubtemplateAttributes.Count;
 
             if (nformalArgs != numExprs)
@@ -910,8 +910,8 @@ namespace Antlr4.StringTemplate
                 // get a value for each attribute in list; put into Template instance
                 int numEmpty = 0;
                 Template embedded = group.createStringTemplate(prototype);
-                embedded.rawSetAttribute("i0", i2);
-                embedded.rawSetAttribute("i", i2 + 1);
+                embedded.RawSetAttribute("i0", i2);
+                embedded.RawSetAttribute("i", i2 + 1);
                 for (int a = 0; a < numExprs; a++)
                 {
                     Iterator it = (Iterator)exprs[a];
@@ -919,7 +919,7 @@ namespace Antlr4.StringTemplate
                     {
                         string argName = (string)formalArgumentNames[a];
                         object iteratedValue = it.next();
-                        embedded.rawSetAttribute(argName, iteratedValue);
+                        embedded.RawSetAttribute(argName, iteratedValue);
                     }
                     else
                     {
@@ -1054,7 +1054,7 @@ namespace Antlr4.StringTemplate
                 {
                     object o = it.next();
                     if (it.hasNext())
-                        a.Add(o); // only add if not last one
+                        a.Add(o); // only Add if not last one
                 }
 
                 return a;
@@ -1297,11 +1297,11 @@ namespace Antlr4.StringTemplate
                     string defArgTemplate = arg.DefaultValueToken.Text;
                     if (defArgTemplate.StartsWith("{<(") && defArgTemplate.EndsWith(")>}"))
                     {
-                        invokedST.rawSetAttribute(arg.Name, toString(invokedST, defaultArgST));
+                        invokedST.RawSetAttribute(arg.Name, toString(invokedST, defaultArgST));
                     }
                     else
                     {
-                        invokedST.rawSetAttribute(arg.Name, defaultArgST);
+                        invokedST.RawSetAttribute(arg.Name, defaultArgST);
                     }
                 }
             }
@@ -1326,7 +1326,7 @@ namespace Antlr4.StringTemplate
             }
 
             tr.Append(" ], calls=");
-            tr.Append(self.getEnclosingInstanceStackString());
+            tr.Append(self.GetEnclosingInstanceStackString());
             tr.Append(", sp=" + sp + ", nw=" + nwline);
             string s = tr.ToString();
 

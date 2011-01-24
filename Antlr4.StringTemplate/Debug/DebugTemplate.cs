@@ -51,7 +51,7 @@ namespace Antlr4.StringTemplate.Debug
         /** Record who made us? ConstructionEvent creates Exception to grab stack */
         public ConstructionEvent newSTEvent = new ConstructionEvent();
 
-        /** Track construction-time add attribute "events"; used for Template user-level debugging */
+        /** Track construction-time Add attribute "events"; used for Template user-level debugging */
         public MultiMap<string, AddAttributeEvent> addAttrEvents = new MultiMap<string, AddAttributeEvent>();
 
         //public Interpreter interp; // set when we start interpreter in inspect()
@@ -64,12 +64,12 @@ namespace Antlr4.StringTemplate.Debug
         {
         }
 
-        public override void add(string name, object value)
+        public override void Add(string name, object value)
         {
             if (TemplateGroup.debug)
                 addAttrEvents.map(name, new AddAttributeEvent(name, value));
 
-            base.add(name, value);
+            base.Add(name, value);
         }
 
         // TESTING SUPPORT
@@ -95,7 +95,7 @@ namespace Antlr4.StringTemplate.Debug
             ITemplateWriter wr = new AutoIndentWriter(@out);
             wr.setLineWidth(lineWidth);
             Interpreter interp = new Interpreter(groupThatCreatedThisInstance, locale);
-            interp.Execute(wr, this); // render and track events
+            interp.Execute(wr, this); // Render and track events
             return interp.getEvents();
         }
     }

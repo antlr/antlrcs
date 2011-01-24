@@ -71,9 +71,9 @@ namespace Antlr4.StringTemplate.Misc
             StringBuilder buf = new StringBuilder();
             buf.Append(getTemplateDeclaratorString() + ":");
             n++;
-            if (self.getAttributes() != null)
+            if (self.GetAttributes() != null)
             {
-                List<string> attrNames = new List<string>(self.getAttributes().Keys);
+                List<string> attrNames = new List<string>(self.GetAttributes().Keys);
                 attrNames.Sort(StringComparer.Ordinal);
                 string longestName = attrNames.OrderBy(i => i.Length).Last();
                 int w = longestName.Length;
@@ -85,7 +85,7 @@ namespace Antlr4.StringTemplate.Misc
                     buf.Append(string.Format("%-" + w + "s = ", name));
                     buf.Append(string.Format(string.Format("{{0,-{0}}} = ", w), name));
                     object value;
-                    self.getAttributes().TryGetValue(name, out value);
+                    self.GetAttributes().TryGetValue(name, out value);
                     buf.Append(getValueDebugString(value, n));
                 }
             }
@@ -129,7 +129,7 @@ namespace Antlr4.StringTemplate.Misc
         {
             StringBuilder buf = new StringBuilder();
             buf.Append("<");
-            buf.Append(self.getName());
+            buf.Append(self.Name());
             buf.Append("(");
             if (self.impl.formalArguments != null)
                 buf.Append(string.Join(",", self.impl.formalArguments.Select(i => i.Name).ToArray()));

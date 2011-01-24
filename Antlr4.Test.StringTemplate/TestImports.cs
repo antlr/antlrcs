@@ -57,13 +57,13 @@ namespace Antlr4.Test.StringTemplate
             group2.importTemplates(group1);
             Template st = group2.getInstanceOf("b");
             string expected = "dir1 b";
-            string result = st.render();
+            string result = st.Render();
             Assert.AreEqual(expected, result);
 
             // do it again, but make a template ref imported template
             st = group2.getInstanceOf("a");
             expected = " dir1 b ";
-            result = st.render();
+            result = st.Render();
             Assert.AreEqual(expected, result);
         }
 
@@ -85,7 +85,7 @@ namespace Antlr4.Test.StringTemplate
             TemplateGroup group = new TemplateGroupFile(dir1 + "/a.stg");
             Template st = group.getInstanceOf("b"); // visible only if import worked
             string expected = "dir2 b";
-            string result = st.render();
+            string result = st.Render();
             Assert.AreEqual(expected, result);
         }
 
@@ -106,7 +106,7 @@ namespace Antlr4.Test.StringTemplate
             TemplateGroup group1 = new TemplateGroupFile(dir + "/group1.stg");
             Template st = group1.getInstanceOf("c"); // should see c()
             string expected = "g2 c";
-            string result = st.render();
+            string result = st.Render();
             Assert.AreEqual(expected, result);
         }
 
@@ -128,7 +128,7 @@ namespace Antlr4.Test.StringTemplate
             Template st = group1.getInstanceOf("a");
             st.impl.dump();
             string expected = " group file b ";
-            string result = st.render();
+            string result = st.Render();
             Assert.AreEqual(expected, result);
         }
 
@@ -151,7 +151,7 @@ namespace Antlr4.Test.StringTemplate
             group1.importTemplates(group2);
             Template st = group1.getInstanceOf("b");
             string expected = "g2 c";
-            string result = st.render();
+            string result = st.Render();
             Assert.AreEqual(expected, result);
         }
 
@@ -170,7 +170,7 @@ namespace Antlr4.Test.StringTemplate
             group1.importTemplates(group2);
             Template st = group1.getInstanceOf("subdir/a");
             string expected = " x's subdir/b ";
-            string result = st.render();
+            string result = st.Render();
             Assert.AreEqual(expected, result);
         }
 
@@ -192,7 +192,7 @@ namespace Antlr4.Test.StringTemplate
             group1.importTemplates(group2);
             Template st = group1.getInstanceOf("subdir/a");
             string expected = " group file: b ";
-            string result = st.render();
+            string result = st.Render();
             Assert.AreEqual(expected, result);
         }
 
@@ -215,13 +215,13 @@ namespace Antlr4.Test.StringTemplate
             // normal lookup; a created from dir2 calls dir2.b
             Template st = group2.getInstanceOf("a");
             string expected = " dir2 b ";
-            string result = st.render();
+            string result = st.Render();
             Assert.AreEqual(expected, result);
 
             // polymorphic lookup; a created from dir1 calls dir2.a which calls dir1.b
             st = group1.getInstanceOf("a");
             expected = " dir1 b ";
-            result = st.render();
+            result = st.Render();
             Assert.AreEqual(expected, result);
         }
 
@@ -242,7 +242,7 @@ namespace Antlr4.Test.StringTemplate
             group2.importTemplates(group1);
             Template st = group2.getInstanceOf("a");
             string expected = " [dir1 a] ";
-            string result = st.render();
+            string result = st.Render();
             Assert.AreEqual(expected, result);
         }
 
@@ -272,13 +272,13 @@ namespace Antlr4.Test.StringTemplate
             Assert.AreEqual(originalHashCode == newHashCode, false); // diff objects
 
             string expected = " dir1 b ";
-            string result = st.render();
+            string result = st.Render();
             Assert.AreEqual(expected, result);
 
             st = group2.getInstanceOf("b");
             int newHashCode2 = RuntimeHelpers.GetHashCode(st);
             Assert.AreEqual(originalHashCode2 == newHashCode2, false); // diff objects
-            result = st.render();
+            result = st.Render();
             expected = "dir1 b";
             Assert.AreEqual(expected, result);
         }

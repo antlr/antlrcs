@@ -202,7 +202,7 @@ namespace Antlr4.StringTemplate.Compiler
             }
         }
 
-        /** Used by Template.add() to add args one by one w/o turning on full formal args definition signal */
+        /** Used by Template.Add() to Add args one by one w/o turning on full formal args definition signal */
         public virtual void addArg(FormalArgument a)
         {
             if (formalArguments == null)

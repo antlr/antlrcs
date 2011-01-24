@@ -62,7 +62,7 @@ namespace Antlr4.StringTemplate.Visualizer.Extensions
             ITemplateWriter wr = new AutoIndentWriter(@out);
             wr.setLineWidth(lineWidth);
             Interpreter interp = new Interpreter(template.groupThatCreatedThisInstance, culture);
-            interp.Execute(wr, template); // render and track events
+            interp.Execute(wr, template); // Render and track events
             TemplateVisualizer visualizer = new TemplateVisualizer(errorManager, template, @out.ToString(), interp, interp.getExecutionTrace(), errors.Errors);
             visualizer.Show();
         }

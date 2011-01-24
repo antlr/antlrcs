@@ -45,9 +45,9 @@ namespace Antlr4.Test.StringTemplate
             string template = "<first(names)>";
             Template st = new Template(template);
             List<string> names = new List<string>() { "Ter", "Tom" };
-            st.add("names", names);
+            st.Add("names", names);
             string expected = "Ter";
-            string result = st.render();
+            string result = st.Render();
             Assert.AreEqual(expected, result);
         }
 
@@ -57,9 +57,9 @@ namespace Antlr4.Test.StringTemplate
             string template = "<length(names)>";
             Template st = new Template(template);
             List<string> names = new List<string>() { "Ter", "Tom" };
-            st.add("names", names);
+            st.Add("names", names);
             string expected = "2";
-            string result = st.render();
+            string result = st.Render();
             Assert.AreEqual(expected, result);
         }
 
@@ -69,9 +69,9 @@ namespace Antlr4.Test.StringTemplate
             string template = "<length(names)>";
             Template st = new Template(template);
             List<string> names = new List<string>() { "Ter", null, "Tom", null };
-            st.add("names", names);
+            st.Add("names", names);
             string expected = "4";
-            string result = st.render();
+            string result = st.Render();
             Assert.AreEqual(expected, result);
         }
 
@@ -81,11 +81,11 @@ namespace Antlr4.Test.StringTemplate
             Template e = new Template(
                     "<first(names)>"
                 );
-            e.add("names", "Ter");
-            e.add("names", "Tom");
-            e.add("names", "Sriram");
+            e.Add("names", "Ter");
+            e.Add("names", "Tom");
+            e.Add("names", "Sriram");
             string expecting = "Ter";
-            Assert.AreEqual(expecting, e.render());
+            Assert.AreEqual(expecting, e.Render());
         }
 
         [TestMethod]
@@ -94,11 +94,11 @@ namespace Antlr4.Test.StringTemplate
             Template e = new Template(
                     "<trunc(names); separator=\", \">"
                 );
-            e.add("names", "Ter");
-            e.add("names", "Tom");
-            e.add("names", "Sriram");
+            e.Add("names", "Ter");
+            e.Add("names", "Tom");
+            e.Add("names", "Sriram");
             string expecting = "Ter, Tom";
-            Assert.AreEqual(expecting, e.render());
+            Assert.AreEqual(expecting, e.Render());
         }
 
         [TestMethod]
@@ -107,11 +107,11 @@ namespace Antlr4.Test.StringTemplate
             Template e = new Template(
                     "<rest(names); separator=\", \">"
                 );
-            e.add("names", "Ter");
-            e.add("names", "Tom");
-            e.add("names", "Sriram");
+            e.Add("names", "Ter");
+            e.Add("names", "Tom");
+            e.Add("names", "Sriram");
             string expecting = "Tom, Sriram";
-            Assert.AreEqual(expecting, e.render());
+            Assert.AreEqual(expecting, e.Render());
         }
 
         [TestMethod]
@@ -120,9 +120,9 @@ namespace Antlr4.Test.StringTemplate
             Template e = new Template(
                     "<rest(names); separator=\", \">"
                 );
-            e.add("names", new List<string>());
+            e.Add("names", new List<string>());
             string expecting = "";
-            Assert.AreEqual(expecting, e.render());
+            Assert.AreEqual(expecting, e.Render());
         }
 
         [TestMethod]
@@ -138,9 +138,9 @@ namespace Antlr4.Test.StringTemplate
             List<string> names = new List<string>();
             names.Add("Ter");
             names.Add("Tom");
-            e.add("names", names);
+            e.Add("names", names);
             string expecting = "Tom, Tom";
-            Assert.AreEqual(expecting, e.render());
+            Assert.AreEqual(expecting, e.Render());
         }
 
         [TestMethod]
@@ -149,11 +149,11 @@ namespace Antlr4.Test.StringTemplate
             Template e = new Template(
                     "<last(names)>"
                 );
-            e.add("names", "Ter");
-            e.add("names", "Tom");
-            e.add("names", "Sriram");
+            e.Add("names", "Ter");
+            e.Add("names", "Tom");
+            e.Add("names", "Sriram");
             string expecting = "Sriram";
-            Assert.AreEqual(expecting, e.render());
+            Assert.AreEqual(expecting, e.Render());
         }
 
         [TestMethod]
@@ -162,14 +162,14 @@ namespace Antlr4.Test.StringTemplate
             Template e = new Template(
                     "<strip(names); null=\"n/a\">"
                 );
-            e.add("names", null);
-            e.add("names", "Tom");
-            e.add("names", null);
-            e.add("names", null);
-            e.add("names", "Sriram");
-            e.add("names", null);
+            e.Add("names", null);
+            e.Add("names", "Tom");
+            e.Add("names", null);
+            e.Add("names", null);
+            e.Add("names", "Sriram");
+            e.Add("names", null);
             string expecting = "TomSriram";
-            Assert.AreEqual(expecting, e.render());
+            Assert.AreEqual(expecting, e.Render());
         }
 
         [TestMethod]
@@ -178,14 +178,14 @@ namespace Antlr4.Test.StringTemplate
             Template e = new Template(
                     "<length(strip(names))>"
                 );
-            e.add("names", null);
-            e.add("names", "Tom");
-            e.add("names", null);
-            e.add("names", null);
-            e.add("names", "Sriram");
-            e.add("names", null);
+            e.Add("names", null);
+            e.Add("names", "Tom");
+            e.Add("names", null);
+            e.Add("names", null);
+            e.Add("names", "Sriram");
+            e.Add("names", null);
             string expecting = "2";
-            Assert.AreEqual(expecting, e.render());
+            Assert.AreEqual(expecting, e.Render());
         }
 
         [TestMethod]
@@ -195,13 +195,13 @@ namespace Antlr4.Test.StringTemplate
             Template e = new Template(
                     "<[first(mine),rest(yours)]; separator=\", \">"
                 );
-            e.add("mine", "1");
-            e.add("mine", "2");
-            e.add("mine", "3");
-            e.add("yours", "a");
-            e.add("yours", "b");
+            e.Add("mine", "1");
+            e.Add("mine", "2");
+            e.Add("mine", "3");
+            e.Add("yours", "a");
+            e.Add("yours", "b");
             string expecting = "1, b";
-            Assert.AreEqual(expecting, e.render());
+            Assert.AreEqual(expecting, e.Render());
         }
 
         [TestMethod]
@@ -211,12 +211,12 @@ namespace Antlr4.Test.StringTemplate
             Template e = new Template(
                     "<[mine,yours]; separator=\", \">"
                 );
-            e.add("mine", "1");
-            e.add("mine", "2");
-            e.add("mine", "3");
-            e.add("yours", "a");
+            e.Add("mine", "1");
+            e.Add("mine", "2");
+            e.Add("mine", "3");
+            e.Add("yours", "a");
             string expecting = "1, 2, 3, a";
-            Assert.AreEqual(expecting, e.render());
+            Assert.AreEqual(expecting, e.Render());
         }
 
         [TestMethod]
@@ -232,12 +232,12 @@ namespace Antlr4.Test.StringTemplate
             List<string> mine = new List<string>();
             mine.Add("Ter");
             mine.Add("Tom");
-            e.add("mine", mine);
+            e.Add("mine", mine);
             List<string> yours = new List<string>();
             yours.Add("Foo");
-            e.add("yours", yours);
+            e.Add("yours", yours);
             string expecting = "TerTomFoo, TerTomFoo";
-            Assert.AreEqual(expecting, e.render());
+            Assert.AreEqual(expecting, e.Render());
         }
 
         [TestMethod]
@@ -250,12 +250,12 @@ namespace Antlr4.Test.StringTemplate
             Template e = new Template(
                     "<[x,mine,y,yours,z]; separator=\", \">"
                 );
-            e.add("mine", "1");
-            e.add("mine", "2");
-            e.add("mine", "3");
-            e.add("yours", "a");
+            e.Add("mine", "1");
+            e.Add("mine", "2");
+            e.Add("mine", "3");
+            e.Add("yours", "a");
             string expecting = "1, 2, 3, a";
-            Assert.AreEqual(expecting, e.render());
+            Assert.AreEqual(expecting, e.Render());
         }
 
         [TestMethod]
@@ -264,11 +264,11 @@ namespace Antlr4.Test.StringTemplate
             Template e = new Template(
                     "<first(rest(names))>" // gets 2nd element
                 );
-            e.add("names", "Ter");
-            e.add("names", "Tom");
-            e.add("names", "Sriram");
+            e.Add("names", "Ter");
+            e.Add("names", "Tom");
+            e.Add("names", "Sriram");
             string expecting = "Tom";
-            Assert.AreEqual(expecting, e.render());
+            Assert.AreEqual(expecting, e.Render());
         }
 
         [TestMethod]
@@ -277,9 +277,9 @@ namespace Antlr4.Test.StringTemplate
             Template e = new Template(
                     "<first(names)>"
                 );
-            e.add("names", "Ter");
+            e.Add("names", "Ter");
             string expecting = "Ter";
-            Assert.AreEqual(expecting, e.render());
+            Assert.AreEqual(expecting, e.Render());
         }
 
         [TestMethod]
@@ -288,9 +288,9 @@ namespace Antlr4.Test.StringTemplate
             Template e = new Template(
                     "<last(names)>"
                 );
-            e.add("names", "Ter");
+            e.Add("names", "Ter");
             string expecting = "Ter";
-            Assert.AreEqual(expecting, e.render());
+            Assert.AreEqual(expecting, e.Render());
         }
 
         [TestMethod]
@@ -299,9 +299,9 @@ namespace Antlr4.Test.StringTemplate
             Template e = new Template(
                     "<last(names)>"
                 );
-            e.add("names", new List<string>() { "Ter" });
+            e.Add("names", new List<string>() { "Ter" });
             string expecting = "Ter";
-            Assert.AreEqual(expecting, e.render());
+            Assert.AreEqual(expecting, e.Render());
         }
 
         [TestMethod]
@@ -310,9 +310,9 @@ namespace Antlr4.Test.StringTemplate
             Template e = new Template(
                     "<rest(names)>"
                 );
-            e.add("names", "Ter");
+            e.Add("names", "Ter");
             string expecting = "";
-            Assert.AreEqual(expecting, e.render());
+            Assert.AreEqual(expecting, e.Render());
         }
 
         [TestMethod]
@@ -321,9 +321,9 @@ namespace Antlr4.Test.StringTemplate
             Template e = new Template(
                     "<rest(names)>"
                 );
-            e.add("names", new List<string>() { "Ter" });
+            e.Add("names", new List<string>() { "Ter" });
             string expecting = "";
-            Assert.AreEqual(expecting, e.render());
+            Assert.AreEqual(expecting, e.Render());
         }
 
         [TestMethod]
@@ -332,10 +332,10 @@ namespace Antlr4.Test.StringTemplate
             Template e = new Template(
                     "<rest(names)>, <rest(names)>" // gets 2nd element
                 );
-            e.add("names", "Ter");
-            e.add("names", "Tom");
+            e.Add("names", "Ter");
+            e.Add("names", "Tom");
             string expecting = "Tom, Tom";
-            Assert.AreEqual(expecting, e.render());
+            Assert.AreEqual(expecting, e.Render());
         }
 
         [TestMethod]
@@ -344,10 +344,10 @@ namespace Antlr4.Test.StringTemplate
             Template e = new Template(
                     "<rest(names)>, <rest(names)>" // gets 2nd element
                 );
-            e.add("names", "Ter");
-            e.add("names", "Tom");
+            e.Add("names", "Ter");
+            e.Add("names", "Tom");
             string expecting = "Tom, Tom";
-            Assert.AreEqual(expecting, e.render());
+            Assert.AreEqual(expecting, e.Render());
         }
 
         [TestMethod]
@@ -356,12 +356,12 @@ namespace Antlr4.Test.StringTemplate
             Template e = new Template(
                     "<first([names,phones])>"
                 );
-            e.add("names", "Ter");
-            e.add("names", "Tom");
-            e.add("phones", "1");
-            e.add("phones", "2");
+            e.Add("names", "Ter");
+            e.Add("names", "Tom");
+            e.Add("phones", "1");
+            e.Add("phones", "2");
             string expecting = "Ter";
-            Assert.AreEqual(expecting, e.render());
+            Assert.AreEqual(expecting, e.Render());
         }
 
         [TestMethod]
@@ -373,16 +373,16 @@ namespace Antlr4.Test.StringTemplate
             IDictionary<string, string> m1 = new Dictionary<string, string>();
             IDictionary<string, string> m2 = new Dictionary<string, string>();
             m1["Ter"] = "x5707";
-            e.add("maps", m1);
+            e.Add("maps", m1);
             m2["Tom"] = "x5332";
-            e.add("maps", m2);
+            e.Add("maps", m2);
             string expecting = "x5707";
-            Assert.AreEqual(expecting, e.render());
+            Assert.AreEqual(expecting, e.Render());
 
             List<IDictionary<string, string>> list = new List<IDictionary<string, string>>() { m1, m2 };
-            e.add("maps", list);
+            e.Add("maps", list);
             expecting = "x5707";
-            Assert.AreEqual(expecting, e.render());
+            Assert.AreEqual(expecting, e.Render());
         }
 
         [TestMethod]
@@ -394,15 +394,15 @@ namespace Antlr4.Test.StringTemplate
             IDictionary<string, string> m1 = new Dictionary<string, string>();
             IDictionary<string, string> m2 = new Dictionary<string, string>();
             m1["Ter"] = "x5707";
-            e.add("maps", m1);
+            e.Add("maps", m1);
             m2["Tom"] = "x5332";
-            e.add("maps", m2);
+            e.Add("maps", m2);
             string expecting = "Ter!";
-            Assert.AreEqual(expecting, e.render());
+            Assert.AreEqual(expecting, e.Render());
             List<IDictionary<string, string>> list = new List<IDictionary<string, string>>() { m1, m2 };
-            e.add("maps", list);
+            e.Add("maps", list);
             expecting = "Ter!";
-            Assert.AreEqual(expecting, e.render());
+            Assert.AreEqual(expecting, e.Render());
         }
 
         [TestMethod]
@@ -411,9 +411,9 @@ namespace Antlr4.Test.StringTemplate
             Template e = new Template(
                     "<trim(name)>"
                 );
-            e.add("name", " Ter  \n");
+            e.Add("name", " Ter  \n");
             string expecting = "Ter";
-            Assert.AreEqual(expecting, e.render());
+            Assert.AreEqual(expecting, e.Render());
         }
 
         [TestMethod]
@@ -422,9 +422,9 @@ namespace Antlr4.Test.StringTemplate
             Template e = new Template(
                     "<strlen(name)>"
                 );
-            e.add("name", "012345");
+            e.Add("name", "012345");
             string expecting = "6";
-            Assert.AreEqual(expecting, e.render());
+            Assert.AreEqual(expecting, e.Render());
         }
 
         [TestMethod]
@@ -433,11 +433,11 @@ namespace Antlr4.Test.StringTemplate
             Template e = new Template(
                     "<reverse(names); separator=\", \">"
                 );
-            e.add("names", "Ter");
-            e.add("names", "Tom");
-            e.add("names", "Sriram");
+            e.Add("names", "Ter");
+            e.Add("names", "Tom");
+            e.Add("names", "Sriram");
             string expecting = "Sriram, Tom, Ter";
-            Assert.AreEqual(expecting, e.render());
+            Assert.AreEqual(expecting, e.Render());
         }
     }
 }

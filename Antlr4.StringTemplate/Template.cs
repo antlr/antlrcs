@@ -54,7 +54,7 @@ namespace Antlr4.StringTemplate
      *  the title attribute defined in the outermost page template.
      *
      *  To use templates, you create one (usually via TemplateGroup) and then inject
-     *  attributes using add(). To render its attacks, use render().
+     *  attributes using Add(). To Render its attacks, use Render().
      */
     public class Template
     {
@@ -72,9 +72,9 @@ namespace Antlr4.StringTemplate
         /** The implementation for this template among all instances of same tmpelate . */
         public CompiledTemplate impl;
 
-        /** Safe to simultaneously write via add, which is synchronized.  Reading
+        /** Safe to simultaneously Write via Add, which is synchronized.  Reading
          *  during exec is, however, NOT synchronized.  So, not thread safe to
-         *  add attributes while it is being evaluated.  Initialized to EmptyAttribute
+         *  Add attributes while it is being evaluated.  Initialized to EmptyAttribute
          *  to distinguish null from empty.
          */
         protected internal object[] locals;
@@ -86,11 +86,11 @@ namespace Antlr4.StringTemplate
         public Template enclosingInstance; // who's your daddy?
 
         /** Created as instance of which group? We need this to init interpreter
-         *  via render.  So, we create st and then it needs to know which
+         *  via Render.  So, we create st and then it needs to know which
          *  group created it for sake of polymorphism:
          *
          *  st = skin1.getInstanceOf("searchbox");
-         *  result = st.render(); // knows skin1 created it
+         *  result = st.Render(); // knows skin1 created it
          *
          *  Say we have a group, g1, with template t and import t and u templates from
          *  another group, g2.  g1.getInstanceOf("u") finds u in g2 but remembers
@@ -165,11 +165,11 @@ namespace Antlr4.StringTemplate
          *  attribute with that name, this method turns the attribute into an
          *  AttributeList with both the previous and the new attribute as elements.
          *  This method will never alter a List that you inject.  If you send
-         *  in a List and then inject a single value element, add() copies
+         *  in a List and then inject a single value element, Add() copies
          *  original list and adds the new value.
          */
         [MethodImpl(MethodImplOptions.Synchronized)]
-        public virtual void add(string name, object value)
+        public virtual void Add(string name, object value)
         {
             if (name == null)
                 return; // allow null value
@@ -217,11 +217,11 @@ namespace Antlr4.StringTemplate
 
             // attribute will be multi-valued for sure now
             // convert current attribute to list if not already
-            // copy-on-write semantics; copy a list injected by user to add new value
-            AttributeList multi = convertToAttributeList(curvalue);
+            // copy-on-Write semantics; copy a list injected by user to Add new value
+            AttributeList multi = ConvertToAttributeList(curvalue);
             locals[arg.Index] = multi; // replace with list
 
-            // now, add incoming value to multi-valued attribute
+            // now, Add incoming value to multi-valued attribute
             if (value is IList)
             {
                 // flatten incoming list into existing list
@@ -237,8 +237,8 @@ namespace Antlr4.StringTemplate
             }
         }
 
-        /** Remove an attribute value entirely (can't remove attribute definitions). */
-        public virtual void remove(string name)
+        /** Remove an attribute value entirely (can't Remove attribute definitions). */
+        public virtual void Remove(string name)
         {
             if (impl.formalArguments == null)
             {
@@ -256,10 +256,10 @@ namespace Antlr4.StringTemplate
         }
 
         /** Set this.locals attr value when you only know the name, not the index.
-         *  This is ultimately invoked by calling Template.add() from outside so toss
+         *  This is ultimately invoked by calling Template.Add() from outside so toss
          *  an exception to notify them.
          */
-        protected internal virtual void rawSetAttribute(string name, object value)
+        protected internal virtual void RawSetAttribute(string name, object value)
         {
             if (impl.formalArguments == null)
                 throw new ArgumentException("no such attribute: " + name);
@@ -275,7 +275,7 @@ namespace Antlr4.StringTemplate
          *  If not found, look for a map.  So attributes sent in to a template
          *  override dictionary names.
          */
-        public virtual object getAttribute(string name)
+        public virtual object GetAttribute(string name)
         {
             Template p = this;
             while (p != null)
@@ -300,7 +300,7 @@ namespace Antlr4.StringTemplate
             throw new TemplateNoSuchPropertyException(name);
         }
 
-        public virtual IDictionary<string, object> getAttributes()
+        public virtual IDictionary<string, object> GetAttributes()
         {
             if (impl.formalArguments == null)
                 return null;
@@ -318,13 +318,13 @@ namespace Antlr4.StringTemplate
             return attributes;
         }
 
-        protected static AttributeList convertToAttributeList(object curvalue)
+        protected static AttributeList ConvertToAttributeList(object curvalue)
         {
             AttributeList multi;
             if (curvalue == null)
             {
                 multi = new AttributeList(); // make list to hold multiple values
-                multi.Add(curvalue);                 // add previous single-valued attribute
+                multi.Add(curvalue);                 // Add previous single-valued attribute
             }
             else if (curvalue.GetType() == typeof(AttributeList))
             {
@@ -348,10 +348,10 @@ namespace Antlr4.StringTemplate
             }
             else
             {
-                // curvalue nonlist and we want to add an attribute
+                // curvalue nonlist and we want to Add an attribute
                 // must convert curvalue existing to list
                 multi = new AttributeList(); // make list to hold multiple values
-                multi.Add(curvalue);                 // add previous single-valued attribute
+                multi.Add(curvalue);                 // Add previous single-valued attribute
             }
             return multi;
         }
@@ -360,23 +360,23 @@ namespace Antlr4.StringTemplate
          *  a String of these instance names in order from topmost to lowest;
          *  here that would be "[z y x]".
          */
-        public virtual string getEnclosingInstanceStackString()
+        public virtual string GetEnclosingInstanceStackString()
         {
-            List<Template> templates = getEnclosingInstanceStack(true);
+            List<Template> templates = GetEnclosingInstanceStack(true);
             StringBuilder buf = new StringBuilder();
             int i = 0;
             foreach (Template st in templates)
             {
                 if (i > 0)
                     buf.Append(" ");
-                buf.Append(st.getName());
+                buf.Append(st.Name());
                 i++;
             }
 
             return buf.ToString();
         }
 
-        public virtual List<Template> getEnclosingInstanceStack(bool topdown)
+        public virtual List<Template> GetEnclosingInstanceStack(bool topdown)
         {
             List<Template> stack = new List<Template>();
             Template p = this;
@@ -392,65 +392,65 @@ namespace Antlr4.StringTemplate
             return stack;
         }
 
-        public virtual string getName()
+        public virtual string Name()
         {
             return impl.name;
         }
 
-        public virtual bool isAnonSubtemplate()
+        public virtual bool IsAnonymousSubtemplate()
         {
             return impl.isAnonSubtemplate;
         }
 
-        public virtual int write(ITemplateWriter @out)
+        public virtual int Write(ITemplateWriter @out)
         {
             Interpreter interp = new Interpreter(groupThatCreatedThisInstance, impl.nativeGroup.errMgr);
             interp.setDefaultArguments(this);
             return interp.Execute(@out, this);
         }
 
-        public virtual int write(ITemplateWriter @out, CultureInfo locale)
+        public virtual int Write(ITemplateWriter @out, CultureInfo locale)
         {
             Interpreter interp = new Interpreter(groupThatCreatedThisInstance, locale, impl.nativeGroup.errMgr);
             interp.setDefaultArguments(this);
             return interp.Execute(@out, this);
         }
 
-        public virtual int write(ITemplateWriter @out, ITemplateErrorListener listener)
+        public virtual int Write(ITemplateWriter @out, ITemplateErrorListener listener)
         {
             Interpreter interp = new Interpreter(groupThatCreatedThisInstance, new ErrorManager(listener));
             interp.setDefaultArguments(this);
             return interp.Execute(@out, this);
         }
 
-        public virtual int write(ITemplateWriter @out, CultureInfo locale, ITemplateErrorListener listener)
+        public virtual int Write(ITemplateWriter @out, CultureInfo locale, ITemplateErrorListener listener)
         {
             Interpreter interp = new Interpreter(groupThatCreatedThisInstance, locale, new ErrorManager(listener));
             interp.setDefaultArguments(this);
             return interp.Execute(@out, this);
         }
 
-        public virtual string render()
+        public virtual string Render()
         {
-            return render(CultureInfo.CurrentCulture);
+            return Render(CultureInfo.CurrentCulture);
         }
 
-        public virtual string render(int lineWidth)
+        public virtual string Render(int lineWidth)
         {
-            return render(CultureInfo.CurrentCulture, lineWidth);
+            return Render(CultureInfo.CurrentCulture, lineWidth);
         }
 
-        public virtual string render(CultureInfo locale)
+        public virtual string Render(CultureInfo locale)
         {
-            return render(locale, AutoIndentWriter.NoWrap);
+            return Render(locale, AutoIndentWriter.NoWrap);
         }
 
-        public virtual string render(CultureInfo locale, int lineWidth)
+        public virtual string Render(CultureInfo locale, int lineWidth)
         {
             StringWriter @out = new StringWriter();
             ITemplateWriter wr = new AutoIndentWriter(@out);
             wr.setLineWidth(lineWidth);
-            write(wr, locale);
+            Write(wr, locale);
             return @out.ToString();
         }
 
@@ -462,15 +462,15 @@ namespace Antlr4.StringTemplate
             return impl.name + "()";
         }
 
-        // Template.format("name, phone | <name>:<phone>", n, p);
-        // Template.format("<%1>:<%2>", n, p);
-        // Template.format("<name>:<phone>", "name", x, "phone", y);
-        public static string format(string template, params object[] attributes)
+        // Template.Format("name, phone | <name>:<phone>", n, p);
+        // Template.Format("<%1>:<%2>", n, p);
+        // Template.Format("<name>:<phone>", "name", x, "phone", y);
+        public static string Format(string template, params object[] attributes)
         {
-            return format(AutoIndentWriter.NoWrap, template, attributes);
+            return Format(AutoIndentWriter.NoWrap, template, attributes);
         }
 
-        public static string format(int lineWidth, string template, params object[] attributes)
+        public static string Format(int lineWidth, string template, params object[] attributes)
         {
             template = Regex.Replace(template, "[0-9]+", @"arg\0");
             Console.WriteLine(template);
@@ -479,10 +479,10 @@ namespace Antlr4.StringTemplate
             int i = 1;
             foreach (object a in attributes)
             {
-                st.add("arg" + i, a);
+                st.Add("arg" + i, a);
                 i++;
             }
-            return st.render(lineWidth);
+            return st.Render(lineWidth);
         }
     }
 }

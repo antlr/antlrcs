@@ -37,7 +37,7 @@ namespace Antlr4.StringTemplate.Misc
         public virtual object GetProperty(Template self, object o, object property, string propertyName)
         {
             Template st = (Template)o;
-            return st.getAttribute(propertyName);
+            return st.GetAttribute(propertyName);
         }
     }
 }

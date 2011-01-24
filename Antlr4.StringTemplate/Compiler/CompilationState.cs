@@ -49,7 +49,7 @@ namespace Antlr4.StringTemplate.Compiler
         internal StringTable stringtable = new StringTable();
 
         /** Track instruction location within code.instrs array; this is
-         *  next address to write to.  Byte-addressable memory.
+         *  next address to Write to.  Byte-addressable memory.
          */
         internal int ip = 0;
 

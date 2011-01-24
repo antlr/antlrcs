@@ -60,7 +60,7 @@ namespace Antlr4.StringTemplate.Debug
             foreach (StackFrame e in trace)
             {
                 string name = e.ToString();
-                // TODO: remove special after testing
+                // TODO: Remove special after testing
                 if (name.IndexOf("main(") > 0)
                     return e;
 

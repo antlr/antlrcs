@@ -36,6 +36,7 @@ namespace Antlr4.Test.StringTemplate
     using Microsoft.VisualStudio.TestTools.UnitTesting;
     using CultureInfo = System.Globalization.CultureInfo;
     using System.Collections.Generic;
+    using Path = System.IO.Path;
 
     [TestClass]
     public class TestRenderers : BaseTest
@@ -141,12 +142,12 @@ namespace Antlr4.Test.StringTemplate
                     "foo(x) ::= << <x; format=\"{0,6}\"> >>\n";
 
             writeFile(tmpdir, "t.stg", templates);
-            TemplateGroup group = new TemplateGroupFile(tmpdir + "/t.stg");
+            TemplateGroup group = new TemplateGroupFile(Path.Combine(tmpdir, "t.stg"));
             group.registerRenderer(typeof(string), new StringRenderer());
             Template st = group.getInstanceOf("foo");
-            st.add("x", "hi");
+            st.Add("x", "hi");
             string expecting = "     hi ";
-            string result = st.render();
+            string result = st.Render();
             Assert.AreEqual(expecting, result);
         }
 
@@ -159,11 +160,11 @@ namespace Antlr4.Test.StringTemplate
             group.registerRenderer(typeof(string), new StringRenderer());
             Template st = new Template(template);
             st.groupThatCreatedThisInstance = group;
-            st.add("names", "ter");
-            st.add("names", "tom");
-            st.add("names", "sriram");
+            st.Add("names", "ter");
+            st.Add("names", "tom");
+            st.Add("names", "sriram");
             string expecting = "The names: TERTOMSRIRAM";
-            string result = st.render();
+            string result = st.Render();
             Assert.AreEqual(expecting, result);
         }
 
@@ -176,11 +177,11 @@ namespace Antlr4.Test.StringTemplate
             group.registerRenderer(typeof(string), new StringRenderer());
             Template st = new Template(template);
             st.groupThatCreatedThisInstance = group;
-            st.add("names", "ter");
-            st.add("names", "tom");
-            st.add("names", "sriram");
+            st.Add("names", "ter");
+            st.Add("names", "tom");
+            st.Add("names", "sriram");
             string expecting = "The names: TER and TOM and SRIRAM";
-            string result = st.render();
+            string result = st.Render();
             Assert.AreEqual(expecting, result);
         }
 
@@ -197,9 +198,9 @@ namespace Antlr4.Test.StringTemplate
             names.Add("ter");
             names.Add(null);
             names.Add("sriram");
-            st.add("names", names);
+            st.Add("names", names);
             string expecting = "The names: TER and N/A and SRIRAM";
-            string result = st.render();
+            string result = st.Render();
             Assert.AreEqual(expecting, result);
         }
 
@@ -214,10 +215,10 @@ namespace Antlr4.Test.StringTemplate
             group.registerRenderer(typeof(int), new NumberRenderer());
             group.registerRenderer(typeof(double), new NumberRenderer());
             Template st = group.getInstanceOf("foo");
-            st.add("x", -2100);
-            st.add("y", 3.14159);
+            st.Add("x", -2100);
+            st.Add("y", 3.14159);
             string expecting = " -2100 3.142 ";
-            string result = st.render();
+            string result = st.Render();
             Assert.AreEqual(expecting, result);
         }
 
@@ -231,11 +232,11 @@ namespace Antlr4.Test.StringTemplate
             group.registerRenderer(typeof(int), new NumberRenderer());
             group.registerRenderer(typeof(double), new NumberRenderer());
             Template st = group.getInstanceOf("numberThing");
-            st.add("x", -2100);
-            st.add("y", 3.14159);
-            st.add("z", "hi");
+            st.Add("x", -2100);
+            st.Add("y", 3.14159);
+            st.Add("z", "hi");
             string expecting = "numbers: -2100, 3.14159; hi";
-            string result = st.render();
+            string result = st.Render();
             Assert.AreEqual(expecting, result);
         }
 
@@ -250,11 +251,11 @@ namespace Antlr4.Test.StringTemplate
             group.registerRenderer(typeof(int), new NumberRenderer());
             group.registerRenderer(typeof(double), new NumberRenderer());
             Template st = group.getInstanceOf("foo");
-            st.add("x", -2100);
-            st.add("y", 3.14159);
+            st.Add("x", -2100);
+            st.Add("y", 3.14159);
             // Polish uses ' ' (ASCII 160) for ',' and ',' for '.'
             string expecting = " -2 100 3,142 "; // Ê
-            string result = st.render(new CultureInfo("pl"));
+            string result = st.Render(new CultureInfo("pl"));
             Assert.AreEqual(expecting, result);
         }
     }

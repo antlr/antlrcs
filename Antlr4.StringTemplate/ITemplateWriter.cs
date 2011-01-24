@@ -34,7 +34,7 @@ namespace Antlr4.StringTemplate
 {
     /** Generic StringTemplate output writer filter.
      *
-     *  Literals and the elements of expressions are emitted via write().
+     *  Literals and the elements of expressions are emitted via Write().
      *  Separators are emitted via writeSeparator() because they must be
      *  handled specially when wrapping lines (we don't want to wrap
      *  in between an element and it's separator).
@@ -57,7 +57,7 @@ namespace Antlr4.StringTemplate
          */
         int write(string str);
 
-        /** Same as write, but wrap lines using the indicated string as the
+        /** Same as Write, but wrap lines using the indicated string as the
          *  wrap character (such as "\n").
          */
         int write(string str, string wrap);
@@ -65,24 +65,24 @@ namespace Antlr4.StringTemplate
         /** Because we evaluate Template instance by invoking exec() again, we
          *  can't pass options in.  So the WRITE instruction of an applied
          *  template (such as when we wrap in between template applications
-         *  like &lt;data:{v|[&lt;v&gt;]}; wrap&gt;) we need to write the wrap string
+         *  like &lt;data:{v|[&lt;v&gt;]}; wrap&gt;) we need to Write the wrap string
          *  before calling exec().  We expose just like for the separator.
          *  See Interpreter.writeObject where it checks for Template instance.
          *  If POJO, writePOJO passes wrap to ITemplateWriter's
          *
-         *     write(String str, String wrap)
+         *     Write(String str, String wrap)
          *
          *  method.  Can't pass to exec(). 
          */
         int writeWrap(string wrap);
 
-        /** Write a separator.  Same as write() except that a \n cannot
+        /** Write a separator.  Same as Write() except that a \n cannot
          *  be inserted before emitting a separator.
          */
         int writeSeparator(string str);
 
         /** Return the absolute char index into the output of the char
-         *  we're about to write.  Returns 0 if no char written yet.
+         *  we're about to Write.  Returns 0 if no char written yet.
          */
         int index();
     }

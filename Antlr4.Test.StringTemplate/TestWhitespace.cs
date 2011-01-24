@@ -46,11 +46,11 @@ namespace Antlr4.Test.StringTemplate
             TemplateGroup group = new TemplateGroup();
             group.defineTemplate("test", "names", "<names:{n | <n>}>!");
             Template st = group.getInstanceOf("test");
-            st.add("names", "Ter");
-            st.add("names", "Tom");
-            st.add("names", "Sumana");
+            st.Add("names", "Ter");
+            st.Add("names", "Tom");
+            st.Add("names", "Sumana");
             string expected = "TerTomSumana!";
-            string result = st.render();
+            string result = st.Render();
             Assert.AreEqual(expected, result);
         }
 
@@ -62,7 +62,7 @@ namespace Antlr4.Test.StringTemplate
             group.defineTemplate("foo", "x", "<x>");
             Template st = group.getInstanceOf("test");
             string expected = "[ foo ]";
-            string result = st.render();
+            string result = st.Render();
             Assert.AreEqual(expected, result);
         }
 
@@ -72,11 +72,11 @@ namespace Antlr4.Test.StringTemplate
             TemplateGroup group = new TemplateGroup();
             group.defineTemplate("test", "names", "<names:{x|  foo }>");
             Template st = group.getInstanceOf("test");
-            st.add("names", "Ter");
-            st.add("names", "Tom");
-            st.add("names", "Sumana");
+            st.Add("names", "Ter");
+            st.Add("names", "Tom");
+            st.Add("names", "Sumana");
             string expected = " foo  foo  foo ";
-            string result = st.render();
+            string result = st.Render();
             Assert.AreEqual(expected, result);
         }
 
@@ -86,11 +86,11 @@ namespace Antlr4.Test.StringTemplate
             TemplateGroup group = new TemplateGroup();
             group.defineTemplate("test", "names", "<names:{n |  <n> }>!");
             Template st = group.getInstanceOf("test");
-            st.add("names", "Ter");
-            st.add("names", "Tom");
-            st.add("names", "Sumana");
+            st.Add("names", "Ter");
+            st.Add("names", "Tom");
+            st.Add("names", "Sumana");
             string expected = " Ter  Tom  Sumana !";
-            string result = st.render();
+            string result = st.Render();
             Assert.AreEqual(expected, result);
         }
 
@@ -101,11 +101,11 @@ namespace Antlr4.Test.StringTemplate
             group.defineTemplate("test", "names", "<names:{n |\n" +
                                          "<n>}>!");
             Template st = group.getInstanceOf("test");
-            st.add("names", "Ter");
-            st.add("names", "Tom");
-            st.add("names", "Sumana");
+            st.Add("names", "Ter");
+            st.Add("names", "Tom");
+            st.Add("names", "Sumana");
             string expected = "TerTomSumana!";
-            string result = st.render();
+            string result = st.Render();
             Assert.AreEqual(expected, result);
         }
 
@@ -117,11 +117,11 @@ namespace Antlr4.Test.StringTemplate
                                          "<n>\n" +
                                          "}>!");
             Template st = group.getInstanceOf("test");
-            st.add("names", "Ter");
-            st.add("names", "Tom");
-            st.add("names", "Sumana");
+            st.Add("names", "Ter");
+            st.Add("names", "Tom");
+            st.Add("names", "Sumana");
             string expected = "Ter" + newline + "Tom" + newline + "Sumana" + newline + "!";
-            string result = st.render();
+            string result = st.Render();
             Assert.AreEqual(expected, result);
         }
 
@@ -134,15 +134,15 @@ namespace Antlr4.Test.StringTemplate
                                          "    <n>\n" +
                                          "  }>!");
             Template st = group.getInstanceOf("test");
-            st.add("names", "Ter");
-            st.add("names", "Tom");
-            st.add("names", "Sumana");
+            st.Add("names", "Ter");
+            st.Add("names", "Tom");
+            st.Add("names", "Sumana");
             string expected =
                 "    Ter" + newline +
                 "    Tom" + newline +
                 "    Sumana" + newline +
                 "!";
-            string result = st.render();
+            string result = st.Render();
             st.impl.dump();
             Assert.AreEqual(expected, result);
         }
@@ -154,7 +154,7 @@ namespace Antlr4.Test.StringTemplate
                 "<users>\n" +
                 "end\n");
             string expecting = "end" + newline;
-            string result = t.render();
+            string result = t.Render();
             Assert.AreEqual(expecting, result);
         }
 
@@ -166,7 +166,7 @@ namespace Antlr4.Test.StringTemplate
                 "    \n" +
                 "end\n");
             string expecting = "begin" + newline + newline + "end" + newline;
-            string result = t.render();
+            string result = t.Render();
             Assert.AreEqual(expecting, result);
         }
 
@@ -178,7 +178,7 @@ namespace Antlr4.Test.StringTemplate
                 "\n" +
                 "end\n");
             string expecting = "begin" + newline + newline + "end" + newline;
-            string result = t.render();
+            string result = t.Render();
             Assert.AreEqual(expecting, result);
         }
 
@@ -192,7 +192,7 @@ namespace Antlr4.Test.StringTemplate
                 "<users>\n" +
                 "end\n");
             string expecting = "begin" + Environment.NewLine + "end" + newline;
-            string result = t.render();
+            string result = t.Render();
             Assert.AreEqual(expecting, result);
         }
 
@@ -206,7 +206,7 @@ namespace Antlr4.Test.StringTemplate
                 "	<users>\n" +
                 "end\n");
             string expecting = "begin" + newline + "end" + newline;
-            string result = t.render();
+            string result = t.Render();
             Assert.AreEqual(expecting, result);
         }
 
@@ -219,7 +219,7 @@ namespace Antlr4.Test.StringTemplate
                 "	<users><users>\n" +
                 "end\n");
             string expecting = "begin" + newline + "end" + newline;
-            string result = t.render();
+            string result = t.Render();
             Assert.AreEqual(expecting, result);
         }
 
@@ -231,7 +231,7 @@ namespace Antlr4.Test.StringTemplate
                 "<if(x)><endif>\n" +
                 "end\n");
             string expecting = "begin" + newline + "end" + newline;
-            string result = t.render();
+            string result = t.Render();
             Assert.AreEqual(expecting, result);
         }
 
@@ -243,7 +243,7 @@ namespace Antlr4.Test.StringTemplate
                 "    <if(x)><endif>\n" +
                 "end\n");
             string expecting = "begin" + newline + "end" + newline;
-            string result = t.render();
+            string result = t.Render();
             Assert.AreEqual(expecting, result);
         }
 
@@ -255,7 +255,7 @@ namespace Antlr4.Test.StringTemplate
                 "<if(users)><else><endif>\n" +
                 "end\n");
             string expecting = "begin" + newline + "end" + newline;
-            string result = t.render();
+            string result = t.Render();
             Assert.AreEqual(expecting, result);
         }
 
@@ -271,7 +271,7 @@ namespace Antlr4.Test.StringTemplate
                 "<endif>\n" +
                 "end\n");
             string expecting = "begin" + newline + "bar" + newline + "end" + newline;
-            string result = t.render();
+            string result = t.Render();
             Assert.AreEqual(expecting, result);
         }
 
@@ -288,9 +288,9 @@ namespace Antlr4.Test.StringTemplate
                 "<endif>\n" +
                 "<endif>\n" +
                 "end\n");
-            t.add("x", "x");
+            t.Add("x", "x");
             string expecting = "begin" + newline + "bar" + newline + "end" + newline;
-            string result = t.render();
+            string result = t.Render();
             Assert.AreEqual(expecting, result);
         }
 
@@ -302,7 +302,7 @@ namespace Antlr4.Test.StringTemplate
                     "  \t  bar" + newline
                     );
             StringWriter sw = new StringWriter();
-            st.write(new AutoIndentWriter(sw, "\n")); // force \n as newline
+            st.Write(new AutoIndentWriter(sw, "\n")); // force \n as newline
             string result = sw.ToString();
             string expecting = "Foo bar\n";     // expect \n in output
             Assert.AreEqual(expecting, result);
@@ -316,7 +316,7 @@ namespace Antlr4.Test.StringTemplate
                     "  \t  bar" + newline
                     );
             StringWriter sw = new StringWriter();
-            st.write(new AutoIndentWriter(sw, "\n")); // force \n as newline
+            st.Write(new AutoIndentWriter(sw, "\n")); // force \n as newline
             string result = sw.ToString();
             string expecting = "Foo bar\n";
             Assert.AreEqual(expecting, result);
@@ -330,7 +330,7 @@ namespace Antlr4.Test.StringTemplate
                     "bar\n"
                     );
             StringWriter sw = new StringWriter();
-            st.write(new AutoIndentWriter(sw, "\n")); // force \n as newline
+            st.Write(new AutoIndentWriter(sw, "\n")); // force \n as newline
             string result = sw.ToString();
             string expecting = "Foo bar\n";
             Assert.AreEqual(expecting, result);
@@ -344,7 +344,7 @@ namespace Antlr4.Test.StringTemplate
                     "Bar\n"
                     );
             StringWriter sw = new StringWriter();
-            st.write(new AutoIndentWriter(sw, "\n")); // force \n as newline
+            st.Write(new AutoIndentWriter(sw, "\n")); // force \n as newline
             string result = sw.ToString();
             string expecting = "Foo\nBar\n";     // expect \n in output
             Assert.AreEqual(expecting, result);
@@ -358,7 +358,7 @@ namespace Antlr4.Test.StringTemplate
                     "Bar\n"
                     );
             StringWriter sw = new StringWriter();
-            st.write(new AutoIndentWriter(sw, "\r\n")); // force \r\n as newline
+            st.Write(new AutoIndentWriter(sw, "\r\n")); // force \r\n as newline
             string result = sw.ToString();
             string expecting = "Foo\r\nBar\r\n";     // expect \r\n in output
             Assert.AreEqual(expecting, result);
@@ -371,9 +371,9 @@ namespace Antlr4.Test.StringTemplate
                     "Foo\r\n" +
                     "<name>\n"
                     );
-            st.add("name", "a\nb\r\nc");
+            st.Add("name", "a\nb\r\nc");
             StringWriter sw = new StringWriter();
-            st.write(new AutoIndentWriter(sw, "\n")); // force \n as newline
+            st.Write(new AutoIndentWriter(sw, "\n")); // force \n as newline
             string result = sw.ToString();
             string expecting = "Foo\na\nb\nc\n";     // expect \n in output
             Assert.AreEqual(expecting, result);

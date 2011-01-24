@@ -48,8 +48,8 @@ namespace Antlr4.Test.StringTemplate.Extensions
             group.defineTemplate("listTemplate", "list", "[$list:{x|$x$}; separator=\", \"$]");
             group.registerRenderer(typeof(IList), new CollectionRenderer());
             Template st = group.getInstanceOf("listTemplate");
-            st.add("list", list);
-            return st.render();
+            st.Add("list", list);
+            return st.Render();
         }
 
         private class CollectionRenderer : IAttributeRenderer

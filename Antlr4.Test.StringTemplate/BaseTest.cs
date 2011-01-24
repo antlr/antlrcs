@@ -75,7 +75,7 @@ namespace Antlr4.Test.StringTemplate
         [TestCleanup]
         public void tearDown()
         {
-            // remove tmpdir if no error. how?
+            // Remove tmpdir if no error. how?
             if (TestContext != null && TestContext.CurrentTestOutcome == UnitTestOutcome.Passed)
                 eraseTempDir();
         }

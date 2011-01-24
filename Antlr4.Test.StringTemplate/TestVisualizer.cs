@@ -67,26 +67,26 @@ namespace Antlr4.Test.StringTemplate
             TemplateGroup.debug = true;
             DebugST st = (DebugST)group.getInstanceOf("method");
             st.impl.dump();
-            st.add("type", "float");
-            st.add("name", "foo");
-            st.add("locals", 3);
-            st.add("args", new String[] { "x", "y", "z" });
+            st.Add("type", "float");
+            st.Add("name", "foo");
+            st.Add("locals", 3);
+            st.Add("args", new String[] { "x", "y", "z" });
             Template s1 = group.getInstanceOf("assign");
             Template paren = group.getInstanceOf("paren");
-            paren.add("x", "x");
-            s1.add("a", paren);
-            s1.add("b", "y");
+            paren.Add("x", "x");
+            s1.Add("a", paren);
+            s1.Add("b", "y");
             Template s2 = group.getInstanceOf("assign");
-            s2.add("a", "y");
-            s2.add("b", "z");
+            s2.Add("a", "y");
+            s2.Add("b", "z");
             Template s3 = group.getInstanceOf("return");
-            s3.add("x", "3.14159");
-            st.add("stats", s1);
-            st.add("stats", s2);
-            st.add("stats", s3);
+            s3.Add("x", "3.14159");
+            st.Add("stats", s1);
+            st.Add("stats", s2);
+            st.Add("stats", s3);
 
             Inspect(st);
-            //st.render();
+            //st.Render();
         }
 
         private void Inspect(DebugST template)
@@ -107,7 +107,7 @@ namespace Antlr4.Test.StringTemplate
             ITemplateWriter wr = new AutoIndentWriter(@out);
             wr.setLineWidth(lineWidth);
             Interpreter interp = new Interpreter(template.groupThatCreatedThisInstance, culture);
-            interp.Execute(wr, template); // render and track events
+            interp.Execute(wr, template); // Render and track events
             TemplateVisualizer visualizer = new TemplateVisualizer(errorManager, template, @out.ToString(), interp, interp.getExecutionTrace(), errors.Errors);
             visualizer.Show();
         }

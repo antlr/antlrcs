@@ -93,9 +93,9 @@ namespace Antlr4.Test.StringTemplate
             TemplateGroup group = new TemplateGroupFile(tmpdir + "/foo.stg");
             group.registerModelAdaptor(typeof(User), new UserAdaptor());
             Template st = group.getInstanceOf("foo");
-            st.add("x", new User(100, "parrt"));
+            st.Add("x", new User(100, "parrt"));
             string expecting = "100: parrt";
-            string result = st.render();
+            string result = st.Render();
             Assert.AreEqual(expecting, result);
         }
 
@@ -110,9 +110,9 @@ namespace Antlr4.Test.StringTemplate
             group.setListener(errors);
             group.registerModelAdaptor(typeof(User), new UserAdaptor());
             Template st = group.getInstanceOf("foo");
-            st.add("x", new User(100, "parrt"));
+            st.Add("x", new User(100, "parrt"));
             string expecting = "";
-            string result = st.render();
+            string result = st.Render();
             Assert.AreEqual(expecting, result);
 
             TemplateRuntimeMessage msg = (TemplateRuntimeMessage)errors.Errors[0];
@@ -129,9 +129,9 @@ namespace Antlr4.Test.StringTemplate
             TemplateGroup group = new TemplateGroupFile(tmpdir + "/foo.stg");
             group.registerModelAdaptor(typeof(User), new UserAdaptor());
             Template st = group.getInstanceOf("foo");
-            st.add("x", new SuperUser(100, "parrt")); // create subclass of User
+            st.Add("x", new SuperUser(100, "parrt")); // create subclass of User
             string expecting = "100: super parrt";
-            string result = st.render();
+            string result = st.Render();
             Assert.AreEqual(expecting, result);
         }
 
@@ -149,9 +149,9 @@ namespace Antlr4.Test.StringTemplate
             group.registerModelAdaptor(typeof(User), new UserAdaptorConst());
             // cache should be reset so we see new adaptor
             Template st = group.getInstanceOf("foo");
-            st.add("x", new User(100, "parrt"));
+            st.Add("x", new User(100, "parrt"));
             string expecting = "const id value: const name value"; // sees UserAdaptorConst
-            string result = st.render();
+            string result = st.Render();
             Assert.AreEqual(expecting, result);
         }
 
@@ -165,15 +165,15 @@ namespace Antlr4.Test.StringTemplate
             group.registerModelAdaptor(typeof(User), new UserAdaptor());
             group.registerModelAdaptor(typeof(SuperUser), new UserAdaptorConst()); // most specific
             Template st = group.getInstanceOf("foo");
-            st.add("x", new User(100, "parrt"));
+            st.Add("x", new User(100, "parrt"));
             string expecting = "100: parrt";
-            string result = st.render();
+            string result = st.Render();
             Assert.AreEqual(expecting, result);
 
-            st.remove("x");
-            st.add("x", new SuperUser(100, "parrt"));
+            st.Remove("x");
+            st.Add("x", new SuperUser(100, "parrt"));
             expecting = "const id value: const name value"; // sees UserAdaptorConst
-            result = st.render();
+            result = st.Render();
             Assert.AreEqual(expecting, result);
         }
     }

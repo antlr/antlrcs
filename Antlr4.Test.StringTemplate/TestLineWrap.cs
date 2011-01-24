@@ -51,7 +51,7 @@ namespace Antlr4.Test.StringTemplate
             TemplateGroup group = new TemplateGroupFile(Path.Combine(tmpdir, "t.stg"));
 
             Template a = group.getInstanceOf("array");
-            a.add("values",
+            a.Add("values",
                            new int[] {3,9,20,2,1,4,6,32,5,6,77,888,2,1,6,32,5,6,77,
 						4,9,20,2,1,4,63,9,20,2,1,4,6,32,5,6,77,6,32,5,6,77,
 					    3,9,20,2,1,4,6,32,5,6,77,888,1,6,32,5});
@@ -64,7 +64,7 @@ namespace Antlr4.Test.StringTemplate
             StringWriter sw = new StringWriter();
             ITemplateWriter stw = new AutoIndentWriter(sw, "\n"); // force \n as newline
             stw.setLineWidth(40);
-            a.write(stw);
+            a.Write(stw);
             string result = sw.ToString();
             Assert.AreEqual(expecting, result);
         }
@@ -78,7 +78,7 @@ namespace Antlr4.Test.StringTemplate
             TemplateGroup group = new TemplateGroupFile(Path.Combine(tmpdir, "t.stg"));
 
             Template a = group.getInstanceOf("array");
-            a.add("values",
+            a.Add("values",
                 new int[] {3,9,20,2,1,4,6,32,5,6,77,888,2,1,6,32,5,6,77,
             4,9,20,2,1,4,63,9,20,2,1,4,6,32,5,6,77,6,32,5,6,77,
             3,9,20,2,1,4,6,32,5,6,77,888,1,6,32,5});
@@ -88,7 +88,7 @@ namespace Antlr4.Test.StringTemplate
                 "            63,9,20,2,1,4,6,32,5,6,77,6," + Environment.NewLine +
                 "            32,5,6,77,3,9,20,2,1,4,6,32," + Environment.NewLine +
                 "            5,6,77,888,1,6,32,5 };";
-            Assert.AreEqual(expecting, a.render(40));
+            Assert.AreEqual(expecting, a.Render(40));
         }
 
         [TestMethod]
@@ -101,18 +101,18 @@ namespace Antlr4.Test.StringTemplate
 
             Template x = new Template("<\\n>{ <stuff; anchor, separator=\",\\n\"> }<\\n>");
             x.groupThatCreatedThisInstance = group;
-            x.add("stuff", "1");
-            x.add("stuff", "2");
-            x.add("stuff", "3");
+            x.Add("stuff", "1");
+            x.Add("stuff", "2");
+            x.Add("stuff", "3");
             Template a = group.getInstanceOf("array");
-            a.add("values", new List<object>() { "a", x, "b" });
+            a.Add("values", new List<object>() { "a", x, "b" });
             string expecting =
                 "{ a, " + Environment.NewLine +
                 "  { 1," + Environment.NewLine +
                 "    2," + Environment.NewLine +
                 "    3 }" + Environment.NewLine +
                 "  , b }";
-            Assert.AreEqual(expecting, a.render(40));
+            Assert.AreEqual(expecting, a.Render(40));
         }
 
         [TestMethod]
@@ -124,12 +124,12 @@ namespace Antlr4.Test.StringTemplate
             TemplateGroup group = new TemplateGroupFile(Path.Combine(tmpdir, "t.stg"));
 
             Template a = group.getInstanceOf("func");
-            a.add("args",
+            a.Add("args",
                            new string[] { "a", "b", "c", "d", "e", "f" });
             string expecting =
                 "       FUNCTION line( a,b,c,d," + Environment.NewLine +
                 "      ce,f )";
-            Assert.AreEqual(expecting, a.render(30));
+            Assert.AreEqual(expecting, a.Render(30));
         }
 
         [TestMethod]
@@ -141,7 +141,7 @@ namespace Antlr4.Test.StringTemplate
             TemplateGroup group = new TemplateGroupFile(Path.Combine(tmpdir, "t.stg"));
 
             Template a = group.getInstanceOf("array");
-            a.add("values",
+            a.Add("values",
                            new int[] {3,9,20,2,1,4,6,32,5,6,77,888,2,1,6,32,5,6,77,
 						4,9,20,2,1,4,63,9,20,2,1,4,6});
             string expecting =
@@ -150,7 +150,7 @@ namespace Antlr4.Test.StringTemplate
                 "            1,6,32,5,6,77,4,9," + Environment.NewLine +
                 "            20,2,1,4,63,9,20,2," + Environment.NewLine +
                 "            1,4,6 };";
-            Assert.AreEqual(expecting, a.render(30));
+            Assert.AreEqual(expecting, a.Render(30));
         }
 
         [TestMethod]
@@ -162,12 +162,12 @@ namespace Antlr4.Test.StringTemplate
             TemplateGroup group = new TemplateGroupFile(Path.Combine(tmpdir, "t.stg"));
 
             Template a = group.getInstanceOf("duh");
-            a.add("chars", new string[] { "a", "b", "c", "d", "e" });
+            a.Add("chars", new string[] { "a", "b", "c", "d", "e" });
             // lineWidth==3 implies that we can have 3 characters at most
             string expecting =
                 "abc" + Environment.NewLine +
                 "de";
-            Assert.AreEqual(expecting, a.render(3));
+            Assert.AreEqual(expecting, a.Render(3));
         }
 
         [TestMethod]
@@ -179,12 +179,12 @@ namespace Antlr4.Test.StringTemplate
             TemplateGroup group = new TemplateGroupFile(Path.Combine(tmpdir, "t.stg"));
 
             Template a = group.getInstanceOf("duh");
-            a.add("chars", new string[] { "a", "b", "\n", "d", "e" });
+            a.Add("chars", new string[] { "a", "b", "\n", "d", "e" });
             // don't do \n if it's last element anyway
             string expecting =
                 "ab" + Environment.NewLine +
                 "de";
-            Assert.AreEqual(expecting, a.render(3));
+            Assert.AreEqual(expecting, a.Render(3));
         }
 
         [TestMethod]
@@ -196,7 +196,7 @@ namespace Antlr4.Test.StringTemplate
             TemplateGroup group = new TemplateGroupFile(Path.Combine(tmpdir, "t.stg"));
 
             Template a = group.getInstanceOf("duh");
-            a.add("chars", new string[] { "a", "b", "c", "\n", "d", "e" });
+            a.Add("chars", new string[] { "a", "b", "c", "\n", "d", "e" });
             // Once we wrap, we must dump chars as we see them.  A newline right
             // after a wrap is just an "unfortunate" event.  People will expect
             // a newline if it's in the data.
@@ -204,7 +204,7 @@ namespace Antlr4.Test.StringTemplate
                 "abc" + Environment.NewLine +
                 "" + Environment.NewLine +
                 "de";
-            Assert.AreEqual(expecting, a.render(3));
+            Assert.AreEqual(expecting, a.Render(3));
         }
 
         [TestMethod]
@@ -216,12 +216,12 @@ namespace Antlr4.Test.StringTemplate
             TemplateGroup group = new TemplateGroupFile(Path.Combine(tmpdir, "t.stg"));
 
             Template a = group.getInstanceOf("duh");
-            a.add("data", new int[] { 1, 2, 3, 4, 5, 6, 7, 8, 9 });
+            a.Add("data", new int[] { 1, 2, 3, 4, 5, 6, 7, 8, 9 });
             string expecting =
                 "!123" + Environment.NewLine +
                 "4567" + Environment.NewLine +
                 "89!";
-            Assert.AreEqual(expecting, a.render(4));
+            Assert.AreEqual(expecting, a.Render(4));
         }
 
         [TestMethod]
@@ -233,12 +233,12 @@ namespace Antlr4.Test.StringTemplate
             TemplateGroup group = new TemplateGroupFile(Path.Combine(tmpdir, "t.stg"));
 
             Template a = group.getInstanceOf("duh");
-            a.add("data", new int[] { 1, 2, 3, 4, 5, 6, 7, 8, 9 });
+            a.Add("data", new int[] { 1, 2, 3, 4, 5, 6, 7, 8, 9 });
             string expecting =
                 "![1][2][3]" + Environment.NewLine + // width=9 is the 3 char; don't break til after ]
                 "[4][5][6]" + Environment.NewLine +
                 "[7][8][9]!";
-            Assert.AreEqual(expecting, a.render(9));
+            Assert.AreEqual(expecting, a.Render(9));
         }
 
         [TestMethod]
@@ -250,12 +250,12 @@ namespace Antlr4.Test.StringTemplate
             TemplateGroup group = new TemplateGroupFile(Path.Combine(tmpdir, "t.stg"));
 
             Template a = group.getInstanceOf("duh");
-            a.add("data", new int[] { 1, 2, 3, 4, 5, 6, 7, 8, 9 });
+            a.Add("data", new int[] { 1, 2, 3, 4, 5, 6, 7, 8, 9 });
             string expecting =
                 "![1][2][3]" + Environment.NewLine +
                 " [4][5][6]" + Environment.NewLine +
                 " [7][8][9]!";
-            Assert.AreEqual(expecting, a.render(9));
+            Assert.AreEqual(expecting, a.Render(9));
         }
 
         [TestMethod]
@@ -269,15 +269,15 @@ namespace Antlr4.Test.StringTemplate
 
             Template t = group.getInstanceOf("top");
             Template s = group.getInstanceOf("str");
-            s.add("data", new int[] { 1, 2, 3, 4, 5, 6, 7, 8, 9 });
-            t.add("s", s);
+            s.Add("data", new int[] { 1, 2, 3, 4, 5, 6, 7, 8, 9 });
+            t.Add("s", s);
             string expecting =
                 "  ![1][2]!+" + Environment.NewLine +
                 "  ![3][4]!+" + Environment.NewLine +
                 "  ![5][6]!+" + Environment.NewLine +
                 "  ![7][8]!+" + Environment.NewLine +
                 "  ![9]!.";
-            Assert.AreEqual(expecting, t.render(9));
+            Assert.AreEqual(expecting, t.Render(9));
         }
 
         [TestMethod]
@@ -289,7 +289,7 @@ namespace Antlr4.Test.StringTemplate
             TemplateGroup group = new TemplateGroupFile(Path.Combine(tmpdir, "t.stg"));
 
             Template a = group.getInstanceOf("duh");
-            a.add("chars", new string[] { "a", "b", "c", "d", "e" });
+            a.Add("chars", new string[] { "a", "b", "c", "d", "e" });
             //
             string expecting =
                 "    a" + Environment.NewLine +
@@ -297,7 +297,7 @@ namespace Antlr4.Test.StringTemplate
                 "    c" + Environment.NewLine +
                 "    d" + Environment.NewLine +
                 "    e";
-            Assert.AreEqual(expecting, a.render(2));
+            Assert.AreEqual(expecting, a.Render(2));
         }
 
         [TestMethod]
@@ -309,14 +309,14 @@ namespace Antlr4.Test.StringTemplate
             TemplateGroup group = new TemplateGroupFile(Path.Combine(tmpdir, "t.stg"));
 
             Template a = group.getInstanceOf("duh");
-            a.add("chars", new string[] { "a", "b", "c", "d", "e" });
+            a.Add("chars", new string[] { "a", "b", "c", "d", "e" });
             //
             string expecting =
                 "    ab" + Environment.NewLine +
                 "    cd" + Environment.NewLine +
                 "    e";
             // width=4 spaces + 2 char.
-            Assert.AreEqual(expecting, a.render(6));
+            Assert.AreEqual(expecting, a.Render(6));
         }
 
         [TestMethod]
@@ -330,14 +330,14 @@ namespace Antlr4.Test.StringTemplate
 
             Template top = group.getInstanceOf("top");
             Template duh = group.getInstanceOf("duh");
-            duh.add("chars", new string[] { "a", "b", "c", "d", "e" });
-            top.add("d", duh);
+            duh.Add("chars", new string[] { "a", "b", "c", "d", "e" });
+            top.Add("d", duh);
             string expecting =
                 "    ab" + Environment.NewLine +
                 "    cd" + Environment.NewLine +
                 "    e!";
             // width=4 spaces + 2 char.
-            Assert.AreEqual(expecting, top.render(6));
+            Assert.AreEqual(expecting, top.Render(6));
         }
 
         [TestMethod]
@@ -351,14 +351,14 @@ namespace Antlr4.Test.StringTemplate
 
             Template top = group.getInstanceOf("top");
             Template duh = group.getInstanceOf("duh");
-            duh.add("chars", new string[] { "a", "b", "c", "d", "e" });
-            top.add("d", duh);
+            duh.Add("chars", new string[] { "a", "b", "c", "d", "e" });
+            top.Add("d", duh);
             //
             string expecting =
                 "  x: ab" + Environment.NewLine +
                 "     cd" + Environment.NewLine +
                 "     e!";
-            Assert.AreEqual(expecting, top.render(7));
+            Assert.AreEqual(expecting, top.Render(7));
         }
 
         [TestMethod]
@@ -370,14 +370,14 @@ namespace Antlr4.Test.StringTemplate
             TemplateGroup group = new TemplateGroupFile(Path.Combine(tmpdir, "t.stg"));
 
             Template a = group.getInstanceOf("m");
-            a.add("args",
+            a.Add("args",
                            new string[] { "a", "b", "c" });
-            a.add("body", "i=3;");
+            a.Add("body", "i=3;");
             // make it wrap because of ") throws Ick { " literal
             int n = "[TestMethod] public voidfoo(a, b, c".Length;
             string expecting =
                 "[TestMethod] public voidfoo(a, b, c) throws Ick { i=3; }";
-            Assert.AreEqual(expecting, a.render(n));
+            Assert.AreEqual(expecting, a.Render(n));
         }
 
         [TestMethod]
@@ -389,12 +389,12 @@ namespace Antlr4.Test.StringTemplate
             TemplateGroup group = new TemplateGroupFile(Path.Combine(tmpdir, "t.stg"));
 
             Template m = group.getInstanceOf("m");
-            m.add("body", "i=3;");
+            m.Add("body", "i=3;");
             // make it wrap because of ") throws Ick { " literal
             string expecting =
                 "{ " + Environment.NewLine +
                 "  i=3; }";
-            Assert.AreEqual(expecting, m.render(2));
+            Assert.AreEqual(expecting, m.Render(2));
         }
 
         [TestMethod]
@@ -408,12 +408,12 @@ namespace Antlr4.Test.StringTemplate
 
             Template top = group.getInstanceOf("top");
             Template a = group.getInstanceOf("array");
-            a.add("values",
+            a.Add("values",
                            new int[] {3,9,20,2,1,4,6,32,5,6,77,888,2,1,6,32,5,6,77,
 						4,9,20,2,1,4,63,9,20,2,1,4,6,32,5,6,77,6,32,5,6,77,
 					    3,9,20,2,1,4,6,32,5,6,77,888,1,6,32,5});
-            top.add("arrays", a);
-            top.add("arrays", a); // add twice
+            top.Add("arrays", a);
+            top.Add("arrays", a); // Add twice
             string expecting =
                 "Arrays: int[] a = { 3,9,20,2,1,4,6,32,5," + Environment.NewLine +
                 "                    6,77,888,2,1,6,32,5," + Environment.NewLine +
@@ -428,7 +428,7 @@ namespace Antlr4.Test.StringTemplate
                 "            32,5,6,77,3,9,20,2,1,4,6,32," + Environment.NewLine +
                 "            5,6,77,888,1,6,32,5 };" + Environment.NewLine +
                 "done";
-            Assert.AreEqual(expecting, top.render(40));
+            Assert.AreEqual(expecting, top.Render(40));
         }
     }
 }

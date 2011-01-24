@@ -43,9 +43,9 @@ namespace Antlr4.Test.StringTemplate
         {
             string template = "hi $name$!";
             Template st = new Template(template, '$', '$');
-            st.add("name", "Ter");
+            st.Add("name", "Ter");
             string expected = "hi Ter!";
-            string result = st.render();
+            string result = st.Render();
             Assert.AreEqual(expected, result);
         }
 
@@ -55,15 +55,15 @@ namespace Antlr4.Test.StringTemplate
             TemplateGroup group = new TemplateGroup('$', '$');
             group.defineTemplate("test", "names,phones", "hi $names,phones:{n,p | $n$:$p$;}$");
             Template st = group.getInstanceOf("test");
-            st.add("names", "Ter");
-            st.add("names", "Tom");
-            st.add("names", "Sumana");
-            st.add("phones", "x5001");
-            st.add("phones", "x5002");
-            st.add("phones", "x5003");
+            st.Add("names", "Ter");
+            st.Add("names", "Tom");
+            st.Add("names", "Sumana");
+            st.Add("phones", "x5001");
+            st.Add("phones", "x5002");
+            st.Add("phones", "x5003");
             string expected =
                 "hi Ter:x5001;Tom:x5002;Sumana:x5003;";
-            string result = st.render();
+            string result = st.Render();
             Assert.AreEqual(expected, result);
         }
 
@@ -78,7 +78,7 @@ namespace Antlr4.Test.StringTemplate
             TemplateGroup group = new TemplateGroupDirectory(dir, '$', '$');
             Template st = group.getInstanceOf("a");
             string expected = " bar ";
-            string result = st.render();
+            string result = st.Render();
             Assert.AreEqual(expected, result);
         }
 
@@ -94,9 +94,9 @@ namespace Antlr4.Test.StringTemplate
             writeFile(tmpdir, "group.stg", templates);
             TemplateGroup group = new TemplateGroupFile(tmpdir + "/group.stg", '$', '$');
             Template b = group.getInstanceOf("method");
-            b.add("name", "foo");
+            b.Add("name", "foo");
             string expecting = "x=99; // foo";
-            string result = b.render();
+            string result = b.Render();
             Assert.AreEqual(expecting, result);
         }
     }

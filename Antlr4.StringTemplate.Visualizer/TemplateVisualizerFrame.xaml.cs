@@ -215,7 +215,7 @@ namespace Antlr4.StringTemplate.Visualizer
             viewModel.Bytecode = currentTemplate.impl.disasm();
             viewModel.Ast = currentTemplate.impl.ast;
 
-            SetSelectionPath(viewModel.TemplateCallHierarchy[0], currentTemplate.getEnclosingInstanceStack(true));
+            SetSelectionPath(viewModel.TemplateCallHierarchy[0], currentTemplate.GetEnclosingInstanceStack(true));
 
             TemplateTextBox.Document = new FlowDocument(new Paragraph(new Run(currentTemplate.impl.template)
             {
@@ -235,7 +235,7 @@ namespace Antlr4.StringTemplate.Visualizer
                     InterpEvent e = ViewModel.Visualizer.Interpreter.getEvents(currentTemplate.enclosingInstance)[i];
                     if (e is EvalTemplateEvent)
                     {
-                        if (currentTemplate.isAnonSubtemplate())
+                        if (currentTemplate.IsAnonymousSubtemplate())
                             Highlight(TemplateTextBox.Document, r);
 
                         Highlight(OutputTextBox.Document, new Interval(e.Start, e.Stop));
@@ -263,7 +263,7 @@ namespace Antlr4.StringTemplate.Visualizer
 
         private void UpdateStack()
         {
-            List<Template> stack = currentTemplate.getEnclosingInstanceStack(true);
+            List<Template> stack = currentTemplate.GetEnclosingInstanceStack(true);
             ViewModel.Title = string.Format("STViz - [{0}]", string.Join(" ", stack.Select(i => i.ToString()).ToArray()));
         }
 
@@ -274,7 +274,7 @@ namespace Antlr4.StringTemplate.Visualizer
                 return;
 
             List<string> attributesList = new List<string>();
-            IDictionary<string, object> attributes = currentTemplate.getAttributes();
+            IDictionary<string, object> attributes = currentTemplate.GetAttributes();
             if (attributes != null)
             {
                 foreach (var attribute in attributes)

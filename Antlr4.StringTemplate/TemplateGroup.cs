@@ -539,13 +539,13 @@ namespace Antlr4.StringTemplate
 
         /** Add an adaptor for a kind of object so Template knows how to pull properties
          *  from them. Add adaptors in increasing order of specificity.  Template adds Object,
-         *  Map, and Template model adaptors for you first. Adaptors you add have
+         *  Map, and Template model adaptors for you first. Adaptors you Add have
          *  priority over default adaptors.
          *
          *  If an adaptor for type T already exists, it is replaced by the adaptor arg.
          *
          *  This must invalidate cache entries, so set your adaptors up before
-         *  render()ing your templates for efficiency.
+         *  Render()ing your templates for efficiency.
          */
         public virtual void registerModelAdaptor(Type attributeType, IModelAdaptor adaptor)
         {
@@ -560,7 +560,7 @@ namespace Antlr4.StringTemplate
         }
 
         /** Register a renderer for all objects of a particular "kind" for all
-         *  templates evaluated relative to this group.  Use r to render if
+         *  templates evaluated relative to this group.  Use r to Render if
          *  object in question is instanceof(attributeType).
          */
         public virtual void registerRenderer(Type attributeType, IAttributeRenderer r)

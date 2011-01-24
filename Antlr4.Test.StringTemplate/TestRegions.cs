@@ -51,7 +51,7 @@ namespace Antlr4.Test.StringTemplate
             TemplateGroup group = new TemplateGroupFile(dir + "/group.stg");
             Template st = group.getInstanceOf("a");
             string expected = "[bar]";
-            string result = st.render();
+            string result = st.Render();
             Assert.AreEqual(expected, result);
         }
 
@@ -67,7 +67,7 @@ namespace Antlr4.Test.StringTemplate
             TemplateGroup group = new TemplateGroupFile(dir + "/group.stg");
             Template st = group.getInstanceOf("a");
             string expected = "[]";
-            string result = st.render();
+            string result = st.Render();
             Assert.AreEqual(expected, result);
         }
 
@@ -85,7 +85,7 @@ namespace Antlr4.Test.StringTemplate
             group2.importTemplates(group1); // define r in g2
             Template st = group2.getInstanceOf("a");
             string expected = "[foo]";
-            string result = st.render();
+            string result = st.Render();
             Assert.AreEqual(expected, result);
         }
 
@@ -103,7 +103,7 @@ namespace Antlr4.Test.StringTemplate
             group2.importTemplates(group1); // define r in g2
             Template st = group2.getInstanceOf("a");
             string expected = "[(foo)]";
-            string result = st.render();
+            string result = st.Render();
             Assert.AreEqual(expected, result);
         }
 
@@ -121,7 +121,7 @@ namespace Antlr4.Test.StringTemplate
             group1.importTemplates(group2); // opposite of previous; g1 imports g2
             Template st = group1.getInstanceOf("a");
             string expected = "[]"; // @a.r implicitly defined in g1; can't see g2's
-            string result = st.render();
+            string result = st.Render();
             Assert.AreEqual(expected, result);
         }
 
@@ -136,7 +136,7 @@ namespace Antlr4.Test.StringTemplate
             TemplateGroup group = new TemplateGroupFile(dir + "/g.stg");
             Template st = group.getInstanceOf("a");
             string expected = "[foo]";
-            string result = st.render();
+            string result = st.Render();
             Assert.AreEqual(expected, result);
         }
 
@@ -176,7 +176,7 @@ namespace Antlr4.Test.StringTemplate
             subGroup.importTemplates(group);
 
             Template st = subGroup.getInstanceOf("a");
-            string result = st.render();
+            string result = st.Render();
             string expecting = "XAfooBY";
             Assert.AreEqual(expecting, result);
         }
@@ -218,7 +218,7 @@ namespace Antlr4.Test.StringTemplate
 
             Template st = subSubGroup.getInstanceOf("a");
 
-            string result = st.render();
+            string result = st.Render();
             string expecting = "Xfoo23Y";
             Assert.AreEqual(expecting, result);
         }
@@ -239,7 +239,7 @@ namespace Antlr4.Test.StringTemplate
             subGroup.importTemplates(group);
 
             Template st = subGroup.getInstanceOf("a");
-            string result = st.render();
+            string result = st.Render();
             string expecting = "XAfooY";
             Assert.AreEqual(expecting, result);
         }
@@ -258,7 +258,7 @@ namespace Antlr4.Test.StringTemplate
             TemplateGroupFile group = new TemplateGroupFile(dir + "/g.stg");
             group.setListener(errors);
             Template st = group.getInstanceOf("a");
-            st.render();
+            st.Render();
             string result = errors.ToString();
             string expecting = "g.stg 3:3: template a doesn't have a region called q" + newline;
             Assert.AreEqual(expecting, result);
@@ -283,7 +283,7 @@ namespace Antlr4.Test.StringTemplate
             subGroup.importTemplates(group);
 
             Template st = subGroup.getInstanceOf("a");
-            string result = st.render();
+            string result = st.Render();
             string expecting = "XABY";
             Assert.AreEqual(expecting, result);
         }

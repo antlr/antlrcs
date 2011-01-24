@@ -51,11 +51,11 @@ namespace Antlr4.Test.StringTemplate
             TemplateGroup group = new TemplateGroupFile(Path.Combine(tmpdir, "t.stg"));
             Template t = group.getInstanceOf("list");
             t.impl.dump();
-            t.add("a", "Terence");
-            t.add("b", "Jim");
+            t.Add("a", "Terence");
+            t.Add("b", "Jim");
             string expecting =
                     "  TerenceJim";
-            Assert.AreEqual(expecting, t.render());
+            Assert.AreEqual(expecting, t.Render());
         }
 
         [TestMethod]
@@ -69,14 +69,14 @@ namespace Antlr4.Test.StringTemplate
             writeFile(tmpdir, "t.stg", templates);
             TemplateGroup group = new TemplateGroupFile(Path.Combine(tmpdir, "t.stg"));
             Template t = group.getInstanceOf("list");
-            t.add("names", "Terence");
-            t.add("names", "Jim");
-            t.add("names", "Sriram");
+            t.Add("names", "Terence");
+            t.Add("names", "Jim");
+            t.Add("names", "Sriram");
             string expecting =
                     "  Terence" + newline +
                     "  Jim" + newline +
                     "  Sriram";
-            Assert.AreEqual(expecting, t.render());
+            Assert.AreEqual(expecting, t.Render());
         }
 
         [TestMethod]
@@ -89,9 +89,9 @@ namespace Antlr4.Test.StringTemplate
             writeFile(tmpdir, "t.stg", templates);
             TemplateGroup group = new TemplateGroupFile(Path.Combine(tmpdir, "t.stg"));
             Template t = group.getInstanceOf("list");
-            t.add("names", "Terence\nis\na\nmaniac");
-            t.add("names", "Jim");
-            t.add("names", "Sriram\nis\ncool");
+            t.Add("names", "Terence\nis\na\nmaniac");
+            t.Add("names", "Jim");
+            t.Add("names", "Sriram\nis\ncool");
             string expecting =
                     "  Terence" + newline +
                     "  is" + newline +
@@ -101,7 +101,7 @@ namespace Antlr4.Test.StringTemplate
                     "  Sriram" + newline +
                     "  is" + newline +
                     "  cool";
-            Assert.AreEqual(expecting, t.render());
+            Assert.AreEqual(expecting, t.Render());
         }
 
         [TestMethod]
@@ -114,12 +114,12 @@ namespace Antlr4.Test.StringTemplate
             writeFile(tmpdir, "t.stg", templates);
             TemplateGroup group = new TemplateGroupFile(Path.Combine(tmpdir, "t.stg"));
             Template t = group.getInstanceOf("list");
-            t.add("names", "Terence\n\nis a maniac");
+            t.Add("names", "Terence\n\nis a maniac");
             string expecting =
                     "  Terence" + newline +
                     "" + newline + // no indent on blank line
                     "  is a maniac";
-            Assert.AreEqual(expecting, t.render());
+            Assert.AreEqual(expecting, t.Render());
         }
 
         [TestMethod]
@@ -134,16 +134,16 @@ namespace Antlr4.Test.StringTemplate
             writeFile(tmpdir, "t.stg", templates);
             TemplateGroup group = new TemplateGroupFile(Path.Combine(tmpdir, "t.stg"));
             Template t = group.getInstanceOf("list");
-            t.add("names", "Terence");
-            t.add("names", "Jim");
-            t.add("names", "Sriram");
+            t.Add("names", "Terence");
+            t.Add("names", "Jim");
+            t.Add("names", "Sriram");
             string expecting =
                     "Before:" + newline +
                     "  Terence" + newline +
                     "  Jim" + newline +
                     "  Sriram" + newline +
                     "after";
-            Assert.AreEqual(expecting, t.render());
+            Assert.AreEqual(expecting, t.Render());
         }
 
         [TestMethod]
@@ -165,22 +165,22 @@ namespace Antlr4.Test.StringTemplate
             writeFile(tmpdir, "t.stg", templates);
             TemplateGroup group = new TemplateGroupFile(Path.Combine(tmpdir, "t.stg"));
             Template t = group.getInstanceOf("method");
-            t.add("name", "foo");
+            t.Add("name", "foo");
             Template s1 = group.getInstanceOf("assign");
-            s1.add("lhs", "x");
-            s1.add("expr", "0");
+            s1.Add("lhs", "x");
+            s1.Add("expr", "0");
             Template s2 = group.getInstanceOf("ifstat");
-            s2.add("expr", "x>0");
+            s2.Add("expr", "x>0");
             Template s2a = group.getInstanceOf("assign");
-            s2a.add("lhs", "y");
-            s2a.add("expr", "x+y");
+            s2a.Add("lhs", "y");
+            s2a.Add("expr", "x+y");
             Template s2b = group.getInstanceOf("assign");
-            s2b.add("lhs", "z");
-            s2b.add("expr", "4");
-            s2.add("stats", s2a);
-            s2.add("stats", s2b);
-            t.add("stats", s1);
-            t.add("stats", s2);
+            s2b.Add("lhs", "z");
+            s2b.Add("expr", "4");
+            s2.Add("stats", s2a);
+            s2.Add("stats", s2b);
+            t.Add("stats", s1);
+            t.Add("stats", s2);
             string expecting =
                     "void foo() {" + newline +
                     "\tx=0;" + newline +
@@ -189,7 +189,7 @@ namespace Antlr4.Test.StringTemplate
                     "\t  z=4;" + newline +
                     "\t}" + newline +
                     "}";
-            Assert.AreEqual(expecting, t.render());
+            Assert.AreEqual(expecting, t.Render());
         }
 
         [TestMethod]
@@ -199,12 +199,12 @@ namespace Antlr4.Test.StringTemplate
                 "begin" + newline +
                 "    <if(x)>foo<endif>" + newline +
                 "end" + newline);
-            t.add("x", "x");
+            t.Add("x", "x");
             string expecting =
                 "begin" + newline +
                 "    foo" + newline +
                 "end" + newline;
-            string result = t.render();
+            string result = t.Render();
             Assert.AreEqual(expecting, result);
         }
 
@@ -223,7 +223,7 @@ namespace Antlr4.Test.StringTemplate
                 "begin" + newline +
                 "   bar" + newline +
                 "end" + newline;
-            string result = t.render();
+            string result = t.Render();
             Assert.AreEqual(expecting, result);
         }
 
@@ -238,12 +238,12 @@ namespace Antlr4.Test.StringTemplate
                 "   <y>" + newline +
                 "   <endif>" + newline +
                 "end" + newline);
-            t.add("y", "y");
+            t.Add("y", "y");
             string expecting =
                 "begin" + newline +
                 "   y" + newline +
                 "end" + newline;
-            string result = t.render();
+            string result = t.Render();
             Assert.AreEqual(expecting, result);
         }
 
@@ -258,12 +258,12 @@ namespace Antlr4.Test.StringTemplate
                 "     <y>" + newline +
                 "   <endif>" + newline +
                 "end" + newline);
-            t.add("y", "y");
+            t.Add("y", "y");
             string expecting =
                 "begin" + newline +
                 "     y" + newline +
                 "end" + newline;
-            string result = t.render();
+            string result = t.Render();
             Assert.AreEqual(expecting, result);
         }
 
@@ -282,13 +282,13 @@ namespace Antlr4.Test.StringTemplate
                 "      <endif>" + newline +
                 "   <endif>" + newline +
                 "end" + newline);
-            t.add("x", "x");
-            t.add("y", "y");
+            t.Add("x", "x");
+            t.Add("y", "y");
             string expecting =
                 "begin" + newline +
                 "      foo" + newline +
                 "end" + newline; // no indent
-            string result = t.render();
+            string result = t.Render();
             Assert.AreEqual(expecting, result);
         }
 
@@ -303,10 +303,10 @@ namespace Antlr4.Test.StringTemplate
                 "   <y>" + newline +
                 "   <endif>" + newline +
                 "}>" + newline);
-            t.add("names", "Ter");
-            t.add("y", "y");
+            t.Add("names", "Ter");
+            t.Add("y", "y");
             string expecting = "   y" + newline + newline;
-            string result = t.render();
+            string result = t.Render();
             Assert.AreEqual(expecting, result);
         }
     }

@@ -49,7 +49,7 @@ namespace Antlr4.Test.StringTemplate
             Template st = new Template(template);
             string expected =
                 "hi !";
-            string result = st.render();
+            string result = st.Render();
             Assert.AreEqual(expected, result);
         }
 
@@ -58,9 +58,9 @@ namespace Antlr4.Test.StringTemplate
         {
             string template = "hi <name>!";
             Template st = new Template(template);
-            st.add("name", "Ter");
+            st.Add("name", "Ter");
             string expected = "hi Ter!";
-            string result = st.render();
+            string result = st.Render();
             Assert.AreEqual(expected, result);
         }
 
@@ -77,7 +77,7 @@ namespace Antlr4.Test.StringTemplate
             string result = null;
             try
             {
-                st.add("name", "Ter");
+                st.Add("name", "Ter");
             }
             catch (ArgumentException iae)
             {
@@ -92,11 +92,11 @@ namespace Antlr4.Test.StringTemplate
         {
             string template = "hi <name>!";
             Template st = new Template(template);
-            st.add("name", "Ter");
-            st.add("name", "Tom");
+            st.Add("name", "Ter");
+            st.Add("name", "Tom");
             string expected =
                 "hi TerTom!";
-            string result = st.render();
+            string result = st.Render();
             Assert.AreEqual(expected, result);
         }
 
@@ -106,11 +106,11 @@ namespace Antlr4.Test.StringTemplate
             string template = "hi <name>!";
             Template st = new Template(template);
             List<string> names = new List<string>() { "Ter", "Tom" };
-            st.add("name", names);
-            st.add("name", "Sumana"); // shouldn't alter my version of names list!
+            st.Add("name", names);
+            st.Add("name", "Sumana"); // shouldn't alter my version of names list!
             string expected =
                 "hi TerTomSumana!";  // Template sees 3 names
-            string result = st.render();
+            string result = st.Render();
             Assert.AreEqual(expected, result);
 
             Assert.IsTrue(names.Count == 2); // my names list is still just 2
@@ -122,11 +122,11 @@ namespace Antlr4.Test.StringTemplate
             string template = "hi <name>!";
             Template st = new Template(template);
             string[] names = new string[] { "Ter", "Tom" };
-            st.add("name", names);
-            st.add("name", "Sumana"); // shouldn't alter my version of names list!
+            st.Add("name", names);
+            st.Add("name", "Sumana"); // shouldn't alter my version of names list!
             string expected =
                 "hi TerTomSumana!";  // Template sees 3 names
-            string result = st.render();
+            string result = st.Render();
             Assert.AreEqual(expected, result);
         }
 
@@ -135,9 +135,9 @@ namespace Antlr4.Test.StringTemplate
         {
             string template = "<u.id>: <u.name>"; // checks field and method getter
             Template st = new Template(template);
-            st.add("u", new User(1, "parrt"));
+            st.Add("u", new User(1, "parrt"));
             string expected = "1: parrt";
-            string result = st.render();
+            string result = st.Render();
             Assert.AreEqual(expected, result);
         }
 
@@ -146,9 +146,9 @@ namespace Antlr4.Test.StringTemplate
         {
             string template = "<foo.a>: <ick>"; // checks field and method getter
             Template st = new Template(template);
-            st.add("foo", new Dictionary<string, string>() { { "a", "b" } });
+            st.Add("foo", new Dictionary<string, string>() { { "a", "b" } });
             string expected = "b: ";
-            string result = st.render();
+            string result = st.Render();
             Assert.AreEqual(expected, result);
         }
 
@@ -158,10 +158,10 @@ namespace Antlr4.Test.StringTemplate
             string template = "<t.x>"; // get x attr of template t
             Template st = new Template(template);
             Template t = new Template("<x>");
-            t.add("x", "Ter");
-            st.add("t", t);
+            t.Add("x", "Ter");
+            st.Add("t", t);
             string expected = "Ter";
-            string result = st.render();
+            string result = st.Render();
             Assert.AreEqual(expected, result);
         }
 
@@ -170,9 +170,9 @@ namespace Antlr4.Test.StringTemplate
         {
             string template = "<t.isManager>"; // call isManager
             Template st = new Template(template);
-            st.add("t", new User(32, "Ter"));
+            st.Add("t", new User(32, "Ter"));
             string expected = true.ToString();
-            string result = st.render();
+            string result = st.Render();
             Assert.AreEqual(expected, result);
         }
 
@@ -181,9 +181,9 @@ namespace Antlr4.Test.StringTemplate
         {
             string template = "<t.hasParkingSpot>"; // call hasParkingSpot
             Template st = new Template(template);
-            st.add("t", new User(32, "Ter"));
+            st.Add("t", new User(32, "Ter"));
             string expected = true.ToString();
-            string result = st.render();
+            string result = st.Render();
             Assert.AreEqual(expected, result);
         }
 
@@ -193,7 +193,7 @@ namespace Antlr4.Test.StringTemplate
             string template = "<u.id>: <u.name>";
             Template st = new Template(template);
             string expected = ": ";
-            string result = st.render();
+            string result = st.Render();
             Assert.AreEqual(expected, result);
         }
 
@@ -205,9 +205,9 @@ namespace Antlr4.Test.StringTemplate
             TemplateGroup group = new TemplateGroup();
             group.setListener(errors);
             Template st = new Template(group, template);
-            st.add("u", new User(1, "parrt"));
+            st.Add("u", new User(1, "parrt"));
             string expected = "";
-            string result = st.render();
+            string result = st.Render();
             Assert.AreEqual(expected, result);
             TemplateRuntimeMessage msg = (TemplateRuntimeMessage)errors.Errors[0];
             TemplateNoSuchPropertyException e = (TemplateNoSuchPropertyException)msg.Cause;
@@ -222,10 +222,10 @@ namespace Antlr4.Test.StringTemplate
             group.setListener(errors);
             string template = "<u.(qqq)>";
             Template st = new Template(group, template);
-            st.add("u", new User(1, "parrt"));
-            st.add("qqq", null);
+            st.Add("u", new User(1, "parrt"));
+            st.Add("qqq", null);
             string expected = "";
-            string result = st.render();
+            string result = st.Render();
             Assert.AreEqual(expected, result);
             TemplateRuntimeMessage msg = (TemplateRuntimeMessage)errors.Errors[0];
             TemplateNoSuchPropertyException e = (TemplateNoSuchPropertyException)msg.Cause;
@@ -240,10 +240,10 @@ namespace Antlr4.Test.StringTemplate
             group.setListener(errors);
             string template = "<u.(name)>";
             Template st = new Template(group, template);
-            st.add("u", new User(1, "parrt"));
-            st.add("name", 100);
+            st.Add("u", new User(1, "parrt"));
+            st.Add("name", 100);
             string expected = "";
-            string result = st.render();
+            string result = st.Render();
             Assert.AreEqual(expected, result);
             TemplateRuntimeMessage msg = (TemplateRuntimeMessage)errors.Errors[0];
             TemplateNoSuchPropertyException e = (TemplateNoSuchPropertyException)msg.Cause;
@@ -259,7 +259,7 @@ namespace Antlr4.Test.StringTemplate
             string expected =
                 "load kewl" + newline +
                 "daddy;";
-            string result = st.render();
+            string result = st.Render();
             Assert.AreEqual(expected, result);
         }
 
@@ -270,9 +270,9 @@ namespace Antlr4.Test.StringTemplate
             Template st = new Template(template);
             st.impl.nativeGroup.defineTemplate("box", "x", "kewl <x> daddy");
             st.impl.dump();
-            st.add("name", "Ter");
+            st.Add("name", "Ter");
             string expected = "load kewl arg daddy;";
-            string result = st.render();
+            string result = st.Render();
             Assert.AreEqual(expected, result);
         }
 
@@ -283,9 +283,9 @@ namespace Antlr4.Test.StringTemplate
             Template st = new Template(template);
             st.impl.nativeGroup.defineTemplate("box", "x,y", "kewl <x> <y> daddy");
             st.impl.nativeGroup.defineTemplate("foo", "blech");
-            st.add("name", "Ter");
+            st.Add("name", "Ter");
             string expected = "load kewl arg blech daddy;";
-            string result = st.render();
+            string result = st.Render();
             Assert.AreEqual(expected, result);
         }
 
@@ -296,9 +296,9 @@ namespace Antlr4.Test.StringTemplate
             Template st = new Template(template);
             st.impl.nativeGroup.defineTemplate("box", "y", "kewl <y> daddy");
             st.impl.nativeGroup.defineTemplate("foo", "x", "blech <x>");
-            st.add("name", "Ter");
+            st.Add("name", "Ter");
             string expected = "load kewl blech arg daddy;";
-            string result = st.render();
+            string result = st.Render();
             Assert.AreEqual(expected, result);
         }
 
@@ -309,12 +309,12 @@ namespace Antlr4.Test.StringTemplate
             group.defineTemplate("inc", "x", "<x>+1");
             group.defineTemplate("test", "name", "hi <name>!");
             Template st = group.getInstanceOf("test");
-            st.add("name", "Ter");
-            st.add("name", "Tom");
-            st.add("name", "Sumana");
+            st.Add("name", "Ter");
+            st.Add("name", "Tom");
+            st.Add("name", "Sumana");
             string expected =
                 "hi TerTomSumana!";
-            string result = st.render();
+            string result = st.Render();
             Assert.AreEqual(expected, result);
         }
 
@@ -325,12 +325,12 @@ namespace Antlr4.Test.StringTemplate
             group.defineTemplate("inc", "x", "[<x>]");
             group.defineTemplate("test", "name", "hi <name:inc()>!");
             Template st = group.getInstanceOf("test");
-            st.add("name", "Ter");
-            st.add("name", "Tom");
-            st.add("name", "Sumana");
+            st.Add("name", "Ter");
+            st.Add("name", "Tom");
+            st.Add("name", "Sumana");
             string expected =
                 "hi [Ter][Tom][Sumana]!";
-            string result = st.render();
+            string result = st.Render();
             Assert.AreEqual(expected, result);
         }
 
@@ -341,13 +341,13 @@ namespace Antlr4.Test.StringTemplate
             group.defineTemplate("inc", "x", "[<x>]");
             group.defineTemplate("test", "t,name", "<name:(t)()>!");
             Template st = group.getInstanceOf("test");
-            st.add("t", "inc");
-            st.add("name", "Ter");
-            st.add("name", "Tom");
-            st.add("name", "Sumana");
+            st.Add("t", "inc");
+            st.Add("name", "Ter");
+            st.Add("name", "Tom");
+            st.Add("name", "Sumana");
             string expected =
                 "[Ter][Tom][Sumana]!";
-            string result = st.render();
+            string result = st.Render();
             Assert.AreEqual(expected, result);
         }
 
@@ -361,11 +361,11 @@ namespace Antlr4.Test.StringTemplate
             writeFile(tmpdir, "t.stg", templates);
             TemplateGroup group = new TemplateGroupFile(tmpdir + "/" + "t.stg");
             Template st = group.getInstanceOf("test");
-            st.add("name", "Ter");
-            st.add("name", "Tom");
-            st.add("name", "Sumana");
+            st.Add("name", "Ter");
+            st.Add("name", "Tom");
+            st.Add("name", "Sumana");
             string expected = "*Ter**Tom**Sumana*";
-            string result = st.render();
+            string result = st.Render();
             Assert.AreEqual(expected, result);
         }
 
@@ -375,15 +375,15 @@ namespace Antlr4.Test.StringTemplate
             TemplateGroup group = new TemplateGroup();
             group.defineTemplate("test", "names,phones", "hi <names,phones:{n,p | <n>:<p>;}>");
             Template st = group.getInstanceOf("test");
-            st.add("names", "Ter");
-            st.add("names", "Tom");
-            st.add("names", "Sumana");
-            st.add("phones", "x5001");
-            st.add("phones", "x5002");
-            st.add("phones", "x5003");
+            st.Add("names", "Ter");
+            st.Add("names", "Tom");
+            st.Add("names", "Sumana");
+            st.Add("phones", "x5001");
+            st.Add("phones", "x5002");
+            st.Add("phones", "x5003");
             string expected =
                 "hi Ter:x5001;Tom:x5002;Sumana:x5003;";
-            string result = st.render();
+            string result = st.Render();
             Assert.AreEqual(expected, result);
         }
 
@@ -393,14 +393,14 @@ namespace Antlr4.Test.StringTemplate
             TemplateGroup group = new TemplateGroup();
             group.defineTemplate("test", "names,phones", "hi <names,phones:{n,p | <n>:<p>;}>");
             Template st = group.getInstanceOf("test");
-            st.add("names", "Ter");
-            st.add("names", "Tom");
-            st.add("names", "Sumana");
-            st.add("phones", "x5001");
-            st.add("phones", "x5002");
+            st.Add("names", "Ter");
+            st.Add("names", "Tom");
+            st.Add("names", "Sumana");
+            st.Add("phones", "x5001");
+            st.Add("phones", "x5002");
             string expected =
                 "hi Ter:x5001;Tom:x5002;Sumana:;";
-            string result = st.render();
+            string result = st.Render();
             Assert.AreEqual(expected, result);
         }
 
@@ -412,14 +412,14 @@ namespace Antlr4.Test.StringTemplate
             group.defineTemplate("test", "names,phones",
                                  "hi <names,phones:{n,p | <n>:<p>;}:bold()>");
             Template st = group.getInstanceOf("test");
-            st.add("names", "Ter");
-            st.add("names", "Tom");
-            st.add("names", "Sumana");
-            st.add("phones", "x5001");
-            st.add("phones", "x5002");
+            st.Add("names", "Ter");
+            st.Add("names", "Tom");
+            st.Add("names", "Sumana");
+            st.Add("phones", "x5001");
+            st.Add("phones", "x5002");
             string expected =
                 "hi [Ter:x5001;][Tom:x5002;][Sumana:;]";
-            string result = st.render();
+            string result = st.Render();
             Assert.AreEqual(expected, result);
         }
 
@@ -431,14 +431,14 @@ namespace Antlr4.Test.StringTemplate
             group.defineTemplate("test", "names,phones",
                                  "hi <[names:bold()],phones:{n,p | <n>:<p>;}>");
             Template st = group.getInstanceOf("test");
-            st.add("names", "Ter");
-            st.add("names", "Tom");
-            st.add("names", "Sumana");
-            st.add("phones", "x5001");
-            st.add("phones", "x5002");
+            st.Add("names", "Ter");
+            st.Add("names", "Tom");
+            st.Add("names", "Sumana");
+            st.Add("phones", "x5001");
+            st.Add("phones", "x5002");
             string expected =
                 "hi [Ter]:x5001;[Tom]:x5002;[Sumana]:;";
-            string result = st.render();
+            string result = st.Render();
             Assert.AreEqual(expected, result);
         }
 
@@ -449,13 +449,13 @@ namespace Antlr4.Test.StringTemplate
             group.defineTemplate("inc", "x,i", "<i>:<x>");
             group.defineTemplate("test", "name", "<name:{n|<inc(n,i)>}; separator=\", \">");
             Template st = group.getInstanceOf("test");
-            st.add("name", "Ter");
-            st.add("name", "Tom");
-            st.add("name", null); // don't count this one
-            st.add("name", "Sumana");
+            st.Add("name", "Ter");
+            st.Add("name", "Tom");
+            st.Add("name", null); // don't count this one
+            st.Add("name", "Sumana");
             string expected =
                 "1:Ter, 2:Tom, 3:Sumana";
-            string result = st.render();
+            string result = st.Render();
             Assert.AreEqual(expected, result);
         }
 
@@ -465,13 +465,13 @@ namespace Antlr4.Test.StringTemplate
             TemplateGroup group = new TemplateGroup();
             group.defineTemplate("test", "name", "<name:{n | <i>:<n>}; separator=\", \">");
             Template st = group.getInstanceOf("test");
-            st.add("name", "Ter");
-            st.add("name", "Tom");
-            st.add("name", null); // don't count this one. still can't apply subtemplate to null value
-            st.add("name", "Sumana");
+            st.Add("name", "Ter");
+            st.Add("name", "Tom");
+            st.Add("name", null); // don't count this one. still can't apply subtemplate to null value
+            st.Add("name", "Sumana");
             string expected =
                 "1:Ter, 2:Tom, 3:Sumana";
-            string result = st.render();
+            string result = st.Render();
             Assert.AreEqual(expected, result);
         }
 
@@ -482,9 +482,9 @@ namespace Antlr4.Test.StringTemplate
             group.defineTemplate("a", "x", "[<x>]");
             group.defineTemplate("test", "name", "hi <name:a()>!");
             Template st = group.getInstanceOf("test");
-            st.add("name", "Ter");
+            st.Add("name", "Ter");
             string expected = "hi [Ter]!";
-            string result = st.render();
+            string result = st.Render();
             Assert.AreEqual(expected, result);
         }
 
@@ -496,7 +496,7 @@ namespace Antlr4.Test.StringTemplate
             group.defineTemplate("test", "name", "hi <name:a()>!");
             Template st = group.getInstanceOf("test");
             string expected = "hi !";
-            string result = st.render();
+            string result = st.Render();
             Assert.AreEqual(expected, result);
         }
 
@@ -506,13 +506,13 @@ namespace Antlr4.Test.StringTemplate
             TemplateGroup group = new TemplateGroup();
             group.defineTemplate("test", "name", "<name; separator=\", \">");
             Template st = group.getInstanceOf("test");
-            st.add("name", "Ter");
-            st.add("name", "Tom");
-            st.add("name", null); // don't print this one
-            st.add("name", "Sumana");
+            st.Add("name", "Ter");
+            st.Add("name", "Tom");
+            st.Add("name", null); // don't print this one
+            st.Add("name", "Sumana");
             string expected =
                 "Ter, Tom, Sumana";
-            string result = st.render();
+            string result = st.Render();
             Assert.AreEqual(expected, result);
         }
 
@@ -524,12 +524,12 @@ namespace Antlr4.Test.StringTemplate
             group.defineTemplate("b", "x", "(<x>)");
             group.defineTemplate("test", "name", "hi <name:a():b()>!");
             Template st = group.getInstanceOf("test");
-            st.add("name", "Ter");
-            st.add("name", "Tom");
-            st.add("name", "Sumana");
+            st.Add("name", "Ter");
+            st.Add("name", "Tom");
+            st.Add("name", "Sumana");
             string expected =
                 "hi ([Ter])([Tom])([Sumana])!";
-            string result = st.render();
+            string result = st.Render();
             Assert.AreEqual(expected, result);
         }
 
@@ -541,12 +541,12 @@ namespace Antlr4.Test.StringTemplate
             group.defineTemplate("b", "x", "(<x>)");
             group.defineTemplate("test", "name", "hi <name:a(),b()>!");
             Template st = group.getInstanceOf("test");
-            st.add("name", "Ter");
-            st.add("name", "Tom");
-            st.add("name", "Sumana");
+            st.Add("name", "Ter");
+            st.Add("name", "Tom");
+            st.Add("name", "Sumana");
             string expected =
                 "hi [Ter](Tom)[Sumana]!";
-            string result = st.render();
+            string result = st.Render();
             Assert.AreEqual(expected, result);
         }
 
@@ -555,9 +555,9 @@ namespace Antlr4.Test.StringTemplate
         {
             string template = "<if(name)>works<endif>";
             Template st = new Template(template);
-            st.add("name", "Ter");
+            st.Add("name", "Ter");
             string expected = "works";
-            string result = st.render();
+            string result = st.Render();
             Assert.AreEqual(expected, result);
         }
 
@@ -566,9 +566,9 @@ namespace Antlr4.Test.StringTemplate
         {
             string template = "<if(x)>fail<elseif(name)><endif>";
             Template st = new Template(template);
-            st.add("name", "Ter");
+            st.Add("name", "Ter");
             string expected = "";
-            string result = st.render();
+            string result = st.Render();
             Assert.AreEqual(expected, result);
         }
 
@@ -578,7 +578,7 @@ namespace Antlr4.Test.StringTemplate
             string template = "<if(!(x||y)&&!z)>works<endif>";
             Template st = new Template(template);
             string expected = "works";
-            string result = st.render();
+            string result = st.Render();
             Assert.AreEqual(expected, result);
         }
 
@@ -588,7 +588,7 @@ namespace Antlr4.Test.StringTemplate
             string template = "<if(name)>works<endif>";
             Template st = new Template(template);
             string expected = "";
-            string result = st.render();
+            string result = st.Render();
             Assert.AreEqual(expected, result);
         }
 
@@ -597,9 +597,9 @@ namespace Antlr4.Test.StringTemplate
         {
             string template = "<if(name)>works<endif>";
             Template st = new Template(template);
-            st.add("name", null);
+            st.Add("name", null);
             string expected = "";
-            string result = st.render();
+            string result = st.Render();
             Assert.AreEqual(expected, result);
         }
 
@@ -620,7 +620,7 @@ namespace Antlr4.Test.StringTemplate
             st.impl.dump();
             string expected = "foo" + newline +
                               "bar";
-            string result = st.render();
+            string result = st.Render();
             Assert.AreEqual(expected, result);
         }
 
@@ -630,9 +630,9 @@ namespace Antlr4.Test.StringTemplate
             string template =
                 "<if(x)>fail1<elseif(y)>fail2<elseif(z)>works<else>fail3<endif>";
             Template st = new Template(template);
-            st.add("z", "blort");
+            st.Add("z", "blort");
             string expected = "works";
-            string result = st.render();
+            string result = st.Render();
             Assert.AreEqual(expected, result);
         }
 
@@ -642,9 +642,9 @@ namespace Antlr4.Test.StringTemplate
             string template =
                 "<if(x)><elseif(y)><elseif(z)>works<else><endif>";
             Template st = new Template(template);
-            st.add("z", "blort");
+            st.Add("z", "blort");
             string expected = "works";
-            string result = st.render();
+            string result = st.Render();
             Assert.AreEqual(expected, result);
         }
 
@@ -653,9 +653,9 @@ namespace Antlr4.Test.StringTemplate
         {
             string template = "<if(!name)>works<endif>";
             Template st = new Template(template);
-            st.add("name", "Ter");
+            st.Add("name", "Ter");
             string expected = "";
-            string result = st.render();
+            string result = st.Render();
             Assert.AreEqual(expected, result);
         }
 
@@ -665,7 +665,7 @@ namespace Antlr4.Test.StringTemplate
             string template = "<if(!name)>works<endif>";
             Template st = new Template(template);
             string expected = "works";
-            string result = st.render();
+            string result = st.Render();
             Assert.AreEqual(expected, result);
         }
 
@@ -674,9 +674,9 @@ namespace Antlr4.Test.StringTemplate
         {
             string template = "<if(name)>works<else>fail<endif>";
             Template st = new Template(template);
-            st.add("name", "Ter");
+            st.Add("name", "Ter");
             string expected = "works";
-            string result = st.render();
+            string result = st.Render();
             Assert.AreEqual(expected, result);
         }
 
@@ -686,7 +686,7 @@ namespace Antlr4.Test.StringTemplate
             string template = "<if(name)>fail<else>works<endif>";
             Template st = new Template(template);
             string expected = "works";
-            string result = st.render();
+            string result = st.Render();
             Assert.AreEqual(expected, result);
         }
 
@@ -695,9 +695,9 @@ namespace Antlr4.Test.StringTemplate
         {
             string template = "<if(name)>fail<elseif(id)>works<else>fail<endif>";
             Template st = new Template(template);
-            st.add("id", "2DF3DF");
+            st.Add("id", "2DF3DF");
             string expected = "works";
-            string result = st.render();
+            string result = st.Render();
             Assert.AreEqual(expected, result);
         }
 
@@ -707,7 +707,7 @@ namespace Antlr4.Test.StringTemplate
             string template = "<if(name)>fail<elseif(id)>fail<endif>";
             Template st = new Template(template);
             string expected = "";
-            string result = st.render();
+            string result = st.Render();
             Assert.AreEqual(expected, result);
         }
 
@@ -717,7 +717,7 @@ namespace Antlr4.Test.StringTemplate
             string template = "<if(name)>fail<elseif(id)>fail<else>works<endif>";
             Template st = new Template(template);
             string expected = "works";
-            string result = st.render();
+            string result = st.Render();
             Assert.AreEqual(expected, result);
         }
 
@@ -726,9 +726,9 @@ namespace Antlr4.Test.StringTemplate
         {
             string template = "<if(name||notThere)>works<else>fail<endif>";
             Template st = new Template(template);
-            st.add("name", "Ter");
+            st.Add("name", "Ter");
             string expected = "works";
-            string result = st.render();
+            string result = st.Render();
             Assert.AreEqual(expected, result);
         }
 
@@ -739,9 +739,9 @@ namespace Antlr4.Test.StringTemplate
             Template st = new Template(template);
             IDictionary<string, string> m = new Dictionary<string, string>();
             m["name"] = "Ter";
-            st.add("m", m);
+            st.Add("m", m);
             string expected = "works \\";
-            string result = st.render();
+            string result = st.Render();
             Assert.AreEqual(expected, result);
         }
 
@@ -750,9 +750,9 @@ namespace Antlr4.Test.StringTemplate
         {
             string template = "<if(name&&notThere)>fail<else>works<endif>";
             Template st = new Template(template);
-            st.add("name", "Ter");
+            st.Add("name", "Ter");
             string expected = "works";
-            string result = st.render();
+            string result = st.Render();
             Assert.AreEqual(expected, result);
         }
 
@@ -761,9 +761,9 @@ namespace Antlr4.Test.StringTemplate
         {
             string template = "<if(name&&!notThere)>works<else>fail<endif>";
             Template st = new Template(template);
-            st.add("name", "Ter");
+            st.Add("name", "Ter");
             string expected = "works";
-            string result = st.render();
+            string result = st.Render();
             Assert.AreEqual(expected, result);
         }
 
@@ -774,7 +774,7 @@ namespace Antlr4.Test.StringTemplate
                     "Foo <\\n><\\n><\\t> bar\n"
                     );
             StringWriter sw = new StringWriter();
-            st.write(new AutoIndentWriter(sw, "\n")); // force \n as newline
+            st.Write(new AutoIndentWriter(sw, "\n")); // force \n as newline
             string result = sw.ToString();
             string expecting = "Foo \n\n\t bar\n";     // expect \n in output
             Assert.AreEqual(expecting, result);
@@ -782,7 +782,7 @@ namespace Antlr4.Test.StringTemplate
             st = new Template(
                     "Foo <\\n><\\t> bar" + newline);
             sw = new StringWriter();
-            st.write(new AutoIndentWriter(sw, "\n")); // force \n as newline
+            st.Write(new AutoIndentWriter(sw, "\n")); // force \n as newline
             expecting = "Foo \n\t bar\n";     // expect \n in output
             result = sw.ToString();
             Assert.AreEqual(expecting, result);
@@ -790,7 +790,7 @@ namespace Antlr4.Test.StringTemplate
             st = new Template(
                     "Foo<\\ >bar<\\n>");
             sw = new StringWriter();
-            st.write(new AutoIndentWriter(sw, "\n")); // force \n as newline
+            st.Write(new AutoIndentWriter(sw, "\n")); // force \n as newline
             result = sw.ToString();
             expecting = "Foo bar\n"; // forced \n
             Assert.AreEqual(expecting, result);
@@ -803,19 +803,19 @@ namespace Antlr4.Test.StringTemplate
                     "Foo <\\uFEA5><\\n><\\u00C2> bar\n"
                     );
             string expecting = "Foo \ufea5" + newline + "\u00C2 bar" + newline;
-            string result = st.render();
+            string result = st.Render();
             Assert.AreEqual(expecting, result);
 
             st = new Template(
                     "Foo <\\uFEA5><\\n><\\u00C2> bar" + newline);
             expecting = "Foo \ufea5" + newline + "\u00C2 bar" + newline;
-            result = st.render();
+            result = st.Render();
             Assert.AreEqual(expecting, result);
 
             st = new Template(
                     "Foo<\\ >bar<\\n>");
             expecting = "Foo bar" + newline;
-            result = st.render();
+            result = st.Render();
             Assert.AreEqual(expecting, result);
         }
 
@@ -826,7 +826,7 @@ namespace Antlr4.Test.StringTemplate
             Template st = new Template(template);
             string expected =
                 "name" + newline;
-            string result = st.render();
+            string result = st.Render();
             Assert.AreEqual(expected, result);
         }
 
@@ -836,11 +836,11 @@ namespace Antlr4.Test.StringTemplate
             TemplateGroup group = new TemplateGroup();
             group.defineTemplate("test", "names", "<names:{n | case <n>}; separator=\", \">");
             Template st = group.getInstanceOf("test");
-            st.add("names", "Ter");
-            st.add("names", "Tom");
+            st.Add("names", "Ter");
+            st.Add("names", "Tom");
             string expected =
                 "case Ter, case Tom";
-            string result = st.render();
+            string result = st.Render();
             Assert.AreEqual(expected, result);
         }
 
@@ -850,10 +850,10 @@ namespace Antlr4.Test.StringTemplate
             TemplateGroup group = new TemplateGroup();
             group.defineTemplate("test", "names", "<names:{n | case <n>}; separator=\", \">");
             Template st = group.getInstanceOf("test");
-            st.add("names", new List<string>() { "Ter", "Tom" });
+            st.Add("names", new List<string>() { "Ter", "Tom" });
             string expected =
                 "case Ter, case Tom";
-            string result = st.render();
+            string result = st.Render();
             Assert.AreEqual(expected, result);
         }
 

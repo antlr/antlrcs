@@ -51,10 +51,10 @@ namespace Antlr4.Test.StringTemplate
             writeFile(tmpdir, "test.stg", templates);
             TemplateGroup group = new TemplateGroupFile(tmpdir + "/" + "test.stg");
             Template st = group.getInstanceOf("var");
-            st.add("type", "int");
-            st.add("name", "x");
+            st.Add("type", "int");
+            st.Add("name", "x");
             string expecting = "int x = 0;";
-            string result = st.render();
+            string result = st.Render();
             Assert.AreEqual(expecting, result);
         }
 
@@ -69,11 +69,11 @@ namespace Antlr4.Test.StringTemplate
             TemplateGroup group = new TemplateGroupFile(tmpdir + "/" + "test.stg");
             Template st = group.getInstanceOf("var");
             st.impl.dump();
-            st.add("w", "L");
-            st.add("type", "int");
-            st.add("name", "x");
+            st.Add("w", "L");
+            st.Add("type", "int");
+            st.Add("name", "x");
             string expecting = "int x = 0L;";
-            string result = st.render();
+            string result = st.Render();
             Assert.AreEqual(expecting, result);
         }
 
@@ -88,11 +88,11 @@ namespace Antlr4.Test.StringTemplate
             writeFile(tmpdir, "test.stg", templates);
             TemplateGroup group = new TemplateGroupFile(tmpdir + "/" + "test.stg");
             Template st = group.getInstanceOf("var");
-            st.add("w", "L");
-            st.add("type", new Template("int"));
-            st.add("name", "x");
+            st.Add("w", "L");
+            st.Add("type", new Template("int"));
+            st.Add("name", "x");
             string expecting = "int x = 0L;";
-            string result = st.render();
+            string result = st.Render();
             Assert.AreEqual(expecting, result);
         }
 
@@ -110,10 +110,10 @@ namespace Antlr4.Test.StringTemplate
             m[new HashableUser(99, "parrt")] = "first";
             m[new HashableUser(172036, "tombu")] = "second";
             m[new HashableUser(391, "sriram")] = "third";
-            st.add("m", m);
-            st.add("k", new HashableUser(172036, "tombu"));
+            st.Add("m", m);
+            st.Add("k", new HashableUser(172036, "tombu"));
             string expecting = "second";
-            string result = st.render();
+            string result = st.Render();
             Assert.AreEqual(expecting, result);
         }
 
@@ -127,11 +127,11 @@ namespace Antlr4.Test.StringTemplate
             writeFile(tmpdir, "test.stg", templates);
             TemplateGroup group = new TemplateGroupFile(tmpdir + "/" + "test.stg");
             Template st = group.getInstanceOf("var");
-            st.add("w", "L");
-            st.add("type", "double"); // double not in typeInit map
-            st.add("name", "x");
+            st.Add("w", "L");
+            st.Add("type", "double"); // double not in typeInit map
+            st.Add("name", "x");
             string expecting = "double x = ;";
-            string result = st.render();
+            string result = st.Render();
             Assert.AreEqual(expecting, result);
         }
 
@@ -145,11 +145,11 @@ namespace Antlr4.Test.StringTemplate
             writeFile(tmpdir, "test.stg", templates);
             TemplateGroup group = new TemplateGroupFile(tmpdir + "/" + "test.stg");
             Template st = group.getInstanceOf("var");
-            st.add("w", "L");
-            st.add("type", null); // double not in typeInit map
-            st.add("name", "x");
+            st.Add("w", "L");
+            st.Add("type", null); // double not in typeInit map
+            st.Add("name", "x");
             string expecting = " x = ;";
-            string result = st.render();
+            string result = st.Render();
             Assert.AreEqual(expecting, result);
         }
 
@@ -163,10 +163,10 @@ namespace Antlr4.Test.StringTemplate
             writeFile(tmpdir, "test.stg", templates);
             TemplateGroup group = new TemplateGroupFile(tmpdir + "/" + "test.stg");
             Template st = group.getInstanceOf("var");
-            st.add("type", "int");
-            st.add("name", "x");
+            st.Add("type", "int");
+            st.Add("name", "x");
             string expecting = "int x = ;";
-            string result = st.render();
+            string result = st.Render();
             Assert.AreEqual(expecting, result);
         }
 
@@ -180,10 +180,10 @@ namespace Antlr4.Test.StringTemplate
             writeFile(tmpdir, "test.stg", templates);
             TemplateGroup group = new TemplateGroupFile(tmpdir + "/" + "test.stg");
             Template st = group.getInstanceOf("var");
-            st.add("type", "float");
-            st.add("name", "x");
+            st.Add("type", "float");
+            st.Add("name", "x");
             string expecting = "float x = ;";
-            string result = st.render();
+            string result = st.Render();
             Assert.AreEqual(expecting, result);
         }
 
@@ -197,10 +197,10 @@ namespace Antlr4.Test.StringTemplate
             writeFile(tmpdir, "test.stg", templates);
             TemplateGroup group = new TemplateGroupFile(tmpdir + "/" + "test.stg");
             Template st = group.getInstanceOf("var");
-            st.add("type", "UserRecord");
-            st.add("name", "x");
+            st.Add("type", "UserRecord");
+            st.Add("name", "x");
             string expecting = "UserRecord x = null;";
-            string result = st.render();
+            string result = st.Render();
             Assert.AreEqual(expecting, result);
         }
 
@@ -214,10 +214,10 @@ namespace Antlr4.Test.StringTemplate
             writeFile(tmpdir, "test.stg", templates);
             TemplateGroup group = new TemplateGroupFile(tmpdir + "/" + "test.stg");
             Template st = group.getInstanceOf("var");
-            // missing or set to null: st.add("type", null);
-            st.add("name", "x");
+            // missing or set to null: st.Add("type", null);
+            st.Add("name", "x");
             string expecting = " x = null;";
-            string result = st.render();
+            string result = st.Render();
             Assert.AreEqual(expecting, result);
         }
 
@@ -248,10 +248,10 @@ namespace Antlr4.Test.StringTemplate
             writeFile(tmpdir, "test.stg", templates);
             TemplateGroup group = new TemplateGroupFile(tmpdir + "/" + "test.stg");
             Template st = group.getInstanceOf("var");
-            st.add("type", "UserRecord");
-            st.add("name", "x");
+            st.Add("type", "UserRecord");
+            st.Add("name", "x");
             string expecting = "UserRecord x = UserRecord;";
-            string result = st.render();
+            string result = st.Render();
             Assert.AreEqual(expecting, result);
         }
 
@@ -268,10 +268,10 @@ namespace Antlr4.Test.StringTemplate
             writeFile(tmpdir, "test.stg", templates);
             TemplateGroup group = new TemplateGroupFile(tmpdir + "/" + "test.stg");
             Template st = group.getInstanceOf("var");
-            st.add("type", "default");
-            st.add("name", "x");
+            st.Add("type", "default");
+            st.Add("name", "x");
             string expecting = "default x = foo;";
-            string result = st.render();
+            string result = st.Render();
             Assert.AreEqual(expecting, result);
         }
 
@@ -289,7 +289,7 @@ namespace Antlr4.Test.StringTemplate
             TemplateGroup group = new TemplateGroupFile(tmpdir + "/" + "test.stg");
             Template st = group.getInstanceOf("t");
             string expecting = " default ";
-            string result = st.render();
+            string result = st.Render();
             Assert.AreEqual(expecting, result);
         }
 
@@ -304,10 +304,10 @@ namespace Antlr4.Test.StringTemplate
             writeFile(tmpdir, "test.stg", templates);
             TemplateGroup group = new TemplateGroupFile(tmpdir + "/" + "test.stg");
             Template st = group.getInstanceOf("intermediate");
-            st.add("type", "int");
-            st.add("name", "x");
+            st.Add("type", "int");
+            st.Add("name", "x");
             string expecting = "int x = 0;";
-            string result = st.render();
+            string result = st.Render();
             Assert.AreEqual(expecting, result);
         }
 
@@ -323,11 +323,11 @@ namespace Antlr4.Test.StringTemplate
             TemplateGroup group = new TemplateGroupFile(tmpdir + "/" + "test.stg");
             Template interm = group.getInstanceOf("intermediate");
             Template var = group.getInstanceOf("var");
-            var.add("type", "int");
-            var.add("name", "x");
-            interm.add("stuff", var);
+            var.Add("type", "int");
+            var.Add("name", "x");
+            interm.Add("stuff", var);
             string expecting = "int x = 0;";
-            string result = interm.render();
+            string result = interm.Render();
             Assert.AreEqual(expecting, result);
         }
     }

@@ -109,7 +109,7 @@ namespace Antlr4.StringTemplate.Misc
             if (Self != null)
             {
                 buf.Append("context [");
-                buf.Append(Self.getEnclosingInstanceStackString());
+                buf.Append(Self.GetEnclosingInstanceStackString());
                 buf.Append("]");
             }
             if (loc != null)

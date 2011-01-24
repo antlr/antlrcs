@@ -44,7 +44,7 @@ namespace Antlr4.StringTemplate.Misc
      */
     public class TemplateMessage
     {
-        /** if in debug mode, has created instance, add attr events and eval
+        /** if in debug mode, has created instance, Add attr events and eval
          *  template events.
          */
         private readonly Template self;

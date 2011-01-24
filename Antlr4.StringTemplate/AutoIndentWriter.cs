@@ -78,7 +78,7 @@ namespace Antlr4.StringTemplate
 
         /** Track char position in the line (later we can think about tabs).
          *  Indexed from 0.  We want to keep charPosition <= lineWidth.
-         *  This is the position we are *about* to write not the position
+         *  This is the position we are *about* to Write not the position
          *  last written to.
          */
         protected int charPosition = 0;
@@ -148,7 +148,7 @@ namespace Antlr4.StringTemplate
                 if (c == '\n')
                 {
                     atStartOfLine = true;
-                    charPosition = -newline.Length; // set so the write below sets to 0
+                    charPosition = -newline.Length; // set so the Write below sets to 0
                     @out.Write(newline);
                     n += newline.Length;
                     charIndex += newline.Length;
@@ -212,7 +212,7 @@ namespace Antlr4.StringTemplate
                         // continue writing any chars out
                     }
                     else
-                    {  // write A or B part
+                    {  // Write A or B part
                         n++;
                         @out.Write(c);
                         charPosition++;

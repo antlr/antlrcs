@@ -36,12 +36,12 @@ namespace Antlr4.StringTemplate
     using HttpUtility = System.Web.HttpUtility;
     using SecurityElement = System.Security.SecurityElement;
 
-    /** This render knows to perform a few operations on String objects:
+    /** This Render knows to perform a few operations on String objects:
      *  upper, lower, cap, url-encode, xml-encode.
      */
     public class StringRenderer : IAttributeRenderer
     {
-        // trim(s) and strlen(s) built-in funcs; these are format options
+        // trim(s) and strlen(s) built-in funcs; these are Format options
         public virtual string ToString(object o, string formatString, CultureInfo locale)
         {
             string s = (string)o;
