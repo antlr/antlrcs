@@ -115,7 +115,7 @@ namespace Antlr4.StringTemplate.Visualizer
                 {
                     _children = new List<TemplateCallHierarchyViewModel>();
                     foreach (var @event in _interpreter.GetEvents(_template))
-                        _children.Add(new TemplateCallHierarchyViewModel(_interpreter, @event.Self));
+                        _children.Add(new TemplateCallHierarchyViewModel(_interpreter, @event.Template));
                 }
 
                 return _children;

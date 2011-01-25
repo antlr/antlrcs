@@ -127,7 +127,7 @@ namespace Antlr4.StringTemplate.Compiler
                 int p = tokens.Get(i).StartIndex;
                 int q = tokens.Get(j).StopIndex;
                 if (!(p < 0 || q < 0))
-                    impl.sourceMap[ip] = new Interval(p, q);
+                    impl.sourceMap[ip] = Interval.FromBounds(p, q + 1);
             }
             impl.instrs[ip++] = (byte)opcode;
         }

@@ -494,8 +494,7 @@ namespace Antlr4.StringTemplate
             }
             if (TemplateGroup.debug)
             {
-                int stop = @out.Index() - 1;
-                EvalTemplateEvent e = new EvalTemplateEvent((DebugST)self, start, stop);
+                EvalTemplateEvent e = new EvalTemplateEvent((DebugST)self, Interval.FromBounds(start, @out.Index()));
                 //System.out.println("eval template "+self+": "+e);
                 events.Add(e);
                 if (self.enclosingInstance != null)
@@ -633,15 +632,7 @@ namespace Antlr4.StringTemplate
             if (TemplateGroup.debug)
             {
                 Interval templateLocation = self.impl.sourceMap[current_ip];
-                int exprStart = -1;
-                int exprStop = -1;
-                if (templateLocation != null)
-                {
-                    exprStart = templateLocation.A;
-                    exprStop = templateLocation.B;
-                }
-
-                EvalExprEvent e = new EvalExprEvent((DebugST)self, start, @out.Index() - 1, exprStart, exprStop);
+                EvalExprEvent e = new EvalExprEvent((DebugST)self, Interval.FromBounds(start, @out.Index()), templateLocation);
                 Console.WriteLine(e);
                 events.Add(e);
             }
@@ -681,10 +672,7 @@ namespace Antlr4.StringTemplate
             if (TemplateGroup.debug)
             {
                 Interval templateLocation = self.impl.sourceMap[current_ip];
-                int exprStart = templateLocation.A, exprStop = templateLocation.B;
-                EvalExprEvent e = new EvalExprEvent((DebugST)self,
-                                                    start, @out.Index() - 1,
-                                                    exprStart, exprStop);
+                EvalExprEvent e = new EvalExprEvent((DebugST)self, Interval.FromBounds(start, @out.Index()), templateLocation);
                 Console.WriteLine(e);
                 events.Add(e);
             }

@@ -32,10 +32,12 @@
 
 namespace Antlr4.StringTemplate.Debug
 {
+    using Antlr4.StringTemplate.Misc;
+
     public class EvalTemplateEvent : InterpEvent
     {
-        public EvalTemplateEvent(DebugST self, int start, int stop)
-            : base(self, start, stop)
+        public EvalTemplateEvent(DebugST template, Interval interval)
+            : base(template, interval)
         {
         }
     }

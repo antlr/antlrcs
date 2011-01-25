@@ -59,12 +59,12 @@
                         <ContentControl Content="{Binding}" />
                     </HierarchicalDataTemplate>
                 </TreeView.ItemTemplate>
-                <TreeView.Resources>
-                    <Style TargetType="{x:Type TreeViewItem}" x:Key="CallHierarchyTreeViewItemStyle">
+                <TreeView.ItemContainerStyle>
+                    <Style TargetType="{x:Type TreeViewItem}">
                         <Setter Property="IsExpanded" Value="{Binding IsExpanded}" />
                         <Setter Property="IsSelected" Value="{Binding IsSelected}" />
                     </Style>
-                </TreeView.Resources>
+                </TreeView.ItemContainerStyle>
             </TreeView>
             <GridSplitter Width="5" Grid.Column="1" Grid.ColumnSpan="1" ResizeBehavior="PreviousAndNext" />
             <RichTextBox Name="OutputTextBox" Grid.Column="2" Grid.ColumnSpan="1" SelectionChanged="HandleOutputTextBoxSelectionChanged" />

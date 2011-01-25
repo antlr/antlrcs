@@ -129,7 +129,7 @@ namespace Antlr4.StringTemplate.Visualizer
             if (a == null || b == null)
                 return;
 
-            Highlight(TemplateTextBox.Document, new Interval(a.StartIndex, b.StopIndex));
+            Highlight(TemplateTextBox.Document, Interval.FromBounds(a.StartIndex, b.StopIndex + 1));
         }
 
         private void HandleOutputTextBoxSelectionChanged(object sender, RoutedEventArgs e)
@@ -138,7 +138,7 @@ namespace Antlr4.StringTemplate.Visualizer
             if (de == null)
                 currentTemplate = ViewModel.Visualizer.RootTemplate;
             else
-                currentTemplate = de.Self;
+                currentTemplate = de.Template;
             UpdateCurrentTemplate();
         }
 
@@ -149,7 +149,7 @@ namespace Antlr4.StringTemplate.Visualizer
 
             foreach (var e in events)
             {
-                if (position >= e.Start && position <= e.Stop)
+                if (e.OutputInterval.Contains(position))
                     return e;
             }
 
@@ -170,8 +170,8 @@ namespace Antlr4.StringTemplate.Visualizer
             // highlight the new text
             if (interval != null)
             {
-                int startOffset = interval.A;
-                int endOffset = interval.B + 1;
+                int startOffset = interval.Start;
+                int endOffset = interval.End;
                 TextPointer highlightStart = document.GetPointerFromCharOffset(ref startOffset);
                 TextPointer highlightStop = document.GetPointerFromCharOffset(ref endOffset);
                 if (startOffset != 0 || endOffset != 0)
@@ -196,6 +196,8 @@ namespace Antlr4.StringTemplate.Visualizer
                 current = current.Children.FirstOrDefault(i => i.Template == template);
                 if (current == null)
                     return;
+
+                nodes.Add(current);
             }
 
             for (int i = 0; i < nodes.Count - 1; i++)
@@ -238,12 +240,13 @@ namespace Antlr4.StringTemplate.Visualizer
                         if (currentTemplate.IsAnonymousSubtemplate)
                             Highlight(TemplateTextBox.Document, r);
 
-                        Highlight(OutputTextBox.Document, new Interval(e.Start, e.Stop));
+                        Highlight(OutputTextBox.Document, e.OutputInterval);
                     }
                 }
             }
             else
             {
+                Highlight(OutputTextBox.Document, null);
                 Highlight(TemplateTextBox.Document, r);
             }
         }

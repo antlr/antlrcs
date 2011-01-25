@@ -110,7 +110,7 @@ namespace Antlr4.StringTemplate.Compiler
             get
             {
                 Interval r = TemplateRange;
-                return template.Substring(r.A, r.B + 1 - r.A);
+                return template.Substring(r.Start, r.End - r.Start);
             }
         }
 
@@ -124,19 +124,19 @@ namespace Antlr4.StringTemplate.Compiler
                     Interval stop = null;
                     for (int i = sourceMap.Length - 1; i > 0; i--)
                     {
-                        Interval I = sourceMap[i];
-                        if (I != null)
+                        Interval interval = sourceMap[i];
+                        if (interval != null)
                         {
-                            stop = I;
+                            stop = interval;
                             break;
                         }
                     }
 
                     if (template != null)
-                        return new Interval(start.A, stop.B);
+                        return Interval.FromBounds(start.Start, stop.End);
                 }
 
-                return new Interval(0, template.Length - 1);
+                return new Interval(0, template.Length);
             }
         }
 

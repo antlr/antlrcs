@@ -32,52 +32,45 @@
 
 namespace Antlr4.StringTemplate.Debug
 {
+    using Antlr4.StringTemplate.Misc;
+    using ArgumentNullException = System.ArgumentNullException;
+
     public class InterpEvent
     {
-        private readonly DebugST self;
+        private readonly DebugST _template;
         // output location
-        private readonly int start;
-        private readonly int stop;
+        private readonly Interval _interval;
 
-        public InterpEvent(DebugST self, int start, int stop)
+        public InterpEvent(DebugST template, Interval interval)
         {
-            this.self = self;
-            this.start = start;
-            this.stop = stop;
+            if (template == null)
+                throw new ArgumentNullException("template");
+            if (interval == null)
+                throw new ArgumentNullException("interval");
+
+            this._template = template;
+            this._interval = interval;
         }
 
-        public DebugST Self
+        public DebugST Template
         {
             get
             {
-                return self;
+                return _template;
             }
         }
 
-        public int Start
+        public Interval OutputInterval
         {
             get
             {
-                return start;
-            }
-        }
-
-        public int Stop
-        {
-            get
-            {
-                return stop;
+                return _interval;
             }
         }
 
         public override string ToString()
         {
-            return GetType().Name + "{" +
-                   "self=" + self +
-                    //", attr=" + self.attributes +
-                   ", start=" + start +
-                   ", stop=" + stop +
-                   '}';
+            return string.Format("{0}{{self={1}, output={2}}}", GetType().Name, _template, OutputInterval);
         }
     }
 }

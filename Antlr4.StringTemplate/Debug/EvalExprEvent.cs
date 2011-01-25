@@ -32,37 +32,27 @@
 
 namespace Antlr4.StringTemplate.Debug
 {
+    using Antlr4.StringTemplate.Misc;
+
     public class EvalExprEvent : InterpEvent
     {
         // template pattern location
-        private readonly int exprStart;
-        private readonly int exprStop;
+        private readonly Interval _sourceInterval;
         private readonly string expr;
 
-        public EvalExprEvent(DebugST self, int start, int stop, int exprStart, int exprStop)
-            : base(self, start, stop)
+        public EvalExprEvent(DebugST template, Interval outputInterval, Interval sourceInterval)
+            : base(template, outputInterval)
         {
-            this.exprStart = exprStart;
-            this.exprStop = exprStop;
-            if (exprStart >= 0 && exprStop >= 0)
-            {
-                expr = self.impl.template.Substring(exprStart, exprStop + 1 - exprStart);
-            }
+            this._sourceInterval = sourceInterval;
+            if (_sourceInterval != null)
+                expr = template.impl.template.Substring(_sourceInterval.Start, _sourceInterval.Length);
         }
 
-        public int ExprStart
+        public Interval SourceInterval
         {
             get
             {
-                return exprStart;
-            }
-        }
-
-        public int ExprStop
-        {
-            get
-            {
-                return exprStop;
+                return _sourceInterval;
             }
         }
 
@@ -76,13 +66,7 @@ namespace Antlr4.StringTemplate.Debug
 
         public override string ToString()
         {
-            return GetType().Name + "{" +
-                   "self=" + Self +
-                 //", attr=" + self.attributes +
-                   ", start=" + Start +
-                   ", stop=" + Stop +
-                   ", expr=" + expr +
-                   '}';
+            return string.Format("{0}{{self={1}, output={2}, expr={3}}}", GetType().Name, Template, OutputInterval, Expr);
         }
     }
 }

@@ -38,6 +38,7 @@ namespace Antlr4.Test.StringTemplate
     using Antlr4.StringTemplate.Debug;
     using Antlr4.Test.StringTemplate.Extensions;
     using System.Collections.Generic;
+    using Path = System.IO.Path;
 
     [TestClass]
     public class TestDebugEvents : BaseTest
@@ -49,13 +50,13 @@ namespace Antlr4.Test.StringTemplate
                 "t() ::= <<foo>>" + Environment.NewLine;
 
             writeFile(tmpdir, "t.stg", templates);
-            TemplateGroup group = new TemplateGroupFile(tmpdir + "/" + "t.stg");
+            TemplateGroup group = new TemplateGroupFile(Path.Combine(tmpdir, "t.stg"));
             TemplateGroup.debug = true;
             DebugST st = (DebugST)group.GetInstanceOf("t");
             List<InterpEvent> events = st.GetEvents();
             string expected =
-                "[EvalExprEvent{self=t(), start=0, stop=2, expr=foo}," +
-                " EvalTemplateEvent{self=t(), start=0, stop=2}]";
+                "[EvalExprEvent{self=t(), output=[0..3), expr=foo}," +
+                " EvalTemplateEvent{self=t(), output=[0..3)}]";
             string result = events.ToListString();
             Assert.AreEqual(expected, result);
         }
@@ -67,14 +68,14 @@ namespace Antlr4.Test.StringTemplate
                 "t(x) ::= << <x> >>" + Environment.NewLine;
 
             writeFile(tmpdir, "t.stg", templates);
-            TemplateGroup group = new TemplateGroupFile(tmpdir + "/" + "t.stg");
+            TemplateGroup group = new TemplateGroupFile(Path.Combine(tmpdir, "t.stg"));
             TemplateGroup.debug = true;
             DebugST st = (DebugST)group.GetInstanceOf("t");
             List<InterpEvent> events = st.GetEvents();
             string expected =
-                "[EvalExprEvent{self=t(), start=0, stop=-1, expr=<x>}," +
-                " EvalExprEvent{self=t(), start=0, stop=0, expr= }," +
-                " EvalTemplateEvent{self=t(), start=0, stop=0}]";
+                "[EvalExprEvent{self=t(), output=[0..0), expr=<x>}," +
+                " EvalExprEvent{self=t(), output=[0..1), expr= }," +
+                " EvalTemplateEvent{self=t(), output=[0..1)}]";
             string result = events.ToListString();
             Assert.AreEqual(expected, result);
         }
@@ -87,18 +88,18 @@ namespace Antlr4.Test.StringTemplate
                 "u() ::= << <x> >>\n";
 
             writeFile(tmpdir, "t.stg", templates);
-            TemplateGroup group = new TemplateGroupFile(tmpdir + "/" + "t.stg");
+            TemplateGroup group = new TemplateGroupFile(Path.Combine(tmpdir, "t.stg"));
             TemplateGroup.debug = true;
             DebugST st = (DebugST)group.GetInstanceOf("t");
             List<InterpEvent> events = st.GetEvents();
             string expected =
-                "[EvalExprEvent{self=t(), start=0, stop=0, expr=[}," +
-                " EvalExprEvent{self=u(), start=1, stop=0, expr=<x>}," +
-                " EvalExprEvent{self=u(), start=1, stop=1, expr= }," +
-                " EvalTemplateEvent{self=u(), start=1, stop=1}," +
-                " EvalExprEvent{self=t(), start=1, stop=1, expr=<u()>}," +
-                " EvalExprEvent{self=t(), start=2, stop=2, expr=]}," +
-                " EvalTemplateEvent{self=t(), start=0, stop=2}]";
+                "[EvalExprEvent{self=t(), output=[0..1), expr=[}," +
+                " EvalExprEvent{self=u(), output=[1..1), expr=<x>}," +
+                " EvalExprEvent{self=u(), output=[1..2), expr= }," +
+                " EvalTemplateEvent{self=u(), output=[1..2)}," +
+                " EvalExprEvent{self=t(), output=[1..2), expr=<u()>}," +
+                " EvalExprEvent{self=t(), output=[2..3), expr=]}," +
+                " EvalTemplateEvent{self=t(), output=[0..3)}]";
             string result = events.ToListString();
             Assert.AreEqual(expected, result);
         }

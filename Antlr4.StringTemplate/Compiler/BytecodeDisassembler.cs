@@ -193,12 +193,12 @@ namespace Antlr4.StringTemplate.Compiler
         {
             StringBuilder buf = new StringBuilder();
             int addr = 0;
-            foreach (Interval I in code.sourceMap)
+            foreach (Interval interval in code.sourceMap)
             {
-                if (I != null)
+                if (interval != null)
                 {
-                    string chunk = code.template.Substring(I.A, I.B + 1 - I.A);
-                    buf.AppendLine(string.Format("{0:0000}: {1}\t\"{2}\"", addr, I, chunk));
+                    string chunk = code.template.Substring(interval.Start, interval.Length);
+                    buf.AppendLine(string.Format("{0:0000}: {1}\t\"{2}\"", addr, interval, chunk));
                 }
                 addr++;
             }
