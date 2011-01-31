@@ -426,6 +426,9 @@ namespace Antlr4.StringTemplate.Compiler
                     re.Line = startLine;
                     re.CharPositionInLine = startCharPositionInLine;
                     errMgr.LexerError(input.SourceName, string.Format("invalid character '{0}'", GetCharString(c)), templateToken, re);
+                    if (c == EOF)
+                        return newToken(EOF_TYPE);
+
                     consume();
                     break;
                 }

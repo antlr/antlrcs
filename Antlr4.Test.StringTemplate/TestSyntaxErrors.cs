@@ -76,6 +76,27 @@ namespace Antlr4.Test.StringTemplate
         }
 
         [TestMethod]
+        public void TestUnterminatedExpr()
+        {
+            string template = "hi <t()$";
+            TemplateGroup group = new TemplateGroup();
+            ErrorBuffer errors = new ErrorBuffer();
+            group.Listener = errors;
+            try
+            {
+                group.DefineTemplate("test", template);
+            }
+            catch (TemplateException)
+            {
+            }
+            string result = errors.ToString();
+            string expected = "test 1:7: invalid character '$'" + newline +
+                "test 1:7: invalid character '<EOF>'" + newline +
+                "test 1:7: premature EOF" + newline;
+            Assert.AreEqual(expected, result);
+        }
+
+        [TestMethod]
         public void TestWeirdChar()
         {
             string template = "   <*>";
