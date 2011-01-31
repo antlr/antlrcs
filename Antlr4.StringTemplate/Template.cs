@@ -45,6 +45,7 @@ namespace Antlr4.StringTemplate
     using IList = System.Collections.IList;
     using StringBuilder = System.Text.StringBuilder;
     using StringWriter = System.IO.StringWriter;
+    using TextWriter = System.IO.TextWriter;
 
     /** An instance of the StringTemplate. It consists primarily of
      *  a reference to its implementation (shared among all instances)
@@ -434,6 +435,26 @@ namespace Antlr4.StringTemplate
             Interpreter interp = new Interpreter(groupThatCreatedThisInstance, locale, new ErrorManager(listener));
             interp.SetDefaultArguments(this);
             return interp.Execute(@out, this);
+        }
+
+        public virtual int Write(TextWriter writer, ITemplateErrorListener listener)
+        {
+            return Write(writer, CultureInfo.CurrentCulture, listener, AutoIndentWriter.NoWrap);
+        }
+
+        public virtual int Write(TextWriter writer, ITemplateErrorListener listener, int lineWidth)
+        {
+            return Write(writer, CultureInfo.CurrentCulture, listener, lineWidth);
+        }
+
+        public virtual int Write(TextWriter writer, CultureInfo culture, ITemplateErrorListener listener, int lineWidth)
+        {
+            ITemplateWriter templateWriter = new AutoIndentWriter(writer)
+            {
+                LineWidth = lineWidth
+            };
+
+            return Write(templateWriter, culture, listener);
         }
 
         public virtual string Render()
