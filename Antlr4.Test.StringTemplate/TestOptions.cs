@@ -33,9 +33,10 @@
 namespace Antlr4.Test.StringTemplate
 {
     using Antlr4.StringTemplate;
-    using Microsoft.VisualStudio.TestTools.UnitTesting;
     using Antlr4.StringTemplate.Misc;
     using Antlr4.Test.StringTemplate.Extensions;
+    using Microsoft.VisualStudio.TestTools.UnitTesting;
+    using Console = System.Console;
 
     [TestClass]
     public class TestOptions : BaseTest
@@ -46,6 +47,22 @@ namespace Antlr4.Test.StringTemplate
             TemplateGroup group = new TemplateGroup();
             group.DefineTemplate("test", "name", "hi <name; separator=\", \">!");
             Template st = group.GetInstanceOf("test");
+            st.Add("name", "Ter");
+            st.Add("name", "Tom");
+            st.Add("name", "Sumana");
+            string expected = "hi Ter, Tom, Sumana!";
+            string result = st.Render();
+            Assert.AreEqual(expected, result);
+        }
+
+        [TestMethod]
+        public void TestSeparatorWithSpaces()
+        {
+            TemplateGroup group = new TemplateGroup();
+            TemplateGroup.debug = true;
+            group.DefineTemplate("test", "name", "hi <name; separator= \", \">!");
+            Template st = group.GetInstanceOf("test");
+            Console.WriteLine(st.impl.ast.ToStringTree());
             st.Add("name", "Ter");
             st.Add("name", "Tom");
             st.Add("name", "Sumana");

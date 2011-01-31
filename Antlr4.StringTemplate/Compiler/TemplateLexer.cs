@@ -84,7 +84,13 @@ namespace Antlr4.StringTemplate.Compiler
                 else
                     txt = "<no text>";
 
-                return "[@" + TokenIndex + "," + StartIndex + ":" + StopIndex + "='" + txt + "',<" + TemplateParser.tokenNames[Type] + ">" + channelStr + "," + Line + ":" + CharPositionInLine + "]";
+                string tokenName = null;
+                if (Type == EOF_TYPE)
+                    tokenName = "EOF";
+                else
+                    tokenName = TemplateParser.tokenNames[Type];
+
+                return string.Format("[@{0},{1}:{2}='{3}',<{4}>{5},{6}:{7}]", TokenIndex, StartIndex, StopIndex, txt, tokenName, channelStr, Line, CharPositionInLine);
             }
         }
 
@@ -314,7 +320,7 @@ namespace Antlr4.StringTemplate.Compiler
                 case '\n':
                 case '\r':
                     consume();
-                    continue;
+                    return SKIP;
 
                 case '.':
                     consume();
