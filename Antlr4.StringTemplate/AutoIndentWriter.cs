@@ -33,6 +33,7 @@
 namespace Antlr4.StringTemplate
 {
     using System.Collections.Generic;
+    using System.Linq;
     using Environment = System.Environment;
     using TextWriter = System.IO.TextWriter;
 
@@ -262,7 +263,7 @@ namespace Antlr4.StringTemplate
         protected virtual int Indent()
         {
             int n = 0;
-            foreach (string ind in _indents)
+            foreach (string ind in _indents.Reverse())
             {
                 if (ind != null)
                 {
