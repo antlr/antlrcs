@@ -33,8 +33,9 @@
 namespace Antlr4.Test.StringTemplate
 {
     using Antlr4.StringTemplate;
-    using Microsoft.VisualStudio.TestTools.UnitTesting;
     using Antlr4.StringTemplate.Misc;
+    using Microsoft.VisualStudio.TestTools.UnitTesting;
+    using Path = System.IO.Path;
 
     [TestClass]
     public class TestRegions : BaseTest
@@ -48,7 +49,7 @@ namespace Antlr4.Test.StringTemplate
                 "[<@r>bar<@end>]\n" +
                 ">>\n";
             writeFile(dir, "group.stg", groupFile);
-            TemplateGroup group = new TemplateGroupFile(dir + "/group.stg");
+            TemplateGroup group = new TemplateGroupFile(Path.Combine(dir, "group.stg"));
             Template st = group.GetInstanceOf("a");
             string expected = "[bar]";
             string result = st.Render();
@@ -64,7 +65,7 @@ namespace Antlr4.Test.StringTemplate
                 "[<@r()>]\n" +
                 ">>\n";
             writeFile(dir, "group.stg", groupFile);
-            TemplateGroup group = new TemplateGroupFile(dir + "/group.stg");
+            TemplateGroup group = new TemplateGroupFile(Path.Combine(dir, "group.stg"));
             Template st = group.GetInstanceOf("a");
             string expected = "[]";
             string result = st.Render();
@@ -80,8 +81,8 @@ namespace Antlr4.Test.StringTemplate
             string g2 = "@a.r() ::= <<foo>>\n";
             writeFile(dir, "g2.stg", g2);
 
-            TemplateGroup group1 = new TemplateGroupFile(dir + "/g1.stg");
-            TemplateGroup group2 = new TemplateGroupFile(dir + "/g2.stg");
+            TemplateGroup group1 = new TemplateGroupFile(Path.Combine(dir, "g1.stg"));
+            TemplateGroup group2 = new TemplateGroupFile(Path.Combine(dir, "g2.stg"));
             group2.ImportTemplates(group1); // define r in g2
             Template st = group2.GetInstanceOf("a");
             string expected = "[foo]";
@@ -98,8 +99,8 @@ namespace Antlr4.Test.StringTemplate
             string g2 = "@a.r() ::= <<(<@super.r()>)>>\n";
             writeFile(dir, "g2.stg", g2);
 
-            TemplateGroup group1 = new TemplateGroupFile(dir + "/g1.stg");
-            TemplateGroup group2 = new TemplateGroupFile(dir + "/g2.stg");
+            TemplateGroup group1 = new TemplateGroupFile(Path.Combine(dir, "g1.stg"));
+            TemplateGroup group2 = new TemplateGroupFile(Path.Combine(dir, "g2.stg"));
             group2.ImportTemplates(group1); // define r in g2
             Template st = group2.GetInstanceOf("a");
             string expected = "[(foo)]";
@@ -116,8 +117,8 @@ namespace Antlr4.Test.StringTemplate
             string g2 = "@a.r() ::= <<foo>>>\n";
             writeFile(dir, "g2.stg", g2);
 
-            TemplateGroup group1 = new TemplateGroupFile(dir + "/g1.stg");
-            TemplateGroup group2 = new TemplateGroupFile(dir + "/g2.stg");
+            TemplateGroup group1 = new TemplateGroupFile(Path.Combine(dir, "g1.stg"));
+            TemplateGroup group2 = new TemplateGroupFile(Path.Combine(dir, "g2.stg"));
             group1.ImportTemplates(group2); // opposite of previous; g1 imports g2
             Template st = group1.GetInstanceOf("a");
             string expected = "[]"; // @a.r implicitly defined in g1; can't see g2's
@@ -133,7 +134,7 @@ namespace Antlr4.Test.StringTemplate
                        "@a.r() ::= <<foo>>\n";
             writeFile(dir, "g.stg", g);
 
-            TemplateGroup group = new TemplateGroupFile(dir + "/g.stg");
+            TemplateGroup group = new TemplateGroupFile(Path.Combine(dir, "g.stg"));
             Template st = group.GetInstanceOf("a");
             string expected = "[foo]";
             string result = st.Render();
@@ -148,12 +149,32 @@ namespace Antlr4.Test.StringTemplate
                        "@a.r() ::= <<bar>>\n"; // error; dup
             writeFile(dir, "g.stg", g);
 
-            TemplateGroupFile group = new TemplateGroupFile(dir + "/g.stg");
+            TemplateGroupFile group = new TemplateGroupFile(Path.Combine(dir, "g.stg"));
             ErrorBuffer errors = new ErrorBuffer();
             group.Listener = errors;
             group.Load();
             string expected = "g.stg 2:3: region a.r is embedded and thus already implicitly defined" + newline;
             string result = errors.ToString();
+            Assert.AreEqual(expected, result);
+        }
+
+        [TestMethod]
+        public void TestIndentBeforeRegionIsIgnored()
+        {
+            string dir = tmpdir;
+            string g = "a() ::= <<[\n" +
+                       "  <@r>\n" +
+                       "  foo\n" +
+                       "  <@end>\n" +
+                       "]>>\n";
+            writeFile(dir, "g.stg", g);
+
+            TemplateGroupFile group = new TemplateGroupFile(Path.Combine(dir, "g.stg"));
+            Template st = group.GetInstanceOf("a");
+            string expected = "[" + newline +
+                              "  foo" + newline +
+                              "]";
+            string result = st.Render();
             Assert.AreEqual(expected, result);
         }
 
@@ -167,7 +188,7 @@ namespace Antlr4.Test.StringTemplate
                     "a() ::= \"X<@r()>Y\"" +
                     "@a.r() ::= \"foo\"" + newline;
             writeFile(dir, "g.stg", g);
-            TemplateGroupFile group = new TemplateGroupFile(dir + "/g.stg");
+            TemplateGroupFile group = new TemplateGroupFile(Path.Combine(dir, "g.stg"));
 
             string sub =
                     "@a.r() ::= \"A<@super.r()>B\"" + newline;
@@ -202,7 +223,7 @@ namespace Antlr4.Test.StringTemplate
                     "a() ::= \"X<@r()>Y\"" +
                     "@a.r() ::= \"foo\"" + newline;
             writeFile(dir, "g.stg", g);
-            TemplateGroupFile group = new TemplateGroupFile(dir + "/g.stg");
+            TemplateGroupFile group = new TemplateGroupFile(Path.Combine(dir, "g.stg"));
 
             string sub =
                     "@a.r() ::= \"<@super.r()>2\"" + newline;
@@ -230,7 +251,7 @@ namespace Antlr4.Test.StringTemplate
             string g =
                     "a() ::= \"X<@r>foo<@end>Y\"" + newline;
             writeFile(dir, "g.stg", g);
-            TemplateGroupFile group = new TemplateGroupFile(dir + "/g.stg");
+            TemplateGroupFile group = new TemplateGroupFile(Path.Combine(dir, "g.stg"));
 
             string sub =
                     "@a.r() ::= \"A<@super.r()>\"" + newline;
@@ -255,7 +276,7 @@ namespace Antlr4.Test.StringTemplate
                     "@a.q() ::= \"foo\"" + newline;
             ITemplateErrorListener errors = new ErrorBuffer();
             writeFile(dir, "g.stg", g);
-            TemplateGroupFile group = new TemplateGroupFile(dir + "/g.stg");
+            TemplateGroupFile group = new TemplateGroupFile(Path.Combine(dir, "g.stg"));
             group.Listener = errors;
             Template st = group.GetInstanceOf("a");
             st.Render();
@@ -272,7 +293,7 @@ namespace Antlr4.Test.StringTemplate
                 "a() ::= \"X<@r()>Y\"" +
                 "@a.r() ::= \"foo\"" + newline;
             writeFile(dir, "g.stg", g);
-            TemplateGroupFile group = new TemplateGroupFile(dir + "/g.stg");
+            TemplateGroupFile group = new TemplateGroupFile(Path.Combine(dir, "g.stg"));
 
             string sub =
                 "@a.r() ::= \"A<@super.q()>B\"" + newline; // allow this; trap at runtime

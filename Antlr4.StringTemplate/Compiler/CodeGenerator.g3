@@ -72,24 +72,33 @@ scope {
 chunk
 	:	element*
 	;
-	
+
 element
-	:	^(INDENT {$template::state.Indent($INDENT.text);} element {$template::state.Emit(Bytecode.INSTR_DEDENT);})
-	|	ifstat
-	|	exprElement
+	:	^(INDENT {Indent($INDENT.text);} element {Dedent();})
+	|	compoundElement
+	|	singleElement
+	;
+
+singleElement
+	:	exprElement
 	|	TEXT
 		{
-		if ($TEXT.text.Length > 0) {
-			emit1($TEXT, Bytecode.INSTR_LOAD_STR, $TEXT.text);
-			emit($TEXT, Bytecode.INSTR_WRITE);
+		if ($TEXT.text.Length > 0)
+		{
+			emit1($TEXT,Bytecode.INSTR_LOAD_STR, $TEXT.text);
+			emit($TEXT,Bytecode.INSTR_WRITE);
 		}
 		}
+	|	NEWLINE {emit(Bytecode.INSTR_NEWLINE);}
+	;
+
+compoundElement
+	:	ifstat
 	|	region
 		{
 		emit2($region.start, Bytecode.INSTR_NEW, $region.name, 0);
 		emit($region.start, Bytecode.INSTR_WRITE);
 		}
-	|	NEWLINE {emit(Bytecode.INSTR_NEWLINE);}
 	;
 
 exprElement

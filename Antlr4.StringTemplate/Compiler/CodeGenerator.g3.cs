@@ -32,9 +32,10 @@
 
 namespace Antlr4.StringTemplate.Compiler
 {
+    using System.Collections.Generic;
     using Antlr.Runtime;
-    using Antlr4.StringTemplate.Misc;
     using Antlr.Runtime.Tree;
+    using Antlr4.StringTemplate.Misc;
 
     partial class CodeGenerator
     {
@@ -87,6 +88,24 @@ namespace Antlr4.StringTemplate.Compiler
         public void emit(CommonTree opAST, Bytecode opcode)
         {
             template_stack.Peek().state.Emit(opAST, opcode);
+        }
+
+        private readonly Stack<string> _elementIndent = new Stack<string>(new string[] { string.Empty });
+
+        private void Indent(string text)
+        {
+            string strip = _elementIndent.Peek();
+            if (!string.IsNullOrEmpty(strip) && text.StartsWith(strip))
+                text = text.Substring(strip.Length);
+
+            template_stack.Peek().state.Indent(text);
+            _elementIndent.Push(_elementIndent.Peek() + text);
+        }
+
+        private void Dedent()
+        {
+            template_stack.Peek().state.Emit(Bytecode.INSTR_DEDENT);
+            _elementIndent.Pop();
         }
 
         public void insert(int addr, Bytecode opcode, string s)
