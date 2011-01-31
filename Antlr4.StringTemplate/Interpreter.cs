@@ -1288,13 +1288,14 @@ namespace Antlr4.StringTemplate
                     defaultArgST.enclosingInstance = invokedST.enclosingInstance;
                     defaultArgST.groupThatCreatedThisInstance = group;
                     defaultArgST.impl = arg.CompiledDefaultValue;
-                    Console.WriteLine("setting def arg " + arg.Name + " to " + defaultArgST);
+                    //Console.WriteLine("setting def arg " + arg.Name + " to " + defaultArgST);
                     // If default arg is template with single expression
                     // wrapped in parens, x={<(...)>}, then eval to string
                     // rather than setting x to the template for later
                     // eval.
                     string defArgTemplate = arg.DefaultValueToken.Text;
-                    if (defArgTemplate.StartsWith("{<(") && defArgTemplate.EndsWith(")>}"))
+                    if (defArgTemplate.StartsWith("{" + group.delimiterStartChar + "(")
+                        && defArgTemplate.EndsWith(")" + group.delimiterStopChar + "}"))
                     {
                         invokedST.RawSetAttribute(arg.Name, ToString(invokedST, defaultArgST));
                     }
