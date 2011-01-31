@@ -181,8 +181,6 @@ namespace Antlr4.Test.StringTemplate
         [TestMethod]
         public void TestRegionOverrideStripsNewlines()
         {
-            TemplateGroup.debug = true;
-
             string dir = tmpdir;
             string g =
                     "a() ::= \"X<@r()>Y\"" +
@@ -198,16 +196,6 @@ namespace Antlr4.Test.StringTemplate
             subGroup.ImportTemplates(group);
             Template st = subGroup.GetInstanceOf("a");
             string result = st.Render();
-
-            Template st2 = group.GetInstanceOf("region__a__r");
-            st2.impl.Dump();
-            System.IO.StringWriter writer = new System.IO.StringWriter();
-            ITemplateWriter wr = new AutoIndentWriter(writer);
-            Interpreter interp = new Interpreter(st.groupThatCreatedThisInstance, System.Globalization.CultureInfo.CurrentCulture);
-            interp.Execute(wr, st); // Render and track events
-            foreach (var line in interp.GetExecutionTrace())
-                System.Console.Error.WriteLine(line);
-
             string expecting = "XAfooBY";
             Assert.AreEqual(expecting, result);
         }
