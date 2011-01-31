@@ -362,6 +362,8 @@ namespace Antlr4.StringTemplate
                                        string template)
         {
             string name = regionT.Text;
+            template = Utility.TrimOneStartingNewline(template);
+            template = Utility.TrimOneTrailingNewline(template);
             CompiledTemplate code = Compile(FileName, enclosingTemplateName, null, template, regionT);
             string mangled = GetMangledRegionName(enclosingTemplateName, name);
 
