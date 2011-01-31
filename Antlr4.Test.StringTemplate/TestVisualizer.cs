@@ -33,17 +33,14 @@
 namespace Antlr4.Test.StringTemplate
 {
     using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Text;
-    using Microsoft.VisualStudio.TestTools.UnitTesting;
     using Antlr4.StringTemplate;
     using Antlr4.StringTemplate.Debug;
-    using CultureInfo = System.Globalization.CultureInfo;
     using Antlr4.StringTemplate.Misc;
-    using StringWriter = System.IO.StringWriter;
     using Antlr4.StringTemplate.Visualizer;
+    using Microsoft.VisualStudio.TestTools.UnitTesting;
+    using CultureInfo = System.Globalization.CultureInfo;
     using Path = System.IO.Path;
+    using StringWriter = System.IO.StringWriter;
 
     [TestClass]
     public class TestVisualizer : BaseTest
@@ -105,7 +102,7 @@ namespace Antlr4.Test.StringTemplate
             template.impl.nativeGroup.Listener = errors;
             StringWriter @out = new StringWriter();
             ITemplateWriter wr = new AutoIndentWriter(@out);
-            wr.SetLineWidth(lineWidth);
+            wr.LineWidth = lineWidth;
             Interpreter interp = new Interpreter(template.groupThatCreatedThisInstance, culture);
             interp.Execute(wr, template); // Render and track events
             TemplateVisualizer visualizer = new TemplateVisualizer(errorManager, template, @out.ToString(), interp, interp.GetExecutionTrace(), errors.Errors);

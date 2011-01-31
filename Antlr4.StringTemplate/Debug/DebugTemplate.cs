@@ -93,7 +93,7 @@ namespace Antlr4.StringTemplate.Debug
         {
             StringWriter @out = new StringWriter();
             ITemplateWriter wr = new AutoIndentWriter(@out);
-            wr.SetLineWidth(lineWidth);
+            wr.LineWidth = lineWidth;
             Interpreter interp = new Interpreter(groupThatCreatedThisInstance, locale);
             interp.Execute(wr, this); // Render and track events
             return interp.GetEvents();

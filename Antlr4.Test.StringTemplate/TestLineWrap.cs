@@ -32,12 +32,12 @@
 
 namespace Antlr4.Test.StringTemplate
 {
+    using System.Collections.Generic;
     using Antlr4.StringTemplate;
     using Microsoft.VisualStudio.TestTools.UnitTesting;
-    using StringWriter = System.IO.StringWriter;
-    using System.Collections.Generic;
     using Environment = System.Environment;
     using Path = System.IO.Path;
+    using StringWriter = System.IO.StringWriter;
 
     [TestClass]
     public class TestLineWrap : BaseTest
@@ -63,7 +63,7 @@ namespace Antlr4.Test.StringTemplate
 
             StringWriter sw = new StringWriter();
             ITemplateWriter stw = new AutoIndentWriter(sw, "\n"); // force \n as newline
-            stw.SetLineWidth(40);
+            stw.LineWidth = 40;
             a.Write(stw);
             string result = sw.ToString();
             Assert.AreEqual(expecting, result);

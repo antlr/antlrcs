@@ -41,6 +41,20 @@ namespace Antlr4.StringTemplate
      */
     public interface ITemplateWriter
     {
+        /** Return the absolute char index into the output of the char
+         *  we're about to Write.  Returns 0 if no char written yet.
+         */
+        int Index
+        {
+            get;
+        }
+
+        int LineWidth
+        {
+            get;
+            set;
+        }
+
         void PushIndentation(string indent);
 
         string PopIndentation();
@@ -48,8 +62,6 @@ namespace Antlr4.StringTemplate
         void PushAnchorPoint();
 
         void PopAnchorPoint();
-
-        void SetLineWidth(int lineWidth);
 
         /** Write the string and return how many actual chars were written.
          *  With autoindentation and wrapping, more chars than length(str)
@@ -80,10 +92,5 @@ namespace Antlr4.StringTemplate
          *  be inserted before emitting a separator.
          */
         int WriteSeparator(string str);
-
-        /** Return the absolute char index into the output of the char
-         *  we're about to Write.  Returns 0 if no char written yet.
-         */
-        int Index();
     }
 }

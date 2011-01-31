@@ -156,7 +156,7 @@ namespace Antlr4.StringTemplate
 
         protected virtual int ExecuteImpl(ITemplateWriter @out, Template self)
         {
-            int start = @out.Index(); // track char we're about to Write
+            int start = @out.Index; // track char we're about to Write
             Bytecode prevOpcode = Bytecode.Invalid;
             int n = 0; // how many char we Write out
             int nargs;
@@ -494,7 +494,7 @@ namespace Antlr4.StringTemplate
             }
             if (TemplateGroup.debug)
             {
-                EvalTemplateEvent e = new EvalTemplateEvent((DebugST)self, Interval.FromBounds(start, @out.Index()));
+                EvalTemplateEvent e = new EvalTemplateEvent((DebugST)self, Interval.FromBounds(start, @out.Index));
                 //System.out.println("eval template "+self+": "+e);
                 events.Add(e);
                 if (self.enclosingInstance != null)
@@ -623,16 +623,16 @@ namespace Antlr4.StringTemplate
         }
 
         /** Write out an expression result that doesn't use expression options.
-         *  E.g., <name>
+         *  E.g., &lt;name&gt;
          */
         protected virtual int WriteObjectNoOptions(ITemplateWriter @out, Template self, object o)
         {
-            int start = @out.Index(); // track char we're about to Write
+            int start = @out.Index; // track char we're about to Write
             int n = WriteObject(@out, self, o, null);
             if (TemplateGroup.debug)
             {
                 Interval templateLocation = self.impl.sourceMap[current_ip];
-                EvalExprEvent e = new EvalExprEvent((DebugST)self, Interval.FromBounds(start, @out.Index()), templateLocation);
+                EvalExprEvent e = new EvalExprEvent((DebugST)self, Interval.FromBounds(start, @out.Index), templateLocation);
                 Console.WriteLine(e);
                 events.Add(e);
             }
@@ -640,12 +640,12 @@ namespace Antlr4.StringTemplate
         }
 
         /** Write out an expression result that uses expression options.
-         *  E.g., <names; separator=", ">
+         *  E.g., &lt;names; separator=", "&gt;
          */
         protected virtual int WriteObjectWithOptions(ITemplateWriter @out, Template self, object o,
                                              object[] options)
         {
-            int start = @out.Index(); // track char we're about to Write
+            int start = @out.Index; // track char we're about to Write
             // precompute all option values (Render all the way to strings)
             string[] optionStrings = null;
             if (options != null)
@@ -672,7 +672,7 @@ namespace Antlr4.StringTemplate
             if (TemplateGroup.debug)
             {
                 Interval templateLocation = self.impl.sourceMap[current_ip];
-                EvalExprEvent e = new EvalExprEvent((DebugST)self, Interval.FromBounds(start, @out.Index()), templateLocation);
+                EvalExprEvent e = new EvalExprEvent((DebugST)self, Interval.FromBounds(start, @out.Index), templateLocation);
                 Console.WriteLine(e);
                 events.Add(e);
             }

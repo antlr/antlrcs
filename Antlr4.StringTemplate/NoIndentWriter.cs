@@ -37,15 +37,15 @@ namespace Antlr4.StringTemplate
     /** Just pass through the text */
     public class NoIndentWriter : AutoIndentWriter
     {
-        public NoIndentWriter(TextWriter @out)
-            : base(@out)
+        public NoIndentWriter(TextWriter writer)
+            : base(writer)
         {
         }
 
-        public override int Write(string str)
+        public override int Write(string value)
         {
-            @out.Write(str);
-            return str.Length;
+            Writer.Write(value);
+            return value.Length;
         }
     }
 }

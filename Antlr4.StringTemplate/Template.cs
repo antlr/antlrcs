@@ -455,7 +455,7 @@ namespace Antlr4.StringTemplate
         {
             StringWriter @out = new StringWriter();
             ITemplateWriter wr = new AutoIndentWriter(@out);
-            wr.SetLineWidth(lineWidth);
+            wr.LineWidth = lineWidth;
             Write(wr, locale);
             return @out.ToString();
         }
