@@ -213,7 +213,7 @@ namespace Antlr4.StringTemplate.Compiler
             else if (tokens.Index == 0)
             {
                 // couldn't parse anything
-                string msg = "this doesn't look like a template: \"" + tokens + "\"";
+                string msg = string.Format("this doesn't look like a template: \"{0}\"", tokens);
                 errMgr.CompiletimeError(ErrorType.SYNTAX_ERROR, templateToken, re.Token, msg);
             }
             else if (tokens.LA(1) == TemplateLexer.LDELIM)
@@ -228,6 +228,7 @@ namespace Antlr4.StringTemplate.Compiler
                 errMgr.CompiletimeError(ErrorType.SYNTAX_ERROR, templateToken, re.Token, msg);
             }
 
+            // we have reported the error, so just blast out
             throw new TemplateException();
         }
     }

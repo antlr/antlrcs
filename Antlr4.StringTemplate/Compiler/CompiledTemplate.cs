@@ -102,7 +102,7 @@ namespace Antlr4.StringTemplate.Compiler
         {
             instrs = new byte[TemplateCompiler.InitialCodeSize];
             sourceMap = new Interval[TemplateCompiler.InitialCodeSize];
-            template = "";
+            template = string.Empty;
         }
 
         public virtual string TemplateSource

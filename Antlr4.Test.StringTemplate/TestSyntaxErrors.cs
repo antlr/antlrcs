@@ -32,6 +32,7 @@ namespace Antlr4.Test.StringTemplate
     using Microsoft.VisualStudio.TestTools.UnitTesting;
     using Antlr4.StringTemplate.Misc;
     using Antlr4.StringTemplate.Compiler;
+    using Path = System.IO.Path;
 
     [TestClass]
     public class TestSyntaxErrors : BaseTest
@@ -95,6 +96,26 @@ namespace Antlr4.Test.StringTemplate
         }
 
         [TestMethod]
+        public void TestWeirdChar2()
+        {
+            string template = "\n<\\\n";
+            TemplateGroup group = new TemplateGroup();
+            ErrorBuffer errors = new ErrorBuffer();
+            group.Listener = errors;
+            try
+            {
+                group.DefineTemplate("test", template);
+            }
+            catch (TemplateException)
+            {
+            }
+            string result = errors.ToString();
+            string expected = "test 1:2: invalid escaped char: '<EOF>'" + newline +
+                              "test 1:2: expecting '>', found '<EOF>'" + newline;
+            Assert.AreEqual(expected, result);
+        }
+
+        [TestMethod]
         public void TestValidButOutOfPlaceChar()
         {
             string templates =
@@ -102,7 +123,7 @@ namespace Antlr4.Test.StringTemplate
             writeFile(tmpdir, "t.stg", templates);
 
             ITemplateErrorListener errors = new ErrorBuffer();
-            TemplateGroupFile group = new TemplateGroupFile(tmpdir + "/" + "t.stg");
+            TemplateGroupFile group = new TemplateGroupFile(Path.Combine(tmpdir, "t.stg"));
             group.Listener = errors;
             group.Load(); // force load
             string expected = "t.stg 1:15: doesn't look like an expression" + newline;
@@ -119,7 +140,7 @@ namespace Antlr4.Test.StringTemplate
             writeFile(tmpdir, "t.stg", templates);
 
             ErrorBuffer errors = new ErrorBuffer();
-            TemplateGroupFile group = new TemplateGroupFile(tmpdir + "/" + "t.stg");
+            TemplateGroupFile group = new TemplateGroupFile(Path.Combine(tmpdir, "t.stg"));
             group.Listener = errors;
             group.Load(); // force load
             string expected = "[t.stg 1:15: \\n in string, t.stg 1:14: doesn't look like an expression]";
@@ -136,7 +157,7 @@ namespace Antlr4.Test.StringTemplate
 
             TemplateGroupFile group = null;
             ITemplateErrorListener errors = new ErrorBuffer();
-            group = new TemplateGroupFile(tmpdir + "/" + "t.stg");
+            group = new TemplateGroupFile(Path.Combine(tmpdir, "t.stg"));
             group.Listener = errors;
             group.Load(); // force load
             string expected = "t.stg 1:29: '!' came as a complete surprise to me" + newline;
@@ -153,10 +174,45 @@ namespace Antlr4.Test.StringTemplate
 
             TemplateGroupFile group = null;
             ITemplateErrorListener errors = new ErrorBuffer();
-            group = new TemplateGroupFile(tmpdir + "/" + "t.stg");
+            group = new TemplateGroupFile(Path.Combine(tmpdir, "t.stg"));
             group.Listener = errors;
             group.Load(); // force load
             string expected = "t.stg 1:34: premature EOF" + newline;
+            string result = errors.ToString();
+            Assert.AreEqual(expected, result);
+        }
+
+        [TestMethod]
+        public void TestEOFInExpr2()
+        {
+            string templates =
+                "foo() ::= \"hi <name:{x|[<aaa.bb>]}\"\n";
+            writeFile(tmpdir, "t.stg", templates);
+
+            TemplateGroupFile group = null;
+            ITemplateErrorListener errors = new ErrorBuffer();
+            group = new TemplateGroupFile(Path.Combine(tmpdir, "t.stg"));
+            group.Listener = errors;
+            group.Load(); // force load
+            string expected = "t.stg 1:34: premature EOF" + newline;
+            string result = errors.ToString();
+            Assert.AreEqual(expected, result);
+        }
+
+        [TestMethod]
+        public void TestEOFInString()
+        {
+            string templates =
+                "foo() ::= << <f(\"foo>>\n";
+            writeFile(tmpdir, "t.stg", templates);
+
+            TemplateGroupFile group = null;
+            ITemplateErrorListener errors = new ErrorBuffer();
+            group = new TemplateGroupFile(Path.Combine(tmpdir, "t.stg"));
+            group.Listener = errors;
+            group.Load(); // force load
+            string expected = "t.stg 1:20: EOF in string" + newline +
+                              "t.stg 1:20: premature EOF" + newline;
             string result = errors.ToString();
             Assert.AreEqual(expected, result);
         }
@@ -170,7 +226,7 @@ namespace Antlr4.Test.StringTemplate
 
             TemplateGroupFile group = null;
             ITemplateErrorListener errors = new ErrorBuffer();
-            group = new TemplateGroupFile(tmpdir + "/" + "t.stg");
+            group = new TemplateGroupFile(Path.Combine(tmpdir, "t.stg"));
             group.Listener = errors;
             group.Load(); // force load
             string expected = "t.stg 1:19: '>' came as a complete surprise to me" + newline;
@@ -187,7 +243,7 @@ namespace Antlr4.Test.StringTemplate
 
             TemplateGroupFile group = null;
             ITemplateErrorListener errors = new ErrorBuffer();
-            group = new TemplateGroupFile(tmpdir + "/" + "t.stg");
+            group = new TemplateGroupFile(Path.Combine(tmpdir, "t.stg"));
             group.Listener = errors;
             group.Load(); // force load
             string expected = "t.stg 1:19: mismatched input ',' expecting RDELIM" + newline;

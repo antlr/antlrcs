@@ -74,7 +74,7 @@ namespace Antlr4.StringTemplate.Compiler
 
             public override string ToString()
             {
-                string channelStr = "";
+                string channelStr = string.Empty;
                 if (Channel > 0)
                     channelStr = ",channel=" + Channel;
 
@@ -180,6 +180,22 @@ namespace Antlr4.StringTemplate.Compiler
             this.delimiterStopChar = delimiterStopChar;
         }
 
+        public virtual string SourceName
+        {
+            get
+            {
+                return "no idea";
+            }
+        }
+
+        public string[] TokenNames
+        {
+            get
+            {
+                return TemplateParser.tokenNames;
+            }
+        }
+
         public virtual IToken NextToken()
         {
             if (tokens.Count > 0)
@@ -191,10 +207,13 @@ namespace Antlr4.StringTemplate.Compiler
         /** Ensure x is next character on the input stream */
         public virtual void match(char x)
         {
-            if (c == x)
-                consume();
-            else
-                throw new Exception(getErrorHeader() + ": expecting " + x + "; found " + c);
+            if (c != x)
+            {
+                NoViableAltException e = new NoViableAltException(string.Empty, 0, 0, input);
+                errMgr.LexerError(input.SourceName, string.Format("expecting '{0}', found '{1}'", x, GetCharString(c)), templateToken, e);
+            }
+
+            consume();
         }
 
         protected virtual void consume()
@@ -397,15 +416,10 @@ namespace Antlr4.StringTemplate.Compiler
                         return id;
                     }
 
-                    RecognitionException re = new NoViableAltException("", 0, 0, input);
+                    RecognitionException re = new NoViableAltException(string.Empty, 0, 0, input);
                     re.Line = startLine;
                     re.CharPositionInLine = startCharPositionInLine;
-                    if (c == EOF)
-                    {
-                        throw new TemplateException("EOF inside Template expression at " + re.Line + ":" + re.CharPositionInLine, re);
-                    }
-
-                    errMgr.lexerError(input.SourceName, "invalid character '" + c + "'", templateToken, re);
+                    errMgr.LexerError(input.SourceName, string.Format("invalid character '{0}'", GetCharString(c)), templateToken, re);
                     consume();
                     break;
                 }
@@ -491,8 +505,9 @@ namespace Antlr4.StringTemplate.Compiler
                 break;
 
             default:
-                NoViableAltException e = new NoViableAltException("", 0, 0, input);
-                errMgr.lexerError(input.SourceName, "invalid escaped char: '" + c + "'", templateToken, e);
+                t = SKIP;
+                NoViableAltException e = new NoViableAltException(string.Empty, 0, 0, input);
+                errMgr.LexerError(input.SourceName, string.Format("invalid escaped char: '{0}'", GetCharString(c)), templateToken, e);
                 break;
             }
             consume();
@@ -506,32 +521,32 @@ namespace Antlr4.StringTemplate.Compiler
             char[] chars = new char[4];
             if (!isUnicodeLetter(c))
             {
-                NoViableAltException e = new NoViableAltException("", 0, 0, input);
-                errMgr.lexerError(input.SourceName, "invalid unicode char: '" + c + "'", templateToken, e);
+                NoViableAltException e = new NoViableAltException(string.Empty, 0, 0, input);
+                errMgr.LexerError(input.SourceName,string.Format( "invalid unicode char: '{0}'", GetCharString(c)), templateToken, e);
             }
 
             chars[0] = c;
             consume();
             if (!isUnicodeLetter(c))
             {
-                NoViableAltException e = new NoViableAltException("", 0, 0, input);
-                errMgr.lexerError(input.SourceName, "invalid unicode char: '" + c + "'", templateToken, e);
+                NoViableAltException e = new NoViableAltException(string.Empty, 0, 0, input);
+                errMgr.LexerError(input.SourceName, string.Format("invalid unicode char: '{0}'", GetCharString(c)), templateToken, e);
             }
 
             chars[1] = c;
             consume();
             if (!isUnicodeLetter(c))
             {
-                NoViableAltException e = new NoViableAltException("", 0, 0, input);
-                errMgr.lexerError(input.SourceName, "invalid unicode char: '" + c + "'", templateToken, e);
+                NoViableAltException e = new NoViableAltException(string.Empty, 0, 0, input);
+                errMgr.LexerError(input.SourceName, string.Format("invalid unicode char: '{0}'", GetCharString(c)), templateToken, e);
             }
 
             chars[2] = c;
             consume();
             if (!isUnicodeLetter(c))
             {
-                NoViableAltException e = new NoViableAltException("", 0, 0, input);
-                errMgr.lexerError(input.SourceName, "invalid unicode char: '" + c + "'", templateToken, e);
+                NoViableAltException e = new NoViableAltException(string.Empty, 0, 0, input);
+                errMgr.LexerError(input.SourceName, string.Format("invalid unicode char: '{0}'", GetCharString(c)), templateToken, e);
             }
 
             chars[3] = c;
@@ -650,7 +665,8 @@ namespace Antlr4.StringTemplate.Compiler
                     RecognitionException re = new MismatchedTokenException((int)'"', input);
                     re.Line = input.Line;
                     re.CharPositionInLine = input.CharPositionInLine;
-                    throw new TemplateException("EOF inside string/template at " + startLine + ":" + startCharPositionInLine, re);
+                    errMgr.LexerError(input.SourceName, "EOF in string", templateToken, re);
+                    break;
                 }
             }
 
@@ -745,25 +761,9 @@ namespace Antlr4.StringTemplate.Compiler
             return t;
         }
 
-        public virtual string getErrorHeader()
+        private static string GetCharString(char c)
         {
-            return startLine + ":" + startCharPositionInLine;
-        }
-
-        public virtual string SourceName
-        {
-            get
-            {
-                return "no idea";
-            }
-        }
-
-        public string[] TokenNames
-        {
-            get
-            {
-                return TemplateParser.tokenNames;
-            }
+            return c == EOF ? "<EOF>" : c.ToString();
         }
     }
 }

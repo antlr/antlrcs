@@ -71,7 +71,7 @@ namespace Antlr4.StringTemplate.Compiler
 
         public virtual void error(string msg)
         {
-            NoViableAltException e = new NoViableAltException("", 0, 0, input);
+            NoViableAltException e = new NoViableAltException(string.Empty, 0, 0, input);
             _group.errMgr.GroupSyntaxError(ErrorType.SYNTAX_ERROR, SourceName, e, msg);
             Recover(input, null);
         }

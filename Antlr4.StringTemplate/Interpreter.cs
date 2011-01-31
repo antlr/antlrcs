@@ -579,7 +579,7 @@ namespace Antlr4.StringTemplate
             foreach (string argName in attrs.Keys)
             {
                 // don't let it throw an exception in RawSetAttribute
-                if (!st.impl.formalArguments.Any(i => i.Name == argName))
+                if (st.impl.formalArguments == null || !st.impl.formalArguments.Any(i => i.Name == argName))
                 {
                     errMgr.RuntimeError(self, current_ip, ErrorType.NO_SUCH_ATTRIBUTE, argName);
                     continue;
@@ -1314,7 +1314,7 @@ namespace Antlr4.StringTemplate
             dis.DisassembleInstruction(buf, ip);
             string name = self.impl.name + ":";
             if (self.impl.name == Template.UnknownName)
-                name = "";
+                name = string.Empty;
 
             tr.Append(string.Format("{0,-40}", name + buf));
             tr.Append("\tstack=[");

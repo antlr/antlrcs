@@ -33,8 +33,11 @@
 namespace Antlr4.Test.StringTemplate
 {
     using Antlr4.StringTemplate;
+    using Antlr4.Test.StringTemplate.Extensions;
     using Microsoft.VisualStudio.TestTools.UnitTesting;
     using Environment = System.Environment;
+    using ErrorBuffer = Antlr4.StringTemplate.Misc.ErrorBuffer;
+    using Path = System.IO.Path;
 
     [TestClass]
     public class TestGroupSyntax : BaseTest
@@ -46,7 +49,7 @@ namespace Antlr4.Test.StringTemplate
                 "t() ::= <<foo>>" + Environment.NewLine;
 
             writeFile(tmpdir, "t.stg", templates);
-            TemplateGroup group = new TemplateGroupFile(tmpdir + "/" + "t.stg");
+            TemplateGroup group = new TemplateGroupFile(Path.Combine(tmpdir, "t.stg"));
             string expected =
                 "t() ::= <<" + Environment.NewLine +
                 "foo" + Environment.NewLine +
@@ -64,7 +67,7 @@ namespace Antlr4.Test.StringTemplate
                 "wow() ::= <<last>>" + Environment.NewLine;
 
             writeFile(tmpdir, "t.stg", templates);
-            TemplateGroup group = new TemplateGroupFile(tmpdir + "/" + "t.stg");
+            TemplateGroup group = new TemplateGroupFile(Path.Combine(tmpdir, "t.stg"));
             string expected =
                 "ta(x) ::= <<" + Environment.NewLine +
                 "[<x>]" + Environment.NewLine +
@@ -86,7 +89,7 @@ namespace Antlr4.Test.StringTemplate
                 "t(a,b) ::= \"[<a>]\"" + Environment.NewLine;
 
             writeFile(tmpdir, "t.stg", templates);
-            TemplateGroup group = new TemplateGroupFile(tmpdir + "/" + "t.stg");
+            TemplateGroup group = new TemplateGroupFile(Path.Combine(tmpdir, "t.stg"));
             string expected =
                 "t(a,b) ::= <<" + Environment.NewLine +
                 "[<a>]" + Environment.NewLine +
@@ -102,7 +105,7 @@ namespace Antlr4.Test.StringTemplate
                 "t(a={def1},b=\"def2\") ::= \"[<a>]\"" + Environment.NewLine;
 
             writeFile(tmpdir, "t.stg", templates);
-            TemplateGroup group = new TemplateGroupFile(tmpdir + "/" + "t.stg");
+            TemplateGroup group = new TemplateGroupFile(Path.Combine(tmpdir, "t.stg"));
             string expected =
                 "t(a={def1},b=\"def2\") ::= <<" + Environment.NewLine +
                 "[<a>]" + Environment.NewLine +
@@ -118,7 +121,7 @@ namespace Antlr4.Test.StringTemplate
                 "t(a={x | 2*<x>}) ::= \"[<a>]\"" + Environment.NewLine;
 
             writeFile(tmpdir, "t.stg", templates);
-            TemplateGroup group = new TemplateGroupFile(tmpdir + "/" + "t.stg");
+            TemplateGroup group = new TemplateGroupFile(Path.Combine(tmpdir, "t.stg"));
             string expected =
                 "t(a={x | 2*<x>}) ::= <<" + Environment.NewLine +
                 "[<a>]" + Environment.NewLine +
@@ -134,7 +137,7 @@ namespace Antlr4.Test.StringTemplate
                 "t(a) ::= \"<a:{x | <x:{y | <y>}>}>\"" + Environment.NewLine;
 
             writeFile(tmpdir, "t.stg", templates);
-            TemplateGroup group = new TemplateGroupFile(tmpdir + "/" + "t.stg");
+            TemplateGroup group = new TemplateGroupFile(Path.Combine(tmpdir, "t.stg"));
             string expected =
                 "t(a) ::= <<" + Environment.NewLine +
                 "<a:{x | <x:{y | <y>}>}>" + Environment.NewLine +
@@ -150,7 +153,7 @@ namespace Antlr4.Test.StringTemplate
                 "t(a={x | <x:{y|<y>}>}) ::= \"ick\"" + Environment.NewLine;
 
             writeFile(tmpdir, "t.stg", templates);
-            TemplateGroup group = new TemplateGroupFile(tmpdir + "/" + "t.stg");
+            TemplateGroup group = new TemplateGroupFile(Path.Combine(tmpdir, "t.stg"));
             group.Load();
             string expected =
                 "t(a={x | <x:{y|<y>}>}) ::= <<" + Environment.NewLine +
@@ -167,12 +170,39 @@ namespace Antlr4.Test.StringTemplate
                 "t(a={x | \\< <x:{y|<y>\\}}>}) ::= \"[<a>]\"" + Environment.NewLine;
 
             writeFile(tmpdir, "t.stg", templates);
-            TemplateGroup group = new TemplateGroupFile(tmpdir + "/" + "t.stg");
+            TemplateGroup group = new TemplateGroupFile(Path.Combine(tmpdir, "t.stg"));
             string expected =
                 "t(a={x | \\< <x:{y|<y>\\}}>}) ::= <<" + Environment.NewLine +
                 "[<a>]" + Environment.NewLine +
                 ">>" + Environment.NewLine;
             string result = group.Show();
+            Assert.AreEqual(expected, result);
+        }
+
+        [TestMethod]
+        public void TestMessedUpTemplateDoesntCauseRuntimeError()
+        {
+            string templates =
+                "main(p) ::= <<\n" +
+                "<f(x=\"abc\")>\n" +
+                ">>\n" +
+                "\n" +
+                "f() ::= <<\n" +
+                "<x>\n" +
+                ">>\n";
+            writeFile(tmpdir, "t.stg", templates);
+
+            TemplateGroupFile group = null;
+            ErrorBuffer errors = new ErrorBuffer();
+            group = new TemplateGroupFile(Path.Combine(tmpdir, "t.stg"));
+            group.Listener = errors;
+            Template st = group.GetInstanceOf("main");
+            st.Render();
+
+            string expected = "[context [main] 1:1 passed 1 arg(s) to template f with 0 declared arg(s)," +
+                              " context [main] 1:1 attribute x isn't defined," +
+                              " context [main f] 1:1 attribute x isn't defined]";
+            string result = errors.Errors.ToListString();
             Assert.AreEqual(expected, result);
         }
     }

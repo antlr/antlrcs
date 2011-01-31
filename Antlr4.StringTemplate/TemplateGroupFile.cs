@@ -150,7 +150,7 @@ namespace Antlr4.StringTemplate
             alreadyLoaded = true; // do before actual load to say we're doing it
             // no prefix since this group file is the entire group, nothing lives
             // beneath it.
-            LoadGroupFile("", url.ToString());
+            LoadGroupFile(string.Empty, url.ToString());
         }
 
         public override string Show()

@@ -74,7 +74,7 @@ namespace Antlr4.StringTemplate.Misc
                 return name.Substring(0, lastSlash);
 
             //System.out.println("GetPrefix("+name+")="+p);
-            return "";
+            return string.Empty;
         }
 
         public static string ReplaceEscapes(string s)

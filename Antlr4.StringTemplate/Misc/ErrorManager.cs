@@ -129,15 +129,20 @@ namespace Antlr4.StringTemplate.Misc
             listener.CompiletimeError(new TemplateCompiletimeMessage(error, srcName, templateToken, t, null, t.Text));
         }
 
-        public virtual void lexerError(string srcName, string msg, IToken templateToken, RecognitionException e)
+        public virtual void LexerError(string srcName, string msg, IToken templateToken, RecognitionException e)
         {
+            if (srcName != null)
+                srcName = Path.GetFileName(srcName);
+
             listener.CompiletimeError(new TemplateLexerMessage(srcName, msg, templateToken, e));
         }
 
         public virtual void CompiletimeError(ErrorType error, IToken templateToken, IToken t, object arg)
         {
             string srcName = t.InputStream.SourceName;
-            srcName = Path.GetFileName(srcName);
+            if (srcName != null)
+                srcName = Path.GetFileName(srcName);
+
             listener.CompiletimeError(new TemplateCompiletimeMessage(error, srcName, templateToken, t, null, arg));
         }
 

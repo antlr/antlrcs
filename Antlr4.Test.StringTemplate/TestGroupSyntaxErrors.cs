@@ -93,6 +93,24 @@ namespace Antlr4.Test.StringTemplate
         }
 
         [TestMethod]
+        public void TestUnclosedTemplate()
+        {
+            string templates =
+                "foo() ::= {";
+            writeFile(tmpdir, "t.stg", templates);
+
+            TemplateGroupFile group = null;
+            ITemplateErrorListener errors = new ErrorBuffer();
+            group = new TemplateGroupFile(tmpdir + "/" + "t.stg");
+            group.Listener = errors;
+            group.Load(); // force load
+            string expected = "t.stg 1:11: missing final '}' in {...} anonymous template" + newline +
+                              "t.stg 1:10: no viable alternative at input '{'" + newline;
+            string result = errors.ToString();
+            Assert.AreEqual(expected, result);
+        }
+
+        [TestMethod]
         public void TestParen()
         {
             string templates =

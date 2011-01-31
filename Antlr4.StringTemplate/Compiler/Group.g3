@@ -97,9 +97,9 @@ templateDef[string prefix]
 	    (	STRING     {template=$STRING.text; n=1;}
 	    |	BIGSTRING  {template=$BIGSTRING.text; n=2;}
 	    |	{
-	    	template = "";
+	    	template = string.Empty;
 	    	string msg = "missing template at '"+input.LT(1).Text+"'";
-            NoViableAltException e = new NoViableAltException("", 0, 0, input);
+            NoViableAltException e = new NoViableAltException(string.Empty, 0, 0, input);
     	    _group.errMgr.GroupSyntaxError(ErrorType.SYNTAX_ERROR, SourceName, e, msg);
     	    }
 	    )
@@ -201,7 +201,7 @@ STRING
 		|	'\\' ~'"'
 		|	{
 			string msg = "\\n in string";
-    		NoViableAltException e = new NoViableAltException("", 0, 0, input);
+    		NoViableAltException e = new NoViableAltException(string.Empty, 0, 0, input);
 			group.errMgr.GroupLexerError(ErrorType.SYNTAX_ERROR, SourceName, e, msg);
 			}
 			'\n'
@@ -229,7 +229,16 @@ ANONYMOUS_TEMPLATE
 		lexer.subtemplateDepth = 1;
 		IToken t = lexer.NextToken();
 		while ( lexer.subtemplateDepth>=1 || t.Type!=TemplateLexer.RCURLY )
+		{
+			if (t.Type == TemplateLexer.EOF_TYPE)
+			{
+				MismatchedTokenException e = new MismatchedTokenException('}', input);
+				string msg = "missing final '}' in {...} anonymous template";
+    			group.errMgr.GroupLexerError(ErrorType.SYNTAX_ERROR, SourceName, e, msg);
+				break;
+			}
 			t = lexer.NextToken();
+		}
 		}
     	// don't match '}' here; our little {...} scanner loop matches it
     	// to terminate.
