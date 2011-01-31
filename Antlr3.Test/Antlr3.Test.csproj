@@ -72,6 +72,7 @@
     <Compile Include="TestSets.cs" />
     <Compile Include="TestSymbolDefinitions.cs" />
     <Compile Include="TestSyntacticPredicateEvaluation.cs" />
+    <Compile Include="TestSyntaxErrors.cs" />
     <Compile Include="TestTemplates.cs" />
     <Compile Include="TestTokenRewriteStream.cs" />
     <Compile Include="TestTopologicalSort.cs" />
