@@ -32,12 +32,13 @@
 
 namespace Antlr4.Test.StringTemplate
 {
-    using Antlr4.StringTemplate;
-    using Microsoft.VisualStudio.TestTools.UnitTesting;
-    using StringWriter = System.IO.StringWriter;
-    using Antlr4.StringTemplate.Misc;
-    using ArgumentException = System.ArgumentException;
     using System.Collections.Generic;
+    using Antlr4.StringTemplate;
+    using Antlr4.StringTemplate.Misc;
+    using Microsoft.VisualStudio.TestTools.UnitTesting;
+    using ArgumentException = System.ArgumentException;
+    using Path = System.IO.Path;
+    using StringWriter = System.IO.StringWriter;
 
     [TestClass]
     public class TestCoreBasics : BaseTest
@@ -71,7 +72,7 @@ namespace Antlr4.Test.StringTemplate
                 "t() ::= <<hi <name>!>>\n";
             ErrorBuffer errors = new ErrorBuffer();
             writeFile(tmpdir, "t.stg", templates);
-            TemplateGroup group = new TemplateGroupFile(tmpdir + "/" + "t.stg");
+            TemplateGroup group = new TemplateGroupFile(Path.Combine(tmpdir, "t.stg"));
             group.Listener = errors;
             Template st = group.GetInstanceOf("t");
             string result = null;
@@ -359,7 +360,7 @@ namespace Antlr4.Test.StringTemplate
                 "test(name) ::= \"<name:(d.foo)()>\"\n" +
                 "bold(x) ::= <<*<x>*>>\n";
             writeFile(tmpdir, "t.stg", templates);
-            TemplateGroup group = new TemplateGroupFile(tmpdir + "/" + "t.stg");
+            TemplateGroup group = new TemplateGroupFile(Path.Combine(tmpdir, "t.stg"));
             Template st = group.GetInstanceOf("test");
             st.Add("name", "Ter");
             st.Add("name", "Tom");
@@ -854,6 +855,39 @@ namespace Antlr4.Test.StringTemplate
             string expected =
                 "case Ter, case Tom";
             string result = st.Render();
+            Assert.AreEqual(expected, result);
+        }
+
+        /** (...) forces early eval to string.
+         * We need an STWriter so I must pick one.  toString(...) is used to
+         * ensure b is property name in &lt;a.b&gt;.  It's used to eval default args
+         * (usually strings). It's use to eval option values (usually strings).
+         * So in general no-indent is fine.  Now, if I used indent-writer, it
+         * would mostly work too.  What about &lt;(t())&gt; when t() is huge and indented
+         * but you had called render() with a no-indent-writer?  now *part* your
+         * input is indented!
+         */
+        [TestMethod]
+        public void TestEarlyEvalIndent()
+        {
+            string templates =
+                "t() ::= <<  abc>>\n" +
+                "main() ::= <<\n" +
+                "<t()>\n" +
+                "<(t())>\n" + // early eval ignores indents; mostly for simply strings
+                "  <t()>\n" +
+                "  <(t())>\n" +
+                ">>\n";
+
+            writeFile(tmpdir, "t.stg", templates);
+            TemplateGroup group = new TemplateGroupFile(Path.Combine(tmpdir, "t.stg"));
+            Template st = group.GetInstanceOf("main");
+            string result = st.Render();
+            string expected =
+                "  abc" + newline +
+                "abc" + newline +
+                "    abc" + newline +
+                "  abc";
             Assert.AreEqual(expected, result);
         }
 

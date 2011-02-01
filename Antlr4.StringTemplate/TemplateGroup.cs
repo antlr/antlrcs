@@ -389,9 +389,6 @@ namespace Antlr4.StringTemplate
             IToken nameToken,
             List<FormalArgument> args)
         {
-            //int n = 1; // num char to strip from left, right of template def token text "" <<>>
-            //if (templateToken.Type == GroupLexer.BIGSTRING)
-            //    n = 2;
             try
             {
                 if (regionSurroundingTemplateName != null)
