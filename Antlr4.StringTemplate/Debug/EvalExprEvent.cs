@@ -40,7 +40,7 @@ namespace Antlr4.StringTemplate.Debug
         private readonly Interval _sourceInterval;
         private readonly string expr;
 
-        public EvalExprEvent(DebugST template, Interval outputInterval, Interval sourceInterval)
+        public EvalExprEvent(DebugTemplate template, Interval outputInterval, Interval sourceInterval)
             : base(template, outputInterval)
         {
             this._sourceInterval = sourceInterval;

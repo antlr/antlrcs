@@ -63,7 +63,7 @@ namespace Antlr4.Test.StringTemplate
             writeFile(tmpdir, "t.stg", templates);
             TemplateGroup group = new TemplateGroupFile(Path.Combine(tmpdir, "t.stg"));
             group.Debug = true;
-            DebugST st = (DebugST)group.GetInstanceOf("method");
+            DebugTemplate st = (DebugTemplate)group.GetInstanceOf("method");
             st.impl.Dump();
             st.Add("type", "float");
             st.Add("name", "foo");

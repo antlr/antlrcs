@@ -50,7 +50,7 @@ namespace Antlr4.StringTemplate.Visualizer
 
     public partial class TemplateVisualizerFrame : UserControl
     {
-        private DebugST currentTemplate;
+        private DebugTemplate currentTemplate;
 
         public TemplateVisualizerFrame()
         {
@@ -97,7 +97,7 @@ namespace Antlr4.StringTemplate.Visualizer
             if (runtimeMessage != null)
             {
                 Interval interval = runtimeMessage.SourceInterval;
-                currentTemplate = (DebugST)message.Self;
+                currentTemplate = (DebugTemplate)message.Self;
                 UpdateCurrentTemplate();
                 Highlight(TemplateTextBox.Document, interval);
             }
@@ -226,7 +226,7 @@ namespace Antlr4.StringTemplate.Visualizer
             Interval r = currentTemplate.impl.TemplateRange;
             if (currentTemplate.EnclosingInstance != null)
             {
-                int i = GetIndexOfChild((DebugST)currentTemplate.EnclosingInstance, currentTemplate);
+                int i = GetIndexOfChild((DebugTemplate)currentTemplate.EnclosingInstance, currentTemplate);
                 if (i == -1)
                 {
                     Highlight(OutputTextBox.Document, null);
@@ -251,7 +251,7 @@ namespace Antlr4.StringTemplate.Visualizer
             }
         }
 
-        private int GetIndexOfChild(DebugST parent, Template child)
+        private int GetIndexOfChild(DebugTemplate parent, Template child)
         {
             if (parent == null)
                 throw new ArgumentNullException("parent");

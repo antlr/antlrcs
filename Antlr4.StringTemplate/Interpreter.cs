@@ -66,8 +66,8 @@ namespace Antlr4.StringTemplate
      *  These are used by STViz to pair up output chunks with the template
      *  expressions that generate them.
      *
-     *  We create a new interpreter for each Template.Render(), DebugST.inspect, or
-     *  DebugST.GetEvents() invocation.
+     *  We create a new interpreter for each Template.Render(), DebugTemplate.Visualize, or
+     *  DebugTemplate.GetEvents() invocation.
      */
     public class Interpreter
     {
@@ -494,12 +494,12 @@ namespace Antlr4.StringTemplate
             }
             if (group.Debug)
             {
-                EvalTemplateEvent e = new EvalTemplateEvent((DebugST)self, Interval.FromBounds(start, @out.Index));
+                EvalTemplateEvent e = new EvalTemplateEvent((DebugTemplate)self, Interval.FromBounds(start, @out.Index));
                 //System.out.println("eval template "+self+": "+e);
                 events.Add(e);
                 if (self.EnclosingInstance != null)
                 {
-                    DebugST parent = (DebugST)self.EnclosingInstance;
+                    DebugTemplate parent = (DebugTemplate)self.EnclosingInstance;
                     GetEvents(parent).Add(e);
                 }
             }
@@ -632,7 +632,7 @@ namespace Antlr4.StringTemplate
             if (group.Debug)
             {
                 Interval templateLocation = self.impl.sourceMap[current_ip];
-                EvalExprEvent e = new EvalExprEvent((DebugST)self, Interval.FromBounds(start, @out.Index), templateLocation);
+                EvalExprEvent e = new EvalExprEvent((DebugTemplate)self, Interval.FromBounds(start, @out.Index), templateLocation);
                 Console.WriteLine(e);
                 events.Add(e);
             }
@@ -672,7 +672,7 @@ namespace Antlr4.StringTemplate
             if (group.Debug)
             {
                 Interval templateLocation = self.impl.sourceMap[current_ip];
-                EvalExprEvent e = new EvalExprEvent((DebugST)self, Interval.FromBounds(start, @out.Index), templateLocation);
+                EvalExprEvent e = new EvalExprEvent((DebugTemplate)self, Interval.FromBounds(start, @out.Index), templateLocation);
                 Console.WriteLine(e);
                 events.Add(e);
             }

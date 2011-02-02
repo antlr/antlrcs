@@ -45,13 +45,13 @@ namespace Antlr4.StringTemplate.Visualizer
         private static readonly PropertyChangedEventArgs IsSelectedPropertyChangedEventArgs = new PropertyChangedEventArgs("IsSelected");
 
         private readonly Interpreter _interpreter;
-        private readonly DebugST _template;
+        private readonly DebugTemplate _template;
         private List<TemplateCallHierarchyViewModel> _children;
 
         private bool _isExpanded;
         private bool _isSelected;
 
-        public TemplateCallHierarchyViewModel(Interpreter interpreter, DebugST template)
+        public TemplateCallHierarchyViewModel(Interpreter interpreter, DebugTemplate template)
         {
             if (interpreter == null)
                 throw new ArgumentNullException("interpreter");
@@ -64,7 +64,7 @@ namespace Antlr4.StringTemplate.Visualizer
 
         public event PropertyChangedEventHandler PropertyChanged;
 
-        public DebugST Template
+        public DebugTemplate Template
         {
             get
             {

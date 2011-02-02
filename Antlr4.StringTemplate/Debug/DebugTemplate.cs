@@ -40,7 +40,7 @@ namespace Antlr4.StringTemplate.Debug
     /** To avoid polluting Template instances with debug info when not debugging.
      *  Setting debug mode in TemplateGroup makes it create these instead of STs.
      */
-    public class DebugST : Template
+    public class DebugTemplate : Template
     {
         public class State
         {
@@ -56,11 +56,11 @@ namespace Antlr4.StringTemplate.Debug
 
         //public Interpreter interp; // set when we start interpreter in inspect()
 
-        public DebugST()
+        public DebugTemplate()
         {
         }
 
-        public DebugST(Template proto) : base(proto)
+        public DebugTemplate(Template proto) : base(proto)
         {
         }
 

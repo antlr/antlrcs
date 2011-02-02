@@ -642,7 +642,7 @@ namespace Antlr4.StringTemplate
         {
             // TODO: try making a mem pool?
             if (Debug)
-                return new DebugST();
+                return new DebugTemplate();
 
             return new Template();
         }
@@ -650,7 +650,7 @@ namespace Antlr4.StringTemplate
         public virtual Template CreateStringTemplate(Template proto)
         {
             if (Debug)
-                return new DebugST(proto);
+                return new DebugTemplate(proto);
 
             return new Template(proto);
         }
