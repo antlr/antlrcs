@@ -59,12 +59,8 @@ namespace Antlr4.StringTemplate.Debug
             StackFrame[] trace = stack.GetFrames();
             foreach (StackFrame e in trace)
             {
-                string name = e.ToString();
-                // TODO: Remove special after testing
-                if (name.IndexOf("main(") > 0)
-                    return e;
-
-                if (!name.StartsWith("org.stringtemplate"))
+                string name = e.GetMethod().DeclaringType.FullName;
+                if (!name.StartsWith("Antlr4.StringTemplate"))
                     return e;
             }
             return trace[0];
