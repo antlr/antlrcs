@@ -45,16 +45,32 @@ namespace Antlr4.StringTemplate.Compiler
         private readonly IToken templateToken;
         /// <summary>Overall template text</summary>
         private readonly string _template;
-        private readonly ErrorManager errMgr;
+        private readonly TemplateCompiler _compiler;
         private CompiledTemplate outermostImpl;
 
-        public CodeGenerator(ITreeNodeStream input, ErrorManager errMgr, string name, string template, IToken templateToken)
+        public CodeGenerator(ITreeNodeStream input, TemplateCompiler compiler, string name, string template, IToken templateToken)
             : this(input, new RecognizerSharedState())
         {
-            this.errMgr = errMgr;
+            this._compiler = compiler;
             this.outermostTemplateName = name;
             this._template = template;
             this.templateToken = templateToken;
+        }
+
+        public ErrorManager errMgr
+        {
+            get
+            {
+                return _compiler.ErrorManager;
+            }
+        }
+
+        public TemplateGroup Group
+        {
+            get
+            {
+                return _compiler.Group;
+            }
         }
 
         // convience funcs to hide offensive sending of emit messages to

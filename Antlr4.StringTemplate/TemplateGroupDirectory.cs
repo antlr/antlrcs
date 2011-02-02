@@ -94,7 +94,7 @@ namespace Antlr4.StringTemplate
             }
             catch (Exception e)
             {
-                errMgr.InternalError(null, "can't Load group dir " + dirName, e);
+                ErrorManager.InternalError(null, "can't Load group dir " + dirName, e);
             }
         }
 
@@ -106,14 +106,14 @@ namespace Antlr4.StringTemplate
         public TemplateGroupDirectory(string dirName, Encoding encoding, char delimiterStartChar, char delimiterStopChar)
             : this(dirName, delimiterStartChar, delimiterStopChar)
         {
-            this.encoding = encoding;
+            this.Encoding = encoding;
         }
 
         public TemplateGroupDirectory(Uri root, Encoding encoding, char delimiterStartChar, char delimiterStopChar)
             : base(delimiterStartChar, delimiterStopChar)
         {
             this.root = root;
-            this.encoding = encoding;
+            this.Encoding = encoding;
         }
 
         /** Load a template from dir or group file.  Group file is given
@@ -134,7 +134,7 @@ namespace Antlr4.StringTemplate
             }
             catch (UriFormatException e)
             {
-                errMgr.InternalError(null, "bad URL: " + Path.Combine(root.LocalPath, parent) + ".stg", e);
+                ErrorManager.InternalError(null, "bad URL: " + Path.Combine(root.LocalPath, parent) + ".stg", e);
                 return null;
             }
 
@@ -170,9 +170,7 @@ namespace Antlr4.StringTemplate
 
             LoadGroupFile(parent, Path.Combine(root.LocalPath, parent) + ".stg");
 
-            CompiledTemplate template;
-            templates.TryGetValue(name, out template);
-            return template;
+            return RawGetTemplate(name);
         }
 
         /** Load full path name .st file relative to root by prefix */
@@ -190,14 +188,14 @@ namespace Antlr4.StringTemplate
             }
             catch (UriFormatException me)
             {
-                errMgr.RuntimeError(null, 0, ErrorType.INVALID_TEMPLATE_NAME, me, Path.Combine(root.LocalPath, fileName));
+                ErrorManager.RuntimeError(null, 0, ErrorType.INVALID_TEMPLATE_NAME, me, Path.Combine(root.LocalPath, fileName));
                 return null;
             }
 
             ANTLRReaderStream fs = null;
             try
             {
-                fs = new ANTLRReaderStream(new StreamReader(f.LocalPath, encoding ?? Encoding.UTF8));
+                fs = new ANTLRReaderStream(new StreamReader(f.LocalPath, Encoding ?? Encoding.UTF8));
             }
             catch (IOException)
             {
@@ -217,12 +215,10 @@ namespace Antlr4.StringTemplate
             }
             catch (RecognitionException re)
             {
-                errMgr.GroupSyntaxError(ErrorType.SYNTAX_ERROR, Path.GetFileName(f.LocalPath), re, re.Message);
+                ErrorManager.GroupSyntaxError(ErrorType.SYNTAX_ERROR, Path.GetFileName(f.LocalPath), re, re.Message);
             }
 
-            CompiledTemplate template;
-            templates.TryGetValue(templateName, out template);
-            return template;
+            return RawGetTemplate(templateName);
         }
 
         public override string Name

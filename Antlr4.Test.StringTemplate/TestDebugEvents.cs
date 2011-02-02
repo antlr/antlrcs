@@ -51,7 +51,7 @@ namespace Antlr4.Test.StringTemplate
 
             writeFile(tmpdir, "t.stg", templates);
             TemplateGroup group = new TemplateGroupFile(Path.Combine(tmpdir, "t.stg"));
-            TemplateGroup.debug = true;
+            group.Debug = true;
             DebugST st = (DebugST)group.GetInstanceOf("t");
             List<InterpEvent> events = st.GetEvents();
             string expected =
@@ -69,7 +69,7 @@ namespace Antlr4.Test.StringTemplate
 
             writeFile(tmpdir, "t.stg", templates);
             TemplateGroup group = new TemplateGroupFile(Path.Combine(tmpdir, "t.stg"));
-            TemplateGroup.debug = true;
+            group.Debug = true;
             DebugST st = (DebugST)group.GetInstanceOf("t");
             List<InterpEvent> events = st.GetEvents();
             string expected =
@@ -89,7 +89,7 @@ namespace Antlr4.Test.StringTemplate
 
             writeFile(tmpdir, "t.stg", templates);
             TemplateGroup group = new TemplateGroupFile(Path.Combine(tmpdir, "t.stg"));
-            TemplateGroup.debug = true;
+            group.Debug = true;
             DebugST st = (DebugST)group.GetInstanceOf("t");
             List<InterpEvent> events = st.GetEvents();
             string expected =

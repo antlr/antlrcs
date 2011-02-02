@@ -61,7 +61,7 @@ namespace Antlr4.Test.StringTemplate
 
             writeFile(tmpdir, "t.stg", templates);
             TemplateGroup group = new TemplateGroupFile(Path.Combine(tmpdir, "t.stg"));
-            TemplateGroup.debug = true;
+            group.Debug = true;
             DebugST st = (DebugST)group.GetInstanceOf("method");
             st.impl.Dump();
             st.Add("type", "float");
@@ -93,7 +93,7 @@ namespace Antlr4.Test.StringTemplate
 
         private void Inspect(DebugST template, CultureInfo culture)
         {
-            Inspect(template, template.impl.nativeGroup.errMgr, culture, AutoIndentWriter.NoWrap);
+            Inspect(template, template.impl.nativeGroup.ErrorManager, culture, AutoIndentWriter.NoWrap);
         }
 
         private void Inspect(DebugST template, ErrorManager errorManager, CultureInfo culture, int lineWidth)

@@ -94,7 +94,7 @@ namespace Antlr4.StringTemplate
             }
             catch (Exception e)
             {
-                errMgr.InternalError(null, "can't Load group file " + fileName, e);
+                ErrorManager.InternalError(null, "can't Load group file " + fileName, e);
             }
 
             this.fileName = fileName;
@@ -108,14 +108,14 @@ namespace Antlr4.StringTemplate
         public TemplateGroupFile(string fullyQualifiedFileName, Encoding encoding, char delimiterStartChar, char delimiterStopChar)
             : this(fullyQualifiedFileName, delimiterStartChar, delimiterStopChar)
         {
-            this.encoding = encoding;
+            this.Encoding = encoding;
         }
 
         public TemplateGroupFile(Uri url, Encoding encoding, char delimiterStartChar, char delimiterStopChar)
             : base(delimiterStartChar, delimiterStopChar)
         {
             this.url = url;
-            this.encoding = encoding;
+            this.Encoding = encoding;
         }
 
         public override bool IsDefined(string name)
@@ -137,9 +137,7 @@ namespace Antlr4.StringTemplate
             if (!alreadyLoaded)
                 Load();
 
-            CompiledTemplate template;
-            templates.TryGetValue(name, out template);
-            return template;
+            return RawGetTemplate(name);
         }
 
         public override void Load()

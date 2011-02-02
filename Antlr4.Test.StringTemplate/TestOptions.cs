@@ -45,7 +45,7 @@ namespace Antlr4.Test.StringTemplate
         public void TestSeparator()
         {
             TemplateGroup group = new TemplateGroup();
-            group.DefineTemplate("test", "name", "hi <name; separator=\", \">!");
+            group.DefineTemplate("test", "hi <name; separator=\", \">!", new string[] { "name" });
             Template st = group.GetInstanceOf("test");
             st.Add("name", "Ter");
             st.Add("name", "Tom");
@@ -59,8 +59,8 @@ namespace Antlr4.Test.StringTemplate
         public void TestSeparatorWithSpaces()
         {
             TemplateGroup group = new TemplateGroup();
-            TemplateGroup.debug = true;
-            group.DefineTemplate("test", "name", "hi <name; separator= \", \">!");
+            group.Debug = true;
+            group.DefineTemplate("test", "hi <name; separator= \", \">!", new string[] { "name" });
             Template st = group.GetInstanceOf("test");
             Console.WriteLine(st.impl.ast.ToStringTree());
             st.Add("name", "Ter");
@@ -75,7 +75,7 @@ namespace Antlr4.Test.StringTemplate
         public void TestAttrSeparator()
         {
             TemplateGroup group = new TemplateGroup();
-            group.DefineTemplate("test", "name,sep", "hi <name; separator=sep>!");
+            group.DefineTemplate("test", "hi <name; separator=sep>!", new string[] { "name", "sep" });
             Template st = group.GetInstanceOf("test");
             st.Add("sep", ", ");
             st.Add("name", "Ter");
@@ -91,7 +91,7 @@ namespace Antlr4.Test.StringTemplate
         {
             TemplateGroup group = new TemplateGroup();
             group.DefineTemplate("foo", "|");
-            group.DefineTemplate("test", "name,sep", "hi <name; separator=foo()>!");
+            group.DefineTemplate("test", "hi <name; separator=foo()>!", new string[] { "name", "sep" });
             Template st = group.GetInstanceOf("test");
             st.Add("sep", ", ");
             st.Add("name", "Ter");
@@ -106,7 +106,7 @@ namespace Antlr4.Test.StringTemplate
         public void TestSubtemplateSeparator()
         {
             TemplateGroup group = new TemplateGroup();
-            group.DefineTemplate("test", "name,sep", "hi <name; separator={<sep> _}>!");
+            group.DefineTemplate("test", "hi <name; separator={<sep> _}>!", new string[] { "name", "sep" });
             Template st = group.GetInstanceOf("test");
             st.Add("sep", ",");
             st.Add("name", "Ter");
@@ -121,7 +121,7 @@ namespace Antlr4.Test.StringTemplate
         public void TestSeparatorWithNullFirstValueAndNullOption()
         {
             TemplateGroup group = new TemplateGroup();
-            group.DefineTemplate("test", "name", "hi <name; null=\"n/a\", separator=\", \">!");
+            group.DefineTemplate("test", "hi <name; null=\"n/a\", separator=\", \">!", new string[] { "name" });
             Template st = group.GetInstanceOf("test");
             st.Add("name", null);
             st.Add("name", "Tom");
@@ -135,7 +135,7 @@ namespace Antlr4.Test.StringTemplate
         public void TestSeparatorWithNull2ndValueAndNullOption()
         {
             TemplateGroup group = new TemplateGroup();
-            group.DefineTemplate("test", "name", "hi <name; null=\"n/a\", separator=\", \">!");
+            group.DefineTemplate("test", "hi <name; null=\"n/a\", separator=\", \">!", new string[] { "name" });
             Template st = group.GetInstanceOf("test");
             st.impl.Dump();
             st.Add("name", "Ter");
@@ -150,7 +150,7 @@ namespace Antlr4.Test.StringTemplate
         public void TestNullValueAndNullOption()
         {
             TemplateGroup group = new TemplateGroup();
-            group.DefineTemplate("test", "name", "<name; null=\"n/a\">");
+            group.DefineTemplate("test", "<name; null=\"n/a\">", new string[] { "name" });
             Template st = group.GetInstanceOf("test");
             st.Add("name", null);
             string expected = "n/a";
@@ -162,7 +162,7 @@ namespace Antlr4.Test.StringTemplate
         public void TestListApplyWithNullValueAndNullOption()
         {
             TemplateGroup group = new TemplateGroup();
-            group.DefineTemplate("test", "name", "<name:{n | <n>}; null=\"n/a\">");
+            group.DefineTemplate("test", "<name:{n | <n>}; null=\"n/a\">", new string[] { "name" });
             Template st = group.GetInstanceOf("test");
             st.Add("name", "Ter");
             st.Add("name", null);
@@ -179,7 +179,7 @@ namespace Antlr4.Test.StringTemplate
             // the value.  This verifies that null not blank comes out of first apply
             // since we don't get [null].
             TemplateGroup group = new TemplateGroup();
-            group.DefineTemplate("test", "name", "<name:{n | <n>}:{n | [<n>]}; null=\"n/a\">");
+            group.DefineTemplate("test", "<name:{n | <n>}:{n | [<n>]}; null=\"n/a\">", new string[] { "name" });
             Template st = group.GetInstanceOf("test");
             st.Add("name", "Ter");
             st.Add("name", null);
@@ -193,7 +193,7 @@ namespace Antlr4.Test.StringTemplate
         public void TestMissingValueAndNullOption()
         {
             TemplateGroup group = new TemplateGroup();
-            group.DefineTemplate("test", "name", "<name; null=\"n/a\">");
+            group.DefineTemplate("test", "<name; null=\"n/a\">", new string[] { "name" });
             Template st = group.GetInstanceOf("test");
             string expected = "n/a";
             string result = st.Render();
@@ -205,7 +205,7 @@ namespace Antlr4.Test.StringTemplate
         {
             TemplateGroup group = new TemplateGroup();
             group.DefineTemplate("foo", "<zippo>");
-            group.DefineTemplate("test", "zippo", "<foo(); null=\"n/a\">");
+            group.DefineTemplate("test", "<foo(); null=\"n/a\">", new string[] { "zippo" });
             Template st = group.GetInstanceOf("test");
             st.Add("zippo", null);
             string expected = "";
@@ -219,7 +219,7 @@ namespace Antlr4.Test.StringTemplate
             ErrorBuffer errors = new ErrorBuffer();
             TemplateGroup group = new TemplateGroup();
             group.Listener = errors;
-            group.DefineTemplate("test", "name", "<name; bad=\"ugly\">");
+            group.DefineTemplate("test", "<name; bad=\"ugly\">", new string[] { "name" });
             Template st = group.GetInstanceOf("test");
             st.Add("name", "Ter");
             string expected = "Ter";

@@ -132,7 +132,7 @@ subtemplate returns [string name, int nargs]
 			{
 			CompiledTemplate sub = $template.impl;
 			sub.isAnonSubtemplate = true;
-			if ( TemplateGroup.debug ) {
+			if ( Group.Debug ) {
 				sub.ast = $SUBTEMPLATE;
 				sub.ast.SetUnknownTokenBoundaries();
 				sub.tokens = input.TokenStream;

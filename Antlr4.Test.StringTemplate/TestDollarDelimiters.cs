@@ -53,7 +53,7 @@ namespace Antlr4.Test.StringTemplate
         public void TestParallelMap()
         {
             TemplateGroup group = new TemplateGroup('$', '$');
-            group.DefineTemplate("test", "names,phones", "hi $names,phones:{n,p | $n$:$p$;}$");
+            group.DefineTemplate("test", "hi $names,phones:{n,p | $n$:$p$;}$", new string[] { "names", "phones" });
             Template st = group.GetInstanceOf("test");
             st.Add("names", "Ter");
             st.Add("names", "Tom");

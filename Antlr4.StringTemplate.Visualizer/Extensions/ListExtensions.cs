@@ -40,8 +40,8 @@ namespace Antlr4.StringTemplate.Visualizer.Extensions
     {
         public static string ToListString(this IList list)
         {
-            TemplateGroup group = new TemplateGroup('$', '$');
-            group.DefineTemplate("listTemplate", "list", "[$list:{x|$x$}; separator=\", \"$]");
+            TemplateGroup group = new TemplateGroup();
+            group.DefineTemplate("listTemplate", "[<list:{x|<x>}; separator=\", \">]", new string[] { "list" });
             group.RegisterRenderer(typeof(IList), new CollectionRenderer());
             Template st = group.GetInstanceOf("listTemplate");
             st.Add("list", list);

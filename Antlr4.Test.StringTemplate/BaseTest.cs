@@ -65,8 +65,8 @@ namespace Antlr4.Test.StringTemplate
         protected virtual void setUpImpl()
         {
             TemplateGroup.defaultGroup = new TemplateGroup();
+            TemplateGroup.defaultGroup.Debug = false;
             TemplateCompiler.subtemplateCount = 0;
-            TemplateGroup.debug = false;
 
             // new output dir for each test
             tmpdir = Path.GetFullPath(Path.Combine(Path.GetTempPath(), "st4-" + currentTimeMillis()));

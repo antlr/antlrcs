@@ -66,7 +66,7 @@ namespace Antlr4.StringTemplate.Debug
 
         public override void Add(string name, object value)
         {
-            if (TemplateGroup.debug)
+            if (groupThatCreatedThisInstance.Debug)
                 addAttrEvents.Add(name, new AddAttributeEvent(name, value));
 
             base.Add(name, value);

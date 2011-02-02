@@ -32,20 +32,16 @@
 
 namespace Antlr4.Test.StringTemplate.Extensions
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Text;
     using Antlr4.StringTemplate;
-    using IList = System.Collections.IList;
     using CultureInfo = System.Globalization.CultureInfo;
+    using IList = System.Collections.IList;
 
     internal static class ListExtensions
     {
         public static string ToListString(this IList list)
         {
-            TemplateGroup group = new TemplateGroup('$', '$');
-            group.DefineTemplate("listTemplate", "list", "[$list:{x|$x$}; separator=\", \"$]");
+            TemplateGroup group = new TemplateGroup();
+            group.DefineTemplate("listTemplate", "[<list:{x|<x>}; separator=\", \">]", new string[] { "list" });
             group.RegisterRenderer(typeof(IList), new CollectionRenderer());
             Template st = group.GetInstanceOf("listTemplate");
             st.Add("list", list);

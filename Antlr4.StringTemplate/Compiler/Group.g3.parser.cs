@@ -56,7 +56,7 @@ namespace Antlr4.StringTemplate.Compiler
         public override void DisplayRecognitionError(string[] tokenNames, RecognitionException e)
         {
             string msg = GetErrorMessage(e, tokenNames);
-            _group.errMgr.GroupSyntaxError(ErrorType.SYNTAX_ERROR, SourceName, e, msg);
+            _group.ErrorManager.GroupSyntaxError(ErrorType.SYNTAX_ERROR, SourceName, e, msg);
         }
 
         public override string SourceName
@@ -72,7 +72,7 @@ namespace Antlr4.StringTemplate.Compiler
         public virtual void error(string msg)
         {
             NoViableAltException e = new NoViableAltException(string.Empty, 0, 0, input);
-            _group.errMgr.GroupSyntaxError(ErrorType.SYNTAX_ERROR, SourceName, e, msg);
+            _group.ErrorManager.GroupSyntaxError(ErrorType.SYNTAX_ERROR, SourceName, e, msg);
             Recover(input, null);
         }
     }

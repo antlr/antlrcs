@@ -411,14 +411,14 @@ namespace Antlr4.StringTemplate
 
         public virtual int Write(ITemplateWriter @out)
         {
-            Interpreter interp = new Interpreter(groupThatCreatedThisInstance, impl.nativeGroup.errMgr);
+            Interpreter interp = new Interpreter(groupThatCreatedThisInstance, impl.nativeGroup.ErrorManager);
             interp.SetDefaultArguments(this);
             return interp.Execute(@out, this);
         }
 
         public virtual int Write(ITemplateWriter @out, CultureInfo locale)
         {
-            Interpreter interp = new Interpreter(groupThatCreatedThisInstance, locale, impl.nativeGroup.errMgr);
+            Interpreter interp = new Interpreter(groupThatCreatedThisInstance, locale, impl.nativeGroup.ErrorManager);
             interp.SetDefaultArguments(this);
             return interp.Execute(@out, this);
         }

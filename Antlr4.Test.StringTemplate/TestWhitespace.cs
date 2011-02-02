@@ -44,7 +44,7 @@ namespace Antlr4.Test.StringTemplate
         public void TestTrimmedSubtemplates()
         {
             TemplateGroup group = new TemplateGroup();
-            group.DefineTemplate("test", "names", "<names:{n | <n>}>!");
+            group.DefineTemplate("test", "<names:{n | <n>}>!", new string[] { "names" });
             Template st = group.GetInstanceOf("test");
             st.Add("names", "Ter");
             st.Add("names", "Tom");
@@ -59,7 +59,7 @@ namespace Antlr4.Test.StringTemplate
         {
             TemplateGroup group = new TemplateGroup();
             group.DefineTemplate("test", "[<foo({ foo })>]");
-            group.DefineTemplate("foo", "x", "<x>");
+            group.DefineTemplate("foo", "<x>", new string[] { "x" });
             Template st = group.GetInstanceOf("test");
             string expected = "[ foo ]";
             string result = st.Render();
@@ -70,7 +70,7 @@ namespace Antlr4.Test.StringTemplate
         public void TestTrimmedSubtemplatesArgs()
         {
             TemplateGroup group = new TemplateGroup();
-            group.DefineTemplate("test", "names", "<names:{x|  foo }>");
+            group.DefineTemplate("test", "<names:{x|  foo }>", new string[] { "names" });
             Template st = group.GetInstanceOf("test");
             st.Add("names", "Ter");
             st.Add("names", "Tom");
@@ -84,7 +84,7 @@ namespace Antlr4.Test.StringTemplate
         public void TestTrimJustOneWSInSubtemplates()
         {
             TemplateGroup group = new TemplateGroup();
-            group.DefineTemplate("test", "names", "<names:{n |  <n> }>!");
+            group.DefineTemplate("test", "<names:{n |  <n> }>!", new string[] { "names" });
             Template st = group.GetInstanceOf("test");
             st.Add("names", "Ter");
             st.Add("names", "Tom");
@@ -98,8 +98,8 @@ namespace Antlr4.Test.StringTemplate
         public void TestTrimNewlineInSubtemplates()
         {
             TemplateGroup group = new TemplateGroup();
-            group.DefineTemplate("test", "names", "<names:{n |\n" +
-                                         "<n>}>!");
+            group.DefineTemplate("test", "<names:{n |\n" +
+                                         "<n>}>!", new string[] { "names" });
             Template st = group.GetInstanceOf("test");
             st.Add("names", "Ter");
             st.Add("names", "Tom");
@@ -113,9 +113,9 @@ namespace Antlr4.Test.StringTemplate
         public void TestLeaveNewlineOnEndInSubtemplates()
         {
             TemplateGroup group = new TemplateGroup();
-            group.DefineTemplate("test", "names", "<names:{n |\n" +
+            group.DefineTemplate("test", "<names:{n |\n" +
                                          "<n>\n" +
-                                         "}>!");
+                                         "}>!", new string[] { "names" });
             Template st = group.GetInstanceOf("test");
             st.Add("names", "Ter");
             st.Add("names", "Tom");
@@ -130,9 +130,9 @@ namespace Antlr4.Test.StringTemplate
         {
             // fails since it counts indent from outer too
             TemplateGroup group = new TemplateGroup();
-            group.DefineTemplate("test", "names", "  <names:{n |\n" +
+            group.DefineTemplate("test", "  <names:{n |\n" +
                                          "    <n>\n" +
-                                         "  }>!");
+                                         "  }>!", new string[] { "names" });
             Template st = group.GetInstanceOf("test");
             st.Add("names", "Ter");
             st.Add("names", "Tom");

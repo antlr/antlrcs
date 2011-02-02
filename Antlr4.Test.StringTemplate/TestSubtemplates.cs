@@ -44,7 +44,7 @@ namespace Antlr4.Test.StringTemplate
         public void TestSimpleIteration()
         {
             TemplateGroup group = new TemplateGroup();
-            group.DefineTemplate("test", "names", "<names:{n|<n>}>!");
+            group.DefineTemplate("test", "<names:{n|<n>}>!", new string[] { "names" });
             Template st = group.GetInstanceOf("test");
             st.Add("names", "Ter");
             st.Add("names", "Tom");
@@ -58,7 +58,7 @@ namespace Antlr4.Test.StringTemplate
         public void TestMapIterationIsByKeys()
         {
             TemplateGroup group = new TemplateGroup();
-            group.DefineTemplate("test", "emails", "<emails:{n|<n>}>!");
+            group.DefineTemplate("test", "<emails:{n|<n>}>!", new string[] { "emails" });
             Template st = group.GetInstanceOf("test");
             IDictionary<string, string> emails = new Dictionary<string, string>();
             emails["parrt"] = "Ter";
@@ -74,7 +74,7 @@ namespace Antlr4.Test.StringTemplate
         public void TestSimpleIterationWithArg()
         {
             TemplateGroup group = new TemplateGroup();
-            group.DefineTemplate("test", "names", "<names:{n | <n>}>!");
+            group.DefineTemplate("test", "<names:{n | <n>}>!", new string[] { "names" });
             Template st = group.GetInstanceOf("test");
             st.Add("names", "Ter");
             st.Add("names", "Tom");
@@ -88,7 +88,7 @@ namespace Antlr4.Test.StringTemplate
         public void TestNestedIterationWithArg()
         {
             TemplateGroup group = new TemplateGroup();
-            group.DefineTemplate("test", "users", "<users:{u | <u.id:{id | <id>=}><u.name>}>!");
+            group.DefineTemplate("test", "<users:{u | <u.id:{id | <id>=}><u.name>}>!", new string[] { "users" });
             Template st = group.GetInstanceOf("test");
             st.Add("users", new TestCoreBasics.User(1, "parrt"));
             st.Add("users", new TestCoreBasics.User(2, "tombu"));
@@ -207,13 +207,13 @@ namespace Antlr4.Test.StringTemplate
             ErrorBuffer errors = new ErrorBuffer();
             TemplateGroup innerGroup = new TemplateGroup();
             innerGroup.Listener = errors;
-            innerGroup.DefineTemplate("test", "m", "<m:samegroup()>");
-            innerGroup.DefineTemplate("samegroup", "x", "hi ");
+            innerGroup.DefineTemplate("test", "<m:samegroup()>", new string[] { "m" });
+            innerGroup.DefineTemplate("samegroup", "hi ", new string[] { "x" });
             Template st = innerGroup.GetInstanceOf("test");
             st.Add("m", new int[] { 1, 2, 3 });
 
             TemplateGroup outerGroup = new TemplateGroup();
-            outerGroup.DefineTemplate("errorMessage", "x", "<x>");
+            outerGroup.DefineTemplate("errorMessage", "<x>", new string[] { "x" });
             Template outerST = outerGroup.GetInstanceOf("errorMessage");
             outerST.Add("x", st);
 
@@ -231,13 +231,13 @@ namespace Antlr4.Test.StringTemplate
             ErrorBuffer errors = new ErrorBuffer();
             TemplateGroup innerGroup = new TemplateGroup();
             innerGroup.Listener = errors;
-            innerGroup.DefineTemplate("test", "m", "<m:samegroup()>");
-            innerGroup.DefineTemplate("samegroup", "x", "hi ");
+            innerGroup.DefineTemplate("test", "<m:samegroup()>", new string[] { "m" });
+            innerGroup.DefineTemplate("samegroup", "hi ", new string[] { "x" });
             Template st = innerGroup.GetInstanceOf("test");
             st.Add("m", 10);
 
             TemplateGroup outerGroup = new TemplateGroup();
-            outerGroup.DefineTemplate("errorMessage", "x", "<x>");
+            outerGroup.DefineTemplate("errorMessage", "<x>", new string[] { "x" });
             Template outerST = outerGroup.GetInstanceOf("errorMessage");
             outerST.Add("x", st);
 
@@ -260,7 +260,7 @@ namespace Antlr4.Test.StringTemplate
 
             TemplateGroup outerGroup = new TemplateGroup();
             outerGroup.Listener = errors;
-            outerGroup.DefineTemplate("errorMessage", "x", "<x>");
+            outerGroup.DefineTemplate("errorMessage", "<x>", new string[] { "x" });
             outerGroup.DefineTemplate("bob", "outer"); // should not be visible to test() in innerGroup
             Template outerST = outerGroup.GetInstanceOf("errorMessage");
             outerST.Add("x", st);

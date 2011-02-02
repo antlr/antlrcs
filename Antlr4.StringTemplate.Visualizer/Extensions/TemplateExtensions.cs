@@ -46,12 +46,12 @@ namespace Antlr4.StringTemplate.Visualizer.Extensions
 
         public static void Inspect(this DebugST template, int lineWidth)
         {
-            Inspect(template, template.impl.nativeGroup.errMgr, CultureInfo.CurrentCulture, lineWidth);
+            Inspect(template, template.impl.nativeGroup.ErrorManager, CultureInfo.CurrentCulture, lineWidth);
         }
 
         public static void Inspect(this DebugST template, CultureInfo culture)
         {
-            Inspect(template, template.impl.nativeGroup.errMgr, culture, AutoIndentWriter.NoWrap);
+            Inspect(template, template.impl.nativeGroup.ErrorManager, culture, AutoIndentWriter.NoWrap);
         }
 
         public static void Inspect(this DebugST template, ErrorManager errorManager, CultureInfo culture, int lineWidth)

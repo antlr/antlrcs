@@ -56,7 +56,7 @@ namespace Antlr4.Test.StringTemplate
             TemplateGroup group = new TemplateGroup();
             group.DefineTemplate("foo", "bar");
             string template = "<(name)()>";
-            group.DefineTemplate("test", "name", template);
+            group.DefineTemplate("test", template, new string[] { "name" });
             Template st = group.GetInstanceOf("test");
             st.Add("name", "foo");
             string expected = "bar";
@@ -68,9 +68,9 @@ namespace Antlr4.Test.StringTemplate
         public void TestIndirectTemplateIncludeWithArgs()
         {
             TemplateGroup group = new TemplateGroup();
-            group.DefineTemplate("foo", "x,y", "<x><y>");
+            group.DefineTemplate("foo", "<x><y>", new string[] { "x", "y" });
             string template = "<(name)({1},{2})>";
-            group.DefineTemplate("test", "name", template);
+            group.DefineTemplate("test", template, new string[] { "name" });
             Template st = group.GetInstanceOf("test");
             st.Add("name", "foo");
             string expected = "12";
@@ -85,7 +85,7 @@ namespace Antlr4.Test.StringTemplate
             group.DefineTemplate("foo", "bar");
             group.DefineTemplate("tname", "foo");
             string template = "<(tname())()>";
-            group.DefineTemplate("test", "name", template);
+            group.DefineTemplate("test", template, new string[] { "name" });
             Template st = group.GetInstanceOf("test");
             string expected = "bar";
             string result = st.Render();
@@ -108,8 +108,8 @@ namespace Antlr4.Test.StringTemplate
         public void TestIndirectMap()
         {
             TemplateGroup group = new TemplateGroup();
-            group.DefineTemplate("a", "x", "[<x>]");
-            group.DefineTemplate("test", "names,templateName", "hi <names:(templateName)()>!");
+            group.DefineTemplate("a", "[<x>]", new string[] { "x" });
+            group.DefineTemplate("test", "hi <names:(templateName)()>!", new string[] { "names", "templateName" });
             Template st = group.GetInstanceOf("test");
             st.Add("names", "Ter");
             st.Add("names", "Tom");

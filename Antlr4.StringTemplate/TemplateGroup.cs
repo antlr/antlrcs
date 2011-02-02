@@ -62,23 +62,23 @@ namespace Antlr4.StringTemplate
         public static readonly string DefaultKey = "default";
 
         /** Load files using what encoding? */
-        public Encoding encoding;
+        private Encoding _encoding;
 
         /** Every group can import templates/dictionaries from other groups.
          *  The list must be synchronized (see ImportTemplates).
          */
-        protected List<TemplateGroup> imports;
+        private readonly List<TemplateGroup> imports = new List<TemplateGroup>();
 
         public readonly char delimiterStartChar = '<'; // Use <expr> by default
         public readonly char delimiterStopChar = '>';
 
         /** Maps template name to StringTemplate object. synchronized. */
-        protected readonly IDictionary<string, CompiledTemplate> templates = new Dictionary<string, CompiledTemplate>();
+        private readonly Dictionary<string, CompiledTemplate> templates = new Dictionary<string, CompiledTemplate>();
 
         /** Maps dict names to HashMap objects.  This is the list of dictionaries
          *  defined by the user like typeInitMap ::= ["int":"0"]
          */
-        protected readonly IDictionary<string, IDictionary<string, object>> dictionaries = new Dictionary<string, IDictionary<string, object>>();
+        private readonly Dictionary<string, IDictionary<string, object>> dictionaries = new Dictionary<string, IDictionary<string, object>>();
 
         /** A dictionary that allows people to register a renderer for
          *  a particular kind of object for any template evaluated relative to this
@@ -127,12 +127,12 @@ namespace Antlr4.StringTemplate
 
         public static readonly ErrorManager DefaultErrorManager = new ErrorManager();
 
-        public static bool debug = false;
+        private bool _debug = false;
 
-        /** The errMgr for entire group; all compilations and executions.
+        /** The error manager for entire group; all compilations and executions.
          *  This gets copied to parsers, walkers, and interpreters.
          */
-        public ErrorManager errMgr = TemplateGroup.DefaultErrorManager;
+        private ErrorManager _errorManager = TemplateGroup.DefaultErrorManager;
 
         public TemplateGroup()
         {
@@ -142,6 +142,53 @@ namespace Antlr4.StringTemplate
         {
             this.delimiterStartChar = delimiterStartChar;
             this.delimiterStopChar = delimiterStopChar;
+        }
+
+        public IEnumerable<CompiledTemplate> CompiledTemplates
+        {
+            get
+            {
+                return templates.Values;
+            }
+        }
+
+        public Encoding Encoding
+        {
+            get
+            {
+                return _encoding;
+            }
+
+            set
+            {
+                _encoding = value;
+            }
+        }
+
+        public ErrorManager ErrorManager
+        {
+            get
+            {
+                return _errorManager;
+            }
+
+            set
+            {
+                _errorManager = value;
+            }
+        }
+
+        public bool Debug
+        {
+            get
+            {
+                return _debug;
+            }
+
+            set
+            {
+                _debug = value;
+            }
         }
 
         /** The primary means of getting an instance of a template from this
@@ -174,7 +221,7 @@ namespace Antlr4.StringTemplate
             Template st = GetInstanceOf(name);
             if (st == null)
             {
-                errMgr.RuntimeError(enclosingInstance, ip, ErrorType.NO_SUCH_TEMPLATE, name);
+                ErrorManager.RuntimeError(enclosingInstance, ip, ErrorType.NO_SUCH_TEMPLATE, name);
                 st = CreateStringTemplate();
                 st.impl = new CompiledTemplate();
                 return st;
@@ -291,11 +338,11 @@ namespace Antlr4.StringTemplate
         }
 
         // for testing
-        public virtual CompiledTemplate DefineTemplate(string templateName, string template)
+        public virtual CompiledTemplate DefineTemplate(string name, string template)
         {
             try
             {
-                CompiledTemplate impl = DefineTemplate(templateName, new CommonToken(GroupParser.ID, templateName), null, template, null);
+                CompiledTemplate impl = DefineTemplate(name, new CommonToken(GroupParser.ID, name), null, template, null);
                 return impl;
             }
             catch (TemplateException)
@@ -307,11 +354,10 @@ namespace Antlr4.StringTemplate
         }
 
         // for testing
-        public virtual CompiledTemplate DefineTemplate(string name, string argsS, string template)
+        public virtual CompiledTemplate DefineTemplate(string name, string template, string[] arguments)
         {
-            string[] args = argsS.Split(',');
             List<FormalArgument> a = new List<FormalArgument>();
-            foreach (string arg in args)
+            foreach (string arg in arguments)
                 a.Add(new FormalArgument(arg));
 
             return DefineTemplate(name, new CommonToken(GroupParser.ID, name), a, template, null);
@@ -349,7 +395,7 @@ namespace Antlr4.StringTemplate
             templates.TryGetValue(target, out targetCode);
             if (targetCode == null)
             {
-                errMgr.CompiletimeError(ErrorType.ALIAS_TARGET_UNDEFINED, null, aliasT, alias, target);
+                ErrorManager.CompiletimeError(ErrorType.ALIAS_TARGET_UNDEFINED, null, aliasT, alias, target);
                 return null;
             }
 
@@ -357,9 +403,7 @@ namespace Antlr4.StringTemplate
             return targetCode;
         }
 
-        public virtual CompiledTemplate DefineRegion(string enclosingTemplateName,
-                                       IToken regionT,
-                                       string template)
+        public virtual CompiledTemplate DefineRegion(string enclosingTemplateName, IToken regionT, string template, IToken templateToken)
         {
             string name = regionT.Text;
             template = Utility.TrimOneStartingNewline(template);
@@ -369,7 +413,7 @@ namespace Antlr4.StringTemplate
 
             if (LookupTemplate(mangled) == null)
             {
-                errMgr.CompiletimeError(ErrorType.NO_SUCH_REGION, null, regionT, enclosingTemplateName, name);
+                ErrorManager.CompiletimeError(ErrorType.NO_SUCH_REGION, null, regionT, enclosingTemplateName, name);
                 return new CompiledTemplate();
             }
 
@@ -393,7 +437,7 @@ namespace Antlr4.StringTemplate
             {
                 if (regionSurroundingTemplateName != null)
                 {
-                    DefineRegion(regionSurroundingTemplateName, nameToken, template);
+                    DefineRegion(regionSurroundingTemplateName, nameToken, template, templateToken);
                 }
                 else
                 {
@@ -415,17 +459,17 @@ namespace Antlr4.StringTemplate
             {
                 if (!prev.isRegion)
                 {
-                    errMgr.CompiletimeError(ErrorType.TEMPLATE_REDEFINITION, null, defT);
+                    ErrorManager.CompiletimeError(ErrorType.TEMPLATE_REDEFINITION, null, defT);
                     return;
                 }
                 if (prev.isRegion && prev.regionDefType == Template.RegionType.Embedded)
                 {
-                    errMgr.CompiletimeError(ErrorType.EMBEDDED_REGION_REDEFINITION, null, defT, GetUnmangledTemplateName(name));
+                    ErrorManager.CompiletimeError(ErrorType.EMBEDDED_REGION_REDEFINITION, null, defT, GetUnmangledTemplateName(name));
                     return;
                 }
                 else if (prev.isRegion && prev.regionDefType == Template.RegionType.Explicit)
                 {
-                    errMgr.CompiletimeError(ErrorType.REGION_REDEFINITION, null, defT, GetUnmangledTemplateName(name));
+                    ErrorManager.CompiletimeError(ErrorType.REGION_REDEFINITION, null, defT, GetUnmangledTemplateName(name));
                     return;
                 }
             }
@@ -446,7 +490,7 @@ namespace Antlr4.StringTemplate
                                   IToken templateToken) // for error location
         {
             //System.out.println("TemplateGroup.Compile: "+enclosingTemplateName);
-            Compiler.TemplateCompiler c = new Compiler.TemplateCompiler(errMgr, delimiterStartChar, delimiterStopChar);
+            TemplateCompiler c = new TemplateCompiler(this);
             CompiledTemplate code = c.Compile(srcName, name, args, template, templateToken);
             code.nativeGroup = this;
             code.template = template;
@@ -480,9 +524,6 @@ namespace Antlr4.StringTemplate
         {
             if (g == null)
                 return;
-
-            if (imports == null)
-                imports = new List<TemplateGroup>();
 
             imports.Add(g);
         }
@@ -525,7 +566,7 @@ namespace Antlr4.StringTemplate
             try
             {
                 Uri f = new Uri(fileName);
-                ANTLRReaderStream fs = new ANTLRReaderStream(new System.IO.StreamReader(f.LocalPath, encoding ?? Encoding.UTF8));
+                ANTLRReaderStream fs = new ANTLRReaderStream(new System.IO.StreamReader(f.LocalPath, Encoding ?? Encoding.UTF8));
                 GroupLexer lexer = new GroupLexer(fs);
                 fs.name = fileName;
                 CommonTokenStream tokens = new CommonTokenStream(lexer);
@@ -534,7 +575,7 @@ namespace Antlr4.StringTemplate
             }
             catch (Exception e)
             {
-                errMgr.IOError(null, ErrorType.CANT_LOAD_GROUP_FILE, e, fileName);
+                ErrorManager.IOError(null, ErrorType.CANT_LOAD_GROUP_FILE, e, fileName);
             }
         }
 
@@ -600,7 +641,7 @@ namespace Antlr4.StringTemplate
         public virtual Template CreateStringTemplate()
         {
             // TODO: try making a mem pool?
-            if (debug)
+            if (Debug)
                 return new DebugST();
 
             return new Template();
@@ -608,7 +649,7 @@ namespace Antlr4.StringTemplate
 
         public virtual Template CreateStringTemplate(Template proto)
         {
-            if (debug)
+            if (Debug)
                 return new DebugST(proto);
 
             return new Template(proto);
@@ -638,7 +679,7 @@ namespace Antlr4.StringTemplate
         public virtual string Show()
         {
             StringBuilder buf = new StringBuilder();
-            if (imports != null)
+            if (imports != null && imports.Count > 0)
                 buf.Append(" : " + imports);
 
             foreach (string n in templates.Keys)
@@ -668,12 +709,12 @@ namespace Antlr4.StringTemplate
         {
             get
             {
-                return errMgr.Listener;
+                return ErrorManager.Listener;
             }
 
             set
             {
-                errMgr = new ErrorManager(value);
+                ErrorManager = new ErrorManager(value);
             }
         }
     }

@@ -113,12 +113,12 @@ namespace Antlr4.StringTemplate
         private IDictionary<Template, List<InterpEvent>> debugInfo;
 
         public Interpreter(TemplateGroup group)
-            : this(group, CultureInfo.CurrentCulture, group.errMgr)
+            : this(group, CultureInfo.CurrentCulture, group.ErrorManager)
         {
         }
 
         public Interpreter(TemplateGroup group, CultureInfo culture)
-            : this(group, culture, group.errMgr)
+            : this(group, culture, group.ErrorManager)
         {
         }
 
@@ -132,7 +132,7 @@ namespace Antlr4.StringTemplate
             this.group = group;
             this.culture = culture;
             this.errMgr = errMgr;
-            if (TemplateGroup.debug)
+            if (group.Debug)
             {
                 events = new List<InterpEvent>();
                 executeTrace = new List<string>();
@@ -170,7 +170,7 @@ namespace Antlr4.StringTemplate
             int ip = 0;
             while (ip < self.impl.codeSize)
             {
-                if (trace || TemplateGroup.debug)
+                if (trace || group.Debug)
                     Trace(self, ip);
 
                 Bytecode opcode = (Bytecode)code[ip];
@@ -492,7 +492,7 @@ namespace Antlr4.StringTemplate
                 }
                 prevOpcode = opcode;
             }
-            if (TemplateGroup.debug)
+            if (group.Debug)
             {
                 EvalTemplateEvent e = new EvalTemplateEvent((DebugST)self, Interval.FromBounds(start, @out.Index));
                 //System.out.println("eval template "+self+": "+e);
@@ -629,7 +629,7 @@ namespace Antlr4.StringTemplate
         {
             int start = @out.Index; // track char we're about to Write
             int n = WriteObject(@out, self, o, null);
-            if (TemplateGroup.debug)
+            if (group.Debug)
             {
                 Interval templateLocation = self.impl.sourceMap[current_ip];
                 EvalExprEvent e = new EvalExprEvent((DebugST)self, Interval.FromBounds(start, @out.Index), templateLocation);
@@ -669,7 +669,7 @@ namespace Antlr4.StringTemplate
                 @out.PopAnchorPoint();
             }
 
-            if (TemplateGroup.debug)
+            if (group.Debug)
             {
                 Interval templateLocation = self.impl.sourceMap[current_ip];
                 EvalExprEvent e = new EvalExprEvent((DebugST)self, Interval.FromBounds(start, @out.Index), templateLocation);
@@ -1330,7 +1330,7 @@ namespace Antlr4.StringTemplate
             tr.Append(", sp=" + sp + ", nw=" + nwline);
             string s = tr.ToString();
 
-            if (TemplateGroup.debug)
+            if (group.Debug)
                 executeTrace.Add(s);
 
             if (trace)

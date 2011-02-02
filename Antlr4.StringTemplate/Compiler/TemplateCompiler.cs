@@ -36,6 +36,7 @@ namespace Antlr4.StringTemplate.Compiler
     using Antlr4.StringTemplate.Misc;
     using Antlr.Runtime;
     using Antlr.Runtime.Tree;
+    using ArgumentNullException = System.ArgumentNullException;
 
     /** A compiler for a single template. */
     public class TemplateCompiler
@@ -80,38 +81,46 @@ namespace Antlr4.StringTemplate.Compiler
         /** Name subtemplates _sub1, _sub2, ... */
         public static int subtemplateCount = 0;
 
-        /** The compiler needs to know how to delimit expressions.
-         *  The TemplateGroup normally passes in this information, but we
-         *  can set some defaults.
-         */
-        public char delimiterStartChar = '<'; // Use <expr> by default
-        public char delimiterStopChar = '>';
+        private readonly TemplateGroup _group;
 
-        public ErrorManager errMgr;
-
-        public TemplateCompiler()
-            : this(TemplateGroup.DefaultErrorManager)
+        public TemplateCompiler(TemplateGroup group)
         {
+            if (group == null)
+                throw new ArgumentNullException("group");
+
+            _group = group;
         }
 
-        public TemplateCompiler(ErrorManager errMgr)
-            : this(errMgr, '<', '>')
+        public TemplateGroup Group
         {
+            get
+            {
+                return _group;
+            }
         }
 
-        public TemplateCompiler(char delimiterStartChar, char delimiterStopChar)
-            : this(TemplateGroup.DefaultErrorManager, delimiterStartChar, delimiterStopChar)
+        public ErrorManager ErrorManager
         {
+            get
+            {
+                return _group.ErrorManager;
+            }
         }
 
-        /** To compile a template, we need to know what the
-         *  enclosing template is (if any) in case of regions.
-         */
-        public TemplateCompiler(ErrorManager errMgr, char delimiterStartChar, char delimiterStopChar)
+        public char DelimiterStartChar
         {
-            this.errMgr = errMgr;
-            this.delimiterStartChar = delimiterStartChar;
-            this.delimiterStopChar = delimiterStopChar;
+            get
+            {
+                return _group.delimiterStartChar;
+            }
+        }
+
+        public char DelimiterStopChar
+        {
+            get
+            {
+                return _group.delimiterStopChar;
+            }
         }
 
         public virtual CompiledTemplate Compile(string template)
@@ -134,9 +143,9 @@ namespace Antlr4.StringTemplate.Compiler
         {
             ANTLRStringStream @is = new ANTLRStringStream(template);
             @is.name = srcName != null ? srcName : name;
-            TemplateLexer lexer = new TemplateLexer(errMgr, @is, templateToken, delimiterStartChar, delimiterStopChar);
+            TemplateLexer lexer = new TemplateLexer(ErrorManager, @is, templateToken, DelimiterStartChar, DelimiterStopChar);
             CommonTokenStream tokens = new CommonTokenStream(lexer);
-            TemplateParser p = new TemplateParser(tokens, errMgr, templateToken);
+            TemplateParser p = new TemplateParser(tokens, ErrorManager, templateToken);
             TemplateParser.templateAndEOF_return r = null;
             try
             {
@@ -158,14 +167,14 @@ namespace Antlr4.StringTemplate.Compiler
             //System.out.println(((CommonTree)r.getTree()).toStringTree());
             CommonTreeNodeStream nodes = new CommonTreeNodeStream(r.Tree);
             nodes.TokenStream = tokens;
-            CodeGenerator gen = new CodeGenerator(nodes, errMgr, name, template, templateToken);
+            CodeGenerator gen = new CodeGenerator(nodes, this, name, template, templateToken);
 
             CompiledTemplate impl2 = null;
             try
             {
                 impl2 = gen.template(name, args);
                 // only save tree/token stream when debugging
-                if (TemplateGroup.debug)
+                if (Group.Debug)
                 {
                     impl2.ast = (CommonTree)r.Tree;
                     impl2.ast.SetUnknownTokenBoundaries();
@@ -174,7 +183,7 @@ namespace Antlr4.StringTemplate.Compiler
             }
             catch (RecognitionException re)
             {
-                errMgr.InternalError(null, "bad tree structure", re);
+                ErrorManager.InternalError(null, "bad tree structure", re);
             }
 
             return impl2;
@@ -203,29 +212,29 @@ namespace Antlr4.StringTemplate.Compiler
             if (re.Token.Type == TemplateLexer.EOF_TYPE)
             {
                 string msg = "premature EOF";
-                errMgr.CompiletimeError(ErrorType.SYNTAX_ERROR, templateToken, re.Token, msg);
+                ErrorManager.CompiletimeError(ErrorType.SYNTAX_ERROR, templateToken, re.Token, msg);
             }
             else if (re is NoViableAltException)
             {
                 string msg = "'" + re.Token.Text + "' came as a complete surprise to me";
-                errMgr.CompiletimeError(ErrorType.SYNTAX_ERROR, templateToken, re.Token, msg);
+                ErrorManager.CompiletimeError(ErrorType.SYNTAX_ERROR, templateToken, re.Token, msg);
             }
             else if (tokens.Index == 0)
             {
                 // couldn't parse anything
                 string msg = string.Format("this doesn't look like a template: \"{0}\"", tokens);
-                errMgr.CompiletimeError(ErrorType.SYNTAX_ERROR, templateToken, re.Token, msg);
+                ErrorManager.CompiletimeError(ErrorType.SYNTAX_ERROR, templateToken, re.Token, msg);
             }
             else if (tokens.LA(1) == TemplateLexer.LDELIM)
             {
                 // couldn't parse expr
                 string msg = "doesn't look like an expression";
-                errMgr.CompiletimeError(ErrorType.SYNTAX_ERROR, templateToken, re.Token, msg);
+                ErrorManager.CompiletimeError(ErrorType.SYNTAX_ERROR, templateToken, re.Token, msg);
             }
             else
             {
                 string msg = parser.GetErrorMessage(re, parser.TokenNames);
-                errMgr.CompiletimeError(ErrorType.SYNTAX_ERROR, templateToken, re.Token, msg);
+                ErrorManager.CompiletimeError(ErrorType.SYNTAX_ERROR, templateToken, re.Token, msg);
             }
 
             // we have reported the error, so just blast out
