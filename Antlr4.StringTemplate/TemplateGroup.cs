@@ -226,7 +226,7 @@ namespace Antlr4.StringTemplate
                 st.impl = new CompiledTemplate();
                 return st;
             }
-            st.enclosingInstance = enclosingInstance;
+            st.EnclosingInstance = enclosingInstance;
             return st;
         }
 

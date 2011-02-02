@@ -84,7 +84,7 @@ namespace Antlr4.StringTemplate
          *  IF-subtemplates are considered embedded as well. We look up
          *  dynamically scoped attributes with this ptr.
          */
-        public Template enclosingInstance; // who's your daddy?
+        private Template _enclosingInstance; // who's your daddy?
 
         /** Created as instance of which group? We need this to init interpreter
          *  via Render.  So, we create st and then it needs to know which
@@ -158,8 +158,21 @@ namespace Antlr4.StringTemplate
             if (proto.locals != null)
                 this.locals = (object[])proto.locals.Clone();
 
-            this.enclosingInstance = proto.enclosingInstance;
+            this.EnclosingInstance = proto.EnclosingInstance;
             this.groupThatCreatedThisInstance = proto.groupThatCreatedThisInstance;
+        }
+
+        public Template EnclosingInstance
+        {
+            get
+            {
+                return _enclosingInstance;
+            }
+
+            set
+            {
+                _enclosingInstance = value;
+            }
         }
 
         /** Inject an attribute (name/value pair). If there is already an
@@ -206,7 +219,7 @@ namespace Antlr4.StringTemplate
             }
 
             if (value is Template)
-                ((Template)value).enclosingInstance = this;
+                ((Template)value).EnclosingInstance = this;
 
             object curvalue = locals[arg.Index];
             if (curvalue == EmptyAttribute)
@@ -290,7 +303,7 @@ namespace Antlr4.StringTemplate
                     return o;
                 }
 
-                p = p.enclosingInstance;
+                p = p.EnclosingInstance;
             }
             // got to root template and no definition, try dictionaries in group
             if (impl.nativeGroup.IsDictionary(name))
@@ -388,7 +401,7 @@ namespace Antlr4.StringTemplate
                 else
                     stack.Add(p);
 
-                p = p.enclosingInstance;
+                p = p.EnclosingInstance;
             }
             return stack;
         }

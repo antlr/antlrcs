@@ -497,9 +497,9 @@ namespace Antlr4.StringTemplate
                 EvalTemplateEvent e = new EvalTemplateEvent((DebugST)self, Interval.FromBounds(start, @out.Index));
                 //System.out.println("eval template "+self+": "+e);
                 events.Add(e);
-                if (self.enclosingInstance != null)
+                if (self.EnclosingInstance != null)
                 {
-                    DebugST parent = (DebugST)self.enclosingInstance;
+                    DebugST parent = (DebugST)self.EnclosingInstance;
                     GetEvents(parent).Add(e);
                 }
             }
@@ -524,7 +524,7 @@ namespace Antlr4.StringTemplate
             }
 
             st = imported.nativeGroup.CreateStringTemplate();
-            st.enclosingInstance = self; // self invoked super.name()
+            st.EnclosingInstance = self; // self invoked super.name()
             st.groupThatCreatedThisInstance = group;
             st.impl = imported;
 
@@ -548,7 +548,7 @@ namespace Antlr4.StringTemplate
             }
 
             st = imported.nativeGroup.CreateStringTemplate();
-            st.enclosingInstance = self; // self invoked super.name()
+            st.EnclosingInstance = self; // self invoked super.name()
             st.groupThatCreatedThisInstance = group;
             st.impl = imported;
 
@@ -698,24 +698,36 @@ namespace Antlr4.StringTemplate
             if (proxyFactory != null)
                 o = proxyFactory.CreateProxy(o);
 
-            if (o is Template)
+            Template template = o as Template;
+            if (template != null)
             {
-                ((Template)o).enclosingInstance = self;
-                SetDefaultArguments((Template)o);
-                if (options != null && options[(int)Option.Wrap] != null)
+                Template previousEnclosingInstance = template.EnclosingInstance;
+                object[] previousLocals = template.locals;
+
+                try
                 {
-                    // if we have a wrap string, then inform writer it
-                    // might need to wrap
-                    try
+                    template.EnclosingInstance = self;
+                    template.locals = SetDefaultArguments(template);
+                    if (options != null && options[(int)Option.Wrap] != null)
                     {
-                        @out.WriteWrap(options[(int)Option.Wrap]);
+                        // if we have a wrap string, then inform writer it
+                        // might need to wrap
+                        try
+                        {
+                            @out.WriteWrap(options[(int)Option.Wrap]);
+                        }
+                        catch (IOException ioe)
+                        {
+                            errMgr.IOError(self, ErrorType.WRITE_IO_ERROR, ioe);
+                        }
                     }
-                    catch (IOException ioe)
-                    {
-                        errMgr.IOError(self, ErrorType.WRITE_IO_ERROR, ioe);
-                    }
+                    n = Execute(@out, template);
                 }
-                n = Execute(@out, (Template)o);
+                finally
+                {
+                    template.EnclosingInstance = previousEnclosingInstance;
+                    template.locals = previousLocals;
+                }
             }
             else
             {
@@ -1155,7 +1167,7 @@ namespace Antlr4.StringTemplate
                     return (string)value;
                 // if Template, make sure it evaluates with enclosing template as self
                 if (value is Template)
-                    ((Template)value).enclosingInstance = self;
+                    ((Template)value).EnclosingInstance = self;
                 // if not string already, must evaluate it
                 StringWriter sw = new StringWriter();
                 /*
@@ -1275,17 +1287,25 @@ namespace Antlr4.StringTemplate
          *
          *  The evaluation context is the template enclosing invokedST.
          */
-        public virtual void SetDefaultArguments(Template invokedST)
+        public virtual object[] SetDefaultArguments(Template invokedST)
         {
             if (invokedST.impl.formalArguments == null)
-                return;
+                return invokedST.locals;
+
+            object[] previousLocals = null;
             foreach (FormalArgument arg in invokedST.impl.formalArguments)
             {
                 // if no value for attribute and default arg, inject default arg into self
                 if (invokedST.locals[arg.Index] == Template.EmptyAttribute && arg.CompiledDefaultValue != null)
                 {
+                    if (previousLocals == null)
+                    {
+                        previousLocals = invokedST.locals;
+                        invokedST.locals = (object[])invokedST.locals.Clone();
+                    }
+
                     Template defaultArgST = group.CreateStringTemplate();
-                    defaultArgST.enclosingInstance = invokedST.enclosingInstance;
+                    defaultArgST.EnclosingInstance = invokedST.EnclosingInstance;
                     defaultArgST.groupThatCreatedThisInstance = group;
                     defaultArgST.impl = arg.CompiledDefaultValue;
                     //Console.WriteLine("setting def arg " + arg.Name + " to " + defaultArgST);
@@ -1305,6 +1325,8 @@ namespace Antlr4.StringTemplate
                     }
                 }
             }
+
+            return previousLocals ?? invokedST.locals;
         }
 
         protected virtual void Trace(Template self, int ip)

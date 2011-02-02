@@ -224,9 +224,9 @@ namespace Antlr4.StringTemplate.Visualizer
                 FontFamily = new FontFamily("Consolas")
             }));
             Interval r = currentTemplate.impl.TemplateRange;
-            if (currentTemplate.enclosingInstance != null)
+            if (currentTemplate.EnclosingInstance != null)
             {
-                int i = GetIndexOfChild((DebugST)currentTemplate.enclosingInstance, currentTemplate);
+                int i = GetIndexOfChild((DebugST)currentTemplate.EnclosingInstance, currentTemplate);
                 if (i == -1)
                 {
                     Highlight(OutputTextBox.Document, null);
@@ -234,7 +234,7 @@ namespace Antlr4.StringTemplate.Visualizer
                 }
                 else
                 {
-                    InterpEvent e = ViewModel.Visualizer.Interpreter.GetEvents(currentTemplate.enclosingInstance)[i];
+                    InterpEvent e = ViewModel.Visualizer.Interpreter.GetEvents(currentTemplate.EnclosingInstance)[i];
                     if (e is EvalTemplateEvent)
                     {
                         if (currentTemplate.IsAnonymousSubtemplate)
