@@ -39,22 +39,22 @@ namespace Antlr4.StringTemplate.Visualizer.Extensions
 
     public static class TemplateExtensions
     {
-        public static void Inspect(this DebugST template)
+        public static void Visualize(this DebugST template)
         {
-            Inspect(template, CultureInfo.CurrentCulture);
+            Visualize(template, CultureInfo.CurrentCulture);
         }
 
-        public static void Inspect(this DebugST template, int lineWidth)
+        public static void Visualize(this DebugST template, int lineWidth)
         {
-            Inspect(template, template.impl.nativeGroup.ErrorManager, CultureInfo.CurrentCulture, lineWidth);
+            Visualize(template, template.impl.nativeGroup.ErrorManager, CultureInfo.CurrentCulture, lineWidth);
         }
 
-        public static void Inspect(this DebugST template, CultureInfo culture)
+        public static void Visualize(this DebugST template, CultureInfo culture)
         {
-            Inspect(template, template.impl.nativeGroup.ErrorManager, culture, AutoIndentWriter.NoWrap);
+            Visualize(template, template.impl.nativeGroup.ErrorManager, culture, AutoIndentWriter.NoWrap);
         }
 
-        public static void Inspect(this DebugST template, ErrorManager errorManager, CultureInfo culture, int lineWidth)
+        public static void Visualize(this DebugST template, ErrorManager errorManager, CultureInfo culture, int lineWidth)
         {
             ErrorBuffer errors = new ErrorBuffer();
             template.impl.nativeGroup.Listener = errors;

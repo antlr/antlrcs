@@ -37,6 +37,7 @@ namespace Antlr4.Test.StringTemplate
     using Antlr4.StringTemplate.Debug;
     using Antlr4.StringTemplate.Misc;
     using Antlr4.StringTemplate.Visualizer;
+    using Antlr4.StringTemplate.Visualizer.Extensions;
     using Microsoft.VisualStudio.TestTools.UnitTesting;
     using CultureInfo = System.Globalization.CultureInfo;
     using Path = System.IO.Path;
@@ -82,31 +83,7 @@ namespace Antlr4.Test.StringTemplate
             st.Add("stats", s2);
             st.Add("stats", s3);
 
-            Inspect(st);
-            //st.Render();
-        }
-
-        private void Inspect(DebugST template)
-        {
-            Inspect(template, CultureInfo.CurrentCulture);
-        }
-
-        private void Inspect(DebugST template, CultureInfo culture)
-        {
-            Inspect(template, template.impl.nativeGroup.ErrorManager, culture, AutoIndentWriter.NoWrap);
-        }
-
-        private void Inspect(DebugST template, ErrorManager errorManager, CultureInfo culture, int lineWidth)
-        {
-            ErrorBuffer errors = new ErrorBuffer();
-            template.impl.nativeGroup.Listener = errors;
-            StringWriter @out = new StringWriter();
-            ITemplateWriter wr = new AutoIndentWriter(@out);
-            wr.LineWidth = lineWidth;
-            Interpreter interp = new Interpreter(template.groupThatCreatedThisInstance, culture);
-            interp.Execute(wr, template); // Render and track events
-            TemplateVisualizer visualizer = new TemplateVisualizer(errorManager, template, @out.ToString(), interp, interp.GetExecutionTrace(), errors.Errors);
-            visualizer.Show();
+            st.Visualize();
         }
     }
 }
