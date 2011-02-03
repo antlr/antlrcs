@@ -50,6 +50,11 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\Antlr3.StringTemplate\Antlr3.StringTemplate.csproj">
+      <Project>{B5910BE2-DE21-4AA9-95C1-486F42B9E794}</Project>
+      <Name>Antlr3.StringTemplate</Name>
+      <Private>False</Private>
+    </ProjectReference>
     <ProjectReference Include="..\..\Antlr3\Antlr3.csproj">
       <Project>{2AB8CAED-C046-4F05-8B18-6948100D2FE7}</Project>
       <Name>Antlr3</Name>

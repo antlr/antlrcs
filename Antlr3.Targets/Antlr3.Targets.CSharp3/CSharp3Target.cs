@@ -31,11 +31,44 @@
  */
 namespace Antlr3.Targets
 {
-    using CLSCompliant = System.CLSCompliantAttribute;
+    using System.Collections.Generic;
+
+    using ArgumentException = System.ArgumentException;
+    using ArgumentNullException = System.ArgumentNullException;
+    using CLSCompliantAttribute = System.CLSCompliantAttribute;
+    using CodeGenerator = Antlr3.Codegen.CodeGenerator;
+    using CultureInfo = System.Globalization.CultureInfo;
+    using Grammar = Antlr3.Tool.Grammar;
+    using IAttributeRenderer = Antlr3.ST.IAttributeRenderer;
+    using StringTemplate = Antlr3.ST.StringTemplate;
     using Target = Antlr3.Codegen.Target;
 
     public class CSharp3Target : Target
     {
+        private static readonly HashSet<string> _languageKeywords = new HashSet<string>()
+            {
+                "abstract", "event", "new", "struct",
+                "as", "explicit", "null", "switch",
+                "base", "extern", "object", "this",
+                "bool", "false", "operator", "throw",
+                "break", "finally", "out", "true",
+                "byte", "fixed", "override", "try",
+                "case", "float", "params", "typeof",
+                "catch", "for", "private", "uint",
+                "char", "foreach", "protected", "ulong",
+                "checked", "goto", "public", "unchecked",
+                "class", "if", "readonly", "unsafe",
+                "const", "implicit", "ref", "ushort",
+                "continue", "in", "return", "using",
+                "decimal", "int", "sbyte", "virtual",
+                "default", "interface", "sealed", "volatile",
+                "delegate", "internal", "short", "void",
+                "do", "is", "sizeof", "while",
+                "double", "lock", "stackalloc",
+                "else", "long", "static",
+                "enum", "namespace", "string",
+            };
+
         public override string EncodeIntAsCharEscape( int v )
         {
             return "\\x" + v.ToString( "X" );
@@ -45,6 +78,54 @@ namespace Antlr3.Targets
         public override string GetTarget64BitStringFromValue(ulong word)
         {
             return "0x" + word.ToString( "X" );
+        }
+
+        protected override void GenRecognizerFile(AntlrTool tool, CodeGenerator generator, Grammar grammar, StringTemplate outputFileST)
+        {
+            generator.Templates.RegisterRenderer(typeof(string), new StringRenderer());
+            base.GenRecognizerFile(tool, generator, grammar, outputFileST);
+        }
+
+        public class StringRenderer : IAttributeRenderer
+        {
+            public string ToString(string value)
+            {
+                return value;
+            }
+
+            public string ToString(string value, string formatName)
+            {
+                if (string.IsNullOrEmpty(value))
+                    return value;
+
+                switch (formatName)
+                {
+                case "id":
+                    if (_languageKeywords.Contains(value))
+                        return "@" + value;
+
+                    return value;
+
+                case "cap":
+                    return char.ToUpper(value[0], CultureInfo.CurrentCulture) + value.Substring(1);
+
+                default:
+                    throw new ArgumentException(string.Format("Unsupported format name: '{0}'", formatName), "formatName");
+                }
+            }
+
+            string IAttributeRenderer.ToString(object o)
+            {
+                return (string)o;
+            }
+
+            string IAttributeRenderer.ToString(object o, string formatName)
+            {
+                if (formatName == null)
+                    throw new ArgumentNullException("formatName");
+
+                return ToString((string)o, formatName);
+            }
         }
     }
 }

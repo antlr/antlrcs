@@ -106,13 +106,13 @@ namespace Antlr3.Tool
             for ( int i = rightEdgeOfDeclarator; i >= 0; i-- )
             {
                 // if we haven't found the end yet, keep going
-                if ( !inID && char.IsLetterOrDigit( decl[i] ) )
+                if ( !inID && (char.IsLetterOrDigit( decl[i] ) || decl[i] == '_' || decl[i] == '@') )
                 {
                     inID = true;
                 }
                 else if ( inID &&
                           !( char.IsLetterOrDigit( decl[i] ) ||
-                           decl[i] == '_' ) )
+                           decl[i] == '_' || decl[i] == '@' ) )
                 {
                     start = i + 1;
                     break;
@@ -132,7 +132,7 @@ namespace Antlr3.Tool
             {
                 // if we haven't found the end yet, keep going
                 if ( !( char.IsLetterOrDigit( decl[i] ) ||
-                    decl[i] == '_' ) )
+                    decl[i] == '_' || decl[i] == '@' ) )
                 {
                     stop = i;
                     break;
