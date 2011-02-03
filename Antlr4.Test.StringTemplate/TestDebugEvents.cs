@@ -73,9 +73,9 @@ namespace Antlr4.Test.StringTemplate
             DebugTemplate st = (DebugTemplate)group.GetInstanceOf("t");
             List<InterpEvent> events = st.GetEvents();
             string expected =
-                "[EvalExprEvent{self=t(), output=[0..0), expr=<x>}," +
-                " EvalExprEvent{self=t(), output=[0..1), expr= }," +
-                " EvalTemplateEvent{self=t(), output=[0..1)}]";
+                "[EvalExprEvent{self=t(x), output=[0..0), expr=<x>}," +
+                " EvalExprEvent{self=t(x), output=[0..1), expr= }," +
+                " EvalTemplateEvent{self=t(x), output=[0..1)}]";
             string result = events.ToListString();
             Assert.AreEqual(expected, result);
         }
@@ -93,13 +93,13 @@ namespace Antlr4.Test.StringTemplate
             DebugTemplate st = (DebugTemplate)group.GetInstanceOf("t");
             List<InterpEvent> events = st.GetEvents();
             string expected =
-                "[EvalExprEvent{self=t(), output=[0..1), expr=[}," +
+                "[EvalExprEvent{self=t(x), output=[0..1), expr=[}," +
                 " EvalExprEvent{self=u(), output=[1..1), expr=<x>}," +
                 " EvalExprEvent{self=u(), output=[1..2), expr= }," +
                 " EvalTemplateEvent{self=u(), output=[1..2)}," +
-                " EvalExprEvent{self=t(), output=[1..2), expr=<u()>}," +
-                " EvalExprEvent{self=t(), output=[2..3), expr=]}," +
-                " EvalTemplateEvent{self=t(), output=[0..3)}]";
+                " EvalExprEvent{self=t(x), output=[1..2), expr=<u()>}," +
+                " EvalExprEvent{self=t(x), output=[2..3), expr=]}," +
+                " EvalTemplateEvent{self=t(x), output=[0..3)}]";
             string result = events.ToListString();
             Assert.AreEqual(expected, result);
         }

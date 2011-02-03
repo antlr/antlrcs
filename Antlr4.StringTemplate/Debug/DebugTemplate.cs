@@ -42,26 +42,43 @@ namespace Antlr4.StringTemplate.Debug
      */
     public class DebugTemplate : Template
     {
-        public class State
-        {
-            /** Track all events that occur during rendering. */
-            public List<InterpEvent> interpEvents = new List<InterpEvent>();
-        }
-
         /** Record who made us? ConstructionEvent creates Exception to grab stack */
-        public ConstructionEvent newSTEvent = new ConstructionEvent();
+        public ConstructionEvent newSTEvent;
 
         /** Track construction-time Add attribute "events"; used for Template user-level debugging */
-        public MultiMap<string, AddAttributeEvent> addAttrEvents = new MultiMap<string, AddAttributeEvent>();
-
-        //public Interpreter interp; // set when we start interpreter in inspect()
+        public MultiMap<string, AddAttributeEvent> addAttrEvents;
 
         public DebugTemplate()
         {
+            newSTEvent = new ConstructionEvent();
+            addAttrEvents = new MultiMap<string, AddAttributeEvent>();
         }
 
-        public DebugTemplate(Template proto) : base(proto)
+        public DebugTemplate(Template prototype)
+            : base(prototype)
         {
+            newSTEvent = new ConstructionEvent();
+            addAttrEvents = new MultiMap<string, AddAttributeEvent>();
+        }
+
+        protected DebugTemplate(DebugTemplate prototype, bool shadowLocals, Template enclosingInstance)
+            : base(prototype, shadowLocals, enclosingInstance)
+        {
+            if (shadowLocals)
+            {
+                newSTEvent = prototype.newSTEvent;
+                addAttrEvents = prototype.addAttrEvents;
+            }
+            else
+            {
+                newSTEvent = new ConstructionEvent();
+                addAttrEvents = new MultiMap<string, AddAttributeEvent>();
+            }
+        }
+
+        public override Template CreateShadow(Template shadowEnclosingInstance)
+        {
+            return new DebugTemplate(this, true, shadowEnclosingInstance);
         }
 
         public override void Add(string name, object value)

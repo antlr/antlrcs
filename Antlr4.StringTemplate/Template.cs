@@ -152,14 +152,17 @@ namespace Antlr4.StringTemplate
         }
 
         /** Clone a prototype template for application in MAP operations; copy all fields */
-        public Template(Template proto)
+        public Template(Template prototype)
+            : this(prototype, false, prototype.EnclosingInstance)
         {
-            this.impl = proto.impl;
-            if (proto.locals != null)
-                this.locals = (object[])proto.locals.Clone();
+        }
 
-            this.EnclosingInstance = proto.EnclosingInstance;
-            this.groupThatCreatedThisInstance = proto.groupThatCreatedThisInstance;
+        protected Template(Template prototype, bool shadowLocals, Template enclosingInstance)
+        {
+            this.impl = prototype.impl;
+            this.locals = shadowLocals ? prototype.locals : (object[])prototype.locals.Clone();
+            this.EnclosingInstance = enclosingInstance;
+            this.groupThatCreatedThisInstance = prototype.groupThatCreatedThisInstance;
         }
 
         public Template EnclosingInstance
@@ -173,6 +176,11 @@ namespace Antlr4.StringTemplate
             {
                 _enclosingInstance = value;
             }
+        }
+
+        public virtual Template CreateShadow(Template shadowEnclosingInstance)
+        {
+            return new Template(this, true, shadowEnclosingInstance);
         }
 
         /** Inject an attribute (name/value pair). If there is already an
@@ -218,9 +226,6 @@ namespace Antlr4.StringTemplate
                 }
             }
 
-            if (value is Template)
-                ((Template)value).EnclosingInstance = this;
-
             object curvalue = locals[arg.Index];
             if (curvalue == EmptyAttribute)
             {
@@ -236,14 +241,11 @@ namespace Antlr4.StringTemplate
             locals[arg.Index] = multi; // replace with list
 
             // now, Add incoming value to multi-valued attribute
-            if (value is IList)
+            IList list = value as IList;
+            if (list != null)
             {
                 // flatten incoming list into existing list
-                multi.AddRange(((IList)value).Cast<object>());
-            }
-            else if (value != null && value.GetType().IsArray)
-            {
-                multi.AddRange(((Array)value).Cast<object>());
+                multi.AddRange(list.Cast<object>());
             }
             else
             {
@@ -499,7 +501,11 @@ namespace Antlr4.StringTemplate
             if (impl == null)
                 return "bad-template()";
 
-            return impl.name + "()";
+            string args = string.Empty;
+            if (impl.formalArguments != null)
+                args = string.Join(",", impl.formalArguments.Select(i => i.Name).ToArray());
+
+            return string.Format("{0}({1})", Name, args);
         }
 
         // Template.Format("name, phone | <name>:<phone>", n, p);
