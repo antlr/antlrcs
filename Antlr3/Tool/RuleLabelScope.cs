@@ -102,7 +102,7 @@ namespace Antlr3.Tool
         public override Attribute GetAttribute( string name )
         {
             AttributeScope rulePropertiesScope =
-                RuleLabelScope.grammarTypeToRulePropertiesScope[(int)grammar.type];
+                RuleLabelScope.grammarTypeToRulePropertiesScope[(int)Grammar.type];
             if ( rulePropertiesScope.GetAttribute( name ) != null )
             {
                 return rulePropertiesScope.GetAttribute( name );

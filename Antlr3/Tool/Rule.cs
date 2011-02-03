@@ -647,7 +647,7 @@ namespace Antlr3.Tool
             return
                 referencedPredefinedRuleAttributes || grammar.BuildAST ||
                 grammar.BuildTemplate ||
-                ( returnScope != null && returnScope.attributes.Count > 1 );
+                ( returnScope != null && returnScope.Attributes.Count > 1 );
         }
 
         public virtual bool GetHasSingleReturnValue()
@@ -655,7 +655,7 @@ namespace Antlr3.Tool
             return
                 !( referencedPredefinedRuleAttributes || grammar.BuildAST ||
                   grammar.BuildTemplate ) &&
-                                           ( returnScope != null && returnScope.attributes.Count == 1 );
+                                           ( returnScope != null && returnScope.Attributes.Count == 1 );
         }
 
         public virtual bool GetHasReturnValue()
@@ -663,14 +663,14 @@ namespace Antlr3.Tool
             return
                 referencedPredefinedRuleAttributes || grammar.BuildAST ||
                 grammar.BuildTemplate ||
-                ( returnScope != null && returnScope.attributes.Count > 0 );
+                ( returnScope != null && returnScope.Attributes.Count > 0 );
         }
 
         public virtual string GetSingleValueReturnType()
         {
-            if ( returnScope != null && returnScope.attributes.Count == 1 )
+            if ( returnScope != null && returnScope.Attributes.Count == 1 )
             {
-                return returnScope.attributes[0].Type;
+                return returnScope.Attributes[0].Type;
                 //ICollection<Attribute> retvalAttrs = returnScope.attributes.Values;
                 //return retvalAttrs.First().Type;
 
@@ -682,9 +682,9 @@ namespace Antlr3.Tool
 
         public virtual string GetSingleValueReturnName()
         {
-            if ( returnScope != null && returnScope.attributes.Count == 1 )
+            if ( returnScope != null && returnScope.Attributes.Count == 1 )
             {
-                return returnScope.attributes[0].Name;
+                return returnScope.Attributes[0].Name;
             }
             return null;
         }
