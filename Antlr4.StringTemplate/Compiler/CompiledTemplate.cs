@@ -184,11 +184,11 @@ namespace Antlr4.StringTemplate.Compiler
                         string argSTname = fa.Name + "_default_value";
                         TemplateCompiler c2 = new TemplateCompiler(group);
                         string defArgTemplate = Utility.Strip(fa.DefaultValueToken.Text, 1);
-                        fa.CompiledDefaultValue = c2.Compile(nativeGroup.FileName, argSTname, null, defArgTemplate, fa.DefaultValueToken);
+                        fa.CompiledDefaultValue = c2.Compile(group.FileName, argSTname, null, defArgTemplate, fa.DefaultValueToken);
                         fa.CompiledDefaultValue.name = argSTname;
+                        fa.CompiledDefaultValue.DefineImplicitlyDefinedTemplates(group);
                     }
-
-                    if (fa.DefaultValueToken.Type == GroupParser.STRING)
+                    else if (fa.DefaultValueToken.Type == GroupParser.STRING)
                     {
                         fa.DefaultValue = Utility.Strip(fa.DefaultValueToken.Text, 1);
                     }

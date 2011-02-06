@@ -32,10 +32,11 @@
 
 namespace Antlr4.Test.StringTemplate
 {
-    using Antlr4.StringTemplate;
-    using Microsoft.VisualStudio.TestTools.UnitTesting;
     using System.Collections.Generic;
+    using Antlr4.StringTemplate;
     using Antlr4.StringTemplate.Misc;
+    using Microsoft.VisualStudio.TestTools.UnitTesting;
+    using Path = System.IO.Path;
 
     [TestClass]
     public class TestSubtemplates : BaseTest
@@ -96,6 +97,26 @@ namespace Antlr4.Test.StringTemplate
             string expected = "1=parrt2=tombu3=sri!";
             string result = st.Render();
             Assert.AreEqual(expected, result);
+        }
+
+        [TestMethod]
+        public void TestSubtemplateAsDefaultArg()
+        {
+            string templates =
+                "t(x,y={<x:{s|<s><s>}>}) ::= <<\n" +
+                "x: <x>\n" +
+                "y: <y>\n" +
+                ">>" + newline
+                ;
+            writeFile(tmpdir, "group.stg", templates);
+            TemplateGroup group = new TemplateGroupFile(Path.Combine(tmpdir, "group.stg"));
+            Template b = group.GetInstanceOf("t");
+            b.Add("x", "a");
+            string expecting =
+                "x: a" + newline +
+                "y: aa";
+            string result = b.Render();
+            Assert.AreEqual(expecting, result);
         }
 
         [TestMethod]

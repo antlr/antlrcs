@@ -1306,7 +1306,9 @@ namespace Antlr4.StringTemplate
                 if (arg.DefaultValueToken.Type == GroupParser.ANONYMOUS_TEMPLATE)
                 {
                     Template defaultArgST = group.CreateStringTemplate();
-                    defaultArgST.EnclosingInstance = invokedST.EnclosingInstance;
+                    // default arg template must see other args so it's enclosing
+                    // instance is the template we are invoking.
+                    defaultArgST.EnclosingInstance = invokedST;
                     defaultArgST.groupThatCreatedThisInstance = group;
                     defaultArgST.impl = arg.CompiledDefaultValue;
                     // If default arg is template with single expression

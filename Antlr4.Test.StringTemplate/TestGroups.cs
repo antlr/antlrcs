@@ -335,6 +335,26 @@ namespace Antlr4.Test.StringTemplate
         }
 
         [TestMethod]
+        public void TestSubtemplateAsDefaultArgSeesOtherArgs()
+        {
+            string templates =
+                "t(x,y={<x:{s|<s><z>}>},z=\"foo\") ::= <<\n" +
+                "x: <x>\n" +
+                "y: <y>\n" +
+                ">>" + newline
+                ;
+            writeFile(tmpdir, "group.stg", templates);
+            TemplateGroup group = new TemplateGroupFile(Path.Combine(tmpdir, "group.stg"));
+            Template b = group.GetInstanceOf("t");
+            b.Add("x", "a");
+            string expecting =
+                "x: a" + newline +
+                "y: afoo";
+            string result = b.Render();
+            Assert.AreEqual(expecting, result);
+        }
+
+        [TestMethod]
         public void TestDefaultArgumentAsSimpleTemplate()
         {
             string templates =
