@@ -80,7 +80,7 @@ def[string prefix] : templateDef[prefix] | dictDef ;
 	catch[RecognitionException re] {
 		// pretend we already saw an error here
 		state.lastErrorIndex = input.Index;
-		error("garbled template definition starting at '"+input.LT(1).Text+"'");
+		Error("garbled template definition starting at '"+input.LT(1).Text+"'");
 	}
 
 public
@@ -170,7 +170,7 @@ dictPairs[IDictionary<string,object> mapping]
     |	defaultValuePair[mapping]
     ;
  	catch[RecognitionException re] {
-		error("missing dictionary entry at '"+input.LT(1).Text+"'");
+		Error("missing dictionary entry at '"+input.LT(1).Text+"'");
 	}
 
 defaultValuePair[IDictionary<string,object> mapping]
@@ -189,7 +189,7 @@ keyValue returns [object value]
 							{$value = TemplateGroup.DictionaryKey;}
 	;
  	catch[RecognitionException re] {
-		error("missing value for key at '"+input.LT(1).Text+"'");
+		Error("missing value for key at '"+input.LT(1).Text+"'");
 	}
 
 ID	:	('a'..'z'|'A'..'Z'|'_') ('a'..'z'|'A'..'Z'|'0'..'9'|'-'|'_')*
