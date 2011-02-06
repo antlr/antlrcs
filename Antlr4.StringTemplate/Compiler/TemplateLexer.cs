@@ -697,8 +697,21 @@ namespace Antlr4.StringTemplate.Compiler
         private void COMMENT()
         {
             match('!');
+
             while (!(c == '!' && input.LA(2) == delimiterStopChar))
+            {
+                if (c == EOF)
+                {
+                    RecognitionException re = new MismatchedTokenException((int)'!', input);
+                    re.Line = input.Line;
+                    re.CharPositionInLine = input.CharPositionInLine;
+                    string message = string.Format("Nonterminated comment starting at {0}:{1}: '!{2}' missing", startLine, startCharPositionInLine, delimiterStopChar);
+                    errMgr.LexerError(input.SourceName, message, templateToken, re);
+                    break;
+                }
                 consume();
+            }
+
             consume();
             consume(); // kill !>
         }

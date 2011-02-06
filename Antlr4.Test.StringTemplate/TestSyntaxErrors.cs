@@ -239,6 +239,24 @@ namespace Antlr4.Test.StringTemplate
         }
 
         [TestMethod]
+        public void TestNonterminatedComment()
+        {
+            string templates = "foo() ::= << <!foo> >>";
+            writeFile(tmpdir, "t.stg", templates);
+
+            TemplateGroupFile group = null;
+            ITemplateErrorListener errors = new ErrorBuffer();
+            group = new TemplateGroupFile(Path.Combine(tmpdir, "t.stg"));
+            group.Listener = errors;
+            group.Load(); // force load
+            string expected =
+                "t.stg 1:20: Nonterminated comment starting at 1:1: '!>' missing" + newline +
+                "t.stg 1:12: this doesn't look like a template: \" \"" + newline;
+            string result = errors.ToString();
+            Assert.AreEqual(expected, result);
+        }
+
+        [TestMethod]
         public void TestMissingRPAREN()
         {
             string templates =
