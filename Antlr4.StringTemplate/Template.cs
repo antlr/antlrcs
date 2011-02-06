@@ -39,6 +39,7 @@ namespace Antlr4.StringTemplate
     using Antlr4.StringTemplate.Compiler;
     using Antlr4.StringTemplate.Misc;
     using ArgumentException = System.ArgumentException;
+    using ArgumentNullException = System.ArgumentNullException;
     using Array = System.Array;
     using Console = System.Console;
     using CultureInfo = System.Globalization.CultureInfo;
@@ -153,14 +154,17 @@ namespace Antlr4.StringTemplate
 
         /** Clone a prototype template for application in MAP operations; copy all fields */
         public Template(Template prototype)
-            : this(prototype, false, prototype.EnclosingInstance)
+            : this(prototype, false, prototype != null ? prototype.EnclosingInstance : null)
         {
         }
 
         protected Template(Template prototype, bool shadowLocals, Template enclosingInstance)
         {
+            if (prototype == null)
+                throw new ArgumentNullException("prototype");
+
             this.impl = prototype.impl;
-            this.locals = shadowLocals ? prototype.locals : (object[])prototype.locals.Clone();
+            this.locals = shadowLocals || prototype.locals == null ? prototype.locals : (object[])prototype.locals.Clone();
             this.EnclosingInstance = enclosingInstance;
             this.groupThatCreatedThisInstance = prototype.groupThatCreatedThisInstance;
         }
