@@ -44,24 +44,6 @@ namespace Antlr4.Test.StringTemplate
     public class TestCoreBasics : BaseTest
     {
         [TestMethod]
-        public void TestLargeFile()
-        {
-            for (int i = 0; i < 100; i++)
-            {
-                TemplateGroupFile group = new TemplateGroupFile(@"C:\dev\stringtemplate_main\antlrcs\main\ST4LargeTest.stg");
-                group.Load();
-            }
-
-            System.Diagnostics.Stopwatch timer = System.Diagnostics.Stopwatch.StartNew();
-            for (int i = 0; i < 100; i++)
-            {
-                TemplateGroupFile group = new TemplateGroupFile(@"C:\dev\stringtemplate_main\antlrcs\main\ST4LargeTest.stg");
-                group.Load();
-            }
-            System.Console.WriteLine(timer.ElapsedMilliseconds);
-        }
-
-        [TestMethod]
         public void TestNullAttr()
         {
             string template = "hi <name>!";

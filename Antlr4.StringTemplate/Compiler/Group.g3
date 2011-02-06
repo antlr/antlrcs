@@ -36,6 +36,11 @@ options {
 	language=CSharp3;
 }
 
+tokens {
+	TRUE='true';
+	FALSE='false';
+}
+
 @lexer::namespace{Antlr4.StringTemplate.Compiler}
 @parser::namespace{Antlr4.StringTemplate.Compiler}
 
@@ -131,6 +136,8 @@ formalArgWithDefaultValue[List<FormalArgument> args]
 	:	ID
 		(	'=' a=STRING
 		|	'=' a=ANONYMOUS_TEMPLATE
+		|	'=' a='true'
+		|	'=' a='false'
 		)
 		{$args.Add(new FormalArgument($ID.text, $a));}
     ;
@@ -185,6 +192,8 @@ keyValue returns [object value]
 	:	BIGSTRING			{$value = _group.CreateSingleton($BIGSTRING);}
 	|	ANONYMOUS_TEMPLATE	{$value = _group.CreateSingleton($ANONYMOUS_TEMPLATE);}
 	|	STRING				{$value = Utility.ReplaceEscapes(Utility.Strip($STRING.text, 1));}
+	|	TRUE				{$value = true;}
+	|	FALSE				{$value = false;}
 	|	{input.LT(1).Text.Equals("key")}?=> ID
 							{$value = TemplateGroup.DictionaryKey;}
 	;

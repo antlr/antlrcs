@@ -36,7 +36,7 @@ namespace Antlr4.StringTemplate.Compiler
 
     /** Represents the name of a formal argument defined in a template:
      *
-     *  test(a,b) ::= "<a> <n>"
+     *  test(a,b,x=defaultvalue) ::= "&lt;a&gt; &lt;n&gt; &lt;x&gt;"
      *
      *  Each template has a set of these formal arguments or uses
      *  a placeholder object: UNKNOWN (indicating that no arguments
@@ -68,21 +68,14 @@ namespace Antlr4.StringTemplate.Compiler
             protected int cardinality = REQUIRED;
              */
 
-        /** When template arguments are not available, when the user
-         *  uses "new Template(...)", then the list of formal arguments
-         *  must be distinguished from the case where a template can specify
-         *  args and there just aren't any such as the t() template above.
-         */
-        //    public static final LinkedHashMap<String, FormalArgument> UNKNOWN =
-        //        new LinkedHashMap<String, FormalArgument>();
-
         private readonly string name;
 
         private int index; // which argument is it? from 0..n-1
 
-        /** If they specified name="value", store the template here */
+        /** If they specified default value x=y, store the token here */
         private readonly IToken defaultValueToken;
-        private CompiledTemplate compiledDefaultValue;
+        private object defaultValue; // x="str", x=true, x=false
+        private CompiledTemplate compiledDefaultValue; // x={...}
 
         public FormalArgument(string name)
         {
@@ -121,6 +114,19 @@ namespace Antlr4.StringTemplate.Compiler
             get
             {
                 return defaultValueToken;
+            }
+        }
+
+        public object DefaultValue
+        {
+            get
+            {
+                return defaultValue;
+            }
+
+            set
+            {
+                defaultValue = value;
             }
         }
 

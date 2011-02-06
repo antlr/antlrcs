@@ -84,5 +84,7 @@ namespace Antlr4.StringTemplate.Compiler
         INSTR_NOOP = 40, // do nothing
         INSTR_POP = 41,
         INSTR_NULL = 42, // push null value
+        INSTR_TRUE = 43, // push true
+        INSTR_FALSE = 44,
     }
 }

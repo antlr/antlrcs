@@ -67,6 +67,8 @@
             instructions[(int)Bytecode.INSTR_NOOP] = new Instruction("noop");
             instructions[(int)Bytecode.INSTR_POP] = new Instruction("pop");
             instructions[(int)Bytecode.INSTR_NULL] = new Instruction("null");
+            instructions[(int)Bytecode.INSTR_TRUE] = new Instruction("true");
+            instructions[(int)Bytecode.INSTR_FALSE] = new Instruction("false");
         }
 
         public Instruction(string name)

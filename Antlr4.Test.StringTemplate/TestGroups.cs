@@ -293,10 +293,28 @@ namespace Antlr4.Test.StringTemplate
                     "stat(name,value=\"99\") ::= \"x=<value>; // <name>\"" + newline
                     ;
             writeFile(tmpdir, "group.stg", templates);
-            TemplateGroup group = new TemplateGroupFile(tmpdir + "/group.stg");
+            TemplateGroup group = new TemplateGroupFile(Path.Combine(tmpdir, "group.stg"));
             Template b = group.GetInstanceOf("method");
             b.Add("name", "foo");
             string expecting = "x=99; // foo";
+            string result = b.Render();
+            Assert.AreEqual(expecting, result);
+        }
+
+        [TestMethod]
+        public void TestBooleanDefaultArguments()
+        {
+            string templates =
+                    "method(name) ::= <<" + newline +
+                    "<stat(name)>" + newline +
+                    ">>" + newline +
+                    "stat(name,x=true,y=false) ::= \"<name>; <x> <y>\"" + newline
+                    ;
+            writeFile(tmpdir, "group.stg", templates);
+            TemplateGroup group = new TemplateGroupFile(Path.Combine(tmpdir, "group.stg"));
+            Template b = group.GetInstanceOf("method");
+            b.Add("name", "foo");
+            string expecting = "foo; True False";
             string result = b.Render();
             Assert.AreEqual(expecting, result);
         }
@@ -308,7 +326,7 @@ namespace Antlr4.Test.StringTemplate
                     "stat(name,value=\"99\") ::= \"x=<value>; // <name>\"" + newline
                     ;
             writeFile(tmpdir, "group.stg", templates);
-            TemplateGroup group = new TemplateGroupFile(tmpdir + "/group.stg");
+            TemplateGroup group = new TemplateGroupFile(Path.Combine(tmpdir, "group.stg"));
             Template b = group.GetInstanceOf("stat");
             b.Add("name", "foo");
             string expecting = "x=99; // foo";
@@ -323,7 +341,7 @@ namespace Antlr4.Test.StringTemplate
                     "stat(name,value={99}) ::= \"x=<value>; // <name>\"" + newline
                     ;
             writeFile(tmpdir, "group.stg", templates);
-            TemplateGroup group = new TemplateGroupFile(tmpdir + "/group.stg");
+            TemplateGroup group = new TemplateGroupFile(Path.Combine(tmpdir, "group.stg"));
             Template b = group.GetInstanceOf("stat");
             b.Add("name", "foo");
             string expecting = "x=99; // foo";
@@ -353,7 +371,7 @@ namespace Antlr4.Test.StringTemplate
                     "stat(f,value={<f.name>}) ::= \"x=<value>; // <f.name>\"" + newline
                     ;
             writeFile(tmpdir, "group.stg", templates);
-            TemplateGroup group = new TemplateGroupFile(tmpdir + "/group.stg");
+            TemplateGroup group = new TemplateGroupFile(Path.Combine(tmpdir, "group.stg"));
             Template m = group.GetInstanceOf("method");
             m.Add("fields", new Field());
             string expecting = "x=parrt; // parrt";
@@ -371,7 +389,7 @@ namespace Antlr4.Test.StringTemplate
                     "stat(value={<f.name>}) ::= \"x=<value>; // <f.name>\"" + newline
                     ;
             writeFile(tmpdir, "group.stg", templates);
-            TemplateGroup group = new TemplateGroupFile(tmpdir + "/group.stg");
+            TemplateGroup group = new TemplateGroupFile(Path.Combine(tmpdir, "group.stg"));
             Template m = group.GetInstanceOf("method");
             m.Add("fields", new Field());
             string expecting = "x=parrt; // parrt";
@@ -390,7 +408,7 @@ namespace Antlr4.Test.StringTemplate
                     "stat(f,value={<f.name>}) ::= \"x=<value>; // <f.name>\"" + newline
                     ;
             writeFile(tmpdir, "group.stg", templates);
-            TemplateGroup group = new TemplateGroupFile(tmpdir + "/group.stg");
+            TemplateGroup group = new TemplateGroupFile(Path.Combine(tmpdir, "group.stg"));
             Template m = group.GetInstanceOf("method");
             m.Add("fields", new Field());
             string expecting = "x=parrt; // parrt";
@@ -408,7 +426,7 @@ namespace Antlr4.Test.StringTemplate
                     "stat(name,value={<name>}) ::= \"x=<value>; // <name>\"" + newline
                     ;
             writeFile(tmpdir, "group.stg", templates);
-            TemplateGroup group = new TemplateGroupFile(tmpdir + "/group.stg");
+            TemplateGroup group = new TemplateGroupFile(Path.Combine(tmpdir, "group.stg"));
             Template b = group.GetInstanceOf("method");
             b.Add("name", "foo");
             b.Add("size", "2");
@@ -428,7 +446,7 @@ namespace Antlr4.Test.StringTemplate
                     "stat(name,value={ [<name>] }) ::= \"x=<value>; // <name>\"" + newline
                     ;
             writeFile(tmpdir, "group.stg", templates);
-            TemplateGroup group = new TemplateGroupFile(tmpdir + "/group.stg");
+            TemplateGroup group = new TemplateGroupFile(Path.Combine(tmpdir, "group.stg"));
             Template b = group.GetInstanceOf("method");
             b.Add("name", "foo");
             b.Add("size", "2");
@@ -448,7 +466,7 @@ namespace Antlr4.Test.StringTemplate
                     "stat(name,value=\"99\") ::= \"x=<value>; // <name>\"" + newline
                     ;
             writeFile(tmpdir, "group.stg", templates);
-            TemplateGroup group = new TemplateGroupFile(tmpdir + "/group.stg");
+            TemplateGroup group = new TemplateGroupFile(Path.Combine(tmpdir, "group.stg"));
             Template b = group.GetInstanceOf("method");
             b.Add("name", "foo");
             string expecting = "x=34; // foo";
@@ -473,13 +491,27 @@ namespace Antlr4.Test.StringTemplate
                     "B(y={<(x)>}) ::= \"<y> <x> <x> <y>\"" + newline
                     ;
             writeFile(tmpdir, "group.stg", templates);
-            TemplateGroup group = new TemplateGroupFile(tmpdir + "/group.stg");
+            TemplateGroup group = new TemplateGroupFile(Path.Combine(tmpdir, "group.stg"));
             Template a = group.GetInstanceOf("A");
             a.Add("x", new Counter());
             string expecting = "0 1 2 0"; // trace must be false to get these numbers
             string result = a.Render();
             //System.err.println("result='"+result+"'");
             Assert.AreEqual(expecting, result);
+        }
+
+        [TestMethod]
+        public void TestTrueFalseArgs()
+        {
+            string groupFile =
+                "f(x,y) ::= \"<x><y>\"\n" +
+                "g() ::= \"<f(true,{a})>\"";
+            writeFile(tmpdir, "group.stg", groupFile);
+            TemplateGroupFile group = new TemplateGroupFile(Path.Combine(tmpdir, "group.stg"));
+            Template st = group.GetInstanceOf("g");
+            string expected = "Truea";
+            string result = st.Render();
+            Assert.AreEqual(expected, result);
         }
 
         [TestMethod]

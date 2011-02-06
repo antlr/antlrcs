@@ -127,6 +127,8 @@ namespace Antlr4.StringTemplate.Compiler
         public const int NEWLINE = 32;
         public const int AT = 33;
         public const int REGION_END = 34;
+        public const int TRUE = 35;
+        public const int FALSE = 36;
 
         /** What char starts an expression? */
         char delimiterStartChar = '<';
@@ -406,20 +408,25 @@ namespace Antlr4.StringTemplate.Compiler
                     if (isIDStartLetter(c))
                     {
                         IToken id = mID();
-                        string name = id.Text;
-
-                        if (name.Equals("if", StringComparison.Ordinal))
+                        switch (id.Text ?? string.Empty)
+                        {
+                        case "if":
                             return newToken(IF);
-                        else if (name.Equals("endif", StringComparison.Ordinal))
+                        case "endif":
                             return newToken(ENDIF);
-                        else if (name.Equals("else", StringComparison.Ordinal))
+                        case "else":
                             return newToken(ELSE);
-                        else if (name.Equals("elseif", StringComparison.Ordinal))
+                        case "elseif":
                             return newToken(ELSEIF);
-                        else if (name.Equals("super", StringComparison.Ordinal))
+                        case "super":
                             return newToken(SUPER);
-
-                        return id;
+                        case "true":
+                            return newToken(TRUE);
+                        case "false":
+                            return newToken(FALSE);
+                        default:
+                            return id;
+                        }
                     }
 
                     RecognitionException re = new NoViableAltException(string.Empty, 0, 0, input);

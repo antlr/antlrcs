@@ -485,6 +485,14 @@ namespace Antlr4.StringTemplate
                     operands[++sp] = null;
                     break;
 
+                case Bytecode.INSTR_TRUE:
+                    operands[++sp] = true;
+                    break;
+
+                case Bytecode.INSTR_FALSE:
+                    operands[++sp] = false;
+                    break;
+
                 default:
                     errMgr.InternalError(self, "invalid bytecode @ " + (ip - 1) + ": " + opcode, null);
                     self.impl.Dump();
@@ -1292,13 +1300,15 @@ namespace Antlr4.StringTemplate
             foreach (FormalArgument arg in invokedST.impl.formalArguments)
             {
                 // if no value for attribute and default arg, inject default arg into self
-                if (invokedST.locals[arg.Index] == Template.EmptyAttribute && arg.CompiledDefaultValue != null)
+                if (invokedST.locals[arg.Index] != Template.EmptyAttribute || arg.DefaultValueToken == null)
+                    continue;
+
+                if (arg.DefaultValueToken.Type == GroupParser.ANONYMOUS_TEMPLATE)
                 {
                     Template defaultArgST = group.CreateStringTemplate();
                     defaultArgST.EnclosingInstance = invokedST.EnclosingInstance;
                     defaultArgST.groupThatCreatedThisInstance = group;
                     defaultArgST.impl = arg.CompiledDefaultValue;
-                    //Console.WriteLine("setting def arg " + arg.Name + " to " + defaultArgST);
                     // If default arg is template with single expression
                     // wrapped in parens, x={<(...)>}, then eval to string
                     // rather than setting x to the template for later
@@ -1313,6 +1323,10 @@ namespace Antlr4.StringTemplate
                     {
                         invokedST.RawSetAttribute(arg.Name, defaultArgST);
                     }
+                }
+                else
+                {
+                    invokedST.RawSetAttribute(arg.Name, arg.DefaultValue);
                 }
             }
         }
