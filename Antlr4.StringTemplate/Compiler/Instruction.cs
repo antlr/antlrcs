@@ -37,7 +37,7 @@
             instructions[(int)Bytecode.INSTR_NEW_BOX_ARGS] = new Instruction("new_box_args", OperandType.String);
             instructions[(int)Bytecode.INSTR_SUPER_NEW] = new Instruction("super_new", OperandType.String, OperandType.Int);
             instructions[(int)Bytecode.INSTR_SUPER_NEW_BOX_ARGS] = new Instruction("super_new_box_args", OperandType.String);
-            instructions[(int)Bytecode.INSTR_WRITE] = new Instruction("Write");
+            instructions[(int)Bytecode.INSTR_WRITE] = new Instruction("write");
             instructions[(int)Bytecode.INSTR_WRITE_OPT] = new Instruction("write_opt");
             instructions[(int)Bytecode.INSTR_MAP] = new Instruction("map");
             instructions[(int)Bytecode.INSTR_ROT_MAP] = new Instruction("rot_map", OperandType.Int);
@@ -47,7 +47,7 @@
             instructions[(int)Bytecode.INSTR_OPTIONS] = new Instruction("options");
             instructions[(int)Bytecode.INSTR_ARGS] = new Instruction("args");
             instructions[(int)Bytecode.INSTR_LIST] = new Instruction("list");
-            instructions[(int)Bytecode.INSTR_ADD] = new Instruction("Add");
+            instructions[(int)Bytecode.INSTR_ADD] = new Instruction("add");
             instructions[(int)Bytecode.INSTR_TOSTR] = new Instruction("tostr");
             instructions[(int)Bytecode.INSTR_FIRST] = new Instruction("first");
             instructions[(int)Bytecode.INSTR_LAST] = new Instruction("last");
