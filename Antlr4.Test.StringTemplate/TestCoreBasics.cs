@@ -669,6 +669,34 @@ namespace Antlr4.Test.StringTemplate
         }
 
         [TestMethod]
+        public void TestParensInConditonal()
+        {
+            string template = "<if((a||b)&&(c||d))>works<endif>";
+            Template st = new Template(template);
+            st.Add("a", true);
+            st.Add("b", true);
+            st.Add("c", true);
+            st.Add("d", true);
+            string expected = "works";
+            string result = st.Render();
+            Assert.AreEqual(expected, result);
+        }
+
+        [TestMethod]
+        public void TestParensInConditonal2()
+        {
+            string template = "<if((!a||b)&&!(c||d))>broken<else>works<endif>";
+            Template st = new Template(template);
+            st.Add("a", true);
+            st.Add("b", true);
+            st.Add("c", true);
+            st.Add("d", true);
+            string expected = "works";
+            string result = st.Render();
+            Assert.AreEqual(expected, result);
+        }
+
+        [TestMethod]
         public void TestTrueCondWithElse()
         {
             string template = "<if(name)>works<else>fail<endif>";

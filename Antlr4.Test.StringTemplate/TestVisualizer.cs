@@ -85,5 +85,26 @@ namespace Antlr4.Test.StringTemplate
 
             st.Visualize();
         }
+
+        [TestMethod]
+        public void VisualizerTestShadowTemplates()
+        {
+            string templates =
+                "list(lines) ::= <<\n" +
+                "<lines:line(); separator=\"\\n\">\n" +
+                ">>\n" +
+                "line(text) ::= \"<text>\"\n";
+
+            writeFile(tmpdir, "t.stg", templates);
+            TemplateGroup group = new TemplateGroupFile(Path.Combine(tmpdir, "t.stg"));
+            group.Debug = true;
+            DebugTemplate template = (DebugTemplate)group.GetInstanceOf("list");
+            DebugTemplate line = (DebugTemplate)group.GetInstanceOf("line");
+            line.Add("text", "x = 3");
+            template.Add("lines", line);
+            template.Add("lines", line);
+            template.Add("lines", line);
+            template.Visualize();
+        }
     }
 }

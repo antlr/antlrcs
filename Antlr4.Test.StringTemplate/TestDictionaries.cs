@@ -37,6 +37,7 @@ namespace Antlr4.Test.StringTemplate
     using System.Collections.Generic;
     using Antlr4.StringTemplate.Misc;
     using Antlr4.Test.StringTemplate.Extensions;
+    using Path = System.IO.Path;
 
     [TestClass]
     public class TestDictionaries : BaseTest
@@ -49,7 +50,7 @@ namespace Antlr4.Test.StringTemplate
                     "var(type,name) ::= \"<type> <name> = <typeInit.(type)>;\"" + newline
                     ;
             writeFile(tmpdir, "test.stg", templates);
-            TemplateGroup group = new TemplateGroupFile(tmpdir + "/" + "test.stg");
+            TemplateGroup group = new TemplateGroupFile(Path.Combine(tmpdir, "test.stg"));
             Template st = group.GetInstanceOf("var");
             st.Add("type", "int");
             st.Add("name", "x");
@@ -66,7 +67,7 @@ namespace Antlr4.Test.StringTemplate
                     "var(type,w,name) ::= \"<type> <name> = <typeInit.(type)>;\"" + newline
                     ;
             writeFile(tmpdir, "test.stg", templates);
-            TemplateGroup group = new TemplateGroupFile(tmpdir + "/" + "test.stg");
+            TemplateGroup group = new TemplateGroupFile(Path.Combine(tmpdir, "test.stg"));
             Template st = group.GetInstanceOf("var");
             st.impl.Dump();
             st.Add("w", "L");
@@ -86,7 +87,7 @@ namespace Antlr4.Test.StringTemplate
                     "var(type,w,name) ::= \"<type> <name> = <typeInit.(type)>;\"" + newline
                     ;
             writeFile(tmpdir, "test.stg", templates);
-            TemplateGroup group = new TemplateGroupFile(tmpdir + "/" + "test.stg");
+            TemplateGroup group = new TemplateGroupFile(Path.Combine(tmpdir, "test.stg"));
             Template st = group.GetInstanceOf("var");
             st.Add("w", "L");
             st.Add("type", new Template("int"));
@@ -104,7 +105,7 @@ namespace Antlr4.Test.StringTemplate
                     "foo(m,k) ::= \"<m.(k)>\"" + newline
                     ;
             writeFile(tmpdir, "test.stg", templates);
-            TemplateGroup group = new TemplateGroupFile(tmpdir + "/" + "test.stg");
+            TemplateGroup group = new TemplateGroupFile(Path.Combine(tmpdir, "test.stg"));
             Template st = group.GetInstanceOf("foo");
             IDictionary<HashableUser, string> m = new Dictionary<HashableUser, string>();
             m[new HashableUser(99, "parrt")] = "first";
@@ -125,7 +126,7 @@ namespace Antlr4.Test.StringTemplate
                     "var(type,w,name) ::= \"<type> <name> = <typeInit.(type)>;\"" + newline
                     ;
             writeFile(tmpdir, "test.stg", templates);
-            TemplateGroup group = new TemplateGroupFile(tmpdir + "/" + "test.stg");
+            TemplateGroup group = new TemplateGroupFile(Path.Combine(tmpdir, "test.stg"));
             Template st = group.GetInstanceOf("var");
             st.Add("w", "L");
             st.Add("type", "double"); // double not in typeInit map
@@ -143,7 +144,7 @@ namespace Antlr4.Test.StringTemplate
                     "var(type,w,name) ::= \"<type> <name> = <typeInit.(type)>;\"" + newline
                     ;
             writeFile(tmpdir, "test.stg", templates);
-            TemplateGroup group = new TemplateGroupFile(tmpdir + "/" + "test.stg");
+            TemplateGroup group = new TemplateGroupFile(Path.Combine(tmpdir, "test.stg"));
             Template st = group.GetInstanceOf("var");
             st.Add("w", "L");
             st.Add("type", null); // double not in typeInit map
@@ -161,7 +162,7 @@ namespace Antlr4.Test.StringTemplate
                     "var(typeInit,type,name) ::= \"<type> <name> = <typeInit.(type)>;\"" + newline
                     ;
             writeFile(tmpdir, "test.stg", templates);
-            TemplateGroup group = new TemplateGroupFile(tmpdir + "/" + "test.stg");
+            TemplateGroup group = new TemplateGroupFile(Path.Combine(tmpdir, "test.stg"));
             Template st = group.GetInstanceOf("var");
             st.Add("type", "int");
             st.Add("name", "x");
@@ -178,7 +179,7 @@ namespace Antlr4.Test.StringTemplate
                     "var(type,name) ::= \"<type> <name> = <typeInit.(type)>;\"" + newline
                     ;
             writeFile(tmpdir, "test.stg", templates);
-            TemplateGroup group = new TemplateGroupFile(tmpdir + "/" + "test.stg");
+            TemplateGroup group = new TemplateGroupFile(Path.Combine(tmpdir, "test.stg"));
             Template st = group.GetInstanceOf("var");
             st.Add("type", "float");
             st.Add("name", "x");
@@ -195,7 +196,7 @@ namespace Antlr4.Test.StringTemplate
                     "var(type,name) ::= \"<type> <name> = <typeInit.(type)>;\"" + newline
                     ;
             writeFile(tmpdir, "test.stg", templates);
-            TemplateGroup group = new TemplateGroupFile(tmpdir + "/" + "test.stg");
+            TemplateGroup group = new TemplateGroupFile(Path.Combine(tmpdir, "test.stg"));
             Template st = group.GetInstanceOf("var");
             st.Add("type", "UserRecord");
             st.Add("name", "x");
@@ -212,7 +213,7 @@ namespace Antlr4.Test.StringTemplate
                     "var(type,name) ::= \"<type> <name> = <typeInit.(type)>;\"" + newline
                     ;
             writeFile(tmpdir, "test.stg", templates);
-            TemplateGroup group = new TemplateGroupFile(tmpdir + "/" + "test.stg");
+            TemplateGroup group = new TemplateGroupFile(Path.Combine(tmpdir, "test.stg"));
             Template st = group.GetInstanceOf("var");
             // missing or set to null: st.Add("type", null);
             st.Add("name", "x");
@@ -230,7 +231,7 @@ namespace Antlr4.Test.StringTemplate
                     ;
             writeFile(tmpdir, "test.stg", templates);
             ErrorBuffer errors = new ErrorBuffer();
-            TemplateGroupFile group = new TemplateGroupFile(tmpdir + "/" + "test.stg");
+            TemplateGroupFile group = new TemplateGroupFile(Path.Combine(tmpdir, "test.stg"));
             group.Listener = errors;
             group.Load();
             string expected = "[test.stg 1:33: missing value for key at ']']";
@@ -246,7 +247,7 @@ namespace Antlr4.Test.StringTemplate
                     "var(type,name) ::= \"<type> <name> = <typeInit.(type)>;\"" + newline
                     ;
             writeFile(tmpdir, "test.stg", templates);
-            TemplateGroup group = new TemplateGroupFile(tmpdir + "/" + "test.stg");
+            TemplateGroup group = new TemplateGroupFile(Path.Combine(tmpdir, "test.stg"));
             Template st = group.GetInstanceOf("var");
             st.Add("type", "UserRecord");
             st.Add("name", "x");
@@ -266,7 +267,7 @@ namespace Antlr4.Test.StringTemplate
                     "var(type,name) ::= \"<type> <name> = <typeInit.(type)>;\"" + newline
                     ;
             writeFile(tmpdir, "test.stg", templates);
-            TemplateGroup group = new TemplateGroupFile(tmpdir + "/" + "test.stg");
+            TemplateGroup group = new TemplateGroupFile(Path.Combine(tmpdir, "test.stg"));
             Template st = group.GetInstanceOf("var");
             st.Add("type", "default");
             st.Add("name", "x");
@@ -286,7 +287,7 @@ namespace Antlr4.Test.StringTemplate
                     "t() ::= << <map.(\"1\")> >>" + newline
                     ;
             writeFile(tmpdir, "test.stg", templates);
-            TemplateGroup group = new TemplateGroupFile(tmpdir + "/" + "test.stg");
+            TemplateGroup group = new TemplateGroupFile(Path.Combine(tmpdir, "test.stg"));
             Template st = group.GetInstanceOf("t");
             string expecting = " default ";
             string result = st.Render();
@@ -302,7 +303,7 @@ namespace Antlr4.Test.StringTemplate
                     "var(type,name) ::= \"<type> <name> = <typeInit.(type)>;\"" + newline
                     ;
             writeFile(tmpdir, "test.stg", templates);
-            TemplateGroup group = new TemplateGroupFile(tmpdir + "/" + "test.stg");
+            TemplateGroup group = new TemplateGroupFile(Path.Combine(tmpdir, "test.stg"));
             Template st = group.GetInstanceOf("intermediate");
             st.Add("type", "int");
             st.Add("name", "x");
@@ -320,7 +321,7 @@ namespace Antlr4.Test.StringTemplate
                     "var(type,name) ::= \"<type> <name> = <typeInit.(type)>;\"" + newline
                     ;
             writeFile(tmpdir, "test.stg", templates);
-            TemplateGroup group = new TemplateGroupFile(tmpdir + "/" + "test.stg");
+            TemplateGroup group = new TemplateGroupFile(Path.Combine(tmpdir, "test.stg"));
             Template interm = group.GetInstanceOf("intermediate");
             Template var = group.GetInstanceOf("var");
             var.Add("type", "int");
@@ -329,6 +330,47 @@ namespace Antlr4.Test.StringTemplate
             string expecting = "int x = 0;";
             string result = interm.Render();
             Assert.AreEqual(expecting, result);
+        }
+
+        [TestMethod]
+        public void TestAccessDictionaryFromAnonymousTemplate()
+        {
+            string dir = tmpdir;
+            string g =
+                "a() ::= <<[<[\"foo\",\"a\"]:{x|<if(values.(x))><x><endif>}>]>>\n" +
+                "values ::= [\n" +
+                "    \"a\":false,\n" +
+                "    default:true\n" +
+                "]\n";
+            writeFile(dir, "g.stg", g);
+
+            TemplateGroup group = new TemplateGroupFile(Path.Combine(dir, "g.stg"));
+            Template st = group.GetInstanceOf("a");
+            string expected = "[foo]";
+            string result = st.Render();
+            Assert.AreEqual(expected, result);
+        }
+
+        [TestMethod]
+        public void TestAccessDictionaryFromAnonymousTemplateInRegion()
+        {
+            string dir = tmpdir;
+            string g =
+                "a() ::= <<[<@r()>]>>\n" +
+                "@a.r() ::= <<\n" +
+                "<[\"foo\",\"a\"]:{x|<if(values.(x))><x><endif>}>\n" +
+                ">>\n" +
+                "values ::= [\n" +
+                "    \"a\":false,\n" +
+                "    default:true\n" +
+                "]\n";
+            writeFile(dir, "g.stg", g);
+
+            TemplateGroup group = new TemplateGroupFile(Path.Combine(dir, "g.stg"));
+            Template st = group.GetInstanceOf("a");
+            string expected = "[foo]";
+            string result = st.Render();
+            Assert.AreEqual(expected, result);
         }
     }
 }
