@@ -711,6 +711,9 @@ namespace Antlr4.StringTemplate
         {
             get
             {
+                if (ErrorManager == null)
+                    return null;
+
                 return ErrorManager.Listener;
             }
 
