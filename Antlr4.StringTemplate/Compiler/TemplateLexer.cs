@@ -721,6 +721,14 @@ namespace Antlr4.StringTemplate.Compiler
 
             consume();
             consume(); // kill !>
+
+            if (startCharPositionInLine == 0 && (c == '\r' || c == '\n'))
+            {
+                if (c == '\r')
+                    consume();
+                if (c == '\n')
+                    consume();
+            }
         }
 
         private void LINEBREAK()
@@ -775,6 +783,8 @@ namespace Antlr4.StringTemplate.Compiler
         public virtual IToken newToken(int ttype, string text, int pos)
         {
             STToken t = new STToken(ttype, text);
+            t.StartIndex = startCharIndex;
+            t.StopIndex = input.Index - 1;
             t.Line = input.Line;
             t.CharPositionInLine = pos;
             return t;
