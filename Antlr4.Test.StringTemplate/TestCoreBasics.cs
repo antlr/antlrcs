@@ -256,7 +256,7 @@ namespace Antlr4.Test.StringTemplate
         {
             string template = "Load <box()>;";
             Template st = new Template(template);
-            st.impl.nativeGroup.DefineTemplate("box", "kewl\ndaddy");
+            st.impl.NativeGroup.DefineTemplate("box", "kewl\ndaddy");
             string expected =
                 "Load kewl" + newline +
                 "daddy;";
@@ -269,7 +269,7 @@ namespace Antlr4.Test.StringTemplate
         {
             string template = "Load <box(\"arg\")>;";
             Template st = new Template(template);
-            st.impl.nativeGroup.DefineTemplate("box", "kewl <x> daddy", new string[] { "x" });
+            st.impl.NativeGroup.DefineTemplate("box", "kewl <x> daddy", new string[] { "x" });
             st.impl.Dump();
             st.Add("name", "Ter");
             string expected = "Load kewl arg daddy;";
@@ -282,8 +282,8 @@ namespace Antlr4.Test.StringTemplate
         {
             string template = "Load <box(\"arg\", foo())>;";
             Template st = new Template(template);
-            st.impl.nativeGroup.DefineTemplate("box", "kewl <x> <y> daddy", new string[] { "x", "y" });
-            st.impl.nativeGroup.DefineTemplate("foo", "blech");
+            st.impl.NativeGroup.DefineTemplate("box", "kewl <x> <y> daddy", new string[] { "x", "y" });
+            st.impl.NativeGroup.DefineTemplate("foo", "blech");
             st.Add("name", "Ter");
             string expected = "Load kewl arg blech daddy;";
             string result = st.Render();
@@ -295,8 +295,8 @@ namespace Antlr4.Test.StringTemplate
         {
             string template = "Load <box(foo(\"arg\"))>;";
             Template st = new Template(template);
-            st.impl.nativeGroup.DefineTemplate("box", "kewl <y> daddy", new string[] { "y" });
-            st.impl.nativeGroup.DefineTemplate("foo", "blech <x>", new string[] { "x" });
+            st.impl.NativeGroup.DefineTemplate("box", "kewl <y> daddy", new string[] { "y" });
+            st.impl.NativeGroup.DefineTemplate("foo", "blech <x>", new string[] { "x" });
             st.Add("name", "Ter");
             string expected = "Load kewl blech arg daddy;";
             string result = st.Render();

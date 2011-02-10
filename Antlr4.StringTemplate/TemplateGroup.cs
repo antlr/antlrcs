@@ -494,7 +494,7 @@ namespace Antlr4.StringTemplate
             //System.out.println("TemplateGroup.Compile: "+enclosingTemplateName);
             TemplateCompiler c = new TemplateCompiler(this);
             CompiledTemplate code = c.Compile(srcName, name, args, template, templateToken);
-            code.nativeGroup = this;
+            code.NativeGroup = this;
             code.template = template;
             return code;
         }

@@ -33,13 +33,13 @@
 namespace Antlr4.StringTemplate.Compiler
 {
     using System.Collections.Generic;
-    using Antlr.Runtime.Tree;
-    using Antlr.Runtime;
-    using Antlr4.StringTemplate.Misc;
     using System.Linq;
-    using StringWriter = System.IO.StringWriter;
-    using Console = System.Console;
+    using Antlr.Runtime;
+    using Antlr.Runtime.Tree;
+    using Antlr4.StringTemplate.Misc;
     using ArgumentNullException = System.ArgumentNullException;
+    using Console = System.Console;
+    using StringWriter = System.IO.StringWriter;
 
     /** The result of compiling an Template.  Contains all the bytecode instructions,
      *  string table, bytecode address to source code map, and other bookkeeping
@@ -74,7 +74,7 @@ namespace Antlr4.StringTemplate.Compiler
          *  interpretation via Template.ToString().  From there, it becomes field 'group'
          *  in interpreter and is fixed until rendering completes.
          */
-        public TemplateGroup nativeGroup = TemplateGroup.defaultGroup;
+        private TemplateGroup _nativeGroup = TemplateGroup.defaultGroup;
 
         /** Does this template come from a &lt;@region&gt;...&lt;@end&gt; embedded in
          *  another template?
@@ -103,6 +103,19 @@ namespace Antlr4.StringTemplate.Compiler
             instrs = new byte[TemplateCompiler.InitialCodeSize];
             sourceMap = new Interval[TemplateCompiler.InitialCodeSize];
             template = string.Empty;
+        }
+
+        public virtual TemplateGroup NativeGroup
+        {
+            get
+            {
+                return _nativeGroup;
+            }
+
+            set
+            {
+                _nativeGroup = value;
+            }
         }
 
         public virtual string TemplateSource

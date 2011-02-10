@@ -521,7 +521,7 @@ namespace Antlr4.StringTemplate
         internal virtual void SuperNew(Template self, string name, int nargs)
         {
             Template st = null;
-            CompiledTemplate imported = self.impl.nativeGroup.LookupImportedTemplate(name);
+            CompiledTemplate imported = self.impl.NativeGroup.LookupImportedTemplate(name);
             if (imported == null)
             {
                 errMgr.RuntimeError(self, current_ip, ErrorType.NO_IMPORTED_TEMPLATE,
@@ -533,7 +533,7 @@ namespace Antlr4.StringTemplate
                 return;
             }
 
-            st = imported.nativeGroup.CreateStringTemplate();
+            st = imported.NativeGroup.CreateStringTemplate();
             st.EnclosingInstance = self; // self invoked super.name()
             st.groupThatCreatedThisInstance = group;
             st.impl = imported;
@@ -547,7 +547,7 @@ namespace Antlr4.StringTemplate
         internal virtual void SuperNew(Template self, string name, IDictionary<string, object> attrs)
         {
             Template st = null;
-            CompiledTemplate imported = self.impl.nativeGroup.LookupImportedTemplate(name);
+            CompiledTemplate imported = self.impl.NativeGroup.LookupImportedTemplate(name);
             if (imported == null)
             {
                 errMgr.RuntimeError(self, current_ip, ErrorType.NO_IMPORTED_TEMPLATE, name);
@@ -557,7 +557,7 @@ namespace Antlr4.StringTemplate
                 return;
             }
 
-            st = imported.nativeGroup.CreateStringTemplate();
+            st = imported.NativeGroup.CreateStringTemplate();
             st.EnclosingInstance = self; // self invoked super.name()
             st.groupThatCreatedThisInstance = group;
             st.impl = imported;

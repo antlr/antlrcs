@@ -46,18 +46,18 @@ namespace Antlr4.StringTemplate.Visualizer.Extensions
 
         public static void Visualize(this DebugTemplate template, int lineWidth)
         {
-            Visualize(template, template.impl.nativeGroup.ErrorManager, CultureInfo.CurrentCulture, lineWidth);
+            Visualize(template, template.impl.NativeGroup.ErrorManager, CultureInfo.CurrentCulture, lineWidth);
         }
 
         public static void Visualize(this DebugTemplate template, CultureInfo culture)
         {
-            Visualize(template, template.impl.nativeGroup.ErrorManager, culture, AutoIndentWriter.NoWrap);
+            Visualize(template, template.impl.NativeGroup.ErrorManager, culture, AutoIndentWriter.NoWrap);
         }
 
         public static void Visualize(this DebugTemplate template, ErrorManager errorManager, CultureInfo culture, int lineWidth)
         {
             ErrorBuffer errors = new ErrorBuffer();
-            template.impl.nativeGroup.Listener = errors;
+            template.impl.NativeGroup.Listener = errors;
             StringWriter @out = new StringWriter();
             ITemplateWriter wr = new AutoIndentWriter(@out);
             wr.LineWidth = lineWidth;

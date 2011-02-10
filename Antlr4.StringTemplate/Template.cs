@@ -312,9 +312,9 @@ namespace Antlr4.StringTemplate
                 p = p.EnclosingInstance;
             }
             // got to root template and no definition, try dictionaries in group
-            if (impl.nativeGroup.IsDictionary(name))
+            if (impl.NativeGroup.IsDictionary(name))
             {
-                return impl.nativeGroup.RawGetDictionary(name);
+                return impl.NativeGroup.RawGetDictionary(name);
             }
 
             throw new TemplateNoSuchPropertyException(name);
@@ -430,14 +430,14 @@ namespace Antlr4.StringTemplate
 
         public virtual int Write(ITemplateWriter @out)
         {
-            Interpreter interp = new Interpreter(groupThatCreatedThisInstance, impl.nativeGroup.ErrorManager);
+            Interpreter interp = new Interpreter(groupThatCreatedThisInstance, impl.NativeGroup.ErrorManager);
             interp.SetDefaultArguments(this);
             return interp.Execute(@out, this);
         }
 
         public virtual int Write(ITemplateWriter @out, CultureInfo locale)
         {
-            Interpreter interp = new Interpreter(groupThatCreatedThisInstance, locale, impl.nativeGroup.ErrorManager);
+            Interpreter interp = new Interpreter(groupThatCreatedThisInstance, locale, impl.NativeGroup.ErrorManager);
             interp.SetDefaultArguments(this);
             return interp.Execute(@out, this);
         }
