@@ -112,6 +112,8 @@ namespace Antlr4.StringTemplate
 
         private IDictionary<Template, List<InterpEvent>> debugInfo;
 
+        private int _writeCount;
+
         public Interpreter(TemplateGroup group)
             : this(group, CultureInfo.CurrentCulture, group.ErrorManager)
         {
@@ -756,20 +758,20 @@ namespace Antlr4.StringTemplate
             string separator = null;
             if (options != null)
                 separator = options[(int)Option.Separator];
-            bool seenAValue = false;
+            bool sawValue = false;
             while (it.hasNext())
             {
                 object iterValue = it.next();
+                if (iterValue == null && options != null && options[(int)Option.Null] == null)
+                    continue;
+
                 // Emit separator if we're beyond first value
-                bool needSeparator = seenAValue &&
-                    separator != null &&            // we have a separator and
-                    (iterValue != null ||           // either we have a value
-                        options[(int)Option.Null] != null); // or no value but null option
-                if (needSeparator)
+                if (sawValue && separator != null)
                     n += @out.WriteSeparator(separator);
+
+                int emptyWriteCount = _writeCount;
                 int nw = WriteObject(@out, self, iterValue, options);
-                if (nw > 0)
-                    seenAValue = true;
+                sawValue = _writeCount > emptyWriteCount;
                 n += nw;
             }
             return n;
@@ -777,6 +779,8 @@ namespace Antlr4.StringTemplate
 
         protected virtual int WritePlainObject(ITemplateWriter @out, object o, string[] options)
         {
+            _writeCount++;
+
             string formatString = null;
             if (options != null)
                 formatString = options[(int)Option.Format];
