@@ -105,17 +105,18 @@ ifstat // ignore INDENTs in front of elseif ...
 		-> ^('if' $c1 $t1? ^('elseif' $c2 $t2)* ^('else' $t3?)?)
 	;
 
-conditional : andConditional ( '||'^ andConditional )* ;
+conditional
+scope {
+	bool inside;
+}
+	: andConditional ( '||'^ andConditional )*
+	;
 
 andConditional : notConditional ( '&&'^ notConditional )* ;
 
-notConditional : ( '!'^ notConditionalExpr | '!'^ '('! conditional ')'! | memberExpr );
-
-notConditionalExpr
-	:	(ID->ID)
-		(	p='.' prop=ID						-> ^(PROP[$p,"PROP"] $notConditionalExpr $prop)
-		|	p='.' '(' mapExpr ')'				-> ^(PROP_IND[$p,"PROP_IND"] $notConditionalExpr mapExpr)
-		)*
+notConditional
+	:	'!'^ notConditional
+	|	memberExpr
 	;
 
 exprOptions : option ( ',' option )* -> ^(OPTIONS option*) ;
@@ -206,7 +207,8 @@ primary
 	|	FALSE
 	|	subtemplate
 	|	list
-	|	lp='(' expr ')'
+	|	{$conditional.Count > 0}? => '('! conditional ')'!
+	|	{$conditional.Count == 0}? => lp='(' expr ')'
 		(	'(' argExprList? ')'				-> ^(INCLUDE_IND[$lp] expr argExprList?)
 		|										-> ^(TO_STR[$lp] expr)
 		)
