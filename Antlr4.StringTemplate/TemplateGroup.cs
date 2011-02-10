@@ -422,6 +422,8 @@ namespace Antlr4.StringTemplate
             code.regionDefType = Template.RegionType.Explicit;
 
             RawDefineTemplate(mangled, code, regionT);
+            code.DefineArgumentDefaultValueTemplates(this);
+            code.DefineImplicitlyDefinedTemplates(this); // define any anonymous subtemplates
             return code;
         }
 
