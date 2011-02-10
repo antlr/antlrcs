@@ -35,7 +35,7 @@ namespace Antlr4.Test.StringTemplate
     using Antlr4.StringTemplate;
     using Microsoft.VisualStudio.TestTools.UnitTesting;
     using StringWriter = System.IO.StringWriter;
-    using Environment = System.Environment;
+    using System.Collections.Generic;
 
     [TestClass]
     public class TestWhitespace : BaseTest
@@ -191,7 +191,7 @@ namespace Antlr4.Test.StringTemplate
                 "<users>\n" +
                 "<users>\n" +
                 "end\n");
-            string expecting = "begin" + Environment.NewLine + "end" + newline;
+            string expecting = "begin" + newline + "end" + newline;
             string result = t.Render();
             Assert.AreEqual(expecting, result);
         }
@@ -376,6 +376,22 @@ namespace Antlr4.Test.StringTemplate
             st.Write(new AutoIndentWriter(sw, "\n")); // force \n as newline
             string result = sw.ToString();
             string expecting = "Foo\na\nb\nc\n";     // expect \n in output
+            Assert.AreEqual(expecting, result);
+        }
+
+        [TestMethod]
+        public void TestNoSeparatorEmittedForSkippedIteratorValue()
+        {
+            Template st = new Template(
+                "<names:{name|<if(name.key)><name.Value><endif>}; separator=\" \">"
+                );
+            st.Add("names", new KeyValuePair<bool, string>(true, "Foo"));
+            st.Add("names", new KeyValuePair<bool, string>(false, "Bar"));
+            st.Add("names", new KeyValuePair<bool, string>(true, "Foo"));
+            StringWriter sw = new StringWriter();
+            st.Write(new AutoIndentWriter(sw));
+            string result = sw.ToString();
+            string expecting = "Foo Foo";
             Assert.AreEqual(expecting, result);
         }
     }

@@ -142,6 +142,64 @@ namespace Antlr4.Test.StringTemplate
         }
 
         [TestMethod]
+        public void TestAnonymousTemplateInRegion()
+        {
+            string dir = tmpdir;
+            string g = "a() ::= <<[<@r()>]>>\n" +
+                       "@a.r() ::= <<\n"+
+                       "<[\"foo\"]:{x|<x>}>\n"+
+                       ">>\n";
+            writeFile(dir, "g.stg", g);
+
+            TemplateGroup group = new TemplateGroupFile(Path.Combine(dir, "g.stg"));
+            Template st = group.GetInstanceOf("a");
+            string expected = "[foo]";
+            string result = st.Render();
+            Assert.AreEqual(expected, result);
+        }
+
+        [TestMethod]
+        public void TestAccessDictionaryFromAnonymousTemplate()
+        {
+            string dir = tmpdir;
+            string g =
+                "a() ::= <<[<[\"foo\",\"a\"]:{x|<if(values.(x))><x><endif>}>]>>\n" +
+                "values ::= [\n" +
+                "    \"a\":false,\n" +
+                "    default:true\n" +
+                "]\n";
+            writeFile(dir, "g.stg", g);
+
+            TemplateGroup group = new TemplateGroupFile(Path.Combine(dir, "g.stg"));
+            Template st = group.GetInstanceOf("a");
+            string expected = "[foo]";
+            string result = st.Render();
+            Assert.AreEqual(expected, result);
+        }
+
+        [TestMethod]
+        public void TestAccessDictionaryFromAnonymousTemplateInRegion()
+        {
+            string dir = tmpdir;
+            string g =
+                "a() ::= <<[<@r()>]>>\n" +
+                "@a.r() ::= <<\n" +
+                "<[\"foo\",\"a\"]:{x|<if(values.(x))><x><endif>}>\n" +
+                ">>\n" +
+                "values ::= [\n" +
+                "    \"a\":false,\n" +
+                "    default:true\n" +
+                "]\n";
+            writeFile(dir, "g.stg", g);
+
+            TemplateGroup group = new TemplateGroupFile(Path.Combine(dir, "g.stg"));
+            Template st = group.GetInstanceOf("a");
+            string expected = "[foo]";
+            string result = st.Render();
+            Assert.AreEqual(expected, result);
+        }
+
+        [TestMethod]
         public void TestCantDefineEmbeddedRegionAgain()
         {
             string dir = tmpdir;
