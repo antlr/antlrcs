@@ -173,6 +173,8 @@ namespace Antlr4.StringTemplate.Compiler
             try
             {
                 impl2 = gen.template(name, args);
+                impl2.NativeGroup = Group;
+                impl2.template = template;
                 // only save tree/token stream when debugging
                 if (Group.Debug)
                 {

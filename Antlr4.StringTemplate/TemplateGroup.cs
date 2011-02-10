@@ -476,6 +476,7 @@ namespace Antlr4.StringTemplate
                 }
             }
 
+            code.NativeGroup = this;
             templates[name] = code;
         }
 
@@ -493,10 +494,7 @@ namespace Antlr4.StringTemplate
         {
             //System.out.println("TemplateGroup.Compile: "+enclosingTemplateName);
             TemplateCompiler c = new TemplateCompiler(this);
-            CompiledTemplate code = c.Compile(srcName, name, args, template, templateToken);
-            code.NativeGroup = this;
-            code.template = template;
-            return code;
+            return c.Compile(srcName, name, args, template, templateToken);
         }
 
         /** The "foo" of t() ::= "<@foo()>" is mangled to "region#t#foo" */
