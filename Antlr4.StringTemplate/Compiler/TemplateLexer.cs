@@ -129,6 +129,7 @@ namespace Antlr4.StringTemplate.Compiler
         public const int REGION_END = 34;
         public const int TRUE = 35;
         public const int FALSE = 36;
+        public const int COMMENT = 37;
 
         /** What char starts an expression? */
         char delimiterStartChar = '<';
@@ -275,10 +276,7 @@ namespace Antlr4.StringTemplate.Compiler
             {
                 consume();
                 if (c == '!')
-                {
-                    COMMENT();
-                    return SKIP;
-                }
+                    return Comment();
 
                 if (c == '\\')
                     return ESCAPE(); // <\\> <\uFFFF> <\n> etc...
@@ -701,7 +699,7 @@ namespace Antlr4.StringTemplate.Compiler
                 consume();
         }
 
-        private void COMMENT()
+        private IToken Comment()
         {
             match('!');
 
@@ -720,15 +718,8 @@ namespace Antlr4.StringTemplate.Compiler
             }
 
             consume();
-            consume(); // kill !>
-
-            if (startCharPositionInLine == 0 && (c == '\r' || c == '\n'))
-            {
-                if (c == '\r')
-                    consume();
-                if (c == '\n')
-                    consume();
-            }
+            consume(); // grab !>
+            return newToken(COMMENT);
         }
 
         private void LINEBREAK()

@@ -65,15 +65,15 @@ templateAndEOF : template EOF!;
 template : element* ;
 
 element
-	:	INDENT^ element
+	:	{input.LT(1).CharPositionInLine == 0 && (input.LA(1) == INDENT ? input.LA(2) == COMMENT && input.LA(3) == NEWLINE : input.LA(1) == COMMENT && input.LA(2) == NEWLINE)}? INDENT!? COMMENT! NEWLINE!
+	|	INDENT^ element
 	|	ifstat
-	|	exprTag
-	|	text
 	|	region
+	|	exprTag
+	|	TEXT
 	|	NEWLINE
+	|	COMMENT!
 	;
-
-text : TEXT ;
 
 exprTag
 	:	LDELIM expr ( ';' exprOptions )? RDELIM

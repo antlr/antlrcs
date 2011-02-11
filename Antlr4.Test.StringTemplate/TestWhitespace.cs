@@ -394,5 +394,29 @@ namespace Antlr4.Test.StringTemplate
             string expecting = "Foo Foo";
             Assert.AreEqual(expecting, result);
         }
+
+        [TestMethod]
+        public void TestCommentOnlyLineGivesNoOutput()
+        {
+            Template t = new Template(
+                "begin\n" +
+                "<! ignore !>\n" +
+                "end\n");
+            string expecting = "begin" + newline + "end" + newline;
+            string result = t.Render();
+            Assert.AreEqual(expecting, result);
+        }
+
+        [TestMethod]
+        public void TestCommentOnlyLineGivesNoOutput2()
+        {
+            Template t = new Template(
+                "begin\n" +
+                "    <! ignore !>\n" +
+                "end\n");
+            string expecting = "begin" + newline + "end" + newline;
+            string result = t.Render();
+            Assert.AreEqual(expecting, result);
+        }
     }
 }

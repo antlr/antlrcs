@@ -250,8 +250,7 @@ namespace Antlr4.Test.StringTemplate
             group.Listener = errors;
             group.Load(); // force load
             string expected =
-                "t.stg 1:20: Nonterminated comment starting at 1:1: '!>' missing" + newline +
-                "t.stg 1:12: this doesn't look like a template: \" \"" + newline;
+                "t.stg 1:20: Nonterminated comment starting at 1:1: '!>' missing" + newline;
             string result = errors.ToString();
             Assert.AreEqual(expected, result);
         }
