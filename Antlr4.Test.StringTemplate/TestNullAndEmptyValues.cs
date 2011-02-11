@@ -35,6 +35,7 @@ namespace Antlr4.Test.StringTemplate
     using Antlr4.StringTemplate;
     using Microsoft.VisualStudio.TestTools.UnitTesting;
     using System.Collections.Generic;
+    using StringWriter = System.IO.StringWriter;
 
     [TestClass]
     public class TestNullAndEmptyValues : BaseTest
@@ -227,6 +228,34 @@ namespace Antlr4.Test.StringTemplate
             t.Add("m", new Dictionary<string, string>() { { "foo", null } });
             string expecting = "";
             string result = t.Render();
+            Assert.AreEqual(expecting, result);
+        }
+
+        [TestMethod]
+        public void TestSeparatorEmittedForEmptyIteratorValue()
+        {
+            Template st = new Template(
+                "<values:{v|<if(v)>x<endif>}; separator=\" \">"
+            );
+            st.Add("values", new bool[] { true, false, true });
+            StringWriter sw = new StringWriter();
+            st.Write(new AutoIndentWriter(sw));
+            string result = sw.ToString();
+            string expecting = "x  x";
+            Assert.AreEqual(expecting, result);
+        }
+
+        [TestMethod]
+        public void TestSeparatorEmittedForEmptyIteratorValue2()
+        {
+            Template st = new Template(
+                "<values; separator=\" \">"
+            );
+            st.Add("values", new string[] { "x", string.Empty, "y" });
+            StringWriter sw = new StringWriter();
+            st.Write(new AutoIndentWriter(sw));
+            string result = sw.ToString();
+            string expecting = "x  y";
             Assert.AreEqual(expecting, result);
         }
     }

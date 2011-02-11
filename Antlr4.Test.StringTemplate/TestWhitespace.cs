@@ -380,22 +380,6 @@ namespace Antlr4.Test.StringTemplate
         }
 
         [TestMethod]
-        public void TestNoSeparatorEmittedForSkippedIteratorValue()
-        {
-            Template st = new Template(
-                "<names:{name|<if(name.key)><name.Value><endif>}; separator=\" \">"
-                );
-            st.Add("names", new KeyValuePair<bool, string>(true, "Foo"));
-            st.Add("names", new KeyValuePair<bool, string>(false, "Bar"));
-            st.Add("names", new KeyValuePair<bool, string>(true, "Foo"));
-            StringWriter sw = new StringWriter();
-            st.Write(new AutoIndentWriter(sw));
-            string result = sw.ToString();
-            string expecting = "Foo Foo";
-            Assert.AreEqual(expecting, result);
-        }
-
-        [TestMethod]
         public void TestCommentOnlyLineGivesNoOutput()
         {
             Template t = new Template(
