@@ -592,9 +592,9 @@ StringBuffer buf = new StringBuffer();
 	;
 
 elementOption[GrammarAST terminalAST]
-	:	a=id ASSIGN^ (b=id|s=STRING_LITERAL)
+	:	a=id ASSIGN^ (b=id|STRING_LITERAL|DOUBLE_QUOTE_STRING_LITERAL|DOUBLE_ANGLE_STRING_LITERAL)
 		{
-		object v = ($b.tree!=null)?$b.text:$s.text;
+		object v = $b.text ?? $STRING_LITERAL.text ?? $DOUBLE_QUOTE_STRING_LITERAL.text ?? $DOUBLE_ANGLE_STRING_LITERAL.text;
 		terminalAST.SetTerminalOption(Grammar,$a.text,v);
 		}
 	;

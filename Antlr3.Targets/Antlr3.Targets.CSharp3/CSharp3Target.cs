@@ -82,12 +82,21 @@ namespace Antlr3.Targets
 
         protected override void GenRecognizerFile(AntlrTool tool, CodeGenerator generator, Grammar grammar, StringTemplate outputFileST)
         {
-            generator.Templates.RegisterRenderer(typeof(string), new StringRenderer());
+            generator.Templates.RegisterRenderer(typeof(string), new StringRenderer(generator, this));
             base.GenRecognizerFile(tool, generator, grammar, outputFileST);
         }
 
         public class StringRenderer : IAttributeRenderer
         {
+            private readonly CodeGenerator _generator;
+            private readonly CSharp3Target _target;
+
+            public StringRenderer(CodeGenerator generator, CSharp3Target target)
+            {
+                _generator = generator;
+                _target = target;
+            }
+
             public string ToString(string value)
             {
                 return value;
@@ -108,6 +117,9 @@ namespace Antlr3.Targets
 
                 case "cap":
                     return char.ToUpper(value[0], CultureInfo.CurrentCulture) + value.Substring(1);
+
+                case "string":
+                    return _target.GetTargetStringLiteralFromString(value, true);
 
                 default:
                     throw new ArgumentException(string.Format("Unsupported format name: '{0}'", formatName), "formatName");
