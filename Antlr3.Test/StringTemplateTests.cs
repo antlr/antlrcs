@@ -1905,30 +1905,30 @@ namespace AntlrUnitTests
 
         public class Connector
         {
-            public int getID()
+            public int GetID()
             {
                 return 1;
             }
-            public string getFirstName()
+            public string GetFirstName()
             {
                 return "Terence";
             }
-            public string getLastName()
+            public string GetLastName()
             {
                 return "Parr";
             }
-            public string getEmail()
+            public string GetEmail()
             {
                 return "parrt@jguru.com";
             }
-            public string getBio()
+            public string GetBio()
             {
                 return "Superhero by night...";
             }
             /** As of 2.0, booleans work as you expect.  In 1.x,
              *  a missing value simulated a boolean.
              */
-            public bool getCanEdit()
+            public bool GetCanEdit()
             {
                 return false;
             }
@@ -1936,27 +1936,27 @@ namespace AntlrUnitTests
 
         public class Connector2
         {
-            public int getID()
+            public int GetID()
             {
                 return 2;
             }
-            public string getFirstName()
+            public string GetFirstName()
             {
                 return "Tom";
             }
-            public string getLastName()
+            public string GetLastName()
             {
                 return "Burns";
             }
-            public string getEmail()
+            public string GetEmail()
             {
                 return "tombu@jguru.com";
             }
-            public string getBio()
+            public string GetBio()
             {
                 return "Superhero by day...";
             }
-            public Boolean getCanEdit()
+            public Boolean GetCanEdit()
             {
                 return true;
             }
@@ -2013,15 +2013,15 @@ namespace AntlrUnitTests
             {
                 text = t;
             }
-            public virtual string getText()
+            public virtual string GetText()
             {
                 return text;
             }
-            public virtual void addChild( Tree c )
+            public virtual void AddChild( Tree c )
             {
                 children.Add( c );
             }
-            public virtual Tree getFirstChild()
+            public virtual Tree GetFirstChild()
             {
                 if ( children.Count == 0 )
                 {
@@ -2029,7 +2029,7 @@ namespace AntlrUnitTests
                 }
                 return (Tree)children[0];
             }
-            public virtual IList getChildren()
+            public virtual IList GetChildren()
             {
                 return children;
             }
@@ -2048,11 +2048,11 @@ namespace AntlrUnitTests
             StringTemplate tree = group.GetInstanceOf( "tree" );
             // build ( a b (c d) e )
             Tree root = new Tree( "a" );
-            root.addChild( new Tree( "b" ) );
+            root.AddChild( new Tree( "b" ) );
             Tree subtree = new Tree( "c" );
-            subtree.addChild( new Tree( "d" ) );
-            root.addChild( subtree );
-            root.addChild( new Tree( "e" ) );
+            subtree.AddChild( new Tree( "d" ) );
+            root.AddChild( subtree );
+            root.AddChild( new Tree( "e" ) );
             tree.SetAttribute( "it", root );
             string expecting = "( a b ( c d ) e )";
             Assert.AreEqual( expecting, tree.ToString() );
@@ -2574,11 +2574,11 @@ namespace AntlrUnitTests
 
         public class Connector3
         {
-            public int[] getValues()
+            public int[] GetValues()
             {
                 return new int[] { 1, 2, 3 };
             }
-            public IDictionary getStuff()
+            public IDictionary GetStuff()
             {
                 IDictionary m = new SortedList<object, object>();
                 m["a"] = "1";
@@ -2743,9 +2743,10 @@ namespace AntlrUnitTests
                     "ifstat(stats) ::= \"IF true then <stats>\"" + newline
                     ;
             StringTemplate.LintMode = true;
+            // load the group once to make sure the ASTExpr static constructor gets called before resetting the template counter
+            StringTemplateGroup group = new StringTemplateGroup(new StringReader(templates));
             StringTemplate.ResetTemplateCounter();
-            StringTemplateGroup group =
-                    new StringTemplateGroup( new StringReader( templates ) );
+            group = new StringTemplateGroup( new StringReader( templates ) );
             StringTemplate b = group.GetInstanceOf( "block" );
             StringTemplate ifstat = group.GetInstanceOf( "ifstat" );
             b.SetAttribute( "stats", ifstat ); // block has if stat
@@ -5415,7 +5416,7 @@ namespace AntlrUnitTests
         public class NonPublicProperty
         {
             public int foo = 9;
-            public int getBar()
+            public int GetBar()
             {
                 return 34;
             }
