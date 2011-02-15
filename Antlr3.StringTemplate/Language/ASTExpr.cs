@@ -612,7 +612,7 @@ namespace Antlr3.ST.Language
             if ( o == null )
                 return null;
 
-            ITypeProxyFactory proxyFactory = self.GetProxy(o.GetType());
+            ITypeProxyFactory proxyFactory = self.Group.GetTypeProxyFactory(o.GetType());
             if (proxyFactory != null)
                 o = proxyFactory.CreateProxy(o);
 
@@ -1011,7 +1011,7 @@ namespace Antlr3.ST.Language
 
             if (o != null)
             {
-                ITypeProxyFactory proxyFactory = self.GetProxy(o.GetType());
+                ITypeProxyFactory proxyFactory = self.Group.GetTypeProxyFactory(o.GetType());
                 if (proxyFactory != null)
                     o = proxyFactory.CreateProxy(o);
             }

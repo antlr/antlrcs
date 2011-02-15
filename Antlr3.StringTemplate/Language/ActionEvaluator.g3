@@ -40,45 +40,10 @@ options
 
 @header
 {
-/*
- [The "BSD licence"]
- Copyright (c) 2005-2008 Terence Parr
- All rights reserved.
-
- Grammar conversion to ANTLR v3 and C#:
- Copyright (c) 2008 Sam Harwell, Pixel Mine, Inc.
- All rights reserved.
-
- Redistribution and use in source and binary forms, with or without
- modification, are permitted provided that the following conditions
- are met:
- 1. Redistributions of source code must retain the above copyright
-	notice, this list of conditions and the following disclaimer.
- 2. Redistributions in binary form must reproduce the above copyright
-	notice, this list of conditions and the following disclaimer in the
-	documentation and/or other materials provided with the distribution.
- 3. The name of the author may not be used to endorse or promote products
-	derived from this software without specific prior written permission.
-
- THIS SOFTWARE IS PROVIDED BY THE AUTHOR ``AS IS'' AND ANY EXPRESS OR
- IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
- OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.
- IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT,
- INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
- NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
- DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
- THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
- (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
- THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-*/
-
 using System.Linq;
 using Antlr.Runtime.JavaExtensions;
 
-using IDictionary = System.Collections.IDictionary;
-using Set = System.Collections.Generic.HashSet<object>;
 using StringWriter = System.IO.StringWriter;
-using Vector = System.Collections.Generic.List<object>;
 }
 
 @namespace {Antlr3.ST.Language}
@@ -89,11 +54,6 @@ action returns [int numCharsWritten=0]
 	;
 
 expr returns [object value]
-@init
-{
-	IDictionary argumentContext=null;
-	$value = null;
-}
 	:	^(PLUS a=expr b=expr {$value = chunk.Add($a.value,$b.value);})
 	|	templateApplication {$value = $templateApplication.value;}
 	|	attribute {$value = $attribute.value;}
@@ -114,7 +74,7 @@ expr returns [object value]
 	;
 
 /** create a new list of expressions as a new multi-value attribute */
-list returns [object value=null]
+list returns [object value]
 @init
 {
 	List<object> elements = new List<object>();
@@ -137,7 +97,7 @@ list returns [object value=null]
 		{$value = new Cat(elements);}
 	;
 
-templateInclude returns [object value=null]
+templateInclude returns [object value]
 @init
 {
 	StringTemplateAST args = null;
@@ -167,7 +127,7 @@ templateInclude returns [object value=null]
 templateApplication returns [object value]
 @init
 {
-	var templatesToApply = new System.Collections.Generic.List<StringTemplate>();
+	var templatesToApply = new List<StringTemplate>();
 	List<object> attributes = new List<object>();
 }
 	:	^(	APPLY a=expr
@@ -198,14 +158,14 @@ function returns [object value]
 		)
 	;
 
-singleFunctionArg returns [object value=null]
+singleFunctionArg returns [object value]
 	:	^( SINGLEVALUEARG expr {$value = $expr.value;} )
 	;
 
-template[System.Collections.Generic.List<StringTemplate> templatesToApply]
+template[List<StringTemplate> templatesToApply]
 @init
 {
-	IDictionary argumentContext = null;
+	IDictionary<string, object> argumentContext = null;
 }
 	:	^(	TEMPLATE
 			(	ID args=. // don't eval argList now; must re-eval each iteration
@@ -306,8 +266,8 @@ attribute returns [object value]
  *  in rawSetArgumentAttribute.
  */
 public
-argList[StringTemplate embedded, System.Collections.Generic.Dictionary<string, object> initialContext]
-	returns [System.Collections.Generic.Dictionary<string, object> argumentContext=null]
+argList[StringTemplate embedded, Dictionary<string, object> initialContext]
+	returns [Dictionary<string, object> argumentContext]
 @init
 {
 	$argumentContext = $initialContext;
@@ -320,7 +280,7 @@ argList[StringTemplate embedded, System.Collections.Generic.Dictionary<string, o
 	|	singleTemplateArg[$embedded,$argumentContext]
 	;
 
-singleTemplateArg[StringTemplate embedded, IDictionary argumentContext]
+singleTemplateArg[StringTemplate embedded, IDictionary<string, object> argumentContext]
 	:	^( SINGLEVALUEARG e=expr )
 		{
 			if ( $e.value!=null )
@@ -360,7 +320,7 @@ singleTemplateArg[StringTemplate embedded, IDictionary argumentContext]
 		}
 	;
 
-argumentAssignment[StringTemplate embedded, IDictionary argumentContext]
+argumentAssignment[StringTemplate embedded, IDictionary<string, object> argumentContext]
 	:	^( ASSIGN arg=ID expr )
 		{
 			if ( $expr.value != null )
@@ -961,7 +921,7 @@ templateCompiled[System.Reflection.Emit.ILGenerator gen]
 templateFunctional[List<System.Func<ASTExpr,StringTemplate,IStringTemplateWriter,StringTemplate>> templateApplicators]
 @init
 {
-	IDictionary argumentContext = null;
+	IDictionary<string, object> argumentContext = null;
 }
 	:	^(	TEMPLATE
 			(	ID args=. // don't eval argList now; must re-eval each iteration

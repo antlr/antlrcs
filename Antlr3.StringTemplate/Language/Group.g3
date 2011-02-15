@@ -43,79 +43,6 @@ KWIMPLEMENTS = 'implements';
 KWDEFAULT = 'default';
 }
 
-@lexer::header
-{
-/*
- [The "BSD licence"]
- Copyright (c) 2005-2008 Terence Parr
- All rights reserved.
-
- Grammar conversion to ANTLR v3 and C#:
- Copyright (c) 2008 Sam Harwell, Pixel Mine, Inc.
- All rights reserved.
-
- Redistribution and use in source and binary forms, with or without
- modification, are permitted provided that the following conditions
- are met:
- 1. Redistributions of source code must retain the above copyright
-	notice, this list of conditions and the following disclaimer.
- 2. Redistributions in binary form must reproduce the above copyright
-	notice, this list of conditions and the following disclaimer in the
-	documentation and/or other materials provided with the distribution.
- 3. The name of the author may not be used to endorse or promote products
-	derived from this software without specific prior written permission.
-
- THIS SOFTWARE IS PROVIDED BY THE AUTHOR ``AS IS'' AND ANY EXPRESS OR
- IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
- OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.
- IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT,
- INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
- NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
- DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
- THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
- (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
- THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-*/
-}
-
-@parser::header
-{
-/*
- [The "BSD licence"]
- Copyright (c) 2005-2008 Terence Parr
- All rights reserved.
-
- Grammar conversion to ANTLR v3 and C#:
- Copyright (c) 2008 Sam Harwell, Pixel Mine, Inc.
- All rights reserved.
-
- Redistribution and use in source and binary forms, with or without
- modification, are permitted provided that the following conditions
- are met:
- 1. Redistributions of source code must retain the above copyright
-	notice, this list of conditions and the following disclaimer.
- 2. Redistributions in binary form must reproduce the above copyright
-	notice, this list of conditions and the following disclaimer in the
-	documentation and/or other materials provided with the distribution.
- 3. The name of the author may not be used to endorse or promote products
-	derived from this software without specific prior written permission.
-
- THIS SOFTWARE IS PROVIDED BY THE AUTHOR ``AS IS'' AND ANY EXPRESS OR
- IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
- OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.
- IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT,
- INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
- NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
- DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
- THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
- (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
- THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-*/
-
-using HashMap = System.Collections.Hashtable;
-using IDictionary = System.Collections.IDictionary;
-}
-
 @lexer::namespace {Antlr3.ST.Language}
 @parser::namespace {Antlr3.ST.Language}
 
@@ -138,18 +65,16 @@ this._group = g;
 template[StringTemplateGroup g]
 @init
 {
-	IDictionary formalArgs = null;
 	StringTemplate st = null;
-	bool ignore = false;
 	string templateName=null;
 	int line = input.LT(1).Line;
 }
 	:	(	AT scope2=ID DOT region=ID
 			{
-				templateName=g.GetMangledRegionName($scope2.text,$region.text);
-				if ( g.IsDefinedInThisGroup(templateName) )
+				templateName = $g.GetMangledRegionName($scope2.text,$region.text);
+				if ( $g.IsDefinedInThisGroup(templateName) )
 				{
-					g.Error("group "+g.Name+" line "+line+": redefinition of template region: @"+
+					$g.Error("group "+$g.Name+" line "+line+": redefinition of template region: @"+
 						$scope2.text+"."+$region.text);
 					st = new StringTemplate(); // create bogus template to fill in
 				}
@@ -157,16 +82,16 @@ template[StringTemplateGroup g]
 				{
 					bool err = false;
 					// @template.region() ::= "..."
-					StringTemplate scopeST = g.LookupTemplate($scope2.text);
+					StringTemplate scopeST = $g.LookupTemplate($scope2.text);
 					if ( scopeST == null )
 					{
-						g.Error("group "+g.Name+" line "+line+": reference to region within undefined template: "+
+						$g.Error("group "+$g.Name+" line "+line+": reference to region within undefined template: "+
 							$scope2.text);
 						err=true;
 					}
 					else if ( !scopeST.ContainsRegionName($region.text) )
 					{
-						g.Error("group "+g.Name+" line "+line+": template "+$scope2.text+" has no region called "+
+						$g.Error("group "+$g.Name+" line "+line+": template "+$scope2.text+" has no region called "+
 							$region.text);
 						err=true;
 					}
@@ -176,7 +101,7 @@ template[StringTemplateGroup g]
 					}
 					else
 					{
-						st = g.DefineRegionTemplate($scope2.text,
+						st = $g.DefineRegionTemplate($scope2.text,
 													$region.text,
 													null,
 													RegionType.Explicit);
@@ -185,14 +110,14 @@ template[StringTemplateGroup g]
 			}
 		|	name=ID {templateName = $name.text;}
 			{
-				if ( g.IsDefinedInThisGroup(templateName) )
+				if ( $g.IsDefinedInThisGroup(templateName) )
 				{
-					g.Error("redefinition of template: "+templateName);
+					$g.Error("redefinition of template: "+templateName);
 					st = new StringTemplate(); // create bogus template to fill in
 				}
 				else
 				{
-					st = g.DefineTemplate(templateName, null);
+					st = $g.DefineTemplate(templateName, null);
 				}
 			}
 		)
@@ -210,7 +135,7 @@ template[StringTemplateGroup g]
 	;
 
 args[StringTemplate st]
-	:	arg[st] ( COMMA arg[st] )*
+	:	arg[$st] ( COMMA arg[$st] )*
 	;
 
 arg[StringTemplate st]
@@ -224,61 +149,61 @@ arg[StringTemplate st]
 				defaultValue=new StringTemplate("\$_val_\$");
 				defaultValue.SetAttribute("_val_", $s.text);
 				defaultValue.DefineFormalArgument("_val_");
-				defaultValue.Name = "<"+st.Name+"'s arg "+$name.text+" default value subtemplate>";
+				defaultValue.Name = "<"+$st.Name+"'s arg "+$name.text+" default value subtemplate>";
 			}
 		|	ASSIGN bs=ANONYMOUS_TEMPLATE
 			{
-				defaultValue=new StringTemplate(st.Group, $bs.text);
-				defaultValue.Name = "<"+st.Name+"'s arg "+$name.text+" default value subtemplate>";
+				defaultValue=new StringTemplate($st.Group, $bs.text);
+				defaultValue.Name = "<"+$st.Name+"'s arg "+$name.text+" default value subtemplate>";
 			}
 		)?
-		{st.DefineFormalArgument($name.text, defaultValue);}
+		{$st.DefineFormalArgument($name.text, defaultValue);}
 	;
 
 mapdef[StringTemplateGroup g]
 	:	name=ID
 		DEFINED_TO_BE m=map
 		{
-			if ( g.GetMap($name.text)!=null )
+			if ( $g.GetMap($name.text)!=null )
 			{
-				g.Error("redefinition of map: "+$name.text);
+				$g.Error("redefinition of map: "+$name.text);
 			}
-			else if ( g.IsDefinedInThisGroup($name.text) )
+			else if ( $g.IsDefinedInThisGroup($name.text) )
 			{
-				g.Error("redefinition of template as map: "+$name.text);
+				$g.Error("redefinition of template as map: "+$name.text);
 			}
 			else
 			{
-				g.DefineMap($name.text, m);
+				$g.DefineMap($name.text, $m.mapping);
 			}
 		}
 	;
 
-map returns [IDictionary mapping=new HashMap()]
+map returns [IDictionary<string, StringTemplate> mapping = new Dictionary<string, StringTemplate>()]
 	:   LBRACK mapPairs[mapping] RBRACK
 	;
 
-mapPairs [IDictionary mapping]
+mapPairs [IDictionary<string, StringTemplate> mapping]
 	:	keyValuePair[mapping] (COMMA keyValuePair[mapping])*
 		(COMMA defaultValuePair[mapping])?
 	|	defaultValuePair[mapping] 
 	;
 
-defaultValuePair[IDictionary mapping]
+defaultValuePair[IDictionary<string, StringTemplate> mapping]
 	:	'default' COLON v=keyValue
-		{mapping[ASTExpr.DefaultMapValueName] = $v.value;}
+		{$mapping[ASTExpr.DefaultMapValueName] = $v.value;}
 	;
 
-keyValuePair[IDictionary mapping]
-	:	key=STRING COLON v=keyValue {mapping[$key.text] = $v.value;}
+keyValuePair[IDictionary<string, StringTemplate> mapping]
+	:	key=STRING COLON v=keyValue {$mapping[$key.text] = $v.value;}
 	;
 
-keyValue returns [StringTemplate value=null]
-	:	s1=BIGSTRING	{value = new StringTemplate(_group,$s1.text);}
-	|	s2=STRING		{value = new StringTemplate(_group,$s2.text);}
+keyValue returns [StringTemplate value]
+	:	s1=BIGSTRING	{$value = new StringTemplate(_group,$s1.text);}
+	|	s2=STRING		{$value = new StringTemplate(_group,$s2.text);}
 	|	k=ID			{$k.text == "key"}?
-						{value = ASTExpr.MapKeyValue;}
-	|					{value = null;}
+						{$value = ASTExpr.MapKeyValue;}
+	|					//{$value = null;}
 	;
 
 //////////////////////////////////////////////////////////////////////////////////////

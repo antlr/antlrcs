@@ -99,7 +99,7 @@ namespace Antlr3.ST
          *  defined by the user like typeInitMap ::= ["int":"0"]
          *  </summary>
          */
-        Dictionary<string, IDictionary> _maps = new Dictionary<string, IDictionary>();
+        Dictionary<string, IDictionary<string, StringTemplate>> _maps = new Dictionary<string, IDictionary<string, StringTemplate>>();
 
         /** <summary>How to pull apart a template into chunks?</summary> */
         Type _templateLexerClass;
@@ -1222,7 +1222,7 @@ namespace Antlr3.ST
             return null;
         }
 
-        public virtual void RegisterProxy(Type originalObjectType, ITypeProxyFactory proxyFactory)
+        public virtual void RegisterTypeProxyFactory(Type originalObjectType, ITypeProxyFactory proxyFactory)
         {
             if (_proxyFactories == null)
                 _proxyFactories = new TypeRegistry<ITypeProxyFactory>();
@@ -1230,19 +1230,19 @@ namespace Antlr3.ST
             _proxyFactories[originalObjectType] = proxyFactory;
         }
 
-        public virtual ITypeProxyFactory GetProxy(Type originalObjectType)
+        public virtual ITypeProxyFactory GetTypeProxyFactory(Type originalObjectType)
         {
             ITypeProxyFactory proxyFactory;
             if (_proxyFactories != null && _proxyFactories.TryGetValue(originalObjectType, out proxyFactory))
                 return proxyFactory;
 
             if (_superGroup != null)
-                return _superGroup.GetProxy(originalObjectType);
+                return _superGroup.GetTypeProxyFactory(originalObjectType);
 
             return null;
         }
 
-        public virtual IDictionary GetMap( string name )
+        public virtual IDictionary<string, StringTemplate> GetMap(string name)
         {
             if ( _maps == null )
             {
@@ -1252,7 +1252,7 @@ namespace Antlr3.ST
                 }
                 return _superGroup.GetMap( name );
             }
-            IDictionary m;
+            IDictionary<string, StringTemplate> m;
             if ( ( !_maps.TryGetValue( name, out m ) || m == null ) && _superGroup != null )
             {
                 m = _superGroup.GetMap( name );
@@ -1265,7 +1265,7 @@ namespace Antlr3.ST
          *  these while you reference them.
          *  </summary>
          */
-        public virtual void DefineMap( string name, IDictionary mapping )
+        public virtual void DefineMap(string name, IDictionary<string, StringTemplate> mapping)
         {
             _maps[name] = mapping;
         }

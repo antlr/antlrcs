@@ -317,8 +317,6 @@ namespace Antlr3.ST
           */
         private TypeRegistry<IAttributeRenderer> _attributeRenderers;
 
-        private TypeRegistry<ITypeProxyFactory> _proxyFactories;
-
         /** <summary>
          *  A list of alternating string and ASTExpr references.
          *  This is compiled to when the template is loaded/defined and walked to
@@ -646,7 +644,6 @@ namespace Antlr3.ST
         protected virtual void Dup( StringTemplate from, StringTemplate to )
         {
             to._attributeRenderers = from._attributeRenderers;
-            to._proxyFactories = from._proxyFactories;
             to._pattern = from._pattern;
             to._chunks = from._chunks;
             to._formalArguments = from._formalArguments;
@@ -942,7 +939,7 @@ namespace Antlr3.ST
          *  </summary>
          */
         public virtual void RawSetArgumentAttribute( StringTemplate embedded,
-                                            IDictionary attributes,
+                                            IDictionary<string, object> attributes,
                                             string name,
                                             object value )
         {
@@ -1365,6 +1362,9 @@ namespace Antlr3.ST
          */
         public virtual void RegisterRenderer( Type objectType, IAttributeRenderer renderer )
         {
+            if (objectType == null)
+                throw new ArgumentNullException("objectType");
+
             if (_attributeRenderers == null)
                 _attributeRenderers = new TypeRegistry<IAttributeRenderer>();
 
@@ -1378,6 +1378,9 @@ namespace Antlr3.ST
          */
         public virtual IAttributeRenderer GetAttributeRenderer( Type objectType )
         {
+            if (objectType == null)
+                throw new ArgumentNullException("objectType");
+
             IAttributeRenderer renderer;
             if (_attributeRenderers != null && _attributeRenderers.TryGetValue(objectType, out renderer))
                 return renderer;
@@ -1387,27 +1390,6 @@ namespace Antlr3.ST
 
             return _group.GetAttributeRenderer(objectType);
         }
-
-        public virtual void RegisterProxy(Type originalObjectType, ITypeProxyFactory proxyFactory)
-        {
-            if (_proxyFactories == null)
-                _proxyFactories = new TypeRegistry<ITypeProxyFactory>();
-
-            _proxyFactories[originalObjectType] = proxyFactory;
-        }
-
-        public virtual ITypeProxyFactory GetProxy(Type originalObjectType)
-        {
-            ITypeProxyFactory proxyFactory;
-            if (_proxyFactories != null && _proxyFactories.TryGetValue(originalObjectType, out proxyFactory))
-                return proxyFactory;
-
-            if (_enclosingInstance != null)
-                return _enclosingInstance.GetProxy(originalObjectType);
-
-            return _group.GetProxy(originalObjectType);
-        }
-
 
         #region Utility routines
 

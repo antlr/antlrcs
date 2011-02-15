@@ -68,81 +68,11 @@ tokens
 	NOTHING;
 }
 
-@lexer::header
-{
-/*
- [The "BSD licence"]
- Copyright (c) 2005-2008 Terence Parr
- All rights reserved.
-
- Grammar conversion to ANTLR v3 and C#:
- Copyright (c) 2008 Sam Harwell, Pixel Mine, Inc.
- All rights reserved.
-
- Redistribution and use in source and binary forms, with or without
- modification, are permitted provided that the following conditions
- are met:
- 1. Redistributions of source code must retain the above copyright
-	notice, this list of conditions and the following disclaimer.
- 2. Redistributions in binary form must reproduce the above copyright
-	notice, this list of conditions and the following disclaimer in the
-	documentation and/or other materials provided with the distribution.
- 3. The name of the author may not be used to endorse or promote products
-	derived from this software without specific prior written permission.
-
- THIS SOFTWARE IS PROVIDED BY THE AUTHOR ``AS IS'' AND ANY EXPRESS OR
- IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
- OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.
- IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT,
- INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
- NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
- DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
- THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
- (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
- THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-*/
-}
-
-@parser::header
-{
-/*
- [The "BSD licence"]
- Copyright (c) 2005-2008 Terence Parr
- All rights reserved.
-
- Grammar conversion to ANTLR v3 and C#:
- Copyright (c) 2008 Sam Harwell, Pixel Mine, Inc.
- All rights reserved.
-
- Redistribution and use in source and binary forms, with or without
- modification, are permitted provided that the following conditions
- are met:
- 1. Redistributions of source code must retain the above copyright
-	notice, this list of conditions and the following disclaimer.
- 2. Redistributions in binary form must reproduce the above copyright
-	notice, this list of conditions and the following disclaimer in the
-	documentation and/or other materials provided with the distribution.
- 3. The name of the author may not be used to endorse or promote products
-	derived from this software without specific prior written permission.
-
- THIS SOFTWARE IS PROVIDED BY THE AUTHOR ``AS IS'' AND ANY EXPRESS OR
- IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
- OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.
- IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT,
- INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
- NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
- DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
- THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
- (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
- THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-*/
-}
-
 @lexer::namespace { Antlr3.ST.Language }
 @parser::namespace { Antlr3.ST.Language }
 
 public
-action returns [IDictionary<string, object> opts=null]
+action returns [IDictionary<string, object> opts]
 	:	(	templatesExpr (SEMI! optionList {$opts = $optionList.opts;})?
 		|	'if'^ LPAREN! ifCondition RPAREN!
 		|	'elseif'! LPAREN! ifCondition RPAREN! // return just conditional
@@ -155,15 +85,8 @@ optionList! returns [IDictionary<string, object> opts=new Dictionary<string, obj
 	;
 
 option[IDictionary<string, object> opts]
-@init
-{
-object v=null;
-}
-	:	ID
-		( ASSIGN nonAlternatingTemplateExpr {v=$nonAlternatingTemplateExpr.tree;}
-		| {v=ASTExpr.EmptyOption;}
-		)
-		{opts[$ID.text] = v;}
+	:	ID (ASSIGN nonAlternatingTemplateExpr)?
+		{opts[$ID.text] = (object)$nonAlternatingTemplateExpr.tree ?? ASTExpr.EmptyOption;}
 	;
 
 templatesExpr
@@ -215,8 +138,7 @@ primaryExpr
 	;
 
 valueExpr
-	:	LPAREN templatesExpr RPAREN
-		-> ^(VALUE[$LPAREN,"value"] templatesExpr)
+	:	LPAREN<type=VALUE;text="value">^ templatesExpr RPAREN!
 	;
 
 nonAlternatingTemplateExpr
@@ -281,10 +203,9 @@ atom
 	;
 
 list
-	:	lb=LBRACK
-		listElement (COMMA listElement)*
-		RBRACK
-		-> ^(LIST[$lb,"value"] listElement+)
+	:	LBRACK<type=LIST;text="value">^
+		listElement (COMMA! listElement)*
+		RBRACK!
 	;
 
 listElement
@@ -302,23 +223,20 @@ templateInclude
 	;
 
 /** Match (foo)() and (foo+".terse")() */
-indirectTemplate!
-	:	LPAREN e=templatesExpr RPAREN args=argList
-		-> ^(VALUE["value"] $e $args)
+indirectTemplate
+	:	LPAREN<type=VALUE;text="value">^ templatesExpr RPAREN! argList
 	;
 
-argList!
-	:	LPAREN
-		(	argumentAssignment (COMMA argumentAssignment)*
+argList
+	:	LPAREN<type=ARGS;text="ARGS">^
+		(	argumentAssignment (COMMA! argumentAssignment)*
 		)?
-		RPAREN
-		-> ^(ARGS["ARGS"] argumentAssignment*)
+		RPAREN!
 	|	singleArg // bold(name)
 	;
 
 singleArg
-	:	LPAREN nonAlternatingTemplateExpr RPAREN
-		-> ^(SINGLEVALUEARG["SINGLEVALUEARG"] nonAlternatingTemplateExpr)
+	:	LPAREN<type=SINGLEVALUEARG;text="SINGLEVALUEARG">^ nonAlternatingTemplateExpr RPAREN!
 	;
 
 argumentAssignment
