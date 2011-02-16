@@ -176,7 +176,9 @@ namespace Antlr4.StringTemplate
         public virtual int Write(string value)
         {
             int n = 0;
-            for (int i = 0; i < value.Length; i++)
+            int valueLength = value.Length;
+            int newlineLength = _newline.Length;
+            for (int i = 0; i < valueLength; i++)
             {
                 char c = value[i];
                 // found \n or \r\n newline?
@@ -187,8 +189,8 @@ namespace Antlr4.StringTemplate
                 {
                     Writer.Write(_newline);
                     _charPosition = 0;
-                    n += _newline.Length;
-                    Index += _newline.Length;
+                    n += newlineLength;
+                    Index += newlineLength;
                     continue;
                 }
 
