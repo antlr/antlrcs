@@ -53,8 +53,7 @@ namespace Antlr4.Test.StringTemplate
             string template = "hi <name>";
             CompiledTemplate code = new TemplateCompiler(new TemplateGroup()).Compile(template);
             string asmExpected =
-                "load_str 0, " +
-                "write, " +
+                "write_str 0, " +
                 "load_attr 1, " +
                 "write";
             string asmResult = code.GetInstructions();
@@ -70,7 +69,7 @@ namespace Antlr4.Test.StringTemplate
             string template = "hi <foo()>";
             CompiledTemplate code = new TemplateCompiler(new TemplateGroup()).Compile(template);
             string asmExpected =
-                "load_str 0, write, new 1 0, write";
+                "write_str 0, new 1 0, write";
             string asmResult = code.GetInstructions();
             Assert.AreEqual(asmExpected, asmResult);
             string stringsExpected = "[hi , foo]";
@@ -127,7 +126,7 @@ namespace Antlr4.Test.StringTemplate
             string template = "hi <foo(a,b)>";
             CompiledTemplate code = new TemplateCompiler(new TemplateGroup()).Compile(template);
             string asmExpected =
-                "load_str 0, write, load_attr 1, load_attr 2, new 3 2, write";
+                "write_str 0, load_attr 1, load_attr 2, new 3 2, write";
             string asmResult = code.GetInstructions();
             Assert.AreEqual(asmExpected, asmResult);
             string stringsExpected = "[hi , a, b, foo]";
@@ -194,7 +193,7 @@ namespace Antlr4.Test.StringTemplate
             string template = "hi <(foo)(a,b)>";
             CompiledTemplate code = new TemplateCompiler(new TemplateGroup()).Compile(template);
             string asmExpected =
-                "load_str 0, write, load_attr 1, tostr, load_attr 2, load_attr 3, new_ind 2, write";
+                "write_str 0, load_attr 1, tostr, load_attr 2, load_attr 3, new_ind 2, write";
             string asmResult = code.GetInstructions();
             Assert.AreEqual(asmExpected, asmResult);
             string stringsExpected = "[hi , foo, a, b]";
@@ -208,7 +207,7 @@ namespace Antlr4.Test.StringTemplate
             string template = "hi <a.b>";
             CompiledTemplate code = new TemplateCompiler(new TemplateGroup()).Compile(template);
             string asmExpected =
-                "load_str 0, write, load_attr 1, load_prop 2, write";
+                "write_str 0, load_attr 1, load_prop 2, write";
             string asmResult = code.GetInstructions();
             Assert.AreEqual(asmExpected, asmResult);
             string stringsExpected = "[hi , a, b]";
@@ -222,7 +221,7 @@ namespace Antlr4.Test.StringTemplate
             string template = "<u.id>: <u.name>";
             CompiledTemplate code = new TemplateCompiler(new TemplateGroup()).Compile(template);
             string asmExpected =
-                "load_attr 0, load_prop 1, write, load_str 2, write, " +
+                "load_attr 0, load_prop 1, write, write_str 2, " +
                 "load_attr 0, load_prop 3, write";
             string asmResult = code.GetInstructions();
             Assert.AreEqual(asmExpected, asmResult);
@@ -407,7 +406,7 @@ namespace Antlr4.Test.StringTemplate
             string template = "go: <if(name)>hi, foo<endif>";
             CompiledTemplate code = new TemplateCompiler(new TemplateGroup()).Compile(template);
             string asmExpected =
-                "load_str 0, write, load_attr 1, brf 14, load_str 2, write";
+                "write_str 0, load_attr 1, brf 12, write_str 2";
             string asmResult = code.GetInstructions();
             Assert.AreEqual(asmExpected, asmResult);
             string stringsExpected = "[go: , name, hi, foo]";
@@ -421,15 +420,12 @@ namespace Antlr4.Test.StringTemplate
             string template = "go: <if(name)>hi, foo<else>bye<endif>";
             CompiledTemplate code = new TemplateCompiler(new TemplateGroup()).Compile(template);
             string asmExpected =
-                "load_str 0, " +
-                "write, " +
+                "write_str 0, " +
                 "load_attr 1, " +
-                "brf 17, " +
-                "load_str 2, " +
-                "write, " +
-                "br 21, " +
-                "load_str 3, " +
-                "write";
+                "brf 15, " +
+                "write_str 2, " +
+                "br 18, " +
+                "write_str 3";
             string asmResult = code.GetInstructions();
             Assert.AreEqual(asmExpected, asmResult);
             string stringsExpected = "[go: , name, hi, foo, bye]";
@@ -443,17 +439,14 @@ namespace Antlr4.Test.StringTemplate
             string template = "go: <if(name)>hi, foo<elseif(user)>a user<endif>";
             CompiledTemplate code = new TemplateCompiler(new TemplateGroup()).Compile(template);
             string asmExpected =
-                "load_str 0, " +
-                "write, " +
+                "write_str 0, " +
                 "load_attr 1, " +
-                "brf 17, " +
-                "load_str 2, " +
-                "write, " +
-                "br 27, " +
+                "brf 15, " +
+                "write_str 2, " +
+                "br 24, " +
                 "load_attr 3, " +
-                "brf 27, " +
-                "load_str 4, " +
-                "write";
+                "brf 24, " +
+                "write_str 4";
             string asmResult = code.GetInstructions();
             Assert.AreEqual(asmExpected, asmResult);
             string stringsExpected = "[go: , name, hi, foo, user, a user]";
@@ -467,20 +460,16 @@ namespace Antlr4.Test.StringTemplate
             string template = "go: <if(name)>hi, foo<elseif(user)>a user<else>bye<endif>";
             CompiledTemplate code = new TemplateCompiler(new TemplateGroup()).Compile(template);
             string asmExpected =
-                "load_str 0, " +
-                "write, " +
+                "write_str 0, " +
                 "load_attr 1, " +
-                "brf 17, " +
-                "load_str 2, " +
-                "write, " +
-                "br 34, " +
+                "brf 15, " +
+                "write_str 2, " +
+                "br 30, " +
                 "load_attr 3, " +
-                "brf 30, " +
-                "load_str 4, " +
-                "write, " +
-                "br 34, " +
-                "load_str 5, " +
-                "write";
+                "brf 27, " +
+                "write_str 4, " +
+                "br 30, " +
+                "write_str 5";
             string asmResult = code.GetInstructions();
             Assert.AreEqual(asmExpected, asmResult);
             string stringsExpected = "[go: , name, hi, foo, user, a user, bye]";
@@ -494,7 +483,7 @@ namespace Antlr4.Test.StringTemplate
             string template = "hi <name; separator=\"x\">";
             CompiledTemplate code = new TemplateCompiler(new TemplateGroup()).Compile(template);
             string asmExpected =
-                "load_str 0, write, load_attr 1, options, load_str 2, store_option 3, write_opt";
+                "write_str 0, load_attr 1, options, load_str 2, store_option 3, write_opt";
             string asmResult = code.GetInstructions();
             Assert.AreEqual(asmExpected, asmResult);
             string stringsExpected = "[hi , name, x]";
@@ -508,7 +497,7 @@ namespace Antlr4.Test.StringTemplate
             string template = "hi <name; separator={, }>";
             CompiledTemplate code = new TemplateCompiler(new TemplateGroup()).Compile(template);
             string asmExpected =
-                "load_str 0, write, load_attr 1, options, new 2 0, store_option 3, write_opt";
+                "write_str 0, load_attr 1, options, new 2 0, store_option 3, write_opt";
             string asmResult = code.GetInstructions();
             Assert.AreEqual(asmExpected, asmResult);
             string stringsExpected = "[hi , name, _sub1]";
@@ -522,8 +511,7 @@ namespace Antlr4.Test.StringTemplate
             string template = "hi <name; anchor, wrap=foo(), separator=\", \">";
             CompiledTemplate code = new TemplateCompiler(new TemplateGroup()).Compile(template);
             string asmExpected =
-                "load_str 0, " +
-                "write, " +
+                "write_str 0, " +
                 "load_attr 1, " +
                 "options, " +
                 "load_str 2, " +
@@ -589,7 +577,7 @@ namespace Antlr4.Test.StringTemplate
             // compile as if in root dir and in template 'a'
             CompiledTemplate code = new TemplateCompiler(new TemplateGroup('<', '>')).Compile("a", template);
             string asmExpected =
-                "load_str 0, write, new 1 0, write";
+                "write_str 0, new 1 0, write";
             string asmResult = code.GetInstructions();
             Assert.AreEqual(asmExpected, asmResult);
             string stringsExpected = "[x:, region__a__r]";

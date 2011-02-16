@@ -86,5 +86,10 @@ namespace Antlr4.StringTemplate.Compiler
         INSTR_NULL = 42, // push null value
         INSTR_TRUE = 43, // push true
         INSTR_FALSE = 44,
+
+        // Combined instructions
+
+        INSTR_WRITE_STR = 45,
+        INSTR_WRITE_LOCAL = 46,
     }
 }

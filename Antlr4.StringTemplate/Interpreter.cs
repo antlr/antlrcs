@@ -493,13 +493,36 @@ namespace Antlr4.StringTemplate
                     operands[++sp] = false;
                     break;
 
+                case Bytecode.INSTR_WRITE_STR:
+                    strIndex = GetShort(code, ip);
+                    ip += Instruction.OperandSizeInBytes;
+                    o = self.impl.strings[strIndex];
+                    n1 = WriteObjectNoOptions(@out, self, o);
+                    n += n1;
+                    nwline += n1;
+                    break;
+
+                case Bytecode.INSTR_WRITE_LOCAL:
+                    valueIndex = GetShort(code, ip);
+                    ip += Instruction.OperandSizeInBytes;
+                    o = self.locals[valueIndex];
+                    if (o == Template.EmptyAttribute)
+                        o = null;
+
+                    n1 = WriteObjectNoOptions(@out, self, o);
+                    n += n1;
+                    nwline += n1;
+                    break;
+
                 default:
                     errMgr.InternalError(self, "invalid bytecode @ " + (ip - 1) + ": " + opcode, null);
                     self.impl.Dump();
                     break;
                 }
+
                 prevOpcode = opcode;
             }
+
             if (group.Debug)
             {
                 EvalTemplateEvent e = new EvalTemplateEvent((DebugTemplate)self, Interval.FromBounds(start, @out.Index));
@@ -568,8 +591,8 @@ namespace Antlr4.StringTemplate
         internal virtual void StoreArguments(Template self, IDictionary<string, object> attrs, Template st)
         {
             int nformalArgs = 0;
-            if (st.impl.formalArguments != null)
-                nformalArgs = st.impl.formalArguments.Count;
+            if (st.impl.FormalArguments != null)
+                nformalArgs = st.impl.FormalArguments.Count;
             int nargs = 0;
             if (attrs != null)
                 nargs = attrs.Count;
@@ -587,7 +610,7 @@ namespace Antlr4.StringTemplate
             foreach (string argName in attrs.Keys)
             {
                 // don't let it throw an exception in RawSetAttribute
-                if (st.impl.formalArguments == null || !st.impl.formalArguments.Any(i => i.Name == argName))
+                if (st.impl.FormalArguments == null || !st.impl.FormalArguments.Any(i => i.Name == argName))
                 {
                     errMgr.RuntimeError(self, current_ip, ErrorType.NO_SUCH_ATTRIBUTE, argName);
                     continue;
@@ -601,8 +624,8 @@ namespace Antlr4.StringTemplate
         internal virtual void StoreArguments(Template self, int nargs, Template st)
         {
             int nformalArgs = 0;
-            if (st.impl.formalArguments != null)
-                nformalArgs = st.impl.formalArguments.Count;
+            if (st.impl.FormalArguments != null)
+                nformalArgs = st.impl.FormalArguments.Count;
             int firstArg = sp - (nargs - 1);
             int numToStore = Math.Min(nargs, nformalArgs);
             if (st.impl.isAnonSubtemplate)
@@ -619,13 +642,13 @@ namespace Antlr4.StringTemplate
                                     nformalArgs);
             }
 
-            if (st.impl.formalArguments == null)
+            if (st.impl.FormalArguments == null)
                 return;
 
             for (int i = 0; i < numToStore; i++)
             {
                 object o = operands[firstArg + i];
-                string argName = st.impl.formalArguments[i].Name;
+                string argName = st.impl.FormalArguments[i].Name;
                 st.RawSetAttribute(argName, o);
             }
         }
@@ -812,40 +835,15 @@ namespace Antlr4.StringTemplate
                 return;
             }
             attr = ConvertAnythingIteratableToIterator(attr);
-            if (attr is Iterator)
+            Iterator iterator = attr as Iterator;
+            if (iterator != null)
             {
-                List<Template> mapped = new List<Template>();
-                Iterator iter = (Iterator)attr;
-                int i0 = 0;
-                int i = 1;
-                int ti = 0;
-                while (iter.hasNext())
-                {
-                    object iterValue = iter.next();
-                    if (iterValue == null)
-                    {
-                        mapped.Add(null);
-                        continue;
-                    }
-
-                    int templateIndex = ti % prototypes.Count; // rotate through
-                    ti++;
-                    Template proto = prototypes[templateIndex];
-                    Template st = group.CreateStringTemplate(proto);
-                    SetFirstArgument(self, st, iterValue);
-                    if (st.impl.isAnonSubtemplate)
-                    {
-                        st.RawSetAttribute("i0", i0);
-                        st.RawSetAttribute("i", i);
-                    }
-                    mapped.Add(st);
-                    i0++;
-                    i++;
-                }
+                List<Template> mapped = RotateMapIterator(self, iterator, prototypes);
                 operands[++sp] = mapped;
             }
             else
-            { // if only single value, just apply first template to sole value
+            {
+                // if only single value, just apply first template to sole value
                 Template proto = prototypes[0];
                 Template st = group.CreateStringTemplate(proto);
                 if (st != null)
@@ -856,6 +854,7 @@ namespace Antlr4.StringTemplate
                         st.RawSetAttribute("i0", 0);
                         st.RawSetAttribute("i", 1);
                     }
+
                     operands[++sp] = st;
                 }
                 else
@@ -863,6 +862,40 @@ namespace Antlr4.StringTemplate
                     operands[++sp] = null;
                 }
             }
+        }
+
+        protected virtual List<Template> RotateMapIterator(Template self, Iterator iterator, List<Template> prototypes)
+        {
+            List<Template> mapped = new List<Template>();
+            int i0 = 0;
+            int i = 1;
+            int ti = 0;
+            while (iterator.hasNext())
+            {
+                object iterValue = iterator.next();
+                if (iterValue == null)
+                {
+                    mapped.Add(null);
+                    continue;
+                }
+
+                int templateIndex = ti % prototypes.Count; // rotate through
+                ti++;
+                Template proto = prototypes[templateIndex];
+                Template st = group.CreateStringTemplate(proto);
+                SetFirstArgument(self, st, iterValue);
+                if (st.impl.isAnonSubtemplate)
+                {
+                    st.RawSetAttribute("i0", i0);
+                    st.RawSetAttribute("i", i);
+                }
+
+                mapped.Add(st);
+                i0++;
+                i++;
+            }
+
+            return mapped;
         }
 
         // <names,phones:{n,p | ...}> or <a,b:t()>
@@ -884,7 +917,7 @@ namespace Antlr4.StringTemplate
             // ensure arguments line up
             int numExprs = exprs.Count;
             CompiledTemplate code = prototype.impl;
-            List<FormalArgument> formalArguments = code.formalArguments;
+            List<FormalArgument> formalArguments = code.FormalArguments;
             if (!code.hasFormalArgs || formalArguments == null)
             {
                 errMgr.RuntimeError(self, current_ip, ErrorType.MISSING_FORMAL_ARGUMENTS);
@@ -944,7 +977,7 @@ namespace Antlr4.StringTemplate
 
         protected virtual void SetFirstArgument(Template self, Template st, object attr)
         {
-            if (st.impl.formalArguments == null)
+            if (st.impl.FormalArguments == null)
             {
                 errMgr.RuntimeError(self, current_ip, ErrorType.ARGUMENT_COUNT_MISMATCH, 1, st.impl.name, 0);
                 return;
@@ -1294,10 +1327,10 @@ namespace Antlr4.StringTemplate
          */
         public virtual void SetDefaultArguments(Template invokedST)
         {
-            if (invokedST.impl.formalArguments == null)
+            if (invokedST.impl.FormalArguments == null || invokedST.impl.NumberOfArgsWithDefaultValues == 0)
                 return;
 
-            foreach (FormalArgument arg in invokedST.impl.formalArguments)
+            foreach (FormalArgument arg in invokedST.impl.FormalArguments)
             {
                 // if no value for attribute and default arg, inject default arg into self
                 if (invokedST.locals[arg.Index] != Template.EmptyAttribute || arg.DefaultValueToken == null)

@@ -63,12 +63,14 @@ namespace Antlr4.StringTemplate.Compiler
         public CommonTree ast;
 
         /** Must be non null map if !noFormalArgs */
-        public List<FormalArgument> formalArguments;
+        private List<FormalArgument> formalArguments;
 
         public bool hasFormalArgs;
 
         /** A list of all regions and subtemplates */
         public List<CompiledTemplate> implicitlyDefinedTemplates;
+
+        private int _numberOfArgsWithDefaultValues;
 
         /** The group that physically defines this Template definition.  We use it to initiate
          *  interpretation via Template.ToString().  From there, it becomes field 'group'
@@ -103,6 +105,20 @@ namespace Antlr4.StringTemplate.Compiler
             instrs = new byte[TemplateCompiler.InitialCodeSize];
             sourceMap = new Interval[TemplateCompiler.InitialCodeSize];
             template = string.Empty;
+        }
+
+        public List<FormalArgument> FormalArguments
+        {
+            get
+            {
+                return formalArguments;
+            }
+
+            set
+            {
+                formalArguments = value;
+                _numberOfArgsWithDefaultValues = (formalArguments != null) ? formalArguments.Count(i => i.DefaultValueToken != null) : 0;
+            }
         }
 
         public virtual TemplateGroup NativeGroup
@@ -157,11 +173,7 @@ namespace Antlr4.StringTemplate.Compiler
         {
             get
             {
-                if (formalArguments == null)
-                    return 0;
-
-                int n = formalArguments.Count(i => i.DefaultValueToken != null);
-                return n;
+                return _numberOfArgsWithDefaultValues;
             }
         }
 
@@ -169,10 +181,10 @@ namespace Antlr4.StringTemplate.Compiler
         {
             if (name == null)
                 throw new ArgumentNullException("name");
-            if (formalArguments == null)
+            if (FormalArguments == null)
                 return null;
 
-            return formalArguments.FirstOrDefault(i => i.Name == name);
+            return FormalArguments.FirstOrDefault(i => i.Name == name);
         }
 
         public virtual void AddImplicitlyDefinedTemplate(CompiledTemplate sub)
@@ -185,10 +197,10 @@ namespace Antlr4.StringTemplate.Compiler
 
         public virtual void DefineArgumentDefaultValueTemplates(TemplateGroup group)
         {
-            if (formalArguments == null)
+            if (FormalArguments == null)
                 return;
 
-            foreach (FormalArgument fa in formalArguments)
+            foreach (FormalArgument fa in FormalArguments)
             {
                 if (fa.DefaultValueToken != null)
                 {
@@ -219,7 +231,7 @@ namespace Antlr4.StringTemplate.Compiler
             hasFormalArgs = true; // even if no args; it's formally defined
             if (args == null)
             {
-                formalArguments = null;
+                FormalArguments = null;
             }
             else
             {
@@ -231,11 +243,13 @@ namespace Antlr4.StringTemplate.Compiler
         /** Used by Template.Add() to Add args one by one w/o turning on full formal args definition signal */
         public virtual void AddArgument(FormalArgument a)
         {
-            if (formalArguments == null)
-                formalArguments = new List<FormalArgument>();
+            if (FormalArguments == null)
+                FormalArguments = new List<FormalArgument>();
 
-            a.Index = formalArguments.Count;
-            formalArguments.Add(a);
+            a.Index = FormalArguments.Count;
+            FormalArguments.Add(a);
+            if (a.DefaultValueToken != null)
+                _numberOfArgsWithDefaultValues++;
         }
 
         public virtual void DefineImplicitlyDefinedTemplates(TemplateGroup group)

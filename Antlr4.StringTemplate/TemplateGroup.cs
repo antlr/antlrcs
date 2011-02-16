@@ -205,9 +205,9 @@ namespace Antlr4.StringTemplate
                 Template instanceST = CreateStringTemplate();
                 instanceST.groupThatCreatedThisInstance = this;
                 instanceST.impl = c;
-                if (instanceST.impl.formalArguments != null)
+                if (instanceST.impl.FormalArguments != null)
                 {
-                    instanceST.locals = new object[instanceST.impl.formalArguments.Count];
+                    instanceST.locals = new object[instanceST.impl.FormalArguments.Count];
                     for (int i = 0; i < instanceST.locals.Length; i++)
                         instanceST.locals[i] = Template.EmptyAttribute;
                 }
@@ -693,8 +693,8 @@ namespace Antlr4.StringTemplate
                 name = name.Substring(slash + 1, name.Length - slash - 1);
                 buf.Append(name);
                 buf.Append('(');
-                if (c.formalArguments != null)
-                    buf.Append(string.Join(",", c.formalArguments.Select(i => i.ToString()).ToArray()));
+                if (c.FormalArguments != null)
+                    buf.Append(string.Join(",", c.FormalArguments.Select(i => i.ToString()).ToArray()));
 
                 buf.Append(')');
                 buf.Append(" ::= <<" + Environment.NewLine);

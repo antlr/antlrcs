@@ -224,7 +224,7 @@ namespace Antlr4.StringTemplate
                     if (locals == null)
                         locals = new object[1];
                     else
-                        Array.Resize(ref locals, impl.formalArguments.Count);
+                        Array.Resize(ref locals, impl.FormalArguments.Count);
 
                     locals[arg.Index] = EmptyAttribute;
                 }
@@ -260,7 +260,7 @@ namespace Antlr4.StringTemplate
         /** Remove an attribute value entirely (can't Remove attribute definitions). */
         public virtual void Remove(string name)
         {
-            if (impl.formalArguments == null)
+            if (impl.FormalArguments == null)
             {
                 if (impl.hasFormalArgs)
                     throw new ArgumentException("no such attribute: " + name);
@@ -281,7 +281,7 @@ namespace Antlr4.StringTemplate
          */
         protected internal virtual void RawSetAttribute(string name, object value)
         {
-            if (impl.formalArguments == null)
+            if (impl.FormalArguments == null)
                 throw new ArgumentException("no such attribute: " + name);
 
             FormalArgument arg = impl.TryGetFormalArgument(name);
@@ -322,11 +322,11 @@ namespace Antlr4.StringTemplate
 
         public virtual IDictionary<string, object> GetAttributes()
         {
-            if (impl.formalArguments == null)
+            if (impl.FormalArguments == null)
                 return null;
 
             IDictionary<string, object> attributes = new Dictionary<string, object>();
-            foreach (FormalArgument a in impl.formalArguments)
+            foreach (FormalArgument a in impl.FormalArguments)
             {
                 object o = locals[a.Index];
                 if (o == Template.EmptyAttribute)
@@ -506,8 +506,8 @@ namespace Antlr4.StringTemplate
                 return "bad-template()";
 
             string args = string.Empty;
-            if (impl.formalArguments != null)
-                args = string.Join(",", impl.formalArguments.Select(i => i.Name).ToArray());
+            if (impl.FormalArguments != null)
+                args = string.Join(",", impl.FormalArguments.Select(i => i.Name).ToArray());
 
             return string.Format("{0}({1})", Name, args);
         }

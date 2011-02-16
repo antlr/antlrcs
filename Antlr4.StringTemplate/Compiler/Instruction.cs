@@ -69,6 +69,8 @@
             instructions[(int)Bytecode.INSTR_NULL] = new Instruction("null");
             instructions[(int)Bytecode.INSTR_TRUE] = new Instruction("true");
             instructions[(int)Bytecode.INSTR_FALSE] = new Instruction("false");
+            instructions[(int)Bytecode.INSTR_WRITE_STR] = new Instruction("write_str", OperandType.String);
+            instructions[(int)Bytecode.INSTR_WRITE_LOCAL] = new Instruction("write_local", OperandType.Int);
         }
 
         public Instruction(string name)

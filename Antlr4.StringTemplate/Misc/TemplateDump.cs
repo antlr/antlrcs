@@ -131,8 +131,8 @@ namespace Antlr4.StringTemplate.Misc
             buf.Append("<");
             buf.Append(self.Name);
             buf.Append("(");
-            if (self.impl.formalArguments != null)
-                buf.Append(string.Join(",", self.impl.formalArguments.Select(i => i.Name).ToArray()));
+            if (self.impl.FormalArguments != null)
+                buf.Append(string.Join(",", self.impl.FormalArguments.Select(i => i.Name).ToArray()));
             buf.Append(")@");
             buf.Append(GetHashCode());
             buf.Append(">");
