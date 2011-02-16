@@ -50,12 +50,12 @@ public override string ToString() { return (Template==null) ? string.Empty : Tem
 
 @genericParser.members() ::= <<
 <@super.members()>
-protected StringTemplateGroup templateLib = new StringTemplateGroup("<name>Templates", typeof(AngleBracketTemplateLexer) );
+private StringTemplateGroup _templateGroup = new StringTemplateGroup("<name>Templates", typeof(AngleBracketTemplateLexer) );
 
-public StringTemplateGroup TemplateLib
+public StringTemplateGroup TemplateGroup
 {
-	get { return templateLib; }
-	set { templateLib = value; }
+	get { return _templateGroup; }
+	set { _templateGroup = value; }
 }
 >>
 
@@ -119,23 +119,27 @@ null;
  *  template.
  */
 rewriteExternalTemplate(name,args) ::= <<
-templateLib.GetInstanceOf("<name>"<if(args)>,
-	new STAttrMap()<args:{a | .put("<a.name>", <a.value>)}>
-	<endif>)
+TemplateGroup.GetInstanceOf("<name>"<optionalArguments(args)>)
 >>
 
 /** expr is a string expression that says what template to load */
 rewriteIndirectTemplate(expr,args) ::= <<
-templateLib.GetInstanceOf(<expr><if(args)>,
-	new STAttrMap()<args:{a | .put("<a.name>", <a.value>)}>
-	<endif>)
+TemplateGroup.GetInstanceOf(<expr><optionalArguments(args)>)
 >>
 
 /** Invoke an inline template with a set of attribute name/value pairs */
 rewriteInlineTemplate(args, template) ::= <<
-new StringTemplate(templateLib, "<template>"<if(args)>,
-	new STAttrMap()<args:{a | .put("<a.name>", <a.value>)}>
-	<endif>)
+new StringTemplate(TemplateGroup, "<template>"<optionalArguments(args)>)
+>>
+
+optionalArguments(args) ::= <<
+<if(args)>,
+	new Dictionary\<string, object>() { <args:optionalArgument(); separator=", "> }
+<endif>
+>>
+
+optionalArgument() ::= <<
+{"<it.name>", <it.value>}
 >>
 
 /** plain -> {foo} action */
@@ -150,5 +154,5 @@ actionSetAttribute(st,attrName,expr) ::= <<
 
 /** Translate %{stringExpr} */
 actionStringConstructor(stringExpr) ::= <<
-new StringTemplate(templateLib,<stringExpr>)
+new StringTemplate(TemplateGroup,<stringExpr>)
 >>

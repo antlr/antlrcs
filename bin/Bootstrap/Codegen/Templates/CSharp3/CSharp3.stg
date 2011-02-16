@@ -112,7 +112,7 @@ lexer(grammar, name, tokens, scopes, rules, numRules, labelType="CommonToken",
 [System.CLSCompliant(false)]
 public partial class <grammar.recognizerName> : <@superClassName><superClass><@end>
 {
-	<tokens:{public const int <it.name>=<it.type>;}; separator="\n">
+	<tokens:{public const int <it.name; format="id">=<it.type>;}; separator="\n">
 	<scopes:{<if(it.isDynamicGlobalScope)><globalAttributeScope(scope=it)><endif>}>
 	<actions.lexer.members>
 
@@ -284,7 +284,7 @@ public partial class <grammar.recognizerName> : <@superClassName><superClass><@e
 		"\<invalid>", "\<EOR>", "\<DOWN>", "\<UP>", <tokenNames; separator=", ">
 	};<\n>
 <endif>
-	<tokens:{public const int <it.name>=<it.type>;}; separator="\n">
+	<tokens:{public const int <it.name; format="id">=<it.type>;}; separator="\n">
 
 	// delegates
 	<grammar.delegates:
@@ -332,7 +332,7 @@ public <grammar.recognizerName>(<inputStreamType> input, RecognizerSharedState s
    appear to be defined in this recognizer. !>
 	#region Delegated rules
 <grammar.delegatedRules:{ruleDescriptor|
-	public <returnType()> <ruleDescriptor.name>(<ruleDescriptor.parameterScope:parameterScope(scope=it)>) <!throws RecognitionException !>\{ <if(ruleDescriptor.hasReturnValue)>return <endif><ruleDescriptor.grammar:delegateName()>.<ruleDescriptor.name>(<ruleDescriptor.parameterScope.attributes:{a|<a.name>}; separator=", ">); \}}; separator="\n">
+	public <returnType()> <ruleDescriptor.name; format="id">(<ruleDescriptor.parameterScope:parameterScope(scope=it)>) <!throws RecognitionException !>\{ <if(ruleDescriptor.hasReturnValue)>return <endif><ruleDescriptor.grammar:delegateName()>.<ruleDescriptor.name; format="id">(<ruleDescriptor.parameterScope.attributes:{a|<a.name; format="id">}; separator=", ">); \}}; separator="\n">
 	#endregion Delegated rules<\n>
 <endif>
 
@@ -487,7 +487,7 @@ partial void LeaveRule_<ruleName>();
 // $ANTLR start "<ruleName>"
 // <fileName>:<description>
 [GrammarRule("<ruleName>")]
-<csharpVisibilityMap.(ruleDescriptor.modifier); null="private"> <returnType()> <ruleName>(<ruleDescriptor.parameterScope:parameterScope(scope=it)>)
+<csharpVisibilityMap.(ruleDescriptor.modifier); null="private"> <returnType()> <ruleName; format="id">(<ruleDescriptor.parameterScope:parameterScope(scope=it)>)
 {
 	EnterRule_<ruleName>();
 	EnterRule("<ruleName>", <ruleDescriptor.index>);
@@ -552,7 +552,7 @@ ruleDeclarations() ::= <<
 retval.Start = (<labelType>)input.LT(1);<\n>
 <else>
 <ruleDescriptor.returnScope.attributes:{ a |
-<a.type> <a.name> = <if(a.initValue)><a.initValue><else><initValue(a.type)><endif>;
+<a.type> <a.name; format="id"> = <if(a.initValue)><a.initValue><else><initValue(a.type)><endif>;
 }>
 <endif>
 <if(memoize)>
@@ -1004,7 +1004,7 @@ wildcardCharListLabel(label, elementIndex) ::= <<
  */
 ruleRef(rule,label,elementIndex,args,scope) ::= <<
 PushFollow(Follow._<rule.name>_in_<ruleName><elementIndex>);
-<if(label)><label>=<endif><if(scope)><scope:delegateName()>.<endif><rule.name>(<args; separator=", ">);
+<if(label)><label>=<endif><if(scope)><scope:delegateName()>.<endif><rule.name; format="id">(<args; separator=", ">);
 PopFollow();
 <checkRuleBacktrackFailure()>
 >>
@@ -1485,43 +1485,48 @@ parameterScope(scope) ::= <<
 <scope.attributes:{<it.decl>}; separator=", ">
 >>
 
-parameterAttributeRef(attr) ::= "<attr.name>"
-parameterSetAttributeRef(attr,expr) ::= "<attr.name> =<expr>;"
+parameterAttributeRef(attr) ::= <<
+<attr.name; format="id">
+>>
+
+parameterSetAttributeRef(attr,expr) ::= <<
+<attr.name; format="id"> =<expr>;
+>>
 
 scopeAttributeRef(scope,attr,index,negIndex) ::= <<
 <if(negIndex)>
-((<scope>_scope)<scope>_stack.elementAt(<scope>_stack.size()-<negIndex>-1)).<attr.name>
+System.Linq.Enumerable.ElementAt(<scope>_stack, <negIndex>).<attr.name; format="id">
 <else>
 <if(index)>
-((<scope>_scope)<scope>_stack.elementAt(<index>)).<attr.name>
+System.Linq.Enumerable.ElementAt(<scope>_stack, <scope>_stack.Count-<index>-1).<attr.name; format="id">
 <else>
-((<scope>_scope)<scope>_stack.Peek()).<attr.name>
+<scope>_stack.Peek().<attr.name; format="id">
 <endif>
 <endif>
 >>
 
 scopeSetAttributeRef(scope,attr,expr,index,negIndex) ::= <<
 <if(negIndex)>
-((<scope>_scope)<scope>_stack.elementAt(<scope>_stack.size()-<negIndex>-1)).<attr.name> =<expr>;
+System.Linq.Enumerable.ElementAt(<scope>_stack, <negIndex>).<attr.name; format="id"> = <expr>;
 <else>
 <if(index)>
-((<scope>_scope)<scope>_stack.elementAt(<index>)).<attr.name> =<expr>;
+System.Linq.Enumerable.ElementAt(<scope>_stack, <scope>_stack.Count-<index>-1).<attr.name; format="id"> = <expr>;
 <else>
-((<scope>_scope)<scope>_stack.Peek()).<attr.name> =<expr>;
+<scope>_stack.Peek().<attr.name; format="id"> = <expr>;
 <endif>
 <endif>
 >>
 
 /** $x is either global scope or x is rule with dynamic scope; refers
  *  to stack itself not top of stack.  This is useful for predicates
- *  like {$function.size()>0 && $function::name.equals("foo")}?
+ *  like {$function.Count>0 && $function::name.Equals("foo")}?
  */
 isolatedDynamicScopeRef(scope) ::= "<scope>_stack"
 
 /** reference an attribute of rule; might only have single return value */
 ruleLabelRef(referencedRule,scope,attr) ::= <<
 <if(referencedRule.hasMultipleReturnValues)>
-(<scope>!=null?<scope>.<attr.name>:<initValue(attr.type)>)
+(<scope>!=null?<scope>.<attr.name; format="id">:<initValue(attr.type)>)
 <else>
 <scope>
 <endif>
@@ -1529,17 +1534,17 @@ ruleLabelRef(referencedRule,scope,attr) ::= <<
 
 returnAttributeRef(ruleDescriptor,attr) ::= <<
 <if(ruleDescriptor.hasMultipleReturnValues)>
-retval.<attr.name>
+retval.<attr.name; format="id">
 <else>
-<attr.name>
+<attr.name; format="id">
 <endif>
 >>
 
 returnSetAttributeRef(ruleDescriptor,attr,expr) ::= <<
 <if(ruleDescriptor.hasMultipleReturnValues)>
-retval.<attr.name> =<expr>;
+retval.<attr.name; format="id"> =<expr>;
 <else>
-<attr.name> =<expr>;
+<attr.name; format="id"> =<expr>;
 <endif>
 >>
 

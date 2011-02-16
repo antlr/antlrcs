@@ -179,9 +179,9 @@ root_0 = (<ASTLabelType>)adaptor.BecomeRoot(<label>_tree, root_0);
 
 createNodeFromToken(label,terminalOptions) ::= <<
 <if(terminalOptions.class)>
-new <terminalOptions.class>(<if(terminalOptions.type)><terminalOptions.type>,<endif><label><if(terminalOptions.text)>,<terminalOptions.text><endif>)
+new <terminalOptions.class>(<if(terminalOptions.type)><terminalOptions.type>,<endif><label><if(terminalOptions.text)>,<terminalOptions.text; format="string"><endif>)
 <else>
-(<ASTLabelType>)adaptor.Create(<if(terminalOptions.type)><terminalOptions.type>,<endif><label><if(terminalOptions.text)>,<terminalOptions.text><endif>)
+(<ASTLabelType>)adaptor.Create(<if(terminalOptions.type)><terminalOptions.type>,<endif><label><if(terminalOptions.text)>,<terminalOptions.text; format="string"><endif>)
 <endif>
 >>
 
