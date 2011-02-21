@@ -354,16 +354,17 @@ namespace Antlr3.Tool
 
         public virtual Grammar.LabelElementPair GetLabel( string name )
         {
-            return (Grammar.LabelElementPair)labelNameSpace.get( name );
+            Grammar.LabelElementPair pair;
+            labelNameSpace.TryGetValue(name, out pair);
+            return pair;
         }
 
         public virtual Grammar.LabelElementPair GetTokenLabel( string name )
         {
             Grammar.LabelElementPair pair = null;
-            if ( tokenLabels != null )
-            {
-                return (Grammar.LabelElementPair)tokenLabels.get( name );
-            }
+            if (tokenLabels != null)
+                tokenLabels.TryGetValue(name, out pair);
+
             return pair;
         }
 
@@ -381,29 +382,26 @@ namespace Antlr3.Tool
         {
             Grammar.LabelElementPair pair = null;
             if ( ruleLabels != null )
-            {
-                return (Grammar.LabelElementPair)ruleLabels.get( name );
-            }
+                ruleLabels.TryGetValue(name, out pair);
+
             return pair;
         }
 
         public virtual Grammar.LabelElementPair GetTokenListLabel( string name )
         {
             Grammar.LabelElementPair pair = null;
-            if ( tokenListLabels != null )
-            {
-                return (Grammar.LabelElementPair)tokenListLabels.get( name );
-            }
+            if (tokenListLabels != null)
+                tokenListLabels.TryGetValue(name, out pair);
+
             return pair;
         }
 
         public virtual Grammar.LabelElementPair GetRuleListLabel( string name )
         {
             Grammar.LabelElementPair pair = null;
-            if ( ruleListLabels != null )
-            {
-                return (Grammar.LabelElementPair)ruleListLabels.get( name );
-            }
+            if (ruleListLabels != null)
+                ruleListLabels.TryGetValue(name, out pair);
+
             return pair;
         }
 
