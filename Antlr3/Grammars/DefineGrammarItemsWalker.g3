@@ -76,7 +76,7 @@ scope AttributeScopeActions;
 }
 	:	^( 'scope' name=ID attrScopeAction* attrs=ACTION )
 		{
-			AttributeScope scope = grammar.DefineGlobalScope($name.text,$attrs.token);
+			AttributeScope scope = grammar.DefineGlobalScope($name.text,$attrs.Token);
 			scope.isDynamicGlobalScope = true;
 			scope.AddAttributes($attrs.text, ';');
 			foreach ( var action in $AttributeScopeActions::actions )
@@ -169,7 +169,7 @@ rule
 				if ( Rule.GetRuleType(name) == RuleType.Lexer && grammar.type==GrammarType.Combined )
 				{
 					// a merged grammar spec, track lexer rules and send to another grammar
-					grammar.DefineLexerRuleFoundInParser($id.token, $start);
+					grammar.DefineLexerRuleFoundInParser($id.Token, $start);
 				}
 				else
 				{
@@ -183,7 +183,7 @@ rule
 					}
 					if ( $ret!=null )
 					{
-						r.returnScope = grammar.CreateReturnScope(name,$ret.token);
+						r.returnScope = grammar.CreateReturnScope(name,$ret.Token);
 						r.returnScope.AddAttributes($ret.text, ',');
 					}
 					if ( $throwsSpec.exceptions != null )
@@ -239,7 +239,7 @@ scope AttributeScopeActions;
 	:	^(	'scope'
 			(	attrScopeAction* attrs=ACTION
 				{
-					r.ruleScope = grammar.CreateRuleScope(r.Name,$attrs.token);
+					r.ruleScope = grammar.CreateRuleScope(r.Name,$attrs.Token);
 					r.ruleScope.isDynamicRuleScope = true;
 					r.ruleScope.AddAttributes($attrs.text, ';');
 					foreach ( var action in $AttributeScopeActions::actions )
@@ -251,7 +251,7 @@ scope AttributeScopeActions;
 					if ( grammar.GetGlobalScope($uses.text)==null ) {
 					ErrorManager.GrammarError(ErrorManager.MSG_UNKNOWN_DYNAMIC_SCOPE,
 					grammar,
-					$uses.token,
+					$uses.Token,
 					$uses.text);
 					}
 					else {
@@ -345,11 +345,11 @@ element
 				}
 				if ( e.Type==RULE_REF)
 				{
-					grammar.DefineRuleRefLabel(currentRuleName,$id.token,e);
+					grammar.DefineRuleRefLabel(currentRuleName,$id.Token,e);
 				}
 				else if ( e.Type==WILDCARD && grammar.type==GrammarType.TreeParser )
 				{
-					grammar.DefineWildcardTreeLabel(currentRuleName,$id.token,e);
+					grammar.DefineWildcardTreeLabel(currentRuleName,$id.Token,e);
 				}
 				else
 				{
@@ -369,7 +369,7 @@ element
 				}
 				else if ( a.Type == WILDCARD && grammar.type == GrammarType.TreeParser )
 				{
-					grammar.DefineWildcardTreeListLabel( currentRuleName, $id2.token, a );
+					grammar.DefineWildcardTreeListLabel( currentRuleName, $id2.Token, a );
 				}
 				else
 				{

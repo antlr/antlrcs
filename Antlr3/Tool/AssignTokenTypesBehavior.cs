@@ -84,7 +84,7 @@ namespace Antlr3.Tool
             {
                 ErrorManager.GrammarError( ErrorManager.MSG_CANNOT_ALIAS_TOKENS_IN_LEXER,
                                           grammar,
-                                          t.token,
+                                          t.Token,
                                           t.Text );
                 return;
             }
@@ -97,7 +97,7 @@ namespace Antlr3.Tool
             {
                 ErrorManager.GrammarError( ErrorManager.MSG_LITERAL_NOT_ASSOCIATED_WITH_LEXER_RULE,
                                           grammar,
-                                          t.token,
+                                          t.Token,
                                           t.Text );
             }
             // Don't record literals for lexers, they are things to match not tokens
@@ -198,7 +198,7 @@ namespace Antlr3.Tool
                     // Allow if both are rules.  Will get DFA nondeterminism error later.
                     ErrorManager.GrammarError( ErrorManager.MSG_TOKEN_ALIAS_CONFLICT,
                                               grammar,
-                                              t.token,
+                                              t.Token,
                                               tokenID + "=" + literal,
                                               prevAliasLiteralID );
                 }
@@ -216,7 +216,7 @@ namespace Antlr3.Tool
             {
                 ErrorManager.GrammarError( ErrorManager.MSG_TOKEN_ALIAS_REASSIGNMENT,
                                           grammar,
-                                          t.token,
+                                          t.Token,
                                           tokenID + "=" + literal,
                                           prevAliasTokenID );
                 return; // don't do the alias

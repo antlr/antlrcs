@@ -233,7 +233,7 @@ mapTemplateRef[int num_exprs]
 	|	subtemplate
 		{
 		if ($subtemplate.nargs != $num_exprs) {
-            errMgr.CompiletimeError(ErrorType.ANON_ARGUMENT_MISMATCH, templateToken, $subtemplate.start.token, $subtemplate.nargs, $num_exprs);
+            errMgr.CompiletimeError(ErrorType.ANON_ARGUMENT_MISMATCH, templateToken, $subtemplate.start.Token, $subtemplate.nargs, $num_exprs);
 		}
 		for (int i=1; i<=$num_exprs; i++) emit($subtemplate.start,Bytecode.INSTR_NULL);
         emit2($subtemplate.start, Bytecode.INSTR_NEW,

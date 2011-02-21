@@ -82,7 +82,7 @@ namespace Antlr4.StringTemplate.Compiler
             {
                 if (Interpreter.predefinedAnonSubtemplateAttributes.Contains(name))
                 {
-                    errMgr.CompiletimeError(ErrorType.NO_SUCH_ATTRIBUTE, templateToken, id.token);
+                    errMgr.CompiletimeError(ErrorType.NO_SUCH_ATTRIBUTE, templateToken, id.Token);
                     Emit(id, Bytecode.INSTR_NULL);
                 }
                 else
@@ -103,7 +103,7 @@ namespace Antlr4.StringTemplate.Compiler
             Bytecode funcBytecode;
             if (!TemplateCompiler.funcs.TryGetValue(id.Text, out funcBytecode))
             {
-                errMgr.CompiletimeError(ErrorType.NO_SUCH_FUNCTION, templateToken, id.token);
+                errMgr.CompiletimeError(ErrorType.NO_SUCH_FUNCTION, templateToken, id.Token);
                 Emit(id, Bytecode.INSTR_POP);
             }
             else

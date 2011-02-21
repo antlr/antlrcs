@@ -219,13 +219,13 @@ namespace Antlr3.Tool
 
         public virtual void Initialize( int i, string s )
         {
-            token = new CommonToken( i, s );
+            Token = new CommonToken( i, s );
         }
 
         public virtual void Initialize( ITree ast )
         {
             GrammarAST t = ( (GrammarAST)ast );
-            this.token = t.token;
+            this.Token = t.Token;
             this.enclosingRuleName = t.enclosingRuleName;
             this.TokenStartIndex = ast.TokenStartIndex;
             this.TokenStopIndex = ast.TokenStopIndex;
@@ -236,7 +236,7 @@ namespace Antlr3.Tool
 
         public virtual void Initialize( IToken token )
         {
-            this.token = token;
+            this.Token = token;
         }
 
         /** Save the option key/value pair and process it; return the key
@@ -266,7 +266,7 @@ namespace Antlr3.Tool
             {
                 ErrorManager.GrammarError( ErrorManager.MSG_ILLEGAL_OPTION,
                                           grammar,
-                                          token,
+                                          Token,
                                           key );
                 return null;
             }
@@ -319,28 +319,28 @@ namespace Antlr3.Tool
         {
             get
             {
-                if ( token == null )
+                if ( Token == null )
                     return string.Empty;
 
-                return token.Text;
+                return Token.Text;
             }
             set
             {
-                token.Text = value;
+                Token.Text = value;
             }
         }
         public override int Type
         {
             get
             {
-                if ( token == null )
+                if ( Token == null )
                     return -1;
 
-                return token.Type;
+                return Token.Type;
             }
             set
             {
-                token.Type = value;
+                Token.Type = value;
             }
         }
         public override int Line
@@ -348,9 +348,9 @@ namespace Antlr3.Tool
             get
             {
                 int line = 0;
-                if ( token != null )
+                if ( Token != null )
                 {
-                    line = token.Line;
+                    line = Token.Line;
                 }
                 if ( line == 0 )
                 {
@@ -364,7 +364,7 @@ namespace Antlr3.Tool
             }
             set
             {
-                token.Line = value;
+                Token.Line = value;
             }
         }
         public override int CharPositionInLine
@@ -372,9 +372,9 @@ namespace Antlr3.Tool
             get
             {
                 int col = 0;
-                if ( token != null )
+                if ( Token != null )
                 {
-                    col = token.CharPositionInLine;
+                    col = Token.CharPositionInLine;
                 }
                 if ( col == 0 )
                 {
@@ -388,7 +388,7 @@ namespace Antlr3.Tool
             }
             set
             {
-                token.CharPositionInLine = value;
+                Token.CharPositionInLine = value;
             }
         }
 
@@ -469,13 +469,13 @@ namespace Antlr3.Tool
                 return a != null && Type == a.Type;
             }
 
-            return token.Line == t.Line &&
-                   token.CharPositionInLine == t.CharPositionInLine;
+            return Token.Line == t.Line &&
+                   Token.CharPositionInLine == t.CharPositionInLine;
         }
 
         public override int GetHashCode()
         {
-            return ObjectExtensions.ShiftPrimeXOR( token.Line, token.CharPositionInLine );
+            return ObjectExtensions.ShiftPrimeXOR( Token.Line, Token.CharPositionInLine );
         }
 
         /** See if tree has exact token types and structure; no text */

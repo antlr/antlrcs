@@ -141,7 +141,7 @@ namespace Antlr3.Analysis
                         {
                             if (p.associatedASTNode != null)
                             {
-                                IToken oldtoken = p.associatedASTNode.token;
+                                IToken oldtoken = p.associatedASTNode.Token;
                                 CommonToken token = new CommonToken(oldtoken.Type, oldtoken.Text);
                                 token.Line = (oldtoken.Line);
                                 token.CharPositionInLine = (oldtoken.CharPositionInLine);

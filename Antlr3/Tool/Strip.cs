@@ -137,8 +137,8 @@ namespace Antlr3.Tool
             {
                 CommonTree a = (CommonTree)t;
                 a = (CommonTree)a.GetChild( 0 );
-                tokens.Delete( a.token.TokenIndex );
-                KillTrailingNewline( tokens, a.token.TokenIndex );
+                tokens.Delete( a.Token.TokenIndex );
+                KillTrailingNewline( tokens, a.Token.TokenIndex );
             } );
 
             // wipe rule return declarations
@@ -146,14 +146,14 @@ namespace Antlr3.Tool
             {
                 CommonTree a = (CommonTree)t;
                 CommonTree ret = (CommonTree)a.GetChild( 0 );
-                tokens.Delete( a.token.TokenIndex, ret.token.TokenIndex );
+                tokens.Delete( a.Token.TokenIndex, ret.Token.TokenIndex );
             } );
 
             // comment out semantic predicates
             wiz.Visit( t, ANTLRParser.SEMPRED, ( tree ) =>
             {
                 CommonTree a = (CommonTree)t;
-                tokens.Replace( a.token.TokenIndex, "/*" + a.Text + "*/" );
+                tokens.Replace( a.Token.TokenIndex, "/*" + a.Text + "*/" );
             } );
 
             // comment out semantic predicates
@@ -220,18 +220,18 @@ namespace Antlr3.Tool
                     CommonTree rew = (CommonTree)a.GetChild( 1 );
                     stop = rew.TokenStopIndex;
                 }
-                tokens.Delete( a.token.TokenIndex, stop );
+                tokens.Delete( a.Token.TokenIndex, stop );
                 KillTrailingNewline( tokens, stop );
             } );
 
             wiz.Visit( t, ANTLRParser.ROOT, ( tree ) =>
             {
-                tokens.Delete( ( (CommonTree)t ).token.TokenIndex );
+                tokens.Delete( ( (CommonTree)t ).Token.TokenIndex );
             } );
 
             wiz.Visit( t, ANTLRParser.BANG, ( tree ) =>
             {
-                tokens.Delete( ( (CommonTree)t ).token.TokenIndex );
+                tokens.Delete( ( (CommonTree)t ).Token.TokenIndex );
             } );
         }
 
@@ -253,7 +253,7 @@ namespace Antlr3.Tool
                 if ( !char.IsUpper( rule.Text[0] ) )
                 {
                     tokens.Delete( t.TokenStartIndex, t.TokenStopIndex );
-                    KillTrailingNewline( tokens, t.token.TokenIndex );
+                    KillTrailingNewline( tokens, t.Token.TokenIndex );
                 }
             }
         }
