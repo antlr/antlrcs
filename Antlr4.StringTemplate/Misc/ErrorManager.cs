@@ -119,7 +119,7 @@ namespace Antlr4.StringTemplate.Misc
 
         public virtual void CompiletimeError(ErrorType error, IToken templateToken, IToken t, object arg)
         {
-            string srcName = t.InputStream.SourceName;
+            string srcName = t != null && t.InputStream != null ? t.InputStream.SourceName : null;
             if (srcName != null)
                 srcName = Path.GetFileName(srcName);
 
