@@ -362,6 +362,8 @@ namespace AntlrUnitTests
                 options.Add( "-lib" );
                 options.Add( tmpdir );
                 options.Add( Path.Combine( tmpdir, grammarFileName ) );
+                options.Add("-language");
+                options.Add("Java");
                 //String[] optionsA = new String[options.size()];
                 //options.toArray( optionsA );
                 string[] optionsA = options.ToArray();

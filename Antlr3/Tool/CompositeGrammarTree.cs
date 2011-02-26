@@ -80,6 +80,9 @@ namespace Antlr3.Tool
         /** Find an option by looking up towards the root grammar rather than down */
         public virtual object GetOption( string key )
         {
+            if (key == "language" && grammar.Tool != null && grammar.Tool.ForcedLanguageOption != null)
+                return grammar.Tool.ForcedLanguageOption;
+
             object o = grammar.GetLocallyDefinedOption( key );
             if ( o != null )
             {

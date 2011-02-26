@@ -160,6 +160,12 @@ namespace Antlr3
             set;
         }
 
+        public string ForcedLanguageOption
+        {
+            get;
+            set;
+        }
+
         public virtual void ProcessArgs( string[] args )
         {
             if ( verbose )
@@ -219,6 +225,18 @@ namespace Antlr3
                             ErrorManager.Error( ErrorManager.MSG_DIR_NOT_FOUND, LibraryDirectory );
                             LibraryDirectory = ".";
                         }
+                    }
+                }
+                else if (args[i] == "-language")
+                {
+                    if (i + 1 >= args.Length)
+                    {
+                        Console.Error.WriteLine("missing language name; ignoring");
+                    }
+                    else
+                    {
+                        i++;
+                        ForcedLanguageOption = args[i];
                     }
                 }
                 else if ( args[i] == "-nfa" )
@@ -598,10 +616,9 @@ namespace Antlr3
                         try
                         {
                             StringReader sr = new StringReader( lexerGrammarStr );
-                            Grammar lexerGrammar = new Grammar();
+                            Grammar lexerGrammar = new Grammar(this);
                             lexerGrammar.composite.watchNFAConversion = internalOption_watchNFAConversion;
                             lexerGrammar.implicitLexer = true;
-                            lexerGrammar.Tool = this;
                             if ( TestMode )
                                 lexerGrammar.DefaultRuleModifier = "public";
                             FileInfo lexerGrammarFullFile = new FileInfo( System.IO.Path.Combine( GetFileDirectory( lexerGrammarFileName ), lexerGrammarFileName ) );
@@ -877,6 +894,7 @@ namespace Antlr3
             Console.Error.WriteLine( "  -verbose              generate ANTLR version and other information" );
             Console.Error.WriteLine( "  -make                 only build if generated files older than grammar" );
             Console.Error.WriteLine( "  -version              print the version of ANTLR and exit." );
+            Console.Error.WriteLine( "  -language L           override language grammar option; generate L" );
             Console.Error.WriteLine( "  -X                    display extended argument list" );
         }
 

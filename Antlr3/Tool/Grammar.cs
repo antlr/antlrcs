@@ -572,10 +572,15 @@ namespace Antlr3.Tool
             target = CodeGenerator.LoadLanguageTarget((string)GetOption("language"), tool.TargetsDirectory);
         }
 
+        public Grammar()
+            : this(default(Tool))
+        {
+        }
+
         /** Useful for when you are sure that you are not part of a composite
          *  already.  Used in Interp/RandomPhrase and testing.
          */
-        public Grammar()
+        public Grammar(Tool tool)
         {
             nameSpaceChecker = new NameSpaceChecker( this );
             ll1Analyzer = new LL1Analyzer( this );
@@ -583,6 +588,7 @@ namespace Antlr3.Tool
 
             builtFromString = true;
             composite = new CompositeGrammar( this );
+            Tool = tool;
             string targetsDirectory = Path.Combine(AntlrTool.ToolPathRoot, "Targets");
             target = CodeGenerator.LoadLanguageTarget((string)GetOption("language"), targetsDirectory);
         }
@@ -597,7 +603,7 @@ namespace Antlr3.Tool
          *  noncomposite grammars.
          */
         public Grammar( Tool tool, string grammarString )
-            : this()
+            : this(tool)
         {
             Tool = tool;
             FileName = "<string>";
