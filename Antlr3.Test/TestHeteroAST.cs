@@ -52,7 +52,7 @@ namespace AntlrUnitTests
                 "  public String toString() { return token.getText()+\"<V>\";}\n" +
                 "}\n" +
                 "}\n" +
-                "a : ID<V> ;\n" +
+                "a : ID<class=V> ;\n" +
                 "ID : 'a'..'z'+ ;\n" +
                 "WS : (' '|'\\n') {$channel=HIDDEN;} ;\n";
             string found = execParser( "T.g", grammar, "TParser", "TLexer",
@@ -70,7 +70,7 @@ namespace AntlrUnitTests
                 "  public String toString() { return token.getText()+\"<V>\";}\n" +
                 "}\n" +
                 "}\n" +
-                "a : ID<TParser.V> ;\n" + // TParser.V is qualified name
+                "a : ID<class=TParser.V> ;\n" + // TParser.V is qualified name
                 "ID : 'a'..'z'+ ;\n" +
                 "WS : (' '|'\\n') {$channel=HIDDEN;} ;\n";
             string found = execParser( "T.g", grammar, "TParser", "TLexer",
@@ -88,7 +88,7 @@ namespace AntlrUnitTests
                 "  public String toString() { return token.getText()+\"<V>\";}\n" +
                 "}\n" +
                 "}\n" +
-                "a : x=ID<V> ;\n" +
+                "a : x=ID<class=V> ;\n" +
                 "ID : 'a'..'z'+ ;\n" +
                 "WS : (' '|'\\n') {$channel=HIDDEN;} ;\n";
             string found = execParser( "T.g", grammar, "TParser", "TLexer",
@@ -106,7 +106,7 @@ namespace AntlrUnitTests
                 "  public String toString() { return token.getText()+\"<V>\";}\n" +
                 "}\n" +
                 "}\n" +
-                "a : x+=ID<V> ;\n" +
+                "a : x+=ID<class=V> ;\n" +
                 "ID : 'a'..'z'+ ;\n" +
                 "WS : (' '|'\\n') {$channel=HIDDEN;} ;\n";
             string found = execParser( "T.g", grammar, "TParser", "TLexer",
@@ -124,7 +124,7 @@ namespace AntlrUnitTests
                 "  public String toString() { return token.getText()+\"<V>\";}\n" +
                 "}\n" +
                 "}\n" +
-                "a : ID<V>^ ;\n" +
+                "a : ID<class=V>^ ;\n" +
                 "ID : 'a'..'z'+ ;\n" +
                 "WS : (' '|'\\n') {$channel=HIDDEN;} ;\n";
             string found = execParser( "T.g", grammar, "TParser", "TLexer",
@@ -142,7 +142,7 @@ namespace AntlrUnitTests
                 "  public String toString() { return token.getText()+\"<V>\";}\n" +
                 "}\n" +
                 "}\n" +
-                "a : x+=ID<V>^ ;\n" +
+                "a : x+=ID<class=V>^ ;\n" +
                 "ID : 'a'..'z'+ ;\n" +
                 "WS : (' '|'\\n') {$channel=HIDDEN;} ;\n";
             string found = execParser( "T.g", grammar, "TParser", "TLexer",
@@ -160,7 +160,7 @@ namespace AntlrUnitTests
                 "  public String toString() { return token.getText()+\"<V>\";}\n" +
                 "}\n" +
                 "}\n" +
-                "a : 'begin'<V> ;\n" +
+                "a : 'begin'<class=V> ;\n" +
                 "ID : 'a'..'z'+ ;\n" +
                 "WS : (' '|'\\n') {$channel=HIDDEN;} ;\n";
             string found = execParser( "T.g", grammar, "TParser", "TLexer",
@@ -178,7 +178,7 @@ namespace AntlrUnitTests
                 "  public String toString() { return token.getText()+\"<V>\";}\n" +
                 "}\n" +
                 "}\n" +
-                "a : 'begin'<V>^ ;\n" +
+                "a : 'begin'<class=V>^ ;\n" +
                 "ID : 'a'..'z'+ ;\n" +
                 "WS : (' '|'\\n') {$channel=HIDDEN;} ;\n";
             string found = execParser( "T.g", grammar, "TParser", "TLexer",
@@ -198,7 +198,7 @@ namespace AntlrUnitTests
                 "  public String toString() { return token.getText()+\"<V>\";}\n" +
                 "}\n" +
                 "}\n" +
-                "a : ID -> ID<V> ;\n" +
+                "a : ID -> ID<class=V> ;\n" +
                 "ID : 'a'..'z'+ ;\n" +
                 "WS : (' '|'\\n') {$channel=HIDDEN;} ;\n";
             string found = execParser( "T.g", grammar, "TParser", "TLexer",
@@ -221,7 +221,7 @@ namespace AntlrUnitTests
                 "  public String toString() { return (token!=null?token.getText():\"\")+\"<V>;\"+x+y+z;}\n" +
                 "}\n" +
                 "}\n" +
-                "a : ID -> ID<V>[42,19,30] ID<V>[$ID,99] ;\n" +
+                "a : ID -> ID<class=V>[42,19,30] ID<class=V>[$ID,99] ;\n" +
                 "ID : 'a'..'z'+ ;\n" +
                 "WS : (' '|'\\n') {$channel=HIDDEN;} ;\n";
             string found = execParser( "T.g", grammar, "TParser", "TLexer",
@@ -239,7 +239,7 @@ namespace AntlrUnitTests
                 "  public String toString() { return token.getText()+\"<V>\";}\n" +
                 "}\n" +
                 "}\n" +
-                "a : ID INT -> ^(ID<V> INT) ;\n" +
+                "a : ID INT -> ^(ID<class=V> INT) ;\n" +
                 "ID : 'a'..'z'+ ;\n" +
                 "INT : '0'..'9'+ ;\n" +
                 "WS : (' '|'\\n') {$channel=HIDDEN;} ;\n";
@@ -258,7 +258,7 @@ namespace AntlrUnitTests
                 "  public String toString() { return token.getText()+\"<V>\";}\n" +
                 "}\n" +
                 "}\n" +
-                "a : 'begin' -> 'begin'<V> ;\n" +
+                "a : 'begin' -> 'begin'<class=V> ;\n" +
                 "ID : 'a'..'z'+ ;\n" +
                 "WS : (' '|'\\n') {$channel=HIDDEN;} ;\n";
             string found = execParser( "T.g", grammar, "TParser", "TLexer",
@@ -276,7 +276,7 @@ namespace AntlrUnitTests
                 "  public String toString() { return token.getText()+\"<V>\";}\n" +
                 "}\n" +
                 "}\n" +
-                "a : 'begin' INT -> ^('begin'<V> INT) ;\n" +
+                "a : 'begin' INT -> ^('begin'<class=V> INT) ;\n" +
                 "ID : 'a'..'z'+ ;\n" +
                 "INT : '0'..'9'+ ;\n" +
                 "WS : (' '|'\\n') {$channel=HIDDEN;} ;\n";
@@ -302,8 +302,8 @@ namespace AntlrUnitTests
                 "  public String toString() { return token.getText()+\"<W>\";}\n" +
                 "}\n" +
                 "}\n" +
-                "a : id (',' id)* -> ^(LIST<W>[\"LIST\"] id+);\n" +
-                "id : ID -> ID<V>;\n" +
+                "a : id (',' id)* -> ^(LIST<class=W>[\"LIST\"] id+);\n" +
+                "id : ID -> ID<class=V>;\n" +
                 "ID : 'a'..'z'+ ;\n" +
                 "WS : (' '|'\\n') {$channel=HIDDEN;} ;\n";
             string found = execParser( "T.g", grammar, "TParser", "TLexer",
@@ -325,7 +325,7 @@ namespace AntlrUnitTests
                 "}\n" +
                 "}\n" +
                 "a : type ID (',' ID)* ';' -> ^(type ID)+;\n" +
-                "type : 'int'<V> ;\n" +
+                "type : 'int'<class=V> ;\n" +
                 "ID : 'a'..'z'+ ;\n" +
                 "INT : '0'..'9'+;\n" +
                 "WS : (' '|'\\n') {$channel=HIDDEN;} ;\n";
@@ -359,7 +359,7 @@ namespace AntlrUnitTests
                 "  public String toString() { return token.getText()+\"<W>\";}\n" +
                 "}\n" +
                 "}\n" +
-                "a : ID INT -> INT<V> ID<W>\n" +
+                "a : ID INT -> INT<class=V> ID<class=W>\n" +
                 "  ;\n";
 
             string found = execTreeParser( "T.g", grammar, "TParser", "TP.g",
@@ -390,7 +390,7 @@ namespace AntlrUnitTests
                 "  public String toString() { return token.getText()+\"<W>\";}\n" +
                 "}\n" +
                 "}\n" +
-                "a : ID INT -> ^(INT<V> ID<W>)\n" +
+                "a : ID INT -> ^(INT<class=V> ID<class=W>)\n" +
                 "  ;\n";
 
             string found = execTreeParser( "T.g", grammar, "TParser", "TP.g",
@@ -418,7 +418,7 @@ namespace AntlrUnitTests
                 "  public String toString() { return tokenNames[token.getType()]+\"<V>\";}\n" +
                 "}\n" +
                 "}\n" +
-                "a : ID -> ROOT<V> ID\n" +
+                "a : ID -> ROOT<class=V> ID\n" +
                 "  ;\n";
 
             string found = execTreeParser( "T.g", grammar, "TParser", "TP.g",
@@ -447,7 +447,7 @@ namespace AntlrUnitTests
                 "  public String toString() { return tokenNames[token.getType()]+\"<V>;\"+x;}\n" +
                 "}\n" +
                 "}\n" +
-                "a : ID -> ROOT<V>[42] ID\n" +
+                "a : ID -> ROOT<class=V>[42] ID\n" +
                 "  ;\n";
 
             string found = execTreeParser( "T.g", grammar, "TParser", "TP.g",
@@ -475,7 +475,7 @@ namespace AntlrUnitTests
                 "  public String toString() { return tokenNames[token.getType()]+\"<V>\";}\n" +
                 "}\n" +
                 "}\n" +
-                "a : ID -> ^(ROOT<V> ID)\n" +
+                "a : ID -> ^(ROOT<class=V> ID)\n" +
                 "  ;\n";
 
             string found = execTreeParser( "T.g", grammar, "TParser", "TP.g",
@@ -504,7 +504,7 @@ namespace AntlrUnitTests
                 "  public String toString() { return tokenNames[token.getType()]+\"<V>@\"+token.getLine();}\n" +
                 "}\n" +
                 "}\n" +
-                "a : ID -> ROOT<V>[$ID]\n" +
+                "a : ID -> ROOT<class=V>[$ID]\n" +
                 "  ;\n";
 
             string found = execTreeParser( "T.g", grammar, "TParser", "TP.g",
@@ -532,7 +532,7 @@ namespace AntlrUnitTests
                 "  public String toString() { return super.toString()+\"<V>\";}\n" +
                 "}\n" +
                 "}\n" +
-                "a : ID<V> ';'<V>\n" +
+                "a : ID<class=V> ';'<class=V>\n" +
                 "  ;\n";
 
             string found = execTreeParser( "T.g", grammar, "TParser", "TP.g",

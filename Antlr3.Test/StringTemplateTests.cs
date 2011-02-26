@@ -115,6 +115,12 @@ namespace AntlrUnitTests
             set;
         }
 
+        [TestInitialize]
+        public void TestInitialize()
+        {
+            StringTemplateGroup.RegisterDefaultLexer(typeof(DefaultTemplateLexer));
+        }
+
         [TestMethod]
         public void TestInterfaceFileFormat()
         {

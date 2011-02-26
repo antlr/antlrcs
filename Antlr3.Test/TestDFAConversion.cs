@@ -1545,7 +1545,7 @@ namespace AntlrUnitTests
 
             HashSet<string> preds = g.synPredNamesUsedInDFA;
             HashSet<string> expectedPreds = new HashSet<string>() { "synpred1_t" };
-            assertEquals("predicate names not recorded properly in grammar", expectedPreds, preds);
+            Assert.IsTrue(expectedPreds.SetEquals(preds), "predicate names not recorded properly in grammar");
         }
 
         [TestMethod]
