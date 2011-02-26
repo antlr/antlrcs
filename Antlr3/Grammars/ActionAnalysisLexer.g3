@@ -1,34 +1,34 @@
 /*
- [The "BSD licence"]
- Copyright (c) 2005-2008 Terence Parr
- All rights reserved.
-
- Grammar conversion to ANTLR v3 and C#:
- Copyright (c) 2008 Sam Harwell, Pixel Mine, Inc.
- All rights reserved.
-
- Redistribution and use in source and binary forms, with or without
- modification, are permitted provided that the following conditions
- are met:
- 1. Redistributions of source code must retain the above copyright
-    notice, this list of conditions and the following disclaimer.
- 2. Redistributions in binary form must reproduce the above copyright
-    notice, this list of conditions and the following disclaimer in the
-    documentation and/or other materials provided with the distribution.
- 3. The name of the author may not be used to endorse or promote products
-    derived from this software without specific prior written permission.
-
- THIS SOFTWARE IS PROVIDED BY THE AUTHOR ``AS IS'' AND ANY EXPRESS OR
- IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
- OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.
- IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT,
- INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
- NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
- DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
- THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
- (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
- THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-*/
+ * [The "BSD licence"]
+ * Copyright (c) 2011 Terence Parr
+ * All rights reserved.
+ *
+ * Grammar conversion to ANTLR v3 and C#:
+ * Copyright (c) 2011 Sam Harwell, Pixel Mine, Inc.
+ * All rights reserved.
+ *
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions
+ * are met:
+ * 1. Redistributions of source code must retain the above copyright
+ *    notice, this list of conditions and the following disclaimer.
+ * 2. Redistributions in binary form must reproduce the above copyright
+ *    notice, this list of conditions and the following disclaimer in the
+ *    documentation and/or other materials provided with the distribution.
+ * 3. The name of the author may not be used to endorse or promote products
+ *    derived from this software without specific prior written permission.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE AUTHOR ``AS IS'' AND ANY EXPRESS OR
+ * IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
+ * OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.
+ * IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT,
+ * INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+ * NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+ * DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
+ * THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+ * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
+ * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ */
 
 /** We need to set Rule.referencedPredefinedRuleAttributes before
  *  code generation.  This filter looks at an action in context of
@@ -46,79 +46,26 @@ options
 	filter=true;
 }
 
-@header
-{
-using Antlr3.Tool;
-}
-
-@lexer::namespace{Antlr3.Grammars}
+@namespace{Antlr3.Grammars}
 
 /**	$x.y	x is enclosing rule or rule ref or rule label
  *			y is a return value, parameter, or predefined property.
  */
 X_Y
-	:	'$' x=ID '.' y=ID {enclosingRule!=null}?
-		{
-			AttributeScope scope = null;
-			string refdRuleName = null;
-			if ( $x.text.Equals(enclosingRule.Name) )
-			{
-				// ref to enclosing rule.
-				refdRuleName = $x.text;
-				scope = enclosingRule.GetLocalAttributeScope($y.text);
-			}
-			else if ( enclosingRule.GetRuleLabel($x.text)!=null )
-			{
-				// ref to rule label
-				Grammar.LabelElementPair pair = enclosingRule.GetRuleLabel($x.text);
-				pair.actionReferencesLabel = true;
-				refdRuleName = pair.referencedRuleName;
-				Rule refdRule = grammar.GetRule(refdRuleName);
-				if ( refdRule!=null )
-				{
-					scope = refdRule.GetLocalAttributeScope($y.text);
-				}
-			}
-			else if ( enclosingRule.GetRuleRefsInAlt(x.Text, outerAltNum)!=null )
-			{
-				// ref to rule referenced in this alt
-				refdRuleName = $x.text;
-				Rule refdRule = grammar.GetRule(refdRuleName);
-				if ( refdRule!=null )
-				{
-					scope = refdRule.GetLocalAttributeScope($y.text);
-				}
-			}
-			if ( scope!=null &&
-				 (scope.isPredefinedRuleScope||scope.isPredefinedLexerRuleScope) )
-			{
-				grammar.ReferenceRuleLabelPredefinedAttribute(refdRuleName);
-				//System.out.println("referenceRuleLabelPredefinedAttribute for "+refdRuleName);
-			}
-		}
+	:	'$' x=ID '.' y=ID {enclosingRule != null}?
+		{HandleAttributeMemberReference($x.text, $y.text);}
 	;
 
 /** $x	x is an isolated rule label.  Just record that the label was referenced */
 X
-	:	'$' ID {enclosingRule!=null && enclosingRule.GetRuleLabel($ID.text)!=null}?
-		{
-			Grammar.LabelElementPair pair = enclosingRule.GetRuleLabel($ID.text);
-			pair.actionReferencesLabel = true;
-		}
+	:	'$' ID {enclosingRule != null && enclosingRule.GetRuleLabel($ID.text) != null}?
+		{HandleRuleLabelReference($ID.text);}
 	;
 	
 /** $y	y is a return value, parameter, or predefined property of current rule */
 Y
-	:	'$' ID {enclosingRule!=null && enclosingRule.GetLocalAttributeScope($ID.text)!=null}?
-		{
-			AttributeScope scope = enclosingRule.GetLocalAttributeScope($ID.text);
-			if ( scope!=null &&
-				 (scope.isPredefinedRuleScope||scope.isPredefinedLexerRuleScope) )
-			{
-				grammar.ReferenceRuleLabelPredefinedAttribute(enclosingRule.Name);
-				//System.out.println("referenceRuleLabelPredefinedAttribute for "+$ID.text);
-			}
-		}
+	:	'$' ID {enclosingRule != null && enclosingRule.GetLocalAttributeScope($ID.text) != null}?
+		{HandleAttributeReference($ID.text);}
 	;
 	
 fragment

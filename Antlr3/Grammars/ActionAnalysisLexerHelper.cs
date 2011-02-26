@@ -1,10 +1,10 @@
 /*
  * [The "BSD licence"]
- * Copyright (c) 2005-2008 Terence Parr
+ * Copyright (c) 2011 Terence Parr
  * All rights reserved.
  *
  * Grammar conversion to ANTLR v3 and C#:
- * Copyright (c) 2008-2009 Sam Harwell, Pixel Mine, Inc.
+ * Copyright (c) 2011 Sam Harwell, Pixel Mine, Inc.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -37,17 +37,17 @@ namespace Antlr3.Grammars
 
     partial class ActionAnalysisLexer
     {
-        Rule enclosingRule;
-        Grammar grammar;
-        IToken actionToken;
-        int outerAltNum = 0;
+        private readonly Rule enclosingRule;
+        private readonly Grammar grammar;
+        private readonly IToken actionToken;
+        private readonly int outerAltNum = 0;
 
-        public ActionAnalysisLexer( Grammar grammar, string ruleName, GrammarAST actionAST )
-            : this( new ANTLRStringStream( actionAST.token.Text ) )
+        public ActionAnalysisLexer(Grammar grammar, string ruleName, GrammarAST actionAST)
+            : this(new ANTLRStringStream(actionAST.Token.Text))
         {
             this.grammar = grammar;
-            this.enclosingRule = grammar.GetLocallyDefinedRule( ruleName );
-            this.actionToken = actionAST.token;
+            this.enclosingRule = grammar.GetLocallyDefinedRule(ruleName);
+            this.actionToken = actionAST.Token;
             this.outerAltNum = actionAST.outerAltNum;
         }
 
@@ -58,7 +58,63 @@ namespace Antlr3.Grammars
             do
             {
                 t = NextToken();
-            } while ( t.Type != TokenTypes.EndOfFile );
+            } while (t.Type != TokenTypes.EndOfFile);
+        }
+
+        private void HandleAttributeMemberReference(string attribute, string member)
+        {
+            AttributeScope scope = null;
+            string refdRuleName = null;
+            if (attribute.Equals(enclosingRule.Name))
+            {
+                // ref to enclosing rule.
+                refdRuleName = attribute;
+                scope = enclosingRule.GetLocalAttributeScope(member);
+            }
+            else if (enclosingRule.GetRuleLabel(attribute) != null)
+            {
+                // ref to rule label
+                Grammar.LabelElementPair pair = enclosingRule.GetRuleLabel(attribute);
+                pair.actionReferencesLabel = true;
+                refdRuleName = pair.referencedRuleName;
+                Rule refdRule = grammar.GetRule(refdRuleName);
+                if (refdRule != null)
+                {
+                    scope = refdRule.GetLocalAttributeScope(member);
+                }
+            }
+            else if (enclosingRule.GetRuleRefsInAlt(attribute, outerAltNum) != null)
+            {
+                // ref to rule referenced in this alt
+                refdRuleName = attribute;
+                Rule refdRule = grammar.GetRule(refdRuleName);
+                if (refdRule != null)
+                {
+                    scope = refdRule.GetLocalAttributeScope(member);
+                }
+            }
+
+            if (scope != null && (scope.isPredefinedRuleScope || scope.isPredefinedLexerRuleScope))
+            {
+                grammar.ReferenceRuleLabelPredefinedAttribute(refdRuleName);
+                //System.Console.WriteLine("referenceRuleLabelPredefinedAttribute for " + refdRuleName);
+            }
+        }
+
+        private void HandleRuleLabelReference(string ruleLabel)
+        {
+            Grammar.LabelElementPair pair = enclosingRule.GetRuleLabel(ruleLabel);
+            pair.actionReferencesLabel = true;
+        }
+
+        private void HandleAttributeReference(string attributeName)
+        {
+            AttributeScope scope = enclosingRule.GetLocalAttributeScope(attributeName);
+            if (scope != null && (scope.isPredefinedRuleScope || scope.isPredefinedLexerRuleScope))
+            {
+                grammar.ReferenceRuleLabelPredefinedAttribute(enclosingRule.Name);
+                //System.Console.WriteLine("referenceRuleLabelPredefinedAttribute for " + attributeName);
+            }
         }
     }
 }

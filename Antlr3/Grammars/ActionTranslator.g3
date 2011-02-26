@@ -37,13 +37,6 @@ options
 	language=CSharp3;
 	// try all non-fragment rules in order specified
 	filter=true;
-	// output=template;  TODO: can we make tokens return templates somehow?
-}
-
-@lexer::header
-{
-using Antlr3.Tool;
-using StringTemplate = Antlr3.ST.StringTemplate;
 }
 
 @lexer::namespace{Antlr3.Grammars}
@@ -56,150 +49,27 @@ using StringTemplate = Antlr3.ST.StringTemplate;
  * 				;
  */
 SET_ENCLOSING_RULE_SCOPE_ATTR
-	:	'$' x=ID '.' y=ID WS? '=' expr=ATTR_VALUE_EXPR ';'
-							{enclosingRule!=null &&
-	                         $x.text.Equals(enclosingRule.Name) &&
-	                         enclosingRule.GetLocalAttributeScope($y.text)!=null}?
-		//{JSystem.@out.println("found \$rule.attr");}
-		{
-			StringTemplate st = null;
-			AttributeScope scope = enclosingRule.GetLocalAttributeScope($y.text);
-			if ( scope.isPredefinedRuleScope )
-			{
-				if ( $y.text.Equals("st") || $y.text.Equals("tree") )
-				{
-					st = Template("ruleSetPropertyRef_"+$y.text);
-					grammar.ReferenceRuleLabelPredefinedAttribute($x.text);
-					st.SetAttribute("scope", $x.text);
-					st.SetAttribute("attr", $y.text);
-					st.SetAttribute("expr", TranslateAction($expr.text));
-				}
-				else
-				{
-					ErrorManager.GrammarError(ErrorManager.MSG_WRITE_TO_READONLY_ATTR,
-											  grammar,
-											  actionToken,
-											  $x.text,
-											  $y.text);
-				}
-			}
-			else if ( scope.isPredefinedLexerRuleScope )
-			{
-	    		// this is a better message to emit than the previous one...
-				ErrorManager.GrammarError(ErrorManager.MSG_WRITE_TO_READONLY_ATTR,
-										  grammar,
-										  actionToken,
-										  $x.text,
-										  $y.text);
-			}
-			else if ( scope.isParameterScope )
-			{
-				st = Template("parameterSetAttributeRef");
-				st.SetAttribute("attr", scope.GetAttribute($y.text));
-				st.SetAttribute("expr", TranslateAction($expr.text));
-			}
-			else
-			{ // must be return value
-				st = Template("returnSetAttributeRef");
-				st.SetAttribute("ruleDescriptor", enclosingRule);
-				st.SetAttribute("attr", scope.GetAttribute($y.text));
-				st.SetAttribute("expr", TranslateAction($expr.text));
-			}
-		}
+	:	'$' x=ID '.' y=ID WS? '=' expr=ATTR_VALUE_EXPR ';' {CanMatchSetEnclosingRuleScopeAttribute($x.text, $y.text)}?
+		{HandleSetEnclosingRuleScopeAttribute($x.text, $y.text, $expr.text);}
 	;
+
 ENCLOSING_RULE_SCOPE_ATTR
-	:	'$' x=ID '.' y=ID	{enclosingRule!=null &&
-	                         $x.text.Equals(enclosingRule.Name) &&
-	                         enclosingRule.GetLocalAttributeScope($y.text)!=null}?
-		//{JSystem.@out.println("found \$rule.attr");}
-		{
-			if ( IsRuleRefInAlt($x.text) )
-			{
-				ErrorManager.GrammarError(ErrorManager.MSG_RULE_REF_AMBIG_WITH_RULE_IN_ALT,
-										  grammar,
-										  actionToken,
-										  $x.text);
-			}
-			StringTemplate st = null;
-			AttributeScope scope = enclosingRule.GetLocalAttributeScope($y.text);
-			if ( scope.isPredefinedRuleScope )
-			{
-				st = Template("rulePropertyRef_"+$y.text);
-				grammar.ReferenceRuleLabelPredefinedAttribute($x.text);
-				st.SetAttribute("scope", $x.text);
-				st.SetAttribute("attr", $y.text);
-			}
-			else if ( scope.isPredefinedLexerRuleScope )
-			{
-				// perhaps not the most precise error message to use, but...
-				ErrorManager.GrammarError(ErrorManager.MSG_RULE_HAS_NO_ARGS,
-										  grammar,
-										  actionToken,
-										  $x.text);
-			}
-			else if ( scope.isParameterScope )
-			{
-				st = Template("parameterAttributeRef");
-				st.SetAttribute("attr", scope.GetAttribute($y.text));
-			}
-			else
-			{ // must be return value
-				st = Template("returnAttributeRef");
-				st.SetAttribute("ruleDescriptor", enclosingRule);
-				st.SetAttribute("attr", scope.GetAttribute($y.text));
-			}
-		}
+	:	'$' x=ID '.' y=ID	{CanMatchEnclosingRuleScopeAttribute($x.text, $y.text)}?
+		{HandleEnclosingRuleScopeAttribute($x.text, $y.text);}
 	;
 
 /** Setting $tokenlabel.attr or $tokenref.attr where attr is predefined property of a token is an error. */
 SET_TOKEN_SCOPE_ATTR
-	:	'$' x=ID '.' y=ID WS? '='
-							 {enclosingRule!=null && input.LA(1)!='=' &&
-	                         (enclosingRule.GetTokenLabel($x.text)!=null||
-	                          IsTokenRefInAlt($x.text)) &&
-	                         AttributeScope.tokenScope.GetAttribute($y.text)!=null}?
-		//{JSystem.@out.println("found \$tokenlabel.attr or \$tokenref.attr");}
-		{
-			ErrorManager.GrammarError(ErrorManager.MSG_WRITE_TO_READONLY_ATTR,
-									  grammar,
-									  actionToken,
-									  $x.text,
-									  $y.text);
-		}
+	:	'$' x=ID '.' y=ID WS? '=' {CanMatchSetTokenScopeAttribute($x.text, $y.text)}?
+		{HandleSetTokenScopeAttribute($x.text, $y.text);}
 	;
 
 /** $tokenlabel.attr or $tokenref.attr where attr is predefined property of a token.
  *  If in lexer grammar, only translate for strings and tokens (rule refs)
  */
 TOKEN_SCOPE_ATTR
-	:	'$' x=ID '.' y=ID	{enclosingRule!=null &&
-	                         (enclosingRule.GetTokenLabel($x.text)!=null||
-	                          IsTokenRefInAlt($x.text)) &&
-	                         AttributeScope.tokenScope.GetAttribute($y.text)!=null &&
-	                         (grammar.type!=GrammarType.Lexer ||
-	                         GetElementLabel($x.text).elementRef.token.Type==ANTLRParser.TOKEN_REF ||
-	                         GetElementLabel($x.text).elementRef.token.Type==ANTLRParser.STRING_LITERAL)}?
-		// {JSystem.@out.println("found \$tokenlabel.attr or \$tokenref.attr");}
-		{
-			string label = $x.text;
-			if ( enclosingRule.GetTokenLabel($x.text)==null )
-			{
-				// \$tokenref.attr  gotta get old label or compute new one
-				CheckElementRefUniqueness($x.text, true);
-				label = enclosingRule.GetElementLabel($x.text, outerAltNum, generator);
-				if ( label==null )
-				{
-					ErrorManager.GrammarError(ErrorManager.MSG_FORWARD_ELEMENT_REF,
-											  grammar,
-											  actionToken,
-											  "\$"+$x.text+"."+$y.text);
-					label = $x.text;
-				}
-			}
-			StringTemplate st = Template("tokenLabelPropertyRef_"+$y.text);
-			st.SetAttribute("scope", label);
-			st.SetAttribute("attr", AttributeScope.tokenScope.GetAttribute($y.text));
-		}
+	:	'$' x=ID '.' y=ID	{CanMatchTokenScopeAttribute($x.text, $y.text)}?
+		{HandleTokenScopeAttribute($x.text, $y.text);}
 	;
 
 /** Setting $rulelabel.attr or $ruleref.attr where attr is a predefined property is an error
@@ -208,171 +78,33 @@ TOKEN_SCOPE_ATTR
  *  attributes declared in scope {} or parameters, return values and the like.
  */
 SET_RULE_SCOPE_ATTR
-@init
-{
-Grammar.LabelElementPair pair=null;
-string refdRuleName=null;
-}
-	:	'$' x=ID '.' y=ID WS? '=' {enclosingRule!=null && input.LA(1)!='='}?
-		{
-			pair = enclosingRule.GetRuleLabel($x.text);
-			refdRuleName = $x.text;
-			if ( pair!=null )
-			{
-				refdRuleName = pair.referencedRuleName;
-			}
-		}
-		// supercomplicated because I can't exec the above action.
-		// This asserts that if it's a label or a ref to a rule proceed but only if the attribute
-		// is valid for that rule's scope
-		{(enclosingRule.GetRuleLabel($x.text)!=null || IsRuleRefInAlt($x.text)) &&
-	      GetRuleLabelAttribute(enclosingRule.GetRuleLabel($x.text)!=null?enclosingRule.GetRuleLabel($x.text).referencedRuleName:$x.text,$y.text)!=null}?
-		//{JSystem.@out.println("found set \$rulelabel.attr or \$ruleref.attr: "+$x.text+"."+$y.text);}
-		{
-			ErrorManager.GrammarError(ErrorManager.MSG_WRITE_TO_READONLY_ATTR,
-									  grammar,
-									  actionToken,
-									  $x.text,
-									  $y.text);
-		}
+	:	'$' x=ID '.' y=ID WS? '=' {CanMatchSetRuleScopeAttribute($x.text, $y.text)}?
+		{HandleSetRuleScopeAttribute($x.text, $y.text);}
 	;
 
 /** $rulelabel.attr or $ruleref.attr where attr is a predefined property*/
 RULE_SCOPE_ATTR
-@init
-{
-	Grammar.LabelElementPair pair=null;
-	string refdRuleName=null;
-}
-	:	'$' x=ID '.' y=ID {enclosingRule!=null}?
-		{
-		pair = enclosingRule.GetRuleLabel($x.text);
-		refdRuleName = $x.text;
-		if ( pair!=null ) {
-			refdRuleName = pair.referencedRuleName;
-		}
-		}
-		// supercomplicated because I can't exec the above action.
-		// This asserts that if it's a label or a ref to a rule proceed but only if the attribute
-		// is valid for that rule's scope
-		{(enclosingRule.GetRuleLabel($x.text)!=null || IsRuleRefInAlt($x.text)) &&
-	      GetRuleLabelAttribute(enclosingRule.GetRuleLabel($x.text)!=null?enclosingRule.GetRuleLabel($x.text).referencedRuleName:$x.text,$y.text)!=null}?
-		//{JSystem.@out.println("found \$rulelabel.attr or \$ruleref.attr: "+$x.text+"."+$y.text);}
-		{
-			string label = $x.text;
-			if ( pair==null )
-			{
-				// \$ruleref.attr  gotta get old label or compute new one
-				CheckElementRefUniqueness($x.text, false);
-				label = enclosingRule.GetElementLabel($x.text, outerAltNum, generator);
-				if ( label==null )
-				{
-					ErrorManager.GrammarError(ErrorManager.MSG_FORWARD_ELEMENT_REF,
-											  grammar,
-											  actionToken,
-											  "\$"+$x.text+"."+$y.text);
-					label = $x.text;
-				}
-			}
-			StringTemplate st;
-			Rule refdRule = grammar.GetRule(refdRuleName);
-			AttributeScope scope = refdRule.GetLocalAttributeScope($y.text);
-			if ( scope.isPredefinedRuleScope )
-			{
-				st = Template("ruleLabelPropertyRef_"+$y.text);
-				grammar.ReferenceRuleLabelPredefinedAttribute(refdRuleName);
-				st.SetAttribute("scope", label);
-				st.SetAttribute("attr", $y.text);
-			}
-			else if ( scope.isPredefinedLexerRuleScope )
-			{
-				st = Template("lexerRuleLabelPropertyRef_"+$y.text);
-				grammar.ReferenceRuleLabelPredefinedAttribute(refdRuleName);
-				st.SetAttribute("scope", label);
-				st.SetAttribute("attr", $y.text);
-			}
-			else if ( scope.isParameterScope )
-			{
-				// TODO: error!
-			}
-			else
-			{
-				st = Template("ruleLabelRef");
-				st.SetAttribute("referencedRule", refdRule);
-				st.SetAttribute("scope", label);
-				st.SetAttribute("attr", scope.GetAttribute($y.text));
-			}
-		}
+	:	'$' x=ID '.' y=ID {CanMatchRuleScopeAttribute($x.text, $y.text)}?
+		{HandleRuleScopeAttribute($x.text, $y.text);}
 	;
 
 
 /** $label	either a token label or token/rule list label like label+=expr */
 LABEL_REF
-	:	'$' ID {enclosingRule!=null &&
-	            GetElementLabel($ID.text)!=null &&
-		        enclosingRule.GetRuleLabel($ID.text)==null}?
-		// {JSystem.@out.println("found \$label");}
-		{
-			StringTemplate st;
-			Grammar.LabelElementPair pair = GetElementLabel($ID.text);
-			if ( pair.type==LabelType.RuleList ||
-				  pair.type==LabelType.TokenList ||
-				  pair.type == LabelType.WildcardTreeList )
-			{
-				st = Template("listLabelRef");
-			}
-			else
-			{
-				st = Template("tokenLabelRef");
-			}
-			st.SetAttribute("label", $ID.text);
-		}
+	:	'$' ID {CanMatchLabelReference($ID.text)}?
+		{HandleLabelReference($ID.text);}
 	;
 
 /** $tokenref in a non-lexer grammar */
 ISOLATED_TOKEN_REF
-	:	'$' ID	{grammar.type!=GrammarType.Lexer && enclosingRule!=null && IsTokenRefInAlt($ID.text)}?
-		//{JSystem.@out.println("found \$tokenref");}
-		{
-			string label = enclosingRule.GetElementLabel($ID.text, outerAltNum, generator);
-			CheckElementRefUniqueness($ID.text, true);
-			if ( label==null )
-			{
-				ErrorManager.GrammarError(ErrorManager.MSG_FORWARD_ELEMENT_REF,
-										  grammar,
-										  actionToken,
-										  $ID.text);
-			}
-			else
-			{
-				StringTemplate st = Template("tokenLabelRef");
-				st.SetAttribute("label", label);
-			}
-		}
+	:	'$' ID	{CanMatchIsolatedTokenReference($ID.text)}?
+		{HandleIsolatedTokenReference($ID.text);}
 	;
 
 /** $lexerruleref from within the lexer */
 ISOLATED_LEXER_RULE_REF
-	:	'$' ID	{grammar.type==GrammarType.Lexer &&
-	             enclosingRule!=null &&
-	             IsRuleRefInAlt($ID.text)}?
-		//{JSystem.@out.println("found \$lexerruleref");}
-		{
-			string label = enclosingRule.GetElementLabel($ID.text, outerAltNum, generator);
-			CheckElementRefUniqueness($ID.text, false);
-			if ( label==null )
-			{
-				ErrorManager.GrammarError(ErrorManager.MSG_FORWARD_ELEMENT_REF,
-										  grammar,
-										  actionToken,
-										  $ID.text);
-			}
-			else
-			{
-				StringTemplate st = Template("lexerRuleLabel");
-				st.SetAttribute("label", label);
-			}
-		}
+	:	'$' ID	{CanMatchIsolatedLexerRuleReference($ID.text)}?
+		{HandleIsolatedLexerRuleReference($ID.text);}
 	;
 
 /**  $y 	return value, parameter, predefined rule property, or token/rule
@@ -387,78 +119,13 @@ ISOLATED_LEXER_RULE_REF
  *	TODO: this might get the dynamic scope's elements too.!!!!!!!!!
  */
 SET_LOCAL_ATTR
-	:	'$' ID WS? '=' expr=ATTR_VALUE_EXPR ';' {enclosingRule!=null
-													&& enclosingRule.GetLocalAttributeScope($ID.text)!=null
-													&& !enclosingRule.GetLocalAttributeScope($ID.text).isPredefinedLexerRuleScope}?
-		//{JSystem.@out.println("found set \$localattr");}
-		{
-			StringTemplate st;
-			AttributeScope scope = enclosingRule.GetLocalAttributeScope($ID.text);
-			if ( scope.isPredefinedRuleScope )
-			{
-				if ($ID.text.Equals("tree") || $ID.text.Equals("st"))
-				{
-					st = Template("ruleSetPropertyRef_"+$ID.text);
-					grammar.ReferenceRuleLabelPredefinedAttribute(enclosingRule.Name);
-					st.SetAttribute("scope", enclosingRule.Name);
-					st.SetAttribute("attr", $ID.text);
-					st.SetAttribute("expr", TranslateAction($expr.text));
-				}
-				else
-				{
-					ErrorManager.GrammarError(ErrorManager.MSG_WRITE_TO_READONLY_ATTR,
-											 grammar,
-											 actionToken,
-											 $ID.text,
-											 "");
-				}
-			}
-			else if ( scope.isParameterScope )
-			{
-				st = Template("parameterSetAttributeRef");
-				st.SetAttribute("attr", scope.GetAttribute($ID.text));
-				st.SetAttribute("expr", TranslateAction($expr.text));
-			}
-			else
-			{
-				st = Template("returnSetAttributeRef");
-				st.SetAttribute("ruleDescriptor", enclosingRule);
-				st.SetAttribute("attr", scope.GetAttribute($ID.text));
-				st.SetAttribute("expr", TranslateAction($expr.text));
-			}
-		}
+	:	'$' ID WS? '=' expr=ATTR_VALUE_EXPR ';' {CanMatchSetLocalAttribute($ID.text)}?
+		{HandleSetLocalAttribute($ID.text, $expr.text);}
 	;
+
 LOCAL_ATTR
-	:	'$' ID {enclosingRule!=null && enclosingRule.GetLocalAttributeScope($ID.text)!=null}?
-		//{JSystem.@out.println("found \$localattr");}
-		{
-			StringTemplate st;
-			AttributeScope scope = enclosingRule.GetLocalAttributeScope($ID.text);
-			if ( scope.isPredefinedRuleScope )
-			{
-				st = Template("rulePropertyRef_"+$ID.text);
-				grammar.ReferenceRuleLabelPredefinedAttribute(enclosingRule.Name);
-				st.SetAttribute("scope", enclosingRule.Name);
-				st.SetAttribute("attr", $ID.text);
-			}
-			else if ( scope.isPredefinedLexerRuleScope )
-			{
-				st = Template("lexerRulePropertyRef_"+$ID.text);
-				st.SetAttribute("scope", enclosingRule.Name);
-				st.SetAttribute("attr", $ID.text);
-			}
-			else if ( scope.isParameterScope )
-			{
-				st = Template("parameterAttributeRef");
-				st.SetAttribute("attr", scope.GetAttribute($ID.text));
-			}
-			else
-			{
-				st = Template("returnAttributeRef");
-				st.SetAttribute("ruleDescriptor", enclosingRule);
-				st.SetAttribute("attr", scope.GetAttribute($ID.text));
-			}
-		}
+	:	'$' ID {CanMatchLocalAttribute($ID.text)}?
+		{HandleLocalAttribute($ID.text);}
 	;
 
 /**	$x::y	the only way to access the attributes within a dynamic scope
@@ -474,57 +141,20 @@ LOCAL_ATTR
  * 				;
  */
 SET_DYNAMIC_SCOPE_ATTR
-	:	'$' x=ID '::' y=ID WS? '=' expr=ATTR_VALUE_EXPR ';'
-						   {ResolveDynamicScope($x.text)!=null &&
-						     ResolveDynamicScope($x.text).GetAttribute($y.text)!=null}?
-		//{JSystem.@out.println("found set \$scope::attr "+ $x.text + "::" + $y.text + " to " + $expr.text);}
-		{
-			AttributeScope scope = ResolveDynamicScope($x.text);
-			if ( scope!=null )
-			{
-				StringTemplate st = Template("scopeSetAttributeRef");
-				st.SetAttribute("scope", $x.text);
-				st.SetAttribute("attr",  scope.GetAttribute($y.text));
-				st.SetAttribute("expr",  TranslateAction($expr.text));
-			}
-			else
-			{
-				// error: invalid dynamic attribute
-			}
-		}
+	:	'$' x=ID '::' y=ID WS? '=' expr=ATTR_VALUE_EXPR ';' {CanMatchSetDynamicScopeAttribute($x.text, $y.text)}?
+		{HandleSetDynamicScopeAttribute($x.text, $y.text, $expr.text);}
 	;
 
 DYNAMIC_SCOPE_ATTR
-	:	'$' x=ID '::' y=ID
-						   {ResolveDynamicScope($x.text)!=null &&
-						     ResolveDynamicScope($x.text).GetAttribute($y.text)!=null}?
-		//{JSystem.@out.println("found \$scope::attr "+ $x.text + "::" + $y.text);}
-		{
-			AttributeScope scope = ResolveDynamicScope($x.text);
-			if ( scope!=null )
-			{
-				StringTemplate st = Template("scopeAttributeRef");
-				st.SetAttribute("scope", $x.text);
-				st.SetAttribute("attr",  scope.GetAttribute($y.text));
-			}
-			else
-			{
-				// error: invalid dynamic attribute
-			}
-		}
+	:	'$' x=ID '::' y=ID {CanMatchDynamicScopeAttribute($x.text, $y.text)}?
+		{HandleDynamicScopeAttribute($x.text, $y.text);}
 	;
-
 
 ERROR_SCOPED_XY
 	:	'$' x=ID '::' y=ID
-		{
-		chunks.Add(Text);
-		generator.IssueInvalidScopeError($x.text,$y.text,
-		                                 enclosingRule,actionToken,
-		                                 outerAltNum);		
-		}
+		{HandleErrorScopedXY($x.text, $y.text);}
 	;
-	
+
 /**		To access deeper (than top of stack) scopes, use the notation:
  *
  * 		$x[-1]::y previous (just under top of stack)
@@ -535,24 +165,12 @@ ERROR_SCOPED_XY
  */
 DYNAMIC_NEGATIVE_INDEXED_SCOPE_ATTR
 	:	'$' x=ID '[' '-' expr=SCOPE_INDEX_EXPR ']' '::' y=ID
-		// {JSystem.@out.println("found \$scope[-...]::attr");}
-		{
-			StringTemplate st = Template("scopeAttributeRef");
-			st.SetAttribute("scope",    $x.text);
-			st.SetAttribute("attr",     ResolveDynamicScope($x.text).GetAttribute($y.text));
-			st.SetAttribute("negIndex", $expr.text);
-		}		
+		{HandleDynamicNegativeIndexedScopeAttribute($x.text, $y.text, $expr.text);}
 	;
 
 DYNAMIC_ABSOLUTE_INDEXED_SCOPE_ATTR
 	:	'$' x=ID '[' expr=SCOPE_INDEX_EXPR ']' '::' y=ID 
-		// {JSystem.@out.println("found \$scope[...]::attr");}
-		{
-			StringTemplate st = Template("scopeAttributeRef");
-			st.SetAttribute("scope", $x.text);
-			st.SetAttribute("attr",  ResolveDynamicScope($x.text).GetAttribute($y.text));
-			st.SetAttribute("index", $expr.text);
-		}		
+		{HandleDynamicAbsoluteIndexedScopeAttribute($x.text, $y.text, $expr.text);}
 	;
 
 fragment
@@ -566,12 +184,8 @@ SCOPE_INDEX_EXPR
  * 			which would be ambiguous.  See TestAttributes.testAmbiguousRuleRef()
  */
 ISOLATED_DYNAMIC_SCOPE
-	:	'$' ID {ResolveDynamicScope($ID.text)!=null}?
-		// {JSystem.@out.println("found isolated \$scope where scope is a dynamic scope");}
-		{
-			StringTemplate st = Template("isolatedDynamicScopeRef");
-			st.SetAttribute("scope", $ID.text);
-		}		
+	:	'$' ID {CanMatchIsolatedDynamicScope($ID.text)}?
+		{HandleIsolatedDynamicScope($ID.text);}
 	;
 	
 // antlr.g then codegen.g does these first two currently.
@@ -580,39 +194,13 @@ ISOLATED_DYNAMIC_SCOPE
 /** %foo(a={},b={},...) ctor */
 TEMPLATE_INSTANCE
 	:	'%' ID '(' ( WS? ARG (',' WS? ARG)* WS? )? ')'
-		// {JSystem.@out.println("found \%foo(args)");}
-		{
-			string action = $text.Substring( 1, $text.Length - 1 );
-			string ruleName = "<outside-of-rule>";
-			if ( enclosingRule!=null )
-			{
-				ruleName = enclosingRule.Name;
-			}
-			StringTemplate st =
-				generator.TranslateTemplateConstructor(ruleName,
-													   outerAltNum,
-													   actionToken,
-													   action);
-			if ( st!=null )
-			{
-				chunks.Add(st);
-			}
-		}
+		{HandleTemplateInstance($text);}
 	;
 
 /** %({name-expr})(a={},...) indirect template ctor reference */
 INDIRECT_TEMPLATE_INSTANCE
 	:	'%' '(' ACTION ')' '(' ( WS? ARG (',' WS? ARG)* WS? )? ')'
-		// {JSystem.@out.println("found \%({...})(args)");}
-		{
-			string action = $text.Substring( 1, $text.Length - 1 );
-			StringTemplate st =
-				generator.TranslateTemplateConstructor(enclosingRule.Name,
-													   outerAltNum,
-													   actionToken,
-													   action);
-			chunks.Add(st);
-		}
+		{HandleIndirectTemplateInstance($text);}
 	;
 
 fragment
@@ -622,15 +210,7 @@ ARG	:	ID '=' ACTION
 /**	%{expr}.y = z; template attribute y of StringTemplate-typed expr to z */
 SET_EXPR_ATTRIBUTE
 	:	'%' a=ACTION '.' ID WS? '=' expr=ATTR_VALUE_EXPR ';'
-		// {JSystem.@out.println("found \%{expr}.y = z;");}
-		{
-			StringTemplate st = Template("actionSetAttribute");
-			string action = $a.text;
-			action = action.Substring( 1, action.Length - 2 ); // stuff inside {...}
-			st.SetAttribute("st", TranslateAction(action));
-			st.SetAttribute("attrName", $ID.text);
-			st.SetAttribute("expr", TranslateAction($expr.text));
-		}
+		{HandleSetExpressionAttribute($a.text, $ID.text, $expr.text);}
 	;
 	
 /*    %x.y = z; set template attribute y of x (always set never get attr)
@@ -639,13 +219,7 @@ SET_EXPR_ATTRIBUTE
  */
 SET_ATTRIBUTE
 	:	'%' x=ID '.' y=ID WS? '=' expr=ATTR_VALUE_EXPR ';'
-		// {JSystem.@out.println("found \%x.y = z;");}
-		{
-			StringTemplate st = Template("actionSetAttribute");
-			st.SetAttribute("st", $x.text);
-			st.SetAttribute("attrName", $y.text);
-			st.SetAttribute("expr", TranslateAction($expr.text));
-		}
+		{HandleSetAttribute($x.text, $y.text, $expr.text);}
 	;
 
 /** Don't allow an = as first char to prevent $x == 3; kind of stuff. */
@@ -656,14 +230,8 @@ ATTR_VALUE_EXPR
 	
 /** %{string-expr} anonymous template from string expr */
 TEMPLATE_EXPR
-	:	'%' a=ACTION
-		// {JSystem.@out.println("found \%{expr}");}
-		{
-			StringTemplate st = Template("actionStringConstructor");
-			string action = $a.text;
-			action = action.Substring( 1, action.Length - 2 ); // stuff inside {...}
-			st.SetAttribute("stringExpr", TranslateAction(action));
-		}
+	:	'%' ACTION
+		{HandleTemplateExpression($ACTION.text);}
 	;
 	
 fragment
@@ -672,49 +240,28 @@ ACTION
 	;
 	
 ESC
-	:	'\\' '$' {chunks.Add("\$");}
-	|	'\\' '%' {chunks.Add("\%");}
-	|	'\\' ~('$'|'%') {chunks.Add(Text);}
+	:	'\\' c=. {HandleEscape((char)$c);}
 	;
 
 ERROR_XY
 	:	'$' x=ID '.' y=ID
-		{
-			chunks.Add(Text);
-			generator.IssueInvalidAttributeError($x.text,$y.text,
-												 enclosingRule,actionToken,
-												 outerAltNum);
-		}
+		{HandleErrorXY($x.text, $y.text);}
 	;
 	
 ERROR_X
 	:	'$' x=ID
-		{
-			chunks.Add(Text);
-			generator.IssueInvalidAttributeError($x.text,
-												 enclosingRule,actionToken,
-												 outerAltNum);
-		}
+		{HandleErrorX($x.text);}
 	;
 	
 UNKNOWN_SYNTAX
 	:	'$'
-		{
-			chunks.Add(Text);
-			// shouldn't need an error here.  Just accept \$ if it doesn't look like anything
-		}
+		{HandleUnknownAttributeSyntax();}
 	|	'%' (ID|'.'|'('|')'|','|'{'|'}'|'"')*
-		{
-			chunks.Add(Text);
-			ErrorManager.GrammarError(ErrorManager.MSG_INVALID_TEMPLATE_ACTION,
-									  grammar,
-									  actionToken,
-									  Text);
-		}
+		{HandleUnknownTemplateSyntax();}
 	;
 
 TEXT
-	:	~('$'|'%'|'\\')+ {chunks.Add(Text);}
+	:	~('$'|'%'|'\\')+ {HandleText();}
 	;
 	
 fragment
