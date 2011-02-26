@@ -515,20 +515,23 @@ elementOptions[GrammarAST terminalAST]
 	;
 
 defaultNodeOption[GrammarAST terminalAST]
-@init
-{
-StringBuffer buf = new StringBuffer();
-}
-	:	i=id {buf.Append($i.text);} (WILDCARD i2=id {buf.Append("."+$i2.text);})*
-		{terminalAST.SetTerminalOption(Grammar,Grammar.defaultTokenOption,buf.ToString());}
+	:	elementOptionId
+		{terminalAST.SetTerminalOption(Grammar,Grammar.defaultTokenOption,$elementOptionId.qid);}
 	;
 
 elementOption[GrammarAST terminalAST]
-	:	a=id ASSIGN^ (b=id|STRING_LITERAL|DOUBLE_QUOTE_STRING_LITERAL|DOUBLE_ANGLE_STRING_LITERAL)
-		{
-		object v = $b.text ?? $STRING_LITERAL.text ?? $DOUBLE_QUOTE_STRING_LITERAL.text ?? $DOUBLE_ANGLE_STRING_LITERAL.text;
-		terminalAST.SetTerminalOption(Grammar,$a.text,v);
-		}
+	:	id ASSIGN^
+		(	elementOptionId
+			{terminalAST.SetTerminalOption(Grammar,$id.text,$elementOptionId.qid);}
+		|	(t=STRING_LITERAL|t=DOUBLE_QUOTE_STRING_LITERAL|t=DOUBLE_ANGLE_STRING_LITERAL)
+			{terminalAST.SetTerminalOption(Grammar,$id.text,$t.text);}
+		)
+	;
+
+elementOptionId returns [string qid]
+@init{StringBuffer buf = new StringBuffer();}
+	:	i=id {buf.Append($i.text);} ('.' i=id {buf.Append("." + $i.text);})*
+		{$qid = buf.ToString();}
 	;
 
 ebnfSuffix[GrammarAST elemAST, bool inRewrite]
@@ -630,27 +633,17 @@ rewrite_element
 	;
 
 rewrite_atom
-@init
-{
-GrammarAST subrule=null;
-}
-	:	(	tr=TOKEN_REF
-			-> $tr
-		)
-		(elementOptions[(GrammarAST)$tree.GetChild(0)])? (ARG_ACTION)? // for imaginary nodes
-		-> ^($rewrite_atom ARG_ACTION?)
-	|	rr=RULE_REF
-	|	(	cl=CHAR_LITERAL
-			-> $cl
-		)
-		(elementOptions[(GrammarAST)$tree.GetChild(0)])?
-	|	(	sl=STRING_LITERAL
-			-> $sl
-		)
-		(eo=elementOptions[(GrammarAST)$tree.GetChild(0)])?
-	|	d=DOLLAR i=id // reference to a label in a rewrite rule
-		-> LABEL[$i.start,$i.text]
+	:	tr=TOKEN_REF^ elementOptions[$tr.tree]!? ARG_ACTION? // for imaginary nodes
+	|	RULE_REF
+	|	cl=CHAR_LITERAL elementOptions[$cl.tree]!?
+	|	sl=STRING_LITERAL elementOptions[$sl.tree]!?
+	|	DOLLAR! label // reference to a label in a rewrite rule
 	|	ACTION
+	;
+
+label
+	:	TOKEN_REF<LABEL> {}
+	|	RULE_REF<LABEL>
 	;
 
 rewrite_ebnf
