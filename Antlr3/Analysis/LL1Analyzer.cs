@@ -260,11 +260,7 @@ namespace Antlr3.Analysis
             // if transition 0 is a rule call and we don't want FOLLOW, check cache
             if ( !chaseFollowTransitions && transition0 is RuleClosureTransition )
             {
-                LookaheadSet prev = _firstCache.get( (NFAState)transition0.target );
-                if ( prev != null )
-                {
-                    tset = new LookaheadSet( prev );
-                }
+                tset = _firstCache.get( (NFAState)transition0.target );
             }
 
             // if not in cache, must compute
@@ -277,6 +273,8 @@ namespace Antlr3.Analysis
                     _firstCache[(NFAState)transition0.target] = tset;
                 }
             }
+
+            LookaheadSet tsetCached = tset; // tset is stored in cache. We can't return the same instance
 
             // did we fall off the end?
             if ( _grammar.type != GrammarType.Lexer && tset.Member( Label.EOR_TOKEN_TYPE ) )
@@ -294,7 +292,7 @@ namespace Antlr3.Analysis
                     //tset.remove(Label.EOR_TOKEN_TYPE);
                     NFAState following = (NFAState)ruleInvocationTrans.followState;
                     LookaheadSet fset = FirstCore( following, chaseFollowTransitions );
-                    fset.OrInPlace( tset ); // tset cached; or into new set
+                    fset.OrInPlace( tset );
                     fset.Remove( Label.EOR_TOKEN_TYPE );
                     tset = fset;
                 }
@@ -309,7 +307,8 @@ namespace Antlr3.Analysis
                 tset = tset1;
             }
 
-            return tset;
+            // never return a cached set; clone
+            return tset == tsetCached ? new LookaheadSet(tset) : tset;
         }
 
         /** Is there a non-syn-pred predicate visible from s that is not in

@@ -100,8 +100,31 @@ namespace AntlrUnitTests
                 "  ;\n";
             Console.WriteLine(grammar);
             string found = execParser("T.g", grammar, "TParser", "TLexer", "a", "((i))z", false);
-            string expecting = "input line 1:5 no viable alternative at input 'z'" + NewLine;
+            string expecting = "input line 1:0 no viable alternative at input '('" + NewLine;
             string result = Regex.Replace(stderrDuringParse, ".*?/input ", "input ");
+            Assert.AreEqual(expecting, result);
+        }
+
+        [TestMethod]
+        public void TestLL1ErrorInfo()
+        {
+            string grammar =
+                "grammar T;\n" +
+                "start : animal (AND acClass)? service EOF;\n" +
+                "animal : (DOG | CAT );\n" +
+                "service : (HARDWARE | SOFTWARE) ;\n" +
+                "AND : 'and';\n" +
+                "DOG : 'dog';\n" +
+                "CAT : 'cat';\n" +
+                "HARDWARE: 'hardware';\n" +
+                "SOFTWARE: 'software';\n" +
+                "WS : ' ' {skip();} ;" +
+                "acClass\n" +
+                "@init\n" +
+                "{ System.out.println(computeContextSensitiveRuleFOLLOW().toString(tokenNames)); }\n" +
+                "  : ;\n";
+            string result = execParser("T.g", grammar, "TParser", "TLexer", "start", "dog and software", false);
+            string expecting = "{HARDWARE,SOFTWARE}" + NewLine;
             Assert.AreEqual(expecting, result);
         }
     }
