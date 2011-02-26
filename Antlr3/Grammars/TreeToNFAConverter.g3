@@ -698,8 +698,8 @@ finally { inTest--; }
 
 /** Match just an element; no ast suffix etc.. */
 testSetElement returns [int alts=1]
-	:	c=CHAR_LITERAL
-	|	t=TOKEN_REF
+	:	c=CHAR_LITERAL {!HasElementOptions($c)}?
+	|	t=TOKEN_REF {!HasElementOptions($t)}?
 		{{
 			if ( grammar.type==GrammarType.Lexer )
 			{

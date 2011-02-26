@@ -32,16 +32,13 @@
 
 namespace Antlr3.Grammars
 {
-    using System.Collections.Generic;
     using Antlr.Runtime;
-    using Antlr.Runtime.JavaExtensions;
     using Antlr3.Analysis;
     using Antlr3.Tool;
 
-    using ArrayList = System.Collections.Generic.List<object>;
+    using ArgumentNullException = System.ArgumentNullException;
     using CommonTreeNodeStream = Antlr.Runtime.Tree.CommonTreeNodeStream;
     using IIntSet = Antlr3.Misc.IIntSet;
-    using IList = System.Collections.IList;
     using ITreeNodeStream = Antlr.Runtime.Tree.ITreeNodeStream;
 
     partial class TreeToNFAConverter
@@ -170,6 +167,14 @@ namespace Antlr3.Grammars
                 token,
                 "buildnfa: " + ex.ToString(),
                 ex );
+        }
+
+        private bool HasElementOptions(GrammarAST node)
+        {
+            if (node == null)
+                throw new ArgumentNullException("node");
+
+            return node.terminalOptions != null && node.terminalOptions.Count > 0;
         }
     }
 }
