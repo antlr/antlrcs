@@ -61,6 +61,20 @@ namespace AntlrUnitTests
         }
 
         [TestMethod]
+        public void TestTokenCommonTree()
+        {
+            string grammar =
+                "grammar T;\n" +
+                "options {output=AST;}\n" +
+                "a : ID<class=CommonTree> ;\n" +
+                "ID : 'a'..'z'+ ;\n" +
+                "WS : (' '|'\\n') {$channel=HIDDEN;} ;\n";
+            string found = execParser("T.g", grammar, "TParser", "TLexer",
+                        "a", "a", debug);
+            assertEquals("a\n", found);
+        }
+
+        [TestMethod]
         public void TestTokenWithQualifiedType() /*throws Exception*/ {
             string grammar =
                 "grammar T;\n" +

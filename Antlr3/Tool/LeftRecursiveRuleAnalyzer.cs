@@ -36,13 +36,15 @@ namespace Antlr3.Tool
     using Antlr.Runtime.JavaExtensions;
     using Antlr.Runtime.Tree;
     using Antlr3.Codegen;
+    using Antlr3.Extensions;
     using Antlr3.Grammars;
     using Antlr3.ST;
     using AngleBracketTemplateLexer = Antlr3.ST.Language.AngleBracketTemplateLexer;
     using Console = System.Console;
+    using Exception = System.Exception;
+    using IStringTemplateGroupLoader = Antlr3.ST.IStringTemplateGroupLoader;
     using StringBuilder = System.Text.StringBuilder;
     using StringTemplateGroup = Antlr3.ST.StringTemplateGroup;
-    using StringTemplateGroupLoader = Antlr3.ST.IStringTemplateGroupLoader;
 
     [System.CLSCompliant(false)]
     public class LeftRecursiveRuleAnalyzer : LeftRecursiveRuleWalker
@@ -63,8 +65,11 @@ namespace Antlr3.Tool
         public List<string> prefixAlts = new List<string>();
         public List<string> otherAlts = new List<string>();
 
-        public StringTemplateGroup recRuleTemplates;
+        private static readonly SortedList<string, StringTemplateGroup> recRuleTemplatesCache =
+            new SortedList<string, StringTemplateGroup>();
+
         public string language;
+        private StringTemplateGroup recRuleTemplates;
 
         public IDictionary<int, ASSOC> altAssociativity = new Dictionary<int, ASSOC>();
 
@@ -76,23 +81,33 @@ namespace Antlr3.Tool
             language = (string)g.GetOption("language");
             generator = new CodeGenerator(g.tool, g, language);
             generator.LoadTemplates(language);
-            LoadPrecRuleTemplates();
+            recRuleTemplates = LoadPrecRuleTemplates(g.Tool);
         }
 
-        public void LoadPrecRuleTemplates()
+        private static StringTemplateGroup LoadPrecRuleTemplates(AntlrTool tool)
         {
-            string templateDirs = g.Tool.TemplatesDirectory;
-            //+":" + Path.Combine(g.Tool.TemplatesDirectory);
-            StringTemplateGroupLoader loader = new CommonGroupLoader(templateDirs, ErrorManager.GetStringTemplateErrorListener());
-            StringTemplateGroup.RegisterGroupLoader(loader);
-            StringTemplateGroup.RegisterDefaultLexer(typeof(AngleBracketTemplateLexer));
-
-            recRuleTemplates = StringTemplateGroup.LoadGroup("LeftRecursiveRules");
-            if (recRuleTemplates == null)
+            string templateDirs = tool.TemplatesDirectory;
+            StringTemplateGroup group;
+            if (!recRuleTemplatesCache.TryGetValue(templateDirs, out group))
             {
-                ErrorManager.Error(ErrorManager.MSG_MISSING_CODE_GEN_TEMPLATES, "PrecRules");
-                return;
+                //+":" + Path.Combine(g.Tool.TemplatesDirectory);
+                IStringTemplateGroupLoader loader = new CommonGroupLoader(templateDirs, ErrorManager.GetStringTemplateErrorListener());
+                StringTemplateGroup.RegisterGroupLoader(loader);
+                StringTemplateGroup.RegisterDefaultLexer(typeof(AngleBracketTemplateLexer));
+
+                group = StringTemplateGroup.LoadGroup("LeftRecursiveRules");
+                if (group != null)
+                {
+                    recRuleTemplatesCache[templateDirs] = group;
+                }
+                else
+                {
+                    ErrorManager.Error(ErrorManager.MSG_MISSING_CODE_GEN_TEMPLATES, "PrecRules");
+                    return null;
+                }
             }
+
+            return group;
         }
 
         public override void SetTokenPrec(GrammarAST t, int alt)
@@ -137,6 +152,7 @@ namespace Antlr3.Tool
             altTree = GrammarAST.DupTree(altTree);
             rewriteTree = GrammarAST.DupTree(rewriteTree);
 
+            StripSynPred(altTree);
             StripLeftRecursion(altTree);
 
             // rewrite e to be e_[rec_arg]
@@ -163,6 +179,7 @@ namespace Antlr3.Tool
             altTree = GrammarAST.DupTree(altTree);
             rewriteTree = GrammarAST.DupTree(rewriteTree);
 
+            StripSynPred(altTree);
             StripLeftRecursion(altTree);
 
             int nextPrec = NextPrecedence(alt);
@@ -187,6 +204,8 @@ namespace Antlr3.Tool
             altTree = GrammarAST.DupTree(altTree);
             rewriteTree = GrammarAST.DupTree(rewriteTree);
 
+            StripSynPred(altTree);
+
             int nextPrec = Precedence(alt);
             // rewrite e to be e_[rec_arg]
             StringTemplate refST = recRuleTemplates.GetInstanceOf("recRuleRef");
@@ -210,6 +229,7 @@ namespace Antlr3.Tool
         {
             altTree = GrammarAST.DupTree(altTree);
             rewriteTree = GrammarAST.DupTree(rewriteTree);
+            StripSynPred(altTree);
             StripLeftRecursion(altTree);
             StringTemplate nameST = recRuleTemplates.GetInstanceOf("recRuleName");
             nameST.SetAttribute("ruleName", ruleName);
@@ -225,6 +245,7 @@ namespace Antlr3.Tool
         {
             altTree = GrammarAST.DupTree(altTree);
             rewriteTree = GrammarAST.DupTree(rewriteTree);
+            StripSynPred(altTree);
             StripLeftRecursion(altTree);
             string altText = Text(altTree);
 
@@ -318,17 +339,28 @@ namespace Antlr3.Tool
             return t;
         }
 
-        public void StripLeftRecursion(GrammarAST t)
+        public void StripSynPred(GrammarAST altAST)
         {
-            GrammarAST rref = (GrammarAST)t.GetChild(0);
-            if (rref.Type == ANTLRParser.RULE_REF)
+            GrammarAST t = (GrammarAST)altAST.GetChild(0);
+            if (t.Type == ANTLRParser.BACKTRACK_SEMPRED ||
+                 t.Type == ANTLRParser.SYNPRED ||
+                 t.Type == ANTLRParser.SYN_SEMPRED)
+            {
+                altAST.DeleteChild(0);
+            }
+        }
+
+        public void StripLeftRecursion(GrammarAST altAST)
+        {
+            GrammarAST rref = (GrammarAST)altAST.GetChild(0);
+            if (rref.Type == ANTLRParser.RULE_REF && rref.Text.Equals(ruleName))
             {
                 // remove rule ref
-                t.setFirstChild(t.GetChild(1));
+                altAST.DeleteChild(0);
 
                 // reset index so it prints properly
-                GrammarAST newFirstChild = (GrammarAST)t.GetChild(0);
-                t.TokenStartIndex = newFirstChild.TokenStartIndex;
+                GrammarAST newFirstChild = (GrammarAST)altAST.GetChild(0);
+                altAST.TokenStartIndex = newFirstChild.TokenStartIndex;
             }
         }
 
@@ -337,7 +369,20 @@ namespace Antlr3.Tool
             if (t == null)
                 return null;
 
-            return ToOriginalString(g.tokenBuffer, t.TokenStartIndex, t.TokenStopIndex);
+            try
+            {
+                ITreeNodeStream input = new CommonTreeNodeStream(new ANTLRParser.grammar_Adaptor(null), t);
+                ANTLRTreePrinter printer = new ANTLRTreePrinter(input);
+                return printer.toString(grammar, true);
+            }
+            catch (Exception e)
+            {
+                if (e.IsCritical())
+                    throw;
+
+                ErrorManager.Error(ErrorManager.MSG_BAD_AST_STRUCTURE, e);
+                return null;
+            }
         }
 
         public int Precedence(int alt)

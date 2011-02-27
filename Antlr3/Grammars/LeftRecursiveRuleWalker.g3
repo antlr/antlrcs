@@ -149,20 +149,20 @@ if (rew.Type != REWRITES)
     ;
 
 binary
-	:	^( ALT recurseNoLabel op=token recurse EOA ) {SetTokenPrec($op.t, outerAlt);}
+	:	^( ALT (^(BACKTRACK_SEMPRED .*))? recurseNoLabel op=token recurse EOA ) {SetTokenPrec($op.t, outerAlt);}
 	;
 
 binaryMultipleOp
-	:	^( ALT recurseNoLabel ^( BLOCK ( ^( ALT op=token EOA {SetTokenPrec($op.t, outerAlt);} ) )+ EOB ) recurse EOA )
+	:	^( ALT (^(BACKTRACK_SEMPRED .*))? recurseNoLabel ^( BLOCK ( ^( ALT op=token EOA {SetTokenPrec($op.t, outerAlt);} ) )+ EOB ) recurse EOA )
 	;
 
 ternary
-	:	^( ALT recurseNoLabel op=token recurse token recurse EOA ) {SetTokenPrec($op.t, outerAlt);}
+	:	^( ALT (^(BACKTRACK_SEMPRED .*))? recurseNoLabel op=token recurse token recurse EOA ) {SetTokenPrec($op.t, outerAlt);}
 	;
 
-prefix : ^( ALT {SetTokenPrec((GrammarAST)input.LT(2), outerAlt);} ({!((CommonTree)input.LT(1)).Text.Equals(ruleName)}? element)+ recurse EOA ) ;
+prefix : ^( ALT (^(BACKTRACK_SEMPRED .*))? {SetTokenPrec((GrammarAST)input.LT(1), outerAlt);} ({!((CommonTree)input.LT(1)).Text.Equals(ruleName)}? element)+ recurse EOA ) ;
 
-suffix : ^( ALT recurseNoLabel {SetTokenPrec((GrammarAST)input.LT(1), outerAlt);} element+  EOA ) ;
+suffix : ^( ALT (^(BACKTRACK_SEMPRED .*))? recurseNoLabel {SetTokenPrec((GrammarAST)input.LT(1), outerAlt);} element+  EOA ) ;
 
 recurse
 	:	^(ASSIGN ID recurseNoLabel)

@@ -39,8 +39,9 @@ recRuleName(ruleName) ::= "<ruleName>_"
 recRule(ruleName, argDef, argName, alts, setResultAction, buildAST) ::= <<
 <recRuleName(...)>[<argDef>]
     :   <ruleName>_primary <if(buildAST)>{<setResultAction>}<endif>
-        (
-          ( <alts; separator="\n        | ">
+        ( options {backtrack=false;}
+        : ( options {backtrack=false;}
+          : <alts; separator="\n        | ">
           )
         )*
     ;

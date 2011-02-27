@@ -303,7 +303,7 @@ namespace AntlrUnitTests
                 "    |   ('~'^|'!'^) e\n" +
                 "    |   e ('*'^|'/'^|'%'^) e\n" +
                 "    |   e ('+'^|'-'^) e\n" +
-                "    |   e ('<' '<' | '>' '>' '>' | '>' '>') e\n" +
+                "    |   e ('<'^ '<' | '>'^ '>' '>' | '>'^ '>') e\n" +
                 "    |   e ('<='^ | '>='^ | '>'^ | '<'^) e\n" +
                 "    |   e 'instanceof'^ e\n" +
                 "    |   e ('=='^ | '!='^) e\n" +
@@ -312,7 +312,7 @@ namespace AntlrUnitTests
                 "    |   e '|'^ e\n" +
                 "    |   e '&&'^ e\n" +
                 "    |   e '||'^ e\n" +
-                "//    |   e '?' e ':' e\n" +
+                "    |   e '?' e ':' e\n" +
                 "    |   e ('='<assoc=right>^\n" +
                 "          |'+='<assoc=right>^\n" +
                 "          |'-='<assoc=right>^\n" +
@@ -324,7 +324,6 @@ namespace AntlrUnitTests
                 "          |'>>='<assoc=right>^\n" +
                 "          |'>>>='<assoc=right>^\n" +
                 "          |'<<='<assoc=right>^\n" +
-                "          |'<<<='<assoc=right>^\n" +
                 "          |'%='<assoc=right>^) e\n" +
                 "    ;\n" +
                 "type: ID \n" +
@@ -355,6 +354,9 @@ namespace AntlrUnitTests
                     "a=b=c+d.e","(= a (= b (+ c (. d e))))",
                     "a|b&c",	"(| a (& b c))",
                     "(a|b)&c",	"(& (| a b) c)",
+                    "a > b",	"(> a b)",
+                    "a >> b",	"(> a b)",  // text is from one token
+                    "a < b",	"(< a b)",
 
                     "(T)x",							"(( T x)",
                     "new A().b",					"(. (new A () b)",

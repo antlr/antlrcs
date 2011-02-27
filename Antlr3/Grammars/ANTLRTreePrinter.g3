@@ -65,7 +65,8 @@ toString[Grammar g, bool showActions] returns [string s=null]
 		|	alternative
 		|	element
 		|	single_rewrite
-		|	EOR {s="EOR";}
+		|	rewrite
+		|	EOR //{s="EOR";}
 		)
 		{return Normalize(buf.ToString());}
 	;
@@ -258,7 +259,7 @@ int numAlts = CountAltsForBlock($start);
 	;
 
 alternative
-	:	^( ALT (element)+ EOA )
+	:	^( ALT element* EOA )
 	;
 
 exceptionGroup
@@ -272,6 +273,11 @@ exceptionHandler
 
 finallyClause
 	:	^('finally' ACTION)
+	;
+
+rewrite
+	:	^(REWRITES single_rewrite+)
+	|
 	;
 
 single_rewrite
@@ -305,14 +311,9 @@ rewrite_template
 		)
 	;
 
-rewrite
-	:	^(REWRITES (single_rewrite)*)
-	|
-	;
-
 element
-	:	^(ROOT element)
-	|	^(BANG element)
+	:	^(ROOT element) {@out("^");}
+	|	^(BANG element) {@out("!");}
 	|	atom
 	|	^(NOT {@out("~");} element)
 	|	^(RANGE atom {@out("..");} atom)
