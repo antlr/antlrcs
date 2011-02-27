@@ -307,8 +307,10 @@ namespace Antlr3.Grammars
             return p;
         }
 
-        public virtual GrammarAST CreateSimpleRuleAST( string name, GrammarAST block, bool fragment )
+        public static GrammarAST CreateSimpleRuleAST( string name, GrammarAST block, bool fragment )
         {
+            var adaptor = new grammar_Adaptor(null);
+
             GrammarAST modifier = null;
             if ( fragment )
             {

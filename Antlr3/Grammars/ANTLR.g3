@@ -73,6 +73,8 @@ tokens
 	TREE='tree';
 
 	RULE;
+	PREC_RULE;
+	RECURSIVE_RULE_REF; // flip recursive RULE_REF to RECURSIVE_RULE_REF in prec rules
 	BLOCK;
 	OPTIONAL;
 	CLOSURE;
@@ -104,6 +106,7 @@ tokens
 	BACKTRACK_SEMPRED; // auto backtracking mode syn pred converted to sempred
 	FRAGMENT='fragment';
 	DOT;
+	REWRITES;
 }
 
 @lexer::header {
@@ -220,7 +223,7 @@ delegateGrammar
 
 tokensSpec
 	:	TOKENS^
-			( tokenSpec	)+
+			tokenSpec*
 		RCURLY!
 	;
 
@@ -246,7 +249,7 @@ rule
 @init
 {
 	GrammarAST eob=null;
-	int start = ((CommonToken)LT(1)).TokenIndex;
+	CommonToken start = (CommonToken)LT(1);
 	int startLine = LT(1).Line;
 }
 	:
@@ -271,7 +274,7 @@ rule
 		scopes=ruleScopeSpec
 		(ruleActions)?
 		COLON
-		altList[$optionsSpec.opts]
+		ruleAltList[$optionsSpec.opts]
 		SEMI
 		( ex=exceptionGroup )?
 		->	^(	RULE[$ruleName.start, "rule"]
@@ -284,11 +287,12 @@ rule
 				optionsSpec?
 				$scopes
 				ruleActions?
-				altList
+				ruleAltList
 				$ex?
 				EOR[$SEMI,"<end-of-rule>"])
 	)
 	{
+		$tree.SetTreeEnclosingRuleNameDeeply(currentRuleName);
 		((GrammarAST)$tree.GetChild(0)).BlockOptions = $optionsSpec.opts;
 	}
 	;
@@ -311,6 +315,32 @@ ruleScopeSpec
 		( 'scope' idList SEMI )*
 		-> ^(SCOPE[$start,"scope"] ruleActions? ACTION? idList*)
 	;
+
+ruleAltList[IDictionary<string, object> opts]
+@init
+{
+	GrammarAST blkRoot = null;
+	GrammarAST save = currentBlockAST;
+}
+	:	( -> BLOCK[input.LT(-1),"BLOCK"] )
+		{
+			blkRoot = (GrammarAST)$tree.GetChild(0);
+			blkRoot.BlockOptions = $opts;
+			currentBlockAST = blkRoot;
+		}
+		(	a1=alternative r1=rewrite
+			{if (LA(1)==OR||(LA(2)==QUESTION||LA(2)==PLUS||LA(2)==STAR)) PrefixWithSynPred($a1.tree);}
+			-> $a1 $r1?
+		)
+		(	(	OR a2=alternative r2=rewrite
+				{if (LA(1)==OR||(LA(2)==QUESTION||LA(2)==PLUS||LA(2)==STAR)) PrefixWithSynPred($a2.tree);}
+				-> $ruleAltList $a2 $r2?
+			)+
+		|
+		)
+		-> ^({blkRoot} $ruleAltList EOB["<end-of-block>"])
+	;
+finally { currentBlockAST = save; }
 
 /** Build #(BLOCK ( #(ALT ...) EOB )+ ) */
 block
@@ -351,35 +381,12 @@ block
 	;
 finally { currentBlockAST = save; }
 
-altList[IDictionary<string, object> opts]
-@init
-{
-	GrammarAST blkRoot = null;
-	GrammarAST save = currentBlockAST;
-}
-	:	( -> BLOCK[input.LT(-1),"BLOCK"] )
-		{
-			blkRoot = (GrammarAST)$tree.GetChild(0);
-			blkRoot.BlockOptions = $opts;
-			currentBlockAST = blkRoot;
-		}
-		(	a1=alternative r1=rewrite
-			{if (LA(1)==OR||(LA(2)==QUESTION||LA(2)==PLUS||LA(2)==STAR)) PrefixWithSynPred($a1.tree);}
-			-> $a1 $r1?
-		)
-		(	OR a2=alternative r2=rewrite
-			{if (LA(1)==OR||(LA(2)==QUESTION||LA(2)==PLUS||LA(2)==STAR)) PrefixWithSynPred($a2.tree);}
-			-> $altList $a2 $r2?
-		)*
-		-> ^({blkRoot} $altList EOB["<end-of-block>"])
-	;
-finally { currentBlockAST = save; }
-
+// ALT and EOA have indexes tracking start/stop of entire alt
 alternative
 	:	element+
-		-> ^(ALT[$start,"ALT"] element+ EOA["<end-of-alt>"])
+		-> ^(ALT[$start,"ALT"] element+ EOA[input.LT(-1),"<end-of-alt>"])
 	|	// epsilon alt
-		-> ^(ALT[$start,"ALT"] EPSILON[input.LT(-1),"epsilon"] EOA["<end-of-alt>"])
+		-> ^(ALT[$start,"ALT"] EPSILON[input.LT(-1),"epsilon"] EOA[input.LT(-1),"<end-of-alt>"])
 	;
 
 exceptionGroup
@@ -588,7 +595,7 @@ id
 rewrite
 	:	rewrite_with_sempred*
 		REWRITE rewrite_alternative
-		-> rewrite_with_sempred* ^(REWRITE rewrite_alternative)
+		-> ^(REWRITES rewrite_with_sempred* ^(REWRITE rewrite_alternative))
 	|
 	;
 

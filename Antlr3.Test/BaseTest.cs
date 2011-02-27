@@ -575,7 +575,69 @@ namespace AntlrUnitTests
                                            bool debug )
         {
             stderrDuringParse = null;
-            if ( treeParserBuildsTrees && parserBuildsTrees )
+            WriteRecognizerAndCompile(parserName, treeParserName, lexerName, parserStartRuleName, treeParserStartRuleName, parserBuildsTrees, parserBuildsTemplate, treeParserBuildsTrees, debug);
+
+            return execRecognizer();
+        }
+
+        public string execRecognizer()
+        {
+            try
+            {
+                string[] args = new string[] {
+				/*"java",*/ "-classpath", tmpdir+pathSep+ClassPath,
+				"Test", System.IO.Path.GetFullPath( System.IO.Path.Combine( tmpdir, "input") )
+			};
+                //String cmdLine = "java -classpath " + CLASSPATH + pathSep + tmpdir + " Test " + Path.GetFullPath( Path.Combine( tmpdir, "input" ) );
+                //System.out.println("execParser: "+cmdLine);
+
+                System.Diagnostics.Process process = System.Diagnostics.Process.Start(new System.Diagnostics.ProcessStartInfo(Jvm, '"' + string.Join("\" \"", args) + '"')
+                {
+                    UseShellExecute = false,
+                    CreateNoWindow = true,
+                    RedirectStandardOutput = true,
+                    RedirectStandardError = true,
+                    WorkingDirectory = tmpdir
+                });
+
+                //Process process =
+                //    Runtime.getRuntime().exec( args, null, new File( tmpdir ) );
+                StreamVacuum stdoutVacuum = new StreamVacuum(process.StandardOutput);
+                StreamVacuum stderrVacuum = new StreamVacuum(process.StandardError);
+                stdoutVacuum.start();
+                stderrVacuum.start();
+                process.WaitForExit();
+                stdoutVacuum.join();
+                stderrVacuum.join();
+                string output = null;
+                output = stdoutVacuum.ToString();
+                if (stderrVacuum.ToString().Length > 0)
+                {
+                    this.stderrDuringParse = stderrVacuum.ToString();
+                    //Console.Error.WriteLine( "exec stderrVacuum: " + stderrVacuum );
+                }
+                return output;
+            }
+            catch (Exception e)
+            {
+                Console.Error.WriteLine("can't exec recognizer");
+                e.PrintStackTrace(Console.Error);
+            }
+            return null;
+        }
+
+        public void WriteRecognizerAndCompile(
+            string parserName,
+            string treeParserName,
+            string lexerName,
+            string parserStartRuleName,
+            string treeParserStartRuleName,
+            bool parserBuildsTrees,
+            bool parserBuildsTemplate,
+            bool treeParserBuildsTrees,
+            bool debug)
+        {
+            if (treeParserBuildsTrees && parserBuildsTrees)
             {
                 writeTreeAndTreeTestFile( parserName,
                                          treeParserName,
@@ -613,48 +675,6 @@ namespace AntlrUnitTests
             }
 
             compile( "Test.java" );
-            try
-            {
-                string[] args = new string[] {
-				/*"java",*/ "-classpath", tmpdir+pathSep+ClassPath,
-				"Test", System.IO.Path.GetFullPath( System.IO.Path.Combine( tmpdir, "input") )
-			};
-                //String cmdLine = "java -classpath " + CLASSPATH + pathSep + tmpdir + " Test " + Path.GetFullPath( Path.Combine( tmpdir, "input" ) );
-                //System.out.println("execParser: "+cmdLine);
-
-                System.Diagnostics.Process process = System.Diagnostics.Process.Start( new System.Diagnostics.ProcessStartInfo( Jvm, '"' + string.Join( "\" \"", args ) + '"' )
-                {
-                    UseShellExecute = false,
-                    CreateNoWindow = true,
-                    RedirectStandardOutput = true,
-                    RedirectStandardError = true,
-                    WorkingDirectory = tmpdir
-                } );
-
-                //Process process =
-                //    Runtime.getRuntime().exec( args, null, new File( tmpdir ) );
-                StreamVacuum stdoutVacuum = new StreamVacuum( process.StandardOutput );
-                StreamVacuum stderrVacuum = new StreamVacuum( process.StandardError );
-                stdoutVacuum.start();
-                stderrVacuum.start();
-                process.WaitForExit();
-                stdoutVacuum.join();
-                stderrVacuum.join();
-                string output = null;
-                output = stdoutVacuum.ToString();
-                if ( stderrVacuum.ToString().Length > 0 )
-                {
-                    this.stderrDuringParse = stderrVacuum.ToString();
-                    //Console.Error.WriteLine( "exec stderrVacuum: " + stderrVacuum );
-                }
-                return output;
-            }
-            catch ( Exception e )
-            {
-                Console.Error.WriteLine( "can't exec recognizer" );
-                e.PrintStackTrace( Console.Error );
-            }
-            return null;
         }
 
         protected void checkGrammarSemanticsError( ErrorQueue equeue,

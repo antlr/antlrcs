@@ -1,0 +1,251 @@
+﻿/*
+ * [The "BSD licence"]
+ * Copyright (c) 2011 Terence Parr
+ * All rights reserved.
+ *
+ * Conversion to C#:
+ * Copyright (c) 2011 Sam Harwell, Pixel Mine, Inc.
+ * All rights reserved.
+ *
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions
+ * are met:
+ * 1. Redistributions of source code must retain the above copyright
+ *    notice, this list of conditions and the following disclaimer.
+ * 2. Redistributions in binary form must reproduce the above copyright
+ *    notice, this list of conditions and the following disclaimer in the
+ *    documentation and/or other materials provided with the distribution.
+ * 3. The name of the author may not be used to endorse or promote products
+ *    derived from this software without specific prior written permission.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE AUTHOR ``AS IS'' AND ANY EXPRESS OR
+ * IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
+ * OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.
+ * IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT,
+ * INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+ * NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+ * DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
+ * THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+ * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
+ * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ */
+
+/** Find left-recursive rules */
+tree grammar LeftRecursiveRuleWalker;
+
+options {
+    language=CSharp3;
+	tokenVocab=ANTLR;
+    ASTLabelType=GrammarAST;
+}
+
+@namespace{Antlr3.Grammars}
+
+@header
+{
+using Antlr3.Analysis;
+using Antlr3.Misc;
+using Antlr3.Tool;
+using Antlr3.Extensions;
+using BitSet = Antlr.Runtime.BitSet;
+using DFA = Antlr.Runtime.DFA;
+using Antlr.Runtime.JavaExtensions;
+}
+
+optionsSpec
+	:	^(OPTIONS option+)
+	;
+
+option
+	:	^(ASSIGN ID optionValue)
+	;
+
+optionValue
+	:	ID
+	|	STRING_LITERAL
+	|	CHAR_LITERAL
+	|	INT
+	;
+
+charSetElement
+	:	CHAR_LITERAL
+	|	^(OR CHAR_LITERAL CHAR_LITERAL)
+	|	^(RANGE CHAR_LITERAL CHAR_LITERAL)
+	;
+
+public
+rec_rule[Grammar g] returns [bool isLeftRec]
+@init
+{
+	grammar = g;
+	outerAlt = 1;
+}
+	:	^(	r=RULE id=ID {ruleName=$id.Text;}
+			modifier?
+			^(ARG ARG_ACTION?)
+			^(RET ARG_ACTION?)
+			optionsSpec?
+			ruleScopeSpec?
+			(^(AMPERSAND .*))*
+			ruleBlock {$isLeftRec = $ruleBlock.isLeftRec;}
+			exceptionGroup?
+			EOR
+		)
+		{if ($ruleBlock.isLeftRec) $r.Type = PREC_RULE;}
+	;
+
+modifier
+	:	'protected'
+	|	'public'
+	|	'private'
+	|	'fragment'
+	;
+
+ruleScopeSpec
+ 	:	^('scope' ACTION? ID*)
+ 	;
+
+ruleBlock returns [bool isLeftRec]
+@init{bool lr=false; this.numAlts = $start.ChildCount;}
+	:	^(	BLOCK
+			optionsSpec?
+			(	outerAlternative
+				{if ($outerAlternative.isLeftRec) $isLeftRec = true;}
+				rewrite?
+				{outerAlt++;}
+			)+
+			EOB
+		)
+	;
+
+block
+    :   ^(  BLOCK
+            optionsSpec?
+            ( ^(ALT element+ EOA) rewrite? )+
+            EOB   
+         )
+    ;
+
+/** An alt is either prefix, suffix, binary, or ternary operation or "other" */
+outerAlternative returns [bool isLeftRec]
+@init
+{
+GrammarAST rew=(GrammarAST)$start.getNextSibling();
+if (rew.Type != REWRITES)
+	rew = null;
+}
+    :   (binaryMultipleOp)=> binaryMultipleOp
+                             {BinaryAlt($start, rew, outerAlt); $isLeftRec=true;}
+    |   (binary)=>           binary       
+                             {BinaryAlt($start, rew, outerAlt); $isLeftRec=true;}
+    |   (ternary)=>          ternary
+                             {TernaryAlt($start, rew, outerAlt); $isLeftRec=true;}
+    |   (prefix)=>           prefix
+                             {PrefixAlt($start, rew, outerAlt);}
+    |   (suffix)=>           suffix
+                             {SuffixAlt($start, rew, outerAlt); $isLeftRec=true;}
+    |   ^(ALT element+ EOA) // "other" case
+                             {OtherAlt($start, rew, outerAlt);}
+    ;
+
+binary
+	:	^( ALT recurseNoLabel op=token recurse EOA ) {SetTokenPrec($op.t, outerAlt);}
+	;
+
+binaryMultipleOp
+	:	^( ALT recurseNoLabel ^( BLOCK ( ^( ALT op=token EOA {SetTokenPrec($op.t, outerAlt);} ) )+ EOB ) recurse EOA )
+	;
+
+ternary
+	:	^( ALT recurseNoLabel op=token recurse token recurse EOA ) {SetTokenPrec($op.t, outerAlt);}
+	;
+
+prefix : ^( ALT {SetTokenPrec((GrammarAST)input.LT(2), outerAlt);} ({!((CommonTree)input.LT(1)).Text.Equals(ruleName)}? element)+ recurse EOA ) ;
+
+suffix : ^( ALT recurseNoLabel {SetTokenPrec((GrammarAST)input.LT(1), outerAlt);} element+  EOA ) ;
+
+recurse
+	:	^(ASSIGN ID recurseNoLabel)
+	|	^(PLUS_ASSIGN ID recurseNoLabel)
+	|	recurseNoLabel
+	;
+
+recurseNoLabel : {((CommonTree)input.LT(1)).Text.Equals(ruleName)}? RULE_REF;
+
+/*
+elementNotRecursiveRule
+    :   {_t.findFirstType(RULE_REF)!=null && _t.findFirstType(RULE_REF).getText().equals(ruleName)}?
+        e:element
+    ;
+*/
+
+token returns [GrammarAST t=null]
+	:	^(ASSIGN ID s=token {$t = $s.t;})
+	|	^(PLUS_ASSIGN ID s=token {$t = $s.t;})
+	|	^(ROOT s=token {$t = $s.t;})
+	|	^(BANG s=token {$t = $s.t;})
+	|	a=CHAR_LITERAL      {$t = $a;}
+	|	b=STRING_LITERAL    {$t = $b;}
+	|	c=TOKEN_REF         {$t = $c;}
+	;
+
+exceptionGroup
+	:	exceptionHandler+ finallyClause?
+	|	finallyClause
+    ;
+
+exceptionHandler
+	:	^('catch' ARG_ACTION ACTION)
+	;
+
+finallyClause
+	:	^('finally' ACTION)
+	;
+
+rewrite
+	:	^(REWRITES ( ^( REWRITE SEMPRED? (^(ALT .*)|^(TEMPLATE .*)|ACTION|ETC) ) )* )
+	;
+
+element
+	:	^(ROOT element)
+	|	^(BANG element)
+	|	atom
+	|	^(NOT element)
+	|	^(RANGE atom atom)
+	|	^(ASSIGN ID element)
+	|	^(PLUS_ASSIGN ID element)
+	|	ebnf
+	|	tree_
+	|	^(SYNPRED block) 
+	|	FORCED_ACTION
+	|	ACTION
+	|	SEMPRED
+	|	SYN_SEMPRED
+	|	BACKTRACK_SEMPRED
+	|	GATED_SEMPRED
+	|	EPSILON 
+	;
+
+ebnf:   block
+    |   ^( OPTIONAL block ) 
+    |   ^( CLOSURE block )  
+    |   ^( POSITIVE_CLOSURE block ) 
+    ;
+
+tree_
+	:	^(TREE_BEGIN element+)
+	;
+
+atom
+	:	^(RULE_REF ARG_ACTION?)
+	|	^(TOKEN_REF ARG_ACTION?)
+	|	CHAR_LITERAL
+	|	STRING_LITERAL
+	|	WILDCARD
+	|	^(DOT ID atom) // scope override on rule
+	;
+
+ast_suffix
+	:	ROOT
+	|	BANG
+	;

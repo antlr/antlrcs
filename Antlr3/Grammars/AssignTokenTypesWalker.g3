@@ -178,7 +178,7 @@ delegateGrammars
 	;
 
 tokensSpec
-	:	^( TOKENS tokenSpec+ )
+	:	^(TOKENS tokenSpec*)
 	;
 
 tokenSpec
@@ -196,19 +196,23 @@ rules
 	;
 
 rule
-	:	^(	RULE id=ID {currentRuleName=$id.text;}
-			(m=modifier)?
-			^(ARG (ARG_ACTION)?)
-			^(RET (ARG_ACTION)?)
-			(throwsSpec)?
-			(optionsSpec)?
-			(ruleScopeSpec)?
-			( ^(AMPERSAND .*) )*
-			b=block
-			(exceptionGroup)?
-			EOR
-			{TrackTokenRule($id,$m.start,$b.start);}
-		)
+	:	^(RULE ruleBody)
+	|	^(PREC_RULE ruleBody)
+	;
+
+ruleBody
+	:	id=ID {currentRuleName=$id.text;}
+		(m=modifier)?
+		^(ARG (ARG_ACTION)?)
+		^(RET (ARG_ACTION)?)
+		(throwsSpec)?
+		(optionsSpec)?
+		(ruleScopeSpec)?
+		( ^(AMPERSAND .*) )*
+		b=block
+		(exceptionGroup)?
+		EOR
+		{TrackTokenRule($id,$m.start,$b.start);}
 	;
 
 modifier
@@ -252,7 +256,8 @@ finallyClause
 	;
 
 rewrite
-	:	( ^(REWRITE .*) )*
+	:	^(REWRITES ( ^(REWRITE .*) )* )
+	|
 	;
 
 element

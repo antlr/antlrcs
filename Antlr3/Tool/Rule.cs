@@ -78,12 +78,6 @@ namespace Antlr3.Tool
 
         public GrammarAST EORNode;
 
-        /** The set of all tokens reachable from the start state w/o leaving
-         *  via the accept state.  If it reaches the accept state, FIRST
-         *  includes EOR_TOKEN_TYPE.
-         */
-        public LookaheadSet FIRST;
-
         /** The return values of a rule and predefined rule attributes */
         public AttributeScope returnScope;
 
@@ -169,9 +163,6 @@ namespace Antlr3.Tool
          */
         private IDictionary<string, IList<GrammarAST>>[] altToRuleRefMap;
 
-        /** Track which alts have rewrite rules associated with them. 1..n */
-        private bool[] altsWithRewrites;
-
         /** Do not generate start, stop etc... in a return value struct unless
          *  somebody references $r.start somewhere.
          */
@@ -193,7 +184,6 @@ namespace Antlr3.Tool
             throwsSpec = new HashSet<string>() { "RecognitionException" };
             altToTokenRefMap = new IDictionary<string, IList<GrammarAST>>[numberOfAlts + 1]; //new Map[numberOfAlts + 1];
             altToRuleRefMap = new IDictionary<string, IList<GrammarAST>>[numberOfAlts + 1]; //new Map[numberOfAlts + 1];
-            altsWithRewrites = new bool[numberOfAlts + 1];
             for ( int alt = 1; alt <= numberOfAlts; alt++ )
             {
                 altToTokenRefMap[alt] = new Dictionary<string, IList<GrammarAST>>();
@@ -472,9 +462,11 @@ namespace Antlr3.Tool
                 // return nothing if not generating trees; i.e., don't do for templates
                 return tokens;
             }
-            for ( int i = 1; i <= numberOfAlts; i++ )
+
+            //System.out.println("blk "+tree.findFirstType(ANTLRParser.BLOCK).toStringTree());
+            for (int i = 1; i <= numberOfAlts; i++)
             {
-                if ( altsWithRewrites[i] )
+                if ( HasRewrite(i) )
                 {
                     foreach ( string tokenName in altToTokenRefMap[i].Keys )
                     {
@@ -485,6 +477,7 @@ namespace Antlr3.Tool
                     }
                 }
             }
+
             return tokens;
         }
 
@@ -500,7 +493,7 @@ namespace Antlr3.Tool
         public virtual ICollection<string> GetAllRuleRefsInAltsWithRewrites()
         {
             var rules = from i in Enumerable.Range( 1, numberOfAlts )
-                        where altsWithRewrites[i]
+                        where HasRewrite(i)
                         select altToRuleRefMap[i].Keys;
 
             return new HashSet<string>( rules.SelectMany( r => r ) );
@@ -513,33 +506,16 @@ namespace Antlr3.Tool
 
         public virtual bool HasRewrite( int i )
         {
-            if ( i >= altsWithRewrites.Length )
-            {
-                ErrorManager.InternalError( "alt " + i + " exceeds number of " + Name +
-                                           "'s alts (" + altsWithRewrites.Length + ")" );
-                return false;
-            }
-            return altsWithRewrites[i];
-        }
+            GrammarAST blk = tree.FindFirstType(ANTLRParser.BLOCK);
+            GrammarAST alt = blk.GetBlockAlt(i);
+            GrammarAST rew = (GrammarAST)alt.getNextSibling();
+            if (rew != null && rew.Type == ANTLRParser.REWRITES)
+                return true;
 
-        /** Track which rules have rewrite rules.  Pass in the ALT node
-         *  for the alt so we can check for problems when output=template,
-         *  rewrite=true, and grammar type is tree parser.
-         */
-        public virtual void TrackAltsWithRewrites( GrammarAST altAST, int outerAltNum )
-        {
-            if ( grammar.type == GrammarType.TreeParser &&
-                 grammar.BuildTemplate &&
-                 grammar.GetOption( "rewrite" ) != null &&
-                 grammar.GetOption( "rewrite" ).Equals( "true" )
-                )
-            {
-                GrammarAST firstElementAST = (GrammarAST)altAST.GetChild( 0 );
-                grammar.sanity.EnsureAltIsSimpleNodeOrTree( altAST,
-                                                           firstElementAST,
-                                                           outerAltNum );
-            }
-            altsWithRewrites[outerAltNum] = true;
+            if (alt.FindFirstType(ANTLRParser.REWRITES) != null)
+                return true;
+
+            return false;
         }
 
         /** Return the scope containing name */
@@ -591,7 +567,7 @@ namespace Antlr3.Tool
         {
             GrammarAST uniqueRefAST;
             if ( grammar.type != GrammarType.Lexer &&
-                 char.IsUpper( refdSymbol[0] ) )
+                 Rule.GetRuleType(refdSymbol) == RuleType.Lexer )
             {
                 // symbol is a token
                 IList tokenRefs = GetTokenRefsInAlt( refdSymbol, outerAltNum );
@@ -622,7 +598,7 @@ namespace Antlr3.Tool
                 labelName = generator.CreateUniqueLabel( refdSymbol );
                 CommonToken label = new CommonToken( ANTLRParser.ID, labelName );
                 if ( grammar.type != GrammarType.Lexer &&
-                     char.IsUpper( refdSymbol[0] ) )
+                     Rule.GetRuleType(refdSymbol) == Tool.RuleType.Lexer )
                 {
                     grammar.DefineTokenRefLabel( Name, label, uniqueRefAST );
                 }

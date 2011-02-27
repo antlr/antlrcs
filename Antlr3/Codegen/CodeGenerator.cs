@@ -116,7 +116,7 @@ namespace Antlr3.Codegen
 
         public static readonly int DefaultMaxSwitchCaseLabels = 300;
         public static readonly int DefaultMinSwitchAlts = 3;
-        public static readonly int DefaultMaxAcyclicDfaStatesInline = 10;
+        public static readonly int DefaultMaxAcyclicDfaStatesInline = 50;
 
         public static int MaxSwitchCaseLabels = DefaultMaxSwitchCaseLabels;
         public static int MinSwitchAlts = DefaultMinSwitchAlts;

@@ -295,6 +295,23 @@ namespace Antlr4.Test.StringTemplate
         }
 
         [TestMethod]
+        public void TestIfElseifOnMultipleLines()
+        {
+            Template t = new Template(
+                "begin\n" +
+                "<if(x&&y)>\n" +
+                "foo\n" +
+                "<elseif(x)>\n" +
+                "bar\n" +
+                "<endif>\n" +
+                "end\n");
+            t.Add("x", "x");
+            string expecting = "begin" + newline + "bar" + newline + "end" + newline;
+            string result = t.Render();
+            Assert.AreEqual(expecting, result);
+        }
+
+        [TestMethod]
         public void TestLineBreak()
         {
             Template st = new Template(
@@ -376,6 +393,31 @@ namespace Antlr4.Test.StringTemplate
             st.Write(new AutoIndentWriter(sw, "\n")); // force \n as newline
             string result = sw.ToString();
             string expecting = "Foo\na\nb\nc\n";     // expect \n in output
+            Assert.AreEqual(expecting, result);
+        }
+
+        [TestMethod]
+        public void TestNullIterationLineGivesNoOutput()
+        {
+            Template t = new Template(
+                "begin\n" +
+                "<items:{x|<x>}>\n" +
+                "end\n");
+            string expecting = "begin" + newline + "end" + newline;
+            string result = t.Render();
+            Assert.AreEqual(expecting, result);
+        }
+
+        [TestMethod]
+        public void TestEmptyIterationLineGivesNoOutput()
+        {
+            Template t = new Template(
+                "begin\n" +
+                "  <items:{x|<x>}>\n" +
+                "end\n");
+            t.Add("items", new List<object>());
+            string expecting = "begin" + newline + "end" + newline;
+            string result = t.Render();
             Assert.AreEqual(expecting, result);
         }
 

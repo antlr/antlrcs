@@ -161,7 +161,7 @@ namespace Antlr3.Tool
          *  including whitespace tokens etc...  I use this to extract
          *  lexer rules from combined grammars.
          */
-        private Antlr.Runtime.CommonTokenStream tokenBuffer;
+        internal Antlr.Runtime.CommonTokenStream tokenBuffer;
         public const string IGNORE_STRING_IN_GRAMMAR_FILE_NAME = "__";
         public const string AUTO_GENERATED_TOKEN_NAME_PREFIX = "T__";
 
@@ -310,6 +310,7 @@ namespace Antlr3.Tool
                 "class",
                 "type",
                 "text",
+                "assoc",
             };
 
         public const string defaultTokenOption = "type";
@@ -363,9 +364,9 @@ namespace Antlr3.Tool
         /** The unique set of all rule references in any rule; set of tree node
          *  objects so two refs to same rule can exist but at different line/position.
          */
-        protected internal HashSet<GrammarAST> ruleRefs = new HashSet<GrammarAST>();
+        protected internal HashSet<GrammarAST> ruleRefs = new HashSet<GrammarAST>(GrammarAST.TreeTokenEqualityComparer.Default);
 
-        protected internal HashSet<GrammarAST> scopedRuleRefs = new HashSet<GrammarAST>();
+        protected internal HashSet<GrammarAST> scopedRuleRefs = new HashSet<GrammarAST>(GrammarAST.TreeTokenEqualityComparer.Default);
 
         /** The unique set of all token ID references in any rule */
         protected internal HashSet<IToken> tokenIDRefs = new HashSet<IToken>();
@@ -377,7 +378,7 @@ namespace Antlr3.Tool
 
         /** A list of all rules that are in any left-recursive cycle.  There
          *  could be multiple cycles, but this is a flat list of all problematic
-         *  rules.
+         *  rules. This is stuff we couldn't refactor to precedence rule.
          */
         protected internal HashSet<Rule> leftRecursiveRules;
 
@@ -395,6 +396,18 @@ namespace Antlr3.Tool
          *  This maps the name (we make up) for a pred to the AST grammar fragment.
          */
         protected List<KeyValuePair<string, GrammarAST>> nameToSynpredASTMap;
+
+        /** Each left-recursive precedence rule must define precedence array
+         *  for binary operators like:
+         *
+         *  	static int[] e_prec = new int[tokenNames.length];
+         *  	static {
+         *  		e_prec[75] = 1;
+         *  	}
+         *  Track and we push into parser later; this is computed
+         *  early when we look for prec rules.
+         */
+        public List<string> precRuleInitCodeBlocks = new List<string>();
 
         /** At least one rule has memoize=true */
         public bool atLeastOneRuleMemoizes;
@@ -512,7 +525,7 @@ namespace Antlr3.Tool
         /** Track decisions with syn preds specified for reporting.
          *  This is the a set of BLOCK type AST nodes.
          */
-        public HashSet<GrammarAST> blocksWithSynPreds = new HashSet<GrammarAST>();
+        public HashSet<GrammarAST> blocksWithSynPreds = new HashSet<GrammarAST>(GrammarAST.TreeTokenEqualityComparer.Default);
 
         /** Track decisions that actually use the syn preds in the DFA.
          *  Computed during NFA to DFA conversion.
@@ -530,7 +543,7 @@ namespace Antlr3.Tool
         /** Track decisions with syn preds specified for reporting.
          *  This is the a set of BLOCK type AST nodes.
          */
-        public HashSet<GrammarAST> blocksWithSemPreds = new HashSet<GrammarAST>();
+        public HashSet<GrammarAST> blocksWithSemPreds = new HashSet<GrammarAST>(GrammarAST.TreeTokenEqualityComparer.Default);
 
         /** Track decisions that actually use the syn preds in the DFA. */
         public HashSet<DFA> decisionsWhoseDFAsUsesSemPreds = new HashSet<DFA>();
@@ -1012,7 +1025,6 @@ namespace Antlr3.Tool
                 _discard = (int[])tokenKinds.Clone();
             }
 
-            #region TokenSource Members
             public IToken NextToken()
             {
                 IToken next = _source.NextToken();
@@ -1021,6 +1033,7 @@ namespace Antlr3.Tool
 
                 return next;
             }
+
             public string SourceName
             {
                 get
@@ -1028,6 +1041,7 @@ namespace Antlr3.Tool
                     return _source.SourceName;
                 }
             }
+
             public string[] TokenNames
             {
                 get
@@ -1035,7 +1049,6 @@ namespace Antlr3.Tool
                     return _source.TokenNames;
                 }
             }
-            #endregion
         }
 
         public virtual void ParseAndBuildAST( TextReader r )
@@ -1089,21 +1102,16 @@ namespace Antlr3.Tool
             }
 
             grammarTree = result.Tree;
+            if (grammarTree != null && AntlrTool.internalOption_PrintGrammarTree)
+                Console.WriteLine("grammar tree: " + grammarTree.ToStringTree());
+
+            grammarTree.SetUnknownTokenBoundaries();
+
             FileName = lexer.Filename; // the lexer #src might change name
             if ( grammarTree == null || grammarTree.FindFirstType( ANTLRParser.RULE ) == null )
             {
                 ErrorManager.Error( ErrorManager.MSG_NO_RULES, FileName );
                 return;
-            }
-
-            // Get syn pred rules and add to existing tree
-            IList<GrammarAST> synpredRules =
-                GetArtificialRulesForSyntacticPredicates( parser,
-                                                         nameToSynpredASTMap );
-            for ( int i = 0; i < synpredRules.Count; i++ )
-            {
-                GrammarAST rAST = (GrammarAST)synpredRules[i];
-                grammarTree.AddChild( rAST );
             }
         }
 
@@ -1145,6 +1153,38 @@ namespace Antlr3.Tool
                 // @synpredgate set to state.backtracking==1 by code gen when filter=true
                 // superClass set in template target::treeParser
             }
+        }
+
+        public void TranslateLeftRecursiveRule(GrammarAST ruleAST)
+        {
+            var input = new Antlr.Runtime.Tree.CommonTreeNodeStream(ruleAST);
+            LeftRecursiveRuleAnalyzer leftRecursiveRuleWalker = new LeftRecursiveRuleAnalyzer(input, this, ruleAST.enclosingRuleName);
+            bool isLeftRec = false;
+            try
+            {
+                //System.out.println("TESTING "+ruleAST.enclosingRuleName);
+                isLeftRec = leftRecursiveRuleWalker.rec_rule(this);
+            }
+            catch (RecognitionException re)
+            {
+                ErrorManager.Error(ErrorManager.MSG_BAD_AST_STRUCTURE, re);
+            }
+
+            if (!isLeftRec)
+                return;
+
+            List<string> rules = new List<string>();
+            rules.Add(leftRecursiveRuleWalker.GetArtificialPrecStartRule());
+            rules.Add(leftRecursiveRuleWalker.GetArtificialOpPrecRule());
+            rules.Add(leftRecursiveRuleWalker.GetArtificialPrimaryRule());
+            foreach (string r in rules)
+            {
+                GrammarAST t = ParseArtificialRule(r);
+                AddRule(grammarTree, t);
+                //System.out.println(t.toStringTree());
+            }
+
+            //precRuleInitCodeBlocks.add( precRuleWalker.getOpPrecJavaCode() );
         }
 
         public virtual void DefineGrammarSymbols()
@@ -1299,69 +1339,118 @@ namespace Antlr3.Tool
             }
             //JSystem.@out.println("tokens rule: "+matchTokenRuleST.toString());
 
-            //ANTLRLexer lexer = new ANTLRLexer( new StringReader( matchTokenRuleST.toString() ) );
-            //lexer.setTokenObjectClass( "antlr.TokenWithIndex" );
-            //TokenStreamRewriteEngine tokbuf =
-            //    new TokenStreamRewriteEngine( lexer );
-            //tokbuf.discard( ANTLRParser.WS );
-            //tokbuf.discard( ANTLRParser.ML_COMMENT );
-            //tokbuf.discard( ANTLRParser.COMMENT );
-            //tokbuf.discard( ANTLRParser.SL_COMMENT );
-            //ANTLRParser parser = new ANTLRParser( tokbuf );
-            ANTLRLexer lexer = new ANTLRLexer( new Antlr.Runtime.ANTLRStringStream( matchTokenRuleST.ToString() ) );
-            TokenStreamRewriteEngine tokbuf = new TokenStreamRewriteEngine( lexer );
-            tokbuf.Discard( ANTLRParser.WS, ANTLRParser.ML_COMMENT, ANTLRParser.COMMENT, ANTLRParser.SL_COMMENT );
-            ANTLRParser parser = new ANTLRParser( new Antlr.Runtime.CommonTokenStream( tokbuf ) );
+            ////ANTLRLexer lexer = new ANTLRLexer( new StringReader( matchTokenRuleST.toString() ) );
+            ////lexer.setTokenObjectClass( "antlr.TokenWithIndex" );
+            ////TokenStreamRewriteEngine tokbuf =
+            ////    new TokenStreamRewriteEngine( lexer );
+            ////tokbuf.discard( ANTLRParser.WS );
+            ////tokbuf.discard( ANTLRParser.ML_COMMENT );
+            ////tokbuf.discard( ANTLRParser.COMMENT );
+            ////tokbuf.discard( ANTLRParser.SL_COMMENT );
+            ////ANTLRParser parser = new ANTLRParser( tokbuf );
+            //ANTLRLexer lexer = new ANTLRLexer( new Antlr.Runtime.ANTLRStringStream( matchTokenRuleST.ToString() ) );
+            //TokenStreamRewriteEngine tokbuf = new TokenStreamRewriteEngine( lexer );
+            //tokbuf.Discard( ANTLRParser.WS, ANTLRParser.ML_COMMENT, ANTLRParser.COMMENT, ANTLRParser.SL_COMMENT );
+            //ANTLRParser parser = new ANTLRParser( new Antlr.Runtime.CommonTokenStream( tokbuf ) );
 
+            //parser.Grammar = this;
+            //parser.GrammarType = GrammarType.Lexer;
+            //ANTLRParser.rule_return result = null;
+            //try
+            //{
+            //    result = parser.rule();
+            //    if ( Tool.internalOption_PrintGrammarTree )
+            //    {
+            //        Console.Out.WriteLine( "Tokens rule: " + ( (ITree)result.Tree ).ToStringTree() );
+            //    }
+            //    GrammarAST p = grammarAST;
+            //    while ( p.Type != ANTLRParser.LEXER_GRAMMAR )
+            //    {
+            //        p = (GrammarAST)p.getNextSibling();
+            //    }
+            //    p.AddChild( (Antlr.Runtime.Tree.ITree)result.Tree );
+            //}
+            //catch ( Exception e )
+            //{
+            //    ErrorManager.Error( ErrorManager.MSG_ERROR_CREATING_ARTIFICIAL_RULE,
+            //                       e );
+            //}
+            //return (GrammarAST)result.Tree;
+
+            GrammarAST r = ParseArtificialRule(matchTokenRuleST.ToString());
+            AddRule(grammarAST, r);
+            //addRule((GrammarAST)parser.getAST());
+            //return (GrammarAST)parser.getAST();
+            return r;
+        }
+
+        public GrammarAST ParseArtificialRule(string ruleText)
+        {
+            ANTLRLexer lexer = new ANTLRLexer(new Antlr.Runtime.ANTLRStringStream(ruleText));
+            TokenStreamRewriteEngine tokbuf = new TokenStreamRewriteEngine(lexer);
+            tokbuf.Discard(ANTLRParser.WS, ANTLRParser.ML_COMMENT, ANTLRParser.COMMENT, ANTLRParser.SL_COMMENT);
+            ANTLRParser parser = new ANTLRParser(new Antlr.Runtime.CommonTokenStream(tokbuf));
             parser.Grammar = this;
-            parser.GrammarType = GrammarType.Lexer;
-            ANTLRParser.rule_return result = null;
+            parser.GrammarType = this.type;
             try
             {
-                result = parser.rule();
-                if ( Tool.internalOption_PrintGrammarTree )
-                {
-                    Console.Out.WriteLine( "Tokens rule: " + ( (ITree)result.Tree ).ToStringTree() );
-                }
-                GrammarAST p = grammarAST;
-                while ( p.Type != ANTLRParser.LEXER_GRAMMAR )
-                {
-                    p = (GrammarAST)p.getNextSibling();
-                }
-                p.AddChild( (Antlr.Runtime.Tree.ITree)result.Tree );
+                ANTLRParser.rule_return result = parser.rule();
+                return result.Tree;
             }
-            catch ( Exception e )
+            catch (Exception e)
             {
-                ErrorManager.Error( ErrorManager.MSG_ERROR_CREATING_ARTIFICIAL_RULE,
-                                   e );
+                ErrorManager.Error(ErrorManager.MSG_ERROR_CREATING_ARTIFICIAL_RULE, e);
+                return null;
             }
-            return (GrammarAST)result.Tree;
+        }
+
+        public void AddRule(GrammarAST grammarTree, GrammarAST t)
+        {
+            GrammarAST p = null;
+            for (int i = 0; i < grammarTree.ChildCount; i++)
+            {
+                p = (GrammarAST)grammarTree.GetChild(i);
+                if (p == null || p.Type == ANTLRParser.RULE || p.Type == ANTLRParser.PREC_RULE)
+                    break;
+            }
+
+            if (p != null)
+                grammarTree.AddChild(t);
         }
 
         /** for any syntactic predicates, we need to define rules for them; they will get
          *  defined automatically like any other rule. :)
          */
         [CLSCompliant(false)]
-        protected virtual IList<GrammarAST> GetArtificialRulesForSyntacticPredicates(ANTLRParser parser,
-                                                                IEnumerable<KeyValuePair<string, GrammarAST>> nameToSynpredASTMap )
+        protected virtual IList<GrammarAST> GetArtificialRulesForSyntacticPredicates(IEnumerable<KeyValuePair<string, GrammarAST>> nameToSynpredASTMap)
         {
             IList<GrammarAST> rules = new List<GrammarAST>();
-            if ( nameToSynpredASTMap == null )
+            if (nameToSynpredASTMap == null)
             {
                 return rules;
             }
+
             bool isLexer = grammarTree.Type == ANTLRParser.LEXER_GRAMMAR;
-            foreach ( var synpred in nameToSynpredASTMap )
+            foreach (var synpred in nameToSynpredASTMap)
             {
                 string synpredName = synpred.Key;
-                GrammarAST fragmentAST = (GrammarAST)synpred.Value;
-                GrammarAST ruleAST =
-                    parser.CreateSimpleRuleAST( synpredName,
-                                               fragmentAST,
-                                               isLexer );
-                rules.Add( ruleAST );
+                GrammarAST fragmentAST = synpred.Value;
+                GrammarAST ruleAST = ANTLRParser.CreateSimpleRuleAST(synpredName, fragmentAST, isLexer);
+                rules.Add(ruleAST);
             }
+
             return rules;
+        }
+
+        public void AddRulesForSyntacticPredicates()
+        {
+            // Get syn pred rules and add to existing tree
+            IList<GrammarAST> synpredRules = GetArtificialRulesForSyntacticPredicates(nameToSynpredASTMap);
+            for (int i = 0; i < synpredRules.Count; i++)
+            {
+                GrammarAST rAST = synpredRules[i];
+                grammarTree.AddChild(rAST);
+            }
         }
 
 #if false
@@ -2394,6 +2483,9 @@ namespace Antlr3.Tool
                 {
                     string labelName = el.Text;
                     Rule enclosingRule = GetLocallyDefinedRule( el.enclosingRuleName );
+                    if (enclosingRule == null)
+                        continue;
+
                     LabelElementPair pair = enclosingRule.GetLabel( labelName );
                     /*
                     // if tree grammar and we have a wildcard, only notice it

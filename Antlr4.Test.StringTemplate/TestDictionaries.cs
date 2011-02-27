@@ -256,6 +256,88 @@ namespace Antlr4.Test.StringTemplate
             Assert.AreEqual(expecting, result);
         }
 
+        [TestMethod]
+        public void TestDictWithoutIteration()
+        {
+            string templates =
+                "t2(adr,line2={<adr.zip> <adr.city>}) ::= <<" + newline +
+                "<adr.firstname> <adr.lastname>" + newline +
+                "<line2>" + newline +
+                ">>";
+
+            writeFile(tmpdir, "test.stg", templates);
+            TemplateGroup group = new TemplateGroupFile(Path.Combine(tmpdir, "test.stg"));
+            Template st = group.GetInstanceOf("t2");
+            st.Add("adr", new Dictionary<string, string>()
+                {
+                    {"firstname","Terence"},
+                    {"lastname","Parr"},
+                    {"zip","99999"},
+                    {"city","San Francisco"},
+                });
+            string expecting =
+                "Terence Parr" + newline +
+                "99999 San Francisco";
+            string result = st.Render();
+            Assert.AreEqual(expecting, result);
+        }
+
+        [TestMethod]
+        public void TestDictWithoutIteration2()
+        {
+            string templates =
+                "t2(adr,line2={<adr.zip> <adr.city>}) ::= <<" + newline +
+                "<adr.firstname> <adr.lastname>" + newline +
+                "<line2>" + newline +
+                ">>";
+
+            writeFile(tmpdir, "test.stg", templates);
+            TemplateGroup group = new TemplateGroupFile(Path.Combine(tmpdir, "test.stg"));
+            Template st = group.GetInstanceOf("t2");
+            st.Add("adr", new Dictionary<string, string>()
+                {
+                    {"firstname","Terence"},
+                    {"lastname","Parr"},
+                    {"zip","99999"},
+                    {"city","San Francisco"},
+                });
+            st.Add("line2", new Template("<adr.city>, <adr.zip>"));
+            string expecting =
+                "Terence Parr" + newline +
+                "San Francisco, 99999";
+            string result = st.Render();
+            Assert.AreEqual(expecting, result);
+        }
+
+        [TestMethod]
+        public void TestDictWithoutIteration3()
+        {
+            string templates =
+                "t2(adr,line2={<adr.zip> <adr.city>}) ::= <<" + newline +
+                "<adr.firstname> <adr.lastname>" + newline +
+                "<line2>" + newline +
+                ">>" + newline +
+                "t3(adr) ::= <<" + newline +
+                "<t2(adr=adr,line2={<adr.city>, <adr.zip>})>" + newline +
+                ">>" + newline;
+
+            writeFile(tmpdir, "test.stg", templates);
+            TemplateGroup group = new TemplateGroupFile(Path.Combine(tmpdir, "test.stg"));
+            Template st = group.GetInstanceOf("t3");
+            st.Add("adr", new Dictionary<string, string>()
+                {
+                    {"firstname","Terence"},
+                    {"lastname","Parr"},
+                    {"zip","99999"},
+                    {"city","San Francisco"},
+                });
+            string expecting =
+                "Terence Parr" + newline +
+                "San Francisco, 99999";
+            string result = st.Render();
+            Assert.AreEqual(expecting, result);
+        }
+
         /**
          * Test that a map can have only the default entry.
          */

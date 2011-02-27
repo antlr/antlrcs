@@ -155,7 +155,7 @@ delegateGrammars
 	;
 
 tokensSpec
-	:	^( TOKENS ( tokenSpec )+ )
+	:	^(TOKENS tokenSpec*)
 	;
 
 tokenSpec
@@ -164,11 +164,32 @@ tokenSpec
 	;
 
 rules
-	:	( rule )+
+	:	( rule | precRule )+
 	;
 
 rule
 	:	^(	RULE id=ID
+			(modifier)?
+			{@out($id.text);}
+			^(ARG (arg=ARG_ACTION {@out("["+$arg.text+"]");} )? )
+			^(RET (ret=ARG_ACTION {@out(" returns ["+$ret.text+"]");} )? )
+			(throwsSpec)?
+			(optionsSpec)?
+			(ruleScopeSpec)?
+			(ruleAction)*
+			{@out(" :");}
+			{
+				if ( input.LA(5) == NOT || input.LA(5) == ASSIGN )
+					@out(" ");
+			}
+			b=block[false]
+			(exceptionGroup)?
+			EOR {@out(";\n");}
+		)
+	;
+
+precRule
+	:	^(	PREC_RULE id=ID
 			(modifier)?
 			{@out($id.text);}
 			^(ARG (arg=ARG_ACTION {@out("["+$arg.text+"]");} )? )
@@ -285,7 +306,8 @@ rewrite_template
 	;
 
 rewrite
-	:	(single_rewrite)*
+	:	^(REWRITES (single_rewrite)*)
+	|
 	;
 
 element

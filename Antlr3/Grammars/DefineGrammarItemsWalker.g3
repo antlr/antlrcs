@@ -133,7 +133,7 @@ delegateGrammars
 	;
 
 tokensSpec
-	:	^( TOKENS ( tokenSpec )+ )
+	:	^(TOKENS tokenSpec*)
 	;
 
 tokenSpec
@@ -147,7 +147,7 @@ tokenSpec
 	;
 
 rules
-	:	rule+
+	:	(rule | ^(PREC_RULE .*))+
 	;
 
 rule
@@ -291,28 +291,28 @@ blockAction
 	;
 
 alternative
-@init
-{
-	if ( state.backtracking == 0 )
-	{
-		if ( grammar.type!=GrammarType.Lexer && grammar.GetOption("output")!=null && blockLevel==1 )
-		{
-			GrammarAST aRewriteNode = $start.FindFirstType(REWRITE); // alt itself has rewrite?
-			GrammarAST rewriteAST = (GrammarAST)$start.Parent.GetChild($start.ChildIndex + 1);
-			// we have a rewrite if alt uses it inside subrule or this alt has one
-			// but don't count -> ... rewrites, which mean "do default auto construction"
-			if ( aRewriteNode!=null||
-				 (rewriteAST!=null &&
-				  rewriteAST.Type==REWRITE &&
-				  rewriteAST.GetChild(0)!=null &&
-				  rewriteAST.GetChild(0).Type!=ETC) )
-			{
-				Rule r = grammar.GetRule(currentRuleName);
-				r.TrackAltsWithRewrites($start,this.outerAltNum);
-			}
-		}
-	}
-}
+//@init
+//{
+//	if ( state.backtracking == 0 )
+//	{
+//		if ( grammar.type!=GrammarType.Lexer && grammar.GetOption("output")!=null && blockLevel==1 )
+//		{
+//			GrammarAST aRewriteNode = $start.FindFirstType(REWRITE); // alt itself has rewrite?
+//			GrammarAST rewriteAST = (GrammarAST)$start.Parent.GetChild($start.ChildIndex + 1);
+//			// we have a rewrite if alt uses it inside subrule or this alt has one
+//			// but don't count -> ... rewrites, which mean "do default auto construction"
+//			if ( aRewriteNode!=null||
+//				 (firstRewriteAST!=null &&
+//				  firstRewriteAST.Type==REWRITE &&
+//				  firstRewriteAST.GetChild(0)!=null &&
+//				  firstRewriteAST.GetChild(0).Type!=ETC) )
+//			{
+//				Rule r = grammar.GetRule(currentRuleName);
+//				r.TrackAltsWithRewrites($start,this.outerAltNum);
+//			}
+//		}
+//	}
+//}
 	:	^( ALT (element)+ EOA )
 	;
 
@@ -497,24 +497,27 @@ ast_suffix
 rewrite
 @init
 {
+	// track top level REWRITES node, store stuff there
 	currentRewriteRule = $start; // has to execute during backtracking
 	if ( state.backtracking == 0 )
 	{
 		if ( grammar.BuildAST )
-			$start.rewriteRefsDeep = new HashSet<GrammarAST>();
+			currentRewriteRule.rewriteRefsDeep = new HashSet<GrammarAST>(GrammarAST.TreeTokenEqualityComparer.Default);
 	}
 }
-	:	(
-			^( REWRITE (pred=SEMPRED)? rewrite_alternative )
-			{
-				if ( $pred != null )
+	:	^(	REWRITES
+			(	^( REWRITE (pred=SEMPRED)? rewrite_alternative )
 				{
-					$pred.outerAltNum = this.outerAltNum;
-					TrackInlineAction($pred);
+					if ( $pred != null )
+					{
+						$pred.outerAltNum = this.outerAltNum;
+						TrackInlineAction($pred);
+					}
 				}
-			}
-		)*
-		//{System.out.println("-> refs = "+#rewrite.rewriteRefs);}
+			)*
+		)
+		//{System.out.println("-> refs = "+currentRewriteRule.rewriteRefsDeep);}
+	|
 	;
 
 rewrite_block
@@ -525,8 +528,8 @@ rewrite_block
 	{
 		// don't do if guessing
 		currentRewriteBlock=$start; // pts to BLOCK node
-		currentRewriteBlock.rewriteRefsShallow = new HashSet<GrammarAST>();
-		currentRewriteBlock.rewriteRefsDeep = new HashSet<GrammarAST>();
+		currentRewriteBlock.rewriteRefsShallow = new HashSet<GrammarAST>(GrammarAST.TreeTokenEqualityComparer.Default);
+		currentRewriteBlock.rewriteRefsDeep = new HashSet<GrammarAST>(GrammarAST.TreeTokenEqualityComparer.Default);
 	}
 }
 	:   ^( BLOCK rewrite_alternative EOB )
@@ -588,6 +591,8 @@ rewrite_atom
 				currentRewriteBlock.rewriteRefsShallow.Add($start);
 				currentRewriteBlock.rewriteRefsDeep.Add($start);
 			}
+
+			//System.out.println("adding "+$start.Text+" to "+currentRewriteRule.Text);
 			currentRewriteRule.rewriteRefsDeep.Add($start);
 		}
 	}

@@ -252,26 +252,20 @@ namespace Antlr3.Grammars
         protected IList<string> GetTokenTypesAsTargetLabels( HashSet<GrammarAST> refs )
         {
             if ( refs == null || refs.Count == 0 )
-            {
                 return null;
-            }
+
             IList<string> labels = new List<string>( refs.Count );
             foreach ( GrammarAST t in refs )
             {
                 string label;
-                if ( t.Type == ANTLRParser.RULE_REF )
-                {
-                    label = t.Text;
-                }
-                else if ( t.Type == ANTLRParser.LABEL )
+                if ( t.Type == ANTLRParser.RULE_REF || t.Type == ANTLRParser.TOKEN_REF || t.Type == ANTLRParser.LABEL)
                 {
                     label = t.Text;
                 }
                 else
                 {
                     // must be char or string literal
-                    label = generator.GetTokenTypeAsTargetLabel(
-                                grammar.GetTokenType( t.Text ) );
+                    label = generator.GetTokenTypeAsTargetLabel(grammar.GetTokenType(t.Text));
                 }
                 labels.Add( label );
             }

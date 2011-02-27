@@ -409,6 +409,23 @@ namespace Antlr3.Tool
             }
         }
 
+        public virtual void TranslateLeftRecursiveRules()
+        {
+            IList<Grammar> grammars = delegateGrammarTreeRoot.GetPostOrderedGrammarList();
+            for (int i = 0; grammars != null && i < grammars.Count; i++)
+            {
+                Grammar g = (Grammar)grammars[i];
+                if (!(g.type == GrammarType.Parser || g.type == GrammarType.Combined))
+                    continue;
+
+                foreach (GrammarAST r in g.Tree.FindAllType(ANTLRParser.RULE))
+                {
+                    if (Rule.GetRuleType(r.GetChild(0).Text) == RuleType.Parser)
+                        g.TranslateLeftRecursiveRule(r);
+                }
+            }
+        }
+
         public virtual void DefineGrammarSymbols()
         {
             delegateGrammarTreeRoot.TrimLexerImportsIntoCombined();
@@ -429,22 +446,16 @@ namespace Antlr3.Tool
         public virtual void CreateNFAs()
         {
             if ( ErrorManager.DoNotAttemptAnalysis() )
-            {
                 return;
-            }
+
             IList<Grammar> grammars = delegateGrammarTreeRoot.GetPostOrderedGrammarList();
-            IList<string> names = new List<string>();
-            for ( int i = 0; i < grammars.Count; i++ )
-            {
-                Grammar g = (Grammar)grammars[i];
-                names.Add( g.name );
-            }
             //System.Console.Out.WriteLine( "### createNFAs for composite; grammars: " + names );
             for ( int i = 0; grammars != null && i < grammars.Count; i++ )
             {
                 Grammar g = (Grammar)grammars[i];
                 g.CreateRuleStartAndStopNFAStates();
             }
+
             for ( int i = 0; grammars != null && i < grammars.Count; i++ )
             {
                 Grammar g = (Grammar)grammars[i];

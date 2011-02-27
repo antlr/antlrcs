@@ -77,6 +77,9 @@
     <Compile Include="Analysis\Transition.cs" />
     <Compile Include="Codegen\CodeGenerator.cs" />
     <Compile Include="Codegen\Target.cs" />
+    <Compile Include="Grammars\LeftRecursiveRuleWalker.g3.cs">
+      <DependentUpon>LeftRecursiveRuleWalker.g3</DependentUpon>
+    </Compile>
     <Compile Include="Misc\Barrier.cs" />
     <Compile Include="Misc\BitSet.cs" />
     <Compile Include="Misc\Interval.cs" />
@@ -89,6 +92,7 @@
     <Compile Include="Tool\ErrorManager.cs" />
     <Compile Include="Tool\Grammar.cs" />
     <Compile Include="Tool\GrammarAST.cs" />
+    <Compile Include="Tool\LeftRecursiveRuleAnalyzer.cs" />
     <Compile Include="Tool\Message.cs" />
     <Compile Include="Tool\Rule.cs" />
     <Compile Include="Tool\ToolMessage.cs" />
@@ -506,7 +510,14 @@
       <Link>Codegen\Templates\Ruby\ST.stg</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <EmbeddedResource Include="..\..\..\antlr\main\tool\src\main\resources\org\antlr\codegen\templates\LeftRecursiveRules.stg">
+      <Link>Codegen\Templates\LeftRecursiveRules.stg</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
     <None Include="app.config" />
+    <Antlr3 Include="Grammars\LeftRecursiveRuleWalker.g3">
+      <Generator>MSBuild:Compile</Generator>
+    </Antlr3>
     <None Include="Key.snk" />
   </ItemGroup>
   <ItemGroup>

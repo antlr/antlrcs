@@ -81,7 +81,7 @@ grammarSpec
 	;
 
 rules
-	: rule+
+	:	(rule | ^(PREC_RULE .*))+
 	;
 
 rule
@@ -203,16 +203,19 @@ finallyClause
 	;
 
 rewrite
-	:	(
-			{
-				if ( grammar.GetOption("output")==null )
+	:	^(	REWRITES
+			(
 				{
-					ErrorManager.GrammarError(ErrorManager.MSG_REWRITE_OR_OP_WITH_NO_OUTPUT_OPTION,
-											  grammar, $start.Token, currentRuleName);
+					if ( grammar.GetOption("output")==null )
+					{
+						ErrorManager.GrammarError(ErrorManager.MSG_REWRITE_OR_OP_WITH_NO_OUTPUT_OPTION,
+												  grammar, $start.Token, currentRuleName);
+					}
 				}
-			}
-			^(REWRITE .*)
-		)*
+				^(REWRITE .*)
+			)*
+		)
+	|
 	;
 
 element returns [StateCluster g=null]

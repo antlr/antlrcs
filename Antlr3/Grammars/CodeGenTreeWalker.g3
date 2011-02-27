@@ -147,6 +147,7 @@ rules[StringTemplate recognizerST]
 					}
 				}
 			|	^(RULE .*)
+			|	^(PREC_RULE .*) // ignore
 			)
 			{{
 				if ( input.LA(1) == RULE )
@@ -340,10 +341,11 @@ options { k=1; }
 					// add the rewrite code as just another element in the alt :)
 					// (unless it's a " -> ..." rewrite
 					// ( -> ... )
+					GrammarAST firstRewriteAST = (GrammarAST)$rew.start.FindFirstType(REWRITE);
 					bool etc =
-						$rew.start.Type==REWRITE &&
-						$rew.start.GetChild(0)!=null &&
-						$rew.start.GetChild(0).Type==ETC;
+						$rew.start.Type==REWRITES &&
+						firstRewriteAST.GetChild(0)!=null &&
+						firstRewriteAST.GetChild(0).Type==ETC;
 					if ( $rew.code!=null && !etc )
 					{
 						$alt.code.SetAttribute("rew", $rew.code);
@@ -389,10 +391,10 @@ setBlock returns [StringTemplate code=null]
 				setcode = GetTokenElementST("matchSet", "set", $s, null, null);
 			}
 			setcode.SetAttribute("elementIndex", i);
-			if ( grammar.type!=GrammarType.Lexer )
-			{
-				generator.GenerateLocalFollow($s,"set",currentRuleName,i);
-			}
+			//if ( grammar.type!=GrammarType.Lexer )
+			//{
+			//	generator.GenerateLocalFollow($s,"set",currentRuleName,i);
+			//}
 			setcode.SetAttribute("s",
 				generator.GenSetExpr(templates,$s.SetValue,1,false));
 			StringTemplate altcode=templates.GetInstanceOf("alt");
@@ -443,22 +445,6 @@ alternative returns [StringTemplate code]
 	if ( state.backtracking == 0 )
 	{
 		$code = templates.GetInstanceOf("alt");
-		/*
-		// TODO: can we use Rule.altsWithRewrites???
-		if ( blockNestingLevel==RULE_BLOCK_NESTING_LEVEL ) {
-			GrammarAST aRewriteNode = #alternative.findFirstType(REWRITE);
-			if ( grammar.buildAST() &&
-				 (aRewriteNode!=null||
-				 (#alternative.getNextSibling()!=null &&
-				  #alternative.getNextSibling().getType()==REWRITE)) )
-			{
-				currentAltHasASTRewrite = true;
-			}
-			else {
-				currentAltHasASTRewrite = false;
-			}
-		}
-		*/
 		if ( blockNestingLevel==RULE_BLOCK_NESTING_LEVEL && grammar.BuildAST )
 		{
 			Rule r = grammar.GetRule(currentRuleName);
@@ -969,7 +955,7 @@ rewrite returns [StringTemplate code=null]
 {
 	if ( state.backtracking == 0 )
 	{
-		if ( $start.Type==REWRITE )
+		if ( $start.Type==REWRITES )
 		{
 			if ( generator.grammar.BuildTemplate )
 			{
@@ -1014,27 +1000,30 @@ rewrite returns [StringTemplate code=null]
 		}
 	}
 }
-	:	(
-			{rewriteRuleRefs = new HashSet<object>();}
-			^( r=REWRITE (pred=SEMPRED)? alt=rewrite_alternative )
-			{
-				rewriteBlockNestingLevel = OUTER_REWRITE_NESTING_LEVEL;
-				IList predChunks = null;
-				if ( $pred!=null )
+	:	^(	REWRITES
+			(
+				{rewriteRuleRefs = new HashSet<object>();}
+				^( r=REWRITE (pred=SEMPRED)? alt=rewrite_alternative)
 				{
-					//predText = #pred.getText();
-					predChunks = generator.TranslateAction(currentRuleName,$pred);
+					rewriteBlockNestingLevel = OUTER_REWRITE_NESTING_LEVEL;
+					IList predChunks = null;
+					if ( $pred!=null )
+					{
+						//predText = #pred.getText();
+						predChunks = generator.TranslateAction(currentRuleName,$pred);
+					}
+					string description =
+						grammar.GrammarTreeToString($r,false);
+					description = generator.target.GetTargetStringLiteralFromString(description);
+					$code.SetAttribute("alts.{pred,alt,description}",
+									  predChunks,
+									  alt,
+									  description);
+					pred=null;
 				}
-				string description =
-					grammar.GrammarTreeToString($r,false);
-				description = generator.target.GetTargetStringLiteralFromString(description);
-				$code.SetAttribute("alts.{pred,alt,description}",
-								  predChunks,
-								  alt,
-								  description);
-				pred=null;
-			}
-		)*
+			)*
+		)
+	|
 	;
 
 rewrite_block[string blockTemplateName] returns [StringTemplate code=null]

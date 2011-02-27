@@ -62,6 +62,7 @@
     <Compile Include="TestInterpretedParsing.cs" />
     <Compile Include="TestIntervalSet.cs" />
     <Compile Include="TestJavaCodeGeneration.cs" />
+    <Compile Include="TestLeftRecursion.cs" />
     <Compile Include="TestLexer.cs" />
     <Compile Include="TestMessages.cs" />
     <Compile Include="TestNFAConstruction.cs" />

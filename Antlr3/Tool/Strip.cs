@@ -250,7 +250,7 @@ namespace Antlr3.Tool
             {
                 CommonTree rule = (CommonTree)root.GetChild( 0 );
                 //Console.Out.WriteLine( "rule: " + rule );
-                if ( !char.IsUpper( rule.Text[0] ) )
+                if ( Rule.GetRuleType( rule.Text ) == RuleType.Parser )
                 {
                     tokens.Delete( t.TokenStartIndex, t.TokenStopIndex );
                     KillTrailingNewline( tokens, t.Token.TokenIndex );

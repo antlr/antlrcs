@@ -36,6 +36,7 @@ namespace Antlr3.Grammars
     using Antlr.Runtime.JavaExtensions;
     using Antlr.Runtime.Tree;
     using Antlr3.Tool;
+    using System.Linq;
 
     partial class DefineGrammarItemsWalker
     {
@@ -49,20 +50,8 @@ namespace Antlr3.Grammars
 
         public int CountAltsForRule( CommonTree t )
         {
-            return CountNodes( ALT, t );
-        }
-        int CountNodes( int nodeType, CommonTree tree )
-        {
-            int i = ( tree.Type == nodeType ) ? 1 : 0;
-
-            var children = tree.Children;
-            if ( children != null )
-            {
-                foreach ( CommonTree child in children )
-                    i += CountNodes( nodeType, child );
-            }
-
-            return i;
+            CommonTree block = (CommonTree)t.GetFirstChildWithType(BLOCK);
+            return block.Children.Count(i => i.Type == ALT);
         }
 
         protected void Finish()

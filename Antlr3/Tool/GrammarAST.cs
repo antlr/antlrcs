@@ -42,10 +42,11 @@ namespace Antlr3.Tool
     using CommonToken = Antlr.Runtime.CommonToken;
     using DFA = Antlr3.Analysis.DFA;
     using IIntSet = Antlr3.Misc.IIntSet;
+    using Interval = Antlr3.Misc.Interval;
     using IToken = Antlr.Runtime.IToken;
     using ITree = Antlr.Runtime.Tree.ITree;
+    using Math = System.Math;
     using NFAState = Antlr3.Analysis.NFAState;
-    using Obsolete = System.ObsoleteAttribute;
     using StringTemplate = Antlr3.ST.StringTemplate;
 
     /** Grammars are first converted to ASTs using this class and then are
@@ -134,6 +135,8 @@ namespace Antlr3.Tool
          */
         public StringTemplate code;
 
+        private string _text;
+
         public GrammarAST()
         {
         }
@@ -220,15 +223,16 @@ namespace Antlr3.Tool
         public virtual void Initialize( int i, string s )
         {
             Token = new CommonToken( i, s );
+            Token.TokenIndex = -1;
         }
 
         public virtual void Initialize( ITree ast )
         {
             GrammarAST t = ( (GrammarAST)ast );
             this.Token = t.Token;
-            this.enclosingRuleName = t.enclosingRuleName;
             this.TokenStartIndex = ast.TokenStartIndex;
             this.TokenStopIndex = ast.TokenStopIndex;
+            this.enclosingRuleName = t.enclosingRuleName;
             this.setValue = t.setValue;
             this.blockOptions = t.blockOptions;
             this.outerAltNum = t.outerAltNum;
@@ -237,6 +241,11 @@ namespace Antlr3.Tool
         public virtual void Initialize( IToken token )
         {
             this.Token = token;
+            if (Token != null)
+            {
+                TokenStartIndex = token.TokenIndex;
+                TokenStopIndex = TokenStartIndex;
+            }
         }
 
         /** Save the option key/value pair and process it; return the key
@@ -319,16 +328,21 @@ namespace Antlr3.Tool
         {
             get
             {
+                if (_text != null)
+                    return _text;
+
                 if ( Token == null )
                     return string.Empty;
 
                 return Token.Text;
             }
+
             set
             {
-                Token.Text = value;
+                _text = value;
             }
         }
+
         public override int Type
         {
             get
@@ -338,11 +352,13 @@ namespace Antlr3.Tool
 
                 return Token.Type;
             }
+
             set
             {
                 Token.Type = value;
             }
         }
+
         public override int Line
         {
             get
@@ -452,30 +468,25 @@ namespace Antlr3.Tool
             return Descendants( this ).OfType<GrammarAST>().FirstOrDefault( child => child.Type == ttype );
         }
 
-        /** Make nodes unique based upon Token so we can add them to a Set; if
-         *  not a GrammarAST, check type.
-         */
-        public override bool Equals( object ast )
+        public List<GrammarAST> FindAllType(int ttype)
         {
-            if ( this == ast )
-            {
-                return true;
-            }
-
-            GrammarAST t = (GrammarAST)ast;
-            if ( t == null )
-            {
-                ITree a = ast as ITree;
-                return a != null && Type == a.Type;
-            }
-
-            return Token.Line == t.Line &&
-                   Token.CharPositionInLine == t.CharPositionInLine;
+            List<GrammarAST> nodes = new List<GrammarAST>();
+            FindAllTypeImpl(ttype, nodes);
+            return nodes;
         }
 
-        public override int GetHashCode()
+        public void FindAllTypeImpl(int ttype, List<GrammarAST> nodes)
         {
-            return ObjectExtensions.ShiftPrimeXOR( Token.Line, Token.CharPositionInLine );
+            // check this node (the root) first
+            if (this.Type == ttype)
+                nodes.Add(this);
+
+            // check children
+            for (int i = 0; i < ChildCount; i++)
+            {
+                GrammarAST child = (GrammarAST)GetChild(i);
+                child.FindAllTypeImpl(ttype, nodes);
+            }
         }
 
         /** See if tree has exact token types and structure; no text */
@@ -492,9 +503,8 @@ namespace Antlr3.Tool
         public static GrammarAST Dup( ITree t )
         {
             if ( t == null )
-            {
                 return null;
-            }
+
             GrammarAST dup_t = new GrammarAST();
             dup_t.Initialize( t );
             return dup_t;
@@ -539,6 +549,24 @@ namespace Antlr3.Tool
             return d;
         }
 
+        public static GrammarAST DupTree(GrammarAST t)
+        {
+            if (t == null)
+                return null;
+
+            // make copy of root
+            GrammarAST root = Dup(t);
+
+            // copy all children of root.
+            for (int i = 0; i < t.ChildCount; i++)
+            {
+                GrammarAST child = (GrammarAST)t.GetChild(i);
+                root.AddChild(DupTree(child));
+            }
+
+            return root;
+        }
+
         public void SetTreeEnclosingRuleNameDeeply( string rname )
         {
             enclosingRuleName = rname;
@@ -549,6 +577,115 @@ namespace Antlr3.Tool
         internal string ToStringList()
         {
             throw new System.NotImplementedException();
+        }
+
+        /** Track start/stop token for subtree root created for a rule.
+         *  Only works with Tree nodes.  For rules that match nothing,
+         *  seems like this will yield start=i and stop=i-1 in a nil node.
+         *  Might be useful info so I'll not force to be i..i.
+         */
+        public void SetTokenBoundaries(IToken startToken, IToken stopToken)
+        {
+            if (startToken != null)
+                startIndex = startToken.TokenIndex;
+            if (stopToken != null)
+                stopIndex = stopToken.TokenIndex;
+        }
+
+        ///** For every node in this subtree, make sure it's start/stop token's
+        // *  are set.  Walk depth first, visit bottom up.  Only updates nodes
+        // *  with at least one token index < 0.
+        // */
+        //public new Interval SetUnknownTokenBoundaries()
+        //{
+        //    //		System.out.println(getText()+": START");
+        //    if (ChildCount == 0)
+        //    {
+        //        if (startIndex < 0 || stopIndex < 0)
+        //        {
+        //            startIndex = stopIndex = Token.TokenIndex;
+        //            //System.out.println(getText()+": STOP "+startIndex);
+        //        }
+
+        //        return new Interval(startIndex, stopIndex);
+        //    }
+
+        //    GrammarAST t = (GrammarAST)this.GetChild(0);
+        //    int min = Token.TokenIndex >= 0 ? Token.TokenIndex : int.MaxValue;
+        //    int max = -1;
+        //    while (t != null)
+        //    {
+        //        Interval I = t.SetUnknownTokenBoundaries();
+        //        if (I.a != -1)
+        //            min = Math.Min(min, I.a);
+
+        //        max = Math.Max(max, I.b);
+        //        t = (GrammarAST)t.getNextSibling();
+        //    }
+
+        //    if (startIndex < 0 || min < startIndex)
+        //        startIndex = min;
+
+        //    if (stopIndex < 0 || max > stopIndex)
+        //        stopIndex = max;
+
+        //    //System.out.println(getText()+": STOP "+startIndex+".."+stopIndex);
+        //    return new Interval(startIndex, stopIndex);
+        //}
+
+        public GrammarAST GetBlockAlt(int i)
+        {
+            if (this.Type != ANTLRParser.BLOCK)
+                return null;
+
+            int alts = 0;
+            for (int j = 0; j < ChildCount; j++)
+            {
+                if (GetChild(j).Type == ANTLRParser.ALT)
+                    alts++;
+                if (alts == i)
+                    return (GrammarAST)GetChild(j);
+            }
+
+            return null;
+        }
+
+        //	@Override
+        //	public String toString() {
+        //		if ( startIndex==-1 && stopIndex==-1 ) return getText();
+        //		return getText()+":"+startIndex+".."+stopIndex;
+        //	}
+
+        /** Make nodes unique based upon Token so we can add them to a Set; if
+         *  not a GrammarAST, check type.
+         */
+        public class TreeTokenEqualityComparer : EqualityComparer<GrammarAST>
+        {
+            public static new readonly TreeTokenEqualityComparer Default = new TreeTokenEqualityComparer();
+
+            public override bool Equals(GrammarAST x, GrammarAST y)
+            {
+                if (x == y)
+                    return true;
+
+                GrammarAST t = y as GrammarAST;
+                if (t == null)
+                {
+                    ITree a = y as ITree;
+                    return a != null && x.Type == a.Type;
+                }
+
+                return x.Token.Line == t.Line &&
+                       x.Token.CharPositionInLine == t.CharPositionInLine;
+            }
+
+            public override int GetHashCode(GrammarAST obj)
+            {
+                if (obj == null)
+                    return 0;
+
+                return ObjectExtensions.ShiftPrimeXOR(obj.Token.Line, obj.Token.CharPositionInLine);
+            }
         }
     }
 }

@@ -57,6 +57,25 @@ namespace Antlr4.Test.StringTemplate
         }
 
         [TestMethod]
+        public void TestIt()
+        {
+            string templates = "main() ::= <<\n<@r>a<@end>\n<@r()>\n>>";
+            writeFile(tmpdir, "t.stg", templates);
+            TemplateGroup group = new TemplateGroupFile(Path.Combine(tmpdir, "t.stg"));
+            ErrorBuffer errors = new ErrorBuffer();
+            group.Listener = errors;
+
+            // Force the compilation (this led to an NPE earlier that is reported in
+            // the error messages)
+            Template st = group.GetInstanceOf("main");
+
+            // A proper error messages should be written
+            Assert.AreEqual(
+                    "0:-1: region main.r is embedded and thus already implicitly defined" + newline,
+                    errors.ToString());
+        }
+
+        [TestMethod]
         public void TestEmptyExpr2()
         {
             string template = "hi <> ";

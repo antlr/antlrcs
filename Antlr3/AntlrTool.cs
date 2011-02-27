@@ -567,42 +567,44 @@ namespace Antlr3
                         continue;
                     }
 
-                    Grammar grammar = GetRootGrammar( grammarFileName );
+                    Grammar rootGrammar = GetRootGrammar( grammarFileName );
                     // we now have all grammars read in as ASTs
                     // (i.e., root and all delegates)
-                    grammar.composite.AssignTokenTypes();
-                    grammar.composite.DefineGrammarSymbols();
-                    grammar.composite.CreateNFAs();
+                    rootGrammar.composite.AssignTokenTypes();
+                    rootGrammar.composite.TranslateLeftRecursiveRules();
+                    rootGrammar.AddRulesForSyntacticPredicates();
+                    rootGrammar.composite.DefineGrammarSymbols();
+                    rootGrammar.composite.CreateNFAs();
 
-                    GenerateRecognizer( grammar );
+                    GenerateRecognizer( rootGrammar );
 
                     if ( PrintGrammar )
                     {
-                        grammar.PrintGrammar( Console.Out );
+                        rootGrammar.PrintGrammar( Console.Out );
                     }
 
                     if (Report)
                     {
-                        GrammarReport2 greport = new GrammarReport2(grammar);
+                        GrammarReport2 greport = new GrammarReport2(rootGrammar);
                         Console.WriteLine(greport.ToString());
                     }
 
                     if ( Profile )
                     {
-                        GrammarReport report = new GrammarReport(grammar);
+                        GrammarReport report = new GrammarReport(rootGrammar);
                         Stats.WriteReport( GrammarReport.GRAMMAR_STATS_FILENAME,
                                           report.ToNotifyString() );
                     }
 
                     // now handle the lexer if one was created for a merged spec
-                    string lexerGrammarStr = grammar.GetLexerGrammar();
+                    string lexerGrammarStr = rootGrammar.GetLexerGrammar();
                     //JSystem.@out.println("lexer grammar:\n"+lexerGrammarStr);
-                    if ( grammar.type == GrammarType.Combined && lexerGrammarStr != null )
+                    if ( rootGrammar.type == GrammarType.Combined && lexerGrammarStr != null )
                     {
-                        lexerGrammarFileName = grammar.ImplicitlyGeneratedLexerFileName;
+                        lexerGrammarFileName = rootGrammar.ImplicitlyGeneratedLexerFileName;
                         try
                         {
-                            TextWriter w = GetOutputFile( grammar, lexerGrammarFileName );
+                            TextWriter w = GetOutputFile( rootGrammar, lexerGrammarFileName );
                             w.Write( lexerGrammarStr );
                             w.Close();
                         }
@@ -624,12 +626,13 @@ namespace Antlr3
                             FileInfo lexerGrammarFullFile = new FileInfo( System.IO.Path.Combine( GetFileDirectory( lexerGrammarFileName ), lexerGrammarFileName ) );
                             lexerGrammar.FileName = lexerGrammarFullFile.ToString();
 
-                            lexerGrammar.ImportTokenVocabulary( grammar );
+                            lexerGrammar.ImportTokenVocabulary( rootGrammar );
                             lexerGrammar.ParseAndBuildAST( sr );
 
                             sr.Close();
 
                             lexerGrammar.composite.AssignTokenTypes();
+                            lexerGrammar.AddRulesForSyntacticPredicates();
                             lexerGrammar.composite.DefineGrammarSymbols();
                             lexerGrammar.composite.CreateNFAs();
 

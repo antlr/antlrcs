@@ -155,7 +155,8 @@ namespace Antlr3.Tool
         public const int MSG_AST_OP_IN_ALT_WITH_REWRITE = 165;
         public const int MSG_WILDCARD_AS_ROOT = 166;
         public const int MSG_CONFLICTING_OPTION_IN_TREE_FILTER = 167;
-
+        public const int MSG_ILLEGAL_OPTION_VALUE = 168;
+        public const int MSG_ALL_OPS_NEED_SAME_ASSOC = 169;
 
         // GRAMMAR WARNINGS
         public const int MSG_GRAMMAR_NONDETERMINISM = 200; // A predicts alts 1,2
