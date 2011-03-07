@@ -56,6 +56,9 @@ namespace Antlr4.StringTemplate.Compiler
          */
         public string template;
 
+        /** The token that begins template definition; could be &lt;@r&gt; of region. */
+        public IToken templateDefStartToken;
+
         /** Overall token stream for template (debug only) */
         public ITokenStream tokens;
 
@@ -151,7 +154,7 @@ namespace Antlr4.StringTemplate.Compiler
                 {
                     Interval start = sourceMap[0];
                     Interval stop = null;
-                    for (int i = sourceMap.Length - 1; i > 0; i--)
+                    for (int i = sourceMap.Length - 1; i >= 0; i--)
                     {
                         Interval interval = sourceMap[i];
                         if (interval != null)
@@ -258,7 +261,7 @@ namespace Antlr4.StringTemplate.Compiler
             {
                 foreach (CompiledTemplate sub in implicitlyDefinedTemplates)
                 {
-                    group.RawDefineTemplate(sub.name, sub, null);
+                    group.RawDefineTemplate(sub.name, sub, sub.templateDefStartToken);
                     sub.DefineImplicitlyDefinedTemplates(group);
                 }
             }

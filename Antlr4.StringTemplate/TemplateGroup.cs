@@ -413,13 +413,14 @@ namespace Antlr4.StringTemplate
 
             if (LookupTemplate(mangled) == null)
             {
-                ErrorManager.CompiletimeError(ErrorType.NO_SUCH_REGION, null, regionT, enclosingTemplateName, name);
+                ErrorManager.CompiletimeError(ErrorType.NO_SUCH_REGION, templateToken, regionT, enclosingTemplateName, name);
                 return new CompiledTemplate();
             }
 
             code.name = mangled;
             code.isRegion = true;
             code.regionDefType = Template.RegionType.Explicit;
+            code.templateDefStartToken = regionT;
 
             RawDefineTemplate(mangled, code, regionT);
             code.DefineArgumentDefaultValueTemplates(this);
@@ -464,19 +465,24 @@ namespace Antlr4.StringTemplate
                     ErrorManager.CompiletimeError(ErrorType.TEMPLATE_REDEFINITION, null, defT);
                     return;
                 }
-                if (prev.isRegion && prev.regionDefType == Template.RegionType.Embedded)
+
+                if (prev.isRegion)
                 {
-                    ErrorManager.CompiletimeError(ErrorType.EMBEDDED_REGION_REDEFINITION, null, defT, GetUnmangledTemplateName(name));
-                    return;
-                }
-                else if (prev.isRegion && prev.regionDefType == Template.RegionType.Explicit)
-                {
-                    ErrorManager.CompiletimeError(ErrorType.REGION_REDEFINITION, null, defT, GetUnmangledTemplateName(name));
-                    return;
+                    if (code.regionDefType != Template.RegionType.Implicit && prev.regionDefType == Template.RegionType.Embedded)
+                    {
+                        ErrorManager.CompiletimeError(ErrorType.EMBEDDED_REGION_REDEFINITION, null, defT, GetUnmangledTemplateName(name));
+                        return;
+                    }
+                    else if (code.regionDefType == Template.RegionType.Implicit && prev.regionDefType == Template.RegionType.Explicit)
+                    {
+                        ErrorManager.CompiletimeError(ErrorType.REGION_REDEFINITION, null, defT, GetUnmangledTemplateName(name));
+                        return;
+                    }
                 }
             }
 
             code.NativeGroup = this;
+            code.templateDefStartToken = defT;
             templates[name] = code;
         }
 

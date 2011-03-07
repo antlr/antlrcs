@@ -112,6 +112,7 @@ region returns [string name]
 			CompiledTemplate sub = $template.impl;
 	        sub.isRegion = true;
 	        sub.regionDefType = Template.RegionType.Embedded;
+			sub.templateDefStartToken = $ID.Token;
 			outermostImpl.AddImplicitlyDefinedTemplate(sub);
 			}
 		 )
@@ -129,6 +130,7 @@ subtemplate returns [string name, int nargs]
 			{
 			CompiledTemplate sub = $template.impl;
 			sub.isAnonSubtemplate = true;
+			sub.templateDefStartToken = $SUBTEMPLATE.Token;
 			if ( Group.Debug ) {
 				sub.ast = $SUBTEMPLATE;
 				sub.ast.SetUnknownTokenBoundaries();
@@ -265,12 +267,12 @@ includeExpr
 		}
 	|	^(INCLUDE_REGION ID)		{
 									CompiledTemplate impl =
-										TemplateCompiler.DefineBlankRegion(outermostImpl, $ID.text);
+										TemplateCompiler.DefineBlankRegion(outermostImpl, $ID.Token);
 									emit2($INCLUDE_REGION,Bytecode.INSTR_NEW,impl.name,0);
 									}
 	|	^(INCLUDE_SUPER_REGION ID)	{
 									CompiledTemplate impl =
-										TemplateCompiler.DefineBlankRegion(outermostImpl, $ID.text);
+										TemplateCompiler.DefineBlankRegion(outermostImpl, $ID.Token);
 									emit2($INCLUDE_SUPER_REGION,Bytecode.INSTR_SUPER_NEW,impl.name,0);
 									}
 	|	primary

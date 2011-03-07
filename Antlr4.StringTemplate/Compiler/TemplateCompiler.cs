@@ -191,12 +191,18 @@ namespace Antlr4.StringTemplate.Compiler
             return impl2;
         }
 
-        public static CompiledTemplate DefineBlankRegion(CompiledTemplate outermostImpl, string name)
+        public static CompiledTemplate DefineBlankRegion(CompiledTemplate outermostImpl, IToken nameToken)
         {
+            if (outermostImpl == null)
+                throw new ArgumentNullException("outermostImpl");
+            if (nameToken == null)
+                throw new ArgumentNullException("nameToken");
+
             string outermostTemplateName = outermostImpl.name;
-            string mangled = TemplateGroup.GetMangledRegionName(outermostTemplateName, name);
+            string mangled = TemplateGroup.GetMangledRegionName(outermostTemplateName, nameToken.Text);
             CompiledTemplate blank = new CompiledTemplate();
             blank.isRegion = true;
+            blank.templateDefStartToken = nameToken;
             blank.regionDefType = Template.RegionType.Implicit;
             blank.name = mangled;
             outermostImpl.AddImplicitlyDefinedTemplate(blank);

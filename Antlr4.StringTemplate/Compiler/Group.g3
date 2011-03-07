@@ -116,11 +116,15 @@ templateDef[string prefix]
     	    }
 	    )
 	    {
-        template = Utility.Strip(template, n);
-        string templateName = $name.text;
-        if (prefix.Length > 0) templateName = prefix+"/"+$name.text;
-	    _group.DefineTemplateOrRegion(templateName, $enclosing.text, templateToken,
-	    							 template, $name, $formalArgs.args);
+		if ($name.index >= 0)
+		{
+			// if ID missing
+			template = Utility.Strip(template, n);
+			string templateName = $name.text;
+			if (prefix.Length > 0) templateName = prefix+"/"+$name.text;
+			_group.DefineTemplateOrRegion(templateName, $enclosing.text, templateToken,
+	    								 template, $name, $formalArgs.args);
+		}
 	    }
 	|   alias=ID '::=' target=ID  {_group.DefineTemplateAlias($alias, $target);}
 	;

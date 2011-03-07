@@ -176,6 +176,44 @@ namespace Antlr4.Test.StringTemplate
         }
 
         [TestMethod]
+        public void TestCantDefineEmbeddedRegionAgainInTemplate()
+        {
+            string dir = tmpdir;
+            string g =
+                "a() ::= <<\n" +
+                "[\n" +
+                "<@r>foo<@end>\n" +
+                "<@r()>" +
+                "]\n" +
+                ">>\n"; // error; dup
+            writeFile(dir, "g.stg", g);
+
+            TemplateGroupFile group = new TemplateGroupFile(Path.Combine(dir, "g.stg"));
+            ErrorBuffer errors = new ErrorBuffer();
+            group.Listener = errors;
+            group.Load();
+            string expected = "g.stg 3:2: redefinition of region a.r" + newline;
+            string result = errors.ToString();
+            Assert.AreEqual(expected, result);
+        }
+
+        [TestMethod]
+        public void TestMissingRegionName()
+        {
+            string dir = tmpdir;
+            string g = "@t.() ::= \"\"\n";
+            writeFile(dir, "g.stg", g);
+
+            TemplateGroupFile group = new TemplateGroupFile(Path.Combine(dir, "g.stg"));
+            ErrorBuffer errors = new ErrorBuffer();
+            group.Listener = errors;
+            group.Load();
+            string expected = "g.stg 1:3: missing ID at '('" + newline;
+            string result = errors.ToString();
+            Assert.AreEqual(expected, result);
+        }
+
+        [TestMethod]
         public void TestIndentBeforeRegionIsIgnored()
         {
             string dir = tmpdir;
