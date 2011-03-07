@@ -286,7 +286,7 @@ namespace Antlr3.Tool
                 ruleST.SetAttribute("alts", altST);
             }
 
-            Console.WriteLine(ruleST);
+            //Console.WriteLine(ruleST);
 
             return ruleST.ToString();
         }
@@ -297,7 +297,7 @@ namespace Antlr3.Tool
             ruleST.SetAttribute("ruleName", ruleName);
             ruleST.SetAttribute("alts", prefixAlts);
             ruleST.SetAttribute("alts", otherAlts);
-            Console.WriteLine(ruleST);
+            //Console.WriteLine(ruleST);
             return ruleST.ToString();
         }
 
@@ -307,7 +307,7 @@ namespace Antlr3.Tool
             ruleST.SetAttribute("ruleName", ruleName);
             ruleST.SetAttribute("maxPrec", 0);
 
-            Console.WriteLine("start: " + ruleST);
+            //Console.WriteLine("start: " + ruleST);
             return ruleST.ToString();
         }
 
