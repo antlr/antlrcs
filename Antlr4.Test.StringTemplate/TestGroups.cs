@@ -58,6 +58,19 @@ namespace Antlr4.Test.StringTemplate
         }
 
         [TestMethod]
+        public void TestSimpleGroupFromString()
+        {
+            string g =
+                "a(x) ::= <<foo>>\n" +
+                "b() ::= <<bar>>\n";
+            TemplateGroup group = new TemplateGroupString(g);
+            Template st = group.GetInstanceOf("a");
+            string expected = "foo";
+            string result = st.Render();
+            Assert.AreEqual(expected, result);
+        }
+
+        [TestMethod]
         public void TestGroupWithTwoTemplates()
         {
             string dir = tmpdir;

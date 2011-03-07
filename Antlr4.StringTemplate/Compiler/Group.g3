@@ -61,7 +61,8 @@ group[TemplateGroup group, string prefix]
 GroupLexer lexer = (GroupLexer)input.TokenSource;
 this._group = lexer.group = $group;
 }
-	:	(	'import' STRING {_group.ImportTemplates($STRING);}
+	:	oldStyleHeader?
+		(	'import' STRING {_group.ImportTemplates($STRING);}
 		|	'import' // common error: name not in string
 			{
 			MismatchedTokenException e = new MismatchedTokenException(STRING, input);
@@ -71,7 +72,13 @@ this._group = lexer.group = $group;
 		)*
         def[prefix]+
     ;
-    
+
+oldStyleHeader // ignore but lets us use this parser in AW for both v3 and v4
+    :   'group' ID ( ':' ID )?
+	    ( 'implements' ID (',' ID)* )?
+	    ';'
+	;
+
 groupName returns [string name]
 @init {StringBuilder buf = new StringBuilder();}
 	:	a=ID {buf.Append($a.text);} ('.' a=ID {buf.Append($a.text);})*
