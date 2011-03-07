@@ -55,7 +55,7 @@ namespace Antlr4.StringTemplate
                 return s.ToLower(culture);
 
             if (formatString.Equals("cap"))
-                return char.ToUpper(s[0], culture) + s.Substring(1);
+                return s.Length > 0 ? char.ToUpper(s[0], culture) + s.Substring(1) : s;
 
             if (formatString.Equals("url-encode"))
                 return HttpUtility.UrlEncode(s);
