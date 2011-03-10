@@ -1,0 +1,160 @@
+﻿/*
+ * [The "BSD licence"]
+ * Copyright (c) 2011 Terence Parr
+ * All rights reserved.
+ *
+ * Conversion to C#:
+ * Copyright (c) 2011 Sam Harwell, Pixel Mine, Inc.
+ * All rights reserved.
+ *
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions
+ * are met:
+ * 1. Redistributions of source code must retain the above copyright
+ *    notice, this list of conditions and the following disclaimer.
+ * 2. Redistributions in binary form must reproduce the above copyright
+ *    notice, this list of conditions and the following disclaimer in the
+ *    documentation and/or other materials provided with the distribution.
+ * 3. The name of the author may not be used to endorse or promote products
+ *    derived from this software without specific prior written permission.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE AUTHOR ``AS IS'' AND ANY EXPRESS OR
+ * IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
+ * OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.
+ * IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT,
+ * INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+ * NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+ * DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
+ * THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+ * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
+ * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ */
+
+grammar TestExpressionFeatures;
+
+options {
+    language=CSharp3;
+    TokenLabelType=CommonToken;
+    output=AST;
+    ASTLabelType=CommonTree;
+}
+
+tokens {
+	LPAREN = '(';
+	RPAREN = ')';
+	DOT = '.';
+	LBRACK = '[';
+	RBRACK = ']';
+	INC = '++';
+	DEC = '--';
+	PLUS = '+';
+	MINUS = '-';
+	TILDE = '~';
+	NOT = '!';
+	//LSHIFT = '<<';
+	//RSHIFT = '>>';
+	//RUSHIFT = '>>>';
+	EQUALS = '==';
+	NOTEQ = '!=';
+	MOD = '%';
+	CARET = '^';
+	GT = '>';
+	LT = '<';
+	GE = '>=';
+	LE = '<=';
+	BITAND = '&';
+	BITOR = '|';
+	AND = '&&';
+	OR = '||';
+
+	KW_THIS = 'this';
+	KW_SUPER = 'super';
+	KW_CLASS = 'class';
+	KW_NEW = 'new';
+	KW_INSTANCEOF = 'instanceof';
+	KW_INT = 'int';
+}
+
+@lexer::namespace{Antlr3.Runtime.Test}
+@parser::namespace{Antlr3.Runtime.Test}
+
+@parser::header{using Console = System.Console;}
+
+/*
+ * Parser Rules
+ */
+
+public
+compileUnit
+    :   e EOF
+    ;
+
+e   :   '('! e ')'!
+    |   'this' 
+    |   'super'
+    |   INT
+    |   ID
+    |   type '.'^ 'class'
+    |   e '.'^ ID
+    |   e '.'^ 'this'
+    |   e '.'^ 'super' '('^ expressionList? ')'!
+    |   e '.'^ 'new'^ ID '('! expressionList? ')'!
+    |	'new'^ type ( '(' expressionList? ')'! | (options {k=1;}:'[' e ']'!)+)
+    |   e '['^ e ']'!
+    |   '('^ type ')'! e
+    |   e ('++'^ | '--'^)
+    |   e '('^ expressionList? ')'!
+    |   ('+'^|'-'^|'++'^|'--'^) e
+    |   ('~'^|'!'^) e
+    |   e ('*'^|'/'^|'%'^) e
+    |   e ('+'^|'-'^) e
+    |   e ('<' '<' | '>' '>' '>' | '>' '>') e
+    |   e ('<='^ | '>='^ | '>'^ | '<'^) e
+    |   e 'instanceof'^ e
+    |   e ('=='^ | '!='^) e
+    |   e '&'^ e
+    |   e '^'<assoc=right>^ e
+    |   e '|'^ e
+    |   e '&&'^ e
+    |   e '||'^ e
+//    |   e '?' e ':' e
+    |   e ('='<assoc=right>^
+          |'+='<assoc=right>^
+          |'-='<assoc=right>^
+          |'*='<assoc=right>^
+          |'/='<assoc=right>^
+          |'&='<assoc=right>^
+          |'|='<assoc=right>^
+          |'^='<assoc=right>^
+          |'>>='<assoc=right>^
+          |'>>>='<assoc=right>^
+          |'<<='<assoc=right>^
+          |'<<<='<assoc=right>^
+          |'%='<assoc=right>^) e
+    ;
+
+expressionList
+	:	e (','! e)*
+	;
+
+type: ID 
+	| ID '['^ ']'!
+	| 'int'
+	| 'int' '['^ ']'! 
+	;
+
+/*
+ * Lexer Rules
+ */
+
+WS
+    :   (' ' | '\t' | '\n' | '\r') {Skip();}
+    ;
+
+ID
+	:	('a'..'z' | 'A'..'Z' | '_') ('a'..'z' | 'A'..'Z' | '0'..'9' | '_')*
+	;
+
+INT
+	:	'0'..'9'+
+	;
