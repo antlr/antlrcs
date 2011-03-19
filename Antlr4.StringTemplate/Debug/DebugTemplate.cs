@@ -81,12 +81,12 @@ namespace Antlr4.StringTemplate.Debug
             return new DebugTemplate(this, true, shadowEnclosingInstance);
         }
 
-        public override void Add(string name, object value)
+        public override Template Add(string name, object value)
         {
             if (groupThatCreatedThisInstance.Debug)
                 addAttrEvents.Add(name, new AddAttributeEvent(name, value));
 
-            base.Add(name, value);
+            return base.Add(name, value);
         }
 
         // TESTING SUPPORT

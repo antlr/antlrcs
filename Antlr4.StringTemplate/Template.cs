@@ -193,12 +193,14 @@ namespace Antlr4.StringTemplate
          *  This method will never alter a List that you inject.  If you send
          *  in a List and then inject a single value element, Add() copies
          *  original list and adds the new value.
+         *
+         *  Return self so we can chain.  t.add("x", 1).add("y", "hi");
          */
         [MethodImpl(MethodImplOptions.Synchronized)]
-        public virtual void Add(string name, object value)
+        public virtual Template Add(string name, object value)
         {
             if (name == null)
-                return; // allow null value
+                return this; // allow null value
 
             if (name.IndexOf('.') >= 0)
             {
@@ -235,7 +237,7 @@ namespace Antlr4.StringTemplate
             {
                 // new attribute
                 locals[arg.Index] = value;
-                return;
+                return this;
             }
 
             // attribute will be multi-valued for sure now
@@ -255,6 +257,8 @@ namespace Antlr4.StringTemplate
             {
                 multi.Add(value);
             }
+
+            return this;
         }
 
         /** Remove an attribute value entirely (can't Remove attribute definitions). */

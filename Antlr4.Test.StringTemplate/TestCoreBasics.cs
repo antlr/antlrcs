@@ -66,6 +66,17 @@ namespace Antlr4.Test.StringTemplate
         }
 
         [TestMethod]
+        public void TestChainAttr()
+        {
+            string template = "<x>:<names>!";
+            Template st = new Template(template);
+            st.Add("names", "Ter").Add("names", "Tom").Add("x", 1);
+            string expected = "1:TerTom!";
+            string result = st.Render();
+            Assert.AreEqual(expected, result);
+        }
+
+        [TestMethod]
         public void TestSetUnknownAttr()
         {
             string templates =
