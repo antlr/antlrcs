@@ -165,6 +165,17 @@ namespace Antlr4.Test.StringTemplate
         }
 
         [TestMethod]
+        public void TestMapAcrossDictionaryUsesKeys()
+        {
+            string template = "<foo:{f | <f>}>"; // checks field and method getter
+            Template st = new Template(template);
+            st.Add("foo", new SortedDictionary<string, string>() { { "a", "b" }, { "c", "d" } });
+            string expected = "ac";
+            string result = st.Render();
+            Assert.AreEqual(expected, result);
+        }
+
+        [TestMethod]
         public void TestSTProp()
         {
             string template = "<t.x>"; // get x attr of template t
