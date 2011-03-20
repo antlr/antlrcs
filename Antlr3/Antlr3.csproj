@@ -220,10 +220,6 @@
       <Link>Codegen\Templates\ActionScript\ASTTreeParser.stg</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <EmbeddedResource Include="..\..\..\antlr\main\tool\src\main\resources\org\antlr\codegen\templates\ANTLRCore.sti">
-      <Link>Codegen\Templates\ANTLRCore.sti</Link>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </EmbeddedResource>
     <Content Include="..\..\..\antlr\main\tool\src\main\resources\org\antlr\codegen\templates\CSharp3\AST.stg">
       <Link>Codegen\Templates\CSharp3\AST.stg</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
