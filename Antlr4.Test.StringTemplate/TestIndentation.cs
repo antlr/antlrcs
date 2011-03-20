@@ -209,6 +209,67 @@ namespace Antlr4.Test.StringTemplate
         }
 
         [TestMethod]
+        public void TestIndentedIFWithElse()
+        {
+            Template t = new Template(
+                "begin" + newline +
+                "    <if(x)>foo<else>bar<endif>" + newline +
+                "end" + newline);
+            t.Add("x", "x");
+            string expecting = "begin" + newline + "    foo" + newline + "end" + newline;
+            string result = t.Render();
+            Assert.AreEqual(expecting, result);
+        }
+
+        [TestMethod]
+        public void TestIndentedIFWithElse2()
+        {
+            Template t = new Template(
+                "begin" + newline +
+                "    <if(x)>foo<else>bar<endif>" + newline +
+                "end" + newline);
+            t.Add("x", false);
+            string expecting = "begin" + newline + "    bar" + newline + "end" + newline;
+            string result = t.Render();
+            Assert.AreEqual(expecting, result);
+        }
+
+        [TestMethod]
+        public void TestIndentedIFWithNewlineBeforeText()
+        {
+            TemplateGroup group = new TemplateGroup();
+            group.DefineTemplate("t",
+                "begin" + newline +
+                "    <if(x)>\n" +
+                "foo\n" +  // no indent; ignore IF indent
+                "    <endif>" + newline +	  // ignore indent on if-tags on line by themselves
+                "end" + newline,
+                new string[] { "x" });
+            Template t = group.GetInstanceOf("t");
+            t.Add("x", "x");
+            string expecting = "begin" + newline + "foo" + newline + "end";
+            string result = t.Render();
+            Assert.AreEqual(expecting, result);
+        }
+
+        [TestMethod]
+        public void TestIndentedIFWithEndifNextLine()
+        {
+            TemplateGroup group = new TemplateGroup();
+            group.DefineTemplate("t",
+                "begin" + newline +
+                "    <if(x)>foo\n" +      // use indent and keep newline
+                "    <endif>" + newline +	  // ignore indent on if-tags on line by themselves
+                "end" + newline,
+                new string[] { "x" });
+            Template t = group.GetInstanceOf("t");
+            t.Add("x", "x");
+            string expecting = "begin" + newline + "    foo" + newline + "end";
+            string result = t.Render();
+            Assert.AreEqual(expecting, result);
+        }
+
+        [TestMethod]
         public void TestIFWithIndentOnMultipleLines()
         {
             Template t = new Template(

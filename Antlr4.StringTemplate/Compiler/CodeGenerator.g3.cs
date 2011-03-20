@@ -32,7 +32,6 @@
 
 namespace Antlr4.StringTemplate.Compiler
 {
-    using System.Collections.Generic;
     using Antlr.Runtime;
     using Antlr.Runtime.Tree;
     using Antlr4.StringTemplate.Misc;
@@ -73,90 +72,93 @@ namespace Antlr4.StringTemplate.Compiler
             }
         }
 
+        public CompilationState CompilationState
+        {
+            get
+            {
+                if (template_stack == null || template_stack.Count == 0)
+                    return null;
+
+                return template_stack.Peek().state;
+            }
+        }
+
         // convience funcs to hide offensive sending of emit messages to
         // CompilationState temp data object.
 
         public void emit1(CommonTree opAST, Bytecode opcode, int arg)
         {
-            template_stack.Peek().state.Emit1(opAST, opcode, arg);
+            CompilationState.Emit1(opAST, opcode, arg);
         }
 
         public void emit1(CommonTree opAST, Bytecode opcode, string arg)
         {
-            template_stack.Peek().state.Emit1(opAST, opcode, arg);
+            CompilationState.Emit1(opAST, opcode, arg);
         }
 
         public void emit2(CommonTree opAST, Bytecode opcode, int arg, int arg2)
         {
-            template_stack.Peek().state.Emit2(opAST, opcode, arg, arg2);
+            CompilationState.Emit2(opAST, opcode, arg, arg2);
         }
 
         public void emit2(CommonTree opAST, Bytecode opcode, string s, int arg2)
         {
-            template_stack.Peek().state.Emit2(opAST, opcode, s, arg2);
+            CompilationState.Emit2(opAST, opcode, s, arg2);
         }
 
         public void emit(Bytecode opcode)
         {
-            template_stack.Peek().state.Emit(opcode);
+            CompilationState.Emit(opcode);
         }
 
         public void emit(CommonTree opAST, Bytecode opcode)
         {
-            template_stack.Peek().state.Emit(opAST, opcode);
+            CompilationState.Emit(opAST, opcode);
         }
-
-        private readonly Stack<string> _elementIndent = new Stack<string>(new string[] { string.Empty });
 
         private void Indent(string text)
         {
-            string strip = _elementIndent.Peek();
-            if (!string.IsNullOrEmpty(strip) && text.StartsWith(strip))
-                text = text.Substring(strip.Length);
-
-            template_stack.Peek().state.Indent(text);
-            _elementIndent.Push(_elementIndent.Peek() + text);
+            CompilationState.Indent(text);
         }
 
         private void Dedent()
         {
-            template_stack.Peek().state.Emit(Bytecode.INSTR_DEDENT);
-            _elementIndent.Pop();
+            CompilationState.Emit(Bytecode.INSTR_DEDENT);
         }
 
         public void insert(int addr, Bytecode opcode, string s)
         {
-            template_stack.Peek().state.Insert(addr, opcode, s);
+            CompilationState.Insert(addr, opcode, s);
         }
 
         public void setOption(CommonTree id)
         {
-            template_stack.Peek().state.SetOption(id);
+            CompilationState.SetOption(id);
         }
 
         public void write(int addr, short value)
         {
-            template_stack.Peek().state.Write(addr, value);
+            CompilationState.Write(addr, value);
         }
 
         public int address()
         {
-            return template_stack.Peek().state.ip;
+            return CompilationState.ip;
         }
 
         public void func(CommonTree id)
         {
-            template_stack.Peek().state.Function(templateToken, id);
+            CompilationState.Function(templateToken, id);
         }
 
         public void refAttr(CommonTree id)
         {
-            template_stack.Peek().state.ReferenceAttribute(templateToken, id);
+            CompilationState.ReferenceAttribute(templateToken, id);
         }
 
         public int defineString(string s)
         {
-            return template_stack.Peek().state.DefineString(s);
+            return CompilationState.DefineString(s);
         }
     }
 }

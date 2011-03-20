@@ -66,13 +66,21 @@ template : element* ;
 
 element
 	:	{input.LT(1).CharPositionInLine == 0 && (input.LA(1) == INDENT ? input.LA(2) == COMMENT && input.LA(3) == NEWLINE : input.LA(1) == COMMENT && input.LA(2) == NEWLINE)}? INDENT!? COMMENT! NEWLINE!
-	|	INDENT^ element
-	|	ifstat
-	|	region
-	|	exprTag
+	|	INDENT^ singleElement
+	|	singleElement
+	|	compoundElement
+	|	COMMENT!
+	;
+
+singleElement
+	:	exprTag
 	|	TEXT
 	|	NEWLINE
-	|	COMMENT!
+	;
+	
+compoundElement
+	:	ifstat
+	|	region
 	;
 
 exprTag
@@ -80,9 +88,15 @@ exprTag
 	;
 
 region
-	:	LDELIM! '@'<REGION>^ ID RDELIM! NEWLINE!?
+@init {IToken indent=null;}
+	:	i=INDENT? x=LDELIM '@' ID RDELIM {if (input.LA(1) != NEWLINE) indent = $i;}
 		template
-		INDENT!? LDELIM! '@end'! RDELIM! NEWLINE!?
+		INDENT? LDELIM '@end' RDELIM
+		// kill \n for <@end> on line by itself if multi-line embedded region
+		({$region.start.Line != input.LT(1).Line}? => NEWLINE)?
+		-> {indent!=null}?
+		   ^({indent} ^(REGION[$x] ID template?))
+		->            ^(REGION[$x] ID template?)
 	;
 
 subtemplate
@@ -91,8 +105,9 @@ subtemplate
 		-> ^(SUBTEMPLATE[$lc,"SUBTEMPLATE"] ^(ARGS $ids)* template?)
 	;
 
-ifstat // ignore INDENTs in front of elseif ...
-	:	LDELIM 'if' '(' c1=conditional ')' RDELIM
+ifstat
+@init {IToken indent=null;}
+	:	i=INDENT? LDELIM 'if' '(' c1=conditional ')' RDELIM {if (input.LA(1) != NEWLINE) indent = $i;}
 			t1=template
 			( INDENT? LDELIM 'elseif' '(' c2+=conditional ')' RDELIM t2+=template )*
 			( INDENT? LDELIM 'else' RDELIM t3=template )?
@@ -100,6 +115,8 @@ ifstat // ignore INDENTs in front of elseif ...
 		RDELIM
 		// kill \n for <endif> on line by itself if multi-line IF
 		({$ifstat.start.Line!=input.LT(1).Line}?=> NEWLINE)?
+		-> {indent!=null}?
+		   ^({indent} ^('if' $c1 $t1? ^('elseif' $c2 $t2)* ^('else' $t3?)?))
 		-> ^('if' $c1 $t1? ^('elseif' $c2 $t2)* ^('else' $t3?)?)
 	;
 

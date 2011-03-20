@@ -32,10 +32,10 @@
 
 namespace Antlr4.Test.StringTemplate
 {
+    using System.Collections.Generic;
     using Antlr4.StringTemplate;
     using Microsoft.VisualStudio.TestTools.UnitTesting;
     using StringWriter = System.IO.StringWriter;
-    using System.Collections.Generic;
 
     [TestClass]
     public class TestWhitespace : BaseTest
@@ -248,7 +248,7 @@ namespace Antlr4.Test.StringTemplate
         }
 
         [TestMethod]
-        public void TestIFElseExpr()
+        public void TestIFElseExprOnSingleLine()
         {
             Template t = new Template(
                 "begin\n" +
@@ -271,6 +271,71 @@ namespace Antlr4.Test.StringTemplate
                 "<endif>\n" +
                 "end\n");
             string expecting = "begin" + newline + "bar" + newline + "end" + newline;
+            string result = t.Render();
+            Assert.AreEqual(expecting, result);
+        }
+
+        [TestMethod]
+        public void TestElseifOnMultipleLines()
+        {
+            Template t = new Template(
+                "begin\n" +
+                "<if(a)>\n" +
+                "foo\n" +
+                "<elseif(b)>\n" +
+                "bar\n" +
+                "<endif>\n" +
+                "end\n");
+            string expecting = "begin" + newline + "end" + newline;
+            string result = t.Render();
+            Assert.AreEqual(expecting, result);
+        }
+
+        [TestMethod]
+        public void TestElseifOnMultipleLines2()
+        {
+            Template t = new Template(
+                "begin\n" +
+                "<if(a)>\n" +
+                "foo\n" +
+                "<elseif(b)>\n" +
+                "bar\n" +
+                "<endif>\n" +
+                "end\n");
+            t.Add("b", true);
+            string expecting = "begin" + newline + "bar" + newline + "end" + newline;
+            string result = t.Render();
+            Assert.AreEqual(expecting, result);
+        }
+
+        [TestMethod]
+        public void TestElseifOnMultipleLines3()
+        {
+            Template t = new Template(
+                "begin\n" +
+                "  <if(a)>\n" +
+                "  foo\n" +
+                "  <elseif(b)>\n" +
+                "  bar\n" +
+                "  <endif>\n" +
+                "end\n");
+            t.Add("a", true);
+            string expecting = "begin" + newline + "  foo" + newline + "end" + newline;
+            string result = t.Render();
+            Assert.AreEqual(expecting, result);
+        }
+
+        [TestMethod]
+        public void TestEndifNotOnLineAlone()
+        {
+            Template t = new Template(
+                "begin\n" +
+                "  <if(users)>\n" +
+                "  foo\n" +
+                "  <else>\n" +
+                "  bar\n" +
+                "  <endif>end\n");
+            string expecting = "begin" + newline + "  bar" + newline + "end" + newline;
             string result = t.Render();
             Assert.AreEqual(expecting, result);
         }

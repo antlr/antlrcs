@@ -74,8 +74,9 @@ chunk
 	;
 
 element
-	:	^(INDENT {Indent($INDENT.text);} element {Dedent();})
-	|	compoundElement
+	:	^(INDENT compoundElement[$INDENT.text])
+	|	compoundElement[null]
+	|	^(INDENT {Indent($INDENT.text);} singleElement {Dedent();})
 	|	singleElement
 	;
 
@@ -89,13 +90,9 @@ singleElement
 	|	NEWLINE {emit(Bytecode.INSTR_NEWLINE);}
 	;
 
-compoundElement
-	:	ifstat
-	|	region
-		{
-		emit2($region.start, Bytecode.INSTR_NEW, $region.name, 0);
-		emit($region.start, Bytecode.INSTR_WRITE);
-		}
+compoundElement[string indent]
+	:	ifstat[$indent]
+	|	region[$indent]
 	;
 
 exprElement
@@ -104,7 +101,9 @@ exprElement
 		{emit($EXPR, op);}
 	;
 
-region returns [string name]
+region[string indent] returns [string name]
+@init {if (!string.IsNullOrEmpty($indent)) Indent($indent);}
+@after {if (!string.IsNullOrEmpty($indent)) Dedent();}
 	:	^(	REGION ID
 			{$name = TemplateGroup.GetMangledRegionName(outermostTemplateName, $ID.text);}
 			template[$name,null]
@@ -114,6 +113,8 @@ region returns [string name]
 	        sub.regionDefType = Template.RegionType.Embedded;
 			sub.templateDefStartToken = $ID.Token;
 			outermostImpl.AddImplicitlyDefinedTemplate(sub);
+			emit2($start, Bytecode.INSTR_NEW, $region.name, 0);
+			emit($start, Bytecode.INSTR_WRITE);
 			}
 		 )
 	;
@@ -141,7 +142,7 @@ subtemplate returns [string name, int nargs]
 		 )
 	;
 
-ifstat
+ifstat[string indent]
 @init {
 	///** Tracks address of branch operand (in code block).  It's how
 	//	*  we backpatch forward references when generating code for IFs.
@@ -151,6 +152,10 @@ ifstat
 	//	*  We need to update them once we see the endif.
 	//	*/
 	List<int> endRefs = new List<int>();
+	if (!string.IsNullOrEmpty($indent)) Indent($indent);
+}
+@after {
+	if (!string.IsNullOrEmpty($indent)) Dedent();
 }
 	:	^(	i='if' conditional
 			{

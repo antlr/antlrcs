@@ -385,5 +385,44 @@ namespace Antlr4.Test.StringTemplate
             string expecting = "XABY";
             Assert.AreEqual(expecting, result);
         }
+
+        [TestMethod]
+        public void TestEmbeddedRegionOnOneLine()
+        {
+            string dir = tmpdir;
+            string groupFile =
+                "a() ::= <<\n" +
+                "[\n" +
+                "  <@r>bar<@end>\n" +
+                "]\n" +
+                ">>\n";
+            writeFile(dir, "group.stg", groupFile);
+            TemplateGroup group = new TemplateGroupFile(Path.Combine(dir, "group.stg"));
+            Template st = group.GetInstanceOf("a");
+            st.impl.Dump();
+            string expected = "[" + newline + "  bar" + newline + "]";
+            string result = st.Render();
+            Assert.AreEqual(expected, result);
+        }
+
+        [TestMethod]
+        public void TestEmbeddedRegionTagsOnSeparateLines()
+        {
+            string dir = tmpdir;
+            string groupFile =
+                "a() ::= <<\n" +
+                "[\n" +
+                "  <@r>\n" +
+                "  bar\n" +
+                "  <@end>\n" +
+                "]\n" +
+                ">>\n";
+            writeFile(dir, "group.stg", groupFile);
+            TemplateGroup group = new TemplateGroupFile(Path.Combine(dir, "group.stg"));
+            Template st = group.GetInstanceOf("a");
+            string expected = "[" + newline + "  bar" + newline + "]";
+            string result = st.Render();
+            Assert.AreEqual(expected, result);
+        }
     }
 }
