@@ -307,7 +307,7 @@ namespace Antlr3.Tool
         public static readonly HashSet<string> legalTokenOptions =
             new HashSet<string>()
             {
-                "class",
+                "node",
                 "type",
                 "text",
                 "assoc",
