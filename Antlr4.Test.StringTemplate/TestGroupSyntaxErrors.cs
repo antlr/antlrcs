@@ -33,9 +33,10 @@
 namespace Antlr4.Test.StringTemplate
 {
     using Antlr4.StringTemplate;
-    using Microsoft.VisualStudio.TestTools.UnitTesting;
     using Antlr4.StringTemplate.Misc;
     using Antlr4.Test.StringTemplate.Extensions;
+    using Microsoft.VisualStudio.TestTools.UnitTesting;
+    using Path = System.IO.Path;
 
     [TestClass]
     public class TestGroupSyntaxErrors : BaseTest
@@ -49,7 +50,7 @@ namespace Antlr4.Test.StringTemplate
             writeFile(tmpdir, "t.stg", templates);
 
             ITemplateErrorListener errors = new ErrorBuffer();
-            TemplateGroup group = new TemplateGroupFile(tmpdir + "/" + "t.stg");
+            TemplateGroup group = new TemplateGroupFile(Path.Combine(tmpdir, "t.stg"));
             group.Listener = errors;
             group.Load(); // force load
             string expected = "t.stg 2:0: mismatched input 'foo' expecting STRING" + newline +
@@ -67,7 +68,7 @@ namespace Antlr4.Test.StringTemplate
             writeFile(tmpdir, "t.stg", templates);
 
             ITemplateErrorListener errors = new ErrorBuffer();
-            TemplateGroup group = new TemplateGroupFile(tmpdir + "/" + "t.stg");
+            TemplateGroup group = new TemplateGroupFile(Path.Combine(tmpdir, "t.stg"));
             group.Listener = errors;
             group.Load(); // force load
             string expected = "t.stg 1:7: mismatched input 'Super' expecting STRING" + newline;
@@ -84,7 +85,7 @@ namespace Antlr4.Test.StringTemplate
 
             TemplateGroupFile group = null;
             ITemplateErrorListener errors = new ErrorBuffer();
-            group = new TemplateGroupFile(tmpdir + "/" + "t.stg");
+            group = new TemplateGroupFile(Path.Combine(tmpdir, "t.stg"));
             group.Listener = errors;
             group.Load(); // force load
             string expected = "t.stg 2:0: missing template at '<EOF>'" + newline;
@@ -101,7 +102,7 @@ namespace Antlr4.Test.StringTemplate
 
             TemplateGroupFile group = null;
             ITemplateErrorListener errors = new ErrorBuffer();
-            group = new TemplateGroupFile(tmpdir + "/" + "t.stg");
+            group = new TemplateGroupFile(Path.Combine(tmpdir, "t.stg"));
             group.Listener = errors;
             group.Load(); // force load
             string expected = "t.stg 1:11: missing final '}' in {...} anonymous template" + newline +
@@ -119,7 +120,7 @@ namespace Antlr4.Test.StringTemplate
 
             TemplateGroupFile group = null;
             ITemplateErrorListener errors = new ErrorBuffer();
-            group = new TemplateGroupFile(tmpdir + "/" + "t.stg");
+            group = new TemplateGroupFile(Path.Combine(tmpdir, "t.stg"));
             group.Listener = errors;
             group.Load(); // force load
             string expected = "t.stg 1:5: no viable alternative at input '::='" + newline;
@@ -136,7 +137,7 @@ namespace Antlr4.Test.StringTemplate
 
             TemplateGroupFile group = null;
             ITemplateErrorListener errors = new ErrorBuffer();
-            group = new TemplateGroupFile(tmpdir + "/" + "t.stg");
+            group = new TemplateGroupFile(Path.Combine(tmpdir, "t.stg"));
             group.Listener = errors;
             group.Load(); // force load
             string expected = "t.stg 1:11: \\n in string" + newline;
@@ -154,7 +155,7 @@ namespace Antlr4.Test.StringTemplate
 
             TemplateGroupFile group = null;
             ITemplateErrorListener errors = new ErrorBuffer();
-            group = new TemplateGroupFile(tmpdir + "/" + "t.stg");
+            group = new TemplateGroupFile(Path.Combine(tmpdir, "t.stg"));
             group.Listener = errors;
             group.Load(); // force load
             string expected = "t.stg 1:0: garbled template definition starting at 'foo'" + newline;
@@ -171,7 +172,7 @@ namespace Antlr4.Test.StringTemplate
 
             TemplateGroupFile group = null;
             ITemplateErrorListener errors = new ErrorBuffer();
-            group = new TemplateGroupFile(tmpdir + "/" + "t.stg");
+            group = new TemplateGroupFile(Path.Combine(tmpdir, "t.stg"));
             group.Listener = errors;
             group.Load(); // force load
             string expected = "t.stg 1:6: mismatched input ')' expecting ID" + newline;
@@ -188,7 +189,7 @@ namespace Antlr4.Test.StringTemplate
 
             TemplateGroupFile group = null;
             ErrorBuffer errors = new ErrorBuffer();
-            group = new TemplateGroupFile(tmpdir + "/" + "t.stg");
+            group = new TemplateGroupFile(Path.Combine(tmpdir, "t.stg"));
             group.Listener = errors;
             group.Load(); // force load
             string expected =
@@ -207,7 +208,7 @@ namespace Antlr4.Test.StringTemplate
 
             TemplateGroupFile group = null;
             ErrorBuffer errors = new ErrorBuffer();
-            group = new TemplateGroupFile(tmpdir + "/" + "t.stg");
+            group = new TemplateGroupFile(Path.Combine(tmpdir, "t.stg"));
             group.Listener = errors;
             group.Load(); // force load
             string expected =
@@ -226,7 +227,7 @@ namespace Antlr4.Test.StringTemplate
 
             TemplateGroupFile group = null;
             ErrorBuffer errors = new ErrorBuffer();
-            group = new TemplateGroupFile(tmpdir + "/" + "t.stg");
+            group = new TemplateGroupFile(Path.Combine(tmpdir, "t.stg"));
             group.Listener = errors;
             group.Load(); // force load
             string expected = "[t.stg 1:15: 'b' came as a complete surprise to me]";
@@ -243,7 +244,7 @@ namespace Antlr4.Test.StringTemplate
 
             TemplateGroupFile group = null;
             ErrorBuffer errors = new ErrorBuffer();
-            group = new TemplateGroupFile(tmpdir + "/" + "t.stg");
+            group = new TemplateGroupFile(Path.Combine(tmpdir, "t.stg"));
             group.Listener = errors;
             group.Load(); // force load
             string expected = "[t.stg 1:7: missing dictionary entry at ']']";
@@ -260,7 +261,7 @@ namespace Antlr4.Test.StringTemplate
 
             TemplateGroupFile group = null;
             ErrorBuffer errors = new ErrorBuffer();
-            group = new TemplateGroupFile(tmpdir + "/" + "t.stg");
+            group = new TemplateGroupFile(Path.Combine(tmpdir, "t.stg"));
             group.Listener = errors;
             group.Load(); // force load
             string expected = "[t.stg 1:11: missing value for key at ']']";
@@ -277,7 +278,7 @@ namespace Antlr4.Test.StringTemplate
 
             TemplateGroupFile group = null;
             ErrorBuffer errors = new ErrorBuffer();
-            group = new TemplateGroupFile(tmpdir + "/" + "t.stg");
+            group = new TemplateGroupFile(Path.Combine(tmpdir, "t.stg"));
             group.Listener = errors;
             group.Load(); // force load
             string expected = "[t.stg 1:17: invalid character '}']";
@@ -294,7 +295,7 @@ namespace Antlr4.Test.StringTemplate
 
             TemplateGroupFile group = null;
             ErrorBuffer errors = new ErrorBuffer();
-            group = new TemplateGroupFile(tmpdir + "/" + "t.stg");
+            group = new TemplateGroupFile(Path.Combine(tmpdir, "t.stg"));
             group.Listener = errors;
             group.Load(); // force load
             string expected = "[t.stg 1:9: unterminated string, t.stg 1:9: missing template at '<EOF>']";
