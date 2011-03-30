@@ -55,8 +55,8 @@ namespace Antlr3.Tool
         protected IDictionary<string, string> aliases = new SortedList<string, string>(StringComparer.Ordinal);
         protected IDictionary<string, string> aliasesReverseIndex = new Dictionary<string, string>();
 
-        public AssignTokenTypesBehavior( ITreeNodeStream input )
-            : base( input )
+        public AssignTokenTypesBehavior()
+            : base(null)
         {
         }
 

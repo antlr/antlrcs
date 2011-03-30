@@ -388,18 +388,15 @@ namespace Antlr3.Tool
             //System.Console.Out.WriteLine( "### assign types" );
             //ttypesWalker.setASTNodeClass( "org.antlr.tool.GrammarAST" );
             IList<Grammar> grammars = delegateGrammarTreeRoot.GetPostOrderedGrammarList();
-            for ( int i = 0; grammars != null && i < grammars.Count; i++ )
+            AssignTokenTypesWalker ttypesWalker = new AssignTokenTypesBehavior();
+            for (int i = 0; grammars != null && i < grammars.Count; i++)
             {
                 Grammar g = (Grammar)grammars[i];
-                AssignTokenTypesWalker ttypesWalker = new AssignTokenTypesBehavior( new Antlr.Runtime.Tree.CommonTreeNodeStream( g.Tree ) );
+                ttypesWalker.SetTreeNodeStream(new Antlr.Runtime.Tree.CommonTreeNodeStream(g.Tree));
                 try
                 {
                     //System.Console.Out.WriteLine( "    walking " + g.name );
                     ttypesWalker.grammar_( g );
-
-                    // the walker has filled literals, tokens, and alias tables.
-                    // now tell it to define them in the root grammar
-                    ttypesWalker.DefineTokens( delegateGrammarTreeRoot.grammar );
                 }
                 catch ( RecognitionException re )
                 {
@@ -407,6 +404,10 @@ namespace Antlr3.Tool
                                        re );
                 }
             }
+
+            // the walker has filled literals, tokens, and alias tables.
+            // now tell it to define them in the root grammar
+            ttypesWalker.DefineTokens(delegateGrammarTreeRoot.grammar);
         }
 
         public virtual void TranslateLeftRecursiveRules()
