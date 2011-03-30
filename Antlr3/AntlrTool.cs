@@ -571,7 +571,7 @@ namespace Antlr3
                     // we now have all grammars read in as ASTs
                     // (i.e., root and all delegates)
                     rootGrammar.composite.AssignTokenTypes();
-                    rootGrammar.composite.TranslateLeftRecursiveRules();
+                    //rootGrammar.composite.TranslateLeftRecursiveRules();
                     rootGrammar.AddRulesForSyntacticPredicates();
                     rootGrammar.composite.DefineGrammarSymbols();
                     rootGrammar.composite.CreateNFAs();
