@@ -623,7 +623,10 @@ namespace Antlr3.Tool
             StringReader r = new StringReader( grammarString );
             ParseAndBuildAST( r );
             composite.AssignTokenTypes();
-            DefineGrammarSymbols();
+            //composite.TranslateLeftRecursiveRules();
+            AddRulesForSyntacticPredicates();
+            composite.DefineGrammarSymbols();
+            //composite.CreateNFAs();
             CheckNameSpaceAndActions();
         }
 
@@ -1953,7 +1956,7 @@ namespace Antlr3.Tool
         public virtual void DefineToken( string text, int tokenType )
         {
             //JSystem.@out.println("defineToken("+text+", "+tokenType+")");
-            if ( composite.tokenIDToTypeMap.ContainsKey( text ) && composite.tokenIDToTypeMap[text] < Antlr.Runtime.TokenTypes.Min )
+            if (composite.tokenIDToTypeMap.ContainsKey( text ))
             {
                 // already defined?  Must be predefined one like EOF;
                 // do nothing
@@ -1972,7 +1975,8 @@ namespace Antlr3.Tool
                 composite.typeToStringLiteralList[tokenType] = text;
             }
             else
-            { // must be a label like ID
+            {
+                // must be a label like ID
                 composite.tokenIDToTypeMap[text] = tokenType;
             }
             int index = Label.NUM_FAUX_LABELS + tokenType - 1;
@@ -2909,6 +2913,7 @@ namespace Antlr3.Tool
                 AddDelegateGrammar( delegateGrammar );
 
                 delegateGrammar.ParseAndBuildAST( br );
+                delegateGrammar.AddRulesForSyntacticPredicates();
                 if ( !ValidImport( delegateGrammar ) )
                 {
                     ErrorManager.GrammarError( ErrorManager.MSG_INVALID_IMPORT,
