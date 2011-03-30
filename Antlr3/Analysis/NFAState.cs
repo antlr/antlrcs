@@ -185,14 +185,14 @@ namespace Antlr3.Analysis
                 _numTransitions++;
                 // Set the "back pointer" of the target state so that it
                 // knows about the label of the incoming edge.
-                Label label = e.label;
+                Label label = e.Label;
                 if ( label.IsAtom || label.IsSet )
                 {
-                    if ( ( (NFAState)e.target ).incidentEdgeLabel != null )
+                    if ( ( (NFAState)e.Target ).incidentEdgeLabel != null )
                     {
                         ErrorManager.InternalError( "Clobbered incident edge" );
                     }
-                    ( (NFAState)e.target ).incidentEdgeLabel = e.label;
+                    ( (NFAState)e.Target ).incidentEdgeLabel = e.Label;
                 }
             }
         }
@@ -296,7 +296,7 @@ namespace Antlr3.Analysis
 
         public override string ToString()
         {
-            return stateNumber.ToString();
+            return StateNumber.ToString();
         }
 
     }

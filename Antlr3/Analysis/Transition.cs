@@ -43,11 +43,15 @@ namespace Antlr3.Analysis
      */
     public class Transition : IComparable<Transition>
     {
-        /** What label must be consumed to transition to target */
-        public Label label;
+        /// <summary>
+        /// What label must be consumed to transition to target
+        /// </summary>
+        private Label label;
 
-        /** The target of this transition */
-        public State target;
+        /// <summary>
+        /// The target of this transition
+        /// </summary>
+        private readonly State target;
 
         public Transition( Label label, State target )
         {
@@ -61,16 +65,19 @@ namespace Antlr3.Analysis
             this.target = target;
         }
 
-        #region Properties
-        [CLSCompliant(false)]
         public Label Label
         {
             get
             {
                 return label;
             }
+
+            set
+            {
+                label = value;
+            }
         }
-        [CLSCompliant(false)]
+
         public State Target
         {
             get
@@ -79,50 +86,51 @@ namespace Antlr3.Analysis
             }
         }
 
+
         public bool IsAction
         {
             get
             {
-                return label.IsAction;
+                return Label.IsAction;
             }
         }
+
         public bool IsEpsilon
         {
             get
             {
-                return label.IsEpsilon;
+                return Label.IsEpsilon;
             }
         }
+
         public bool IsSemanticPredicate
         {
             get
             {
-                return label.IsSemanticPredicate;
+                return Label.IsSemanticPredicate;
             }
         }
-        #endregion
 
         public override int GetHashCode()
         {
-            return label.GetHashCode() + target.stateNumber;
+            return Label.GetHashCode() + Target.StateNumber;
         }
 
         public override bool Equals( object o )
         {
             Transition other = (Transition)o;
-            return this.label.Equals( other.label ) &&
-                   this.target.Equals( other.target );
+            return this.Label.Equals( other.Label ) &&
+                   this.Target.Equals( other.Target );
         }
 
         public int CompareTo( Transition other )
         {
-            return this.label.CompareTo( other.label );
+            return this.Label.CompareTo( other.Label );
         }
 
         public override string ToString()
         {
-            return label + "->" + target.stateNumber;
+            return Label + "->" + Target.StateNumber;
         }
-
     }
 }

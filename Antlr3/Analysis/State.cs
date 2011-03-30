@@ -37,14 +37,13 @@ namespace Antlr3.Analysis
     {
         public const int INVALID_STATE_NUMBER = -1;
 
-        public int stateNumber = INVALID_STATE_NUMBER;
+        private int stateNumber = INVALID_STATE_NUMBER;
 
         /** An accept state is an end of rule state for lexers and
          *  parser grammar rules.
          */
         protected internal bool acceptState = false;
 
-        #region Properties
         public virtual bool IsAcceptState
         {
             get
@@ -56,11 +55,24 @@ namespace Antlr3.Analysis
                 acceptState = value;
             }
         }
+
+        public int StateNumber
+        {
+            get
+            {
+                return stateNumber;
+            }
+
+            set
+            {
+                stateNumber = value;
+            }
+        }
+
         public abstract int NumberOfTransitions
         {
             get;
         }
-        #endregion
 
         public abstract void AddTransition( Transition e );
 

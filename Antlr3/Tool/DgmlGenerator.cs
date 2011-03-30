@@ -97,7 +97,7 @@ namespace Antlr3.Tool
                     _groupId = "decision_";
                     _extraNodes.Add(new XElement(Elements.Node,
                         new XAttribute(Attributes.Id, _groupId),
-                        new XAttribute(Attributes.Label, dfaState.stateNumber.ToString()),
+                        new XAttribute(Attributes.Label, dfaState.StateNumber.ToString()),
                         new XAttribute(Attributes.Group, "Collapsed")));
                 }
                 else
@@ -137,7 +137,7 @@ namespace Antlr3.Tool
 
         private void WalkCreatingDfaDgml(DFAState dfaState)
         {
-            if (!_markedStates.Add(dfaState.stateNumber))
+            if (!_markedStates.Add(dfaState.StateNumber))
                 return;
 
             // first add this node
@@ -152,13 +152,13 @@ namespace Antlr3.Tool
             }
 
             XElement node = new XElement(Elements.Node,
-                new XAttribute(Attributes.Id, "state_" + dfaState.stateNumber),
+                new XAttribute(Attributes.Id, "state_" + dfaState.StateNumber),
                 new XAttribute(Attributes.Label, GetStateLabel(dfaState)),
                 new XAttribute(Attributes.Category, nodeCategory));
 
             _nodes.Add(dfaState, node);
             if (GroupNodes)
-                _extraLinks.Add(CreateContainmentLink(_groupId, "state_" + dfaState.stateNumber));
+                _extraLinks.Add(CreateContainmentLink(_groupId, "state_" + dfaState.StateNumber));
 
             // make an edge for each transition
             for (int i = 0; i < dfaState.NumberOfTransitions; i++)
@@ -166,7 +166,7 @@ namespace Antlr3.Tool
                 Transition edge = dfaState.Transition(i);
                 if (StripNonreducedStates)
                 {
-                    DFAState target = edge.target as DFAState;
+                    DFAState target = edge.Target as DFAState;
                     // don't generate nodes for terminal states
                     if (target != null && target.AcceptStateReachable != DFA.REACHABLE_YES)
                         continue;
@@ -174,8 +174,8 @@ namespace Antlr3.Tool
 
                 string edgeCategory = Categories.Edge;
                 XElement edgeElement = new XElement(Elements.Link,
-                    new XAttribute(Attributes.Source, "state_" + dfaState.stateNumber),
-                    new XAttribute(Attributes.Target, "state_" + edge.target.stateNumber),
+                    new XAttribute(Attributes.Source, "state_" + dfaState.StateNumber),
+                    new XAttribute(Attributes.Target, "state_" + edge.Target.StateNumber),
                     new XAttribute(Attributes.Category, edgeCategory),
                     new XAttribute(Attributes.Label, GetEdgeLabel(edge)));
 
@@ -194,7 +194,7 @@ namespace Antlr3.Tool
 
         private void WalkRuleNfaCreatingDgml(State state)
         {
-            if (!_markedStates.Add(state.stateNumber))
+            if (!_markedStates.Add(state.StateNumber))
                 return;
 
             NFAState nfaState = state as NFAState;
@@ -209,7 +209,7 @@ namespace Antlr3.Tool
                 nodeCategory = Categories.State;
 
             XElement node = new XElement(Elements.Node,
-                new XAttribute(Attributes.Id, "state_" + state.stateNumber),
+                new XAttribute(Attributes.Id, "state_" + state.StateNumber),
                 new XAttribute(Attributes.Label, GetStateLabel(state)),
                 new XAttribute(Attributes.Category, nodeCategory));
 
@@ -225,7 +225,7 @@ namespace Antlr3.Tool
 
             _nodes.Add(state, node);
             if (GroupNodes)
-                _extraLinks.Add(CreateContainmentLink(_groupId, "state_" + state.stateNumber));
+                _extraLinks.Add(CreateContainmentLink(_groupId, "state_" + state.StateNumber));
 
             // don't go past end of rule
             if (state.IsAcceptState)
@@ -246,7 +246,7 @@ namespace Antlr3.Tool
                         label = string.Format("<{0}>", rr.rule.Name);
 
                     XElement link = new XElement(Elements.Link,
-                        new XAttribute(Attributes.Source, "state_" + state.stateNumber),
+                        new XAttribute(Attributes.Source, "state_" + state.StateNumber),
                         new XAttribute(Attributes.Target, "state_" + rr.followState),
                         new XAttribute(Attributes.Category, Categories.RuleClosureEdge),
                         new XAttribute(Attributes.Label, label));
@@ -262,14 +262,14 @@ namespace Antlr3.Tool
                         edgeCategory = Categories.ActionEdge;
                     else if (edge.IsEpsilon)
                         edgeCategory = Categories.EpsilonEdge;
-                    else if (edge.Label.IsSet || edge.label.IsAtom)
+                    else if (edge.Label.IsSet || edge.Label.IsAtom)
                         edgeCategory = Categories.AtomEdge;
                     else
                         edgeCategory = Categories.Edge;
 
                     XElement link = new XElement(Elements.Link,
-                        new XAttribute(Attributes.Source, "state_" + state.stateNumber),
-                        new XAttribute(Attributes.Target, "state_" + edge.Target.stateNumber),
+                        new XAttribute(Attributes.Source, "state_" + state.StateNumber),
+                        new XAttribute(Attributes.Target, "state_" + edge.Target.StateNumber),
                         new XAttribute(Attributes.Category, edgeCategory),
                         new XAttribute(Attributes.Label, GetEdgeLabel(edge)));
 
@@ -321,7 +321,7 @@ namespace Antlr3.Tool
                     {
                         XElement newLink = new XElement(link.Value);
                         newLink.Attribute(Attributes.Target).Remove();
-                        newLink.Add(new XAttribute(Attributes.Target, "state_" + newTarget.stateNumber));
+                        newLink.Add(new XAttribute(Attributes.Target, "state_" + newTarget.StateNumber));
                         newLink.Add(new XElement(Elements.Category, new XAttribute(Attributes.Ref, Categories.OptimizedEdge)));
 
                         _extraLinks.Add(newLink);
@@ -337,7 +337,7 @@ namespace Antlr3.Tool
                 return false;
 
             // Cannot skip first state
-            if (state.stateNumber == 0)
+            if (state.StateNumber == 0)
                 return false;
 
             // Cannot skip accepted state
@@ -378,13 +378,13 @@ namespace Antlr3.Tool
 
         private string GetEdgeLabel(Transition edge)
         {
-            string label = edge.label.ToString(_grammar);
+            string label = edge.Label.ToString(_grammar);
             label = string.Join(" ", label.Split(default(char[]), StringSplitOptions.RemoveEmptyEntries));
             if (label.Equals(Label.EPSILON_STR))
             {
                 label = EpsilonLinkLabel;
             }
-            State target = edge.target;
+            State target = edge.Target;
             if (!edge.IsSemanticPredicate && target is DFAState)
             {
                 // look for gated predicates; don't add gated to simple sempred edges
@@ -412,14 +412,14 @@ namespace Antlr3.Tool
             if (state == null)
                 return "null";
 
-            string stateLabel = state.stateNumber.ToString();
+            string stateLabel = state.StateNumber.ToString();
             DFAState dfaState = state as DFAState;
             NFAState nfaState = state as NFAState;
             if (dfaState != null)
             {
                 StringBuilder builder = new StringBuilder(250);
                 builder.Append('s');
-                builder.Append(state.stateNumber);
+                builder.Append(state.StateNumber);
                 if (AntlrTool.internalOption_ShowNFAConfigsInDFA)
                 {
                     if (dfaState.abortedDueToRecursionOverflow)

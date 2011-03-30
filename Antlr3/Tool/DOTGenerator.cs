@@ -130,7 +130,7 @@ namespace Antlr3.Tool
             {
                 dot = stlib.GetInstanceOf( Path.Combine( dfaTemplateDirectoryName, "dfa" ) );
                 dot.SetAttribute( "startState",
-                        startState.stateNumber );
+                        startState.StateNumber );
                 dot.SetAttribute( "useBox",
                                  AntlrTool.internalOption_ShowNFAConfigsInDFA );
                 WalkCreatingDFADOT( dot, (DFAState)startState );
@@ -139,7 +139,7 @@ namespace Antlr3.Tool
             {
                 dot = stlib.GetInstanceOf( Path.Combine( dfaTemplateDirectoryName, "nfa" ) );
                 dot.SetAttribute( "startState",
-                        startState.stateNumber );
+                        startState.StateNumber );
                 WalkRuleNFACreatingDOT( dot, startState );
             }
             dot.SetAttribute( "rankdir", rankdir );
@@ -170,12 +170,12 @@ namespace Antlr3.Tool
         protected virtual void WalkCreatingDFADOT( StringTemplate dot,
                                           DFAState s )
         {
-            if ( markedStates.Contains( s.stateNumber ) )
+            if ( markedStates.Contains( s.StateNumber ) )
             {
                 return; // already visited this node
             }
 
-            markedStates.Add( s.stateNumber ); // mark this node as completed.
+            markedStates.Add( s.StateNumber ); // mark this node as completed.
 
             // first add this node
             StringTemplate st;
@@ -198,8 +198,8 @@ namespace Antlr3.Tool
                 //    + s.stateNumber + " [" + i + "] of " + s.NumberOfTransitions );
                 if ( StripNonreducedStates )
                 {
-                    if ( edge.target is DFAState &&
-                        ( (DFAState)edge.target ).AcceptStateReachable != DFA.REACHABLE_YES )
+                    if ( edge.Target is DFAState &&
+                        ( (DFAState)edge.Target ).AcceptStateReachable != DFA.REACHABLE_YES )
                     {
                         continue; // don't generate nodes for terminal states
                     }
@@ -207,10 +207,10 @@ namespace Antlr3.Tool
                 st = stlib.GetInstanceOf( Path.Combine( dfaTemplateDirectoryName, "edge" ) );
                 st.SetAttribute( "label", GetEdgeLabel( edge ) );
                 st.SetAttribute( "src", GetStateLabel( s ) );
-                st.SetAttribute( "target", GetStateLabel( edge.target ) );
+                st.SetAttribute( "target", GetStateLabel( edge.Target ) );
                 st.SetAttribute( "arrowhead", arrowhead );
                 dot.SetAttribute( "edges", st );
-                WalkCreatingDFADOT( dot, (DFAState)edge.target ); // keep walkin'
+                WalkCreatingDFADOT( dot, (DFAState)edge.Target ); // keep walkin'
             }
         }
 
@@ -223,12 +223,12 @@ namespace Antlr3.Tool
         protected virtual void WalkRuleNFACreatingDOT( StringTemplate dot,
                                               State s )
         {
-            if ( markedStates.Contains( s.stateNumber ) )
+            if ( markedStates.Contains( s.StateNumber ) )
             {
                 return; // already visited this node
             }
 
-            markedStates.Add( s.stateNumber ); // mark this node as completed.
+            markedStates.Add( s.StateNumber ); // mark this node as completed.
 
             // first add this node
             StringTemplate stateST;
@@ -262,7 +262,7 @@ namespace Antlr3.Tool
                         rankST.SetAttribute( "states", GetStateLabel( alt ) );
                         if ( alt.transition[1] != null )
                         {
-                            alt = (NFAState)alt.transition[1].target;
+                            alt = (NFAState)alt.transition[1].Target;
                         }
                         else
                         {
@@ -312,10 +312,10 @@ namespace Antlr3.Tool
                 }
                 edgeST.SetAttribute( "label", GetEdgeLabel( edge ) );
                 edgeST.SetAttribute( "src", GetStateLabel( s ) );
-                edgeST.SetAttribute( "target", GetStateLabel( edge.target ) );
+                edgeST.SetAttribute( "target", GetStateLabel( edge.Target ) );
                 edgeST.SetAttribute( "arrowhead", arrowhead );
                 dot.SetAttribute( "edges", edgeST );
-                WalkRuleNFACreatingDOT( dot, edge.target ); // keep walkin'
+                WalkRuleNFACreatingDOT( dot, edge.Target ); // keep walkin'
             }
         }
 
@@ -365,7 +365,7 @@ namespace Antlr3.Tool
          */
         protected virtual string GetEdgeLabel( Transition edge )
         {
-            string label = edge.label.ToString( grammar );
+            string label = edge.Label.ToString( grammar );
             label = label.Replace( "\\", "\\\\" );
             label = label.Replace( "\"", "\\\"" );
             label = label.Replace( "\n", "\\\\n" );
@@ -374,7 +374,7 @@ namespace Antlr3.Tool
             {
                 label = "e";
             }
-            State target = edge.target;
+            State target = edge.Target;
             if ( !edge.IsSemanticPredicate && target is DFAState )
             {
                 // look for gated predicates; don't add gated to simple sempred edges
@@ -399,12 +399,12 @@ namespace Antlr3.Tool
             {
                 return "null";
             }
-            string stateLabel = s.stateNumber.ToString();
+            string stateLabel = s.StateNumber.ToString();
             if ( s is DFAState )
             {
                 StringBuffer buf = new StringBuffer( 250 );
                 buf.Append( 's' );
-                buf.Append( s.stateNumber );
+                buf.Append( s.StateNumber );
                 if ( AntlrTool.internalOption_ShowNFAConfigsInDFA )
                 {
                     if ( s is DFAState )

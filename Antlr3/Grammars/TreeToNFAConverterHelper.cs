@@ -120,7 +120,7 @@ namespace Antlr3.Grammars
             NFAState end = r.stopState;
             while ( end.GetTransition( 1 ) != null )
             {
-                end = (NFAState)end.GetTransition( 1 ).target;
+                end = (NFAState)end.GetTransition( 1 ).Target;
             }
             if ( end.GetTransition( 0 ) != null )
             {

@@ -969,7 +969,7 @@ namespace Antlr3.Codegen
             stateST = templates.GetInstanceOf( "cyclicDFAState" );
             stateST.SetAttribute( "needErrorClause", true );
             stateST.SetAttribute( "semPredState", s.IsResolvedWithPredicates );
-            stateST.SetAttribute( "stateNumber", s.stateNumber );
+            stateST.SetAttribute( "stateNumber", s.StateNumber );
             stateST.SetAttribute( "decisionNumber", s.dfa.decisionNumber );
 
             bool foundGatedPred = false;
@@ -978,7 +978,7 @@ namespace Antlr3.Codegen
             {
                 Transition edge = (Transition)s.Transition( i );
                 StringTemplate edgeST;
-                if ( edge.label.Atom == Label.EOT )
+                if ( edge.Label.Atom == Label.EOT )
                 {
                     // this is the default clause; has to held until last
                     edgeST = templates.GetInstanceOf( "eotDFAEdge" );
@@ -994,11 +994,11 @@ namespace Antlr3.Codegen
                 }
                 edgeST.SetAttribute( "edgeNumber", i + 1 );
                 edgeST.SetAttribute( "targetStateNumber",
-                                     edge.target.stateNumber );
+                                     edge.Target.StateNumber );
                 // stick in any gated predicates for any edge if not already a pred
-                if ( !edge.label.IsSemanticPredicate )
+                if ( !edge.Label.IsSemanticPredicate )
                 {
-                    DFAState t = (DFAState)edge.target;
+                    DFAState t = (DFAState)edge.Target;
                     SemanticContext preds = t.GetGatedPredicatesInNFAConfigurations();
                     if ( preds != null )
                     {
@@ -1009,7 +1009,7 @@ namespace Antlr3.Codegen
                         edgeST.SetAttribute( "predicates", predST.ToString() );
                     }
                 }
-                if ( edge.label.Atom != Label.EOT )
+                if ( edge.Label.Atom != Label.EOT )
                 {
                     stateST.SetAttribute( "edges", edgeST );
                 }
@@ -1032,7 +1032,7 @@ namespace Antlr3.Codegen
                                               Transition edge,
                                               int k )
         {
-            Label label = edge.label;
+            Label label = edge.Label;
             if ( label.IsSemanticPredicate )
             {
                 return GenSemanticPredicateExpr( templates, edge );
@@ -1052,8 +1052,8 @@ namespace Antlr3.Codegen
         protected internal virtual StringTemplate GenSemanticPredicateExpr( StringTemplateGroup templates,
                                                           Transition edge )
         {
-            DFA dfa = ( (DFAState)edge.target ).dfa; // which DFA are we in
-            Label label = edge.label;
+            DFA dfa = ( (DFAState)edge.Target ).dfa; // which DFA are we in
+            Label label = edge.Label;
             SemanticContext semCtx = label.SemanticContext;
             return semCtx.GenExpr( this, templates, dfa );
         }
@@ -1622,14 +1622,14 @@ namespace Antlr3.Codegen
             for ( int i = 0; i < s.NumberOfTransitions; i++ )
             {
                 Transition edge = (Transition)s.Transition( i );
-                if ( edge.label.IsSemanticPredicate )
+                if ( edge.Label.IsSemanticPredicate )
                 {
                     return false;
                 }
                 // can't do a switch if the edges are going to require predicates
-                if ( edge.label.Atom == Label.EOT )
+                if ( edge.Label.Atom == Label.EOT )
                 {
-                    int EOTPredicts = ( (DFAState)edge.target ).GetUniquelyPredictedAlt();
+                    int EOTPredicts = ( (DFAState)edge.Target ).GetUniquelyPredictedAlt();
                     if ( EOTPredicts == NFA.INVALID_ALT_NUMBER )
                     {
                         // EOT target has to be a predicate then; no unique alt
@@ -1638,11 +1638,11 @@ namespace Antlr3.Codegen
                 }
                 // if target is a state with gated preds, we need to use preds on
                 // this edge then to reach it.
-                if ( ( (DFAState)edge.target ).GetGatedPredicatesInNFAConfigurations() != null )
+                if ( ( (DFAState)edge.Target ).GetGatedPredicatesInNFAConfigurations() != null )
                 {
                     return false;
                 }
-                size += edge.label.Set.Count;
+                size += edge.Label.Set.Count;
             }
             if ( s.NumberOfTransitions < MinSwitchAlts ||
                  size > MaxSwitchCaseLabels )

@@ -98,7 +98,7 @@ namespace Antlr3.Analysis
                 DFAState d = (DFAState)_work.Peek();
                 if ( _dfa.nfa.grammar.composite.watchNFAConversion )
                 {
-                    Console.Out.WriteLine( "convert DFA state " + d.stateNumber +
+                    Console.Out.WriteLine( "convert DFA state " + d.StateNumber +
                                        " (" + d.nfaConfigurations.Size() + " nfa states)" );
                 }
                 int k = _dfa.UserMaxLookahead;
@@ -175,7 +175,7 @@ namespace Antlr3.Analysis
                     int numAltsIncludingExitBranch = _dfa.nfa.grammar
                         .GetNumberOfAltsForDecisionNFA( _dfa.NFADecisionStartState );
                     altNum = numAltsIncludingExitBranch;
-                    Closure( (NFAState)alt.transition[0].target,
+                    Closure( (NFAState)alt.transition[0].Target,
                             altNum,
                             initialContext,
                             SemanticContext.EmptySemanticContext,
@@ -186,7 +186,7 @@ namespace Antlr3.Analysis
                 }
                 else
                 {
-                    Closure( (NFAState)alt.transition[0].target,
+                    Closure( (NFAState)alt.transition[0].Target,
                             altNum,
                             initialContext,
                             SemanticContext.EmptySemanticContext,
@@ -202,7 +202,7 @@ namespace Antlr3.Analysis
                 {
                     break;
                 }
-                alt = (NFAState)alt.transition[1].target;
+                alt = (NFAState)alt.transition[1].Target;
             }
 
             // now DFA start state has the complete closure for the decision
@@ -445,7 +445,7 @@ namespace Antlr3.Analysis
             if ( DFAOptimizer.COLLAPSE_ALL_PARALLEL_EDGES )
             {
                 // track which targets we've hit
-                int tI = targetState.stateNumber;
+                int tI = targetState.StateNumber;
                 Transition oldTransition = (Transition)targetToLabelMap.get( tI );
                 if ( oldTransition != null )
                 {
@@ -455,15 +455,15 @@ namespace Antlr3.Analysis
                     if ( label.Atom == Label.EOT )
                     {
                         // merge with EOT means old edge can go away
-                        oldTransition.label = new Label( Label.EOT );
+                        oldTransition.Label = new Label( Label.EOT );
                     }
                     else
                     {
                         // don't add anything to EOT, it's essentially the wildcard
-                        if ( oldTransition.label.Atom != Label.EOT )
+                        if ( oldTransition.Label.Atom != Label.EOT )
                         {
                             // ok, not EOT, add in this label to old label
-                            oldTransition.label.Add( label );
+                            oldTransition.Label.Add( label );
                         }
                         //JSystem.@out.println("label updated to be "+oldTransition.label.toString(dfa.nfa.grammar));
                     }
@@ -638,8 +638,8 @@ namespace Antlr3.Analysis
         {
             if ( debug )
             {
-                Console.Out.WriteLine( "closure at " + p.enclosingRule.Name + " state " + p.stateNumber + "|" +
-                                   alt + " filling DFA state " + d.stateNumber + " with context " + context
+                Console.Out.WriteLine( "closure at " + p.enclosingRule.Name + " state " + p.StateNumber + "|" +
+                                   alt + " filling DFA state " + d.StateNumber + " with context " + context
                                    );
             }
 
@@ -652,7 +652,7 @@ namespace Antlr3.Analysis
             //}
 
             NFAConfiguration proposedNFAConfiguration =
-                    new NFAConfiguration( p.stateNumber,
+                    new NFAConfiguration( p.StateNumber,
                             alt,
                             context,
                             semanticContext );
@@ -664,7 +664,7 @@ namespace Antlr3.Analysis
                 {
                     Console.Out.WriteLine( "avoid visiting exact closure computation NFA config: " +
                                        proposedNFAConfiguration + " in " + p.enclosingRule.Name );
-                    Console.Out.WriteLine( "state is " + d.dfa.decisionNumber + "." + d.stateNumber );
+                    Console.Out.WriteLine( "state is " + d.dfa.decisionNumber + "." + d.StateNumber );
                 }
                 return;
             }
@@ -679,7 +679,7 @@ namespace Antlr3.Analysis
             Transition transition0 = p.transition[0];
             if ( transition0 is RuleClosureTransition )
             {
-                int depth = context.RecursionDepthEmanatingFromState( p.stateNumber );
+                int depth = context.RecursionDepthEmanatingFromState( p.StateNumber );
                 // Detect recursion by more than a single alt, which indicates
                 // that the decision's lookahead language is potentially non-regular; terminate
                 if ( depth == 1 && d.dfa.UserMaxLookahead == 0 )
@@ -710,7 +710,7 @@ namespace Antlr3.Analysis
                     d.dfa.probe.ReportRecursionOverflow( d, proposedNFAConfiguration );
                     if ( debug )
                     {
-                        Console.Out.WriteLine( "analysis overflow in closure(" + d.stateNumber + ")" );
+                        Console.Out.WriteLine( "analysis overflow in closure(" + d.StateNumber + ")" );
                     }
                     return;
                 }
@@ -727,7 +727,7 @@ namespace Antlr3.Analysis
                 //JSystem.@out.println("invoking rule "+ref.rule.name);
                 // JSystem.@out.println(" context="+context);
                 // traverse epsilon edge to new rule
-                NFAState ruleTarget = (NFAState)@ref.target;
+                NFAState ruleTarget = (NFAState)@ref.Target;
                 Closure( ruleTarget, alt, newContext, semanticContext, d, collectPredicates );
             }
             // Case 2: end of rule state, context (i.e., an invoker) exists
@@ -758,7 +758,7 @@ namespace Antlr3.Analysis
                         }
                          */
                     }
-                    Closure( (NFAState)transition0.target,
+                    Closure( (NFAState)transition0.Target,
                             alt,
                             context,
                             semanticContext,
@@ -789,7 +789,7 @@ namespace Antlr3.Analysis
                     {
                         // AND the previous semantic context with new pred
                         SemanticContext labelContext =
-                            transition0.label.SemanticContext;
+                            transition0.Label.SemanticContext;
                         // do not hoist syn preds from other rules; only get if in
                         // starting state's rule (i.e., context is empty)
                         int walkAlt =
@@ -804,14 +804,14 @@ namespace Antlr3.Analysis
                             altLeftEdge.transition(0).target.stateNumber);
                         */
                         if ( !labelContext.IsSyntacticPredicate ||
-                             p == altLeftEdge.transition[0].target )
+                             p == altLeftEdge.transition[0].Target )
                         {
                             //JSystem.@out.println("&"+labelContext+" enclosingRule="+p.enclosingRule);
                             newSemanticContext =
                                 SemanticContext.And( semanticContext, labelContext );
                         }
                     }
-                    Closure( (NFAState)transition0.target,
+                    Closure( (NFAState)transition0.Target,
                             alt,
                             context,
                             newSemanticContext,
@@ -821,7 +821,7 @@ namespace Antlr3.Analysis
                 Transition transition1 = p.transition[1];
                 if ( transition1 != null && transition1.IsEpsilon )
                 {
-                    Closure( (NFAState)transition1.target,
+                    Closure( (NFAState)transition1.Target,
                             alt,
                             context,
                             semanticContext,
@@ -931,7 +931,7 @@ namespace Antlr3.Analysis
                 {
                     continue;
                 }
-                Label edgeLabel = edge.label;
+                Label edgeLabel = edge.Label;
 
                 // SPECIAL CASE
                 // if it's an EOT transition on end of lexer rule, but context
@@ -953,7 +953,7 @@ namespace Antlr3.Analysis
                     // found a transition with label;
                     // add NFA target to (potentially) new DFA state
                     NFAConfiguration newC = labelDFATarget.AddNFAConfiguration(
-                        (NFAState)edge.target,
+                        (NFAState)edge.Target,
                         c.alt,
                         c.context,
                         c.semanticContext );
@@ -962,7 +962,7 @@ namespace Antlr3.Analysis
             if ( labelDFATarget.nfaConfigurations.Size() == 0 )
             {
                 // kill; it's empty
-                _dfa.SetState( labelDFATarget.stateNumber, null );
+                _dfa.SetState( labelDFATarget.StateNumber, null );
                 labelDFATarget = null;
             }
             return labelDFATarget;
@@ -992,7 +992,7 @@ namespace Antlr3.Analysis
                 }
                 NFAState p = _dfa.nfa.GetState( c.state );
                 Transition edge = p.transition[0];
-                Label edgeLabel = edge.label;
+                Label edgeLabel = edge.Label;
                 if ( edgeLabel.Equals( eot ) )
                 {
                     //JSystem.@out.println("config with EOT: "+c);
@@ -1028,7 +1028,7 @@ namespace Antlr3.Analysis
                 // into the reachable state space and the error
                 // reporting must be able to compute the path from
                 // start to the error state with infinite recursion
-                _dfa.SetState( d.stateNumber, existingState );
+                _dfa.SetState( d.StateNumber, existingState );
                 return existingState;
             }
 
@@ -1088,7 +1088,7 @@ namespace Antlr3.Analysis
                           gatedPreds.Equals( existingStateGatedPreds ) ) )
                     {
                         // make this d.statenumber point at old DFA state
-                        _dfa.SetState( d.stateNumber, acceptStateForAlt );
+                        _dfa.SetState( d.StateNumber, acceptStateForAlt );
                         _dfa.RemoveState( d );    // remove this state from unique DFA state set
                         d = acceptStateForAlt; // use old accept state; throw this one out
                         return d;
@@ -1307,7 +1307,7 @@ namespace Antlr3.Analysis
             {
                 if ( debug )
                 {
-                    Console.Out.WriteLine( "resolved DFA state " + d.stateNumber + " with pred" );
+                    Console.Out.WriteLine( "resolved DFA state " + d.StateNumber + " with pred" );
                 }
                 d.IsResolvedWithPredicates = true;
                 _dfa.probe.ReportNondeterminismResolvedWithSemanticPredicate( d );
@@ -1835,7 +1835,7 @@ namespace Antlr3.Analysis
                         // already there...use/return the existing DFA state that
                         // is a target of this predicate.  Make this state number
                         // point at the existing state
-                        _dfa.SetState( predDFATarget.stateNumber, existingState );
+                        _dfa.SetState( predDFATarget.StateNumber, existingState );
                         predDFATarget = existingState;
                     }
                 }

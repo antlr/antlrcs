@@ -131,7 +131,7 @@ namespace Antlr3.Tool
                     // must visit if not already visited; send new visitedStates set
                     visitedDuringRecursionCheck.Add( refRuleDef );
                     bool callReachedAcceptState =
-                        TraceStatesLookingForLeftRecursion( (NFAState)t0.target,
+                        TraceStatesLookingForLeftRecursion( (NFAState)t0.Target,
                                                            new HashSet<object>(),
                                                            listOfRecursiveCycles );
                     // we're back from visiting that rule
@@ -148,10 +148,10 @@ namespace Antlr3.Tool
                     }
                 }
             }
-            else if ( t0.label.IsEpsilon || t0.label.IsSemanticPredicate )
+            else if ( t0.Label.IsEpsilon || t0.Label.IsSemanticPredicate )
             {
                 stateReachesAcceptState |=
-                    TraceStatesLookingForLeftRecursion( (NFAState)t0.target, visitedStates, listOfRecursiveCycles );
+                    TraceStatesLookingForLeftRecursion( (NFAState)t0.Target, visitedStates, listOfRecursiveCycles );
             }
             // else it has a labeled edge
 
@@ -160,7 +160,7 @@ namespace Antlr3.Tool
             if ( t1 != null )
             {
                 stateReachesAcceptState |=
-                    TraceStatesLookingForLeftRecursion( (NFAState)t1.target,
+                    TraceStatesLookingForLeftRecursion( (NFAState)t1.Target,
                                                        visitedStates,
                                                        listOfRecursiveCycles );
             }

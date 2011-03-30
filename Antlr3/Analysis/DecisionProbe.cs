@@ -356,7 +356,7 @@ namespace Antlr3.Analysis
          */
         public virtual void RemoveRecursiveOverflowState( DFAState d )
         {
-            _stateToRecursionOverflowConfigurationsMap.Remove( d.stateNumber );
+            _stateToRecursionOverflowConfigurationsMap.Remove( d.StateNumber );
         }
 
         /** Return a IList<Label> indicating an input sequence that can be matched
@@ -446,7 +446,7 @@ namespace Antlr3.Analysis
 
             // add first state of actual alt
             NFAState altStart = dfa.nfa.grammar.GetNFAStateForAltOfDecision( nfaStart, alt );
-            NFAState isolatedAltStart = (NFAState)altStart.transition[0].target;
+            NFAState isolatedAltStart = (NFAState)altStart.transition[0].Target;
             path.Add( isolatedAltStart );
 
             // add the actual path now
@@ -671,7 +671,7 @@ namespace Antlr3.Analysis
                     NFAState ruleInvocationState = dfa.nfa.GetState( c.state );
                     Transition transition0 = ruleInvocationState.transition[0];
                     RuleClosureTransition @ref = (RuleClosureTransition)transition0;
-                    String targetRule = ( (NFAState)@ref.target ).enclosingRule.Name;
+                    String targetRule = ( (NFAState)@ref.Target ).enclosingRule.Name;
                     int altI = c.alt;
                     IDictionary<string, ICollection<NFAState>> targetToCallSiteMap =
                         altToTargetToCallSitesMap.get( altI );
@@ -703,7 +703,7 @@ namespace Antlr3.Analysis
             foreach ( int stateI in dfaStatesWithRecursionProblems )
             {
                 DFAState d = dfa.GetState( stateI );
-                dfaStatesUnaliased.Add( d.stateNumber );
+                dfaStatesUnaliased.Add( d.StateNumber );
             }
             return dfaStatesUnaliased;
         }
@@ -744,9 +744,9 @@ namespace Antlr3.Analysis
             // call resolveNondeterminism() on the start state (it would
             // not look k=1 to get min single token lookahead), we must
             // prevent errors derived from this state.  Avoid start state
-            if ( d.stateNumber > 0 )
+            if ( d.StateNumber > 0 )
             {
-                int stateI = d.stateNumber;
+                int stateI = d.StateNumber;
                 _stateToRecursionOverflowConfigurationsMap.Map( stateI, recursionNFAConfiguration );
             }
         }
@@ -816,13 +816,13 @@ namespace Antlr3.Analysis
             {
                 states.Add( targetState );
                 //JSystem.@out.println("found target DFA state "+targetState.getStateNumber());
-                _stateReachable[startState.stateNumber] = REACHABLE_YES;
+                _stateReachable[startState.StateNumber] = REACHABLE_YES;
                 return true;
             }
 
             DFAState s = startState;
             // avoid infinite loops
-            _stateReachable[s.stateNumber] = REACHABLE_BUSY;
+            _stateReachable[s.StateNumber] = REACHABLE_BUSY;
 
             // look for a path to targetState among transitions for this state
             // stop when you find the first one; I'm pretty sure there is
@@ -830,10 +830,10 @@ namespace Antlr3.Analysis
             for ( int i = 0; i < s.NumberOfTransitions; i++ )
             {
                 Transition t = s.Transition( i );
-                DFAState edgeTarget = (DFAState)t.target;
+                DFAState edgeTarget = (DFAState)t.Target;
 
                 int targetStatus; //= stateReachable.get( edgeTarget.stateNumber );
-                if ( _stateReachable.TryGetValue( edgeTarget.stateNumber, out targetStatus ) )
+                if ( _stateReachable.TryGetValue( edgeTarget.StateNumber, out targetStatus ) )
                 {
                     if ( targetStatus == REACHABLE_BUSY )
                     { // avoid cycles; they say nothing
@@ -841,7 +841,7 @@ namespace Antlr3.Analysis
                     }
                     if ( targetStatus == REACHABLE_YES )
                     { // return success!
-                        _stateReachable[s.stateNumber] = REACHABLE_YES;
+                        _stateReachable[s.StateNumber] = REACHABLE_YES;
                         return true;
                     }
                     if ( targetStatus == REACHABLE_NO )
@@ -854,12 +854,12 @@ namespace Antlr3.Analysis
                 if ( ReachesState( edgeTarget, targetState, states ) )
                 {
                     states.Add( s );
-                    _stateReachable[s.stateNumber] = REACHABLE_YES;
+                    _stateReachable[s.StateNumber] = REACHABLE_YES;
                     return true;
                 }
             }
 
-            _stateReachable[s.stateNumber] = REACHABLE_NO;
+            _stateReachable[s.StateNumber] = REACHABLE_NO;
             return false; // no path to targetState found.
         }
 
@@ -889,17 +889,17 @@ namespace Antlr3.Analysis
                                                            HashSet<object> states,
                                                            IList<Label> labels )
         {
-            _statesVisitedDuringSampleSequence.Add( startState.stateNumber );
+            _statesVisitedDuringSampleSequence.Add( startState.StateNumber );
 
             // pick the first edge in states as the one to traverse
             for ( int i = 0; i < startState.NumberOfTransitions; i++ )
             {
                 Transition t = startState.GetTransition( i );
-                DFAState edgeTarget = (DFAState)t.target;
+                DFAState edgeTarget = (DFAState)t.Target;
                 if ( states.Contains( edgeTarget ) &&
-                     !_statesVisitedDuringSampleSequence.Contains( edgeTarget.stateNumber ) )
+                     !_statesVisitedDuringSampleSequence.Contains( edgeTarget.StateNumber ) )
                 {
-                    labels.Add( t.label ); // traverse edge and track label
+                    labels.Add( t.Label ); // traverse edge and track label
                     if ( edgeTarget != targetState )
                     {
                         // get more labels if not at target
@@ -931,7 +931,7 @@ namespace Antlr3.Analysis
                                      IList<NFAState> path )      // output list of NFA states
         {
             // track a visit to state s at input index labelIndex if not seen
-            String thisStateKey = GetStateLabelIndexKey( s.stateNumber, labelIndex );
+            String thisStateKey = GetStateLabelIndexKey( s.StateNumber, labelIndex );
             if ( _statesVisitedAtInputDepth.Contains( thisStateKey ) )
             {
                 /*
@@ -952,7 +952,7 @@ namespace Antlr3.Analysis
             for ( int i = 0; i < s.NumberOfTransitions; i++ )
             {
                 Transition t = s.transition[i];
-                NFAState edgeTarget = (NFAState)t.target;
+                NFAState edgeTarget = (NFAState)t.Target;
                 Label label = (Label)labels[labelIndex];
                 /*
                 JSystem.@out.println(s.stateNumber+"-"+
@@ -960,7 +960,7 @@ namespace Antlr3.Analysis
                                    edgeTarget.stateNumber+" =="+
                                    label.toString(dfa.nfa.grammar)+"?");
                 */
-                if ( t.label.IsEpsilon || t.label.IsSemanticPredicate )
+                if ( t.Label.IsEpsilon || t.Label.IsSemanticPredicate )
                 {
                     // nondeterministically backtrack down epsilon edges
                     path.Add( edgeTarget );
@@ -974,7 +974,7 @@ namespace Antlr3.Analysis
                     path.RemoveAt( path.Count - 1 ); // remove; didn't work out
                     continue; // look at the next edge
                 }
-                if ( t.label.Matches( label ) )
+                if ( t.Label.Matches( label ) )
                 {
                     path.Add( edgeTarget );
                     /*
@@ -1027,10 +1027,10 @@ namespace Antlr3.Analysis
             NFAState decisionState = dfa.NFADecisionStartState;
             NFAState altState =
                 dfa.nfa.grammar.GetNFAStateForAltOfDecision( decisionState, alt );
-            NFAState decisionLeft = (NFAState)altState.transition[0].target;
+            NFAState decisionLeft = (NFAState)altState.transition[0].Target;
             RuleClosureTransition ruleCallEdge =
                 (RuleClosureTransition)decisionLeft.transition[0];
-            NFAState ruleStartState = (NFAState)ruleCallEdge.target;
+            NFAState ruleStartState = (NFAState)ruleCallEdge.Target;
             //JSystem.@out.println("alt = "+decisionLeft.getEnclosingRule());
             return ruleStartState.enclosingRule.Name;
         }

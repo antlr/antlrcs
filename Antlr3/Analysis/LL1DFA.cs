@@ -173,11 +173,11 @@ namespace Antlr3.Analysis
                 decisionStartState.TranslateDisplayAltToWalkAlt( alt );
             NFAState altLeftEdge =
                 nfa.grammar.GetNFAStateForAltOfDecision( decisionStartState, walkAlt );
-            NFAState altStartState = (NFAState)altLeftEdge.transition[0].target;
+            NFAState altStartState = (NFAState)altLeftEdge.transition[0].Target;
             //JSystem.@out.println("alt "+alt+" start state = "+altStartState.stateNumber);
             if ( altStartState.transition[0].IsSemanticPredicate )
             {
-                SemanticContext ctx = altStartState.transition[0].label.SemanticContext;
+                SemanticContext ctx = altStartState.transition[0].Label.SemanticContext;
                 if ( ctx.IsSyntacticPredicate )
                 {
                     SemanticContext.Predicate p = (SemanticContext.Predicate)ctx;
@@ -191,7 +191,7 @@ namespace Antlr3.Analysis
                         {
                             nfa.grammar.SynPredUsedInDFA( this, ctx );
                         }
-                        return (SemanticContext.Predicate)altStartState.transition[0].label.SemanticContext;
+                        return (SemanticContext.Predicate)altStartState.transition[0].Label.SemanticContext;
                     }
                 }
             }

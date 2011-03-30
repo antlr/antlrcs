@@ -129,7 +129,7 @@ namespace Antlr3.Analysis
 
         /** A set of token types or character codes if label==SET */
         // TODO: try IntervalSet for everything
-        IIntSet _labelSet;
+        private IIntSet _labelSet;
 
         public Label( int label )
         {
@@ -156,7 +156,6 @@ namespace Antlr3.Analysis
             this._labelSet = labelSet;
         }
 
-        #region Properties
         /** return the single atom label or INVALID if not a single atom */
         public virtual int Atom
         {
@@ -169,6 +168,7 @@ namespace Antlr3.Analysis
                 return INVALID;
             }
         }
+
         public virtual bool IsAction
         {
             get
@@ -176,6 +176,7 @@ namespace Antlr3.Analysis
                 return false;
             }
         }
+
         public virtual bool IsAtom
         {
             get
@@ -183,6 +184,7 @@ namespace Antlr3.Analysis
                 return label >= MIN_ATOM_VALUE;
             }
         }
+
         public virtual bool IsEpsilon
         {
             get
@@ -190,6 +192,7 @@ namespace Antlr3.Analysis
                 return label == EPSILON;
             }
         }
+
         public virtual bool IsSemanticPredicate
         {
             get
@@ -197,6 +200,7 @@ namespace Antlr3.Analysis
                 return false;
             }
         }
+
         public virtual bool IsSet
         {
             get
@@ -204,6 +208,7 @@ namespace Antlr3.Analysis
                 return label == SET;
             }
         }
+
         public virtual SemanticContext SemanticContext
         {
             get
@@ -211,6 +216,7 @@ namespace Antlr3.Analysis
                 return null;
             }
         }
+
         [CLSCompliant(false)]
         public virtual IIntSet Set
         {
@@ -229,7 +235,6 @@ namespace Antlr3.Analysis
                 _labelSet = value;
             }
         }
-        #endregion
 
         public virtual object Clone()
         {

@@ -130,7 +130,7 @@ namespace Antlr3.Analysis
             this.invokingState = invokingState;
             if ( invokingState != null )
             {
-                this._cachedHashCode = invokingState.stateNumber;
+                this._cachedHashCode = invokingState.StateNumber;
             }
             if ( parent != null )
             {
@@ -292,7 +292,7 @@ namespace Antlr3.Analysis
             //JSystem.@out.println("this.context is "+sp);
             while ( sp.parent != null )
             {
-                if ( sp.invokingState.stateNumber == state )
+                if ( sp.invokingState.StateNumber == state )
                 {
                     n++;
                 }
@@ -322,7 +322,7 @@ namespace Antlr3.Analysis
             buf.Append( "[" );
             while ( sp.parent != null )
             {
-                buf.Append( sp.invokingState.stateNumber );
+                buf.Append( sp.invokingState.StateNumber );
                 buf.Append( " " );
                 sp = sp.parent;
             }

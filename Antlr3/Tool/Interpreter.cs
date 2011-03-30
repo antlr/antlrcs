@@ -278,7 +278,7 @@ namespace Antlr3.Tool
                         NoViableAltException nvae =
                             new NoViableAltException( description,
                                                           dfa.DecisionNumber,
-                                                          s.stateNumber,
+                                                          s.StateNumber,
                                                           input );
                         if ( actions != null )
                         {
@@ -304,7 +304,7 @@ namespace Antlr3.Tool
                     {
                         alt = s.nfa.grammar.GetNFAStateForAltOfDecision( s, parseAlt );
                     }
-                    s = (NFAState)alt.transition[0].target;
+                    s = (NFAState)alt.transition[0].Target;
                     continue;
                 }
 
@@ -331,7 +331,7 @@ namespace Antlr3.Tool
                 }
 
                 Transition trans = s.transition[0];
-                Label label = trans.label;
+                Label label = trans.Label;
                 if ( label.IsSemanticPredicate )
                 {
                     FailedPredicateException fpe =
@@ -351,7 +351,7 @@ namespace Antlr3.Tool
                     if ( trans is RuleClosureTransition )
                     {
                         ruleInvocationStack.Push( s );
-                        s = (NFAState)trans.target;
+                        s = (NFAState)trans.Target;
                         //Console.Out.WriteLine( "call " + s.enclosingRule.name + " from " + s.nfa.grammar.getFileName() );
                         if ( actions != null )
                         {
@@ -366,7 +366,7 @@ namespace Antlr3.Tool
                     // CASE 3b: plain old epsilon transition, just move
                     else
                     {
-                        s = (NFAState)trans.target;
+                        s = (NFAState)trans.Target;
                     }
                 }
 
@@ -381,7 +381,7 @@ namespace Antlr3.Tool
                             actions.ConsumeToken( ( (ITokenStream)input ).LT( 1 ) );
                         }
                     }
-                    s = (NFAState)s.transition[0].target;
+                    s = (NFAState)s.transition[0].Target;
                     input.Consume();
                     t = input.LA( 1 );
                 }
@@ -458,22 +458,22 @@ namespace Antlr3.Tool
                 {
                     Transition t = s.Transition( i );
                     // special case: EOT matches any char
-                    if ( t.label.Matches( c ) )
+                    if ( t.Label.Matches( c ) )
                     {
                         // take transition i
-                        s = (DFAState)t.target;
+                        s = (DFAState)t.Target;
                         input.Consume();
                         c = input.LA( 1 );
                         goto dfaLoop;
                     }
-                    if ( t.label.Atom == Label.EOT )
+                    if ( t.Label.Atom == Label.EOT )
                     {
                         eotTransition = t;
                     }
                 }
                 if ( eotTransition != null )
                 {
-                    s = (DFAState)eotTransition.target;
+                    s = (DFAState)eotTransition.Target;
                     goto dfaLoop;
                 }
                 /*

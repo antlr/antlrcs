@@ -192,7 +192,7 @@ namespace Antlr3.Analysis
 
         protected virtual void OptimizeExitBranches( DFAState d )
         {
-            int sI = d.stateNumber;
+            int sI = d.StateNumber;
             if ( _visited.Contains( sI ) )
             {
                 return; // already visited
@@ -202,7 +202,7 @@ namespace Antlr3.Analysis
             for ( int i = 0; i < d.NumberOfTransitions; i++ )
             {
                 Transition edge = (Transition)d.Transition( i );
-                DFAState edgeTarget = ( (DFAState)edge.target );
+                DFAState edgeTarget = ( (DFAState)edge.Target );
                 /*
                 JSystem.@out.println(d.stateNumber+"-"+
                                    edge.label.toString(d.dfa.nfa.grammar)+"->"+
@@ -225,7 +225,7 @@ namespace Antlr3.Analysis
 
         protected virtual void OptimizeEOTBranches( DFAState d )
         {
-            int sI = d.stateNumber;
+            int sI = d.StateNumber;
             if ( _visited.Contains( sI ) )
             {
                 return; // already visited
@@ -234,7 +234,7 @@ namespace Antlr3.Analysis
             for ( int i = 0; i < d.NumberOfTransitions; i++ )
             {
                 Transition edge = (Transition)d.Transition( i );
-                DFAState edgeTarget = ( (DFAState)edge.target );
+                DFAState edgeTarget = ( (DFAState)edge.Target );
                 /*
                 JSystem.@out.println(d.stateNumber+"-"+
                                    edge.label.toString(d.dfa.nfa.grammar)+"->"+
@@ -244,8 +244,8 @@ namespace Antlr3.Analysis
                 if ( PRUNE_TOKENS_RULE_SUPERFLUOUS_EOT_EDGES &&
                     edgeTarget.IsAcceptState &&
                     d.NumberOfTransitions == 1 &&
-                    edge.label.IsAtom &&
-                    edge.label.Atom == Label.EOT )
+                    edge.Label.IsAtom &&
+                    edge.Label.Atom == Label.EOT )
                 {
                     //JSystem.@out.println("state "+d+" can be pruned");
                     // remove the superfluous EOT edge

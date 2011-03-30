@@ -68,7 +68,7 @@ namespace Antlr3.Analysis
                 Transition e = startState.GetTransition(i);
                 if (!visited.Contains((DFAState)e.Target))
                 {
-                    List<DFAState> path = GetAnyDFAPathToTarget((DFAState)e.target, targetState, visited);
+                    List<DFAState> path = GetAnyDFAPathToTarget((DFAState)e.Target, targetState, visited);
                     if (path != null)
                     { // found path, we're done
                         dfaStates.Add(startState);
@@ -93,9 +93,9 @@ namespace Antlr3.Analysis
                 for (int j = 0; j < d.NumberOfTransitions; j++)
                 {
                     Transition e = d.GetTransition(j);
-                    if (e.target.stateNumber == nextState.stateNumber)
+                    if (e.Target.StateNumber == nextState.StateNumber)
                     {
-                        labels.Add(e.label.Set);
+                        labels.Add(e.Label.Set);
                     }
                 }
             }
@@ -137,7 +137,7 @@ namespace Antlr3.Analysis
                     for (int j = 0; j < p.NumberOfTransitions; j++)
                     {
                         Transition t = p.transition[j];
-                        if (!t.IsEpsilon && !t.label.Set.And(label).IsNil && next.Contains((NFAState)t.target))
+                        if (!t.IsEpsilon && !t.Label.Set.And(label).IsNil && next.Contains((NFAState)t.Target))
                         {
                             if (p.associatedASTNode != null)
                             {

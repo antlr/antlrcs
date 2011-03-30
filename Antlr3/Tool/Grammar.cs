@@ -1697,7 +1697,7 @@ namespace Antlr3.Tool
                 int walkAlt =
                     decisionStartState.TranslateDisplayAltToWalkAlt( alt );
                 NFAState altLeftEdge = GetNFAStateForAltOfDecision( decisionStartState, walkAlt );
-                NFAState altStartState = (NFAState)altLeftEdge.transition[0].target;
+                NFAState altStartState = (NFAState)altLeftEdge.transition[0].Target;
                 //JSystem.@out.println("alt "+alt+" start state = "+altStartState.stateNumber);
                 altLook[alt] = ll1Analyzer.Look( altStartState );
                 //JSystem.@out.println("alt "+alt+": "+altLook[alt].toString(this));
@@ -2169,7 +2169,7 @@ namespace Antlr3.Tool
             buf.Append( FileName );
             buf.Append( "\" " );
             buf.Append( ruleAST.Line );
-            buf.Append( "\n" );
+            buf.AppendLine();
             for ( int i = ruleAST.TokenStartIndex;
                  i <= ruleAST.TokenStopIndex && i < tokenBuffer.Count;
                  i++ )
@@ -3665,7 +3665,7 @@ namespace Antlr3.Tool
             while ( p.transition[1] != null )
             {
                 n++;
-                p = (NFAState)p.transition[1].target;
+                p = (NFAState)p.transition[1].Target;
             }
             return n;
         }
@@ -3700,7 +3700,7 @@ namespace Antlr3.Tool
                 p = null;
                 if ( next != null )
                 {
-                    p = (NFAState)next.target;
+                    p = (NFAState)next.Target;
                 }
             }
             return null;

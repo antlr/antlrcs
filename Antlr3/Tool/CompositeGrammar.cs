@@ -373,8 +373,8 @@ namespace Antlr3.Tool
 
         public virtual void AddState( NFAState state )
         {
-            numberToStateList.setSize( state.stateNumber + 1 ); // make sure we have room
-            numberToStateList[state.stateNumber] = state;
+            numberToStateList.setSize( state.StateNumber + 1 ); // make sure we have room
+            numberToStateList[state.StateNumber] = state;
         }
 
         public virtual NFAState GetState( int s )

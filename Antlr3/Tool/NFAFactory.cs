@@ -84,7 +84,7 @@ namespace Antlr3.Tool
         {
             NFAState n = new NFAState( nfa );
             int state = nfa.GetNewNFAStateNumber();
-            n.stateNumber = state;
+            n.StateNumber = state;
             nfa.AddState( n );
             n.enclosingRule = currentRule;
             return n;
@@ -115,13 +115,13 @@ namespace Antlr3.Tool
                     s = ( (RuleClosureTransition)t ).followState;
                     continue;
                 }
-                if ( t.label.IsEpsilon && !t.label.IsAction && s.NumberOfTransitions == 1 )
+                if ( t.Label.IsEpsilon && !t.Label.IsAction && s.NumberOfTransitions == 1 )
                 {
                     // bypass epsilon transition and point to what the epsilon's
                     // target points to unless that epsilon transition points to
                     // a block or loop etc..  Also don't collapse epsilons that
                     // point at the last node of the alt. Don't collapse action edges
-                    NFAState epsilonTarget = (NFAState)t.target;
+                    NFAState epsilonTarget = (NFAState)t.Target;
                     if ( epsilonTarget.endOfBlockStateNumber == State.INVALID_STATE_NUMBER &&
                          epsilonTarget.transition[0] != null )
                     {
@@ -129,7 +129,7 @@ namespace Antlr3.Tool
                         //System.Console.Out.WriteLine( "### opt " + s.stateNumber + "->" + epsilonTarget.transition[0].target.stateNumber );
                     }
                 }
-                s = (NFAState)t.target;
+                s = (NFAState)t.Target;
             }
         }
 
@@ -483,7 +483,7 @@ namespace Antlr3.Tool
             firstAlt.decisionStateType = NFAState.BLOCK_START;
 
             // set EOB markers for Jean
-            firstAlt.endOfBlockStateNumber = blockEndNFAState.stateNumber;
+            firstAlt.endOfBlockStateNumber = blockEndNFAState.StateNumber;
 
             return result;
         }
@@ -517,7 +517,7 @@ namespace Antlr3.Tool
                 TransitionBetweenStates( emptyAlt, blockEndNFAState, Label.EPSILON );
 
                 // set EOB markers for Jean
-                decisionState.endOfBlockStateNumber = blockEndNFAState.stateNumber;
+                decisionState.endOfBlockStateNumber = blockEndNFAState.StateNumber;
                 blockEndNFAState.decisionStateType = NFAState.RIGHT_EDGE_OF_BLOCK;
 
                 g = new StateCluster( decisionState, blockEndNFAState );
@@ -533,7 +533,7 @@ namespace Antlr3.Tool
                 TransitionBetweenStates( emptyAlt, A.right, Label.EPSILON );
 
                 // set EOB markers for Jean (I think this is redundant here)
-                A.left.endOfBlockStateNumber = A.right.stateNumber;
+                A.left.endOfBlockStateNumber = A.right.StateNumber;
                 A.right.decisionStateType = NFAState.RIGHT_EDGE_OF_BLOCK;
 
                 g = A; // return same block, but now with optional last path
@@ -581,7 +581,7 @@ namespace Antlr3.Tool
             A.left.decisionStateType = NFAState.BLOCK_START;
 
             // set EOB markers for Jean
-            A.left.endOfBlockStateNumber = A.right.stateNumber;
+            A.left.endOfBlockStateNumber = A.right.StateNumber;
 
             StateCluster g = new StateCluster( left, blockEndNFAState );
             return g;
@@ -653,8 +653,8 @@ namespace Antlr3.Tool
             A.right.decisionStateType = NFAState.LOOPBACK;
 
             // set EOB markers for Jean
-            A.left.endOfBlockStateNumber = A.right.stateNumber;
-            bypassDecisionState.endOfBlockStateNumber = blockEndNFAState.stateNumber;
+            A.left.endOfBlockStateNumber = A.right.StateNumber;
+            bypassDecisionState.endOfBlockStateNumber = blockEndNFAState.StateNumber;
 
             StateCluster g = new StateCluster( bypassDecisionState, blockEndNFAState );
             return g;
@@ -780,10 +780,10 @@ namespace Antlr3.Tool
             State s0 = blk;
             if ( s0 != null && s0.GetTransition( 0 ) != null )
             {
-                State s1 = s0.GetTransition( 0 ).target;
+                State s1 = s0.GetTransition( 0 ).Target;
                 if ( s1 != null && s1.GetTransition( 0 ) != null )
                 {
-                    Label label = s1.GetTransition( 0 ).label;
+                    Label label = s1.GetTransition( 0 ).Label;
                     if ( label.IsSet )
                     {
                         return label.Set;

@@ -335,7 +335,7 @@ namespace Antlr3.Analysis
             // We're adding an NFA state; check to see if it has a non-epsilon edge
             if ( state.transition[0] != null )
             {
-                Label label = state.transition[0].label;
+                Label label = state.transition[0].Label;
                 if ( !( label.IsEpsilon || label.IsSemanticPredicate ) )
                 {
                     // this NFA state has a non-epsilon edge, track for fast
@@ -357,7 +357,7 @@ namespace Antlr3.Analysis
                                                     NFAContext context,
                                                     SemanticContext semanticContext )
         {
-            NFAConfiguration c = new NFAConfiguration( state.stateNumber,
+            NFAConfiguration c = new NFAConfiguration( state.StateNumber,
                                                       alt,
                                                       context,
                                                       semanticContext );
@@ -901,7 +901,7 @@ namespace Antlr3.Analysis
         public override String ToString()
         {
             StringBuilder buf = new StringBuilder();
-            buf.Append( stateNumber + ":{" );
+            buf.Append( StateNumber + ":{" );
             for ( int i = 0; i < nfaConfigurations.Size(); i++ )
             {
                 NFAConfiguration configuration = (NFAConfiguration)nfaConfigurations.Get( i );

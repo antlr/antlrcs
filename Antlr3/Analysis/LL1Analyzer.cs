@@ -244,14 +244,14 @@ namespace Antlr3.Analysis
                 return null;
             }
 
-            if ( transition0.label.IsAtom )
+            if ( transition0.Label.IsAtom )
             {
-                int atom = transition0.label.Atom;
+                int atom = transition0.Label.Atom;
                 return new LookaheadSet( atom );
             }
-            if ( transition0.label.IsSet )
+            if ( transition0.Label.IsSet )
             {
-                IIntSet sl = transition0.label.Set;
+                IIntSet sl = transition0.Label.Set;
                 return new LookaheadSet( sl );
             }
 
@@ -260,17 +260,17 @@ namespace Antlr3.Analysis
             // if transition 0 is a rule call and we don't want FOLLOW, check cache
             if ( !chaseFollowTransitions && transition0 is RuleClosureTransition )
             {
-                tset = _firstCache.get( (NFAState)transition0.target );
+                tset = _firstCache.get( (NFAState)transition0.Target );
             }
 
             // if not in cache, must compute
             if ( tset == null )
             {
-                tset = FirstCore( (NFAState)transition0.target, chaseFollowTransitions );
+                tset = FirstCore( (NFAState)transition0.Target, chaseFollowTransitions );
                 // save FIRST cache for transition 0 if rule call
                 if ( !chaseFollowTransitions && transition0 is RuleClosureTransition )
                 {
-                    _firstCache[(NFAState)transition0.target] = tset;
+                    _firstCache[(NFAState)transition0.Target] = tset;
                 }
             }
 
@@ -302,7 +302,7 @@ namespace Antlr3.Analysis
             if ( transition1 != null )
             {
                 LookaheadSet tset1 =
-                    FirstCore( (NFAState)transition1.target, chaseFollowTransitions );
+                    FirstCore( (NFAState)transition1.Target, chaseFollowTransitions );
                 tset1.OrInPlace( tset ); // tset cached; or into new set
                 tset = tset1;
             }
@@ -353,16 +353,16 @@ namespace Antlr3.Analysis
                 return DETECT_PRED_NOT_FOUND;
             }
 
-            if ( !( transition0.label.IsSemanticPredicate ||
-                   transition0.label.IsEpsilon ) )
+            if ( !( transition0.Label.IsSemanticPredicate ||
+                   transition0.Label.IsEpsilon ) )
             {
                 return DETECT_PRED_NOT_FOUND;
             }
 
-            if ( transition0.label.IsSemanticPredicate )
+            if ( transition0.Label.IsSemanticPredicate )
             {
                 //JSystem.@out.println("pred "+transition0.label);
-                SemanticContext ctx = transition0.label.SemanticContext;
+                SemanticContext ctx = transition0.Label.SemanticContext;
                 SemanticContext.Predicate p = (SemanticContext.Predicate)ctx;
                 if ( p.predicateAST.Type != ANTLRParser.BACKTRACK_SEMPRED )
                 {
@@ -385,7 +385,7 @@ namespace Antlr3.Analysis
             }
             */
 
-            int result = DetectConfoundingPredicatesCore( (NFAState)transition0.target,
+            int result = DetectConfoundingPredicatesCore( (NFAState)transition0.Target,
                                                       enclosingRule,
                                                       chaseFollowTransitions );
             if ( result == DETECT_PRED_FOUND )
@@ -420,7 +420,7 @@ namespace Antlr3.Analysis
             if ( transition1 != null )
             {
                 int t1Result =
-                    DetectConfoundingPredicatesCore( (NFAState)transition1.target,
+                    DetectConfoundingPredicatesCore( (NFAState)transition1.Target,
                                                  enclosingRule,
                                                  chaseFollowTransitions );
                 if ( t1Result == DETECT_PRED_FOUND )
@@ -465,8 +465,8 @@ namespace Antlr3.Analysis
             }
 
             // not a predicate and not even an epsilon
-            if ( !( transition0.label.IsSemanticPredicate ||
-                   transition0.label.IsEpsilon ) )
+            if ( !( transition0.Label.IsSemanticPredicate ||
+                   transition0.Label.IsEpsilon ) )
             {
                 return null;
             }
@@ -474,27 +474,27 @@ namespace Antlr3.Analysis
             SemanticContext p = null;
             SemanticContext p0 = null;
             SemanticContext p1 = null;
-            if ( transition0.label.IsSemanticPredicate )
+            if ( transition0.Label.IsSemanticPredicate )
             {
                 //JSystem.@out.println("pred "+transition0.label);
-                p = transition0.label.SemanticContext;
+                p = transition0.Label.SemanticContext;
                 // ignore backtracking preds not on left edge for this decision
                 if ( ( (SemanticContext.Predicate)p ).predicateAST.Type ==
                       ANTLRParser.BACKTRACK_SEMPRED &&
-                     s == altStartState.transition[0].target )
+                     s == altStartState.transition[0].Target )
                 {
                     p = null; // don't count
                 }
             }
 
             // get preds from beyond this state
-            p0 = GetPredicatesCore( (NFAState)transition0.target, altStartState );
+            p0 = GetPredicatesCore( (NFAState)transition0.Target, altStartState );
 
             // get preds from other transition
             Transition transition1 = s.transition[1];
             if ( transition1 != null )
             {
-                p1 = GetPredicatesCore( (NFAState)transition1.target, altStartState );
+                p1 = GetPredicatesCore( (NFAState)transition1.Target, altStartState );
             }
 
             // join this&following-right|following-down

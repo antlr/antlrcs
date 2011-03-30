@@ -35,6 +35,7 @@ namespace Antlr3.Tool
     using System.Collections.Generic;
     using Antlr3.Analysis;
 
+    using Environment = System.Environment;
     using IList = System.Collections.IList;
     using StringBuilder = System.Text.StringBuilder;
 
@@ -104,7 +105,7 @@ namespace Antlr3.Tool
             {
                 // special case: s0 is an accept
                 string s0 = GetStateString( 0, s );
-                lines.Add( s0 + "\n" );
+                lines.Add( s0 + Environment.NewLine );
             }
             StringBuilder buf = new StringBuilder( 0 );
             // sort lines to normalize; makes states come out ordered
@@ -141,7 +142,7 @@ namespace Antlr3.Tool
             for ( int i = 0; i < s.NumberOfTransitions; i++ )
             {
                 Transition edge = (Transition)s.GetTransition( i );
-                WalkFANormalizingStateNumbers( edge.target ); // keep walkin'
+                WalkFANormalizingStateNumbers( edge.Target ); // keep walkin'
                 // if this transition is a rule reference, the node "following" this state
                 // will not be found and appear to be not in graph.  Must explicitly jump
                 // to it, but don't "draw" an edge.
@@ -161,7 +162,7 @@ namespace Antlr3.Tool
 
             markedStates.Add( s ); // mark this node as completed.
 
-            int normalizedStateNumber = s.stateNumber;
+            int normalizedStateNumber = s.StateNumber;
             if ( stateNumberTranslator != null )
             {
                 normalizedStateNumber = stateNumberTranslator[s];
@@ -185,16 +186,16 @@ namespace Antlr3.Tool
                 }
                 else if ( edge.IsSemanticPredicate )
                 {
-                    buf.Append( "-{" + edge.label.SemanticContext + "}?->" );
+                    buf.Append( "-{" + edge.Label.SemanticContext + "}?->" );
                 }
                 else
                 {
                     string predsStr = "";
-                    if ( edge.target is DFAState )
+                    if ( edge.Target is DFAState )
                     {
                         // look for gated predicates; don't add gated to simple sempred edges
                         SemanticContext preds =
-                            ( (DFAState)edge.target ).GetGatedPredicatesInNFAConfigurations();
+                            ( (DFAState)edge.Target ).GetGatedPredicatesInNFAConfigurations();
                         if ( preds != null )
                         {
                             predsStr = "&&{" +
@@ -203,20 +204,20 @@ namespace Antlr3.Tool
                                 + "}?";
                         }
                     }
-                    buf.Append( "-" + edge.label.ToString( grammar ) + predsStr + "->" );
+                    buf.Append( "-" + edge.Label.ToString( grammar ) + predsStr + "->" );
                 }
 
-                int normalizedTargetStateNumber = edge.target.stateNumber;
+                int normalizedTargetStateNumber = edge.Target.StateNumber;
                 if ( stateNumberTranslator != null )
                 {
-                    normalizedTargetStateNumber = stateNumberTranslator[edge.target];
+                    normalizedTargetStateNumber = stateNumberTranslator[edge.Target];
                 }
-                buf.Append( GetStateString( normalizedTargetStateNumber, edge.target ) );
-                buf.Append( "\n" );
+                buf.Append( GetStateString( normalizedTargetStateNumber, edge.Target ) );
+                buf.AppendLine();
                 lines.Add( buf.ToString() );
 
                 // walk this transition
-                WalkSerializingFA( lines, edge.target );
+                WalkSerializingFA( lines, edge.Target );
 
                 // if this transition is a rule reference, the node "following" this state
                 // will not be found and appear to be not in graph.  Must explicitly jump

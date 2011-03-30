@@ -92,7 +92,7 @@ namespace Antlr3.Codegen
                 dfaST = templates.GetInstanceOf( dfaOptionalBlockStateName );
             }
             dfaST.SetAttribute( "k", k );
-            dfaST.SetAttribute( "stateNumber", s.stateNumber );
+            dfaST.SetAttribute( "stateNumber", s.StateNumber );
             dfaST.SetAttribute( "semPredState",
                                s.IsResolvedWithPredicates );
             /*
@@ -111,11 +111,11 @@ namespace Antlr3.Codegen
             {
                 Transition edge = (Transition)s.Transition( i );
                 //System.Console.Out.WriteLine( "edge " + s.stateNumber + "-" + edge.label.ToString() + "->" + edge.target.stateNumber );
-                if ( edge.label.Atom == Label.EOT )
+                if ( edge.Label.Atom == Label.EOT )
                 {
                     // don't generate a real edge for EOT; track alt EOT predicts
                     // generate that prediction in the else clause as default case
-                    EOTTarget = (DFAState)edge.target;
+                    EOTTarget = (DFAState)edge.Target;
                     EOTPredicts = EOTTarget.GetUniquelyPredictedAlt();
                     /*
                     System.Console.Out.WriteLine("DFA s"+s.stateNumber+" EOT goes to s"+
@@ -138,9 +138,9 @@ namespace Antlr3.Codegen
                 }
 
                 // stick in any gated predicates for any edge if not already a pred
-                if ( !edge.label.IsSemanticPredicate )
+                if ( !edge.Label.IsSemanticPredicate )
                 {
-                    DFAState target = (DFAState)edge.target;
+                    DFAState target = (DFAState)edge.Target;
                     SemanticContext preds =
                         target.GetGatedPredicatesInNFAConfigurations();
                     if ( preds != null )
@@ -156,7 +156,7 @@ namespace Antlr3.Codegen
                 StringTemplate targetST =
                     WalkFixedDFAGeneratingStateMachine( templates,
                                                        dfa,
-                                                       (DFAState)edge.target,
+                                                       (DFAState)edge.Target,
                                                        k + 1 );
                 edgeST.SetAttribute( "targetState", targetST );
                 dfaST.SetAttribute( "edges", edgeST );
@@ -190,7 +190,7 @@ namespace Antlr3.Codegen
                     StringTemplate targetST =
                         WalkFixedDFAGeneratingStateMachine( templates,
                                                            dfa,
-                                                           (DFAState)predEdge.target,
+                                                           (DFAState)predEdge.Target,
                                                            k + 1 );
                     edgeST.SetAttribute( "targetState", targetST );
                     dfaST.SetAttribute( "edges", edgeST );
