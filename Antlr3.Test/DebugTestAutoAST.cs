@@ -32,6 +32,9 @@
 
 namespace AntlrUnitTests
 {
+    using Microsoft.VisualStudio.TestTools.UnitTesting;
+
+    [TestClass]
     public class DebugTestAutoAST : TestAutoAST
     {
         public DebugTestAutoAST()
