@@ -109,7 +109,7 @@ namespace AntlrUnitTests
         //throws Exception
         {
             ANTLRStringStream stream = new ANTLRStringStream( input );
-            assertEquals( dfa.Predict( stream ), expected );
+            Assert.AreEqual( dfa.Predict( stream ), expected );
         }
 
     }

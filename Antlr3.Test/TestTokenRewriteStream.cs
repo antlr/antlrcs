@@ -58,7 +58,7 @@ namespace AntlrUnitTests
             tokens.InsertBefore( 0, "0" );
             string result = tokens.ToString();
             string expecting = "0abc";
-            assertEquals( expecting, result );
+            Assert.AreEqual( expecting, result );
         }
 
         [TestMethod]
@@ -74,7 +74,7 @@ namespace AntlrUnitTests
             tokens.InsertAfter( 2, "x" );
             string result = tokens.ToString();
             string expecting = "abcx";
-            assertEquals( expecting, result );
+            Assert.AreEqual( expecting, result );
         }
 
         [TestMethod]
@@ -92,7 +92,7 @@ namespace AntlrUnitTests
             tokens.InsertAfter( 1, "x" );
             string result = tokens.ToString();
             string expecting = "axbxc";
-            assertEquals( expecting, result );
+            Assert.AreEqual( expecting, result );
         }
 
         [TestMethod]
@@ -109,7 +109,7 @@ namespace AntlrUnitTests
             tokens.Replace( 0, "x" );
             string result = tokens.ToString();
             string expecting = "xbc";
-            assertEquals( expecting, result );
+            Assert.AreEqual( expecting, result );
         }
 
         [TestMethod]
@@ -126,7 +126,7 @@ namespace AntlrUnitTests
             tokens.Replace( 2, "x" );
             string result = tokens.ToString();
             string expecting = "abx";
-            assertEquals( expecting, result );
+            Assert.AreEqual( expecting, result );
         }
 
         [TestMethod]
@@ -143,7 +143,7 @@ namespace AntlrUnitTests
             tokens.Replace( 1, "x" );
             string result = tokens.ToString();
             string expecting = "axc";
-            assertEquals( expecting, result );
+            Assert.AreEqual( expecting, result );
         }
 
         [TestMethod]
@@ -166,19 +166,19 @@ namespace AntlrUnitTests
 
             string result = tokens.ToOriginalString();
             string expecting = "x = 3 * 0;";
-            assertEquals( expecting, result );
+            Assert.AreEqual( expecting, result );
 
             result = tokens.ToString();
             expecting = "x = 0;";
-            assertEquals( expecting, result );
+            Assert.AreEqual( expecting, result );
 
             result = tokens.ToString( 0, 9 );
             expecting = "x = 0;";
-            assertEquals( expecting, result );
+            Assert.AreEqual( expecting, result );
 
             result = tokens.ToString( 4, 8 );
             expecting = "0";
-            assertEquals( expecting, result );
+            Assert.AreEqual( expecting, result );
         }
 
         [TestMethod]
@@ -201,37 +201,37 @@ namespace AntlrUnitTests
 
             string result = tokens.ToOriginalString();
             string expecting = "x = 3 * 0 + 2 * 0;";
-            assertEquals( expecting, result );
+            Assert.AreEqual( expecting, result );
 
             tokens.Replace( 4, 8, "0" ); // replace 3 * 0 with 0
             result = tokens.ToString();
             expecting = "x = 0 + 2 * 0;";
-            assertEquals( expecting, result );
+            Assert.AreEqual( expecting, result );
 
             result = tokens.ToString( 0, 17 );
             expecting = "x = 0 + 2 * 0;";
-            assertEquals( expecting, result );
+            Assert.AreEqual( expecting, result );
 
             result = tokens.ToString( 4, 8 );
             expecting = "0";
-            assertEquals( expecting, result );
+            Assert.AreEqual( expecting, result );
 
             result = tokens.ToString( 0, 8 );
             expecting = "x = 0";
-            assertEquals( expecting, result );
+            Assert.AreEqual( expecting, result );
 
             result = tokens.ToString( 12, 16 );
             expecting = "2 * 0";
-            assertEquals( expecting, result );
+            Assert.AreEqual( expecting, result );
 
             tokens.InsertAfter( 17, "// comment" );
             result = tokens.ToString( 12, 18 );
             expecting = "2 * 0;// comment";
-            assertEquals( expecting, result );
+            Assert.AreEqual( expecting, result );
 
             result = tokens.ToString( 0, 8 ); // try again after insert at end
             expecting = "x = 0";
-            assertEquals( expecting, result );
+            Assert.AreEqual( expecting, result );
         }
 
 
@@ -250,7 +250,7 @@ namespace AntlrUnitTests
             tokens.Replace( 1, "y" );
             string result = tokens.ToString();
             string expecting = "ayc";
-            assertEquals( expecting, result );
+            Assert.AreEqual( expecting, result );
         }
 
         [TestMethod]
@@ -269,7 +269,7 @@ namespace AntlrUnitTests
             tokens.Replace( 1, "y" );
             string result = tokens.ToString();
             string expecting = "_ayc";
-            assertEquals( expecting, result );
+            Assert.AreEqual( expecting, result );
         }
 
         [TestMethod]
@@ -287,7 +287,7 @@ namespace AntlrUnitTests
             tokens.Delete( 1 );
             string result = tokens.ToString();
             string expecting = "ac";
-            assertEquals( expecting, result );
+            Assert.AreEqual( expecting, result );
         }
 
         [TestMethod]
@@ -313,8 +313,8 @@ namespace AntlrUnitTests
                 exc = iae;
             }
             string expecting = "insert op <InsertBeforeOp@[@1,1:1='b',<5>,1:1]:\"0\"> within boundaries of previous <ReplaceOp@[@0,0:0='a',<4>,1:0]..[@2,2:2='c',<6>,1:2]:\"x\">";
-            assertNotNull( exc );
-            assertEquals( expecting, exc.Message );
+            Assert.IsNotNull( exc );
+            Assert.AreEqual( expecting, exc.Message );
         }
 
         [TestMethod]
@@ -332,7 +332,7 @@ namespace AntlrUnitTests
             tokens.Replace( 0, "x" ); // supercedes insert at 0
             string result = tokens.ToString();
             string expecting = "0xbc";
-            assertEquals( expecting, result );
+            Assert.AreEqual( expecting, result );
         }
 
         [TestMethod]
@@ -350,7 +350,7 @@ namespace AntlrUnitTests
             tokens.InsertBefore( 1, "y" );
             string result = tokens.ToString();
             string expecting = "ayxbc";
-            assertEquals( expecting, result );
+            Assert.AreEqual( expecting, result );
         }
 
         [TestMethod]
@@ -369,7 +369,7 @@ namespace AntlrUnitTests
             tokens.Replace( 0, "z" );
             string result = tokens.ToString();
             string expecting = "yxzbc";
-            assertEquals( expecting, result );
+            Assert.AreEqual( expecting, result );
         }
 
         [TestMethod]
@@ -387,7 +387,7 @@ namespace AntlrUnitTests
             tokens.InsertBefore( 2, "y" );
             string result = tokens.ToString();
             string expecting = "abyx";
-            assertEquals( expecting, result );
+            Assert.AreEqual( expecting, result );
         }
 
         [TestMethod]
@@ -405,7 +405,7 @@ namespace AntlrUnitTests
             tokens.Replace( 2, "x" );
             string result = tokens.ToString();
             string expecting = "abyx";
-            assertEquals( expecting, result );
+            Assert.AreEqual( expecting, result );
         }
 
         [TestMethod]
@@ -423,7 +423,7 @@ namespace AntlrUnitTests
             tokens.InsertAfter( 2, "y" );
             string result = tokens.ToString();
             string expecting = "abxy";
-            assertEquals( expecting, result );
+            Assert.AreEqual( expecting, result );
         }
 
         [TestMethod]
@@ -441,7 +441,7 @@ namespace AntlrUnitTests
             tokens.InsertBefore( 2, "y" );
             string result = tokens.ToString();
             string expecting = "abyxba";
-            assertEquals( expecting, result );
+            Assert.AreEqual( expecting, result );
         }
 
         [TestMethod]
@@ -467,8 +467,8 @@ namespace AntlrUnitTests
                 exc = iae;
             }
             string expecting = "insert op <InsertBeforeOp@[@4,4:4='c',<6>,1:4]:\"y\"> within boundaries of previous <ReplaceOp@[@2,2:2='c',<6>,1:2]..[@4,4:4='c',<6>,1:4]:\"x\">";
-            assertNotNull( exc );
-            assertEquals( expecting, exc.Message );
+            Assert.IsNotNull( exc );
+            Assert.AreEqual( expecting, exc.Message );
         }
 
         [TestMethod]
@@ -486,7 +486,7 @@ namespace AntlrUnitTests
             tokens.InsertAfter( 4, "y" );
             string result = tokens.ToString();
             string expecting = "abxyba";
-            assertEquals( expecting, result );
+            Assert.AreEqual( expecting, result );
         }
 
         [TestMethod]
@@ -503,7 +503,7 @@ namespace AntlrUnitTests
             tokens.Replace( 0, 6, "x" );
             string result = tokens.ToString();
             string expecting = "x";
-            assertEquals( expecting, result );
+            Assert.AreEqual( expecting, result );
         }
 
         [TestMethod]
@@ -520,7 +520,7 @@ namespace AntlrUnitTests
             tokens.Replace( 2, 4, "xyz" );
             string result = tokens.ToString( 0, 6 );
             string expecting = "abxyzba";
-            assertEquals( expecting, result );
+            Assert.AreEqual( expecting, result );
         }
 
         [TestMethod]
@@ -546,8 +546,8 @@ namespace AntlrUnitTests
                 exc = iae;
             }
             string expecting = "replace op boundaries of <ReplaceOp@[@3,3:3='c',<6>,1:3]..[@5,5:5='b',<5>,1:5]:\"foo\"> overlap with previous <ReplaceOp@[@2,2:2='c',<6>,1:2]..[@4,4:4='c',<6>,1:4]:\"xyz\">";
-            assertNotNull( exc );
-            assertEquals( expecting, exc.Message );
+            Assert.IsNotNull( exc );
+            Assert.AreEqual( expecting, exc.Message );
         }
 
         [TestMethod]
@@ -573,8 +573,8 @@ namespace AntlrUnitTests
                 exc = iae;
             }
             string expecting = "replace op boundaries of <ReplaceOp@[@1,1:1='b',<5>,1:1]..[@3,3:3='c',<6>,1:3]:\"foo\"> overlap with previous <ReplaceOp@[@2,2:2='c',<6>,1:2]..[@4,4:4='c',<6>,1:4]:\"xyz\">";
-            assertNotNull( exc );
-            assertEquals( expecting, exc.Message );
+            Assert.IsNotNull( exc );
+            Assert.AreEqual( expecting, exc.Message );
         }
 
         [TestMethod]
@@ -592,7 +592,7 @@ namespace AntlrUnitTests
             tokens.Replace( 0, 3, "foo" );
             string result = tokens.ToString();
             string expecting = "fooa";
-            assertEquals( expecting, result );
+            Assert.AreEqual( expecting, result );
         }
 
         // June 2, 2008 I rewrote core of rewrite engine; just adding lots more tests here
@@ -612,7 +612,7 @@ namespace AntlrUnitTests
             tokens.InsertBefore( 0, "y" );
             string result = tokens.ToString();
             string expecting = "yxabc";
-            assertEquals( expecting, result );
+            Assert.AreEqual( expecting, result );
         }
 
         [TestMethod]
@@ -631,7 +631,7 @@ namespace AntlrUnitTests
             tokens.InsertBefore( 1, "z" );
             string result = tokens.ToString();
             string expecting = "yazxbc";
-            assertEquals( expecting, result );
+            Assert.AreEqual( expecting, result );
         }
 
         [TestMethod]
@@ -649,7 +649,7 @@ namespace AntlrUnitTests
             tokens.InsertBefore( 0, "z" ); // combine with left edge of rewrite
             string result = tokens.ToString();
             string expecting = "zfoo";
-            assertEquals( expecting, result );
+            Assert.AreEqual( expecting, result );
         }
 
         [TestMethod]
@@ -667,7 +667,7 @@ namespace AntlrUnitTests
             tokens.InsertBefore( 0, "z" ); // combine with left edge of rewrite
             string result = tokens.ToString();
             string expecting = "z"; // make sure combo is not znull
-            assertEquals( expecting, result );
+            Assert.AreEqual( expecting, result );
         }
 
         [TestMethod]
@@ -686,7 +686,7 @@ namespace AntlrUnitTests
             tokens.InsertBefore( 0, "z" );
             string result = tokens.ToString();
             string expecting = "zaxbyc";
-            assertEquals( expecting, result );
+            Assert.AreEqual( expecting, result );
         }
 
         [TestMethod]
@@ -704,7 +704,7 @@ namespace AntlrUnitTests
             tokens.Replace( 0, 3, "bar" ); // wipes prior nested replace
             string result = tokens.ToString();
             string expecting = "bar";
-            assertEquals( expecting, result );
+            Assert.AreEqual( expecting, result );
         }
 
         [TestMethod]
@@ -730,8 +730,8 @@ namespace AntlrUnitTests
                 exc = iae;
             }
             string expecting = "replace op boundaries of <ReplaceOp@[@1,1:1='b',<5>,1:1]..[@2,2:2='c',<6>,1:2]:\"foo\"> overlap with previous <ReplaceOp@[@0,0:0='a',<4>,1:0]..[@3,3:3='c',<6>,1:3]:\"bar\">";
-            assertNotNull( exc );
-            assertEquals( expecting, exc.Message );
+            Assert.IsNotNull( exc );
+            Assert.AreEqual( expecting, exc.Message );
         }
 
         [TestMethod]
@@ -749,7 +749,7 @@ namespace AntlrUnitTests
             tokens.Replace( 0, 2, "bar" ); // wipes prior nested replace
             string result = tokens.ToString();
             string expecting = "barc";
-            assertEquals( expecting, result );
+            Assert.AreEqual( expecting, result );
         }
 
         [TestMethod]
@@ -767,7 +767,7 @@ namespace AntlrUnitTests
             tokens.Replace( 1, 3, "bar" ); // wipes prior nested replace
             string result = tokens.ToString();
             string expecting = "abar";
-            assertEquals( expecting, result );
+            Assert.AreEqual( expecting, result );
         }
 
         [TestMethod]
@@ -785,7 +785,7 @@ namespace AntlrUnitTests
             tokens.Replace( 1, 2, "foo" ); // drop previous, identical
             string result = tokens.ToString();
             string expecting = "afooc";
-            assertEquals( expecting, result );
+            Assert.AreEqual( expecting, result );
         }
 
         [TestMethod]
@@ -803,7 +803,7 @@ namespace AntlrUnitTests
             tokens.Replace( 1, 2, "foo" ); // kill prev insert
             string result = tokens.ToString();
             string expecting = "afoofoo";
-            assertEquals( expecting, result );
+            Assert.AreEqual( expecting, result );
         }
 
         [TestMethod]
@@ -821,7 +821,7 @@ namespace AntlrUnitTests
             tokens.Replace( 2, 3, "foo" );
             string result = tokens.ToString();
             string expecting = "axbfoo";
-            assertEquals( expecting, result );
+            Assert.AreEqual( expecting, result );
         }
 
         [TestMethod]
@@ -839,7 +839,7 @@ namespace AntlrUnitTests
             tokens.InsertBefore( 1, "x" );
             string result = tokens.ToString();
             string expecting = "axbfoo";
-            assertEquals( expecting, result );
+            Assert.AreEqual( expecting, result );
         }
 
         [TestMethod]
@@ -858,7 +858,7 @@ namespace AntlrUnitTests
             tokens.Delete(2);
             string result = tokens.ToString();
             string expecting = "aby";
-            assertEquals(expecting, result);
+            Assert.AreEqual(expecting, result);
         }
     }
 }

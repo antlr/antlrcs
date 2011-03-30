@@ -72,8 +72,8 @@ namespace AntlrUnitTests
         [TestMethod]
         public void TestSingleNode() /*throws Exception*/ {
             CommonTree t = new CommonTree( new CommonToken( 101 ) );
-            assertNull( t.Parent );
-            assertEquals( -1, t.ChildIndex );
+            Assert.IsNull( t.Parent );
+            Assert.AreEqual( -1, t.ChildIndex );
         }
 
         [TestMethod]
@@ -83,10 +83,10 @@ namespace AntlrUnitTests
             CommonTree u = new V( new CommonToken( 102, "102" ) );
             adaptor.AddChild( root_0, t );
             adaptor.AddChild( root_0, u );
-            assertNull( root_0.Parent );
-            assertEquals( -1, root_0.ChildIndex );
-            assertEquals( 0, t.ChildIndex );
-            assertEquals( 1, u.ChildIndex );
+            Assert.IsNull( root_0.Parent );
+            Assert.AreEqual( -1, root_0.ChildIndex );
+            Assert.AreEqual( 0, t.ChildIndex );
+            Assert.AreEqual( 1, u.ChildIndex );
         }
 
         [TestMethod]
@@ -97,8 +97,8 @@ namespace AntlrUnitTests
             r0.GetChild( 0 ).AddChild( new CommonTree( new CommonToken( 103 ) ) );
             r0.AddChild( new CommonTree( new CommonToken( 104 ) ) );
 
-            assertNull( r0.Parent );
-            assertEquals( -1, r0.ChildIndex );
+            Assert.IsNull( r0.Parent );
+            Assert.AreEqual( -1, r0.ChildIndex );
         }
 
         [TestMethod]
@@ -110,14 +110,14 @@ namespace AntlrUnitTests
             r0.AddChild( c1 = new CommonTree( new CommonToken( 102 ) ) );
             r0.AddChild( c2 = new CommonTree( new CommonToken( 103 ) ) );
 
-            assertNull( r0.Parent );
-            assertEquals( -1, r0.ChildIndex );
-            assertEquals( r0, c0.Parent );
-            assertEquals( 0, c0.ChildIndex );
-            assertEquals( r0, c1.Parent );
-            assertEquals( 1, c1.ChildIndex );
-            assertEquals( r0, c2.Parent );
-            assertEquals( 2, c2.ChildIndex );
+            Assert.IsNull( r0.Parent );
+            Assert.AreEqual( -1, r0.ChildIndex );
+            Assert.AreEqual( r0, c0.Parent );
+            Assert.AreEqual( 0, c0.ChildIndex );
+            Assert.AreEqual( r0, c1.Parent );
+            Assert.AreEqual( 1, c1.ChildIndex );
+            Assert.AreEqual( r0, c2.Parent );
+            Assert.AreEqual( 2, c2.ChildIndex );
         }
 
         [TestMethod]
@@ -135,15 +135,15 @@ namespace AntlrUnitTests
 
             root.AddChild( r0 );
 
-            assertNull( root.Parent );
-            assertEquals( -1, root.ChildIndex );
+            Assert.IsNull( root.Parent );
+            Assert.AreEqual( -1, root.ChildIndex );
             // check children of root all point at root
-            assertEquals( root, c0.Parent );
-            assertEquals( 0, c0.ChildIndex );
-            assertEquals( root, c0.Parent );
-            assertEquals( 1, c1.ChildIndex );
-            assertEquals( root, c0.Parent );
-            assertEquals( 2, c2.ChildIndex );
+            Assert.AreEqual( root, c0.Parent );
+            Assert.AreEqual( 0, c0.ChildIndex );
+            Assert.AreEqual( root, c0.Parent );
+            Assert.AreEqual( 1, c1.ChildIndex );
+            Assert.AreEqual( root, c0.Parent );
+            Assert.AreEqual( 2, c2.ChildIndex );
         }
 
         [TestMethod]
@@ -162,15 +162,15 @@ namespace AntlrUnitTests
 
             root.AddChild( r0 );
 
-            assertNull( root.Parent );
-            assertEquals( -1, root.ChildIndex );
+            Assert.IsNull( root.Parent );
+            Assert.AreEqual( -1, root.ChildIndex );
             // check children of root all point at root
-            assertEquals( root, c0.Parent );
-            assertEquals( 1, c0.ChildIndex );
-            assertEquals( root, c0.Parent );
-            assertEquals( 2, c1.ChildIndex );
-            assertEquals( root, c0.Parent );
-            assertEquals( 3, c2.ChildIndex );
+            Assert.AreEqual( root, c0.Parent );
+            Assert.AreEqual( 1, c0.ChildIndex );
+            Assert.AreEqual( root, c0.Parent );
+            Assert.AreEqual( 2, c1.ChildIndex );
+            Assert.AreEqual( root, c0.Parent );
+            Assert.AreEqual( 3, c2.ChildIndex );
         }
 
         [TestMethod]
@@ -188,8 +188,8 @@ namespace AntlrUnitTests
 
             CommonTree dup = (CommonTree)( new CommonTreeAdaptor() ).DupTree( r0 );
 
-            assertNull( dup.Parent );
-            assertEquals( -1, dup.ChildIndex );
+            Assert.IsNull( dup.Parent );
+            Assert.AreEqual( -1, dup.ChildIndex );
             dup.SanityCheckParentAndChildIndexes();
         }
 
@@ -282,7 +282,7 @@ namespace AntlrUnitTests
             {
                 error = true;
             }
-            assertTrue( error );
+            Assert.IsTrue( error );
         }
 
         [TestMethod]
@@ -295,7 +295,7 @@ namespace AntlrUnitTests
             CommonTree newChild = new CommonTree( new CommonToken( 99, "c" ) );
             t.ReplaceChildren( 0, 0, newChild );
             string expecting = "(a c)";
-            assertEquals( expecting, t.ToStringTree() );
+            Assert.AreEqual( expecting, t.ToStringTree() );
             t.SanityCheckParentAndChildIndexes();
         }
 
@@ -309,7 +309,7 @@ namespace AntlrUnitTests
             CommonTree newChild = new CommonTree( new CommonToken( 99, "x" ) );
             t.ReplaceChildren( 1, 1, newChild );
             string expecting = "(a b x d)";
-            assertEquals( expecting, t.ToStringTree() );
+            Assert.AreEqual( expecting, t.ToStringTree() );
             t.SanityCheckParentAndChildIndexes();
         }
 
@@ -323,7 +323,7 @@ namespace AntlrUnitTests
             CommonTree newChild = new CommonTree( new CommonToken( 99, "x" ) );
             t.ReplaceChildren( 0, 0, newChild );
             string expecting = "(a x c d)";
-            assertEquals( expecting, t.ToStringTree() );
+            Assert.AreEqual( expecting, t.ToStringTree() );
             t.SanityCheckParentAndChildIndexes();
         }
 
@@ -337,7 +337,7 @@ namespace AntlrUnitTests
             CommonTree newChild = new CommonTree( new CommonToken( 99, "x" ) );
             t.ReplaceChildren( 2, 2, newChild );
             string expecting = "(a b c x)";
-            assertEquals( expecting, t.ToStringTree() );
+            Assert.AreEqual( expecting, t.ToStringTree() );
             t.SanityCheckParentAndChildIndexes();
         }
 
@@ -354,7 +354,7 @@ namespace AntlrUnitTests
 
             t.ReplaceChildren( 0, 0, newChildren );
             string expecting = "(a x y c d)";
-            assertEquals( expecting, t.ToStringTree() );
+            Assert.AreEqual( expecting, t.ToStringTree() );
             t.SanityCheckParentAndChildIndexes();
         }
 
@@ -371,7 +371,7 @@ namespace AntlrUnitTests
 
             t.ReplaceChildren( 2, 2, newChildren );
             string expecting = "(a b c x y)";
-            assertEquals( expecting, t.ToStringTree() );
+            Assert.AreEqual( expecting, t.ToStringTree() );
             t.SanityCheckParentAndChildIndexes();
         }
 
@@ -388,7 +388,7 @@ namespace AntlrUnitTests
 
             t.ReplaceChildren( 1, 1, newChildren );
             string expecting = "(a b x y d)";
-            assertEquals( expecting, t.ToStringTree() );
+            Assert.AreEqual( expecting, t.ToStringTree() );
             t.SanityCheckParentAndChildIndexes();
         }
 
@@ -403,7 +403,7 @@ namespace AntlrUnitTests
 
             t.ReplaceChildren( 0, 1, newChild );
             string expecting = "(a x d)";
-            assertEquals( expecting, t.ToStringTree() );
+            Assert.AreEqual( expecting, t.ToStringTree() );
             t.SanityCheckParentAndChildIndexes();
         }
 
@@ -418,7 +418,7 @@ namespace AntlrUnitTests
 
             t.ReplaceChildren( 1, 2, newChild );
             string expecting = "(a b x)";
-            assertEquals( expecting, t.ToStringTree() );
+            Assert.AreEqual( expecting, t.ToStringTree() );
             t.SanityCheckParentAndChildIndexes();
         }
 
@@ -433,7 +433,7 @@ namespace AntlrUnitTests
 
             t.ReplaceChildren( 0, 2, newChild );
             string expecting = "(a x)";
-            assertEquals( expecting, t.ToStringTree() );
+            Assert.AreEqual( expecting, t.ToStringTree() );
             t.SanityCheckParentAndChildIndexes();
         }
 
@@ -450,7 +450,7 @@ namespace AntlrUnitTests
 
             t.ReplaceChildren( 0, 2, newChildren );
             string expecting = "(a x y)";
-            assertEquals( expecting, t.ToStringTree() );
+            Assert.AreEqual( expecting, t.ToStringTree() );
             t.SanityCheckParentAndChildIndexes();
         }
     }

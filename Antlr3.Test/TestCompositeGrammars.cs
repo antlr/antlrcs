@@ -51,7 +51,7 @@ namespace AntlrUnitTests
                 "parser grammar S;\n" +
                 "a : B . C ;\n"; // not qualified ID
             Grammar g = new Grammar( grammar );
-            assertEquals( "unexpected errors: " + equeue, 0, equeue.errors.Count );
+            Assert.AreEqual(0, equeue.errors.Count, "unexpected errors: " + equeue);
         }
 
         [TestMethod]
@@ -69,7 +69,7 @@ namespace AntlrUnitTests
                 "WS : (' '|'\\n') {skip();} ;\n";
             string found = execParser( "M.g", master, "MParser", "MLexer",
                                       "s", "b", debug );
-            assertEquals( "S.a" + NewLine, found );
+            Assert.AreEqual( "S.a" + NewLine, found );
         }
 
         [TestMethod]
@@ -90,7 +90,7 @@ namespace AntlrUnitTests
                 "WS : (' '|'\\n') {skip();} ;\n";
             string found = execParser( "M.g", master, "MParser", "MLexer",
                                       "s", "b", debug );
-            assertEquals( "S.a1000" + NewLine, found );
+            Assert.AreEqual( "S.a1000" + NewLine, found );
         }
 
         [TestMethod]
@@ -111,7 +111,7 @@ namespace AntlrUnitTests
                 "WS : (' '|'\\n') {skip();} ;\n";
             string found = execParser( "M.g", master, "MParser", "MLexer",
                                       "s", "b", debug );
-            assertEquals( "S.ab" + NewLine, found );
+            Assert.AreEqual( "S.ab" + NewLine, found );
         }
 
         [TestMethod]
@@ -131,7 +131,7 @@ namespace AntlrUnitTests
                 "WS : (' '|'\\n') {skip();} ;\n";
             string found = execParser( "M.g", master, "MParser", "MLexer",
                                       "s", "b", debug );
-            assertEquals( "foo" + NewLine, found );
+            Assert.AreEqual( "foo" + NewLine, found );
         }
 
         [TestMethod]
@@ -154,7 +154,7 @@ namespace AntlrUnitTests
                 "WS : (' '|'\\n') {skip();} ;\n";
             string found = execParser( "M.g", master, "MParser", "MLexer",
                                       "s", "b", debug );
-            assertEquals( "S.a" + NewLine, found );
+            Assert.AreEqual( "S.a" + NewLine, found );
         }
 
         [TestMethod]
@@ -192,7 +192,7 @@ namespace AntlrUnitTests
                 "WS : (' '|'\\n') {skip();} ;\n";
             string found = execParser( "M.g", master, "MParser", "MLexer",
                                       "s", "aa", debug );
-            assertEquals( "S.x" + NewLine +
+            Assert.AreEqual( "S.x" + NewLine +
                          "T.y" + NewLine, found );
         }
 
@@ -233,13 +233,13 @@ namespace AntlrUnitTests
             string expectedStringLiteralToTypeMap = "{}";
             string expectedTypeToTokenList = "[A, B, C, WS]";
 
-            assertEquals( expectedTokenIDToTypeMap,
+            Assert.AreEqual( expectedTokenIDToTypeMap,
                          realElements( g.composite.tokenIDToTypeMap ).ToElementString() );
-            assertEquals( expectedStringLiteralToTypeMap, g.composite.stringLiteralToTypeMap.ToElementString() );
-            assertEquals( expectedTypeToTokenList,
+            Assert.AreEqual( expectedStringLiteralToTypeMap, g.composite.stringLiteralToTypeMap.ToElementString() );
+            Assert.AreEqual( expectedTypeToTokenList,
                          realElements( g.composite.typeToTokenList ).ToElementString() );
 
-            assertEquals( "unexpected errors: " + equeue, 0, equeue.errors.Count );
+            Assert.AreEqual(0, equeue.errors.Count, "unexpected errors: " + equeue);
         }
 
         [TestMethod]
@@ -269,14 +269,13 @@ namespace AntlrUnitTests
             g.ParseAndBuildAST();
             g.composite.AssignTokenTypes();
 
-            assertEquals( "unexpected errors: " + equeue, 1, equeue.errors.Count );
+            Assert.AreEqual(1, equeue.errors.Count, "unexpected errors: " + equeue);
             string expectedError = "error(161): " + tmpdir.ToString().replaceFirst( "\\-[0-9]+", "" ) + "/M.g:2:8: combined grammar M cannot import combined grammar S";
-            assertEquals( "unexpected errors: " + equeue, expectedError, equeue.errors[0].ToString().replaceFirst( "\\-[0-9]+", "" ) );
+            Assert.AreEqual(expectedError, equeue.errors[0].ToString().replaceFirst("\\-[0-9]+", ""), "unexpected errors: " + equeue);
         }
 
         [TestMethod]
         public void TestSameStringTwoNames() /*throws Exception*/ {
-            Assert.Inconclusive( "May be failing on just my port..." );
             ErrorQueue equeue = new ErrorQueue();
             ErrorManager.SetErrorListener( equeue );
             string slave =
@@ -305,14 +304,14 @@ namespace AntlrUnitTests
             g.ParseAndBuildAST();
             g.composite.AssignTokenTypes();
 
-            string expectedTokenIDToTypeMap = "[A=4, WS=6, X=5]";
+            string expectedTokenIDToTypeMap = "[A=4, WS=5, X=6]";
             string expectedStringLiteralToTypeMap = "{'a'=4}";
-            string expectedTypeToTokenList = "[A, X, WS]";
+            string expectedTypeToTokenList = "[A, WS, X]";
 
-            assertEquals( expectedTokenIDToTypeMap,
+            Assert.AreEqual( expectedTokenIDToTypeMap,
                          realElements( g.composite.tokenIDToTypeMap ).ToElementString() );
-            assertEquals( expectedStringLiteralToTypeMap, g.composite.stringLiteralToTypeMap.ToString() );
-            assertEquals( expectedTypeToTokenList,
+            Assert.AreEqual( expectedStringLiteralToTypeMap, g.composite.stringLiteralToTypeMap.ToElementString() );
+            Assert.AreEqual( expectedTypeToTokenList,
                          realElements( g.composite.typeToTokenList ).ToElementString() );
 
             object expectedArg = "X='a'";
@@ -322,16 +321,15 @@ namespace AntlrUnitTests
                 new GrammarSemanticsMessage( expectedMsgID, g, null, expectedArg, expectedArg2 );
             checkGrammarSemanticsError( equeue, expectedMessage );
 
-            assertEquals( "unexpected errors: " + equeue, 1, equeue.errors.Count );
+            Assert.AreEqual(1, equeue.errors.Count, "unexpected errors: " + equeue);
 
             string expectedError =
                 "error(158): T.g:2:10: cannot alias X='a'; string already assigned to A";
-            assertEquals( expectedError, equeue.errors[0].ToString() );
+            Assert.AreEqual( expectedError, equeue.errors[0].ToString() );
         }
 
         [TestMethod]
         public void TestSameNameTwoStrings() /*throws Exception*/ {
-            Assert.Inconclusive( "May be failing on just my port..." );
             ErrorQueue equeue = new ErrorQueue();
             ErrorManager.SetErrorListener( equeue );
             string slave =
@@ -363,10 +361,10 @@ namespace AntlrUnitTests
             string expectedStringLiteralToTypeMap = "{'a'=4, 'x'=6}";
             string expectedTypeToTokenList = "[A, WS, T__6]";
 
-            assertEquals( expectedTokenIDToTypeMap,
+            Assert.AreEqual( expectedTokenIDToTypeMap,
                          realElements( g.composite.tokenIDToTypeMap ).ToElementString() );
-            assertEquals( expectedStringLiteralToTypeMap, sortMapToString( g.composite.stringLiteralToTypeMap ) );
-            assertEquals( expectedTypeToTokenList,
+            Assert.AreEqual( expectedStringLiteralToTypeMap, sortMapToString( g.composite.stringLiteralToTypeMap ) );
+            Assert.AreEqual( expectedTypeToTokenList,
                          realElements( g.composite.typeToTokenList ).ToElementString() );
 
             object expectedArg = "A='x'";
@@ -376,11 +374,11 @@ namespace AntlrUnitTests
                 new GrammarSemanticsMessage( expectedMsgID, g, null, expectedArg, expectedArg2 );
             checkGrammarSemanticsError( equeue, expectedMessage );
 
-            assertEquals( "unexpected errors: " + equeue, 1, equeue.errors.Count );
+            Assert.AreEqual(1, equeue.errors.Count, "unexpected errors: " + equeue);
 
             string expectedError =
                 "error(159): T.g:2:10: cannot alias A='x'; token name already assigned to 'a'";
-            assertEquals( expectedError, equeue.errors[0].ToString() );
+            Assert.AreEqual( expectedError, equeue.errors[0].ToString() );
         }
 
         [TestMethod]
@@ -414,17 +412,16 @@ namespace AntlrUnitTests
                 new GrammarSemanticsMessage( expectedMsgID, g, null, expectedArg );
             checkGrammarSemanticsWarning( equeue, expectedMessage );
 
-            assertEquals( "unexpected errors: " + equeue, 0, equeue.errors.Count );
-            assertEquals( "unexpected errors: " + equeue, 1, equeue.warnings.Count );
+            Assert.AreEqual(0, equeue.errors.Count, "unexpected errors: " + equeue);
+            Assert.AreEqual(1, equeue.warnings.Count, "unexpected errors: " + equeue);
 
             string expectedError =
                 "warning(160): S.g:2:10: tokenVocab option ignored in imported grammar S";
-            assertEquals( expectedError, equeue.warnings[0].ToString() );
+            Assert.AreEqual( expectedError, equeue.warnings[0].ToString() );
         }
 
         [TestMethod]
         public void TestImportedTokenVocabWorksInRoot() /*throws Exception*/ {
-            Assert.Inconclusive( "May be failing on just my port..." );
             ErrorQueue equeue = new ErrorQueue();
             ErrorManager.SetErrorListener( equeue );
             string slave =
@@ -456,13 +453,13 @@ namespace AntlrUnitTests
             string expectedStringLiteralToTypeMap = "{'a'=100}";
             string expectedTypeToTokenList = "[A, 'a', WS]";
 
-            assertEquals( expectedTokenIDToTypeMap,
+            Assert.AreEqual( expectedTokenIDToTypeMap,
                          realElements( g.composite.tokenIDToTypeMap ).ToElementString() );
-            assertEquals( expectedStringLiteralToTypeMap, g.composite.stringLiteralToTypeMap.ToString() );
-            assertEquals( expectedTypeToTokenList,
+            Assert.AreEqual( expectedStringLiteralToTypeMap, g.composite.stringLiteralToTypeMap.ToElementString() );
+            Assert.AreEqual( expectedTypeToTokenList,
                          realElements( g.composite.typeToTokenList ).ToElementString() );
 
-            assertEquals( "unexpected errors: " + equeue, 0, equeue.errors.Count );
+            Assert.AreEqual(0, equeue.errors.Count, "unexpected errors: " + equeue);
         }
 
         [TestMethod]
@@ -489,7 +486,7 @@ namespace AntlrUnitTests
             g.composite.AssignTokenTypes();
 
             // whole bunch of errors from bad S.g file
-            assertEquals( "unexpected errors: " + equeue, 5, equeue.errors.Count );
+            Assert.AreEqual(5, equeue.errors.Count, "unexpected errors: " + equeue);
         }
 
         [TestMethod]
@@ -516,7 +513,7 @@ namespace AntlrUnitTests
             g.composite.AssignTokenTypes();
 
             // whole bunch of errors from bad S.g file
-            assertEquals( "unexpected errors: " + equeue, 3, equeue.errors.Count );
+            Assert.AreEqual(3, equeue.errors.Count, "unexpected errors: " + equeue);
         }
 
         [TestMethod]
@@ -534,7 +531,7 @@ namespace AntlrUnitTests
                 "WS : (' '|'\\n') {skip();} ;\n";
             string found = execParser( "M.g", master, "MParser", "MLexer",
                                       "a", "c", debug );
-            assertEquals( "S.a" + NewLine, found );
+            Assert.AreEqual( "S.a" + NewLine, found );
         }
 
         [TestMethod]
@@ -560,7 +557,7 @@ namespace AntlrUnitTests
             // for float to work in decl, type must be overridden
             string found = execParser( "Java.g", master, "JavaParser", "JavaLexer",
                                       "prog", "float x = 3;", debug );
-            assertEquals( "JavaDecl: floatx=3;" + NewLine, found );
+            Assert.AreEqual( "JavaDecl: floatx=3;" + NewLine, found );
         }
 
         // LEXER INHERITANCE
@@ -579,7 +576,7 @@ namespace AntlrUnitTests
                 "B : 'b' ;\n" +
                 "WS : (' '|'\\n') {skip();} ;\n";
             string found = execLexer( "M.g", master, "M", "abc", debug );
-            assertEquals( "S.A"+NewLine+"abc"+NewLine, found );
+            Assert.AreEqual( "S.A"+NewLine+"abc"+NewLine, found );
         }
 
         [TestMethod]
@@ -596,7 +593,7 @@ namespace AntlrUnitTests
                 "A : 'a' B {System.out.println(\"M.A\");} ;\n" +
                 "WS : (' '|'\\n') {skip();} ;\n";
             string found = execLexer( "M.g", master, "M", "ab", debug );
-            assertEquals( "S.B" + NewLine +
+            Assert.AreEqual( "S.B" + NewLine +
                          "M.A" + NewLine +
                          "ab" + NewLine, found );
         }
@@ -631,16 +628,16 @@ namespace AntlrUnitTests
 
             // predict only alts from M not S
             string expectingDFA =
-                ".s0-'a'->.s1\n" +
-                ".s0-{'\\n', ' '}->:s3=>2\n" +
-                ".s1-<EOT>->:s2=>1\n";
+                ".s0-'a'->.s1" + NewLine +
+                ".s0-{'\\n', ' '}->:s3=>2" + NewLine +
+                ".s1-<EOT>->:s2=>1" + NewLine;
             Antlr3.Analysis.DFA dfa = g.GetLookaheadDFA( 1 );
             FASerializer serializer = new FASerializer( g );
             string result = serializer.Serialize( dfa.startState );
-            assertEquals( expectingDFA, result );
+            Assert.AreEqual( expectingDFA, result );
 
             // must not be a "unreachable alt: Tokens" error
-            assertEquals( "unexpected errors: " + equeue, 0, equeue.errors.Count );
+            Assert.AreEqual(0, equeue.errors.Count, "unexpected errors: " + equeue);
         }
 
         [TestMethod]
@@ -666,12 +663,12 @@ namespace AntlrUnitTests
             composite.SetDelegationRoot( g );
             g.ParseAndBuildAST();
 
-            assertEquals( "unexpected errors: " + equeue, 1, equeue.errors.Count );
-            assertEquals( "unexpected errors: " + equeue, 0, equeue.warnings.Count );
+            Assert.AreEqual(1, equeue.errors.Count, "unexpected errors: " + equeue);
+            Assert.AreEqual(0, equeue.warnings.Count, "unexpected errors: " + equeue);
 
             string expectedError =
                 "error(161): " + tmpdir.ToString().replaceFirst( "\\-[0-9]+", "" ) + "\\M.g:2:8: tree grammar M cannot import lexer grammar S";
-            assertEquals( expectedError, equeue.errors[0].ToString().replaceFirst( "\\-[0-9]+", "" ) );
+            Assert.AreEqual( expectedError, equeue.errors[0].ToString().replaceFirst( "\\-[0-9]+", "" ) );
         }
 
         [TestMethod]
@@ -696,7 +693,7 @@ namespace AntlrUnitTests
                 "WS : (' '|'\\n') {skip();} ;\n";
             string found = execParser( "M.g", master, "MParser", "MLexer",
                                       "start", "ax", debug );
-            assertEquals( "S.a1" + NewLine, found );
+            Assert.AreEqual( "S.a1" + NewLine, found );
         }
 
         [TestMethod]
@@ -717,10 +714,10 @@ namespace AntlrUnitTests
             string found = execParser( "M.g", master, "MParser", "MLexer",
                                       "a", "abc", debug );
 
-            assertEquals( "unexpected errors: " + equeue, 0, equeue.errors.Count );
-            assertEquals( "unexpected warnings: " + equeue, 0, equeue.warnings.Count );
+            Assert.AreEqual(0, equeue.errors.Count, "unexpected errors: " + equeue);
+            Assert.AreEqual(0, equeue.warnings.Count, "unexpected warnings: " + equeue);
 
-            assertEquals( "S.A" + NewLine + "M.a" + NewLine, found );
+            Assert.AreEqual( "S.A" + NewLine + "M.a" + NewLine, found );
         }
 
         [TestMethod]
@@ -742,11 +739,11 @@ namespace AntlrUnitTests
 
             rawGenerateAndBuildRecognizer( "M.g", master, "MParser", "MLexer", debug );
 
-            assertEquals( "unexpected errors: " + equeue, 0, equeue.errors.Count );
-            assertEquals( "unexpected warnings: " + equeue, 1, equeue.warnings.Count );
+            Assert.AreEqual(0, equeue.errors.Count, "unexpected errors: " + equeue);
+            Assert.AreEqual(1, equeue.warnings.Count, "unexpected warnings: " + equeue);
             string expectedError =
                 "warning(105): " + tmpdir.ToString().replaceFirst( "\\-[0-9]+", "" ) + "\\M.g:3:5: no lexer rule corresponding to token: ABC";
-            assertEquals( expectedError, equeue.warnings[0].ToString().replaceFirst( "\\-[0-9]+", "" ) );
+            Assert.AreEqual( expectedError, equeue.warnings[0].ToString().replaceFirst( "\\-[0-9]+", "" ) );
         }
 
         /** Make sure that M can import S that imports T. */
@@ -779,22 +776,22 @@ namespace AntlrUnitTests
             g.composite.AssignTokenTypes();
             g.composite.DefineGrammarSymbols();
 
-            string expectedTokenIDToTypeMap = "[M=6, S=5, T=4]";
+            string expectedTokenIDToTypeMap = "[M=4, S=5, T=6]";
             string expectedStringLiteralToTypeMap = "{}";
-            string expectedTypeToTokenList = "[T, S, M]";
+            string expectedTypeToTokenList = "[M, S, T]";
 
-            assertEquals( expectedTokenIDToTypeMap,
+            Assert.AreEqual( expectedTokenIDToTypeMap,
                          realElements( g.composite.tokenIDToTypeMap ).ToElementString() );
-            assertEquals( expectedStringLiteralToTypeMap, g.composite.stringLiteralToTypeMap.ToElementString() );
-            assertEquals( expectedTypeToTokenList,
+            Assert.AreEqual( expectedStringLiteralToTypeMap, g.composite.stringLiteralToTypeMap.ToElementString() );
+            Assert.AreEqual( expectedTypeToTokenList,
                          realElements( g.composite.typeToTokenList ).ToElementString() );
 
-            assertEquals( "unexpected errors: " + equeue, 0, equeue.errors.Count );
+            Assert.AreEqual(0, equeue.errors.Count, "unexpected errors: " + equeue);
 
             bool ok =
                 rawGenerateAndBuildRecognizer( "M.g", master, "MParser", null, false );
             bool expecting = true; // should be ok
-            assertEquals( expecting, ok );
+            Assert.AreEqual( expecting, ok );
         }
 
         [TestMethod]
@@ -843,22 +840,22 @@ namespace AntlrUnitTests
             g.composite.AssignTokenTypes();
             g.composite.DefineGrammarSymbols();
 
-            string expectedTokenIDToTypeMap = "[A=8, B=6, C=7, M=9, S=5, T=4]";
+            string expectedTokenIDToTypeMap = "[A=4, B=5, C=6, M=7, S=8, T=9]";
             string expectedStringLiteralToTypeMap = "{}";
-            string expectedTypeToTokenList = "[T, S, B, C, A, M]";
+            string expectedTypeToTokenList = "[A, B, C, M, S, T]";
 
-            assertEquals( expectedTokenIDToTypeMap,
+            Assert.AreEqual( expectedTokenIDToTypeMap,
                          realElements( g.composite.tokenIDToTypeMap ).ToElementString() );
-            assertEquals( expectedStringLiteralToTypeMap, g.composite.stringLiteralToTypeMap.ToElementString() );
-            assertEquals( expectedTypeToTokenList,
+            Assert.AreEqual( expectedStringLiteralToTypeMap, g.composite.stringLiteralToTypeMap.ToElementString() );
+            Assert.AreEqual( expectedTypeToTokenList,
                          realElements( g.composite.typeToTokenList ).ToElementString() );
 
-            assertEquals( "unexpected errors: " + equeue, 0, equeue.errors.Count );
+            Assert.AreEqual(0, equeue.errors.Count, "unexpected errors: " + equeue);
 
             bool ok =
                 rawGenerateAndBuildRecognizer( "M.g", master, "MParser", null, false );
             bool expecting = true; // should be ok
-            assertEquals( expecting, ok );
+            Assert.AreEqual( expecting, ok );
         }
 
         [TestMethod]
@@ -890,17 +887,17 @@ namespace AntlrUnitTests
             g.composite.AssignTokenTypes();
             g.composite.DefineGrammarSymbols();
 
-            string expectedTokenIDToTypeMap = "[M=6, S=5, T=4]";
+            string expectedTokenIDToTypeMap = "[M=4, S=5, T=6]";
             string expectedStringLiteralToTypeMap = "{}";
-            string expectedTypeToTokenList = "[T, S, M]";
+            string expectedTypeToTokenList = "[M, S, T]";
 
-            assertEquals( expectedTokenIDToTypeMap,
+            Assert.AreEqual( expectedTokenIDToTypeMap,
                          realElements( g.composite.tokenIDToTypeMap ).ToElementString() );
-            assertEquals( expectedStringLiteralToTypeMap, g.composite.stringLiteralToTypeMap.ToElementString() );
-            assertEquals( expectedTypeToTokenList,
+            Assert.AreEqual( expectedStringLiteralToTypeMap, g.composite.stringLiteralToTypeMap.ToElementString() );
+            Assert.AreEqual( expectedTypeToTokenList,
                          realElements( g.composite.typeToTokenList ).ToElementString() );
 
-            assertEquals( "unexpected errors: " + equeue, 0, equeue.errors.Count );
+            Assert.AreEqual(0, equeue.errors.Count, "unexpected errors: " + equeue);
         }
 
         [TestMethod]
@@ -959,7 +956,7 @@ namespace AntlrUnitTests
             bool ok =
                 rawGenerateAndBuildRecognizer("G3.g", G3str, "G3Parser", null, false);
             bool expecting = true; // should be ok
-            assertEquals(expecting, ok);
+            Assert.AreEqual(expecting, ok);
         }
 
         [TestMethod]

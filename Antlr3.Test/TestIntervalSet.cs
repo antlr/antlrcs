@@ -54,7 +54,7 @@ namespace AntlrUnitTests
         public void TestSingleElement() /*throws Exception*/ {
             IntervalSet s = IntervalSet.Of( 99 );
             string expecting = "99";
-            assertEquals( s.ToString(), expecting );
+            Assert.AreEqual( s.ToString(), expecting );
         }
 
         [TestMethod]
@@ -64,7 +64,7 @@ namespace AntlrUnitTests
             s.Add( 'z' );
             s.Add( '\uFFF0' );
             string expecting = "{1, 122, 65520}";
-            assertEquals( s.ToString(), expecting );
+            Assert.AreEqual( s.ToString(), expecting );
         }
 
         [TestMethod]
@@ -74,7 +74,7 @@ namespace AntlrUnitTests
             s.Add( 'a', 'z' );
             s.Add( '0', '9' );
             string expecting = "{1, 48..57, 97..122}";
-            assertEquals( s.ToString(), expecting );
+            Assert.AreEqual( s.ToString(), expecting );
         }
 
         [TestMethod]
@@ -83,7 +83,7 @@ namespace AntlrUnitTests
             IntervalSet s2 = IntervalSet.Of( 13, 15 );
             string expecting = "13..15";
             string result = ( s.And( s2 ) ).ToString();
-            assertEquals( result, expecting );
+            Assert.AreEqual( result, expecting );
         }
 
         [TestMethod]
@@ -92,7 +92,7 @@ namespace AntlrUnitTests
             IntervalSet s2 = IntervalSet.Of( 'd' );
             string expecting = "100";
             string result = ( s.And( s2 ) ).ToString();
-            assertEquals( result, expecting );
+            Assert.AreEqual( result, expecting );
         }
 
         [TestMethod]
@@ -101,7 +101,7 @@ namespace AntlrUnitTests
             IntervalSet s2 = IntervalSet.Of( '0', '9' );
             string expecting = "{}";
             string result = ( s.And( s2 ) ).ToString();
-            assertEquals( result, expecting );
+            Assert.AreEqual( result, expecting );
         }
 
         [TestMethod]
@@ -110,7 +110,7 @@ namespace AntlrUnitTests
             IntervalSet s2 = IntervalSet.Of( 'd' );
             string expecting = "{}";
             string result = ( s.And( s2 ) ).ToString();
-            assertEquals( result, expecting );
+            Assert.AreEqual( result, expecting );
         }
 
         [TestMethod]
@@ -120,7 +120,7 @@ namespace AntlrUnitTests
             IntervalSet s = IntervalSet.Of( 50, 50 );
             string expecting = "{1..49, 51..1000, 2000..3000}";
             string result = ( s.Complement( vocabulary ) ).ToString();
-            assertEquals( result, expecting );
+            Assert.AreEqual( result, expecting );
         }
 
         [TestMethod]
@@ -131,7 +131,7 @@ namespace AntlrUnitTests
             s.Add( 250, 300 );
             string expecting = "{1..4, 6..49, 61..249, 301..1000}";
             string result = ( s.Complement( vocabulary ) ).ToString();
-            assertEquals( result, expecting );
+            Assert.AreEqual( result, expecting );
         }
 
         [TestMethod]
@@ -140,7 +140,7 @@ namespace AntlrUnitTests
             IntervalSet s = IntervalSet.Of( 1, 1000 );
             string expecting = "{}";
             string result = ( s.Complement( vocabulary ) ).ToString();
-            assertEquals( result, expecting );
+            Assert.AreEqual( result, expecting );
         }
 
         [TestMethod]
@@ -149,7 +149,7 @@ namespace AntlrUnitTests
             IntervalSet s = IntervalSet.Of( 1 );
             string expecting = "2";
             string result = ( s.Complement( vocabulary ) ).ToString();
-            assertEquals( result, expecting );
+            Assert.AreEqual( result, expecting );
         }
 
         [TestMethod]
@@ -163,7 +163,7 @@ namespace AntlrUnitTests
             s.Add( 10000 ); // this is outside range of vocab and should be ignored
             string expecting = "{1..2, 4..49, 61..249, 1000..2000, 9999}";
             string result = ( s.Complement( vocabulary ) ).ToString();
-            assertEquals( result, expecting );
+            Assert.AreEqual( result, expecting );
         }
 
         [TestMethod]
@@ -172,7 +172,7 @@ namespace AntlrUnitTests
             IntervalSet s2 = IntervalSet.Of( 12, 15 );
             string expecting = "{10..11, 16..20}";
             string result = ( s.Subtract( s2 ) ).ToString();
-            assertEquals( result, expecting );
+            Assert.AreEqual( result, expecting );
         }
 
         [TestMethod]
@@ -181,12 +181,12 @@ namespace AntlrUnitTests
             IntervalSet s2 = IntervalSet.Of( 5, 11 );
             string expecting = "12..20";
             string result = ( s.Subtract( s2 ) ).ToString();
-            assertEquals( result, expecting );
+            Assert.AreEqual( result, expecting );
 
             IntervalSet s3 = IntervalSet.Of( 5, 10 );
             expecting = "11..20";
             result = ( s.Subtract( s3 ) ).ToString();
-            assertEquals( result, expecting );
+            Assert.AreEqual( result, expecting );
         }
 
         [TestMethod]
@@ -195,12 +195,12 @@ namespace AntlrUnitTests
             IntervalSet s2 = IntervalSet.Of( 15, 25 );
             string expecting = "10..14";
             string result = ( s.Subtract( s2 ) ).ToString();
-            assertEquals( result, expecting );
+            Assert.AreEqual( result, expecting );
 
             IntervalSet s3 = IntervalSet.Of( 20, 25 );
             expecting = "10..19";
             result = ( s.Subtract( s3 ) ).ToString();
-            assertEquals( result, expecting );
+            Assert.AreEqual( result, expecting );
         }
 
         [TestMethod]
@@ -209,7 +209,7 @@ namespace AntlrUnitTests
             IntervalSet s2 = IntervalSet.Of( 1, 25 );
             string expecting = "{}";
             string result = ( s.Subtract( s2 ) ).ToString();
-            assertEquals( result, expecting );
+            Assert.AreEqual( result, expecting );
         }
 
         [TestMethod]
@@ -220,12 +220,12 @@ namespace AntlrUnitTests
             IntervalSet s2 = IntervalSet.Of( 5, 55 ); // covers one and touches 2nd range
             string expecting = "56..60";
             string result = ( s.Subtract( s2 ) ).ToString();
-            assertEquals( result, expecting );
+            Assert.AreEqual( result, expecting );
 
             IntervalSet s3 = IntervalSet.Of( 15, 55 ); // touches both
             expecting = "{10..14, 56..60}";
             result = ( s.Subtract( s3 ) ).ToString();
-            assertEquals( result, expecting );
+            Assert.AreEqual( result, expecting );
         }
 
         /** The following was broken:
@@ -239,7 +239,7 @@ namespace AntlrUnitTests
             s2.Add( 117, 200 );
             string expecting = "116";
             string result = ( s.Subtract( s2 ) ).ToString();
-            assertEquals( result, expecting );
+            Assert.AreEqual( result, expecting );
         }
 
         [TestMethod]
@@ -248,12 +248,12 @@ namespace AntlrUnitTests
             IntervalSet s2 = IntervalSet.Of( 10, 20 );
             Boolean expecting = true;
             Boolean result = s.Equals( s2 );
-            assertEquals( result, expecting );
+            Assert.AreEqual( result, expecting );
 
             IntervalSet s3 = IntervalSet.Of( 15, 55 );
             expecting = false;
             result = s.Equals( s3 );
-            assertEquals( result, expecting );
+            Assert.AreEqual( result, expecting );
         }
 
         [TestMethod]
@@ -266,13 +266,13 @@ namespace AntlrUnitTests
             s2.Add( 499, 501 );
             Boolean expecting = true;
             Boolean result = s.Equals( s2 );
-            assertEquals( result, expecting );
+            Assert.AreEqual( result, expecting );
 
             IntervalSet s3 = IntervalSet.Of( 10, 20 );
             s3.Add( 2 );
             expecting = false;
             result = s.Equals( s3 );
-            assertEquals( result, expecting );
+            Assert.AreEqual( result, expecting );
         }
 
         [TestMethod]
@@ -282,20 +282,20 @@ namespace AntlrUnitTests
             s2.Add( 10, 20 );
             string expecting = "{}"; // 15 - {1..5, 10..20} = {}
             string result = s.Subtract( s2 ).ToString();
-            assertEquals( result, expecting );
+            Assert.AreEqual( result, expecting );
         }
 
         [TestMethod]
         public void TestMembership() /*throws Exception*/ {
             IntervalSet s = IntervalSet.Of( 15, 15 );
             s.Add( 50, 60 );
-            assertTrue( !s.Contains( 0 ) );
-            assertTrue( !s.Contains( 20 ) );
-            assertTrue( !s.Contains( 100 ) );
-            assertTrue( s.Contains( 15 ) );
-            assertTrue( s.Contains( 55 ) );
-            assertTrue( s.Contains( 50 ) );
-            assertTrue( s.Contains( 60 ) );
+            Assert.IsTrue( !s.Contains( 0 ) );
+            Assert.IsTrue( !s.Contains( 20 ) );
+            Assert.IsTrue( !s.Contains( 100 ) );
+            Assert.IsTrue( s.Contains( 15 ) );
+            Assert.IsTrue( s.Contains( 55 ) );
+            Assert.IsTrue( s.Contains( 50 ) );
+            Assert.IsTrue( s.Contains( 60 ) );
         }
 
         // {2,15,18} & 10..20
@@ -307,7 +307,7 @@ namespace AntlrUnitTests
             s2.Add( 18 );
             string expecting = "{15, 18}";
             string result = ( s.And( s2 ) ).ToString();
-            assertEquals( result, expecting );
+            Assert.AreEqual( result, expecting );
         }
 
         [TestMethod]
@@ -318,7 +318,7 @@ namespace AntlrUnitTests
             s2.Add( 18 );
             string expecting = "{15, 18}";
             string result = ( s2.And( s ) ).ToString();
-            assertEquals( result, expecting );
+            Assert.AreEqual( result, expecting );
         }
 
         [TestMethod]
@@ -328,7 +328,7 @@ namespace AntlrUnitTests
             IntervalSet s2 = IntervalSet.Of( 100, 102 );
             string expecting = "102";
             string result = ( s.Complement( s2 ) ).ToString();
-            assertEquals( result, expecting );
+            Assert.AreEqual( result, expecting );
         }
 
         [TestMethod]
@@ -337,7 +337,7 @@ namespace AntlrUnitTests
             IntervalSet s2 = IntervalSet.Of( 100, 102 );
             string expecting = "102";
             string result = ( s.Complement( s2 ) ).ToString();
-            assertEquals( result, expecting );
+            Assert.AreEqual( result, expecting );
         }
 
         [TestMethod]
@@ -346,7 +346,7 @@ namespace AntlrUnitTests
             s.Add( 99, Label.MAX_CHAR_VALUE );
             string expecting = "97..98";
             string result = ( s.Complement( 1, Label.MAX_CHAR_VALUE ) ).ToString();
-            assertEquals( result, expecting );
+            Assert.AreEqual( result, expecting );
         }
 
         [TestMethod]
@@ -357,7 +357,7 @@ namespace AntlrUnitTests
             s.Add( 43, 65534 );
             string expecting = "0..65534";
             string result = s.ToString();
-            assertEquals( result, expecting );
+            Assert.AreEqual( result, expecting );
         }
 
         [TestMethod]
@@ -367,7 +367,7 @@ namespace AntlrUnitTests
             s.Add( 0, 41 );
             string expecting = "0..65534";
             string result = s.ToString();
-            assertEquals( result, expecting );
+            Assert.AreEqual( result, expecting );
         }
 
         [TestMethod]
@@ -380,7 +380,7 @@ namespace AntlrUnitTests
             s.Add( 11, 41 );
             string expecting = "0..65534";
             string result = s.ToString();
-            assertEquals( result, expecting );
+            Assert.AreEqual( result, expecting );
         }
 
         [TestMethod]
@@ -390,7 +390,7 @@ namespace AntlrUnitTests
             s.Add( 5, 25 ); // overlaps two!
             string expecting = "1..30";
             string result = s.ToString();
-            assertEquals( result, expecting );
+            Assert.AreEqual( result, expecting );
         }
 
         [TestMethod]
@@ -400,7 +400,7 @@ namespace AntlrUnitTests
             s.Add( 5, 19 );
             string expecting = "32";
             string result = s.Count.ToString();
-            assertEquals( result, expecting );
+            Assert.AreEqual( result, expecting );
         }
 
         [TestMethod]
@@ -412,7 +412,7 @@ namespace AntlrUnitTests
             IList foo = new List<object>();
             //String result = String.valueOf( s.toList() );
             string result = "[" + string.Join( ", ", s.ToArray().Select( i => i.ToString() ).ToArray() ) + "]";
-            assertEquals( result, expecting );
+            Assert.AreEqual( result, expecting );
         }
 
         /** The following was broken:
@@ -429,7 +429,7 @@ namespace AntlrUnitTests
             s2.Add( 's', 200 );
             string expecting = "{0..113, 115, 117..200}";
             string result = ( s.And( s2 ) ).ToString();
-            assertEquals( result, expecting );
+            Assert.AreEqual( result, expecting );
         }
 
     }

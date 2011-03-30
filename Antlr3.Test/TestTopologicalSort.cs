@@ -61,7 +61,7 @@ namespace AntlrUnitTests
             string expecting = "[H, F, E, D, A, G, B, C]";
             var nodes = g.Sort();
             string result = nodes.ToElementString();
-            assertEquals( expecting, result );
+            Assert.AreEqual( expecting, result );
         }
 
         [TestMethod]
@@ -76,7 +76,7 @@ namespace AntlrUnitTests
             string expecting = "[D, C, B, A]";
             var nodes = g.Sort();
             string result = nodes.ToElementString();
-            assertEquals( expecting, result );
+            Assert.AreEqual( expecting, result );
         }
 
         [TestMethod]
@@ -91,7 +91,7 @@ namespace AntlrUnitTests
             string expecting = "[D, C, B, A]";
             var nodes = g.Sort();
             string result = nodes.ToElementString();
-            assertEquals( expecting, result );
+            Assert.AreEqual( expecting, result );
         }
 
         [TestMethod]
@@ -106,7 +106,7 @@ namespace AntlrUnitTests
             string expecting = "[MyJava.tokens, Java.g, Java.tokens, Def.g, Ref.g]";
             var nodes = g.Sort();
             string result = nodes.ToElementString();
-            assertEquals( expecting, result );
+            Assert.AreEqual( expecting, result );
         }
 
         [TestMethod]
@@ -121,7 +121,7 @@ namespace AntlrUnitTests
             string expecting = "[JavaLexer.g, JavaLexer.tokens, JavaParser.g, Def.g, Ref.g]";
             var nodes = g.Sort();
             string result = nodes.ToElementString();
-            assertEquals( expecting, result );
+            Assert.AreEqual( expecting, result );
         }
     }
 }

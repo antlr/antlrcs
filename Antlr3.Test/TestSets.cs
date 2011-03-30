@@ -57,7 +57,7 @@ namespace AntlrUnitTests
                 "C : A | B;\n";
             string found = execParser( "P.g", grammar, "PParser", "PLexer",
                                       "a", "34", debug );
-            assertEquals( "34" + NewLine, found );
+            Assert.AreEqual( "34" + NewLine, found );
         }
 
         [TestMethod]
@@ -67,7 +67,7 @@ namespace AntlrUnitTests
                 "a : t=('x'|'y') {System.out.println($t.text);} ;\n";
             string found = execParser( "T.g", grammar, "TParser", "TLexer",
                                       "a", "x", debug );
-            assertEquals( "x" + NewLine, found );
+            Assert.AreEqual( "x" + NewLine, found );
         }
 
         [TestMethod]
@@ -77,7 +77,7 @@ namespace AntlrUnitTests
                 "a : t=~('x'|'y') 'z' {System.out.println($t.text);} ;\n";
             string found = execParser( "T.g", grammar, "TParser", "TLexer",
                                       "a", "zz", debug );
-            assertEquals( "z" + NewLine, found );
+            Assert.AreEqual( "z" + NewLine, found );
         }
 
         [TestMethod]
@@ -87,7 +87,7 @@ namespace AntlrUnitTests
                 "a : ~'x' 'z' {System.out.println(input);} ;\n";
             string found = execParser( "T.g", grammar, "TParser", "TLexer",
                                       "a", "zz", debug );
-            assertEquals( "zz" + NewLine, found );
+            Assert.AreEqual( "zz" + NewLine, found );
         }
 
         [TestMethod]
@@ -97,7 +97,7 @@ namespace AntlrUnitTests
                 "a : t=~'x' 'z' {System.out.println($t.text);} ;\n";
             string found = execParser( "T.g", grammar, "TParser", "TLexer",
                                       "a", "zz", debug );
-            assertEquals( "z" + NewLine, found );
+            Assert.AreEqual( "z" + NewLine, found );
         }
 
         [TestMethod]
@@ -107,7 +107,7 @@ namespace AntlrUnitTests
                 "a @after {System.out.println(input);} : 'a' | 'b' |'c' ;\n";
             string found = execParser( "T.g", grammar, "TParser", "TLexer",
                                       "a", "b", debug );
-            assertEquals( "b" + NewLine, found );
+            Assert.AreEqual( "b" + NewLine, found );
         }
 
         [TestMethod]
@@ -118,7 +118,7 @@ namespace AntlrUnitTests
                 "a : 'a' | 'b' |'c' ;\n";
             string found = execParser( "T.g", grammar, "TParser", "TLexer",
                                       "a", "b", debug );
-            assertEquals( "b" + NewLine, found );
+            Assert.AreEqual( "b" + NewLine, found );
         }
 
         [TestMethod]
@@ -129,7 +129,7 @@ namespace AntlrUnitTests
                 "A : ~'b' ;\n";
             string found = execParser( "T.g", grammar, "TParser", "TLexer",
                                       "a", "x", debug );
-            assertEquals( "x" + NewLine, found );
+            Assert.AreEqual( "x" + NewLine, found );
         }
 
         [TestMethod]
@@ -140,7 +140,7 @@ namespace AntlrUnitTests
                 "A : 'b' ;\n";
             string found = execParser( "T.g", grammar, "TParser", "TLexer",
                                       "a", "bc", debug );
-            assertEquals( "bc" + NewLine, found );
+            Assert.AreEqual( "bc" + NewLine, found );
         }
 
         [TestMethod]
@@ -151,7 +151,7 @@ namespace AntlrUnitTests
                 "A : 'b'? 'c' ;\n";
             string found = execParser( "T.g", grammar, "TParser", "TLexer",
                                       "a", "bc", debug );
-            assertEquals( "bc" + NewLine, found );
+            Assert.AreEqual( "bc" + NewLine, found );
         }
 
         [TestMethod]
@@ -162,10 +162,10 @@ namespace AntlrUnitTests
                 "A : 'b'* 'c' ;\n";
             string found = execParser( "T.g", grammar, "TParser", "TLexer",
                                       "a", "bbbbc", debug );
-            assertEquals( "bbbbc" + NewLine, found );
+            Assert.AreEqual( "bbbbc" + NewLine, found );
             found = execParser( "T.g", grammar, "TParser", "TLexer",
                                       "a", "c", debug );
-            assertEquals( "c" + NewLine, found );
+            Assert.AreEqual( "c" + NewLine, found );
         }
 
         [TestMethod]
@@ -176,7 +176,7 @@ namespace AntlrUnitTests
                 "A : 'b'+ 'c' ;\n";
             string found = execParser( "T.g", grammar, "TParser", "TLexer",
                                       "a", "bbbbc", debug );
-            assertEquals( "bbbbc" + NewLine, found );
+            Assert.AreEqual( "bbbbc" + NewLine, found );
         }
 
         [TestMethod]
@@ -186,7 +186,7 @@ namespace AntlrUnitTests
                 "a : ('a'|'b')? 'c' {System.out.println(input);} ;\n";
             string found = execParser( "T.g", grammar, "TParser", "TLexer",
                                       "a", "ac", debug );
-            assertEquals( "ac" + NewLine, found );
+            Assert.AreEqual( "ac" + NewLine, found );
         }
 
         [TestMethod]
@@ -196,7 +196,7 @@ namespace AntlrUnitTests
                 "a : ('a'|'b')* 'c' {System.out.println(input);} ;\n";
             string found = execParser( "T.g", grammar, "TParser", "TLexer",
                                       "a", "abaac", debug );
-            assertEquals( "abaac" + NewLine, found );
+            Assert.AreEqual( "abaac" + NewLine, found );
         }
 
         [TestMethod]
@@ -206,7 +206,7 @@ namespace AntlrUnitTests
                 "a : ('a'|'b')+ 'c' {System.out.println(input);} ;\n";
             string found = execParser( "T.g", grammar, "TParser", "TLexer",
                                       "a", "abaac", debug );
-            assertEquals( "abaac" + NewLine, found );
+            Assert.AreEqual( "abaac" + NewLine, found );
         }
 
         [TestMethod]
@@ -217,7 +217,7 @@ namespace AntlrUnitTests
                 "A : ('a'|'b')? 'c' ;\n";
             string found = execParser( "T.g", grammar, "TParser", "TLexer",
                                       "a", "ac", debug );
-            assertEquals( "ac" + NewLine, found );
+            Assert.AreEqual( "ac" + NewLine, found );
         }
 
         [TestMethod]
@@ -228,7 +228,7 @@ namespace AntlrUnitTests
                 "A : ('a'|'b')* 'c' ;\n";
             string found = execParser( "T.g", grammar, "TParser", "TLexer",
                                       "a", "abaac", debug );
-            assertEquals( "abaac" + NewLine, found );
+            Assert.AreEqual( "abaac" + NewLine, found );
         }
 
         [TestMethod]
@@ -239,7 +239,7 @@ namespace AntlrUnitTests
                 "A : ('a'|'b')+ 'c' ;\n";
             string found = execParser( "T.g", grammar, "TParser", "TLexer",
                                       "a", "abaac", debug );
-            assertEquals( "abaac" + NewLine, found );
+            Assert.AreEqual( "abaac" + NewLine, found );
         }
 
         [TestMethod]
@@ -250,7 +250,7 @@ namespace AntlrUnitTests
                 "A : ~('b'|'c') ;\n";
             string found = execParser( "T.g", grammar, "TParser", "TLexer",
                                       "a", "x", debug );
-            assertEquals( "x" + NewLine, found );
+            Assert.AreEqual( "x" + NewLine, found );
         }
 
         [TestMethod]
@@ -263,7 +263,7 @@ namespace AntlrUnitTests
                 "A : h=~('b'|'c') ;\n";
             string found = execParser( "T.g", grammar, "TParser", "TLexer",
                                       "a", "x", debug );
-            assertEquals( "x" + NewLine, found );
+            Assert.AreEqual( "x" + NewLine, found );
         }
 
         [TestMethod]
@@ -275,7 +275,7 @@ namespace AntlrUnitTests
                 "B : 'b' ;\n";
             string found = execParser( "T.g", grammar, "TParser", "TLexer",
                                       "a", "x", debug );
-            assertEquals( "x" + NewLine, found );
+            Assert.AreEqual( "x" + NewLine, found );
         }
 
         [TestMethod]
@@ -287,7 +287,7 @@ namespace AntlrUnitTests
                 "B : 'b'|'c' ;\n";
             string found = execParser( "T.g", grammar, "TParser", "TLexer",
                                       "a", "x", debug );
-            assertEquals( "x" + NewLine, found );
+            Assert.AreEqual( "x" + NewLine, found );
         }
 
         [TestMethod]
@@ -300,7 +300,7 @@ namespace AntlrUnitTests
                 "B : ~('a'|'c') ;\n";
             string found = execParser( "T.g", grammar, "TParser", "TLexer",
                                       "a", "x", debug );
-            assertEquals( "x" + NewLine, found );
+            Assert.AreEqual( "x" + NewLine, found );
         }
 
         [TestMethod]
@@ -315,7 +315,7 @@ namespace AntlrUnitTests
                 "C : 'c'|'d' ;\n ";
             string found = execParser( "T.g", grammar, "TParser", "TLexer",
                                       "a", "x", debug );
-            assertEquals( "x" + NewLine, found );
+            Assert.AreEqual( "x" + NewLine, found );
         }
 
     }

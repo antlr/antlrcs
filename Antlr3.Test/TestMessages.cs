@@ -80,7 +80,7 @@ namespace AntlrUnitTests
             GrammarSemanticsMessage expectedMessage =
                 new GrammarSemanticsMessage( expectedMsgID, g, null, expectedArg, expectedArg2 );
             string expectedMessageString = expectedMessage.ToString();
-            assertEquals( expectedMessageString, expectedMessage.ToString() );
+            Assert.AreEqual( expectedMessageString, expectedMessage.ToString() );
         }
     }
 }

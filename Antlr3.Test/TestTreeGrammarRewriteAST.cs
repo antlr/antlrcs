@@ -69,7 +69,7 @@ namespace AntlrUnitTests
 
             string found = execTreeParser( "T.g", grammar, "TParser", "TP.g",
                                           treeGrammar, "TP", "TLexer", "a", "a", "abc 34" );
-            assertEquals( "34 abc" + NewLine, found );
+            Assert.AreEqual( "34 abc" + NewLine, found );
         }
 
         [TestMethod]
@@ -90,7 +90,7 @@ namespace AntlrUnitTests
 
             string found = execTreeParser( "T.g", grammar, "TParser", "TP.g",
                                           treeGrammar, "TP", "TLexer", "a", "a", "abc 34" );
-            assertEquals( "(34 abc)" + NewLine, found );
+            Assert.AreEqual( "(34 abc)" + NewLine, found );
         }
 
         [TestMethod]
@@ -110,7 +110,7 @@ namespace AntlrUnitTests
 
             string found = execTreeParser( "T.g", grammar, "TParser", "TP.g",
                         treeGrammar, "TP", "TLexer", "a", "a", "34" );
-            assertEquals( "99" + NewLine, found );
+            Assert.AreEqual( "99" + NewLine, found );
         }
 
         [TestMethod]
@@ -131,11 +131,11 @@ namespace AntlrUnitTests
 
             string found = execTreeParser( "T.g", grammar, "TParser", "TP.g",
                                           treeGrammar, "TP", "TLexer", "a", "a", "abc 34" );
-            assertEquals( "(34 abc)" + NewLine, found );
+            Assert.AreEqual( "(34 abc)" + NewLine, found );
 
             found = execTreeParser( "T.g", grammar, "TParser", "TP.g",
                                    treeGrammar, "TP", "TLexer", "a", "a", "34" );
-            assertEquals( "34" + NewLine, found );
+            Assert.AreEqual( "34" + NewLine, found );
         }
 
         [TestMethod]
@@ -156,7 +156,7 @@ namespace AntlrUnitTests
 
             string found = execTreeParser( "T.g", grammar, "TParser", "TP.g",
                                           treeGrammar, "TP", "TLexer", "a", "a", "abc" );
-            assertEquals( "(abc abc)" + NewLine, found );
+            Assert.AreEqual( "(abc abc)" + NewLine, found );
         }
 
         [TestMethod]
@@ -177,7 +177,7 @@ namespace AntlrUnitTests
 
             string found = execTreeParser( "T.g", grammar, "TParser", "TP.g",
                                           treeGrammar, "TP", "TLexer", "a", "a", "a b c 3 4 5" );
-            assertEquals( "3 4 5 a b c" + NewLine, found );
+            Assert.AreEqual( "3 4 5 a b c" + NewLine, found );
         }
 
         [TestMethod]
@@ -198,7 +198,7 @@ namespace AntlrUnitTests
 
             string found = execTreeParser( "T.g", grammar, "TParser", "TP.g",
                                           treeGrammar, "TP", "TLexer", "a", "a", "abc" );
-            assertEquals( "abc" + NewLine, found );
+            Assert.AreEqual( "abc" + NewLine, found );
         }
 
         [TestMethod]
@@ -220,7 +220,7 @@ namespace AntlrUnitTests
 
             string found = execTreeParser( "T.g", grammar, "TParser", "TP.g",
                                           treeGrammar, "TP", "TLexer", "a", "a", "a 1" );
-            assertEquals( "a 1" + NewLine, found );
+            Assert.AreEqual( "a 1" + NewLine, found );
         }
 
         [TestMethod]
@@ -242,7 +242,7 @@ namespace AntlrUnitTests
 
             string found = execTreeParser( "T.g", grammar, "TParser", "TP.g",
                                           treeGrammar, "TP", "TLexer", "a", "a", "abc 34" );
-            assertEquals( "abc 34" + NewLine, found );
+            Assert.AreEqual( "abc 34" + NewLine, found );
         }
 
         [TestMethod]
@@ -264,7 +264,7 @@ namespace AntlrUnitTests
             g.CodeGenerator = generator;
             generator.GenRecognizer();
 
-            assertEquals( "unexpected errors: " + equeue, 1, equeue.errors.Count );
+            Assert.AreEqual(1, equeue.errors.Count, "unexpected errors: " + equeue);
 
             int expectedMsgID = ErrorManager.MSG_WILDCARD_AS_ROOT;
             object expectedArg = null;
@@ -294,7 +294,7 @@ namespace AntlrUnitTests
 
             string found = execTreeParser( "T.g", grammar, "TParser", "TP.g",
                                           treeGrammar, "TP", "TLexer", "a", "a", "abc 34" );
-            assertEquals( "(abc 34)" + NewLine, found );
+            Assert.AreEqual( "(abc 34)" + NewLine, found );
         }
 
         [TestMethod]
@@ -316,7 +316,7 @@ namespace AntlrUnitTests
 
             string found = execTreeParser( "T.g", grammar, "TParser", "TP.g",
                                           treeGrammar, "TP", "TLexer", "a", "a", "abc 34" );
-            assertEquals( "abc 34" + NewLine, found );
+            Assert.AreEqual( "abc 34" + NewLine, found );
         }
 
         [TestMethod]
@@ -338,7 +338,7 @@ namespace AntlrUnitTests
 
             string found = execTreeParser( "T.g", grammar, "TParser", "TP.g",
                                           treeGrammar, "TP", "TLexer", "a", "a", "abc 34" );
-            assertEquals( "abc 34" + NewLine, found );
+            Assert.AreEqual( "abc 34" + NewLine, found );
         }
 
         [TestMethod]
@@ -359,7 +359,7 @@ namespace AntlrUnitTests
 
             string found = execTreeParser( "T.g", grammar, "TParser", "TP.g",
                                           treeGrammar, "TP", "TLexer", "a", "a", "a b 3" );
-            assertEquals( "a b 3" + NewLine, found );
+            Assert.AreEqual( "a b 3" + NewLine, found );
         }
 
         [TestMethod]
@@ -380,7 +380,7 @@ namespace AntlrUnitTests
 
             string found = execTreeParser( "T.g", grammar, "TParser", "TP.g",
                                           treeGrammar, "TP", "TLexer", "a", "a", "a 3" );
-            assertEquals( "(a 3)" + NewLine, found );
+            Assert.AreEqual( "(a 3)" + NewLine, found );
         }
 
         [TestMethod]
@@ -402,7 +402,7 @@ namespace AntlrUnitTests
 
             string found = execTreeParser( "T.g", grammar, "TParser", "TP.g",
                                           treeGrammar, "TP", "TLexer", "a", "a", "a 3 4" );
-            assertEquals( "(a 3 4)" + NewLine, found );
+            Assert.AreEqual( "(a 3 4)" + NewLine, found );
         }
 
         [TestMethod]
@@ -423,7 +423,7 @@ namespace AntlrUnitTests
 
             string found = execTreeParser( "T.g", grammar, "TParser", "TP.g",
                                           treeGrammar, "TP", "TLexer", "a", "a", "a 3" );
-            assertEquals( "(a 3)" + NewLine, found );
+            Assert.AreEqual( "(a 3)" + NewLine, found );
         }
 
         [TestMethod]
@@ -444,7 +444,7 @@ namespace AntlrUnitTests
 
             string found = execTreeParser( "T.g", grammar, "TParser", "TP.g",
                                           treeGrammar, "TP", "TLexer", "a", "a", "a 3" );
-            assertEquals( "(a 3)" + NewLine, found );
+            Assert.AreEqual( "(a 3)" + NewLine, found );
         }
 
         [TestMethod]
@@ -465,7 +465,7 @@ namespace AntlrUnitTests
 
             string found = execTreeParser( "T.g", grammar, "TParser", "TP.g",
                                           treeGrammar, "TP", "TLexer", "a", "a", "a 3" );
-            assertEquals( "(a 3)" + NewLine, found );
+            Assert.AreEqual( "(a 3)" + NewLine, found );
         }
 
         [TestMethod]
@@ -486,7 +486,7 @@ namespace AntlrUnitTests
 
             string found = execTreeParser( "T.g", grammar, "TParser", "TP.g",
                                           treeGrammar, "TP", "TLexer", "a", "a", "a 3" );
-            assertEquals( "(a 3)" + NewLine, found );
+            Assert.AreEqual( "(a 3)" + NewLine, found );
         }
 
         [TestMethod]
@@ -508,7 +508,7 @@ namespace AntlrUnitTests
 
             string found = execTreeParser( "T.g", grammar, "TParser", "TP.g",
                                           treeGrammar, "TP", "TLexer", "a", "a", "a 3" );
-            assertEquals( "(a 3)" + NewLine, found );
+            Assert.AreEqual( "(a 3)" + NewLine, found );
         }
 
         [TestMethod]
@@ -529,7 +529,7 @@ namespace AntlrUnitTests
 
             string found = execTreeParser( "T.g", grammar, "TParser", "TP.g",
                                           treeGrammar, "TP", "TLexer", "a", "a", "a b 3" );
-            assertEquals( "(a (b 3))" + NewLine, found );
+            Assert.AreEqual( "(a (b 3))" + NewLine, found );
         }
 
         [TestMethod]
@@ -552,7 +552,7 @@ namespace AntlrUnitTests
 
             string found = execTreeParser( "T.g", grammar, "TParser", "TP.g",
                                           treeGrammar, "TP", "TLexer", "a", "a", "a" );
-            assertEquals( "(OP a)" + NewLine, found );
+            Assert.AreEqual( "(OP a)" + NewLine, found );
         }
 
         [TestMethod]
@@ -573,7 +573,7 @@ namespace AntlrUnitTests
 
             string found = execTreeParser( "T.g", grammar, "TParser", "TP.g",
                                           treeGrammar, "TP", "TLexer", "a", "a", "abc" );
-            assertEquals( "", found );
+            Assert.AreEqual( "", found );
         }
 
         [TestMethod]
@@ -595,7 +595,7 @@ namespace AntlrUnitTests
 
             string found = execTreeParser( "T.g", grammar, "TParser", "TP.g",
                                           treeGrammar, "TP", "TLexer", "a", "a", "abc 34" );
-            assertEquals( "abc 34" + NewLine, found );
+            Assert.AreEqual( "abc 34" + NewLine, found );
         }
 
         [TestMethod]
@@ -615,7 +615,7 @@ namespace AntlrUnitTests
 
             string found = execTreeParser( "T.g", grammar, "TParser", "TP.g",
                                           treeGrammar, "TP", "TLexer", "a", "a", "abc 34" );
-            assertEquals( "abc 34" + NewLine, found );
+            Assert.AreEqual( "abc 34" + NewLine, found );
         }
 
 
@@ -636,7 +636,7 @@ namespace AntlrUnitTests
 
             string found = execTreeParser( "T.g", grammar, "TParser", "TP.g",
                                           treeGrammar, "TP", "TLexer", "a", "a", "abc 34" );
-            assertEquals( "(abc 34)" + NewLine, found );
+            Assert.AreEqual( "(abc 34)" + NewLine, found );
         }
 
         [TestMethod]
@@ -656,7 +656,7 @@ namespace AntlrUnitTests
 
             string found = execTreeParser( "T.g", grammar, "TParser", "TP.g",
                                           treeGrammar, "TP", "TLexer", "a", "a", "abc 34" );
-            assertEquals( "(abc 34)" + NewLine, found );
+            Assert.AreEqual( "(abc 34)" + NewLine, found );
         }
 
 
@@ -681,11 +681,11 @@ namespace AntlrUnitTests
 
             string found = execTreeParser( "T.g", grammar, "TParser", "TP.g",
                                           treeGrammar, "TP", "TLexer", "a", "a", "abc 34" );
-            assertEquals( "(ick 34)" + NewLine, found );
+            Assert.AreEqual( "(ick 34)" + NewLine, found );
 
             found = execTreeParser( "T.g", grammar, "TParser", "TP.g",
                                    treeGrammar, "TP", "TLexer", "a", "a", "34" );
-            assertEquals( "34" + NewLine, found );
+            Assert.AreEqual( "34" + NewLine, found );
         }
 
         [TestMethod]
@@ -707,7 +707,7 @@ namespace AntlrUnitTests
 
             string found = execTreeParser( "T.g", grammar, "TParser", "TP.g",
                                           treeGrammar, "TP", "TLexer", "a", "s", "abc 34" );
-            assertEquals( "abc 1" + NewLine, found );
+            Assert.AreEqual( "abc 1" + NewLine, found );
         }
 
         [TestMethod]
@@ -730,7 +730,7 @@ namespace AntlrUnitTests
 
             string found = execTreeParser( "T.g", grammar, "TParser", "TP.g",
                                           treeGrammar, "TP", "TLexer", "a", "s", "abc 34" );
-            assertEquals( "34 abc" + NewLine, found );
+            Assert.AreEqual( "34 abc" + NewLine, found );
         }
 
         [TestMethod]
@@ -753,7 +753,7 @@ namespace AntlrUnitTests
 
             string found = execTreeParser( "T.g", grammar, "TParser", "TP.g",
                                           treeGrammar, "TP", "TLexer", "a", "s", "abc 34" );
-            assertEquals( "34" + NewLine, found );
+            Assert.AreEqual( "34" + NewLine, found );
         }
 
         [TestMethod]
@@ -777,7 +777,7 @@ namespace AntlrUnitTests
 
             string found = execTreeParser( "T.g", grammar, "TParser", "TP.g",
                                           treeGrammar, "TP", "TLexer", "a", "s", "abc 34" );
-            assertEquals( "34" + NewLine, found );
+            Assert.AreEqual( "34" + NewLine, found );
         }
 
         [TestMethod]
@@ -801,7 +801,7 @@ namespace AntlrUnitTests
 
             string found = execTreeParser( "T.g", grammar, "TParser", "TP.g",
                                           treeGrammar, "TP", "TLexer", "a", "s", "boo abc 34" );
-            assertEquals( "boo 34" + NewLine, found );
+            Assert.AreEqual( "boo 34" + NewLine, found );
         }
 
         [TestMethod]
@@ -825,7 +825,7 @@ namespace AntlrUnitTests
 
             string found = execTreeParser( "T.g", grammar, "TParser", "TP.g",
                                           treeGrammar, "TP", "TLexer", "a", "s", "boo abc 34" );
-            assertEquals( "(boo 34)" + NewLine, found );
+            Assert.AreEqual( "(boo 34)" + NewLine, found );
         }
 
         [TestMethod]
@@ -849,7 +849,7 @@ namespace AntlrUnitTests
 
             string found = execTreeParser( "T.g", grammar, "TParser", "TP.g",
                                           treeGrammar, "TP", "TLexer", "a", "s", "boo abc 34" );
-            assertEquals( "(boo 34)" + NewLine, found );
+            Assert.AreEqual( "(boo 34)" + NewLine, found );
         }
 
         [TestMethod]
@@ -870,7 +870,7 @@ namespace AntlrUnitTests
 
             string found = execTreeParser( "T.g", grammar, "TParser", "TP.g",
                                           treeGrammar, "TP", "TLexer", "a", "s", "abc 34" );
-            assertEquals( "abc 34" + NewLine, found );
+            Assert.AreEqual( "abc 34" + NewLine, found );
         }
 
         [TestMethod]
@@ -894,7 +894,7 @@ namespace AntlrUnitTests
             // emits whole tree when you ref the root since I can't know whether
             // you want the children or not.  You might be returning a whole new
             // tree.  Hmm...still seems weird.  oh well.
-            assertEquals( "(12 (abc 34))" + NewLine, found );
+            Assert.AreEqual( "(12 (abc 34))" + NewLine, found );
         }
 
         [TestMethod]
@@ -918,10 +918,11 @@ namespace AntlrUnitTests
             // emits whole tree when you ref the root since I can't know whether
             // you want the children or not.  You might be returning a whole new
             // tree.  Hmm...still seems weird.  oh well.
-            assertEquals( "(12 (abc 34))" + NewLine, found );
+            Assert.AreEqual( "(12 (abc 34))" + NewLine, found );
         }
 
         [TestMethod]
+        [Ignore]
         public void TestRewriteOfRuleRefRootListLabeled() /*throws Exception*/ {
             string grammar =
                 "grammar T;\n" +
@@ -942,7 +943,7 @@ namespace AntlrUnitTests
             // emits whole tree when you ref the root since I can't know whether
             // you want the children or not.  You might be returning a whole new
             // tree.  Hmm...still seems weird.  oh well.
-            assertEquals( "(12 (abc 34))" + NewLine, found );
+            Assert.AreEqual( "(12 (abc 34))" + NewLine, found );
         }
 
         [TestMethod]
@@ -963,7 +964,7 @@ namespace AntlrUnitTests
 
             string found = execTreeParser( "T.g", grammar, "TParser", "TP.g",
                                           treeGrammar, "TP", "TLexer", "a", "s", "abc 34" );
-            assertEquals( "(34 34)" + NewLine, found );
+            Assert.AreEqual( "(34 34)" + NewLine, found );
         }
 
         [TestMethod]
@@ -984,7 +985,7 @@ namespace AntlrUnitTests
 
             string found = execTreeParser( "T.g", grammar, "TParser", "TP.g",
                                           treeGrammar, "TP", "TLexer", "a", "s", "abc 34" );
-            assertEquals( "(34 34)" + NewLine, found );
+            Assert.AreEqual( "(34 34)" + NewLine, found );
         }
 
         [TestMethod]
@@ -1005,7 +1006,7 @@ namespace AntlrUnitTests
 
             string found = execTreeParser( "T.g", grammar, "TParser", "TP.g",
                                           treeGrammar, "TP", "TLexer", "a", "s", "abc 34" );
-            assertEquals( "(34 34)" + NewLine, found );
+            Assert.AreEqual( "(34 34)" + NewLine, found );
         }
 
         [TestMethod]
@@ -1028,7 +1029,7 @@ namespace AntlrUnitTests
 
             string found = execTreeParser( "T.g", grammar, "TParser", "TP.g",
                                           treeGrammar, "TP", "TLexer", "a", "s", "abc 34" );
-            assertEquals( "altered tree=(root (ick 34))" + NewLine +
+            Assert.AreEqual( "altered tree=(root (ick 34))" + NewLine +
                          "(root (ick 34))" + NewLine, found );
         }
 
@@ -1051,7 +1052,7 @@ namespace AntlrUnitTests
 
             string found = execTreeParser( "T.g", grammar, "TParser", "TP.g",
                                           treeGrammar, "TP", "TLexer", "a", "s", "abc 34" );
-            assertEquals( "34" + NewLine, found );
+            Assert.AreEqual( "34" + NewLine, found );
         }
 
         [TestMethod]
@@ -1073,7 +1074,7 @@ namespace AntlrUnitTests
 
             string found = execTreeParser( "T.g", grammar, "TParser", "TP.g",
                                           treeGrammar, "TP", "TLexer", "a", "s", "abc 34" );
-            assertEquals( "abc" + NewLine, found );
+            Assert.AreEqual( "abc" + NewLine, found );
         }
 
         [TestMethod]
@@ -1095,7 +1096,7 @@ namespace AntlrUnitTests
 
             string found = execTreeParser( "T.g", grammar, "TParser", "TP.g",
                                           treeGrammar, "TP", "TLexer", "a", "s", "abc 1 2 3" );
-            assertEquals( "(1 2 3)" + NewLine, found );
+            Assert.AreEqual( "(1 2 3)" + NewLine, found );
         }
 
         [TestMethod]
@@ -1117,7 +1118,7 @@ namespace AntlrUnitTests
 
             string found = execTreeParser( "T.g", grammar, "TParser", "TP.g",
                                           treeGrammar, "TP", "TLexer", "a", "s", "abc 1 2 3" );
-            assertEquals( "(1 2 3)" + NewLine, found );
+            Assert.AreEqual( "(1 2 3)" + NewLine, found );
         }
 
         [TestMethod]
@@ -1139,7 +1140,7 @@ namespace AntlrUnitTests
 
             string found = execTreeParser( "T.g", grammar, "TParser", "TP.g",
                                           treeGrammar, "TP", "TLexer", "a", "s", "1 2 3" );
-            assertEquals( "1 2 3" + NewLine, found );
+            Assert.AreEqual( "1 2 3" + NewLine, found );
         }
 
         [TestMethod]
@@ -1161,7 +1162,7 @@ namespace AntlrUnitTests
 
             string found = execTreeParser( "T.g", grammar, "TParser", "TP.g",
                                           treeGrammar, "TP", "TLexer", "a", "s", "1 2 3" );
-            assertEquals( "(2 3) (2 3)" + NewLine, found );
+            Assert.AreEqual( "(2 3) (2 3)" + NewLine, found );
         }
 
         [TestMethod]

@@ -65,7 +65,7 @@ namespace AntlrUnitTests
                 "enter b" + NewLine +
                 "enter b" + NewLine +
                 "alt 2" + NewLine;
-            assertEquals( expecting, found );
+            Assert.AreEqual( expecting, found );
 
             found = execParser( "T.g", grammar, "TParser", "TLexer",
                     "a", "(x). ;", false );
@@ -73,7 +73,7 @@ namespace AntlrUnitTests
                 "enter b" + NewLine +
                 "enter b" + NewLine +
                 "alt 1" + NewLine;
-            assertEquals( expecting, found );
+            Assert.AreEqual( expecting, found );
 
             found = execParser( "T.g", grammar, "TParser", "TLexer",
                     "a", "((x)) ;", false );
@@ -84,7 +84,7 @@ namespace AntlrUnitTests
                 "enter c" + NewLine +
                 "enter c" + NewLine +
                 "alt 3" + NewLine;
-            assertEquals( expecting, found );
+            Assert.AreEqual( expecting, found );
         }
 
         [TestMethod]
@@ -115,7 +115,7 @@ namespace AntlrUnitTests
                 "enter c" + NewLine +
                 "enter c" + NewLine +
                 "alt 2" + NewLine;
-            assertEquals( expecting, found );
+            Assert.AreEqual( expecting, found );
 
             found = execParser( "T.g", grammar, "TParser", "TLexer",
                     "a", "(x). ;", false );
@@ -123,7 +123,7 @@ namespace AntlrUnitTests
                 "enter b" + NewLine +
                 "enter b" + NewLine +
                 "alt 1" + NewLine;
-            assertEquals( expecting, found );
+            Assert.AreEqual( expecting, found );
 
             found = execParser( "T.g", grammar, "TParser", "TLexer",
                     "a", "((x)) ;", false );
@@ -133,7 +133,7 @@ namespace AntlrUnitTests
                 "enter c" + NewLine +
                 "enter c" + NewLine +
                 "alt 2" + NewLine;
-            assertEquals( expecting, found );
+            Assert.AreEqual( expecting, found );
         }
 
         [TestMethod]
@@ -150,12 +150,12 @@ namespace AntlrUnitTests
             string found = execParser( "T.g", grammar, "TParser", "TLexer",
                         "s", "xxx", false );
 
-            assertEquals( "alt2" + NewLine, found );
+            Assert.AreEqual( "alt2" + NewLine, found );
 
             found = execParser( "T.g", grammar, "TParser", "TLexer",
                     "s", "xxx.", false );
 
-            assertEquals( "alt1" + NewLine, found );
+            Assert.AreEqual( "alt1" + NewLine, found );
         }
 
         [TestMethod]
@@ -173,12 +173,12 @@ namespace AntlrUnitTests
             string found = execParser( "T.g", grammar, "TParser", "TLexer",
                         "s", "xxx", false );
 
-            assertEquals( "alt2" + NewLine, found );
+            Assert.AreEqual( "alt2" + NewLine, found );
 
             found = execParser( "T.g", grammar, "TParser", "TLexer",
                     "s", "xxx.", false );
 
-            assertEquals( "alt1"+NewLine+"D" + NewLine, found );
+            Assert.AreEqual( "alt1"+NewLine+"D" + NewLine, found );
         }
 
         [TestMethod]
@@ -195,7 +195,7 @@ namespace AntlrUnitTests
             string found = execParser( "T.g", grammar, "TParser", "TLexer",
                         "s", "xxx", false );
 
-            assertEquals( "alt1" + NewLine, found );
+            Assert.AreEqual( "alt1" + NewLine, found );
         }
 
         [TestMethod]
@@ -211,7 +211,7 @@ namespace AntlrUnitTests
                 "B : 'x'+ ;\n";
             string found = execParser( "T.g", grammar, "TParser", "TLexer",
                         "s", "xxx", false );
-            assertEquals( "alt2" + NewLine, found );
+            Assert.AreEqual( "alt2" + NewLine, found );
         }
 
         [TestMethod]
@@ -247,7 +247,7 @@ namespace AntlrUnitTests
                 "enter expr 34" + NewLine +
                 "enter atom 34" + NewLine +
                 "enter atom 34" + NewLine;
-            assertEquals( expecting, found );
+            Assert.AreEqual( expecting, found );
         }
 
         [TestMethod]
@@ -299,7 +299,7 @@ namespace AntlrUnitTests
                 "ATOM x" + NewLine +
                 "ATOM x" + NewLine +
                 "done" + NewLine;
-            assertEquals( expecting, found );
+            Assert.AreEqual( expecting, found );
         }
 
         [TestMethod]
@@ -323,7 +323,7 @@ namespace AntlrUnitTests
 
             string found = execTreeParser( "T.g", grammar, "TParser", "TP.g",
                         treeGrammar, "TP", "TLexer", "a", "a", "a 1 2 3;" );
-            assertEquals( "alt 2" + NewLine, found );
+            Assert.AreEqual( "alt 2" + NewLine, found );
         }
 
         [TestMethod]
@@ -351,7 +351,7 @@ namespace AntlrUnitTests
 
             string found = execTreeParser( "T.g", grammar, "TParser", "TP.g",
                         treeGrammar, "TP", "TLexer", "a", "a", "a 1 2 3." );
-            assertEquals( "b:alt 2 a:alt 1" + NewLine, found );
+            Assert.AreEqual( "b:alt 2 a:alt 1" + NewLine, found );
         }
 
         [TestMethod]
@@ -372,7 +372,7 @@ namespace AntlrUnitTests
             string found = execParser( "T.g", grammar, "TParser", "TLexer",
                         "a", "xxxy", false );
 
-            assertEquals( "1:xxxy;" + NewLine, found );
+            Assert.AreEqual( "1:xxxy;" + NewLine, found );
         }
 
         [TestMethod]
@@ -393,7 +393,7 @@ namespace AntlrUnitTests
             string found = execParser( "T.g", grammar, "TParser", "TLexer",
                         "a", "xxxy", false );
 
-            assertEquals( "x x x y" + NewLine, found );
+            Assert.AreEqual( "x x x y" + NewLine, found );
         }
 
         [TestMethod]
@@ -405,10 +405,10 @@ namespace AntlrUnitTests
                     "b : 'x' ;\n";
             string found = execParser( "T.g", grammar, "TParser", "TLexer",
                         "a", "xx", false );
-            assertEquals( "b" + NewLine, found );
+            Assert.AreEqual( "b" + NewLine, found );
             found = execParser( "T.g", grammar, "TParser", "TLexer",
                         "a", "x", false );
-            assertEquals( "", found );
+            Assert.AreEqual( "", found );
         }
 
         [TestMethod]
@@ -423,7 +423,7 @@ namespace AntlrUnitTests
             string found = execParser( "T.g", grammar, "TParser", "TLexer",
                         "a", "ab", false );
 
-            assertEquals( "alt1" + NewLine, found );
+            Assert.AreEqual( "alt1" + NewLine, found );
         }
 
         [TestMethod]
@@ -436,7 +436,7 @@ namespace AntlrUnitTests
             string found = execParser( "T.g", grammar, "TParser", "TLexer",
                         "a", "aaab", false );
 
-            assertEquals( "alt1" + NewLine, found );
+            Assert.AreEqual( "alt1" + NewLine, found );
         }
 
     }

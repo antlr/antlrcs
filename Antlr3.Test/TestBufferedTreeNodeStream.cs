@@ -76,11 +76,11 @@ namespace AntlrUnitTests
             stream.Consume(); // consume DN
             stream.Consume(); // consume 102
             stream.Seek( 7 );   // seek to 107
-            assertEquals( 107, ( (ITree)stream.LT( 1 ) ).Type );
+            Assert.AreEqual( 107, ( (ITree)stream.LT( 1 ) ).Type );
             stream.Consume(); // consume 107
             stream.Consume(); // consume UP
             stream.Consume(); // consume UP
-            assertEquals( 104, ( (ITree)stream.LT( 1 ) ).Type );
+            Assert.AreEqual( 104, ( (ITree)stream.LT( 1 ) ).Type );
         }
     }
 }

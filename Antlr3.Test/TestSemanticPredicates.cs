@@ -59,8 +59,8 @@ namespace AntlrUnitTests
                 "parser grammar P;\n" +
                 "a : {p1}? A | {p2}? B ;" );
             string expecting =
-                ".s0-A->:s1=>1\n" +
-                ".s0-B->:s2=>2\n";
+                ".s0-A->:s1=>1" + NewLine +
+                ".s0-B->:s2=>2" + NewLine;
             checkDecision( g, 1, expecting, null, null, null, null, null, 0, false );
         }
 
@@ -70,9 +70,9 @@ namespace AntlrUnitTests
                 "parser grammar P;\n" +
                 "a : {p1}? A | {p2}? A ;" );
             string expecting =
-                ".s0-A->.s1\n" +
-                ".s1-{p1}?->:s2=>1\n" +
-                ".s1-{p2}?->:s3=>2\n";
+                ".s0-A->.s1" + NewLine +
+                ".s1-{p1}?->:s2=>1" + NewLine +
+                ".s1-{p2}?->:s3=>2" + NewLine;
             checkDecision( g, 1, expecting, null, null, null, null, null, 0, false );
         }
 
@@ -83,9 +83,9 @@ namespace AntlrUnitTests
                 "parser grammar P;\n" +
                 "a options {k=1;} : {p1}? A | {p2}? A ;" );
             string expecting =
-                ".s0-A->.s1\n" +
-                ".s1-{p1}?->:s2=>1\n" +
-                ".s1-{p2}?->:s3=>2\n";
+                ".s0-A->.s1" + NewLine +
+                ".s1-{p1}?->:s2=>1" + NewLine +
+                ".s1-{p2}?->:s3=>2" + NewLine;
             checkDecision( g, 1, expecting, null, null, null, null, null, 0, false );
         }
 
@@ -95,10 +95,10 @@ namespace AntlrUnitTests
                 "parser grammar P;\n" +
                 "a : {p1}? A B | {p2}? A B ;" );
             string expecting =
-                ".s0-A->.s1\n" +
-                ".s1-B->.s2\n" +
-                ".s2-{p1}?->:s3=>1\n" +
-                ".s2-{p2}?->:s4=>2\n";
+                ".s0-A->.s1" + NewLine +
+                ".s1-B->.s2" + NewLine +
+                ".s2-{p1}?->:s3=>1" + NewLine +
+                ".s2-{p2}?->:s4=>2" + NewLine;
             checkDecision( g, 1, expecting, null, null, null, null, null, 0, false );
         }
 
@@ -108,23 +108,23 @@ namespace AntlrUnitTests
                 "parser grammar P;\n" +
                 "a : ( {p1}? A | {p2}? A )+;" );
             string expecting =                   // loop back
-                ".s0-A->.s2\n" +
-                ".s0-EOF->:s1=>3\n" +
-                ".s2-{p1}?->:s3=>1\n" +
-                ".s2-{p2}?->:s4=>2\n";
+                ".s0-A->.s2" + NewLine +
+                ".s0-EOF->:s1=>3" + NewLine +
+                ".s2-{p1}?->:s3=>1" + NewLine +
+                ".s2-{p2}?->:s4=>2" + NewLine;
             checkDecision( g, 1, expecting, null, null, null, null, null, 0, false );
         }
 
         [TestMethod]
         public void TestPredicatedToStayInLoop() /*throws Exception*/ {
-            Assert.Inconclusive( "May be failing on just my port..." );
             Grammar g = new Grammar(
                 "parser grammar P;\n" +
                 "a : ( {p1}? A )+ (A)+;" );
             string expecting =
-                ".s0-A->.s1\n" +
-                ".s1-{!(p1)}?->:s2=>1\n" +
-                ".s1-{p1}?->:s3=>2\n";       // loop back
+                ".s0-A->.s1" + NewLine +
+                ".s1-{!(p1)}?->:s2=>1" + NewLine +
+                ".s1-{p1}?->:s3=>2" + NewLine;       // loop back
+            Assert.Inconclusive("Also fails in the Java version.");
             checkDecision( g, 1, expecting, null, null, null, null, null, 0, false );
         }
 
@@ -134,9 +134,9 @@ namespace AntlrUnitTests
                 "parser grammar P;\n" +
                 "a : {p1}? {p1a}? A | {p2}? A ;" );
             string expecting =
-                ".s0-A->.s1\n" +
-                ".s1-{(p1&&p1a)}?->:s2=>1\n" +
-                ".s1-{p2}?->:s3=>2\n";
+                ".s0-A->.s1" + NewLine +
+                ".s1-{(p1&&p1a)}?->:s2=>1" + NewLine +
+                ".s1-{p2}?->:s3=>2" + NewLine;
             checkDecision( g, 1, expecting, null, null, null, null, null, 0, false );
         }
 
@@ -147,9 +147,9 @@ namespace AntlrUnitTests
                 "a : b | {p2}? A ;\n" +
                 "b : {p1}? A | {p1a}? A ;" );
             string expecting =
-                ".s0-A->.s1\n" +
-                ".s1-{(p1||p1a)}?->:s2=>1\n" +
-                ".s1-{p2}?->:s3=>2\n";
+                ".s0-A->.s1" + NewLine +
+                ".s1-{(p1||p1a)}?->:s2=>1" + NewLine +
+                ".s1-{p2}?->:s3=>2" + NewLine;
             checkDecision( g, 1, expecting, null, null, null, null, null, 0, false );
         }
 
@@ -159,7 +159,7 @@ namespace AntlrUnitTests
                 "parser grammar P;\n" +
                 "a : A {p1}? | A {p2}?;" );
             string expecting =
-                ".s0-A->:s1=>1\n";
+                ".s0-A->:s1=>1" + NewLine;
             checkDecision( g, 1, expecting, new int[] { 2 },
                           new int[] { 1, 2 }, "A", null, null, 2, false );
         }
@@ -170,7 +170,7 @@ namespace AntlrUnitTests
                 "parser grammar P;\n" +
                 "a : {a1} {p1}? A | {a2} {p2}? A ;" );
             string expecting =
-                ".s0-A->:s1=>1\n";
+                ".s0-A->:s1=>1" + NewLine;
             checkDecision( g, 1, expecting, new int[] { 2 },
                           new int[] { 1, 2 }, "A", null, null, 2, true );
         }
@@ -181,9 +181,9 @@ namespace AntlrUnitTests
                 "parser grammar P;\n" +
                 "a : {p1}? A | {a2} {p2}? A ;" ); // ok since 1 pred visible
             string expecting =
-                ".s0-A->.s1\n" +
-                ".s1-{p1}?->:s2=>1\n" +
-                ".s1-{true}?->:s3=>2\n";
+                ".s0-A->.s1" + NewLine +
+                ".s1-{p1}?->:s2=>1" + NewLine +
+                ".s1-{true}?->:s3=>2" + NewLine;
             checkDecision( g, 1, expecting, null,
                           null, null, null, null, 0, true );
         }
@@ -197,8 +197,8 @@ namespace AntlrUnitTests
                 "a : b | A B;\n" +
                 "b : {p1}? A B | A B ;");
             String expecting =
-                ".s0-A->.s1\n" +
-                ".s1-B->:s2=>1\n";
+                ".s0-A->.s1" + NewLine +
+                ".s1-B->:s2=>1" + NewLine;
             checkDecision(g, 1, expecting, new int[] {2},
                           new int[] {1,2}, "A B", new int[] {1}, null, 3);
         }	
@@ -212,9 +212,9 @@ namespace AntlrUnitTests
                 "b : {p1}? A ;\n" +
                 "c : {p2}? A ;\n" );
             string expecting =
-                ".s0-A->.s1\n" +
-                ".s1-{p1}?->:s2=>1\n" +
-                ".s1-{p2}?->:s3=>2\n";
+                ".s0-A->.s1" + NewLine +
+                ".s1-{p1}?->:s2=>1" + NewLine +
+                ".s1-{p2}?->:s3=>2" + NewLine;
             checkDecision( g, 1, expecting, null, null, null, null, null, 0, false );
         }
 
@@ -225,10 +225,10 @@ namespace AntlrUnitTests
                 "a : b | {p2}? ID ;\n" +
                 "b : {p1}? ID | INT ;\n" );
             string expecting =  // only tests after ID, not INT :)
-                ".s0-ID->.s1\n" +
-                ".s0-INT->:s2=>1\n" +
-                ".s1-{p1}?->:s2=>1\n" +
-                ".s1-{p2}?->:s3=>2\n";
+                ".s0-ID->.s1" + NewLine +
+                ".s0-INT->:s2=>1" + NewLine +
+                ".s1-{p1}?->:s2=>1" + NewLine +
+                ".s1-{p2}?->:s3=>2" + NewLine;
             checkDecision( g, 1, expecting, null, null, null, null, null, 0, false );
         }
 
@@ -239,10 +239,10 @@ namespace AntlrUnitTests
                 "a : b | ID ;\n" +
                 "b : {p1}? ID | INT ;\n" );
             string expecting =
-                ".s0-ID->.s1\n" +
-                ".s0-INT->:s2=>1\n" +
-                ".s1-{p1}?->:s2=>1\n" +
-                ".s1-{true}?->:s3=>2\n";
+                ".s0-ID->.s1" + NewLine +
+                ".s0-INT->:s2=>1" + NewLine +
+                ".s1-{p1}?->:s2=>1" + NewLine +
+                ".s1-{true}?->:s3=>2" + NewLine;
             checkDecision( g, 1, expecting, null, null, null, null, null, 0, false );
         }
 
@@ -253,10 +253,10 @@ namespace AntlrUnitTests
                 "a : ID | b ;\n" +
                 "b : {p1}? ID | INT ;\n" );
             string expecting =
-                ".s0-ID->.s1\n" +
-                ".s0-INT->:s3=>2\n" +
-                ".s1-{!(p1)}?->:s2=>1\n" +
-                ".s1-{p1}?->:s3=>2\n";
+                ".s0-ID->.s1" + NewLine +
+                ".s0-INT->:s3=>2" + NewLine +
+                ".s1-{!(p1)}?->:s2=>1" + NewLine +
+                ".s1-{p1}?->:s3=>2" + NewLine;
             checkDecision( g, 1, expecting, null, null, null, null, null, 0, false );
         }
 
@@ -281,21 +281,20 @@ namespace AntlrUnitTests
             }
 
             DFA dfa = g.GetLookaheadDFA( 1 );
-            assertEquals( null, dfa ); // can't analyze.
+            Assert.AreEqual( null, dfa ); // can't analyze.
 
             /*
             String expecting =
-                ".s0-ID->.s1\n" +
-                ".s1-{p1}?->:s2=>1\n" +
-                ".s1-{true}?->:s3=>2\n";
+                ".s0-ID->.s1" + NewLine +
+                ".s1-{p1}?->:s2=>1" + NewLine +
+                ".s1-{true}?->:s3=>2" + NewLine;
             String result = serializer.serialize(dfa.startState);
-            assertEquals(expecting, result);
+            Assert.AreEqual(expecting, result);
             */
 
-            assertEquals( "unexpected number of expected problems", 1, equeue.size() );
+            Assert.AreEqual(1, equeue.size(), "unexpected number of expected problems");
             Message msg = equeue.errors[0];
-            assertTrue( "warning must be a left recursion msg",
-                        msg is LeftRecursionCyclesMessage );
+            Assert.IsTrue(msg is LeftRecursionCyclesMessage, "warning must be a left recursion msg");
         }
 
         [TestMethod]
@@ -311,12 +310,12 @@ namespace AntlrUnitTests
             //    not include alt 1's p1 pred in the "complement of other alts"
             //    because it is not considered nondeterministic with alts 3..5
             string expecting =
-                ".s0-A->.s1\n" +
-                ".s1-B->:s2=>1\n" +
-                ".s1-C->:s3=>2\n" +
-                ".s1-{p2}?->:s4=>3\n" +
-                ".s1-{p3}?->:s5=>4\n" +
-                ".s1-{true}?->:s6=>5\n";
+                ".s0-A->.s1" + NewLine +
+                ".s1-B->:s2=>1" + NewLine +
+                ".s1-C->:s3=>2" + NewLine +
+                ".s1-{p2}?->:s4=>3" + NewLine +
+                ".s1-{p3}?->:s5=>4" + NewLine +
+                ".s1-{true}?->:s6=>5" + NewLine;
             checkDecision( g, 1, expecting, null, null, null, null, null, 0, false );
         }
 
@@ -333,12 +332,12 @@ namespace AntlrUnitTests
             //    not include alt 1's p1 pred in the "complement of other alts"
             //    because it is not considered nondeterministic with alts 3..5
             string expecting =
-                ".s0-A->.s1\n" +
-                ".s1-B->:s2=>1\n" +
-                ".s1-C->:s3=>2\n" +
-                ".s1-{!((p2||p3))}?->:s5=>4\n" +
-                ".s1-{p2}?->:s4=>3\n" +
-                ".s1-{p3}?->:s6=>5\n";
+                ".s0-A->.s1" + NewLine +
+                ".s1-B->:s2=>1" + NewLine +
+                ".s1-C->:s3=>2" + NewLine +
+                ".s1-{!((p2||p3))}?->:s5=>4" + NewLine +
+                ".s1-{p2}?->:s4=>3" + NewLine +
+                ".s1-{p3}?->:s6=>5" + NewLine;
             checkDecision( g, 1, expecting, null, null, null, null, null, 0, false );
         }
 
@@ -349,11 +348,11 @@ namespace AntlrUnitTests
                 "a : b | A B | C ;\n" +
                 "b : {p1}? A B ;\n" );
             string expecting =
-                ".s0-A->.s1\n" +
-                ".s0-C->:s5=>3\n" +
-                ".s1-B->.s2\n" +
-                ".s2-{p1}?->:s3=>1\n" +
-                ".s2-{true}?->:s4=>2\n";
+                ".s0-A->.s1" + NewLine +
+                ".s0-C->:s5=>3" + NewLine +
+                ".s1-B->.s2" + NewLine +
+                ".s2-{p1}?->:s3=>1" + NewLine +
+                ".s2-{true}?->:s4=>2" + NewLine;
             checkDecision( g, 1, expecting, null, null, null, null, null, 0, false );
         }
 
@@ -365,10 +364,10 @@ namespace AntlrUnitTests
                 "b : {p}? A ;\n" +
                 "c : {q}? (A|B)+ ;" );
             string expecting =
-                ".s0-A->.s1\n" +
-                ".s0-B->:s3=>2\n" +
-                ".s1-{p}?->:s2=>1\n" +
-                ".s1-{q}?->:s3=>2\n";
+                ".s0-A->.s1" + NewLine +
+                ".s0-B->:s3=>2" + NewLine +
+                ".s1-{p}?->:s2=>1" + NewLine +
+                ".s1-{q}?->:s3=>2" + NewLine;
             checkDecision( g, 1, expecting, null, null, null, null, null, 0, false );
         }
 
@@ -382,12 +381,12 @@ namespace AntlrUnitTests
                 "s : {p1}? e '.' | {p2}? e ':' ;\n" +
                 "e : '(' e ')' | INT ;\n" );
             string expecting =
-                ".s0-'('->.s1\n" +
-                ".s0-INT->.s4\n" +
-                ".s1-{p1}?->:s2=>1\n" +
-                ".s1-{p2}?->:s3=>2\n" +
-                ".s4-{p1}?->:s2=>1\n" +
-                ".s4-{p2}?->:s3=>2\n";
+                ".s0-'('->.s1" + NewLine +
+                ".s0-INT->.s4" + NewLine +
+                ".s1-{p1}?->:s2=>1" + NewLine +
+                ".s1-{p2}?->:s3=>2" + NewLine +
+                ".s4-{p1}?->:s2=>1" + NewLine +
+                ".s4-{p2}?->:s3=>2" + NewLine;
             DecisionProbe.verbose = true; // make sure we get all error info
             ErrorQueue equeue = new ErrorQueue();
             ErrorManager.SetErrorListener( equeue );
@@ -399,7 +398,7 @@ namespace AntlrUnitTests
                 g.CreateLookaheadDFAs( false );
             }
 
-            assertEquals( "unexpected number of expected problems", 0, equeue.size() );
+            Assert.AreEqual(0, equeue.size(), "unexpected number of expected problems");
             checkDecision( g, 1, expecting, null, null, null, null, null, 0, false );
         }
 
@@ -414,16 +413,16 @@ namespace AntlrUnitTests
                 "s : {p1}? e '.' | {p2}? e ':' ;\n" +
                 "e : '(' e ')' | INT ;\n" );
             string expecting =
-                ".s0-'('->.s1\n" +
-                ".s0-INT->.s6\n" +
-                ".s1-'('->.s2\n" +
-                ".s1-INT->.s5\n" +
-                ".s2-{p1}?->:s3=>1\n" +
-                ".s2-{p2}?->:s4=>2\n" +
-                ".s5-{p1}?->:s3=>1\n" +
-                ".s5-{p2}?->:s4=>2\n" +
-                ".s6-'.'->:s3=>1\n" +
-                ".s6-':'->:s4=>2\n";
+                ".s0-'('->.s1" + NewLine +
+                ".s0-INT->.s6" + NewLine +
+                ".s1-'('->.s2" + NewLine +
+                ".s1-INT->.s5" + NewLine +
+                ".s2-{p1}?->:s3=>1" + NewLine +
+                ".s2-{p2}?->:s4=>2" + NewLine +
+                ".s5-{p1}?->:s3=>1" + NewLine +
+                ".s5-{p2}?->:s4=>2" + NewLine +
+                ".s6-'.'->:s3=>1" + NewLine +
+                ".s6-':'->:s4=>2" + NewLine;
             DecisionProbe.verbose = true; // make sure we get all error info
             ErrorQueue equeue = new ErrorQueue();
             ErrorManager.SetErrorListener( equeue );
@@ -435,7 +434,7 @@ namespace AntlrUnitTests
                 g.CreateLookaheadDFAs( false );
             }
 
-            assertEquals( "unexpected number of expected problems", 0, equeue.size() );
+            Assert.AreEqual(0, equeue.size(), "unexpected number of expected problems");
             checkDecision( g, 1, expecting, null, null, null, null, null, 0, false );
         }
 
@@ -446,12 +445,12 @@ namespace AntlrUnitTests
                 "B : {p}? 'a' ;\n" +
                 "C : {q}? ('a'|'b')+ ;" );
             string expecting =
-                ".s0-'a'->.s1\n" +
-                ".s0-'b'->:s4=>2\n" +
-                ".s1-'a'..'b'->:s4=>2\n" +
-                ".s1-<EOT>->.s2\n" +
-                ".s2-{p}?->:s3=>1\n" +
-                ".s2-{q}?->:s4=>2\n";
+                ".s0-'a'->.s1" + NewLine +
+                ".s0-'b'->:s4=>2" + NewLine +
+                ".s1-'a'..'b'->:s4=>2" + NewLine +
+                ".s1-<EOT>->.s2" + NewLine +
+                ".s2-{p}?->:s3=>1" + NewLine +
+                ".s2-{q}?->:s4=>2" + NewLine;
             checkDecision( g, 2, expecting, null, null, null, null, null, 0, false );
         }
 
@@ -462,10 +461,10 @@ namespace AntlrUnitTests
                 "B : 'a' ;\n" +
                 "C : ('a'|'b')+ ;" );
             string expecting =
-                ".s0-'a'->.s1\n" +
-                ".s0-'b'->:s3=>2\n" +
-                ".s1-'a'..'b'->:s3=>2\n" +
-                ".s1-<EOT>->:s2=>1\n";
+                ".s0-'a'->.s1" + NewLine +
+                ".s0-'b'->:s3=>2" + NewLine +
+                ".s1-'a'..'b'->:s3=>2" + NewLine +
+                ".s1-<EOT>->:s2=>1" + NewLine;
             checkDecision( g, 2, expecting, null, null, null, null, null, 0, false );
         }
 
@@ -477,12 +476,12 @@ namespace AntlrUnitTests
                 "B : {p}? => 'a' ;\n" +
                 "C : {q}? => ('a'|'b')+ ;" );
             string expecting =
-                ".s0-'a'&&{(p||q)}?->.s1\n" +
-                ".s0-'b'&&{q}?->:s4=>2\n" +
-                ".s1-'a'..'b'&&{q}?->:s4=>2\n" +
-                ".s1-<EOT>&&{(p||q)}?->.s2\n" +
-                ".s2-{p}?->:s3=>1\n" +
-                ".s2-{q}?->:s4=>2\n";
+                ".s0-'a'&&{(p||q)}?->.s1" + NewLine +
+                ".s0-'b'&&{q}?->:s4=>2" + NewLine +
+                ".s1-'a'..'b'&&{q}?->:s4=>2" + NewLine +
+                ".s1-<EOT>&&{(p||q)}?->.s2" + NewLine +
+                ".s2-{p}?->:s3=>1" + NewLine +
+                ".s2-{q}?->:s4=>2" + NewLine;
             checkDecision( g, 2, expecting, null, null, null, null, null, 0, false );
         }
 
@@ -495,9 +494,9 @@ namespace AntlrUnitTests
                 "a : b+ ;\n" +
                 "b : 'x' | {p}?=> 'y' ;" );
             string expecting =
-                ".s0-'x'->:s2=>1\n" +
-                ".s0-'y'&&{p}?->:s3=>1\n" +
-                ".s0-EOF->:s1=>2\n";
+                ".s0-'x'->:s2=>1" + NewLine +
+                ".s0-'y'&&{p}?->:s3=>1" + NewLine +
+                ".s0-EOF->:s1=>2" + NewLine;
             checkDecision( g, 1, expecting, null, null, null, null, null, 0, false );
         }
 
@@ -508,14 +507,14 @@ namespace AntlrUnitTests
                 "A : {p}?=> ('a')+ 'x' ;\n" +
                 "B : {q}?=> ('a'|'b')+ 'x' ;" );
             string expecting =
-                ".s0-'a'&&{(p||q)}?->.s1\n" +
-                ".s0-'b'&&{q}?->:s5=>2\n" +
-                ".s1-'a'&&{(p||q)}?->.s1\n" +
-                ".s1-'b'&&{q}?->:s5=>2\n" +
-                ".s1-'x'&&{(p||q)}?->.s2\n" +
-                ".s2-<EOT>&&{(p||q)}?->.s3\n" +
-                ".s3-{p}?->:s4=>1\n" +
-                ".s3-{q}?->:s5=>2\n";
+                ".s0-'a'&&{(p||q)}?->.s1" + NewLine +
+                ".s0-'b'&&{q}?->:s5=>2" + NewLine +
+                ".s1-'a'&&{(p||q)}?->.s1" + NewLine +
+                ".s1-'b'&&{q}?->:s5=>2" + NewLine +
+                ".s1-'x'&&{(p||q)}?->.s2" + NewLine +
+                ".s2-<EOT>&&{(p||q)}?->.s3" + NewLine +
+                ".s3-{p}?->:s4=>1" + NewLine +
+                ".s3-{q}?->:s5=>2" + NewLine;
             checkDecision( g, 3, expecting, null, null, null, null, null, 0, false );
         }
 
@@ -527,18 +526,18 @@ namespace AntlrUnitTests
                 "  | 'a' 'b'\n" +
                 "  ;" );
             string expecting1 =
-                ".s0-'a'->.s1\n" +
-                ".s1-{!(p)}?->:s2=>1\n" +  	// Used to disambig subrule
-                ".s1-{p}?->:s3=>2\n";
+                ".s0-'a'->.s1" + NewLine +
+                ".s1-{!(p)}?->:s2=>1" + NewLine +  	// Used to disambig subrule
+                ".s1-{p}?->:s3=>2" + NewLine;
             // rule A decision can't test p from s0->1 because 'a' is valid
             // for alt1 *and* alt2 w/o p.  Can't test p from s1 to s3 because
             // we might have passed the first alt of subrule.  The same state
             // is listed in s2 in 2 different configurations: one with and one
             // w/o p.  Can't test therefore.  p||true == true.
             string expecting2 =
-                ".s0-'a'->.s1\n" +
-                ".s1-'b'->:s2=>2\n" +
-                ".s1-<EOT>->:s3=>1\n";
+                ".s0-'a'->.s1" + NewLine +
+                ".s1-'b'->:s2=>2" + NewLine +
+                ".s1-<EOT>->:s3=>1" + NewLine;
             checkDecision( g, 1, expecting1, null, null, null, null, null, 0, false );
             checkDecision( g, 2, expecting2, null, null, null, null, null, 0, false );
         }
@@ -552,8 +551,8 @@ namespace AntlrUnitTests
                 "c : {q}?=> d ;\n" +
                 "d : {r}? C ;\n" );
             string expecting =
-                ".s0-B->:s1=>1\n" +
-                ".s0-C&&{q}?->:s2=>2\n";
+                ".s0-B->:s1=>1" + NewLine +
+                ".s0-C&&{q}?->:s2=>2" + NewLine;
             checkDecision( g, 1, expecting, null, null, null, null, null, 0, false );
         }
 
@@ -568,10 +567,10 @@ namespace AntlrUnitTests
                 "  | B\n" +
                 "  ;\n" );
             string expecting =
-                ".s0-B->.s1\n" +
-                ".s0-C&&{(q&&r)}?->:s3=>2\n" +
-                ".s1-{p}?->:s2=>1\n" +
-                ".s1-{q}?->:s3=>2\n";
+                ".s0-B->.s1" + NewLine +
+                ".s0-C&&{(q&&r)}?->:s3=>2" + NewLine +
+                ".s1-{p}?->:s2=>1" + NewLine +
+                ".s1-{q}?->:s3=>2" + NewLine;
             checkDecision( g, 1, expecting, null, null, null, null, null, 0, false );
         }
 
@@ -586,10 +585,10 @@ namespace AntlrUnitTests
                 "  | {s}?=> B\n" +
                 "  ;\n" );
             string expecting =
-                ".s0-B->.s1\n" +
-                ".s0-C&&{(q&&r)}?->:s3=>2\n" +
-                ".s1-{(q&&s)}?->:s3=>2\n" +
-                ".s1-{p}?->:s2=>1\n";
+                ".s0-B->.s1" + NewLine +
+                ".s0-C&&{(q&&r)}?->:s3=>2" + NewLine +
+                ".s1-{(q&&s)}?->:s3=>2" + NewLine +
+                ".s1-{p}?->:s2=>1" + NewLine;
             checkDecision( g, 1, expecting, null, null, null, null, null, 0, false );
         }
 
@@ -605,7 +604,7 @@ namespace AntlrUnitTests
                 "a : b | B;\n" +
                 "b : {p1}? B | B ;" );
             string expecting =
-                ".s0-B->:s1=>1\n";
+                ".s0-B->:s1=>1" + NewLine;
             checkDecision( g, 1, expecting, new int[] { 2 },
                           new int[] { 1, 2 }, "B", new int[] { 1 }, null, 3, false );
         }
@@ -619,8 +618,8 @@ namespace AntlrUnitTests
                 "a : b | A B;\n" +
                 "b : {p1}? A B | A B ;" );
             string expecting =
-                ".s0-A->.s1\n" +
-                ".s1-B->:s2=>1\n";
+                ".s0-A->.s1" + NewLine +
+                ".s1-B->:s2=>1" + NewLine;
             checkDecision( g, 1, expecting, new int[] { 2 },
                           new int[] { 1, 2 }, "A B", new int[] { 1 }, null, 3, false );
         }
@@ -635,7 +634,7 @@ namespace AntlrUnitTests
                 "a : A? ;\n" + // need FOLLOW
                 "b : X a {p1}? A | Y a A ;" ); // only one A is covered
             string expecting =
-                ".s0-A->:s1=>1\n"; // s0-EOF->s2 branch pruned during optimization
+                ".s0-A->:s1=>1" + NewLine; // s0-EOF->s2 branch pruned during optimization
             checkDecision( g, 1, expecting, new int[] { 2 },
                           new int[] { 1, 2 }, "A", new int[] { 2 }, null, 3, false );
         }
@@ -649,9 +648,9 @@ namespace AntlrUnitTests
                 "a : (A B)? ;\n" + // need FOLLOW
                 "b : X a {p1}? A B | Y a A B | Z a ;" ); // only first alt is covered
             string expecting =
-                ".s0-A->.s1\n" +
-                ".s0-EOF->:s3=>2\n" +
-                ".s1-B->:s2=>1\n";
+                ".s0-A->.s1" + NewLine +
+                ".s0-EOF->:s3=>2" + NewLine +
+                ".s1-B->:s2=>1" + NewLine;
             checkDecision( g, 1, expecting, null,
                           new int[] { 1, 2 }, "A B", new int[] { 2 }, null, 2, false );
         }
@@ -665,9 +664,9 @@ namespace AntlrUnitTests
                 "a : (A B)? ;\n" + // need FOLLOW
                 "b : X a {p1}? A B | Y a {a1} {p2}? A B | Z a ;" ); // only first alt is covered
             string expecting =
-                ".s0-A->.s1\n" +
-                ".s0-EOF->:s3=>2\n" +
-                ".s1-B->:s2=>1\n";
+                ".s0-A->.s1" + NewLine +
+                ".s0-EOF->:s3=>2" + NewLine +
+                ".s1-B->:s2=>1" + NewLine;
             checkDecision( g, 1, expecting, null,
                           new int[] { 1, 2 }, "A B", new int[] { 2 }, null, 2, true );
         }
@@ -691,7 +690,7 @@ namespace AntlrUnitTests
                 "a : b | B;\n" +
                 "b : {p1}? B | B D ;" );
             string expecting =
-                ".s0-B->:s1=>1\n";
+                ".s0-B->:s1=>1" + NewLine;
             checkDecision( g, 1, expecting, new int[] { 2 },
                           new int[] { 1, 2 }, "B", new int[] { 1 },
                           null, 3, false );
@@ -703,7 +702,7 @@ namespace AntlrUnitTests
                 "parser grammar t;\n" +
                 "a : {p1}? A | A | A ;" );
             string expecting =
-                ".s0-A->:s1=>1\n";
+                ".s0-A->:s1=>1" + NewLine;
             checkDecision( g, 1, expecting, new int[] { 2, 3 },
                           new int[] { 1, 2, 3 }, "A",
                           null, null, 2, false );
@@ -721,9 +720,9 @@ namespace AntlrUnitTests
                 "  | {p2}? ('x')+ '.'\n" +
                 "  ;\n" );
             string expecting =
-                ".s0-'x'->.s1\n" +
-                ".s1-{p1}?->:s2=>1\n" +
-                ".s1-{p2}?->:s3=>2\n";
+                ".s0-'x'->.s1" + NewLine +
+                ".s1-{p1}?->:s2=>1" + NewLine +
+                ".s1-{p2}?->:s3=>2" + NewLine;
             int[] unreachableAlts = null;
             int[] nonDetAlts = null;
             string ambigInput = null;
@@ -743,11 +742,11 @@ namespace AntlrUnitTests
                 "  | {p2}? ('x')+ '.'\n" +
                 "  ;\n" );
             string expecting =
-                ".s0-'x'->.s1\n" +
-                ".s1-'.'->.s2\n" +
-                ".s1-'x'->.s1\n" +
-                ".s2-{p1}?->:s3=>1\n" +
-                ".s2-{p2}?->:s4=>2\n";
+                ".s0-'x'->.s1" + NewLine +
+                ".s1-'.'->.s2" + NewLine +
+                ".s1-'x'->.s1" + NewLine +
+                ".s2-{p1}?->:s3=>1" + NewLine +
+                ".s2-{p2}?->:s4=>2" + NewLine;
             int[] unreachableAlts = null;
             int[] nonDetAlts = null;
             string ambigInput = null;
@@ -780,9 +779,9 @@ namespace AntlrUnitTests
                 "  | b\n" +
                 "  ;\n" );
             string expecting =
-                ".s0-X->.s1\n" +
-                ".s1-{((a&&c)||(b&&c))}?->:s2=>1\n" +
-                ".s1-{c}?->:s3=>2\n";
+                ".s0-X->.s1" + NewLine +
+                ".s1-{((a&&c)||(b&&c))}?->:s2=>1" + NewLine +
+                ".s1-{c}?->:s3=>2" + NewLine;
             int[] unreachableAlts = null;
             int[] nonDetAlts = null;
             string ambigInput = null;
@@ -806,10 +805,10 @@ namespace AntlrUnitTests
                 "    | {for}? ID\n" +
                 "    ;" );
             string expecting =
-                ".s0-ID->.s1\n" +
-                ".s1-SEMI->.s2\n" +
-                ".s2-{(while||do||for)}?->:s3=>1\n" +
-                ".s2-{true}?->:s4=>2\n";
+                ".s0-ID->.s1" + NewLine +
+                ".s1-SEMI->.s2" + NewLine +
+                ".s2-{(while||do||for)}?->:s3=>1" + NewLine +
+                ".s2-{true}?->:s4=>2" + NewLine;
             checkDecision( g, 1, expecting, null, null, null, null, null, 0, false );
         }
 
@@ -861,8 +860,7 @@ namespace AntlrUnitTests
                 Console.Error.WriteLine( "Warnings issued: " + equeue );
             }
 
-            assertEquals( "unexpected number of expected problems",
-                       expectingNumWarnings, equeue.size() );
+            Assert.AreEqual(expectingNumWarnings, equeue.size(), "unexpected number of expected problems");
 
             DFA dfa = g.GetLookaheadDFA( decision );
             FASerializer serializer = new FASerializer( g );
@@ -877,12 +875,11 @@ namespace AntlrUnitTests
                 s.AddAll( expectingUnreachableAlts );
                 BitSet s2 = new BitSet();
                 s2.AddAll( unreachableAlts );
-                assertEquals( "unreachable alts mismatch", s, s2 );
+                Assert.AreEqual(s, s2, "unreachable alts mismatch");
             }
             else
             {
-                assertEquals( "unreachable alts mismatch", 0,
-                             unreachableAlts != null ? unreachableAlts.Count : 0 );
+                Assert.AreEqual(0, unreachableAlts != null ? unreachableAlts.Count : 0, "unreachable alts mismatch");
             }
 
             // check conflicting input
@@ -890,15 +887,14 @@ namespace AntlrUnitTests
             {
                 // first, find nondet message
                 Message msg = getNonDeterminismMessage( equeue.warnings );
-                assertNotNull( "no nondeterminism warning?", msg );
-                assertTrue( "expecting nondeterminism; found " + msg.GetType().Name,
-                msg is GrammarNonDeterminismMessage );
+                Assert.IsNotNull(msg, "no nondeterminism warning?");
+                Assert.IsTrue(msg is GrammarNonDeterminismMessage, "expecting nondeterminism; found " + msg.GetType().Name);
                 GrammarNonDeterminismMessage nondetMsg =
                     getNonDeterminismMessage( equeue.warnings );
                 var labels =
                     nondetMsg.probe.GetSampleNonDeterministicInputSequence( nondetMsg.problemState );
                 string input = nondetMsg.probe.GetInputSequenceDisplay( labels );
-                assertEquals( expectingAmbigInput, input );
+                Assert.AreEqual( expectingAmbigInput, input );
             }
 
             // check nondet alts
@@ -906,8 +902,7 @@ namespace AntlrUnitTests
             {
                 GrammarNonDeterminismMessage nondetMsg =
                     getNonDeterminismMessage( equeue.warnings );
-                assertNotNull( "found no nondet alts; expecting: " +
-                                            str( expectingNonDetAlts ), nondetMsg );
+                Assert.IsNotNull(nondetMsg, "found no nondet alts; expecting: " + str(expectingNonDetAlts));
                 var nonDetAlts =
                     nondetMsg.probe.GetNonDeterministicAltsForState( nondetMsg.problemState );
                 // compare nonDetAlts with expectingNonDetAlts
@@ -915,33 +910,30 @@ namespace AntlrUnitTests
                 s.AddAll( expectingNonDetAlts );
                 BitSet s2 = new BitSet();
                 s2.AddAll( nonDetAlts );
-                assertEquals( "nondet alts mismatch", s, s2 );
-                assertEquals( "mismatch between expected hasPredHiddenByAction", hasPredHiddenByAction,
-                             nondetMsg.problemState.dfa.hasPredicateBlockedByAction );
+                Assert.AreEqual(s, s2, "nondet alts mismatch");
+                Assert.AreEqual(hasPredHiddenByAction, nondetMsg.problemState.dfa.hasPredicateBlockedByAction, "mismatch between expected hasPredHiddenByAction");
             }
             else
             {
                 // not expecting any nondet alts, make sure there are none
                 GrammarNonDeterminismMessage nondetMsg =
                     getNonDeterminismMessage( equeue.warnings );
-                assertNull( "found nondet alts, but expecting none", nondetMsg );
+                Assert.IsNull(nondetMsg, "found nondet alts, but expecting none");
             }
 
             if ( expectingInsufficientPredAlts != null )
             {
                 GrammarInsufficientPredicatesMessage insuffPredMsg =
                     getGrammarInsufficientPredicatesMessage( equeue.warnings );
-                assertNotNull( "found no GrammarInsufficientPredicatesMessage alts; expecting: " +
-                                            str( expectingNonDetAlts ), insuffPredMsg );
+                Assert.IsNotNull(insuffPredMsg, "found no GrammarInsufficientPredicatesMessage alts; expecting: " + str(expectingNonDetAlts));
                 var locations = insuffPredMsg.altToLocations;
                 var actualAlts = locations.Keys;
                 BitSet s = new BitSet();
                 s.AddAll( expectingInsufficientPredAlts );
                 BitSet s2 = new BitSet();
                 s2.AddAll( actualAlts );
-                assertEquals( "mismatch between insufficiently covered alts", s, s2 );
-                assertEquals( "mismatch between expected hasPredHiddenByAction", hasPredHiddenByAction,
-                             insuffPredMsg.problemState.dfa.hasPredicateBlockedByAction );
+                Assert.AreEqual(s, s2, "mismatch between insufficiently covered alts");
+                Assert.AreEqual(hasPredHiddenByAction, insuffPredMsg.problemState.dfa.hasPredicateBlockedByAction, "mismatch between expected hasPredHiddenByAction");
             }
             else
             {
@@ -952,10 +944,10 @@ namespace AntlrUnitTests
                 {
                     Console.Out.WriteLine( equeue.warnings );
                 }
-                assertNull( "found insufficiently covered alts, but expecting none", nondetMsg );
+                Assert.IsNull(nondetMsg, "found insufficiently covered alts, but expecting none");
             }
 
-            assertEquals( expecting, result );
+            Assert.AreEqual( expecting, result );
         }
 
         protected GrammarNonDeterminismMessage getNonDeterminismMessage( IList warnings )

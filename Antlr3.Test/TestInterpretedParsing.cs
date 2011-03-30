@@ -76,13 +76,13 @@ namespace AntlrUnitTests
             string result = t.ToStringTree();
             string expecting =
                 "(<grammar p> (prog while x { (assign i = (expr 1) ;) (assign y = (expr 3.42) ;) (assign z = (expr y) ;) } <EOF>))";
-            assertEquals(expecting, result);
+            Assert.AreEqual(expecting, result);
         }
 
         [TestMethod]
         public void TestMismatchedTokenError()
         {
-            Assert.Inconclusive("May be failing on just my port...");
+            //Assert.Inconclusive("May be failing on just my port...");
             Grammar pg = new Grammar(
                 "parser grammar p;\n" +
                 "prog : WHILE ID LCURLY (assign)* RCURLY;\n" +
@@ -113,14 +113,14 @@ namespace AntlrUnitTests
             ParseTree t = parseEngine.Parse("prog");
             string result = t.ToStringTree();
             string expecting =
-                "(<grammar p> (prog while x { (assign i = (expr 1) MismatchedTokenException(5!=9))))";
-            assertEquals(expecting, result);
+                "(<grammar p> (prog while x { (assign i = (expr 1) MismatchedTokenException(6!=10))))";
+            Assert.AreEqual(expecting, result);
         }
 
         [TestMethod]
         public void TestMismatchedSetError()
         {
-            Assert.Inconclusive("May be failing on just my port...");
+            //Assert.Inconclusive("May be failing on just my port...");
             Grammar pg = new Grammar(
                 "parser grammar p;\n" +
                 "prog : WHILE ID LCURLY (assign)* RCURLY;\n" +
@@ -151,14 +151,14 @@ namespace AntlrUnitTests
             ParseTree t = parseEngine.Parse("prog");
             string result = t.ToStringTree();
             string expecting =
-                "(<grammar p> (prog while x { (assign i = (expr MismatchedSetException(9!={5,10,11})))))";
-            assertEquals(expecting, result);
+                "(<grammar p> (prog while x { (assign i = (expr MismatchedSetException(10!={5,6,7})))))";
+            Assert.AreEqual(expecting, result);
         }
 
         [TestMethod]
         public void TestNoViableAltError()
         {
-            Assert.Inconclusive("May be failing on just my port...");
+            //Assert.Inconclusive("May be failing on just my port...");
             Grammar pg = new Grammar(
                 "parser grammar p;\n" +
                 "prog : WHILE ID LCURLY (assign)* RCURLY;\n" +
@@ -189,8 +189,8 @@ namespace AntlrUnitTests
             ParseTree t = parseEngine.Parse("prog");
             string result = t.ToStringTree();
             string expecting =
-                "(<grammar p> (prog while x { (assign i = (expr NoViableAltException(9@[4:1: expr : ( INT | FLOAT | ID );])))))";
-            assertEquals(expecting, result);
+                "(<grammar p> (prog while x { (assign i = (expr NoViableAltException(10@[4:1: expr : ( INT | FLOAT | ID );])))))";
+            Assert.AreEqual(expecting, result);
         }
     }
 }

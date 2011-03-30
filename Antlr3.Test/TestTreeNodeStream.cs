@@ -64,11 +64,11 @@ namespace AntlrUnitTests
             ITreeNodeStream stream = newStream( t );
             string expecting = " 101";
             string found = ToNodesOnlyString( stream );
-            assertEquals( expecting, found );
+            Assert.AreEqual( expecting, found );
 
             expecting = " 101";
             found = ToTokenTypeString( stream );
-            assertEquals( expecting, found );
+            Assert.AreEqual( expecting, found );
         }
 
         [TestMethod]
@@ -82,11 +82,11 @@ namespace AntlrUnitTests
             ITreeNodeStream stream = newStream( t );
             string expecting = " 101 102 103 104";
             string found = ToNodesOnlyString( stream );
-            assertEquals( expecting, found );
+            Assert.AreEqual( expecting, found );
 
             expecting = " 101 2 102 2 103 3 104 3";
             found = ToTokenTypeString( stream );
-            assertEquals( expecting, found );
+            Assert.AreEqual( expecting, found );
         }
 
         [TestMethod]
@@ -106,11 +106,11 @@ namespace AntlrUnitTests
             ITreeNodeStream stream = newStream( root );
             string expecting = " 101 102 103 104 105";
             string found = ToNodesOnlyString( stream );
-            assertEquals( expecting, found );
+            Assert.AreEqual( expecting, found );
 
             expecting = " 101 2 102 2 103 3 104 3 105";
             found = ToTokenTypeString( stream );
-            assertEquals( expecting, found );
+            Assert.AreEqual( expecting, found );
         }
 
         [TestMethod]
@@ -124,11 +124,11 @@ namespace AntlrUnitTests
             ITreeNodeStream stream = newStream( root );
             string expecting = " 101 102 103";
             string found = ToNodesOnlyString( stream );
-            assertEquals( expecting, found );
+            Assert.AreEqual( expecting, found );
 
             expecting = " 101 102 103";
             found = ToTokenTypeString( stream );
-            assertEquals( expecting, found );
+            Assert.AreEqual( expecting, found );
         }
 
         [TestMethod]
@@ -140,11 +140,11 @@ namespace AntlrUnitTests
             ITreeNodeStream stream = newStream( root );
             string expecting = " 101";
             string found = ToNodesOnlyString( stream );
-            assertEquals( expecting, found );
+            Assert.AreEqual( expecting, found );
 
             expecting = " 101";
             found = ToTokenTypeString( stream );
-            assertEquals( expecting, found );
+            Assert.AreEqual( expecting, found );
         }
 
         [TestMethod]
@@ -155,11 +155,11 @@ namespace AntlrUnitTests
             ITreeNodeStream stream = newStream( t );
             string expecting = " 101 102";
             string found = ToNodesOnlyString( stream );
-            assertEquals( expecting, found );
+            Assert.AreEqual( expecting, found );
 
             expecting = " 101 2 102 3";
             found = ToTokenTypeString( stream );
-            assertEquals( expecting, found );
+            Assert.AreEqual( expecting, found );
         }
 
         [TestMethod]
@@ -171,17 +171,17 @@ namespace AntlrUnitTests
             t.AddChild( new CommonTree( new CommonToken( 104 ) ) );
 
             ITreeNodeStream stream = newStream( t );
-            assertEquals( 101, ( (ITree)stream.LT( 1 ) ).Type );
-            assertEquals( TokenTypes.Down, ( (ITree)stream.LT( 2 ) ).Type );
-            assertEquals( 102, ( (ITree)stream.LT( 3 ) ).Type );
-            assertEquals( TokenTypes.Down, ( (ITree)stream.LT( 4 ) ).Type );
-            assertEquals( 103, ( (ITree)stream.LT( 5 ) ).Type );
-            assertEquals( TokenTypes.Up, ( (ITree)stream.LT( 6 ) ).Type );
-            assertEquals( 104, ( (ITree)stream.LT( 7 ) ).Type );
-            assertEquals( TokenTypes.Up, ( (ITree)stream.LT( 8 ) ).Type );
-            assertEquals( TokenTypes.EndOfFile, ( (ITree)stream.LT( 9 ) ).Type );
+            Assert.AreEqual( 101, ( (ITree)stream.LT( 1 ) ).Type );
+            Assert.AreEqual( TokenTypes.Down, ( (ITree)stream.LT( 2 ) ).Type );
+            Assert.AreEqual( 102, ( (ITree)stream.LT( 3 ) ).Type );
+            Assert.AreEqual( TokenTypes.Down, ( (ITree)stream.LT( 4 ) ).Type );
+            Assert.AreEqual( 103, ( (ITree)stream.LT( 5 ) ).Type );
+            Assert.AreEqual( TokenTypes.Up, ( (ITree)stream.LT( 6 ) ).Type );
+            Assert.AreEqual( 104, ( (ITree)stream.LT( 7 ) ).Type );
+            Assert.AreEqual( TokenTypes.Up, ( (ITree)stream.LT( 8 ) ).Type );
+            Assert.AreEqual( TokenTypes.EndOfFile, ( (ITree)stream.LT( 9 ) ).Type );
             // check way ahead
-            assertEquals( TokenTypes.EndOfFile, ( (ITree)stream.LT( 100 ) ).Type );
+            Assert.AreEqual( TokenTypes.EndOfFile, ( (ITree)stream.LT( 100 ) ).Type );
         }
 
         [TestMethod]
@@ -206,7 +206,7 @@ namespace AntlrUnitTests
                 stream.LT( 1 );
                 stream.Consume();
             }
-            assertEquals( TokenTypes.EndOfFile, ( (ITree)stream.LT( 1 ) ).Type );
+            Assert.AreEqual( TokenTypes.EndOfFile, ( (ITree)stream.LT( 1 ) ).Type );
             stream.Rewind( m );      // REWIND
 
             // consume til end again :)
@@ -215,7 +215,7 @@ namespace AntlrUnitTests
                 stream.LT( 1 );
                 stream.Consume();
             }
-            assertEquals( TokenTypes.EndOfFile, ( (ITree)stream.LT( 1 ) ).Type );
+            Assert.AreEqual( TokenTypes.EndOfFile, ( (ITree)stream.LT( 1 ) ).Type );
         }
 
         [TestMethod]
@@ -239,7 +239,7 @@ namespace AntlrUnitTests
                 //System.out.println(((Tree)stream.LT(1)).getType());
                 stream.Consume();
             }
-            assertEquals( 107, ( (ITree)stream.LT( 1 ) ).Type );
+            Assert.AreEqual( 107, ( (ITree)stream.LT( 1 ) ).Type );
             stream.Mark(); // MARK
             stream.Consume(); // consume 107
             stream.Consume(); // consume UP
@@ -248,21 +248,21 @@ namespace AntlrUnitTests
             stream.Rewind();      // REWIND
             stream.Mark(); // keep saving nodes though
 
-            assertEquals( 107, ( (ITree)stream.LT( 1 ) ).Type );
+            Assert.AreEqual( 107, ( (ITree)stream.LT( 1 ) ).Type );
             stream.Consume();
-            assertEquals( TokenTypes.Up, ( (ITree)stream.LT( 1 ) ).Type );
+            Assert.AreEqual( TokenTypes.Up, ( (ITree)stream.LT( 1 ) ).Type );
             stream.Consume();
-            assertEquals( TokenTypes.Up, ( (ITree)stream.LT( 1 ) ).Type );
+            Assert.AreEqual( TokenTypes.Up, ( (ITree)stream.LT( 1 ) ).Type );
             stream.Consume();
-            assertEquals( 104, ( (ITree)stream.LT( 1 ) ).Type );
+            Assert.AreEqual( 104, ( (ITree)stream.LT( 1 ) ).Type );
             stream.Consume();
             // now we're past rewind position
-            assertEquals( 105, ( (ITree)stream.LT( 1 ) ).Type );
+            Assert.AreEqual( 105, ( (ITree)stream.LT( 1 ) ).Type );
             stream.Consume();
-            assertEquals( TokenTypes.Up, ( (ITree)stream.LT( 1 ) ).Type );
+            Assert.AreEqual( TokenTypes.Up, ( (ITree)stream.LT( 1 ) ).Type );
             stream.Consume();
-            assertEquals( TokenTypes.EndOfFile, ( (ITree)stream.LT( 1 ) ).Type );
-            assertEquals( TokenTypes.Up, ( (ITree)stream.LT( -1 ) ).Type );
+            Assert.AreEqual( TokenTypes.EndOfFile, ( (ITree)stream.LT( 1 ) ).Type );
+            Assert.AreEqual( TokenTypes.Up, ( (ITree)stream.LT( -1 ) ).Type );
         }
 
         [TestMethod]
@@ -290,19 +290,19 @@ namespace AntlrUnitTests
             stream.Consume(); // consume 103
             stream.Consume(); // consume 106
             stream.Rewind( m2 );      // REWIND to 102
-            assertEquals( 102, ( (ITree)stream.LT( 1 ) ).Type );
+            Assert.AreEqual( 102, ( (ITree)stream.LT( 1 ) ).Type );
             stream.Consume();
-            assertEquals( TokenTypes.Down, ( (ITree)stream.LT( 1 ) ).Type );
+            Assert.AreEqual( TokenTypes.Down, ( (ITree)stream.LT( 1 ) ).Type );
             stream.Consume();
             // stop at 103 and rewind to start
             stream.Rewind( m ); // REWIND to 101
-            assertEquals( 101, ( (ITree)stream.LT( 1 ) ).Type );
+            Assert.AreEqual( 101, ( (ITree)stream.LT( 1 ) ).Type );
             stream.Consume();
-            assertEquals( TokenTypes.Down, ( (ITree)stream.LT( 1 ) ).Type );
+            Assert.AreEqual( TokenTypes.Down, ( (ITree)stream.LT( 1 ) ).Type );
             stream.Consume();
-            assertEquals( 102, ( (ITree)stream.LT( 1 ) ).Type );
+            Assert.AreEqual( 102, ( (ITree)stream.LT( 1 ) ).Type );
             stream.Consume();
-            assertEquals( TokenTypes.Down, ( (ITree)stream.LT( 1 ) ).Type );
+            Assert.AreEqual( TokenTypes.Down, ( (ITree)stream.LT( 1 ) ).Type );
         }
 
         [TestMethod]
@@ -322,11 +322,11 @@ namespace AntlrUnitTests
 
             ITreeNodeStream stream = newStream( r0 );
             stream.Seek( 7 );   // seek to 107
-            assertEquals( 107, ( (ITree)stream.LT( 1 ) ).Type );
+            Assert.AreEqual( 107, ( (ITree)stream.LT( 1 ) ).Type );
             stream.Consume(); // consume 107
             stream.Consume(); // consume UP
             stream.Consume(); // consume UP
-            assertEquals( 104, ( (ITree)stream.LT( 1 ) ).Type );
+            Assert.AreEqual( 104, ( (ITree)stream.LT( 1 ) ).Type );
         }
 
         public string ToNodesOnlyString( ITreeNodeStream nodes )

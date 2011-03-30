@@ -1536,7 +1536,7 @@ namespace AntlrUnitTests
             //a.SetAttribute("name", "Terence");
             b.SetAttribute( "name", "Terence" );
             string expecting = "<b>Terence Parr</b>";
-            //assertEquals(a.toString(), expecting);
+            //Assert.AreEqual(a.toString(), expecting);
             Assert.AreEqual( b.ToString(), expecting );
         }
 
@@ -1550,7 +1550,7 @@ namespace AntlrUnitTests
             //a.SetAttribute("name", "Terence");
             b.SetAttribute( "name", "Terence" );
             string expecting = "<b>Terence Parr</b>";
-            //assertEquals(expecting, a.toString());
+            //Assert.AreEqual(expecting, a.toString());
             Assert.AreEqual( expecting, b.ToString() );
         }
 
@@ -1564,7 +1564,7 @@ namespace AntlrUnitTests
             //a.SetAttribute("name", "Terence");
             b.SetAttribute( "name", "Terence" );
             string expecting = "<b>Terence Parr=</b>";
-            //assertEquals(expecting, a.toString());
+            //Assert.AreEqual(expecting, a.toString());
             Assert.AreEqual( expecting, b.ToString() );
         }
 
@@ -1971,7 +1971,7 @@ namespace AntlrUnitTests
         [TestMethod]
         public void TestObjectPropertyReference()
         {
-            //assertEquals(expecting, t.toString());
+            //Assert.AreEqual(expecting, t.toString());
             StringTemplateGroup group =
                     new StringTemplateGroup( "dummy", "." );
             StringTemplate t =

@@ -52,7 +52,7 @@ namespace AntlrUnitTests
             CommonTree t = (CommonTree)wiz.Create( "ID" );
             string found = t.ToStringTree();
             string expecting = "ID";
-            assertEquals( expecting, found );
+            Assert.AreEqual( expecting, found );
         }
 
         [TestMethod]
@@ -61,7 +61,7 @@ namespace AntlrUnitTests
             CommonTree t = (CommonTree)wiz.Create( "ID[foo]" );
             string found = t.ToStringTree();
             string expecting = "foo";
-            assertEquals( expecting, found );
+            Assert.AreEqual( expecting, found );
         }
 
         [TestMethod]
@@ -70,7 +70,7 @@ namespace AntlrUnitTests
             CommonTree t = (CommonTree)wiz.Create( "(A)" );
             string found = t.ToStringTree();
             string expecting = "A";
-            assertEquals( expecting, found );
+            Assert.AreEqual( expecting, found );
         }
 
         [TestMethod]
@@ -79,7 +79,7 @@ namespace AntlrUnitTests
             CommonTree t = (CommonTree)wiz.Create( "(A B C D)" );
             string found = t.ToStringTree();
             string expecting = "(A B C D)";
-            assertEquals( expecting, found );
+            Assert.AreEqual( expecting, found );
         }
 
         [TestMethod]
@@ -88,14 +88,14 @@ namespace AntlrUnitTests
             CommonTree t = (CommonTree)wiz.Create( "(nil A B C)" );
             string found = t.ToStringTree();
             string expecting = "A B C";
-            assertEquals( expecting, found );
+            Assert.AreEqual( expecting, found );
         }
 
         [TestMethod]
         public void TestInvalidListTree() /*throws Exception*/ {
             TreeWizard wiz = new TreeWizard( adaptor, tokens );
             CommonTree t = (CommonTree)wiz.Create( "A B C" );
-            assertTrue( t == null );
+            Assert.IsTrue( t == null );
         }
 
         [TestMethod]
@@ -104,7 +104,7 @@ namespace AntlrUnitTests
             CommonTree t = (CommonTree)wiz.Create( "(A (B C) (B D) E)" );
             string found = t.ToStringTree();
             string expecting = "(A (B C) (B D) E)";
-            assertEquals( expecting, found );
+            Assert.AreEqual( expecting, found );
         }
 
         [TestMethod]
@@ -114,7 +114,7 @@ namespace AntlrUnitTests
             var m = wiz.Index( t );
             string found = m.ToElementString();
             string expecting = "{10=[ID]}";
-            assertEquals( expecting, found );
+            Assert.AreEqual( expecting, found );
         }
 
         [TestMethod]
@@ -124,7 +124,7 @@ namespace AntlrUnitTests
             var m = wiz.Index( t );
             string found = sortMapToString( m );
             string expecting = "{5=[A], 6=[B], 7=[C], 8=[D]}";
-            assertEquals( expecting, found );
+            Assert.AreEqual( expecting, found );
         }
 
         [TestMethod]
@@ -134,7 +134,7 @@ namespace AntlrUnitTests
             var m = wiz.Index( t );
             string found = sortMapToString( m );
             string expecting = "{5=[A, A], 6=[B, B, B], 7=[C], 8=[D, D]}";
-            assertEquals( expecting, found );
+            Assert.AreEqual( expecting, found );
         }
 
         class testNoRepeatsVisit_TreeWizard_Visitor : TreeWizard.Visitor
@@ -160,7 +160,7 @@ namespace AntlrUnitTests
             wiz.Visit( t, wiz.GetTokenType( "B" ), new testNoRepeatsVisit_TreeWizard_Visitor( elements ) );
             string found = elements.ToElementString();
             string expecting = "[B]";
-            assertEquals( expecting, found );
+            Assert.AreEqual( expecting, found );
         }
 
         [TestMethod]
@@ -172,7 +172,7 @@ namespace AntlrUnitTests
                           new testNoRepeatsVisit_TreeWizard_Visitor( elements ) );
             string found = elements.ToElementString();
             string expecting = "[C]";
-            assertEquals( expecting, found );
+            Assert.AreEqual( expecting, found );
         }
 
         [TestMethod]
@@ -184,7 +184,7 @@ namespace AntlrUnitTests
                            new testNoRepeatsVisit_TreeWizard_Visitor( elements ) );
             string found = elements.ToElementString();
             string expecting = "[B, B, B]";
-            assertEquals( expecting, found );
+            Assert.AreEqual( expecting, found );
         }
 
         [TestMethod]
@@ -196,7 +196,7 @@ namespace AntlrUnitTests
                            new testNoRepeatsVisit_TreeWizard_Visitor( elements ) );
             string found = elements.ToElementString();
             string expecting = "[A, A]";
-            assertEquals( expecting, found );
+            Assert.AreEqual( expecting, found );
         }
 
         class testRepeatsVisitWithContext_TreeWizard_Visitor : TreeWizard.Visitor
@@ -229,7 +229,7 @@ namespace AntlrUnitTests
                new testRepeatsVisitWithContext_TreeWizard_Visitor( elements ) );
             string found = elements.ToElementString();
             string expecting = "[B@A[0], B@A[1], B@A[2]]";
-            assertEquals( expecting, found );
+            Assert.AreEqual( expecting, found );
         }
 
         [TestMethod]
@@ -241,7 +241,7 @@ namespace AntlrUnitTests
                new testRepeatsVisitWithContext_TreeWizard_Visitor( elements ) );
             string found = elements.ToElementString();
             string expecting = "[A@nil[0], A@A[1]]";
-            assertEquals( expecting, found );
+            Assert.AreEqual( expecting, found );
         }
 
         [TestMethod]
@@ -253,7 +253,7 @@ namespace AntlrUnitTests
                            new testNoRepeatsVisit_TreeWizard_Visitor( elements ) );
             string found = elements.ToElementString();
             string expecting = "[A]"; // shouldn't match overall root, just (A B)
-            assertEquals( expecting, found );
+            Assert.AreEqual( expecting, found );
         }
 
         [TestMethod]
@@ -265,7 +265,7 @@ namespace AntlrUnitTests
                           new testRepeatsVisitWithContext_TreeWizard_Visitor( elements ) );
             string found = elements.ToElementString();
             string expecting = "[A@A[2], A@D[0]]"; // shouldn't match overall root, just (A B)
-            assertEquals( expecting, found );
+            Assert.AreEqual( expecting, found );
         }
 
         class testVisitPatternMultipleWithLabels_TreeWizard_Visitor : TreeWizard.IContextVisitor
@@ -295,7 +295,7 @@ namespace AntlrUnitTests
                           new testVisitPatternMultipleWithLabels_TreeWizard_Visitor( elements ) );
             string found = elements.ToElementString();
             string expecting = "[foo@A[2]foo&bar, big@D[0]big&dog]";
-            assertEquals( expecting, found );
+            Assert.AreEqual( expecting, found );
         }
 
         [TestMethod]
@@ -303,7 +303,7 @@ namespace AntlrUnitTests
             TreeWizard wiz = new TreeWizard( adaptor, tokens );
             CommonTree t = (CommonTree)wiz.Create( "(A B C)" );
             bool valid = wiz.Parse( t, "(A B C)" );
-            assertTrue( valid );
+            Assert.IsTrue( valid );
         }
 
         [TestMethod]
@@ -311,7 +311,7 @@ namespace AntlrUnitTests
             TreeWizard wiz = new TreeWizard( adaptor, tokens );
             CommonTree t = (CommonTree)wiz.Create( "A" );
             bool valid = wiz.Parse( t, "A" );
-            assertTrue( valid );
+            Assert.IsTrue( valid );
         }
 
         [TestMethod]
@@ -319,7 +319,7 @@ namespace AntlrUnitTests
             TreeWizard wiz = new TreeWizard( adaptor, tokens );
             CommonTree t = (CommonTree)wiz.Create( "(nil A B C)" );
             bool valid = wiz.Parse( t, "(nil A B C)" );
-            assertTrue( valid );
+            Assert.IsTrue( valid );
         }
 
         [TestMethod]
@@ -327,7 +327,7 @@ namespace AntlrUnitTests
             TreeWizard wiz = new TreeWizard( adaptor, tokens );
             CommonTree t = (CommonTree)wiz.Create( "(A B C)" );
             bool valid = wiz.Parse( t, "(A . .)" );
-            assertTrue( valid );
+            Assert.IsTrue( valid );
         }
 
         [TestMethod]
@@ -337,7 +337,7 @@ namespace AntlrUnitTests
             // C pattern has no text arg so despite [bar] in t, no need
             // to match text--check structure only.
             bool valid = wiz.Parse( t, "(A B[foo] C)" );
-            assertTrue( valid );
+            Assert.IsTrue( valid );
         }
 
         [TestMethod]
@@ -356,7 +356,7 @@ namespace AntlrUnitTests
             TreeWizard wiz = new TreeWizard( adaptor, tokens );
             CommonTree t = (CommonTree)wiz.Create( "(A B C)" );
             bool valid = wiz.Parse( t, "(A[foo] B C)" );
-            assertTrue( !valid ); // fails
+            Assert.IsTrue( !valid ); // fails
         }
 
         [TestMethod]
@@ -365,10 +365,10 @@ namespace AntlrUnitTests
             CommonTree t = (CommonTree)wiz.Create( "(A B C)" );
             IDictionary<string, object> labels = new Dictionary<string, object>();
             bool valid = wiz.Parse( t, "(%a:A %b:B %c:C)", labels );
-            assertTrue( valid );
-            assertEquals( "A", labels.get( "a" ).ToString() );
-            assertEquals( "B", labels.get( "b" ).ToString() );
-            assertEquals( "C", labels.get( "c" ).ToString() );
+            Assert.IsTrue( valid );
+            Assert.AreEqual( "A", labels.get( "a" ).ToString() );
+            Assert.AreEqual( "B", labels.get( "b" ).ToString() );
+            Assert.AreEqual( "C", labels.get( "c" ).ToString() );
         }
 
         [TestMethod]
@@ -377,9 +377,9 @@ namespace AntlrUnitTests
             CommonTree t = (CommonTree)wiz.Create( "(A B C)" );
             var labels = new Dictionary<string, object>();
             bool valid = wiz.Parse( t, "(A %b:. %c:.)", labels );
-            assertTrue( valid );
-            assertEquals( "B", labels.get( "b" ).ToString() );
-            assertEquals( "C", labels.get( "c" ).ToString() );
+            Assert.IsTrue( valid );
+            Assert.AreEqual( "B", labels.get( "b" ).ToString() );
+            Assert.AreEqual( "C", labels.get( "c" ).ToString() );
         }
 
         [TestMethod]
@@ -388,10 +388,10 @@ namespace AntlrUnitTests
             CommonTree t = (CommonTree)wiz.Create( "(A B[foo] C)" );
             var labels = new Dictionary<string, object>();
             bool valid = wiz.Parse( t, "(%a:A %b:B[foo] %c:C)", labels );
-            assertTrue( valid );
-            assertEquals( "A", labels.get( "a" ).ToString() );
-            assertEquals( "foo", labels.get( "b" ).ToString() );
-            assertEquals( "C", labels.get( "c" ).ToString() );
+            Assert.IsTrue( valid );
+            Assert.AreEqual( "A", labels.get( "a" ).ToString() );
+            Assert.AreEqual( "foo", labels.get( "b" ).ToString() );
+            Assert.AreEqual( "C", labels.get( "c" ).ToString() );
         }
 
         [TestMethod]
@@ -400,12 +400,12 @@ namespace AntlrUnitTests
             CommonTree t = (CommonTree)wiz.Create( "(A (B C) (D E))" );
             var labels = new Dictionary<string, object>();
             bool valid = wiz.Parse( t, "(%a:A (%b:B %c:C) (%d:D %e:E) )", labels );
-            assertTrue( valid );
-            assertEquals( "A", labels.get( "a" ).ToString() );
-            assertEquals( "B", labels.get( "b" ).ToString() );
-            assertEquals( "C", labels.get( "c" ).ToString() );
-            assertEquals( "D", labels.get( "d" ).ToString() );
-            assertEquals( "E", labels.get( "e" ).ToString() );
+            Assert.IsTrue( valid );
+            Assert.AreEqual( "A", labels.get( "a" ).ToString() );
+            Assert.AreEqual( "B", labels.get( "b" ).ToString() );
+            Assert.AreEqual( "C", labels.get( "c" ).ToString() );
+            Assert.AreEqual( "D", labels.get( "d" ).ToString() );
+            Assert.AreEqual( "E", labels.get( "e" ).ToString() );
         }
 
         [TestMethod]
@@ -414,7 +414,7 @@ namespace AntlrUnitTests
             CommonTree t1 = (CommonTree)wiz.Create( "(A B C)" );
             CommonTree t2 = (CommonTree)wiz.Create( "(A B C)" );
             bool same = TreeWizard.Equals( t1, t2, adaptor );
-            assertTrue( same );
+            Assert.IsTrue( same );
         }
 
         [TestMethod]
@@ -423,7 +423,7 @@ namespace AntlrUnitTests
             CommonTree t1 = (CommonTree)wiz.Create( "(A B[foo] C)" );
             CommonTree t2 = (CommonTree)wiz.Create( "(A B[foo] C)" );
             bool same = TreeWizard.Equals( t1, t2, adaptor );
-            assertTrue( same );
+            Assert.IsTrue( same );
         }
 
         [TestMethod]
@@ -432,7 +432,7 @@ namespace AntlrUnitTests
             CommonTree t1 = (CommonTree)wiz.Create( "(A B[foo] C)" );
             CommonTree t2 = (CommonTree)wiz.Create( "(A B C)" );
             bool same = TreeWizard.Equals( t1, t2, adaptor );
-            assertTrue( !same );
+            Assert.IsTrue( !same );
         }
 
         [TestMethod]
@@ -443,7 +443,7 @@ namespace AntlrUnitTests
             IList elements = subtrees;
             string found = elements.ToElementString();
             string expecting = "[foo, big]";
-            assertEquals( expecting, found );
+            Assert.AreEqual( expecting, found );
         }
 
     }

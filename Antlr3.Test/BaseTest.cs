@@ -64,9 +64,9 @@ namespace AntlrUnitTests
     {
         public readonly string jikes = null;
         public static readonly string pathSep = System.IO.Path.PathSeparator.ToString();
-        public readonly string RuntimeJar = Path.Combine( Environment.CurrentDirectory, @"..\..\antlr-3.1.1-runtime.jar" );
+        public readonly string RuntimeJar = Path.Combine( Environment.CurrentDirectory, @"..\..\antlr-runtime-3.3.jar" );
         public readonly string Runtime2Jar = Path.Combine( Environment.CurrentDirectory, @"..\..\antlr-2.7.7.jar" );
-        public readonly string StringTemplateJar = Path.Combine( Environment.CurrentDirectory, @"..\..\stringtemplate-3.1b1.jar" );
+        public readonly string StringTemplateJar = Path.Combine( Environment.CurrentDirectory, @"..\..\stringtemplate-3.2.1.jar" );
 
         private static string javaHome;
 
@@ -291,6 +291,7 @@ namespace AntlrUnitTests
                 classpathOption = "-bootclasspath";
             }
 
+            string inputFile = Path.Combine(tmpdir, fileName);
             string[] args = new string[]
                 {
                     /*compiler,*/
@@ -298,7 +299,7 @@ namespace AntlrUnitTests
                     tmpdir,
                     classpathOption,
                     tmpdir+pathSep+ClassPath,
-                    tmpdir+"/"+fileName
+                    inputFile
                 };
             string cmdLine = compiler + " -d " + tmpdir + " " + classpathOption + " " + '"'+tmpdir + pathSep + ClassPath+'"' + " " + fileName;
             //System.out.println("compile: "+cmdLine);
@@ -317,8 +318,8 @@ namespace AntlrUnitTests
                 //Process process =
                 //    Runtime.getRuntime().exec( args, null, outputDir );
 
-                StreamVacuum stdout = new StreamVacuum( process.StandardOutput );
-                StreamVacuum stderr = new StreamVacuum( process.StandardError );
+                StreamVacuum stdout = new StreamVacuum( process.StandardOutput, inputFile );
+                StreamVacuum stderr = new StreamVacuum( process.StandardError, inputFile );
                 stdout.start();
                 stderr.start();
                 process.WaitForExit();
@@ -584,10 +585,11 @@ namespace AntlrUnitTests
         {
             try
             {
+                string inputFile = Path.GetFullPath(Path.Combine(tmpdir, "input"));
                 string[] args = new string[] {
-				/*"java",*/ "-classpath", tmpdir+pathSep+ClassPath,
-				"Test", System.IO.Path.GetFullPath( System.IO.Path.Combine( tmpdir, "input") )
-			};
+                        /*"java",*/ "-classpath", tmpdir+pathSep+ClassPath,
+                        "Test", inputFile
+                    };
                 //String cmdLine = "java -classpath " + CLASSPATH + pathSep + tmpdir + " Test " + Path.GetFullPath( Path.Combine( tmpdir, "input" ) );
                 //System.out.println("execParser: "+cmdLine);
 
@@ -602,8 +604,8 @@ namespace AntlrUnitTests
 
                 //Process process =
                 //    Runtime.getRuntime().exec( args, null, new File( tmpdir ) );
-                StreamVacuum stdoutVacuum = new StreamVacuum(process.StandardOutput);
-                StreamVacuum stderrVacuum = new StreamVacuum(process.StandardError);
+                StreamVacuum stdoutVacuum = new StreamVacuum(process.StandardOutput, inputFile);
+                StreamVacuum stderrVacuum = new StreamVacuum(process.StandardError, inputFile);
                 stdoutVacuum.start();
                 stderrVacuum.start();
                 process.WaitForExit();
@@ -685,7 +687,7 @@ namespace AntlrUnitTests
                     System.out.println(equeue.infos);
                     System.out.println(equeue.warnings);
                     System.out.println(equeue.errors);
-                    assertTrue("number of errors mismatch", n, equeue.errors.size());
+                    Assert.IsTrue("number of errors mismatch", n, equeue.errors.size());
                                */
             Message foundMsg = null;
             for ( int i = 0; i < equeue.errors.Count; i++ )
@@ -738,15 +740,15 @@ namespace AntlrUnitTests
                     foundMsg = m;
                 }
             }
-            assertTrue( "no error; " + expectedMessage.msgID + " expected", equeue.errors.Count > 0 );
-            assertTrue( "too many errors; " + equeue.errors, equeue.errors.Count <= 1 );
-            assertNotNull( "couldn't find expected error: " + expectedMessage.msgID, foundMsg );
+            Assert.IsTrue(equeue.errors.Count > 0, "no error; " + expectedMessage.msgID + " expected");
+            Assert.IsTrue(equeue.errors.Count <= 1, "too many errors; " + equeue.errors);
+            Assert.IsNotNull(foundMsg, "couldn't find expected error: " + expectedMessage.msgID);
             /*
-            assertTrue("error is not a GrammarSemanticsMessage",
+            Assert.IsTrue("error is not a GrammarSemanticsMessage",
                        foundMsg instanceof GrammarSemanticsMessage);
              */
-            assertEquals( expectedMessage.arg, foundMsg.arg );
-            assertEquals( expectedMessage.arg2, foundMsg.arg2 );
+            Assert.AreEqual( expectedMessage.arg, foundMsg.arg );
+            Assert.AreEqual( expectedMessage.arg2, foundMsg.arg2 );
             ErrorManager.ResetErrorState(); // wack errors for next test
         }
 
@@ -755,9 +757,11 @@ namespace AntlrUnitTests
             StringBuilder buf = new StringBuilder();
             System.IO.TextReader @in;
             System.Threading.Thread sucker;
-            public StreamVacuum( System.IO.StreamReader @in )
+            string inputFile;
+            public StreamVacuum( System.IO.StreamReader @in, string inputFile )
             {
                 this.@in = @in;
+                this.inputFile = inputFile;
             }
             public void start()
             {
@@ -771,6 +775,9 @@ namespace AntlrUnitTests
                     string line = @in.ReadLine();
                     while ( line != null )
                     {
+                        if (line.StartsWith(inputFile))
+                            line = line.Substring(inputFile.Length + 1);
+
                         buf.AppendLine( line );
                         //buf.append( '\n' );
                         line = @in.ReadLine();
@@ -1147,51 +1154,6 @@ namespace AntlrUnitTests
 
             Console.Out.WriteLine( "Tree map looks like: " + nset.ToElementString() );
             return nset.ToElementString();
-        }
-
-        protected static void assertEquals<T>( T expecting, T found )
-        {
-            Assert.AreEqual( expecting, found );
-        }
-
-        protected static void assertEquals<T>( string message, T expecting, T found )
-        {
-            Assert.AreEqual( expecting, found, message );
-        }
-
-        protected static void assertFalse( string message, bool condition )
-        {
-            Assert.IsFalse( condition, message );
-        }
-
-        protected static void assertTrue( bool condition )
-        {
-            Assert.IsTrue( condition );
-        }
-
-        protected static void assertTrue( string message, bool condition )
-        {
-            Assert.IsTrue( condition, message );
-        }
-
-        protected static void assertNotNull( object value )
-        {
-            Assert.IsNotNull( value );
-        }
-
-        protected static void assertNotNull( string message, object value )
-        {
-            Assert.IsNotNull( value, message );
-        }
-
-        protected static void assertNull( object value )
-        {
-            Assert.IsNull( value );
-        }
-
-        protected static void assertNull( string message, object value )
-        {
-            Assert.IsNull( value, message );
         }
 
         public class FilteringTokenStream : CommonTokenStream

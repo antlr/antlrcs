@@ -91,10 +91,10 @@ namespace AntlrUnitTests
             Interpreter engine = new Interpreter( g, new ANTLRStringStream( "a" ) );
             engine = new Interpreter( g, new ANTLRStringStream( "b" ) );
             IToken result = engine.Scan( "A" );
-            assertEquals( result.Type, Atype );
+            Assert.AreEqual( result.Type, Atype );
             engine = new Interpreter( g, new ANTLRStringStream( "c" ) );
             result = engine.Scan( "A" );
-            assertEquals( result.Type, Atype );
+            Assert.AreEqual( result.Type, Atype );
         }
 
         [TestMethod]
@@ -106,7 +106,7 @@ namespace AntlrUnitTests
             int Atype = g.GetTokenType( "A" );
             Interpreter engine = new Interpreter( g, new ANTLRStringStream( "abc" ) ); // should ignore the x
             IToken result = engine.Scan( "A" );
-            assertEquals( result.Type, Atype );
+            Assert.AreEqual( result.Type, Atype );
         }
 
         [TestMethod]
@@ -118,10 +118,10 @@ namespace AntlrUnitTests
             int INTtype = g.GetTokenType( "INT" );
             Interpreter engine = new Interpreter( g, new ANTLRStringStream( "12x" ) ); // should ignore the x
             IToken result = engine.Scan( "INT" );
-            assertEquals( result.Type, INTtype );
+            Assert.AreEqual( result.Type, INTtype );
             engine = new Interpreter( g, new ANTLRStringStream( "1234" ) );
             result = engine.Scan( "INT" );
-            assertEquals( result.Type, INTtype );
+            Assert.AreEqual( result.Type, INTtype );
         }
 
         [TestMethod]
@@ -134,22 +134,22 @@ namespace AntlrUnitTests
             IToken result = engine.Scan( "A" );
             engine = new Interpreter( g, new ANTLRStringStream( "a" ) );
             result = engine.Scan( "A" );
-            assertEquals( result.Type, Atype );
+            Assert.AreEqual( result.Type, Atype );
             engine = new Interpreter( g, new ANTLRStringStream( "1234" ) );
             result = engine.Scan( "A" );
-            assertEquals( result.Type, Atype );
+            Assert.AreEqual( result.Type, Atype );
             engine = new Interpreter( g, new ANTLRStringStream( "aaa" ) );
             result = engine.Scan( "A" );
-            assertEquals( result.Type, Atype );
+            Assert.AreEqual( result.Type, Atype );
             engine = new Interpreter( g, new ANTLRStringStream( "aaaa9" ) );
             result = engine.Scan( "A" );
-            assertEquals( result.Type, Atype );
+            Assert.AreEqual( result.Type, Atype );
             engine = new Interpreter( g, new ANTLRStringStream( "b" ) );
             result = engine.Scan( "A" );
-            assertEquals( result.Type, Atype );
+            Assert.AreEqual( result.Type, Atype );
             engine = new Interpreter( g, new ANTLRStringStream( "baa" ) );
             result = engine.Scan( "A" );
-            assertEquals( result.Type, Atype );
+            Assert.AreEqual( result.Type, Atype );
         }
 
         [TestMethod]

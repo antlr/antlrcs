@@ -56,7 +56,7 @@ namespace AntlrUnitTests
                 rawGenerateAndBuildRecognizer(
                     "T.g", grammar, "TParser", null, false );
             bool expecting = true; // should be ok
-            assertEquals( expecting, found );
+            Assert.AreEqual( expecting, found );
         }
 
         [TestMethod]
@@ -71,7 +71,7 @@ namespace AntlrUnitTests
                 rawGenerateAndBuildRecognizer(
                     "T.g", grammar, null, "T", false );
             bool expecting = true; // should be ok
-            assertEquals( expecting, found );
+            Assert.AreEqual( expecting, found );
         }
 
         [TestMethod]
@@ -85,7 +85,7 @@ namespace AntlrUnitTests
                 "  ; \n";
             string found = execParser( "T.g", grammar, "TParser", "TLexer",
                                       "a", "x", false );
-            assertEquals( "x" + NewLine, found );
+            Assert.AreEqual( "x" + NewLine, found );
         }
 
         [TestMethod]
@@ -99,7 +99,7 @@ namespace AntlrUnitTests
                 "  ; \n";
             string found = execParser( "T.g", grammar, "TParser", "TLexer",
                                       "a", "x", false );
-            assertEquals( "x" + NewLine, found );
+            Assert.AreEqual( "x" + NewLine, found );
         }
 
         [TestMethod]
@@ -113,7 +113,7 @@ namespace AntlrUnitTests
                 "  ; \n";
             string found = execParser( "T.g", grammar, "TParser", "TLexer",
                                       "a", "x", false );
-            assertEquals( "x" + NewLine, found );
+            Assert.AreEqual( "x" + NewLine, found );
         }
 
         [TestMethod]
@@ -126,7 +126,7 @@ namespace AntlrUnitTests
                 rawGenerateAndBuildRecognizer(
                     "T.g", grammar, "TParser", "TLexer", false );
             bool expecting = true; // should be ok
-            assertEquals( expecting, found );
+            Assert.AreEqual( expecting, found );
         }
 
         [TestMethod]
@@ -143,7 +143,7 @@ namespace AntlrUnitTests
                 rawGenerateAndBuildRecognizer(
                     "T.g", grammar, null, "T", false );
             bool expecting = true; // should be ok
-            assertEquals( expecting, found );
+            Assert.AreEqual( expecting, found );
         }
 
         [TestMethod]

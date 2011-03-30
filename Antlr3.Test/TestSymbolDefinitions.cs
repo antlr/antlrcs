@@ -135,7 +135,7 @@ namespace AntlrUnitTests
             string[] literals = new string[] { "'x'" };
 
             var foundLiterals = g.StringLiterals;
-            assertTrue( literals.SequenceEqual(foundLiterals) );
+            Assert.IsTrue( literals.SequenceEqual(foundLiterals) );
 
             string implicitLexer =
                 "lexer grammar t;" + NewLine +
@@ -144,7 +144,7 @@ namespace AntlrUnitTests
                 "" + NewLine +
                 "// $ANTLR src \"<string>\" 3" + NewLine +
                 "E: 'x' '0' ;";
-            assertEquals( implicitLexer, g.GetLexerGrammar() );
+            Assert.AreEqual( implicitLexer, g.GetLexerGrammar() );
         }
 
         [TestMethod]
@@ -204,7 +204,7 @@ namespace AntlrUnitTests
                     "a : '\\n';\n" );
             var literals = g.StringLiterals;
             // must store literals how they appear in the antlr grammar
-            assertEquals( "'\\n'", literals.ToArray()[0] );
+            Assert.AreEqual( "'\\n'", literals.ToArray()[0] );
         }
 
         [TestMethod]
@@ -220,7 +220,7 @@ namespace AntlrUnitTests
                 "WS : (' '|'\\n') {$channel=HIDDEN;} ;";
             string found = execParser( "P.g", grammar, "PParser", "PLexer",
                                       "a", "a}", false );
-            assertEquals( "a}" + NewLine, found );
+            Assert.AreEqual( "a}" + NewLine, found );
         }
 
         [TestMethod]
@@ -236,7 +236,7 @@ namespace AntlrUnitTests
                 "WS : (' '|'\\n') {$channel=HIDDEN;} ;";
             string found = execParser( "P.g", grammar, "PParser", "PLexer",
                                       "a", "a}", false );
-            assertEquals( "a}" + NewLine, found );
+            Assert.AreEqual( "a}" + NewLine, found );
         }
 
 
@@ -257,9 +257,9 @@ namespace AntlrUnitTests
             g.CodeGenerator = generator;
             StringTemplate recogST = generator.GenRecognizer();
             string code = recogST.ToString();
-            assertTrue( "not expecting label", code.IndexOf( "x=b();" ) < 0 );
+            Assert.IsTrue(code.IndexOf("x=b();") < 0, "not expecting label");
 
-            assertEquals( "unexpected errors: " + equeue, 0, equeue.errors.Count );
+            Assert.AreEqual(0, equeue.errors.Count, "unexpected errors: " + equeue);
         }
 
         // T E S T  E R R O R S
@@ -463,7 +463,7 @@ namespace AntlrUnitTests
             Grammar g = new Grammar(
                     "parser grammar t;\n" +
                     "x : ID ;" );
-            assertEquals( "should not be an error", 0, equeue.errors.Count );
+            Assert.AreEqual(0, equeue.errors.Count, "should not be an error");
         }
 
         [TestMethod]
@@ -855,13 +855,13 @@ namespace AntlrUnitTests
             string expectedStringLiteralToTypeMap = "{';'=4}";
             string expectedTypeToTokenList = "[SEMI]";
 
-            assertEquals( expectedTokenIDToTypeMap,
+            Assert.AreEqual( expectedTokenIDToTypeMap,
                          realElements( g.composite.tokenIDToTypeMap ).ToElementString() );
-            assertEquals( expectedStringLiteralToTypeMap, g.composite.stringLiteralToTypeMap.ToElementString() );
-            assertEquals( expectedTypeToTokenList,
+            Assert.AreEqual( expectedStringLiteralToTypeMap, g.composite.stringLiteralToTypeMap.ToElementString() );
+            Assert.AreEqual( expectedTypeToTokenList,
                          realElements( g.composite.typeToTokenList ).ToElementString() );
 
-            assertEquals( "unexpected errors: " + equeue, 0, equeue.errors.Count );
+            Assert.AreEqual(0, equeue.errors.Count, "unexpected errors: " + equeue);
         }
 
         [TestMethod]
@@ -888,13 +888,13 @@ namespace AntlrUnitTests
             string expectedStringLiteralToTypeMap = "{';'=4}";
             string expectedTypeToTokenList = "[SEMI]";
 
-            assertEquals( expectedTokenIDToTypeMap,
+            Assert.AreEqual( expectedTokenIDToTypeMap,
                          realElements( g.composite.tokenIDToTypeMap ).ToElementString() );
-            assertEquals( expectedStringLiteralToTypeMap, g.composite.stringLiteralToTypeMap.ToElementString() );
-            assertEquals( expectedTypeToTokenList,
+            Assert.AreEqual( expectedStringLiteralToTypeMap, g.composite.stringLiteralToTypeMap.ToElementString() );
+            Assert.AreEqual( expectedTypeToTokenList,
                          realElements( g.composite.typeToTokenList ).ToElementString() );
 
-            assertEquals( "unexpected errors: " + equeue, 0, equeue.errors.Count );
+            Assert.AreEqual(0, equeue.errors.Count, "unexpected errors: " + equeue);
         }
 
         protected void checkPlusEqualsLabels( Grammar g,
@@ -927,19 +927,19 @@ namespace AntlrUnitTests
                     ruleLabels.Add( labelName );
                 }
             }
-            assertTrue( "token += labels mismatch; " + tokenLabels + "!=" + r.tokenListLabels,
-                       ( tokenLabels != null && r.tokenListLabels != null ) ||
-                       ( tokenLabels == null && r.tokenListLabels == null ) );
-            assertTrue( "rule += labels mismatch; " + ruleLabels + "!=" + r.ruleListLabels,
-                       ( ruleLabels != null && r.ruleListLabels != null ) ||
-                       ( ruleLabels == null && r.ruleListLabels == null ) );
+            Assert.IsTrue((tokenLabels != null && r.tokenListLabels != null) ||
+                       (tokenLabels == null && r.tokenListLabels == null),
+                       "token += labels mismatch; " + tokenLabels + "!=" + r.tokenListLabels);
+            Assert.IsTrue((ruleLabels != null && r.ruleListLabels != null) ||
+                       (ruleLabels == null && r.ruleListLabels == null),
+                       "rule += labels mismatch; " + ruleLabels + "!=" + r.ruleListLabels);
             if ( tokenLabels != null )
             {
-                assertTrue( tokenLabels.SequenceEqual( r.tokenListLabels.Keys ) );
+                Assert.IsTrue( tokenLabels.SequenceEqual( r.tokenListLabels.Keys ) );
             }
             if ( ruleLabels != null )
             {
-                assertTrue( ruleLabels.SequenceEqual( r.ruleListLabels.Keys ) );
+                Assert.IsTrue( ruleLabels.SequenceEqual( r.ruleListLabels.Keys ) );
             }
         }
 
@@ -956,8 +956,7 @@ namespace AntlrUnitTests
             foreach ( string tokenName in tokensStr.Split( new string[] { ", " }, StringSplitOptions.RemoveEmptyEntries ) )
             {
                 //String tokenName = st.nextToken();
-                assertTrue( "token " + tokenName + " expected",
-                           g.GetTokenType( tokenName ) != Label.INVALID );
+                Assert.IsTrue(g.GetTokenType(tokenName) != Label.INVALID, "token " + tokenName + " expected");
                 tokens.Remove( tokenName );
             }
             // make sure there are not any others (other than <EOF> etc...)
@@ -973,13 +972,13 @@ namespace AntlrUnitTests
             foreach ( string ruleName in rulesStr.Split( new string[] { ", " }, StringSplitOptions.RemoveEmptyEntries ) )
             {
                 //String ruleName = st.nextToken();
-                assertNotNull( "rule " + ruleName + " expected", g.GetRule( ruleName ) );
+                Assert.IsNotNull(g.GetRule(ruleName), "rule " + ruleName + " expected");
                 n++;
             }
             var rules = g.Rules;
             //System.out.println("rules="+rules);
             // make sure there are no extra rules
-            assertEquals( "number of rules mismatch; expecting " + n + "; found " + rules.Count, n, rules.Count );
+            Assert.AreEqual(n, rules.Count, "number of rules mismatch; expecting " + n + "; found " + rules.Count);
 
         }
 

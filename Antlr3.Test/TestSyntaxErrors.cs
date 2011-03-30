@@ -50,7 +50,7 @@ namespace AntlrUnitTests
                 ";\n" +
                 "q : 'e' ;\n";
             string found = execParser("T.g", grammar, "TParser", "TLexer", "a", "ae", false);
-            string expecting = "input line 1:1 no viable alternative at input 'e'" + NewLine;
+            string expecting = "line 1:1 no viable alternative at input 'e'" + NewLine;
             string result = Regex.Replace(stderrDuringParse, ".*?/input ", "input ");
             Assert.AreEqual(expecting, result);
         }
@@ -66,7 +66,7 @@ namespace AntlrUnitTests
                 "q : 'e' ;\n";
             Console.WriteLine(grammar);
             string found = execParser("T.g", grammar, "TParser", "TLexer", "a", "abe", false);
-            string expecting = "input line 1:2 no viable alternative at input 'e'" + NewLine;
+            string expecting = "line 1:2 no viable alternative at input 'e'" + NewLine;
             string result = Regex.Replace(stderrDuringParse, ".*?/input ", "input ");
             Assert.AreEqual(expecting, result);
         }
@@ -81,7 +81,7 @@ namespace AntlrUnitTests
                 ";\n" +
                 "q : 'e' ;\n";
             string found = execParser("T.g", grammar, "TParser", "TLexer", "a", "aaae", false);
-            string expecting = "input line 1:3 no viable alternative at input 'e'" + NewLine;
+            string expecting = "line 1:3 no viable alternative at input 'e'" + NewLine;
             string result = Regex.Replace(stderrDuringParse, ".*?/input ", "input ");
             Assert.AreEqual(expecting, result);
         }
@@ -100,7 +100,7 @@ namespace AntlrUnitTests
                 "  ;\n";
             Console.WriteLine(grammar);
             string found = execParser("T.g", grammar, "TParser", "TLexer", "a", "((i))z", false);
-            string expecting = "input line 1:0 no viable alternative at input '('" + NewLine;
+            string expecting = "line 1:0 no viable alternative at input '('" + NewLine;
             string result = Regex.Replace(stderrDuringParse, ".*?/input ", "input ");
             Assert.AreEqual(expecting, result);
         }

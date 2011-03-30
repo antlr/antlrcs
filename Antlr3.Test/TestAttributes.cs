@@ -78,7 +78,7 @@ namespace AntlrUnitTests
             StringTemplate actionST = new StringTemplate( templates, "<action>" );
             actionST.SetAttribute( "action", rawTranslation );
             string found = actionST.ToString();
-            assertEquals( expecting, found );
+            Assert.AreEqual( expecting, found );
         }
 
         [TestMethod]
@@ -105,7 +105,7 @@ namespace AntlrUnitTests
                 new StringTemplateGroup( ".", typeof( AngleBracketTemplateLexer ) );
             StringTemplate actionST = new StringTemplate( templates, rawTranslation );
             string found = actionST.ToString();
-            assertEquals( expecting, found );
+            Assert.AreEqual( expecting, found );
         }
 
         [TestMethod]
@@ -132,9 +132,9 @@ namespace AntlrUnitTests
                 new StringTemplateGroup( ".", typeof( AngleBracketTemplateLexer ) );
             StringTemplate actionST = new StringTemplate( templates, rawTranslation );
             string found = actionST.ToString();
-            assertEquals( expecting, found );
+            Assert.AreEqual( expecting, found );
 
-            assertEquals( "unexpected errors: " + equeue, 0, equeue.errors.Count );
+            Assert.AreEqual(0, equeue.errors.Count, "unexpected errors: " + equeue);
         }
 
         [TestMethod]
@@ -159,9 +159,9 @@ namespace AntlrUnitTests
             ActionTranslator translator = new ActionTranslator( generator, "a",
                                                                          new CommonToken( ANTLRParser.ACTION, action ), 1 );
             string rawTranslation = translator.Translate();
-            assertEquals( expecting, rawTranslation );
+            Assert.AreEqual( expecting, rawTranslation );
 
-            assertEquals( "unexpected errors: " + equeue, 0, equeue.errors.Count );
+            Assert.AreEqual(0, equeue.errors.Count, "unexpected errors: " + equeue);
         }
 
         [TestMethod]
@@ -182,15 +182,15 @@ namespace AntlrUnitTests
             Rule r = g.GetRule( "a" );
             AttributeScope parameters = r.parameterScope;
             var attrs = parameters.Attributes;
-            assertEquals( "attribute mismatch", "String[] ick", attrs.ElementAt( 0 ).Decl.ToString() );
-            assertEquals( "parameter name mismatch", "ick", attrs.ElementAt( 0 ).Name );
-            assertEquals( "declarator mismatch", "String[]", attrs.ElementAt( 0 ).Type );
+            Assert.AreEqual("String[] ick", attrs.ElementAt(0).Decl.ToString(), "attribute mismatch");
+            Assert.AreEqual("ick", attrs.ElementAt(0).Name, "parameter name mismatch");
+            Assert.AreEqual("String[]", attrs.ElementAt(0).Type, "declarator mismatch");
 
-            assertEquals( "attribute mismatch", "int i", attrs.ElementAt( 1 ).Decl.ToString() );
-            assertEquals( "parameter name mismatch", "i", attrs.ElementAt( 1 ).Name );
-            assertEquals( "declarator mismatch", "int", attrs.ElementAt( 1 ).Type );
+            Assert.AreEqual("int i", attrs.ElementAt(1).Decl.ToString(), "attribute mismatch");
+            Assert.AreEqual("i", attrs.ElementAt(1).Name, "parameter name mismatch");
+            Assert.AreEqual("int", attrs.ElementAt(1).Type, "declarator mismatch");
 
-            assertEquals( "unexpected errors: " + equeue, 0, equeue.errors.Count );
+            Assert.AreEqual(0, equeue.errors.Count, "unexpected errors: " + equeue);
         }
 
         [TestMethod]
@@ -214,7 +214,7 @@ namespace AntlrUnitTests
             ActionTranslator translator = new ActionTranslator( generator, "a",
                                                                          new CommonToken( ANTLRParser.ACTION, action ), 1 );
             string rawTranslation = translator.Translate();
-            assertEquals( expecting, rawTranslation );
+            Assert.AreEqual( expecting, rawTranslation );
 
             //IList<String> expectArgs = new List<String>() {
             //    {add("34");}
@@ -235,10 +235,10 @@ namespace AntlrUnitTests
             } );
 
             List<string> actualArgs = CodeGenerator.GetListOfArgumentsFromAction( action, ',' );
-            //assertEquals( "args mismatch", expectArgs, actualArgs );
-            assertTrue( "args mismatch", expectArgs.SequenceEqual( actualArgs ) );
+            //Assert.AreEqual( "args mismatch", expectArgs, actualArgs );
+            Assert.IsTrue(expectArgs.SequenceEqual(actualArgs), "args mismatch");
 
-            assertEquals( "unexpected errors: " + equeue, 0, equeue.errors.Count );
+            Assert.AreEqual(0, equeue.errors.Count, "unexpected errors: " + equeue);
         }
 
         [TestMethod]
@@ -262,9 +262,9 @@ namespace AntlrUnitTests
             ActionTranslator translator = new ActionTranslator( generator, "a",
                                                                          new CommonToken( ANTLRParser.ACTION, action ), 1 );
             string rawTranslation = translator.Translate();
-            assertEquals( expecting, rawTranslation );
+            Assert.AreEqual( expecting, rawTranslation );
 
-            assertEquals( "unexpected errors: " + equeue, 0, equeue.errors.Count );
+            Assert.AreEqual(0, equeue.errors.Count, "unexpected errors: " + equeue);
         }
 
         [TestMethod]
@@ -289,9 +289,9 @@ namespace AntlrUnitTests
                                                                          new CommonToken( ANTLRParser.ACTION, action ), 1 );
             string rawTranslation =
                 translator.Translate();
-            assertEquals( expecting, rawTranslation );
+            Assert.AreEqual( expecting, rawTranslation );
 
-            assertEquals( "unexpected errors: " + equeue, 0, equeue.errors.Count );
+            Assert.AreEqual(0, equeue.errors.Count, "unexpected errors: " + equeue);
         }
 
         [TestMethod]
@@ -309,9 +309,9 @@ namespace AntlrUnitTests
             Grammar g = new Grammar( grammar );
             Rule ra = g.GetRule( "a" );
             var attrs = ra.parameterScope.Attributes;
-            assertEquals( "attribute mismatch", "HashMap<String,String> foo", attrs.ElementAt( 0 ).Decl.ToString() );
-            assertEquals( "parameter name mismatch", "foo", attrs.ElementAt( 0 ).Name );
-            assertEquals( "declarator mismatch", "HashMap<String,String>", attrs.ElementAt( 0 ).Type );
+            Assert.AreEqual("HashMap<String,String> foo", attrs.ElementAt(0).Decl.ToString(), "attribute mismatch");
+            Assert.AreEqual("foo", attrs.ElementAt(0).Name, "parameter name mismatch");
+            Assert.AreEqual("HashMap<String,String>", attrs.ElementAt(0).Type, "declarator mismatch");
 
             AntlrTool antlr = newTool();
             CodeGenerator generator = new CodeGenerator( antlr, g, "Java" );
@@ -325,9 +325,9 @@ namespace AntlrUnitTests
                 new StringTemplateGroup( ".", typeof( AngleBracketTemplateLexer ) );
             StringTemplate actionST = new StringTemplate( templates, rawTranslation );
             string found = actionST.ToString();
-            assertEquals( expecting, found );
+            Assert.AreEqual( expecting, found );
 
-            assertEquals( "unexpected errors: " + equeue, 0, equeue.errors.Count );
+            Assert.AreEqual(0, equeue.errors.Count, "unexpected errors: " + equeue);
         }
 
         [TestMethod]
@@ -346,17 +346,17 @@ namespace AntlrUnitTests
             Rule ra = g.GetRule( "a" );
             var attrs = ra.parameterScope.Attributes;
 
-            assertEquals( "attribute mismatch", "HashMap<String,String> foo", attrs.ElementAt( 0 ).Decl.ToString().Trim() );
-            assertEquals( "parameter name mismatch", "foo", attrs.ElementAt( 0 ).Name );
-            assertEquals( "declarator mismatch", "HashMap<String,String>", attrs.ElementAt( 0 ).Type );
+            Assert.AreEqual("HashMap<String,String> foo", attrs.ElementAt(0).Decl.ToString().Trim(), "attribute mismatch");
+            Assert.AreEqual("foo", attrs.ElementAt(0).Name, "parameter name mismatch");
+            Assert.AreEqual("HashMap<String,String>", attrs.ElementAt(0).Type, "declarator mismatch");
 
-            assertEquals( "attribute mismatch", "int x", attrs.ElementAt( 1 ).Decl.ToString().Trim() );
-            assertEquals( "parameter name mismatch", "x", attrs.ElementAt( 1 ).Name );
-            assertEquals( "declarator mismatch", "int", attrs.ElementAt( 1 ).Type );
+            Assert.AreEqual("int x", attrs.ElementAt(1).Decl.ToString().Trim(), "attribute mismatch");
+            Assert.AreEqual("x", attrs.ElementAt(1).Name, "parameter name mismatch");
+            Assert.AreEqual("int", attrs.ElementAt(1).Type, "declarator mismatch");
 
-            assertEquals( "attribute mismatch", "List<String> duh", attrs.ElementAt( 2 ).Decl.ToString().Trim() );
-            assertEquals( "parameter name mismatch", "duh", attrs.ElementAt( 2 ).Name );
-            assertEquals( "declarator mismatch", "List<String>", attrs.ElementAt( 2 ).Type );
+            Assert.AreEqual("List<String> duh", attrs.ElementAt(2).Decl.ToString().Trim(), "attribute mismatch");
+            Assert.AreEqual("duh", attrs.ElementAt(2).Name, "parameter name mismatch");
+            Assert.AreEqual("List<String>", attrs.ElementAt(2).Type, "declarator mismatch");
 
             AntlrTool antlr = newTool();
             CodeGenerator generator = new CodeGenerator( antlr, g, "Java" );
@@ -370,9 +370,9 @@ namespace AntlrUnitTests
                 new StringTemplateGroup( ".", typeof( AngleBracketTemplateLexer ) );
             StringTemplate actionST = new StringTemplate( templates, rawTranslation );
             string found = actionST.ToString();
-            assertEquals( expecting, found );
+            Assert.AreEqual( expecting, found );
 
-            assertEquals( "unexpected errors: " + equeue, 0, equeue.errors.Count );
+            Assert.AreEqual(0, equeue.errors.Count, "unexpected errors: " + equeue);
         }
 
         [TestMethod]
@@ -385,11 +385,11 @@ namespace AntlrUnitTests
             Grammar g = new Grammar( grammar );
             Rule ra = g.GetRule( "a" );
             var attrs = ra.returnScope.Attributes;
-            assertEquals( "attribute mismatch", "HashMap<String,String> foo", attrs.ElementAt( 0 ).Decl.ToString() );
-            assertEquals( "parameter name mismatch", "foo", attrs.ElementAt( 0 ).Name );
-            assertEquals( "declarator mismatch", "HashMap<String,String>", attrs.ElementAt( 0 ).Type );
+            Assert.AreEqual("HashMap<String,String> foo", attrs.ElementAt(0).Decl.ToString(), "attribute mismatch");
+            Assert.AreEqual("foo", attrs.ElementAt(0).Name, "parameter name mismatch");
+            Assert.AreEqual("HashMap<String,String>", attrs.ElementAt(0).Type, "declarator mismatch");
 
-            assertEquals( "unexpected errors: " + equeue, 0, equeue.errors.Count );
+            Assert.AreEqual(0, equeue.errors.Count, "unexpected errors: " + equeue);
         }
 
         [TestMethod]
@@ -419,9 +419,9 @@ namespace AntlrUnitTests
                 new StringTemplateGroup( ".", typeof( AngleBracketTemplateLexer ) );
             StringTemplate actionST = new StringTemplate( templates, rawTranslation );
             string found = actionST.ToString();
-            assertEquals( expecting, found );
+            Assert.AreEqual( expecting, found );
 
-            assertEquals( "unexpected errors: " + equeue, 0, equeue.errors.Count );
+            Assert.AreEqual(0, equeue.errors.Count, "unexpected errors: " + equeue);
         }
 
         /** $x.start refs are checked during translation not before so ANTLR misses
@@ -453,9 +453,9 @@ namespace AntlrUnitTests
                 new StringTemplateGroup( ".", typeof( AngleBracketTemplateLexer ) );
             StringTemplate actionST = new StringTemplate( templates, rawTranslation );
             string found = actionST.ToString();
-            assertEquals( expecting, found );
+            Assert.AreEqual( expecting, found );
 
-            assertEquals( "unexpected errors: " + equeue, 0, equeue.errors.Count );
+            Assert.AreEqual(0, equeue.errors.Count, "unexpected errors: " + equeue);
         }
 
         [TestMethod]
@@ -471,12 +471,18 @@ namespace AntlrUnitTests
             ErrorManager.SetErrorListener( equeue );
             Grammar g = new Grammar(
                 "parser grammar t;\n" +
-                "a : x=b {" + action + "} ;\n" +
+                "a : x=b {###" + action + "!!!} ;\n" +
                 "b : B ;\n" );
             AntlrTool antlr = newTool();
             CodeGenerator generator = new CodeGenerator( antlr, g, "Java" );
             g.CodeGenerator = generator;
             generator.GenRecognizer(); // forces load of templates
+            StringTemplate codeST = generator.RecognizerST;
+            string code = codeST.ToString();
+            string found = code.Substring(code.IndexOf("###") + 3, code.IndexOf("!!!") - code.IndexOf("###") - 3);
+            Assert.AreEqual(expecting, found);
+
+#if false
             ActionTranslator translator = new ActionTranslator( generator, "a",
                                                                          new CommonToken( ANTLRParser.ACTION, action ), 1 );
             string rawTranslation =
@@ -484,10 +490,12 @@ namespace AntlrUnitTests
             StringTemplateGroup templates =
                 new StringTemplateGroup( ".", typeof( AngleBracketTemplateLexer ) );
             StringTemplate actionST = new StringTemplate( templates, rawTranslation );
-            string found = actionST.ToString();
-            assertEquals( expecting, found );
+            string code = actionST.ToString();
+            string found = code.Substring(code.IndexOf("###") + 3, code.IndexOf("!!!") - code.IndexOf("###") - 2);
+            Assert.AreEqual( expecting, found );
+#endif
 
-            assertEquals( "unexpected errors: " + equeue, 0, equeue.errors.Count );
+            Assert.AreEqual(0, equeue.errors.Count, "unexpected errors: " + equeue);
         }
 
         [TestMethod]
@@ -513,7 +521,7 @@ namespace AntlrUnitTests
                 new StringTemplateGroup( ".", typeof( AngleBracketTemplateLexer ) );
             StringTemplate actionST = new StringTemplate( templates, rawTranslation );
             string found = actionST.ToString();
-            assertEquals( expecting, found );
+            Assert.AreEqual( expecting, found );
 
             int expectedMsgID = ErrorManager.MSG_UNKNOWN_SIMPLE_ATTRIBUTE;
             object expectedArg = "x";
@@ -549,9 +557,9 @@ namespace AntlrUnitTests
                 new StringTemplateGroup( ".", typeof( AngleBracketTemplateLexer ) );
             StringTemplate actionST = new StringTemplate( templates, rawTranslation );
             string found = actionST.ToString();
-            assertEquals( expecting, found );
+            Assert.AreEqual( expecting, found );
 
-            assertEquals( "unexpected errors: " + equeue, 0, equeue.errors.Count );
+            Assert.AreEqual(0, equeue.errors.Count, "unexpected errors: " + equeue);
         }
 
         [TestMethod]
@@ -581,9 +589,9 @@ namespace AntlrUnitTests
                 new StringTemplateGroup( ".", typeof( AngleBracketTemplateLexer ) );
             StringTemplate actionST = new StringTemplate( templates, rawTranslation );
             string found = actionST.ToString();
-            assertEquals( expecting, found );
+            Assert.AreEqual( expecting, found );
 
-            assertEquals( "unexpected errors: " + equeue, 0, equeue.errors.Count );
+            Assert.AreEqual(0, equeue.errors.Count, "unexpected errors: " + equeue);
         }
 
         [TestMethod]
@@ -610,9 +618,9 @@ namespace AntlrUnitTests
                 new StringTemplateGroup( ".", typeof( AngleBracketTemplateLexer ) );
             StringTemplate actionST = new StringTemplate( templates, rawTranslation );
             string found = actionST.ToString();
-            assertEquals( expecting, found );
+            Assert.AreEqual( expecting, found );
 
-            assertEquals( "unexpected errors: " + equeue, 0, equeue.errors.Count );
+            Assert.AreEqual(0, equeue.errors.Count, "unexpected errors: " + equeue);
         }
 
         /* regression test for ANTLR-46 */
@@ -654,11 +662,11 @@ namespace AntlrUnitTests
                         new StringTemplateGroup( ".", typeof( AngleBracketTemplateLexer ) );
                 StringTemplate actionST = new StringTemplate( templates, rawTranslation );
                 string found = actionST.ToString();
-                assertEquals( expecting, found );
+                Assert.AreEqual( expecting, found );
                 action = action2;
                 expecting = expecting2;
             } while ( i++ < 1 );
-            assertEquals( "unexpected errors: " + equeue, 0, equeue.errors.Count );
+            Assert.AreEqual(0, equeue.errors.Count, "unexpected errors: " + equeue);
         }
 
         [TestMethod]
@@ -683,7 +691,7 @@ namespace AntlrUnitTests
                 new StringTemplateGroup( ".", typeof( AngleBracketTemplateLexer ) );
             StringTemplate actionST = new StringTemplate( templates, rawTranslation );
             string found = actionST.ToString();
-            assertEquals( expecting, found );
+            Assert.AreEqual( expecting, found );
 
             int expectedMsgID = ErrorManager.MSG_UNKNOWN_SIMPLE_ATTRIBUTE;
             object expectedArg = "x";
@@ -717,9 +725,9 @@ namespace AntlrUnitTests
                 new StringTemplateGroup( ".", typeof( AngleBracketTemplateLexer ) );
             StringTemplate actionST = new StringTemplate( templates, rawTranslation );
             string found = actionST.ToString();
-            assertEquals( expecting, found );
+            Assert.AreEqual( expecting, found );
 
-            assertEquals( "unexpected errors: " + equeue, 0, equeue.errors.Count );
+            Assert.AreEqual(0, equeue.errors.Count, "unexpected errors: " + equeue);
         }
 
         [TestMethod]
@@ -748,9 +756,9 @@ namespace AntlrUnitTests
             int startIndex = code.IndexOf("###") + 3;
             int endIndex = code.IndexOf("!!!");
             string found = code.Substring( startIndex, endIndex - startIndex );
-            assertEquals( expecting, found );
+            Assert.AreEqual( expecting, found );
 
-            assertEquals( "unexpected errors: " + equeue, 0, equeue.errors.Count );
+            Assert.AreEqual(0, equeue.errors.Count, "unexpected errors: " + equeue);
         }
 
         [TestMethod]
@@ -767,7 +775,7 @@ namespace AntlrUnitTests
             generator.GenRecognizer();
 
             // error(132): <string>:2:9: reference $a is ambiguous; rule a is enclosing rule and referenced in the production
-            assertEquals( "unexpected errors: " + equeue, 1, equeue.errors.Count );
+            Assert.AreEqual(1, equeue.errors.Count, "unexpected errors: " + equeue);
         }
 
         [TestMethod]
@@ -796,9 +804,9 @@ namespace AntlrUnitTests
             int startIndex = code.IndexOf("###") + 3;
             int endIndex = code.IndexOf("!!!");
             string found = code.Substring( startIndex, endIndex - startIndex );
-            assertEquals( expecting, found );
+            Assert.AreEqual( expecting, found );
 
-            assertEquals( "unexpected errors: " + equeue, 0, equeue.errors.Count );
+            Assert.AreEqual(0, equeue.errors.Count, "unexpected errors: " + equeue);
         }
 
         [TestMethod]
@@ -825,9 +833,9 @@ namespace AntlrUnitTests
             int startIndex = code.IndexOf("###") + 3;
             int endIndex = code.IndexOf("!!!");
             string found = code.Substring(startIndex, endIndex - startIndex);
-            assertEquals( expecting, found );
+            Assert.AreEqual( expecting, found );
 
-            assertEquals( "unexpected errors: " + equeue, 0, equeue.errors.Count );
+            Assert.AreEqual(0, equeue.errors.Count, "unexpected errors: " + equeue);
         }
 
         [TestMethod]
@@ -854,7 +862,7 @@ namespace AntlrUnitTests
                 new StringTemplateGroup( ".", typeof( AngleBracketTemplateLexer ) );
             StringTemplate actionST = new StringTemplate( templates, rawTranslation );
             string found = actionST.ToString();
-            assertEquals( expecting, found );
+            Assert.AreEqual( expecting, found );
 
             int expectedMsgID = ErrorManager.MSG_INVALID_RULE_PARAMETER_REF;
             object expectedArg = "a";
@@ -889,7 +897,7 @@ namespace AntlrUnitTests
                 new StringTemplateGroup( ".", typeof( AngleBracketTemplateLexer ) );
             StringTemplate actionST = new StringTemplate( templates, rawTranslation );
             string found = actionST.ToString();
-            assertEquals( expecting, found );
+            Assert.AreEqual( expecting, found );
 
             int expectedMsgID = ErrorManager.MSG_INVALID_RULE_SCOPE_ATTRIBUTE_REF;
             object expectedArg = "a";
@@ -923,7 +931,7 @@ namespace AntlrUnitTests
                 new StringTemplateGroup( ".", typeof( AngleBracketTemplateLexer ) );
             StringTemplate actionST = new StringTemplate( templates, rawTranslation );
             string found = actionST.ToString();
-            assertEquals( expecting, found );
+            Assert.AreEqual( expecting, found );
 
             int expectedMsgID = ErrorManager.MSG_UNKNOWN_RULE_ATTRIBUTE;
             object expectedArg = "a";
@@ -1011,7 +1019,7 @@ namespace AntlrUnitTests
                 new StringTemplateGroup( ".", typeof( AngleBracketTemplateLexer ) );
             StringTemplate actionST = new StringTemplate( templates, rawTranslation );
             string found = actionST.ToString();
-            assertEquals( expecting, found );
+            Assert.AreEqual( expecting, found );
 
             int expectedMsgID = ErrorManager.MSG_ATTRIBUTE_REF_NOT_IN_RULE;
             object expectedArg = "x";
@@ -1042,7 +1050,7 @@ namespace AntlrUnitTests
                 new StringTemplateGroup( ".", typeof( AngleBracketTemplateLexer ) );
             StringTemplate actionST = new StringTemplate( templates, rawTranslation );
             string found = actionST.ToString();
-            assertEquals( expecting, found );
+            Assert.AreEqual( expecting, found );
 
             int expectedMsgID = ErrorManager.MSG_ATTRIBUTE_REF_NOT_IN_RULE;
             object expectedArg = "x";
@@ -1082,9 +1090,9 @@ namespace AntlrUnitTests
                 new StringTemplateGroup( ".", typeof( AngleBracketTemplateLexer ) );
             StringTemplate actionST = new StringTemplate( templates, rawTranslation );
             string found = actionST.ToString();
-            assertEquals( expecting, found );
+            Assert.AreEqual( expecting, found );
 
-            assertEquals( "unexpected errors: " + equeue, 0, equeue.errors.Count );
+            Assert.AreEqual(0, equeue.errors.Count, "unexpected errors: " + equeue);
         }
 
         [TestMethod]
@@ -1105,7 +1113,7 @@ namespace AntlrUnitTests
             ActionTranslator translator = new ActionTranslator( generator, "a",
                                                                          new CommonToken( ANTLRParser.ACTION, action ), 1 );
 
-            assertEquals( "unexpected errors: " + equeue, 2, equeue.errors.Count );
+            Assert.AreEqual(2, equeue.errors.Count, "unexpected errors: " + equeue);
 
             int expectedMsgID = ErrorManager.MSG_UNKNOWN_DYNAMIC_SCOPE;
             object expectedArg = "Symbols";
@@ -1143,9 +1151,9 @@ namespace AntlrUnitTests
                 new StringTemplateGroup( ".", typeof( AngleBracketTemplateLexer ) );
             StringTemplate actionST = new StringTemplate( templates, rawTranslation );
             string found = actionST.ToString();
-            assertEquals( expecting, found );
+            Assert.AreEqual( expecting, found );
 
-            assertEquals( "unexpected errors: " + equeue, 0, equeue.errors.Count );
+            Assert.AreEqual(0, equeue.errors.Count, "unexpected errors: " + equeue);
         }
 
         [TestMethod]
@@ -1175,9 +1183,9 @@ namespace AntlrUnitTests
                 translator.Translate();
             StringTemplateGroup templates =
                 new StringTemplateGroup( ".", typeof( AngleBracketTemplateLexer ) );
-            assertEquals( expecting, rawTranslation );
+            Assert.AreEqual( expecting, rawTranslation );
 
-            assertEquals( "unexpected errors: " + equeue, 0, equeue.errors.Count );
+            Assert.AreEqual(0, equeue.errors.Count, "unexpected errors: " + equeue);
         }
 
         [TestMethod]
@@ -1207,9 +1215,9 @@ namespace AntlrUnitTests
                 translator.Translate();
             StringTemplateGroup templates =
                 new StringTemplateGroup( ".", typeof( AngleBracketTemplateLexer ) );
-            assertEquals( expecting, rawTranslation );
+            Assert.AreEqual( expecting, rawTranslation );
 
-            assertEquals( "unexpected errors: " + equeue, 0, equeue.errors.Count );
+            Assert.AreEqual(0, equeue.errors.Count, "unexpected errors: " + equeue);
         }
 
         [TestMethod]
@@ -1240,9 +1248,9 @@ namespace AntlrUnitTests
             StringTemplate actionST = new StringTemplate( templates, rawTranslation );
             string found = actionST.ToString();
 
-            assertEquals( expecting, found );
+            Assert.AreEqual( expecting, found );
 
-            assertEquals( "unexpected errors: " + equeue, 0, equeue.errors.Count );
+            Assert.AreEqual(0, equeue.errors.Count, "unexpected errors: " + equeue);
         }
 
         [TestMethod]
@@ -1276,9 +1284,9 @@ namespace AntlrUnitTests
                 new StringTemplateGroup( ".", typeof( AngleBracketTemplateLexer ) );
             StringTemplate actionST = new StringTemplate( templates, rawTranslation );
             string found = actionST.ToString();
-            assertEquals( expecting, found );
+            Assert.AreEqual( expecting, found );
 
-            assertEquals( "unexpected errors: " + equeue, 0, equeue.errors.Count );
+            Assert.AreEqual(0, equeue.errors.Count, "unexpected errors: " + equeue);
         }
 
         [TestMethod]
@@ -1309,9 +1317,9 @@ namespace AntlrUnitTests
                 new StringTemplateGroup( ".", typeof( AngleBracketTemplateLexer ) );
             StringTemplate actionST = new StringTemplate( templates, rawTranslation );
             string found = actionST.ToString();
-            assertEquals( expecting, found );
+            Assert.AreEqual( expecting, found );
 
-            assertEquals( "unexpected errors: " + equeue, 0, equeue.errors.Count );
+            Assert.AreEqual(0, equeue.errors.Count, "unexpected errors: " + equeue);
         }
 
         [TestMethod]
@@ -1341,9 +1349,9 @@ namespace AntlrUnitTests
                 new StringTemplateGroup( ".", typeof( AngleBracketTemplateLexer ) );
             StringTemplate actionST = new StringTemplate( templates, rawTranslation );
             string found = actionST.ToString();
-            assertEquals( expecting, found );
+            Assert.AreEqual( expecting, found );
 
-            assertEquals( "unexpected errors: " + equeue, 0, equeue.errors.Count );
+            Assert.AreEqual(0, equeue.errors.Count, "unexpected errors: " + equeue);
         }
 
         [TestMethod]
@@ -1372,9 +1380,9 @@ namespace AntlrUnitTests
                 new StringTemplateGroup( ".", typeof( AngleBracketTemplateLexer ) );
             StringTemplate actionST = new StringTemplate( templates, rawTranslation );
             string found = actionST.ToString();
-            assertEquals( expecting, found );
+            Assert.AreEqual( expecting, found );
 
-            assertEquals( "unexpected errors: " + equeue, 0, equeue.errors.Count );
+            Assert.AreEqual(0, equeue.errors.Count, "unexpected errors: " + equeue);
         }
 
         [TestMethod]
@@ -1432,9 +1440,9 @@ namespace AntlrUnitTests
                 new StringTemplateGroup( ".", typeof( AngleBracketTemplateLexer ) );
             StringTemplate actionST = new StringTemplate( templates, rawTranslation );
             string found = actionST.ToString();
-            assertEquals( expecting, found );
+            Assert.AreEqual( expecting, found );
 
-            assertEquals( "unexpected errors: " + equeue, 0, equeue.errors.Count );
+            Assert.AreEqual(0, equeue.errors.Count, "unexpected errors: " + equeue);
         }
 
         [TestMethod]
@@ -1464,9 +1472,9 @@ namespace AntlrUnitTests
                 new StringTemplateGroup( ".", typeof( AngleBracketTemplateLexer ) );
             StringTemplate actionST = new StringTemplate( templates, rawTranslation );
             string found = actionST.ToString();
-            assertEquals( expecting, found );
+            Assert.AreEqual( expecting, found );
 
-            assertEquals( "unexpected errors: " + equeue, 0, equeue.errors.Count );
+            Assert.AreEqual(0, equeue.errors.Count, "unexpected errors: " + equeue);
         }
 
         [TestMethod]
@@ -1500,9 +1508,9 @@ namespace AntlrUnitTests
                 new StringTemplateGroup( ".", typeof( AngleBracketTemplateLexer ) );
             StringTemplate actionST = new StringTemplate( templates, rawTranslation );
             string found = actionST.ToString();
-            assertEquals( expecting, found );
+            Assert.AreEqual( expecting, found );
 
-            assertEquals( "unexpected errors: " + equeue, 0, equeue.errors.Count );
+            Assert.AreEqual(0, equeue.errors.Count, "unexpected errors: " + equeue);
         }
 
         [TestMethod]
@@ -1533,9 +1541,9 @@ namespace AntlrUnitTests
                 new StringTemplateGroup( ".", typeof( AngleBracketTemplateLexer ) );
             StringTemplate actionST = new StringTemplate( templates, rawTranslation );
             string found = actionST.ToString();
-            assertEquals( expecting, found );
+            Assert.AreEqual( expecting, found );
 
-            assertEquals( "unexpected errors: " + equeue, 0, equeue.errors.Count );
+            Assert.AreEqual(0, equeue.errors.Count, "unexpected errors: " + equeue);
         }
 
         [TestMethod]
@@ -1561,9 +1569,9 @@ namespace AntlrUnitTests
                 new StringTemplateGroup( ".", typeof( AngleBracketTemplateLexer ) );
             StringTemplate actionST = new StringTemplate( templates, rawTranslation );
             string found = actionST.ToString();
-            assertEquals( expecting, found );
+            Assert.AreEqual( expecting, found );
 
-            assertEquals( "unexpected errors: " + equeue, 0, equeue.errors.Count );
+            Assert.AreEqual(0, equeue.errors.Count, "unexpected errors: " + equeue);
         }
 
         [TestMethod]
@@ -1589,9 +1597,9 @@ namespace AntlrUnitTests
                 new StringTemplateGroup( ".", typeof( AngleBracketTemplateLexer ) );
             StringTemplate actionST = new StringTemplate( templates, rawTranslation );
             string found = actionST.ToString();
-            assertEquals( expecting, found );
+            Assert.AreEqual( expecting, found );
 
-            assertEquals( "unexpected errors: " + equeue, 0, equeue.errors.Count );
+            Assert.AreEqual(0, equeue.errors.Count, "unexpected errors: " + equeue);
         }
 
         [TestMethod]
@@ -1617,9 +1625,9 @@ namespace AntlrUnitTests
                 new StringTemplateGroup( ".", typeof( AngleBracketTemplateLexer ) );
             StringTemplate actionST = new StringTemplate( templates, rawTranslation );
             string found = actionST.ToString();
-            assertEquals( expecting, found );
+            Assert.AreEqual( expecting, found );
 
-            assertEquals( "unexpected errors: " + equeue, 0, equeue.errors.Count );
+            Assert.AreEqual(0, equeue.errors.Count, "unexpected errors: " + equeue);
         }
 
         [TestMethod]
@@ -1695,9 +1703,9 @@ namespace AntlrUnitTests
                     new StringTemplateGroup(".", typeof(AngleBracketTemplateLexer));
                 StringTemplate actionST = new StringTemplate(templates, rawTranslation);
                 String found = actionST.ToString();
-                assertEquals(expecting, found);
+                Assert.AreEqual(expecting, found);
 
-                assertEquals("unexpected errors: "+equeue, 0, equeue.errors.size());
+                Assert.AreEqual("unexpected errors: "+equeue, 0, equeue.errors.size());
             }
 
         [TestMethod] public void TestFullyQualifiedRefToListLabelInCurrentRule()
@@ -1724,9 +1732,9 @@ namespace AntlrUnitTests
                 new StringTemplateGroup(".", typeof(AngleBracketTemplateLexer));
             StringTemplate actionST = new StringTemplate(templates, rawTranslation);
             String found = actionST.ToString();
-            assertEquals(expecting, found);
+            Assert.AreEqual(expecting, found);
 
-            assertEquals("unexpected errors: "+equeue, 0, equeue.errors.size());
+            Assert.AreEqual("unexpected errors: "+equeue, 0, equeue.errors.size());
         }
     */
         [TestMethod]
@@ -1753,9 +1761,9 @@ namespace AntlrUnitTests
                 new StringTemplateGroup( ".", typeof( AngleBracketTemplateLexer ) );
             StringTemplate actionST = new StringTemplate( templates, rawTranslation );
             string found = actionST.ToString();
-            assertEquals( expecting, found );
+            Assert.AreEqual( expecting, found );
 
-            assertEquals( "unexpected errors: " + equeue, 0, equeue.errors.Count );
+            Assert.AreEqual(0, equeue.errors.Count, "unexpected errors: " + equeue);
         }
 
         [TestMethod]
@@ -1783,9 +1791,9 @@ namespace AntlrUnitTests
             int startIndex = code.IndexOf("###") + 3;
             int endIndex = code.IndexOf("!!!");
             string found = code.Substring(startIndex, endIndex - startIndex);
-            assertEquals( expecting, found );
+            Assert.AreEqual( expecting, found );
 
-            assertEquals( "unexpected errors: " + equeue, 0, equeue.errors.Count );
+            Assert.AreEqual(0, equeue.errors.Count, "unexpected errors: " + equeue);
         }
 
         [TestMethod]
@@ -1815,9 +1823,9 @@ namespace AntlrUnitTests
                 new StringTemplateGroup( ".", typeof( AngleBracketTemplateLexer ) );
             StringTemplate actionST = new StringTemplate( templates, rawTranslation );
             string found = actionST.ToString();
-            assertEquals( expecting, found );
+            Assert.AreEqual( expecting, found );
 
-            assertEquals( "unexpected errors: " + equeue, 0, equeue.errors.Count );
+            Assert.AreEqual(0, equeue.errors.Count, "unexpected errors: " + equeue);
         }
 
         [TestMethod]
@@ -1844,9 +1852,9 @@ namespace AntlrUnitTests
                 new StringTemplateGroup( ".", typeof( AngleBracketTemplateLexer ) );
             StringTemplate actionST = new StringTemplate( templates, rawTranslation );
             string found = actionST.ToString();
-            assertEquals( expecting, found );
+            Assert.AreEqual( expecting, found );
 
-            assertEquals( "unexpected errors: " + equeue, 0, equeue.errors.Count );
+            Assert.AreEqual(0, equeue.errors.Count, "unexpected errors: " + equeue);
         }
 
         [TestMethod]
@@ -1859,23 +1867,18 @@ namespace AntlrUnitTests
             Grammar g = new Grammar(
                 "parser grammar t;\n" +
                 "options {output=template;}\n" +
-                "a : {" + action + "}\n" +
+                "a : {###" + action + "!!!}\n" +
                 "  ;\n" );
             AntlrTool antlr = newTool();
             CodeGenerator generator = new CodeGenerator( antlr, g, "Java" );
             g.CodeGenerator = generator;
             generator.GenRecognizer(); // forces load of templates
-            ActionTranslator translator = new ActionTranslator( generator, "a",
-                                                                         new CommonToken( ANTLRParser.ACTION, action ), 1 );
-            string rawTranslation =
-                translator.Translate();
-            StringTemplateGroup templates =
-                new StringTemplateGroup( ".", typeof( AngleBracketTemplateLexer ) );
-            StringTemplate actionST = new StringTemplate( templates, rawTranslation );
-            string found = actionST.ToString();
-            assertEquals( expecting, found );
+            StringTemplate codeST = generator.RecognizerST;
+            string code = codeST.ToString();
+            string found = code.Substring(code.IndexOf("###") + 3, code.IndexOf("!!!") - code.IndexOf("###") - 3);
+            Assert.AreEqual(expecting, found);
 
-            assertEquals( "unexpected errors: " + equeue, 0, equeue.errors.Count );
+            Assert.AreEqual(0, equeue.errors.Count, "unexpected errors: " + equeue);
         }
 
         [TestMethod]
@@ -1900,9 +1903,9 @@ namespace AntlrUnitTests
             int startIndex = code.IndexOf("###") + 3;
             int endIndex = code.IndexOf("!!!");
             string found = code.Substring(startIndex, endIndex - startIndex);
-            assertEquals( expecting, found );
+            Assert.AreEqual( expecting, found );
 
-            assertEquals( "unexpected errors: " + equeue, 0, equeue.errors.Count );
+            Assert.AreEqual(0, equeue.errors.Count, "unexpected errors: " + equeue);
         }
 
         [TestMethod]
@@ -1933,9 +1936,9 @@ namespace AntlrUnitTests
                 new StringTemplateGroup( ".", typeof( AngleBracketTemplateLexer ) );
             StringTemplate actionST = new StringTemplate( templates, rawTranslation );
             string found = actionST.ToString();
-            assertEquals( expecting, found );
+            Assert.AreEqual( expecting, found );
 
-            assertEquals( "unexpected errors: " + equeue, 0, equeue.errors.Count );
+            Assert.AreEqual(0, equeue.errors.Count, "unexpected errors: " + equeue);
             translator = new ActionTranslator( generator,
                                                    "a",
                                                    new CommonToken( ANTLRParser.ACTION, action2 ), 2 );
@@ -1946,9 +1949,9 @@ namespace AntlrUnitTests
             actionST = new StringTemplate( templates, rawTranslation );
             found = actionST.ToString();
 
-            assertEquals( expecting2, found );
+            Assert.AreEqual( expecting2, found );
 
-            assertEquals( "unexpected errors: " + equeue, 0, equeue.errors.Count );
+            Assert.AreEqual(0, equeue.errors.Count, "unexpected errors: " + equeue);
         }
 
         [TestMethod]
@@ -1962,8 +1965,8 @@ namespace AntlrUnitTests
             ErrorManager.SetErrorListener( equeue );
             Grammar g = new Grammar(
                 "grammar t;\n" +
-                "a : b {" + action + "}\n" +
-                "  | c {" + action2 + "}\n" +
+                "a : b {###" + action + "!!!}\n" +
+                "  | c {^^^" + action2 + "&&&}\n" +
                 "  ;\n" +
                 "b : 'a';\n" +
                 "c : '0';\n" );
@@ -1971,30 +1974,14 @@ namespace AntlrUnitTests
             CodeGenerator generator = new CodeGenerator( antlr, g, "Java" );
             g.CodeGenerator = generator;
             generator.GenRecognizer(); // forces load of templates
-            ActionTranslator translator = new ActionTranslator( generator, "a",
-                                                                         new CommonToken( ANTLRParser.ACTION, action ), 1 );
-            string rawTranslation =
-                translator.Translate();
-            StringTemplateGroup templates =
-                new StringTemplateGroup( ".", typeof( AngleBracketTemplateLexer ) );
-            StringTemplate actionST = new StringTemplate( templates, rawTranslation );
-            string found = actionST.ToString();
-            assertEquals( expecting, found );
+            StringTemplate codeST = generator.RecognizerST;
+            string code = codeST.ToString();
+            string found = code.Substring(code.IndexOf("###") + 3, code.IndexOf("!!!") - code.IndexOf("###") - 3);
+            Assert.AreEqual(expecting, found);
+            found = code.Substring(code.IndexOf("^^^") + 3, code.IndexOf("&&&") - code.IndexOf("^^^") - 3);
+            Assert.AreEqual(expecting2, found);
 
-            assertEquals( "unexpected errors: " + equeue, 0, equeue.errors.Count );
-            translator = new ActionTranslator( generator,
-                                                   "a",
-                                                   new CommonToken( ANTLRParser.ACTION, action2 ), 2 );
-            rawTranslation =
-                translator.Translate();
-            templates =
-                new StringTemplateGroup( ".", typeof( AngleBracketTemplateLexer ) );
-            actionST = new StringTemplate( templates, rawTranslation );
-            found = actionST.ToString();
-
-            assertEquals( expecting2, found );
-
-            assertEquals( "unexpected errors: " + equeue, 0, equeue.errors.Count );
+            Assert.AreEqual(0, equeue.errors.Count, "unexpected errors: " + equeue);
         }
 
         [TestMethod]
@@ -2025,7 +2012,7 @@ namespace AntlrUnitTests
                 new StringTemplateGroup( ".", typeof( AngleBracketTemplateLexer ) );
             StringTemplate actionST = new StringTemplate( templates, rawTranslation );
             string found = actionST.ToString();
-            assertEquals( expecting, found );
+            Assert.AreEqual( expecting, found );
 
             int expectedMsgID = ErrorManager.MSG_UNKNOWN_DYNAMIC_SCOPE_ATTRIBUTE;
             object expectedArg = "a";
@@ -2063,7 +2050,7 @@ namespace AntlrUnitTests
                 new StringTemplateGroup( ".", typeof( AngleBracketTemplateLexer ) );
             StringTemplate actionST = new StringTemplate( templates, rawTranslation );
             string found = actionST.ToString();
-            assertEquals( expecting, found );
+            Assert.AreEqual( expecting, found );
 
             int expectedMsgID = ErrorManager.MSG_UNKNOWN_DYNAMIC_SCOPE_ATTRIBUTE;
             object expectedArg = "Symbols";
@@ -2101,7 +2088,7 @@ namespace AntlrUnitTests
                 new StringTemplateGroup( ".", typeof( AngleBracketTemplateLexer ) );
             StringTemplate actionST = new StringTemplate( templates, rawTranslation );
             string found = actionST.ToString();
-            assertEquals( expecting, found );
+            Assert.AreEqual( expecting, found );
 
             int expectedMsgID = ErrorManager.MSG_UNKNOWN_SIMPLE_ATTRIBUTE;
             object expectedArg = "n";
@@ -2205,9 +2192,9 @@ namespace AntlrUnitTests
                 new StringTemplateGroup( ".", typeof( AngleBracketTemplateLexer ) );
             StringTemplate actionST = new StringTemplate( templates, rawTranslation );
             string found = actionST.ToString();
-            assertEquals( expecting, found );
+            Assert.AreEqual( expecting, found );
 
-            assertEquals( "unexpected errors: " + equeue, 0, equeue.errors.Count );
+            Assert.AreEqual(0, equeue.errors.Count, "unexpected errors: " + equeue);
         }
 
         [TestMethod]
@@ -2235,9 +2222,9 @@ namespace AntlrUnitTests
                 new StringTemplateGroup( ".", typeof( AngleBracketTemplateLexer ) );
             StringTemplate actionST = new StringTemplate( templates, rawTranslation );
             string found = actionST.ToString();
-            assertEquals( expecting, found );
+            Assert.AreEqual( expecting, found );
 
-            assertEquals( "unexpected errors: " + equeue, 0, equeue.errors.Count );
+            Assert.AreEqual(0, equeue.errors.Count, "unexpected errors: " + equeue);
         }
 
         [TestMethod]
@@ -2265,9 +2252,9 @@ namespace AntlrUnitTests
                 new StringTemplateGroup( ".", typeof( AngleBracketTemplateLexer ) );
             StringTemplate actionST = new StringTemplate( templates, rawTranslation );
             string found = actionST.ToString();
-            assertEquals( expecting, found );
+            Assert.AreEqual( expecting, found );
 
-            assertEquals( "unexpected errors: " + equeue, 0, equeue.errors.Count );
+            Assert.AreEqual(0, equeue.errors.Count, "unexpected errors: " + equeue);
         }
 
         [TestMethod]
@@ -2295,9 +2282,9 @@ namespace AntlrUnitTests
                 new StringTemplateGroup( ".", typeof( AngleBracketTemplateLexer ) );
             StringTemplate actionST = new StringTemplate( templates, rawTranslation );
             string found = actionST.ToString();
-            assertEquals( expecting, found );
+            Assert.AreEqual( expecting, found );
 
-            assertEquals( "unexpected errors: " + equeue, 0, equeue.errors.Count );
+            Assert.AreEqual(0, equeue.errors.Count, "unexpected errors: " + equeue);
         }
 
         [TestMethod]
@@ -2327,9 +2314,9 @@ namespace AntlrUnitTests
                 new StringTemplateGroup( ".", typeof( AngleBracketTemplateLexer ) );
             StringTemplate actionST = new StringTemplate( templates, rawTranslation );
             string found = actionST.ToString();
-            assertEquals( expecting, found );
+            Assert.AreEqual( expecting, found );
 
-            assertEquals( "unexpected errors: " + equeue, 0, equeue.errors.Count );
+            Assert.AreEqual(0, equeue.errors.Count, "unexpected errors: " + equeue);
         }
 
         [TestMethod]
@@ -2354,9 +2341,9 @@ namespace AntlrUnitTests
             int startIndex = code.IndexOf("###") + 3;
             int endIndex = code.IndexOf("!!!");
             string found = code.Substring(startIndex, endIndex - startIndex);
-            assertEquals( expecting, found );
+            Assert.AreEqual( expecting, found );
 
-            assertEquals( "unexpected errors: " + equeue, 0, equeue.errors.Count );
+            Assert.AreEqual(0, equeue.errors.Count, "unexpected errors: " + equeue);
         }
 
         [TestMethod]
@@ -2381,9 +2368,9 @@ namespace AntlrUnitTests
             int startIndex = code.IndexOf("###") + 3;
             int endIndex = code.IndexOf("!!!");
             string found = code.Substring(startIndex, endIndex - startIndex);
-            assertEquals( expecting, found );
+            Assert.AreEqual( expecting, found );
 
-            assertEquals( "unexpected errors: " + equeue, 0, equeue.errors.Count );
+            Assert.AreEqual(0, equeue.errors.Count, "unexpected errors: " + equeue);
         }
 
         [TestMethod]
@@ -2409,9 +2396,9 @@ namespace AntlrUnitTests
             int startIndex = code.IndexOf("###") + 3;
             int endIndex = code.IndexOf("!!!");
             string found = code.Substring(startIndex, endIndex - startIndex);
-            assertEquals( expecting, found );
+            Assert.AreEqual( expecting, found );
 
-            assertEquals( "unexpected errors: " + equeue, 0, equeue.errors.Count );
+            Assert.AreEqual(0, equeue.errors.Count, "unexpected errors: " + equeue);
         }
 
         [TestMethod]
@@ -2439,9 +2426,9 @@ namespace AntlrUnitTests
                 new StringTemplateGroup( ".", typeof( AngleBracketTemplateLexer ) );
             StringTemplate actionST = new StringTemplate( templates, rawTranslation );
             string found = actionST.ToString();
-            assertEquals( expecting, found );
+            Assert.AreEqual( expecting, found );
 
-            assertEquals( "unexpected errors: " + equeue, 0, equeue.errors.Count );
+            Assert.AreEqual(0, equeue.errors.Count, "unexpected errors: " + equeue);
         }
 
         [TestMethod]
@@ -2469,9 +2456,9 @@ namespace AntlrUnitTests
                 new StringTemplateGroup( ".", typeof( AngleBracketTemplateLexer ) );
             StringTemplate actionST = new StringTemplate( templates, rawTranslation );
             string found = actionST.ToString();
-            assertEquals( expecting, found );
+            Assert.AreEqual( expecting, found );
 
-            assertEquals( "unexpected errors: " + equeue, 0, equeue.errors.Count );
+            Assert.AreEqual(0, equeue.errors.Count, "unexpected errors: " + equeue);
         }
 
         [TestMethod]
@@ -2500,7 +2487,7 @@ namespace AntlrUnitTests
 
         [TestMethod]
         public void TestRuleLabelOnTwoDifferentRulesAST() /*throws Exception*/ {
-            Assert.Inconclusive( "I broke this test while trying to fix return values on another test..." );
+            //Assert.Inconclusive( "I broke this test while trying to fix return values on another test..." );
             string grammar =
                 "grammar T;\n" +
                 "options {output=AST;}\n" +
@@ -2511,12 +2498,12 @@ namespace AntlrUnitTests
             string expecting = "[a, b]" + NewLine + "a b" + NewLine;
             string found = execParser( "T.g", grammar, "TParser", "TLexer",
                                       "s", "a b", false );
-            assertEquals( expecting, found );
+            Assert.AreEqual( expecting, found );
         }
 
         [TestMethod]
         public void TestRuleLabelOnTwoDifferentRulesTemplate() /*throws Exception*/ {
-            Assert.Inconclusive( "I broke this test while trying to fix return values on another test..." );
+            //Assert.Inconclusive( "I broke this test while trying to fix return values on another test..." );
             string grammar =
                 "grammar T;\n" +
                 "options {output=template;}\n" +
@@ -2527,7 +2514,7 @@ namespace AntlrUnitTests
             string expecting = "[hi, mom]" + NewLine;
             string found = execParser( "T.g", grammar, "TParser", "TLexer",
                                       "s", "a b", false );
-            assertEquals( expecting, found );
+            Assert.AreEqual( expecting, found );
         }
 
         [TestMethod]
@@ -2582,16 +2569,16 @@ namespace AntlrUnitTests
                 "grammar t;\n" +
                 "a : r ;\n" +
                 "r returns [int x=0] : 'a' {$x = 4;} ;\n" );
-            assertEquals( "unexpected errors: " + equeue, 0, equeue.errors.Count );
+            Assert.AreEqual(0, equeue.errors.Count, "unexpected errors: " + equeue);
 
             Rule r = g.GetRule( "r" );
             AttributeScope retScope = r.returnScope;
             var parameters = retScope.Attributes;
-            assertNotNull( "missing return action", parameters );
-            assertEquals( 1, parameters.Count );
+            Assert.IsNotNull(parameters, "missing return action");
+            Assert.AreEqual( 1, parameters.Count );
             string found = parameters.ElementAt( 0 ).ToString();
             string expecting = "int x=0";
-            assertEquals( expecting, found );
+            Assert.AreEqual( expecting, found );
         }
 
         [TestMethod]
@@ -2602,16 +2589,16 @@ namespace AntlrUnitTests
                 "grammar t;\n" +
                 "a : r ;\n" +
                 "r returns [int x=0, int y, String s=new String(\"foo\")] : 'a' {$x = 4;} ;\n" );
-            assertEquals( "unexpected errors: " + equeue, 0, equeue.errors.Count );
+            Assert.AreEqual(0, equeue.errors.Count, "unexpected errors: " + equeue);
 
             Rule r = g.GetRule( "r" );
             AttributeScope retScope = r.returnScope;
             var parameters = retScope.Attributes;
-            assertNotNull( "missing return action", parameters );
-            assertEquals( 3, parameters.Count );
-            assertEquals( "int x=0", parameters.ElementAt( 0 ).ToString() );
-            assertEquals( "int y", parameters.ElementAt( 1 ).ToString() );
-            assertEquals( "String s=new String(\"foo\")", parameters.ElementAt( 2 ).ToString() );
+            Assert.IsNotNull(parameters, "missing return action");
+            Assert.AreEqual( 3, parameters.Count );
+            Assert.AreEqual( "int x=0", parameters.ElementAt( 0 ).ToString() );
+            Assert.AreEqual( "int y", parameters.ElementAt( 1 ).ToString() );
+            Assert.AreEqual( "String s=new String(\"foo\")", parameters.ElementAt( 2 ).ToString() );
         }
 
         [TestMethod]
@@ -2622,16 +2609,16 @@ namespace AntlrUnitTests
                 "grammar t;\n" +
                 "a : r ;\n" +
                 "r returns [int (*x)()=NULL] : 'a' ;\n" );
-            assertEquals( "unexpected errors: " + equeue, 0, equeue.errors.Count );
+            Assert.AreEqual(0, equeue.errors.Count, "unexpected errors: " + equeue);
 
             Rule r = g.GetRule( "r" );
             AttributeScope retScope = r.returnScope;
             var parameters = retScope.Attributes;
-            assertNotNull( "missing return action", parameters );
-            assertEquals( 1, parameters.Count );
+            Assert.IsNotNull(parameters, "missing return action");
+            Assert.AreEqual( 1, parameters.Count );
             string found = parameters.ElementAt( 0 ).ToString();
             string expecting = "int (*)() x=NULL";
-            assertEquals( expecting, found );
+            Assert.AreEqual( expecting, found );
         }
 
         [TestMethod]
@@ -2725,9 +2712,9 @@ namespace AntlrUnitTests
             StringTemplate actionST = new StringTemplate( templates, rawTranslation );
             string found = actionST.ToString();
 
-            assertEquals( expecting, found );
+            Assert.AreEqual( expecting, found );
 
-            assertEquals( "unexpected errors: " + equeue, 0, equeue.errors.Count );
+            Assert.AreEqual(0, equeue.errors.Count, "unexpected errors: " + equeue);
         }
 
         [TestMethod]
@@ -2755,9 +2742,9 @@ namespace AntlrUnitTests
             StringTemplate actionST = new StringTemplate( templates, rawTranslation );
             string found = actionST.ToString();
 
-            assertEquals( expecting, found );
+            Assert.AreEqual( expecting, found );
 
-            assertEquals( "unexpected errors: " + equeue, 0, equeue.errors.Count );
+            Assert.AreEqual(0, equeue.errors.Count, "unexpected errors: " + equeue);
         }
 
         [TestMethod]
@@ -2785,9 +2772,9 @@ namespace AntlrUnitTests
             StringTemplate actionST = new StringTemplate( templates, rawTranslation );
             string found = actionST.ToString();
 
-            assertEquals( expecting, found );
+            Assert.AreEqual( expecting, found );
 
-            assertEquals( "unexpected errors: " + equeue, 0, equeue.errors.Count );
+            Assert.AreEqual(0, equeue.errors.Count, "unexpected errors: " + equeue);
         }
 
         [TestMethod]
@@ -2803,7 +2790,7 @@ namespace AntlrUnitTests
             g.CodeGenerator = generator;
             generator.GenRecognizer(); // forces load of templates
 
-            assertEquals( "unexpected errors: " + equeue, 0, equeue.errors.Count );
+            Assert.AreEqual(0, equeue.errors.Count, "unexpected errors: " + equeue);
         }
 
         [TestMethod]
@@ -2818,7 +2805,7 @@ namespace AntlrUnitTests
             CodeGenerator generator = new CodeGenerator( antlr, g, "Java" );
             g.CodeGenerator = generator;
             generator.GenRecognizer(); // forces load of templates
-            assertEquals( "unexpected errors: " + equeue, 0, equeue.errors.Count );
+            Assert.AreEqual(0, equeue.errors.Count, "unexpected errors: " + equeue);
         }
 
         [TestMethod]
@@ -2833,7 +2820,7 @@ namespace AntlrUnitTests
             CodeGenerator generator = new CodeGenerator( antlr, g, "Java" );
             g.CodeGenerator = generator;
             generator.GenRecognizer(); // forces load of templates
-            assertEquals( "unexpected errors: " + equeue, 0, equeue.errors.Count );
+            Assert.AreEqual(0, equeue.errors.Count, "unexpected errors: " + equeue);
         }
 
         [TestMethod]
@@ -2848,7 +2835,7 @@ namespace AntlrUnitTests
             CodeGenerator generator = new CodeGenerator( antlr, g, "Java" );
             g.CodeGenerator = generator;
             generator.GenRecognizer(); // forces load of templates
-            assertEquals( "unexpected errors: " + equeue, 0, equeue.errors.Count );
+            Assert.AreEqual(0, equeue.errors.Count, "unexpected errors: " + equeue);
         }
 
         [TestMethod]
@@ -2898,9 +2885,9 @@ namespace AntlrUnitTests
             StringTemplate actionST = new StringTemplate( templates, rawTranslation );
             string found = actionST.ToString();
 
-            assertEquals( expecting, found );
+            Assert.AreEqual( expecting, found );
 
-            assertEquals( "unexpected errors: " + equeue, 0, equeue.errors.Count );
+            Assert.AreEqual(0, equeue.errors.Count, "unexpected errors: " + equeue);
         }
 
         [TestMethod]
@@ -2928,9 +2915,9 @@ namespace AntlrUnitTests
             StringTemplate actionST = new StringTemplate( templates, rawTranslation );
             string found = actionST.ToString();
 
-            assertEquals( expecting, found );
+            Assert.AreEqual( expecting, found );
 
-            assertEquals( "unexpected errors: " + equeue, 0, equeue.errors.Count );
+            Assert.AreEqual(0, equeue.errors.Count, "unexpected errors: " + equeue);
         }
 
         [TestMethod]
@@ -2957,9 +2944,9 @@ namespace AntlrUnitTests
             StringTemplate actionST = new StringTemplate( templates, rawTranslation );
             string found = actionST.ToString();
 
-            assertEquals( expecting, found );
+            Assert.AreEqual( expecting, found );
 
-            assertEquals( "unexpected errors: " + equeue, 0, equeue.errors.Count );
+            Assert.AreEqual(0, equeue.errors.Count, "unexpected errors: " + equeue);
         }
 
         [TestMethod]
@@ -3059,9 +3046,9 @@ namespace AntlrUnitTests
                 new StringTemplateGroup( ".", typeof( AngleBracketTemplateLexer ) );
             StringTemplate actionST = new StringTemplate( templates, rawTranslation );
             string found = actionST.ToString();
-            assertEquals( expecting, found );
+            Assert.AreEqual( expecting, found );
 
-            assertEquals( "unexpected errors: " + equeue, 0, equeue.errors.Count );
+            Assert.AreEqual(0, equeue.errors.Count, "unexpected errors: " + equeue);
         }
 
         [TestMethod]
@@ -3089,7 +3076,7 @@ namespace AntlrUnitTests
                 new StringTemplateGroup( ".", typeof( AngleBracketTemplateLexer ) );
             StringTemplate actionST = new StringTemplate( templates, rawTranslation );
             string found = actionST.ToString();
-            assertEquals( expecting, found );
+            Assert.AreEqual( expecting, found );
         }
 
         [TestMethod]
@@ -3166,9 +3153,9 @@ namespace AntlrUnitTests
                 new StringTemplateGroup( ".", typeof( AngleBracketTemplateLexer ) );
             StringTemplate actionST = new StringTemplate( templates, rawTranslation );
             string found = actionST.ToString();
-            assertEquals( expecting, found );
+            Assert.AreEqual( expecting, found );
 
-            assertEquals( "unexpected errors: " + equeue, 0, equeue.errors.Count );
+            Assert.AreEqual(0, equeue.errors.Count, "unexpected errors: " + equeue);
         }
 
         [TestMethod]
@@ -3195,9 +3182,9 @@ namespace AntlrUnitTests
                 new StringTemplateGroup( ".", typeof( AngleBracketTemplateLexer ) );
             StringTemplate actionST = new StringTemplate( templates, rawTranslation );
             string found = actionST.ToString();
-            assertEquals( expecting, found );
+            Assert.AreEqual( expecting, found );
 
-            assertEquals( "unexpected errors: " + equeue, 0, equeue.errors.Count );
+            Assert.AreEqual(0, equeue.errors.Count, "unexpected errors: " + equeue);
         }
 
         [TestMethod]
@@ -3224,9 +3211,9 @@ namespace AntlrUnitTests
                 new StringTemplateGroup( ".", typeof( AngleBracketTemplateLexer ) );
             StringTemplate actionST = new StringTemplate( templates, rawTranslation );
             string found = actionST.ToString();
-            assertEquals( expecting, found );
+            Assert.AreEqual( expecting, found );
 
-            assertEquals( "unexpected errors: " + equeue, 0, equeue.errors.Count );
+            Assert.AreEqual(0, equeue.errors.Count, "unexpected errors: " + equeue);
         }
 
         [TestMethod]
@@ -3295,7 +3282,7 @@ namespace AntlrUnitTests
                 new StringTemplateGroup( ".", typeof( AngleBracketTemplateLexer ) );
             StringTemplate actionST = new StringTemplate( templates, rawTranslation );
             string found = actionST.ToString();
-            assertEquals( expecting, found );
+            Assert.AreEqual( expecting, found );
         }
 
         [TestMethod]
@@ -3362,7 +3349,7 @@ namespace AntlrUnitTests
         [TestMethod]
         public void TestAssignToTreeNodeAttribute() /*throws Exception*/ {
             string action = "$tree.scope = localScope;";
-            string expecting = "(()retval.tree).scope = localScope;";
+            string expecting = "((Object)retval.tree).scope = localScope;";
             ErrorQueue equeue = new ErrorQueue();
             ErrorManager.SetErrorListener( equeue );
             Grammar g = new Grammar(
@@ -3373,7 +3360,7 @@ namespace AntlrUnitTests
                 "   Scope localScope=null;\n" +
                 "}\n" +
                 "@after {\n" +
-                "   $tree.scope = localScope;\n" +
+                "   ###$tree.scope = localScope;!!!\n" +
                 "}\n" +
                 "   : 'a' -> ^('a')\n" +
                 ";" );
@@ -3381,17 +3368,10 @@ namespace AntlrUnitTests
             CodeGenerator generator = new CodeGenerator( antlr, g, "Java" );
             g.CodeGenerator = generator;
             generator.GenRecognizer(); // forces load of templates
-            ActionTranslator translator = new ActionTranslator( generator,
-                                                                         "rule",
-                                                                         new CommonToken( ANTLRParser.ACTION, action ), 1 );
-            string rawTranslation =
-                translator.Translate();
-            StringTemplateGroup templates =
-                new StringTemplateGroup( ".", typeof( AngleBracketTemplateLexer ) );
-            StringTemplate actionST = new StringTemplate( templates, rawTranslation );
-            string found = actionST.ToString();
-            assertEquals( "unexpected errors: " + equeue, 0, equeue.errors.Count );
-            assertEquals( expecting, found );
+            StringTemplate codeST = generator.RecognizerST;
+            string code = codeST.ToString();
+            string found = code.Substring(code.IndexOf("###") + 3, code.IndexOf("!!!") - code.IndexOf("###") - 3);
+            Assert.AreEqual(expecting, found);
         }
 
         [TestMethod]
@@ -3420,8 +3400,8 @@ namespace AntlrUnitTests
                 new StringTemplateGroup( ".", typeof( AngleBracketTemplateLexer ) );
             StringTemplate actionST = new StringTemplate( templates, rawTranslation );
             string found = actionST.ToString();
-            assertEquals( "unexpected errors: " + equeue, 0, equeue.errors.Count );
-            assertEquals( expecting, found );
+            Assert.AreEqual(0, equeue.errors.Count, "unexpected errors: " + equeue);
+            Assert.AreEqual( expecting, found );
         }
 
         [TestMethod]
@@ -3465,13 +3445,13 @@ namespace AntlrUnitTests
                     }
                 }
             }
-            assertFalse( "action translator used scopeSetAttributeRef template in comparison!", foundScopeSetAttributeRef );
+            Assert.IsFalse(foundScopeSetAttributeRef, "action translator used scopeSetAttributeRef template in comparison!");
             StringTemplateGroup templates =
                 new StringTemplateGroup( ".", typeof( AngleBracketTemplateLexer ) );
             StringTemplate actionST = new StringTemplate( templates, rawTranslation );
             string found = actionST.ToString();
-            assertEquals( "unexpected errors: " + equeue, 0, equeue.errors.Count );
-            assertEquals( expecting, found );
+            Assert.AreEqual(0, equeue.errors.Count, "unexpected errors: " + equeue);
+            Assert.AreEqual( expecting, found );
         }
 
         [TestMethod]
@@ -3499,7 +3479,7 @@ namespace AntlrUnitTests
             int startIndex = code.IndexOf("###") + 3;
             int endIndex = code.IndexOf("!!!");
             string found = code.Substring(startIndex, endIndex - startIndex);
-            assertEquals( expecting, found );
+            Assert.AreEqual( expecting, found );
 
             int expectedMsgID = ErrorManager.MSG_UNKNOWN_RULE_ATTRIBUTE;
             object expectedArg = "a";
@@ -3535,9 +3515,9 @@ namespace AntlrUnitTests
             int startIndex = code.IndexOf("###") + 3;
             int endIndex = code.IndexOf("!!!");
             string found = code.Substring(startIndex, endIndex - startIndex);
-            assertEquals( expecting, found );
+            Assert.AreEqual( expecting, found );
 
-            assertEquals( "unexpected errors: " + equeue, 0, equeue.errors.Count );
+            Assert.AreEqual(0, equeue.errors.Count, "unexpected errors: " + equeue);
         }
 
         [TestMethod]
@@ -3567,9 +3547,9 @@ namespace AntlrUnitTests
                 new StringTemplateGroup( ".", typeof( AngleBracketTemplateLexer ) );
             StringTemplate actionST = new StringTemplate( templates, rawTranslation );
             string found = actionST.ToString();
-            assertEquals( expecting, found );
+            Assert.AreEqual( expecting, found );
 
-            assertEquals( "unexpected errors: " + equeue, 0, equeue.errors.Count );
+            Assert.AreEqual(0, equeue.errors.Count, "unexpected errors: " + equeue);
         }
 
         [TestMethod]
@@ -3613,12 +3593,11 @@ namespace AntlrUnitTests
                     foundMsg = m;
                 }
             }
-            assertTrue( "no error; " + expectedMessage.msgID + " expected", equeue.errors.Count > 0 );
-            assertNotNull( "couldn't find expected error: " + expectedMessage.msgID + " in " + equeue, foundMsg );
-            assertTrue( "error is not a GrammarSemanticsMessage",
-                       foundMsg is GrammarSemanticsMessage );
-            assertEquals( expectedMessage.arg, foundMsg.arg );
-            assertEquals( expectedMessage.arg2, foundMsg.arg2 );
+            Assert.IsTrue(equeue.errors.Count > 0, "no error; " + expectedMessage.msgID + " expected");
+            Assert.IsNotNull(foundMsg, "couldn't find expected error: " + expectedMessage.msgID + " in " + equeue);
+            Assert.IsTrue(foundMsg is GrammarSemanticsMessage, "error is not a GrammarSemanticsMessage");
+            Assert.AreEqual( expectedMessage.arg, foundMsg.arg );
+            Assert.AreEqual( expectedMessage.arg2, foundMsg.arg2 );
         }
 
         /** Allow checking for multiple errors in one test */
@@ -3648,7 +3627,7 @@ namespace AntlrUnitTests
             }
             for ( int i = 0; i < equeue.errors.Count; i++ )
             {
-                assertTrue( "unexpected error:" + equeue.errors[i], ( (Boolean)messageExpected[i] ) );
+                Assert.IsTrue( ( (Boolean)messageExpected[i] ), "unexpected error:" + equeue.errors[i] );
             }
         }
     }

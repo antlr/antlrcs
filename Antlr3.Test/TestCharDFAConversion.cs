@@ -60,10 +60,10 @@ namespace AntlrUnitTests
                 "A : 'a'..'z' '@' | 'k' '$' ;" );
             g.CreateLookaheadDFAs();
             string expecting =
-                ".s0-'k'->.s1\n" +
-                ".s0-{'a'..'j', 'l'..'z'}->:s2=>1\n" +
-                ".s1-'$'->:s3=>2\n" +
-                ".s1-'@'->:s2=>1\n";
+                ".s0-'k'->.s1" + NewLine +
+                ".s0-{'a'..'j', 'l'..'z'}->:s2=>1" + NewLine +
+                ".s1-'$'->:s3=>2" + NewLine +
+                ".s1-'@'->:s2=>1" + NewLine;
             checkDecision( g, 1, expecting, null );
         }
 
@@ -77,11 +77,11 @@ namespace AntlrUnitTests
             g.CreateLookaheadDFAs();
             // must break up a..z into {'a'..'j', 'l'..'o', 'q'..'z'}
             string expecting =
-                ".s0-'9'->:s3=>2\n" +
-                ".s0-{'a'..'j', 'l'..'o', 'q'..'z'}->:s2=>1\n" +
-                ".s0-{'k', 'p'}->.s1\n" +
-                ".s1-'$'->:s3=>2\n" +
-                ".s1-'@'->:s2=>1\n";
+                ".s0-'9'->:s3=>2" + NewLine +
+                ".s0-{'a'..'j', 'l'..'o', 'q'..'z'}->:s2=>1" + NewLine +
+                ".s0-{'k', 'p'}->.s1" + NewLine +
+                ".s1-'$'->:s3=>2" + NewLine +
+                ".s1-'@'->:s2=>1" + NewLine;
             checkDecision( g, 1, expecting, null );
         }
 
@@ -96,10 +96,10 @@ namespace AntlrUnitTests
             // must break up a..z into {'a'..'j', 'l'..'o', 'q'..'z'} and 0..9
             // into 0..8
             string expecting =
-                ".s0-{'0'..'8', 'a'..'j', 'l'..'o', 'q'..'z'}->:s2=>1\n" +
-                ".s0-{'9', 'k', 'p'}->.s1\n" +
-                ".s1-'$'->:s3=>2\n" +
-                ".s1-'@'->:s2=>1\n";
+                ".s0-{'0'..'8', 'a'..'j', 'l'..'o', 'q'..'z'}->:s2=>1" + NewLine +
+                ".s0-{'9', 'k', 'p'}->.s1" + NewLine +
+                ".s1-'$'->:s3=>2" + NewLine +
+                ".s1-'@'->:s2=>1" + NewLine;
             checkDecision( g, 1, expecting, null );
         }
 
@@ -113,10 +113,10 @@ namespace AntlrUnitTests
             // must break up a..z into {'a'..'j', 'l'..'o', 'q'..'z'} and 0..9
             // into 0..8
             string expecting =
-                ".s0-{'0'..'8', 'a'..'j', 'l'..'o', 'q'..'z'}->:s3=>2\n" +
-                ".s0-{'9', 'k', 'p'}->.s1\n" +
-                ".s1-'$'->:s2=>1\n" +
-                ".s1-'@'->:s3=>2\n";
+                ".s0-{'0'..'8', 'a'..'j', 'l'..'o', 'q'..'z'}->:s3=>2" + NewLine +
+                ".s0-{'9', 'k', 'p'}->.s1" + NewLine +
+                ".s1-'$'->:s2=>1" + NewLine +
+                ".s1-'@'->:s3=>2" + NewLine;
             checkDecision( g, 1, expecting, null );
         }
 
@@ -133,17 +133,17 @@ namespace AntlrUnitTests
             // must break up a..z into {'a'..'j', 'l'..'o', 'q'..'z'} and 0..9
             // into 0..8
             string expecting =
-                ".s0-'0'..'8'->:s8=>5\n" +
-                ".s0-'9'->.s6\n" +
-                ".s0-'k'->.s1\n" +
-                ".s0-'p'->.s4\n" +
-                ".s0-{'a'..'j', 'l'..'o', 'q'..'z'}->:s2=>1\n" +
-                ".s1-'$'->:s3=>2\n" +
-                ".s1-'@'->:s2=>1\n" +
-                ".s4-'$'->:s5=>4\n" +
-                ".s4-'@'->:s2=>1\n" +
-                ".s6-'$'->:s7=>3\n" +
-                ".s6-'@'->:s8=>5\n";
+                ".s0-'0'..'8'->:s8=>5" + NewLine +
+                ".s0-'9'->.s6" + NewLine +
+                ".s0-'k'->.s1" + NewLine +
+                ".s0-'p'->.s4" + NewLine +
+                ".s0-{'a'..'j', 'l'..'o', 'q'..'z'}->:s2=>1" + NewLine +
+                ".s1-'$'->:s3=>2" + NewLine +
+                ".s1-'@'->:s2=>1" + NewLine +
+                ".s4-'$'->:s5=>4" + NewLine +
+                ".s4-'@'->:s2=>1" + NewLine +
+                ".s6-'$'->:s7=>3" + NewLine +
+                ".s6-'@'->:s8=>5" + NewLine;
             checkDecision( g, 1, expecting, null );
         }
 
@@ -154,16 +154,16 @@ namespace AntlrUnitTests
                 "IF : 'if' ;\n" + // choose this over ID
                 "ID : ('a'..'z')+ ;\n" );
             string expecting =
-                ".s0-'a'..'z'->:s2=>1\n" +
-                ".s0-<EOT>->:s1=>2\n";
+                ".s0-'a'..'z'->:s2=>1" + NewLine +
+                ".s0-<EOT>->:s1=>2" + NewLine;
             checkDecision( g, 1, expecting, null );
             expecting =
-                ".s0-'i'->.s1\n" +
-                ".s0-{'a'..'h', 'j'..'z'}->:s4=>2\n" +
-                ".s1-'f'->.s2\n" +
-                ".s1-<EOT>->:s4=>2\n" +
-                ".s2-'a'..'z'->:s4=>2\n" +
-                ".s2-<EOT>->:s3=>1\n";
+                ".s0-'i'->.s1" + NewLine +
+                ".s0-{'a'..'h', 'j'..'z'}->:s4=>2" + NewLine +
+                ".s1-'f'->.s2" + NewLine +
+                ".s1-<EOT>->:s4=>2" + NewLine +
+                ".s2-'a'..'z'->:s4=>2" + NewLine +
+                ".s2-<EOT>->:s3=>1" + NewLine;
             checkDecision( g, 2, expecting, null );
         }
 
@@ -174,21 +174,19 @@ namespace AntlrUnitTests
                 "A : 'a' ;\n" +
                 "B : 'a' ;\n" ); // can't reach this
             string expecting =
-                ".s0-'a'->.s1\n" +
-                ".s1-<EOT>->:s2=>1\n";
+                ".s0-'a'->.s1" + NewLine +
+                ".s1-<EOT>->:s2=>1" + NewLine;
 
             ErrorQueue equeue = new ErrorQueue();
             ErrorManager.SetErrorListener( equeue );
 
             checkDecision( g, 1, expecting, new int[] { 2 } );
 
-            assertEquals( "unexpected number of expected problems",
-                        1, equeue.size() );
+            Assert.AreEqual(1, equeue.size(), "unexpected number of expected problems");
             Message msg = (Message)equeue.errors[0];
-            assertTrue( "warning must be an unreachable alt",
-                        msg is GrammarUnreachableAltsMessage );
+            Assert.IsTrue( msg is GrammarUnreachableAltsMessage, "warning must be an unreachable alt" );
             GrammarUnreachableAltsMessage u = (GrammarUnreachableAltsMessage)msg;
-            assertEquals( "[2]", u.alts.ToElementString() );
+            Assert.AreEqual( "[2]", u.alts.ToElementString() );
 
         }
 
@@ -199,12 +197,12 @@ namespace AntlrUnitTests
                 "A : (~'r')+ ;\n" +
                 "B : (~'s')+ ;\n" );
             string expecting =
-                ".s0-'r'->:s3=>2\n" +
-                ".s0-'s'->:s2=>1\n" +
-                ".s0-{'\\u0000'..'q', 't'..'\\uFFFF'}->.s1\n" +
-                ".s1-'r'->:s3=>2\n" +
-                ".s1-<EOT>->:s2=>1\n" +
-                ".s1-{'\\u0000'..'q', 't'..'\\uFFFF'}->.s1\n";
+                ".s0-'r'->:s3=>2" + NewLine +
+                ".s0-'s'->:s2=>1" + NewLine +
+                ".s0-{'\\u0000'..'q', 't'..'\\uFFFF'}->.s1" + NewLine +
+                ".s1-'r'->:s3=>2" + NewLine +
+                ".s1-<EOT>->:s2=>1" + NewLine +
+                ".s1-{'\\u0000'..'q', 't'..'\\uFFFF'}->.s1" + NewLine;
             checkDecision( g, 3, expecting, null );
         }
 
@@ -215,12 +213,12 @@ namespace AntlrUnitTests
                 "A : (~'r')+ ;\n" +
                 "B : (~'t')+ ;\n" );
             string expecting =
-                ".s0-'r'->:s3=>2\n" +
-                ".s0-'t'->:s2=>1\n" +
-                ".s0-{'\\u0000'..'q', 's', 'u'..'\\uFFFF'}->.s1\n" +
-                ".s1-'r'->:s3=>2\n" +
-                ".s1-<EOT>->:s2=>1\n" +
-                ".s1-{'\\u0000'..'q', 's', 'u'..'\\uFFFF'}->.s1\n";
+                ".s0-'r'->:s3=>2" + NewLine +
+                ".s0-'t'->:s2=>1" + NewLine +
+                ".s0-{'\\u0000'..'q', 's', 'u'..'\\uFFFF'}->.s1" + NewLine +
+                ".s1-'r'->:s3=>2" + NewLine +
+                ".s1-<EOT>->:s2=>1" + NewLine +
+                ".s1-{'\\u0000'..'q', 's', 'u'..'\\uFFFF'}->.s1" + NewLine;
             checkDecision( g, 3, expecting, null );
         }
 
@@ -230,8 +228,8 @@ namespace AntlrUnitTests
                 "lexer grammar t;\n" +
                 "A : 'x'* ~'x'+ ;\n" );
             string expecting =
-                ".s0-'x'->:s1=>1\n" +
-                ".s0-{'\\u0000'..'w', 'y'..'\\uFFFF'}->:s2=>2\n";
+                ".s0-'x'->:s1=>1" + NewLine +
+                ".s0-{'\\u0000'..'w', 'y'..'\\uFFFF'}->:s2=>2" + NewLine;
             checkDecision( g, 1, expecting, null );
 
             // The optimizer yanks out all exit branches from EBNF blocks
@@ -242,8 +240,8 @@ namespace AntlrUnitTests
             FASerializer serializer = new FASerializer( g );
             DFA dfa = g.GetLookaheadDFA( 1 );
             string result = serializer.Serialize( dfa.startState );
-            expecting = ".s0-'x'->:s1=>1\n";
-            assertEquals( expecting, result );
+            expecting = ".s0-'x'->:s1=>1" + NewLine;
+            Assert.AreEqual( expecting, result );
         }
 
         // N O N G R E E D Y
@@ -254,10 +252,10 @@ namespace AntlrUnitTests
                 "lexer grammar t;\n" +
                 "CMT : '/*' ( options {greedy=false;} : . )* '*/' ;" );
             string expecting =
-                ".s0-'*'->.s1\n" +
-                ".s0-{'\\u0000'..')', '+'..'\\uFFFF'}->:s3=>1\n" +
-                ".s1-'/'->:s2=>2\n" +
-                ".s1-{'\\u0000'..'.', '0'..'\\uFFFF'}->:s3=>1\n";
+                ".s0-'*'->.s1" + NewLine +
+                ".s0-{'\\u0000'..')', '+'..'\\uFFFF'}->:s3=>1" + NewLine +
+                ".s1-'/'->:s2=>2" + NewLine +
+                ".s1-{'\\u0000'..'.', '0'..'\\uFFFF'}->:s3=>1" + NewLine;
             checkDecision( g, 1, expecting, null );
         }
 
@@ -267,8 +265,8 @@ namespace AntlrUnitTests
                 "lexer grammar t;\n" +
                 "SLCMT : '//' ( options {greedy=false;} : . )* '\n' ;" );
             string expecting =
-                ".s0-'\\n'->:s1=>2\n" +
-                ".s0-{'\\u0000'..'\\t', '\\u000B'..'\\uFFFF'}->:s2=>1\n";
+                ".s0-'\\n'->:s1=>2" + NewLine +
+                ".s0-{'\\u0000'..'\\t', '\\u000B'..'\\uFFFF'}->:s2=>1" + NewLine;
             checkDecision( g, 1, expecting, null );
         }
 
@@ -278,8 +276,8 @@ namespace AntlrUnitTests
                 "lexer grammar t;\n" +
                 "SLCMT : '//' .* '\n' ;" );
             string expecting =
-                ".s0-'\\n'->:s1=>2\n" +
-                ".s0-{'\\u0000'..'\\t', '\\u000B'..'\\uFFFF'}->:s2=>1\n";
+                ".s0-'\\n'->:s1=>2" + NewLine +
+                ".s0-{'\\u0000'..'\\t', '\\u000B'..'\\uFFFF'}->:s2=>1" + NewLine;
             checkDecision( g, 1, expecting, null );
         }
 
@@ -291,8 +289,8 @@ namespace AntlrUnitTests
                 "lexer grammar t;\n" +
                 "SLCMT : '//' ( options {greedy=false;} : . )+ '\n' ;" );
             string expecting =
-                ".s0-'\\n'->:s1=>2\n" +
-                ".s0-{'\\u0000'..'\\t', '\\u000B'..'\\uFFFF'}->:s2=>1\n";
+                ".s0-'\\n'->:s1=>2" + NewLine +
+                ".s0-{'\\u0000'..'\\t', '\\u000B'..'\\uFFFF'}->:s2=>1" + NewLine;
             checkDecision( g, 1, expecting, null );
         }
 
@@ -302,8 +300,8 @@ namespace AntlrUnitTests
                 "lexer grammar t;\n" +
                 "SLCMT : '//' .+ '\n' ;" );
             string expecting =
-                ".s0-'\\n'->:s1=>2\n" +
-                ".s0-{'\\u0000'..'\\t', '\\u000B'..'\\uFFFF'}->:s2=>1\n";
+                ".s0-'\\n'->:s1=>2" + NewLine +
+                ".s0-{'\\u0000'..'\\t', '\\u000B'..'\\uFFFF'}->:s2=>1" + NewLine;
             checkDecision( g, 1, expecting, null );
         }
 
@@ -313,8 +311,8 @@ namespace AntlrUnitTests
                 "lexer grammar t;\n" +
                 "SLCMT : '//' (.)+ '\n' ;" );
             string expecting =
-                ".s0-'\\n'->:s1=>2\n" +
-                ".s0-{'\\u0000'..'\\t', '\\u000B'..'\\uFFFF'}->:s2=>1\n";
+                ".s0-'\\n'->:s1=>2" + NewLine +
+                ".s0-{'\\u0000'..'\\t', '\\u000B'..'\\uFFFF'}->:s2=>1" + NewLine;
             checkDecision( g, 1, expecting, null );
         }
 
@@ -324,10 +322,10 @@ namespace AntlrUnitTests
                 "lexer grammar t;\n" +
                 "DUH : (options {greedy=false;}:'x'|'y')* 'xy' ;" );
             string expecting =
-                ".s0-'x'->.s1\n" +
-                ".s0-'y'->:s4=>2\n" +
-                ".s1-'x'->:s3=>1\n" +
-                ".s1-'y'->:s2=>3\n";
+                ".s0-'x'->.s1" + NewLine +
+                ".s0-'y'->:s4=>2" + NewLine +
+                ".s1-'x'->:s3=>1" + NewLine +
+                ".s1-'y'->:s2=>3" + NewLine;
             checkDecision( g, 1, expecting, null );
         }
 
@@ -337,12 +335,12 @@ namespace AntlrUnitTests
                 "lexer grammar t;\n" +
                 "DUH : ('x'|'y')* 'xy' ;" );
             string expecting =
-                ".s0-'x'->.s1\n" +
-                ".s0-'y'->:s4=>1\n" +
-                ".s1-'x'->:s4=>1\n" +
-                ".s1-'y'->.s2\n" +
-                ".s2-'x'..'y'->:s4=>1\n" +
-                ".s2-<EOT>->:s3=>2\n";
+                ".s0-'x'->.s1" + NewLine +
+                ".s0-'y'->:s4=>1" + NewLine +
+                ".s1-'x'->:s4=>1" + NewLine +
+                ".s1-'y'->.s2" + NewLine +
+                ".s2-'x'..'y'->:s4=>1" + NewLine +
+                ".s2-<EOT>->:s3=>2" + NewLine;
             checkDecision( g, 1, expecting, null );
         }
 
@@ -354,11 +352,11 @@ namespace AntlrUnitTests
                 "STRING : '\"' (options {greedy=false;}: '\\\\\"' | .)* '\"' ;\n"
             );
             string expecting =
-                ".s0-'\"'->:s1=>3\n" +
-                    ".s0-'\\\\'->.s2\n" +
-                    ".s0-{'\\u0000'..'!', '#'..'[', ']'..'\\uFFFF'}->:s4=>2\n" +
-                    ".s2-'\"'->:s3=>1\n" +
-                    ".s2-{'\\u0000'..'!', '#'..'\\uFFFF'}->:s4=>2\n";
+                ".s0-'\"'->:s1=>3" + NewLine +
+                    ".s0-'\\\\'->.s2" + NewLine +
+                    ".s0-{'\\u0000'..'!', '#'..'[', ']'..'\\uFFFF'}->:s4=>2" + NewLine +
+                    ".s2-'\"'->:s3=>1" + NewLine +
+                    ".s2-{'\\u0000'..'!', '#'..'\\uFFFF'}->:s4=>2" + NewLine;
             checkDecision( g, 1, expecting, null );
         }
 
@@ -368,20 +366,18 @@ namespace AntlrUnitTests
                 "lexer grammar t;\n" +
                 "DUH : (options {greedy=false;}:'x')+ ;" ); // loop never matched
             string expecting =
-                ":s0=>2\n";
+                ":s0=>2" + NewLine;
 
             ErrorQueue equeue = new ErrorQueue();
             ErrorManager.SetErrorListener( equeue );
 
             checkDecision( g, 1, expecting, new int[] { 1 } );
 
-            assertEquals( "unexpected number of expected problems",
-                        1, equeue.size() );
+            Assert.AreEqual(1, equeue.size(), "unexpected number of expected problems");
             Message msg = (Message)equeue.errors[0];
-            assertTrue( "warning must be an unreachable alt",
-                       msg is GrammarUnreachableAltsMessage );
+            Assert.IsTrue(msg is GrammarUnreachableAltsMessage, "warning must be an unreachable alt");
             GrammarUnreachableAltsMessage u = (GrammarUnreachableAltsMessage)msg;
-            assertEquals( "[1]", u.alts.ToElementString() );
+            Assert.AreEqual( "[1]", u.alts.ToElementString() );
         }
 
         [TestMethod]
@@ -401,10 +397,10 @@ namespace AntlrUnitTests
                 "ESC     :       '\\\\' . ;" );
             g.CreateLookaheadDFAs();
             string expecting =
-                ".s0-'\\\\'->:s2=>2\n" +
-                ".s0-'{'->:s1=>1\n" +
-                ".s0-'}'->:s4=>4\n" +
-                ".s0-{'\\u0000'..'[', ']'..'z', '|', '~'..'\\uFFFF'}->:s3=>3\n";
+                ".s0-'\\\\'->:s2=>2" + NewLine +
+                ".s0-'{'->:s1=>1" + NewLine +
+                ".s0-'}'->:s4=>4" + NewLine +
+                ".s0-{'\\u0000'..'[', ']'..'z', '|', '~'..'\\uFFFF'}->:s3=>3" + NewLine;
             checkDecision( g, 1, expecting, null );
         }
 
@@ -426,16 +422,16 @@ namespace AntlrUnitTests
                 "ESC     :       '\\\\' . ;" );
             g.CreateLookaheadDFAs();
             string expecting =
-                ".s0-'\\\\'->.s3\n" +
-                ".s0-'{'->:s2=>1\n" +
-                ".s0-'}'->:s1=>4\n" +
-                ".s0-{'\\u0000'..'[', ']'..'z', '|', '~'..'\\uFFFF'}->:s5=>3\n" +
-                ".s3-'\\\\'->:s8=>2\n" +
-                ".s3-'{'->:s7=>2\n" +
-                ".s3-'}'->.s4\n" +
-                ".s3-{'\\u0000'..'[', ']'..'z', '|', '~'..'\\uFFFF'}->:s6=>2\n" +
-                ".s4-'\\u0000'..'\\uFFFF'->:s6=>2\n" +
-                ".s4-<EOT>->:s5=>3\n";
+                ".s0-'\\\\'->.s3" + NewLine +
+                ".s0-'{'->:s2=>1" + NewLine +
+                ".s0-'}'->:s1=>4" + NewLine +
+                ".s0-{'\\u0000'..'[', ']'..'z', '|', '~'..'\\uFFFF'}->:s5=>3" + NewLine +
+                ".s3-'\\\\'->:s8=>2" + NewLine +
+                ".s3-'{'->:s7=>2" + NewLine +
+                ".s3-'}'->.s4" + NewLine +
+                ".s3-{'\\u0000'..'[', ']'..'z', '|', '~'..'\\uFFFF'}->:s6=>2" + NewLine +
+                ".s4-'\\u0000'..'\\uFFFF'->:s6=>2" + NewLine +
+                ".s4-<EOT>->:s5=>3" + NewLine;
             checkDecision( g, 1, expecting, null );
         }
 
@@ -447,8 +443,8 @@ namespace AntlrUnitTests
                 "fragment B : 'a' ;\n" );
             g.CreateLookaheadDFAs();
             string expecting =
-                ".s0-'a'->:s1=>1\n" +
-                ".s0-{'\\u0000'..'`', 'b'..'\\uFFFF'}->:s2=>2\n";
+                ".s0-'a'->:s1=>1" + NewLine +
+                ".s0-{'\\u0000'..'`', 'b'..'\\uFFFF'}->:s2=>2" + NewLine;
             checkDecision( g, 1, expecting, null );
         }
 
@@ -460,8 +456,8 @@ namespace AntlrUnitTests
                 "fragment B : 'a'|'b' ;\n" );
             g.CreateLookaheadDFAs();
             string expecting =
-                ".s0-'a'..'b'->:s1=>1\n" +
-                ".s0-{'\\u0000'..'`', 'c'..'\\uFFFF'}->:s2=>2\n";
+                ".s0-'a'..'b'->:s1=>1" + NewLine +
+                ".s0-{'\\u0000'..'`', 'c'..'\\uFFFF'}->:s2=>2" + NewLine;
             checkDecision( g, 1, expecting, null );
         }
 
@@ -473,8 +469,8 @@ namespace AntlrUnitTests
                 "B : 'a' ;\n" );
             g.CreateLookaheadDFAs();
             string expecting =
-                ".s0-'a'->:s1=>1\n" +
-                ".s0-{'\\u0000'..'`', 'b'..'\\uFFFF'}->:s2=>2\n";
+                ".s0-'a'->:s1=>1" + NewLine +
+                ".s0-{'\\u0000'..'`', 'b'..'\\uFFFF'}->:s2=>2" + NewLine;
             checkDecision( g, 1, expecting, null );
         }
 
@@ -486,8 +482,8 @@ namespace AntlrUnitTests
                 "fragment B : 'a'|'b'|'c'..'e'|C ;\n" +
                 "fragment C : 'f' ;\n" ); // has to seen from B to C
             string expecting =
-                ".s0-'a'..'f'->:s1=>1\n" +
-                ".s0-{'\\u0000'..'`', 'g'..'\\uFFFF'}->:s2=>2\n";
+                ".s0-'a'..'f'->:s1=>1" + NewLine +
+                ".s0-{'\\u0000'..'`', 'g'..'\\uFFFF'}->:s2=>2" + NewLine;
             checkDecision( g, 1, expecting, null );
         }
 
@@ -500,10 +496,10 @@ namespace AntlrUnitTests
                 "B : 'b' ;\n" +
                 "C : ~'x'{;} ;" ); // force Tokens to not collapse T|C
             string expecting =
-                ".s0-'b'->:s3=>2\n" +
-                ".s0-'x'->:s2=>1\n" +
-                ".s0-{'\\u0000'..'a', 'c'..'w', 'y'..'\\uFFFF'}->.s1\n" +
-                ".s1-<EOT>->:s2=>1\n";
+                ".s0-'b'->:s3=>2" + NewLine +
+                ".s0-'x'->:s2=>1" + NewLine +
+                ".s0-{'\\u0000'..'a', 'c'..'w', 'y'..'\\uFFFF'}->.s1" + NewLine +
+                ".s1-<EOT>->:s2=>1" + NewLine;
             checkDecision( g, 1, expecting, null );
         }
 
@@ -514,8 +510,8 @@ namespace AntlrUnitTests
                 "T : ~'x' ;\n" +
                 "S : 'x' (T | 'x') ;\n" );
             string expecting =
-                ".s0-'x'->:s2=>2\n" +
-                ".s0-{'\\u0000'..'w', 'y'..'\\uFFFF'}->:s1=>1\n";
+                ".s0-'x'->:s2=>2" + NewLine +
+                ".s0-{'\\u0000'..'w', 'y'..'\\uFFFF'}->:s1=>1" + NewLine;
             checkDecision( g, 1, expecting, null );
         }
 
@@ -529,8 +525,8 @@ namespace AntlrUnitTests
                 "IDENT:    'a'+;\n" );
             // basically, Tokens rule should not do set compression test
             string expecting =
-                ".s0-'<'->:s1=>1\n" +
-                ".s0-'a'->:s2=>2\n";
+                ".s0-'<'->:s1=>1" + NewLine +
+                ".s0-'a'->:s2=>2" + NewLine;
             checkDecision( g, 4, expecting, null ); // 4 is Tokens rule
         }
 
@@ -562,7 +558,7 @@ namespace AntlrUnitTests
             }
 
             DFA dfa = g.GetLookaheadDFA( decision );
-            assertNotNull( "unknown decision #" + decision, dfa );
+            Assert.IsNotNull(dfa, "unknown decision #" + decision);
             FASerializer serializer = new FASerializer( g );
             string result = serializer.Serialize( dfa.startState );
             //System.out.print(result);
@@ -576,17 +572,16 @@ namespace AntlrUnitTests
                 {
                     Console.Error.WriteLine( "nondeterministic alts (should be empty): " + ( (IList)nonDetAlts ).ToElementString() );
                 }
-                assertEquals( "unreachable alts mismatch", 0, nonDetAlts != null ? nonDetAlts.Count : 0 );
+                Assert.AreEqual(0, nonDetAlts != null ? nonDetAlts.Count : 0, "unreachable alts mismatch");
             }
             else
             {
                 for ( int i = 0; i < expectingUnreachableAlts.Length; i++ )
                 {
-                    assertTrue( "unreachable alts mismatch",
-                               nonDetAlts != null ? nonDetAlts.Contains( expectingUnreachableAlts[i] ) : false );
+                    Assert.IsTrue(nonDetAlts != null ? nonDetAlts.Contains(expectingUnreachableAlts[i]) : false, "unreachable alts mismatch");
                 }
             }
-            assertEquals( expecting, result );
+            Assert.AreEqual( expecting, result );
         }
 
     }

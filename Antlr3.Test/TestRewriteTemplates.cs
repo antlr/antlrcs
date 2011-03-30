@@ -55,7 +55,7 @@ namespace AntlrUnitTests
                 "WS : (' '|'\\n') {$channel=HIDDEN;} ;\n";
             string found = execParser( "T.g", grammar, "TParser", "TLexer",
                                       "a", "abc 34", debug );
-            assertEquals( "", found );
+            Assert.AreEqual( "", found );
         }
 
         [TestMethod]
@@ -69,7 +69,7 @@ namespace AntlrUnitTests
                 "WS : (' '|'\\n') {$channel=HIDDEN;} ;\n";
             string found = execParser( "T.g", grammar, "TParser", "TLexer",
                                       "a", "abc 34", debug );
-            assertEquals( "abc" + NewLine, found );
+            Assert.AreEqual( "abc" + NewLine, found );
         }
 
         [TestMethod]
@@ -83,7 +83,7 @@ namespace AntlrUnitTests
                 "WS : (' '|'\\n') {$channel=HIDDEN;} ;\n";
             string found = execParser( "T.g", grammar, "TParser", "TLexer",
                                       "a", "abc 34", debug );
-            assertEquals( "abc" + NewLine, found );
+            Assert.AreEqual( "abc" + NewLine, found );
         }
 
         [TestMethod]
@@ -97,7 +97,7 @@ namespace AntlrUnitTests
                 "WS : (' '|'\\n') {$channel=HIDDEN;} ;\n";
             string found = execParser( "T.g", grammar, "TParser", "TLexer",
                                       "a", "abc 34", debug );
-            assertEquals( "x:abc, y:34;" + NewLine, found );
+            Assert.AreEqual( "x:abc, y:34;" + NewLine, found );
         }
 
         [TestMethod]
@@ -113,7 +113,7 @@ namespace AntlrUnitTests
                 "WS : (' '|'\\n') {$channel=HIDDEN;} ;\n";
             string found = execParser( "T.g", grammar, "TParser", "TLexer",
                                       "a", "abc 34", debug );
-            assertEquals( "abc 34" + NewLine, found );
+            Assert.AreEqual( "abc 34" + NewLine, found );
         }
 
         [TestMethod]
@@ -129,7 +129,7 @@ namespace AntlrUnitTests
                 "WS : (' '|'\\n') {$channel=HIDDEN;} ;\n";
             string found = execParser( "T.g", grammar, "TParser", "TLexer",
                                       "a", "abc 34", debug );
-            assertEquals( "abc 34" + NewLine, found );
+            Assert.AreEqual( "abc 34" + NewLine, found );
         }
 
         [TestMethod]
@@ -143,7 +143,7 @@ namespace AntlrUnitTests
                 "WS : (' '|'\\n') {$channel=HIDDEN;} ;\n";
             string found = execParser( "T.g", grammar, "TParser", "TLexer",
                                       "a", "abc 34", debug );
-            assertEquals( "abc 34" + NewLine, found );
+            Assert.AreEqual( "abc 34" + NewLine, found );
         }
 
         [TestMethod]
@@ -161,7 +161,7 @@ namespace AntlrUnitTests
                 "WS : (' '|'\\n') {$channel=HIDDEN;} ;\n";
             string found = execParser( "T.g", grammar, "TParser", "TLexer",
                                       "a", "abc 34", debug );
-            assertEquals( "hi abc" + NewLine, found );
+            Assert.AreEqual( "hi abc" + NewLine, found );
         }
 
         [TestMethod]
@@ -176,7 +176,7 @@ namespace AntlrUnitTests
                 "WS : (' '|'\\n') {$channel=HIDDEN;} ;\n";
             string found = execParser( "T.g", grammar, "TParser", "TLexer",
                                       "a", "abc 34", debug );
-            assertEquals( "abc 34" + NewLine, found );
+            Assert.AreEqual( "abc 34" + NewLine, found );
         }
 
         [TestMethod]
@@ -191,7 +191,7 @@ namespace AntlrUnitTests
                 "WS : (' '|'\\n') {$channel=HIDDEN;} ;\n";
             string found = execParser( "T.g", grammar, "TParser", "TLexer",
                                       "a", "abc 34", debug );
-            assertEquals( "8" + NewLine, found );
+            Assert.AreEqual( "8" + NewLine, found );
         }
 
         [TestMethod]
@@ -208,7 +208,7 @@ namespace AntlrUnitTests
                 "WS : (' '|'\\n') {$channel=HIDDEN;} ;\n";
             string found = execParser( "T.g", grammar, "TParser", "TLexer",
                                       "a", "abc 34", debug );
-            assertEquals( "abc " + NewLine, found );
+            Assert.AreEqual( "abc " + NewLine, found );
         }
 
         // tests for rewriting templates in tree parsers
@@ -231,7 +231,7 @@ namespace AntlrUnitTests
 
             string found = execTreeParser( "T.g", grammar, "TParser", "TP.g",
                                           treeGrammar, "TP", "TLexer", "a", "s", "abc" );
-            assertEquals( "|abc|" + NewLine, found );
+            Assert.AreEqual( "|abc|" + NewLine, found );
         }
 
         [TestMethod]
@@ -252,7 +252,7 @@ namespace AntlrUnitTests
 
             string found = execTreeParser( "T.g", grammar, "TParser", "TP.g",
                                           treeGrammar, "TP", "TLexer", "a", "s", "abc" );
-            assertEquals( "|abc|" + NewLine, found );
+            Assert.AreEqual( "|abc|" + NewLine, found );
         }
 
         [TestMethod]
@@ -274,7 +274,7 @@ namespace AntlrUnitTests
             g.CodeGenerator = generator;
             generator.GenRecognizer();
 
-            assertEquals( "unexpected errors: " + equeue, 0, equeue.warnings.Count );
+            Assert.AreEqual(0, equeue.warnings.Count, "unexpected errors: " + equeue);
         }
 
         [TestMethod]
@@ -297,7 +297,7 @@ namespace AntlrUnitTests
             g.CodeGenerator = generator;
             generator.GenRecognizer();
 
-            assertEquals( "unexpected errors: " + equeue, 0, equeue.warnings.Count );
+            Assert.AreEqual(0, equeue.warnings.Count, "unexpected errors: " + equeue);
         }
 
         [TestMethod]
@@ -317,7 +317,7 @@ namespace AntlrUnitTests
             g.CodeGenerator = generator;
             generator.GenRecognizer();
 
-            assertEquals( "unexpected errors: " + equeue, 2, equeue.warnings.Count );
+            Assert.AreEqual(0, equeue.warnings.Count, "unexpected errors: " + equeue);
         }
 
         [TestMethod]
@@ -338,7 +338,7 @@ namespace AntlrUnitTests
             g.CodeGenerator = generator;
             generator.GenRecognizer();
 
-            assertEquals( "unexpected errors: " + equeue, 2, equeue.warnings.Count );
+            Assert.AreEqual(0, equeue.warnings.Count, "unexpected errors: " + equeue);
         }
 
     }

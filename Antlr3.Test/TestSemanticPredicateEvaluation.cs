@@ -46,7 +46,7 @@ namespace AntlrUnitTests
                 "  ;\n";
             string found = execParser( "foo.g", grammar, "fooParser", "fooLexer",
                         "a", "xxxy", false );
-            assertEquals( "alt2" + NewLine, found );
+            Assert.AreEqual( "alt2" + NewLine, found );
         }
 
         [TestMethod]
@@ -59,7 +59,7 @@ namespace AntlrUnitTests
                 "  ;\n";
             string found = execParser( "foo.g", grammar, "fooParser", "fooLexer",
                         "a", "xxxy", false );
-            assertEquals( "alt2" + NewLine, found );
+            Assert.AreEqual( "alt2" + NewLine, found );
         }
 
         [TestMethod]
@@ -76,7 +76,7 @@ namespace AntlrUnitTests
                 "  ;\n";
             string found = execParser( "foo.g", grammar, "fooParser", "fooLexer",
                         "a", "x", false );
-            assertEquals( "error: FailedPredicateException(a,{false}?)" + NewLine, found );
+            Assert.AreEqual( "error: FailedPredicateException(a,{false}?)" + NewLine, found );
         }
 
         [TestMethod]
@@ -90,7 +90,7 @@ namespace AntlrUnitTests
             string found = execParser( "foo.g", grammar, "fooParser", "fooLexer",
                         "a", "a", false );
             // "a" is ambig; can match both A, B.  Pred says match 2
-            assertEquals( "token 2" + NewLine, found );
+            Assert.AreEqual( "token 2" + NewLine, found );
         }
 
         [TestMethod]
@@ -104,7 +104,7 @@ namespace AntlrUnitTests
             string found = execParser( "foo.g", grammar, "fooParser", "fooLexer",
                         "a", "a", false );
             // "a" is ambig; can match both A, B.  Pred says match 1
-            assertEquals( "token 1" + NewLine, found );
+            Assert.AreEqual( "token 1" + NewLine, found );
         }
 
         [TestMethod]
@@ -119,7 +119,7 @@ namespace AntlrUnitTests
                 "    ('a' {System.out.print(\"2\");})* ;\n";
             string found = execParser( "foo.g", grammar, "fooParser", "fooLexer",
                         "a", "aaa", false );
-            assertEquals( "222" + NewLine, found );
+            Assert.AreEqual( "222" + NewLine, found );
         }
 
         [TestMethod]
@@ -132,7 +132,7 @@ namespace AntlrUnitTests
                 "    ('a' {System.out.print(\"2\");})* ;\n";
             string found = execParser( "foo.g", grammar, "fooParser", "fooLexer",
                         "a", "aaa", false );
-            assertEquals( "111" + NewLine, found );
+            Assert.AreEqual( "111" + NewLine, found );
         }
 
         [TestMethod]
@@ -145,7 +145,7 @@ namespace AntlrUnitTests
                 "    ('a' {System.out.print(\"2\");})* ;\n";
             string found = execParser( "foo.g", grammar, "fooParser", "fooLexer",
                         "a", "aaa", false );
-            assertEquals( "122" + NewLine, found );
+            Assert.AreEqual( "122" + NewLine, found );
         }
 
         [TestMethod]
@@ -157,7 +157,7 @@ namespace AntlrUnitTests
                 "    ('a' {System.out.print(\"x\");})* ;\n";
             string found = execParser( "foo.g", grammar, "fooParser", "fooLexer",
                         "a", "aaaaa", false );
-            assertEquals( "01xxx" + NewLine, found );
+            Assert.AreEqual( "01xxx" + NewLine, found );
         }
 
         [TestMethod]
@@ -170,7 +170,7 @@ namespace AntlrUnitTests
                 "B :      ('a')+ 'x' {System.out.println(\"token 2\");} ;\n";
             string found = execParser( "foo.g", grammar, "fooParser", "fooLexer",
                         "a", "aax", false );
-            assertEquals( "token 2" + NewLine, found );
+            Assert.AreEqual( "token 2" + NewLine, found );
         }
 
         [TestMethod]
@@ -183,7 +183,7 @@ namespace AntlrUnitTests
                 "B :      ('a')+ 'x' {System.out.println(\"token 2\");} ;\n";
             string found = execParser( "foo.g", grammar, "fooParser", "fooLexer",
                         "a", "aax", false );
-            assertEquals( "token 2" + NewLine, found );
+            Assert.AreEqual( "token 2" + NewLine, found );
         }
 
         [TestMethod]
@@ -196,7 +196,7 @@ namespace AntlrUnitTests
             string found = execParser( "foo.g", grammar, "fooParser", "fooLexer",
                         "a", "aa", false );
             // "a" is ambig; can match both A, B.  Pred says match A twice
-            assertEquals( "token 1" + NewLine + "token 1" + NewLine, found );
+            Assert.AreEqual( "token 1" + NewLine + "token 1" + NewLine, found );
         }
 
         [TestMethod]
@@ -210,7 +210,7 @@ namespace AntlrUnitTests
                 "C : {sig}?=> ('a'|'b') {System.out.print(\"C\");} ;\n";
             string found = execParser( "foo.g", grammar, "fooParser", "fooLexer",
                         "a", "aa", false );
-            assertEquals( "AC" + NewLine, found );
+            Assert.AreEqual( "AC" + NewLine, found );
         }
 
         [TestMethod]
@@ -224,7 +224,7 @@ namespace AntlrUnitTests
                 "  ;\n";
             string found = execParser( "foo.g", grammar, "fooParser", "fooLexer",
                         "a", "aa", false );
-            assertEquals( "alt 2" + NewLine, found );
+            Assert.AreEqual( "alt 2" + NewLine, found );
         }
 
         [TestMethod]
@@ -239,7 +239,7 @@ namespace AntlrUnitTests
                 "D: '<';\n";
             string found = execParser( "foo.g", grammar, "fooParser", "fooLexer",
                         "a", "<!", false );
-            assertEquals( "B" + NewLine, found );
+            Assert.AreEqual( "B" + NewLine, found );
         }
 
 #if true // my lookahead tests
@@ -299,7 +299,7 @@ namespace AntlrUnitTests
         [TestMethod]
         public void TestPredicatesWithGlobalScope3()
         {
-            Assert.Inconclusive();
+            //Assert.Inconclusive();
             string grammar =
                 "grammar foo;\n" +
                 "scope S { boolean value; }\n" +
@@ -332,7 +332,7 @@ namespace AntlrUnitTests
                 "WS : (' '|'\\n') {channel=99;} ;\n";
             string found = execParser( "t.g", grammar, "T", "TLexer",
                         "a", "abc 34", false );
-            assertEquals( "" + NewLine, found );
+            Assert.AreEqual( "" + NewLine, found );
         }
 
     }

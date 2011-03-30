@@ -58,8 +58,8 @@ namespace AntlrUnitTests
                 "parser grammar t;\n" +
                 "a : A C | B;" );
             string expecting =
-                ".s0-A->:s1=>1\n" +
-                ".s0-B->:s2=>2\n";
+                ".s0-A->:s1=>1" + NewLine +
+                ".s0-B->:s2=>2" + NewLine;
             checkDecision( g, 1, expecting, null, null, null, null, 0 );
         }
 
@@ -69,9 +69,9 @@ namespace AntlrUnitTests
                 "parser grammar t;\n" +
                 "a : A B | A C;" );
             string expecting =
-                ".s0-A->.s1\n" +
-                ".s1-B->:s2=>1\n" +
-                ".s1-C->:s3=>2\n";
+                ".s0-A->.s1" + NewLine +
+                ".s1-B->:s2=>1" + NewLine +
+                ".s1-C->:s3=>2" + NewLine;
             checkDecision( g, 1, expecting, null, null, null, null, 0 );
         }
 
@@ -82,9 +82,9 @@ namespace AntlrUnitTests
                 "options {k=2;}\n" +
                 "a : A B | A C;" );
             string expecting =
-                ".s0-A->.s1\n" +
-                ".s1-B->:s2=>1\n" +
-                ".s1-C->:s3=>2\n";
+                ".s0-A->.s1" + NewLine +
+                ".s1-B->:s2=>1" + NewLine +
+                ".s1-C->:s3=>2" + NewLine;
             checkDecision( g, 1, expecting, null, null, null, null, 0 );
         }
 
@@ -95,7 +95,7 @@ namespace AntlrUnitTests
                 "options {k=1;}\n" +
                 "a : A B | A C;" );
             string expecting =
-                ".s0-A->:s1=>1\n";
+                ".s0-A->:s1=>1" + NewLine;
             int[] unreachableAlts = new int[] { 2 };
             int[] nonDetAlts = new int[] { 1, 2 };
             string ambigInput = "A";
@@ -146,18 +146,18 @@ namespace AntlrUnitTests
                 "s : (a Y)=> a Y | A A A A A X ;\n" + // force recursion past m=4
                 "a : A a | Q;" );
             string expecting =
-                ".s0-A->.s1\n" +
-                ".s0-Q&&{synpred1_t}?->:s11=>1\n" +
-                ".s1-A->.s2\n" +
-                ".s1-Q&&{synpred1_t}?->:s10=>1\n" +
-                ".s2-A->.s3\n" +
-                ".s2-Q&&{synpred1_t}?->:s9=>1\n" +
-                ".s3-A->.s4\n" +
-                ".s3-Q&&{synpred1_t}?->:s8=>1\n" +
-                ".s4-A->.s5\n" +
-                ".s4-Q&&{synpred1_t}?->:s6=>1\n" +
-                ".s5-{synpred1_t}?->:s6=>1\n" +
-                ".s5-{true}?->:s7=>2\n";
+                ".s0-A->.s1" + NewLine +
+                ".s0-Q&&{synpred1_t}?->:s11=>1" + NewLine +
+                ".s1-A->.s2" + NewLine +
+                ".s1-Q&&{synpred1_t}?->:s10=>1" + NewLine +
+                ".s2-A->.s3" + NewLine +
+                ".s2-Q&&{synpred1_t}?->:s9=>1" + NewLine +
+                ".s3-A->.s4" + NewLine +
+                ".s3-Q&&{synpred1_t}?->:s8=>1" + NewLine +
+                ".s4-A->.s5" + NewLine +
+                ".s4-Q&&{synpred1_t}?->:s6=>1" + NewLine +
+                ".s5-{synpred1_t}?->:s6=>1" + NewLine +
+                ".s5-{true}?->:s7=>2" + NewLine;
             int[] unreachableAlts = null;
             int[] nonDetAlts = null;
             string ambigInput = null;
@@ -175,19 +175,19 @@ namespace AntlrUnitTests
                 "s : (a Y)=> a Y | A A A A A X | Z;\n" + // force recursion past m=4
                 "a : A a | Q;" );
             string expecting =
-                ".s0-A->.s1\n" +
-                ".s0-Q&&{synpred1_t}?->:s11=>1\n" +
-                ".s0-Z->:s12=>3\n" +
-                ".s1-A->.s2\n" +
-                ".s1-Q&&{synpred1_t}?->:s10=>1\n" +
-                ".s2-A->.s3\n" +
-                ".s2-Q&&{synpred1_t}?->:s9=>1\n" +
-                ".s3-A->.s4\n" +
-                ".s3-Q&&{synpred1_t}?->:s8=>1\n" +
-                ".s4-A->.s5\n" +
-                ".s4-Q&&{synpred1_t}?->:s6=>1\n" +
-                ".s5-{synpred1_t}?->:s6=>1\n" +
-                ".s5-{true}?->:s7=>2\n";
+                ".s0-A->.s1" + NewLine +
+                ".s0-Q&&{synpred1_t}?->:s11=>1" + NewLine +
+                ".s0-Z->:s12=>3" + NewLine +
+                ".s1-A->.s2" + NewLine +
+                ".s1-Q&&{synpred1_t}?->:s10=>1" + NewLine +
+                ".s2-A->.s3" + NewLine +
+                ".s2-Q&&{synpred1_t}?->:s9=>1" + NewLine +
+                ".s3-A->.s4" + NewLine +
+                ".s3-Q&&{synpred1_t}?->:s8=>1" + NewLine +
+                ".s4-A->.s5" + NewLine +
+                ".s4-Q&&{synpred1_t}?->:s6=>1" + NewLine +
+                ".s5-{synpred1_t}?->:s6=>1" + NewLine +
+                ".s5-{true}?->:s7=>2" + NewLine;
             int[] unreachableAlts = null;
             int[] nonDetAlts = null;
             string ambigInput = null;
@@ -222,12 +222,12 @@ namespace AntlrUnitTests
                 "    | B\n" +
                 "    ;" );
             string expecting =
-                ".s0-B->.s4\n" +
-                ".s0-L->.s1\n" +
-                ".s1-{synpred1_t}?->:s2=>1\n" +
-                ".s1-{true}?->:s3=>2\n" +
-                ".s4-{synpred1_t}?->:s2=>1\n" +
-                ".s4-{true}?->:s3=>2\n";
+                ".s0-B->.s4" + NewLine +
+                ".s0-L->.s1" + NewLine +
+                ".s1-{synpred1_t}?->:s2=>1" + NewLine +
+                ".s1-{true}?->:s3=>2" + NewLine +
+                ".s4-{synpred1_t}?->:s2=>1" + NewLine +
+                ".s4-{true}?->:s3=>2" + NewLine;
             int[] unreachableAlts = null;
             int[] nonDetAlts = null;
             string ambigInput = null;
@@ -247,10 +247,10 @@ namespace AntlrUnitTests
                 "	 | (C)=> X" +
                 "    ;\n");
             string expecting =
-                ".s0-X->.s1\n" +
-                ".s1-{synpred1_t}?->:s2=>1\n" +
-                ".s1-{synpred2_t}?->:s4=>3\n" +
-                ".s1-{true}?->:s3=>2\n";
+                ".s0-X->.s1" + NewLine +
+                ".s1-{synpred1_t}?->:s2=>1" + NewLine +
+                ".s1-{synpred2_t}?->:s4=>3" + NewLine +
+                ".s1-{true}?->:s3=>2" + NewLine;
             int[] unreachableAlts = null;
             int[] nonDetAlts = null;
             string ambigInput = null;
@@ -271,10 +271,10 @@ namespace AntlrUnitTests
                 "	 | (C)=> X" +
                 "    ;\n");
             string expecting =
-                ".s0-X->.s1\n" +
-                ".s1-{synpred1_t}?->:s2=>1\n" +  // gen code should have this as (A)=>
-                ".s1-{synpred2_t}?->:s3=>2\n" + // gen code should have this as (X)=>
-                ".s1-{synpred3_t}?->:s4=>3\n"; // gen code should have this as (C)=>
+                ".s0-X->.s1" + NewLine +
+                ".s1-{synpred1_t}?->:s2=>1" + NewLine +  // gen code should have this as (A)=>
+                ".s1-{synpred2_t}?->:s3=>2" + NewLine + // gen code should have this as (X)=>
+                ".s1-{synpred3_t}?->:s4=>3" + NewLine; // gen code should have this as (C)=>
             int[] unreachableAlts = null;
             int[] nonDetAlts = null;
             string ambigInput = null;
@@ -295,12 +295,12 @@ namespace AntlrUnitTests
                 "    | B\n" +
                 "    ;" );
             string expecting =
-                ".s0-B->.s4\n" +
-                ".s0-L->.s1\n" +
-                ".s1-{p}?->:s2=>1\n" +
-                ".s1-{true}?->:s3=>2\n" +
-                ".s4-{p}?->:s2=>1\n" +
-                ".s4-{true}?->:s3=>2\n";
+                ".s0-B->.s4" + NewLine +
+                ".s0-L->.s1" + NewLine +
+                ".s1-{p}?->:s2=>1" + NewLine +
+                ".s1-{true}?->:s3=>2" + NewLine +
+                ".s4-{p}?->:s2=>1" + NewLine +
+                ".s4-{true}?->:s3=>2" + NewLine;
             int[] unreachableAlts = null;
             int[] nonDetAlts = null;
             string ambigInput = null;
@@ -323,12 +323,12 @@ namespace AntlrUnitTests
                 "    | B\n" +
                 "    ;" );
             string expecting =
-                ".s0-B->.s4\n" +
-                ".s0-L->.s1\n" +
-                ".s1-{p}?->:s2=>1\n" +
-                ".s1-{true}?->:s3=>2\n" +
-                ".s4-{p}?->:s2=>1\n" +
-                ".s4-{true}?->:s3=>2\n";
+                ".s0-B->.s4" + NewLine +
+                ".s0-L->.s1" + NewLine +
+                ".s1-{p}?->:s2=>1" + NewLine +
+                ".s1-{true}?->:s3=>2" + NewLine +
+                ".s4-{p}?->:s2=>1" + NewLine +
+                ".s4-{true}?->:s3=>2" + NewLine;
             int[] unreachableAlts = null;
             int[] nonDetAlts = null;
             string ambigInput = null;
@@ -351,16 +351,16 @@ namespace AntlrUnitTests
                 "    | B\n" +
                 "    ;" );
             string expecting =
-                ".s0-B->.s6\n" +
-                ".s0-L->.s1\n" +
-                ".s1-B->.s5\n" +
-                ".s1-L->.s2\n" +
-                ".s2-{p}?->:s3=>1\n" +
-                ".s2-{true}?->:s4=>2\n" +
-                ".s5-{p}?->:s3=>1\n" +
-                ".s5-{true}?->:s4=>2\n" +
-                ".s6-X->:s3=>1\n" +
-                ".s6-Y->:s4=>2\n";
+                ".s0-B->.s6" + NewLine +
+                ".s0-L->.s1" + NewLine +
+                ".s1-B->.s5" + NewLine +
+                ".s1-L->.s2" + NewLine +
+                ".s2-{p}?->:s3=>1" + NewLine +
+                ".s2-{true}?->:s4=>2" + NewLine +
+                ".s5-{p}?->:s3=>1" + NewLine +
+                ".s5-{true}?->:s4=>2" + NewLine +
+                ".s6-X->:s3=>1" + NewLine +
+                ".s6-Y->:s4=>2" + NewLine;
             int[] unreachableAlts = null;
             int[] nonDetAlts = null;
             string ambigInput = null;
@@ -391,10 +391,10 @@ namespace AntlrUnitTests
                 "    :     expr COMMA expr\n" +
                 "    ;" );
             string expecting =
-                ".s0-ID->.s1\n" +
-                ".s0-{FLOAT, INT}->:s3=>2\n" +
-                ".s1-{synpred1_t}?->:s2=>1\n" +
-                ".s1-{true}?->:s3=>2\n";
+                ".s0-ID->.s1" + NewLine +
+                ".s0-{FLOAT, INT}->:s3=>2" + NewLine +
+                ".s1-{synpred1_t}?->:s2=>1" + NewLine +
+                ".s1-{true}?->:s3=>2" + NewLine;
             int[] unreachableAlts = null;
             int[] nonDetAlts = null;
             string ambigInput = null;
@@ -425,10 +425,10 @@ namespace AntlrUnitTests
                 "    :     expr COMMA expr\n" +
                 "    ;" );
             string expecting =
-                ".s0-ID->.s1\n" +
-                ".s0-{FLOAT, INT}->:s3=>2\n" +
-                ".s1-{synpred1_t}?->:s2=>1\n" +
-                ".s1-{true}?->:s3=>2\n";
+                ".s0-ID->.s1" + NewLine +
+                ".s0-{FLOAT, INT}->:s3=>2" + NewLine +
+                ".s1-{synpred1_t}?->:s2=>1" + NewLine +
+                ".s1-{true}?->:s3=>2" + NewLine;
             int[] unreachableAlts = null;
             int[] nonDetAlts = null;
             string ambigInput = null;
@@ -460,11 +460,11 @@ namespace AntlrUnitTests
                 "    :     expr COMMA expr\n" +
                 "    ;" );
             string expecting =
-                ".s0-ID->.s1\n" +
-                ".s0-{FLOAT, INT}->:s4=>2\n" +
-                ".s1-L->.s2\n" +
-                ".s2-{synpred1_t}?->:s3=>1\n" +
-                ".s2-{true}?->:s4=>2\n";
+                ".s0-ID->.s1" + NewLine +
+                ".s0-{FLOAT, INT}->:s4=>2" + NewLine +
+                ".s1-L->.s2" + NewLine +
+                ".s2-{synpred1_t}?->:s3=>1" + NewLine +
+                ".s2-{true}?->:s4=>2" + NewLine;
             int[] unreachableAlts = null;
             int[] nonDetAlts = null;
             string ambigInput = null;
@@ -486,12 +486,12 @@ namespace AntlrUnitTests
                 "  |     'x'\n" +
                 "  ;\n" );
             string expecting =
-                ".s0-'('->.s1\n" +
-                ".s0-'x'->.s4\n" +
-                ".s1-{synpred1_t}?->:s2=>1\n" +
-                ".s1-{true}?->:s3=>2\n" +
-                ".s4-{synpred1_t}?->:s2=>1\n" +
-                ".s4-{true}?->:s3=>2\n";
+                ".s0-'('->.s1" + NewLine +
+                ".s0-'x'->.s4" + NewLine +
+                ".s1-{synpred1_t}?->:s2=>1" + NewLine +
+                ".s1-{true}?->:s3=>2" + NewLine +
+                ".s4-{synpred1_t}?->:s2=>1" + NewLine +
+                ".s4-{true}?->:s3=>2" + NewLine;
             int[] unreachableAlts = null;
             int[] nonDetAlts = null;
             string ambigInput = null;
@@ -514,12 +514,12 @@ namespace AntlrUnitTests
                 "  |     'x'\n" +
                 "  ;\n" );
             string expecting =
-                ".s0-'('->.s1\n" +
-                ".s0-'x'->.s4\n" +
-                ".s1-{synpred1_t}?->:s2=>1\n" +
-                ".s1-{true}?->:s3=>2\n" +
-                ".s4-{synpred1_t}?->:s2=>1\n" +
-                ".s4-{true}?->:s3=>2\n";
+                ".s0-'('->.s1" + NewLine +
+                ".s0-'x'->.s4" + NewLine +
+                ".s1-{synpred1_t}?->:s2=>1" + NewLine +
+                ".s1-{true}?->:s3=>2" + NewLine +
+                ".s4-{synpred1_t}?->:s2=>1" + NewLine +
+                ".s4-{true}?->:s3=>2" + NewLine;
             int[] unreachableAlts = null;
             int[] nonDetAlts = null;
             string ambigInput = null;
@@ -541,12 +541,12 @@ namespace AntlrUnitTests
                 "    | B\n" +
                 "    ;" );
             string expecting =
-                ".s0-B->.s4\n" +
-                ".s0-L->.s1\n" +
-                ".s1-{synpred1_t}?->:s2=>1\n" +
-                ".s1-{true}?->:s3=>2\n" +
-                ".s4-{synpred1_t}?->:s2=>1\n" +
-                ".s4-{true}?->:s3=>2\n";
+                ".s0-B->.s4" + NewLine +
+                ".s0-L->.s1" + NewLine +
+                ".s1-{synpred1_t}?->:s2=>1" + NewLine +
+                ".s1-{true}?->:s3=>2" + NewLine +
+                ".s4-{synpred1_t}?->:s2=>1" + NewLine +
+                ".s4-{true}?->:s3=>2" + NewLine;
             int[] unreachableAlts = null;
             int[] nonDetAlts = null;
             string ambigInput = null;
@@ -564,9 +564,9 @@ namespace AntlrUnitTests
                 "a : P a P | P;" );
             // nondeterministic from left edge
             string expecting =
-                ".s0-P->.s1\n" +
-                ".s1-EOF->:s3=>2\n" +
-                ".s1-P->:s2=>1\n";
+                ".s0-P->.s1" + NewLine +
+                ".s1-EOF->:s3=>2" + NewLine +
+                ".s1-P->:s2=>1" + NewLine;
             int[] unreachableAlts = null;
             int[] nonDetAlts = new int[] { 1, 2 };
             string ambigInput = "P P";
@@ -595,12 +595,11 @@ namespace AntlrUnitTests
             expectedRules.Add( "a" );
             expectedRules.Add( "b" );
 
-            assertTrue( expectedRules.SequenceEqual( ruleNames( leftRecursive ) ) );
+            Assert.IsTrue( expectedRules.SequenceEqual( ruleNames( leftRecursive ) ) );
 
             Assert.AreEqual(1, equeue.errors.Count);
             Message msg = equeue.errors[0];
-            assertTrue( "expecting left recursion cycles; found " + msg.GetType().Name,
-                        msg is LeftRecursionCyclesMessage );
+            Assert.IsTrue(msg is LeftRecursionCyclesMessage, "expecting left recursion cycles; found " + msg.GetType().Name);
             LeftRecursionCyclesMessage cyclesMsg = (LeftRecursionCyclesMessage)msg;
 
             // cycle of [a, b]
@@ -608,7 +607,7 @@ namespace AntlrUnitTests
             var expecting = new HashSet<string>(); //{{add("a"); add("b");}};
             expecting.Add( "a" );
             expecting.Add( "b" );
-            assertTrue( expecting.SequenceEqual( ruleNames2( result ) ) );
+            Assert.IsTrue( expecting.SequenceEqual( ruleNames2( result ) ) );
         }
 
         [TestMethod]
@@ -630,12 +629,11 @@ namespace AntlrUnitTests
             var expectedRules = new HashSet<string>();
             expectedRules.Add( "a" );
             expectedRules.Add( "b" );
-            assertTrue( expectedRules.SequenceEqual( ruleNames( leftRecursive ) ) );
+            Assert.IsTrue( expectedRules.SequenceEqual( ruleNames( leftRecursive ) ) );
 
             Assert.AreEqual(1, equeue.errors.Count);
             Message msg = equeue.errors[0];
-            assertTrue("expecting left recursion cycles; found " + msg.GetType().Name,
-                        msg is LeftRecursionCyclesMessage );
+            Assert.IsTrue(msg is LeftRecursionCyclesMessage, "expecting left recursion cycles; found " + msg.GetType().Name);
             LeftRecursionCyclesMessage cyclesMsg = (LeftRecursionCyclesMessage)msg;
 
             // cycle of [a, b]
@@ -645,7 +643,7 @@ namespace AntlrUnitTests
             expecting.Add( "a" );
             expecting.Add( "b" );
 
-            assertTrue( expecting.SequenceEqual( ruleNames2( result ) ) );
+            Assert.IsTrue( expecting.SequenceEqual( ruleNames2( result ) ) );
         }
 
         [TestMethod]
@@ -666,19 +664,18 @@ namespace AntlrUnitTests
             var leftRecursive = g.GetLeftRecursiveRules();
             var expectedRules = new HashSet<string>() { "a", "b", "d", "e" };
 
-            assertTrue( expectedRules.SequenceEqual( ruleNames( leftRecursive ) ) );
+            Assert.IsTrue( expectedRules.SequenceEqual( ruleNames( leftRecursive ) ) );
 
             Assert.AreEqual(1, equeue.errors.Count);
             Message msg = equeue.errors[0];
-            assertTrue("expecting left recursion cycles; found " + msg.GetType().Name,
-                        msg is LeftRecursionCyclesMessage );
+            Assert.IsTrue(msg is LeftRecursionCyclesMessage, "expecting left recursion cycles; found " + msg.GetType().Name);
             LeftRecursionCyclesMessage cyclesMsg = (LeftRecursionCyclesMessage)msg;
 
             // cycle of [a, b]
             ICollection result = cyclesMsg.cycles;
             var expecting = new HashSet<string>() { "a", "b", "d", "e" };
 
-            assertTrue( expecting.SequenceEqual( ruleNames2( result ) ) );
+            Assert.IsTrue( expecting.SequenceEqual( ruleNames2( result ) ) );
         }
 
         [TestMethod]
@@ -688,8 +685,8 @@ namespace AntlrUnitTests
                 "s : IF s (E s)? | B;\n" +
                 "slist: s SEMI ;" );
             string expecting =
-                ".s0-E->:s1=>1\n" +
-                ".s0-SEMI->:s2=>2\n";
+                ".s0-E->:s1=>1" + NewLine +
+                ".s0-SEMI->:s2=>2" + NewLine;
             int[] unreachableAlts = null;
             int[] nonDetAlts = new int[] { 1, 2 };
             string ambigInput = "E";
@@ -698,8 +695,8 @@ namespace AntlrUnitTests
             checkDecision( g, 1, expecting, unreachableAlts,
                           nonDetAlts, ambigInput, danglingAlts, numWarnings );
             expecting =
-                ".s0-B->:s2=>2\n" +
-                ".s0-IF->:s1=>1\n";
+                ".s0-B->:s2=>2" + NewLine +
+                ".s0-IF->:s1=>1" + NewLine;
             checkDecision( g, 2, expecting, null, null, null, null, 0 );
         }
 
@@ -713,8 +710,8 @@ namespace AntlrUnitTests
                 "s : IF s el | B;\n" +
                 "el: (E s)? ;\n" );
             string expecting =
-                ".s0-E->:s1=>1\n" +
-                ".s0-SEMI->:s2=>2\n";
+                ".s0-E->:s1=>1" + NewLine +
+                ".s0-SEMI->:s2=>2" + NewLine;
             int[] unreachableAlts = null;
             int[] nonDetAlts = new int[] { 1, 2 };
             string ambigInput = "E";
@@ -723,8 +720,8 @@ namespace AntlrUnitTests
             checkDecision( g, 2, expecting, unreachableAlts,
                           nonDetAlts, ambigInput, danglingAlts, numWarnings );
             expecting =
-                ".s0-B->:s2=>2\n" +
-                ".s0-IF->:s1=>1\n";
+                ".s0-B->:s2=>2" + NewLine +
+                ".s0-IF->:s1=>1" + NewLine;
             checkDecision( g, 1, expecting, null, null, null, null, 0 );
         }
 
@@ -739,10 +736,10 @@ namespace AntlrUnitTests
                 "b : X\n" +
                 "  ;\n" );
             string expecting =
-                ".s0-C->:s4=>3\n" +
-                ".s0-X->.s1\n" +
-                ".s1-A->:s2=>1\n" +
-                ".s1-B->:s3=>2\n";
+                ".s0-C->:s4=>3" + NewLine +
+                ".s0-X->.s1" + NewLine +
+                ".s1-A->:s2=>1" + NewLine +
+                ".s1-B->:s3=>2" + NewLine;
             checkDecision( g, 1, expecting, null, null, null, null, 0 );
         }
 
@@ -758,17 +755,17 @@ namespace AntlrUnitTests
                 "  ;\n" +
                 "c : C ;\n" );
             string expecting =
-                ".s0-C->.s1\n" +
-                ".s1-B->.s2\n" +
-                ".s1-X->:s3=>1\n" +
-                ".s1-Y->:s4=>2\n" +
-                ".s2-X->:s3=>1\n" +
-                ".s2-Y->:s4=>2\n";
+                ".s0-C->.s1" + NewLine +
+                ".s1-B->.s2" + NewLine +
+                ".s1-X->:s3=>1" + NewLine +
+                ".s1-Y->:s4=>2" + NewLine +
+                ".s2-X->:s3=>1" + NewLine +
+                ".s2-Y->:s4=>2" + NewLine;
             checkDecision( g, 1, expecting, null, null, null, null, 0 );
             expecting =
-                ".s0-C->.s1\n" +
-                ".s1-B->:s2=>1\n" +
-                ".s1-X..Y->:s3=>2\n";
+                ".s0-C->.s1" + NewLine +
+                ".s1-B->:s2=>1" + NewLine +
+                ".s1-X..Y->:s3=>2" + NewLine;
             checkDecision( g, 2, expecting, null, null, null, null, 0 );
         }
 
@@ -779,9 +776,9 @@ namespace AntlrUnitTests
                 "s : a ;\n" +
                 "a : A a | A B;" );
             string expecting =
-                ".s0-A->.s1\n" +
-                ".s1-A->:s3=>1\n" +
-                ".s1-B->:s2=>2\n";
+                ".s0-A->.s1" + NewLine +
+                ".s1-A->:s3=>1" + NewLine +
+                ".s1-B->:s2=>2" + NewLine;
             checkDecision( g, 1, expecting, null, null, null, null, 0 );
         }
 
@@ -792,8 +789,8 @@ namespace AntlrUnitTests
                 "s : a ;\n" +
                 "a : A a | ;" );
             string expecting =
-                ".s0-A->:s1=>1\n" +
-                ".s0-EOF->:s2=>2\n";
+                ".s0-A->:s1=>1" + NewLine +
+                ".s0-EOF->:s2=>2" + NewLine;
             int[] unreachableAlts = null; // without
             int[] nonDetAlts = null;
             string ambigInput = null;
@@ -818,8 +815,7 @@ namespace AntlrUnitTests
             generator.GenRecognizer();
 
             Message msg = (Message)equeue.warnings[0];
-            assertTrue( "expecting no start rules; found " + msg.GetType().Name,
-                       msg is GrammarSemanticsMessage );
+            Assert.IsTrue(msg is GrammarSemanticsMessage, "expecting no start rules; found " + msg.GetType().Name);
         }
 
         [TestMethod]
@@ -829,9 +825,9 @@ namespace AntlrUnitTests
                 "s : a ;\n" +
                 "a : A a | A ;" );
             string expecting =
-                ".s0-A->.s1\n" +
-                ".s1-A->:s2=>1\n" +
-                ".s1-EOF->:s3=>2\n";
+                ".s0-A->.s1" + NewLine +
+                ".s1-A->:s2=>1" + NewLine +
+                ".s1-EOF->:s3=>2" + NewLine;
             int[] unreachableAlts = null;
             int[] nonDetAlts = null;
             string ambigInput = null;
@@ -851,7 +847,7 @@ namespace AntlrUnitTests
             //Set expectedRules = new HashSet() {{add("a");}};
             var expectedRules = new HashSet<string>();
             expectedRules.Add( "a" );
-            assertTrue( expectedRules.SequenceEqual( ruleNames( leftRecursive ) ) );
+            Assert.IsTrue( expectedRules.SequenceEqual( ruleNames( leftRecursive ) ) );
         }
 
         [TestMethod]
@@ -868,7 +864,7 @@ namespace AntlrUnitTests
             expectedRules.Add( "a" );
             expectedRules.Add( "b" );
             expectedRules.Add( "c" );
-            assertTrue( expectedRules.SequenceEqual( ruleNames( leftRecursive ) ) );
+            Assert.IsTrue( expectedRules.SequenceEqual( ruleNames( leftRecursive ) ) );
         }
 
         [TestMethod]
@@ -890,7 +886,7 @@ namespace AntlrUnitTests
             expectedRules.Add( "c" );
             expectedRules.Add( "x" );
             expectedRules.Add( "y" );
-            assertTrue( expectedRules.SequenceEqual( ruleNames( leftRecursive ) ) );
+            Assert.IsTrue( expectedRules.SequenceEqual( ruleNames( leftRecursive ) ) );
         }
 
         [TestMethod]
@@ -903,7 +899,7 @@ namespace AntlrUnitTests
             // forever inside of a rule if there was an epsilon loop.
             var leftRecursive = g.GetLeftRecursiveRules();
             var expectedRules = new HashSet<Rule>();
-            assertTrue( expectedRules.SequenceEqual( leftRecursive ) );
+            Assert.IsTrue( expectedRules.SequenceEqual( leftRecursive ) );
         }
 
         // L O O P S
@@ -914,8 +910,8 @@ namespace AntlrUnitTests
                 "parser grammar t;\n" +
                 "a : ( A )* ;" );
             string expecting =
-                ".s0-A->:s1=>1\n" +
-                ".s0-EOF->:s2=>2\n";
+                ".s0-A->:s1=>1" + NewLine +
+                ".s0-EOF->:s2=>2" + NewLine;
             checkDecision( g, 1, expecting, null, null, null, null, 0 );
         }
 
@@ -925,8 +921,8 @@ namespace AntlrUnitTests
                 "parser grammar t;\n" +
                 "a : ( A | B | C )* ;" );
             string expecting =
-                ".s0-A..C->:s1=>1\n" +
-                ".s0-EOF->:s2=>2\n";
+                ".s0-A..C->:s1=>1" + NewLine +
+                ".s0-EOF->:s2=>2" + NewLine;
             checkDecision( g, 1, expecting, null, null, null, null, 0 );
         }
 
@@ -936,8 +932,8 @@ namespace AntlrUnitTests
                 "parser grammar t;\n" +
                 "a : ( A )+ ;" );
             string expecting =
-                ".s0-A->:s1=>1\n" +
-                ".s0-EOF->:s2=>2\n";
+                ".s0-A->:s1=>1" + NewLine +
+                ".s0-EOF->:s2=>2" + NewLine;
             checkDecision( g, 1, expecting, null, null, null, null, 0 ); // loopback decision
         }
 
@@ -948,8 +944,8 @@ namespace AntlrUnitTests
                 "a : (options {greedy=false;}:A)+ ;\n" );
             // should look the same as A+ since no ambiguity
             string expecting =
-                ".s0-A->:s1=>1\n" +
-                ".s0-EOF->:s2=>2\n";
+                ".s0-A->:s1=>1" + NewLine +
+                ".s0-EOF->:s2=>2" + NewLine;
             checkDecision( g, 1, expecting, null, null, null, null, 0 );
         }
 
@@ -960,7 +956,7 @@ namespace AntlrUnitTests
                 "a : (options {greedy=false;}:A)+ A+ ;\n" );
             // should look the same as A+ since no ambiguity
             string expecting =
-                ".s0-A->:s1=>2\n"; // always chooses to exit
+                ".s0-A->:s1=>2" + NewLine; // always chooses to exit
             int[] unreachableAlts = new int[] { 1 };
             int[] nonDetAlts = new int[] { 1, 2 };
             string ambigInput = "A";
@@ -977,7 +973,7 @@ namespace AntlrUnitTests
                 "a : (options {greedy=true;}:A)+ A+ ;\n" );
             // should look the same as A+ since no ambiguity
             string expecting =
-                ".s0-A->:s1=>1\n"; // always chooses to enter loop upon A
+                ".s0-A->:s1=>1" + NewLine; // always chooses to enter loop upon A
             // turns off 1 of warnings. A can never exit loop now
             int[] unreachableAlts = new int[] { 2 };
             int[] nonDetAlts = null;
@@ -994,8 +990,8 @@ namespace AntlrUnitTests
                 "parser grammar t;\n" +
                 "a : ( A | B | C )+ ;" );
             string expecting =
-                ".s0-A..C->:s1=>1\n" +
-                ".s0-EOF->:s2=>2\n";
+                ".s0-A..C->:s1=>1" + NewLine +
+                ".s0-EOF->:s2=>2" + NewLine;
             checkDecision( g, 1, expecting, null, null, null, null, 0 );
         }
 
@@ -1005,8 +1001,8 @@ namespace AntlrUnitTests
                 "parser grammar t;\n" +
                 "a : ( A )? B ;" );
             string expecting =
-                ".s0-A->:s1=>1\n" +
-                ".s0-B->:s2=>2\n";
+                ".s0-A->:s1=>1" + NewLine +
+                ".s0-B->:s2=>2" + NewLine;
             checkDecision( g, 1, expecting, null, null, null, null, 0 ); // loopback decision
         }
 
@@ -1016,8 +1012,8 @@ namespace AntlrUnitTests
                 "parser grammar t;\n" +
                 "a : ( A | B | C )? Z ;" );
             string expecting =
-                ".s0-A..C->:s1=>1\n" +
-                ".s0-Z->:s2=>2\n";
+                ".s0-A..C->:s1=>1" + NewLine +
+                ".s0-Z->:s2=>2" + NewLine;
             checkDecision( g, 1, expecting, null, null, null, null, 0 ); // loopback decision
         }
 
@@ -1029,20 +1025,20 @@ namespace AntlrUnitTests
                 "parser grammar t;\n" +
                 "a : (A)* B | (A)* C;" );
             string expecting =
-                ".s0-A->:s1=>1\n" +
-                ".s0-B->:s2=>2\n";
+                ".s0-A->:s1=>1" + NewLine +
+                ".s0-B->:s2=>2" + NewLine;
             checkDecision( g, 1, expecting, null, null, null, null, 0 ); // loopback
             expecting =
-                ".s0-A->:s1=>1\n" +
-                ".s0-C->:s2=>2\n";
+                ".s0-A->:s1=>1" + NewLine +
+                ".s0-C->:s2=>2" + NewLine;
             checkDecision( g, 2, expecting, null, null, null, null, 0 ); // loopback
             expecting =
-                ".s0-A->.s1\n" +
-                ".s0-B->:s2=>1\n" +
-                ".s0-C->:s3=>2\n" +
-                ".s1-A->.s1\n" +
-                ".s1-B->:s2=>1\n" +
-                ".s1-C->:s3=>2\n";
+                ".s0-A->.s1" + NewLine +
+                ".s0-B->:s2=>1" + NewLine +
+                ".s0-C->:s3=>2" + NewLine +
+                ".s1-A->.s1" + NewLine +
+                ".s1-B->:s2=>1" + NewLine +
+                ".s1-C->:s3=>2" + NewLine;
             checkDecision( g, 3, expecting, null, null, null, null, 0 ); // rule block
         }
 
@@ -1052,19 +1048,19 @@ namespace AntlrUnitTests
                 "parser grammar t;\n" +
                 "a : (A)* B | (A)+ C;" );
             string expecting =
-                ".s0-A->:s1=>1\n" +
-                ".s0-B->:s2=>2\n";
+                ".s0-A->:s1=>1" + NewLine +
+                ".s0-B->:s2=>2" + NewLine;
             checkDecision( g, 1, expecting, null, null, null, null, 0 ); // loopback
             expecting =
-                ".s0-A->:s1=>1\n" +
-                ".s0-C->:s2=>2\n";
+                ".s0-A->:s1=>1" + NewLine +
+                ".s0-C->:s2=>2" + NewLine;
             checkDecision( g, 2, expecting, null, null, null, null, 0 ); // loopback
             expecting =
-                ".s0-A->.s1\n" +
-                ".s0-B->:s2=>1\n" +
-                ".s1-A->.s1\n" +
-                ".s1-B->:s2=>1\n" +
-                ".s1-C->:s3=>2\n";
+                ".s0-A->.s1" + NewLine +
+                ".s0-B->:s2=>1" + NewLine +
+                ".s1-A->.s1" + NewLine +
+                ".s1-B->:s2=>1" + NewLine +
+                ".s1-C->:s3=>2" + NewLine;
             checkDecision( g, 3, expecting, null, null, null, null, 0 ); // rule block
         }
 
@@ -1075,19 +1071,19 @@ namespace AntlrUnitTests
                 "parser grammar t;\n" +
                 "a : (A|B)* X | (A)+ Y;" );
             string expecting =
-                ".s0-A..B->:s1=>1\n" +
-                ".s0-X->:s2=>2\n";
+                ".s0-A..B->:s1=>1" + NewLine +
+                ".s0-X->:s2=>2" + NewLine;
             checkDecision( g, 1, expecting, null, null, null, null, 0 ); // loopback (A|B)*
             expecting =
-                ".s0-A->:s1=>1\n" +
-                ".s0-Y->:s2=>2\n";
+                ".s0-A->:s1=>1" + NewLine +
+                ".s0-Y->:s2=>2" + NewLine;
             checkDecision( g, 2, expecting, null, null, null, null, 0 ); // loopback (A)+
             expecting =
-                ".s0-A->.s1\n" +
-                ".s0-B..X->:s2=>1\n" +
-                ".s1-A->.s1\n" +
-                ".s1-B..X->:s2=>1\n" +
-                ".s1-Y->:s3=>2\n";
+                ".s0-A->.s1" + NewLine +
+                ".s0-B..X->:s2=>1" + NewLine +
+                ".s1-A->.s1" + NewLine +
+                ".s1-B..X->:s2=>1" + NewLine +
+                ".s1-Y->:s3=>2" + NewLine;
             checkDecision( g, 3, expecting, null, null, null, null, 0 ); // rule
         }
 
@@ -1097,10 +1093,10 @@ namespace AntlrUnitTests
                 "parser grammar t;\n" +
                 "a : (A|B)+ B;" );
             string expecting =
-                ".s0-A->:s3=>1\n" +
-                ".s0-B->.s1\n" +
-                ".s1-A..B->:s3=>1\n" +
-                ".s1-EOF->:s2=>2\n"; // sees A|B as a set
+                ".s0-A->:s3=>1" + NewLine +
+                ".s0-B->.s1" + NewLine +
+                ".s1-A..B->:s3=>1" + NewLine +
+                ".s1-EOF->:s2=>2" + NewLine; // sees A|B as a set
             checkDecision( g, 1, expecting, null, null, null, null, 0 );
         }
 
@@ -1110,10 +1106,10 @@ namespace AntlrUnitTests
                 "parser grammar t;\n" +
                 "a : (A|B)? B;" );
             string expecting =
-                ".s0-A->:s2=>1\n" +
-                ".s0-B->.s1\n" +
-                ".s1-B->:s2=>1\n" +
-                ".s1-EOF->:s3=>2\n";
+                ".s0-A->:s2=>1" + NewLine +
+                ".s0-B->.s1" + NewLine +
+                ".s1-B->:s2=>1" + NewLine +
+                ".s1-EOF->:s3=>2" + NewLine;
             checkDecision( g, 1, expecting, null, null, null, null, 0 );
         }
 
@@ -1125,8 +1121,8 @@ namespace AntlrUnitTests
                 "parser grammar t;\n" +
                 "a : A C | A C;" );
             string expecting =
-                ".s0-A->.s1\n" +
-                ".s1-C->:s2=>1\n";
+                ".s0-A->.s1" + NewLine +
+                ".s1-C->:s2=>1" + NewLine;
             int[] unreachableAlts = new int[] { 2 };
             int[] nonDetAlts = new int[] { 1, 2 };
             string ambigInput = "A C";
@@ -1142,8 +1138,8 @@ namespace AntlrUnitTests
                 "parser grammar t;\n" +
                 "a : A B | A B;" );
             string expecting =
-                ".s0-A->.s1\n" +
-                ".s1-B->:s2=>1\n";
+                ".s0-A->.s1" + NewLine +
+                ".s1-B->:s2=>1" + NewLine;
             int[] unreachableAlts = new int[] { 2 };
             int[] nonDetAlts = new int[] { 1, 2 };
             string ambigInput = "A B";
@@ -1159,10 +1155,10 @@ namespace AntlrUnitTests
                 "parser grammar t;\n" +
                 "a : A B | A C | A B | Z;" );
             string expecting =
-                ".s0-A->.s1\n" +
-                ".s0-Z->:s4=>4\n" +
-                ".s1-B->:s2=>1\n" +
-                ".s1-C->:s3=>2\n";
+                ".s0-A->.s1" + NewLine +
+                ".s0-Z->:s4=>4" + NewLine +
+                ".s1-B->:s2=>1" + NewLine +
+                ".s1-C->:s3=>2" + NewLine;
             int[] unreachableAlts = new int[] { 3 };
             int[] nonDetAlts = new int[] { 1, 3 };
             string ambigInput = "A B";
@@ -1174,7 +1170,7 @@ namespace AntlrUnitTests
 
         [TestMethod]
         public void TestIndirectIFThenElseStyleAmbig() /*throws Exception*/ {
-            Assert.Inconclusive( "May be failing on just my port..." );
+            //Assert.Inconclusive( "May be failing on just my port..." );
             // the (c)+ loopback is ambig because it could match "CASE"
             // by entering the loop or by falling out and ignoring (s)*
             // back falling back into (cg)* loop which stats over and
@@ -1190,8 +1186,8 @@ namespace AntlrUnitTests
                 "cg : (c)+ (stat)* ;\n" +
                 "c : CASE E ;\n" );
             string expecting =
-                ".s0-CASE->:s2=>1\n" +
-                ".s0-LCURLY..E->:s1=>2\n";
+                ".s0-CASE->:s2=>1" + NewLine +
+                ".s0-E..RCURLY->:s1=>2" + NewLine;
             int[] unreachableAlts = null;
             int[] nonDetAlts = new int[] { 1, 2 };
             string ambigInput = "CASE";
@@ -1210,8 +1206,8 @@ namespace AntlrUnitTests
                 "a : ~(A | B | C) | C {;} ;\n" +
                 "b : X Y Z ;" );
             string expecting =
-                ".s0-C->:s2=>2\n" +
-                ".s0-X..Z->:s1=>1\n";
+                ".s0-C->:s2=>2" + NewLine +
+                ".s0-X..Z->:s1=>1" + NewLine;
             checkDecision( g, 1, expecting, null, null, null, null, 0 );
         }
 
@@ -1222,8 +1218,8 @@ namespace AntlrUnitTests
                 "a : ~C | C {;} ;\n" +
                 "b : X Y Z ;" );
             string expecting =
-                ".s0-C->:s2=>2\n" +
-                ".s0-X..Z->:s1=>1\n";
+                ".s0-C->:s2=>2" + NewLine +
+                ".s0-X..Z->:s1=>1" + NewLine;
             checkDecision( g, 1, expecting, null, null, null, null, 0 );
         }
 
@@ -1233,8 +1229,8 @@ namespace AntlrUnitTests
                 "lexer grammar t;\n" +
                 "A : ~'x' | 'x' {;} ;\n" );
             string expecting =
-                ".s0-'x'->:s2=>2\n" +
-                ".s0-{'\\u0000'..'w', 'y'..'\\uFFFF'}->:s1=>1\n";
+                ".s0-'x'->:s2=>2" + NewLine +
+                ".s0-{'\\u0000'..'w', 'y'..'\\uFFFF'}->:s1=>1" + NewLine;
             checkDecision( g, 1, expecting, null, null, null, null, 0 );
         }
 
@@ -1245,8 +1241,8 @@ namespace AntlrUnitTests
                 "A : ~(' '|'\t'|'x'|'y') | 'x';\n" + // collapse into single set
                 "B : 'y' ;" );
             string expecting =
-                ".s0-'y'->:s2=>2\n" +
-                ".s0-{'\\u0000'..'\\b', '\\n'..'\\u001F', '!'..'x', 'z'..'\\uFFFF'}->:s1=>1\n";
+                ".s0-'y'->:s2=>2" + NewLine +
+                ".s0-{'\\u0000'..'\\b', '\\n'..'\\u001F', '!'..'x', 'z'..'\\uFFFF'}->:s1=>1" + NewLine;
             checkDecision( g, 1, expecting, null, null, null, null, 0 );
         }
 
@@ -1256,8 +1252,8 @@ namespace AntlrUnitTests
                 "parser grammar t;\n" +
                 "a : (A | B {foo}) | C;" );
             string expecting =
-                ".s0-A->:s1=>1\n" +
-                ".s0-B->:s2=>2\n";
+                ".s0-A->:s1=>1" + NewLine +
+                ".s0-B->:s2=>2" + NewLine;
             checkDecision( g, 1, expecting, null, null, null, null, 0 );
         }
 
@@ -1269,7 +1265,7 @@ namespace AntlrUnitTests
             );
             string expecting = // still looks like block
                 "(grammar t (rule a ARG RET scope (BLOCK (ALT A <end-of-alt>) (ALT B <end-of-alt>) (ALT C <end-of-alt>) <end-of-block>) <end-of-rule>))";
-            assertEquals( expecting, g.Tree.ToStringTree() );
+            Assert.AreEqual( expecting, g.Tree.ToStringTree() );
         }
 
         [TestMethod]
@@ -1280,8 +1276,8 @@ namespace AntlrUnitTests
                 "B : 'b';\n"
             );
             string expecting =
-                ".s0-'a'->:s1=>1\n" +
-                ".s0-'b'->:s2=>2\n";
+                ".s0-'a'->:s1=>1" + NewLine +
+                ".s0-'b'->:s2=>2" + NewLine;
             checkDecision( g, 1, expecting, null, null, null, null, 0 );
         }
 
@@ -1294,8 +1290,8 @@ namespace AntlrUnitTests
                 "  | A\n" +
                 "  ;" );
             string expecting =
-                ".s0-A->:s1=>1\n" +
-                ".s0-B->:s2=>1\n"; // not optimized because states are nondet
+                ".s0-A->:s1=>1" + NewLine +
+                ".s0-B->:s2=>1" + NewLine; // not optimized because states are nondet
             int[] unreachableAlts = new int[] { 2, 3 };
             int[] nonDetAlts = new int[] { 1, 2, 3 };
             string ambigInput = "A";
@@ -1332,8 +1328,8 @@ namespace AntlrUnitTests
                 "type : I | F;" );
             // nondeterministic from left edge; no stop state
             string expecting =
-                ".s0-F..I->.s1\n" +
-                ".s1-ID->:s2=>1\n";
+                ".s0-F..I->.s1" + NewLine +
+                ".s1-ID->:s2=>1" + NewLine;
             int[] unreachableAlts = new int[] { 2, 3, 4 };
             int[] nonDetAlts = new int[] { 1, 2, 3, 4 };
             string ambigInput = "F..I ID";
@@ -1345,7 +1341,7 @@ namespace AntlrUnitTests
 
         [TestMethod]
         public void TestFollowReturnsToLoopReenteringSameRule() /*throws Exception*/ {
-            Assert.Inconclusive( "May be failing on just my port..." );
+            //Assert.Inconclusive( "May be failing on just my port..." );
             // D07 can be matched in the (...)? or fall out of esc back into (..)*
             // loop in sl.  Note that D07 is matched by ~(R|SLASH).  No good
             // way to write that grammar I guess
@@ -1355,9 +1351,9 @@ namespace AntlrUnitTests
                 "\n" +
                 "esc : SLASH ( N | D03 (D07)? ) ;" );
             string expecting =
-                ".s0-R->:s3=>3\n" +
-                ".s0-SLASH->:s1=>1\n" +
-                ".s0-{L, N..D07}->:s2=>2\n";
+                ".s0-D03..N->:s2=>2" + NewLine +
+                ".s0-R->:s3=>3" + NewLine +
+                ".s0-SLASH->:s1=>1" + NewLine;
             int[] unreachableAlts = null;
             int[] nonDetAlts = new int[] { 1, 2 };
             string ambigInput = "D07";
@@ -1377,9 +1373,9 @@ namespace AntlrUnitTests
                 "    ;\n"
             );
             string expecting =
-                ".s0-'0'->.s1\n" +
-                ".s1-'.'->:s3=>1\n" +
-                ".s1-<EOT>->:s2=>2\n";
+                ".s0-'0'->.s1" + NewLine +
+                ".s1-'.'->:s3=>1" + NewLine +
+                ".s1-<EOT>->:s2=>2" + NewLine;
             checkDecision( g, 1, expecting, null, null, null, null, 0 );
         }
 
@@ -1398,11 +1394,11 @@ namespace AntlrUnitTests
                 "b   :   ID\n" +
                 "    ;\n" );
             string expecting =
-                ".s0-ID->:s5=>3\n" +
-                ".s0-L->.s1\n" +
-                ".s1-ID->.s2\n" +
-                ".s1-L->:s4=>2\n" +
-                ".s2-R->:s3=>1\n";
+                ".s0-ID->:s5=>3" + NewLine +
+                ".s0-L->.s1" + NewLine +
+                ".s1-ID->.s2" + NewLine +
+                ".s1-L->:s4=>2" + NewLine +
+                ".s2-R->:s3=>1" + NewLine;
             int[] unreachableAlts = null;
             int[] nonDetAlts = new int[] { 1, 2 };
             string ambigInput = "L ID R";
@@ -1433,11 +1429,11 @@ namespace AntlrUnitTests
                 "    |   L a R\n" +
                 "    ;" );
             string expecting =
-                ".s0-ID->:s4=>2\n" +
-                ".s0-L->.s1\n" +
-                ".s1-ID->.s2\n" +
-                ".s1-L->:s4=>2\n" +
-                ".s2-R->:s3=>1\n";
+                ".s0-ID->:s4=>2" + NewLine +
+                ".s0-L->.s1" + NewLine +
+                ".s1-ID->.s2" + NewLine +
+                ".s1-L->:s4=>2" + NewLine +
+                ".s2-R->:s3=>1" + NewLine;
             int[] unreachableAlts = null;
             int[] nonDetAlts = new int[] { 1, 2 };
             string ambigInput = "L ID R";
@@ -1470,8 +1466,8 @@ namespace AntlrUnitTests
                 "s : A block EOF ;\n" +
                 "block : L .* R ;" );
             string expecting =
-                ".s0-A..L->:s2=>1\n" +
-                ".s0-R->:s1=>2\n";
+                ".s0-A..L->:s2=>1" + NewLine +
+                ".s0-R->:s1=>2" + NewLine;
             int[] unreachableAlts = null;
             int[] nonDetAlts = null;
             string ambigInput = null;
@@ -1488,8 +1484,8 @@ namespace AntlrUnitTests
                 "s : A block EOF ;\n" +
                 "block : L .+ R ;" );
             string expecting =
-                ".s0-A..L->:s2=>1\n" +
-                ".s0-R->:s1=>2\n";
+                ".s0-A..L->:s2=>1" + NewLine +
+                ".s0-R->:s1=>2" + NewLine;
             int[] unreachableAlts = null;
             int[] nonDetAlts = null;
             string ambigInput = null;
@@ -1507,8 +1503,8 @@ namespace AntlrUnitTests
                 "    | Y\n" +
                 "    ;\n" );
             string expecting =
-                ".s0-X&&{synpred1_t}?->:s1=>1\n" + // does not hoist; it gates edges
-                ".s0-Y->:s2=>2\n";
+                ".s0-X&&{synpred1_t}?->:s1=>1" + NewLine + // does not hoist; it gates edges
+                ".s0-Y->:s2=>2" + NewLine;
             int[] unreachableAlts = null;
             int[] nonDetAlts = null;
             string ambigInput = null;
@@ -1520,7 +1516,7 @@ namespace AntlrUnitTests
             HashSet<string> preds = g.synPredNamesUsedInDFA;
             HashSet<string> expectedPreds = new HashSet<string>(); //{{add("synpred1_t");}};
             expectedPreds.Add( "synpred1_t" );
-            assertTrue( "predicate names not recorded properly in grammar", expectedPreds.SequenceEqual( preds ) );
+            Assert.IsTrue(expectedPreds.SequenceEqual(preds), "predicate names not recorded properly in grammar");
         }
 
         [TestMethod]
@@ -1532,9 +1528,9 @@ namespace AntlrUnitTests
                 "    | X\n" +
                 "    ;\n");
             string expecting =
-                ".s0-X->.s1\n" +
-                ".s1-{synpred1_t}?->:s2=>1\n" + // hoists into decision
-            ".s1-{true}?->:s3=>2\n";
+                ".s0-X->.s1" + NewLine +
+                ".s1-{synpred1_t}?->:s2=>1" + NewLine + // hoists into decision
+            ".s1-{true}?->:s3=>2" + NewLine;
             int[] unreachableAlts = null;
             int[] nonDetAlts = null;
             string ambigInput = null;
@@ -1557,10 +1553,10 @@ namespace AntlrUnitTests
                 "    | X\n" +
                 "    ;\n");
             string expecting =
-                ".s0-X->.s1\n" +
-                ".s0-Y&&{synpred1_t}?->:s2=>1\n" +
-                ".s1-{synpred1_t}?->:s2=>1\n" +
-                    ".s1-{true}?->:s3=>2\n";
+                ".s0-X->.s1" + NewLine +
+                ".s0-Y&&{synpred1_t}?->:s2=>1" + NewLine +
+                ".s1-{synpred1_t}?->:s2=>1" + NewLine +
+                    ".s1-{true}?->:s3=>2" + NewLine;
             int[] unreachableAlts = null;
             int[] nonDetAlts = null;
             string ambigInput = null;
@@ -1572,7 +1568,7 @@ namespace AntlrUnitTests
             HashSet<string> preds = g.synPredNamesUsedInDFA;
             HashSet<string> expectedPreds = new HashSet<string>(); //{{add("synpred1_t");}};
             expectedPreds.Add("synpred1_t");
-            assertTrue("predicate names not recorded properly in grammar", expectedPreds.SequenceEqual(preds));
+            Assert.IsTrue(expectedPreds.SequenceEqual(preds), "predicate names not recorded properly in grammar");
         }
 
         [TestMethod]
@@ -1583,8 +1579,8 @@ namespace AntlrUnitTests
                 "s : IF s (options {greedy=true;} : E s)? | B;\n" +
                 "slist: s SEMI ;");
             string expecting =
-                ".s0-E->:s1=>1\n" +
-                ".s0-SEMI->:s2=>2\n";
+                ".s0-E->:s1=>1" + NewLine +
+                ".s0-SEMI->:s2=>2" + NewLine;
             int[] unreachableAlts = null;
             int[] nonDetAlts = null;
             string ambigInput = null;
@@ -1593,8 +1589,8 @@ namespace AntlrUnitTests
             checkDecision(g, 1, expecting, unreachableAlts,
                           nonDetAlts, ambigInput, danglingAlts, numWarnings);
             expecting =
-                ".s0-B->:s2=>2\n" +
-                ".s0-IF->:s1=>1\n";
+                ".s0-B->:s2=>2" + NewLine +
+                ".s0-IF->:s1=>1" + NewLine;
             checkDecision(g, 2, expecting, null, null, null, null, 0);
         }
 
@@ -1635,8 +1631,8 @@ namespace AntlrUnitTests
                 "parser grammar t;\n" +
                 "a : A+ X | A+ Y ;" );
             string expecting =
-                ".s0-A->:s1=>1\n" +
-                ".s0-X->:s2=>2\n";
+                ".s0-A->:s1=>1" + NewLine +
+                ".s0-X->:s2=>2" + NewLine;
             checkDecision( g, 1, expecting, null, null, null, null, 0 );
         }
 
@@ -1665,13 +1661,13 @@ namespace AntlrUnitTests
                 g.CreateLookaheadDFAs( false );
             }
             NonRegularDecisionMessage msg = getNonRegularDecisionMessage( equeue.errors );
-            assertTrue( "expected fatal non-LL(*) msg", msg != null );
+            Assert.IsNotNull(msg, "expected fatal non-LL(*) msg");
             List<int> alts = new List<int>();
             alts.AddRange( msg.altsWithRecursion );
             alts.Sort();
             //Collections.sort( alts );
-            //assertEquals( expectedBadAlts, alts );
-            assertTrue( expectedBadAlts.SequenceEqual( alts ) );
+            //Assert.AreEqual( expectedBadAlts, alts );
+            Assert.IsTrue( expectedBadAlts.SequenceEqual( alts ) );
         }
 
         protected void assertRecursionOverflow( Grammar g,
@@ -1689,10 +1685,9 @@ namespace AntlrUnitTests
                 g.CreateLookaheadDFAs( false );
             }
             RecursionOverflowMessage msg = getRecursionOverflowMessage( equeue.errors );
-            assertTrue( "missing expected recursion overflow msg" + msg, msg != null );
-            assertEquals( "target rules mismatch",
-                         expectedTargetRules.ToElementString(), msg.targetRules.ToList().ToElementString() );
-            assertEquals( "mismatched alt", expectedAlt, msg.alt );
+            Assert.IsNotNull(msg, "missing expected recursion overflow msg" + msg);
+            Assert.AreEqual(expectedTargetRules.ToElementString(), msg.targetRules.ToList().ToElementString(), "target rules mismatch");
+            Assert.AreEqual(expectedAlt, msg.alt, "mismatched alt");
         }
 
         [TestMethod]
@@ -1702,9 +1697,9 @@ namespace AntlrUnitTests
                 "tree grammar t;\n" +
                 "a : A B | A . ;\n" );
             string expecting =
-                ".s0-A->.s1\n" +
-                ".s1-A->:s3=>2\n" +
-                ".s1-B->:s2=>1\n";
+                ".s0-A->.s1" + NewLine +
+                ".s1-A->:s3=>2" + NewLine +
+                ".s1-B->:s2=>1" + NewLine;
             int[] unreachableAlts = null;
             int[] nonDetAlts = new int[] { 1, 2 };
             string ambigInput = null;
@@ -1721,14 +1716,14 @@ namespace AntlrUnitTests
                 "tree grammar t;\n" +
                 "a : ^(A X Y) | ^(A . .) ;\n" );
             string expecting =
-                ".s0-A->.s1\n" +
-                ".s1-DOWN->.s2\n" +
-                ".s2-X->.s3\n" +
-                ".s2-{A, Y}->:s6=>2\n" +
-                ".s3-Y->.s4\n" +
-                ".s3-{DOWN, A..X}->:s6=>2\n" +
-                ".s4-DOWN->:s6=>2\n" +
-                ".s4-UP->:s5=>1\n";
+                ".s0-A->.s1" + NewLine +
+                ".s1-DOWN->.s2" + NewLine +
+                ".s2-X->.s3" + NewLine +
+                ".s2-{A, Y}->:s6=>2" + NewLine +
+                ".s3-Y->.s4" + NewLine +
+                ".s3-{DOWN, A..X}->:s6=>2" + NewLine +
+                ".s4-DOWN->:s6=>2" + NewLine +
+                ".s4-UP->:s5=>1" + NewLine;
             int[] unreachableAlts = null;
             int[] nonDetAlts = new int[] { 1, 2 };
             string ambigInput = null;
@@ -1766,11 +1761,10 @@ namespace AntlrUnitTests
                 Console.Error.WriteLine( "Warnings issued: " + equeue );
             }
 
-            assertEquals( "unexpected number of expected problems",
-                       expectingNumWarnings, equeue.size() );
+            Assert.AreEqual(expectingNumWarnings, equeue.size(), "unexpected number of expected problems");
 
             DFA dfa = g.GetLookaheadDFA( decision );
-            assertNotNull( "no DFA for decision " + decision, dfa );
+            Assert.IsNotNull( dfa, "no DFA for decision " + decision );
             FASerializer serializer = new FASerializer( g );
             string result = serializer.Serialize( dfa.startState );
 
@@ -1783,12 +1777,11 @@ namespace AntlrUnitTests
                 s.AddAll( expectingUnreachableAlts );
                 BitSet s2 = new BitSet();
                 s2.AddAll( unreachableAlts );
-                assertEquals( "unreachable alts mismatch", s, s2 );
+                Assert.AreEqual(s, s2, "unreachable alts mismatch");
             }
             else
             {
-                assertEquals( "number of unreachable alts", 0,
-                             unreachableAlts != null ? unreachableAlts.Count : 0 );
+                Assert.AreEqual(0, unreachableAlts != null ? unreachableAlts.Count : 0, "number of unreachable alts");
             }
 
             // check conflicting input
@@ -1796,14 +1789,13 @@ namespace AntlrUnitTests
             {
                 // first, find nondet message
                 Message msg = (Message)equeue.warnings[0];
-                assertTrue( "expecting nondeterminism; found " + msg.GetType().Name,
-                            msg is GrammarNonDeterminismMessage );
+                Assert.IsTrue(msg is GrammarNonDeterminismMessage, "expecting nondeterminism; found " + msg.GetType().Name);
                 GrammarNonDeterminismMessage nondetMsg =
                     getNonDeterminismMessage( equeue.warnings );
                 var labels =
                     nondetMsg.probe.GetSampleNonDeterministicInputSequence( nondetMsg.problemState );
                 string input = nondetMsg.probe.GetInputSequenceDisplay( labels );
-                assertEquals( expectingAmbigInput, input );
+                Assert.AreEqual( expectingAmbigInput, input );
             }
 
             // check nondet alts
@@ -1831,20 +1823,18 @@ namespace AntlrUnitTests
                 s.AddAll( expectingNonDetAlts );
                 BitSet s2 = new BitSet();
                 s2.AddAll( nonDetAlts );
-                assertEquals( "nondet alts mismatch", s, s2 );
-                assertTrue( "found no nondet alts; expecting: " +
-                            str( expectingNonDetAlts ),
-                            nondetMsg != null || recMsg != null );
+                Assert.AreEqual(s, s2, "nondet alts mismatch");
+                Assert.IsTrue(nondetMsg != null || recMsg != null, "found no nondet alts; expecting: " + str(expectingNonDetAlts));
             }
             else
             {
                 // not expecting any nondet alts, make sure there are none
                 GrammarNonDeterminismMessage nondetMsg =
                     getNonDeterminismMessage( equeue.warnings );
-                assertNull( "found nondet alts, but expecting none", nondetMsg );
+                Assert.IsNull(nondetMsg, "found nondet alts, but expecting none");
             }
 
-            assertEquals( expecting, result );
+            Assert.AreEqual( expecting, result );
         }
 
         protected GrammarNonDeterminismMessage getNonDeterminismMessage( IList warnings )

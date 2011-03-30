@@ -85,7 +85,7 @@ namespace AntlrUnitTests
 
             assertNoErrors( equeue );
 
-            assertEquals( expecting, found );
+            Assert.AreEqual( expecting, found );
         }
 
         [TestMethod]
@@ -122,7 +122,7 @@ namespace AntlrUnitTests
 
             assertNoErrors( equeue );
 
-            assertEquals( expecting, found );
+            Assert.AreEqual( expecting, found );
         }
 
         [TestMethod]
@@ -160,7 +160,7 @@ namespace AntlrUnitTests
 
             assertNoErrors( equeue );
 
-            assertEquals( expecting, found );
+            Assert.AreEqual( expecting, found );
         }
 
         [TestMethod]
@@ -196,7 +196,7 @@ namespace AntlrUnitTests
 
             assertNoErrors( equeue );
 
-            assertEquals( expecting, found );
+            Assert.AreEqual( expecting, found );
         }
 
         [TestMethod]
@@ -233,7 +233,7 @@ namespace AntlrUnitTests
 
             assertNoErrors( equeue );
 
-            assertEquals( expecting, found );
+            Assert.AreEqual( expecting, found );
         }
 
         [TestMethod]
@@ -269,7 +269,7 @@ namespace AntlrUnitTests
 
             assertNoErrors( equeue );
 
-            assertEquals( expecting, found );
+            Assert.AreEqual( expecting, found );
         }
 
         [TestMethod]
@@ -372,19 +372,18 @@ namespace AntlrUnitTests
                     foundMsg = m;
                 }
             }
-            assertTrue( "no error; " + expectedMessage.msgID + " expected", equeue.errors.Count > 0 );
-            assertTrue( "too many errors; " + equeue.errors, equeue.errors.Count <= 1 );
-            assertTrue( "couldn't find expected error: " + expectedMessage.msgID, foundMsg != null );
-            assertTrue( "error is not a GrammarSemanticsMessage",
-                       foundMsg is GrammarSemanticsMessage );
-            assertEquals( expectedMessage.arg, foundMsg.arg );
-            assertEquals( expectedMessage.arg2, foundMsg.arg2 );
+            Assert.IsTrue(equeue.errors.Count > 0, "no error; " + expectedMessage.msgID + " expected");
+            Assert.IsTrue(equeue.errors.Count <= 1, "too many errors; " + equeue.errors);
+            Assert.IsTrue(foundMsg != null, "couldn't find expected error: " + expectedMessage.msgID);
+            Assert.IsTrue(foundMsg is GrammarSemanticsMessage, "error is not a GrammarSemanticsMessage");
+            Assert.AreEqual( expectedMessage.arg, foundMsg.arg );
+            Assert.AreEqual( expectedMessage.arg2, foundMsg.arg2 );
         }
 
         // S U P P O R T
         private void assertNoErrors( ErrorQueue equeue )
         {
-            assertTrue( "unexpected errors: " + equeue, equeue.errors.Count == 0 );
+            Assert.AreEqual(equeue.errors.Count, 0, "unexpected errors: " + equeue);
         }
     }
 }
