@@ -653,7 +653,7 @@ namespace Antlr3.Grammars
             string action = a;
             action = action.Substring(1, action.Length - 2); // stuff inside {...}
             st.SetAttribute("st", TranslateAction(action));
-            st.SetAttribute("attrName", ID);
+            st.SetAttribute("attrName", id);
             st.SetAttribute("expr", TranslateAction(expr));
         }
 
