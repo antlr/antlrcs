@@ -71,7 +71,7 @@ namespace Antlr3.Tool
         public DOTGenerator( Grammar grammar )
         {
             this.grammar = grammar;
-            this.dfaTemplateDirectoryName = Path.Combine(AntlrTool.ToolPathRoot, @"Tool\Templates\dot");
+            this.dfaTemplateDirectoryName = Path.Combine(Path.Combine(Path.Combine(AntlrTool.ToolPathRoot, "Tool"), "Templates"), "dot");
         }
 
         #region Properties

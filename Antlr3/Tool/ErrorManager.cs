@@ -49,6 +49,7 @@ namespace Antlr3.Tool
     using IStringTemplateErrorListener = Antlr3.ST.IStringTemplateErrorListener;
     using IToken = Antlr.Runtime.IToken;
     using NFAState = Antlr3.Analysis.NFAState;
+    using Path = System.IO.Path;
     using RecognitionException = Antlr.Runtime.RecognitionException;
     using StackFrame = System.Diagnostics.StackFrame;
     using StreamReader = System.IO.StreamReader;
@@ -411,8 +412,8 @@ namespace Antlr3.Tool
             ErrorManager.locale = locale;
             String language = locale.TwoLetterISOLanguageName;
             //String fileName = "org/antlr/tool/templates/messages/languages/"+language+".stg";
-            string fileName = @"Tool\Templates\messages\languages\" + language + ".stg";
-            string streamName = "Antlr3." + fileName.Replace( '\\', '.' );
+            string fileName = Path.Combine(Path.Combine(Path.Combine(Path.Combine("Tool", "Templates"), "messages"), "languages"), language + ".stg");
+            string streamName = "Antlr3." + fileName.Replace(Path.DirectorySeparatorChar, '.').Replace(Path.AltDirectorySeparatorChar, '.');
             fileName = System.IO.Path.Combine(AntlrTool.ToolPathRoot, fileName);
             //ClassLoader cl = Thread.currentThread().getContextClassLoader();
             //InputStream @is = cl.getResourceAsStream(fileName);
@@ -474,8 +475,8 @@ namespace Antlr3.Tool
         {
             ErrorManager.formatName = formatName;
             //String fileName = "org/antlr/tool/templates/messages/formats/"+formatName+".stg";
-            string fileName = @"Tool\Templates\messages\formats\" + formatName + ".stg";
-            string streamName = "Antlr3." + fileName.Replace( '\\', '.' );
+            string fileName = Path.Combine(Path.Combine(Path.Combine(Path.Combine("Tool", "Templates"), "messages"), "formats"), formatName + ".stg");
+            string streamName = "Antlr3." + fileName.Replace(Path.DirectorySeparatorChar, '.').Replace(Path.AltDirectorySeparatorChar, '.');
             fileName = System.IO.Path.Combine(AntlrTool.ToolPathRoot, fileName);
             //ClassLoader cl = Thread.currentThread().getContextClassLoader();
             //InputStream is = cl.getResourceAsStream(fileName);

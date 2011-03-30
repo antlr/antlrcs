@@ -124,7 +124,7 @@ namespace Antlr3
                 ToolPathRoot = toolPathRoot;
 
             TargetsDirectory = Path.Combine(ToolPathRoot, @"Targets");
-            TemplatesDirectory = Path.Combine(ToolPathRoot, @"Codegen\Templates");
+            TemplatesDirectory = Path.Combine(Path.Combine(ToolPathRoot, @"Codegen"), "Templates");
         }
 
         public AntlrTool( string[] args )
@@ -194,8 +194,9 @@ namespace Antlr3
                             ForceAllFilesToOutputDir = true;
                         i++;
                         outputDirectory = args[i];
-                        if ( outputDirectory.EndsWith( "/" ) || outputDirectory.EndsWith( "\\" ) )
-                            outputDirectory = outputDirectory.Substring( 0, OutputDirectory.Length - 1 );
+                        if (outputDirectory.LastIndexOfAny(new char[] { Path.DirectorySeparatorChar, Path.AltDirectorySeparatorChar }) == outputDirectory.Length - 1)
+                            outputDirectory = outputDirectory.Substring(0, OutputDirectory.Length - 1);
+
                         haveOutputDir = true;
                         if ( System.IO.File.Exists( outputDirectory ) )
                         {
@@ -214,12 +215,11 @@ namespace Antlr3
                     {
                         i++;
                         LibraryDirectory = args[i];
-                        if ( LibraryDirectory.EndsWith( "/" ) ||
-                             LibraryDirectory.EndsWith( "\\" ) )
+                        if (LibraryDirectory.LastIndexOfAny(new char[] { Path.DirectorySeparatorChar, Path.AltDirectorySeparatorChar }) == LibraryDirectory.Length - 1)
                         {
-                            LibraryDirectory =
-                                LibraryDirectory.Substring( 0, LibraryDirectory.Length - 1 );
+                            LibraryDirectory = LibraryDirectory.Substring(0, LibraryDirectory.Length - 1);
                         }
+
                         if ( !System.IO.Directory.Exists( libDirectory ) )
                         {
                             ErrorManager.Error( ErrorManager.MSG_DIR_NOT_FOUND, LibraryDirectory );
