@@ -61,6 +61,7 @@ namespace Antlr3.Grammars
 
             public GrammarASTErrorNode( ITokenStream input, IToken start, IToken stop,
                                    RecognitionException e )
+                : base(stop)
             {
                 //Console.Out.WriteLine( "start: " + start + ", stop: " + stop );
                 if ( stop == null ||
