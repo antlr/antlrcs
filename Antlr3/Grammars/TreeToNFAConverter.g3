@@ -301,7 +301,7 @@ ebnf returns [StateCluster g=null]
 			grammar.SetDecisionBlockAST(d, blk);
 			bg.right.SetDecisionASTNode(eob);
 			// make block entry state also have same decision for interpreting grammar
-			NFAState altBlockState = (NFAState)$g.left.GetTransition(0).target;
+			NFAState altBlockState = (NFAState)$g.left.GetTransition(0).Target;
 			altBlockState.SetDecisionASTNode($start);
 			altBlockState.DecisionNumber = d;
 			$g.left.DecisionNumber = d; // this is the bypass decision (2 alts)
@@ -323,7 +323,7 @@ ebnf returns [StateCluster g=null]
 			grammar.SetDecisionBlockAST(d, blk);
 			bg.right.SetDecisionASTNode(eob);
 			// make block entry state also have same decision for interpreting grammar
-			NFAState altBlockState = (NFAState)$g.left.GetTransition(0).target;
+			NFAState altBlockState = (NFAState)$g.left.GetTransition(0).Target;
 			altBlockState.SetDecisionASTNode($start);
 			altBlockState.DecisionNumber = d;
 		}
@@ -646,7 +646,7 @@ setElement[IIntSet elements]
 	|	gset=set
 		{
 			Transition setTrans = $gset.g.left.GetTransition(0);
-			elements.AddAll(setTrans.label.Set);
+			elements.AddAll(setTrans.Label.Set);
 		}
 
 	|	^(	NOT {ns=new IntervalSet();}
