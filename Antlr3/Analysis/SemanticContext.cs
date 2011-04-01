@@ -33,9 +33,11 @@
 namespace Antlr3.Analysis
 {
     using System.Collections.Generic;
+    using System.Linq;
     using Antlr.Runtime.JavaExtensions;
 
     using ANTLRParser = Antlr3.Grammars.ANTLRParser;
+    using ArgumentNullException = System.ArgumentNullException;
     using CLSCompliant = System.CLSCompliantAttribute;
     using CodeGenerator = Antlr3.Codegen.CodeGenerator;
     using Grammar = Antlr3.Tool.Grammar;
@@ -64,7 +66,7 @@ namespace Antlr3.Analysis
      *  made it really hard to reduce complicated || sequences to their minimum.
      *  Got huge repeated || conditions.
      */
-    public abstract class SemanticContext
+    public abstract class SemanticContext : System.IEquatable<SemanticContext>
     {
         /** Create a default value for the semantic context shared among all
          *  NFAConfigurations that do not have an actual semantic context.
@@ -104,6 +106,37 @@ namespace Antlr3.Analysis
         public virtual void TrackUseOfSyntacticPredicates( Grammar g )
         {
         }
+
+        protected virtual void ExpandOperands(HashSet<SemanticContext> contexts)
+        {
+            contexts.Add(this);
+        }
+
+        public override sealed bool Equals(object obj)
+        {
+            SemanticContext other = obj as SemanticContext;
+            if (other == null)
+                return false;
+
+            return this.Equals(other);
+        }
+
+        public virtual bool Equals(SemanticContext other)
+        {
+            return object.ReferenceEquals(this, other);
+        }
+
+        public virtual SemanticContext ReduceOrWith(SemanticContext other)
+        {
+            return this;
+        }
+
+        public virtual SemanticContext ReduceAndWith(SemanticContext other)
+        {
+            return this;
+        }
+
+        public abstract override int GetHashCode();
 
         public class Predicate : SemanticContext
         {
@@ -164,22 +197,20 @@ namespace Antlr3.Analysis
              *  Or, if they have the same constant value, return equal.
              *  As of July 2006 I'm not sure these are needed.
              */
-            public override bool Equals( object o )
+            public override bool Equals(SemanticContext other)
             {
-                Predicate p = o as Predicate;
-                if ( p == null )
-                {
+                Predicate p = other as Predicate;
+                if (p == null)
                     return false;
-                }
-                return predicateAST.Text.Equals( p.predicateAST.Text );
+
+                return predicateAST.Text.Equals(p.predicateAST.Text);
             }
 
             public override int GetHashCode()
             {
                 if ( predicateAST == null )
-                {
                     return 0;
-                }
+
                 return predicateAST.Text.GetHashCode();
             }
 
@@ -282,20 +313,19 @@ namespace Antlr3.Analysis
 
         public class TruePredicate : Predicate
         {
+            public static readonly TruePredicate Instance = new TruePredicate();
+
             public TruePredicate()
             {
                 this.constantValue = TruePred;
             }
 
-            public override StringTemplate GenExpr( CodeGenerator generator,
-                                          StringTemplateGroup templates,
-                                          DFA dfa )
+            public override StringTemplate GenExpr(CodeGenerator generator, StringTemplateGroup templates, DFA dfa)
             {
-                if ( templates != null )
-                {
-                    return templates.GetInstanceOf( "true" );
-                }
-                return new StringTemplate( "true" );
+                if (templates != null)
+                    return templates.GetInstanceOf("true");
+
+                return new StringTemplate("true");
             }
 
             public override bool HasUserSemanticPredicate
@@ -306,46 +336,63 @@ namespace Antlr3.Analysis
                 }
             }
 
+            public override int GetHashCode()
+            {
+                return ~0;
+            }
+
             public override string ToString()
             {
                 return "true"; // not used for code gen, just DOT and print outs
             }
         }
 
-#if false
         public class FalsePredicate : Predicate
         {
+            public static readonly FalsePredicate Instance = new FalsePredicate();
+
             public FalsePredicate()
             {
                 this.constantValue = FalsePred;
             }
-            public StringTemplate GenExpr( CodeGenerator generator,
-                                          StringTemplateGroup templates,
-                                          DFA dfa )
+
+            public override StringTemplate GenExpr(CodeGenerator generator, StringTemplateGroup templates, DFA dfa)
             {
-                if ( templates != null )
-                {
-                    return templates.GetInstanceOf( "false" );
-                }
-                return new StringTemplate( "false" );
+                if (templates != null)
+                    return templates.GetInstanceOf("false");
+
+                return new StringTemplate("false");
             }
+
+            public override int GetHashCode()
+            {
+                return 0;
+            }
+
             public override string ToString()
             {
                 return "false"; // not used for code gen, just DOT and print outs
             }
         }
-#endif
 
         public class AND : SemanticContext
         {
-            SemanticContext _left;
-            SemanticContext _right;
+            private readonly SemanticContext _left;
+            private readonly SemanticContext _right;
+            private readonly int _hashcode;
 
             public AND( SemanticContext a, SemanticContext b )
             {
+                if (a == null)
+                    throw new ArgumentNullException("a");
+                if (b == null)
+                    throw new ArgumentNullException("b");
+
                 this._left = a;
                 this._right = b;
+                _hashcode = a.GetHashCode() ^ b.GetHashCode();
             }
+
             public override StringTemplate GenExpr( CodeGenerator generator,
                                           StringTemplateGroup templates,
                                           DFA dfa )
@@ -363,6 +410,7 @@ namespace Antlr3.Analysis
                 eST.SetAttribute( "right", _right.GenExpr( generator, templates, dfa ) );
                 return eST;
             }
+
             public override SemanticContext GatedPredicateContext
             {
                 get
@@ -396,60 +444,109 @@ namespace Antlr3.Analysis
                     return _left.IsSyntacticPredicate || _right.IsSyntacticPredicate;
                 }
             }
+
             public override void TrackUseOfSyntacticPredicates( Grammar g )
             {
                 _left.TrackUseOfSyntacticPredicates( g );
                 _right.TrackUseOfSyntacticPredicates( g );
             }
+
+            public override bool Equals(SemanticContext other)
+            {
+                if (object.ReferenceEquals(this, other))
+                    return true;
+
+                HashSet<SemanticContext> operands = new HashSet<SemanticContext>();
+                ExpandOperands(operands);
+
+                AND and = other as AND;
+                if (and != null)
+                {
+                    HashSet<SemanticContext> otherOperands = new HashSet<SemanticContext>();
+                    and.ExpandOperands(otherOperands);
+
+                    return operands.SetEquals(otherOperands);
+                }
+
+                NOT not = other as NOT;
+                if (not != null)
+                {
+                    OR or = not.ctx as OR;
+                    if (or != null)
+                    {
+                        return operands.SetEquals(or.Operands.Select(i => Not(i)));
+                    }
+                }
+
+                return false;
+            }
+
+            public override int GetHashCode()
+            {
+                return _hashcode;
+            }
+
+            public override SemanticContext ReduceAndWith(SemanticContext other)
+            {
+                if (_left.Equals(other))
+                    return _right.ReduceAndWith(other);
+                else if (_right.Equals(other))
+                    return _left.ReduceAndWith(other);
+
+                return this;
+            }
+
+            public override SemanticContext ReduceOrWith(SemanticContext other)
+            {
+                if (_left.Equals(other) || _right.Equals(other))
+                    return FalsePredicate.Instance;
+
+                return this;
+            }
+
             public override string ToString()
             {
                 return "(" + _left + "&&" + _right + ")";
+            }
+
+            protected override void ExpandOperands(HashSet<SemanticContext> contexts)
+            {
+                AND and = _left as AND;
+                if (and != null)
+                    and.ExpandOperands(contexts);
+                else
+                    contexts.Add(_left);
+
+                and = _right as AND;
+                if (and != null)
+                    and.ExpandOperands(contexts);
+                else
+                    contexts.Add(_right);
             }
         }
 
         public class OR : SemanticContext
         {
-            HashSet<object> _operands;
+            private readonly HashSet<SemanticContext> _operands = new HashSet<SemanticContext>();
+            private readonly int _hashcode;
 
-            public OR( SemanticContext a, SemanticContext b )
+            public OR(SemanticContext a, SemanticContext b)
             {
-                _operands = new HashSet<object>();
-                if ( a is OR )
-                {
-                    _operands.addAll( ( (OR)a )._operands );
-                }
-                else if ( a != null )
-                {
-                    _operands.Add( a );
-                }
-                if ( b is OR )
-                {
-                    _operands.addAll( ( (OR)b )._operands );
-                }
-                else if ( b != null )
-                {
-                    _operands.Add( b );
-                }
+                OR or = a as OR;
+                if (or != null)
+                    _operands.UnionWith(or._operands);
+                else if (a != null)
+                    _operands.Add(a);
+
+                or = b as OR;
+                if (or != null)
+                    _operands.UnionWith(or._operands);
+                else if (b != null)
+                    _operands.Add(b);
+
+                _hashcode = _operands.Aggregate(0, (x, y) => ~x ^ ~y.GetHashCode());
             }
-            public override StringTemplate GenExpr( CodeGenerator generator,
-                                          StringTemplateGroup templates,
-                                          DFA dfa )
-            {
-                StringTemplate eST = null;
-                if ( templates != null )
-                {
-                    eST = templates.GetInstanceOf( "orPredicates" );
-                }
-                else
-                {
-                    eST = new StringTemplate( "($first(operands)$$rest(operands):{o | ||$o$}$)" );
-                }
-                foreach ( SemanticContext semctx in _operands )
-                {
-                    eST.SetAttribute( "operands", semctx.GenExpr( generator, templates, dfa ) );
-                }
-                return eST;
-            }
+
             public override SemanticContext GatedPredicateContext
             {
                 get
@@ -497,6 +594,37 @@ namespace Antlr3.Analysis
                     return false;
                 }
             }
+
+            public ICollection<SemanticContext> Operands
+            {
+                get
+                {
+                    return _operands;
+                }
+            }
+
+            public override StringTemplate GenExpr( CodeGenerator generator,
+                                          StringTemplateGroup templates,
+                                          DFA dfa )
+            {
+                StringTemplate eST = null;
+                if ( templates != null )
+                {
+                    eST = templates.GetInstanceOf( "orPredicates" );
+                }
+                else
+                {
+                    eST = new StringTemplate( "($first(operands)$$rest(operands):{o | ||$o$}$)" );
+                }
+
+                foreach ( SemanticContext semctx in _operands )
+                {
+                    eST.SetAttribute( "operands", semctx.GenExpr( generator, templates, dfa ) );
+                }
+
+                return eST;
+            }
+
             public override void TrackUseOfSyntacticPredicates( Grammar g )
             {
                 foreach ( SemanticContext semctx in _operands )
@@ -504,6 +632,49 @@ namespace Antlr3.Analysis
                     semctx.TrackUseOfSyntacticPredicates( g );
                 }
             }
+
+            public override bool Equals(SemanticContext other)
+            {
+                if (object.ReferenceEquals(this, other))
+                    return true;
+
+                OR or = other as OR;
+                if (or != null)
+                    return or._operands.SetEquals(this._operands);
+
+                NOT not = other as NOT;
+                if (not != null)
+                {
+                    AND and = not.ctx as AND;
+                    if (and != null)
+                    {
+                        HashSet<SemanticContext> andOperands = new HashSet<SemanticContext>();
+                        and.ExpandOperands(andOperands);
+                        return _operands.SetEquals(andOperands.Select(i => Not(i)));
+                    }
+                }
+
+                return false;
+            }
+
+            public override int GetHashCode()
+            {
+                return _hashcode;
+            }
+
+            public override SemanticContext ReduceAndWith(SemanticContext other)
+            {
+                if (_operands.Contains(other))
+                    return TruePredicate.Instance;
+
+                return base.ReduceAndWith(other);
+            }
+
+            public override SemanticContext ReduceOrWith(SemanticContext other)
+            {
+                return base.ReduceOrWith(other);
+            }
+
             public override string ToString()
             {
                 StringBuilder buf = new StringBuilder();
@@ -521,11 +692,17 @@ namespace Antlr3.Analysis
                 buf.Append( ")" );
                 return buf.ToString();
             }
+
+            protected override void ExpandOperands(HashSet<SemanticContext> contexts)
+            {
+                contexts.UnionWith(_operands);
+            }
         }
 
         public class NOT : SemanticContext
         {
             protected internal SemanticContext ctx;
+
             public NOT( SemanticContext ctx )
             {
                 this.ctx = ctx;
@@ -574,23 +751,40 @@ namespace Antlr3.Analysis
                     return ctx.IsSyntacticPredicate;
                 }
             }
+
             public override void TrackUseOfSyntacticPredicates( Grammar g )
             {
                 ctx.TrackUseOfSyntacticPredicates( g );
             }
 
-            public override bool Equals( object @object )
+            public override bool Equals(SemanticContext other)
             {
-                if ( !( @object is NOT ) )
-                {
+                NOT not = other as NOT;
+                if (not == null)
                     return false;
-                }
-                return this.ctx.Equals( ( (NOT)@object ).ctx );
+
+                return this.ctx.Equals(not.ctx);
             }
 
             public override int GetHashCode()
             {
-                return ctx.GetHashCode();
+                return ~ctx.GetHashCode();
+            }
+
+            public override SemanticContext ReduceAndWith(SemanticContext other)
+            {
+                if (ctx.Equals(other))
+                    return FalsePredicate.Instance;
+
+                return this;
+            }
+
+            public override SemanticContext ReduceOrWith(SemanticContext other)
+            {
+                if (ctx.Equals(other))
+                    return TruePredicate.Instance;
+
+                return this;
             }
 
             public override string ToString()
@@ -603,20 +797,27 @@ namespace Antlr3.Analysis
         public static SemanticContext And(SemanticContext a, SemanticContext b)
         {
             //System.Console.Out.WriteLine( "AND: " + a + "&&" + b );
-            if ( a == EmptySemanticContext || a == null )
-            {
+            if (a is FalsePredicate || b is FalsePredicate)
+                return FalsePredicate.Instance;
+
+            if (a == EmptySemanticContext || a == null)
                 return b;
-            }
-            if ( b == EmptySemanticContext || b == null )
-            {
+
+            if (b == EmptySemanticContext || b == null)
                 return a;
-            }
-            if ( a.Equals( b ) )
-            {
+
+            b = b.ReduceAndWith(a);
+
+            if (a is TruePredicate)
+                return b;
+            if (b is TruePredicate)
+                return a;
+
+            if (a.Equals(b))
                 return a; // if same, just return left one
-            }
+
             //System.Console.Out.WriteLine( "## have to AND" );
-            return new AND( a, b );
+            return new AND(a, b);
         }
 
         [CLSCompliant(false)]
@@ -624,45 +825,42 @@ namespace Antlr3.Analysis
         {
             //System.Console.Out.WriteLine( "OR: " + a + "||" + b );
             if ( a == EmptySemanticContext || a == null )
-            {
                 return b;
-            }
+
             if ( b == EmptySemanticContext || b == null )
-            {
                 return a;
-            }
-            if ( a is TruePredicate )
-            {
+
+            b = b.ReduceOrWith(a);
+
+            if (a is TruePredicate || b is TruePredicate)
+                return TruePredicate.Instance;
+            if (b is FalsePredicate)
                 return a;
-            }
-            if ( b is TruePredicate )
-            {
+            if (a is FalsePredicate)
                 return b;
-            }
-            if ( a is NOT && b is Predicate )
-            {
-                NOT n = (NOT)a;
-                // check for !p||p
-                if ( n.ctx.Equals( b ) )
-                {
-                    return new TruePredicate();
-                }
-            }
-            else if ( b is NOT && a is Predicate )
-            {
-                NOT n = (NOT)b;
-                // check for p||!p
-                if ( n.ctx.Equals( a ) )
-                {
-                    return new TruePredicate();
-                }
-            }
-            else if ( a.Equals( b ) )
-            {
+
+            if (a.Equals(b))
                 return a;
+
+            NOT not = a as NOT;
+            if (not != null)
+            {
+                if (not.ctx.Equals(b))
+                    return TruePredicate.Instance;
             }
+            else
+            {
+                not = b as NOT;
+                if (not != null && not.ctx.Equals(a))
+                    return TruePredicate.Instance;
+            }
+
             //System.Console.Out.WriteLine( "## have to OR" );
-            return new OR( a, b );
+            OR result = new OR( a, b );
+            if (result.Operands.Count == 1)
+                return result.Operands.First();
+
+            return result;
         }
 
         [CLSCompliant(false)]
@@ -672,8 +870,12 @@ namespace Antlr3.Analysis
             if ( nota != null )
                 return nota.ctx;
 
+            if (a is TruePredicate)
+                return FalsePredicate.Instance;
+            else if (a is FalsePredicate)
+                return TruePredicate.Instance;
+
             return new NOT( a );
         }
-
     }
 }
