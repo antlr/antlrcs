@@ -228,6 +228,7 @@ STRING
 		|	~('\\'|'"'|'\n')
 		)*
 		'"'
+		{$text = $text.Replace("\\\"","\"");}
 	;
 
 BIGSTRING

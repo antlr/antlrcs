@@ -59,6 +59,24 @@ namespace Antlr4.Test.StringTemplate
         }
 
         [TestMethod]
+        public void TestEscapedQuote()
+        {
+            // setTest(ranges) ::= "<ranges; separator=\"||\">"
+            // has to unescape the strings.
+            string templates =
+                "setTest(ranges) ::= \"<ranges; separator=\\\"||\\\">\"" + Environment.NewLine;
+
+            writeFile(tmpdir, "t.stg", templates);
+            TemplateGroup group = new TemplateGroupFile(Path.Combine(tmpdir, "t.stg"));
+            string expected =
+                "setTest(ranges) ::= <<" + Environment.NewLine +
+                "<ranges; separator=\"||\">" + Environment.NewLine +
+                ">>" + Environment.NewLine;
+            string result = group.Show();
+            Assert.AreEqual(expected, result);
+        }
+
+        [TestMethod]
         public void TestMultiTemplates()
         {
             string templates =
