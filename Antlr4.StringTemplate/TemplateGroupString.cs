@@ -44,7 +44,6 @@ namespace Antlr4.StringTemplate
         private string sourceName;
         private string text;
         private bool alreadyLoaded = false;
-        private CommonTokenStream tokens; // keep around for tools that display ST files
 
         public TemplateGroupString(string text)
             : this("<string>", text, '<', '>')
@@ -98,11 +97,6 @@ namespace Antlr4.StringTemplate
             {
                 ErrorManager.IOError(null, ErrorType.CANT_LOAD_GROUP_FILE, e, "<string>");
             }
-        }
-
-        public virtual IList<IToken> GetTokens()
-        {
-            return tokens.GetTokens();
         }
 
         protected override CompiledTemplate Load(string name)
