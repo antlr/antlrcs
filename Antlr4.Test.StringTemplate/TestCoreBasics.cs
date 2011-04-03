@@ -940,6 +940,58 @@ namespace Antlr4.Test.StringTemplate
         }
 
         [TestMethod]
+        public void TestArrayOfTemplates()
+        {
+            string template = "<foo>!";
+            Template st = new Template(template);
+            Template[] t = new Template[] { new Template("hi"), new Template("mom") };
+            st.Add("foo", t);
+            string expected = "himom!";
+            string result = st.Render();
+            Assert.AreEqual(expected, result);
+        }
+
+        [TestMethod]
+        public void TestArrayOfTemplatesInTemplate()
+        {
+            string template = "<foo>!";
+            Template st = new Template(template);
+            Template[] t = new Template[] { new Template("hi"), new Template("mom") };
+            st.Add("foo", t);
+            Template wrapper = new Template("<x>");
+            wrapper.Add("x", st);
+            string expected = "himom!";
+            string result = wrapper.Render();
+            Assert.AreEqual(expected, result);
+        }
+
+        [TestMethod]
+        public void TestListOfTemplates()
+        {
+            string template = "<foo>!";
+            Template st = new Template(template);
+            List<Template> t = new List<Template>() { new Template("hi"), new Template("mom") };
+            st.Add("foo", t);
+            string expected = "himom!";
+            string result = st.Render();
+            Assert.AreEqual(expected, result);
+        }
+
+        [TestMethod]
+        public void TestListOfTemplatesInTemplate()
+        {
+            string template = "<foo>!";
+            Template st = new Template(template);
+            List<Template> t = new List<Template>() { new Template("hi"), new Template("mom") };
+            st.Add("foo", t);
+            Template wrapper = new Template("<x>");
+            wrapper.Add("x", st);
+            string expected = "himom!";
+            string result = wrapper.Render();
+            Assert.AreEqual(expected, result);
+        }
+
+        [TestMethod]
         public void Playing()
         {
             string template = "<a:t(x,y),u()>";
