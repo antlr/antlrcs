@@ -44,6 +44,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Debug\IndentEvent.cs" />
     <Compile Include="Extensions\ExceptionExtensions.cs" />
     <Compile Include="IAttributeRenderer.cs" />
     <Compile Include="AutoIndentWriter.cs" />

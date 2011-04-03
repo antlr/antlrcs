@@ -439,9 +439,9 @@ namespace Antlr4.StringTemplate
             return interp.Execute(@out, this);
         }
 
-        public virtual int Write(ITemplateWriter @out, CultureInfo locale)
+        public virtual int Write(ITemplateWriter @out, CultureInfo culture)
         {
-            Interpreter interp = new Interpreter(groupThatCreatedThisInstance, locale, impl.NativeGroup.ErrorManager);
+            Interpreter interp = new Interpreter(groupThatCreatedThisInstance, culture, impl.NativeGroup.ErrorManager);
             interp.SetDefaultArguments(this);
             return interp.Execute(@out, this);
         }
@@ -453,9 +453,9 @@ namespace Antlr4.StringTemplate
             return interp.Execute(@out, this);
         }
 
-        public virtual int Write(ITemplateWriter @out, CultureInfo locale, ITemplateErrorListener listener)
+        public virtual int Write(ITemplateWriter @out, CultureInfo culture, ITemplateErrorListener listener)
         {
-            Interpreter interp = new Interpreter(groupThatCreatedThisInstance, locale, new ErrorManager(listener));
+            Interpreter interp = new Interpreter(groupThatCreatedThisInstance, culture, new ErrorManager(listener));
             interp.SetDefaultArguments(this);
             return interp.Execute(@out, this);
         }
@@ -490,17 +490,17 @@ namespace Antlr4.StringTemplate
             return Render(CultureInfo.CurrentCulture, lineWidth);
         }
 
-        public virtual string Render(CultureInfo locale)
+        public virtual string Render(CultureInfo culture)
         {
-            return Render(locale, AutoIndentWriter.NoWrap);
+            return Render(culture, AutoIndentWriter.NoWrap);
         }
 
-        public virtual string Render(CultureInfo locale, int lineWidth)
+        public virtual string Render(CultureInfo culture, int lineWidth)
         {
             StringWriter @out = new StringWriter();
             ITemplateWriter wr = new AutoIndentWriter(@out);
             wr.LineWidth = lineWidth;
-            Write(wr, locale);
+            Write(wr, culture);
             return @out.ToString();
         }
 

@@ -32,10 +32,10 @@
 
 namespace Antlr4.StringTemplate.Compiler
 {
-    using Array = System.Array;
     using Antlr.Runtime;
     using Antlr.Runtime.Tree;
     using Antlr4.StringTemplate.Misc;
+    using Array = System.Array;
 
     /** temp data used during construction and functions that fill it / use it.
      *  Result is impl CompiledTemplate object.
@@ -205,9 +205,9 @@ namespace Antlr4.StringTemplate.Compiler
             }
         }
 
-        public virtual void Indent(string indent)
+        public virtual void Indent(CommonTree indent)
         {
-            Emit1(null, Bytecode.INSTR_INDENT, indent);
+            Emit1(indent, Bytecode.INSTR_INDENT, indent.Text);
         }
 
         /** Write value at index into a byte array highest to lowest byte,

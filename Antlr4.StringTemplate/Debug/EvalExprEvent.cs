@@ -38,7 +38,7 @@ namespace Antlr4.StringTemplate.Debug
     {
         // template pattern location
         private readonly Interval _sourceInterval;
-        private readonly string expr;
+        private readonly string expr = string.Empty;
 
         public EvalExprEvent(DebugTemplate template, Interval outputInterval, Interval sourceInterval)
             : base(template, outputInterval)
@@ -66,7 +66,7 @@ namespace Antlr4.StringTemplate.Debug
 
         public override string ToString()
         {
-            return string.Format("{0}{{self={1}, output={2}, expr={3}}}", GetType().Name, Template, OutputInterval, Expr);
+            return string.Format("{0}{{self={1}, expr='{2}', source={3}, output={4}}}", GetType().Name, Template, Expr, SourceInterval, OutputInterval);
         }
     }
 }

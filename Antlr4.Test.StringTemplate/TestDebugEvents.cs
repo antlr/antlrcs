@@ -32,13 +32,14 @@
 
 namespace Antlr4.Test.StringTemplate
 {
+    using System.Collections.Generic;
     using Antlr4.StringTemplate;
-    using Microsoft.VisualStudio.TestTools.UnitTesting;
-    using Environment = System.Environment;
     using Antlr4.StringTemplate.Debug;
     using Antlr4.Test.StringTemplate.Extensions;
-    using System.Collections.Generic;
+    using Microsoft.VisualStudio.TestTools.UnitTesting;
+    using Environment = System.Environment;
     using Path = System.IO.Path;
+    using StringWriter = System.IO.StringWriter;
 
     [TestClass]
     public class TestDebugEvents : BaseTest
@@ -100,6 +101,26 @@ namespace Antlr4.Test.StringTemplate
                 " EvalExprEvent{self=t(x), output=[1..2), expr=<u()>}," +
                 " EvalExprEvent{self=t(x), output=[2..3), expr=]}," +
                 " EvalTemplateEvent{self=t(x), output=[0..3)}]";
+            string result = events.ToListString();
+            Assert.AreEqual(expected, result);
+        }
+
+        [TestMethod]
+        public void TestEvalExprEventForSpecialCharacter()
+        {
+            string templates = "t() ::= <<[<\\n>]>>\n";
+            //                            012 345
+            TemplateGroupString g = new TemplateGroupString(templates);
+            g.Debug = true;
+            DebugTemplate st = (DebugTemplate)g.GetInstanceOf("t");
+            st.impl.Dump();
+            StringWriter writer = new StringWriter();
+            List<InterpEvent> events = st.GetEvents(new AutoIndentWriter(writer, "\n"));
+            string expected =
+                "[EvalExprEvent{self=t(), expr='[', source=[0..1), output=[0..1)}, " +
+                "EvalExprEvent{self=t(), expr='\\n', source=[2..4), output=[1..2)}, " +
+                "EvalExprEvent{self=t(), expr=']', source=[5..6), output=[2..3)}, " +
+                "EvalTemplateEvent{self=t(), output=[0..3)}]";
             string result = events.ToListString();
             Assert.AreEqual(expected, result);
         }

@@ -101,6 +101,11 @@ namespace Antlr4.StringTemplate.Debug
             return GetEvents(CultureInfo.CurrentCulture, lineWidth);
         }
 
+        public virtual List<InterpEvent> GetEvents(ITemplateWriter writer)
+        {
+            return GetEvents(CultureInfo.CurrentCulture, writer);
+        }
+
         public virtual List<InterpEvent> GetEvents(CultureInfo locale)
         {
             return GetEvents(locale, AutoIndentWriter.NoWrap);
@@ -111,8 +116,13 @@ namespace Antlr4.StringTemplate.Debug
             StringWriter @out = new StringWriter();
             ITemplateWriter wr = new AutoIndentWriter(@out);
             wr.LineWidth = lineWidth;
-            Interpreter interp = new Interpreter(groupThatCreatedThisInstance, locale);
-            interp.Execute(wr, this); // Render and track events
+            return GetEvents(locale, wr);
+        }
+
+        public virtual List<InterpEvent> GetEvents(CultureInfo culture, ITemplateWriter writer)
+        {
+            Interpreter interp = new Interpreter(groupThatCreatedThisInstance, culture);
+            interp.Execute(writer, this); // Render and track events
             return interp.GetEvents();
         }
     }

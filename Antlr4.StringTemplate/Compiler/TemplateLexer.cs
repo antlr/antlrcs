@@ -35,10 +35,8 @@ namespace Antlr4.StringTemplate.Compiler
     using System.Collections.Generic;
     using Antlr.Runtime;
     using Antlr4.StringTemplate.Misc;
-    using Exception = System.Exception;
     using NumberStyles = System.Globalization.NumberStyles;
     using StringBuilder = System.Text.StringBuilder;
-    using StringComparison = System.StringComparison;
 
     /** This class represents the tokenizer for templates. It operates in two modes:
      *  inside and outside of expressions. It behaves like an ANTLR TokenSource,
@@ -494,8 +492,13 @@ namespace Antlr4.StringTemplate.Compiler
 
         private IToken ESCAPE()
         {
+            startCharIndex = input.Index;
+            startCharPositionInLine = input.CharPositionInLine;
             consume(); // kill \\
-            IToken t = null;
+            if (c == 'u')
+                return UNICODE();
+
+            string text = null;
             switch (c)
             {
             case '\\':
@@ -503,28 +506,27 @@ namespace Antlr4.StringTemplate.Compiler
                 return SKIP;
 
             case 'n':
-                t = newToken(TEXT, "\n", input.CharPositionInLine - 2);
+                text = "\n";
                 break;
 
             case 't':
-                t = newToken(TEXT, "\t", input.CharPositionInLine - 2);
+                text = "\t";
                 break;
 
             case ' ':
-                t = newToken(TEXT, " ", input.CharPositionInLine - 2);
-                break;
-
-            case 'u':
-                t = UNICODE();
+                text = " ";
                 break;
 
             default:
-                t = SKIP;
                 NoViableAltException e = new NoViableAltException(string.Empty, 0, 0, input);
                 errMgr.LexerError(input.SourceName, string.Format("invalid escaped char: '{0}'", GetCharString(c)), templateToken, e);
-                break;
+                consume();
+                match(delimiterStopChar);
+                return SKIP;
             }
+
             consume();
+            IToken t = newToken(TEXT, text, input.CharPositionInLine - 2);
             match(delimiterStopChar);
             return t;
         }
@@ -564,9 +566,12 @@ namespace Antlr4.StringTemplate.Compiler
             }
 
             chars[3] = c;
-            // ESCAPE kills final char and >
+            // ESCAPE kills >
             char uc = (char)int.Parse(new string(chars), NumberStyles.HexNumber);
-            return newToken(TEXT, uc.ToString(), input.CharPositionInLine - 6);
+            IToken t = newToken(TEXT, uc.ToString(), input.CharPositionInLine - 6);
+            consume();
+            match(delimiterStopChar);
+            return t;
         }
 
         private IToken mTEXT()

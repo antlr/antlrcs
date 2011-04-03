@@ -55,6 +55,32 @@ namespace Antlr4.Test.StringTemplate
         }
 
         [TestMethod]
+        public void TestTrimmedNewlinesBeforeAfterInTemplate()
+        {
+            string templates =
+                "a(x) ::= <<" + newline +
+                "foo" + newline +
+                ">>" + newline;
+            TemplateGroupString group = new TemplateGroupString(templates);
+            Template st = group.GetInstanceOf("a");
+            string expected = "foo";
+            string result = st.Render();
+            Assert.AreEqual(expected, result);
+        }
+
+        [TestMethod]
+        public void TestDontTrimJustSpaceBeforeAfterInTemplate()
+        {
+            string templates =
+                "a(x) ::= << foo >>\n";
+            TemplateGroupString group = new TemplateGroupString(templates);
+            Template st = group.GetInstanceOf("a");
+            string expected = " foo ";
+            string result = st.Render();
+            Assert.AreEqual(expected, result);
+        }
+
+        [TestMethod]
         public void TestTrimmedSubtemplatesNoArgs()
         {
             TemplateGroup group = new TemplateGroup();

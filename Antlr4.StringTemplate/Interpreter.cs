@@ -450,7 +450,7 @@ namespace Antlr4.StringTemplate
                 case Bytecode.INSTR_INDENT:
                     strIndex = GetShort(code, ip);
                     ip += Instruction.OperandSizeInBytes;
-                    @out.PushIndentation(self.impl.strings[strIndex]);
+                    Indent(@out, self, strIndex);
                     break;
 
                 case Bytecode.INSTR_DEDENT:
@@ -526,7 +526,7 @@ namespace Antlr4.StringTemplate
             if (group.Debug)
             {
                 EvalTemplateEvent e = new EvalTemplateEvent((DebugTemplate)self, Interval.FromBounds(start, @out.Index));
-                //System.out.println("eval template "+self+": "+e);
+                //Console.WriteLine(e);
                 events.Add(e);
                 if (self.EnclosingInstance != null)
                 {
@@ -651,6 +651,20 @@ namespace Antlr4.StringTemplate
                 string argName = st.impl.FormalArguments[i].Name;
                 st.RawSetAttribute(argName, o);
             }
+        }
+
+        protected void Indent(ITemplateWriter @out, Template self, int strIndex)
+        {
+            string indent = self.impl.strings[strIndex];
+            if (group.Debug)
+            {
+                int start = @out.Index; // track char we're about to write
+                EvalExprEvent e = new IndentEvent((DebugTemplate)self, new Interval(start, indent.Length), GetExpressionInterval(self));
+                //Console.WriteLine(e);
+                events.Add(e);
+            }
+
+            @out.PushIndentation(indent);
         }
 
         /** Write out an expression result that doesn't use expression options.
@@ -819,6 +833,11 @@ namespace Antlr4.StringTemplate
                 n = @out.Write(v);
             }
             return n;
+        }
+
+        protected virtual Interval GetExpressionInterval(Template self)
+        {
+            return self.impl.sourceMap[current_ip];
         }
 
         protected virtual void Map(Template self, object attr, Template st)

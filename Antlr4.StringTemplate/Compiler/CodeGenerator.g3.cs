@@ -116,9 +116,9 @@ namespace Antlr4.StringTemplate.Compiler
             CompilationState.Emit(opAST, opcode);
         }
 
-        private void Indent(string text)
+        private void Indent(CommonTree indent)
         {
-            CompilationState.Indent(text);
+            CompilationState.Indent(indent);
         }
 
         private void Dedent()
