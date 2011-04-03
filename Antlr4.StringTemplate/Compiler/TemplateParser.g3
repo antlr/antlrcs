@@ -265,6 +265,14 @@ bool empty = true;
 bool finished = false;
 }
 	:	'['<LIST>^
-			({!finished}? => (exprNoComma (','! | ']'! {finished=true;}) {empty=false;} | ','<NULL> {empty=false;} | {!empty}? => ']'<NULL> {finished=true;}))+
-			({!finished}? => ']'!)
+			(	{!finished}? =>
+				(	exprNoComma
+					(	','!
+					|	']'! {{finished=true;}}
+					) {{empty=false;}}
+				|	','<NULL> {{empty=false;}}
+				|	{!empty}? => ']'<NULL> {{finished=true;}}
+				)
+			)+
+			({!finished}? => ']'!)?
 	;
