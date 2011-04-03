@@ -523,7 +523,7 @@ namespace Antlr4.StringTemplate
                 prevOpcode = opcode;
             }
 
-            if (group.Debug)
+            if (group.Debug && self is DebugTemplate)
             {
                 EvalTemplateEvent e = new EvalTemplateEvent((DebugTemplate)self, Interval.FromBounds(start, @out.Index));
                 //Console.WriteLine(e);
@@ -656,7 +656,7 @@ namespace Antlr4.StringTemplate
         protected void Indent(ITemplateWriter @out, Template self, int strIndex)
         {
             string indent = self.impl.strings[strIndex];
-            if (group.Debug)
+            if (group.Debug && self is DebugTemplate)
             {
                 int start = @out.Index; // track char we're about to write
                 EvalExprEvent e = new IndentEvent((DebugTemplate)self, new Interval(start, indent.Length), GetExpressionInterval(self));
@@ -674,7 +674,7 @@ namespace Antlr4.StringTemplate
         {
             int start = @out.Index; // track char we're about to Write
             int n = WriteObject(@out, self, o, null);
-            if (group.Debug)
+            if (group.Debug && self is DebugTemplate)
             {
                 Interval templateLocation = self.impl.sourceMap[current_ip];
                 EvalExprEvent e = new EvalExprEvent((DebugTemplate)self, Interval.FromBounds(start, @out.Index), templateLocation);
@@ -714,7 +714,7 @@ namespace Antlr4.StringTemplate
                 @out.PopAnchorPoint();
             }
 
-            if (group.Debug)
+            if (group.Debug && self is DebugTemplate)
             {
                 Interval templateLocation = self.impl.sourceMap[current_ip];
                 EvalExprEvent e = new EvalExprEvent((DebugTemplate)self, Interval.FromBounds(start, @out.Index), templateLocation);

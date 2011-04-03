@@ -48,6 +48,8 @@
     <Compile Include="Extensions\ExceptionExtensions.cs" />
     <Compile Include="IAttributeRenderer.cs" />
     <Compile Include="AutoIndentWriter.cs" />
+    <Compile Include="Misc\Aggregate.cs" />
+    <Compile Include="Misc\AggregateModelAdaptor.cs" />
     <Compile Include="TemplateGroupString.cs" />
     <None Include="..\Antlr3\Key.snk">
       <Link>Key.snk</Link>

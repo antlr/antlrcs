@@ -156,7 +156,7 @@ namespace Antlr4.Test.StringTemplate
         [TestMethod]
         public void TestPropWithNoAttr()
         {
-            string template = "<foo.a>: <ick>"; // checks field and method getter
+            string template = "<foo.a>: <ick>";
             Template st = new Template(template);
             st.Add("foo", new Dictionary<string, string>() { { "a", "b" } });
             string expected = "b: ";

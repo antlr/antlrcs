@@ -116,6 +116,7 @@ namespace Antlr4.StringTemplate
                 {typeof(object), new ObjectModelAdaptor()},
                 {typeof(Template), new TemplateModelAdaptor()},
                 {typeof(IDictionary), new MapModelAdaptor()},
+                {typeof(Aggregate), new AggregateModelAdaptor()},
             };
 
         public static TemplateGroup defaultGroup = new TemplateGroup();

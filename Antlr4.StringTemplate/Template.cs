@@ -261,6 +261,44 @@ namespace Antlr4.StringTemplate
             return this;
         }
 
+        /** Split "aggrName.{propName1,propName2}" into list [propName1,propName2]
+         *  and the aggrName. Spaces are allowed around ','.
+         */
+        [MethodImpl(MethodImplOptions.Synchronized)]
+        public Template AddMany(string aggrSpec, params object[] values)
+        {
+            if (aggrSpec == null)
+                throw new ArgumentNullException("aggrSpec");
+            if (values == null)
+                throw new ArgumentNullException("values");
+
+            if (values.Length == 0)
+                throw new ArgumentException(string.Format("missing values for aggregate attribute format: {0}", aggrSpec), "aggrSpec");
+
+            int dot = aggrSpec.IndexOf(".{");
+            int finalCurly = aggrSpec.IndexOf('}');
+            if (dot < 0 || finalCurly < 0)
+                throw new ArgumentException(string.Format("invalid aggregate attribute format: {0}", aggrSpec), "aggrSpec");
+
+            string aggrName = aggrSpec.Substring(0, dot);
+            string propString = aggrSpec.Substring(dot + 2, aggrSpec.Length - dot - 3);
+            propString = propString.Trim();
+            string[] propNames = Array.ConvertAll(propString.Split(','), p => p.Trim());
+            if (propNames == null || propNames.Length == 0)
+                throw new ArgumentException(string.Format("invalid aggregate attribute format: {0}", aggrSpec), "aggrSpec");
+
+            if (values.Length != propNames.Length)
+                throw new ArgumentException(string.Format("number of properties and values mismatch for aggregate attribute format: {0}", aggrSpec), "aggrSpec");
+
+            int i = 0;
+            Aggregate aggr = new Aggregate();
+            foreach (string p in propNames)
+                aggr[p] = values[i++];
+
+            Add(aggrName, aggr); // now add as usual
+            return this;
+        }
+
         /** Remove an attribute value entirely (can't Remove attribute definitions). */
         public virtual void Remove(string name)
         {
