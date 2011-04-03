@@ -44,8 +44,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Extensions\ExceptionExtensions.cs" />
     <Compile Include="IAttributeRenderer.cs" />
     <Compile Include="AutoIndentWriter.cs" />
+    <Compile Include="TemplateGroupString.cs" />
     <None Include="..\Antlr3\Key.snk">
       <Link>Key.snk</Link>
     </None>
@@ -136,12 +138,7 @@
       <Name>Antlr3.Runtime</Name>
     </ProjectReference>
   </ItemGroup>
-  <PropertyGroup>
-    <!-- Folder containing AntlrBuildTask.dll -->
-    <AntlrBuildTaskPath>$(SolutionDir)bin\Bootstrap</AntlrBuildTaskPath>
-    <!-- Path to the ANTLR Tool itself. -->
-    <AntlrToolPath>$(SolutionDir)bin\Bootstrap\Antlr3.exe</AntlrToolPath>
-  </PropertyGroup>
+  <ItemGroup />
   <PropertyGroup>
     <SignAssembly>true</SignAssembly>
   </PropertyGroup>
@@ -149,6 +146,12 @@
     <AssemblyOriginatorKeyFile>..\Antlr3\Key.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <!-- Folder containing AntlrBuildTask.dll -->
+    <AntlrBuildTaskPath>$(ProjectDir)..\bin\Bootstrap</AntlrBuildTaskPath>
+    <!-- Path to the ANTLR Tool itself. -->
+    <AntlrToolPath>$(ProjectDir)..\bin\Bootstrap\Antlr3.exe</AntlrToolPath>
+  </PropertyGroup>
   <Import Project="$(ProjectDir)..\bin\Bootstrap\Antlr3.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
