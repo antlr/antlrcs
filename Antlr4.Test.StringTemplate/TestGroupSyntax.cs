@@ -115,6 +115,22 @@ namespace Antlr4.Test.StringTemplate
         }
 
         [TestMethod]
+        public void TestDefaultValues2()
+        {
+            string templates =
+                "t(x, y, a={def1}, b=\"def2\") ::= \"[<a>]\"" + Environment.NewLine;
+
+            writeFile(tmpdir, "t.stg", templates);
+            TemplateGroup group = new TemplateGroupFile(Path.Combine(tmpdir, "t.stg"));
+            string expected =
+                "t(x,y,a={def1},b=\"def2\") ::= <<" + Environment.NewLine +
+                "[<a>]" + Environment.NewLine +
+                ">>" + Environment.NewLine;
+            string result = group.Show();
+            Assert.AreEqual(expected, result);
+        }
+
+        [TestMethod]
         public void TestDefaultValueTemplateWithArg()
         {
             string templates =
