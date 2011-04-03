@@ -36,7 +36,7 @@ namespace Antlr4.StringTemplate.Debug
 
     public class EvalTemplateEvent : InterpEvent
     {
-        public EvalTemplateEvent(DebugTemplate template, Interval interval)
+        public EvalTemplateEvent(Template template, Interval interval)
             : base(template, interval)
         {
         }

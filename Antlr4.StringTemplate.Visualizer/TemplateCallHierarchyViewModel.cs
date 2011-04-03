@@ -45,30 +45,38 @@ namespace Antlr4.StringTemplate.Visualizer
         private static readonly PropertyChangedEventArgs IsSelectedPropertyChangedEventArgs = new PropertyChangedEventArgs("IsSelected");
 
         private readonly Interpreter _interpreter;
-        private readonly DebugTemplate _template;
+        private readonly EvalTemplateEvent _event;
         private List<TemplateCallHierarchyViewModel> _children;
 
         private bool _isExpanded;
         private bool _isSelected;
 
-        public TemplateCallHierarchyViewModel(Interpreter interpreter, DebugTemplate template)
+        public TemplateCallHierarchyViewModel(Interpreter interpreter, EvalTemplateEvent @event)
         {
             if (interpreter == null)
                 throw new ArgumentNullException("interpreter");
-            if (template == null)
-                throw new ArgumentNullException("template");
+            if (@event == null)
+                throw new ArgumentNullException("event");
 
             this._interpreter = interpreter;
-            this._template = template;
+            this._event = @event;
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
 
-        public DebugTemplate Template
+        public EvalTemplateEvent Event
         {
             get
             {
-                return _template;
+                return _event;
+            }
+        }
+
+        public Template Template
+        {
+            get
+            {
+                return _event.Template;
             }
         }
 
@@ -114,8 +122,8 @@ namespace Antlr4.StringTemplate.Visualizer
                 if (_children == null)
                 {
                     _children = new List<TemplateCallHierarchyViewModel>();
-                    foreach (var @event in _interpreter.GetEvents(_template))
-                        _children.Add(new TemplateCallHierarchyViewModel(_interpreter, @event.Template));
+                    foreach (var @event in _interpreter.GetDebugState(_event.Template).ChildEvalTemplateEvents)
+                        _children.Add(new TemplateCallHierarchyViewModel(_interpreter, @event));
                 }
 
                 return _children;
@@ -124,10 +132,14 @@ namespace Antlr4.StringTemplate.Visualizer
 
         public override string ToString()
         {
-            if (_template.IsAnonymousSubtemplate)
+            Template template = _event.Template;
+            if (template.IsAnonymousSubtemplate)
                 return "{...}";
 
-            return string.Format("{0} @ {1}:{2}", _template, Path.GetFileName(_template.newSTEvent.GetFileName()), _template.newSTEvent.GetLine());
+            if (template.DebugState == null || template.DebugState.NewTemplateEvent == null)
+                return string.Format("{0}", template);
+
+            return string.Format("{0} @ {1}:{2}", template, Path.GetFileName(template.DebugState.NewTemplateEvent.GetFileName()), template.DebugState.NewTemplateEvent.GetLine());
         }
 
         protected virtual void OnPropertyChanged(PropertyChangedEventArgs e)

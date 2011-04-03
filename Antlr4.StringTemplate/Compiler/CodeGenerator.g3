@@ -132,11 +132,9 @@ subtemplate returns [string name, int nargs]
 			CompiledTemplate sub = $template.impl;
 			sub.isAnonSubtemplate = true;
 			sub.templateDefStartToken = $SUBTEMPLATE.Token;
-			if ( Group.Debug ) {
-				sub.ast = $SUBTEMPLATE;
-				sub.ast.SetUnknownTokenBoundaries();
-				sub.tokens = input.TokenStream;
-			}
+			sub.ast = $SUBTEMPLATE;
+			sub.ast.SetUnknownTokenBoundaries();
+			sub.tokens = input.TokenStream;
 			outermostImpl.AddImplicitlyDefinedTemplate(sub);
 			}
 		 )

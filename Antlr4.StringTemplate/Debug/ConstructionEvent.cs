@@ -63,6 +63,7 @@ namespace Antlr4.StringTemplate.Debug
                 if (!name.StartsWith("Antlr4.StringTemplate"))
                     return e;
             }
+
             return trace[0];
         }
     }

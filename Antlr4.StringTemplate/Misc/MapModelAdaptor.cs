@@ -60,6 +60,15 @@ namespace Antlr4.StringTemplate.Misc
                 value = property;
             }
 
+            Template template = value as Template;
+            if (template != null)
+            {
+                // dup, don't alter existing template; it's a prototype
+                template = template.groupThatCreatedThisInstance.CreateStringTemplateInternally(template);
+                template.EnclosingInstance = self;
+                value = template;
+            }
+
             return value;
         }
     }

@@ -50,7 +50,7 @@ namespace Antlr4.StringTemplate.Visualizer
 
     public partial class TemplateVisualizerFrame : UserControl
     {
-        private DebugTemplate currentTemplate;
+        private Template currentTemplate;
 
         public TemplateVisualizerFrame()
         {
@@ -97,7 +97,7 @@ namespace Antlr4.StringTemplate.Visualizer
             if (runtimeMessage != null)
             {
                 Interval interval = runtimeMessage.SourceInterval;
-                currentTemplate = (DebugTemplate)message.Self;
+                currentTemplate = message.Self;
                 UpdateCurrentTemplate();
                 Highlight(TemplateTextBox.Document, interval);
             }
@@ -212,21 +212,54 @@ namespace Antlr4.StringTemplate.Visualizer
             if (viewModel == null)
                 return;
 
+            // update all views according to current template
             UpdateStack();
             UpdateAttributes();
             viewModel.Bytecode = currentTemplate.impl.Disassemble();
-            viewModel.Ast = currentTemplate.impl.ast;
-
-            SetSelectionPath(viewModel.TemplateCallHierarchy[0], currentTemplate.GetEnclosingInstanceStack(true));
-
             TemplateTextBox.Document = new FlowDocument(new Paragraph(new Run(currentTemplate.impl.template)
             {
                 FontFamily = new FontFamily("Consolas")
             }));
+
+            #region new stuff
+
+            // update tree view of template hierarchy and select assoc. text substring
+
+            // compute path from root to currentST, create TreePath for tree widget
+            //		List<ST> pathST = currentST.getEnclosingInstanceStack(true);
+            ////		System.out.println("path="+pathST);
+            //		Object[] path = new Object[pathST.size()];
+            //		int j = 0;
+            //		for (ST s : pathST) path[j++] = new JTreeSTModel.Node(s, interp.getDebugState(s));
+            //		m.tree.setSelectionPath(new TreePath(path));
+
+            // highlight output text and, if {...} subtemplate, region in ST src
+            // get last event for currentST; it's the event that captures ST eval
+            List<InterpEvent> events = viewModel.Visualizer.Interpreter.GetDebugState(currentTemplate).Events;
+            EvalTemplateEvent e = (EvalTemplateEvent)events[events.Count - 1];
+            //m.output.moveCaretPosition(e.outputStartChar);
+            Highlight(OutputTextBox.Document, e.OutputInterval);
+            if (currentTemplate.IsAnonymousSubtemplate)
+            {
+                Interval r = currentTemplate.impl.TemplateRange;
+                //				System.out.println("currentST src range="+r);
+                //m.template.moveCaretPosition(r.a);
+                //TemplateTextBox.CaretPosition.
+                Highlight(TemplateTextBox.Document, r);
+            }
+
+            #endregion
+
+#if false
+            // update tree view of template hierarchy and select assoc. text substring
+            viewModel.Ast = currentTemplate.impl.ast;
+
+            SetSelectionPath(viewModel.TemplateCallHierarchy[0], currentTemplate.GetEnclosingInstanceStack(true));
+
             Interval r = currentTemplate.impl.TemplateRange;
             if (currentTemplate.EnclosingInstance != null)
             {
-                int i = GetIndexOfChild((DebugTemplate)currentTemplate.EnclosingInstance, currentTemplate);
+                int i = GetIndexOfChild(currentTemplate.EnclosingInstance, currentTemplate);
                 if (i == -1)
                 {
                     Highlight(OutputTextBox.Document, null);
@@ -249,19 +282,19 @@ namespace Antlr4.StringTemplate.Visualizer
                 Highlight(OutputTextBox.Document, null);
                 Highlight(TemplateTextBox.Document, r);
             }
+#endif
         }
 
-        private int GetIndexOfChild(DebugTemplate parent, Template child)
+        private int GetIndexOfChild(EvalTemplateEvent parent, EvalTemplateEvent child)
         {
             if (parent == null)
                 throw new ArgumentNullException("parent");
             if (child == null)
                 throw new ArgumentNullException("child");
 
-
             TemplateCallHierarchyViewModel hierarchy = new TemplateCallHierarchyViewModel(ViewModel.Visualizer.Interpreter, parent);
             List<TemplateCallHierarchyViewModel> children = hierarchy.Children;
-            return children.FindIndex(i => i.Template == child);
+            return children.FindIndex(i => i.Event == child);
         }
 
         private void UpdateStack()
@@ -287,10 +320,10 @@ namespace Antlr4.StringTemplate.Visualizer
                     if (valueList != null)
                         value = valueList.ToListString();
 
-                    if (currentTemplate.addAttrEvents != null)
+                    if (currentTemplate.DebugState != null && currentTemplate.DebugState.AddAttributeEvents != null)
                     {
                         List<AddAttributeEvent> events;
-                        currentTemplate.addAttrEvents.TryGetValue(attribute.Key, out events);
+                        currentTemplate.DebugState.AddAttributeEvents.TryGetValue(attribute.Key, out events);
                         StringBuilder locations = new StringBuilder();
                         int i = 0;
                         if (events != null)
@@ -305,7 +338,14 @@ namespace Antlr4.StringTemplate.Visualizer
                             }
                         }
 
-                        attributesList.Add(string.Format("{0} = {1} @ {2}", attribute.Key, value, locations));
+                        if (locations.Length > 0)
+                        {
+                            attributesList.Add(string.Format("{0} = {1} @ {2}", attribute.Key, value, locations));
+                        }
+                        else
+                        {
+                            attributesList.Add(string.Format("{0} = {1}", attribute.Key, value));
+                        }
                     }
                     else
                     {

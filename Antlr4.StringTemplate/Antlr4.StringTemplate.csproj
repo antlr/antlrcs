@@ -74,7 +74,7 @@
     <Compile Include="Compiler\TestNewStuff.cs" />
     <Compile Include="Debug\AddAttributeEvent.cs" />
     <Compile Include="Debug\ConstructionEvent.cs" />
-    <Compile Include="Debug\DebugTemplate.cs" />
+    <None Include="Debug\DebugTemplate.cs" />
     <Compile Include="Debug\EvalExprEvent.cs" />
     <Compile Include="Debug\EvalTemplateEvent.cs" />
     <Compile Include="Debug\InterpEvent.cs" />

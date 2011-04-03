@@ -119,6 +119,14 @@ namespace Antlr4.StringTemplate
                 {typeof(Aggregate), new AggregateModelAdaptor()},
             };
 
+        /** Watch loading of groups and templates */
+        private bool _verbose = false;
+
+        /** For debugging with STViz. Records where in code an ST was created
+         *  and where code added attributes.
+         */
+        private bool _trackCreationEvents = false;
+
         public static TemplateGroup defaultGroup = new TemplateGroup();
 
         /** Used to indicate that the template doesn't exist.
@@ -127,8 +135,6 @@ namespace Antlr4.StringTemplate
         protected static readonly CompiledTemplate NotFoundTemplate = new CompiledTemplate();
 
         public static readonly ErrorManager DefaultErrorManager = new ErrorManager();
-
-        private bool _debug = false;
 
         /** The error manager for entire group; all compilations and executions.
          *  This gets copied to parsers, walkers, and interpreters.
@@ -179,16 +185,29 @@ namespace Antlr4.StringTemplate
             }
         }
 
-        public bool Debug
+        public bool Verbose
         {
             get
             {
-                return _debug;
+                return _verbose;
             }
 
             set
             {
-                _debug = value;
+                _verbose = value;
+            }
+        }
+
+        public bool TrackCreationEvents
+        {
+            get
+            {
+                return _trackCreationEvents;
+            }
+
+            set
+            {
+                _trackCreationEvents = value;
             }
         }
 
@@ -219,6 +238,11 @@ namespace Antlr4.StringTemplate
 
         protected internal virtual Template GetEmbeddedInstanceOf(Template enclosingInstance, int ip, string name)
         {
+            if (Verbose)
+            {
+                Console.WriteLine(string.Format("GetEmbeddedInstanceOf({0})", name));
+            }
+
             Template st = GetInstanceOf(name);
             if (st == null)
             {
@@ -227,6 +251,14 @@ namespace Antlr4.StringTemplate
                 st.impl = new CompiledTemplate();
                 return st;
             }
+
+            // this is only called internally. wack any debug ST create events
+            if (_trackCreationEvents)
+            {
+                // toss it out
+                st.DebugState.NewTemplateEvent = null;
+            }
+
             st.EnclosingInstance = enclosingInstance;
             return st;
         }
@@ -243,7 +275,7 @@ namespace Antlr4.StringTemplate
             {
                 template = Utility.Strip(templateToken.Text, 1);
             }
-            Template st = CreateStringTemplate();
+            Template st = CreateStringTemplateInternally();
             st.groupThatCreatedThisInstance = this;
             st.impl = Compile(FileName, null, null, template, templateToken);
             st.impl.hasFormalArgs = false;
@@ -647,19 +679,39 @@ namespace Antlr4.StringTemplate
         /** StringTemplate object factory; each group can have its own. */
         public virtual Template CreateStringTemplate()
         {
-            // TODO: try making a mem pool?
-            if (Debug)
-                return new DebugTemplate();
-
-            return new Template();
+            return new Template(this);
         }
 
-        public virtual Template CreateStringTemplate(Template proto)
+        public virtual Template CreateStringTemplate(Template prototype)
         {
-            if (Debug)
-                return new DebugTemplate(proto);
+            return new Template(prototype);
+        }
 
-            return new Template(proto);
+        /** differentiate so we can avoid having creation events for regions,
+         *  map operations, and other "new ST" events used during interp.
+         */
+        public Template CreateStringTemplateInternally()
+        {
+            Template template = CreateStringTemplate();
+            if (TrackCreationEvents && template.DebugState != null)
+            {
+                // toss it out
+                template.DebugState.NewTemplateEvent = null;
+            }
+
+            return template;
+        }
+
+        public Template CreateStringTemplateInternally(Template prototype)
+        {
+            Template template = CreateStringTemplate(prototype);
+            if (TrackCreationEvents && template.DebugState != null)
+            {
+                // toss it out
+                template.DebugState.NewTemplateEvent = null;
+            }
+
+            return template;
         }
 
         public virtual string Name

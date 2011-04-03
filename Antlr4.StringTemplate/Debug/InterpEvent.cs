@@ -37,11 +37,11 @@ namespace Antlr4.StringTemplate.Debug
 
     public class InterpEvent
     {
-        private readonly DebugTemplate _template;
+        private readonly Template _template;
         // output location
         private readonly Interval _interval;
 
-        public InterpEvent(DebugTemplate template, Interval interval)
+        public InterpEvent(Template template, Interval interval)
         {
             if (template == null)
                 throw new ArgumentNullException("template");
@@ -52,7 +52,7 @@ namespace Antlr4.StringTemplate.Debug
             this._interval = interval;
         }
 
-        public DebugTemplate Template
+        public Template Template
         {
             get
             {

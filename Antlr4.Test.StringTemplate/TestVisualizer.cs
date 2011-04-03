@@ -62,8 +62,8 @@ namespace Antlr4.Test.StringTemplate
 
             writeFile(tmpdir, "t.stg", templates);
             TemplateGroup group = new TemplateGroupFile(Path.Combine(tmpdir, "t.stg"));
-            group.Debug = true;
-            DebugTemplate st = (DebugTemplate)group.GetInstanceOf("method");
+            group.TrackCreationEvents = true;
+            Template st = group.GetInstanceOf("method");
             st.impl.Dump();
             st.Add("type", "float");
             st.Add("name", "foo");
@@ -97,9 +97,9 @@ namespace Antlr4.Test.StringTemplate
 
             writeFile(tmpdir, "t.stg", templates);
             TemplateGroup group = new TemplateGroupFile(Path.Combine(tmpdir, "t.stg"));
-            group.Debug = true;
-            DebugTemplate template = (DebugTemplate)group.GetInstanceOf("list");
-            DebugTemplate line = (DebugTemplate)group.GetInstanceOf("line");
+            group.TrackCreationEvents = true;
+            Template template = group.GetInstanceOf("list");
+            Template line = group.GetInstanceOf("line");
             line.Add("text", "x = 3");
             template.Add("lines", line);
             template.Add("lines", line);

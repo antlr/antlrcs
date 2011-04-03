@@ -59,7 +59,6 @@ namespace Antlr4.Test.StringTemplate
         public void TestSeparatorWithSpaces()
         {
             TemplateGroup group = new TemplateGroup();
-            group.Debug = true;
             group.DefineTemplate("test", "hi <name; separator= \", \">!", new string[] { "name" });
             Template st = group.GetInstanceOf("test");
             Console.WriteLine(st.impl.ast.ToStringTree());

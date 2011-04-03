@@ -41,13 +41,13 @@ namespace Antlr4.StringTemplate.Visualizer
     public class TemplateVisualizer
     {
         private readonly ErrorManager _errorManager;
-        private readonly DebugTemplate _root;
+        private readonly Template _root;
         private readonly string _output;
         private readonly Interpreter _interpreter;
         private readonly List<string> _trace;
         private readonly ReadOnlyCollection<TemplateMessage> _errors;
 
-        public TemplateVisualizer(ErrorManager errorManager, DebugTemplate root, string output, Interpreter interpreter, List<string> trace, ReadOnlyCollection<TemplateMessage> errors)
+        public TemplateVisualizer(ErrorManager errorManager, Template root, string output, Interpreter interpreter, List<string> trace, ReadOnlyCollection<TemplateMessage> errors)
         {
             if (errorManager == null)
                 throw new ArgumentNullException("errorManager");
@@ -76,7 +76,7 @@ namespace Antlr4.StringTemplate.Visualizer
             }
         }
 
-        public DebugTemplate RootTemplate
+        public Template RootTemplate
         {
             get
             {

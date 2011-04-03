@@ -37,6 +37,7 @@ namespace Antlr4.StringTemplate
     using System.Runtime.CompilerServices;
     using System.Text.RegularExpressions;
     using Antlr4.StringTemplate.Compiler;
+    using Antlr4.StringTemplate.Debug;
     using Antlr4.StringTemplate.Misc;
     using ArgumentException = System.ArgumentException;
     using ArgumentNullException = System.ArgumentNullException;
@@ -105,6 +106,11 @@ namespace Antlr4.StringTemplate
          */
         public TemplateGroup groupThatCreatedThisInstance;
 
+        /** If Interpreter.trackCreationEvents, track creation, add-attr events
+         *  for each object. Create this object on first use.
+         */
+        private TemplateDebugState _debugState;
+
         /** Just an alias for ArrayList, but this way I can track whether a
          *  list is something Template created or it's an incoming list.
          */
@@ -121,8 +127,14 @@ namespace Antlr4.StringTemplate
         }
 
         /** Used by group creation routine, not by users */
-        public Template()
+        internal Template(TemplateGroup group)
         {
+            if (group.TrackCreationEvents)
+            {
+                if (_debugState == null)
+                    _debugState = new TemplateDebugState();
+                _debugState.NewTemplateEvent = new ConstructionEvent();
+            }
         }
 
         /** Used to make templates inline in code for simple things like SQL or log records.
@@ -152,7 +164,9 @@ namespace Antlr4.StringTemplate
             impl.DefineImplicitlyDefinedTemplates(groupThatCreatedThisInstance);
         }
 
-        /** Clone a prototype template for application in MAP operations; copy all fields */
+        /** Clone a prototype template for application in MAP operations; copy all fields
+         *  except DebugState.
+         */
         public Template(Template prototype)
             : this(prototype, false, prototype != null ? prototype.EnclosingInstance : null)
         {
@@ -167,6 +181,19 @@ namespace Antlr4.StringTemplate
             this.locals = shadowLocals || prototype.locals == null ? prototype.locals : (object[])prototype.locals.Clone();
             this.EnclosingInstance = enclosingInstance;
             this.groupThatCreatedThisInstance = prototype.groupThatCreatedThisInstance;
+        }
+
+        public TemplateDebugState DebugState
+        {
+            get
+            {
+                return _debugState;
+            }
+
+            set
+            {
+                _debugState = value;
+            }
         }
 
         public Template EnclosingInstance
@@ -200,11 +227,18 @@ namespace Antlr4.StringTemplate
         public virtual Template Add(string name, object value)
         {
             if (name == null)
-                return this; // allow null value
+                return this; // allow null value but not name
 
             if (name.IndexOf('.') >= 0)
             {
                 throw new ArgumentException("cannot have '.' in attribute names");
+            }
+
+            if (groupThatCreatedThisInstance.TrackCreationEvents)
+            {
+                if (_debugState == null)
+                    _debugState = new TemplateDebugState();
+                _debugState.AddAttributeEvents.Add(name, new AddAttributeEvent(name, value));
             }
 
             FormalArgument arg = null;
@@ -293,7 +327,10 @@ namespace Antlr4.StringTemplate
             int i = 0;
             Aggregate aggr = new Aggregate();
             foreach (string p in propNames)
-                aggr[p] = values[i++];
+            {
+                object value = values[i++];
+                aggr[p] = value;
+            }
 
             Add(aggrName, aggr); // now add as usual
             return this;
@@ -472,28 +509,28 @@ namespace Antlr4.StringTemplate
 
         public virtual int Write(ITemplateWriter @out)
         {
-            Interpreter interp = new Interpreter(groupThatCreatedThisInstance, impl.NativeGroup.ErrorManager);
+            Interpreter interp = new Interpreter(groupThatCreatedThisInstance, impl.NativeGroup.ErrorManager, false);
             interp.SetDefaultArguments(this);
             return interp.Execute(@out, this);
         }
 
         public virtual int Write(ITemplateWriter @out, CultureInfo culture)
         {
-            Interpreter interp = new Interpreter(groupThatCreatedThisInstance, culture, impl.NativeGroup.ErrorManager);
+            Interpreter interp = new Interpreter(groupThatCreatedThisInstance, culture, impl.NativeGroup.ErrorManager, false);
             interp.SetDefaultArguments(this);
             return interp.Execute(@out, this);
         }
 
         public virtual int Write(ITemplateWriter @out, ITemplateErrorListener listener)
         {
-            Interpreter interp = new Interpreter(groupThatCreatedThisInstance, new ErrorManager(listener));
+            Interpreter interp = new Interpreter(groupThatCreatedThisInstance, new ErrorManager(listener), false);
             interp.SetDefaultArguments(this);
             return interp.Execute(@out, this);
         }
 
         public virtual int Write(ITemplateWriter @out, CultureInfo culture, ITemplateErrorListener listener)
         {
-            Interpreter interp = new Interpreter(groupThatCreatedThisInstance, culture, new ErrorManager(listener));
+            Interpreter interp = new Interpreter(groupThatCreatedThisInstance, culture, new ErrorManager(listener), false);
             interp.SetDefaultArguments(this);
             return interp.Execute(@out, this);
         }
@@ -542,6 +579,43 @@ namespace Antlr4.StringTemplate
             return @out.ToString();
         }
 
+        // TESTING SUPPORT
+
+        public virtual List<InterpEvent> GetEvents()
+        {
+            return GetEvents(CultureInfo.CurrentCulture);
+        }
+
+        public virtual List<InterpEvent> GetEvents(int lineWidth)
+        {
+            return GetEvents(CultureInfo.CurrentCulture, lineWidth);
+        }
+
+        public virtual List<InterpEvent> GetEvents(ITemplateWriter writer)
+        {
+            return GetEvents(CultureInfo.CurrentCulture, writer);
+        }
+
+        public virtual List<InterpEvent> GetEvents(CultureInfo locale)
+        {
+            return GetEvents(locale, AutoIndentWriter.NoWrap);
+        }
+
+        public virtual List<InterpEvent> GetEvents(CultureInfo locale, int lineWidth)
+        {
+            StringWriter @out = new StringWriter();
+            ITemplateWriter wr = new AutoIndentWriter(@out);
+            wr.LineWidth = lineWidth;
+            return GetEvents(locale, wr);
+        }
+
+        public virtual List<InterpEvent> GetEvents(CultureInfo culture, ITemplateWriter writer)
+        {
+            Interpreter interp = new Interpreter(groupThatCreatedThisInstance, culture, true);
+            interp.Execute(writer, this); // Render and track events
+            return interp.GetEvents();
+        }
+
         public override string ToString()
         {
             if (impl == null)
@@ -575,6 +649,39 @@ namespace Antlr4.StringTemplate
                 i++;
             }
             return st.Render(lineWidth);
+        }
+
+        /** Events during template hierarchy construction (not evaluation) */
+        public class TemplateDebugState
+        {
+            /** Record who made us? ConstructionEvent creates Exception to grab stack */
+            public ConstructionEvent NewTemplateEvent;
+
+            /** Track construction-time add attribute "events"; used for ST user-level debugging */
+            public MultiMap<string, AddAttributeEvent> AddAttributeEvents = new MultiMap<string, AddAttributeEvent>();
+        }
+
+        /** Track all events that happen while evaluating this template */
+        public class InterpDebugState
+        {
+            /* Includes the EvalTemplateEvent for this template.  This
+            *  is a subset of Interpreter.events field. The final
+            *  EvalTemplateEvent is stored in 3 places:
+            *
+            *  	1. In enclosingInstance's childTemplateEvents
+            *  	2. In this event list
+            *  	3. In the overall event list
+            *
+            *  The root ST has the final EvalTemplateEvent in its list.
+            *
+            *  All events get added to the enclosingInstance's event list.
+            */
+            public List<InterpEvent> Events = new List<InterpEvent>();
+
+            /** All templates evaluated and embedded in this ST. Used
+             *  for tree view in STViz.
+             */
+            public List<EvalTemplateEvent> ChildEvalTemplateEvents = new List<EvalTemplateEvent>();
         }
     }
 }

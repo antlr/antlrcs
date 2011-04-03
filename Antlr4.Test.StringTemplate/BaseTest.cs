@@ -65,7 +65,6 @@ namespace Antlr4.Test.StringTemplate
         protected virtual void setUpImpl()
         {
             TemplateGroup.defaultGroup = new TemplateGroup();
-            TemplateGroup.defaultGroup.Debug = false;
             TemplateCompiler.subtemplateCount = 0;
 
             // new output dir for each test

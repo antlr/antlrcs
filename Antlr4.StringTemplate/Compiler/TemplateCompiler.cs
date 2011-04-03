@@ -175,13 +175,9 @@ namespace Antlr4.StringTemplate.Compiler
                 impl2 = gen.template(name, args);
                 impl2.NativeGroup = Group;
                 impl2.template = template;
-                // only save tree/token stream when debugging
-                if (Group.Debug)
-                {
-                    impl2.ast = (CommonTree)r.Tree;
-                    impl2.ast.SetUnknownTokenBoundaries();
-                    impl2.tokens = tokens;
-                }
+                impl2.ast = r.Tree;
+                impl2.ast.SetUnknownTokenBoundaries();
+                impl2.tokens = tokens;
             }
             catch (RecognitionException re)
             {

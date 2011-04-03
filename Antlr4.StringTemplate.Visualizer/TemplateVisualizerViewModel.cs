@@ -65,10 +65,11 @@ namespace Antlr4.StringTemplate.Visualizer
 
             _visualizer = visualizer;
             _allEvents = visualizer.Interpreter.GetEvents();
+            List<InterpEvent> events = visualizer.Interpreter.GetDebugState(visualizer.RootTemplate).Events;
             _templateCallHierarchy =
                 new List<TemplateCallHierarchyViewModel>()
                 {
-                    new TemplateCallHierarchyViewModel(visualizer.Interpreter, visualizer.RootTemplate)
+                    new TemplateCallHierarchyViewModel(visualizer.Interpreter, (EvalTemplateEvent)events[events.Count - 1])
                 };
         }
 

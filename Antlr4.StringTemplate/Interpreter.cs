@@ -103,40 +103,48 @@ namespace Antlr4.StringTemplate
         private int current_ip = 0; // mirrors ip in exec(), but visible to all methods
         private int nwline = 0;     // how many char written on this template LINE so far?
 
-        /** Track everything happening in interp if debug across all templates */
-        private List<InterpEvent> events;
-
-        /** If debug mode, track trace here */
+        /** If trace mode, track trace here */
         // TODO: track the pieces not a string and track what it contributes to output
         private List<string> executeTrace;
 
-        private IDictionary<Template, List<InterpEvent>> debugInfo;
+        /** Track events inside templates and in this.events */
+        private bool _debug;
 
-        public Interpreter(TemplateGroup group)
-            : this(group, CultureInfo.CurrentCulture, group.ErrorManager)
+        /** Track everything happening in interp if debug across all templates.
+         *  The last event in this field is the EvalTemplateEvent for the root
+         *  template.
+         */
+        private List<InterpEvent> events;
+
+        /** Track interp events for every ST we exec */
+        protected IDictionary<Template, Template.InterpDebugState> debugStateMap;
+
+        public Interpreter(TemplateGroup group, bool debug)
+            : this(group, CultureInfo.CurrentCulture, group.ErrorManager, debug)
         {
         }
 
-        public Interpreter(TemplateGroup group, CultureInfo culture)
-            : this(group, culture, group.ErrorManager)
+        public Interpreter(TemplateGroup group, CultureInfo culture, bool debug)
+            : this(group, culture, group.ErrorManager, debug)
         {
         }
 
-        public Interpreter(TemplateGroup group, ErrorManager errMgr)
-            : this(group, CultureInfo.CurrentCulture, errMgr)
+        public Interpreter(TemplateGroup group, ErrorManager errMgr, bool debug)
+            : this(group, CultureInfo.CurrentCulture, errMgr, debug)
         {
         }
 
-        public Interpreter(TemplateGroup group, CultureInfo culture, ErrorManager errMgr)
+        public Interpreter(TemplateGroup group, CultureInfo culture, ErrorManager errMgr, bool debug)
         {
             this.group = group;
             this.culture = culture;
             this.errMgr = errMgr;
-            if (group.Debug)
+            this._debug = debug;
+            if (debug)
             {
                 events = new List<InterpEvent>();
+                debugStateMap = new Dictionary<Template, Template.InterpDebugState>();
                 executeTrace = new List<string>();
-                debugInfo = new Dictionary<Template, List<InterpEvent>>();
             }
         }
 
@@ -170,7 +178,7 @@ namespace Antlr4.StringTemplate
             int ip = 0;
             while (ip < self.impl.codeSize)
             {
-                if (trace || group.Debug)
+                if (trace || _debug)
                     Trace(self, ip);
 
                 Bytecode opcode = (Bytecode)code[ip];
@@ -523,16 +531,10 @@ namespace Antlr4.StringTemplate
                 prevOpcode = opcode;
             }
 
-            if (group.Debug && self is DebugTemplate)
+            if (_debug)
             {
-                EvalTemplateEvent e = new EvalTemplateEvent((DebugTemplate)self, Interval.FromBounds(start, @out.Index));
-                //Console.WriteLine(e);
-                events.Add(e);
-                if (self.EnclosingInstance != null)
-                {
-                    DebugTemplate parent = (DebugTemplate)self.EnclosingInstance;
-                    GetEvents(parent).Add(e);
-                }
+                EvalTemplateEvent e = new EvalTemplateEvent(self, Interval.FromBounds(start, @out.Index));
+                TrackDebugEvent(self, e);
             }
             return n;
         }
@@ -547,14 +549,15 @@ namespace Antlr4.StringTemplate
             {
                 errMgr.RuntimeError(self, current_ip, ErrorType.NO_IMPORTED_TEMPLATE,
                                     name);
-                st = self.groupThatCreatedThisInstance.CreateStringTemplate();
+                st = self.groupThatCreatedThisInstance.CreateStringTemplateInternally();
+                st.EnclosingInstance = self;
                 st.impl = new CompiledTemplate();
                 sp -= nargs;
                 operands[++sp] = st;
                 return;
             }
 
-            st = imported.NativeGroup.CreateStringTemplate();
+            st = imported.NativeGroup.CreateStringTemplateInternally();
             st.EnclosingInstance = self; // self invoked super.name()
             st.groupThatCreatedThisInstance = group;
             st.impl = imported;
@@ -572,13 +575,14 @@ namespace Antlr4.StringTemplate
             if (imported == null)
             {
                 errMgr.RuntimeError(self, current_ip, ErrorType.NO_IMPORTED_TEMPLATE, name);
-                st = self.groupThatCreatedThisInstance.CreateStringTemplate();
+                st = self.groupThatCreatedThisInstance.CreateStringTemplateInternally();
+                st.EnclosingInstance = self;
                 st.impl = new CompiledTemplate();
                 operands[++sp] = st;
                 return;
             }
 
-            st = imported.NativeGroup.CreateStringTemplate();
+            st = imported.NativeGroup.CreateStringTemplateInternally();
             st.EnclosingInstance = self; // self invoked super.name()
             st.groupThatCreatedThisInstance = group;
             st.impl = imported;
@@ -656,12 +660,11 @@ namespace Antlr4.StringTemplate
         protected void Indent(ITemplateWriter @out, Template self, int strIndex)
         {
             string indent = self.impl.strings[strIndex];
-            if (group.Debug && self is DebugTemplate)
+            if (_debug)
             {
                 int start = @out.Index; // track char we're about to write
-                EvalExprEvent e = new IndentEvent((DebugTemplate)self, new Interval(start, indent.Length), GetExpressionInterval(self));
-                //Console.WriteLine(e);
-                events.Add(e);
+                EvalExprEvent e = new IndentEvent(self, new Interval(start, indent.Length), GetExpressionInterval(self));
+                TrackDebugEvent(self, e);
             }
 
             @out.PushIndentation(indent);
@@ -674,13 +677,13 @@ namespace Antlr4.StringTemplate
         {
             int start = @out.Index; // track char we're about to Write
             int n = WriteObject(@out, self, o, null);
-            if (group.Debug && self is DebugTemplate)
+            if (_debug)
             {
                 Interval templateLocation = self.impl.sourceMap[current_ip];
-                EvalExprEvent e = new EvalExprEvent((DebugTemplate)self, Interval.FromBounds(start, @out.Index), templateLocation);
-                Console.WriteLine(e);
-                events.Add(e);
+                EvalExprEvent e = new EvalExprEvent(self, Interval.FromBounds(start, @out.Index), templateLocation);
+                TrackDebugEvent(self, e);
             }
+
             return n;
         }
 
@@ -714,12 +717,11 @@ namespace Antlr4.StringTemplate
                 @out.PopAnchorPoint();
             }
 
-            if (group.Debug && self is DebugTemplate)
+            if (_debug)
             {
                 Interval templateLocation = self.impl.sourceMap[current_ip];
-                EvalExprEvent e = new EvalExprEvent((DebugTemplate)self, Interval.FromBounds(start, @out.Index), templateLocation);
-                Console.WriteLine(e);
-                events.Add(e);
+                EvalExprEvent e = new EvalExprEvent(self, Interval.FromBounds(start, @out.Index), templateLocation);
+                TrackDebugEvent(self, e);
             }
 
             return n;
@@ -864,7 +866,8 @@ namespace Antlr4.StringTemplate
             {
                 // if only single value, just apply first template to sole value
                 Template proto = prototypes[0];
-                Template st = group.CreateStringTemplate(proto);
+                Template st = group.CreateStringTemplateInternally(proto);
+                st.EnclosingInstance = self;
                 if (st != null)
                 {
                     SetFirstArgument(self, st, attr);
@@ -901,7 +904,8 @@ namespace Antlr4.StringTemplate
                 int templateIndex = ti % prototypes.Count; // rotate through
                 ti++;
                 Template proto = prototypes[templateIndex];
-                Template st = group.CreateStringTemplate(proto);
+                Template st = group.CreateStringTemplateInternally(proto);
+                st.EnclosingInstance = self;
                 SetFirstArgument(self, st, iterValue);
                 if (st.impl.isAnonSubtemplate)
                 {
@@ -967,7 +971,8 @@ namespace Antlr4.StringTemplate
             {
                 // get a value for each attribute in list; put into Template instance
                 int numEmpty = 0;
-                Template embedded = group.CreateStringTemplate(prototype);
+                Template embedded = group.CreateStringTemplateInternally(prototype);
+                embedded.EnclosingInstance = self;
                 embedded.RawSetAttribute("i0", i2);
                 embedded.RawSetAttribute("i", i2 + 1);
                 for (int a = 0; a < numExprs; a++)
@@ -1357,7 +1362,7 @@ namespace Antlr4.StringTemplate
 
                 if (arg.DefaultValueToken.Type == GroupParser.ANONYMOUS_TEMPLATE)
                 {
-                    Template defaultArgST = group.CreateStringTemplate();
+                    Template defaultArgST = group.CreateStringTemplateInternally();
                     // default arg template must see other args so it's enclosing
                     // instance is the template we are invoking.
                     defaultArgST.EnclosingInstance = invokedST;
@@ -1408,7 +1413,7 @@ namespace Antlr4.StringTemplate
             tr.Append(", sp=" + sp + ", nw=" + nwline);
             string s = tr.ToString();
 
-            if (group.Debug)
+            if (_debug)
                 executeTrace.Add(s);
 
             if (trace)
@@ -1448,13 +1453,42 @@ namespace Antlr4.StringTemplate
             return events;
         }
 
-        public virtual List<InterpEvent> GetEvents(Template st)
+        /** For every event, we track in overall list and in self's
+         *  event list so that each template has a list of events used to
+         *  create it.  If EvalTemplateEvent, store in parent's
+         *  childEvalTemplateEvents list for STViz tree view.
+         */
+        protected void TrackDebugEvent(Template self, InterpEvent e)
         {
-            List<InterpEvent> events;
-            if (!debugInfo.TryGetValue(st, out events) || events == null)
-                debugInfo[st] = events = new List<InterpEvent>();
+            //		System.out.println(e);
+            this.events.Add(e);
+            //		if ( self.debugState==null ) self.debugState = new ST.DebugState();
+            //		self.debugState.events.add(e);
+            GetDebugState(self).Events.Add(e);
+            if (e is EvalTemplateEvent)
+            {
+                //ST parent = getDebugState(self).interpEnclosingInstance;
+                Template parent = self.EnclosingInstance;
+                if (parent != null)
+                {
+                    // System.out.println("add eval "+e.self.getName()+" to children of "+parent.getName());
+                    //				if ( parent.debugState==null ) parent.debugState = new ST.DebugState();
+                    //				parent.debugState.childEvalTemplateEvents.add((EvalTemplateEvent)e);
+                    GetDebugState(parent).ChildEvalTemplateEvents.Add((EvalTemplateEvent)e);
+                }
+            }
+        }
 
-            return events;
+        public Template.InterpDebugState GetDebugState(Template st)
+        {
+            Template.InterpDebugState result;
+            if (!debugStateMap.TryGetValue(st, out result))
+            {
+                result = new Template.InterpDebugState();
+                debugStateMap[st] = result;
+            }
+
+            return result;
         }
 
         public virtual List<string> GetExecutionTrace()

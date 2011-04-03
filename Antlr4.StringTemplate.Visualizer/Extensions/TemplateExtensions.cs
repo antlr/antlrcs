@@ -39,29 +39,29 @@ namespace Antlr4.StringTemplate.Visualizer.Extensions
 
     public static class TemplateExtensions
     {
-        public static TemplateVisualizer Visualize(this DebugTemplate template)
+        public static TemplateVisualizer Visualize(this Template template)
         {
             return Visualize(template, CultureInfo.CurrentCulture);
         }
 
-        public static TemplateVisualizer Visualize(this DebugTemplate template, int lineWidth)
+        public static TemplateVisualizer Visualize(this Template template, int lineWidth)
         {
             return Visualize(template, template.impl.NativeGroup.ErrorManager, CultureInfo.CurrentCulture, lineWidth);
         }
 
-        public static TemplateVisualizer Visualize(this DebugTemplate template, CultureInfo culture)
+        public static TemplateVisualizer Visualize(this Template template, CultureInfo culture)
         {
             return Visualize(template, template.impl.NativeGroup.ErrorManager, culture, AutoIndentWriter.NoWrap);
         }
 
-        public static TemplateVisualizer Visualize(this DebugTemplate template, ErrorManager errorManager, CultureInfo culture, int lineWidth)
+        public static TemplateVisualizer Visualize(this Template template, ErrorManager errorManager, CultureInfo culture, int lineWidth)
         {
             ErrorBuffer errors = new ErrorBuffer();
             template.impl.NativeGroup.Listener = errors;
             StringWriter @out = new StringWriter();
             ITemplateWriter wr = new AutoIndentWriter(@out);
             wr.LineWidth = lineWidth;
-            Interpreter interp = new Interpreter(template.groupThatCreatedThisInstance, culture);
+            Interpreter interp = new Interpreter(template.groupThatCreatedThisInstance, culture, true);
             interp.Execute(wr, template); // Render and track events
             TemplateVisualizer visualizer = new TemplateVisualizer(errorManager, template, @out.ToString(), interp, interp.GetExecutionTrace(), errors.Errors);
             visualizer.Show();

@@ -214,7 +214,6 @@ namespace Antlr4.Test.StringTemplate
             writeFile(tmpdir, "t.stg", templates);
             TemplateGroup group = new TemplateGroupFile(tmpdir + "/" + "t.stg");
             group.Listener = errors;
-            group.Debug = true;
             Template st = group.GetInstanceOf("t");
             st.Render();
             string expected = "context [t u] 1:1 attribute x isn't defined" + newline;
