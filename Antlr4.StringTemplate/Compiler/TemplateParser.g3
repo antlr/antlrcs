@@ -50,13 +50,14 @@ tokens {
 @namespace{Antlr4.StringTemplate.Compiler}
 
 @header{
+using Antlr4.StringTemplate.Extensions;
 using Antlr4.StringTemplate.Misc;
 // The variable 'name' is declared but never used
 #pragma warning disable 168
 }
 
 @rulecatch {
-   catch (RecognitionException re) { throw; }
+catch (RecognitionException re) { re.PreserveStackTrace(); throw; }
 }
 
 public
@@ -65,17 +66,17 @@ templateAndEOF : template EOF!;
 template : element* ;
 
 element
-	:	{input.LT(1).CharPositionInLine == 0 && (input.LA(1) == INDENT ? input.LA(2) == COMMENT && input.LA(3) == NEWLINE : input.LA(1) == COMMENT && input.LA(2) == NEWLINE)}? INDENT!? COMMENT! NEWLINE!
+	:	{input.LT(1).CharPositionInLine == 0}? INDENT!? COMMENT! NEWLINE!
 	|	INDENT^ singleElement
 	|	singleElement
 	|	compoundElement
-	|	COMMENT!
 	;
 
 singleElement
 	:	exprTag
 	|	TEXT
 	|	NEWLINE
+	|	COMMENT!
 	;
 	
 compoundElement
@@ -88,36 +89,61 @@ exprTag
 	;
 
 region
-@init {IToken indent=null;}
-	:	i=INDENT? x=LDELIM '@' ID RDELIM {if (input.LA(1) != NEWLINE) indent = $i;}
-		template
-		INDENT? LDELIM '@end' RDELIM
+@init {bool indented = false; CommonTree tree = null;}
+@after {if (!indented) $tree = tree;}
+	:	INDENT^? regionbody
 		// kill \n for <@end> on line by itself if multi-line embedded region
-		({$region.start.Line != input.LT(1).Line}? => NEWLINE)?
-		-> {indent!=null}?
-		   ^({indent} ^(REGION[$x] ID template?))
-		->            ^(REGION[$x] ID template?)
+		({$region.start.Line != input.LT(1).Line}? => NEWLINE!)?
+		{indented = $regionbody.indented; tree = $regionbody.tree;}
+	;
+
+regionbody returns[bool indented]
+	:	LDELIM<REGION>^ '@'! ID RDELIM! {$indented = (input.LA(1) != NEWLINE);}
+		template
+		INDENT!? LDELIM! '@end'! RDELIM!
 	;
 
 subtemplate
-	:	lc='{' (ids+= ID ( ',' ids+= ID )* '|' )? template INDENT? '}'
+	:	'{'<type=SUBTEMPLATE;text="SUBTEMPLATE">^ subtemplateargs? template INDENT!? '}'!
 		// ignore final INDENT before } as it's not part of outer indent
-		-> ^(SUBTEMPLATE[$lc,"SUBTEMPLATE"] ^(ARGS $ids)* template?)
+	;
+
+subtemplateargs
+	:	subtemplate_args_trunc* subtemplate_args_last
+	;
+
+subtemplate_args_trunc
+	:	ID ','<ARGS>^
+	;
+
+subtemplate_args_last
+	:	ID '|'<ARGS>^
 	;
 
 ifstat
-@init {IToken indent=null;}
-	:	i=INDENT? LDELIM 'if' '(' c1=conditional ')' RDELIM {if (input.LA(1) != NEWLINE) indent = $i;}
-			t1=template
-			( INDENT? LDELIM 'elseif' '(' c2+=conditional ')' RDELIM t2+=template )*
-			( INDENT? LDELIM 'else' RDELIM t3=template )?
-			INDENT? endif= LDELIM 'endif'
-		RDELIM
+@init {bool indented = false; CommonTree tree = null;}
+@after {if (!indented) $tree = tree;}
+	:	INDENT^? ifstatbody
 		// kill \n for <endif> on line by itself if multi-line IF
-		({$ifstat.start.Line!=input.LT(1).Line}?=> NEWLINE)?
-		-> {indent!=null}?
-		   ^({indent} ^('if' $c1 $t1? ^('elseif' $c2 $t2)* ^('else' $t3?)?))
-		-> ^('if' $c1 $t1? ^('elseif' $c2 $t2)* ^('else' $t3?)?)
+		({$ifstat.start.Line!=input.LT(1).Line}?=> NEWLINE!)?
+		{indented = $ifstatbody.indented; tree = $ifstatbody.tree;}
+	;
+
+ifstatbody returns[bool indented]
+	:	LDELIM! 'if'^ '('! conditional ')'! RDELIM! {$indented = (input.LA(1) != NEWLINE);}
+			template
+			elseifstat*
+			elsestat?
+			INDENT!? LDELIM! 'endif'!
+		RDELIM!
+	;
+
+elseifstat
+	:	INDENT!? LDELIM! 'elseif'^ '('! conditional ')'! RDELIM! template
+	;
+
+elsestat
+	:	INDENT!? LDELIM! 'else'^ RDELIM! template
 	;
 
 conditional
@@ -142,8 +168,7 @@ option
 	string id = input.LT(1).Text;
 	string defVal;
 	TemplateCompiler.defaultOptionValues.TryGetValue(id, out defVal);
-	Interpreter.Option supportedOption;
-	bool validOption = TemplateCompiler.supportedOptions.TryGetValue(id, out supportedOption);
+	bool validOption = TemplateCompiler.supportedOptions.ContainsKey(id);
 }
 	:	ID
 		{
@@ -175,14 +200,8 @@ expr : mapExpr ;
 // error handling
 mapExpr
 	:	memberExpr
-		( (c=',' memberExpr)+ col=':' mapTemplateRef
-												-> ^(ZIP[$col] ^(ELEMENTS memberExpr+) mapTemplateRef)
-		|										-> memberExpr
-		)
-		(	{if ($x!=null) $x.Clear();} // don't keep queueing x; new list for each iteration
-			col=':' x+=mapTemplateRef ({$c==null}?=> ',' x+=mapTemplateRef )*
-												-> ^(MAP[$col] $mapExpr $x+)
-		)*
+		((c=','<ELEMENTS>^ memberExpr (c=','! memberExpr)*) ':'<ZIP>^ mapTemplateRef)?
+		(':'<MAP>^ mapTemplateRef ({$c==null}? => ','! mapTemplateRef)*)*
 	;
 
 /**
@@ -240,9 +259,12 @@ arg : exprNoComma ;
 
 namedArg : ID '='^ arg;
 
-list:	{input.LA(2)==RBRACK}? // hush warning; [] special case
-		'['<LIST>^ ']'!
-	|	'['<LIST>^ listElement ( ','! listElement )* ']'!
+list
+@init {
+bool empty = true;
+bool finished = false;
+}
+	:	'['<LIST>^
+			({!finished}? => (exprNoComma (','! | ']'! {finished=true;}) {empty=false;} | ','<NULL> {empty=false;} | {!empty}? => ']'<NULL> {finished=true;}))+
+			({!finished}? => ']'!)
 	;
-
-listElement : exprNoComma | -> NULL ;
