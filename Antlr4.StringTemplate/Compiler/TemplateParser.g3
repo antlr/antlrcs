@@ -272,7 +272,7 @@ bool finished = false;
 					) {{empty=false;}}
 				|	','<NULL> {{empty=false;}}
 				|	{!empty}? => ']'<NULL> {{finished=true;}}
+				|	{empty}? => ']'! {{finished=true;}}
 				)
 			)+
-			({!finished}? => ']'!)?
 	;
