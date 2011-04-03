@@ -4,7 +4,7 @@
   <CodeCoverage keyFile="Antlr3\Key.snk" />
   <Deployment>
     <DeploymentItem filename="bin\Debug\Targets\" />
-    <DeploymentItem filename="..\antlr\main\tool\src\main\resources\org\antlr\" />
+    <DeploymentItem filename="..\antlr\antlr3-main\tool\src\main\resources\org\antlr\" />
   </Deployment>
   <Hosts>
     <VSSDKTestHostRunConfig name="VS IDE" HiveKind="DevEnv" HiveName="9.0" IsRANU="false" xmlns="http://microsoft.com/schemas/VisualStudio/SDK/Tools/IdeHostAdapter/2006/06" />
