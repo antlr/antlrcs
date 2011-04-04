@@ -179,6 +179,38 @@ namespace Antlr3.Analysis
                 }
             }
 
+            public override SemanticContext GatedPredicateContext
+            {
+                get
+                {
+                    if (_gated)
+                        return this;
+
+                    return null;
+                }
+            }
+
+            public override bool HasUserSemanticPredicate
+            {
+                get
+                {
+                    // user-specified sempred
+                    return _predicateAST != null &&
+                           (_predicateAST.Type == ANTLRParser.GATED_SEMPRED ||
+                             _predicateAST.Type == ANTLRParser.SEMPRED);
+                }
+            }
+
+            public override bool IsSyntacticPredicate
+            {
+                get
+                {
+                    return _predicateAST != null &&
+                        (_predicateAST.Type == ANTLRParser.SYN_SEMPRED ||
+                          _predicateAST.Type == ANTLRParser.BACKTRACK_SEMPRED);
+                }
+            }
+
             /** Two predicates are the same if they are literally the same
              *  text rather than same node in the grammar's AST.
              *  Or, if they have the same constant value, return equal.
@@ -254,38 +286,6 @@ namespace Antlr3.Analysis
                 return eST;
             }
 
-            public override SemanticContext GatedPredicateContext
-            {
-                get
-                {
-                    if (_gated)
-                        return this;
-
-                    return null;
-                }
-            }
-
-            public override bool HasUserSemanticPredicate
-            {
-                get
-                {
-                    // user-specified sempred
-                    return _predicateAST != null &&
-                           (_predicateAST.Type == ANTLRParser.GATED_SEMPRED ||
-                             _predicateAST.Type == ANTLRParser.SEMPRED);
-                }
-            }
-
-            public override bool IsSyntacticPredicate
-            {
-                get
-                {
-                    return _predicateAST != null &&
-                        (_predicateAST.Type == ANTLRParser.SYN_SEMPRED ||
-                          _predicateAST.Type == ANTLRParser.BACKTRACK_SEMPRED);
-                }
-            }
-
             public override void TrackUseOfSyntacticPredicates(Grammar g)
             {
                 if (_synpred)
@@ -310,20 +310,20 @@ namespace Antlr3.Analysis
             {
             }
 
-            public override StringTemplate GenExpr(CodeGenerator generator, StringTemplateGroup templates, DFA dfa)
-            {
-                if (templates != null)
-                    return templates.GetInstanceOf("true");
-
-                return new StringTemplate("true");
-            }
-
             public override bool HasUserSemanticPredicate
             {
                 get
                 {
                     return false;
                 }
+            }
+
+            public override StringTemplate GenExpr(CodeGenerator generator, StringTemplateGroup templates, DFA dfa)
+            {
+                if (templates != null)
+                    return templates.GetInstanceOf("true");
+
+                return new StringTemplate("true");
             }
 
             public override string ToString()
@@ -341,20 +341,20 @@ namespace Antlr3.Analysis
             {
             }
 
-            public override StringTemplate GenExpr(CodeGenerator generator, StringTemplateGroup templates, DFA dfa)
-            {
-                if (templates != null)
-                    return templates.GetInstanceOf("false");
-
-                return new StringTemplate("false");
-            }
-
             public override bool HasUserSemanticPredicate
             {
                 get
                 {
                     return false;
                 }
+            }
+
+            public override StringTemplate GenExpr(CodeGenerator generator, StringTemplateGroup templates, DFA dfa)
+            {
+                if (templates != null)
+                    return templates.GetInstanceOf("false");
+
+                return new StringTemplate("false");
             }
 
             public override string ToString()
@@ -606,18 +606,6 @@ namespace Antlr3.Analysis
                 this.ctx = ctx;
             }
 
-            public override StringTemplate GenExpr(CodeGenerator generator, StringTemplateGroup templates, DFA dfa)
-            {
-                StringTemplate eST = null;
-                if (templates != null)
-                    eST = templates.GetInstanceOf("notPredicate");
-                else
-                    eST = new StringTemplate("?!($pred$)");
-
-                eST.SetAttribute("pred", ctx.GenExpr(generator, templates, dfa));
-                return eST;
-            }
-
             public override SemanticContext GatedPredicateContext
             {
                 get
@@ -644,6 +632,18 @@ namespace Antlr3.Analysis
                 {
                     return ctx.IsSyntacticPredicate;
                 }
+            }
+
+            public override StringTemplate GenExpr(CodeGenerator generator, StringTemplateGroup templates, DFA dfa)
+            {
+                StringTemplate eST = null;
+                if (templates != null)
+                    eST = templates.GetInstanceOf("notPredicate");
+                else
+                    eST = new StringTemplate("?!($pred$)");
+
+                eST.SetAttribute("pred", ctx.GenExpr(generator, templates, dfa));
+                return eST;
             }
 
             public override void TrackUseOfSyntacticPredicates(Grammar g)
