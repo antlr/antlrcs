@@ -33,14 +33,14 @@
 namespace Antlr3.Analysis
 {
     using System.Collections.Generic;
-    using Antlr.Runtime.JavaExtensions;
+    using System.Linq;
 
     using ANTLRParser = Antlr3.Grammars.ANTLRParser;
+    using ArgumentNullException = System.ArgumentNullException;
     using CLSCompliant = System.CLSCompliantAttribute;
     using CodeGenerator = Antlr3.Codegen.CodeGenerator;
     using Grammar = Antlr3.Tool.Grammar;
     using GrammarAST = Antlr3.Tool.GrammarAST;
-    using StringBuilder = System.Text.StringBuilder;
     using StringTemplate = Antlr3.ST.StringTemplate;
     using StringTemplateGroup = Antlr3.ST.StringTemplateGroup;
 
@@ -344,134 +344,55 @@ namespace Antlr3.Analysis
         }
 #endif
 
-        public class AND : SemanticContext
+        public abstract class CommutativePredicate : SemanticContext
         {
-            SemanticContext _left;
-            SemanticContext _right;
+            private readonly HashSet<SemanticContext> _operands = new HashSet<SemanticContext>();
 
-            public AND( SemanticContext a, SemanticContext b )
+            protected CommutativePredicate(SemanticContext a, SemanticContext b)
             {
-                this._left = a;
-                this._right = b;
-            }
-            public override StringTemplate GenExpr( CodeGenerator generator,
-                                          StringTemplateGroup templates,
-                                          DFA dfa )
-            {
-                StringTemplate eST = null;
-                if ( templates != null )
-                {
-                    eST = templates.GetInstanceOf( "andPredicates" );
-                }
+                if (a == null)
+                    throw new ArgumentNullException("a");
+                if (b == null)
+                    throw new ArgumentNullException("b");
+
+                if (a.GetType() == this.GetType())
+                    _operands.UnionWith(((CommutativePredicate)a).Operands);
                 else
-                {
-                    eST = new StringTemplate( "($left$&&$right$)" );
-                }
-                eST.SetAttribute( "left", _left.GenExpr( generator, templates, dfa ) );
-                eST.SetAttribute( "right", _right.GenExpr( generator, templates, dfa ) );
-                return eST;
-            }
-            public override SemanticContext GatedPredicateContext
-            {
-                get
-                {
-                    SemanticContext gatedLeft = _left.GatedPredicateContext;
-                    SemanticContext gatedRight = _right.GatedPredicateContext;
-                    if ( gatedLeft == null )
-                    {
-                        return gatedRight;
-                    }
-                    if ( gatedRight == null )
-                    {
-                        return gatedLeft;
-                    }
-                    return new AND( gatedLeft, gatedRight );
-                }
-            }
+                    _operands.Add(a);
 
-            public override bool HasUserSemanticPredicate
-            {
-                get
-                {
-                    return _left.HasUserSemanticPredicate || _right.HasUserSemanticPredicate;
-                }
-            }
-
-            public override bool IsSyntacticPredicate
-            {
-                get
-                {
-                    return _left.IsSyntacticPredicate || _right.IsSyntacticPredicate;
-                }
-            }
-            public override void TrackUseOfSyntacticPredicates( Grammar g )
-            {
-                _left.TrackUseOfSyntacticPredicates( g );
-                _right.TrackUseOfSyntacticPredicates( g );
-            }
-            public override string ToString()
-            {
-                return "(" + _left + "&&" + _right + ")";
-            }
-        }
-
-        public class OR : SemanticContext
-        {
-            HashSet<object> _operands;
-
-            public OR( SemanticContext a, SemanticContext b )
-            {
-                _operands = new HashSet<object>();
-                if ( a is OR )
-                {
-                    _operands.addAll( ( (OR)a )._operands );
-                }
-                else if ( a != null )
-                {
-                    _operands.Add( a );
-                }
-                if ( b is OR )
-                {
-                    _operands.addAll( ( (OR)b )._operands );
-                }
-                else if ( b != null )
-                {
-                    _operands.Add( b );
-                }
-            }
-            public override StringTemplate GenExpr( CodeGenerator generator,
-                                          StringTemplateGroup templates,
-                                          DFA dfa )
-            {
-                StringTemplate eST = null;
-                if ( templates != null )
-                {
-                    eST = templates.GetInstanceOf( "orPredicates" );
-                }
+                if (b.GetType() == this.GetType())
+                    _operands.UnionWith(((CommutativePredicate)b).Operands);
                 else
-                {
-                    eST = new StringTemplate( "($first(operands)$$rest(operands):{o | ||$o$}$)" );
-                }
-                foreach ( SemanticContext semctx in _operands )
-                {
-                    eST.SetAttribute( "operands", semctx.GenExpr( generator, templates, dfa ) );
-                }
-                return eST;
+                    _operands.Add(b);
             }
+
+            public CommutativePredicate(IEnumerable<SemanticContext> contexts)
+            {
+                if (contexts == null)
+                    throw new ArgumentNullException("contexts");
+
+                foreach (var context in contexts)
+                {
+                    CommutativePredicate commutative = context as CommutativePredicate;
+                    if (commutative != null && commutative.GetType() == this.GetType())
+                        _operands.UnionWith(commutative._operands);
+                    else if (context != null)
+                        _operands.Add(context);
+                }
+            }
+
             public override SemanticContext GatedPredicateContext
             {
                 get
                 {
                     SemanticContext result = null;
-                    foreach ( SemanticContext semctx in _operands )
+                    foreach (SemanticContext semctx in _operands)
                     {
                         SemanticContext gatedPred = semctx.GatedPredicateContext;
-                        if ( gatedPred != null )
-                        {
-                            result = Or( result, gatedPred );
-                            // result = new OR(result, gatedPred);
-                        }
+                        if (gatedPred != null)
+                            result = CombinePredicates(result, gatedPred);
                     }
+
                     return result;
                 }
             }
@@ -480,14 +401,7 @@ namespace Antlr3.Analysis
             {
                 get
                 {
-                    for (Iterator it = _operands.iterator(); it.hasNext(); )
-                    {
-                        SemanticContext semctx = (SemanticContext)it.next();
-                        if (semctx.HasUserSemanticPredicate)
-                            return true;
-                    }
-
-                    return false;
+                    return _operands.Any(i => i.HasUserSemanticPredicate);
                 }
             }
 
@@ -495,39 +409,127 @@ namespace Antlr3.Analysis
             {
                 get
                 {
-                    foreach ( SemanticContext semctx in _operands )
-                    {
-                        if ( semctx.IsSyntacticPredicate )
-                        {
-                            return true;
-                        }
-                    }
-                    return false;
+                    return _operands.Any(i => i.IsSyntacticPredicate);
                 }
             }
-            public override void TrackUseOfSyntacticPredicates( Grammar g )
+
+            public ICollection<SemanticContext> Operands
             {
-                foreach ( SemanticContext semctx in _operands )
+                get
                 {
-                    semctx.TrackUseOfSyntacticPredicates( g );
+                    return _operands;
                 }
             }
+
+            protected abstract string OperatorString
+            {
+                get;
+            }
+
+            public override void TrackUseOfSyntacticPredicates(Grammar g)
+            {
+                foreach (SemanticContext semctx in _operands)
+                    semctx.TrackUseOfSyntacticPredicates(g);
+            }
+
             public override string ToString()
             {
-                StringBuilder buf = new StringBuilder();
-                buf.Append( "(" );
-                int i = 0;
-                foreach ( SemanticContext semctx in _operands )
+                return string.Format("({0})", string.Join(OperatorString, _operands.Select(i => i.ToString()).ToArray()));
+            }
+
+            protected abstract SemanticContext CombinePredicates(SemanticContext a, SemanticContext b);
+        }
+
+        public class AND : CommutativePredicate
+        {
+            public AND(SemanticContext a, SemanticContext b)
+                : base(a, b)
+            {
+            }
+
+            public AND(IEnumerable<SemanticContext> contexts)
+                : base(contexts)
+            {
+            }
+
+            protected override string OperatorString
+            {
+                get
                 {
-                    if ( i > 0 )
-                    {
-                        buf.Append( "||" );
-                    }
-                    buf.Append( semctx.ToString() );
-                    i++;
+                    return "&&";
                 }
-                buf.Append( ")" );
-                return buf.ToString();
+            }
+
+            public override StringTemplate GenExpr(CodeGenerator generator, StringTemplateGroup templates, DFA dfa)
+            {
+                StringTemplate result =
+                    Operands.Aggregate(default(StringTemplate),
+                        (template, operand) =>
+                        {
+                            if (template == null)
+                                return operand.GenExpr(generator, templates, dfa);
+
+                            StringTemplate eST = null;
+                            if (templates != null)
+                                eST = templates.GetInstanceOf("andPredicates");
+                            else
+                                eST = new StringTemplate("($left$&&$right$)");
+
+                            eST.SetAttribute("left", template);
+                            eST.SetAttribute("right", operand.GenExpr(generator, templates, dfa));
+                            return eST;
+                        });
+
+                return result;
+            }
+
+            protected override SemanticContext CombinePredicates(SemanticContext a, SemanticContext b)
+            {
+                return And(a, b);
+            }
+        }
+
+        public class OR : CommutativePredicate
+        {
+            public OR(SemanticContext a, SemanticContext b)
+                : base(a, b)
+            {
+            }
+
+            public OR(IEnumerable<SemanticContext> contexts)
+                : base(contexts)
+            {
+            }
+
+            protected override string OperatorString
+            {
+                get
+                {
+                    return "||";
+                }
+            }
+
+            public override StringTemplate GenExpr(CodeGenerator generator,
+                                          StringTemplateGroup templates,
+                                          DFA dfa)
+            {
+                StringTemplate eST = null;
+                if (templates != null)
+                    eST = templates.GetInstanceOf("orPredicates");
+                else
+                    eST = new StringTemplate("($first(operands)$$rest(operands):{o | ||$o$}$)");
+
+                foreach (SemanticContext semctx in Operands)
+                {
+                    eST.SetAttribute("operands", semctx.GenExpr(generator, templates, dfa));
+                }
+
+                return eST;
+            }
+
+            protected override SemanticContext CombinePredicates(SemanticContext a, SemanticContext b)
+            {
+                return Or(a, b);
             }
         }
 
