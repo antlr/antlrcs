@@ -71,7 +71,7 @@ namespace Antlr3.Analysis
          *  This prevents lots of if!=null type checks all over; it represents
          *  just an empty set of predicates.
          */
-        public static readonly SemanticContext EmptySemanticContext = new Predicate();
+        public static readonly SemanticContext EmptySemanticContext = new Predicate(Predicate.InvalidPredValue);
 
         /** Given a semantic context expression tree, return a tree with all
          *  nongated predicates set to true and then reduced.  So p&&(q||r) would
@@ -81,13 +81,6 @@ namespace Antlr3.Analysis
         {
             get;
         }
-
-        /** Generate an expression that will evaluate the semantic context,
-         *  given a set of output templates.
-         */
-        public abstract StringTemplate GenExpr( CodeGenerator generator,
-                                               StringTemplateGroup templates,
-                                               DFA dfa );
 
         // user-specified sempred {}? or {}?=>
         public abstract bool HasUserSemanticPredicate
@@ -101,12 +94,21 @@ namespace Antlr3.Analysis
         }
 
         /** Notify the indicated grammar of any syn preds used within this context */
-        public virtual void TrackUseOfSyntacticPredicates( Grammar g )
+        public virtual void TrackUseOfSyntacticPredicates(Grammar g)
         {
         }
 
+        /** Generate an expression that will evaluate the semantic context,
+         *  given a set of output templates.
+         */
+        public abstract StringTemplate GenExpr(CodeGenerator generator, StringTemplateGroup templates, DFA dfa);
+
         public class Predicate : SemanticContext
         {
+            public const int InvalidPredValue = -1;
+            public const int FalsePred = 0;
+            public const int TruePred = 1;
+
             /** The AST node in tree created from the grammar holding the predicate */
             private readonly GrammarAST _predicateAST;
 
@@ -117,30 +119,26 @@ namespace Antlr3.Analysis
              *  The simple Predicate object's predicate AST's type is used to set
              *  gated to true if type==GATED_SEMPRED.
              */
-            bool _gated;
+            private readonly bool _gated;
 
             /** syntactic predicates are converted to semantic predicates
              *  but synpreds are generated slightly differently.
              */
-            bool _synpred;
-
-            public const int InvalidPredValue = -1;
-            public const int FalsePred = 0;
-            public const int TruePred = 1;
+            private readonly bool _synpred;
 
             /** sometimes predicates are known to be true or false; we need
              *  a way to represent this without resorting to a target language
              *  value like true or TRUE.
              */
-            protected int constantValue = InvalidPredValue;
+            private readonly int _constantValue = InvalidPredValue;
 
-            public Predicate()
+            public Predicate(int constantValue)
             {
-                _predicateAST = new GrammarAST();
-                this._gated = false;
+                this._predicateAST = new GrammarAST();
+                this._constantValue = constantValue;
             }
 
-            public Predicate( GrammarAST predicate )
+            public Predicate(GrammarAST predicate)
             {
                 this._predicateAST = predicate;
                 this._gated =
@@ -151,12 +149,12 @@ namespace Antlr3.Analysis
                     predicate.Type == ANTLRParser.BACKTRACK_SEMPRED;
             }
 
-            public Predicate( Predicate p )
+            public Predicate(Predicate p)
             {
                 this._predicateAST = p._predicateAST;
                 this._gated = p._gated;
                 this._synpred = p._synpred;
-                this.constantValue = p.constantValue;
+                this._constantValue = p._constantValue;
             }
 
             public GrammarAST PredicateAST
@@ -172,41 +170,38 @@ namespace Antlr3.Analysis
              *  Or, if they have the same constant value, return equal.
              *  As of July 2006 I'm not sure these are needed.
              */
-            public override bool Equals( object o )
+            public override bool Equals(object o)
             {
                 Predicate p = o as Predicate;
-                if ( p == null )
-                {
+                if (p == null)
                     return false;
-                }
-                return _predicateAST.Text.Equals( p._predicateAST.Text );
+
+                return _predicateAST.Text.Equals(p._predicateAST.Text);
             }
 
             public override int GetHashCode()
             {
-                if ( _predicateAST == null )
-                {
+                if (_predicateAST == null)
                     return 0;
-                }
+
                 return _predicateAST.Text.GetHashCode();
             }
 
-            public override StringTemplate GenExpr( CodeGenerator generator,
-                                          StringTemplateGroup templates,
-                                          DFA dfa )
+            public override StringTemplate GenExpr(CodeGenerator generator, StringTemplateGroup templates, DFA dfa)
             {
                 StringTemplate eST = null;
-                if ( templates != null )
+                if (templates != null)
                 {
-                    if ( _synpred )
+                    if (_synpred)
                     {
-                        eST = templates.GetInstanceOf( "evalSynPredicate" );
+                        eST = templates.GetInstanceOf("evalSynPredicate");
                     }
                     else
                     {
-                        eST = templates.GetInstanceOf( "evalPredicate" );
-                        generator.grammar.decisionsWhoseDFAsUsesSemPreds.Add( dfa );
+                        eST = templates.GetInstanceOf("evalPredicate");
+                        generator.grammar.decisionsWhoseDFAsUsesSemPreds.Add(dfa);
                     }
+
                     string predEnclosingRuleName = _predicateAST.enclosingRuleName;
                     /*
                     String decisionEnclosingRuleName =
@@ -216,24 +211,24 @@ namespace Antlr3.Analysis
                     // I do the translation anyway.
                     */
                     //eST.setAttribute("pred", this.toString());
-                    if ( generator != null )
+                    if (generator != null)
                     {
-                        eST.SetAttribute( "pred",
-                                         generator.TranslateAction( predEnclosingRuleName, _predicateAST ) );
+                        eST.SetAttribute("pred", generator.TranslateAction(predEnclosingRuleName, _predicateAST));
                     }
                 }
                 else
                 {
-                    eST = new StringTemplate( "$pred$" );
-                    eST.SetAttribute( "pred", this.ToString() );
+                    eST = new StringTemplate("$pred$");
+                    eST.SetAttribute("pred", this.ToString());
                     return eST;
                 }
-                if ( generator != null )
+
+                if (generator != null)
                 {
-                    string description =
-                        generator.target.GetTargetStringLiteralFromString( this.ToString() );
-                    eST.SetAttribute( "description", description );
+                    string description = generator.target.GetTargetStringLiteralFromString(this.ToString());
+                    eST.SetAttribute("description", description);
                 }
+
                 return eST;
             }
 
@@ -241,10 +236,9 @@ namespace Antlr3.Analysis
             {
                 get
                 {
-                    if ( _gated )
-                    {
+                    if (_gated)
                         return this;
-                    }
+
                     return null;
                 }
             }
@@ -265,25 +259,22 @@ namespace Antlr3.Analysis
                 get
                 {
                     return _predicateAST != null &&
-                        ( _predicateAST.Type == ANTLRParser.SYN_SEMPRED ||
-                          _predicateAST.Type == ANTLRParser.BACKTRACK_SEMPRED );
+                        (_predicateAST.Type == ANTLRParser.SYN_SEMPRED ||
+                          _predicateAST.Type == ANTLRParser.BACKTRACK_SEMPRED);
                 }
             }
 
-            public override void TrackUseOfSyntacticPredicates( Grammar g )
+            public override void TrackUseOfSyntacticPredicates(Grammar g)
             {
-                if ( _synpred )
-                {
-                    g.synPredNamesUsedInDFA.Add( _predicateAST.Text );
-                }
+                if (_synpred)
+                    g.synPredNamesUsedInDFA.Add(_predicateAST.Text);
             }
 
             public override string ToString()
             {
-                if ( _predicateAST == null )
-                {
+                if (_predicateAST == null)
                     return "<nopred>";
-                }
+
                 return _predicateAST.Text;
             }
         }
@@ -291,19 +282,16 @@ namespace Antlr3.Analysis
         public class TruePredicate : Predicate
         {
             public TruePredicate()
+                : base(TruePred)
             {
-                this.constantValue = TruePred;
             }
 
-            public override StringTemplate GenExpr( CodeGenerator generator,
-                                          StringTemplateGroup templates,
-                                          DFA dfa )
+            public override StringTemplate GenExpr(CodeGenerator generator, StringTemplateGroup templates, DFA dfa)
             {
-                if ( templates != null )
-                {
-                    return templates.GetInstanceOf( "true" );
-                }
-                return new StringTemplate( "true" );
+                if (templates != null)
+                    return templates.GetInstanceOf("true");
+
+                return new StringTemplate("true");
             }
 
             public override bool HasUserSemanticPredicate
@@ -509,9 +497,7 @@ namespace Antlr3.Analysis
                 }
             }
 
-            public override StringTemplate GenExpr(CodeGenerator generator,
-                                          StringTemplateGroup templates,
-                                          DFA dfa)
+            public override StringTemplate GenExpr(CodeGenerator generator, StringTemplateGroup templates, DFA dfa)
             {
                 StringTemplate eST = null;
                 if (templates != null)
@@ -536,36 +522,33 @@ namespace Antlr3.Analysis
         public class NOT : SemanticContext
         {
             protected internal SemanticContext ctx;
-            public NOT( SemanticContext ctx )
+
+            public NOT(SemanticContext ctx)
             {
                 this.ctx = ctx;
             }
-            public override StringTemplate GenExpr( CodeGenerator generator,
-                                          StringTemplateGroup templates,
-                                          DFA dfa )
+
+            public override StringTemplate GenExpr(CodeGenerator generator, StringTemplateGroup templates, DFA dfa)
             {
                 StringTemplate eST = null;
-                if ( templates != null )
-                {
-                    eST = templates.GetInstanceOf( "notPredicate" );
-                }
+                if (templates != null)
+                    eST = templates.GetInstanceOf("notPredicate");
                 else
-                {
-                    eST = new StringTemplate( "?!($pred$)" );
-                }
-                eST.SetAttribute( "pred", ctx.GenExpr( generator, templates, dfa ) );
+                    eST = new StringTemplate("?!($pred$)");
+
+                eST.SetAttribute("pred", ctx.GenExpr(generator, templates, dfa));
                 return eST;
             }
+
             public override SemanticContext GatedPredicateContext
             {
                 get
                 {
                     SemanticContext p = ctx.GatedPredicateContext;
-                    if ( p == null )
-                    {
+                    if (p == null)
                         return null;
-                    }
-                    return new NOT( p );
+
+                    return new NOT(p);
                 }
             }
 
@@ -584,18 +567,18 @@ namespace Antlr3.Analysis
                     return ctx.IsSyntacticPredicate;
                 }
             }
-            public override void TrackUseOfSyntacticPredicates( Grammar g )
+
+            public override void TrackUseOfSyntacticPredicates(Grammar g)
             {
-                ctx.TrackUseOfSyntacticPredicates( g );
+                ctx.TrackUseOfSyntacticPredicates(g);
             }
 
-            public override bool Equals( object @object )
+            public override bool Equals(object @object)
             {
-                if ( !( @object is NOT ) )
-                {
+                if (!(@object is NOT))
                     return false;
-                }
-                return this.ctx.Equals( ( (NOT)@object ).ctx );
+
+                return this.ctx.Equals(((NOT)@object).ctx);
             }
 
             public override int GetHashCode()
@@ -613,76 +596,66 @@ namespace Antlr3.Analysis
         public static SemanticContext And(SemanticContext a, SemanticContext b)
         {
             //System.Console.Out.WriteLine( "AND: " + a + "&&" + b );
-            if ( a == EmptySemanticContext || a == null )
-            {
+            if (a == EmptySemanticContext || a == null)
                 return b;
-            }
-            if ( b == EmptySemanticContext || b == null )
-            {
+
+            if (b == EmptySemanticContext || b == null)
                 return a;
-            }
-            if ( a.Equals( b ) )
-            {
+
+            if (a.Equals(b))
                 return a; // if same, just return left one
-            }
+
             //System.Console.Out.WriteLine( "## have to AND" );
-            return new AND( a, b );
+            return new AND(a, b);
         }
 
         [CLSCompliant(false)]
         public static SemanticContext Or(SemanticContext a, SemanticContext b)
         {
             //System.Console.Out.WriteLine( "OR: " + a + "||" + b );
-            if ( a == EmptySemanticContext || a == null )
-            {
+            if (a == EmptySemanticContext || a == null)
                 return b;
-            }
-            if ( b == EmptySemanticContext || b == null )
-            {
+
+            if (b == EmptySemanticContext || b == null)
                 return a;
-            }
-            if ( a is TruePredicate )
-            {
+
+            if (a is TruePredicate)
                 return a;
-            }
-            if ( b is TruePredicate )
-            {
+
+            if (b is TruePredicate)
                 return b;
-            }
-            if ( a is NOT && b is Predicate )
+
+            if (a is NOT && b is Predicate)
             {
                 NOT n = (NOT)a;
                 // check for !p||p
-                if ( n.ctx.Equals( b ) )
-                {
+                if (n.ctx.Equals(b))
                     return new TruePredicate();
-                }
             }
-            else if ( b is NOT && a is Predicate )
+            else if (b is NOT && a is Predicate)
             {
                 NOT n = (NOT)b;
                 // check for p||!p
-                if ( n.ctx.Equals( a ) )
-                {
+                if (n.ctx.Equals(a))
                     return new TruePredicate();
-                }
             }
-            else if ( a.Equals( b ) )
+            else if (a.Equals(b))
             {
                 return a;
             }
+
             //System.Console.Out.WriteLine( "## have to OR" );
-            return new OR( a, b );
+            return new OR(a, b);
         }
 
         [CLSCompliant(false)]
         public static SemanticContext Not(SemanticContext a)
         {
             NOT nota = a as NOT;
-            if ( nota != null )
+            if (nota != null)
                 return nota.ctx;
 
-            return new NOT( a );
+            return new NOT(a);
         }
 
     }
