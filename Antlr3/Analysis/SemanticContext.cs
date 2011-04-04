@@ -674,15 +674,30 @@ namespace Antlr3.Analysis
         [CLSCompliant(false)]
         public static SemanticContext And(SemanticContext a, SemanticContext b)
         {
+            SemanticContext commonTerms = FactorOr(ref a, ref b);
+            bool factored = commonTerms != null && commonTerms != EmptySemanticContext && !(commonTerms is TruePredicate);
+            if (factored)
+                return Or(commonTerms, And(a, b));
+
             //System.Console.Out.WriteLine( "AND: " + a + "&&" + b );
+            if (a is FalsePredicate || b is FalsePredicate)
+                return FalsePredicate.Instance;
+
             if (a == EmptySemanticContext || a == null)
                 return b;
 
             if (b == EmptySemanticContext || b == null)
                 return a;
 
-            if (a.Equals(b))
-                return a; // if same, just return left one
+            if (a is TruePredicate)
+                return b;
+
+            if (b is TruePredicate)
+                return a;
+
+            //// Factoring takes care of this case
+            //if (a.Equals(b))
+            //    return a;
 
             //System.Console.Out.WriteLine( "## have to AND" );
             return new AND(a, b);
@@ -691,40 +706,48 @@ namespace Antlr3.Analysis
         [CLSCompliant(false)]
         public static SemanticContext Or(SemanticContext a, SemanticContext b)
         {
+            SemanticContext commonTerms = FactorAnd(ref a, ref b);
+            bool factored = commonTerms != null && commonTerms != EmptySemanticContext && !(commonTerms is FalsePredicate);
+            if (factored)
+                return And(commonTerms, Or(a, b));
+
             //System.Console.Out.WriteLine( "OR: " + a + "||" + b );
-            if (a == EmptySemanticContext || a == null)
+            if (a == EmptySemanticContext || a == null || a is FalsePredicate)
+                return factored ? Or(commonTerms, b) : b;
+
+            if (b == EmptySemanticContext || b == null || b is FalsePredicate)
+                return factored ? Or(commonTerms, a) : a;
+
+            if (a is TruePredicate || b is TruePredicate || commonTerms is TruePredicate)
+                return TruePredicate.Instance;
+            else if (b is FalsePredicate)
+                return a;
+            else if (a is FalsePredicate)
                 return b;
 
-            if (b == EmptySemanticContext || b == null)
-                return a;
+            //// Factoring takes care of this case
+            //if (a.Equals(b))
+            //    return a;
 
-            if (a is TruePredicate)
-                return a;
-
-            if (b is TruePredicate)
-                return b;
-
-            if (a is NOT && b is Predicate)
+            NOT not = a as NOT;
+            if (not != null)
             {
-                NOT n = (NOT)a;
-                // check for !p||p
-                if (n.ctx.Equals(b))
-                    return new TruePredicate();
+                if (not.ctx.Equals(b))
+                    return TruePredicate.Instance;
             }
-            else if (b is NOT && a is Predicate)
+            else
             {
-                NOT n = (NOT)b;
-                // check for p||!p
-                if (n.ctx.Equals(a))
-                    return new TruePredicate();
-            }
-            else if (a.Equals(b))
-            {
-                return a;
+                not = b as NOT;
+                if (not != null && not.ctx.Equals(a))
+                    return TruePredicate.Instance;
             }
 
             //System.Console.Out.WriteLine( "## have to OR" );
-            return new OR(a, b);
+            OR result = new OR(a, b);
+            if (result.Operands.Count == 1)
+                return result.Operands.First();
+
+            return result;
         }
 
         [CLSCompliant(false)]
@@ -734,8 +757,116 @@ namespace Antlr3.Analysis
             if (nota != null)
                 return nota.ctx;
 
+            if (a is TruePredicate)
+                return FalsePredicate.Instance;
+            else if (a is FalsePredicate)
+                return TruePredicate.Instance;
+
             return new NOT(a);
         }
 
+        // Factor so (a && b) == (result && a && b)
+        public static SemanticContext FactorAnd(ref SemanticContext a, ref SemanticContext b)
+        {
+            if (a == EmptySemanticContext || a == null || a is FalsePredicate)
+                return EmptySemanticContext;
+            if (b == EmptySemanticContext || b == null || b is FalsePredicate)
+                return EmptySemanticContext;
+
+            if (a is TruePredicate || b is TruePredicate)
+            {
+                a = EmptySemanticContext;
+                b = EmptySemanticContext;
+                return TruePredicate.Instance;
+            }
+
+            HashSet<SemanticContext> opsA = new HashSet<SemanticContext>(GetAndOperands(a));
+            HashSet<SemanticContext> opsB = new HashSet<SemanticContext>(GetAndOperands(b));
+
+            HashSet<SemanticContext> result = new HashSet<SemanticContext>(opsA);
+            result.IntersectWith(opsB);
+            if (result.Count == 0)
+                return EmptySemanticContext;
+
+            opsA.ExceptWith(result);
+            if (opsA.Count == 0)
+                a = TruePredicate.Instance;
+            else if (opsA.Count == 1)
+                a = opsA.First();
+            else
+                a = new AND(opsA);
+
+            opsB.ExceptWith(result);
+            if (opsB.Count == 0)
+                b = TruePredicate.Instance;
+            else if (opsB.Count == 1)
+                b = opsB.First();
+            else
+                b = new AND(opsB);
+
+            if (result.Count == 1)
+                return result.First();
+
+            return new AND(result);
+        }
+
+        // Factor so (a || b) == (result || a || b)
+        public static SemanticContext FactorOr(ref SemanticContext a, ref SemanticContext b)
+        {
+            HashSet<SemanticContext> opsA = new HashSet<SemanticContext>(GetOrOperands(a));
+            HashSet<SemanticContext> opsB = new HashSet<SemanticContext>(GetOrOperands(b));
+
+            HashSet<SemanticContext> result = new HashSet<SemanticContext>(opsA);
+            result.IntersectWith(opsB);
+            if (result.Count == 0)
+                return EmptySemanticContext;
+
+            opsA.ExceptWith(result);
+            if (opsA.Count == 0)
+                a = FalsePredicate.Instance;
+            else if (opsA.Count == 1)
+                a = opsA.First();
+            else
+                a = new OR(opsA);
+
+            opsB.ExceptWith(result);
+            if (opsB.Count == 0)
+                b = FalsePredicate.Instance;
+            else if (opsB.Count == 1)
+                b = opsB.First();
+            else
+                b = new OR(opsB);
+
+            if (result.Count == 1)
+                return result.First();
+
+            return new OR(result);
+        }
+
+        public static IEnumerable<SemanticContext> GetAndOperands(SemanticContext context)
+        {
+            AND and = context as AND;
+            if (and != null)
+                return and.Operands;
+
+            NOT not = context as NOT;
+            if (not != null)
+                return GetOrOperands(not.ctx).Select(Not);
+
+            return new SemanticContext[] { context };
+        }
+
+        public static IEnumerable<SemanticContext> GetOrOperands(SemanticContext context)
+        {
+            OR or = context as OR;
+            if (or != null)
+                return or.Operands;
+
+            NOT not = context as NOT;
+            if (not != null)
+                return GetAndOperands(not.ctx).Select(Not);
+
+            return new SemanticContext[] { context };
+        }
     }
 }
