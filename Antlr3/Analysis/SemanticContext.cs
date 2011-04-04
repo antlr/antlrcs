@@ -41,6 +41,7 @@ namespace Antlr3.Analysis
     using CodeGenerator = Antlr3.Codegen.CodeGenerator;
     using Grammar = Antlr3.Tool.Grammar;
     using GrammarAST = Antlr3.Tool.GrammarAST;
+    using StringComparer = System.StringComparer;
     using StringTemplate = Antlr3.ST.StringTemplate;
     using StringTemplateGroup = Antlr3.ST.StringTemplateGroup;
 
@@ -64,7 +65,7 @@ namespace Antlr3.Analysis
      *  made it really hard to reduce complicated || sequences to their minimum.
      *  Got huge repeated || conditions.
      */
-    public abstract class SemanticContext
+    public abstract class SemanticContext : System.IEquatable<SemanticContext>
     {
         /** Create a default value for the semantic context shared among all
          *  NFAConfigurations that do not have an actual semantic context.
@@ -93,6 +94,19 @@ namespace Antlr3.Analysis
             get;
         }
 
+        public sealed override bool Equals(object obj)
+        {
+            SemanticContext other = obj as SemanticContext;
+            if (other == null)
+                return false;
+
+            return this.Equals(other);
+        }
+
+        public abstract bool Equals(SemanticContext other);
+
+        public abstract override int GetHashCode();
+
         /** Notify the indicated grammar of any syn preds used within this context */
         public virtual void TrackUseOfSyntacticPredicates(Grammar g)
         {
@@ -105,9 +119,9 @@ namespace Antlr3.Analysis
 
         public class Predicate : SemanticContext
         {
-            public const int InvalidPredValue = -1;
+            public const int InvalidPredValue = -2;
             public const int FalsePred = 0;
-            public const int TruePred = 1;
+            public const int TruePred = ~0;
 
             /** The AST node in tree created from the grammar holding the predicate */
             private readonly GrammarAST _predicateAST;
@@ -170,21 +184,29 @@ namespace Antlr3.Analysis
              *  Or, if they have the same constant value, return equal.
              *  As of July 2006 I'm not sure these are needed.
              */
-            public override bool Equals(object o)
+            public override bool Equals(SemanticContext other)
             {
-                Predicate p = o as Predicate;
+                Predicate p = other as Predicate;
                 if (p == null)
                     return false;
 
-                return _predicateAST.Text.Equals(p._predicateAST.Text);
+                if (this._constantValue != InvalidPredValue)
+                    return this._constantValue == p._constantValue;
+                else if (p._constantValue != InvalidPredValue)
+                    return false;
+
+                return StringComparer.Ordinal.Equals(_predicateAST.Text, p._predicateAST.Text);
             }
 
             public override int GetHashCode()
             {
+                if (_constantValue != InvalidPredValue)
+                    return _constantValue.GetHashCode();
+
                 if (_predicateAST == null)
                     return 0;
 
-                return _predicateAST.Text.GetHashCode();
+                return StringComparer.Ordinal.GetHashCode(_predicateAST.Text);
             }
 
             public override StringTemplate GenExpr(CodeGenerator generator, StringTemplateGroup templates, DFA dfa)
@@ -279,8 +301,10 @@ namespace Antlr3.Analysis
             }
         }
 
-        public class TruePredicate : Predicate
+        public sealed class TruePredicate : Predicate
         {
+            public static readonly TruePredicate Instance = new TruePredicate();
+
             public TruePredicate()
                 : base(TruePred)
             {
@@ -308,33 +332,41 @@ namespace Antlr3.Analysis
             }
         }
 
-#if false
-        public class FalsePredicate : Predicate
+        public sealed class FalsePredicate : Predicate
         {
+            public static readonly FalsePredicate Instance = new FalsePredicate();
+
             public FalsePredicate()
+                : base(FalsePred)
             {
-                this.constantValue = FalsePred;
             }
-            public StringTemplate GenExpr( CodeGenerator generator,
-                                          StringTemplateGroup templates,
-                                          DFA dfa )
+
+            public override StringTemplate GenExpr(CodeGenerator generator, StringTemplateGroup templates, DFA dfa)
             {
-                if ( templates != null )
+                if (templates != null)
+                    return templates.GetInstanceOf("false");
+
+                return new StringTemplate("false");
+            }
+
+            public override bool HasUserSemanticPredicate
+            {
+                get
                 {
-                    return templates.GetInstanceOf( "false" );
+                    return false;
                 }
-                return new StringTemplate( "false" );
             }
+
             public override string ToString()
             {
                 return "false"; // not used for code gen, just DOT and print outs
             }
         }
-#endif
 
         public abstract class CommutativePredicate : SemanticContext
         {
             private readonly HashSet<SemanticContext> _operands = new HashSet<SemanticContext>();
+            private readonly int _hashcode;
 
             protected CommutativePredicate(SemanticContext a, SemanticContext b)
             {
@@ -352,6 +384,8 @@ namespace Antlr3.Analysis
                     _operands.UnionWith(((CommutativePredicate)b).Operands);
                 else
                     _operands.Add(b);
+
+                _hashcode = CalculateHashCode();
             }
 
             public CommutativePredicate(IEnumerable<SemanticContext> contexts)
@@ -367,6 +401,8 @@ namespace Antlr3.Analysis
                     else if (context != null)
                         _operands.Add(context);
                 }
+
+                _hashcode = CalculateHashCode();
             }
 
             public override SemanticContext GatedPredicateContext
@@ -420,12 +456,44 @@ namespace Antlr3.Analysis
                     semctx.TrackUseOfSyntacticPredicates(g);
             }
 
+            public override bool Equals(SemanticContext other)
+            {
+                if (object.ReferenceEquals(this, other))
+                    return true;
+
+                CommutativePredicate commutative = other as CommutativePredicate;
+                if (commutative != null && other.GetType() == this.GetType())
+                {
+                    ICollection<SemanticContext> otherOperands = commutative.Operands;
+                    return _operands.SetEquals(otherOperands);
+                }
+
+                NOT not = other as NOT;
+                if (not != null)
+                {
+                    commutative = not.ctx as CommutativePredicate;
+                    if (commutative != null && commutative.GetType() != this.GetType())
+                    {
+                        return _operands.SetEquals(commutative.Operands.Select(i => Not(i)));
+                    }
+                }
+
+                return false;
+            }
+
+            public override int GetHashCode()
+            {
+                return _hashcode;
+            }
+
             public override string ToString()
             {
                 return string.Format("({0})", string.Join(OperatorString, _operands.Select(i => i.ToString()).ToArray()));
             }
 
             protected abstract SemanticContext CombinePredicates(SemanticContext a, SemanticContext b);
+
+            protected abstract int CalculateHashCode();
         }
 
         public class AND : CommutativePredicate
@@ -475,6 +543,11 @@ namespace Antlr3.Analysis
             {
                 return And(a, b);
             }
+
+            protected override int CalculateHashCode()
+            {
+                return Operands.Aggregate(0, (x, y) => x ^ y.GetHashCode());
+            }
         }
 
         public class OR : CommutativePredicate
@@ -516,6 +589,11 @@ namespace Antlr3.Analysis
             protected override SemanticContext CombinePredicates(SemanticContext a, SemanticContext b)
             {
                 return Or(a, b);
+            }
+
+            protected override int CalculateHashCode()
+            {
+                return Operands.Aggregate(0, (x, y) => x ^ ~y.GetHashCode());
             }
         }
 
@@ -573,17 +651,18 @@ namespace Antlr3.Analysis
                 ctx.TrackUseOfSyntacticPredicates(g);
             }
 
-            public override bool Equals(object @object)
+            public override bool Equals(SemanticContext other)
             {
-                if (!(@object is NOT))
+                NOT not = other as NOT;
+                if (not == null)
                     return false;
 
-                return this.ctx.Equals(((NOT)@object).ctx);
+                return this.ctx.Equals(not.ctx);
             }
 
             public override int GetHashCode()
             {
-                return ctx.GetHashCode();
+                return ~ctx.GetHashCode();
             }
 
             public override string ToString()
