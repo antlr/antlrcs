@@ -364,7 +364,7 @@ namespace Antlr3.Analysis
                 //JSystem.@out.println("pred "+transition0.label);
                 SemanticContext ctx = transition0.Label.SemanticContext;
                 SemanticContext.Predicate p = (SemanticContext.Predicate)ctx;
-                if ( p.predicateAST.Type != ANTLRParser.BACKTRACK_SEMPRED )
+                if ( p.PredicateAST.Type != ANTLRParser.BACKTRACK_SEMPRED )
                 {
                     return DETECT_PRED_FOUND;
                 }
@@ -479,7 +479,7 @@ namespace Antlr3.Analysis
                 //JSystem.@out.println("pred "+transition0.label);
                 p = transition0.Label.SemanticContext;
                 // ignore backtracking preds not on left edge for this decision
-                if ( ( (SemanticContext.Predicate)p ).predicateAST.Type ==
+                if ( ( (SemanticContext.Predicate)p ).PredicateAST.Type ==
                       ANTLRParser.BACKTRACK_SEMPRED &&
                      s == altStartState.transition[0].Target )
                 {

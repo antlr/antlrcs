@@ -141,7 +141,7 @@ namespace Antlr3.Analysis
         public class Predicate : SemanticContext
         {
             /** The AST node in tree created from the grammar holding the predicate */
-            public GrammarAST predicateAST;
+            private readonly GrammarAST _predicateAST;
 
             /** Is this a {...}?=> gating predicate or a normal disambiguating {..}?
              *  If any predicate in expression is gated, then expression is considered
@@ -169,13 +169,13 @@ namespace Antlr3.Analysis
 
             public Predicate()
             {
-                predicateAST = new GrammarAST();
+                _predicateAST = new GrammarAST();
                 this._gated = false;
             }
 
             public Predicate( GrammarAST predicate )
             {
-                this.predicateAST = predicate;
+                this._predicateAST = predicate;
                 this._gated =
                     predicate.Type == ANTLRParser.GATED_SEMPRED ||
                     predicate.Type == ANTLRParser.SYN_SEMPRED;
@@ -186,10 +186,18 @@ namespace Antlr3.Analysis
 
             public Predicate( Predicate p )
             {
-                this.predicateAST = p.predicateAST;
+                this._predicateAST = p._predicateAST;
                 this._gated = p._gated;
                 this._synpred = p._synpred;
                 this.constantValue = p.constantValue;
+            }
+
+            public GrammarAST PredicateAST
+            {
+                get
+                {
+                    return _predicateAST;
+                }
             }
 
             /** Two predicates are the same if they are literally the same
@@ -203,15 +211,15 @@ namespace Antlr3.Analysis
                 if (p == null)
                     return false;
 
-                return predicateAST.Text.Equals(p.predicateAST.Text);
+                return _predicateAST.Text.Equals(p._predicateAST.Text);
             }
 
             public override int GetHashCode()
             {
-                if ( predicateAST == null )
+                if ( _predicateAST == null )
                     return 0;
 
-                return predicateAST.Text.GetHashCode();
+                return _predicateAST.Text.GetHashCode();
             }
 
             public override StringTemplate GenExpr( CodeGenerator generator,
@@ -230,7 +238,7 @@ namespace Antlr3.Analysis
                         eST = templates.GetInstanceOf( "evalPredicate" );
                         generator.grammar.decisionsWhoseDFAsUsesSemPreds.Add( dfa );
                     }
-                    string predEnclosingRuleName = predicateAST.enclosingRuleName;
+                    string predEnclosingRuleName = _predicateAST.enclosingRuleName;
                     /*
                     String decisionEnclosingRuleName =
                         dfa.getNFADecisionStartState().getEnclosingRule();
@@ -242,7 +250,7 @@ namespace Antlr3.Analysis
                     if ( generator != null )
                     {
                         eST.SetAttribute( "pred",
-                                         generator.TranslateAction( predEnclosingRuleName, predicateAST ) );
+                                         generator.TranslateAction( predEnclosingRuleName, _predicateAST ) );
                     }
                 }
                 else
@@ -277,9 +285,9 @@ namespace Antlr3.Analysis
                 get
                 {
                     // user-specified sempred
-                    return predicateAST != null &&
-                           (predicateAST.Type == ANTLRParser.GATED_SEMPRED ||
-                             predicateAST.Type == ANTLRParser.SEMPRED);
+                    return _predicateAST != null &&
+                           (_predicateAST.Type == ANTLRParser.GATED_SEMPRED ||
+                             _predicateAST.Type == ANTLRParser.SEMPRED);
                 }
             }
 
@@ -287,9 +295,9 @@ namespace Antlr3.Analysis
             {
                 get
                 {
-                    return predicateAST != null &&
-                        ( predicateAST.Type == ANTLRParser.SYN_SEMPRED ||
-                          predicateAST.Type == ANTLRParser.BACKTRACK_SEMPRED );
+                    return _predicateAST != null &&
+                        ( _predicateAST.Type == ANTLRParser.SYN_SEMPRED ||
+                          _predicateAST.Type == ANTLRParser.BACKTRACK_SEMPRED );
                 }
             }
 
@@ -297,17 +305,17 @@ namespace Antlr3.Analysis
             {
                 if ( _synpred )
                 {
-                    g.synPredNamesUsedInDFA.Add( predicateAST.Text );
+                    g.synPredNamesUsedInDFA.Add( _predicateAST.Text );
                 }
             }
 
             public override string ToString()
             {
-                if ( predicateAST == null )
+                if ( _predicateAST == null )
                 {
                     return "<nopred>";
                 }
-                return predicateAST.Text;
+                return _predicateAST.Text;
             }
         }
 

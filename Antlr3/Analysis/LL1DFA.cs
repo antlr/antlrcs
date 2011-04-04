@@ -181,7 +181,7 @@ namespace Antlr3.Analysis
                 if ( ctx.IsSyntacticPredicate )
                 {
                     SemanticContext.Predicate p = (SemanticContext.Predicate)ctx;
-                    if ( p.predicateAST.Type == ANTLRParser.BACKTRACK_SEMPRED )
+                    if ( p.PredicateAST.Type == ANTLRParser.BACKTRACK_SEMPRED )
                     {
                         /*
                         JSystem.@out.println("syn pred for alt "+walkAlt+" "+
