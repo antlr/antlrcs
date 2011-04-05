@@ -241,7 +241,7 @@ primary
 	|	subtemplate
 	|	list
 	|	{$conditional.Count > 0}? => '('! conditional ')'!
-	|	{$conditional.Count == 0}? => lp='(' expr ')'
+	|	lp='(' expr ')'
 		(	'(' argExprList? ')'				-> ^(INCLUDE_IND[$lp] expr argExprList?)
 		|										-> ^(TO_STR[$lp] expr)
 		)
@@ -272,7 +272,7 @@ bool finished = false;
 					) {{empty=false;}}
 				|	','<NULL> {{empty=false;}}
 				|	{!empty}? => ']'<NULL> {{finished=true;}}
-				|	{empty}? => ']'! {{finished=true;}}
+				|	']'! {{finished=true;}}
 				)
 			)+
 	;
