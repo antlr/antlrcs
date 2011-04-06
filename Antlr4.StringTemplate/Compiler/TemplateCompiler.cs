@@ -45,14 +45,14 @@ namespace Antlr4.StringTemplate.Compiler
 
         public const int InitialCodeSize = 15;
 
-        public static readonly IDictionary<string, Interpreter.Option> supportedOptions =
-            new Dictionary<string, Interpreter.Option>()
+        public static readonly IDictionary<string, RenderOption> supportedOptions =
+            new Dictionary<string, RenderOption>()
             {
-                {"anchor",       Interpreter.Option.Anchor},
-                {"format",       Interpreter.Option.Format},
-                {"null",         Interpreter.Option.Null},
-                {"separator",    Interpreter.Option.Separator},
-                {"wrap",         Interpreter.Option.Wrap},
+                {"anchor",       RenderOption.Anchor},
+                {"format",       RenderOption.Format},
+                {"null",         RenderOption.Null},
+                {"separator",    RenderOption.Separator},
+                {"wrap",         RenderOption.Wrap},
             };
 
         public static readonly int NUM_OPTIONS = supportedOptions.Count;

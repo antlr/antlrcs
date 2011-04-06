@@ -48,6 +48,9 @@
     <Compile Include="Extensions\ExceptionExtensions.cs" />
     <Compile Include="IAttributeRenderer.cs" />
     <Compile Include="AutoIndentWriter.cs" />
+    <Compile Include="Debug\DebugEvents.cs" />
+    <Compile Include="RenderOption.cs" />
+    <Compile Include="TemplateFrame.cs" />
     <Compile Include="Misc\Aggregate.cs" />
     <Compile Include="Misc\AggregateModelAdaptor.cs" />
     <Compile Include="TemplateGroupString.cs" />

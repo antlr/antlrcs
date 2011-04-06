@@ -1,5 +1,5 @@
 ﻿/*
- * [The "BSD licence"]
+ * [The "BSD license"]
  * Copyright (c) 2011 Terence Parr
  * All rights reserved.
  *
@@ -34,20 +34,19 @@ namespace Antlr4.StringTemplate.Visualizer
 {
     using System.Collections.Generic;
     using System.Collections.ObjectModel;
-    using Antlr4.StringTemplate.Debug;
     using Antlr4.StringTemplate.Misc;
     using ArgumentNullException = System.ArgumentNullException;
 
     public class TemplateVisualizer
     {
         private readonly ErrorManager _errorManager;
-        private readonly Template _root;
+        private readonly TemplateFrame _root;
         private readonly string _output;
         private readonly Interpreter _interpreter;
         private readonly List<string> _trace;
         private readonly ReadOnlyCollection<TemplateMessage> _errors;
 
-        public TemplateVisualizer(ErrorManager errorManager, Template root, string output, Interpreter interpreter, List<string> trace, ReadOnlyCollection<TemplateMessage> errors)
+        public TemplateVisualizer(ErrorManager errorManager, TemplateFrame root, string output, Interpreter interpreter, List<string> trace, ReadOnlyCollection<TemplateMessage> errors)
         {
             if (errorManager == null)
                 throw new ArgumentNullException("errorManager");
@@ -76,7 +75,7 @@ namespace Antlr4.StringTemplate.Visualizer
             }
         }
 
-        public Template RootTemplate
+        public TemplateFrame RootTemplate
         {
             get
             {

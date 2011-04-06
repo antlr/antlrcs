@@ -1,5 +1,5 @@
 /*
- * [The "BSD licence"]
+ * [The "BSD license"]
  * Copyright (c) 2011 Terence Parr
  * All rights reserved.
  *
@@ -36,8 +36,8 @@ namespace Antlr4.StringTemplate.Debug
 
     public class EvalTemplateEvent : InterpEvent
     {
-        public EvalTemplateEvent(Template template, Interval interval)
-            : base(template, interval)
+        public EvalTemplateEvent(TemplateFrame frame, Interval interval)
+            : base(frame, interval)
         {
         }
     }

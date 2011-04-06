@@ -1,5 +1,5 @@
 ﻿/*
- * [The "BSD licence"]
+ * [The "BSD license"]
  * Copyright (c) 2011 Terence Parr
  * All rights reserved.
  *
@@ -32,7 +32,6 @@
 
 namespace Antlr4.StringTemplate.Visualizer.Extensions
 {
-    using Antlr4.StringTemplate.Debug;
     using Antlr4.StringTemplate.Misc;
     using CultureInfo = System.Globalization.CultureInfo;
     using StringWriter = System.IO.StringWriter;
@@ -62,8 +61,9 @@ namespace Antlr4.StringTemplate.Visualizer.Extensions
             ITemplateWriter wr = new AutoIndentWriter(@out);
             wr.LineWidth = lineWidth;
             Interpreter interp = new Interpreter(template.groupThatCreatedThisInstance, culture, true);
-            interp.Execute(wr, template); // Render and track events
-            TemplateVisualizer visualizer = new TemplateVisualizer(errorManager, template, @out.ToString(), interp, interp.GetExecutionTrace(), errors.Errors);
+            TemplateFrame frame = new TemplateFrame(template, null);
+            interp.Execute(wr, frame); // Render and track events
+            TemplateVisualizer visualizer = new TemplateVisualizer(errorManager, frame, @out.ToString(), interp, interp.GetExecutionTrace(), errors.Errors);
             visualizer.Show();
             return visualizer;
         }

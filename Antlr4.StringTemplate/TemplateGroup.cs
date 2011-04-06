@@ -1,5 +1,5 @@
 /*
- * [The "BSD licence"]
+ * [The "BSD license"]
  * Copyright (c) 2011 Terence Parr
  * All rights reserved.
  *
@@ -236,7 +236,7 @@ namespace Antlr4.StringTemplate
             return null;
         }
 
-        protected internal virtual Template GetEmbeddedInstanceOf(Template enclosingInstance, int ip, string name)
+        protected internal virtual Template GetEmbeddedInstanceOf(TemplateFrame frame, int ip, string name)
         {
             if (Verbose)
             {
@@ -246,7 +246,7 @@ namespace Antlr4.StringTemplate
             Template st = GetInstanceOf(name);
             if (st == null)
             {
-                ErrorManager.RuntimeError(enclosingInstance, ip, ErrorType.NO_SUCH_TEMPLATE, name);
+                ErrorManager.RuntimeError(frame, ip, ErrorType.NO_SUCH_TEMPLATE, name);
                 st = CreateStringTemplate();
                 st.impl = new CompiledTemplate();
                 return st;
@@ -259,7 +259,6 @@ namespace Antlr4.StringTemplate
                 st.DebugState.NewTemplateEvent = null;
             }
 
-            st.EnclosingInstance = enclosingInstance;
             return st;
         }
 

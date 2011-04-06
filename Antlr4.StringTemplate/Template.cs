@@ -1,5 +1,5 @@
 /*
- * [The "BSD licence"]
+ * [The "BSD license"]
  * Copyright (c) 2011 Terence Parr
  * All rights reserved.
  *
@@ -45,7 +45,6 @@ namespace Antlr4.StringTemplate
     using Console = System.Console;
     using CultureInfo = System.Globalization.CultureInfo;
     using IList = System.Collections.IList;
-    using StringBuilder = System.Text.StringBuilder;
     using StringWriter = System.IO.StringWriter;
     using TextWriter = System.IO.TextWriter;
 
@@ -81,12 +80,6 @@ namespace Antlr4.StringTemplate
          *  to distinguish null from empty.
          */
         protected internal object[] locals;
-
-        /** Enclosing instance if I'm embedded within another template.
-         *  IF-subtemplates are considered embedded as well. We look up
-         *  dynamically scoped attributes with this ptr.
-         */
-        private Template _enclosingInstance; // who's your daddy?
 
         /** Created as instance of which group? We need this to init interpreter
          *  via Render.  So, we create st and then it needs to know which
@@ -168,18 +161,17 @@ namespace Antlr4.StringTemplate
          *  except DebugState.
          */
         public Template(Template prototype)
-            : this(prototype, false, prototype != null ? prototype.EnclosingInstance : null)
+            : this(prototype, false)
         {
         }
 
-        protected Template(Template prototype, bool shadowLocals, Template enclosingInstance)
+        protected Template(Template prototype, bool shadowLocals)
         {
             if (prototype == null)
                 throw new ArgumentNullException("prototype");
 
             this.impl = prototype.impl;
             this.locals = shadowLocals || prototype.locals == null ? prototype.locals : (object[])prototype.locals.Clone();
-            this.EnclosingInstance = enclosingInstance;
             this.groupThatCreatedThisInstance = prototype.groupThatCreatedThisInstance;
         }
 
@@ -196,22 +188,9 @@ namespace Antlr4.StringTemplate
             }
         }
 
-        public Template EnclosingInstance
+        public virtual Template CreateShadow()
         {
-            get
-            {
-                return _enclosingInstance;
-            }
-
-            set
-            {
-                _enclosingInstance = value;
-            }
-        }
-
-        public virtual Template CreateShadow(Template shadowEnclosingInstance)
-        {
-            return new Template(this, true, shadowEnclosingInstance);
+            return new Template(this, true);
         }
 
         /** Inject an attribute (name/value pair). If there is already an
@@ -370,33 +349,37 @@ namespace Antlr4.StringTemplate
             locals[arg.Index] = value;
         }
 
-        /** Find an attr via dynamic scoping up enclosing Template chain.
-         *  If not found, look for a map.  So attributes sent in to a template
-         *  override dictionary names.
+        /** Find an attr in this template only.
          */
         public virtual object GetAttribute(string name)
         {
-            Template p = this;
-            while (p != null)
+            FormalArgument localArg = impl.TryGetFormalArgument(name);
+            if (localArg != null)
             {
-                FormalArgument localArg = p.impl.TryGetFormalArgument(name);
-                if (localArg != null)
-                {
-                    object o = p.locals[localArg.Index];
-                    if (o == Template.EmptyAttribute)
-                        o = null;
-                    return o;
-                }
-
-                p = p.EnclosingInstance;
-            }
-            // got to root template and no definition, try dictionaries in group
-            if (impl.NativeGroup.IsDictionary(name))
-            {
-                return impl.NativeGroup.RawGetDictionary(name);
+                object o = locals[localArg.Index];
+                if (o == Template.EmptyAttribute)
+                    o = null;
+                return o;
             }
 
-            throw new TemplateNoSuchPropertyException(name);
+            return null;
+            //    if (context != null)
+            //    {
+            //        p = context.Template;
+            //        context = context.Parent;
+            //    }
+            //    else
+            //    {
+            //        p = null;
+            //    }
+
+            //// got to root template and no definition, try dictionaries in group
+            //if (impl.NativeGroup.IsDictionary(name))
+            //{
+            //    return impl.NativeGroup.RawGetDictionary(name);
+            //}
+
+            //throw new TemplateNoSuchPropertyException(name);
         }
 
         public virtual IDictionary<string, object> GetAttributes()
@@ -455,42 +438,6 @@ namespace Antlr4.StringTemplate
             return multi;
         }
 
-        /** If an instance of x is enclosed in a y which is in a z, return
-         *  a String of these instance names in order from topmost to lowest;
-         *  here that would be "[z y x]".
-         */
-        public virtual string GetEnclosingInstanceStackString()
-        {
-            List<Template> templates = GetEnclosingInstanceStack(true);
-            StringBuilder buf = new StringBuilder();
-            int i = 0;
-            foreach (Template st in templates)
-            {
-                if (i > 0)
-                    buf.Append(" ");
-                buf.Append(st.Name);
-                i++;
-            }
-
-            return buf.ToString();
-        }
-
-        public virtual List<Template> GetEnclosingInstanceStack(bool topdown)
-        {
-            List<Template> stack = new List<Template>();
-            Template p = this;
-            while (p != null)
-            {
-                if (topdown)
-                    stack.Insert(0, p);
-                else
-                    stack.Add(p);
-
-                p = p.EnclosingInstance;
-            }
-            return stack;
-        }
-
         public virtual string Name
         {
             get
@@ -510,29 +457,33 @@ namespace Antlr4.StringTemplate
         public virtual int Write(ITemplateWriter @out)
         {
             Interpreter interp = new Interpreter(groupThatCreatedThisInstance, impl.NativeGroup.ErrorManager, false);
-            interp.SetDefaultArguments(this);
-            return interp.Execute(@out, this);
+            TemplateFrame frame = new TemplateFrame(this, null);
+            interp.SetDefaultArguments(frame);
+            return interp.Execute(@out, frame);
         }
 
         public virtual int Write(ITemplateWriter @out, CultureInfo culture)
         {
             Interpreter interp = new Interpreter(groupThatCreatedThisInstance, culture, impl.NativeGroup.ErrorManager, false);
-            interp.SetDefaultArguments(this);
-            return interp.Execute(@out, this);
+            TemplateFrame frame = new TemplateFrame(this, null);
+            interp.SetDefaultArguments(frame);
+            return interp.Execute(@out, frame);
         }
 
         public virtual int Write(ITemplateWriter @out, ITemplateErrorListener listener)
         {
             Interpreter interp = new Interpreter(groupThatCreatedThisInstance, new ErrorManager(listener), false);
-            interp.SetDefaultArguments(this);
-            return interp.Execute(@out, this);
+            TemplateFrame frame = new TemplateFrame(this, null);
+            interp.SetDefaultArguments(frame);
+            return interp.Execute(@out, frame);
         }
 
         public virtual int Write(ITemplateWriter @out, CultureInfo culture, ITemplateErrorListener listener)
         {
             Interpreter interp = new Interpreter(groupThatCreatedThisInstance, culture, new ErrorManager(listener), false);
-            interp.SetDefaultArguments(this);
-            return interp.Execute(@out, this);
+            TemplateFrame frame = new TemplateFrame(this, null);
+            interp.SetDefaultArguments(frame);
+            return interp.Execute(@out, frame);
         }
 
         public virtual int Write(TextWriter writer, ITemplateErrorListener listener)
@@ -612,7 +563,8 @@ namespace Antlr4.StringTemplate
         public virtual List<InterpEvent> GetEvents(CultureInfo culture, ITemplateWriter writer)
         {
             Interpreter interp = new Interpreter(groupThatCreatedThisInstance, culture, true);
-            interp.Execute(writer, this); // Render and track events
+            TemplateFrame frame = new TemplateFrame(this, null);
+            interp.Execute(writer, frame); // Render and track events
             return interp.GetEvents();
         }
 
@@ -659,29 +611,6 @@ namespace Antlr4.StringTemplate
 
             /** Track construction-time add attribute "events"; used for ST user-level debugging */
             public MultiMap<string, AddAttributeEvent> AddAttributeEvents = new MultiMap<string, AddAttributeEvent>();
-        }
-
-        /** Track all events that happen while evaluating this template */
-        public class InterpDebugState
-        {
-            /* Includes the EvalTemplateEvent for this template.  This
-            *  is a subset of Interpreter.events field. The final
-            *  EvalTemplateEvent is stored in 3 places:
-            *
-            *  	1. In enclosingInstance's childTemplateEvents
-            *  	2. In this event list
-            *  	3. In the overall event list
-            *
-            *  The root ST has the final EvalTemplateEvent in its list.
-            *
-            *  All events get added to the enclosingInstance's event list.
-            */
-            public List<InterpEvent> Events = new List<InterpEvent>();
-
-            /** All templates evaluated and embedded in this ST. Used
-             *  for tree view in STViz.
-             */
-            public List<EvalTemplateEvent> ChildEvalTemplateEvents = new List<EvalTemplateEvent>();
         }
     }
 }

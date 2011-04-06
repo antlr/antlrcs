@@ -1,5 +1,5 @@
 /*
- * [The "BSD licence"]
+ * [The "BSD license"]
  * Copyright (c) 2011 Terence Parr
  * All rights reserved.
  *
@@ -46,7 +46,7 @@ namespace Antlr4.StringTemplate.Misc
         private static readonly Dictionary<Type, Dictionary<string, System.Func<object, object>>> _memberAccessors =
             new Dictionary<Type, Dictionary<string, System.Func<object, object>>>();
 
-        public virtual object GetProperty(Template self, object o, object property, string propertyName)
+        public virtual object GetProperty(Interpreter interpreter, TemplateFrame frame, object o, object property, string propertyName)
         {
             if (o == null)
                 throw new ArgumentNullException("o");

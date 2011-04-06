@@ -1,4 +1,4 @@
-/*
+﻿/*
  * [The "BSD license"]
  * Copyright (c) 2011 Terence Parr
  * All rights reserved.
@@ -30,17 +30,14 @@
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-namespace Antlr4.StringTemplate.Misc
+namespace Antlr4.StringTemplate
 {
-    public class TemplateModelAdaptor : IModelAdaptor
+    public enum RenderOption
     {
-        public virtual object GetProperty(Interpreter interpreter, TemplateFrame frame, object o, object property, string propertyName)
-        {
-            Template template = (Template)o;
-            if (frame.Template != template)
-                frame = new TemplateFrame(template, frame);
-
-            return interpreter.GetAttribute(frame, propertyName);
-        }
+        Anchor,
+        Format,
+        Null,
+        Separator,
+        Wrap
     }
 }

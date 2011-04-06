@@ -1,5 +1,5 @@
 /*
- * [The "BSD licence"]
+ * [The "BSD license"]
  * Copyright (c) 2011 Terence Parr
  * All rights reserved.
  *
@@ -41,36 +41,48 @@ namespace Antlr4.StringTemplate.Misc
         /** Where error occurred in bytecode memory */
         private readonly int ip = -1;
 
+        private readonly TemplateFrame _frame;
+
         public TemplateRuntimeMessage(ErrorType error, int ip)
             : this(error, ip, null)
         {
         }
 
-        public TemplateRuntimeMessage(ErrorType error, int ip, Template self)
-            : this(error, ip, self, null)
+        public TemplateRuntimeMessage(ErrorType error, int ip, TemplateFrame frame)
+            : this(error, ip, frame, null)
         {
         }
 
-        public TemplateRuntimeMessage(ErrorType error, int ip, Template self, object arg)
-            : this(error, ip, self, null, arg, null)
+        public TemplateRuntimeMessage(ErrorType error, int ip, TemplateFrame frame, object arg)
+            : this(error, ip, frame, null, arg, null)
         {
         }
 
-        public TemplateRuntimeMessage(ErrorType error, int ip, Template self, Exception e, object arg)
-            : this(error, ip, self, e, arg, null)
+        public TemplateRuntimeMessage(ErrorType error, int ip, TemplateFrame frame, Exception e, object arg)
+            : this(error, ip, frame, e, arg, null)
         {
         }
 
-        public TemplateRuntimeMessage(ErrorType error, int ip, Template self, Exception e, object arg, object arg2)
-            : base(error, self, e, arg, arg2)
+        public TemplateRuntimeMessage(ErrorType error, int ip, TemplateFrame frame, Exception e, object arg, object arg2)
+            : base(error, frame.Template, e, arg, arg2)
         {
             this.ip = ip;
+            this._frame = frame;
         }
 
-        public TemplateRuntimeMessage(ErrorType error, int ip, Template self, Exception e, object arg, object arg2, object arg3)
-            : base(error, self, e, arg, arg2, arg3)
+        public TemplateRuntimeMessage(ErrorType error, int ip, TemplateFrame frame, Exception e, object arg, object arg2, object arg3)
+            : base(error, frame.Template, e, arg, arg2, arg3)
         {
             this.ip = ip;
+            this._frame = frame;
+        }
+
+        public TemplateFrame Frame
+        {
+            get
+            {
+                return _frame;
+            }
         }
 
         public Interval SourceInterval
@@ -103,10 +115,10 @@ namespace Antlr4.StringTemplate.Misc
         {
             StringBuilder buf = new StringBuilder();
             string loc = GetSourceLocation();
-            if (Self != null)
+            if (_frame != null)
             {
                 buf.Append("context [");
-                buf.Append(Self.GetEnclosingInstanceStackString());
+                buf.Append(_frame.GetEnclosingInstanceStackString());
                 buf.Append("]");
             }
             if (loc != null)

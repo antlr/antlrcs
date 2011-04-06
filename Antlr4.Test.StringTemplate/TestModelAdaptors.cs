@@ -1,5 +1,5 @@
 /*
- * [The "BSD licence"]
+ * [The "BSD license"]
  * Copyright (c) 2011 Terence Parr
  * All rights reserved.
  *
@@ -41,7 +41,7 @@ namespace Antlr4.Test.StringTemplate
     {
         private class UserAdaptor : IModelAdaptor
         {
-            public object GetProperty(Template self, object o, object property, string propertyName)
+            public object GetProperty(Interpreter interpreter, TemplateFrame frame, object o, object property, string propertyName)
             {
                 if (propertyName.Equals("id"))
                     return ((User)o).id;
@@ -53,7 +53,7 @@ namespace Antlr4.Test.StringTemplate
 
         private class UserAdaptorConst : IModelAdaptor
         {
-            public object GetProperty(Template self, object o, object property, string propertyName)
+            public object GetProperty(Interpreter interpreter, TemplateFrame frame, object o, object property, string propertyName)
             {
                 if (propertyName.Equals("id"))
                     return "const id value";

@@ -1,5 +1,5 @@
 ﻿/*
- * [The "BSD licence"]
+ * [The "BSD license"]
  * Copyright (c) 2011 Terence Parr
  * All rights reserved.
  *
@@ -36,8 +36,8 @@ namespace Antlr4.StringTemplate.Visualizer
     using System.ComponentModel;
     using System.Diagnostics;
     using Antlr4.StringTemplate.Debug;
-    using Path = System.IO.Path;
     using ArgumentNullException = System.ArgumentNullException;
+    using Path = System.IO.Path;
 
     public class TemplateCallHierarchyViewModel : INotifyPropertyChanged
     {
@@ -69,6 +69,14 @@ namespace Antlr4.StringTemplate.Visualizer
             get
             {
                 return _event;
+            }
+        }
+
+        public TemplateFrame Frame
+        {
+            get
+            {
+                return _event.Frame;
             }
         }
 
@@ -122,7 +130,7 @@ namespace Antlr4.StringTemplate.Visualizer
                 if (_children == null)
                 {
                     _children = new List<TemplateCallHierarchyViewModel>();
-                    foreach (var @event in _interpreter.GetDebugState(_event.Template).ChildEvalTemplateEvents)
+                    foreach (var @event in _event.Frame.GetDebugState().ChildEvalTemplateEvents)
                         _children.Add(new TemplateCallHierarchyViewModel(_interpreter, @event));
                 }
 

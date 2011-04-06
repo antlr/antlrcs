@@ -1,4 +1,4 @@
-/*
+﻿/*
  * [The "BSD license"]
  * Copyright (c) 2011 Terence Parr
  * All rights reserved.
@@ -30,55 +30,80 @@
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-namespace Antlr4.StringTemplate.Debug
+namespace Antlr4.StringTemplate
 {
-    using Antlr4.StringTemplate.Misc;
-    using ArgumentNullException = System.ArgumentNullException;
+    using System.Collections.Generic;
+    using Antlr4.StringTemplate.Debug;
+    using StringBuilder = System.Text.StringBuilder;
 
-    public class InterpEvent
+    public sealed class TemplateFrame
     {
-        private readonly TemplateFrame _frame;
-        // output location
-        private readonly Interval _interval;
+        private readonly Template _template;
+        private readonly TemplateFrame _parent;
+        private DebugEvents _debugState;
 
-        public InterpEvent(TemplateFrame frame, Interval interval)
+        public TemplateFrame(Template template, TemplateFrame parent)
         {
-            if (frame == null)
-                throw new ArgumentNullException("frame");
-            if (interval == null)
-                throw new ArgumentNullException("interval");
-
-            this._frame = frame;
-            this._interval = interval;
-        }
-
-        public TemplateFrame Frame
-        {
-            get
-            {
-                return _frame;
-            }
+            _template = template;
+            _parent = parent;
         }
 
         public Template Template
         {
             get
             {
-                return _frame.Template;
+                return _template;
             }
         }
 
-        public Interval OutputInterval
+        public TemplateFrame Parent
         {
             get
             {
-                return _interval;
+                return _parent;
             }
         }
 
-        public override string ToString()
+        public DebugEvents GetDebugState()
         {
-            return string.Format("{0}{{self={1}, output={2}}}", GetType().Name, Template, OutputInterval);
+            _debugState = _debugState ?? new DebugEvents();
+            return _debugState;
+        }
+
+        /** If an instance of x is enclosed in a y which is in a z, return
+         *  a String of these instance names in order from topmost to lowest;
+         *  here that would be "[z y x]".
+         */
+        public string GetEnclosingInstanceStackString()
+        {
+            List<Template> templates = GetEnclosingInstanceStack(true);
+            StringBuilder buf = new StringBuilder();
+            int i = 0;
+            foreach (Template st in templates)
+            {
+                if (i > 0)
+                    buf.Append(" ");
+                buf.Append(st.Name);
+                i++;
+            }
+
+            return buf.ToString();
+        }
+
+        public List<Template> GetEnclosingInstanceStack(bool topdown)
+        {
+            List<Template> stack = new List<Template>();
+            TemplateFrame p = this;
+            while (p != null)
+            {
+                if (topdown)
+                    stack.Insert(0, p.Template);
+                else
+                    stack.Add(p.Template);
+
+                p = p.Parent;
+            }
+            return stack;
         }
     }
 }

@@ -1,4 +1,4 @@
-/*
+﻿/*
  * [The "BSD license"]
  * Copyright (c) 2011 Terence Parr
  * All rights reserved.
@@ -30,17 +30,30 @@
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-namespace Antlr4.StringTemplate.Misc
+namespace Antlr4.StringTemplate.Debug
 {
-    public class TemplateModelAdaptor : IModelAdaptor
-    {
-        public virtual object GetProperty(Interpreter interpreter, TemplateFrame frame, object o, object property, string propertyName)
-        {
-            Template template = (Template)o;
-            if (frame.Template != template)
-                frame = new TemplateFrame(template, frame);
+    using System.Collections.Generic;
 
-            return interpreter.GetAttribute(frame, propertyName);
-        }
+    /** Track all events that happen while evaluating this template */
+    public class DebugEvents
+    {
+        /* Includes the EvalTemplateEvent for this template.  This
+        *  is a subset of Interpreter.events field. The final
+        *  EvalTemplateEvent is stored in 3 places:
+        *
+        *  	1. In enclosingInstance's childTemplateEvents
+        *  	2. In this event list
+        *  	3. In the overall event list
+        *
+        *  The root ST has the final EvalTemplateEvent in its list.
+        *
+        *  All events get added to the enclosingInstance's event list.
+        */
+        public List<InterpEvent> Events = new List<InterpEvent>();
+
+        /** All templates evaluated and embedded in this ST. Used
+         *  for tree view in STViz.
+         */
+        public List<EvalTemplateEvent> ChildEvalTemplateEvents = new List<EvalTemplateEvent>();
     }
 }

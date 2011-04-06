@@ -36,8 +36,8 @@ namespace Antlr4.StringTemplate.Debug
 
     public class IndentEvent : EvalExprEvent
     {
-        public IndentEvent(Template template, Interval outputInterval, Interval sourceInterval)
-            : base(template, outputInterval, sourceInterval)
+        public IndentEvent(TemplateFrame frame, Interval outputInterval, Interval sourceInterval)
+            : base(frame, outputInterval, sourceInterval)
         {
         }
     }

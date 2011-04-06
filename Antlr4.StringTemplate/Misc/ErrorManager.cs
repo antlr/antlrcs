@@ -1,5 +1,5 @@
 /*
- * [The "BSD licence"]
+ * [The "BSD license"]
  * Copyright (c) 2011 Terence Parr
  * All rights reserved.
  *
@@ -146,29 +146,29 @@ namespace Antlr4.StringTemplate.Misc
             listener.CompiletimeError(new TemplateGroupCompiletimeMessage(error, srcName, e.Token, e, msg));
         }
 
-        public virtual void RuntimeError(Template self, int ip, ErrorType error)
+        public virtual void RuntimeError(TemplateFrame frame, int ip, ErrorType error)
         {
-            listener.RuntimeError(new TemplateRuntimeMessage(error, ip, self));
+            listener.RuntimeError(new TemplateRuntimeMessage(error, ip, frame));
         }
 
-        public virtual void RuntimeError(Template self, int ip, ErrorType error, object arg)
+        public virtual void RuntimeError(TemplateFrame frame, int ip, ErrorType error, object arg)
         {
-            listener.RuntimeError(new TemplateRuntimeMessage(error, ip, self, arg));
+            listener.RuntimeError(new TemplateRuntimeMessage(error, ip, frame, arg));
         }
 
-        public virtual void RuntimeError(Template self, int ip, ErrorType error, Exception e, object arg)
+        public virtual void RuntimeError(TemplateFrame frame, int ip, ErrorType error, Exception e, object arg)
         {
-            listener.RuntimeError(new TemplateRuntimeMessage(error, ip, self, e, arg));
+            listener.RuntimeError(new TemplateRuntimeMessage(error, ip, frame, e, arg));
         }
 
-        public virtual void RuntimeError(Template self, int ip, ErrorType error, object arg, object arg2)
+        public virtual void RuntimeError(TemplateFrame frame, int ip, ErrorType error, object arg, object arg2)
         {
-            listener.RuntimeError(new TemplateRuntimeMessage(error, ip, self, null, arg, arg2));
+            listener.RuntimeError(new TemplateRuntimeMessage(error, ip, frame, null, arg, arg2));
         }
 
-        public virtual void RuntimeError(Template self, int ip, ErrorType error, object arg, object arg2, object arg3)
+        public virtual void RuntimeError(TemplateFrame frame, int ip, ErrorType error, object arg, object arg2, object arg3)
         {
-            listener.RuntimeError(new TemplateRuntimeMessage(error, ip, self, null, arg, arg2, arg3));
+            listener.RuntimeError(new TemplateRuntimeMessage(error, ip, frame, null, arg, arg2, arg3));
         }
 
         public virtual void IOError(Template self, ErrorType error, Exception e)

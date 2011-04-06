@@ -1,5 +1,5 @@
 /*
- * [The "BSD licence"]
+ * [The "BSD license"]
  * Copyright (c) 2011 Terence Parr
  * All rights reserved.
  *
@@ -94,7 +94,7 @@ namespace Antlr4.StringTemplate.Compiler
 
         public virtual void SetOption(CommonTree id)
         {
-            Interpreter.Option O = TemplateCompiler.supportedOptions[id.Text];
+            RenderOption O = TemplateCompiler.supportedOptions[id.Text];
             Emit1(id, Bytecode.INSTR_STORE_OPTION, (int)O);
         }
 

@@ -1,5 +1,5 @@
 ﻿/*
- * [The "BSD licence"]
+ * [The "BSD license"]
  * Copyright (c) 2011 Terence Parr
  * All rights reserved.
  *
@@ -65,7 +65,7 @@ namespace Antlr4.StringTemplate.Visualizer
 
             _visualizer = visualizer;
             _allEvents = visualizer.Interpreter.GetEvents();
-            List<InterpEvent> events = visualizer.Interpreter.GetDebugState(visualizer.RootTemplate).Events;
+            List<InterpEvent> events = visualizer.RootTemplate.GetDebugState().Events;
             _templateCallHierarchy =
                 new List<TemplateCallHierarchyViewModel>()
                 {

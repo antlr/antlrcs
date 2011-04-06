@@ -1,5 +1,5 @@
 ﻿/*
- * [The "BSD licence"]
+ * [The "BSD license"]
  * Copyright (c) 2011 Terence Parr
  * All rights reserved.
  *
@@ -50,7 +50,7 @@ namespace Antlr4.StringTemplate.Visualizer
 
     public partial class TemplateVisualizerFrame : UserControl
     {
-        private Template currentTemplate;
+        private TemplateFrame currentTemplate;
 
         public TemplateVisualizerFrame()
         {
@@ -97,7 +97,7 @@ namespace Antlr4.StringTemplate.Visualizer
             if (runtimeMessage != null)
             {
                 Interval interval = runtimeMessage.SourceInterval;
-                currentTemplate = message.Self;
+                currentTemplate = runtimeMessage.Frame;
                 UpdateCurrentTemplate();
                 Highlight(TemplateTextBox.Document, interval);
             }
@@ -113,7 +113,7 @@ namespace Antlr4.StringTemplate.Visualizer
             TemplateCallHierarchyViewModel selected = CallHierarchyTreeView.SelectedItem as TemplateCallHierarchyViewModel;
             if (selected != null)
             {
-                currentTemplate = selected.Template;
+                currentTemplate = selected.Frame;
                 UpdateCurrentTemplate();
             }
         }
@@ -124,8 +124,8 @@ namespace Antlr4.StringTemplate.Visualizer
             if (node == null)
                 return;
 
-            CommonToken a = (CommonToken)currentTemplate.impl.tokens.Get(node.TokenStartIndex);
-            CommonToken b = (CommonToken)currentTemplate.impl.tokens.Get(node.TokenStopIndex);
+            CommonToken a = (CommonToken)currentTemplate.Template.impl.tokens.Get(node.TokenStartIndex);
+            CommonToken b = (CommonToken)currentTemplate.Template.impl.tokens.Get(node.TokenStopIndex);
             if (a == null || b == null)
                 return;
 
@@ -138,7 +138,7 @@ namespace Antlr4.StringTemplate.Visualizer
             if (de == null)
                 currentTemplate = ViewModel.Visualizer.RootTemplate;
             else
-                currentTemplate = de.Template;
+                currentTemplate = de.Frame;
             UpdateCurrentTemplate();
         }
 
@@ -215,8 +215,8 @@ namespace Antlr4.StringTemplate.Visualizer
             // update all views according to current template
             UpdateStack();
             UpdateAttributes();
-            viewModel.Bytecode = currentTemplate.impl.Disassemble();
-            TemplateTextBox.Document = new FlowDocument(new Paragraph(new Run(currentTemplate.impl.template)
+            viewModel.Bytecode = currentTemplate.Template.impl.Disassemble();
+            TemplateTextBox.Document = new FlowDocument(new Paragraph(new Run(currentTemplate.Template.impl.template)
             {
                 FontFamily = new FontFamily("Consolas")
             }));
@@ -235,13 +235,13 @@ namespace Antlr4.StringTemplate.Visualizer
 
             // highlight output text and, if {...} subtemplate, region in ST src
             // get last event for currentST; it's the event that captures ST eval
-            List<InterpEvent> events = viewModel.Visualizer.Interpreter.GetDebugState(currentTemplate).Events;
+            List<InterpEvent> events = currentTemplate.GetDebugState().Events;
             EvalTemplateEvent e = (EvalTemplateEvent)events[events.Count - 1];
             //m.output.moveCaretPosition(e.outputStartChar);
             Highlight(OutputTextBox.Document, e.OutputInterval);
-            if (currentTemplate.IsAnonymousSubtemplate)
+            if (currentTemplate.Template.IsAnonymousSubtemplate)
             {
-                Interval r = currentTemplate.impl.TemplateRange;
+                Interval r = currentTemplate.Template.impl.TemplateRange;
                 //				System.out.println("currentST src range="+r);
                 //m.template.moveCaretPosition(r.a);
                 //TemplateTextBox.CaretPosition.
@@ -310,7 +310,7 @@ namespace Antlr4.StringTemplate.Visualizer
                 return;
 
             List<string> attributesList = new List<string>();
-            IDictionary<string, object> attributes = currentTemplate.GetAttributes();
+            IDictionary<string, object> attributes = currentTemplate.Template.GetAttributes();
             if (attributes != null)
             {
                 foreach (var attribute in attributes)
@@ -320,10 +320,10 @@ namespace Antlr4.StringTemplate.Visualizer
                     if (valueList != null)
                         value = valueList.ToListString();
 
-                    if (currentTemplate.DebugState != null && currentTemplate.DebugState.AddAttributeEvents != null)
+                    if (currentTemplate.Template.DebugState != null && currentTemplate.Template.DebugState.AddAttributeEvents != null)
                     {
                         List<AddAttributeEvent> events;
-                        currentTemplate.DebugState.AddAttributeEvents.TryGetValue(attribute.Key, out events);
+                        currentTemplate.Template.DebugState.AddAttributeEvents.TryGetValue(attribute.Key, out events);
                         StringBuilder locations = new StringBuilder();
                         int i = 0;
                         if (events != null)

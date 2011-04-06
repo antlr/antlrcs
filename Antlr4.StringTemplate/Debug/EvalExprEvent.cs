@@ -1,5 +1,5 @@
 /*
- * [The "BSD licence"]
+ * [The "BSD license"]
  * Copyright (c) 2011 Terence Parr
  * All rights reserved.
  *
@@ -40,12 +40,12 @@ namespace Antlr4.StringTemplate.Debug
         private readonly Interval _sourceInterval;
         private readonly string expr = string.Empty;
 
-        public EvalExprEvent(Template template, Interval outputInterval, Interval sourceInterval)
-            : base(template, outputInterval)
+        public EvalExprEvent(TemplateFrame frame, Interval outputInterval, Interval sourceInterval)
+            : base(frame, outputInterval)
         {
             this._sourceInterval = sourceInterval;
             if (_sourceInterval != null)
-                expr = template.impl.template.Substring(_sourceInterval.Start, _sourceInterval.Length);
+                expr = frame.Template.impl.template.Substring(_sourceInterval.Start, _sourceInterval.Length);
         }
 
         public Interval SourceInterval
