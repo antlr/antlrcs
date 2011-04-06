@@ -1045,7 +1045,6 @@ namespace Antlr.Runtime
             return n;
         }
 
-        [Conditional("ANTLR_TRACE")]
         public virtual void TraceIn(string ruleName, int ruleIndex, object inputSymbol)
         {
             if (TraceDestination == null)
@@ -1059,7 +1058,6 @@ namespace Antlr.Runtime
             TraceDestination.WriteLine();
         }
 
-        [Conditional("ANTLR_TRACE")]
         public virtual void TraceOut(string ruleName, int ruleIndex, object inputSymbol)
         {
             if (TraceDestination == null)

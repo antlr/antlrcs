@@ -68,6 +68,14 @@
     <Antlr3 Include="SimpleExpression.g3">
       <Generator>MSBuild:Compile</Generator>
     </Antlr3>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="SemanticPredicateReduction.g3.lexer.cs">
+      <DependentUpon>SemanticPredicateReduction.g3</DependentUpon>
+    </Compile>
+    <Compile Include="SemanticPredicateReduction.g3.parser.cs">
+      <DependentUpon>SemanticPredicateReduction.g3</DependentUpon>
+    </Compile>
     <Compile Include="SimpleExpressionLexerHelper.cs">
       <DependentUpon>SimpleExpression.g3</DependentUpon>
     </Compile>
@@ -158,9 +166,12 @@
     <Antlr3 Include="TestActionFeatures.g3">
       <Generator>MSBuild:Compile</Generator>
     </Antlr3>
-    <Antlr3 Include="TestExpressionFeatures.g3">
+    <Antlr3 Include="SemanticPredicateReduction.g3">
       <Generator>MSBuild:Compile</Generator>
     </Antlr3>
+    <None Include="TestExpressionFeatures.g3">
+      <Generator>MSBuild:Compile</Generator>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <None Include="BuildOptions\ProfileTreeGrammar.g3">
