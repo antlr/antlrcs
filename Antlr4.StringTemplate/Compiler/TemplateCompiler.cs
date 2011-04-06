@@ -1,5 +1,5 @@
 /*
- * [The "BSD licence"]
+ * [The "BSD license"]
  * Copyright (c) 2011 Terence Parr
  * All rights reserved.
  *
@@ -143,7 +143,16 @@ namespace Antlr4.StringTemplate.Compiler
         {
             ANTLRStringStream @is = new ANTLRStringStream(template);
             @is.name = srcName != null ? srcName : name;
-            TemplateLexer lexer = new TemplateLexer(ErrorManager, @is, templateToken, DelimiterStartChar, DelimiterStopChar);
+            TemplateLexer lexer = null;
+            if (templateToken != null && templateToken.Type == GroupParser.BIGSTRING_NO_NL)
+            {
+                lexer = new TemplateLexerNoNewlines(ErrorManager, @is, templateToken, DelimiterStartChar, DelimiterStopChar);
+            }
+            else
+            {
+                lexer = new TemplateLexer(ErrorManager, @is, templateToken, DelimiterStartChar, DelimiterStopChar);
+            }
+
             CommonTokenStream tokens = new CommonTokenStream(lexer);
             TemplateParser p = new TemplateParser(tokens, ErrorManager, templateToken);
             TemplateParser.templateAndEOF_return r = null;
@@ -243,6 +252,33 @@ namespace Antlr4.StringTemplate.Compiler
 
             // we have reported the error, so just blast out
             throw new TemplateException();
+        }
+
+        private class TemplateLexerNoNewlines : TemplateLexer
+        {
+            public TemplateLexerNoNewlines(ErrorManager errMgr, ICharStream input, IToken templateToken, char delimiterStartChar, char delimiterStopChar)
+                : base(errMgr, input, templateToken, delimiterStartChar, delimiterStopChar)
+            {
+            }
+
+            /** Throw out \n tokens inside BIGSTRING_NO_NL */
+            public override IToken NextToken()
+            {
+                IToken t = base.NextToken();
+                while (t.Type == TemplateLexer.NEWLINE)
+                {
+                    t = base.NextToken();
+                }
+
+                if (t.Type == TemplateLexer.INDENT)
+                {
+                    // flip to TEXT so it prints; indent only prints
+                    // when we're at start of line
+                    t.Type = TEXT;
+                }
+
+                return t;
+            }
         }
     }
 }

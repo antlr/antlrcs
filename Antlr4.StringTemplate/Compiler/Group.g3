@@ -1,5 +1,5 @@
 /*
- * [The "BSD licence"]
+ * [The "BSD license"]
  * Copyright (c) 2011 Terence Parr
  * All rights reserved.
  *
@@ -106,6 +106,7 @@ templateDef[string prefix]
 	    {IToken templateToken = input.LT(1);}
 	    (	STRING     {template=$STRING.text; n=1;}
 	    |	BIGSTRING  {template=$BIGSTRING.text; n=2;}
+	    |	BIGSTRING_NO_NL  {template=$BIGSTRING_NO_NL.text; n=2;}
 	    |	{
 	    	template = string.Empty;
 	    	string msg = "missing template at '"+input.LT(1).Text+"'";
@@ -199,6 +200,7 @@ keyValuePair[IDictionary<string,object> mapping]
 
 keyValue returns [object value]
 	:	BIGSTRING			{$value = _group.CreateSingleton($BIGSTRING);}
+	|	BIGSTRING_NO_NL		{$value = _group.CreateSingleton($BIGSTRING_NO_NL);}
 	|	ANONYMOUS_TEMPLATE	{$value = _group.CreateSingleton($ANONYMOUS_TEMPLATE);}
 	|	STRING				{$value = Utility.ReplaceEscapes(Utility.Strip($STRING.text, 1));}
 	|	TRUE				{$value = true;}
@@ -238,6 +240,10 @@ BIGSTRING
 		)*
         '>>'
         {Text = Text.Replace("\\>",">");}
+	;
+
+BIGSTRING_NO_NL // same as BIGSTRING but means ignore newlines later
+	:	'<%' .* '%>'
 	;
 
 ANONYMOUS_TEMPLATE
