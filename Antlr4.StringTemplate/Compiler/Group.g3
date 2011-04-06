@@ -51,8 +51,6 @@ using Antlr4.StringTemplate.Misc;
 @parser::header{
 using Antlr4.StringTemplate.Misc;
 using StringBuilder = System.Text.StringBuilder;
-// The variable 'name' is declared but never used
-#pragma warning disable 168
 }
 
 public
@@ -89,7 +87,7 @@ groupName returns [string name]
  *  elements separate from "stay in loop" prediction.
  */
 def[string prefix] : templateDef[prefix] | dictDef ;
-	catch[RecognitionException re] {
+	catch[RecognitionException] {
 		// pretend we already saw an error here
 		state.lastErrorIndex = input.Index;
 		Error("garbled template definition starting at '"+input.LT(1).Text+"'");
@@ -187,7 +185,7 @@ dictPairs[IDictionary<string,object> mapping]
     	(',' keyValuePair[mapping])* (',' defaultValuePair[mapping])?
     |	defaultValuePair[mapping]
     ;
- 	catch[RecognitionException re] {
+ 	catch[RecognitionException] {
 		Error("missing dictionary entry at '"+input.LT(1).Text+"'");
 	}
 
@@ -208,7 +206,7 @@ keyValue returns [object value]
 	|	{input.LT(1).Text.Equals("key")}?=> ID
 							{$value = TemplateGroup.DictionaryKey;}
 	;
- 	catch[RecognitionException re] {
+ 	catch[RecognitionException] {
 		Error("missing value for key at '"+input.LT(1).Text+"'");
 	}
 
