@@ -1,5 +1,5 @@
 /*
- * [The "BSD licence"]
+ * [The "BSD license"]
  * Copyright (c) 2011 Terence Parr
  * All rights reserved.
  *
@@ -164,8 +164,7 @@ namespace Antlr4.StringTemplate.Compiler
                         }
                     }
 
-                    if (template != null)
-                        return Interval.FromBounds(start.Start, stop.End);
+                    return Interval.FromBounds(start.Start, stop.End);
                 }
 
                 return new Interval(0, template.Length);
