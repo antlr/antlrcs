@@ -1,10 +1,10 @@
 ﻿/*
- * [The "BSD licence"]
- * Copyright (c) 2005-2008 Terence Parr
+ * [The "BSD license"]
+ * Copyright (c) 2011 Terence Parr
  * All rights reserved.
  *
  * Conversion to C#:
- * Copyright (c) 2008-2009 Sam Harwell, Pixel Mine, Inc.
+ * Copyright (c) 2011 Sam Harwell, Pixel Mine, Inc.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -42,7 +42,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyConfiguration( "" )]
 [assembly: AssemblyCompany( "Pixel Mine, Inc." )]
 [assembly: AssemblyProduct( "AntlrUnitTests" )]
-[assembly: AssemblyCopyright( "Copyright © Pixel Mine 2008" )]
+[assembly: AssemblyCopyright( "Copyright © Sam Harwell 2011" )]
 [assembly: AssemblyTrademark( "" )]
 [assembly: AssemblyCulture( "" )]
 
@@ -63,5 +63,5 @@ using System.Runtime.InteropServices;
 //
 // You can specify all the values or you can default the Revision and Build Numbers 
 // by using the '*' as shown below:
-[assembly: AssemblyVersion("3.2.0.6288")]
-[assembly: AssemblyFileVersion("3.2.0.6288")]
+[assembly: AssemblyVersion("3.3.2.8093")]
+[assembly: AssemblyFileVersion("3.3.2.8093")]
