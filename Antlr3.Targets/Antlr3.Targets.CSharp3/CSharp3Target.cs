@@ -82,6 +82,24 @@ namespace Antlr3.Targets
 
         protected override void GenRecognizerFile(AntlrTool tool, CodeGenerator generator, Grammar grammar, StringTemplate outputFileST)
         {
+            if (!grammar.IsRoot)
+            {
+                Grammar rootGrammar = grammar.composite.RootGrammar;
+                string actionScope = grammar.GetDefaultActionScope(grammar.type);
+                IDictionary<string, object> actions;
+                object rootNamespace;
+                if (rootGrammar.Actions.TryGetValue(actionScope, out actions) && actions.TryGetValue("namespace", out rootNamespace))
+                {
+                    if (!grammar.Actions.TryGetValue(actionScope, out actions))
+                    {
+                        actions = new Dictionary<string, object>();
+                        grammar.Actions[actionScope] = actions;
+                    }
+
+                    actions["namespace"] = rootNamespace;
+                }
+            }
+
             generator.Templates.RegisterRenderer(typeof(string), new StringRenderer(generator, this));
             base.GenRecognizerFile(tool, generator, grammar, outputFileST);
         }
