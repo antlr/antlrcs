@@ -73,6 +73,7 @@ namespace Antlr3.Tool
         public const string SynpredRulePrefix = "synpred";
 
         public const string GrammarFileExtension = ".g";
+        public const string AltGrammarFileExtension = ".g3";
 
         /** used for generating lexer temp files */
         public const string LexerGrammarFileExtension = ".g";
@@ -2901,6 +2902,12 @@ namespace Antlr3.Tool
             try
             {
                 string fullName = tool.GetLibraryFile( gname );
+                if (!File.Exists(fullName))
+                {
+                    gname = grammarName + AltGrammarFileExtension;
+                    fullName = tool.GetLibraryFile(gname);
+                }
+
                 //FileReader fr = new FileReader( fullName );
                 //br = new BufferedReader( fr );
                 br = new StringReader( System.IO.File.ReadAllText( fullName ) );
