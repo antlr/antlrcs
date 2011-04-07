@@ -33,13 +33,13 @@
 namespace Antlr4.StringTemplate.Compiler
 {
     using System.Collections.Generic;
-    using Antlr4.StringTemplate.Misc;
     using Antlr.Runtime;
     using Antlr.Runtime.Tree;
+    using Antlr4.StringTemplate.Misc;
     using ArgumentNullException = System.ArgumentNullException;
 
     /** A compiler for a single template. */
-    public class TemplateCompiler
+    public partial class TemplateCompiler
     {
         public static readonly string SubtemplatePrefix = "_sub";
 
@@ -252,33 +252,6 @@ namespace Antlr4.StringTemplate.Compiler
 
             // we have reported the error, so just blast out
             throw new TemplateException();
-        }
-
-        private class TemplateLexerNoNewlines : TemplateLexer
-        {
-            public TemplateLexerNoNewlines(ErrorManager errMgr, ICharStream input, IToken templateToken, char delimiterStartChar, char delimiterStopChar)
-                : base(errMgr, input, templateToken, delimiterStartChar, delimiterStopChar)
-            {
-            }
-
-            /** Throw out \n tokens inside BIGSTRING_NO_NL */
-            public override IToken NextToken()
-            {
-                IToken t = base.NextToken();
-                while (t.Type == TemplateLexer.NEWLINE)
-                {
-                    t = base.NextToken();
-                }
-
-                if (t.Type == TemplateLexer.INDENT)
-                {
-                    // flip to TEXT so it prints; indent only prints
-                    // when we're at start of line
-                    t.Type = TEXT;
-                }
-
-                return t;
-            }
         }
     }
 }
