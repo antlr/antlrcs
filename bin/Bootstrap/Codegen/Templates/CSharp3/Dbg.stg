@@ -1,5 +1,5 @@
 /*
- * [The "BSD licence"]
+ * [The "BSD license"]
  * Copyright (c) 2005-2008 Terence Parr
  * All rights reserved.
  *
@@ -88,11 +88,11 @@ protected virtual bool EvalPredicate( bool result, string predicate )
 ctorForRootGrammar() ::= <<
 <! bug: can't use <@super.members()> cut-n-paste instead !>
 <! Same except we add port number and profile stuff if root grammar !>
-public <name>( <inputStreamType> input )
+<actions.(actionScope).ctorModifier; null="public"> <name>( <inputStreamType> input )
 	: this( input, DebugEventSocketProxy.DefaultDebuggerPort, new RecognizerSharedState() )
 {
 }
-public <name>( <inputStreamType> input, int port, RecognizerSharedState state )
+<actions.(actionScope).ctorModifier; null="public"> <name>( <inputStreamType> input, int port, RecognizerSharedState state )
 	: base( input, state )
 {
 	<parserCtorBody()>
@@ -104,11 +104,11 @@ public <name>( <inputStreamType> input, int port, RecognizerSharedState state )
 
 ctorForProfilingRootGrammar() ::= <<
 <! bug: can't use <@super.members()> cut-n-paste instead !>
-public <name>( <inputStreamType> input )
+<actions.(actionScope).ctorModifier; null="public"> <name>( <inputStreamType> input )
 	: this( input, new Profiler(null), new RecognizerSharedState() )
 {
 }
-public <name>( <inputStreamType> input, IDebugEventListener dbg, RecognizerSharedState state )
+<actions.(actionScope).ctorModifier; null="public"> <name>( <inputStreamType> input, IDebugEventListener dbg, RecognizerSharedState state )
 	: base( input, dbg, state )
 {
 	Profiler p = (Profiler)dbg;
@@ -123,7 +123,7 @@ public <name>( <inputStreamType> input, IDebugEventListener dbg, RecognizerShare
 
 /** Basically we don't want to set any dbg listeners are root will have it. */
 ctorForDelegateGrammar() ::= <<
-public <name>( <inputStreamType> input, IDebugEventListener dbg, RecognizerSharedState state<grammar.delegators:{g|, <g.recognizerName> <g:delegateName()>}> )
+<actions.(actionScope).ctorModifier; null="public"> <name>( <inputStreamType> input, IDebugEventListener dbg, RecognizerSharedState state<grammar.delegators:{g|, <g.recognizerName> <g:delegateName()>}> )
 	: base( input, dbg, state )
 {
 	<parserCtorBody()>
@@ -133,7 +133,7 @@ public <name>( <inputStreamType> input, IDebugEventListener dbg, RecognizerShare
 >>
 
 ctorForPredefinedListener() ::= <<
-public <name>( <inputStreamType> input, IDebugEventListener dbg )
+<actions.(actionScope).ctorModifier; null="public"> <name>( <inputStreamType> input, IDebugEventListener dbg )
 	<@superClassRef>: base( input, dbg, new RecognizerSharedState() )<@end>
 {
 <if(profile)>

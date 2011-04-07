@@ -1,5 +1,5 @@
 /*
- * [The "BSD licence"]
+ * [The "BSD license"]
  * Copyright (c) 2011 Terence Parr
  * All rights reserved.
  *
@@ -119,8 +119,8 @@ _last = (<ASTLabelType>)input.LT(1);
 <super.tokenRef(...)>
 <if(!rewriteMode)>
 <if(backtracking)>if (<actions.(actionScope).synpredgate>) {<endif>
-<if(terminalOptions.class)>
-<label>_tree = new <terminalOptions.class>(<if(terminalOptions.type)><terminalOptions.type>,<endif><label><if(terminalOptions.text)>,<terminalOptions.text; format="string"><endif>);
+<if(terminalOptions.node)>
+<label>_tree = new <terminalOptions.node>(<if(terminalOptions.type)><terminalOptions.type>,<endif><label><if(terminalOptions.text)>,<terminalOptions.text; format="string"><endif>);
 <else>
 <label>_tree = (<ASTLabelType>)adaptor.DupNode(<if(terminalOptions.type)><terminalOptions.type>,<endif><label><if(terminalOptions.text)>,<terminalOptions.text; format="string"><endif>);
 <endif><\n>
@@ -144,8 +144,8 @@ _last = (<ASTLabelType>)input.LT(1);
 <super.tokenRef(...)>
 <if(!rewriteMode)>
 <if(backtracking)>if (<actions.(actionScope).synpredgate>) {<endif>
-<if(terminalOptions.class)>
-<label>_tree = new <terminalOptions.class>(<if(terminalOptions.type)><terminalOptions.type>,<endif><label><if(terminalOptions.text)>,<terminalOptions.text; format="string"><endif>);
+<if(terminalOptions.node)>
+<label>_tree = new <terminalOptions.node>(<if(terminalOptions.type)><terminalOptions.type>,<endif><label><if(terminalOptions.text)>,<terminalOptions.text; format="string"><endif>);
 <else>
 <label>_tree = (<ASTLabelType>)adaptor.DupNode(<if(terminalOptions.type)><terminalOptions.type>,<endif><label><if(terminalOptions.text)>,<terminalOptions.text; format="string"><endif>);
 <endif><\n>
@@ -182,8 +182,8 @@ _last = (<ASTLabelType>)input.LT(1);
 <super.matchSet(..., postmatchCode={
 <if(!rewriteMode)>
 <if(backtracking)>if (<actions.(actionScope).synpredgate>) {<endif>
-<if(terminalOptions.class)>
-<label>_tree = new <terminalOptions.class>(<if(terminalOptions.type)><terminalOptions.type>,<endif><label><if(terminalOptions.text)>,<terminalOptions.text; format="string"><endif>);
+<if(terminalOptions.node)>
+<label>_tree = new <terminalOptions.node>(<if(terminalOptions.type)><terminalOptions.type>,<endif><label><if(terminalOptions.text)>,<terminalOptions.text; format="string"><endif>);
 <else>
 <label>_tree = (<ASTLabelType>)adaptor.DupNode(<if(terminalOptions.type)><terminalOptions.type>,<endif><label><if(terminalOptions.text)>,<terminalOptions.text; format="string"><endif>);
 <endif><\n>
@@ -208,8 +208,8 @@ matchSetRuleRoot(s,label,terminalOptions,elementIndex,debug) ::= <<
 <super.matchSet(..., postmatchCode={
 <if(!rewriteMode)>
 <if(backtracking)>if (<actions.(actionScope).synpredgate>) {<endif>
-<if(terminalOptions.class)>
-<label>_tree = new <terminalOptions.class>(<if(terminalOptions.type)><terminalOptions.type>,<endif><label><if(terminalOptions.text)>,<terminalOptions.text; format="string"><endif>);
+<if(terminalOptions.node)>
+<label>_tree = new <terminalOptions.node>(<if(terminalOptions.type)><terminalOptions.type>,<endif><label><if(terminalOptions.text)>,<terminalOptions.text; format="string"><endif>);
 <else>
 <label>_tree = (<ASTLabelType>)adaptor.DupNode(<if(terminalOptions.type)><terminalOptions.type>,<endif><label><if(terminalOptions.text)>,<terminalOptions.text; format="string"><endif>);
 <endif><\n>
@@ -283,8 +283,8 @@ _last = (<ASTLabelType>)input.LT(1);
  *  change NextToken to NextNode.
  */
 createRewriteNodeFromElement(token,terminalOptions,scope) ::= <<
-<if(terminalOptions.class)>
-new <terminalOptions.class>(<if(terminalOptions.type)><terminalOptions.type>,<endif>stream_<token>.NextNode())
+<if(terminalOptions.node)>
+new <terminalOptions.node>(<if(terminalOptions.type)><terminalOptions.type>,<endif>stream_<token>.NextNode())
 <else>
 stream_<token>.NextNode()
 <endif>

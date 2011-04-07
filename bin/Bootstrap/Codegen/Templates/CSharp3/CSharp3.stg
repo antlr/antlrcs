@@ -1,5 +1,5 @@
 /*
- * [The "BSD licence"]
+ * [The "BSD license"]
  * Copyright (c) 2011 Terence Parr
  * All rights reserved.
  *
@@ -29,7 +29,7 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-group CSharp3 implements ANTLRCore;
+group CSharp3;
 
 csharpVisibilityMap ::= [
 	"private":"private",
@@ -76,6 +76,8 @@ outputFile(	LEXER,PARSER,TREE_PARSER, actionScope, actions,
 #pragma warning disable 219
 // Unreachable code detected.
 #pragma warning disable 162
+// Missing XML comment for publicly visible type or member 'Type_or_Member'
+#pragma warning disable 1591
 
 <actions.(actionScope).header>
 
@@ -110,7 +112,7 @@ lexer(grammar, name, tokens, scopes, rules, numRules, labelType="CommonToken",
       filterMode, superClass={<if(actions.(actionScope).superClass)><actions.(actionScope).superClass><else>Antlr.Runtime.Lexer<endif>}) ::= <<
 [System.CodeDom.Compiler.GeneratedCode("ANTLR", "<ANTLRVersion>")]
 [System.CLSCompliant(false)]
-public partial class <grammar.recognizerName> : <@superClassName><superClass><@end>
+<parserModifier(grammar=grammar, actions=actions)> partial class <grammar.recognizerName> : <@superClassName><superClass><@end>
 {
 	<tokens:{public const int <it.name; format="id">=<it.type>;}; separator="\n">
 	<scopes:{<if(it.isDynamicGlobalScope)><globalAttributeScope(scope=it)><endif>}>
@@ -118,23 +120,23 @@ public partial class <grammar.recognizerName> : <@superClassName><superClass><@e
 
     // delegates
     <grammar.delegates:
-         {g|public <g.recognizerName> <g:delegateName()>;}; separator="\n">
+         {g|private <g.recognizerName> <g:delegateName()>;}; separator="\n">
     // delegators
     <grammar.delegators:
-         {g|public <g.recognizerName> <g:delegateName()>;}; separator="\n">
-    <last(grammar.delegators):{g|public <g.recognizerName> gParent;}>
+         {g|private <g.recognizerName> <g:delegateName()>;}; separator="\n">
+    <last(grammar.delegators):{g|private <g.recognizerName> gParent;}>
 
-	public <grammar.recognizerName>()<! needed by subclasses !>
+	<actions.(actionScope).ctorModifier; null="public"> <grammar.recognizerName>()<! needed by subclasses !>
 	{
 		OnCreated();
 	}
 
-	public <grammar.recognizerName>(<lexerInputStreamType()> input<grammar.delegators:{g|, <g.recognizerName> <g:delegateName()>}> )
+	<actions.(actionScope).ctorModifier; null="public"> <grammar.recognizerName>(<lexerInputStreamType()> input<grammar.delegators:{g|, <g.recognizerName> <g:delegateName()>}> )
 		: this(input, new RecognizerSharedState()<grammar.delegators:{g|, <g:delegateName()>}>)
 	{
 	}
 
-	public <grammar.recognizerName>(<lexerInputStreamType()> input, RecognizerSharedState state<grammar.delegators:{g|, <g.recognizerName> <g:delegateName()>}>)
+	<actions.(actionScope).ctorModifier; null="public"> <grammar.recognizerName>(<lexerInputStreamType()> input, RecognizerSharedState state<grammar.delegators:{g|, <g.recognizerName> <g:delegateName()>}>)
 		: base(input, state)
 	{
 <if(memoize)>
@@ -277,7 +279,7 @@ genericParser(grammar, name, scopes, tokens, tokenNames, rules, numRules,
               filterMode) ::= <<
 [System.CodeDom.Compiler.GeneratedCode("ANTLR", "<ANTLRVersion>")]
 [System.CLSCompliant(false)]
-public partial class <grammar.recognizerName> : <@superClassName><superClass><@end>
+<parserModifier(grammar=grammar, actions=actions)> partial class <grammar.recognizerName> : <@superClassName><superClass><@end>
 {
 <if(grammar.grammarIsRoot)>
 	internal static readonly string[] tokenNames = new string[] {
@@ -288,20 +290,20 @@ public partial class <grammar.recognizerName> : <@superClassName><superClass><@e
 
 	// delegates
 	<grammar.delegates:
-		 {g|public <g.recognizerName> <g:delegateName()>;}; separator="\n">
+		 {g|private <g.recognizerName> <g:delegateName()>;}; separator="\n">
 	// delegators
 	<grammar.delegators:
-		 {g|public <g.recognizerName> <g:delegateName()>;}; separator="\n">
-	<last(grammar.delegators):{g|public <g.recognizerName> gParent;}>
+		 {g|private <g.recognizerName> <g:delegateName()>;}; separator="\n">
+	<last(grammar.delegators):{g|private <g.recognizerName> gParent;}>
 
 	<scopes:{<if(it.isDynamicGlobalScope)><globalAttributeScope(scope=it)><endif>}>
 	<@members>
 <! WARNING. bug in ST: this is cut-n-paste into Dbg.stg !>
-public <grammar.recognizerName>( <inputStreamType> input<grammar.delegators:{g|, <g.recognizerName> <g:delegateName()>}> )
+<actions.(actionScope).ctorModifier; null="public"> <grammar.recognizerName>( <inputStreamType> input<grammar.delegators:{g|, <g.recognizerName> <g:delegateName()>}> )
 	: this( input, new RecognizerSharedState()<grammar.delegators:{g|, <g:delegateName()>}> )
 {
 }
-public <grammar.recognizerName>(<inputStreamType> input, RecognizerSharedState state<grammar.delegators:{g|, <g.recognizerName> <g:delegateName()>}>)
+<actions.(actionScope).ctorModifier; null="public"> <grammar.recognizerName>(<inputStreamType> input, RecognizerSharedState state<grammar.delegators:{g|, <g.recognizerName> <g:delegateName()>}>)
 	: base(input, state)
 {
 	<parserCtorBody()>
@@ -332,7 +334,7 @@ public <grammar.recognizerName>(<inputStreamType> input, RecognizerSharedState s
    appear to be defined in this recognizer. !>
 	#region Delegated rules
 <grammar.delegatedRules:{ruleDescriptor|
-	public <returnType()> <ruleDescriptor.name; format="id">(<ruleDescriptor.parameterScope:parameterScope(scope=it)>) <!throws RecognitionException !>\{ <if(ruleDescriptor.hasReturnValue)>return <endif><ruleDescriptor.grammar:delegateName()>.<ruleDescriptor.name; format="id">(<ruleDescriptor.parameterScope.attributes:{a|<a.name; format="id">}; separator=", ">); \}}; separator="\n">
+	<ruleModifier(grammar=grammar,ruleDescriptor=ruleDescriptor)> <returnType()> <ruleDescriptor.name; format="id">(<ruleDescriptor.parameterScope:parameterScope(scope=it)>) <!throws RecognitionException !>\{ <if(ruleDescriptor.hasReturnValue)>return <endif><ruleDescriptor.grammar:delegateName()>.<ruleDescriptor.name; format="id">(<ruleDescriptor.parameterScope.attributes:{a|<a.name; format="id">}; separator=", ">); \}}; separator="\n">
 	#endregion Delegated rules<\n>
 <endif>
 
@@ -364,6 +366,11 @@ public <grammar.recognizerName>(<inputStreamType> input, RecognizerSharedState s
 }
 >>
 
+// imported grammars are 'public' (can't be internal because their return scope classes must be accessible)
+parserModifier(grammar, actions) ::= <<
+<if(grammar.grammarIsRoot)><actions.(actionScope).modifier; null="public"><else>public<endif>
+>>
+
 parserCtorBody() ::= <<
 <if(memoize)>
 <if(grammar.grammarIsRoot)>
@@ -385,7 +392,7 @@ parser(grammar, name, scopes, tokens, tokenNames, rules, numRules, bitsets,
  */
 treeParser(grammar, name, scopes, tokens, tokenNames, globalAction, rules,
            numRules, bitsets, labelType={<ASTLabelType>}, ASTLabelType="object",
-           superClass={<if(actions.(actionScope).superClass)><actions.(actionScope).superClass><else>Antlr.Runtime.Tree.<if(filterMode)><if(buildAST)>TreeRewriter\<<labelType>\><else>TreeFilter<endif><else>TreeParser<endif><endif>},
+           superClass={<if(actions.(actionScope).superClass)><actions.(actionScope).superClass><else>Antlr.Runtime.Tree.<if(filterMode)><if(buildAST)>TreeRewriter<else>TreeFilter<endif><else>TreeParser<endif><endif>},
            members={<actions.treeparser.members>},
            filterMode) ::= <<
 <genericParser(inputStreamType="ITreeNodeStream", rewriteElementType="Node", ...)>
@@ -487,7 +494,7 @@ partial void LeaveRule_<ruleName>();
 // $ANTLR start "<ruleName>"
 // <fileName>:<description>
 [GrammarRule("<ruleName>")]
-<csharpVisibilityMap.(ruleDescriptor.modifier); null="private"> <returnType()> <ruleName; format="id">(<ruleDescriptor.parameterScope:parameterScope(scope=it)>)
+<ruleModifier(grammar=grammar,ruleDescriptor=ruleDescriptor)> <returnType()> <ruleName; format="id">(<ruleDescriptor.parameterScope:parameterScope(scope=it)>)
 {
 	EnterRule_<ruleName>();
 	EnterRule("<ruleName>", <ruleDescriptor.index>);
@@ -537,6 +544,16 @@ partial void LeaveRule_<ruleName>();
 	<returnFromRule()><\n>
 }
 // $ANTLR end "<ruleName>"
+>>
+
+// imported grammars need to have internal rules
+ruleModifier(grammar,ruleDescriptor) ::= <<
+<if(grammar.grammarIsRoot)><csharpVisibilityMap.(ruleDescriptor.modifier); null="private"><else>internal<endif>
+>>
+
+// imported grammars need to have public return scopes
+returnScopeModifier(grammar,ruleDescriptor) ::= <<
+<if(grammar.grammarIsRoot)><csharpVisibilityMap.(ruleDescriptor.modifier); null="private"><else>public<endif>
 >>
 
 catch(decl,action) ::= <<
@@ -641,7 +658,7 @@ partial void LeaveRule_<ruleName>();
 
 // $ANTLR start "<ruleName>"
 [GrammarRule("<ruleName>")]
-<csharpVisibilityMap.(ruleDescriptor.modifier); null="private"> void m<ruleName>(<ruleDescriptor.parameterScope:parameterScope(scope=it)>)
+<ruleModifier(grammar=grammar,ruleDescriptor=ruleDescriptor)> void m<ruleName>(<ruleDescriptor.parameterScope:parameterScope(scope=it)>)
 {
 	EnterRule_<ruleName>();
 	EnterRule("<ruleName>", <ruleDescriptor.index>);
@@ -1474,7 +1491,7 @@ ruleLabelDef(label) ::= <<
  */
 returnScope(scope) ::= <<
 <if(ruleDescriptor.hasMultipleReturnValues)>
-<csharpVisibilityMap.(ruleDescriptor.modifier); null="private"> sealed partial class <ruleDescriptor:returnStructName()> : <if(TREE_PARSER)>Tree<else>Parser<endif>RuleReturnScope\<<labelType>\><@ruleReturnInterfaces()>
+<returnScopeModifier(grammar=grammar,ruleDescriptor=ruleDescriptor)> sealed partial class <ruleDescriptor:returnStructName()> : <if(TREE_PARSER)>Tree<else>Parser<endif>RuleReturnScope\<<labelType>\><@ruleReturnInterfaces()>
 {
 	<scope.attributes:{public <it.decl>;}; separator="\n">
 	<@ruleReturnMembers()>
@@ -1596,7 +1613,7 @@ lexerRuleLabelPropertyRef_type(scope,attr) ::=
 lexerRuleLabelPropertyRef_line(scope,attr) ::=
     "(<scope>!=null?<scope>.Line:0)"
 
-lexerRuleLabelPropertyRef_pos(scope,attr) ::= 
+lexerRuleLabelPropertyRef_pos(scope,attr) ::=
     "(<scope>!=null?<scope>.CharPositionInLine:-1)"
 
 lexerRuleLabelPropertyRef_channel(scope,attr) ::=

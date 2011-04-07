@@ -1,5 +1,5 @@
 /*
- * [The "BSD licence"]
+ * [The "BSD license"]
  * Copyright (c) 2011 Terence Parr
  * All rights reserved.
  *
@@ -427,17 +427,17 @@ adaptor.AddChild(root_<treeLevel>, stream_<label>.NextTree());<\n>
 >>
 
 createImaginaryNode(tokenType,terminalOptions,args) ::= <<
-<if(terminalOptions.class)>
+<if(terminalOptions.node)>
 <! new MethodNode(IDLabel, args) !>
-new <terminalOptions.class>(<tokenType><if(args)>, <args; separator=", "><endif>)
+new <terminalOptions.node>(<tokenType><if(args)>, <args; separator=", "><endif>)
 <else>
 (<ASTLabelType>)adaptor.Create(<tokenType>, <args; separator=", "><if(!args)>"<tokenType>"<endif>)
 <endif>
 >>
 
 createRewriteNodeFromElement(token,terminalOptions,args) ::= <<
-<if(terminalOptions.class)>
-new <terminalOptions.class>(stream_<token>.NextToken()<if(args)>, <args; separator=", "><endif>)
+<if(terminalOptions.node)>
+new <terminalOptions.node>(stream_<token>.NextToken()<if(args)>, <args; separator=", "><endif>)
 <else>
 <if(args)> <! must create new node from old !>
 adaptor.Create(<token>, <args; separator=", ">)
