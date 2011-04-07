@@ -1,10 +1,10 @@
 ﻿/*
- * [The "BSD licence"]
- * Copyright (c) 2005-2008 Terence Parr
+ * [The "BSD license"]
+ * Copyright (c) 2011 Terence Parr
  * All rights reserved.
  *
  * Conversion to C#:
- * Copyright (c) 2008-2010 Sam Harwell, Pixel Mine, Inc.
+ * Copyright (c) 2011 Sam Harwell, Pixel Mine, Inc.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -240,8 +240,8 @@ namespace Antlr3.Tool
                 {
                     string label;
 
-                    if (rr.rule.grammar != _grammar)
-                        label = string.Format("<{0}.{1}>", rr.rule.grammar.name, rr.rule.Name);
+                    if (rr.rule.Grammar != _grammar)
+                        label = string.Format("<{0}.{1}>", rr.rule.Grammar.name, rr.rule.Name);
                     else
                         label = string.Format("<{0}>", rr.rule.Name);
 

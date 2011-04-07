@@ -54,7 +54,6 @@ using Antlr3.Tool;
 
 using BitSet = Antlr.Runtime.BitSet;
 using DFA = Antlr.Runtime.DFA;
-using IList = System.Collections.IList;
 using StringTemplate = Antlr3.ST.StringTemplate;
 using StringTemplateGroup = Antlr3.ST.StringTemplateGroup;
 using TokenWithIndex = Antlr.Runtime.CommonToken;
@@ -176,7 +175,7 @@ rule returns [StringTemplate code=null]
 	// For syn preds, we don't want any AST code etc... in there.
 	// Save old templates ptr and restore later.  Base templates include Dbg.
 	StringTemplateGroup saveGroup = templates;
-	if ( ruleDescr.isSynPred )
+	if ( ruleDescr.IsSynPred )
 	{
 		templates = generator.BaseTemplates;
 	}
@@ -202,7 +201,7 @@ rule returns [StringTemplate code=null]
 				$b.code.SetAttribute("description", description);
 				// do not generate lexer rules in combined grammar
 				string stName = null;
-				if ( ruleDescr.isSynPred )
+				if ( ruleDescr.IsSynPred )
 				{
 					stName = "synpredRule";
 				}
@@ -426,7 +425,7 @@ exceptionGroup[StringTemplate ruleST]
 exceptionHandler[StringTemplate ruleST]
 	:	^('catch' ARG_ACTION ACTION)
 		{
-			IList chunks = generator.TranslateAction(currentRuleName,$ACTION);
+			IList<object> chunks = generator.TranslateAction(currentRuleName,$ACTION);
 			$ruleST.SetAttribute("exceptions.{decl,action}",$ARG_ACTION.text,chunks);
 		}
 	;
@@ -434,7 +433,7 @@ exceptionHandler[StringTemplate ruleST]
 finallyClause[StringTemplate ruleST]
 	:	^('finally' ACTION)
 		{
-			IList chunks = generator.TranslateAction(currentRuleName,$ACTION);
+			IList<object> chunks = generator.TranslateAction(currentRuleName,$ACTION);
 			$ruleST.SetAttribute("finally",chunks);
 		}
 	;
@@ -750,25 +749,25 @@ atom[GrammarAST scope, GrammarAST label, GrammarAST astSuffix]
 				Grammar scopeG = grammar.composite.GetGrammar(scope.Text);
 				$code.SetAttribute("scope", scopeG);
 			}
-			else if ( rdef.grammar != this.grammar ) { // nonlocal
+			else if ( rdef.Grammar != this.grammar ) { // nonlocal
 				// if rule definition is not in this grammar, it's nonlocal
-				IList<Grammar> rdefDelegates = rdef.grammar.GetDelegates();
+				IList<Grammar> rdefDelegates = rdef.Grammar.GetDelegates();
 				if ( rdefDelegates.Contains(this.grammar) ) {
-					$code.SetAttribute("scope", rdef.grammar);
+					$code.SetAttribute("scope", rdef.Grammar);
 				}
 				else {
 					// defining grammar is not a delegate, scope all the
 					// back to root, which has delegate methods for all
 					// rules.  Don't use scope if we are root.
-					if ( this.grammar != rdef.grammar.composite.delegateGrammarTreeRoot.grammar ) {
+					if ( this.grammar != rdef.Grammar.composite.delegateGrammarTreeRoot.grammar ) {
 						$code.SetAttribute("scope",
-										  rdef.grammar.composite.delegateGrammarTreeRoot.grammar);
+										  rdef.Grammar.composite.delegateGrammarTreeRoot.grammar);
 					}
 				}
 			}
 
 			if ( $rarg!=null ) {
-				IList args = generator.TranslateAction(currentRuleName,$rarg);
+				IList<object> args = generator.TranslateAction(currentRuleName,$rarg);
 				$code.SetAttribute("args", args);
 			}
 			int i = ((TokenWithIndex)r.Token).TokenIndex;
@@ -813,14 +812,14 @@ atom[GrammarAST scope, GrammarAST label, GrammarAST astSuffix]
 						Grammar scopeG = grammar.composite.GetGrammar(scope.Text);
 						$code.SetAttribute("scope", scopeG);
 					}
-					else if ( rdef2.grammar != this.grammar )
+					else if ( rdef2.Grammar != this.grammar )
 					{ // nonlocal
 						// if rule definition is not in this grammar, it's nonlocal
-						$code.SetAttribute("scope", rdef2.grammar);
+						$code.SetAttribute("scope", rdef2.Grammar);
 					}
 					if ( $targ!=null )
 					{
-						IList args = generator.TranslateAction(currentRuleName,$targ);
+						IList<object> args = generator.TranslateAction(currentRuleName,$targ);
 						$code.SetAttribute("args", args);
 					}
 				}
@@ -1006,7 +1005,7 @@ rewrite returns [StringTemplate code=null]
 				^( r=REWRITE (pred=SEMPRED)? alt=rewrite_alternative)
 				{
 					rewriteBlockNestingLevel = OUTER_REWRITE_NESTING_LEVEL;
-					IList predChunks = null;
+					IList<object> predChunks = null;
 					if ( $pred!=null )
 					{
 						//predText = #pred.getText();
@@ -1223,7 +1222,7 @@ rewrite_atom[bool isRoot] returns [StringTemplate code=null]
 			$code.SetAttribute("terminalOptions",term.terminalOptions);
 			if ( $arg!=null )
 			{
-				IList args = generator.TranslateAction(currentRuleName,$arg);
+				IList<object> args = generator.TranslateAction(currentRuleName,$arg);
 				$code.SetAttribute("args", args);
 			}
 			$code.SetAttribute("elementIndex", ((TokenWithIndex)$start.Token).TokenIndex);
@@ -1305,7 +1304,7 @@ rewrite_atom[bool isRoot] returns [StringTemplate code=null]
 		{
 			// actions in rewrite rules yield a tree object
 			string actText = $ACTION.text;
-			IList chunks = generator.TranslateAction(currentRuleName,$ACTION);
+			IList<object> chunks = generator.TranslateAction(currentRuleName,$ACTION);
 			$code = templates.GetInstanceOf("rewriteNodeAction"+(isRoot?"Root":""));
 			$code.SetAttribute("action", chunks);
 		}
@@ -1328,7 +1327,7 @@ rewrite_template returns [StringTemplate code=null]
 				else if ( $ind!=null )
 				{ // must be \%({expr})(args)
 					$code = templates.GetInstanceOf("rewriteIndirectTemplate");
-					IList chunks=generator.TranslateAction(currentRuleName,$ind);
+					IList<object> chunks=generator.TranslateAction(currentRuleName,$ind);
 					$code.SetAttribute("expr", chunks);
 				}
 			}
@@ -1339,7 +1338,7 @@ rewrite_template returns [StringTemplate code=null]
 						// because actions like \%foo(name={\$ID.text}) aren't
 						// broken up yet into trees.
 						$a.outerAltNum = this.outerAltNum;
-						IList chunks = generator.TranslateAction(currentRuleName,$a);
+						IList<object> chunks = generator.TranslateAction(currentRuleName,$a);
 						$code.SetAttribute("args.{name,value}", $arg.text, chunks);
 					}
 					)

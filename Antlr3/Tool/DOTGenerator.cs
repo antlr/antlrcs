@@ -1,10 +1,10 @@
 /*
- * [The "BSD licence"]
- * Copyright (c) 2005-2008 Terence Parr
+ * [The "BSD license"]
+ * Copyright (c) 2011 Terence Parr
  * All rights reserved.
  *
  * Conversion to C#:
- * Copyright (c) 2008-2010 Sam Harwell, Pixel Mine, Inc.
+ * Copyright (c) 2011 Sam Harwell, Pixel Mine, Inc.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -39,7 +39,6 @@ namespace Antlr3.Tool
 
     using AngleBracketTemplateLexer = Antlr3.ST.Language.AngleBracketTemplateLexer;
     using ANTLRParser = Antlr3.Grammars.ANTLRParser;
-    using IList = System.Collections.IList;
     using Path = System.IO.Path;
     using StringBuffer = System.Text.StringBuilder;
     using StringTemplate = Antlr3.ST.StringTemplate;
@@ -283,9 +282,9 @@ namespace Antlr3.Tool
                     RuleClosureTransition rr = ( (RuleClosureTransition)edge );
                     // don't jump to other rules, but display edge to follow node
                     edgeST = stlib.GetInstanceOf( Path.Combine( dfaTemplateDirectoryName, "edge" ) );
-                    if ( rr.rule.grammar != grammar )
+                    if ( rr.rule.Grammar != grammar )
                     {
-                        edgeST.SetAttribute( "label", "<" + rr.rule.grammar.name + "." + rr.rule.Name + ">" );
+                        edgeST.SetAttribute( "label", "<" + rr.rule.Grammar.name + "." + rr.rule.Name + ">" );
                     }
                     else
                     {
@@ -438,7 +437,7 @@ namespace Antlr3.Tool
                             buf.Append( ':' );
                             // get a list of configs for just this alt
                             // it will help us print better later
-                            IList configsInAlt = new List<object>();
+                            IList<object> configsInAlt = new List<object>();
                             foreach ( NFAConfiguration c in configurations )
                             {
                                 if ( c.alt != alt )

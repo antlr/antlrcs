@@ -927,19 +927,19 @@ namespace AntlrUnitTests
                     ruleLabels.Add( labelName );
                 }
             }
-            Assert.IsTrue((tokenLabels != null && r.tokenListLabels != null) ||
-                       (tokenLabels == null && r.tokenListLabels == null),
-                       "token += labels mismatch; " + tokenLabels + "!=" + r.tokenListLabels);
-            Assert.IsTrue((ruleLabels != null && r.ruleListLabels != null) ||
-                       (ruleLabels == null && r.ruleListLabels == null),
-                       "rule += labels mismatch; " + ruleLabels + "!=" + r.ruleListLabels);
+            Assert.IsTrue((tokenLabels != null && r.TokenListLabels != null) ||
+                       (tokenLabels == null && r.TokenListLabels == null),
+                       "token += labels mismatch; " + tokenLabels + "!=" + r.TokenListLabels);
+            Assert.IsTrue((ruleLabels != null && r.RuleListLabels != null) ||
+                       (ruleLabels == null && r.RuleListLabels == null),
+                       "rule += labels mismatch; " + ruleLabels + "!=" + r.RuleListLabels);
             if ( tokenLabels != null )
             {
-                Assert.IsTrue( tokenLabels.SequenceEqual( r.tokenListLabels.Keys ) );
+                Assert.IsTrue( tokenLabels.SequenceEqual( r.TokenListLabels.Keys ) );
             }
             if ( ruleLabels != null )
             {
-                Assert.IsTrue( ruleLabels.SequenceEqual( r.ruleListLabels.Keys ) );
+                Assert.IsTrue( ruleLabels.SequenceEqual( r.RuleListLabels.Keys ) );
             }
         }
 

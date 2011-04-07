@@ -1,10 +1,10 @@
 /*
- * [The "BSD licence"]
- * Copyright (c) 2005-2008 Terence Parr
+ * [The "BSD license"]
+ * Copyright (c) 2011 Terence Parr
  * All rights reserved.
  *
  * Grammar conversion to ANTLR v3 and C#:
- * Copyright (c) 2008 Sam Harwell, Pixel Mine, Inc.
+ * Copyright (c) 2011 Sam Harwell, Pixel Mine, Inc.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -33,7 +33,6 @@
 namespace Antlr3.Grammars
 {
     using System.Collections.Generic;
-    using Antlr.Runtime.JavaExtensions;
     using Antlr3.Codegen;
 
     using CommonToken = Antlr.Runtime.CommonToken;
@@ -126,7 +125,7 @@ namespace Antlr3.Grammars
             // unless we're in a synpred rule.
             Rule r = grammar.GetRule( currentRuleName );
             if ( ( grammar.BuildAST || suffix.Length > 0 ) && label == null &&
-                 ( r == null || !r.isSynPred ) )
+                 ( r == null || !r.IsSynPred ) )
             {
                 // we will need a label to do the AST or tracking, make one
                 label = generator.CreateUniqueLabel( ruleTargetName );
@@ -166,7 +165,7 @@ namespace Antlr3.Grammars
             // unless we're in a synpred rule.
             Rule r = grammar.GetRule( currentRuleName );
             if ( ( grammar.BuildAST || suffix.Length > 0 ) && label == null &&
-                 ( r == null || !r.isSynPred ) )
+                 ( r == null || !r.IsSynPred ) )
             {
                 label = generator.CreateUniqueLabel( elementName );
                 CommonToken labelTok = new CommonToken( ANTLRParser.ID, label );
@@ -223,7 +222,7 @@ namespace Antlr3.Grammars
             string rewritePart = "";
             string listLabelPart = "";
             Rule ruleDescr = grammar.GetRule( currentRuleName );
-            if ( ast_suffix != null && !ruleDescr.isSynPred )
+            if ( ast_suffix != null && !ruleDescr.IsSynPred )
             {
                 if ( ast_suffix.Type == ANTLRParser.ROOT )
                 {

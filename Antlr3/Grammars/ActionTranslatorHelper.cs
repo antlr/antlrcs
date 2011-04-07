@@ -1,10 +1,10 @@
 /*
- * [The "BSD licence"]
- * Copyright (c) 2005-2008 Terence Parr
+ * [The "BSD license"]
+ * Copyright (c) 2011 Terence Parr
  * All rights reserved.
  *
  * Grammar conversion to ANTLR v3 and C#:
- * Copyright (c) 2008-2009 Sam Harwell, Pixel Mine, Inc.
+ * Copyright (c) 2011 Sam Harwell, Pixel Mine, Inc.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -32,17 +32,16 @@
 
 namespace Antlr3.Grammars
 {
+    using System.Collections.Generic;
     using Antlr3.Codegen;
 
     using ANTLRStringStream = Antlr.Runtime.ANTLRStringStream;
-    using ArrayList = System.Collections.ArrayList;
     using Attribute = Antlr3.Tool.Attribute;
     using AttributeScope = Antlr3.Tool.AttributeScope;
     using CommonToken = Antlr.Runtime.CommonToken;
     using ErrorManager = Antlr3.Tool.ErrorManager;
     using Grammar = Antlr3.Tool.Grammar;
     using GrammarAST = Antlr3.Tool.GrammarAST;
-    using IList = System.Collections.IList;
     using IToken = Antlr.Runtime.IToken;
     using Rule = Antlr3.Tool.Rule;
     using StringBuilder = System.Text.StringBuilder;
@@ -52,7 +51,7 @@ namespace Antlr3.Grammars
 
     partial class ActionTranslator
     {
-        public IList chunks = new ArrayList();
+        public IList<object> chunks = new List<object>();
         Rule enclosingRule;
         int outerAltNum;
         Grammar grammar;
@@ -87,7 +86,7 @@ namespace Antlr3.Grammars
         /** Return a list of strings and StringTemplate objects that
          *  represent the translated action.
          */
-        public IList TranslateToChunks()
+        public IList<object> TranslateToChunks()
         {
             // JSystem.@out.println("###\naction="+action);
             IToken t;
@@ -100,7 +99,7 @@ namespace Antlr3.Grammars
 
         public string Translate()
         {
-            IList theChunks = TranslateToChunks();
+            IList<object> theChunks = TranslateToChunks();
             //JSystem.@out.println("chunks="+a.chunks);
             StringBuilder buf = new StringBuilder();
             for (int i = 0; i < theChunks.Count; i++)
@@ -112,7 +111,7 @@ namespace Antlr3.Grammars
             return buf.ToString();
         }
 
-        public IList TranslateAction(string action)
+        public IList<object> TranslateAction(string action)
         {
             string rname = null;
             if (enclosingRule != null)
@@ -141,7 +140,7 @@ namespace Antlr3.Grammars
 
         public void CheckElementRefUniqueness(string @ref, bool isToken)
         {
-            IList refs = null;
+            IList<GrammarAST> refs = null;
             if (isToken)
             {
                 refs = enclosingRule.GetTokenRefsInAlt(@ref, outerAltNum);
@@ -182,7 +181,7 @@ namespace Antlr3.Grammars
             Rule scopeRule = grammar.GetRule(scopeName);
             if (scopeRule != null)
             {
-                return scopeRule.ruleScope;
+                return scopeRule.RuleScope;
             }
             return null; // not a valid dynamic scope
         }

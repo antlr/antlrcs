@@ -178,18 +178,18 @@ rule
 					r = grammar.GetRule(name);
 					if ( $args!=null )
 					{
-						r.parameterScope = grammar.CreateParameterScope(name,$args.Token);
-						r.parameterScope.AddAttributes($args.text, ',');
+						r.ParameterScope = grammar.CreateParameterScope(name,$args.Token);
+						r.ParameterScope.AddAttributes($args.text, ',');
 					}
 					if ( $ret!=null )
 					{
-						r.returnScope = grammar.CreateReturnScope(name,$ret.Token);
-						r.returnScope.AddAttributes($ret.text, ',');
+						r.ReturnScope = grammar.CreateReturnScope(name,$ret.Token);
+						r.ReturnScope.AddAttributes($ret.text, ',');
 					}
 					if ( $throwsSpec.exceptions != null )
 					{
 						foreach ( string exception in $throwsSpec.exceptions )
-							r.throwsSpec.Add( exception );
+							r.ThrowsSpec.Add( exception );
 					}
 				}
 			}
@@ -239,11 +239,11 @@ scope AttributeScopeActions;
 	:	^(	'scope'
 			(	attrScopeAction* attrs=ACTION
 				{
-					r.ruleScope = grammar.CreateRuleScope(r.Name,$attrs.Token);
-					r.ruleScope.isDynamicRuleScope = true;
-					r.ruleScope.AddAttributes($attrs.text, ';');
+					r.RuleScope = grammar.CreateRuleScope(r.Name,$attrs.Token);
+					r.RuleScope.isDynamicRuleScope = true;
+					r.RuleScope.AddAttributes($attrs.text, ';');
 					foreach ( var action in $AttributeScopeActions::actions )
-						r.ruleScope.DefineNamedAction( action.Key, action.Value );
+						r.RuleScope.DefineNamedAction( action.Key, action.Value );
 				}
 			)?
 			(	uses=ID
@@ -255,8 +255,8 @@ scope AttributeScopeActions;
 					$uses.text);
 					}
 					else {
-					if ( r.useScopes==null ) {r.useScopes=new List<string>();}
-					r.useScopes.Add($uses.text);
+					if ( r.UseScopes==null ) {r.UseScopes=new List<string>();}
+					r.UseScopes.Add($uses.text);
 					}
 				}
 			)*

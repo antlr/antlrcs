@@ -1,10 +1,10 @@
 ﻿/*
- * [The "BSD licence"]
- * Copyright (c) 2005-2008 Terence Parr
+ * [The "BSD license"]
+ * Copyright (c) 2011 Terence Parr
  * All rights reserved.
  *
  * Conversion to C#:
- * Copyright (c) 2008-2009 Sam Harwell, Pixel Mine, Inc.
+ * Copyright (c) 2011 Sam Harwell, Pixel Mine, Inc.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -38,26 +38,24 @@ namespace Antlr3.Tool
 
     using ANTLRParser = Antlr3.Grammars.ANTLRParser;
     using ArgumentException = System.ArgumentException;
-    using CLSCompliant = System.CLSCompliantAttribute;
     using CodeGenerator = Antlr3.Codegen.CodeGenerator;
     using CommonToken = Antlr.Runtime.CommonToken;
-    using IDictionary = System.Collections.IDictionary;
-    using IList = System.Collections.IList;
     using IToken = Antlr.Runtime.IToken;
-    using LookaheadSet = Antlr3.Analysis.LookaheadSet;
     using NFAState = Antlr3.Analysis.NFAState;
 
     /** Combine the info associated with a rule. */
     public class Rule
     {
         private readonly string _name;
-        public int index;
-        public string modifier;
-        public NFAState startState;
-        public NFAState stopState;
+        private int _index;
+        private string _modifier;
+        private NFAState _startState;
+        private NFAState _stopState;
 
-        /** This rule's options */
-        protected IDictionary options;
+        /// <summary>
+        /// This rule's options.
+        /// </summary>
+        private IDictionary<object, object> _options;
 
         public static readonly HashSet<string> legalOptions = new HashSet<string>()
             {
@@ -67,110 +65,146 @@ namespace Antlr3.Tool
                 "backtrack"
             };
 
-        /** The AST representing the whole rule */
-        public GrammarAST tree;
+        /// <summary>
+        /// The AST representing the whole rule.
+        /// </summary>
+        private GrammarAST _tree;
 
-        /** To which grammar does this belong? */
-        public Grammar grammar;
+        /// <summary>
+        /// To which grammar does this belong?
+        /// </summary>
+        private Grammar _grammar;
 
-        /** For convenience, track the argument def AST action node if any */
-        public GrammarAST argActionAST;
+        /// <summary>
+        /// For convenience, track the argument def AST action node if any.
+        /// </summary>
+        private GrammarAST _argActionAST;
 
-        public GrammarAST EORNode;
+        private GrammarAST _endOfRuleNode;
 
-        /** The return values of a rule and predefined rule attributes */
-        public AttributeScope returnScope;
+        /// <summary>
+        /// The return values of a rule and predefined rule attributes.
+        /// </summary>
+        private AttributeScope _returnScope;
 
-        public AttributeScope parameterScope;
+        private AttributeScope _parameterScope;
 
-        /** the attributes defined with "scope {...}" inside a rule */
-        public AttributeScope ruleScope;
+        /// <summary>
+        /// the attributes defined with "scope {...}" inside a rule
+        /// </summary>
+        private AttributeScope _ruleScope;
 
-        /** A list of scope names used by this rule */
-        public List<string> useScopes;
+        /// <summary>
+        /// A list of scope names used by this rule
+        /// </summary>
+        private List<string> _useScopes;
 
-        /** Exceptions that this rule can throw */
-        public HashSet<string> throwsSpec;
+        /// <summary>
+        /// Exceptions that this rule can throw
+        /// </summary>
+        private HashSet<string> _throwsSpec;
 
-        /** A list of all LabelElementPair attached to tokens like id=ID */
-        public Dictionary<string, Grammar.LabelElementPair> tokenLabels;
+        /// <summary>
+        /// A list of all LabelElementPair attached to tokens like id=ID
+        /// </summary>
+        private Dictionary<string, Grammar.LabelElementPair> _tokenLabels;
 
-        /** A list of all LabelElementPair attached to tokens like x=. in tree grammar */
-        public Dictionary<string, Grammar.LabelElementPair> wildcardTreeLabels;
+        /// <summary>
+        /// A list of all LabelElementPair attached to tokens like x=. in tree grammar
+        /// </summary>
+        private Dictionary<string, Grammar.LabelElementPair> _wildcardTreeLabels;
 
-        /** A list of all LabelElementPair attached to tokens like x+=. in tree grammar */
-        public Dictionary<string, Grammar.LabelElementPair> wildcardTreeListLabels;
+        /// <summary>
+        /// A list of all LabelElementPair attached to tokens like x+=. in tree grammar
+        /// </summary>
+        private Dictionary<string, Grammar.LabelElementPair> _wildcardTreeListLabels;
 
-        /** A list of all LabelElementPair attached to single char literals like x='a' */
-        public Dictionary<string, Grammar.LabelElementPair> charLabels;
+        /// <summary>
+        /// A list of all LabelElementPair attached to single char literals like x='a'
+        /// </summary>
+        private Dictionary<string, Grammar.LabelElementPair> _charLabels;
 
-        /** A list of all LabelElementPair attached to char literals like x+='a' */
-        public Dictionary<string, Grammar.LabelElementPair> charListLabels;
+        /// <summary>
+        /// A list of all LabelElementPair attached to char literals like x+='a'
+        /// </summary>
+        private Dictionary<string, Grammar.LabelElementPair> _charListLabels;
 
-        /** A list of all LabelElementPair attached to rule references like f=field */
-        public Dictionary<string, Grammar.LabelElementPair> ruleLabels;
+        /// <summary>
+        /// A list of all LabelElementPair attached to rule references like f=field
+        /// </summary>
+        private Dictionary<string, Grammar.LabelElementPair> _ruleLabels;
 
-        /** A list of all Token list LabelElementPair like ids+=ID */
-        public Dictionary<string, Grammar.LabelElementPair> tokenListLabels;
+        /// <summary>
+        /// A list of all Token list LabelElementPair like ids+=ID
+        /// </summary>
+        private Dictionary<string, Grammar.LabelElementPair> _tokenListLabels;
 
-        /** A list of all rule ref list LabelElementPair like ids+=expr */
-        public Dictionary<string, Grammar.LabelElementPair> ruleListLabels;
+        /// <summary>
+        /// A list of all rule ref list LabelElementPair like ids+=expr
+        /// </summary>
+        private Dictionary<string, Grammar.LabelElementPair> _ruleListLabels;
 
-        /** All labels go in here (plus being split per the above lists) to
-         *  catch dup label and label type mismatches.
-         */
-        protected internal IDictionary<string, Grammar.LabelElementPair> labelNameSpace =
+        /// <summary>
+        /// All labels go in here (plus being split per the above lists) to
+        /// catch dup label and label type mismatches.
+        /// </summary>
+        private  IDictionary<string, Grammar.LabelElementPair> _labelNameSpace =
             new Dictionary<string, Grammar.LabelElementPair>();
 
-        /** Map a name to an action for this rule.  Currently init is only
-         *  one we use, but we can add more in future.
-         *  The code generator will use this to fill holes in the rule template.
-         *  I track the AST node for the action in case I need the line number
-         *  for errors.  A better name is probably namedActions, but I don't
-         *  want everyone to have to change their code gen templates now.
-         */
-        private IDictionary<string, object> actions = new Dictionary<string, object>();
+        /// <summary>
+        /// Map a name to an action for this rule.  Currently init is only
+        /// one we use, but we can add more in future.
+        /// The code generator will use this to fill holes in the rule template.
+        /// I track the AST node for the action in case I need the line number
+        /// for errors.  A better name is probably namedActions, but I don't
+        /// want everyone to have to change their code gen templates now.
+        /// </summary>
+        private readonly IDictionary<string, object> _actions = new Dictionary<string, object>();
 
-        /** Track all executable actions other than named actions like @init.
-         *  Also tracks exception handlers, predicates, and rewrite rewrites.
-         *  We need to examine these actions before code generation so
-         *  that we can detect refs to $rule.attr etc...
-         */
-        private IList<GrammarAST> inlineActions = new List<GrammarAST>();
+        /// <summary>
+        /// Track all executable actions other than named actions like @init.
+        /// Also tracks exception handlers, predicates, and rewrite rewrites.
+        /// We need to examine these actions before code generation so
+        /// that we can detect refs to $rule.attr etc...
+        /// </summary>
+        private readonly IList<GrammarAST> _inlineActions = new List<GrammarAST>();
 
-        public int numberOfAlts;
+        private readonly int _numberOfAlts;
 
-        /** Each alt has a Map&lt;tokenRefName,List&lt;tokenRefAST&gt;&gt;; range 1..numberOfAlts.
-         *  So, if there are 3 ID refs in a rule's alt number 2, you'll have
-         *  altToTokenRef[2].get("ID").size()==3.  This is used to see if $ID is ok.
-         *  There must be only one ID reference in the alt for $ID to be ok in
-         *  an action--must be unique.
-         *
-         *  This also tracks '+' and "int" literal token references
-         *  (if not in LEXER).
-         *
-         *  Rewrite rules force tracking of all tokens.
-         */
-        private IDictionary<string, IList<GrammarAST>>[] altToTokenRefMap;
+        /// <summary>
+        /// Each alt has a Map&lt;tokenRefName,List&lt;tokenRefAST&gt;&gt;; range 1..numberOfAlts.
+        /// So, if there are 3 ID refs in a rule's alt number 2, you'll have
+        /// altToTokenRef[2].get("ID").size()==3.  This is used to see if $ID is ok.
+        /// There must be only one ID reference in the alt for $ID to be ok in
+        /// an action--must be unique.
+        ///
+        /// This also tracks '+' and "int" literal token references
+        /// (if not in LEXER).
+        ///
+        /// Rewrite rules force tracking of all tokens.
+        /// </summary>
+        private IDictionary<string, IList<GrammarAST>>[] _altToTokenRefMap;
 
-        /** Each alt has a Map&lt;ruleRefName,List&lt;ruleRefAST&gt;&gt;; range 1..numberOfAlts
-         *  So, if there are 3 expr refs in a rule's alt number 2, you'll have
-         *  altToRuleRef[2].get("expr").size()==3.  This is used to see if $expr is ok.
-         *  There must be only one expr reference in the alt for $expr to be ok in
-         *  an action--must be unique.
-         *
-         *  Rewrite rules force tracking of all rule result ASTs. 1..n
-         */
-        private IDictionary<string, IList<GrammarAST>>[] altToRuleRefMap;
+        /// <summary>
+        /// Each alt has a Map&lt;ruleRefName,List&lt;ruleRefAST&gt;&gt;; range 1..numberOfAlts
+        /// So, if there are 3 expr refs in a rule's alt number 2, you'll have
+        /// altToRuleRef[2].get("expr").size()==3.  This is used to see if $expr is ok.
+        /// There must be only one expr reference in the alt for $expr to be ok in
+        /// an action--must be unique.
+        ///
+        /// Rewrite rules force tracking of all rule result ASTs. 1..n
+        /// </summary>
+        private IDictionary<string, IList<GrammarAST>>[] _altToRuleRefMap;
 
-        /** Do not generate start, stop etc... in a return value struct unless
-         *  somebody references $r.start somewhere.
-         */
-        public bool referencedPredefinedRuleAttributes = false;
+        /// <summary>
+        /// Do not generate start, stop etc... in a return value struct unless
+        /// somebody references $r.start somewhere.
+        /// </summary>
+        private bool _referencedPredefinedRuleAttributes = false;
 
-        public bool isSynPred = false;
+        private bool _isSynPred = false;
 
-        public bool imported = false;
+        private bool _imported = false;
 
         public Rule( Grammar grammar,
                     string ruleName,
@@ -178,26 +212,78 @@ namespace Antlr3.Tool
                     int numberOfAlts )
         {
             this._name = ruleName;
-            this.index = ruleIndex;
-            this.numberOfAlts = numberOfAlts;
-            this.grammar = grammar;
-            throwsSpec = new HashSet<string>() { "RecognitionException" };
-            altToTokenRefMap = new IDictionary<string, IList<GrammarAST>>[numberOfAlts + 1]; //new Map[numberOfAlts + 1];
-            altToRuleRefMap = new IDictionary<string, IList<GrammarAST>>[numberOfAlts + 1]; //new Map[numberOfAlts + 1];
+            this._index = ruleIndex;
+            this._numberOfAlts = numberOfAlts;
+            this._grammar = grammar;
+            _throwsSpec = new HashSet<string>() { "RecognitionException" };
+            _altToTokenRefMap = new IDictionary<string, IList<GrammarAST>>[numberOfAlts + 1]; //new Map[numberOfAlts + 1];
+            _altToRuleRefMap = new IDictionary<string, IList<GrammarAST>>[numberOfAlts + 1]; //new Map[numberOfAlts + 1];
             for ( int alt = 1; alt <= numberOfAlts; alt++ )
             {
-                altToTokenRefMap[alt] = new Dictionary<string, IList<GrammarAST>>();
-                altToRuleRefMap[alt] = new Dictionary<string, IList<GrammarAST>>();
+                _altToTokenRefMap[alt] = new Dictionary<string, IList<GrammarAST>>();
+                _altToRuleRefMap[alt] = new Dictionary<string, IList<GrammarAST>>();
             }
         }
 
         #region Properties
 
+        public int Index
+        {
+            get
+            {
+                return _index;
+            }
+
+            set
+            {
+                _index = value;
+            }
+        }
+
+        public NFAState StartState
+        {
+            get
+            {
+                return _startState;
+            }
+
+            set
+            {
+                _startState = value;
+            }
+        }
+
+        public NFAState StopState
+        {
+            get
+            {
+                return _stopState;
+            }
+
+            set
+            {
+                _stopState = value;
+            }
+        }
+
+        public GrammarAST EORNode
+        {
+            get
+            {
+                return _endOfRuleNode;
+            }
+
+            set
+            {
+                _endOfRuleNode = value;
+            }
+        }
+
         public IDictionary<string, object> Actions
         {
             get
             {
-                return actions;
+                return _actions;
             }
         }
 
@@ -225,11 +311,63 @@ namespace Antlr3.Tool
             }
         }
 
+        protected internal IDictionary<string, Grammar.LabelElementPair> LabelNameSpace
+        {
+            get
+            {
+                return _labelNameSpace;
+            }
+
+            set
+            {
+                _labelNameSpace = value;
+            }
+        }
+
+        public bool Imported
+        {
+            get
+            {
+                return _imported;
+            }
+
+            set
+            {
+                _imported = value;
+            }
+        }
+
         public ICollection<GrammarAST> InlineActions
         {
             get
             {
-                return GetInlineActions();
+                return _inlineActions;
+            }
+        }
+
+        public bool IsSynPred
+        {
+            get
+            {
+                return _isSynPred;
+            }
+
+            set
+            {
+                _isSynPred = value;
+            }
+        }
+
+        public string Modifier
+        {
+            get
+            {
+                return _modifier;
+            }
+
+            set
+            {
+                _modifier = value;
             }
         }
 
@@ -241,21 +379,230 @@ namespace Antlr3.Tool
             }
         }
 
-        [CLSCompliant(false)]
+        public int NumberOfAlts
+        {
+            get
+            {
+                return _numberOfAlts;
+            }
+        }
+
+        public bool ReferencedPredefinedRuleAttributes
+        {
+            get
+            {
+                return _referencedPredefinedRuleAttributes;
+            }
+
+            set
+            {
+                _referencedPredefinedRuleAttributes = value;
+            }
+        }
+
         public IDictionary<string, Grammar.LabelElementPair> RuleLabels
         {
             get
             {
-                return GetRuleLabels();
+                return _ruleLabels;
             }
         }
 
-        [CLSCompliant(false)]
+        protected IDictionary<object, object> Options
+        {
+            get
+            {
+                return _options;
+            }
+
+            set
+            {
+                _options = value;
+            }
+        }
+
+        public GrammarAST Tree
+        {
+            get
+            {
+                return _tree;
+            }
+
+            set
+            {
+                _tree = value;
+            }
+        }
+
+        public Grammar Grammar
+        {
+            get
+            {
+                return _grammar;
+            }
+
+            set
+            {
+                _grammar = value;
+            }
+        }
+
+        public GrammarAST ArgActionAST
+        {
+            get
+            {
+                return _argActionAST;
+            }
+
+            set
+            {
+                _argActionAST = value;
+            }
+        }
+
+        public AttributeScope ReturnScope
+        {
+            get
+            {
+                return _returnScope;
+            }
+
+            set
+            {
+                _returnScope = value;
+            }
+        }
+
+        public AttributeScope ParameterScope
+        {
+            get
+            {
+                return _parameterScope;
+            }
+
+            set
+            {
+                _parameterScope = value;
+            }
+        }
+
+        public AttributeScope RuleScope
+        {
+            get
+            {
+                return _ruleScope;
+            }
+
+            set
+            {
+                _ruleScope = value;
+            }
+        }
+
+        public List<string> UseScopes
+        {
+            get
+            {
+                return _useScopes;
+            }
+
+            set
+            {
+                _useScopes = value;
+            }
+        }
+
+        public HashSet<string> ThrowsSpec
+        {
+            get
+            {
+                return _throwsSpec;
+            }
+        }
+
+        public Dictionary<string, Grammar.LabelElementPair> TokenLabels
+        {
+            get
+            {
+                return _tokenLabels;
+            }
+
+            set
+            {
+                _tokenLabels = value;
+            }
+        }
+
+        public Dictionary<string, Grammar.LabelElementPair> WildcardTreeLabels
+        {
+            get
+            {
+                return _wildcardTreeLabels;
+            }
+
+            set
+            {
+                _wildcardTreeLabels = value;
+            }
+        }
+
+        public Dictionary<string, Grammar.LabelElementPair> WildcardTreeListLabels
+        {
+            get
+            {
+                return _wildcardTreeListLabels;
+            }
+
+            set
+            {
+                _wildcardTreeListLabels = value;
+            }
+        }
+
+        public Dictionary<string, Grammar.LabelElementPair> CharLabels
+        {
+            get
+            {
+                return _charLabels;
+            }
+
+            set
+            {
+                _charLabels = value;
+            }
+        }
+
+        public Dictionary<string, Grammar.LabelElementPair> CharListLabels
+        {
+            get
+            {
+                return _charListLabels;
+            }
+
+            set
+            {
+                _charListLabels = value;
+            }
+        }
+
+        public Dictionary<string, Grammar.LabelElementPair> TokenListLabels
+        {
+            get
+            {
+                return _tokenListLabels;
+            }
+
+            set
+            {
+                _tokenListLabels = value;
+            }
+        }
+
         public IDictionary<string, Grammar.LabelElementPair> RuleListLabels
         {
             get
             {
-                return GetRuleListLabels();
+                return _ruleListLabels;
             }
         }
 
@@ -292,49 +639,49 @@ namespace Antlr3.Tool
 
         public virtual void DefineLabel( IToken label, GrammarAST elementRef, LabelType type )
         {
-            Grammar.LabelElementPair pair = new Grammar.LabelElementPair( grammar, label, elementRef );
+            Grammar.LabelElementPair pair = new Grammar.LabelElementPair( Grammar, label, elementRef );
             pair.type = type;
-            labelNameSpace[label.Text] = pair;
+            LabelNameSpace[label.Text] = pair;
             switch (type)
             {
             case LabelType.Token:
-                tokenLabels = tokenLabels ?? new Dictionary<string, Grammar.LabelElementPair>();
-                tokenLabels[label.Text] = pair;
+                TokenLabels = TokenLabels ?? new Dictionary<string, Grammar.LabelElementPair>();
+                TokenLabels[label.Text] = pair;
                 break;
 
             case LabelType.WildcardTree:
-                wildcardTreeLabels = wildcardTreeLabels ?? new Dictionary<string, Grammar.LabelElementPair>();
-                wildcardTreeLabels[label.Text] = pair;
+                WildcardTreeLabels = WildcardTreeLabels ?? new Dictionary<string, Grammar.LabelElementPair>();
+                WildcardTreeLabels[label.Text] = pair;
                 break;
 
             case LabelType.WildcardTreeList:
-                wildcardTreeListLabels = wildcardTreeListLabels ?? new Dictionary<string, Grammar.LabelElementPair>();
-                wildcardTreeListLabels[label.Text] = pair;
+                WildcardTreeListLabels = WildcardTreeListLabels ?? new Dictionary<string, Grammar.LabelElementPair>();
+                WildcardTreeListLabels[label.Text] = pair;
                 break;
 
             case LabelType.Rule:
-                ruleLabels = ruleLabels ?? new Dictionary<string, Grammar.LabelElementPair>();
-                ruleLabels[label.Text] = pair;
+                _ruleLabels = _ruleLabels ?? new Dictionary<string, Grammar.LabelElementPair>();
+                _ruleLabels[label.Text] = pair;
                 break;
 
             case LabelType.TokenList:
-                tokenListLabels = tokenListLabels ?? new Dictionary<string, Grammar.LabelElementPair>();
-                tokenListLabels[label.Text] = pair;
+                TokenListLabels = TokenListLabels ?? new Dictionary<string, Grammar.LabelElementPair>();
+                TokenListLabels[label.Text] = pair;
                 break;
 
             case LabelType.RuleList:
-                ruleListLabels = ruleListLabels ?? new Dictionary<string, Grammar.LabelElementPair>();
-                ruleListLabels[label.Text] = pair;
+                _ruleListLabels = _ruleListLabels ?? new Dictionary<string, Grammar.LabelElementPair>();
+                _ruleListLabels[label.Text] = pair;
                 break;
 
             case LabelType.Char:
-                charLabels = charLabels ?? new Dictionary<string, Grammar.LabelElementPair>();
-                charLabels[label.Text] = pair;
+                CharLabels = CharLabels ?? new Dictionary<string, Grammar.LabelElementPair>();
+                CharLabels[label.Text] = pair;
                 break;
 
             case LabelType.CharList:
-                charListLabels = charListLabels ?? new Dictionary<string, Grammar.LabelElementPair>();
-                charListLabels[label.Text] = pair;
+                CharListLabels = CharListLabels ?? new Dictionary<string, Grammar.LabelElementPair>();
+                CharListLabels[label.Text] = pair;
                 break;
 
             default:
@@ -345,34 +692,24 @@ namespace Antlr3.Tool
         public virtual Grammar.LabelElementPair GetLabel( string name )
         {
             Grammar.LabelElementPair pair;
-            labelNameSpace.TryGetValue(name, out pair);
+            LabelNameSpace.TryGetValue(name, out pair);
             return pair;
         }
 
         public virtual Grammar.LabelElementPair GetTokenLabel( string name )
         {
             Grammar.LabelElementPair pair = null;
-            if (tokenLabels != null)
-                tokenLabels.TryGetValue(name, out pair);
+            if (TokenLabels != null)
+                TokenLabels.TryGetValue(name, out pair);
 
             return pair;
-        }
-
-        public virtual IDictionary<string, Grammar.LabelElementPair> GetRuleLabels()
-        {
-            return ruleLabels;
-        }
-
-        public virtual IDictionary<string, Grammar.LabelElementPair> GetRuleListLabels()
-        {
-            return ruleListLabels;
         }
 
         public virtual Grammar.LabelElementPair GetRuleLabel( string name )
         {
             Grammar.LabelElementPair pair = null;
-            if ( ruleLabels != null )
-                ruleLabels.TryGetValue(name, out pair);
+            if ( RuleLabels != null )
+                RuleLabels.TryGetValue(name, out pair);
 
             return pair;
         }
@@ -380,8 +717,8 @@ namespace Antlr3.Tool
         public virtual Grammar.LabelElementPair GetTokenListLabel( string name )
         {
             Grammar.LabelElementPair pair = null;
-            if (tokenListLabels != null)
-                tokenListLabels.TryGetValue(name, out pair);
+            if (TokenListLabels != null)
+                TokenListLabels.TryGetValue(name, out pair);
 
             return pair;
         }
@@ -389,8 +726,8 @@ namespace Antlr3.Tool
         public virtual Grammar.LabelElementPair GetRuleListLabel( string name )
         {
             Grammar.LabelElementPair pair = null;
-            if (ruleListLabels != null)
-                ruleListLabels.TryGetValue(name, out pair);
+            if (RuleListLabels != null)
+                RuleListLabels.TryGetValue(name, out pair);
 
             return pair;
         }
@@ -403,49 +740,52 @@ namespace Antlr3.Tool
          */
         public virtual void TrackTokenReferenceInAlt( GrammarAST refAST, int outerAltNum )
         {
-            IList<GrammarAST> refs = altToTokenRefMap[outerAltNum].get( refAST.Text );
+            IList<GrammarAST> refs = _altToTokenRefMap[outerAltNum].get( refAST.Text );
             if ( refs == null )
             {
                 refs = new List<GrammarAST>();
-                altToTokenRefMap[outerAltNum][refAST.Text] = refs;
+                _altToTokenRefMap[outerAltNum][refAST.Text] = refs;
             }
             refs.Add( refAST );
         }
 
-        public virtual IList GetTokenRefsInAlt( string @ref, int outerAltNum )
+        public virtual IList<GrammarAST> GetTokenRefsInAlt( string @ref, int outerAltNum )
         {
-            if ( altToTokenRefMap[outerAltNum] != null )
+            if ( _altToTokenRefMap[outerAltNum] != null )
             {
-                IList tokenRefASTs = (IList)altToTokenRefMap[outerAltNum].get( @ref );
+                IList<GrammarAST> tokenRefASTs = _altToTokenRefMap[outerAltNum].get( @ref );
                 return tokenRefASTs;
             }
+
             return null;
         }
 
         public virtual void TrackRuleReferenceInAlt( GrammarAST refAST, int outerAltNum )
         {
-            IList<GrammarAST> refs = altToRuleRefMap[outerAltNum].get( refAST.Text );
+            IList<GrammarAST> refs = _altToRuleRefMap[outerAltNum].get( refAST.Text );
             if ( refs == null )
             {
                 refs = new List<GrammarAST>();
-                altToRuleRefMap[outerAltNum][refAST.Text] = refs;
+                _altToRuleRefMap[outerAltNum][refAST.Text] = refs;
             }
+
             refs.Add( refAST );
         }
 
-        public virtual IList GetRuleRefsInAlt( string @ref, int outerAltNum )
+        public virtual IList<GrammarAST> GetRuleRefsInAlt( string @ref, int outerAltNum )
         {
-            if ( altToRuleRefMap[outerAltNum] != null )
+            if ( _altToRuleRefMap[outerAltNum] != null )
             {
-                IList ruleRefASTs = (IList)altToRuleRefMap[outerAltNum].get( @ref );
+                IList<GrammarAST> ruleRefASTs = _altToRuleRefMap[outerAltNum].get( @ref );
                 return ruleRefASTs;
             }
+
             return null;
         }
 
         public virtual ICollection<string> GetTokenRefsInAlt( int altNum )
         {
-            return altToTokenRefMap[altNum].Keys;
+            return _altToTokenRefMap[altNum].Keys;
         }
 
         /** For use with rewrite rules, we must track all tokens matched on the
@@ -455,7 +795,7 @@ namespace Antlr3.Tool
          */
         public virtual ICollection<string> GetAllTokenRefsInAltsWithRewrites()
         {
-            string output = (string)grammar.GetOption( "output" );
+            string output = (string)Grammar.GetOption( "output" );
             ICollection<string> tokens = new HashSet<string>();
             if ( output == null || !output.Equals( "AST" ) )
             {
@@ -464,15 +804,15 @@ namespace Antlr3.Tool
             }
 
             //System.out.println("blk "+tree.findFirstType(ANTLRParser.BLOCK).toStringTree());
-            for (int i = 1; i <= numberOfAlts; i++)
+            for (int i = 1; i <= _numberOfAlts; i++)
             {
                 if ( HasRewrite(i) )
                 {
-                    foreach ( string tokenName in altToTokenRefMap[i].Keys )
+                    foreach ( string tokenName in _altToTokenRefMap[i].Keys )
                     {
                         // convert token name like ID to ID, "void" to 31
-                        int ttype = grammar.GetTokenType( tokenName );
-                        string label = grammar.generator.GetTokenTypeAsTargetLabel( ttype );
+                        int ttype = Grammar.GetTokenType( tokenName );
+                        string label = Grammar.generator.GetTokenTypeAsTargetLabel( ttype );
                         tokens.Add( label );
                     }
                 }
@@ -483,7 +823,7 @@ namespace Antlr3.Tool
 
         public virtual ICollection<string> GetRuleRefsInAlt( int outerAltNum )
         {
-            return altToRuleRefMap[outerAltNum].Keys;
+            return _altToRuleRefMap[outerAltNum].Keys;
         }
 
         /** For use with rewrite rules, we must track all rule AST results on the
@@ -492,21 +832,16 @@ namespace Antlr3.Tool
          */
         public virtual ICollection<string> GetAllRuleRefsInAltsWithRewrites()
         {
-            var rules = from i in Enumerable.Range( 1, numberOfAlts )
+            var rules = from i in Enumerable.Range( 1, _numberOfAlts )
                         where HasRewrite(i)
-                        select altToRuleRefMap[i].Keys;
+                        select _altToRuleRefMap[i].Keys;
 
             return new HashSet<string>( rules.SelectMany( r => r ) );
         }
 
-        public virtual IList<GrammarAST> GetInlineActions()
-        {
-            return inlineActions;
-        }
-
         public virtual bool HasRewrite( int i )
         {
-            GrammarAST blk = tree.FindFirstType(ANTLRParser.BLOCK);
+            GrammarAST blk = Tree.FindFirstType(ANTLRParser.BLOCK);
             GrammarAST alt = blk.GetBlockAlt(i);
             GrammarAST rew = (GrammarAST)alt.getNextSibling();
             if (rew != null && rew.Type == ANTLRParser.REWRITES)
@@ -526,9 +861,9 @@ namespace Antlr3.Tool
             {
                 return scope;
             }
-            if ( ruleScope != null && ruleScope.GetAttribute( name ) != null )
+            if ( RuleScope != null && RuleScope.GetAttribute( name ) != null )
             {
-                scope = ruleScope;
+                scope = RuleScope;
             }
             return scope;
         }
@@ -537,18 +872,18 @@ namespace Antlr3.Tool
         public virtual AttributeScope GetLocalAttributeScope( string name )
         {
             AttributeScope scope = null;
-            if ( returnScope != null && returnScope.GetAttribute( name ) != null )
+            if ( ReturnScope != null && ReturnScope.GetAttribute( name ) != null )
             {
-                scope = returnScope;
+                scope = ReturnScope;
             }
-            else if ( parameterScope != null && parameterScope.GetAttribute( name ) != null )
+            else if ( ParameterScope != null && ParameterScope.GetAttribute( name ) != null )
             {
-                scope = parameterScope;
+                scope = ParameterScope;
             }
             else
             {
                 AttributeScope rulePropertiesScope =
-                    RuleLabelScope.grammarTypeToRulePropertiesScope[(int)grammar.type];
+                    RuleLabelScope.grammarTypeToRulePropertiesScope[(int)Grammar.type];
                 if ( rulePropertiesScope.GetAttribute( name ) != null )
                 {
                     scope = rulePropertiesScope;
@@ -566,18 +901,18 @@ namespace Antlr3.Tool
                                       CodeGenerator generator )
         {
             GrammarAST uniqueRefAST;
-            if ( grammar.type != GrammarType.Lexer &&
+            if ( Grammar.type != GrammarType.Lexer &&
                  Rule.GetRuleType(refdSymbol) == RuleType.Lexer )
             {
                 // symbol is a token
-                IList tokenRefs = GetTokenRefsInAlt( refdSymbol, outerAltNum );
-                uniqueRefAST = (GrammarAST)tokenRefs[0];
+                IList<GrammarAST> tokenRefs = GetTokenRefsInAlt( refdSymbol, outerAltNum );
+                uniqueRefAST = tokenRefs[0];
             }
             else
             {
                 // symbol is a rule
-                IList ruleRefs = GetRuleRefsInAlt( refdSymbol, outerAltNum );
-                uniqueRefAST = (GrammarAST)ruleRefs[0];
+                IList<GrammarAST> ruleRefs = GetRuleRefsInAlt( refdSymbol, outerAltNum );
+                uniqueRefAST = ruleRefs[0];
             }
             if ( uniqueRefAST.code == null )
             {
@@ -597,14 +932,14 @@ namespace Antlr3.Tool
                 // else create new label
                 labelName = generator.CreateUniqueLabel( refdSymbol );
                 CommonToken label = new CommonToken( ANTLRParser.ID, labelName );
-                if ( grammar.type != GrammarType.Lexer &&
+                if ( Grammar.type != GrammarType.Lexer &&
                      Rule.GetRuleType(refdSymbol) == Tool.RuleType.Lexer )
                 {
-                    grammar.DefineTokenRefLabel( Name, label, uniqueRefAST );
+                    Grammar.DefineTokenRefLabel( Name, label, uniqueRefAST );
                 }
                 else
                 {
-                    grammar.DefineRuleRefLabel( Name, label, uniqueRefAST );
+                    Grammar.DefineRuleRefLabel( Name, label, uniqueRefAST );
                 }
                 uniqueRefAST.code.SetAttribute( "label", labelName );
             }
@@ -619,32 +954,32 @@ namespace Antlr3.Tool
         public virtual bool GetHasMultipleReturnValues()
         {
             return
-                referencedPredefinedRuleAttributes || grammar.BuildAST ||
-                grammar.BuildTemplate ||
-                ( returnScope != null && returnScope.Attributes.Count > 1 );
+                _referencedPredefinedRuleAttributes || Grammar.BuildAST ||
+                Grammar.BuildTemplate ||
+                ( ReturnScope != null && ReturnScope.Attributes.Count > 1 );
         }
 
         public virtual bool GetHasSingleReturnValue()
         {
             return
-                !( referencedPredefinedRuleAttributes || grammar.BuildAST ||
-                  grammar.BuildTemplate ) &&
-                                           ( returnScope != null && returnScope.Attributes.Count == 1 );
+                !( _referencedPredefinedRuleAttributes || Grammar.BuildAST ||
+                  Grammar.BuildTemplate ) &&
+                                           ( ReturnScope != null && ReturnScope.Attributes.Count == 1 );
         }
 
         public virtual bool GetHasReturnValue()
         {
             return
-                referencedPredefinedRuleAttributes || grammar.BuildAST ||
-                grammar.BuildTemplate ||
-                ( returnScope != null && returnScope.Attributes.Count > 0 );
+                _referencedPredefinedRuleAttributes || Grammar.BuildAST ||
+                Grammar.BuildTemplate ||
+                ( ReturnScope != null && ReturnScope.Attributes.Count > 0 );
         }
 
         public virtual string GetSingleValueReturnType()
         {
-            if ( returnScope != null && returnScope.Attributes.Count == 1 )
+            if ( ReturnScope != null && ReturnScope.Attributes.Count == 1 )
             {
-                return returnScope.Attributes[0].Type;
+                return ReturnScope.Attributes[0].Type;
                 //ICollection<Attribute> retvalAttrs = returnScope.attributes.Values;
                 //return retvalAttrs.First().Type;
 
@@ -656,9 +991,9 @@ namespace Antlr3.Tool
 
         public virtual string GetSingleValueReturnName()
         {
-            if ( returnScope != null && returnScope.Attributes.Count == 1 )
+            if ( ReturnScope != null && ReturnScope.Attributes.Count == 1 )
             {
-                return returnScope.Attributes[0].Name;
+                return ReturnScope.Attributes[0].Name;
             }
             return null;
         }
@@ -672,22 +1007,22 @@ namespace Antlr3.Tool
         {
             //JSystem.@out.println("rule @"+nameAST.getText()+"{"+actionAST.getText()+"}");
             string actionName = nameAST.Text;
-            GrammarAST a = (GrammarAST)actions.get( actionName );
+            GrammarAST a = (GrammarAST)_actions.get( actionName );
             if ( a != null )
             {
                 ErrorManager.GrammarError(
-                    ErrorManager.MSG_ACTION_REDEFINITION, grammar,
+                    ErrorManager.MSG_ACTION_REDEFINITION, Grammar,
                     nameAST.Token, nameAST.Text );
             }
             else
             {
-                actions[actionName] = actionAST;
+                _actions[actionName] = actionAST;
             }
         }
 
         public virtual void TrackInlineAction( GrammarAST actionAST )
         {
-            inlineActions.Add( actionAST );
+            _inlineActions.Add( actionAST );
         }
 
         /** Save the option key/value pair and process it; return the key
@@ -698,28 +1033,28 @@ namespace Antlr3.Tool
             if ( !legalOptions.Contains( key ) )
             {
                 ErrorManager.GrammarError( ErrorManager.MSG_ILLEGAL_OPTION,
-                                          grammar,
+                                          Grammar,
                                           optionsStartToken,
                                           key );
                 return null;
             }
-            if ( options == null )
+            if ( Options == null )
             {
-                options = new Dictionary<object, object>();
+                Options = new Dictionary<object, object>();
             }
             if ( key.Equals( "memoize" ) && value.ToString().Equals( "true" ) )
             {
-                grammar.atLeastOneRuleMemoizes = true;
+                Grammar.atLeastOneRuleMemoizes = true;
             }
             if ( key == "backtrack" && value.ToString() == "true" )
             {
-                grammar.composite.GetRootGrammar().atLeastOneBacktrackOption = true;
+                Grammar.composite.GetRootGrammar().atLeastOneBacktrackOption = true;
             }
             if ( key.Equals( "k" ) )
             {
-                grammar.numberOfManualLookaheadOptions++;
+                Grammar.numberOfManualLookaheadOptions++;
             }
-            options[key] = value;
+            Options[key] = value;
             return key;
         }
 
@@ -727,7 +1062,7 @@ namespace Antlr3.Tool
         {
             if ( options == null )
             {
-                this.options = null;
+                this.Options = null;
                 return;
             }
 
@@ -760,7 +1095,7 @@ namespace Antlr3.Tool
         public override string ToString()
         {
             // used for testing
-            return "[" + grammar.name + "." + Name + ",index=" + index + ",line=" + tree.Token.Line + "]";
+            return "[" + Grammar.name + "." + Name + ",index=" + Index + ",line=" + Tree.Token.Line + "]";
         }
     }
 }

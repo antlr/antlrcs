@@ -1,10 +1,10 @@
 ﻿/*
- * [The "BSD licence"]
- * Copyright (c) 2005-2008 Terence Parr
+ * [The "BSD license"]
+ * Copyright (c) 2011 Terence Parr
  * All rights reserved.
  *
  * Conversion to C#:
- * Copyright (c) 2008-2009 Sam Harwell, Pixel Mine, Inc.
+ * Copyright (c) 2011 Sam Harwell, Pixel Mine, Inc.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -41,7 +41,6 @@ namespace Antlr3.Analysis
     using CodeGenerator = Antlr3.Codegen.CodeGenerator;
     using IIntSet = Antlr3.Misc.IIntSet;
     using IIntStream = Antlr.Runtime.IIntStream;
-    using IList = System.Collections.IList;
     using IntervalSet = Antlr3.Misc.IntervalSet;
     using StringBuilder = System.Text.StringBuilder;
     using StringTemplate = Antlr3.ST.StringTemplate;
@@ -1141,7 +1140,7 @@ namespace Antlr3.Analysis
             }
             NFAState nfaStart = NFADecisionStartState;
             Rule r = nfa.grammar.GetLocallyDefinedRule( Grammar.ArtificialTokensRuleName );
-            NFAState TokensRuleStart = r.startState;
+            NFAState TokensRuleStart = r.StartState;
             NFAState TokensDecisionStart =
                 (NFAState)TokensRuleStart.transition[0].Target;
             return nfaStart == TokensDecisionStart;

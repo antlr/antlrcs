@@ -1,10 +1,10 @@
 /*
- * [The "BSD licence"]
- * Copyright (c) 2005-2008 Terence Parr
+ * [The "BSD license"]
+ * Copyright (c) 2011 Terence Parr
  * All rights reserved.
  *
  * Conversion to C#:
- * Copyright (c) 2008-2009 Sam Harwell, Pixel Mine, Inc.
+ * Copyright (c) 2011 Sam Harwell, Pixel Mine, Inc.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -32,17 +32,16 @@
 
 namespace Antlr3.Tool
 {
+    using System;
     using System.Collections.Generic;
     using System.Linq;
+    using System.Reflection;
     using Antlr.Runtime.JavaExtensions;
+    using Antlr3.Grammars;
 
     using DFA = Antlr3.Analysis.DFA;
-    using Stats = Antlr.Runtime.Misc.Stats;
     using StringBuilder = System.Text.StringBuilder;
     using StringComparison = System.StringComparison;
-    using System.Reflection;
-    using System;
-    using Antlr3.Grammars;
 
     public class GrammarReport
     {
@@ -99,7 +98,7 @@ namespace Antlr3.Tool
                 Rule r = (Rule)it.next();
                 if (!r.Name.StartsWith(Grammar.SynpredRulePrefix, StringComparison.OrdinalIgnoreCase))
                 {
-                    totalNonSynPredProductions += r.numberOfAlts;
+                    totalNonSynPredProductions += r.NumberOfAlts;
                     totalNonSynPredRules++;
                 }
             }

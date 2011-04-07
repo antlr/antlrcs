@@ -1,10 +1,10 @@
 /*
- * [The "BSD licence"]
- * Copyright (c) 2005-2008 Terence Parr
+ * [The "BSD license"]
+ * Copyright (c) 2011 Terence Parr
  * All rights reserved.
  *
  * Conversion to C#:
- * Copyright (c) 2008-2009 Sam Harwell, Pixel Mine, Inc.
+ * Copyright (c) 2011 Sam Harwell, Pixel Mine, Inc.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -108,9 +108,9 @@ namespace Antlr3.Tool
                 return rulePropertiesScope.GetAttribute( name );
             }
 
-            if ( referencedRule.returnScope != null )
+            if ( referencedRule.ReturnScope != null )
             {
-                return referencedRule.returnScope.GetAttribute( name );
+                return referencedRule.ReturnScope.GetAttribute( name );
             }
             return null;
         }

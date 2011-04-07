@@ -1,10 +1,10 @@
 ﻿/*
- * [The "BSD licence"]
- * Copyright (c) 2005-2008 Terence Parr
+ * [The "BSD license"]
+ * Copyright (c) 2011 Terence Parr
  * All rights reserved.
  *
  * Conversion to C#:
- * Copyright (c) 2008-2009 Sam Harwell, Pixel Mine, Inc.
+ * Copyright (c) 2011 Sam Harwell, Pixel Mine, Inc.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -60,7 +60,6 @@ namespace Antlr3.Codegen
     using GrammarAST = Antlr3.Tool.GrammarAST;
     using GrammarType = Antlr3.Tool.GrammarType;
     using IIntSet = Antlr3.Misc.IIntSet;
-    using IList = System.Collections.IList;
     using Interval = Antlr3.Misc.Interval;
     using IntervalSet = Antlr3.Misc.IntervalSet;
     using IOException = System.IO.IOException;
@@ -69,8 +68,6 @@ namespace Antlr3.Codegen
     using IToken = Antlr.Runtime.IToken;
     using Label = Antlr3.Analysis.Label;
     using LookaheadSet = Antlr3.Analysis.LookaheadSet;
-    using MethodImpl = System.Runtime.CompilerServices.MethodImplAttribute;
-    using MethodImplOptions = System.Runtime.CompilerServices.MethodImplOptions;
     using NFAState = Antlr3.Analysis.NFAState;
     using Path = System.IO.Path;
     using RecognitionException = Antlr.Runtime.RecognitionException;
@@ -814,7 +811,7 @@ namespace Antlr3.Codegen
             foreach ( string name in actionNameSet )
             {
                 GrammarAST actionAST = (GrammarAST)scopeActions.get( name );
-                IList chunks = TranslateAction( ruleName, actionAST );
+                IList<object> chunks = TranslateAction( ruleName, actionAST );
                 scopeActions[name] = chunks; // replace with translation
             }
         }
@@ -876,12 +873,12 @@ namespace Antlr3.Codegen
             }
             //JSystem.@out.println(" "+follow);
 
-            IList tokenTypeList = null;
+            IList<int> tokenTypeList = null;
             ulong[] words = null;
             if ( follow.tokenTypeSet == null )
             {
                 words = new ulong[1];
-                tokenTypeList = new List<object>();
+                tokenTypeList = new List<int>();
             }
             else
             {
@@ -1202,7 +1199,7 @@ namespace Antlr3.Codegen
             return vocabFileST;
         }
 
-        public virtual IList TranslateAction( string ruleName,
+        public virtual IList<object> TranslateAction( string ruleName,
                                     GrammarAST actionTree )
         {
             if ( actionTree.Type == ANTLRParser.ARG_ACTION )
@@ -1210,7 +1207,7 @@ namespace Antlr3.Codegen
                 return TranslateArgAction( ruleName, actionTree );
             }
             ActionTranslator translator = new ActionTranslator( this, ruleName, actionTree );
-            IList chunks = translator.TranslateToChunks();
+            IList<object> chunks = translator.TranslateToChunks();
             chunks = target.PostProcessAction( chunks, actionTree.Token );
             return chunks;
         }
@@ -1220,12 +1217,12 @@ namespace Antlr3.Codegen
          *  of chunks, must cat together into a StringTemplate>.  Don't translate
          *  to strings early as we need to eval templates in context.
          */
-        public virtual List<StringTemplate> TranslateArgAction( string ruleName,
+        public virtual List<object> TranslateArgAction( string ruleName,
                                                GrammarAST actionTree )
         {
             string actionText = actionTree.Token.Text;
             List<string> args = GetListOfArgumentsFromAction( actionText, ',' );
-            List<StringTemplate> translatedArgs = new List<StringTemplate>();
+            List<object> translatedArgs = new List<object>();
             foreach ( string arg in args )
             {
                 if ( arg != null )
@@ -1236,7 +1233,7 @@ namespace Antlr3.Codegen
                         new ActionTranslator( this, ruleName,
                                                   actionToken,
                                                   actionTree.outerAltNum );
-                    IList chunks = translator.TranslateToChunks();
+                    IList<object> chunks = translator.TranslateToChunks();
                     chunks = target.PostProcessAction( chunks, actionToken );
                     StringTemplate catST = new StringTemplate( templates, "<chunks>" );
                     catST.SetAttribute( "chunks", chunks );
@@ -1436,7 +1433,7 @@ namespace Antlr3.Codegen
             {
                 if ( r != null )
                 {
-                    scope = r.ruleScope; // if not global, might be rule scope
+                    scope = r.RuleScope; // if not global, might be rule scope
                 }
             }
             if ( scope == null )

@@ -112,7 +112,7 @@ rule
 				{
 					// attach start node to block for this rule
 					Rule thisR = grammar.GetLocallyDefinedRule(currentRuleName);
-					NFAState start = thisR.startState;
+					NFAState start = thisR.StartState;
 					start.associatedASTNode = $id;
 					start.AddTransition(new Transition(Label.EPSILON, g.left));
 
@@ -127,7 +127,7 @@ rule
 					}
 
 					// hook to end of rule node
-					NFAState end = thisR.stopState;
+					NFAState end = thisR.StopState;
 					g.right.AddTransition(new Transition(Label.EPSILON,end));
 				}
 			}
@@ -713,7 +713,7 @@ testSetElement returns [int alts=1]
 					throw new RecognitionException();
 				}
 				// recursively will invoke this rule to match elements in target rule ref
-				$alts += TestSetRule(rule.tree);
+				$alts += TestSetRule(rule.Tree);
 			}
 		}}
 	|   {grammar.type!=GrammarType.Lexer}? => s=STRING_LITERAL

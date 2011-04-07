@@ -1,10 +1,10 @@
 ﻿/*
- * [The "BSD licence"]
- * Copyright (c) 2005-2008 Terence Parr
+ * [The "BSD license"]
+ * Copyright (c) 2011 Terence Parr
  * All rights reserved.
  *
  * Conversion to C#:
- * Copyright (c) 2008-2009 Sam Harwell, Pixel Mine, Inc.
+ * Copyright (c) 2011 Sam Harwell, Pixel Mine, Inc.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -35,13 +35,12 @@ namespace Antlr3.Analysis
     using System.Collections.Generic;
     using System.Linq;
     using Antlr.Runtime.JavaExtensions;
+    using Antlr3.Misc;
 
     using BitSet = Antlr3.Misc.BitSet;
     using Console = System.Console;
     using ErrorManager = Antlr3.Tool.ErrorManager;
-    using IList = System.Collections.IList;
     using IToken = Antlr.Runtime.IToken;
-    using Antlr3.Misc;
 
     /** Code that embodies the NFA conversion to DFA. A new object is needed
      *  per DFA (also required for thread safety if multiple conversions
@@ -1813,7 +1812,7 @@ namespace Antlr3.Analysis
             // Sort ascending according to alt; alt i has higher precedence than i+1
             configsWithPreds.Sort( new AddPredicateTransitionsComparer() );
             //Collections.sort( configsWithPreds, new AddPredicateTransitionsComparer() );
-            IList predConfigsSortedByAlt = configsWithPreds;
+            IList<NFAConfiguration> predConfigsSortedByAlt = configsWithPreds;
             // Now, we can add edges emanating from d for these preds in right order
             for ( int i = 0; i < predConfigsSortedByAlt.Count; i++ )
             {

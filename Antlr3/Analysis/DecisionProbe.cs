@@ -1,10 +1,10 @@
 ﻿/*
- * [The "BSD licence"]
- * Copyright (c) 2005-2008 Terence Parr
+ * [The "BSD license"]
+ * Copyright (c) 2011 Terence Parr
  * All rights reserved.
  *
  * Conversion to C#:
- * Copyright (c) 2008-2009 Sam Harwell, Pixel Mine, Inc.
+ * Copyright (c) 2011 Sam Harwell, Pixel Mine, Inc.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -43,9 +43,7 @@ namespace Antlr3.Analysis
     using Grammar = Antlr3.Tool.Grammar;
     using GrammarAST = Antlr3.Tool.GrammarAST;
     using GrammarType = Antlr3.Tool.GrammarType;
-    using IList = System.Collections.IList;
     using IToken = Antlr.Runtime.IToken;
-    using Obsolete = System.ObsoleteAttribute;
     using StringBuilder = System.Text.StringBuilder;
 
     /** Collection of information about what is wrong with a decision as
@@ -430,7 +428,7 @@ namespace Antlr3.Analysis
          *  the extra state beginning each alt in my NFA structures).  Here,
          *  firstAlt=1.
          */
-        public virtual IList GetNFAPathStatesForAlt( int firstAlt,
+        public virtual IList<NFAState> GetNFAPathStatesForAlt( int firstAlt,
                                            int alt,
                                            IList<Label> labels )
         {
@@ -664,7 +662,7 @@ namespace Antlr3.Analysis
             foreach ( int stateI in dfaStatesUnaliased )
             {
                 // walk this DFA's config list
-                IList configs = (IList)configurationsMap.get( stateI );
+                IList<NFAConfiguration> configs = configurationsMap.get( stateI );
                 for ( int i = 0; i < configs.Count; i++ )
                 {
                     NFAConfiguration c = (NFAConfiguration)configs[i];

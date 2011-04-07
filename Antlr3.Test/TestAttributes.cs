@@ -180,7 +180,7 @@ namespace AntlrUnitTests
             g.CodeGenerator = generator;
             generator.GenRecognizer(); // forces load of templates
             Rule r = g.GetRule( "a" );
-            AttributeScope parameters = r.parameterScope;
+            AttributeScope parameters = r.ParameterScope;
             var attrs = parameters.Attributes;
             Assert.AreEqual("String[] ick", attrs.ElementAt(0).Decl.ToString(), "attribute mismatch");
             Assert.AreEqual("ick", attrs.ElementAt(0).Name, "parameter name mismatch");
@@ -308,7 +308,7 @@ namespace AntlrUnitTests
                 "        ;";
             Grammar g = new Grammar( grammar );
             Rule ra = g.GetRule( "a" );
-            var attrs = ra.parameterScope.Attributes;
+            var attrs = ra.ParameterScope.Attributes;
             Assert.AreEqual("HashMap<String,String> foo", attrs.ElementAt(0).Decl.ToString(), "attribute mismatch");
             Assert.AreEqual("foo", attrs.ElementAt(0).Name, "parameter name mismatch");
             Assert.AreEqual("HashMap<String,String>", attrs.ElementAt(0).Type, "declarator mismatch");
@@ -344,7 +344,7 @@ namespace AntlrUnitTests
                 "        ;";
             Grammar g = new Grammar( grammar );
             Rule ra = g.GetRule( "a" );
-            var attrs = ra.parameterScope.Attributes;
+            var attrs = ra.ParameterScope.Attributes;
 
             Assert.AreEqual("HashMap<String,String> foo", attrs.ElementAt(0).Decl.ToString().Trim(), "attribute mismatch");
             Assert.AreEqual("foo", attrs.ElementAt(0).Name, "parameter name mismatch");
@@ -384,7 +384,7 @@ namespace AntlrUnitTests
                 "a returns [HashMap<String,String> foo] : ;\n";
             Grammar g = new Grammar( grammar );
             Rule ra = g.GetRule( "a" );
-            var attrs = ra.returnScope.Attributes;
+            var attrs = ra.ReturnScope.Attributes;
             Assert.AreEqual("HashMap<String,String> foo", attrs.ElementAt(0).Decl.ToString(), "attribute mismatch");
             Assert.AreEqual("foo", attrs.ElementAt(0).Name, "parameter name mismatch");
             Assert.AreEqual("HashMap<String,String>", attrs.ElementAt(0).Type, "declarator mismatch");
@@ -2572,7 +2572,7 @@ namespace AntlrUnitTests
             Assert.AreEqual(0, equeue.errors.Count, "unexpected errors: " + equeue);
 
             Rule r = g.GetRule( "r" );
-            AttributeScope retScope = r.returnScope;
+            AttributeScope retScope = r.ReturnScope;
             var parameters = retScope.Attributes;
             Assert.IsNotNull(parameters, "missing return action");
             Assert.AreEqual( 1, parameters.Count );
@@ -2592,7 +2592,7 @@ namespace AntlrUnitTests
             Assert.AreEqual(0, equeue.errors.Count, "unexpected errors: " + equeue);
 
             Rule r = g.GetRule( "r" );
-            AttributeScope retScope = r.returnScope;
+            AttributeScope retScope = r.ReturnScope;
             var parameters = retScope.Attributes;
             Assert.IsNotNull(parameters, "missing return action");
             Assert.AreEqual( 3, parameters.Count );
@@ -2612,7 +2612,7 @@ namespace AntlrUnitTests
             Assert.AreEqual(0, equeue.errors.Count, "unexpected errors: " + equeue);
 
             Rule r = g.GetRule( "r" );
-            AttributeScope retScope = r.returnScope;
+            AttributeScope retScope = r.ReturnScope;
             var parameters = retScope.Attributes;
             Assert.IsNotNull(parameters, "missing return action");
             Assert.AreEqual( 1, parameters.Count );

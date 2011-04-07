@@ -85,7 +85,7 @@ namespace Antlr3.Targets
             return text.Split( '\n' );
         }
 
-        public override IList PostProcessAction( IList chunks, IToken actionToken )
+        public override IList<object> PostProcessAction( IList<object> chunks, IToken actionToken )
         {
             /* TODO
                - check for and report TAB usage

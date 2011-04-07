@@ -1,10 +1,10 @@
 ﻿/*
- * [The "BSD licence"]
- * Copyright (c) 2005-2008 Terence Parr
+ * [The "BSD license"]
+ * Copyright (c) 2011 Terence Parr
  * All rights reserved.
  *
  * Conversion to C#:
- * Copyright (c) 2008-2009 Sam Harwell, Pixel Mine, Inc.
+ * Copyright (c) 2011 Sam Harwell, Pixel Mine, Inc.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -121,7 +121,7 @@ namespace Antlr3.Tool
 
         public bool watchNFAConversion = false;
 
-        protected virtual void initTokenSymbolTables()
+        protected virtual void InitTokenSymbolTables()
         {
             // the faux token types take first NUM_FAUX_LABELS positions
             // then we must have room for the predefined runtime token types
@@ -149,7 +149,7 @@ namespace Antlr3.Tool
 
         public CompositeGrammar()
         {
-            initTokenSymbolTables();
+            InitTokenSymbolTables();
         }
 
         public CompositeGrammar( Grammar g )
@@ -310,7 +310,7 @@ namespace Antlr3.Tool
             {
                 Rule localRule = g.GetLocallyDefinedRule( r.Name );
                 // if locally defined or it's not local but synpred, don't make a delegation method
-                if ( localRule != null || r.isSynPred )
+                if ( localRule != null || r.IsSynPred )
                 {
                     // kill overridden rules
                     rules.Remove( r );

@@ -1,5 +1,5 @@
 ﻿/*
- * [The "BSD licence"]
+ * [The "BSD license"]
  * Copyright (c) 2011 Terence Parr
  * All rights reserved.
  *
@@ -48,8 +48,6 @@ namespace Antlr3.Tool
     using DateTime = System.DateTime;
     using Exception = System.Exception;
     using File = System.IO.File;
-    using IDictionary = System.Collections.IDictionary;
-    using IList = System.Collections.IList;
     using IOException = System.IO.IOException;
     using IToken = Antlr.Runtime.IToken;
     using ITree = Antlr.Runtime.Tree.ITree;
@@ -1244,9 +1242,9 @@ namespace Antlr3.Tool
             if ( actions.get( "lexer" ) != null )
             {
                 LexerGrammarST.SetAttribute( "actionNames",
-                                            ( (IDictionary)actions.get( "lexer" ) ).Keys );
+                                            ( actions.get( "lexer" ) ).Keys );
                 LexerGrammarST.SetAttribute( "actions",
-                                            ( (IDictionary)actions.get( "lexer" ) ).Values );
+                                            ( actions.get( "lexer" ) ).Values );
             }
             // make sure generated grammar has the same options
             if ( options != null )
@@ -1498,12 +1496,12 @@ namespace Antlr3.Tool
                 NFAState ruleBeginState = factory.NewState();
                 ruleBeginState.Description = "rule " + ruleName + " start";
                 ruleBeginState.enclosingRule = r;
-                r.startState = ruleBeginState;
+                r.StartState = ruleBeginState;
                 NFAState ruleEndState = factory.NewState();
                 ruleEndState.Description = "rule " + ruleName + " end";
                 ruleEndState.IsAcceptState = true;
                 ruleEndState.enclosingRule = r;
-                r.stopState = ruleEndState;
+                r.StopState = ruleEndState;
             }
         }
 
@@ -1594,7 +1592,7 @@ namespace Antlr3.Tool
                     if ( !externalAnalysisAbort && decisionStartState.NumberOfTransitions > 1 )
                     {
                         Rule r = decisionStartState.enclosingRule;
-                        if ( r.isSynPred && !synPredNamesUsedInDFA.Contains( r.Name ) )
+                        if ( r.IsSynPred && !synPredNamesUsedInDFA.Contains( r.Name ) )
                         {
                             continue;
                         }
@@ -1684,7 +1682,7 @@ namespace Antlr3.Tool
                                    decisionStartState.Description );
             }
 
-            if ( r.isSynPred && !synPredNamesUsedInDFA.Contains( enclosingRule ) )
+            if ( r.IsSynPred && !synPredNamesUsedInDFA.Contains( enclosingRule ) )
             {
                 return null;
             }
@@ -2025,17 +2023,17 @@ namespace Antlr3.Tool
             JSystem.@out.println("defineRule("+ruleName+",modifier="+modifier+
                                "): index="+r.index+", nalts="+numAlts);
             */
-            r.modifier = modifier ?? DefaultRuleModifier;
+            r.Modifier = modifier ?? DefaultRuleModifier;
             nameToRuleMap[ruleName] = r;
             SetRuleAST( ruleName, tree );
             r.SetOptions( options, ruleToken );
-            r.argActionAST = argActionAST;
+            r.ArgActionAST = argActionAST;
             composite.ruleIndexToRuleList.setSize( composite.ruleIndex + 1 );
             composite.ruleIndexToRuleList[composite.ruleIndex] = r;
             composite.ruleIndex++;
             if ( ruleName.StartsWith( SynpredRulePrefix ) )
             {
-                r.isSynPred = true;
+                r.IsSynPred = true;
             }
         }
 
@@ -2291,7 +2289,7 @@ namespace Antlr3.Tool
             Rule r = GetRule( scopeName, ruleName );
             if ( r != null )
             {
-                return r.index;
+                return r.Index;
             }
             return InvalidRuleIndex;
         }
@@ -2331,8 +2329,8 @@ namespace Antlr3.Tool
             }
             // generate if non-synpred or synpred used in a DFA
             Rule r = GetLocallyDefinedRule( ruleName );
-            return !r.isSynPred ||
-                   ( r.isSynPred && synPredNamesUsedInDFA.Contains( ruleName ) );
+            return !r.IsSynPred ||
+                   ( r.IsSynPred && synPredNamesUsedInDFA.Contains( ruleName ) );
         }
 
         public virtual AttributeScope DefineGlobalScope( string name, IToken scopeAction )
@@ -2644,7 +2642,7 @@ namespace Antlr3.Tool
                 // indicate that an action ref'd an attr unless it's in a lexer
                 // so that $ID.text refs don't force lexer rules to define
                 // return values...Token objects are created by the caller instead.
-                r.referencedPredefinedRuleAttributes = true;
+                r.ReferencedPredefinedRuleAttributes = true;
             }
         }
 
@@ -3326,7 +3324,7 @@ namespace Antlr3.Tool
             Rule r = GetLocallyDefinedRule( ruleName );
             if ( r != null )
             {
-                r.tree = t;
+                r.Tree = t;
                 r.EORNode = t.LastChild;
             }
         }
@@ -3342,7 +3340,7 @@ namespace Antlr3.Tool
             if ( r != null )
             {
                 //JSystem.@out.println("getRuleStartState("+scopeName+", "+ruleName+")="+r.startState);
-                return r.startState;
+                return r.StartState;
             }
             //JSystem.@out.println("getRuleStartState("+scopeName+", "+ruleName+")=null");
             return null;
@@ -3353,7 +3351,7 @@ namespace Antlr3.Tool
             Rule r = GetRule( ruleName );
             if ( r != null )
             {
-                return r.modifier;
+                return r.Modifier;
             }
             return null;
         }
@@ -3363,7 +3361,7 @@ namespace Antlr3.Tool
             Rule r = GetRule( ruleName );
             if ( r != null )
             {
-                return r.stopState;
+                return r.StopState;
             }
             return null;
         }
@@ -3645,7 +3643,7 @@ namespace Antlr3.Tool
             }
             IIntSet elements = null;
             //JSystem.@out.println("parsed tree: "+r.tree.toStringTree());
-            elements = nfabuilder.SetRule( r.tree );
+            elements = nfabuilder.SetRule( r.Tree );
             //JSystem.@out.println("elements="+elements);
             return elements;
         }

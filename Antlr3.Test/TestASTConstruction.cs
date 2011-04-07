@@ -52,7 +52,7 @@ namespace AntlrUnitTests
                     "a : A;" );
             string expecting =
                 "(rule a ARG RET scope (BLOCK (ALT A <end-of-alt>) <end-of-block>) <end-of-rule>)";
-            string found = g.GetRule( "a" ).tree.ToStringTree();
+            string found = g.GetRule( "a" ).Tree.ToStringTree();
             Assert.AreEqual( expecting, found );
         }
 
@@ -64,7 +64,7 @@ namespace AntlrUnitTests
                     "B : 'a';" );
             string expecting =
                 "(rule A ARG RET scope (BLOCK (ALT (+ (BLOCK (ALT B <end-of-alt>) <end-of-block>)) <end-of-alt>) <end-of-block>) <end-of-rule>)";
-            string found = g.GetRule( "A" ).tree.ToStringTree();
+            string found = g.GetRule( "A" ).Tree.ToStringTree();
             Assert.AreEqual( expecting, found );
         }
 
@@ -76,7 +76,7 @@ namespace AntlrUnitTests
                     "b : B;" );
             string expecting =
                 "(rule a ARG RET scope (BLOCK (ALT (+ (BLOCK (ALT b <end-of-alt>) <end-of-block>)) <end-of-alt>) <end-of-block>) <end-of-rule>)";
-            string found = g.GetRule( "a" ).tree.ToStringTree();
+            string found = g.GetRule( "a" ).Tree.ToStringTree();
             Assert.AreEqual( expecting, found );
         }
 
@@ -88,7 +88,7 @@ namespace AntlrUnitTests
                     "b : B;" );
             string expecting =
                 "(rule a ARG RET scope (BLOCK (ALT (+ (BLOCK (ALT b <end-of-alt>) <end-of-block>)) <end-of-alt>) <end-of-block>) <end-of-rule>)";
-            string found = g.GetRule( "a" ).tree.ToStringTree();
+            string found = g.GetRule( "a" ).Tree.ToStringTree();
             Assert.AreEqual( expecting, found );
         }
 
@@ -100,7 +100,7 @@ namespace AntlrUnitTests
                     "b : B;" );
             string expecting =
                 "(rule a ARG RET scope (BLOCK (ALT (? (BLOCK (ALT b <end-of-alt>) <end-of-block>)) <end-of-alt>) <end-of-block>) <end-of-rule>)";
-            string found = g.GetRule( "a" ).tree.ToStringTree();
+            string found = g.GetRule( "a" ).Tree.ToStringTree();
             Assert.AreEqual( expecting, found );
         }
 
@@ -112,7 +112,7 @@ namespace AntlrUnitTests
                     "b : B;" );
             string expecting =
                 "(rule a ARG RET scope (BLOCK (ALT (? (BLOCK (ALT b <end-of-alt>) <end-of-block>)) <end-of-alt>) <end-of-block>) <end-of-rule>)";
-            string found = g.GetRule( "a" ).tree.ToStringTree();
+            string found = g.GetRule( "a" ).Tree.ToStringTree();
             Assert.AreEqual( expecting, found );
         }
 
@@ -124,7 +124,7 @@ namespace AntlrUnitTests
                     "b : B;" );
             string expecting =
                 "(rule a ARG RET scope (BLOCK (ALT (* (BLOCK (ALT b <end-of-alt>) <end-of-block>)) <end-of-alt>) <end-of-block>) <end-of-rule>)";
-            string found = g.GetRule( "a" ).tree.ToStringTree();
+            string found = g.GetRule( "a" ).Tree.ToStringTree();
             Assert.AreEqual( expecting, found );
         }
 
@@ -136,7 +136,7 @@ namespace AntlrUnitTests
                     "b : B;" );
             string expecting =
                 "(rule a ARG RET scope (BLOCK (ALT (* (BLOCK (ALT b <end-of-alt>) <end-of-block>)) <end-of-alt>) <end-of-block>) <end-of-rule>)";
-            string found = g.GetRule( "a" ).tree.ToStringTree();
+            string found = g.GetRule( "a" ).Tree.ToStringTree();
             Assert.AreEqual( expecting, found );
         }
 
@@ -147,7 +147,7 @@ namespace AntlrUnitTests
                     "a : 'a'*;" );
             string expecting =
                 "(rule a ARG RET scope (BLOCK (ALT (* (BLOCK (ALT 'a' <end-of-alt>) <end-of-block>)) <end-of-alt>) <end-of-block>) <end-of-rule>)";
-            string found = g.GetRule( "a" ).tree.ToStringTree();
+            string found = g.GetRule( "a" ).Tree.ToStringTree();
             Assert.AreEqual( expecting, found );
         }
 
@@ -158,7 +158,7 @@ namespace AntlrUnitTests
                     "B : 'b'*;" );
             string expecting =
                 "(rule B ARG RET scope (BLOCK (ALT (* (BLOCK (ALT 'b' <end-of-alt>) <end-of-block>)) <end-of-alt>) <end-of-block>) <end-of-rule>)";
-            string found = g.GetRule( "B" ).tree.ToStringTree();
+            string found = g.GetRule( "B" ).Tree.ToStringTree();
             Assert.AreEqual( expecting, found );
         }
 
@@ -169,7 +169,7 @@ namespace AntlrUnitTests
                     "a : 'while'*;" );
             string expecting =
                 "(rule a ARG RET scope (BLOCK (ALT (* (BLOCK (ALT 'while' <end-of-alt>) <end-of-block>)) <end-of-alt>) <end-of-block>) <end-of-rule>)";
-            string found = g.GetRule( "a" ).tree.ToStringTree();
+            string found = g.GetRule( "a" ).Tree.ToStringTree();
             Assert.AreEqual( expecting, found );
         }
 
@@ -180,7 +180,7 @@ namespace AntlrUnitTests
                     "B : 'while'*;" );
             string expecting =
                 "(rule B ARG RET scope (BLOCK (ALT (* (BLOCK (ALT 'while' <end-of-alt>) <end-of-block>)) <end-of-alt>) <end-of-block>) <end-of-rule>)";
-            string found = g.GetRule( "B" ).tree.ToStringTree();
+            string found = g.GetRule( "B" ).Tree.ToStringTree();
             Assert.AreEqual( expecting, found );
         }
 
@@ -191,7 +191,7 @@ namespace AntlrUnitTests
                     "a : 'a'+;" );
             string expecting =
                 "(rule a ARG RET scope (BLOCK (ALT (+ (BLOCK (ALT 'a' <end-of-alt>) <end-of-block>)) <end-of-alt>) <end-of-block>) <end-of-rule>)";
-            string found = g.GetRule( "a" ).tree.ToStringTree();
+            string found = g.GetRule( "a" ).Tree.ToStringTree();
             Assert.AreEqual( expecting, found );
         }
 
@@ -202,7 +202,7 @@ namespace AntlrUnitTests
                     "B : 'b'+;" );
             string expecting =
                 "(rule B ARG RET scope (BLOCK (ALT (+ (BLOCK (ALT 'b' <end-of-alt>) <end-of-block>)) <end-of-alt>) <end-of-block>) <end-of-rule>)";
-            string found = g.GetRule( "B" ).tree.ToStringTree();
+            string found = g.GetRule( "B" ).Tree.ToStringTree();
             Assert.AreEqual( expecting, found );
         }
 
@@ -213,7 +213,7 @@ namespace AntlrUnitTests
                     "a : 'a'?;" );
             string expecting =
                 "(rule a ARG RET scope (BLOCK (ALT (? (BLOCK (ALT 'a' <end-of-alt>) <end-of-block>)) <end-of-alt>) <end-of-block>) <end-of-rule>)";
-            string found = g.GetRule( "a" ).tree.ToStringTree();
+            string found = g.GetRule( "a" ).Tree.ToStringTree();
             Assert.AreEqual( expecting, found );
         }
 
@@ -224,7 +224,7 @@ namespace AntlrUnitTests
                     "B : 'b'?;" );
             string expecting =
                 "(rule B ARG RET scope (BLOCK (ALT (? (BLOCK (ALT 'b' <end-of-alt>) <end-of-block>)) <end-of-alt>) <end-of-block>) <end-of-rule>)";
-            string found = g.GetRule( "B" ).tree.ToStringTree();
+            string found = g.GetRule( "B" ).Tree.ToStringTree();
             Assert.AreEqual( expecting, found );
         }
 
@@ -235,7 +235,7 @@ namespace AntlrUnitTests
                     "ID : 'a'..'z'+;" );
             string expecting =
                 "(rule ID ARG RET scope (BLOCK (ALT (+ (BLOCK (ALT (.. 'a' 'z') <end-of-alt>) <end-of-block>)) <end-of-alt>) <end-of-block>) <end-of-rule>)";
-            string found = g.GetRule( "ID" ).tree.ToStringTree();
+            string found = g.GetRule( "ID" ).Tree.ToStringTree();
             Assert.AreEqual( expecting, found );
         }
 
@@ -246,7 +246,7 @@ namespace AntlrUnitTests
                     "a : x=ID;" );
             string expecting =
                 "(rule a ARG RET scope (BLOCK (ALT (= x ID) <end-of-alt>) <end-of-block>) <end-of-rule>)";
-            string found = g.GetRule( "a" ).tree.ToStringTree();
+            string found = g.GetRule( "a" ).Tree.ToStringTree();
             Assert.AreEqual( expecting, found );
         }
 
@@ -257,7 +257,7 @@ namespace AntlrUnitTests
                     "a : x=ID?;" );
             string expecting =
                 "(rule a ARG RET scope (BLOCK (ALT (? (BLOCK (ALT (= x ID) <end-of-alt>) <end-of-block>)) <end-of-alt>) <end-of-block>) <end-of-rule>)";
-            string found = g.GetRule( "a" ).tree.ToStringTree();
+            string found = g.GetRule( "a" ).Tree.ToStringTree();
             Assert.AreEqual( expecting, found );
         }
 
@@ -268,7 +268,7 @@ namespace AntlrUnitTests
                     "a : x=ID*;" );
             string expecting =
                 "(rule a ARG RET scope (BLOCK (ALT (* (BLOCK (ALT (= x ID) <end-of-alt>) <end-of-block>)) <end-of-alt>) <end-of-block>) <end-of-rule>)";
-            string found = g.GetRule( "a" ).tree.ToStringTree();
+            string found = g.GetRule( "a" ).Tree.ToStringTree();
             Assert.AreEqual( expecting, found );
         }
 
@@ -280,7 +280,7 @@ namespace AntlrUnitTests
                     "b : ID;\n" );
             string expecting =
                 "(rule a ARG RET scope (BLOCK (ALT (= x b) <end-of-alt>) <end-of-block>) <end-of-rule>)";
-            string found = g.GetRule( "a" ).tree.ToStringTree();
+            string found = g.GetRule( "a" ).Tree.ToStringTree();
             Assert.AreEqual( expecting, found );
         }
 
@@ -291,7 +291,7 @@ namespace AntlrUnitTests
                     "a : x=(A|B);\n" );
             string expecting =
                 "(rule a ARG RET scope (BLOCK (ALT (= x (BLOCK (ALT A <end-of-alt>) (ALT B <end-of-alt>) <end-of-block>)) <end-of-alt>) <end-of-block>) <end-of-rule>)";
-            string found = g.GetRule( "a" ).tree.ToStringTree();
+            string found = g.GetRule( "a" ).Tree.ToStringTree();
             Assert.AreEqual( expecting, found );
         }
 
@@ -302,7 +302,7 @@ namespace AntlrUnitTests
                     "a : x=~(A|B);\n" );
             string expecting =
                 "(rule a ARG RET scope (BLOCK (ALT (= x (~ (BLOCK (ALT A <end-of-alt>) (ALT B <end-of-alt>) <end-of-block>))) <end-of-alt>) <end-of-block>) <end-of-rule>)";
-            string found = g.GetRule( "a" ).tree.ToStringTree();
+            string found = g.GetRule( "a" ).Tree.ToStringTree();
             Assert.AreEqual( expecting, found );
         }
 
@@ -313,7 +313,7 @@ namespace AntlrUnitTests
                     "a : x+=~(A|B);\n" );
             string expecting =
                 "(rule a ARG RET scope (BLOCK (ALT (+= x (~ (BLOCK (ALT A <end-of-alt>) (ALT B <end-of-alt>) <end-of-block>))) <end-of-alt>) <end-of-block>) <end-of-rule>)";
-            string found = g.GetRule( "a" ).tree.ToStringTree();
+            string found = g.GetRule( "a" ).Tree.ToStringTree();
             Assert.AreEqual( expecting, found );
         }
 
@@ -324,7 +324,7 @@ namespace AntlrUnitTests
                     "a : x+=~(A|B)+;\n" );
             string expecting =
                 "(rule a ARG RET scope (BLOCK (ALT (+ (BLOCK (ALT (+= x (~ (BLOCK (ALT A <end-of-alt>) (ALT B <end-of-alt>) <end-of-block>))) <end-of-alt>) <end-of-block>)) <end-of-alt>) <end-of-block>) <end-of-rule>)";
-            string found = g.GetRule( "a" ).tree.ToStringTree();
+            string found = g.GetRule( "a" ).Tree.ToStringTree();
             Assert.AreEqual( expecting, found );
         }
 
@@ -336,7 +336,7 @@ namespace AntlrUnitTests
                     "b : ID;\n" );
             string expecting =
                 "(rule a ARG RET scope (BLOCK (ALT (+ (BLOCK (ALT (= x b) <end-of-alt>) <end-of-block>)) <end-of-alt>) <end-of-block>) <end-of-rule>)";
-            string found = g.GetRule( "a" ).tree.ToStringTree();
+            string found = g.GetRule( "a" ).Tree.ToStringTree();
             Assert.AreEqual( expecting, found );
         }
 
@@ -347,7 +347,7 @@ namespace AntlrUnitTests
                     "a : x+=ID*;" );
             string expecting =
                 "(rule a ARG RET scope (BLOCK (ALT (* (BLOCK (ALT (+= x ID) <end-of-alt>) <end-of-block>)) <end-of-alt>) <end-of-block>) <end-of-rule>)";
-            string found = g.GetRule( "a" ).tree.ToStringTree();
+            string found = g.GetRule( "a" ).Tree.ToStringTree();
             Assert.AreEqual( expecting, found );
         }
 
@@ -358,7 +358,7 @@ namespace AntlrUnitTests
                     "a : x+='int'*;" );
             string expecting =
                 "(rule a ARG RET scope (BLOCK (ALT (* (BLOCK (ALT (+= x 'int') <end-of-alt>) <end-of-block>)) <end-of-alt>) <end-of-block>) <end-of-rule>)";
-            string found = g.GetRule( "a" ).tree.ToStringTree();
+            string found = g.GetRule( "a" ).Tree.ToStringTree();
             Assert.AreEqual( expecting, found );
         }
 
@@ -371,7 +371,7 @@ namespace AntlrUnitTests
                     "b : ID;\n" );
             string expecting =
                 "(rule a ARG RET scope (BLOCK (ALT (+ (BLOCK (ALT (+= x b) <end-of-alt>) <end-of-block>)) <end-of-alt>) <end-of-block>) <end-of-rule>)";
-            string found = g.GetRule( "a" ).tree.ToStringTree();
+            string found = g.GetRule( "a" ).Tree.ToStringTree();
             Assert.AreEqual( expecting, found );
         }
 
@@ -383,7 +383,7 @@ namespace AntlrUnitTests
                     "a : ('*'^)* ;\n" );  // bug: the synpred had nothing in it
             string expecting =
                 "(rule synpred1_Expr ARG RET scope (BLOCK (ALT '*' <end-of-alt>) <end-of-block>) <end-of-rule>)";
-            string found = g.GetRule( "synpred1_Expr" ).tree.ToStringTree();
+            string found = g.GetRule( "synpred1_Expr" ).Tree.ToStringTree();
             Assert.AreEqual( expecting, found );
         }
 
@@ -395,7 +395,7 @@ namespace AntlrUnitTests
                     "a : ({blort} 'x')* ;\n" );  // bug: the synpred had nothing in it
             string expecting =
                 "(rule synpred1_Expr ARG RET scope (BLOCK (ALT blort 'x' <end-of-alt>) <end-of-block>) <end-of-rule>)";
-            string found = g.GetRule( "synpred1_Expr" ).tree.ToStringTree();
+            string found = g.GetRule( "synpred1_Expr" ).Tree.ToStringTree();
             Assert.AreEqual( expecting, found );
         }
 

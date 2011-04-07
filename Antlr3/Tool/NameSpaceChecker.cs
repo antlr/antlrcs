@@ -1,10 +1,10 @@
 ﻿/*
- * [The "BSD licence"]
- * Copyright (c) 2005-2008 Terence Parr
+ * [The "BSD license"]
+ * Copyright (c) 2011 Terence Parr
  * All rights reserved.
  *
  * Conversion to C#:
- * Copyright (c) 2008-2009 Sam Harwell, Pixel Mine, Inc.
+ * Copyright (c) 2011 Sam Harwell, Pixel Mine, Inc.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -58,17 +58,17 @@ namespace Antlr3.Tool
                     continue;
                 }
                 // walk all labels for Rule r
-                if ( r.labelNameSpace != null )
+                if ( r.LabelNameSpace != null )
                 {
-                    foreach ( Grammar.LabelElementPair pair in r.labelNameSpace.Values )
+                    foreach ( Grammar.LabelElementPair pair in r.LabelNameSpace.Values )
                     {
                         CheckForLabelConflict( r, pair.label );
                     }
                 }
                 // walk rule scope attributes for Rule r
-                if ( r.ruleScope != null )
+                if ( r.RuleScope != null )
                 {
-                    var attributes = r.ruleScope.Attributes;
+                    var attributes = r.RuleScope.Attributes;
                     for ( int j = 0; j < attributes.Count; j++ )
                     {
                         Attribute attribute = (Attribute)attributes.ElementAt( j );
@@ -89,9 +89,9 @@ namespace Antlr3.Tool
 
         protected virtual void CheckForRuleArgumentAndReturnValueConflicts( Rule r )
         {
-            if ( r.returnScope != null )
+            if ( r.ReturnScope != null )
             {
-                HashSet<object> conflictingKeys = r.returnScope.Intersection( r.parameterScope );
+                HashSet<object> conflictingKeys = r.ReturnScope.Intersection( r.ParameterScope );
                 if ( conflictingKeys != null )
                 {
                     foreach ( string key in conflictingKeys )
@@ -99,7 +99,7 @@ namespace Antlr3.Tool
                         ErrorManager.GrammarError(
                             ErrorManager.MSG_ARG_RETVAL_CONFLICT,
                             grammar,
-                            r.tree.Token,
+                            r.Tree.Token,
                             key,
                             r.Name );
                     }
@@ -110,7 +110,7 @@ namespace Antlr3.Tool
         protected virtual void CheckForRuleDefinitionProblems( Rule r )
         {
             string ruleName = r.Name;
-            IToken ruleToken = r.tree.Token;
+            IToken ruleToken = r.Tree.Token;
             int msgID = 0;
             if ( ( grammar.type == GrammarType.Parser || grammar.type == GrammarType.TreeParser ) &&
                  Rule.GetRuleType(ruleName) == RuleType.Lexer)
@@ -119,7 +119,7 @@ namespace Antlr3.Tool
             }
             else if ( grammar.type == GrammarType.Lexer &&
                       Rule.GetRuleType(ruleName) == RuleType.Parser &&
-                      !r.isSynPred )
+                      !r.IsSynPred )
             {
                 msgID = ErrorManager.MSG_PARSER_RULES_NOT_ALLOWED;
             }
@@ -152,7 +152,7 @@ namespace Antlr3.Tool
                 if ( localRule == null && rule != null )
                 { // imported rule?
                     grammar.delegatedRuleReferences.Add( rule );
-                    rule.imported = true;
+                    rule.Imported = true;
                 }
                 if ( rule == null && grammar.GetTokenType( ruleName ) != Label.EOF )
                 {
@@ -231,15 +231,15 @@ namespace Antlr3.Tool
                 msgID = ErrorManager.MSG_ATTRIBUTE_CONFLICTS_WITH_RULE;
                 arg2 = r.Name;
             }
-            else if ( ( r.returnScope != null && r.returnScope.GetAttribute( attrName ) != null ) ||
-                      ( r.parameterScope != null && r.parameterScope.GetAttribute( attrName ) != null ) )
+            else if ( ( r.ReturnScope != null && r.ReturnScope.GetAttribute( attrName ) != null ) ||
+                      ( r.ParameterScope != null && r.ParameterScope.GetAttribute( attrName ) != null ) )
             {
                 msgID = ErrorManager.MSG_ATTRIBUTE_CONFLICTS_WITH_RULE_ARG_RETVAL;
                 arg2 = r.Name;
             }
             if ( msgID != 0 )
             {
-                ErrorManager.GrammarError( msgID, grammar, r.tree.Token, attrName, arg2 );
+                ErrorManager.GrammarError( msgID, grammar, r.Tree.Token, attrName, arg2 );
             }
         }
 
@@ -264,13 +264,13 @@ namespace Antlr3.Tool
             {
                 msgID = ErrorManager.MSG_LABEL_CONFLICTS_WITH_TOKEN;
             }
-            else if ( r.ruleScope != null && r.ruleScope.GetAttribute( label.Text ) != null )
+            else if ( r.RuleScope != null && r.RuleScope.GetAttribute( label.Text ) != null )
             {
                 msgID = ErrorManager.MSG_LABEL_CONFLICTS_WITH_RULE_SCOPE_ATTRIBUTE;
                 arg2 = r.Name;
             }
-            else if ( ( r.returnScope != null && r.returnScope.GetAttribute( label.Text ) != null ) ||
-                      ( r.parameterScope != null && r.parameterScope.GetAttribute( label.Text ) != null ) )
+            else if ( ( r.ReturnScope != null && r.ReturnScope.GetAttribute( label.Text ) != null ) ||
+                      ( r.ParameterScope != null && r.ParameterScope.GetAttribute( label.Text ) != null ) )
             {
                 msgID = ErrorManager.MSG_LABEL_CONFLICTS_WITH_RULE_ARG_RETVAL;
                 arg2 = r.Name;
@@ -286,7 +286,7 @@ namespace Antlr3.Tool
         public virtual bool CheckForLabelTypeMismatch( Rule r, IToken label, LabelType type )
         {
             Grammar.LabelElementPair prevLabelPair =
-                (Grammar.LabelElementPair)r.labelNameSpace.get( label.Text );
+                (Grammar.LabelElementPair)r.LabelNameSpace.get( label.Text );
             if ( prevLabelPair != null )
             {
                 // label already defined; if same type, no problem
