@@ -1,0 +1,22 @@
+grammar VecMath;
+
+options 
+{
+   ASTLabelType=CommonTree;
+   output=AST;
+   language=CSharp3;
+}
+
+import VecMath_Lexer, VecMath_Parser;
+
+@lexer::namespace{Antlr3.Runtime.Test.Composition}
+@parser::namespace{Antlr3.Runtime.Test.Composition}
+
+public 
+main
+   : prog
+   ;
+
+dummy
+   : 'DUMMY' // 1. If the parser or the composite grammar does not contain a token, no lexer is generated.
+   ;

@@ -1,0 +1,26 @@
+﻿tree grammar Reduce;
+
+options
+{
+    tokenVocab=VecMath;      
+    ASTLabelType=CommonTree; 
+    output=AST;              
+    filter=true;             
+    language=CSharp3;
+}
+
+
+@members 
+{ 
+   //public override IAstRuleReturnScope Topdown() { return topdown(); }
+   public override IAstRuleReturnScope Bottomup() { return bottomup(); } 
+} 
+
+
+/** Rewrite: x+x to be 2*x, 2*x to be x<<1, x<<n<<m to be x<<(n+m) */
+bottomup
+    :  ^(PLUS i=INT j=INT {$i.int==$j.int}?) -> ^(MULT["*"] INT["2"] $j)
+    |  ^(MULT x=INT {$x.int==2}? y=.)        -> ^(SHIFT["<<"] $y INT["1"])
+    |  ^(SHIFT ^(SHIFT e=. n=INT) m=INT)
+       -> ^(SHIFT["<<"] $e INT[($n.int+$m.int).ToString()])
+    ;

@@ -1,0 +1,25 @@
+tree grammar Simplify;
+
+options {
+    tokenVocab=VecMath;    
+    ASTLabelType=CommonTree;
+    output=AST;
+    language=CSharp3;
+    filter=true;
+    //rewrite=true;
+}
+
+@members 
+{ 
+   public override IAstRuleReturnScope Topdown() { return topdown(); }
+   public override IAstRuleReturnScope Bottomup() { return bottomup(); } 
+} 
+
+
+topdown
+    :   ^( MULT INT ^(VEC (e+=.)+) ) -> ^(VEC ^(MULT INT $e)+)
+    ;
+
+bottomup
+    :  ^(MULT a=. b=INT {$b.int==0}?) -> $b // x*0 -> 0
+    ;
