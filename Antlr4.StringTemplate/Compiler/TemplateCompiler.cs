@@ -141,7 +141,7 @@ namespace Antlr4.StringTemplate.Compiler
         /** Compile full template with respect to a list of formal args. */
         public virtual CompiledTemplate Compile(string srcName, string name, List<FormalArgument> args, string template, IToken templateToken)
         {
-            ANTLRStringStream @is = new ANTLRStringStream(template);
+            ANTLRStringStream @is = new ANTLRStringStream(template, srcName);
             @is.name = srcName != null ? srcName : name;
             TemplateLexer lexer = null;
             if (templateToken != null && templateToken.Type == GroupParser.BIGSTRING_NO_NL)
