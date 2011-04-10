@@ -114,7 +114,7 @@ namespace Antlr4.Test.StringTemplate
 
             string expected = "xx";
             Assert.AreEqual(expected, result);
-            group.Listener = ErrorManager.DEFAULT_ERROR_LISTENER;
+            group.Listener = ErrorManager.DefaultErrorListener;
         }
 
         [TestMethod]
@@ -137,7 +137,7 @@ namespace Antlr4.Test.StringTemplate
 
             string expected = ":Ter";
             Assert.AreEqual(expected, result);
-            group.Listener = ErrorManager.DEFAULT_ERROR_LISTENER;
+            group.Listener = ErrorManager.DefaultErrorListener;
         }
     }
 }
