@@ -100,7 +100,7 @@ namespace Antlr4.Test.StringTemplate
             TemplateGroup group = new TemplateGroupFile(Path.Combine(tmpdir, "t.stg"));
 
             Template x = new Template("<\\n>{ <stuff; anchor, separator=\",\\n\"> }<\\n>");
-            x.groupThatCreatedThisInstance = group;
+            x.Group = group;
             x.Add("stuff", "1");
             x.Add("stuff", "2");
             x.Add("stuff", "3");

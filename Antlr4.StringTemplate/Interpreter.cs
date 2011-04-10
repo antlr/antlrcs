@@ -248,7 +248,7 @@ namespace Antlr4.StringTemplate
                     ip += Instruction.OperandSizeInBytes;
                     // look up in original hierarchy not enclosing template (variable group)
                     // see TestSubtemplates.testEvalSTFromAnotherGroup()
-                    st = self.groupThatCreatedThisInstance.GetEmbeddedInstanceOf(frame, ip, name);
+                    st = self.Group.GetEmbeddedInstanceOf(frame, ip, name);
                     // get n args and store into st's attr list
                     StoreArguments(frame, nargs, st);
                     sp -= nargs;
@@ -259,7 +259,7 @@ namespace Antlr4.StringTemplate
                     nargs = GetShort(code, ip);
                     ip += Instruction.OperandSizeInBytes;
                     name = (string)operands[sp - nargs];
-                    st = self.groupThatCreatedThisInstance.GetEmbeddedInstanceOf(frame, ip, name);
+                    st = self.Group.GetEmbeddedInstanceOf(frame, ip, name);
                     StoreArguments(frame, nargs, st);
                     sp -= nargs;
                     sp--; // pop template name
@@ -273,7 +273,7 @@ namespace Antlr4.StringTemplate
                     IDictionary<string, object> attrs = (IDictionary<string, object>)operands[sp--];
                     // look up in original hierarchy not enclosing template (variable group)
                     // see TestSubtemplates.testEvalSTFromAnotherGroup()
-                    st = self.groupThatCreatedThisInstance.GetEmbeddedInstanceOf(frame, ip, name);
+                    st = self.Group.GetEmbeddedInstanceOf(frame, ip, name);
                     // get n args and store into st's attr list
                     StoreArguments(frame, attrs, st);
                     operands[++sp] = st;
@@ -394,7 +394,7 @@ namespace Antlr4.StringTemplate
                 case Bytecode.INSTR_ADD:
                     o = operands[sp--];             // pop value
                     List<object> list = (List<object>)operands[sp]; // don't pop list
-                    AddToList(list, o);
+                    AddToList(list, frame, o);
                     break;
 
                 case Bytecode.INSTR_TOSTR:
@@ -403,23 +403,23 @@ namespace Antlr4.StringTemplate
                     break;
 
                 case Bytecode.INSTR_FIRST:
-                    operands[sp] = First(operands[sp]);
+                    operands[sp] = First(frame, operands[sp]);
                     break;
 
                 case Bytecode.INSTR_LAST:
-                    operands[sp] = Last(operands[sp]);
+                    operands[sp] = Last(frame, operands[sp]);
                     break;
 
                 case Bytecode.INSTR_REST:
-                    operands[sp] = Rest(operands[sp]);
+                    operands[sp] = Rest(frame, operands[sp]);
                     break;
 
                 case Bytecode.INSTR_TRUNC:
-                    operands[sp] = Trunc(operands[sp]);
+                    operands[sp] = Trunc(frame, operands[sp]);
                     break;
 
                 case Bytecode.INSTR_STRIP:
-                    operands[sp] = Strip(operands[sp]);
+                    operands[sp] = Strip(frame, operands[sp]);
                     break;
 
                 case Bytecode.INSTR_TRIM:
@@ -453,7 +453,7 @@ namespace Antlr4.StringTemplate
                     break;
 
                 case Bytecode.INSTR_REVERSE:
-                    operands[sp] = Reverse(operands[sp]);
+                    operands[sp] = Reverse(frame, operands[sp]);
                     break;
 
                 case Bytecode.INSTR_NOT:
@@ -567,7 +567,7 @@ namespace Antlr4.StringTemplate
             if (imported == null)
             {
                 _errorManager.RuntimeError(frame, current_ip, ErrorType.NO_IMPORTED_TEMPLATE, name);
-                st = self.groupThatCreatedThisInstance.CreateStringTemplateInternally();
+                st = self.Group.CreateStringTemplateInternally();
                 st.impl = new CompiledTemplate();
                 sp -= nargs;
                 operands[++sp] = st;
@@ -575,7 +575,7 @@ namespace Antlr4.StringTemplate
             }
 
             st = imported.NativeGroup.CreateStringTemplateInternally();
-            st.groupThatCreatedThisInstance = group;
+            st.Group = group;
             st.impl = imported;
 
             // get n args and store into st's attr list
@@ -592,14 +592,14 @@ namespace Antlr4.StringTemplate
             if (imported == null)
             {
                 _errorManager.RuntimeError(frame, current_ip, ErrorType.NO_IMPORTED_TEMPLATE, name);
-                st = self.groupThatCreatedThisInstance.CreateStringTemplateInternally();
+                st = self.Group.CreateStringTemplateInternally();
                 st.impl = new CompiledTemplate();
                 operands[++sp] = st;
                 return;
             }
 
             st = imported.NativeGroup.CreateStringTemplateInternally();
-            st.groupThatCreatedThisInstance = group;
+            st.Group = group;
             st.impl = imported;
 
             // get n args and store into st's attr list
@@ -774,7 +774,7 @@ namespace Antlr4.StringTemplate
                     return 0;
             }
 
-            ITypeProxyFactory proxyFactory = frame.Template.groupThatCreatedThisInstance.GetTypeProxyFactory(o.GetType());
+            ITypeProxyFactory proxyFactory = frame.Template.Group.GetTypeProxyFactory(o.GetType());
             if (proxyFactory != null)
                 o = proxyFactory.CreateProxy(o);
 
@@ -800,7 +800,7 @@ namespace Antlr4.StringTemplate
             }
             else
             {
-                o = ConvertAnythingIteratableToIterator(o); // normalize
+                o = ConvertAnythingIteratableToIterator(frame, o); // normalize
                 try
                 {
                     if (o is Iterator)
@@ -887,7 +887,7 @@ namespace Antlr4.StringTemplate
                 operands[++sp] = null;
                 return;
             }
-            attr = ConvertAnythingIteratableToIterator(attr);
+            attr = ConvertAnythingIteratableToIterator(frame, attr);
             Iterator iterator = attr as Iterator;
             if (iterator != null)
             {
@@ -966,7 +966,7 @@ namespace Antlr4.StringTemplate
             {
                 object attr = exprs[i];
                 if (attr != null)
-                    exprs[i] = ConvertAnythingToIterator(attr);
+                    exprs[i] = ConvertAnythingToIterator(frame, attr);
             }
 
             // ensure arguments line up
@@ -1041,9 +1041,9 @@ namespace Antlr4.StringTemplate
             st.locals[0] = attr;
         }
 
-        protected virtual void AddToList(List<object> list, object o)
+        protected virtual void AddToList(List<object> list, TemplateFrame frame, object o)
         {
-            o = Interpreter.ConvertAnythingIteratableToIterator(o);
+            o = Interpreter.ConvertAnythingIteratableToIterator(frame, o);
             if (o is Iterator)
             {
                 // copy of elements into our temp list
@@ -1060,12 +1060,12 @@ namespace Antlr4.StringTemplate
         /** Return the first attribute if multiple valued or the attribute
          *  itself if single-valued.  Used in &lt;names:First()&gt;
          */
-        public virtual object First(object v)
+        public virtual object First(TemplateFrame frame, object v)
         {
             if (v == null)
                 return null;
             object r = v;
-            v = ConvertAnythingIteratableToIterator(v);
+            v = ConvertAnythingIteratableToIterator(frame, v);
             if (v is Iterator)
             {
                 Iterator it = (Iterator)v;
@@ -1081,7 +1081,7 @@ namespace Antlr4.StringTemplate
          *  itself if single-valued. Unless it's a list or array, this is pretty
          *  slow as it iterates until the last element.
          */
-        public virtual object Last(object v)
+        public virtual object Last(TemplateFrame frame, object v)
         {
             if (v == null)
                 return null;
@@ -1091,7 +1091,7 @@ namespace Antlr4.StringTemplate
                 return list[list.Count - 1];
 
             object last = v;
-            v = ConvertAnythingIteratableToIterator(v);
+            v = ConvertAnythingIteratableToIterator(frame, v);
             Iterator it = v as Iterator;
             if (it != null)
             {
@@ -1105,12 +1105,12 @@ namespace Antlr4.StringTemplate
         /** Return everything but the first attribute if multiple valued
          *  or null if single-valued.
          */
-        public virtual object Rest(object v)
+        public virtual object Rest(TemplateFrame frame, object v)
         {
             if (v == null)
                 return null;
 
-            v = ConvertAnythingIteratableToIterator(v);
+            v = ConvertAnythingIteratableToIterator(frame, v);
             Iterator it = v as Iterator;
             if (it != null)
             {
@@ -1134,12 +1134,12 @@ namespace Antlr4.StringTemplate
         }
 
         /** Return all but the last element.  Trunc(x)=null if x is single-valued. */
-        public virtual object Trunc(object v)
+        public virtual object Trunc(TemplateFrame frame, object v)
         {
             if (v == null)
                 return null;
 
-            v = ConvertAnythingIteratableToIterator(v);
+            v = ConvertAnythingIteratableToIterator(frame, v);
             if (v is Iterator)
             {
                 List<object> a = new List<object>();
@@ -1159,12 +1159,12 @@ namespace Antlr4.StringTemplate
         }
 
         /** Return a new list w/o null values. */
-        public virtual object Strip(object v)
+        public virtual object Strip(TemplateFrame frame, object v)
         {
             if (v == null)
                 return null;
 
-            v = ConvertAnythingIteratableToIterator(v);
+            v = ConvertAnythingIteratableToIterator(frame, v);
             if (v is Iterator)
             {
                 List<object> a = new List<object>();
@@ -1185,12 +1185,12 @@ namespace Antlr4.StringTemplate
         /** Return a list with the same elements as v but in reverse order. null
          *  values are NOT stripped out. use Reverse(Strip(v)) to do that.
          */
-        public virtual object Reverse(object v)
+        public virtual object Reverse(TemplateFrame frame, object v)
         {
             if (v == null)
                 return null;
 
-            v = ConvertAnythingIteratableToIterator(v);
+            v = ConvertAnythingIteratableToIterator(frame, v);
             Iterator it = v as Iterator;
             if (it != null)
             {
@@ -1266,7 +1266,7 @@ namespace Antlr4.StringTemplate
             return null;
         }
 
-        public static object ConvertAnythingIteratableToIterator(object o)
+        public static object ConvertAnythingIteratableToIterator(TemplateFrame frame, object o)
         {
             if (o == null)
                 return null;
@@ -1277,7 +1277,12 @@ namespace Antlr4.StringTemplate
 
             IDictionary dictionary = o as IDictionary;
             if (dictionary != null)
+            {
+                if (frame.Template.Group.IterateAcrossValues)
+                    return dictionary.Values.iterator();
+
                 return dictionary.Keys.iterator();
+            }
 
             ICollection collection = o as ICollection;
             if (collection != null)
@@ -1295,9 +1300,9 @@ namespace Antlr4.StringTemplate
             return o;
         }
 
-        public static Iterator ConvertAnythingToIterator(object o)
+        public static Iterator ConvertAnythingToIterator(TemplateFrame frame, object o)
         {
-            o = ConvertAnythingIteratableToIterator(o);
+            o = ConvertAnythingIteratableToIterator(frame, o);
 
             Iterator iter = o as Iterator;
             if (iter != null)
@@ -1353,11 +1358,11 @@ namespace Antlr4.StringTemplate
 
             try
             {
-                ITypeProxyFactory proxyFactory = self.groupThatCreatedThisInstance.GetTypeProxyFactory(o.GetType());
+                ITypeProxyFactory proxyFactory = self.Group.GetTypeProxyFactory(o.GetType());
                 if (proxyFactory != null)
                     o = proxyFactory.CreateProxy(o);
 
-                IModelAdaptor adap = self.groupThatCreatedThisInstance.GetModelAdaptor(o.GetType());
+                IModelAdaptor adap = self.Group.GetModelAdaptor(o.GetType());
                 return adap.GetProperty(this, frame, o, property, ToString(frame, property));
             }
             catch (TemplateNoSuchPropertyException e)
@@ -1419,7 +1424,7 @@ namespace Antlr4.StringTemplate
                     Template defaultArgST = group.CreateStringTemplateInternally();
                     // default arg template must see other args so it's enclosing
                     // instance is the template we are invoking.
-                    defaultArgST.groupThatCreatedThisInstance = group;
+                    defaultArgST.Group = group;
                     defaultArgST.impl = arg.CompiledDefaultValue;
                     // If default arg is template with single expression
                     // wrapped in parens, x={<(...)>}, then eval to string
@@ -1459,7 +1464,7 @@ namespace Antlr4.StringTemplate
             for (int i = 0; i <= sp; i++)
             {
                 object o = operands[i];
-                PrintForTrace(tr, o);
+                PrintForTrace(tr, frame, o);
             }
 
             tr.Append(" ], calls=");
@@ -1474,7 +1479,7 @@ namespace Antlr4.StringTemplate
                 Console.WriteLine(s);
         }
 
-        protected virtual void PrintForTrace(StringBuilder tr, object o)
+        protected virtual void PrintForTrace(StringBuilder tr, TemplateFrame frame, object o)
         {
             if (o is Template)
             {
@@ -1484,7 +1489,7 @@ namespace Antlr4.StringTemplate
                     tr.Append(" " + ((Template)o).impl.name + "()");
                 return;
             }
-            o = ConvertAnythingIteratableToIterator(o);
+            o = ConvertAnythingIteratableToIterator(frame, o);
             if (o is Iterator)
             {
                 Iterator it = (Iterator)o;
@@ -1492,7 +1497,7 @@ namespace Antlr4.StringTemplate
                 while (it.hasNext())
                 {
                     object iterValue = it.next();
-                    PrintForTrace(tr, iterValue);
+                    PrintForTrace(tr, frame, iterValue);
                 }
                 tr.Append(" ]");
             }

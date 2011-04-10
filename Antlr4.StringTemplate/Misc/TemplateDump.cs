@@ -35,6 +35,7 @@ namespace Antlr4.StringTemplate.Misc
     using System.Collections.Generic;
     using System.Linq;
     using Antlr.Runtime.JavaExtensions;
+    using ArgumentNullException = System.ArgumentNullException;
     using Environment = System.Environment;
     using StringBuilder = System.Text.StringBuilder;
     using StringComparer = System.StringComparer;
@@ -48,16 +49,19 @@ namespace Antlr4.StringTemplate.Misc
      */
     public class TemplateDump
     {
-        private readonly Template self;
+        private readonly TemplateFrame _frame;
 
-        public TemplateDump(Template self)
+        public TemplateDump(TemplateFrame frame)
         {
-            this.self = self;
+            if (frame == null)
+                throw new ArgumentNullException("frame");
+
+            this._frame = frame;
         }
 
-        public static string ToString(Template self)
+        public static string ToString(TemplateFrame frame)
         {
-            TemplateDump d = new TemplateDump(self);
+            TemplateDump d = new TemplateDump(frame);
             return d.ToString();
         }
 
@@ -68,6 +72,7 @@ namespace Antlr4.StringTemplate.Misc
 
         protected virtual string ToString(int n)
         {
+            Template self = _frame.Template;
             StringBuilder buf = new StringBuilder();
             buf.Append(GetTemplateDeclaratorString() + ":");
             n++;
@@ -99,10 +104,10 @@ namespace Antlr4.StringTemplate.Misc
         protected virtual string GetValueDebugString(object value, int n)
         {
             StringBuilder buf = new StringBuilder();
-            value = Interpreter.ConvertAnythingIteratableToIterator(value);
+            value = Interpreter.ConvertAnythingIteratableToIterator(_frame, value);
             if (value is Template)
             {
-                TemplateDump d = new TemplateDump((Template)value);
+                TemplateDump d = new TemplateDump(new TemplateFrame((Template)value, _frame));
                 buf.Append(d.ToString(n));
             }
             else if (value is Iterator)
@@ -127,6 +132,7 @@ namespace Antlr4.StringTemplate.Misc
 
         protected virtual string GetTemplateDeclaratorString()
         {
+            Template self = _frame.Template;
             StringBuilder buf = new StringBuilder();
             buf.Append("<");
             buf.Append(self.Name);

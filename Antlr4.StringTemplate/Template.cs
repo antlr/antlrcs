@@ -97,7 +97,7 @@ namespace Antlr4.StringTemplate
          *   v
          *   g2 = {t()}
          */
-        public TemplateGroup groupThatCreatedThisInstance;
+        private TemplateGroup groupThatCreatedThisInstance;
 
         /** If Interpreter.trackCreationEvents, track creation, add-attr events
          *  for each object. Create this object on first use.
@@ -188,6 +188,19 @@ namespace Antlr4.StringTemplate
             }
         }
 
+        public TemplateGroup Group
+        {
+            get
+            {
+                return groupThatCreatedThisInstance;
+            }
+
+            set
+            {
+                groupThatCreatedThisInstance = value;
+            }
+        }
+
         public virtual Template CreateShadow()
         {
             return new Template(this, true);
@@ -213,7 +226,7 @@ namespace Antlr4.StringTemplate
                 throw new ArgumentException("cannot have '.' in attribute names");
             }
 
-            if (groupThatCreatedThisInstance.TrackCreationEvents)
+            if (Group.TrackCreationEvents)
             {
                 if (_debugState == null)
                     _debugState = new TemplateDebugState();
@@ -456,28 +469,28 @@ namespace Antlr4.StringTemplate
 
         public virtual int Write(ITemplateWriter @out)
         {
-            Interpreter interp = new Interpreter(groupThatCreatedThisInstance, impl.NativeGroup.ErrorManager, false);
+            Interpreter interp = new Interpreter(Group, impl.NativeGroup.ErrorManager, false);
             TemplateFrame frame = new TemplateFrame(this, null);
             return interp.Execute(@out, frame);
         }
 
         public virtual int Write(ITemplateWriter @out, CultureInfo culture)
         {
-            Interpreter interp = new Interpreter(groupThatCreatedThisInstance, culture, impl.NativeGroup.ErrorManager, false);
+            Interpreter interp = new Interpreter(Group, culture, impl.NativeGroup.ErrorManager, false);
             TemplateFrame frame = new TemplateFrame(this, null);
             return interp.Execute(@out, frame);
         }
 
         public virtual int Write(ITemplateWriter @out, ITemplateErrorListener listener)
         {
-            Interpreter interp = new Interpreter(groupThatCreatedThisInstance, new ErrorManager(listener), false);
+            Interpreter interp = new Interpreter(Group, new ErrorManager(listener), false);
             TemplateFrame frame = new TemplateFrame(this, null);
             return interp.Execute(@out, frame);
         }
 
         public virtual int Write(ITemplateWriter @out, CultureInfo culture, ITemplateErrorListener listener)
         {
-            Interpreter interp = new Interpreter(groupThatCreatedThisInstance, culture, new ErrorManager(listener), false);
+            Interpreter interp = new Interpreter(Group, culture, new ErrorManager(listener), false);
             TemplateFrame frame = new TemplateFrame(this, null);
             return interp.Execute(@out, frame);
         }
@@ -558,7 +571,7 @@ namespace Antlr4.StringTemplate
 
         public virtual List<InterpEvent> GetEvents(CultureInfo culture, ITemplateWriter writer)
         {
-            Interpreter interp = new Interpreter(groupThatCreatedThisInstance, culture, true);
+            Interpreter interp = new Interpreter(Group, culture, true);
             TemplateFrame frame = new TemplateFrame(this, null);
             interp.Execute(writer, frame); // Render and track events
             return interp.GetEvents();

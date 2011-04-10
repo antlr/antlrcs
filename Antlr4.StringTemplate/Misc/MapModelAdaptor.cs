@@ -64,7 +64,7 @@ namespace Antlr4.StringTemplate.Misc
             if (template != null)
             {
                 // dup, don't alter existing template; it's a prototype
-                template = template.groupThatCreatedThisInstance.CreateStringTemplateInternally(template);
+                template = template.Group.CreateStringTemplateInternally(template);
                 value = template;
             }
 

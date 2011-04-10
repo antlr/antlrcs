@@ -127,6 +127,12 @@ namespace Antlr4.StringTemplate
          */
         private bool _trackCreationEvents = false;
 
+        /** v3 compatibility; used to iterate across values not keys like v4.
+         *  But to convert ANTLR templates, it's too hard to find without
+         *  static typing in templates.
+         */
+        private bool _iterateAcrossValues = false;
+
         /** Used to indicate that the template doesn't exist.
          *  Prevents duplicate group file loads and unnecessary file checks.
          */
@@ -222,6 +228,19 @@ namespace Antlr4.StringTemplate
             }
         }
 
+        public bool IterateAcrossValues
+        {
+            get
+            {
+                return _iterateAcrossValues;
+            }
+
+            set
+            {
+                _iterateAcrossValues = value;
+            }
+        }
+
         /** The primary means of getting an instance of a template from this
          *  group. Names must be absolute, fully-qualified names like a/b
          */
@@ -234,7 +253,7 @@ namespace Antlr4.StringTemplate
             if (c != null)
             {
                 Template instanceST = CreateStringTemplate();
-                instanceST.groupThatCreatedThisInstance = this;
+                instanceST.Group = this;
                 instanceST.impl = c;
                 if (instanceST.impl.FormalArguments != null)
                 {
@@ -286,7 +305,7 @@ namespace Antlr4.StringTemplate
                 template = Utility.Strip(templateToken.Text, 1);
             }
             Template st = CreateStringTemplateInternally();
-            st.groupThatCreatedThisInstance = this;
+            st.Group = this;
             st.impl = Compile(FileName, null, null, template, templateToken);
             st.impl.hasFormalArgs = false;
             st.impl.name = Template.UnknownName;

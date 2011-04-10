@@ -159,7 +159,7 @@ namespace Antlr4.Test.StringTemplate
             TemplateGroup group = new TemplateGroup();
             group.RegisterRenderer(typeof(string), new StringRenderer());
             Template st = new Template(template);
-            st.groupThatCreatedThisInstance = group;
+            st.Group = group;
             st.Add("names", "ter");
             st.Add("names", "tom");
             st.Add("names", "sriram");
@@ -176,7 +176,7 @@ namespace Antlr4.Test.StringTemplate
             TemplateGroup group = new TemplateGroup();
             group.RegisterRenderer(typeof(string), new StringRenderer());
             Template st = new Template(template);
-            st.groupThatCreatedThisInstance = group;
+            st.Group = group;
             st.Add("names", "ter");
             st.Add("names", "tom");
             st.Add("names", "sriram");
@@ -193,7 +193,7 @@ namespace Antlr4.Test.StringTemplate
             TemplateGroup group = new TemplateGroup();
             group.RegisterRenderer(typeof(string), new StringRenderer());
             Template st = new Template(template);
-            st.groupThatCreatedThisInstance = group;
+            st.Group = group;
             List<string> names = new List<string>();
             names.Add("ter");
             names.Add(null);
