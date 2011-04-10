@@ -516,17 +516,18 @@ namespace Antlr4.StringTemplate
                     nwline += n1;
                     break;
 
-                case Bytecode.INSTR_WRITE_LOCAL:
-                    valueIndex = GetShort(code, ip);
-                    ip += Instruction.OperandSizeInBytes;
-                    o = self.locals[valueIndex];
-                    if (o == Template.EmptyAttribute)
-                        o = null;
+                // TODO: generate this optimization
+                //case Bytecode.INSTR_WRITE_LOCAL:
+                //    valueIndex = GetShort(code, ip);
+                //    ip += Instruction.OperandSizeInBytes;
+                //    o = self.locals[valueIndex];
+                //    if (o == Template.EmptyAttribute)
+                //        o = null;
 
-                    n1 = WriteObjectNoOptions(@out, frame, o);
-                    n += n1;
-                    nwline += n1;
-                    break;
+                //    n1 = WriteObjectNoOptions(@out, frame, o);
+                //    n += n1;
+                //    nwline += n1;
+                //    break;
 
                 default:
                     _errorManager.InternalError(self, "invalid bytecode @ " + (ip - 1) + ": " + opcode, null);
