@@ -326,6 +326,51 @@ namespace Antlr4.Test.StringTemplate
         }
 
         [TestMethod]
+        public void TestPassThru()
+        {
+            string templates =
+                "a(x,y) ::= \"<b(...)>\"\n" +
+                "b(x,y) ::= \"<x><y>\"\n";
+            TemplateGroup group = new TemplateGroupString(templates);
+            Template a = group.GetInstanceOf("a");
+            a.Add("x", "x");
+            a.Add("y", "y");
+            string expected = "xy";
+            string result = a.Render();
+            Assert.AreEqual(expected, result);
+        }
+
+        [TestMethod]
+        public void TestPassThruPartialArgs()
+        {
+            string templates =
+                "a(x,y) ::= \"<b(y={99},...)>\"\n" +
+                "b(x,y) ::= \"<x><y>\"\n";
+            TemplateGroup group = new TemplateGroupString(templates);
+            Template a = group.GetInstanceOf("a");
+            a.Add("x", "x");
+            a.Add("y", "y");
+            string expected = "x99";
+            string result = a.Render();
+            Assert.AreEqual(expected, result);
+        }
+
+        [TestMethod]
+        public void TestPassThruNoMissingArgs()
+        {
+            string templates =
+                "a(x,y) ::= \"<b(y={99},x={1},...)>\"\n" +
+                "b(x,y) ::= \"<x><y>\"\n";
+            TemplateGroup group = new TemplateGroupString(templates);
+            Template a = group.GetInstanceOf("a");
+            a.Add("x", "x");
+            a.Add("y", "y");
+            string expected = "199";
+            string result = a.Render();
+            Assert.AreEqual(expected, result);
+        }
+
+        [TestMethod]
         public void TestDefineTemplate()
         {
             TemplateGroup group = new TemplateGroup();

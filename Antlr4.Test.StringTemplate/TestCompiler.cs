@@ -33,10 +33,10 @@
 namespace Antlr4.Test.StringTemplate
 {
     using Antlr4.StringTemplate;
-    using Microsoft.VisualStudio.TestTools.UnitTesting;
     using Antlr4.StringTemplate.Compiler;
-    using Antlr4.Test.StringTemplate.Extensions;
     using Antlr4.StringTemplate.Misc;
+    using Antlr4.Test.StringTemplate.Extensions;
+    using Microsoft.VisualStudio.TestTools.UnitTesting;
 
     [TestClass]
     public class TestCompiler : BaseTest
@@ -73,6 +73,34 @@ namespace Antlr4.Test.StringTemplate
             string asmResult = code.GetInstructions();
             Assert.AreEqual(asmExpected, asmResult);
             string stringsExpected = "[hi , foo]";
+            string stringsResult = code.strings.ToListString();
+            Assert.AreEqual(stringsExpected, stringsResult);
+        }
+
+        [TestMethod]
+        public void TestIncludeWithPassThrough()
+        {
+            string template = "hi <foo(...)>";
+            CompiledTemplate code = new TemplateCompiler(new TemplateGroup()).Compile(template);
+            string asmExpected =
+                "write_str 0, args, passthru 1, new_box_args 1, write";
+            string asmResult = code.GetInstructions();
+            Assert.AreEqual(asmExpected, asmResult);
+            string stringsExpected = "[hi , foo]";
+            string stringsResult = code.strings.ToListString();
+            Assert.AreEqual(stringsExpected, stringsResult);
+        }
+
+        [TestMethod]
+        public void TestIncludeWithPartialPassThrough()
+        {
+            string template = "hi <foo(x=y,...)>";
+            CompiledTemplate code = new TemplateCompiler(new TemplateGroup()).Compile(template);
+            string asmExpected =
+                "write_str 0, args, load_attr 1, store_arg 2, passthru 3, new_box_args 3, write";
+            string asmResult = code.GetInstructions();
+            Assert.AreEqual(asmExpected, asmResult);
+            string stringsExpected = "[hi , y, x, foo]";
             string stringsResult = code.strings.ToListString();
             Assert.AreEqual(stringsExpected, stringsResult);
         }

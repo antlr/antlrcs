@@ -36,8 +36,8 @@ namespace Antlr4.StringTemplate
     using System.Linq;
     using Antlr.Runtime.JavaExtensions;
     using Antlr4.StringTemplate.Compiler;
-    using Antlr4.StringTemplate.Extensions;
     using Antlr4.StringTemplate.Debug;
+    using Antlr4.StringTemplate.Extensions;
     using Antlr4.StringTemplate.Misc;
     using ArgumentNullException = System.ArgumentNullException;
     using Array = System.Array;
@@ -45,6 +45,7 @@ namespace Antlr4.StringTemplate
     using Console = System.Console;
     using CultureInfo = System.Globalization.CultureInfo;
     using Environment = System.Environment;
+    using Exception = System.Exception;
     using ICollection = System.Collections.ICollection;
     using IDictionary = System.Collections.IDictionary;
     using IEnumerable = System.Collections.IEnumerable;
@@ -53,7 +54,6 @@ namespace Antlr4.StringTemplate
     using Math = System.Math;
     using StringBuilder = System.Text.StringBuilder;
     using StringWriter = System.IO.StringWriter;
-    using Exception = System.Exception;
 
     /** This class knows how to execute template bytecodes relative to a
      *  particular TemplateGroup. To execute the byte codes, we need an output stream
@@ -206,6 +206,8 @@ namespace Antlr4.StringTemplate
                     try
                     {
                         o = GetAttribute(frame, name);
+                        if (o == Template.EmptyAttribute)
+                            o = null;
                     }
                     catch (TemplateNoSuchPropertyException)
                     {
@@ -375,6 +377,14 @@ namespace Antlr4.StringTemplate
 
                 case Bytecode.INSTR_ARGS:
                     operands[++sp] = new Dictionary<string, object>();
+                    break;
+
+                case Bytecode.INSTR_PASSTHRU:
+                    nameIndex = GetShort(code, ip);
+                    ip += Instruction.OperandSizeInBytes;
+                    name = self.impl.strings[nameIndex];
+                    attrs = (IDictionary<string, object>)operands[sp];
+                    PassThrough(frame, name, attrs);
                     break;
 
                 case Bytecode.INSTR_LIST:
@@ -595,6 +605,24 @@ namespace Antlr4.StringTemplate
             // get n args and store into st's attr list
             StoreArguments(frame, attrs, st);
             operands[++sp] = st;
+        }
+
+        internal virtual void PassThrough(TemplateFrame frame, string templateName, IDictionary<string, object> attrs)
+        {
+            CompiledTemplate c = group.LookupTemplate(templateName);
+            if (c == null)
+                return; // will get error later
+
+            foreach (FormalArgument arg in c.FormalArguments)
+            {
+                if (!attrs.ContainsKey(arg.Name))
+                {
+                    //System.out.println("arg "+arg.name+" missing");
+                    object o = GetAttribute(frame, arg.Name);
+                    //System.out.println("setting to "+o);
+                    attrs[arg.Name] = o;
+                }
+            }
         }
 
         internal virtual void StoreArguments(TemplateFrame frame, IDictionary<string, object> attrs, Template st)
@@ -1354,8 +1382,6 @@ namespace Antlr4.StringTemplate
                 if (arg != null)
                 {
                     object o = template.locals[arg.Index];
-                    if (o == Template.EmptyAttribute)
-                        o = null;
                     return o;
                 }
                 scope = scope.Parent;

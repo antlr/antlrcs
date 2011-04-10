@@ -249,7 +249,8 @@ primary
 
 args
 	:	argExprList
-	|	namedArg (','! namedArg)*
+	|	namedArg (','! namedArg)* (','! '...')?
+	|	'...'
 	|
 	;
 

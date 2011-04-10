@@ -46,6 +46,8 @@
             instructions[(int)Bytecode.INSTR_BRF] = new Instruction("brf", OperandType.Address);
             instructions[(int)Bytecode.INSTR_OPTIONS] = new Instruction("options");
             instructions[(int)Bytecode.INSTR_ARGS] = new Instruction("args");
+            instructions[(int)Bytecode.INSTR_PASSTHRU] = new Instruction("passthru", OperandType.String);
+            //instructions[(int)Bytecode.INSTR_PASSTHRU_IND] = new Instruction("passthru_ind", OperandType.Int);
             instructions[(int)Bytecode.INSTR_LIST] = new Instruction("list");
             instructions[(int)Bytecode.INSTR_ADD] = new Instruction("add");
             instructions[(int)Bytecode.INSTR_TOSTR] = new Instruction("tostr");

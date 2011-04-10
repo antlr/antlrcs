@@ -105,5 +105,32 @@ namespace Antlr4.StringTemplate
             }
             return stack;
         }
+
+        public List<TemplateFrame> GetFrameStack(bool topdown)
+        {
+            List<TemplateFrame> stack = new List<TemplateFrame>();
+            for (TemplateFrame p = this; p != null; p = p.Parent)
+                stack.Add(p);
+
+            if (topdown)
+                stack.Reverse();
+
+            return stack;
+        }
+
+        public List<EvalTemplateEvent> GetEvalTemplateEventStack(bool topdown)
+        {
+            List<EvalTemplateEvent> stack = new List<EvalTemplateEvent>();
+            for (TemplateFrame p = this; p != null; p = p.Parent)
+            {
+                EvalTemplateEvent eval = (EvalTemplateEvent)p.GetDebugState().Events[p.GetDebugState().Events.Count - 1];
+                stack.Add(eval);
+            }
+
+            if (topdown)
+                stack.Reverse();
+
+            return stack;
+        }
     }
 }

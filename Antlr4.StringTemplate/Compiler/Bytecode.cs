@@ -37,59 +37,61 @@ namespace Antlr4.StringTemplate.Compiler
         Invalid = 0,
 
         // INSTRUCTION BYTECODES (byte is signed; use a short to keep 0..255)
-        INSTR_LOAD_STR = 1,
-        INSTR_LOAD_ATTR = 2,
-        INSTR_LOAD_LOCAL = 3, // load stuff like it, i, i0
-        INSTR_LOAD_PROP = 4,
-        INSTR_LOAD_PROP_IND = 5,
-        INSTR_STORE_OPTION = 6,
-        INSTR_STORE_ARG = 7,
-        INSTR_NEW = 8,  // create new template instance
-        INSTR_NEW_IND = 9,  // create new instance using value on stack
-        INSTR_NEW_BOX_ARGS = 10, // create new instance using args in Map on stack
-        INSTR_SUPER_NEW = 11,  // create new instance using value on stack
-        INSTR_SUPER_NEW_BOX_ARGS = 12, // create new instance using args in Map on stack
-        INSTR_WRITE = 13,
-        INSTR_WRITE_OPT = 14,
-        INSTR_MAP = 15,  // <a:b()>, <a:b():c()>, <a:{...}>
-        INSTR_ROT_MAP = 16,  // <a:b(),c()>
-        INSTR_ZIP_MAP = 17,  // <names,phones:{n,p | ...}>
-        INSTR_BR = 18,
-        INSTR_BRF = 19,
-        INSTR_OPTIONS = 20,  // push options map
-        INSTR_ARGS = 21,  // push args map
-        INSTR_LIST = 22,
-        INSTR_ADD = 23,
-        INSTR_TOSTR = 24,
+        INSTR_LOAD_STR,
+        INSTR_LOAD_ATTR,
+        INSTR_LOAD_LOCAL, // load stuff like it, i, i0
+        INSTR_LOAD_PROP,
+        INSTR_LOAD_PROP_IND,
+        INSTR_STORE_OPTION,
+        INSTR_STORE_ARG,
+        INSTR_NEW,  // create new template instance
+        INSTR_NEW_IND,  // create new instance using value on stack
+        INSTR_NEW_BOX_ARGS, // create new instance using args in Map on stack
+        INSTR_SUPER_NEW,  // create new instance using value on stack
+        INSTR_SUPER_NEW_BOX_ARGS, // create new instance using args in Map on stack
+        INSTR_WRITE,
+        INSTR_WRITE_OPT,
+        INSTR_MAP,  // <a:b()>, <a:b():c()>, <a:{...}>
+        INSTR_ROT_MAP,  // <a:b(),c()>
+        INSTR_ZIP_MAP,  // <names,phones:{n,p | ...}>
+        INSTR_BR,
+        INSTR_BRF,
+        INSTR_OPTIONS,  // push options map
+        INSTR_ARGS,  // push args map
+        INSTR_PASSTHRU,
+        //INSTR_PASSTHRU_IND,
+        INSTR_LIST,
+        INSTR_ADD,
+        INSTR_TOSTR,
 
         // Predefined functions
-        INSTR_FIRST = 25,
-        INSTR_LAST = 26,
-        INSTR_REST = 27,
-        INSTR_TRUNC = 28,
-        INSTR_STRIP = 29,
-        INSTR_TRIM = 30,
-        INSTR_LENGTH = 31,
-        INSTR_STRLEN = 32,
-        INSTR_REVERSE = 33,
+        INSTR_FIRST,
+        INSTR_LAST,
+        INSTR_REST,
+        INSTR_TRUNC,
+        INSTR_STRIP,
+        INSTR_TRIM,
+        INSTR_LENGTH,
+        INSTR_STRLEN,
+        INSTR_REVERSE,
 
-        INSTR_NOT = 34,
-        INSTR_OR = 35,
-        INSTR_AND = 36,
+        INSTR_NOT,
+        INSTR_OR,
+        INSTR_AND,
 
-        INSTR_INDENT = 37,
-        INSTR_DEDENT = 38,
-        INSTR_NEWLINE = 39,
+        INSTR_INDENT,
+        INSTR_DEDENT,
+        INSTR_NEWLINE,
 
-        INSTR_NOOP = 40, // do nothing
-        INSTR_POP = 41,
-        INSTR_NULL = 42, // push null value
-        INSTR_TRUE = 43, // push true
-        INSTR_FALSE = 44,
+        INSTR_NOOP, // do nothing
+        INSTR_POP,
+        INSTR_NULL, // push null value
+        INSTR_TRUE, // push true
+        INSTR_FALSE,
 
         // Combined instructions
 
-        INSTR_WRITE_STR = 45,
-        INSTR_WRITE_LOCAL = 46,
+        INSTR_WRITE_STR, // load_str n, write
+        INSTR_WRITE_LOCAL, // TODO load_local n, write
     }
 }
