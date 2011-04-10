@@ -48,10 +48,9 @@ namespace Antlr4.StringTemplate
      */
     public class TemplateGroupFile : TemplateGroup
     {
-        public readonly string fileName;
-        public readonly Uri url;
-
-        protected bool alreadyLoaded = false;
+        private readonly string _fileName;
+        private readonly Uri _url;
+        private bool _alreadyLoaded = false;
 
         /** Load a file relative to current dir or from root or via CLASSPATH. */
         public TemplateGroupFile(string fileName)
@@ -70,7 +69,7 @@ namespace Antlr4.StringTemplate
                 //File f = new File(fileName);
                 if (File.Exists(fileName))
                 {
-                    url = new Uri(fileName);
+                    _url = new Uri(fileName);
                 }
                 else
                 {
@@ -87,7 +86,7 @@ namespace Antlr4.StringTemplate
 #endif
                 }
 
-                if (url == null)
+                if (_url == null)
                 {
                     throw new ArgumentException("No such group file: " + fileName);
                 }
@@ -97,7 +96,7 @@ namespace Antlr4.StringTemplate
                 ErrorManager.InternalError(null, "can't Load group file " + fileName, e);
             }
 
-            this.fileName = fileName;
+            this._fileName = fileName;
         }
 
         public TemplateGroupFile(string fullyQualifiedFileName, Encoding encoding)
@@ -114,13 +113,13 @@ namespace Antlr4.StringTemplate
         public TemplateGroupFile(Uri url, Encoding encoding, char delimiterStartChar, char delimiterStopChar)
             : base(delimiterStartChar, delimiterStopChar)
         {
-            this.url = url;
+            this._url = url;
             this.Encoding = encoding;
         }
 
         public override bool IsDefined(string name)
         {
-            if (!alreadyLoaded)
+            if (!_alreadyLoaded)
                 Load();
             return base.IsDefined(name);
         }
@@ -129,12 +128,12 @@ namespace Antlr4.StringTemplate
         public override void Unload()
         {
             base.Unload();
-            alreadyLoaded = false;
+            _alreadyLoaded = false;
         }
 
         protected override CompiledTemplate Load(string name)
         {
-            if (!alreadyLoaded)
+            if (!_alreadyLoaded)
                 Load();
 
             return RawGetTemplate(name);
@@ -142,18 +141,18 @@ namespace Antlr4.StringTemplate
 
         public override void Load()
         {
-            if (alreadyLoaded)
+            if (_alreadyLoaded)
                 return;
 
-            alreadyLoaded = true; // do before actual load to say we're doing it
+            _alreadyLoaded = true; // do before actual load to say we're doing it
             // no prefix since this group file is the entire group, nothing lives
             // beneath it.
-            LoadGroupFile(string.Empty, url.ToString());
+            LoadGroupFile(string.Empty, _url.ToString());
         }
 
         public override string Show()
         {
-            if (!alreadyLoaded)
+            if (!_alreadyLoaded)
                 Load();
 
             return base.Show();
@@ -163,7 +162,7 @@ namespace Antlr4.StringTemplate
         {
             get
             {
-                return Path.GetFileNameWithoutExtension(fileName);
+                return Path.GetFileNameWithoutExtension(_fileName);
             }
         }
 
@@ -171,7 +170,7 @@ namespace Antlr4.StringTemplate
         {
             get
             {
-                return fileName;
+                return _fileName;
             }
         }
     }
