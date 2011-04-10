@@ -65,7 +65,6 @@ namespace Antlr4.StringTemplate.Compiler
         /** How do we interpret syntax of template? (debug only) */
         public CommonTree ast;
 
-        /** Must be non null map if !noFormalArgs */
         private List<FormalArgument> formalArguments;
 
         public bool hasFormalArgs;
