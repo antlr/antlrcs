@@ -567,16 +567,13 @@ namespace Antlr4.StringTemplate
             if (imported == null)
             {
                 _errorManager.RuntimeError(frame, current_ip, ErrorType.NO_IMPORTED_TEMPLATE, name);
-                st = self.Group.CreateStringTemplateInternally();
-                st.impl = new CompiledTemplate();
-                sp -= nargs;
-                operands[++sp] = st;
-                return;
+                st = self.Group.CreateStringTemplateInternally(new CompiledTemplate());
             }
-
-            st = imported.NativeGroup.CreateStringTemplateInternally();
-            st.Group = group;
-            st.impl = imported;
+            else
+            {
+                st = imported.NativeGroup.GetEmbeddedInstanceOf(frame, current_ip, name);
+                st.Group = group;
+            }
 
             // get n args and store into st's attr list
             StoreArguments(frame, nargs, st);
@@ -592,15 +589,13 @@ namespace Antlr4.StringTemplate
             if (imported == null)
             {
                 _errorManager.RuntimeError(frame, current_ip, ErrorType.NO_IMPORTED_TEMPLATE, name);
-                st = self.Group.CreateStringTemplateInternally();
-                st.impl = new CompiledTemplate();
-                operands[++sp] = st;
-                return;
+                st = self.Group.CreateStringTemplateInternally(new CompiledTemplate());
             }
-
-            st = imported.NativeGroup.CreateStringTemplateInternally();
-            st.Group = group;
-            st.impl = imported;
+            else
+            {
+                st = imported.NativeGroup.CreateStringTemplateInternally(imported);
+                st.Group = group;
+            }
 
             // get n args and store into st's attr list
             StoreArguments(frame, attrs, st);
@@ -879,7 +874,7 @@ namespace Antlr4.StringTemplate
             RotateMap(frame, attr, new List<Template>() { st });
         }
 
-        // <names:a> or <names:a,b>
+        // <names:a()> or <names:a(),b()>
         protected virtual void RotateMap(TemplateFrame frame, object attr, List<Template> prototypes)
         {
             if (attr == null)
@@ -1421,11 +1416,10 @@ namespace Antlr4.StringTemplate
 
                 if (arg.DefaultValueToken.Type == GroupParser.ANONYMOUS_TEMPLATE)
                 {
-                    Template defaultArgST = group.CreateStringTemplateInternally();
+                    Template defaultArgST = group.CreateStringTemplateInternally(arg.CompiledDefaultValue);
                     // default arg template must see other args so it's enclosing
                     // instance is the template we are invoking.
                     defaultArgST.Group = group;
-                    defaultArgST.impl = arg.CompiledDefaultValue;
                     // If default arg is template with single expression
                     // wrapped in parens, x={<(...)>}, then eval to string
                     // rather than setting x to the template for later

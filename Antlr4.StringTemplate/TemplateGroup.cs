@@ -251,18 +251,8 @@ namespace Antlr4.StringTemplate
             //System.out.println("GetInstanceOf("+name+")");
             CompiledTemplate c = LookupTemplate(name);
             if (c != null)
-            {
-                Template instanceST = CreateStringTemplate();
-                instanceST.Group = this;
-                instanceST.impl = c;
-                if (instanceST.impl.FormalArguments != null)
-                {
-                    instanceST.locals = new object[instanceST.impl.FormalArguments.Count];
-                    for (int i = 0; i < instanceST.locals.Length; i++)
-                        instanceST.locals[i] = Template.EmptyAttribute;
-                }
-                return instanceST;
-            }
+                return CreateStringTemplate(c);
+
             return null;
         }
 
@@ -277,9 +267,7 @@ namespace Antlr4.StringTemplate
             if (st == null)
             {
                 ErrorManager.RuntimeError(frame, ip, ErrorType.NO_SUCH_TEMPLATE, name);
-                st = CreateStringTemplate();
-                st.impl = new CompiledTemplate();
-                return st;
+                return CreateStringTemplateInternally(new CompiledTemplate());
             }
 
             // this is only called internally. wack any debug ST create events
@@ -304,9 +292,10 @@ namespace Antlr4.StringTemplate
             {
                 template = Utility.Strip(templateToken.Text, 1);
             }
-            Template st = CreateStringTemplateInternally();
+
+            CompiledTemplate impl = Compile(FileName, null, null, template, templateToken);
+            Template st = CreateStringTemplateInternally(impl);
             st.Group = this;
-            st.impl = Compile(FileName, null, null, template, templateToken);
             st.impl.hasFormalArgs = false;
             st.impl.name = Template.UnknownName;
             st.impl.DefineImplicitlyDefinedTemplates(this);
@@ -711,17 +700,26 @@ namespace Antlr4.StringTemplate
             return new Template(this);
         }
 
-        public virtual Template CreateStringTemplate(Template prototype)
+        public virtual Template CreateStringTemplate(CompiledTemplate impl)
         {
-            return new Template(prototype);
+            Template st = new Template(this);
+            st.impl = impl;
+            if (impl.FormalArguments != null)
+            {
+                st.locals = new object[impl.FormalArguments.Count];
+                for (int i = 0; i < st.locals.Length; i++)
+                    st.locals[i] = Template.EmptyAttribute;
+            }
+
+            return st;
         }
 
         /** differentiate so we can avoid having creation events for regions,
          *  map operations, and other "new ST" events used during interp.
          */
-        public Template CreateStringTemplateInternally()
+        public Template CreateStringTemplateInternally(CompiledTemplate impl)
         {
-            Template template = CreateStringTemplate();
+            Template template = CreateStringTemplate(impl);
             if (TrackCreationEvents && template.DebugState != null)
             {
                 // toss it out
@@ -733,14 +731,8 @@ namespace Antlr4.StringTemplate
 
         public Template CreateStringTemplateInternally(Template prototype)
         {
-            Template template = CreateStringTemplate(prototype);
-            if (TrackCreationEvents && template.DebugState != null)
-            {
-                // toss it out
-                template.DebugState.NewTemplateEvent = null;
-            }
-
-            return template;
+            // no need to wack debugState; not set in ST(proto).
+            return new Template(prototype);
         }
 
         public virtual string Name
