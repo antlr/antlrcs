@@ -38,6 +38,7 @@ namespace Antlr4.StringTemplate
     using Antlr4.StringTemplate.Compiler;
     using Antlr4.StringTemplate.Debug;
     using Antlr4.StringTemplate.Misc;
+    using ArgumentNullException = System.ArgumentNullException;
     using Array = System.Array;
     using BitConverter = System.BitConverter;
     using Console = System.Console;
@@ -77,7 +78,7 @@ namespace Antlr4.StringTemplate
         public static readonly HashSet<string> predefinedAnonSubtemplateAttributes = new HashSet<string>() { "i", "i0" };
 
         /** Dump bytecode instructions as we execute them? */
-        public static bool trace = false;
+        private static bool trace = false;
 
         /** Exec st with respect to this group. Once set in Template.ToString(),
          *  it should be fixed. Template has group also.
@@ -87,7 +88,7 @@ namespace Antlr4.StringTemplate
         /** For renderers, we have to pass in the culture */
         private readonly CultureInfo culture;
 
-        private readonly ErrorManager errMgr;
+        private readonly ErrorManager _errorManager;
 
         /** Operand stack, grows upwards */
         private object[] operands = new object[DefaultOperandStackSize];
@@ -118,16 +119,19 @@ namespace Antlr4.StringTemplate
         {
         }
 
-        public Interpreter(TemplateGroup group, ErrorManager errMgr, bool debug)
-            : this(group, CultureInfo.CurrentCulture, errMgr, debug)
+        public Interpreter(TemplateGroup group, ErrorManager errorManager, bool debug)
+            : this(group, CultureInfo.CurrentCulture, errorManager, debug)
         {
         }
 
-        public Interpreter(TemplateGroup group, CultureInfo culture, ErrorManager errMgr, bool debug)
+        public Interpreter(TemplateGroup group, CultureInfo culture, ErrorManager errorManager, bool debug)
         {
+            if (errorManager == null)
+                throw new ArgumentNullException("errorManager");
+
             this.group = group;
             this.culture = culture;
-            this.errMgr = errMgr;
+            this._errorManager = errorManager;
             this._debug = debug;
             if (debug)
             {
@@ -191,7 +195,7 @@ namespace Antlr4.StringTemplate
                     }
                     catch (TemplateNoSuchPropertyException)
                     {
-                        errMgr.RuntimeError(frame, current_ip, ErrorType.NO_SUCH_ATTRIBUTE, name);
+                        _errorManager.RuntimeError(frame, current_ip, ErrorType.NO_SUCH_ATTRIBUTE, name);
                         o = null;
                     }
                     operands[++sp] = o;
@@ -402,7 +406,7 @@ namespace Antlr4.StringTemplate
                     }
                     else
                     {
-                        errMgr.RuntimeError(frame, current_ip, ErrorType.EXPECTING_STRING, "trim", o.GetType());
+                        _errorManager.RuntimeError(frame, current_ip, ErrorType.EXPECTING_STRING, "trim", o.GetType());
                         operands[++sp] = o;
                     }
                     break;
@@ -419,7 +423,7 @@ namespace Antlr4.StringTemplate
                     }
                     else
                     {
-                        errMgr.RuntimeError(frame, current_ip, ErrorType.EXPECTING_STRING, "strlen", o.GetType());
+                        _errorManager.RuntimeError(frame, current_ip, ErrorType.EXPECTING_STRING, "strlen", o.GetType());
                         operands[++sp] = 0;
                     }
                     break;
@@ -467,7 +471,7 @@ namespace Antlr4.StringTemplate
                     }
                     catch (IOException ioe)
                     {
-                        errMgr.IOError(self, ErrorType.WRITE_IO_ERROR, ioe);
+                        _errorManager.IOError(self, ErrorType.WRITE_IO_ERROR, ioe);
                     }
                     break;
 
@@ -512,7 +516,7 @@ namespace Antlr4.StringTemplate
                     break;
 
                 default:
-                    errMgr.InternalError(self, "invalid bytecode @ " + (ip - 1) + ": " + opcode, null);
+                    _errorManager.InternalError(self, "invalid bytecode @ " + (ip - 1) + ": " + opcode, null);
                     self.impl.Dump();
                     break;
                 }
@@ -537,7 +541,7 @@ namespace Antlr4.StringTemplate
             CompiledTemplate imported = self.impl.NativeGroup.LookupImportedTemplate(name);
             if (imported == null)
             {
-                errMgr.RuntimeError(frame, current_ip, ErrorType.NO_IMPORTED_TEMPLATE, name);
+                _errorManager.RuntimeError(frame, current_ip, ErrorType.NO_IMPORTED_TEMPLATE, name);
                 st = self.groupThatCreatedThisInstance.CreateStringTemplateInternally();
                 st.impl = new CompiledTemplate();
                 sp -= nargs;
@@ -562,7 +566,7 @@ namespace Antlr4.StringTemplate
             CompiledTemplate imported = self.impl.NativeGroup.LookupImportedTemplate(name);
             if (imported == null)
             {
-                errMgr.RuntimeError(frame, current_ip, ErrorType.NO_IMPORTED_TEMPLATE, name);
+                _errorManager.RuntimeError(frame, current_ip, ErrorType.NO_IMPORTED_TEMPLATE, name);
                 st = self.groupThatCreatedThisInstance.CreateStringTemplateInternally();
                 st.impl = new CompiledTemplate();
                 operands[++sp] = st;
@@ -589,7 +593,7 @@ namespace Antlr4.StringTemplate
 
             if (nargs < (nformalArgs - st.impl.NumberOfArgsWithDefaultValues) || nargs > nformalArgs)
             {
-                errMgr.RuntimeError(frame,
+                _errorManager.RuntimeError(frame,
                                     current_ip,
                                     ErrorType.ARGUMENT_COUNT_MISMATCH,
                                     nargs,
@@ -602,7 +606,7 @@ namespace Antlr4.StringTemplate
                 // don't let it throw an exception in RawSetAttribute
                 if (st.impl.FormalArguments == null || !st.impl.FormalArguments.Any(i => i.Name == argName))
                 {
-                    errMgr.RuntimeError(frame, current_ip, ErrorType.NO_SUCH_ATTRIBUTE, argName);
+                    _errorManager.RuntimeError(frame, current_ip, ErrorType.NO_SUCH_ATTRIBUTE, argName);
                     continue;
                 }
 
@@ -624,7 +628,7 @@ namespace Antlr4.StringTemplate
             if (nargs < (nformalArgs - st.impl.NumberOfArgsWithDefaultValues) ||
                  nargs > nformalArgs)
             {
-                errMgr.RuntimeError(frame,
+                _errorManager.RuntimeError(frame,
                                     current_ip,
                                     ErrorType.ARGUMENT_COUNT_MISMATCH,
                                     nargs,
@@ -747,7 +751,7 @@ namespace Antlr4.StringTemplate
                     }
                     catch (IOException ioe)
                     {
-                        errMgr.IOError(template, ErrorType.WRITE_IO_ERROR, ioe);
+                        _errorManager.IOError(template, ErrorType.WRITE_IO_ERROR, ioe);
                     }
                 }
                 n = Execute(@out, frame);
@@ -764,7 +768,7 @@ namespace Antlr4.StringTemplate
                 }
                 catch (IOException ioe)
                 {
-                    errMgr.IOError(frame.Template, ErrorType.WRITE_IO_ERROR, ioe, o);
+                    _errorManager.IOError(frame.Template, ErrorType.WRITE_IO_ERROR, ioe, o);
                 }
             }
 
@@ -929,7 +933,7 @@ namespace Antlr4.StringTemplate
             List<FormalArgument> formalArguments = code.FormalArguments;
             if (!code.hasFormalArgs || formalArguments == null)
             {
-                errMgr.RuntimeError(frame, current_ip, ErrorType.MISSING_FORMAL_ARGUMENTS);
+                _errorManager.RuntimeError(frame, current_ip, ErrorType.MISSING_FORMAL_ARGUMENTS);
                 return null;
             }
 
@@ -941,7 +945,7 @@ namespace Antlr4.StringTemplate
 
             if (nformalArgs != numExprs)
             {
-                errMgr.RuntimeError(frame, current_ip, ErrorType.MAP_ARGUMENT_COUNT_MISMATCH, numExprs, nformalArgs);
+                _errorManager.RuntimeError(frame, current_ip, ErrorType.MAP_ARGUMENT_COUNT_MISMATCH, numExprs, nformalArgs);
                 // TODO just fill first n
                 // truncate arg list to match smaller size
                 int shorterSize = Math.Min(formalArgumentNames.Length, numExprs);
@@ -988,7 +992,7 @@ namespace Antlr4.StringTemplate
         {
             if (st.impl.FormalArguments == null)
             {
-                errMgr.RuntimeError(frame, current_ip, ErrorType.ARGUMENT_COUNT_MISMATCH, 1, st.impl.name, 0);
+                _errorManager.RuntimeError(frame, current_ip, ErrorType.ARGUMENT_COUNT_MISMATCH, 1, st.impl.name, 0);
                 return;
             }
 
@@ -1300,7 +1304,7 @@ namespace Antlr4.StringTemplate
 
             if (o == null)
             {
-                errMgr.RuntimeError(frame, current_ip, ErrorType.NO_SUCH_PROPERTY,
+                _errorManager.RuntimeError(frame, current_ip, ErrorType.NO_SUCH_PROPERTY,
                                           "null attribute");
                 return null;
             }
@@ -1316,7 +1320,7 @@ namespace Antlr4.StringTemplate
             }
             catch (TemplateNoSuchPropertyException e)
             {
-                errMgr.RuntimeError(frame, current_ip, ErrorType.NO_SUCH_PROPERTY,
+                _errorManager.RuntimeError(frame, current_ip, ErrorType.NO_SUCH_PROPERTY,
                                           e, o.GetType().Name + "." + property);
             }
             return null;
