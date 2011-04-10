@@ -52,6 +52,7 @@
     <Compile Include="Extensions\ListExtensions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TestAggregates.cs" />
+    <Compile Include="TestNoNewlineTemplates.cs" />
     <Compile Include="TestVisualizer.cs" />
   </ItemGroup>
   <ItemGroup>
