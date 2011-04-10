@@ -33,8 +33,9 @@
 namespace Antlr4.Test.StringTemplate
 {
     using Antlr4.StringTemplate;
-    using Microsoft.VisualStudio.TestTools.UnitTesting;
     using Antlr4.StringTemplate.Misc;
+    using Microsoft.VisualStudio.TestTools.UnitTesting;
+    using Path = System.IO.Path;
 
     [TestClass]
     public class TestScopes : BaseTest
@@ -47,7 +48,7 @@ namespace Antlr4.Test.StringTemplate
                 "u() ::= \"<x><y>\"";
             ErrorBuffer errors = new ErrorBuffer();
             writeFile(tmpdir, "t.stg", templates);
-            TemplateGroup group = new TemplateGroupFile(tmpdir + "/" + "t.stg");
+            TemplateGroup group = new TemplateGroupFile(Path.Combine(tmpdir, "t.stg"));
             group.Listener = errors;
             Template st = group.GetInstanceOf("t");
             st.Add("x", "x");
@@ -69,7 +70,7 @@ namespace Antlr4.Test.StringTemplate
                 "u(z) ::= \"\"";
             ErrorBuffer errors = new ErrorBuffer();
             writeFile(tmpdir, "t.stg", templates);
-            TemplateGroup group = new TemplateGroupFile(tmpdir + "/" + "t.stg");
+            TemplateGroup group = new TemplateGroupFile(Path.Combine(tmpdir, "t.stg"));
             group.Listener = errors;
             Template st = group.GetInstanceOf("t");
             string result = st.Render();
@@ -85,7 +86,7 @@ namespace Antlr4.Test.StringTemplate
                 "t() ::= \"<x>\"\n";
             ErrorBuffer errors = new ErrorBuffer();
             writeFile(tmpdir, "t.stg", templates);
-            TemplateGroup group = new TemplateGroupFile(tmpdir + "/" + "t.stg");
+            TemplateGroup group = new TemplateGroupFile(Path.Combine(tmpdir, "t.stg"));
             group.Listener = errors;
             Template st = group.GetInstanceOf("t");
             string result = st.Render();
@@ -102,7 +103,7 @@ namespace Antlr4.Test.StringTemplate
                 "u(y) ::= \"<x><y>\"";
             ErrorBuffer errors = new ErrorBuffer();
             writeFile(tmpdir, "t.stg", templates);
-            TemplateGroup group = new TemplateGroupFile(tmpdir + "/" + "t.stg");
+            TemplateGroup group = new TemplateGroupFile(Path.Combine(tmpdir, "t.stg"));
             group.Listener = errors;
             Template st = group.GetInstanceOf("t");
             st.Add("x", "x");
@@ -125,7 +126,7 @@ namespace Antlr4.Test.StringTemplate
                 "u(x) ::= \"<i>:<x>\"";
             ErrorBuffer errors = new ErrorBuffer();
             writeFile(tmpdir, "t.stg", templates);
-            TemplateGroup group = new TemplateGroupFile(tmpdir + "/" + "t.stg");
+            TemplateGroup group = new TemplateGroupFile(Path.Combine(tmpdir, "t.stg"));
             group.Listener = errors;
             Template st = group.GetInstanceOf("t");
             st.Add("names", "Ter");
