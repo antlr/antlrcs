@@ -458,7 +458,6 @@ namespace Antlr4.StringTemplate
         {
             Interpreter interp = new Interpreter(groupThatCreatedThisInstance, impl.NativeGroup.ErrorManager, false);
             TemplateFrame frame = new TemplateFrame(this, null);
-            interp.SetDefaultArguments(frame);
             return interp.Execute(@out, frame);
         }
 
@@ -466,7 +465,6 @@ namespace Antlr4.StringTemplate
         {
             Interpreter interp = new Interpreter(groupThatCreatedThisInstance, culture, impl.NativeGroup.ErrorManager, false);
             TemplateFrame frame = new TemplateFrame(this, null);
-            interp.SetDefaultArguments(frame);
             return interp.Execute(@out, frame);
         }
 
@@ -474,7 +472,6 @@ namespace Antlr4.StringTemplate
         {
             Interpreter interp = new Interpreter(groupThatCreatedThisInstance, new ErrorManager(listener), false);
             TemplateFrame frame = new TemplateFrame(this, null);
-            interp.SetDefaultArguments(frame);
             return interp.Execute(@out, frame);
         }
 
@@ -482,7 +479,6 @@ namespace Antlr4.StringTemplate
         {
             Interpreter interp = new Interpreter(groupThatCreatedThisInstance, culture, new ErrorManager(listener), false);
             TemplateFrame frame = new TemplateFrame(this, null);
-            interp.SetDefaultArguments(frame);
             return interp.Execute(@out, frame);
         }
 

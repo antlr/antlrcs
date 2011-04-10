@@ -424,5 +424,26 @@ namespace Antlr4.Test.StringTemplate
             string result = st.Render();
             Assert.AreEqual(expected, result);
         }
+
+        [TestMethod]
+        public void TestEmbeddedSubtemplate()
+        {
+            // fix so we ignore inside {...}
+            string dir = tmpdir;
+            string groupFile =
+                "a() ::= <<\n" +
+                "[\n" +
+                "  <{\n" +
+                "  bar\n" +
+                "  }>\n" +
+                "]\n" +
+                ">>\n";
+            writeFile(dir, "group.stg", groupFile);
+            TemplateGroup group = new TemplateGroupFile(Path.Combine(dir, "group.stg"));
+            Template st = group.GetInstanceOf("a");
+            string expected = "[" + newline + "  bar" + newline + "]";
+            string result = st.Render();
+            Assert.AreEqual(expected, result);
+        }
     }
 }

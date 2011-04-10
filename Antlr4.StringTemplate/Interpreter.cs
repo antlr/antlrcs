@@ -148,6 +148,7 @@ namespace Antlr4.StringTemplate
             int save_ip = current_ip;
             try
             {
+                SetDefaultArguments(frame);
                 return ExecuteImpl(@out, frame);
             }
             catch (Exception e)
@@ -754,7 +755,6 @@ namespace Antlr4.StringTemplate
             if (template != null)
             {
                 frame = new TemplateFrame(template, frame);
-                SetDefaultArguments(frame);
                 if (options != null && options[(int)RenderOption.Wrap] != null)
                 {
                     // if we have a wrap string, then inform writer it
@@ -1376,7 +1376,7 @@ namespace Antlr4.StringTemplate
          *
          *  The evaluation context is the template enclosing invokedST.
          */
-        public virtual void SetDefaultArguments(TemplateFrame frame)
+        protected virtual void SetDefaultArguments(TemplateFrame frame)
         {
             Template invokedST = frame.Template;
             if (invokedST.impl.FormalArguments == null || invokedST.impl.NumberOfArgsWithDefaultValues == 0)

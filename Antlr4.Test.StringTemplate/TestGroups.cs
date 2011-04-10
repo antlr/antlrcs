@@ -368,6 +368,19 @@ namespace Antlr4.Test.StringTemplate
         }
 
         [TestMethod]
+        public void TestEarlyEvalOfDefaultArgs()
+        {
+            string templates =
+                "s(x,y={<(x)>}) ::= \"<x><y>\"\n"; // should see x in def arg
+            TemplateGroup group = new TemplateGroupString(templates);
+            Template b = group.GetInstanceOf("s");
+            b.Add("x", "a");
+            string expecting = "aa";
+            string result = b.Render();
+            Assert.AreEqual(expecting, result);
+        }
+
+        [TestMethod]
         public void TestDefaultArgumentAsSimpleTemplate()
         {
             string templates =
