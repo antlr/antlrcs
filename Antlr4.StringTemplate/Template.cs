@@ -122,6 +122,11 @@ namespace Antlr4.StringTemplate
         /** Used by group creation routine, not by users */
         internal Template(TemplateGroup group)
         {
+            if (group == null)
+                throw new ArgumentNullException("group");
+
+            this.groupThatCreatedThisInstance = group;
+
             if (group.TrackCreationEvents)
             {
                 if (_debugState == null)
@@ -149,6 +154,9 @@ namespace Antlr4.StringTemplate
 
         public Template(TemplateGroup group, string template)
         {
+            if (group == null)
+                throw new ArgumentNullException("group");
+
             groupThatCreatedThisInstance = group;
             impl = groupThatCreatedThisInstance.Compile(group.FileName, null,
                                                         null, template, null);
@@ -157,8 +165,8 @@ namespace Antlr4.StringTemplate
             impl.DefineImplicitlyDefinedTemplates(groupThatCreatedThisInstance);
         }
 
-        /** Clone a prototype template for application in MAP operations; copy all fields
-         *  except DebugState.
+        /** Clone a prototype template.
+         *  Copy all fields except DebugState.
          */
         public Template(Template prototype)
             : this(prototype, false)
@@ -197,6 +205,9 @@ namespace Antlr4.StringTemplate
 
             set
             {
+                if (value == null)
+                    throw new ArgumentNullException("value");
+
                 groupThatCreatedThisInstance = value;
             }
         }
