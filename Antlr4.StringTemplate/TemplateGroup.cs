@@ -38,9 +38,9 @@ namespace Antlr4.StringTemplate
     using System.Text;
     using Antlr.Runtime;
     using Antlr4.StringTemplate.Compiler;
-    using Antlr4.StringTemplate.Debug;
     using Antlr4.StringTemplate.Misc;
     using ArgumentException = System.ArgumentException;
+    using ArgumentNullException = System.ArgumentNullException;
     using Console = System.Console;
     using Environment = System.Environment;
     using Exception = System.Exception;
@@ -101,7 +101,7 @@ namespace Antlr4.StringTemplate
          */
         protected TypeRegistry<IAttributeRenderer> renderers;
 
-        protected TypeRegistry<ITypeProxyFactory> _proxyFactories;
+        private TypeRegistry<ITypeProxyFactory> _proxyFactories;
 
         /** A dictionary that allows people to register a model adaptor for
          *  a particular kind of object (subclass or implementation). Applies
@@ -127,14 +127,14 @@ namespace Antlr4.StringTemplate
          */
         private bool _trackCreationEvents = false;
 
-        public static TemplateGroup defaultGroup = new TemplateGroup();
-
         /** Used to indicate that the template doesn't exist.
          *  Prevents duplicate group file loads and unnecessary file checks.
          */
         protected static readonly CompiledTemplate NotFoundTemplate = new CompiledTemplate();
 
-        public static readonly ErrorManager DefaultErrorManager = new ErrorManager();
+        private static readonly ErrorManager _defaultErrorManager = new ErrorManager();
+
+        public static TemplateGroup defaultGroup = new TemplateGroup();
 
         /** The error manager for entire group; all compilations and executions.
          *  This gets copied to parsers, walkers, and interpreters.
@@ -149,6 +149,14 @@ namespace Antlr4.StringTemplate
         {
             this.delimiterStartChar = delimiterStartChar;
             this.delimiterStopChar = delimiterStopChar;
+        }
+
+        public static ErrorManager DefaultErrorManager
+        {
+            get
+            {
+                return _defaultErrorManager;
+            }
         }
 
         public IEnumerable<CompiledTemplate> CompiledTemplates
@@ -181,6 +189,9 @@ namespace Antlr4.StringTemplate
 
             set
             {
+                if (value == null)
+                    throw new ArgumentNullException("value");
+
                 _errorManager = value;
             }
         }
@@ -440,7 +451,7 @@ namespace Antlr4.StringTemplate
             string name = regionT.Text;
             template = Utility.TrimOneStartingNewline(template);
             template = Utility.TrimOneTrailingNewline(template);
-            CompiledTemplate code = Compile(FileName, enclosingTemplateName, null, template, regionT);
+            CompiledTemplate code = Compile(FileName, enclosingTemplateName, null, template, templateToken);
             string mangled = GetMangledRegionName(enclosingTemplateName, name);
 
             if (LookupTemplate(mangled) == null)
