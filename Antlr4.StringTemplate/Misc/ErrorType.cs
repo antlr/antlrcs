@@ -32,7 +32,10 @@
 
 namespace Antlr4.StringTemplate.Misc
 {
+    using DebuggerDisplayAttribute = System.Diagnostics.DebuggerDisplayAttribute;
+
     /** All the errors that can happen and how to generate a message */
+    [DebuggerDisplay("{Message}")]
     public sealed class ErrorType
     {
         // RUNTIME SEMANTIC ERRORS
