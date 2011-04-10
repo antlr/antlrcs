@@ -36,6 +36,7 @@ namespace Antlr4.StringTemplate
     using System.Linq;
     using Antlr.Runtime.JavaExtensions;
     using Antlr4.StringTemplate.Compiler;
+    using Antlr4.StringTemplate.Extensions;
     using Antlr4.StringTemplate.Debug;
     using Antlr4.StringTemplate.Misc;
     using ArgumentNullException = System.ArgumentNullException;
@@ -52,6 +53,7 @@ namespace Antlr4.StringTemplate
     using Math = System.Math;
     using StringBuilder = System.Text.StringBuilder;
     using StringWriter = System.IO.StringWriter;
+    using Exception = System.Exception;
 
     /** This class knows how to execute template bytecodes relative to a
      *  particular TemplateGroup. To execute the byte codes, we need an output stream
@@ -147,6 +149,17 @@ namespace Antlr4.StringTemplate
             try
             {
                 return ExecuteImpl(@out, frame);
+            }
+            catch (Exception e)
+            {
+                if (e.IsCritical())
+                    throw;
+
+                StringBuilder builder = new StringBuilder();
+                builder.AppendLine(e.ToString());
+                builder.AppendLine(e.StackTrace);
+                _errorManager.RuntimeError(frame, current_ip, ErrorType.INTERNAL_ERROR, "internal error caused by: " + builder);
+                return 0;
             }
             finally
             {
