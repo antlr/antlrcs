@@ -35,6 +35,7 @@ namespace Antlr4.StringTemplate.Compiler
     using System.Collections.Generic;
     using Antlr.Runtime;
     using Antlr4.StringTemplate.Misc;
+    using CLSCompliantAttribute = System.CLSCompliantAttribute;
     using NumberStyles = System.Globalization.NumberStyles;
     using StringBuilder = System.Text.StringBuilder;
 
@@ -101,6 +102,7 @@ namespace Antlr4.StringTemplate.Compiler
         public const int ELLIPSIS = 11;
         public const int LCURLY = 20;
         public const int BANG = 10;
+        [CLSCompliant(false)]
         public const int EQUALS = 12;
         public const int TEXT = 22;
         public const int ID = 25;
@@ -208,7 +210,7 @@ namespace Antlr4.StringTemplate.Compiler
             if (tokens.Count > 0)
                 return tokens.Dequeue();
 
-            return _nextToken();
+            return NextTokenImpl();
         }
 
         /** Ensure x is next character on the input stream */
@@ -234,7 +236,7 @@ namespace Antlr4.StringTemplate.Compiler
             tokens.Enqueue(token);
         }
 
-        public virtual IToken _nextToken()
+        public virtual IToken NextTokenImpl()
         {
             //System.out.println("nextToken: c="+(char)c+"@"+input.Index());
             while (true)
