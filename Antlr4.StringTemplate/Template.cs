@@ -119,6 +119,11 @@ namespace Antlr4.StringTemplate
             }
         }
 
+        public Template()
+            : this(TemplateGroup.defaultGroup, string.Empty)
+        {
+        }
+
         /** Used by group creation routine, not by users */
         internal Template(TemplateGroup group)
         {
