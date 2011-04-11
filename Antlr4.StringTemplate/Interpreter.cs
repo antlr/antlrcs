@@ -39,6 +39,7 @@ namespace Antlr4.StringTemplate
     using Antlr4.StringTemplate.Debug;
     using Antlr4.StringTemplate.Extensions;
     using Antlr4.StringTemplate.Misc;
+
     using ArgumentNullException = System.ArgumentNullException;
     using Array = System.Array;
     using BitConverter = System.BitConverter;
@@ -159,7 +160,7 @@ namespace Antlr4.StringTemplate
                 StringBuilder builder = new StringBuilder();
                 builder.AppendLine(e.ToString());
                 builder.AppendLine(e.StackTrace);
-                _errorManager.RuntimeError(frame, current_ip, ErrorType.INTERNAL_ERROR, "internal error caused by: " + builder);
+                _errorManager.RuntimeError(frame, current_ip, ErrorType.INTERNAL_ERROR, "internal error: " + builder);
                 return 0;
             }
             finally
@@ -209,7 +210,7 @@ namespace Antlr4.StringTemplate
                         if (o == Template.EmptyAttribute)
                             o = null;
                     }
-                    catch (TemplateNoSuchPropertyException)
+                    catch (AttributeNotFoundException)
                     {
                         _errorManager.RuntimeError(frame, current_ip, ErrorType.NO_SUCH_ATTRIBUTE, name);
                         o = null;
@@ -1393,7 +1394,7 @@ namespace Antlr4.StringTemplate
                 return self.impl.NativeGroup.RawGetDictionary(name);
 
             // not found, report unknown attr
-            throw new TemplateNoSuchPropertyException(name);
+            throw new AttributeNotFoundException(frame, name);
         }
 
         /** Set any default argument values that were not set by the

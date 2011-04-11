@@ -50,6 +50,7 @@
     <Compile Include="IAttributeRenderer.cs" />
     <Compile Include="AutoIndentWriter.cs" />
     <Compile Include="Debug\DebugEvents.cs" />
+    <Compile Include="Misc\AttributeNotFoundException.cs" />
     <Compile Include="RenderOption.cs" />
     <Compile Include="TemplateFrame.cs" />
     <Compile Include="Misc\Aggregate.cs" />

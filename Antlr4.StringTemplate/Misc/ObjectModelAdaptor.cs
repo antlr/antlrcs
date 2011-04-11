@@ -35,6 +35,7 @@ namespace Antlr4.StringTemplate.Misc
     using System.Collections.Generic;
     using System.Linq;
     using System.Linq.Expressions;
+
     using ArgumentNullException = System.ArgumentNullException;
     using FieldInfo = System.Reflection.FieldInfo;
     using MethodInfo = System.Reflection.MethodInfo;
@@ -53,7 +54,7 @@ namespace Antlr4.StringTemplate.Misc
 
             Type c = o.GetType();
             if (property == null)
-                throw new TemplateNoSuchPropertyException(string.Format("{0}.{1}", c.FullName, propertyName ?? "null"));
+                throw new TemplateNoSuchPropertyException(o, string.Format("{0}.{1}", c.FullName, propertyName ?? "null"));
 
             object value = null;
             var accessor = FindMember(c, propertyName);
@@ -63,7 +64,7 @@ namespace Antlr4.StringTemplate.Misc
             }
             else
             {
-                throw new TemplateNoSuchPropertyException(string.Format("{0}.{1}", c.FullName, propertyName));
+                throw new TemplateNoSuchPropertyException(o, string.Format("{0}.{1}", c.FullName, propertyName));
             }
 
             return value;
