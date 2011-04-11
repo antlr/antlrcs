@@ -74,6 +74,7 @@ namespace Antlr4.StringTemplate
         {
             if (!alreadyLoaded)
                 Load();
+
             return base.IsDefined(name);
         }
 
@@ -81,6 +82,8 @@ namespace Antlr4.StringTemplate
         {
             if (alreadyLoaded)
                 return;
+
+            alreadyLoaded = true;
             GroupParser parser = null;
             try
             {
