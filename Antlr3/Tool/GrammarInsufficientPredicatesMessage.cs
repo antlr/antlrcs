@@ -35,10 +35,11 @@ namespace Antlr3.Tool
     using System.Collections.Generic;
     using Antlr.Runtime.JavaExtensions;
     using Antlr3.Analysis;
+    using Antlr3.Extensions;
 
     using IToken = Antlr.Runtime.IToken;
     using StringComparer = System.StringComparer;
-    using StringTemplate = Antlr3.ST.StringTemplate;
+    using StringTemplate = Antlr4.StringTemplate.Template;
 
     public class GrammarInsufficientPredicatesMessage : Message
     {

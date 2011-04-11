@@ -32,8 +32,10 @@
 
 namespace Antlr3.Tool
 {
+    using Antlr3.Extensions;
+
     using CLSCompliant = System.CLSCompliantAttribute;
-    using StringTemplate = Antlr3.ST.StringTemplate;
+    using StringTemplate = Antlr4.StringTemplate.Template;
     using Exception = System.Exception;
 
     /** The ANTLR code calls methods on ErrorManager to report errors etc...
@@ -164,7 +166,7 @@ namespace Antlr3.Tool
             reportST.SetAttribute( "message", messageFormatST );
             reportST.SetAttribute( "type", ErrorManager.GetMessageType( msgID ) );
 
-            return reportST.ToString();
+            return reportST.Render();
         }
     }
 }

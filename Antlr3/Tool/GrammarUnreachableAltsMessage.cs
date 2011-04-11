@@ -35,10 +35,11 @@ namespace Antlr3.Tool
     using System;
     using System.Collections.Generic;
     using System.Linq;
+    using Antlr3.Extensions;
 
     using DecisionProbe = Antlr3.Analysis.DecisionProbe;
     using NFAState = Antlr3.Analysis.NFAState;
-    using StringTemplate = Antlr3.ST.StringTemplate;
+    using StringTemplate = Antlr4.StringTemplate.Template;
 
     /** Reports a potential parsing issue with a decision; the decision is
      *  nondeterministic in some way.

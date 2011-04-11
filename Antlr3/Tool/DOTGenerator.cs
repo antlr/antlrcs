@@ -36,13 +36,14 @@ namespace Antlr3.Tool
     using System.Collections.Generic;
     using System.Linq;
     using Antlr3.Analysis;
+    using Antlr3.Extensions;
 
-    using AngleBracketTemplateLexer = Antlr3.ST.Language.AngleBracketTemplateLexer;
     using ANTLRParser = Antlr3.Grammars.ANTLRParser;
     using Path = System.IO.Path;
     using StringBuffer = System.Text.StringBuilder;
-    using StringTemplate = Antlr3.ST.StringTemplate;
-    using StringTemplateGroup = Antlr3.ST.StringTemplateGroup;
+    using StringTemplate = Antlr4.StringTemplate.Template;
+    using TemplateGroupDirectory = Antlr4.StringTemplate.TemplateGroupDirectory;
+    using TemplateGroup = Antlr4.StringTemplate.TemplateGroup;
 
     /** The DOT (part of graphviz) generation aspect. */
     public class DOTGenerator : IGraphGenerator
@@ -53,8 +54,7 @@ namespace Antlr3.Tool
         protected string rankdir = "LR";
 
         /** <summary>Library of output templates; use &lt;attrname&gt; format</summary> */
-        public static StringTemplateGroup stlib =
-                new StringTemplateGroup( "toollib", typeof( AngleBracketTemplateLexer ) );
+        private static TemplateGroup _stlib;
 
         public string dfaTemplateDirectoryName;
 
@@ -112,6 +112,16 @@ namespace Antlr3.Tool
 
         #endregion
 
+        public static TemplateGroup GetTemplates()
+        {
+            if (_stlib == null)
+            {
+                _stlib = new TemplateGroupDirectory(Path.Combine(Path.Combine(Path.Combine(AntlrTool.ToolPathRoot, "Tool"), "Templates"), "dot"));
+            }
+
+            return _stlib;
+        }
+
         /** Return a String containing a DOT description that, when displayed,
          *  will show the incoming state machine visually.  All nodes reachable
          *  from startState will be included.
@@ -127,7 +137,7 @@ namespace Antlr3.Tool
             markedStates = new HashSet<int>();
             if ( startState is DFAState )
             {
-                dot = stlib.GetInstanceOf( Path.Combine( dfaTemplateDirectoryName, "dfa" ) );
+                dot = GetTemplates().GetInstanceOf( "dfa" );
                 dot.SetAttribute( "startState",
                         startState.StateNumber );
                 dot.SetAttribute( "useBox",
@@ -136,7 +146,7 @@ namespace Antlr3.Tool
             }
             else
             {
-                dot = stlib.GetInstanceOf( Path.Combine( dfaTemplateDirectoryName, "nfa" ) );
+                dot = GetTemplates().GetInstanceOf( "nfa" );
                 dot.SetAttribute( "startState",
                         startState.StateNumber );
                 WalkRuleNFACreatingDOT( dot, startState );
@@ -153,7 +163,7 @@ namespace Antlr3.Tool
         public string GetRuleNFADOT( State startState )
         {
             // The output DOT graph for visualization
-            StringTemplate dot = stlib.GetInstanceOf( Path.Combine( dfaTemplateDirectoryName, "nfa" ) );
+            StringTemplate dot = GetTemplates().GetInstanceOf( "nfa" );
 
             markedStates = new HashSet<object>();
             dot.SetAttribute( "startState", startState.stateNumber );
@@ -180,11 +190,11 @@ namespace Antlr3.Tool
             StringTemplate st;
             if ( s.IsAcceptState )
             {
-                st = stlib.GetInstanceOf( Path.Combine( dfaTemplateDirectoryName, "stopstate" ) );
+                st = GetTemplates().GetInstanceOf( "stopstate" );
             }
             else
             {
-                st = stlib.GetInstanceOf( Path.Combine( dfaTemplateDirectoryName, "state" ) );
+                st = GetTemplates().GetInstanceOf( "state" );
             }
             st.SetAttribute( "name", GetStateLabel( s ) );
             dot.SetAttribute( "states", st );
@@ -203,7 +213,7 @@ namespace Antlr3.Tool
                         continue; // don't generate nodes for terminal states
                     }
                 }
-                st = stlib.GetInstanceOf( Path.Combine( dfaTemplateDirectoryName, "edge" ) );
+                st = GetTemplates().GetInstanceOf( "edge" );
                 st.SetAttribute( "label", GetEdgeLabel( edge ) );
                 st.SetAttribute( "src", GetStateLabel( s ) );
                 st.SetAttribute( "target", GetStateLabel( edge.Target ) );
@@ -233,11 +243,11 @@ namespace Antlr3.Tool
             StringTemplate stateST;
             if ( s.IsAcceptState )
             {
-                stateST = stlib.GetInstanceOf( Path.Combine( dfaTemplateDirectoryName, "stopstate" ) );
+                stateST = GetTemplates().GetInstanceOf( "stopstate" );
             }
             else
             {
-                stateST = stlib.GetInstanceOf( Path.Combine( dfaTemplateDirectoryName, "state" ) );
+                stateST = GetTemplates().GetInstanceOf( "state" );
             }
             stateST.SetAttribute( "name", GetStateLabel( s ) );
             dot.SetAttribute( "states", stateST );
@@ -254,7 +264,7 @@ namespace Antlr3.Tool
                 GrammarAST n = ( (NFAState)s ).associatedASTNode;
                 if ( n != null && n.Type != ANTLRParser.EOB )
                 {
-                    StringTemplate rankST = stlib.GetInstanceOf( Path.Combine( dfaTemplateDirectoryName, "decision-rank" ) );
+                    StringTemplate rankST = GetTemplates().GetInstanceOf( "decision-rank" );
                     NFAState alt = (NFAState)s;
                     while ( alt != null )
                     {
@@ -281,7 +291,7 @@ namespace Antlr3.Tool
                 {
                     RuleClosureTransition rr = ( (RuleClosureTransition)edge );
                     // don't jump to other rules, but display edge to follow node
-                    edgeST = stlib.GetInstanceOf( Path.Combine( dfaTemplateDirectoryName, "edge" ) );
+                    edgeST = GetTemplates().GetInstanceOf( "edge" );
                     if ( rr.rule.Grammar != grammar )
                     {
                         edgeST.SetAttribute( "label", "<" + rr.rule.Grammar.name + "." + rr.rule.Name + ">" );
@@ -299,15 +309,15 @@ namespace Antlr3.Tool
                 }
                 if ( edge.IsAction )
                 {
-                    edgeST = stlib.GetInstanceOf( Path.Combine( dfaTemplateDirectoryName, "action-edge" ) );
+                    edgeST = GetTemplates().GetInstanceOf( "action-edge" );
                 }
                 else if ( edge.IsEpsilon )
                 {
-                    edgeST = stlib.GetInstanceOf( Path.Combine( dfaTemplateDirectoryName, "epsilon-edge" ) );
+                    edgeST = GetTemplates().GetInstanceOf( "epsilon-edge" );
                 }
                 else
                 {
-                    edgeST = stlib.GetInstanceOf( Path.Combine( dfaTemplateDirectoryName, "edge" ) );
+                    edgeST = GetTemplates().GetInstanceOf( "edge" );
                 }
                 edgeST.SetAttribute( "label", GetEdgeLabel( edge ) );
                 edgeST.SetAttribute( "src", GetStateLabel( s ) );

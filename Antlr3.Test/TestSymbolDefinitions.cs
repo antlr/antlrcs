@@ -42,7 +42,7 @@ namespace AntlrUnitTests
     using AntlrTool = Antlr3.AntlrTool;
     using CodeGenerator = Antlr3.Codegen.CodeGenerator;
     using Label = Antlr3.Analysis.Label;
-    using StringTemplate = Antlr3.ST.StringTemplate;
+    using StringTemplate = Antlr4.StringTemplate.Template;
     using StringTokenizer = Antlr.Runtime.JavaExtensions.StringTokenizer;
 
     [TestClass]
@@ -139,7 +139,6 @@ namespace AntlrUnitTests
 
             string implicitLexer =
                 "lexer grammar t;" + NewLine +
-                "" + NewLine +
                 "T__5 : 'x' ;" + NewLine +
                 "" + NewLine +
                 "// $ANTLR src \"<string>\" 3" + NewLine +
@@ -256,7 +255,7 @@ namespace AntlrUnitTests
             CodeGenerator generator = new CodeGenerator( antlr, g, "Java" );
             g.CodeGenerator = generator;
             StringTemplate recogST = generator.GenRecognizer();
-            string code = recogST.ToString();
+            string code = recogST.Render();
             Assert.IsTrue(code.IndexOf("x=b();") < 0, "not expecting label");
 
             Assert.AreEqual(0, equeue.errors.Count, "unexpected errors: " + equeue);

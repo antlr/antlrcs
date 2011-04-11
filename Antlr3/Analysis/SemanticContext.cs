@@ -34,6 +34,7 @@ namespace Antlr3.Analysis
 {
     using System.Collections.Generic;
     using System.Linq;
+    using Antlr3.Extensions;
 
     using ANTLRParser = Antlr3.Grammars.ANTLRParser;
     using ArgumentNullException = System.ArgumentNullException;
@@ -42,8 +43,8 @@ namespace Antlr3.Analysis
     using Grammar = Antlr3.Tool.Grammar;
     using GrammarAST = Antlr3.Tool.GrammarAST;
     using StringComparer = System.StringComparer;
-    using StringTemplate = Antlr3.ST.StringTemplate;
-    using StringTemplateGroup = Antlr3.ST.StringTemplateGroup;
+    using StringTemplate = Antlr4.StringTemplate.Template;
+    using TemplateGroup = Antlr4.StringTemplate.TemplateGroup;
 
     /** A binary tree structure used to record the semantic context in which
      *  an NFA configuration is valid.  It's either a single predicate or
@@ -115,7 +116,7 @@ namespace Antlr3.Analysis
         /** Generate an expression that will evaluate the semantic context,
          *  given a set of output templates.
          */
-        public abstract StringTemplate GenExpr(CodeGenerator generator, StringTemplateGroup templates, DFA dfa);
+        public abstract StringTemplate GenExpr(CodeGenerator generator, TemplateGroup templates, DFA dfa);
 
         public class Predicate : SemanticContext
         {
@@ -241,7 +242,7 @@ namespace Antlr3.Analysis
                 return StringComparer.Ordinal.GetHashCode(_predicateAST.Text);
             }
 
-            public override StringTemplate GenExpr(CodeGenerator generator, StringTemplateGroup templates, DFA dfa)
+            public override StringTemplate GenExpr(CodeGenerator generator, TemplateGroup templates, DFA dfa)
             {
                 StringTemplate eST = null;
                 if (templates != null)
@@ -272,7 +273,7 @@ namespace Antlr3.Analysis
                 }
                 else
                 {
-                    eST = new StringTemplate("$pred$");
+                    eST = new StringTemplate("<pred>");
                     eST.SetAttribute("pred", this.ToString());
                     return eST;
                 }
@@ -318,10 +319,10 @@ namespace Antlr3.Analysis
                 }
             }
 
-            public override StringTemplate GenExpr(CodeGenerator generator, StringTemplateGroup templates, DFA dfa)
+            public override StringTemplate GenExpr(CodeGenerator generator, TemplateGroup templates, DFA dfa)
             {
                 if (templates != null)
-                    return templates.GetInstanceOf("true");
+                    return templates.GetInstanceOf("true_value");
 
                 return new StringTemplate("true");
             }
@@ -349,10 +350,10 @@ namespace Antlr3.Analysis
                 }
             }
 
-            public override StringTemplate GenExpr(CodeGenerator generator, StringTemplateGroup templates, DFA dfa)
+            public override StringTemplate GenExpr(CodeGenerator generator, TemplateGroup templates, DFA dfa)
             {
                 if (templates != null)
-                    return templates.GetInstanceOf("false");
+                    return templates.GetInstanceOf("false_value");
 
                 return new StringTemplate("false");
             }
@@ -516,7 +517,7 @@ namespace Antlr3.Analysis
                 }
             }
 
-            public override StringTemplate GenExpr(CodeGenerator generator, StringTemplateGroup templates, DFA dfa)
+            public override StringTemplate GenExpr(CodeGenerator generator, TemplateGroup templates, DFA dfa)
             {
                 StringTemplate result =
                     Operands.Aggregate(default(StringTemplate),
@@ -529,7 +530,7 @@ namespace Antlr3.Analysis
                             if (templates != null)
                                 eST = templates.GetInstanceOf("andPredicates");
                             else
-                                eST = new StringTemplate("($left$&&$right$)");
+                                eST = new StringTemplate("(<left>&&<right>)");
 
                             eST.SetAttribute("left", template);
                             eST.SetAttribute("right", operand.GenExpr(generator, templates, dfa));
@@ -570,13 +571,13 @@ namespace Antlr3.Analysis
                 }
             }
 
-            public override StringTemplate GenExpr(CodeGenerator generator, StringTemplateGroup templates, DFA dfa)
+            public override StringTemplate GenExpr(CodeGenerator generator, TemplateGroup templates, DFA dfa)
             {
                 StringTemplate eST = null;
                 if (templates != null)
                     eST = templates.GetInstanceOf("orPredicates");
                 else
-                    eST = new StringTemplate("($first(operands)$$rest(operands):{o | ||$o$}$)");
+                    eST = new StringTemplate("(<first(operands)><rest(operands):{o | ||<o>}>)");
 
                 foreach (SemanticContext semctx in Operands)
                 {
@@ -634,13 +635,13 @@ namespace Antlr3.Analysis
                 }
             }
 
-            public override StringTemplate GenExpr(CodeGenerator generator, StringTemplateGroup templates, DFA dfa)
+            public override StringTemplate GenExpr(CodeGenerator generator, TemplateGroup templates, DFA dfa)
             {
                 StringTemplate eST = null;
                 if (templates != null)
                     eST = templates.GetInstanceOf("notPredicate");
                 else
-                    eST = new StringTemplate("?!($pred$)");
+                    eST = new StringTemplate("!(<pred>)");
 
                 eST.SetAttribute("pred", ctx.GenExpr(generator, templates, dfa));
                 return eST;

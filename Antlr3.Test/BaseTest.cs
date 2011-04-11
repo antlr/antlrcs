@@ -38,6 +38,7 @@ namespace AntlrUnitTests
     using Antlr.Runtime;
     using Antlr.Runtime.JavaExtensions;
     using Microsoft.VisualStudio.TestTools.UnitTesting;
+    using Antlr3.Extensions;
 
     using AntlrTool = Antlr3.AntlrTool;
     using BindingFlags = System.Reflection.BindingFlags;
@@ -56,8 +57,8 @@ namespace AntlrUnitTests
     using RegistryKey = Microsoft.Win32.RegistryKey;
     using RegistryValueOptions = Microsoft.Win32.RegistryValueOptions;
     using StringBuilder = System.Text.StringBuilder;
-    using StringTemplate = Antlr3.ST.StringTemplate;
-    using StringTemplateGroup = Antlr3.ST.StringTemplateGroup;
+    using StringTemplate = Antlr4.StringTemplate.Template;
+    using StringTemplateGroup = Antlr4.StringTemplate.TemplateGroup;
 
     [TestClass]
     public abstract class BaseTest
@@ -111,12 +112,7 @@ namespace AntlrUnitTests
             tmpdir = Path.GetFullPath( Path.Combine( Path.GetTempPath(), "antlr-" + currentTimeMillis() ) );
 
             ErrorManager.ResetErrorState();
-
-            // force reset of static caches
-            StringTemplateGroup.ResetNameMaps();
-
-            StringTemplate.ResetTemplateCounter();
-            StringTemplate.defaultGroup = new StringTemplateGroup( "defaultGroup", "." );
+            StringTemplateGroup.defaultGroup = new StringTemplateGroup();
 
             // verify token constants in StringTemplate
             VerifyImportedTokens( typeof( Antlr3.ST.Language.ActionParser ), typeof( Antlr3.ST.Language.ActionLexer ) );
@@ -840,29 +836,29 @@ namespace AntlrUnitTests
                 "public class Test {\n" +
                 "    public static void main(String[] args) throws Exception {\n" +
                 "        CharStream input = new ANTLRFileStream(args[0]);\n" +
-                "        $lexerName$ lex = new $lexerName$(input);\n" +
+                "        <lexerName> lex = new <lexerName>(input);\n" +
                 "        CommonTokenStream tokens = new CommonTokenStream(lex);\n" +
-                "        $createParser$\n" +
-                "        parser.$parserStartRuleName$();\n" +
+                "        <createParser>\n" +
+                "        parser.<parserStartRuleName>();\n" +
                 "    }\n" +
                 "}"
                 );
             StringTemplate createParserST =
                 new StringTemplate(
                 "        Profiler2 profiler = new Profiler2();\n" +
-                "        $parserName$ parser = new $parserName$(tokens,profiler);\n" +
+                "        <parserName> parser = new <parserName>(tokens,profiler);\n" +
                 "        profiler.setParser(parser);\n" );
             if ( !debug )
             {
                 createParserST =
                     new StringTemplate(
-                    "        $parserName$ parser = new $parserName$(tokens);\n" );
+                    "        <parserName> parser = new <parserName>(tokens);\n" );
             }
             outputFileST.SetAttribute( "createParser", createParserST );
             outputFileST.SetAttribute( "parserName", parserName );
             outputFileST.SetAttribute( "lexerName", lexerName );
             outputFileST.SetAttribute( "parserStartRuleName", parserStartRuleName );
-            writeFile( tmpdir, "Test.java", outputFileST.ToString() );
+            writeFile( tmpdir, "Test.java", outputFileST.Render() );
         }
 
         protected void writeLexerTestFile( string lexerName, bool debug )
@@ -878,14 +874,14 @@ namespace AntlrUnitTests
                 "public class Test {\n" +
                 "    public static void main(String[] args) throws Exception {\n" +
                 "        CharStream input = new ANTLRFileStream(args[0]);\n" +
-                "        $lexerName$ lex = new $lexerName$(input);\n" +
+                "        <lexerName> lex = new <lexerName>(input);\n" +
                 "        CommonTokenStream tokens = new CommonTokenStream(lex);\n" +
                 "        System.out.println(tokens);\n" +
                 "    }\n" +
                 "}"
                 );
             outputFileST.SetAttribute( "lexerName", lexerName );
-            writeFile( tmpdir, "Test.java", outputFileST.ToString() );
+            writeFile( tmpdir, "Test.java", outputFileST.Render() );
         }
 
         protected void writeTreeTestFile( string parserName,
@@ -906,28 +902,28 @@ namespace AntlrUnitTests
                 "public class Test {\n" +
                 "    public static void main(String[] args) throws Exception {\n" +
                 "        CharStream input = new ANTLRFileStream(args[0]);\n" +
-                "        $lexerName$ lex = new $lexerName$(input);\n" +
+                "        <lexerName> lex = new <lexerName>(input);\n" +
                 "        TokenRewriteStream tokens = new TokenRewriteStream(lex);\n" +
-                "        $createParser$\n" +
-                "        $parserName$.$parserStartRuleName$_return r = parser.$parserStartRuleName$();\n" +
-                "        $if(!treeParserStartRuleName)$\n" +
+                "        <createParser>\n" +
+                "        <parserName>.<parserStartRuleName>_return r = parser.<parserStartRuleName>();\n" +
+                "        <if(!treeParserStartRuleName)>\n" +
                 "        if ( r.tree!=null ) {\n" +
                 "            System.out.println(((Tree)r.tree).toStringTree());\n" +
                 "            ((CommonTree)r.tree).sanityCheckParentAndChildIndexes();\n" +
                 "		 }\n" +
-                "        $else$\n" +
+                "        <else>\n" +
                 "        CommonTreeNodeStream nodes = new CommonTreeNodeStream((Tree)r.tree);\n" +
                 "        nodes.setTokenStream(tokens);\n" +
-                "        $treeParserName$ walker = new $treeParserName$(nodes);\n" +
-                "        walker.$treeParserStartRuleName$();\n" +
-                "        $endif$\n" +
+                "        <treeParserName> walker = new <treeParserName>(nodes);\n" +
+                "        walker.<treeParserStartRuleName>();\n" +
+                "        <endif>\n" +
                 "    }\n" +
                 "}"
                 );
             StringTemplate createParserST =
                 new StringTemplate(
                 "        Profiler2 profiler = new Profiler2();\n" +
-                "        $parserName$ parser = new $parserName$(tokens,profiler);\n" +
+                "        <parserName> parser = new <parserName>(tokens,profiler);\n" +
                 "        profiler.setParser(parser);\n" );
             if ( !debug )
             {
@@ -941,7 +937,7 @@ namespace AntlrUnitTests
             outputFileST.SetAttribute( "lexerName", lexerName );
             outputFileST.SetAttribute( "parserStartRuleName", parserStartRuleName );
             outputFileST.SetAttribute( "treeParserStartRuleName", treeParserStartRuleName );
-            writeFile( tmpdir, "Test.java", outputFileST.ToString() );
+            writeFile( tmpdir, "Test.java", outputFileST.Render() );
         }
 
         /** Parser creates trees and so does the tree parser */
@@ -963,15 +959,15 @@ namespace AntlrUnitTests
                 "public class Test {\n" +
                 "    public static void main(String[] args) throws Exception {\n" +
                 "        CharStream input = new ANTLRFileStream(args[0]);\n" +
-                "        $lexerName$ lex = new $lexerName$(input);\n" +
+                "        <lexerName> lex = new <lexerName>(input);\n" +
                 "        TokenRewriteStream tokens = new TokenRewriteStream(lex);\n" +
-                "        $createParser$\n" +
-                "        $parserName$.$parserStartRuleName$_return r = parser.$parserStartRuleName$();\n" +
+                "        <createParser>\n" +
+                "        <parserName>.<parserStartRuleName>_return r = parser.<parserStartRuleName>();\n" +
                 "        ((CommonTree)r.tree).sanityCheckParentAndChildIndexes();\n" +
                 "        CommonTreeNodeStream nodes = new CommonTreeNodeStream((Tree)r.tree);\n" +
                 "        nodes.setTokenStream(tokens);\n" +
-                "        $treeParserName$ walker = new $treeParserName$(nodes);\n" +
-                "        $treeParserName$.$treeParserStartRuleName$_return r2 = walker.$treeParserStartRuleName$();\n" +
+                "        <treeParserName> walker = new <treeParserName>(nodes);\n" +
+                "        <treeParserName>.<treeParserStartRuleName>_return r2 = walker.<treeParserStartRuleName>();\n" +
                 "		 CommonTree rt = ((CommonTree)r2.tree);\n" +
                 "		 if ( rt!=null ) System.out.println(((CommonTree)r2.tree).toStringTree());\n" +
                 "    }\n" +
@@ -980,13 +976,13 @@ namespace AntlrUnitTests
             StringTemplate createParserST =
                 new StringTemplate(
                 "        Profiler2 profiler = new Profiler2();\n" +
-                "        $parserName$ parser = new $parserName$(tokens,profiler);\n" +
+                "        <parserName> parser = new <parserName>(tokens,profiler);\n" +
                 "        profiler.setParser(parser);\n" );
             if ( !debug )
             {
                 createParserST =
                     new StringTemplate(
-                    "        $parserName$ parser = new $parserName$(tokens);\n" );
+                    "        <parserName> parser = new <parserName>(tokens);\n" );
             }
             outputFileST.SetAttribute( "createParser", createParserST );
             outputFileST.SetAttribute( "parserName", parserName );
@@ -994,7 +990,7 @@ namespace AntlrUnitTests
             outputFileST.SetAttribute( "lexerName", lexerName );
             outputFileST.SetAttribute( "parserStartRuleName", parserStartRuleName );
             outputFileST.SetAttribute( "treeParserStartRuleName", treeParserStartRuleName );
-            writeFile( tmpdir, "Test.java", outputFileST.ToString() );
+            writeFile( tmpdir, "Test.java", outputFileST.Render() );
         }
 
         protected void writeTemplateTestFile( string parserName,
@@ -1021,11 +1017,11 @@ namespace AntlrUnitTests
                 "					AngleBracketTemplateLexer.class);" +
                 "    public static void main(String[] args) throws Exception {\n" +
                 "        CharStream input = new ANTLRFileStream(args[0]);\n" +
-                "        $lexerName$ lex = new $lexerName$(input);\n" +
+                "        <lexerName> lex = new <lexerName>(input);\n" +
                 "        CommonTokenStream tokens = new CommonTokenStream(lex);\n" +
-                "        $createParser$\n" +
+                "        <createParser>\n" +
                 "		 parser.setTemplateLib(group);\n" +
-                "        $parserName$.$parserStartRuleName$_return r = parser.$parserStartRuleName$();\n" +
+                "        <parserName>.<parserStartRuleName>_return r = parser.<parserStartRuleName>();\n" +
                 "        if ( r.st!=null )\n" +
                 "            System.out.print(r.st.toString());\n" +
                 "	 	 else\n" +
@@ -1036,19 +1032,19 @@ namespace AntlrUnitTests
             StringTemplate createParserST =
                 new StringTemplate(
                 "        Profiler2 profiler = new Profiler2();\n" +
-                "        $parserName$ parser = new $parserName$(tokens,profiler);\n" +
+                "        <parserName> parser = new <parserName>(tokens,profiler);\n" +
                 "        profiler.setParser(parser);\n" );
             if ( !debug )
             {
                 createParserST =
                     new StringTemplate(
-                    "        $parserName$ parser = new $parserName$(tokens);\n" );
+                    "        <parserName> parser = new <parserName>(tokens);\n" );
             }
             outputFileST.SetAttribute( "createParser", createParserST );
             outputFileST.SetAttribute( "parserName", parserName );
             outputFileST.SetAttribute( "lexerName", lexerName );
             outputFileST.SetAttribute( "parserStartRuleName", parserStartRuleName );
-            writeFile( tmpdir, "Test.java", outputFileST.ToString() );
+            writeFile( tmpdir, "Test.java", outputFileST.Render() );
         }
 
         protected void eraseFiles( string filesEndingWith )

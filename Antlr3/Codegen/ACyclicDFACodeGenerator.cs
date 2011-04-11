@@ -35,9 +35,10 @@ namespace Antlr3.Codegen
     using System.Collections.Generic;
     using System.Linq;
     using Antlr3.Analysis;
+    using Antlr3.Extensions;
 
-    using StringTemplate = Antlr3.ST.StringTemplate;
-    using StringTemplateGroup = Antlr3.ST.StringTemplateGroup;
+    using StringTemplate = Antlr4.StringTemplate.Template;
+    using TemplateGroup = Antlr4.StringTemplate.TemplateGroup;
 
     public class ACyclicDFACodeGenerator
     {
@@ -48,14 +49,14 @@ namespace Antlr3.Codegen
             this.parentGenerator = parent;
         }
 
-        public virtual StringTemplate GenFixedLookaheadDecision( StringTemplateGroup templates,
+        public virtual StringTemplate GenFixedLookaheadDecision( TemplateGroup templates,
                                                         DFA dfa )
         {
             return WalkFixedDFAGeneratingStateMachine( templates, dfa, dfa.startState, 1 );
         }
 
         protected virtual StringTemplate WalkFixedDFAGeneratingStateMachine(
-                StringTemplateGroup templates,
+                TemplateGroup templates,
                 DFA dfa,
                 DFAState s,
                 int k )
@@ -126,7 +127,7 @@ namespace Antlr3.Codegen
                 }
                 StringTemplate edgeST = templates.GetInstanceOf( dfaEdgeName );
                 // If the template wants all the label values delineated, do that
-                if ( edgeST.GetFormalArgument( "labels" ) != null )
+                if ( edgeST.impl.TryGetFormalArgument( "labels" ) != null )
                 {
                     List<string> labels = edge.Label.Set.Select( value => parentGenerator.GetTokenTypeAsTargetLabel( value ) ).ToList();
                     edgeST.SetAttribute( "labels", labels );

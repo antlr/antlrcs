@@ -827,7 +827,6 @@ namespace AntlrUnitTests
             string result = g.GetLexerGrammar();
             string expecting =
                 "lexer grammar t;" + NewLine +
-                "" + NewLine +
                 "// $ANTLR src \"<string>\" 2" + NewLine +
                 "A : '{' ~('}')* '}';";
             Assert.AreEqual( expecting, result );

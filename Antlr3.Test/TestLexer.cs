@@ -38,7 +38,7 @@ namespace AntlrUnitTests
     using AntlrTool = Antlr3.AntlrTool;
     using CodeGenerator = Antlr3.Codegen.CodeGenerator;
     using Grammar = Antlr3.Tool.Grammar;
-    using StringTemplate = Antlr3.ST.StringTemplate;
+    using StringTemplate = Antlr4.StringTemplate.Template;
 
     [TestClass]
     public class TestLexer : BaseTest
@@ -277,7 +277,7 @@ namespace AntlrUnitTests
             g.CodeGenerator = generator;
             generator.GenRecognizer(); // codegen phase sets some vars we need
             StringTemplate codeST = generator.RecognizerST;
-            string code = codeST.ToString();
+            string code = codeST.Render();
             int m = code.IndexOf( "match(\"" );
             string found = code.Substring( m, expecting.Length );
 

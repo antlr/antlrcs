@@ -38,13 +38,12 @@ namespace Antlr3.Tool
     using Antlr3.Codegen;
     using Antlr3.Extensions;
     using Antlr3.Grammars;
-    using Antlr3.ST;
-    using AngleBracketTemplateLexer = Antlr3.ST.Language.AngleBracketTemplateLexer;
     using Console = System.Console;
     using Exception = System.Exception;
-    using IStringTemplateGroupLoader = Antlr3.ST.IStringTemplateGroupLoader;
+    using StringTemplate = Antlr4.StringTemplate.Template;
     using StringBuilder = System.Text.StringBuilder;
-    using StringTemplateGroup = Antlr3.ST.StringTemplateGroup;
+    using TemplateGroup = Antlr4.StringTemplate.TemplateGroup;
+    using TemplateGroupFile = Antlr4.StringTemplate.TemplateGroupFile;
 
     [System.CLSCompliant(false)]
     public class LeftRecursiveRuleAnalyzer : LeftRecursiveRuleWalker
@@ -65,11 +64,11 @@ namespace Antlr3.Tool
         public List<string> prefixAlts = new List<string>();
         public List<string> otherAlts = new List<string>();
 
-        private static readonly SortedList<string, StringTemplateGroup> recRuleTemplatesCache =
-            new SortedList<string, StringTemplateGroup>();
+        private static readonly SortedList<string, TemplateGroup> recRuleTemplatesCache =
+            new SortedList<string, TemplateGroup>();
 
         public string language;
-        private StringTemplateGroup recRuleTemplates;
+        private TemplateGroup recRuleTemplates;
 
         public IDictionary<int, ASSOC> altAssociativity = new Dictionary<int, ASSOC>();
 
@@ -84,19 +83,15 @@ namespace Antlr3.Tool
             recRuleTemplates = LoadPrecRuleTemplates(g.Tool);
         }
 
-        private static StringTemplateGroup LoadPrecRuleTemplates(AntlrTool tool)
+        private static TemplateGroup LoadPrecRuleTemplates(AntlrTool tool)
         {
             string templateDirs = tool.TemplatesDirectory;
-            StringTemplateGroup group;
+            TemplateGroup group;
             if (!recRuleTemplatesCache.TryGetValue(templateDirs, out group))
             {
-                //+":" + Path.Combine(g.Tool.TemplatesDirectory);
-                IStringTemplateGroupLoader loader = new CommonGroupLoader(templateDirs, ErrorManager.GetStringTemplateErrorListener());
-                StringTemplateGroup.RegisterGroupLoader(loader);
-                StringTemplateGroup.RegisterDefaultLexer(typeof(AngleBracketTemplateLexer));
-
-                group = StringTemplateGroup.LoadGroup("LeftRecursiveRules");
-                if (group != null)
+                string fileName = CodeGenerator.FindTemplateFile(templateDirs.Split(':'), "LeftRecursiveRules.stg");
+                group = new TemplateGroupFile(fileName);
+                if (!group.IsDefined("recRuleName"))
                 {
                     recRuleTemplatesCache[templateDirs] = group;
                 }
@@ -160,14 +155,14 @@ namespace Antlr3.Tool
             StringTemplate refST = recRuleTemplates.GetInstanceOf("recRuleRef");
             refST.SetAttribute("ruleName", ruleName);
             refST.SetAttribute("arg", nextPrec);
-            altTree = ReplaceRuleRefs(altTree, refST.ToString());
+            altTree = ReplaceRuleRefs(altTree, refST.Render());
 
             string altText = Text(altTree);
             altText = altText.Trim();
             altText += "{}"; // add empty alt to prevent pred hoisting
             StringTemplate nameST = recRuleTemplates.GetInstanceOf("recRuleName");
             nameST.SetAttribute("ruleName", ruleName);
-            rewriteTree = ReplaceRuleRefs(rewriteTree, "$" + nameST.ToString());
+            rewriteTree = ReplaceRuleRefs(rewriteTree, "$" + nameST.Render());
             string rewriteText = Text(rewriteTree);
             binaryAlts.Add(alt, altText + (rewriteText != null ? " " + rewriteText : ""));
             //System.out.println("binaryAlt " + alt + ": " + altText + ", rewrite=" + rewriteText);
@@ -186,14 +181,14 @@ namespace Antlr3.Tool
             StringTemplate refST = recRuleTemplates.GetInstanceOf("recRuleRef");
             refST.SetAttribute("ruleName", ruleName);
             refST.SetAttribute("arg", nextPrec);
-            altTree = ReplaceLastRuleRef(altTree, refST.ToString());
+            altTree = ReplaceLastRuleRef(altTree, refST.Render());
 
             string altText = Text(altTree);
             altText = altText.Trim();
             altText += "{}"; // add empty alt to prevent pred hoisting
             StringTemplate nameST = recRuleTemplates.GetInstanceOf("recRuleName");
             nameST.SetAttribute("ruleName", ruleName);
-            rewriteTree = ReplaceRuleRefs(rewriteTree, "$" + nameST.ToString());
+            rewriteTree = ReplaceRuleRefs(rewriteTree, "$" + nameST.Render());
             string rewriteText = Text(rewriteTree);
             ternaryAlts.Add(alt, altText + (rewriteText != null ? " " + rewriteText : ""));
             //System.out.println("ternaryAlt " + alt + ": " + altText + ", rewrite=" + rewriteText);
@@ -211,14 +206,14 @@ namespace Antlr3.Tool
             StringTemplate refST = recRuleTemplates.GetInstanceOf("recRuleRef");
             refST.SetAttribute("ruleName", ruleName);
             refST.SetAttribute("arg", nextPrec);
-            altTree = ReplaceRuleRefs(altTree, refST.ToString());
+            altTree = ReplaceRuleRefs(altTree, refST.Render());
             string altText = Text(altTree);
             altText = altText.Trim();
             altText += "{}"; // add empty alt to prevent pred hoisting
 
             StringTemplate nameST = recRuleTemplates.GetInstanceOf("recRuleName");
             nameST.SetAttribute("ruleName", ruleName);
-            rewriteTree = ReplaceRuleRefs(rewriteTree, nameST.ToString());
+            rewriteTree = ReplaceRuleRefs(rewriteTree, nameST.Render());
             string rewriteText = Text(rewriteTree);
 
             prefixAlts.Add(altText + (rewriteText != null ? " " + rewriteText : ""));
@@ -233,7 +228,7 @@ namespace Antlr3.Tool
             StripLeftRecursion(altTree);
             StringTemplate nameST = recRuleTemplates.GetInstanceOf("recRuleName");
             nameST.SetAttribute("ruleName", ruleName);
-            rewriteTree = ReplaceRuleRefs(rewriteTree, "$" + nameST.ToString());
+            rewriteTree = ReplaceRuleRefs(rewriteTree, "$" + nameST.Render());
             string rewriteText = Text(rewriteTree);
             string altText = Text(altTree);
             altText = altText.Trim();
@@ -288,7 +283,7 @@ namespace Antlr3.Tool
 
             //Console.WriteLine(ruleST);
 
-            return ruleST.ToString();
+            return ruleST.Render();
         }
 
         public string GetArtificialPrimaryRule()
@@ -298,7 +293,7 @@ namespace Antlr3.Tool
             ruleST.SetAttribute("alts", prefixAlts);
             ruleST.SetAttribute("alts", otherAlts);
             //Console.WriteLine(ruleST);
-            return ruleST.ToString();
+            return ruleST.Render();
         }
 
         public string GetArtificialPrecStartRule()
@@ -308,7 +303,7 @@ namespace Antlr3.Tool
             ruleST.SetAttribute("maxPrec", 0);
 
             //Console.WriteLine("start: " + ruleST);
-            return ruleST.ToString();
+            return ruleST.Render();
         }
 
         public GrammarAST ReplaceRuleRefs(GrammarAST t, string name)

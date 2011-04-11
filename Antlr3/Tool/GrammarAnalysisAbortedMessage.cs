@@ -32,8 +32,9 @@
 
 namespace Antlr3.Tool
 {
+    using Antlr3.Extensions;
     using DecisionProbe = Antlr3.Analysis.DecisionProbe;
-    using StringTemplate = Antlr3.ST.StringTemplate;
+    using StringTemplate = Antlr4.StringTemplate.Template;
 
     /** Reports the condition that ANTLR's LL(*) analysis engine terminated
      *  early.

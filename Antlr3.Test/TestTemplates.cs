@@ -41,8 +41,8 @@ namespace AntlrUnitTests
     using AntlrTool = Antlr3.AntlrTool;
     using CodeGenerator = Antlr3.Codegen.CodeGenerator;
     using CommonToken = Antlr.Runtime.CommonToken;
-    using StringTemplate = Antlr3.ST.StringTemplate;
-    using StringTemplateGroup = Antlr3.ST.StringTemplateGroup;
+    using StringTemplate = Antlr4.StringTemplate.Template;
+    using StringTemplateGroup = Antlr4.StringTemplate.TemplateGroup;
 
     /** Test templates in actions; %... shorthands */
     [TestClass]
@@ -54,7 +54,7 @@ namespace AntlrUnitTests
         public void TestTemplateConstructor() /*throws Exception*/ {
             string action = "x = %foo(name={$ID.text});";
             string expecting = "x = templateLib.getInstanceOf(\"foo\"," +
-                LINE_SEP + "  new STAttrMap().put(\"name\", (ID1!=null?ID1.getText():null)));";
+                "  new STAttrMap().put(\"name\", (ID1!=null?ID1.getText():null)));";
 
             ErrorQueue equeue = new ErrorQueue();
             ErrorManager.SetErrorListener( equeue );
@@ -79,9 +79,9 @@ namespace AntlrUnitTests
             string rawTranslation =
                 translator.Translate();
             StringTemplateGroup templates =
-                new StringTemplateGroup( ".", typeof( AngleBracketTemplateLexer ) );
+                new StringTemplateGroup();
             StringTemplate actionST = new StringTemplate( templates, rawTranslation );
-            string found = actionST.ToString();
+            string found = actionST.Render();
 
             assertNoErrors( equeue );
 
@@ -116,9 +116,9 @@ namespace AntlrUnitTests
             string rawTranslation =
                 translator.Translate();
             StringTemplateGroup templates =
-                new StringTemplateGroup( ".", typeof( AngleBracketTemplateLexer ) );
+                new StringTemplateGroup();
             StringTemplate actionST = new StringTemplate( templates, rawTranslation );
-            string found = actionST.ToString();
+            string found = actionST.Render();
 
             assertNoErrors( equeue );
 
@@ -129,7 +129,7 @@ namespace AntlrUnitTests
         public void TestIndirectTemplateConstructor() /*throws Exception*/ {
             string action = "x = %({\"foo\"})(name={$ID.text});";
             string expecting = "x = templateLib.getInstanceOf(\"foo\"," +
-                LINE_SEP + "  new STAttrMap().put(\"name\", (ID1!=null?ID1.getText():null)));";
+                "  new STAttrMap().put(\"name\", (ID1!=null?ID1.getText():null)));";
 
             ErrorQueue equeue = new ErrorQueue();
             ErrorManager.SetErrorListener( equeue );
@@ -154,9 +154,9 @@ namespace AntlrUnitTests
             string rawTranslation =
                 translator.Translate();
             StringTemplateGroup templates =
-                new StringTemplateGroup( ".", typeof( AngleBracketTemplateLexer ) );
+                new StringTemplateGroup();
             StringTemplate actionST = new StringTemplate( templates, rawTranslation );
-            string found = actionST.ToString();
+            string found = actionST.Render();
 
             assertNoErrors( equeue );
 
@@ -190,9 +190,9 @@ namespace AntlrUnitTests
             string rawTranslation =
                 translator.Translate();
             StringTemplateGroup templates =
-                new StringTemplateGroup( ".", typeof( AngleBracketTemplateLexer ) );
+                new StringTemplateGroup();
             StringTemplate actionST = new StringTemplate( templates, rawTranslation );
-            string found = actionST.ToString();
+            string found = actionST.Render();
 
             assertNoErrors( equeue );
 
@@ -227,9 +227,9 @@ namespace AntlrUnitTests
             string rawTranslation =
                 translator.Translate();
             StringTemplateGroup templates =
-                new StringTemplateGroup( ".", typeof( AngleBracketTemplateLexer ) );
+                new StringTemplateGroup();
             StringTemplate actionST = new StringTemplate( templates, rawTranslation );
-            string found = actionST.ToString();
+            string found = actionST.Render();
 
             assertNoErrors( equeue );
 
@@ -263,9 +263,9 @@ namespace AntlrUnitTests
             string rawTranslation =
                 translator.Translate();
             StringTemplateGroup templates =
-                new StringTemplateGroup( ".", typeof( AngleBracketTemplateLexer ) );
+                new StringTemplateGroup();
             StringTemplate actionST = new StringTemplate( templates, rawTranslation );
-            string found = actionST.ToString();
+            string found = actionST.Render();
 
             assertNoErrors( equeue );
 

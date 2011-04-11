@@ -34,13 +34,12 @@ namespace Antlr3.Targets
     using System.Collections.Generic;
 
     using ArgumentException = System.ArgumentException;
-    using ArgumentNullException = System.ArgumentNullException;
     using CLSCompliantAttribute = System.CLSCompliantAttribute;
     using CodeGenerator = Antlr3.Codegen.CodeGenerator;
     using CultureInfo = System.Globalization.CultureInfo;
     using Grammar = Antlr3.Tool.Grammar;
-    using IAttributeRenderer = Antlr3.ST.IAttributeRenderer;
-    using StringTemplate = Antlr3.ST.StringTemplate;
+    using IAttributeRenderer = Antlr4.StringTemplate.IAttributeRenderer;
+    using Template = Antlr4.StringTemplate.Template;
     using Target = Antlr3.Codegen.Target;
 
     public class CSharp3Target : Target
@@ -80,7 +79,7 @@ namespace Antlr3.Targets
             return "0x" + word.ToString( "X" );
         }
 
-        protected override void GenRecognizerFile(AntlrTool tool, CodeGenerator generator, Grammar grammar, StringTemplate outputFileST)
+        protected override void GenRecognizerFile(AntlrTool tool, CodeGenerator generator, Grammar grammar, Template outputFileST)
         {
             if (!grammar.IsRoot)
             {
@@ -115,14 +114,9 @@ namespace Antlr3.Targets
                 _target = target;
             }
 
-            public string ToString(string value)
+            public string ToString(string value, string formatName, CultureInfo culture)
             {
-                return value;
-            }
-
-            public string ToString(string value, string formatName)
-            {
-                if (string.IsNullOrEmpty(value))
+                if (string.IsNullOrEmpty(value) || string.IsNullOrEmpty(formatName))
                     return value;
 
                 switch (formatName)
@@ -144,17 +138,9 @@ namespace Antlr3.Targets
                 }
             }
 
-            string IAttributeRenderer.ToString(object o)
+            string IAttributeRenderer.ToString(object o, string formatName, CultureInfo culture)
             {
-                return (string)o;
-            }
-
-            string IAttributeRenderer.ToString(object o, string formatName)
-            {
-                if (formatName == null)
-                    throw new ArgumentNullException("formatName");
-
-                return ToString((string)o, formatName);
+                return ToString((string)o, formatName, culture);
             }
         }
     }

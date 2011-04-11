@@ -47,7 +47,7 @@ namespace Antlr3.Tool
     using ITree = Antlr.Runtime.Tree.ITree;
     using Math = System.Math;
     using NFAState = Antlr3.Analysis.NFAState;
-    using StringTemplate = Antlr3.ST.StringTemplate;
+    using StringTemplate = Antlr4.StringTemplate.Template;
 
     /** Grammars are first converted to ASTs using this class and then are
      *  converted to NFAs via a tree walker.

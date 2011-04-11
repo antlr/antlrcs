@@ -37,9 +37,11 @@ namespace Antlr3.Codegen
     using Antlr.Runtime.JavaExtensions;
     using Antlr3.Analysis;
     using Antlr3.Grammars;
+    using Antlr3.Extensions;
+    using Antlr4.StringTemplate.Visualizer.Extensions;
 
+    using File = System.IO.File;
     using Activator = System.Activator;
-    using AngleBracketTemplateLexer = Antlr3.ST.Language.AngleBracketTemplateLexer;
     using ANTLRLexer = Antlr3.Grammars.ANTLRLexer;
     using ANTLRParser = Antlr3.Grammars.ANTLRParser;
     using AntlrTool = Antlr3.AntlrTool;
@@ -49,7 +51,6 @@ namespace Antlr3.Codegen
     using AttributeScope = Antlr3.Tool.AttributeScope;
     using BitSet = Antlr3.Misc.BitSet;
     using CLSCompliant = System.CLSCompliantAttribute;
-    using CommonGroupLoader = Antlr3.ST.CommonGroupLoader;
     using CommonToken = Antlr.Runtime.CommonToken;
     using DFA = Antlr3.Analysis.DFA;
     using DFAOptimizer = Antlr3.Analysis.DFAOptimizer;
@@ -63,8 +64,7 @@ namespace Antlr3.Codegen
     using Interval = Antlr3.Misc.Interval;
     using IntervalSet = Antlr3.Misc.IntervalSet;
     using IOException = System.IO.IOException;
-    using IStringTemplateGroupLoader = Antlr3.ST.IStringTemplateGroupLoader;
-    using IStringTemplateWriter = Antlr3.ST.IStringTemplateWriter;
+    using ITemplateWriter = Antlr4.StringTemplate.ITemplateWriter;
     using IToken = Antlr.Runtime.IToken;
     using Label = Antlr3.Analysis.Label;
     using LookaheadSet = Antlr3.Analysis.LookaheadSet;
@@ -74,15 +74,17 @@ namespace Antlr3.Codegen
     using Rule = Antlr3.Tool.Rule;
     using RuntimeHelpers = System.Runtime.CompilerServices.RuntimeHelpers;
     using Stopwatch = System.Diagnostics.Stopwatch;
-    using StringTemplate = Antlr3.ST.StringTemplate;
-    using StringTemplateGroup = Antlr3.ST.StringTemplateGroup;
+    using StringTemplate = Antlr4.StringTemplate.Template;
+    using TemplateGroup = Antlr4.StringTemplate.TemplateGroup;
     using TextWriter = System.IO.TextWriter;
     using TimeSpan = System.TimeSpan;
+    using TemplateGroupFile = Antlr4.StringTemplate.TemplateGroupFile;
+    using FileNotFoundException = System.IO.FileNotFoundException;
 
     /** ANTLR's code generator.
      *
      *  Generate recognizers derived from grammars.  Language independence
-     *  achieved through the use of StringTemplateGroup objects.  All output
+     *  achieved through the use of TemplateGroup objects.  All output
      *  strings are completely encapsulated in the group files such as Java.stg.
      *  Some computations are done that are unused by a particular language.
      *  This generator just computes and sets the values into the templates;
@@ -118,7 +120,7 @@ namespace Antlr3.Codegen
         public static int MaxSwitchCaseLabels = DefaultMaxSwitchCaseLabels;
         public static int MinSwitchAlts = DefaultMinSwitchAlts;
         public static int MaxAcyclicDfaStatesInline = DefaultMaxAcyclicDfaStatesInline;
-        public static bool EmitTemplateDelimiters = false;
+        public static bool LaunchTemplateInspector = false;
 
         public bool GenerateSwitchesWhenPossible = true;
 
@@ -137,13 +139,13 @@ namespace Antlr3.Codegen
         static readonly Dictionary<string, Target> _targets = new Dictionary<string, Target>();
 
         /** Where are the templates this generator should use to generate code? */
-        protected StringTemplateGroup templates;
+        protected TemplateGroup templates;
 
         /** The basic output templates without AST or templates stuff; this will be
          *  the templates loaded for the language such as Java.stg *and* the Dbg
          *  stuff if turned on.  This is used for generating syntactic predicates.
          */
-        protected StringTemplateGroup baseTemplates;
+        protected TemplateGroup baseTemplates;
 
         protected StringTemplate recognizerST;
         protected StringTemplate outputFileST;
@@ -182,8 +184,8 @@ namespace Antlr3.Codegen
         public static readonly string VocabFileExtension = ".tokens";
 
         protected const string vocabFilePattern =
-            "<tokens:{<attr.name>=<attr.type>\n}>" +
-            "<literals:{<attr.name>=<attr.type>\n}>";
+            "<tokens:{it|<it.name>=<it.type>\n}>" +
+            "<literals:{it|<it.name>=<it.type>\n}>";
 
         public CodeGenerator( AntlrTool tool, Grammar grammar, string language )
         {
@@ -202,7 +204,7 @@ namespace Antlr3.Codegen
         #region Properties
 
         [CLSCompliant(false)]
-        public StringTemplateGroup BaseTemplates
+        public TemplateGroup BaseTemplates
         {
             get
             {
@@ -220,7 +222,7 @@ namespace Antlr3.Codegen
         }
 
         [CLSCompliant(false)]
-        public StringTemplateGroup Templates
+        public TemplateGroup Templates
         {
             get
             {
@@ -340,9 +342,8 @@ namespace Antlr3.Codegen
             LoadTemplates(tool, language, grammar.type, outputOption, debug, out baseTemplates, out templates);
         }
 
-        private static readonly Dictionary<string, IStringTemplateGroupLoader> _templateLoaders = new Dictionary<string, IStringTemplateGroupLoader>();
-        private static readonly Dictionary<string, StringTemplateGroup> _coreTemplates = new Dictionary<string, StringTemplateGroup>();
-        private static readonly Dictionary<StringTemplateGroup, Dictionary<string, StringTemplateGroup>> _languageTemplates = new Dictionary<StringTemplateGroup, Dictionary<string, StringTemplateGroup>>(ObjectReferenceEqualityComparer<StringTemplateGroup>.Default);
+        private static readonly Dictionary<string, TemplateGroup> _coreTemplates = new Dictionary<string, TemplateGroup>();
+        private static readonly Dictionary<TemplateGroup, Dictionary<string, TemplateGroup>> _languageTemplates = new Dictionary<TemplateGroup, Dictionary<string, TemplateGroup>>(ObjectReferenceEqualityComparer<TemplateGroup>.Default);
 
         private sealed class ObjectReferenceEqualityComparer<T> : EqualityComparer<T>
             where T : class
@@ -372,10 +373,10 @@ namespace Antlr3.Codegen
             }
         }
 
-        private static void LoadTemplates(AntlrTool tool, string language, GrammarType grammarType, string outputOption, bool debug, out StringTemplateGroup baseTemplates, out StringTemplateGroup templates)
+        private static void LoadTemplates(AntlrTool tool, string language, GrammarType grammarType, string outputOption, bool debug, out TemplateGroup baseTemplates, out TemplateGroup templates)
         {
             // first load main language template
-            StringTemplateGroup coreTemplates = GetOrCacheTemplateGroup(tool, language, null, null);
+            TemplateGroup coreTemplates = GetOrCacheTemplateGroup(tool, language, null, null);
             baseTemplates = coreTemplates;
             if (coreTemplates == null)
             {
@@ -392,10 +393,10 @@ namespace Antlr3.Codegen
             {
                 if (debug && grammarType != GrammarType.Lexer)
                 {
-                    StringTemplateGroup dbgTemplates = GetOrCacheTemplateGroup(tool, language, "Dbg", coreTemplates);
+                    TemplateGroup dbgTemplates = GetOrCacheTemplateGroup(tool, language, "Dbg", coreTemplates);
                     baseTemplates = dbgTemplates;
-                    StringTemplateGroup astTemplates = GetOrCacheTemplateGroup(tool, language, "AST", dbgTemplates);
-                    StringTemplateGroup astParserTemplates = astTemplates;
+                    TemplateGroup astTemplates = GetOrCacheTemplateGroup(tool, language, "AST", dbgTemplates);
+                    TemplateGroup astParserTemplates = astTemplates;
                     if (grammarType == GrammarType.TreeParser)
                     {
                         astParserTemplates = GetOrCacheTemplateGroup(tool, language, "ASTTreeParser", astTemplates);
@@ -405,13 +406,13 @@ namespace Antlr3.Codegen
                         astParserTemplates = GetOrCacheTemplateGroup(tool, language, "ASTParser", astTemplates);
                     }
 
-                    StringTemplateGroup astDbgTemplates = GetOrCacheTemplateGroup(tool, language, "ASTDbg", astParserTemplates);
+                    TemplateGroup astDbgTemplates = GetOrCacheTemplateGroup(tool, language, "ASTDbg", astParserTemplates);
                     templates = astDbgTemplates;
                 }
                 else
                 {
-                    StringTemplateGroup astTemplates = GetOrCacheTemplateGroup(tool, language, "AST", coreTemplates);
-                    StringTemplateGroup astParserTemplates = astTemplates;
+                    TemplateGroup astTemplates = GetOrCacheTemplateGroup(tool, language, "AST", coreTemplates);
+                    TemplateGroup astParserTemplates = astTemplates;
                     if (grammarType == GrammarType.TreeParser)
                     {
                         astParserTemplates = GetOrCacheTemplateGroup(tool, language, "ASTTreeParser", astTemplates);
@@ -428,9 +429,9 @@ namespace Antlr3.Codegen
             {
                 if (debug && grammarType != GrammarType.Lexer)
                 {
-                    StringTemplateGroup dbgTemplates = GetOrCacheTemplateGroup(tool, language, "Dbg", coreTemplates);
+                    TemplateGroup dbgTemplates = GetOrCacheTemplateGroup(tool, language, "Dbg", coreTemplates);
                     baseTemplates = dbgTemplates;
-                    StringTemplateGroup stTemplates = GetOrCacheTemplateGroup(tool, language, "ST", dbgTemplates);
+                    TemplateGroup stTemplates = GetOrCacheTemplateGroup(tool, language, "ST", dbgTemplates);
                     templates = stTemplates;
                 }
                 else
@@ -447,91 +448,79 @@ namespace Antlr3.Codegen
             {
                 templates = coreTemplates;
             }
-
-            if (CodeGenerator.EmitTemplateDelimiters)
-            {
-                templates.EmitDebugStartStopStrings(true);
-                templates.DoNotEmitDebugStringsForTemplate("codeFileExtension");
-                templates.DoNotEmitDebugStringsForTemplate("headerFileExtension");
-            }
         }
 
-        private static StringTemplateGroup GetOrCacheTemplateGroup(AntlrTool tool, string language, string name, StringTemplateGroup superGroup)
-        {
-#if true // <-- Caching
-            return GetOrCacheTemplateGroup(tool, null, language, name, superGroup);
-#else
-            // get or create the template loader
-            IStringTemplateGroupLoader loader;
-            if (!_templateLoaders.TryGetValue(language, out loader))
-            {
-                string templateDirs =
-                    tool.TemplatesDirectory + ":" +
-                    Path.Combine(tool.TemplatesDirectory, language);
-                loader = new CommonGroupLoader(templateDirs, ErrorManager.GetStringTemplateErrorListener());
-                _templateLoaders[language] = loader;
-            }
-
-            return CacheTemplateGroup(loader, language, name, superGroup);
-#endif
-        }
-
-        private static StringTemplateGroup GetOrCacheTemplateGroup(AntlrTool tool, IStringTemplateGroupLoader loader, string language, string name, StringTemplateGroup superGroup)
+        private static TemplateGroup GetOrCacheTemplateGroup(AntlrTool tool, string language, string name, TemplateGroup superGroup)
         {
             if (string.IsNullOrEmpty(name) && superGroup == null)
             {
-                StringTemplateGroup group;
+                TemplateGroup group;
                 if (_coreTemplates.TryGetValue(language, out group))
                     return group;
             }
             else
             {
-                Dictionary<string, StringTemplateGroup> languageTemplates;
+                Dictionary<string, TemplateGroup> languageTemplates;
                 if (_languageTemplates.TryGetValue(superGroup, out languageTemplates))
                 {
-                    StringTemplateGroup group;
+                    TemplateGroup group;
                     if (languageTemplates.TryGetValue(name, out group))
                         return group;
                 }
             }
 
-            // get or create the template loader
-            if (loader == null && !_templateLoaders.TryGetValue(language, out loader))
-            {
-                string templateDirs =
-                    tool.TemplatesDirectory + ":" +
-                    Path.Combine(tool.TemplatesDirectory, language);
-                loader = new CommonGroupLoader(templateDirs, ErrorManager.GetStringTemplateErrorListener());
-                _templateLoaders[language] = loader;
-            }
+            string[] templateDirectories =
+                {
+                    tool.TemplatesDirectory,
+                    Path.Combine(tool.TemplatesDirectory, language)
+                };
 
-            return CacheTemplateGroup(loader, language, name, superGroup);
+            return CacheTemplateGroup(templateDirectories, language, name, superGroup);
         }
 
-        private static StringTemplateGroup CacheTemplateGroup(IStringTemplateGroupLoader loader, string language, string name, StringTemplateGroup superGroup)
+        private static TemplateGroup CacheTemplateGroup(string[] templateDirectories, string language, string name, TemplateGroup superGroup)
         {
-            StringTemplateGroup.RegisterGroupLoader(loader, true, true);
-            StringTemplateGroup.RegisterDefaultLexer(typeof(AngleBracketTemplateLexer));
+            string groupFileName;
+            if (string.IsNullOrEmpty(name))
+                groupFileName = FindTemplateFile(templateDirectories, string.Format("{0}.stg", language));
+            else
+                groupFileName = FindTemplateFile(templateDirectories, string.Format("{0}.stg", name));
 
             if (string.IsNullOrEmpty(name) && superGroup == null)
             {
-                StringTemplateGroup group = StringTemplateGroup.LoadGroup(language);
+                TemplateGroup group = new TemplateGroupFile(groupFileName);
+                group.IterateAcrossValues = true;
                 _coreTemplates[language] = group;
                 return group;
             }
             else
             {
-                StringTemplateGroup group = StringTemplateGroup.LoadGroup(name, superGroup);
-                Dictionary<string, StringTemplateGroup> groups;
+                TemplateGroup group = new TemplateGroupFile(groupFileName);
+                group.IterateAcrossValues = true;
+                group.ImportTemplates(superGroup);
+
+                Dictionary<string, TemplateGroup> groups;
                 if (!_languageTemplates.TryGetValue(superGroup, out groups))
                 {
-                    groups = new Dictionary<string, StringTemplateGroup>();
+                    groups = new Dictionary<string, TemplateGroup>();
                     _languageTemplates[superGroup] = groups;
                 }
 
                 groups[name] = group;
                 return group;
             }
+        }
+
+        internal static string FindTemplateFile(string[] templateDirectories, string fileName)
+        {
+            foreach (var directory in templateDirectories)
+            {
+                string templateFileName = Path.Combine(directory, fileName);
+                if (File.Exists(templateFileName))
+                    return templateFileName;
+            }
+
+            throw new FileNotFoundException();
         }
 
         /** Given the grammar to which we are attached, walk the AST associated
@@ -585,8 +574,10 @@ namespace Antlr3.Codegen
             else
             {
                 // create a dummy to avoid null-checks all over code generator
-                headerFileST = new StringTemplate( templates, "" );
-                headerFileST.Name = "dummy-header-file";
+                headerFileST = new StringTemplate( templates, string.Empty );
+                // it normally sees this from outputFile
+                headerFileST.Add("cyclicDFAs", null);
+                headerFileST.impl.name = "dummy-header-file";
             }
 
             bool filterMode = grammar.GetOption( "filter" ) != null &&
@@ -729,6 +720,13 @@ namespace Antlr3.Codegen
             // all recognizers can see Grammar object
             recognizerST.SetAttribute( "grammar", grammar );
 
+            if (CodeGenerator.LaunchTemplateInspector)
+            {
+                outputFileST.Visualize();
+                if (templates.IsDefined("headerFile"))
+                    headerFileST.Visualize();
+            }
+
             // WRITE FILES
             try
             {
@@ -736,7 +734,7 @@ namespace Antlr3.Codegen
                 if ( templates.IsDefined( "headerFile" ) )
                 {
                     StringTemplate extST = templates.GetInstanceOf( "headerFileExtension" );
-                    target.GenRecognizerHeaderFile( tool, this, grammar, headerFileST, extST.ToString() );
+                    target.GenRecognizerHeaderFile( tool, this, grammar, headerFileST, extST.Render() );
                 }
                 // write out the vocab interchange file; used by antlr,
                 // does not change per target
@@ -1003,7 +1001,7 @@ namespace Antlr3.Codegen
                         StringTemplate predST = preds.GenExpr( this,
                                                               Templates,
                                                               t.dfa );
-                        edgeST.SetAttribute( "predicates", predST.ToString() );
+                        edgeST.SetAttribute( "predicates", predST.Render() );
                     }
                 }
                 if ( edge.Label.Atom != Label.EOT )
@@ -1025,7 +1023,7 @@ namespace Antlr3.Codegen
         }
 
         /** Generate an expression for traversing an edge. */
-        protected internal virtual StringTemplate GenLabelExpr( StringTemplateGroup templates,
+        protected internal virtual StringTemplate GenLabelExpr( TemplateGroup templates,
                                               Transition edge,
                                               int k )
         {
@@ -1046,7 +1044,7 @@ namespace Antlr3.Codegen
             return eST;
         }
 
-        protected internal virtual StringTemplate GenSemanticPredicateExpr( StringTemplateGroup templates,
+        protected internal virtual StringTemplate GenSemanticPredicateExpr( TemplateGroup templates,
                                                           Transition edge )
         {
             DFA dfa = ( (DFAState)edge.Target ).dfa; // which DFA are we in
@@ -1058,7 +1056,7 @@ namespace Antlr3.Codegen
         /** For intervals such as [3..3, 30..35], generate an expression that
          *  tests the lookahead similar to LA(1)==3 || (LA(1)>=30&&LA(1)<=35)
          */
-        public virtual StringTemplate GenSetExpr( StringTemplateGroup templates,
+        public virtual StringTemplate GenSetExpr( TemplateGroup templates,
                                          IIntSet set,
                                          int k,
                                          bool partOfDFA )
@@ -1071,7 +1069,7 @@ namespace Antlr3.Codegen
             if ( iset.Intervals == null || iset.Intervals.Count == 0 )
             {
                 StringTemplate emptyST = new StringTemplate( templates, "" );
-                emptyST.Name = "empty-set-expr";
+                emptyST.impl.name = "empty-set-expr";
                 return emptyST;
             }
             string testSTName = "lookaheadTest";
@@ -1172,10 +1170,11 @@ namespace Antlr3.Codegen
          */
         protected virtual StringTemplate GenTokenVocabOutput()
         {
-            StringTemplate vocabFileST =
-                new StringTemplate( vocabFilePattern,
-                                   typeof( AngleBracketTemplateLexer ) );
-            vocabFileST.Name = "vocab-file";
+            StringTemplate vocabFileST = new StringTemplate( vocabFilePattern );
+            // "define" literals arg
+            vocabFileST.Add("literals", null);
+            vocabFileST.Add("tokens", null);
+            vocabFileST.impl.name = "vocab-file";
             // make constants for the token names
             foreach ( string tokenID in grammar.TokenIDs )
             {
@@ -1237,7 +1236,6 @@ namespace Antlr3.Codegen
                     chunks = target.PostProcessAction( chunks, actionToken );
                     StringTemplate catST = new StringTemplate( templates, "<chunks>" );
                     catST.SetAttribute( "chunks", chunks );
-                    templates.CreateStringTemplate();
                     translatedArgs.Add( catST );
                 }
             }
@@ -1566,7 +1564,7 @@ namespace Antlr3.Codegen
         {
             StringTemplate extST = templates.GetInstanceOf( "codeFileExtension" );
             string recognizerName = grammar.GetRecognizerName();
-            return recognizerName + extST.ToString();
+            return recognizerName + extST.Render();
             /*
             String suffix = "";
             if ( type==GrammarType.Combined ||
@@ -1595,8 +1593,8 @@ namespace Antlr3.Codegen
             Stopwatch watch = Stopwatch.StartNew();
             TextWriter w = tool.GetOutputFile( grammar, fileName );
             // Write the output to a StringWriter
-            IStringTemplateWriter wr = templates.GetStringTemplateWriter( w );
-            wr.SetLineWidth( lineWidth );
+            ITemplateWriter wr = templates.GetStringTemplateWriter( w );
+            wr.LineWidth = lineWidth;
             code.Write( wr );
             w.Close();
             TimeSpan duration = watch.Elapsed;

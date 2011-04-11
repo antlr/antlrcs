@@ -36,7 +36,7 @@ namespace Antlr3.Targets
     using CodeGenerator = Antlr3.Codegen.CodeGenerator;
     using Grammar = Antlr3.Tool.Grammar;
     using StringBuilder = System.Text.StringBuilder;
-    using StringTemplate = Antlr3.ST.StringTemplate;
+    using StringTemplate = Antlr4.StringTemplate.Template;
     using Target = Antlr3.Codegen.Target;
 
     public class ObjCTarget : Target

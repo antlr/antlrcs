@@ -199,7 +199,7 @@ namespace Antlr3.Tool
                         {
                             predsStr = "&&{" +
                                 preds.GenExpr( grammar.generator,
-                                              grammar.generator.Templates, null ).ToString()
+                                              grammar.generator.Templates, null ).Render()
                                 + "}?";
                         }
                     }

@@ -95,6 +95,7 @@ namespace Antlr3
                 ".g3"
             };
 
+        [STAThread]
         public static void Main( string[] args )
         {
             AntlrTool antlr = new AntlrTool( args );
@@ -102,7 +103,7 @@ namespace Antlr3
             {
                 //System.Diagnostics.Stopwatch timer = System.Diagnostics.Stopwatch.StartNew();
                 antlr.Process();
-                //Console.WriteLine("Total parse time: {0}", timer.ElapsedMilliseconds);
+                //Console.WriteLine("Total parse time: {0}ms", timer.ElapsedMilliseconds);
                 Environment.ExitCode = ( ErrorManager.GetNumErrors() > 0 ) ? 1 : 0;
             }
         }
@@ -124,6 +125,7 @@ namespace Antlr3
 
             TargetsDirectory = Path.Combine(ToolPathRoot, @"Targets");
             TemplatesDirectory = Path.Combine(Path.Combine(ToolPathRoot, @"Codegen"), "Templates");
+            ErrorManager.Initialize();
         }
 
         public AntlrTool( string[] args )
@@ -342,7 +344,7 @@ namespace Antlr3
                 }
                 else if ( args[i] == "-XdbgST" )
                 {
-                    CodeGenerator.EmitTemplateDelimiters = true;
+                    CodeGenerator.LaunchTemplateInspector = true;
                 }
                 else if ( args[i] == "-Xmaxinlinedfastates" )
                 {

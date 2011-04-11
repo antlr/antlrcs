@@ -34,6 +34,7 @@ namespace Antlr3.Grammars
 {
     using System.Collections.Generic;
     using Antlr3.Codegen;
+    using Antlr3.Extensions;
 
     using CommonToken = Antlr.Runtime.CommonToken;
     using Console = System.Console;
@@ -48,8 +49,8 @@ namespace Antlr3.Grammars
     using RecognitionException = Antlr.Runtime.RecognitionException;
     using Rule = Antlr3.Tool.Rule;
     using RuleType = Antlr3.Tool.RuleType;
-    using StringTemplate = Antlr3.ST.StringTemplate;
-    using StringTemplateGroup = Antlr3.ST.StringTemplateGroup;
+    using StringTemplate = Antlr4.StringTemplate.Template;
+    using TemplateGroup = Antlr4.StringTemplate.TemplateGroup;
 
     partial class CodeGenTreeWalker
     {
@@ -91,7 +92,7 @@ namespace Antlr3.Grammars
 
         protected CodeGenerator generator;
         protected Grammar grammar;
-        protected StringTemplateGroup templates;
+        protected TemplateGroup templates;
 
         /** The overall lexer/parser template; simulate dynamically scoped
          *  attributes by making this an instance var of the walker.

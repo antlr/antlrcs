@@ -33,12 +33,13 @@
 namespace Antlr3.Targets
 {
     using System.Collections.Generic;
+    using Antlr3.Extensions;
 
     using CodeGenerator = Antlr3.Codegen.CodeGenerator;
     using Grammar = Antlr3.Tool.Grammar;
     using GrammarType = Antlr3.Tool.GrammarType;
     using StringBuilder = System.Text.StringBuilder;
-    using StringTemplate = Antlr3.ST.StringTemplate;
+    using StringTemplate = Antlr4.StringTemplate.Template;
     using Target = Antlr3.Codegen.Target;
 
     public class CTarget : Target

@@ -37,7 +37,6 @@ namespace Antlr3.Tool
     using Antlr.Runtime.JavaExtensions;
     using Antlr3.Misc;
 
-    using AngleBracketTemplateLexer = Antlr3.ST.Language.AngleBracketTemplateLexer;
     using BitSet = Antlr3.Misc.BitSet;
     using CultureInfo = System.Globalization.CultureInfo;
     using DecisionProbe = Antlr3.Analysis.DecisionProbe;
@@ -46,19 +45,22 @@ namespace Antlr3.Tool
     using FieldInfo = System.Reflection.FieldInfo;
     using ICollection = System.Collections.ICollection;
     using IOException = System.IO.IOException;
-    using IStringTemplateErrorListener = Antlr3.ST.IStringTemplateErrorListener;
     using IToken = Antlr.Runtime.IToken;
     using NFAState = Antlr3.Analysis.NFAState;
     using Path = System.IO.Path;
     using RecognitionException = Antlr.Runtime.RecognitionException;
     using StackFrame = System.Diagnostics.StackFrame;
     using StreamReader = System.IO.StreamReader;
-    using StringTemplate = Antlr3.ST.StringTemplate;
-    using StringTemplateGroup = Antlr3.ST.StringTemplateGroup;
+    using StringTemplate = Antlr4.StringTemplate.Template;
+    using TemplateGroup = Antlr4.StringTemplate.TemplateGroup;
     using TargetInvocationException = System.Reflection.TargetInvocationException;
     using Thread = System.Threading.Thread;
     using Tool = Antlr3.AntlrTool;
     using TraceListener = System.Diagnostics.TraceListener;
+    using ITemplateErrorListener = Antlr4.StringTemplate.ITemplateErrorListener;
+    using TemplateErrorManager = Antlr4.StringTemplate.Misc.ErrorManager;
+    using TemplateGroupFile = Antlr4.StringTemplate.TemplateGroupFile;
+    using TemplateMessage = Antlr4.StringTemplate.Misc.TemplateMessage;
 
     public static class ErrorManager
     {
@@ -244,9 +246,9 @@ namespace Antlr3.Tool
         private static IDictionary<Thread, Tool> threadToToolMap = new Dictionary<Thread, Tool>();
 
         /** The group of templates that represent all possible ANTLR errors. */
-        private static StringTemplateGroup messages;
+        private static TemplateGroup messages;
         /** The group of templates that represent the current message format. */
-        private static StringTemplateGroup format;
+        private static TemplateGroup format;
 
         /** From a msgID how can I get the name of the template that describes
          *  the error or warning?
@@ -313,43 +315,51 @@ namespace Antlr3.Tool
             }
         }
 
-        static IANTLRErrorListener theDefaultErrorListener = new DefaultErrorListener();
+        private static IANTLRErrorListener theDefaultErrorListener = new DefaultErrorListener();
 
-        class InitSTListener : IStringTemplateErrorListener
+        private class InitSTListener : ITemplateErrorListener
         {
-            public virtual void Error( String s, Exception e )
+            public void CompiletimeError(TemplateMessage msg)
             {
-                Console.Error.WriteLine( "ErrorManager init error: " + s );
-                if ( e != null )
-                {
-                    Console.Error.WriteLine( "exception: " + e );
-                }
-                /*
-                if ( e!=null ) {
-                    e.printStackTrace(System.err);
-                }
-                */
+                Console.Error.WriteLine("ErrorManager init error: " + msg);
             }
-            public virtual void Warning( String s )
+
+            public void RuntimeError(TemplateMessage msg)
             {
-                Console.Error.WriteLine( "ErrorManager init warning: " + s );
+                Console.Error.WriteLine("ErrorManager init error: " + msg);
             }
-            public virtual void Debug( String s )
+
+            public void IOError(TemplateMessage msg)
             {
+                Console.Error.WriteLine("ErrorManager init error: " + msg);
+            }
+
+            public void InternalError(TemplateMessage msg)
+            {
+                Console.Error.WriteLine("ErrorManager init error: " + msg);
             }
         }
 
         /** Handle all ST error listeners here (code gen, Grammar, and this class
          *  use templates.
          */
-        static IStringTemplateErrorListener initSTListener = new InitSTListener();
+        private static ITemplateErrorListener initSTListener = new InitSTListener();
 
-        class BlankSTListener : IStringTemplateErrorListener
+        private sealed class BlankSTListener : ITemplateErrorListener
         {
-            public virtual void Error( string msg, Exception e )
+            public void CompiletimeError(TemplateMessage msg)
             {
             }
-            public virtual void Warning( string msg )
+
+            public void RuntimeError(TemplateMessage msg)
+            {
+            }
+
+            public void IOError(TemplateMessage msg)
+            {
+            }
+
+            public void InternalError(TemplateMessage msg)
             {
             }
         }
@@ -358,46 +368,52 @@ namespace Antlr3.Tool
          *  I'll handle them here.  This is used only after file has loaded ok
          *  and only for the messages STG.
          */
-        static IStringTemplateErrorListener blankSTListener = new BlankSTListener();
+        private static ITemplateErrorListener blankSTListener = new BlankSTListener();
 
-        class DefaultSTListener : IStringTemplateErrorListener
+        private class DefaultSTListener : ITemplateErrorListener
         {
-            public virtual void Error( String s, Exception e )
+            public void CompiletimeError(TemplateMessage msg)
             {
-                if ( e is TargetInvocationException )
-                {
-                    e = e.InnerException ?? e;
-                }
-                ErrorManager.Error( ErrorManager.MSG_INTERNAL_ERROR, s, e );
+                ErrorManager.Error(ErrorManager.MSG_INTERNAL_ERROR, msg.ToString(), msg.Cause);
             }
-            public virtual void Warning( String s )
+
+            public void RuntimeError(TemplateMessage msg)
             {
-                ErrorManager.Warning( ErrorManager.MSG_INTERNAL_WARNING, s );
+                ErrorManager.Error(ErrorManager.MSG_INTERNAL_ERROR, msg.ToString(), msg.Cause);
             }
-            public virtual void Debug( String s )
+
+            public void IOError(TemplateMessage msg)
             {
+                ErrorManager.Error(ErrorManager.MSG_INTERNAL_ERROR, msg.ToString(), msg.Cause);
+            }
+
+            public void InternalError(TemplateMessage msg)
+            {
+                ErrorManager.Error(ErrorManager.MSG_INTERNAL_ERROR, msg.ToString(), msg.Cause);
             }
         }
 
         /** Errors during initialization related to ST must all go to System.err.
          */
-        static IStringTemplateErrorListener theDefaultSTListener = new DefaultSTListener();
+        private static ITemplateErrorListener theDefaultSTListener = new DefaultSTListener();
 
-        static ErrorManager()
+        internal static void Initialize()
         {
             InitIdToMessageNameMapping();
+
             // it is inefficient to set the default locale here if another
             // piece of code is going to set the locale, but that would
             // require that a user call an init() function or something.  I prefer
             // that this class be ready to go when loaded as I'm absentminded ;)
             SetLocale( CultureInfo.CurrentCulture );
+
             // try to load the message format group
             // the user might have specified one on the command line
             // if not, or if the user has given an illegal value, we will fall back to "antlr"
             SetFormat( "antlr" );
         }
 
-        public static IStringTemplateErrorListener GetStringTemplateErrorListener()
+        public static ITemplateErrorListener GetStringTemplateErrorListener()
         {
             return theDefaultSTListener;
         }
@@ -410,54 +426,26 @@ namespace Antlr3.Tool
         public static void SetLocale( CultureInfo locale )
         {
             ErrorManager.locale = locale;
-            String language = locale.TwoLetterISOLanguageName;
-            //String fileName = "org/antlr/tool/templates/messages/languages/"+language+".stg";
-            string fileName = Path.Combine(Path.Combine(Path.Combine(Path.Combine("Tool", "Templates"), "messages"), "languages"), language + ".stg");
-            string streamName = "Antlr3." + fileName.Replace(Path.DirectorySeparatorChar, '.').Replace(Path.AltDirectorySeparatorChar, '.');
-            fileName = System.IO.Path.Combine(AntlrTool.ToolPathRoot, fileName);
-            //ClassLoader cl = Thread.currentThread().getContextClassLoader();
-            //InputStream @is = cl.getResourceAsStream(fileName);
-            System.IO.Stream @is;
-            if ( System.IO.File.Exists( fileName ) )
-                @is = new System.IO.MemoryStream( System.IO.File.ReadAllBytes( fileName ) );
-            else
-                @is = typeof( ErrorManager ).Assembly.GetManifestResourceStream( streamName );
-            //if ( @is==null ) {
-            //    cl = typeof(ErrorManager).getClassLoader();
-            //    @is = cl.getResourceAsStream(fileName);
-            //}
-            if ( @is==null && language.Equals(CultureInfo.GetCultureInfo("en-us").TwoLetterISOLanguageName) ) {
-                RawError("ANTLR installation corrupted; cannot find English messages file "+fileName);
-                Panic();
-            }
-            else if ( @is==null ) {
-                //rawError("no such locale file "+fileName+" retrying with English locale");
-                SetLocale(CultureInfo.GetCultureInfo("en-us")); // recurse on this rule, trying the US locale
-                return;
-            }
-            StreamReader br = null;
-            try {
-                br = new StreamReader(new System.IO.BufferedStream( @is ) );
-                messages = new StringTemplateGroup(br,
-                                                   typeof(AngleBracketTemplateLexer),
-                                                   initSTListener);
-                br.Close();
-            }
-            catch (IOException ioe) {
-                RawError("error reading message file "+fileName, ioe);
-            }
-            finally {
-                if ( br!=null ) {
-                    try {
-                        br.Close();
-                    }
-                    catch (IOException ioe) {
-                        RawError("cannot close message file "+fileName, ioe);
-                    }
+            string language = locale.TwoLetterISOLanguageName;
+            string fileName = Path.Combine(Path.Combine(Path.Combine(Path.Combine(Path.Combine(AntlrTool.ToolPathRoot, "Tool"), "Templates"), "messages"), "languages"), language + ".stg");
+            messages = new TemplateGroupFile(fileName);
+            messages.Listener = initSTListener;
+            if (!messages.IsDefined("INTERNAL_ERROR"))
+            {
+                // pick random msg to load
+                if (language.Equals(CultureInfo.GetCultureInfo("en-us").TwoLetterISOLanguageName))
+                {
+                    RawError("ANTLR installation corrupted; cannot find English messages file " + fileName);
+                    Panic();
+                }
+                else
+                {
+                    // recurse on this rule, trying the US locale
+                    SetLocale(CultureInfo.GetCultureInfo("en-us"));
                 }
             }
 
-            messages.ErrorListener = blankSTListener;
+            messages.Listener = blankSTListener;
             bool messagesOK = VerifyMessages();
             if ( !messagesOK && language.Equals(CultureInfo.GetCultureInfo("en-us").TwoLetterISOLanguageName) ) {
                 RawError("ANTLR installation corrupted; English messages file "+language+".stg incomplete");
@@ -474,56 +462,27 @@ namespace Antlr3.Tool
         public static void SetFormat( String formatName )
         {
             ErrorManager.formatName = formatName;
-            //String fileName = "org/antlr/tool/templates/messages/formats/"+formatName+".stg";
-            string fileName = Path.Combine(Path.Combine(Path.Combine(Path.Combine("Tool", "Templates"), "messages"), "formats"), formatName + ".stg");
-            string streamName = "Antlr3." + fileName.Replace(Path.DirectorySeparatorChar, '.').Replace(Path.AltDirectorySeparatorChar, '.');
-            fileName = System.IO.Path.Combine(AntlrTool.ToolPathRoot, fileName);
-            //ClassLoader cl = Thread.currentThread().getContextClassLoader();
-            //InputStream is = cl.getResourceAsStream(fileName);
-            System.IO.Stream @is;
-            if ( System.IO.File.Exists( fileName ) )
-                @is = new System.IO.MemoryStream( System.IO.File.ReadAllBytes( fileName ) );
-            else
-                @is = typeof( ErrorManager ).Assembly.GetManifestResourceStream( streamName );
-            //if ( is==null ) {
-            //    cl = ErrorManager.class.getClassLoader();
-            //    is = cl.getResourceAsStream(fileName);
-            //}
-            if ( @is == null && formatName.Equals( "antlr" ) )
+            string fileName = Path.Combine(Path.Combine(Path.Combine(Path.Combine(Path.Combine(AntlrTool.ToolPathRoot, "Tool"), "Templates"), "messages"), "formats"), formatName + ".stg");
+            format = new TemplateGroupFile(fileName);
+            format.Listener = initSTListener;
+            if (!format.IsDefined("message"))
             {
-                RawError( "ANTLR installation corrupted; cannot find ANTLR messages format file " + fileName );
-                Panic();
-            }
-            else if ( @is == null )
-            {
-                RawError( "no such message format file " + fileName + " retrying with default ANTLR format" );
-                SetFormat( "antlr" ); // recurse on this rule, trying the default message format
-                return;
-            }
-            StreamReader br = null;
-            try
-            {
-                br = new StreamReader( new System.IO.BufferedStream( @is ) );
-                format = new StringTemplateGroup( br,
-                                                   typeof( AngleBracketTemplateLexer ),
-                                                   initSTListener );
-            }
-            finally
-            {
-                try
+                // pick random msg to load
+                if (formatName.Equals("antlr"))
                 {
-                    if ( br != null )
-                    {
-                        br.Close();
-                    }
+                    RawError("no such message format file " + fileName + " retrying with default ANTLR format");
+                    // recurse on this rule, trying the default message format
+                    SetFormat("antlr");
+                    return;
                 }
-                catch ( IOException ioe )
+                else
                 {
-                    RawError( "cannot close message format file " + fileName, ioe );
+                    // recurse on this rule, trying the default message format
+                    SetFormat("antlr");
                 }
             }
 
-            format.ErrorListener = blankSTListener;
+            format.Listener = blankSTListener;
             bool formatOK = VerifyFormat();
             if ( !formatOK && formatName.Equals( "antlr" ) )
             {
@@ -603,11 +562,11 @@ namespace Antlr3.Tool
         {
             if ( GetErrorState().warningMsgIDs.Contains( msgID ) )
             {
-                return messages.GetInstanceOf( "warning" ).ToString();
+                return messages.GetInstanceOf( "warning" ).Render();
             }
             else if ( GetErrorState().errorMsgIDs.Contains( msgID ) )
             {
-                return messages.GetInstanceOf( "error" ).ToString();
+                return messages.GetInstanceOf( "error" ).Render();
             }
             AssertTrue( false, "Assertion failed! Message ID " + msgID + " created but is not present in errorMsgIDs or warningMsgIDs." );
             return "";
@@ -630,7 +589,7 @@ namespace Antlr3.Tool
         }
         public static bool FormatWantsSingleLineMessage()
         {
-            return format.GetInstanceOf( "wantsSingleLineMessage" ).ToString().Equals( "true" );
+            return format.GetInstanceOf( "wantsSingleLineMessage" ).Render().Equals( "true" );
         }
 
         public static IANTLRErrorListener GetErrorListener()

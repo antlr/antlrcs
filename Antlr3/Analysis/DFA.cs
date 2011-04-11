@@ -43,7 +43,7 @@ namespace Antlr3.Analysis
     using IIntStream = Antlr.Runtime.IIntStream;
     using IntervalSet = Antlr3.Misc.IntervalSet;
     using StringBuilder = System.Text.StringBuilder;
-    using StringTemplate = Antlr3.ST.StringTemplate;
+    using StringTemplate = Antlr4.StringTemplate.Template;
 
     /** A DFA (converted from a grammar's NFA).
      *  DFAs are used as prediction machine for alternative blocks in all kinds

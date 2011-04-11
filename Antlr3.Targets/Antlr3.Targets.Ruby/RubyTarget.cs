@@ -40,14 +40,15 @@ namespace Antlr3.Targets
     using Console = System.Console;
     using Grammar = Antlr3.Tool.Grammar;
     using GrammarType = Antlr3.Tool.GrammarType;
-    using IAttributeRenderer = Antlr3.ST.IAttributeRenderer;
+    using IAttributeRenderer = Antlr4.StringTemplate.IAttributeRenderer;
     using Regex = System.Text.RegularExpressions.Regex;
     using StringBuilder = System.Text.StringBuilder;
-    using StringTemplate = Antlr3.ST.StringTemplate;
-    using StringTemplateGroup = Antlr3.ST.StringTemplateGroup;
+    using StringTemplate = Antlr4.StringTemplate.Template;
+    using StringTemplateGroup = Antlr4.StringTemplate.TemplateGroup;
     using Target = Antlr3.Codegen.Target;
     using TypeLoadException = System.TypeLoadException;
     using NumberStyles = System.Globalization.NumberStyles;
+    using CultureInfo = System.Globalization.CultureInfo;
 
     public class RubyTarget : Target
     {
@@ -98,18 +99,10 @@ namespace Antlr3.Targets
                 rubyCharValueEscape['"'] = "\\\"";
             }
 
-            public string ToString(object o)
+            public string ToString(object o, string formatName, CultureInfo culture)
             {
-                return o.ToString();
-            }
-
-            public string ToString(object o, string formatName)
-            {
-                if (formatName == null)
-                    throw new ArgumentNullException("formatName");
-
                 string idString = o.ToString();
-                if (string.IsNullOrEmpty(idString))
+                if (string.IsNullOrEmpty(idString) || string.IsNullOrEmpty(formatName))
                     return idString;
 
                 switch (formatName)

@@ -33,10 +33,11 @@
 namespace Antlr3.Tool
 {
     using System;
+    using Antlr3.Extensions;
 
     using IToken = Antlr.Runtime.IToken;
     using RecognitionException = Antlr.Runtime.RecognitionException;
-    using StringTemplate = Antlr3.ST.StringTemplate;
+    using StringTemplate = Antlr4.StringTemplate.Template;
 
     /** A problem with the syntax of your antlr grammar such as
      *  "The '{' came as a complete surprise to me at this point in your program"

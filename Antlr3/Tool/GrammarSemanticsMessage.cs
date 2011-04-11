@@ -32,8 +32,10 @@
 
 namespace Antlr3.Tool
 {
+    using Antlr3.Extensions;
+
     using IToken = Antlr.Runtime.IToken;
-    using StringTemplate = Antlr3.ST.StringTemplate;
+    using StringTemplate = Antlr4.StringTemplate.Template;
 
     /** A problem with the symbols and/or meaning of a grammar such as rule
      *  redefinition.

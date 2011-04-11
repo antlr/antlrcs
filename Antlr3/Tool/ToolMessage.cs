@@ -33,9 +33,10 @@
 namespace Antlr3.Tool
 {
     using Antlr.Runtime.JavaExtensions;
+    using Antlr3.Extensions;
 
     using Exception = System.Exception;
-    using StringTemplate = Antlr3.ST.StringTemplate;
+    using StringTemplate = Antlr4.StringTemplate.Template;
 
     /** A generic message from the tool such as "file not found" type errors; there
      *  is no reason to create a special object for each error unlike the grammar

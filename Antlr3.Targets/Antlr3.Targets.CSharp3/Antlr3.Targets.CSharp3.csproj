@@ -20,7 +20,8 @@
     <SignAssembly>true</SignAssembly>
     <DelaySign>false</DelaySign>
     <AssemblyOriginatorKeyFile>..\..\Antlr3\Key.snk</AssemblyOriginatorKeyFile>
-    <TargetFrameworkProfile>Client</TargetFrameworkProfile>
+    <TargetFrameworkProfile>
+    </TargetFrameworkProfile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -50,14 +51,14 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\Antlr3.StringTemplate\Antlr3.StringTemplate.csproj">
-      <Project>{B5910BE2-DE21-4AA9-95C1-486F42B9E794}</Project>
-      <Name>Antlr3.StringTemplate</Name>
-      <Private>False</Private>
-    </ProjectReference>
     <ProjectReference Include="..\..\Antlr3\Antlr3.csproj">
       <Project>{2AB8CAED-C046-4F05-8B18-6948100D2FE7}</Project>
       <Name>Antlr3</Name>
+      <Private>False</Private>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Antlr4.StringTemplate\Antlr4.StringTemplate.csproj">
+      <Project>{DE9B7DA2-35DD-46CC-B768-DAEE3C298660}</Project>
+      <Name>Antlr4.StringTemplate</Name>
       <Private>False</Private>
     </ProjectReference>
   </ItemGroup>

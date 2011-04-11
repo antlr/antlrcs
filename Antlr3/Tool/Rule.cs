@@ -35,6 +35,7 @@ namespace Antlr3.Tool
     using System.Collections.Generic;
     using System.Linq;
     using Antlr.Runtime.JavaExtensions;
+    using Antlr3.Extensions;
 
     using ANTLRParser = Antlr3.Grammars.ANTLRParser;
     using ArgumentException = System.ArgumentException;

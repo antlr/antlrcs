@@ -42,7 +42,7 @@ namespace Antlr3.Codegen
     using IToken = Antlr.Runtime.IToken;
     using Label = Antlr3.Analysis.Label;
     using StringBuilder = System.Text.StringBuilder;
-    using StringTemplate = Antlr3.ST.StringTemplate;
+    using StringTemplate = Antlr4.StringTemplate.Template;
 
     /** The code generator for ANTLR can usually be retargeted just by providing
      *  a new X.stg file for language X, however, sometimes the files that must

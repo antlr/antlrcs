@@ -35,8 +35,9 @@ namespace Antlr3.Tool
     using System;
     using System.Collections.Generic;
     using Antlr3.Analysis;
+    using Antlr3.Extensions;
 
-    using StringTemplate = Antlr3.ST.StringTemplate;
+    using StringTemplate = Antlr4.StringTemplate.Template;
 
     /** Indicates recursion overflow.  A DFA state tried add an NFA configuration
      *  with NFA state p that was mentioned in its stack context too many times.

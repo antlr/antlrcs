@@ -34,9 +34,10 @@ namespace Antlr3.Tool
 {
     using System;
     using Antlr3.Analysis;
+    using Antlr3.Extensions;
 
     using ICollection = System.Collections.ICollection;
-    using StringTemplate = Antlr3.ST.StringTemplate;
+    using StringTemplate = Antlr4.StringTemplate.Template;
 
     /** Similar to LeftRecursionMessage except this is used for announcing
      *  cycles found by walking rules without decisions; the other msg is

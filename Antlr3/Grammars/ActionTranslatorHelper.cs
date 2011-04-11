@@ -34,6 +34,7 @@ namespace Antlr3.Grammars
 {
     using System.Collections.Generic;
     using Antlr3.Codegen;
+    using Antlr3.Extensions;
 
     using ANTLRStringStream = Antlr.Runtime.ANTLRStringStream;
     using Attribute = Antlr3.Tool.Attribute;
@@ -46,7 +47,7 @@ namespace Antlr3.Grammars
     using Rule = Antlr3.Tool.Rule;
     using StringBuilder = System.Text.StringBuilder;
     using StringComparison = System.StringComparison;
-    using StringTemplate = Antlr3.ST.StringTemplate;
+    using StringTemplate = Antlr4.StringTemplate.Template;
     using TokenTypes = Antlr.Runtime.TokenTypes;
 
     partial class ActionTranslator
@@ -105,7 +106,11 @@ namespace Antlr3.Grammars
             for (int i = 0; i < theChunks.Count; i++)
             {
                 object o = (object)theChunks[i];
-                buf.Append(o);
+                StringTemplate template = o as StringTemplate;
+                if (template != null)
+                    buf.Append(template.Render());
+                else
+                    buf.Append(o);
             }
             //JSystem.@out.println("translated: "+buf.toString());
             return buf.ToString();

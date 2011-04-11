@@ -34,9 +34,10 @@ namespace Antlr3.Tool
 {
     using System.Collections.Generic;
     using Antlr.Runtime.JavaExtensions;
+    using Antlr3.Extensions;
 
     using DecisionProbe = Antlr3.Analysis.DecisionProbe;
-    using StringTemplate = Antlr3.ST.StringTemplate;
+    using StringTemplate = Antlr4.StringTemplate.Template;
 
     /** More a single alternative recurses so this decision is not regular. */
     public class NonRegularDecisionMessage : Message

@@ -34,8 +34,8 @@ namespace Antlr3.Targets
     using CodeGenerator = Antlr3.Codegen.CodeGenerator;
     using Grammar = Antlr3.Tool.Grammar;
     using StringBuilder = System.Text.StringBuilder;
-    using StringTemplate = Antlr3.ST.StringTemplate;
-    using StringTemplateGroup = Antlr3.ST.StringTemplateGroup;
+    using StringTemplate = Antlr4.StringTemplate.Template;
+    using StringTemplateGroup = Antlr4.StringTemplate.TemplateGroup;
     using Target = Antlr3.Codegen.Target;
 
     public class CPPTarget : Target
@@ -104,7 +104,6 @@ namespace Antlr3.Targets
                                                StringTemplate headerFileST,
                                                string extName )
         {
-            StringTemplateGroup templates = generator.Templates;
             generator.Write( headerFileST, grammar.name + extName );
         }
 
