@@ -280,22 +280,29 @@ namespace Antlr4.Test.StringTemplate
         }
 
         [TestMethod]
+        public void TestRegionOverrideRefSuperRegion2Levels()
+        {
+            string g =
+                    "a() ::= \"X<@r()>Y\"\n" +
+                    "@a.r() ::= \"foo\"\n";
+            TemplateGroup group = new TemplateGroupString(g);
+
+            string sub =
+                    "@a.r() ::= \"<@super.r()>2\"\n";
+            TemplateGroup subGroup = new TemplateGroupString(sub);
+            subGroup.ImportTemplates(group);
+
+            Template st = subGroup.GetInstanceOf("a");
+
+            string result = st.Render();
+            string expecting = "Xfoo2Y";
+            Assert.AreEqual(expecting, result);
+        }
+
+        [TestMethod]
         public void TestRegionOverrideRefSuperRegion3Levels()
         {
             string dir = tmpdir;
-            // Bug: This was causing infinite recursion:
-            // GetInstanceOf(super::a)
-            // GetInstanceOf(sub::a)
-            // GetInstanceOf(subsub::a)
-            // GetInstanceOf(subsub::region__a__r)
-            // GetInstanceOf(subsub::super.region__a__r)
-            // GetInstanceOf(subsub::super.region__a__r)
-            // GetInstanceOf(subsub::super.region__a__r)
-            // ...
-            // Somehow, the ref to super in subsub is not moving up the chain
-            // to the @super.r(); oh, i introduced a bug when i put setGroup
-            // into STG.GetInstanceOf()!
-
             string g =
                     "a() ::= \"X<@r()>Y\"" +
                     "@a.r() ::= \"foo\"" + newline;
