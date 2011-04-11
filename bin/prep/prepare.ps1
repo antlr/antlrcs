@@ -35,7 +35,7 @@ $ArchivePath = ".\Backup\Bootstrap-" + [System.IO.Path]::GetFileNameWithoutExten
 .\7z.exe a -r $ArchivePath "..\Bootstrap\*"
 
 # copy the new bootstrap files
-$BootstrapBinaries = "Antlr3.exe", "Antlr3.exe.config", "Antlr3.Runtime.dll", "Antlr3.Runtime.Debug.dll", "Antlr3.StringTemplate.dll", "Antlr3.targets", "AntlrBuildTask.dll"
+$BootstrapBinaries = "Antlr3.exe", "Antlr3.exe.config", "Antlr3.Runtime.dll", "Antlr3.Runtime.Debug.dll", "Antlr4.StringTemplate.dll", "Antlr4.StringTemplate.Visualizer.dll", "Antlr3.targets", "AntlrBuildTask.dll"
 $BootstrapBinaries | ForEach-Object {
     copy -force "..\$BuildConfig\$_" "..\Bootstrap"
     if ($LASTEXITCODE -ne 0) {
@@ -92,7 +92,8 @@ copy "..\$BuildConfig\Antlr3.exe" ".\Tool"
 copy "..\$BuildConfig\Antlr3.exe.config" ".\Tool"
 copy "..\$BuildConfig\Antlr3.Runtime.dll" ".\Tool"
 copy "..\$BuildConfig\Antlr3.Runtime.Debug.dll" ".\Tool"
-copy "..\$BuildConfig\Antlr3.StringTemplate.dll" ".\Tool"
+copy "..\$BuildConfig\Antlr4.StringTemplate.dll" ".\Tool"
+copy "..\$BuildConfig\Antlr4.StringTemplate.Visualizer.dll" ".\Tool"
 copy "..\$BuildConfig\Antlr3.targets" ".\Tool"
 copy "..\$BuildConfig\AntlrBuildTask.dll" ".\Tool"
 
@@ -102,12 +103,9 @@ copy ".\Tool\*" ".\Bootstrap"
 copy "..\$BuildConfig\Antlr3.pdb" ".\Tool"
 copy "..\$BuildConfig\Antlr3.Runtime.pdb" ".\Tool"
 copy "..\$BuildConfig\Antlr3.Runtime.Debug.pdb" ".\Tool"
-copy "..\$BuildConfig\Antlr3.StringTemplate.pdb" ".\Tool"
+copy "..\$BuildConfig\Antlr4.StringTemplate.pdb" ".\Tool"
+copy "..\$BuildConfig\Antlr4.StringTemplate.Visualizer.pdb" ".\Tool"
 copy "..\$BuildConfig\AntlrBuildTask.pdb" ".\Tool"
-copy "..\..\Antlr4.StringTemplate\bin\$BuildConfig\Antlr4.StringTemplate.dll" ".\Tool"
-copy "..\..\Antlr4.StringTemplate\bin\$BuildConfig\Antlr4.StringTemplate.pdb" ".\Tool"
-copy "..\..\Antlr4.StringTemplate.Visualizer\bin\$BuildConfig\Antlr4.StringTemplate.Visualizer.dll" ".\Tool"
-copy "..\..\Antlr4.StringTemplate.Visualizer\bin\$BuildConfig\Antlr4.StringTemplate.Visualizer.pdb" ".\Tool"
 
 mkdir "Tool\Codegen"
 mkdir "Tool\Targets"

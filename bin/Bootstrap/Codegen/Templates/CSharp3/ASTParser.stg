@@ -41,7 +41,6 @@
  *  The situation is not too bad as rewrite (->) usage makes ^ and !
  *  invalid. There is no huge explosion of combinations.
  */
-group ASTParser;
 
 @rule.setErrorReturnValue() ::= <<
 retval.Tree = (<ASTLabelType>)adaptor.ErrorNode(input, retval.Start, input.LT(-1), re);
@@ -103,23 +102,23 @@ tokenRefRuleRootAndListLabel(token,label,terminalOptions,elementIndex) ::= <<
 // I have more time.
 
 matchSet(s,label,terminalOptions,elementIndex,postmatchCode) ::= <<
-<super.matchSet(..., postmatchCode={<if(backtracking)>if (<actions.(actionScope).synpredgate>) <endif>adaptor.AddChild(root_0, <createNodeFromToken(...)>);})>
+<super.matchSet(postmatchCode={<if(backtracking)>if (<actions.(actionScope).synpredgate>) <endif>adaptor.AddChild(root_0, <createNodeFromToken(...)>);}, ...)>
 >>
 
 matchRuleBlockSet(s,label,terminalOptions,elementIndex,postmatchCode,treeLevel="0") ::= <<
 <matchSet(...)>
 >>
 
-matchSetBang(s,label,elementIndex,postmatchCode) ::= "<super.matchSet(...)>"
+matchSetBang(s,label,elementIndex,terminalOptions,postmatchCode) ::= "<super.matchSet(...)>"
 
 // note there is no matchSetTrack because -> rewrites force sets to be
 // plain old blocks of alts: (A|B|...|C)
 
 matchSetRuleRoot(s,label,terminalOptions,elementIndex,debug) ::= <<
 <if(label)>
-<label>=(<labelType>)input.LT(1);<\n>
+<label>=(<labelType>)input.LT(1);
 <endif>
-<super.matchSet(..., postmatchCode={<if(backtracking)>if (<actions.(actionScope).synpredgate>) <endif>root_0 = (<ASTLabelType>)adaptor.BecomeRoot(<createNodeFromToken(...)>, root_0);})>
+<super.matchSet(postmatchCode={<if(backtracking)>if (<actions.(actionScope).synpredgate>) <endif>root_0 = (<ASTLabelType>)adaptor.BecomeRoot(<createNodeFromToken(...)>, root_0);}, ...)>
 >>
 
 // RULE REF AST
@@ -142,24 +141,24 @@ ruleRefRuleRoot(rule,label,elementIndex,args,scope) ::= <<
 /** x+=rule when output=AST */
 ruleRefAndListLabel(rule,label,elementIndex,args,scope) ::= <<
 <ruleRef(...)>
-<listLabelElem(elem=label+".Tree",elemType=ASTLabelType,...)>
+<listLabelElem(elem={<label>.Tree},elemType=ASTLabelType,...)>
 >>
 
 /** x+=rule! when output=AST is a rule ref with list addition */
 ruleRefBangAndListLabel(rule,label,elementIndex,args,scope) ::= <<
 <ruleRefBang(...)>
-<listLabelElem(elem=label+".Tree",elemType=ASTLabelType,...)>
+<listLabelElem(elem={<label>.Tree},elemType=ASTLabelType,...)>
 >>
 
 /** x+=rule^ */
 ruleRefRuleRootAndListLabel(rule,label,elementIndex,args,scope) ::= <<
 <ruleRefRuleRoot(...)>
-<listLabelElem(elem=label+".Tree",elemType=ASTLabelType,...)>
+<listLabelElem(elem={<label>.Tree},elemType=ASTLabelType,...)>
 >>
 
 // WILDCARD AST
 
-wildcard(label,elementIndex) ::= <<
+wildcard(token,label,elementIndex,terminalOptions) ::= <<
 <super.wildcard(...)>
 <if(backtracking)>if (<actions.(actionScope).synpredgate>) {<endif>
 <label>_tree = (<ASTLabelType>)adaptor.Create(<label>);
@@ -169,7 +168,7 @@ adaptor.AddChild(root_0, <label>_tree);
 
 wildcardBang(label,elementIndex) ::= "<super.wildcard(...)>"
 
-wildcardRuleRoot(label,elementIndex) ::= <<
+wildcardRuleRoot(token,label,elementIndex,terminalOptions) ::= <<
 <super.wildcard(...)>
 <if(backtracking)>if (<actions.(actionScope).synpredgate>) {<endif>
 <label>_tree = (<ASTLabelType>)adaptor.Create(<label>);
@@ -177,13 +176,13 @@ root_0 = (<ASTLabelType>)adaptor.BecomeRoot(<label>_tree, root_0);
 <if(backtracking)>}<endif>
 >>
 
-createNodeFromToken(label,terminalOptions) ::= <<
+createNodeFromToken(label,terminalOptions) ::= <%
 <if(terminalOptions.node)>
 new <terminalOptions.node>(<if(terminalOptions.type)><terminalOptions.type>,<endif><label><if(terminalOptions.text)>,<terminalOptions.text; format="string"><endif>)
 <else>
 (<ASTLabelType>)adaptor.Create(<if(terminalOptions.type)><terminalOptions.type>,<endif><label><if(terminalOptions.text)>,<terminalOptions.text; format="string"><endif>)
 <endif>
->>
+%>
 
 ruleCleanUp() ::= <<
 <super.ruleCleanUp()>

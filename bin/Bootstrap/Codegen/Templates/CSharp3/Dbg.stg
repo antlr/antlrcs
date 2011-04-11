@@ -32,7 +32,6 @@
 /** Template overrides to add debugging to normal Java output;
  *  If ASTs are built, then you'll also get ASTDbg.stg loaded.
  */
-group Dbg;
 
 @outputFile.imports() ::= <<
 <@super.imports()>

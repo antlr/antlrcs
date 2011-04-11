@@ -32,7 +32,6 @@
 /** Template subgroup to add template rewrite output
  *  If debugging, then you'll also get STDbg.stg loaded.
  */
-group ST;
 
 @outputFile.imports() ::= <<
 <@super.imports()>
@@ -62,7 +61,7 @@ public StringTemplateGroup TemplateGroup
 /** x+=rule when output=template */
 ruleRefAndListLabel(rule,label,elementIndex,args,scope) ::= <<
 <ruleRef(...)>
-<listLabelElem(elem=label+".Template",elemType="StringTemplate",...)>
+<listLabelElem(elem={<label>.Template},elemType="StringTemplate",...)>
 >>
 
 rewriteTemplate(alts) ::= <<
@@ -94,7 +93,7 @@ replaceTextInLine() ::= <<
 <endif>
 >>
 
-rewriteTemplateAlt() ::= <<
+rewriteTemplateAlt(it) ::= <<
 // <it.description>
 <if(it.pred)>
 if (<it.pred>)
@@ -118,19 +117,19 @@ null;
  *  an attribute to build a bigger template; you get a self-embedded
  *  template.
  */
-rewriteExternalTemplate(name,args) ::= <<
+rewriteExternalTemplate(name,args) ::= <%
 TemplateGroup.GetInstanceOf("<name>"<optionalArguments(args)>)
->>
+%>
 
 /** expr is a string expression that says what template to load */
-rewriteIndirectTemplate(expr,args) ::= <<
+rewriteIndirectTemplate(expr,args) ::= <%
 TemplateGroup.GetInstanceOf(<expr><optionalArguments(args)>)
->>
+%>
 
 /** Invoke an inline template with a set of attribute name/value pairs */
-rewriteInlineTemplate(args, template) ::= <<
+rewriteInlineTemplate(args, template) ::= <%
 new StringTemplate(TemplateGroup, "<template>"<optionalArguments(args)>)
->>
+%>
 
 optionalArguments(args) ::= <<
 <if(args)>,
@@ -138,7 +137,7 @@ optionalArguments(args) ::= <<
 <endif>
 >>
 
-optionalArgument() ::= <<
+optionalArgument(it) ::= <<
 {"<it.name>", <it.value>}
 >>
 

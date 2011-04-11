@@ -33,7 +33,6 @@
 /** Template overrides to add debugging to AST stuff.  Dynamic inheritance
  *  hierarchy is set up as ASTDbg : AST : Dbg : Java by code generator.
  */
-group ASTDbg;
 
 parserMembers() ::= <<
 // Implement this function in your helper file to use a custom tree adaptor
