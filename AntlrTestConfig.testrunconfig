@@ -3,8 +3,9 @@
   <Description>This is a default test run configuration for a local test run.</Description>
   <CodeCoverage keyFile="Antlr3\Key.snk" />
   <Deployment>
-    <DeploymentItem filename="bin\Debug\Targets\" />
-    <DeploymentItem filename="..\antlr\antlr3-main\tool\src\main\resources\org\antlr\" />
+    <DeploymentItem filename="bin\Debug\Codegen\" outputDirectory="Codegen" />
+    <DeploymentItem filename="bin\Debug\Targets\" outputDirectory="Targets" />
+    <DeploymentItem filename="bin\Debug\Tool\" outputDirectory="Tool" />
   </Deployment>
   <Hosts>
     <VSSDKTestHostRunConfig name="VS IDE" HiveKind="DevEnv" HiveName="9.0" IsRANU="false" xmlns="http://microsoft.com/schemas/VisualStudio/SDK/Tools/IdeHostAdapter/2006/06" />
