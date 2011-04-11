@@ -615,23 +615,29 @@ namespace Antlr4.StringTemplate
                 if (!attrs.ContainsKey(arg.Name))
                 {
                     //System.out.println("arg "+arg.name+" missing");
-
-                    // We only pass through nonempty values. Further, it makes no sense to set
-                    // values for parameter x if x has no definition above. That is the same as
-                    // having no value.  If we did set to null, we'd mess up
-                    // any default argument (which is set later).
                     try
                     {
                         object o = GetAttribute(frame, arg.Name);
-                        if (o != Template.EmptyAttribute)
+                        // If the attribute exists but there is no value and
+                        // the formal argument has no default value, make it null.
+                        if (o == Template.EmptyAttribute && arg.DefaultValueToken == null)
                         {
-                            //System.out.println("setting to "+o);
+                            attrs[arg.Name] = null;
+                        }
+                        // Else, the attribute has an existing value, set arg.
+                        else if (o != Template.EmptyAttribute)
+                        {
                             attrs[arg.Name] = o;
                         }
                     }
                     catch (AttributeNotFoundException)
                     {
-                        // if no such attribute exists for arg.name, don't set parameter
+                        // if no such attribute exists for arg.name, set parameter
+                        // if no default value
+                        if (arg.DefaultValueToken == null)
+                        {
+                            attrs[arg.Name] = null;
+                        }
                     }
                 }
             }
