@@ -37,10 +37,7 @@ namespace Antlr4.StringTemplate.Misc
         public virtual object GetProperty(Interpreter interpreter, TemplateFrame frame, object o, object property, string propertyName)
         {
             Template template = (Template)o;
-            if (frame.Template != template)
-                frame = new TemplateFrame(template, frame);
-
-            return interpreter.GetAttribute(frame, propertyName);
+            return template.GetAttribute(propertyName);
         }
     }
 }
