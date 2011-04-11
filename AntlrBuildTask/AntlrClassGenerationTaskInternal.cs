@@ -142,6 +142,9 @@ namespace Antlr3.Build.Tasks
             }
             catch (Exception e)
             {
+                if (e is TargetInvocationException && e.InnerException != null)
+                    e = e.InnerException;
+
                 _buildMessages.Add(new BuildMessage(e.Message));
                 throw;
             }
