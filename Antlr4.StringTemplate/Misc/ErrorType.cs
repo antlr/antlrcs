@@ -42,6 +42,7 @@ namespace Antlr4.StringTemplate.Misc
         public static readonly ErrorType NO_SUCH_TEMPLATE = new ErrorType("no such template: {0}");
         public static readonly ErrorType NO_IMPORTED_TEMPLATE = new ErrorType("no such template: super.{0}");
         public static readonly ErrorType NO_SUCH_ATTRIBUTE = new ErrorType("attribute {0} isn't defined");
+        public static readonly ErrorType REF_TO_IMPLICIT_ATTRIBUTE_OUT_OF_SCOPE = new ErrorType("implicitly-defined attribute {0} not visible");
         public static readonly ErrorType MISSING_FORMAL_ARGUMENTS = new ErrorType("missing argument definitions");
         public static readonly ErrorType NO_SUCH_PROPERTY = new ErrorType("no such property or can't access: {0}");
         public static readonly ErrorType MAP_ARGUMENT_COUNT_MISMATCH = new ErrorType("iterating through {0} values in zip map but template has {1} declared arguments");
