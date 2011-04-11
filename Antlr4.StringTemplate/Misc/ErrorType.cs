@@ -40,7 +40,6 @@ namespace Antlr4.StringTemplate.Misc
     {
         // RUNTIME SEMANTIC ERRORS
         public static readonly ErrorType NO_SUCH_TEMPLATE = new ErrorType("no such template: {0}");
-        public static readonly ErrorType CANT_SET_ATTRIBUTE = new ErrorType("can't set attribute {0}; template {1} has no such attribute");
         public static readonly ErrorType NO_IMPORTED_TEMPLATE = new ErrorType("no such template: super.{0}");
         public static readonly ErrorType NO_SUCH_ATTRIBUTE = new ErrorType("attribute {0} isn't defined");
         public static readonly ErrorType MISSING_FORMAL_ARGUMENTS = new ErrorType("missing argument definitions");
