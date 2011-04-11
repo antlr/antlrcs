@@ -341,6 +341,34 @@ namespace Antlr4.Test.StringTemplate
         }
 
         [TestMethod]
+        public void TestPassThruWithDefaultValue()
+        {
+            string templates =
+                "a(x,y) ::= \"<b(...)>\"\n" + // should not set y when it sees "no value" from above
+                "b(x,y={99}) ::= \"<x><y>\"\n";
+            TemplateGroup group = new TemplateGroupString(templates);
+            Template a = group.GetInstanceOf("a");
+            a.Add("x", "x");
+            string expected = "x99";
+            string result = a.Render();
+            Assert.AreEqual(expected, result);
+        }
+
+        [TestMethod]
+        public void TestPassThruWithDefaultValueThatLacksDefinitionAbove()
+        {
+            string templates =
+                "a(x) ::= \"<b(...)>\"\n" + // should not set y when it sees "no definition" from above
+                "b(x,y={99}) ::= \"<x><y>\"\n";
+            TemplateGroup group = new TemplateGroupString(templates);
+            Template a = group.GetInstanceOf("a");
+            a.Add("x", "x");
+            string expected = "x99";
+            string result = a.Render();
+            Assert.AreEqual(expected, result);
+        }
+
+        [TestMethod]
         public void TestPassThruPartialArgs()
         {
             string templates =

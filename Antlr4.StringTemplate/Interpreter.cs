@@ -611,12 +611,28 @@ namespace Antlr4.StringTemplate
 
             foreach (FormalArgument arg in c.FormalArguments)
             {
+                // if not already set by user, set to value from outer scope
                 if (!attrs.ContainsKey(arg.Name))
                 {
                     //System.out.println("arg "+arg.name+" missing");
-                    object o = GetAttribute(frame, arg.Name);
-                    //System.out.println("setting to "+o);
-                    attrs[arg.Name] = o;
+
+                    // We only pass through nonempty values. Further, it makes no sense to set
+                    // values for parameter x if x has no definition above. That is the same as
+                    // having no value.  If we did set to null, we'd mess up
+                    // any default argument (which is set later).
+                    try
+                    {
+                        object o = GetAttribute(frame, arg.Name);
+                        if (o != Template.EmptyAttribute)
+                        {
+                            //System.out.println("setting to "+o);
+                            attrs[arg.Name] = o;
+                        }
+                    }
+                    catch (AttributeNotFoundException)
+                    {
+                        // if no such attribute exists for arg.name, don't set parameter
+                    }
                 }
             }
         }
