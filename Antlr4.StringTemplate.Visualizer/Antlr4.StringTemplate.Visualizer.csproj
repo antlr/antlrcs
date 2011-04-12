@@ -56,6 +56,7 @@
     <Reference Include="PresentationFramework" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AttributeViewModel.cs" />
     <Compile Include="Extensions\FlowDocumentExtensions.cs" />
     <Compile Include="Extensions\ListExtensions.cs" />
     <Compile Include="Extensions\TemplateExtensions.cs" />
@@ -73,6 +74,7 @@
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
     <Compile Include="TemplateCallHierarchyViewModel.cs" />
+    <Compile Include="TemplateFrameAttributeViewModel.cs" />
     <Compile Include="TemplateVisualizer.cs" />
     <Compile Include="TemplateVisualizerFrame.xaml.cs">
       <DependentUpon>TemplateVisualizerFrame.xaml</DependentUpon>
@@ -81,6 +83,7 @@
     <Compile Include="TemplateVisualizerWindow.xaml.cs">
       <DependentUpon>TemplateVisualizerWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="TreeViewItemDisplay.cs" />
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
@@ -93,6 +96,7 @@
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
     <AppDesigner Include="Properties\" />
+    <None Include="Resources\Templates\AttributeRendererTemplates.stg" />
   </ItemGroup>
   <ItemGroup>
     <Page Include="TemplateVisualizerFrame.xaml">

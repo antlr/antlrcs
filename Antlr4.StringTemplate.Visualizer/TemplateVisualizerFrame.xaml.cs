@@ -35,7 +35,6 @@ namespace Antlr4.StringTemplate.Visualizer
     using System;
     using System.Collections.Generic;
     using System.Linq;
-    using System.Text;
     using System.Windows;
     using System.Windows.Controls;
     using System.Windows.Documents;
@@ -45,8 +44,6 @@ namespace Antlr4.StringTemplate.Visualizer
     using Antlr4.StringTemplate.Debug;
     using Antlr4.StringTemplate.Misc;
     using Antlr4.StringTemplate.Visualizer.Extensions;
-    using IList = System.Collections.IList;
-    using Path = System.IO.Path;
 
     public partial class TemplateVisualizerFrame : UserControl
     {
@@ -103,7 +100,7 @@ namespace Antlr4.StringTemplate.Visualizer
             }
         }
 
-        private void HandleAttributesListBoxSelectionChanged(object sender, SelectionChangedEventArgs e)
+        private void HandleAttributesTreeViewSelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
         {
             // do nothing for now
         }
@@ -139,6 +136,8 @@ namespace Antlr4.StringTemplate.Visualizer
                 currentTemplate = ViewModel.Visualizer.RootTemplate;
             else
                 currentTemplate = de.Frame;
+
+            SetSelectionPath(ViewModel.TemplateCallHierarchy[0], currentTemplate.GetEvalTemplateEventStack(true));
             UpdateCurrentTemplate();
         }
 
@@ -182,18 +181,18 @@ namespace Antlr4.StringTemplate.Visualizer
             }
         }
 
-        private static void SetSelectionPath(TemplateCallHierarchyViewModel treeView, ICollection<Template> selectionPath)
+        private static void SetSelectionPath(TemplateCallHierarchyViewModel viewModel, ICollection<EvalTemplateEvent> selectionPath)
         {
-            if (treeView == null || selectionPath == null || selectionPath.Count == 0 || treeView.Template != selectionPath.First())
+            if (viewModel == null || selectionPath == null || selectionPath.Count == 0 || viewModel.Event != selectionPath.First())
                 return;
 
             List<TemplateCallHierarchyViewModel> nodes = new List<TemplateCallHierarchyViewModel>();
-            nodes.Add(treeView);
+            nodes.Add(viewModel);
 
-            TemplateCallHierarchyViewModel current = treeView;
-            foreach (var template in selectionPath.Skip(1))
+            TemplateCallHierarchyViewModel current = viewModel;
+            foreach (var @event in selectionPath.Skip(1))
             {
-                current = current.Children.FirstOrDefault(i => i.Template == template);
+                current = current.Children.FirstOrDefault(i => i.Event == @event);
                 if (current == null)
                     return;
 
@@ -236,9 +235,11 @@ namespace Antlr4.StringTemplate.Visualizer
             // highlight output text and, if {...} subtemplate, region in ST src
             // get last event for currentST; it's the event that captures ST eval
             List<InterpEvent> events = currentTemplate.GetDebugState().Events;
-            EvalTemplateEvent e = (EvalTemplateEvent)events[events.Count - 1];
+            EvalTemplateEvent e = events[events.Count - 1] as EvalTemplateEvent;
             //m.output.moveCaretPosition(e.outputStartChar);
-            Highlight(OutputTextBox.Document, e.OutputInterval);
+            if (e != null)
+                Highlight(OutputTextBox.Document, e.OutputInterval);
+
             if (currentTemplate.Template.IsAnonymousSubtemplate)
             {
                 Interval r = currentTemplate.Template.impl.TemplateRange;
@@ -309,52 +310,7 @@ namespace Antlr4.StringTemplate.Visualizer
             if (viewModel == null)
                 return;
 
-            List<string> attributesList = new List<string>();
-            IDictionary<string, object> attributes = currentTemplate.Template.GetAttributes();
-            if (attributes != null)
-            {
-                foreach (var attribute in attributes)
-                {
-                    object value = attribute.Value;
-                    IList valueList = value as IList;
-                    if (valueList != null)
-                        value = valueList.ToListString();
-
-                    if (currentTemplate.Template.DebugState != null && currentTemplate.Template.DebugState.AddAttributeEvents != null)
-                    {
-                        List<AddAttributeEvent> events;
-                        currentTemplate.Template.DebugState.AddAttributeEvents.TryGetValue(attribute.Key, out events);
-                        StringBuilder locations = new StringBuilder();
-                        int i = 0;
-                        if (events != null)
-                        {
-                            foreach (AddAttributeEvent ae in events)
-                            {
-                                if (i > 0)
-                                    locations.Append(", ");
-
-                                locations.AppendFormat("{0}:{1}", Path.GetFileName(ae.GetFileName()), ae.GetLine());
-                                i++;
-                            }
-                        }
-
-                        if (locations.Length > 0)
-                        {
-                            attributesList.Add(string.Format("{0} = {1} @ {2}", attribute.Key, value, locations));
-                        }
-                        else
-                        {
-                            attributesList.Add(string.Format("{0} = {1}", attribute.Key, value));
-                        }
-                    }
-                    else
-                    {
-                        attributesList.Add(string.Format("{0} = {1}", attribute.Key, value));
-                    }
-                }
-            }
-
-            viewModel.Attributes = attributesList;
+            viewModel.AttributeStack = currentTemplate.GetEvalTemplateEventStack(false).Select(i => new TemplateFrameAttributeViewModel(i)).ToList();
         }
     }
 }

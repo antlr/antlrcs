@@ -1,10 +1,10 @@
 ﻿/*
  * [The "BSD licence"]
- * Copyright (c) 2003-2008 Terence Parr
+ * Copyright (c) 2011 Terence Parr
  * All rights reserved.
  *
  * Conversion to C#:
- * Copyright (c) 2010 Sam Harwell, Pixel Mine, Inc.
+ * Copyright (c) 2011 Sam Harwell, Tunnel Vision Laboratories, LLC
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -30,10 +30,21 @@
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-namespace Antlr4.StringTemplate
-{
-    public interface ITypeProxyFactory
-    {
-        object CreateProxy(TemplateFrame frame, object obj);
-    }
-}
+attribute(attr) ::= <%
+<attr.Name> = <attr.Value>
+<if(attr.Events)>
+<!!> @ <attr.Events:{event|<event.FileName>:<event.Line>}; separator=", ">
+<endif>
+%>
+
+listTemplate(list) ::= <<
+[<list:{x|<x>}; separator=", ">]
+>>
+
+aggregateTemplate(aggr) ::= <<
+aggr<dictionaryTemplate(aggr)>
+>>
+
+dictionaryTemplate(dict) ::= <<
+{<dict.keys,dict.values:{key,value|<key>=<value>}; separator=", ">}
+>>

@@ -33,7 +33,8 @@
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:local="clr-namespace:Antlr4.StringTemplate.Visualizer"
              mc:Ignorable="d" 
              d:DesignHeight="600" d:DesignWidth="800">
     <Grid>
@@ -63,6 +64,7 @@
                     <Style TargetType="{x:Type TreeViewItem}">
                         <Setter Property="IsExpanded" Value="{Binding IsExpanded}" />
                         <Setter Property="IsSelected" Value="{Binding IsSelected}" />
+                        <Setter Property="local:TreeViewItemDisplay.BringSelectionIntoView" Value="true" />
                     </Style>
                 </TreeView.ItemContainerStyle>
             </TreeView>
@@ -79,8 +81,20 @@
                 <ColumnDefinition />
             </Grid.ColumnDefinitions>
 
-            <ListBox Name="AttributesListBox" Grid.Column="0" Grid.ColumnSpan="1" SelectionChanged="HandleAttributesListBoxSelectionChanged"
-                         ItemsSource="{Binding Attributes}" />
+            <TreeView Name="AttributesListBox" Grid.Column="0" Grid.ColumnSpan="1" SelectedItemChanged="HandleAttributesTreeViewSelectedItemChanged"
+                         ItemsSource="{Binding AttributeStack}">
+                <TreeView.ItemTemplate>
+                    <HierarchicalDataTemplate ItemsSource="{Binding Attributes}">
+                        <ContentControl Content="{Binding}" />
+                    </HierarchicalDataTemplate>
+                </TreeView.ItemTemplate>
+                <TreeView.ItemContainerStyle>
+                    <Style TargetType="{x:Type TreeViewItem}">
+                        <Setter Property="IsExpanded" Value="True" />
+                    </Style>
+                </TreeView.ItemContainerStyle>
+            </TreeView>
+
             <GridSplitter Width="5" Grid.Column="1" Grid.ColumnSpan="1" ResizeBehavior="PreviousAndNext" />
             <TabControl Grid.Column="2" Grid.ColumnSpan="1">
                 <TabItem Header="Template">

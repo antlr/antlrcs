@@ -32,27 +32,142 @@
 
 namespace Antlr4.StringTemplate.Visualizer.Extensions
 {
+    using System.Collections;
     using Antlr4.StringTemplate;
+    using ArgumentNullException = System.ArgumentNullException;
     using CultureInfo = System.Globalization.CultureInfo;
-    using IList = System.Collections.IList;
+    using IEnumerable = System.Collections.IEnumerable;
 
     internal static class ListExtensions
     {
-        public static string ToListString(this IList list)
+        private static TemplateGroup _listRendererTemplateGroup;
+
+        public static string ToListString(this IEnumerable list)
         {
-            TemplateGroup group = new TemplateGroup();
-            group.DefineTemplate("listTemplate", "[<list:{x|<x>}; separator=\", \">]", new string[] { "list" });
-            group.RegisterRenderer(typeof(IList), new CollectionRenderer());
-            Template st = group.GetInstanceOf("listTemplate");
+            Template st = GetListRendererTemplate();
             st.Add("list", list);
             return st.Render();
+        }
+
+        public static string GetDescription(this AttributeViewModel attribute)
+        {
+            if (attribute == null)
+                throw new ArgumentNullException("attribute");
+
+            Template template = GetAttributeTemplate();
+            template.Add("attr", attribute);
+            return template.Render().Replace("\\", "\\\\").Replace("\r", "\\r").Replace("\n", "\\n").Replace("\0", "\\0");
+        }
+
+        private static Template GetAttributeTemplate()
+        {
+            return GetListRendererTemplateGroup().GetInstanceOf("attribute");
+        }
+
+        private static Template GetListRendererTemplate()
+        {
+            return GetListRendererTemplateGroup().GetInstanceOf("listTemplate");
+        }
+
+        private static Template GetAggregateRendererTemplate()
+        {
+            return GetListRendererTemplateGroup().GetInstanceOf("aggregateTemplate");
+        }
+
+        private static Template GetDictionaryRendererTemplate()
+        {
+            return GetListRendererTemplateGroup().GetInstanceOf("dictionaryTemplate");
+        }
+
+        private static TemplateGroup GetListRendererTemplateGroup()
+        {
+            if (_listRendererTemplateGroup == null)
+            {
+                _listRendererTemplateGroup = new TemplateGroupString("AttributeRendererTemplates", Properties.Resources.AttributeRendererTemplates);
+                _listRendererTemplateGroup.RegisterRenderer(typeof(IEnumerable), new CollectionRenderer());
+                _listRendererTemplateGroup.RegisterTypeProxyFactory(typeof(IDictionary), new DictionaryTypeProxyFactory());
+                _listRendererTemplateGroup.RegisterTypeProxyFactory(typeof(Misc.Aggregate), new AggregateProxyFactory());
+                _listRendererTemplateGroup.RegisterTypeProxyFactory(typeof(Template), new TemplateProxyFactory(_listRendererTemplateGroup));
+            }
+
+            return _listRendererTemplateGroup;
         }
 
         private class CollectionRenderer : IAttributeRenderer
         {
             public string ToString(object o, string formatString, CultureInfo culture)
             {
-                return ((IList)o).ToListString();
+                string s = o as string;
+                if (s != null)
+                    return s;
+
+                return ((IEnumerable)o).ToListString();
+            }
+        }
+
+        private class DictionaryTypeProxyFactory : ITypeProxyFactory
+        {
+            public object CreateProxy(TemplateFrame frame, object obj)
+            {
+                if (frame.Template.Name == "dictionaryTemplate")
+                    return obj;
+
+                Template template = GetDictionaryRendererTemplate();
+                template.Add("dict", obj);
+                return template;
+            }
+        }
+
+        private class AggregateProxyFactory : ITypeProxyFactory
+        {
+            public object CreateProxy(TemplateFrame frame, object obj)
+            {
+                if (frame.Template.Name == "dictionaryTemplate")
+                    return obj;
+
+                Template template = GetAggregateRendererTemplate();
+                template.Add("aggr", obj);
+                return template;
+            }
+        }
+
+        private class TemplateProxyFactory : ITypeProxyFactory
+        {
+            private readonly TemplateGroup _ignoreGroup;
+
+            public TemplateProxyFactory(TemplateGroup ignoreGroup)
+            {
+                _ignoreGroup = ignoreGroup;
+            }
+
+            public object CreateProxy(TemplateFrame frame, object obj)
+            {
+                Template template = obj as Template;
+                if (template != null && template.Group != _ignoreGroup)
+                    return new TemplateProxy(template);
+
+                return obj;
+            }
+        }
+
+        private class TemplateProxy
+        {
+            private readonly Template _template;
+
+            public TemplateProxy(Template template)
+            {
+                if (template == null)
+                    throw new ArgumentNullException("template");
+
+                _template = template;
+            }
+
+            public override string ToString()
+            {
+                if (_template.impl == null)
+                    return _template.ToString();
+
+                return _template.impl.template;
             }
         }
     }

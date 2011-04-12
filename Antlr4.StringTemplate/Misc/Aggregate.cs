@@ -78,7 +78,7 @@ namespace Antlr4.StringTemplate.Misc
     {
         private readonly Dictionary<string, object> _properties = new Dictionary<string, object>();
 
-        internal IDictionary<string, object> Properties
+        public IDictionary<string, object> Properties
         {
             get
             {

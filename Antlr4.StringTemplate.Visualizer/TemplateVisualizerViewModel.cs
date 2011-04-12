@@ -46,10 +46,12 @@ namespace Antlr4.StringTemplate.Visualizer
         private static readonly PropertyChangedEventArgs AstPropertyChangedEventArgs = new PropertyChangedEventArgs("Ast");
         private static readonly PropertyChangedEventArgs BytecodePropertyChangedEventArgs = new PropertyChangedEventArgs("Bytecode");
         private static readonly PropertyChangedEventArgs AttributesPropertyChangedEventArgs = new PropertyChangedEventArgs("Attributes");
+        private static readonly PropertyChangedEventArgs AttributeStackPropertyChangedEventArgs = new PropertyChangedEventArgs("AttributeStack");
         private static readonly PropertyChangedEventArgs TitlePropertyChangedEventArgs = new PropertyChangedEventArgs("Title");
 
         private readonly TemplateVisualizer _visualizer;
         private readonly List<TemplateCallHierarchyViewModel> _templateCallHierarchy;
+        private List<TemplateFrameAttributeViewModel> _attributeStack;
         private readonly List<InterpEvent> _allEvents;
         private CommonTree _ast;
         private string _title;
@@ -118,6 +120,23 @@ namespace Antlr4.StringTemplate.Visualizer
             get
             {
                 return _templateCallHierarchy;
+            }
+        }
+
+        public List<TemplateFrameAttributeViewModel> AttributeStack
+        {
+            get
+            {
+                return _attributeStack;
+            }
+
+            set
+            {
+                if (value == _attributeStack)
+                    return;
+
+                _attributeStack = value;
+                OnPropertyChanged(AttributeStackPropertyChangedEventArgs);
             }
         }
 

@@ -76,7 +76,7 @@ namespace Antlr4.StringTemplate
     public partial class Interpreter
     {
 
-        public const int DefaultOperandStackSize = 100;
+        public const int DefaultOperandStackSize = 512;
 
         public static readonly HashSet<string> predefinedAnonSubtemplateAttributes = new HashSet<string>() { "i", "i0" };
 
@@ -794,7 +794,7 @@ namespace Antlr4.StringTemplate
 
             ITypeProxyFactory proxyFactory = frame.Template.Group.GetTypeProxyFactory(o.GetType());
             if (proxyFactory != null)
-                o = proxyFactory.CreateProxy(o);
+                o = proxyFactory.CreateProxy(frame, o);
 
             System.Diagnostics.Debug.Assert(!(o is TemplateFrame));
             Template template = o as Template;
@@ -1378,7 +1378,7 @@ namespace Antlr4.StringTemplate
             {
                 ITypeProxyFactory proxyFactory = self.Group.GetTypeProxyFactory(o.GetType());
                 if (proxyFactory != null)
-                    o = proxyFactory.CreateProxy(o);
+                    o = proxyFactory.CreateProxy(frame, o);
 
                 IModelAdaptor adap = self.Group.GetModelAdaptor(o.GetType());
                 return adap.GetProperty(this, frame, o, property, ToString(frame, property));
