@@ -47,7 +47,8 @@ namespace Antlr4.StringTemplate.Visualizer
 
     public partial class TemplateVisualizerFrame : UserControl
     {
-        private TemplateFrame currentTemplate;
+        private InterpEvent _currentEvent;
+        private TemplateFrame _currentFrame;
 
         public TemplateVisualizerFrame()
         {
@@ -75,7 +76,8 @@ namespace Antlr4.StringTemplate.Visualizer
                 if (viewModel == null)
                     return;
 
-                currentTemplate = viewModel.Visualizer.RootTemplate;
+                _currentEvent = null;
+                _currentFrame = viewModel.Visualizer.RootTemplate;
                 OutputTextBox.Document = new FlowDocument(new Paragraph(new Run(viewModel.Output)
                 {
                     FontFamily = new FontFamily("Consolas")
@@ -94,7 +96,8 @@ namespace Antlr4.StringTemplate.Visualizer
             if (runtimeMessage != null)
             {
                 Interval interval = runtimeMessage.SourceInterval;
-                currentTemplate = runtimeMessage.Frame;
+                _currentEvent = null;
+                _currentFrame = runtimeMessage.Frame;
                 UpdateCurrentTemplate();
                 Highlight(TemplateTextBox.Document, interval);
             }
@@ -108,9 +111,10 @@ namespace Antlr4.StringTemplate.Visualizer
         private void HandleCallHierarchyTreeViewSelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
         {
             TemplateCallHierarchyViewModel selected = CallHierarchyTreeView.SelectedItem as TemplateCallHierarchyViewModel;
-            if (selected != null)
+            if (selected != null && _currentFrame != selected.Frame)
             {
-                currentTemplate = selected.Frame;
+                _currentEvent = selected.Event;
+                _currentFrame = selected.Frame;
                 UpdateCurrentTemplate();
             }
         }
@@ -121,8 +125,8 @@ namespace Antlr4.StringTemplate.Visualizer
             if (node == null)
                 return;
 
-            CommonToken a = (CommonToken)currentTemplate.Template.impl.tokens.Get(node.TokenStartIndex);
-            CommonToken b = (CommonToken)currentTemplate.Template.impl.tokens.Get(node.TokenStopIndex);
+            IToken a = _currentFrame.Template.impl.tokens.Get(node.TokenStartIndex);
+            IToken b = _currentFrame.Template.impl.tokens.Get(node.TokenStopIndex);
             if (a == null || b == null)
                 return;
 
@@ -131,13 +135,13 @@ namespace Antlr4.StringTemplate.Visualizer
 
         private void HandleOutputTextBoxSelectionChanged(object sender, RoutedEventArgs e)
         {
-            InterpEvent de = FindEventAtOutputLocation(ViewModel.AllEvents, OutputTextBox.Document.GetCharOffsetToPosition(OutputTextBox.CaretPosition));
-            if (de == null)
-                currentTemplate = ViewModel.Visualizer.RootTemplate;
+            _currentEvent = FindEventAtOutputLocation(ViewModel.AllEvents, OutputTextBox.Document.GetCharOffsetToPosition(OutputTextBox.CaretPosition));
+            if (_currentEvent == null)
+                _currentFrame = ViewModel.Visualizer.RootTemplate;
             else
-                currentTemplate = de.Frame;
+                _currentFrame = _currentEvent.Frame;
 
-            SetSelectionPath(ViewModel.TemplateCallHierarchy[0], currentTemplate.GetEvalTemplateEventStack(true));
+            SetSelectionPath(ViewModel.TemplateCallHierarchy[0], _currentFrame.GetEvalTemplateEventStack(true));
             UpdateCurrentTemplate();
         }
 
@@ -155,7 +159,7 @@ namespace Antlr4.StringTemplate.Visualizer
             return null;
         }
 
-        private static void Highlight(FlowDocument document, Interval interval)
+        private static TextPointer Highlight(FlowDocument document, Interval interval)
         {
             if (document == null)
                 throw new ArgumentNullException("document");
@@ -166,19 +170,20 @@ namespace Antlr4.StringTemplate.Visualizer
             TextRange documentRange = new TextRange(document.ContentStart, document.ContentEnd);
             documentRange.ApplyPropertyValue(FlowDocument.BackgroundProperty, FlowDocument.BackgroundProperty.DefaultMetadata.DefaultValue);
 
-            // highlight the new text
-            if (interval != null)
-            {
-                int startOffset = interval.Start;
-                int endOffset = interval.End;
-                TextPointer highlightStart = document.GetPointerFromCharOffset(ref startOffset);
-                TextPointer highlightStop = document.GetPointerFromCharOffset(ref endOffset);
-                if (startOffset != 0 || endOffset != 0)
-                    return;
+            if (interval == null)
+                return null;
 
-                var textRange = new TextRange(highlightStart, highlightStop);
-                textRange.ApplyPropertyValue(FlowDocument.BackgroundProperty, Brushes.Yellow);
-            }
+            // highlight the new text
+            int startOffset = interval.Start;
+            int endOffset = interval.End;
+            TextPointer highlightStart = document.GetPointerFromCharOffset(ref startOffset);
+            TextPointer highlightStop = document.GetPointerFromCharOffset(ref endOffset);
+            if (startOffset != 0 || endOffset != 0)
+                return null;
+
+            var textRange = new TextRange(highlightStart, highlightStop);
+            textRange.ApplyPropertyValue(FlowDocument.BackgroundProperty, Brushes.Yellow);
+            return textRange.Start;
         }
 
         private static void SetSelectionPath(TemplateCallHierarchyViewModel viewModel, ICollection<EvalTemplateEvent> selectionPath)
@@ -214,11 +219,12 @@ namespace Antlr4.StringTemplate.Visualizer
             // update all views according to current template
             UpdateStack();
             UpdateAttributes();
-            viewModel.Bytecode = currentTemplate.Template.impl.Disassemble();
-            TemplateTextBox.Document = new FlowDocument(new Paragraph(new Run(currentTemplate.Template.impl.template)
+            viewModel.Bytecode = _currentFrame.Template.impl.Disassemble();
+            TemplateTextBox.Document = new FlowDocument(new Paragraph(new Run(_currentFrame.Template.impl.template)
             {
                 FontFamily = new FontFamily("Consolas")
             }));
+            viewModel.Ast = _currentFrame.Template.impl.ast;
 
             #region new stuff
 
@@ -234,19 +240,40 @@ namespace Antlr4.StringTemplate.Visualizer
 
             // highlight output text and, if {...} subtemplate, region in ST src
             // get last event for currentST; it's the event that captures ST eval
-            List<InterpEvent> events = currentTemplate.GetDebugState().Events;
-            EvalTemplateEvent e = events[events.Count - 1] as EvalTemplateEvent;
-            //m.output.moveCaretPosition(e.outputStartChar);
-            if (e != null)
-                Highlight(OutputTextBox.Document, e.OutputInterval);
-
-            if (currentTemplate.Template.IsAnonymousSubtemplate)
+            EvalExprEvent exprEvent = _currentEvent as EvalExprEvent;
+            if (exprEvent != null)
             {
-                Interval r = currentTemplate.Template.impl.TemplateRange;
-                //				System.out.println("currentST src range="+r);
-                //m.template.moveCaretPosition(r.a);
-                //TemplateTextBox.CaretPosition.
-                Highlight(TemplateTextBox.Document, r);
+                Highlight(OutputTextBox.Document, exprEvent.OutputInterval);
+                Highlight(TemplateTextBox.Document, exprEvent.SourceInterval);
+            }
+            else
+            {
+                EvalTemplateEvent templateEvent = _currentEvent as EvalTemplateEvent;
+                if (templateEvent == null)
+                {
+                    List<InterpEvent> events = _currentFrame.GetDebugState().Events;
+                    templateEvent = events[events.Count - 1] as EvalTemplateEvent;
+                }
+
+                //m.output.moveCaretPosition(e.outputStartChar);
+                if (templateEvent != null)
+                {
+                    TextPointer position = Highlight(OutputTextBox.Document, templateEvent.OutputInterval);
+                    if (position != null)
+                    {
+                        Rect rect = position.GetCharacterRect(LogicalDirection.Forward);
+                        //OutputTextBox.ScrollToVerticalOffset(rect.Top);
+                    }
+                }
+
+                if (_currentFrame.Template.IsAnonymousSubtemplate)
+                {
+                    Interval r = _currentFrame.Template.impl.TemplateRange;
+                    //				System.out.println("currentST src range="+r);
+                    //m.template.moveCaretPosition(r.a);
+                    //TemplateTextBox.CaretPosition.
+                    Highlight(TemplateTextBox.Document, r);
+                }
             }
 
             #endregion
@@ -300,7 +327,7 @@ namespace Antlr4.StringTemplate.Visualizer
 
         private void UpdateStack()
         {
-            List<Template> stack = currentTemplate.GetEnclosingInstanceStack(true);
+            List<Template> stack = _currentFrame.GetEnclosingInstanceStack(true);
             ViewModel.Title = string.Format("STViz - [{0}]", string.Join(" ", stack.Select(i => i.ToString()).ToArray()));
         }
 
@@ -310,7 +337,8 @@ namespace Antlr4.StringTemplate.Visualizer
             if (viewModel == null)
                 return;
 
-            viewModel.AttributeStack = currentTemplate.GetEvalTemplateEventStack(false).Select(i => new TemplateFrameAttributeViewModel(i)).ToList();
+            HashSet<string> hiddenAttributes = new HashSet<string>();
+            viewModel.AttributeStack = _currentFrame.GetEvalTemplateEventStack(false).Select(i => new TemplateFrameAttributeViewModel(i, hiddenAttributes)).ToList();
         }
     }
 }

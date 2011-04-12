@@ -602,7 +602,11 @@ namespace Antlr4.StringTemplate
             if (impl.FormalArguments != null)
                 args = string.Join(",", impl.FormalArguments.Select(i => i.Name).ToArray());
 
-            return string.Format("{0}({1})", Name, args);
+            string name = Name;
+            if (this.impl.isRegion)
+                name = "@" + TemplateGroup.GetUnmangledTemplateName(name);
+
+            return string.Format("{0}({1})", name, args);
         }
 
         // Template.Format("name, phone | <name>:<phone>", n, p);

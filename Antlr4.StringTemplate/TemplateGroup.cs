@@ -271,7 +271,7 @@ namespace Antlr4.StringTemplate
             }
 
             // this is only called internally. wack any debug ST create events
-            if (_trackCreationEvents)
+            if (TrackCreationEvents)
             {
                 // toss it out
                 st.DebugState.NewTemplateEvent = null;

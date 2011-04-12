@@ -38,6 +38,7 @@ namespace Antlr4.StringTemplate.Visualizer
     using Antlr4.StringTemplate.Debug;
     using ArgumentNullException = System.ArgumentNullException;
     using Path = System.IO.Path;
+    using TemplateDebugState = Antlr4.StringTemplate.Template.TemplateDebugState;
 
     public class TemplateCallHierarchyViewModel : INotifyPropertyChanged
     {
@@ -85,6 +86,15 @@ namespace Antlr4.StringTemplate.Visualizer
             get
             {
                 return _event.Template;
+            }
+        }
+
+        public bool IsUserInstanced
+        {
+            get
+            {
+                TemplateDebugState debugState = _event.Template.DebugState;
+                return debugState != null && debugState.NewTemplateEvent != null;
             }
         }
 

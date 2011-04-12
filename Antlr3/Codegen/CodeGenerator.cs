@@ -489,6 +489,7 @@ namespace Antlr3.Codegen
             if (string.IsNullOrEmpty(name) && superGroup == null)
             {
                 TemplateGroup group = new TemplateGroupFile(groupFileName);
+                group.TrackCreationEvents = CodeGenerator.LaunchTemplateInspector;
                 group.IterateAcrossValues = true;
                 _coreTemplates[language] = group;
                 return group;
@@ -496,6 +497,7 @@ namespace Antlr3.Codegen
             else
             {
                 TemplateGroup group = new TemplateGroupFile(groupFileName);
+                group.TrackCreationEvents = CodeGenerator.LaunchTemplateInspector;
                 group.IterateAcrossValues = true;
                 group.ImportTemplates(superGroup);
 

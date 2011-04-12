@@ -57,7 +57,17 @@
                           ItemsSource="{Binding TemplateCallHierarchy}">
                 <TreeView.ItemTemplate>
                     <HierarchicalDataTemplate ItemsSource="{Binding Children}">
-                        <ContentControl Content="{Binding}" />
+                        <ContentPresenter Content="{Binding}">
+                            <ContentPresenter.Resources>
+                                <Style TargetType="{x:Type TextBlock}">
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding IsUserInstanced}" Value="true">
+                                            <Setter Property="FontWeight" Value="Bold" />
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </ContentPresenter.Resources>
+                        </ContentPresenter>
                     </HierarchicalDataTemplate>
                 </TreeView.ItemTemplate>
                 <TreeView.ItemContainerStyle>
@@ -85,7 +95,17 @@
                          ItemsSource="{Binding AttributeStack}">
                 <TreeView.ItemTemplate>
                     <HierarchicalDataTemplate ItemsSource="{Binding Attributes}">
-                        <ContentControl Content="{Binding}" />
+                        <ContentPresenter Content="{Binding}">
+                            <ContentPresenter.Resources>
+                                <Style TargetType="{x:Type TextBlock}">
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding IsHidden}" Value="true">
+                                            <Setter Property="Foreground" Value="Gray" />
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </ContentPresenter.Resources>
+                        </ContentPresenter>
                     </HierarchicalDataTemplate>
                 </TreeView.ItemTemplate>
                 <TreeView.ItemContainerStyle>
@@ -108,9 +128,12 @@
                         <GridSplitter Grid.Column="1" Grid.ColumnSpan="1" Width="5" ResizeBehavior="PreviousAndNext" />
                         <TreeView Grid.Column="2" Grid.ColumnSpan="1" Name="AstTreeView" SelectedItemChanged="HandleAstTreeViewSelectedItemChanged"
                                   ItemsSource="{Binding Ast.Children}">
+                            <TreeView.Resources>
+                                <local:AstNodeToStringConverter x:Key="AstNodeToStringConverter" />
+                            </TreeView.Resources>
                             <TreeView.ItemTemplate>
                                 <HierarchicalDataTemplate ItemsSource="{Binding Children}">
-                                    <ContentControl Content="{Binding}" />
+                                    <ContentPresenter Content="{Binding Converter={StaticResource AstNodeToStringConverter}}" />
                                 </HierarchicalDataTemplate>
                             </TreeView.ItemTemplate>
                         </TreeView>

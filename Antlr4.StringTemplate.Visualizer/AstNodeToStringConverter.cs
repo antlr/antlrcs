@@ -1,5 +1,5 @@
 ﻿/*
- * [The "BSD licence"]
+ * [The "BSD license"]
  * Copyright (c) 2011 Terence Parr
  * All rights reserved.
  *
@@ -32,76 +32,40 @@
 
 namespace Antlr4.StringTemplate.Visualizer
 {
+    using System;
     using System.Collections.Generic;
-    using System.Collections.ObjectModel;
     using System.Linq;
-    using Antlr4.StringTemplate.Debug;
-    using Antlr4.StringTemplate.Visualizer.Extensions;
+    using System.Text;
+    using System.Windows.Data;
+    using System.Globalization;
+    using Antlr.Runtime.Tree;
 
-    public class AttributeViewModel
+    public class AstNodeToStringConverter : IValueConverter
     {
-        private readonly string _name;
-        private readonly object _value;
-        private readonly bool _hidden;
-        private readonly ReadOnlyCollection<AddAttributeEvent> _events;
-
-        public AttributeViewModel(string name, object value, bool hidden, IEnumerable<AddAttributeEvent> events)
+        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            _name = name;
-            _value = value;
-            _hidden = hidden;
-            if (events != null)
-                _events = events.ToList().AsReadOnly();
-        }
-
-        public string Name
-        {
-            get
+            CommonTree tree = value as CommonTree;
+            if (tree != null)
             {
-                return _name;
+                if (tree.IsNil)
+                    return "nil";
+
+                string text = tree.Text;
+                if (string.IsNullOrEmpty(text))
+                    return string.Empty;
+
+                return text.Replace("\\", "\\\\").Replace("\r", "\\r").Replace("\n", "\\n").Replace("\0", "\\0");
             }
+
+            if (value != null)
+                return value.ToString();
+
+            return value;
         }
 
-        public object Value
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            get
-            {
-                return _value;
-            }
-        }
-
-        public bool IsHidden
-        {
-            get
-            {
-                return _hidden;
-            }
-        }
-
-        public ReadOnlyCollection<AddAttributeEvent> Events
-        {
-            get
-            {
-                return _events;
-            }
-        }
-
-        // for WPF tree view binding
-        public object Attributes
-        {
-            get
-            {
-                return null;
-            }
-        }
-
-        public override string ToString()
-        {
-            string description = this.GetDescription();
-            if (description.Length > 200)
-                description = description.Substring(0, 197) + "...";
-
-            return description;
+            throw new NotSupportedException();
         }
     }
 }

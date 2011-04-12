@@ -47,7 +47,7 @@ namespace Antlr4.StringTemplate.Visualizer
         private readonly EvalTemplateEvent _event;
         private readonly ReadOnlyCollection<AttributeViewModel> _attributes = EmptyAttributes;
 
-        public TemplateFrameAttributeViewModel(EvalTemplateEvent @event)
+        public TemplateFrameAttributeViewModel(EvalTemplateEvent @event, HashSet<string> hiddenAttributes)
         {
             if (@event == null)
                 throw new ArgumentNullException("event");
@@ -57,7 +57,16 @@ namespace Antlr4.StringTemplate.Visualizer
             Template template = _event.Frame.Template;
             IDictionary<string, object> attributes = template.GetAttributes();
             if (attributes != null)
-                _attributes = attributes.Select(i => new AttributeViewModel(i.Key, i.Value, GetAttributeEvents(template, i.Key))).ToList().AsReadOnly();
+            {
+                List<AttributeViewModel> attributesList = new List<AttributeViewModel>();
+                foreach (var attribute in attributes)
+                {
+                    bool hidden = !hiddenAttributes.Add(attribute.Key);
+                    attributesList.Add(new AttributeViewModel(attribute.Key, attribute.Value, hidden, GetAttributeEvents(template, attribute.Key)));
+                }
+
+                _attributes = attributesList.AsReadOnly();
+            }
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
