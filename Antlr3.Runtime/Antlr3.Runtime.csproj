@@ -89,6 +89,7 @@
     <Compile Include="RuleReturnScope.cs" />
     <Compile Include="TokenConstants.cs" />
     <Compile Include="TokenRewriteStream.cs" />
+    <Compile Include="Tree\AstTreeRuleReturnScope`1.cs" />
     <Compile Include="Tree\BaseTree.cs" />
     <Compile Include="Tree\BaseTreeAdaptor.cs" />
     <Compile Include="Tree\AntlrRuntime_BaseTreeDebugView.cs" />
@@ -97,6 +98,7 @@
     <Compile Include="Tree\CommonTree.cs" />
     <Compile Include="Tree\CommonTreeAdaptor.cs" />
     <Compile Include="Tree\CommonTreeNodeStream.cs" />
+    <Compile Include="Tree\AstParserRuleReturnScope`1.cs" />
     <Compile Include="Tree\DotTreeGenerator.cs" />
     <Compile Include="Tree\ITree.cs" />
     <Compile Include="Tree\ITreeAdaptor.cs" />
