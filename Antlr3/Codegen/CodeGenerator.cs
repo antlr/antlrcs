@@ -579,7 +579,7 @@ namespace Antlr3.Codegen
                 headerFileST = new StringTemplate( templates, string.Empty );
                 // it normally sees this from outputFile
                 headerFileST.Add("cyclicDFAs", null);
-                headerFileST.impl.name = "dummy-header-file";
+                headerFileST.impl.Name = "dummy-header-file";
             }
 
             bool filterMode = grammar.GetOption( "filter" ) != null &&
@@ -1071,7 +1071,7 @@ namespace Antlr3.Codegen
             if ( iset.Intervals == null || iset.Intervals.Count == 0 )
             {
                 StringTemplate emptyST = new StringTemplate( templates, "" );
-                emptyST.impl.name = "empty-set-expr";
+                emptyST.impl.Name = "empty-set-expr";
                 return emptyST;
             }
             string testSTName = "lookaheadTest";
@@ -1176,7 +1176,7 @@ namespace Antlr3.Codegen
             // "define" literals arg
             vocabFileST.Add("literals", null);
             vocabFileST.Add("tokens", null);
-            vocabFileST.impl.name = "vocab-file";
+            vocabFileST.impl.Name = "vocab-file";
             // make constants for the token names
             foreach ( string tokenID in grammar.TokenIDs )
             {

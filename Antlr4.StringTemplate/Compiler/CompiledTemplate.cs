@@ -48,29 +48,29 @@ namespace Antlr4.StringTemplate.Compiler
      */
     public class CompiledTemplate
     {
-        public string name;
+        private string _name;
 
         /** The original, immutable pattern (not really used again after
          *  initial "compilation"). Useful for debugging.  Even for
          *  subtemplates, this is entire overall template.
          */
-        public string template;
+        private string _template;
 
         /** The token that begins template definition; could be &lt;@r&gt; of region. */
-        public IToken templateDefStartToken;
+        private IToken _templateDefStartToken;
 
         /** Overall token stream for template (debug only) */
-        public ITokenStream tokens;
+        private ITokenStream _tokens;
 
         /** How do we interpret syntax of template? (debug only) */
-        public CommonTree ast;
+        private CommonTree _ast;
 
-        private List<FormalArgument> formalArguments;
+        private List<FormalArgument> _formalArguments;
 
-        public bool hasFormalArgs;
+        private bool _hasFormalArgs;
 
         /** A list of all regions and subtemplates */
-        public List<CompiledTemplate> implicitlyDefinedTemplates;
+        private List<CompiledTemplate> implicitlyDefinedTemplates;
 
         private int _numberOfArgsWithDefaultValues;
 
@@ -83,7 +83,7 @@ namespace Antlr4.StringTemplate.Compiler
         /** Does this template come from a &lt;@region&gt;...&lt;@end&gt; embedded in
          *  another template?
          */
-        public bool isRegion;
+        private bool isRegion;
 
         /** If someone refs &lt;@r()&gt; in template t, an implicit
          *
@@ -93,9 +93,9 @@ namespace Antlr4.StringTemplate.Compiler
          *  own.  We need to prevent more than one manual def though.  Between
          *  this var and isEmbeddedRegion we can determine these cases.
          */
-        public Template.RegionType regionDefType;
+        private Template.RegionType regionDefType;
 
-        public bool isAnonSubtemplate; // {...}
+        private bool isAnonSubtemplate; // {...}
 
         public string[] strings;     // string operands of instructions
         public byte[] instrs;        // byte-addressable code memory.
@@ -106,20 +106,111 @@ namespace Antlr4.StringTemplate.Compiler
         {
             instrs = new byte[TemplateCompiler.InitialCodeSize];
             sourceMap = new Interval[TemplateCompiler.InitialCodeSize];
-            template = string.Empty;
+            _template = string.Empty;
+        }
+
+        public string Name
+        {
+            get
+            {
+                return _name;
+            }
+
+            set
+            {
+                _name = value;
+            }
+        }
+
+        public string Template
+        {
+            get
+            {
+                return _template;
+            }
+
+            set
+            {
+                _template = value;
+            }
+        }
+
+        public IToken TemplateDefStartToken
+        {
+            get
+            {
+                return _templateDefStartToken;
+            }
+
+            set
+            {
+                _templateDefStartToken = value;
+            }
+        }
+
+        public ITokenStream Tokens
+        {
+            get
+            {
+                return _tokens;
+            }
+
+            set
+            {
+                _tokens = value;
+            }
+        }
+
+        public CommonTree Ast
+        {
+            get
+            {
+                return _ast;
+            }
+
+            set
+            {
+                _ast = value;
+            }
         }
 
         public List<FormalArgument> FormalArguments
         {
             get
             {
-                return formalArguments;
+                return _formalArguments;
             }
 
             set
             {
-                formalArguments = value;
-                _numberOfArgsWithDefaultValues = (formalArguments != null) ? formalArguments.Count(i => i.DefaultValueToken != null) : 0;
+                _formalArguments = value;
+                _numberOfArgsWithDefaultValues = (_formalArguments != null) ? _formalArguments.Count(i => i.DefaultValueToken != null) : 0;
+            }
+        }
+
+        public bool HasFormalArgs
+        {
+            get
+            {
+                return _hasFormalArgs;
+            }
+
+            set
+            {
+                _hasFormalArgs = value;
+            }
+        }
+
+        public List<CompiledTemplate> ImplicitlyDefinedTemplates
+        {
+            get
+            {
+                return implicitlyDefinedTemplates;
+            }
+
+            set
+            {
+                implicitlyDefinedTemplates = value;
             }
         }
 
@@ -136,12 +227,51 @@ namespace Antlr4.StringTemplate.Compiler
             }
         }
 
+        public bool IsRegion
+        {
+            get
+            {
+                return isRegion;
+            }
+
+            set
+            {
+                isRegion = value;
+            }
+        }
+
+        public Template.RegionType RegionDefType
+        {
+            get
+            {
+                return regionDefType;
+            }
+
+            set
+            {
+                regionDefType = value;
+            }
+        }
+
+        public bool IsAnonSubtemplate
+        {
+            get
+            {
+                return isAnonSubtemplate;
+            }
+
+            set
+            {
+                isAnonSubtemplate = value;
+            }
+        }
+
         public virtual string TemplateSource
         {
             get
             {
                 Interval r = TemplateRange;
-                return template.Substring(r.Start, r.End - r.Start);
+                return Template.Substring(r.Start, r.End - r.Start);
             }
         }
 
@@ -149,7 +279,7 @@ namespace Antlr4.StringTemplate.Compiler
         {
             get
             {
-                if (isAnonSubtemplate)
+                if (IsAnonSubtemplate)
                 {
                     Interval start = sourceMap[0];
                     Interval stop = null;
@@ -166,7 +296,7 @@ namespace Antlr4.StringTemplate.Compiler
                     return Interval.FromBounds(start.Start, stop.End);
                 }
 
-                return new Interval(0, template.Length);
+                return new Interval(0, Template.Length);
             }
         }
 
@@ -190,10 +320,10 @@ namespace Antlr4.StringTemplate.Compiler
 
         public virtual void AddImplicitlyDefinedTemplate(CompiledTemplate sub)
         {
-            if (implicitlyDefinedTemplates == null)
-                implicitlyDefinedTemplates = new List<CompiledTemplate>();
+            if (ImplicitlyDefinedTemplates == null)
+                ImplicitlyDefinedTemplates = new List<CompiledTemplate>();
 
-            implicitlyDefinedTemplates.Add(sub);
+            ImplicitlyDefinedTemplates.Add(sub);
         }
 
         public virtual void DefineArgumentDefaultValueTemplates(TemplateGroup group)
@@ -211,7 +341,7 @@ namespace Antlr4.StringTemplate.Compiler
                         TemplateCompiler c2 = new TemplateCompiler(group);
                         string defArgTemplate = Utility.Strip(fa.DefaultValueToken.Text, 1);
                         fa.CompiledDefaultValue = c2.Compile(group.FileName, argSTname, null, defArgTemplate, fa.DefaultValueToken);
-                        fa.CompiledDefaultValue.name = argSTname;
+                        fa.CompiledDefaultValue.Name = argSTname;
                         fa.CompiledDefaultValue.DefineImplicitlyDefinedTemplates(group);
                     }
                     else if (fa.DefaultValueToken.Type == GroupParser.STRING)
@@ -229,7 +359,7 @@ namespace Antlr4.StringTemplate.Compiler
 
         public virtual void DefineFormalArguments(IEnumerable<FormalArgument> args)
         {
-            hasFormalArgs = true; // even if no args; it's formally defined
+            HasFormalArgs = true; // even if no args; it's formally defined
             if (args == null)
             {
                 FormalArguments = null;
@@ -255,11 +385,11 @@ namespace Antlr4.StringTemplate.Compiler
 
         public virtual void DefineImplicitlyDefinedTemplates(TemplateGroup group)
         {
-            if (implicitlyDefinedTemplates != null)
+            if (ImplicitlyDefinedTemplates != null)
             {
-                foreach (CompiledTemplate sub in implicitlyDefinedTemplates)
+                foreach (CompiledTemplate sub in ImplicitlyDefinedTemplates)
                 {
-                    group.RawDefineTemplate(sub.name, sub, sub.templateDefStartToken);
+                    group.RawDefineTemplate(sub.Name, sub, sub.TemplateDefStartToken);
                     sub.DefineImplicitlyDefinedTemplates(group);
                 }
             }

@@ -61,7 +61,7 @@ namespace Antlr4.Test.StringTemplate
             TemplateGroup group = new TemplateGroup();
             group.DefineTemplate("test", "hi <name; separator= \", \">!", new string[] { "name" });
             Template st = group.GetInstanceOf("test");
-            Console.WriteLine(st.impl.ast.ToStringTree());
+            Console.WriteLine(st.impl.Ast.ToStringTree());
             st.Add("name", "Ter");
             st.Add("name", "Tom");
             st.Add("name", "Sumana");

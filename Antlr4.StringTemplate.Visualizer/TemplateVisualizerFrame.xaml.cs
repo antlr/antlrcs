@@ -125,8 +125,8 @@ namespace Antlr4.StringTemplate.Visualizer
             if (node == null)
                 return;
 
-            IToken a = _currentFrame.Template.impl.tokens.Get(node.TokenStartIndex);
-            IToken b = _currentFrame.Template.impl.tokens.Get(node.TokenStopIndex);
+            IToken a = _currentFrame.Template.impl.Tokens.Get(node.TokenStartIndex);
+            IToken b = _currentFrame.Template.impl.Tokens.Get(node.TokenStopIndex);
             if (a == null || b == null)
                 return;
 
@@ -220,11 +220,11 @@ namespace Antlr4.StringTemplate.Visualizer
             UpdateStack();
             UpdateAttributes();
             viewModel.Bytecode = _currentFrame.Template.impl.Disassemble();
-            TemplateTextBox.Document = new FlowDocument(new Paragraph(new Run(_currentFrame.Template.impl.template)
+            TemplateTextBox.Document = new FlowDocument(new Paragraph(new Run(_currentFrame.Template.impl.Template)
             {
                 FontFamily = new FontFamily("Consolas")
             }));
-            viewModel.Ast = _currentFrame.Template.impl.ast;
+            viewModel.Ast = _currentFrame.Template.impl.Ast;
 
             #region new stuff
 

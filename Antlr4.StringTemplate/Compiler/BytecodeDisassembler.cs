@@ -197,7 +197,7 @@ namespace Antlr4.StringTemplate.Compiler
             {
                 if (interval != null)
                 {
-                    string chunk = code.template.Substring(interval.Start, interval.Length);
+                    string chunk = code.Template.Substring(interval.Start, interval.Length);
                     buf.AppendLine(string.Format("{0:0000}: {1}\t\"{2}\"", addr, interval, chunk));
                 }
                 addr++;

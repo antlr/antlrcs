@@ -296,8 +296,8 @@ namespace Antlr4.StringTemplate
             CompiledTemplate impl = Compile(FileName, null, null, template, templateToken);
             Template st = CreateStringTemplateInternally(impl);
             st.Group = this;
-            st.impl.hasFormalArgs = false;
-            st.impl.name = Template.UnknownName;
+            st.impl.HasFormalArgs = false;
+            st.impl.Name = Template.UnknownName;
             st.impl.DefineImplicitlyDefinedTemplates(this);
             return st;
         }
@@ -429,7 +429,7 @@ namespace Antlr4.StringTemplate
             template = Utility.TrimOneTrailingNewline(template);
             // compile, passing in templateName as enclosing name for any embedded regions
             CompiledTemplate code = Compile(FileName, templateName, args, template, templateToken);
-            code.name = templateName;
+            code.Name = templateName;
             RawDefineTemplate(templateName, code, nameT);
             code.DefineArgumentDefaultValueTemplates(this);
             code.DefineImplicitlyDefinedTemplates(this); // define any anonymous subtemplates
@@ -468,10 +468,10 @@ namespace Antlr4.StringTemplate
                 return new CompiledTemplate();
             }
 
-            code.name = mangled;
-            code.isRegion = true;
-            code.regionDefType = Template.RegionType.Explicit;
-            code.templateDefStartToken = regionT;
+            code.Name = mangled;
+            code.IsRegion = true;
+            code.RegionDefType = Template.RegionType.Explicit;
+            code.TemplateDefStartToken = regionT;
 
             RawDefineTemplate(mangled, code, regionT);
             code.DefineArgumentDefaultValueTemplates(this);
@@ -511,20 +511,20 @@ namespace Antlr4.StringTemplate
             templates.TryGetValue(name, out prev);
             if (prev != null)
             {
-                if (!prev.isRegion)
+                if (!prev.IsRegion)
                 {
                     ErrorManager.CompiletimeError(ErrorType.TEMPLATE_REDEFINITION, null, defT);
                     return;
                 }
 
-                if (prev.isRegion)
+                if (prev.IsRegion)
                 {
-                    if (code.regionDefType != Template.RegionType.Implicit && prev.regionDefType == Template.RegionType.Embedded)
+                    if (code.RegionDefType != Template.RegionType.Implicit && prev.RegionDefType == Template.RegionType.Embedded)
                     {
                         ErrorManager.CompiletimeError(ErrorType.EMBEDDED_REGION_REDEFINITION, null, defT, GetUnmangledTemplateName(name));
                         return;
                     }
-                    else if (code.regionDefType == Template.RegionType.Implicit && prev.regionDefType == Template.RegionType.Explicit)
+                    else if (code.RegionDefType == Template.RegionType.Implicit && prev.RegionDefType == Template.RegionType.Explicit)
                     {
                         ErrorManager.CompiletimeError(ErrorType.REGION_REDEFINITION, null, defT, GetUnmangledTemplateName(name));
                         return;
@@ -533,7 +533,7 @@ namespace Antlr4.StringTemplate
             }
 
             code.NativeGroup = this;
-            code.templateDefStartToken = defT;
+            code.TemplateDefStartToken = defT;
             templates[name] = code;
         }
 
@@ -766,7 +766,7 @@ namespace Antlr4.StringTemplate
             {
                 string name = n;
                 CompiledTemplate c = templates[name];
-                if (c.isAnonSubtemplate || c == NotFoundTemplate)
+                if (c.IsAnonSubtemplate || c == NotFoundTemplate)
                     continue;
 
                 int slash = name.LastIndexOf('/');
@@ -778,7 +778,7 @@ namespace Antlr4.StringTemplate
 
                 buf.Append(')');
                 buf.Append(" ::= <<" + Environment.NewLine);
-                buf.Append(c.template + Environment.NewLine);
+                buf.Append(c.Template + Environment.NewLine);
                 buf.Append(">>" + Environment.NewLine);
             }
 

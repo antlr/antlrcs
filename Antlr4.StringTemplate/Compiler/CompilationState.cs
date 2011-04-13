@@ -61,7 +61,7 @@ namespace Antlr4.StringTemplate.Compiler
         {
             this.errMgr = errMgr;
             this.tokens = tokens;
-            impl.name = name;
+            impl.Name = name;
         }
 
         public virtual int DefineString(string s)

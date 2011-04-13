@@ -288,11 +288,19 @@ namespace Antlr3.Tool
             }
         }
 
+        /** If a rule has no user-defined return values and nobody references
+         *  it's start/stop (predefined attributes), then there is no need to
+         *  define a struct; otherwise for now we assume a struct.  A rule also
+         *  has multiple return values if you are building trees or templates.
+         */
         public bool HasMultipleReturnValues
         {
             get
             {
-                return GetHasMultipleReturnValues();
+                return _referencedPredefinedRuleAttributes
+                    || Grammar.BuildAST
+                    || Grammar.BuildTemplate
+                    || (ReturnScope != null && ReturnScope.Attributes.Count > 1);
             }
         }
 
@@ -300,7 +308,10 @@ namespace Antlr3.Tool
         {
             get
             {
-                return GetHasReturnValue();
+                return _referencedPredefinedRuleAttributes
+                    || Grammar.BuildAST
+                    || Grammar.BuildTemplate
+                    || (ReturnScope != null && ReturnScope.Attributes.Count > 0);
             }
         }
 
@@ -308,7 +319,8 @@ namespace Antlr3.Tool
         {
             get
             {
-                return GetHasSingleReturnValue();
+                return !(_referencedPredefinedRuleAttributes || Grammar.BuildAST || Grammar.BuildTemplate)
+                    && (ReturnScope != null && ReturnScope.Attributes.Count == 1);
             }
         }
 
@@ -945,35 +957,6 @@ namespace Antlr3.Tool
                 uniqueRefAST.code.SetAttribute( "label", labelName );
             }
             return labelName;
-        }
-
-        /** If a rule has no user-defined return values and nobody references
-         *  it's start/stop (predefined attributes), then there is no need to
-         *  define a struct; otherwise for now we assume a struct.  A rule also
-         *  has multiple return values if you are building trees or templates.
-         */
-        public virtual bool GetHasMultipleReturnValues()
-        {
-            return
-                _referencedPredefinedRuleAttributes || Grammar.BuildAST ||
-                Grammar.BuildTemplate ||
-                ( ReturnScope != null && ReturnScope.Attributes.Count > 1 );
-        }
-
-        public virtual bool GetHasSingleReturnValue()
-        {
-            return
-                !( _referencedPredefinedRuleAttributes || Grammar.BuildAST ||
-                  Grammar.BuildTemplate ) &&
-                                           ( ReturnScope != null && ReturnScope.Attributes.Count == 1 );
-        }
-
-        public virtual bool GetHasReturnValue()
-        {
-            return
-                _referencedPredefinedRuleAttributes || Grammar.BuildAST ||
-                Grammar.BuildTemplate ||
-                ( ReturnScope != null && ReturnScope.Attributes.Count > 0 );
         }
 
         public virtual string GetSingleValueReturnType()

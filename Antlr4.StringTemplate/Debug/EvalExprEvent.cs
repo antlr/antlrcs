@@ -45,7 +45,7 @@ namespace Antlr4.StringTemplate.Debug
         {
             this._sourceInterval = sourceInterval;
             if (_sourceInterval != null)
-                expr = frame.Template.impl.template.Substring(_sourceInterval.Start, _sourceInterval.Length);
+                expr = frame.Template.impl.Template.Substring(_sourceInterval.Start, _sourceInterval.Length);
         }
 
         public Interval SourceInterval

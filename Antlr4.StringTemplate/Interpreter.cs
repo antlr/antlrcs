@@ -658,7 +658,7 @@ namespace Antlr4.StringTemplate
                                     current_ip,
                                     ErrorType.ARGUMENT_COUNT_MISMATCH,
                                     nargs,
-                                    st.impl.name,
+                                    st.impl.Name,
                                     nformalArgs);
             }
 
@@ -683,7 +683,7 @@ namespace Antlr4.StringTemplate
                 nformalArgs = st.impl.FormalArguments.Count;
             int firstArg = sp - (nargs - 1);
             int numToStore = Math.Min(nargs, nformalArgs);
-            if (st.impl.isAnonSubtemplate)
+            if (st.impl.IsAnonSubtemplate)
                 nformalArgs -= predefinedAnonSubtemplateAttributes.Count;
 
             if (nargs < (nformalArgs - st.impl.NumberOfArgsWithDefaultValues) ||
@@ -693,7 +693,7 @@ namespace Antlr4.StringTemplate
                                     current_ip,
                                     ErrorType.ARGUMENT_COUNT_MISMATCH,
                                     nargs,
-                                    st.impl.name,
+                                    st.impl.Name,
                                     nformalArgs);
             }
 
@@ -870,11 +870,22 @@ namespace Antlr4.StringTemplate
             if (options != null)
                 formatString = options[(int)RenderOption.Format];
             IAttributeRenderer r = group.GetAttributeRenderer(o.GetType());
+
             string v;
             if (r != null)
+            {
                 v = r.ToString(o, formatString, culture);
+            }
             else
-                v = o.ToString();
+            {
+                if (o is bool)
+                    v = (bool)o ? "true" : "false";
+                else if (o is bool? && ((bool?)o).HasValue)
+                    v = ((bool?)o).Value ? "true" : "false";
+                else
+                    v = o.ToString();
+            }
+
             int n;
             if (options != null && options[(int)RenderOption.Wrap] != null)
             {
@@ -884,6 +895,7 @@ namespace Antlr4.StringTemplate
             {
                 n = @out.Write(v);
             }
+
             return n;
         }
 
@@ -920,7 +932,7 @@ namespace Antlr4.StringTemplate
                 if (st != null)
                 {
                     SetFirstArgument(frame, st, attr);
-                    if (st.impl.isAnonSubtemplate)
+                    if (st.impl.IsAnonSubtemplate)
                     {
                         st.RawSetAttribute("i0", 0);
                         st.RawSetAttribute("i", 1);
@@ -955,7 +967,7 @@ namespace Antlr4.StringTemplate
                 Template proto = prototypes[templateIndex];
                 Template st = group.CreateStringTemplateInternally(proto);
                 SetFirstArgument(frame, st, iterValue);
-                if (st.impl.isAnonSubtemplate)
+                if (st.impl.IsAnonSubtemplate)
                 {
                     st.RawSetAttribute("i0", i0);
                     st.RawSetAttribute("i", i);
@@ -991,7 +1003,7 @@ namespace Antlr4.StringTemplate
             int numExprs = exprs.Count;
             CompiledTemplate code = prototype.impl;
             List<FormalArgument> formalArguments = code.FormalArguments;
-            if (!code.hasFormalArgs || formalArguments == null)
+            if (!code.HasFormalArgs || formalArguments == null)
             {
                 _errorManager.RuntimeError(frame, current_ip, ErrorType.MISSING_FORMAL_ARGUMENTS);
                 return null;
@@ -1052,7 +1064,7 @@ namespace Antlr4.StringTemplate
         {
             if (st.impl.FormalArguments == null)
             {
-                _errorManager.RuntimeError(frame, current_ip, ErrorType.ARGUMENT_COUNT_MISMATCH, 1, st.impl.name, 0);
+                _errorManager.RuntimeError(frame, current_ip, ErrorType.ARGUMENT_COUNT_MISMATCH, 1, st.impl.Name, 0);
                 return;
             }
 
@@ -1472,8 +1484,8 @@ namespace Antlr4.StringTemplate
             BytecodeDisassembler dis = new BytecodeDisassembler(self.impl);
             StringBuilder buf = new StringBuilder();
             dis.DisassembleInstruction(buf, ip);
-            string name = self.impl.name + ":";
-            if (self.impl.name == Template.UnknownName)
+            string name = self.impl.Name + ":";
+            if (self.impl.Name == Template.UnknownName)
                 name = string.Empty;
 
             tr.Append(string.Format("{0,-40}", name + buf));
@@ -1503,7 +1515,7 @@ namespace Antlr4.StringTemplate
                 if (((Template)o).impl == null)
                     tr.Append("bad-template()");
                 else
-                    tr.Append(" " + ((Template)o).impl.name + "()");
+                    tr.Append(" " + ((Template)o).impl.Name + "()");
                 return;
             }
             o = ConvertAnythingIteratableToIterator(frame, o);

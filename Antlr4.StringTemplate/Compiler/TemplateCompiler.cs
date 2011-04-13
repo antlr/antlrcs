@@ -126,7 +126,7 @@ namespace Antlr4.StringTemplate.Compiler
         public virtual CompiledTemplate Compile(string template)
         {
             CompiledTemplate code = Compile(null, null, null, template, null);
-            code.hasFormalArgs = false;
+            code.HasFormalArgs = false;
             return code;
         }
 
@@ -134,7 +134,7 @@ namespace Antlr4.StringTemplate.Compiler
         public virtual CompiledTemplate Compile(string name, string template)
         {
             CompiledTemplate code = Compile(null, name, null, template, null);
-            code.hasFormalArgs = false;
+            code.HasFormalArgs = false;
             return code;
         }
 
@@ -183,10 +183,10 @@ namespace Antlr4.StringTemplate.Compiler
             {
                 impl2 = gen.template(name, args);
                 impl2.NativeGroup = Group;
-                impl2.template = template;
-                impl2.ast = r.Tree;
-                impl2.ast.SetUnknownTokenBoundaries();
-                impl2.tokens = tokens;
+                impl2.Template = template;
+                impl2.Ast = r.Tree;
+                impl2.Ast.SetUnknownTokenBoundaries();
+                impl2.Tokens = tokens;
             }
             catch (RecognitionException re)
             {
@@ -203,13 +203,13 @@ namespace Antlr4.StringTemplate.Compiler
             if (nameToken == null)
                 throw new ArgumentNullException("nameToken");
 
-            string outermostTemplateName = outermostImpl.name;
+            string outermostTemplateName = outermostImpl.Name;
             string mangled = TemplateGroup.GetMangledRegionName(outermostTemplateName, nameToken.Text);
             CompiledTemplate blank = new CompiledTemplate();
-            blank.isRegion = true;
-            blank.templateDefStartToken = nameToken;
-            blank.regionDefType = Template.RegionType.Implicit;
-            blank.name = mangled;
+            blank.IsRegion = true;
+            blank.TemplateDefStartToken = nameToken;
+            blank.RegionDefType = Template.RegionType.Implicit;
+            blank.Name = mangled;
             outermostImpl.AddImplicitlyDefinedTemplate(blank);
             return blank;
         }

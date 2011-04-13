@@ -165,8 +165,8 @@ namespace Antlr4.StringTemplate
             groupThatCreatedThisInstance = group;
             impl = groupThatCreatedThisInstance.Compile(group.FileName, null,
                                                         null, template, null);
-            impl.hasFormalArgs = false;
-            impl.name = UnknownName;
+            impl.HasFormalArgs = false;
+            impl.Name = UnknownName;
             impl.DefineImplicitlyDefinedTemplates(groupThatCreatedThisInstance);
         }
 
@@ -250,7 +250,7 @@ namespace Antlr4.StringTemplate
             }
 
             FormalArgument arg = null;
-            if (impl.hasFormalArgs)
+            if (impl.HasFormalArgs)
             {
                 arg = impl.TryGetFormalArgument(name);
                 if (arg == null)
@@ -349,7 +349,7 @@ namespace Antlr4.StringTemplate
         {
             if (impl.FormalArguments == null)
             {
-                if (impl.hasFormalArgs)
+                if (impl.HasFormalArgs)
                     throw new ArgumentException("no such attribute: " + name);
 
                 return;
@@ -471,7 +471,7 @@ namespace Antlr4.StringTemplate
         {
             get
             {
-                return impl.name;
+                return impl.Name;
             }
         }
 
@@ -479,7 +479,7 @@ namespace Antlr4.StringTemplate
         {
             get
             {
-                return impl.isAnonSubtemplate;
+                return impl.IsAnonSubtemplate;
             }
         }
 
@@ -603,7 +603,7 @@ namespace Antlr4.StringTemplate
                 args = string.Join(",", impl.FormalArguments.Select(i => i.Name).ToArray());
 
             string name = Name;
-            if (this.impl.isRegion)
+            if (this.impl.IsRegion)
                 name = "@" + TemplateGroup.GetUnmangledTemplateName(name);
 
             return string.Format("{0}({1})", name, args);

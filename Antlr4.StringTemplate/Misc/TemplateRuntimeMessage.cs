@@ -107,7 +107,7 @@ namespace Antlr4.StringTemplate.Misc
 
             // get left edge and get line/col
             int i = interval.Start;
-            Coordinate loc = Utility.GetLineCharPosition(Self.impl.template, i);
+            Coordinate loc = Utility.GetLineCharPosition(Self.impl.Template, i);
             return loc.ToString();
         }
 

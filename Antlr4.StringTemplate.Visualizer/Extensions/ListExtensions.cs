@@ -167,7 +167,7 @@ namespace Antlr4.StringTemplate.Visualizer.Extensions
                 if (_template.impl == null)
                     return _template.ToString();
 
-                return _template.impl.template;
+                return _template.impl.Template;
             }
         }
     }
