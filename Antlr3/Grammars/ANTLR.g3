@@ -188,7 +188,7 @@ actionScopeName
 	;
 
 optionsSpec returns [IDictionary<string, object> opts=new Dictionary<string, object>()]
-	:	OPTIONS^ (option[$opts] SEMI!)+ RCURLY!
+	:	OPTIONS^ (option[$opts] SEMI!)* RCURLY!
 	;
 
 option[IDictionary<string, object> opts]

@@ -129,7 +129,7 @@ attrScope
 	;
 
 optionsSpec returns [IDictionary<object, object> opts = new Dictionary<object, object>()]
-	:	^( OPTIONS (option[$opts])+ )
+	:	^( OPTIONS (option[$opts])* )
 	;
 
 option[IDictionary<object, object> opts]
