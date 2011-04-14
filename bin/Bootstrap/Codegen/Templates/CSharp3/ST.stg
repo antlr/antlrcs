@@ -39,14 +39,6 @@ using Antlr3.ST;
 using Antlr3.ST.Language;
 >>
 
-/** Add this to each rule's return value struct */
-@returnScope.ruleReturnMembers() ::= <<
-private StringTemplate _st;
-public StringTemplate Template { get { return _st; } set { _st = value; } }
-public override string ToString() { return (Template==null) ? string.Empty : Template.ToString(); }
-<@super.ruleReturnMembers()>
->>
-
 @genericParser.members() ::= <<
 <@super.members()>
 private StringTemplateGroup _templateGroup = new StringTemplateGroup("<name>Templates", typeof(AngleBracketTemplateLexer) );
@@ -57,6 +49,10 @@ public StringTemplateGroup TemplateGroup
 	set { _templateGroup = value; }
 }
 >>
+
+ruleReturnBaseType() ::= <%
+Template<if(TREE_PARSER)>Tree<else>Parser<endif>RuleReturnScope\<StringTemplate, <labelType>>
+%>
 
 /** x+=rule when output=template */
 ruleRefAndListLabel(rule,label,elementIndex,args,scope) ::= <<

@@ -38,16 +38,6 @@ csharpVisibilityMap ::= [
 	default:"private"
 ]
 
-// System.Boolean.ToString() returns "True" and "False", but the proper C# literals are "true" and "false"
-// The Java version of Boolean returns "true" and "false", so they map to themselves here.
-booleanLiteral ::= [
-	"True":"true",
-	"False":"false",
-	"true":"true",
-	"false":"false",
-	default:"false"
-]
-
 /** The overall file structure of a recognizer; stores methods for rules
  *  and cyclic DFAs plus support code.
  */
@@ -285,13 +275,17 @@ genericParser(grammar, name, scopes, tokens, tokenNames, rules, numRules,
 <endif>
 	<tokens:{it|public const int <it.name; format="id">=<it.type>;}; separator="\n">
 
+<if(grammar.delegates)>
 	// delegates
 	<grammar.delegates:
 		 {g|private <g.recognizerName> <g:delegateName()>;}; separator="\n">
+<endif>
+<if(grammar.delegators)>
 	// delegators
 	<grammar.delegators:
 		 {g|private <g.recognizerName> <g:delegateName()>;}; separator="\n">
 	<last(grammar.delegators):{g|private <g.recognizerName> gParent;}>
+<endif>
 
 	<scopes:{it|<if(it.isDynamicGlobalScope)><globalAttributeScope(scope=it)><endif>}>
 	<@members()>
@@ -314,7 +308,7 @@ genericParser(grammar, name, scopes, tokens, tokenNames, rules, numRules,
    appear to be defined in this recognizer. !>
 	#region Delegated rules
 <grammar.delegatedRules:{ruleDescriptor|
-	<ruleModifier(grammar=grammar,ruleDescriptor=ruleDescriptor)> <returnType()> <ruleDescriptor.name; format="id">(<ruleDescriptor.parameterScope:parameterScope()>) <!throws RecognitionException !>{ <if(ruleDescriptor.hasReturnValue)>return <endif><ruleDescriptor.grammar:delegateName()>.<ruleDescriptor.name; format="id">(<ruleDescriptor.parameterScope.attributes:{a|<a.name; format="id">}; separator=", ">); \}}; separator="\n">
+	<ruleModifier(grammar=grammar,ruleDescriptor=ruleDescriptor)> <returnType(ruleDescriptor)> <ruleDescriptor.name; format="id">(<ruleDescriptor.parameterScope:parameterScope()>) <!throws RecognitionException !>{ <if(ruleDescriptor.hasReturnValue)>return <endif><ruleDescriptor.grammar:delegateName()>.<ruleDescriptor.name; format="id">(<ruleDescriptor.parameterScope.attributes:{a|<a.name; format="id">}; separator=", ">); \}}; separator="\n">
 	#endregion Delegated rules
 <endif>
 
@@ -338,8 +332,7 @@ genericParser(grammar, name, scopes, tokens, tokenNames, rules, numRules,
 	#region Follow sets
 	private static class Follow
 	{
-		<bitsets:{it|<bitset(name={_<it.name>_in_<it.inName><it.tokenIndex>},
-							words64=it.bits)>}>
+		<bitsets:{it|<bitset(name={_<it.name>_in_<it.inName><it.tokenIndex>}, words64=it.bits)>}; separator="\n">
 	}
 	#endregion Follow sets
 <endif>
@@ -348,19 +341,24 @@ genericParser(grammar, name, scopes, tokens, tokenNames, rules, numRules,
 
 @genericParser.members() ::= <<
 <! WARNING. bug in ST: this is cut-n-paste into Dbg.stg !>
-<actions.(actionScope).ctorModifier; null="public"> <grammar.recognizerName>( <inputStreamType> input<grammar.delegators:{g|, <g.recognizerName> <g:delegateName()>}> )
-	: this( input, new RecognizerSharedState()<grammar.delegators:{g|, <g:delegateName()>}> )
+<actions.(actionScope).ctorModifier; null="public"> <grammar.recognizerName>(<inputStreamType> input<grammar.delegators:{g|, <g.recognizerName> <g:delegateName()>}>)
+	: this(input, new RecognizerSharedState()<grammar.delegators:{g|, <g:delegateName()>}>)
 {
 }
 <actions.(actionScope).ctorModifier; null="public"> <grammar.recognizerName>(<inputStreamType> input, RecognizerSharedState state<grammar.delegators:{g|, <g.recognizerName> <g:delegateName()>}>)
 	: base(input, state)
 {
 	<parserCtorBody()>
+<if(grammar.directDelegates)>
 	<grammar.directDelegates:
 		{g|<g:delegateName()> = new <g.recognizerName>(input, state<trunc(g.delegators):{p|, <p:delegateName()>}>, this);}; separator="\n">
+<endif>
+<if(grammar.indirectDelegates)>
 	<grammar.indirectDelegates:{g | <g:delegateName()> = <g.delegator:delegateName()>.<g:delegateName()>;}; separator="\n">
+<endif>
+<if(grammar.delegators)>
 	<last(grammar.delegators):{g|gParent = <g:delegateName()>;}>
-
+<endif>
 	OnCreated();
 }
 >>
@@ -485,14 +483,14 @@ ruleBacktrackFailure() ::= <<
  */
 rule(ruleName,ruleDescriptor,block,emptyRule,description,exceptions,finally,memoize) ::= <<
 <ruleAttributeScope(scope=ruleDescriptor.ruleScope)>
-<returnScope(scope=ruleDescriptor.returnScope)>
+<returnScope(ruleDescriptor.returnScope)>
 partial void EnterRule_<ruleName>();
 partial void LeaveRule_<ruleName>();
 
 // $ANTLR start "<ruleName>"
 // <fileName>:<description>
 [GrammarRule("<ruleName>")]
-<ruleModifier(grammar=grammar,ruleDescriptor=ruleDescriptor)> <returnType()> <ruleName; format="id">(<ruleDescriptor.parameterScope:parameterScope()>)
+<ruleModifier(grammar=grammar,ruleDescriptor=ruleDescriptor)> <returnType(ruleDescriptor)> <ruleName; format="id">(<ruleDescriptor.parameterScope:parameterScope()>)
 {
 	EnterRule_<ruleName>();
 	EnterRule("<ruleName>", <ruleDescriptor.index>);
@@ -563,7 +561,7 @@ catch (<e.decl>)
 
 ruleDeclarations() ::= <<
 <if(ruleDescriptor.hasMultipleReturnValues)>
-<returnType()> retval = new <returnType()>(this);
+<returnType(ruleDescriptor)> retval = new <returnType(ruleDescriptor)>(<if(ruleDescriptor.returnScope.attributes)>this<endif>);
 retval.Start = (<labelType>)input.LT(1);
 <else>
 <ruleDescriptor.returnScope.attributes:{ a |
@@ -717,7 +715,7 @@ int alt<decisionNumber>=<maxAlt>;
 <decls>
 <@predecision()>
 try { DebugEnterSubRule(<decisionNumber>);
-try { DebugEnterDecision(<decisionNumber>, false<!<booleanLiteral.(decision.dfa.hasSynPred)>!>);
+try { DebugEnterDecision(<decisionNumber>, false<!<decision.dfa.hasSynPred>!>);
 <decision>
 } finally { DebugExitDecision(<decisionNumber>); }
 <@postdecision()>
@@ -736,7 +734,7 @@ ruleBlock(alts,decls,decision,enclosingBlockLevel,blockLevel,decisionNumber,maxK
 int alt<decisionNumber>=<maxAlt>;
 <decls>
 <@predecision()>
-try { DebugEnterDecision(<decisionNumber>, false<!<booleanLiteral.(decision.dfa.hasSynPred)>!>);
+try { DebugEnterDecision(<decisionNumber>, false<!<decision.dfa.hasSynPred>!>);
 <decision>
 } finally { DebugExitDecision(<decisionNumber>); }
 <@postdecision()>
@@ -776,7 +774,7 @@ while (true)
 {
 	int alt<decisionNumber>=<maxAlt>;
 	<@predecision()>
-	try { DebugEnterDecision(<decisionNumber>, false<!<booleanLiteral.(decision.dfa.hasSynPred)>!>);
+	try { DebugEnterDecision(<decisionNumber>, false<!<decision.dfa.hasSynPred>!>);
 	<decision>
 	} finally { DebugExitDecision(<decisionNumber>); }
 	<@postdecision()>
@@ -814,7 +812,7 @@ while (true)
 {
 	int alt<decisionNumber>=<maxAlt>;
 	<@predecision()>
-	try { DebugEnterDecision(<decisionNumber>, false<!<booleanLiteral.(decision.dfa.hasSynPred)>!>);
+	try { DebugEnterDecision(<decisionNumber>, false<!<decision.dfa.hasSynPred>!>);
 	<decision>
 	} finally { DebugExitDecision(<decisionNumber>); }
 	<@postdecision()>
@@ -1446,15 +1444,15 @@ ruleAttributeScope(scope) ::= <<
 
 returnStructName(it) ::= "<it.name>_return"
 
-returnType() ::= <%
-<if(ruleDescriptor.hasMultipleReturnValues)>
-<ruleDescriptor.grammar.recognizerName>.<ruleDescriptor:returnStructName()>
+returnType(ruleDescriptor) ::= <%
+<if(ruleDescriptor.returnScope.attributes && ruleDescriptor.hasMultipleReturnValues)>
+	<ruleDescriptor.grammar.recognizerName>.<ruleDescriptor:returnStructName()>
+<elseif(ruleDescriptor.hasMultipleReturnValues)>
+	<ruleReturnBaseType()>
+<elseif(ruleDescriptor.hasSingleReturnValue)>
+	<ruleDescriptor.singleValueReturnType>
 <else>
-<if(ruleDescriptor.hasSingleReturnValue)>
-<ruleDescriptor.singleValueReturnType>
-<else>
-void
-<endif>
+	void
 <endif>
 %>
 
@@ -1462,14 +1460,14 @@ void
  *  values.
  */
 ruleLabelType(referencedRule) ::= <%
-<if(referencedRule.hasMultipleReturnValues)>
-<referencedRule.grammar.recognizerName>.<referencedRule.name>_return
+<if(referencedRule.returnScope.attributes&&referencedRule.hasMultipleReturnValues)>
+	<referencedRule.grammar.recognizerName>.<referencedRule:returnStructName()>
+<elseif(referencedRule.hasMultipleReturnValues)>
+	<ruleReturnBaseType()>
+<elseif(referencedRule.hasSingleReturnValue)>
+	<referencedRule.singleValueReturnType>
 <else>
-<if(referencedRule.hasSingleReturnValue)>
-<referencedRule.singleValueReturnType>
-<else>
-void
-<endif>
+	void
 <endif>
 %>
 
@@ -1494,14 +1492,18 @@ ruleLabelDef(label) ::= <%
  *  subgroups to stick in members.
  */
 returnScope(scope) ::= <<
-<if(ruleDescriptor.hasMultipleReturnValues)>
-<returnScopeModifier(grammar=grammar,ruleDescriptor=ruleDescriptor)> sealed partial class <ruleDescriptor:returnStructName()> : <if(TREE_PARSER)>Tree<else>Parser<endif>RuleReturnScope\<<labelType>\><@ruleReturnInterfaces()>
+<if(scope.attributes && ruleDescriptor.hasMultipleReturnValues)>
+<returnScopeModifier(grammar=grammar,ruleDescriptor=ruleDescriptor)> sealed partial class <ruleDescriptor:returnStructName()> : <ruleReturnBaseType()><@ruleReturnInterfaces()>
 {
 	<scope.attributes:{it|public <it.decl>;}; separator="\n">
 	<@ruleReturnMembers()>
 }
 <endif>
 >>
+
+ruleReturnBaseType() ::= <%
+<if(TREE_PARSER)>Tree<else>Parser<endif>RuleReturnScope\<<labelType>>
+%>
 
 @returnScope.ruleReturnMembers() ::= <<
 public <ruleDescriptor:returnStructName()>(<grammar.recognizerName> grammar) {OnCreated(grammar);}
@@ -1684,7 +1686,7 @@ execForcedAction(action) ::= "<action>"
 // M I S C (properties, etc...)
 
 bitset(name, words64) ::= <<
-public static readonly BitSet <name> = new BitSet(new ulong[]{<words64:{it|<it>UL};separator=",">});<\n>
+public static readonly BitSet <name> = new BitSet(new ulong[]{<words64:{it|<it>UL};separator=",">});
 >>
 
 codeFileExtension() ::= ".cs"

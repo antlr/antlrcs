@@ -49,9 +49,7 @@ parserCtorBody() ::= <<
 <super.parserCtorBody()>
 <treeAdaptorType()> treeAdaptor = default(<treeAdaptorType()>);
 CreateTreeAdaptor(ref treeAdaptor);
-
 TreeAdaptor = treeAdaptor<if(!actions.(actionScope).treeAdaptorType)> ?? new CommonTreeAdaptor()<endif>;
-
 >>
 
 /** Add an adaptor property that knows how to build trees */
@@ -80,16 +78,9 @@ treeAdaptorType() ::= <<
 <actions.(actionScope).treeAdaptorType; null="ITreeAdaptor">
 >>
 
-@returnScope.ruleReturnInterfaces() ::= <<
-, IAstRuleReturnScope\<<ASTLabelType>\>, IAstRuleReturnScope
->>
-
-@returnScope.ruleReturnMembers() ::= <<
-private <ASTLabelType> _tree;
-public <ASTLabelType> Tree { get { return _tree; } set { _tree = value; } }
-object IAstRuleReturnScope.Tree { get { return Tree; } }
-<@super.ruleReturnMembers()>
->>
+ruleReturnBaseType() ::= <%
+Ast<if(TREE_PARSER)>Tree<else>Parser<endif>RuleReturnScope\<<ASTLabelType>, <labelType>>
+%>
 
 /** Add a variable to track rule's return AST */
 ruleDeclarations() ::= <<
