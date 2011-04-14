@@ -1077,7 +1077,7 @@ namespace Antlr3.Tool
             //tokenBuffer.discard( ANTLRParser.SL_COMMENT );
             ANTLRParser parser = new ANTLRParser( tokenBuffer );
             parser.FileName = this.FileName;
-            ANTLRParser.grammar__return result = null;
+            Antlr.Runtime.IAstRuleReturnScope<GrammarAST> result = null;
             try
             {
                 result = parser.grammar_( this );
@@ -1361,7 +1361,7 @@ namespace Antlr3.Tool
             parser.GrammarType = this.type;
             try
             {
-                ANTLRParser.rule_return result = parser.rule();
+                Antlr.Runtime.IAstRuleReturnScope<GrammarAST> result = parser.rule();
                 return result.Tree;
             }
             catch (Exception e)

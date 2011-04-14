@@ -33,6 +33,7 @@
 namespace Antlr3.Grammars
 {
     using Antlr.Runtime;
+    using Antlr.Runtime.Tree;
     using Antlr3.Tool;
 
     using CommonTreeNodeStream = Antlr.Runtime.Tree.CommonTreeNodeStream;
@@ -45,7 +46,7 @@ namespace Antlr3.Grammars
         protected bool showActions;
         protected StringBuilder buf = new StringBuilder( 300 );
 
-        private ANTLRTreePrinter.block_return Block( GrammarAST t, bool forceParens )
+        private TreeRuleReturnScope<GrammarAST> Block( GrammarAST t, bool forceParens )
         {
             ANTLRTreePrinter other = new ANTLRTreePrinter(new CommonTreeNodeStream(t));
             other.buf = buf;

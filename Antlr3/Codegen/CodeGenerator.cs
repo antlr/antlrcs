@@ -1383,8 +1383,8 @@ namespace Antlr3.Codegen
                 //parser.setASTNodeClass( "org.antlr.tool.GrammarAST" );
                 try
                 {
-                    ANTLRParser.rewrite_template_return result = parser.rewrite_template();
-                    rewriteTree = (GrammarAST)result.Tree;
+                    Antlr.Runtime.IAstRuleReturnScope<GrammarAST> result = parser.rewrite_template();
+                    rewriteTree = result.Tree;
                 }
                 catch ( RecognitionException /*re*/ )
                 {

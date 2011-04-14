@@ -155,7 +155,7 @@ namespace Antlr4.StringTemplate.Compiler
 
             CommonTokenStream tokens = new CommonTokenStream(lexer);
             TemplateParser p = new TemplateParser(tokens, ErrorManager, templateToken);
-            TemplateParser.templateAndEOF_return r = null;
+            IAstRuleReturnScope<CommonTree> r = null;
             try
             {
                 r = p.templateAndEOF();
