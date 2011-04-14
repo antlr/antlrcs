@@ -66,6 +66,8 @@
     <Compile Include="ICharStream.cs" />
     <Compile Include="IIntStream.cs" />
     <Compile Include="IRuleReturnScope.cs" />
+    <Compile Include="ITemplateRuleReturnScope.cs" />
+    <Compile Include="ITemplateRuleReturnScope`1.cs" />
     <Compile Include="IToken.cs" />
     <Compile Include="ITokenSource.cs" />
     <Compile Include="ITokenStream.cs" />
@@ -87,6 +89,7 @@
     <Compile Include="RecognitionException.cs" />
     <Compile Include="RecognizerSharedState.cs" />
     <Compile Include="RuleReturnScope.cs" />
+    <Compile Include="TemplateParserRuleReturnScope`2.cs" />
     <Compile Include="TokenConstants.cs" />
     <Compile Include="TokenRewriteStream.cs" />
     <Compile Include="Tree\AstTreeRuleReturnScope`1.cs" />
@@ -112,6 +115,7 @@
     <Compile Include="Tree\RewriteRuleNodeStream.cs" />
     <Compile Include="Tree\RewriteRuleSubtreeStream.cs" />
     <Compile Include="Tree\RewriteRuleTokenStream.cs" />
+    <Compile Include="Tree\TemplateTreeRuleReturnScope`2.cs" />
     <Compile Include="Tree\TreeConstants.cs" />
     <Compile Include="Tree\TreeFilter.cs" />
     <Compile Include="Tree\TreeIterator.cs" />

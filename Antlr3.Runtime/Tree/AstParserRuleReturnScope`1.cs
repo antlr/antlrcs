@@ -32,7 +32,7 @@
 
 namespace Antlr.Runtime.Tree
 {
-    public class AstParserRuleReturnScope<TTree> : ParserRuleReturnScope<TTree>, IAstRuleReturnScope<TTree>, IAstRuleReturnScope
+    public class AstParserRuleReturnScope<TTree, TToken> : ParserRuleReturnScope<TToken>, IAstRuleReturnScope<TTree>, IAstRuleReturnScope
     {
         private TTree _tree;
 

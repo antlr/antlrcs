@@ -37,7 +37,7 @@
             var lex = new VecMathLexer(input);
             var tokens = new CommonTokenStream(lex);
             var g = new VecMathParser(tokens);
-            VecMath_VecMath_Parser.prog_return r = g.prog();
+            IAstRuleReturnScope<CommonTree> r = g.prog();
             CommonTree t = r.Tree;
             Console.WriteLine("Original tree:   " + t.ToStringTree());
 
