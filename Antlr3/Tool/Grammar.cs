@@ -323,12 +323,12 @@ namespace Antlr3.Tool
         protected int global_k = -1;
 
         /** Map a scope to a map of name:action pairs.
-         *  Map<String, Map<String,GrammarAST>>
+         *  Map&lt;String, Map&lt;String,GrammarAST&gt;&gt;
          *  The code generator will use this to fill holes in the output files.
          *  I track the AST node for the action in case I need the line number
          *  for errors.
          */
-        protected Dictionary<string, IDictionary<string, object>> actions = new Dictionary<string, IDictionary<string, object>>();
+        private Dictionary<string, IDictionary<string, object>> actions = new Dictionary<string, IDictionary<string, object>>();
 
         /** The NFA that represents the grammar with edges labelled with tokens
          *  or epsilon.  It is more suitable to analysis than an AST representation.
@@ -636,7 +636,6 @@ namespace Antlr3.Tool
         }
 
         #region Properties
-        [CLSCompliant(false)]
         public IDictionary<string, IDictionary<string, object>> Actions
         {
             get
@@ -1246,12 +1245,12 @@ namespace Antlr3.Tool
             }
             LexerGrammarTemplate.SetAttribute( "name", name );
             // if there are any actions set for lexer, pass them in
-            if ( actions.get( "lexer" ) != null )
+            if ( Actions.get( "lexer" ) != null )
             {
                 LexerGrammarTemplate.SetAttribute( "actionNames",
-                                            ( actions.get( "lexer" ) ).Keys );
+                                            ( Actions.get( "lexer" ) ).Keys );
                 LexerGrammarTemplate.SetAttribute( "actions",
-                                            ( actions.get( "lexer" ) ).Values );
+                                            ( Actions.get( "lexer" ) ).Values );
             }
             // make sure generated grammar has the same options
             if ( options != null )
@@ -2052,11 +2051,11 @@ namespace Antlr3.Tool
             }
             //JSystem.@out.println("@"+scope+"::"+nameAST.getText()+"{"+actionAST.getText()+"}");
             string actionName = nameAST.Text;
-            var scopeActions = actions.get( scope );
+            var scopeActions = Actions.get( scope );
             if ( scopeActions == null )
             {
                 scopeActions = new Dictionary<string, object>();
-                actions[scope] = scopeActions;
+                Actions[scope] = scopeActions;
             }
             GrammarAST a = (GrammarAST)scopeActions.get( actionName );
             if ( a != null )
@@ -2087,14 +2086,14 @@ namespace Antlr3.Tool
         public virtual void SetSynPredGateIfNotAlready( StringTemplate gateST )
         {
             string scope = GetDefaultActionScope( type );
-            var actionsForGrammarScope = actions.get( scope );
+            var actionsForGrammarScope = Actions.get( scope );
             // if no synpredgate action set by user then set
             if ( actionsForGrammarScope == null || !actionsForGrammarScope.ContainsKey( Grammar.SynpredGateActionName ) )
             {
                 if ( actionsForGrammarScope == null )
                 {
                     actionsForGrammarScope = new Dictionary<string, object>();
-                    actions[scope] = actionsForGrammarScope;
+                    Actions[scope] = actionsForGrammarScope;
                 }
                 actionsForGrammarScope[Grammar.SynpredGateActionName] = gateST;
             }
