@@ -31,9 +31,28 @@
  */
 namespace Antlr3.Targets
 {
+    using System.Collections.Generic;
+
+    using CodeGenerator = Antlr3.Codegen.CodeGenerator;
+    using Grammar = Antlr3.Tool.Grammar;
+    using Rule = Antlr3.Tool.Rule;
     using Target = Antlr3.Codegen.Target;
 
     public class JavaTarget : Target
     {
+        protected override void PerformGrammarAnalysis(CodeGenerator generator, Grammar grammar)
+        {
+            base.PerformGrammarAnalysis(generator, grammar);
+
+            foreach (Rule rule in grammar.Rules)
+                rule.ThrowsSpec.Add("RecognitionException");
+
+            IEnumerable<Rule> delegatedRules = grammar.GetDelegatedRules();
+            if (delegatedRules != null)
+            {
+                foreach (Rule rule in delegatedRules)
+                    rule.ThrowsSpec.Add("RecognitionException");
+            }
+        }
     }
 }
