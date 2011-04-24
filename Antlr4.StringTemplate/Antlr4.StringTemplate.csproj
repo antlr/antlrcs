@@ -94,7 +94,6 @@
     <Compile Include="Misc\MultiMap.cs" />
     <Compile Include="Misc\ObjectModelAdaptor.cs" />
     <Compile Include="Misc\TemplateCompileTimeMessage.cs" />
-    <Compile Include="Misc\TemplateDump.cs" />
     <Compile Include="Misc\TemplateGroupCompiletimeMessage.cs" />
     <Compile Include="Misc\TemplateLexerMessage.cs" />
     <Compile Include="Misc\TemplateMessage.cs" />
