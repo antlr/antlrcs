@@ -34,7 +34,6 @@ namespace Antlr4.StringTemplate
 {
     using System.Collections.Generic;
     using System.Linq;
-    using Antlr.Runtime.JavaExtensions;
     using Antlr4.StringTemplate.Compiler;
     using Antlr4.StringTemplate.Debug;
     using Antlr4.StringTemplate.Extensions;
@@ -50,6 +49,7 @@ namespace Antlr4.StringTemplate
     using ICollection = System.Collections.ICollection;
     using IDictionary = System.Collections.IDictionary;
     using IEnumerable = System.Collections.IEnumerable;
+    using IEnumerator = System.Collections.IEnumerator;
     using IList = System.Collections.IList;
     using IOException = System.IO.IOException;
     using Math = System.Math;
@@ -821,7 +821,7 @@ namespace Antlr4.StringTemplate
                 o = ConvertAnythingIteratableToIterator(frame, o); // normalize
                 try
                 {
-                    if (o is Iterator)
+                    if (o is IEnumerator)
                         n = WriteIterator(@out, frame, o, options);
                     else
                         n = WritePlainObject(@out, o, options);
@@ -841,14 +841,14 @@ namespace Antlr4.StringTemplate
                 return 0;
 
             int n = 0;
-            Iterator it = (Iterator)o;
+            IEnumerator it = (IEnumerator)o;
             string separator = null;
             if (options != null)
                 separator = options[(int)RenderOption.Separator];
             bool seenAValue = false;
-            while (it.hasNext())
+            while (it.MoveNext())
             {
-                object iterValue = it.next();
+                object iterValue = it.Current;
                 // Emit separator if we're beyond first value
                 bool needSeparator = seenAValue &&
                     separator != null &&            // we have a separator and
@@ -918,7 +918,7 @@ namespace Antlr4.StringTemplate
                 return;
             }
             attr = ConvertAnythingIteratableToIterator(frame, attr);
-            Iterator iterator = attr as Iterator;
+            IEnumerator iterator = attr as IEnumerator;
             if (iterator != null)
             {
                 List<Template> mapped = RotateMapIterator(frame, iterator, prototypes);
@@ -947,15 +947,15 @@ namespace Antlr4.StringTemplate
             }
         }
 
-        protected virtual List<Template> RotateMapIterator(TemplateFrame frame, Iterator iterator, List<Template> prototypes)
+        protected virtual List<Template> RotateMapIterator(TemplateFrame frame, IEnumerator iterator, List<Template> prototypes)
         {
             List<Template> mapped = new List<Template>();
             int i0 = 0;
             int i = 1;
             int ti = 0;
-            while (iterator.hasNext())
+            while (iterator.MoveNext())
             {
-                object iterValue = iterator.next();
+                object iterValue = iterator.Current;
                 if (iterValue == null)
                 {
                     mapped.Add(null);
@@ -1038,11 +1038,11 @@ namespace Antlr4.StringTemplate
                 embedded.RawSetAttribute("i", i2 + 1);
                 for (int a = 0; a < numExprs; a++)
                 {
-                    Iterator it = (Iterator)exprs[a];
-                    if (it != null && it.hasNext())
+                    IEnumerator it = (IEnumerator)exprs[a];
+                    if (it != null && it.MoveNext())
                     {
                         string argName = (string)formalArgumentNames[a];
-                        object iteratedValue = it.next();
+                        object iteratedValue = it.Current;
                         embedded.RawSetAttribute(argName, iteratedValue);
                     }
                     else
@@ -1074,12 +1074,12 @@ namespace Antlr4.StringTemplate
         protected virtual void AddToList(List<object> list, TemplateFrame frame, object o)
         {
             o = Interpreter.ConvertAnythingIteratableToIterator(frame, o);
-            if (o is Iterator)
+            if (o is IEnumerator)
             {
                 // copy of elements into our temp list
-                Iterator it = (Iterator)o;
-                while (it.hasNext())
-                    list.Add(it.next());
+                IEnumerator it = (IEnumerator)o;
+                while (it.MoveNext())
+                    list.Add(it.Current);
             }
             else
             {
@@ -1096,12 +1096,12 @@ namespace Antlr4.StringTemplate
                 return null;
             object r = v;
             v = ConvertAnythingIteratableToIterator(frame, v);
-            if (v is Iterator)
+            if (v is IEnumerator)
             {
-                Iterator it = (Iterator)v;
-                if (it.hasNext())
+                IEnumerator it = (IEnumerator)v;
+                if (it.MoveNext())
                 {
-                    r = it.next();
+                    r = it.Current;
                 }
             }
             return r;
@@ -1122,11 +1122,11 @@ namespace Antlr4.StringTemplate
 
             object last = v;
             v = ConvertAnythingIteratableToIterator(frame, v);
-            Iterator it = v as Iterator;
+            IEnumerator it = v as IEnumerator;
             if (it != null)
             {
-                while (it.hasNext())
-                    last = it.next();
+                while (it.MoveNext())
+                    last = it.Current;
             }
 
             return last;
@@ -1141,17 +1141,18 @@ namespace Antlr4.StringTemplate
                 return null;
 
             v = ConvertAnythingIteratableToIterator(frame, v);
-            Iterator it = v as Iterator;
+            IEnumerator it = v as IEnumerator;
             if (it != null)
             {
-                if (!it.hasNext())
+                if (!it.MoveNext())
                     return null; // if not even one value return null
 
                 List<object> a = new List<object>();
-                it.next(); // ignore first value
-                while (it.hasNext())
+                // first value is ignored above
+
+                while (it.MoveNext())
                 {
-                    object o = it.next();
+                    object o = it.Current;
                     if (o != null)
                         a.Add(o);
                 }
@@ -1170,17 +1171,15 @@ namespace Antlr4.StringTemplate
                 return null;
 
             v = ConvertAnythingIteratableToIterator(frame, v);
-            if (v is Iterator)
+            if (v is IEnumerator)
             {
                 List<object> a = new List<object>();
-                Iterator it = (Iterator)v;
-                while (it.hasNext())
-                {
-                    object o = it.next();
-                    if (it.hasNext())
-                        a.Add(o); // only Add if not last one
-                }
+                IEnumerator it = (IEnumerator)v;
+                while (it.MoveNext())
+                    a.Add(it.Current);
 
+                // remove the last item
+                a.RemoveAt(a.Count - 1);
                 return a;
             }
 
@@ -1195,13 +1194,13 @@ namespace Antlr4.StringTemplate
                 return null;
 
             v = ConvertAnythingIteratableToIterator(frame, v);
-            if (v is Iterator)
+            if (v is IEnumerator)
             {
                 List<object> a = new List<object>();
-                Iterator it = (Iterator)v;
-                while (it.hasNext())
+                IEnumerator it = (IEnumerator)v;
+                while (it.MoveNext())
                 {
-                    object o = it.next();
+                    object o = it.Current;
                     if (o != null)
                         a.Add(o);
                 }
@@ -1221,12 +1220,12 @@ namespace Antlr4.StringTemplate
                 return null;
 
             v = ConvertAnythingIteratableToIterator(frame, v);
-            Iterator it = v as Iterator;
+            IEnumerator it = v as IEnumerator;
             if (it != null)
             {
                 List<object> a = new List<object>();
-                while (it.hasNext())
-                    a.Add(it.next());
+                while (it.MoveNext())
+                    a.Add(it.Current);
 
                 a.Reverse();
                 return a;
@@ -1261,15 +1260,13 @@ namespace Antlr4.StringTemplate
             if (enumerable != null)
                 return enumerable.Cast<object>().Count();
 
-            Iterator iterator = v as Iterator;
+            IEnumerator iterator = v as IEnumerator;
             if (iterator != null)
             {
                 int i = 0;
-                while (iterator.hasNext())
-                {
-                    iterator.next();
+                while (iterator.MoveNext())
                     i++;
-                }
+
                 return i;
             }
 
@@ -1309,18 +1306,18 @@ namespace Antlr4.StringTemplate
             if (dictionary != null)
             {
                 if (frame.Template.Group.IterateAcrossValues)
-                    return dictionary.Values.iterator();
+                    return dictionary.Values.GetEnumerator();
 
-                return dictionary.Keys.iterator();
+                return dictionary.Keys.GetEnumerator();
             }
 
             ICollection collection = o as ICollection;
             if (collection != null)
-                return collection.iterator();
+                return collection.GetEnumerator();
 
             IEnumerable enumerable = o as IEnumerable;
             if (enumerable != null)
-                return enumerable.Cast<object>().iterator();
+                return enumerable.Cast<object>().GetEnumerator();
 
             //// This code is implied in the last line
             //Iterator iterator = o as Iterator;
@@ -1330,17 +1327,17 @@ namespace Antlr4.StringTemplate
             return o;
         }
 
-        public static Iterator ConvertAnythingToIterator(TemplateFrame frame, object o)
+        public static IEnumerator ConvertAnythingToIterator(TemplateFrame frame, object o)
         {
             o = ConvertAnythingIteratableToIterator(frame, o);
 
-            Iterator iter = o as Iterator;
+            IEnumerator iter = o as IEnumerator;
             if (iter != null)
                 return iter;
 
             Template.AttributeList singleton = new Template.AttributeList(1);
             singleton.Add(o);
-            return singleton.iterator();
+            return singleton.GetEnumerator();
         }
 
         protected virtual bool TestAttributeTrue(object a)
@@ -1367,9 +1364,10 @@ namespace Antlr4.StringTemplate
             if (enumerable != null)
                 return enumerable.Cast<object>().Any();
 
-            Iterator iterator = a as Iterator;
-            if (iterator != null)
-                return iterator.hasNext();
+            // have to simply return true here for IEnumerator because there's no immutable way to check its contents
+            //IEnumerator iterator = a as IEnumerator;
+            //if (iterator != null)
+            //    return iterator.hasNext();
 
             // any other non-null object, return true--it's present
             return true;
@@ -1519,15 +1517,16 @@ namespace Antlr4.StringTemplate
                 return;
             }
             o = ConvertAnythingIteratableToIterator(frame, o);
-            if (o is Iterator)
+            if (o is IEnumerator)
             {
-                Iterator it = (Iterator)o;
+                IEnumerator it = (IEnumerator)o;
                 tr.Append(" [");
-                while (it.hasNext())
+                while (it.MoveNext())
                 {
-                    object iterValue = it.next();
+                    object iterValue = it.Current;
                     PrintForTrace(tr, frame, iterValue);
                 }
+
                 tr.Append(" ]");
             }
             else
