@@ -464,7 +464,7 @@ namespace Antlr4.StringTemplate
 
             if (LookupTemplate(mangled) == null)
             {
-                ErrorManager.CompiletimeError(ErrorType.NO_SUCH_REGION, templateToken, regionT, enclosingTemplateName, name);
+                ErrorManager.CompiletimeError(ErrorType.NO_SUCH_REGION, null, regionT, enclosingTemplateName, name);
                 return new CompiledTemplate();
             }
 

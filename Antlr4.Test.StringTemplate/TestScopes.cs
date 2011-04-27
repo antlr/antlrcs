@@ -133,7 +133,7 @@ namespace Antlr4.Test.StringTemplate
             string result = st.Render();
             group.GetInstanceOf("u").impl.Dump();
 
-            string expectedError = "t.stg 2:11: implicitly defined attribute i not visible" + newline;
+            string expectedError = "t.stg 2:11: implicitly-defined attribute i not visible" + newline;
             Assert.AreEqual(expectedError, errors.ToString());
 
             string expected = ":Ter";

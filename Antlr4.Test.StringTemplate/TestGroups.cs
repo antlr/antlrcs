@@ -327,7 +327,7 @@ namespace Antlr4.Test.StringTemplate
             TemplateGroup group = new TemplateGroupFile(Path.Combine(tmpdir, "group.stg"));
             Template b = group.GetInstanceOf("method");
             b.Add("name", "foo");
-            string expecting = "foo; True False";
+            string expecting = "foo; true false";
             string result = b.Render();
             Assert.AreEqual(expecting, result);
         }
@@ -555,7 +555,7 @@ namespace Antlr4.Test.StringTemplate
             writeFile(tmpdir, "group.stg", groupFile);
             TemplateGroupFile group = new TemplateGroupFile(Path.Combine(tmpdir, "group.stg"));
             Template st = group.GetInstanceOf("g");
-            string expected = "Truea";
+            string expected = "truea";
             string result = st.Render();
             Assert.AreEqual(expected, result);
         }
@@ -624,7 +624,7 @@ namespace Antlr4.Test.StringTemplate
             ErrorBuffer errors = new ErrorBuffer();
             group.Listener = errors;
             group.Load();
-            string expected = "group.stg 2:18: mismatched input '{' expecting ID" + newline;
+            string expected = "group.stg 2:18: mismatched input '{' expecting ELLIPSIS" + newline;
             string result = errors.ToString();
             Assert.AreEqual(expected, result);
         }
@@ -642,7 +642,8 @@ namespace Antlr4.Test.StringTemplate
             ErrorBuffer errors = new ErrorBuffer();
             group.Listener = errors;
             group.Load();
-            string expected = "group.stg 2:22: '=' came as a complete surprise to me" + newline;
+            // TODO: this could be more informative about the incorrect use of named arguments
+            string expected = "group.stg 2:21: 'x' came as a complete surprise to me" + newline;
             string result = errors.ToString();
             Assert.AreEqual(expected, result);
         }

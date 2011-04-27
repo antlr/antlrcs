@@ -194,7 +194,7 @@ namespace Antlr4.Test.StringTemplate
             string template = "<t.isManager>"; // call isManager
             Template st = new Template(template);
             st.Add("t", new User(32, "Ter"));
-            string expected = true.ToString();
+            string expected = "true";
             string result = st.Render();
             Assert.AreEqual(expected, result);
         }
@@ -205,7 +205,7 @@ namespace Antlr4.Test.StringTemplate
             string template = "<t.hasParkingSpot>"; // call hasParkingSpot
             Template st = new Template(template);
             st.Add("t", new User(32, "Ter"));
-            string expected = true.ToString();
+            string expected = "true";
             string result = st.Render();
             Assert.AreEqual(expected, result);
         }
