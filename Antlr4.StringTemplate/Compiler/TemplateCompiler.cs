@@ -227,7 +227,7 @@ namespace Antlr4.StringTemplate.Compiler
                 string msg = "premature EOF";
                 ErrorManager.CompiletimeError(ErrorType.SYNTAX_ERROR, templateToken, re.Token, msg);
             }
-            else if (re is NoViableAltException || re is MismatchedTokenException)
+            else if (re is NoViableAltException)
             {
                 string msg = "'" + re.Token.Text + "' came as a complete surprise to me";
                 ErrorManager.CompiletimeError(ErrorType.SYNTAX_ERROR, templateToken, re.Token, msg);

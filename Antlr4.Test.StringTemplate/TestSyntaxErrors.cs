@@ -200,7 +200,7 @@ namespace Antlr4.Test.StringTemplate
             group = new TemplateGroupFile(Path.Combine(tmpdir, "t.stg"));
             group.Listener = errors;
             group.Load(); // force load
-            string expected = "t.stg 1:29: '!' came as a complete surprise to me" + newline;
+            string expected = "t.stg 1:29: mismatched input '!' expecting RDELIM" + newline;
             string result = errors.ToString();
             Assert.AreEqual(expected, result);
         }
