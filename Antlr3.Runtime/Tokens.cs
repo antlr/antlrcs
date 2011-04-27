@@ -1,5 +1,5 @@
-/*
- * [The "BSD licence"]
+﻿/*
+ * [The "BSD license"]
  * Copyright (c) 2011 Terence Parr
  * All rights reserved.
  *
@@ -32,26 +32,17 @@
 
 namespace Antlr.Runtime
 {
-    /// <summary>
-    /// Rules can have start/stop info.
-    /// </summary>
-    /// <typeparam name="TLabel">The element type of the input stream.</typeparam>
-    public interface IRuleReturnScope<TLabel> : IRuleReturnScope
+    public static class Tokens
     {
-        /// <summary>
-        /// Gets the start element from the input stream
-        /// </summary>
-        new TLabel Start
-        {
-            get;
-        }
+        public static readonly IToken EndOfFile = Tokens<CommonToken>.EndOfFile;
 
-        /// <summary>
-        /// Gets the stop element from the input stream
-        /// </summary>
-        new TLabel Stop
-        {
-            get;
-        }
+        public static readonly IToken Invalid = new CommonToken( TokenTypes.Invalid );
+
+        /** <summary>
+         *  In an action, a lexer rule can set token to this SKIP_TOKEN and ANTLR
+         *  will avoid creating a token for this symbol and try to fetch another.
+         *  </summary>
+         */
+        public static readonly IToken Skip = new CommonToken( TokenTypes.Invalid );
     }
 }

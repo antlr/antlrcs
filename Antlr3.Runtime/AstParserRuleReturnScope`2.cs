@@ -1,5 +1,5 @@
 ﻿/*
- * [The "BSD licence"]
+ * [The "BSD license"]
  * Copyright (c) 2011 Terence Parr
  * All rights reserved.
  *
@@ -30,13 +30,13 @@
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-namespace Antlr.Runtime.Tree
+namespace Antlr.Runtime
 {
-    public class AstTreeRuleReturnScope<TOutputTree, TInputTree> : TreeRuleReturnScope<TInputTree>, IAstRuleReturnScope<TOutputTree>, IAstRuleReturnScope
+    public class AstParserRuleReturnScope<TTree, TToken> : ParserRuleReturnScope<TToken>, IAstRuleReturnScope<TTree>, IAstRuleReturnScope
     {
-        private TOutputTree _tree;
+        private TTree _tree;
 
-        public TOutputTree Tree
+        public TTree Tree
         {
             get
             {

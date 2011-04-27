@@ -1,5 +1,5 @@
-/*
- * [The "BSD licence"]
+﻿/*
+ * [The "BSD license"]
  * Copyright (c) 2011 Terence Parr
  * All rights reserved.
  *
@@ -30,55 +30,17 @@
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-namespace Antlr.Runtime.Tree
+namespace Antlr.Runtime
 {
-    /** <summary>
-     *  This is identical to the ParserRuleReturnScope except that
-     *  the start property is a tree nodes not Token object
-     *  when you are parsing trees.
-     *  </summary>
-     */
-    [System.Serializable]
-    public class TreeRuleReturnScope<TTree> : IRuleReturnScope<TTree>
+    public static class TokenTypes
     {
-        private TTree _start;
-
-        /** <summary>Gets the first node or root node of tree matched for this rule.</summary> */
-        public TTree Start
-        {
-            get
-            {
-                return _start;
-            }
-
-            set
-            {
-                _start = value;
-            }
-        }
-
-        object IRuleReturnScope.Start
-        {
-            get
-            {
-                return Start;
-            }
-        }
-
-        TTree IRuleReturnScope<TTree>.Stop
-        {
-            get
-            {
-                return default(TTree);
-            }
-        }
-
-        object IRuleReturnScope.Stop
-        {
-            get
-            {
-                return default(TTree);
-            }
-        }
+        public const int EndOfFile = CharStreamConstants.EndOfFile;
+        public const int Invalid = 0;
+        public const int EndOfRule = 1;
+        /** <summary>imaginary tree navigation type; traverse "get child" link</summary> */
+        public const int Down = 2;
+        /** <summary>imaginary tree navigation type; finish with a child list</summary> */
+        public const int Up = 3;
+        public const int Min = Up + 1;
     }
 }

@@ -1,5 +1,5 @@
-﻿/*
- * [The "BSD licence"]
+/*
+ * [The "BSD license"]
  * Copyright (c) 2011 Terence Parr
  * All rights reserved.
  *
@@ -32,28 +32,52 @@
 
 namespace Antlr.Runtime.Tree
 {
-    public class AstParserRuleReturnScope<TTree, TToken> : ParserRuleReturnScope<TToken>, IAstRuleReturnScope<TTree>, IAstRuleReturnScope
+    /** <summary>
+     *  This is identical to the ParserRuleReturnScope except that
+     *  the start property is a tree nodes not Token object
+     *  when you are parsing trees.
+     *  </summary>
+     */
+    [System.Serializable]
+    public class TreeRuleReturnScope<TTree> : IRuleReturnScope<TTree>
     {
-        private TTree _tree;
+        private TTree _start;
 
-        public TTree Tree
+        /** <summary>Gets the first node or root node of tree matched for this rule.</summary> */
+        public TTree Start
         {
             get
             {
-                return _tree;
+                return _start;
             }
 
             set
             {
-                _tree = value;
+                _start = value;
             }
         }
 
-        object IAstRuleReturnScope.Tree
+        object IRuleReturnScope.Start
         {
             get
             {
-                return Tree;
+                return Start;
+            }
+        }
+
+        TTree IRuleReturnScope<TTree>.Stop
+        {
+            get
+            {
+                return default(TTree);
+            }
+        }
+
+        object IRuleReturnScope.Stop
+        {
+            get
+            {
+                return default(TTree);
             }
         }
     }

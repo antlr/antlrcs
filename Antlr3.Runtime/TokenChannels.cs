@@ -1,10 +1,10 @@
 ﻿/*
- * [The "BSD licence"]
- * Copyright (c) 2005-2008 Terence Parr
+ * [The "BSD license"]
+ * Copyright (c) 2011 Terence Parr
  * All rights reserved.
  *
  * Conversion to C#:
- * Copyright (c) 2008-2009 Sam Harwell, Pixel Mine, Inc.
+ * Copyright (c) 2011 Sam Harwell, Pixel Mine, Inc.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -48,50 +48,5 @@ namespace Antlr.Runtime
          *  </summary>
          */
         public const int Hidden = 99;
-    }
-
-    public static class TokenTypes
-    {
-        public const int EndOfFile = CharStreamConstants.EndOfFile;
-        public const int Invalid = 0;
-        public const int EndOfRule = 1;
-        /** <summary>imaginary tree navigation type; traverse "get child" link</summary> */
-        public const int Down = 2;
-        /** <summary>imaginary tree navigation type; finish with a child list</summary> */
-        public const int Up = 3;
-        public const int Min = Up + 1;
-    }
-
-    public static class Tokens
-    {
-        public static readonly IToken EndOfFile = Tokens<CommonToken>.EndOfFile;
-
-        public static readonly IToken Invalid = new CommonToken( TokenTypes.Invalid );
-
-        /** <summary>
-         *  In an action, a lexer rule can set token to this SKIP_TOKEN and ANTLR
-         *  will avoid creating a token for this symbol and try to fetch another.
-         *  </summary>
-         */
-        public static readonly IToken Skip = new CommonToken( TokenTypes.Invalid );
-    }
-
-    public static class Tokens<T>
-        where T : IToken, new()
-    {
-        public static readonly T EndOfFile = new T()
-        {
-            Type = TokenTypes.EndOfFile
-        };
-
-        public static readonly T Invalid = new T()
-        {
-            Type = TokenTypes.Invalid
-        };
-
-        public static readonly T Skip = new T()
-        {
-            Type = TokenTypes.Invalid
-        };
     }
 }
