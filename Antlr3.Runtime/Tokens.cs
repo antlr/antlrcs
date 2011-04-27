@@ -34,10 +34,6 @@ namespace Antlr.Runtime
 {
     public static class Tokens
     {
-        public static readonly IToken EndOfFile = Tokens<CommonToken>.EndOfFile;
-
-        public static readonly IToken Invalid = new CommonToken( TokenTypes.Invalid );
-
         /** <summary>
          *  In an action, a lexer rule can set token to this SKIP_TOKEN and ANTLR
          *  will avoid creating a token for this symbol and try to fetch another.

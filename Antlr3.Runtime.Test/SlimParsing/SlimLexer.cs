@@ -1,10 +1,10 @@
 ﻿/*
- * [The "BSD licence"]
- * Copyright (c) 2005-2008 Terence Parr
+ * [The "BSD license"]
+ * Copyright (c) 2011 Terence Parr
  * All rights reserved.
  *
  * Conversion to C#:
- * Copyright (c) 2008-2009 Sam Harwell, Pixel Mine, Inc.
+ * Copyright (c) 2011 Sam Harwell, Pixel Mine, Inc.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -143,7 +143,7 @@ namespace Antlr.Runtime
                 state.text = null;
                 if ( input.LA( 1 ) == CharStreamConstants.EndOfFile )
                 {
-                    return Tokens<SlimToken>.EndOfFile;
+                    return new SlimToken(TokenTypes.EndOfFile);
                 }
                 try
                 {

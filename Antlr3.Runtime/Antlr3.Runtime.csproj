@@ -94,7 +94,6 @@
     <Compile Include="TokenChannels.cs" />
     <Compile Include="TokenRewriteStream.cs" />
     <Compile Include="Tokens.cs" />
-    <Compile Include="Tokens`1.cs" />
     <Compile Include="TokenTypes.cs" />
     <Compile Include="Tree\AstTreeRuleReturnScope`2.cs" />
     <Compile Include="Tree\BaseTree.cs" />
@@ -119,7 +118,6 @@
     <Compile Include="Tree\RewriteRuleSubtreeStream.cs" />
     <Compile Include="Tree\RewriteRuleTokenStream.cs" />
     <Compile Include="Tree\TemplateTreeRuleReturnScope`2.cs" />
-    <Compile Include="Tree\TreeConstants.cs" />
     <Compile Include="Tree\TreeFilter.cs" />
     <Compile Include="Tree\TreeIterator.cs" />
     <Compile Include="Tree\TreeParser.cs" />
