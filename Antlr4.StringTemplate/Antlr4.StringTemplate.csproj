@@ -16,6 +16,7 @@
     <SccLocalPath>SAK</SccLocalPath>
     <SccAuxPath>SAK</SccAuxPath>
     <SccProvider>SAK</SccProvider>
+    <TargetFrameworkProfile>Client</TargetFrameworkProfile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -37,7 +38,6 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
-    <Reference Include="System.Web" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Compiler\TemplateCompiler.TemplateLexerNoNewlines.cs" />
@@ -47,6 +47,7 @@
     <Compile Include="AutoIndentWriter.cs" />
     <Compile Include="Debug\DebugEvents.cs" />
     <Compile Include="Misc\AttributeNotFoundException.cs" />
+    <Compile Include="Misc\HttpUtility.cs" />
     <Compile Include="RenderOption.cs" />
     <Compile Include="TemplateFrame.cs" />
     <Compile Include="Misc\Aggregate.cs" />

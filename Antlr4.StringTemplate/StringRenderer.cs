@@ -33,7 +33,7 @@
 namespace Antlr4.StringTemplate
 {
     using CultureInfo = System.Globalization.CultureInfo;
-    using HttpUtility = System.Web.HttpUtility;
+    using HttpUtility = Antlr4.StringTemplate.Misc.HttpUtility;
     using SecurityElement = System.Security.SecurityElement;
 
     /** This Render knows to perform a few operations on String objects:
