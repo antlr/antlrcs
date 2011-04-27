@@ -1153,8 +1153,7 @@ namespace Antlr4.StringTemplate
                 while (it.MoveNext())
                 {
                     object o = it.Current;
-                    if (o != null)
-                        a.Add(o);
+                    a.Add(o);
                 }
 
                 return a;
