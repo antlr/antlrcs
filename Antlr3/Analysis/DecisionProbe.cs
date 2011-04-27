@@ -35,7 +35,6 @@ namespace Antlr3.Analysis
     using System;
     using System.Collections.Generic;
     using System.Linq;
-    using Antlr.Runtime.JavaExtensions;
     using Antlr3.Misc;
 
     using ANTLRParser = Antlr3.Grammars.ANTLRParser;
@@ -126,7 +125,7 @@ namespace Antlr3.Analysis
         /** The overall list of alts within the decision that have at least one
          *  conflicting input sequence.
          */
-        ICollection<int> _altsWithProblem = new HashSet<int>();
+        private readonly HashSet<int> _altsWithProblem = new HashSet<int>();
 
         /** If decision with > 1 alt has recursion in > 1 alt, it's (likely) nonregular
          *  lookahead.  The decision cannot be made with a DFA.
@@ -462,12 +461,14 @@ namespace Antlr3.Analysis
          */
         public virtual SemanticContext GetSemanticContextForAlt( DFAState d, int alt )
         {
-            var altToPredMap = _stateToAltSetWithSemanticPredicatesMap.get( d );
+            IDictionary<int, SemanticContext> altToPredMap;
+            _stateToAltSetWithSemanticPredicatesMap.TryGetValue(d, out altToPredMap);
             if ( altToPredMap == null )
-            {
                 return null;
-            }
-            return altToPredMap.get( alt );
+
+            SemanticContext result;
+            altToPredMap.TryGetValue( alt, out result );
+            return result;
         }
 
         /** Return a list of alts whose predicate context was insufficient to
@@ -475,7 +476,9 @@ namespace Antlr3.Analysis
          */
         public virtual IDictionary<int, ICollection<IToken>> GetIncompletelyCoveredAlts( DFAState d )
         {
-            return _stateToIncompletelyCoveredAltsMap.get( d );
+            IDictionary<int, ICollection<IToken>> result;
+            _stateToIncompletelyCoveredAltsMap.TryGetValue( d, out result );
+            return result;
         }
 
         public virtual void IssueWarnings()
@@ -641,11 +644,12 @@ namespace Antlr3.Analysis
             //Collections.sort( sortedAlts );
             foreach ( int altI in sortedAlts )
             {
-                var targetToCallSiteMap =
-                    altToTargetToCallSitesMap.get( altI );
+                IDictionary<string, ICollection<NFAState>> targetToCallSiteMap;
+                altToTargetToCallSitesMap.TryGetValue(altI, out targetToCallSiteMap);
                 var targetRules = targetToCallSiteMap.Keys;
                 var callSiteStates = targetToCallSiteMap.Values;
-                DFAState sampleBadState = (DFAState)altToDFAState.get( altI );
+                DFAState sampleBadState;
+                altToDFAState.TryGetValue(altI, out sampleBadState);
                 ErrorManager.RecursionOverflow( this,
                                                sampleBadState,
                                                altI,
@@ -662,7 +666,8 @@ namespace Antlr3.Analysis
             foreach ( int stateI in dfaStatesUnaliased )
             {
                 // walk this DFA's config list
-                IList<NFAConfiguration> configs = configurationsMap.get( stateI );
+                IList<NFAConfiguration> configs;
+                configurationsMap.TryGetValue(stateI, out configs);
                 for ( int i = 0; i < configs.Count; i++ )
                 {
                     NFAConfiguration c = (NFAConfiguration)configs[i];
@@ -671,14 +676,15 @@ namespace Antlr3.Analysis
                     RuleClosureTransition @ref = (RuleClosureTransition)transition0;
                     String targetRule = ( (NFAState)@ref.Target ).enclosingRule.Name;
                     int altI = c.alt;
-                    IDictionary<string, ICollection<NFAState>> targetToCallSiteMap =
-                        altToTargetToCallSitesMap.get( altI );
+                    IDictionary<string, ICollection<NFAState>> targetToCallSiteMap;
+                    altToTargetToCallSitesMap.TryGetValue(altI, out targetToCallSiteMap);
                     if ( targetToCallSiteMap == null )
                     {
                         targetToCallSiteMap = new Dictionary<string, ICollection<NFAState>>();
                         altToTargetToCallSitesMap[altI] = targetToCallSiteMap;
                     }
-                    ICollection<NFAState> callSites = targetToCallSiteMap.get( targetRule );
+                    ICollection<NFAState> callSites;
+                    targetToCallSiteMap.TryGetValue(targetRule, out callSites);
                     if ( callSites == null )
                     {
                         callSites = new HashSet<NFAState>();
@@ -686,7 +692,8 @@ namespace Antlr3.Analysis
                     }
                     callSites.Add( ruleInvocationState );
                     // track one problem DFA state per alt
-                    if ( altToDFAState.get( altI ) == null )
+                    DFAState state;
+                    if ( !altToDFAState.TryGetValue( altI, out state ) || state == null )
                     {
                         DFAState sampleBadState = dfa.GetState( stateI );
                         altToDFAState[altI] = sampleBadState;
@@ -729,7 +736,7 @@ namespace Antlr3.Analysis
                                */
             _nonLLStarDecision = true;
             dfa.nfa.grammar.numNonLLStar++;
-            _altsWithProblem.addAll( dfa.recursiveAltSet.ToList() );
+            _altsWithProblem.UnionWith( dfa.recursiveAltSet.ToList() );
         }
 
         public virtual void ReportRecursionOverflow( DFAState d,
@@ -751,7 +758,7 @@ namespace Antlr3.Analysis
 
         public virtual void ReportNondeterminism( DFAState d, HashSet<int> nondeterministicAlts )
         {
-            _altsWithProblem.addAll( nondeterministicAlts ); // track overall list
+            _altsWithProblem.UnionWith( nondeterministicAlts ); // track overall list
             _statesWithSyntacticallyAmbiguousAltsSet.Add( d );
             dfa.nfa.grammar.setOfNondeterministicDecisionNumbers.Add(
                 dfa.DecisionNumber

@@ -33,7 +33,6 @@
 namespace Antlr3.Tool
 {
     using System.Collections.Generic;
-    using Antlr.Runtime.JavaExtensions;
     using Antlr3.Extensions;
 
     using DecisionProbe = Antlr3.Analysis.DecisionProbe;
@@ -67,7 +66,7 @@ namespace Antlr3.Tool
             string ruleName = probe.dfa.NFADecisionStartState.enclosingRule.Name;
             st.SetAttribute( "ruleName", ruleName );
             List<int> sortedAlts = new List<int>();
-            sortedAlts.addAll( altsWithRecursion );
+            sortedAlts.AddRange( altsWithRecursion );
             sortedAlts.Sort();
             st.SetAttribute( "alts", sortedAlts );
 

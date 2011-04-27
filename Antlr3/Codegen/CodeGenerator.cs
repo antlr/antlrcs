@@ -34,13 +34,11 @@ namespace Antlr3.Codegen
 {
     using System.Collections.Generic;
     using System.Linq;
-    using Antlr.Runtime.JavaExtensions;
     using Antlr3.Analysis;
-    using Antlr3.Grammars;
     using Antlr3.Extensions;
+    using Antlr3.Grammars;
     using Antlr4.StringTemplate.Visualizer.Extensions;
 
-    using File = System.IO.File;
     using Activator = System.Activator;
     using ANTLRLexer = Antlr3.Grammars.ANTLRLexer;
     using ANTLRParser = Antlr3.Grammars.ANTLRParser;
@@ -57,6 +55,8 @@ namespace Antlr3.Codegen
     using DFAState = Antlr3.Analysis.DFAState;
     using ErrorManager = Antlr3.Tool.ErrorManager;
     using Exception = System.Exception;
+    using File = System.IO.File;
+    using FileNotFoundException = System.IO.FileNotFoundException;
     using Grammar = Antlr3.Tool.Grammar;
     using GrammarAST = Antlr3.Tool.GrammarAST;
     using GrammarType = Antlr3.Tool.GrammarType;
@@ -71,15 +71,15 @@ namespace Antlr3.Codegen
     using NFAState = Antlr3.Analysis.NFAState;
     using Path = System.IO.Path;
     using RecognitionException = Antlr.Runtime.RecognitionException;
+    using Regex = System.Text.RegularExpressions.Regex;
     using Rule = Antlr3.Tool.Rule;
     using RuntimeHelpers = System.Runtime.CompilerServices.RuntimeHelpers;
     using Stopwatch = System.Diagnostics.Stopwatch;
     using StringTemplate = Antlr4.StringTemplate.Template;
     using TemplateGroup = Antlr4.StringTemplate.TemplateGroup;
+    using TemplateGroupFile = Antlr4.StringTemplate.TemplateGroupFile;
     using TextWriter = System.IO.TextWriter;
     using TimeSpan = System.TimeSpan;
-    using TemplateGroupFile = Antlr4.StringTemplate.TemplateGroupFile;
-    using FileNotFoundException = System.IO.FileNotFoundException;
 
     /** ANTLR's code generator.
      *
@@ -810,7 +810,9 @@ namespace Antlr3.Codegen
             ICollection<string> actionNameSet = scopeActions.Keys.ToArray();
             foreach ( string name in actionNameSet )
             {
-                GrammarAST actionAST = (GrammarAST)scopeActions.get( name );
+                object action;
+                scopeActions.TryGetValue(name, out action);
+                GrammarAST actionAST = action as GrammarAST;
                 IList<object> chunks = TranslateAction( ruleName, actionAST );
                 scopeActions[name] = chunks; // replace with translation
             }
@@ -1274,7 +1276,7 @@ namespace Antlr3.Codegen
             {
                 return -1;
             }
-            actionText = actionText.replaceAll( "//.*\n", "" );
+            actionText = Regex.Replace(actionText, "//.*\n", "" );
             int n = actionText.Length;
             //JSystem.@out.println("actionText@"+start+"->"+(char)targetChar+"="+actionText.substring(start,n));
             int p = start;

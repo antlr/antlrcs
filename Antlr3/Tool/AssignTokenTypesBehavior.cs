@@ -34,8 +34,6 @@ namespace Antlr3.Tool
 {
     using System.Collections.Generic;
     using System.Linq;
-    using Antlr.Runtime.JavaExtensions;
-    using Antlr.Runtime.Tree;
     using Antlr3.Grammars;
 
     using CLSCompliant = System.CLSCompliantAttribute;
@@ -181,7 +179,8 @@ namespace Antlr3.Tool
         {
             string tokenID = t.Text;
             string literal = s.Text;
-            string prevAliasLiteralID = aliasesReverseIndex.get( literal );
+            string prevAliasLiteralID;
+            aliasesReverseIndex.TryGetValue(literal, out prevAliasLiteralID);
             if ( prevAliasLiteralID != null )
             { // we've seen this literal before
                 if ( tokenID.Equals( prevAliasLiteralID ) )
@@ -211,7 +210,8 @@ namespace Antlr3.Tool
                 // don't assign a new token type; use existingLiteralType.
                 tokens[tokenID] = existingLiteralType;
             }
-            string prevAliasTokenID = aliases.get( tokenID );
+            string prevAliasTokenID;
+            aliases.TryGetValue(tokenID, out prevAliasTokenID);
             if ( prevAliasTokenID != null )
             {
                 ErrorManager.GrammarError( ErrorManager.MSG_TOKEN_ALIAS_REASSIGNMENT,
@@ -293,9 +293,12 @@ namespace Antlr3.Tool
                 string literal = alias.Value;
                 if ( literal[0] == '\'' && stringLiterals.ContainsKey( literal ) )
                 {
-                    stringLiterals[literal] = tokens.get( tokenID );
+                    int token;
+                    tokens.TryGetValue(tokenID, out token);
+                    stringLiterals[literal] = token;
                     // an alias still means you need a lexer rule for it
-                    int typeI = (int)tokens.get( tokenID );
+                    int typeI;
+                    tokens.TryGetValue(tokenID, out typeI);
                     if ( !tokenRuleDefs.Contains( tokenID ) )
                     {
                         root.DefineLexerRuleForAliasedStringLiteral( tokenID, literal, typeI );

@@ -34,7 +34,6 @@ namespace Antlr3.Tool
 {
     using System.Collections.Generic;
     using System.Linq;
-    using Antlr.Runtime.JavaExtensions;
     using Antlr3.Extensions;
 
     using ANTLRParser = Antlr3.Grammars.ANTLRParser;
@@ -753,7 +752,8 @@ namespace Antlr3.Tool
          */
         public virtual void TrackTokenReferenceInAlt( GrammarAST refAST, int outerAltNum )
         {
-            IList<GrammarAST> refs = _altToTokenRefMap[outerAltNum].get( refAST.Text );
+            IList<GrammarAST> refs;
+            _altToTokenRefMap[outerAltNum].TryGetValue(refAST.Text, out refs);
             if ( refs == null )
             {
                 refs = new List<GrammarAST>();
@@ -766,7 +766,8 @@ namespace Antlr3.Tool
         {
             if ( _altToTokenRefMap[outerAltNum] != null )
             {
-                IList<GrammarAST> tokenRefASTs = _altToTokenRefMap[outerAltNum].get( @ref );
+                IList<GrammarAST> tokenRefASTs;
+                _altToTokenRefMap[outerAltNum].TryGetValue(@ref, out tokenRefASTs);
                 return tokenRefASTs;
             }
 
@@ -775,7 +776,8 @@ namespace Antlr3.Tool
 
         public virtual void TrackRuleReferenceInAlt( GrammarAST refAST, int outerAltNum )
         {
-            IList<GrammarAST> refs = _altToRuleRefMap[outerAltNum].get( refAST.Text );
+            IList<GrammarAST> refs;
+            _altToRuleRefMap[outerAltNum].TryGetValue(refAST.Text, out refs);
             if ( refs == null )
             {
                 refs = new List<GrammarAST>();
@@ -789,7 +791,8 @@ namespace Antlr3.Tool
         {
             if ( _altToRuleRefMap[outerAltNum] != null )
             {
-                IList<GrammarAST> ruleRefASTs = _altToRuleRefMap[outerAltNum].get( @ref );
+                IList<GrammarAST> ruleRefASTs;
+                _altToRuleRefMap[outerAltNum].TryGetValue(@ref, out ruleRefASTs);
                 return ruleRefASTs;
             }
 
@@ -856,7 +859,7 @@ namespace Antlr3.Tool
         {
             GrammarAST blk = Tree.FindFirstType(ANTLRParser.BLOCK);
             GrammarAST alt = blk.GetBlockAlt(i);
-            GrammarAST rew = (GrammarAST)alt.getNextSibling();
+            GrammarAST rew = (GrammarAST)alt.Parent.GetChild(alt.ChildIndex + 1);
             if (rew != null && rew.Type == ANTLRParser.REWRITES)
                 return true;
 
@@ -991,7 +994,9 @@ namespace Antlr3.Tool
         {
             //JSystem.@out.println("rule @"+nameAST.getText()+"{"+actionAST.getText()+"}");
             string actionName = nameAST.Text;
-            GrammarAST a = (GrammarAST)_actions.get( actionName );
+            object actionsObject;
+            _actions.TryGetValue(actionName, out actionsObject);
+            GrammarAST a = (GrammarAST)actionsObject;
             if ( a != null )
             {
                 ErrorManager.GrammarError(

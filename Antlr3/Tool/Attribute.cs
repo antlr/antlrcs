@@ -32,8 +32,6 @@
 
 namespace Antlr3.Tool
 {
-    using Antlr.Runtime.JavaExtensions;
-
     /** Track the names of attributes define in arg lists, return values,
      *  scope blocks etc...
      */

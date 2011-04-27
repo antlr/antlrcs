@@ -33,7 +33,6 @@
 namespace Antlr3.Tool
 {
     using System.Collections.Generic;
-    using Antlr.Runtime.JavaExtensions;
     using Antlr3.Extensions;
 
     using DecisionProbe = Antlr3.Analysis.DecisionProbe;
@@ -70,7 +69,7 @@ namespace Antlr3.Tool
             string input = probe.GetInputSequenceDisplay( labels );
             StringTemplate st = GetMessageTemplate();
             List<int> alts = new List<int>();
-            alts.addAll( problemState.AltSet );
+            alts.AddRange( problemState.AltSet );
             alts.Sort();
             st.SetAttribute( "danglingAlts", alts );
             st.SetAttribute( "input", input );

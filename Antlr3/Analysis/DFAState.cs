@@ -35,7 +35,6 @@ namespace Antlr3.Analysis
     using System;
     using System.Collections.Generic;
     using System.Linq;
-    using Antlr.Runtime.JavaExtensions;
     using Antlr3.Misc;
 
     using Grammar = Antlr3.Tool.Grammar;
@@ -691,7 +690,8 @@ namespace Antlr3.Analysis
             foreach ( int stateI in states )
             {
                 bool thisStateHasPotentialProblem = false;
-                var configsForState = stateToConfigListMap.get( stateI );
+                IList<NFAConfiguration> configsForState;
+                stateToConfigListMap.TryGetValue(stateI, out configsForState);
                 int alt = 0;
                 int numConfigsForState = configsForState.Count;
                 for ( int i = 0; i < numConfigsForState && numConfigsForState > 1; i++ )
@@ -755,7 +755,8 @@ namespace Antlr3.Analysis
             // walk each state with potential conflicting configurations
             foreach ( int stateI in states )
             {
-                var configsForState = stateToConfigListMap.get( stateI );
+                IList<NFAConfiguration> configsForState;
+                stateToConfigListMap.TryGetValue(stateI, out configsForState);
                 // compare each configuration pair s, t to ensure:
                 // s.ctx different than t.ctx if s.alt != t.alt
                 int numConfigsForState = 0;

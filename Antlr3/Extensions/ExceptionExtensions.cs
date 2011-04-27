@@ -33,7 +33,12 @@
 namespace Antlr3.Extensions
 {
     using System;
+    using System.Linq;
+
     using BindingFlags = System.Reflection.BindingFlags;
+    using StackFrame = System.Diagnostics.StackFrame;
+    using StackTrace = System.Diagnostics.StackTrace;
+    using TextWriter = System.IO.TextWriter;
 
     public static class ExceptionExtensions
     {
@@ -64,6 +69,29 @@ namespace Antlr3.Extensions
         public static void PreserveStackTrace(this Exception e)
         {
             _internalPreserveStackTrace(e);
+        }
+
+        internal static StackFrame[] GetStackTrace(this Exception e)
+        {
+            StackTrace trace = new StackTrace(e, true);
+            StackFrame[] frames = trace.GetFrames();
+            if (frames == null)
+            {
+                // don't include this helper function in the trace
+                frames = new StackTrace(true).GetFrames().Skip(1).ToArray();
+            }
+            return frames;
+        }
+
+        internal static void PrintStackTrace(this Exception e, TextWriter writer)
+        {
+            writer.WriteLine(e.ToString());
+            string trace = e.StackTrace ?? string.Empty;
+            foreach (string line in trace.Split('\n', '\r'))
+            {
+                if (!string.IsNullOrEmpty(line))
+                    writer.WriteLine("        " + line);
+            }
         }
     }
 }

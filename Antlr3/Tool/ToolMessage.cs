@@ -32,7 +32,6 @@
 
 namespace Antlr3.Tool
 {
-    using Antlr.Runtime.JavaExtensions;
     using Antlr3.Extensions;
 
     using Exception = System.Exception;
@@ -87,7 +86,7 @@ namespace Antlr3.Tool
             if ( e != null )
             {
                 st.SetAttribute( "exception", e );
-                st.SetAttribute( "stackTrace", e.getStackTrace() );
+                st.SetAttribute( "stackTrace", e.GetStackTrace() );
             }
             return base.ToString( st );
         }

@@ -37,9 +37,9 @@ namespace Antlr3.Tool
     using System.Linq;
     using Antlr.Runtime.JavaExtensions;
     using Antlr3.Analysis;
+    using Antlr3.Extensions;
     using Antlr3.Grammars;
     using Antlr3.Misc;
-    using Antlr3.Extensions;
 
     using CLSCompliant = System.CLSCompliantAttribute;
     using CodeGenerator = Antlr3.Codegen.CodeGenerator;
@@ -62,12 +62,12 @@ namespace Antlr3.Tool
     using StringReader = System.IO.StringReader;
     using StringTemplate = Antlr4.StringTemplate.Template;
     using Target = Antlr3.Codegen.Target;
+    using TemplateGroup = Antlr4.StringTemplate.TemplateGroup;
+    using TemplateGroupString = Antlr4.StringTemplate.TemplateGroupString;
     using TextReader = System.IO.TextReader;
     using TextWriter = System.IO.TextWriter;
     using TimeSpan = System.TimeSpan;
-    using TemplateGroupString = Antlr4.StringTemplate.TemplateGroupString;
     using Tool = Antlr3.AntlrTool;
-    using TemplateGroup = Antlr4.StringTemplate.TemplateGroup;
 
     /** Represents a grammar in memory. */
     public class Grammar
@@ -1228,7 +1228,8 @@ namespace Antlr3.Tool
         /** Many imports are illegal such as lexer into a tree grammar */
         public virtual bool ValidImport( Grammar @delegate )
         {
-            IList<GrammarType> validDelegators = validDelegations.get( @delegate.type );
+            IList<GrammarType> validDelegators;
+            validDelegations.TryGetValue(@delegate.type, out validDelegators);
             return validDelegators != null && validDelegators.Contains( this.type );
         }
 
@@ -1244,13 +1245,16 @@ namespace Antlr3.Tool
                 return null;
             }
             LexerGrammarTemplate.SetAttribute( "name", name );
+
+            IDictionary<string, object> lexerActions;
+            Actions.TryGetValue("lexer", out lexerActions);
             // if there are any actions set for lexer, pass them in
-            if ( Actions.get( "lexer" ) != null )
+            if ( lexerActions != null )
             {
                 LexerGrammarTemplate.SetAttribute( "actionNames",
-                                            ( Actions.get( "lexer" ) ).Keys );
+                                            lexerActions.Keys );
                 LexerGrammarTemplate.SetAttribute( "actions",
-                                            ( Actions.get( "lexer" ) ).Values );
+                                            lexerActions.Values );
             }
             // make sure generated grammar has the same options
             if ( options != null )
@@ -2051,13 +2055,17 @@ namespace Antlr3.Tool
             }
             //JSystem.@out.println("@"+scope+"::"+nameAST.getText()+"{"+actionAST.getText()+"}");
             string actionName = nameAST.Text;
-            var scopeActions = Actions.get( scope );
+            IDictionary<string, object> scopeActions;
+            Actions.TryGetValue(scope, out scopeActions);
             if ( scopeActions == null )
             {
                 scopeActions = new Dictionary<string, object>();
                 Actions[scope] = scopeActions;
             }
-            GrammarAST a = (GrammarAST)scopeActions.get( actionName );
+
+            object o;
+            scopeActions.TryGetValue(actionName, out o);
+            GrammarAST a = o as GrammarAST;
             if ( a != null )
             {
                 ErrorManager.GrammarError(
@@ -2086,7 +2094,8 @@ namespace Antlr3.Tool
         public virtual void SetSynPredGateIfNotAlready( StringTemplate gateST )
         {
             string scope = GetDefaultActionScope( type );
-            var actionsForGrammarScope = Actions.get( scope );
+            IDictionary<string, object> actionsForGrammarScope;
+            Actions.TryGetValue(scope, out actionsForGrammarScope);
             // if no synpredgate action set by user then set
             if ( actionsForGrammarScope == null || !actionsForGrammarScope.ContainsKey( Grammar.SynpredGateActionName ) )
             {
@@ -2329,7 +2338,9 @@ namespace Antlr3.Tool
         /** Get a global scope */
         public virtual AttributeScope GetGlobalScope( string name )
         {
-            return (AttributeScope)scopes.get( name );
+            AttributeScope result;
+            scopes.TryGetValue(name, out result);
+            return result;
         }
 
         /** Define a label defined in a rule r; check the validity then ask the
@@ -3148,11 +3159,11 @@ namespace Antlr3.Tool
             object value = null;
             if ( options != null )
             {
-                value = options.get( key );
+                options.TryGetValue( key, out value );
             }
             if ( value == null )
             {
-                value = defaultOptions.get( key );
+                defaultOptions.TryGetValue( key, out value );
             }
             return value;
         }
@@ -3164,11 +3175,14 @@ namespace Antlr3.Tool
             {
                 return v;
             }
-            if ( type == GrammarType.Lexer )
-            {
-                return defaultLexerBlockOptions.get( key );
-            }
-            return defaultBlockOptions.get( key );
+
+            object result;
+            if (type == GrammarType.Lexer)
+                defaultLexerBlockOptions.TryGetValue(key, out result);
+            else
+                defaultBlockOptions.TryGetValue(key, out result);
+
+            return result;
         }
 
         public virtual int GetUserMaxLookahead( int decision )
@@ -3437,7 +3451,9 @@ namespace Antlr3.Tool
         /** Useful for ANTLRWorks to map position in file to the DFA for display */
         public virtual DFA GetLookaheadDFAFromPositionInFile( int line, int col )
         {
-            return (DFA)lineColumnToLookaheadDFAMap.get( line.ToString() + ":" + col.ToString() );
+            DFA result;
+            lineColumnToLookaheadDFAMap.TryGetValue( line.ToString() + ":" + col.ToString(), out result );
+            return result;
         }
 
 #if false

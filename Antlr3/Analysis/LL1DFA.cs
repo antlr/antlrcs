@@ -35,7 +35,6 @@ namespace Antlr3.Analysis
     using System.Collections.Generic;
     using System.Linq;
     using Antlr3.Misc;
-    using Antlr.Runtime.JavaExtensions;
 
     using ANTLRParser = Antlr3.Grammars.ANTLRParser;
 

@@ -33,15 +33,15 @@
 namespace Antlr3.Tool
 {
     using System.Collections.Generic;
-    using Antlr.Runtime.JavaExtensions;
+    using System.Linq;
     using Antlr.Runtime.Tree;
     using Antlr3.Codegen;
     using Antlr3.Extensions;
     using Antlr3.Grammars;
-    using Console = System.Console;
+
     using Exception = System.Exception;
-    using StringTemplate = Antlr4.StringTemplate.Template;
     using StringBuilder = System.Text.StringBuilder;
+    using StringTemplate = Antlr4.StringTemplate.Template;
     using TemplateGroup = Antlr4.StringTemplate.TemplateGroup;
     using TemplateGroupFile = Antlr4.StringTemplate.TemplateGroupFile;
 
@@ -114,7 +114,9 @@ namespace Antlr3.Tool
             ASSOC assoc = ASSOC.left;
             if (t.terminalOptions != null)
             {
-                string a = (string)t.terminalOptions.get("assoc");
+                object o;
+                t.terminalOptions.TryGetValue("assoc", out o);
+                string a = o as string;
                 if (a != null)
                 {
                     if (a.Equals(ASSOC.right.ToString()))
@@ -264,13 +266,11 @@ namespace Antlr3.Tool
                 generator.Templates.GetInstanceOf("recRuleSetResultAction");
             ruleST.SetAttribute("setResultAction", setResultST);
 
-            IDictionary<int, string> opPrecRuleAlts = new Dictionary<int, string>();
-            opPrecRuleAlts.addAll(binaryAlts);
-            opPrecRuleAlts.addAll(ternaryAlts);
-            opPrecRuleAlts.addAll(suffixAlts);
+            IDictionary<int, string> opPrecRuleAlts = binaryAlts.Concat(ternaryAlts).Concat(suffixAlts).ToDictionary(i => i.Key, i => i.Value);
             foreach (int alt in opPrecRuleAlts.Keys)
             {
-                string altText = opPrecRuleAlts.get(alt);
+                string altText;
+                opPrecRuleAlts.TryGetValue(alt, out altText);
                 StringTemplate altST = recRuleTemplates.GetInstanceOf("recRuleAlt");
                 StringTemplate predST =
                     generator.Templates.GetInstanceOf("recRuleAltPredicate");
@@ -388,8 +388,11 @@ namespace Antlr3.Tool
         public int NextPrecedence(int alt)
         {
             int p = Precedence(alt);
-            if (altAssociativity.get(alt) == ASSOC.left)
+            ASSOC assoc;
+            altAssociativity.TryGetValue(alt, out assoc);
+            if (assoc == ASSOC.left)
                 p++;
+
             return p;
         }
 

@@ -49,7 +49,6 @@ using Antlr3.Tool;
 using Antlr3.Extensions;
 using BitSet = Antlr.Runtime.BitSet;
 using DFA = Antlr.Runtime.DFA;
-using Antlr.Runtime.JavaExtensions;
 }
 
 optionsSpec
@@ -130,7 +129,7 @@ block
 outerAlternative returns [bool isLeftRec]
 @init
 {
-GrammarAST rew=(GrammarAST)$start.getNextSibling();
+GrammarAST rew=(GrammarAST)$start.Parent.GetChild( $start.ChildIndex + 1 );
 if (rew.Type != REWRITES)
 	rew = null;
 }

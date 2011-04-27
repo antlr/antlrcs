@@ -34,7 +34,6 @@ namespace Antlr3.Analysis
 {
     using System.Collections.Generic;
     using System.Linq;
-    using Antlr.Runtime.JavaExtensions;
     using Antlr3.Misc;
 
     using BitSet = Antlr3.Misc.BitSet;
@@ -445,7 +444,8 @@ namespace Antlr3.Analysis
             {
                 // track which targets we've hit
                 int tI = targetState.StateNumber;
-                Transition oldTransition = (Transition)targetToLabelMap.get( tI );
+                Transition oldTransition;
+                targetToLabelMap.TryGetValue(tI, out oldTransition);
                 if ( oldTransition != null )
                 {
                     //JSystem.@out.println("extra transition to "+tI+" upon "+label.toString(dfa.nfa.grammar));
@@ -497,10 +497,10 @@ namespace Antlr3.Analysis
                 Console.Out.WriteLine( "closure(" + d + ")" );
             }
 
-            IList<NFAConfiguration> configs = new List<NFAConfiguration>();
+            List<NFAConfiguration> configs = new List<NFAConfiguration>();
             // Because we are adding to the configurations in closure
             // must clone initial list so we know when to stop doing closure
-            configs.addAll( d.nfaConfigurations );
+            configs.AddRange( d.nfaConfigurations );
             // for each NFA configuration in d (abort if we detect non-LL(*) state)
             int numConfigs = configs.Count;
             for ( int i = 0; i < numConfigs; i++ )
@@ -1550,8 +1550,8 @@ namespace Antlr3.Analysis
                 for ( int i = 0; i < numConfigs; i++ )
                 {
                     NFAConfiguration configuration = (NFAConfiguration)d.nfaConfigurations.Get( i );
-                    SemanticContext semCtx = (SemanticContext)
-                            altToPredMap.get( configuration.alt );
+                    SemanticContext semCtx;
+                    altToPredMap.TryGetValue(configuration.alt, out semCtx);
                     if ( semCtx != null )
                     {
                         // resolve (first found) with pred
@@ -1640,7 +1640,8 @@ namespace Antlr3.Analysis
                     if ( configuration.semanticContext !=
                          SemanticContext.EmptySemanticContext )
                     {
-                        OrderedHashSet<SemanticContext> predSet = altToSetOfContextsMap.get( altI );
+                        OrderedHashSet<SemanticContext> predSet;
+                        altToSetOfContextsMap.TryGetValue(altI, out predSet);
                         predSet.Add( configuration.semanticContext );
                     }
                     else
@@ -1680,7 +1681,8 @@ namespace Antlr3.Analysis
             IList<int> incompletelyCoveredAlts = new List<int>();
             foreach ( int altI in nondeterministicAlts )
             {
-                OrderedHashSet<SemanticContext> contextsForThisAlt = altToSetOfContextsMap.get( altI );
+                OrderedHashSet<SemanticContext> contextsForThisAlt;
+                altToSetOfContextsMap.TryGetValue(altI, out contextsForThisAlt);
                 if ( nondetAltsWithUncoveredConfiguration.Contains( altI ) )
                 { // >= 1 config has no ctx
                     if ( contextsForThisAlt.Count > 0 )
@@ -1736,7 +1738,8 @@ namespace Antlr3.Analysis
                             }
                             else
                             {
-                                ICollection<IToken> locations = altToLocationsReachableWithoutPredicate.get( altI );
+                                ICollection<IToken> locations;
+                                altToLocationsReachableWithoutPredicate.TryGetValue(altI, out locations);
                                 if ( locations == null )
                                 {
                                     locations = new HashSet<IToken>();

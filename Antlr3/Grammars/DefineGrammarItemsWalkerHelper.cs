@@ -33,10 +33,9 @@
 namespace Antlr3.Grammars
 {
     using System;
-    using Antlr.Runtime.JavaExtensions;
+    using System.Linq;
     using Antlr.Runtime.Tree;
     using Antlr3.Tool;
-    using System.Linq;
 
     partial class DefineGrammarItemsWalker
     {
@@ -74,7 +73,7 @@ namespace Antlr3.Grammars
             // find the grammar spec
             while ( !p.Text.Equals( "grammar" ) )
             {
-                p = (GrammarAST)p.getNextSibling();
+                p = (GrammarAST)p.Parent.GetChild(p.ChildIndex + 1);
             }
             for ( int i = 0; i < p.ChildCount; i++ )
             {

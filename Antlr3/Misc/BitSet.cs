@@ -34,7 +34,6 @@ namespace Antlr3.Misc
 {
     using System.Collections.Generic;
     using System.Linq;
-    using Antlr.Runtime.JavaExtensions;
 
     using ArgumentException = System.ArgumentException;
     using Array = System.Array;
@@ -46,8 +45,6 @@ namespace Antlr3.Misc
     using IList = System.Collections.IList;
     using Label = Antlr3.Analysis.Label;
     using Math = System.Math;
-    using NotImplementedException = System.NotImplementedException;
-    using Obsolete = System.ObsoleteAttribute;
     using StringBuilder = System.Text.StringBuilder;
 
     /**A BitSet to replace java.util.BitSet.

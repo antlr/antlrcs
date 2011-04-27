@@ -379,7 +379,7 @@ namespace Antlr3.Tool
 
         public virtual NFAState GetState( int s )
         {
-            return (NFAState)numberToStateList[s];
+            return numberToStateList[s];
         }
 
         public virtual void AssignTokenTypes()
@@ -495,7 +495,7 @@ namespace Antlr3.Tool
             // make set of all rules defined thus far walking delegation tree.
             // the same rule in two delegates resolves in favor of first found
             // in tree therefore second must not be included
-            ruleDefs.addAll( localRuleDefs );
+            ruleDefs.UnionWith( localRuleDefs );
 
             // pass larger set of defined rules to delegates
             if ( p.children != null )

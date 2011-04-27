@@ -32,9 +32,7 @@
 
 namespace Antlr3.Grammars
 {
-    using System;
     using Antlr.Runtime;
-    using Antlr.Runtime.JavaExtensions;
     using Antlr.Runtime.Tree;
 
     using ErrorManager = Antlr3.Tool.ErrorManager;

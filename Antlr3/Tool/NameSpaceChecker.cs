@@ -34,7 +34,6 @@ namespace Antlr3.Tool
 {
     using System.Collections.Generic;
     using System.Linq;
-    using Antlr.Runtime.JavaExtensions;
 
     using IToken = Antlr.Runtime.IToken;
     using Label = Antlr3.Analysis.Label;
@@ -285,8 +284,8 @@ namespace Antlr3.Tool
          */
         public virtual bool CheckForLabelTypeMismatch( Rule r, IToken label, LabelType type )
         {
-            Grammar.LabelElementPair prevLabelPair =
-                (Grammar.LabelElementPair)r.LabelNameSpace.get( label.Text );
+            Grammar.LabelElementPair prevLabelPair;
+            r.LabelNameSpace.TryGetValue(label.Text, out prevLabelPair);
             if ( prevLabelPair != null )
             {
                 // label already defined; if same type, no problem

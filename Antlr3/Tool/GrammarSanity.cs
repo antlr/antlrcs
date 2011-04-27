@@ -33,7 +33,6 @@
 namespace Antlr3.Tool
 {
     using System.Collections.Generic;
-    using Antlr.Runtime.JavaExtensions;
 
     using ANTLRParser = Antlr3.Grammars.ANTLRParser;
     using NFAState = Antlr3.Analysis.NFAState;
@@ -297,7 +296,7 @@ namespace Antlr3.Tool
         {
             if ( IsValidSimpleElementNode( elementAST ) )
             {
-                GrammarAST next = (GrammarAST)elementAST.getNextSibling();
+                GrammarAST next = (GrammarAST)elementAST.Parent.GetChild(elementAST.ChildIndex + 1);
                 if ( !IsNextNonActionElementEOA( next ) )
                 {
                     ErrorManager.GrammarWarning( ErrorManager.MSG_REWRITE_FOR_MULTI_ELEMENT_ALT,
@@ -322,7 +321,7 @@ namespace Antlr3.Tool
             case ANTLRParser.BACKTRACK_SEMPRED:
             case ANTLRParser.GATED_SEMPRED:
                 EnsureAltIsSimpleNodeOrTree( altAST,
-                                            (GrammarAST)elementAST.getNextSibling(),
+                                            (GrammarAST)elementAST.Parent.GetChild(elementAST.ChildIndex + 1),
                                             outerAltNum );
                 return;
             }
@@ -352,12 +351,14 @@ namespace Antlr3.Tool
             while ( t.Type == ANTLRParser.ACTION ||
                     t.Type == ANTLRParser.SEMPRED )
             {
-                t = (GrammarAST)t.getNextSibling();
+                t = (GrammarAST)t.Parent.GetChild(t.ChildIndex + 1);
             }
+
             if ( t.Type == ANTLRParser.EOA )
             {
                 return true;
             }
+
             return false;
         }
     }

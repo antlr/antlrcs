@@ -34,8 +34,7 @@ namespace Antlr3.Tool
 {
     using System;
     using System.Collections.Generic;
-    using Antlr.Runtime.JavaExtensions;
-    using Antlr3.Misc;
+    using Antlr3.Extensions;
 
     using BitSet = Antlr3.Misc.BitSet;
     using CultureInfo = System.Globalization.CultureInfo;
@@ -44,23 +43,19 @@ namespace Antlr3.Tool
     using FieldAccessException = System.FieldAccessException;
     using FieldInfo = System.Reflection.FieldInfo;
     using ICollection = System.Collections.ICollection;
-    using IOException = System.IO.IOException;
+    using ITemplateErrorListener = Antlr4.StringTemplate.ITemplateErrorListener;
     using IToken = Antlr.Runtime.IToken;
     using NFAState = Antlr3.Analysis.NFAState;
     using Path = System.IO.Path;
     using RecognitionException = Antlr.Runtime.RecognitionException;
     using StackFrame = System.Diagnostics.StackFrame;
-    using StreamReader = System.IO.StreamReader;
     using StringTemplate = Antlr4.StringTemplate.Template;
     using TemplateGroup = Antlr4.StringTemplate.TemplateGroup;
-    using TargetInvocationException = System.Reflection.TargetInvocationException;
+    using TemplateGroupFile = Antlr4.StringTemplate.TemplateGroupFile;
+    using TemplateMessage = Antlr4.StringTemplate.Misc.TemplateMessage;
     using Thread = System.Threading.Thread;
     using Tool = Antlr3.AntlrTool;
     using TraceListener = System.Diagnostics.TraceListener;
-    using ITemplateErrorListener = Antlr4.StringTemplate.ITemplateErrorListener;
-    using TemplateErrorManager = Antlr4.StringTemplate.Misc.ErrorManager;
-    using TemplateGroupFile = Antlr4.StringTemplate.TemplateGroupFile;
-    using TemplateMessage = Antlr4.StringTemplate.Misc.TemplateMessage;
 
     public static class ErrorManager
     {
@@ -267,7 +262,7 @@ namespace Antlr3.Tool
             {
                 if ( FormatWantsSingleLineMessage() )
                 {
-                    msg = msg.replaceAll( "\n", " " );
+                    msg = msg.Replace( '\n', ' ' );
                 }
                 Console.Error.WriteLine( msg );
 
@@ -280,7 +275,7 @@ namespace Antlr3.Tool
                 String outputMsg = msg.ToString();
                 if ( FormatWantsSingleLineMessage() )
                 {
-                    outputMsg = outputMsg.replaceAll( "\n", " " );
+                    outputMsg = outputMsg.Replace( '\n', ' ' );
                 }
                 Console.Error.WriteLine( outputMsg );
 
@@ -293,7 +288,7 @@ namespace Antlr3.Tool
                 String outputMsg = msg.ToString();
                 if ( FormatWantsSingleLineMessage() )
                 {
-                    outputMsg = outputMsg.replaceAll( "\n", " " );
+                    outputMsg = outputMsg.Replace( '\n', ' ' );
                 }
                 Console.Error.WriteLine( outputMsg );
 
@@ -306,7 +301,7 @@ namespace Antlr3.Tool
                 String outputMsg = msg.ToString();
                 if ( FormatWantsSingleLineMessage() )
                 {
-                    outputMsg = outputMsg.replaceAll( "\n", " " );
+                    outputMsg = outputMsg.Replace( '\n', ' ' );
                 }
                 Console.Error.WriteLine( outputMsg );
 
@@ -594,8 +589,8 @@ namespace Antlr3.Tool
 
         public static IANTLRErrorListener GetErrorListener()
         {
-            IANTLRErrorListener el =
-                (IANTLRErrorListener)threadToListenerMap.get( Thread.CurrentThread );
+            IANTLRErrorListener el;
+            threadToListenerMap.TryGetValue(Thread.CurrentThread, out el);
             if ( el == null )
             {
                 return theDefaultErrorListener;
@@ -605,8 +600,8 @@ namespace Antlr3.Tool
 
         public static ErrorState GetErrorState()
         {
-            ErrorState ec =
-                (ErrorState)threadToErrorStateMap.get( Thread.CurrentThread );
+            ErrorState ec;
+            threadToErrorStateMap.TryGetValue(Thread.CurrentThread, out ec);
             if ( ec == null )
             {
                 ec = new ErrorState();
@@ -690,7 +685,8 @@ namespace Antlr3.Tool
             GetErrorState().errors++;
             Message msg = new GrammarDanglingStateMessage( probe, d );
             GetErrorState().errorMsgIDs.Add( msg.msgID );
-            ICollection<object> seen = (ICollection<object>)emitSingleError.get( "danglingState" );
+            ICollection<object> seen;
+            emitSingleError.TryGetValue("danglingState", out seen);
             if ( !seen.Contains( d.dfa.decisionNumber + "|" + d.AltSet ) )
             {
                 GetErrorListener().Error( msg );
@@ -865,7 +861,7 @@ namespace Antlr3.Tool
         /** Return first non ErrorManager code location for generating messages */
         private static StackFrame GetLastNonErrorManagerCodeLocation( Exception e )
         {
-            StackFrame[] stack = e.getStackTrace();
+            StackFrame[] stack = e.GetStackTrace();
             int i = 0;
             for ( ; i < stack.Length; i++ )
             {
@@ -1008,7 +1004,8 @@ namespace Antlr3.Tool
          */
         public static void Panic()
         {
-            Tool tool = (Tool)threadToToolMap.get( Thread.CurrentThread );
+            Tool tool;
+            threadToToolMap.TryGetValue(Thread.CurrentThread, out tool);
             if ( tool == null )
             {
                 // no tool registered, exit

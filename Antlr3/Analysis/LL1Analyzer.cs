@@ -33,7 +33,6 @@
 namespace Antlr3.Analysis
 {
     using System.Collections.Generic;
-    using Antlr.Runtime.JavaExtensions;
 
     using ANTLRParser = Antlr3.Grammars.ANTLRParser;
     using Console = System.Console;
@@ -170,7 +169,8 @@ namespace Antlr3.Analysis
         public LookaheadSet Follow( Rule r )
         {
             //JSystem.@out.println("> FOLLOW("+r.name+") in rule "+r.startState.enclosingRule);
-            LookaheadSet f = _followCache.get( r );
+            LookaheadSet f;
+            _followCache.TryGetValue(r, out f);
             if ( f != null )
             {
                 return f;
@@ -260,7 +260,7 @@ namespace Antlr3.Analysis
             // if transition 0 is a rule call and we don't want FOLLOW, check cache
             if ( !chaseFollowTransitions && transition0 is RuleClosureTransition )
             {
-                tset = _firstCache.get( (NFAState)transition0.Target );
+                _firstCache.TryGetValue((NFAState)transition0.Target, out tset);
             }
 
             // if not in cache, must compute

@@ -34,7 +34,6 @@ namespace Antlr3.Tool
 {
     using System.Collections.Generic;
     using System.Linq;
-    using Antlr.Runtime.JavaExtensions;
     using Antlr3.Extensions;
 
     using ANTLRParser = Antlr3.Grammars.ANTLRParser;
@@ -42,10 +41,8 @@ namespace Antlr3.Tool
     using CommonToken = Antlr.Runtime.CommonToken;
     using DFA = Antlr3.Analysis.DFA;
     using IIntSet = Antlr3.Misc.IIntSet;
-    using Interval = Antlr3.Misc.Interval;
     using IToken = Antlr.Runtime.IToken;
     using ITree = Antlr.Runtime.Tree.ITree;
-    using Math = System.Math;
     using NFAState = Antlr3.Analysis.NFAState;
     using StringTemplate = Antlr4.StringTemplate.Template;
 
@@ -304,7 +301,7 @@ namespace Antlr3.Tool
             object value = null;
             if ( blockOptions != null )
             {
-                value = blockOptions.get( key );
+                blockOptions.TryGetValue( key, out value );
             }
             return value;
         }
@@ -318,7 +315,9 @@ namespace Antlr3.Tool
             }
             foreach ( string optionName in options.Keys.ToArray() )
             {
-                string stored = SetBlockOption( grammar, optionName, options.get( optionName ) );
+                object option;
+                options.TryGetValue(optionName, out option);
+                string stored = SetBlockOption( grammar, optionName, option );
                 if ( stored == null )
                     options.Remove( optionName );
             }
@@ -684,7 +683,7 @@ namespace Antlr3.Tool
                 if (obj == null)
                     return 0;
 
-                return ObjectExtensions.ShiftPrimeXOR(obj.Token.Line, obj.Token.CharPositionInLine);
+                return obj.Token.Line ^ obj.Token.CharPositionInLine;
             }
         }
     }

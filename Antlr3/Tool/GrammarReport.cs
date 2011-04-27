@@ -36,7 +36,6 @@ namespace Antlr3.Tool
     using System.Collections.Generic;
     using System.Linq;
     using System.Reflection;
-    using Antlr.Runtime.JavaExtensions;
     using Antlr3.Grammars;
 
     using DFA = Antlr3.Analysis.DFA;
@@ -93,9 +92,8 @@ namespace Antlr3.Tool
             int totalNonSynPredProductions = 0;
             int totalNonSynPredRules = 0;
             ICollection<Rule> rules = g.Rules;
-            for (Iterator it = rules.iterator(); it.hasNext(); )
+            foreach (Rule r in rules)
             {
-                Rule r = (Rule)it.next();
                 if (!r.Name.StartsWith(Grammar.SynpredRulePrefix, StringComparison.OrdinalIgnoreCase))
                 {
                     totalNonSynPredProductions += r.NumberOfAlts;
@@ -320,11 +318,12 @@ namespace Antlr3.Tool
         protected static ReportData DecodeReportData(string dataS)
         {
             ReportData data = new ReportData();
-            StringTokenizer st = new StringTokenizer(dataS, "\t");
+            IEnumerator<string> st = dataS.Split('\t').Cast<string>().GetEnumerator();
             FieldInfo[] fields = typeof(ReportData).GetFields();
             foreach (FieldInfo f in fields)
             {
-                string v = st.nextToken();
+                st.MoveNext();
+                string v = st.Current;
                 try
                 {
                     if (f.FieldType == typeof(string))

@@ -33,7 +33,6 @@
 namespace Antlr3.Tool
 {
     using System.Collections.Generic;
-    using Antlr.Runtime.JavaExtensions;
     using Antlr3.Analysis;
     using Antlr3.Extensions;
 
@@ -71,11 +70,13 @@ namespace Antlr3.Tool
             // convert to string key to avoid 3.1 ST bug
             var altToLocationsWithStringKey = new SortedList<string, ICollection<IToken>>(StringComparer.Ordinal);
             List<int> alts = new List<int>();
-            alts.addAll( altToLocations.Keys );
+            alts.AddRange( altToLocations.Keys );
             alts.Sort();
             foreach ( int altI in alts )
             {
-                altToLocationsWithStringKey[altI.ToString()] = altToLocations.get( altI );
+                ICollection<IToken> locations;
+                altToLocations.TryGetValue(altI, out locations);
+                altToLocationsWithStringKey[altI.ToString()] = locations;
                 //List<string> tokens = new List<string>();
                 //foreach ( IToken t in altToLocations.get( altI ) )
                 //{

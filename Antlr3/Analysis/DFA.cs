@@ -1091,7 +1091,8 @@ namespace Antlr3.Analysis
             }
             // does a DFA state exist already with everything the same
             // except its state number?
-            DFAState existing = (DFAState)_uniqueStates.get( d );
+            DFAState existing;
+            _uniqueStates.TryGetValue(d, out existing);
             if ( existing != null )
             {
                 /*
