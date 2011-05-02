@@ -1,10 +1,10 @@
 ﻿/*
- * [The "BSD licence"]
- * Copyright (c) 2005-2008 Terence Parr
+ * [The "BSD license"]
+ * Copyright (c) 2011 Terence Parr
  * All rights reserved.
  *
  * Conversion to C#:
- * Copyright (c) 2008 Sam Harwell, Pixel Mine, Inc.
+ * Copyright (c) 2011 Sam Harwell, Pixel Mine, Inc.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -34,8 +34,8 @@ namespace Antlr3.Misc
 {
     using System.Collections.Generic;
 
-    using CLSCompliant = System.CLSCompliantAttribute;
-    using NotSupportedException = System.NotSupportedException;
+    using ArgumentException = System.ArgumentException;
+    using ArgumentNullException = System.ArgumentNullException;
 
     /** A HashMap that remembers the order that the elements were added.
      *  You can alter the ith element with this[i]=value too :)  Unique list.
@@ -45,32 +45,33 @@ namespace Antlr3.Misc
     public class OrderedHashSet<T> : ICollection<T>
     {
         /** Track the elements as they are added to the set */
-        [CLSCompliant(false)]
-        protected IList<T> _elements = new List<T>();
+        private readonly List<T> _elements = new List<T>();
 
-        [CLSCompliant(false)]
-        protected HashSet<T> _elementSet = new HashSet<T>();
+        private readonly HashSet<T> _elementSet = new HashSet<T>();
 
-        public T Get( int i )
+        public T this[int i]
         {
-            return _elements[i];
-        }
+            get
+            {
+                return _elements[i];
+            }
 
-        /** Replace an existing value with a new value; updates the element
-         *  list and the hash table, but not the key as that has not changed.
-         */
-        public T Set( int i, T value )
-        {
-            T oldElement = _elements[i];
-            _elements[i] = value; // update list
+            /** Replace an existing value with a new value; updates the element
+             *  list and the hash table, but not the key as that has not changed.
+             */
+            set
+            {
+                if (value == null)
+                    throw new ArgumentNullException("value");
 
-            _elementSet.Remove( oldElement );
-            _elementSet.Add( value );
+                T oldElement = _elements[i];
+                if (_elementSet.Contains(value) && !_elementSet.Comparer.Equals(oldElement, value))
+                    throw new ArgumentException("The value already exists in this set.", "value");
 
-            //throw new NotImplementedException();
-            //base.Remove( oldElement ); // now update the set: remove/add
-            //base.Add( value );
-            return oldElement;
+                _elements[i] = value; // update list
+                _elementSet.Remove( oldElement );
+                _elementSet.Add( value );
+            }
         }
 
         /** Add a value to list; keep in hashtable for consistency also;
@@ -86,22 +87,17 @@ namespace Antlr3.Misc
             }
 
             return false;
-            //throw new NotImplementedException();
-            //boolean result = base.add( value );
-            //if ( result )
-            //{  // only track if new element not in set
-            //    elements.add( (T)value );
-            //}
-            //return result;
         }
 
         public bool Remove( T o )
         {
-            throw new NotSupportedException();
-            /*
-            elements.remove(o);
-            return super.remove(o);
-            */
+            if (_elementSet.Remove(o))
+            {
+                _elements.Remove(o);
+                return true;
+            }
+
+            return false;
         }
 
         public void Clear()
@@ -116,17 +112,6 @@ namespace Antlr3.Misc
         public IList<T> GetElements()
         {
             return _elements;
-        }
-
-        public int Size()
-        {
-            /*
-            if ( elements.size()!=super.size() ) {
-                ErrorManager.internalError("OrderedHashSet: elements and set size differs; "+
-                                           elements.size()+"!="+super.size());
-            }
-            */
-            return _elements.Count;
         }
 
         public override string ToString()
@@ -148,7 +133,7 @@ namespace Antlr3.Misc
 
         public void CopyTo( T[] array, int arrayIndex )
         {
-            throw new System.NotImplementedException();
+            _elements.CopyTo(array, arrayIndex);
         }
 
         public int Count
@@ -163,7 +148,7 @@ namespace Antlr3.Misc
         {
             get
             {
-                throw new System.NotImplementedException();
+                return false;
             }
         }
 

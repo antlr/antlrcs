@@ -1787,10 +1787,10 @@ namespace Antlr3.Tool
 
                 // compare t with set i for disjointness
                 IntervalSet remainder = t; // remainder starts out as whole set to add
-                int numDisjointElements = disjointSets.Size();
+                int numDisjointElements = disjointSets.Count;
                 for ( int i = 0; i < numDisjointElements; i++ )
                 {
-                    IntervalSet s_i = (IntervalSet)disjointSets.Get( i );
+                    IntervalSet s_i = (IntervalSet)disjointSets[i];
 
                     if ( t.And( s_i ).IsNil )
                     { // nothing in common
@@ -1804,7 +1804,7 @@ namespace Antlr3.Tool
                     // Replace existing s_i with intersection since we
                     // know that will always be a non nil character class
                     IntervalSet intersection = (IntervalSet)s_i.And( t );
-                    disjointSets.Set( i, intersection );
+                    disjointSets[i] = intersection;
 
                     // Compute s_i-t to see what is in current set and not in incoming
                     IIntSet existingMinusNewElements = s_i.Subtract( t );
