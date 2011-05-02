@@ -342,8 +342,16 @@ namespace Antlr3.Codegen
             LoadTemplates(tool, language, grammar.type, outputOption, debug, out baseTemplates, out templates);
         }
 
-        private static readonly Dictionary<string, TemplateGroup> _coreTemplates = new Dictionary<string, TemplateGroup>();
-        private static readonly Dictionary<TemplateGroup, Dictionary<string, TemplateGroup>> _languageTemplates = new Dictionary<TemplateGroup, Dictionary<string, TemplateGroup>>(ObjectReferenceEqualityComparer<TemplateGroup>.Default);
+        private static readonly Dictionary<string, TemplateGroup> _coreTemplates =
+            new Dictionary<string, TemplateGroup>();
+
+#if AGGREGATE_TEMPLATE_GROUPS
+        private static readonly Dictionary<string, Dictionary<string, TemplateGroup>> _languageBaseTemplates =
+            new Dictionary<string, Dictionary<string, TemplateGroup>>();
+#endif
+
+        private static readonly Dictionary<TemplateGroup, Dictionary<string, TemplateGroup>> _languageTemplates =
+            new Dictionary<TemplateGroup, Dictionary<string, TemplateGroup>>(ObjectReferenceEqualityComparer<TemplateGroup>.Default);
 
         private sealed class ObjectReferenceEqualityComparer<T> : EqualityComparer<T>
             where T : class
@@ -478,6 +486,85 @@ namespace Antlr3.Codegen
             return CacheTemplateGroup(templateDirectories, language, name, superGroup);
         }
 
+#if AGGREGATE_TEMPLATE_GROUPS
+        private static TemplateGroup CacheTemplateGroup(string[] templateDirectories, string language, string name, TemplateGroup superGroup)
+        {
+            TemplateGroup baseTemplateGroup;
+            if (string.IsNullOrEmpty(name))
+            {
+                _coreTemplates.TryGetValue(language, out baseTemplateGroup);
+            }
+            else
+            {
+                Dictionary<string, TemplateGroup> baseTemplates;
+                if (!_languageBaseTemplates.TryGetValue(language, out baseTemplates))
+                {
+                    baseTemplates = new Dictionary<string, TemplateGroup>();
+                    _languageBaseTemplates[language] = baseTemplates;
+                }
+
+                baseTemplates.TryGetValue(name, out baseTemplateGroup);
+            }
+
+            if (baseTemplateGroup == null)
+            {
+                baseTemplateGroup = CacheBaseTemplateGroup(templateDirectories, language, name);
+            }
+
+            if (superGroup == null)
+                return baseTemplateGroup;
+
+            TemplateGroup group = new TemplateGroup();
+            group.TrackCreationEvents = CodeGenerator.LaunchTemplateInspector;
+            group.IterateAcrossValues = true;
+            group.ImportTemplates(baseTemplateGroup);
+            group.ImportTemplates(superGroup);
+
+            Dictionary<string, TemplateGroup> languageTemplates;
+            if (!_languageTemplates.TryGetValue(superGroup, out languageTemplates))
+            {
+                languageTemplates = new Dictionary<string, TemplateGroup>();
+                _languageTemplates[superGroup] = languageTemplates;
+            }
+
+            languageTemplates[name] = group;
+            return group;
+        }
+
+        private static TemplateGroup CacheBaseTemplateGroup(string[] templateDirectories, string language, string name)
+        {
+            string groupFileName;
+            if (string.IsNullOrEmpty(name))
+                groupFileName = FindTemplateFile(templateDirectories, string.Format("{0}.stg", language));
+            else
+                groupFileName = FindTemplateFile(templateDirectories, string.Format("{0}.stg", name));
+
+            if (string.IsNullOrEmpty(name))
+            {
+                TemplateGroup group = new TemplateGroupFile(groupFileName);
+                group.TrackCreationEvents = CodeGenerator.LaunchTemplateInspector;
+                group.IterateAcrossValues = true;
+                _coreTemplates[language] = group;
+                return group;
+            }
+            else
+            {
+                TemplateGroup group = new TemplateGroupFile(groupFileName);
+                group.TrackCreationEvents = CodeGenerator.LaunchTemplateInspector;
+                group.IterateAcrossValues = true;
+
+                Dictionary<string, TemplateGroup> groups;
+                if (!_languageBaseTemplates.TryGetValue(language, out groups))
+                {
+                    groups = new Dictionary<string, TemplateGroup>();
+                    _languageBaseTemplates[language] = groups;
+                }
+
+                groups[name] = group;
+                return group;
+            }
+        }
+#else
         private static TemplateGroup CacheTemplateGroup(string[] templateDirectories, string language, string name, TemplateGroup superGroup)
         {
             string groupFileName;
@@ -512,6 +599,7 @@ namespace Antlr3.Codegen
                 return group;
             }
         }
+#endif
 
         internal static string FindTemplateFile(string[] templateDirectories, string fileName)
         {
