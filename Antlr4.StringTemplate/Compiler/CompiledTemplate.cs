@@ -33,10 +33,12 @@
 namespace Antlr4.StringTemplate.Compiler
 {
     using System.Collections.Generic;
+    using System.Collections.ObjectModel;
     using System.Linq;
     using Antlr.Runtime;
     using Antlr.Runtime.Tree;
     using Antlr4.StringTemplate.Misc;
+
     using ArgumentNullException = System.ArgumentNullException;
     using Console = System.Console;
     using StringWriter = System.IO.StringWriter;
@@ -48,6 +50,9 @@ namespace Antlr4.StringTemplate.Compiler
      */
     public class CompiledTemplate
     {
+        private static readonly ReadOnlyCollection<CompiledTemplate> EmptyImplicitlyDefinedTemplates =
+            new ReadOnlyCollection<CompiledTemplate>(new CompiledTemplate[0]);
+
         private string _name;
 
         /** The original, immutable pattern (not really used again after
@@ -201,16 +206,14 @@ namespace Antlr4.StringTemplate.Compiler
             }
         }
 
-        public List<CompiledTemplate> ImplicitlyDefinedTemplates
+        public ReadOnlyCollection<CompiledTemplate> ImplicitlyDefinedTemplates
         {
             get
             {
-                return implicitlyDefinedTemplates;
-            }
+                if (implicitlyDefinedTemplates == null)
+                    return EmptyImplicitlyDefinedTemplates;
 
-            set
-            {
-                implicitlyDefinedTemplates = value;
+                return implicitlyDefinedTemplates.AsReadOnly();
             }
         }
 
@@ -320,10 +323,10 @@ namespace Antlr4.StringTemplate.Compiler
 
         public virtual void AddImplicitlyDefinedTemplate(CompiledTemplate sub)
         {
-            if (ImplicitlyDefinedTemplates == null)
-                ImplicitlyDefinedTemplates = new List<CompiledTemplate>();
+            if (implicitlyDefinedTemplates == null)
+                implicitlyDefinedTemplates = new List<CompiledTemplate>();
 
-            ImplicitlyDefinedTemplates.Add(sub);
+            implicitlyDefinedTemplates.Add(sub);
         }
 
         public virtual void DefineArgumentDefaultValueTemplates(TemplateGroup group)
