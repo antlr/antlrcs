@@ -34,7 +34,9 @@ namespace Antlr4.StringTemplate.Misc
 {
     using System.Collections.Generic;
     using System.Linq;
+
     using AmbiguousMatchException = System.Reflection.AmbiguousMatchException;
+    using ArgumentNullException = System.ArgumentNullException;
     using Array = System.Array;
     using ICollection = System.Collections.ICollection;
     using IDictionary = System.Collections.IDictionary;
@@ -49,6 +51,19 @@ namespace Antlr4.StringTemplate.Misc
     {
         private readonly Dictionary<Type, T> _backingStore = new Dictionary<Type, T>();
         private readonly Dictionary<Type, Type> _cache = new Dictionary<Type, Type>();
+
+        public TypeRegistry()
+        {
+        }
+
+        public TypeRegistry(IEnumerable<KeyValuePair<Type, T>> collection)
+        {
+            if (collection == null)
+                throw new ArgumentNullException("collection");
+
+            foreach (var type in collection)
+                this.Add(type.Key, type.Value);
+        }
 
         ICollection<Type> IDictionary<Type, T>.Keys
         {
