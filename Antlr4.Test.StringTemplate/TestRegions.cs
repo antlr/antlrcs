@@ -170,7 +170,7 @@ namespace Antlr4.Test.StringTemplate
             ErrorBuffer errors = new ErrorBuffer();
             group.Listener = errors;
             group.Load();
-            string expected = "g.stg 2:3: region a.r is embedded and thus already implicitly defined" + newline;
+            string expected = "g.stg 2:3: the explicit definition of region a.r hides an embedded definition in the same group" + newline;
             string result = errors.ToString();
             Assert.AreEqual(expected, result);
         }

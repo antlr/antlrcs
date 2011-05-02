@@ -39,6 +39,7 @@ namespace Antlr4.StringTemplate
     using Antlr.Runtime;
     using Antlr4.StringTemplate.Compiler;
     using Antlr4.StringTemplate.Misc;
+
     using ArgumentException = System.ArgumentException;
     using ArgumentNullException = System.ArgumentNullException;
     using Console = System.Console;
@@ -99,7 +100,7 @@ namespace Antlr4.StringTemplate
          *
          *  This structure is synchronized.
          */
-        protected TypeRegistry<IAttributeRenderer> renderers;
+        private TypeRegistry<IAttributeRenderer> renderers;
 
         private TypeRegistry<ITypeProxyFactory> _proxyFactories;
 
@@ -517,18 +518,61 @@ namespace Antlr4.StringTemplate
                     return;
                 }
 
-                if (prev.IsRegion)
+                /* If this region was previously defined, the following actions should be taken:
+                 *
+                 *      Previous type   Current type   Result   Applied     Reason
+                 *      -------------   ------------   ------   -------     ------
+                 *      Implicit        Implicit       Success  Previous    A rule may make multiple implicit references to the same region.
+                 *                                                          Keeping either has the same semantics, so the existing one is
+                 *                                                          used for slightly less overhead.
+                 *      Implicit        Explicit       Success  Current     A region with previous implicit references is now being explicitly
+                 *                                                          defined.
+                 *      Implicit        Embedded       Success  Current     A region with previous implicit references is now being defined
+                 *                                                          with an embedded region.
+                 *      Explicit        Implicit       Success  Previous    An explicitly defined region is now being implicitly referenced.
+                 *                                                          Make sure to keep the previous explicit definition as the actual
+                 *                                                          definition.
+                 *      Explicit        Explicit       Error    Previous    Multiple explicit definitions exist for the same region (template
+                 *                                                          redefinition error). Give an error and use the previous one.
+                 *      Explicit        Embedded       Warning  Previous    An explicit region definition already exists for the current
+                 *                                                          embedded region definition. The explicit definition overrides the
+                 *                                                          embedded definition and a warning is given since the embedded
+                 *                                                          definition is hidden.
+                 *      Embedded        Implicit       Success  Previous    A region with an embedded definition is now being implicitly
+                 *                                                          referenced. The embedded definition should be used.
+                 *      Embedded        Explicit       Warning  Current     A region with an embedded definition is now being explicitly
+                 *                                                          defined. The explicit definition overrides the embedded
+                 *                                                          definition and a warning is given since the embedded definition
+                 *                                                          is hidden.
+                 *      Embedded        Embedded       Error    Previous    Multiple embedded definitions of the same region were given in a
+                 *                                                          template. Give an error and use the previous one.
+                 */
+
+                // handle the Explicit/Explicit and Embedded/Embedded error cases
+                if (code.RegionDefType != Template.RegionType.Implicit && code.RegionDefType == prev.RegionDefType)
                 {
-                    if (code.RegionDefType != Template.RegionType.Implicit && prev.RegionDefType == Template.RegionType.Embedded)
-                    {
+                    if (code.RegionDefType == Template.RegionType.Embedded)
                         ErrorManager.CompiletimeError(ErrorType.EMBEDDED_REGION_REDEFINITION, null, defT, GetUnmangledTemplateName(name));
-                        return;
-                    }
-                    else if (code.RegionDefType == Template.RegionType.Implicit && prev.RegionDefType == Template.RegionType.Explicit)
-                    {
+                    else
                         ErrorManager.CompiletimeError(ErrorType.REGION_REDEFINITION, null, defT, GetUnmangledTemplateName(name));
+
+                    // keep the previous one
+                    return;
+                }
+                // handle the Explicit/Embedded and Embedded/Explicit warning cases
+                else if ((code.RegionDefType == Template.RegionType.Embedded && prev.RegionDefType == Template.RegionType.Explicit)
+                    || (code.RegionDefType == Template.RegionType.Explicit && prev.RegionDefType == Template.RegionType.Embedded))
+                {
+                    // TODO: can we make this a warning?
+                    ErrorManager.CompiletimeError(ErrorType.HIDDEN_EMBEDDED_REGION_DEFINITION, null, defT, GetUnmangledTemplateName(name));
+                    // keep the previous one only if that's the explicit definition
+                    if (prev.RegionDefType == Template.RegionType.Explicit)
                         return;
-                    }
+                }
+                // else if the current definition type is implicit, keep the previous one
+                else if (code.RegionDefType == Template.RegionType.Implicit)
+                {
+                    return;
                 }
             }
 

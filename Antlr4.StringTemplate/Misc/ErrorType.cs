@@ -54,6 +54,7 @@ namespace Antlr4.StringTemplate.Misc
         public static readonly ErrorType TEMPLATE_REDEFINITION = new ErrorType("redefinition of template {0}");
         public static readonly ErrorType EMBEDDED_REGION_REDEFINITION = new ErrorType("region {0} is embedded and thus already implicitly defined");
         public static readonly ErrorType REGION_REDEFINITION = new ErrorType("redefinition of region {0}");
+        public static readonly ErrorType HIDDEN_EMBEDDED_REGION_DEFINITION = new ErrorType("the explicit definition of region {0} hides an embedded definition in the same group");
         public static readonly ErrorType MAP_REDEFINITION = new ErrorType("redefinition of dictionary {0}");
         public static readonly ErrorType ALIAS_TARGET_UNDEFINED = new ErrorType("cannot alias {0} to undefined template: {1}");
         public static readonly ErrorType TEMPLATE_REDEFINITION_AS_MAP = new ErrorType("redefinition of template {0} as a map");
