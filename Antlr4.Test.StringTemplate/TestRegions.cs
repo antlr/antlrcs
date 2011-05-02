@@ -183,7 +183,7 @@ namespace Antlr4.Test.StringTemplate
                 "a() ::= <<\n" +
                 "[\n" +
                 "<@r>foo<@end>\n" +
-                "<@r()>" +
+                "<@r()>\n" +
                 "]\n" +
                 ">>\n"; // error; dup
             writeFile(dir, "g.stg", g);
@@ -192,8 +192,15 @@ namespace Antlr4.Test.StringTemplate
             ErrorBuffer errors = new ErrorBuffer();
             group.Listener = errors;
             group.Load();
-            string expected = "g.stg 3:2: redefinition of region a.r" + newline;
-            string result = errors.ToString();
+            Assert.AreEqual(0, errors.Errors.Count);
+
+            Template template = group.GetInstanceOf("a");
+            string expected =
+                "[" + newline +
+                "foo" + newline +
+                "foo" + newline +
+                "]";
+            string result = template.Render();
             Assert.AreEqual(expected, result);
         }
 

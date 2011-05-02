@@ -59,20 +59,24 @@ namespace Antlr4.Test.StringTemplate
         [TestMethod]
         public void TestIt()
         {
-            string templates = "main() ::= <<\n<@r>a<@end>\n<@r()>\n>>";
+            string templates =
+                "main() ::= <<" + newline +
+                "<@r>a<@end>" + newline +
+                "<@r()>" + newline +
+                ">>";
             writeFile(tmpdir, "t.stg", templates);
             TemplateGroup group = new TemplateGroupFile(Path.Combine(tmpdir, "t.stg"));
             ErrorBuffer errors = new ErrorBuffer();
             group.Listener = errors;
+            group.Load();
+            Assert.AreEqual(0, errors.Errors.Count);
 
-            // Force the compilation (this led to an NPE earlier that is reported in
-            // the error messages)
-            Template st = group.GetInstanceOf("main");
-
-            // A proper error messages should be written
-            Assert.AreEqual(
-                    "0:-1: region main.r is embedded and thus already implicitly defined" + newline,
-                    errors.ToString());
+            Template template = group.GetInstanceOf("main");
+            string expected =
+                "a" + newline +
+                "a";
+            string result = template.Render();
+            Assert.AreEqual(expected, result);
         }
 
         [TestMethod]

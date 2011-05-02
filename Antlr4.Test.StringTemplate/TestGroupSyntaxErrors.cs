@@ -175,7 +175,7 @@ namespace Antlr4.Test.StringTemplate
             group = new TemplateGroupFile(Path.Combine(tmpdir, "t.stg"));
             group.Listener = errors;
             group.Load(); // force load
-            string expected = "t.stg 1:6: mismatched input ')' expecting ID" + newline;
+            string expected = "t.stg 1:6: missing ID at ')'" + newline;
             string result = errors.ToString();
             Assert.AreEqual(expected, result);
         }
@@ -193,8 +193,8 @@ namespace Antlr4.Test.StringTemplate
             group.Listener = errors;
             group.Load(); // force load
             string expected =
-                "[t.stg 1:6: mismatched input ',' expecting ID, " +
-                "t.stg 1:7: mismatched input ')' expecting ID]";
+                "[t.stg 1:6: missing ID at ',', " +
+                "t.stg 1:7: missing ID at ')']";
             string result = errors.Errors.ToListString();
             Assert.AreEqual(expected, result);
         }
@@ -212,8 +212,7 @@ namespace Antlr4.Test.StringTemplate
             group.Listener = errors;
             group.Load(); // force load
             string expected =
-                "[t.stg 1:4: no viable alternative at input 'a', " +
-                "t.stg 1:6: garbled template definition starting at 'b']";
+                "[t.stg 1:6: no viable alternative at input 'b']";
             string result = errors.Errors.ToListString();
             Assert.AreEqual(expected, result);
         }
@@ -232,23 +231,6 @@ namespace Antlr4.Test.StringTemplate
             group.Load(); // force load
             // TODO: The forced k=2 in TemplateParser results in a message for 'a' instead of 'b'.
             string expected = "[t.stg 1:13: 'a' came as a complete surprise to me]";
-            string result = errors.Errors.ToListString();
-            Assert.AreEqual(expected, result);
-        }
-
-        [TestMethod]
-        public void TestMap()
-        {
-            string templates =
-                "d ::= []\n";
-            writeFile(tmpdir, "t.stg", templates);
-
-            TemplateGroupFile group = null;
-            ErrorBuffer errors = new ErrorBuffer();
-            group = new TemplateGroupFile(Path.Combine(tmpdir, "t.stg"));
-            group.Listener = errors;
-            group.Load(); // force load
-            string expected = "[t.stg 1:7: missing dictionary entry at ']']";
             string result = errors.Errors.ToListString();
             Assert.AreEqual(expected, result);
         }

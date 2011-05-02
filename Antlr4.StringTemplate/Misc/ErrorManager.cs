@@ -116,10 +116,15 @@ namespace Antlr4.StringTemplate.Misc
             Listener.CompiletimeError(new TemplateCompiletimeMessage(error, srcName, templateToken, t, null, arg, arg2));
         }
 
-        public virtual void GroupSyntaxError(ErrorType error, string srcName, RecognitionException e, string msg)
+        public virtual void GroupSyntaxError(ErrorType error, string sourceName, IToken token)
         {
-            IToken t = e.Token;
-            Listener.CompiletimeError(new TemplateGroupCompiletimeMessage(error, srcName, e.Token, e, msg));
+            Listener.CompiletimeError(new TemplateGroupCompiletimeMessage(error, sourceName, token));
+        }
+
+        public virtual void GroupSyntaxError(ErrorType error, string sourceName, RecognitionException e, string message)
+        {
+            IToken token = e.Token;
+            Listener.CompiletimeError(new TemplateGroupCompiletimeMessage(error, sourceName, token, e, message));
         }
 
         public virtual void GroupLexerError(ErrorType error, string srcName, RecognitionException e, string msg)

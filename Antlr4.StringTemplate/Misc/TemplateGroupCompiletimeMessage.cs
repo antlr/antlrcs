@@ -44,8 +44,13 @@ namespace Antlr4.StringTemplate.Misc
         private readonly IToken token;
         private readonly string srcName;
 
+        public TemplateGroupCompiletimeMessage(ErrorType error, string srcName, IToken t)
+            : this(error, srcName, t, null, null, null)
+        {
+        }
+
         public TemplateGroupCompiletimeMessage(ErrorType error, string srcName, IToken t, Exception cause)
-            : this(error, srcName, t, cause, null)
+            : this(error, srcName, t, cause, null, null)
         {
         }
 

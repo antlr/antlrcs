@@ -128,26 +128,16 @@ templateDef[string prefix]
 	|   alias=ID '::=' target=ID  {_group.DefineTemplateAlias($alias, $target);}
 	;
 
-formalArgs returns[List<FormalArgument> args]
-@init {$args = new List<FormalArgument>();}
-    :	formalArg[$args]
-    	( ',' formalArg[$args] )*
-    	( ',' formalArgWithDefaultValue[$args] )*
-    |	formalArgWithDefaultValue[$args] ( ',' formalArgWithDefaultValue[$args] )*
-    |
+formalArgs returns[List<FormalArgument> args = new List<FormalArgument>()]
+	:	formalArg[$args] (',' formalArg[$args])*
+	|
 	;
 
 formalArg[List<FormalArgument> args]
+@init{bool hasOptionalParameter = false;}
 	:	ID
-		{$args.Add(new FormalArgument($ID.text));}
-    ;
-
-formalArgWithDefaultValue[List<FormalArgument> args]
-	:	ID
-		(	'=' a=STRING
-		|	'=' a=ANONYMOUS_TEMPLATE
-		|	'=' a='true'
-		|	'=' a='false'
+		(	'=' a=(STRING|ANONYMOUS_TEMPLATE|'true'|'false') {hasOptionalParameter = true;}
+		|	{if (hasOptionalParameter) _group.ErrorManager.GroupSyntaxError(ErrorType.REQUIRED_PARAMETER_AFTER_OPTIONAL, SourceName, input.LT(1));}
 		)
 		{$args.Add(new FormalArgument($ID.text, $a));}
     ;
@@ -176,16 +166,16 @@ dictDef
         }
 	;
 
-dict returns [IDictionary<string,object> mapping]
-@init {mapping=new Dictionary<string,object>();}
+dict returns [IDictionary<string,object> mapping = new Dictionary<string, object>()]
 	:   '[' dictPairs[mapping] ']'
 	;
 
 dictPairs[IDictionary<string,object> mapping]
-    :	keyValuePair[mapping]
-    	(',' keyValuePair[mapping])* (',' defaultValuePair[mapping])?
-    |	defaultValuePair[mapping]
-    ;
+	:	keyValuePair[mapping]
+		(',' keyValuePair[mapping])* (',' defaultValuePair[mapping])?
+	|	defaultValuePair[mapping]
+	|	/* no dictionary entries */
+	;
  	catch[RecognitionException] {
 		Error("missing dictionary entry at '"+input.LT(1).Text+"'");
 	}
@@ -199,16 +189,16 @@ keyValuePair[IDictionary<string,object> mapping]
 	;
 
 keyValue returns [object value]
-	:	BIGSTRING			{$value = _group.CreateSingleton($BIGSTRING);}
-	|	BIGSTRING_NO_NL		{$value = _group.CreateSingleton($BIGSTRING_NO_NL);}
-	|	ANONYMOUS_TEMPLATE	{$value = _group.CreateSingleton($ANONYMOUS_TEMPLATE);}
-	|	STRING				{$value = Utility.ReplaceEscapes(Utility.Strip($STRING.text, 1));}
-	|	TRUE				{$value = true;}
-	|	FALSE				{$value = false;}
+	:	a=BIGSTRING				{$value = _group.CreateSingleton($a);}
+	|	a=BIGSTRING_NO_NL		{$value = _group.CreateSingleton($a);}
+	|	a=ANONYMOUS_TEMPLATE	{$value = _group.CreateSingleton($a);}
+	|	a=STRING				{$value = Utility.ReplaceEscapes(Utility.Strip($a.text, 1));}
+	|	TRUE					{$value = true;}
+	|	FALSE					{$value = false;}
 	|	{input.LT(1).Text.Equals("key")}?=> ID
-							{$value = TemplateGroup.DictionaryKey;}
+								{$value = TemplateGroup.DictionaryKey;}
 	;
- 	catch[RecognitionException] {
+	catch[RecognitionException] {
 		Error("missing value for key at '"+input.LT(1).Text+"'");
 	}
 

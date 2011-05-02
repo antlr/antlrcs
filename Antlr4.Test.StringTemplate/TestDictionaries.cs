@@ -60,6 +60,21 @@ namespace Antlr4.Test.StringTemplate
         }
 
         [TestMethod]
+        public void TestEmptyDictionary()
+        {
+            string templates =
+                "d ::= []\n";
+            writeFile(tmpdir, "t.stg", templates);
+
+            TemplateGroupFile group = null;
+            ErrorBuffer errors = new ErrorBuffer();
+            group = new TemplateGroupFile(Path.Combine(tmpdir, "t.stg"));
+            group.Listener = errors;
+            group.Load(); // force load
+            Assert.AreEqual(0, errors.Errors.Count);
+        }
+
+        [TestMethod]
         public void TestDictValuesAreTemplates()
         {
             string templates =

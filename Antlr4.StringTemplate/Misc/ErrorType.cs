@@ -64,6 +64,7 @@ namespace Antlr4.StringTemplate.Misc
         public static readonly ErrorType NO_SUCH_OPTION = new ErrorType("no such option: {0}");
         public static readonly ErrorType INVALID_TEMPLATE_NAME = new ErrorType("invalid template name or path: {0}");
         public static readonly ErrorType ANON_ARGUMENT_MISMATCH = new ErrorType("anonymous template has {0} arg(s) but mapped across {1} value(s)");
+        public static readonly ErrorType REQUIRED_PARAMETER_AFTER_OPTIONAL = new ErrorType("Optional parameters must appear after all required parameters");
 
         // INTERNAL ERRORS
         public static readonly ErrorType INTERNAL_ERROR = new ErrorType("{0}");
