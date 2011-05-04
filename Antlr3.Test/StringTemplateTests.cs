@@ -4741,7 +4741,7 @@ namespace AntlrUnitTests
             IList names = new List<object>();
             names.Add( "Ter" );
             names.Add( "Tom" );
-            e.SetAttribute( "names", names.iterator() );
+            e.SetAttribute( "names", names.GetEnumerator() );
             string expecting = "TerTom, ";  // This does not give TerTom twice!!
             Assert.AreEqual( expecting, e.ToString() );
         }
