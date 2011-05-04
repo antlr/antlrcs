@@ -1,10 +1,10 @@
 ﻿/*
- * [The "BSD licence"]
- * Copyright (c) 2003-2008 Terence Parr
+ * [The "BSD license"]
+ * Copyright (c) 2011 Terence Parr
  * All rights reserved.
  *
  * Conversion to C#:
- * Copyright (c) 2008 Sam Harwell, Pixel Mine, Inc.
+ * Copyright (c) 2011 Sam Harwell, Pixel Mine, Inc.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -33,7 +33,6 @@
 namespace Antlr3.ST.Language
 {
     using System.Collections.Generic;
-    using Antlr.Runtime.JavaExtensions;
 
     /** <summary>
      *  Represents the name of a formal argument
@@ -139,10 +138,9 @@ namespace Antlr3.ST.Language
 
         public override int GetHashCode()
         {
-            return ObjectExtensions.ShiftPrimeXOR(
-                ( name != null ) ? name.GetHashCode() : 0,
-                ( defaultValueST != null ) ? defaultValueST.GetHashCode() : 0
-                );
+            int nameHash = (name != null) ? name.GetHashCode() : 0;
+            int defaultValueHash = (defaultValueST != null) ? defaultValueST.GetHashCode() : 0;
+            return nameHash ^ defaultValueHash;
         }
 
         public override string ToString()

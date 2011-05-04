@@ -30,35 +30,58 @@
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-namespace Antlr3.ST.Language
+namespace Antlr3.ST.Extensions
 {
-    using System.Collections.Generic;
-    using System.Linq;
+    using System;
 
-    using IEnumerable = System.Collections.IEnumerable;
-    using IEnumerator = System.Collections.IEnumerator;
+    using BindingFlags = System.Reflection.BindingFlags;
+    using TextWriter = System.IO.TextWriter;
 
-    public class Cat : List<object>
+    public static class ExceptionExtensions
     {
-        public Cat( IEnumerable attributes )
-            : base( Unfold( attributes.Cast<object>() ).ToArray() )
+        private static readonly Action<Exception> _internalPreserveStackTrace =
+            (Action<Exception>)Delegate.CreateDelegate(
+                typeof(Action<Exception>),
+                typeof(Exception).GetMethod(
+                    "InternalPreserveStackTrace",
+                    BindingFlags.Instance | BindingFlags.NonPublic));
+
+#pragma warning disable 618
+        public static bool IsCritical(this Exception e)
         {
+            if (e is AccessViolationException
+                || e is StackOverflowException
+                || e is ExecutionEngineException
+                || e is OutOfMemoryException
+                || e is BadImageFormatException
+                || e is AppDomainUnloadedException)
+            {
+                return true;
+            }
+
+            return false;
+        }
+#pragma warning restore 618
+
+        public static void PreserveStackTrace(this Exception e)
+        {
+            _internalPreserveStackTrace(e);
         }
 
-        static IEnumerable<object> Unfold( IEnumerable<object> items )
+        internal static void PrintStackTrace(this Exception e)
         {
-            return items.SelectMany( ( item ) =>
+            PrintStackTrace(e, Console.Error);
+        }
+
+        internal static void PrintStackTrace(this Exception e, TextWriter writer)
+        {
+            writer.WriteLine(e.ToString());
+            string trace = e.StackTrace ?? string.Empty;
+            foreach (string line in trace.Split('\n', '\r'))
             {
-                item = ASTExpr.ConvertAnythingIteratableToIterator( item );
-                if ( item is string )
-                    return Enumerable.Repeat( item, 1 );
-                else if ( item is IEnumerable )
-                    return ( (IEnumerable)item ).Cast<object>();
-                else if ( item is IEnumerator )
-                    return Enumerable.Repeat( item, 1 );
-                else
-                    return Enumerable.Repeat( item, 1 );
-            } );
+                if (!string.IsNullOrEmpty(line))
+                    writer.WriteLine("        " + line);
+            }
         }
     }
 }

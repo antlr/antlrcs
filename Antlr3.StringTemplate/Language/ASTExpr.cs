@@ -1,10 +1,10 @@
 ﻿/*
- * [The "BSD licence"]
- * Copyright (c) 2003-2008 Terence Parr
+ * [The "BSD license"]
+ * Copyright (c) 2011 Terence Parr
  * All rights reserved.
  *
  * Conversion to C#:
- * Copyright (c) 2008-2009 Sam Harwell, Pixel Mine, Inc.
+ * Copyright (c) 2011 Sam Harwell, Pixel Mine, Inc.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -42,6 +42,7 @@ namespace Antlr3.ST.Language
     using ICollection = System.Collections.ICollection;
     using IDictionary = System.Collections.IDictionary;
     using IEnumerable = System.Collections.IEnumerable;
+    using IEnumerator = System.Collections.IEnumerator;
     using IList = System.Collections.IList;
     using InvalidOperationException = System.InvalidOperationException;
     using IOException = System.IO.IOException;
@@ -442,11 +443,11 @@ namespace Antlr3.ST.Language
                 int numEmpty = 0;
                 for ( int a = 0; a < numAttributes; a++ )
                 {
-                    Iterator it = attributes[a] as Iterator;
-                    if ( it != null && it.hasNext() )
+                    IEnumerator it = attributes[a] as IEnumerator;
+                    if ( it != null && it.MoveNext() )
                     {
                         string argName = formalArgumentNames[a];
-                        object iteratedValue = it.next();
+                        object iteratedValue = it.Current;
                         argumentContext[argName] = iteratedValue;
                     }
                     else
@@ -486,15 +487,15 @@ namespace Antlr3.ST.Language
             attributeValue = ConvertArrayToList( attributeValue );
             attributeValue = ConvertAnythingIteratableToIterator( attributeValue );
 
-            Iterator iter = attributeValue as Iterator;
+            IEnumerator iter = attributeValue as IEnumerator;
             if ( iter != null )
             {
                 // results can be treated list an attribute, indicate ST created list
                 var resultVector = new StringTemplate.STAttributeList();
                 int i = 0;
-                while ( iter.hasNext() )
+                while ( iter.MoveNext() )
                 {
-                    object ithValue = iter.next();
+                    object ithValue = iter.Current;
                     if ( ithValue == null )
                     {
                         if ( _nullValue == null )
@@ -806,7 +807,7 @@ namespace Antlr3.ST.Language
                 if ( attributes != null )
                 {
                     string propertyName2 = (string)property;
-                    value = attributes.get( propertyName2 );
+                    attributes.TryGetValue( propertyName2, out value );
                     return value;
                 }
             }
@@ -919,9 +920,10 @@ namespace Antlr3.ST.Language
             if ( enumerable != null )
                 return enumerable.Cast<object>().Any();
 
-            Iterator iterator = a as Iterator;
-            if ( iterator != null )
-                return iterator.hasNext();
+            // have to simply return true here for IEnumerator because there's no immutable way to check its contents
+            //IEnumerator iterator = a as IEnumerator;
+            //if (iterator != null)
+            //    return iterator.hasNext();
 
             // any other non-null object, return true--it's present
             return true;
@@ -1024,7 +1026,7 @@ namespace Antlr3.ST.Language
 
                 // normalize
                 o = ConvertAnythingIteratableToIterator(o);
-                Iterator iter = o as Iterator;
+                IEnumerator iter = o as IEnumerator;
                 if (iter != null)
                     return WriteIterableValue(self, iter, @out);
 
@@ -1114,13 +1116,13 @@ namespace Antlr3.ST.Language
             return n;
         }
 
-        protected virtual int WriteIterableValue(StringTemplate self, Iterator iter, IStringTemplateWriter @out)
+        protected virtual int WriteIterableValue(StringTemplate self, IEnumerator iter, IStringTemplateWriter @out)
         {
             int n = 0;
             bool seenAValue = false;
-            while (iter.hasNext())
+            while (iter.MoveNext())
             {
-                object iterValue = iter.next() ?? _nullValue;
+                object iterValue = iter.Current ?? _nullValue;
 
                 if (iterValue != null)
                 {
@@ -1165,7 +1167,7 @@ namespace Antlr3.ST.Language
                             continue;
                         }
                     }
-                    else if (!(iterValue is Iterator))
+                    else if (!(iterValue is IEnumerator))
                     {
                         // if not possible to be missing, don't waste time
                         // writing to temp buffer; might need separator though
@@ -1377,15 +1379,15 @@ namespace Antlr3.ST.Language
 
             IDictionary dictionary = o as IDictionary;
             if ( dictionary != null )
-                return dictionary.Values.iterator();
+                return dictionary.Values.GetEnumerator();
 
             ICollection collection = o as ICollection;
             if ( collection != null )
-                return collection.iterator();
+                return collection.GetEnumerator();
 
             IEnumerable enumerable = o as IEnumerable;
             if ( enumerable != null )
-                return enumerable.Cast<object>().iterator();
+                return enumerable.Cast<object>().GetEnumerator();
 
             //// This code is implied in the last line
             //Iterator iterator = o as Iterator;
@@ -1395,17 +1397,17 @@ namespace Antlr3.ST.Language
             return o;
         }
 
-        protected static Iterator ConvertAnythingToIterator( object o )
+        protected static IEnumerator ConvertAnythingToIterator( object o )
         {
             o = ConvertAnythingIteratableToIterator( o );
 
-            Iterator iter = o as Iterator;
+            IEnumerator iter = o as IEnumerator;
             if ( iter != null )
                 return iter;
 
             var singleton = new StringTemplate.STAttributeList( 1 );
             singleton.Add( o );
-            return singleton.iterator();
+            return singleton.GetEnumerator();
         }
 
         /** <summary>
@@ -1419,14 +1421,15 @@ namespace Antlr3.ST.Language
             {
                 return null;
             }
+
             object f = attribute;
             attribute = ConvertAnythingIteratableToIterator( attribute );
-            Iterator it = attribute as Iterator;
+            IEnumerator it = attribute as IEnumerator;
             if ( it != null )
             {
-                if ( it.hasNext() )
+                if ( it.MoveNext() )
                 {
-                    f = it.next();
+                    f = it.Current;
                 }
             }
 
@@ -1444,23 +1447,27 @@ namespace Antlr3.ST.Language
             {
                 return null;
             }
+
             object theRest = attribute;
             attribute = ConvertAnythingIteratableToIterator( attribute );
-            Iterator it = attribute as Iterator;
+            IEnumerator it = attribute as IEnumerator;
             if ( it != null )
             {
                 var a = new List<object>();
-                if ( !it.hasNext() )
+                if ( !it.MoveNext() )
                 {
                     return null; // if not even one value return null
                 }
-                it.next(); // ignore first value
-                while ( it.hasNext() )
+
+                // ignore first value
+
+                while ( it.MoveNext() )
                 {
-                    object o = it.next();
+                    object o = it.Current;
                     if ( o != null )
                         a.Add( o );
                 }
+
                 return a;
             }
             else
@@ -1484,14 +1491,15 @@ namespace Antlr3.ST.Language
             {
                 return null;
             }
+
             object last = attribute;
             attribute = ConvertAnythingIteratableToIterator( attribute );
-            Iterator it = attribute as Iterator;
+            IEnumerator it = attribute as IEnumerator;
             if ( it != null )
             {
-                while ( it.hasNext() )
+                while ( it.MoveNext() )
                 {
-                    last = it.next();
+                    last = it.Current;
                 }
             }
 
@@ -1506,13 +1514,13 @@ namespace Antlr3.ST.Language
                 return null;
             }
             attribute = ConvertAnythingIteratableToIterator( attribute );
-            Iterator it = attribute as Iterator;
+            IEnumerator it = attribute as IEnumerator;
             if ( it != null )
             {
                 var a = new List<object>();
-                while ( it.hasNext() )
+                while ( it.MoveNext() )
                 {
-                    object o = it.next();
+                    object o = it.Current;
                     if ( o != null )
                         a.Add( o );
                 }
@@ -1529,16 +1537,20 @@ namespace Antlr3.ST.Language
                 return null;
             }
             attribute = ConvertAnythingIteratableToIterator( attribute );
-            Iterator it = attribute as Iterator;
+            IEnumerator it = attribute as IEnumerator;
             if ( it != null )
             {
                 var a = new List<object>();
-                while ( it.hasNext() )
+                while ( it.MoveNext() )
                 {
-                    object o = (object)it.next();
-                    if ( it.hasNext() )
-                        a.Add( o ); // only add if not last one
+                    object o = it.Current;
+                    a.Add( o );
                 }
+
+                // remove the last item
+                if (a.Count > 0)
+                    a.RemoveAt(a.Count - 1);
+
                 return a;
             }
             return null; // trunc(x)==null when x single-valued attribute
@@ -1572,15 +1584,15 @@ namespace Antlr3.ST.Language
             if ( enumerable != null )
                 return enumerable.Cast<object>().Count();
 
-            Iterator iterator = attribute as Iterator;
+            IEnumerator iterator = attribute as IEnumerator;
             if ( iterator != null )
             {
                 int i = 0;
-                while ( iterator.hasNext() )
+                while ( iterator.MoveNext() )
                 {
-                    iterator.next();
                     i++;
                 }
+
                 return i;
             }
 

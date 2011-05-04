@@ -1,10 +1,10 @@
 ﻿/*
- * [The "BSD licence"]
- * Copyright (c) 2003-2008 Terence Parr
+ * [The "BSD license"]
+ * Copyright (c) 2011 Terence Parr
  * All rights reserved.
  *
  * Conversion to C#:
- * Copyright (c) 2010 Sam Harwell, Pixel Mine, Inc.
+ * Copyright (c) 2011 Sam Harwell, Pixel Mine, Inc.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -36,7 +36,7 @@ namespace Antlr3.ST
     using System.Collections.Generic;
     using System.Linq;
     using System.Linq.Expressions;
-    using Antlr.Runtime.JavaExtensions;
+    using Antlr3.ST.Extensions;
 
     using AngleBracketTemplateLexer = Antlr3.ST.Language.AngleBracketTemplateLexer;
     using ANTLRReaderStream = Antlr.Runtime.ANTLRReaderStream;
@@ -539,8 +539,8 @@ namespace Antlr3.ST
          */
         public virtual void SetSuperGroup( string superGroupName )
         {
-            StringTemplateGroup superGroup =
-                (StringTemplateGroup)_nameToGroupMap.get( superGroupName );
+            StringTemplateGroup superGroup;
+            _nameToGroupMap.TryGetValue(superGroupName, out superGroup);
             if ( superGroup != null )
             {
                 // we've seen before; just use it
@@ -580,7 +580,8 @@ namespace Antlr3.ST
          */
         public virtual void ImplementInterface( string interfaceName )
         {
-            StringTemplateGroupInterface I = _nameToInterfaceMap.get( interfaceName );
+            StringTemplateGroupInterface I;
+            _nameToInterfaceMap.TryGetValue(interfaceName, out I);
             if ( I != null )
             {
                 // we've seen before; just use it
