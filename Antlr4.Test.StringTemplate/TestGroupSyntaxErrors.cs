@@ -218,6 +218,24 @@ namespace Antlr4.Test.StringTemplate
         }
 
         [TestMethod]
+        public void TestDefaultArgsOutOfOrder()
+        {
+            string templates =
+                "foo(a={hi}, b) ::= << >>\n";
+            writeFile(tmpdir, "t.stg", templates);
+
+            TemplateGroupFile group = null;
+            ErrorBuffer errors = new ErrorBuffer();
+            group = new TemplateGroupFile(Path.Combine(tmpdir, "t.stg"));
+            group.Listener = errors;
+            group.Load(); // force load
+            string expected =
+                "[t.stg 1:13: Optional parameters must appear after all required parameters]";
+            string result = errors.Errors.ToListString();
+            Assert.AreEqual(expected, result);
+        }
+
+        [TestMethod]
         public void TestErrorWithinTemplate()
         {
             string templates =

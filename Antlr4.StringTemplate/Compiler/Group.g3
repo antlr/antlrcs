@@ -129,15 +129,17 @@ templateDef[string prefix]
 	;
 
 formalArgs returns[List<FormalArgument> args = new List<FormalArgument>()]
+scope {
+bool hasOptionalParameter;
+}
 	:	formalArg[$args] (',' formalArg[$args])*
 	|
 	;
 
 formalArg[List<FormalArgument> args]
-@init{bool hasOptionalParameter = false;}
 	:	ID
-		(	'=' a=(STRING|ANONYMOUS_TEMPLATE|'true'|'false') {hasOptionalParameter = true;}
-		|	{if (hasOptionalParameter) _group.ErrorManager.GroupSyntaxError(ErrorType.REQUIRED_PARAMETER_AFTER_OPTIONAL, SourceName, input.LT(1));}
+		(	'=' a=(STRING|ANONYMOUS_TEMPLATE|'true'|'false') {$formalArgs::hasOptionalParameter = true;}
+		|	{if ($formalArgs::hasOptionalParameter) _group.ErrorManager.GroupSyntaxError(ErrorType.REQUIRED_PARAMETER_AFTER_OPTIONAL, SourceName, input.LT(1));}
 		)
 		{$args.Add(new FormalArgument($ID.text, $a));}
     ;
