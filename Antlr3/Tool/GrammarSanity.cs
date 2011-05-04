@@ -63,9 +63,9 @@ namespace Antlr3.Tool
             grammar.BuildNFA(); // make sure we have NFAs
             grammar.leftRecursiveRules = new HashSet<Rule>();
             List<HashSet<Rule>> listOfRecursiveCycles = new List<HashSet<Rule>>();
-            for ( int i = 0; i < grammar.composite.ruleIndexToRuleList.Count; i++ )
+            for ( int i = 0; i < grammar.composite.RuleIndexToRuleList.Count; i++ )
             {
-                Rule r = grammar.composite.ruleIndexToRuleList[i];
+                Rule r = grammar.composite.RuleIndexToRuleList[i];
                 if ( r != null )
                 {
                     visitedDuringRecursionCheck = new HashSet<Rule>();
@@ -114,7 +114,7 @@ namespace Antlr3.Tool
             if ( t0 is RuleClosureTransition )
             {
                 RuleClosureTransition refTrans = (RuleClosureTransition)t0;
-                Rule refRuleDef = refTrans.rule;
+                Rule refRuleDef = refTrans.Rule;
                 //String targetRuleName = ((NFAState)t0.target).getEnclosingRule();
                 if ( visitedDuringRecursionCheck.Contains( refRuleDef ) )
                 {
@@ -139,7 +139,7 @@ namespace Antlr3.Tool
                     if ( callReachedAcceptState )
                     {
                         NFAState followingState =
-                            ( (RuleClosureTransition)t0 ).followState;
+                            ( (RuleClosureTransition)t0 ).FollowState;
                         stateReachesAcceptState |=
                             TraceStatesLookingForLeftRecursion( followingState,
                                                                visitedStates,

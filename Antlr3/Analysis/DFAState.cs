@@ -71,17 +71,16 @@ namespace Antlr3.Analysis
     public class DFAState : State
     {
         public const int INITIAL_NUM_TRANSITIONS = 4;
-        public const int PREDICTED_ALT_UNSET = NFA.INVALID_ALT_NUMBER - 1;
 
         /** We are part of what DFA?  Use this ref to get access to the
          *  context trees for an alt.
          */
-        public DFA dfa;
+        private readonly DFA dfa;
 
         /** Track the transitions emanating from this DFA state.  The List
          *  elements are Transition objects.
          */
-        IList<Transition> _transitions =
+        private readonly IList<Transition> _transitions =
             new List<Transition>( INITIAL_NUM_TRANSITIONS );
 
         /** When doing an acyclic DFA, this is the number of lookahead symbols
@@ -89,7 +88,7 @@ namespace Antlr3.Analysis
          *  dfa states, but it is only a valid value if the user has specified
          *  a max fixed lookahead.
          */
-        int _k;
+        private int _k;
 
         /** The NFA->DFA algorithm may terminate leaving some states
          *  without a path to an accept state, implying that upon certain
@@ -97,20 +96,20 @@ namespace Antlr3.Analysis
          *  predicting a unique alternative can be made.  Recall that an
          *  accept state is one in which a unique alternative is predicted.
          */
-        int _acceptStateReachable = DFA.REACHABLE_UNKNOWN;
+        private Reachable _acceptStateReachable = Reachable.Unknown;
 
         /** Rather than recheck every NFA configuration in a DFA state (after
          *  resolving) in findNewDFAStatesAndAddDFATransitions just check
          *  this boolean.  Saves a linear walk perhaps DFA state creation.
          *  Every little bit helps.
          */
-        bool _resolvedWithPredicates = false;
+        private bool _resolvedWithPredicates = false;
 
         /** If a closure operation finds that we tried to invoke the same
          *  rule too many times (stack would grow beyond a threshold), it
          *  marks the state has aborted and notifies the DecisionProbe.
          */
-        public bool abortedDueToRecursionOverflow = false;
+        private bool _abortedDueToRecursionOverflow = false;
 
         /** If we detect recursion on more than one alt, decision is non-LL(*),
          *  but try to isolate it to only those states whose closure operations
@@ -128,24 +127,24 @@ namespace Antlr3.Analysis
          *  now and we simply report the problem.  If synpreds exist, I'll retry
          *  with k=1.
          */
-        internal bool abortedDueToMultipleRecursiveAlts = false;
+        private bool _abortedDueToMultipleRecursiveAlts = false;
 
         /** Build up the hash code for this state as NFA configurations
          *  are added as it's monotonically increasing list of configurations.
          */
-        int _cachedHashCode;
+        private int _cachedHashCode;
 
-        internal int cachedUniquelyPredicatedAlt = PREDICTED_ALT_UNSET;
+        private int? _cachedUniquelyPredicatedAlt;
 
-        public int minAltInConfigurations = int.MaxValue;
+        private int _minAltInConfigurations = int.MaxValue;
 
-        bool _atLeastOneConfigurationHasAPredicate = false;
+        private bool _atLeastOneConfigurationHasAPredicate = false;
 
         /** The set of NFA configurations (state,alt,context) for this DFA state */
-        public OrderedHashSet<NFAConfiguration> nfaConfigurations =
+        private OrderedHashSet<NFAConfiguration> _nfaConfigurations =
             new OrderedHashSet<NFAConfiguration>();
 
-        public IList<NFAConfiguration> configurationsWithLabeledEdges =
+        private IList<NFAConfiguration> _configurationsWithLabeledEdges =
             new List<NFAConfiguration>();
 
         /** Used to prevent the closure operation from looping to itself and
@@ -157,7 +156,7 @@ namespace Antlr3.Analysis
          *  Two configurations identical including semantic context are
          *  considered the same closure computation.  @see NFAToDFAConverter.closureBusy().
          */
-        internal HashSet<NFAConfiguration> closureBusy = new HashSet<NFAConfiguration>();
+        private HashSet<NFAConfiguration> _closureBusy = new HashSet<NFAConfiguration>();
 
         /** As this state is constructed (i.e., as NFA states are added), we
          *  can easily check for non-epsilon transitions because the only
@@ -167,33 +166,51 @@ namespace Antlr3.Analysis
          *  times size(nfa states), which can be pretty damn big.  It's better
          *  to simply track possible labels.
          */
-        OrderedHashSet<Label> _reachableLabels;
+        private OrderedHashSet<Label> _reachableLabels;
 
         public DFAState( DFA dfa )
         {
+            if (dfa == null)
+                throw new ArgumentNullException("dfa");
+
             this.dfa = dfa;
         }
 
         #region Properties
+
+        public DFA Dfa
+        {
+            get
+            {
+                return dfa;
+            }
+        }
+
         /** Is an accept state reachable from this state? */
-        public int AcceptStateReachable
+        public Reachable AcceptStateReachable
         {
             get
             {
                 return _acceptStateReachable;
             }
+
             set
             {
                 _acceptStateReachable = value;
             }
         }
-        public ICollection<int> AltSet
+
+        /** Get the set of all alts mentioned by all NFA configurations in this
+         *  DFA state.
+         */
+        public IEnumerable<int> AltSet
         {
             get
             {
-                return GetAltSet();
+                return _nfaConfigurations.Select(i => i.Alt).Distinct();
             }
         }
+
         public bool AtLeastOneConfigurationHasAPredicate
         {
             get
@@ -201,60 +218,155 @@ namespace Antlr3.Analysis
                 return _atLeastOneConfigurationHasAPredicate;
             }
         }
-        public ICollection<int> DisabledAlternatives
+
+        /** When more than one alternative can match the same input, the first
+         *  alternative is chosen to resolve the conflict.  The other alts
+         *  are "turned off" by setting the "resolved" flag in the NFA
+         *  configurations.  Return the set of disabled alternatives.  For
+         *
+         *  a : A | A | A ;
+         *
+         *  this method returns {2,3} as disabled.  This does not mean that
+         *  the alternative is totally unreachable, it just means that for this
+         *  DFA state, that alt is disabled.  There may be other accept states
+         *  for that alt.
+         */
+        public IEnumerable<int> DisabledAlternatives
         {
             get
             {
-                return GetDisabledAlternatives();
+                return _nfaConfigurations.Where(i => i.Resolved).Select(i => i.Alt).Distinct();
             }
         }
+
         public bool IsResolvedWithPredicates
         {
             get
             {
                 return _resolvedWithPredicates;
             }
+
             set
             {
                 _resolvedWithPredicates = value;
             }
         }
+
+        public bool AbortedDueToRecursionOverflow
+        {
+            get
+            {
+                return _abortedDueToRecursionOverflow;
+            }
+
+            set
+            {
+                _abortedDueToRecursionOverflow = value;
+            }
+        }
+
+        public bool AbortedDueToMultipleRecursiveAlts
+        {
+            get
+            {
+                return _abortedDueToMultipleRecursiveAlts;
+            }
+
+            set
+            {
+                _abortedDueToMultipleRecursiveAlts = value;
+            }
+        }
+
         public int LookaheadDepth
         {
             get
             {
                 return _k;
             }
+
             set
             {
                 _k = value;
-                if ( value > dfa.max_k )
+                if ( value > dfa.MaxLookahead )
                 {
                     // track max k for entire DFA
-                    dfa.max_k = value;
+                    dfa.MaxLookahead = value;
                 }
             }
         }
+
         public ICollection<Label> ReachableLabels
         {
             get
             {
-                return GetReachableLabels();
+                return _reachableLabels;
             }
         }
+
+        internal int? CachedUniquelyPredicatedAlt
+        {
+            get
+            {
+                return _cachedUniquelyPredicatedAlt;
+            }
+
+            set
+            {
+                _cachedUniquelyPredicatedAlt = value;
+            }
+        }
+
+        public int MinAltInConfigurations
+        {
+            get
+            {
+                return _minAltInConfigurations;
+            }
+
+            set
+            {
+                _minAltInConfigurations = value;
+            }
+        }
+
+        public OrderedHashSet<NFAConfiguration> NfaConfigurations
+        {
+            get
+            {
+                return _nfaConfigurations;
+            }
+        }
+
+        public IList<NFAConfiguration> ConfigurationsWithLabeledEdges
+        {
+            get
+            {
+                return _configurationsWithLabeledEdges;
+            }
+        }
+
+        public HashSet<NFAConfiguration> ClosureBusy
+        {
+            get
+            {
+                return _closureBusy;
+            }
+
+            set
+            {
+                _closureBusy = value;
+            }
+        }
+
         #endregion
 
         public virtual void Reset()
         {
             //nfaConfigurations = null; // getGatedPredicatesInNFAConfigurations needs
-            configurationsWithLabeledEdges = null;
-            closureBusy = null;
+            _configurationsWithLabeledEdges = null;
+            _closureBusy = null;
             _reachableLabels = null;
-        }
-
-        public virtual Transition Transition( int i )
-        {
-            return (Transition)_transitions[i];
         }
 
         public override int NumberOfTransitions
@@ -308,27 +420,27 @@ namespace Antlr3.Analysis
          */
         public virtual void AddNFAConfiguration( NFAState state, NFAConfiguration c )
         {
-            if ( nfaConfigurations.Contains( c ) )
+            if ( _nfaConfigurations.Contains( c ) )
             {
                 return;
             }
 
-            nfaConfigurations.Add( c );
+            _nfaConfigurations.Add( c );
 
             // track min alt rather than compute later
-            if ( c.alt < minAltInConfigurations )
+            if ( c.Alt < _minAltInConfigurations )
             {
-                minAltInConfigurations = c.alt;
+                _minAltInConfigurations = c.Alt;
             }
 
-            if ( c.semanticContext != SemanticContext.EmptySemanticContext )
+            if ( c.SemanticContext != SemanticContext.EmptySemanticContext )
             {
                 _atLeastOneConfigurationHasAPredicate = true;
             }
 
             // update hashCode; for some reason using context.hashCode() also
             // makes the GC take like 70% of the CPU and is slow!
-            _cachedHashCode += c.state + c.alt;
+            _cachedHashCode += c.State + c.Alt;
 
             // update reachableLabels
             // We're adding an NFA state; check to see if it has a non-epsilon edge
@@ -340,11 +452,11 @@ namespace Antlr3.Analysis
                     // this NFA state has a non-epsilon edge, track for fast
                     // walking later when we do reach on this DFA state we're
                     // building.
-                    configurationsWithLabeledEdges.Add( c );
+                    _configurationsWithLabeledEdges.Add( c );
                     if ( state.transition[1] == null )
                     {
                         // later we can check this to ignore o-A->o states in closure
-                        c.singleAtomTransitionEmanating = true;
+                        c.SingleAtomTransitionEmanating = true;
                     }
                     AddReachableLabel( label );
                 }
@@ -481,16 +593,6 @@ namespace Antlr3.Analysis
                     */
         }
 
-        public virtual OrderedHashSet<Label> GetReachableLabels()
-        {
-            return _reachableLabels;
-        }
-
-        public virtual void SetNFAConfigurations( OrderedHashSet<NFAConfiguration> configs )
-        {
-            this.nfaConfigurations = configs;
-        }
-
         /** A decent hash for a DFA state is the sum of the NFA state/alt pairs.
          *  This is used when we add DFAState objects to the DFA.states Map and
          *  when we compare DFA states.  Computed in addNFAConfiguration()
@@ -520,15 +622,17 @@ namespace Antlr3.Analysis
         public override bool Equals( object o )
         {
             // compare set of NFA configurations in this set with other
-            DFAState other = (DFAState)o;
+            DFAState other = o as DFAState;
+            if (other == null)
+                return false;
 
-            if ( object.ReferenceEquals( nfaConfigurations, other.nfaConfigurations ) )
+            if ( object.ReferenceEquals( _nfaConfigurations, other._nfaConfigurations ) )
                 return true;
 
-            if ( this.nfaConfigurations.Equals( other.nfaConfigurations ) )
+            if ( this._nfaConfigurations.Equals( other._nfaConfigurations ) )
                 return true;
 
-            if ( nfaConfigurations.SequenceEqual( other.nfaConfigurations ) )
+            if ( _nfaConfigurations.SequenceEqual( other._nfaConfigurations ) )
                 return true;
 
             return false;
@@ -543,32 +647,35 @@ namespace Antlr3.Analysis
          */
         public virtual int GetUniquelyPredictedAlt()
         {
-            if ( cachedUniquelyPredicatedAlt != PREDICTED_ALT_UNSET )
+            if ( _cachedUniquelyPredicatedAlt.HasValue )
             {
-                return cachedUniquelyPredicatedAlt;
+                return _cachedUniquelyPredicatedAlt.Value;
             }
+
             int alt = NFA.INVALID_ALT_NUMBER;
-            int numConfigs = nfaConfigurations.Count;
+            int numConfigs = _nfaConfigurations.Count;
             for ( int i = 0; i < numConfigs; i++ )
             {
-                NFAConfiguration configuration = (NFAConfiguration)nfaConfigurations[i];
+                NFAConfiguration configuration = _nfaConfigurations[i];
                 // ignore anything we resolved; predicates will still result
                 // in transitions out of this state, so must count those
                 // configurations; i.e., don't ignore resolveWithPredicate configs
-                if ( configuration.resolved )
+                if ( configuration.Resolved )
                 {
                     continue;
                 }
+
                 if ( alt == NFA.INVALID_ALT_NUMBER )
                 {
-                    alt = configuration.alt; // found first nonresolved alt
+                    alt = configuration.Alt; // found first nonresolved alt
                 }
-                else if ( configuration.alt != alt )
+                else if ( configuration.Alt != alt )
                 {
                     return NFA.INVALID_ALT_NUMBER;
                 }
             }
-            this.cachedUniquelyPredicatedAlt = alt;
+
+            this._cachedUniquelyPredicatedAlt = alt;
             return alt;
         }
 
@@ -579,47 +686,20 @@ namespace Antlr3.Analysis
         public virtual int GetUniqueAlt()
         {
             int alt = NFA.INVALID_ALT_NUMBER;
-            int numConfigs = nfaConfigurations.Count;
+            int numConfigs = _nfaConfigurations.Count;
             for ( int i = 0; i < numConfigs; i++ )
             {
-                NFAConfiguration configuration = (NFAConfiguration)nfaConfigurations[i];
+                NFAConfiguration configuration = _nfaConfigurations[i];
                 if ( alt == NFA.INVALID_ALT_NUMBER )
                 {
-                    alt = configuration.alt; // found first alt
+                    alt = configuration.Alt; // found first alt
                 }
-                else if ( configuration.alt != alt )
+                else if ( configuration.Alt != alt )
                 {
                     return NFA.INVALID_ALT_NUMBER;
                 }
             }
             return alt;
-        }
-
-        /** When more than one alternative can match the same input, the first
-         *  alternative is chosen to resolve the conflict.  The other alts
-         *  are "turned off" by setting the "resolved" flag in the NFA
-         *  configurations.  Return the set of disabled alternatives.  For
-         *
-         *  a : A | A | A ;
-         *
-         *  this method returns {2,3} as disabled.  This does not mean that
-         *  the alternative is totally unreachable, it just means that for this
-         *  DFA state, that alt is disabled.  There may be other accept states
-         *  for that alt.
-         */
-        public virtual ICollection<int> GetDisabledAlternatives()
-        {
-            HashSet<int> disabled = new HashSet<int>();
-            int numConfigs = nfaConfigurations.Count;
-            for ( int i = 0; i < numConfigs; i++ )
-            {
-                NFAConfiguration configuration = (NFAConfiguration)nfaConfigurations[i];
-                if ( configuration.resolved )
-                {
-                    disabled.Add( configuration.alt );
-                }
-            }
-            return disabled;
         }
 
         protected internal virtual HashSet<int> GetNonDeterministicAlts()
@@ -631,7 +711,7 @@ namespace Antlr3.Analysis
                 // if we have hit the max lookahead
                 return new HashSet<int>( AltSet );
             }
-            else if ( abortedDueToMultipleRecursiveAlts || abortedDueToRecursionOverflow )
+            else if ( AbortedDueToMultipleRecursiveAlts || AbortedDueToRecursionOverflow )
             {
                 // if we had to abort for non-LL(*) state assume all alts are a problem
                 return new HashSet<int>( AltSet );
@@ -668,7 +748,7 @@ namespace Antlr3.Analysis
             // save the overhead.  There are many o-a->o NFA transitions
             // and so we save a hash map and iterator creation for each
             // state.
-            int numConfigs = nfaConfigurations.Count;
+            int numConfigs = _nfaConfigurations.Count;
             if ( numConfigs <= 1 )
             {
                 return null;
@@ -680,8 +760,8 @@ namespace Antlr3.Analysis
                 new MultiMap<int, NFAConfiguration>();
             for ( int i = 0; i < numConfigs; i++ )
             {
-                NFAConfiguration configuration = (NFAConfiguration)nfaConfigurations[i];
-                int stateI = configuration.state;
+                NFAConfiguration configuration = (NFAConfiguration)_nfaConfigurations[i];
+                int stateI = configuration.State;
                 stateToConfigListMap.Map( stateI, configuration );
             }
             // potential conflicts are states with > 1 configuration and diff alts
@@ -699,9 +779,9 @@ namespace Antlr3.Analysis
                     NFAConfiguration c = (NFAConfiguration)configsForState[i];
                     if ( alt == 0 )
                     {
-                        alt = c.alt;
+                        alt = c.Alt;
                     }
-                    else if ( c.alt != alt )
+                    else if ( c.Alt != alt )
                     {
                         /*
                         JSystem.@out.println("potential conflict in state "+stateI+
@@ -717,7 +797,7 @@ namespace Antlr3.Analysis
                         // for example would terminate at state s1 and test predicate
                         // meaning input "ab" would test preds to decide what to
                         // do but it should match rule C w/o testing preds.
-                        if ( dfa.nfa.grammar.type != GrammarType.Lexer ||
+                        if ( dfa.Nfa.Grammar.type != GrammarType.Lexer ||
                              !dfa.NFADecisionStartState.enclosingRule.Name.Equals( Grammar.ArtificialTokensRuleName ) )
                         {
                             numPotentialConflicts++;
@@ -773,10 +853,10 @@ namespace Antlr3.Analysis
                         // conflicts means s.ctx==t.ctx or s.ctx is a stack
                         // suffix of t.ctx or vice versa (if alts differ).
                         // Also a conflict if s.ctx or t.ctx is empty
-                        if ( s.alt != t.alt && s.context.ConflictsWith( t.context ) )
+                        if ( s.Alt != t.Alt && s.Context.ConflictsWith( t.Context ) )
                         {
-                            nondeterministicAlts.Add( s.alt );
-                            nondeterministicAlts.Add( t.alt );
+                            nondeterministicAlts.Add( s.Alt );
+                            nondeterministicAlts.Add( t.Alt );
                         }
                     }
                 }
@@ -789,39 +869,20 @@ namespace Antlr3.Analysis
             return nondeterministicAlts;
         }
 
-        /** Get the set of all alts mentioned by all NFA configurations in this
-         *  DFA state.
-         */
-        public virtual HashSet<int> GetAltSet()
-        {
-            int numConfigs = nfaConfigurations.Count;
-            HashSet<int> alts = new HashSet<int>();
-            for ( int i = 0; i < numConfigs; i++ )
-            {
-                NFAConfiguration configuration = (NFAConfiguration)nfaConfigurations[i];
-                alts.Add( configuration.alt );
-            }
-            if ( alts.Count == 0 )
-            {
-                return null;
-            }
-            return alts;
-        }
-
         public virtual HashSet<SemanticContext> GetGatedSyntacticPredicatesInNFAConfigurations()
         {
-            int numConfigs = nfaConfigurations.Count;
+            int numConfigs = _nfaConfigurations.Count;
             HashSet<SemanticContext> synpreds = new HashSet<SemanticContext>();
             for ( int i = 0; i < numConfigs; i++ )
             {
-                NFAConfiguration configuration = (NFAConfiguration)nfaConfigurations[i];
+                NFAConfiguration configuration = (NFAConfiguration)_nfaConfigurations[i];
                 SemanticContext gatedPredExpr =
-                    configuration.semanticContext.GatedPredicateContext;
+                    configuration.SemanticContext.GatedPredicateContext;
                 // if this is a manual syn pred (gated and syn pred), add
                 if ( gatedPredExpr != null &&
-                     configuration.semanticContext.IsSyntacticPredicate )
+                     configuration.SemanticContext.IsSyntacticPredicate )
                 {
-                    synpreds.Add( configuration.semanticContext );
+                    synpreds.Add( configuration.SemanticContext );
                 }
             }
             if ( synpreds.Count == 0 )
@@ -860,12 +921,12 @@ namespace Antlr3.Analysis
         public virtual SemanticContext GetGatedPredicatesInNFAConfigurations()
         {
             SemanticContext unionOfPredicatesFromAllAlts = null;
-            int numConfigs = nfaConfigurations.Count;
+            int numConfigs = _nfaConfigurations.Count;
             for ( int i = 0; i < numConfigs; i++ )
             {
-                NFAConfiguration configuration = (NFAConfiguration)nfaConfigurations[i];
+                NFAConfiguration configuration = (NFAConfiguration)_nfaConfigurations[i];
                 SemanticContext gatedPredExpr =
-                    configuration.semanticContext.GatedPredicateContext;
+                    configuration.SemanticContext.GatedPredicateContext;
                 if ( gatedPredExpr == null )
                 {
                     // if we ever find a configuration w/o a gated predicate
@@ -873,7 +934,7 @@ namespace Antlr3.Analysis
                     // the indident edges.
                     return null;
                 }
-                else if ( acceptState || !configuration.semanticContext.IsSyntacticPredicate )
+                else if ( IsAcceptState || !configuration.SemanticContext.IsSyntacticPredicate )
                 {
                     // at this point we have a gated predicate and, due to elseif,
                     // we know it's an accept or not a syn pred.  In this case,
@@ -903,9 +964,9 @@ namespace Antlr3.Analysis
         {
             StringBuilder buf = new StringBuilder();
             buf.Append( StateNumber + ":{" );
-            for ( int i = 0; i < nfaConfigurations.Count; i++ )
+            for ( int i = 0; i < _nfaConfigurations.Count; i++ )
             {
-                NFAConfiguration configuration = (NFAConfiguration)nfaConfigurations[i];
+                NFAConfiguration configuration = (NFAConfiguration)_nfaConfigurations[i];
                 if ( i > 0 )
                 {
                     buf.Append( ", " );

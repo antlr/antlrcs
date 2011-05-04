@@ -53,23 +53,19 @@ namespace Antlr3.Analysis
          *  ...
          */
         public LL1DFA( int decisionNumber, NFAState decisionStartState, LookaheadSet[] altLook )
+            : base(decisionNumber, decisionStartState)
         {
             DFAState s0 = NewState();
-            startState = s0;
-            nfa = decisionStartState.nfa;
-            NumberOfAlts = nfa.grammar.GetNumberOfAltsForDecisionNFA( decisionStartState );
-            this.decisionNumber = decisionNumber;
-            this.NFADecisionStartState = decisionStartState;
-            InitAltRelatedInfo();
-            UnreachableAlts = null;
+            StartState = s0;
+            UnreachableAlts.Clear();
             for ( int alt = 1; alt < altLook.Length; alt++ )
             {
                 DFAState acceptAltState = NewState();
-                acceptAltState.acceptState = true;
+                acceptAltState.IsAcceptState = true;
                 SetAcceptState( alt, acceptAltState );
                 acceptAltState.LookaheadDepth = 1;
-                acceptAltState.cachedUniquelyPredicatedAlt = alt;
-                Label e = GetLabelForSet( altLook[alt].tokenTypeSet );
+                acceptAltState.CachedUniquelyPredicatedAlt = alt;
+                Label e = GetLabelForSet( altLook[alt].TokenTypeSet );
                 s0.AddTransition( acceptAltState, e );
             }
         }
@@ -77,18 +73,12 @@ namespace Antlr3.Analysis
         /** From a set of edgeset->list-of-alts mappings, create a DFA
          *  that uses syn preds for all |list-of-alts|>1.
          */
-        public LL1DFA( int decisionNumber,
-                      NFAState decisionStartState,
-                      MultiMap<IntervalSet, int> edgeMap )
+        public LL1DFA(int decisionNumber, NFAState decisionStartState, MultiMap<IntervalSet, int> edgeMap)
+            : base(decisionNumber, decisionStartState)
         {
             DFAState s0 = NewState();
-            startState = s0;
-            nfa = decisionStartState.nfa;
-            NumberOfAlts = nfa.grammar.GetNumberOfAltsForDecisionNFA( decisionStartState );
-            this.decisionNumber = decisionNumber;
-            this.NFADecisionStartState = decisionStartState;
-            InitAltRelatedInfo();
-            UnreachableAlts = null;
+            StartState = s0;
+            UnreachableAlts.Clear();
             foreach ( var edgeVar in edgeMap )
             {
                 IntervalSet edge = edgeVar.Key;
@@ -102,10 +92,10 @@ namespace Antlr3.Analysis
                 s0.AddTransition( s, e );
                 if ( alts.Count == 1 )
                 {
-                    s.acceptState = true;
+                    s.IsAcceptState = true;
                     int alt = alts[0];
                     SetAcceptState( alt, s );
-                    s.cachedUniquelyPredicatedAlt = alt;
+                    s.CachedUniquelyPredicatedAlt = alt;
                 }
                 else
                 {
@@ -115,13 +105,13 @@ namespace Antlr3.Analysis
                     for ( int i = 0; i < alts.Count; i++ )
                     {
                         int alt = (int)alts[i];
-                        s.cachedUniquelyPredicatedAlt = NFA.INVALID_ALT_NUMBER;
+                        s.CachedUniquelyPredicatedAlt = NFA.INVALID_ALT_NUMBER;
                         DFAState predDFATarget = GetAcceptState( alt );
                         if ( predDFATarget == null )
                         {
                             predDFATarget = NewState(); // create if not there.
-                            predDFATarget.acceptState = true;
-                            predDFATarget.cachedUniquelyPredicatedAlt = alt;
+                            predDFATarget.IsAcceptState = true;
+                            predDFATarget.CachedUniquelyPredicatedAlt = alt;
                             SetAcceptState( alt, predDFATarget );
                         }
                         // add a transition to pred target from d
@@ -171,7 +161,7 @@ namespace Antlr3.Analysis
             int walkAlt =
                 decisionStartState.TranslateDisplayAltToWalkAlt( alt );
             NFAState altLeftEdge =
-                nfa.grammar.GetNFAStateForAltOfDecision( decisionStartState, walkAlt );
+                Nfa.Grammar.GetNFAStateForAltOfDecision( decisionStartState, walkAlt );
             NFAState altStartState = (NFAState)altLeftEdge.transition[0].Target;
             //JSystem.@out.println("alt "+alt+" start state = "+altStartState.stateNumber);
             if ( altStartState.transition[0].IsSemanticPredicate )
@@ -188,7 +178,7 @@ namespace Antlr3.Analysis
                         */
                         if ( ctx.IsSyntacticPredicate )
                         {
-                            nfa.grammar.SynPredUsedInDFA( this, ctx );
+                            Nfa.Grammar.SynPredUsedInDFA( this, ctx );
                         }
                         return (SemanticContext.Predicate)altStartState.transition[0].Label.SemanticContext;
                     }

@@ -53,17 +53,17 @@ namespace Antlr3.Tool
 
         public override string ToString()
         {
-            GrammarAST decisionASTNode = probe.dfa.DecisionASTNode;
+            GrammarAST decisionASTNode = probe.Dfa.DecisionASTNode;
             line = decisionASTNode.Line;
             charPositionInLine = decisionASTNode.CharPositionInLine;
-            string fileName = probe.dfa.nfa.grammar.FileName;
+            string fileName = probe.Dfa.Nfa.Grammar.FileName;
             if ( fileName != null )
             {
                 file = fileName;
             }
 
             StringTemplate st = GetMessageTemplate();
-            string ruleName = probe.dfa.NFADecisionStartState.enclosingRule.Name;
+            string ruleName = probe.Dfa.NFADecisionStartState.enclosingRule.Name;
             st.SetAttribute( "ruleName", ruleName );
             List<int> sortedAlts = new List<int>();
             sortedAlts.AddRange( altsWithRecursion );

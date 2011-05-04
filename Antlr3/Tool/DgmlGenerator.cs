@@ -163,12 +163,12 @@ namespace Antlr3.Tool
             // make an edge for each transition
             for (int i = 0; i < dfaState.NumberOfTransitions; i++)
             {
-                Transition edge = dfaState.Transition(i);
+                Transition edge = dfaState.GetTransition(i);
                 if (StripNonreducedStates)
                 {
                     DFAState target = edge.Target as DFAState;
                     // don't generate nodes for terminal states
-                    if (target != null && target.AcceptStateReachable != DFA.REACHABLE_YES)
+                    if (target != null && target.AcceptStateReachable != Reachable.Yes)
                         continue;
                 }
 
@@ -240,19 +240,19 @@ namespace Antlr3.Tool
                 {
                     string label;
 
-                    if (rr.rule.Grammar != _grammar)
-                        label = string.Format("<{0}.{1}>", rr.rule.Grammar.name, rr.rule.Name);
+                    if (rr.Rule.Grammar != _grammar)
+                        label = string.Format("<{0}.{1}>", rr.Rule.Grammar.name, rr.Rule.Name);
                     else
-                        label = string.Format("<{0}>", rr.rule.Name);
+                        label = string.Format("<{0}>", rr.Rule.Name);
 
                     XElement link = new XElement(Elements.Link,
                         new XAttribute(Attributes.Source, "state_" + state.StateNumber),
-                        new XAttribute(Attributes.Target, "state_" + rr.followState),
+                        new XAttribute(Attributes.Target, "state_" + rr.FollowState),
                         new XAttribute(Attributes.Category, Categories.RuleClosureEdge),
                         new XAttribute(Attributes.Label, label));
 
                     _links.Add(new KeyValuePair<State, Transition>(state, edge), link);
-                    WalkRuleNfaCreatingDgml(rr.followState);
+                    WalkRuleNfaCreatingDgml(rr.FollowState);
                 }
                 else
                 {
@@ -422,7 +422,7 @@ namespace Antlr3.Tool
                 builder.Append(state.StateNumber);
                 if (AntlrTool.internalOption_ShowNFAConfigsInDFA)
                 {
-                    if (dfaState.abortedDueToRecursionOverflow)
+                    if (dfaState.AbortedDueToRecursionOverflow)
                     {
                         builder.AppendLine();
                         builder.AppendLine("AbortedDueToRecursionOverflow");
@@ -433,7 +433,7 @@ namespace Antlr3.Tool
                     {
                         builder.AppendLine();
                         List<int> altList = alts.OrderBy(i => i).ToList();
-                        ICollection<NFAConfiguration> configurations = dfaState.nfaConfigurations;
+                        ICollection<NFAConfiguration> configurations = dfaState.NfaConfigurations;
                         for (int i = 0; i < altList.Count; i++)
                         {
                             int alt = altList[i];
@@ -445,7 +445,7 @@ namespace Antlr3.Tool
                             List<NFAConfiguration> configsInAlt = new List<NFAConfiguration>();
                             foreach (NFAConfiguration c in configurations)
                             {
-                                if (c.alt != alt)
+                                if (c.Alt != alt)
                                     continue;
 
                                 configsInAlt.Add(c);

@@ -43,19 +43,34 @@ namespace Antlr3.Analysis
     public class RuleClosureTransition : Transition
     {
         /** Ptr to the rule definition object for this rule ref */
-        public Rule rule;
+        private readonly Rule _rule;
 
         /** What node to begin computations following ref to rule */
-        public NFAState followState;
+        private readonly NFAState _followState;
 
         public RuleClosureTransition( Rule rule,
                                      NFAState ruleStart,
                                      NFAState followState )
             : base( Label.EPSILON, ruleStart )
         {
-            this.rule = rule;
-            this.followState = followState;
+            this._rule = rule;
+            this._followState = followState;
+        }
+
+        public Rule Rule
+        {
+            get
+            {
+                return _rule;
+            }
+        }
+
+        public NFAState FollowState
+        {
+            get
+            {
+                return _followState;
+            }
         }
     }
-
 }

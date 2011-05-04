@@ -249,7 +249,7 @@ namespace Antlr3.Tool
             NFAState s = start;
             if ( actions != null )
             {
-                actions.EnterRule( s.nfa.grammar.FileName, start.enclosingRule.Name );
+                actions.EnterRule( s.nfa.Grammar.FileName, start.enclosingRule.Name );
             }
             int t = input.LA( 1 );
             while ( s != stop )
@@ -258,17 +258,17 @@ namespace Antlr3.Tool
                 {
                     visitedStates.Add( s );
                 }
-                //Console.Out.WriteLine( "parse state " + s.stateNumber + " input=" + s.nfa.grammar.getTokenDisplayName( t ) );
+                //Console.Out.WriteLine( "parse state " + s.stateNumber + " input=" + s.nfa.Grammar.getTokenDisplayName( t ) );
                 // CASE 1: decision state
-                if ( s.DecisionNumber > 0 && s.nfa.grammar.GetNumberOfAltsForDecisionNFA( s ) > 1 )
+                if ( s.DecisionNumber > 0 && s.nfa.Grammar.GetNumberOfAltsForDecisionNFA( s ) > 1 )
                 {
                     // decision point, must predict and jump to alt
-                    DFA dfa = s.nfa.grammar.GetLookaheadDFA( s.DecisionNumber );
-                    //if ( s.nfa.grammar.type != GrammarType.Lexer )
+                    DFA dfa = s.nfa.Grammar.GetLookaheadDFA( s.DecisionNumber );
+                    //if ( s.nfa.Grammar.type != GrammarType.Lexer )
                     //{
                     //    Console.Out.WriteLine( "decision: " +
                     //                   dfa.getNFADecisionStartState().Description +
-                    //                   " input=" + s.nfa.grammar.getTokenDisplayName( t ) );
+                    //                   " input=" + s.nfa.Grammar.getTokenDisplayName( t ) );
                     //}
                     int m = input.Mark();
                     int predictedAlt = Predict( dfa );
@@ -277,7 +277,7 @@ namespace Antlr3.Tool
                         string description = dfa.NFADecisionStartState.Description;
                         NoViableAltException nvae =
                             new NoViableAltException( description,
-                                                          dfa.DecisionNumber,
+                                                          dfa.NfaStartStateDecisionNumber,
                                                           s.StateNumber,
                                                           input );
                         if ( actions != null )
@@ -290,19 +290,19 @@ namespace Antlr3.Tool
                     input.Rewind( m );
                     int parseAlt =
                         s.TranslateDisplayAltToWalkAlt( predictedAlt );
-                    //if ( s.nfa.grammar.type != GrammarType.Lexer )
+                    //if ( s.nfa.Grammar.type != GrammarType.Lexer )
                     //{
                     //    Console.Out.WriteLine( "predicted alt " + predictedAlt + ", parseAlt " + parseAlt );
                     //}
                     NFAState alt;
-                    if ( parseAlt > s.nfa.grammar.GetNumberOfAltsForDecisionNFA( s ) )
+                    if ( parseAlt > s.nfa.Grammar.GetNumberOfAltsForDecisionNFA( s ) )
                     {
                         // implied branch of loop etc...
-                        alt = s.nfa.grammar.nfa.GetState( s.endOfBlockStateNumber );
+                        alt = s.nfa.Grammar.nfa.GetState( s.endOfBlockStateNumber );
                     }
                     else
                     {
-                        alt = s.nfa.grammar.GetNFAStateForAltOfDecision( s, parseAlt );
+                        alt = s.nfa.Grammar.GetNFAStateForAltOfDecision( s, parseAlt );
                     }
                     s = (NFAState)alt.transition[0].Target;
                     continue;
@@ -313,7 +313,7 @@ namespace Antlr3.Tool
                 { // end of rule node
                     if ( actions != null )
                     {
-                        actions.ExitRule( s.nfa.grammar.FileName, s.enclosingRule.Name );
+                        actions.ExitRule( s.nfa.Grammar.FileName, s.enclosingRule.Name );
                     }
                     if ( ruleInvocationStack.Count == 0 )
                     {
@@ -326,7 +326,7 @@ namespace Antlr3.Tool
                     RuleClosureTransition invokingTransition =
                             (RuleClosureTransition)invokingState.transition[0];
                     // move to node after state that invoked this rule
-                    s = invokingTransition.followState;
+                    s = invokingTransition.FollowState;
                     continue;
                 }
 
@@ -352,15 +352,15 @@ namespace Antlr3.Tool
                     {
                         ruleInvocationStack.Push( s );
                         s = (NFAState)trans.Target;
-                        //Console.Out.WriteLine( "call " + s.enclosingRule.name + " from " + s.nfa.grammar.getFileName() );
+                        //Console.Out.WriteLine( "call " + s.enclosingRule.name + " from " + s.nfa.Grammar.getFileName() );
                         if ( actions != null )
                         {
-                            actions.EnterRule( s.nfa.grammar.FileName, s.enclosingRule.Name );
+                            actions.EnterRule( s.nfa.Grammar.FileName, s.enclosingRule.Name );
                         }
                         // could be jumping to new grammar, make sure DFA created
-                        if ( !s.nfa.grammar.AllDecisionDFAHaveBeenCreated )
+                        if ( !s.nfa.Grammar.AllDecisionDFAHaveBeenCreated )
                         {
-                            s.nfa.grammar.CreateLookaheadDFAs();
+                            s.nfa.Grammar.CreateLookaheadDFAs();
                         }
                     }
                     // CASE 3b: plain old epsilon transition, just move
@@ -375,8 +375,8 @@ namespace Antlr3.Tool
                 {
                     if ( actions != null )
                     {
-                        if ( s.nfa.grammar.type == GrammarType.Parser ||
-                             s.nfa.grammar.type == GrammarType.Combined )
+                        if ( s.nfa.Grammar.type == GrammarType.Parser ||
+                             s.nfa.Grammar.type == GrammarType.Combined )
                         {
                             actions.ConsumeToken( ( (ITokenStream)input ).LT( 1 ) );
                         }
@@ -434,7 +434,7 @@ namespace Antlr3.Tool
             //Console.Out.WriteLine( "hit stop state for " + stop.enclosingRule );
             if ( actions != null )
             {
-                actions.ExitRule( s.nfa.grammar.FileName, stop.enclosingRule.Name );
+                actions.ExitRule( s.nfa.Grammar.FileName, stop.enclosingRule.Name );
             }
         }
 
@@ -446,17 +446,17 @@ namespace Antlr3.Tool
          */
         public int Predict( DFA dfa )
         {
-            DFAState s = dfa.startState;
+            DFAState s = dfa.StartState;
             int c = input.LA( 1 );
             Transition eotTransition = null;
         dfaLoop:
             while ( !s.IsAcceptState )
             {
-                //Console.Out.WriteLine( "DFA.predict(" + s.stateNumber + ", " + dfa.nfa.grammar.getTokenDisplayName( c ) + ")" );
+                //Console.Out.WriteLine( "DFA.predict(" + s.stateNumber + ", " + dfa.nfa.Grammar.getTokenDisplayName( c ) + ")" );
                 // for each edge of s, look for intersection with current char
                 for ( int i = 0; i < s.NumberOfTransitions; i++ )
                 {
-                    Transition t = s.Transition( i );
+                    Transition t = s.GetTransition( i );
                     // special case: EOT matches any char
                     if ( t.Label.Matches( c ) )
                     {
@@ -479,7 +479,7 @@ namespace Antlr3.Tool
                 /*
                 ErrorManager.error(ErrorManager.MSG_NO_VIABLE_DFA_ALT,
                                    s,
-                                   dfa.nfa.grammar.getTokenName(c));
+                                   dfa.nfa.Grammar.getTokenName(c));
                 */
                 return NFA.INVALID_ALT_NUMBER;
             }

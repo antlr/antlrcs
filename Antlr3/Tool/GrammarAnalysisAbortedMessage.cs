@@ -51,17 +51,17 @@ namespace Antlr3.Tool
 
         public override string ToString()
         {
-            GrammarAST decisionASTNode = probe.dfa.DecisionASTNode;
+            GrammarAST decisionASTNode = probe.Dfa.DecisionASTNode;
             line = decisionASTNode.Line;
             charPositionInLine = decisionASTNode.CharPositionInLine;
-            string fileName = probe.dfa.nfa.grammar.FileName;
+            string fileName = probe.Dfa.Nfa.Grammar.FileName;
             if ( fileName != null )
             {
                 file = fileName;
             }
             StringTemplate st = GetMessageTemplate();
             st.SetAttribute( "enclosingRule",
-                            probe.dfa.NFADecisionStartState.enclosingRule.Name );
+                            probe.Dfa.NFADecisionStartState.enclosingRule.Name );
 
             return base.ToString( st );
         }

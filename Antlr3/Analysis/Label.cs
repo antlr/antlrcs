@@ -47,7 +47,7 @@ namespace Antlr3.Analysis
      *  (which assumes an epsilon transition) or a tree of predicates (in a DFA).
      *  Special label types have to be &lt; 0 to avoid conflict with char.
      */
-    public class Label : IComparable, ICloneable
+    public class Label : System.IComparable<Label>, ICloneable
     {
         public const int INVALID = -7;
 
@@ -169,6 +169,9 @@ namespace Antlr3.Analysis
             }
         }
 
+        /// <summary>
+        /// Gets whether or not the label is an action
+        /// </summary>
         public virtual bool IsAction
         {
             get
@@ -177,6 +180,9 @@ namespace Antlr3.Analysis
             }
         }
 
+        /// <summary>
+        /// Gets whether or not the label is an atom
+        /// </summary>
         public virtual bool IsAtom
         {
             get
@@ -185,6 +191,9 @@ namespace Antlr3.Analysis
             }
         }
 
+        /// <summary>
+        /// Gets whether or not the label is an epsilon label
+        /// </summary>
         public virtual bool IsEpsilon
         {
             get
@@ -193,6 +202,9 @@ namespace Antlr3.Analysis
             }
         }
 
+        /// <summary>
+        /// Gets whether or not the label is a semantic predicate
+        /// </summary>
         public virtual bool IsSemanticPredicate
         {
             get
@@ -201,6 +213,9 @@ namespace Antlr3.Analysis
             }
         }
 
+        /// <summary>
+        /// Gets whether or not the label matches a set
+        /// </summary>
         public virtual bool IsSet
         {
             get
@@ -209,6 +224,9 @@ namespace Antlr3.Analysis
             }
         }
 
+        /// <summary>
+        /// Gets the semantic context for the label
+        /// </summary>
         public virtual SemanticContext SemanticContext
         {
             get
@@ -236,22 +254,17 @@ namespace Antlr3.Analysis
             }
         }
 
-        public virtual object Clone()
+        public virtual Label Clone()
         {
-            Label l;
-            //try
-            //{
-                //l = (Label)base.clone();
-                l = new Label( label );
-                l.label = this.label;
-                l._labelSet = new IntervalSet();
-                l._labelSet.AddAll( this._labelSet );
-            //}
-            //catch ( CloneNotSupportedException e )
-            //{
-            //    throw new InternalError();
-            //}
+            Label l = new Label(label);
+            l._labelSet = new IntervalSet();
+            l._labelSet.AddAll(this._labelSet);
             return l;
+        }
+
+        object ICloneable.Clone()
+        {
+            return Clone();
         }
 
         public virtual void Add( Label a )
@@ -272,8 +285,10 @@ namespace Antlr3.Analysis
                 {
                     throw new InvalidOperationException( "can't add element to Label of type " + label );
                 }
+
                 return;
             }
+
             if ( IsSet )
             {
                 if ( a.IsAtom )
@@ -288,8 +303,10 @@ namespace Antlr3.Analysis
                 {
                     throw new InvalidOperationException( "can't add element to Label of type " + label );
                 }
+
                 return;
             }
+
             throw new InvalidOperationException( "can't add element to Label of type " + label );
         }
 
@@ -297,12 +314,15 @@ namespace Antlr3.Analysis
         {
             if ( label == atom )
             {
-                return true; // handle the single atom case efficiently
+                // handle the single atom case efficiently
+                return true;
             }
+
             if ( IsSet )
             {
                 return _labelSet.Contains( atom );
             }
+
             return false;
         }
 
@@ -312,11 +332,13 @@ namespace Antlr3.Analysis
             {
                 return set.Contains( Atom );
             }
+
             if ( IsSet )
             {
                 // matches if intersection non-nil
                 return !Set.And( set ).IsNil;
             }
+
             return false;
         }
 
@@ -327,10 +349,12 @@ namespace Antlr3.Analysis
             {
                 return Matches( other.Set );
             }
+
             if ( other.IsAtom )
             {
                 return Matches( other.Atom );
             }
+
             return false;
         }
 
@@ -349,29 +373,34 @@ namespace Antlr3.Analysis
         // TODO: do we care about comparing set {A} with atom A? Doesn't now.
         public override bool Equals( object o )
         {
-            if ( o == null )
-            {
+            Label other = o as Label;
+            if (other == null)
                 return false;
-            }
-            if ( this == o )
+
+            if (object.ReferenceEquals(this, o))
             {
-                return true; // equals if same object
+                // equals if same object
+                return true;
             }
+
             // labels must be the same even if epsilon or set or sempred etc...
-            if ( label != ( (Label)o ).label )
+            if ( label != other.label )
             {
                 return false;
             }
+
             if ( label == SET )
             {
-                return this._labelSet.Equals( ( (Label)o )._labelSet );
+                return this._labelSet.Equals( other._labelSet );
             }
-            return true;  // label values are same, so true
+
+            // label values are same, so true
+            return true;
         }
 
-        public virtual int CompareTo( object o )
+        public virtual int CompareTo( Label other )
         {
-            return this.label - ( (Label)o ).label;
+            return this.label - other.label;
         }
 
 #if false
@@ -408,6 +437,7 @@ namespace Antlr3.Analysis
             {
             case SET:
                 return _labelSet.ToString();
+
             default:
                 return label.ToString(); //String.valueOf( label );
             }
@@ -466,6 +496,7 @@ namespace Antlr3.Analysis
             {
                 hasIntersection = true;
             }
+
             return hasIntersection;
         }
     }

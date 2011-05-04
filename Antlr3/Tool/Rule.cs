@@ -1037,7 +1037,7 @@ namespace Antlr3.Tool
             }
             if ( key == "backtrack" && value.ToString() == "true" )
             {
-                Grammar.composite.GetRootGrammar().atLeastOneBacktrackOption = true;
+                Grammar.composite.RootGrammar.atLeastOneBacktrackOption = true;
             }
             if ( key.Equals( "k" ) )
             {

@@ -1,10 +1,10 @@
 ﻿/*
- * [The "BSD licence"]
- * Copyright (c) 2005-2008 Terence Parr
+ * [The "BSD license"]
+ * Copyright (c) 2011 Terence Parr
  * All rights reserved.
  *
  * Conversion to C#:
- * Copyright (c) 2008 Sam Harwell, Pixel Mine, Inc.
+ * Copyright (c) 2011 Sam Harwell, Pixel Mine, Inc.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -42,7 +42,7 @@ namespace Antlr3.Analysis
          *  may have to combine a bunch of them as it collects predicates from
          *  multiple NFA configurations into a single DFA state.
          */
-        SemanticContext _semanticContext;
+        private readonly SemanticContext _semanticContext;
 
         /** Make a semantic predicate label */
         public PredicateLabel( GrammarAST predicateASTNode )

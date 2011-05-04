@@ -147,7 +147,7 @@ namespace Antlr3.Tool
                 // to it, but don't "draw" an edge.
                 if ( edge is RuleClosureTransition )
                 {
-                    WalkFANormalizingStateNumbers( ( (RuleClosureTransition)edge ).followState );
+                    WalkFANormalizingStateNumbers( ( (RuleClosureTransition)edge ).FollowState );
                 }
             }
         }
@@ -223,7 +223,7 @@ namespace Antlr3.Tool
                 // to it, but don't "draw" an edge.
                 if ( edge is RuleClosureTransition )
                 {
-                    WalkSerializingFA( lines, ( (RuleClosureTransition)edge ).followState );
+                    WalkSerializingFA( lines, ( (RuleClosureTransition)edge ).FollowState );
                 }
             }
 

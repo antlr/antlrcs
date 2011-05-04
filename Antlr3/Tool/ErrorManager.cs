@@ -687,11 +687,11 @@ namespace Antlr3.Tool
             GetErrorState().errorMsgIDs.Add( msg.msgID );
             ICollection<object> seen;
             emitSingleError.TryGetValue("danglingState", out seen);
-            if ( !seen.Contains( d.dfa.decisionNumber + "|" + d.AltSet ) )
+            if ( !seen.Contains( d.Dfa.DecisionNumber + "|" + d.AltSet ) )
             {
                 GetErrorListener().Error( msg );
                 // we've seen this decision and this alt set; never again
-                seen.Add( d.dfa.decisionNumber + "|" + d.AltSet );
+                seen.Add( d.Dfa.DecisionNumber + "|" + d.AltSet );
             }
         }
 

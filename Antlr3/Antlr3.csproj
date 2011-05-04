@@ -54,6 +54,7 @@
     <Compile Include="Analysis\ActionLabel.cs" />
     <Compile Include="Analysis\AnalysisRecursionOverflowException.cs" />
     <Compile Include="Analysis\AnalysisTimeoutException.cs" />
+    <Compile Include="Analysis\Cyclic.cs" />
     <Compile Include="Analysis\DecisionProbe.cs" />
     <Compile Include="Analysis\DFA.cs" />
     <Compile Include="Analysis\DFAOptimizer.cs" />
@@ -70,6 +71,7 @@
     <Compile Include="Analysis\NFAtoDFAConverter.cs" />
     <Compile Include="Analysis\NonLLStarDecisionException.cs" />
     <Compile Include="Analysis\PredicateLabel.cs" />
+    <Compile Include="Analysis\Reachable.cs" />
     <Compile Include="Analysis\RuleClosureTransition.cs" />
     <Compile Include="Analysis\SemanticContext.cs" />
     <Compile Include="Analysis\State.cs" />

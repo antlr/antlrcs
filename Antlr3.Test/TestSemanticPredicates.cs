@@ -864,7 +864,7 @@ namespace AntlrUnitTests
 
             DFA dfa = g.GetLookaheadDFA( decision );
             FASerializer serializer = new FASerializer( g );
-            string result = serializer.Serialize( dfa.startState );
+            string result = serializer.Serialize( dfa.StartState );
             //System.out.print(result);
             var unreachableAlts = dfa.UnreachableAlts;
 
@@ -911,7 +911,7 @@ namespace AntlrUnitTests
                 BitSet s2 = new BitSet();
                 s2.AddAll( nonDetAlts );
                 Assert.AreEqual(s, s2, "nondet alts mismatch");
-                Assert.AreEqual(hasPredHiddenByAction, nondetMsg.problemState.dfa.hasPredicateBlockedByAction, "mismatch between expected hasPredHiddenByAction");
+                Assert.AreEqual(hasPredHiddenByAction, nondetMsg.problemState.Dfa.HasPredicateBlockedByAction, "mismatch between expected hasPredHiddenByAction");
             }
             else
             {
@@ -933,7 +933,7 @@ namespace AntlrUnitTests
                 BitSet s2 = new BitSet();
                 s2.AddAll( actualAlts );
                 Assert.AreEqual(s, s2, "mismatch between insufficiently covered alts");
-                Assert.AreEqual(hasPredHiddenByAction, insuffPredMsg.problemState.dfa.hasPredicateBlockedByAction, "mismatch between expected hasPredHiddenByAction");
+                Assert.AreEqual(hasPredHiddenByAction, insuffPredMsg.problemState.Dfa.HasPredicateBlockedByAction, "mismatch between expected hasPredHiddenByAction");
             }
             else
             {

@@ -65,7 +65,7 @@ namespace Antlr3.Grammars
             : this(new ANTLRStringStream(actionAST.Token.Text))
         {
             this.generator = generator;
-            this.grammar = generator.grammar;
+            this.grammar = generator.Grammar;
             this.enclosingRule = grammar.GetLocallyDefinedRule(ruleName);
             this.actionToken = actionAST.Token;
             this.outerAltNum = actionAST.outerAltNum;
@@ -78,7 +78,7 @@ namespace Antlr3.Grammars
             : this(new ANTLRStringStream(actionToken.Text))
         {
             this.generator = generator;
-            grammar = generator.grammar;
+            grammar = generator.Grammar;
             this.enclosingRule = grammar.GetRule(ruleName);
             this.actionToken = actionToken;
             this.outerAltNum = outerAltNum;
@@ -170,7 +170,7 @@ namespace Antlr3.Grammars
         {
             Rule r = grammar.GetRule(ruleName);
             AttributeScope scope = r.GetLocalAttributeScope(attrName);
-            if (scope != null && !scope.isParameterScope)
+            if (scope != null && !scope.IsParameterScope)
             {
                 return scope.GetAttribute(attrName);
             }
@@ -209,7 +209,7 @@ namespace Antlr3.Grammars
         {
             StringTemplate st = null;
             AttributeScope scope = enclosingRule.GetLocalAttributeScope(y);
-            if (scope.isPredefinedRuleScope)
+            if (scope.IsPredefinedRuleScope)
             {
                 if (y.Equals("st") || y.Equals("tree"))
                 {
@@ -224,12 +224,12 @@ namespace Antlr3.Grammars
                     ErrorManager.GrammarError(ErrorManager.MSG_WRITE_TO_READONLY_ATTR, grammar, actionToken, x, y);
                 }
             }
-            else if (scope.isPredefinedLexerRuleScope)
+            else if (scope.IsPredefinedLexerRuleScope)
             {
                 // this is a better message to emit than the previous one...
                 ErrorManager.GrammarError(ErrorManager.MSG_WRITE_TO_READONLY_ATTR, grammar, actionToken, x, y);
             }
-            else if (scope.isParameterScope)
+            else if (scope.IsParameterScope)
             {
                 st = Template("parameterSetAttributeRef");
                 st.SetAttribute("attr", scope.GetAttribute(y));
@@ -260,19 +260,19 @@ namespace Antlr3.Grammars
 
             StringTemplate st = null;
             AttributeScope scope = enclosingRule.GetLocalAttributeScope(y);
-            if (scope.isPredefinedRuleScope)
+            if (scope.IsPredefinedRuleScope)
             {
                 st = Template("rulePropertyRef_" + y);
                 grammar.ReferenceRuleLabelPredefinedAttribute(x);
                 st.SetAttribute("scope", x);
                 st.SetAttribute("attr", y);
             }
-            else if (scope.isPredefinedLexerRuleScope)
+            else if (scope.IsPredefinedLexerRuleScope)
             {
                 // perhaps not the most precise error message to use, but...
                 ErrorManager.GrammarError(ErrorManager.MSG_RULE_HAS_NO_ARGS, grammar, actionToken, x);
             }
-            else if (scope.isParameterScope)
+            else if (scope.IsParameterScope)
             {
                 st = Template("parameterAttributeRef");
                 st.SetAttribute("attr", scope.GetAttribute(y));
@@ -381,21 +381,21 @@ namespace Antlr3.Grammars
             StringTemplate st;
             Rule refdRule = grammar.GetRule(refdRuleName);
             AttributeScope scope = refdRule.GetLocalAttributeScope(y);
-            if (scope.isPredefinedRuleScope)
+            if (scope.IsPredefinedRuleScope)
             {
                 st = Template("ruleLabelPropertyRef_" + y);
                 grammar.ReferenceRuleLabelPredefinedAttribute(refdRuleName);
                 st.SetAttribute("scope", label);
                 st.SetAttribute("attr", y);
             }
-            else if (scope.isPredefinedLexerRuleScope)
+            else if (scope.IsPredefinedLexerRuleScope)
             {
                 st = Template("lexerRuleLabelPropertyRef_" + y);
                 grammar.ReferenceRuleLabelPredefinedAttribute(refdRuleName);
                 st.SetAttribute("scope", label);
                 st.SetAttribute("attr", y);
             }
-            else if (scope.isParameterScope)
+            else if (scope.IsParameterScope)
             {
                 // TODO: error!
             }
@@ -481,14 +481,14 @@ namespace Antlr3.Grammars
         {
             return enclosingRule != null
                 && enclosingRule.GetLocalAttributeScope(attributeName) != null
-                && !enclosingRule.GetLocalAttributeScope(attributeName).isPredefinedLexerRuleScope;
+                && !enclosingRule.GetLocalAttributeScope(attributeName).IsPredefinedLexerRuleScope;
         }
 
         private void HandleSetLocalAttribute(string attributeName, string expr)
         {
             StringTemplate st;
             AttributeScope scope = enclosingRule.GetLocalAttributeScope(attributeName);
-            if (scope.isPredefinedRuleScope)
+            if (scope.IsPredefinedRuleScope)
             {
                 if (attributeName.Equals("tree") || attributeName.Equals("st"))
                 {
@@ -503,7 +503,7 @@ namespace Antlr3.Grammars
                     ErrorManager.GrammarError(ErrorManager.MSG_WRITE_TO_READONLY_ATTR, grammar, actionToken, attributeName, "");
                 }
             }
-            else if (scope.isParameterScope)
+            else if (scope.IsParameterScope)
             {
                 st = Template("parameterSetAttributeRef");
                 st.SetAttribute("attr", scope.GetAttribute(attributeName));
@@ -528,20 +528,20 @@ namespace Antlr3.Grammars
         {
             StringTemplate st;
             AttributeScope scope = enclosingRule.GetLocalAttributeScope(name);
-            if (scope.isPredefinedRuleScope)
+            if (scope.IsPredefinedRuleScope)
             {
                 st = Template("rulePropertyRef_" + name);
                 grammar.ReferenceRuleLabelPredefinedAttribute(enclosingRule.Name);
                 st.SetAttribute("scope", enclosingRule.Name);
                 st.SetAttribute("attr", name);
             }
-            else if (scope.isPredefinedLexerRuleScope)
+            else if (scope.IsPredefinedLexerRuleScope)
             {
                 st = Template("lexerRulePropertyRef_" + name);
                 st.SetAttribute("scope", enclosingRule.Name);
                 st.SetAttribute("attr", name);
             }
-            else if (scope.isParameterScope)
+            else if (scope.IsParameterScope)
             {
                 st = Template("parameterAttributeRef");
                 st.SetAttribute("attr", scope.GetAttribute(name));

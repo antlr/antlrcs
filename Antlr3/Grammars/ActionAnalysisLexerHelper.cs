@@ -94,7 +94,7 @@ namespace Antlr3.Grammars
                 }
             }
 
-            if (scope != null && (scope.isPredefinedRuleScope || scope.isPredefinedLexerRuleScope))
+            if (scope != null && (scope.IsPredefinedRuleScope || scope.IsPredefinedLexerRuleScope))
             {
                 grammar.ReferenceRuleLabelPredefinedAttribute(refdRuleName);
                 //System.Console.WriteLine("referenceRuleLabelPredefinedAttribute for " + refdRuleName);
@@ -110,7 +110,7 @@ namespace Antlr3.Grammars
         private void HandleAttributeReference(string attributeName)
         {
             AttributeScope scope = enclosingRule.GetLocalAttributeScope(attributeName);
-            if (scope != null && (scope.isPredefinedRuleScope || scope.isPredefinedLexerRuleScope))
+            if (scope != null && (scope.IsPredefinedRuleScope || scope.IsPredefinedLexerRuleScope))
             {
                 grammar.ReferenceRuleLabelPredefinedAttribute(enclosingRule.Name);
                 //System.Console.WriteLine("referenceRuleLabelPredefinedAttribute for " + attributeName);

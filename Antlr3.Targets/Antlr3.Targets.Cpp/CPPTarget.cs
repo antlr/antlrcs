@@ -118,7 +118,7 @@ namespace Antlr3.Targets
         {
             int c = Grammar.GetCharValueFromGrammarCharLiteral( literal );
             string prefix = "'";
-            if ( codegen.grammar.MaxCharValue > 255 )
+            if ( codegen.Grammar.MaxCharValue > 255 )
                 prefix = "L'";
             else if ( ( c & 0x80 ) != 0 )	// if in char mode prevent sign extensions
                 return "" + c;
@@ -136,7 +136,7 @@ namespace Antlr3.Targets
         {
             StringBuilder buf = Grammar.GetUnescapedStringFromGrammarStringLiteral( literal );
             string prefix = "\"";
-            if ( codegen.grammar.MaxCharValue > 255 )
+            if ( codegen.Grammar.MaxCharValue > 255 )
                 prefix = "L\"";
             return prefix + EscapeString( buf.ToString() ) + "\"";
         }

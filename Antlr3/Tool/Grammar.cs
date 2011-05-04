@@ -573,13 +573,13 @@ namespace Antlr3.Tool
             Tool = tool;
             FileName = fileName;
             // ensure we have the composite set to something
-            if ( composite.delegateGrammarTreeRoot == null )
+            if ( composite.DelegateGrammarTreeRoot == null )
             {
                 composite.SetDelegationRoot( this );
             }
             else
             {
-                defaultRuleModifier = composite.delegateGrammarTreeRoot.grammar.DefaultRuleModifier;
+                defaultRuleModifier = composite.DelegateGrammarTreeRoot.Grammar.DefaultRuleModifier;
             }
 
             TemplateGroup lexerGrammarTemplateGroup = new TemplateGroupString(lexerGrammarTemplateText);
@@ -817,7 +817,7 @@ namespace Antlr3.Tool
         {
             get
             {
-                return composite.delegateGrammarTreeRoot.grammar == this;
+                return composite.DelegateGrammarTreeRoot.Grammar == this;
             }
         }
 
@@ -847,7 +847,7 @@ namespace Antlr3.Tool
             {
                 if ( generator != null )
                 {
-                    return generator.target.GetMaxCharValue( generator );
+                    return generator.Target.GetMaxCharValue( generator );
                 }
                 else
                 {
@@ -860,7 +860,7 @@ namespace Antlr3.Tool
         {
             get
             {
-                return composite.maxTokenType;
+                return composite.MaxTokenType;
             }
         }
         public int MaxLookahead
@@ -908,7 +908,7 @@ namespace Antlr3.Tool
         {
             get
             {
-                return composite.stringLiteralToTypeMap.Keys;
+                return composite.StringLiteralToTypeMap.Keys;
             }
         }
         public IList<KeyValuePair<string, GrammarAST>> SyntacticPredicates
@@ -923,7 +923,7 @@ namespace Antlr3.Tool
         {
             get
             {
-                return composite.tokenIDToTypeMap.Keys;
+                return composite.TokenIDToTypeMap.Keys;
             }
         }
         /** Return a set of all possible token or char types for this grammar */
@@ -1480,7 +1480,7 @@ namespace Antlr3.Tool
             {
                 CreateRuleStartAndStopNFAStates();
             }
-            if ( nfa.complete )
+            if ( nfa.Complete )
             {
                 // don't let it create more than once; has side-effects
                 return;
@@ -1503,7 +1503,7 @@ namespace Antlr3.Tool
                                    name,
                                    re );
             }
-            nfa.complete = true;
+            nfa.Complete = true;
         }
 
         /** For each decision in this grammar, compute a single DFA using the
@@ -1551,7 +1551,7 @@ namespace Antlr3.Tool
                     if ( leftRecursiveRules.Contains( decisionStartState.enclosingRule ) )
                     {
                         // don't bother to process decisions within left recursive rules.
-                        if ( composite.watchNFAConversion )
+                        if ( composite.WatchNFAConversion )
                         {
                             Console.Out.WriteLine( "ignoring decision " + decision +
                                                " within left-recursive rule " + decisionStartState.enclosingRule.Name );
@@ -1574,14 +1574,14 @@ namespace Antlr3.Tool
                         }
                         if ( dfa == null )
                         {
-                            if ( composite.watchNFAConversion )
+                            if ( composite.WatchNFAConversion )
                             {
                                 Console.Out.WriteLine( "decision " + decision +
                                                    " not suitable for LL(1)-optimized DFA analysis" );
                             }
                             dfa = CreateLookaheadDFA( decision, wackTempStructures );
                         }
-                        if ( dfa.startState == null )
+                        if ( dfa.StartState == null )
                         {
                             // something went wrong; wipe out DFA
                             SetLookaheadDFA( decision, null );
@@ -1589,8 +1589,8 @@ namespace Antlr3.Tool
                         if ( Tool.internalOption_PrintDFA )
                         {
                             Console.Out.WriteLine( "DFA d=" + decision );
-                            FASerializer serializer = new FASerializer( nfa.grammar );
-                            string result = serializer.Serialize( dfa.startState );
+                            FASerializer serializer = new FASerializer( nfa.Grammar );
+                            string result = serializer.Serialize( dfa.StartState );
                             Console.Out.WriteLine( result );
                         }
                     }
@@ -1644,7 +1644,7 @@ namespace Antlr3.Tool
             Rule r = d.startState.enclosingRule;
             NFAState decisionStartState = GetDecisionNFAStartState( decision );
 
-            if ( composite.watchNFAConversion )
+            if ( composite.WatchNFAConversion )
             {
                 Console.Out.WriteLine( "--------------------\nattempting LL(1) DFA (d="
                                    + decisionStartState.DecisionNumber + ") for " +
@@ -1732,7 +1732,7 @@ namespace Antlr3.Tool
             for ( int i = 1; i < altLook.Length; i++ )
             {
                 LookaheadSet s = altLook[i];
-                edges.Add( (IntervalSet)s.tokenTypeSet );
+                edges.Add( (IntervalSet)s.TokenTypeSet );
             }
             IList<IIntSet> disjoint = MakeEdgeSetsDisjoint( edges );
             //JSystem.@out.println("disjoint="+disjoint);
@@ -1744,7 +1744,7 @@ namespace Antlr3.Tool
                 for ( int alt = 1; alt < altLook.Length; alt++ )
                 {
                     LookaheadSet look = altLook[alt];
-                    if ( !ds.And( look.tokenTypeSet ).IsNil )
+                    if ( !ds.And( look.TokenTypeSet ).IsNil )
                     {
                         edgeMap.Map( ds, alt );
                     }
@@ -1766,7 +1766,7 @@ namespace Antlr3.Tool
 
         private void UpdateLineColumnToLookaheadDFAMap( DFA lookaheadDFA )
         {
-            GrammarAST decisionAST = nfa.grammar.GetDecisionBlockAST( lookaheadDFA.decisionNumber );
+            GrammarAST decisionAST = nfa.Grammar.GetDecisionBlockAST( lookaheadDFA.DecisionNumber );
             int line = decisionAST.Line;
             int col = decisionAST.CharPositionInLine;
             lineColumnToLookaheadDFAMap[line + ":" + col] = lookaheadDFA;
@@ -1843,7 +1843,7 @@ namespace Antlr3.Tool
             NFAState decisionStartState = GetDecisionNFAStartState( decision );
             DateTime startDFA = DateTime.MinValue;
             DateTime stopDFA = DateTime.MinValue;
-            if ( composite.watchNFAConversion )
+            if ( composite.WatchNFAConversion )
             {
                 Console.Out.WriteLine( "--------------------\nbuilding lookahead DFA (d="
                                    + decisionStartState.DecisionNumber + ") for " +
@@ -1855,8 +1855,8 @@ namespace Antlr3.Tool
             // Retry to create a simpler DFA if analysis failed (non-LL(*),
             // recursion overflow, or time out).
             bool failed =
-                lookaheadDFA.probe.IsNonLLStarDecision ||
-                lookaheadDFA.probe.AnalysisOverflowed;
+                lookaheadDFA.Probe.IsNonLLStarDecision ||
+                lookaheadDFA.Probe.AnalysisOverflowed;
             if ( failed && lookaheadDFA.OkToRetryWithK1 )
             {
                 // set k=1 option and try again.
@@ -1864,7 +1864,7 @@ namespace Antlr3.Tool
                 decisionsWhoseDFAsUsesSynPreds.Remove( lookaheadDFA );
                 // TODO: clean up synPredNamesUsedInDFA also (harder)
                 d.blockAST.SetBlockOption( this, "k", 1 );
-                if ( composite.watchNFAConversion )
+                if ( composite.WatchNFAConversion )
                 {
                     Console.Out.Write( "trying decision " + decision +
                                      " again with k=1; reason: " +
@@ -1887,7 +1887,7 @@ namespace Antlr3.Tool
             // create map from line:col to decision DFA (for ANTLRWorks)
             UpdateLineColumnToLookaheadDFAMap( lookaheadDFA );
 
-            if ( composite.watchNFAConversion )
+            if ( composite.WatchNFAConversion )
             {
                 stopDFA = DateTime.Now;
                 Console.Out.WriteLine( "cost: " + lookaheadDFA.NumberOfStates +
@@ -1912,8 +1912,8 @@ namespace Antlr3.Tool
         /** Return a new unique integer in the token type space */
         public virtual int GetNewTokenType()
         {
-            composite.maxTokenType++;
-            return composite.maxTokenType;
+            composite.MaxTokenType++;
+            return composite.MaxTokenType;
         }
 
         /** Define a token at a particular token type value.  Blast an
@@ -1923,7 +1923,7 @@ namespace Antlr3.Tool
         public virtual void DefineToken( string text, int tokenType )
         {
             //JSystem.@out.println("defineToken("+text+", "+tokenType+")");
-            if (composite.tokenIDToTypeMap.ContainsKey( text ))
+            if (composite.TokenIDToTypeMap.ContainsKey( text ))
             {
                 // already defined?  Must be predefined one like EOF;
                 // do nothing
@@ -1933,31 +1933,31 @@ namespace Antlr3.Tool
             // hold faux labels as you cannot have negative indices.
             if ( text[0] == '\'' )
             {
-                composite.stringLiteralToTypeMap[text] = tokenType;
+                composite.StringLiteralToTypeMap[text] = tokenType;
                 // track in reverse index too
-                if ( tokenType >= composite.typeToStringLiteralList.Count )
+                if ( tokenType >= composite.TypeToStringLiteralList.Count )
                 {
-                    composite.typeToStringLiteralList.setSize( tokenType + 1 );
+                    composite.TypeToStringLiteralList.setSize( tokenType + 1 );
                 }
-                composite.typeToStringLiteralList[tokenType] = text;
+                composite.TypeToStringLiteralList[tokenType] = text;
             }
             else
             {
                 // must be a label like ID
-                composite.tokenIDToTypeMap[text] = tokenType;
+                composite.TokenIDToTypeMap[text] = tokenType;
             }
             int index = Label.NUM_FAUX_LABELS + tokenType - 1;
             //JSystem.@out.println("defining "+name+" token "+text+" at type="+tokenType+", index="+index);
-            composite.maxTokenType = Math.Max( composite.maxTokenType, tokenType );
-            if ( index >= composite.typeToTokenList.Count )
+            composite.MaxTokenType = Math.Max( composite.MaxTokenType, tokenType );
+            if ( index >= composite.TypeToTokenList.Count )
             {
-                composite.typeToTokenList.setSize( index + 1 );
+                composite.TypeToTokenList.setSize( index + 1 );
             }
-            string prevToken = (string)composite.typeToTokenList[index];
+            string prevToken = (string)composite.TypeToTokenList[index];
             if ( prevToken == null || prevToken[0] == '\'' )
             {
                 // only record if nothing there before or if thing before was a literal
-                composite.typeToTokenList[index] = text;
+                composite.TypeToTokenList[index] = text;
             }
         }
 
@@ -1987,7 +1987,7 @@ namespace Antlr3.Tool
                 return;
             }
 
-            Rule r = new Rule( this, ruleName, composite.ruleIndex, numAlts );
+            Rule r = new Rule( this, ruleName, composite.RuleIndex, numAlts );
             /*
             JSystem.@out.println("defineRule("+ruleName+",modifier="+modifier+
                                "): index="+r.index+", nalts="+numAlts);
@@ -1997,9 +1997,9 @@ namespace Antlr3.Tool
             SetRuleAST( ruleName, tree );
             r.SetOptions( options, ruleToken );
             r.ArgActionAST = argActionAST;
-            composite.ruleIndexToRuleList.setSize( composite.ruleIndex + 1 );
-            composite.ruleIndexToRuleList[composite.ruleIndex] = r;
-            composite.ruleIndex++;
+            composite.RuleIndexToRuleList.setSize( composite.RuleIndex + 1 );
+            composite.RuleIndexToRuleList[composite.RuleIndex] = r;
+            composite.RuleIndex++;
             if ( ruleName.StartsWith( SynpredRulePrefix ) )
             {
                 r.IsSynPred = true;
@@ -2186,7 +2186,7 @@ namespace Antlr3.Tool
                 LexerGrammarTemplate.SetAttribute( "rules", ruleText );
             }
             // track this lexer rule's name
-            composite.lexerRules.Add( ruleToken.Text );
+            composite.LexerRules.Add( ruleToken.Text );
         }
 
         /** If someone does PLUS='+' in the parser, must make sure we get
@@ -2205,7 +2205,7 @@ namespace Antlr3.Tool
                                             literal );
             }
             // track this lexer rule's name
-            composite.lexerRules.Add( tokenID );
+            composite.LexerRules.Add( tokenID );
         }
 
         public virtual void DefineLexerRuleForStringLiteral( string literal, int tokenType )
@@ -2275,7 +2275,7 @@ namespace Antlr3.Tool
 
         public virtual string GetRuleName( int ruleIndex )
         {
-            Rule r = composite.ruleIndexToRuleList[ruleIndex];
+            Rule r = composite.RuleIndexToRuleList[ruleIndex];
             if ( r != null )
             {
                 return r.Name;
@@ -2317,21 +2317,21 @@ namespace Antlr3.Tool
         public virtual AttributeScope CreateReturnScope( string ruleName, IToken retAction )
         {
             AttributeScope scope = new AttributeScope( this, ruleName, retAction );
-            scope.isReturnScope = true;
+            scope.IsReturnScope = true;
             return scope;
         }
 
         public virtual AttributeScope CreateRuleScope( string ruleName, IToken scopeAction )
         {
             AttributeScope scope = new AttributeScope( this, ruleName, scopeAction );
-            scope.isDynamicRuleScope = true;
+            scope.IsDynamicRuleScope = true;
             return scope;
         }
 
         public virtual AttributeScope CreateParameterScope( string ruleName, IToken argAction )
         {
             AttributeScope scope = new AttributeScope( this, ruleName, argAction );
-            scope.isParameterScope = true;
+            scope.IsParameterScope = true;
             return scope;
         }
 
@@ -2695,13 +2695,13 @@ namespace Antlr3.Tool
             int i;
             if ( tokenName[0] == '\'' )
             {
-                if ( composite.stringLiteralToTypeMap.TryGetValue( tokenName, out i ) )
+                if ( composite.StringLiteralToTypeMap.TryGetValue( tokenName, out i ) )
                     return i;
             }
             else
             {
                 // must be a label like ID
-                if ( composite.tokenIDToTypeMap.TryGetValue( tokenName, out i ) )
+                if ( composite.TokenIDToTypeMap.TryGetValue( tokenName, out i ) )
                     return i;
             }
 
@@ -2852,14 +2852,14 @@ namespace Antlr3.Tool
             foreach ( string tokenID in importedTokenIDs )
             {
                 int tokenType = importFromGr.GetTokenType( tokenID );
-                composite.maxTokenType = Math.Max( composite.maxTokenType, tokenType );
+                composite.MaxTokenType = Math.Max( composite.MaxTokenType, tokenType );
                 if ( tokenType >= Label.MIN_TOKEN_TYPE )
                 {
                     //JSystem.@out.println("import token from grammar "+tokenID+"="+tokenType);
                     DefineToken( tokenID, tokenType );
                 }
             }
-            return composite.maxTokenType; // return max found
+            return composite.MaxTokenType; // return max found
         }
 
         /** Import the rules/tokens of a delegate grammar. All delegate grammars are
@@ -2956,7 +2956,7 @@ namespace Antlr3.Tool
         /** add new delegate to composite tree */
         protected virtual void AddDelegateGrammar( Grammar delegateGrammar )
         {
-            CompositeGrammarTree t = composite.delegateGrammarTreeRoot.FindNode( this );
+            CompositeGrammarTree t = composite.DelegateGrammarTreeRoot.FindNode( this );
             t.AddChild( new CompositeGrammarTree( delegateGrammar ) );
             // make sure new grammar shares this composite
             delegateGrammar.composite = this.composite;
@@ -2972,7 +2972,7 @@ namespace Antlr3.Tool
                                             this,
                                             tokenVocabOptionAST.Token,
                                             name );
-                return composite.maxTokenType;
+                return composite.MaxTokenType;
             }
 
             Regex vocabLine = new Regex( @"^(?<tokenID>'(?:\\'|.)+'|\w+)\s*=\s*(?<tokenType>\d+)$", RegexOptions.Compiled );
@@ -3015,7 +3015,7 @@ namespace Antlr3.Tool
                 ErrorManager.Error( ErrorManager.MSG_CANNOT_FIND_TOKENS_FILE, fileName );
             }
 
-            return composite.maxTokenType;
+            return composite.MaxTokenType;
         }
 
         /** Given a token type, get a meaningful name for it such as the ID
@@ -3035,7 +3035,7 @@ namespace Antlr3.Tool
             // faux label?
             else if ( ttype < 0 )
             {
-                tokenName = (string)composite.typeToTokenList[Label.NUM_FAUX_LABELS + ttype];
+                tokenName = (string)composite.TypeToTokenList[Label.NUM_FAUX_LABELS + ttype];
             }
             else
             {
@@ -3043,13 +3043,13 @@ namespace Antlr3.Tool
                 index = ttype - 1; // normalize to 0..n-1
                 index += Label.NUM_FAUX_LABELS;     // jump over faux tokens
 
-                if ( index < composite.typeToTokenList.Count )
+                if ( index < composite.TypeToTokenList.Count )
                 {
-                    tokenName = (string)composite.typeToTokenList[index];
+                    tokenName = (string)composite.TypeToTokenList[index];
                     if ( tokenName != null &&
                          tokenName.StartsWith( AUTO_GENERATED_TOKEN_NAME_PREFIX ) )
                     {
-                        tokenName = composite.typeToStringLiteralList[ttype];
+                        tokenName = composite.TypeToStringLiteralList[ttype];
                     }
                 }
                 else
@@ -3107,7 +3107,7 @@ namespace Antlr3.Tool
             }
             if ( key == "backtrack" && value.ToString() == "true" )
             {
-                composite.GetRootGrammar().atLeastOneBacktrackOption = true;
+                composite.RootGrammar.atLeastOneBacktrackOption = true;
             }
             if ( options == null )
             {
@@ -3188,11 +3188,11 @@ namespace Antlr3.Tool
         public virtual int GetUserMaxLookahead( int decision )
         {
             int user_k = 0;
-            GrammarAST blockAST = nfa.grammar.GetDecisionBlockAST( decision );
+            GrammarAST blockAST = nfa.Grammar.GetDecisionBlockAST( decision );
             object k = blockAST.GetBlockOption( "k" );
             if ( k == null )
             {
-                user_k = nfa.grammar.MaxLookahead;
+                user_k = nfa.Grammar.MaxLookahead;
                 return user_k;
             }
             if ( k is int )
@@ -3219,7 +3219,7 @@ namespace Antlr3.Tool
 
             if ( autoBacktrack == null )
             {
-                autoBacktrack = (string)nfa.grammar.GetOption( "backtrack" );
+                autoBacktrack = (string)nfa.Grammar.GetOption( "backtrack" );
             }
             return autoBacktrack != null && autoBacktrack.Equals( "true" );
         }

@@ -56,7 +56,7 @@ namespace Antlr3.Tool
             this.probe = probe;
             this.alts = alts.ToArray();
             // flip msg ID if alts are actually token refs in Tokens rule
-            if ( probe.dfa.IsTokensRuleDecision )
+            if ( probe.Dfa.IsTokensRuleDecision )
             {
                 MessageID = ErrorManager.MSG_UNREACHABLE_TOKENS;
             }
@@ -64,10 +64,10 @@ namespace Antlr3.Tool
 
         public override String ToString()
         {
-            GrammarAST decisionASTNode = probe.dfa.DecisionASTNode;
+            GrammarAST decisionASTNode = probe.Dfa.DecisionASTNode;
             line = decisionASTNode.Line;
             charPositionInLine = decisionASTNode.CharPositionInLine;
-            String fileName = probe.dfa.nfa.grammar.FileName;
+            String fileName = probe.Dfa.Nfa.Grammar.FileName;
             if ( fileName != null )
             {
                 file = fileName;
@@ -75,7 +75,7 @@ namespace Antlr3.Tool
 
             StringTemplate st = GetMessageTemplate();
 
-            if ( probe.dfa.IsTokensRuleDecision )
+            if ( probe.Dfa.IsTokensRuleDecision )
             {
                 // alts are token rules, convert to the names instead of numbers
                 for ( int i = 0; i < alts.Length; i++ )
@@ -83,7 +83,7 @@ namespace Antlr3.Tool
                     int altI = alts[i];
                     String tokenName = probe.GetTokenNameForTokensRuleAlt( altI );
                     // reset the line/col to the token definition
-                    NFAState ruleStart = probe.dfa.nfa.grammar.GetRuleStartState( tokenName );
+                    NFAState ruleStart = probe.Dfa.Nfa.Grammar.GetRuleStartState( tokenName );
                     line = ruleStart.associatedASTNode.Line;
                     charPositionInLine = ruleStart.associatedASTNode.CharPositionInLine;
                     st.SetAttribute( "tokens", tokenName );

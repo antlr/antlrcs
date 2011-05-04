@@ -58,13 +58,13 @@ namespace Antlr3.Analysis
         /**	2	if we didn't find such a pred */
         public const int DETECT_PRED_NOT_FOUND = 2;
 
-        Grammar _grammar;
+        private readonly Grammar _grammar;
 
         /** Used during LOOK to detect computation cycles */
-        HashSet<NFAState> _lookBusy = new HashSet<NFAState>();
+        private readonly HashSet<NFAState> _lookBusy = new HashSet<NFAState>();
 
-        IDictionary<NFAState, LookaheadSet> _firstCache = new Dictionary<NFAState, LookaheadSet>();
-        IDictionary<Rule, LookaheadSet> _followCache = new Dictionary<Rule, LookaheadSet>();
+        private readonly IDictionary<NFAState, LookaheadSet> _firstCache = new Dictionary<NFAState, LookaheadSet>();
+        private readonly IDictionary<Rule, LookaheadSet> _followCache = new Dictionary<Rule, LookaheadSet>();
 
         public LL1Analyzer( Grammar grammar )
         {
@@ -290,7 +290,7 @@ namespace Antlr3.Analysis
                         (RuleClosureTransition)transition0;
                     // remove the EOR and get what follows
                     //tset.remove(Label.EOR_TOKEN_TYPE);
-                    NFAState following = (NFAState)ruleInvocationTrans.followState;
+                    NFAState following = (NFAState)ruleInvocationTrans.FollowState;
                     LookaheadSet fset = FirstCore( following, chaseFollowTransitions );
                     fset.OrInPlace( tset );
                     fset.Remove( Label.EOR_TOKEN_TYPE );
@@ -404,7 +404,7 @@ namespace Antlr3.Analysis
                     // should include A.
                     RuleClosureTransition ruleInvocationTrans =
                         (RuleClosureTransition)transition0;
-                    NFAState following = (NFAState)ruleInvocationTrans.followState;
+                    NFAState following = (NFAState)ruleInvocationTrans.FollowState;
                     int afterRuleResult =
                         DetectConfoundingPredicatesCore( following,
                                                      enclosingRule,

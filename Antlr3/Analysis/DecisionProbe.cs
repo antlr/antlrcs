@@ -32,12 +32,12 @@
 
 namespace Antlr3.Analysis
 {
-    using System;
     using System.Collections.Generic;
     using System.Linq;
     using Antlr3.Misc;
 
     using ANTLRParser = Antlr3.Grammars.ANTLRParser;
+    using ArgumentNullException = System.ArgumentNullException;
     using ErrorManager = Antlr3.Tool.ErrorManager;
     using Grammar = Antlr3.Tool.Grammar;
     using GrammarAST = Antlr3.Tool.GrammarAST;
@@ -78,7 +78,7 @@ namespace Antlr3.Analysis
      */
     public class DecisionProbe
     {
-        internal DFA dfa;
+        private readonly DFA _dfa;
 
         /** Track all DFA states with nondeterministic alternatives.
          *  By reaching the same DFA state, a path through the NFA for some input
@@ -88,39 +88,39 @@ namespace Antlr3.Analysis
          *  Note that from the DFA state, you can ask for
          *  which alts are nondeterministic.
          */
-        ICollection<DFAState> _statesWithSyntacticallyAmbiguousAltsSet = new HashSet<DFAState>();
+        private readonly HashSet<DFAState> _statesWithSyntacticallyAmbiguousAltsSet = new HashSet<DFAState>();
 
         /** Track just like stateToSyntacticallyAmbiguousAltsMap, but only
          *  for nondeterminisms that arise in the Tokens rule such as keyword vs
          *  ID rule.  The state maps to the list of Tokens rule alts that are
          *  in conflict.
          */
-        internal IDictionary<DFAState, ICollection<int>> stateToSyntacticallyAmbiguousTokensRuleAltsMap =
+        internal readonly Dictionary<DFAState, ICollection<int>> stateToSyntacticallyAmbiguousTokensRuleAltsMap =
             new Dictionary<DFAState, ICollection<int>>();
 
         /** Was a syntactic ambiguity resolved with predicates?  Any DFA
          *  state that predicts more than one alternative, must be resolved
          *  with predicates or it should be reported to the user.
          */
-        ICollection<DFAState> _statesResolvedWithSemanticPredicatesSet = new HashSet<DFAState>();
+        private readonly HashSet<DFAState> _statesResolvedWithSemanticPredicatesSet = new HashSet<DFAState>();
 
         /** Track the predicates for each alt per DFA state;
          *  more than one DFA state might have syntactically ambig alt prediction.
          *  Maps DFA state to another map, mapping alt number to a
          *  SemanticContext (pred(s) to execute to resolve syntactic ambiguity).
          */
-        IDictionary<DFAState, IDictionary<int, SemanticContext>> _stateToAltSetWithSemanticPredicatesMap =
+        private readonly Dictionary<DFAState, IDictionary<int, SemanticContext>> _stateToAltSetWithSemanticPredicatesMap =
             new Dictionary<DFAState, IDictionary<int, SemanticContext>>();
 
         /** Tracks alts insufficiently covered.
          *  For example, p1||true gets reduced to true and so leaves
          *  whole alt uncovered.  This maps DFA state to the set of alts
          */
-        IDictionary<DFAState, IDictionary<int, ICollection<IToken>>> _stateToIncompletelyCoveredAltsMap =
+        private readonly Dictionary<DFAState, IDictionary<int, ICollection<IToken>>> _stateToIncompletelyCoveredAltsMap =
             new Dictionary<DFAState, IDictionary<int, ICollection<IToken>>>();
 
         /** The set of states w/o emanating edges and w/o resolving sem preds. */
-        ICollection<DFAState> _danglingStates = new HashSet<DFAState>();
+        private readonly HashSet<DFAState> _danglingStates = new HashSet<DFAState>();
 
         /** The overall list of alts within the decision that have at least one
          *  conflicting input sequence.
@@ -131,12 +131,12 @@ namespace Antlr3.Analysis
          *  lookahead.  The decision cannot be made with a DFA.
          *  the alts are stored in altsWithProblem.
          */
-        bool _nonLLStarDecision = false;
+        private bool _nonLLStarDecision = false;
 
         /** Recursion is limited to a particular depth.  If that limit is exceeded
          *  the proposed new NFAConfiguration is recorded for the associated DFA state.
          */
-        MultiMap<int, NFAConfiguration> _stateToRecursionOverflowConfigurationsMap =
+        private readonly MultiMap<int, NFAConfiguration> _stateToRecursionOverflowConfigurationsMap =
             new MultiMap<int, NFAConfiguration>();
 
 #if false
@@ -155,11 +155,7 @@ namespace Antlr3.Analysis
         /** Used to find paths through syntactically ambiguous DFA. If we've
          *  seen statement number before, what did we learn?
          */
-        IDictionary<int, int> _stateReachable;
-
-        public const int REACHABLE_BUSY = -1;
-        public const int REACHABLE_NO = 0;
-        public const int REACHABLE_YES = 1;
+        private IDictionary<int, Reachable> _stateReachable;
 
         /** Used while finding a path through an NFA whose edge labels match
          *  an input sequence.  Tracks the input position
@@ -168,18 +164,29 @@ namespace Antlr3.Analysis
          *  infinite loop.  Stop.  Set<String>.  The strings look like
          *  stateNumber_labelIndex.
          */
-        ICollection<string> _statesVisitedAtInputDepth;
+        private ICollection<string> _statesVisitedAtInputDepth;
 
-        ICollection<int> _statesVisitedDuringSampleSequence;
+        private ICollection<int> _statesVisitedDuringSampleSequence;
 
         public static bool verbose = false;
 
         public DecisionProbe( DFA dfa )
         {
-            this.dfa = dfa;
+            if (dfa == null)
+                throw new ArgumentNullException("dfa");
+
+            this._dfa = dfa;
         }
 
         #region Properties
+        public DFA Dfa
+        {
+            get
+            {
+                return _dfa;
+            }
+        }
+
         /** Took too long to analyze a DFA */
         public bool AnalysisOverflowed
         {
@@ -201,6 +208,7 @@ namespace Antlr3.Analysis
                 return _danglingStates;
             }
         }
+
         /** Return a string like "3:22: ( A {;} | B )" that describes this
          *  decision.
          */
@@ -208,9 +216,10 @@ namespace Antlr3.Analysis
         {
             get
             {
-                return dfa.NFADecisionStartState.Description;
+                return _dfa.NFADecisionStartState.Description;
             }
         }
+
         /** Return all DFA states in this DFA that have NFA configurations that
          *  conflict.  You must report a problem for each state in this set
          *  because each state represents a different input sequence.
@@ -222,6 +231,7 @@ namespace Antlr3.Analysis
                 return _statesWithSyntacticallyAmbiguousAltsSet;
             }
         }
+
         /** At least one alt refs a sem or syn pred */
         public bool HasPredicate
         {
@@ -230,13 +240,15 @@ namespace Antlr3.Analysis
                 return _stateToAltSetWithSemanticPredicatesMap.Count > 0;
             }
         }
+
         public bool IsCyclic
         {
             get
             {
-                return dfa.IsCyclic;
+                return _dfa.IsCyclic;
             }
         }
+
         /** If no states are dead-ends, no alts are unreachable, there are
          *  no nondeterminisms unresolved by syn preds, all is ok with decision.
          */
@@ -246,7 +258,7 @@ namespace Antlr3.Analysis
             {
                 if ( _danglingStates.Count == 0 &&
                      _statesWithSyntacticallyAmbiguousAltsSet.Count == 0 &&
-                     dfa.UnreachableAlts.Count == 0 )
+                     _dfa.UnreachableAlts.Count == 0 )
                 {
                     return true;
                 }
@@ -262,6 +274,7 @@ namespace Antlr3.Analysis
                 return false;
             }
         }
+
         /** Found recursion in > 1 alt */
         public bool IsNonLLStarDecision
         {
@@ -270,13 +283,15 @@ namespace Antlr3.Analysis
                 return _nonLLStarDecision;
             }
         }
+
         public bool IsReduced
         {
             get
             {
-                return dfa.IsReduced;
+                return _dfa.IsReduced;
             }
         }
+
         public ICollection<int> NonDeterministicAlts
         {
             get
@@ -284,6 +299,7 @@ namespace Antlr3.Analysis
                 return _altsWithProblem;
             }
         }
+
         public ICollection<DFAState> NondeterministicStatesResolvedWithSemanticPredicate
         {
             get
@@ -291,14 +307,16 @@ namespace Antlr3.Analysis
                 return _statesResolvedWithSemanticPredicatesSet;
             }
         }
+
         /** How many states does the DFA predictor have? */
         public int NumberOfStates
         {
             get
             {
-                return dfa.NumberOfStates;
+                return _dfa.NumberOfStates;
             }
         }
+
         /** Get a list of all unreachable alternatives for this decision.  There
          *  may be multiple alternatives with ambiguous input sequences, but this
          *  is the overall list of unreachable alternatives (either due to
@@ -308,9 +326,10 @@ namespace Antlr3.Analysis
         {
             get
             {
-                return dfa.UnreachableAlts;
+                return _dfa.UnreachableAlts;
             }
         }
+
         #endregion
 
         // I N F O R M A T I O N  A B O U T  D E C I S I O N
@@ -343,7 +362,7 @@ namespace Antlr3.Analysis
          *  that for this DFA state, that alt is disabled.  There may be other
          *  accept states for that alt that make an alt reachable.
          */
-        public virtual ICollection<int> GetDisabledAlternatives( DFAState d )
+        public virtual IEnumerable<int> GetDisabledAlternatives( DFAState d )
         {
             return d.DisabledAlternatives;
         }
@@ -365,11 +384,11 @@ namespace Antlr3.Analysis
             HashSet<object> dfaStates = GetDFAPathStatesToTarget( targetState );
             _statesVisitedDuringSampleSequence = new HashSet<int>();
             IList<Label> labels = new List<Label>(); // may access ith element; use array
-            if ( dfa == null || dfa.startState == null )
+            if ( _dfa == null || _dfa.StartState == null )
             {
                 return labels;
             }
-            GetSampleInputSequenceUsingStateSet( dfa.startState,
+            GetSampleInputSequenceUsingStateSet( _dfa.StartState,
                                                 targetState,
                                                 dfaStates,
                                                 labels );
@@ -380,9 +399,9 @@ namespace Antlr3.Analysis
          *  of the associated input string.  One could show something different
          *  for lexers and parsers, for example.
          */
-        public virtual String GetInputSequenceDisplay( IList<Label> labels )
+        public virtual string GetInputSequenceDisplay( IList<Label> labels )
         {
-            Grammar g = dfa.nfa.grammar;
+            Grammar g = _dfa.Nfa.Grammar;
             StringBuilder buf = new StringBuilder();
             foreach ( Label label in labels )
             {
@@ -431,18 +450,18 @@ namespace Antlr3.Analysis
                                            int alt,
                                            IList<Label> labels )
         {
-            NFAState nfaStart = dfa.NFADecisionStartState;
+            NFAState nfaStart = _dfa.NFADecisionStartState;
             List<NFAState> path = new List<NFAState>();
             // first add all NFA states leading up to altStart state
             for ( int a = firstAlt; a <= alt; a++ )
             {
                 NFAState s =
-                    dfa.nfa.grammar.GetNFAStateForAltOfDecision( nfaStart, a );
+                    _dfa.Nfa.Grammar.GetNFAStateForAltOfDecision( nfaStart, a );
                 path.Add( s );
             }
 
             // add first state of actual alt
-            NFAState altStart = dfa.nfa.grammar.GetNFAStateForAltOfDecision( nfaStart, alt );
+            NFAState altStart = _dfa.Nfa.Grammar.GetNFAStateForAltOfDecision( nfaStart, alt );
             NFAState isolatedAltStart = (NFAState)altStart.transition[0].Target;
             path.Add( isolatedAltStart );
 
@@ -486,7 +505,7 @@ namespace Antlr3.Analysis
             // NONREGULAR DUE TO RECURSION > 1 ALTS
             // Issue this before aborted analysis, which might also occur
             // if we take too long to terminate
-            if ( _nonLLStarDecision && !dfa.AutoBacktrackMode )
+            if ( _nonLLStarDecision && !_dfa.AutoBacktrackMode )
             {
                 ErrorManager.NonLLStarDecision( this );
             }
@@ -496,41 +515,38 @@ namespace Antlr3.Analysis
             // generate a separate message for each problem state in DFA
             ICollection<DFAState> resolvedStates = NondeterministicStatesResolvedWithSemanticPredicate;
             ICollection<DFAState> problemStates = DFAStatesWithSyntacticallyAmbiguousAlts;
-            if ( problemStates.Count > 0 )
+            foreach (DFAState d in problemStates)
             {
-                foreach ( DFAState d in problemStates )
+                if (_dfa.Nfa.Grammar.NFAToDFAConversionExternallyAborted())
+                    break;
+
+                IDictionary<int, ICollection<IToken>> insufficientAltToLocations = GetIncompletelyCoveredAlts(d);
+                if (insufficientAltToLocations != null && insufficientAltToLocations.Count > 0)
                 {
-                    if ( dfa.nfa.grammar.NFAToDFAConversionExternallyAborted() )
-                        break;
-
-                    IDictionary<int, ICollection<IToken>> insufficientAltToLocations = GetIncompletelyCoveredAlts( d );
-                    if ( insufficientAltToLocations != null && insufficientAltToLocations.Count > 0 )
+                    ErrorManager.InsufficientPredicates(this, d, insufficientAltToLocations);
+                }
+                // don't report problem if resolved
+                if (resolvedStates == null || !resolvedStates.Contains(d))
+                {
+                    // first strip last alt from disableAlts if it's wildcard
+                    // then don't print error if no more disable alts
+                    List<int> disabledAlts = GetDisabledAlternatives(d).ToList();
+                    StripWildCardAlts(disabledAlts);
+                    if (disabledAlts.Count > 0)
                     {
-                        ErrorManager.InsufficientPredicates( this, d, insufficientAltToLocations );
-                    }
-                    // don't report problem if resolved
-                    if ( resolvedStates == null || !resolvedStates.Contains( d ) )
-                    {
-                        // first strip last alt from disableAlts if it's wildcard
-                        // then don't print error if no more disable alts
-                        ICollection<int> disabledAlts = GetDisabledAlternatives( d );
-                        StripWildCardAlts( disabledAlts );
-                        if ( disabledAlts.Count > 0 )
+                        // nondeterminism; same input predicts multiple alts.
+                        // but don't emit error if greedy=true explicitly set
+                        bool explicitlyGreedy = false;
+                        GrammarAST blockAST = d.Dfa.Nfa.Grammar.GetDecisionBlockAST(d.Dfa.DecisionNumber);
+                        if (blockAST != null)
                         {
-                            // nondeterminism; same input predicts multiple alts.
-                            // but don't emit error if greedy=true explicitly set
-                            bool explicitlyGreedy = false;
-                            GrammarAST blockAST = d.dfa.nfa.grammar.GetDecisionBlockAST(d.dfa.decisionNumber);
-                            if (blockAST != null)
-                            {
-                                String greedyS = (String)blockAST.GetBlockOption("greedy");
-                                if (greedyS != null && greedyS.Equals("true"))
-                                    explicitlyGreedy = true;
-                            }
-
-                            if (!explicitlyGreedy)
-                                ErrorManager.Nondeterminism(this, d);
+                            string greedyS = (string)blockAST.GetBlockOption("greedy");
+                            if (greedyS != null && greedyS.Equals("true"))
+                                explicitlyGreedy = true;
                         }
+
+                        if (!explicitlyGreedy)
+                            ErrorManager.Nondeterminism(this, d);
                     }
                 }
             }
@@ -547,16 +563,16 @@ namespace Antlr3.Analysis
 
             if ( !_nonLLStarDecision )
             {
-                var unreachableAlts = dfa.UnreachableAlts;
+                var unreachableAlts = _dfa.UnreachableAlts;
                 if ( unreachableAlts != null && unreachableAlts.Count > 0 )
                 {
                     // give different msg if it's an empty Tokens rule from delegate
                     bool isInheritedTokensRule = false;
-                    if ( dfa.IsTokensRuleDecision )
+                    if ( _dfa.IsTokensRuleDecision )
                     {
                         foreach ( int altI in unreachableAlts )
                         {
-                            GrammarAST decAST = dfa.DecisionASTNode;
+                            GrammarAST decAST = _dfa.DecisionASTNode;
                             GrammarAST altAST = (GrammarAST)decAST.GetChild( altI - 1 );
                             GrammarAST delegatedTokensAlt =
                                 (GrammarAST)altAST.GetFirstChildWithType( ANTLRParser.DOT );
@@ -564,9 +580,9 @@ namespace Antlr3.Analysis
                             {
                                 isInheritedTokensRule = true;
                                 ErrorManager.GrammarWarning( ErrorManager.MSG_IMPORTED_TOKENS_RULE_EMPTY,
-                                                            dfa.nfa.grammar,
+                                                            _dfa.Nfa.Grammar,
                                                             null,
-                                                            dfa.nfa.grammar.name,
+                                                            _dfa.Nfa.Grammar.name,
                                                             delegatedTokensAlt.GetChild( 0 ).Text );
                             }
                         }
@@ -594,7 +610,7 @@ namespace Antlr3.Analysis
             int lastAlt =
                 (int)sortedDisableAlts[sortedDisableAlts.Count - 1];
             GrammarAST blockAST =
-                dfa.nfa.grammar.GetDecisionBlockAST( dfa.decisionNumber );
+                _dfa.Nfa.Grammar.GetDecisionBlockAST( _dfa.DecisionNumber );
             //JSystem.@out.println("block with error = "+blockAST.toStringTree());
             GrammarAST lastAltAST = null;
             if ( blockAST.GetChild( 0 ).Type == ANTLRParser.OPTIONS )
@@ -671,11 +687,11 @@ namespace Antlr3.Analysis
                 for ( int i = 0; i < configs.Count; i++ )
                 {
                     NFAConfiguration c = (NFAConfiguration)configs[i];
-                    NFAState ruleInvocationState = dfa.nfa.GetState( c.state );
+                    NFAState ruleInvocationState = _dfa.Nfa.GetState( c.State );
                     Transition transition0 = ruleInvocationState.transition[0];
                     RuleClosureTransition @ref = (RuleClosureTransition)transition0;
-                    String targetRule = ( (NFAState)@ref.Target ).enclosingRule.Name;
-                    int altI = c.alt;
+                    string targetRule = ( (NFAState)@ref.Target ).enclosingRule.Name;
+                    int altI = c.Alt;
                     IDictionary<string, ICollection<NFAState>> targetToCallSiteMap;
                     altToTargetToCallSitesMap.TryGetValue(altI, out targetToCallSiteMap);
                     if ( targetToCallSiteMap == null )
@@ -695,7 +711,7 @@ namespace Antlr3.Analysis
                     DFAState state;
                     if ( !altToDFAState.TryGetValue( altI, out state ) || state == null )
                     {
-                        DFAState sampleBadState = dfa.GetState( stateI );
+                        DFAState sampleBadState = _dfa.GetState( stateI );
                         altToDFAState[altI] = sampleBadState;
                     }
                 }
@@ -707,7 +723,7 @@ namespace Antlr3.Analysis
             HashSet<object> dfaStatesUnaliased = new HashSet<object>();
             foreach ( int stateI in dfaStatesWithRecursionProblems )
             {
-                DFAState d = dfa.GetState( stateI );
+                DFAState d = _dfa.GetState( stateI );
                 dfaStatesUnaliased.Add( d.StateNumber );
             }
             return dfaStatesUnaliased;
@@ -735,8 +751,8 @@ namespace Antlr3.Analysis
                                dfa.recursiveAltSet.toList());
                                */
             _nonLLStarDecision = true;
-            dfa.nfa.grammar.numNonLLStar++;
-            _altsWithProblem.UnionWith( dfa.recursiveAltSet.ToList() );
+            dfa.Nfa.Grammar.numNonLLStar++;
+            _altsWithProblem.UnionWith( dfa.RecursiveAltSet.ToList() );
         }
 
         public virtual void ReportRecursionOverflow( DFAState d,
@@ -760,8 +776,8 @@ namespace Antlr3.Analysis
         {
             _altsWithProblem.UnionWith( nondeterministicAlts ); // track overall list
             _statesWithSyntacticallyAmbiguousAltsSet.Add( d );
-            dfa.nfa.grammar.setOfNondeterministicDecisionNumbers.Add(
-                dfa.DecisionNumber
+            _dfa.Nfa.Grammar.setOfNondeterministicDecisionNumbers.Add(
+                _dfa.NfaStartStateDecisionNumber
             );
         }
 
@@ -778,14 +794,14 @@ namespace Antlr3.Analysis
         {
             // First, prevent a recursion warning on this state due to
             // pred resolution
-            if ( d.abortedDueToRecursionOverflow )
+            if ( d.AbortedDueToRecursionOverflow )
             {
-                d.dfa.probe.RemoveRecursiveOverflowState( d );
+                d.Dfa.Probe.RemoveRecursiveOverflowState( d );
             }
             _statesResolvedWithSemanticPredicatesSet.Add( d );
             //JSystem.@out.println("resolved with pred: "+d);
-            dfa.nfa.grammar.setOfNondeterministicDecisionNumbersResolvedWithPredicates.Add(
-                dfa.DecisionNumber
+            _dfa.Nfa.Grammar.setOfNondeterministicDecisionNumbersResolvedWithPredicates.Add(
+                _dfa.NfaStartStateDecisionNumber
             );
         }
 
@@ -821,35 +837,35 @@ namespace Antlr3.Analysis
             {
                 states.Add( targetState );
                 //JSystem.@out.println("found target DFA state "+targetState.getStateNumber());
-                _stateReachable[startState.StateNumber] = REACHABLE_YES;
+                _stateReachable[startState.StateNumber] = Reachable.Yes;
                 return true;
             }
 
             DFAState s = startState;
             // avoid infinite loops
-            _stateReachable[s.StateNumber] = REACHABLE_BUSY;
+            _stateReachable[s.StateNumber] = Reachable.Busy;
 
             // look for a path to targetState among transitions for this state
             // stop when you find the first one; I'm pretty sure there is
             // at most one path to any DFA state with conflicting predictions
             for ( int i = 0; i < s.NumberOfTransitions; i++ )
             {
-                Transition t = s.Transition( i );
+                Transition t = s.GetTransition( i );
                 DFAState edgeTarget = (DFAState)t.Target;
 
-                int targetStatus; //= stateReachable.get( edgeTarget.stateNumber );
+                Reachable targetStatus; //= stateReachable.get( edgeTarget.stateNumber );
                 if ( _stateReachable.TryGetValue( edgeTarget.StateNumber, out targetStatus ) )
                 {
-                    if ( targetStatus == REACHABLE_BUSY )
+                    if ( targetStatus == Reachable.Busy )
                     { // avoid cycles; they say nothing
                         continue;
                     }
-                    if ( targetStatus == REACHABLE_YES )
+                    if ( targetStatus == Reachable.Yes )
                     { // return success!
-                        _stateReachable[s.StateNumber] = REACHABLE_YES;
+                        _stateReachable[s.StateNumber] = Reachable.Yes;
                         return true;
                     }
-                    if ( targetStatus == REACHABLE_NO )
+                    if ( targetStatus == Reachable.No )
                     { // try another transition
                         continue;
                     }
@@ -859,24 +875,25 @@ namespace Antlr3.Analysis
                 if ( ReachesState( edgeTarget, targetState, states ) )
                 {
                     states.Add( s );
-                    _stateReachable[s.StateNumber] = REACHABLE_YES;
+                    _stateReachable[s.StateNumber] = Reachable.Yes;
                     return true;
                 }
             }
 
-            _stateReachable[s.StateNumber] = REACHABLE_NO;
+            _stateReachable[s.StateNumber] = Reachable.No;
             return false; // no path to targetState found.
         }
 
         protected virtual HashSet<object> GetDFAPathStatesToTarget( DFAState targetState )
         {
             HashSet<object> dfaStates = new HashSet<object>();
-            _stateReachable = new Dictionary<int, int>();
-            if ( dfa == null || dfa.startState == null )
+            _stateReachable = new Dictionary<int, Reachable>();
+            if ( _dfa == null || _dfa.StartState == null )
             {
                 return dfaStates;
             }
-            bool reaches = ReachesState( dfa.startState, targetState, dfaStates );
+
+            bool reaches = ReachesState( _dfa.StartState, targetState, dfaStates );
             return dfaStates;
         }
 
@@ -936,7 +953,7 @@ namespace Antlr3.Analysis
                                      IList<NFAState> path )      // output list of NFA states
         {
             // track a visit to state s at input index labelIndex if not seen
-            String thisStateKey = GetStateLabelIndexKey( s.StateNumber, labelIndex );
+            string thisStateKey = GetStateLabelIndexKey( s.StateNumber, labelIndex );
             if ( _statesVisitedAtInputDepth.Contains( thisStateKey ) )
             {
                 /*
@@ -961,9 +978,9 @@ namespace Antlr3.Analysis
                 Label label = (Label)labels[labelIndex];
                 /*
                 JSystem.@out.println(s.stateNumber+"-"+
-                                   t.label.toString(dfa.nfa.grammar)+"->"+
+                                   t.label.toString(dfa.nfa.Grammar)+"->"+
                                    edgeTarget.stateNumber+" =="+
-                                   label.toString(dfa.nfa.grammar)+"?");
+                                   label.toString(dfa.nfa.Grammar)+"?");
                 */
                 if ( t.Label.IsEpsilon || t.Label.IsSemanticPredicate )
                 {
@@ -984,7 +1001,7 @@ namespace Antlr3.Analysis
                     path.Add( edgeTarget );
                     /*
                     JSystem.@out.println("found label "+
-                                       t.label.toString(dfa.nfa.grammar)+
+                                       t.label.toString(dfa.nfa.Grammar)+
                                        " at state "+s.stateNumber+"; labelIndex="+labelIndex);
                     */
                     if ( labelIndex == labels.Count - 1 )
@@ -1003,7 +1020,7 @@ namespace Antlr3.Analysis
                     }
                     /*
                     JSystem.@out.println("backtrack; path from "+s.stateNumber+"->"+
-                                       t.label.toString(dfa.nfa.grammar)+" didn't work");
+                                       t.label.toString(dfa.nfa.Grammar)+" didn't work");
                     */
                     path.RemoveAt( path.Count - 1 ); // remove; didn't work out
                     continue; // keep looking for a path for labels
@@ -1015,7 +1032,7 @@ namespace Antlr3.Analysis
             return false;
         }
 
-        protected virtual String GetStateLabelIndexKey( int s, int i )
+        protected virtual string GetStateLabelIndexKey( int s, int i )
         {
             StringBuilder buf = new StringBuilder();
             buf.Append( s );
@@ -1027,11 +1044,11 @@ namespace Antlr3.Analysis
         /** From an alt number associated with artificial Tokens rule, return
          *  the name of the token that is associated with that alt.
          */
-        public virtual String GetTokenNameForTokensRuleAlt( int alt )
+        public virtual string GetTokenNameForTokensRuleAlt( int alt )
         {
-            NFAState decisionState = dfa.NFADecisionStartState;
+            NFAState decisionState = _dfa.NFADecisionStartState;
             NFAState altState =
-                dfa.nfa.grammar.GetNFAStateForAltOfDecision( decisionState, alt );
+                _dfa.Nfa.Grammar.GetNFAStateForAltOfDecision( decisionState, alt );
             NFAState decisionLeft = (NFAState)altState.transition[0].Target;
             RuleClosureTransition ruleCallEdge =
                 (RuleClosureTransition)decisionLeft.transition[0];

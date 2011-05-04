@@ -55,14 +55,14 @@ namespace Antlr3.Tool
             predefinedRulePropertiesScope.AddAttribute( "stop", null );
             predefinedRulePropertiesScope.AddAttribute( "tree", null );
             predefinedRulePropertiesScope.AddAttribute( "st", null );
-            predefinedRulePropertiesScope.isPredefinedRuleScope = true;
+            predefinedRulePropertiesScope.IsPredefinedRuleScope = true;
 
             predefinedTreeRulePropertiesScope = new AttributeScope( "RulePredefined", null );
             predefinedTreeRulePropertiesScope.AddAttribute( "text", null );
             predefinedTreeRulePropertiesScope.AddAttribute( "start", null ); // note: no stop; not meaningful
             predefinedTreeRulePropertiesScope.AddAttribute( "tree", null );
             predefinedTreeRulePropertiesScope.AddAttribute( "st", null );
-            predefinedTreeRulePropertiesScope.isPredefinedRuleScope = true;
+            predefinedTreeRulePropertiesScope.IsPredefinedRuleScope = true;
 
             predefinedLexerRulePropertiesScope = new AttributeScope( "LexerRulePredefined", null );
             predefinedLexerRulePropertiesScope.AddAttribute( "text", null );
@@ -74,7 +74,7 @@ namespace Antlr3.Tool
             predefinedLexerRulePropertiesScope.AddAttribute( "start", null );
             predefinedLexerRulePropertiesScope.AddAttribute( "stop", null );
             predefinedLexerRulePropertiesScope.AddAttribute( "int", null );
-            predefinedLexerRulePropertiesScope.isPredefinedLexerRuleScope = true;
+            predefinedLexerRulePropertiesScope.IsPredefinedLexerRuleScope = true;
 
             grammarTypeToRulePropertiesScope =
                 new AttributeScope[]

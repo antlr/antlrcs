@@ -61,7 +61,7 @@ namespace Antlr3.Targets
                 return ttype.ToString();
             }
 
-            string name = generator.grammar.GetTokenDisplayName( ttype );
+            string name = generator.Grammar.GetTokenDisplayName( ttype );
 
             // If name is a literal, return the token type instead
             if ( name[0] == '\'' )

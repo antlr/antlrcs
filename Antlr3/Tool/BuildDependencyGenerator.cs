@@ -82,24 +82,24 @@ namespace Antlr3.Tool
      */
     public class BuildDependencyGenerator
     {
-        protected string grammarFileName;
-        protected string tokenVocab;
-        protected Tool tool;
-        protected Grammar grammar;
-        protected CodeGenerator generator;
-        protected TemplateGroup templates;
+        private readonly string grammarFileName;
+        private readonly Tool tool;
+        private readonly Grammar grammar;
+        private readonly CodeGenerator generator;
+        private string tokenVocab;
+        private TemplateGroup templates;
 
         public BuildDependencyGenerator( Tool tool, string grammarFileName )
         {
             this.tool = tool;
             this.grammarFileName = grammarFileName;
-            grammar = tool.GetRootGrammar( grammarFileName );
+            this.grammar = tool.GetRootGrammar( grammarFileName );
+
             string language = (string)grammar.GetOption( "language" );
-            generator = new CodeGenerator( tool, grammar, language );
-            generator.LoadTemplates( language );
+            this.generator = new CodeGenerator( tool, grammar, language );
+            this.generator.LoadTemplates( language );
         }
 
-        [CLSCompliant(false)]
         public virtual string TokenVocab
         {
             get
@@ -108,7 +108,6 @@ namespace Antlr3.Tool
             }
         }
 
-        [CLSCompliant(false)]
         public virtual CodeGenerator Generator
         {
             get

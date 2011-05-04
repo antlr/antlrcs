@@ -45,45 +45,61 @@ namespace Antlr3.Analysis
         public const int INVALID_ALT_NUMBER = -1;
 
         /** This NFA represents which grammar? */
-        internal Grammar grammar;
+        private readonly Grammar _grammar;
 
         /** Which factory created this NFA? */
-        NFAFactory _factory;
+        private readonly NFAFactory _factory;
 
-        public bool complete;
+        private bool _complete;
 
-        public NFA( Grammar g )
+        public NFA( Grammar grammar )
         {
-            this.grammar = g;
+            this._grammar = grammar;
+            this._factory = new NFAFactory(this);
         }
 
-        #region Properties
+        public Grammar Grammar
+        {
+            get
+            {
+                return _grammar;
+            }
+        }
+
         public NFAFactory Factory
         {
             get
             {
                 return _factory;
             }
+        }
+
+        public bool Complete
+        {
+            get
+            {
+                return _complete;
+            }
+
             set
             {
-                _factory = value;
+                _complete = value;
             }
         }
-        #endregion
 
         public int GetNewNFAStateNumber()
         {
-            return grammar.composite.GetNewNFAStateNumber();
+            return Grammar.composite.GetNewNFAStateNumber();
         }
 
         public void AddState( NFAState state )
         {
-            grammar.composite.AddState( state );
+            Grammar.composite.AddState( state );
         }
 
         public NFAState GetState( int s )
         {
-            return grammar.composite.GetState( s );
+            return Grammar.composite.GetState( s );
         }
     }
 }

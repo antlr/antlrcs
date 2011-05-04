@@ -58,15 +58,15 @@ namespace Antlr3.Tool
     {
         public const int MinRuleIndex = 1;
 
-        public CompositeGrammarTree delegateGrammarTreeRoot;
+        private CompositeGrammarTree delegateGrammarTreeRoot;
 
         /** Used during getRuleReferenceClosure to detect computation cycles */
-        protected HashSet<NFAState> refClosureBusy = new HashSet<NFAState>();
+        private readonly HashSet<NFAState> refClosureBusy = new HashSet<NFAState>();
 
         /** Used to assign state numbers; all grammars in composite share common
          *  NFA space.  This NFA tracks state numbers number to state mapping.
          */
-        public int stateCounter = 0;
+        private int stateCounter = 0;
 
         /** The NFA states in the NFA built from rules across grammars in composite.
          *  Maps state number to NFAState object.
@@ -74,7 +74,7 @@ namespace Antlr3.Tool
          *  this properly.  After talking to Josh Bloch, Collections guy at Sun,
          *  I decided this was easiest solution.
          */
-        protected List<NFAState> numberToStateList = new List<NFAState>( 1000 );
+        private readonly List<NFAState> numberToStateList = new List<NFAState>( 1000 );
 
         /** Token names and literal tokens like "void" are uniquely indexed.
          *  with -1 implying EOF.  Characters are different; they go from
@@ -84,42 +84,43 @@ namespace Antlr3.Tool
          *  like EPSILON. Char/String literals and token types overlap in the same
          *  space, however.
          */
-        protected internal int maxTokenType = Label.MIN_TOKEN_TYPE - 1;
+        private int maxTokenType = Label.MIN_TOKEN_TYPE - 1;
 
         /** Map token like ID (but not literals like "while") to its token type */
-        public IDictionary<string, int> tokenIDToTypeMap = new Dictionary<string, int>();
+        private readonly Dictionary<string, int> tokenIDToTypeMap = new Dictionary<string, int>();
 
         /** Map token literals like "while" to its token type.  It may be that
          *  WHILE="while"=35, in which case both tokenIDToTypeMap and this
          *  field will have entries both mapped to 35.
          */
-        public IDictionary<string, int> stringLiteralToTypeMap = new Dictionary<string, int>();
+        private readonly Dictionary<string, int> stringLiteralToTypeMap = new Dictionary<string, int>();
+
         /** Reverse index for stringLiteralToTypeMap */
-        public List<string> typeToStringLiteralList = new List<string>();
+        private readonly List<string> typeToStringLiteralList = new List<string>();
 
         /** Map a token type to its token name.
          *  Must subtract MIN_TOKEN_TYPE from index.
          */
-        public List<string> typeToTokenList = new List<string>();
+        private readonly List<string> typeToTokenList = new List<string>();
 
         /** If combined or lexer grammar, track the rules.
          * 	Track lexer rules so we can warn about undefined tokens.
          *  This is combined set of lexer rules from all lexer grammars
          *  seen in all imports.
          */
-        protected internal HashSet<string> lexerRules = new HashSet<string>();
+        private readonly HashSet<string> lexerRules = new HashSet<string>();
 
         /** Rules are uniquely labeled from 1..n among all grammars */
-        protected internal int ruleIndex = MinRuleIndex;
+        private int ruleIndex = MinRuleIndex;
 
         /** Map a rule index to its name; use a Vector on purpose as new
          *  collections stuff won't let me setSize and make it grow.  :(
          *  I need a specific guaranteed index, which the Collections stuff
          *  won't let me have.
          */
-        protected internal List<Rule> ruleIndexToRuleList = new List<Rule>();
+        private readonly List<Rule> ruleIndexToRuleList = new List<Rule>();
 
-        public bool watchNFAConversion = false;
+        private bool watchNFAConversion = false;
 
         protected virtual void InitTokenSymbolTables()
         {
@@ -159,13 +160,121 @@ namespace Antlr3.Tool
         }
 
         #region Properties
+
+        public CompositeGrammarTree DelegateGrammarTreeRoot
+        {
+            get
+            {
+                return delegateGrammarTreeRoot;
+            }
+        }
+
         public Grammar RootGrammar
         {
             get
             {
-                return GetRootGrammar();
+                if (delegateGrammarTreeRoot == null)
+                    return null;
+
+                return delegateGrammarTreeRoot.Grammar;
             }
         }
+
+        public int StateCounter
+        {
+            get
+            {
+                return stateCounter;
+            }
+        }
+
+        public int MaxTokenType
+        {
+            get
+            {
+                return maxTokenType;
+            }
+
+            set
+            {
+                maxTokenType = value;
+            }
+        }
+
+        public IDictionary<string, int> TokenIDToTypeMap
+        {
+            get
+            {
+                return tokenIDToTypeMap;
+            }
+        }
+
+        public IDictionary<string, int> StringLiteralToTypeMap
+        {
+            get
+            {
+                return stringLiteralToTypeMap;
+            }
+        }
+
+        public List<string> TypeToStringLiteralList
+        {
+            get
+            {
+                return typeToStringLiteralList;
+            }
+        }
+
+        public List<string> TypeToTokenList
+        {
+            get
+            {
+                return typeToTokenList;
+            }
+        }
+
+        public ICollection<string> LexerRules
+        {
+            get
+            {
+                return lexerRules;
+            }
+        }
+
+        public List<Rule> RuleIndexToRuleList
+        {
+            get
+            {
+                return ruleIndexToRuleList;
+            }
+        }
+
+        public bool WatchNFAConversion
+        {
+            get
+            {
+                return watchNFAConversion;
+            }
+
+            set
+            {
+                watchNFAConversion = value;
+            }
+        }
+
+        protected internal int RuleIndex
+        {
+            get
+            {
+                return ruleIndex;
+            }
+
+            set
+            {
+                ruleIndex = value;
+            }
+        }
+
         #endregion
 
         public virtual void SetDelegationRoot( Grammar root )
@@ -216,10 +325,12 @@ namespace Antlr3.Tool
             {
                 return null; // not found
             }
-            if ( me.parent != null )
+
+            if ( me.Parent != null )
             {
-                return me.parent.grammar;
+                return me.Parent.Grammar;
             }
+
             return null;
         }
 
@@ -251,7 +362,7 @@ namespace Antlr3.Tool
             for ( int i = 0; children != null && i < children.Count; i++ )
             {
                 CompositeGrammarTree child = (CompositeGrammarTree)children[i];
-                grammars.Add( child.grammar );
+                grammars.Add( child.Grammar );
             }
             return grammars;
         }
@@ -273,18 +384,18 @@ namespace Antlr3.Tool
          */
         public virtual IList<Grammar> GetDelegators( Grammar g )
         {
-            if ( g == delegateGrammarTreeRoot.grammar )
+            if ( g == delegateGrammarTreeRoot.Grammar )
             {
                 return null;
             }
             List<Grammar> grammars = new List<Grammar>();
             CompositeGrammarTree t = delegateGrammarTreeRoot.FindNode( g );
             // walk backwards to root, collecting grammars
-            CompositeGrammarTree p = t.parent;
+            CompositeGrammarTree p = t.Parent;
             while ( p != null )
             {
-                grammars.Insert( 0, p.grammar ); // add to head so in order later
-                p = p.parent;
+                grammars.Insert( 0, p.Grammar ); // add to head so in order later
+                p = p.Parent;
             }
             return grammars;
         }
@@ -300,7 +411,7 @@ namespace Antlr3.Tool
          */
         public virtual HashSet<Rule> GetDelegatedRules( Grammar g )
         {
-            if ( g != delegateGrammarTreeRoot.grammar )
+            if ( g != delegateGrammarTreeRoot.Grammar )
             {
                 return null;
             }
@@ -345,21 +456,12 @@ namespace Antlr3.Tool
             return rules;
         }
 
-        public virtual Grammar GetRootGrammar()
-        {
-            if ( delegateGrammarTreeRoot == null )
-            {
-                return null;
-            }
-            return delegateGrammarTreeRoot.grammar;
-        }
-
         public virtual Grammar GetGrammar( string grammarName )
         {
             CompositeGrammarTree t = delegateGrammarTreeRoot.FindNode( grammarName );
             if ( t != null )
             {
-                return t.grammar;
+                return t.Grammar;
             }
             return null;
         }
@@ -407,7 +509,7 @@ namespace Antlr3.Tool
 
             // the walker has filled literals, tokens, and alias tables.
             // now tell it to define them in the root grammar
-            ttypesWalker.DefineTokens(delegateGrammarTreeRoot.grammar);
+            ttypesWalker.DefineTokens(delegateGrammarTreeRoot.Grammar);
         }
 
         public virtual void TranslateLeftRecursiveRules()
@@ -476,7 +578,7 @@ namespace Antlr3.Tool
             HashSet<string> localRuleDefs = new HashSet<string>();
             HashSet<string> overrides = new HashSet<string>();
             // compute set of non-overridden rules for this delegate
-            foreach ( Rule r in p.grammar.Rules )
+            foreach ( Rule r in p.Grammar.Rules )
             {
                 if ( !ruleDefs.Contains( r.Name ) )
                 {
@@ -490,7 +592,7 @@ namespace Antlr3.Tool
             }
             //System.Console.Out.WriteLine( "rule defs for " + p.grammar.name + ": " + localRuleDefs );
             //System.Console.Out.WriteLine( "overridden rule for " + p.grammar.name + ": " + overrides );
-            p.grammar.overriddenRules = overrides;
+            p.Grammar.overriddenRules = overrides;
 
             // make set of all rules defined thus far walking delegation tree.
             // the same rule in two delegates resolves in favor of first found

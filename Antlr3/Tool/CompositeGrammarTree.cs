@@ -38,14 +38,36 @@ namespace Antlr3.Tool
     public class CompositeGrammarTree
     {
         protected internal IList<CompositeGrammarTree> children;
-        public Grammar grammar;
+
+        private readonly Grammar grammar;
 
         /** Who is the parent node of this node; if null, implies node is root */
-        public CompositeGrammarTree parent;
+        private CompositeGrammarTree parent;
 
         public CompositeGrammarTree( Grammar g )
         {
             grammar = g;
+        }
+
+        public Grammar Grammar
+        {
+            get
+            {
+                return grammar;
+            }
+        }
+
+        public CompositeGrammarTree Parent
+        {
+            get
+            {
+                return parent;
+            }
+
+            set
+            {
+                parent = value;
+            }
         }
 
         public virtual void AddChild( CompositeGrammarTree t )

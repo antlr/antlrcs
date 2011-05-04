@@ -286,15 +286,15 @@ namespace Antlr3.Tool
             foreach ( DFA dfa in dfas )
             {
                 // if we aborted a DFA and redid with k=1, the backtrackin
-                if ( decisions.Contains( dfa.decisionNumber ) )
+                if ( decisions.Contains( dfa.DecisionNumber ) )
                 {
                     continue;
                 }
-                decisions.Add( dfa.decisionNumber );
+                decisions.Add( dfa.DecisionNumber );
                 buf.Append( "Rule " );
                 buf.Append( dfa.NFADecisionStartState.enclosingRule.Name );
                 buf.Append( " decision " );
-                buf.Append( dfa.decisionNumber );
+                buf.Append( dfa.DecisionNumber );
                 buf.Append( " location " );
                 GrammarAST decisionAST =
                     dfa.NFADecisionStartState.associatedASTNode;

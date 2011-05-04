@@ -42,7 +42,7 @@ namespace Antlr3.Analysis
         /** An accept state is an end of rule state for lexers and
          *  parser grammar rules.
          */
-        protected internal bool acceptState = false;
+        private bool acceptState = false;
 
         public virtual bool IsAcceptState
         {

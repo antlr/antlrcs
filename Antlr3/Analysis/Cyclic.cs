@@ -1,10 +1,10 @@
 ﻿/*
- * [The "BSD licence"]
- * Copyright (c) 2005-2008 Terence Parr
+ * [The "BSD license"]
+ * Copyright (c) 2011 Terence Parr
  * All rights reserved.
  *
  * Conversion to C#:
- * Copyright (c) 2008 Sam Harwell, Pixel Mine, Inc.
+ * Copyright (c) 2011 Sam Harwell, Pixel Mine, Inc.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -32,45 +32,10 @@
 
 namespace Antlr3.Analysis
 {
-
-    /** A Cluster object points to the left/right (start and end) states of a
-     *  state machine.  Used to build NFAs.
-     */
-    public class StateCluster
+    public enum Cyclic
     {
-        private NFAState _left;
-        private NFAState _right;
-
-        public StateCluster( NFAState left, NFAState right )
-        {
-            this._left = left;
-            this._right = right;
-        }
-
-        public NFAState Left
-        {
-            get
-            {
-                return _left;
-            }
-
-            set
-            {
-                _left = value;
-            }
-        }
-
-        public NFAState Right
-        {
-            get
-            {
-                return _right;
-            }
-
-            set
-            {
-                _right = value;
-            }
-        }
+        Unknown = -2,
+        Busy = -1, // in process of computing
+        Done = 0,
     }
 }

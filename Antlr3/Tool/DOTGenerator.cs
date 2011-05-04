@@ -202,13 +202,13 @@ namespace Antlr3.Tool
             // make a DOT edge for each transition
             for ( int i = 0; i < s.NumberOfTransitions; i++ )
             {
-                Transition edge = (Transition)s.Transition( i );
+                Transition edge = (Transition)s.GetTransition( i );
                 //Console.Out.WriteLine( "dfa " + s.dfa.decisionNumber + " edge from s"
                 //    + s.stateNumber + " [" + i + "] of " + s.NumberOfTransitions );
                 if ( StripNonreducedStates )
                 {
                     if ( edge.Target is DFAState &&
-                        ( (DFAState)edge.Target ).AcceptStateReachable != DFA.REACHABLE_YES )
+                        ( (DFAState)edge.Target ).AcceptStateReachable != Reachable.Yes )
                     {
                         continue; // don't generate nodes for terminal states
                     }
@@ -292,19 +292,19 @@ namespace Antlr3.Tool
                     RuleClosureTransition rr = ( (RuleClosureTransition)edge );
                     // don't jump to other rules, but display edge to follow node
                     edgeST = GetTemplates().GetInstanceOf( "edge" );
-                    if ( rr.rule.Grammar != grammar )
+                    if ( rr.Rule.Grammar != grammar )
                     {
-                        edgeST.SetAttribute( "label", "<" + rr.rule.Grammar.name + "." + rr.rule.Name + ">" );
+                        edgeST.SetAttribute( "label", "<" + rr.Rule.Grammar.name + "." + rr.Rule.Name + ">" );
                     }
                     else
                     {
-                        edgeST.SetAttribute( "label", "<" + rr.rule.Name + ">" );
+                        edgeST.SetAttribute( "label", "<" + rr.Rule.Name + ">" );
                     }
                     edgeST.SetAttribute( "src", GetStateLabel( s ) );
-                    edgeST.SetAttribute( "target", GetStateLabel( rr.followState ) );
+                    edgeST.SetAttribute( "target", GetStateLabel( rr.FollowState ) );
                     edgeST.SetAttribute( "arrowhead", arrowhead );
                     dot.SetAttribute( "edges", edgeST );
-                    WalkRuleNFACreatingDOT( dot, rr.followState );
+                    WalkRuleNFACreatingDOT( dot, rr.FollowState );
                     continue;
                 }
                 if ( edge.IsAction )
@@ -418,7 +418,7 @@ namespace Antlr3.Tool
                 {
                     if ( s is DFAState )
                     {
-                        if ( ( (DFAState)s ).abortedDueToRecursionOverflow )
+                        if ( ( (DFAState)s ).AbortedDueToRecursionOverflow )
                         {
                             buf.Append( "\\n" );
                             buf.Append( "abortedDueToRecursionOverflow" );
@@ -433,7 +433,7 @@ namespace Antlr3.Tool
                         //altList.addAll( alts );
                         //Collections.sort( altList );
                         List<int> altList = alts.OrderBy( i => i ).ToList();
-                        ICollection<NFAConfiguration> configurations = ( (DFAState)s ).nfaConfigurations;
+                        ICollection<NFAConfiguration> configurations = ( (DFAState)s ).NfaConfigurations;
                         for ( int altIndex = 0; altIndex < altList.Count; altIndex++ )
                         {
                             object altI = altList[altIndex];
@@ -447,24 +447,25 @@ namespace Antlr3.Tool
                             buf.Append( ':' );
                             // get a list of configs for just this alt
                             // it will help us print better later
-                            IList<object> configsInAlt = new List<object>();
+                            IList<NFAConfiguration> configsInAlt = new List<NFAConfiguration>();
                             foreach ( NFAConfiguration c in configurations )
                             {
-                                if ( c.alt != alt )
+                                if ( c.Alt != alt )
                                     continue;
                                 configsInAlt.Add( c );
                             }
+
                             int n = 0;
                             for ( int cIndex = 0; cIndex < configsInAlt.Count; cIndex++ )
                             {
-                                NFAConfiguration c =
-                                    (NFAConfiguration)configsInAlt[cIndex];
+                                NFAConfiguration c = configsInAlt[cIndex];
                                 n++;
                                 buf.Append( c.ToString( false ) );
                                 if ( ( cIndex + 1 ) < configsInAlt.Count )
                                 {
                                     buf.Append( ", " );
                                 }
+
                                 if ( n % 5 == 0 && ( configsInAlt.Count - cIndex ) > 3 )
                                 {
                                     buf.Append( "\\n" );

@@ -259,7 +259,7 @@ namespace Antlr3.Analysis
                 ErrorManager.internalError("can't get DFA for decision "+decisionNumber);
             }
             */
-            int nAlts = nfa.grammar.GetNumberOfAltsForDecisionNFA( nfaStart );
+            int nAlts = nfa.Grammar.GetNumberOfAltsForDecisionNFA( nfaStart );
             switch ( nfaStart.decisionStateType )
             {
             case LOOPBACK:

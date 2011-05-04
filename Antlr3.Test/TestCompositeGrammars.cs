@@ -234,10 +234,10 @@ namespace AntlrUnitTests
             string expectedTypeToTokenList = "[A, B, C, WS]";
 
             Assert.AreEqual( expectedTokenIDToTypeMap,
-                         realElements( g.composite.tokenIDToTypeMap ).ToElementString() );
-            Assert.AreEqual( expectedStringLiteralToTypeMap, g.composite.stringLiteralToTypeMap.ToElementString() );
+                         realElements( g.composite.TokenIDToTypeMap ).ToElementString() );
+            Assert.AreEqual( expectedStringLiteralToTypeMap, g.composite.StringLiteralToTypeMap.ToElementString() );
             Assert.AreEqual( expectedTypeToTokenList,
-                         realElements( g.composite.typeToTokenList ).ToElementString() );
+                         realElements( g.composite.TypeToTokenList ).ToElementString() );
 
             Assert.AreEqual(0, equeue.errors.Count, "unexpected errors: " + equeue);
         }
@@ -309,10 +309,10 @@ namespace AntlrUnitTests
             string expectedTypeToTokenList = "[A, WS, X]";
 
             Assert.AreEqual( expectedTokenIDToTypeMap,
-                         realElements( g.composite.tokenIDToTypeMap ).ToElementString() );
-            Assert.AreEqual( expectedStringLiteralToTypeMap, g.composite.stringLiteralToTypeMap.ToElementString() );
+                         realElements( g.composite.TokenIDToTypeMap ).ToElementString() );
+            Assert.AreEqual( expectedStringLiteralToTypeMap, g.composite.StringLiteralToTypeMap.ToElementString() );
             Assert.AreEqual( expectedTypeToTokenList,
-                         realElements( g.composite.typeToTokenList ).ToElementString() );
+                         realElements( g.composite.TypeToTokenList ).ToElementString() );
 
             object expectedArg = "X='a'";
             object expectedArg2 = "A";
@@ -362,10 +362,10 @@ namespace AntlrUnitTests
             string expectedTypeToTokenList = "[A, WS, T__6]";
 
             Assert.AreEqual( expectedTokenIDToTypeMap,
-                         realElements( g.composite.tokenIDToTypeMap ).ToElementString() );
-            Assert.AreEqual( expectedStringLiteralToTypeMap, sortMapToString( g.composite.stringLiteralToTypeMap ) );
+                         realElements( g.composite.TokenIDToTypeMap ).ToElementString() );
+            Assert.AreEqual( expectedStringLiteralToTypeMap, sortMapToString( g.composite.StringLiteralToTypeMap ) );
             Assert.AreEqual( expectedTypeToTokenList,
-                         realElements( g.composite.typeToTokenList ).ToElementString() );
+                         realElements( g.composite.TypeToTokenList ).ToElementString() );
 
             object expectedArg = "A='x'";
             object expectedArg2 = "'a'";
@@ -454,10 +454,10 @@ namespace AntlrUnitTests
             string expectedTypeToTokenList = "[A, 'a', WS]";
 
             Assert.AreEqual( expectedTokenIDToTypeMap,
-                         realElements( g.composite.tokenIDToTypeMap ).ToElementString() );
-            Assert.AreEqual( expectedStringLiteralToTypeMap, g.composite.stringLiteralToTypeMap.ToElementString() );
+                         realElements( g.composite.TokenIDToTypeMap ).ToElementString() );
+            Assert.AreEqual( expectedStringLiteralToTypeMap, g.composite.StringLiteralToTypeMap.ToElementString() );
             Assert.AreEqual( expectedTypeToTokenList,
-                         realElements( g.composite.typeToTokenList ).ToElementString() );
+                         realElements( g.composite.TypeToTokenList ).ToElementString() );
 
             Assert.AreEqual(0, equeue.errors.Count, "unexpected errors: " + equeue);
         }
@@ -633,7 +633,7 @@ namespace AntlrUnitTests
                 ".s1-<EOT>->:s2=>1" + NewLine;
             Antlr3.Analysis.DFA dfa = g.GetLookaheadDFA( 1 );
             FASerializer serializer = new FASerializer( g );
-            string result = serializer.Serialize( dfa.startState );
+            string result = serializer.Serialize( dfa.StartState );
             Assert.AreEqual( expectingDFA, result );
 
             // must not be a "unreachable alt: Tokens" error
@@ -781,10 +781,10 @@ namespace AntlrUnitTests
             string expectedTypeToTokenList = "[M, S, T]";
 
             Assert.AreEqual( expectedTokenIDToTypeMap,
-                         realElements( g.composite.tokenIDToTypeMap ).ToElementString() );
-            Assert.AreEqual( expectedStringLiteralToTypeMap, g.composite.stringLiteralToTypeMap.ToElementString() );
+                         realElements( g.composite.TokenIDToTypeMap ).ToElementString() );
+            Assert.AreEqual( expectedStringLiteralToTypeMap, g.composite.StringLiteralToTypeMap.ToElementString() );
             Assert.AreEqual( expectedTypeToTokenList,
-                         realElements( g.composite.typeToTokenList ).ToElementString() );
+                         realElements( g.composite.TypeToTokenList ).ToElementString() );
 
             Assert.AreEqual(0, equeue.errors.Count, "unexpected errors: " + equeue);
 
@@ -845,10 +845,10 @@ namespace AntlrUnitTests
             string expectedTypeToTokenList = "[A, B, C, M, S, T]";
 
             Assert.AreEqual( expectedTokenIDToTypeMap,
-                         realElements( g.composite.tokenIDToTypeMap ).ToElementString() );
-            Assert.AreEqual( expectedStringLiteralToTypeMap, g.composite.stringLiteralToTypeMap.ToElementString() );
+                         realElements( g.composite.TokenIDToTypeMap ).ToElementString() );
+            Assert.AreEqual( expectedStringLiteralToTypeMap, g.composite.StringLiteralToTypeMap.ToElementString() );
             Assert.AreEqual( expectedTypeToTokenList,
-                         realElements( g.composite.typeToTokenList ).ToElementString() );
+                         realElements( g.composite.TypeToTokenList ).ToElementString() );
 
             Assert.AreEqual(0, equeue.errors.Count, "unexpected errors: " + equeue);
 
@@ -892,10 +892,10 @@ namespace AntlrUnitTests
             string expectedTypeToTokenList = "[M, S, T]";
 
             Assert.AreEqual( expectedTokenIDToTypeMap,
-                         realElements( g.composite.tokenIDToTypeMap ).ToElementString() );
-            Assert.AreEqual( expectedStringLiteralToTypeMap, g.composite.stringLiteralToTypeMap.ToElementString() );
+                         realElements( g.composite.TokenIDToTypeMap ).ToElementString() );
+            Assert.AreEqual( expectedStringLiteralToTypeMap, g.composite.StringLiteralToTypeMap.ToElementString() );
             Assert.AreEqual( expectedTypeToTokenList,
-                         realElements( g.composite.typeToTokenList ).ToElementString() );
+                         realElements( g.composite.TypeToTokenList ).ToElementString() );
 
             Assert.AreEqual(0, equeue.errors.Count, "unexpected errors: " + equeue);
         }
@@ -947,9 +947,9 @@ namespace AntlrUnitTests
             string expectedStringLiteralToTypeMap = "{}";
             string expectedTypeToTokenList = "[T1, T2, T3, T4]";
 
-            Assert.AreEqual(expectedTokenIDToTypeMap, realElements(g.composite.tokenIDToTypeMap).ToElementString());
-            Assert.AreEqual(expectedStringLiteralToTypeMap, g.composite.stringLiteralToTypeMap.ToElementString());
-            Assert.AreEqual(expectedTypeToTokenList, realElements(g.composite.typeToTokenList).ToElementString());
+            Assert.AreEqual(expectedTokenIDToTypeMap, realElements(g.composite.TokenIDToTypeMap).ToElementString());
+            Assert.AreEqual(expectedStringLiteralToTypeMap, g.composite.StringLiteralToTypeMap.ToElementString());
+            Assert.AreEqual(expectedTypeToTokenList, realElements(g.composite.TypeToTokenList).ToElementString());
 
             Assert.AreEqual(0, equeue.errors.Count, "unexpected errors: " + equeue);
 

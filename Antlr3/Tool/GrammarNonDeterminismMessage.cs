@@ -55,7 +55,7 @@ namespace Antlr3.Tool
             this.probe = probe;
             this.problemState = problemState;
             // flip msg ID if alts are actually token refs in Tokens rule
-            if ( probe.dfa.IsTokensRuleDecision )
+            if ( probe.Dfa.IsTokensRuleDecision )
             {
                 MessageID = ErrorManager.MSG_TOKEN_NONDETERMINISM;
             }
@@ -63,10 +63,10 @@ namespace Antlr3.Tool
 
         public override string ToString()
         {
-            GrammarAST decisionASTNode = probe.dfa.DecisionASTNode;
+            GrammarAST decisionASTNode = probe.Dfa.DecisionASTNode;
             line = decisionASTNode.Line;
             charPositionInLine = decisionASTNode.CharPositionInLine;
-            string fileName = probe.dfa.nfa.grammar.FileName;
+            string fileName = probe.Dfa.Nfa.Grammar.FileName;
             if ( fileName != null )
             {
                 file = fileName;
@@ -78,7 +78,7 @@ namespace Antlr3.Tool
             string input = probe.GetInputSequenceDisplay( labels );
             st.SetAttribute( "input", input );
 
-            if ( probe.dfa.IsTokensRuleDecision )
+            if ( probe.Dfa.IsTokensRuleDecision )
             {
                 var disabledAlts = probe.GetDisabledAlternatives( problemState );
                 foreach ( int altI in disabledAlts )
@@ -87,7 +87,7 @@ namespace Antlr3.Tool
                         probe.GetTokenNameForTokensRuleAlt( (int)altI );
                     // reset the line/col to the token definition (pick last one)
                     NFAState ruleStart =
-                        probe.dfa.nfa.grammar.GetRuleStartState( tokenName );
+                        probe.Dfa.Nfa.Grammar.GetRuleStartState( tokenName );
                     line = ruleStart.associatedASTNode.Line;
                     charPositionInLine = ruleStart.associatedASTNode.CharPositionInLine;
                     st.SetAttribute( "disabled", tokenName );
@@ -99,7 +99,7 @@ namespace Antlr3.Tool
             }
 
             var nondetAlts = probe.GetNonDeterministicAltsForState( problemState );
-            NFAState nfaStart = probe.dfa.NFADecisionStartState;
+            NFAState nfaStart = probe.Dfa.NFADecisionStartState;
             // all state paths have to begin with same NFA state
             int firstAlt = 0;
             if ( nondetAlts != null )
@@ -123,7 +123,7 @@ namespace Antlr3.Tool
                     }
                     else
                     {
-                        if ( probe.dfa.IsTokensRuleDecision )
+                        if ( probe.Dfa.IsTokensRuleDecision )
                         {
                             // alts are token rules, convert to the names instead of numbers
                             string tokenName =
@@ -137,7 +137,7 @@ namespace Antlr3.Tool
                     }
                 }
             }
-            st.SetAttribute( "hasPredicateBlockedByAction", problemState.dfa.hasPredicateBlockedByAction );
+            st.SetAttribute( "hasPredicateBlockedByAction", problemState.Dfa.HasPredicateBlockedByAction );
             return base.ToString( st );
         }
 

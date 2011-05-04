@@ -620,7 +620,7 @@ namespace Antlr3
                         {
                             StringReader sr = new StringReader( lexerGrammarStr );
                             Grammar lexerGrammar = new Grammar(this);
-                            lexerGrammar.composite.watchNFAConversion = internalOption_watchNFAConversion;
+                            lexerGrammar.composite.WatchNFAConversion = internalOption_watchNFAConversion;
                             lexerGrammar.implicitLexer = true;
                             if ( TestMode )
                                 lexerGrammar.DefaultRuleModifier = "public";
@@ -749,7 +749,7 @@ namespace Antlr3
 
             StringReader reader = new StringReader( System.IO.File.ReadAllText( f ) );
             grammar.ParseAndBuildAST( reader );
-            composite.watchNFAConversion = internalOption_watchNFAConversion;
+            composite.WatchNFAConversion = internalOption_watchNFAConversion;
             return grammar;
         }
 
@@ -818,7 +818,7 @@ namespace Antlr3
                     generator = new DOTGenerator(g);
                 }
 
-                string graph = generator.GenerateGraph( dfa.startState );
+                string graph = generator.GenerateGraph( dfa.StartState );
                 string graphFileName = g.name + "." + "dec-" + d;
                 if ( g.implicitLexer )
                 {

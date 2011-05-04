@@ -53,37 +53,35 @@ namespace Antlr3.Tool
         /** This factory is attached to a specifc NFA that it is building.
          *  The NFA will be filled up with states and transitions.
          */
-        NFA nfa = null;
+        private readonly NFA _nfa;
 
-        Rule currentRule = null;
+        private Rule _currentRule;
 
         public NFAFactory( NFA nfa )
         {
-            nfa.Factory = this;
-            this.nfa = nfa;
+            this._nfa = nfa;
         }
 
-        #region Properties
         public Rule CurrentRule
         {
             get
             {
-                return currentRule;
+                return _currentRule;
             }
+
             set
             {
-                currentRule = value;
+                _currentRule = value;
             }
         }
-        #endregion
 
         public virtual NFAState NewState()
         {
-            NFAState n = new NFAState( nfa );
-            int state = nfa.GetNewNFAStateNumber();
+            NFAState n = new NFAState( _nfa );
+            int state = _nfa.GetNewNFAStateNumber();
             n.StateNumber = state;
-            nfa.AddState( n );
-            n.enclosingRule = currentRule;
+            _nfa.AddState( n );
+            n.enclosingRule = _currentRule;
             return n;
         }
 
@@ -97,19 +95,19 @@ namespace Antlr3.Tool
          */
         public virtual void OptimizeAlternative( StateCluster alt )
         {
-            NFAState s = alt.left;
-            while ( s != alt.right )
+            NFAState s = alt.Left;
+            while ( s != alt.Right )
             {
                 // if it's a block element, jump over it and continue
                 if ( s.endOfBlockStateNumber != State.INVALID_STATE_NUMBER )
                 {
-                    s = nfa.GetState( s.endOfBlockStateNumber );
+                    s = _nfa.GetState( s.endOfBlockStateNumber );
                     continue;
                 }
                 Transition t = s.transition[0];
                 if ( t is RuleClosureTransition )
                 {
-                    s = ( (RuleClosureTransition)t ).followState;
+                    s = ( (RuleClosureTransition)t ).FollowState;
                     continue;
                 }
                 if ( t.Label.IsEpsilon && !t.Label.IsAction && s.NumberOfTransitions == 1 )
@@ -144,7 +142,7 @@ namespace Antlr3.Tool
 
         public virtual StateCluster BuildAtom( GrammarAST atomAST )
         {
-            int tokenType = nfa.grammar.GetTokenType( atomAST.Text );
+            int tokenType = _nfa.Grammar.GetTokenType( atomAST.Text );
             return BuildAtom( tokenType, atomAST );
         }
 
@@ -222,7 +220,7 @@ namespace Antlr3.Tool
          */
         public virtual StateCluster BuildStringLiteralAtom( GrammarAST stringLiteralAST )
         {
-            if ( nfa.grammar.type == GrammarType.Lexer )
+            if ( _nfa.Grammar.type == GrammarType.Lexer )
             {
                 StringBuilder chars =
                     Grammar.GetUnescapedStringFromGrammarStringLiteral( stringLiteralAST.Text );
@@ -240,7 +238,7 @@ namespace Antlr3.Tool
             }
 
             // a simple token reference in non-Lexers
-            int tokenType = nfa.grammar.GetTokenType( stringLiteralAST.Text );
+            int tokenType = _nfa.Grammar.GetTokenType( stringLiteralAST.Text );
             return BuildAtom( tokenType, stringLiteralAST );
         }
 
@@ -291,7 +289,7 @@ namespace Antlr3.Tool
             // don't count syn preds
             if ( !pred.Text.StartsWith( Grammar.SynpredRulePrefix, StringComparison.OrdinalIgnoreCase ) )
             {
-                nfa.grammar.numberOfSemanticPredicates++;
+                _nfa.Grammar.numberOfSemanticPredicates++;
             }
             NFAState left = NewState();
             NFAState right = NewState();
@@ -350,7 +348,7 @@ namespace Antlr3.Tool
         {
             NFAState end = NewState();
             int label = Label.EOF;
-            if ( nfa.grammar.type == GrammarType.Lexer )
+            if ( _nfa.Grammar.type == GrammarType.Lexer )
             {
                 label = Label.EOT;
                 end.IsEOTTargetState = true;
@@ -377,8 +375,8 @@ namespace Antlr3.Tool
             {
                 return A;
             }
-            TransitionBetweenStates( A.right, B.left, Label.EPSILON );
-            StateCluster g = new StateCluster( A.left, B.right );
+            TransitionBetweenStates( A.Right, B.Left, Label.EPSILON );
+            StateCluster g = new StateCluster( A.Left, B.Right );
             return g;
         }
 
@@ -395,9 +393,9 @@ namespace Antlr3.Tool
 
             // single alt, no decision, just return only alt state cluster
             NFAState startOfAlt = NewState(); // must have this no matter what
-            TransitionBetweenStates( startOfAlt, set.left, Label.EPSILON );
+            TransitionBetweenStates( startOfAlt, set.Left, Label.EPSILON );
 
-            return new StateCluster( startOfAlt, set.right );
+            return new StateCluster( startOfAlt, set.Right );
         }
 
         /** From A|B|..|Z alternative block build
@@ -437,10 +435,10 @@ namespace Antlr3.Tool
                 // single alt, no decision, just return only alt state cluster
                 StateCluster g = alternativeStateClusters.First();
                 NFAState startOfAlt = NewState(); // must have this no matter what
-                TransitionBetweenStates( startOfAlt, g.left, Label.EPSILON );
+                TransitionBetweenStates( startOfAlt, g.Left, Label.EPSILON );
 
                 //System.Console.Out.WriteLine( "### opt saved start/stop end in (...)" );
-                return new StateCluster( startOfAlt, g.right );
+                return new StateCluster( startOfAlt, g.Right );
             }
 
             // even if we can collapse for lookahead purposes, we will still
@@ -457,8 +455,8 @@ namespace Antlr3.Tool
                 // add begin NFAState for this alt connected by epsilon
                 NFAState left = NewState();
                 left.Description = "alt " + altNum + " of ()";
-                TransitionBetweenStates( left, g.left, Label.EPSILON );
-                TransitionBetweenStates( g.right, blockEndNFAState, Label.EPSILON );
+                TransitionBetweenStates( left, g.Left, Label.EPSILON );
+                TransitionBetweenStates( g.Right, blockEndNFAState, Label.EPSILON );
                 // Are we the first alternative?
                 if ( firstAlt == null )
                 {
@@ -496,18 +494,18 @@ namespace Antlr3.Tool
         public virtual StateCluster BuildAoptional( StateCluster A )
         {
             StateCluster g = null;
-            int n = nfa.grammar.GetNumberOfAltsForDecisionNFA( A.left );
+            int n = _nfa.Grammar.GetNumberOfAltsForDecisionNFA( A.Left );
             if ( n == 1 )
             {
                 // no decision, just wrap in an optional path
                 //NFAState decisionState = newState();
-                NFAState decisionState = A.left; // resuse left edge
+                NFAState decisionState = A.Left; // resuse left edge
                 decisionState.Description = "only alt of ()? block";
                 NFAState emptyAlt = NewState();
                 emptyAlt.Description = "epsilon path of ()? block";
                 NFAState blockEndNFAState = null;
                 blockEndNFAState = NewState();
-                TransitionBetweenStates( A.right, blockEndNFAState, Label.EPSILON );
+                TransitionBetweenStates( A.Right, blockEndNFAState, Label.EPSILON );
                 blockEndNFAState.Description = "end ()? block";
                 //transitionBetweenStates(decisionState, A.left, Label.EPSILON);
                 TransitionBetweenStates( decisionState, emptyAlt, Label.EPSILON );
@@ -523,19 +521,19 @@ namespace Antlr3.Tool
             {
                 // a decision block, add an empty alt
                 NFAState lastRealAlt =
-                        nfa.grammar.GetNFAStateForAltOfDecision( A.left, n );
+                        _nfa.Grammar.GetNFAStateForAltOfDecision( A.Left, n );
                 NFAState emptyAlt = NewState();
                 emptyAlt.Description = "epsilon path of ()? block";
                 TransitionBetweenStates( lastRealAlt, emptyAlt, Label.EPSILON );
-                TransitionBetweenStates( emptyAlt, A.right, Label.EPSILON );
+                TransitionBetweenStates( emptyAlt, A.Right, Label.EPSILON );
 
                 // set EOB markers for Jean (I think this is redundant here)
-                A.left.endOfBlockStateNumber = A.right.StateNumber;
-                A.right.decisionStateType = NFAState.RIGHT_EDGE_OF_BLOCK;
+                A.Left.endOfBlockStateNumber = A.Right.StateNumber;
+                A.Right.decisionStateType = NFAState.RIGHT_EDGE_OF_BLOCK;
 
                 g = A; // return same block, but now with optional last path
             }
-            g.left.decisionStateType = NFAState.OPTIONAL_BLOCK_START;
+            g.Left.decisionStateType = NFAState.OPTIONAL_BLOCK_START;
 
             return g;
         }
@@ -560,25 +558,25 @@ namespace Antlr3.Tool
             blockEndNFAState.decisionStateType = NFAState.RIGHT_EDGE_OF_BLOCK;
 
             // don't reuse A.right as loopback if it's right edge of another block
-            if ( A.right.decisionStateType == NFAState.RIGHT_EDGE_OF_BLOCK )
+            if ( A.Right.decisionStateType == NFAState.RIGHT_EDGE_OF_BLOCK )
             {
                 // nested A* so make another tail node to be the loop back
                 // instead of the usual A.right which is the EOB for inner loop
                 NFAState extraRightEdge = NewState();
-                TransitionBetweenStates( A.right, extraRightEdge, Label.EPSILON );
-                A.right = extraRightEdge;
+                TransitionBetweenStates( A.Right, extraRightEdge, Label.EPSILON );
+                A.Right = extraRightEdge;
             }
 
-            TransitionBetweenStates( A.right, blockEndNFAState, Label.EPSILON ); // follow is Transition 1
+            TransitionBetweenStates( A.Right, blockEndNFAState, Label.EPSILON ); // follow is Transition 1
             // turn A's block end into a loopback (acts like alt 2)
-            TransitionBetweenStates( A.right, A.left, Label.EPSILON ); // loop back Transition 2
-            TransitionBetweenStates( left, A.left, Label.EPSILON );
+            TransitionBetweenStates( A.Right, A.Left, Label.EPSILON ); // loop back Transition 2
+            TransitionBetweenStates( left, A.Left, Label.EPSILON );
 
-            A.right.decisionStateType = NFAState.LOOPBACK;
-            A.left.decisionStateType = NFAState.BLOCK_START;
+            A.Right.decisionStateType = NFAState.LOOPBACK;
+            A.Left.decisionStateType = NFAState.BLOCK_START;
 
             // set EOB markers for Jean
-            A.left.endOfBlockStateNumber = A.right.StateNumber;
+            A.Left.endOfBlockStateNumber = A.Right.StateNumber;
 
             StateCluster g = new StateCluster( left, blockEndNFAState );
             return g;
@@ -624,33 +622,33 @@ namespace Antlr3.Tool
             blockEndNFAState.decisionStateType = NFAState.RIGHT_EDGE_OF_BLOCK;
 
             // don't reuse A.right as loopback if it's right edge of another block
-            if ( A.right.decisionStateType == NFAState.RIGHT_EDGE_OF_BLOCK )
+            if ( A.Right.decisionStateType == NFAState.RIGHT_EDGE_OF_BLOCK )
             {
                 // nested A* so make another tail node to be the loop back
                 // instead of the usual A.right which is the EOB for inner loop
                 NFAState extraRightEdge = NewState();
-                TransitionBetweenStates( A.right, extraRightEdge, Label.EPSILON );
-                A.right = extraRightEdge;
+                TransitionBetweenStates( A.Right, extraRightEdge, Label.EPSILON );
+                A.Right = extraRightEdge;
             }
 
             // convert A's end block to loopback
-            A.right.Description = "()* loopback";
+            A.Right.Description = "()* loopback";
             // Transition 1 to actual block of stuff
-            TransitionBetweenStates( bypassDecisionState, A.left, Label.EPSILON );
+            TransitionBetweenStates( bypassDecisionState, A.Left, Label.EPSILON );
             // Transition 2 optional to bypass
             TransitionBetweenStates( bypassDecisionState, optionalAlt, Label.EPSILON );
             TransitionBetweenStates( optionalAlt, blockEndNFAState, Label.EPSILON );
             // Transition 1 of end block exits
-            TransitionBetweenStates( A.right, blockEndNFAState, Label.EPSILON );
+            TransitionBetweenStates( A.Right, blockEndNFAState, Label.EPSILON );
             // Transition 2 of end block loops
-            TransitionBetweenStates( A.right, A.left, Label.EPSILON );
+            TransitionBetweenStates( A.Right, A.Left, Label.EPSILON );
 
             bypassDecisionState.decisionStateType = NFAState.BYPASS;
-            A.left.decisionStateType = NFAState.BLOCK_START;
-            A.right.decisionStateType = NFAState.LOOPBACK;
+            A.Left.decisionStateType = NFAState.BLOCK_START;
+            A.Right.decisionStateType = NFAState.LOOPBACK;
 
             // set EOB markers for Jean
-            A.left.endOfBlockStateNumber = A.right.StateNumber;
+            A.Left.endOfBlockStateNumber = A.Right.StateNumber;
             bypassDecisionState.endOfBlockStateNumber = blockEndNFAState.StateNumber;
 
             StateCluster g = new StateCluster( bypassDecisionState, blockEndNFAState );
@@ -730,7 +728,7 @@ namespace Antlr3.Tool
             NFAState right = NewState();
             left.associatedASTNode = associatedAST;
             right.associatedASTNode = associatedAST;
-            Label label = new Label( nfa.grammar.TokenTypes ); // char or tokens
+            Label label = new Label( _nfa.Grammar.TokenTypes ); // char or tokens
             Transition e = new Transition( label, right );
             left.AddTransition( e );
             StateCluster g = new StateCluster( left, right );

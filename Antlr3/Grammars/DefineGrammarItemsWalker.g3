@@ -77,7 +77,7 @@ scope AttributeScopeActions;
 	:	^( 'scope' name=ID attrScopeAction* attrs=ACTION )
 		{
 			AttributeScope scope = grammar.DefineGlobalScope($name.text,$attrs.Token);
-			scope.isDynamicGlobalScope = true;
+			scope.IsDynamicGlobalScope = true;
 			scope.AddAttributes($attrs.text, ';');
 			foreach ( var action in $AttributeScopeActions::actions )
 				scope.DefineNamedAction( action.Key, action.Value );
@@ -240,7 +240,7 @@ scope AttributeScopeActions;
 			(	attrScopeAction* attrs=ACTION
 				{
 					r.RuleScope = grammar.CreateRuleScope(r.Name,$attrs.Token);
-					r.RuleScope.isDynamicRuleScope = true;
+					r.RuleScope.IsDynamicRuleScope = true;
 					r.RuleScope.AddAttributes($attrs.text, ';');
 					foreach ( var action in $AttributeScopeActions::actions )
 						r.RuleScope.DefineNamedAction( action.Key, action.Value );

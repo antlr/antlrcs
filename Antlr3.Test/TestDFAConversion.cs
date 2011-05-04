@@ -1766,7 +1766,7 @@ namespace AntlrUnitTests
             DFA dfa = g.GetLookaheadDFA( decision );
             Assert.IsNotNull( dfa, "no DFA for decision " + decision );
             FASerializer serializer = new FASerializer( g );
-            string result = serializer.Serialize( dfa.startState );
+            string result = serializer.Serialize( dfa.StartState );
 
             var unreachableAlts = dfa.UnreachableAlts;
 

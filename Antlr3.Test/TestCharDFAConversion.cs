@@ -239,7 +239,7 @@ namespace AntlrUnitTests
             optimizer.Optimize();
             FASerializer serializer = new FASerializer( g );
             DFA dfa = g.GetLookaheadDFA( 1 );
-            string result = serializer.Serialize( dfa.startState );
+            string result = serializer.Serialize( dfa.StartState );
             expecting = ".s0-'x'->:s1=>1" + NewLine;
             Assert.AreEqual( expecting, result );
         }
@@ -560,7 +560,7 @@ namespace AntlrUnitTests
             DFA dfa = g.GetLookaheadDFA( decision );
             Assert.IsNotNull(dfa, "unknown decision #" + decision);
             FASerializer serializer = new FASerializer( g );
-            string result = serializer.Serialize( dfa.startState );
+            string result = serializer.Serialize( dfa.StartState );
             //System.out.print(result);
             var nonDetAlts = dfa.UnreachableAlts;
             //System.out.println("alts w/o predict state="+nonDetAlts);

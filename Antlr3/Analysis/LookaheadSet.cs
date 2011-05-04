@@ -43,7 +43,7 @@ namespace Antlr3.Analysis
      */
     public class LookaheadSet
     {
-        public IntervalSet tokenTypeSet;
+        private IntervalSet tokenTypeSet;
 
         public LookaheadSet()
         {
@@ -68,6 +68,15 @@ namespace Antlr3.Analysis
         }
 
         #region Properties
+
+        public IntervalSet TokenTypeSet
+        {
+            get
+            {
+                return tokenTypeSet;
+            }
+        }
+
         public bool IsNil
         {
             get
@@ -75,6 +84,7 @@ namespace Antlr3.Analysis
                 return tokenTypeSet.IsNil;
             }
         }
+
         #endregion
 
         public virtual void OrInPlace( LookaheadSet other )

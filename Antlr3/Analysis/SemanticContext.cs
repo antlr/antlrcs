@@ -254,7 +254,7 @@ namespace Antlr3.Analysis
                     else
                     {
                         eST = templates.GetInstanceOf("evalPredicate");
-                        generator.grammar.decisionsWhoseDFAsUsesSemPreds.Add(dfa);
+                        generator.Grammar.decisionsWhoseDFAsUsesSemPreds.Add(dfa);
                     }
 
                     string predEnclosingRuleName = _predicateAST.enclosingRuleName;
@@ -280,7 +280,7 @@ namespace Antlr3.Analysis
 
                 if (generator != null)
                 {
-                    string description = generator.target.GetTargetStringLiteralFromString(this.ToString());
+                    string description = generator.Target.GetTargetStringLiteralFromString(this.ToString());
                     eST.SetAttribute("description", description);
                 }
 

@@ -42,17 +42,17 @@ namespace Antlr3.Codegen
 
     public class ACyclicDFACodeGenerator
     {
-        protected CodeGenerator parentGenerator;
+        private readonly CodeGenerator _parentGenerator;
 
         public ACyclicDFACodeGenerator( CodeGenerator parent )
         {
-            this.parentGenerator = parent;
+            this._parentGenerator = parent;
         }
 
         public virtual StringTemplate GenFixedLookaheadDecision( TemplateGroup templates,
                                                         DFA dfa )
         {
-            return WalkFixedDFAGeneratingStateMachine( templates, dfa, dfa.startState, 1 );
+            return WalkFixedDFAGeneratingStateMachine( templates, dfa, dfa.StartState, 1 );
         }
 
         protected virtual StringTemplate WalkFixedDFAGeneratingStateMachine(
@@ -75,7 +75,7 @@ namespace Antlr3.Codegen
             string dfaLoopbackStateName = "dfaLoopbackState";
             string dfaOptionalBlockStateName = "dfaOptionalBlockState";
             string dfaEdgeName = "dfaEdge";
-            if ( parentGenerator.CanGenerateSwitch( s ) )
+            if ( _parentGenerator.CanGenerateSwitch( s ) )
             {
                 dfaStateName = "dfaStateSwitch";
                 dfaLoopbackStateName = "dfaLoopbackStateSwitch";
@@ -110,7 +110,7 @@ namespace Antlr3.Codegen
             //System.Console.Out.WriteLine( "DFA state " + s.stateNumber );
             for ( int i = 0; i < s.NumberOfTransitions; i++ )
             {
-                Transition edge = (Transition)s.Transition( i );
+                Transition edge = (Transition)s.GetTransition( i );
                 //System.Console.Out.WriteLine( "edge " + s.stateNumber + "-" + edge.label.ToString() + "->" + edge.target.stateNumber );
                 if ( edge.Label.Atom == Label.EOT )
                 {
@@ -129,13 +129,13 @@ namespace Antlr3.Codegen
                 // If the template wants all the label values delineated, do that
                 if ( edgeST.impl.TryGetFormalArgument( "labels" ) != null )
                 {
-                    List<string> labels = edge.Label.Set.Select( value => parentGenerator.GetTokenTypeAsTargetLabel( value ) ).ToList();
+                    List<string> labels = edge.Label.Set.Select( value => _parentGenerator.GetTokenTypeAsTargetLabel( value ) ).ToList();
                     edgeST.SetAttribute( "labels", labels );
                 }
                 else
                 { // else create an expression to evaluate (the general case)
                     edgeST.SetAttribute( "labelExpr",
-                                        parentGenerator.GenLabelExpr( templates, edge, k ) );
+                                        _parentGenerator.GenLabelExpr( templates, edge, k ) );
                 }
 
                 // stick in any gated predicates for any edge if not already a pred
@@ -147,8 +147,8 @@ namespace Antlr3.Codegen
                     if ( preds != null )
                     {
                         //System.Console.Out.WriteLine( "preds=" + target.getGatedPredicatesInNFAConfigurations() );
-                        StringTemplate predST = preds.GenExpr( parentGenerator,
-                                                              parentGenerator.Templates,
+                        StringTemplate predST = preds.GenExpr( _parentGenerator,
+                                                              _parentGenerator.Templates,
                                                               dfa );
                         edgeST.SetAttribute( "predicates", predST );
                     }
@@ -182,10 +182,10 @@ namespace Antlr3.Codegen
                 // hoisted up to the state that has the EOT edge.
                 for ( int i = 0; i < EOTTarget.NumberOfTransitions; i++ )
                 {
-                    Transition predEdge = (Transition)EOTTarget.Transition( i );
+                    Transition predEdge = (Transition)EOTTarget.GetTransition( i );
                     StringTemplate edgeST = templates.GetInstanceOf( dfaEdgeName );
                     edgeST.SetAttribute( "labelExpr",
-                                        parentGenerator.GenSemanticPredicateExpr( templates, predEdge ) );
+                                        _parentGenerator.GenSemanticPredicateExpr( templates, predEdge ) );
                     // the target must be an accept state
                     //System.Console.Out.WriteLine( "EOT edge" );
                     StringTemplate targetST =

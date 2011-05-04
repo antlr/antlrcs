@@ -290,7 +290,7 @@ namespace Antlr3.Tool
             }
             if ( key == "backtrack" && value.ToString() == "true" )
             {
-                grammar.composite.GetRootGrammar().atLeastOneBacktrackOption = true;
+                grammar.composite.RootGrammar.atLeastOneBacktrackOption = true;
             }
             options[key] = value;
             return key;

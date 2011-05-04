@@ -37,7 +37,7 @@ namespace Antlr3.Analysis
 
     public class ActionLabel : Label
     {
-        GrammarAST _actionAST;
+        private readonly GrammarAST _actionAST;
 
         public ActionLabel( GrammarAST actionAST )
             : base( ACTION )

@@ -127,51 +127,51 @@ namespace Antlr3.Codegen
          *  moment so targets can add template actions w/o having to recompile
          *  ANTLR.
          */
-        public virtual bool IsValidActionScope( GrammarType grammarType, string scope )
+        public virtual bool IsValidActionScope(GrammarType grammarType, string scope)
         {
-            switch ( grammarType )
+            switch (grammarType)
             {
             case GrammarType.Lexer:
-                if ( scope.Equals( "lexer" ) )
-                {
+                if (scope.Equals("lexer"))
                     return true;
-                }
+
                 break;
+
             case GrammarType.Parser:
-                if ( scope.Equals( "parser" ) )
-                {
+                if (scope.Equals("parser"))
                     return true;
-                }
+
                 break;
+
             case GrammarType.Combined:
-                if ( scope.Equals( "parser" ) )
-                {
+                if (scope.Equals("parser"))
                     return true;
-                }
-                if ( scope.Equals( "lexer" ) )
-                {
+
+                if (scope.Equals("lexer"))
                     return true;
-                }
+
                 break;
+
             case GrammarType.TreeParser:
-                if ( scope.Equals( "treeparser" ) )
-                {
+                if (scope.Equals("treeparser"))
                     return true;
-                }
+
                 break;
             }
+
             return false;
         }
 
         /** Target must be able to override the labels used for token types */
         public virtual string GetTokenTypeAsTargetLabel( CodeGenerator generator, int ttype )
         {
-            string name = generator.grammar.GetTokenDisplayName( ttype );
+            string name = generator.Grammar.GetTokenDisplayName( ttype );
             // If name is a literal, return the token type instead
             if ( name[0] == '\'' )
             {
-                return ttype.ToString(); //String.valueOf( ttype );
+                return ttype.ToString();
             }
+
             return name;
         }
 
@@ -195,6 +195,7 @@ namespace Antlr3.Codegen
             {
                 return "'\u0000'";
             }
+
             if ( c < targetCharValueEscape.Length &&
                  targetCharValueEscape[c] != null )
             {
@@ -334,11 +335,13 @@ namespace Antlr3.Codegen
             {
                 return null;
             }
+
             StringBuilder buf = new StringBuilder();
             if ( quoted )
             {
                 buf.Append( '"' );
             }
+
             for ( int i = 0; i < s.Length; i++ )
             {
                 int c = s[i];
@@ -353,10 +356,12 @@ namespace Antlr3.Codegen
                     buf.Append( (char)c );
                 }
             }
+
             if ( quoted )
             {
                 buf.Append( '"' );
             }
+
             return buf.ToString();
         }
 
@@ -383,6 +388,7 @@ namespace Antlr3.Codegen
             {
                 buf.Append( '0' );
             }
+
             buf.Append( digits );
             return buf.ToString();
         }
@@ -403,6 +409,7 @@ namespace Antlr3.Codegen
                 value /= 8;
                 index--;
             }
+
             return builder.ToString().Trim();
         }
 
@@ -412,6 +419,7 @@ namespace Antlr3.Codegen
             {
                 return "\\" + ToOctalString( v );
             }
+
             //String hex = Integer.toHexString( v | 0x10000 ).substring( 1, 5 );
             string hex = v.ToString( "x4" );
             return "\\u" + hex;
@@ -432,7 +440,5 @@ namespace Antlr3.Codegen
         {
             return chunks;
         }
-
     }
-
 }

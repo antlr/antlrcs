@@ -34,6 +34,7 @@ namespace Antlr3.Analysis
 {
     using System.Collections.Generic;
 
+    using ArgumentNullException = System.ArgumentNullException;
     using Grammar = Antlr3.Tool.Grammar;
 
     /** A module to perform optimizations on DFAs.
@@ -129,12 +130,15 @@ namespace Antlr3.Analysis
          *  This is a side-effect of calling optimize; can't clear after use
          *  because code gen needs it.
          */
-        HashSet<object> _visited = new HashSet<object>();
+        private readonly HashSet<object> _visited = new HashSet<object>();
 
-        Grammar _grammar;
+        private readonly Grammar _grammar;
 
         public DFAOptimizer( Grammar grammar )
         {
+            if (grammar == null)
+                throw new ArgumentNullException("grammar");
+
             this._grammar = grammar;
         }
 
@@ -170,16 +174,16 @@ namespace Antlr3.Analysis
                      ( decisionType == NFAState.OPTIONAL_BLOCK_START ||
                      decisionType == NFAState.LOOPBACK ) )
                 {
-                    OptimizeExitBranches( dfa.startState );
+                    OptimizeExitBranches( dfa.StartState );
                 }
             }
             // If the Tokens rule has syntactically ambiguous rules, try to prune
             if ( PRUNE_TOKENS_RULE_SUPERFLUOUS_EOT_EDGES &&
                  dfa.IsTokensRuleDecision &&
-                 dfa.probe.stateToSyntacticallyAmbiguousTokensRuleAltsMap.Count > 0 )
+                 dfa.Probe.stateToSyntacticallyAmbiguousTokensRuleAltsMap.Count > 0 )
             {
                 _visited.Clear();
-                OptimizeEOTBranches( dfa.startState );
+                OptimizeEOTBranches( dfa.StartState );
             }
 
             /* ack...code gen needs this, cannot optimize
@@ -190,18 +194,21 @@ namespace Antlr3.Analysis
             //JSystem.@out.println("minimized in "+(int)(stop-start)+" ms");
         }
 
-        protected virtual void OptimizeExitBranches( DFAState d )
+        protected virtual void OptimizeExitBranches( DFAState state )
         {
-            int sI = d.StateNumber;
+            if (state == null)
+                throw new ArgumentNullException("state");
+
+            int sI = state.StateNumber;
             if ( _visited.Contains( sI ) )
             {
                 return; // already visited
             }
             _visited.Add( sI );
-            int nAlts = d.dfa.NumberOfAlts;
-            for ( int i = 0; i < d.NumberOfTransitions; i++ )
+            int nAlts = state.Dfa.NumberOfAlts;
+            for ( int i = 0; i < state.NumberOfTransitions; i++ )
             {
-                Transition edge = (Transition)d.Transition( i );
+                Transition edge = (Transition)state.GetTransition( i );
                 DFAState edgeTarget = ( (DFAState)edge.Target );
                 /*
                 JSystem.@out.println(d.stateNumber+"-"+
@@ -216,24 +223,27 @@ namespace Antlr3.Analysis
                     JSystem.@out.println("ignoring transition "+i+" to max alt "+
                         d.dfa.getNumberOfAlts());
                     */
-                    d.RemoveTransition( i );
+                    state.RemoveTransition( i );
                     i--; // back up one so that i++ of loop iteration stays within bounds
                 }
                 OptimizeExitBranches( edgeTarget );
             }
         }
 
-        protected virtual void OptimizeEOTBranches( DFAState d )
+        protected virtual void OptimizeEOTBranches( DFAState state )
         {
-            int sI = d.StateNumber;
+            if (state == null)
+                throw new ArgumentNullException("state");
+
+            int sI = state.StateNumber;
             if ( _visited.Contains( sI ) )
             {
                 return; // already visited
             }
             _visited.Add( sI );
-            for ( int i = 0; i < d.NumberOfTransitions; i++ )
+            for ( int i = 0; i < state.NumberOfTransitions; i++ )
             {
-                Transition edge = (Transition)d.Transition( i );
+                Transition edge = state.GetTransition( i );
                 DFAState edgeTarget = ( (DFAState)edge.Target );
                 /*
                 JSystem.@out.println(d.stateNumber+"-"+
@@ -243,17 +253,16 @@ namespace Antlr3.Analysis
                 // if only one edge coming out, it is EOT, and target is accept prune
                 if ( PRUNE_TOKENS_RULE_SUPERFLUOUS_EOT_EDGES &&
                     edgeTarget.IsAcceptState &&
-                    d.NumberOfTransitions == 1 &&
+                    state.NumberOfTransitions == 1 &&
                     edge.Label.IsAtom &&
                     edge.Label.Atom == Label.EOT )
                 {
                     //JSystem.@out.println("state "+d+" can be pruned");
                     // remove the superfluous EOT edge
-                    d.RemoveTransition( i );
-                    d.IsAcceptState = true; // make it an accept state
+                    state.RemoveTransition( i );
+                    state.IsAcceptState = true; // make it an accept state
                     // force it to uniquely predict the originally predicted state
-                    d.cachedUniquelyPredicatedAlt =
-                        edgeTarget.GetUniquelyPredictedAlt();
+                    state.CachedUniquelyPredicatedAlt = edgeTarget.GetUniquelyPredictedAlt();
                     i--; // back up one so that i++ of loop iteration stays within bounds
                 }
                 OptimizeEOTBranches( edgeTarget );

@@ -32,6 +32,7 @@
 
 namespace Antlr3.Analysis
 {
+    using ArgumentNullException = System.ArgumentNullException;
     using StringBuilder = System.Text.StringBuilder;
 
     /** An NFA state, predicted alt, and syntactic/semantic context.
@@ -43,13 +44,13 @@ namespace Antlr3.Analysis
     public class NFAConfiguration
     {
         /** The NFA state associated with this configuration */
-        public int state;
+        private readonly int _state;
 
         /** What alt is predicted by this configuration */
-        public int alt;
+        private readonly int _alt;
 
         /** What is the stack of rule invocations that got us to state? */
-        public NFAContext context;
+        private readonly NFAContext _context;
 
         /** The set of semantic predicates associated with this NFA
          *  configuration.  The predicates were found on the way to
@@ -60,7 +61,7 @@ namespace Antlr3.Analysis
          *  the equals() method will correctly show {pred1,pred2} as equals()
          *  to {pred2,pred1}.
          */
-        public SemanticContext semanticContext = SemanticContext.EmptySemanticContext;
+        private SemanticContext _semanticContext = SemanticContext.EmptySemanticContext;
 
         /** Indicate that this configuration has been resolved and no further
          *  DFA processing should occur with it.  Essentially, this is used
@@ -68,7 +69,7 @@ namespace Antlr3.Analysis
          *  such as (s|2) and (s|3), I can set (s|3) to resolved=true (and any
          *  other configuration associated with alt 3).
          */
-        protected internal bool resolved;
+        private bool _resolved;
 
         /** This bit is used to indicate a semantic predicate will be
          *  used to resolve the conflict.  Method
@@ -78,7 +79,7 @@ namespace Antlr3.Analysis
          *  nondeterministic configurations (as it does for "resolved" field)
          *  that have enough predicates to resolve the conflit.
          */
-        protected internal bool resolveWithPredicate;
+        private bool _resolveWithPredicate;
 
         /** Lots of NFA states have only epsilon edges (1 or 2).  We can
          *  safely consider only n>0 during closure.
@@ -88,7 +89,7 @@ namespace Antlr3.Analysis
         /** Indicates that the NFA state associated with this configuration
          *  has exactly one transition and it's an atom (not epsilon etc...).
          */
-        protected internal bool singleAtomTransitionEmanating;
+        private bool _singleAtomTransitionEmanating;
 
         //protected boolean addedDuringClosure = true;
 
@@ -97,10 +98,89 @@ namespace Antlr3.Analysis
                                 NFAContext context,
                                 SemanticContext semanticContext )
         {
-            this.state = state;
-            this.alt = alt;
-            this.context = context;
-            this.semanticContext = semanticContext;
+            this._state = state;
+            this._alt = alt;
+            this._context = context;
+            this._semanticContext = semanticContext;
+        }
+
+        public int State
+        {
+            get
+            {
+                return _state;
+            }
+        }
+
+        public int Alt
+        {
+            get
+            {
+                return _alt;
+            }
+        }
+
+        public NFAContext Context
+        {
+            get
+            {
+                return _context;
+            }
+        }
+
+        public SemanticContext SemanticContext
+        {
+            get
+            {
+                return _semanticContext;
+            }
+
+            set
+            {
+                if (value == null)
+                    throw new ArgumentNullException("value");
+
+                _semanticContext = value;
+            }
+        }
+
+        protected internal bool Resolved
+        {
+            get
+            {
+                return _resolved;
+            }
+
+            set
+            {
+                _resolved = value;
+            }
+        }
+
+        protected internal bool ResolveWithPredicate
+        {
+            get
+            {
+                return _resolveWithPredicate;
+            }
+
+            set
+            {
+                _resolveWithPredicate = value;
+            }
+        }
+
+        protected internal bool SingleAtomTransitionEmanating
+        {
+            get
+            {
+                return _singleAtomTransitionEmanating;
+            }
+
+            set
+            {
+                _singleAtomTransitionEmanating = value;
+            }
         }
 
         /** An NFA configuration is equal to another if both have
@@ -117,15 +197,15 @@ namespace Antlr3.Analysis
                 return false;
             }
             NFAConfiguration other = (NFAConfiguration)o;
-            return this.state == other.state &&
-                   this.alt == other.alt &&
-                   this.context.Equals( other.context ) &&
-                   this.semanticContext.Equals( other.semanticContext );
+            return this._state == other._state &&
+                   this._alt == other._alt &&
+                   this._context.Equals( other._context ) &&
+                   this._semanticContext.Equals( other._semanticContext );
         }
 
         public override int GetHashCode()
         {
-            int h = state + alt + context.GetHashCode();
+            int h = _state + _alt + _context.GetHashCode();
             return h;
         }
 
@@ -137,32 +217,37 @@ namespace Antlr3.Analysis
         public string ToString( bool showAlt )
         {
             StringBuilder buf = new StringBuilder();
-            buf.Append( state );
+            buf.Append( _state );
             if ( showAlt )
             {
                 buf.Append( "|" );
-                buf.Append( alt );
+                buf.Append( _alt );
             }
-            if ( context.parent != null )
+
+            if ( _context.Parent != null )
             {
                 buf.Append( "|" );
-                buf.Append( context );
+                buf.Append( _context );
             }
-            if ( semanticContext != null &&
-                 semanticContext != SemanticContext.EmptySemanticContext )
+
+            if ( _semanticContext != null &&
+                 _semanticContext != SemanticContext.EmptySemanticContext )
             {
                 buf.Append( "|" );
-                string escQuote = semanticContext.ToString().Replace( "\"", "\\\"" );
+                string escQuote = _semanticContext.ToString().Replace( "\"", "\\\"" );
                 buf.Append( escQuote );
             }
-            if ( resolved )
+
+            if ( _resolved )
             {
                 buf.Append( "|resolved" );
             }
-            if ( resolveWithPredicate )
+
+            if ( _resolveWithPredicate )
             {
                 buf.Append( "|resolveWithPredicate" );
             }
+
             return buf.ToString();
         }
     }

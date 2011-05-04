@@ -114,21 +114,21 @@ rule
 					Rule thisR = grammar.GetLocallyDefinedRule(currentRuleName);
 					NFAState start = thisR.StartState;
 					start.associatedASTNode = $id;
-					start.AddTransition(new Transition(Label.EPSILON, g.left));
+					start.AddTransition(new Transition(Label.EPSILON, g.Left));
 
 					// track decision if > 1 alts
-					if ( grammar.GetNumberOfAltsForDecisionNFA(g.left)>1 )
+					if ( grammar.GetNumberOfAltsForDecisionNFA(g.Left)>1 )
 					{
-						g.left.Description = grammar.GrammarTreeToString($start,false);
-						g.left.SetDecisionASTNode($b.start);
-						int d = grammar.AssignDecisionNumber( g.left );
-						grammar.SetDecisionNFA( d, g.left );
+						g.Left.Description = grammar.GrammarTreeToString($start,false);
+						g.Left.SetDecisionASTNode($b.start);
+						int d = grammar.AssignDecisionNumber( g.Left );
+						grammar.SetDecisionNFA( d, g.Left );
 						grammar.SetDecisionBlockAST(d, $b.start);
 					}
 
 					// hook to end of rule node
 					NFAState end = thisR.StopState;
-					g.right.AddTransition(new Transition(Label.EPSILON,end));
+					g.Right.AddTransition(new Transition(Label.EPSILON,end));
 				}
 			}
 		)
@@ -259,12 +259,12 @@ ebnf returns [StateCluster g=null]
 	|	b=block
 		{
 			// track decision if > 1 alts
-			if ( grammar.GetNumberOfAltsForDecisionNFA($b.g.left)>1 )
+			if ( grammar.GetNumberOfAltsForDecisionNFA($b.g.Left)>1 )
 			{
-				$b.g.left.Description = grammar.GrammarTreeToString(blk,false);
-				$b.g.left.SetDecisionASTNode(blk);
-				int d = grammar.AssignDecisionNumber( $b.g.left );
-				grammar.SetDecisionNFA( d, $b.g.left );
+				$b.g.Left.Description = grammar.GrammarTreeToString(blk,false);
+				$b.g.Left.SetDecisionASTNode(blk);
+				int d = grammar.AssignDecisionNumber( $b.g.Left );
+				grammar.SetDecisionNFA( d, $b.g.Left );
 				grammar.SetDecisionBlockAST(d, blk);
 			}
 			$g = $b.g;
@@ -279,12 +279,12 @@ ebnf returns [StateCluster g=null]
 				bg = factory.BuildAlternativeBlockFromSet(bg);
 			}
 			$g = factory.BuildAoptional(bg);
-			$g.left.Description = grammar.GrammarTreeToString($start,false);
+			$g.Left.Description = grammar.GrammarTreeToString($start,false);
 			// there is always at least one alt even if block has just 1 alt
-			int d = grammar.AssignDecisionNumber( $g.left );
-			grammar.SetDecisionNFA(d, $g.left);
+			int d = grammar.AssignDecisionNumber( $g.Left );
+			grammar.SetDecisionNFA(d, $g.Left);
 			grammar.SetDecisionBlockAST(d, blk);
-			$g.left.SetDecisionASTNode($start);
+			$g.Left.SetDecisionASTNode($start);
 		}
 	|	^( CLOSURE b=block )
 		{
@@ -295,17 +295,17 @@ ebnf returns [StateCluster g=null]
 			}
 			$g = factory.BuildAstar(bg);
 			// track the loop back / exit decision point
-			bg.right.Description = "()* loopback of "+grammar.GrammarTreeToString($start,false);
-			int d = grammar.AssignDecisionNumber( bg.right );
-			grammar.SetDecisionNFA(d, bg.right);
+			bg.Right.Description = "()* loopback of "+grammar.GrammarTreeToString($start,false);
+			int d = grammar.AssignDecisionNumber( bg.Right );
+			grammar.SetDecisionNFA(d, bg.Right);
 			grammar.SetDecisionBlockAST(d, blk);
-			bg.right.SetDecisionASTNode(eob);
+			bg.Right.SetDecisionASTNode(eob);
 			// make block entry state also have same decision for interpreting grammar
-			NFAState altBlockState = (NFAState)$g.left.GetTransition(0).Target;
+			NFAState altBlockState = (NFAState)$g.Left.GetTransition(0).Target;
 			altBlockState.SetDecisionASTNode($start);
 			altBlockState.DecisionNumber = d;
-			$g.left.DecisionNumber = d; // this is the bypass decision (2 alts)
-			$g.left.SetDecisionASTNode($start);
+			$g.Left.DecisionNumber = d; // this is the bypass decision (2 alts)
+			$g.Left.SetDecisionASTNode($start);
 		}
 	|	^( POSITIVE_CLOSURE b=block )
 		{
@@ -317,13 +317,13 @@ ebnf returns [StateCluster g=null]
 			$g = factory.BuildAplus(bg);
 			// don't make a decision on left edge, can reuse loop end decision
 			// track the loop back / exit decision point
-			bg.right.Description = "()+ loopback of "+grammar.GrammarTreeToString($start,false);
-			int d = grammar.AssignDecisionNumber( bg.right );
-			grammar.SetDecisionNFA(d, bg.right);
+			bg.Right.Description = "()+ loopback of "+grammar.GrammarTreeToString($start,false);
+			int d = grammar.AssignDecisionNumber( bg.Right );
+			grammar.SetDecisionNFA(d, bg.Right);
 			grammar.SetDecisionBlockAST(d, blk);
-			bg.right.SetDecisionASTNode(eob);
+			bg.Right.SetDecisionASTNode(eob);
 			// make block entry state also have same decision for interpreting grammar
-			NFAState altBlockState = (NFAState)$g.left.GetTransition(0).Target;
+			NFAState altBlockState = (NFAState)$g.Left.GetTransition(0).Target;
 			altBlockState.SetDecisionASTNode($start);
 			altBlockState.DecisionNumber = d;
 		}
@@ -339,16 +339,16 @@ tree_ returns [StateCluster g=null]
 			{
 				down = factory.BuildAtom(Label.DOWN, $e.start);
 				// TODO set following states for imaginary nodes?
-				//el.followingNFAState = down.right;
+				//el.followingNFAState = down.Right;
 				$g = factory.BuildAB($g,down);
 			}
 			( e=element {$g = factory.BuildAB($g,$e.g);} )*
 			{
 				up = factory.BuildAtom(Label.UP, $e.start);
-				//el.followingNFAState = up.right;
+				//el.followingNFAState = up.Right;
 				$g = factory.BuildAB($g,up);
 				// tree roots point at right edge of DOWN for LOOK computation later
-				$start.NFATreeDownState = down.left;
+				$start.NFATreeDownState = down.Left;
 			}
 		)
 	;
@@ -433,7 +433,7 @@ atom_or_notatom returns [StateCluster g=null]
 					$g=factory.BuildSet(s,$n);
 				}
 			)
-			{$n.followingNFAState = $g.right;}
+			{$n.followingNFAState = $g.Right;}
 		)
 	;
 
@@ -445,12 +445,12 @@ atom[string scopeName] returns [StateCluster g=null]
 			{
 				Rule rr = grammar.GetRule(scopeName,$r.text);
 				$g = factory.BuildRuleRef(rr, start);
-				r.followingNFAState = $g.right;
-				r._nfaStartState = $g.left;
-				if ( $g.left.GetTransition(0) is RuleClosureTransition
+				r.followingNFAState = $g.Right;
+				r._nfaStartState = $g.Left;
+				if ( $g.Left.GetTransition(0) is RuleClosureTransition
 					&& grammar.type!=GrammarType.Lexer )
 				{
-					AddFollowTransition($r.text, $g.right);
+					AddFollowTransition($r.text, $g.Right);
 				}
 				// else rule ref got inlined to a set
 			}
@@ -465,7 +465,7 @@ atom[string scopeName] returns [StateCluster g=null]
 				{
 					Rule rr = grammar.GetRule(scopeName,t.Text);
 					$g = factory.BuildRuleRef(rr, start);
-					t._nfaStartState = $g.left;
+					t._nfaStartState = $g.Left;
 					// don't add FOLLOW transitions in the lexer;
 					// only exact context should be used.
 				}
@@ -473,7 +473,7 @@ atom[string scopeName] returns [StateCluster g=null]
 			else
 			{
 				$g = factory.BuildAtom(t);
-				t.followingNFAState = $g.right;
+				t.followingNFAState = $g.Right;
 			}
 		}
 
@@ -486,7 +486,7 @@ atom[string scopeName] returns [StateCluster g=null]
 			else
 			{
 				$g = factory.BuildAtom(c);
-				c.followingNFAState = $g.right;
+				c.followingNFAState = $g.Right;
 			}
 		}
 
@@ -499,13 +499,13 @@ atom[string scopeName] returns [StateCluster g=null]
 			else
 			{
 				$g = factory.BuildAtom(s);
-				s.followingNFAState = $g.right;
+				s.followingNFAState = $g.Right;
 			}
 		}
 
 	|	^(	w=WILDCARD (as5=ast_suffix)? )
 			{
-				if ( nfa.grammar.type == GrammarType.TreeParser
+				if ( nfa.Grammar.type == GrammarType.TreeParser
 					&& (w.ChildIndex > 0 || w.Parent.GetChild(1).Type == EOA) )
 				{
 					$g = factory.BuildWildcardTree( $w );
@@ -537,7 +537,7 @@ set returns [StateCluster g=null]
 		 )
 		{
 		$g = factory.BuildSet(elements,$b);
-		$b.followingNFAState = $g.right;
+		$b.followingNFAState = $g.Right;
 		$b.SetValue = elements; // track set value of this block
 		}
 		//{System.out.println("set elements="+elements.ToString(grammar));}
@@ -645,7 +645,7 @@ setElement[IIntSet elements]
 
 	|	gset=set
 		{
-			Transition setTrans = $gset.g.left.GetTransition(0);
+			Transition setTrans = $gset.g.Left.GetTransition(0);
 			elements.AddAll(setTrans.Label.Set);
 		}
 

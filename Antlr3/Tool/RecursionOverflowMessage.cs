@@ -66,10 +66,10 @@ namespace Antlr3.Tool
 
         public override String ToString()
         {
-            GrammarAST decisionASTNode = probe.dfa.DecisionASTNode;
+            GrammarAST decisionASTNode = probe.Dfa.DecisionASTNode;
             line = decisionASTNode.Line;
             charPositionInLine = decisionASTNode.CharPositionInLine;
-            String fileName = probe.dfa.nfa.grammar.FileName;
+            String fileName = probe.Dfa.Nfa.Grammar.FileName;
             if ( fileName != null )
             {
                 file = fileName;

@@ -65,6 +65,9 @@ namespace Antlr3.Analysis
             this.target = target;
         }
 
+        /// <summary>
+        /// Gets or sets the label which must be consumed to transition to target
+        /// </summary>
         public Label Label
         {
             get
@@ -78,6 +81,9 @@ namespace Antlr3.Analysis
             }
         }
 
+        /// <summary>
+        /// Gets the target state
+        /// </summary>
         public State Target
         {
             get
@@ -86,7 +92,9 @@ namespace Antlr3.Analysis
             }
         }
 
-
+        /// <summary>
+        /// Gets whether or not the transition is an action
+        /// </summary>
         public bool IsAction
         {
             get
@@ -95,6 +103,9 @@ namespace Antlr3.Analysis
             }
         }
 
+        /// <summary>
+        /// Gets whether or not the transition is an epsilon-transition
+        /// </summary>
         public bool IsEpsilon
         {
             get
@@ -103,6 +114,9 @@ namespace Antlr3.Analysis
             }
         }
 
+        /// <summary>
+        /// Gets whether or not the transition is a semantic predicate transition
+        /// </summary>
         public bool IsSemanticPredicate
         {
             get

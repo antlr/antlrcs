@@ -3029,7 +3029,7 @@ namespace AntlrUnitTests
 
         [TestMethod]
         public void TestAssignToTreeNodeAttribute() /*throws Exception*/ {
-            string action = "$tree.scope = localScope;";
+            //string action = "$tree.scope = localScope;";
             string expecting = "((Object)retval.tree).scope = localScope;";
             ErrorQueue equeue = new ErrorQueue();
             ErrorManager.SetErrorListener( equeue );

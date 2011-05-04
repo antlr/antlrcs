@@ -49,9 +49,9 @@ namespace Antlr3.Tool
 
         public virtual void CheckConflicts()
         {
-            for ( int i = CompositeGrammar.MinRuleIndex; i < grammar.composite.ruleIndexToRuleList.Count; i++ )
+            for ( int i = CompositeGrammar.MinRuleIndex; i < grammar.composite.RuleIndexToRuleList.Count; i++ )
             {
-                Rule r = grammar.composite.ruleIndexToRuleList[i];
+                Rule r = grammar.composite.RuleIndexToRuleList[i];
                 if ( r == null )
                 {
                     continue;
@@ -168,7 +168,7 @@ namespace Antlr3.Tool
                 foreach ( IToken tok in grammar.tokenIDRefs )
                 {
                     string tokenID = tok.Text;
-                    if ( !grammar.composite.lexerRules.Contains( tokenID ) &&
+                    if ( !grammar.composite.LexerRules.Contains( tokenID ) &&
                          grammar.GetTokenType( tokenID ) != Label.EOF )
                     {
                         ErrorManager.GrammarWarning( ErrorManager.MSG_NO_TOKEN_DEFINITION,

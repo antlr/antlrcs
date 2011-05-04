@@ -44,24 +44,23 @@ namespace Antlr3.Tool
     [CLSCompliant(false)]
     public class AssignTokenTypesBehavior : AssignTokenTypesWalker
     {
-        protected const int Unassigned = -1;
-        protected const int UnassignedInParserRule = -2;
+        private const int Unassigned = -1;
+        private const int UnassignedInParserRule = -2;
 
-        protected IDictionary<string, int> stringLiterals = new SortedList<string, int>(StringComparer.Ordinal);
-        [CLSCompliant(false)]
-        protected IDictionary<string, int> tokens = new SortedList<string, int>(StringComparer.Ordinal);
-        protected IDictionary<string, string> aliases = new SortedList<string, string>(StringComparer.Ordinal);
-        protected IDictionary<string, string> aliasesReverseIndex = new Dictionary<string, string>();
+        private readonly IDictionary<string, int> _stringLiterals = new SortedList<string, int>(StringComparer.Ordinal);
+        private readonly IDictionary<string, int> _tokens = new SortedList<string, int>(StringComparer.Ordinal);
+        private readonly IDictionary<string, string> _aliases = new SortedList<string, string>(StringComparer.Ordinal);
+        private readonly IDictionary<string, string> _aliasesReverseIndex = new Dictionary<string, string>();
+
+        /** Track actual lexer rule defs so we don't get repeated token defs in
+         *  generated lexer.
+         */
+        private readonly HashSet<string> tokenRuleDefs = new HashSet<string>();
 
         public AssignTokenTypesBehavior()
             : base(null)
         {
         }
-
-        /** Track actual lexer rule defs so we don't get repeated token defs in
-         *  generated lexer.
-         */
-        protected HashSet<string> tokenRuleDefs = new HashSet<string>();
 
         protected override void Init( Grammar g )
         {
@@ -109,7 +108,7 @@ namespace Antlr3.Tool
                   Rule.GetRuleType(currentRuleName) == RuleType.Parser) &&
                                                                     grammar.GetTokenType( t.Text ) == Label.INVALID )
             {
-                stringLiterals[t.Text] = UnassignedInParserRule;
+                _stringLiterals[t.Text] = UnassignedInParserRule;
             }
         }
 
@@ -119,9 +118,9 @@ namespace Antlr3.Tool
             // Might have ';'=4 in vocab import and SEMI=';'. Avoid
             // setting to UNASSIGNED if we have loaded ';'/SEMI
             if ( grammar.GetTokenType( t.Text ) == Label.INVALID &&
-                 !tokens.ContainsKey( t.Text ) )
+                 !_tokens.ContainsKey( t.Text ) )
             {
-                tokens[t.Text] = Unassigned;
+                _tokens[t.Text] = Unassigned;
             }
         }
 
@@ -144,12 +143,12 @@ namespace Antlr3.Tool
 
                 // track all lexer rules so we can look for token refs w/o
                 // associated lexer rules.
-                grammar.composite.lexerRules.Add( t.Text );
+                grammar.composite.LexerRules.Add( t.Text );
 
                 int existing = grammar.GetTokenType( t.Text );
                 if ( existing == Label.INVALID )
                 {
-                    tokens[t.Text] = Unassigned;
+                    _tokens[t.Text] = Unassigned;
                 }
                 // look for "<TOKEN> : <literal> ;" pattern
                 // (can have optional action last)
@@ -180,7 +179,7 @@ namespace Antlr3.Tool
             string tokenID = t.Text;
             string literal = s.Text;
             string prevAliasLiteralID;
-            aliasesReverseIndex.TryGetValue(literal, out prevAliasLiteralID);
+            _aliasesReverseIndex.TryGetValue(literal, out prevAliasLiteralID);
             if ( prevAliasLiteralID != null )
             { // we've seen this literal before
                 if ( tokenID.Equals( prevAliasLiteralID ) )
@@ -208,10 +207,10 @@ namespace Antlr3.Tool
             {
                 // we've seen this before from a tokenVocab most likely
                 // don't assign a new token type; use existingLiteralType.
-                tokens[tokenID] = existingLiteralType;
+                _tokens[tokenID] = existingLiteralType;
             }
             string prevAliasTokenID;
-            aliases.TryGetValue(tokenID, out prevAliasTokenID);
+            _aliases.TryGetValue(tokenID, out prevAliasTokenID);
             if ( prevAliasTokenID != null )
             {
                 ErrorManager.GrammarError( ErrorManager.MSG_TOKEN_ALIAS_REASSIGNMENT,
@@ -221,8 +220,8 @@ namespace Antlr3.Tool
                                           prevAliasTokenID );
                 return; // don't do the alias
             }
-            aliases[tokenID] = literal;
-            aliasesReverseIndex[literal] = tokenID;
+            _aliases[tokenID] = literal;
+            _aliasesReverseIndex[literal] = tokenID;
         }
 
         protected internal override void DefineTokens( Grammar root )
@@ -269,10 +268,10 @@ namespace Antlr3.Tool
         protected override void AssignStringTypes( Grammar root )
         {
             // walk string literals assigning types to unassigned ones
-            foreach ( var literal in stringLiterals.Where( pair => pair.Value < Label.MIN_TOKEN_TYPE ).ToArray() )
+            foreach ( var literal in _stringLiterals.Where( pair => pair.Value < Label.MIN_TOKEN_TYPE ).ToArray() )
             {
                 int type = root.GetNewTokenType();
-                stringLiterals[literal.Key] = type;
+                _stringLiterals[literal.Key] = type;
                 // if string referenced in combined grammar parser rule,
                 // automatically define in the generated lexer
                 root.DefineLexerRuleForStringLiteral( literal.Key, type );
@@ -287,18 +286,18 @@ namespace Antlr3.Tool
             }
             // walk aliases if any and assign types to aliased literals if literal
             // was referenced
-            foreach ( var alias in aliases )
+            foreach ( var alias in _aliases )
             {
                 string tokenID = alias.Key;
                 string literal = alias.Value;
-                if ( literal[0] == '\'' && stringLiterals.ContainsKey( literal ) )
+                if ( literal[0] == '\'' && _stringLiterals.ContainsKey( literal ) )
                 {
                     int token;
-                    tokens.TryGetValue(tokenID, out token);
-                    stringLiterals[literal] = token;
+                    _tokens.TryGetValue(tokenID, out token);
+                    _stringLiterals[literal] = token;
                     // an alias still means you need a lexer rule for it
                     int typeI;
-                    tokens.TryGetValue(tokenID, out typeI);
+                    _tokens.TryGetValue(tokenID, out typeI);
                     if ( !tokenRuleDefs.Contains( tokenID ) )
                     {
                         root.DefineLexerRuleForAliasedStringLiteral( tokenID, literal, typeI );
@@ -310,20 +309,20 @@ namespace Antlr3.Tool
         protected override void AssignTokenIDTypes( Grammar root )
         {
             // walk token names, assigning values if unassigned
-            foreach ( var token in tokens.Where( pair => pair.Value == Unassigned ).ToArray() )
+            foreach ( var token in _tokens.Where( pair => pair.Value == Unassigned ).ToArray() )
             {
-                tokens[token.Key] = root.GetNewTokenType();
+                _tokens[token.Key] = root.GetNewTokenType();
             }
         }
 
         protected override void DefineTokenNamesAndLiteralsInGrammar( Grammar root )
         {
-            foreach ( var token in tokens )
+            foreach ( var token in _tokens )
             {
                 root.DefineToken( token.Key, token.Value );
             }
 
-            foreach ( var lit in stringLiterals )
+            foreach ( var lit in _stringLiterals )
             {
                 root.DefineToken( lit.Key, lit.Value );
             }

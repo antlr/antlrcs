@@ -32,7 +32,6 @@
 
 namespace Antlr3.Analysis
 {
-    using System;
     using System.Collections.Generic;
     using System.Linq;
     using Antlr.Runtime.JavaExtensions;
@@ -42,8 +41,10 @@ namespace Antlr3.Analysis
     using IIntSet = Antlr3.Misc.IIntSet;
     using IIntStream = Antlr.Runtime.IIntStream;
     using IntervalSet = Antlr3.Misc.IntervalSet;
+    using Math = System.Math;
     using StringBuilder = System.Text.StringBuilder;
     using StringTemplate = Antlr4.StringTemplate.Template;
+    using TimeSpan = System.TimeSpan;
 
     /** A DFA (converted from a grammar's NFA).
      *  DFAs are used as prediction machine for alternative blocks in all kinds
@@ -51,15 +52,6 @@ namespace Antlr3.Analysis
      */
     public class DFA
     {
-        public const int REACHABLE_UNKNOWN = -2;
-        public const int REACHABLE_BUSY = -1; // in process of computing
-        public const int REACHABLE_NO = 0;
-        public const int REACHABLE_YES = 1;
-
-        public const int CYCLIC_UNKNOWN = -2;
-        public const int CYCLIC_BUSY = -1; // in process of computing
-        public const int CYCLIC_DONE = 0;
-
 #if false
         /** Prevent explosion of DFA states during conversion. The max number
          *  of states per alt in a single decision's DFA.
@@ -76,16 +68,16 @@ namespace Antlr3.Analysis
         public static int MAX_STATE_TRANSITIONS_FOR_TABLE = 65534;
 
         /** What's the start state for this DFA? */
-        public DFAState startState;
+        private DFAState _startState;
 
         /** This DFA is being built for which decision? */
-        public int decisionNumber = 0;
+        private readonly int _decisionNumber;
 
         /** From what NFAState did we create the DFA? */
-        NFAState _decisionNFAStartState;
+        private readonly NFAState _decisionNFAStartState;
 
         /** The printable grammar fragment associated with this DFA */
-        string _description;
+        private string _description;
 
         /** A set of all uniquely-numbered DFA states.  Maps hash of DFAState
          *  to the actual DFAState object.  We use this to detect
@@ -94,7 +86,7 @@ namespace Antlr3.Analysis
          *  Not used during fixed k lookahead as it's a waste to fill it with
          *  a dup of states array.
          */
-        IDictionary<DFAState, DFAState> _uniqueStates = new Dictionary<DFAState, DFAState>();
+        private readonly Dictionary<DFAState, DFAState> _uniqueStates = new Dictionary<DFAState, DFAState>();
 
         /** Maps the state number to the actual DFAState.  Use a Vector as it
          *  grows automatically when I set the ith element.  This contains all
@@ -107,38 +99,40 @@ namespace Antlr3.Analysis
          *  a way to go from state number to DFAState rather than via a
          *  hash lookup.
          */
-        List<DFAState> _states = new List<DFAState>();
+        private readonly List<DFAState> _states = new List<DFAState>();
 
         /** Unique state numbers per DFA */
-        int _stateCounter = 0;
+        private int _stateCounter = 0;
 
         /** count only new states not states that were rejected as already present */
-        int _numberOfStates = 0;
+        private int _numberOfStates = 0;
 
         /** User specified max fixed lookahead.  If 0, nothing specified.  -1
          *  implies we have not looked at the options table yet to set k.
          */
-        int _userK = -1;
+        private int _userK = -1;
 
-        /** While building the DFA, track max lookahead depth if not cyclic */
-        internal int max_k = -1;
+        /// <summary>
+        /// While building the DFA, track max lookahead depth if not cyclic.
+        /// </summary>
+        private int _max_k = -1;
 
         /** Is this DFA reduced?  I.e., can all states lead to an accept state? */
-        bool _reduced = true;
+        private bool _reduced = true;
 
         /** Are there any loops in this DFA?
          *  Computed by doesStateReachAcceptState()
          */
-        bool _cyclic = false;
+        private bool _cyclic = false;
 
         /** Track whether this DFA has at least one sem/syn pred encountered
          *  during a closure operation.  This is useful for deciding whether
          *  to retry a non-LL(*) with k=1.  If no pred, it will not work w/o
          *  a pred so don't bother.  It would just give another error message.
          */
-        public bool predicateVisible = false;
+        private bool _predicateVisible = false;
 
-        public bool hasPredicateBlockedByAction = false;
+        private bool _hasPredicateBlockedByAction = false;
 
         /** Each alt in an NFA derived from a grammar must have a DFA state that
          *  predicts it lest the parser not know what to do.  Nondeterminisms can
@@ -149,29 +143,29 @@ namespace Antlr3.Analysis
          *  and then in method doesStateReachAcceptState() I remove the alts I
          *  know to be uniquely predicted.
          */
-        List<int> _unreachableAlts;
+        private readonly List<int> _unreachableAlts;
 
-        int _nAlts = 0;
+        private readonly int _numberOfAlts = 0;
 
         /** We only want one accept state per predicted alt; track here */
-        DFAState[] _altToAcceptState;
+        private readonly DFAState[] _altToAcceptState;
 
         /** Track whether an alt discovers recursion for each alt during
          *  NFA to DFA conversion; >1 alt with recursion implies nonregular.
          */
-        public IIntSet recursiveAltSet = new IntervalSet();
+        private readonly IIntSet _recursiveAltSet = new IntervalSet();
 
         /** Which NFA are we converting (well, which piece of the NFA)? */
-        public NFA nfa;
+        private readonly NFA _nfa;
 
-        NFAToDFAConverter _nfaConverter;
+        private readonly NFAToDFAConverter _nfaConverter;
 
         /** This probe tells you a lot about a decision and is useful even
          *  when there is no error such as when a syntactic nondeterminism
          *  is solved via semantic predicates.  Perhaps a GUI would want
          *  the ability to show that.
          */
-        public DecisionProbe probe;
+        private readonly DecisionProbe _probe;
 
         /** Map an edge transition table to a unique set number; ordered so
          *  we can push into the output template as an ordered list of sets
@@ -188,14 +182,14 @@ namespace Antlr3.Analysis
          *     	  ...
          *      };
          */
-        IDictionary<int[], int?> _edgeTransitionClassMap = new Dictionary<int[], int?>();
+        private readonly Dictionary<int[], int?> _edgeTransitionClassMap = new Dictionary<int[], int?>();
 
         /** The unique edge transition class number; every time we see a new
          *  set of edges emanating from a state, we number it so we can reuse
          *  if it's every seen again for another state.  For Java grammar,
          *  some of the big edge transition tables are seen about 57 times.
          */
-        int _edgeTransitionClass = 0;
+        private int _edgeTransitionClass = 0;
 
         /* This DFA can be converted to a transition[state][char] table and
          * the following tables are filled by createStateTables upon request.
@@ -207,40 +201,37 @@ namespace Antlr3.Analysis
          */
 
         /** List of special DFAState objects */
-        IList<DFAState> _specialStates;
+        private IList<DFAState> _specialStates;
+
         /** List of ST for special states. */
-        IList<StringTemplate> _specialStateSTs;
-        const int EmptyValue = -1;
-        int[] _accept;
-        int[] _eot;
-        int[] _eof;
-        int[] _min;
-        int[] _max;
-        int[] _special;
-        int[][] _transition;
+        private IList<StringTemplate> _specialStateSTs;
+        private const int EmptyValue = -1;
+        private int[] _accept;
+        private int[] _eot;
+        private int[] _eof;
+        private int[] _min;
+        private int[] _max;
+        private int[] _special;
+        private int[][] _transition;
         /** just the Vector&lt;Integer&gt; indicating which unique edge table is at
          *  position i.
          */
-        List<int?> _transitionEdgeTables; // not used by java yet
-        int _uniqueCompressedSpecialStateNum = 0;
+        private List<int?> _transitionEdgeTables; // not used by java yet
+        private int _uniqueCompressedSpecialStateNum;
 
         /** Which generator to use if we're building state tables */
-        CodeGenerator _generator = null;
-
-        protected DFA()
-        {
-            probe = new DecisionProbe( this );
-        }
+        private CodeGenerator _generator;
 
         public DFA( int decisionNumber, NFAState decisionStartState )
-            : this()
         {
-            this.decisionNumber = decisionNumber;
+            _probe = new DecisionProbe(this);
+            this._decisionNumber = decisionNumber;
             this._decisionNFAStartState = decisionStartState;
-            nfa = decisionStartState.nfa;
-            _nAlts = nfa.grammar.GetNumberOfAltsForDecisionNFA( decisionStartState );
+            _nfa = decisionStartState.nfa;
+            _numberOfAlts = Nfa.Grammar.GetNumberOfAltsForDecisionNFA( decisionStartState );
             //setOptions( nfa.grammar.getDecisionOptions(getDecisionNumber()) );
-            InitAltRelatedInfo();
+            _altToAcceptState = new DFAState[NumberOfAlts + 1];
+            _unreachableAlts = new List<int>(Enumerable.Range(1, NumberOfAlts));
 
             //long start = JSystem.currentTimeMillis();
             _nfaConverter = new NFAToDFAConverter( this );
@@ -251,9 +242,9 @@ namespace Antlr3.Analysis
                 // figure out if there are problems with decision
                 Verify();
 
-                if ( !probe.IsDeterministic || probe.AnalysisOverflowed )
+                if ( !Probe.IsDeterministic || Probe.AnalysisOverflowed )
                 {
-                    probe.IssueWarnings();
+                    Probe.IssueWarnings();
                 }
 
                 // must be after verify as it computes cyclic, needed by this routine
@@ -266,33 +257,43 @@ namespace Antlr3.Analysis
             }
             catch ( NonLLStarDecisionException /*nonLL*/ )
             {
-                probe.ReportNonLLStarDecision( this );
+                Probe.ReportNonLLStarDecision( this );
                 // >1 alt recurses, k=* and no auto backtrack nor manual sem/syn
                 if ( !OkToRetryWithK1 )
                 {
-                    probe.IssueWarnings();
+                    Probe.IssueWarnings();
                 }
             }
         }
 
         #region Properties
 
+        public NFA Nfa
+        {
+            get
+            {
+                return _nfa;
+            }
+        }
+
         public bool CanInlineDecision
         {
             get
             {
                 return !IsCyclic &&
-                    !probe.IsNonLLStarDecision &&
+                    !Probe.IsNonLLStarDecision &&
                     NumberOfStates < CodeGenerator.MaxAcyclicDfaStatesInline;
             }
         }
+
         public bool AutoBacktrackMode
         {
             get
             {
-                return GetAutoBacktrackMode();
+                return Nfa.Grammar.GetAutoBacktrackMode(DecisionNumber);
             }
         }
+
         /** What GrammarAST node (derived from the grammar) is this DFA
          *  associated with?  It will point to the start of a block or
          *  the loop back of a (...)+ block etc...
@@ -304,21 +305,49 @@ namespace Antlr3.Analysis
                 return _decisionNFAStartState.associatedASTNode;
             }
         }
-        [CLSCompliant(false)]
+
+        public DFAState StartState
+        {
+            get
+            {
+                return _startState;
+            }
+
+            set
+            {
+                _startState = value;
+            }
+        }
+
         public int DecisionNumber
+        {
+            get
+            {
+                return _decisionNumber;
+            }
+        }
+
+        public int NfaStartStateDecisionNumber
         {
             get
             {
                 return _decisionNFAStartState.DecisionNumber;
             }
         }
+
         public string Description
         {
             get
             {
                 return _description;
             }
+
+            private set
+            {
+                _description = value;
+            }
         }
+
         /** Is this DFA cyclic?  That is, are there any loops?  If not, then
          *  the DFA is essentially an LL(k) predictor for some fixed, max k value.
          *  We can build a series of nested IF statements to match this.  In the
@@ -333,13 +362,39 @@ namespace Antlr3.Analysis
             }
         }
 
+        public bool PredicateVisible
+        {
+            get
+            {
+                return _predicateVisible;
+            }
+
+            set
+            {
+                _predicateVisible = value;
+            }
+        }
+
+        public bool HasPredicateBlockedByAction
+        {
+            get
+            {
+                return _hasPredicateBlockedByAction;
+            }
+
+            set
+            {
+                _hasPredicateBlockedByAction = value;
+            }
+        }
+
         public bool IsClassicDFA
         {
             get
             {
                 return !IsCyclic &&
-                       !nfa.grammar.decisionsWhoseDFAsUsesSemPreds.Contains(this) &&
-                       !nfa.grammar.decisionsWhoseDFAsUsesSynPreds.Contains(this);
+                       !Nfa.Grammar.decisionsWhoseDFAsUsesSemPreds.Contains(this) &&
+                       !Nfa.Grammar.decisionsWhoseDFAsUsesSynPreds.Contains(this);
             }
         }
 
@@ -350,6 +405,31 @@ namespace Antlr3.Analysis
                 return GetIsGreedy();
             }
         }
+
+        /// <summary>
+        /// While building the DFA, track max lookahead depth if not cyclic.
+        /// </summary>
+        public int MaxLookahead
+        {
+            get
+            {
+                return _max_k;
+            }
+
+            set
+            {
+                _max_k = value;
+            }
+        }
+
+        public IIntSet RecursiveAltSet
+        {
+            get
+            {
+                return _recursiveAltSet;
+            }
+        }
+
         /** Is the DFA reduced?  I.e., does every state have a path to an accept
          *  state?  If not, don't delete as we need to generate an error indicating
          *  which paths are "dead ends".  Also tracks list of alts with no accept
@@ -379,7 +459,7 @@ namespace Antlr3.Analysis
                 if (HasCycle)
                     return int.MaxValue;
                 // compute to be sure
-                return CalculateMaxLookaheadDepth(startState, 0);
+                return CalculateMaxLookaheadDepth(StartState, 0);
             }
         }
 
@@ -393,28 +473,31 @@ namespace Antlr3.Analysis
                 return _states.Count - 1;
             }
         }
+
         public NFAState NFADecisionStartState
         {
             get
             {
                 return _decisionNFAStartState;
             }
-            set
-            {
-                _decisionNFAStartState = value;
-            }
         }
+
         public int NumberOfAlts
         {
             get
             {
-                return _nAlts;
-            }
-            set
-            {
-                _nAlts = value;
+                return _numberOfAlts;
             }
         }
+
+        public DecisionProbe Probe
+        {
+            get
+            {
+                return _probe;
+            }
+        }
+
         public int NumberOfStates
         {
             get
@@ -441,6 +524,7 @@ namespace Antlr3.Analysis
                 return GetReasonForFailure();
             }
         }
+
         public IList<StringTemplate> SpecialStateSTs
         {
             get
@@ -448,6 +532,7 @@ namespace Antlr3.Analysis
                 return _specialStateSTs;
             }
         }
+
         public IDictionary<DFAState, DFAState> UniqueStates
         {
             get
@@ -455,6 +540,7 @@ namespace Antlr3.Analysis
                 return _uniqueStates;
             }
         }
+
         /** Return a list of Integer alt numbers for which no lookahead could
          *  be computed or for which no single DFA accept state predicts those
          *  alts.  Must call verify() first before this makes sense.
@@ -465,11 +551,8 @@ namespace Antlr3.Analysis
             {
                 return _unreachableAlts;
             }
-            set
-            {
-                _unreachableAlts = value;
-            }
         }
+
         public int UserMaxLookahead
         {
             get
@@ -486,7 +569,7 @@ namespace Antlr3.Analysis
             int max = depth;
             for (int i = 0; i < d.NumberOfTransitions; i++)
             {
-                Transition t = d.Transition(i);
+                Transition t = d.GetTransition(i);
                 //			if ( t.isSemanticPredicate() ) return Integer.MAX_VALUE;
                 if (!t.IsSemanticPredicate)
                 {
@@ -518,7 +601,7 @@ namespace Antlr3.Analysis
         {
             get
             {
-                bool has = CalculateHasSynPred(startState, new HashSet<DFAState>());
+                bool has = CalculateHasSynPred(StartState, new HashSet<DFAState>());
                 //		if ( !has ) {
                 //			System.out.println("no synpred in dec "+decisionNumber);
                 //			FASerializer serializer = new FASerializer(nfa.grammar);
@@ -534,7 +617,7 @@ namespace Antlr3.Analysis
             busy.Add(d);
             for (int i = 0; i < d.NumberOfTransitions; i++)
             {
-                Transition t = d.Transition(i);
+                Transition t = d.GetTransition(i);
                 if (t.IsSemanticPredicate)
                 {
                     SemanticContext ctx = t.Label.SemanticContext;
@@ -557,7 +640,7 @@ namespace Antlr3.Analysis
         {
             get
             { // has user-defined sempred
-                bool has = CalculateHasSemPred(startState, new HashSet<DFAState>());
+                bool has = CalculateHasSemPred(StartState, new HashSet<DFAState>());
                 return has;
             }
         }
@@ -567,7 +650,7 @@ namespace Antlr3.Analysis
             busy.Add(d);
             for (int i = 0; i < d.NumberOfTransitions; i++)
             {
-                Transition t = d.Transition(i);
+                Transition t = d.GetTransition(i);
                 if (t.IsSemanticPredicate)
                 {
                     SemanticContext ctx = t.Label.SemanticContext;
@@ -587,27 +670,27 @@ namespace Antlr3.Analysis
         {
             get
             {
-                bool cyclic = CalculateHasCycle(startState, new Dictionary<DFAState, int>());
+                bool cyclic = CalculateHasCycle(StartState, new Dictionary<DFAState, Cyclic>());
                 return cyclic;
             }
         }
 
-        internal virtual bool CalculateHasCycle(DFAState d, IDictionary<DFAState, int> busy)
+        internal virtual bool CalculateHasCycle(DFAState d, IDictionary<DFAState, Cyclic> busy)
         {
-            busy[d] = CYCLIC_BUSY;
+            busy[d] = Cyclic.Busy;
             for (int i = 0; i < d.NumberOfTransitions; i++)
             {
-                Transition t = d.Transition(i);
+                Transition t = d.GetTransition(i);
                 DFAState target = (DFAState)t.Target;
-                int cond;
+                Cyclic cond;
                 if (!busy.TryGetValue(target, out cond))
-                    cond = CYCLIC_UNKNOWN;
-                if (cond == CYCLIC_BUSY)
+                    cond = Cyclic.Unknown;
+                if (cond == Cyclic.Busy)
                     return true;
-                if (cond != CYCLIC_DONE && CalculateHasCycle(target, busy))
+                if (cond != Cyclic.Done && CalculateHasCycle(target, busy))
                     return true;
             }
-            busy[d] = CYCLIC_DONE;
+            busy[d] = Cyclic.Done;
             return false;
         }
 
@@ -661,7 +744,7 @@ namespace Antlr3.Analysis
             }
             if ( snum != NumberOfStates )
             {
-                ErrorManager.InternalError( "DFA " + decisionNumber + ": " +
+                ErrorManager.InternalError( "DFA " + DecisionNumber + ": " +
                     _decisionNFAStartState.Description + " num unique states " + NumberOfStates +
                     "!= num renumbered states " + snum );
             }
@@ -761,8 +844,8 @@ namespace Antlr3.Analysis
                         break;
                     }
                 }
-                encoded.Add( _generator.target.EncodeIntAsCharEscape( (char)n ) );
-                encoded.Add( _generator.target.EncodeIntAsCharEscape( (char)(int)I ) );
+                encoded.Add( _generator.Target.EncodeIntAsCharEscape( (char)n ) );
+                encoded.Add( _generator.Target.EncodeIntAsCharEscape( (char)(int)I ) );
                 i += n;
             }
             return encoded;
@@ -772,9 +855,8 @@ namespace Antlr3.Analysis
         {
             //JSystem.@out.println("createTables:\n"+this);
             this._generator = generator;
-            _description = NFADecisionStartState.Description;
-            _description =
-                generator.target.GetTargetStringLiteralFromString( _description );
+            Description = NFADecisionStartState.Description;
+            Description = generator.Target.GetTargetStringLiteralFromString( Description );
 
             // create all the tables
             //special = new List<int>( this.NumberOfStates ); // Vector<short>
@@ -812,6 +894,7 @@ namespace Antlr3.Analysis
             {
                 it = UniqueStates.Values;
             }
+
             foreach ( DFAState s in it )
             {
                 if ( s == null )
@@ -820,6 +903,7 @@ namespace Antlr3.Analysis
                     // when inlining DFA (due to lacking of exit branch pruning?)
                     continue;
                 }
+
                 if ( s.IsAcceptState )
                 {
                     // can't compute min,max,special,transition on accepts
@@ -837,9 +921,8 @@ namespace Antlr3.Analysis
             // now that we have computed list of specialStates, gen code for 'em
             for ( int i = 0; i < _specialStates.Count; i++ )
             {
-                DFAState ss = (DFAState)_specialStates[i];
-                StringTemplate stateST =
-                    generator.GenerateSpecialState( ss );
+                DFAState ss = _specialStates[i];
+                StringTemplate stateST = generator.GenerateSpecialState( ss );
                 _specialStateSTs.Add( stateST );
             }
 
@@ -901,7 +984,7 @@ namespace Antlr3.Analysis
             int smax = Label.MIN_ATOM_VALUE - 1;
             for ( int j = 0; j < s.NumberOfTransitions; j++ )
             {
-                Transition edge = (Transition)s.Transition( j );
+                Transition edge = (Transition)s.GetTransition( j );
                 Label label = edge.Label;
                 if ( label.IsAtom )
                 {
@@ -965,7 +1048,7 @@ namespace Antlr3.Analysis
             _transition[s.StateNumber] = stateTransitions;
             for ( int j = 0; j < s.NumberOfTransitions; j++ )
             {
-                Transition edge = s.Transition( j );
+                Transition edge = s.GetTransition( j );
                 Label label = edge.Label;
                 if ( label.IsAtom && label.Atom >= Label.MIN_CHAR_VALUE )
                 {
@@ -1006,7 +1089,7 @@ namespace Antlr3.Analysis
         {
             for ( int j = 0; j < s.NumberOfTransitions; j++ )
             {
-                Transition edge = s.Transition( j );
+                Transition edge = s.GetTransition( j );
                 Label label = edge.Label;
                 if ( label.IsAtom )
                 {
@@ -1044,7 +1127,7 @@ namespace Antlr3.Analysis
             // TODO this code is very similar to canGenerateSwitch.  Refactor to share
             for ( int j = 0; j < s.NumberOfTransitions; j++ )
             {
-                Transition edge = (Transition)s.Transition( j );
+                Transition edge = (Transition)s.GetTransition( j );
                 Label label = edge.Label;
                 // can't do a switch if the edges have preds or are going to
                 // require gated predicates
@@ -1072,7 +1155,7 @@ namespace Antlr3.Analysis
 
         public virtual int Predict( IIntStream input )
         {
-            Interpreter interp = new Interpreter( nfa.grammar, input );
+            Interpreter interp = new Interpreter( Nfa.Grammar, input );
             return interp.Predict( this );
         }
 
@@ -1135,12 +1218,12 @@ namespace Antlr3.Analysis
         /** Is this DFA derived from the NFA for the Tokens rule? */
         public virtual bool GetIsTokensRuleDecision()
         {
-            if ( nfa.grammar.type != GrammarType.Lexer )
+            if ( Nfa.Grammar.type != GrammarType.Lexer )
             {
                 return false;
             }
             NFAState nfaStart = NFADecisionStartState;
-            Rule r = nfa.grammar.GetLocallyDefinedRule( Grammar.ArtificialTokensRuleName );
+            Rule r = Nfa.Grammar.GetLocallyDefinedRule( Grammar.ArtificialTokensRuleName );
             NFAState TokensRuleStart = r.StartState;
             NFAState TokensDecisionStart =
                 (NFAState)TokensRuleStart.transition[0].Target;
@@ -1154,16 +1237,13 @@ namespace Antlr3.Analysis
         public virtual int GetUserMaxLookahead()
         {
             if ( _userK >= 0 )
-            { // cache for speed
+            {
+                // cache for speed
                 return _userK;
             }
-            _userK = nfa.grammar.GetUserMaxLookahead( decisionNumber );
-            return _userK;
-        }
 
-        public virtual bool GetAutoBacktrackMode()
-        {
-            return nfa.grammar.GetAutoBacktrackMode( decisionNumber );
+            _userK = Nfa.Grammar.GetUserMaxLookahead( DecisionNumber );
+            return _userK;
         }
 
         public virtual void SetUserMaxLookahead( int k )
@@ -1185,7 +1265,7 @@ namespace Antlr3.Analysis
          */
         public virtual void Verify()
         {
-            DoesStateReachAcceptState( startState );
+            DoesStateReachAcceptState( StartState );
         }
 
         /** figure out if this state eventually reaches an accept state and
@@ -1206,15 +1286,15 @@ namespace Antlr3.Analysis
             if ( d.IsAcceptState )
             {
                 // accept states have no edges emanating from them so we can return
-                d.AcceptStateReachable = REACHABLE_YES;
+                d.AcceptStateReachable = Reachable.Yes;
                 // this alt is uniquely predicted, remove from nondeterministic list
                 int predicts = d.GetUniquelyPredictedAlt();
-                _unreachableAlts.Remove( predicts );
+                UnreachableAlts.Remove( predicts );
                 return true;
             }
 
             // avoid infinite loops
-            d.AcceptStateReachable = REACHABLE_BUSY;
+            d.AcceptStateReachable = Reachable.Busy;
 
             bool anEdgeReachesAcceptState = false;
             // Visit every transition, track if at least one edge reaches stop state
@@ -1222,23 +1302,29 @@ namespace Antlr3.Analysis
             // all transitions must be traversed to set status of each DFA state.
             for ( int i = 0; i < d.NumberOfTransitions; i++ )
             {
-                Transition t = d.Transition( i );
+                Transition t = d.GetTransition( i );
                 DFAState edgeTarget = (DFAState)t.Target;
-                int targetStatus = edgeTarget.AcceptStateReachable;
-                if ( targetStatus == REACHABLE_BUSY )
-                { // avoid cycles; they say nothing
+                Reachable targetStatus = edgeTarget.AcceptStateReachable;
+                if ( targetStatus == Reachable.Busy )
+                {
+                    // avoid cycles; they say nothing
                     _cyclic = true;
                     continue;
                 }
-                if ( targetStatus == REACHABLE_YES )
-                { // avoid unnecessary work
+
+                if ( targetStatus == Reachable.Yes )
+                {
+                    // avoid unnecessary work
                     anEdgeReachesAcceptState = true;
                     continue;
                 }
-                if ( targetStatus == REACHABLE_NO )
-                {  // avoid unnecessary work
+
+                if ( targetStatus == Reachable.No )
+                {
+                    // avoid unnecessary work
                     continue;
                 }
+
                 // target must be REACHABLE_UNKNOWN (i.e., unvisited)
                 if ( DoesStateReachAcceptState( edgeTarget ) )
                 {
@@ -1247,15 +1333,17 @@ namespace Antlr3.Analysis
                     // must cover all states even if we find a path for this state
                 }
             }
+
             if ( anEdgeReachesAcceptState )
             {
-                d.AcceptStateReachable = REACHABLE_YES;
+                d.AcceptStateReachable = Reachable.Yes;
             }
             else
             {
-                d.AcceptStateReachable = REACHABLE_NO;
+                d.AcceptStateReachable = Reachable.No;
                 _reduced = false;
             }
+
             return anEdgeReachesAcceptState;
         }
 
@@ -1282,7 +1370,7 @@ namespace Antlr3.Analysis
                         foreach ( SemanticContext semctx in synpreds )
                         {
                             // JSystem.@out.println("synpreds: "+semctx);
-                            nfa.grammar.SynPredUsedInDFA( this, semctx );
+                            Nfa.Grammar.SynPredUsedInDFA( this, semctx );
                         }
                     }
                 }
@@ -1309,8 +1397,8 @@ namespace Antlr3.Analysis
         public virtual bool OkToRetryDFAWithK1()
         {
             bool nonLLStarOrOverflowAndPredicateVisible =
-                ( probe.IsNonLLStarDecision || probe.AnalysisOverflowed ) &&
-                predicateVisible; // auto backtrack or manual sem/syn
+                ( Probe.IsNonLLStarDecision || Probe.AnalysisOverflowed ) &&
+                _predicateVisible; // auto backtrack or manual sem/syn
 
             return UserMaxLookahead != 1 && nonLLStarOrOverflowAndPredicateVisible;
         }
@@ -1318,18 +1406,18 @@ namespace Antlr3.Analysis
         public virtual string GetReasonForFailure()
         {
             StringBuilder buf = new StringBuilder();
-            if ( probe.IsNonLLStarDecision )
+            if ( Probe.IsNonLLStarDecision )
             {
                 buf.Append( "non-LL(*)" );
-                if ( predicateVisible )
+                if ( _predicateVisible )
                 {
                     buf.Append( " && predicate visible" );
                 }
             }
-            if ( probe.AnalysisOverflowed )
+            if ( Probe.AnalysisOverflowed )
             {
                 buf.Append( "recursion overflow" );
-                if ( predicateVisible )
+                if ( _predicateVisible )
                 {
                     buf.Append( " && predicate visible" );
                 }
@@ -1341,8 +1429,8 @@ namespace Antlr3.Analysis
 
         public virtual bool GetIsGreedy()
         {
-            GrammarAST blockAST = nfa.grammar.GetDecisionBlockAST( decisionNumber );
-            Object v = nfa.grammar.GetBlockOption( blockAST, "greedy" );
+            GrammarAST blockAST = Nfa.Grammar.GetDecisionBlockAST( DecisionNumber );
+            object v = Nfa.Grammar.GetBlockOption( blockAST, "greedy" );
             if ( v != null && v.Equals( "false" ) )
             {
                 return false;
@@ -1361,24 +1449,14 @@ namespace Antlr3.Analysis
             return n;
         }
 
-        protected virtual void InitAltRelatedInfo()
-        {
-            _unreachableAlts = new List<int>();
-            for ( int i = 1; i <= _nAlts; i++ )
-            {
-                _unreachableAlts.Add( i );
-            }
-            _altToAcceptState = new DFAState[_nAlts + 1];
-        }
-
         public override string ToString()
         {
-            FASerializer serializer = new FASerializer( nfa.grammar );
-            if ( startState == null )
+            FASerializer serializer = new FASerializer( Nfa.Grammar );
+            if ( StartState == null )
             {
                 return "";
             }
-            return serializer.Serialize( startState, false );
+            return serializer.Serialize( StartState, false );
         }
 
 #if false

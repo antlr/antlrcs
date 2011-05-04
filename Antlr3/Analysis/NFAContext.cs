@@ -106,12 +106,12 @@ namespace Antlr3.Analysis
          */
         public static int MAX_SAME_RULE_INVOCATIONS_PER_NFA_CONFIG_STACK = 4;
 
-        public NFAContext parent;
+        private readonly NFAContext _parent;
 
         /** The NFA state that invoked another rule's start state is recorded
          *  on the rule invocation context stack.
          */
-        public NFAState invokingState;
+        private readonly NFAState _invokingState;
 
         /** Computing the hashCode is very expensive and closureBusy()
          *  uses it to track when it's seen a state|ctx before to avoid
@@ -122,23 +122,39 @@ namespace Antlr3.Analysis
          *  and nothing on the stack is ever modified...ctx just grows
          *  or shrinks.
          */
-        int _cachedHashCode;
+        private readonly int _cachedHashCode;
 
         public NFAContext( NFAContext parent, NFAState invokingState )
         {
-            this.parent = parent;
-            this.invokingState = invokingState;
+            this._parent = parent;
+            this._invokingState = invokingState;
             if ( invokingState != null )
             {
                 this._cachedHashCode = invokingState.StateNumber;
             }
+
             if ( parent != null )
             {
                 this._cachedHashCode += parent._cachedHashCode;
             }
         }
 
-        #region Properties
+        public NFAContext Parent
+        {
+            get
+            {
+                return _parent;
+            }
+        }
+
+        public NFAState InvokingState
+        {
+            get
+            {
+                return _invokingState;
+            }
+        }
+
         /** A context is empty if there is no parent; meaning nobody pushed
          *  anything on the call stack.
          */
@@ -146,10 +162,9 @@ namespace Antlr3.Analysis
         {
             get
             {
-                return parent == null;
+                return _parent == null;
             }
         }
-        #endregion
 
         /** Two contexts are equals() if both have
          *  same call stack; walk upwards to the root.
@@ -172,16 +187,16 @@ namespace Antlr3.Analysis
             }
             // JSystem.@out.println("comparing "+this+" with "+other);
             NFAContext sp = this;
-            while ( sp.parent != null && other.parent != null )
+            while ( sp._parent != null && other._parent != null )
             {
-                if ( sp.invokingState != other.invokingState )
+                if ( sp._invokingState != other._invokingState )
                 {
                     return false;
                 }
-                sp = sp.parent;
-                other = other.parent;
+                sp = sp._parent;
+                other = other._parent;
             }
-            if ( !( sp.parent == null && other.parent == null ) )
+            if ( !( sp._parent == null && other._parent == null ) )
             {
                 return false; // both pointers must be at their roots after walk
             }
@@ -239,14 +254,14 @@ namespace Antlr3.Analysis
         {
             NFAContext sp = this;
             // if one of the contexts is empty, it never enters loop and returns true
-            while ( sp.parent != null && other.parent != null )
+            while ( sp._parent != null && other._parent != null )
             {
-                if ( sp.invokingState != other.invokingState )
+                if ( sp._invokingState != other._invokingState )
                 {
                     return false;
                 }
-                sp = sp.parent;
-                other = other.parent;
+                sp = sp._parent;
+                other = other._parent;
             }
             //JSystem.@out.println("suffix");
             return true;
@@ -290,13 +305,13 @@ namespace Antlr3.Analysis
             NFAContext sp = this;
             int n = 0; // track recursive invocations of target from this state
             //JSystem.@out.println("this.context is "+sp);
-            while ( sp.parent != null )
+            while ( sp._parent != null )
             {
-                if ( sp.invokingState.StateNumber == state )
+                if ( sp._invokingState.StateNumber == state )
                 {
                     n++;
                 }
-                sp = sp.parent;
+                sp = sp._parent;
             }
             return n;
         }
@@ -320,11 +335,11 @@ namespace Antlr3.Analysis
             StringBuilder buf = new StringBuilder();
             NFAContext sp = this;
             buf.Append( "[" );
-            while ( sp.parent != null )
+            while ( sp._parent != null )
             {
-                buf.Append( sp.invokingState.StateNumber );
+                buf.Append( sp._invokingState.StateNumber );
                 buf.Append( " " );
-                sp = sp.parent;
+                sp = sp._parent;
             }
             buf.Append( "$]" );
             return buf.ToString();

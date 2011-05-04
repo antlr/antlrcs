@@ -33,23 +33,28 @@
 namespace Antlr3.Analysis
 {
     using System.Collections.Generic;
+    using Antlr.Runtime;
     using Antlr3.Misc;
     using Antlr3.Tool;
-    using Antlr.Runtime;
+
+    using ArgumentNullException = System.ArgumentNullException;
 
     public class MachineProbe
     {
-        private DFA dfa;
+        private readonly DFA _dfa;
 
         public MachineProbe(DFA dfa)
         {
-            this.dfa = dfa;
+            if (dfa == null)
+                throw new ArgumentNullException("dfa");
+
+            this._dfa = dfa;
         }
 
         internal List<DFAState> GetAnyDFAPathToTarget(DFAState targetState)
         {
             HashSet<DFAState> visited = new HashSet<DFAState>();
-            return GetAnyDFAPathToTarget(dfa.startState, targetState, visited);
+            return GetAnyDFAPathToTarget(_dfa.StartState, targetState, visited);
         }
 
         public List<DFAState> GetAnyDFAPathToTarget(DFAState startState, DFAState targetState, HashSet<DFAState> visited)
@@ -143,11 +148,11 @@ namespace Antlr3.Analysis
                             {
                                 IToken oldtoken = p.associatedASTNode.Token;
                                 CommonToken token = new CommonToken(oldtoken.Type, oldtoken.Text);
-                                token.Line = (oldtoken.Line);
-                                token.CharPositionInLine = (oldtoken.CharPositionInLine);
+                                token.Line = oldtoken.Line;
+                                token.CharPositionInLine = oldtoken.CharPositionInLine;
                                 tokens.Add(token);
-                                goto endNfaConfigLoop; // found path, move to next
-                                // NFAState set
+                                // found path, move to next NFAState set
+                                goto endNfaConfigLoop;
                             }
                         }
                     }

@@ -58,10 +58,10 @@ namespace Antlr3.Tool
 
         public override string ToString()
         {
-            GrammarAST decisionASTNode = probe.dfa.DecisionASTNode;
+            GrammarAST decisionASTNode = probe.Dfa.DecisionASTNode;
             line = decisionASTNode.Line;
             charPositionInLine = decisionASTNode.CharPositionInLine;
-            string fileName = probe.dfa.nfa.grammar.FileName;
+            string fileName = probe.Dfa.Nfa.Grammar.FileName;
             if ( fileName != null )
             {
                 file = fileName;
@@ -87,11 +87,11 @@ namespace Antlr3.Tool
             }
             st.SetAttribute( "altToLocations", altToLocationsWithStringKey );
 
-            var sampleInputLabels = problemState.dfa.probe.GetSampleNonDeterministicInputSequence( problemState );
-            string input = problemState.dfa.probe.GetInputSequenceDisplay( sampleInputLabels );
+            var sampleInputLabels = problemState.Dfa.Probe.GetSampleNonDeterministicInputSequence( problemState );
+            string input = problemState.Dfa.Probe.GetInputSequenceDisplay( sampleInputLabels );
             st.SetAttribute( "upon", input );
 
-            st.SetAttribute( "hasPredicateBlockedByAction", problemState.dfa.hasPredicateBlockedByAction );
+            st.SetAttribute( "hasPredicateBlockedByAction", problemState.Dfa.HasPredicateBlockedByAction );
 
             return base.ToString( st );
         }

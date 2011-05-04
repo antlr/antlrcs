@@ -89,7 +89,7 @@ namespace Antlr3.Targets
         /** If we have a label, prefix it with the recognizer's name */
         public override string GetTokenTypeAsTargetLabel( CodeGenerator generator, int ttype )
         {
-            string name = generator.grammar.GetTokenDisplayName( ttype );
+            string name = generator.Grammar.GetTokenDisplayName( ttype );
             // If name is a literal, return the token type instead
             if ( name[0] == '\'' )
             {
@@ -104,7 +104,7 @@ namespace Antlr3.Targets
         /** Target must be able to override the labels used for token types. Sometimes also depends on the token text.*/
         string GetTokenTextAndTypeAsTargetLabel( CodeGenerator generator, string text, int tokenType )
         {
-            string name = generator.grammar.GetTokenDisplayName( tokenType );
+            string name = generator.Grammar.GetTokenDisplayName( tokenType );
             // If name is a literal, return the token type instead
             if ( name[0] == '\'' )
             {
@@ -117,7 +117,7 @@ namespace Antlr3.Targets
             }
             else
             {
-                return generator.grammar.name + Grammar.grammarTypeToFileNameSuffix[(int)generator.grammar.type] + "_" + textEquivalent;
+                return generator.Grammar.name + Grammar.grammarTypeToFileNameSuffix[(int)generator.Grammar.type] + "_" + textEquivalent;
             }
         }
 

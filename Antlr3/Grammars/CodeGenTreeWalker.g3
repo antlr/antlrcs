@@ -207,7 +207,7 @@ rule returns [StringTemplate code=null]
 					grammar.GrammarTreeToString((GrammarAST)$start.GetFirstChildWithType(BLOCK),
 												false);
 				description =
-					generator.target.GetTargetStringLiteralFromString(description);
+					generator.Target.GetTargetStringLiteralFromString(description);
 				$b.code.SetAttribute("description", description);
 				// do not generate lexer rules in combined grammar
 				string stName = null;
@@ -268,7 +268,7 @@ rule returns [StringTemplate code=null]
 				else
 				{
 					description = grammar.GrammarTreeToString($start,false);
-					description = generator.target.GetTargetStringLiteralFromString(description);
+					description = generator.Target.GetTargetStringLiteralFromString(description);
 					$code.SetAttribute("description", description);
 				}
 				Rule theRule = grammar.GetRule(currentRuleName);
@@ -318,7 +318,7 @@ options { k=1; }
 			$code = templates.GetInstanceOf($blockTemplateName);
 			decision = generator.GenLookaheadDecision(recognizerST,$dfa);
 			$code.SetAttribute("decision", decision);
-			$code.SetAttribute("decisionNumber", $dfa.DecisionNumber);
+			$code.SetAttribute("decisionNumber", $dfa.NfaStartStateDecisionNumber);
 			$code.SetAttribute("maxK",$dfa.MaxLookaheadDepth);
 			$code.SetAttribute("maxAlt",$dfa.NumberOfAlts);
 		}
@@ -460,7 +460,7 @@ alternative returns [StringTemplate code]
 			currentAltHasASTRewrite = r.HasRewrite(outerAltNum);
 		}
 		string description = grammar.GrammarTreeToString($start, false);
-		description = generator.target.GetTargetStringLiteralFromString(description);
+		description = generator.Target.GetTargetStringLiteralFromString(description);
 		$code.SetAttribute("description", description);
 		$code.SetAttribute("treeLevel", rewriteTreeNestingLevel);
 		if ( !currentAltHasASTRewrite && grammar.BuildAST )
@@ -512,8 +512,8 @@ options { k=1; }
 	|	^(CHAR_RANGE a=CHAR_LITERAL b=CHAR_LITERAL)
 		{
 			$code = templates.GetInstanceOf("charRangeRef");
-			string low = generator.target.GetTargetCharLiteralFromANTLRCharLiteral(generator,$a.text);
-			string high = generator.target.GetTargetCharLiteralFromANTLRCharLiteral(generator,$b.text);
+			string low = generator.Target.GetTargetCharLiteralFromANTLRCharLiteral(generator,$a.text);
+			string high = generator.Target.GetTargetCharLiteralFromANTLRCharLiteral(generator,$b.text);
 			$code.SetAttribute("a", low);
 			$code.SetAttribute("b", high);
 			if ( label!=null )
@@ -538,7 +538,7 @@ options { k=1; }
 		{
 			$code = templates.GetInstanceOf("validateSemanticPredicate");
 			$code.SetAttribute("pred", generator.TranslateAction(currentRuleName,$sp));
-			string description = generator.target.GetTargetStringLiteralFromString($sp.text);
+			string description = generator.Target.GetTargetStringLiteralFromString($sp.text);
 			$code.SetAttribute("description", description);
 		}
 
@@ -649,7 +649,7 @@ ebnf returns [StringTemplate code=null]
 		)
 		{
 			string description = grammar.GrammarTreeToString($start, false);
-			description = generator.target.GetTargetStringLiteralFromString(description);
+			description = generator.Target.GetTargetStringLiteralFromString(description);
 			$code.SetAttribute("description", description);
 		}
 	;
@@ -769,9 +769,9 @@ atom[GrammarAST scope, GrammarAST label, GrammarAST astSuffix]
 					// defining grammar is not a delegate, scope all the
 					// back to root, which has delegate methods for all
 					// rules.  Don't use scope if we are root.
-					if ( this.grammar != rdef.Grammar.composite.delegateGrammarTreeRoot.grammar ) {
+					if ( this.grammar != rdef.Grammar.composite.DelegateGrammarTreeRoot.Grammar ) {
 						$code.SetAttribute("scope",
-										  rdef.Grammar.composite.delegateGrammarTreeRoot.grammar);
+										  rdef.Grammar.composite.DelegateGrammarTreeRoot.Grammar);
 					}
 				}
 			}
@@ -861,7 +861,7 @@ atom[GrammarAST scope, GrammarAST label, GrammarAST astSuffix]
 			{
 				$code = templates.GetInstanceOf("charRef");
 				$code.SetAttribute("char",
-				   generator.target.GetTargetCharLiteralFromANTLRCharLiteral(generator,$c.text));
+				   generator.Target.GetTargetCharLiteralFromANTLRCharLiteral(generator,$c.text));
 				if ( label!=null )
 				{
 					$code.SetAttribute("label", labelText);
@@ -887,7 +887,7 @@ atom[GrammarAST scope, GrammarAST label, GrammarAST astSuffix]
 			{
 				$code = templates.GetInstanceOf("lexerStringRef");
 				$code.SetAttribute("string",
-					generator.target.GetTargetStringLiteralFromANTLRStringLiteral(generator,$s.text));
+					generator.Target.GetTargetStringLiteralFromANTLRStringLiteral(generator,$s.text));
 				$code.SetAttribute("elementIndex", i);
 				if ( label!=null )
 				{
@@ -966,7 +966,7 @@ rewrite returns [StringTemplate code=null]
 	{
 		if ( $start.Type==REWRITES )
 		{
-			if ( generator.grammar.BuildTemplate )
+			if ( generator.Grammar.BuildTemplate )
 			{
 				$code = templates.GetInstanceOf("rewriteTemplate");
 			}
@@ -1023,7 +1023,7 @@ rewrite returns [StringTemplate code=null]
 					}
 					string description =
 						grammar.GrammarTreeToString($r,false);
-					description = generator.target.GetTargetStringLiteralFromString(description);
+					description = generator.Target.GetTargetStringLiteralFromString(description);
 					$code.SetAttribute("alts.{pred,alt,description}",
 									  predChunks,
 									  alt,
@@ -1064,7 +1064,7 @@ rewrite_block[string blockTemplateName] returns [StringTemplate code=null]
 finally { rewriteBlockNestingLevel--; currentBlockST = save_currentBlockST; }
 
 rewrite_alternative returns [StringTemplate code=null]
-	:	{generator.grammar.BuildAST}?
+	:	{generator.Grammar.BuildAST}?
 		^(	a=ALT {$code=templates.GetInstanceOf("rewriteElementList");}
 			(	(
 					el=rewrite_element
@@ -1086,7 +1086,7 @@ rewrite_alternative returns [StringTemplate code=null]
 			EOA
 		 )
 
-	|	{generator.grammar.BuildTemplate}? rewrite_template
+	|	{generator.Grammar.BuildTemplate}? rewrite_template
 		{ $code = $rewrite_template.code; }
 
 	|	// reproduce same input (only AST at moment)
@@ -1112,21 +1112,21 @@ rewrite_ebnf returns [StringTemplate code=null]
 		{ $code = $rewrite_block.code; }
 		{
 			string description = grammar.GrammarTreeToString($start, false);
-			description = generator.target.GetTargetStringLiteralFromString(description);
+			description = generator.Target.GetTargetStringLiteralFromString(description);
 			$code.SetAttribute("description", description);
 		}
 	|	^( CLOSURE rewrite_block["rewriteClosureBlock"] )
 		{ $code = $rewrite_block.code; }
 		{
 			string description = grammar.GrammarTreeToString($start, false);
-			description = generator.target.GetTargetStringLiteralFromString(description);
+			description = generator.Target.GetTargetStringLiteralFromString(description);
 			$code.SetAttribute("description", description);
 		}
 	|	^( POSITIVE_CLOSURE rewrite_block["rewritePositiveClosureBlock"] )
 		{ $code = $rewrite_block.code; }
 		{
 			string description = grammar.GrammarTreeToString($start, false);
-			description = generator.target.GetTargetStringLiteralFromString(description);
+			description = generator.Target.GetTargetStringLiteralFromString(description);
 			$code.SetAttribute("description", description);
 		}
 	;
@@ -1164,7 +1164,7 @@ rewrite_tree returns [StringTemplate code]
 		)
 		{
 			string description = grammar.GrammarTreeToString($start, false);
-			description = generator.target.GetTargetStringLiteralFromString(description);
+			description = generator.Target.GetTargetStringLiteralFromString(description);
 			$code.SetAttribute("description", description);
 		}
 	;
@@ -1358,14 +1358,14 @@ rewrite_template returns [StringTemplate code=null]
 				{
 					string sl = $DOUBLE_QUOTE_STRING_LITERAL.text;
 					string t = sl.Substring( 1, sl.Length - 2 ); // strip quotes
-					t = generator.target.GetTargetStringLiteralFromString(t);
+					t = generator.Target.GetTargetStringLiteralFromString(t);
 					$code.SetAttribute("template",t);
 				}
 			|	DOUBLE_ANGLE_STRING_LITERAL
 				{
 					string sl = $DOUBLE_ANGLE_STRING_LITERAL.text;
 					string t = sl.Substring( 2, sl.Length - 4 ); // strip double angle quotes
-					t = generator.target.GetTargetStringLiteralFromString(t);
+					t = generator.Target.GetTargetStringLiteralFromString(t);
 					$code.SetAttribute("template",t);
 				}
 			)?

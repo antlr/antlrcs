@@ -35,7 +35,6 @@ namespace Antlr3.Tool
     using System.Collections.Generic;
     using System.Linq;
 
-    using CLSCompliant = System.CLSCompliantAttribute;
     using CodeGenerator = Antlr3.Codegen.CodeGenerator;
     using IToken = Antlr.Runtime.IToken;
 
@@ -47,12 +46,11 @@ namespace Antlr3.Tool
      */
     public class AttributeScope
     {
-
         /** All token scopes (token labels) share the same fixed scope of
          *  of predefined attributes.  I keep this out of the runtime.Token
          *  object to avoid a runtime space burden.
          */
-        public static AttributeScope tokenScope = new AttributeScope( "Token", null );
+        public static readonly AttributeScope tokenScope = new AttributeScope( "Token", null );
 
         static AttributeScope()
         {
@@ -67,34 +65,34 @@ namespace Antlr3.Tool
         }
 
         /** This scope is associated with which input token (for error handling)? */
-        private readonly IToken derivedFromToken;
+        private readonly IToken _derivedFromToken;
 
-        private readonly Grammar grammar;
+        private readonly Grammar _grammar;
 
         /** The scope name */
-        private readonly string name;
+        private readonly string _name;
 
         /** Not a rule scope, but visible to all rules "scope symbols { ...}" */
-        public bool isDynamicGlobalScope;
+        private bool _isDynamicGlobalScope;
 
         /** Visible to all rules, but defined in rule "scope { int i; }" */
-        public bool isDynamicRuleScope;
+        private bool _isDynamicRuleScope;
 
-        public bool isParameterScope;
+        private bool _isParameterScope;
 
-        public bool isReturnScope;
+        private bool _isReturnScope;
 
-        public bool isPredefinedRuleScope;
+        private bool _isPredefinedRuleScope;
 
-        public bool isPredefinedLexerRuleScope;
+        private bool _isPredefinedLexerRuleScope;
 
-        private readonly IDictionary<string, GrammarAST> actions = new Dictionary<string, GrammarAST>();
+        private readonly Dictionary<string, GrammarAST> _actions = new Dictionary<string, GrammarAST>();
 
         /** The list of Attribute objects */
 
         // until we have a list-ordered dictionary
         //protected internal IDictionary<string, Attribute> attributes = new SortedList<string, Attribute>();
-        private readonly List<Attribute> attributes = new List<Attribute>();
+        private readonly List<Attribute> _attributes = new List<Attribute>();
 
         public AttributeScope( string name, IToken derivedFromToken )
             : this( null, name, derivedFromToken )
@@ -103,27 +101,104 @@ namespace Antlr3.Tool
 
         public AttributeScope( Grammar grammar, string name, IToken derivedFromToken )
         {
-            this.grammar = grammar;
-            this.name = name;
-            this.derivedFromToken = derivedFromToken;
+            this._grammar = grammar;
+            this._name = name;
+            this._derivedFromToken = derivedFromToken;
         }
 
         #region Properties
+
+        public bool IsDynamicGlobalScope
+        {
+            get
+            {
+                return _isDynamicGlobalScope;
+            }
+
+            set
+            {
+                _isDynamicGlobalScope = value;
+            }
+        }
+
+        public bool IsDynamicRuleScope
+        {
+            get
+            {
+                return _isDynamicRuleScope;
+            }
+
+            set
+            {
+                _isDynamicRuleScope = value;
+            }
+        }
+
+        public bool IsParameterScope
+        {
+            get
+            {
+                return _isParameterScope;
+            }
+
+            set
+            {
+                _isParameterScope = value;
+            }
+        }
+
+        public bool IsReturnScope
+        {
+            get
+            {
+                return _isReturnScope;
+            }
+
+            set
+            {
+                _isReturnScope = value;
+            }
+        }
+
+        public bool IsPredefinedRuleScope
+        {
+            get
+            {
+                return _isPredefinedRuleScope;
+            }
+
+            set
+            {
+                _isPredefinedRuleScope = value;
+            }
+        }
+
+        public bool IsPredefinedLexerRuleScope
+        {
+            get
+            {
+                return _isPredefinedLexerRuleScope;
+            }
+
+            set
+            {
+                _isPredefinedLexerRuleScope = value;
+            }
+        }
 
         public IDictionary<string, GrammarAST> Actions
         {
             get
             {
-                return actions;
+                return _actions;
             }
         }
 
-        [CLSCompliant(false)]
         public IList<Attribute> Attributes
         {
             get
             {
-                return attributes.AsReadOnly();
+                return _attributes.AsReadOnly();
             }
         }
 
@@ -131,7 +206,7 @@ namespace Antlr3.Tool
         {
             get
             {
-                return attributes == null ? 0 : attributes.Count;
+                return _attributes == null ? 0 : _attributes.Count;
             }
         }
 
@@ -139,7 +214,7 @@ namespace Antlr3.Tool
         {
             get
             {
-                return grammar;
+                return _grammar;
             }
         }
 
@@ -147,12 +222,12 @@ namespace Antlr3.Tool
         {
             get
             {
-                if ( isParameterScope )
-                    return name + "_parameter";
-                else if ( isReturnScope )
-                    return name + "_return";
+                if ( IsParameterScope )
+                    return _name + "_parameter";
+                else if ( IsReturnScope )
+                    return _name + "_return";
 
-                return name;
+                return _name;
             }
         }
 
@@ -178,27 +253,27 @@ namespace Antlr3.Tool
             foreach ( string a in attrs )
             {
                 Attribute attr = new Attribute( a );
-                if ( !isReturnScope && attr.InitValue != null )
+                if ( !IsReturnScope && attr.InitValue != null )
                 {
                     ErrorManager.GrammarError( ErrorManager.MSG_ARG_INIT_VALUES_ILLEGAL,
-                                              grammar,
-                                              derivedFromToken,
+                                              _grammar,
+                                              _derivedFromToken,
                                               attr.Name );
                     attr.InitValue = null; // wipe it out
                 }
-                for ( int i = 0; i <= attributes.Count; i++ )
+                for ( int i = 0; i <= _attributes.Count; i++ )
                 {
-                    if ( i < attributes.Count )
+                    if ( i < _attributes.Count )
                     {
-                        if ( attributes[i].Name == attr.Name )
+                        if ( _attributes[i].Name == attr.Name )
                         {
-                            attributes[i] = attr;
+                            _attributes[i] = attr;
                             break;
                         }
                     }
                     else
                     {
-                        attributes.Add( attr );
+                        _attributes.Add( attr );
                         // *must* break since the count changed
                         break;
                         //attributes.put( attr.Name, attr );
@@ -210,19 +285,19 @@ namespace Antlr3.Tool
         public virtual void AddAttribute( string name, string decl )
         {
             Attribute attr = new Attribute( name, decl );
-            for ( int i = 0; i <= attributes.Count; i++ )
+            for ( int i = 0; i <= _attributes.Count; i++ )
             {
-                if ( i < attributes.Count )
+                if ( i < _attributes.Count )
                 {
-                    if ( attributes[i].Name == attr.Name )
+                    if ( _attributes[i].Name == attr.Name )
                     {
-                        attributes[i] = attr;
+                        _attributes[i] = attr;
                         break;
                     }
                 }
                 else
                 {
-                    attributes.Add( attr );
+                    _attributes.Add( attr );
                     // *must* break since the count changed
                     break;
                     //attributes.put( name, new Attribute( name, decl ) );
@@ -240,7 +315,7 @@ namespace Antlr3.Tool
             if ( Actions.TryGetValue( actionName, out a ) && a != null )
             {
                 ErrorManager.GrammarError(
-                    ErrorManager.MSG_ACTION_REDEFINITION, grammar,
+                    ErrorManager.MSG_ACTION_REDEFINITION, _grammar,
                     nameAST.Token, nameAST.Text );
             }
             else
@@ -251,7 +326,7 @@ namespace Antlr3.Tool
 
         public virtual Attribute GetAttribute( string name )
         {
-            return attributes.FirstOrDefault( attr => attr.Name == name );
+            return _attributes.FirstOrDefault( attr => attr.Name == name );
         }
 
         /** Return the set of keys that collide from
@@ -264,7 +339,7 @@ namespace Antlr3.Tool
                 return null;
             }
             HashSet<object> inter = new HashSet<object>();
-            foreach ( Attribute attr in attributes )
+            foreach ( Attribute attr in _attributes )
             {
                 string key = attr.Name;
                 if ( other.GetAttribute( key ) != null )
@@ -281,7 +356,7 @@ namespace Antlr3.Tool
 
         public override string ToString()
         {
-            return ( isDynamicGlobalScope ? "global " : "" ) + Name + ":" + attributes;
+            return ( IsDynamicGlobalScope ? "global " : "" ) + Name + ":" + _attributes;
         }
     }
 }
