@@ -18,7 +18,7 @@
     </SccAuxPath>
     <SccProvider>MSSCCI:Perforce SCM</SccProvider>
     <SignAssembly>true</SignAssembly>
-    <AssemblyOriginatorKeyFile>..\Antlr3.Runtime\Key.snk</AssemblyOriginatorKeyFile>
+    <AssemblyOriginatorKeyFile>..\..\..\..\..\..\..\keys\antlr\Key.snk</AssemblyOriginatorKeyFile>
     <TargetFrameworkProfile>Client</TargetFrameworkProfile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
@@ -71,6 +71,9 @@
     <Compile Include="JavaExtensions\TypeExtensions.cs" />
     <Compile Include="Misc\DoubleKeyMap`3.cs" />
     <Compile Include="Misc\Stats.cs" />
+    <None Include="..\..\..\..\..\..\..\keys\antlr\Key.snk">
+      <Link>Key.snk</Link>
+    </None>
     <None Include="ParserDebugger.cs" />
     <Compile Include="ParseTreeBuilder.cs" />
     <Compile Include="Profiler.cs" />
@@ -78,11 +81,6 @@
     <Compile Include="RemoteDebugEventSocketListener.cs" />
     <Compile Include="TraceDebugEventListener.cs" />
     <Compile Include="Tracer.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="..\Antlr3.Runtime\Key.snk">
-      <Link>Key.snk</Link>
-    </None>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Antlr3.Runtime\Antlr3.Runtime.csproj">
