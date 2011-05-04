@@ -179,9 +179,7 @@ namespace Antlr.Runtime.JavaExtensions
             }
             else if ( list.Count > size )
             {
-                T[] items = list.Take( size ).ToArray();
-                list.Clear();
-                list.AddRange( items );
+                list.RemoveRange(size, list.Count - size);
             }
         }
 
