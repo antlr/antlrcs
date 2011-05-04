@@ -10,7 +10,7 @@ if (!(Test-Path $SolutionPath)) {
 $BuildConfig = "Release"
 
 # clean up from any previous builds
-$CleanItems = "Runtime", "Tool", "Bootstrap"
+$CleanItems = "Runtime", "Tool", "Bootstrap", "ST3", "ST4"
 $CleanItems | ForEach-Object {
   if (Test-Path $_) {
     Remove-Item -Force -Recurse $_
@@ -86,7 +86,10 @@ if ($LASTEXITCODE -ne 0) {
 mkdir Runtime
 mkdir Tool
 mkdir Bootstrap
+mkdir ST3
+mkdir ST4
 copy "..\$BuildConfig\Antlr3.Runtime.dll" ".\Runtime"
+copy "..\$BuildConfig\Antlr3.Runtime.pdb" ".\Runtime"
 
 copy "..\$BuildConfig\Antlr3.exe" ".\Tool"
 copy "..\$BuildConfig\Antlr3.exe.config" ".\Tool"
@@ -123,3 +126,32 @@ copy "..\$BuildConfig\Codegen\Templates\CSharp3\*" ".\Bootstrap\Codegen\Template
 copy "..\$BuildConfig\Targets\Antlr3.Targets.CSharp3.dll" ".\Bootstrap\Targets"
 copy -r "..\$BuildConfig\Tool\*" ".\Bootstrap\Tool"
 Remove-Item ".\Bootstrap\Tool\Templates\messages\formats\gnu.stg"
+
+# ST3 dist
+copy "..\..\Antlr3.StringTemplate\bin\$BuildConfig\Antlr3.StringTemplate.dll" ".\ST3"
+copy "..\..\Antlr3.StringTemplate\bin\$BuildConfig\Antlr3.Runtime.dll" ".\ST3"
+copy "..\..\Antlr3.StringTemplate\bin\$BuildConfig\Antlr3.StringTemplate.pdb" ".\ST3"
+copy "..\..\Antlr3.StringTemplate\bin\$BuildConfig\Antlr3.Runtime.pdb" ".\ST3"
+
+# ST4 dist
+copy "..\$BuildConfig\Antlr3.Runtime.dll" ".\ST4"
+copy "..\$BuildConfig\Antlr4.StringTemplate.dll" ".\ST4"
+copy "..\$BuildConfig\Antlr4.StringTemplate.Visualizer.dll" ".\ST4"
+copy "..\$BuildConfig\Antlr3.Runtime.pdb" ".\ST4"
+copy "..\$BuildConfig\Antlr4.StringTemplate.pdb" ".\ST4"
+copy "..\$BuildConfig\Antlr4.StringTemplate.Visualizer.pdb" ".\ST4"
+
+# compress the distributable packages
+$AntlrVersion = "3.3.3.8388"
+$STVersion = "4.0.2.8388"
+
+$ArchivePath = ".\dist\antlr-dotnet-csharp3bootstrap-" + $AntlrVersion + ".7z"
+.\7z.exe a -r -mx9 $ArchivePath ".\Bootstrap\*"
+$ArchivePath = ".\dist\antlr-dotnet-csharp3runtime-" + $AntlrVersion + ".7z"
+.\7z.exe a -r -mx9 $ArchivePath ".\Runtime\*"
+$ArchivePath = ".\dist\antlr-dotnet-tool-" + $AntlrVersion + ".7z"
+.\7z.exe a -r -mx9 $ArchivePath ".\Tool\*"
+$ArchivePath = ".\dist\antlr-dotnet-st3-" + $AntlrVersion + ".7z"
+.\7z.exe a -r -mx9 $ArchivePath ".\ST3\*"
+$ArchivePath = ".\dist\antlr-dotnet-st4-" + $STVersion + ".7z"
+.\7z.exe a -r -mx9 $ArchivePath ".\ST4\*"
