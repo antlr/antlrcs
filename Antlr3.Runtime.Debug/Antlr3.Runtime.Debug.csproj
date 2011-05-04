@@ -56,10 +56,8 @@
     <Compile Include="DebugTreeNodeStream.cs" />
     <Compile Include="DebugTreeParser.cs" />
     <Compile Include="JavaExtensions\DictionaryExtensions.cs" />
-    <Compile Include="JavaExtensions\EnumeratorExtensions.cs" />
     <Compile Include="JavaExtensions\ExceptionExtensions.cs" />
     <Compile Include="JavaExtensions\IOExtensions.cs" />
-    <Compile Include="JavaExtensions\Iterator.cs" />
     <Compile Include="JavaExtensions\JSystem.cs" />
     <Compile Include="JavaExtensions\ListExtensions.cs" />
     <Compile Include="JavaExtensions\ObjectExtensions.cs" />
