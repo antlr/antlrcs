@@ -20,7 +20,7 @@
     <StartupObject>
     </StartupObject>
     <SignAssembly>true</SignAssembly>
-    <AssemblyOriginatorKeyFile>Key.snk</AssemblyOriginatorKeyFile>
+    <AssemblyOriginatorKeyFile>..\..\..\..\keys\antlr\Key.snk</AssemblyOriginatorKeyFile>
     <TargetFrameworkProfile>Client</TargetFrameworkProfile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
@@ -513,11 +513,13 @@
       <Link>Codegen\Templates\LeftRecursiveRules.stg</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </EmbeddedResource>
+    <None Include="..\..\..\..\keys\antlr\Key.snk">
+      <Link>Key.snk</Link>
+    </None>
     <None Include="app.config" />
     <Antlr3 Include="Grammars\LeftRecursiveRuleWalker.g3">
       <Generator>MSBuild:Compile</Generator>
     </Antlr3>
-    <None Include="Key.snk" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\..\antlr\antlr3-main\runtime\CSharp3\Sources\Antlr3.Runtime.Debug\Antlr3.Runtime.Debug.csproj">
