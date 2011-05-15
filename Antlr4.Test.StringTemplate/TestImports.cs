@@ -32,9 +32,9 @@
 
 namespace Antlr4.Test.StringTemplate
 {
+    using System.Runtime.CompilerServices;
     using Antlr4.StringTemplate;
     using Microsoft.VisualStudio.TestTools.UnitTesting;
-    using System.Runtime.CompilerServices;
     using Path = System.IO.Path;
 
     [TestClass]
@@ -70,8 +70,8 @@ namespace Antlr4.Test.StringTemplate
         [TestMethod]
         public void TestImportStatementWithDir()
         {
-            string dir1 = tmpdir + "/dir1";
-            string dir2 = tmpdir + "/dir2";
+            string dir1 = Path.Combine(tmpdir, "dir1");
+            string dir2 = Path.Combine(tmpdir, "dir2");
             string a =
                 "import \"" + dir2 + "\"\n" +
                 "a() ::= <<dir1 a>>\n";
@@ -82,7 +82,7 @@ namespace Antlr4.Test.StringTemplate
             writeFile(dir2, "a.st", a);
             writeFile(dir2, "b.st", b);
 
-            TemplateGroup group = new TemplateGroupFile(dir1 + "/a.stg");
+            TemplateGroup group = new TemplateGroupFile(Path.Combine(dir1, "a.stg"));
             Template st = group.GetInstanceOf("b"); // visible only if import worked
             string expected = "dir2 b";
             string result = st.Render();
@@ -103,7 +103,7 @@ namespace Antlr4.Test.StringTemplate
                 "c() ::= \"g2 c\"\n";
             writeFile(dir, "group2.stg", groupFile);
 
-            TemplateGroup group1 = new TemplateGroupFile(dir + "/group1.stg");
+            TemplateGroup group1 = new TemplateGroupFile(Path.Combine(dir, "group1.stg"));
             Template st = group1.GetInstanceOf("c"); // should see c()
             string expected = "g2 c";
             string result = st.Render();
@@ -120,10 +120,10 @@ namespace Antlr4.Test.StringTemplate
             string groupFile =
                 "b() ::= \"group file b\"\n" +
                 "c() ::= \"group file c\"\n";
-            writeFile(dir, "y/group.stg", groupFile);
+            writeFile(dir, Path.Combine("y", "group.stg"), groupFile);
 
-            TemplateGroup group1 = new TemplateGroupDirectory(dir + "/x");
-            TemplateGroup group2 = new TemplateGroupFile(dir + "/y/group.stg");
+            TemplateGroup group1 = new TemplateGroupDirectory(Path.Combine(dir, "x"));
+            TemplateGroup group2 = new TemplateGroupFile(Path.Combine(dir, "y", "group.stg"));
             group1.ImportTemplates(group2);
             Template st = group1.GetInstanceOf("a");
             st.impl.Dump();
@@ -139,15 +139,15 @@ namespace Antlr4.Test.StringTemplate
             string groupFile =
                 "a() ::= \"g1 a\"\n" +
                 "b() ::= \"<c()>\"\n";
-            writeFile(dir, "x/group.stg", groupFile);
+            writeFile(dir, Path.Combine("x", "group.stg"), groupFile);
 
             groupFile =
                 "b() ::= \"g2 b\"\n" +
                 "c() ::= \"g2 c\"\n";
-            writeFile(dir, "y/group.stg", groupFile);
+            writeFile(dir, Path.Combine("y", "group.stg"), groupFile);
 
-            TemplateGroup group1 = new TemplateGroupFile(dir + "/x/group.stg");
-            TemplateGroup group2 = new TemplateGroupFile(dir + "/y/group.stg");
+            TemplateGroup group1 = new TemplateGroupFile(Path.Combine(dir, "x", "group.stg"));
+            TemplateGroup group2 = new TemplateGroupFile(Path.Combine(dir, "y", "group.stg"));
             group1.ImportTemplates(group2);
             Template st = group1.GetInstanceOf("b");
             string expected = "g2 c";
@@ -162,11 +162,11 @@ namespace Antlr4.Test.StringTemplate
             string dir = tmpdir;
             string a = "a() ::= << <subdir/b()> >>\n";
             string b = "b() ::= <<x's subdir/b>>\n";
-            writeFile(dir, "x/subdir/a.st", a);
-            writeFile(dir, "y/subdir/b.st", b);
+            writeFile(dir, Path.Combine("x", "subdir", "a.st"), a);
+            writeFile(dir, Path.Combine("y", "subdir", "b.st"), b);
 
-            TemplateGroup group1 = new TemplateGroupDirectory(dir + "/x");
-            TemplateGroup group2 = new TemplateGroupDirectory(dir + "/y");
+            TemplateGroup group1 = new TemplateGroupDirectory(Path.Combine(dir, "x"));
+            TemplateGroup group2 = new TemplateGroupDirectory(Path.Combine(dir, "y"));
             group1.ImportTemplates(group2);
             Template st = group1.GetInstanceOf("subdir/a");
             string expected = " x's subdir/b ";
@@ -180,15 +180,15 @@ namespace Antlr4.Test.StringTemplate
             // /randomdir/x/subdir/a and /randomdir/y/subdir.stg which has a and b
             string dir = tmpdir;
             string a = "a() ::= << <subdir/b()> >>\n"; // get b imported from subdir.stg
-            writeFile(dir, "x/subdir/a.st", a);
+            writeFile(dir, Path.Combine("x", "subdir", "a.st"), a);
 
             string groupFile =
                 "a() ::= \"group file: a\"\n" +
                 "b() ::= \"group file: b\"\n";
-            writeFile(dir, "y/subdir.stg", groupFile);
+            writeFile(dir, Path.Combine("y", "subdir.stg"), groupFile);
 
-            TemplateGroup group1 = new TemplateGroupDirectory(dir + "/x");
-            TemplateGroup group2 = new TemplateGroupDirectory(dir + "/y");
+            TemplateGroup group1 = new TemplateGroupDirectory(Path.Combine(dir, "x"));
+            TemplateGroup group2 = new TemplateGroupDirectory(Path.Combine(dir, "y"));
             group1.ImportTemplates(group2);
             Template st = group1.GetInstanceOf("subdir/a");
             string expected = " group file: b ";

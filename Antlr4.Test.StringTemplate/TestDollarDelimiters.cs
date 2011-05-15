@@ -34,6 +34,7 @@ namespace Antlr4.Test.StringTemplate
 {
     using Antlr4.StringTemplate;
     using Microsoft.VisualStudio.TestTools.UnitTesting;
+    using Path = System.IO.Path;
 
     [TestClass]
     public class TestDollarDelimiters : BaseTest
@@ -92,7 +93,7 @@ namespace Antlr4.Test.StringTemplate
                     "stat(name,value=\"99\") ::= \"x=$value$; // $name$\"" + newline
                     ;
             writeFile(tmpdir, "group.stg", templates);
-            TemplateGroup group = new TemplateGroupFile(tmpdir + "/group.stg", '$', '$');
+            TemplateGroup group = new TemplateGroupFile(Path.Combine(tmpdir, "group.stg"), '$', '$');
             Template b = group.GetInstanceOf("method");
             b.Add("name", "foo");
             string expecting = "x=99; // foo";

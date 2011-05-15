@@ -32,9 +32,10 @@
 
 namespace Antlr4.Test.StringTemplate
 {
+    using System.Collections.Generic;
     using Antlr4.StringTemplate;
     using Microsoft.VisualStudio.TestTools.UnitTesting;
-    using System.Collections.Generic;
+    using Path = System.IO.Path;
 
     [TestClass]
     public class TestFunctions : BaseTest
@@ -133,7 +134,7 @@ namespace Antlr4.Test.StringTemplate
                 "b(x) ::= \"<x>, <x>\"" + newline
                 ;
             writeFile(tmpdir, "t.stg", templates);
-            TemplateGroup group = new TemplateGroupFile(tmpdir + "/" + "t.stg");
+            TemplateGroup group = new TemplateGroupFile(Path.Combine(tmpdir, "t.stg"));
             Template e = group.GetInstanceOf("a");
             List<string> names = new List<string>();
             names.Add("Ter");
@@ -227,7 +228,7 @@ namespace Antlr4.Test.StringTemplate
                 "b(x) ::= \"<x>, <x>\"" + newline
                 ;
             writeFile(tmpdir, "t.stg", templates);
-            TemplateGroup group = new TemplateGroupFile(tmpdir + "/" + "t.stg");
+            TemplateGroup group = new TemplateGroupFile(Path.Combine(tmpdir, "t.stg"));
             Template e = group.GetInstanceOf("a");
             List<string> mine = new List<string>();
             mine.Add("Ter");

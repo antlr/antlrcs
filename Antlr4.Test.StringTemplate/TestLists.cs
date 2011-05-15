@@ -34,6 +34,7 @@ namespace Antlr4.Test.StringTemplate
 {
     using Antlr4.StringTemplate;
     using Microsoft.VisualStudio.TestTools.UnitTesting;
+    using Path = System.IO.Path;
 
     [TestClass]
     public class TestLists : BaseTest
@@ -206,7 +207,7 @@ namespace Antlr4.Test.StringTemplate
                     "foo(items) ::= \"<items:{a | *<a>*}>\"" + newline
                     ;
             writeFile(tmpdir, "t.stg", templates);
-            TemplateGroup group = new TemplateGroupFile(tmpdir + "/" + "t.stg");
+            TemplateGroup group = new TemplateGroupFile(Path.Combine(tmpdir, "t.stg"));
             Template e = group.GetInstanceOf("test");
             e.Add("names", "Ter");
             e.Add("names", "Tom");

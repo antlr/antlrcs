@@ -32,10 +32,10 @@
 
 namespace Antlr4.Test.StringTemplate
 {
+    using System.Collections.Generic;
     using Antlr4.StringTemplate;
     using Microsoft.VisualStudio.TestTools.UnitTesting;
     using CultureInfo = System.Globalization.CultureInfo;
-    using System.Collections.Generic;
     using Path = System.IO.Path;
 
     [TestClass]
@@ -48,7 +48,7 @@ namespace Antlr4.Test.StringTemplate
             string templates =
                     "dateThing(created) ::= \"datetime: <created>\"\n";
             writeFile(tmpdir, "t.stg", templates);
-            STGroup group = new STGroupFile(tmpdir + "/t.stg");
+            STGroup group = new STGroupFile(Path.Combine(tmpdir, "t.stg"));
             group.registerRenderer(typeof(GregorianCalendar), new DateRenderer());
             ST st = group.getInstanceOf("dateThing");
             st.add("created", new GregorianCalendar(2005, 07 - 1, 05));
@@ -63,7 +63,7 @@ namespace Antlr4.Test.StringTemplate
             string templates =
                     "dateThing(created) ::= << date: <created; format=\"yyyy.MM.dd\"> >>\n";
             writeFile(tmpdir, "t.stg", templates);
-            STGroup group = new STGroupFile(tmpdir + "/t.stg");
+            STGroup group = new STGroupFile(Path.Combine(tmpdir, "t.stg"));
             group.registerRenderer(typeof(GregorianCalendar), new DateRenderer());
             ST st = group.getInstanceOf("dateThing");
             st.add("created", new GregorianCalendar(2005, 07 - 1, 05));
@@ -78,7 +78,7 @@ namespace Antlr4.Test.StringTemplate
             string templates =
                     "dateThing(created) ::= << datetime: <created; format=\"short\"> >>\n";
             writeFile(tmpdir, "t.stg", templates);
-            STGroup group = new STGroupFile(tmpdir + "/t.stg");
+            STGroup group = new STGroupFile(Path.Combine(tmpdir, "t.stg"));
             group.registerRenderer(typeof(GregorianCalendar), new DateRenderer());
             ST st = group.getInstanceOf("dateThing");
             st.add("created", new GregorianCalendar(2005, 07 - 1, 05));
@@ -93,7 +93,7 @@ namespace Antlr4.Test.StringTemplate
             string templates =
                     "dateThing(created) ::= << datetime: <created; format=\"full\"> >>\n";
             writeFile(tmpdir, "t.stg", templates);
-            STGroup group = new STGroupFile(tmpdir + "/t.stg");
+            STGroup group = new STGroupFile(Path.Combine(tmpdir, "t.stg"));
             group.registerRenderer(typeof(GregorianCalendar), new DateRenderer());
             ST st = group.getInstanceOf("dateThing");
             st.add("created", new GregorianCalendar(2005, 07 - 1, 05));
@@ -109,7 +109,7 @@ namespace Antlr4.Test.StringTemplate
                     "dateThing(created) ::= << date: <created; format=\"date:medium\"> >>\n";
 
             writeFile(tmpdir, "t.stg", templates);
-            STGroup group = new STGroupFile(tmpdir + "/t.stg");
+            STGroup group = new STGroupFile(Path.Combine(tmpdir, "t.stg"));
             group.registerRenderer(typeof(GregorianCalendar), new DateRenderer());
             ST st = group.getInstanceOf("dateThing");
             st.add("created", new GregorianCalendar(2005, 07 - 1, 05));
@@ -125,7 +125,7 @@ namespace Antlr4.Test.StringTemplate
                     "dateThing(created) ::= << time: <created; format=\"time:medium\"> >>\n";
 
             writeFile(tmpdir, "t.stg", templates);
-            STGroup group = new STGroupFile(tmpdir + "/t.stg");
+            STGroup group = new STGroupFile(Path.Combine(tmpdir, "t.stg"));
             group.registerRenderer(typeof(GregorianCalendar), new DateRenderer());
             ST st = group.getInstanceOf("dateThing");
             st.add("created", new GregorianCalendar(2005, 07 - 1, 05));
@@ -211,7 +211,7 @@ namespace Antlr4.Test.StringTemplate
             string templates = "foo(x,y) ::= << <x; format=\"{0}\"> <y; format=\"{0:0.000}\"> >>\n";
 
             writeFile(tmpdir, "t.stg", templates);
-            TemplateGroup group = new TemplateGroupFile(tmpdir + "/t.stg");
+            TemplateGroup group = new TemplateGroupFile(Path.Combine(tmpdir, "t.stg"));
             group.RegisterRenderer(typeof(int), new NumberRenderer());
             group.RegisterRenderer(typeof(double), new NumberRenderer());
             Template st = group.GetInstanceOf("foo");
@@ -228,7 +228,7 @@ namespace Antlr4.Test.StringTemplate
             string templates =
                     "numberThing(x,y,z) ::= \"numbers: <x>, <y>; <z>\"\n";
             writeFile(tmpdir, "t.stg", templates);
-            TemplateGroup group = new TemplateGroupFile(tmpdir + "/t.stg");
+            TemplateGroup group = new TemplateGroupFile(Path.Combine(tmpdir, "t.stg"));
             group.RegisterRenderer(typeof(int), new NumberRenderer());
             group.RegisterRenderer(typeof(double), new NumberRenderer());
             Template st = group.GetInstanceOf("numberThing");
@@ -247,7 +247,7 @@ namespace Antlr4.Test.StringTemplate
             string templates = "foo(x,y) ::= << <x; format=\"{0:#,#}\"> <y; format=\"{0:0.000}\"> >>\n";
 
             writeFile(tmpdir, "t.stg", templates);
-            TemplateGroup group = new TemplateGroupFile(tmpdir + "/t.stg");
+            TemplateGroup group = new TemplateGroupFile(Path.Combine(tmpdir, "t.stg"));
             group.RegisterRenderer(typeof(int), new NumberRenderer());
             group.RegisterRenderer(typeof(double), new NumberRenderer());
             Template st = group.GetInstanceOf("foo");

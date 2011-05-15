@@ -33,8 +33,9 @@
 namespace Antlr4.Test.StringTemplate
 {
     using Antlr4.StringTemplate;
-    using Microsoft.VisualStudio.TestTools.UnitTesting;
     using Antlr4.StringTemplate.Misc;
+    using Microsoft.VisualStudio.TestTools.UnitTesting;
+    using Path = System.IO.Path;
 
     [TestClass]
     public class TestModelAdaptors : BaseTest
@@ -90,7 +91,7 @@ namespace Antlr4.Test.StringTemplate
             string templates =
                     "foo(x) ::= \"<x.id>: <x.name>\"\n";
             writeFile(tmpdir, "foo.stg", templates);
-            TemplateGroup group = new TemplateGroupFile(tmpdir + "/foo.stg");
+            TemplateGroup group = new TemplateGroupFile(Path.Combine(tmpdir, "foo.stg"));
             group.RegisterModelAdaptor(typeof(User), new UserAdaptor());
             Template st = group.GetInstanceOf("foo");
             st.Add("x", new User(100, "parrt"));
@@ -106,7 +107,7 @@ namespace Antlr4.Test.StringTemplate
             string templates =
                     "foo(x) ::= \"<x.qqq>\"\n";
             writeFile(tmpdir, "foo.stg", templates);
-            TemplateGroup group = new TemplateGroupFile(tmpdir + "/foo.stg");
+            TemplateGroup group = new TemplateGroupFile(Path.Combine(tmpdir, "foo.stg"));
             group.Listener = errors;
             group.RegisterModelAdaptor(typeof(User), new UserAdaptor());
             Template st = group.GetInstanceOf("foo");
@@ -126,7 +127,7 @@ namespace Antlr4.Test.StringTemplate
             string templates =
                     "foo(x) ::= \"<x.id>: <x.name>\"\n";
             writeFile(tmpdir, "foo.stg", templates);
-            TemplateGroup group = new TemplateGroupFile(tmpdir + "/foo.stg");
+            TemplateGroup group = new TemplateGroupFile(Path.Combine(tmpdir, "foo.stg"));
             group.RegisterModelAdaptor(typeof(User), new UserAdaptor());
             Template st = group.GetInstanceOf("foo");
             st.Add("x", new SuperUser(100, "parrt")); // create subclass of User
@@ -141,7 +142,7 @@ namespace Antlr4.Test.StringTemplate
             string templates =
                     "foo(x) ::= \"<x.id>: <x.name>\"\n";
             writeFile(tmpdir, "foo.stg", templates);
-            TemplateGroup group = new TemplateGroupFile(tmpdir + "/foo.stg");
+            TemplateGroup group = new TemplateGroupFile(Path.Combine(tmpdir, "foo.stg"));
             group.RegisterModelAdaptor(typeof(User), new UserAdaptor());
             group.GetModelAdaptor(typeof(User)); // get User, SuperUser into cache
             group.GetModelAdaptor(typeof(SuperUser));
@@ -161,7 +162,7 @@ namespace Antlr4.Test.StringTemplate
             string templates =
                     "foo(x) ::= \"<x.id>: <x.name>\"\n";
             writeFile(tmpdir, "foo.stg", templates);
-            TemplateGroup group = new TemplateGroupFile(tmpdir + "/foo.stg");
+            TemplateGroup group = new TemplateGroupFile(Path.Combine(tmpdir, "foo.stg"));
             group.RegisterModelAdaptor(typeof(User), new UserAdaptor());
             group.RegisterModelAdaptor(typeof(SuperUser), new UserAdaptorConst()); // most specific
             Template st = group.GetInstanceOf("foo");

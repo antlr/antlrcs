@@ -210,7 +210,7 @@ namespace Antlr4.Test.StringTemplate
                     "value(x) ::= \"<if(!x)>n/a<else><x><endif>\"" + newline;
             writeFile(tmpdir, "g.stg", templates);
 
-            TemplateGroup group = new TemplateGroupFile(tmpdir + "/g.stg");
+            TemplateGroup group = new TemplateGroupFile(Path.Combine(tmpdir, "g.stg"));
             Template p = group.GetInstanceOf("page");
             p.Add("names", "Ter");
             p.Add("names", "Tom");
