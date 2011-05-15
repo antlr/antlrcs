@@ -54,6 +54,11 @@
       <Name>Antlr3</Name>
       <Private>False</Private>
     </ProjectReference>
+    <ProjectReference Include="..\..\Antlr4.StringTemplate\Antlr4.StringTemplate.csproj">
+      <Project>{DE9B7DA2-35DD-46CC-B768-DAEE3C298660}</Project>
+      <Name>Antlr4.StringTemplate</Name>
+      <Private>False</Private>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\..\..\..\keys\antlr\Key.snk">

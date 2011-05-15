@@ -32,13 +32,117 @@
  */
 namespace Antlr3.Targets
 {
+    using System.Collections.Generic;
+
+    using ArgumentException = System.ArgumentException;
+    using CLSCompliantAttribute = System.CLSCompliantAttribute;
+    using CodeGenerator = Antlr3.Codegen.CodeGenerator;
+    using CultureInfo = System.Globalization.CultureInfo;
+    using Grammar = Antlr3.Tool.Grammar;
+    using IAttributeRenderer = Antlr4.StringTemplate.IAttributeRenderer;
+    using Template = Antlr4.StringTemplate.Template;
     using Target = Antlr3.Codegen.Target;
 
     public class CSharp2Target : Target
     {
-        public override string EncodeIntAsCharEscape( int v )
+        private static readonly HashSet<string> _languageKeywords = new HashSet<string>()
+            {
+                "abstract", "event", "new", "struct",
+                "as", "explicit", "null", "switch",
+                "base", "extern", "object", "this",
+                "bool", "false", "operator", "throw",
+                "break", "finally", "out", "true",
+                "byte", "fixed", "override", "try",
+                "case", "float", "params", "typeof",
+                "catch", "for", "private", "uint",
+                "char", "foreach", "protected", "ulong",
+                "checked", "goto", "public", "unchecked",
+                "class", "if", "readonly", "unsafe",
+                "const", "implicit", "ref", "ushort",
+                "continue", "in", "return", "using",
+                "decimal", "int", "sbyte", "virtual",
+                "default", "interface", "sealed", "volatile",
+                "delegate", "internal", "short", "void",
+                "do", "is", "sizeof", "while",
+                "double", "lock", "stackalloc",
+                "else", "long", "static",
+                "enum", "namespace", "string",
+            };
+
+        public override string EncodeIntAsCharEscape(int v)
         {
-            return "\\x" + v.ToString( "X" );
+            return "\\x" + v.ToString("X");
+        }
+
+        [CLSCompliant(false)]
+        public override string GetTarget64BitStringFromValue(ulong word)
+        {
+            return "0x" + word.ToString("X");
+        }
+
+        protected override void GenRecognizerFile(AntlrTool tool, CodeGenerator generator, Grammar grammar, Template outputFileST)
+        {
+            if (!grammar.IsRoot)
+            {
+                Grammar rootGrammar = grammar.composite.RootGrammar;
+                string actionScope = grammar.GetDefaultActionScope(grammar.type);
+                IDictionary<string, object> actions;
+                object rootNamespace;
+                if (rootGrammar.Actions.TryGetValue(actionScope, out actions) && actions.TryGetValue("namespace", out rootNamespace))
+                {
+                    if (!grammar.Actions.TryGetValue(actionScope, out actions))
+                    {
+                        actions = new Dictionary<string, object>();
+                        grammar.Actions[actionScope] = actions;
+                    }
+
+                    actions["namespace"] = rootNamespace;
+                }
+            }
+
+            generator.Templates.RegisterRenderer(typeof(string), new StringRenderer(generator, this));
+            base.GenRecognizerFile(tool, generator, grammar, outputFileST);
+        }
+
+        public class StringRenderer : IAttributeRenderer
+        {
+            private readonly CodeGenerator _generator;
+            private readonly CSharp2Target _target;
+
+            public StringRenderer(CodeGenerator generator, CSharp2Target target)
+            {
+                _generator = generator;
+                _target = target;
+            }
+
+            public string ToString(string value, string formatName, CultureInfo culture)
+            {
+                if (string.IsNullOrEmpty(value) || string.IsNullOrEmpty(formatName))
+                    return value;
+
+                switch (formatName)
+                {
+                case "id":
+                    if (_languageKeywords.Contains(value))
+                        return "@" + value;
+
+                    return value;
+
+                case "cap":
+                    return char.ToUpper(value[0], CultureInfo.CurrentCulture) + value.Substring(1);
+
+                case "string":
+                    return _target.GetTargetStringLiteralFromString(value, true);
+
+                default:
+                    throw new ArgumentException(string.Format("Unsupported format name: '{0}'", formatName), "formatName");
+                }
+            }
+
+            string IAttributeRenderer.ToString(object o, string formatName, CultureInfo culture)
+            {
+                return ToString((string)o, formatName, culture);
+            }
         }
     }
 }
