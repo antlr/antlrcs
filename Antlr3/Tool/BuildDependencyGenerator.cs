@@ -87,7 +87,9 @@ namespace Antlr3.Tool
         private readonly Grammar grammar;
         private readonly CodeGenerator generator;
         private string tokenVocab;
+#pragma warning disable 649 // Field 'field' is never assigned to, and will always have its default value 'value'
         private TemplateGroup templates;
+#pragma warning restore 649
 
         public BuildDependencyGenerator( Tool tool, string grammarFileName )
         {

@@ -262,9 +262,9 @@ namespace Antlr3.ST.Language
             // TODO: handle args
             throw new System.NotImplementedException();
 
-            gen.Emit( OpCodes.Callvirt, typeof( ASTExpr ).GetMethod( "GetTemplateInclude", new System.Type[] { typeof( StringTemplate ), typeof( string ), typeof( StringTemplateAST ) } ) );
+            //gen.Emit( OpCodes.Callvirt, typeof( ASTExpr ).GetMethod( "GetTemplateInclude", new System.Type[] { typeof( StringTemplate ), typeof( string ), typeof( StringTemplateAST ) } ) );
 
-            gen.MarkLabel( endinclude );
+            //gen.MarkLabel( endinclude );
         }
 
         static void EmitWriteAttribute( ILGenerator gen )
