@@ -76,6 +76,7 @@
     <Compile Include="Lexer.cs" />
     <Compile Include="Misc\FastQueue.cs" />
     <Compile Include="Misc\FunctionDelegates.cs" />
+    <Compile Include="Misc\ListStack`1.cs" />
     <Compile Include="Misc\LookaheadStream.cs" />
     <Compile Include="MismatchedNotSetException.cs" />
     <Compile Include="MismatchedRangeException.cs" />
