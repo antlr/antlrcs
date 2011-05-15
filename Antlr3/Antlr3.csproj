@@ -526,6 +526,10 @@
       <Project>{5EE27A90-B023-42C9-AAF1-52B0424C5D0B}</Project>
       <Name>Antlr3.Runtime.Debug</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\..\antlr\antlr3-main\runtime\CSharp3\Sources\Antlr3.Runtime.JavaExtensions\Antlr3.Runtime.JavaExtensions.csproj">
+      <Project>{A7EEC557-EB14-451C-9616-B7A61F4ECE69}</Project>
+      <Name>Antlr3.Runtime.JavaExtensions</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\..\antlr\antlr3-main\runtime\CSharp3\Sources\Antlr3.Runtime\Antlr3.Runtime.csproj">
       <Project>{8FDC0A87-9005-4D5A-AB75-E55CEB575559}</Project>
       <Name>Antlr3.Runtime</Name>
