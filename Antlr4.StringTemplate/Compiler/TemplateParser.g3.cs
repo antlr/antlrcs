@@ -37,8 +37,8 @@ namespace Antlr4.StringTemplate.Compiler
 
     partial class TemplateParser
     {
-        ErrorManager errMgr;
-        IToken templateToken;
+        private readonly ErrorManager errMgr;
+        private readonly IToken templateToken;
 
         public TemplateParser(ITokenStream input, ErrorManager errMgr, IToken templateToken)
             : this(input)
