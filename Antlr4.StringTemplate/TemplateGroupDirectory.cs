@@ -188,7 +188,7 @@ namespace Antlr4.StringTemplate
             }
             catch (UriFormatException me)
             {
-                ErrorManager.RuntimeError(null, 0, ErrorType.INVALID_TEMPLATE_NAME, me, Path.Combine(root.LocalPath, fileName));
+                ErrorManager.RuntimeError(null, ErrorType.INVALID_TEMPLATE_NAME, me, Path.Combine(root.LocalPath, fileName));
                 return null;
             }
 

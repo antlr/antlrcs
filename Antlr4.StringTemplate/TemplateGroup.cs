@@ -257,7 +257,7 @@ namespace Antlr4.StringTemplate
             return null;
         }
 
-        protected internal virtual Template GetEmbeddedInstanceOf(TemplateFrame frame, int ip, string name)
+        protected internal virtual Template GetEmbeddedInstanceOf(TemplateFrame frame, string name)
         {
             if (Verbose)
             {
@@ -267,7 +267,7 @@ namespace Antlr4.StringTemplate
             Template st = GetInstanceOf(name);
             if (st == null)
             {
-                ErrorManager.RuntimeError(frame, ip, ErrorType.NO_SUCH_TEMPLATE, name);
+                ErrorManager.RuntimeError(frame, ErrorType.NO_SUCH_TEMPLATE, name);
                 return CreateStringTemplateInternally(new CompiledTemplate());
             }
 

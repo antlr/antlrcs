@@ -80,7 +80,7 @@ namespace Antlr4.StringTemplate.Compiler
             }
             else
             {
-                if (Interpreter.predefinedAnonSubtemplateAttributes.Contains(name))
+                if (Interpreter.PredefinedAnonymousSubtemplateAttributes.Contains(name))
                 {
                     errMgr.CompiletimeError(ErrorType.REF_TO_IMPLICIT_ATTRIBUTE_OUT_OF_SCOPE, templateToken, id.Token);
                     Emit(id, Bytecode.INSTR_NULL);

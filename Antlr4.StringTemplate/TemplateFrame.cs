@@ -40,6 +40,7 @@ namespace Antlr4.StringTemplate
     {
         private readonly Template _template;
         private readonly TemplateFrame _parent;
+        private int _ip;
         private DebugEvents _debugState;
 
         public TemplateFrame(Template template, TemplateFrame parent)
@@ -61,6 +62,19 @@ namespace Antlr4.StringTemplate
             get
             {
                 return _parent;
+            }
+        }
+
+        public int InstructionPointer
+        {
+            get
+            {
+                return _ip;
+            }
+
+            set
+            {
+                _ip = value;
             }
         }
 
