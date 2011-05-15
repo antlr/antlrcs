@@ -40,6 +40,7 @@ options
 }
 
 @lexer::namespace{Antlr3.Grammars}
+@ctorModifier{private}
 
 /**	$x.y	x is enclosing rule, y is a return value, parameter, or
  * 			predefined property.

@@ -47,6 +47,7 @@ options
 }
 
 @namespace{Antlr3.Grammars}
+@ctorModifier{private}
 
 /**	$x.y	x is enclosing rule or rule ref or rule label
  *			y is a return value, parameter, or predefined property.

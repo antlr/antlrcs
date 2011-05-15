@@ -37,8 +37,8 @@ options
 	language=CSharp3;
 }
 
-/**/
-@lexer::namespace {Antlr3.ST.Language}
+@namespace {Antlr3.ST.Language}
+@ctorModifier{private}
 
 NEWLINE
 	:	('\r')? '\n' {currentIndent=null;}

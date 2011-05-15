@@ -71,6 +71,9 @@ tokens
 @lexer::namespace { Antlr3.ST.Language }
 @parser::namespace { Antlr3.ST.Language }
 
+@parser::ctorModifier{private}
+@parser::treeAdaptorType{StringTemplateTreeAdaptor}
+
 public
 action returns [IDictionary<string, object> opts]
 	:	(	templatesExpr (SEMI! optionList {$opts = $optionList.opts;})?

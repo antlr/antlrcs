@@ -47,6 +47,7 @@ using StringWriter = System.IO.StringWriter;
 }
 
 @namespace {Antlr3.ST.Language}
+@ctorModifier{private}
 
 public
 action returns [int numCharsWritten=0]

@@ -39,6 +39,8 @@ options
 @lexer::namespace {Antlr3.ST.Language}
 @parser::namespace {Antlr3.ST.Language}
 
+@lexer::ctorModifier{private}
+
 public
 template[StringTemplate self]
 @init

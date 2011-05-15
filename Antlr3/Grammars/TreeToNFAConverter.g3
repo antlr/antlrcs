@@ -51,6 +51,7 @@ using DFA = Antlr.Runtime.DFA;
 }
 
 @namespace{Antlr3.Grammars}
+@ctorModifier{private}
 
 public
 grammar_

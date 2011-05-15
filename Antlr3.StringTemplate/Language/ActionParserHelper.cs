@@ -49,7 +49,7 @@ namespace Antlr3.ST.Language
             this.self = self;
         }
 
-        partial void CreateTreeAdaptor(ref ITreeAdaptor adaptor)
+        partial void CreateTreeAdaptor(ref StringTemplateTreeAdaptor adaptor)
         {
             adaptor = new StringTemplateTreeAdaptor();
         }

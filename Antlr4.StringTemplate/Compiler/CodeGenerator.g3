@@ -44,6 +44,8 @@ using Antlr4.StringTemplate.Misc;
 
 @namespace{Antlr4.StringTemplate.Compiler}
 
+@ctorModifier{private}
+
 templateAndEOF : template[null,null] EOF; // hush warning; ignore
 
 public

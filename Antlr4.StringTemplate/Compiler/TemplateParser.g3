@@ -60,6 +60,8 @@ using Antlr4.StringTemplate.Misc;
 catch (RecognitionException re) { re.PreserveStackTrace(); throw; }
 }
 
+@ctorModifier{private}
+
 public
 templateAndEOF : template EOF!;
 
