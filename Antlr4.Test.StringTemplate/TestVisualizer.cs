@@ -106,5 +106,26 @@ namespace Antlr4.Test.StringTemplate
             template.Add("lines", line);
             template.Visualize();
         }
+
+        [TestMethod]
+        public void VisualizerTestDefaultArgumentTemplate()
+        {
+            string templates =
+                "main() ::= <<\n" +
+                "<f(p=\"x\")>*<f(p=\"y\")>\n" +
+                ">>\n" +
+                "\n" +
+                "f(p,q={<({a<p>})>}) ::= <<\n" +
+                "-<q>-\n" +
+                ">>";
+
+            writeFile(tmpdir, "t.stg", templates);
+            TemplateGroup group = new TemplateGroupFile(Path.Combine(tmpdir, "t.stg"));
+            group.TrackCreationEvents = true;
+            Template template = group.GetInstanceOf("main");
+            string result = template.Render();
+            Assert.AreEqual("-ax-*-ay-", result);
+            template.Visualize();
+        }
     }
 }
