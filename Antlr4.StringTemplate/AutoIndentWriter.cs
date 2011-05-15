@@ -33,7 +33,8 @@
 namespace Antlr4.StringTemplate
 {
     using System.Collections.Generic;
-    using System.Linq;
+    using Antlr.Runtime.Misc;
+
     using Environment = System.Environment;
     using TextWriter = System.IO.TextWriter;
 
@@ -62,7 +63,7 @@ namespace Antlr4.StringTemplate
         /// <summary>
         /// Stack of indents
         /// </summary>
-        private readonly Stack<string> _indents = new Stack<string>();
+        private readonly ListStack<string> _indents = new ListStack<string>();
 
         /// <summary>
         /// Stack of integer anchors (char positions in line)
@@ -265,7 +266,7 @@ namespace Antlr4.StringTemplate
         protected virtual int Indent()
         {
             int n = 0;
-            foreach (string ind in _indents.Reverse())
+            foreach (string ind in _indents)
             {
                 if (ind != null)
                 {
