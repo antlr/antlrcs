@@ -30,15 +30,13 @@
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#if !DEBUG
-
-using System;
-
-using TextReader = System.IO.TextReader;
-using TextWriter = System.IO.TextWriter;
-
 namespace Antlr.Runtime.JavaExtensions
 {
+    using System;
+
+    using TextReader = System.IO.TextReader;
+    using TextWriter = System.IO.TextWriter;
+
     public static class IOExtensions
     {
         [Obsolete]
@@ -90,5 +88,3 @@ namespace Antlr.Runtime.JavaExtensions
         }
     }
 }
-
-#endif

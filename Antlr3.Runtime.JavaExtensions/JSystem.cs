@@ -30,7 +30,6 @@
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#if !DEBUG
 namespace Antlr.Runtime.JavaExtensions
 {
     using System;
@@ -86,4 +85,3 @@ namespace Antlr.Runtime.JavaExtensions
 
     }
 }
-#endif

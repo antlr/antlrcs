@@ -30,60 +30,71 @@
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#if DEBUG
+using System;
+using System.Diagnostics;
+using System.Linq;
+
+using TargetInvocationException = System.Reflection.TargetInvocationException;
+
 namespace Antlr.Runtime.JavaExtensions
 {
-    using System;
-    using System.IO;
-
-    public static class JSystem
+    public static class ExceptionExtensions
     {
+#if DEBUG
         [Obsolete]
-        public static TextWriter err
+        public static string getMessage( this Exception e )
         {
-            get
+            return e.Message;
+        }
+#endif
+
+        public static StackFrame[] getStackTrace( this Exception e )
+        {
+            StackTrace trace = new StackTrace( e, true );
+            StackFrame[] frames = trace.GetFrames();
+            if ( frames == null )
             {
-                return Console.Error;
+                // don't include this helper function in the trace
+                frames = new StackTrace( true ).GetFrames().Skip( 1 ).ToArray();
+            }
+            return frames;
+        }
+
+#if DEBUG
+        [Obsolete]
+        public static string getMethodName( this StackFrame frame )
+        {
+            return frame.GetMethod().Name;
+        }
+
+        [Obsolete]
+        public static string getClassName( this StackFrame frame )
+        {
+            return frame.GetMethod().DeclaringType.Name;
+        }
+#endif
+
+        public static void PrintStackTrace( this Exception e )
+        {
+            e.PrintStackTrace( Console.Out );
+        }
+        public static void PrintStackTrace( this Exception e, System.IO.TextWriter writer )
+        {
+            writer.WriteLine( e.ToString() );
+            string trace = e.StackTrace ?? string.Empty;
+            foreach ( string line in trace.Split( '\n', '\r' ) )
+            {
+                if ( !string.IsNullOrEmpty( line ) )
+                    writer.WriteLine( "        " + line );
             }
         }
 
+#if DEBUG
         [Obsolete]
-        public static TextWriter @out
+        public static Exception getTargetException( this TargetInvocationException e )
         {
-            get
-            {
-                return Console.Out;
-            }
+            return e.InnerException ?? e;
         }
-
-        [Obsolete]
-        public static void arraycopy<T>( T[] sourceArray, int sourceIndex, T[] destinationArray, int destinationIndex, int length )
-        {
-            Array.Copy( sourceArray, sourceIndex, destinationArray, destinationIndex, length );
-        }
-
-        [Obsolete]
-        public static string getProperty( string name )
-        {
-            switch ( name )
-            {
-            case "file.encoding":
-                return System.Text.Encoding.Default.WebName;
-
-            case "line.separator":
-                return Environment.NewLine;
-
-            case "java.io.tmpdir":
-                return System.IO.Path.GetTempPath();
-
-            case "user.home":
-                return Environment.GetFolderPath( Environment.SpecialFolder.Personal );
-
-            default:
-                throw new ArgumentException( string.Format( "Unknown system property: '{0}'", name ) );
-            }
-        }
-
+#endif
     }
 }
-#endif

@@ -32,6 +32,8 @@
 
 namespace Antlr.Runtime.Tree
 {
+    using Antlr.Runtime.Misc;
+
     /** <summary>
      *  How to execute code for node t when a visitor visits node t.  Execute
      *  pre() before visiting children and execute post() after visiting children.
@@ -60,10 +62,10 @@ namespace Antlr.Runtime.Tree
     public class TreeVisitorAction
         : ITreeVisitorAction
     {
-        System.Func<object, object> _preAction;
-        System.Func<object, object> _postAction;
+        private readonly Func<object, object> _preAction;
+        private readonly Func<object, object> _postAction;
 
-        public TreeVisitorAction( System.Func<object, object> preAction, System.Func<object, object> postAction )
+        public TreeVisitorAction( Func<object, object> preAction, Func<object, object> postAction )
         {
             _preAction = preAction;
             _postAction = postAction;

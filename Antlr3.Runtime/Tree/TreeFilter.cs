@@ -32,6 +32,8 @@
 
 namespace Antlr.Runtime.Tree
 {
+    using Antlr.Runtime.Misc;
+
     public class TreeFilter : TreeParser
     {
         protected ITokenStream originalTokenStream;
@@ -48,7 +50,7 @@ namespace Antlr.Runtime.Tree
             originalTokenStream = input.TokenStream;
         }
 
-        public virtual void ApplyOnce( object t, System.Action whichRule )
+        public virtual void ApplyOnce( object t, Action whichRule )
         {
             if ( t == null )
                 return;
@@ -71,12 +73,12 @@ namespace Antlr.Runtime.Tree
         public virtual void Downup( object t )
         {
             TreeVisitor v = new TreeVisitor( new CommonTreeAdaptor() );
-            System.Func<object, object> pre = ( o ) =>
+            Func<object, object> pre = ( o ) =>
             {
                 ApplyOnce( o, Topdown );
                 return o;
             };
-            System.Func<object, object> post = ( o ) =>
+            Func<object, object> post = ( o ) =>
             {
                 ApplyOnce( o, Bottomup );
                 return o;

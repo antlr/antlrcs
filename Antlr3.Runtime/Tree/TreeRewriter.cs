@@ -32,6 +32,8 @@
 
 namespace Antlr.Runtime.Tree
 {
+    using Antlr.Runtime.Misc;
+
     using Console = System.Console;
 
     public class TreeRewriter : TreeParser
@@ -41,8 +43,8 @@ namespace Antlr.Runtime.Tree
         protected ITokenStream originalTokenStream;
         protected ITreeAdaptor originalAdaptor;
 
-        System.Func<IAstRuleReturnScope> topdown_func;
-        System.Func<IAstRuleReturnScope> bottomup_func;
+        Func<IAstRuleReturnScope> topdown_func;
+        Func<IAstRuleReturnScope> bottomup_func;
 
         public TreeRewriter( ITreeNodeStream input )
             : this( input, new RecognizerSharedState() )
@@ -57,7 +59,7 @@ namespace Antlr.Runtime.Tree
             bottomup_func = () => Bottomup();
         }
 
-        public virtual object ApplyOnce( object t, System.Func<IAstRuleReturnScope> whichRule )
+        public virtual object ApplyOnce( object t, Func<IAstRuleReturnScope> whichRule )
         {
             if ( t == null )
                 return null;
@@ -89,7 +91,7 @@ namespace Antlr.Runtime.Tree
             return t;
         }
 
-        public virtual object ApplyRepeatedly( object t, System.Func<IAstRuleReturnScope> whichRule )
+        public virtual object ApplyRepeatedly( object t, Func<IAstRuleReturnScope> whichRule )
         {
             bool treeChanged = true;
             while ( treeChanged )

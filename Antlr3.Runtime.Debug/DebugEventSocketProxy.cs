@@ -142,7 +142,7 @@ namespace Antlr.Runtime.Debug
             }
             catch ( IOException ioe )
             {
-                ioe.PrintStackTrace( Console.Error );
+                ExceptionExtensions.PrintStackTrace( ioe, Console.Error );
             }
         }
 
@@ -155,7 +155,7 @@ namespace Antlr.Runtime.Debug
             }
             catch ( IOException ioe )
             {
-                ioe.PrintStackTrace( Console.Error );
+                ExceptionExtensions.PrintStackTrace( ioe, Console.Error );
             }
         }
 
@@ -434,9 +434,9 @@ namespace Antlr.Runtime.Debug
 
         protected virtual string EscapeNewlines( string txt )
         {
-            txt = txt.replaceAll( "%", "%25" );   // escape all escape char ;)
-            txt = txt.replaceAll( "\n", "%0A" );  // escape \n
-            txt = txt.replaceAll( "\r", "%0D" );  // escape \r
+            txt = txt.Replace( "%", "%25" );   // escape all escape char ;)
+            txt = txt.Replace( "\n", "%0A" );  // escape \n
+            txt = txt.Replace( "\r", "%0D" );  // escape \r
             return txt;
         }
 

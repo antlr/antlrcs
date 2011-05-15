@@ -4,7 +4,7 @@
  * All rights reserved.
  *
  * Conversion to C#:
- * Copyright (c) 2008-2009 Sam Harwell, Pixel Mine, Inc.
+ * Copyright (c) 2008 Sam Harwell, Pixel Mine, Inc.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -30,17 +30,15 @@
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#if !DEBUG
-
-using System;
-using System.Collections.Generic;
-using System.Linq;
-
-using IDictionary = System.Collections.IDictionary;
-
 namespace Antlr.Runtime.JavaExtensions
 {
-    public static class DictionaryExtensions2
+    using System.Collections.Generic;
+    using System.Linq;
+
+    using IDictionary = System.Collections.IDictionary;
+    using ObsoleteAttribute = System.ObsoleteAttribute;
+
+    public static class DictionaryExtensions
     {
         [Obsolete]
         public static bool containsKey( this IDictionary map, object key )
@@ -52,6 +50,43 @@ namespace Antlr.Runtime.JavaExtensions
         public static object get( this IDictionary map, object key )
         {
             return map[key];
+        }
+
+        public static TValue get<TKey, TValue>( this IDictionary<TKey, TValue> map, TKey key )
+        {
+            TValue value;
+            if ( map.TryGetValue( key, out value ) )
+                return value;
+
+            if ( typeof( TValue ).IsValueType )
+                throw new KeyNotFoundException();
+
+            return default( TValue );
+        }
+
+        // disambiguates
+        public static TValue get<TKey, TValue>( this Dictionary<TKey, TValue> map, TKey key )
+        {
+            TValue value;
+            if ( map.TryGetValue( key, out value ) )
+                return value;
+
+            if ( typeof( TValue ).IsValueType )
+                throw new KeyNotFoundException();
+
+            return default( TValue );
+        }
+
+        public static TValue get<TKey, TValue>( this SortedList<TKey, TValue> map, TKey key )
+        {
+            TValue value;
+            if ( map.TryGetValue( key, out value ) )
+                return value;
+
+            if ( typeof( TValue ).IsValueType )
+                throw new KeyNotFoundException();
+
+            return default( TValue );
         }
 
         [Obsolete]
@@ -98,5 +133,3 @@ namespace Antlr.Runtime.JavaExtensions
         }
     }
 }
-
-#endif

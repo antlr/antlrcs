@@ -33,17 +33,12 @@
 namespace Antlr.Runtime.Misc
 {
     using System.Collections.Generic;
-    using System.Linq;
 
     using Directory = System.IO.Directory;
     using Environment = System.Environment;
     using File = System.IO.File;
     using Math = System.Math;
     using Path = System.IO.Path;
-
-#if DEBUG
-    using ObsoleteAttribute = System.ObsoleteAttribute;
-#endif
 
     /** <summary>Stats routines needed by profiler etc...</summary>
      *
@@ -78,7 +73,7 @@ namespace Antlr.Runtime.Misc
             {
                 return 0;
             }
-            double xbar = X.Average();
+            double xbar = Average(X);
             double s2 = 0.0;
             for ( int i = 0; i < m; i++ )
             {
@@ -94,7 +89,7 @@ namespace Antlr.Runtime.Misc
             {
                 return 0;
             }
-            double xbar = X.Average();
+            double xbar = Average(X);
             double s2 = 0.0;
             for ( int i = 0; i < m; i++ )
             {
@@ -104,32 +99,18 @@ namespace Antlr.Runtime.Misc
             return Math.Sqrt( s2 );
         }
 
-#if DEBUG
         /** <summary>Compute the sample mean</summary> */
-        [Obsolete]
-        public static double avg( IList<int> X )
+        public static double Average(ICollection<int> X)
         {
-            return X.DefaultIfEmpty( 0 ).Average();
-        }
+            if (X.Count == 0)
+                return 0.0;
 
-        [Obsolete]
-        public static int min( IList<int> X )
-        {
-            return X.DefaultIfEmpty( int.MaxValue ).Min();
-        }
+            double sum = 0.0;
+            foreach (int i in X)
+                sum += i;
 
-        [Obsolete]
-        public static int max( IList<int> X )
-        {
-            return X.DefaultIfEmpty( int.MinValue ).Max();
+            return sum / X.Count;
         }
-
-        [Obsolete]
-        public static int sum( IList<int> X )
-        {
-            return X.Sum();
-        }
-#endif
 
         public static void WriteReport( string filename, string data )
         {

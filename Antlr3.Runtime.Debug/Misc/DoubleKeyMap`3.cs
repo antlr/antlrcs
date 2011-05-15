@@ -73,15 +73,14 @@
 
         public virtual ICollection<TValue> Values()
         {
-            HashSet<TValue> s = new HashSet<TValue>();
+            Dictionary<TValue, bool> s = new Dictionary<TValue, bool>();
             foreach (IDictionary<TKey2, TValue> k2 in data.Values)
             {
                 foreach (TValue v in k2.Values)
-                {
-                    s.Add(v);
-                }
+                    s[v] = true;
             }
-            return s;
+
+            return s.Keys;
         }
     }
 }

@@ -10,7 +10,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Antlr.Runtime</RootNamespace>
     <AssemblyName>Antlr3.Runtime</AssemblyName>
-    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v2.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <SccProjectName>SAK</SccProjectName>
     <SccLocalPath>SAK</SccLocalPath>
@@ -18,7 +18,8 @@
     <SccProvider>SAK</SccProvider>
     <SignAssembly>true</SignAssembly>
     <AssemblyOriginatorKeyFile>..\..\..\..\..\..\..\keys\antlr\Key.snk</AssemblyOriginatorKeyFile>
-    <TargetFrameworkProfile>Client</TargetFrameworkProfile>
+    <TargetFrameworkProfile>
+    </TargetFrameworkProfile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -39,9 +40,6 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
-    <Reference Include="System.Core">
-      <RequiredTargetFramework>3.5</RequiredTargetFramework>
-    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ANTLRFileStream.cs" />
@@ -77,6 +75,7 @@
     <Compile Include="LegacyCommonTokenStream.cs" />
     <Compile Include="Lexer.cs" />
     <Compile Include="Misc\FastQueue.cs" />
+    <Compile Include="Misc\FunctionDelegates.cs" />
     <Compile Include="Misc\LookaheadStream.cs" />
     <Compile Include="MismatchedNotSetException.cs" />
     <Compile Include="MismatchedRangeException.cs" />

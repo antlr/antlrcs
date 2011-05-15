@@ -1,10 +1,10 @@
 ﻿/*
- * [The "BSD licence"]
- * Copyright (c) 2005-2008 Terence Parr
+ * [The "BSD license"]
+ * Copyright (c) 2011 Terence Parr
  * All rights reserved.
  *
  * Conversion to C#:
- * Copyright (c) 2008 Sam Harwell, Pixel Mine, Inc.
+ * Copyright (c) 2011 Sam Harwell, Pixel Mine, Inc.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -30,55 +30,14 @@
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-using System;
-using System.Diagnostics;
-using System.Linq;
-
-using TargetInvocationException = System.Reflection.TargetInvocationException;
-
 namespace Antlr.Runtime.JavaExtensions
 {
-    public static class ExceptionExtensions
+    using Exception = System.Exception;
+    using TextWriter = System.IO.TextWriter;
+
+    internal static class ExceptionExtensions
     {
-#if DEBUG
-        [Obsolete]
-        public static string getMessage( this Exception e )
-        {
-            return e.Message;
-        }
-#endif
-
-        public static StackFrame[] getStackTrace( this Exception e )
-        {
-            StackTrace trace = new StackTrace( e, true );
-            StackFrame[] frames = trace.GetFrames();
-            if ( frames == null )
-            {
-                // don't include this helper function in the trace
-                frames = new StackTrace( true ).GetFrames().Skip( 1 ).ToArray();
-            }
-            return frames;
-        }
-
-#if DEBUG
-        [Obsolete]
-        public static string getMethodName( this StackFrame frame )
-        {
-            return frame.GetMethod().Name;
-        }
-
-        [Obsolete]
-        public static string getClassName( this StackFrame frame )
-        {
-            return frame.GetMethod().DeclaringType.Name;
-        }
-#endif
-
-        public static void PrintStackTrace( this Exception e )
-        {
-            e.PrintStackTrace( Console.Out );
-        }
-        public static void PrintStackTrace( this Exception e, System.IO.TextWriter writer )
+        public static void PrintStackTrace( Exception e, TextWriter writer )
         {
             writer.WriteLine( e.ToString() );
             string trace = e.StackTrace ?? string.Empty;
@@ -88,13 +47,5 @@ namespace Antlr.Runtime.JavaExtensions
                     writer.WriteLine( "        " + line );
             }
         }
-
-#if DEBUG
-        [Obsolete]
-        public static Exception getTargetException( this TargetInvocationException e )
-        {
-            return e.InnerException ?? e;
-        }
-#endif
     }
 }

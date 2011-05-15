@@ -33,9 +33,7 @@
 namespace Antlr.Runtime
 {
     using System.Collections.Generic;
-    using System.Linq;
 
-    using ArgumentOutOfRangeException = System.ArgumentOutOfRangeException;
     using InvalidOperationException = System.InvalidOperationException;
     using StringBuilder = System.Text.StringBuilder;
 
@@ -65,7 +63,7 @@ namespace Antlr.Runtime
         protected IDictionary<int, int> channelOverrideMap;
 
         /** <summary>Set<tokentype>; discard any tokens with this type</summary> */
-        protected HashSet<int> discardSet;
+        protected List<int> discardSet;
 
         /** <summary>Skip tokens on any channel but this one; this is how we skip whitespace...</summary> */
         protected int channel = TokenChannels.Default;
@@ -239,7 +237,7 @@ namespace Antlr.Runtime
         {
             if ( discardSet == null )
             {
-                discardSet = new HashSet<int>();
+                discardSet = new List<int>();
             }
             discardSet.Add( ttype );
         }

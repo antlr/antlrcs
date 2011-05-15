@@ -95,7 +95,7 @@ namespace Antlr.Runtime.Debug
         public virtual void ReportError( IOException e )
         {
             Console.Error.WriteLine( e );
-            e.PrintStackTrace( Console.Error );
+            ExceptionExtensions.PrintStackTrace( e, Console.Error );
         }
 
         public override void BeginResync()

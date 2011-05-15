@@ -33,11 +33,14 @@
 namespace Antlr.Runtime.Debug
 {
     using Antlr.Runtime.JavaExtensions;
+
+    using Array = System.Array;
     using BaseTree = Antlr.Runtime.Tree.BaseTree;
     using Console = System.Console;
     using Exception = System.Exception;
     using IOException = System.IO.IOException;
     using ITree = Antlr.Runtime.Tree.ITree;
+    using Math = System.Math;
     using Socket = System.Net.Sockets.Socket;
     using SocketException = System.Net.Sockets.SocketException;
     using TextReader = System.IO.TextReader;
@@ -314,7 +317,7 @@ namespace Antlr.Runtime.Debug
             catch ( Exception e )
             {
                 Console.Error.WriteLine( e );
-                e.PrintStackTrace( Console.Error );
+                ExceptionExtensions.PrintStackTrace( e, Console.Error );
             }
             finally
             {
@@ -359,7 +362,7 @@ namespace Antlr.Runtime.Debug
             catch ( Exception e )
             {
                 Console.Error.WriteLine( e );
-                e.PrintStackTrace( Console.Error );
+                ExceptionExtensions.PrintStackTrace( e, Console.Error );
             }
             finally
             {
@@ -703,26 +706,20 @@ namespace Antlr.Runtime.Debug
                     str = @event.Substring( firstQuoteIndex + 1 );
                     @event = eventWithoutString;
                 }
-                StringTokenizer st = new StringTokenizer( @event, "\t", false );
-                int i = 0;
-                while ( st.hasMoreTokens() )
-                {
-                    if ( i >= MAX_EVENT_ELEMENTS )
-                    {
-                        // ErrorManager.internalError("event has more than "+MAX_EVENT_ELEMENTS+" args: "+event);
-                        return elements;
-                    }
-                    elements[i] = st.nextToken();
-                    i++;
-                }
+
+                string[] tokens = @event.Split('\t');
+                Array.Copy(tokens, elements, Math.Min(tokens.Length, MAX_EVENT_ELEMENTS));
+                if (tokens.Length >= MAX_EVENT_ELEMENTS)
+                    return elements;
+
                 if ( str != null )
                 {
-                    elements[i] = str;
+                    elements[tokens.Length] = str;
                 }
             }
             catch ( Exception e )
             {
-                e.PrintStackTrace( Console.Error );
+                ExceptionExtensions.PrintStackTrace( e, Console.Error );
             }
             return elements;
         }
@@ -730,16 +727,15 @@ namespace Antlr.Runtime.Debug
         protected virtual string UnEscapeNewlines( string txt )
         {
             // this unescape is slow but easy to understand
-            txt = txt.replaceAll( "%0A", "\n" );  // unescape \n
-            txt = txt.replaceAll( "%0D", "\r" );  // unescape \r
-            txt = txt.replaceAll( "%25", "%" );   // undo escaped escape chars
+            txt = txt.Replace( "%0A", "\n" );  // unescape \n
+            txt = txt.Replace( "%0D", "\r" );  // unescape \r
+            txt = txt.Replace( "%25", "%" );   // undo escaped escape chars
             return txt;
         }
 
         public virtual bool TokenIndexesAreInvalid()
         {
-            return false;
-            //return tokenIndexesInvalid;
+            return tokenIndexesInvalid;
         }
 
         #endregion

@@ -71,7 +71,7 @@ namespace Antlr.Runtime.Debug
         protected int ruleLevel = 0;
         //protected int decisionLevel = 0;
         protected IToken lastRealTokenTouchedInDecision;
-        protected HashSet<string> uniqueRules = new HashSet<string>();
+        protected Dictionary<string, bool> uniqueRules = new Dictionary<string, bool>();
         protected Stack<string> currentGrammarFileName = new Stack<string>();
         protected Stack<string> currentRuleName = new Stack<string>();
         protected Stack<int> currentLine = new Stack<int>();
@@ -103,7 +103,7 @@ namespace Antlr.Runtime.Debug
             //System.out.println("enterRule "+grammarFileName+":"+ruleName);
             ruleLevel++;
             stats.numRuleInvocations++;
-            uniqueRules.Add(grammarFileName + ":" + ruleName);
+            uniqueRules.Add(grammarFileName + ":" + ruleName, true);
             stats.maxRuleInvocationDepth = Math.Max(stats.maxRuleInvocationDepth, ruleLevel);
             currentGrammarFileName.Push(grammarFileName);
             currentRuleName.Push(ruleName);

@@ -34,7 +34,6 @@ namespace Antlr.Runtime
 {
     using System.Collections.Generic;
     using System.Collections.ObjectModel;
-    using System.Linq;
     using ArgumentNullException = System.ArgumentNullException;
     using Exception = System.Exception;
     using SerializationInfo = System.Runtime.Serialization.SerializationInfo;
@@ -72,7 +71,7 @@ namespace Antlr.Runtime
             this._expecting = expecting;
 
             if (tokenNames != null)
-                this._tokenNames = tokenNames.ToList().AsReadOnly();
+                this._tokenNames = new List<string>(tokenNames).AsReadOnly();
         }
 
         public MismatchedTokenException(string message, int expecting, IIntStream input, IList<string> tokenNames)
@@ -81,7 +80,7 @@ namespace Antlr.Runtime
             this._expecting = expecting;
 
             if (tokenNames != null)
-                this._tokenNames = tokenNames.ToList().AsReadOnly();
+                this._tokenNames = new List<string>(tokenNames).AsReadOnly();
         }
 
         public MismatchedTokenException(string message, int expecting, IIntStream input, IList<string> tokenNames, Exception innerException)
@@ -90,7 +89,7 @@ namespace Antlr.Runtime
             this._expecting = expecting;
 
             if (tokenNames != null)
-                this._tokenNames = tokenNames.ToList().AsReadOnly();
+                this._tokenNames = new List<string>(tokenNames).AsReadOnly();
         }
 
         protected MismatchedTokenException(SerializationInfo info, StreamingContext context)
@@ -126,7 +125,7 @@ namespace Antlr.Runtime
 
             base.GetObjectData(info, context);
             info.AddValue("Expecting", _expecting);
-            info.AddValue("TokenNames", (_tokenNames != null) ? _tokenNames.ToArray() : default(string[]));
+            info.AddValue("TokenNames", (_tokenNames != null) ? new List<string>(_tokenNames).ToArray() : default(string[]));
         }
 
         public override string ToString()

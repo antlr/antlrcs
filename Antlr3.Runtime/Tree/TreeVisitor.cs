@@ -32,6 +32,8 @@
 
 namespace Antlr.Runtime.Tree
 {
+    using Antlr.Runtime.Misc;
+
     /** <summary>Do a depth first walk of a tree, applying pre() and post() actions as we go.</summary> */
     public class TreeVisitor
     {
@@ -73,7 +75,7 @@ namespace Antlr.Runtime.Tree
             return t;
         }
 
-        public object Visit( object t, System.Func<object, object> preAction, System.Func<object, object> postAction )
+        public object Visit( object t, Func<object, object> preAction, Func<object, object> postAction )
         {
             return Visit( t, new TreeVisitorAction( preAction, postAction ) );
         }

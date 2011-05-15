@@ -1,10 +1,10 @@
 ﻿/*
- * [The "BSD licence"]
- * Copyright (c) 2005-2008 Terence Parr
+ * [The "BSD license"]
+ * Copyright (c) 2011 Terence Parr
  * All rights reserved.
  *
  * Conversion to C#:
- * Copyright (c) 2008-2009 Sam Harwell, Pixel Mine, Inc.
+ * Copyright (c) 2011 Sam Harwell, Pixel Mine, Inc.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -30,65 +30,11 @@
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#if DEBUG
-
-using System;
-
-using TextReader = System.IO.TextReader;
-using TextWriter = System.IO.TextWriter;
-
-namespace Antlr.Runtime.JavaExtensions
+namespace Antlr.Runtime.Misc
 {
-    public static class IOExtensions
-    {
-        [Obsolete]
-        public static void close( this TextReader reader )
-        {
-            reader.Close();
-        }
+    public delegate void Action();
 
-        [Obsolete]
-        public static void close( this TextWriter writer )
-        {
-            writer.Close();
-        }
+    public delegate TResult Func<TResult>();
 
-        [Obsolete]
-        public static void print<T>( this TextWriter writer, T value )
-        {
-            writer.Write( value );
-        }
-
-        [Obsolete]
-        public static void println( this TextWriter writer )
-        {
-            writer.WriteLine();
-        }
-
-        [Obsolete]
-        public static void println<T>( this TextWriter writer, T value )
-        {
-            writer.WriteLine( value );
-        }
-
-        [Obsolete]
-        public static void write<T>( this TextWriter writer, T value )
-        {
-            writer.Write( value );
-        }
-
-        [Obsolete]
-        public static int read( this TextReader reader, char[] buffer, int index, int count )
-        {
-            return reader.Read( buffer, index, count );
-        }
-
-        [Obsolete]
-        public static string readLine( this TextReader reader )
-        {
-            return reader.ReadLine();
-        }
-    }
+    public delegate TResult Func<T, TResult>(T arg);
 }
-
-#endif

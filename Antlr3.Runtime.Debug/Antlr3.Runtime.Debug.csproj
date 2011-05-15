@@ -10,7 +10,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Antlr.Runtime.Debug</RootNamespace>
     <AssemblyName>Antlr3.Runtime.Debug</AssemblyName>
-    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v2.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <SccProjectName>Perforce Project</SccProjectName>
     <SccLocalPath>..\..\..\..\..\..</SccLocalPath>
@@ -19,7 +19,8 @@
     <SccProvider>MSSCCI:Perforce SCM</SccProvider>
     <SignAssembly>true</SignAssembly>
     <AssemblyOriginatorKeyFile>..\..\..\..\..\..\..\keys\antlr\Key.snk</AssemblyOriginatorKeyFile>
-    <TargetFrameworkProfile>Client</TargetFrameworkProfile>
+    <TargetFrameworkProfile>
+    </TargetFrameworkProfile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -40,9 +41,6 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
-    <Reference Include="System.Core">
-      <RequiredTargetFramework>3.5</RequiredTargetFramework>
-    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BlankDebugEventListener.cs" />
@@ -55,20 +53,7 @@
     <Compile Include="DebugTreeAdaptor.cs" />
     <Compile Include="DebugTreeNodeStream.cs" />
     <Compile Include="DebugTreeParser.cs" />
-    <Compile Include="JavaExtensions\DictionaryExtensions.cs" />
     <Compile Include="JavaExtensions\ExceptionExtensions.cs" />
-    <Compile Include="JavaExtensions\IOExtensions.cs" />
-    <Compile Include="JavaExtensions\JSystem.cs" />
-    <Compile Include="JavaExtensions\ListExtensions.cs" />
-    <Compile Include="JavaExtensions\ObjectExtensions.cs" />
-    <Compile Include="JavaExtensions\SetExtensions.cs" />
-    <Compile Include="JavaExtensions\StackExtensions.cs" />
-    <Compile Include="JavaExtensions\StringBuilderExtensions.cs" />
-    <Compile Include="JavaExtensions\StringExtensions.cs" />
-    <Compile Include="JavaExtensions\StringTokenizer.cs" />
-    <Compile Include="JavaExtensions\SubList.cs" />
-    <Compile Include="JavaExtensions\TreeExtensions.cs" />
-    <Compile Include="JavaExtensions\TypeExtensions.cs" />
     <Compile Include="Misc\DoubleKeyMap`3.cs" />
     <Compile Include="Misc\Stats.cs" />
     <None Include="..\..\..\..\..\..\..\keys\antlr\Key.snk">

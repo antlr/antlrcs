@@ -33,7 +33,6 @@
 namespace Antlr.Runtime.Debug
 {
     using System.Collections.Generic;
-    using System.Linq;
     using ParseTree = Antlr.Runtime.Tree.ParseTree;
 
     /** <summary>
@@ -59,7 +58,7 @@ namespace Antlr.Runtime.Debug
         {
             get
             {
-                return callStack.First();
+                return callStack.Peek();
             }
         }
 
