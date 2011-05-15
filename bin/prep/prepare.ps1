@@ -35,7 +35,7 @@ $ArchivePath = ".\Backup\Bootstrap-" + [System.IO.Path]::GetFileNameWithoutExten
 .\7z.exe a -r $ArchivePath "..\Bootstrap\*"
 
 # copy the new bootstrap files
-$BootstrapBinaries = "Antlr3.exe", "Antlr3.exe.config", "Antlr3.Runtime.dll", "Antlr3.Runtime.Debug.dll", "Antlr4.StringTemplate.dll", "Antlr4.StringTemplate.Visualizer.dll", "Antlr3.targets", "AntlrBuildTask.dll"
+$BootstrapBinaries = "Antlr3.exe", "Antlr3.exe.config", "Antlr3.Runtime.dll", "Antlr3.Runtime.Debug.dll", "Antlr3.Runtime.JavaExtensions.dll", "Antlr4.StringTemplate.dll", "Antlr4.StringTemplate.Visualizer.dll", "Antlr3.targets", "AntlrBuildTask.dll"
 $BootstrapBinaries | ForEach-Object {
     copy -force "..\$BuildConfig\$_" "..\Bootstrap"
     if ($LASTEXITCODE -ne 0) {
@@ -49,13 +49,29 @@ if ($LASTEXITCODE -ne 0) {
   exit $p.ExitCode
 }
 
+if (-not (Test-Path "..\Bootstrap\Codegen\Templates\CSharp2")) {
+  mkdir "..\Bootstrap\Codegen\Templates\CSharp2"
+}
+
 copy -force "..\$BuildConfig\Codegen\Templates\LeftRecursiveRules.stg" "..\Bootstrap\Codegen\Templates"
 if ($LASTEXITCODE -ne 0) {
   echo "Bootstrap update failed, Aborting!"
   exit $p.ExitCode
 }
 
+copy -force "..\$BuildConfig\Codegen\Templates\CSharp2\*" "..\Bootstrap\Codegen\Templates\CSharp2"
+if ($LASTEXITCODE -ne 0) {
+  echo "Bootstrap update failed, Aborting!"
+  exit $p.ExitCode
+}
+
 copy -force "..\$BuildConfig\Codegen\Templates\CSharp3\*" "..\Bootstrap\Codegen\Templates\CSharp3"
+if ($LASTEXITCODE -ne 0) {
+  echo "Bootstrap update failed, Aborting!"
+  exit $p.ExitCode
+}
+
+copy -force "..\$BuildConfig\Targets\Antlr3.Targets.CSharp2.dll" "..\Bootstrap\Targets"
 if ($LASTEXITCODE -ne 0) {
   echo "Bootstrap update failed, Aborting!"
   exit $p.ExitCode
@@ -95,6 +111,7 @@ copy "..\$BuildConfig\Antlr3.exe" ".\Tool"
 copy "..\$BuildConfig\Antlr3.exe.config" ".\Tool"
 copy "..\$BuildConfig\Antlr3.Runtime.dll" ".\Tool"
 copy "..\$BuildConfig\Antlr3.Runtime.Debug.dll" ".\Tool"
+copy "..\$BuildConfig\Antlr3.Runtime.JavaExtensions.dll" ".\Tool"
 copy "..\$BuildConfig\Antlr4.StringTemplate.dll" ".\Tool"
 copy "..\$BuildConfig\Antlr4.StringTemplate.Visualizer.dll" ".\Tool"
 copy "..\$BuildConfig\Antlr3.targets" ".\Tool"
@@ -106,6 +123,7 @@ copy ".\Tool\*" ".\Bootstrap"
 copy "..\$BuildConfig\Antlr3.pdb" ".\Tool"
 copy "..\$BuildConfig\Antlr3.Runtime.pdb" ".\Tool"
 copy "..\$BuildConfig\Antlr3.Runtime.Debug.pdb" ".\Tool"
+copy "..\$BuildConfig\Antlr3.Runtime.JavaExtensions.pdb" ".\Tool"
 copy "..\$BuildConfig\Antlr4.StringTemplate.pdb" ".\Tool"
 copy "..\$BuildConfig\Antlr4.StringTemplate.Visualizer.pdb" ".\Tool"
 copy "..\$BuildConfig\AntlrBuildTask.pdb" ".\Tool"
@@ -118,11 +136,14 @@ copy -r "..\$BuildConfig\Targets\*.dll" ".\Tool\Targets"
 copy -r "..\$BuildConfig\Targets\*.pdb" ".\Tool\Targets"
 copy -r "..\$BuildConfig\Tool\*" ".\Tool\Tool"
 
+mkdir "Bootstrap\Codegen\Templates\CSharp2"
 mkdir "Bootstrap\Codegen\Templates\CSharp3"
 mkdir "Bootstrap\Tool"
 mkdir "Bootstrap\Targets"
 copy "..\$BuildConfig\Codegen\Templates\LeftRecursiveRules.stg" ".\Bootstrap\Codegen\Templates"
+copy "..\$BuildConfig\Codegen\Templates\CSharp2\*" ".\Bootstrap\Codegen\Templates\CSharp2"
 copy "..\$BuildConfig\Codegen\Templates\CSharp3\*" ".\Bootstrap\Codegen\Templates\CSharp3"
+copy "..\$BuildConfig\Targets\Antlr3.Targets.CSharp2.dll" ".\Bootstrap\Targets"
 copy "..\$BuildConfig\Targets\Antlr3.Targets.CSharp3.dll" ".\Bootstrap\Targets"
 copy -r "..\$BuildConfig\Tool\*" ".\Bootstrap\Tool"
 Remove-Item ".\Bootstrap\Tool\Templates\messages\formats\gnu.stg"
@@ -142,8 +163,8 @@ copy "..\$BuildConfig\Antlr4.StringTemplate.pdb" ".\ST4"
 copy "..\$BuildConfig\Antlr4.StringTemplate.Visualizer.pdb" ".\ST4"
 
 # compress the distributable packages
-$AntlrVersion = "3.3.3.8388"
-$STVersion = "4.0.2.8388"
+$AntlrVersion = "3.3.4.8516"
+$STVersion = "4.0.3.8516"
 
 $ArchivePath = ".\dist\antlr-dotnet-csharp3bootstrap-" + $AntlrVersion + ".7z"
 .\7z.exe a -r -mx9 $ArchivePath ".\Bootstrap\*"
