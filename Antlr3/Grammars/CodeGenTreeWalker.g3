@@ -181,15 +181,6 @@ rule returns [StringTemplate code=null]
 	blockNestingLevel = RULE_BLOCK_NESTING_LEVEL-1;
 	Rule ruleDescr = grammar.GetRule($start.GetChild(0).Text);
 	currentRuleName = $start.GetChild(0).Text;
-
-	// For syn preds, we don't want any AST code etc... in there.
-	// Save old templates ptr and restore later.  Base templates include Dbg.
-	TemplateGroup saveGroup = templates;
-	if ( ruleDescr.IsSynPred )
-	{
-		templates = generator.BaseTemplates;
-	}
-
 	string description = string.Empty;
 }
 	:	^(	RULE id=ID
@@ -285,7 +276,6 @@ rule returns [StringTemplate code=null]
 			}
 		}
 	;
-finally { templates = saveGroup; }
 
 modifier
 	:	'protected'
