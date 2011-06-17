@@ -33,6 +33,7 @@
 namespace Antlr.Runtime.Misc
 {
     using ArgumentException = System.ArgumentException;
+    using InvalidOperationException = System.InvalidOperationException;
 
     /** <summary>
      *  A lookahead queue that knows how to mark/release locations
@@ -72,6 +73,14 @@ namespace Antlr.Runtime.Misc
             protected set
             {
                 _eof = value;
+            }
+        }
+
+        public T PreviousElement
+        {
+            get
+            {
+                return _previousElement;
             }
         }
 
@@ -184,6 +193,9 @@ namespace Antlr.Runtime.Misc
 
         public virtual void Release( int marker )
         {
+            if (_markDepth == 0)
+                throw new InvalidOperationException();
+
             _markDepth--;
         }
 
@@ -195,7 +207,7 @@ namespace Antlr.Runtime.Misc
 
         public virtual void Rewind()
         {
-            Seek( _lastMarker );
+            Rewind( _lastMarker );
         }
 
         /** <summary>

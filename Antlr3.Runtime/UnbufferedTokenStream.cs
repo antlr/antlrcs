@@ -52,7 +52,7 @@ namespace Antlr.Runtime
      *  @see BufferedTokenStream
      *  @see CommonTokenStream
      */
-    public class UnbufferedTokenStream : LookaheadStream<IToken>, ITokenStream
+    public class UnbufferedTokenStream : LookaheadStream<IToken>, ITokenStream, ITokenStreamInformation
     {
         [CLSCompliant(false)]
         protected ITokenSource tokenSource;
@@ -60,6 +60,8 @@ namespace Antlr.Runtime
 
         /** Skip tokens on any channel but this one; this is how we skip whitespace... */
         protected int channel = TokenChannels.Default;
+
+        private readonly ListStack<IToken> _realTokens = new ListStack<IToken>() { null };
 
         public UnbufferedTokenStream(ITokenSource tokenSource)
         {
@@ -81,6 +83,59 @@ namespace Antlr.Runtime
                 return TokenSource.SourceName;
             }
         }
+
+        #region ITokenStreamInformation Members
+
+        public IToken LastToken
+        {
+            get
+            {
+                return LB(1);
+            }
+        }
+
+        public IToken LastRealToken
+        {
+            get
+            {
+                return _realTokens.Peek();
+            }
+        }
+
+        public int MaxLookBehind
+        {
+            get
+            {
+                return 1;
+            }
+        }
+
+        public override int Mark()
+        {
+            _realTokens.Push(_realTokens.Peek());
+            return base.Mark();
+        }
+
+        public override void Release(int marker)
+        {
+            base.Release(marker);
+            _realTokens.Pop();
+        }
+
+        public override void Clear()
+        {
+            _realTokens.Clear();
+            _realTokens.Push(null);
+        }
+
+        public override void Consume()
+        {
+            base.Consume();
+            if (PreviousElement != null && PreviousElement.Line > 0)
+                _realTokens[_realTokens.Count - 1] = PreviousElement;
+        }
+
+        #endregion
 
         public override IToken NextElement()
         {
