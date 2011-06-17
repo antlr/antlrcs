@@ -92,11 +92,8 @@ options
 
 @header
 {
-using System;
-using Antlr3.Analysis;
-using Antlr3.Misc;
-using Antlr3.Tool;
-using BitSet = Antlr.Runtime.BitSet;
+using Grammar = Antlr3.Tool.Grammar;
+using GrammarAST = Antlr3.Tool.GrammarAST;
 }
 
 public
@@ -106,34 +103,34 @@ grammar_[Grammar g]
 	if ( state.backtracking == 0 )
 		Init($g);
 }
-	:	(	^( LEXER_GRAMMAR 	  grammarSpec )
-		|	^( PARSER_GRAMMAR   grammarSpec )
-		|	^( TREE_GRAMMAR     grammarSpec )
-		|	^( COMBINED_GRAMMAR grammarSpec )
+	:	(	^(LEXER_GRAMMAR    grammarSpec)
+		|	^(PARSER_GRAMMAR   grammarSpec)
+		|	^(TREE_GRAMMAR     grammarSpec)
+		|	^(COMBINED_GRAMMAR grammarSpec)
 		)
 	;
 
 grammarSpec
-	:	id=ID
-		(cmt=DOC_COMMENT)?
-		(optionsSpec)?
-		(delegateGrammars)?
-		(tokensSpec)?
-		(attrScope)*
+	:	ID
+		DOC_COMMENT?
+		optionsSpec?
+		delegateGrammars?
+		tokensSpec?
+		attrScope*
 		( ^(AMPERSAND .*) )* // skip actions
 		rules
 	;
 
 attrScope
-	:	^( 'scope' ID ( ^(AMPERSAND .*) )* ACTION )
+	:	^('scope' ID ( ^(AMPERSAND .*) )* ACTION)
 	;
 
 optionsSpec returns [IDictionary<object, object> opts = new Dictionary<object, object>()]
-	:	^( OPTIONS (option[$opts])* )
+	:	^(OPTIONS (option[$opts])*)
 	;
 
 option[IDictionary<object, object> opts]
-	:	^( ASSIGN ID optionValue )
+	:	^(ASSIGN ID optionValue)
 		{
 			string key = $ID.text;
 			$opts[key] = $optionValue.value;
@@ -145,28 +142,27 @@ option[IDictionary<object, object> opts]
 		}
 	;
 
-optionValue returns [Object value=null]
+optionValue returns [object value=null]
 @init
 {
-	if ( state.backtracking == 0 )
+	if (state.backtracking == 0)
 		$value = $start.Text;
 }
 	:	ID
 	|	STRING_LITERAL
 	|	CHAR_LITERAL
-	|	INT
-		{ $value = int.Parse( $INT.text ); }
-//  |   cs=charSet       {$value = $cs;} // return set AST in this case
+	|	INT				{$value = int.Parse($INT.text);}
+//	|	cs=charSet		{$value = $cs;} // return set AST in this case
 	;
 
 charSet
-	:	^( CHARSET charSetElement )
+	:	^(CHARSET charSetElement)
 	;
 
 charSetElement
 	:	CHAR_LITERAL
-	|	^( OR CHAR_LITERAL CHAR_LITERAL )
-	|	^( RANGE CHAR_LITERAL CHAR_LITERAL )
+	|	^(OR CHAR_LITERAL CHAR_LITERAL)
+	|	^(RANGE CHAR_LITERAL CHAR_LITERAL)
 	;
 
 delegateGrammars
@@ -182,11 +178,11 @@ tokensSpec
 	;
 
 tokenSpec
-	:	t=TOKEN_REF            {TrackToken($t);}
+	:	t=TOKEN_REF					{TrackToken($t);}
 	|	^(	ASSIGN
-			t2=TOKEN_REF       {TrackToken($t2);}
-			( s=STRING_LITERAL {TrackString($s); Alias($t2,$s);}
-			| c=CHAR_LITERAL   {TrackString($c); Alias($t2,$c);}
+			t=TOKEN_REF				{TrackToken($t);}
+			(	s=STRING_LITERAL	{TrackString($s); Alias($t, $s);}
+			|	s=CHAR_LITERAL		{TrackString($s); Alias($t, $s);}
 			)
 		)
 	;
@@ -202,17 +198,17 @@ rule
 
 ruleBody
 	:	id=ID {currentRuleName=$id.text;}
-		(m=modifier)?
-		^(ARG (ARG_ACTION)?)
-		^(RET (ARG_ACTION)?)
-		(throwsSpec)?
-		(optionsSpec)?
-		(ruleScopeSpec)?
+		modifier?
+		^(ARG ARG_ACTION?)
+		^(RET ARG_ACTION?)
+		throwsSpec?
+		optionsSpec?
+		ruleScopeSpec?
 		( ^(AMPERSAND .*) )*
-		b=block
-		(exceptionGroup)?
+		block
+		exceptionGroup?
 		EOR
-		{TrackTokenRule($id,$m.start,$b.start);}
+		{TrackTokenRule($id,$modifier.start,$block.start);}
 	;
 
 modifier
@@ -227,23 +223,23 @@ throwsSpec
 	;
 
 ruleScopeSpec
-	:	^( 'scope' ( ^(AMPERSAND .*) )* (ACTION)? ( ID )* )
+	:	^('scope' ( ^(AMPERSAND .*) )* ACTION? ID*)
 	;
 
 block
 	:	^(	BLOCK
-			(optionsSpec)?
-			( alternative rewrite )+
+			optionsSpec?
+			(alternative rewrite)+
 			EOB
 		)
 	;
 
 alternative
-	:	^( ALT (element)+ EOA )
+	:	^(ALT element+ EOA)
 	;
 
 exceptionGroup
-	:	( exceptionHandler )+ (finallyClause)?
+	:	exceptionHandler+ finallyClause?
 	|	finallyClause
 	;
 
@@ -271,7 +267,7 @@ element
 	|	^(PLUS_ASSIGN ID element)
 	|	ebnf
 	|	tree_
-	|	^( SYNPRED block )
+	|	^(SYNPRED block)
 	|	FORCED_ACTION
 	|	ACTION
 	|	SEMPRED
@@ -283,9 +279,9 @@ element
 
 ebnf
 	:	block
-	|	^( OPTIONAL block )
-	|	^( CLOSURE block )
-	|	^( POSITIVE_CLOSURE block )
+	|	^(OPTIONAL block)
+	|	^(CLOSURE block)
+	|	^(POSITIVE_CLOSURE block)
 	;
 
 tree_
@@ -293,10 +289,10 @@ tree_
 	;
 
 atom
-	:	^( RULE_REF (ARG_ACTION)? )
-	|	^( t=TOKEN_REF (ARG_ACTION )? ) {TrackToken($t);}
-	|	c=CHAR_LITERAL   {TrackString($c);}
-	|	s=STRING_LITERAL {TrackString($s);}
+	:	^(RULE_REF ARG_ACTION?)
+	|	^(t=TOKEN_REF ARG_ACTION?)	{TrackToken($t);}
+	|	t=CHAR_LITERAL				{TrackString($t);}
+	|	t=STRING_LITERAL			{TrackString($t);}
 	|	WILDCARD
 	|	^(DOT ID atom) // scope override on rule
 	;
