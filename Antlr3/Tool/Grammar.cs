@@ -2868,9 +2868,9 @@ namespace Antlr3.Tool
          *  Do not create NFA here because NFA construction needs to hook up with
          *  overridden rules in delegation root grammar.
          */
-        public virtual void ImportGrammar( GrammarAST grammarNameAST, string label )
+        public virtual void ImportGrammar( IToken grammarNameToken, string label )
         {
-            string grammarName = grammarNameAST.Text;
+            string grammarName = grammarNameToken.Text;
             //JSystem.@out.println("import "+gfile.getName());
             string gname = grammarName + GrammarFileExtension;
             TextReader br = null;
@@ -2898,7 +2898,7 @@ namespace Antlr3.Tool
                 {
                     ErrorManager.GrammarError( ErrorManager.MSG_INVALID_IMPORT,
                                               this,
-                                              grammarNameAST.Token,
+                                              grammarNameToken,
                                               this,
                                               delegateGrammar );
                     return;
@@ -2909,7 +2909,7 @@ namespace Antlr3.Tool
                 {
                     ErrorManager.GrammarError( ErrorManager.MSG_IMPORT_NAME_CLASH,
                                               this,
-                                              grammarNameAST.Token,
+                                              grammarNameToken,
                                               this,
                                               delegateGrammar );
                     return;

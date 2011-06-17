@@ -367,5 +367,10 @@ namespace Antlr3.Grammars
                         filter != null && filter.Equals( "true" ) );
             }
         }
+
+        private void HandleDelegateGrammar(IToken grammarName, string label)
+        {
+            Grammar.ImportGrammar(grammarName, label);
+        }
     }
 }

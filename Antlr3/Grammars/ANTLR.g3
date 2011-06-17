@@ -217,8 +217,7 @@ delegateGrammars
 	;
 
 delegateGrammar
-	:	lab=id ASSIGN^ g=id {Grammar.ImportGrammar($g.tree, $lab.text);}
-	|	g2=id               {Grammar.ImportGrammar($g2.tree,null);}
+	:	(lab=id ASSIGN^)? g=id {HandleDelegateGrammar($g.start, $lab.text);}
 	;
 
 tokensSpec
@@ -584,10 +583,8 @@ idList
 	;
 
 id
-	:	TOKEN_REF
-		-> ID[$TOKEN_REF]
-	|	RULE_REF
-		-> ID[$RULE_REF]
+	:	TOKEN_REF<ID>
+	|	RULE_REF<ID>
 	;
 
 // R E W R I T E  S Y N T A X
@@ -604,10 +601,9 @@ rewrite_with_sempred
 	;
 
 rewrite_block
-	:	LPAREN
+	:	LPAREN<type=BLOCK;text="BLOCK">^
 		rewrite_alternative
-		RPAREN
-		-> ^(BLOCK[$LPAREN,"BLOCK"] rewrite_alternative EOB[$RPAREN,"<end-of-block>"])
+		RPAREN<type=EOB;text="<end-of-block>">
 	;
 
 rewrite_alternative
@@ -649,7 +645,7 @@ rewrite_atom
 	;
 
 label
-	:	TOKEN_REF<LABEL> {}
+	:	TOKEN_REF<LABEL>
 	|	RULE_REF<LABEL>
 	;
 
@@ -704,19 +700,17 @@ options{k=1;}
 
 /** -> foo(a={...}, ...) */
 rewrite_template_head
-	:	id lp=LPAREN
+	:	id LPAREN<type=TEMPLATE;text="TEMPLATE">^
 		rewrite_template_args
-		RPAREN
-		-> ^(TEMPLATE[$lp,"TEMPLATE"] id rewrite_template_args)
+		RPAREN!
 	;
 
 /** -> ({expr})(a={...}, ...) */
 rewrite_indirect_template_head
-	:	lp=LPAREN
+	:	LPAREN<type=TEMPLATE;text="TEMPLATE">^
 		ACTION
-		RPAREN
-		LPAREN rewrite_template_args RPAREN
-		-> ^(TEMPLATE[$lp,"TEMPLATE"] ACTION rewrite_template_args)
+		RPAREN!
+		LPAREN! rewrite_template_args RPAREN!
 	;
 
 rewrite_template_args
@@ -727,8 +721,7 @@ rewrite_template_args
 	;
 
 rewrite_template_arg
-	:	id a=ASSIGN ACTION
-		-> ^(ARG[$a,"ARG"] id ACTION)
+	:	id ASSIGN<type=ARG;text="ARG">^ ACTION
 	;
 
 //////////////////////////////////////////////////////////////////////////////
