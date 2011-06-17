@@ -45,7 +45,6 @@ scope AttributeScopeActions
 
 @header
 {
-using System;
 using Antlr3.Tool;
 }
 
@@ -62,10 +61,10 @@ root = $start;
 {
 Finish();
 }
-	:	^( LEXER_GRAMMAR	{grammar.type = GrammarType.Lexer;} 		grammarSpec )
-	|	^( PARSER_GRAMMAR	{grammar.type = GrammarType.Parser;}		grammarSpec )
-	|	^( TREE_GRAMMAR		{grammar.type = GrammarType.TreeParser;}	grammarSpec )
-	|	^( COMBINED_GRAMMAR	{grammar.type = GrammarType.Combined;}		grammarSpec )
+	:	^(LEXER_GRAMMAR		grammarSpec)
+	|	^(PARSER_GRAMMAR	grammarSpec)
+	|	^(TREE_GRAMMAR		grammarSpec)
+	|	^(COMBINED_GRAMMAR	grammarSpec)
 	;
 
 attrScope
@@ -75,53 +74,44 @@ scope AttributeScopeActions;
 	$AttributeScopeActions::actions = new Dictionary<GrammarAST, GrammarAST>();
 }
 	:	^( 'scope' name=ID attrScopeAction* attrs=ACTION )
-		{
-			AttributeScope scope = grammar.DefineGlobalScope($name.text,$attrs.Token);
-			scope.IsDynamicGlobalScope = true;
-			scope.AddAttributes($attrs.text, ';');
-			foreach ( var action in $AttributeScopeActions::actions )
-				scope.DefineNamedAction( action.Key, action.Value );
-		}
+		{HandleAttrScope($name, $attrs, $AttributeScopeActions::actions);}
 	;
 
 attrScopeAction
 	:	^(AMPERSAND ID ACTION)
-		{
-			$AttributeScopeActions::actions.Add( $ID, $ACTION );
-		}
+		{HandleAttrScopeAction($ID, $ACTION, $AttributeScopeActions::actions);}
 	;
 
 grammarSpec
-	:	id=ID
-		(cmt=DOC_COMMENT)?
-		( optionsSpec )?
-		(delegateGrammars)?
-		(tokensSpec)?
-		(attrScope)*
-		(actions)?
+	:	ID
+		DOC_COMMENT?
+		optionsSpec?
+		delegateGrammars?
+		tokensSpec?
+		attrScope*
+		actions?
 		rules
 	;
 
 actions
-	:	( action )+
+	:	action+
 	;
 
 action
 @init
 {
-	string scope=null;
-	GrammarAST nameAST=null, actionAST=null;
+	string scope = null;
+	GrammarAST nameAST = null;
+	GrammarAST actionAST = null;
 }
 	:	^(amp=AMPERSAND id1=ID
 			( id2=ID a1=ACTION
-			  {scope=$id1.text; nameAST=$id2; actionAST=$a1;}
+			  {scope = $id1.text; nameAST = $id2; actionAST = $a1;}
 			| a2=ACTION
-			  {scope=null; nameAST=$id1; actionAST=$a2;}
+			  {scope = null; nameAST = $id1; actionAST = $a2;}
 			)
 		 )
-		 {
-		 grammar.DefineNamedAction($amp,scope,nameAST,actionAST);
-		 }
+		 {HandleAction(scope, $amp, nameAST, actionAST);}
 	;
 
 optionsSpec
@@ -137,7 +127,7 @@ tokensSpec
 	;
 
 tokenSpec
-	:	t=TOKEN_REF
+	:	TOKEN_REF
 	|	^(	ASSIGN
 			TOKEN_REF
 			(	STRING_LITERAL
@@ -153,62 +143,26 @@ rules
 rule
 @init
 {
-	string name=null;
-	IDictionary<string,object> opts=null;
+	string name = null;
+	IDictionary<string, object> opts = null;
 	Rule r = null;
 }
-	:		^( RULE id=ID {opts = $RULE.BlockOptions;}
-			(modifier)?
+	:	^(	RULE id=ID {opts = $RULE.BlockOptions;}
+			modifier?
 			^( ARG (args=ARG_ACTION)? )
 			^( RET (ret=ARG_ACTION)? )
-			(throwsSpec)?
-			(optionsSpec)?
-			{
-				name = $id.text;
-				currentRuleName = name;
-				if ( Rule.GetRuleType(name) == RuleType.Lexer && grammar.type==GrammarType.Combined )
-				{
-					// a merged grammar spec, track lexer rules and send to another grammar
-					grammar.DefineLexerRuleFoundInParser($id.Token, $start);
-				}
-				else
-				{
-					int numAlts = CountAltsForRule($start);
-					grammar.DefineRule($id.Token, $modifier.mod, opts, $start, $args, numAlts);
-					r = grammar.GetRule(name);
-					if ( $args!=null )
-					{
-						r.ParameterScope = grammar.CreateParameterScope(name,$args.Token);
-						r.ParameterScope.AddAttributes($args.text, ',');
-					}
-					if ( $ret!=null )
-					{
-						r.ReturnScope = grammar.CreateReturnScope(name,$ret.Token);
-						r.ReturnScope.AddAttributes($ret.text, ',');
-					}
-					if ( $throwsSpec.exceptions != null )
-					{
-						foreach ( string exception in $throwsSpec.exceptions )
-							r.ThrowsSpec.Add( exception );
-					}
-				}
-			}
-			(ruleScopeSpec[r])?
-			(ruleAction[r])*
-			{ this.blockLevel=0; }
+			throwsSpec?
+			optionsSpec?				{HandleRuleAfterOptionsSpec(ref name, ref r, opts, $start, $id, $modifier.mod, $args, $ret, $throwsSpec.exceptions);}
+			ruleScopeSpec[r]?
+			ruleAction[r]*				{HandleRuleAfterRuleActions();}
 			b=block
-			(exceptionGroup)?
-			EOR
-			{
-				// copy rule options into the block AST, which is where
-				// the analysis will look for k option etc...
-				$b.start.BlockOptions = opts;
-			}
+			exceptionGroup?
+			EOR							{HandleRuleEnd($b.start, opts);}
 		)
 	;
 
 ruleAction[Rule r]
-	:	^(amp=AMPERSAND id=ID a=ACTION ) {if (r!=null) r.DefineNamedAction($amp,$id,$a);}
+	:	^(amp=AMPERSAND id=ID a=ACTION) {HandleRuleAction(r, $amp, $id, $a);}
 	;
 
 modifier returns [string mod]
@@ -222,11 +176,7 @@ modifier returns [string mod]
 	|	'fragment'
 	;
 
-throwsSpec returns [HashSet<string> exceptions]
-@init
-{
-	$exceptions = new HashSet<string>();
-}
+throwsSpec returns [HashSet<string> exceptions = new HashSet<string>()]
 	:	^('throws' (ID {$exceptions.Add($ID.text);})+ )
 	;
 
@@ -237,28 +187,9 @@ scope AttributeScopeActions;
 	$AttributeScopeActions::actions = new Dictionary<GrammarAST, GrammarAST>();
 }
 	:	^(	'scope'
-			(	attrScopeAction* attrs=ACTION
-				{
-					r.RuleScope = grammar.CreateRuleScope(r.Name,$attrs.Token);
-					r.RuleScope.IsDynamicRuleScope = true;
-					r.RuleScope.AddAttributes($attrs.text, ';');
-					foreach ( var action in $AttributeScopeActions::actions )
-						r.RuleScope.DefineNamedAction( action.Key, action.Value );
-				}
+			(	attrScopeAction* attrs=ACTION	{HandleRuleScopeSpecAction(r, $attrs, $AttributeScopeActions::actions);}
 			)?
-			(	uses=ID
-				{
-					if ( grammar.GetGlobalScope($uses.text)==null ) {
-					ErrorManager.GrammarError(ErrorManager.MSG_UNKNOWN_DYNAMIC_SCOPE,
-					grammar,
-					$uses.Token,
-					$uses.text);
-					}
-					else {
-					if ( r.UseScopes==null ) {r.UseScopes=new List<string>();}
-					r.UseScopes.Add($uses.text);
-					}
-				}
+			(	uses=ID							{HandleRuleScopeSpecUses(r, $uses);}
 			)*
 		)
 	;
@@ -287,37 +218,15 @@ finally { blockLevel--; }
 
 // TODO: this does nothing now! subrules cannot have init actions. :(
 blockAction
-	:	^(amp=AMPERSAND id=ID a=ACTION ) // {r.defineAction(#amp,#id,#a);}
+	:	^(AMPERSAND ID ACTION)
 	;
 
 alternative
-//@init
-//{
-//	if ( state.backtracking == 0 )
-//	{
-//		if ( grammar.type!=GrammarType.Lexer && grammar.GetOption("output")!=null && blockLevel==1 )
-//		{
-//			GrammarAST aRewriteNode = $start.FindFirstType(REWRITE); // alt itself has rewrite?
-//			GrammarAST rewriteAST = (GrammarAST)$start.Parent.GetChild($start.ChildIndex + 1);
-//			// we have a rewrite if alt uses it inside subrule or this alt has one
-//			// but don't count -> ... rewrites, which mean "do default auto construction"
-//			if ( aRewriteNode!=null||
-//				 (firstRewriteAST!=null &&
-//				  firstRewriteAST.Type==REWRITE &&
-//				  firstRewriteAST.GetChild(0)!=null &&
-//				  firstRewriteAST.GetChild(0).Type!=ETC) )
-//			{
-//				Rule r = grammar.GetRule(currentRuleName);
-//				r.TrackAltsWithRewrites($start,this.outerAltNum);
-//			}
-//		}
-//	}
-//}
-	:	^( ALT (element)+ EOA )
+	:	^(ALT element+ EOA)
 	;
 
 exceptionGroup
-	:	( exceptionHandler )+ (finallyClause)?
+	:	exceptionHandler+ finallyClause?
 	|	finallyClause
 	;
 
@@ -336,101 +245,35 @@ element
 	|   ^(NOT element)
 	|   ^(RANGE atom[null] atom[null])
 	|   ^(CHAR_RANGE atom[null] atom[null])
-	|	^(	ASSIGN id=ID el=element)
-			{
-				GrammarAST e = $el.start;
-				if ( e.Type==ANTLRParser.ROOT || e.Type==ANTLRParser.BANG )
-				{
-					e = (GrammarAST)e.GetChild(0);
-				}
-				if ( e.Type==RULE_REF)
-				{
-					grammar.DefineRuleRefLabel(currentRuleName,$id.Token,e);
-				}
-				else if ( e.Type==WILDCARD && grammar.type==GrammarType.TreeParser )
-				{
-					grammar.DefineWildcardTreeLabel(currentRuleName,$id.Token,e);
-				}
-				else
-				{
-					grammar.DefineTokenRefLabel(currentRuleName,$id.Token,e);
-				}
-			}
-	|	^(	PLUS_ASSIGN id2=ID a2=element
-			{
-				GrammarAST a = $a2.start;
-				if ( a.Type==ANTLRParser.ROOT || a.Type==ANTLRParser.BANG )
-				{
-					a = (GrammarAST)a.GetChild(0);
-				}
-				if ( a.Type==RULE_REF )
-				{
-					grammar.DefineRuleListLabel(currentRuleName,$id2.Token,a);
-				}
-				else if ( a.Type == WILDCARD && grammar.type == GrammarType.TreeParser )
-				{
-					grammar.DefineWildcardTreeListLabel( currentRuleName, $id2.Token, a );
-				}
-				else
-				{
-					grammar.DefineTokenListLabel(currentRuleName,$id2.Token,a);
-				}
-			}
-		 )
+	|	^(ASSIGN id=ID el=element)			{HandleElementAssign($id, $el.start);}
+	|	^(PLUS_ASSIGN id=ID el=element)		{HandleElementPlusAssign($id, $el.start);}
 	|   ebnf
 	|   tree_
-	|   ^( SYNPRED block )
-	|   act=ACTION
-		{
-			$act.outerAltNum = this.outerAltNum;
-			TrackInlineAction($act);
-		}
-	|   act2=FORCED_ACTION
-		{
-			$act2.outerAltNum = this.outerAltNum;
-			TrackInlineAction($act2);
-		}
-	|   SEMPRED
-		{
-			$SEMPRED.outerAltNum = this.outerAltNum;
-			TrackInlineAction($SEMPRED);
-		}
+	|   ^(SYNPRED block)
+	|   act=ACTION							{HandleInlineAction($act);}
+	|   act=FORCED_ACTION					{HandleInlineAction($act);}
+	|   act=SEMPRED							{HandleInlineAction($act);}
 	|   SYN_SEMPRED
 	|   ^(BACKTRACK_SEMPRED .*)
-	|   GATED_SEMPRED
-		{
-			$GATED_SEMPRED.outerAltNum = this.outerAltNum;
-			TrackInlineAction($GATED_SEMPRED);
-		}
+	|   act=GATED_SEMPRED					{HandleInlineAction($act);}
 	|   EPSILON 
 	;
 
 ebnf
 	:	(dotLoop) => dotLoop // .* or .+
 	|	block
-	|	^( OPTIONAL block )
-	|	^( CLOSURE block )
-	|	^( POSITIVE_CLOSURE block )
+	|	^(OPTIONAL block)
+	|	^(CLOSURE block)
+	|	^(POSITIVE_CLOSURE block)
 	;
 
 /** Track the .* and .+ idioms and make them nongreedy by default.
  */
 dotLoop
-	:	(	^( CLOSURE dotBlock )
-		|	^( POSITIVE_CLOSURE dotBlock )
+	:	(	^(CLOSURE dotBlock)
+		|	^(POSITIVE_CLOSURE dotBlock)
 		)
-		{
-			GrammarAST block = (GrammarAST)$start.GetChild(0);
-			IDictionary<string, object> opts=new Dictionary<string, object>();
-			opts["greedy"] = "false";
-			if ( grammar.type!=GrammarType.Lexer )
-			{
-				// parser grammars assume k=1 for .* loops
-				// otherwise they (analysis?) look til EOF!
-				opts["k"] = 1;
-			}
-			block.SetOptions(grammar,opts);
-		}
+		{HandleDotLoop($start);}
 	;
 
 dotBlock
@@ -442,49 +285,10 @@ tree_
 	;
 
 atom[GrammarAST scope_]
-	:	^( rr=RULE_REF (rarg=ARG_ACTION)? )
-		{
-			grammar.AltReferencesRule( currentRuleName, $scope_, $rr, this.outerAltNum );
-			if ( $rarg != null )
-			{
-				$rarg.outerAltNum = this.outerAltNum;
-				TrackInlineAction($rarg);
-			}
-		}
-	|	^( t=TOKEN_REF (targ=ARG_ACTION )? )
-		{
-			if ( $targ != null )
-			{
-				$targ.outerAltNum = this.outerAltNum;
-				TrackInlineAction($targ);
-			}
-			if ( grammar.type == GrammarType.Lexer )
-			{
-				grammar.AltReferencesRule( currentRuleName, $scope_, $t, this.outerAltNum );
-			}
-			else
-			{
-				grammar.AltReferencesTokenID( currentRuleName, $t, this.outerAltNum );
-			}
-		}
-	|	c=CHAR_LITERAL
-		{
-			if ( grammar.type != GrammarType.Lexer )
-			{
-				Rule rule = grammar.GetRule(currentRuleName);
-				if ( rule != null )
-					rule.TrackTokenReferenceInAlt($c, outerAltNum);
-			}
-		}
-	|	s=STRING_LITERAL 
-		{
-			if ( grammar.type != GrammarType.Lexer )
-			{
-				Rule rule = grammar.GetRule(currentRuleName);
-				if ( rule!=null )
-					rule.TrackTokenReferenceInAlt($s, outerAltNum);
-			}
-		}
+	:	^( t=RULE_REF (a=ARG_ACTION)? )		{HandleRuleReferenceAtom($scope_, $t, $a);}
+	|	^( t=TOKEN_REF (a=ARG_ACTION )? )	{HandleTokenReferenceAtom($scope_, $t, $a);}
+	|	t=CHAR_LITERAL						{HandleStringLiteralAtom($t);}
+	|	t=STRING_LITERAL					{HandleStringLiteralAtom($t);}
 	|	WILDCARD
 	|	^(DOT ID atom[$ID]) // scope override on rule
 	;
@@ -506,14 +310,11 @@ rewrite
 	}
 }
 	:	^(	REWRITES
-			(	^( REWRITE (pred=SEMPRED)? rewrite_alternative )
-				{
-					if ( $pred != null )
-					{
-						$pred.outerAltNum = this.outerAltNum;
-						TrackInlineAction($pred);
-					}
-				}
+			(	^(	REWRITE
+					(	pred=SEMPRED	{HandleInlineAction($pred);}
+					)?
+					rewrite_alternative
+				)
 			)*
 		)
 		//{System.out.println("-> refs = "+currentRewriteRule.rewriteRefsDeep);}
@@ -541,13 +342,12 @@ rewrite_block
 				foreach ( var item in currentRewriteBlock.rewriteRefsShallow )
 					enclosingBlock.rewriteRefsDeep.Add( item );
 			}
-			//currentRewriteBlock = enclosingBlock; // restore old BLOCK ptr
 		}
 	;
-finally { currentRewriteBlock = enclosingBlock; }
+finally { currentRewriteBlock = enclosingBlock; /* restore old BLOCK ptr */ }
 
 rewrite_alternative
-	:	{grammar.BuildAST}? => ^( a=ALT ( ( rewrite_element )+ | EPSILON ) EOA )
+	:	{grammar.BuildAST}? => ^(ALT (rewrite_element+ | EPSILON) EOA)
 	|	{grammar.BuildTemplate}? => rewrite_template
 	|	ETC {this.blockLevel==1}? // only valid as outermost rewrite
 	;
@@ -565,83 +365,40 @@ rewrite_ebnf
 	;
 
 rewrite_tree
-	:   ^(	TREE_BEGIN rewrite_atom ( rewrite_element )* )
+	:   ^(TREE_BEGIN rewrite_atom rewrite_element*)
 	;
 
 rewrite_atom
 @init
 {
-	if ( state.backtracking == 0 )
-	{
-		Rule r = grammar.GetRule(currentRuleName);
-		var tokenRefsInAlt = r.GetTokenRefsInAlt(outerAltNum);
-		bool imaginary =
-			$start.Type==TOKEN_REF &&
-			!tokenRefsInAlt.Contains($start.Text);
-		if ( !imaginary && grammar.BuildAST &&
-			 ($start.Type==RULE_REF ||
-			  $start.Type==LABEL ||
-			  $start.Type==TOKEN_REF ||
-			  $start.Type==CHAR_LITERAL ||
-			  $start.Type==STRING_LITERAL) )
-		{
-			// track per block and for entire rewrite rule
-			if ( currentRewriteBlock!=null )
-			{
-				currentRewriteBlock.rewriteRefsShallow.Add($start);
-				currentRewriteBlock.rewriteRefsDeep.Add($start);
-			}
-
-			//System.out.println("adding "+$start.Text+" to "+currentRewriteRule.Text);
-			currentRewriteRule.rewriteRefsDeep.Add($start);
-		}
-	}
+	if (state.backtracking == 0)
+		HandleRewriteAtomStart($start);
 }
 	:	RULE_REF 
 	|	(	^(	TOKEN_REF
-				(	ARG_ACTION
-					{
-						$ARG_ACTION.outerAltNum = this.outerAltNum;
-						TrackInlineAction($ARG_ACTION);
-					}
+				(	ARG_ACTION	{HandleInlineAction($ARG_ACTION);}
 				)?
 			)
 		|	CHAR_LITERAL
 		|	STRING_LITERAL
 		)
 	|	LABEL
-	|	ACTION
-		{
-			$ACTION.outerAltNum = this.outerAltNum;
-			TrackInlineAction($ACTION);
-		}
+	|	ACTION					{HandleInlineAction($ACTION);}
 	;
 
 rewrite_template
 	:	^(	ALT EPSILON EOA )
-	|	^(	TEMPLATE (id=ID|ind=ACTION)
-			^( ARGLIST
-				(	^( ARG arg=ID a=ACTION )
-					{
-						$a.outerAltNum = this.outerAltNum;
-						TrackInlineAction($a);
-					}
+	|	^(	TEMPLATE
+			(	ID
+			|	a=ACTION				{HandleInlineAction($a);}
+			)
+			^(	ARGLIST
+				(	^(ARG ID a=ACTION)	{HandleInlineAction($a);}
 				)*
 			)
-			{
-				if ( $ind!=null )
-				{
-					$ind.outerAltNum = this.outerAltNum;
-					TrackInlineAction($ind);
-				}
-			}
 			(	DOUBLE_QUOTE_STRING_LITERAL
 			|	DOUBLE_ANGLE_STRING_LITERAL
 			)?
 		)
-	|	act=ACTION
-		{
-			$act.outerAltNum = this.outerAltNum;
-			TrackInlineAction($act);
-		}
+	|	a=ACTION						{HandleInlineAction($a);}
 	;
