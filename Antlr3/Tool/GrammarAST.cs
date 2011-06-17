@@ -520,7 +520,7 @@ namespace Antlr3.Tool
             {
                 GrammarAST child = (GrammarAST)t.GetChild( i );
                 int ttype = child.Type;
-                if ( ttype == ANTLRParser.REWRITE )
+                if ( ttype == ANTLRParser.REWRITES )
                 {
                     continue;
                 }
