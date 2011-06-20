@@ -205,6 +205,86 @@ namespace Antlr4.Test.StringTemplate
         }
 
         [TestMethod]
+        public void TestStringRendererWithFormat_cap()
+        {
+            string templates =
+                    "foo(x) ::= << <x; format=\"cap\"> >>\n";
+
+            writeFile(tmpdir, "t.stg", templates);
+            TemplateGroup group = new TemplateGroupFile(Path.Combine(tmpdir, "t.stg"));
+            group.RegisterRenderer(typeof(string), new StringRenderer());
+            Template st = group.GetInstanceOf("foo");
+            st.Add("x", "hi");
+            string expecting = " Hi ";
+            string result = st.Render();
+            Assert.AreEqual(expecting, result);
+        }
+
+        [TestMethod]
+        public void TestStringRendererWithFormat_cap_emptyValue()
+        {
+            string templates =
+                    "foo(x) ::= << <x; format=\"cap\"> >>\n";
+
+            writeFile(tmpdir, "t.stg", templates);
+            TemplateGroup group = new TemplateGroupFile(Path.Combine(tmpdir, "t.stg"));
+            group.RegisterRenderer(typeof(string), new StringRenderer());
+            Template st = group.GetInstanceOf("foo");
+            st.Add("x", "");
+            string expecting = " ";//FIXME: why not two spaces?
+            string result = st.Render();
+            Assert.AreEqual(expecting, result);
+        }
+
+        [TestMethod]
+        public void TestStringRendererWithFormat_url_encode()
+        {
+            string templates =
+                    "foo(x) ::= << <x; format=\"url-encode\"> >>\n";
+
+            writeFile(tmpdir, "t.stg", templates);
+            TemplateGroup group = new TemplateGroupFile(Path.Combine(tmpdir, "t.stg"));
+            group.RegisterRenderer(typeof(string), new StringRenderer());
+            Template st = group.GetInstanceOf("foo");
+            st.Add("x", "a b");
+            string expecting = " a+b ";
+            string result = st.Render();
+            Assert.AreEqual(expecting, result);
+        }
+
+        [TestMethod]
+        public void TestStringRendererWithFormat_xml_encode()
+        {
+            string templates =
+                    "foo(x) ::= << <x; format=\"xml-encode\"> >>\n";
+
+            writeFile(tmpdir, "t.stg", templates);
+            TemplateGroup group = new TemplateGroupFile(Path.Combine(tmpdir, "t.stg"));
+            group.RegisterRenderer(typeof(string), new StringRenderer());
+            Template st = group.GetInstanceOf("foo");
+            st.Add("x", "a<b> &\t\b");
+            string expecting = " a&lt;b&gt; &amp;\t&#8; ";
+            string result = st.Render();
+            Assert.AreEqual(expecting, result);
+        }
+
+        [TestMethod]
+        public void TestStringRendererWithFormat_xml_encode_null()
+        {
+            string templates =
+                    "foo(x) ::= << <x; format=\"xml-encode\"> >>\n";
+
+            writeFile(tmpdir, "t.stg", templates);
+            TemplateGroup group = new TemplateGroupFile(Path.Combine(tmpdir, "t.stg"));
+            group.RegisterRenderer(typeof(string), new StringRenderer());
+            Template st = group.GetInstanceOf("foo");
+            st.Add("x", null);
+            string expecting = " ";
+            string result = st.Render();
+            Assert.AreEqual(expecting, result);
+        }
+
+        [TestMethod]
         public void TestNumberRendererWithPrintfFormat()
         {
             //string templates = "foo(x,y) ::= << <x; format=\"%d\"> <y; format=\"%2.3f\"> >>\n";

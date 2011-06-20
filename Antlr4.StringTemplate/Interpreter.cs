@@ -611,6 +611,8 @@ namespace Antlr4.StringTemplate
             CompiledTemplate c = group.LookupTemplate(templateName);
             if (c == null)
                 return; // will get error later
+            if (c.FormalArguments == null)
+                return;
 
             foreach (FormalArgument arg in c.FormalArguments)
             {
@@ -1449,7 +1451,11 @@ namespace Antlr4.StringTemplate
 
                 if (arg.DefaultValueToken.Type == GroupParser.ANONYMOUS_TEMPLATE)
                 {
-                    Template defaultArgST = group.CreateStringTemplateInternally(arg.CompiledDefaultValue);
+                    CompiledTemplate code = arg.CompiledDefaultValue;
+                    if (code == null)
+                        code = new CompiledTemplate();
+
+                    Template defaultArgST = group.CreateStringTemplateInternally(code);
                     // default arg template must see other args so it's enclosing
                     // instance is the template we are invoking.
                     defaultArgST.Group = group;

@@ -1013,6 +1013,34 @@ namespace Antlr4.Test.StringTemplate
         }
 
         [TestMethod]
+        public void TestEarlyEvalNoIndent()
+        {
+            string templates =
+                "t() ::= <<  abc>>\n" +
+                "main() ::= <<\n" +
+                "<t()>\n" +
+                "<(t())>\n" + // early eval ignores indents; mostly for simply strings
+                "  <t()>\n" +
+                "  <(t())>\n" +
+                ">>\n";
+
+            writeFile(tmpdir, "t.stg", templates);
+            TemplateGroup group = new TemplateGroupFile(Path.Combine(tmpdir, "t.stg"));
+            Template st = group.GetInstanceOf("main");
+            StringWriter sw = new StringWriter();
+            NoIndentWriter w = new NoIndentWriter(sw);
+            st.Write(w);
+            string result = sw.ToString();
+            string expected =
+                "abc" + newline +
+                "abc" + newline +
+                "abc" + newline +
+                "abc";
+            Assert.AreEqual(expected, result);
+        }
+
+
+        [TestMethod]
         public void TestArrayOfTemplates()
         {
             string template = "<foo>!";

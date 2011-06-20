@@ -122,6 +122,11 @@ namespace Antlr4.StringTemplate
         protected override CompiledTemplate Load(string name)
         {
             string parent = Utility.GetPrefix(name);
+            if (string.IsNullOrEmpty(parent))
+            {
+                // no need to check for a group file as name has no parent
+                return LoadTemplateFile(string.Empty, name + ".st"); // load t.st file
+            }
 
             if (Path.IsPathRooted(parent))
                 throw new ArgumentException();

@@ -520,6 +520,32 @@ namespace Antlr4.Test.StringTemplate
             Assert.AreEqual(expecting, result);
         }
 
+        /**
+         * When the anonymous template specified as a default value for a formalArg
+         * contains a syntax error Template 4.0.2 emits a NullPointerException error
+         * (after the syntax error)
+         * 
+         * @throws Exception
+         */
+        [TestMethod]
+        public void TestHandleBuggyDefaultArgument()
+        {
+            string templates = "main(a={(<\"\")>}) ::= \"\"";
+            writeFile(tmpdir, "t.stg", templates);
+
+            ErrorBuffer errors = new ErrorBuffer();
+            TemplateGroup group = new TemplateGroupFile(Path.Combine(tmpdir, "t.stg"));
+            group.Listener = errors;
+
+            Template st = group.GetInstanceOf("main");
+            string s = st.Render();
+
+            // Check the errors. This contained an "NullPointerException" before
+            Assert.AreEqual(
+                    "t.stg 1:12: mismatched input ')' expecting RDELIM" + newline,
+                    errors.ToString());
+        }
+
         private class Counter
         {
             int n = 0;
@@ -768,6 +794,40 @@ namespace Antlr4.Test.StringTemplate
             expected = "bar";
             result = st.Render();
             Assert.AreEqual(expected, result);
+        }
+
+        [TestMethod]
+        public void TestGroupFileImport()
+        {
+            // /randomdir/group1.stg (a template) and /randomdir/group2.stg with b.
+            // group1 imports group2, a includes b
+            string dir = tmpdir;
+            string groupFile1 =
+                "import \"group2.stg\"\n" +
+                "a(x) ::= <<\n" +
+                "foo<b()>\n" +
+                ">>\n";
+            writeFile(dir, "group1.stg", groupFile1);
+            string groupFile2 =
+                "b() ::= \"bar\"\n";
+            writeFile(dir, "group2.stg", groupFile2);
+            TemplateGroup group1 = new TemplateGroupFile(Path.Combine(dir, "group1.stg"));
+
+            // Is the imported template b found? 
+            Template stb = group1.GetInstanceOf("b");
+            Assert.AreEqual("bar", stb.Render());
+
+            // Is the include of b() resolved?
+            Template sta = group1.GetInstanceOf("a");
+            Assert.AreEqual("foobar", sta.Render());
+
+            // Are the correct "ThatCreatedThisInstance" groups assigned 
+            Assert.AreEqual("group1", sta.Group.Name);
+            Assert.AreEqual("group1", stb.Group.Name);
+
+            // Are the correct (native) groups assigned for the templates 
+            Assert.AreEqual("group1", sta.impl.NativeGroup.Name);
+            Assert.AreEqual("group2", stb.impl.NativeGroup.Name);
         }
     }
 }

@@ -38,14 +38,17 @@ namespace Antlr4.StringTemplate
     using System.Text;
     using Antlr.Runtime;
     using Antlr4.StringTemplate.Compiler;
+    using Antlr4.StringTemplate.Extensions;
     using Antlr4.StringTemplate.Misc;
 
     using ArgumentException = System.ArgumentException;
     using ArgumentNullException = System.ArgumentNullException;
     using Console = System.Console;
+    using Directory = System.IO.Directory;
     using Environment = System.Environment;
     using Exception = System.Exception;
     using IDictionary = System.Collections.IDictionary;
+    using Path = System.IO.Path;
     using StringBuilder = System.Text.StringBuilder;
     using Type = System.Type;
     using Uri = System.Uri;
@@ -646,7 +649,11 @@ namespace Antlr4.StringTemplate
             // do nothing upon syntax error
             if (fileName == null || fileName.Equals("<missing STRING>"))
                 return;
+
             fileName = Utility.Strip(fileName, 1);
+            if (!string.IsNullOrEmpty(this.FileName) && Directory.Exists(Path.GetDirectoryName(this.FileName)))
+                fileName = Path.Combine(Path.GetDirectoryName(this.FileName), fileName);
+
             TemplateGroup g = null;
             if (fileName.EndsWith(".stg"))
             {
@@ -656,6 +663,7 @@ namespace Antlr4.StringTemplate
             {
                 g = new TemplateGroupDirectory(fileName, delimiterStartChar, delimiterStopChar);
             }
+
             ImportTemplates(g);
         }
 
@@ -676,7 +684,11 @@ namespace Antlr4.StringTemplate
             }
             catch (Exception e)
             {
-                ErrorManager.IOError(null, ErrorType.CANT_LOAD_GROUP_FILE, e, fileName);
+                e.PreserveStackTrace();
+                if (!e.IsCritical())
+                    ErrorManager.IOError(null, ErrorType.CANT_LOAD_GROUP_FILE, e, fileName);
+
+                throw;
             }
         }
 

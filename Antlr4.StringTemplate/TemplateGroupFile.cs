@@ -34,12 +34,21 @@ namespace Antlr4.StringTemplate
 {
     using System.Runtime.CompilerServices;
     using Antlr4.StringTemplate.Compiler;
+    using Antlr4.StringTemplate.Extensions;
     using ArgumentException = System.ArgumentException;
+    using ArgumentNullException = System.ArgumentNullException;
     using Encoding = System.Text.Encoding;
     using Exception = System.Exception;
     using File = System.IO.File;
+    using FileStream = System.IO.FileStream;
+    using FileMode = System.IO.FileMode;
+    using FileAccess = System.IO.FileAccess;
+    using FileShare = System.IO.FileShare;
+    using FileNotFoundException = System.IO.FileNotFoundException;
     using NotImplementedException = System.NotImplementedException;
     using Path = System.IO.Path;
+    using Stream = System.IO.Stream;
+    using StringComparison = System.StringComparison;
     using Uri = System.Uri;
 
     /** The internal representation of a single group file (which must end in
@@ -61,42 +70,28 @@ namespace Antlr4.StringTemplate
         public TemplateGroupFile(string fileName, char delimiterStartChar, char delimiterStopChar)
             : base(delimiterStartChar, delimiterStopChar)
         {
-            if (!fileName.EndsWith(".stg"))
-                throw new ArgumentException("Group file names must end in .stg: " + fileName);
+            if (fileName == null)
+                throw new ArgumentNullException("fileName");
 
             try
             {
-                //File f = new File(fileName);
-                if (File.Exists(fileName))
-                {
-                    _url = new Uri(fileName);
-                }
-                else
-                {
-                    throw new NotImplementedException();
-#if false
-                    // try in classpath
-                    ClassLoader cl = Thread.currentThread().getContextClassLoader();
-                    url = cl.getResource(fileName);
-                    if (url == null)
-                    {
-                        cl = this.GetType().getClassLoader();
-                        url = cl.getResource(fileName);
-                    }
-#endif
-                }
+                if (!fileName.EndsWith(".stg"))
+                    throw new ArgumentException("Group file names must end in .stg: " + fileName);
 
-                if (_url == null)
-                {
-                    throw new ArgumentException("No such group file: " + fileName);
-                }
+                if (!File.Exists(fileName))
+                    throw new FileNotFoundException(string.Format("No such group file: {0}", fileName));
+
+                this._url = new Uri(fileName);
+                this._fileName = fileName;
             }
             catch (Exception e)
             {
-                ErrorManager.InternalError(null, "can't Load group file " + fileName, e);
-            }
+                e.PreserveStackTrace();
+                if (!e.IsCritical())
+                    ErrorManager.InternalError(null, "can't Load group file " + fileName, e);
 
-            this._fileName = fileName;
+                throw;
+            }
         }
 
         public TemplateGroupFile(string fullyQualifiedFileName, Encoding encoding)
@@ -113,8 +108,12 @@ namespace Antlr4.StringTemplate
         public TemplateGroupFile(Uri url, Encoding encoding, char delimiterStartChar, char delimiterStopChar)
             : base(delimiterStartChar, delimiterStopChar)
         {
+            if (url == null)
+                throw new ArgumentNullException("url");
+
             this._url = url;
             this.Encoding = encoding;
+            this._fileName = _url.AbsolutePath;
         }
 
         public override bool IsDefined(string name)
@@ -144,10 +143,11 @@ namespace Antlr4.StringTemplate
             if (_alreadyLoaded)
                 return;
 
-            _alreadyLoaded = true; // do before actual load to say we're doing it
+            // do before actual load to say we're doing it
             // no prefix since this group file is the entire group, nothing lives
             // beneath it.
-            LoadGroupFile(string.Empty, _url.ToString());
+            _alreadyLoaded = true;
+            LoadGroupFile(string.Empty, _url.LocalPath);
         }
 
         public override string Show()

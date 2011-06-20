@@ -72,13 +72,13 @@ namespace Antlr4.Test.StringTemplate
         public void TestRefToAnotherTemplateInSameGroup()
         {
             string dir = tmpdir;
-            string a = "a() ::= << $b()$ >>\n";
+            string a = "a() ::= << <$b()$> >>\n";
             string b = "b() ::= <<bar>>\n";
             writeFile(dir, "a.st", a);
             writeFile(dir, "b.st", b);
             TemplateGroup group = new TemplateGroupDirectory(dir, '$', '$');
             Template st = group.GetInstanceOf("a");
-            string expected = " bar ";
+            string expected = " <bar> ";
             string result = st.Render();
             Assert.AreEqual(expected, result);
         }
