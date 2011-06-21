@@ -89,7 +89,7 @@ namespace Antlr.Runtime
             t.Line = current.Line;
             t.CharPositionInLine = current.CharPositionInLine;
             t.Channel = DefaultTokenChannel;
-            t.InputStream = input as ICharStream;
+            t.InputStream = current.InputStream;
             return t;
         }
 
