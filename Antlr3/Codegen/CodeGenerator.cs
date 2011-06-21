@@ -863,9 +863,7 @@ namespace Antlr3.Codegen
             }
             catch ( IOException ioe )
             {
-                ErrorManager.Error( ErrorManager.MSG_CANNOT_WRITE_FILE,
-                                   VocabFileName,
-                                   ioe );
+                ErrorManager.Error( ErrorManager.MSG_CANNOT_WRITE_FILE, ioe );
             }
             /*
             JSystem.@out.println("num obj.prop refs: "+ ASTExpr.totalObjPropRefs);

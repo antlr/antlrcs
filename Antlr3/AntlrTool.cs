@@ -564,7 +564,7 @@ namespace Antlr3
                         Console.Out.WriteLine( "output: " + outputFiles );
                         Console.Out.WriteLine( "dependents: " + dependents );
 #endif
-                        Console.Out.WriteLine( dep.GetDependencies() );
+                        Console.Out.WriteLine( dep.GetDependencies().Render() );
                         continue;
                     }
 
@@ -655,8 +655,7 @@ namespace Antlr3
                 {
                     if ( exceptionWhenWritingLexerFile )
                     {
-                        ErrorManager.Error( ErrorManager.MSG_CANNOT_WRITE_FILE,
-                                           lexerGrammarFileName, e );
+                        ErrorManager.Error( ErrorManager.MSG_CANNOT_WRITE_FILE, e );
                     }
                     else
                     {
