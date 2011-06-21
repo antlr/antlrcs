@@ -1,10 +1,10 @@
 /*
- * [The "BSD licence"]
- * Copyright (c) 2005-2008 Terence Parr
+ * [The "BSD license"]
+ * Copyright (c) 2005-2011 Terence Parr
  * All rights reserved.
  *
  * Conversion to C#:
- * Copyright (c) 2008 Sam Harwell, Pixel Mine, Inc.
+ * Copyright (c) 2011 Sam Harwell, Pixel Mine, Inc.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -502,6 +502,36 @@ namespace AntlrUnitTests
                                           "b",
                                           new CommonToken( ANTLRParser.ACTION, action ), 1 );
             string found = translator.Translate();
+            Assert.AreEqual(expecting, found);
+
+            Assert.AreEqual(0, equeue.errors.Count, "unexpected errors: " + equeue);
+        }
+
+        [TestMethod]
+        public void TestActionNotMovedToSynPred()
+        {
+            String action = "$b = true;";
+            String expecting = "retval.b = true;";
+
+            ErrorQueue equeue = new ErrorQueue();
+            ErrorManager.SetErrorListener(equeue);
+            Grammar g = new Grammar(
+                "grammar t;\n" +
+                "options {output=AST;}\n" + // push b into retval struct
+                "a returns [boolean b]\n" +
+                "options {backtrack=true;}\n" +
+                "   : 'a' {" + action + "}\n" +
+                "   | 'a'\n" +
+                "   ;\n");
+            AntlrTool antlr = newTool();
+            CodeGenerator generator = new CodeGenerator(antlr, g, "Java");
+            g.CodeGenerator = generator;
+            generator.GenRecognizer(); // forces load of templates
+            ActionTranslator translator =
+                new ActionTranslator(generator,
+                    "a",
+                    new CommonToken(ANTLRParser.ACTION, action), 1);
+            String found = translator.Translate();
             Assert.AreEqual(expecting, found);
 
             Assert.AreEqual(0, equeue.errors.Count, "unexpected errors: " + equeue);
