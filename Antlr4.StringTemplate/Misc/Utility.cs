@@ -1,5 +1,5 @@
 /*
- * [The "BSD licence"]
+ * [The "BSD license"]
  * Copyright (c) 2011 Terence Parr
  * All rights reserved.
  *
@@ -32,10 +32,6 @@
 
 namespace Antlr4.StringTemplate.Misc
 {
-    using FieldInfo = System.Reflection.FieldInfo;
-    using MethodInfo = System.Reflection.MethodInfo;
-    using Type = System.Type;
-
     public static class Utility
     {
         public static string Strip(string s, int n)
@@ -70,6 +66,9 @@ namespace Antlr4.StringTemplate.Misc
                 return null;
 
             int lastSlash = name.LastIndexOf('/');
+            if (lastSlash == 0)
+                return "/";
+
             if (lastSlash > 0)
                 return name.Substring(0, lastSlash);
 

@@ -1,5 +1,5 @@
 /*
- * [The "BSD licence"]
+ * [The "BSD license"]
  * Copyright (c) 2011 Terence Parr
  * All rights reserved.
  *
@@ -744,7 +744,7 @@ namespace Antlr4.StringTemplate.Compiler
 
         public static bool isIDStartLetter(char c)
         {
-            return c >= 'a' && c <= 'z' || c >= 'A' && c <= 'Z' || c == '_';
+            return isIDLetter(c);
         }
 
         public static bool isIDLetter(char c)

@@ -39,6 +39,7 @@ namespace Antlr4.StringTemplate.Compiler
     using Antlr.Runtime.Tree;
     using Antlr4.StringTemplate.Misc;
 
+    using ArgumentException = System.ArgumentException;
     using ArgumentNullException = System.ArgumentNullException;
     using Console = System.Console;
     using StringWriter = System.IO.StringWriter;
@@ -54,6 +55,24 @@ namespace Antlr4.StringTemplate.Compiler
             new ReadOnlyCollection<CompiledTemplate>(new CompiledTemplate[0]);
 
         private string _name;
+
+        /**
+        Every template knows where it is relative to the group that
+        loaded it. The prefix is the relative path from the
+        root. "/prefix/name" is the fully qualified name of this
+        template. All ST.getInstanceOf() calls must use fully qualified
+        names. A "/" is added to the front if you don't specify
+        one. Template references within template code, however, uses
+        relative names, unless of course the name starts with "/".
+
+        This has nothing to do with the outer filesystem path to the group dir
+        or group file.
+
+        We set this as we load/compile the template.
+
+        Always ends with "/".
+         */
+        private string _prefix = "/";
 
         /** The original, immutable pattern (not really used again after
          *  initial "compilation"). Useful for debugging.  Even for
@@ -124,6 +143,24 @@ namespace Antlr4.StringTemplate.Compiler
             set
             {
                 _name = value;
+            }
+        }
+
+        public string Prefix
+        {
+            get
+            {
+                return _prefix;
+            }
+
+            set
+            {
+                if (value == null)
+                    throw new ArgumentNullException("value");
+                if (!value.EndsWith("/"))
+                    throw new ArgumentException("The prefix must end with a trailing '/'.");
+
+                _prefix = value;
             }
         }
 
@@ -323,6 +360,10 @@ namespace Antlr4.StringTemplate.Compiler
 
         public virtual void AddImplicitlyDefinedTemplate(CompiledTemplate sub)
         {
+            sub.Prefix = this.Prefix;
+            if (sub.Name[0] != '/')
+                sub.Name = sub.Prefix + sub.Name;
+
             if (implicitlyDefinedTemplates == null)
                 implicitlyDefinedTemplates = new List<CompiledTemplate>();
 

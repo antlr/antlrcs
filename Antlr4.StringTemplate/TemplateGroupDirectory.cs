@@ -1,5 +1,5 @@
 /*
- * [The "BSD licence"]
+ * [The "BSD license"]
  * Copyright (c) 2011 Terence Parr
  * All rights reserved.
  *
@@ -36,6 +36,7 @@ namespace Antlr4.StringTemplate
     using Antlr4.StringTemplate.Compiler;
     using Antlr4.StringTemplate.Misc;
     using ArgumentException = System.ArgumentException;
+    using Console = System.Console;
     using Directory = System.IO.Directory;
     using Encoding = System.Text.Encoding;
     using Exception = System.Exception;
@@ -91,6 +92,9 @@ namespace Antlr4.StringTemplate
                     }
 #endif
                 }
+
+                if (Verbose)
+                    Console.WriteLine("TemplateGroupDirectory({0}) found at {1}", dirName, root);
             }
             catch (Exception e)
             {
@@ -116,35 +120,47 @@ namespace Antlr4.StringTemplate
             this.Encoding = encoding;
         }
 
-        /** Load a template from dir or group file.  Group file is given
-         *  precedence over dir with same name.
+        /** <summary>
+         * Load a template from dir or group file.  Group file is given
+         * precedence over dir with same name. <paramref name="name"/> is
+         * always fully qualified.
+         * </summary>
          */
         protected override CompiledTemplate Load(string name)
         {
-            string parent = Utility.GetPrefix(name);
-            if (string.IsNullOrEmpty(parent))
-            {
-                // no need to check for a group file as name has no parent
-                return LoadTemplateFile(string.Empty, name + ".st"); // load t.st file
-            }
+            if (Verbose)
+                Console.WriteLine("STGroupDir.load(" + name + ")");
 
-            if (Path.IsPathRooted(parent))
+            string parent = Utility.GetPrefix(name); // must have parent; it's fully-qualified
+            string prefix = parent;
+            if (!parent.EndsWith("/"))
+                prefix += '/';
+
+            //    	if (parent.isEmpty()) {
+            //    		// no need to check for a group file as name has no parent
+            //            return loadTemplateFile("/", name+".st"); // load t.st file
+            //    	}
+
+            if (!Path.IsPathRooted(parent))
                 throw new ArgumentException();
 
             Uri groupFileURL = null;
             try
             {
                 // see if parent of template name is a group file
-                groupFileURL = new Uri(Path.Combine(root.LocalPath, parent) + ".stg");
+                groupFileURL = new Uri(TemplateName.GetTemplatePath(root.LocalPath, parent) + ".stg");
             }
             catch (UriFormatException e)
             {
-                ErrorManager.InternalError(null, "bad URL: " + Path.Combine(root.LocalPath, parent) + ".stg", e);
+                ErrorManager.InternalError(null, "bad URL: " + TemplateName.GetTemplatePath(root.LocalPath, parent) + ".stg", e);
                 return null;
             }
 
             if (!File.Exists(groupFileURL.LocalPath))
-                return LoadTemplateFile(parent, name + ".st");
+            {
+                string unqualifiedName = Path.GetFileName(name);
+                return LoadTemplateFile(prefix, unqualifiedName + ".st"); // load t.st file
+            }
 #if false
             InputStream @is = null;
             try
@@ -173,27 +189,29 @@ namespace Antlr4.StringTemplate
             }
 #endif
 
-            LoadGroupFile(parent, Path.Combine(root.LocalPath, parent) + ".stg");
+            LoadGroupFile(prefix, groupFileURL.LocalPath);
 
             return RawGetTemplate(name);
         }
 
         /** Load full path name .st file relative to root by prefix */
-        public virtual CompiledTemplate LoadTemplateFile(string prefix, string fileName)
+        public virtual CompiledTemplate LoadTemplateFile(string prefix, string unqualifiedFileName)
         {
-            if (Path.IsPathRooted(fileName))
+            if (Path.IsPathRooted(unqualifiedFileName))
                 throw new ArgumentException();
 
-            //System.out.println("load "+fileName+" from "+root+" prefix="+prefix);
-            string templateName = Path.ChangeExtension(fileName, null);
+            if (Verbose)
+                Console.WriteLine("loadTemplateFile({0}) in groupdir from {1} prefix={2}", unqualifiedFileName, root, prefix);
+
+            string templateName = Path.ChangeExtension(unqualifiedFileName, null);
             Uri f = null;
             try
             {
-                f = new Uri(Path.Combine(root.LocalPath, fileName));
+                f = new Uri(root.LocalPath + prefix + unqualifiedFileName);
             }
             catch (UriFormatException me)
             {
-                ErrorManager.RuntimeError(null, ErrorType.INVALID_TEMPLATE_NAME, me, Path.Combine(root.LocalPath, fileName));
+                ErrorManager.RuntimeError(null, ErrorType.INVALID_TEMPLATE_NAME, me, Path.Combine(root.LocalPath, unqualifiedFileName));
                 return null;
             }
 
@@ -201,29 +219,18 @@ namespace Antlr4.StringTemplate
             try
             {
                 fs = new ANTLRReaderStream(new StreamReader(f.LocalPath, Encoding ?? Encoding.UTF8));
+                fs.name = unqualifiedFileName;
             }
             catch (IOException)
             {
-                // doesn't exist; just return null to say not found
+                if (Verbose)
+                    Console.WriteLine("{0}/{1} doesn't exist", root, unqualifiedFileName);
+
+                //errMgr.IOError(null, ErrorType.NO_SUCH_TEMPLATE, ioe, unqualifiedFileName);
                 return null;
             }
 
-            GroupLexer lexer = new GroupLexer(fs);
-            fs.name = fileName;
-            CommonTokenStream tokens = new CommonTokenStream(lexer);
-            GroupParser parser = new GroupParser(tokens);
-            parser.Group = this;
-            lexer.group = this;
-            try
-            {
-                parser.templateDef(prefix);
-            }
-            catch (RecognitionException re)
-            {
-                ErrorManager.GroupSyntaxError(ErrorType.SYNTAX_ERROR, Path.GetFileName(f.LocalPath), re, re.Message);
-            }
-
-            return RawGetTemplate(templateName);
+            return LoadTemplateFile(prefix, unqualifiedFileName, fs);
         }
 
         public override string Name
@@ -239,6 +246,14 @@ namespace Antlr4.StringTemplate
             get
             {
                 return Path.GetFileName(root.LocalPath);
+            }
+        }
+
+        public override Uri RootDirUri
+        {
+            get
+            {
+                return root;
             }
         }
     }

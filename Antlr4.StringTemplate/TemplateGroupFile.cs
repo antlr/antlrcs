@@ -1,5 +1,5 @@
 /*
- * [The "BSD licence"]
+ * [The "BSD license"]
  * Copyright (c) 2011 Terence Parr
  * All rights reserved.
  *
@@ -35,21 +35,19 @@ namespace Antlr4.StringTemplate
     using System.Runtime.CompilerServices;
     using Antlr4.StringTemplate.Compiler;
     using Antlr4.StringTemplate.Extensions;
+
     using ArgumentException = System.ArgumentException;
     using ArgumentNullException = System.ArgumentNullException;
+    using Console = System.Console;
     using Encoding = System.Text.Encoding;
+    using ErrorType = Antlr4.StringTemplate.Misc.ErrorType;
     using Exception = System.Exception;
     using File = System.IO.File;
-    using FileStream = System.IO.FileStream;
-    using FileMode = System.IO.FileMode;
-    using FileAccess = System.IO.FileAccess;
-    using FileShare = System.IO.FileShare;
     using FileNotFoundException = System.IO.FileNotFoundException;
-    using NotImplementedException = System.NotImplementedException;
     using Path = System.IO.Path;
-    using Stream = System.IO.Stream;
-    using StringComparison = System.StringComparison;
     using Uri = System.Uri;
+    using UriFormatException = System.UriFormatException;
+    using Utility = Antlr4.StringTemplate.Misc.Utility;
 
     /** The internal representation of a single group file (which must end in
      *  ".stg").  If we fail to find a group file, look for it via the
@@ -83,6 +81,9 @@ namespace Antlr4.StringTemplate
 
                 this._url = new Uri(fileName);
                 this._fileName = fileName;
+
+                if (Verbose)
+                    Console.WriteLine("STGroupFile({0}) == file {1}", fileName, Path.GetFullPath(fileName));
             }
             catch (Exception e)
             {
@@ -147,7 +148,14 @@ namespace Antlr4.StringTemplate
             // no prefix since this group file is the entire group, nothing lives
             // beneath it.
             _alreadyLoaded = true;
-            LoadGroupFile(string.Empty, _url.LocalPath);
+
+            if (Verbose)
+                Console.WriteLine("loading group file " + _url.LocalPath);
+
+            LoadGroupFile("/", _url.LocalPath);
+
+            if (Verbose)
+                Console.WriteLine("found {0} templates in {1} = {2}", CompiledTemplates.Count, _url.ToString(), CompiledTemplates);
         }
 
         public override string Show()
@@ -171,6 +179,25 @@ namespace Antlr4.StringTemplate
             get
             {
                 return _fileName;
+            }
+        }
+
+        public override Uri RootDirUri
+        {
+            get
+            {
+                //System.out.println("url of "+fileName+" is "+url.toString());
+                string parent = Path.GetDirectoryName(_url.ToString());
+                try
+                {
+                    return new Uri(parent);
+                }
+                catch (UriFormatException mue)
+                {
+                    ErrorManager.RuntimeError(null, ErrorType.INVALID_TEMPLATE_NAME, mue, parent);
+                }
+
+                return null;
             }
         }
     }

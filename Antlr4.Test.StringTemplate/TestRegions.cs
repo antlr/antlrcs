@@ -1,5 +1,5 @@
 /*
- * [The "BSD licence"]
+ * [The "BSD license"]
  * Copyright (c) 2011 Terence Parr
  * All rights reserved.
  *
@@ -76,10 +76,8 @@ namespace Antlr4.Test.StringTemplate
         public void TestDefineRegionInSubgroup()
         {
             string dir = tmpdir;
-            string g1 = "a() ::= <<[<@r()>]>>\n";
-            writeFile(dir, "g1.stg", g1);
-            string g2 = "@a.r() ::= <<foo>>\n";
-            writeFile(dir, "g2.stg", g2);
+            writeFile(dir, "g1.stg", "a() ::= <<[<@r()>]>>\n");
+            writeFile(dir, "g2.stg", "@a.r() ::= <<foo>>\n");
 
             TemplateGroup group1 = new TemplateGroupFile(Path.Combine(dir, "g1.stg"));
             TemplateGroup group2 = new TemplateGroupFile(Path.Combine(dir, "g2.stg"));
@@ -170,7 +168,7 @@ namespace Antlr4.Test.StringTemplate
             ErrorBuffer errors = new ErrorBuffer();
             group.Listener = errors;
             group.Load();
-            string expected = "g.stg 2:3: the explicit definition of region a.r hides an embedded definition in the same group" + newline;
+            string expected = "g.stg 2:3: the explicit definition of region /a.r hides an embedded definition in the same group" + newline;
             string result = errors.ToString();
             Assert.AreEqual(expected, result);
         }

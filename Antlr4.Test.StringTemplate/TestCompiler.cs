@@ -1,5 +1,5 @@
 /*
- * [The "BSD licence"]
+ * [The "BSD license"]
  * Copyright (c) 2011 Terence Parr
  * All rights reserved.
  *
@@ -593,7 +593,7 @@ namespace Antlr4.Test.StringTemplate
                 "new 0 0, write";
             string asmResult = code.GetInstructions();
             Assert.AreEqual(asmExpected, asmResult);
-            string stringsExpected = "[region__a__r]";
+            string stringsExpected = "[/region__/a__r]";
             string stringsResult = code.strings.ToListString();
             Assert.AreEqual(stringsExpected, stringsResult);
         }
@@ -608,7 +608,7 @@ namespace Antlr4.Test.StringTemplate
                 "write_str 0, new 1 0, write";
             string asmResult = code.GetInstructions();
             Assert.AreEqual(asmExpected, asmResult);
-            string stringsExpected = "[x:, region__a__r]";
+            string stringsExpected = "[x:, /region__/a__r]";
             string stringsResult = code.strings.ToListString();
             Assert.AreEqual(stringsExpected, stringsResult);
         }

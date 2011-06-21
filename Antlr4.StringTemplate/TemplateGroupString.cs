@@ -1,5 +1,5 @@
 ﻿/*
- * [The "BSD licence"]
+ * [The "BSD license"]
  * Copyright (c) 2011 Terence Parr
  * All rights reserved.
  *
@@ -32,10 +32,10 @@
 
 namespace Antlr4.StringTemplate
 {
-    using System.Collections.Generic;
     using Antlr.Runtime;
     using Antlr4.StringTemplate.Compiler;
     using Antlr4.StringTemplate.Misc;
+
     using Exception = System.Exception;
 
     /** A group derived from a string not a file or dir. */
@@ -94,7 +94,7 @@ namespace Antlr4.StringTemplate
                 parser = new GroupParser(tokens);
                 // no prefix since this group file is the entire group, nothing lives
                 // beneath it.
-                parser.group(this, "");
+                parser.group(this, "/");
             }
             catch (Exception e)
             {

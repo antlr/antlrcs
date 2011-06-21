@@ -47,11 +47,15 @@ namespace Antlr4.StringTemplate
     using Directory = System.IO.Directory;
     using Environment = System.Environment;
     using Exception = System.Exception;
+    using File = System.IO.File;
     using IDictionary = System.Collections.IDictionary;
+    using IOException = System.IO.IOException;
     using Path = System.IO.Path;
+    using Stream = System.IO.Stream;
     using StringBuilder = System.Text.StringBuilder;
     using Type = System.Type;
     using Uri = System.Uri;
+    using UriFormatException = System.UriFormatException;
 
     /** A directory or directory tree of .st template files and/or group files.
      *  Individual template files contain formal template definitions. In a sense,
@@ -169,7 +173,7 @@ namespace Antlr4.StringTemplate
             }
         }
 
-        public IEnumerable<CompiledTemplate> CompiledTemplates
+        public ICollection<CompiledTemplate> CompiledTemplates
         {
             get
             {
@@ -252,7 +256,9 @@ namespace Antlr4.StringTemplate
         {
             if (name == null)
                 return null;
-            //System.out.println("GetInstanceOf("+name+")");
+            if (Verbose)
+                Console.WriteLine(string.Format("{0}.GetInstanceOf({1})", Name, name));
+
             CompiledTemplate c = LookupTemplate(name);
             if (c != null)
                 return CreateStringTemplate(c);
@@ -262,15 +268,17 @@ namespace Antlr4.StringTemplate
 
         protected internal virtual Template GetEmbeddedInstanceOf(TemplateFrame frame, string name)
         {
-            if (Verbose)
-            {
-                Console.WriteLine(string.Format("GetEmbeddedInstanceOf({0})", name));
-            }
+            string fullyQualifiedName = name;
+            if (name[0] != '/')
+                fullyQualifiedName = frame.Template.impl.Prefix + name;
 
-            Template st = GetInstanceOf(name);
+            if (Verbose)
+                Console.WriteLine(string.Format("getEmbeddedInstanceOf({0})", fullyQualifiedName));
+
+            Template st = GetInstanceOf(fullyQualifiedName);
             if (st == null)
             {
-                ErrorManager.RuntimeError(frame, ErrorType.NO_SUCH_TEMPLATE, name);
+                ErrorManager.RuntimeError(frame, ErrorType.NO_SUCH_TEMPLATE, fullyQualifiedName);
                 return CreateStringTemplateInternally(new CompiledTemplate());
             }
 
@@ -317,10 +325,21 @@ namespace Antlr4.StringTemplate
         /** Look up a fully-qualified name */
         public virtual CompiledTemplate LookupTemplate(string name)
         {
+            if (name[0] != '/')
+                name = "/" + name;
+
+            if (Verbose)
+                Console.WriteLine(string.Format("{0}.LookupTemplate({1})", Name, name));
+
             CompiledTemplate code;
             templates.TryGetValue(name, out code);
             if (code == NotFoundTemplate)
+            {
+                if (Verbose)
+                    Console.WriteLine(string.Format("{0} previously seen as not found", name));
+
                 return null;
+            }
 
             // try to load from disk and look up again
             if (code == null)
@@ -330,7 +349,15 @@ namespace Antlr4.StringTemplate
                 code = LookupImportedTemplate(name);
 
             if (code == null)
+            {
+                if (Verbose)
+                    Console.WriteLine(string.Format("{0} recorded not found", name));
+
                 templates[name] = NotFoundTemplate;
+            }
+
+            if (Verbose && code != null)
+                Console.WriteLine(string.Format("{0}.LookupTemplate({1}) found", Name, name));
 
             return code;
         }
@@ -361,15 +388,27 @@ namespace Antlr4.StringTemplate
 
         protected internal virtual CompiledTemplate LookupImportedTemplate(string name)
         {
-            //System.out.println("look for "+name+" in "+imports);
             if (imports == null)
                 return null;
+
             foreach (TemplateGroup g in imports)
             {
+                if (Verbose)
+                    Console.WriteLine(string.Format("checking {0} for imported {1}", g.Name, name));
+
                 CompiledTemplate code = g.LookupTemplate(name);
                 if (code != null)
+                {
+                    if (Verbose)
+                        Console.WriteLine(string.Format("{0}.LookupImportedTemplate({1}) found", g.Name, name));
+
                     return code;
+                }
             }
+
+            if (Verbose)
+                Console.WriteLine(string.Format("{0} not found in {1} imports", name, Name));
+
             return null;
         }
 
@@ -395,6 +434,9 @@ namespace Antlr4.StringTemplate
         // for testing
         public virtual CompiledTemplate DefineTemplate(string name, string template)
         {
+            if (name[0] != '/')
+                name = "/" + name;
+
             try
             {
                 CompiledTemplate impl = DefineTemplate(name, new CommonToken(GroupParser.ID, name), null, template, null);
@@ -411,6 +453,9 @@ namespace Antlr4.StringTemplate
         // for testing
         public virtual CompiledTemplate DefineTemplate(string name, string template, string[] arguments)
         {
+            if (name[0] != '/')
+                name = "/" + name;
+
             List<FormalArgument> a = new List<FormalArgument>();
             foreach (string arg in arguments)
                 a.Add(new FormalArgument(arg));
@@ -418,23 +463,30 @@ namespace Antlr4.StringTemplate
             return DefineTemplate(name, new CommonToken(GroupParser.ID, name), a, template, null);
         }
 
-        public virtual CompiledTemplate DefineTemplate(string templateName,
+        public virtual CompiledTemplate DefineTemplate(string fullyQualifiedTemplateName,
                                          IToken nameT,
                                          List<FormalArgument> args,
                                          string template,
                                          IToken templateToken)
         {
-            if (templateName == null || templateName.Length == 0)
-                throw new ArgumentException("empty template name");
-            if (templateName.IndexOf('.') >= 0)
-                throw new ArgumentException("cannot have '.' in template names");
+            if (Verbose)
+                Console.WriteLine(string.Format("DefineTemplate({0})", fullyQualifiedTemplateName));
+
+            if (fullyQualifiedTemplateName == null)
+                throw new ArgumentNullException("fullyQualifiedTemplateName");
+            if (fullyQualifiedTemplateName.Length == 0)
+                throw new ArgumentException("empty template name", "fullyQualifiedTemplateName");
+            if (fullyQualifiedTemplateName.IndexOf('.') >= 0)
+                throw new ArgumentException("cannot have '.' in template names", "fullyQualifiedTemplateName");
+            if (fullyQualifiedTemplateName[0] != '/')
+                throw new ArgumentException("Expected a fully qualified template name.", "fullyQualifiedTemplateName");
 
             template = Utility.TrimOneStartingNewline(template);
             template = Utility.TrimOneTrailingNewline(template);
             // compile, passing in templateName as enclosing name for any embedded regions
-            CompiledTemplate code = Compile(FileName, templateName, args, template, templateToken);
-            code.Name = templateName;
-            RawDefineTemplate(templateName, code, nameT);
+            CompiledTemplate code = Compile(FileName, fullyQualifiedTemplateName, args, template, templateToken);
+            code.Name = fullyQualifiedTemplateName;
+            RawDefineTemplate(fullyQualifiedTemplateName, code, nameT);
             code.DefineArgumentDefaultValueTemplates(this);
             code.DefineImplicitlyDefinedTemplates(this); // define any anonymous subtemplates
 
@@ -446,15 +498,14 @@ namespace Antlr4.StringTemplate
         {
             string alias = aliasT.Text;
             string target = targetT.Text;
-            CompiledTemplate targetCode;
-            templates.TryGetValue(target, out targetCode);
+            CompiledTemplate targetCode = RawGetTemplate("/" + target);
             if (targetCode == null)
             {
                 ErrorManager.CompiletimeError(ErrorType.ALIAS_TARGET_UNDEFINED, null, aliasT, alias, target);
                 return null;
             }
 
-            templates[alias] = targetCode;
+            RawDefineTemplate("/" + alias, targetCode, aliasT);
             return targetCode;
         }
 
@@ -484,13 +535,16 @@ namespace Antlr4.StringTemplate
         }
 
         public virtual void DefineTemplateOrRegion(
-            string templateName,
+            string fullyQualifiedTemplateName,
             string regionSurroundingTemplateName,
             IToken templateToken,
             string template,
             IToken nameToken,
             List<FormalArgument> args)
         {
+            if (fullyQualifiedTemplateName[0] != '/')
+                throw new ArgumentException("Expected a fully qualified template name.", "fullyQualifiedTemplateName");
+
             try
             {
                 if (regionSurroundingTemplateName != null)
@@ -499,13 +553,13 @@ namespace Antlr4.StringTemplate
                 }
                 else
                 {
-                    DefineTemplate(templateName, nameToken, args, template, templateToken);
+                    DefineTemplate(fullyQualifiedTemplateName, nameToken, args, template, templateToken);
                 }
             }
             catch (TemplateException)
             {
                 // after getting syntax error in a template, we emit msg
-                // and throw exception to blast all the way out here.
+                // and throw exception to blast all the way out to here.
             }
         }
 
@@ -601,16 +655,19 @@ namespace Antlr4.StringTemplate
             return c.Compile(srcName, name, args, template, templateToken);
         }
 
-        /** The "foo" of t() ::= "<@foo()>" is mangled to "region#t#foo" */
+        /** The "foo" of t() ::= "&lt;@foo()&gt;" is mangled to "/region__/t__foo" */
         public static string GetMangledRegionName(string enclosingTemplateName, string name)
         {
-            return "region__" + enclosingTemplateName + "__" + name;
+            if (enclosingTemplateName[0] != '/')
+                enclosingTemplateName = '/' + enclosingTemplateName;
+
+            return "/region__" + enclosingTemplateName + "__" + name;
         }
 
-        /** Return "t.foo" from "region__t__foo" */
+        /** Return "t.foo" from "/region__/t__foo" */
         public static string GetUnmangledTemplateName(string mangledName)
         {
-            string t = mangledName.Substring("region__".Length, mangledName.LastIndexOf("__") - "region__".Length);
+            string t = mangledName.Substring("/region__".Length, mangledName.LastIndexOf("__") - "/region__".Length);
             string r = mangledName.Substring(mangledName.LastIndexOf("__") + 2, mangledName.Length - mangledName.LastIndexOf("__") - 2);
             return t + '.' + r;
         }
@@ -632,39 +689,121 @@ namespace Antlr4.StringTemplate
             imports.Add(g);
         }
 
-        /** Load group dir or file (if .stg suffix) and then import templates. Don't hold
-         *  an independent ref to the "supergroup".
+        /** Import template files, directories, and group files.
+         *  Priority is given to templates defined in the current group;
+         *  this, in effect, provides inheritance. Polymorphism is in effect so
+         *  that if an inherited template references template t() then we
+         *  search for t() in the subgroup first.
          *
-         *  Override this if you want to look for groups elsewhere (database maybe?)
+         *  Templates are loaded on-demand from import dirs.  Imported groups are
+         *  loaded on-demand when searching for a template.
          *
-         *  ImportTemplates("org.foo.proj.G.stg") will try to find file org/foo/proj/G.stg
-         *  relative to current dir or in CLASSPATH. The name is not relative to this group.
-         *  Can use "/a/b/c/myfile.stg" also or "/a/b/c/mydir".
-         *
-         *  Pass token so you can give good error if you want.
+         *  The listener of this group is passed to the import group so errors
+         *  found while loading imported element are sent to listener of this group.
          */
         public virtual void ImportTemplates(IToken fileNameToken)
         {
             string fileName = fileNameToken.Text;
+
+            if (Verbose)
+                Console.WriteLine("ImportTemplates({0})", fileName);
+
             // do nothing upon syntax error
             if (fileName == null || fileName.Equals("<missing STRING>"))
                 return;
 
             fileName = Utility.Strip(fileName, 1);
-            if (!string.IsNullOrEmpty(this.FileName) && Directory.Exists(Path.GetDirectoryName(this.FileName)))
-                fileName = Path.Combine(Path.GetDirectoryName(this.FileName), fileName);
+
+            //Console.WriteLine("import {0}", fileName);
+            bool isGroupFile = fileName.EndsWith(".stg");
+            bool isTemplateFile = fileName.EndsWith(".st");
+            bool isGroupDir = !(isGroupFile || isTemplateFile);
 
             TemplateGroup g = null;
-            if (fileName.EndsWith(".stg"))
+
+            // search path is: working dir, g.stg's dir, CLASSPATH
+            Uri thisRoot = RootDirUri;
+            Uri fileUnderRoot = null;
+            //Console.WriteLine("thisRoot={0}", thisRoot);
+            try
             {
-                g = new TemplateGroupFile(fileName, delimiterStartChar, delimiterStopChar);
+                fileUnderRoot = new Uri(thisRoot + "/" + fileName);
+            }
+            catch (UriFormatException mfe)
+            {
+                ErrorManager.InternalError(null, string.Format("can't build URL for {0}/{1}", thisRoot, fileName), mfe);
+                return;
+            }
+
+            if (isTemplateFile)
+            {
+                g = new TemplateGroup();
+                g.Listener = this.Listener;
+                Uri fileURL = null;
+                if (File.Exists(fileUnderRoot.LocalPath))
+                    fileURL = fileUnderRoot;
+
+                if (fileURL != null)
+                {
+                    try
+                    {
+                        Stream s = File.OpenRead(fileURL.LocalPath);
+                        ANTLRInputStream templateStream = new ANTLRInputStream(s);
+                        templateStream.name = fileName;
+                        CompiledTemplate code = g.LoadTemplateFile("/", fileName, templateStream);
+                        if (code == null)
+                            g = null;
+                    }
+                    catch (IOException ioe)
+                    {
+                        ErrorManager.InternalError(null, string.Format("can't read from {0}", fileURL), ioe);
+                        g = null;
+                    }
+                }
+                else
+                {
+                    g = null;
+                }
+            }
+            else if (isGroupFile)
+            {
+                //System.out.println("look for fileUnderRoot: "+fileUnderRoot);
+                if (File.Exists(fileUnderRoot.LocalPath))
+                {
+                    g = new TemplateGroupFile(fileUnderRoot, Encoding, delimiterStartChar, delimiterStopChar);
+                    g.Listener = this.Listener;
+                }
+                else
+                {
+                    g = new TemplateGroupFile(fileName, delimiterStartChar, delimiterStopChar);
+                    g.Listener = this.Listener;
+                }
+            }
+            else if (isGroupDir)
+            {
+                //			System.out.println("try dir "+fileUnderRoot);
+                if (Directory.Exists(fileUnderRoot.LocalPath))
+                {
+                    g = new TemplateGroupDirectory(fileUnderRoot, Encoding, delimiterStartChar, delimiterStopChar);
+                    g.Listener = this.Listener;
+                }
+                else
+                {
+                    // try in CLASSPATH
+                    //				System.out.println("try dir in CLASSPATH "+fileName);
+                    g = new TemplateGroupDirectory(fileName, delimiterStartChar, delimiterStopChar);
+                    g.Listener = this.Listener;
+                }
+            }
+
+            if (g == null)
+            {
+                ErrorManager.CompiletimeError(ErrorType.CANT_IMPORT, null, fileNameToken, fileName);
             }
             else
             {
-                g = new TemplateGroupDirectory(fileName, delimiterStartChar, delimiterStopChar);
+                ImportTemplates(g);
             }
-
-            ImportTemplates(g);
         }
 
         /** Load a group file with full path fileName; it's relative to root by prefix. */
@@ -690,6 +829,54 @@ namespace Antlr4.StringTemplate
 
                 throw;
             }
+        }
+
+        /** Load template file into this group using absolute filename */
+        public virtual CompiledTemplate LoadAbsoluteTemplateFile(string fileName)
+        {
+            ANTLRFileStream fs;
+            try
+            {
+                fs = new ANTLRFileStream(fileName, Encoding);
+                fs.name = fileName;
+            }
+            catch (IOException)
+            {
+                // doesn't exist
+                //errMgr.IOError(null, ErrorType.NO_SUCH_TEMPLATE, ioe, fileName);
+                return null;
+            }
+
+            return LoadTemplateFile("", fileName, fs);
+        }
+
+        /** Load template stream into this group. unqualifiedFileName is "a.st".
+         *  The prefix is path from group root to unqualifiedFileName like /subdir
+         *  if file is in /subdir/a.st
+         */
+        public CompiledTemplate LoadTemplateFile(string prefix, string unqualifiedFileName, ICharStream templateStream)
+        {
+            GroupLexer lexer = new GroupLexer(templateStream);
+            CommonTokenStream tokens = new CommonTokenStream(lexer);
+            GroupParser parser = new GroupParser(tokens);
+            parser.Group = this;
+            lexer.group = this;
+            try
+            {
+                parser.templateDef(prefix);
+            }
+            catch (RecognitionException re)
+            {
+                ErrorManager.GroupSyntaxError(ErrorType.SYNTAX_ERROR, unqualifiedFileName, re, re.Message);
+            }
+
+            string templateName = Path.GetFileNameWithoutExtension(unqualifiedFileName);
+            if (!string.IsNullOrEmpty(prefix))
+                templateName = prefix + templateName;
+
+            CompiledTemplate impl = RawGetTemplate(templateName);
+            impl.Prefix = prefix;
+            return impl;
         }
 
         /** Add an adaptor for a kind of object so Template knows how to pull properties
@@ -800,6 +987,20 @@ namespace Antlr4.StringTemplate
         }
 
         public virtual string FileName
+        {
+            get
+            {
+                return null;
+            }
+        }
+
+        /** Return root dir if this is group dir; return dir containing group file
+         *  if this is group file.  This is derived from original incoming
+         *  dir or filename.  If it was absolute, this should come back
+         *  as full absolute path.  If only a URL is available, return URL of
+         *  one dir up.
+         */
+        public virtual Uri RootDirUri
         {
             get
             {

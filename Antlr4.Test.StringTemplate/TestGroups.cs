@@ -1,5 +1,5 @@
 /*
- * [The "BSD licence"]
+ * [The "BSD license"]
  * Copyright (c) 2011 Terence Parr
  * All rights reserved.
  *
@@ -32,10 +32,10 @@
 
 namespace Antlr4.Test.StringTemplate
 {
-    using Antlr4.StringTemplate;
-    using Microsoft.VisualStudio.TestTools.UnitTesting;
-    using Antlr4.StringTemplate.Misc;
     using System.Runtime.CompilerServices;
+    using Antlr4.StringTemplate;
+    using Antlr4.StringTemplate.Misc;
+    using Microsoft.VisualStudio.TestTools.UnitTesting;
     using Path = System.IO.Path;
 
     [TestClass]
@@ -45,11 +45,7 @@ namespace Antlr4.Test.StringTemplate
         public void TestSimpleGroup()
         {
             string dir = tmpdir;
-            string a =
-                "a(x) ::= <<" + newline +
-                "foo" + newline +
-                ">>" + newline;
-            writeFile(dir, "a.st", a);
+            writeFile(dir, "a.st", "a(x) ::= <<foo>>");
             TemplateGroup group = new TemplateGroupDirectory(dir);
             Template st = group.GetInstanceOf("a");
             string expected = "foo";
@@ -74,14 +70,8 @@ namespace Antlr4.Test.StringTemplate
         public void TestGroupWithTwoTemplates()
         {
             string dir = tmpdir;
-            string a =
-                "a(x) ::= <<" + newline +
-                "foo" + newline +
-                ">>" + newline;
-            writeFile(dir, "a.st", a);
-            string b =
-                "b() ::= \"bar\"" + newline;
-            writeFile(dir, "b.st", b);
+            writeFile(dir, "a.st", "a(x) ::= <<foo>>");
+            writeFile(dir, "b.st", "b() ::= \"bar\"");
             TemplateGroup group = new TemplateGroupDirectory(dir);
             Template st1 = group.GetInstanceOf("a");
             Template st2 = group.GetInstanceOf("b");
@@ -95,42 +85,12 @@ namespace Antlr4.Test.StringTemplate
         {
             // /randomdir/a and /randomdir/subdir/b
             string dir = tmpdir;
-            string a =
-                "a(x) ::= <<" + newline +
-                "foo" + newline +
-                ">>" + newline;
-            writeFile(dir, "a.st", a);
-            string b =
-                "b() ::= \"bar\"" + newline;
-            writeFile(Path.Combine(dir, "subdir"), "b.st", b);
+            writeFile(dir, "a.st", "a(x) ::= <<foo>>");
+            writeFile(Path.Combine(dir, "subdir"), "b.st", "b() ::= \"bar\"");
             TemplateGroup group = new TemplateGroupDirectory(dir);
-            Template st1 = group.GetInstanceOf("a");
-            Template st2 = group.GetInstanceOf("subdir/b");
-            string expected = "foobar";
-            string result = st1.Render() + st2.Render();
-            Assert.AreEqual(expected, result);
-            st2 = group.GetInstanceOf("subdir/b"); // should work with / in front too
-            expected = "bar";
-            result = st2.Render();
-            Assert.AreEqual(expected, result);
-        }
-
-        [TestMethod]
-        public void TestAbsoluteTemplateRef()
-        {
-            // /randomdir/a and /randomdir/subdir/b
-            string dir = tmpdir;
-            string a =
-                "a(x) ::= << <subdir/b()> >>\n";
-            writeFile(dir, "a.st", a);
-            string b =
-                "b() ::= <<bar>>\n";
-            writeFile(dir + "/subdir", "b.st", b);
-            TemplateGroup group = new TemplateGroupDirectory(dir);
-            Template st = group.GetInstanceOf("a");
-            string expected = " bar ";
-            string result = st.Render();
-            Assert.AreEqual(expected, result);
+            Assert.AreEqual("foo", group.GetInstanceOf("a").Render());
+            Assert.AreEqual("bar", group.GetInstanceOf("/subdir/b").Render());
+            Assert.AreEqual("bar", group.GetInstanceOf("subdir/b").Render());
         }
 
         [TestMethod]
@@ -138,22 +98,15 @@ namespace Antlr4.Test.StringTemplate
         {
             // /randomdir/a and /randomdir/group.stg with b and c templates
             string dir = tmpdir;
-            string a =
-                "a(x) ::= <<\n" +
-                "foo\n" +
-                ">>\n";
-            writeFile(dir, "a.st", a);
+            writeFile(dir, "a.st", "a(x) ::= <<foo>>");
             string groupFile =
                 "b() ::= \"bar\"\n" +
                 "c() ::= \"duh\"\n";
             writeFile(dir, "group.stg", groupFile);
             TemplateGroup group = new TemplateGroupDirectory(dir);
-            Template st1 = group.GetInstanceOf("a");
-            Template st2 = group.GetInstanceOf("group/b");
-            Template st3 = group.GetInstanceOf("group/c");
-            string expected = "foobarduh";
-            string result = st1.Render() + st2.Render() + st3.Render();
-            Assert.AreEqual(expected, result);
+            Assert.AreEqual("foo", group.GetInstanceOf("a").Render());
+            Assert.AreEqual("bar", group.GetInstanceOf("/group/b").Render());
+            Assert.AreEqual("duh", group.GetInstanceOf("/group/c").Render());
         }
 
         [TestMethod]
@@ -161,17 +114,11 @@ namespace Antlr4.Test.StringTemplate
         {
             // /randomdir/a and /randomdir/subdir/b
             string dir = tmpdir;
-            string a =
-                "a(x) ::= <<" + newline +
-                "foo" + newline +
-                ">>" + newline;
-            writeFile(dir, "a.st", a);
-            string b =
-                "b() ::= \"bar\"" + newline;
-            writeFile(dir + "/sub1/sub2", "b.st", b);
+            writeFile(dir, "a.st", "a(x) ::= <<foo>>");
+            writeFile(Path.Combine(dir, "sub1", "sub2"), "b.st", "b() ::= \"bar\"");
             TemplateGroup group = new TemplateGroupDirectory(dir);
             Template st1 = group.GetInstanceOf("a");
-            Template st2 = group.GetInstanceOf("sub1/sub2/b");
+            Template st2 = group.GetInstanceOf("/sub1/sub2/b");
             string expected = "foobar";
             string result = st1.Render() + st2.Render();
             Assert.AreEqual(expected, result);
@@ -182,11 +129,7 @@ namespace Antlr4.Test.StringTemplate
         {
             // /randomdir/a and /randomdir/group.stg with b and c templates
             string dir = tmpdir;
-            string a =
-                "a(x) ::= <<\n" +
-                "foo\n" +
-                ">>\n";
-            writeFile(dir, "a.st", a);
+            writeFile(dir, "a.st", "a(x) ::= <<foo>>");
             string groupFile =
                 "b() ::= \"bar\"\n" +
                 "c() ::= \"duh\"\n";
@@ -197,38 +140,6 @@ namespace Antlr4.Test.StringTemplate
             Template st3 = group.GetInstanceOf("subdir/group/c");
             string expected = "foobarduh";
             string result = st1.Render() + st2.Render() + st3.Render();
-            Assert.AreEqual(expected, result);
-        }
-
-        [TestMethod]
-        public void TestRefToAnotherTemplateInSameGroup()
-        {
-            string dir = tmpdir;
-            string a = "a() ::= << <b()> >>\n";
-            string b = "b() ::= <<bar>>\n";
-            writeFile(dir, "a.st", a);
-            writeFile(dir, "b.st", b);
-            TemplateGroup group = new TemplateGroupDirectory(dir);
-            Template st = group.GetInstanceOf("a");
-            string expected = " bar ";
-            string result = st.Render();
-            Assert.AreEqual(expected, result);
-        }
-
-        [TestMethod]
-        public void TestRefToAnotherTemplateInSameSubdir()
-        {
-            // /randomdir/a and /randomdir/subdir/b
-            string dir = tmpdir;
-            string a = "a() ::= << <subdir/b()> >>\n";
-            string b = "b() ::= <<bar>>\n";
-            writeFile(dir + "/subdir", "a.st", a);
-            writeFile(dir + "/subdir", "b.st", b);
-            TemplateGroup group = new TemplateGroupDirectory(dir);
-            Template st = group.GetInstanceOf("subdir/a");
-            st.impl.Dump();
-            string expected = " bar ";
-            string result = st.Render();
             Assert.AreEqual(expected, result);
         }
 
@@ -631,7 +542,7 @@ namespace Antlr4.Test.StringTemplate
             group.Listener = errors;
             Template st = group.GetInstanceOf("g");
             st.Render();
-            string expected = "context [g] 1:1 attribute z isn't defined" + newline;
+            string expected = "context [/g] 1:1 attribute z isn't defined" + newline;
             string result = errors.ToString();
             Assert.AreEqual(expected, result);
         }
@@ -688,60 +599,6 @@ namespace Antlr4.Test.StringTemplate
             TemplateGroup group1 = new TemplateGroupDirectory(dir);
             Template st = group1.GetInstanceOf("group/a"); // can't see
             Assert.AreEqual(null, st);
-        }
-
-        // test fully-qualified template refs
-
-        [TestMethod]
-        public void TestFullyQualifiedGetInstanceOf()
-        {
-            string dir = tmpdir;
-            string a =
-                "a(x) ::= <<" + newline +
-                "foo" + newline +
-                ">>" + newline;
-            writeFile(dir, "a.st", a);
-            TemplateGroup group = new TemplateGroupDirectory(dir);
-            Template st = group.GetInstanceOf("a");
-            string expected = "foo";
-            string result = st.Render();
-            Assert.AreEqual(expected, result);
-        }
-
-        [TestMethod]
-        public void TestFullyQualifiedTemplateRef()
-        {
-            // /randomdir/a and /randomdir/subdir/b
-            string dir = tmpdir;
-            string a = "a() ::= << <subdir/b()> >>\n";
-            string b = "b() ::= <<bar>>\n";
-            writeFile(dir + "/subdir", "a.st", a);
-            writeFile(dir + "/subdir", "b.st", b);
-            TemplateGroup group = new TemplateGroupDirectory(dir);
-            Template st = group.GetInstanceOf("subdir/a");
-            string expected = " bar ";
-            string result = st.Render();
-            Assert.AreEqual(expected, result);
-        }
-
-        [TestMethod]
-        public void TestFullyQualifiedTemplateRef2()
-        {
-            // /randomdir/a and /randomdir/group.stg with b and c templates
-            string dir = tmpdir;
-            string a =
-                "a(x) ::= << <group/b()> >>\n";
-            writeFile(dir, "a.st", a);
-            string groupFile =
-                "b() ::= \"bar\"\n" +
-                "c() ::= \"<a()>\"\n";
-            writeFile(dir, "group.stg", groupFile);
-            TemplateGroup group = new TemplateGroupDirectory(dir);
-            Template st1 = group.GetInstanceOf("a");
-            Template st2 = group.GetInstanceOf("group/c"); // invokes /a
-            string expected = " bar  bar ";
-            string result = st1.Render() + st2.Render();
-            Assert.AreEqual(expected, result);
         }
 
         [TestMethod]
@@ -828,6 +685,24 @@ namespace Antlr4.Test.StringTemplate
             // Are the correct (native) groups assigned for the templates 
             Assert.AreEqual("group1", sta.impl.NativeGroup.Name);
             Assert.AreEqual("group2", stb.impl.NativeGroup.Name);
+        }
+
+        [TestMethod]
+        public void TestUnloadWithImports()
+        {
+            writeFile(tmpdir, "t.stg",
+                    "import \"g1.stg\"\n\nmain() ::= <<\nv1-<f()>\n>>");
+            writeFile(tmpdir, "g1.stg", "f() ::= \"g1\"");
+            writeFile(tmpdir, "g2.stg", "f() ::= \"g2\"\nf2() ::= \"f2\"\n");
+            TemplateGroup group = new TemplateGroupFile(Path.Combine(tmpdir, "t.stg"));
+            Template st = group.GetInstanceOf("main");
+            Assert.AreEqual("v1-g1", st.Render());
+
+            // Change the text of group t, including the imports.
+            writeFile(tmpdir, "t.stg", "import \"g2.stg\"\n\nmain() ::= <<\nv2-<f()>;<f2()>\n>>");
+            group.Unload();
+            st = group.GetInstanceOf("main");
+            Assert.AreEqual("v2-g2;f2", st.Render());
         }
     }
 }

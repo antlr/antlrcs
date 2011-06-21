@@ -1,5 +1,5 @@
 /*
- * [The "BSD licence"]
+ * [The "BSD license"]
  * Copyright (c) 2011 Terence Parr
  * All rights reserved.
  *
@@ -23,9 +23,9 @@
  * OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.
  * IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT,
  * INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
- * NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+ * NOT LIMITED TO, PROCUREMENT OF SUBTemplateITUTE GOODS OR SERVICES; LOSS OF USE,
  * DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
- * THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+ * THEORY OF LIABILITY, WHETHER IN CONTRACT, TemplateRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
@@ -41,14 +41,181 @@ namespace Antlr4.Test.StringTemplate
     public class TestImports : BaseTest
     {
         [TestMethod]
-        public void TestImportTemplate()
+        public void TestImportDir()
         {
-            string dir1 = Path.Combine(tmpdir, "d1");
+            /*
+            dir1
+                g.stg has a() that imports dir2 with absolute path
+            dir2
+                a.st
+                b.st
+             */
+            string dir1 = Path.Combine(tmpdir, "dir1");
+            string dir2 = Path.Combine(tmpdir, "dir2");
+            string gstr =
+                "import \"" + dir2 + "\"\n" +
+                "a() ::= <<dir1 a>>\n";
+            writeFile(dir1, "g.stg", gstr);
+
+            string a = "a() ::= <<dir2 a>>\n";
+            string b = "b() ::= <<dir2 b>>\n";
+            writeFile(dir2, "a.st", a);
+            writeFile(dir2, "b.st", b);
+
+            TemplateGroup group = new TemplateGroupFile(Path.Combine(dir1, "g.stg"));
+            Template st = group.GetInstanceOf("b"); // visible only if import worked
+            string expected = "dir2 b";
+            string result = st.Render();
+            Assert.AreEqual(expected, result);
+        }
+
+        [TestMethod]
+        public void TestImportRelativeDir()
+        {
+            /*
+            dir
+                g.stg has a() that imports subdir with relative path
+                subdir
+                    a.st
+                    b.st
+             */
+            string dir = tmpdir;
+            string gstr =
+                "import \"subdir\"\n" + // finds subdir in dir
+                "a() ::= <<dir1 a>>\n";
+            writeFile(dir, "g.stg", gstr);
+
+            string a = "a() ::= <<dir2 a>>\n";
+            string b = "b() ::= <<dir2 b>>\n";
+            writeFile(dir, Path.Combine("subdir", "a.st"), a);
+            writeFile(dir, Path.Combine("subdir", "b.st"), b);
+
+            TemplateGroup group = new TemplateGroupFile(Path.Combine(dir, "g.stg"));
+            Template st = group.GetInstanceOf("b"); // visible only if import worked
+            string expected = "dir2 b";
+            string result = st.Render();
+            Assert.AreEqual(expected, result);
+        }
+
+        [TestMethod]
+        public void TestImportGroupFileSameDir()
+        {
+            /*
+            dir
+                group1.stg		that imports group2.stg in same dir with just filename
+                group2.stg		has c()
+             */
+            string dir = tmpdir;
+            string groupFile =
+                "import \"group2.stg\"\n" +
+                "a() ::= \"g1 a\"\n" +
+                "b() ::= \"<c()>\"\n";
+            writeFile(dir, "group1.stg", groupFile);
+
+            groupFile =
+                "c() ::= \"g2 c\"\n";
+            writeFile(dir, "group2.stg", groupFile);
+
+            TemplateGroup group1 = new TemplateGroupFile(Path.Combine(dir, "group1.stg"));
+            Template st = group1.GetInstanceOf("c"); // should see c()
+            string expected = "g2 c";
+            string result = st.Render();
+            Assert.AreEqual(expected, result);
+        }
+
+        [TestMethod]
+        public void TestImportRelativeGroupFile()
+        {
+            /*
+            dir
+                group1.stg		that imports group2.stg in same dir with just filename
+                subdir
+                    group2.stg	has c()
+             */
+            string dir = tmpdir;
+            string groupFile =
+                "import \"subdir/group2.stg\"\n" +
+                "a() ::= \"g1 a\"\n" +
+                "b() ::= \"<c()>\"\n";
+            writeFile(dir, "group1.stg", groupFile);
+
+            groupFile =
+                "c() ::= \"g2 c\"\n";
+            writeFile(dir, Path.Combine("subdir", "group2.stg"), groupFile);
+
+            TemplateGroup group1 = new TemplateGroupFile(Path.Combine(dir, "group1.stg"));
+            Template st = group1.GetInstanceOf("c"); // should see c()
+            string expected = "g2 c";
+            string result = st.Render();
+            Assert.AreEqual(expected, result);
+        }
+
+        [TestMethod]
+        public void TestImportTemplateFileSameDir()
+        {
+            /*
+            dir
+                group1.stg		(that imports c.st)
+                c.st
+             */
+            string dir = tmpdir;
+            string groupFile =
+                "import \"c.st\"\n" +
+                "a() ::= \"g1 a\"\n" +
+                "b() ::= \"<c()>\"\n";
+            writeFile(dir, "group1.stg", groupFile);
+            writeFile(dir, "c.st", "c() ::= \"c\"\n");
+
+            TemplateGroup group1 = new TemplateGroupFile(Path.Combine(dir, "group1.stg"));
+            Template st = group1.GetInstanceOf("c"); // should see c()
+            string expected = "c";
+            string result = st.Render();
+            Assert.AreEqual(expected, result);
+        }
+
+        [TestMethod]
+        public void TestImportRelativeTemplateFile()
+        {
+            /*
+            dir
+                group1.stg		that imports c.st
+                subdir
+                    c.st
+             */
+            string dir = tmpdir;
+            string groupFile =
+                "import \"subdir/c.st\"\n" +
+                "a() ::= \"g1 a\"\n" +
+                "b() ::= \"<c()>\"\n";
+            writeFile(dir, "group1.stg", groupFile);
+
+            string stFile =
+                "c() ::= \"c\"\n";
+            writeFile(dir, Path.Combine("subdir", "c.st"), stFile);
+
+            TemplateGroup group1 = new TemplateGroupFile(Path.Combine(dir, "group1.stg"));
+            Template st = group1.GetInstanceOf("c"); // should see c()
+            string expected = "c";
+            string result = st.Render();
+            Assert.AreEqual(expected, result);
+        }
+
+        [TestMethod]
+        public void TestImportTemplateFromAnotherGroupObject()
+        {
+            /*
+            dir1
+                a.st
+                b.st
+            dir2
+                a.st
+             */
+            string dir1 = tmpdir;
             string a = "a() ::= <<dir1 a>>\n";
             string b = "b() ::= <<dir1 b>>\n";
             writeFile(dir1, "a.st", a);
             writeFile(dir1, "b.st", b);
-            string dir2 = Path.Combine(tmpdir, "d2");
+            string dir2 = tmpdir;
             a = "a() ::= << <b()> >>\n";
             writeFile(dir2, "a.st", a);
 
@@ -64,49 +231,6 @@ namespace Antlr4.Test.StringTemplate
             st = group2.GetInstanceOf("a");
             expected = " dir1 b ";
             result = st.Render();
-            Assert.AreEqual(expected, result);
-        }
-
-        [TestMethod]
-        public void TestImportStatementWithDir()
-        {
-            string dir1 = Path.Combine(tmpdir, "dir1");
-            string dir2 = Path.Combine(tmpdir, "dir2");
-            string a =
-                "import \"" + dir2 + "\"\n" +
-                "a() ::= <<dir1 a>>\n";
-            writeFile(dir1, "a.stg", a);
-
-            a = "a() ::= <<dir2 a>>\n";
-            string b = "b() ::= <<dir2 b>>\n";
-            writeFile(dir2, "a.st", a);
-            writeFile(dir2, "b.st", b);
-
-            TemplateGroup group = new TemplateGroupFile(Path.Combine(dir1, "a.stg"));
-            Template st = group.GetInstanceOf("b"); // visible only if import worked
-            string expected = "dir2 b";
-            string result = st.Render();
-            Assert.AreEqual(expected, result);
-        }
-
-        [TestMethod]
-        public void TestImportStatementWithFile()
-        {
-            string dir = tmpdir;
-            string groupFile =
-                "import \"" + dir + "/group2.stg\"\n" +
-                "a() ::= \"g1 a\"\n" +
-                "b() ::= \"<c()>\"\n";
-            writeFile(dir, "group1.stg", groupFile);
-
-            groupFile =
-                "c() ::= \"g2 c\"\n";
-            writeFile(dir, "group2.stg", groupFile);
-
-            TemplateGroup group1 = new TemplateGroupFile(Path.Combine(dir, "group1.stg"));
-            Template st = group1.GetInstanceOf("c"); // should see c()
-            string expected = "g2 c";
-            string result = st.Render();
             Assert.AreEqual(expected, result);
         }
 

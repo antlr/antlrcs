@@ -1,5 +1,5 @@
 /*
- * [The "BSD licence"]
+ * [The "BSD license"]
  * Copyright (c) 2011 Terence Parr
  * All rights reserved.
  *
@@ -48,6 +48,7 @@ namespace Antlr4.StringTemplate.Misc
         public static readonly ErrorType MAP_ARGUMENT_COUNT_MISMATCH = new ErrorType("iterating through {0} values in zip map but template has {1} declared arguments");
         public static readonly ErrorType ARGUMENT_COUNT_MISMATCH = new ErrorType("passed {0} arg(s) to template {1} with {2} declared arg(s)");
         public static readonly ErrorType EXPECTING_STRING = new ErrorType("function {0} expects a string not {1}");
+        public static readonly ErrorType CANT_IMPORT = new ErrorType("can't find template(s) in import \"{0}\"");
 
         // COMPILE-TIME SYNTAX/SEMANTIC ERRORS
         public static readonly ErrorType SYNTAX_ERROR = new ErrorType("{0}");

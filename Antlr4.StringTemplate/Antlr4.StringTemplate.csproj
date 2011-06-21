@@ -53,6 +53,7 @@
     <Compile Include="Misc\Aggregate.cs" />
     <Compile Include="Misc\AggregateModelAdaptor.cs" />
     <Compile Include="TemplateGroupString.cs" />
+    <Compile Include="TemplateName.cs" />
     <None Include="..\..\..\..\keys\antlr\Key.snk">
       <Link>Key.snk</Link>
     </None>

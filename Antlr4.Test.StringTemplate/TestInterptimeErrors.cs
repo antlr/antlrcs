@@ -1,5 +1,5 @@
 /*
- * [The "BSD licence"]
+ * [The "BSD license"]
  * Copyright (c) 2011 Terence Parr
  * All rights reserved.
  *
@@ -76,7 +76,7 @@ namespace Antlr4.Test.StringTemplate
             group.Listener = errors;
             Template st = group.GetInstanceOf("t");
             st.Render();
-            string expected = "context [t] 1:0 no such template: foo" + newline;
+            string expected = "context [/t] 1:1 no such template: /foo" + newline;
             string result = errors.ToString();
             Assert.AreEqual(expected, result);
         }
@@ -100,7 +100,7 @@ namespace Antlr4.Test.StringTemplate
             group.ImportTemplates(group2);
             Template st = group.GetInstanceOf("t");
             st.Render();
-            string expected = "context [t] 1:1 no such template: super.t" + newline;
+            string expected = "context [/t] 1:1 no such template: super.t" + newline;
             string result = errors.ToString();
             Assert.AreEqual(expected, result);
         }
@@ -176,7 +176,7 @@ namespace Antlr4.Test.StringTemplate
             group.Listener = errors;
             Template st = group.GetInstanceOf("t");
             st.Render();
-            string expected = "context [t] 1:1 passed 1 arg(s) to template u with 2 declared arg(s)" + newline;
+            string expected = "context [/t] 1:1 passed 1 arg(s) to template /u with 2 declared arg(s)" + newline;
             string result = errors.ToString();
             Assert.AreEqual(expected, result);
         }
@@ -198,7 +198,7 @@ namespace Antlr4.Test.StringTemplate
             string result = st.Render();
             Assert.AreEqual(expected, result);
 
-            expected = "context [t] 1:5 passed 1 arg(s) to template u with 2 declared arg(s)" + newline;
+            expected = "context [/t] 1:5 passed 1 arg(s) to template /u with 2 declared arg(s)" + newline;
             result = errors.ToString();
             Assert.AreEqual(expected, result);
         }
@@ -217,7 +217,7 @@ namespace Antlr4.Test.StringTemplate
             group.Listener = errors;
             Template st = group.GetInstanceOf("t");
             st.Render();
-            string expected = "context [t u] 1:1 attribute x isn't defined" + newline;
+            string expected = "context [/t /u] 1:1 attribute x isn't defined" + newline;
             string result = errors.ToString();
             Assert.AreEqual(expected, result);
         }
@@ -239,7 +239,7 @@ namespace Antlr4.Test.StringTemplate
             e.Render();
             string errorExpecting =
                 "1:23: anonymous template has 2 arg(s) but mapped across 3 value(s)" + newline +
-                "context [anonymous] 1:23 passed 3 arg(s) to template _sub1 with 2 declared arg(s)" + newline +
+                "context [anonymous] 1:23 passed 3 arg(s) to template /_sub1 with 2 declared arg(s)" + newline +
                 "context [anonymous] 1:1 iterating through 3 values in zip map but template has 2 declared arguments" + newline;
             Assert.AreEqual(errorExpecting, errors.ToString());
             string expecting = "Ter@1, Tom@2";

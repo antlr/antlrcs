@@ -120,7 +120,7 @@ templateDef[string prefix]
 			// if ID missing
 			template = Utility.Strip(template, n);
 			string templateName = $name.text;
-			if (prefix.Length > 0) templateName = prefix+"/"+$name.text;
+			if (prefix.Length > 0) templateName = prefix + $name.text;
 			_group.DefineTemplateOrRegion(templateName, $enclosing.text, templateToken,
 	    								 template, $name, $formalArgs.args);
 		}

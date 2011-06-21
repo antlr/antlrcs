@@ -1,5 +1,5 @@
 /*
- * [The "BSD licence"]
+ * [The "BSD license"]
  * Copyright (c) 2011 Terence Parr
  * All rights reserved.
  *
@@ -75,7 +75,7 @@ namespace Antlr4.Test.StringTemplate
             Template st = group.GetInstanceOf("t");
             string result = st.Render();
 
-            string expectedError = "context [t] 1:1 passed 0 arg(s) to template u with 1 declared arg(s)" + newline;
+            string expectedError = "context [/t] 1:1 passed 0 arg(s) to template /u with 1 declared arg(s)" + newline;
             Assert.AreEqual(expectedError, errors.ToString());
         }
 
@@ -91,7 +91,7 @@ namespace Antlr4.Test.StringTemplate
             Template st = group.GetInstanceOf("t");
             string result = st.Render();
 
-            string expectedError = "context [t] 1:1 attribute x isn't defined" + newline;
+            string expectedError = "context [/t] 1:1 attribute x isn't defined" + newline;
             Assert.AreEqual(expectedError, errors.ToString());
         }
 

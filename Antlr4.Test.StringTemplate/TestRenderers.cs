@@ -1,5 +1,5 @@
 /*
- * [The "BSD licence"]
+ * [The "BSD license"]
  * Copyright (c) 2011 Terence Parr
  * All rights reserved.
  *
@@ -263,7 +263,7 @@ namespace Antlr4.Test.StringTemplate
             group.RegisterRenderer(typeof(string), new StringRenderer());
             Template st = group.GetInstanceOf("foo");
             st.Add("x", "a<b> &\t\b");
-            string expecting = " a&lt;b&gt; &amp;\t&#8; ";
+            string expecting = " a&lt;b&gt; &amp;\t\b ";
             string result = st.Render();
             Assert.AreEqual(expecting, result);
         }
