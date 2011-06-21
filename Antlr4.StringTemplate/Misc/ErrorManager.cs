@@ -40,7 +40,7 @@ namespace Antlr4.StringTemplate.Misc
 
     public class ErrorManager
     {
-        private static ITemplateErrorListener _defaultErrorListener = new ConsoleErrorListener();
+        private static ITemplateErrorListener _defaultErrorListener = new TextWriterErrorListener(Console.Error);
 
         private readonly ITemplateErrorListener _listener;
 
@@ -170,45 +170,6 @@ namespace Antlr4.StringTemplate.Misc
         public virtual void InternalError(Template self, string msg, Exception e)
         {
             Listener.InternalError(new TemplateMessage(ErrorType.INTERNAL_ERROR, self, e, msg));
-        }
-
-        private class ConsoleErrorListener : ITemplateErrorListener
-        {
-            public virtual void CompiletimeError(TemplateMessage msg)
-            {
-                Console.Error.WriteLine(msg);
-            }
-
-            public virtual void RuntimeError(TemplateMessage msg)
-            {
-                if (msg.Error != ErrorType.NO_SUCH_PROPERTY)
-                { // ignore these
-                    Console.Error.WriteLine(msg);
-                }
-            }
-
-            public virtual void IOError(TemplateMessage msg)
-            {
-                Console.Error.WriteLine(msg);
-            }
-
-            public virtual void InternalError(TemplateMessage msg)
-            {
-                Console.Error.WriteLine(msg);
-                // throw new Error("internal error", msg.cause);
-            }
-
-            public virtual void Error(string s)
-            {
-                Error(s, null);
-            }
-
-            public virtual void Error(string s, Exception e)
-            {
-                Console.Error.WriteLine(s);
-                if (e != null)
-                    Console.Error.WriteLine(e.StackTrace);
-            }
         }
     }
 }
