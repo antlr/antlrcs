@@ -1,5 +1,5 @@
 /*
- * [The "BSD licence"]
+ * [The "BSD license"]
  * Copyright (c) 2011 Terence Parr
  * All rights reserved.
  *
@@ -308,6 +308,19 @@ namespace Antlr4.Test.StringTemplate
             st.impl.NativeGroup.DefineTemplate("foo", "blech");
             st.Add("name", "Ter");
             string expected = "Load kewl arg blech daddy;";
+            string result = st.Render();
+            Assert.AreEqual(expected, result);
+        }
+
+        [TestMethod]
+        public void TestIncludeWithEmptySubtemplateArg()
+        {
+            string template = "load <box({})>;";
+            Template st = new Template(template);
+            st.impl.NativeGroup.DefineTemplate("box", "kewl <x> daddy", new string[] { "x" });
+            st.impl.Dump();
+            st.Add("name", "Ter");
+            string expected = "load kewl  daddy;";
             string result = st.Render();
             Assert.AreEqual(expected, result);
         }
