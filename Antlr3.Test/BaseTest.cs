@@ -1097,17 +1097,16 @@ namespace AntlrUnitTests
             return lines[0].Substring( prefix.Length );
         }
 
-        public IList realElements( IList elements )
+        public IList<T> realElements<T>( IList<T> elements )
         {
-            IList n = new List<object>();
+            IList<T> n = new List<T>();
             for ( int i = Label.NUM_FAUX_LABELS + Label.MIN_TOKEN_TYPE - 1; i < elements.Count; i++ )
             {
-                object o = elements[i];
+                T o = elements[i];
                 if ( o != null )
-                {
                     n.Add( o );
-                }
             }
+
             return n;
         }
 

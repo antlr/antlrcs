@@ -33,12 +33,11 @@
 namespace Antlr.Runtime.JavaExtensions
 {
     using System.Linq;
-
-    using IList = System.Collections.IList;
+    using IEnumerable = System.Collections.IEnumerable;
 
     public static class ListExtensions
     {
-        public static string ToElementString( this IList list )
+        public static string ToElementString( this IEnumerable list )
         {
             return "[" + string.Join( ", ", list.Cast<object>().Select( o => o.ToString() ).ToArray() ) + "]";
         }
