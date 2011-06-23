@@ -2677,7 +2677,7 @@ namespace Antlr3.Tool
                 }
             }
 
-            return false;
+            return true;
         }
 
         public virtual bool IsAtomTokenType( int ttype )

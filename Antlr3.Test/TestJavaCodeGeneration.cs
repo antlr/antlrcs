@@ -158,5 +158,20 @@ namespace AntlrUnitTests
             bool expecting = true;
             Assert.AreEqual( expecting, found );
         }
+
+        [TestMethod]
+        public void TestBlankRuleGetsNoException()
+        {
+            string grammar =
+                "grammar T;\n" +
+                "a : sync (ID sync)* ;\n" +
+                "sync : ;\n" +
+                "ID : 'a'..'z'+;\n";
+            bool found =
+                rawGenerateAndBuildRecognizer(
+                    "T.g", grammar, "TParser", "TLexer", false);
+            bool expecting = true; // should be ok
+            Assert.AreEqual(expecting, found);
+        }
     }
 }

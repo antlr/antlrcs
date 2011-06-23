@@ -3145,7 +3145,7 @@ namespace AntlrUnitTests
                 object chunk = translator.chunks[i];
                 if ( chunk is StringTemplate )
                 {
-                    if ( ( (StringTemplate)chunk ).Name.Equals( "scopeSetAttributeRef" ) )
+                    if ( ( (StringTemplate)chunk ).Name.Equals( "/scopeSetAttributeRef" ) )
                     {
                         foundScopeSetAttributeRef = true;
                     }

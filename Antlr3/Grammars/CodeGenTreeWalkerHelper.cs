@@ -403,7 +403,7 @@ namespace Antlr3.Grammars
             }
 
             code = templates.GetInstanceOf(stName);
-            if (code.Name.Equals("rule"))
+            if (code.Name.Equals("/rule"))
                 code.SetAttribute("emptyRule", grammar.IsEmptyRule(block2));
 
             code.SetAttribute("ruleDescriptor", ruleDescr);
