@@ -103,6 +103,9 @@ namespace Antlr4.StringTemplate
         public TemplateGroupFile(string fullyQualifiedFileName, Encoding encoding, char delimiterStartChar, char delimiterStopChar)
             : this(fullyQualifiedFileName, delimiterStartChar, delimiterStopChar)
         {
+            if (encoding == null)
+                throw new ArgumentNullException("encoding");
+
             this.Encoding = encoding;
         }
 
@@ -111,6 +114,8 @@ namespace Antlr4.StringTemplate
         {
             if (url == null)
                 throw new ArgumentNullException("url");
+            if (encoding == null)
+                throw new ArgumentNullException("encoding");
 
             this._url = url;
             this.Encoding = encoding;
@@ -121,6 +126,7 @@ namespace Antlr4.StringTemplate
         {
             if (!_alreadyLoaded)
                 Load();
+
             return base.IsDefined(name);
         }
 

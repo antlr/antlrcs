@@ -70,7 +70,7 @@ namespace Antlr4.StringTemplate
         public static readonly string DefaultKey = "default";
 
         /** Load files using what encoding? */
-        private Encoding _encoding;
+        private Encoding _encoding = Encoding.UTF8;
 
         /** Every group can import templates/dictionaries from other groups.
          *  The list must be synchronized (see ImportTemplates).
@@ -150,7 +150,7 @@ namespace Antlr4.StringTemplate
 
         private static readonly ErrorManager _defaultErrorManager = new ErrorManager();
 
-        public static TemplateGroup defaultGroup = new TemplateGroup();
+        private static TemplateGroup _defaultGroup = new TemplateGroup();
 
         /** The error manager for entire group; all compilations and executions.
          *  This gets copied to parsers, walkers, and interpreters.
@@ -175,6 +175,22 @@ namespace Antlr4.StringTemplate
             }
         }
 
+        public static TemplateGroup DefaultGroup
+        {
+            get
+            {
+                return _defaultGroup;
+            }
+
+            set
+            {
+                if (value == null)
+                    throw new ArgumentNullException("value");
+
+                _defaultGroup = value;
+            }
+        }
+
         public ICollection<CompiledTemplate> CompiledTemplates
         {
             get
@@ -192,6 +208,9 @@ namespace Antlr4.StringTemplate
 
             set
             {
+                if (value == null)
+                    throw new ArgumentNullException("value");
+
                 _encoding = value;
             }
         }
@@ -832,7 +851,7 @@ namespace Antlr4.StringTemplate
             try
             {
                 Uri f = new Uri(fileName);
-                ANTLRReaderStream fs = new ANTLRReaderStream(new System.IO.StreamReader(f.LocalPath, Encoding ?? Encoding.UTF8));
+                ANTLRReaderStream fs = new ANTLRReaderStream(new System.IO.StreamReader(f.LocalPath, Encoding));
                 GroupLexer lexer = new GroupLexer(fs);
                 fs.name = fileName;
                 CommonTokenStream tokens = new CommonTokenStream(lexer);

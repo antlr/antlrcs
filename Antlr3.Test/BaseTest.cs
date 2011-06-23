@@ -112,7 +112,7 @@ namespace AntlrUnitTests
             tmpdir = Path.GetFullPath( Path.Combine( Path.GetTempPath(), "antlr-" + currentTimeMillis() ) );
 
             ErrorManager.ResetErrorState();
-            StringTemplateGroup.defaultGroup = new StringTemplateGroup();
+            StringTemplateGroup.DefaultGroup = new StringTemplateGroup();
 
             // verify token constants in StringTemplate
             VerifyImportedTokens( typeof( Antlr3.ST.Language.ActionParser ), typeof( Antlr3.ST.Language.ActionLexer ) );

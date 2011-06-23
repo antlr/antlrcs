@@ -35,7 +35,9 @@ namespace Antlr4.StringTemplate
     using Antlr.Runtime;
     using Antlr4.StringTemplate.Compiler;
     using Antlr4.StringTemplate.Misc;
+
     using ArgumentException = System.ArgumentException;
+    using ArgumentNullException = System.ArgumentNullException;
     using Console = System.Console;
     using Directory = System.IO.Directory;
     using Encoding = System.Text.Encoding;
@@ -110,12 +112,18 @@ namespace Antlr4.StringTemplate
         public TemplateGroupDirectory(string dirName, Encoding encoding, char delimiterStartChar, char delimiterStopChar)
             : this(dirName, delimiterStartChar, delimiterStopChar)
         {
+            if (encoding == null)
+                throw new ArgumentNullException("encoding");
+
             this.Encoding = encoding;
         }
 
         public TemplateGroupDirectory(Uri root, Encoding encoding, char delimiterStartChar, char delimiterStopChar)
             : base(delimiterStartChar, delimiterStopChar)
         {
+            if (encoding == null)
+                throw new ArgumentNullException("encoding");
+
             this.root = root;
             this.Encoding = encoding;
         }
@@ -216,7 +224,7 @@ namespace Antlr4.StringTemplate
             ANTLRReaderStream fs = null;
             try
             {
-                fs = new ANTLRReaderStream(new StreamReader(f.LocalPath, Encoding ?? Encoding.UTF8));
+                fs = new ANTLRReaderStream(new StreamReader(f.LocalPath, Encoding));
                 fs.name = unqualifiedFileName;
             }
             catch (IOException)

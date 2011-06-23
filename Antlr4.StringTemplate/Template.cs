@@ -150,7 +150,7 @@ namespace Antlr4.StringTemplate
          *  No formal args are set and there is no enclosing instance.
          */
         public Template(string template)
-            : this(TemplateGroup.defaultGroup, template)
+            : this(TemplateGroup.DefaultGroup, template)
         {
         }
 

@@ -102,7 +102,7 @@ namespace Antlr4.StringTemplate.Compiler
          *  interpretation via Template.ToString().  From there, it becomes field 'group'
          *  in interpreter and is fixed until rendering completes.
          */
-        private TemplateGroup _nativeGroup = TemplateGroup.defaultGroup;
+        private TemplateGroup _nativeGroup = TemplateGroup.DefaultGroup;
 
         /** Does this template come from a &lt;@region&gt;...&lt;@end&gt; embedded in
          *  another template?
