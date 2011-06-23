@@ -61,7 +61,6 @@ namespace Antlr4.StringTemplate.Misc
 
         public static string GetParent(string name)
         {
-            //System.out.println("getParent("+name+")="+p);
             if (name == null)
                 return null;
 
@@ -72,7 +71,6 @@ namespace Antlr4.StringTemplate.Misc
             if (lastSlash > 0)
                 return name.Substring(0, lastSlash);
 
-            //System.out.println("GetPrefix("+name+")="+p);
             return string.Empty;
         }
 
