@@ -151,6 +151,7 @@ namespace Antlr4.Test.StringTemplate
             Assert.AreEqual(expected, result);
         }
 
+        [Ignore]
         [TestMethod]
         public void TestTabBeforeEndInSubtemplates()
         {
