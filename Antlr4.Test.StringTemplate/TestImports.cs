@@ -284,7 +284,7 @@ namespace Antlr4.Test.StringTemplate
         {
             // /randomdir/x/subdir/a and /randomdir/y/subdir/b
             string dir = tmpdir;
-            string a = "a() ::= << <subdir/b()> >>\n";
+            string a = "a() ::= << </subdir/b()> >>\n";
             string b = "b() ::= <<x's subdir/b>>\n";
             writeFile(dir, Path.Combine("x", "subdir", "a.st"), a);
             writeFile(dir, Path.Combine("y", "subdir", "b.st"), b);
@@ -303,7 +303,7 @@ namespace Antlr4.Test.StringTemplate
         {
             // /randomdir/x/subdir/a and /randomdir/y/subdir.stg which has a and b
             string dir = tmpdir;
-            string a = "a() ::= << <subdir/b()> >>\n"; // get b imported from subdir.stg
+            string a = "a() ::= << </subdir/b()> >>\n"; // get b imported from subdir.stg
             writeFile(dir, Path.Combine("x", "subdir", "a.st"), a);
 
             string groupFile =
@@ -314,7 +314,12 @@ namespace Antlr4.Test.StringTemplate
             TemplateGroup group1 = new TemplateGroupDirectory(Path.Combine(dir, "x"));
             TemplateGroup group2 = new TemplateGroupDirectory(Path.Combine(dir, "y"));
             group1.ImportTemplates(group2);
+
             Template st = group1.GetInstanceOf("subdir/a");
+
+            Assert.IsNotNull(st);
+            Assert.IsNotNull(group1.GetInstanceOf("subdir/b"));
+
             string expected = " group file: b ";
             string result = st.Render();
             Assert.AreEqual(expected, result);

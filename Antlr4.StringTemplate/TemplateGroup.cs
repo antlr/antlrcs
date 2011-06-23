@@ -75,7 +75,9 @@ namespace Antlr4.StringTemplate
         /** Every group can import templates/dictionaries from other groups.
          *  The list must be synchronized (see ImportTemplates).
          */
-        private readonly List<TemplateGroup> imports = new List<TemplateGroup>();
+        private readonly List<TemplateGroup> _imports = new List<TemplateGroup>();
+
+        private readonly List<TemplateGroup> _importsToClearOnUnload = new List<TemplateGroup>();
 
         public readonly char delimiterStartChar = '<'; // Use <expr> by default
         public readonly char delimiterStopChar = '>';
@@ -371,6 +373,14 @@ namespace Antlr4.StringTemplate
         {
             templates.Clear();
             dictionaries.Clear();
+
+            foreach (var import in _imports)
+                import.Unload();
+
+            foreach (var import in _importsToClearOnUnload)
+                _imports.Remove(import);
+
+            _importsToClearOnUnload.Clear();
         }
 
         /** Load st from disk if dir or load whole group file if .stg file (then
@@ -388,10 +398,10 @@ namespace Antlr4.StringTemplate
 
         protected internal virtual CompiledTemplate LookupImportedTemplate(string name)
         {
-            if (imports == null)
+            if (_imports == null)
                 return null;
 
-            foreach (TemplateGroup g in imports)
+            foreach (TemplateGroup g in _imports)
             {
                 if (Verbose)
                     Console.WriteLine(string.Format("checking {0} for imported {1}", g.Name, name));
@@ -683,10 +693,18 @@ namespace Antlr4.StringTemplate
         /** Make this group import templates/dictionaries from g. */
         public virtual void ImportTemplates(TemplateGroup g)
         {
-            if (g == null)
+            ImportTemplates(g, false);
+        }
+
+        /** Make this group import templates/dictionaries from g. */
+        private void ImportTemplates(TemplateGroup group, bool clearOnUnload)
+        {
+            if (group == null)
                 return;
 
-            imports.Add(g);
+            _imports.Add(group);
+            if (clearOnUnload)
+                _importsToClearOnUnload.Add(group);
         }
 
         /** Import template files, directories, and group files.
@@ -802,7 +820,7 @@ namespace Antlr4.StringTemplate
             }
             else
             {
-                ImportTemplates(g);
+                ImportTemplates(g, true);
             }
         }
 
@@ -1016,8 +1034,8 @@ namespace Antlr4.StringTemplate
         public virtual string Show()
         {
             StringBuilder buf = new StringBuilder();
-            if (imports != null && imports.Count > 0)
-                buf.Append(" : " + imports);
+            if (_imports != null && _imports.Count > 0)
+                buf.Append(" : " + _imports);
 
             foreach (string n in templates.Keys)
             {
