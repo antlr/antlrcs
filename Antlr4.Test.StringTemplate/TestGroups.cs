@@ -94,6 +94,18 @@ namespace Antlr4.Test.StringTemplate
         }
 
         [TestMethod]
+        public void TestSubdirWithSubtemplate()
+        {
+            // /randomdir/a and /randomdir/subdir/b
+            string dir = tmpdir;
+            writeFile(Path.Combine(dir, "subdir"), "a.st", "a(x) ::= \"<x:{y|<y>}>\"");
+            TemplateGroup group = new TemplateGroupDirectory(dir);
+            Template st = group.GetInstanceOf("/subdir/a");
+            st.Add("x", new string[] { "a", "b" });
+            Assert.AreEqual("ab", st.Render());
+        }
+
+        [TestMethod]
         public void TestGroupFileInDir()
         {
             // /randomdir/a and /randomdir/group.stg with b and c templates

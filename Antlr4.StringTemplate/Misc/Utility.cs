@@ -59,7 +59,7 @@ namespace Antlr4.StringTemplate.Misc
             return s;
         }
 
-        public static string GetPrefix(string name)
+        public static string GetParent(string name)
         {
             //System.out.println("getParent("+name+")="+p);
             if (name == null)
@@ -74,6 +74,19 @@ namespace Antlr4.StringTemplate.Misc
 
             //System.out.println("GetPrefix("+name+")="+p);
             return string.Empty;
+        }
+
+        public static string GetPrefix(string name)
+        {
+            if (name == null)
+                return "/";
+
+            string parent = GetParent(name);
+            string prefix = parent;
+            if (!parent.EndsWith("/"))
+                prefix += '/';
+
+            return prefix;
         }
 
         public static string ReplaceEscapes(string s)

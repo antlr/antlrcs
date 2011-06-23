@@ -89,6 +89,38 @@ namespace Antlr4.Test.StringTemplate
         }
 
         [TestMethod]
+        public void TestDefineRegionInSubgroupOneInSubdir()
+        {
+            string dir = tmpdir;
+            writeFile(dir, "g1.stg", "a() ::= <<[<@r()>]>>\n");
+            writeFile(Path.Combine(dir, "subdir"), "g2.stg", "@a.r() ::= <<foo>>\n");
+
+            TemplateGroup group1 = new TemplateGroupFile(Path.Combine(dir, "g1.stg"));
+            TemplateGroup group2 = new TemplateGroupFile(Path.Combine(dir, "subdir", "g2.stg"));
+            group2.ImportTemplates(group1); // define r in g2
+            Template st = group2.GetInstanceOf("a");
+            string expected = "[foo]";
+            string result = st.Render();
+            Assert.AreEqual(expected, result);
+        }
+
+        [TestMethod]
+        public void TestDefineRegionInSubgroupBothInSubdir()
+        {
+            string dir = tmpdir;
+            writeFile(Path.Combine(dir, "subdir"), "g1.stg", "a() ::= <<[<@r()>]>>\n");
+            writeFile(Path.Combine(dir, "subdir"), "g2.stg", "@a.r() ::= <<foo>>\n");
+
+            TemplateGroup group1 = new TemplateGroupFile(Path.Combine(dir, "subdir", "g1.stg"));
+            TemplateGroup group2 = new TemplateGroupFile(Path.Combine(dir, "subdir", "g2.stg"));
+            group2.ImportTemplates(group1); // define r in g2
+            Template st = group2.GetInstanceOf("a");
+            string expected = "[foo]";
+            string result = st.Render();
+            Assert.AreEqual(expected, result);
+        }
+
+        [TestMethod]
         public void TestDefineRegionInSubgroupThatRefsSuper()
         {
             string dir = tmpdir;

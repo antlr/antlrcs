@@ -131,10 +131,8 @@ namespace Antlr4.StringTemplate
             if (Verbose)
                 Console.WriteLine("STGroupDir.load(" + name + ")");
 
-            string parent = Utility.GetPrefix(name); // must have parent; it's fully-qualified
-            string prefix = parent;
-            if (!parent.EndsWith("/"))
-                prefix += '/';
+            string parent = Utility.GetParent(name); // must have parent; it's fully-qualified
+            string prefix = Utility.GetPrefix(name);
 
             //    	if (parent.isEmpty()) {
             //    		// no need to check for a group file as name has no parent
