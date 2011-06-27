@@ -54,8 +54,7 @@ namespace Antlr4.StringTemplate.Misc
             else
                 value = map[TemplateGroup.DefaultKey]; // not found, use default
 
-            string valueString = value as string;
-            if (valueString == TemplateGroup.DictionaryKey)
+            if (object.ReferenceEquals(value, TemplateGroup.DictionaryKey))
             {
                 value = property;
             }
