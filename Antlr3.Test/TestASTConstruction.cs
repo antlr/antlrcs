@@ -57,6 +57,18 @@ namespace AntlrUnitTests
         }
 
         [TestMethod]
+        public void TestEmptyAlt()
+        {
+            Grammar g = new Grammar(
+                    "parser grammar P;\n" +
+                    "a : ;");
+            string expecting =
+                "(rule a ARG RET scope (BLOCK (ALT epsilon <end-of-alt>) <end-of-block>) <end-of-rule>)";
+            string found = g.GetRule("a").Tree.ToStringTree();
+            Assert.AreEqual(expecting, found);
+        }
+
+        [TestMethod]
         public void TestNakeRulePlusInLexer() /*throws Exception*/ {
             Grammar g = new Grammar(
                     "lexer grammar P;\n" +

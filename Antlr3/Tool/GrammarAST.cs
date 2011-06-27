@@ -62,10 +62,6 @@ namespace Antlr3.Tool
      */
     public class GrammarAST : Antlr.Runtime.Tree.CommonTree
     {
-        static int count = 0;
-
-        public int ID = ++count;
-
         /** This AST node was created from what token? */
         //public Token token = null;
 
@@ -516,6 +512,9 @@ namespace Antlr3.Tool
 
         private static IEnumerable<GrammarAST> GetChildrenForDupTree( GrammarAST t )
         {
+            bool isAlt = t.Type == ANTLRParser.ALT;
+            int count = 0;
+
             for ( int i = 0; i < t.ChildCount; i++ )
             {
                 GrammarAST child = (GrammarAST)t.GetChild( i );
@@ -526,11 +525,20 @@ namespace Antlr3.Tool
                 }
                 else if ( ttype == ANTLRParser.BANG || ttype == ANTLRParser.ROOT )
                 {
-                    foreach ( GrammarAST subchild in GetChildrenForDupTree( child ) )
+                    foreach (GrammarAST subchild in GetChildrenForDupTree(child))
+                    {
+                        count++;
                         yield return subchild;
+                    }
                 }
                 else
                 {
+                    if (isAlt && child.Type == ANTLRParser.EOA && count == 0)
+                    {
+                        yield return new GrammarAST(ANTLRParser.EPSILON, "epsilon");
+                    }
+
+                    count++;
                     yield return child;
                 }
             }
