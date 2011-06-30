@@ -1855,7 +1855,7 @@ namespace Antlr3.Tool
                 startDFA = DateTime.Now;
             }
 
-            DFA lookaheadDFA = new DFA( decision, decisionStartState );
+            DFA lookaheadDFA = DFA.CreateFromNfa( decision, decisionStartState );
             // Retry to create a simpler DFA if analysis failed (non-LL(*),
             // recursion overflow, or time out).
             bool failed =
@@ -1875,7 +1875,7 @@ namespace Antlr3.Tool
                                      lookaheadDFA.ReasonForFailure );
                 }
                 lookaheadDFA = null; // make sure other memory is "free" before redoing
-                lookaheadDFA = new DFA( decision, decisionStartState );
+                lookaheadDFA = DFA.CreateFromNfa( decision, decisionStartState );
             }
 
             SetLookaheadDFA( decision, lookaheadDFA );

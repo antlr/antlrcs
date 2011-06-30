@@ -158,8 +158,6 @@ namespace Antlr3.Analysis
         /** Which NFA are we converting (well, which piece of the NFA)? */
         private readonly NFA _nfa;
 
-        private readonly NFAToDFAConverter _nfaConverter;
-
         /** This probe tells you a lot about a decision and is useful even
          *  when there is no error such as when a syntactic nondeterminism
          *  is solved via semantic predicates.  Perhaps a GUI would want
@@ -222,48 +220,55 @@ namespace Antlr3.Analysis
         /** Which generator to use if we're building state tables */
         private CodeGenerator _generator;
 
-        public DFA( int decisionNumber, NFAState decisionStartState )
+        protected DFA( int decisionNumber, NFAState decisionStartState )
         {
-            _probe = new DecisionProbe(this);
+            this._probe = new DecisionProbe(this);
             this._decisionNumber = decisionNumber;
             this._decisionNFAStartState = decisionStartState;
-            _nfa = decisionStartState.nfa;
-            _numberOfAlts = Nfa.Grammar.GetNumberOfAltsForDecisionNFA( decisionStartState );
+            this._nfa = decisionStartState.nfa;
+            this._numberOfAlts = Nfa.Grammar.GetNumberOfAltsForDecisionNFA( decisionStartState );
             //setOptions( nfa.grammar.getDecisionOptions(getDecisionNumber()) );
-            _altToAcceptState = new DFAState[NumberOfAlts + 1];
-            _unreachableAlts = new List<int>(Enumerable.Range(1, NumberOfAlts));
+            this._altToAcceptState = new DFAState[NumberOfAlts + 1];
+            this._unreachableAlts = new List<int>(Enumerable.Range(1, NumberOfAlts));
+        }
+
+        public static DFA CreateFromNfa(int decisionNumber, NFAState decisionStartState)
+        {
+            DFA dfa = new DFA(decisionNumber, decisionStartState);
 
             //long start = JSystem.currentTimeMillis();
-            _nfaConverter = new NFAToDFAConverter( this );
+            NFAToDFAConverter nfaConverter = new NFAToDFAConverter( dfa );
             try
             {
-                _nfaConverter.Convert();
+                nfaConverter.Convert();
 
                 // figure out if there are problems with decision
-                Verify();
+                dfa.Verify();
 
-                if ( !Probe.IsDeterministic || Probe.AnalysisOverflowed )
+                if ( !dfa.Probe.IsDeterministic || dfa.Probe.AnalysisOverflowed )
                 {
-                    Probe.IssueWarnings();
+                    dfa.Probe.IssueWarnings();
                 }
 
                 // must be after verify as it computes cyclic, needed by this routine
                 // should be after warnings because early termination or something
                 // will not allow the reset to operate properly in some cases.
-                ResetStateNumbersToBeContiguous();
+                dfa.ResetStateNumbersToBeContiguous();
 
                 //long stop = JSystem.currentTimeMillis();
                 //JSystem.@out.println("verify cost: "+(int)(stop-start)+" ms");
             }
             catch ( NonLLStarDecisionException /*nonLL*/ )
             {
-                Probe.ReportNonLLStarDecision( this );
+                dfa.Probe.ReportNonLLStarDecision( dfa );
                 // >1 alt recurses, k=* and no auto backtrack nor manual sem/syn
-                if ( !OkToRetryWithK1 )
+                if ( !dfa.OkToRetryWithK1 )
                 {
-                    Probe.IssueWarnings();
+                    dfa.Probe.IssueWarnings();
                 }
             }
+
+            return dfa;
         }
 
         #region Properties
