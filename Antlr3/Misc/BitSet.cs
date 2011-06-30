@@ -177,7 +177,7 @@ namespace Antlr3.Misc
             {
                 IntervalSet other = (IntervalSet)set;
                 // walk set and add each interval
-                foreach ( Interval I in other.intervals )
+                foreach ( Interval I in other.Intervals )
                 {
                     this.OrInPlace( BitSet.Range( I.a, I.b ) );
                 }
@@ -361,13 +361,9 @@ namespace Antlr3.Misc
             return s;
         }
 
-        public virtual IIntSet Complement( IIntSet set )
+        public virtual IIntSet Complement( Interval vocabulary )
         {
-            if ( set == null )
-            {
-                return this.Complement();
-            }
-            return set.Subtract( this );
+            return BitSet.Of(vocabulary).Subtract(this);
         }
 
         public virtual void NotInPlace()
@@ -405,6 +401,13 @@ namespace Antlr3.Misc
         {
             BitSet s = new BitSet( el + 1 );
             s.Add( el );
+            return s;
+        }
+
+        public static BitSet Of(Interval interval)
+        {
+            BitSet s = new BitSet(interval.b + 1);
+            s.AddAll(Enumerable.Range(interval.a, interval.b - interval.a + 1));
             return s;
         }
 

@@ -728,7 +728,7 @@ namespace Antlr3.Tool
             NFAState right = NewState();
             left.associatedASTNode = associatedAST;
             right.associatedASTNode = associatedAST;
-            Label label = new Label( _nfa.Grammar.TokenTypes ); // char or tokens
+            Label label = new Label(IntervalSet.Of( _nfa.Grammar.TokenTypes )); // char or tokens
             Transition e = new Transition( label, right );
             left.AddTransition( e );
             StateCluster g = new StateCluster( left, right );

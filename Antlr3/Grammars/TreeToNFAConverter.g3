@@ -361,6 +361,6 @@ testSetElement returns [int alts=1]
 	|   testBlockAsSet
 		{{ $alts = $testBlockAsSet.alts; }}
 	|   ^( NOT tse=testSetElement )
-		{{ $alts = grammar.TokenTypes.Count - $tse.alts; }}
+		{{ $alts = grammar.TokenTypes.Length - $tse.alts; }}
 	;
 catch[RecognitionException re] { re.PreserveStackTrace(); throw; }

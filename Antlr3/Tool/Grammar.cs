@@ -353,14 +353,14 @@ namespace Antlr3.Tool
         public string label;
 
         /** TODO: hook this to the charVocabulary option */
-        protected IIntSet charVocabulary = null;
+        protected Interval? charVocabulary = null;
 
         /** For ANTLRWorks, we want to be able to map a line:col to a specific
          *  decision DFA so it can display DFA.
          */
         Dictionary<string, DFA> lineColumnToLookaheadDFAMap = new Dictionary<string, DFA>();
 
-        public Tool tool;
+        private Tool _tool;
 
         /** The unique set of all rule references in any rule; set of tree node
          *  objects so two refs to same rule can exist but at different line/position.
@@ -646,16 +646,16 @@ namespace Antlr3.Tool
         /** If there is a char vocabulary, use it; else return min to max char
          *  as defined by the target.  If no target, use max unicode char value.
          */
-        public IIntSet AllCharValues
+        public Interval AllCharValues
         {
             get
             {
                 if ( charVocabulary != null )
                 {
-                    return charVocabulary;
+                    return charVocabulary.Value;
                 }
-                IIntSet allChar = IntervalSet.Of( Label.MIN_CHAR_VALUE, MaxCharValue );
-                return allChar;
+
+                return Interval.FromBounds(Label.MIN_CHAR_VALUE, MaxCharValue);
             }
         }
         public bool AllDecisionDFAHaveBeenCreated
@@ -927,7 +927,7 @@ namespace Antlr3.Tool
             }
         }
         /** Return a set of all possible token or char types for this grammar */
-        public IIntSet TokenTypes
+        public Interval TokenTypes
         {
             get
             {
@@ -935,21 +935,24 @@ namespace Antlr3.Tool
                 {
                     return AllCharValues;
                 }
-                return IntervalSet.Of( Label.MIN_TOKEN_TYPE, MaxTokenType );
+
+                return Interval.FromBounds(Label.MIN_TOKEN_TYPE, MaxTokenType);
             }
         }
-        [CLSCompliant(false)]
+
         public AntlrTool Tool
         {
             get
             {
-                return tool;
+                return _tool;
             }
+
             set
             {
-                tool = value;
+                _tool = value;
             }
         }
+
         public GrammarAST Tree
         {
             get
@@ -957,6 +960,7 @@ namespace Antlr3.Tool
                 return grammarTree;
             }
         }
+
         #endregion
 
         public virtual void SetName( string name )
@@ -1809,7 +1813,7 @@ namespace Antlr3.Tool
                     // Compute s_i-t to see what is in current set and not in incoming
                     IIntSet existingMinusNewElements = s_i.Subtract( t );
                     //JSystem.@out.println(s_i+"-"+t+"="+existingMinusNewElements);
-                    if ( !existingMinusNewElements.IsNil )
+                    if ( existingMinusNewElements != null && !existingMinusNewElements.IsNil )
                     {
                         // found a new character class, add to the end (doesn't affect
                         // outer loop duration due to n computation a priori.
@@ -2876,18 +2880,18 @@ namespace Antlr3.Tool
             TextReader br = null;
             try
             {
-                string fullName = tool.GetLibraryFile( gname );
+                string fullName = Tool.GetLibraryFile( gname );
                 if (!File.Exists(fullName))
                 {
                     gname = grammarName + AltGrammarFileExtension;
-                    fullName = tool.GetLibraryFile(gname);
+                    fullName = Tool.GetLibraryFile(gname);
                 }
 
                 //FileReader fr = new FileReader( fullName );
                 //br = new BufferedReader( fr );
                 br = new StringReader( System.IO.File.ReadAllText( fullName ) );
                 Grammar delegateGrammar = null;
-                delegateGrammar = new Grammar( tool, gname, composite );
+                delegateGrammar = new Grammar( Tool, gname, composite );
                 delegateGrammar.label = label;
 
                 AddDelegateGrammar( delegateGrammar );
@@ -2976,7 +2980,7 @@ namespace Antlr3.Tool
             }
 
             Regex vocabLine = new Regex( @"^(?<tokenID>'(?:\\'|.)+'|\w+)\s*=\s*(?<tokenType>\d+)$", RegexOptions.Compiled );
-            string fileName = Path.GetFullPath( tool.GetImportedVocabFile( vocabName ) );
+            string fileName = Path.GetFullPath( Tool.GetImportedVocabFile( vocabName ) );
             if ( File.Exists( fileName ) )
             {
                 try

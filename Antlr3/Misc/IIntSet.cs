@@ -57,7 +57,7 @@ namespace Antlr3.Misc
          */
         IIntSet And( IIntSet a );
 
-        IIntSet Complement( IIntSet elements );
+        IIntSet Complement( Interval vocabulary );
 
         IIntSet Or( IIntSet a );
 

@@ -36,11 +36,10 @@ namespace Antlr3.Misc
     using System.Linq;
 
     using ArgumentException = System.ArgumentException;
-    using CLSCompliant = System.CLSCompliantAttribute;
     using Grammar = Antlr3.Tool.Grammar;
     using Label = Antlr3.Analysis.Label;
+    using Math = System.Math;
     using NotImplementedException = System.NotImplementedException;
-    using Obsolete = System.ObsoleteAttribute;
     using StringBuilder = System.Text.StringBuilder;
 
     /** A set of integers that relies on ranges being common to do
@@ -59,11 +58,11 @@ namespace Antlr3.Misc
      */
     public class IntervalSet : IIntSet
     {
-        public static readonly IntervalSet COMPLETE_SET = IntervalSet.Of( 0, Label.MAX_CHAR_VALUE );
+        public static readonly Interval CompleteInterval = Interval.FromBounds(0, Label.MAX_CHAR_VALUE);
+        public static readonly IntervalSet COMPLETE_SET = IntervalSet.Of(CompleteInterval);
 
         /** The list of sorted, disjoint intervals. */
-        //protected List<Interval> intervals;
-        protected internal IList<Interval> intervals;
+        private IList<Interval> intervals;
 
         /** Create a set with no elements */
         public IntervalSet()
@@ -85,14 +84,15 @@ namespace Antlr3.Misc
                 return intervals.Sum( interval => interval.b - interval.a + 1 );
             }
         }
-        [CLSCompliant(false)]
+
         public ICollection<Interval> Intervals
         {
             get
             {
-                return GetIntervals();
+                return intervals;
             }
         }
+
         public int MaxElement
         {
             get
@@ -119,16 +119,18 @@ namespace Antlr3.Misc
         /** Create a set with a single element, el. */
         public static IntervalSet Of( int a )
         {
-            IntervalSet s = new IntervalSet();
-            s.Add( a );
-            return s;
+            return Of(Interval.FromBounds(a, a));
         }
 
         /** Create a set with all ints within range [a..b] (inclusive) */
         public static IntervalSet Of( int a, int b )
         {
-            IntervalSet s = new IntervalSet();
-            s.Add( a, b );
+            return Of(Interval.FromBounds(a, b));
+        }
+
+        public static IntervalSet Of(Interval interval)
+        {
+            IntervalSet s = new IntervalSet(new List<Interval> { interval });
             return s;
         }
 
@@ -149,7 +151,7 @@ namespace Antlr3.Misc
          */
         public virtual void Add( int a, int b )
         {
-            Add( Interval.Create( a, b ) );
+            Add( Interval.FromBounds( a, b ) );
         }
 
         // copy on write so we can cache a..a intervals and sets of that
@@ -288,7 +290,7 @@ namespace Antlr3.Misc
 
         public virtual IIntSet Complement( int minElement, int maxElement )
         {
-            return this.Complement( IntervalSet.Of( minElement, maxElement ) );
+            return this.Complement( Interval.FromBounds( minElement, maxElement ) );
         }
 
         /** Given the set of possible values (rather than, say UNICODE or MAXINT),
@@ -297,50 +299,60 @@ namespace Antlr3.Misc
          *
          *  'this' is assumed to be either a subset or equal to vocabulary.
          */
-        public virtual IIntSet Complement( IIntSet vocabulary )
+        public virtual IIntSet Complement( Interval vocabulary )
         {
-            if ( vocabulary == null )
+            if (vocabulary.b < MinElement || vocabulary.a > MaxElement)
             {
-                return null; // nothing in common with null set
+                // nothing in common with this set
+                return null;
             }
-            if ( !( vocabulary is IntervalSet ) )
-            {
-                throw new ArgumentException( "can't complement with non IntervalSet (" +
-                                                   vocabulary.GetType().Name + ")" );
-            }
-            IntervalSet vocabularyIS = ( (IntervalSet)vocabulary );
-            int maxElement = vocabularyIS.GetMaxElement();
 
-            IntervalSet compl = new IntervalSet();
             int n = intervals.Count;
             if ( n == 0 )
             {
-                return compl;
+                return IntervalSet.Of(vocabulary);
             }
-            Interval first = (Interval)intervals[0];
+
+            IntervalSet compl = new IntervalSet();
+
+            Interval first = intervals[0];
             // add a range from 0 to first.a constrained to vocab
-            if ( first.a > 0 )
+            if ( first.a > vocabulary.a )
             {
-                IntervalSet s = IntervalSet.Of( 0, first.a - 1 );
-                IntervalSet a = (IntervalSet)s.And( vocabularyIS );
-                compl.AddAll( a );
+                compl.Intervals.Add(Interval.FromBounds(vocabulary.a, first.a - 1));
             }
+
             for ( int i = 1; i < n; i++ )
-            { // from 2nd interval .. nth
-                Interval previous = (Interval)intervals[i - 1];
-                Interval current = (Interval)intervals[i];
-                IntervalSet s = IntervalSet.Of( previous.b + 1, current.a - 1 );
-                IntervalSet a = (IntervalSet)s.And( vocabularyIS );
-                compl.AddAll( a );
-            }
-            Interval last = (Interval)intervals[n - 1];
-            // add a range from last.b to maxElement constrained to vocab
-            if ( last.b < maxElement )
             {
-                IntervalSet s = IntervalSet.Of( last.b + 1, maxElement );
-                IntervalSet a = (IntervalSet)s.And( vocabularyIS );
-                compl.AddAll( a );
+                if (intervals[i - 1].b >= vocabulary.b)
+                    break;
+
+                if (intervals[i].a <= vocabulary.a)
+                    continue;
+
+                if (intervals[i - 1].b == intervals[i].a - 1)
+                    continue;
+
+                compl.Intervals.Add(Interval.FromBounds(Math.Max(vocabulary.a, intervals[i - 1].b + 1), Math.Min(vocabulary.b, intervals[i].a - 1)));
+
+                //// from 2nd interval .. nth
+                //Interval previous = intervals[i - 1];
+                //Interval current = intervals[i];
+                //IntervalSet s = IntervalSet.Of( previous.b + 1, current.a - 1 );
+                //IntervalSet a = (IntervalSet)s.And( vocabularyIS );
+                //compl.AddAll( a );
             }
+
+            Interval last = intervals[n - 1];
+            // add a range from last.b to maxElement constrained to vocab
+            if ( last.b < vocabulary.b )
+            {
+                compl.Intervals.Add(Interval.FromBounds(last.b + 1, vocabulary.b));
+                //IntervalSet s = IntervalSet.Of( last.b + 1, maxElement );
+                //IntervalSet a = (IntervalSet)s.And( vocabularyIS );
+                //compl.AddAll( a );
+            }
+
             return compl;
         }
 
@@ -357,7 +369,7 @@ namespace Antlr3.Misc
             // will be empty.  The only problem would be when this' set max value
             // goes beyond MAX_CHAR_VALUE, but hopefully the constant MAX_CHAR_VALUE
             // will prevent this.
-            return this.And( ( (IntervalSet)other ).Complement( COMPLETE_SET ) );
+            return this.And( ( (IntervalSet)other ).Complement( CompleteInterval ) );
         }
 
 #if false
@@ -526,7 +538,7 @@ namespace Antlr3.Misc
 
             var myIntervals = this.intervals;
             var theirIntervals = ( (IntervalSet)other ).intervals;
-            IntervalSet intersection = null;
+            IntervalSet intersection = new IntervalSet();
             int mySize = myIntervals.Count;
             int theirSize = theirIntervals.Count;
             int i = 0;
@@ -534,8 +546,8 @@ namespace Antlr3.Misc
             // iterate down both interval lists looking for nondisjoint intervals
             while ( i < mySize && j < theirSize )
             {
-                Interval mine = (Interval)myIntervals[i];
-                Interval theirs = (Interval)theirIntervals[j];
+                Interval mine = myIntervals[i];
+                Interval theirs = theirIntervals[j];
                 //JSystem.@out.println("mine="+mine+" and theirs="+theirs);
                 if ( mine.StartsBeforeDisjoint( theirs ) )
                 {
@@ -550,30 +562,18 @@ namespace Antlr3.Misc
                 else if ( mine.ProperlyContains( theirs ) )
                 {
                     // overlap, add intersection, get next theirs
-                    if ( intersection == null )
-                    {
-                        intersection = new IntervalSet();
-                    }
-                    intersection.Add( mine.Intersection( theirs ) );
+                    intersection.Intervals.Add( theirs );
                     j++;
                 }
                 else if ( theirs.ProperlyContains( mine ) )
                 {
                     // overlap, add intersection, get next mine
-                    if ( intersection == null )
-                    {
-                        intersection = new IntervalSet();
-                    }
-                    intersection.Add( mine.Intersection( theirs ) );
+                    intersection.Intervals.Add( mine );
                     i++;
                 }
                 else if ( !mine.Disjoint( theirs ) )
                 {
                     // overlap, add intersection
-                    if ( intersection == null )
-                    {
-                        intersection = new IntervalSet();
-                    }
                     intersection.Add( mine.Intersection( theirs ) );
                     // Move the iterator of lower range [a..b], but not
                     // the upper range as it may contain elements that will collide
@@ -592,10 +592,7 @@ namespace Antlr3.Misc
                     }
                 }
             }
-            if ( intersection == null )
-            {
-                return new IntervalSet();
-            }
+
             return intersection;
         }
 
@@ -685,12 +682,6 @@ namespace Antlr3.Misc
                 }
             }
             return Label.INVALID;
-        }
-
-        /** Return a list of Interval objects. */
-        public virtual IList<Interval> GetIntervals()
-        {
-            return intervals;
         }
 
         /** Are two IntervalSets equal?  Because all intervals are sorted

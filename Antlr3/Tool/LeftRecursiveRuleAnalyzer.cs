@@ -78,7 +78,7 @@ namespace Antlr3.Tool
             this.g = g;
             this.ruleName = ruleName;
             language = (string)g.GetOption("language");
-            generator = new CodeGenerator(g.tool, g, language);
+            generator = new CodeGenerator(g.Tool, g, language);
             generator.LoadTemplates(language);
             recRuleTemplates = LoadPrecRuleTemplates(g.Tool);
         }

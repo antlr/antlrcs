@@ -214,7 +214,7 @@ namespace Antlr3.Tool
             //
             //		data. = Stats.sum(cyclicDFAStates);
 
-            data.numTokens = g.TokenTypes.Count;
+            data.numTokens = g.TokenTypes.Length;
 
             data.DFACreationWallClockTimeInMS = g.DFACreationWallClockTimeInMS;
 

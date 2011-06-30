@@ -1196,7 +1196,7 @@ namespace Antlr3.Codegen
             }
             StringTemplate setST = templates.GetInstanceOf( "setTest" );
             int rangeNumber = 1;
-            foreach ( Interval I in iset.GetIntervals() )
+            foreach ( Interval I in iset.Intervals )
             {
                 int a = I.a;
                 int b = I.b;

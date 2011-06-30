@@ -33,121 +33,111 @@
 namespace Antlr3.Misc
 {
     using Math = System.Math;
+    using ArgumentException = System.ArgumentException;
 
     /** An immutable inclusive interval a..b */
-    public class Interval
+    public struct Interval
     {
-        public const int INTERVAL_POOL_MAX_VALUE = 1000;
+        public readonly int a;
+        public readonly int b;
 
-        static Interval[] cache = new Interval[INTERVAL_POOL_MAX_VALUE + 1];
-
-        public int a;
-        public int b;
-
-        public static int creates = 0;
-        public static int misses = 0;
-        public static int hits = 0;
-        public static int outOfRange = 0;
-
-        public Interval( int a, int b )
+        private Interval( int a, int b )
         {
+            if (a > b)
+                throw new ArgumentException();
+
             this.a = a;
             this.b = b;
         }
 
-        /** Interval objects are used readonly so share all with the
-         *  same single value a==b up to some max size.  Use an array as a perfect hash.
-         *  Return shared object for 0..INTERVAL_POOL_MAX_VALUE or a new
-         *  Interval object with a..a in it.  On Java.g, 218623 IntervalSets
-         *  have a..a (set with 1 element).
-         */
-        public static Interval Create( int a, int b )
+        public int Length
         {
-            //return new Interval(a,b);
-            // cache just a..a
-            if ( a != b || a < 0 || a > INTERVAL_POOL_MAX_VALUE )
+            get
             {
-                return new Interval( a, b );
+                return b - a + 1;
             }
-            if ( cache[a] == null )
-            {
-                cache[a] = new Interval( a, a );
-            }
-            return cache[a];
+        }
+
+        public static Interval FromBounds( int start, int endInclusive )
+        {
+            return new Interval( start, endInclusive );
         }
 
         public override int GetHashCode()
         {
-            throw new System.NotImplementedException();
+            return a + b;
+        }
+
+        public bool Equals(Interval other)
+        {
+            return this.a == other.a && this.b == other.b;
         }
 
         public override bool Equals( object o )
         {
-            if ( o == null )
-            {
+            if (!(o is Interval))
                 return false;
-            }
-            Interval other = (Interval)o;
-            return this.a == other.a && this.b == other.b;
+
+            return this.Equals((Interval)o);
         }
 
         /** Does this start completely before other? Disjoint */
-        public virtual bool StartsBeforeDisjoint( Interval other )
+        public bool StartsBeforeDisjoint( Interval other )
         {
             return this.a < other.a && this.b < other.a;
         }
 
         /** Does this start at or before other? Nondisjoint */
-        public virtual bool StartsBeforeNonDisjoint( Interval other )
+        public bool StartsBeforeNonDisjoint( Interval other )
         {
             return this.a <= other.a && this.b >= other.a;
         }
 
         /** Does this.a start after other.b? May or may not be disjoint */
-        public virtual bool StartsAfter( Interval other )
+        public bool StartsAfter( Interval other )
         {
             return this.a > other.a;
         }
 
         /** Does this start completely after other? Disjoint */
-        public virtual bool StartsAfterDisjoint( Interval other )
+        public bool StartsAfterDisjoint( Interval other )
         {
             return this.a > other.b;
         }
 
         /** Does this start after other? NonDisjoint */
-        public virtual bool StartsAfterNonDisjoint( Interval other )
+        public bool StartsAfterNonDisjoint( Interval other )
         {
             return this.a > other.a && this.a <= other.b; // this.b>=other.b implied
         }
 
         /** Are both ranges disjoint? I.e., no overlap? */
-        public virtual bool Disjoint( Interval other )
+        public bool Disjoint( Interval other )
         {
             return StartsBeforeDisjoint( other ) || StartsAfterDisjoint( other );
         }
 
         /** Are two intervals adjacent such as 0..41 and 42..42? */
-        public virtual bool Adjacent( Interval other )
+        public bool Adjacent( Interval other )
         {
             return this.a == other.b + 1 || this.b == other.a - 1;
         }
 
-        public virtual bool ProperlyContains( Interval other )
+        public bool ProperlyContains( Interval other )
         {
             return other.a >= this.a && other.b <= this.b;
         }
 
         /** Return the interval computed from combining this and other */
-        public virtual Interval Union( Interval other )
+        public Interval Union( Interval other )
         {
-            return Interval.Create( Math.Min( a, other.a ), Math.Max( b, other.b ) );
+            return Interval.FromBounds( Math.Min( a, other.a ), Math.Max( b, other.b ) );
         }
 
         /** Return the interval in common between this and o */
-        public virtual Interval Intersection( Interval other )
+        public Interval Intersection( Interval other )
         {
-            return Interval.Create( Math.Max( a, other.a ), Math.Min( b, other.b ) );
+            return Interval.FromBounds( Math.Max( a, other.a ), Math.Min( b, other.b ) );
         }
 
         /** Return the interval with elements from this not in other;
@@ -155,21 +145,22 @@ namespace Antlr3.Misc
          *  within this, which would result in two disjoint intervals
          *  instead of the single one returned by this method.
          */
-        public virtual Interval DifferenceNotProperlyContained( Interval other )
+        public Interval? DifferenceNotProperlyContained( Interval other )
         {
-            Interval diff = null;
+            Interval? diff = null;
+
             // other.a to left of this.a (or same)
             if ( other.StartsBeforeNonDisjoint( this ) )
             {
-                diff = Interval.Create( Math.Max( this.a, other.b + 1 ),
+                diff = Interval.FromBounds( Math.Max( this.a, other.b + 1 ),
                                        this.b );
             }
-
             // other.a to right of this.a
             else if ( other.StartsAfterNonDisjoint( this ) )
             {
-                diff = Interval.Create( this.a, other.a - 1 );
+                diff = Interval.FromBounds( this.a, other.a - 1 );
             }
+
             return diff;
         }
 

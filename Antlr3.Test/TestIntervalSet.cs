@@ -38,6 +38,7 @@ namespace AntlrUnitTests
     using Microsoft.VisualStudio.TestTools.UnitTesting;
 
     using IList = System.Collections.IList;
+    using Interval = Antlr3.Misc.Interval;
     using IntervalSet = Antlr3.Misc.IntervalSet;
     using Label = Antlr3.Analysis.Label;
 
@@ -113,6 +114,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( result, expecting );
         }
 
+#if false
         [TestMethod]
         public void TestNotSingleElement() /*throws Exception*/ {
             IntervalSet vocabulary = IntervalSet.Of( 1, 1000 );
@@ -165,6 +167,7 @@ namespace AntlrUnitTests
             string result = ( s.Complement( vocabulary ) ).ToString();
             Assert.AreEqual( result, expecting );
         }
+#endif
 
         [TestMethod]
         public void TestSubtractOfCompletelyContainedRange() /*throws Exception*/ {
@@ -325,7 +328,7 @@ namespace AntlrUnitTests
         public void TestComplement() /*throws Exception*/ {
             IntervalSet s = IntervalSet.Of( 100, 100 );
             s.Add( 101, 101 );
-            IntervalSet s2 = IntervalSet.Of( 100, 102 );
+            Interval s2 = Interval.FromBounds( 100, 102 );
             string expecting = "102";
             string result = ( s.Complement( s2 ) ).ToString();
             Assert.AreEqual( result, expecting );
@@ -334,7 +337,7 @@ namespace AntlrUnitTests
         [TestMethod]
         public void TestComplement2() /*throws Exception*/ {
             IntervalSet s = IntervalSet.Of( 100, 101 );
-            IntervalSet s2 = IntervalSet.Of( 100, 102 );
+            Interval s2 = Interval.FromBounds( 100, 102 );
             string expecting = "102";
             string result = ( s.Complement( s2 ) ).ToString();
             Assert.AreEqual( result, expecting );
