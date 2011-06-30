@@ -1,10 +1,10 @@
 ﻿/*
- * [The "BSD licence"]
- * Copyright (c) 2005-2008 Terence Parr
+ * [The "BSD license"]
+ * Copyright (c) 2011 Terence Parr
  * All rights reserved.
  *
  * Conversion to C#:
- * Copyright (c) 2008 Sam Harwell, Pixel Mine, Inc.
+ * Copyright (c) 2011 Sam Harwell, Pixel Mine, Inc.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -50,7 +50,7 @@ namespace Antlr3.Analysis
      *  The complete context for an NFA configuration is the set of invoking states
      *  on the path from this node thru the parent pointers to the root.
      */
-    public class NFAContext
+    public class NFAContext : System.IEquatable<NFAContext>
     {
         /** This is similar to Bermudez's m constant in his LAR(m) where
          *  you bound the stack so your states don't explode.  The main difference
@@ -135,7 +135,7 @@ namespace Antlr3.Analysis
 
             if ( parent != null )
             {
-                this._cachedHashCode += parent._cachedHashCode;
+                this._cachedHashCode ^= (parent._cachedHashCode << 1) + (parent._cachedHashCode < 0 ? 1 : 0);
             }
         }
 
@@ -174,33 +174,32 @@ namespace Antlr3.Analysis
          *  The hashCode is now cheap as it's computed once upon each context
          *  push on the stack.  Use it to make equals() more efficient.
          */
-        public override bool Equals( object o )
+        public override bool Equals(object obj)
         {
-            NFAContext other = ( (NFAContext)o );
+            if (object.ReferenceEquals(this, obj))
+                return true;
+
+            NFAContext other = obj as NFAContext;
+            if (other == null)
+                return false;
+
+            return this.Equals(other);
+        }
+
+        public bool Equals(NFAContext other)
+        {
+            if (object.ReferenceEquals(this, other))
+                return true;
+
             if ( this._cachedHashCode != other._cachedHashCode )
             {
                 return false; // can't be same if hash is different
             }
-            if ( this == other )
-            {
-                return true;
-            }
-            // JSystem.@out.println("comparing "+this+" with "+other);
-            NFAContext sp = this;
-            while ( sp._parent != null && other._parent != null )
-            {
-                if ( sp._invokingState != other._invokingState )
-                {
-                    return false;
-                }
-                sp = sp._parent;
-                other = other._parent;
-            }
-            if ( !( sp._parent == null && other._parent == null ) )
-            {
-                return false; // both pointers must be at their roots after walk
-            }
-            return true;
+
+            if (_parent == null)
+                return other._parent == null;
+
+            return _parent.Equals(other._parent);
         }
 
         /** Two contexts conflict() if they are equals() or one is a stack suffix
