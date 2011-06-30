@@ -114,13 +114,12 @@ namespace Antlr.Runtime
                 if ( input == null )
                     return null;
 
-                if (start < input.Count && stop < input.Count)
-                text = input.Substring( start, stop - start + 1 );
-                else
-                    text = "<EOF>";
+                if (start <= stop && stop < input.Count)
+                    return input.Substring( start, stop - start + 1 );
 
-                return text;
+                return "<EOF>";
             }
+
             set
             {
                 /** Override the text for this token.  getText() will return this text
