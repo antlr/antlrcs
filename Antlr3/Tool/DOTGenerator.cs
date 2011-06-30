@@ -42,6 +42,7 @@ namespace Antlr3.Tool
     using Path = System.IO.Path;
     using StringBuffer = System.Text.StringBuilder;
     using StringTemplate = Antlr4.StringTemplate.Template;
+    using TemplateGroupFile = Antlr4.StringTemplate.TemplateGroupFile;
     using TemplateGroupDirectory = Antlr4.StringTemplate.TemplateGroupDirectory;
     using TemplateGroup = Antlr4.StringTemplate.TemplateGroup;
 
@@ -112,12 +113,10 @@ namespace Antlr3.Tool
 
         #endregion
 
-        public static TemplateGroup GetTemplates()
+        public TemplateGroup GetTemplates()
         {
             if (_stlib == null)
-            {
-                _stlib = new TemplateGroupDirectory(Path.Combine(Path.Combine(Path.Combine(AntlrTool.ToolPathRoot, "Tool"), "Templates"), "dot"));
-            }
+                _stlib = new TemplateGroupFile(Path.Combine(dfaTemplateDirectoryName, "dot.stg"));
 
             return _stlib;
         }
@@ -152,7 +151,7 @@ namespace Antlr3.Tool
                 WalkRuleNFACreatingDOT( dot, startState );
             }
             dot.SetAttribute( "rankdir", rankdir );
-            return dot.ToString();
+            return dot.Render();
         }
 
 #if false
@@ -168,7 +167,7 @@ namespace Antlr3.Tool
             markedStates = new HashSet<object>();
             dot.SetAttribute( "startState", startState.stateNumber );
             walkRuleNFACreatingDOT( dot, startState );
-            return dot.ToString();
+            return dot.Render();
         }
 #endif
 
@@ -264,7 +263,7 @@ namespace Antlr3.Tool
                 GrammarAST n = ( (NFAState)s ).associatedASTNode;
                 if ( n != null && n.Type != ANTLRParser.EOB )
                 {
-                    StringTemplate rankST = GetTemplates().GetInstanceOf( "decision-rank" );
+                    StringTemplate rankST = GetTemplates().GetInstanceOf( "decision_rank" );
                     NFAState alt = (NFAState)s;
                     while ( alt != null )
                     {
@@ -309,11 +308,11 @@ namespace Antlr3.Tool
                 }
                 if ( edge.IsAction )
                 {
-                    edgeST = GetTemplates().GetInstanceOf( "action-edge" );
+                    edgeST = GetTemplates().GetInstanceOf( "action_edge" );
                 }
                 else if ( edge.IsEpsilon )
                 {
-                    edgeST = GetTemplates().GetInstanceOf( "epsilon-edge" );
+                    edgeST = GetTemplates().GetInstanceOf( "epsilon_edge" );
                 }
                 else
                 {
@@ -394,7 +393,7 @@ namespace Antlr3.Tool
                     string predsStr = "";
                     predsStr = "&&{" +
                         preds.GenExpr( grammar.generator,
-                                      grammar.generator.Templates, null ).ToString()
+                                      grammar.generator.Templates, null ).Render()
                         + "}?";
                     label += predsStr;
                 }

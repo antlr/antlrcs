@@ -453,36 +453,8 @@
       <Link>Tool\Templates\messages\languages\en.stg</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </EmbeddedResource>
-    <Content Include="..\..\..\antlr\antlr3-main\tool\src\main\resources\org\antlr\tool\templates\dot\action-edge.st">
-      <Link>Tool\Templates\dot\action-edge.st</Link>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="..\..\..\antlr\antlr3-main\tool\src\main\resources\org\antlr\tool\templates\dot\decision-rank.st">
-      <Link>Tool\Templates\dot\decision-rank.st</Link>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="..\..\..\antlr\antlr3-main\tool\src\main\resources\org\antlr\tool\templates\dot\dfa.st">
-      <Link>Tool\Templates\dot\dfa.st</Link>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="..\..\..\antlr\antlr3-main\tool\src\main\resources\org\antlr\tool\templates\dot\edge.st">
-      <Link>Tool\Templates\dot\edge.st</Link>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="..\..\..\antlr\antlr3-main\tool\src\main\resources\org\antlr\tool\templates\dot\epsilon-edge.st">
-      <Link>Tool\Templates\dot\epsilon-edge.st</Link>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="..\..\..\antlr\antlr3-main\tool\src\main\resources\org\antlr\tool\templates\dot\nfa.st">
-      <Link>Tool\Templates\dot\nfa.st</Link>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="..\..\..\antlr\antlr3-main\tool\src\main\resources\org\antlr\tool\templates\dot\state.st">
-      <Link>Tool\Templates\dot\state.st</Link>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="..\..\..\antlr\antlr3-main\tool\src\main\resources\org\antlr\tool\templates\dot\stopstate.st">
-      <Link>Tool\Templates\dot\stopstate.st</Link>
+    <Content Include="..\..\..\antlr\antlr3-main\tool\src\main\resources\org\antlr\tool\templates\dot\dot.stg">
+      <Link>Tool\Templates\dot\dot.stg</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="..\..\..\antlr\antlr3-main\tool\src\main\resources\org\antlr\codegen\templates\Ruby\AST.stg">
