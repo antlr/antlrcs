@@ -827,7 +827,7 @@ namespace Antlr4.StringTemplate
                     if (o is IEnumerator)
                         n = WriteIterator(@out, frame, o, options);
                     else
-                        n = WritePlainObject(@out, o, options);
+                        n = WritePlainObject(@out, frame, o, options);
                 }
                 catch (IOException ioe)
                 {
@@ -867,12 +867,12 @@ namespace Antlr4.StringTemplate
             return n;
         }
 
-        protected virtual int WritePlainObject(ITemplateWriter @out, object o, string[] options)
+        protected virtual int WritePlainObject(ITemplateWriter @out, TemplateFrame frame, object o, string[] options)
         {
             string formatString = null;
             if (options != null)
                 formatString = options[(int)RenderOption.Format];
-            IAttributeRenderer r = group.GetAttributeRenderer(o.GetType());
+            IAttributeRenderer r = frame.Template.impl.NativeGroup.GetAttributeRenderer(o.GetType());
 
             string v;
             if (r != null)

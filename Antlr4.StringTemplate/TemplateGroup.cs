@@ -33,6 +33,7 @@
 namespace Antlr4.StringTemplate
 {
     using System.Collections.Generic;
+    using System.Collections.ObjectModel;
     using System.Linq;
     using System.Runtime.CompilerServices;
     using System.Text;
@@ -267,6 +268,14 @@ namespace Antlr4.StringTemplate
             set
             {
                 _iterateAcrossValues = value;
+            }
+        }
+
+        public ReadOnlyCollection<TemplateGroup> ImportedGroups
+        {
+            get
+            {
+                return _imports.AsReadOnly();
             }
         }
 
@@ -942,10 +951,25 @@ namespace Antlr4.StringTemplate
          *  templates evaluated relative to this group.  Use r to Render if
          *  object in question is instanceof(attributeType).
          */
-        public virtual void RegisterRenderer(Type attributeType, IAttributeRenderer r)
+        public void RegisterRenderer(Type attributeType, IAttributeRenderer renderer)
+        {
+            RegisterRenderer(attributeType, renderer, true);
+        }
+
+        /** Register a renderer for all objects of a particular "kind" for all
+         *  templates evaluated relative to this group.  Use r to Render if
+         *  object in question is instanceof(attributeType).
+         */
+        public virtual void RegisterRenderer(Type attributeType, IAttributeRenderer renderer, bool recursive)
         {
             renderers = renderers ?? new TypeRegistry<IAttributeRenderer>();
-            renderers[attributeType] = r;
+            renderers[attributeType] = renderer;
+            if (recursive)
+            {
+                Load();
+                foreach (var group in ImportedGroups)
+                    group.RegisterRenderer(attributeType, renderer, recursive);
+            }
         }
 
         public virtual IAttributeRenderer GetAttributeRenderer(Type attributeType)

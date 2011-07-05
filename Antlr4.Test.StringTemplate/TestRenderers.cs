@@ -158,8 +158,7 @@ namespace Antlr4.Test.StringTemplate
                     "The names: <names; format=\"upper\">";
             TemplateGroup group = new TemplateGroup();
             group.RegisterRenderer(typeof(string), new StringRenderer());
-            Template st = new Template(template);
-            st.Group = group;
+            Template st = new Template(group, template);
             st.Add("names", "ter");
             st.Add("names", "tom");
             st.Add("names", "sriram");
@@ -175,8 +174,7 @@ namespace Antlr4.Test.StringTemplate
                     "The names: <names; separator=\" and \", format=\"upper\">";
             TemplateGroup group = new TemplateGroup();
             group.RegisterRenderer(typeof(string), new StringRenderer());
-            Template st = new Template(template);
-            st.Group = group;
+            Template st = new Template(group, template);
             st.Add("names", "ter");
             st.Add("names", "tom");
             st.Add("names", "sriram");
@@ -192,8 +190,7 @@ namespace Antlr4.Test.StringTemplate
                     "The names: <names; separator=\" and \", null=\"n/a\", format=\"upper\">";
             TemplateGroup group = new TemplateGroup();
             group.RegisterRenderer(typeof(string), new StringRenderer());
-            Template st = new Template(template);
-            st.Group = group;
+            Template st = new Template(group, template);
             List<string> names = new List<string>();
             names.Add("ter");
             names.Add(null);
