@@ -55,45 +55,7 @@ namespace Antlr4.StringTemplate.Compiler
         public const char EOF = char.MaxValue;            // EOF char
         public const int EOF_TYPE = CharStreamConstants.EndOfFile;  // EOF token type
 
-        /** We build STToken tokens instead of relying on CommonToken so we
-         *  can override ToString(). It just converts token types to
-         *  token names like 23 to LDELIM.
-         */
-        public class STToken : CommonToken
-        {
-            public STToken(ICharStream input, int type, int start, int stop)
-                : base(input, type, TokenChannels.Default, start, stop)
-            {
-            }
-
-            public STToken(int type, string text)
-                : base(type, text)
-            {
-            }
-
-            public override string ToString()
-            {
-                string channelStr = string.Empty;
-                if (Channel > 0)
-                    channelStr = ",channel=" + Channel;
-
-                string txt = Text;
-                if (txt != null)
-                    txt = Utility.ReplaceEscapes(txt);
-                else
-                    txt = "<no text>";
-
-                string tokenName = null;
-                if (Type == EOF_TYPE)
-                    tokenName = "EOF";
-                else
-                    tokenName = TemplateParser.tokenNames[Type];
-
-                return string.Format("[@{0},{1}:{2}='{3}',<{4}>{5},{6}:{7}]", TokenIndex, StartIndex, StopIndex, txt, tokenName, channelStr, Line, CharPositionInLine);
-            }
-        }
-
-        public static readonly IToken SKIP = new STToken(-1, "<skip>");
+        public static readonly IToken SkipToken = new TemplateToken(-1, "<skip>");
 
         // must follow TemplateLexer.tokens file that STParser.g loads
         public const int RBRACK = 17;
@@ -132,13 +94,13 @@ namespace Antlr4.StringTemplate.Compiler
         public const int COMMENT = 37;
 
         /** What char starts an expression? */
-        char delimiterStartChar = '<';
-        char delimiterStopChar = '>';
+        private readonly char delimiterStartChar = '<';
+        private readonly char delimiterStopChar = '>';
 
         /** This keep track of the mode of the lexer. Are we inside or outside
          *  an Template expression?
          */
-        bool scanningInsideExpr = false;
+        private bool scanningInsideExpr = false;
 
         /** To be able to properly track the inside/outside mode, we need to
          *  track how deeply nested we are in some templates. Otherwise, we
@@ -147,19 +109,19 @@ namespace Antlr4.StringTemplate.Compiler
          */
         public int subtemplateDepth = 0; // start out *not* in a {...} subtemplate
 
-        ErrorManager errMgr;
+        private ErrorManager errMgr;
 
-        IToken templateToken; // template embedded in a group file? this is the template
+        private IToken templateToken; // template embedded in a group file? this is the template
 
-        ICharStream input;
-        char c;        // current character
+        private ICharStream input;
+        private char c;        // current character
 
         /** When we started token, track initial coordinates so we can properly
          *  build token objects.
          */
-        int startCharIndex;
-        int startLine;
-        int startCharPositionInLine;
+        private int startCharIndex;
+        private int startLine;
+        private int startCharPositionInLine;
 
         /** Our lexer routines might have to emit more than a single token. We
          *  buffer everything through this list.
@@ -175,11 +137,7 @@ namespace Antlr4.StringTemplate.Compiler
         {
         }
 
-        public TemplateLexer(ErrorManager errMgr,
-                       ICharStream input,
-                       IToken templateToken,
-                       char delimiterStartChar,
-                       char delimiterStopChar)
+        public TemplateLexer(ErrorManager errMgr, ICharStream input, IToken templateToken, char delimiterStartChar, char delimiterStopChar)
         {
             this.errMgr = errMgr;
             this.input = input;
@@ -214,7 +172,7 @@ namespace Antlr4.StringTemplate.Compiler
         }
 
         /** Ensure x is next character on the input stream */
-        public virtual void match(char x)
+        public virtual void Match(char x)
         {
             if (c != x)
             {
@@ -222,16 +180,16 @@ namespace Antlr4.StringTemplate.Compiler
                 errMgr.LexerError(input.SourceName, string.Format("expecting '{0}', found '{1}'", x, GetCharString(c)), templateToken, e);
             }
 
-            consume();
+            Consume();
         }
 
-        protected virtual void consume()
+        protected virtual void Consume()
         {
             input.Consume();
             c = (char)input.LA(1);
         }
 
-        public virtual void emit(IToken token)
+        public virtual void Emit(IToken token)
         {
             tokens.Enqueue(token);
         }
@@ -246,70 +204,70 @@ namespace Antlr4.StringTemplate.Compiler
                 startCharPositionInLine = input.CharPositionInLine;
 
                 if (c == EOF)
-                    return newToken(EOF_TYPE);
+                    return NewToken(EOF_TYPE);
 
                 IToken t;
                 if (scanningInsideExpr)
-                    t = inside();
+                    t = NextTokenInside();
                 else
-                    t = outside();
+                    t = NextTokenOutside();
 
-                if (t != SKIP)
+                if (t != SkipToken)
                     return t;
             }
         }
 
-        protected virtual IToken outside()
+        protected virtual IToken NextTokenOutside()
         {
             if (input.CharPositionInLine == 0 && (c == ' ' || c == '\t'))
             {
                 while (c == ' ' || c == '\t')
-                    consume(); // scarf indent
+                    Consume(); // scarf indent
 
                 if (c != EOF)
-                    return newToken(INDENT);
+                    return NewToken(INDENT);
 
-                return newToken(TEXT);
+                return NewToken(TEXT);
             }
 
             if (c == delimiterStartChar)
             {
-                consume();
+                Consume();
                 if (c == '!')
-                    return Comment();
+                    return MatchComment();
 
                 if (c == '\\')
-                    return ESCAPE(); // <\\> <\uFFFF> <\n> etc...
+                    return MatchEscape(); // <\\> <\uFFFF> <\n> etc...
 
                 scanningInsideExpr = true;
-                return newToken(LDELIM);
+                return NewToken(LDELIM);
             }
 
             if (c == '\r')
             {
-                consume();
-                consume();
-                return newToken(NEWLINE);
+                Consume();
+                Consume();
+                return NewToken(NEWLINE);
             } // \r\n -> \n
 
             if (c == '\n')
             {
-                consume();
-                return newToken(NEWLINE);
+                Consume();
+                return NewToken(NEWLINE);
             }
 
             if (c == '}' && subtemplateDepth > 0)
             {
                 scanningInsideExpr = true;
                 subtemplateDepth--;
-                consume();
-                return newTokenFromPreviousChar(RCURLY);
+                Consume();
+                return NewTokenFromPreviousChar(RCURLY);
             }
 
-            return mTEXT();
+            return MatchText();
         }
 
-        protected virtual IToken inside()
+        protected virtual IToken NextTokenInside()
         {
             while (true)
             {
@@ -319,109 +277,109 @@ namespace Antlr4.StringTemplate.Compiler
                 case '\t':
                 case '\n':
                 case '\r':
-                    consume();
-                    return SKIP;
+                    Consume();
+                    return SkipToken;
 
                 case '.':
-                    consume();
+                    Consume();
                     if (input.LA(1) == '.' && input.LA(2) == '.')
                     {
-                        consume();
-                        match('.');
-                        return newToken(ELLIPSIS);
+                        Consume();
+                        Match('.');
+                        return NewToken(ELLIPSIS);
                     }
-                    return newToken(DOT);
+                    return NewToken(DOT);
 
                 case ',':
-                    consume();
-                    return newToken(COMMA);
+                    Consume();
+                    return NewToken(COMMA);
 
                 case ':':
-                    consume();
-                    return newToken(COLON);
+                    Consume();
+                    return NewToken(COLON);
 
                 case ';':
-                    consume();
-                    return newToken(SEMI);
+                    Consume();
+                    return NewToken(SEMI);
 
                 case '(':
-                    consume();
-                    return newToken(LPAREN);
+                    Consume();
+                    return NewToken(LPAREN);
 
                 case ')':
-                    consume();
-                    return newToken(RPAREN);
+                    Consume();
+                    return NewToken(RPAREN);
 
                 case '[':
-                    consume();
-                    return newToken(LBRACK);
+                    Consume();
+                    return NewToken(LBRACK);
 
                 case ']':
-                    consume();
-                    return newToken(RBRACK);
+                    Consume();
+                    return NewToken(RBRACK);
 
                 case '=':
-                    consume();
-                    return newToken(EQUALS);
+                    Consume();
+                    return NewToken(EQUALS);
 
                 case '!':
-                    consume();
-                    return newToken(BANG);
+                    Consume();
+                    return NewToken(BANG);
 
                 case '@':
-                    consume();
+                    Consume();
                     if (c == 'e' && input.LA(2) == 'n' && input.LA(3) == 'd')
                     {
-                        consume();
-                        consume();
-                        consume();
-                        return newToken(REGION_END);
+                        Consume();
+                        Consume();
+                        Consume();
+                        return NewToken(REGION_END);
                     }
-                    return newToken(AT);
+                    return NewToken(AT);
 
                 case '"':
-                    return mSTRING();
+                    return MatchString();
 
                 case '&':
-                    consume();
-                    match('&');
-                    return newToken(AND); // &&
+                    Consume();
+                    Match('&');
+                    return NewToken(AND); // &&
 
                 case '|':
-                    consume();
-                    match('|');
-                    return newToken(OR); // ||
+                    Consume();
+                    Match('|');
+                    return NewToken(OR); // ||
 
                 case '{':
-                    return subTemplate();
+                    return MatchSubTemplate();
 
                 default:
                     if (c == delimiterStopChar)
                     {
-                        consume();
+                        Consume();
                         scanningInsideExpr = false;
-                        return newToken(RDELIM);
+                        return NewToken(RDELIM);
                     }
 
-                    if (isIDStartLetter(c))
+                    if (IsIDStartLetter(c))
                     {
-                        IToken id = mID();
+                        IToken id = MatchIdentifier();
                         switch (id.Text ?? string.Empty)
                         {
                         case "if":
-                            return newToken(IF);
+                            return NewToken(IF);
                         case "endif":
-                            return newToken(ENDIF);
+                            return NewToken(ENDIF);
                         case "else":
-                            return newToken(ELSE);
+                            return NewToken(ELSE);
                         case "elseif":
-                            return newToken(ELSEIF);
+                            return NewToken(ELSEIF);
                         case "super":
-                            return newToken(SUPER);
+                            return NewToken(SUPER);
                         case "true":
-                            return newToken(TRUE);
+                            return NewToken(TRUE);
                         case "false":
-                            return newToken(FALSE);
+                            return NewToken(FALSE);
                         default:
                             return id;
                         }
@@ -432,15 +390,15 @@ namespace Antlr4.StringTemplate.Compiler
                     re.CharPositionInLine = startCharPositionInLine;
                     errMgr.LexerError(input.SourceName, string.Format("invalid character '{0}'", GetCharString(c)), templateToken, re);
                     if (c == EOF)
-                        return newToken(EOF_TYPE);
+                        return NewToken(EOF_TYPE);
 
-                    consume();
+                    Consume();
                     break;
                 }
             }
         }
 
-        private IToken subTemplate()
+        private IToken MatchSubTemplate()
         {
             // look for "{ args ID (',' ID)* '|' ..."
             subtemplateDepth++;
@@ -449,31 +407,31 @@ namespace Antlr4.StringTemplate.Compiler
             int curlyLine = startLine;
             int curlyPos = startCharPositionInLine;
             List<IToken> argTokens = new List<IToken>();
-            consume();
-            IToken curly = newTokenFromPreviousChar(LCURLY);
-            WS();
-            argTokens.Add(mID());
-            WS();
+            Consume();
+            IToken curly = NewTokenFromPreviousChar(LCURLY);
+            ConsumeWhitespace();
+            argTokens.Add(MatchIdentifier());
+            ConsumeWhitespace();
             while (c == ',')
             {
-                consume();
-                argTokens.Add(newTokenFromPreviousChar(COMMA));
-                WS();
-                argTokens.Add(mID());
-                WS();
+                Consume();
+                argTokens.Add(NewTokenFromPreviousChar(COMMA));
+                ConsumeWhitespace();
+                argTokens.Add(MatchIdentifier());
+                ConsumeWhitespace();
             }
 
-            WS();
+            ConsumeWhitespace();
             if (c == '|')
             {
-                consume();
-                argTokens.Add(newTokenFromPreviousChar(PIPE));
-                if (isWS(c))
-                    consume(); // ignore a single whitespace after |
+                Consume();
+                argTokens.Add(NewTokenFromPreviousChar(PIPE));
+                if (IsWS(c))
+                    Consume(); // ignore a single whitespace after |
 
                 //System.out.println("matched args: "+argTokens);
                 foreach (IToken t in argTokens)
-                    emit(t);
+                    Emit(t);
 
                 input.Release(m);
                 scanningInsideExpr = false;
@@ -487,25 +445,25 @@ namespace Antlr4.StringTemplate.Compiler
             startCharIndex = curlyStartChar; // reset state
             startLine = curlyLine;
             startCharPositionInLine = curlyPos;
-            consume();
+            Consume();
             scanningInsideExpr = false;
             return curly;
         }
 
-        private IToken ESCAPE()
+        private IToken MatchEscape()
         {
             startCharIndex = input.Index;
             startCharPositionInLine = input.CharPositionInLine;
-            consume(); // kill \\
+            Consume(); // kill \\
             if (c == 'u')
-                return UNICODE();
+                return MatchUnicode();
 
             string text = null;
             switch (c)
             {
             case '\\':
-                LINEBREAK();
-                return SKIP;
+                ConsumeLineBreak();
+                return SkipToken;
 
             case 'n':
                 text = "\n";
@@ -522,46 +480,46 @@ namespace Antlr4.StringTemplate.Compiler
             default:
                 NoViableAltException e = new NoViableAltException(string.Empty, 0, 0, input);
                 errMgr.LexerError(input.SourceName, string.Format("invalid escaped char: '{0}'", GetCharString(c)), templateToken, e);
-                consume();
-                match(delimiterStopChar);
-                return SKIP;
+                Consume();
+                Match(delimiterStopChar);
+                return SkipToken;
             }
 
-            consume();
-            IToken t = newToken(TEXT, text, input.CharPositionInLine - 2);
-            match(delimiterStopChar);
+            Consume();
+            IToken t = NewToken(TEXT, text, input.CharPositionInLine - 2);
+            Match(delimiterStopChar);
             return t;
         }
 
-        private IToken UNICODE()
+        private IToken MatchUnicode()
         {
-            consume();
+            Consume();
             char[] chars = new char[4];
-            if (!isUnicodeLetter(c))
+            if (!IsUnicodeLetter(c))
             {
                 NoViableAltException e = new NoViableAltException(string.Empty, 0, 0, input);
                 errMgr.LexerError(input.SourceName,string.Format( "invalid unicode char: '{0}'", GetCharString(c)), templateToken, e);
             }
 
             chars[0] = c;
-            consume();
-            if (!isUnicodeLetter(c))
+            Consume();
+            if (!IsUnicodeLetter(c))
             {
                 NoViableAltException e = new NoViableAltException(string.Empty, 0, 0, input);
                 errMgr.LexerError(input.SourceName, string.Format("invalid unicode char: '{0}'", GetCharString(c)), templateToken, e);
             }
 
             chars[1] = c;
-            consume();
-            if (!isUnicodeLetter(c))
+            Consume();
+            if (!IsUnicodeLetter(c))
             {
                 NoViableAltException e = new NoViableAltException(string.Empty, 0, 0, input);
                 errMgr.LexerError(input.SourceName, string.Format("invalid unicode char: '{0}'", GetCharString(c)), templateToken, e);
             }
 
             chars[2] = c;
-            consume();
-            if (!isUnicodeLetter(c))
+            Consume();
+            if (!IsUnicodeLetter(c))
             {
                 NoViableAltException e = new NoViableAltException(string.Empty, 0, 0, input);
                 errMgr.LexerError(input.SourceName, string.Format("invalid unicode char: '{0}'", GetCharString(c)), templateToken, e);
@@ -570,13 +528,13 @@ namespace Antlr4.StringTemplate.Compiler
             chars[3] = c;
             // ESCAPE kills >
             char uc = (char)int.Parse(new string(chars), NumberStyles.HexNumber);
-            IToken t = newToken(TEXT, uc.ToString(), input.CharPositionInLine - 6);
-            consume();
-            match(delimiterStopChar);
+            IToken t = NewToken(TEXT, uc.ToString(), input.CharPositionInLine - 6);
+            Consume();
+            Match(delimiterStopChar);
             return t;
         }
 
-        private IToken mTEXT()
+        private IToken MatchText()
         {
             bool modifiedText = false;
             StringBuilder buf = new StringBuilder();
@@ -593,8 +551,8 @@ namespace Antlr4.StringTemplate.Compiler
                     if (input.LA(2) == '\\')
                     {
                         // convert \\ to \
-                        consume();
-                        consume();
+                        Consume();
+                        Consume();
                         buf.Append('\\');
                         modifiedText = true;
                         continue;
@@ -604,58 +562,58 @@ namespace Antlr4.StringTemplate.Compiler
                     {
                         modifiedText = true;
                         // toss out \ char
-                        consume();
+                        Consume();
                         buf.Append(c);
-                        consume();
+                        Consume();
                     }
                     else
                     {
                         buf.Append(c);
-                        consume();
+                        Consume();
                     }
 
                     continue;
                 }
 
                 buf.Append(c);
-                consume();
+                Consume();
             }
 
             if (modifiedText)
-                return newToken(TEXT, buf.ToString());
+                return NewToken(TEXT, buf.ToString());
             else
-                return newToken(TEXT);
+                return NewToken(TEXT);
         }
 
         /** ID  :   ('a'..'z'|'A'..'Z'|'_'|'/') ('a'..'z'|'A'..'Z'|'0'..'9'|'_'|'/')* ; */
-        private IToken mID()
+        private IToken MatchIdentifier()
         {
             // called from subTemplate; so keep resetting position during speculation
             startCharIndex = input.Index;
             startLine = input.Line;
             startCharPositionInLine = input.CharPositionInLine;
-            consume();
-            while (isIDLetter(c))
+            Consume();
+            while (IsIDLetter(c))
             {
-                consume();
+                Consume();
             }
-            return newToken(ID);
+            return NewToken(ID);
         }
 
         /** STRING : '"' ( '\\' '"' | '\\' ~'"' | ~('\\'|'"') )* '"' ; */
-        private IToken mSTRING()
+        private IToken MatchString()
         {
             //{setText(getText().substring(1, getText().length()-1));}
             bool sawEscape = false;
             StringBuilder buf = new StringBuilder();
             buf.Append(c);
-            consume();
+            Consume();
             while (c != '"')
             {
                 if (c == '\\')
                 {
                     sawEscape = true;
-                    consume();
+                    Consume();
                     switch (c)
                     {
                     case 'n':
@@ -675,12 +633,12 @@ namespace Antlr4.StringTemplate.Compiler
                         break;
                     }
 
-                    consume();
+                    Consume();
                     continue;
                 }
 
                 buf.Append(c);
-                consume();
+                Consume();
                 if (c == EOF)
                 {
                     RecognitionException re = new MismatchedTokenException((int)'"', input);
@@ -692,23 +650,23 @@ namespace Antlr4.StringTemplate.Compiler
             }
 
             buf.Append(c);
-            consume();
+            Consume();
 
             if (sawEscape)
-                return newToken(STRING, buf.ToString());
+                return NewToken(STRING, buf.ToString());
             else
-                return newToken(STRING);
+                return NewToken(STRING);
         }
 
-        private void WS()
+        private void ConsumeWhitespace()
         {
             while (c == ' ' || c == '\t' || c == '\n' || c == '\r')
-                consume();
+                Consume();
         }
 
-        private IToken Comment()
+        private IToken MatchComment()
         {
-            match('!');
+            Match('!');
 
             while (!(c == '!' && input.LA(2) == delimiterStopChar))
             {
@@ -721,66 +679,66 @@ namespace Antlr4.StringTemplate.Compiler
                     errMgr.LexerError(input.SourceName, message, templateToken, re);
                     break;
                 }
-                consume();
+                Consume();
             }
 
-            consume();
-            consume(); // grab !>
-            return newToken(COMMENT);
+            Consume();
+            Consume(); // grab !>
+            return NewToken(COMMENT);
         }
 
-        private void LINEBREAK()
+        private void ConsumeLineBreak()
         {
-            match('\\'); // only kill 2nd \ as outside() kills first one
-            match(delimiterStopChar);
+            Match('\\'); // only kill 2nd \ as outside() kills first one
+            Match(delimiterStopChar);
             while (c == ' ' || c == '\t')
-                consume(); // scarf WS after <\\>
+                Consume(); // scarf WS after <\\>
             if (c == '\r')
-                consume();
-            match('\n');
+                Consume();
+            Match('\n');
             while (c == ' ' || c == '\t')
-                consume(); // scarf any indent
+                Consume(); // scarf any indent
         }
 
-        public static bool isIDStartLetter(char c)
+        public static bool IsIDStartLetter(char c)
         {
-            return isIDLetter(c);
+            return IsIDLetter(c);
         }
 
-        public static bool isIDLetter(char c)
+        public static bool IsIDLetter(char c)
         {
             return c >= 'a' && c <= 'z' || c >= 'A' && c <= 'Z' || c >= '0' && c <= '9' || c == '_' || c == '/';
         }
 
-        public static bool isWS(char c)
+        public static bool IsWS(char c)
         {
             return c == ' ' || c == '\t' || c == '\n' || c == '\r';
         }
 
-        public static bool isUnicodeLetter(char c)
+        public static bool IsUnicodeLetter(char c)
         {
             return c >= 'a' && c <= 'f' || c >= 'A' && c <= 'F' || c >= '0' && c <= '9';
         }
 
-        public virtual IToken newToken(int ttype)
+        public virtual IToken NewToken(int ttype)
         {
-            STToken t = new STToken(input, ttype, startCharIndex, input.Index - 1);
+            TemplateToken t = new TemplateToken(input, ttype, startCharIndex, input.Index - 1);
             t.Line = startLine;
             t.CharPositionInLine = startCharPositionInLine;
             return t;
         }
 
-        public virtual IToken newTokenFromPreviousChar(int ttype)
+        public virtual IToken NewTokenFromPreviousChar(int ttype)
         {
-            STToken t = new STToken(input, ttype, input.Index - 1, input.Index - 1);
+            TemplateToken t = new TemplateToken(input, ttype, input.Index - 1, input.Index - 1);
             t.Line = input.Line;
             t.CharPositionInLine = input.CharPositionInLine - 1;
             return t;
         }
 
-        public virtual IToken newToken(int ttype, string text, int pos)
+        public virtual IToken NewToken(int ttype, string text, int pos)
         {
-            STToken t = new STToken(ttype, text);
+            TemplateToken t = new TemplateToken(ttype, text);
             t.StartIndex = startCharIndex;
             t.StopIndex = input.Index - 1;
             t.Line = input.Line;
@@ -788,9 +746,9 @@ namespace Antlr4.StringTemplate.Compiler
             return t;
         }
 
-        public virtual IToken newToken(int ttype, string text)
+        public virtual IToken NewToken(int ttype, string text)
         {
-            STToken t = new STToken(ttype, text);
+            TemplateToken t = new TemplateToken(ttype, text);
             t.StartIndex = startCharIndex;
             t.StopIndex = input.Index - 1;
             t.Line = startLine;
@@ -801,6 +759,44 @@ namespace Antlr4.StringTemplate.Compiler
         private static string GetCharString(char c)
         {
             return c == EOF ? "<EOF>" : c.ToString();
+        }
+
+        /** We build STToken tokens instead of relying on CommonToken so we
+         *  can override ToString(). It just converts token types to
+         *  token names like 23 to LDELIM.
+         */
+        public class TemplateToken : CommonToken
+        {
+            public TemplateToken(ICharStream input, int type, int start, int stop)
+                : base(input, type, TokenChannels.Default, start, stop)
+            {
+            }
+
+            public TemplateToken(int type, string text)
+                : base(type, text)
+            {
+            }
+
+            public override string ToString()
+            {
+                string channelStr = string.Empty;
+                if (Channel > 0)
+                    channelStr = ",channel=" + Channel;
+
+                string txt = Text;
+                if (txt != null)
+                    txt = Utility.ReplaceEscapes(txt);
+                else
+                    txt = "<no text>";
+
+                string tokenName = null;
+                if (Type == EOF_TYPE)
+                    tokenName = "EOF";
+                else
+                    tokenName = TemplateParser.tokenNames[Type];
+
+                return string.Format("[@{0},{1}:{2}='{3}',<{4}>{5},{6}:{7}]", TokenIndex, StartIndex, StopIndex, txt, tokenName, channelStr, Line, CharPositionInLine);
+            }
         }
     }
 }
