@@ -144,7 +144,7 @@ namespace Antlr.Runtime
                 }
                 try
                 {
-                    mTokens();
+                    ParseNextToken();
                     if ( state.token == null )
                     {
                         Emit();
@@ -155,15 +155,20 @@ namespace Antlr.Runtime
                     }
                     return state.token;
                 }
-                catch ( NoViableAltException nva )
+                catch (MismatchedRangeException mre)
                 {
-                    ReportError( nva );
-                    Recover( nva ); // throw out current char and try again
+                    ReportError(mre);
+                    // MatchRange() routine has already called recover()
+                }
+                catch (MismatchedTokenException mte)
+                {
+                    ReportError(mte);
+                    // Match() routine has already called recover()
                 }
                 catch ( RecognitionException re )
                 {
                     ReportError( re );
-                    // match() routine has already called recover()
+                    Recover( re ); // throw out current char and try again
                 }
             }
         }
@@ -420,6 +425,11 @@ namespace Antlr.Runtime
         {
             string inputSymbol = ( (char)input.LT( 1 ) ) + " line=" + Line + ":" + CharPositionInLine;
             base.TraceOut( ruleName, ruleIndex, inputSymbol );
+        }
+
+        protected virtual void ParseNextToken()
+        {
+            mTokens();
         }
     }
 }
