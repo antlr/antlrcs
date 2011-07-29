@@ -45,6 +45,7 @@ namespace Antlr3
     using IOException = System.IO.IOException;
     using Path = System.IO.Path;
     using Stats = Antlr.Runtime.Misc.Stats;
+    using Stopwatch = System.Diagnostics.Stopwatch;
     using StringReader = System.IO.StringReader;
     using StringWriter = System.IO.StringWriter;
     using TextWriter = System.IO.TextWriter;
@@ -80,6 +81,7 @@ namespace Antlr3
         private bool showBanner = true;
         // true when we are in a unit test
         private bool testMode = false;
+        private bool _showTimer = false;
         private static bool exitNow = false;
 
         // The internal options are for my use on the command line during dev
@@ -101,9 +103,7 @@ namespace Antlr3
             AntlrTool antlr = new AntlrTool( args );
             if ( !exitNow )
             {
-                //System.Diagnostics.Stopwatch timer = System.Diagnostics.Stopwatch.StartNew();
                 antlr.Process();
-                //Console.WriteLine("Total parse time: {0}ms", timer.ElapsedMilliseconds);
                 Environment.ExitCode = ( ErrorManager.GetNumErrors() > 0 ) ? 1 : 0;
             }
         }
@@ -434,6 +434,10 @@ namespace Antlr3
                 {
                     deleteTempLexer = false;
                 }
+                else if (args[i] == "-Xtimer")
+                {
+                    _showTimer = true;
+                }
                 else if (args[i] == "-X")
                 {
                     ExtendedHelp();
@@ -513,6 +517,8 @@ namespace Antlr3
         {
             bool exceptionWhenWritingLexerFile = false;
             string lexerGrammarFileName = null;		// necessary at this scope to have access in the catch below
+
+            Stopwatch timer = Stopwatch.StartNew();
 
             // Have to be tricky here when Maven or build tools call in and must new Tool()
             // before setting options. The banner won't display that way!
@@ -676,6 +682,11 @@ namespace Antlr3
                     Console.Out.WriteLine( "outOfRange=" + Interval.outOfRange );
                 }
 #endif
+            }
+
+            if (_showTimer)
+            {
+                Console.WriteLine("Total parse time: {0}ms", timer.ElapsedMilliseconds);
             }
         }
 
