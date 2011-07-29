@@ -192,6 +192,8 @@ namespace Antlr3.Codegen
         {
             if (tool == null)
                 throw new ArgumentNullException("tool");
+            if (grammar == null)
+                throw new ArgumentNullException("grammar");
 
             this.tool = tool;
             this._grammar = grammar;
