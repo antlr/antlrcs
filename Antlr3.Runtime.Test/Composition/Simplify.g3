@@ -9,12 +9,7 @@ options {
     //rewrite=true;
 }
 
-@members 
-{ 
-   public override IAstRuleReturnScope Topdown() { return topdown(); }
-   public override IAstRuleReturnScope Bottomup() { return bottomup(); } 
-} 
-
+@namespace{Antlr3.Runtime.Test.Composition}
 
 topdown
     :   ^( MULT INT ^(VEC (e+=.)+) ) -> ^(VEC ^(MULT INT $e)+)

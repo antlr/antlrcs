@@ -2,20 +2,14 @@
 
 options
 {
-    tokenVocab=VecMath;      
-    ASTLabelType=CommonTree; 
-    output=AST;              
-    filter=true;             
-    language=CSharp3;
+	tokenVocab=VecMath;
+	ASTLabelType=CommonTree;
+	output=AST;
+	filter=true;
+	language=CSharp3;
 }
 
-
-@members 
-{ 
-   //public override IAstRuleReturnScope Topdown() { return topdown(); }
-   public override IAstRuleReturnScope Bottomup() { return bottomup(); } 
-} 
-
+@namespace{Antlr3.Runtime.Test.Composition}
 
 /** Rewrite: x+x to be 2*x, 2*x to be x<<1, x<<n<<m to be x<<(n+m) */
 bottomup
