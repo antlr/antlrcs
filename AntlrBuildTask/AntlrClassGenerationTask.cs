@@ -92,6 +92,12 @@ namespace Antlr3.Build.Tasks
             set;
         }
 
+        public ITaskItem[] AbstractGrammarFiles
+        {
+            get;
+            set;
+        }
+
         public string GeneratedSourceExtension
         {
             get;
