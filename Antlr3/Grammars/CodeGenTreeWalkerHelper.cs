@@ -123,11 +123,13 @@ namespace Antlr3.Grammars
                                                   GrammarAST ast_suffix,
                                                   string label )
         {
-            string suffix = GetSTSuffix( elementAST, ast_suffix, label );
-            name += suffix;
+            Rule r = grammar.GetRule(currentRuleName);
+            string suffix = GetSTSuffix(elementAST, ast_suffix, label);
+            if (!r.IsSynPred)
+                name += suffix;
+
             // if we're building trees and there is no label, gen a label
             // unless we're in a synpred rule.
-            Rule r = grammar.GetRule( currentRuleName );
             if ( ( grammar.BuildAST || suffix.Length > 0 ) && label == null &&
                  ( r == null || !r.IsSynPred ) )
             {
