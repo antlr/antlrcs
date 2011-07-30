@@ -106,6 +106,7 @@ mkdir ST3
 mkdir ST4
 copy "..\$BuildConfig\Antlr3.Runtime.dll" ".\Runtime"
 copy "..\$BuildConfig\Antlr3.Runtime.pdb" ".\Runtime"
+copy "LICENSE.txt" ".\Runtime"
 
 copy "..\$BuildConfig\Antlr3.exe" ".\Tool"
 copy "..\$BuildConfig\Antlr3.exe.config" ".\Tool"
@@ -116,6 +117,7 @@ copy "..\$BuildConfig\Antlr4.StringTemplate.dll" ".\Tool"
 copy "..\$BuildConfig\Antlr4.StringTemplate.Visualizer.dll" ".\Tool"
 copy "..\$BuildConfig\Antlr3.targets" ".\Tool"
 copy "..\$BuildConfig\AntlrBuildTask.dll" ".\Tool"
+copy "LICENSE.txt" ".\Tool"
 
 copy ".\Tool\*" ".\Bootstrap"
 
@@ -153,6 +155,7 @@ copy "..\..\Antlr3.StringTemplate\bin\$BuildConfig\Antlr3.StringTemplate.dll" ".
 copy "..\..\Antlr3.StringTemplate\bin\$BuildConfig\Antlr3.Runtime.dll" ".\ST3"
 copy "..\..\Antlr3.StringTemplate\bin\$BuildConfig\Antlr3.StringTemplate.pdb" ".\ST3"
 copy "..\..\Antlr3.StringTemplate\bin\$BuildConfig\Antlr3.Runtime.pdb" ".\ST3"
+copy "LICENSE.txt" ".\ST3"
 
 # ST4 dist
 copy "..\$BuildConfig\Antlr3.Runtime.dll" ".\ST4"
@@ -161,10 +164,11 @@ copy "..\$BuildConfig\Antlr4.StringTemplate.Visualizer.dll" ".\ST4"
 copy "..\$BuildConfig\Antlr3.Runtime.pdb" ".\ST4"
 copy "..\$BuildConfig\Antlr4.StringTemplate.pdb" ".\ST4"
 copy "..\$BuildConfig\Antlr4.StringTemplate.Visualizer.pdb" ".\ST4"
+copy "LICENSE.txt" ".\ST4"
 
 # compress the distributable packages
-$AntlrVersion = "3.3.4.8516"
-$STVersion = "4.0.3.8516"
+$AntlrVersion = "special-3.4.0.8950"
+$STVersion = "special-4.0.4.8950"
 
 $ArchivePath = ".\dist\antlr-dotnet-csharp3bootstrap-" + $AntlrVersion + ".7z"
 .\7z.exe a -r -mx9 $ArchivePath ".\Bootstrap\*"
