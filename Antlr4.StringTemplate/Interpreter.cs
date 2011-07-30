@@ -1464,8 +1464,8 @@ namespace Antlr4.StringTemplate
                     // rather than setting x to the template for later
                     // eval.
                     string defArgTemplate = arg.DefaultValueToken.Text;
-                    if (defArgTemplate.StartsWith("{" + group.delimiterStartChar + "(")
-                        && defArgTemplate.EndsWith(")" + group.delimiterStopChar + "}"))
+                    if (defArgTemplate.StartsWith("{" + group.DelimiterStartChar + "(")
+                        && defArgTemplate.EndsWith(")" + group.DelimiterStopChar + "}"))
                     {
                         invokedST.RawSetAttribute(arg.Name, ToString(new TemplateFrame(defaultArgST, frame), defaultArgST));
                     }

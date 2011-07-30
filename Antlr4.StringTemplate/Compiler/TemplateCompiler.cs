@@ -111,7 +111,7 @@ namespace Antlr4.StringTemplate.Compiler
         {
             get
             {
-                return _group.delimiterStartChar;
+                return _group.DelimiterStartChar;
             }
         }
 
@@ -119,7 +119,7 @@ namespace Antlr4.StringTemplate.Compiler
         {
             get
             {
-                return _group.delimiterStopChar;
+                return _group.DelimiterStopChar;
             }
         }
 

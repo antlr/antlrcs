@@ -101,6 +101,38 @@ namespace Antlr4.Test.StringTemplate
         }
 
         [TestMethod]
+        public void TestSetDefaultDelimiters()
+        {
+            string templates =
+                "delimiters \"<\", \">\"" + Environment.NewLine +
+                "ta(x) ::= \"[<x>]\"" + Environment.NewLine;
+
+            writeFile(tmpdir, "t.stg", templates);
+            TemplateGroup group = new TemplateGroupFile(Path.Combine(tmpdir, "t.stg"));
+            Template st = group.GetInstanceOf("ta");
+            st.Add("x", "hi");
+            string expected = "[hi]";
+            string result = st.Render();
+            Assert.AreEqual(expected, result);
+        }
+
+        [TestMethod]
+        public void TestSetNonDefaultDelimiters()
+        {
+            string templates =
+                "delimiters \"%\", \"%\"" + Environment.NewLine +
+                "ta(x) ::= \"[%x%]\"" + Environment.NewLine;
+
+            writeFile(tmpdir, "t.stg", templates);
+            TemplateGroup group = new TemplateGroupFile(Path.Combine(tmpdir, "t.stg"));
+            Template st = group.GetInstanceOf("ta");
+            st.Add("x", "hi");
+            string expected = "[hi]";
+            string result = st.Render();
+            Assert.AreEqual(expected, result);
+        }
+
+        [TestMethod]
         public void TestSingleTemplateWithArgs()
         {
             string templates =

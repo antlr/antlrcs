@@ -80,8 +80,8 @@ namespace Antlr4.StringTemplate
 
         private readonly List<TemplateGroup> _importsToClearOnUnload = new List<TemplateGroup>();
 
-        public readonly char delimiterStartChar = '<'; // Use <expr> by default
-        public readonly char delimiterStopChar = '>';
+        private char delimiterStartChar = '<'; // Use <expr> by default
+        private char delimiterStopChar = '>';
 
         /** Maps template name to StringTemplate object. synchronized. */
         private readonly Dictionary<string, CompiledTemplate> templates = new Dictionary<string, CompiledTemplate>();
@@ -192,6 +192,22 @@ namespace Antlr4.StringTemplate
             }
         }
 
+        public char DelimiterStartChar
+        {
+            get
+            {
+                return delimiterStartChar;
+            }
+        }
+
+        public char DelimiterStopChar
+        {
+            get
+            {
+                return delimiterStopChar;
+            }
+        }
+
         public ICollection<CompiledTemplate> CompiledTemplates
         {
             get
@@ -286,6 +302,10 @@ namespace Antlr4.StringTemplate
         {
             if (name == null)
                 return null;
+
+            if (!name.StartsWith("/"))
+                name = "/" + name;
+
             if (Verbose)
                 Console.WriteLine(string.Format("{0}.GetInstanceOf({1})", Name, name));
 
@@ -299,7 +319,7 @@ namespace Antlr4.StringTemplate
         protected internal virtual Template GetEmbeddedInstanceOf(TemplateFrame frame, string name)
         {
             string fullyQualifiedName = name;
-            if (name[0] != '/')
+            if (!name.StartsWith("/"))
                 fullyQualifiedName = frame.Template.impl.Prefix + name;
 
             if (Verbose)
@@ -716,6 +736,36 @@ namespace Antlr4.StringTemplate
         public virtual void DefineDictionary(string name, IDictionary<string, object> mapping)
         {
             dictionaries[name] = mapping;
+        }
+
+        public virtual void SetDelimiters(IToken openDelimiter, IToken closeDelimiter)
+        {
+            if (openDelimiter == null)
+                throw new ArgumentNullException("openDelimiter");
+            if (closeDelimiter == null)
+                throw new ArgumentNullException("closeDelimiter");
+
+            string openDelimiterText = openDelimiter.Text.Trim('"');
+            if (openDelimiterText.Length != 1)
+            {
+                ErrorManager.CompiletimeError(ErrorType.INVALID_DELIMITER, null, openDelimiter, openDelimiterText);
+                return;
+            }
+
+            string closeDelimiterText = closeDelimiter.Text.Trim('"');
+            if (closeDelimiterText.Length != 1)
+            {
+                ErrorManager.CompiletimeError(ErrorType.INVALID_DELIMITER, null, openDelimiter, closeDelimiterText);
+                return;
+            }
+
+            SetDelimiters(openDelimiterText[0], closeDelimiterText[0]);
+        }
+
+        public virtual void SetDelimiters(char delimiterStartChar, char delimiterStopChar)
+        {
+            this.delimiterStartChar = delimiterStartChar;
+            this.delimiterStopChar = delimiterStopChar;
         }
 
         /** Make this group import templates/dictionaries from g. */

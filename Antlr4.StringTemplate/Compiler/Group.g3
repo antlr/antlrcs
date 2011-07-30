@@ -37,6 +37,7 @@ options {
 }
 
 tokens {
+	COMMA=',';
 	TRUE='true';
 	FALSE='false';
 }
@@ -60,6 +61,7 @@ GroupLexer lexer = (GroupLexer)input.TokenSource;
 this._group = lexer.group = $group;
 }
 	:	oldStyleHeader?
+		delimiters?
 		(	'import' STRING {_group.ImportTemplates($STRING);}
 		|	'import' // common error: name not in string
 			{
@@ -80,6 +82,10 @@ oldStyleHeader // ignore but lets us use this parser in AW for both v3 and v4
 groupName returns [string name]
 @init {StringBuilder buf = new StringBuilder();}
 	:	a=ID {buf.Append($a.text);} ('.' a=ID {buf.Append($a.text);})*
+	;
+
+delimiters
+	:	{string.Equals("delimiters", input.LT(1).Text)}? => ID open=STRING ',' close=STRING {_group.SetDelimiters($open, $close);}
 	;
 
 /** Match template and dictionary defs outside of (...)+ loop in group.
@@ -242,7 +248,7 @@ ANONYMOUS_TEMPLATE
     :	'{'
     	{
 		IToken templateToken = new CommonToken(input, ANONYMOUS_TEMPLATE, 0, CharIndex, CharIndex);
-		TemplateLexer lexer = new TemplateLexer(group.ErrorManager, input, templateToken, group.delimiterStartChar, group.delimiterStopChar);
+		TemplateLexer lexer = new TemplateLexer(group.ErrorManager, input, templateToken, group.DelimiterStartChar, group.DelimiterStopChar);
 		lexer.subtemplateDepth = 1;
 		IToken t = lexer.NextToken();
 		while ( lexer.subtemplateDepth>=1 || t.Type!=TemplateLexer.RCURLY )
