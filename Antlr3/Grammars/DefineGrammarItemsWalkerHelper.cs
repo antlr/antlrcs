@@ -51,7 +51,7 @@ namespace Antlr3.Grammars
         public int CountAltsForRule( CommonTree t )
         {
             CommonTree block = (CommonTree)t.GetFirstChildWithType(BLOCK);
-            if (block.ChildCount == 0)
+            if (block == null || block.ChildCount == 0)
                 return 0;
 
             return block.Children.Count(i => i.Type == ALT);
