@@ -218,6 +218,43 @@ namespace Antlr4.Test.StringTemplate
         }
 
         [TestMethod]
+        public void TestStringRendererWithTemplateInclude_cap()
+        {
+            // must toString the t() ref before applying format
+            string templates =
+                    "foo(x) ::= << <(t()); format=\"cap\"> >>\n" +
+                    "t() ::= <<ack>>\n";
+
+            writeFile(tmpdir, "t.stg", templates);
+            TemplateGroup group = new TemplateGroupFile(Path.Combine(tmpdir, "t.stg"));
+            //Interpreter.trace = true;
+            group.RegisterRenderer(typeof(string), new StringRenderer());
+            Template st = group.GetInstanceOf("foo");
+            st.Add("x", "hi");
+            string expecting = " Ack ";
+            string result = st.Render();
+            Assert.AreEqual(expecting, result);
+        }
+
+        [TestMethod]
+        public void TestStringRendererWithSubtemplateInclude_cap()
+        {
+            // must toString the t() ref before applying format
+            string templates =
+                    "foo(x) ::= << <({ack}); format=\"cap\"> >>\n";
+
+            writeFile(tmpdir, "t.stg", templates);
+            TemplateGroup group = new TemplateGroupFile(Path.Combine(tmpdir, "t.stg"));
+            //Interpreter.trace = true;
+            group.RegisterRenderer(typeof(string), new StringRenderer());
+            Template st = group.GetInstanceOf("foo");
+            st.Add("x", "hi");
+            string expecting = " Ack ";
+            string result = st.Render();
+            Assert.AreEqual(expecting, result);
+        }
+
+        [TestMethod]
         public void TestStringRendererWithFormat_cap_emptyValue()
         {
             string templates =
