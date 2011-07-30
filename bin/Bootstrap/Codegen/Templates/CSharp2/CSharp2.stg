@@ -501,6 +501,24 @@ ruleBacktrackFailure() ::= <<
 <if(backtracking)>if (state.backtracking>0) {state.failed=true; <returnFromRule()>}<endif>
 >>
 
+ruleWrapperMap ::= [
+	"bottomup":{<ruleWrapperBottomup()>},
+	"topdown":{<ruleWrapperTopdown()>},
+	default:""
+]
+
+ruleWrapperBottomup() ::= <<
+<if(TREE_PARSER && filterMode)>
+public override IAstRuleReturnScope Bottomup() { return bottomup(); }
+<endif>
+>>
+
+ruleWrapperTopdown() ::= <<
+<if(TREE_PARSER && filterMode)>
+public override IAstRuleReturnScope Topdown() { return topdown(); }
+<endif>
+>>
+
 /** How to generate code for a rule.  This includes any return type
  *  data aggregates required for multiple return values.
  */
@@ -512,7 +530,7 @@ rule(ruleName,ruleDescriptor,block,emptyRule,description,exceptions,finally,memo
 protected virtual void EnterRule_<ruleName>() {}
 [Conditional("ANTLR_TRACE")]
 protected virtual void LeaveRule_<ruleName>() {}
-
+<ruleWrapperMap.(ruleName)>
 // $ANTLR start "<ruleName>"
 // <fileName>:<description>
 [GrammarRule("<ruleName>")]
@@ -1140,7 +1158,7 @@ else
 	alt<decisionNumber> = <eotPredictsAlt>;
 <else>
 	<ruleBacktrackFailure()>
-	NoViableAltException nvae = new NoViableAltException("<description>", <decisionNumber>, <stateNumber>, input);
+	NoViableAltException nvae = new NoViableAltException("<description>", <decisionNumber>, <stateNumber>, input, <k>);
 	DebugRecognitionException(nvae);
 	<@noViableAltException()>
 	throw nvae;
@@ -1209,7 +1227,7 @@ default:
 <else>
 	{
 		<ruleBacktrackFailure()>
-		NoViableAltException nvae = new NoViableAltException("<description>", <decisionNumber>, <stateNumber>, input);
+		NoViableAltException nvae = new NoViableAltException("<description>", <decisionNumber>, <stateNumber>, input, <k>);
 		DebugRecognitionException(nvae);
 		<@noViableAltException()>
 		throw nvae;

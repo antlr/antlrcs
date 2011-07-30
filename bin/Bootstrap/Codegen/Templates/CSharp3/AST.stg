@@ -88,16 +88,18 @@ ruleDeclarations() ::= <<
 <ASTLabelType> root_0 = default(<ASTLabelType>);<\n>
 >>
 
-ruleLabelDefs() ::= <<
-<super.ruleLabelDefs()>
+ruleLabelDefs(ruleDescriptor, labelType, ASTLabelType, rewriteElementType) ::= <%
+<super.ruleLabelDefs(...)>
+<if(!ruleDescriptor.isSynPred)>
 <[ruleDescriptor.tokenLabels,ruleDescriptor.wildcardTreeLabels,ruleDescriptor.wildcardTreeListLabels]
-	:{it|<ASTLabelType> <it.label.text>_tree = default(<ASTLabelType>);}; separator="\n">
-<ruleDescriptor.tokenListLabels:{it|<ASTLabelType> <it.label.text>_tree = default(<ASTLabelType>);}; separator="\n">
+	:{it|<\n><ASTLabelType> <it.label.text>_tree = default(<ASTLabelType>);}>
+<ruleDescriptor.tokenListLabels:{it|<\n><ASTLabelType> <it.label.text>_tree = default(<ASTLabelType>);}>
 <ruleDescriptor.allTokenRefsInAltsWithRewrites
-	:{it|RewriteRule<rewriteElementType>Stream stream_<it>=new RewriteRule<rewriteElementType>Stream(adaptor,"token <it>");}; separator="\n">
+	:{it|<\n>RewriteRule<rewriteElementType>Stream stream_<it>=new RewriteRule<rewriteElementType>Stream(adaptor,"token <it>");}>
 <ruleDescriptor.allRuleRefsInAltsWithRewrites
-	:{it|RewriteRuleSubtreeStream stream_<it>=new RewriteRuleSubtreeStream(adaptor,"rule <it>");}; separator="\n">
->>
+	:{it|<\n>RewriteRuleSubtreeStream stream_<it>=new RewriteRuleSubtreeStream(adaptor,"rule <it>");}>
+<endif>
+%>
 
 /** When doing auto AST construction, we must define some variables;
  *  These should be turned off if doing rewrites.  This must be a "mode"
@@ -105,12 +107,8 @@ ruleLabelDefs() ::= <<
  *  block.
  */
 @alt.declarations() ::= <<
-<if(autoAST)>
-<if(outerAlt)>
-<if(!rewriteMode)>
+<if(autoAST && outerAlt && !rewriteMode && !ruleDescriptor.isSynPred)>
 root_0 = (<ASTLabelType>)adaptor.Nil();
-<endif>
-<endif>
 <endif>
 >>
 

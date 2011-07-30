@@ -67,6 +67,8 @@ outputFile(	LEXER,PARSER,TREE_PARSER, actionScope, actions,
 #pragma warning disable 162
 // Missing XML comment for publicly visible type or member 'Type_or_Member'
 #pragma warning disable 1591
+// CLS compliance checking will not be performed on 'type' because it is not visible from outside this assembly.
+#pragma warning disable 3019
 
 <actions.(actionScope).header>
 
@@ -96,7 +98,8 @@ lexerInputStreamType() ::= <<
 >>
 
 lexer(grammar, name, tokens, scopes, rules, numRules, filterMode, labelType="CommonToken",
-      superClass={<if(actions.(actionScope).superClass)><actions.(actionScope).superClass><else>Antlr.Runtime.Lexer<endif>}) ::= <<
+      superClass={<if(actions.(actionScope).superClass)><actions.(actionScope).superClass><else>Antlr.Runtime.Lexer<endif>},
+	  rewriteElementType={}, ASTLabelType={}) ::= <<
 [System.CodeDom.Compiler.GeneratedCode("ANTLR", "<ANTLRVersion>")]
 [System.CLSCompliant(false)]
 <parserModifier(grammar=grammar, actions=actions)> partial class <grammar.recognizerName> : <@superClassName><superClass><@end>
@@ -382,7 +385,7 @@ this.state.ruleMemo = new System.Collections.Generic.Dictionary\<int, int>[<leng
 parser(grammar, name, scopes, tokens, tokenNames, rules, numRules, bitsets,
        ASTLabelType="object", superClass={<if(actions.(actionScope).superClass)><actions.(actionScope).superClass><else>Antlr.Runtime.Parser<endif>}, labelType="IToken",
        members={<actions.parser.members>}) ::= <<
-<genericParser(inputStreamType="ITokenStream", rewriteElementType="IToken", ...)>
+<genericParser(inputStreamType="ITokenStream", rewriteElementType="IToken", filterMode=false, ...)>
 >>
 
 /** How to generate a tree parser; same as parser except the input
@@ -411,7 +414,7 @@ partial void LeaveRule_<ruleName>_fragment();
 // $ANTLR start <ruleName>
 public <!final !>void <ruleName>_fragment(<ruleDescriptor.parameterScope:parameterScope()>)
 {
-	<ruleLabelDefs()>
+	<ruleLabelDefs(...)>
 	EnterRule_<ruleName>_fragment();
 	EnterRule("<ruleName>_fragment", <ruleDescriptor.index>);
 	TraceIn("<ruleName>_fragment", <ruleDescriptor.index>);
@@ -479,6 +482,24 @@ ruleBacktrackFailure() ::= <<
 <if(backtracking)>if (state.backtracking>0) {state.failed=true; <returnFromRule()>}<endif>
 >>
 
+ruleWrapperMap ::= [
+	"bottomup":{<ruleWrapperBottomup()>},
+	"topdown":{<ruleWrapperTopdown()>},
+	default:""
+]
+
+ruleWrapperBottomup() ::= <<
+<if(TREE_PARSER && filterMode)>
+public override IAstRuleReturnScope Bottomup() { return bottomup(); }
+<endif>
+>>
+
+ruleWrapperTopdown() ::= <<
+<if(TREE_PARSER && filterMode)>
+public override IAstRuleReturnScope Topdown() { return topdown(); }
+<endif>
+>>
+
 /** How to generate code for a rule.  This includes any return type
  *  data aggregates required for multiple return values.
  */
@@ -487,7 +508,7 @@ rule(ruleName,ruleDescriptor,block,emptyRule,description,exceptions,finally,memo
 <returnScope(ruleDescriptor.returnScope)>
 partial void EnterRule_<ruleName>();
 partial void LeaveRule_<ruleName>();
-
+<ruleWrapperMap.(ruleName)>
 // $ANTLR start "<ruleName>"
 // <fileName>:<description>
 [GrammarRule("<ruleName>")]
@@ -498,7 +519,7 @@ partial void LeaveRule_<ruleName>();
 	TraceIn("<ruleName>", <ruleDescriptor.index>);
 	<ruleScopeSetUp()>
 	<ruleDeclarations()>
-	<ruleLabelDefs()>
+	<ruleLabelDefs(...)>
 	<ruleDescriptor.actions.init>
 	try { DebugEnterRule(GrammarFileName, "<ruleName>");
 	DebugLocation(<ruleDescriptor.tree.line>, <ruleDescriptor.EORNode.charPositionInLine>);
@@ -584,7 +605,7 @@ ruleScopeCleanUp() ::= <<
 <ruleDescriptor.ruleScope:{it|<it.name>_scopeAfter(<it.name>_stack.Peek());<it.name>_stack.Pop();}; separator="\n">
 >>
 
-ruleLabelDefs() ::= <<
+ruleLabelDefs(ruleDescriptor, labelType, ASTLabelType, rewriteElementType) ::= <<
 <[ruleDescriptor.tokenLabels,ruleDescriptor.tokenListLabels,ruleDescriptor.wildcardTreeLabels,ruleDescriptor.wildcardTreeListLabels]
     :{it|<labelType> <it.label.text> = default(<labelType>);}; separator="\n"
 >
@@ -1116,7 +1137,7 @@ else
 	alt<decisionNumber> = <eotPredictsAlt>;
 <else>
 	<ruleBacktrackFailure()>
-	NoViableAltException nvae = new NoViableAltException("<description>", <decisionNumber>, <stateNumber>, input);
+	NoViableAltException nvae = new NoViableAltException("<description>", <decisionNumber>, <stateNumber>, input, <k>);
 	DebugRecognitionException(nvae);
 	<@noViableAltException()>
 	throw nvae;
@@ -1185,7 +1206,7 @@ default:
 <else>
 	{
 		<ruleBacktrackFailure()>
-		NoViableAltException nvae = new NoViableAltException("<description>", <decisionNumber>, <stateNumber>, input);
+		NoViableAltException nvae = new NoViableAltException("<description>", <decisionNumber>, <stateNumber>, input, <k>);
 		DebugRecognitionException(nvae);
 		<@noViableAltException()>
 		throw nvae;
@@ -1485,7 +1506,7 @@ default(<typeName>)
 
 /** Define a rule label including default value */
 ruleLabelDef(label) ::= <%
-<ruleLabelType(referencedRule=label.referencedRule)> <label.label.text> = <initValue(typeName=ruleLabelType(referencedRule=label.referencedRule))>;
+<ruleLabelType(label.referencedRule)> <label.label.text> = <initValue(ruleLabelType(label.referencedRule))>;
 %>
 
 /** Define a return struct for a rule if the code needs to access its
