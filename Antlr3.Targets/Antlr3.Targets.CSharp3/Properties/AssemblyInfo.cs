@@ -4,7 +4,7 @@
  * All rights reserved.
  *
  * Conversion to C#:
- * Copyright (c) 2011 Sam Harwell, Pixel Mine, Inc.
+ * Copyright (c) 2011 Sam Harwell, Tunnel Vision Laboratories, LLC
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -40,7 +40,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyTitle( "Antlr3.Target.CSharp3" )]
 [assembly: AssemblyDescription( "" )]
 [assembly: AssemblyConfiguration( "" )]
-[assembly: AssemblyCompany( "Pixel Mine, Inc." )]
+[assembly: AssemblyCompany( "Tunnel Vision Laboratories, LLC" )]
 [assembly: AssemblyProduct( "Antlr3.Target.CSharp3" )]
 [assembly: AssemblyCopyright( "Copyright © Sam Harwell 2011" )]
 [assembly: AssemblyTrademark( "" )]
@@ -66,5 +66,5 @@ using System.Runtime.InteropServices;
  *      the Major or Minor version is incremented.
  *   3. Revision is the Perforce changelist number associated with the release.
  */
-[assembly: AssemblyVersion("3.3.3.8388")]
-[assembly: AssemblyFileVersion("3.3.3.8388")]
+[assembly: AssemblyVersion("3.4.0.8959")]
+[assembly: AssemblyFileVersion("3.4.0.8959")]

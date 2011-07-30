@@ -40,9 +40,9 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyTitle("AntlrBuildTask")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("Pixel Mine, Inc.")]
+[assembly: AssemblyCompany("Tunnel Vision Laboratories, LLC")]
 [assembly: AssemblyProduct("AntlrBuildTask")]
-[assembly: AssemblyCopyright("Copyright © Pixel Mine 2010")]
+[assembly: AssemblyCopyright("Copyright © Sam Harwell 2011")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 [assembly: CLSCompliant(true)]
@@ -66,5 +66,5 @@ using System.Runtime.InteropServices;
  *      the Major or Minor version is incremented.
  *   3. Revision is the Perforce changelist number associated with the release.
  */
-[assembly: AssemblyVersion("3.3.0.7239")]
-[assembly: AssemblyFileVersion("3.3.0.7239")]
+[assembly: AssemblyVersion("3.4.0.8959")]
+[assembly: AssemblyFileVersion("3.4.0.8959")]
