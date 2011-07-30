@@ -780,7 +780,7 @@ namespace AntlrUnitTests
                 "  ;\n" );
             string expecting =
                 ".s0-X->.s1" + NewLine +
-                ".s1-{((a&&c)||(b&&c))}?->:s2=>1" + NewLine +
+                ".s1-{(c&&(a||b))}?->:s2=>1" + NewLine +
                 ".s1-{c}?->:s3=>2" + NewLine;
             int[] unreachableAlts = null;
             int[] nonDetAlts = null;

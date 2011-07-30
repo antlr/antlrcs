@@ -103,64 +103,34 @@ namespace AntlrUnitTests
         // E r r o r s
 
         [TestMethod]
+        [ExpectedException(typeof(InvalidOperationException))]
         public void TestGetFromEmptyQueue()
         {
             FastQueue<string> q = new FastQueue<string>();
-            string msg = null;
-            try
-            {
-                q.Dequeue();
-            }
-            catch (InvalidOperationException nsee)
-            {
-                msg = nsee.Message;
-            }
-            string expecting = "queue index 0 > last index -1";
-            string found = msg;
-            Assert.AreEqual( expecting, found );
+            q.Dequeue();
         }
 
         [TestMethod]
+        [ExpectedException(typeof(InvalidOperationException))]
         public void TestGetFromEmptyQueueAfterSomeAdds()
         {
             FastQueue<string> q = new FastQueue<string>();
-            q.Enqueue( "a" );
-            q.Enqueue( "b" );
+            q.Enqueue("a");
+            q.Enqueue("b");
             q.Dequeue();
             q.Dequeue();
-            string msg = null;
-            try
-            {
-                q.Dequeue();
-            }
-            catch (InvalidOperationException nsee)
-            {
-                msg = nsee.Message;
-            }
-            string expecting = "queue index 0 > last index -1";
-            string found = msg;
-            Assert.AreEqual( expecting, found );
+            q.Dequeue();
         }
 
         [TestMethod]
+        [ExpectedException(typeof(InvalidOperationException))]
         public void TestGetFromEmptyQueueAfterClear()
         {
             FastQueue<string> q = new FastQueue<string>();
-            q.Enqueue( "a" );
-            q.Enqueue( "b" );
+            q.Enqueue("a");
+            q.Enqueue("b");
             q.Clear();
-            string msg = null;
-            try
-            {
-                q.Dequeue();
-            }
-            catch ( InvalidOperationException nsee )
-            {
-                msg = nsee.Message;
-            }
-            string expecting = "queue index 0 > last index -1";
-            string found = msg;
-            Assert.AreEqual( expecting, found );
+            q.Dequeue();
         }
     }
 }

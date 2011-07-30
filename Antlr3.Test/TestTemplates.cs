@@ -54,7 +54,7 @@ namespace AntlrUnitTests
         public void TestTemplateConstructor() /*throws Exception*/ {
             string action = "x = %foo(name={$ID.text});";
             string expecting = "x = templateLib.getInstanceOf(\"foo\"," +
-                "  new STAttrMap().put(\"name\", (ID1!=null?ID1.getText():null)));";
+                "new STAttrMap().put(\"name\", (ID1!=null?ID1.getText():null)));";
 
             ErrorQueue equeue = new ErrorQueue();
             ErrorManager.SetErrorListener( equeue );
@@ -129,7 +129,7 @@ namespace AntlrUnitTests
         public void TestIndirectTemplateConstructor() /*throws Exception*/ {
             string action = "x = %({\"foo\"})(name={$ID.text});";
             string expecting = "x = templateLib.getInstanceOf(\"foo\"," +
-                "  new STAttrMap().put(\"name\", (ID1!=null?ID1.getText():null)));";
+                "new STAttrMap().put(\"name\", (ID1!=null?ID1.getText():null)));";
 
             ErrorQueue equeue = new ErrorQueue();
             ErrorManager.SetErrorListener( equeue );

@@ -406,7 +406,7 @@ namespace AntlrUnitTests
                     "options { backtrack=true; }\n" +
                     "a : ({blort} 'x')* ;\n" );  // bug: the synpred had nothing in it
             string expecting =
-                "(rule synpred1_Expr ARG RET scope (BLOCK (ALT blort 'x' <end-of-alt>) <end-of-block>) <end-of-rule>)";
+                "(rule synpred1_Expr ARG RET scope (BLOCK (ALT 'x' <end-of-alt>) <end-of-block>) <end-of-rule>)";
             string found = g.GetRule( "synpred1_Expr" ).Tree.ToStringTree();
             Assert.AreEqual( expecting, found );
         }
