@@ -1,10 +1,10 @@
 /*
- * [The "BSD licence"]
+ * [The "BSD license"]
  * Copyright (c) 2011 Terence Parr
  * All rights reserved.
  *
  * Conversion to C#:
- * Copyright (c) 2011 Sam Harwell, Pixel Mine, Inc.
+ * Copyright (c) 2011 Sam Harwell, Tunnel Vision Laboratories, LLC
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -286,6 +286,30 @@ namespace Antlr.Runtime.Tree
             t.ChildIndex = i;
         }
 
+        /** Insert child t at child position i (0..n-1) by shifting children
+         *  i+1..n-1 to the right one position. Set parent / indexes properly
+         *  but does NOT collapse nil-rooted t's that come in here like addChild.
+         */
+        public virtual void InsertChild(int i, ITree t)
+        {
+            if (i < 0)
+                throw new ArgumentOutOfRangeException("i");
+            if (i > ChildCount)
+                throw new ArgumentException();
+
+            if (i == ChildCount)
+            {
+                AddChild(t);
+                return;
+            }
+
+            Children.Insert(i, t);
+
+            // walk others to increment their child indexes
+            // set index, parent of this one too
+            this.FreshenParentAndChildIndexes(i);
+        }
+
         public virtual object DeleteChild( int i )
         {
             if (i < 0)
@@ -425,6 +449,25 @@ namespace Antlr.Runtime.Tree
                 ITree child = GetChild( c );
                 child.ChildIndex = c;
                 child.Parent = this;
+            }
+        }
+
+        public virtual void FreshenParentAndChildIndexesDeeply()
+        {
+            FreshenParentAndChildIndexesDeeply(0);
+        }
+
+        public virtual void FreshenParentAndChildIndexesDeeply(int offset)
+        {
+            int n = ChildCount;
+            for (int c = offset; c < n; c++)
+            {
+                ITree child = GetChild(c);
+                child.ChildIndex = c;
+                child.Parent = this;
+                BaseTree baseTree = child as BaseTree;
+                if (baseTree != null)
+                    baseTree.FreshenParentAndChildIndexesDeeply();
             }
         }
 
