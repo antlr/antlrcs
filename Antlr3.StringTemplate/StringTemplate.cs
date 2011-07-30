@@ -871,12 +871,12 @@ namespace Antlr3.ST
                         aggrSpec );
             }
 
-            string aggrName = aggrSpec.Substring( 0, dot );
-            string propString = aggrSpec.Substring( dot + 1 );
+            string aggrName = aggrSpec.Substring( 0, dot ).Trim();
+            string propString = aggrSpec.Substring( dot + 1 ).Trim();
             if (!propString.StartsWith("{") || !propString.EndsWith("}"))
                 throw new ArgumentException("invalid aggregate attribute format", "aggrSpec");
 
-            properties.AddRange(propString.Substring(1, propString.Length - 2).Split(','));
+            properties.AddRange(propString.Substring(1, propString.Length - 2).Split(',').Select(i => i.Trim()));
             return aggrName;
         }
 

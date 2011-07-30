@@ -55,10 +55,16 @@ namespace Antlr3.ST.Language
                 else if ( item is IEnumerable )
                     return ( (IEnumerable)item ).Cast<object>();
                 else if ( item is IEnumerator )
-                    return Enumerable.Repeat( item, 1 );
+                    return Enumerate((IEnumerator)item);
                 else
                     return Enumerable.Repeat( item, 1 );
             } );
+        }
+
+        private static IEnumerable<object> Enumerate(IEnumerator enumerator)
+        {
+            while (enumerator.MoveNext())
+                yield return enumerator.Current;
         }
     }
 }
