@@ -66,5 +66,5 @@ using System.Runtime.InteropServices;
  *      the Major or Minor version is incremented.
  *   3. Revision is the Perforce changelist number associated with the release.
  */
-[assembly: AssemblyVersion("3.3.2.8098")]
-[assembly: AssemblyFileVersion("3.3.2.8098")]
+[assembly: AssemblyVersion("3.4.0.8959")]
+[assembly: AssemblyFileVersion("3.4.0.8959")]
