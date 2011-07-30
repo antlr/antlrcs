@@ -36,6 +36,7 @@ namespace AntlrUnitTests
     using Console = System.Console;
 
     [TestClass]
+    [Ignore]
     public class TestLeftRecursion : BaseTest
     {
         protected bool debug = false;
