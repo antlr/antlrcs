@@ -2,11 +2,7 @@
 <TestRunConfiguration name="AntlrTestConfig" id="ffdb4029-8f84-4bbb-9829-cc1e67c5715e" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010">
   <Description>This is a default test run configuration for a local test run.</Description>
   <CodeCoverage keyFile="Antlr3\Key.snk" />
-  <Deployment>
-    <DeploymentItem filename="bin\Debug\Codegen\" outputDirectory="Codegen" />
-    <DeploymentItem filename="bin\Debug\Targets\" outputDirectory="Targets" />
-    <DeploymentItem filename="bin\Debug\Tool\" outputDirectory="Tool" />
-  </Deployment>
+  <Deployment />
   <Hosts>
     <VSSDKTestHostRunConfig name="VS IDE" HiveKind="DevEnv" HiveName="9.0" IsRANU="false" xmlns="http://microsoft.com/schemas/VisualStudio/SDK/Tools/IdeHostAdapter/2006/06" />
     <DeviceHostRunConfigData name="Smart Device" deviceId="AE1FD546-ECB8-4553-B0AA-53E129544859" deviceName="Pocket PC 2003 Device" platformId="3C41C503-53EF-4c2a-8DD4-A8217CAD115E" platformName="Pocket PC 2003" uiPlatformId="00000000-0000-0000-0000-000000000000" />

@@ -250,6 +250,11 @@ namespace Antlr3.Tool
          */
         private static String[] idToMessageTemplateName = new String[MAX_MESSAGE_NUMBER + 1];
 
+        static ErrorManager()
+        {
+            InitIdToMessageNameMapping();
+        }
+
         public static TraceListener ExternalListener
         {
             get;
@@ -394,8 +399,6 @@ namespace Antlr3.Tool
 
         internal static void Initialize()
         {
-            InitIdToMessageNameMapping();
-
             // it is inefficient to set the default locale here if another
             // piece of code is going to set the locale, but that would
             // require that a user call an init() function or something.  I prefer
@@ -420,6 +423,9 @@ namespace Antlr3.Tool
          */
         public static void SetLocale( CultureInfo locale )
         {
+            if (ErrorManager.locale == locale)
+                return;
+
             ErrorManager.locale = locale;
             string language = locale.TwoLetterISOLanguageName;
             string fileName = Path.Combine(Path.Combine(Path.Combine(Path.Combine(Path.Combine(AntlrTool.ToolPathRoot, "Tool"), "Templates"), "messages"), "languages"), language + ".stg");
@@ -456,6 +462,9 @@ namespace Antlr3.Tool
          */
         public static void SetFormat( String formatName )
         {
+            if (ErrorManager.formatName == formatName)
+                return;
+
             ErrorManager.formatName = formatName;
             string fileName = Path.Combine(Path.Combine(Path.Combine(Path.Combine(Path.Combine(AntlrTool.ToolPathRoot, "Tool"), "Templates"), "messages"), "formats"), formatName + ".stg");
             format = new TemplateGroupFile(fileName);

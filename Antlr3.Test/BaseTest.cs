@@ -37,11 +37,12 @@ namespace AntlrUnitTests
     using System.Linq;
     using Antlr.Runtime;
     using Antlr.Runtime.JavaExtensions;
-    using Microsoft.VisualStudio.TestTools.UnitTesting;
     using Antlr3.Extensions;
+    using Microsoft.VisualStudio.TestTools.UnitTesting;
 
     using AntlrTool = Antlr3.AntlrTool;
     using BindingFlags = System.Reflection.BindingFlags;
+    using CultureInfo = System.Globalization.CultureInfo;
     using Debugger = System.Diagnostics.Debugger;
     using Directory = System.IO.Directory;
     using ErrorManager = Antlr3.Tool.ErrorManager;
@@ -61,6 +62,15 @@ namespace AntlrUnitTests
     using StringTemplateGroup = Antlr4.StringTemplate.TemplateGroup;
 
     [TestClass]
+#if DEBUG
+    [DeploymentItem(@"bin\Debug\Codegen\", "Codegen")]
+    [DeploymentItem(@"bin\Debug\Targets\", "Targets")]
+    [DeploymentItem(@"bin\Debug\Tool\", "Tool")]
+#else
+    [DeploymentItem(@"bin\Release\Codegen\", "Codegen")]
+    [DeploymentItem(@"bin\Release\Targets\", "Targets")]
+    [DeploymentItem(@"bin\Release\Tool\", "Tool")]
+#endif
     public abstract class BaseTest
     {
         public readonly string jikes = null;
@@ -111,6 +121,8 @@ namespace AntlrUnitTests
             // new output dir for each test
             tmpdir = Path.GetFullPath( Path.Combine( Path.GetTempPath(), "antlr-" + currentTimeMillis() ) );
 
+            ErrorManager.SetLocale(CultureInfo.GetCultureInfo("en-us"));
+            ErrorManager.SetFormat("antlr");
             ErrorManager.ResetErrorState();
             StringTemplateGroup.DefaultGroup = new StringTemplateGroup();
 
@@ -929,7 +941,7 @@ namespace AntlrUnitTests
             {
                 createParserST =
                     new StringTemplate(
-                    "        $parserName$ parser = new $parserName$(tokens);\n" );
+                    "        <parserName> parser = new <parserName>(tokens);\n" );
             }
             outputFileST.SetAttribute( "createParser", createParserST );
             outputFileST.SetAttribute( "parserName", parserName );
@@ -1011,7 +1023,7 @@ namespace AntlrUnitTests
                 "public class Test {\n" +
                 "    static String templates =\n" +
                 "    		\"group test;\"+" +
-                "    		\"foo(x,y) ::= \\\"<x> <y>\\\"\";\n" +
+                "    		\"foo(x,y) ::= \\\"\\<x> \\<y>\\\"\";\n" +
                 "    static StringTemplateGroup group =" +
                 "    		new StringTemplateGroup(new StringReader(templates)," +
                 "					AngleBracketTemplateLexer.class);" +
