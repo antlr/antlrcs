@@ -166,6 +166,12 @@ namespace Antlr.Runtime
             return i;
         }
 
+        public override void Reset()
+        {
+            base.Reset();
+            _p = SkipOffTokenChannels(0);
+        }
+
         protected override void Setup()
         {
             _p = 0;
