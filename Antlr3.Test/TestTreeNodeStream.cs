@@ -1,10 +1,10 @@
 /*
- * [The "BSD licence"]
- * Copyright (c) 2005-2008 Terence Parr
+ * [The "BSD license"]
+ * Copyright (c) 2011 Terence Parr
  * All rights reserved.
  *
  * Conversion to C#:
- * Copyright (c) 2008-2009 Sam Harwell, Pixel Mine, Inc.
+ * Copyright (c) 2011 Sam Harwell, Tunnel Vision Laboratories, LLC
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -327,6 +327,43 @@ namespace AntlrUnitTests
             stream.Consume(); // consume UP
             stream.Consume(); // consume UP
             Assert.AreEqual( 104, ( (ITree)stream.LT( 1 ) ).Type );
+        }
+
+        [TestMethod]
+        public void TestDeepTree()
+        {
+            // ^(10 100 101 ^(20 ^(30 40 (50 (60 70)))) (80 90)))
+            // stream has 8 real + 10 nav nodes
+            int n = 9;
+            CommonTree[] nodes = new CommonTree[n];
+            for (int i = 0; i < n; i++)
+            {
+                nodes[i] = new CommonTree(new CommonToken((i + 1) * 10));
+            }
+            ITree g = nodes[0];
+            ITree rules = nodes[1];
+            ITree rule1 = nodes[2];
+            ITree id = nodes[3];
+            ITree block = nodes[4];
+            ITree alt = nodes[5];
+            ITree s = nodes[6];
+            ITree rule2 = nodes[7];
+            ITree id2 = nodes[8];
+            g.AddChild(new CommonTree(new CommonToken(100)));
+            g.AddChild(new CommonTree(new CommonToken(101)));
+            g.AddChild(rules);
+            rules.AddChild(rule1);
+            rule1.AddChild(id);
+            rule1.AddChild(block);
+            block.AddChild(alt);
+            alt.AddChild(s);
+            rules.AddChild(rule2);
+            rule2.AddChild(id2);
+
+            ITreeNodeStream stream = newStream(g);
+            string expecting = " 10 2 100 101 20 2 30 2 40 50 2 60 2 70 3 3 3 80 2 90 3 3 3";
+            string found = ToTokenTypeString(stream);
+            Assert.AreEqual(expecting, found);
         }
 
         public string ToNodesOnlyString( ITreeNodeStream nodes )
