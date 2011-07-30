@@ -1,10 +1,10 @@
 /*
- * [The "BSD licence"]
- * Copyright (c) 2005-2008 Terence Parr
+ * [The "BSD license"]
+ * Copyright (c) 2011 Terence Parr
  * All rights reserved.
  *
  * Conversion to C#:
- * Copyright (c) 2008 Sam Harwell, Pixel Mine, Inc.
+ * Copyright (c) 2011 Sam Harwell, Tunnel Vision Laboratories, LLC
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -66,7 +66,12 @@ namespace Antlr.Runtime
         }
 
         public NoViableAltException(string grammarDecisionDescription, int decisionNumber, int stateNumber, IIntStream input)
-            : base(input)
+            : this(grammarDecisionDescription, decisionNumber, stateNumber, input, 1)
+        {
+        }
+
+        public NoViableAltException(string grammarDecisionDescription, int decisionNumber, int stateNumber, IIntStream input, int k)
+            : base(input, k)
         {
             this._grammarDecisionDescription = grammarDecisionDescription;
             this._decisionNumber = decisionNumber;
@@ -74,7 +79,12 @@ namespace Antlr.Runtime
         }
 
         public NoViableAltException(string message, string grammarDecisionDescription, int decisionNumber, int stateNumber, IIntStream input)
-            : base(message, input)
+            : this(message, grammarDecisionDescription, decisionNumber, stateNumber, input, 1)
+        {
+        }
+
+        public NoViableAltException(string message, string grammarDecisionDescription, int decisionNumber, int stateNumber, IIntStream input, int k)
+            : base(message, input, k)
         {
             this._grammarDecisionDescription = grammarDecisionDescription;
             this._decisionNumber = decisionNumber;
@@ -82,7 +92,12 @@ namespace Antlr.Runtime
         }
 
         public NoViableAltException(string message, string grammarDecisionDescription, int decisionNumber, int stateNumber, IIntStream input, Exception innerException)
-            : base(message, input, innerException)
+            : this(message, grammarDecisionDescription, decisionNumber, stateNumber, input, 1, innerException)
+        {
+        }
+
+        public NoViableAltException(string message, string grammarDecisionDescription, int decisionNumber, int stateNumber, IIntStream input, int k, Exception innerException)
+            : base(message, input, k, innerException)
         {
             this._grammarDecisionDescription = grammarDecisionDescription;
             this._decisionNumber = decisionNumber;

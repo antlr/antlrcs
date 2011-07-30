@@ -1,10 +1,10 @@
 /*
- * [The "BSD licence"]
- * Copyright (c) 2005-2008 Terence Parr
+ * [The "BSD license"]
+ * Copyright (c) 2011 Terence Parr
  * All rights reserved.
  *
  * Conversion to C#:
- * Copyright (c) 2008-2009 Sam Harwell, Pixel Mine, Inc.
+ * Copyright (c) 2011 Sam Harwell, Tunnel Vision Laboratories, LLC
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -78,6 +78,11 @@ namespace Antlr.Runtime
         /** <summary>What input stream did the error occur in?</summary> */
         private IIntStream _input;
 
+        /// <summary>
+        /// What was the lookahead index when this exception was thrown?
+        /// </summary>
+        private int _k;
+
         /** <summary>What is index of token/char were we looking at when the error occurred?</summary> */
         private int _index;
 
@@ -127,8 +132,13 @@ namespace Antlr.Runtime
         {
         }
 
-        public RecognitionException( IIntStream input )
-            : this("A recognition error occurred.", input, null)
+        public RecognitionException(IIntStream input)
+            : this("A recognition error occurred.", input, 1, null)
+        {
+        }
+
+        public RecognitionException(IIntStream input, int k)
+            : this("A recognition error occurred.", input, k, null)
         {
         }
 
@@ -138,7 +148,12 @@ namespace Antlr.Runtime
         }
 
         public RecognitionException(string message, IIntStream input)
-            : this(message, input, null)
+            : this(message, input, 1, null)
+        {
+        }
+
+        public RecognitionException(string message, IIntStream input, int k)
+            : this(message, input, k, null)
         {
         }
 
@@ -148,15 +163,21 @@ namespace Antlr.Runtime
         }
 
         public RecognitionException(string message, IIntStream input, Exception innerException)
+            : this(message, input, 1, innerException)
+        {
+        }
+
+        public RecognitionException(string message, IIntStream input, int k, Exception innerException)
             : base(message, innerException)
         {
             this._input = input;
+            this._k = k;
             if (input != null)
             {
-                this._index = input.Index;
+                this._index = input.Index + k - 1;
                 if (input is ITokenStream)
                 {
-                    this._token = ((ITokenStream)input).LT(1);
+                    this._token = ((ITokenStream)input).LT(k);
                     this._line = _token.Line;
                     this._charPositionInLine = _token.CharPositionInLine;
                 }
@@ -164,20 +185,31 @@ namespace Antlr.Runtime
                 ITreeNodeStream tns = input as ITreeNodeStream;
                 if (tns != null)
                 {
-                    ExtractInformationFromTreeNodeStream(tns);
+                    ExtractInformationFromTreeNodeStream(tns, k);
                 }
                 else
                 {
                     ICharStream charStream = input as ICharStream;
                     if (charStream != null)
                     {
-                        this._c = input.LA(1);
-                        this._line = ((ICharStream)input).Line;
-                        this._charPositionInLine = ((ICharStream)input).CharPositionInLine;
+                        int mark = input.Mark();
+                        try
+                        {
+                            for (int i = 0; i < k - 1; i++)
+                                input.Consume();
+
+                            this._c = input.LA(1);
+                            this._line = ((ICharStream)input).Line;
+                            this._charPositionInLine = ((ICharStream)input).CharPositionInLine;
+                        }
+                        finally
+                        {
+                            input.Rewind(mark);
+                        }
                     }
                     else
                     {
-                        this._c = input.LA(1);
+                        this._c = input.LA(k);
                     }
                 }
             }
@@ -238,6 +270,14 @@ namespace Antlr.Runtime
             protected set
             {
                 _input = value;
+            }
+        }
+
+        public int Lookahead
+        {
+            get
+            {
+                return _k;
             }
         }
 
@@ -398,6 +438,22 @@ namespace Antlr.Runtime
                     string text = adaptor.GetText(this._node);
                     this._token = new CommonToken(type, text);
                 }
+            }
+        }
+
+        protected virtual void ExtractInformationFromTreeNodeStream(ITreeNodeStream input, int k)
+        {
+            int mark = input.Mark();
+            try
+            {
+                for (int i = 0; i < k - 1; i++)
+                    input.Consume();
+
+                ExtractInformationFromTreeNodeStream(input);
+            }
+            finally
+            {
+                input.Rewind(mark);
             }
         }
     }
