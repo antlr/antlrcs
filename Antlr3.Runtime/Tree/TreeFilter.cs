@@ -58,8 +58,8 @@ namespace Antlr.Runtime.Tree
             try
             {
                 // share TreeParser object but not parsing-related state
-                state = new RecognizerSharedState();
-                input = new CommonTreeNodeStream( originalAdaptor, t );
+                SetState(new RecognizerSharedState());
+                SetTreeNodeStream(new CommonTreeNodeStream(originalAdaptor, t));
                 ( (CommonTreeNodeStream)input ).TokenStream = originalTokenStream;
                 BacktrackingLevel = 1;
                 whichRule();
