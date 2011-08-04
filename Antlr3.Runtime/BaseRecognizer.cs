@@ -1,10 +1,10 @@
 /*
- * [The "BSD licence"]
- * Copyright (c) 2005-2008 Terence Parr
+ * [The "BSD license"]
+ * Copyright (c) 2011 Terence Parr
  * All rights reserved.
  *
  * Conversion to C#:
- * Copyright (c) 2008-2009 Sam Harwell, Pixel Mine, Inc.
+ * Copyright (c) 2011 Sam Harwell, Pixel Mine, Inc.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -37,15 +37,12 @@ namespace Antlr.Runtime
     using ArgumentNullException = System.ArgumentNullException;
     using Array = System.Array;
     using Conditional = System.Diagnostics.ConditionalAttribute;
-    using Exception = System.Exception;
     using IDebugEventListener = Antlr.Runtime.Debug.IDebugEventListener;
     using MethodBase = System.Reflection.MethodBase;
-    using NotSupportedException = System.NotSupportedException;
     using Regex = System.Text.RegularExpressions.Regex;
     using StackFrame = System.Diagnostics.StackFrame;
     using StackTrace = System.Diagnostics.StackTrace;
     using TextWriter = System.IO.TextWriter;
-    using Type = System.Type;
 
     /** <summary>
      *  A generic recognizer that can handle recognizers generated from
@@ -95,6 +92,11 @@ namespace Antlr.Runtime
         {
             get;
             set;
+        }
+
+        protected virtual void SetState(RecognizerSharedState value)
+        {
+            this.state = value;
         }
 
         protected virtual void InitDFAs()
