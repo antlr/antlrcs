@@ -1006,10 +1006,6 @@ OPTIONS
 
 // we get a warning here when looking for options '{', but it works right
 RULE_REF
-@init
-{
-	int t=0;
-}
 	:	'a'..'z' ('a'..'z' | 'A'..'Z' | '_' | '0'..'9')*
 	;
 
@@ -1022,7 +1018,7 @@ WS_LOOP
 
 fragment
 WS_OPT
-	:	(WS)?
+	:	WS?
 	;
 
 /** Reset the file and line information; useful when the grammar
