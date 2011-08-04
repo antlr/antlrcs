@@ -88,9 +88,15 @@
     <Antlr3 Include="SemanticPredicateReduction.g3">
       <Generator>MSBuild:Compile</Generator>
     </Antlr3>
-    <Antlr3 Include="Composition\Reduce.g3" />
-    <Antlr3 Include="Composition\Simplify.g3" />
-    <Antlr3 Include="Composition\VecMath.g3" />
+    <Antlr3 Include="Composition\Reduce.g3">
+      <Generator>MSBuild:Compile</Generator>
+    </Antlr3>
+    <Antlr3 Include="Composition\Simplify.g3">
+      <Generator>MSBuild:Compile</Generator>
+    </Antlr3>
+    <Antlr3 Include="Composition\VecMath.g3">
+      <Generator>MSBuild:Compile</Generator>
+    </Antlr3>
     <AntlrAbstractGrammar Include="Composition\VecMath_Lexer.g3">
       <Generator>MSBuild:Compile</Generator>
     </AntlrAbstractGrammar>
