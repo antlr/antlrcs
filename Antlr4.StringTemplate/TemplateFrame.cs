@@ -40,6 +40,7 @@ namespace Antlr4.StringTemplate
     {
         private readonly Template _template;
         private readonly TemplateFrame _parent;
+        private readonly int _depth;
         private int _ip;
         private DebugEvents _debugState;
 
@@ -47,6 +48,8 @@ namespace Antlr4.StringTemplate
         {
             _template = template;
             _parent = parent;
+
+            _depth = (parent != null) ? parent._depth + 1 : 1;
         }
 
         public Template Template
@@ -62,6 +65,14 @@ namespace Antlr4.StringTemplate
             get
             {
                 return _parent;
+            }
+        }
+
+        public int StackDepth
+        {
+            get
+            {
+                return _depth;
             }
         }
 

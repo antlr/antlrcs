@@ -156,13 +156,19 @@ namespace Antlr4.StringTemplate
         {
             try
             {
+                if (frame.StackDepth > 200)
+                    throw new TemplateException("Template stack overflow.", null);
+
                 SetDefaultArguments(frame);
                 return ExecuteImpl(@out, frame);
             }
             catch (Exception e)
             {
                 if (e.IsCritical())
+                {
+                    e.PreserveStackTrace();
                     throw;
+                }
 
                 StringBuilder builder = new StringBuilder();
                 builder.AppendLine(e.ToString());
