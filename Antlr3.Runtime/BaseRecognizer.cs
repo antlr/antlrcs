@@ -94,7 +94,7 @@ namespace Antlr.Runtime
             set;
         }
 
-        protected virtual void SetState(RecognizerSharedState value)
+        public virtual void SetState(RecognizerSharedState value)
         {
             this.state = value;
         }
