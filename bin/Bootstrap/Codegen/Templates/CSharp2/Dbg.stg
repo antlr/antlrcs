@@ -95,9 +95,9 @@ ctorForRootGrammar() ::= <<
 <actions.(actionScope).ctorModifier; null="public"> <name>( <inputStreamType> input, int port, RecognizerSharedState state )
 	: base( input, state )
 {
-	<parserCtorBody()>
 	<createListenerAndHandshake()>
 	<grammar.directDelegates:{g|<g:delegateName()> = new <g.recognizerName>( input, dbg, this.state, this<grammar.delegators:{g|, <g:delegateName()>}> );}; separator="\n">
+	<parserCtorBody()>
 	<@finally()>
 }<\n>
 >>
@@ -113,9 +113,9 @@ ctorForProfilingRootGrammar() ::= <<
 {
 	Profiler p = (Profiler)dbg;
 	p.setParser(this);
-	<parserCtorBody()>
 	<grammar.directDelegates:
 	 {g|<g:delegateName()> = new <g.recognizerName>( input, dbg, this.state, this<grammar.delegators:{g|, <g:delegateName()>}> );}; separator="\n">
+	<parserCtorBody()>
 	<@finally()>
 }
 <\n>
@@ -126,9 +126,9 @@ ctorForDelegateGrammar() ::= <<
 <actions.(actionScope).ctorModifier; null="public"> <name>( <inputStreamType> input, IDebugEventListener dbg, RecognizerSharedState state<grammar.delegators:{g|, <g.recognizerName> <g:delegateName()>}> )
 	: base( input, dbg, state )
 {
-	<parserCtorBody()>
 	<grammar.directDelegates:
 	 {g|<g:delegateName()> = new <g.recognizerName>( input, this, this.state<grammar.delegators:{g|, <g:delegateName()>}> );}; separator="\n">
+	<parserCtorBody()>
 }<\n>
 >>
 
@@ -140,8 +140,8 @@ ctorForPredefinedListener() ::= <<
 	Profiler p = (Profiler)dbg;
 	p.setParser(this);
 <endif>
-	<parserCtorBody()>
 	<grammar.directDelegates:{g|<g:delegateName()> = new <g.recognizerName>(input, dbg, this.state, this<grammar.delegators:{g|, <g:delegateName()>}>);}; separator="\n">
+	<parserCtorBody()>
 	<@finally()>
 }<\n>
 >>

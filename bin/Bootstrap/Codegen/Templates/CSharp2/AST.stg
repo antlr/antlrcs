@@ -196,10 +196,8 @@ root_0 = (<ASTLabelType>)adaptor.Nil();
 <! if tree parser and rewrite=true !>
 <if(TREE_PARSER&&rewriteMode)>
 <prevRuleRootRef()>.Tree = (<ASTLabelType>)adaptor.RulePostProcessing(root_0);
-input.ReplaceChildren(adaptor.GetParent(retval.Start),
-                      adaptor.GetChildIndex(retval.Start),
-                      adaptor.GetChildIndex(_last),
-                      retval.Tree);
+if (<prevRuleRootRef()>.Tree != null)
+	input.ReplaceChildren(adaptor.GetParent(retval.Start), adaptor.GetChildIndex(retval.Start), adaptor.GetChildIndex(_last), retval.Tree);
 <endif>
 <! if parser or tree-parser && rewrite!=true, we need to set result !>
 <if(!TREE_PARSER||!rewriteMode)>

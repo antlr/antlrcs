@@ -165,6 +165,14 @@ lexer(grammar, name, tokens, scopes, rules, numRules, filterMode, labelType="Com
 		}
 	}
 
+<if(grammar.delegates)>
+	public override void SetState(RecognizerSharedState state)
+	{
+		base.SetState(state);
+		<grammar.delegates:{g|<g:delegateName()>.SetState(state);}; separator="\n">
+	}
+<endif>
+
 <endif>
 <if(filterMode)>
 	<filteringNextToken()>
@@ -296,6 +304,22 @@ genericParser(grammar, name, scopes, tokens, tokenNames, rules, numRules,
 	<last(grammar.delegators):{g|private <g.recognizerName> gParent;}>
 <endif>
 
+<if(grammar.delegates)>
+	public override void SetState(RecognizerSharedState state)
+	{
+		base.SetState(state);
+		<grammar.delegates:{g|<g:delegateName()>.SetState(state);}; separator="\n">
+	}
+
+<if(TREE_PARSER)>
+	public override void SetTreeNodeStream(ITreeNodeStream input)
+	{
+		base.SetTreeNodeStream(input);
+		<grammar.delegates:{g|<g:delegateName()>.SetTreeNodeStream(input);}; separator="\n">
+	}
+<endif>
+<endif>
+
 	<scopes:{it|<if(it.isDynamicGlobalScope)><globalAttributeScope(scope=it)><endif>}>
 	<@members()>
 
@@ -370,7 +394,6 @@ genericParser(grammar, name, scopes, tokens, tokenNames, rules, numRules,
 <actions.(actionScope).ctorModifier; null="public"> <grammar.recognizerName>(<inputStreamType> input, RecognizerSharedState state<grammar.delegators:{g|, <g.recognizerName> <g:delegateName()>}>)
 	: base(input, state)
 {
-	<parserCtorBody()>
 <if(grammar.directDelegates)>
 	<grammar.directDelegates:
 	 {g|<g:delegateName()> = new <g.recognizerName>(input, state<trunc(g.delegators):{p|, <p:delegateName()>}>, this);}; separator="\n">
@@ -381,6 +404,7 @@ genericParser(grammar, name, scopes, tokens, tokenNames, rules, numRules,
 <if(grammar.delegators)>
 	<last(grammar.delegators):{g|gParent = <g:delegateName()>;}>
 <endif>
+	<parserCtorBody()>
 	OnCreated();
 }
 >>
@@ -509,13 +533,13 @@ ruleWrapperMap ::= [
 
 ruleWrapperBottomup() ::= <<
 <if(TREE_PARSER && filterMode)>
-public override IAstRuleReturnScope Bottomup() { return bottomup(); }
+protected override <if(buildAST)>IAstRuleReturnScope<else>void<endif> Bottomup() { return bottomup(); }
 <endif>
 >>
 
 ruleWrapperTopdown() ::= <<
 <if(TREE_PARSER && filterMode)>
-public override IAstRuleReturnScope Topdown() { return topdown(); }
+protected override <if(buildAST)>IAstRuleReturnScope<else>void<endif> Topdown() { return topdown(); }
 <endif>
 >>
 
