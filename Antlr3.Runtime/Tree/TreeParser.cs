@@ -58,13 +58,13 @@ namespace Antlr.Runtime.Tree
         public TreeParser( ITreeNodeStream input )
             : base() // highlight that we go to super to set state object
         {
-            SetTreeNodeStream( input );
+            this.input = input;
         }
 
         public TreeParser( ITreeNodeStream input, RecognizerSharedState state )
             : base( state ) // share the state object with another parser
         {
-            SetTreeNodeStream( input );
+            this.input = input;
         }
 
         public override void Reset()
