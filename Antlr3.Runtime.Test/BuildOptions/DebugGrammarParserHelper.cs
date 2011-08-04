@@ -1,10 +1,10 @@
 /*
- * [The "BSD licence"]
- * Copyright (c) 2005-2008 Terence Parr
+ * [The "BSD license"]
+ * Copyright (c) 2011 Terence Parr
  * All rights reserved.
  *
  * Conversion to C#:
- * Copyright (c) 2008-2009 Sam Harwell, Pixel Mine, Inc.
+ * Copyright (c) 2011 Sam Harwell, Pixel Mine, Inc.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -30,11 +30,14 @@
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-using System.Collections.Generic;
-using Antlr.Runtime.Tree;
-
-partial class DebugGrammarParser
+namespace Antlr3.Runtime.Test.BuildOptions
 {
-    /** List of function definitions. Must point at the FUNC nodes. */
-    List<CommonTree> functionDefinitions = new List<CommonTree>();
+    using System.Collections.Generic;
+    using Antlr.Runtime.Tree;
+
+    partial class DebugGrammarParser
+    {
+        /** List of function definitions. Must point at the FUNC nodes. */
+        List<CommonTree> functionDefinitions = new List<CommonTree>();
+    }
 }

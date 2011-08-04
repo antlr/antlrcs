@@ -41,6 +41,8 @@ options
 }
 
 @lexer::superClass{Antlr.Runtime.SlimLexer}
+@lexer::namespace{Antlr3.Runtime.Test}
+@parser::namespace{Antlr3.Runtime.Test}
 
 public
 expression
