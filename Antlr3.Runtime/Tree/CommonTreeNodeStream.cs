@@ -1,10 +1,10 @@
 /*
- * [The "BSD licence"]
- * Copyright (c) 2005-2008 Terence Parr
+ * [The "BSD license"]
+ * Copyright (c) 2011 Terence Parr
  * All rights reserved.
  *
  * Conversion to C#:
- * Copyright (c) 2008-2009 Sam Harwell, Pixel Mine, Inc.
+ * Copyright (c) 2011 Sam Harwell, Pixel Mine, Inc.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -36,7 +36,6 @@ namespace Antlr.Runtime.Tree
     using Antlr.Runtime.Misc;
 
     using StringBuilder = System.Text.StringBuilder;
-    using NotSupportedException = System.NotSupportedException;
 
     [System.Serializable]
     public class CommonTreeNodeStream : LookaheadStream<object>, ITreeNodeStream
@@ -45,26 +44,26 @@ namespace Antlr.Runtime.Tree
         public const int INITIAL_CALL_STACK_SIZE = 10;
 
         /** <summary>Pull nodes from which tree?</summary> */
-        object _root;
+        private readonly object _root;
 
         /** <summary>If this tree (root) was created from a token stream, track it.</summary> */
         protected ITokenStream tokens;
 
         /** <summary>What tree adaptor was used to build these trees</summary> */
         [System.NonSerialized]
-        ITreeAdaptor _adaptor;
+        private ITreeAdaptor _adaptor;
 
         /** The tree iterator we are using */
-        TreeIterator _it;
+        private readonly TreeIterator _it;
 
         /** <summary>Stack of indexes used for push/pop calls</summary> */
-        Stack<int> _calls;
+        private Stack<int> _calls;
 
         /** <summary>Tree (nil A B C) trees like flat A B C streams</summary> */
-        bool _hasNilRoot = false;
+        private bool _hasNilRoot = false;
 
         /** <summary>Tracks tree depth.  Level=0 means we're at root node level.</summary> */
-        int _level = 0;
+        private int _level = 0;
 
         public CommonTreeNodeStream( object tree )
             : this( new CommonTreeAdaptor(), tree )
@@ -97,6 +96,7 @@ namespace Antlr.Runtime.Tree
             {
                 return tokens;
             }
+
             set
             {
                 tokens = value;
@@ -197,9 +197,8 @@ namespace Antlr.Runtime.Tree
         public virtual void Push( int index )
         {
             if ( _calls == null )
-            {
                 _calls = new Stack<int>();
-            }
+
             _calls.Push( _p ); // save current index
             Seek( index );
         }
