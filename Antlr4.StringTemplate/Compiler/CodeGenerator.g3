@@ -89,7 +89,7 @@ singleElement
 		if ($TEXT.text.Length > 0)
 			emit1($TEXT,Bytecode.INSTR_WRITE_STR, $TEXT.text);
 		}
-	|	NEWLINE {emit(Bytecode.INSTR_NEWLINE);}
+	|	NEWLINE {emit($NEWLINE, Bytecode.INSTR_NEWLINE);}
 	;
 
 compoundElement[CommonTree indent]
@@ -313,7 +313,7 @@ args returns [int n=0, bool namedArgs=false, bool passThru]
 	|
  	;
 
-list:	{emit(Bytecode.INSTR_LIST);}
+list:	{emit($start, Bytecode.INSTR_LIST);}
 		^(LIST (listElement {emit($listElement.start, Bytecode.INSTR_ADD);})* ) 
 	;
 
