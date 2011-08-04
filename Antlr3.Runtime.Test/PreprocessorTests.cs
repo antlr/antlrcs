@@ -42,7 +42,7 @@ namespace Antlr3.Runtime.Test
         [TestMethod]
         public void TestEmptyComment()
         {
-            string inputText = "/**/";
+            string inputText = "/**/ ";
             var input = new ANTLRStringStream(inputText);
             var lexer = new PreprocessorLexer(input);
             var tokenStream = new CommonTokenStream(lexer);
@@ -51,7 +51,7 @@ namespace Antlr3.Runtime.Test
             List<IToken> tokens = tokenStream.GetTokens();
             Assert.AreEqual(2, tokens.Count);
             Assert.AreEqual(PreprocessorLexer.DELIMITED_COMMENT, tokens[0].Type);
-            Assert.AreEqual(inputText, tokens[0].Text);
+            Assert.AreEqual("/**/", tokens[0].Text);
             Assert.AreEqual(PreprocessorLexer.EOF, tokens[1].Type);
         }
     }
