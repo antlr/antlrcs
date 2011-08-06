@@ -190,7 +190,7 @@ template[List<StringTemplate> templatesToApply]
 					$templatesToApply.Add(anonymous);
 				}
 
-			|	^(	VALUE n=expr args2=.
+			|	^(	VALUE n=expr args=.
 					{
 						StringTemplate embedded = null;
 						if ( $n.value!=null )
@@ -200,7 +200,7 @@ template[List<StringTemplate> templatesToApply]
 							embedded = group.GetEmbeddedInstanceOf(self, templateName);
 							if ( embedded!=null )
 							{
-								embedded.ArgumentsAST = $args2;
+								embedded.ArgumentsAST = $args;
 								$templatesToApply.Add(embedded);
 							}
 						}
@@ -236,24 +236,24 @@ attribute returns [object value]
 		)
 		{$value = chunk.GetObjectProperty(self,$obj.value,propName);}
 
-	|	i3=ID
+	|	ID
 		{
-		$value=self.GetAttribute($i3.text);
+		$value=self.GetAttribute($ID.text);
 		}
 
-	|	i=INT {$value=int.Parse($i.text);}
+	|	INT {$value=int.Parse($INT.text);}
 
-	|	s=STRING
+	|	STRING
 		{
-		$value=$s.text;
+		$value=$STRING.text;
 		}
 
-	|	at=ANONYMOUS_TEMPLATE
+	|	ANONYMOUS_TEMPLATE
 		{
-			$value=$at.text;
-			if ( $at.text!=null )
+			$value = $ANONYMOUS_TEMPLATE.text;
+			if ($ANONYMOUS_TEMPLATE.text != null)
 			{
-				StringTemplate valueST =new StringTemplate(self.Group, $at.text);
+				StringTemplate valueST =new StringTemplate(self.Group, $ANONYMOUS_TEMPLATE.text);
 				valueST.EnclosingInstance = self;
 				valueST.Name = "<anonymous template argument>";
 				$value = valueST;
@@ -479,7 +479,7 @@ templateApplicationCompiled[System.Reflection.Emit.ILGenerator gen]
 	System.Reflection.Emit.LocalBuilder attributes = null;
 #endif
 }
-	:	^(	APPLY a=exprCompiled[$gen]
+	:	^(	APPLY exprCompiled[$gen]
 			{
 #if COMPILE_EXPRESSIONS
 				templates = EmitCreateList<StringTemplate>($gen);
@@ -894,21 +894,21 @@ singleFunctionArgFunctional returns [System.Func<ASTExpr,StringTemplate,IStringT
 
 templateCompiled[System.Reflection.Emit.ILGenerator gen]
 	:	^(	TEMPLATE
-			(	ID args=. // don't eval argList now; must re-eval each iteration
+			(	ID . // don't eval argList now; must re-eval each iteration
 				{
 #if COMPILE_EXPRESSIONS
 					throw new System.NotImplementedException();
 #endif
 				}
 
-			|	anon=ANONYMOUS_TEMPLATE
+			|	ANONYMOUS_TEMPLATE
 				{
 #if COMPILE_EXPRESSIONS
 					throw new System.NotImplementedException();
 #endif
 				}
 
-			|	^(	VALUE n=exprCompiled[$gen] args2=.
+			|	^(	VALUE exprCompiled[$gen] .
 					{
 #if COMPILE_EXPRESSIONS
 						throw new System.NotImplementedException();
@@ -960,7 +960,7 @@ templateFunctional[List<System.Func<ASTExpr,StringTemplate,IStringTemplateWriter
 #endif
 				}
 
-			|	^(	VALUE n=expr args2=.
+			|	^(	VALUE n=expr args=.
 					{
 #if COMPILE_EXPRESSIONS
 						System.Func<ASTExpr,StringTemplate,IStringTemplateWriter,StringTemplate> func =
@@ -974,7 +974,7 @@ templateFunctional[List<System.Func<ASTExpr,StringTemplate,IStringTemplateWriter
 									embedded = group.GetEmbeddedInstanceOf(self, templateName);
 									if ( embedded!=null )
 									{
-										embedded.ArgumentsAST = $args2;
+										embedded.ArgumentsAST = $args;
 									}
 								}
 								return embedded;
