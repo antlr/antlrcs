@@ -592,7 +592,7 @@ namespace Antlr4.Test.StringTemplate
             group.Listener = errors;
             group.Load();
             // TODO: this could be more informative about the incorrect use of named arguments
-            string expected = "group.stg 2:21: 'x' came as a complete surprise to me" + newline;
+            string expected = "group.stg 2:22: '=' came as a complete surprise to me" + newline;
             string result = errors.ToString();
             Assert.AreEqual(expected, result);
         }

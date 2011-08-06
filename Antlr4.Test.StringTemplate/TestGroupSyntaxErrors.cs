@@ -247,8 +247,7 @@ namespace Antlr4.Test.StringTemplate
             group = new TemplateGroupFile(Path.Combine(tmpdir, "t.stg"));
             group.Listener = errors;
             group.Load(); // force load
-            // TODO: The forced k=2 in TemplateParser results in a message for 'a' instead of 'b'.
-            string expected = "[t.stg 1:13: 'a' came as a complete surprise to me]";
+            string expected = "[t.stg 1:15: 'b' came as a complete surprise to me]";
             string result = errors.Errors.ToListString();
             Assert.AreEqual(expected, result);
         }
