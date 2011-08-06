@@ -141,34 +141,30 @@ grammar_![Grammar g]
 	Cleanup( $tree );
 }
 	:	//hdr:headerSpec
-		( ACTION )?
-		( cmt=DOC_COMMENT  )?
-		gr=grammarType gid=id {Grammar.SetName($gid.text);} SEMI
+		ACTION?
+		DOC_COMMENT?
+		grammarType id {Grammar.SetName($id.text);} SEMI
 		(	optionsSpec {opts = $optionsSpec.opts; Grammar.SetOptions(opts, $optionsSpec.start);}
 		)?
-		(ig=delegateGrammars)?
-		(ts=tokensSpec)?
-		scopes=attrScopes
-		(a=actions)?
-		r=rules
+		delegateGrammars?
+		tokensSpec?
+		attrScopes
+		actions?
+		rules
 		EOF
-		-> ^($gr $gid $cmt? optionsSpec? $ig? $ts? $scopes? $a? $r)
+		-> ^(grammarType id DOC_COMMENT? optionsSpec? delegateGrammars? tokensSpec? attrScopes? actions? rules)
 	;
 
 grammarType
-	:	(	'lexer'  gr='grammar' {GrammarType=GrammarType.Lexer; Grammar.type = GrammarType.Lexer;}       // pure lexer
-			-> LEXER_GRAMMAR[$gr]
-		|	'parser' gr='grammar' {GrammarType=GrammarType.Parser; Grammar.type = GrammarType.Parser;}     // pure parser
-			-> PARSER_GRAMMAR[$gr]
-		|	'tree'   gr='grammar' {GrammarType=GrammarType.TreeParser; Grammar.type = GrammarType.TreeParser;}  // a tree parser
-			-> TREE_GRAMMAR[$gr]
-		|			 gr='grammar' {GrammarType=GrammarType.Combined; Grammar.type = GrammarType.Combined;} // merged parser/lexer
-			-> COMBINED_GRAMMAR[$gr]
-		)
+	:	'lexer'!  'grammar'<LEXER_GRAMMAR> {GrammarType=GrammarType.Lexer; Grammar.type = GrammarType.Lexer;}       // pure lexer
+	|	'parser'! 'grammar'<PARSER_GRAMMAR> {GrammarType=GrammarType.Parser; Grammar.type = GrammarType.Parser;}     // pure parser
+	|	'tree'!   'grammar'<TREE_GRAMMAR> {GrammarType=GrammarType.TreeParser; Grammar.type = GrammarType.TreeParser;}  // a tree parser
+	|			  'grammar'<COMBINED_GRAMMAR> {GrammarType=GrammarType.Combined; Grammar.type = GrammarType.Combined;} // merged parser/lexer
+
 	;
 
 actions
-	:	(action)+
+	:	action+
 	;
 
 /** Match stuff like @parser::members {int i;} */
@@ -181,10 +177,8 @@ action
  */
 actionScopeName
 	:	id
-	|	l='lexer'
-		-> ID[$l]
-	|	p='parser'
-		-> ID[$p]
+	|	'lexer'<ID>
+	|	'parser'<ID>
 	;
 
 optionsSpec returns [IDictionary<string, object> opts=new Dictionary<string, object>()]
@@ -198,17 +192,16 @@ option[IDictionary<string, object> opts]
 		}
 	;
 
-optionValue returns [object value=null]
-	:	x=id			 {$value = $x.text;}
-	|	s=STRING_LITERAL {string vs = $s.text;
+optionValue returns [object value]
+	:	id			 {$value = $id.text;}
+	|	t=STRING_LITERAL {string vs = $t.text;
 						  // remove the quotes:
 						  $value=vs.Substring(1,vs.Length-2);}
-	|	c=CHAR_LITERAL   {string vs = $c.text;
+	|	t=CHAR_LITERAL   {string vs = $t.text;
 						  // remove the quotes:
 						  $value=vs.Substring(1,vs.Length-2);}
-	|	i=INT            {$value = int.Parse($i.text);}
-	|	ss=STAR			 {$value = "*";} // used for k=*
-		-> STRING_LITERAL[$ss]
+	|	t=INT            {$value = int.Parse($t.text);}
+	|	t=STAR<STRING_LITERAL>			 {$value = "*";} // used for k=*
 //	|	cs:charSet       {value = #cs;} // return set AST in this case
 	;
 
@@ -227,11 +220,11 @@ tokensSpec
 	;
 
 tokenSpec
-	:	TOKEN_REF ( ASSIGN^ (STRING_LITERAL|CHAR_LITERAL) )? SEMI!
+	:	TOKEN_REF (ASSIGN^ (STRING_LITERAL|CHAR_LITERAL))? SEMI!
 	;
 
 attrScopes
-	:	(attrScope)*
+	:	attrScope*
 	;
 
 attrScope
@@ -239,8 +232,7 @@ attrScope
 	;
 
 rules
-	:	(	rule
-		)+
+	:	rule+
 	;
 
 public
@@ -254,24 +246,24 @@ rule
 	:
 	(	(	d=DOC_COMMENT
 		)?
-		(	p1='protected'	//{modifier=$p1.tree;}
-		|	p2='public'		//{modifier=$p2.tree;}
-		|	p3='private'	//{modifier=$p3.tree;}
-		|	p4='fragment'	//{modifier=$p4.tree;}
+		(	mod='protected'
+		|	mod='public'
+		|	mod='private'
+		|	mod='fragment'
 		)?
 		ruleName=id
 		{
 			currentRuleName=$ruleName.text;
-			if ( GrammarType==GrammarType.Lexer && $p4==null )
+			if ( GrammarType==GrammarType.Lexer && $mod.text!="fragment" )
 				Grammar.lexerRuleNamesInCombined.Add(currentRuleName);
 		}
-		( BANG )?
+		BANG?
 		( aa=ARG_ACTION )?
 		( 'returns' rt=ARG_ACTION  )?
-		( throwsSpec )?
-		( optionsSpec )?
+		throwsSpec?
+		optionsSpec?
 		scopes=ruleScopeSpec
-		(ruleActions)?
+		ruleActions?
 		COLON
 		ruleAltList[$optionsSpec.opts]
 		SEMI
@@ -279,7 +271,7 @@ rule
 		->	^(	RULE[$ruleName.start, "rule"]
 				$ruleName
 				// the modifier will be 0 or one of the modifiers:
-				$p1? $p2? $p3? $p4?
+				$mod?
 				^(ARG["ARG"] $aa?)
 				^(RET["RET"] $rt?)
 				throwsSpec?
@@ -297,7 +289,7 @@ rule
 	;
 
 ruleActions
-	:	(ruleAction)+
+	:	ruleAction+
 	;
 
 /** Match stuff like @init {int i;} */
@@ -306,7 +298,7 @@ ruleAction
 	;
 
 throwsSpec
-	:	'throws'^ id ( COMMA! id )*
+	:	'throws'^ id (COMMA! id)*
 	;
 
 ruleScopeSpec
@@ -410,22 +402,21 @@ elementNoOptionSpec
 {
 	IntSet elements=null;
 }
-	:	(	(	id (ASSIGN^|PLUS_ASSIGN^) (atom|block)
-			)
-			(	sub=ebnfSuffix[root_0,false]! {root_0 = $sub.tree;}
-			)?
-		|	a=atom
-			(	sub2=ebnfSuffix[$a.tree,false]! {root_0=$sub2.tree;}
-			)?
-		|	ebnf
-		|	FORCED_ACTION
-		|	ACTION
-		|	p=SEMPRED ( IMPLIES! {$p.Type = GATED_SEMPRED;} )?
-			{
-			Grammar.blocksWithSemPreds.Add(currentBlockAST);
-			}
-		|	t3=tree_
+	:	(	id (ASSIGN^|PLUS_ASSIGN^) (atom|block)
 		)
+		(	ebnfSuffix[root_0,false]! {root_0 = $ebnfSuffix.tree;}
+		)?
+	|	atom
+		(	ebnfSuffix[$atom.tree,false]! {root_0 = $ebnfSuffix.tree;}
+		)?
+	|	ebnf
+	|	FORCED_ACTION
+	|	ACTION
+	|	p=SEMPRED ( IMPLIES! {$p.Type = GATED_SEMPRED;} )?
+		{
+		Grammar.blocksWithSemPreds.Add(currentBlockAST);
+		}
+	|	t3=tree_
 	;
 
 atom
@@ -435,7 +426,7 @@ atom
 			// We do here rather than lexer so we can build a tree
 			({LT(1).CharPositionInLine+LT(1).Text.Length==LT(2).CharPositionInLine&&
 			 LT(2).CharPositionInLine+1==LT(3).CharPositionInLine}? id WILDCARD (terminal|ruleref)) =>
-			id w=WILDCARD^ (terminal|ruleref) {$w.Type = DOT;}
+			id WILDCARD^ (terminal|ruleref) {$WILDCARD.Type = DOT;}
 		|	terminal
 		|	ruleref
 		)
@@ -491,26 +482,25 @@ ebnf
 	;
 
 range
-	:	c1=CHAR_LITERAL RANGE c2=CHAR_LITERAL
-		-> ^(CHAR_RANGE[$c1,".."] $c1 $c2)
+	:	CHAR_LITERAL RANGE<type=CHAR_RANGE;text="..">^ CHAR_LITERAL
 	;
 
 terminal
-	:	cl=CHAR_LITERAL^ ( elementOptions[$cl.tree]! )? (ROOT^|BANG^)?
+	:	CHAR_LITERAL^ ( elementOptions[$CHAR_LITERAL.tree]! )? (ROOT^|BANG^)?
 
-	|	tr=TOKEN_REF^
-		( elementOptions[$tr.tree]! )?
+	|	TOKEN_REF^
+		( elementOptions[$TOKEN_REF.tree]! )?
 		( ARG_ACTION )? // Args are only valid for lexer rules
 		(ROOT^|BANG^)?
 
-	|	sl=STRING_LITERAL^ ( elementOptions[$sl.tree]! )? (ROOT^|BANG^)?
+	|	STRING_LITERAL^ ( elementOptions[$STRING_LITERAL.tree]! )? (ROOT^|BANG^)?
 
-	|	wi=WILDCARD (ROOT^|BANG^)?
+	|	WILDCARD (ROOT^|BANG^)?
 		{
 			if ( atTreeRoot )
 			{
 				ErrorManager.SyntaxError(
-					ErrorManager.MSG_WILDCARD_AS_ROOT,Grammar,$wi,null,null);
+					ErrorManager.MSG_WILDCARD_AS_ROOT,Grammar,$WILDCARD,null,null);
 			}
 		}
 	;
@@ -620,26 +610,26 @@ options{k=1;}
 	;
 
 rewrite_element
-	:	(	t=rewrite_atom
-			-> $t
+	:	(	rewrite_atom
+			-> rewrite_atom
 		)
-		(	subrule=ebnfSuffix[$t.tree,true]
-			-> $subrule
+		(	ebnfSuffix[$rewrite_atom.tree,true]
+			-> ebnfSuffix
 		)?
 	|	rewrite_ebnf
-	|	(	tr=rewrite_tree
-			-> $tr
+	|	(	rewrite_tree
+			-> rewrite_tree
 		)
-		(	subrule=ebnfSuffix[$tr.tree,true]
-			-> $subrule
+		(	ebnfSuffix[$rewrite_tree.tree,true]
+			-> ebnfSuffix
 		)?
 	;
 
 rewrite_atom
-	:	tr=TOKEN_REF^ elementOptions[$tr.tree]!? ARG_ACTION? // for imaginary nodes
+	:	TOKEN_REF^ elementOptions[$TOKEN_REF.tree]!? ARG_ACTION? // for imaginary nodes
 	|	RULE_REF
-	|	cl=CHAR_LITERAL elementOptions[$cl.tree]!?
-	|	sl=STRING_LITERAL elementOptions[$sl.tree]!?
+	|	CHAR_LITERAL elementOptions[$CHAR_LITERAL.tree]!?
+	|	STRING_LITERAL elementOptions[$STRING_LITERAL.tree]!?
 	|	DOLLAR! label // reference to a label in a rewrite rule
 	|	ACTION
 	;
