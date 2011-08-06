@@ -79,6 +79,7 @@ element
 	:	^(INDENT compoundElement[$INDENT])
 	|	compoundElement[null]
 	|	^(INDENT {Indent($INDENT);} singleElement {Dedent();})
+	|	INDENT {Indent($INDENT); Dedent();}
 	|	singleElement
 	;
 
