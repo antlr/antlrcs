@@ -121,6 +121,12 @@ Antlr3.Analysis.DFA dfa;
 Rule ruleDescr;
 string description;
 HandleRuleInit($start, out initAction, out block2, out dfa, out ruleDescr, out description);
+
+// For syn preds, we don't want any AST code etc... in there.
+// Save old templates ptr and restore later.  Base templates include Dbg.
+TemplateGroup saveGroup = templates;
+if (ruleDescr.IsSynPred && generator.Target.UseBaseTemplatesForSynPredFragments)
+	templates = generator.BaseTemplates;
 }
 	:	^(	RULE id=ID						{HandleRuleAfterId($id);}
 			(mod=modifier)?
@@ -137,6 +143,7 @@ HandleRuleInit($start, out initAction, out block2, out dfa, out ruleDescr, out d
 		)
 											{HandleRuleEnd($code, $start, initAction, description, $mod.start, $b.code);}
 	;
+finally { templates = saveGroup; }
 
 modifier
 	:	'protected'

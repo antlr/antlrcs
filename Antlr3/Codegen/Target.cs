@@ -92,6 +92,14 @@ namespace Antlr3.Codegen
             targetCharValueEscape['"'] = "\\\"";
         }
 
+        public virtual bool UseBaseTemplatesForSynPredFragments
+        {
+            get
+            {
+                return true;
+            }
+        }
+
         protected internal virtual void GenRecognizerFile( AntlrTool tool,
                                          CodeGenerator generator,
                                          Grammar grammar,

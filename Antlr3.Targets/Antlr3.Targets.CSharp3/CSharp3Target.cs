@@ -68,6 +68,14 @@ namespace Antlr3.Targets
                 "enum", "namespace", "string",
             };
 
+        public override bool UseBaseTemplatesForSynPredFragments
+        {
+            get
+            {
+                return false;
+            }
+        }
+
         public override string EncodeIntAsCharEscape( int v )
         {
             return "\\x" + v.ToString( "X" );
