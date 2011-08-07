@@ -32,6 +32,7 @@
 
 namespace Antlr.Runtime
 {
+    using ArgumentNullException = System.ArgumentNullException;
     using ConditionalAttribute = System.Diagnostics.ConditionalAttribute;
     using Console = System.Console;
     using IDebugEventListener = Antlr.Runtime.Debug.IDebugEventListener;
@@ -66,16 +67,16 @@ namespace Antlr.Runtime
         /** <summary>Which recognizer encloses this DFA?  Needed to check backtracking</summary> */
         protected BaseRecognizer recognizer;
 
-        public readonly bool debug = false;
+        public bool debug = false;
 
         public DFA()
-            : this( new SpecialStateTransitionHandler( SpecialStateTransitionDefault ) )
+            : this(SpecialStateTransitionDefault)
         {
         }
 
         public DFA( SpecialStateTransitionHandler specialStateTransition )
         {
-            this.SpecialStateTransition = specialStateTransition ?? new SpecialStateTransitionHandler( SpecialStateTransitionDefault );
+            this.SpecialStateTransition = specialStateTransition ?? SpecialStateTransitionDefault;
         }
 
         public virtual string Description
@@ -95,47 +96,44 @@ namespace Antlr.Runtime
          */
         public virtual int Predict( IIntStream input )
         {
-            if ( debug )
-            {
-                Console.Error.WriteLine( "Enter DFA.predict for decision " + decisionNumber );
-            }
+            if (input == null)
+                throw new ArgumentNullException("input");
+
+            DfaDebugMessage("Enter DFA.Predict for decision {0}", decisionNumber);
+
             int mark = input.Mark(); // remember where decision started in input
             int s = 0; // we always start at s0
             try
             {
-                for ( ; ; )
+                while (true)
                 {
-                    if ( debug )
-                        Console.Error.WriteLine( "DFA " + decisionNumber + " state " + s + " LA(1)=" + (char)input.LA( 1 ) + "(" + input.LA( 1 ) +
-                                           "), index=" + input.Index );
+                    DfaDebugMessage("DFA {0} state {1} LA(1)={2}({3}), index={4}", decisionNumber, s, (char)input.LA(1), input.LA(1), input.Index);
+
                     int specialState = special[s];
                     if ( specialState >= 0 )
                     {
-                        if ( debug )
-                        {
-                            Console.Error.WriteLine( "DFA " + decisionNumber +
-                                " state " + s + " is special state " + specialState );
-                        }
+                        DfaDebugMessage("DFA {0} state {1} is special state {2}", decisionNumber, s, specialState);
+
                         s = SpecialStateTransition( this, specialState, input );
-                        if ( debug )
-                        {
-                            Console.Error.WriteLine( "DFA " + decisionNumber +
-                                " returns from special state " + specialState + " to " + s );
-                        }
+
+                        DfaDebugMessage("DFA {0} returns from special state {1} to {2}", decisionNumber, specialState, s);
+
                         if ( s == -1 )
                         {
                             NoViableAlt( s, input );
                             return 0;
                         }
+
                         input.Consume();
                         continue;
                     }
+
                     if ( accept[s] >= 1 )
                     {
-                        if ( debug )
-                            Console.Error.WriteLine( "accept; predict " + accept[s] + " from state " + s );
+                        DfaDebugMessage("accept; predict {0} from state {1}", accept[s], s);
                         return accept[s];
                     }
+
                     // look for a normal char transition
                     char c = (char)input.LA( 1 ); // -1 == \uFFFF, all tokens fit in 65000 space
                     if ( c >= min[s] && c <= max[s] )
@@ -148,9 +146,9 @@ namespace Antlr.Runtime
                             // eot[s]>=0 indicates that an EOT edge goes to another
                             // state.
                             if ( eot[s] >= 0 )
-                            {  // EOT Transition to accept state?
-                                if ( debug )
-                                    Console.Error.WriteLine( "EOT transition" );
+                            {
+                                // EOT Transition to accept state?
+                                DfaDebugMessage("EOT transition");
                                 s = eot[s];
                                 input.Consume();
                                 // TODO: I had this as return accept[eot[s]]
@@ -160,40 +158,35 @@ namespace Antlr.Runtime
                                 // target?
                                 continue;
                             }
+
                             NoViableAlt( s, input );
                             return 0;
                         }
+
                         s = snext;
                         input.Consume();
                         continue;
                     }
+
                     if ( eot[s] >= 0 )
-                    {  // EOT Transition?
-                        if ( debug )
-                            Console.Error.WriteLine( "EOT transition" );
+                    {
+                        // EOT Transition?
+                        DfaDebugMessage("EOT transition");
                         s = eot[s];
                         input.Consume();
                         continue;
                     }
+
                     if ( c == unchecked( (char)TokenTypes.EndOfFile ) && eof[s] >= 0 )
-                    {  // EOF Transition to accept state?
-                        if ( debug )
-                            Console.Error.WriteLine( "accept via EOF; predict " + accept[eof[s]] + " from " + eof[s] );
+                    {
+                        // EOF Transition to accept state?
+                        DfaDebugMessage("accept via EOF; predict {0} from {1}", accept[eof[s]], eof[s]);
                         return accept[eof[s]];
                     }
+
                     // not in range and not EOF/EOT, must be invalid symbol
-                    if ( debug )
-                    {
-                        Console.Error.WriteLine( "min[" + s + "]=" + min[s] );
-                        Console.Error.WriteLine( "max[" + s + "]=" + max[s] );
-                        Console.Error.WriteLine( "eot[" + s + "]=" + eot[s] );
-                        Console.Error.WriteLine( "eof[" + s + "]=" + eof[s] );
-                        for ( int p = 0; p < transition[s].Length; p++ )
-                        {
-                            Console.Error.Write( transition[s][p] + " " );
-                        }
-                        Console.Error.WriteLine();
-                    }
+                    DfaDebugInvalidSymbol(s);
+
                     NoViableAlt( s, input );
                     return 0;
                 }
@@ -202,6 +195,26 @@ namespace Antlr.Runtime
             {
                 input.Rewind( mark );
             }
+        }
+
+        [Conditional("DEBUG_DFA")]
+        private void DfaDebugMessage(string format, params object[] args)
+        {
+            Console.Error.WriteLine(format, args);
+        }
+
+        [Conditional("DEBUG_DFA")]
+        private void DfaDebugInvalidSymbol(int s)
+        {
+            Console.Error.WriteLine("min[{0}]={1}", s, min[s]);
+            Console.Error.WriteLine("max[{0}]={1}", s, max[s]);
+            Console.Error.WriteLine("eot[{0}]={1}", s, eot[s]);
+            Console.Error.WriteLine("eof[{0}]={1}", s, eof[s]);
+
+            for (int p = 0; p < transition[s].Length; p++)
+                Console.Error.Write(transition[s][p] + " ");
+
+            Console.Error.WriteLine();
         }
 
         protected virtual void NoViableAlt( int s, IIntStream input )
