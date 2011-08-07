@@ -297,9 +297,9 @@ namespace AntlrUnitTests
         }
 
         [TestMethod]
+        [Ignore]
         public void TestPredicatesWithGlobalScope3()
         {
-            //Assert.Inconclusive();
             string grammar =
                 "grammar foo;\n" +
                 "scope S { boolean value; }\n" +
