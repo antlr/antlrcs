@@ -241,9 +241,9 @@ namespace Antlr.Runtime
             {
                 state = markers[markDepth];
             }
-            state.p = p;
-            state.line = line;
-            state.charPositionInLine = charPositionInLine;
+            state.p = Index;
+            state.line = Line;
+            state.charPositionInLine = CharPositionInLine;
             lastMarker = markDepth;
             return markDepth;
         }
