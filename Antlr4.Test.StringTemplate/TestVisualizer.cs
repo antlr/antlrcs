@@ -32,7 +32,6 @@
 
 namespace Antlr4.Test.StringTemplate
 {
-    using System;
     using Antlr4.StringTemplate;
     using Antlr4.StringTemplate.Debug;
     using Antlr4.StringTemplate.Misc;
@@ -68,7 +67,7 @@ namespace Antlr4.Test.StringTemplate
             st.Add("type", "float");
             st.Add("name", "foo");
             st.Add("locals", 3);
-            st.Add("args", new String[] { "x", "y", "z" });
+            st.Add("args", new string[] { "x", "y", "z" });
             Template s1 = group.GetInstanceOf("assign");
             Template paren = group.GetInstanceOf("paren");
             paren.Add("x", "x");
@@ -126,6 +125,80 @@ namespace Antlr4.Test.StringTemplate
             string result = template.Render();
             Assert.AreEqual("-ax-*-ay-", result);
             template.Visualize();
+        }
+
+        /**
+         * see
+         * http://www.antlr.org/pipermail/stringtemplate-interest/2011-May/003476.
+         * html
+         */
+        [TestMethod]
+        public void TestEarlyEval()
+        {
+            string templates = "main() ::= <<\n<f(p=\"x\")>*<f(p=\"y\")>\n>>\n\n" +
+                    "f(p,q={<({a<p>})>}) ::= <<\n-<q>-\n>>";
+            writeFile(tmpdir, "t.stg", templates);
+
+            TemplateGroup group = new TemplateGroupFile(Path.Combine(tmpdir, "t.stg"));
+
+            Template st = group.GetInstanceOf("main");
+
+            string s = st.Render();
+            Assert.AreEqual("-ax-*-ay-", s);
+
+            // Calling inspect led to an java.lang.ArrayIndexOutOfBoundsException in 4.0.2
+            st.Visualize();
+        }
+
+        /**
+         * see
+         * http://www.antlr.org/pipermail/stringtemplate-interest/2011-May/003476.
+         * html
+         */
+        [TestMethod]
+        public void TestEarlyEval2()
+        {
+            string templates = "main() ::= <<\n<f(p=\"x\")>*\n>>\n\n" +
+                    "f(p,q={<({a<p>})>}) ::= <<\n-<q>-\n>>";
+            writeFile(tmpdir, "t.stg", templates);
+
+            TemplateGroup group = new TemplateGroupFile(Path.Combine(tmpdir, "t.stg"));
+
+            Template st = group.GetInstanceOf("main");
+
+            string s = st.Render();
+            Assert.AreEqual("-ax-*", s);
+
+            // When <f(...)> is invoked only once inspect throws no Exception in 4.0.2
+            st.Visualize();
+        }
+
+        /**
+         *  see http://www.antlr.org/pipermail/stringtemplate-interest/2011-August/003758.html 
+         */
+        [TestMethod]
+        public void TestBugArrayIndexOutOfBoundsExceptionInTemplateRuntimeMessage_SourceLocation()
+        {
+            string templates = "main(doit = true) ::= "
+                    + "\"<if(doit || other)><t(...)><endif>\"\n"
+                    + "t2() ::= \"Hello\"\n" //
+                    + "t(x={<(t2())>}) ::= \"<x>\"";
+
+            writeFile(tmpdir, "t.stg", templates);
+
+            TemplateGroup group = new TemplateGroupFile(Path.Combine(tmpdir, "t.stg"));
+
+            Template st = group.GetInstanceOf("main");
+
+            string s = st.Render();
+            Assert.AreEqual("Hello", s);
+
+            // Inspecting this template threw an ArrayIndexOutOfBoundsException in 4.0.2. 
+            // With the default for x changed to {<t2()>} (i.e. lazy eval) inspect 
+            // works fine. Also removing the " || other" and keeping the early eval 
+            // works fine with inspect.
+
+            st.Visualize();
         }
     }
 }
