@@ -42,10 +42,9 @@ namespace Antlr4.StringTemplate
         {
         }
 
-        public override int Write(string value)
+        protected override int Indent()
         {
-            Writer.Write(value);
-            return value.Length;
+            return 0;
         }
     }
 }
