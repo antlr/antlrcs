@@ -1294,6 +1294,13 @@ namespace Antlr4.StringTemplate
                             Interpreter interp = new Interpreter(group, new NoIndentWriter(sw), culture);
                             interp.WriteObjectNoOptions(self, value, -1, -1);
                             */
+
+                if (_debug && !frame.GetDebugState().IsEarlyEval)
+                {
+                    frame = new TemplateFrame(frame.Template, frame);
+                    frame.GetDebugState().IsEarlyEval = true;
+                }
+
                 WriteObjectNoOptions(new NoIndentWriter(sw), frame, value);
 
                 return sw.ToString();

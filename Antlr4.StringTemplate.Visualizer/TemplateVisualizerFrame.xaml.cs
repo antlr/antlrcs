@@ -152,6 +152,9 @@ namespace Antlr4.StringTemplate.Visualizer
 
             foreach (var e in events)
             {
+                if (e.Frame.GetDebugState().IsEarlyEval)
+                    continue;
+
                 if (e.OutputInterval.Contains(position))
                     return e;
             }

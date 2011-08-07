@@ -50,6 +50,9 @@ namespace Antlr4.StringTemplate
             _parent = parent;
 
             _depth = (parent != null) ? parent._depth + 1 : 1;
+
+            if (parent != null && parent._debugState != null && parent._debugState.IsEarlyEval)
+                GetDebugState().IsEarlyEval = true;
         }
 
         public Template Template

@@ -49,11 +49,13 @@ namespace Antlr4.StringTemplate.Debug
         *
         *  All events get added to the enclosingInstance's event list.
         */
-        public List<InterpEvent> Events = new List<InterpEvent>();
+        public readonly List<InterpEvent> Events = new List<InterpEvent>();
 
         /** All templates evaluated and embedded in this ST. Used
          *  for tree view in STViz.
          */
-        public List<EvalTemplateEvent> ChildEvalTemplateEvents = new List<EvalTemplateEvent>();
+        public readonly List<EvalTemplateEvent> ChildEvalTemplateEvents = new List<EvalTemplateEvent>();
+
+        public bool IsEarlyEval = false;
     }
 }
