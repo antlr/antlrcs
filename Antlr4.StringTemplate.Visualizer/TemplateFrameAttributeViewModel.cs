@@ -95,6 +95,14 @@ namespace Antlr4.StringTemplate.Visualizer
             }
         }
 
+        public bool IsHidden
+        {
+            get
+            {
+                return false;
+            }
+        }
+
         public ReadOnlyCollection<AttributeViewModel> Attributes
         {
             get
