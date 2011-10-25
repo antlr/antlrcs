@@ -84,6 +84,8 @@ namespace Antlr3
         private bool _showTimer = false;
         private static bool exitNow = false;
 
+        internal static bool EnableTemplateCache = false;
+
         // The internal options are for my use on the command line during dev
         //
         public static bool internalOption_PrintGrammarTree = false;
@@ -100,11 +102,24 @@ namespace Antlr3
         [STAThread]
         public static void Main( string[] args )
         {
-            AntlrTool antlr = new AntlrTool( args );
-            if ( !exitNow )
+            if (args.Contains("-Xcachetemplates"))
+                EnableTemplateCache = true;
+
+            bool repeat = false;
+            if (args.Contains("-Xrepeat"))
+                repeat = true;
+
+            for (int i = 0; i < (repeat ? 2 : 1); i++)
             {
-                antlr.Process();
-                Environment.ExitCode = ( ErrorManager.GetNumErrors() > 0 ) ? 1 : 0;
+                if (i == 1)
+                    Console.In.ReadLine();
+
+                AntlrTool antlr = new AntlrTool(args);
+                if (!exitNow)
+                {
+                    antlr.Process();
+                    Environment.ExitCode = (ErrorManager.GetNumErrors() > 0) ? 1 : 0;
+                }
             }
         }
 
@@ -167,31 +182,33 @@ namespace Antlr3
             set;
         }
 
-        public virtual void ProcessArgs( string[] args )
+        public virtual void ProcessArgs(string[] args)
         {
-            if ( verbose )
+            if (verbose)
             {
-                ErrorManager.Info( "ANTLR Parser Generator  Version " + AssemblyVersion.ToString(4) );
+                ErrorManager.Info("ANTLR Parser Generator  Version " + AssemblyVersion.ToString(4));
                 showBanner = false;
             }
 
-            if ( args == null || args.Length == 0 )
+            if (args == null || args.Length == 0)
             {
                 Help();
                 return;
             }
 
-            for ( int i = 0; i < args.Length; i++ )
+            for (int i = 0; i < args.Length; i++)
             {
-                if ( args[i] == "-o" || args[i] == "-fo" )
+                switch (args[i])
                 {
-                    if ( i + 1 >= args.Length )
+                case "-o":
+                case "-fo":
+                    if (i + 1 >= args.Length)
                     {
-                        Console.Error.WriteLine( "missing output directory with -fo/-o option; ignoring" );
+                        Console.Error.WriteLine("missing output directory with -fo/-o option; ignoring");
                     }
                     else
                     {
-                        if ( args[i] == "-fo" )
+                        if (args[i] == "-fo")
                             ForceAllFilesToOutputDir = true;
                         i++;
                         outputDirectory = args[i];
@@ -199,18 +216,19 @@ namespace Antlr3
                             outputDirectory = outputDirectory.Substring(0, OutputDirectory.Length - 1);
 
                         haveOutputDir = true;
-                        if ( System.IO.File.Exists( outputDirectory ) )
+                        if (System.IO.File.Exists(outputDirectory))
                         {
-                            ErrorManager.Error( ErrorManager.MSG_OUTPUT_DIR_IS_FILE, outputDirectory );
+                            ErrorManager.Error(ErrorManager.MSG_OUTPUT_DIR_IS_FILE, outputDirectory);
                             LibraryDirectory = ".";
                         }
                     }
-                }
-                else if ( args[i] == "-lib" )
-                {
-                    if ( i + 1 >= args.Length )
+
+                    break;
+
+                case "-lib":
+                    if (i + 1 >= args.Length)
                     {
-                        Console.Error.WriteLine( "missing library directory with -lib option; ignoring" );
+                        Console.Error.WriteLine("missing library directory with -lib option; ignoring");
                     }
                     else
                     {
@@ -221,15 +239,16 @@ namespace Antlr3
                             LibraryDirectory = LibraryDirectory.Substring(0, LibraryDirectory.Length - 1);
                         }
 
-                        if ( !System.IO.Directory.Exists( libDirectory ) )
+                        if (!System.IO.Directory.Exists(libDirectory))
                         {
-                            ErrorManager.Error( ErrorManager.MSG_DIR_NOT_FOUND, LibraryDirectory );
+                            ErrorManager.Error(ErrorManager.MSG_DIR_NOT_FOUND, LibraryDirectory);
                             LibraryDirectory = ".";
                         }
                     }
-                }
-                else if (args[i] == "-language")
-                {
+
+                    break;
+
+                case "-language":
                     if (i + 1 >= args.Length)
                     {
                         Console.Error.WriteLine("missing language name; ignoring");
@@ -239,127 +258,130 @@ namespace Antlr3
                         i++;
                         ForcedLanguageOption = args[i];
                     }
-                }
-                else if ( args[i] == "-nfa" )
-                {
+
+                    break;
+
+                case "-nfa":
                     Generate_NFA_dot = true;
-                }
-                else if ( args[i] == "-dfa" )
-                {
+                    break;
+
+                case "-dfa":
                     Generate_DFA_dot = true;
-                }
-                else if ( args[i] == "-dgml" )
-                {
+                    break;
+
+                case "-dgml":
                     GenerateDgmlGraphs = true;
-                }
-                else if ( args[i] == "-debug" )
-                {
+                    break;
+
+                case "-debug":
                     Debug = true;
-                }
-                else if ( args[i] == "-trace" )
-                {
+                    break;
+
+                case "-trace":
                     Trace = true;
-                }
-                else if ( args[i] == "-report" )
-                {
+                    break;
+
+                case "-report":
                     Report = true;
-                }
-                else if ( args[i] == "-profile" )
-                {
+                    break;
+
+                case "-profile":
                     Profile = true;
-                }
-                else if ( args[i] == "-print" )
-                {
+                    break;
+
+                case "-print":
                     PrintGrammar = true;
-                }
-                else if ( args[i] == "-depend" )
-                {
+                    break;
+
+                case "-depend":
                     Depend = true;
-                }
-                else if ( args[i] == "-testmode" )
-                {
+                    break;
+
+                case "-testmode":
                     TestMode = true;
-                }
-                else if ( args[i] == "-verbose" )
-                {
+                    break;
+
+                case "-verbose":
                     Verbose = true;
-                }
-                else if ( args[i] == "-version" )
-                {
+                    break;
+
+                case "-version":
                     Version();
                     exitNow = true;
-                }
-                else if ( args[i] == "-make" )
-                {
+                    break;
+
+                case "-make":
                     Make = true;
-                }
-                else if ( args[i] == "-message-format" )
-                {
-                    if ( i + 1 >= args.Length )
+                    break;
+
+                case "-message-format":
+                    if (i + 1 >= args.Length)
                     {
-                        Console.Error.WriteLine( "missing output format with -message-format option; using default" );
+                        Console.Error.WriteLine("missing output format with -message-format option; using default");
                     }
                     else
                     {
                         i++;
-                        ErrorManager.SetFormat( args[i] );
+                        ErrorManager.SetFormat(args[i]);
                     }
-                }
-                else if ( args[i] == "-Xgrtree" )
-                {
+
+                    break;
+
+                case "-Xgrtree":
                     internalOption_PrintGrammarTree = true;
-                }
-                else if ( args[i] == "-Xdfa" )
-                {
+                    break;
+
+                case "-Xdfa":
                     internalOption_PrintDFA = true;
-                }
-                else if ( args[i] == "-Xnoprune" )
-                {
+                    break;
+
+                case "-Xnoprune":
                     DFAOptimizer.PRUNE_EBNF_EXIT_BRANCHES = false;
-                }
-                else if ( args[i] == "-Xnocollapse" )
-                {
+                    break;
+
+                case "-Xnocollapse":
                     DFAOptimizer.COLLAPSE_ALL_PARALLEL_EDGES = false;
-                }
-                else if ( args[i] == "-Xdbgconversion" )
-                {
+                    break;
+
+                case "-Xdbgconversion":
                     NFAToDFAConverter.debug = true;
-                }
-                else if ( args[i] == "-Xmultithreaded" )
-                {
+                    break;
+
+                case "-Xmultithreaded":
                     //NFAToDFAConverter.SINGLE_THREADED_NFA_CONVERSION = false;
-                    Console.Error.WriteLine( "Multithreaded NFA conversion is not currently supported." );
-                }
-                else if ( args[i] == "-Xnomergestopstates" )
-                {
+                    Console.Error.WriteLine("Multithreaded NFA conversion is not currently supported.");
+                    break;
+
+                case "-Xnomergestopstates":
                     DFAOptimizer.MergeStopStates = false;
-                }
-                else if ( args[i] == "-Xdfaverbose" )
-                {
+                    break;
+
+                case "-Xdfaverbose":
                     internalOption_ShowNFAConfigsInDFA = true;
-                }
-                else if ( args[i] == "-Xwatchconversion" )
-                {
+                    break;
+
+                case "-Xwatchconversion":
                     internalOption_watchNFAConversion = true;
-                }
-                else if ( args[i] == "-XdbgST" )
-                {
+                    break;
+
+                case "-XdbgST":
                     CodeGenerator.LaunchTemplateInspector = true;
-                }
-                else if ( args[i] == "-Xmaxinlinedfastates" )
-                {
-                    if ( i + 1 >= args.Length )
+                    break;
+
+                case "-Xmaxinlinedfastates":
+                    if (i + 1 >= args.Length)
                     {
-                        Console.Error.WriteLine( "missing max inline dfa states -Xmaxinlinedfastates option; ignoring" );
+                        Console.Error.WriteLine("missing max inline dfa states -Xmaxinlinedfastates option; ignoring");
                     }
                     else
                     {
                         i++;
-                        CodeGenerator.MaxAcyclicDfaStatesInline = int.Parse( args[i] );
+                        CodeGenerator.MaxAcyclicDfaStatesInline = int.Parse(args[i]);
                     }
-                }
-                else if (args[i] == "-Xmaxswitchcaselabels")
-                {
+
+                    break;
+
+                case "-Xmaxswitchcaselabels":
                     if (i + 1 >= args.Length)
                     {
                         Console.Error.WriteLine("missing max switch case labels -Xmaxswitchcaselabels option; ignoring");
@@ -373,9 +395,10 @@ namespace Antlr3
                         else
                             Console.Error.WriteLine(string.Format("invalid value '{0}' for max switch case labels -Xmaxswitchcaselabels option; ignoring", args[i]));
                     }
-                }
-                else if (args[i] == "-Xminswitchalts")
-                {
+
+                    break;
+
+                case "-Xminswitchalts":
                     if (i + 1 >= args.Length)
                     {
                         Console.Error.WriteLine("missing min switch alternatives -Xminswitchalts option; ignoring");
@@ -389,9 +412,10 @@ namespace Antlr3
                         else
                             Console.Error.WriteLine(string.Format("invalid value '{0}' for min switch alternatives -Xminswitchalts option; ignoring", args[i]));
                     }
-                }
-                else if (args[i] == "-Xm")
-                {
+
+                    break;
+
+                case "-Xm":
                     if (i + 1 >= args.Length)
                     {
                         Console.Error.WriteLine("missing max recursion with -Xm option; ignoring");
@@ -401,9 +425,10 @@ namespace Antlr3
                         i++;
                         NFAContext.MAX_SAME_RULE_INVOCATIONS_PER_NFA_CONFIG_STACK = int.Parse(args[i]);
                     }
-                }
-                else if (args[i] == "-Xmaxdfaedges")
-                {
+
+                    break;
+
+                case "-Xmaxdfaedges":
                     if (i + 1 >= args.Length)
                     {
                         Console.Error.WriteLine("missing max number of edges with -Xmaxdfaedges option; ignoring");
@@ -413,9 +438,10 @@ namespace Antlr3
                         i++;
                         DFA.MAX_STATE_TRANSITIONS_FOR_TABLE = int.Parse(args[i]);
                     }
-                }
-                else if (args[i] == "-Xconversiontimeout")
-                {
+
+                    break;
+
+                case "-Xconversiontimeout":
                     if (i + 1 >= args.Length)
                     {
                         Console.Error.WriteLine("missing max time in ms -Xconversiontimeout option; ignoring");
@@ -425,30 +451,40 @@ namespace Antlr3
                         i++;
                         DFA.MAX_TIME_PER_DFA_CREATION = TimeSpan.FromMilliseconds(int.Parse(args[i]));
                     }
-                }
-                else if (args[i] == "-Xnfastates")
-                {
+
+                    break;
+
+                case "-Xnfastates":
                     DecisionProbe.verbose = true;
-                }
-                else if (args[i] == "-Xsavelexer")
-                {
+                    break;
+
+                case "-Xsavelexer":
                     deleteTempLexer = false;
-                }
-                else if (args[i] == "-Xtimer")
-                {
+                    break;
+
+                case "-Xtimer":
                     _showTimer = true;
-                }
-                else if (args[i] == "-X")
-                {
+                    break;
+
+                case "-Xcachetemplates":
+                    EnableTemplateCache = true;
+                    break;
+
+                case "-Xrepeat":
+                    break;
+
+                case "-X":
                     ExtendedHelp();
-                }
-                else
-                {
+                    break;
+
+                default:
                     if (args[i][0] != '-')
                     {
                         // Must be the grammar file
                         AddGrammarFile(args[i]);
                     }
+
+                    break;
                 }
             }
         }
