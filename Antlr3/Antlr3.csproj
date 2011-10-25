@@ -481,7 +481,7 @@
       <Link>Codegen\Templates\Ruby\ST.stg</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <EmbeddedResource Include="..\..\..\antlr\main\tool\src\main\resources\org\antlr\codegen\templates\LeftRecursiveRules.stg">
+    <EmbeddedResource Include="..\..\..\antlr\antlr3-main\tool\src\main\resources\org\antlr\codegen\templates\LeftRecursiveRules.stg">
       <Link>Codegen\Templates\LeftRecursiveRules.stg</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </EmbeddedResource>
