@@ -675,6 +675,9 @@ namespace Antlr3.Analysis
         [CLSCompliant(false)]
         public static SemanticContext And(SemanticContext a, SemanticContext b)
         {
+            if (a is FalsePredicate || b is FalsePredicate)
+                return FalsePredicate.Instance;
+
             SemanticContext commonTerms = FactorOr(ref a, ref b);
             bool factored = commonTerms != null && commonTerms != EmptySemanticContext && !(commonTerms is TruePredicate);
             if (factored)
@@ -707,6 +710,9 @@ namespace Antlr3.Analysis
         [CLSCompliant(false)]
         public static SemanticContext Or(SemanticContext a, SemanticContext b)
         {
+            if (a is TruePredicate || b is TruePredicate)
+                return TruePredicate.Instance;
+
             SemanticContext commonTerms = FactorAnd(ref a, ref b);
             bool factored = commonTerms != null && commonTerms != EmptySemanticContext && !(commonTerms is FalsePredicate);
             if (factored)
