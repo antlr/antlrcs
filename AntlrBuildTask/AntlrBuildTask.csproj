@@ -63,6 +63,7 @@
     <None Include="..\..\..\..\keys\antlr\Key.snk">
       <Link>Key.snk</Link>
     </None>
+    <None Include="Antlr3.Java.targets" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

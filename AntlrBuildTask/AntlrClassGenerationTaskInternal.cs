@@ -62,7 +62,7 @@ namespace Antlr3.Build.Tasks
             set;
         }
 
-        public string Language
+        public string TargetLanguage
         {
             get;
             set;
@@ -75,6 +75,24 @@ namespace Antlr3.Build.Tasks
         }
 
         public string RootNamespace
+        {
+            get;
+            set;
+        }
+
+        public string[] LanguageSourceExtensions
+        {
+            get;
+            set;
+        }
+
+        public bool DebugGrammar
+        {
+            get;
+            set;
+        }
+
+        public bool ProfileGrammar
         {
             get;
             set;
@@ -126,6 +144,18 @@ namespace Antlr3.Build.Tasks
                     "-message-format", "vs2005"
                 };
 
+                if (DebugGrammar)
+                    args.Add("-debug");
+
+                if (ProfileGrammar)
+                    args.Add("-profile");
+
+                if (!string.IsNullOrEmpty(TargetLanguage))
+                {
+                    args.Add("-language");
+                    args.Add(TargetLanguage);
+                }
+
                 args.AddRange(SourceCodeFiles);
 
                 using (LoggingTraceListener traceListener = new LoggingTraceListener(_buildMessages))
@@ -135,7 +165,7 @@ namespace Antlr3.Build.Tasks
                     process();
                 }
 
-                _generatedCodeFiles.AddRange(GetGeneratedFiles().Where(file => Path.GetExtension(file).Equals(".cs", StringComparison.OrdinalIgnoreCase)));
+                _generatedCodeFiles.AddRange(GetGeneratedFiles().Where(file => LanguageSourceExtensions.Contains(Path.GetExtension(file), StringComparer.OrdinalIgnoreCase)));
 
                 int errorCount = GetNumErrors();
                 return errorCount == 0;

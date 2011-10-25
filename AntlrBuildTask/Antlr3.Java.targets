@@ -30,7 +30,6 @@
     <BuildSystem>MSBuild</BuildSystem>
     <TaskVersion>3.3.0.7239</TaskVersion>
     <TaskKeyToken>eb42632606e9261f</TaskKeyToken>
-    <AntlrBuildTaskAssemblyName Condition="'$(AntlrBuildTaskAssemblyName)'==''">AntlrBuildTask, Version=$(TaskVersion), Culture=neutral, PublicKeyToken=$(TaskKeyToken)</AntlrBuildTaskAssemblyName>
   </PropertyGroup>
 
   <PropertyGroup>
@@ -55,20 +54,19 @@
     <AntlrGenCodeFileNames Condition="'$(AntlrGenCodeFileNames)'==''">$(MSBuildProjectFile).AntlrGeneratedCodeFileListAbsolute.txt</AntlrGenCodeFileNames>
   </PropertyGroup>
 
-  <UsingTask Condition="'$(AntlrBuildTaskPath)'==''" TaskName="Antlr3.Build.Tasks.AntlrClassGenerationTask" AssemblyName="$(AntlrBuildTaskAssemblyName)" />
-  <UsingTask Condition="'$(AntlrBuildTaskPath)'!=''" TaskName="Antlr3.Build.Tasks.AntlrClassGenerationTask" AssemblyFile="$(AntlrBuildTaskPath)\AntlrBuildTask.dll" />
+  <UsingTask TaskName="Antlr3.Build.Tasks.AntlrClassGenerationTask" AssemblyFile="AntlrBuildTask.dll" />
 
   <PropertyGroup>
-    <PrepareResourcesDependsOn>
+    <CoreCompileDependsOn>
       AntlrCompile;
       AntlrCompileAddFilesGenerated;
-      $(PrepareResourcesDependsOn)
-    </PrepareResourcesDependsOn>
+      $(CoreCompileDependsOn)
+    </CoreCompileDependsOn>
   </PropertyGroup>
 
   <PropertyGroup>
     <AntlrCompileDependsOn>
-      AntlrCompileReadGeneratedFileList
+      AntlrCompileReadGeneratedFileList;_ComputeGrammarInputs
     </AntlrCompileDependsOn>
   </PropertyGroup>
 
@@ -99,9 +97,25 @@
                 Targets="AntlrCompile" />
   </Target>
 
+  <Target Name="_ComputeGrammarInputs"
+          DependsOnTargets="$(_ComputeGrammarInputsDependsOn)">
+    <ItemGroup>
+      <_GrammarIncludeItems Condition="'%(SourceFolder.Antlr3Source)'=='true'" Include="@(SourceFolder->'%(RelativeDir)**\*.g')" />
+      <_GrammarIncludeItems Condition="'%(SourceFolder.Antlr3Source)'=='true'" Include="@(SourceFolder->'%(RelativeDir)**\*.g3')" />
+      <_TokensIncludeItems Condition="'%(SourceFolder.Antlr3Source)'=='true'" Include="@(SourceFolder->'%(RelativeDir)**\*.tokens')" />
+    </ItemGroup>
+    <PropertyGroup>
+      <_GrammarIncludeSpec>@(_GrammarIncludeItems)</_GrammarIncludeSpec>
+      <_TokensIncludeSpec>@(_TokensIncludeItems)</_TokensIncludeSpec>
+    </PropertyGroup>
+    <ItemGroup>
+      <Antlr3 Include="$(_GrammarIncludeSpec)" />
+      <AntlrTokens Include="$(_TokensIncludeSpec)" />
+    </ItemGroup>
+  </Target>
+
   <Target Name="AntlrCompile"
           DependsOnTargets="$(AntlrCompileDependsOn)"
-          Condition="'@(Antlr3)' != ''"
           Inputs="@(Antlr3);@(AntlrTokens);@(AntlrAbstractGrammar)"
           Outputs="@(AntlrOutputCodeFilesList);
                   $(IntermediateOutputPath)$(AntlrGenCodeFileNames);">
@@ -110,12 +124,7 @@
       <AntlrGeneratedCodeFiles Remove="@(AntlrGeneratedCodeFiles)" />
     </ItemGroup>
 
-    <ItemGroup>
-      <Antlr3>
-        <DebugGrammar Condition=" '%(DebugGrammar)' == '' ">false</DebugGrammar>
-        <ProfileGrammar Condition=" '%(ProfileGrammar)' == '' ">false</ProfileGrammar>
-      </Antlr3>
-    </ItemGroup>
+    <Message Importance="high" Text="Processing %(Antlr3.RelativeDir): @(Antlr3)." />
 
     <PropertyGroup>
       <_IntellisenseOnlyCompile>false</_IntellisenseOnlyCompile>
@@ -124,7 +133,7 @@
     <AntlrClassGenerationTask
       AntlrToolPath="$(AntlrToolLocation)"
       BuildTaskPath="$(AntlrBuildTaskLocation)"
-      OutputPath="$(IntermediateOutputPath)"
+      OutputPath="$(IntermediateOutputPath)\%(Antlr3.RelativeDir)"
       Language="%(Antlr3.TargetLanguage)"
       SourceCodeFiles="@(Antlr3)"
       ContinueOnError="$(_IntellisenseOnlyCompile)"

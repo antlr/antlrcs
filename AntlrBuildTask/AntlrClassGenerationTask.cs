@@ -38,6 +38,7 @@ namespace Antlr3.Build.Tasks
     using System.Threading;
     using Microsoft.Build.Framework;
     using Microsoft.Build.Utilities;
+    using Directory = System.IO.Directory;
     using File = System.IO.File;
     using FileAttributes = System.IO.FileAttributes;
     using Path = System.IO.Path;
@@ -45,6 +46,8 @@ namespace Antlr3.Build.Tasks
     public class AntlrClassGenerationTask
         : Task
     {
+        private static AppDomain _sharedAppDomain;
+
         private const string DefaultGeneratedSourceExtension = "g";
         private List<ITaskItem> _generatedCodeFiles = new List<ITaskItem>();
 
@@ -68,7 +71,7 @@ namespace Antlr3.Build.Tasks
         }
 
         [Required]
-        public string Language
+        public string TargetLanguage
         {
             get;
             set;
@@ -110,6 +113,24 @@ namespace Antlr3.Build.Tasks
             set;
         }
 
+        public string[] LanguageSourceExtensions
+        {
+            get;
+            set;
+        }
+
+        public bool DebugGrammar
+        {
+            get;
+            set;
+        }
+
+        public bool ProfileGrammar
+        {
+            get;
+            set;
+        }
+
         [Output]
         public ITaskItem[] GeneratedCodeFiles
         {
@@ -123,6 +144,23 @@ namespace Antlr3.Build.Tasks
             }
         }
 
+        public AppDomain GetAntlrTaskAppDomain()
+        {
+            if (_sharedAppDomain != null)
+                return _sharedAppDomain;
+
+            AppDomainSetup info = new AppDomainSetup
+            {
+                ApplicationBase = BuildTaskPath,
+                LoaderOptimization = LoaderOptimization.MultiDomainHost,
+                ShadowCopyFiles = "true"
+            };
+
+            string friendlyName = "AntlrClassGenerationDomain_" + Guid.NewGuid();
+            _sharedAppDomain = AppDomain.CreateDomain(friendlyName, AppDomain.CurrentDomain.Evidence, info, new NamedPermissionSet("FullTrust"), new StrongName[0]);
+            return _sharedAppDomain;
+        }
+
         public override bool Execute()
         {
             AppDomain domain = null;
@@ -130,15 +168,7 @@ namespace Antlr3.Build.Tasks
 
             try
             {
-                AppDomainSetup info = new AppDomainSetup
-                {
-                    ApplicationBase = BuildTaskPath,
-                    LoaderOptimization = LoaderOptimization.MultiDomainHost,
-                    ShadowCopyFiles = "true"
-                };
-
-                string friendlyName = "AntlrClassGenerationDomain_" + Guid.NewGuid();
-                domain = AppDomain.CreateDomain(friendlyName, AppDomain.CurrentDomain.Evidence, info, new NamedPermissionSet("FullTrust"), new StrongName[0]);
+                domain = GetAntlrTaskAppDomain();
                 AntlrClassGenerationTaskInternal wrapper = CreateBuildTaskWrapper(domain);
                 success = wrapper.Execute();
 
@@ -162,7 +192,7 @@ namespace Antlr3.Build.Tasks
             }
             finally
             {
-                if (domain != null)
+                if (domain != null && domain != _sharedAppDomain)
                     AppDomain.Unload(domain);
             }
 
@@ -219,6 +249,8 @@ namespace Antlr3.Build.Tasks
 
             if (this.TokensFiles != null && this.TokensFiles.Length > 0)
             {
+                Directory.CreateDirectory(OutputPath);
+
                 HashSet<string> copied = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
                 foreach (ITaskItem taskItem in TokensFiles)
                 {
@@ -250,10 +282,13 @@ namespace Antlr3.Build.Tasks
 
             wrapper.AntlrToolPath = AntlrToolPath;
             wrapper.SourceCodeFiles = sourceCodeFiles;
-            wrapper.Language = Language;
+            wrapper.TargetLanguage = TargetLanguage;
             wrapper.OutputPath = OutputPath;
             wrapper.RootNamespace = RootNamespace;
             wrapper.GeneratedSourceExtension = GeneratedSourceExtension;
+            wrapper.LanguageSourceExtensions = LanguageSourceExtensions;
+            wrapper.DebugGrammar = DebugGrammar;
+            wrapper.ProfileGrammar = ProfileGrammar;
             return wrapper;
         }
 
