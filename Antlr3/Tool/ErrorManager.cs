@@ -42,6 +42,7 @@ namespace Antlr3.Tool
     using DFAState = Antlr3.Analysis.DFAState;
     using FieldAccessException = System.FieldAccessException;
     using FieldInfo = System.Reflection.FieldInfo;
+    using File = System.IO.File;
     using ICollection = System.Collections.ICollection;
     using ITemplateErrorListener = Antlr4.StringTemplate.ITemplateErrorListener;
     using IToken = Antlr.Runtime.IToken;
@@ -429,7 +430,14 @@ namespace Antlr3.Tool
             ErrorManager.locale = locale;
             string language = locale.TwoLetterISOLanguageName;
             string fileName = Path.Combine(Path.Combine(Path.Combine(Path.Combine(Path.Combine(AntlrTool.ToolPathRoot, "Tool"), "Templates"), "messages"), "languages"), language + ".stg");
+            if (!File.Exists(fileName) && locale.TwoLetterISOLanguageName != CultureInfo.GetCultureInfo("en-us").TwoLetterISOLanguageName)
+            {
+                SetLocale(CultureInfo.GetCultureInfo("en-us"));
+                return;
+            }
+
             messages = new TemplateGroupFile(fileName);
+            messages.EnableCache = AntlrTool.EnableTemplateCache;
             messages.Listener = initSTListener;
             if (!messages.IsDefined("INTERNAL_ERROR"))
             {
@@ -468,6 +476,13 @@ namespace Antlr3.Tool
             ErrorManager.formatName = formatName;
             string fileName = Path.Combine(Path.Combine(Path.Combine(Path.Combine(Path.Combine(AntlrTool.ToolPathRoot, "Tool"), "Templates"), "messages"), "formats"), formatName + ".stg");
             format = new TemplateGroupFile(fileName);
+            if (!File.Exists(fileName) && formatName != "antlr")
+            {
+                SetFormat("antlr");
+                return;
+            }
+
+            format.EnableCache = AntlrTool.EnableTemplateCache;
             format.Listener = initSTListener;
             if (!format.IsDefined("message"))
             {
