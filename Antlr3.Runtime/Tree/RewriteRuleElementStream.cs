@@ -71,10 +71,7 @@ namespace Antlr.Runtime.Tree
         /** <summary>Once a node / subtree has been used in a stream, it must be dup'd
          *  from then on.  Streams are reset after subrules so that the streams
          *  can be reused in future subrules.  So, reset must set a dirty bit.
-         *  If dirty, then next() always returns a dup.
-         *
-         *  I wanted to use "naughty bit" here, but couldn't think of a way
-         *  to use "naughty".
+         *  If dirty, then next() always returns a dup.</summary>
          */
         protected bool dirty = false;
 
