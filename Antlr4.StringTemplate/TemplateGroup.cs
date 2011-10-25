@@ -44,17 +44,28 @@ namespace Antlr4.StringTemplate
 
     using ArgumentException = System.ArgumentException;
     using ArgumentNullException = System.ArgumentNullException;
+    using BinaryReader = System.IO.BinaryReader;
+    using BinaryWriter = System.IO.BinaryWriter;
     using Console = System.Console;
+    using DateTime = System.DateTime;
+    using DateTimeKind = System.DateTimeKind;
     using Directory = System.IO.Directory;
     using Environment = System.Environment;
     using Exception = System.Exception;
     using File = System.IO.File;
     using IDictionary = System.Collections.IDictionary;
     using IOException = System.IO.IOException;
+    using MemoryStream = System.IO.MemoryStream;
+    using NotImplementedException = System.NotImplementedException;
+    using NotSupportedException = System.NotSupportedException;
     using Path = System.IO.Path;
+    using SeekOrigin = System.IO.SeekOrigin;
     using Stream = System.IO.Stream;
     using StringBuilder = System.Text.StringBuilder;
+    using StringComparer = System.StringComparer;
+    using TemplateToken = Antlr4.StringTemplate.Compiler.TemplateLexer.TemplateToken;
     using Type = System.Type;
+    using TypeCode = System.TypeCode;
     using Uri = System.Uri;
     using UriFormatException = System.UriFormatException;
 
@@ -132,6 +143,8 @@ namespace Antlr4.StringTemplate
 
         /** Watch loading of groups and templates */
         private bool _verbose = false;
+
+        private bool _enableCache = false;
 
         /** For debugging with STViz. Records where in code an ST was created
          *  and where code added attributes.
@@ -258,6 +271,19 @@ namespace Antlr4.StringTemplate
             set
             {
                 _verbose = value;
+            }
+        }
+
+        public bool EnableCache
+        {
+            get
+            {
+                return _enableCache;
+            }
+
+            set
+            {
+                _enableCache = value;
             }
         }
 
@@ -911,11 +937,28 @@ namespace Antlr4.StringTemplate
             {
                 Uri f = new Uri(fileName);
                 ANTLRReaderStream fs = new ANTLRReaderStream(new System.IO.StreamReader(f.LocalPath, Encoding));
-                GroupLexer lexer = new GroupLexer(fs);
-                fs.name = fileName;
-                CommonTokenStream tokens = new CommonTokenStream(lexer);
-                parser = new GroupParser(tokens);
-                parser.group(this, prefix);
+
+                var timer = System.Diagnostics.Stopwatch.StartNew();
+
+                string cachePath = Path.Combine(Path.GetTempPath(), "ST4TemplateCache");
+                if (EnableCache && TryLoadGroupFromCache(cachePath, prefix, fileName))
+                {
+                    System.Diagnostics.Debug.WriteLine(string.Format("Successfully loaded the group from cache {0} in {1}ms.", Name, timer.ElapsedMilliseconds));
+                }
+                else
+                {
+                    GroupLexer lexer = new GroupLexer(fs);
+                    fs.name = fileName;
+                    CommonTokenStream tokens = new CommonTokenStream(lexer);
+                    parser = new GroupParser(tokens);
+                    parser.group(this, prefix);
+
+                    System.Diagnostics.Debug.WriteLine(string.Format("Successfully loaded the group {0} in {1}ms.", Name, timer.ElapsedMilliseconds));
+
+                    if (EnableCache)
+                        CacheCompiledGroup(cachePath, prefix, fileName, File.GetLastWriteTimeUtc(f.LocalPath));
+                }
+
             }
             catch (Exception e)
             {
@@ -924,6 +967,722 @@ namespace Antlr4.StringTemplate
                     ErrorManager.IOError(null, ErrorType.CANT_LOAD_GROUP_FILE, e, fileName);
 
                 throw;
+            }
+        }
+
+        private bool TryLoadGroupFromCache(string cachePath, string prefix, string fileName)
+        {
+            string cacheFileName = Path.GetFileNameWithoutExtension(fileName) + (uint)fileName.GetHashCode() + prefix.Replace(Path.DirectorySeparatorChar, '_').Replace(Path.AltDirectorySeparatorChar, '_');
+            cacheFileName = Path.Combine(cachePath, cacheFileName);
+            if (!File.Exists(cacheFileName))
+                return false;
+
+            try
+            {
+                byte[] data = File.ReadAllBytes(cacheFileName);
+                return TryLoadCachedGroup(data, File.GetLastWriteTimeUtc(new Uri(fileName).LocalPath));
+            }
+            catch (IOException)
+            {
+                return false;
+            }
+        }
+
+        private bool TryLoadCachedGroup(byte[] data, DateTime lastWriteTime)
+        {
+            var timer = System.Diagnostics.Stopwatch.StartNew();
+
+            var reader = new BinaryReader(new MemoryStream(data), Encoding.UTF8);
+
+            DateTime cacheTime = new DateTime(reader.ReadInt64(), DateTimeKind.Utc);
+            if (cacheTime != lastWriteTime)
+                return false;
+
+            Dictionary<int, object> objects = new Dictionary<int, object>();
+            objects.Add(0, null);
+
+            // first pass constructs objects
+            long objectTableOffset = reader.BaseStream.Position;
+            int objectCount = reader.ReadInt32();
+            for (int i = 0; i < objectCount; i++)
+            {
+                int key = reader.ReadInt32();
+                object obj = CreateGroupObject(reader, key, objects);
+                objects.Add(key, obj);
+            }
+
+            reader.BaseStream.Seek(objectTableOffset + 4, SeekOrigin.Begin);
+            for (int i = 0; i < objectCount; i++)
+            {
+                int key = reader.ReadInt32();
+                LoadGroupObject(reader, key, objects);
+            }
+
+            List<TemplateGroup> importsToClearOnUnload = new List<TemplateGroup>();
+            Dictionary<string, CompiledTemplate> templates = new Dictionary<string, CompiledTemplate>();
+            Dictionary<string, IDictionary<string, object>> dictionaries = new Dictionary<string, IDictionary<string, object>>();
+
+            // imported groups
+            int importCount = reader.ReadInt32();
+            for (int i = 0; i < importCount; i++)
+                importsToClearOnUnload.Add((TemplateGroup)objects[reader.ReadInt32()]);
+
+            // delimiters
+            char delimiterStartChar = reader.ReadChar();
+            char delimiterStopChar = reader.ReadChar();
+
+            // templates & aliases
+            int templateCount = reader.ReadInt32();
+            for (int i = 0; i < templateCount; i++)
+            {
+                string key = reader.ReadString();
+                CompiledTemplate value = (CompiledTemplate)objects[reader.ReadInt32()];
+                templates[key] = value;
+            }
+
+            // dictionaries
+            int dictionaryCount = reader.ReadInt32();
+            for (int i = 0; i < dictionaryCount; i++)
+            {
+                string name = reader.ReadString();
+                IDictionary<string, object> dictionary = new Dictionary<string, object>();
+                dictionaries[name] = dictionary;
+                int valueCount = reader.ReadInt32();
+                for (int j = 0; j < valueCount; j++)
+                {
+                    string key = reader.ReadString();
+                    object value = objects[reader.ReadInt32()];
+                    dictionary[key] = value;
+                }
+            }
+
+            this._importsToClearOnUnload.AddRange(importsToClearOnUnload);
+            this.delimiterStartChar = delimiterStartChar;
+            this.delimiterStopChar = delimiterStopChar;
+
+            foreach (var pair in templates)
+                this.templates[pair.Key] = pair.Value;
+
+            foreach (var pair in dictionaries)
+                this.dictionaries[pair.Key] = pair.Value;
+
+            System.Diagnostics.Debug.WriteLine(string.Format("Successfully loaded the cached group {0} in {1}ms.", Name, timer.ElapsedMilliseconds));
+            return true;
+        }
+
+        private object CreateGroupObject(BinaryReader reader, int key, Dictionary<int, object> objects)
+        {
+            var comparer = ObjectReferenceEqualityComparer<object>.Default;
+
+            int typeKey = reader.ReadInt32();
+            if (typeKey == 0)
+            {
+                // this is a string
+                return reader.ReadString();
+            }
+
+            string typeName = (string)objects[typeKey];
+            if (typeName == typeof(bool).FullName)
+            {
+                return reader.ReadBoolean();
+            }
+            else if (typeName == typeof(TemplateToken).FullName || typeName == typeof(CommonToken).FullName)
+            {
+                int channel = reader.ReadInt32();
+                int charPositionInLine = reader.ReadInt32();
+                int line = reader.ReadInt32();
+                int startIndex = reader.ReadInt32();
+                int stopIndex = reader.ReadInt32();
+                string text = reader.ReadString();
+                int tokenIndex = reader.ReadInt32();
+                int type = reader.ReadInt32();
+                CommonToken token = new CommonToken(type, text)
+                {
+                    Channel = channel,
+                    CharPositionInLine = charPositionInLine,
+                    Line = line,
+                    StartIndex = startIndex,
+                    StopIndex = stopIndex,
+                    TokenIndex = tokenIndex,
+                };
+
+                return token;
+            }
+            else if (typeName == typeof(CompiledTemplate).FullName)
+            {
+                CompiledTemplate compiledTemplate = new CompiledTemplate();
+                compiledTemplate.Name = reader.ReadString();
+                compiledTemplate.Prefix = reader.ReadString();
+                compiledTemplate.Template = reader.ReadString();
+                int templateDefStartTokenObject = reader.ReadInt32();
+                compiledTemplate.HasFormalArgs = reader.ReadBoolean();
+                int nativeGroupObject = reader.ReadInt32();
+                compiledTemplate.IsRegion = reader.ReadBoolean();
+                compiledTemplate.RegionDefType = (Template.RegionType)reader.ReadInt32();
+                compiledTemplate.IsAnonSubtemplate = reader.ReadBoolean();
+
+                int formalArgsLength = reader.ReadInt32();
+                if (formalArgsLength > 0)
+                {
+                    for (int i = 0; i < formalArgsLength; i++)
+                    {
+                        int formalArgObject = reader.ReadInt32();
+                    }
+                }
+
+                int stringsLength = reader.ReadInt32();
+                if (stringsLength >= 0)
+                {
+                    compiledTemplate.strings = new string[stringsLength];
+                    for (int i = 0; i < stringsLength; i++)
+                        compiledTemplate.strings[i] = reader.ReadString();
+                }
+
+                int instrsLength = reader.ReadInt32();
+                if (instrsLength >= 0)
+                    compiledTemplate.instrs = reader.ReadBytes(instrsLength);
+
+                compiledTemplate.codeSize = reader.ReadInt32();
+
+                int sourceMapLength = reader.ReadInt32();
+                if (sourceMapLength >= 0)
+                {
+                    compiledTemplate.sourceMap = new Interval[sourceMapLength];
+                    for (int i = 0; i < sourceMapLength; i++)
+                    {
+                        int start = reader.ReadInt32();
+                        int length = reader.ReadInt32();
+                        if (length >= 0)
+                            compiledTemplate.sourceMap[i] = new Interval(start, length);
+                    }
+                }
+
+                return compiledTemplate;
+            }
+            else if (typeName == typeof(FormalArgument).FullName)
+            {
+                string name = reader.ReadString();
+                int index = reader.ReadInt32();
+                IToken defaultValueToken = (IToken)objects[reader.ReadInt32()];
+                int defaultValueObject = reader.ReadInt32();
+                int compiledDefaultValue = reader.ReadInt32();
+
+                FormalArgument formalArgument = new FormalArgument(name, defaultValueToken);
+                formalArgument.Index = index;
+
+                return formalArgument;
+            }
+            else if (typeName == typeof(Template).FullName)
+            {
+                int implObject = reader.ReadInt32();
+
+                int localsCount = reader.ReadInt32();
+                for (int i = 0; i < localsCount; i++)
+                {
+                    int localObject = reader.ReadInt32();
+                }
+
+                int groupObject = reader.ReadInt32();
+
+                TemplateGroup group = this;
+                Template template = new Template(group);
+                return template;
+            }
+            else if (typeName == typeof(TemplateGroupFile).FullName)
+            {
+                bool isDefaultGroup = reader.ReadBoolean();
+                if (!isDefaultGroup)
+                    return this;
+                else
+                    throw new NotSupportedException();
+            }
+            else if (typeName == typeof(TemplateGroup).FullName)
+            {
+                bool isDefaultGroup = reader.ReadBoolean();
+                if (isDefaultGroup)
+                    return TemplateGroup.DefaultGroup;
+                else
+                    throw new NotSupportedException();
+            }
+            else
+            {
+                throw new NotImplementedException();
+            }
+        }
+
+        private void LoadGroupObject(BinaryReader reader, int key, Dictionary<int, object> objects)
+        {
+            var comparer = ObjectReferenceEqualityComparer<object>.Default;
+
+            int typeKey = reader.ReadInt32();
+            if (typeKey == 0)
+            {
+                // this is a string, nothing more to load
+                reader.ReadString();
+                return;
+            }
+
+            string typeName = (string)objects[typeKey];
+            if (typeName == typeof(bool).FullName)
+            {
+                // nothing more to load
+                reader.ReadBoolean();
+                return;
+            }
+            else if (typeName == typeof(TemplateToken).FullName || typeName == typeof(CommonToken).FullName)
+            {
+                // nothing more to load
+                int channel = reader.ReadInt32();
+                int charPositionInLine = reader.ReadInt32();
+                int line = reader.ReadInt32();
+                int startIndex = reader.ReadInt32();
+                int stopIndex = reader.ReadInt32();
+                string text = reader.ReadString();
+                int tokenIndex = reader.ReadInt32();
+                int type = reader.ReadInt32();
+                return;
+            }
+            else if (typeName == typeof(CompiledTemplate).FullName)
+            {
+                CompiledTemplate compiledTemplate = (CompiledTemplate)objects[key];
+                string name = reader.ReadString();
+                string prefix = reader.ReadString();
+                string template = reader.ReadString();
+                int templateDefStartTokenObject = reader.ReadInt32();
+                bool hasFormalArgs = reader.ReadBoolean();
+                int nativeGroupObject = reader.ReadInt32();
+                bool isRegion = reader.ReadBoolean();
+                Template.RegionType regionDefType = (Template.RegionType)reader.ReadInt32();
+                bool isAnonSubtemplate = reader.ReadBoolean();
+
+                compiledTemplate.TemplateDefStartToken = (IToken)objects[templateDefStartTokenObject];
+                compiledTemplate.NativeGroup = this;
+
+                int formalArgsLength = reader.ReadInt32();
+                if (formalArgsLength >= 0)
+                {
+                    List<FormalArgument> formalArguments = new List<FormalArgument>(formalArgsLength);
+
+                    for (int i = 0; i < formalArgsLength; i++)
+                    {
+                        int formalArgObject = reader.ReadInt32();
+                        formalArguments.Add((FormalArgument)objects[formalArgObject]);
+                    }
+
+                    compiledTemplate.FormalArguments = formalArguments;
+                }
+
+                int stringsLength = reader.ReadInt32();
+                for (int i = 0; i < stringsLength; i++)
+                    reader.ReadString();
+
+                int instrsLength = reader.ReadInt32();
+                if (instrsLength >= 0)
+                    reader.ReadBytes(instrsLength);
+
+                int codeSize = reader.ReadInt32();
+
+                int sourceMapLength = reader.ReadInt32();
+                for (int i = 0; i < sourceMapLength; i++)
+                {
+                    int start = reader.ReadInt32();
+                    int length = reader.ReadInt32();
+                }
+
+                return;
+            }
+            else if (typeName == typeof(FormalArgument).FullName)
+            {
+                FormalArgument formalArgument = (FormalArgument)objects[key];
+                string name = reader.ReadString();
+                int index = reader.ReadInt32();
+                IToken defaultValueToken = (IToken)objects[reader.ReadInt32()];
+                int defaultValueObject = reader.ReadInt32();
+                int compiledDefaultValue = reader.ReadInt32();
+
+                formalArgument.DefaultValue = objects[defaultValueObject];
+                formalArgument.CompiledDefaultValue = (CompiledTemplate)objects[compiledDefaultValue];
+            }
+            else if (typeName == typeof(Template).FullName)
+            {
+                Template template = (Template)objects[key];
+
+                int implObject = reader.ReadInt32();
+                template.impl = (CompiledTemplate)objects[implObject];
+
+                int localsCount = reader.ReadInt32();
+                if (localsCount >= 0)
+                {
+                    template.locals = new object[localsCount];
+                    for (int i = 0; i < localsCount; i++)
+                    {
+                        int localObject = reader.ReadInt32();
+                        template.locals[i] = objects[localObject];
+                    }
+                }
+
+                int groupObject = reader.ReadInt32();
+                template.Group = (TemplateGroup)objects[groupObject];
+
+                return;
+            }
+            else if (typeName == typeof(TemplateGroupFile).FullName)
+            {
+                bool isDefaultGroup = reader.ReadBoolean();
+                return;
+            }
+            else if (typeName == typeof(TemplateGroup).FullName)
+            {
+                bool isDefaultGroup = reader.ReadBoolean();
+            }
+            else
+            {
+                throw new NotImplementedException();
+            }
+        }
+
+        private void CacheCompiledGroup(string cachePath, string prefix, string fileName, DateTime lastWriteTime)
+        {
+            var timer = System.Diagnostics.Stopwatch.StartNew();
+
+            var serializedStrings = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+
+            var comparer = ObjectReferenceEqualityComparer<object>.Default;
+            var serializedObjects = new HashSet<object>(ObjectReferenceEqualityComparer<object>.Default);
+
+            // start with the root set
+            serializedObjects.UnionWith(_importsToClearOnUnload.OfType<object>());
+            serializedObjects.UnionWith(templates.Values.OfType<object>());
+            serializedObjects.UnionWith(dictionaries.Values.SelectMany(i => i.Values).OfType<object>());
+            // update to the reachable set
+            serializedObjects = CalculateReachableSerializedObjects(serializedObjects.ToArray());
+
+            MemoryStream stream = new MemoryStream();
+            var writer = new BinaryWriter(stream, Encoding.UTF8);
+            writer.Write(lastWriteTime.Ticks);
+
+            // objects
+            List<object> orderedObjectsForExport = GetOrderedExports(serializedObjects);
+            writer.Write(orderedObjectsForExport.Count);
+            foreach (var obj in orderedObjectsForExport)
+            {
+                WriteGroupObject(writer, obj);
+            }
+
+            // imported groups
+            writer.Write(_importsToClearOnUnload.Count);
+            foreach (var group in _importsToClearOnUnload)
+                writer.Write(comparer.GetHashCode(group));
+
+            // delimiters
+            writer.Write(delimiterStartChar);
+            writer.Write(delimiterStopChar);
+
+            // templates & aliases
+            writer.Write(templates.Count);
+            foreach (var template in templates)
+            {
+                writer.Write(template.Key);
+                writer.Write(comparer.GetHashCode(template.Value));
+            }
+
+            // dictionaries
+            writer.Write(dictionaries.Count);
+            foreach (var dictionary in dictionaries)
+            {
+                writer.Write(dictionary.Key);
+                writer.Write(dictionary.Value.Count);
+                foreach (var dictionaryValue in dictionary.Value)
+                {
+                    writer.Write(dictionaryValue.Key);
+                    writer.Write(comparer.GetHashCode(dictionaryValue.Value));
+                }
+            }
+
+            System.Diagnostics.Debug.WriteLine(string.Format("Successfully cached the group {0} in {1}ms ({2} bytes).", Name, timer.ElapsedMilliseconds, stream.Length));
+
+            Directory.CreateDirectory(cachePath);
+
+            string cacheFileName = Path.GetFileNameWithoutExtension(fileName) + (uint)fileName.GetHashCode() + prefix.Replace(Path.DirectorySeparatorChar, '_').Replace(Path.AltDirectorySeparatorChar, '_');
+            cacheFileName = Path.Combine(cachePath, cacheFileName);
+            File.WriteAllBytes(cacheFileName, stream.ToArray());
+        }
+
+        private List<object> GetOrderedExports(IEnumerable<object> serializedObjects)
+        {
+            List<object> exportList = new List<object>();
+            HashSet<object> visited = new HashSet<object>(ObjectReferenceEqualityComparer<object>.Default);
+            foreach (var obj in serializedObjects)
+                GetOrderedExports(obj, exportList, visited);
+
+            return exportList;
+        }
+
+        private void GetOrderedExports(object currentObject, List<object> exportList, HashSet<object> visited)
+        {
+            if (currentObject == null || !visited.Add(currentObject))
+                return;
+
+            // constructor dependencies
+            if (!(currentObject is Type) && !(currentObject is string))
+                GetOrderedExports(currentObject.GetType(), exportList, visited);
+
+            FormalArgument formalArgument = currentObject as FormalArgument;
+            if (formalArgument != null)
+            {
+                GetOrderedExports(formalArgument.DefaultValueToken, exportList, visited);
+            }
+
+            exportList.Add(currentObject);
+        }
+
+        private void WriteGroupObjectReference(BinaryWriter writer, object obj)
+        {
+            if (obj == null)
+                writer.Write(0);
+            else
+                writer.Write(ObjectReferenceEqualityComparer<object>.Default.GetHashCode(obj));
+        }
+
+        private void WriteGroupObject(BinaryWriter writer, object obj)
+        {
+            var comparer = ObjectReferenceEqualityComparer<object>.Default;
+            writer.Write(comparer.GetHashCode(obj));
+
+            string str = obj as string;
+            if (str != null)
+            {
+                writer.Write(0);
+                writer.Write(str);
+                return;
+            }
+
+            Type type = obj as Type;
+            if (type != null)
+            {
+                writer.Write(0);
+                writer.Write(type.FullName);
+                return;
+            }
+
+            WriteGroupObjectReference(writer, obj.GetType());
+
+            if (obj is bool)
+            {
+                writer.Write((bool)obj);
+                return;
+            }
+
+            IToken token = obj as IToken;
+            if (token != null)
+            {
+                writer.Write(token.Channel);
+                writer.Write(token.CharPositionInLine);
+                writer.Write(token.Line);
+                writer.Write(token.StartIndex);
+                writer.Write(token.StopIndex);
+                writer.Write(token.Text);
+                writer.Write(token.TokenIndex);
+                writer.Write(token.Type);
+                return;
+            }
+
+            if (obj.GetType() == typeof(CompiledTemplate))
+            {
+                CompiledTemplate compiledTemplate = (CompiledTemplate)obj;
+                writer.Write(compiledTemplate.Name);
+                writer.Write(compiledTemplate.Prefix);
+                writer.Write(compiledTemplate.Template);
+                WriteGroupObjectReference(writer, compiledTemplate.TemplateDefStartToken);
+                writer.Write(compiledTemplate.HasFormalArgs);
+                WriteGroupObjectReference(writer, compiledTemplate.NativeGroup);
+                writer.Write(compiledTemplate.IsRegion);
+                writer.Write((int)compiledTemplate.RegionDefType);
+                writer.Write(compiledTemplate.IsAnonSubtemplate);
+
+                if (compiledTemplate.FormalArguments == null)
+                {
+                    writer.Write(-1);
+                }
+                else
+                {
+                    writer.Write(compiledTemplate.FormalArguments.Count);
+                    foreach (var arg in compiledTemplate.FormalArguments)
+                        WriteGroupObjectReference(writer, arg);
+                }
+
+                if (compiledTemplate.strings == null)
+                {
+                    writer.Write(-1);
+                }
+                else
+                {
+                    writer.Write(compiledTemplate.strings.Length);
+                    foreach (var s in compiledTemplate.strings)
+                        writer.Write(s);
+                }
+
+                if (compiledTemplate.instrs == null)
+                {
+                    writer.Write(-1);
+                }
+                else
+                {
+                    writer.Write(compiledTemplate.instrs.Length);
+                    writer.Write(compiledTemplate.instrs);
+                }
+
+                writer.Write(compiledTemplate.codeSize);
+
+                if (compiledTemplate.sourceMap == null)
+                {
+                    writer.Write(-1);
+                }
+                else
+                {
+                    writer.Write(compiledTemplate.sourceMap.Length);
+                    foreach (var interval in compiledTemplate.sourceMap)
+                    {
+                        if (interval == null)
+                        {
+                            writer.Write(-1);
+                            writer.Write(-1);
+                        }
+                        else
+                        {
+                            writer.Write(interval.Start);
+                            writer.Write(interval.Length);
+                        }
+                    }
+                }
+            }
+            else if (obj.GetType() == typeof(FormalArgument))
+            {
+                FormalArgument formalArgument = (FormalArgument)obj;
+                writer.Write(formalArgument.Name);
+                writer.Write(formalArgument.Index);
+                WriteGroupObjectReference(writer, formalArgument.DefaultValueToken);
+                WriteGroupObjectReference(writer, formalArgument.DefaultValue);
+                WriteGroupObjectReference(writer, formalArgument.CompiledDefaultValue);
+            }
+            else if (obj.GetType() == typeof(Template))
+            {
+                Template template = (Template)obj;
+                WriteGroupObjectReference(writer, template.impl);
+
+                if (template.locals == null)
+                {
+                    writer.Write(-1);
+                }
+                else
+                {
+                    writer.Write(template.locals.Length);
+                    foreach (var local in template.locals)
+                    {
+                        WriteGroupObjectReference(writer, local);
+                    }
+                }
+
+                WriteGroupObjectReference(writer, template.Group);
+            }
+            else if (obj.GetType() == typeof(TemplateGroupFile) || obj == TemplateGroup.DefaultGroup)
+            {
+                writer.Write(obj == TemplateGroup.DefaultGroup);
+            }
+            else
+            {
+                throw new NotImplementedException();
+            }
+        }
+
+        private HashSet<object> CalculateReachableSerializedObjects(ICollection<object> rootSet)
+        {
+            var reachableObjects = new HashSet<object>(ObjectReferenceEqualityComparer<object>.Default);
+            foreach (var obj in rootSet)
+                CalculateReachableSerializedObjects(obj, reachableObjects);
+
+            return reachableObjects;
+        }
+
+        private void CalculateReachableSerializedObjects(object obj, HashSet<object> reachableObjects)
+        {
+            if (obj == null || !reachableObjects.Add(obj))
+                return;
+
+            CalculateReachableSerializedObjects(obj.GetType(), reachableObjects);
+
+            switch (Type.GetTypeCode(obj.GetType()))
+            {
+            case TypeCode.Boolean:
+            case TypeCode.String:
+                // nothing more to do
+                return;
+
+            case TypeCode.Object:
+            default:
+                IToken token = obj as IToken;
+                if (token != null)
+                {
+                    // nothing else to do
+                    return;
+                }
+
+                Type type = obj as Type;
+                if (type != null)
+                {
+                    // nothing else to do
+                    return;
+                }
+
+                if (obj.GetType() == typeof(CompiledTemplate))
+                {
+                    CompiledTemplate compiledTemplate = (CompiledTemplate)obj;
+                    CalculateReachableSerializedObjects(compiledTemplate.NativeGroup, reachableObjects);
+                    CalculateReachableSerializedObjects(compiledTemplate.TemplateDefStartToken, reachableObjects);
+                    if (compiledTemplate.FormalArguments != null)
+                    {
+                        foreach (var argument in compiledTemplate.FormalArguments)
+                            CalculateReachableSerializedObjects(argument, reachableObjects);
+                    }
+                    if (compiledTemplate.ImplicitlyDefinedTemplates != null)
+                    {
+                        foreach (var template in compiledTemplate.ImplicitlyDefinedTemplates)
+                            CalculateReachableSerializedObjects(template, reachableObjects);
+                    }
+                }
+                else if (obj.GetType() == typeof(FormalArgument))
+                {
+                    FormalArgument formalArgument = (FormalArgument)obj;
+                    CalculateReachableSerializedObjects(formalArgument.DefaultValueToken, reachableObjects);
+                    CalculateReachableSerializedObjects(formalArgument.DefaultValue, reachableObjects);
+                    CalculateReachableSerializedObjects(formalArgument.CompiledDefaultValue, reachableObjects);
+                }
+                else if (obj.GetType() == typeof(Template))
+                {
+                    Template template = (Template)obj;
+                    CalculateReachableSerializedObjects(template.impl, reachableObjects);
+                    if (template.locals != null)
+                    {
+                        foreach (var local in template.locals)
+                            CalculateReachableSerializedObjects(local, reachableObjects);
+                    }
+
+                    CalculateReachableSerializedObjects(template.Group, reachableObjects);
+                }
+                else if (obj.GetType() == typeof(TemplateGroupFile) || obj == TemplateGroup.DefaultGroup)
+                {
+                    // these are the only supported groups for now
+                    if (obj != this && obj != TemplateGroup.DefaultGroup)
+                        throw new NotSupportedException();
+
+                    return;
+                }
+                else
+                {
+                    throw new NotImplementedException();
+                }
+
+                break;
             }
         }
 

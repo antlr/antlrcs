@@ -47,6 +47,7 @@
     <Compile Include="AutoIndentWriter.cs" />
     <Compile Include="Debug\DebugEvents.cs" />
     <Compile Include="Misc\AttributeNotFoundException.cs" />
+    <Compile Include="Misc\ObjectReferenceEqualityComparer`1.cs" />
     <Compile Include="Misc\TextWriterErrorListener.cs" />
     <Compile Include="Misc\DebugErrorListener.cs" />
     <Compile Include="Misc\HttpUtility.cs" />
