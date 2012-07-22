@@ -160,6 +160,8 @@
 
     <ItemGroup>
       <Compile Include="@(AntlrGeneratedCodeFiles)" />
+      <!-- The WinFX "GenerateTemporaryTargetAssembly" target requires generated code files be added here. -->
+      <_GeneratedCodeFiles Include="@(AntlrGeneratedCodeFiles)" />
     </ItemGroup>
 
   </Target>
