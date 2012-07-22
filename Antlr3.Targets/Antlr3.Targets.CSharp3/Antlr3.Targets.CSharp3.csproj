@@ -12,11 +12,6 @@
     <AssemblyName>Antlr3.Targets.CSharp3</AssemblyName>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
-    <SccProjectName>Perforce Project</SccProjectName>
-    <SccLocalPath>..\..\..\..</SccLocalPath>
-    <SccAuxPath>
-    </SccAuxPath>
-    <SccProvider>MSSCCI:Perforce SCM</SccProvider>
     <SignAssembly>true</SignAssembly>
     <DelaySign>false</DelaySign>
     <AssemblyOriginatorKeyFile>..\..\..\..\..\keys\antlr\Key.snk</AssemblyOriginatorKeyFile>

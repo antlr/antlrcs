@@ -14,11 +14,6 @@
     <FileAlignment>512</FileAlignment>
     <SignAssembly>true</SignAssembly>
     <AssemblyOriginatorKeyFile>..\..\..\..\keys\antlr\Key.snk</AssemblyOriginatorKeyFile>
-    <SccProjectName>Perforce Project</SccProjectName>
-    <SccLocalPath>..\..\..</SccLocalPath>
-    <SccAuxPath>
-    </SccAuxPath>
-    <SccProvider>MSSCCI:Perforce SCM</SccProvider>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>

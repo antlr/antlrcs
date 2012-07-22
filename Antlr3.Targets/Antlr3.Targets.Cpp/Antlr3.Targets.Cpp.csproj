@@ -12,11 +12,6 @@
     <AssemblyName>Antlr3.Targets.Cpp</AssemblyName>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
-    <SccProjectName>Perforce Project</SccProjectName>
-    <SccLocalPath>..\..\..\..</SccLocalPath>
-    <SccAuxPath>
-    </SccAuxPath>
-    <SccProvider>MSSCCI:Perforce SCM</SccProvider>
     <SignAssembly>true</SignAssembly>
     <AssemblyOriginatorKeyFile>..\..\..\..\..\keys\antlr\Key.snk</AssemblyOriginatorKeyFile>
     <TargetFrameworkProfile>Client</TargetFrameworkProfile>

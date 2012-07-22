@@ -54,13 +54,13 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Antlr3.Targets.Python", "An
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Antlr3.Targets.Ruby", "Antlr3.Targets\Antlr3.Targets.Ruby\Antlr3.Targets.Ruby.csproj", "{64418260-E75A-4556-BB7E-8BDAAFC2EFB9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Antlr3.Runtime", "..\..\antlr\antlr3-main\runtime\CSharp3\Sources\Antlr3.Runtime\Antlr3.Runtime.csproj", "{8FDC0A87-9005-4D5A-AB75-E55CEB575559}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Antlr3.Runtime", "..\antlr3\runtime\CSharp3\Sources\Antlr3.Runtime\Antlr3.Runtime.csproj", "{8FDC0A87-9005-4D5A-AB75-E55CEB575559}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Antlr3.Runtime.Debug", "..\..\antlr\antlr3-main\runtime\CSharp3\Sources\Antlr3.Runtime.Debug\Antlr3.Runtime.Debug.csproj", "{5EE27A90-B023-42C9-AAF1-52B0424C5D0B}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Antlr3.Runtime.Debug", "..\antlr3\runtime\CSharp3\Sources\Antlr3.Runtime.Debug\Antlr3.Runtime.Debug.csproj", "{5EE27A90-B023-42C9-AAF1-52B0424C5D0B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Antlr3.Runtime.JavaExtensions", "..\..\antlr\antlr3-main\runtime\CSharp3\Sources\Antlr3.Runtime.JavaExtensions\Antlr3.Runtime.JavaExtensions.csproj", "{A7EEC557-EB14-451C-9616-B7A61F4ECE69}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Antlr3.Runtime.JavaExtensions", "..\antlr3\runtime\CSharp3\Sources\Antlr3.Runtime.JavaExtensions\Antlr3.Runtime.JavaExtensions.csproj", "{A7EEC557-EB14-451C-9616-B7A61F4ECE69}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Antlr3.Runtime.Test", "..\..\antlr\antlr3-main\runtime\CSharp3\Sources\Antlr3.Runtime.Test\Antlr3.Runtime.Test.csproj", "{19B965DE-5100-4064-A580-159644F6980E}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Antlr3.Runtime.Test", "..\antlr3\runtime\CSharp3\Sources\Antlr3.Runtime.Test\Antlr3.Runtime.Test.csproj", "{19B965DE-5100-4064-A580-159644F6980E}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AntlrBuildTask", "AntlrBuildTask\AntlrBuildTask.csproj", "{60F8B554-5C53-4DE2-B868-A0BFEF4EF80E}"
 EndProject
@@ -75,97 +75,6 @@ EndProject
 Global
 	GlobalSection(TestCaseManagementSettings) = postSolution
 		CategoryFile = Antlr3.vsmdi
-	EndGlobalSection
-	GlobalSection(SourceCodeControl) = preSolution
-		SccNumberOfProjects = 25
-		SccProjectName0 = Perforce\u0020Project
-		SccLocalPath0 = ..\\..
-		SccProvider0 = MSSCCI:Perforce\u0020SCM
-		SccProjectFilePathRelativizedFromConnection0 = antlrcs\\main\\
-		SccProjectUniqueName1 = Antlr3\\Antlr3.csproj
-		SccLocalPath1 = ..\\..
-		SccProjectFilePathRelativizedFromConnection1 = antlrcs\\main\\Antlr3\\
-		SccProjectUniqueName2 = AntlrBuildTask\\AntlrBuildTask.csproj
-		SccLocalPath2 = ..\\..
-		SccProjectFilePathRelativizedFromConnection2 = antlrcs\\main\\AntlrBuildTask\\
-		SccProjectUniqueName3 = Antlr3.StringTemplate\\Antlr3.StringTemplate.csproj
-		SccLocalPath3 = ..\\..
-		SccProjectFilePathRelativizedFromConnection3 = antlrcs\\main\\Antlr3.StringTemplate\\
-		SccProjectUniqueName4 = Antlr3.Test\\Antlr3.Test.csproj
-		SccLocalPath4 = ..\\..
-		SccProjectFilePathRelativizedFromConnection4 = antlrcs\\main\\Antlr3.Test\\
-		SccProjectUniqueName5 = Antlr3.Targets\\Antlr3.Targets.ActionScript\\Antlr3.Targets.ActionScript.csproj
-		SccProjectTopLevelParentUniqueName5 = Antlr3.sln
-		SccLocalPath5 = ..\\..
-		SccProjectFilePathRelativizedFromConnection5 = antlrcs\\main\\Antlr3.Targets\\Antlr3.Targets.ActionScript\\
-		SccProjectUniqueName6 = Antlr3.Targets\\Antlr3.Targets.C\\Antlr3.Targets.C.csproj
-		SccProjectTopLevelParentUniqueName6 = Antlr3.sln
-		SccLocalPath6 = ..\\..
-		SccProjectFilePathRelativizedFromConnection6 = antlrcs\\main\\Antlr3.Targets\\Antlr3.Targets.C\\
-		SccProjectUniqueName7 = Antlr3.Targets\\Antlr3.Targets.Cpp\\Antlr3.Targets.Cpp.csproj
-		SccProjectTopLevelParentUniqueName7 = Antlr3.sln
-		SccLocalPath7 = ..\\..
-		SccProjectFilePathRelativizedFromConnection7 = antlrcs\\main\\Antlr3.Targets\\Antlr3.Targets.Cpp\\
-		SccProjectUniqueName8 = Antlr3.Targets\\Antlr3.Targets.CSharp2\\Antlr3.Targets.CSharp2.csproj
-		SccProjectTopLevelParentUniqueName8 = Antlr3.sln
-		SccLocalPath8 = ..\\..
-		SccProjectFilePathRelativizedFromConnection8 = antlrcs\\main\\Antlr3.Targets\\Antlr3.Targets.CSharp2\\
-		SccProjectUniqueName9 = Antlr3.Targets\\Antlr3.Targets.CSharp3\\Antlr3.Targets.CSharp3.csproj
-		SccProjectTopLevelParentUniqueName9 = Antlr3.sln
-		SccLocalPath9 = ..\\..
-		SccProjectFilePathRelativizedFromConnection9 = antlrcs\\main\\Antlr3.Targets\\Antlr3.Targets.CSharp3\\
-		SccProjectUniqueName10 = Antlr3.Targets\\Antlr3.Targets.Delphi\\Antlr3.Targets.Delphi.csproj
-		SccProjectTopLevelParentUniqueName10 = Antlr3.sln
-		SccLocalPath10 = ..\\..
-		SccProjectFilePathRelativizedFromConnection10 = antlrcs\\main\\Antlr3.Targets\\Antlr3.Targets.Delphi\\
-		SccProjectUniqueName11 = Antlr3.Targets\\Antlr3.Targets.Java\\Antlr3.Targets.Java.csproj
-		SccProjectTopLevelParentUniqueName11 = Antlr3.sln
-		SccLocalPath11 = ..\\..
-		SccProjectFilePathRelativizedFromConnection11 = antlrcs\\main\\Antlr3.Targets\\Antlr3.Targets.Java\\
-		SccProjectUniqueName12 = Antlr3.Targets\\Antlr3.Targets.JavaScript\\Antlr3.Targets.JavaScript.csproj
-		SccProjectTopLevelParentUniqueName12 = Antlr3.sln
-		SccLocalPath12 = ..\\..
-		SccProjectFilePathRelativizedFromConnection12 = antlrcs\\main\\Antlr3.Targets\\Antlr3.Targets.JavaScript\\
-		SccProjectUniqueName13 = Antlr3.Targets\\Antlr3.Targets.ObjC\\Antlr3.Targets.ObjC.csproj
-		SccProjectTopLevelParentUniqueName13 = Antlr3.sln
-		SccLocalPath13 = ..\\..
-		SccProjectFilePathRelativizedFromConnection13 = antlrcs\\main\\Antlr3.Targets\\Antlr3.Targets.ObjC\\
-		SccProjectUniqueName14 = Antlr3.Targets\\Antlr3.Targets.Perl5\\Antlr3.Targets.Perl5.csproj
-		SccProjectTopLevelParentUniqueName14 = Antlr3.sln
-		SccLocalPath14 = ..\\..
-		SccProjectFilePathRelativizedFromConnection14 = antlrcs\\main\\Antlr3.Targets\\Antlr3.Targets.Perl5\\
-		SccProjectUniqueName15 = Antlr3.Targets\\Antlr3.Targets.Python\\Antlr3.Targets.Python.csproj
-		SccProjectTopLevelParentUniqueName15 = Antlr3.sln
-		SccLocalPath15 = ..\\..
-		SccProjectFilePathRelativizedFromConnection15 = antlrcs\\main\\Antlr3.Targets\\Antlr3.Targets.Python\\
-		SccProjectUniqueName16 = Antlr3.Targets\\Antlr3.Targets.Ruby\\Antlr3.Targets.Ruby.csproj
-		SccProjectTopLevelParentUniqueName16 = Antlr3.sln
-		SccLocalPath16 = ..\\..
-		SccProjectFilePathRelativizedFromConnection16 = antlrcs\\main\\Antlr3.Targets\\Antlr3.Targets.Ruby\\
-		SccProjectUniqueName17 = Antlr4.StringTemplate\\Antlr4.StringTemplate.csproj
-		SccLocalPath17 = ..\\..
-		SccProjectFilePathRelativizedFromConnection17 = antlrcs\\main\\Antlr4.StringTemplate\\
-		SccProjectUniqueName18 = Antlr4.Test.StringTemplate\\Antlr4.Test.StringTemplate.csproj
-		SccLocalPath18 = ..\\..
-		SccProjectFilePathRelativizedFromConnection18 = antlrcs\\main\\Antlr4.Test.StringTemplate\\
-		SccProjectUniqueName19 = Antlr4.StringTemplate.Visualizer\\Antlr4.StringTemplate.Visualizer.csproj
-		SccLocalPath19 = ..\\..
-		SccProjectFilePathRelativizedFromConnection19 = antlrcs\\main\\Antlr4.StringTemplate.Visualizer\\
-		SccProjectUniqueName20 = ..\\..\\antlr\\antlr3-main\\runtime\\CSharp3\\Sources\\Antlr3.Runtime.Debug\\Antlr3.Runtime.Debug.csproj
-		SccLocalPath20 = ..\\..
-		SccProjectFilePathRelativizedFromConnection20 = antlr\\antlr3-main\\runtime\\CSharp3\\Sources\\Antlr3.Runtime.Debug\\
-		SccProjectUniqueName21 = ..\\..\\antlr\\antlr3-main\\runtime\\CSharp3\\Sources\\Antlr3.Runtime\\Antlr3.Runtime.csproj
-		SccLocalPath21 = ..\\..
-		SccProjectFilePathRelativizedFromConnection21 = antlr\\antlr3-main\\runtime\\CSharp3\\Sources\\Antlr3.Runtime\\
-		SccProjectUniqueName22 = ..\\..\\antlr\\antlr3-main\\runtime\\CSharp3\\Sources\\Antlr3.Runtime.JavaExtensions\\Antlr3.Runtime.JavaExtensions.csproj
-		SccLocalPath22 = ..\\..
-		SccProjectFilePathRelativizedFromConnection22 = antlr\\antlr3-main\\runtime\\CSharp3\\Sources\\Antlr3.Runtime.JavaExtensions\\
-		SccProjectUniqueName23 = ..\\..\\antlr\\antlr3-main\\runtime\\CSharp3\\Sources\\Antlr3.Runtime.Test\\Antlr3.Runtime.Test.csproj
-		SccLocalPath23 = ..\\..
-		SccProjectFilePathRelativizedFromConnection23 = antlr\\antlr3-main\\runtime\\CSharp3\\Sources\\Antlr3.Runtime.Test\\
-		SccProjectUniqueName24 = Antlr3.Runtime.Visualizer\\Antlr3.Runtime.Visualizer.csproj
-		SccLocalPath24 = ..\\..
-		SccProjectFilePathRelativizedFromConnection24 = antlrcs\\main\\Antlr3.Runtime.Visualizer\\
 	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU

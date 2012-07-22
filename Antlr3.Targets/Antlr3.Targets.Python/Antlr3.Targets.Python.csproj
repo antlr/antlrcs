@@ -12,11 +12,6 @@
     <AssemblyName>Antlr3.Targets.Python</AssemblyName>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
-    <SccProjectName>Perforce Project</SccProjectName>
-    <SccLocalPath>..\..\..\..</SccLocalPath>
-    <SccAuxPath>
-    </SccAuxPath>
-    <SccProvider>MSSCCI:Perforce SCM</SccProvider>
     <SignAssembly>true</SignAssembly>
     <AssemblyOriginatorKeyFile>..\..\..\..\..\keys\antlr\Key.snk</AssemblyOriginatorKeyFile>
     <TargetFrameworkProfile>Client</TargetFrameworkProfile>
@@ -49,7 +44,7 @@
     <Compile Include="PythonTarget.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\..\antlr\antlr3-main\runtime\CSharp3\Sources\Antlr3.Runtime\Antlr3.Runtime.csproj">
+    <ProjectReference Include="..\..\..\antlr3\runtime\CSharp3\Sources\Antlr3.Runtime\Antlr3.Runtime.csproj">
       <Project>{8FDC0A87-9005-4D5A-AB75-E55CEB575559}</Project>
       <Name>Antlr3.Runtime</Name>
       <Private>False</Private>
