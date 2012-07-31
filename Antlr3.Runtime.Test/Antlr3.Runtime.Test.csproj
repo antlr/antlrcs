@@ -13,10 +13,6 @@
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{3AC096D0-A1C2-E12C-1390-A8335801FDAB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
-    <SccProjectName>SAK</SccProjectName>
-    <SccLocalPath>SAK</SccLocalPath>
-    <SccAuxPath>SAK</SccAuxPath>
-    <SccProvider>SAK</SccProvider>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -44,7 +40,7 @@
     <Reference Include="vjslib" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\..\..\..\antlrcs\main\Antlr3.StringTemplate\Antlr3.StringTemplate.csproj">
+    <ProjectReference Include="..\..\..\..\..\antlrcs\Antlr3.StringTemplate\Antlr3.StringTemplate.csproj">
       <Project>{B5910BE2-DE21-4AA9-95C1-486F42B9E794}</Project>
       <Name>Antlr3.StringTemplate</Name>
     </ProjectReference>
@@ -204,11 +200,11 @@
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <!-- Folder containing AntlrBuildTask.dll -->
-    <AntlrBuildTaskPath>$(ProjectDir)..\..\..\..\..\..\antlrcs\main\bin\Bootstrap</AntlrBuildTaskPath>
+    <AntlrBuildTaskPath>$(ProjectDir)..\..\..\..\..\antlrcs\bin\Bootstrap</AntlrBuildTaskPath>
     <!-- Path to the ANTLR Tool itself. -->
-    <AntlrToolPath>$(ProjectDir)..\..\..\..\..\..\antlrcs\main\bin\Bootstrap\Antlr3.exe</AntlrToolPath>
+    <AntlrToolPath>$(ProjectDir)..\..\..\..\..\antlrcs\bin\Bootstrap\Antlr3.exe</AntlrToolPath>
   </PropertyGroup>
-  <Import Project="$(ProjectDir)..\..\..\..\..\..\antlrcs\main\bin\Bootstrap\Antlr3.targets" />
+  <Import Project="$(ProjectDir)..\..\..\..\..\antlrcs\bin\Bootstrap\Antlr3.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">
