@@ -30,6 +30,7 @@
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+#if DEBUG
 namespace Antlr.Runtime.JavaExtensions
 {
     using ObsoleteAttribute = System.ObsoleteAttribute;
@@ -38,7 +39,6 @@ namespace Antlr.Runtime.JavaExtensions
 
     public static class StringExtensions
     {
-#if DEBUG
         [Obsolete]
         public static char charAt( this string str, int index )
         {
@@ -98,19 +98,19 @@ namespace Antlr.Runtime.JavaExtensions
         {
             return str.Replace(oldValue, newValue);
         }
-#endif
 
+        [Obsolete]
         public static string replaceAll( this string str, string regex, string newValue )
         {
             return Regex.Replace( str, regex, newValue );
         }
 
+        [Obsolete]
         public static string replaceFirst( this string str, string regex, string replacement )
         {
             return Regex.Replace( str, regex, replacement );
         }
 
-#if DEBUG
         [Obsolete]
         public static bool startsWith( this string str, string value )
         {
@@ -146,6 +146,6 @@ namespace Antlr.Runtime.JavaExtensions
         {
             return str.Trim();
         }
-#endif
     }
 }
+#endif
