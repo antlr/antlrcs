@@ -37,6 +37,7 @@ namespace AntlrUnitTests
     using Microsoft.VisualStudio.TestTools.UnitTesting;
 
     using AntlrTool = Antlr3.AntlrTool;
+    using Regex = System.Text.RegularExpressions.Regex;
 
     [TestClass]
     public class TestCompositeGrammars : BaseTest
@@ -270,8 +271,8 @@ namespace AntlrUnitTests
             g.composite.AssignTokenTypes();
 
             Assert.AreEqual(1, equeue.errors.Count, "unexpected errors: " + equeue);
-            string expectedError = "error(161): " + tmpdir.ToString().replaceFirst( "\\-[0-9]+", "" ) + "/M.g:2:8: combined grammar M cannot import combined grammar S";
-            Assert.AreEqual(expectedError, equeue.errors[0].ToString().replaceFirst("\\-[0-9]+", ""), "unexpected errors: " + equeue);
+            string expectedError = "error(161): " + Regex.Replace(tmpdir.ToString(), "\\-[0-9]+", "") + "/M.g:2:8: combined grammar M cannot import combined grammar S";
+            Assert.AreEqual(expectedError, Regex.Replace(equeue.errors[0].ToString(), "\\-[0-9]+", ""), "unexpected errors: " + equeue);
         }
 
         [TestMethod]
@@ -667,8 +668,8 @@ namespace AntlrUnitTests
             Assert.AreEqual(0, equeue.warnings.Count, "unexpected errors: " + equeue);
 
             string expectedError =
-                "error(161): " + tmpdir.ToString().replaceFirst( "\\-[0-9]+", "" ) + "\\M.g:2:8: tree grammar M cannot import lexer grammar S";
-            Assert.AreEqual( expectedError, equeue.errors[0].ToString().replaceFirst( "\\-[0-9]+", "" ) );
+                "error(161): " + Regex.Replace(tmpdir.ToString(), "\\-[0-9]+", "") + "\\M.g:2:8: tree grammar M cannot import lexer grammar S";
+            Assert.AreEqual(expectedError, Regex.Replace(equeue.errors[0].ToString(), "\\-[0-9]+", ""));
         }
 
         [TestMethod]
@@ -742,8 +743,8 @@ namespace AntlrUnitTests
             Assert.AreEqual(0, equeue.errors.Count, "unexpected errors: " + equeue);
             Assert.AreEqual(1, equeue.warnings.Count, "unexpected warnings: " + equeue);
             string expectedError =
-                "warning(105): " + tmpdir.ToString().replaceFirst( "\\-[0-9]+", "" ) + "\\M.g:3:5: no lexer rule corresponding to token: ABC";
-            Assert.AreEqual( expectedError, equeue.warnings[0].ToString().replaceFirst( "\\-[0-9]+", "" ) );
+                "warning(105): " + Regex.Replace(tmpdir.ToString(), "\\-[0-9]+", "") + "\\M.g:3:5: no lexer rule corresponding to token: ABC";
+            Assert.AreEqual(expectedError, Regex.Replace(equeue.warnings[0].ToString(), "\\-[0-9]+", ""));
         }
 
         /** Make sure that M can import S that imports T. */
