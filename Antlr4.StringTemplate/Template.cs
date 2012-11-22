@@ -625,7 +625,7 @@ namespace Antlr4.StringTemplate
 
         public static string Format(int lineWidth, string template, params object[] attributes)
         {
-            template = Regex.Replace(template, "[0-9]+", @"arg\0");
+            template = Regex.Replace(template, "[0-9]+", "arg$0");
             Console.WriteLine(template);
 
             Template st = new Template(template);
