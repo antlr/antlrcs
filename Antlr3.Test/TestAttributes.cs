@@ -684,8 +684,8 @@ namespace AntlrUnitTests
         public void TestRuleLabels() /*throws Exception*/ {
             string action = "$r.x; $r.start;\n $r.stop;\n $r.tree; $a.x; $a.stop;";
             string expecting = "(r!=null?r.x:0); (r!=null?((Token)r.start):null);" + NewLine +
-                               "             (r!=null?((Token)r.stop):null);" + NewLine +
-                               "             (r!=null?((Object)r.tree):null); (r!=null?r.x:0); (r!=null?((Token)r.stop):null);";
+                               "\t\t\t (r!=null?((Token)r.stop):null);" + NewLine +
+                               "\t\t\t (r!=null?((Object)r.tree):null); (r!=null?r.x:0); (r!=null?((Token)r.stop):null);";
 
             ErrorQueue equeue = new ErrorQueue();
             ErrorManager.SetErrorListener( equeue );

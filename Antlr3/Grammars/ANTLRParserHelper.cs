@@ -92,19 +92,14 @@ namespace Antlr3.Grammars
                 get
                 {
                     string badText = null;
-                    if ( start is IToken )
+                    if ( start != null )
                     {
-                        int i = ( (IToken)start ).TokenIndex;
-                        int j = ( (IToken)stop ).TokenIndex;
-                        if ( ( (IToken)stop ).Type == TokenTypes.EndOfFile )
-                        {
-                            j = ( (ITokenStream)input ).Count;
-                        }
+                        int i = start.TokenIndex;
+                        int j = stop.TokenIndex;
+                        if ( stop.Type == TokenTypes.EndOfFile )
+                            j = input.Count;
+
                         badText = ( (ITokenStream)input ).ToString( i, j );
-                    }
-                    else if ( start is ITree )
-                    {
-                        badText = ( (ITreeNodeStream)input ).ToString( start, stop );
                     }
                     else
                     {
@@ -112,6 +107,7 @@ namespace Antlr3.Grammars
                         // next one is for sure correct.
                         badText = "<unknown>";
                     }
+
                     return badText;
                 }
                 set

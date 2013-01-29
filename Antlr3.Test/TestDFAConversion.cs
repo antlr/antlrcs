@@ -1662,8 +1662,7 @@ namespace AntlrUnitTests
             }
             NonRegularDecisionMessage msg = getNonRegularDecisionMessage( equeue.errors );
             Assert.IsNotNull(msg, "expected fatal non-LL(*) msg");
-            List<int> alts = new List<int>();
-            alts.AddRange( msg.altsWithRecursion );
+            List<int> alts = new List<int>(msg.altsWithRecursion);
             alts.Sort();
             //Collections.sort( alts );
             //Assert.AreEqual( expectedBadAlts, alts );

@@ -60,6 +60,7 @@
     <Compile Include="TestJavaCodeGeneration.cs" />
     <Compile Include="TestLeftRecursion.cs" />
     <Compile Include="TestLexer.cs" />
+    <Compile Include="TestLookaheadStream.cs" />
     <Compile Include="TestMessages.cs" />
     <Compile Include="TestNFAConstruction.cs" />
     <Compile Include="TestRewriteAST.cs" />

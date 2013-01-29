@@ -48,7 +48,7 @@ namespace Antlr3.Targets
     using IToken = Antlr.Runtime.IToken;
     using Target = Antlr3.Codegen.Target;
 
-    public class PythonTarget : Target
+    public class Python3Target : Target
     {
         public override bool UseBaseTemplatesForSynPredFragments
         {

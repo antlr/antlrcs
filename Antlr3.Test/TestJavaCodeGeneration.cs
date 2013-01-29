@@ -173,5 +173,25 @@ namespace AntlrUnitTests
             bool expecting = true; // should be ok
             Assert.AreEqual(expecting, found);
         }
+
+        /**
+         * This is a regression test for antlr/antlr3#20: StackOverflow error when
+         * compiling grammar with backtracking.
+         * https://github.com/antlr/antlr3/issues/20
+         */
+        [TestMethod]
+        public void TestSemanticPredicateAnalysisStackOverflow()
+        {
+            string grammar =
+                "grammar T;\n"
+                + "\n"
+                + "options {\n"
+                + "  backtrack=true;\n"
+                + "}\n"
+                + "\n"
+                + "main : ('x'*)*;\n";
+            bool success = rawGenerateAndBuildRecognizer("T.g", grammar, "TParser", "TLexer", false);
+            Assert.IsTrue(success);
+        }
     }
 }

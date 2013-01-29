@@ -72,6 +72,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Antlr4.StringTemplate.Visua
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Antlr3.Runtime.Visualizer", "Antlr3.Runtime.Visualizer\Antlr3.Runtime.Visualizer.csproj", "{2F59DA1C-A502-440C-ABE8-240BDE2D0664}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Antlr3.Targets.Python3", "Antlr3.Targets\Antlr3.Targets.Python3\Antlr3.Targets.Python3.csproj", "{5B7F1199-FB67-4AC1-A482-6BF1DA6CCDC5}"
+EndProject
 Global
 	GlobalSection(TestCaseManagementSettings) = postSolution
 		CategoryFile = Antlr3.vsmdi
@@ -177,6 +179,10 @@ Global
 		{2F59DA1C-A502-440C-ABE8-240BDE2D0664}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2F59DA1C-A502-440C-ABE8-240BDE2D0664}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2F59DA1C-A502-440C-ABE8-240BDE2D0664}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5B7F1199-FB67-4AC1-A482-6BF1DA6CCDC5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5B7F1199-FB67-4AC1-A482-6BF1DA6CCDC5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5B7F1199-FB67-4AC1-A482-6BF1DA6CCDC5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5B7F1199-FB67-4AC1-A482-6BF1DA6CCDC5}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -194,5 +200,6 @@ Global
 		{9444ACEF-784D-47B0-B317-F374782FA511} = {3A92893D-7810-4D8B-80D8-E1E8D151FA73}
 		{1DEA6EB4-2288-4B6C-B5F4-1D102B8745BB} = {3A92893D-7810-4D8B-80D8-E1E8D151FA73}
 		{64418260-E75A-4556-BB7E-8BDAAFC2EFB9} = {3A92893D-7810-4D8B-80D8-E1E8D151FA73}
+		{5B7F1199-FB67-4AC1-A482-6BF1DA6CCDC5} = {3A92893D-7810-4D8B-80D8-E1E8D151FA73}
 	EndGlobalSection
 EndGlobal

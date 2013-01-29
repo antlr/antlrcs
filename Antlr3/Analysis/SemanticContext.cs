@@ -577,7 +577,7 @@ namespace Antlr3.Analysis
                 if (templates != null)
                     eST = templates.GetInstanceOf("orPredicates");
                 else
-                    eST = new StringTemplate("(<first(operands)><rest(operands):{o | ||<o>}>)");
+                    eST = new StringTemplate("(<operands; separator=\"||\">)");
 
                 foreach (SemanticContext semctx in Operands)
                 {
@@ -704,7 +704,11 @@ namespace Antlr3.Analysis
             //    return a;
 
             //System.Console.Out.WriteLine( "## have to AND" );
-            return new AND(a, b);
+            AND result = new AND(a, b);
+            if (result.Operands.Count == 1)
+                return result.Operands.First();
+
+            return result;
         }
 
         [CLSCompliant(false)]

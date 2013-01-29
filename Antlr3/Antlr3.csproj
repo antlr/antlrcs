@@ -92,6 +92,7 @@
     <Compile Include="Tool\Message.cs" />
     <Compile Include="Tool\Rule.cs" />
     <Compile Include="Tool\ToolMessage.cs" />
+    <Compile Include="Tool\ToolTemplateGroupFile.cs" />
   </ItemGroup>
   <ItemGroup>
     <Antlr3 Include="Grammars\ActionTranslator.g3">

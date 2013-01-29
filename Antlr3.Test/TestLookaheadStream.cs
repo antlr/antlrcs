@@ -1,4 +1,4 @@
-/*
+﻿/*
  * [The "BSD licence"]
  * Copyright (c) 2005-2008 Terence Parr
  * All rights reserved.
@@ -29,37 +29,65 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-namespace Antlr3.Targets
+
+namespace AntlrUnitTests
 {
-    using System.Collections.Generic;
+    using Antlr.Runtime;
+    using Microsoft.VisualStudio.TestTools.UnitTesting;
+    using NotImplementedException = System.NotImplementedException;
 
-    using CodeGenerator = Antlr3.Codegen.CodeGenerator;
-    using Grammar = Antlr3.Tool.Grammar;
-    using Rule = Antlr3.Tool.Rule;
-    using Target = Antlr3.Codegen.Target;
-
-    public class JavaTarget : Target
+    [TestClass]
+    public class TestLookaheadStream
     {
-        public override bool UseBaseTemplatesForSynPredFragments
+        [TestMethod]
+        public void TestSeek()
         {
-            get
-            {
-                return false;
-            }
+            UnbufferedTokenStream stream = new UnbufferedTokenStream(new TokenSource());
+
+            stream.Consume();
+            Assert.AreEqual(0, stream.LA(-1));
+            Assert.AreEqual(1, stream.LA(1));
+
+            stream.Mark();
+
+            stream.Consume();
+            Assert.AreEqual(1, stream.LA(-1));
+            Assert.AreEqual(2, stream.LA(1));
+
+            int index = stream.Index;
+            stream.Rewind();
+            Assert.AreEqual(0, stream.LA(-1));
+            Assert.AreEqual(1, stream.LA(1));
+
+            stream.Seek(index);
+            Assert.AreEqual(1, stream.LA(-1));
+            Assert.AreEqual(2, stream.LA(1));
         }
 
-        protected override void PerformGrammarAnalysis(CodeGenerator generator, Grammar grammar)
+        private class TokenSource : ITokenSource
         {
-            base.PerformGrammarAnalysis(generator, grammar);
+            int count = 0;
 
-            foreach (Rule rule in grammar.Rules)
-                rule.ThrowsSpec.Add("RecognitionException");
-
-            IEnumerable<Rule> delegatedRules = grammar.GetDelegatedRules();
-            if (delegatedRules != null)
+            public string SourceName
             {
-                foreach (Rule rule in delegatedRules)
-                    rule.ThrowsSpec.Add("RecognitionException");
+                get
+                {
+                    return "test";
+                }
+            }
+
+            public IToken NextToken()
+            {
+                return new CommonToken(count++);
+            }
+
+
+            public string[] TokenNames
+            {
+                get
+                {
+                    throw new NotImplementedException();
+                }
             }
         }
     }

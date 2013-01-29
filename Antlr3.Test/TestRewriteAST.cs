@@ -1094,10 +1094,7 @@ namespace AntlrUnitTests
         }
 
         [TestMethod]
-        [Ignore]
         public void TestSetWithLabel() /*throws Exception*/ {
-            // FAILS. The should probably generate a warning from antlr
-            // See http://www.antlr.org:8888/browse/ANTLR-162
             string grammar =
                 "grammar T;\n" +
                 "options { output = AST; } \n" +

@@ -416,12 +416,14 @@ namespace AntlrUnitTests
                                    string input,
                                    bool debug )
         {
-            rawGenerateAndBuildRecognizer( grammarFileName,
+            bool compiled = rawGenerateAndBuildRecognizer( grammarFileName,
                                           grammarStr,
                                           null,
                                           lexerName,
                                           debug );
-            writeFile( tmpdir, "input", input );
+            Assert.IsTrue(compiled);
+
+            writeFile(tmpdir, "input", input);
             return rawExecRecognizer( null,
                                      null,
                                      lexerName,
@@ -440,12 +442,14 @@ namespace AntlrUnitTests
                                     string startRuleName,
                                     string input, bool debug )
         {
-            rawGenerateAndBuildRecognizer( grammarFileName,
+            bool compiled = rawGenerateAndBuildRecognizer( grammarFileName,
                                           grammarStr,
                                           parserName,
                                           lexerName,
                                           debug );
-            writeFile( tmpdir, "input", input );
+            Assert.IsTrue(compiled);
+
+            writeFile(tmpdir, "input", input);
             bool parserBuildsTrees =
                 grammarStr.IndexOf( "output=AST" ) >= 0 ||
                 grammarStr.IndexOf( "output = AST" ) >= 0;
@@ -500,18 +504,20 @@ namespace AntlrUnitTests
                                         bool debug )
         {
             // build the parser
-            rawGenerateAndBuildRecognizer( parserGrammarFileName,
+            bool compiled = rawGenerateAndBuildRecognizer( parserGrammarFileName,
                                           parserGrammarStr,
                                           parserName,
                                           lexerName,
                                           debug );
+            Assert.IsTrue(compiled);
 
             // build the tree parser
-            rawGenerateAndBuildRecognizer( treeParserGrammarFileName,
+            compiled = rawGenerateAndBuildRecognizer( treeParserGrammarFileName,
                                           treeParserGrammarStr,
                                           treeParserName,
                                           lexerName,
                                           debug );
+            Assert.IsTrue(compiled);
 
             writeFile( tmpdir, "input", input );
 
@@ -545,6 +551,9 @@ namespace AntlrUnitTests
         {
             bool allIsWell =
                 antlr( grammarFileName, grammarFileName, grammarStr, debug );
+            if (!allIsWell)
+                return false;
+
             if ( lexerName != null )
             {
                 bool ok;

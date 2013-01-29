@@ -270,19 +270,11 @@ namespace AntlrUnitTests
         // Test replaceChildren
 
         [TestMethod]
+        [ExpectedException(typeof(ArgumentException))]
         public void TestReplaceWithNoChildren() /*throws Exception*/ {
             CommonTree t = new CommonTree( new CommonToken( 101 ) );
             CommonTree newChild = new CommonTree( new CommonToken( 5 ) );
-            bool error = false;
-            try
-            {
-                t.ReplaceChildren( 0, 0, newChild );
-            }
-            catch ( ArgumentException /*iae*/ )
-            {
-                error = true;
-            }
-            Assert.IsTrue( error );
+            t.ReplaceChildren( 0, 0, newChild );
         }
 
         [TestMethod]

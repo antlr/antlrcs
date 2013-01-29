@@ -90,7 +90,7 @@ namespace Antlr3.Tool
             if (!recRuleTemplatesCache.TryGetValue(templateDirs, out group))
             {
                 string fileName = CodeGenerator.FindTemplateFile(templateDirs.Split(':'), "LeftRecursiveRules.stg");
-                group = new TemplateGroupFile(fileName);
+                group = new ToolTemplateGroupFile(fileName);
                 if (!group.IsDefined("recRuleName"))
                 {
                     recRuleTemplatesCache[templateDirs] = group;
@@ -267,10 +267,10 @@ namespace Antlr3.Tool
             ruleST.SetAttribute("setResultAction", setResultST);
 
             IDictionary<int, string> opPrecRuleAlts = binaryAlts.Concat(ternaryAlts).Concat(suffixAlts).ToDictionary(i => i.Key, i => i.Value);
-            foreach (int alt in opPrecRuleAlts.Keys)
+            foreach (var pair in opPrecRuleAlts)
             {
-                string altText;
-                opPrecRuleAlts.TryGetValue(alt, out altText);
+                int alt = pair.Key;
+                string altText = pair.Value;
                 StringTemplate altST = recRuleTemplates.GetInstanceOf("recRuleAlt");
                 StringTemplate predST =
                     generator.Templates.GetInstanceOf("recRuleAltPredicate");

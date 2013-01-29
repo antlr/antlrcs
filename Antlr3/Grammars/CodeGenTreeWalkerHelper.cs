@@ -1016,7 +1016,9 @@ namespace Antlr3.Grammars
                 stName += "Root";
 
             code = templates.GetInstanceOf(stName);
-            code.SetAttribute("terminalOptions", term.terminalOptions);
+            if (term.terminalOptions != null)
+                code.SetAttribute("terminalOptions", term.terminalOptions);
+
             if (arg != null)
             {
                 IList<object> args = generator.TranslateAction(currentRuleName, arg);

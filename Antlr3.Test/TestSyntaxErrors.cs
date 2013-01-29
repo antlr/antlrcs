@@ -33,8 +33,9 @@
 namespace AntlrUnitTests
 {
     using Microsoft.VisualStudio.TestTools.UnitTesting;
-
     using Console = System.Console;
+    using ErrorManager = Antlr3.Tool.ErrorManager;
+    using Path = System.IO.Path;
     using Regex = System.Text.RegularExpressions.Regex;
 
     [TestClass]
@@ -126,6 +127,58 @@ namespace AntlrUnitTests
             string result = execParser("T.g", grammar, "TParser", "TLexer", "start", "dog and software", false);
             string expecting = "{HARDWARE,SOFTWARE}" + NewLine;
             Assert.AreEqual(expecting, result);
+        }
+
+        [TestMethod]
+        public void TestStrayBracketRecovery()
+        {
+            string grammar =
+                "grammar T;\n" +
+                "options {output = AST;}\n" +
+                "tokens{NODE;}\n" +
+                "s : a=ID INT -> ^(NODE[$a]] INT);\n" +
+                "ID: 'a'..'z'+;\n" +
+                "INT: '0'..'9'+;\n";
+
+            ErrorQueue errorQueue = new ErrorQueue();
+            ErrorManager.SetErrorListener(errorQueue);
+
+            bool found =
+                rawGenerateAndBuildRecognizer(
+                    "T.g", grammar, "TParser", "TLexer", false);
+
+            Assert.IsFalse(found);
+            Assert.AreEqual(
+                "[error(100): :4:27: syntax error: antlr: dangling ']'? make sure to escape with \\]]",
+                errorQueue.errors.ToString());
+        }
+
+        /**
+         * This is a regression test for antlr/antlr3#61.
+         * https://github.com/antlr/antlr3/issues/61
+         */
+        [TestMethod]
+        public void TestMissingAttributeAccessPreventsCodeGeneration()
+        {
+            string grammar =
+                "grammar T;\n" +
+                "options {\n" +
+                "    backtrack = true; \n" +
+                "}\n" +
+                "// if b is rule ref, gens bad void x=null code\n" +
+                "a : x=b {Object o = $x; System.out.println(\"alt1\");}\n" +
+                "  | y=b\n" +
+                "  ;\n" +
+                "\n" +
+                "b : 'a' ;\n";
+
+            ErrorQueue errorQueue = new ErrorQueue();
+            ErrorManager.SetErrorListener(errorQueue);
+            bool success = rawGenerateAndBuildRecognizer("T.g", grammar, "TParser", "TLexer", false);
+            Assert.IsFalse(success);
+            Assert.AreEqual(
+                "[error(117): " + tmpdir.ToString() + Path.DirectorySeparatorChar + "T.g:6:9: missing attribute access on rule scope: x]",
+                errorQueue.errors.ToString());
         }
     }
 }

@@ -525,6 +525,14 @@ namespace Antlr3
                 if ( !File.Exists( outputFile ) || grammarLastModified > File.GetLastWriteTime( outputFile ) )
                 {
                     // One of the output files does not exist or is out of date, so we must build it
+                    if (Verbose)
+                    {
+                        if (!File.Exists(outputFile))
+                            Console.Out.WriteLine("Output file " + outputFile + " does not exist: must build " + grammarFileName);
+                        else
+                            Console.Out.WriteLine("Output file " + outputFile + " is not up-to-date: must build " + grammarFileName);
+                    }
+
                     return true;
                 }
 
@@ -537,6 +545,9 @@ namespace Antlr3
                         if ( File.GetLastWriteTime( inputFile ) > File.GetLastWriteTime( outputFile ) )
                         {
                             // One of the imported grammar files has been updated so we must build
+                            if (Verbose)
+                                Console.Out.WriteLine("Input file " + inputFile + " is newer than output: must rebuild " + grammarFileName);
+
                             return true;
                         }
                     }

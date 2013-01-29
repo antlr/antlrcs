@@ -136,7 +136,7 @@ if (ruleDescr.IsSynPred && generator.Target.UseBaseTemplatesForSynPredFragments)
 			( ^(OPTIONS .*) )?
 			(ruleScopeSpec)?
 			( ^(AMPERSAND .*) )*
-			b=block["ruleBlock", dfa]		{HandleRuleAfterBlock(out $code, $start, block2, ruleDescr, description, $b.code);}
+			b=block["ruleBlock", dfa, null]		{HandleRuleAfterBlock(out $code, $start, block2, ruleDescr, description, $b.code);}
 
 			(exceptionGroup[$code])?
 			EOR
@@ -160,7 +160,7 @@ ruleScopeSpec
 	:	^('scope' ( ^(AMPERSAND .*) )* ACTION? ID*)
 	;
 
-block[string blockTemplateName, Antlr3.Analysis.DFA dfa]
+block[string blockTemplateName, Antlr3.Analysis.DFA dfa, GrammarAST label]
 	 returns [Template code]
 options { k=1; }
 @init
@@ -172,7 +172,7 @@ options { k=1; }
 
 	|	^(  BLOCK
 			( ^(OPTIONS .*) )? // ignore
-			( alt=alternative rew=rewrite								{HandleBlockAlternative($code, ref altNum, $alt.code, $rew.start, $rew.code);}
+			( alt=alternative[$label] rew=rewrite								{HandleBlockAlternative($code, ref altNum, $alt.code, $rew.start, $rew.code);}
 			)+
 			EOB
 		 )
@@ -200,13 +200,13 @@ finallyClause[Template ruleST]
 	:	^('finally' ACTION)						{HandleFinallyClause($ruleST, $ACTION);}
 	;
 
-alternative returns [Template code]
+alternative[GrammarAST label] returns [Template code]
 @init
 {
 HandleAlternativeInit(out $code, $start);
 }
 	:	^(	ALT
-			(	e=element[null,null]			{HandleAlternativeElement($code, $e.start, $e.code);}
+			(	e=element[$label,null]			{HandleAlternativeElement($code, $e.start, $e.code);}
 			)+
 			EOA
 		)
@@ -214,13 +214,13 @@ HandleAlternativeInit(out $code, $start);
 
 element[GrammarAST label, GrammarAST astSuffix] returns [Template code]
 options { k=1; }
-	:	^(ROOT e=element[label,$ROOT])							{$code = $e.code;}
-	|	^(BANG e=element[label,$BANG])							{$code = $e.code;}
+	:	^(ROOT e=element[$label,$ROOT])							{$code = $e.code;}
+	|	^(BANG e=element[$label,$BANG])							{$code = $e.code;}
 	|	^(n=NOT notElement[$n, $label, $astSuffix])				{$code = $notElement.code;}
 	|	^(ASSIGN alabel=ID e=element[$alabel,$astSuffix])		{$code = $e.code;}
 	|	^(PLUS_ASSIGN label2=ID e=element[$label2,$astSuffix])	{$code = $e.code;}
 	|	^(CHAR_RANGE a=CHAR_LITERAL b=CHAR_LITERAL)				{HandleElementCharRange($label, out $code, $a, $b);}
-	|	{$start.SetValue == null}? ebnf							{$code = $ebnf.code;}
+	|	{$start.SetValue == null}? ebnf[$label]					{$code = $ebnf.code;}
 	|	atom[null, $label, $astSuffix]							{$code = $atom.code;}
 	|	tree_													{$code = $tree_.code;}
 	|	element_action											{$code = $element_action.code;}
@@ -249,16 +249,16 @@ notElement[GrammarAST n, GrammarAST label, GrammarAST astSuffix] returns [Templa
 								{HandleNotElementEnd($n, $label, $astSuffix, out $code, elements, $start);}
 	;
 
-ebnf returns [Template code=null]
+ebnf[GrammarAST label] returns [Template code=null]
 @init
 {
 	GrammarAST b = (GrammarAST)$start.GetChild(0);
 	GrammarAST eob = (GrammarAST)b.LastChild; // loops will use EOB DFA
 }
-	:	(	blk=block["block", $start.LookaheadDFA]										{$code = $blk.code;}
-		|	^(OPTIONAL blk=block["optionalBlock", $start.LookaheadDFA])					{$code = $blk.code;}
-		|	^(CLOSURE blk=block["closureBlock", eob.LookaheadDFA])						{$code = $blk.code;}
-		|	^(POSITIVE_CLOSURE blk=block["positiveClosureBlock", eob.LookaheadDFA])		{$code = $blk.code;}
+	:	(	blk=block["block", $start.LookaheadDFA, $label]										{$code = $blk.code;}
+		|	^(OPTIONAL blk=block["optionalBlock", $start.LookaheadDFA, $label])					{$code = $blk.code;}
+		|	^(CLOSURE blk=block["closureBlock", eob.LookaheadDFA, $label])						{$code = $blk.code;}
+		|	^(POSITIVE_CLOSURE blk=block["positiveClosureBlock", eob.LookaheadDFA, $label])		{$code = $blk.code;}
 		)
 		{
 			string description = grammar.GrammarTreeToString($start, false);

@@ -691,11 +691,10 @@ namespace Antlr3.Misc
          */
         public override bool Equals( object obj )
         {
-            if ( obj == null || !( obj is IntervalSet ) )
-            {
+            IntervalSet other = obj as IntervalSet;
+            if (other == null)
                 return false;
-            }
-            IntervalSet other = (IntervalSet)obj;
+
             return intervals.SequenceEqual( other.intervals );
         }
 

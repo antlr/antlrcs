@@ -95,7 +95,7 @@ namespace AntlrUnitTests
         public void TestInvalidListTree() /*throws Exception*/ {
             TreeWizard wiz = new TreeWizard( adaptor, tokens );
             CommonTree t = (CommonTree)wiz.Create( "A B C" );
-            Assert.IsTrue( t == null );
+            Assert.IsNull(t);
         }
 
         [TestMethod]
