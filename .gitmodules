@@ -1,0 +1,3 @@
+[submodule "Reference/antlr3"]
+	path = Reference/antlr3
+	url = git://github.com/antlr/antlr3.git
