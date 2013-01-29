@@ -39,7 +39,7 @@ namespace AntlrUnitTests
     [TestClass]
     public class TestLookaheadStream
     {
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestSeek()
         {
             UnbufferedTokenStream stream = new UnbufferedTokenStream(new TokenSource());

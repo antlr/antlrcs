@@ -61,7 +61,7 @@ namespace AntlrUnitTests
         {
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestEscapedLessThanInAction() /*throws Exception*/ {
             Grammar g = new Grammar();
             AntlrTool antlr = newTool();
@@ -80,7 +80,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( expecting, found );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestEscaped_InAction() /*throws Exception*/ {
             string action = "int \\$n; \"\\$in string\\$\"";
             string expecting = "int $n; \"$in string$\"";
@@ -102,7 +102,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( expecting, found );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestArguments() /*throws Exception*/ {
             string action = "$i; $i.x; $u; $u.x";
             string expecting = "i; i.x; u; u.x";
@@ -126,7 +126,7 @@ namespace AntlrUnitTests
             Assert.AreEqual(0, equeue.errors.Count, "unexpected errors: " + equeue);
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestComplicatedArgParsing() /*throws Exception*/ {
             string action = "x, (*a).foo(21,33), 3.2+1, '\\n', " +
                             "\"a,oo\\nick\", {bl, \"fdkj\"eck}";
@@ -153,7 +153,7 @@ namespace AntlrUnitTests
             Assert.AreEqual(0, equeue.errors.Count, "unexpected errors: " + equeue);
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestBracketArgParsing() /*throws Exception*/ {
             ErrorQueue equeue = new ErrorQueue();
             ErrorManager.SetErrorListener( equeue );
@@ -182,7 +182,7 @@ namespace AntlrUnitTests
             Assert.AreEqual(0, equeue.errors.Count, "unexpected errors: " + equeue);
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestStringArgParsing() /*throws Exception*/ {
             string action = "34, '{', \"it's<\", '\"', \"\\\"\", 19";
             string expecting = "34, '{', \"it's<\", '\"', \"\\\"\", 19";
@@ -230,7 +230,7 @@ namespace AntlrUnitTests
             Assert.AreEqual(0, equeue.errors.Count, "unexpected errors: " + equeue);
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestComplicatedSingleArgParsing() /*throws Exception*/ {
             string action = "(*a).foo(21,33,\",\")";
             string expecting = "(*a).foo(21,33,\",\")";
@@ -256,7 +256,7 @@ namespace AntlrUnitTests
             Assert.AreEqual(0, equeue.errors.Count, "unexpected errors: " + equeue);
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestArgWithLT() /*throws Exception*/ {
             string action = "34<50";
             string expecting = "34<50";
@@ -283,7 +283,7 @@ namespace AntlrUnitTests
             Assert.AreEqual(0, equeue.errors.Count, "unexpected errors: " + equeue);
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestGenericsAsArgumentDefinition() /*throws Exception*/ {
             string action = "$foo.get(\"ick\");";
             string expecting = "foo.get(\"ick\");";
@@ -314,7 +314,7 @@ namespace AntlrUnitTests
             Assert.AreEqual(0, equeue.errors.Count, "unexpected errors: " + equeue);
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestGenericsAsArgumentDefinition2() /*throws Exception*/ {
             string action = "$foo.get(\"ick\"); x=3;";
             string expecting = "foo.get(\"ick\"); x=3;";
@@ -354,7 +354,7 @@ namespace AntlrUnitTests
             Assert.AreEqual(0, equeue.errors.Count, "unexpected errors: " + equeue);
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestGenericsAsReturnValue() /*throws Exception*/ {
             ErrorQueue equeue = new ErrorQueue();
             ErrorManager.SetErrorListener( equeue );
@@ -371,7 +371,7 @@ namespace AntlrUnitTests
             Assert.AreEqual(0, equeue.errors.Count, "unexpected errors: " + equeue);
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestComplicatedArgParsingWithTranslation() /*throws Exception*/ {
             string action = "x, $A.text+\"3242\", (*$A).foo(21,33), 3.2+1, '\\n', " +
                             "\"a,oo\\nick\", {bl, \"fdkj\"eck}";
@@ -404,7 +404,7 @@ namespace AntlrUnitTests
          convert actions to strings; keep as templates.
          June 9, 2006: made action translation leave templates not strings
          */
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestRefToReturnValueBeforeRefToPredefinedAttr() /*throws Exception*/ {
             string action = "$x.foo";
             string expecting = "(x!=null?x.foo:0)";
@@ -427,7 +427,7 @@ namespace AntlrUnitTests
             Assert.AreEqual(0, equeue.errors.Count, "unexpected errors: " + equeue);
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestRuleLabelBeforeRefToPredefinedAttr() /*throws Exception*/ {
             // As of Mar 2007, I'm removing unused labels.  Unfortunately,
             // the action is not seen until code gen.  Can't see $x.text
@@ -453,7 +453,7 @@ namespace AntlrUnitTests
             Assert.AreEqual(0, equeue.errors.Count, "unexpected errors: " + equeue);
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestInvalidArguments() /*throws Exception*/ {
             string action = "$x";
             string expecting = action;
@@ -480,7 +480,7 @@ namespace AntlrUnitTests
             checkError( equeue, expectedMessage );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestReturnValue() /*throws Exception*/ {
             string action = "$x.i";
             string expecting = "x";
@@ -507,7 +507,7 @@ namespace AntlrUnitTests
             Assert.AreEqual(0, equeue.errors.Count, "unexpected errors: " + equeue);
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestActionNotMovedToSynPred()
         {
             String action = "$b = true;";
@@ -537,7 +537,7 @@ namespace AntlrUnitTests
             Assert.AreEqual(0, equeue.errors.Count, "unexpected errors: " + equeue);
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestReturnValueWithNumber() /*throws Exception*/ {
             string action = "$x.i1";
             string expecting = "x";
@@ -564,7 +564,7 @@ namespace AntlrUnitTests
             Assert.AreEqual(0, equeue.errors.Count, "unexpected errors: " + equeue);
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestReturnValues() /*throws Exception*/ {
             string action = "$i; $i.x; $u; $u.x";
             string expecting = "retval.i; retval.i.x; retval.u; retval.u.x";
@@ -589,7 +589,7 @@ namespace AntlrUnitTests
         }
 
         /* regression test for ANTLR-46 */
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestReturnWithMultipleRuleRefs() /*throws Exception*/ {
             string action1 = "$obj = $rule2.obj;";
             string action2 = "$obj = $rule3.obj;";
@@ -629,7 +629,7 @@ namespace AntlrUnitTests
             Assert.AreEqual(0, equeue.errors.Count, "unexpected errors: " + equeue);
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestInvalidReturnValues() /*throws Exception*/ {
             string action = "$x";
             string expecting = action;
@@ -655,7 +655,7 @@ namespace AntlrUnitTests
             checkError( equeue, expectedMessage );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestTokenLabels() /*throws Exception*/ {
             string action = "$id; $f; $id.text; $id.getText(); $id.dork " +
                             "$id.type; $id.line; $id.pos; " +
@@ -680,7 +680,7 @@ namespace AntlrUnitTests
             Assert.AreEqual(0, equeue.errors.Count, "unexpected errors: " + equeue);
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestRuleLabels() /*throws Exception*/ {
             string action = "$r.x; $r.start;\n $r.stop;\n $r.tree; $a.x; $a.stop;";
             string expecting = "(r!=null?r.x:0); (r!=null?((Token)r.start):null);" + NewLine +
@@ -711,7 +711,7 @@ namespace AntlrUnitTests
             Assert.AreEqual(0, equeue.errors.Count, "unexpected errors: " + equeue);
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestAmbiguRuleRef() /*throws Exception*/ {
             ErrorQueue equeue = new ErrorQueue();
             ErrorManager.SetErrorListener( equeue );
@@ -728,7 +728,7 @@ namespace AntlrUnitTests
             Assert.AreEqual(1, equeue.errors.Count, "unexpected errors: " + equeue);
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestRuleLabelsWithSpecialToken() /*throws Exception*/ {
             string action = "$r.x; $r.start; $r.stop; $r.tree; $a.x; $a.stop;";
             string expecting = "(r!=null?r.x:0); (r!=null?((MYTOKEN)r.start):null); (r!=null?((MYTOKEN)r.stop):null); (r!=null?((Object)r.tree):null); (r!=null?r.x:0); (r!=null?((MYTOKEN)r.stop):null);";
@@ -759,7 +759,7 @@ namespace AntlrUnitTests
             Assert.AreEqual(0, equeue.errors.Count, "unexpected errors: " + equeue);
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestForwardRefRuleLabels() /*throws Exception*/ {
             string action = "$r.x; $r.start; $r.stop; $r.tree; $a.x; $a.tree;";
             string expecting = "(r!=null?r.x:0); (r!=null?((Token)r.start):null); (r!=null?((Token)r.stop):null); (r!=null?((Object)r.tree):null); (r!=null?r.x:0); (r!=null?((Object)r.tree):null);";
@@ -788,7 +788,7 @@ namespace AntlrUnitTests
             Assert.AreEqual(0, equeue.errors.Count, "unexpected errors: " + equeue);
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestInvalidRuleLabelAccessesParameter() /*throws Exception*/ {
             string action = "$r.z";
             string expecting = action;
@@ -817,7 +817,7 @@ namespace AntlrUnitTests
             checkError( equeue, expectedMessage );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestInvalidRuleLabelAccessesScopeAttribute() /*throws Exception*/ {
             string action = "$r.n";
             string expecting = action;
@@ -847,7 +847,7 @@ namespace AntlrUnitTests
             checkError( equeue, expectedMessage );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestInvalidRuleAttribute() /*throws Exception*/ {
             string action = "$r.blort";
             string expecting = action;
@@ -876,7 +876,7 @@ namespace AntlrUnitTests
             checkError( equeue, expectedMessage );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestMissingRuleAttribute() /*throws Exception*/ {
             string action = "$r";
             string expecting = action;
@@ -905,7 +905,7 @@ namespace AntlrUnitTests
             checkError( equeue, expectedMessage );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestMissingUnlabeledRuleAttribute() /*throws Exception*/ {
             string action = "$a";
             string expecting = action;
@@ -932,7 +932,7 @@ namespace AntlrUnitTests
             checkError( equeue, expectedMessage );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestNonDynamicAttributeOutsideRule() /*throws Exception*/ {
             string action = "[TestMethod] public void foo() { $x; }";
             string expecting = action;
@@ -958,7 +958,7 @@ namespace AntlrUnitTests
             checkError( equeue, expectedMessage );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestNonDynamicAttributeOutsideRule2() /*throws Exception*/ {
             string action = "[TestMethod] public void foo() { $x.y; }";
             string expecting = action;
@@ -987,7 +987,7 @@ namespace AntlrUnitTests
 
         // D Y N A M I C A L L Y  S C O P E D  A T T R I B U T E S
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestBasicGlobalScope() /*throws Exception*/ {
             string action = "$Symbols::names.add($id.text);";
             string expecting = "((Symbols_scope)Symbols_stack.peek()).names.add((id!=null?id.getText():null));";
@@ -1015,7 +1015,7 @@ namespace AntlrUnitTests
             Assert.AreEqual(0, equeue.errors.Count, "unexpected errors: " + equeue);
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestUnknownGlobalScope() /*throws Exception*/ {
             string action = "$Symbols::names.add($id.text);";
 
@@ -1042,7 +1042,7 @@ namespace AntlrUnitTests
             checkError( equeue, expectedMessage );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestIndexedGlobalScope() /*throws Exception*/ {
             string action = "$Symbols[-1]::names.add($id.text);";
             string expecting =
@@ -1071,7 +1071,7 @@ namespace AntlrUnitTests
             Assert.AreEqual(0, equeue.errors.Count, "unexpected errors: " + equeue);
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void Test0IndexedGlobalScope() /*throws Exception*/ {
             string action = "$Symbols[0]::names.add($id.text);";
             string expecting =
@@ -1100,7 +1100,7 @@ namespace AntlrUnitTests
             Assert.AreEqual(0, equeue.errors.Count, "unexpected errors: " + equeue);
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestAbsoluteIndexedGlobalScope() /*throws Exception*/ {
             string action = "$Symbols[3]::names.add($id.text);";
             string expecting =
@@ -1129,7 +1129,7 @@ namespace AntlrUnitTests
             Assert.AreEqual(0, equeue.errors.Count, "unexpected errors: " + equeue);
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestScopeAndAttributeWithUnderscore() /*throws Exception*/ {
             string action = "$foo_bar::a_b;";
             string expecting = "((foo_bar_scope)foo_bar_stack.peek()).a_b;";
@@ -1156,7 +1156,7 @@ namespace AntlrUnitTests
             Assert.AreEqual(0, equeue.errors.Count, "unexpected errors: " + equeue);
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestSharedGlobalScope() /*throws Exception*/ {
             string action = "$Symbols::x;";
             string expecting = "((Symbols_scope)Symbols_stack.peek()).x;";
@@ -1187,7 +1187,7 @@ namespace AntlrUnitTests
             Assert.AreEqual(0, equeue.errors.Count, "unexpected errors: " + equeue);
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestGlobalScopeOutsideRule() /*throws Exception*/ {
             string action = "public void foo() {$Symbols::names.add('foo');}";
             string expecting = "public void foo() {((Symbols_scope)Symbols_stack.peek()).names.add('foo');}";
@@ -1215,7 +1215,7 @@ namespace AntlrUnitTests
             Assert.AreEqual(0, equeue.errors.Count, "unexpected errors: " + equeue);
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestRuleScopeOutsideRule() /*throws Exception*/ {
             string action = "public void foo() {$a::name;}";
             string expecting = "public void foo() {((a_scope)a_stack.peek()).name;}";
@@ -1242,7 +1242,7 @@ namespace AntlrUnitTests
             Assert.AreEqual(0, equeue.errors.Count, "unexpected errors: " + equeue);
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestBasicRuleScope() /*throws Exception*/ {
             string action = "$a::n;";
             string expecting = "((a_scope)a_stack.peek()).n;";
@@ -1268,7 +1268,7 @@ namespace AntlrUnitTests
             Assert.AreEqual(0, equeue.errors.Count, "unexpected errors: " + equeue);
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestUnqualifiedRuleScopeAccessInsideRule() /*throws Exception*/ {
             string action = "$n;";
             string expecting = action;
@@ -1296,7 +1296,7 @@ namespace AntlrUnitTests
             checkError( equeue, expectedMessage );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestIsolatedDynamicRuleScopeRef() /*throws Exception*/ {
             string action = "$a;"; // refers to stack not top of stack
             string expecting = "a_stack;";
@@ -1323,7 +1323,7 @@ namespace AntlrUnitTests
             Assert.AreEqual(0, equeue.errors.Count, "unexpected errors: " + equeue);
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestDynamicRuleScopeRefInSubrule() /*throws Exception*/ {
             string action = "$a::n;";
             string expecting = "((a_scope)a_stack.peek()).n;";
@@ -1350,7 +1350,7 @@ namespace AntlrUnitTests
             Assert.AreEqual(0, equeue.errors.Count, "unexpected errors: " + equeue);
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestIsolatedGlobalScopeRef() /*throws Exception*/ {
             string action = "$Symbols;";
             string expecting = "Symbols_stack;";
@@ -1381,7 +1381,7 @@ namespace AntlrUnitTests
             Assert.AreEqual(0, equeue.errors.Count, "unexpected errors: " + equeue);
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestRuleScopeFromAnotherRule() /*throws Exception*/ {
             string action = "$a::n;"; // must be qualified
             string expecting = "((a_scope)a_stack.peek()).n;";
@@ -1409,7 +1409,7 @@ namespace AntlrUnitTests
             Assert.AreEqual(0, equeue.errors.Count, "unexpected errors: " + equeue);
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestFullyQualifiedRefToCurrentRuleParameter() /*throws Exception*/ {
             string action = "$a.i;";
             string expecting = "i;";
@@ -1432,7 +1432,7 @@ namespace AntlrUnitTests
             Assert.AreEqual(0, equeue.errors.Count, "unexpected errors: " + equeue);
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestFullyQualifiedRefToCurrentRuleRetVal() /*throws Exception*/ {
             string action = "$a.i;";
             string expecting = "retval.i;";
@@ -1455,7 +1455,7 @@ namespace AntlrUnitTests
             Assert.AreEqual(0, equeue.errors.Count, "unexpected errors: " + equeue);
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestSetFullyQualifiedRefToCurrentRuleRetVal() /*throws Exception*/ {
             string action = "$a.i = 1;";
             string expecting = "retval.i = 1;";
@@ -1478,7 +1478,7 @@ namespace AntlrUnitTests
             Assert.AreEqual(0, equeue.errors.Count, "unexpected errors: " + equeue);
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestIsolatedRefToCurrentRule() /*throws Exception*/ {
             string action = "$a;";
             //String expecting = "";
@@ -1503,7 +1503,7 @@ namespace AntlrUnitTests
             checkError( equeue, expectedMessage );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestIsolatedRefToRule() /*throws Exception*/ {
             string action = "$x;";
 
@@ -1527,7 +1527,7 @@ namespace AntlrUnitTests
         }
 
         /*  I think these have to be errors $a.x makes no sense.
-        [TestMethod] public void TestFullyQualifiedRefToLabelInCurrentRule()
+        [TestMethod][TestCategory(TestCategories.Antlr3)] public void TestFullyQualifiedRefToLabelInCurrentRule()
             //throws Exception
         {
                 String action = "$a.x;";
@@ -1556,7 +1556,7 @@ namespace AntlrUnitTests
                 Assert.AreEqual("unexpected errors: "+equeue, 0, equeue.errors.size());
             }
 
-        [TestMethod] public void TestFullyQualifiedRefToListLabelInCurrentRule()
+        [TestMethod][TestCategory(TestCategories.Antlr3)] public void TestFullyQualifiedRefToListLabelInCurrentRule()
             //throws Exception
         {
             String action = "$a.x;"; // must be qualified
@@ -1585,7 +1585,7 @@ namespace AntlrUnitTests
             Assert.AreEqual("unexpected errors: "+equeue, 0, equeue.errors.size());
         }
     */
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestFullyQualifiedRefToTemplateAttributeInCurrentRule() /*throws Exception*/ {
             string action = "$a.st;"; // can be qualified
             string expecting = "retval.st;";
@@ -1609,7 +1609,7 @@ namespace AntlrUnitTests
             Assert.AreEqual(0, equeue.errors.Count, "unexpected errors: " + equeue);
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestRuleRefWhenRuleHasScope() /*throws Exception*/ {
             string action = "$b.start;";
             string expecting = "(b1!=null?((Token)b1.start):null);";
@@ -1639,7 +1639,7 @@ namespace AntlrUnitTests
             Assert.AreEqual(0, equeue.errors.Count, "unexpected errors: " + equeue);
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestDynamicScopeRefOkEvenThoughRuleRefExists() /*throws Exception*/ {
             string action = "$b::n;";
             string expecting = "((b_scope)b_stack.peek()).n;";
@@ -1666,7 +1666,7 @@ namespace AntlrUnitTests
             Assert.AreEqual(0, equeue.errors.Count, "unexpected errors: " + equeue);
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestRefToTemplateAttributeForCurrentRule() /*throws Exception*/ {
             string action = "$st=null;";
             string expecting = "retval.st =null;";
@@ -1690,7 +1690,7 @@ namespace AntlrUnitTests
             Assert.AreEqual(0, equeue.errors.Count, "unexpected errors: " + equeue);
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestRefToTextAttributeForCurrentRule() /*throws Exception*/ {
             string action = "$text";
             string expecting = "input.toString(retval.start,input.LT(-1))";
@@ -1714,7 +1714,7 @@ namespace AntlrUnitTests
             Assert.AreEqual(0, equeue.errors.Count, "unexpected errors: " + equeue);
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestRefToStartAttributeForCurrentRule() /*throws Exception*/ {
             string action = "$start;";
             string expecting = "((Token)retval.start);";
@@ -1741,7 +1741,7 @@ namespace AntlrUnitTests
             Assert.AreEqual(0, equeue.errors.Count, "unexpected errors: " + equeue);
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestTokenLabelFromMultipleAlts() /*throws Exception*/ {
             string action = "$ID.text;"; // must be qualified
             string action2 = "$INT.text;"; // must be qualified
@@ -1776,7 +1776,7 @@ namespace AntlrUnitTests
             Assert.AreEqual(0, equeue.errors.Count, "unexpected errors: " + equeue);
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestRuleLabelFromMultipleAlts() /*throws Exception*/ {
             string action = "$b.text;"; // must be qualified
             string action2 = "$c.text;"; // must be qualified
@@ -1806,7 +1806,7 @@ namespace AntlrUnitTests
             Assert.AreEqual(0, equeue.errors.Count, "unexpected errors: " + equeue);
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestUnknownDynamicAttribute() /*throws Exception*/ {
             string action = "$a::x";
             string expecting = action;
@@ -1839,7 +1839,7 @@ namespace AntlrUnitTests
             checkError( equeue, expectedMessage );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestUnknownGlobalDynamicAttribute() /*throws Exception*/ {
             string action = "$Symbols::x";
             string expecting = action;
@@ -1872,7 +1872,7 @@ namespace AntlrUnitTests
             checkError( equeue, expectedMessage );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestUnqualifiedRuleScopeAttribute() /*throws Exception*/ {
             string action = "$n;"; // must be qualified
             string expecting = "$n;";
@@ -1905,7 +1905,7 @@ namespace AntlrUnitTests
             checkError( equeue, expectedMessage );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestRuleAndTokenLabelTypeMismatch() /*throws Exception*/ {
             ErrorQueue equeue = new ErrorQueue();
             ErrorManager.SetErrorListener( equeue );
@@ -1922,7 +1922,7 @@ namespace AntlrUnitTests
             checkError( equeue, expectedMessage );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestListAndTokenLabelTypeMismatch() /*throws Exception*/ {
             ErrorQueue equeue = new ErrorQueue();
             ErrorManager.SetErrorListener( equeue );
@@ -1939,7 +1939,7 @@ namespace AntlrUnitTests
             checkError( equeue, expectedMessage );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestListAndRuleLabelTypeMismatch() /*throws Exception*/ {
             ErrorQueue equeue = new ErrorQueue();
             ErrorManager.SetErrorListener( equeue );
@@ -1957,7 +1957,7 @@ namespace AntlrUnitTests
             checkError( equeue, expectedMessage );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestArgReturnValueMismatch() /*throws Exception*/ {
             ErrorQueue equeue = new ErrorQueue();
             ErrorManager.SetErrorListener( equeue );
@@ -1975,7 +1975,7 @@ namespace AntlrUnitTests
             checkError( equeue, expectedMessage );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestSimplePlusEqualLabel() /*throws Exception*/ {
             string action = "$ids.size();"; // must be qualified
             string expecting = "list_ids.size();";
@@ -1999,7 +1999,7 @@ namespace AntlrUnitTests
             Assert.AreEqual(0, equeue.errors.Count, "unexpected errors: " + equeue);
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestPlusEqualStringLabel() /*throws Exception*/ {
             string action = "$ids.size();"; // must be qualified
             string expecting = "list_ids.size();";
@@ -2024,7 +2024,7 @@ namespace AntlrUnitTests
             Assert.AreEqual(0, equeue.errors.Count, "unexpected errors: " + equeue);
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestPlusEqualSetLabel() /*throws Exception*/ {
             string action = "$ids.size();"; // must be qualified
             string expecting = "list_ids.size();";
@@ -2049,7 +2049,7 @@ namespace AntlrUnitTests
             Assert.AreEqual(0, equeue.errors.Count, "unexpected errors: " + equeue);
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestPlusEqualWildcardLabel() /*throws Exception*/ {
             string action = "$ids.size();"; // must be qualified
             string expecting = "list_ids.size();";
@@ -2074,7 +2074,7 @@ namespace AntlrUnitTests
             Assert.AreEqual(0, equeue.errors.Count, "unexpected errors: " + equeue);
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestImplicitTokenLabel() /*throws Exception*/ {
             string action = "$ID; $ID.text; $ID.getText()";
             string expecting = "ID1; (ID1!=null?ID1.getText():null); ID1.getText()";
@@ -2101,7 +2101,7 @@ namespace AntlrUnitTests
             Assert.AreEqual(0, equeue.errors.Count, "unexpected errors: " + equeue);
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestImplicitRuleLabel() /*throws Exception*/ {
             string action = "$r.start;";
             string expecting = "(r1!=null?((Token)r1.start):null);";
@@ -2128,7 +2128,7 @@ namespace AntlrUnitTests
             Assert.AreEqual(0, equeue.errors.Count, "unexpected errors: " + equeue);
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestReuseExistingLabelWithImplicitRuleLabel() /*throws Exception*/ {
             string action = "$r.start;";
             string expecting = "(x!=null?((Token)x.start):null);";
@@ -2155,7 +2155,7 @@ namespace AntlrUnitTests
             Assert.AreEqual(0, equeue.errors.Count, "unexpected errors: " + equeue);
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestReuseExistingListLabelWithImplicitRuleLabel() /*throws Exception*/ {
             string action = "$r.start;";
             string expecting = "(x!=null?((Token)x.start):null);";
@@ -2183,7 +2183,7 @@ namespace AntlrUnitTests
             Assert.AreEqual(0, equeue.errors.Count, "unexpected errors: " + equeue);
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestReuseExistingLabelWithImplicitTokenLabel() /*throws Exception*/ {
             string action = "$ID.text;";
             string expecting = "(x!=null?x.getText():null);";
@@ -2208,7 +2208,7 @@ namespace AntlrUnitTests
             Assert.AreEqual(0, equeue.errors.Count, "unexpected errors: " + equeue);
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestReuseExistingListLabelWithImplicitTokenLabel() /*throws Exception*/ {
             string action = "$ID.text;";
             string expecting = "(x!=null?x.getText():null);";
@@ -2233,7 +2233,7 @@ namespace AntlrUnitTests
             Assert.AreEqual(0, equeue.errors.Count, "unexpected errors: " + equeue);
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestRuleLabelWithoutOutputOption() /*throws Exception*/ {
             ErrorQueue equeue = new ErrorQueue();
             ErrorManager.SetErrorListener( equeue );
@@ -2257,7 +2257,7 @@ namespace AntlrUnitTests
             checkError( equeue, expectedMessage );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestRuleLabelOnTwoDifferentRulesAST() /*throws Exception*/ {
             //Assert.Inconclusive( "I broke this test while trying to fix return values on another test..." );
             string grammar =
@@ -2273,7 +2273,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( expecting, found );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestRuleLabelOnTwoDifferentRulesTemplate() /*throws Exception*/ {
             //Assert.Inconclusive( "I broke this test while trying to fix return values on another test..." );
             string grammar =
@@ -2289,7 +2289,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( expecting, found );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestMissingArgs() /*throws Exception*/ {
             ErrorQueue equeue = new ErrorQueue();
             ErrorManager.SetErrorListener( equeue );
@@ -2311,7 +2311,7 @@ namespace AntlrUnitTests
             checkError( equeue, expectedMessage );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestArgsWhenNoneDefined() /*throws Exception*/ {
             ErrorQueue equeue = new ErrorQueue();
             ErrorManager.SetErrorListener( equeue );
@@ -2333,7 +2333,7 @@ namespace AntlrUnitTests
             checkError( equeue, expectedMessage );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestReturnInitValue() /*throws Exception*/ {
             ErrorQueue equeue = new ErrorQueue();
             ErrorManager.SetErrorListener( equeue );
@@ -2353,7 +2353,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( expecting, found );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestMultipleReturnInitValue() /*throws Exception*/ {
             ErrorQueue equeue = new ErrorQueue();
             ErrorManager.SetErrorListener( equeue );
@@ -2373,7 +2373,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( "String s=new String(\"foo\")", parameters.ElementAt( 2 ).ToString() );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestCStyleReturnInitValue() /*throws Exception*/ {
             ErrorQueue equeue = new ErrorQueue();
             ErrorManager.SetErrorListener( equeue );
@@ -2393,7 +2393,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( expecting, found );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestArgsWithInitValues() /*throws Exception*/ {
             ErrorQueue equeue = new ErrorQueue();
             ErrorManager.SetErrorListener( equeue );
@@ -2415,7 +2415,7 @@ namespace AntlrUnitTests
             checkError( equeue, expectedMessage );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestArgsOnToken() /*throws Exception*/ {
             ErrorQueue equeue = new ErrorQueue();
             ErrorManager.SetErrorListener( equeue );
@@ -2437,7 +2437,7 @@ namespace AntlrUnitTests
             checkError( equeue, expectedMessage );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestArgsOnTokenInLexer() /*throws Exception*/ {
             ErrorQueue equeue = new ErrorQueue();
             ErrorManager.SetErrorListener( equeue );
@@ -2459,7 +2459,7 @@ namespace AntlrUnitTests
             checkError( equeue, expectedMessage );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestLabelOnRuleRefInLexer() /*throws Exception*/ {
             string action = "$i.text";
             string expecting = "(i!=null?i.getText():null)";
@@ -2483,7 +2483,7 @@ namespace AntlrUnitTests
             Assert.AreEqual(0, equeue.errors.Count, "unexpected errors: " + equeue);
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestRefToRuleRefInLexer() /*throws Exception*/ {
             string action = "$ID.text";
             string expecting = "(ID1!=null?ID1.getText():null)";
@@ -2507,7 +2507,7 @@ namespace AntlrUnitTests
             Assert.AreEqual(0, equeue.errors.Count, "unexpected errors: " + equeue);
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestRefToRuleRefInLexerNoAttribute() /*throws Exception*/ {
             string action = "$ID";
             string expecting = "ID1";
@@ -2531,7 +2531,7 @@ namespace AntlrUnitTests
             Assert.AreEqual(0, equeue.errors.Count, "unexpected errors: " + equeue);
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestCharLabelInLexer() /*throws Exception*/ {
             ErrorQueue equeue = new ErrorQueue();
             ErrorManager.SetErrorListener( equeue );
@@ -2547,7 +2547,7 @@ namespace AntlrUnitTests
             Assert.AreEqual(0, equeue.errors.Count, "unexpected errors: " + equeue);
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestCharListLabelInLexer() /*throws Exception*/ {
             ErrorQueue equeue = new ErrorQueue();
             ErrorManager.SetErrorListener( equeue );
@@ -2562,7 +2562,7 @@ namespace AntlrUnitTests
             Assert.AreEqual(0, equeue.errors.Count, "unexpected errors: " + equeue);
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestWildcardCharLabelInLexer() /*throws Exception*/ {
             ErrorQueue equeue = new ErrorQueue();
             ErrorManager.SetErrorListener( equeue );
@@ -2577,7 +2577,7 @@ namespace AntlrUnitTests
             Assert.AreEqual(0, equeue.errors.Count, "unexpected errors: " + equeue);
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestWildcardCharListLabelInLexer() /*throws Exception*/ {
             ErrorQueue equeue = new ErrorQueue();
             ErrorManager.SetErrorListener( equeue );
@@ -2592,7 +2592,7 @@ namespace AntlrUnitTests
             Assert.AreEqual(0, equeue.errors.Count, "unexpected errors: " + equeue);
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestMissingArgsInLexer() /*throws Exception*/ {
             ErrorQueue equeue = new ErrorQueue();
             ErrorManager.SetErrorListener( equeue );
@@ -2615,7 +2615,7 @@ namespace AntlrUnitTests
             checkError( equeue, expectedMessage );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestLexerRulePropertyRefs() /*throws Exception*/ {
             string action = "$text $type $line $pos $channel $index $start $stop";
             string expecting = "getText() _type state.tokenStartLine state.tokenStartCharPositionInLine _channel -1 state.tokenStartCharIndex (getCharIndex()-1)";
@@ -2638,7 +2638,7 @@ namespace AntlrUnitTests
             Assert.AreEqual(0, equeue.errors.Count, "unexpected errors: " + equeue);
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestLexerLabelRefs() /*throws Exception*/ {
             string action = "$a $b.text $c $d.text";
             string expecting = "a (b!=null?b.getText():null) c (d!=null?d.getText():null)";
@@ -2662,7 +2662,7 @@ namespace AntlrUnitTests
             Assert.AreEqual(0, equeue.errors.Count, "unexpected errors: " + equeue);
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestSettingLexerRulePropertyRefs() /*throws Exception*/ {
             string action = "$text $type=1 $line=1 $pos=1 $channel=1 $index";
             string expecting = "getText() _type=1 state.tokenStartLine=1 state.tokenStartCharPositionInLine=1 _channel=1 -1";
@@ -2685,7 +2685,7 @@ namespace AntlrUnitTests
             Assert.AreEqual(0, equeue.errors.Count, "unexpected errors: " + equeue);
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestArgsOnTokenInLexerRuleOfCombined() /*throws Exception*/ {
             ErrorQueue equeue = new ErrorQueue();
             ErrorManager.SetErrorListener( equeue );
@@ -2719,7 +2719,7 @@ namespace AntlrUnitTests
             checkError( equeue, expectedMessage );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestMissingArgsOnTokenInLexerRuleOfCombined() /*throws Exception*/ {
             ErrorQueue equeue = new ErrorQueue();
             ErrorManager.SetErrorListener( equeue );
@@ -2755,7 +2755,7 @@ namespace AntlrUnitTests
 
         // T R E E S
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestTokenLabelTreeProperty() /*throws Exception*/ {
             string action = "$id.tree;";
             string expecting = "id_tree;";
@@ -2782,7 +2782,7 @@ namespace AntlrUnitTests
             Assert.AreEqual(0, equeue.errors.Count, "unexpected errors: " + equeue);
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestTokenRefTreeProperty() /*throws Exception*/ {
             string action = "$ID.tree;";
             string expecting = "ID1_tree;";
@@ -2805,7 +2805,7 @@ namespace AntlrUnitTests
             Assert.AreEqual(expecting, found);
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestAmbiguousTokenRef() /*throws Exception*/ {
             string action = "$ID;";
             //String expecting = "";
@@ -2829,7 +2829,7 @@ namespace AntlrUnitTests
             checkError( equeue, expectedMessage );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestAmbiguousTokenRefWithProp() /*throws Exception*/ {
             string action = "$ID.text;";
             //String expecting = "";
@@ -2853,7 +2853,7 @@ namespace AntlrUnitTests
             checkError( equeue, expectedMessage );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestRuleRefWithDynamicScope() /*throws Exception*/ {
             string action = "$field::x = $field.st;";
             string expecting = "((field_scope)field_stack.peek()).x = retval.st;";
@@ -2879,7 +2879,7 @@ namespace AntlrUnitTests
             Assert.AreEqual(0, equeue.errors.Count, "unexpected errors: " + equeue);
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestAssignToOwnRulenameAttr() /*throws Exception*/ {
             string action = "$rule.tree = null;";
             string expecting = "retval.tree = null;";
@@ -2903,7 +2903,7 @@ namespace AntlrUnitTests
             Assert.AreEqual(0, equeue.errors.Count, "unexpected errors: " + equeue);
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestAssignToOwnParamAttr() /*throws Exception*/ {
             string action = "$rule.i = 42; $i = 23;";
             string expecting = "i = 42; i = 23;";
@@ -2927,7 +2927,7 @@ namespace AntlrUnitTests
             Assert.AreEqual(0, equeue.errors.Count, "unexpected errors: " + equeue);
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestIllegalAssignToOwnRulenameAttr() /*throws Exception*/ {
             string action = "$rule.stop = 0;";
             ErrorQueue equeue = new ErrorQueue();
@@ -2955,7 +2955,7 @@ namespace AntlrUnitTests
             checkError( equeue, expectedMessage );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestIllegalAssignToLocalAttr() /*throws Exception*/ {
             string action = "$tree = null; $st = null; $start = 0; $stop = 0; $text = 0;";
             string expecting = "retval.tree = null; retval.st = null;   ";
@@ -2996,7 +2996,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( expecting, found );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestIllegalAssignRuleRefAttr() /*throws Exception*/ {
             string action = "$other.tree = null;";
             ErrorQueue equeue = new ErrorQueue();
@@ -3027,7 +3027,7 @@ namespace AntlrUnitTests
             checkError( equeue, expectedMessage );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestIllegalAssignTokenRefAttr() /*throws Exception*/ {
             string action = "$ID.text = \"test\";";
             ErrorQueue equeue = new ErrorQueue();
@@ -3057,7 +3057,7 @@ namespace AntlrUnitTests
             checkError( equeue, expectedMessage );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestAssignToTreeNodeAttribute() /*throws Exception*/ {
             //string action = "$tree.scope = localScope;";
             string expecting = "((Object)retval.tree).scope = localScope;";
@@ -3085,7 +3085,7 @@ namespace AntlrUnitTests
             Assert.AreEqual(expecting, found);
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestDoNotTranslateAttributeCompare() /*throws Exception*/ {
             string action = "$a.line == $b.line";
             string expecting = "(a!=null?a.getLine():0) == (b!=null?b.getLine():0)";
@@ -3110,7 +3110,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( expecting, found );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestDoNotTranslateScopeAttributeCompare() /*throws Exception*/ {
             string action = "if ($rule::foo == \"foo\" || 1) { System.out.println(\"ouch\"); }";
             string expecting = "if (((rule_scope)rule_stack.peek()).foo == \"foo\" || 1) { System.out.println(\"ouch\"); }";
@@ -3160,7 +3160,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( expecting, found );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestTreeRuleStopAttributeIsInvalid() /*throws Exception*/ {
             string action = "$r.x; $r.start; $r.stop";
             string expecting = "(r!=null?r.x:0); (r!=null?((CommonTree)r.start):null); $r.stop";
@@ -3196,7 +3196,7 @@ namespace AntlrUnitTests
             checkError( equeue, expectedMessage );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestRefToTextAttributeForCurrentTreeRule() /*throws Exception*/ {
             string action = "$text";
             string expecting = "input.getTokenStream().toString(" +
@@ -3226,7 +3226,7 @@ namespace AntlrUnitTests
             Assert.AreEqual(0, equeue.errors.Count, "unexpected errors: " + equeue);
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestTypeOfGuardedAttributeRefIsCorrect() /*throws Exception*/ {
             string action = "int x = $b::n;";
             string expecting = "int x = ((b_scope)b_stack.peek()).n;";
@@ -3253,7 +3253,7 @@ namespace AntlrUnitTests
             Assert.AreEqual(0, equeue.errors.Count, "unexpected errors: " + equeue);
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestGlobalAttributeScopeInit()
         {
             string grammar =
@@ -3264,7 +3264,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( "true" + NewLine, found );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestRuleAttributeScopeInit()
         {
             string grammar =

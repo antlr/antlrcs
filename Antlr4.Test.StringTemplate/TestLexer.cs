@@ -37,7 +37,7 @@ namespace Antlr4.Test.StringTemplate
     [TestClass]
     public class TestLexer : BaseTest
     {
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST4)]
         public void TestOneExpr()
         {
             string template = "<name>";
@@ -46,7 +46,7 @@ namespace Antlr4.Test.StringTemplate
             checkTokens(template, expected);
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST4)]
         public void TestOneExprSurrounded()
         {
             string template = "hi <name> mom";
@@ -56,7 +56,7 @@ namespace Antlr4.Test.StringTemplate
             checkTokens(template, expected);
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST4)]
         public void TestEscDelim()
         {
             string template = "hi \\<name>";
@@ -68,7 +68,7 @@ namespace Antlr4.Test.StringTemplate
     \signature{Laleh Shahideh, Ed.D. \\ Associate~Dean \\ Student Academic~Services \\ College of Arts and Sciences
     }
     */
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST4)]
         public void TestEscEsc()
         {
             string template = "hi \\\\ foo";
@@ -76,7 +76,7 @@ namespace Antlr4.Test.StringTemplate
             checkTokens(template, expected);
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST4)]
         public void TestEscDelimHasCorrectStartChar()
         {
             string template = "<a>\\<dog";
@@ -86,7 +86,7 @@ namespace Antlr4.Test.StringTemplate
             checkTokens(template, expected);
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST4)]
         public void TestEscChar()
         {
             string template = "hi \\x";
@@ -94,7 +94,7 @@ namespace Antlr4.Test.StringTemplate
             checkTokens(template, expected);
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST4)]
         public void TestString()
         {
             string template = "hi <foo(a=\">\")>";
@@ -106,7 +106,7 @@ namespace Antlr4.Test.StringTemplate
             checkTokens(template, expected);
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST4)]
         public void TestEscInString()
         {
             string template = "hi <foo(a=\">\\\"\")>";
@@ -118,7 +118,7 @@ namespace Antlr4.Test.StringTemplate
             checkTokens(template, expected);
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST4)]
         public void TestSubtemplate()
         {
             string template = "hi <names:{n | <n>}>";
@@ -127,7 +127,7 @@ namespace Antlr4.Test.StringTemplate
             checkTokens(template, expected);
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST4)]
         public void TestSubtemplateNoArg()
         {
             string template = "hi <names:{n | <n>}>";
@@ -136,7 +136,7 @@ namespace Antlr4.Test.StringTemplate
             checkTokens(template, expected);
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST4)]
         public void TestSubtemplateMultiArgs()
         {
             string template = "hi <names:{x,y | <x><y>}>"; // semantically bogus
@@ -145,7 +145,7 @@ namespace Antlr4.Test.StringTemplate
             checkTokens(template, expected);
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST4)]
         public void TestNestedSubtemplate()
         {
             string template = "hi <names:{n | <n:{x|<x>}>}>";
@@ -154,7 +154,7 @@ namespace Antlr4.Test.StringTemplate
             checkTokens(template, expected);
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST4)]
         public void TestNestedList()
         {
             string template =
@@ -164,7 +164,7 @@ namespace Antlr4.Test.StringTemplate
             checkTokens(template, expected);
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST4)]
         public void TestIF()
         {
             string template = "<if(!name)>works<endif>";
@@ -177,7 +177,7 @@ namespace Antlr4.Test.StringTemplate
             checkTokens(template, expected);
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST4)]
         public void TestIFNot()
         {
             string template = "<if(!name)>works<endif>";
@@ -190,7 +190,7 @@ namespace Antlr4.Test.StringTemplate
             checkTokens(template, expected);
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST4)]
         public void TestIFELSE()
         {
             string template = "<if(name)>works<else>fail<endif>";
@@ -204,7 +204,7 @@ namespace Antlr4.Test.StringTemplate
             checkTokens(template, expected);
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST4)]
         public void TestELSEIF()
         {
             string template = "<if(name)>fail<elseif(id)>works<else>fail<endif>";
@@ -222,7 +222,7 @@ namespace Antlr4.Test.StringTemplate
             checkTokens(template, expected);
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST4)]
         public void TestEmbeddedRegion()
         {
             string template = "<@r>foo<@end>";
@@ -233,7 +233,7 @@ namespace Antlr4.Test.StringTemplate
             checkTokens(template, expected);
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST4)]
         public void TestRegion()
         {
             string template = "<@r()>";

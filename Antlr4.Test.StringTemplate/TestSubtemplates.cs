@@ -41,7 +41,7 @@ namespace Antlr4.Test.StringTemplate
     [TestClass]
     public class TestSubtemplates : BaseTest
     {
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST4)]
         public void TestSimpleIteration()
         {
             TemplateGroup group = new TemplateGroup();
@@ -55,7 +55,7 @@ namespace Antlr4.Test.StringTemplate
             Assert.AreEqual(expected, result);
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST4)]
         public void TestMapIterationIsByKeys()
         {
             TemplateGroup group = new TemplateGroup();
@@ -71,7 +71,7 @@ namespace Antlr4.Test.StringTemplate
             Assert.AreEqual(expected, result);
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST4)]
         public void TestSimpleIterationWithArg()
         {
             TemplateGroup group = new TemplateGroup();
@@ -85,7 +85,7 @@ namespace Antlr4.Test.StringTemplate
             Assert.AreEqual(expected, result);
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST4)]
         public void TestNestedIterationWithArg()
         {
             TemplateGroup group = new TemplateGroup();
@@ -99,7 +99,7 @@ namespace Antlr4.Test.StringTemplate
             Assert.AreEqual(expected, result);
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST4)]
         public void TestSubtemplateAsDefaultArg()
         {
             string templates =
@@ -119,7 +119,7 @@ namespace Antlr4.Test.StringTemplate
             Assert.AreEqual(expecting, result);
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST4)]
         public void TestParallelAttributeIteration()
         {
             Template e = new Template(
@@ -135,7 +135,7 @@ namespace Antlr4.Test.StringTemplate
             Assert.AreEqual(expecting, e.Render());
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST4)]
         public void TestParallelAttributeIterationWithNullValue()
         {
             Template e = new Template(
@@ -154,7 +154,7 @@ namespace Antlr4.Test.StringTemplate
             Assert.AreEqual(expecting, e.Render());
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST4)]
         public void TestParallelAttributeIterationHasI()
         {
             Template e = new Template(
@@ -172,7 +172,7 @@ namespace Antlr4.Test.StringTemplate
             Assert.AreEqual(expecting, e.Render());
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST4)]
         public void TestParallelAttributeIterationWithDifferentSizes()
         {
             Template e = new Template(
@@ -188,7 +188,7 @@ namespace Antlr4.Test.StringTemplate
             Assert.AreEqual(expecting, e.Render());
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST4)]
         public void TestParallelAttributeIterationWithSingletons()
         {
             Template e = new Template(
@@ -201,7 +201,7 @@ namespace Antlr4.Test.StringTemplate
             Assert.AreEqual(expecting, e.Render());
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST4)]
         public void TestParallelAttributeIterationWithDifferentSizesTemplateRefInsideToo()
         {
             string templates =
@@ -222,7 +222,7 @@ namespace Antlr4.Test.StringTemplate
             Assert.AreEqual(expecting, p.Render());
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST4)]
         public void TestEvalSTIteratingSubtemplateInSTFromAnotherGroup()
         {
             ErrorBuffer errors = new ErrorBuffer();
@@ -246,7 +246,7 @@ namespace Antlr4.Test.StringTemplate
             Assert.AreEqual(expected, result);
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST4)]
         public void TestEvalSTIteratingSubtemplateInSTFromAnotherGroupSingleValue()
         {
             ErrorBuffer errors = new ErrorBuffer();
@@ -270,7 +270,7 @@ namespace Antlr4.Test.StringTemplate
             Assert.AreEqual(expected, result);
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST4)]
         public void TestEvalSTFromAnotherGroup()
         {
             ErrorBuffer errors = new ErrorBuffer();

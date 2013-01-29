@@ -47,6 +47,7 @@
     <Compile Include="TestAttributes.cs" />
     <Compile Include="TestAutoAST.cs" />
     <Compile Include="TestBufferedTreeNodeStream.cs" />
+    <Compile Include="TestCategories.cs" />
     <Compile Include="TestCharDFAConversion.cs" />
     <Compile Include="TestCommonTokenStream.cs" />
     <Compile Include="TestCompositeGrammars.cs" />

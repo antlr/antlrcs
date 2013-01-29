@@ -39,7 +39,7 @@ namespace Antlr4.Test.StringTemplate
     [TestClass]
     public class TestIndirectionAndEarlyEval : BaseTest
     {
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST4)]
         public void TestEarlyEval()
         {
             string template = "<(name)>";
@@ -50,7 +50,7 @@ namespace Antlr4.Test.StringTemplate
             Assert.AreEqual(expected, result);
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST4)]
         public void TestIndirectTemplateInclude()
         {
             TemplateGroup group = new TemplateGroup();
@@ -64,7 +64,7 @@ namespace Antlr4.Test.StringTemplate
             Assert.AreEqual(expected, result);
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST4)]
         public void TestIndirectTemplateIncludeWithArgs()
         {
             TemplateGroup group = new TemplateGroup();
@@ -78,7 +78,7 @@ namespace Antlr4.Test.StringTemplate
             Assert.AreEqual(expected, result);
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST4)]
         public void TestIndirectTemplateIncludeViaTemplate()
         {
             TemplateGroup group = new TemplateGroup();
@@ -92,7 +92,7 @@ namespace Antlr4.Test.StringTemplate
             Assert.AreEqual(expected, result);
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST4)]
         public void TestIndirectProp()
         {
             string template = "<u.(propname)>: <u.name>";
@@ -104,7 +104,7 @@ namespace Antlr4.Test.StringTemplate
             Assert.AreEqual(expected, result);
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST4)]
         public void TestIndirectMap()
         {
             TemplateGroup group = new TemplateGroup();
@@ -121,7 +121,7 @@ namespace Antlr4.Test.StringTemplate
             Assert.AreEqual(expected, result);
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST4)]
         public void TestNonStringDictLookup()
         {
             string template = "<m.(intkey)>";

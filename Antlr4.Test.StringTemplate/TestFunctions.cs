@@ -40,7 +40,7 @@ namespace Antlr4.Test.StringTemplate
     [TestClass]
     public class TestFunctions : BaseTest
     {
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST4)]
         public void TestFirst()
         {
             string template = "<first(names)>";
@@ -52,7 +52,7 @@ namespace Antlr4.Test.StringTemplate
             Assert.AreEqual(expected, result);
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST4)]
         public void TestLength()
         {
             string template = "<length(names)>";
@@ -64,7 +64,7 @@ namespace Antlr4.Test.StringTemplate
             Assert.AreEqual(expected, result);
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST4)]
         public void TestLengthWithNullValues()
         {
             string template = "<length(names)>";
@@ -76,7 +76,7 @@ namespace Antlr4.Test.StringTemplate
             Assert.AreEqual(expected, result);
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST4)]
         public void TestFirstOp()
         {
             Template e = new Template(
@@ -89,7 +89,7 @@ namespace Antlr4.Test.StringTemplate
             Assert.AreEqual(expecting, e.Render());
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST4)]
         public void TestTruncOp()
         {
             Template e = new Template(
@@ -102,7 +102,7 @@ namespace Antlr4.Test.StringTemplate
             Assert.AreEqual(expecting, e.Render());
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST4)]
         public void TestRestOp()
         {
             Template e = new Template(
@@ -115,7 +115,7 @@ namespace Antlr4.Test.StringTemplate
             Assert.AreEqual(expecting, e.Render());
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST4)]
         public void TestRestOpEmptyList()
         {
             Template e = new Template(
@@ -126,7 +126,7 @@ namespace Antlr4.Test.StringTemplate
             Assert.AreEqual(expecting, e.Render());
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST4)]
         public void TestReUseOfRestResult()
         {
             string templates =
@@ -144,7 +144,7 @@ namespace Antlr4.Test.StringTemplate
             Assert.AreEqual(expecting, e.Render());
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST4)]
         public void TestLastOp()
         {
             Template e = new Template(
@@ -157,7 +157,7 @@ namespace Antlr4.Test.StringTemplate
             Assert.AreEqual(expecting, e.Render());
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST4)]
         public void TestStripOp()
         {
             Template e = new Template(
@@ -173,7 +173,7 @@ namespace Antlr4.Test.StringTemplate
             Assert.AreEqual(expecting, e.Render());
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST4)]
         public void TestLengthStrip()
         {
             Template e = new Template(
@@ -189,7 +189,7 @@ namespace Antlr4.Test.StringTemplate
             Assert.AreEqual(expecting, e.Render());
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST4)]
         public void TestCombinedOp()
         {
             // replace first of yours with first of mine
@@ -205,7 +205,7 @@ namespace Antlr4.Test.StringTemplate
             Assert.AreEqual(expecting, e.Render());
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST4)]
         public void TestCatListAndSingleAttribute()
         {
             // replace first of yours with first of mine
@@ -220,7 +220,7 @@ namespace Antlr4.Test.StringTemplate
             Assert.AreEqual(expecting, e.Render());
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST4)]
         public void TestReUseOfCat()
         {
             string templates =
@@ -241,7 +241,7 @@ namespace Antlr4.Test.StringTemplate
             Assert.AreEqual(expecting, e.Render());
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST4)]
         public void TestCatListAndEmptyAttributes()
         {
             // + is overloaded to be cat strings and cat lists so the
@@ -259,7 +259,7 @@ namespace Antlr4.Test.StringTemplate
             Assert.AreEqual(expecting, e.Render());
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST4)]
         public void TestNestedOp()
         {
             Template e = new Template(
@@ -272,7 +272,7 @@ namespace Antlr4.Test.StringTemplate
             Assert.AreEqual(expecting, e.Render());
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST4)]
         public void TestFirstWithOneAttributeOp()
         {
             Template e = new Template(
@@ -283,7 +283,7 @@ namespace Antlr4.Test.StringTemplate
             Assert.AreEqual(expecting, e.Render());
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST4)]
         public void TestLastWithOneAttributeOp()
         {
             Template e = new Template(
@@ -294,7 +294,7 @@ namespace Antlr4.Test.StringTemplate
             Assert.AreEqual(expecting, e.Render());
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST4)]
         public void TestLastWithLengthOneListAttributeOp()
         {
             Template e = new Template(
@@ -305,7 +305,7 @@ namespace Antlr4.Test.StringTemplate
             Assert.AreEqual(expecting, e.Render());
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST4)]
         public void TestRestWithOneAttributeOp()
         {
             Template e = new Template(
@@ -316,7 +316,7 @@ namespace Antlr4.Test.StringTemplate
             Assert.AreEqual(expecting, e.Render());
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST4)]
         public void TestRestWithLengthOneListAttributeOp()
         {
             Template e = new Template(
@@ -327,7 +327,7 @@ namespace Antlr4.Test.StringTemplate
             Assert.AreEqual(expecting, e.Render());
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST4)]
         public void TestRepeatedRestOp()
         {
             Template e = new Template(
@@ -339,7 +339,7 @@ namespace Antlr4.Test.StringTemplate
             Assert.AreEqual(expecting, e.Render());
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST4)]
         public void TestIncomingLists()
         {
             Template e = new Template(
@@ -351,7 +351,7 @@ namespace Antlr4.Test.StringTemplate
             Assert.AreEqual(expecting, e.Render());
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST4)]
         public void TestFirstWithCatAttribute()
         {
             Template e = new Template(
@@ -365,7 +365,7 @@ namespace Antlr4.Test.StringTemplate
             Assert.AreEqual(expecting, e.Render());
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST4)]
         public void TestFirstWithListOfMaps()
         {
             Template e = new Template(
@@ -386,7 +386,7 @@ namespace Antlr4.Test.StringTemplate
             Assert.AreEqual(expecting, e.Render());
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST4)]
         public void TestFirstWithListOfMaps2()
         {
             Template e = new Template(
@@ -406,7 +406,7 @@ namespace Antlr4.Test.StringTemplate
             Assert.AreEqual(expecting, e.Render());
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST4)]
         public void TestTrim()
         {
             Template e = new Template(
@@ -417,7 +417,7 @@ namespace Antlr4.Test.StringTemplate
             Assert.AreEqual(expecting, e.Render());
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST4)]
         public void TestStrlen()
         {
             Template e = new Template(
@@ -428,7 +428,7 @@ namespace Antlr4.Test.StringTemplate
             Assert.AreEqual(expecting, e.Render());
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST4)]
         public void TestReverse()
         {
             Template e = new Template(

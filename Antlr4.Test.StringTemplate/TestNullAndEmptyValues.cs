@@ -40,7 +40,7 @@ namespace Antlr4.Test.StringTemplate
     [TestClass]
     public class TestNullAndEmptyValues : BaseTest
     {
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST4)]
         public void TestSeparatorWithNullFirstValue()
         {
             TemplateGroup group = new TemplateGroup();
@@ -54,7 +54,7 @@ namespace Antlr4.Test.StringTemplate
             Assert.AreEqual(expected, result);
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST4)]
         public void TestTemplateAppliedToNullIsEmpty()
         {
             TemplateGroup group = new TemplateGroup();
@@ -67,7 +67,7 @@ namespace Antlr4.Test.StringTemplate
             Assert.AreEqual(expected, result);
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST4)]
         public void TestTemplateAppliedToMissingValueIsEmpty()
         {
             TemplateGroup group = new TemplateGroup();
@@ -79,7 +79,7 @@ namespace Antlr4.Test.StringTemplate
             Assert.AreEqual(expected, result);
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST4)]
         public void TestSeparatorWithNull2ndValue()
         {
             TemplateGroup group = new TemplateGroup();
@@ -93,7 +93,7 @@ namespace Antlr4.Test.StringTemplate
             Assert.AreEqual(expected, result);
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST4)]
         public void TestSeparatorWithNullLastValue()
         {
             TemplateGroup group = new TemplateGroup();
@@ -107,7 +107,7 @@ namespace Antlr4.Test.StringTemplate
             Assert.AreEqual(expected, result);
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST4)]
         public void TestSeparatorWithTwoNullValuesInRow()
         {
             TemplateGroup group = new TemplateGroup();
@@ -123,7 +123,7 @@ namespace Antlr4.Test.StringTemplate
             Assert.AreEqual(expected, result);
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST4)]
         public void TestTwoNullValues()
         {
             TemplateGroup group = new TemplateGroup();
@@ -136,7 +136,7 @@ namespace Antlr4.Test.StringTemplate
             Assert.AreEqual(expected, result);
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST4)]
         public void TestNullListItemNotCountedForIteratorIndex()
         {
             TemplateGroup group = new TemplateGroup();
@@ -151,7 +151,7 @@ namespace Antlr4.Test.StringTemplate
             Assert.AreEqual(expected, result);
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST4)]
         public void TestSizeZeroButNonNullListGetsNoOutput()
         {
             TemplateGroup group = new TemplateGroup();
@@ -166,7 +166,7 @@ namespace Antlr4.Test.StringTemplate
             Assert.AreEqual(expecting, result);
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST4)]
         public void TestNullListGetsNoOutput()
         {
             TemplateGroup group = new TemplateGroup();
@@ -180,7 +180,7 @@ namespace Antlr4.Test.StringTemplate
             Assert.AreEqual(expecting, result);
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST4)]
         public void TestEmptyListGetsNoOutput()
         {
             TemplateGroup group = new TemplateGroup();
@@ -195,7 +195,7 @@ namespace Antlr4.Test.StringTemplate
             Assert.AreEqual(expecting, result);
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST4)]
         public void TestMissingDictionaryValue()
         {
             TemplateGroup group = new TemplateGroup();
@@ -207,7 +207,7 @@ namespace Antlr4.Test.StringTemplate
             Assert.AreEqual(expecting, result);
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST4)]
         public void TestMissingDictionaryValue2()
         {
             TemplateGroup group = new TemplateGroup();
@@ -219,7 +219,7 @@ namespace Antlr4.Test.StringTemplate
             Assert.AreEqual(expecting, result);
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST4)]
         public void TestMissingDictionaryValue3()
         {
             TemplateGroup group = new TemplateGroup();
@@ -231,7 +231,7 @@ namespace Antlr4.Test.StringTemplate
             Assert.AreEqual(expecting, result);
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST4)]
         public void TestSeparatorEmittedForEmptyIteratorValue()
         {
             Template st = new Template(
@@ -245,7 +245,7 @@ namespace Antlr4.Test.StringTemplate
             Assert.AreEqual(expecting, result);
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST4)]
         public void TestSeparatorEmittedForEmptyIteratorValue2()
         {
             Template st = new Template(

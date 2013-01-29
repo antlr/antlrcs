@@ -37,7 +37,7 @@ namespace AntlrUnitTests
     [TestClass]
     public class TestSyntacticPredicateEvaluation : BaseTest
     {
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestTwoPredsWithNakedAlt() /*throws Exception*/ {
             string grammar =
                 "grammar T;\n" +
@@ -87,7 +87,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( expecting, found );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestTwoPredsWithNakedAltNotLast() /*throws Exception*/ {
             string grammar =
                 "grammar T;\n" +
@@ -136,7 +136,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( expecting, found );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TesTLexerPred() /*throws Exception*/ {
             string grammar =
                 "grammar T;\n" +
@@ -158,7 +158,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( "alt1" + NewLine, found );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TesTLexerWithPredLongerThanAlt() /*throws Exception*/ {
             string grammar =
                 "grammar T;\n" +
@@ -181,7 +181,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( "alt1"+NewLine+"D" + NewLine, found );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TesTLexerPredCyclicPrediction() /*throws Exception*/ {
             string grammar =
                 "grammar T;\n" +
@@ -198,7 +198,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( "alt1" + NewLine, found );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TesTLexerPredCyclicPrediction2() /*throws Exception*/ {
             string grammar =
                 "grammar T;\n" +
@@ -214,7 +214,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( "alt2" + NewLine, found );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestSimpleNestedPred() /*throws Exception*/ {
             string grammar =
                 "grammar T;\n" +
@@ -250,7 +250,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( expecting, found );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestTripleNestedPredInLexer() /*throws Exception*/ {
             string grammar =
                 "grammar T;\n" +
@@ -302,7 +302,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( expecting, found );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestTreeParserWithSynPred() /*throws Exception*/ {
             string grammar =
                 "grammar T;\n" +
@@ -326,7 +326,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( "alt 2" + NewLine, found );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestTreeParserWithNestedSynPred() /*throws Exception*/ {
             string grammar =
                 "grammar T;\n" +
@@ -354,7 +354,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( "b:alt 2 a:alt 1" + NewLine, found );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestSynPredWithOutputTemplate() /*throws Exception*/ {
             // really just seeing if it will compile
             string grammar =
@@ -375,7 +375,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( "1:xxxy;" + NewLine, found );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestSynPredWithOutputAST() /*throws Exception*/ {
             // really just seeing if it will compile
             string grammar =
@@ -396,7 +396,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( "x x x y" + NewLine, found );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestOptionalBlockWithSynPred() /*throws Exception*/ {
             string grammar =
                 "grammar T;\n" +
@@ -411,7 +411,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( "", found );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestSynPredK2() /*throws Exception*/ {
             // all manually specified syn predicates are gated (i.e., forced
             // to execute).
@@ -426,7 +426,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( "alt1" + NewLine, found );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestSynPredKStar() /*throws Exception*/ {
             string grammar =
                 "grammar T;\n" +

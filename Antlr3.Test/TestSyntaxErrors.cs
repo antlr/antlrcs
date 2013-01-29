@@ -41,7 +41,7 @@ namespace AntlrUnitTests
     [TestClass]
     public class TestSyntaxErrors : BaseTest
     {
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestLL2()
         {
             string grammar =
@@ -56,7 +56,7 @@ namespace AntlrUnitTests
             Assert.AreEqual(expecting, result);
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestLL3()
         {
             string grammar =
@@ -72,7 +72,7 @@ namespace AntlrUnitTests
             Assert.AreEqual(expecting, result);
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestLLStar()
         {
             string grammar =
@@ -87,7 +87,7 @@ namespace AntlrUnitTests
             Assert.AreEqual(expecting, result);
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestSynPred()
         {
             string grammar =
@@ -106,7 +106,7 @@ namespace AntlrUnitTests
             Assert.AreEqual(expecting, result);
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestLL1ErrorInfo()
         {
             string grammar =
@@ -129,7 +129,7 @@ namespace AntlrUnitTests
             Assert.AreEqual(expecting, result);
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestStrayBracketRecovery()
         {
             string grammar =
@@ -157,7 +157,7 @@ namespace AntlrUnitTests
          * This is a regression test for antlr/antlr3#61.
          * https://github.com/antlr/antlr3/issues/61
          */
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestMissingAttributeAccessPreventsCodeGeneration()
         {
             string grammar =

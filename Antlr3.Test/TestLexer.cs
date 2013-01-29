@@ -50,7 +50,7 @@ namespace AntlrUnitTests
         {
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestSetText() /*throws Exception*/ {
             // this must return A not I to the parser; calling a nonfragment rule
             // from a nonfragment rule does not set the overall token.
@@ -64,7 +64,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( "\t" + NewLine, found );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestRefToRuleDoesNotSetTokenNorEmitAnother() /*throws Exception*/ {
             // this must return A not I to the parser; calling a nonfragment rule
             // from a nonfragment rule does not set the overall token.
@@ -79,7 +79,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( "-34" + NewLine, found );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestRefToRuleDoesNotSetChannel() /*throws Exception*/ {
             // this must set channel of A to HIDDEN.  $channel is local to rule
             // like $type.
@@ -94,7 +94,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( "- 34, channel=0" + NewLine, found );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestWeCanSetType() /*throws Exception*/ {
             string grammar =
                 "grammar P;\n" +
@@ -108,7 +108,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( "-34" + NewLine, found );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestRefToFragment() /*throws Exception*/ {
             // this must return A not I to the parser; calling a nonfragment rule
             // from a nonfragment rule does not set the overall token.
@@ -123,7 +123,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( "-34" + NewLine, found );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestMultipleRefToFragment() /*throws Exception*/ {
             // this must return A not I to the parser; calling a nonfragment rule
             // from a nonfragment rule does not set the overall token.
@@ -138,7 +138,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( "3.14159" + NewLine, found );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestLabelInSubrule() /*throws Exception*/ {
             // can we see v outside?
             string grammar =
@@ -152,7 +152,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( "342" + NewLine, found );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestRefToTokenInLexer() /*throws Exception*/ {
             string grammar =
                 "grammar P;\n" +
@@ -165,7 +165,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( "342" + NewLine, found );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestListLabelInLexer() /*throws Exception*/ {
             string grammar =
                 "grammar P;\n" +
@@ -178,7 +178,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( " 33 297" + NewLine, found );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestDupListRefInLexer() /*throws Exception*/ {
             string grammar =
                 "grammar P;\n" +
@@ -191,7 +191,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( " 33 297" + NewLine, found );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestCharLabelInLexer()
         {
             string grammar =
@@ -203,7 +203,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( "a" + NewLine, found );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestRepeatedLabelInLexer()
         {
             string grammar =
@@ -216,7 +216,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( expecting, found );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestRepeatedRuleLabelInLexer()
         {
             string grammar =
@@ -230,7 +230,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( expecting, found );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestIsolatedEOTEdge()
         {
             string grammar =
@@ -244,7 +244,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( expecting, found );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestEscapedLiterals()
         {
             /* Grammar:
@@ -262,7 +262,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( expecting, found );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestNewlineLiterals() /*throws Exception*/
         {
             Grammar g = new Grammar(

@@ -51,14 +51,14 @@ namespace AntlrUnitTests
         {
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestSingleElement() /*throws Exception*/ {
             IntervalSet s = IntervalSet.Of( 99 );
             string expecting = "99";
             Assert.AreEqual( s.ToString(), expecting );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestIsolatedElements() /*throws Exception*/ {
             IntervalSet s = new IntervalSet();
             s.Add( 1 );
@@ -68,7 +68,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( s.ToString(), expecting );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestMixedRangesAndElements() /*throws Exception*/ {
             IntervalSet s = new IntervalSet();
             s.Add( 1 );
@@ -78,7 +78,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( s.ToString(), expecting );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestSimpleAnd() /*throws Exception*/ {
             IntervalSet s = IntervalSet.Of( 10, 20 );
             IntervalSet s2 = IntervalSet.Of( 13, 15 );
@@ -87,7 +87,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( result, expecting );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestRangeAndIsolatedElement() /*throws Exception*/ {
             IntervalSet s = IntervalSet.Of( 'a', 'z' );
             IntervalSet s2 = IntervalSet.Of( 'd' );
@@ -96,7 +96,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( result, expecting );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestEmptyIntersection() /*throws Exception*/ {
             IntervalSet s = IntervalSet.Of( 'a', 'z' );
             IntervalSet s2 = IntervalSet.Of( '0', '9' );
@@ -105,7 +105,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( result, expecting );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestEmptyIntersectionSingleElements() /*throws Exception*/ {
             IntervalSet s = IntervalSet.Of( 'a' );
             IntervalSet s2 = IntervalSet.Of( 'd' );
@@ -115,7 +115,7 @@ namespace AntlrUnitTests
         }
 
 #if false
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestNotSingleElement() /*throws Exception*/ {
             IntervalSet vocabulary = IntervalSet.Of( 1, 1000 );
             vocabulary.Add( 2000, 3000 );
@@ -125,7 +125,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( result, expecting );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestNotSet() /*throws Exception*/ {
             IntervalSet vocabulary = IntervalSet.Of( 1, 1000 );
             IntervalSet s = IntervalSet.Of( 50, 60 );
@@ -136,7 +136,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( result, expecting );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestNotEqualSet() /*throws Exception*/ {
             IntervalSet vocabulary = IntervalSet.Of( 1, 1000 );
             IntervalSet s = IntervalSet.Of( 1, 1000 );
@@ -145,7 +145,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( result, expecting );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestNotSetEdgeElement() /*throws Exception*/ {
             IntervalSet vocabulary = IntervalSet.Of( 1, 2 );
             IntervalSet s = IntervalSet.Of( 1 );
@@ -154,7 +154,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( result, expecting );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestNotSetFragmentedVocabulary() /*throws Exception*/ {
             IntervalSet vocabulary = IntervalSet.Of( 1, 255 );
             vocabulary.Add( 1000, 2000 );
@@ -169,7 +169,7 @@ namespace AntlrUnitTests
         }
 #endif
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestSubtractOfCompletelyContainedRange() /*throws Exception*/ {
             IntervalSet s = IntervalSet.Of( 10, 20 );
             IntervalSet s2 = IntervalSet.Of( 12, 15 );
@@ -178,7 +178,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( result, expecting );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestSubtractOfOverlappingRangeFromLeft() /*throws Exception*/ {
             IntervalSet s = IntervalSet.Of( 10, 20 );
             IntervalSet s2 = IntervalSet.Of( 5, 11 );
@@ -192,7 +192,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( result, expecting );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestSubtractOfOverlappingRangeFromRight() /*throws Exception*/ {
             IntervalSet s = IntervalSet.Of( 10, 20 );
             IntervalSet s2 = IntervalSet.Of( 15, 25 );
@@ -206,7 +206,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( result, expecting );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestSubtractOfCompletelyCoveredRange() /*throws Exception*/ {
             IntervalSet s = IntervalSet.Of( 10, 20 );
             IntervalSet s2 = IntervalSet.Of( 1, 25 );
@@ -215,7 +215,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( result, expecting );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestSubtractOfRangeSpanningMultipleRanges() /*throws Exception*/ {
             IntervalSet s = IntervalSet.Of( 10, 20 );
             s.Add( 30, 40 );
@@ -234,7 +234,7 @@ namespace AntlrUnitTests
         /** The following was broken:
             {0..113, 115..65534}-{0..115, 117..65534}=116..65534
          */
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestSubtractOfWackyRange() /*throws Exception*/ {
             IntervalSet s = IntervalSet.Of( 0, 113 );
             s.Add( 115, 200 );
@@ -245,7 +245,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( result, expecting );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestSimpleEquals() /*throws Exception*/ {
             IntervalSet s = IntervalSet.Of( 10, 20 );
             IntervalSet s2 = IntervalSet.Of( 10, 20 );
@@ -259,7 +259,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( result, expecting );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestEquals() /*throws Exception*/ {
             IntervalSet s = IntervalSet.Of( 10, 20 );
             s.Add( 2 );
@@ -278,7 +278,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( result, expecting );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestSingleElementMinusDisjointSet() /*throws Exception*/ {
             IntervalSet s = IntervalSet.Of( 15, 15 );
             IntervalSet s2 = IntervalSet.Of( 1, 5 );
@@ -288,7 +288,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( result, expecting );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestMembership() /*throws Exception*/ {
             IntervalSet s = IntervalSet.Of( 15, 15 );
             s.Add( 50, 60 );
@@ -302,7 +302,7 @@ namespace AntlrUnitTests
         }
 
         // {2,15,18} & 10..20
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestIntersectionWithTwoContainedElements() /*throws Exception*/ {
             IntervalSet s = IntervalSet.Of( 10, 20 );
             IntervalSet s2 = IntervalSet.Of( 2, 2 );
@@ -313,7 +313,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( result, expecting );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestIntersectionWithTwoContainedElementsReversed() /*throws Exception*/ {
             IntervalSet s = IntervalSet.Of( 10, 20 );
             IntervalSet s2 = IntervalSet.Of( 2, 2 );
@@ -324,7 +324,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( result, expecting );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestComplement() /*throws Exception*/ {
             IntervalSet s = IntervalSet.Of( 100, 100 );
             s.Add( 101, 101 );
@@ -334,7 +334,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( result, expecting );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestComplement2() /*throws Exception*/ {
             IntervalSet s = IntervalSet.Of( 100, 101 );
             Interval s2 = Interval.FromBounds( 100, 102 );
@@ -343,7 +343,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( result, expecting );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestComplement3() /*throws Exception*/ {
             IntervalSet s = IntervalSet.Of( 1, 96 );
             s.Add( 99, Label.MAX_CHAR_VALUE );
@@ -352,7 +352,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( result, expecting );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestMergeOfRangesAndSingleValues() /*throws Exception*/ {
             // {0..41, 42, 43..65534}
             IntervalSet s = IntervalSet.Of( 0, 41 );
@@ -363,7 +363,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( result, expecting );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestMergeOfRangesAndSingleValuesReverse() /*throws Exception*/ {
             IntervalSet s = IntervalSet.Of( 43, 65534 );
             s.Add( 42 );
@@ -373,7 +373,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( result, expecting );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestMergeWhereAdditionMergesTwoExistingIntervals() /*throws Exception*/ {
             // 42, 10, {0..9, 11..41, 43..65534}
             IntervalSet s = IntervalSet.Of( 42 );
@@ -386,7 +386,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( result, expecting );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestMergeWithDoubleOverlap() /*throws Exception*/ {
             IntervalSet s = IntervalSet.Of( 1, 10 );
             s.Add( 20, 30 );
@@ -396,7 +396,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( result, expecting );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestSize() /*throws Exception*/ {
             IntervalSet s = IntervalSet.Of( 20, 30 );
             s.Add( 50, 55 );
@@ -406,7 +406,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( result, expecting );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestToList() /*throws Exception*/ {
             IntervalSet s = IntervalSet.Of( 20, 25 );
             s.Add( 50, 55 );
@@ -424,7 +424,7 @@ namespace AntlrUnitTests
             'q' is 113 ascii
             'u' is 117
         */
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestNotRIntersectionNotT() /*throws Exception*/ {
             IntervalSet s = IntervalSet.Of( 0, 's' );
             s.Add( 'u', 200 );

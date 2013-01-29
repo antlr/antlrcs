@@ -47,7 +47,7 @@ namespace AntlrUnitTests
                 "<invalid>", "<EOR>", "<DOWN>", "<UP>", "A", "B", "C", "D", "E", "F", "G"
             };
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestNode()
         {
             ITreeAdaptor adaptor = new CommonTreeAdaptor();
@@ -71,7 +71,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( expecting, found );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestFlatAB()
         {
             ITreeAdaptor adaptor = new CommonTreeAdaptor();
@@ -95,7 +95,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( expecting, found );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestAB()
         {
             ITreeAdaptor adaptor = new CommonTreeAdaptor();
@@ -119,7 +119,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( expecting, found );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestABC()
         {
             ITreeAdaptor adaptor = new CommonTreeAdaptor();
@@ -143,7 +143,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( expecting, found );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestVerticalList()
         {
             ITreeAdaptor adaptor = new CommonTreeAdaptor();
@@ -167,7 +167,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( expecting, found );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestComplex()
         {
             ITreeAdaptor adaptor = new CommonTreeAdaptor();

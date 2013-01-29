@@ -55,7 +55,7 @@ namespace AntlrUnitTests
             return ( (BufferedTreeNodeStream)stream ).ToTokenTypeString();
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestSeek()
         {
             // ^(101 ^(102 103 ^(106 107) ) 104 105)

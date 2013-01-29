@@ -44,7 +44,7 @@ namespace Antlr4.Test.StringTemplate
     [TestClass]
     public class TestDebugEvents : BaseTest
     {
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST4)]
         public void TestString()
         {
             string templates =
@@ -61,7 +61,7 @@ namespace Antlr4.Test.StringTemplate
             Assert.AreEqual(expected, result);
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST4)]
         public void TestAttribute()
         {
             string templates =
@@ -80,7 +80,7 @@ namespace Antlr4.Test.StringTemplate
             Assert.AreEqual(expected, result);
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST4)]
         public void TestTemplateCall()
         {
             string templates =
@@ -104,7 +104,7 @@ namespace Antlr4.Test.StringTemplate
             Assert.AreEqual(expected, result);
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST4)]
         public void TestEvalExprEventForSpecialCharacter()
         {
             string templates = "t() ::= <<[<\\n>]>>\n";

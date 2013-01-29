@@ -41,7 +41,7 @@ namespace Antlr4.Test.StringTemplate
     [TestClass]
     public class TestGroups : BaseTest
     {
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST4)]
         public void TestSimpleGroup()
         {
             string dir = tmpdir;
@@ -53,7 +53,7 @@ namespace Antlr4.Test.StringTemplate
             Assert.AreEqual(expected, result);
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST4)]
         public void TestSimpleGroupFromString()
         {
             string g =
@@ -66,7 +66,7 @@ namespace Antlr4.Test.StringTemplate
             Assert.AreEqual(expected, result);
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST4)]
         public void TestGroupWithTwoTemplates()
         {
             string dir = tmpdir;
@@ -80,7 +80,7 @@ namespace Antlr4.Test.StringTemplate
             Assert.AreEqual(expected, result);
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST4)]
         public void TestSubdir()
         {
             // /randomdir/a and /randomdir/subdir/b
@@ -93,7 +93,7 @@ namespace Antlr4.Test.StringTemplate
             Assert.AreEqual("bar", group.GetInstanceOf("subdir/b").Render());
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST4)]
         public void TestSubdirWithSubtemplate()
         {
             // /randomdir/a and /randomdir/subdir/b
@@ -105,7 +105,7 @@ namespace Antlr4.Test.StringTemplate
             Assert.AreEqual("ab", st.Render());
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST4)]
         public void TestGroupFileInDir()
         {
             // /randomdir/a and /randomdir/group.stg with b and c templates
@@ -121,7 +121,7 @@ namespace Antlr4.Test.StringTemplate
             Assert.AreEqual("duh", group.GetInstanceOf("/group/c").Render());
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST4)]
         public void TestSubSubdir()
         {
             // /randomdir/a and /randomdir/subdir/b
@@ -136,7 +136,7 @@ namespace Antlr4.Test.StringTemplate
             Assert.AreEqual(expected, result);
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST4)]
         public void TestGroupFileInSubDir()
         {
             // /randomdir/a and /randomdir/group.stg with b and c templates
@@ -155,7 +155,7 @@ namespace Antlr4.Test.StringTemplate
             Assert.AreEqual(expected, result);
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST4)]
         public void TestDupDef()
         {
             string dir = tmpdir;
@@ -172,7 +172,7 @@ namespace Antlr4.Test.StringTemplate
             Assert.AreEqual(expected, result);
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST4)]
         public void TestAlias()
         {
             string dir = tmpdir;
@@ -187,7 +187,7 @@ namespace Antlr4.Test.StringTemplate
             Assert.AreEqual(expected, result);
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST4)]
         public void TestAliasWithArgs()
         {
             string dir = tmpdir;
@@ -204,7 +204,7 @@ namespace Antlr4.Test.StringTemplate
             Assert.AreEqual(expected, result);
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST4)]
         public void TestSimpleDefaultArg()
         {
             string dir = tmpdir;
@@ -219,7 +219,7 @@ namespace Antlr4.Test.StringTemplate
             Assert.AreEqual(expected, result);
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST4)]
         public void TestDefaultArgument()
         {
             string templates =
@@ -237,7 +237,7 @@ namespace Antlr4.Test.StringTemplate
             Assert.AreEqual(expecting, result);
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST4)]
         public void TestBooleanDefaultArguments()
         {
             string templates =
@@ -255,7 +255,7 @@ namespace Antlr4.Test.StringTemplate
             Assert.AreEqual(expecting, result);
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST4)]
         public void TestDefaultArgument2()
         {
             string templates =
@@ -270,7 +270,7 @@ namespace Antlr4.Test.StringTemplate
             Assert.AreEqual(expecting, result);
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST4)]
         public void TestSubtemplateAsDefaultArgSeesOtherArgs()
         {
             string templates =
@@ -290,7 +290,7 @@ namespace Antlr4.Test.StringTemplate
             Assert.AreEqual(expecting, result);
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST4)]
         public void TestEarlyEvalOfDefaultArgs()
         {
             string templates =
@@ -303,7 +303,7 @@ namespace Antlr4.Test.StringTemplate
             Assert.AreEqual(expecting, result);
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST4)]
         public void TestDefaultArgumentAsSimpleTemplate()
         {
             string templates =
@@ -329,7 +329,7 @@ namespace Antlr4.Test.StringTemplate
             }
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST4)]
         public void TestDefaultArgumentManuallySet()
         {
             // set arg f manually for stat(f=f)
@@ -348,7 +348,7 @@ namespace Antlr4.Test.StringTemplate
             Assert.AreEqual(expecting, result);
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST4)]
         public void TestDefaultArgumentSeesVarFromDynamicScoping()
         {
             string templates =
@@ -366,7 +366,7 @@ namespace Antlr4.Test.StringTemplate
             Assert.AreEqual(expecting, result);
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST4)]
         public void TestDefaultArgumentImplicitlySet2()
         {
             // f of stat is implicit first arg
@@ -385,7 +385,7 @@ namespace Antlr4.Test.StringTemplate
             Assert.AreEqual(expecting, result);
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST4)]
         public void TestDefaultArgumentAsTemplate()
         {
             string templates =
@@ -405,7 +405,7 @@ namespace Antlr4.Test.StringTemplate
             Assert.AreEqual(expecting, result);
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST4)]
         public void TestDefaultArgumentAsTemplate2()
         {
             string templates =
@@ -425,7 +425,7 @@ namespace Antlr4.Test.StringTemplate
             Assert.AreEqual(expecting, result);
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST4)]
         public void TestDoNotUseDefaultArgument()
         {
             string templates =
@@ -450,7 +450,7 @@ namespace Antlr4.Test.StringTemplate
          * 
          * @throws Exception
          */
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST4)]
         public void TestHandleBuggyDefaultArgument()
         {
             string templates = "main(a={(<\"\")>}) ::= \"\"";
@@ -478,7 +478,7 @@ namespace Antlr4.Test.StringTemplate
             }
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST4)]
         public void TestDefaultArgumentInParensToEvalEarly()
         {
             string templates =
@@ -495,7 +495,7 @@ namespace Antlr4.Test.StringTemplate
             Assert.AreEqual(expecting, result);
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST4)]
         public void TestTrueFalseArgs()
         {
             string groupFile =
@@ -509,7 +509,7 @@ namespace Antlr4.Test.StringTemplate
             Assert.AreEqual(expected, result);
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST4)]
         public void TestNamedArgsInOrder()
         {
             string dir = tmpdir;
@@ -524,7 +524,7 @@ namespace Antlr4.Test.StringTemplate
             Assert.AreEqual(expected, result);
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST4)]
         public void TestNamedArgsOutOfOrder()
         {
             string dir = tmpdir;
@@ -539,7 +539,7 @@ namespace Antlr4.Test.StringTemplate
             Assert.AreEqual(expected, result);
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST4)]
         public void TestUnknownNamedArg()
         {
             string dir = tmpdir;
@@ -559,7 +559,7 @@ namespace Antlr4.Test.StringTemplate
             Assert.AreEqual(expected, result);
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST4)]
         public void TestMissingNamedArg()
         {
             string dir = tmpdir;
@@ -578,7 +578,7 @@ namespace Antlr4.Test.StringTemplate
             Assert.AreEqual(expected, result);
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST4)]
         public void TestNamedArgsNotAllowInIndirectInclude()
         {
             string dir = tmpdir;
@@ -597,7 +597,7 @@ namespace Antlr4.Test.StringTemplate
             Assert.AreEqual(expected, result);
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST4)]
         public void TestCantSeeGroupDirIfGroupFileOfSameName()
         {
             string dir = tmpdir;
@@ -613,7 +613,7 @@ namespace Antlr4.Test.StringTemplate
             Assert.AreEqual(null, st);
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST4)]
         public void TestUnloadingSimpleGroup()
         {
             string dir = tmpdir;
@@ -640,7 +640,7 @@ namespace Antlr4.Test.StringTemplate
             Assert.AreEqual(expected, result);
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST4)]
         public void TestUnloadingGroupFile()
         {
             string dir = tmpdir;
@@ -665,7 +665,7 @@ namespace Antlr4.Test.StringTemplate
             Assert.AreEqual(expected, result);
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST4)]
         public void TestGroupFileImport()
         {
             // /randomdir/group1.stg (a template) and /randomdir/group2.stg with b.
@@ -699,7 +699,7 @@ namespace Antlr4.Test.StringTemplate
             Assert.AreEqual("group2", stb.impl.NativeGroup.Name);
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST4)]
         public void TestUnloadWithImports()
         {
             writeFile(tmpdir, "t.stg",

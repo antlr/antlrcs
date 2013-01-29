@@ -45,7 +45,7 @@ namespace AntlrUnitTests
         {
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestSeqDoesNotBecomeSet() /*throws Exception*/ {
             // this must return A not I to the parser; calling a nonfragment rule
             // from a nonfragment rule does not set the overall token.
@@ -60,7 +60,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( "34" + NewLine, found );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestParserSet() /*throws Exception*/ {
             string grammar =
                 "grammar T;\n" +
@@ -70,7 +70,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( "x" + NewLine, found );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestParserNotSet() /*throws Exception*/ {
             string grammar =
                 "grammar T;\n" +
@@ -80,7 +80,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( "z" + NewLine, found );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestParserNotToken() /*throws Exception*/ {
             string grammar =
                 "grammar T;\n" +
@@ -90,7 +90,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( "zz" + NewLine, found );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestParserNotTokenWithLabel() /*throws Exception*/ {
             string grammar =
                 "grammar T;\n" +
@@ -100,7 +100,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( "z" + NewLine, found );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestRuleAsSet() /*throws Exception*/ {
             string grammar =
                 "grammar T;\n" +
@@ -110,7 +110,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( "b" + NewLine, found );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestRuleAsSetAST() /*throws Exception*/ {
             string grammar =
                 "grammar T;\n" +
@@ -121,7 +121,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( "b" + NewLine, found );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestNotChar() /*throws Exception*/ {
             string grammar =
                 "grammar T;\n" +
@@ -132,7 +132,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( "x" + NewLine, found );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestOptionalSingleElement() /*throws Exception*/ {
             string grammar =
                 "grammar T;\n" +
@@ -143,7 +143,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( "bc" + NewLine, found );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestOptionalLexerSingleElement() /*throws Exception*/ {
             string grammar =
                 "grammar T;\n" +
@@ -154,7 +154,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( "bc" + NewLine, found );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestStarLexerSingleElement() /*throws Exception*/ {
             string grammar =
                 "grammar T;\n" +
@@ -168,7 +168,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( "c" + NewLine, found );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestPlusLexerSingleElement() /*throws Exception*/ {
             string grammar =
                 "grammar T;\n" +
@@ -179,7 +179,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( "bbbbc" + NewLine, found );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestOptionalSet() /*throws Exception*/ {
             string grammar =
                 "grammar T;\n" +
@@ -189,7 +189,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( "ac" + NewLine, found );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestStarSet() /*throws Exception*/ {
             string grammar =
                 "grammar T;\n" +
@@ -199,7 +199,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( "abaac" + NewLine, found );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestPlusSet() /*throws Exception*/ {
             string grammar =
                 "grammar T;\n" +
@@ -209,7 +209,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( "abaac" + NewLine, found );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestLexerOptionalSet() /*throws Exception*/ {
             string grammar =
                 "grammar T;\n" +
@@ -220,7 +220,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( "ac" + NewLine, found );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestLexerStarSet() /*throws Exception*/ {
             string grammar =
                 "grammar T;\n" +
@@ -231,7 +231,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( "abaac" + NewLine, found );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestLexerPlusSet() /*throws Exception*/ {
             string grammar =
                 "grammar T;\n" +
@@ -242,7 +242,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( "abaac" + NewLine, found );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestNotCharSet() /*throws Exception*/ {
             string grammar =
                 "grammar T;\n" +
@@ -253,7 +253,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( "x" + NewLine, found );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestNotCharSetWithLabel() /*throws Exception*/ {
             // This doesn't work in lexer yet.
             // Generates: h=input.LA(1); but h is defined as a Token
@@ -266,7 +266,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( "x" + NewLine, found );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestNotCharSetWithRuleRef() /*throws Exception*/ {
             string grammar =
                 "grammar T;\n" +
@@ -278,7 +278,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( "x" + NewLine, found );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestNotCharSetWithRuleRef2() /*throws Exception*/ {
             string grammar =
                 "grammar T;\n" +
@@ -290,7 +290,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( "x" + NewLine, found );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestNotCharSetWithRuleRef3() /*throws Exception*/ {
             string grammar =
                 "grammar T;\n" +
@@ -303,7 +303,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( "x" + NewLine, found );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestNotCharSetWithRuleRef4() /*throws Exception*/ {
             string grammar =
                 "grammar T;\n" +

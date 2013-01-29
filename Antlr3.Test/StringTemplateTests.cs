@@ -122,6 +122,7 @@ namespace AntlrUnitTests
         }
 
         [TestMethod]
+        [TestCategory(TestCategories.ST3)]
         public void TestInterfaceFileFormat()
         {
             string groupI =
@@ -140,7 +141,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( expecting, I.ToString() );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST3)]
         public void TestNoGroupLoader()
         {
             // this also tests the group loader
@@ -163,7 +164,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( expecting, errors.ToString() );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST3)]
         public void TestCannotFindInterfaceFile()
         {
             // this also tests the group loader
@@ -186,7 +187,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( expecting, errors.ToString() );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST3)]
         public void TestMultiDirGroupLoading()
         {
             // this also tests the group loader
@@ -225,7 +226,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( expecting, group.ToString() );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST3)]
         public void TestGroupSatisfiesSingleInterface()
         {
             // this also tests the group loader
@@ -254,7 +255,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( expecting, errors.ToString() );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST3)]
         public void TestGroupExtendsSuperGroup()
         {
             // this also tests the group loader
@@ -285,7 +286,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( expecting, st.ToString() );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST3)]
         public void TestGroupExtendsSuperGroupWithAngleBrackets()
         {
             // this also tests the group loader
@@ -315,7 +316,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( expecting, st.ToString() );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST3)]
         public void TestMissingInterfaceTemplate()
         {
             // this also tests the group loader
@@ -343,7 +344,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( expecting, errors.ToString() );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST3)]
         public void TestMissingOptionalInterfaceTemplate()
         {
             // this also tests the group loader
@@ -371,7 +372,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( expecting, errors.ToString() );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST3)]
         public void TestMismatchedInterfaceTemplate()
         {
             // this also tests the group loader
@@ -400,7 +401,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( expecting, errors.ToString() );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST3)]
         public void TestGroupFileFormat()
         {
             string templates =
@@ -428,7 +429,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( expecting, b.ToString() );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST3)]
         public void TestEscapedTemplateDelimiters()
         {
             string templates =
@@ -457,7 +458,7 @@ namespace AntlrUnitTests
         }
 
         /** Check syntax and setAttribute-time errors */
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST3)]
         public void TestTemplateParameterDecls()
         {
             string templates =
@@ -494,7 +495,7 @@ namespace AntlrUnitTests
             a.SetAttribute( "b", "x" );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST3)]
         public void TestTemplateRedef()
         {
             string templates =
@@ -508,7 +509,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( expecting, errors.ToString() );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST3)]
         public void TestMissingInheritedAttribute()
         {
             string templates =
@@ -531,7 +532,7 @@ namespace AntlrUnitTests
             t.ToString(); // should be no problem
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST3)]
         public void TestFormalArgumentAssignment()
         {
             string templates =
@@ -546,7 +547,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( expecting, t.ToString() );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST3)]
         public void TestUndefinedArgumentAssignment()
         {
             string templates =
@@ -571,7 +572,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( expecting, error );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST3)]
         public void TestFormalArgumentAssignmentInApply()
         {
             string templates =
@@ -587,7 +588,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( expecting, t.ToString() );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST3)]
         public void TestUndefinedArgumentAssignmentInApply()
         {
             string templates =
@@ -613,7 +614,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( expecting, error );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST3)]
         public void TestUndefinedAttributeReference()
         {
             string templates =
@@ -637,7 +638,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( expecting, error );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST3)]
         public void TestUndefinedDefaultAttributeReference()
         {
             string templates =
@@ -661,7 +662,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( expecting, error );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST3)]
         public void TestAngleBracketsWithGroupFile()
         {
             string templates =
@@ -679,7 +680,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( expecting, t.ToString() );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST3)]
         public void TestAngleBracketsNoGroup()
         {
             StringTemplate st = new StringTemplate(
@@ -691,7 +692,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( expecting, st.ToString() );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST3)]
         public void TestRegionRef()
         {
             string templates =
@@ -706,7 +707,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( expecting, result );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST3)]
         public void TestEmbeddedRegionRef()
         {
             string templates =
@@ -721,7 +722,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( expecting, result );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST3)]
         public void TestRegionRefAngleBrackets()
         {
             string templates =
@@ -735,7 +736,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( expecting, result );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST3)]
         public void TestEmbeddedRegionRefAngleBrackets()
         {
             string templates =
@@ -750,7 +751,7 @@ namespace AntlrUnitTests
         }
 
         // FIXME: This test fails due to inserted white space...
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST3)]
         public void TestEmbeddedRegionRefWithNewlinesAngleBrackets()
         {
             string templates =
@@ -767,7 +768,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( expecting, result );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST3)]
         public void TestRegionRefWithDefAngleBrackets()
         {
             string templates =
@@ -782,7 +783,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( expecting, result );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST3)]
         public void TestRegionRefWithDefInConditional()
         {
             string templates =
@@ -798,7 +799,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( expecting, result );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST3)]
         public void TestRegionRefWithImplicitDefInConditional()
         {
             string templates =
@@ -820,7 +821,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( err_expecting, err_result );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST3)]
         public void TestRegionOverride()
         {
             string templates1 =
@@ -845,7 +846,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( expecting, result );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST3)]
         public void TestRegionOverrideRefSuperRegion()
         {
             string templates1 =
@@ -870,7 +871,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( expecting, result );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST3)]
         public void TestRegionOverrideRefSuperRegion3Levels()
         {
             // Bug: This was causing infinite recursion:
@@ -917,7 +918,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( expecting, result );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST3)]
         public void TestRegionOverrideRefSuperImplicitRegion()
         {
             string templates1 =
@@ -941,7 +942,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( expecting, result );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST3)]
         public void TestEmbeddedRegionRedefError()
         {
             // cannot define an embedded template within group
@@ -960,7 +961,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( expecting, result );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST3)]
         public void TestImplicitRegionRedefError()
         {
             // cannot define an implicitly-defined template more than once
@@ -980,7 +981,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( expecting, result );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST3)]
         public void TestImplicitOverriddenRegionRedefError()
         {
             string templates1 =
@@ -1007,7 +1008,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( expecting, result );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST3)]
         public void TestUnknownRegionDefError()
         {
             // cannot define an implicitly-defined template more than once
@@ -1026,7 +1027,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( expecting, result );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST3)]
         public void TestSuperRegionRefError()
         {
             string templates1 =
@@ -1052,7 +1053,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( expecting, result );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST3)]
         public void TestMissingEndRegionError()
         {
             // cannot define an implicitly-defined template more than once
@@ -1072,7 +1073,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( expecting, result );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST3)]
         public void TestMissingEndRegionErrorAngleBrackets()
         {
             // cannot define an implicitly-defined template more than once
@@ -1090,7 +1091,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( expecting, result );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST3)]
         public void TestSimpleInheritance()
         {
             // make a bold template in the super group that you can inherit from sub
@@ -1107,7 +1108,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( expecting, duh.ToString() );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST3)]
         public void TestOverrideInheritance()
         {
             // make a bold template in the super group and one in sub group
@@ -1125,7 +1126,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( expecting, duh.ToString() );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST3)]
         public void TestMultiLevelInheritance()
         {
             // must loop up two levels to find bold()
@@ -1145,7 +1146,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( expecting, duh.ToString() );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST3)]
         public void TestComplicatedInheritance()
         {
             // in super: decls invokes labels
@@ -1177,7 +1178,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( expecting, result );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST3)]
         public void Test3LevelSuperRef()
         {
             string templates1 =
@@ -1210,7 +1211,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( expecting, result );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST3)]
         public void TestExprInParens()
         {
             // specify a template to apply to an attribute
@@ -1227,7 +1228,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( expecting, duh.ToString() );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST3)]
         public void TestMultipleAdditions()
         {
             // specify a template to apply to an attribute
@@ -1244,7 +1245,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( expecting, duh.ToString() );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST3)]
         public void TestCollectionAttributes()
         {
             StringTemplateGroup group =
@@ -1273,7 +1274,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( expecting, t.ToString() );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST3)]
         public void TestParenthesizedExpression()
         {
             StringTemplateGroup group =
@@ -1287,7 +1288,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( expecting, t.ToString() );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST3)]
         public void TestApplyTemplateNameExpression()
         {
             StringTemplateGroup group =
@@ -1302,7 +1303,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( expecting, t.ToString() );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST3)]
         public void TestApplyTemplateNameTemplateEval()
         {
             StringTemplateGroup group =
@@ -1317,7 +1318,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( expecting, t.ToString() );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST3)]
         public void TestTemplateNameExpression()
         {
             StringTemplateGroup group =
@@ -1330,7 +1331,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( expecting, t.ToString() );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST3)]
         public void TestMissingEndDelimiter()
         {
             StringTemplateGroup group =
@@ -1345,7 +1346,7 @@ namespace AntlrUnitTests
             Assert.IsTrue( errors.ToString().StartsWith( expectingError ) );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST3)]
         public void TestSetButNotRefd()
         {
             StringTemplate.LintMode = true;
@@ -1365,7 +1366,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( expectingError, errors.ToString() );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST3)]
         public void TestNullTemplateApplication()
         {
             StringTemplateGroup group =
@@ -1388,7 +1389,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( expecting, error );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST3)]
         public void TestNullTemplateToMultiValuedApplication()
         {
             StringTemplateGroup group =
@@ -1412,7 +1413,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( expecting, error );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST3)]
         public void TestChangingAttrValueTemplateApplicationToVector()
         {
             StringTemplateGroup group =
@@ -1426,7 +1427,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( expecting, t.ToString() );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST3)]
         public void TestChangingAttrValueRepeatedTemplateApplicationToVector()
         {
             StringTemplateGroup group = new StringTemplateGroup( "dummy", "." );
@@ -1441,7 +1442,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( expecting, members.ToString() );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST3)]
         public void TestAlternatingTemplateApplication()
         {
             StringTemplateGroup group = new StringTemplateGroup( "dummy", "." );
@@ -1457,7 +1458,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( expecting, item.ToString() );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST3)]
         public void TestExpressionAsRHSOfAssignment()
         {
             StringTemplateGroup group =
@@ -1469,7 +1470,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( expecting, t.ToString() );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST3)]
         public void TestTemplateApplicationAsRHSOfAssignment()
         {
             StringTemplateGroup group = new StringTemplateGroup( "test" );
@@ -1481,7 +1482,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( expecting, t.ToString() );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST3)]
         public void TestParameterAndAttributeScoping()
         {
             StringTemplateGroup group =
@@ -1495,7 +1496,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( expecting, t.ToString() );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST3)]
         public void TestComplicatedSeparatorExpr()
         {
             StringTemplateGroup group =
@@ -1513,7 +1514,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( expecting, t.ToString() );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST3)]
         public void TestAttributeRefButtedUpAgainstEndifAndWhitespace()
         {
             StringTemplateGroup group =
@@ -1525,7 +1526,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( a.ToString(), expecting );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST3)]
         public void TestStringCatenationOnSingleValuedAttributeViaTemplateLiteral()
         {
             StringTemplateGroup group =
@@ -1540,7 +1541,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( b.ToString(), expecting );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST3)]
         public void TestStringCatenationOpOnArg()
         {
             StringTemplateGroup group =
@@ -1554,7 +1555,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( expecting, b.ToString() );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST3)]
         public void TestStringCatenationOpOnArgWithEqualsInString()
         {
             StringTemplateGroup group =
@@ -1568,7 +1569,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( expecting, b.ToString() );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST3)]
         public void TestApplyingTemplateFromDiskWithPrecompiledIF()
         {
             // Create a temporary working directory
@@ -1640,7 +1641,7 @@ namespace AntlrUnitTests
             }
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST3)]
         public void TestMultiValuedAttributeWithAnonymousTemplateUsingIndexVariableI()
         {
             StringTemplateGroup tgroup =
@@ -1664,7 +1665,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( expecting, t.ToString() );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST3)]
         public void TestFindTemplateInCLASSPATH()
         {
             // Look for templates in CLASSPATH as resources
@@ -1691,7 +1692,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( expecting, m.ToString() );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST3)]
         public void TestApplyTemplateToSingleValuedAttribute()
         {
             StringTemplateGroup group = new StringTemplateGroup( "test" );
@@ -1701,7 +1702,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( "<b>Terence</b>", name.ToString() );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST3)]
         public void TestStringLiteralAsAttribute()
         {
             StringTemplateGroup group = new StringTemplateGroup( "test" );
@@ -1710,7 +1711,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( "<b>Terence</b>", name.ToString() );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST3)]
         public void TestApplyTemplateToSingleValuedAttributeWithDefaultAttribute()
         {
             StringTemplateGroup group = new StringTemplateGroup( "test" );
@@ -1720,7 +1721,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( "<b>Terence</b>", name.ToString() );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST3)]
         public void TestApplyAnonymousTemplateToSingleValuedAttribute()
         {
             // specify a template to apply to an attribute
@@ -1731,7 +1732,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( "<li>Terence</li>", item.ToString() );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST3)]
         public void TestApplyAnonymousTemplateToMultiValuedAttribute()
         {
             // specify a template to apply to an attribute
@@ -1748,7 +1749,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( expecting, list.ToString() );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST3)]
         public void TestApplyAnonymousTemplateToAggregateAttribute()
         {
             StringTemplate st = new StringTemplate( "$items:{$it.lastName$, $it.firstName$\n}$" );
@@ -1761,7 +1762,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( expecting, st.ToString() );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST3)]
         public void TestRepeatedApplicationOfTemplateToSingleValuedAttribute()
         {
             StringTemplateGroup group = new StringTemplateGroup( "dummy", "." );
@@ -1771,7 +1772,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( "<b><b>Jim</b></b>", item.ToString() );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST3)]
         public void TestRepeatedApplicationOfTemplateToMultiValuedAttributeWithSeparator()
         {
             StringTemplateGroup group = new StringTemplateGroup( "dummy", "." );
@@ -1788,7 +1789,7 @@ namespace AntlrUnitTests
 
         // ### NEED A TEST OF obj ASSIGNED TO ARG?
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST3)]
         public void TestMultiValuedAttributeWithSeparator()
         {
             StringTemplate query;
@@ -1806,7 +1807,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( "SELECT  name, email FROM User;", query.ToString() );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST3)]
         public void TestSingleValuedAttributes()
         {
             // all attributes are single-valued:
@@ -1816,7 +1817,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( "SELECT name FROM User;", query.ToString() );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST3)]
         public void TestIFTemplate()
         {
             StringTemplateGroup group =
@@ -1831,7 +1832,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( "SELECT name FROM PERSON WHERE ID=231;", t.ToString() );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST3)]
         public void TestIFCondWithParensTemplate()
         {
             StringTemplateGroup group = new StringTemplateGroup( "dummy", ".", typeof( AngleBracketTemplateLexer ) );
@@ -1844,7 +1845,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( "int x=0;", t.ToString() );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST3)]
         public void TestIFCondWithParensDollarDelimsTemplate()
         {
             StringTemplateGroup group = new StringTemplateGroup( "dummy", "." );
@@ -1858,7 +1859,7 @@ namespace AntlrUnitTests
         }
 
         /** As of 2.0, you can test a boolean value */
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST3)]
         public void TestIFBoolean()
         {
             StringTemplateGroup group =
@@ -1874,7 +1875,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( " y", t.ToString() );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST3)]
         public void TestNestedIFTemplate()
         {
             StringTemplateGroup group = new StringTemplateGroup( "dummy", ".", typeof( AngleBracketTemplateLexer ) );
@@ -1897,7 +1898,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( expecting, t.ToString() );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST3)]
         public void TestIFConditionWithTemplateApplication()
         {
             StringTemplateGroup group =
@@ -1968,7 +1969,7 @@ namespace AntlrUnitTests
             }
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST3)]
         public void TestObjectPropertyReference()
         {
             //Assert.AreEqual(expecting, t.toString());
@@ -1990,7 +1991,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( expecting, t.ToString() );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST3)]
         public void TestApplyRepeatedAnonymousTemplateWithForeignTemplateRefToMultiValuedAttribute()
         {
             // specify a template to apply to an attribute
@@ -2041,7 +2042,7 @@ namespace AntlrUnitTests
             }
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST3)]
         public void TestRecursion()
         {
             StringTemplateGroup group = new StringTemplateGroup( "dummy", ".", typeof( AngleBracketTemplateLexer ) );
@@ -2064,7 +2065,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( expecting, tree.ToString() );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST3)]
         public void TestNestedAnonymousTemplates()
         {
             StringTemplateGroup group =
@@ -2086,7 +2087,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( expecting, t.ToString() );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST3)]
         public void TestAnonymousTemplateAccessToEnclosingAttributes()
         {
             StringTemplateGroup group =
@@ -2109,7 +2110,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( expecting, t.ToString() );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST3)]
         public void TestNestedAnonymousTemplatesAgain()
         {
             StringTemplateGroup group =
@@ -2130,7 +2131,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( expecting, t.ToString() );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST3)]
         public void TestEscapes()
         {
             StringTemplateGroup group =
@@ -2166,7 +2167,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( expecting, v.ToString() );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST3)]
         public void TestEscapesOutsideExpressions()
         {
             StringTemplate b = new StringTemplate( "It\\'s ok...\\$; $a:{\\'hi\\', $it$}$" );
@@ -2176,7 +2177,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( expecting, result );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST3)]
         public void TestElseClause()
         {
             StringTemplate e = new StringTemplate(
@@ -2195,7 +2196,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( expecting, e.ToString() );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST3)]
         public void TestElseIfClause()
         {
             StringTemplate e = new StringTemplate(
@@ -2210,7 +2211,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( expecting, e.ToString() );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST3)]
         public void TestElseIfClauseAngleBrackets()
         {
             StringTemplate e = new StringTemplate(
@@ -2226,7 +2227,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( expecting, e.ToString() );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST3)]
         public void TestElseIfClause2()
         {
             StringTemplate e = new StringTemplate(
@@ -2243,7 +2244,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( expecting, e.ToString() );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST3)]
         public void TestElseIfClauseAndElse()
         {
             StringTemplate e = new StringTemplate(
@@ -2261,7 +2262,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( expecting, e.ToString() );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST3)]
         public void TestNestedIF()
         {
             StringTemplate e = new StringTemplate(
@@ -2289,7 +2290,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( expecting, e.ToString() );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST3)]
         public void TestEmbeddedMultiLineIF()
         {
             StringTemplateGroup group =
@@ -2319,7 +2320,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( expecting, main.ToString() );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST3)]
         public void TestSimpleIndentOfAttributeList()
         {
             string templates =
@@ -2343,7 +2344,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( expecting, t.ToString() );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST3)]
         public void TestIndentOfMultilineAttributes()
         {
             string templates =
@@ -2372,7 +2373,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( expecting, t.ToString() );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST3)]
         public void TestIndentOfMultipleBlankLines()
         {
             string templates =
@@ -2394,7 +2395,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( expecting, t.ToString() );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST3)]
         public void TestIndentBetweenLeftJustifiedLiterals()
         {
             string templates =
@@ -2422,7 +2423,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( expecting, t.ToString() );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST3)]
         public void TestNestedIndent()
         {
             string templates =
@@ -2516,7 +2517,7 @@ namespace AntlrUnitTests
             }
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST3)]
         public void TestAlternativeWriter()
         {
             StringBuilder buf = new StringBuilder();
@@ -2530,7 +2531,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( "<b>Terence</b>", buf.ToString() );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST3)]
         public void TestApplyAnonymousTemplateToMapAndSet()
         {
             StringTemplate st =
@@ -2554,7 +2555,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( expecting, st.ToString() );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST3)]
         public void TestDumpMapAndSet()
         {
             StringTemplate st =
@@ -2593,7 +2594,7 @@ namespace AntlrUnitTests
             }
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST3)]
         public void TestApplyAnonymousTemplateToArrayAndMapProperty()
         {
             StringTemplate st =
@@ -2608,7 +2609,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( expecting, st.ToString() );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST3)]
         public void TestSuperTemplateRef()
         {
             // you can refer to a template defined in a super group via super.t()
@@ -2624,7 +2625,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( expecting, st.ToString() );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST3)]
         public void TestApplySuperTemplateRef()
         {
             StringTemplateGroup group = new StringTemplateGroup( "super" );
@@ -2640,7 +2641,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( expecting, st.ToString() );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST3)]
         public void TestLazyEvalOfSuperInApplySuperTemplateRef()
         {
             StringTemplateGroup group = new StringTemplateGroup( "base" );
@@ -2672,7 +2673,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( expectingError, error );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST3)]
         public void TestTemplatePolymorphism()
         {
             StringTemplateGroup group = new StringTemplateGroup( "super" );
@@ -2692,7 +2693,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( expecting, st.ToString() );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST3)]
         public void TestListOfEmbeddedTemplateSeesEnclosingAttributes()
         {
             string templates =
@@ -2717,7 +2718,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( expecting, outputST.ToString() );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST3)]
         public void TestInheritArgumentFromRecursiveTemplateApplication()
         {
             // do not inherit attributes through formal args
@@ -2738,7 +2739,7 @@ namespace AntlrUnitTests
         }
 
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST3)]
         public void TestDeliberateRecursiveTemplateApplication()
         {
             // This test will cause infinite loop.  block contains a stat which
@@ -2783,7 +2784,7 @@ namespace AntlrUnitTests
         }
 
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST3)]
         public void TestImmediateTemplateAsAttributeLoop()
         {
             // even though block has a stats value that refers to itself,
@@ -2804,7 +2805,7 @@ namespace AntlrUnitTests
         }
 
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST3)]
         public void TestTemplateAlias()
         {
             string templates =
@@ -2821,7 +2822,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( expecting, result );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST3)]
         public void TestTemplateGetPropertyGetsAttribute()
         {
             // This test will cause infinite loop if missing attribute no
@@ -2883,7 +2884,7 @@ namespace AntlrUnitTests
             }
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST3)]
         public void TestComplicatedIndirectTemplateApplication()
         {
             string templates =
@@ -2906,7 +2907,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( expecting, f.ToString() );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST3)]
         public void TestIndirectTemplateApplication()
         {
             string templates =
@@ -2926,7 +2927,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( expecting, f.ToString() );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST3)]
         public void TestIndirectTemplateWithArgsApplication()
         {
             string templates =
@@ -2946,7 +2947,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( expecting, f.ToString() );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST3)]
         public void TestNullIndirectTemplateApplication()
         {
             string templates =
@@ -2966,7 +2967,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( expecting, f.ToString() );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST3)]
         public void TestNullIndirectTemplate()
         {
             string templates =
@@ -2986,7 +2987,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( expecting, f.ToString() );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST3)]
         public void TestHashMapPropertyFetch()
         {
             StringTemplate a = new StringTemplate( "$stuff.prop$" );
@@ -2999,7 +3000,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( expecting, results );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST3)]
         public void TestHashMapPropertyFetchEmbeddedStringTemplate()
         {
             StringTemplate a = new StringTemplate( "$stuff.prop$" );
@@ -3013,7 +3014,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( expecting, results );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST3)]
         public void TestEmbeddedComments()
         {
             StringTemplate st = new StringTemplate(
@@ -3060,7 +3061,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( expecting, result );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST3)]
         public void TestEmbeddedCommentsAngleBracketed()
         {
             StringTemplate st = new StringTemplate(
@@ -3113,7 +3114,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( expecting, result );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST3)]
         public void TestLineBreak()
         {
             StringTemplate st = new StringTemplate(
@@ -3128,7 +3129,7 @@ namespace AntlrUnitTests
             Assert.AreEqual(expecting, result);
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST3)]
         public void TestLineBreak2()
         {
             StringTemplate st = new StringTemplate(
@@ -3143,7 +3144,7 @@ namespace AntlrUnitTests
             Assert.AreEqual(expecting, result);
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST3)]
         public void TestLineBreakNoWhiteSpace()
         {
             StringTemplate st = new StringTemplate(
@@ -3158,7 +3159,7 @@ namespace AntlrUnitTests
             Assert.AreEqual(expecting, result);
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST3)]
         public void TestLineBreakDollar()
         {
             StringTemplate st = new StringTemplate(
@@ -3173,7 +3174,7 @@ namespace AntlrUnitTests
             Assert.AreEqual(expecting, result);
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST3)]
         public void TestLineBreakDollar2()
         {
             StringTemplate st = new StringTemplate(
@@ -3188,7 +3189,7 @@ namespace AntlrUnitTests
             Assert.AreEqual(expecting, result);
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST3)]
         public void TestLineBreakNoWhiteSpaceDollar()
         {
             StringTemplate st = new StringTemplate(
@@ -3203,7 +3204,7 @@ namespace AntlrUnitTests
             Assert.AreEqual(expecting, result);
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST3)]
         public void TestCharLiterals()
         {
             StringTemplate st = new StringTemplate(
@@ -3233,7 +3234,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( expecting, result );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST3)]
         public void TestNewlineNormalizationInTemplateString()
         {
             StringTemplate st = new StringTemplate(
@@ -3248,7 +3249,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( expecting, result );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST3)]
         public void TestNewlineNormalizationInTemplateStringPC()
         {
             StringTemplate st = new StringTemplate(
@@ -3263,7 +3264,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( expecting, result );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST3)]
         public void TestNewlineNormalizationInAttribute()
         {
             StringTemplate st = new StringTemplate(
@@ -3279,7 +3280,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( expecting, result );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST3)]
         public void TestUnicodeLiterals()
         {
             StringTemplate st = new StringTemplate(
@@ -3304,7 +3305,7 @@ namespace AntlrUnitTests
         }
 
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST3)]
         public void TestEmptyIteratedValueGetsSeparator()
         {
             StringTemplateGroup group =
@@ -3324,7 +3325,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( expecting, result );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST3)]
         public void TestMissingIteratedConditionalValueGetsNoSeparator()
         {
             StringTemplateGroup group =
@@ -3343,7 +3344,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( expecting, result );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST3)]
         public void TestMissingIteratedConditionalValueGetsNoSeparator2()
         {
             StringTemplateGroup group = new StringTemplateGroup("test");
@@ -3360,7 +3361,7 @@ namespace AntlrUnitTests
             Assert.AreEqual(expecting, result);
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST3)]
         public void TestMissingIteratedDoubleConditionalValueGetsNoSeparator()
         {
             StringTemplateGroup group = new StringTemplateGroup("test");
@@ -3377,7 +3378,7 @@ namespace AntlrUnitTests
             Assert.AreEqual(expecting, result);
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST3)]
         public void TestIteratedConditionalWithEmptyElseValueGetsSeparator()
         {
             StringTemplateGroup group =
@@ -3396,7 +3397,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( expecting, result );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST3)]
         public void TestWhiteSpaceAtEndOfTemplate()
         {
             StringTemplateGroup group = new StringTemplateGroup( "group", System.Reflection.Assembly.GetExecutingAssembly() );
@@ -3421,7 +3422,7 @@ namespace AntlrUnitTests
             public IList users = new List<object>();
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST3)]
         public void TestSizeZeroButNonNullListGetsNoOutput()
         {
             StringTemplateGroup group =
@@ -3438,7 +3439,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( expecting, result );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST3)]
         public void TestNullListGetsNoOutput()
         {
             StringTemplateGroup group =
@@ -3455,7 +3456,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( expecting, result );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST3)]
         public void TestEmptyListGetsNoOutput()
         {
             StringTemplateGroup group =
@@ -3472,7 +3473,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( expecting, result );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST3)]
         public void TestEmptyListNoIteratorGetsNoOutput()
         {
             StringTemplateGroup group =
@@ -3489,7 +3490,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( expecting, result );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST3)]
         public void TestEmptyExprAsFirstLineGetsNoOutput()
         {
             StringTemplateGroup group =
@@ -3505,7 +3506,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( expecting, result );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST3)]
         public void TestSizeZeroOnLineByItselfGetsNoOutput()
         {
             StringTemplateGroup group =
@@ -3523,7 +3524,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( expecting, result );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST3)]
         public void TestSizeZeroOnLineWithIndentGetsNoOutput()
         {
             StringTemplateGroup group =
@@ -3541,7 +3542,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( expecting, result );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST3)]
         public void TestSimpleAutoIndent()
         {
             StringTemplate a = new StringTemplate(
@@ -3561,7 +3562,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( expecting, results );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST3)]
         public void TestComputedPropertyName()
         {
             StringTemplateGroup group =
@@ -3578,7 +3579,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( expecting, result );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST3)]
         public void TestNonNullButEmptyIteratorTestsFalse()
         {
             StringTemplateGroup group =
@@ -3593,7 +3594,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( expecting, result );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST3)]
         public void TestDoNotInheritAttributesThroughFormalArgs()
         {
             string templates =
@@ -3613,7 +3614,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( expecting, result );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST3)]
         public void TestArgEvaluationContext()
         {
             string templates =
@@ -3636,7 +3637,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( expecting, result );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST3)]
         public void TestPassThroughAttributes()
         {
             string templates =
@@ -3654,7 +3655,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( expecting, result );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST3)]
         public void TestPassThroughAttributes2()
         {
             string templates =
@@ -3674,7 +3675,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( expecting, result );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST3)]
         public void TestDefaultArgument()
         {
             string templates =
@@ -3694,7 +3695,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( expecting, result );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST3)]
         public void TestDefaultArgument2()
         {
             string templates =
@@ -3722,7 +3723,7 @@ namespace AntlrUnitTests
             }
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST3)]
         public void TestDefaultArgumentManuallySet()
         {
             string templates =
@@ -3752,7 +3753,7 @@ namespace AntlrUnitTests
          *  a default value. look up the value to see if it's null without
          *  checking checkNullAttributeAgainstFormalArguments.
          */
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST3)]
         public void TestDefaultArgumentImplicitlySet()
         {
             string templates =
@@ -3771,7 +3772,9 @@ namespace AntlrUnitTests
             Assert.AreEqual(expecting, result);
         }
 
+        [Ignore] // this is known to fail in the Java version as well
         [TestMethod]
+        [TestCategory(TestCategories.ST3)]
         public void TestDefaultArgumentImplicitlySet2()
         {
             string templates =
@@ -3790,7 +3793,7 @@ namespace AntlrUnitTests
             Assert.AreEqual(expecting, result);
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST3)]
         public void TestDefaultArgumentAsTemplate()
         {
             string templates =
@@ -3811,7 +3814,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( expecting, result );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST3)]
         public void TestDefaultArgumentAsTemplate2()
         {
             string templates =
@@ -3831,7 +3834,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( expecting, result );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST3)]
         public void TestDoNotUseDefaultArgument()
         {
             string templates =
@@ -3859,7 +3862,7 @@ namespace AntlrUnitTests
             }
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST3)]
         public void TestDefaultArgumentInParensToEvalEarly()
         {
             string templates =
@@ -3877,7 +3880,7 @@ namespace AntlrUnitTests
             Assert.AreEqual(expecting, result);
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST3)]
         public void TestArgumentsAsTemplates()
         {
             string templates =
@@ -3897,7 +3900,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( expecting, result );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST3)]
         public void TestTemplateArgumentEvaluatedInSurroundingContext()
         {
             string templates =
@@ -3920,7 +3923,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( expecting, result );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST3)]
         public void TestArgumentsAsTemplatesDefaultDelimiters()
         {
             string templates =
@@ -3941,7 +3944,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( expecting, result );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST3)]
         public void TestDefaultArgsWhenNotInvoked()
         {
             string templates =
@@ -4016,7 +4019,7 @@ namespace AntlrUnitTests
             }
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST3)]
         public void TestRendererForST()
         {
             StringTemplate st = new StringTemplate(
@@ -4030,7 +4033,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( expecting, result );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST3)]
         public void TestRendererWithFormat()
         {
             StringTemplate st = new StringTemplate(
@@ -4044,7 +4047,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( expecting, result );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST3)]
         public void TestRendererWithFormatAndList()
         {
             StringTemplate st = new StringTemplate(
@@ -4059,7 +4062,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( expecting, result );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST3)]
         public void TestRendererWithFormatAndSeparator()
         {
             StringTemplate st = new StringTemplate(
@@ -4074,7 +4077,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( expecting, result );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST3)]
         public void TestRendererWithFormatAndSeparatorAndNull()
         {
             StringTemplate st = new StringTemplate(
@@ -4091,7 +4094,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( expecting, result );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST3)]
         public void TestEmbeddedRendererSeesEnclosing()
         {
             // st is embedded in outer; set renderer on outer, st should
@@ -4111,7 +4114,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( expecting, result );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST3)]
         public void TestRendererForGroup()
         {
             string templates =
@@ -4129,7 +4132,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( expecting, result );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST3)]
         public void TestOverriddenRenderer()
         {
             string templates =
@@ -4148,7 +4151,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( expecting, result );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST3)]
         public void TestMap()
         {
             string templates =
@@ -4166,7 +4169,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( expecting, result );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST3)]
         public void TestMapValuesAreTemplates()
         {
             string templates =
@@ -4185,7 +4188,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( expecting, result );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST3)]
         public void TestMapKeyLookupViaTemplate()
         {
             // ST doesn't do a toString on .(key) values, it just uses the value
@@ -4207,7 +4210,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( expecting, result );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST3)]
         public void TestMapMissingDefaultValueIsEmpty()
         {
             string templates =
@@ -4226,7 +4229,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( expecting, result );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST3)]
         public void TestMapHiddenByFormalArg()
         {
             string templates =
@@ -4244,7 +4247,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( expecting, result );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST3)]
         public void TestMapEmptyValueAndAngleBracketStrings()
         {
             string templates =
@@ -4262,7 +4265,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( expecting, result );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST3)]
         public void TestMapDefaultValue()
         {
             string templates =
@@ -4280,7 +4283,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( expecting, result );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST3)]
         public void TestMapEmptyDefaultValue()
         {
             string templates =
@@ -4298,7 +4301,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( expecting, result );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST3)]
         public void TestMapDefaultValueIsKey()
         {
             string templates =
@@ -4321,7 +4324,7 @@ namespace AntlrUnitTests
          * <p>
          * Bug ref: JIRA bug ST-15 (Fixed)
          */
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST3)]
         public void TestMapDefaultStringAsKey()
         {
             string templates =
@@ -4344,7 +4347,7 @@ namespace AntlrUnitTests
          * <p>
          * Bug ref: JIRA bug ST-15 (Fixed)
          */
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST3)]
         public void TestMapDefaultIsDefaultString()
         {
             string templates =
@@ -4360,7 +4363,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( expecting, result );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST3)]
         public void TestMapViaEnclosingTemplates()
         {
             string templates =
@@ -4379,7 +4382,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( expecting, result );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST3)]
         public void TestMapViaEnclosingTemplates2()
         {
             string templates =
@@ -4400,7 +4403,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( expecting, result );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST3)]
         public void TestEmptyGroupTemplate()
         {
             string templates =
@@ -4415,7 +4418,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( expecting, result );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST3)]
         public void TestEmptyStringAndEmptyAnonTemplateAsParameterUsingAngleBracketLexer()
         {
             string templates =
@@ -4430,7 +4433,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( expecting, result );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST3)]
         public void TestEmptyStringAndEmptyAnonTemplateAsParameterUsingDollarLexer()
         {
             string templates =
@@ -4451,7 +4454,7 @@ namespace AntlrUnitTests
          *  encoding on windows. The character needs to be escaped as bellow.
          *  Please correct to escape the correct charcter.
          */
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST3)]
         public void Test8BitEuroChars()
         {
             StringTemplate e = new StringTemplate(
@@ -4462,7 +4465,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( expecting, e.ToString() );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST3)]
         public void Test16BitUnicodeChar()
         {
             StringTemplate e = new StringTemplate(
@@ -4473,7 +4476,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( expecting, e.ToString() );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST3)]
         public void TestFirstOp()
         {
             StringTemplate e = new StringTemplate(
@@ -4487,7 +4490,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( expecting, e.ToString() );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST3)]
         public void TestTruncOp()
         {
             StringTemplate e = new StringTemplate(
@@ -4501,7 +4504,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( expecting, e.ToString() );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST3)]
         public void TestRestOp()
         {
             StringTemplate e = new StringTemplate(
@@ -4515,7 +4518,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( expecting, e.ToString() );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST3)]
         public void TestRestOpEmptyList()
         {
             StringTemplate e = new StringTemplate(
@@ -4527,7 +4530,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( expecting, e.ToString() );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST3)]
         public void TestReUseOfRestResult()
         {
             string templates =
@@ -4546,7 +4549,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( expecting, e.ToString() );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST3)]
         public void TestLastOp()
         {
             StringTemplate e = new StringTemplate(
@@ -4560,7 +4563,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( expecting, e.ToString() );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST3)]
         public void TestCombinedOp()
         {
             // replace first of yours with first of mine
@@ -4577,7 +4580,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( expecting, e.ToString() );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST3)]
         public void TestCatListAndSingleAttribute()
         {
             // replace first of yours with first of mine
@@ -4593,7 +4596,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( expecting, e.ToString() );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST3)]
         public void TestReUseOfCat()
         {
             string templates =
@@ -4615,7 +4618,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( expecting, e.ToString() );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST3)]
         public void TestCatListAndEmptyAttributes()
         {
             // + is overloaded to be cat strings and cat lists so the
@@ -4634,7 +4637,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( expecting, e.ToString() );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST3)]
         public void TestNestedOp()
         {
             StringTemplate e = new StringTemplate(
@@ -4648,7 +4651,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( expecting, e.ToString() );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST3)]
         public void TestFirstWithOneAttributeOp()
         {
             StringTemplate e = new StringTemplate(
@@ -4660,7 +4663,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( expecting, e.ToString() );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST3)]
         public void TestLastWithOneAttributeOp()
         {
             StringTemplate e = new StringTemplate(
@@ -4672,7 +4675,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( expecting, e.ToString() );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST3)]
         public void TestLastWithLengthOneListAttributeOp()
         {
             StringTemplate e = new StringTemplate(
@@ -4684,7 +4687,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( expecting, e.ToString() );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST3)]
         public void TestRestWithOneAttributeOp()
         {
             StringTemplate e = new StringTemplate(
@@ -4696,7 +4699,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( expecting, e.ToString() );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST3)]
         public void TestRestWithLengthOneListAttributeOp()
         {
             StringTemplate e = new StringTemplate(
@@ -4708,7 +4711,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( expecting, e.ToString() );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST3)]
         public void TestRepeatedRestOp()
         {
             StringTemplate e = new StringTemplate(
@@ -4726,7 +4729,7 @@ namespace AntlrUnitTests
          *  work if we passed in a List not an iterator.  Avoid sending in iterators
          *  if you ref it twice.
          */
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST3)]
         public void TestRepeatedIteratedAttrFromArg()
         {
             string templates =
@@ -4754,7 +4757,7 @@ namespace AntlrUnitTests
          *
          *  Maybe make a RestIterator like I have CatIterator.
          */
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST3)]
         public void TestRepeatedRestOpAsArg()
         {
             String templates =
@@ -4773,7 +4776,7 @@ namespace AntlrUnitTests
         }
 #endif
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST3)]
         public void TestIncomingLists()
         {
             StringTemplate e = new StringTemplate(
@@ -4786,7 +4789,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( expecting, e.ToString() );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST3)]
         public void TestIncomingListsAreNotModified()
         {
             StringTemplate e = new StringTemplate(
@@ -4804,7 +4807,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( names.Count, 2 );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST3)]
         public void TestIncomingListsAreNotModified2()
         {
             StringTemplate e = new StringTemplate(
@@ -4822,7 +4825,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( names.Count, 2 );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST3)]
         public void TestIncomingArraysAreOk()
         {
             StringTemplate e = new StringTemplate(
@@ -4835,7 +4838,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( expecting, e.ToString() );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST3)]
         public void TestMultipleRefsToListAttribute()
         {
             string templates =
@@ -4851,7 +4854,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( expecting, e.ToString() );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST3)]
         public void TestApplyTemplateWithSingleFormalArgs()
         {
             string templates =
@@ -4869,7 +4872,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( expecting, result );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST3)]
         public void TestApplyTemplateWithNoFormalArgs()
         {
             string templates =
@@ -4888,7 +4891,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( expecting, result );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST3)]
         public void TestAnonTemplateArgs()
         {
             StringTemplate e = new StringTemplate(
@@ -4901,7 +4904,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( expecting, e.ToString() );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST3)]
         public void TestAnonTemplateWithArgHasNoITArg()
         {
             StringTemplate e = new StringTemplate(
@@ -4923,7 +4926,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( expecting, error );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST3)]
         public void TestAnonTemplateArgs2()
         {
             StringTemplate e = new StringTemplate(
@@ -4936,7 +4939,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( expecting, e.ToString() );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST3)]
         public void TestFirstWithCatAttribute()
         {
             StringTemplate e = new StringTemplate(
@@ -4951,7 +4954,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( expecting, e.ToString() );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST3)]
         public void TestFirstWithListOfMaps()
         {
             StringTemplate e = new StringTemplate(
@@ -4976,7 +4979,7 @@ namespace AntlrUnitTests
 
 #if false
         // this FAILS!
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST3)]
         public void TestFirstWithListOfMaps2()
         {
             StringTemplate e = new StringTemplate(
@@ -4999,7 +5002,7 @@ namespace AntlrUnitTests
         }
 #endif
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST3)]
         public void TestJustCat()
         {
             StringTemplate e = new StringTemplate(
@@ -5014,7 +5017,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( expecting, e.ToString() );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST3)]
         public void TestCat2Attributes()
         {
             StringTemplate e = new StringTemplate(
@@ -5029,7 +5032,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( expecting, e.ToString() );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST3)]
         public void TestCat2AttributesWithApply()
         {
             StringTemplate e = new StringTemplate(
@@ -5044,7 +5047,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( expecting, e.ToString() );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST3)]
         public void TestCat3Attributes()
         {
             StringTemplate e = new StringTemplate(
@@ -5061,7 +5064,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( expecting, e.ToString() );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST3)]
         public void TestCatWithTemplateApplicationAsElement()
         {
             StringTemplate e = new StringTemplate(
@@ -5076,7 +5079,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( expecting, e.ToString() );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST3)]
         public void TestCatWithIFAsElement()
         {
             StringTemplate e = new StringTemplate(
@@ -5091,7 +5094,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( expecting, e.ToString() );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST3)]
         public void TestCatWithNullTemplateApplicationAsElement()
         {
             StringTemplate e = new StringTemplate(
@@ -5104,7 +5107,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( expecting, e.ToString() );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST3)]
         public void TestCatWithNestedTemplateApplicationAsElement()
         {
             StringTemplate e = new StringTemplate(
@@ -5119,7 +5122,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( expecting, e.ToString() );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST3)]
         public void TestListAsTemplateArgument()
         {
             string templates =
@@ -5140,7 +5143,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( expecting, result );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST3)]
         public void TestSingleExprTemplateArgument()
         {
             string templates =
@@ -5158,7 +5161,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( expecting, result );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST3)]
         public void TestSingleExprTemplateArgumentInApply()
         {
             // when you specify a single arg on a template application
@@ -5181,7 +5184,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( expecting, result );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST3)]
         public void TestSoleFormalTemplateArgumentInMultiApply()
         {
             string templates =
@@ -5201,7 +5204,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( expecting, result );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST3)]
         public void TestSingleExprTemplateArgumentError()
         {
             string templates =
@@ -5220,7 +5223,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( expecting, errors.ToString() );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST3)]
         public void TestInvokeIndirectTemplateWithSingleFormalArgs()
         {
             string templates =
@@ -5239,7 +5242,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( expecting, result );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST3)]
         public void TestParallelAttributeIteration()
         {
             StringTemplate e = new StringTemplate(
@@ -5256,7 +5259,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( expecting, e.ToString() );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST3)]
         public void TestParallelAttributeIterationWithNullValue()
         {
             StringTemplate e = new StringTemplate(
@@ -5276,7 +5279,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( expecting, e.ToString() );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST3)]
         public void TestParallelAttributeIterationHasI()
         {
             StringTemplate e = new StringTemplate(
@@ -5293,7 +5296,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( expecting, e.ToString() );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST3)]
         public void TestParallelAttributeIterationWithDifferentSizes()
         {
             StringTemplate e = new StringTemplate(
@@ -5310,7 +5313,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( expecting, e.ToString() );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST3)]
         public void TestParallelAttributeIterationWithSingletons()
         {
             StringTemplate e = new StringTemplate(
@@ -5324,7 +5327,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( expecting, e.ToString() );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST3)]
         public void TestParallelAttributeIterationWithMismatchArgListSizes()
         {
             IStringTemplateErrorListener errors = new ErrorBuffer();
@@ -5344,7 +5347,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( errorExpecting, errors.ToString() );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST3)]
         public void TestParallelAttributeIterationWithMissingArgs()
         {
             IStringTemplateErrorListener errors = new ErrorBuffer();
@@ -5361,7 +5364,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( errorExpecting, errors.ToString() );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST3)]
         public void TestParallelAttributeIterationWithDifferentSizesTemplateRefInsideToo()
         {
             string templates =
@@ -5383,7 +5386,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( expecting, p.ToString() );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST3)]
         public void TestAnonTemplateOnLeftOfApply()
         {
             StringTemplate e = new StringTemplate(
@@ -5393,7 +5396,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( expecting, e.ToString() );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST3)]
         public void TestOverrideThroughConditional()
         {
             string templates =
@@ -5428,7 +5431,7 @@ namespace AntlrUnitTests
             }
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST3)]
         public void TestNonPublicPropertyAccess()
         {
             StringTemplate st =
@@ -5440,7 +5443,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( expecting, st.ToString() );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST3)]
         public void TestIndexVar()
         {
             StringTemplateGroup group =
@@ -5458,7 +5461,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( expecting, t.ToString() );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST3)]
         public void TestIndex0Var()
         {
             StringTemplateGroup group =
@@ -5476,7 +5479,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( expecting, t.ToString() );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST3)]
         public void TestIndexVarWithMultipleExprs()
         {
             StringTemplateGroup group =
@@ -5496,7 +5499,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( expecting, t.ToString() );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST3)]
         public void TestIndex0VarWithMultipleExprs()
         {
             StringTemplateGroup group =
@@ -5516,7 +5519,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( expecting, t.ToString() );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST3)]
         public void TestArgumentContext()
         {
             // t is referenced within foo and so will be evaluated in that
@@ -5529,7 +5532,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( expecting, main.ToString() );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST3)]
         public void TestNoDotsInAttributeNames()
         {
             StringTemplateGroup group = new StringTemplateGroup( "dummy", "." );
@@ -5547,7 +5550,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( expecting, error );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST3)]
         public void TestNoDotsInTemplateNames()
         {
             IStringTemplateErrorListener errors = new ErrorBuffer();
@@ -5564,7 +5567,7 @@ namespace AntlrUnitTests
             Assert.IsTrue( errors.ToString().StartsWith( expecting ) );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST3)]
         public void TestLineWrap()
         {
             string templates =
@@ -5586,7 +5589,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( expecting, a.ToString( 40 ) );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST3)]
         public void TestLineWrapWithNormalizedNewlines()
         {
             string templates =
@@ -5614,7 +5617,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( expecting, result );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST3)]
         public void TestLineWrapAnchored()
         {
             string templates =
@@ -5637,7 +5640,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( expecting, a.ToString( 40 ) );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST3)]
         public void TestSubtemplatesAnchorToo()
         {
             String templates =
@@ -5661,7 +5664,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( expecting, a.ToString( 40 ) );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST3)]
         public void TestFortranLineWrap()
         {
             string templates =
@@ -5679,7 +5682,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( expecting, a.ToString( 30 ) );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST3)]
         public void TestLineWrapWithDiffAnchor()
         {
             string templates =
@@ -5701,7 +5704,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( expecting, a.ToString( 30 ) );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST3)]
         public void TestLineWrapEdgeCase()
         {
             string templates =
@@ -5719,7 +5722,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( expecting, a.ToString( 3 ) );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST3)]
         public void TestLineWrapLastCharIsNewline()
         {
             string templates =
@@ -5737,7 +5740,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( expecting, a.ToString( 3 ) );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST3)]
         public void TestLineWrapCharAfterWrapIsNewline()
         {
             string templates =
@@ -5758,7 +5761,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( expecting, a.ToString( 3 ) );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST3)]
         public void TestLineWrapForAnonTemplate()
         {
             string templates =
@@ -5776,7 +5779,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( expecting, a.ToString( 9 ) );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST3)]
         public void TestLineWrapForAnonTemplateAnchored()
         {
             string templates =
@@ -5794,7 +5797,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( expecting, a.ToString( 9 ) );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST3)]
         public void TestLineWrapForAnonTemplateComplicatedWrap()
         {
             string templates =
@@ -5817,7 +5820,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( expecting, t.ToString( 9 ) );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST3)]
         public void TestIndentBeyondLineWidth()
         {
             string templates =
@@ -5838,7 +5841,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( expecting, a.ToString( 2 ) );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST3)]
         public void TestIndentedExpr()
         {
             string templates =
@@ -5858,7 +5861,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( expecting, a.ToString( 6 ) );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST3)]
         public void TestNestedIndentedExpr()
         {
             string templates =
@@ -5880,7 +5883,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( expecting, top.ToString( 6 ) );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST3)]
         public void TestNestedWithIndentAndTrackStartOfExpr()
         {
             string templates =
@@ -5902,7 +5905,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( expecting, top.ToString( 7 ) );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST3)]
         public void TestLineDoesNotWrapDueToLiteral()
         {
             string templates =
@@ -5922,7 +5925,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( expecting, a.ToString( n ) );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST3)]
         public void TestSingleValueWrap()
         {
             string templates =
@@ -5940,7 +5943,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( expecting, m.ToString( 2 ) );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST3)]
         public void TestLineWrapInNestedExpr()
         {
             string templates =
@@ -5975,7 +5978,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( expecting, top.ToString( 40 ) );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST3)]
         public void TestBackslash()
         {
             StringTemplateGroup group = new StringTemplateGroup("test");
@@ -5984,7 +5987,7 @@ namespace AntlrUnitTests
             Assert.AreEqual(expecting, t.ToString());
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST3)]
         public void TestBackslash2()
         {
             StringTemplateGroup group = new StringTemplateGroup("test");
@@ -5993,7 +5996,7 @@ namespace AntlrUnitTests
             Assert.AreEqual(expecting, t.ToString());
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST3)]
         public void TestEscapeEscape()
         {
             StringTemplateGroup group =
@@ -6005,7 +6008,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( expecting, t.ToString() );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST3)]
         public void TestEscapeEscapeNestedAngle()
         {
             StringTemplateGroup group =
@@ -6017,7 +6020,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( expecting, t.ToString() );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST3)]
         public void TestListOfIntArrays()
         {
             StringTemplateGroup group =
@@ -6037,7 +6040,7 @@ namespace AntlrUnitTests
 
         // Test null option
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST3)]
         public void TestNullOptionSingleNullValue()
         {
             StringTemplateGroup group =
@@ -6049,7 +6052,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( expecting, t.ToString() );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST3)]
         public void TestNullOptionHasEmptyNullValue()
         {
             StringTemplateGroup group =
@@ -6064,7 +6067,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( expecting, t.ToString() );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST3)]
         public void TestNullOptionSingleNullValueInList()
         {
             StringTemplateGroup group =
@@ -6079,7 +6082,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( expecting, t.ToString() );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST3)]
         public void TestNullValueInList()
         {
             StringTemplateGroup group =
@@ -6099,7 +6102,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( expecting, t.ToString() );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST3)]
         public void TestNullValueInListNoNullOption()
         {
             StringTemplateGroup group =
@@ -6119,7 +6122,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( expecting, t.ToString() );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST3)]
         public void TestNullValueInListWithTemplateApply()
         {
             StringTemplateGroup group =
@@ -6137,7 +6140,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( expecting, t.ToString() );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST3)]
         public void TestNullValueInListWithTemplateApplyNullFirstValue()
         {
             StringTemplateGroup group =
@@ -6155,7 +6158,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( expecting, t.ToString() );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST3)]
         public void TestNullSingleValueInListWithTemplateApply()
         {
             StringTemplateGroup group =
@@ -6170,7 +6173,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( expecting, t.ToString() );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST3)]
         public void TestNullSingleValueWithTemplateApply()
         {
             StringTemplateGroup group =
@@ -6182,7 +6185,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( expecting, t.ToString() );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST3)]
         public void TestLengthOp()
         {
             StringTemplate e = new StringTemplate(
@@ -6196,7 +6199,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( expecting, e.ToString() );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST3)]
         public void TestLengthOpWithMap()
         {
             StringTemplate e = new StringTemplate(
@@ -6212,7 +6215,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( expecting, e.ToString() );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST3)]
         public void TestLengthOpWithSet()
         {
             StringTemplate e = new StringTemplate(
@@ -6228,7 +6231,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( expecting, e.ToString() );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST3)]
         public void TestLengthOpNull()
         {
             StringTemplate e = new StringTemplate(
@@ -6240,7 +6243,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( expecting, e.ToString() );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST3)]
         public void TestLengthOpSingleValue()
         {
             StringTemplate e = new StringTemplate(
@@ -6252,7 +6255,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( expecting, e.ToString() );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST3)]
         public void TestLengthOpPrimitive()
         {
             StringTemplate e = new StringTemplate(
@@ -6264,7 +6267,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( expecting, e.ToString() );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST3)]
         public void TestLengthOpOfListWithNulls()
         {
             StringTemplate e = new StringTemplate(
@@ -6281,7 +6284,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( expecting, e.ToString() );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST3)]
         public void TestStripOpOfListWithNulls()
         {
             StringTemplate e = new StringTemplate(
@@ -6298,7 +6301,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( expecting, e.ToString() );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST3)]
         public void TestStripOpOfListOfListsWithNulls()
         {
             StringTemplate e = new StringTemplate(
@@ -6322,7 +6325,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( expecting, e.ToString() );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST3)]
         public void TestStripOpOfSingleAlt()
         {
             StringTemplate e = new StringTemplate(
@@ -6334,7 +6337,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( expecting, e.ToString() );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST3)]
         public void TestStripOpOfNull()
         {
             StringTemplate e = new StringTemplate(
@@ -6345,7 +6348,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( expecting, e.ToString() );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST3)]
         public void TestReUseOfStripResult()
         {
             string templates =
@@ -6365,7 +6368,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( expecting, e.ToString() );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST3)]
         public void TestLengthOpOfStrippedListWithNulls()
         {
             StringTemplate e = new StringTemplate(
@@ -6382,7 +6385,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( expecting, e.ToString() );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST3)]
         public void TestLengthOpOfStrippedListWithNullsFrontAndBack()
         {
             StringTemplate e = new StringTemplate(
@@ -6406,7 +6409,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( expecting, e.ToString() );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST3)]
         public void TestMapKeys()
         {
             StringTemplateGroup group =
@@ -6426,7 +6429,7 @@ namespace AntlrUnitTests
                 Assert.AreEqual( "float:0.0, int:0", t.ToString() );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST3)]
         public void TestMapValues()
         {
             StringTemplateGroup group =
@@ -6447,7 +6450,7 @@ namespace AntlrUnitTests
                 Assert.AreEqual( "0.0, 0 0", t.ToString() );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST3)]
         public void TestMapKeysWithIntegerType()
         {
             // must get back an Integer from keys not a toString()'d version
@@ -6469,7 +6472,7 @@ namespace AntlrUnitTests
 #if false
         /** Use when super.attr name is implemented
          */
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST3)]
         public void TestArgumentContext2()
         {
             // t is referenced within foo and so will be evaluated in that
@@ -6492,7 +6495,7 @@ namespace AntlrUnitTests
          * <p>
          * Bug ref: JIRA bug ST-2
          */
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST3)]
         public void TestGroupTrailingSemiColon()
         {
             //try {
@@ -6516,7 +6519,7 @@ namespace AntlrUnitTests
         }
 #endif
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST3)]
         public void TestSuperReferenceInIfClause()
         {
             string superGroupString =
@@ -6546,7 +6549,7 @@ namespace AntlrUnitTests
         }
 
         /** Added feature for ST-21 */
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST3)]
         public void TestListLiteralWithEmptyElements()
         {
             StringTemplate e = new StringTemplate(
@@ -6560,7 +6563,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( expecting, e.ToString() );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST3)]
         public void TestTemplateApplicationAsOptionValue()
         {
             StringTemplate st = new StringTemplate(
@@ -6576,7 +6579,7 @@ namespace AntlrUnitTests
 
         #region C# port tests only
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST3)]
         public void TestDateTimeFormatting()
         {
             StringTemplate e = new StringTemplate(

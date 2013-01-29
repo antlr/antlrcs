@@ -42,7 +42,7 @@ namespace Antlr4.Test.StringTemplate
     public class TestRenderers : BaseTest
     {
 #if false // date renderer
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST4)]
         public void TestRendererForGroup()
         {
             string templates =
@@ -57,7 +57,7 @@ namespace Antlr4.Test.StringTemplate
             Assert.AreEqual(expecting, result);
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST4)]
         public void TestRendererWithFormat()
         {
             string templates =
@@ -72,7 +72,7 @@ namespace Antlr4.Test.StringTemplate
             Assert.AreEqual(expecting, result);
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST4)]
         public void TestRendererWithPredefinedFormat()
         {
             string templates =
@@ -87,7 +87,7 @@ namespace Antlr4.Test.StringTemplate
             Assert.AreEqual(expecting, result);
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST4)]
         public void TestRendererWithPredefinedFormat2()
         {
             string templates =
@@ -102,7 +102,7 @@ namespace Antlr4.Test.StringTemplate
             Assert.AreEqual(expecting, result);
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST4)]
         public void TestRendererWithPredefinedFormat3()
         {
             string templates =
@@ -118,7 +118,7 @@ namespace Antlr4.Test.StringTemplate
             Assert.AreEqual(expecting, result);
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST4)]
         public void TestRendererWithPredefinedFormat4()
         {
             string templates =
@@ -135,7 +135,7 @@ namespace Antlr4.Test.StringTemplate
         }
 #endif
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST4)]
         public void TestStringRendererWithPrintfFormat()
         {
             string templates =
@@ -151,7 +151,7 @@ namespace Antlr4.Test.StringTemplate
             Assert.AreEqual(expecting, result);
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST4)]
         public void TestRendererWithFormatAndList()
         {
             string template =
@@ -167,7 +167,7 @@ namespace Antlr4.Test.StringTemplate
             Assert.AreEqual(expecting, result);
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST4)]
         public void TestRendererWithFormatAndSeparator()
         {
             string template =
@@ -183,7 +183,7 @@ namespace Antlr4.Test.StringTemplate
             Assert.AreEqual(expecting, result);
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST4)]
         public void TestRendererWithFormatAndSeparatorAndNull()
         {
             string template =
@@ -201,7 +201,7 @@ namespace Antlr4.Test.StringTemplate
             Assert.AreEqual(expecting, result);
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST4)]
         public void TestStringRendererWithFormat_cap()
         {
             string templates =
@@ -217,7 +217,7 @@ namespace Antlr4.Test.StringTemplate
             Assert.AreEqual(expecting, result);
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST4)]
         public void TestStringRendererWithTemplateInclude_cap()
         {
             // must toString the t() ref before applying format
@@ -236,7 +236,7 @@ namespace Antlr4.Test.StringTemplate
             Assert.AreEqual(expecting, result);
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST4)]
         public void TestStringRendererWithSubtemplateInclude_cap()
         {
             // must toString the t() ref before applying format
@@ -254,7 +254,7 @@ namespace Antlr4.Test.StringTemplate
             Assert.AreEqual(expecting, result);
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST4)]
         public void TestStringRendererWithFormat_cap_emptyValue()
         {
             string templates =
@@ -270,7 +270,7 @@ namespace Antlr4.Test.StringTemplate
             Assert.AreEqual(expecting, result);
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST4)]
         public void TestStringRendererWithFormat_url_encode()
         {
             string templates =
@@ -286,7 +286,7 @@ namespace Antlr4.Test.StringTemplate
             Assert.AreEqual(expecting, result);
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST4)]
         public void TestStringRendererWithFormat_xml_encode()
         {
             string templates =
@@ -302,7 +302,7 @@ namespace Antlr4.Test.StringTemplate
             Assert.AreEqual(expecting, result);
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST4)]
         public void TestStringRendererWithFormat_xml_encode_null()
         {
             string templates =
@@ -318,7 +318,7 @@ namespace Antlr4.Test.StringTemplate
             Assert.AreEqual(expecting, result);
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST4)]
         public void TestNumberRendererWithPrintfFormat()
         {
             //string templates = "foo(x,y) ::= << <x; format=\"%d\"> <y; format=\"%2.3f\"> >>\n";
@@ -336,7 +336,7 @@ namespace Antlr4.Test.StringTemplate
             Assert.AreEqual(expecting, result);
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST4)]
         public void TestInstanceofRenderer()
         {
             string templates =
@@ -354,7 +354,7 @@ namespace Antlr4.Test.StringTemplate
             Assert.AreEqual(expecting, result);
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST4)]
         public void TestLocaleWithNumberRenderer()
         {
             //string templates = "foo(x,y) ::= << <x; format=\"%,d\"> <y; format=\"%,2.3f\"> >>\n";

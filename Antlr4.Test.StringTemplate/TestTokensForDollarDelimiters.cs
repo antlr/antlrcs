@@ -38,7 +38,7 @@ namespace Antlr4.Test.StringTemplate
     [TestClass]
     public class TestTokensForDollarDelimiters : BaseTest
     {
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST4)]
         public void TestSimpleAttr()
         {
             string template = "hi $name$";
@@ -46,7 +46,7 @@ namespace Antlr4.Test.StringTemplate
             checkTokens(template, expected, '$', '$');
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST4)]
         public void TestString()
         {
             string template = "hi $foo(a=\"$\")$";
@@ -54,7 +54,7 @@ namespace Antlr4.Test.StringTemplate
             checkTokens(template, expected, '$', '$');
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST4)]
         public void TestEscInString()
         {
             string template = "hi $foo(a=\"$\\\"\")$"; // "hi $foo(a="$\"")$"
@@ -62,7 +62,7 @@ namespace Antlr4.Test.StringTemplate
             checkTokens(template, expected, '$', '$');
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST4)]
         public void TestSubtemplate()
         {
             string template = "hi $names:{n | $n$}$";
@@ -74,7 +74,7 @@ namespace Antlr4.Test.StringTemplate
             checkTokens(template, expected, '$', '$');
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST4)]
         public void TestNestedSubtemplate()
         {
             string template = "hi $names:{n | $n:{$it$}$}$";

@@ -41,7 +41,7 @@ namespace AntlrUnitTests
     {
         protected bool debug = false;
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestSimple()
         {
             string grammar =
@@ -58,7 +58,7 @@ namespace AntlrUnitTests
             Assert.AreEqual(expecting, found);
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestTernaryExpr()
         {
             string grammar =
@@ -88,7 +88,7 @@ namespace AntlrUnitTests
             RunTests(grammar, tests, "e");
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestDeclarationsUsingASTOperators()
         {
             string grammar =
@@ -123,7 +123,7 @@ namespace AntlrUnitTests
             RunTests(grammar, tests, "declarator");
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestDeclarationsUsingRewriteOperators()
         {
             string grammar =
@@ -158,7 +158,7 @@ namespace AntlrUnitTests
             RunTests(grammar, tests, "declarator");
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestExpressionsUsingASTOperators()
         {
             string grammar =
@@ -194,7 +194,7 @@ namespace AntlrUnitTests
             RunTests(grammar, tests, "e");
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestExpressionsUsingRewriteOperators()
         {
             string grammar =
@@ -230,7 +230,7 @@ namespace AntlrUnitTests
             RunTests(grammar, tests, "e");
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestExpressionAssociativity()
         {
             string grammar =
@@ -272,7 +272,7 @@ namespace AntlrUnitTests
             RunTests(grammar, tests, "e");
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestJavaExpressions()
         {
             // Generates about 7k in bytecodes for generated e_ rule;

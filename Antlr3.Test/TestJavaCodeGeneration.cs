@@ -41,7 +41,7 @@ namespace AntlrUnitTests
     [TestClass]
     public class TestJavaCodeGeneration : BaseTest
     {
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestDupVarDefForPinchedState()
         {
             // so->s2 and s0->s3->s1 pinches back to s1
@@ -59,7 +59,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( expecting, found );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestLabeledNotSetsInLexer()
         {
             // d must be an int
@@ -74,7 +74,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( expecting, found );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestLabeledSetsInLexer()
         {
             // d must be an int
@@ -88,7 +88,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( "x" + NewLine, found );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestLabeledRangeInLexer()
         {
             // d must be an int
@@ -102,7 +102,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( "x" + NewLine, found );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestLabeledWildcardInLexer()
         {
             // d must be an int
@@ -116,7 +116,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( "x" + NewLine, found );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestSynpredWithPlusLoop()
         {
             string grammar =
@@ -129,7 +129,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( expecting, found );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestDoubleQuoteEscape()
         {
             string grammar =
@@ -146,7 +146,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( expecting, found );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestUserExceptionInParser()
         {
             string grammar =
@@ -159,7 +159,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( expecting, found );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestBlankRuleGetsNoException()
         {
             string grammar =
@@ -179,7 +179,7 @@ namespace AntlrUnitTests
          * compiling grammar with backtracking.
          * https://github.com/antlr/antlr3/issues/20
          */
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestSemanticPredicateAnalysisStackOverflow()
         {
             string grammar =

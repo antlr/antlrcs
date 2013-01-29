@@ -45,7 +45,7 @@ namespace Antlr4.Test.StringTemplate
     [TestClass]
     public class TestVisualizer : BaseTest
     {
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST4)]
         public void SimpleVisualizerTest()
         {
             string templates =
@@ -85,7 +85,7 @@ namespace Antlr4.Test.StringTemplate
             st.Visualize();
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST4)]
         public void VisualizerTestShadowTemplates()
         {
             string templates =
@@ -106,7 +106,7 @@ namespace Antlr4.Test.StringTemplate
             template.Visualize();
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST4)]
         public void VisualizerTestDefaultArgumentTemplate()
         {
             string templates =
@@ -132,7 +132,7 @@ namespace Antlr4.Test.StringTemplate
          * http://www.antlr.org/pipermail/stringtemplate-interest/2011-May/003476.
          * html
          */
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST4)]
         public void TestEarlyEval()
         {
             string templates = "main() ::= <<\n<f(p=\"x\")>*<f(p=\"y\")>\n>>\n\n" +
@@ -155,7 +155,7 @@ namespace Antlr4.Test.StringTemplate
          * http://www.antlr.org/pipermail/stringtemplate-interest/2011-May/003476.
          * html
          */
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST4)]
         public void TestEarlyEval2()
         {
             string templates = "main() ::= <<\n<f(p=\"x\")>*\n>>\n\n" +
@@ -176,7 +176,7 @@ namespace Antlr4.Test.StringTemplate
         /**
          *  see http://www.antlr.org/pipermail/stringtemplate-interest/2011-August/003758.html 
          */
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST4)]
         public void TestBugArrayIndexOutOfBoundsExceptionInTemplateRuntimeMessage_SourceLocation()
         {
             string templates = "main(doit = true) ::= "

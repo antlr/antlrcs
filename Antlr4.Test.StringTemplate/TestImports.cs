@@ -40,7 +40,7 @@ namespace Antlr4.Test.StringTemplate
     [TestClass]
     public class TestImports : BaseTest
     {
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST4)]
         public void TestImportDir()
         {
             /*
@@ -69,7 +69,7 @@ namespace Antlr4.Test.StringTemplate
             Assert.AreEqual(expected, result);
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST4)]
         public void TestImportRelativeDir()
         {
             /*
@@ -97,7 +97,7 @@ namespace Antlr4.Test.StringTemplate
             Assert.AreEqual(expected, result);
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST4)]
         public void TestImportGroupFileSameDir()
         {
             /*
@@ -123,7 +123,7 @@ namespace Antlr4.Test.StringTemplate
             Assert.AreEqual(expected, result);
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST4)]
         public void TestImportRelativeGroupFile()
         {
             /*
@@ -150,7 +150,7 @@ namespace Antlr4.Test.StringTemplate
             Assert.AreEqual(expected, result);
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST4)]
         public void TestImportTemplateFileSameDir()
         {
             /*
@@ -173,7 +173,7 @@ namespace Antlr4.Test.StringTemplate
             Assert.AreEqual(expected, result);
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST4)]
         public void TestImportRelativeTemplateFile()
         {
             /*
@@ -200,7 +200,7 @@ namespace Antlr4.Test.StringTemplate
             Assert.AreEqual(expected, result);
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST4)]
         public void TestImportTemplateFromAnotherGroupObject()
         {
             /*
@@ -234,7 +234,7 @@ namespace Antlr4.Test.StringTemplate
             Assert.AreEqual(expected, result);
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST4)]
         public void TestImportTemplateInGroupFileFromDir()
         {
             string dir = tmpdir;
@@ -256,7 +256,7 @@ namespace Antlr4.Test.StringTemplate
             Assert.AreEqual(expected, result);
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST4)]
         public void TestImportTemplateInGroupFileFromGroupFile()
         {
             string dir = tmpdir;
@@ -279,7 +279,7 @@ namespace Antlr4.Test.StringTemplate
             Assert.AreEqual(expected, result);
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST4)]
         public void TestImportTemplateFromSubdir()
         {
             // /randomdir/x/subdir/a and /randomdir/y/subdir/b
@@ -298,7 +298,7 @@ namespace Antlr4.Test.StringTemplate
             Assert.AreEqual(expected, result);
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST4)]
         public void TestImportTemplateFromGroupFile()
         {
             // /randomdir/x/subdir/a and /randomdir/y/subdir.stg which has a and b
@@ -325,7 +325,7 @@ namespace Antlr4.Test.StringTemplate
             Assert.AreEqual(expected, result);
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST4)]
         public void TestPolymorphicTemplateReference()
         {
             string dir1 = Path.Combine(tmpdir, "d1");
@@ -354,7 +354,7 @@ namespace Antlr4.Test.StringTemplate
             Assert.AreEqual(expected, result);
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST4)]
         public void TestSuper()
         {
             string dir1 = Path.Combine(tmpdir, "d1");
@@ -375,7 +375,7 @@ namespace Antlr4.Test.StringTemplate
             Assert.AreEqual(expected, result);
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST4)]
         public void TestUnloadImportedTemplate()
         {
             string dir1 = Path.Combine(tmpdir, "d1");

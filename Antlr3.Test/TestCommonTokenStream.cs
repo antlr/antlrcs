@@ -40,7 +40,7 @@ namespace AntlrUnitTests
     [TestClass]
     public class TestCommonTokenStream : BaseTest
     {
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestFirstToken()
         {
             Grammar g = new Grammar(
@@ -63,7 +63,7 @@ namespace AntlrUnitTests
             Assert.AreEqual(expecting, result);
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void Test2ndToken()
         {
             Grammar g = new Grammar(
@@ -86,7 +86,7 @@ namespace AntlrUnitTests
             Assert.AreEqual(expecting, result);
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestCompleteBuffer()
         {
             Grammar g = new Grammar(
@@ -119,7 +119,7 @@ namespace AntlrUnitTests
             Assert.AreEqual(expecting, result);
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestCompleteBufferAfterConsuming()
         {
             Grammar g = new Grammar(
@@ -153,7 +153,7 @@ namespace AntlrUnitTests
             Assert.AreEqual(expecting, result);
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestLookback()
         {
             Grammar g = new Grammar(
@@ -233,7 +233,7 @@ namespace AntlrUnitTests
             }
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestOffChannel()
         {
             ITokenSource lexer = // simulate input " x =34  ;\n"

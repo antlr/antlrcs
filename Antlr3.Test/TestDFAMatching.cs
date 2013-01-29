@@ -48,7 +48,7 @@ namespace AntlrUnitTests
         {
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestSimpleAltCharTest() /*throws Exception*/ {
             Grammar g = new Grammar(
                     "lexer grammar t;\n" +
@@ -62,7 +62,7 @@ namespace AntlrUnitTests
             checkPrediction( dfa, "d", NFA.INVALID_ALT_NUMBER );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestSets() /*throws Exception*/ {
             Grammar g = new Grammar(
                     "lexer grammar t;\n" +
@@ -77,7 +77,7 @@ namespace AntlrUnitTests
             checkPrediction( dfa, "9", 3 );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestFiniteCommonLeftPrefixes() /*throws Exception*/ {
             Grammar g = new Grammar(
                     "lexer grammar t;\n" +
@@ -91,7 +91,7 @@ namespace AntlrUnitTests
             checkPrediction( dfa, "q", NFA.INVALID_ALT_NUMBER );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestSimpleLoops() /*throws Exception*/ {
             Grammar g = new Grammar(
                     "lexer grammar t;\n" +

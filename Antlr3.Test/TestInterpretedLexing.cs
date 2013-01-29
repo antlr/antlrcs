@@ -82,7 +82,7 @@ namespace AntlrUnitTests
         {
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestSimpleAltCharTest() /*throws Exception*/ {
             Grammar g = new Grammar(
                     "lexer grammar t;\n" +
@@ -97,7 +97,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( result.Type, Atype );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestSingleRuleRef() /*throws Exception*/ {
             Grammar g = new Grammar(
                     "lexer grammar t;\n" +
@@ -109,7 +109,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( result.Type, Atype );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestSimpleLoop() /*throws Exception*/ {
             Grammar g = new Grammar(
                     "lexer grammar t;\n" +
@@ -124,7 +124,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( result.Type, INTtype );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestMultAltLoop() /*throws Exception*/ {
             Grammar g = new Grammar(
                     "lexer grammar t;\n" +
@@ -152,7 +152,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( result.Type, Atype );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestSimpleLoops() /*throws Exception*/ {
             Grammar g = new Grammar(
                     "lexer grammar t;\n" +
@@ -164,7 +164,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( Atype, result.Type );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestTokensRules() /*throws Exception*/ {
             Grammar pg = new Grammar(
                 "parser grammar p;\n" +

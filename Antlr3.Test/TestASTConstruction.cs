@@ -45,7 +45,7 @@ namespace AntlrUnitTests
         {
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestA() /*throws Exception*/ {
             Grammar g = new Grammar(
                     "parser grammar P;\n" +
@@ -56,7 +56,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( expecting, found );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestEmptyAlt()
         {
             Grammar g = new Grammar(
@@ -68,7 +68,7 @@ namespace AntlrUnitTests
             Assert.AreEqual(expecting, found);
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestNakeRulePlusInLexer() /*throws Exception*/ {
             Grammar g = new Grammar(
                     "lexer grammar P;\n" +
@@ -80,7 +80,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( expecting, found );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestRulePlus() /*throws Exception*/ {
             Grammar g = new Grammar(
                     "parser grammar P;\n" +
@@ -92,7 +92,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( expecting, found );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestNakedRulePlus() /*throws Exception*/ {
             Grammar g = new Grammar(
                     "parser grammar P;\n" +
@@ -104,7 +104,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( expecting, found );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestRuleOptional() /*throws Exception*/ {
             Grammar g = new Grammar(
                     "parser grammar P;\n" +
@@ -116,7 +116,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( expecting, found );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestNakedRuleOptional() /*throws Exception*/ {
             Grammar g = new Grammar(
                     "parser grammar P;\n" +
@@ -128,7 +128,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( expecting, found );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestRuleStar() /*throws Exception*/ {
             Grammar g = new Grammar(
                     "parser grammar P;\n" +
@@ -140,7 +140,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( expecting, found );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestNakedRuleStar() /*throws Exception*/ {
             Grammar g = new Grammar(
                     "parser grammar P;\n" +
@@ -152,7 +152,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( expecting, found );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestCharStar() /*throws Exception*/ {
             Grammar g = new Grammar(
                     "grammar P;\n" +
@@ -163,7 +163,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( expecting, found );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestCharStarInLexer() /*throws Exception*/ {
             Grammar g = new Grammar(
                     "lexer grammar P;\n" +
@@ -174,7 +174,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( expecting, found );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestStringStar() /*throws Exception*/ {
             Grammar g = new Grammar(
                     "grammar P;\n" +
@@ -185,7 +185,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( expecting, found );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestStringStarInLexer() /*throws Exception*/ {
             Grammar g = new Grammar(
                     "lexer grammar P;\n" +
@@ -196,7 +196,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( expecting, found );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestCharPlus() /*throws Exception*/ {
             Grammar g = new Grammar(
                     "grammar P;\n" +
@@ -207,7 +207,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( expecting, found );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestCharPlusInLexer() /*throws Exception*/ {
             Grammar g = new Grammar(
                     "lexer grammar P;\n" +
@@ -218,7 +218,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( expecting, found );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestCharOptional() /*throws Exception*/ {
             Grammar g = new Grammar(
                     "grammar P;\n" +
@@ -229,7 +229,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( expecting, found );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestCharOptionalInLexer() /*throws Exception*/ {
             Grammar g = new Grammar(
                     "lexer grammar P;\n" +
@@ -240,7 +240,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( expecting, found );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestCharRangePlus() /*throws Exception*/ {
             Grammar g = new Grammar(
                     "lexer grammar P;\n" +
@@ -251,7 +251,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( expecting, found );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestLabel() /*throws Exception*/ {
             Grammar g = new Grammar(
                     "grammar P;\n" +
@@ -262,7 +262,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( expecting, found );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestLabelOfOptional() /*throws Exception*/ {
             Grammar g = new Grammar(
                     "grammar P;\n" +
@@ -273,7 +273,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( expecting, found );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestLabelOfClosure() /*throws Exception*/ {
             Grammar g = new Grammar(
                     "grammar P;\n" +
@@ -284,7 +284,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( expecting, found );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestRuleLabel() /*throws Exception*/ {
             Grammar g = new Grammar(
                     "grammar P;\n" +
@@ -296,7 +296,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( expecting, found );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestSetLabel() /*throws Exception*/ {
             Grammar g = new Grammar(
                     "grammar P;\n" +
@@ -307,7 +307,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( expecting, found );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestNotSetLabel() /*throws Exception*/ {
             Grammar g = new Grammar(
                     "grammar P;\n" +
@@ -318,7 +318,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( expecting, found );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestNotSetListLabel() /*throws Exception*/ {
             Grammar g = new Grammar(
                     "grammar P;\n" +
@@ -329,7 +329,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( expecting, found );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestNotSetListLabelInLoop() /*throws Exception*/ {
             Grammar g = new Grammar(
                     "grammar P;\n" +
@@ -340,7 +340,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( expecting, found );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestRuleLabelOfPositiveClosure() /*throws Exception*/ {
             Grammar g = new Grammar(
                     "grammar P;\n" +
@@ -352,7 +352,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( expecting, found );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestListLabelOfClosure() /*throws Exception*/ {
             Grammar g = new Grammar(
                     "grammar P;\n" +
@@ -363,7 +363,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( expecting, found );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestListLabelOfClosure2() /*throws Exception*/ {
             Grammar g = new Grammar(
                     "grammar P;\n" +
@@ -374,7 +374,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( expecting, found );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestRuleListLabelOfPositiveClosure() /*throws Exception*/ {
             Grammar g = new Grammar(
                     "grammar P;\n" +
@@ -387,7 +387,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( expecting, found );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestRootTokenInStarLoop() /*throws Exception*/ {
             Grammar g = new Grammar(
                     "grammar Expr;\n" +
@@ -399,7 +399,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( expecting, found );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestActionInStarLoop() /*throws Exception*/ {
             Grammar g = new Grammar(
                     "grammar Expr;\n" +

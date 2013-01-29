@@ -69,14 +69,14 @@ namespace AntlrUnitTests
             }
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestSingleNode() /*throws Exception*/ {
             CommonTree t = new CommonTree( new CommonToken( 101 ) );
             Assert.IsNull( t.Parent );
             Assert.AreEqual( -1, t.ChildIndex );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestTwoChildrenOfNilRoot() /*throws Exception*/ {
             CommonTree root_0 = (CommonTree)adaptor.Nil();
             CommonTree t = new V( 101, 2 );
@@ -89,7 +89,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( 1, u.ChildIndex );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void Test4Nodes() /*throws Exception*/ {
             // ^(101 ^(102 103) 104)
             CommonTree r0 = new CommonTree( new CommonToken( 101 ) );
@@ -101,7 +101,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( -1, r0.ChildIndex );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestList() /*throws Exception*/ {
             // ^(nil 101 102 103)
             CommonTree r0 = new CommonTree( (IToken)null );
@@ -120,7 +120,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( 2, c2.ChildIndex );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestList2() /*throws Exception*/ {
             // Add child ^(nil 101 102 103) to root 5
             // should pull 101 102 103 directly to become 5's child list
@@ -146,7 +146,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( 2, c2.ChildIndex );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestAddListToExistChildren() /*throws Exception*/ {
             // Add child ^(nil 101 102 103) to root ^(5 6)
             // should add 101 102 103 to end of 5's child list
@@ -173,7 +173,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( 3, c2.ChildIndex );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestDupTree() /*throws Exception*/ {
             // ^(101 ^(102 103 ^(106 107) ) 104 105)
             CommonTree r0 = new CommonTree( new CommonToken( 101 ) );
@@ -193,7 +193,7 @@ namespace AntlrUnitTests
             dup.SanityCheckParentAndChildIndexes();
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestBecomeRoot() /*throws Exception*/ {
             // 5 becomes new root of ^(nil 101 102 103)
             CommonTree newRoot = new CommonTree( new CommonToken( 5 ) );
@@ -208,7 +208,7 @@ namespace AntlrUnitTests
             newRoot.SanityCheckParentAndChildIndexes();
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestBecomeRoot2() /*throws Exception*/ {
             // 5 becomes new root of ^(101 102 103)
             CommonTree newRoot = new CommonTree( new CommonToken( 5 ) );
@@ -222,7 +222,7 @@ namespace AntlrUnitTests
             newRoot.SanityCheckParentAndChildIndexes();
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestBecomeRoot3() /*throws Exception*/ {
             // ^(nil 5) becomes new root of ^(nil 101 102 103)
             CommonTree newRoot = new CommonTree( (IToken)null );
@@ -238,7 +238,7 @@ namespace AntlrUnitTests
             newRoot.SanityCheckParentAndChildIndexes();
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestBecomeRoot5() /*throws Exception*/ {
             // ^(nil 5) becomes new root of ^(101 102 103)
             CommonTree newRoot = new CommonTree( (IToken)null );
@@ -253,7 +253,7 @@ namespace AntlrUnitTests
             newRoot.SanityCheckParentAndChildIndexes();
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestBecomeRoot6() /*throws Exception*/ {
             // emulates construction of ^(5 6)
             CommonTree root_0 = (CommonTree)adaptor.Nil();
@@ -269,7 +269,7 @@ namespace AntlrUnitTests
 
         // Test replaceChildren
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         [ExpectedException(typeof(ArgumentException))]
         public void TestReplaceWithNoChildren() /*throws Exception*/ {
             CommonTree t = new CommonTree( new CommonToken( 101 ) );
@@ -277,7 +277,7 @@ namespace AntlrUnitTests
             t.ReplaceChildren( 0, 0, newChild );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestReplaceWithOneChildren() /*throws Exception*/ {
             // assume token type 99 and use text
             CommonTree t = new CommonTree( new CommonToken( 99, "a" ) );
@@ -291,7 +291,7 @@ namespace AntlrUnitTests
             t.SanityCheckParentAndChildIndexes();
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestReplaceInMiddle() /*throws Exception*/ {
             CommonTree t = new CommonTree( new CommonToken( 99, "a" ) );
             t.AddChild( new CommonTree( new CommonToken( 99, "b" ) ) );
@@ -305,7 +305,7 @@ namespace AntlrUnitTests
             t.SanityCheckParentAndChildIndexes();
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestReplaceAtLeft() /*throws Exception*/ {
             CommonTree t = new CommonTree( new CommonToken( 99, "a" ) );
             t.AddChild( new CommonTree( new CommonToken( 99, "b" ) ) ); // index 0
@@ -319,7 +319,7 @@ namespace AntlrUnitTests
             t.SanityCheckParentAndChildIndexes();
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestReplaceAtRight() /*throws Exception*/ {
             CommonTree t = new CommonTree( new CommonToken( 99, "a" ) );
             t.AddChild( new CommonTree( new CommonToken( 99, "b" ) ) );
@@ -333,7 +333,7 @@ namespace AntlrUnitTests
             t.SanityCheckParentAndChildIndexes();
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestReplaceOneWithTwoAtLeft() /*throws Exception*/ {
             CommonTree t = new CommonTree( new CommonToken( 99, "a" ) );
             t.AddChild( new CommonTree( new CommonToken( 99, "b" ) ) );
@@ -350,7 +350,7 @@ namespace AntlrUnitTests
             t.SanityCheckParentAndChildIndexes();
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestReplaceOneWithTwoAtRight() /*throws Exception*/ {
             CommonTree t = new CommonTree( new CommonToken( 99, "a" ) );
             t.AddChild( new CommonTree( new CommonToken( 99, "b" ) ) );
@@ -367,7 +367,7 @@ namespace AntlrUnitTests
             t.SanityCheckParentAndChildIndexes();
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestReplaceOneWithTwoInMiddle() /*throws Exception*/ {
             CommonTree t = new CommonTree( new CommonToken( 99, "a" ) );
             t.AddChild( new CommonTree( new CommonToken( 99, "b" ) ) );
@@ -384,7 +384,7 @@ namespace AntlrUnitTests
             t.SanityCheckParentAndChildIndexes();
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestReplaceTwoWithOneAtLeft() /*throws Exception*/ {
             CommonTree t = new CommonTree( new CommonToken( 99, "a" ) );
             t.AddChild( new CommonTree( new CommonToken( 99, "b" ) ) );
@@ -399,7 +399,7 @@ namespace AntlrUnitTests
             t.SanityCheckParentAndChildIndexes();
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestReplaceTwoWithOneAtRight() /*throws Exception*/ {
             CommonTree t = new CommonTree( new CommonToken( 99, "a" ) );
             t.AddChild( new CommonTree( new CommonToken( 99, "b" ) ) );
@@ -414,7 +414,7 @@ namespace AntlrUnitTests
             t.SanityCheckParentAndChildIndexes();
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestReplaceAllWithOne() /*throws Exception*/ {
             CommonTree t = new CommonTree( new CommonToken( 99, "a" ) );
             t.AddChild( new CommonTree( new CommonToken( 99, "b" ) ) );
@@ -429,7 +429,7 @@ namespace AntlrUnitTests
             t.SanityCheckParentAndChildIndexes();
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestReplaceAllWithTwo() /*throws Exception*/ {
             CommonTree t = new CommonTree( new CommonToken( 99, "a" ) );
             t.AddChild( new CommonTree( new CommonToken( 99, "b" ) ) );
