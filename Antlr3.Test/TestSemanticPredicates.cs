@@ -122,10 +122,9 @@ namespace AntlrUnitTests
                 "a : ( {p1}? A )+ (A)+;" );
             string expecting =
                 ".s0-A->.s1" + NewLine +
-                ".s1-{!(p1)}?->:s2=>1" + NewLine +
-                ".s1-{p1}?->:s3=>2" + NewLine;       // loop back
-            Assert.Inconclusive("Also fails in the Java version.");
-            checkDecision( g, 1, expecting, null, null, null, null, null, 0, false );
+                ".s1-{p1}?->:s2=>1" + NewLine +
+                ".s1-{true}?->:s3=>2" + NewLine;       // loop back
+            checkDecision(g, 1, expecting, null, null, null, null, null, 0, false);
         }
 
         [TestMethod][TestCategory(TestCategories.Antlr3)]

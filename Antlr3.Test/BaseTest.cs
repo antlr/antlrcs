@@ -389,7 +389,7 @@ namespace AntlrUnitTests
                     if ( equeue.errors.Count > 0 )
                     {
                         allIsWell = false;
-                        Console.Error.WriteLine( "antlr reports errors from " + options );
+                        Console.Error.WriteLine( "antlr reports errors from [" + string.Join(", ", options) + ']' );
                         for ( int i = 0; i < equeue.errors.Count; i++ )
                         {
                             Message msg = (Message)equeue.errors[i];

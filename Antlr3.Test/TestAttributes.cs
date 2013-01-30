@@ -934,7 +934,7 @@ namespace AntlrUnitTests
 
         [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestNonDynamicAttributeOutsideRule() /*throws Exception*/ {
-            string action = "[TestMethod] public void foo() { $x; }";
+            string action = "public void foo() { $x; }";
             string expecting = action;
 
             ErrorQueue equeue = new ErrorQueue();
@@ -960,7 +960,7 @@ namespace AntlrUnitTests
 
         [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestNonDynamicAttributeOutsideRule2() /*throws Exception*/ {
-            string action = "[TestMethod] public void foo() { $x.y; }";
+            string action = "public void foo() { $x.y; }";
             string expecting = action;
 
             ErrorQueue equeue = new ErrorQueue();
@@ -3253,6 +3253,7 @@ namespace AntlrUnitTests
             Assert.AreEqual(0, equeue.errors.Count, "unexpected errors: " + equeue);
         }
 
+        [Ignore] // The Java target does not support this feature yet
         [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestGlobalAttributeScopeInit()
         {
@@ -3264,6 +3265,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( "true" + NewLine, found );
         }
 
+        [Ignore] // The Java target does not support this feature yet
         [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestRuleAttributeScopeInit()
         {

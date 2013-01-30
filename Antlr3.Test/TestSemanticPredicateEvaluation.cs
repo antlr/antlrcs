@@ -249,7 +249,7 @@ namespace AntlrUnitTests
             string grammar =
                 "grammar foo;\n" +
                 "a : B EOF {System.out.println(\"B\");};\n" +
-                "B : '/*';\n" +
+                "B : '/*'\n" +
                 "    ( ('/' ~'*') => '/'\n" +
                 "    | ('*' ~'/') => '*'\n" +
                 "    | B\n" +

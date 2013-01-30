@@ -399,7 +399,6 @@ namespace AntlrUnitTests
 
         [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestSetRootWithLabel() /*throws Exception*/ {
-            // FAILS until I rebuild the antlr.g in v3 (ROOT can't follow a block after an ID assign)
             string grammar =
                 "grammar T;\n" +
                 "options {output=AST;}\n" +
@@ -409,7 +408,6 @@ namespace AntlrUnitTests
                 "WS : (' '|'\\n') {$channel=HIDDEN;} ;\n";
             string found = execParser( "T.g", grammar, "TParser", "TLexer",
                                       "a", "+abc", debug );
-            Assert.Inconclusive("Known to fail.");
             Assert.AreEqual( "(+ abc)" + NewLine, found );
         }
 

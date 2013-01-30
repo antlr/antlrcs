@@ -922,7 +922,6 @@ namespace AntlrUnitTests
         }
 
         [TestMethod][TestCategory(TestCategories.Antlr3)]
-        [Ignore]
         public void TestRewriteOfRuleRefRootListLabeled() /*throws Exception*/ {
             string grammar =
                 "grammar T;\n" +

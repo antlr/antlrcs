@@ -82,7 +82,6 @@ namespace AntlrUnitTests
         [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestMismatchedTokenError()
         {
-            Assert.Inconclusive("May be failing on just my port...");
             Grammar pg = new Grammar(
                 "parser grammar p;\n" +
                 "prog : WHILE ID LCURLY (assign)* RCURLY;\n" +
@@ -120,7 +119,6 @@ namespace AntlrUnitTests
         [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestMismatchedSetError()
         {
-            Assert.Inconclusive("May be failing on just my port...");
             Grammar pg = new Grammar(
                 "parser grammar p;\n" +
                 "prog : WHILE ID LCURLY (assign)* RCURLY;\n" +
@@ -158,7 +156,6 @@ namespace AntlrUnitTests
         [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestNoViableAltError()
         {
-            Assert.Inconclusive("May be failing on just my port...");
             Grammar pg = new Grammar(
                 "parser grammar p;\n" +
                 "prog : WHILE ID LCURLY (assign)* RCURLY;\n" +

@@ -101,7 +101,7 @@ namespace AntlrUnitTests
                 "  ;\n";
             Console.WriteLine(grammar);
             string found = execParser("T.g", grammar, "TParser", "TLexer", "a", "((i))z", false);
-            string expecting = "line 1:0 no viable alternative at input '('" + NewLine;
+            string expecting = "line 1:1 no viable alternative at input '('" + NewLine;
             string result = Regex.Replace(stderrDuringParse, ".*?/input ", "input ");
             Assert.AreEqual(expecting, result);
         }
@@ -150,7 +150,7 @@ namespace AntlrUnitTests
             Assert.IsFalse(found);
             Assert.AreEqual(
                 "[error(100): :4:27: syntax error: antlr: dangling ']'? make sure to escape with \\]]",
-                errorQueue.errors.ToString());
+                '[' + string.Join(", ", errorQueue.errors) + ']');
         }
 
         /**
@@ -178,7 +178,7 @@ namespace AntlrUnitTests
             Assert.IsFalse(success);
             Assert.AreEqual(
                 "[error(117): " + tmpdir.ToString() + Path.DirectorySeparatorChar + "T.g:6:9: missing attribute access on rule scope: x]",
-                errorQueue.errors.ToString());
+                '[' + string.Join(", ", errorQueue.errors) + ']');
         }
     }
 }
