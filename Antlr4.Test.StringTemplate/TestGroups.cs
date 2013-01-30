@@ -55,7 +55,78 @@ namespace Antlr4.Test.StringTemplate
             Assert.AreEqual(expected, result);
         }
 
-        [TestMethod][TestCategory(TestCategories.ST4)]
+        [TestMethod]
+        [TestCategory(TestCategories.ST4)]
+        public void TestEscapeOneRightAngle()
+        {
+            string dir = tmpdir;
+            writeFile(dir, "a.st", "a(x) ::= << > >>");
+            TemplateGroup group = new TemplateGroupDirectory(dir);
+            Template st = group.GetInstanceOf("a");
+            st.Add("x", "parrt");
+            string expected = " > ";
+            string result = st.Render();
+            Assert.AreEqual(expected, result);
+        }
+
+        [TestMethod]
+        [TestCategory(TestCategories.ST4)]
+        public void TestEscapeJavaRightShift()
+        {
+            string dir = tmpdir;
+            writeFile(dir, "a.st", "a(x) ::= << \\>> >>");
+            TemplateGroup group = new TemplateGroupDirectory(dir);
+            Template st = group.GetInstanceOf("a");
+            st.Add("x", "parrt");
+            string expected = " >> ";
+            string result = st.Render();
+            Assert.AreEqual(expected, result);
+        }
+
+        [TestMethod]
+        [TestCategory(TestCategories.ST4)]
+        public void TestEscapeJavaRightShift2()
+        {
+            string dir = tmpdir;
+            writeFile(dir, "a.st", "a(x) ::= << >\\> >>");
+            TemplateGroup group = new TemplateGroupDirectory(dir);
+            Template st = group.GetInstanceOf("a");
+            st.Add("x", "parrt");
+            string expected = " >> ";
+            string result = st.Render();
+            Assert.AreEqual(expected, result);
+        }
+
+        [TestMethod]
+        [TestCategory(TestCategories.ST4)]
+        public void TestEscapeJavaRightShiftAtRightEdge()
+        {
+            string dir = tmpdir;
+            writeFile(dir, "a.st", "a(x) ::= <<\\>>>"); // <<\>>>
+            TemplateGroup group = new TemplateGroupDirectory(dir);
+            Template st = group.GetInstanceOf("a");
+            st.Add("x", "parrt");
+            string expected = "\\>";
+            string result = st.Render();
+            Assert.AreEqual(expected, result);
+        }
+
+        [TestMethod]
+        [TestCategory(TestCategories.ST4)]
+        public void TestEscapeJavaRightShiftAtRightEdge2()
+        {
+            string dir = tmpdir;
+            writeFile(dir, "a.st", "a(x) ::= <<>\\>>>");
+            TemplateGroup group = new TemplateGroupDirectory(dir);
+            Template st = group.GetInstanceOf("a");
+            st.Add("x", "parrt");
+            string expected = ">>";
+            string result = st.Render();
+            Assert.AreEqual(expected, result);
+        }
+
+        [TestMethod]
+        [TestCategory(TestCategories.ST4)]
         public void TestSimpleGroupFromString()
         {
             string g =
@@ -774,6 +845,38 @@ namespace Antlr4.Test.StringTemplate
             Assert.IsNotNull(st);
             string expecting = "Foo bar";     // expect \n in output
             Assert.AreEqual(expecting, st.Render());
+        }
+
+        [TestMethod]
+        [TestCategory(TestCategories.ST4)]
+        public void TestLineBreakMissingTrailingNewline()
+        {
+            writeFile(tmpdir, "t.stg", "a(x) ::= <<<\\\\>\r\n>>"); // that is <<<\\>>> not an escaped >>
+            ErrorBuffer errors = new ErrorBuffer();
+            TemplateGroup group = new TemplateGroupFile(tmpdir + "/" + "t.stg");
+            group.Listener = errors;
+            Template st = group.GetInstanceOf("a");
+            Assert.AreEqual("t.stg 1:15: Missing newline after newline escape <\\\\>" + newline, errors.ToString());
+            st.Add("x", "parrt");
+            string expected = "";
+            string result = st.Render();
+            Assert.AreEqual(expected, result);
+        }
+
+        [TestMethod]
+        [TestCategory(TestCategories.ST4)]
+        public void TestLineBreakWithScarfedTrailingNewline()
+        {
+            writeFile(tmpdir, "t.stg", "a(x) ::= <<<\\\\>\r\n>>"); // \r\n removed as trailing whitespace
+            ErrorBuffer errors = new ErrorBuffer();
+            TemplateGroup group = new TemplateGroupFile(tmpdir + "/" + "t.stg");
+            group.Listener = errors;
+            Template st = group.GetInstanceOf("a");
+            Assert.AreEqual("t.stg 1:15: Missing newline after newline escape <\\\\>" + newline, errors.ToString());
+            st.Add("x", "parrt");
+            string expected = "";
+            string result = st.Render();
+            Assert.AreEqual(expected, result);
         }
     }
 }

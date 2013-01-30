@@ -237,11 +237,23 @@ STRING
 		{$text = $text.Replace("\\\"","\"");}
 	;
 
+/** Match <<...>> but also allow <<..<x>>> so we can have tag on end.
+ *  Escapes: >\> means >> inside of <<...>>.
+ *  Escapes: \>> means >> inside of <<...>> unless at end like <<...\>>>>.
+ *  In that case, use <%..>>%> instead.
+ */
 BIGSTRING
-	:	'<<' .* '>>'
-		// >\> is the escape to avoid end of string
+	:	'<<'
+		(	options {greedy=false;}
+		:	'\\' '>'  // \> escape
+		|	'\\' ~'>' // allow this but don't collapse in action
+		|	~'\\'
+		)*
+		'>>'
 		{
-		Text = Text.Replace(">\\>",">>");
+		string txt = Text;
+		txt = Utility.ReplaceEscapedRightAngle(txt); // replace \> with > unless <\\>
+		Text = txt;
 		}
 	;
 
