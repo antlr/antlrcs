@@ -42,7 +42,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyConfiguration( "" )]
 [assembly: AssemblyCompany( "Pixel Mine, Inc." )]
 [assembly: AssemblyProduct( "Antlr3.Runtime.Test" )]
-[assembly: AssemblyCopyright("Copyright © Sam Harwell 2011")]
+[assembly: AssemblyCopyright("Copyright © Sam Harwell 2013")]
 [assembly: AssemblyTrademark( "" )]
 [assembly: AssemblyCulture( "" )]
 [assembly: CLSCompliant( true )]
