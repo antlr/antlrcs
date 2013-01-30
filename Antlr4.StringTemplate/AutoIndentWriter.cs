@@ -241,6 +241,9 @@ namespace Antlr4.StringTemplate
                 for (int i = 0; i < wrap.Length; i++)
                 {
                     char c = wrap[i];
+                    if (c == '\r')
+                        continue;
+
                     if (c == '\n')
                     {
                         Writer.Write(_newline);
