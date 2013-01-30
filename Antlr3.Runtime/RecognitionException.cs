@@ -34,9 +34,9 @@ namespace Antlr.Runtime
 {
     using Antlr.Runtime.Tree;
 
-    using ArgumentException = System.ArgumentException;
     using ArgumentNullException = System.ArgumentNullException;
     using Exception = System.Exception;
+    using NotSupportedException = System.NotSupportedException;
     using SerializationInfo = System.Runtime.Serialization.SerializationInfo;
     using StreamingContext = System.Runtime.Serialization.StreamingContext;
 
@@ -369,6 +369,19 @@ namespace Antlr.Runtime
         protected virtual void ExtractInformationFromTreeNodeStream(ITreeNodeStream input)
         {
             this._node = input.LT(1);
+
+            object positionNode = null;
+            IPositionTrackingStream positionTrackingStream = input as IPositionTrackingStream;
+            if (positionTrackingStream != null)
+            {
+                positionNode = positionTrackingStream.GetKnownPositionElement(false);
+                if (positionNode == null)
+                {
+                    positionNode = positionTrackingStream.GetKnownPositionElement(true);
+                    this._approximateLineInfo = positionNode != null;
+                }
+            }
+
             ITokenStreamInformation streamInformation = input as ITokenStreamInformation;
             if (streamInformation != null)
             {
@@ -385,7 +398,7 @@ namespace Antlr.Runtime
             else
             {
                 ITreeAdaptor adaptor = input.TreeAdaptor;
-                IToken payload = adaptor.GetToken(_node);
+                IToken payload = adaptor.GetToken(positionNode ?? _node);
                 if (payload != null)
                 {
                     this._token = payload;
@@ -405,12 +418,13 @@ namespace Antlr.Runtime
                                 this._approximateLineInfo = true;
                                 break;
                             }
+
                             --i;
                             try
                             {
                                 priorNode = input.LT(i);
                             }
-                            catch (ArgumentException)
+                            catch (NotSupportedException)
                             {
                                 priorNode = null;
                             }

@@ -99,6 +99,7 @@
     <Compile Include="Tree\CommonTreeAdaptor.cs" />
     <Compile Include="Tree\CommonTreeNodeStream.cs" />
     <Compile Include="Tree\DotTreeGenerator.cs" />
+    <Compile Include="Tree\IPositionTrackingStream.cs" />
     <Compile Include="Tree\ITree.cs" />
     <Compile Include="Tree\ITreeAdaptor.cs" />
     <Compile Include="Tree\ITreeNodeStream.cs" />

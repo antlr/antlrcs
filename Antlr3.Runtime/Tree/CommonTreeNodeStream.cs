@@ -38,7 +38,7 @@ namespace Antlr.Runtime.Tree
     using StringBuilder = System.Text.StringBuilder;
 
     [System.Serializable]
-    public class CommonTreeNodeStream : LookaheadStream<object>, ITreeNodeStream
+    public class CommonTreeNodeStream : LookaheadStream<object>, ITreeNodeStream, IPositionTrackingStream
     {
         public const int DEFAULT_INITIAL_BUFFER_SIZE = 100;
         public const int INITIAL_CALL_STACK_SIZE = 10;
@@ -64,6 +64,17 @@ namespace Antlr.Runtime.Tree
 
         /** <summary>Tracks tree depth.  Level=0 means we're at root node level.</summary> */
         private int _level = 0;
+
+        /**
+         * Tracks the last node before the start of {@link #data} which contains
+         * position information to provide information for error reporting. This is
+         * tracked in addition to {@link #prevElement} which may or may not contain
+         * position information.
+         *
+         * @see #hasPositionInformation
+         * @see RecognitionException#extractInformationFromTreeNodeStream
+         */
+        private object _previousLocationElement;
 
         public CommonTreeNodeStream( object tree )
             : this( new CommonTreeAdaptor(), tree )
@@ -144,6 +155,7 @@ namespace Antlr.Runtime.Tree
             _it.Reset();
             _hasNilRoot = false;
             _level = 0;
+            _previousLocationElement = null;
             if ( _calls != null )
                 _calls.Clear();
         }
@@ -181,6 +193,15 @@ namespace Antlr.Runtime.Tree
             return t;
         }
 
+        public override object Dequeue()
+        {
+            object result = base.Dequeue();
+            if (_p == 0 && HasPositionInformation(PreviousElement))
+                _previousLocationElement = PreviousElement;
+
+            return result;
+        }
+
         public override bool IsEndOfFile(object o)
         {
             return TreeAdaptor.GetType(o) == CharStreamConstants.EndOfFile;
@@ -211,6 +232,44 @@ namespace Antlr.Runtime.Tree
             int ret = _calls.Pop();
             Seek( ret );
             return ret;
+        }
+
+        /**
+         * Returns an element containing position information. If {@code allowApproximateLocation} is {@code false}, then
+         * this method will return the {@code LT(1)} element if it contains position information, and otherwise return {@code null}.
+         * If {@code allowApproximateLocation} is {@code true}, then this method will return the last known element containing position information.
+         *
+         * @see #hasPositionInformation
+         */
+        public object GetKnownPositionElement(bool allowApproximateLocation)
+        {
+            object node = _data[_p];
+            if (HasPositionInformation(node))
+                return node;
+
+            if (!allowApproximateLocation)
+                return null;
+
+            for (int index = _p - 1; index >= 0; index--)
+            {
+                node = _data[index];
+                if (HasPositionInformation(node))
+                    return node;
+            }
+
+            return _previousLocationElement;
+        }
+
+        public bool HasPositionInformation(object node)
+        {
+            IToken token = TreeAdaptor.GetToken(node);
+            if (token == null)
+                return false;
+
+            if (token.Line <= 0)
+                return false;
+
+            return true;
         }
 
         #region Tree rewrite interface

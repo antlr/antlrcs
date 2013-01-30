@@ -68,5 +68,5 @@ using System.Security;
  *      the Major or Minor version is incremented.
  *   3. Revision is the Perforce changelist number associated with the release.
  */
-[assembly: AssemblyVersion("3.4.1.9004")]
-[assembly: AssemblyFileVersion("3.4.1.9004")]
+[assembly: AssemblyVersion("3.5.0.0")]
+[assembly: AssemblyFileVersion("3.5.0.0")]

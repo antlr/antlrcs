@@ -137,10 +137,7 @@ namespace Antlr.Runtime
                 state.text = null;
                 if ( input.LA( 1 ) == CharStreamConstants.EndOfFile )
                 {
-                    IToken eof = new CommonToken((ICharStream)input, CharStreamConstants.EndOfFile, TokenChannels.Default, input.Index, input.Index);
-                    eof.Line = Line;
-                    eof.CharPositionInLine = CharPositionInLine;
-                    return eof;
+                    return GetEndOfFileToken();
                 }
                 try
                 {
@@ -171,6 +168,17 @@ namespace Antlr.Runtime
                     Recover( re ); // throw out current char and try again
                 }
             }
+        }
+
+        /** Returns the EOF token (default), if you need
+         *  to return a custom token instead override this method.
+         */
+        public virtual IToken GetEndOfFileToken()
+        {
+            IToken eof = new CommonToken((ICharStream)input, CharStreamConstants.EndOfFile, TokenChannels.Default, input.Index, input.Index);
+            eof.Line = Line;
+            eof.CharPositionInLine = CharPositionInLine;
+            return eof;
         }
 
         /** <summary>

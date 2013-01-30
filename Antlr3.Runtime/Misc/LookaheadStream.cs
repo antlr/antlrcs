@@ -33,13 +33,16 @@
 namespace Antlr.Runtime.Misc
 {
     using ArgumentException = System.ArgumentException;
+    using Debug = System.Diagnostics.Debug;
     using InvalidOperationException = System.InvalidOperationException;
+    using NotSupportedException = System.NotSupportedException;
+    using ArgumentOutOfRangeException = System.ArgumentOutOfRangeException;
 
     /** <summary>
-     *  A lookahead queue that knows how to mark/release locations
-     *  in the buffer for backtracking purposes. Any markers force the FastQueue
-     *  superclass to keep all tokens until no more markers; then can reset
-     *  to avoid growing a huge buffer.
+     * A lookahead queue that knows how to mark/release locations in the buffer for
+     * backtracking purposes. Any markers force the {@link FastQueue} superclass to
+     * keep all elements until no more markers; then can reset to avoid growing a
+     * huge buffer.
      *  </summary>
      */
     public abstract class LookaheadStream<T>
@@ -47,10 +50,13 @@ namespace Antlr.Runtime.Misc
         where T : class
     {
         /** Absolute token index. It's the index of the symbol about to be
-         *  read via LT(1). Goes from 0 to numtokens.
+         *  read via {@code LT(1)}. Goes from 0 to numtokens.
          */
         private int _currentElementIndex = 0;
 
+        /**
+         * This is the {@code LT(-1)} element for the first element in {@link #data}.
+         */
         private T _previousElement;
 
         /** Track object returned by nextElement upon end of stream;
@@ -94,14 +100,17 @@ namespace Antlr.Runtime.Misc
 
         /** <summary>
          *  Implement nextElement to supply a stream of elements to this
-         *  lookahead buffer.  Return eof upon end of the stream we're pulling from.
+         *  lookahead buffer.  Return EOF upon end of the stream we're pulling from.
          *  </summary>
          */
         public abstract T NextElement();
 
         public abstract bool IsEndOfFile(T o);
 
-        /** <summary>Get and remove first element in queue; override FastQueue.remove()</summary> */
+        /** <summary>
+         * Get and remove first element in queue; override
+         * {@link FastQueue#remove()}; it's the same, just checks for backtracking.
+         * </summary> */
         public override T Dequeue()
         {
             T o = this[0];
@@ -109,6 +118,7 @@ namespace Antlr.Runtime.Misc
             // have we hit end of buffer and not backtracking?
             if ( _p == _data.Count && _markDepth == 0 )
             {
+                _previousElement = o;
                 // if so, it's an opportunity to start filling at index 0 again
                 Clear(); // size goes to 0, but retains memory
             }
@@ -119,7 +129,7 @@ namespace Antlr.Runtime.Misc
         public virtual void Consume()
         {
             SyncAhead(1);
-            _previousElement = Dequeue();
+            Dequeue();
             _currentElementIndex++;
         }
 
@@ -201,34 +211,61 @@ namespace Antlr.Runtime.Misc
 
         public virtual void Rewind( int marker )
         {
-            Seek( marker );
-            Release( marker );
+            _markDepth--;
+            int delta = _p - marker;
+            _currentElementIndex -= delta;
+            _p = marker;
         }
 
         public virtual void Rewind()
         {
-            Rewind( _lastMarker );
+            // rewind but do not release marker
+            int delta = _p - _lastMarker;
+            _currentElementIndex -= delta;
+            _p = _lastMarker;
         }
 
         /** <summary>
-         *  Seek to a 0-indexed position within data buffer.  Can't handle
-         *  case where you seek beyond end of existing buffer.  Normally used
-         *  to seek backwards in the buffer. Does not force loading of nodes.
-         *  Doesn't see to absolute position in input stream since this stream
-         *  is unbuffered. Seeks only into our moving window of elements.
+         * Seek to a 0-indexed absolute token index. Normally used to seek backwards
+         * in the buffer. Does not force loading of nodes.
          *  </summary>
+         *  <remarks>
+         * To preserve backward compatibility, this method allows seeking past the
+         * end of the currently buffered data. In this case, the input pointer will
+         * be moved but the data will only actually be loaded upon the next call to
+         * {@link #consume} or {@link #LT} for {@code k>0}.
+         *  </remarks>
          */
         public virtual void Seek( int index )
         {
-            _p = index;
+            if (index < 0)
+                throw new ArgumentOutOfRangeException("index");
+
+            int delta = _currentElementIndex - index;
+            if (_p - delta < 0)
+                throw new NotSupportedException("can't seek before the beginning of this stream's buffer");
+
+            _p -= delta;
+            _currentElementIndex = index;
         }
 
         protected virtual T LB(int k)
         {
-            if (k == 1)
+            Debug.Assert(k > 0);
+
+            int index = _p - k;
+            if (index == -1)
                 return _previousElement;
 
-            throw new ArgumentException("can't look backwards more than one token in this stream");
+            // if k>0 then we know index < data.size(). avoid the double-check for
+            // performance.
+            if (index >= 0 /*&& index < data.size()*/)
+                return _data[index];
+
+            if (index < -1)
+                throw new NotSupportedException("can't look more than one token before the beginning of this stream's buffer");
+
+            throw new NotSupportedException("can't look past the end of this stream's buffer using LB(int)");
         }
     }
 }

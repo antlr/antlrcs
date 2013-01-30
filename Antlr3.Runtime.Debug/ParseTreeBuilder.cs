@@ -58,7 +58,8 @@ namespace Antlr.Runtime.Debug
         {
             get
             {
-                return callStack.Peek();
+                ParseTree[] stack = callStack.ToArray();
+                return stack[stack.Length - 1];
             }
         }
 

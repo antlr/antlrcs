@@ -47,18 +47,18 @@ namespace Antlr.Runtime.Tree
         }
 
         /** <summary>
-         *  Get tree node at current input pointer + i ahead where i=1 is next node.
-         *  i&lt;0 indicates nodes in the past.  So LT(-1) is previous node, but
-         *  implementations are not required to provide results for k &lt; -1.
-         *  LT(0) is undefined.  For i&gt;=n, return null.
-         *  Return null for LT(0) and any index that results in an absolute address
-         *  that is negative.
+         * Get tree node at current input pointer + {@code k} ahead where
+         * {@code k==1} is next node. {@code k<0} indicates nodes in the past. So
+         * {@code LT(-1)} is previous node, but implementations are not required to
+         * provide results for {@code k < -1}. {@code LT(0)} is undefined. For
+         * {@code k<=n}, return {@code null}. Return {@code null} for {@code LT(0)}
+         * and any index that results in an absolute address that is negative.
          *  </summary>
          *
          *  <remarks>
-         *  This is analogus to the LT() method of the TokenStream, but this
-         *  returns a tree node instead of a token.  Makes code gen identical
-         *  for both parser and tree grammars. :)
+         * This is analogous to {@link TokenStream#LT}, but this returns a tree node
+         * instead of a {@link Token}. Makes code generation identical for both
+         * parser and tree grammars.
          *  </remarks>
          */
         object LT( int k );
@@ -74,10 +74,11 @@ namespace Antlr.Runtime.Tree
         }
 
         /** <summary>
-         *  If the tree associated with this stream was created from a TokenStream,
-         *  you can specify it here.  Used to do rule $text attribute in tree
-         *  parser.  Optional unless you use tree parser rule text attribute
-         *  or output=template and rewrite=true options.
+         * If the tree associated with this stream was created from a
+         * {@link TokenStream}, you can specify it here. Used to do rule
+         * {@code $text} attribute in tree parser. Optional unless you use tree
+         * parser rule {@code $text} attribute or {@code output=template} and
+         * {@code rewrite=true} options.
          *  </summary>
          */
         ITokenStream TokenStream
@@ -96,11 +97,11 @@ namespace Antlr.Runtime.Tree
         }
 
         /** <summary>
-         *  As we flatten the tree, we use UP, DOWN nodes to represent
-         *  the tree structure.  When debugging we need unique nodes
-         *  so we have to instantiate new ones.  When doing normal tree
-         *  parsing, it's slow and a waste of memory to create unique
-         *  navigation nodes.  Default should be false;
+         * As we flatten the tree, we use {@link Token#UP}, {@link Token#DOWN} nodes
+         * to represent the tree structure. When debugging we need unique nodes so
+         * we have to instantiate new ones. When doing normal tree parsing, it's
+         * slow and a waste of memory to create unique navigation nodes. Default
+         * should be {@code false}.
          *  </summary>
          */
         bool UniqueNavigationNodes
@@ -110,11 +111,11 @@ namespace Antlr.Runtime.Tree
         }
 
         /** <summary>
-         *  Return the text of all nodes from start to stop, inclusive.
-         *  If the stream does not buffer all the nodes then it can still
-         *  walk recursively from start until stop.  You can always return
-         *  null or "" too, but users should not access $ruleLabel.text in
-         *  an action of course in that case.
+         * Return the text of all nodes from {@code start} to {@code stop},
+         * inclusive. If the stream does not buffer all the nodes then it can still
+         * walk recursively from start until stop. You can always return
+         * {@code null} or {@code ""} too, but users should not access
+         * {@code $ruleLabel.text} in an action of course in that case.
          *  </summary>
          */
         string ToString( object start, object stop );
@@ -123,17 +124,18 @@ namespace Antlr.Runtime.Tree
         #region REWRITING TREES (used by tree parser)
 
         /** <summary>
-         *  Replace from start to stop child index of parent with t, which might
-         *  be a list.  Number of children may be different
-         *  after this call.  The stream is notified because it is walking the
-         *  tree and might need to know you are monkeying with the underlying
-         *  tree.  Also, it might be able to modify the node stream to avoid
-         *  restreaming for future phases.
+         * Replace children of {@code parent} from index {@code startChildIndex} to
+         * {@code stopChildIndex} with {@code t}, which might be a list. Number of
+         * children may be different after this call. The stream is notified because
+         * it is walking the tree and might need to know you are monkeying with the
+         * underlying tree. Also, it might be able to modify the node stream to
+         * avoid restreaming for future phases.
          *  </summary>
          *
          *  <remarks>
-         *  If parent is null, don't do anything; must be at root of overall tree.
-         *  Can't replace whatever points to the parent externally.  Do nothing.
+         * If {@code parent} is {@code null}, don't do anything; must be at root of
+         * overall tree. Can't replace whatever points to the parent externally. Do
+         * nothing.
          *  </remarks>
          */
         void ReplaceChildren( object parent, int startChildIndex, int stopChildIndex, object t );
