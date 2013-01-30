@@ -188,6 +188,26 @@ namespace Antlr4.Test.StringTemplate
             Assert.AreEqual(expected, result);
         }
 
+        [TestMethod]
+        [TestCategory(TestCategories.ST4)]
+        public void TestAnonymousTemplateInRegionInSubdir()
+        {
+            //fails since it makes region name /region__/g/a/_r
+            string dir = tmpdir;
+            string g = "a() ::= <<[<@r()>]>>\n" +
+                       "@a.r() ::= <<\n" +
+                       "<[\"foo\"]:{x|<x>}>\n" +
+                       ">>\n";
+            writeFile(dir, "g.stg", g);
+
+            TemplateGroup group = new TemplateGroupDirectory(dir);
+            group.Verbose = true;
+            Template st = group.GetInstanceOf("g/a");
+            string expected = "[foo]";
+            string result = st.Render();
+            Assert.AreEqual(expected, result);
+        }
+
         [TestMethod][TestCategory(TestCategories.ST4)]
         public void TestCantDefineEmbeddedRegionAgain()
         {
@@ -392,7 +412,7 @@ namespace Antlr4.Test.StringTemplate
             string dir = tmpdir;
             string g =
                     "a() ::= <<\n" +
-                    "X<@r()>Y" +
+                    "X<@r()>Y\n" +
                     ">>\n" +
                     "@a.q() ::= \"foo\"" + newline;
             ITemplateErrorListener errors = new ErrorBuffer();
@@ -402,7 +422,7 @@ namespace Antlr4.Test.StringTemplate
             Template st = group.GetInstanceOf("a");
             st.Render();
             string result = errors.ToString();
-            string expecting = "g.stg 3:3: template a doesn't have a region called q" + newline;
+            string expecting = "g.stg 4:3: template /a doesn't have a region called q" + newline;
             Assert.AreEqual(expecting, result);
         }
 

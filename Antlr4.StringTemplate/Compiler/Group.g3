@@ -40,6 +40,8 @@ tokens {
 	COMMA=',';
 	TRUE='true';
 	FALSE='false';
+	LBRACK='[';
+	RBRACK=']';
 }
 
 @lexer::namespace{Antlr4.StringTemplate.Compiler}
@@ -127,7 +129,11 @@ templateDef[string prefix]
 			template = Utility.Strip(template, n);
 			string templateName = $name.text;
 			if (prefix.Length > 0) templateName = prefix + $name.text;
-			_group.DefineTemplateOrRegion(templateName, $enclosing.text, templateToken,
+			string enclosingTemplateName = $enclosing.text;
+			if (enclosingTemplateName != null && enclosingTemplateName.Length > 0 && prefix.Length > 0)
+				enclosingTemplateName = prefix + enclosingTemplateName;
+
+			_group.DefineTemplateOrRegion(templateName, enclosingTemplateName, templateToken,
 	    								 template, $name, $formalArgs.args);
 		}
 	    }
@@ -145,6 +151,7 @@ bool hasOptionalParameter;
 formalArg[List<FormalArgument> args]
 	:	ID
 		(	'=' a=(STRING|ANONYMOUS_TEMPLATE|'true'|'false') {$formalArgs::hasOptionalParameter = true;}
+		|	'=' a='[' ']' {$formalArgs::hasOptionalParameter = true;}
 		|	{if ($formalArgs::hasOptionalParameter) _group.ErrorManager.GroupSyntaxError(ErrorType.REQUIRED_PARAMETER_AFTER_OPTIONAL, SourceName, input.LT(1));}
 		)
 		{$args.Add(new FormalArgument($ID.text, $a));}
@@ -203,6 +210,7 @@ keyValue returns [object value]
 	|	a=STRING				{$value = Utility.ReplaceEscapes(Utility.Strip($a.text, 1));}
 	|	TRUE					{$value = true;}
 	|	FALSE					{$value = false;}
+	|	'[' ']'					{$value = new object[0];}
 	|	{input.LT(1).Text.Equals("key")}?=> ID
 								{$value = TemplateGroup.DictionaryKey;}
 	;
@@ -230,18 +238,19 @@ STRING
 	;
 
 BIGSTRING
-	:	'<<'
-		(	options {greedy=false;}
-		:	'\\' '>'  // \> escape
-		|	'\\' ~'>'
-		|	~'\\'
-		)*
-        '>>'
-        {Text = Text.Replace("\\>",">");}
+	:	'<<' .* '>>'
+		// >\> is the escape to avoid end of string
+		{
+		Text = Text.Replace(">\\>",">>");
+		}
 	;
 
 BIGSTRING_NO_NL // same as BIGSTRING but means ignore newlines later
 	:	'<%' .* '%>'
+		// %\> is the escape to avoid end of string
+		{
+		Text = Text.Replace("\%\\>","\%>");
+		}
 	;
 
 ANONYMOUS_TEMPLATE

@@ -32,10 +32,12 @@
 
 namespace Antlr4.Test.StringTemplate
 {
-    using System.Runtime.CompilerServices;
     using Antlr4.StringTemplate;
     using Antlr4.StringTemplate.Misc;
     using Microsoft.VisualStudio.TestTools.UnitTesting;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Runtime.CompilerServices;
     using Path = System.IO.Path;
 
     [TestClass]
@@ -699,6 +701,29 @@ namespace Antlr4.Test.StringTemplate
             Assert.AreEqual("group2", stb.impl.NativeGroup.Name);
         }
 
+        [TestMethod]
+        [TestCategory(TestCategories.ST4)]
+        public void TestGetTemplateNames()
+        {
+            string templates =
+                "t() ::= \"foo\"\n" +
+                "main() ::= \"<t()>\"";
+            writeFile(tmpdir, "t.stg", templates);
+
+            TemplateGroup group = new TemplateGroupFile(tmpdir + "/t.stg");
+            // try to get an undefined template.
+            // This will add an entry to the "templates" field in STGroup, however
+            // this should not be returned.
+            group.LookupTemplate("t2");
+
+            HashSet<string> names = group.GetTemplateNames();
+
+            // Should only contain "t" and "main" (not "t2")
+            Assert.AreEqual(2, names.Count);
+            CollectionAssert.Contains(names.ToList(), "/t");
+            CollectionAssert.Contains(names.ToList(), "/main");
+        }
+
         [TestMethod][TestCategory(TestCategories.ST4)]
         public void TestUnloadWithImports()
         {
@@ -715,6 +740,40 @@ namespace Antlr4.Test.StringTemplate
             group.Unload();
             st = group.GetInstanceOf("main");
             Assert.AreEqual("v2-g2;f2", st.Render());
+        }
+
+        [TestMethod]
+        [TestCategory(TestCategories.ST4)]
+        public void TestLineBreakInGroup()
+        {
+            string templates =
+                "t() ::= <<" + newline +
+                "Foo <\\\\>" + newline +
+                "  \t  bar" + newline +
+                ">>" + newline;
+            writeFile(tmpdir, "t.stg", templates);
+            TemplateGroup group = new TemplateGroupFile(tmpdir + Path.DirectorySeparatorChar + "t.stg");
+            Template st = group.GetInstanceOf("t");
+            Assert.IsNotNull(st);
+            string expecting = "Foo bar";     // expect \n in output
+            Assert.AreEqual(expecting, st.Render());
+        }
+
+        [TestMethod]
+        [TestCategory(TestCategories.ST4)]
+        public void TestLineBreakInGroup2()
+        {
+            string templates =
+                "t() ::= <<" + newline +
+                "Foo <\\\\>       " + newline +
+                "  \t  bar" + newline +
+                ">>" + newline;
+            writeFile(tmpdir, "t.stg", templates);
+            TemplateGroup group = new TemplateGroupFile(tmpdir + Path.DirectorySeparatorChar + "t.stg");
+            Template st = group.GetInstanceOf("t");
+            Assert.IsNotNull(st);
+            string expecting = "Foo bar";     // expect \n in output
+            Assert.AreEqual(expecting, st.Render());
         }
     }
 }

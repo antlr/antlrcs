@@ -35,6 +35,7 @@ namespace Antlr4.Test.StringTemplate
     using System.Runtime.CompilerServices;
     using Antlr4.StringTemplate;
     using Microsoft.VisualStudio.TestTools.UnitTesting;
+    using ErrorBuffer = Antlr4.StringTemplate.Misc.ErrorBuffer;
     using Path = System.IO.Path;
 
     [TestClass]
@@ -78,6 +79,7 @@ namespace Antlr4.Test.StringTemplate
                 subdir
                     a.st
                     b.st
+                    c.st
              */
             string dir = tmpdir;
             string gstr =
@@ -85,15 +87,20 @@ namespace Antlr4.Test.StringTemplate
                 "a() ::= <<dir1 a>>\n";
             writeFile(dir, "g.stg", gstr);
 
-            string a = "a() ::= <<dir2 a>>\n";
-            string b = "b() ::= <<dir2 b>>\n";
+            string a = "a() ::= <<subdir a>>\n";
+            string b = "b() ::= <<subdir b>>\n";
+            string c = "c() ::= <<subdir b>>\n";
             writeFile(dir, Path.Combine("subdir", "a.st"), a);
             writeFile(dir, Path.Combine("subdir", "b.st"), b);
+            writeFile(dir, Path.Combine("subdir", "c.st"), c);
 
             TemplateGroup group = new TemplateGroupFile(Path.Combine(dir, "g.stg"));
             Template st = group.GetInstanceOf("b"); // visible only if import worked
-            string expected = "dir2 b";
+            string expected = "subdir b";
             string result = st.Render();
+            Assert.AreEqual(expected, result);
+            st = group.GetInstanceOf("c");
+            result = st.Render();
             Assert.AreEqual(expected, result);
         }
 
@@ -409,6 +416,79 @@ namespace Antlr4.Test.StringTemplate
             Assert.AreEqual(originalHashCode2 == newHashCode2, false); // diff objects
             result = st.Render();
             expected = "dir1 b";
+            Assert.AreEqual(expected, result);
+        }
+
+        [TestMethod]
+        [TestCategory(TestCategories.ST4)]
+        public void TestUnloadImportedTemplatedSpecifiedInGroupFile()
+        {
+            writeFile(tmpdir, "t.stg",
+                    "import \"g1.stg\"\n\nmain() ::= <<\nv1-<f()>\n>>");
+            writeFile(tmpdir, "g1.stg", "f() ::= \"g1\"");
+            writeFile(tmpdir, "g2.stg", "f() ::= \"g2\"\nf2() ::= \"f2\"\n");
+            TemplateGroup group = new TemplateGroupFile(tmpdir + "/t.stg");
+            Template st = group.GetInstanceOf("main");
+            Assert.AreEqual("v1-g1", st.Render());
+
+            // Change the imports of group t.
+            writeFile(tmpdir, "t.stg",
+                    "import \"g2.stg\"\n\nmain() ::= <<\nv2-<f()>;<f2()>\n>>");
+            group.Unload(); // will also unload already imported groups
+            st = group.GetInstanceOf("main");
+            Assert.AreEqual("v2-g2;f2", st.Render());
+        }
+
+        /** Cannot import from a group file unless it's the root.
+         */
+        [TestMethod]
+        [TestCategory(TestCategories.ST4)]
+        public void TestGroupFileInDirImportsAnotherGroupFile()
+        {
+            // /randomdir/group.stg with a() imports /randomdir/imported.stg with b()
+            // can't have groupdir then groupfile inside that imports
+            string dir = tmpdir;
+            string groupFile =
+                "import \"imported.stg\"\n" +
+                "a() ::= \"a: <b()>\"\n";
+            writeFile(dir, "group.stg", groupFile);
+            string importedFile =
+                "b() ::= \"b\"\n";
+            writeFile(dir, "imported.stg", importedFile);
+            ITemplateErrorListener errors = new ErrorBuffer();
+            TemplateGroup group = new TemplateGroupDirectory(dir);
+            group.Listener = errors;
+            group.GetInstanceOf("/group/a");
+            string result = errors.ToString();
+            string substring =
+                "import illegal in group files embedded in TemplateGroupDirectory; import \"imported.stg\" in TemplateGroupDirectory";
+            StringAssert.Contains(result, substring);
+        }
+
+        [TestMethod]
+        [TestCategory(TestCategories.ST4)]
+        public void TestGroupFileInDirImportsAGroupDir()
+        {
+            /*
+            dir
+                g.stg has a() that imports subdir with relative path
+                subdir
+                    b.st
+                    c.st
+             */
+            string dir = tmpdir;
+            string gstr =
+                "import \"subdir\"\n" + // finds subdir in dir
+                "a() ::= \"a: <b()>\"\n";
+            writeFile(dir, "g.stg", gstr);
+
+            writeFile(dir, "subdir/b.st", "b() ::= \"b: <c()>\"\n");
+            writeFile(dir, "subdir/c.st", "c() ::= <<subdir c>>\n");
+
+            TemplateGroup group = new TemplateGroupFile(dir + "/g.stg");
+            Template st = group.GetInstanceOf("a");
+            string expected = "a: b: subdir c";
+            string result = st.Render();
             Assert.AreEqual(expected, result);
         }
     }

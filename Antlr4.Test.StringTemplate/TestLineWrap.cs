@@ -157,7 +157,7 @@ namespace Antlr4.Test.StringTemplate
         public void TestLineWrapEdgeCase()
         {
             string templates =
-                    "duh(chars) ::= <<<chars; wrap=\"\\n\"\\>>>" + newline;
+                    "duh(chars) ::= <<<chars; wrap=\"\\n\">\\>>" + newline;
             writeFile(tmpdir, "t.stg", templates);
             TemplateGroup group = new TemplateGroupFile(Path.Combine(tmpdir, "t.stg"));
 
@@ -174,7 +174,7 @@ namespace Antlr4.Test.StringTemplate
         public void TestLineWrapLastCharIsNewline()
         {
             string templates =
-                    "duh(chars) ::= <<<chars; wrap=\"\\n\"\\>>>" + newline;
+                    "duh(chars) ::= <<<chars; wrap=\"\\n\">\\>>" + newline;
             writeFile(tmpdir, "t.stg", templates);
             TemplateGroup group = new TemplateGroupFile(Path.Combine(tmpdir, "t.stg"));
 
@@ -191,7 +191,7 @@ namespace Antlr4.Test.StringTemplate
         public void TestLineWrapCharAfterWrapIsNewline()
         {
             string templates =
-                    "duh(chars) ::= <<<chars; wrap=\"\\n\"\\>>>" + newline;
+                    "duh(chars) ::= <<<chars; wrap=\"\\n\">\\>>" + newline;
             writeFile(tmpdir, "t.stg", templates);
             TemplateGroup group = new TemplateGroupFile(Path.Combine(tmpdir, "t.stg"));
 
@@ -284,7 +284,7 @@ namespace Antlr4.Test.StringTemplate
         public void TestIndentBeyondLineWidth()
         {
             string templates =
-                    "duh(chars) ::= <<    <chars; wrap=\"\\n\"\\>>>" + newline;
+                    "duh(chars) ::= <<    <chars; wrap=\"\\n\">\\>>" + newline;
             writeFile(tmpdir, "t.stg", templates);
             TemplateGroup group = new TemplateGroupFile(Path.Combine(tmpdir, "t.stg"));
 
@@ -304,7 +304,7 @@ namespace Antlr4.Test.StringTemplate
         public void TestIndentedExpr()
         {
             string templates =
-                    "duh(chars) ::= <<    <chars; wrap=\"\\n\"\\>>>" + newline;
+                    "duh(chars) ::= <<    <chars; wrap=\"\\n\">\\>>" + newline;
             writeFile(tmpdir, "t.stg", templates);
             TemplateGroup group = new TemplateGroupFile(Path.Combine(tmpdir, "t.stg"));
 
@@ -324,7 +324,7 @@ namespace Antlr4.Test.StringTemplate
         {
             string templates =
                     "top(d) ::= <<  <d>!>>" + newline +
-                    "duh(chars) ::= <<  <chars; wrap=\"\\n\"\\>>>" + newline;
+                    "duh(chars) ::= <<  <chars; wrap=\"\\n\">\\>>" + newline;
             writeFile(tmpdir, "t.stg", templates);
             TemplateGroup group = new TemplateGroupFile(Path.Combine(tmpdir, "t.stg"));
 
@@ -345,7 +345,7 @@ namespace Antlr4.Test.StringTemplate
         {
             string templates =
                     "top(d) ::= <<  <d>!>>" + newline +
-                    "duh(chars) ::= <<x: <chars; anchor, wrap=\"\\n\"\\>>>" + newline;
+                    "duh(chars) ::= <<x: <chars; anchor, wrap=\"\\n\">\\>>" + newline;
             writeFile(tmpdir, "t.stg", templates);
             TemplateGroup group = new TemplateGroupFile(Path.Combine(tmpdir, "t.stg"));
 
@@ -402,7 +402,7 @@ namespace Antlr4.Test.StringTemplate
         {
             string templates =
                     "top(arrays) ::= <<Arrays: <arrays>done>>" + newline +
-                    "array(values) ::= <<int[] a = { <values; anchor, wrap=\"\\n\", separator=\",\"> };<\\n\\>>>" + newline;
+                    "array(values) ::= <<int[] a = { <values; anchor, wrap=\"\\n\", separator=\",\"> };<\\n>\\>>" + newline;
             writeFile(tmpdir, "t.stg", templates);
             TemplateGroup group = new TemplateGroupFile(Path.Combine(tmpdir, "t.stg"));
 

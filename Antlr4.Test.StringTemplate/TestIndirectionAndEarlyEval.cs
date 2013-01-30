@@ -35,6 +35,7 @@ namespace Antlr4.Test.StringTemplate
     using Antlr4.StringTemplate;
     using Microsoft.VisualStudio.TestTools.UnitTesting;
     using System.Collections.Generic;
+    using ErrorBuffer = Antlr4.StringTemplate.Misc.ErrorBuffer;
 
     [TestClass]
     public class TestIndirectionAndEarlyEval : BaseTest
@@ -76,6 +77,25 @@ namespace Antlr4.Test.StringTemplate
             string expected = "12";
             string result = st.Render();
             Assert.AreEqual(expected, result);
+        }
+
+        [TestMethod]
+        [TestCategory(TestCategories.ST4)]
+        public void TestIndirectCallWithPassThru()
+        {
+            // pass-through for dynamic template invocation is not supported by the
+            // bytecode representation
+            writeFile(tmpdir, "t.stg",
+                "t1(x) ::= \"<x>\"\n" +
+                "main(x=\"hello\",t=\"t1\") ::= <<\n" +
+                "<(t)(...)>\n" +
+                ">>");
+            TemplateGroup group = new TemplateGroupFile(tmpdir + "/t.stg");
+            ErrorBuffer errors = new ErrorBuffer();
+            group.Listener = errors;
+            Template st = group.GetInstanceOf("main");
+            Assert.AreEqual("t.stg 2:34: mismatched input '...' expecting RPAREN" + newline, errors.ToString());
+            Assert.IsNull(st);
         }
 
         [TestMethod][TestCategory(TestCategories.ST4)]

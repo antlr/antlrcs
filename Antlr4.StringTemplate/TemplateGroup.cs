@@ -77,6 +77,9 @@ namespace Antlr4.StringTemplate
      */
     public class TemplateGroup
     {
+        public static readonly string GroupFileExtension = ".stg";
+        public static readonly string TemplateFileExtension = ".st";
+
         /** When we use key as a value in a dictionary, this is how we signify. */
         public static readonly string DictionaryKey = "key";
         public static readonly string DefaultKey = "default";
@@ -837,8 +840,8 @@ namespace Antlr4.StringTemplate
             fileName = Utility.Strip(fileName, 1);
 
             //Console.WriteLine("import {0}", fileName);
-            bool isGroupFile = fileName.EndsWith(".stg");
-            bool isTemplateFile = fileName.EndsWith(".st");
+            bool isGroupFile = fileName.EndsWith(GroupFileExtension);
+            bool isTemplateFile = fileName.EndsWith(TemplateFileExtension);
             bool isGroupDir = !(isGroupFile || isTemplateFile);
 
             TemplateGroup g = null;
@@ -931,7 +934,12 @@ namespace Antlr4.StringTemplate
         /** Load a group file with full path fileName; it's relative to root by prefix. */
         public virtual void LoadGroupFile(string prefix, string fileName)
         {
-            //System.out.println("load group file prefix="+prefix+", fileName="+fileName);
+            if (Verbose)
+            {
+                Console.Out.WriteLine("{0}.LoadGroupFile(prefix={1}, fileName={2})",
+                    GetType().FullName, prefix, fileName);
+            }
+
             GroupParser parser = null;
             try
             {
@@ -963,10 +971,10 @@ namespace Antlr4.StringTemplate
             catch (Exception e)
             {
                 e.PreserveStackTrace();
-                if (!e.IsCritical())
-                    ErrorManager.IOError(null, ErrorType.CANT_LOAD_GROUP_FILE, e, fileName);
+                if (e.IsCritical())
+                    throw;
 
-                throw;
+                ErrorManager.IOError(null, ErrorType.CANT_LOAD_GROUP_FILE, e, fileName);
             }
         }
 
@@ -1709,7 +1717,7 @@ namespace Antlr4.StringTemplate
          *  The prefix is path from group root to unqualifiedFileName like /subdir
          *  if file is in /subdir/a.st
          */
-        public CompiledTemplate LoadTemplateFile(string prefix, string unqualifiedFileName, ICharStream templateStream)
+        public virtual CompiledTemplate LoadTemplateFile(string prefix, string unqualifiedFileName, ICharStream templateStream)
         {
             GroupLexer lexer = new GroupLexer(templateStream);
             CommonTokenStream tokens = new CommonTokenStream(lexer);
@@ -1926,6 +1934,20 @@ namespace Antlr4.StringTemplate
             {
                 ErrorManager = new ErrorManager(value);
             }
+        }
+
+
+        public virtual HashSet<string> GetTemplateNames()
+        {
+            Load();
+            HashSet<string> result = new HashSet<string>();
+            foreach (KeyValuePair<string, CompiledTemplate> e in templates)
+            {
+                if (e.Value != NotFoundTemplate)
+                    result.Add(e.Key);
+            }
+
+            return result;
         }
     }
 }

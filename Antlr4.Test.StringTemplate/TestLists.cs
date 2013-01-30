@@ -169,7 +169,7 @@ namespace Antlr4.Test.StringTemplate
                 );
             e.Add("phones", "1");
             e.Add("phones", "2");
-            string expecting = "foo, foo";  // only one since template application gives nothing
+            string expecting = "foo, foo";
             Assert.AreEqual(expecting, e.Render());
         }
 
@@ -216,6 +216,19 @@ namespace Antlr4.Test.StringTemplate
             string expecting = "*Ter**Tom**1**2*";
             string result = e.Render();
             Assert.AreEqual(expecting, result);
+        }
+
+        [TestMethod]
+        [TestCategory(TestCategories.ST4)]
+        public void TestListWithTwoEmptyListsCollapsesToEmptyList()
+        {
+            Template e = new Template(
+                "<[[],[]]:{x | <x>!}; separator=\", \">"
+            );
+            e.Add("names", "Ter");
+            e.Add("names", "Tom");
+            string expecting = "";
+            Assert.AreEqual(expecting, e.Render());
         }
     }
 }

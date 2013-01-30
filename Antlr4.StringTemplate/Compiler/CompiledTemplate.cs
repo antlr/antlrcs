@@ -42,6 +42,8 @@ namespace Antlr4.StringTemplate.Compiler
     using ArgumentException = System.ArgumentException;
     using ArgumentNullException = System.ArgumentNullException;
     using Console = System.Console;
+    using Math = System.Math;
+    using NotSupportedException = System.NotSupportedException;
     using StringWriter = System.IO.StringWriter;
 
     /** The result of compiling an Template.  Contains all the bytecode instructions,
@@ -321,19 +323,19 @@ namespace Antlr4.StringTemplate.Compiler
             {
                 if (IsAnonSubtemplate)
                 {
-                    Interval start = sourceMap[0];
-                    Interval stop = null;
-                    for (int i = sourceMap.Length - 1; i >= 0; i--)
+                    int start = int.MaxValue;
+                    int stop = int.MinValue;
+                    foreach (Interval interval in sourceMap)
                     {
-                        Interval interval = sourceMap[i];
-                        if (interval != null)
-                        {
-                            stop = interval;
-                            break;
-                        }
+                        if (interval == null)
+                            continue;
+
+                        start = Math.Min(start, interval.Start);
+                        stop = Math.Max(stop, interval.End);
                     }
 
-                    return Interval.FromBounds(start.Start, stop.End);
+                    if (start <= stop + 1)
+                        return new Interval(start, stop);
                 }
 
                 return new Interval(0, Template.Length);
@@ -379,23 +381,32 @@ namespace Antlr4.StringTemplate.Compiler
             {
                 if (fa.DefaultValueToken != null)
                 {
-                    if (fa.DefaultValueToken.Type == GroupParser.ANONYMOUS_TEMPLATE)
+                    switch (fa.DefaultValueToken.Type)
                     {
+                    case GroupParser.ANONYMOUS_TEMPLATE:
                         string argSTname = fa.Name + "_default_value";
                         TemplateCompiler c2 = new TemplateCompiler(group);
                         string defArgTemplate = Utility.Strip(fa.DefaultValueToken.Text, 1);
                         fa.CompiledDefaultValue = c2.Compile(group.FileName, argSTname, null, defArgTemplate, fa.DefaultValueToken);
                         fa.CompiledDefaultValue.Name = argSTname;
                         fa.CompiledDefaultValue.DefineImplicitlyDefinedTemplates(group);
-                    }
-                    else if (fa.DefaultValueToken.Type == GroupParser.STRING)
-                    {
+                        break;
+
+                    case GroupParser.STRING:
                         fa.DefaultValue = Utility.Strip(fa.DefaultValueToken.Text, 1);
-                    }
-                    else
-                    {
-                        // true or false
+                        break;
+
+                    case GroupParser.LBRACK:
+                        fa.DefaultValue = new object[0];
+                        break;
+
+                    case GroupParser.TRUE:
+                    case GroupParser.FALSE:
                         fa.DefaultValue = fa.DefaultValueToken.Type == GroupParser.TRUE;
+                        break;
+
+                    default:
+                        throw new NotSupportedException("Unexpected default value token type.");
                     }
                 }
             }

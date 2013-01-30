@@ -125,7 +125,7 @@ namespace Antlr4.Test.StringTemplate
             string result = st.Render();
             Assert.AreEqual(expected, result);
 
-            Assert.IsTrue(names.Count == 2); // my names list is still just 2
+            Assert.AreEqual(2, names.Count); // my names list is still just 2
         }
 
         [TestMethod][TestCategory(TestCategories.ST4)]
@@ -640,6 +640,42 @@ namespace Antlr4.Test.StringTemplate
             Assert.AreEqual(expected, result);
         }
 
+        [TestMethod]
+        [TestCategory(TestCategories.ST4)]
+        public void TestRepeatedMapWithNullValue()
+        {
+            TemplateGroup group = new TemplateGroup();
+            group.DefineTemplate("a", "[<x>]", new string[] { "x" });
+            group.DefineTemplate("b", "(<x>)", new string[] { "x" });
+            group.DefineTemplate("test", "hi <name:a():b()>!", new string[] { "name" });
+            Template st = group.GetInstanceOf("test");
+            st.Add("name", "Ter");
+            st.Add("name", null);
+            st.Add("name", "Sumana");
+            string expected =
+                "hi ([Ter])([Sumana])!";
+            string result = st.Render();
+            Assert.AreEqual(expected, result);
+        }
+
+        [TestMethod]
+        [TestCategory(TestCategories.ST4)]
+        public void TestRepeatedMapWithNullValueAndNullOption()
+        {
+            TemplateGroup group = new TemplateGroup();
+            group.DefineTemplate("a", "[<x>]", new string[] { "x" });
+            group.DefineTemplate("b", "(<x>)", new string[] { "x" });
+            group.DefineTemplate("test", "hi <name:a():b(); null={x}>!", new string[] { "name" });
+            Template st = group.GetInstanceOf("test");
+            st.Add("name", "Ter");
+            st.Add("name", null);
+            st.Add("name", "Sumana");
+            string expected =
+                "hi ([Ter])x([Sumana])!";
+            string result = st.Render();
+            Assert.AreEqual(expected, result);
+        }
+
         [TestMethod][TestCategory(TestCategories.ST4)]
         public void TestRoundRobinMap()
         {
@@ -988,6 +1024,79 @@ namespace Antlr4.Test.StringTemplate
             st.Add("names", new List<string>() { "Ter", "Tom" });
             string expected =
                 "case Ter, case Tom";
+            string result = st.Render();
+            Assert.AreEqual(expected, result);
+        }
+
+        [TestMethod]
+        [TestCategory(TestCategories.ST4)]
+        public void TestSeparatorInList2()
+        {
+            TemplateGroup group = new TemplateGroup();
+            group.DefineTemplate("test", "<names:{n | case <n>}; separator=\", \">", new string[] { "names" });
+            Template st = group.GetInstanceOf("test");
+            st.Add("names", "Ter");
+            st.Add("names", new List<string>(new string[] { "Tom", "Sriram" }));
+            string expected =
+                "case Ter, case Tom, case Sriram";
+            string result = st.Render();
+            Assert.AreEqual(expected, result);
+        }
+
+        [TestMethod]
+        [TestCategory(TestCategories.ST4)]
+        public void TestSeparatorInArray()
+        {
+            TemplateGroup group = new TemplateGroup();
+            group.DefineTemplate("test", "<names:{n | case <n>}; separator=\", \">", new string[] { "names" });
+            Template st = group.GetInstanceOf("test");
+            st.Add("names", new string[] { "Ter", "Tom" });
+            string expected =
+                "case Ter, case Tom";
+            string result = st.Render();
+            Assert.AreEqual(expected, result);
+        }
+
+        [TestMethod]
+        [TestCategory(TestCategories.ST4)]
+        public void TestSeparatorInArray2()
+        {
+            TemplateGroup group = new TemplateGroup();
+            group.DefineTemplate("test", "<names:{n | case <n>}; separator=\", \">", new string[] { "names" });
+            Template st = group.GetInstanceOf("test");
+            st.Add("names", "Ter");
+            st.Add("names", new string[] { "Tom", "Sriram" });
+            string expected =
+                "case Ter, case Tom, case Sriram";
+            string result = st.Render();
+            Assert.AreEqual(expected, result);
+        }
+
+        [TestMethod]
+        [TestCategory(TestCategories.ST4)]
+        public void TestSeparatorInPrimitiveArray()
+        {
+            TemplateGroup group = new TemplateGroup();
+            group.DefineTemplate("test", "<names:{n | case <n>}; separator=\", \">", new string[] { "names" });
+            Template st = group.GetInstanceOf("test");
+            st.Add("names", new int[] { 0, 1 });
+            string expected =
+                "case 0, case 1";
+            string result = st.Render();
+            Assert.AreEqual(expected, result);
+        }
+
+        [TestMethod]
+        [TestCategory(TestCategories.ST4)]
+        public void TestSeparatorInPrimitiveArray2()
+        {
+            TemplateGroup group = new TemplateGroup();
+            group.DefineTemplate("test", "<names:{n | case <n>}; separator=\", \">", new string[] { "names" });
+            Template st = group.GetInstanceOf("test");
+            st.Add("names", 0);
+            st.Add("names", new int[] { 1, 2 });
+            string expected =
+                "case 0, case 1, case 2";
             string result = st.Render();
             Assert.AreEqual(expected, result);
         }

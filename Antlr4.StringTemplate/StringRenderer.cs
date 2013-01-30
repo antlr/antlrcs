@@ -33,6 +33,7 @@
 namespace Antlr4.StringTemplate
 {
     using CultureInfo = System.Globalization.CultureInfo;
+    using Encoding = System.Text.Encoding;
     using HttpUtility = Antlr4.StringTemplate.Misc.HttpUtility;
     using SecurityElement = System.Security.SecurityElement;
 
@@ -58,12 +59,12 @@ namespace Antlr4.StringTemplate
                 return s.Length > 0 ? char.ToUpper(s[0], culture) + s.Substring(1) : s;
 
             if (formatString.Equals("url-encode"))
-                return HttpUtility.UrlEncode(s);
+                return HttpUtility.UrlEncode(s, Encoding.UTF8);
 
             if (formatString.Equals("xml-encode"))
                 return SecurityElement.Escape(s);
 
-            return string.Format(formatString, s);
+            return string.Format(culture, formatString, s);
         }
     }
 }

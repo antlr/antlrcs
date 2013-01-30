@@ -51,6 +51,7 @@
     <Compile Include="TestCategories.cs" />
     <Compile Include="TestNoNewlineTemplates.cs" />
     <Compile Include="TestTemplateNames.cs" />
+    <Compile Include="TestTemplateRawGroupDirectory.cs" />
     <Compile Include="TestVisualizer.cs" />
   </ItemGroup>
   <ItemGroup>

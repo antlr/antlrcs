@@ -41,29 +41,45 @@ namespace Antlr4.StringTemplate.Misc
         /// <summary>
         /// token inside group file
         /// </summary>
-        private readonly IToken token;
-        private readonly string srcName;
+        private readonly IToken _token;
+        private readonly string _sourceName;
 
-        public TemplateGroupCompiletimeMessage(ErrorType error, string srcName, IToken t)
-            : this(error, srcName, t, null, null, null)
+        public TemplateGroupCompiletimeMessage(ErrorType error, string sourceName, IToken token)
+            : this(error, sourceName, token, null, null, null)
         {
         }
 
-        public TemplateGroupCompiletimeMessage(ErrorType error, string srcName, IToken t, Exception cause)
-            : this(error, srcName, t, cause, null, null)
+        public TemplateGroupCompiletimeMessage(ErrorType error, string sourceName, IToken token, Exception cause)
+            : this(error, sourceName, token, cause, null, null)
         {
         }
 
-        public TemplateGroupCompiletimeMessage(ErrorType error, string srcName, IToken t, Exception cause, object arg)
-            : this(error, srcName, t, cause, arg, null)
+        public TemplateGroupCompiletimeMessage(ErrorType error, string sourceName, IToken token, Exception cause, object arg)
+            : this(error, sourceName, token, cause, arg, null)
         {
         }
 
-        public TemplateGroupCompiletimeMessage(ErrorType error, string srcName, IToken t, Exception cause, object arg, object arg2)
+        public TemplateGroupCompiletimeMessage(ErrorType error, string sourceName, IToken token, Exception cause, object arg, object arg2)
             : base(error, null, cause, arg, arg2)
         {
-            this.token = t;
-            this.srcName = srcName;
+            this._token = token;
+            this._sourceName = sourceName;
+        }
+
+        public IToken Token
+        {
+            get
+            {
+                return _token;
+            }
+        }
+
+        public string SourceName
+        {
+            get
+            {
+                return _sourceName;
+            }
         }
 
         public override string ToString()
@@ -71,10 +87,10 @@ namespace Antlr4.StringTemplate.Misc
             RecognitionException re = (RecognitionException)Cause;
             int line = 0;
             int charPos = -1;
-            if (token != null)
+            if (_token != null)
             {
-                line = token.Line;
-                charPos = token.CharPositionInLine;
+                line = _token.Line;
+                charPos = _token.CharPositionInLine;
             }
             else if (re != null)
             {
@@ -83,9 +99,9 @@ namespace Antlr4.StringTemplate.Misc
             }
 
             string filepos = line + ":" + charPos;
-            if (srcName != null)
+            if (_sourceName != null)
             {
-                return srcName + " " + filepos + ": " + string.Format(Error.Message, Arg, Arg2);
+                return _sourceName + " " + filepos + ": " + string.Format(Error.Message, Arg, Arg2);
             }
 
             return filepos + ": " + string.Format(Error.Message, Arg, Arg2);

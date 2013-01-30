@@ -106,11 +106,6 @@ namespace Antlr4.StringTemplate.Compiler
             CompilationState.Emit2(opAST, opcode, s, arg2);
         }
 
-        public void emit(Bytecode opcode)
-        {
-            CompilationState.Emit(opcode);
-        }
-
         public void emit(CommonTree opAST, Bytecode opcode)
         {
             CompilationState.Emit(opAST, opcode);

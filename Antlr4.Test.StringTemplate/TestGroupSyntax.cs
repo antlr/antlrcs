@@ -196,6 +196,74 @@ namespace Antlr4.Test.StringTemplate
             Assert.AreEqual(expected, result);
         }
 
+        [TestMethod]
+        [TestCategory(TestCategories.ST4)]
+        public void TestDefaultValueBehaviorTrue()
+        {
+            string templates =
+                "t(a=true) ::= <<\n" +
+                "<a><if(a)>+<else>-<endif>\n" +
+                ">>\n";
+
+            writeFile(tmpdir, "t.stg", templates);
+            TemplateGroup group = new TemplateGroupFile(tmpdir + Path.DirectorySeparatorChar + "t.stg");
+            Template st = group.GetInstanceOf("t");
+            string expected = "true+";
+            string result = st.Render();
+            Assert.AreEqual(expected, result);
+        }
+
+        [TestMethod]
+        [TestCategory(TestCategories.ST4)]
+        public void TestDefaultValueBehaviorFalse()
+        {
+            string templates =
+                "t(a=false) ::= <<\n" +
+                "<a><if(a)>+<else>-<endif>\n" +
+                ">>\n";
+
+            writeFile(tmpdir, "t.stg", templates);
+            TemplateGroup group = new TemplateGroupFile(tmpdir + Path.DirectorySeparatorChar + "t.stg");
+            Template st = group.GetInstanceOf("t");
+            string expected = "false-";
+            string result = st.Render();
+            Assert.AreEqual(expected, result);
+        }
+
+        [TestMethod]
+        [TestCategory(TestCategories.ST4)]
+        public void TestDefaultValueBehaviorEmptyTemplate()
+        {
+            string templates =
+                "t(a={}) ::= <<\n" +
+                "<a><if(a)>+<else>-<endif>\n" +
+                ">>\n";
+
+            writeFile(tmpdir, "t.stg", templates);
+            TemplateGroup group = new TemplateGroupFile(tmpdir + Path.DirectorySeparatorChar + "t.stg");
+            Template st = group.GetInstanceOf("t");
+            string expected = "+";
+            string result = st.Render();
+            Assert.AreEqual(expected, result);
+        }
+
+        [TestMethod]
+        [TestCategory(TestCategories.ST4)]
+        public void TestDefaultValueBehaviorEmptyList()
+        {
+            string templates =
+                "t(a=[]) ::= <<\n" +
+                "<a><if(a)>+<else>-<endif>\n" +
+                ">>\n";
+
+            writeFile(tmpdir, "t.stg", templates);
+            TemplateGroup group = new TemplateGroupFile(tmpdir + Path.DirectorySeparatorChar + "t.stg");
+            Template st = group.GetInstanceOf("t");
+            string expected = "-";
+            string result = st.Render();
+            Assert.AreEqual(expected, result);
+        }
+
         [TestMethod][TestCategory(TestCategories.ST4)]
         public void TestNestedTemplateInGroupFile()
         {

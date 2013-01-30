@@ -469,5 +469,157 @@ namespace Antlr4.Test.StringTemplate
             string result = st.Render();
             Assert.AreEqual(expected, result);
         }
+
+        [TestMethod]
+        [TestCategory(TestCategories.ST4)]
+        public void TestStringsInDictionary()
+        {
+            string templates =
+                "auxMap ::= [\n" +
+                "   \"E\": \"electric <field>\",\n" +
+                "   \"I\": \"in <field> between\",\n" +
+                "   \"F\": \"<field> force\",\n" +
+                "   default: \"<field>\"\n" +
+                "]\n" +
+                "\n" +
+                "makeTmpl(type, field) ::= <<\n" +
+                "<auxMap.(type)>\n" +
+                ">>\n" +
+                "\n" +
+                "top() ::= <<\n" +
+                "  <makeTmpl(\"E\", \"foo\")>\n" +
+                "  <makeTmpl(\"F\", \"foo\")>\n" +
+                "  <makeTmpl(\"I\", \"foo\")>\n" +
+                ">>\n";
+            writeFile(tmpdir, "t.stg", templates);
+            TemplateGroup group = new TemplateGroupFile(tmpdir + Path.DirectorySeparatorChar + "t.stg");
+            Template st = group.GetInstanceOf("top");
+            Assert.IsNotNull(st);
+            string expecting =
+                "  electric <field>" + newline +
+                "  <field> force" + newline +
+                "  in <field> between";
+            Assert.AreEqual(expecting, st.Render());
+        }
+
+        [TestMethod]
+        [TestCategory(TestCategories.ST4)]
+        public void TestTemplatesInDictionary()
+        {
+            string templates =
+                "auxMap ::= [\n" +
+                "   \"E\": {electric <field>},\n" +
+                "   \"I\": {in <field> between},\n" +
+                "   \"F\": {<field> force},\n" +
+                "   default: {<field>}\n" +
+                "]\n" +
+                "\n" +
+                "makeTmpl(type, field) ::= <<\n" +
+                "<auxMap.(type)>\n" +
+                ">>\n" +
+                "\n" +
+                "top() ::= <<\n" +
+                "  <makeTmpl(\"E\", \"foo\")>\n" +
+                "  <makeTmpl(\"F\", \"foo\")>\n" +
+                "  <makeTmpl(\"I\", \"foo\")>\n" +
+                ">>\n";
+            writeFile(tmpdir, "t.stg", templates);
+            TemplateGroup group = new TemplateGroupFile(tmpdir + Path.DirectorySeparatorChar + "t.stg");
+            Template st = group.GetInstanceOf("top");
+            Assert.IsNotNull(st);
+            string expecting =
+                "  electric foo" + newline +
+                "  foo force" + newline +
+                "  in foo between";
+            Assert.AreEqual(expecting, st.Render());
+        }
+
+        [TestMethod]
+        [TestCategory(TestCategories.ST4)]
+        public void TestDictionaryBehaviorTrue()
+        {
+            string templates =
+                "d ::= [\n" +
+                "	\"x\" : true,\n" +
+                "	default : false,\n" +
+                "]\n" +
+                "\n" +
+                "t() ::= <<\n" +
+                "<d.(\"x\")><if(d.(\"x\"))>+<else>-<endif>\n" +
+                ">>\n";
+
+            writeFile(tmpdir, "t.stg", templates);
+            TemplateGroup group = new TemplateGroupFile(tmpdir + Path.DirectorySeparatorChar + "t.stg");
+            Template st = group.GetInstanceOf("t");
+            string expected = "true+";
+            string result = st.Render();
+            Assert.AreEqual(expected, result);
+        }
+
+        [TestMethod]
+        [TestCategory(TestCategories.ST4)]
+        public void TestDictionaryBehaviorFalse()
+        {
+            string templates =
+                "d ::= [\n" +
+                "	\"x\" : false,\n" +
+                "	default : false,\n" +
+                "]\n" +
+                "\n" +
+                "t() ::= <<\n" +
+                "<d.(\"x\")><if(d.(\"x\"))>+<else>-<endif>\n" +
+                ">>\n";
+
+            writeFile(tmpdir, "t.stg", templates);
+            TemplateGroup group = new TemplateGroupFile(tmpdir + Path.DirectorySeparatorChar + "t.stg");
+            Template st = group.GetInstanceOf("t");
+            string expected = "false-";
+            string result = st.Render();
+            Assert.AreEqual(expected, result);
+        }
+
+        [TestMethod]
+        [TestCategory(TestCategories.ST4)]
+        public void TestDictionaryBehaviorEmptyTemplate()
+        {
+            string templates =
+                "d ::= [\n" +
+                "	\"x\" : {},\n" +
+                "	default : false,\n" +
+                "]\n" +
+                "\n" +
+                "t() ::= <<\n" +
+                "<d.(\"x\")><if(d.(\"x\"))>+<else>-<endif>\n" +
+                ">>\n";
+
+            writeFile(tmpdir, "t.stg", templates);
+            TemplateGroup group = new TemplateGroupFile(tmpdir + Path.DirectorySeparatorChar + "t.stg");
+            Template st = group.GetInstanceOf("t");
+            string expected = "+";
+            string result = st.Render();
+            Assert.AreEqual(expected, result);
+        }
+
+        [TestMethod]
+        [TestCategory(TestCategories.ST4)]
+        public void TestDictionaryBehaviorEmptyList()
+        {
+            string templates =
+                "d ::= [\n" +
+                "	\"x\" : [],\n" +
+                "	default : false,\n" +
+                "]\n" +
+                "\n" +
+                "t() ::= <<\n" +
+                "<d.(\"x\")><if(d.(\"x\"))>+<else>-<endif>\n" +
+                ">>\n";
+
+            writeFile(tmpdir, "t.stg", templates);
+            TemplateGroup group = new TemplateGroupFile(tmpdir + Path.DirectorySeparatorChar + "t.stg");
+            Template st = group.GetInstanceOf("t");
+            string expected = "-";
+            string result = st.Render();
+            Assert.AreEqual(expected, result);
+        }
     }
 }

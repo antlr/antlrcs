@@ -25,7 +25,7 @@
  * INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
  * NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
  * DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
- * THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+ * THEORY OF LIABILITY, WHETHER IN CONTRACT, TemplateRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
@@ -40,7 +40,8 @@ namespace Antlr4.Test.StringTemplate
     [TestClass]
     public class TestFunctions : BaseTest
     {
-        [TestMethod][TestCategory(TestCategories.ST4)]
+        [TestMethod]
+        [TestCategory(TestCategories.ST4)]
         public void TestFirst()
         {
             string template = "<first(names)>";
@@ -52,7 +53,8 @@ namespace Antlr4.Test.StringTemplate
             Assert.AreEqual(expected, result);
         }
 
-        [TestMethod][TestCategory(TestCategories.ST4)]
+        [TestMethod]
+        [TestCategory(TestCategories.ST4)]
         public void TestLength()
         {
             string template = "<length(names)>";
@@ -64,7 +66,8 @@ namespace Antlr4.Test.StringTemplate
             Assert.AreEqual(expected, result);
         }
 
-        [TestMethod][TestCategory(TestCategories.ST4)]
+        [TestMethod]
+        [TestCategory(TestCategories.ST4)]
         public void TestLengthWithNullValues()
         {
             string template = "<length(names)>";
@@ -76,7 +79,8 @@ namespace Antlr4.Test.StringTemplate
             Assert.AreEqual(expected, result);
         }
 
-        [TestMethod][TestCategory(TestCategories.ST4)]
+        [TestMethod]
+        [TestCategory(TestCategories.ST4)]
         public void TestFirstOp()
         {
             Template e = new Template(
@@ -89,7 +93,44 @@ namespace Antlr4.Test.StringTemplate
             Assert.AreEqual(expecting, e.Render());
         }
 
-        [TestMethod][TestCategory(TestCategories.ST4)]
+        [TestMethod]
+        [TestCategory(TestCategories.ST4)]
+        public void TestFirstOpList()
+        {
+            Template e = new Template(
+                    "<first(names)>"
+                );
+            e.Add("names", new List<string>(new string[] { "Ter", "Tom", "Sriram" }));
+            string expecting = "Ter";
+            Assert.AreEqual(expecting, e.Render());
+        }
+
+        [TestMethod]
+        [TestCategory(TestCategories.ST4)]
+        public void TestFirstOpArray()
+        {
+            Template e = new Template(
+                    "<first(names)>"
+                );
+            e.Add("names", new string[] { "Ter", "Tom", "Sriram" });
+            string expecting = "Ter";
+            Assert.AreEqual(expecting, e.Render());
+        }
+
+        [TestMethod]
+        [TestCategory(TestCategories.ST4)]
+        public void TestFirstOpPrimitiveArray()
+        {
+            Template e = new Template(
+                    "<first(names)>"
+                );
+            e.Add("names", new int[] { 0, 1, 2 });
+            string expecting = "0";
+            Assert.AreEqual(expecting, e.Render());
+        }
+
+        [TestMethod]
+        [TestCategory(TestCategories.ST4)]
         public void TestTruncOp()
         {
             Template e = new Template(
@@ -102,7 +143,44 @@ namespace Antlr4.Test.StringTemplate
             Assert.AreEqual(expecting, e.Render());
         }
 
-        [TestMethod][TestCategory(TestCategories.ST4)]
+        [TestMethod]
+        [TestCategory(TestCategories.ST4)]
+        public void TestTruncOpList()
+        {
+            Template e = new Template(
+                    "<trunc(names); separator=\", \">"
+                );
+            e.Add("names", new List<string>(new string[] { "Ter", "Tom", "Sriram" }));
+            string expecting = "Ter, Tom";
+            Assert.AreEqual(expecting, e.Render());
+        }
+
+        [TestMethod]
+        [TestCategory(TestCategories.ST4)]
+        public void TestTruncOpArray()
+        {
+            Template e = new Template(
+                    "<trunc(names); separator=\", \">"
+                );
+            e.Add("names", new string[] { "Ter", "Tom", "Sriram" });
+            string expecting = "Ter, Tom";
+            Assert.AreEqual(expecting, e.Render());
+        }
+
+        [TestMethod]
+        [TestCategory(TestCategories.ST4)]
+        public void TestTruncOpPrimitiveArray()
+        {
+            Template e = new Template(
+                    "<trunc(names); separator=\", \">"
+                );
+            e.Add("names", new int[] { 0, 1, 2 });
+            string expecting = "0, 1";
+            Assert.AreEqual(expecting, e.Render());
+        }
+
+        [TestMethod]
+        [TestCategory(TestCategories.ST4)]
         public void TestRestOp()
         {
             Template e = new Template(
@@ -115,7 +193,44 @@ namespace Antlr4.Test.StringTemplate
             Assert.AreEqual(expecting, e.Render());
         }
 
-        [TestMethod][TestCategory(TestCategories.ST4)]
+        [TestMethod]
+        [TestCategory(TestCategories.ST4)]
+        public void TestRestOpList()
+        {
+            Template e = new Template(
+                    "<rest(names); separator=\", \">"
+                );
+            e.Add("names", new List<string>(new string[] { "Ter", "Tom", "Sriram" }));
+            string expecting = "Tom, Sriram";
+            Assert.AreEqual(expecting, e.Render());
+        }
+
+        [TestMethod]
+        [TestCategory(TestCategories.ST4)]
+        public void TestRestOpArray()
+        {
+            Template e = new Template(
+                    "<rest(names); separator=\", \">"
+                );
+            e.Add("names", new string[] { "Ter", "Tom", "Sriram" });
+            string expecting = "Tom, Sriram";
+            Assert.AreEqual(expecting, e.Render());
+        }
+
+        [TestMethod]
+        [TestCategory(TestCategories.ST4)]
+        public void TestRestOpPrimitiveArray()
+        {
+            Template e = new Template(
+                    "<rest(names); separator=\", \">"
+                );
+            e.Add("names", new int[] { 0, 1, 2 });
+            string expecting = "1, 2";
+            Assert.AreEqual(expecting, e.Render());
+        }
+
+        [TestMethod]
+        [TestCategory(TestCategories.ST4)]
         public void TestRestOpEmptyList()
         {
             Template e = new Template(
@@ -126,7 +241,32 @@ namespace Antlr4.Test.StringTemplate
             Assert.AreEqual(expecting, e.Render());
         }
 
-        [TestMethod][TestCategory(TestCategories.ST4)]
+        [TestMethod]
+        [TestCategory(TestCategories.ST4)]
+        public void TestRestOpEmptyArray()
+        {
+            Template e = new Template(
+                    "<rest(names); separator=\", \">"
+                );
+            e.Add("names", new string[0]);
+            string expecting = "";
+            Assert.AreEqual(expecting, e.Render());
+        }
+
+        [TestMethod]
+        [TestCategory(TestCategories.ST4)]
+        public void TestRestOpEmptyPrimitiveArray()
+        {
+            Template e = new Template(
+                    "<rest(names); separator=\", \">"
+                );
+            e.Add("names", new int[0]);
+            string expecting = "";
+            Assert.AreEqual(expecting, e.Render());
+        }
+
+        [TestMethod]
+        [TestCategory(TestCategories.ST4)]
         public void TestReUseOfRestResult()
         {
             string templates =
@@ -144,7 +284,24 @@ namespace Antlr4.Test.StringTemplate
             Assert.AreEqual(expecting, e.Render());
         }
 
-        [TestMethod][TestCategory(TestCategories.ST4)]
+        [TestMethod]
+        [TestCategory(TestCategories.ST4)]
+        public void TestReUseOfRestPrimitiveArrayResult()
+        {
+            string templates =
+                "a(names) ::= \"<b(rest(names))>\"" + newline +
+                "b(x) ::= \"<x>, <x>\"" + newline
+                ;
+            writeFile(tmpdir, "t.stg", templates);
+            TemplateGroup group = new TemplateGroupFile(tmpdir + "/" + "t.stg");
+            Template e = group.GetInstanceOf("a");
+            e.Add("names", new int[] { 0, 1 });
+            string expecting = "1, 1";
+            Assert.AreEqual(expecting, e.Render());
+        }
+
+        [TestMethod]
+        [TestCategory(TestCategories.ST4)]
         public void TestLastOp()
         {
             Template e = new Template(
@@ -157,7 +314,44 @@ namespace Antlr4.Test.StringTemplate
             Assert.AreEqual(expecting, e.Render());
         }
 
-        [TestMethod][TestCategory(TestCategories.ST4)]
+        [TestMethod]
+        [TestCategory(TestCategories.ST4)]
+        public void TestLastOpList()
+        {
+            Template e = new Template(
+                    "<last(names)>"
+                );
+            e.Add("names", new List<string>(new string[] { "Ter", "Tom", "Sriram" }));
+            string expecting = "Sriram";
+            Assert.AreEqual(expecting, e.Render());
+        }
+
+        [TestMethod]
+        [TestCategory(TestCategories.ST4)]
+        public void TestLastOpArray()
+        {
+            Template e = new Template(
+                    "<last(names)>"
+                );
+            e.Add("names", new string[] { "Ter", "Tom", "Sriram" });
+            string expecting = "Sriram";
+            Assert.AreEqual(expecting, e.Render());
+        }
+
+        [TestMethod]
+        [TestCategory(TestCategories.ST4)]
+        public void TestLastOpPrimitiveArray()
+        {
+            Template e = new Template(
+                    "<last(names)>"
+                );
+            e.Add("names", new int[] { 0, 1, 2 });
+            string expecting = "2";
+            Assert.AreEqual(expecting, e.Render());
+        }
+
+        [TestMethod]
+        [TestCategory(TestCategories.ST4)]
         public void TestStripOp()
         {
             Template e = new Template(
@@ -173,7 +367,32 @@ namespace Antlr4.Test.StringTemplate
             Assert.AreEqual(expecting, e.Render());
         }
 
-        [TestMethod][TestCategory(TestCategories.ST4)]
+        [TestMethod]
+        [TestCategory(TestCategories.ST4)]
+        public void TestStripOpList()
+        {
+            Template e = new Template(
+                    "<strip(names); null=\"n/a\">"
+                );
+            e.Add("names", new List<string>(new string[] { null, "Tom", null, null, "Sriram", null }));
+            string expecting = "TomSriram";
+            Assert.AreEqual(expecting, e.Render());
+        }
+
+        [TestMethod]
+        [TestCategory(TestCategories.ST4)]
+        public void TestStripOpArray()
+        {
+            Template e = new Template(
+                    "<strip(names); null=\"n/a\">"
+                );
+            e.Add("names", new string[] { null, "Tom", null, null, "Sriram", null });
+            string expecting = "TomSriram";
+            Assert.AreEqual(expecting, e.Render());
+        }
+
+        [TestMethod]
+        [TestCategory(TestCategories.ST4)]
         public void TestLengthStrip()
         {
             Template e = new Template(
@@ -189,7 +408,32 @@ namespace Antlr4.Test.StringTemplate
             Assert.AreEqual(expecting, e.Render());
         }
 
-        [TestMethod][TestCategory(TestCategories.ST4)]
+        [TestMethod]
+        [TestCategory(TestCategories.ST4)]
+        public void TestLengthStripList()
+        {
+            Template e = new Template(
+                    "<length(strip(names))>"
+                );
+            e.Add("names", new List<string>(new string[] { null, "Tom", null, null, "Sriram", null }));
+            string expecting = "2";
+            Assert.AreEqual(expecting, e.Render());
+        }
+
+        [TestMethod]
+        [TestCategory(TestCategories.ST4)]
+        public void TestLengthStripArray()
+        {
+            Template e = new Template(
+                    "<length(strip(names))>"
+                );
+            e.Add("names", new string[] { null, "Tom", null, null, "Sriram", null });
+            string expecting = "2";
+            Assert.AreEqual(expecting, e.Render());
+        }
+
+        [TestMethod]
+        [TestCategory(TestCategories.ST4)]
         public void TestCombinedOp()
         {
             // replace first of yours with first of mine
@@ -205,7 +449,53 @@ namespace Antlr4.Test.StringTemplate
             Assert.AreEqual(expecting, e.Render());
         }
 
-        [TestMethod][TestCategory(TestCategories.ST4)]
+        [TestMethod]
+        [TestCategory(TestCategories.ST4)]
+        public void TestCombinedOpList()
+        {
+            // replace first of yours with first of mine
+            Template e = new Template(
+                    "<[first(mine),rest(yours)]; separator=\", \">"
+                );
+            e.Add("mine", new List<string>(new string[] { "1", "2", "3" }));
+            e.Add("yours", "a");
+            e.Add("yours", "b");
+            string expecting = "1, b";
+            Assert.AreEqual(expecting, e.Render());
+        }
+
+        [TestMethod]
+        [TestCategory(TestCategories.ST4)]
+        public void TestCombinedOpArray()
+        {
+            // replace first of yours with first of mine
+            Template e = new Template(
+                    "<[first(mine),rest(yours)]; separator=\", \">"
+                );
+            e.Add("mine", new string[] { "1", "2", "3" });
+            e.Add("yours", "a");
+            e.Add("yours", "b");
+            string expecting = "1, b";
+            Assert.AreEqual(expecting, e.Render());
+        }
+
+        [TestMethod]
+        [TestCategory(TestCategories.ST4)]
+        public void TestCombinedOpPrimitiveArray()
+        {
+            // replace first of yours with first of mine
+            Template e = new Template(
+                    "<[first(mine),rest(yours)]; separator=\", \">"
+                );
+            e.Add("mine", new int[] { 1, 2, 3 });
+            e.Add("yours", "a");
+            e.Add("yours", "b");
+            string expecting = "1, b";
+            Assert.AreEqual(expecting, e.Render());
+        }
+
+        [TestMethod]
+        [TestCategory(TestCategories.ST4)]
         public void TestCatListAndSingleAttribute()
         {
             // replace first of yours with first of mine
@@ -220,7 +510,50 @@ namespace Antlr4.Test.StringTemplate
             Assert.AreEqual(expecting, e.Render());
         }
 
-        [TestMethod][TestCategory(TestCategories.ST4)]
+        [TestMethod]
+        [TestCategory(TestCategories.ST4)]
+        public void TestCatListAndSingleAttribute2()
+        {
+            // replace first of yours with first of mine
+            Template e = new Template(
+                    "<[mine,yours]; separator=\", \">"
+                );
+            e.Add("mine", new List<string>(new string[] { "1", "2", "3" }));
+            e.Add("yours", "a");
+            string expecting = "1, 2, 3, a";
+            Assert.AreEqual(expecting, e.Render());
+        }
+
+        [TestMethod]
+        [TestCategory(TestCategories.ST4)]
+        public void TestCatArrayAndSingleAttribute()
+        {
+            // replace first of yours with first of mine
+            Template e = new Template(
+                    "<[mine,yours]; separator=\", \">"
+                );
+            e.Add("mine", new string[] { "1", "2", "3" });
+            e.Add("yours", "a");
+            string expecting = "1, 2, 3, a";
+            Assert.AreEqual(expecting, e.Render());
+        }
+
+        [TestMethod]
+        [TestCategory(TestCategories.ST4)]
+        public void TestCatPrimitiveArrayAndSingleAttribute()
+        {
+            // replace first of yours with first of mine
+            Template e = new Template(
+                    "<[mine,yours]; separator=\", \">"
+                );
+            e.Add("mine", new int[] { 1, 2, 3 });
+            e.Add("yours", "a");
+            string expecting = "1, 2, 3, a";
+            Assert.AreEqual(expecting, e.Render());
+        }
+
+        [TestMethod]
+        [TestCategory(TestCategories.ST4)]
         public void TestReUseOfCat()
         {
             string templates =
@@ -241,7 +574,8 @@ namespace Antlr4.Test.StringTemplate
             Assert.AreEqual(expecting, e.Render());
         }
 
-        [TestMethod][TestCategory(TestCategories.ST4)]
+        [TestMethod]
+        [TestCategory(TestCategories.ST4)]
         public void TestCatListAndEmptyAttributes()
         {
             // + is overloaded to be cat strings and cat lists so the
@@ -259,7 +593,59 @@ namespace Antlr4.Test.StringTemplate
             Assert.AreEqual(expecting, e.Render());
         }
 
-        [TestMethod][TestCategory(TestCategories.ST4)]
+        [TestMethod]
+        [TestCategory(TestCategories.ST4)]
+        public void TestCatListAndEmptyAttributes2()
+        {
+            // + is overloaded to be cat strings and cat lists so the
+            // two operands (from left to right) determine which way it
+            // goes.  In this case, x+mine is a list so everything from their
+            // to the right becomes list cat.
+            Template e = new Template(
+                    "<[x,mine,y,yours,z]; separator=\", \">"
+                );
+            e.Add("mine", new List<string>(new string[] { "1", "2", "3" }));
+            e.Add("yours", "a");
+            string expecting = "1, 2, 3, a";
+            Assert.AreEqual(expecting, e.Render());
+        }
+
+        [TestMethod]
+        [TestCategory(TestCategories.ST4)]
+        public void TestCatArrayAndEmptyAttributes2()
+        {
+            // + is overloaded to be cat strings and cat lists so the
+            // two operands (from left to right) determine which way it
+            // goes.  In this case, x+mine is a list so everything from their
+            // to the right becomes list cat.
+            Template e = new Template(
+                    "<[x,mine,y,yours,z]; separator=\", \">"
+                );
+            e.Add("mine", new string[] { "1", "2", "3" });
+            e.Add("yours", "a");
+            string expecting = "1, 2, 3, a";
+            Assert.AreEqual(expecting, e.Render());
+        }
+
+        [TestMethod]
+        [TestCategory(TestCategories.ST4)]
+        public void TestCatPrimitiveArrayAndEmptyAttributes()
+        {
+            // + is overloaded to be cat strings and cat lists so the
+            // two operands (from left to right) determine which way it
+            // goes.  In this case, x+mine is a list so everything from their
+            // to the right becomes list cat.
+            Template e = new Template(
+                    "<[x,mine,y,yours,z]; separator=\", \">"
+                );
+            e.Add("mine", new int[] { 1, 2, 3 });
+            e.Add("yours", "a");
+            string expecting = "1, 2, 3, a";
+            Assert.AreEqual(expecting, e.Render());
+        }
+
+        [TestMethod]
+        [TestCategory(TestCategories.ST4)]
         public void TestNestedOp()
         {
             Template e = new Template(
@@ -272,7 +658,44 @@ namespace Antlr4.Test.StringTemplate
             Assert.AreEqual(expecting, e.Render());
         }
 
-        [TestMethod][TestCategory(TestCategories.ST4)]
+        [TestMethod]
+        [TestCategory(TestCategories.ST4)]
+        public void TestNestedOpList()
+        {
+            Template e = new Template(
+                    "<first(rest(names))>" // gets 2nd element
+                );
+            e.Add("names", new List<string>(new string[] { "Ter", "Tom", "Sriram" }));
+            string expecting = "Tom";
+            Assert.AreEqual(expecting, e.Render());
+        }
+
+        [TestMethod]
+        [TestCategory(TestCategories.ST4)]
+        public void TestNestedOpArray()
+        {
+            Template e = new Template(
+                    "<first(rest(names))>" // gets 2nd element
+                );
+            e.Add("names", new string[] { "Ter", "Tom", "Sriram" });
+            string expecting = "Tom";
+            Assert.AreEqual(expecting, e.Render());
+        }
+
+        [TestMethod]
+        [TestCategory(TestCategories.ST4)]
+        public void TestNestedOpPrimitiveArray()
+        {
+            Template e = new Template(
+                    "<first(rest(names))>" // gets 2nd element
+                );
+            e.Add("names", new int[] { 0, 1, 2 });
+            string expecting = "1";
+            Assert.AreEqual(expecting, e.Render());
+        }
+
+        [TestMethod]
+        [TestCategory(TestCategories.ST4)]
         public void TestFirstWithOneAttributeOp()
         {
             Template e = new Template(
@@ -283,7 +706,8 @@ namespace Antlr4.Test.StringTemplate
             Assert.AreEqual(expecting, e.Render());
         }
 
-        [TestMethod][TestCategory(TestCategories.ST4)]
+        [TestMethod]
+        [TestCategory(TestCategories.ST4)]
         public void TestLastWithOneAttributeOp()
         {
             Template e = new Template(
@@ -294,7 +718,8 @@ namespace Antlr4.Test.StringTemplate
             Assert.AreEqual(expecting, e.Render());
         }
 
-        [TestMethod][TestCategory(TestCategories.ST4)]
+        [TestMethod]
+        [TestCategory(TestCategories.ST4)]
         public void TestLastWithLengthOneListAttributeOp()
         {
             Template e = new Template(
@@ -305,7 +730,32 @@ namespace Antlr4.Test.StringTemplate
             Assert.AreEqual(expecting, e.Render());
         }
 
-        [TestMethod][TestCategory(TestCategories.ST4)]
+        [TestMethod]
+        [TestCategory(TestCategories.ST4)]
+        public void TestLastWithLengthOneArrayAttributeOp()
+        {
+            Template e = new Template(
+                    "<last(names)>"
+                );
+            e.Add("names", new string[] { "Ter" });
+            string expecting = "Ter";
+            Assert.AreEqual(expecting, e.Render());
+        }
+
+        [TestMethod]
+        [TestCategory(TestCategories.ST4)]
+        public void TestLastWithLengthOnePrimitiveArrayAttributeOp()
+        {
+            Template e = new Template(
+                    "<last(names)>"
+                );
+            e.Add("names", new int[] { 0 });
+            string expecting = "0";
+            Assert.AreEqual(expecting, e.Render());
+        }
+
+        [TestMethod]
+        [TestCategory(TestCategories.ST4)]
         public void TestRestWithOneAttributeOp()
         {
             Template e = new Template(
@@ -316,7 +766,8 @@ namespace Antlr4.Test.StringTemplate
             Assert.AreEqual(expecting, e.Render());
         }
 
-        [TestMethod][TestCategory(TestCategories.ST4)]
+        [TestMethod]
+        [TestCategory(TestCategories.ST4)]
         public void TestRestWithLengthOneListAttributeOp()
         {
             Template e = new Template(
@@ -327,7 +778,32 @@ namespace Antlr4.Test.StringTemplate
             Assert.AreEqual(expecting, e.Render());
         }
 
-        [TestMethod][TestCategory(TestCategories.ST4)]
+        [TestMethod]
+        [TestCategory(TestCategories.ST4)]
+        public void TestRestWithLengthOneArrayAttributeOp()
+        {
+            Template e = new Template(
+                    "<rest(names)>"
+                );
+            e.Add("names", new string[] { "Ter" });
+            string expecting = "";
+            Assert.AreEqual(expecting, e.Render());
+        }
+
+        [TestMethod]
+        [TestCategory(TestCategories.ST4)]
+        public void TestRestWithLengthOnePrimitiveArrayAttributeOp()
+        {
+            Template e = new Template(
+                    "<rest(names)>"
+                );
+            e.Add("names", new int[] { 0 });
+            string expecting = "";
+            Assert.AreEqual(expecting, e.Render());
+        }
+
+        [TestMethod]
+        [TestCategory(TestCategories.ST4)]
         public void TestRepeatedRestOp()
         {
             Template e = new Template(
@@ -339,7 +815,44 @@ namespace Antlr4.Test.StringTemplate
             Assert.AreEqual(expecting, e.Render());
         }
 
-        [TestMethod][TestCategory(TestCategories.ST4)]
+        [TestMethod]
+        [TestCategory(TestCategories.ST4)]
+        public void TestRepeatedRestOpList()
+        {
+            Template e = new Template(
+                    "<rest(names)>, <rest(names)>" // gets 2nd element
+                );
+            e.Add("names", new List<string>(new string[] { "Ter", "Tom" }));
+            string expecting = "Tom, Tom";
+            Assert.AreEqual(expecting, e.Render());
+        }
+
+        [TestMethod]
+        [TestCategory(TestCategories.ST4)]
+        public void TestRepeatedRestOpArray()
+        {
+            Template e = new Template(
+                    "<rest(names)>, <rest(names)>" // gets 2nd element
+                );
+            e.Add("names", new string[] { "Ter", "Tom" });
+            string expecting = "Tom, Tom";
+            Assert.AreEqual(expecting, e.Render());
+        }
+
+        [TestMethod]
+        [TestCategory(TestCategories.ST4)]
+        public void TestRepeatedRestOpPrimitiveArray()
+        {
+            Template e = new Template(
+                    "<rest(names)>, <rest(names)>" // gets 2nd element
+                );
+            e.Add("names", new int[] { 0, 1 });
+            string expecting = "1, 1";
+            Assert.AreEqual(expecting, e.Render());
+        }
+
+        [TestMethod]
+        [TestCategory(TestCategories.ST4)]
         public void TestIncomingLists()
         {
             Template e = new Template(
@@ -351,7 +864,8 @@ namespace Antlr4.Test.StringTemplate
             Assert.AreEqual(expecting, e.Render());
         }
 
-        [TestMethod][TestCategory(TestCategories.ST4)]
+        [TestMethod]
+        [TestCategory(TestCategories.ST4)]
         public void TestFirstWithCatAttribute()
         {
             Template e = new Template(
@@ -365,7 +879,8 @@ namespace Antlr4.Test.StringTemplate
             Assert.AreEqual(expecting, e.Render());
         }
 
-        [TestMethod][TestCategory(TestCategories.ST4)]
+        [TestMethod]
+        [TestCategory(TestCategories.ST4)]
         public void TestFirstWithListOfMaps()
         {
             Template e = new Template(
@@ -386,7 +901,8 @@ namespace Antlr4.Test.StringTemplate
             Assert.AreEqual(expecting, e.Render());
         }
 
-        [TestMethod][TestCategory(TestCategories.ST4)]
+        [TestMethod]
+        [TestCategory(TestCategories.ST4)]
         public void TestFirstWithListOfMaps2()
         {
             Template e = new Template(
@@ -406,7 +922,8 @@ namespace Antlr4.Test.StringTemplate
             Assert.AreEqual(expecting, e.Render());
         }
 
-        [TestMethod][TestCategory(TestCategories.ST4)]
+        [TestMethod]
+        [TestCategory(TestCategories.ST4)]
         public void TestTrim()
         {
             Template e = new Template(
@@ -417,7 +934,8 @@ namespace Antlr4.Test.StringTemplate
             Assert.AreEqual(expecting, e.Render());
         }
 
-        [TestMethod][TestCategory(TestCategories.ST4)]
+        [TestMethod]
+        [TestCategory(TestCategories.ST4)]
         public void TestStrlen()
         {
             Template e = new Template(
@@ -428,7 +946,8 @@ namespace Antlr4.Test.StringTemplate
             Assert.AreEqual(expecting, e.Render());
         }
 
-        [TestMethod][TestCategory(TestCategories.ST4)]
+        [TestMethod]
+        [TestCategory(TestCategories.ST4)]
         public void TestReverse()
         {
             Template e = new Template(
@@ -438,6 +957,42 @@ namespace Antlr4.Test.StringTemplate
             e.Add("names", "Tom");
             e.Add("names", "Sriram");
             string expecting = "Sriram, Tom, Ter";
+            Assert.AreEqual(expecting, e.Render());
+        }
+
+        [TestMethod]
+        [TestCategory(TestCategories.ST4)]
+        public void TestReverseList()
+        {
+            Template e = new Template(
+                    "<reverse(names); separator=\", \">"
+                );
+            e.Add("names", new List<string>(new string[] { "Ter", "Tom", "Sriram" }));
+            string expecting = "Sriram, Tom, Ter";
+            Assert.AreEqual(expecting, e.Render());
+        }
+
+        [TestMethod]
+        [TestCategory(TestCategories.ST4)]
+        public void TestReverseArray()
+        {
+            Template e = new Template(
+                    "<reverse(names); separator=\", \">"
+                );
+            e.Add("names", new string[] { "Ter", "Tom", "Sriram" });
+            string expecting = "Sriram, Tom, Ter";
+            Assert.AreEqual(expecting, e.Render());
+        }
+
+        [TestMethod]
+        [TestCategory(TestCategories.ST4)]
+        public void TestReversePrimitiveArray()
+        {
+            Template e = new Template(
+                    "<reverse(names); separator=\", \">"
+                );
+            e.Add("names", new int[] { 0, 1, 2 });
+            string expecting = "2, 1, 0";
             Assert.AreEqual(expecting, e.Render());
         }
     }

@@ -152,6 +152,7 @@ namespace Antlr4.StringTemplate.Misc
             {
                 sw.WriteLine();
                 sw.Write("Caused by: ");
+                sw.WriteLine(cause.Message);
                 sw.Write(cause.StackTrace);
             }
             return sw.ToString();
