@@ -70,7 +70,6 @@ namespace Antlr3.Build.Tasks
             set;
         }
 
-        [Required]
         public string TargetLanguage
         {
             get;

@@ -78,6 +78,14 @@
     <AvailableItemName Include="AntlrAbstractGrammar" />
   </ItemGroup>
 
+  <ItemDefinitionGroup>
+    <Antlr3>
+      <TargetLanguage/>
+      <DebugGrammar>false</DebugGrammar>
+      <ProfileGrammar>false</ProfileGrammar>
+    </Antlr3>
+  </ItemDefinitionGroup>
+
   <Target Name="AntlrCompileReadGeneratedFileList">
     <ReadLinesFromFile File="$(IntermediateOutputPath)$(AntlrGenCodeFileNames)">
       <Output TaskParameter="Lines" ItemName="AntlrOutputCodeFilesList"/>
@@ -110,13 +118,6 @@
       <AntlrGeneratedCodeFiles Remove="@(AntlrGeneratedCodeFiles)" />
     </ItemGroup>
 
-    <ItemGroup>
-      <Antlr3>
-        <DebugGrammar Condition=" '%(DebugGrammar)' == '' ">false</DebugGrammar>
-        <ProfileGrammar Condition=" '%(ProfileGrammar)' == '' ">false</ProfileGrammar>
-      </Antlr3>
-    </ItemGroup>
-
     <PropertyGroup>
       <_IntellisenseOnlyCompile>false</_IntellisenseOnlyCompile>
       <_IntellisenseOnlyCompile Condition="'$(BuildingProject)' != 'true'">true</_IntellisenseOnlyCompile>
@@ -125,7 +126,7 @@
       AntlrToolPath="$(AntlrToolLocation)"
       BuildTaskPath="$(AntlrBuildTaskLocation)"
       OutputPath="$(IntermediateOutputPath)"
-      Language="%(Antlr3.TargetLanguage)"
+      TargetLanguage="%(Antlr3.TargetLanguage)"
       SourceCodeFiles="@(Antlr3)"
       ContinueOnError="$(_IntellisenseOnlyCompile)"
       TokensFiles="@(AntlrTokens)"
