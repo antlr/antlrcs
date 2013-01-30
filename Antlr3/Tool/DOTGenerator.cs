@@ -263,7 +263,7 @@ namespace Antlr3.Tool
                 GrammarAST n = ( (NFAState)s ).associatedASTNode;
                 if ( n != null && n.Type != ANTLRParser.EOB )
                 {
-                    StringTemplate rankST = GetTemplates().GetInstanceOf( "decision_rank" );
+                    StringTemplate rankST = GetTemplates().GetInstanceOf( "decision-rank" );
                     NFAState alt = (NFAState)s;
                     while ( alt != null )
                     {
@@ -308,11 +308,11 @@ namespace Antlr3.Tool
                 }
                 if ( edge.IsAction )
                 {
-                    edgeST = GetTemplates().GetInstanceOf( "action_edge" );
+                    edgeST = GetTemplates().GetInstanceOf( "action-edge" );
                 }
                 else if ( edge.IsEpsilon )
                 {
-                    edgeST = GetTemplates().GetInstanceOf( "epsilon_edge" );
+                    edgeST = GetTemplates().GetInstanceOf( "epsilon-edge" );
                 }
                 else
                 {
