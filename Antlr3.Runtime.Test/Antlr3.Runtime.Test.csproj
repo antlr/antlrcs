@@ -37,7 +37,7 @@
     <Reference Include="System.Core">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
-    <Reference Include="vjslib" />
+    <Reference Include="System.Numerics" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\..\..\..\antlrcs\Antlr3.StringTemplate\Antlr3.StringTemplate.csproj">
@@ -64,9 +64,9 @@
     <Antlr3 Include="FastSimpleExpression.g3">
       <Generator>MSBuild:Compile</Generator>
     </Antlr3>
-    <Antlr3 Include="JavaCompat\Expr.g3">
+    <None Include="JavaCompat\Expr.g3">
       <Generator>MSBuild:Compile</Generator>
-    </Antlr3>
+    </None>
     <Antlr3 Include="BuildOptions\DebugGrammar.g3">
       <!--<GrammarOptions>-debug</GrammarOptions>-->
       <Generator>MSBuild:Compile</Generator>

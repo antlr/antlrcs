@@ -44,7 +44,7 @@ options
 {
 //import java.util.Map;
 //import java.util.HashMap;
-using BigInteger = java.math.BigInteger;
+using BigInteger = System.Numerics.BigInteger;
 using Console = System.Console;
 }
 // END:members
@@ -63,13 +63,13 @@ stat:   expr                       { string result = $expr.value.ToString();
     ;
 
 expr returns [BigInteger value]
-    :   ^('+' a=expr b=expr)       { $value = $a.value.add($b.value); }
-    |   ^('-' a=expr b=expr)       { $value = $a.value.subtract($b.value); }
-    |   ^('*' a=expr b=expr)       { $value = $a.value.multiply($b.value); }
-    |   ^('/' a=expr b=expr)       { $value = $a.value.divide($b.value); }
-    |   ^('%' a=expr b=expr)       { $value = $a.value.remainder($b.value); }
+    :   ^('+' a=expr b=expr)       { $value = $a.value + $b.value; }
+    |   ^('-' a=expr b=expr)       { $value = $a.value - $b.value; }
+    |   ^('*' a=expr b=expr)       { $value = $a.value * $b.value; }
+    |   ^('/' a=expr b=expr)       { $value = $a.value / $b.value; }
+    |   ^('%' a=expr b=expr)       { $value = $a.value \% $b.value; }
     |   ID                         { $value = getValue($ID.text); }
-    |   INT                        { $value = new BigInteger($INT.text); }
+    |   INT                        { $value = BigInteger.Parse($INT.text); }
     |   call                       { $value = $call.value; }
     ;
 

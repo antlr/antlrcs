@@ -35,7 +35,7 @@ namespace Antlr3.Runtime.Test.BuildOptions
     using System.Collections.Generic;
     using Antlr.Runtime.Tree;
 
-    using BigInteger = java.math.BigInteger;
+    using BigInteger = System.Numerics.BigInteger;
     using Console = System.Console;
 
     partial class DebugTreeGrammar
@@ -87,7 +87,7 @@ namespace Antlr3.Runtime.Test.BuildOptions
                     // Check whether parameter matches
                     CommonTree formalPar = (CommonTree)f.GetChild(1);
                     if (formalPar.Token.Type == INT
-                        && !new BigInteger(formalPar.Token.Text).Equals(paramValue))
+                        && !BigInteger.Parse(formalPar.Token.Text).Equals(paramValue))
                     {
                         // Constant in formalPar list does not match actual value -> no match.
                         continue;
@@ -113,7 +113,7 @@ namespace Antlr3.Runtime.Test.BuildOptions
             }
             // not found in local memory or global memory
             Console.Error.WriteLine("undefined variable " + name);
-            return new BigInteger("0");
+            return BigInteger.Zero;
         }
     }
 }
