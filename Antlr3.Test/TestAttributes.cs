@@ -407,7 +407,7 @@ namespace AntlrUnitTests
         [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestRefToReturnValueBeforeRefToPredefinedAttr() /*throws Exception*/ {
             string action = "$x.foo";
-            string expecting = "(x!=null?x.foo:0)";
+            string expecting = "(x!=null?((t.b_return)x).foo:0)";
 
             ErrorQueue equeue = new ErrorQueue();
             ErrorManager.SetErrorListener( equeue );
@@ -683,9 +683,9 @@ namespace AntlrUnitTests
         [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestRuleLabels() /*throws Exception*/ {
             string action = "$r.x; $r.start;\n $r.stop;\n $r.tree; $a.x; $a.stop;";
-            string expecting = "(r!=null?r.x:0); (r!=null?((Token)r.start):null);" + NewLine +
-                               "\t\t\t (r!=null?((Token)r.stop):null);" + NewLine +
-                               "\t\t\t (r!=null?((Object)r.tree):null); (r!=null?r.x:0); (r!=null?((Token)r.stop):null);";
+            string expecting = "(r!=null?((t.a_return)r).x:0); (r!=null?(r.start):null);" + NewLine +
+                               "\t\t\t (r!=null?(r.stop):null);" + NewLine +
+                               "\t\t\t (r!=null?((Object)r.getTree()):null); (r!=null?((t.a_return)r).x:0); (r!=null?(r.stop):null);";
 
             ErrorQueue equeue = new ErrorQueue();
             ErrorManager.SetErrorListener( equeue );
@@ -731,7 +731,7 @@ namespace AntlrUnitTests
         [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestRuleLabelsWithSpecialToken() /*throws Exception*/ {
             string action = "$r.x; $r.start; $r.stop; $r.tree; $a.x; $a.stop;";
-            string expecting = "(r!=null?r.x:0); (r!=null?((MYTOKEN)r.start):null); (r!=null?((MYTOKEN)r.stop):null); (r!=null?((Object)r.tree):null); (r!=null?r.x:0); (r!=null?((MYTOKEN)r.stop):null);";
+            string expecting = "(r!=null?((t.a_return)r).x:0); (r!=null?((MYTOKEN)r.start):null); (r!=null?((MYTOKEN)r.stop):null); (r!=null?((Object)r.getTree()):null); (r!=null?((t.a_return)r).x:0); (r!=null?((MYTOKEN)r.stop):null);";
 
             ErrorQueue equeue = new ErrorQueue();
             ErrorManager.SetErrorListener( equeue );
@@ -762,7 +762,7 @@ namespace AntlrUnitTests
         [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestForwardRefRuleLabels() /*throws Exception*/ {
             string action = "$r.x; $r.start; $r.stop; $r.tree; $a.x; $a.tree;";
-            string expecting = "(r!=null?r.x:0); (r!=null?((Token)r.start):null); (r!=null?((Token)r.stop):null); (r!=null?((Object)r.tree):null); (r!=null?r.x:0); (r!=null?((Object)r.tree):null);";
+            string expecting = "(r!=null?((t.a_return)r).x:0); (r!=null?(r.start):null); (r!=null?(r.stop):null); (r!=null?((Object)r.getTree()):null); (r!=null?((t.a_return)r).x:0); (r!=null?((Object)r.getTree()):null);";
 
             ErrorQueue equeue = new ErrorQueue();
             ErrorManager.SetErrorListener( equeue );
@@ -990,7 +990,7 @@ namespace AntlrUnitTests
         [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestBasicGlobalScope() /*throws Exception*/ {
             string action = "$Symbols::names.add($id.text);";
-            string expecting = "((Symbols_scope)Symbols_stack.peek()).names.add((id!=null?id.getText():null));";
+            string expecting = "Symbols_stack.peek().names.add((id!=null?id.getText():null));";
 
             ErrorQueue equeue = new ErrorQueue();
             ErrorManager.SetErrorListener( equeue );
@@ -1046,7 +1046,7 @@ namespace AntlrUnitTests
         public void TestIndexedGlobalScope() /*throws Exception*/ {
             string action = "$Symbols[-1]::names.add($id.text);";
             string expecting =
-                "((Symbols_scope)Symbols_stack.elementAt(Symbols_stack.size()-1-1)).names.add((id!=null?id.getText():null));";
+                "Symbols_stack.elementAt(Symbols_stack.size()-1-1).names.add((id!=null?id.getText():null));";
 
             ErrorQueue equeue = new ErrorQueue();
             ErrorManager.SetErrorListener( equeue );
@@ -1075,7 +1075,7 @@ namespace AntlrUnitTests
         public void Test0IndexedGlobalScope() /*throws Exception*/ {
             string action = "$Symbols[0]::names.add($id.text);";
             string expecting =
-                "((Symbols_scope)Symbols_stack.elementAt(0)).names.add((id!=null?id.getText():null));";
+                "Symbols_stack.elementAt(0).names.add((id!=null?id.getText():null));";
 
             ErrorQueue equeue = new ErrorQueue();
             ErrorManager.SetErrorListener( equeue );
@@ -1104,7 +1104,7 @@ namespace AntlrUnitTests
         public void TestAbsoluteIndexedGlobalScope() /*throws Exception*/ {
             string action = "$Symbols[3]::names.add($id.text);";
             string expecting =
-                "((Symbols_scope)Symbols_stack.elementAt(3)).names.add((id!=null?id.getText():null));";
+                "Symbols_stack.elementAt(3).names.add((id!=null?id.getText():null));";
 
             ErrorQueue equeue = new ErrorQueue();
             ErrorManager.SetErrorListener( equeue );
@@ -1132,7 +1132,7 @@ namespace AntlrUnitTests
         [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestScopeAndAttributeWithUnderscore() /*throws Exception*/ {
             string action = "$foo_bar::a_b;";
-            string expecting = "((foo_bar_scope)foo_bar_stack.peek()).a_b;";
+            string expecting = "foo_bar_stack.peek().a_b;";
 
             ErrorQueue equeue = new ErrorQueue();
             ErrorManager.SetErrorListener( equeue );
@@ -1159,7 +1159,7 @@ namespace AntlrUnitTests
         [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestSharedGlobalScope() /*throws Exception*/ {
             string action = "$Symbols::x;";
-            string expecting = "((Symbols_scope)Symbols_stack.peek()).x;";
+            string expecting = "Symbols_stack.peek().x;";
 
             ErrorQueue equeue = new ErrorQueue();
             ErrorManager.SetErrorListener( equeue );
@@ -1190,7 +1190,7 @@ namespace AntlrUnitTests
         [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestGlobalScopeOutsideRule() /*throws Exception*/ {
             string action = "public void foo() {$Symbols::names.add('foo');}";
-            string expecting = "public void foo() {((Symbols_scope)Symbols_stack.peek()).names.add('foo');}";
+            string expecting = "public void foo() {Symbols_stack.peek().names.add('foo');}";
 
             ErrorQueue equeue = new ErrorQueue();
             ErrorManager.SetErrorListener( equeue );
@@ -1218,7 +1218,7 @@ namespace AntlrUnitTests
         [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestRuleScopeOutsideRule() /*throws Exception*/ {
             string action = "public void foo() {$a::name;}";
-            string expecting = "public void foo() {((a_scope)a_stack.peek()).name;}";
+            string expecting = "public void foo() {a_stack.peek().name;}";
 
             ErrorQueue equeue = new ErrorQueue();
             ErrorManager.SetErrorListener( equeue );
@@ -1245,7 +1245,7 @@ namespace AntlrUnitTests
         [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestBasicRuleScope() /*throws Exception*/ {
             string action = "$a::n;";
-            string expecting = "((a_scope)a_stack.peek()).n;";
+            string expecting = "a_stack.peek().n;";
 
             ErrorQueue equeue = new ErrorQueue();
             ErrorManager.SetErrorListener( equeue );
@@ -1326,7 +1326,7 @@ namespace AntlrUnitTests
         [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestDynamicRuleScopeRefInSubrule() /*throws Exception*/ {
             string action = "$a::n;";
-            string expecting = "((a_scope)a_stack.peek()).n;";
+            string expecting = "a_stack.peek().n;";
 
             ErrorQueue equeue = new ErrorQueue();
             ErrorManager.SetErrorListener( equeue );
@@ -1384,7 +1384,7 @@ namespace AntlrUnitTests
         [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestRuleScopeFromAnotherRule() /*throws Exception*/ {
             string action = "$a::n;"; // must be qualified
-            string expecting = "((a_scope)a_stack.peek()).n;";
+            string expecting = "a_stack.peek().n;";
 
             ErrorQueue equeue = new ErrorQueue();
             ErrorManager.SetErrorListener( equeue );
@@ -1612,7 +1612,7 @@ namespace AntlrUnitTests
         [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestRuleRefWhenRuleHasScope() /*throws Exception*/ {
             string action = "$b.start;";
-            string expecting = "(b1!=null?((Token)b1.start):null);";
+            string expecting = "(b1!=null?(b1.start):null);";
 
             ErrorQueue equeue = new ErrorQueue();
             ErrorManager.SetErrorListener( equeue );
@@ -1642,7 +1642,7 @@ namespace AntlrUnitTests
         [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestDynamicScopeRefOkEvenThoughRuleRefExists() /*throws Exception*/ {
             string action = "$b::n;";
-            string expecting = "((b_scope)b_stack.peek()).n;";
+            string expecting = "b_stack.peek().n;";
 
             ErrorQueue equeue = new ErrorQueue();
             ErrorManager.SetErrorListener( equeue );
@@ -1717,7 +1717,7 @@ namespace AntlrUnitTests
         [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestRefToStartAttributeForCurrentRule() /*throws Exception*/ {
             string action = "$start;";
-            string expecting = "((Token)retval.start);";
+            string expecting = "(retval.start);";
 
             ErrorQueue equeue = new ErrorQueue();
             ErrorManager.SetErrorListener( equeue );
@@ -2104,7 +2104,7 @@ namespace AntlrUnitTests
         [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestImplicitRuleLabel() /*throws Exception*/ {
             string action = "$r.start;";
-            string expecting = "(r1!=null?((Token)r1.start):null);";
+            string expecting = "(r1!=null?(r1.start):null);";
 
             ErrorQueue equeue = new ErrorQueue();
             ErrorManager.SetErrorListener( equeue );
@@ -2131,7 +2131,7 @@ namespace AntlrUnitTests
         [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestReuseExistingLabelWithImplicitRuleLabel() /*throws Exception*/ {
             string action = "$r.start;";
-            string expecting = "(x!=null?((Token)x.start):null);";
+            string expecting = "(x!=null?(x.start):null);";
 
             ErrorQueue equeue = new ErrorQueue();
             ErrorManager.SetErrorListener( equeue );
@@ -2158,7 +2158,7 @@ namespace AntlrUnitTests
         [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestReuseExistingListLabelWithImplicitRuleLabel() /*throws Exception*/ {
             string action = "$r.start;";
-            string expecting = "(x!=null?((Token)x.start):null);";
+            string expecting = "(x!=null?(x.start):null);";
 
             ErrorQueue equeue = new ErrorQueue();
             ErrorManager.SetErrorListener( equeue );
@@ -2856,7 +2856,7 @@ namespace AntlrUnitTests
         [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestRuleRefWithDynamicScope() /*throws Exception*/ {
             string action = "$field::x = $field.st;";
-            string expecting = "((field_scope)field_stack.peek()).x = retval.st;";
+            string expecting = "field_stack.peek().x = retval.st;";
 
             ErrorQueue equeue = new ErrorQueue();
             ErrorManager.SetErrorListener( equeue );
@@ -3060,7 +3060,7 @@ namespace AntlrUnitTests
         [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestAssignToTreeNodeAttribute() /*throws Exception*/ {
             //string action = "$tree.scope = localScope;";
-            string expecting = "((Object)retval.tree).scope = localScope;";
+            string expecting = "retval.tree.scope = localScope;";
             ErrorQueue equeue = new ErrorQueue();
             ErrorManager.SetErrorListener( equeue );
             Grammar g = new Grammar(
@@ -3113,7 +3113,7 @@ namespace AntlrUnitTests
         [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestDoNotTranslateScopeAttributeCompare() /*throws Exception*/ {
             string action = "if ($rule::foo == \"foo\" || 1) { System.out.println(\"ouch\"); }";
-            string expecting = "if (((rule_scope)rule_stack.peek()).foo == \"foo\" || 1) { System.out.println(\"ouch\"); }";
+            string expecting = "if (rule_stack.peek().foo == \"foo\" || 1) { System.out.println(\"ouch\"); }";
             ErrorQueue equeue = new ErrorQueue();
             ErrorManager.SetErrorListener( equeue );
             Grammar g = new Grammar(
@@ -3163,7 +3163,7 @@ namespace AntlrUnitTests
         [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestTreeRuleStopAttributeIsInvalid() /*throws Exception*/ {
             string action = "$r.x; $r.start; $r.stop";
-            string expecting = "(r!=null?r.x:0); (r!=null?((CommonTree)r.start):null); $r.stop";
+            string expecting = "(r!=null?((t.a_return)r).x:0); (r!=null?((CommonTree)r.start):null); $r.stop";
 
             ErrorQueue equeue = new ErrorQueue();
             ErrorManager.SetErrorListener( equeue );
@@ -3229,7 +3229,7 @@ namespace AntlrUnitTests
         [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestTypeOfGuardedAttributeRefIsCorrect() /*throws Exception*/ {
             string action = "int x = $b::n;";
-            string expecting = "int x = ((b_scope)b_stack.peek()).n;";
+            string expecting = "int x = b_stack.peek().n;";
 
             ErrorQueue equeue = new ErrorQueue();
             ErrorManager.SetErrorListener( equeue );
