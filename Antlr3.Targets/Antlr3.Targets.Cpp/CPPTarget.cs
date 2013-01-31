@@ -375,7 +375,7 @@ namespace Antlr3.Targets
             // the default size. If it is then whack it all the way up to the maximum that
             // we can sensibly get away with.
             //
-            if (CodeGenerator.MaxAcyclicDfaStatesInline == CodeGenerator.MaxAcyclicDfaStatesInline)
+            if (CodeGenerator.MaxAcyclicDfaStatesInline == CodeGenerator.DefaultMaxAcyclicDfaStatesInline)
             {
 
                 CodeGenerator.MaxAcyclicDfaStatesInline = 65535;
