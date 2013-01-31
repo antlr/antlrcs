@@ -50,7 +50,7 @@ retval.Tree = (<ASTLabelType>)adaptor.ErrorNode(input, retval.Start, input.LT(-1
 // TOKEN AST STUFF
 
 /** ID and output=AST */
-tokenRef(token,label,elementIndex,terminalOptions) ::= <%
+tokenRef(token,label,elementIndex,terminalOptions={}) ::= <%
 <super.tokenRef(...)>
 <if(!ruleDescriptor.isSynPred)>
 <if(backtracking)><\n>if (state.backtracking == 0) {<endif>
@@ -61,10 +61,10 @@ tokenRef(token,label,elementIndex,terminalOptions) ::= <%
 %>
 
 /** ID! and output=AST (same as plain tokenRef) */
-tokenRefBang(token,label,elementIndex,terminalOptions) ::= "<super.tokenRef(...)>"
+tokenRefBang(token,label,elementIndex,terminalOptions={}) ::= "<super.tokenRef(...)>"
 
 /** ID^ and output=AST */
-tokenRefRuleRoot(token,label,elementIndex,terminalOptions) ::= <%
+tokenRefRuleRoot(token,label,elementIndex,terminalOptions={}) ::= <%
 <super.tokenRef(...)>
 <if(!ruleDescriptor.isSynPred)>
 <if(backtracking)><\n>if (<actions.(actionScope).synpredgate>) {<endif>
@@ -75,19 +75,19 @@ tokenRefRuleRoot(token,label,elementIndex,terminalOptions) ::= <%
 %>
 
 /** ids+=ID! and output=AST */
-tokenRefBangAndListLabel(token,label,elementIndex,terminalOptions) ::= <<
+tokenRefBangAndListLabel(token,label,elementIndex,terminalOptions={}) ::= <<
 <tokenRefBang(...)>
 <listLabelElem(elem=label,elemType=labelType,...)>
 >>
 
 /** label+=TOKEN when output=AST but not rewrite alt */
-tokenRefAndListLabel(token,label,elementIndex,terminalOptions) ::= <<
+tokenRefAndListLabel(token,label,elementIndex,terminalOptions={}) ::= <<
 <tokenRef(...)>
 <listLabelElem(elem=label,elemType=labelType,...)>
 >>
 
 /** Match label+=TOKEN^ when output=AST but not rewrite alt */
-tokenRefRuleRootAndListLabel(token,label,terminalOptions,elementIndex) ::= <<
+tokenRefRuleRootAndListLabel(token,label,elementIndex,terminalOptions={}) ::= <<
 <tokenRefRuleRoot(...)>
 <listLabelElem(elem=label,elemType=labelType,...)>
 >>
@@ -105,20 +105,20 @@ tokenRefRuleRootAndListLabel(token,label,terminalOptions,elementIndex) ::= <<
 // rather than just added on code.  Investigate that refactoring when
 // I have more time.
 
-matchSet(s,label,terminalOptions,elementIndex,postmatchCode) ::= <<
+matchSet(s,label,elementIndex,postmatchCode,terminalOptions={}) ::= <<
 <super.matchSet(postmatchCode={<if(!ruleDescriptor.isSynPred)><if(backtracking)>if (<actions.(actionScope).synpredgate>) <endif>adaptor.AddChild(root_0, <createNodeFromToken(...)>);<endif>}, ...)>
 >>
 
-matchRuleBlockSet(s,label,terminalOptions,elementIndex,postmatchCode,treeLevel="0") ::= <<
+matchRuleBlockSet(s,label,elementIndex,postmatchCode,treeLevel="0",terminalOptions={}) ::= <<
 <matchSet(...)>
 >>
 
-matchSetBang(s,label,elementIndex,terminalOptions,postmatchCode) ::= "<super.matchSet(...)>"
+matchSetBang(s,label,elementIndex,postmatchCode,terminalOptions={}) ::= "<super.matchSet(...)>"
 
 // note there is no matchSetTrack because -> rewrites force sets to be
 // plain old blocks of alts: (A|B|...|C)
 
-matchSetRuleRoot(s,label,terminalOptions,elementIndex,debug) ::= <<
+matchSetRuleRoot(s,label,elementIndex,debug,terminalOptions={}) ::= <<
 <if(label)>
 <label>=(<labelType>)input.LT(1);
 <endif>
@@ -164,7 +164,7 @@ ruleRefRuleRootAndListLabel(rule,label,elementIndex,args,scope) ::= <<
 
 // WILDCARD AST
 
-wildcard(token,label,elementIndex,terminalOptions) ::= <<
+wildcard(token,label,elementIndex,terminalOptions={}) ::= <<
 <super.wildcard(...)>
 <if(!ruleDescriptor.isSynPred)>
 <if(backtracking)>if (<actions.(actionScope).synpredgate>) {<endif>
@@ -174,9 +174,9 @@ adaptor.AddChild(root_0, <label>_tree);
 <endif>
 >>
 
-wildcardBang(label,elementIndex) ::= "<super.wildcard(...)>"
+wildcardBang(label,elementIndex) ::= "<super.wildcard(token=[],...)>"
 
-wildcardRuleRoot(token,label,elementIndex,terminalOptions) ::= <<
+wildcardRuleRoot(token,label,elementIndex,terminalOptions={}) ::= <<
 <super.wildcard(...)>
 <if(!ruleDescriptor.isSynPred)>
 <if(backtracking)>if (<actions.(actionScope).synpredgate>) {<endif>
@@ -186,7 +186,7 @@ root_0 = (<ASTLabelType>)adaptor.BecomeRoot(<label>_tree, root_0);
 <endif>
 >>
 
-createNodeFromToken(label,terminalOptions) ::= <%
+createNodeFromToken(label,terminalOptions={}) ::= <%
 <if(terminalOptions.node)>
 new <terminalOptions.node>(<if(terminalOptions.type)><terminalOptions.type>,<endif><label><if(terminalOptions.text)>,<terminalOptions.text; format="string"><endif>)
 <else>

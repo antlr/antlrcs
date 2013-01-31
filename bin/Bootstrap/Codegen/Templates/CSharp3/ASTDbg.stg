@@ -35,26 +35,26 @@
  */
 
 parserMembers() ::= <<
-// Implement this function in your helper file to use a custom tree adaptor
-partial void InitializeTreeAdaptor();
-protected DebugTreeAdaptor adaptor;
+	// Implement this function in your helper file to use a custom tree adaptor
+	partial void InitializeTreeAdaptor();
+	protected DebugTreeAdaptor adaptor;
 
-public ITreeAdaptor TreeAdaptor
-{
-	get
+	public ITreeAdaptor TreeAdaptor
 	{
-		return adaptor;
-	}
-	set
-	{
+		get
+		{
+			return adaptor;
+		}
+		set
+		{
 <if(grammar.grammarIsRoot)>
-		this.adaptor = new DebugTreeAdaptor(dbg,adaptor);
+			this.adaptor = new DebugTreeAdaptor(dbg,adaptor);
 <else>
-		this.adaptor = (DebugTreeAdaptor)adaptor; // delegator sends dbg adaptor
+			this.adaptor = (DebugTreeAdaptor)adaptor; // delegator sends dbg adaptor
 <endif><\n>
-		<grammar.directDelegates:{g|<g:delegateName()>.TreeAdaptor = this.adaptor;}>
-	}
-}<\n>
+			<grammar.directDelegates:{g|<g:delegateName()>.TreeAdaptor = this.adaptor;}>
+		}
+	}<\n>
 >>
 
 parserCtorBody() ::= <<

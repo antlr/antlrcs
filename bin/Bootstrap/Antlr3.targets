@@ -28,12 +28,12 @@
 <Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <BuildSystem>MSBuild</BuildSystem>
-    <TaskVersion>3.3.0.7239</TaskVersion>
+    <TaskVersion>3.5.0.0</TaskVersion>
     <TaskKeyToken>eb42632606e9261f</TaskKeyToken>
     <AntlrBuildTaskAssemblyName Condition="'$(AntlrBuildTaskAssemblyName)'==''">AntlrBuildTask, Version=$(TaskVersion), Culture=neutral, PublicKeyToken=$(TaskKeyToken)</AntlrBuildTaskAssemblyName>
   </PropertyGroup>
 
-  <!--<PropertyGroup>
+  <PropertyGroup>
     <LoadTimeSensitiveTargets>
       $(LoadTimeSensitiveTargets);
       AntlrCompile;
@@ -42,13 +42,7 @@
       $(LoadTimeSensitiveProperties);
       AntlrCompileDependsOn;
     </LoadTimeSensitiveProperties>
-
-
-    <PrepareResourcesDependsOn>
-      AntlrCompile;
-      $(PrepareResourcesDependsOn)
-    </PrepareResourcesDependsOn>
-  </PropertyGroup>-->
+  </PropertyGroup>
 
   <PropertyGroup>
     <AntlrBuildTaskLocation Condition="'$(AntlrBuildTaskPath)'==''">$(MSBuildBinPath)</AntlrBuildTaskLocation>
@@ -83,6 +77,14 @@
     <AvailableItemName Include="AntlrTokens" />
     <AvailableItemName Include="AntlrAbstractGrammar" />
   </ItemGroup>
+
+  <ItemDefinitionGroup>
+    <Antlr3>
+      <TargetLanguage/>
+      <DebugGrammar>false</DebugGrammar>
+      <ProfileGrammar>false</ProfileGrammar>
+    </Antlr3>
+  </ItemDefinitionGroup>
 
   <Target Name="AntlrCompileReadGeneratedFileList">
     <ReadLinesFromFile File="$(IntermediateOutputPath)$(AntlrGenCodeFileNames)">
@@ -124,14 +126,16 @@
       AntlrToolPath="$(AntlrToolLocation)"
       BuildTaskPath="$(AntlrBuildTaskLocation)"
       OutputPath="$(IntermediateOutputPath)"
-      Language="$(Language)"
+      TargetLanguage="%(Antlr3.TargetLanguage)"
       SourceCodeFiles="@(Antlr3)"
       ContinueOnError="$(_IntellisenseOnlyCompile)"
       TokensFiles="@(AntlrTokens)"
-      AbstractGrammarFiles="@(AntlrAbstractGrammar)">
+      AbstractGrammarFiles="@(AntlrAbstractGrammar)"
+      LanguageSourceExtensions="$(DefaultLanguageSourceExtension)"
+      DebugGrammar="%(Antlr3.DebugGrammar)"
+      ProfileGrammar="%(Antlr3.ProfileGrammar)">
 
       <Output ItemName="AntlrGeneratedCodeFiles" TaskParameter="GeneratedCodeFiles" />
-      <Output ItemName="Compile" TaskParameter="GeneratedCodeFiles" />
     </AntlrClassGenerationTask>
 
     <WriteLinesToFile
@@ -142,21 +146,22 @@
   </Target>
 
   <Target Name="AntlrCompileAddFilesGenerated"
-          DependsOnTargets="AntlrCompile"
+          AfterTargets="AntlrCompile"
           Condition="'@(Antlr3)' != ''">
 
     <ItemGroup>
-      <Compile Condition="'@(AntlrGeneratedCodeFiles)' == ''" Include="@(AntlrOutputCodeFilesList)" />
+      <AntlrGeneratedCodeFiles Condition="'@(AntlrGeneratedCodeFiles)' == ''" Include="@(AntlrOutputCodeFilesList)" />
     </ItemGroup>
 
     <ItemGroup>
-      <_AntlrCodeGenFileWrites Condition="'@(AntlrGeneratedCodeFiles)' != ''" Include="@(AntlrGeneratedCodeFiles)" />
-      <_AntlrCodeGenFileWrites Condition="'@(AntlrGeneratedCodeFiles)' == ''" Include="@(AntlrOutputCodeFilesList)" />
-    </ItemGroup>
-
-    <ItemGroup>
-      <FileWrites Include="@(_AntlrCodeGenFileWrites);
+      <FileWrites Include="@(AntlrGeneratedCodeFiles);
                            $(IntermediateOutputPath)$(AntlrGenCodeFileNames);" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Compile Include="@(AntlrGeneratedCodeFiles)" />
+      <!-- The WinFX "GenerateTemporaryTargetAssembly" target requires generated code files be added here. -->
+      <_GeneratedCodeFiles Include="@(AntlrGeneratedCodeFiles)" />
     </ItemGroup>
 
   </Target>

@@ -49,21 +49,21 @@ public static readonly string[] ruleNames =
 	};<\n>
 <endif>
 <if(grammar.grammarIsRoot)><! grammar imports other grammar(s) !>
-	int ruleLevel = 0;
-	public virtual int RuleLevel { get { return ruleLevel; } }
-	public virtual void IncRuleLevel() { ruleLevel++; }
-	public virtual void DecRuleLevel() { ruleLevel--; }
+int ruleLevel = 0;
+public virtual int RuleLevel { get { return ruleLevel; } }
+public virtual void IncRuleLevel() { ruleLevel++; }
+public virtual void DecRuleLevel() { ruleLevel--; }
 <if(profile)>
-	<ctorForProfilingRootGrammar()>
+<ctorForProfilingRootGrammar()>
 <else>
-	<ctorForRootGrammar()>
+<ctorForRootGrammar()>
 <endif>
 <ctorForPredefinedListener()>
 <else><! imported grammar !>
-	public int RuleLevel { get { return <grammar.delegators:{g| <g:delegateName()>}>.RuleLevel; } }
-	public void IncRuleLevel() { <grammar.delegators:{g| <g:delegateName()>}>.IncRuleLevel(); }
-	public void DecRuleLevel() { <grammar.delegators:{g| <g:delegateName()>}>.DecRuleLevel(); }
-	<ctorForDelegateGrammar()>
+public int RuleLevel { get { return <grammar.delegators:{g| <g:delegateName()>}>.RuleLevel; } }
+public void IncRuleLevel() { <grammar.delegators:{g| <g:delegateName()>}>.IncRuleLevel(); }
+public void DecRuleLevel() { <grammar.delegators:{g| <g:delegateName()>}>.DecRuleLevel(); }
+<ctorForDelegateGrammar()>
 <endif>
 <if(profile)>
 public override bool AlreadyParsedRule( IIntStream input, int ruleIndex )

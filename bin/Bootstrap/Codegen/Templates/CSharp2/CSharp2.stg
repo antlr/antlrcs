@@ -344,7 +344,7 @@ genericParser(grammar, name, scopes, tokens, tokenNames, rules, numRules,
    appear to be defined in this recognizer. !>
 	#region Delegated rules
 <grammar.delegatedRules:{ruleDescriptor|
-	<ruleModifier(grammar=grammar,ruleDescriptor=ruleDescriptor)> <returnType(ruleDescriptor)> <ruleDescriptor.name; format="id">(<ruleDescriptor.parameterScope:parameterScope()>) <!throws RecognitionException !>{ <if(ruleDescriptor.hasReturnValue)>return <endif><ruleDescriptor.grammar:delegateName()>.<ruleDescriptor.name; format="id">(<ruleDescriptor.parameterScope.attributes:{a|<a.name; format="id">}; separator=", ">); \}}; separator="\n">
+	<ruleModifier(grammar=grammar,ruleDescriptor=ruleDescriptor)> <returnType(ruleDescriptor)> <ruleDescriptor.name; format="id">(<ruleDescriptor.parameterScope:parameterScope()>) <!throws RecognitionException !>{ <if(ruleDescriptor.hasReturnValue)>return <endif><ruleDescriptor.grammar:delegateName()>.<ruleDescriptor.name; format="id">(<if(ruleDescriptor.parameterScope)><ruleDescriptor.parameterScope.attributes:{a|<a.name; format="id">}; separator=", "><endif>); \}}; separator="\n">
 	#endregion Delegated rules
 <endif>
 
@@ -377,14 +377,14 @@ genericParser(grammar, name, scopes, tokens, tokenNames, rules, numRules,
 
 @genericParser.members() ::= <<
 #if ANTLR_DEBUG
-	private static readonly bool[] decisionCanBacktrack =
-		new bool[]
-		{
-			false, // invalid decision
-			<grammar.decisions:{d | <d.dfa.hasSynPred>}; wrap="\n", separator=", ">
-		};
+private static readonly bool[] decisionCanBacktrack =
+	new bool[]
+	{
+		false, // invalid decision
+		<grammar.decisions:{d | <d.dfa.hasSynPred>}; wrap="\n", separator=", ">
+	};
 #else
-	private static readonly bool[] decisionCanBacktrack = new bool[0];
+private static readonly bool[] decisionCanBacktrack = new bool[0];
 #endif
 <! WARNING. bug in ST: this is cut-n-paste into Dbg.stg !>
 <actions.(actionScope).ctorModifier; null="public"> <grammar.recognizerName>(<inputStreamType> input<grammar.delegators:{g|, <g.recognizerName> <g:delegateName()>}>)
@@ -455,7 +455,7 @@ protected virtual void EnterRule_<ruleName>_fragment() {}
 protected virtual void LeaveRule_<ruleName>_fragment() {}
 
 // $ANTLR start <ruleName>
-public <!final !>void <ruleName>_fragment(<ruleDescriptor.parameterScope:parameterScope()>)
+<ruleModifier(grammar,ruleDescriptor)> void <ruleName>_fragment(<ruleDescriptor.parameterScope:parameterScope()>)
 {
 	<ruleLabelDefs()>
 	EnterRule_<ruleName>_fragment();
@@ -631,7 +631,7 @@ ruleDeclarations() ::= <<
 <if(ruleDescriptor.hasMultipleReturnValues)>
 <returnType(ruleDescriptor)> retval = new <returnType(ruleDescriptor)>();
 retval.Start = (<labelType>)input.LT(1);
-<else>
+<elseif(ruleDescriptor.returnScope)>
 <ruleDescriptor.returnScope.attributes:{ a |
 <a.type> <a.name; format="id"> = <if(a.initValue)><a.initValue><else><initValue(a.type)><endif>;
 }>
@@ -679,7 +679,7 @@ lexerRuleLabelDefs() ::= <<
   ruleDescriptor.ruleListLabels]
     :{it|List\<<labelType>\> list_<it.label.text> = null;}; separator="\n"
 >
-<ruleDescriptor.charListLabels:{it|List\<int\> list_<it.label.text> = null;}; separator="\n"
+<ruleDescriptor.charListLabels:{it|List\<int> list_<it.label.text> = null;}; separator="\n"
 >
 >>
 
@@ -948,12 +948,12 @@ DebugLocation(<it.line>, <it.pos>);<\n>
 %>
 
 /** match a token optionally with a label in front */
-tokenRef(token,label,elementIndex,terminalOptions) ::= <<
+tokenRef(token,label,elementIndex,terminalOptions={}) ::= <<
 <if(label)><label>=(<labelType>)<endif>Match(input,<token>,Follow._<token>_in_<ruleName><elementIndex>); <checkRuleBacktrackFailure()>
 >>
 
 /** ids+=ID */
-tokenRefAndListLabel(token,label,elementIndex,terminalOptions) ::= <<
+tokenRefAndListLabel(token,label,elementIndex,terminalOptions={}) ::= <<
 <tokenRef(...)>
 <listLabelElem(elem=label,elemType=labelType,...)>
 >>
@@ -980,7 +980,7 @@ MatchRange(<a>,<b>); <checkRuleBacktrackFailure()>
 >>
 
 /** For now, sets are interval tests and must be tested inline */
-matchSet(s,label,terminalOptions,elementIndex,postmatchCode="") ::= <<
+matchSet(s,label,elementIndex,postmatchCode="",terminalOptions={}) ::= <<
 <if(label)>
 <matchSetLabel()>
 <endif>
@@ -1049,14 +1049,14 @@ Match(<string>); <checkRuleBacktrackFailure()><\n>
 <endif>
 %>
 
-wildcard(token,label,elementIndex,terminalOptions) ::= <<
+wildcard(token,label,elementIndex,terminalOptions={}) ::= <<
 <if(label)>
 <label>=(<labelType>)input.LT(1);<\n>
 <endif>
 MatchAny(input); <checkRuleBacktrackFailure()>
 >>
 
-wildcardAndListLabel(token,label,elementIndex,terminalOptions) ::= <<
+wildcardAndListLabel(token,label,elementIndex,terminalOptions={}) ::= <<
 <wildcard(...)>
 <listLabelElem(elem=label,elemType=labelType,...)>
 >>
@@ -1176,6 +1176,7 @@ if (!(<evalPredicate(...)>))
 dfaState(k,edges,eotPredictsAlt,description,stateNumber,semPredState) ::= <<
 int LA<decisionNumber>_<k> = input.LA(<k>);<\n>
 <edges; separator="\nelse ">
+<if((!isTrue.(last(edges).labelExpr)) && (!last(edges).predicates))>
 else
 {
 <if(eotPredictsAlt)>
@@ -1188,6 +1189,7 @@ else
 	throw nvae;
 <endif>
 }
+<endif>
 >>
 
 /** Same as a normal DFA state except that we don't examine lookahead
@@ -1450,7 +1452,7 @@ s = <targetStateNumber>;<\n>
 
 andPredicates(left,right) ::= "(<left>&&<right>)"
 
-orPredicates(operands) ::= "(<first(operands)><rest(operands):{o | ||<o>}>)"
+orPredicates(operands) ::= "(<operands; separator=\"||\">)"
 
 notPredicate(pred) ::= "!(<evalPredicate(...)>)"
 
@@ -1481,6 +1483,7 @@ setTest(ranges) ::= <<
 // A T T R I B U T E S
 
 attributeScope(scope) ::= <<
+<if(scope)>
 <if(scope.attributes)>
 protected sealed partial class <scope.name>_scope
 {
@@ -1502,7 +1505,8 @@ protected void <scope.name>_scopeAfter( <scope.name>_scope scope )
 <else>
 protected virtual void <scope.name>_scopeAfter( <scope.name>_scope scope ) {}
 <endif>
-protected readonly ListStack\<<scope.name>_scope\> <scope.name>_stack = new ListStack\<<scope.name>_scope\>();
+protected readonly ListStack\<<scope.name>_scope> <scope.name>_stack = new ListStack\<<scope.name>_scope>();
+<endif>
 <endif>
 >>
 
@@ -1532,9 +1536,7 @@ returnType(ruleDescriptor) ::= <%
  *  values.
  */
 ruleLabelType(referencedRule) ::= <%
-<if(referencedRule.returnScope.attributes&&referencedRule.hasMultipleReturnValues)>
-	<referencedRule.grammar.recognizerName>.<referencedRule:returnStructName()>
-<elseif(referencedRule.hasMultipleReturnValues)>
+<if(referencedRule.hasMultipleReturnValues)>
 	<ruleReturnBaseType()>
 <elseif(referencedRule.hasSingleReturnValue)>
 	<referencedRule.singleValueReturnType>
@@ -1625,7 +1627,7 @@ isolatedDynamicScopeRef(scope) ::= "<scope>_stack"
 /** reference an attribute of rule; might only have single return value */
 ruleLabelRef(referencedRule,scope,attr) ::= <%
 <if(referencedRule.hasMultipleReturnValues)>
-(<scope>!=null?<scope>.<attr.name; format="id">:<initValue(attr.type)>)
+(<scope>!=null?((<returnType(referencedRule)>)<scope>).<attr.name; format="id">:<initValue(attr.type)>)
 <else>
 <scope>
 <endif>
@@ -1656,7 +1658,7 @@ listLabelRef(label) ::= "list_<label>"
 
 // not sure the next are the right approach
 
-tokenLabelPropertyRef_text(scope,attr) ::= "(<scope>!=null?<scope>.Text:null)"
+tokenLabelPropertyRef_text(scope,attr) ::= "(<scope>!=null?<scope>.Text:default(string))"
 tokenLabelPropertyRef_type(scope,attr) ::= "(<scope>!=null?<scope>.Type:0)"
 tokenLabelPropertyRef_line(scope,attr) ::= "(<scope>!=null?<scope>.Line:0)"
 tokenLabelPropertyRef_pos(scope,attr) ::= "(<scope>!=null?<scope>.CharPositionInLine:0)"
@@ -1672,9 +1674,9 @@ ruleLabelPropertyRef_text(scope,attr) ::= <%
 <if(TREE_PARSER)>
 (<scope>!=null?(input.TokenStream.ToString(
   input.TreeAdaptor.GetTokenStartIndex(<scope>.Start),
-  input.TreeAdaptor.GetTokenStopIndex(<scope>.Start))):null)
+  input.TreeAdaptor.GetTokenStopIndex(<scope>.Start))):default(string))
 <else>
-(<scope>!=null?input.ToString(<scope>.Start,<scope>.Stop):null)
+(<scope>!=null?input.ToString(<scope>.Start,<scope>.Stop):default(string))
 <endif>
 %>
 
@@ -1699,7 +1701,7 @@ lexerRuleLabelPropertyRef_index(scope,attr) ::=
     "(<scope>!=null?<scope>.TokenIndex:0)"
 
 lexerRuleLabelPropertyRef_text(scope,attr) ::=
-    "(<scope>!=null?<scope>.Text:null)"
+    "(<scope>!=null?<scope>.Text:default(string))"
 
 lexerRuleLabelPropertyRef_int(scope,attr) ::=
     "(<scope>!=null?int.Parse(<scope>.Text):0)"
@@ -1763,3 +1765,8 @@ codeFileExtension() ::= ".cs"
 
 true_value() ::= "true"
 false_value() ::= "false"
+
+isTrue ::= [
+	"true" : true,
+	default : false
+]

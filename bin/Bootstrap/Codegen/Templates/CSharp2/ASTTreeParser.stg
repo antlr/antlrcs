@@ -53,7 +53,7 @@ ruleDeclarations() ::= <<
 /** What to emit when there is no rewrite rule.  For auto build
  *  mode, does nothing.
  */
-noRewrite(rewriteBlockLevel, treeLevel) ::= <<
+noRewrite(rewriteBlockLevel=false, treeLevel=false) ::= <<
 <if(!ruleDescriptor.isSynPred)>
 <if(backtracking)>if (<actions.(actionScope).synpredgate>) {<endif>
 <if(rewriteMode)>
