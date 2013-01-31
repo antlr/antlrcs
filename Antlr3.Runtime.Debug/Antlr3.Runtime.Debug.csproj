@@ -13,7 +13,7 @@
     <TargetFrameworkVersion>v2.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <SignAssembly>true</SignAssembly>
-    <AssemblyOriginatorKeyFile>..\..\..\..\..\..\..\keys\antlr\Key.snk</AssemblyOriginatorKeyFile>
+    <AssemblyOriginatorKeyFile>..\..\..\..\..\..\..\..\..\keys\antlr\Key.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -49,7 +49,7 @@
     <Compile Include="JavaExtensions\ExceptionExtensions.cs" />
     <Compile Include="Misc\DoubleKeyMap`3.cs" />
     <Compile Include="Misc\Stats.cs" />
-    <None Include="..\..\..\..\..\..\..\keys\antlr\Key.snk">
+    <None Include="..\..\..\..\..\..\..\..\..\keys\antlr\Key.snk">
       <Link>Key.snk</Link>
     </None>
     <None Include="ParserDebugger.cs" />
