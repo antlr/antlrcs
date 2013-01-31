@@ -40,7 +40,7 @@ namespace Antlr4.Test.StringTemplate
     [TestClass]
     public class TestWhitespace : BaseTest
     {
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST4)]
         public void TestTrimmedSubtemplates()
         {
             TemplateGroup group = new TemplateGroup();
@@ -54,7 +54,7 @@ namespace Antlr4.Test.StringTemplate
             Assert.AreEqual(expected, result);
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST4)]
         public void TestTrimmedNewlinesBeforeAfterInTemplate()
         {
             string templates =
@@ -68,7 +68,7 @@ namespace Antlr4.Test.StringTemplate
             Assert.AreEqual(expected, result);
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST4)]
         public void TestDontTrimJustSpaceBeforeAfterInTemplate()
         {
             string templates =
@@ -80,7 +80,7 @@ namespace Antlr4.Test.StringTemplate
             Assert.AreEqual(expected, result);
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST4)]
         public void TestTrimmedSubtemplatesNoArgs()
         {
             TemplateGroup group = new TemplateGroup();
@@ -92,7 +92,7 @@ namespace Antlr4.Test.StringTemplate
             Assert.AreEqual(expected, result);
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST4)]
         public void TestTrimmedSubtemplatesArgs()
         {
             TemplateGroup group = new TemplateGroup();
@@ -106,7 +106,7 @@ namespace Antlr4.Test.StringTemplate
             Assert.AreEqual(expected, result);
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST4)]
         public void TestTrimJustOneWSInSubtemplates()
         {
             TemplateGroup group = new TemplateGroup();
@@ -120,7 +120,7 @@ namespace Antlr4.Test.StringTemplate
             Assert.AreEqual(expected, result);
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST4)]
         public void TestTrimNewlineInSubtemplates()
         {
             TemplateGroup group = new TemplateGroup();
@@ -135,7 +135,7 @@ namespace Antlr4.Test.StringTemplate
             Assert.AreEqual(expected, result);
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST4)]
         public void TestLeaveNewlineOnEndInSubtemplates()
         {
             TemplateGroup group = new TemplateGroup();
@@ -152,7 +152,7 @@ namespace Antlr4.Test.StringTemplate
         }
 
         [Ignore]
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST4)]
         public void TestTabBeforeEndInSubtemplates()
         {
             // fails since it counts indent from outer too
@@ -174,7 +174,7 @@ namespace Antlr4.Test.StringTemplate
             Assert.AreEqual(expected, result);
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST4)]
         public void TestEmptyExprAsFirstLineGetsNoOutput()
         {
             Template t = new Template(
@@ -185,7 +185,7 @@ namespace Antlr4.Test.StringTemplate
             Assert.AreEqual(expecting, result);
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST4)]
         public void TestEmptyLineWithIndent()
         {
             Template t = new Template(
@@ -197,7 +197,7 @@ namespace Antlr4.Test.StringTemplate
             Assert.AreEqual(expecting, result);
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST4)]
         public void TestEmptyLine()
         {
             Template t = new Template(
@@ -209,7 +209,7 @@ namespace Antlr4.Test.StringTemplate
             Assert.AreEqual(expecting, result);
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST4)]
         public void TestSizeZeroOnLineByItselfGetsNoOutput()
         {
             Template t = new Template(
@@ -223,7 +223,7 @@ namespace Antlr4.Test.StringTemplate
             Assert.AreEqual(expecting, result);
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST4)]
         public void TestSizeZeroOnLineWithIndentGetsNoOutput()
         {
             Template t = new Template(
@@ -237,7 +237,7 @@ namespace Antlr4.Test.StringTemplate
             Assert.AreEqual(expecting, result);
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST4)]
         public void TestSizeZeroOnLineWithMultipleExpr()
         {
             Template t = new Template(
@@ -250,7 +250,7 @@ namespace Antlr4.Test.StringTemplate
             Assert.AreEqual(expecting, result);
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST4)]
         public void TestIFExpr()
         {
             Template t = new Template(
@@ -262,7 +262,7 @@ namespace Antlr4.Test.StringTemplate
             Assert.AreEqual(expecting, result);
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST4)]
         public void TestIndentedIFExpr()
         {
             Template t = new Template(
@@ -274,7 +274,7 @@ namespace Antlr4.Test.StringTemplate
             Assert.AreEqual(expecting, result);
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST4)]
         public void TestIFElseExprOnSingleLine()
         {
             Template t = new Template(
@@ -286,7 +286,7 @@ namespace Antlr4.Test.StringTemplate
             Assert.AreEqual(expecting, result);
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST4)]
         public void TestIFOnMultipleLines()
         {
             Template t = new Template(
@@ -302,7 +302,7 @@ namespace Antlr4.Test.StringTemplate
             Assert.AreEqual(expecting, result);
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST4)]
         public void TestElseifOnMultipleLines()
         {
             Template t = new Template(
@@ -318,7 +318,7 @@ namespace Antlr4.Test.StringTemplate
             Assert.AreEqual(expecting, result);
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST4)]
         public void TestElseifOnMultipleLines2()
         {
             Template t = new Template(
@@ -335,7 +335,7 @@ namespace Antlr4.Test.StringTemplate
             Assert.AreEqual(expecting, result);
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST4)]
         public void TestElseifOnMultipleLines3()
         {
             Template t = new Template(
@@ -352,7 +352,7 @@ namespace Antlr4.Test.StringTemplate
             Assert.AreEqual(expecting, result);
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST4)]
         public void TestEndifNotOnLineAlone()
         {
             Template t = new Template(
@@ -367,7 +367,7 @@ namespace Antlr4.Test.StringTemplate
             Assert.AreEqual(expecting, result);
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST4)]
         public void TestNestedIFOnMultipleLines()
         {
             Template t = new Template(
@@ -386,7 +386,7 @@ namespace Antlr4.Test.StringTemplate
             Assert.AreEqual(expecting, result);
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST4)]
         public void TestIfElseifOnMultipleLines()
         {
             Template t = new Template(
@@ -403,7 +403,7 @@ namespace Antlr4.Test.StringTemplate
             Assert.AreEqual(expecting, result);
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST4)]
         public void TestLineBreak()
         {
             Template st = new Template(
@@ -417,7 +417,7 @@ namespace Antlr4.Test.StringTemplate
             Assert.AreEqual(expecting, result);
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST4)]
         public void TestLineBreak2()
         {
             Template st = new Template(
@@ -431,7 +431,7 @@ namespace Antlr4.Test.StringTemplate
             Assert.AreEqual(expecting, result);
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST4)]
         public void TestLineBreakNoWhiteSpace()
         {
             Template st = new Template(
@@ -445,7 +445,7 @@ namespace Antlr4.Test.StringTemplate
             Assert.AreEqual(expecting, result);
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST4)]
         public void TestNewlineNormalizationInTemplateString()
         {
             Template st = new Template(
@@ -459,7 +459,7 @@ namespace Antlr4.Test.StringTemplate
             Assert.AreEqual(expecting, result);
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST4)]
         public void TestNewlineNormalizationInTemplateStringPC()
         {
             Template st = new Template(
@@ -473,7 +473,7 @@ namespace Antlr4.Test.StringTemplate
             Assert.AreEqual(expecting, result);
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST4)]
         public void TestNewlineNormalizationInAttribute()
         {
             Template st = new Template(
@@ -488,7 +488,7 @@ namespace Antlr4.Test.StringTemplate
             Assert.AreEqual(expecting, result);
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST4)]
         public void TestNullIterationLineGivesNoOutput()
         {
             Template t = new Template(
@@ -500,7 +500,7 @@ namespace Antlr4.Test.StringTemplate
             Assert.AreEqual(expecting, result);
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST4)]
         public void TestEmptyIterationLineGivesNoOutput()
         {
             Template t = new Template(
@@ -513,7 +513,7 @@ namespace Antlr4.Test.StringTemplate
             Assert.AreEqual(expecting, result);
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST4)]
         public void TestCommentOnlyLineGivesNoOutput()
         {
             Template t = new Template(
@@ -525,7 +525,7 @@ namespace Antlr4.Test.StringTemplate
             Assert.AreEqual(expecting, result);
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST4)]
         public void TestCommentOnlyLineGivesNoOutput2()
         {
             Template t = new Template(

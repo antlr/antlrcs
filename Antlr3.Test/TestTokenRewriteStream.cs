@@ -45,7 +45,7 @@ namespace AntlrUnitTests
     [TestClass]
     public class TestTokenRewriteStream : BaseTest
     {
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestInsertBeforeIndex0() /*throws Exception*/ {
             Grammar g = new Grammar(
                 "lexer grammar t;\n" +
@@ -61,7 +61,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( expecting, result );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestInsertAfterLastIndex() /*throws Exception*/ {
             Grammar g = new Grammar(
                 "lexer grammar t;\n" +
@@ -77,7 +77,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( expecting, result );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void Test2InsertBeforeAfterMiddleIndex() /*throws Exception*/ {
             Grammar g = new Grammar(
                 "lexer grammar t;\n" +
@@ -95,7 +95,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( expecting, result );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestReplaceIndex0() /*throws Exception*/ {
             Grammar g = new Grammar(
                 "lexer grammar t;\n" +
@@ -112,7 +112,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( expecting, result );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestReplaceLastIndex() /*throws Exception*/ {
             Grammar g = new Grammar(
                 "lexer grammar t;\n" +
@@ -129,7 +129,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( expecting, result );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestReplaceMiddleIndex() /*throws Exception*/ {
             Grammar g = new Grammar(
                 "lexer grammar t;\n" +
@@ -146,7 +146,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( expecting, result );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestToStringStartStop() /*throws Exception*/ {
             Grammar g = new Grammar(
                 "lexer grammar t;\n" +
@@ -181,7 +181,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( expecting, result );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestToStringStartStop2() /*throws Exception*/ {
             Grammar g = new Grammar(
                 "lexer grammar t;\n" +
@@ -235,7 +235,7 @@ namespace AntlrUnitTests
         }
 
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void Test2ReplaceMiddleIndex() /*throws Exception*/ {
             Grammar g = new Grammar(
                 "lexer grammar t;\n" +
@@ -253,7 +253,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( expecting, result );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void Test2ReplaceMiddleIndex1InsertBefore() /*throws Exception*/ {
             Grammar g = new Grammar(
                 "lexer grammar t;\n" +
@@ -272,7 +272,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( expecting, result );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestReplaceThenDeleteMiddleIndex() /*throws Exception*/ {
             Grammar g = new Grammar(
                 "lexer grammar t;\n" +
@@ -290,7 +290,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( expecting, result );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestInsertInPriorReplace() /*throws Exception*/ {
             Grammar g = new Grammar(
                 "lexer grammar t;\n" +
@@ -317,7 +317,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( expecting, exc.Message );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestInsertThenReplaceSameIndex() /*throws Exception*/ {
             Grammar g = new Grammar(
                 "lexer grammar t;\n" +
@@ -335,7 +335,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( expecting, result );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void Test2InsertMiddleIndex() /*throws Exception*/ {
             Grammar g = new Grammar(
                 "lexer grammar t;\n" +
@@ -353,7 +353,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( expecting, result );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void Test2InsertThenReplaceIndex0() /*throws Exception*/ {
             Grammar g = new Grammar(
                 "lexer grammar t;\n" +
@@ -372,7 +372,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( expecting, result );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestReplaceThenInsertBeforeLastIndex() /*throws Exception*/ {
             Grammar g = new Grammar(
                 "lexer grammar t;\n" +
@@ -390,7 +390,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( expecting, result );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestInsertThenReplaceLastIndex() /*throws Exception*/ {
             Grammar g = new Grammar(
                 "lexer grammar t;\n" +
@@ -408,7 +408,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( expecting, result );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestReplaceThenInsertAfterLastIndex() /*throws Exception*/ {
             Grammar g = new Grammar(
                 "lexer grammar t;\n" +
@@ -426,7 +426,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( expecting, result );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestReplaceRangeThenInsertAtLeftEdge() /*throws Exception*/ {
             Grammar g = new Grammar(
                 "lexer grammar t;\n" +
@@ -444,7 +444,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( expecting, result );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestReplaceRangeThenInsertAtRightEdge() /*throws Exception*/ {
             Grammar g = new Grammar(
                 "lexer grammar t;\n" +
@@ -471,7 +471,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( expecting, exc.Message );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestReplaceRangeThenInsertAfterRightEdge() /*throws Exception*/ {
             Grammar g = new Grammar(
                 "lexer grammar t;\n" +
@@ -489,7 +489,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( expecting, result );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestReplaceAll() /*throws Exception*/ {
             Grammar g = new Grammar(
                 "lexer grammar t;\n" +
@@ -506,7 +506,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( expecting, result );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestReplaceSubsetThenFetch() /*throws Exception*/ {
             Grammar g = new Grammar(
                 "lexer grammar t;\n" +
@@ -523,7 +523,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( expecting, result );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestReplaceThenReplaceSuperset() /*throws Exception*/ {
             Grammar g = new Grammar(
                 "lexer grammar t;\n" +
@@ -550,7 +550,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( expecting, exc.Message );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestReplaceThenReplaceLowerIndexedSuperset() /*throws Exception*/ {
             Grammar g = new Grammar(
                 "lexer grammar t;\n" +
@@ -577,7 +577,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( expecting, exc.Message );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestReplaceSingleMiddleThenOverlappingSuperset() /*throws Exception*/ {
             Grammar g = new Grammar(
                 "lexer grammar t;\n" +
@@ -597,7 +597,7 @@ namespace AntlrUnitTests
 
         // June 2, 2008 I rewrote core of rewrite engine; just adding lots more tests here
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestCombineInserts() /*throws Exception*/ {
             Grammar g = new Grammar(
                 "lexer grammar t;\n" +
@@ -615,7 +615,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( expecting, result );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestCombine3Inserts() /*throws Exception*/ {
             Grammar g = new Grammar(
                 "lexer grammar t;\n" +
@@ -634,7 +634,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( expecting, result );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestCombineInsertOnLeftWithReplace() /*throws Exception*/ {
             Grammar g = new Grammar(
                 "lexer grammar t;\n" +
@@ -652,7 +652,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( expecting, result );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestCombineInsertOnLeftWithDelete() /*throws Exception*/ {
             Grammar g = new Grammar(
                 "lexer grammar t;\n" +
@@ -670,7 +670,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( expecting, result );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestDisjointInserts() /*throws Exception*/ {
             Grammar g = new Grammar(
                 "lexer grammar t;\n" +
@@ -689,7 +689,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( expecting, result );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestOverlappingReplace() /*throws Exception*/ {
             Grammar g = new Grammar(
                 "lexer grammar t;\n" +
@@ -707,7 +707,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( expecting, result );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestOverlappingReplace2() /*throws Exception*/ {
             Grammar g = new Grammar(
                 "lexer grammar t;\n" +
@@ -734,7 +734,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( expecting, exc.Message );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestOverlappingReplace3() /*throws Exception*/ {
             Grammar g = new Grammar(
                 "lexer grammar t;\n" +
@@ -752,7 +752,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( expecting, result );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestOverlappingReplace4() /*throws Exception*/ {
             Grammar g = new Grammar(
                 "lexer grammar t;\n" +
@@ -770,7 +770,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( expecting, result );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestDropIdenticalReplace() /*throws Exception*/ {
             Grammar g = new Grammar(
                 "lexer grammar t;\n" +
@@ -788,7 +788,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( expecting, result );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestDropPrevCoveredInsert() /*throws Exception*/ {
             Grammar g = new Grammar(
                 "lexer grammar t;\n" +
@@ -806,7 +806,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( expecting, result );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestLeaveAloneDisjointInsert() /*throws Exception*/ {
             Grammar g = new Grammar(
                 "lexer grammar t;\n" +
@@ -824,7 +824,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( expecting, result );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestLeaveAloneDisjointInsert2() /*throws Exception*/ {
             Grammar g = new Grammar(
                 "lexer grammar t;\n" +
@@ -842,7 +842,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( expecting, result );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestInsertBeforeTokenThenDeleteThatToken()
         {
             Grammar g = new Grammar(

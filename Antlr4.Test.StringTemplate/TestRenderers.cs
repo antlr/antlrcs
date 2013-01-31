@@ -36,106 +36,119 @@ namespace Antlr4.Test.StringTemplate
     using Antlr4.StringTemplate;
     using Microsoft.VisualStudio.TestTools.UnitTesting;
     using CultureInfo = System.Globalization.CultureInfo;
+    using DateTime = System.DateTime;
+    using DateTimeOffset = System.DateTimeOffset;
     using Path = System.IO.Path;
 
     [TestClass]
     public class TestRenderers : BaseTest
     {
-#if false // date renderer
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST4)]
         public void TestRendererForGroup()
         {
             string templates =
                     "dateThing(created) ::= \"datetime: <created>\"\n";
             writeFile(tmpdir, "t.stg", templates);
-            STGroup group = new STGroupFile(Path.Combine(tmpdir, "t.stg"));
-            group.registerRenderer(typeof(GregorianCalendar), new DateRenderer());
-            ST st = group.getInstanceOf("dateThing");
-            st.add("created", new GregorianCalendar(2005, 07 - 1, 05));
-            string expecting = "datetime: 7/5/05 12:00 AM";
-            string result = st.render();
+            TemplateGroup group = new TemplateGroupFile(Path.Combine(tmpdir, "t.stg"));
+            group.RegisterRenderer(typeof(DateTime), new DateRenderer());
+            group.RegisterRenderer(typeof(DateTimeOffset), new DateRenderer());
+            Template st = group.GetInstanceOf("dateThing");
+            st.Add("created", new DateTime(2005, 07, 05));
+            string expecting = "datetime: 7/5/2005 12:00 AM";
+            string result = st.Render();
             Assert.AreEqual(expecting, result);
         }
 
         [TestMethod]
+        [TestCategory(TestCategories.ST4)]
         public void TestRendererWithFormat()
         {
             string templates =
                     "dateThing(created) ::= << date: <created; format=\"yyyy.MM.dd\"> >>\n";
             writeFile(tmpdir, "t.stg", templates);
-            STGroup group = new STGroupFile(Path.Combine(tmpdir, "t.stg"));
-            group.registerRenderer(typeof(GregorianCalendar), new DateRenderer());
-            ST st = group.getInstanceOf("dateThing");
-            st.add("created", new GregorianCalendar(2005, 07 - 1, 05));
+            TemplateGroup group = new TemplateGroupFile(Path.Combine(tmpdir, "t.stg"));
+            group.RegisterRenderer(typeof(DateTime), new DateRenderer());
+            group.RegisterRenderer(typeof(DateTimeOffset), new DateRenderer());
+            Template st = group.GetInstanceOf("dateThing");
+            st.Add("created", new DateTime(2005, 07, 05));
             string expecting = " date: 2005.07.05 ";
-            string result = st.render();
+            string result = st.Render();
             Assert.AreEqual(expecting, result);
         }
 
         [TestMethod]
+        [TestCategory(TestCategories.ST4)]
         public void TestRendererWithPredefinedFormat()
         {
             string templates =
                     "dateThing(created) ::= << datetime: <created; format=\"short\"> >>\n";
             writeFile(tmpdir, "t.stg", templates);
-            STGroup group = new STGroupFile(Path.Combine(tmpdir, "t.stg"));
-            group.registerRenderer(typeof(GregorianCalendar), new DateRenderer());
-            ST st = group.getInstanceOf("dateThing");
-            st.add("created", new GregorianCalendar(2005, 07 - 1, 05));
-            string expecting = " datetime: 7/5/05 12:00 AM ";
-            string result = st.render();
+            TemplateGroup group = new TemplateGroupFile(Path.Combine(tmpdir, "t.stg"));
+            group.RegisterRenderer(typeof(DateTime), new DateRenderer());
+            group.RegisterRenderer(typeof(DateTimeOffset), new DateRenderer());
+            Template st = group.GetInstanceOf("dateThing");
+            st.Add("created", new DateTime(2005, 07, 05));
+            string expecting = " datetime: 7/5/2005 12:00 AM ";
+            string result = st.Render();
             Assert.AreEqual(expecting, result);
         }
 
         [TestMethod]
+        [TestCategory(TestCategories.ST4)]
         public void TestRendererWithPredefinedFormat2()
         {
             string templates =
                     "dateThing(created) ::= << datetime: <created; format=\"full\"> >>\n";
             writeFile(tmpdir, "t.stg", templates);
-            STGroup group = new STGroupFile(Path.Combine(tmpdir, "t.stg"));
-            group.registerRenderer(typeof(GregorianCalendar), new DateRenderer());
-            ST st = group.getInstanceOf("dateThing");
-            st.add("created", new GregorianCalendar(2005, 07 - 1, 05));
-            string expecting = " datetime: Tuesday, July 5, 2005 12:00:00 AM PDT ";
-            string result = st.render();
+            TemplateGroup group = new TemplateGroupFile(Path.Combine(tmpdir, "t.stg"));
+            group.RegisterRenderer(typeof(DateTime), new DateRenderer());
+            group.RegisterRenderer(typeof(DateTimeOffset), new DateRenderer());
+            Template st = group.GetInstanceOf("dateThing");
+            st.Add("created", new DateTime(2005, 07, 05));
+            string expecting = " datetime: Tuesday, July 05, 2005 12:00:00 AM ";
+            string result = st.Render();
             Assert.AreEqual(expecting, result);
         }
 
+        [Ignore] // medium is not supported on .NET
         [TestMethod]
+        [TestCategory(TestCategories.ST4)]
         public void TestRendererWithPredefinedFormat3()
         {
             string templates =
                     "dateThing(created) ::= << date: <created; format=\"date:medium\"> >>\n";
 
             writeFile(tmpdir, "t.stg", templates);
-            STGroup group = new STGroupFile(Path.Combine(tmpdir, "t.stg"));
-            group.registerRenderer(typeof(GregorianCalendar), new DateRenderer());
-            ST st = group.getInstanceOf("dateThing");
-            st.add("created", new GregorianCalendar(2005, 07 - 1, 05));
+            TemplateGroup group = new TemplateGroupFile(Path.Combine(tmpdir, "t.stg"));
+            group.RegisterRenderer(typeof(DateTime), new DateRenderer());
+            group.RegisterRenderer(typeof(DateTimeOffset), new DateRenderer());
+            Template st = group.GetInstanceOf("dateThing");
+            st.Add("created", new DateTime(2005, 07, 05));
             string expecting = " date: Jul 5, 2005 ";
-            string result = st.render();
+            string result = st.Render();
             Assert.AreEqual(expecting, result);
         }
 
+        [Ignore] // medium is not supported on .NET
         [TestMethod]
+        [TestCategory(TestCategories.ST4)]
         public void TestRendererWithPredefinedFormat4()
         {
             string templates =
                     "dateThing(created) ::= << time: <created; format=\"time:medium\"> >>\n";
 
             writeFile(tmpdir, "t.stg", templates);
-            STGroup group = new STGroupFile(Path.Combine(tmpdir, "t.stg"));
-            group.registerRenderer(typeof(GregorianCalendar), new DateRenderer());
-            ST st = group.getInstanceOf("dateThing");
-            st.add("created", new GregorianCalendar(2005, 07 - 1, 05));
+            TemplateGroup group = new TemplateGroupFile(Path.Combine(tmpdir, "t.stg"));
+            group.RegisterRenderer(typeof(DateTime), new DateRenderer());
+            group.RegisterRenderer(typeof(DateTimeOffset), new DateRenderer());
+            Template st = group.GetInstanceOf("dateThing");
+            st.Add("created", new DateTime(2005, 07, 05));
             string expecting = " time: 12:00:00 AM ";
-            string result = st.render();
+            string result = st.Render();
             Assert.AreEqual(expecting, result);
         }
-#endif
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST4)]
         public void TestStringRendererWithPrintfFormat()
         {
             string templates =
@@ -151,7 +164,7 @@ namespace Antlr4.Test.StringTemplate
             Assert.AreEqual(expecting, result);
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST4)]
         public void TestRendererWithFormatAndList()
         {
             string template =
@@ -167,7 +180,7 @@ namespace Antlr4.Test.StringTemplate
             Assert.AreEqual(expecting, result);
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST4)]
         public void TestRendererWithFormatAndSeparator()
         {
             string template =
@@ -183,7 +196,7 @@ namespace Antlr4.Test.StringTemplate
             Assert.AreEqual(expecting, result);
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST4)]
         public void TestRendererWithFormatAndSeparatorAndNull()
         {
             string template =
@@ -201,7 +214,7 @@ namespace Antlr4.Test.StringTemplate
             Assert.AreEqual(expecting, result);
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST4)]
         public void TestStringRendererWithFormat_cap()
         {
             string templates =
@@ -217,7 +230,7 @@ namespace Antlr4.Test.StringTemplate
             Assert.AreEqual(expecting, result);
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST4)]
         public void TestStringRendererWithTemplateInclude_cap()
         {
             // must toString the t() ref before applying format
@@ -236,7 +249,7 @@ namespace Antlr4.Test.StringTemplate
             Assert.AreEqual(expecting, result);
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST4)]
         public void TestStringRendererWithSubtemplateInclude_cap()
         {
             // must toString the t() ref before applying format
@@ -254,7 +267,7 @@ namespace Antlr4.Test.StringTemplate
             Assert.AreEqual(expecting, result);
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST4)]
         public void TestStringRendererWithFormat_cap_emptyValue()
         {
             string templates =
@@ -270,7 +283,7 @@ namespace Antlr4.Test.StringTemplate
             Assert.AreEqual(expecting, result);
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST4)]
         public void TestStringRendererWithFormat_url_encode()
         {
             string templates =
@@ -286,7 +299,7 @@ namespace Antlr4.Test.StringTemplate
             Assert.AreEqual(expecting, result);
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST4)]
         public void TestStringRendererWithFormat_xml_encode()
         {
             string templates =
@@ -302,7 +315,7 @@ namespace Antlr4.Test.StringTemplate
             Assert.AreEqual(expecting, result);
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST4)]
         public void TestStringRendererWithFormat_xml_encode_null()
         {
             string templates =
@@ -318,7 +331,7 @@ namespace Antlr4.Test.StringTemplate
             Assert.AreEqual(expecting, result);
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST4)]
         public void TestNumberRendererWithPrintfFormat()
         {
             //string templates = "foo(x,y) ::= << <x; format=\"%d\"> <y; format=\"%2.3f\"> >>\n";
@@ -336,7 +349,7 @@ namespace Antlr4.Test.StringTemplate
             Assert.AreEqual(expecting, result);
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST4)]
         public void TestInstanceofRenderer()
         {
             string templates =
@@ -354,7 +367,7 @@ namespace Antlr4.Test.StringTemplate
             Assert.AreEqual(expecting, result);
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST4)]
         public void TestLocaleWithNumberRenderer()
         {
             //string templates = "foo(x,y) ::= << <x; format=\"%,d\"> <y; format=\"%,2.3f\"> >>\n";

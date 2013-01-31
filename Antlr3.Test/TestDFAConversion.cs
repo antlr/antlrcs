@@ -52,7 +52,7 @@ namespace AntlrUnitTests
     public class TestDFAConversion : BaseTest
     {
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestA() /*throws Exception*/ {
             Grammar g = new Grammar(
                 "parser grammar t;\n" +
@@ -63,7 +63,7 @@ namespace AntlrUnitTests
             checkDecision( g, 1, expecting, null, null, null, null, 0 );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestAB_or_AC() /*throws Exception*/ {
             Grammar g = new Grammar(
                 "parser grammar t;\n" +
@@ -75,7 +75,7 @@ namespace AntlrUnitTests
             checkDecision( g, 1, expecting, null, null, null, null, 0 );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestAB_or_AC_k2() /*throws Exception*/ {
             Grammar g = new Grammar(
                 "parser grammar t;\n" +
@@ -88,7 +88,7 @@ namespace AntlrUnitTests
             checkDecision( g, 1, expecting, null, null, null, null, 0 );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestAB_or_AC_k1() /*throws Exception*/ {
             Grammar g = new Grammar(
                 "parser grammar t;\n" +
@@ -105,7 +105,7 @@ namespace AntlrUnitTests
                           nonDetAlts, ambigInput, danglingAlts, numWarnings );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestselfRecurseNonDet() /*throws Exception*/ {
             Grammar g = new Grammar(
                 "parser grammar t;\n" +
@@ -115,7 +115,7 @@ namespace AntlrUnitTests
             assertNonLLStar( g, altsWithRecursion );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestRecursionOverflow() /*throws Exception*/ {
             Grammar g = new Grammar(
                 "parser grammar t;\n" +
@@ -126,7 +126,7 @@ namespace AntlrUnitTests
             assertRecursionOverflow( g, expectedTargetRules, expectedAlt );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestRecursionOverflow2() /*throws Exception*/ {
             Grammar g = new Grammar(
                 "parser grammar t;\n" +
@@ -137,7 +137,7 @@ namespace AntlrUnitTests
             assertRecursionOverflow( g, expectedTargetRules, expectedAlt );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestRecursionOverflowWithPredOk() /*throws Exception*/ {
             // overflows with k=*, but resolves with pred
             // no warnings/errors
@@ -167,7 +167,7 @@ namespace AntlrUnitTests
                           nonDetAlts, ambigInput, danglingAlts, numWarnings );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestRecursionOverflowWithPredOk2() /*throws Exception*/ {
             // must predict Z w/o predicate
             Grammar g = new Grammar(
@@ -197,7 +197,7 @@ namespace AntlrUnitTests
                           nonDetAlts, ambigInput, danglingAlts, numWarnings );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestCannotSeePastRecursion() /*throws Exception*/ {
             Grammar g = new Grammar(
                 "parser grammar t;\n" +
@@ -211,7 +211,7 @@ namespace AntlrUnitTests
             assertNonLLStar( g, altsWithRecursion );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestSynPredResolvesRecursion() /*throws Exception*/ {
             Grammar g = new Grammar(
                 "parser grammar t;\n" +
@@ -237,7 +237,7 @@ namespace AntlrUnitTests
                           nonDetAlts, ambigInput, danglingAlts, numWarnings );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestSynPredMissingInMiddle()
         {
             Grammar g = new Grammar(
@@ -260,7 +260,7 @@ namespace AntlrUnitTests
                           nonDetAlts, ambigInput, danglingAlts, numWarnings);
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestAutoBacktrackAndPredMissingInMiddle()
         {
             Grammar g = new Grammar(
@@ -284,7 +284,7 @@ namespace AntlrUnitTests
                           nonDetAlts, ambigInput, danglingAlts, numWarnings);
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestSemPredResolvesRecursion() /*throws Exception*/ {
             Grammar g = new Grammar(
                 "parser grammar t;\n" +
@@ -310,7 +310,7 @@ namespace AntlrUnitTests
                           nonDetAlts, ambigInput, danglingAlts, numWarnings );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestSemPredResolvesRecursion2() /*throws Exception*/ {
             Grammar g = new Grammar(
                 "parser grammar t;\n" +
@@ -338,7 +338,7 @@ namespace AntlrUnitTests
                           nonDetAlts, ambigInput, danglingAlts, numWarnings );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestSemPredResolvesRecursion3() /*throws Exception*/ {
             Grammar g = new Grammar(
                 "parser grammar t;\n" +
@@ -370,7 +370,7 @@ namespace AntlrUnitTests
                           nonDetAlts, ambigInput, danglingAlts, numWarnings );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestSynPredResolvesRecursion2() /*throws Exception*/ {
             // k=* fails and it retries/succeeds with k=1 silently
             // because of predicate
@@ -404,7 +404,7 @@ namespace AntlrUnitTests
                           nonDetAlts, ambigInput, danglingAlts, numWarnings );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestSynPredResolvesRecursion3() /*throws Exception*/ {
             // No errors with k=1; don't try k=* first
             Grammar g = new Grammar(
@@ -438,7 +438,7 @@ namespace AntlrUnitTests
                           nonDetAlts, ambigInput, danglingAlts, numWarnings );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestSynPredResolvesRecursion4() /*throws Exception*/ {
             // No errors with k=2; don't try k=* first
             // Should be ok like k=1 'except bigger DFA
@@ -474,7 +474,7 @@ namespace AntlrUnitTests
                           nonDetAlts, ambigInput, danglingAlts, numWarnings );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestSynPredResolvesRecursionInLexer() /*throws Exception*/ {
             Grammar g = new Grammar(
                 "lexer grammar t;\n" +
@@ -501,7 +501,7 @@ namespace AntlrUnitTests
                           nonDetAlts, ambigInput, danglingAlts, numWarnings );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestAutoBacktrackResolvesRecursionInLexer() /*throws Exception*/ {
             Grammar g = new Grammar(
                 "lexer grammar t;\n" +
@@ -529,7 +529,7 @@ namespace AntlrUnitTests
                           nonDetAlts, ambigInput, danglingAlts, numWarnings );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestAutoBacktrackResolvesRecursion() /*throws Exception*/ {
             Grammar g = new Grammar(
                 "parser grammar t;\n" +
@@ -556,7 +556,7 @@ namespace AntlrUnitTests
                           nonDetAlts, ambigInput, danglingAlts, numWarnings );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestselfRecurseNonDet2() /*throws Exception*/ {
             Grammar g = new Grammar(
                 "parser grammar t;\n" +
@@ -576,7 +576,7 @@ namespace AntlrUnitTests
                           nonDetAlts, ambigInput, danglingAlts, numWarnings );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestIndirectRecursionLoop() /*throws Exception*/ {
             Grammar g = new Grammar(
                 "parser grammar t;\n" +
@@ -610,7 +610,7 @@ namespace AntlrUnitTests
             Assert.IsTrue( expecting.SequenceEqual( ruleNames2( result ) ) );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestIndirectRecursionLoop2() /*throws Exception*/ {
             Grammar g = new Grammar(
                 "parser grammar t;\n" +
@@ -646,7 +646,7 @@ namespace AntlrUnitTests
             Assert.IsTrue( expecting.SequenceEqual( ruleNames2( result ) ) );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestIndirectRecursionLoop3() /*throws Exception*/ {
             Grammar g = new Grammar(
                 "parser grammar t;\n" +
@@ -678,7 +678,7 @@ namespace AntlrUnitTests
             Assert.IsTrue( expecting.SequenceEqual( ruleNames2( result ) ) );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestifThenElse() /*throws Exception*/ {
             Grammar g = new Grammar(
                 "parser grammar t;\n" +
@@ -700,7 +700,7 @@ namespace AntlrUnitTests
             checkDecision( g, 2, expecting, null, null, null, null, 0 );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestifThenElseChecksStackSuffixConflict() /*throws Exception*/ {
             // if you don't check stack soon enough, this finds E B not just E
             // as ambig input
@@ -725,7 +725,7 @@ namespace AntlrUnitTests
             checkDecision( g, 1, expecting, null, null, null, null, 0 );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestInvokeRule() /*throws Exception*/ {
             Grammar g = new Grammar(
                 "parser grammar t;\n" +
@@ -743,7 +743,7 @@ namespace AntlrUnitTests
             checkDecision( g, 1, expecting, null, null, null, null, 0 );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestDoubleInvokeRuleLeftEdge() /*throws Exception*/ {
             Grammar g = new Grammar(
                 "parser grammar t;\n" +
@@ -769,7 +769,7 @@ namespace AntlrUnitTests
             checkDecision( g, 2, expecting, null, null, null, null, 0 );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestimmediateTailRecursion() /*throws Exception*/ {
             Grammar g = new Grammar(
                 "parser grammar t;\n" +
@@ -782,7 +782,7 @@ namespace AntlrUnitTests
             checkDecision( g, 1, expecting, null, null, null, null, 0 );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestAStar_immediateTailRecursion() /*throws Exception*/ {
             Grammar g = new Grammar(
                 "parser grammar t;\n" +
@@ -800,7 +800,7 @@ namespace AntlrUnitTests
                           nonDetAlts, ambigInput, danglingAlts, numWarnings );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestNoStartRule() /*throws Exception*/ {
             ErrorQueue equeue = new ErrorQueue();
             ErrorManager.SetErrorListener( equeue );
@@ -818,7 +818,7 @@ namespace AntlrUnitTests
             Assert.IsTrue(msg is GrammarSemanticsMessage, "expecting no start rules; found " + msg.GetType().Name);
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestAStar_immediateTailRecursion2() /*throws Exception*/ {
             Grammar g = new Grammar(
                 "parser grammar t;\n" +
@@ -837,7 +837,7 @@ namespace AntlrUnitTests
                           nonDetAlts, ambigInput, danglingAlts, numWarnings );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestimmediateLeftRecursion() /*throws Exception*/ {
             Grammar g = new Grammar(
                 "parser grammar t;\n" +
@@ -850,7 +850,7 @@ namespace AntlrUnitTests
             Assert.IsTrue( expectedRules.SequenceEqual( ruleNames( leftRecursive ) ) );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestIndirectLeftRecursion() /*throws Exception*/ {
             Grammar g = new Grammar(
                 "parser grammar t;\n" +
@@ -867,7 +867,7 @@ namespace AntlrUnitTests
             Assert.IsTrue( expectedRules.SequenceEqual( ruleNames( leftRecursive ) ) );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestLeftRecursionInMultipleCycles() /*throws Exception*/ {
             Grammar g = new Grammar(
                 "parser grammar t;\n" +
@@ -889,7 +889,7 @@ namespace AntlrUnitTests
             Assert.IsTrue( expectedRules.SequenceEqual( ruleNames( leftRecursive ) ) );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestCycleInsideRuleDoesNotForceInfiniteRecursion() /*throws Exception*/ {
             Grammar g = new Grammar(
                 "parser grammar t;\n" +
@@ -904,7 +904,7 @@ namespace AntlrUnitTests
 
         // L O O P S
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestAStar() /*throws Exception*/ {
             Grammar g = new Grammar(
                 "parser grammar t;\n" +
@@ -915,7 +915,7 @@ namespace AntlrUnitTests
             checkDecision( g, 1, expecting, null, null, null, null, 0 );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestAorBorCStar() /*throws Exception*/ {
             Grammar g = new Grammar(
                 "parser grammar t;\n" +
@@ -926,7 +926,7 @@ namespace AntlrUnitTests
             checkDecision( g, 1, expecting, null, null, null, null, 0 );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestAPlus() /*throws Exception*/ {
             Grammar g = new Grammar(
                 "parser grammar t;\n" +
@@ -937,7 +937,7 @@ namespace AntlrUnitTests
             checkDecision( g, 1, expecting, null, null, null, null, 0 ); // loopback decision
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestAPlusNonGreedyWhenDeterministic() /*throws Exception*/ {
             Grammar g = new Grammar(
                 "parser grammar t;\n" +
@@ -949,7 +949,7 @@ namespace AntlrUnitTests
             checkDecision( g, 1, expecting, null, null, null, null, 0 );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestAPlusNonGreedyWhenNonDeterministic() /*throws Exception*/ {
             Grammar g = new Grammar(
                 "parser grammar t;\n" +
@@ -966,7 +966,7 @@ namespace AntlrUnitTests
                           nonDetAlts, ambigInput, danglingAlts, numWarnings );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestAPlusGreedyWhenNonDeterministic() /*throws Exception*/ {
             Grammar g = new Grammar(
                 "parser grammar t;\n" +
@@ -984,7 +984,7 @@ namespace AntlrUnitTests
                           nonDetAlts, ambigInput, danglingAlts, numWarnings );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestAorBorCPlus() /*throws Exception*/ {
             Grammar g = new Grammar(
                 "parser grammar t;\n" +
@@ -995,7 +995,7 @@ namespace AntlrUnitTests
             checkDecision( g, 1, expecting, null, null, null, null, 0 );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestAOptional() /*throws Exception*/ {
             Grammar g = new Grammar(
                 "parser grammar t;\n" +
@@ -1006,7 +1006,7 @@ namespace AntlrUnitTests
             checkDecision( g, 1, expecting, null, null, null, null, 0 ); // loopback decision
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestAorBorCOptional() /*throws Exception*/ {
             Grammar g = new Grammar(
                 "parser grammar t;\n" +
@@ -1019,7 +1019,7 @@ namespace AntlrUnitTests
 
         // A R B I T R A R Y  L O O K A H E A D
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestAStarBOrAStarC() /*throws Exception*/ {
             Grammar g = new Grammar(
                 "parser grammar t;\n" +
@@ -1042,7 +1042,7 @@ namespace AntlrUnitTests
             checkDecision( g, 3, expecting, null, null, null, null, 0 ); // rule block
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestAStarBOrAPlusC() /*throws Exception*/ {
             Grammar g = new Grammar(
                 "parser grammar t;\n" +
@@ -1065,7 +1065,7 @@ namespace AntlrUnitTests
         }
 
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestAOrBPlusOrAPlus() /*throws Exception*/ {
             Grammar g = new Grammar(
                 "parser grammar t;\n" +
@@ -1087,7 +1087,7 @@ namespace AntlrUnitTests
             checkDecision( g, 3, expecting, null, null, null, null, 0 ); // rule
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestLoopbackAndExit() /*throws Exception*/ {
             Grammar g = new Grammar(
                 "parser grammar t;\n" +
@@ -1100,7 +1100,7 @@ namespace AntlrUnitTests
             checkDecision( g, 1, expecting, null, null, null, null, 0 );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestOptionalAltAndBypass() /*throws Exception*/ {
             Grammar g = new Grammar(
                 "parser grammar t;\n" +
@@ -1115,7 +1115,7 @@ namespace AntlrUnitTests
 
         // R E S O L V E  S Y N  C O N F L I C T S
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestResolveLL1ByChoosingFirst() /*throws Exception*/ {
             Grammar g = new Grammar(
                 "parser grammar t;\n" +
@@ -1132,7 +1132,7 @@ namespace AntlrUnitTests
                           nonDetAlts, ambigInput, danglingAlts, numWarnings );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestResolveLL2ByChoosingFirst() /*throws Exception*/ {
             Grammar g = new Grammar(
                 "parser grammar t;\n" +
@@ -1149,7 +1149,7 @@ namespace AntlrUnitTests
                           nonDetAlts, ambigInput, danglingAlts, numWarnings );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestResolveLL2MixAlt() /*throws Exception*/ {
             Grammar g = new Grammar(
                 "parser grammar t;\n" +
@@ -1168,7 +1168,7 @@ namespace AntlrUnitTests
                           nonDetAlts, ambigInput, danglingAlts, numWarnings );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestIndirectIFThenElseStyleAmbig() /*throws Exception*/ {
             //Assert.Inconclusive( "May be failing on just my port..." );
             // the (c)+ loopback is ambig because it could match "CASE"
@@ -1199,7 +1199,7 @@ namespace AntlrUnitTests
 
         // S E T S
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestComplement() /*throws Exception*/ {
             Grammar g = new Grammar(
                 "parser grammar t;\n" +
@@ -1211,7 +1211,7 @@ namespace AntlrUnitTests
             checkDecision( g, 1, expecting, null, null, null, null, 0 );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestComplementToken() /*throws Exception*/ {
             Grammar g = new Grammar(
                 "parser grammar t;\n" +
@@ -1223,7 +1223,7 @@ namespace AntlrUnitTests
             checkDecision( g, 1, expecting, null, null, null, null, 0 );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestComplementChar() /*throws Exception*/ {
             Grammar g = new Grammar(
                 "lexer grammar t;\n" +
@@ -1234,7 +1234,7 @@ namespace AntlrUnitTests
             checkDecision( g, 1, expecting, null, null, null, null, 0 );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestComplementCharSet() /*throws Exception*/ {
             Grammar g = new Grammar(
                 "lexer grammar t;\n" +
@@ -1246,7 +1246,7 @@ namespace AntlrUnitTests
             checkDecision( g, 1, expecting, null, null, null, null, 0 );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestNoSetCollapseWithActions() /*throws Exception*/ {
             Grammar g = new Grammar(
                 "parser grammar t;\n" +
@@ -1257,7 +1257,7 @@ namespace AntlrUnitTests
             checkDecision( g, 1, expecting, null, null, null, null, 0 );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestRuleAltsSetCollapse() /*throws Exception*/ {
             Grammar g = new Grammar(
                 "parser grammar t;\n" +
@@ -1268,7 +1268,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( expecting, g.Tree.ToStringTree() );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestTokensRuleAltsDoNotCollapse() /*throws Exception*/ {
             Grammar g = new Grammar(
                 "lexer grammar t;\n" +
@@ -1281,7 +1281,7 @@ namespace AntlrUnitTests
             checkDecision( g, 1, expecting, null, null, null, null, 0 );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestMultipleSequenceCollision() /*throws Exception*/ {
             Grammar g = new Grammar(
                 "parser grammar t;\n" +
@@ -1315,7 +1315,7 @@ namespace AntlrUnitTests
     */
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestMultipleAltsSameSequenceCollision() /*throws Exception*/ {
             Grammar g = new Grammar(
                 "parser grammar t;\n" +
@@ -1339,7 +1339,7 @@ namespace AntlrUnitTests
                           nonDetAlts, ambigInput, danglingAlts, numWarnings );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestFollowReturnsToLoopReenteringSameRule() /*throws Exception*/ {
             //Assert.Inconclusive( "May be failing on just my port..." );
             // D07 can be matched in the (...)? or fall out of esc back into (..)*
@@ -1363,7 +1363,7 @@ namespace AntlrUnitTests
                           nonDetAlts, ambigInput, danglingAlts, numWarnings );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestTokenCallsAnotherOnLeftEdge() /*throws Exception*/ {
             Grammar g = new Grammar(
                 "lexer grammar t;\n" +
@@ -1380,7 +1380,7 @@ namespace AntlrUnitTests
         }
 
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestSelfRecursionAmbigAlts() /*throws Exception*/ {
             // ambiguous grammar for "L ID R" (alts 1,2 of a)
             Grammar g = new Grammar(
@@ -1408,7 +1408,7 @@ namespace AntlrUnitTests
                           nonDetAlts, ambigInput, danglingAlts, numWarnings );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestIndirectRecursionAmbigAlts() /*throws Exception*/ {
             // ambiguous grammar for "L ID R" (alts 1,2 of a)
             // This was derived from the java grammar 12/4/2004 when it
@@ -1443,7 +1443,7 @@ namespace AntlrUnitTests
                           nonDetAlts, ambigInput, danglingAlts, numWarnings );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestTailRecursionInvokedFromArbitraryLookaheadDecision() /*throws Exception*/ {
             Grammar g = new Grammar(
                 "parser grammar t;\n" +
@@ -1458,7 +1458,7 @@ namespace AntlrUnitTests
             assertNonLLStar( g, altsWithRecursion );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestWildcardStarK1AndNonGreedyByDefaultInParser() /*throws Exception*/ {
             // no error because .* assumes it should finish when it sees R
             Grammar g = new Grammar(
@@ -1477,7 +1477,7 @@ namespace AntlrUnitTests
                           nonDetAlts, ambigInput, danglingAlts, numWarnings );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestWildcardPlusK1AndNonGreedyByDefaultInParser() /*throws Exception*/ {
             Grammar g = new Grammar(
                 "parser grammar t;\n" +
@@ -1495,7 +1495,7 @@ namespace AntlrUnitTests
                           nonDetAlts, ambigInput, danglingAlts, numWarnings );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestGatedSynPred() /*throws Exception*/ {
             Grammar g = new Grammar(
                 "parser grammar t;\n" +
@@ -1519,7 +1519,7 @@ namespace AntlrUnitTests
             Assert.IsTrue(expectedPreds.SequenceEqual(preds), "predicate names not recorded properly in grammar");
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestHoistedGatedSynPred()
         {
             Grammar g = new Grammar(
@@ -1544,7 +1544,7 @@ namespace AntlrUnitTests
             Assert.IsTrue(expectedPreds.SetEquals(preds), "predicate names not recorded properly in grammar");
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestHoistedGatedSynPred2()
         {
             Grammar g = new Grammar(
@@ -1571,7 +1571,7 @@ namespace AntlrUnitTests
             Assert.IsTrue(expectedPreds.SequenceEqual(preds), "predicate names not recorded properly in grammar");
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestGreedyGetsNoErrorForAmbig()
         {
             Grammar g = new Grammar(
@@ -1594,7 +1594,7 @@ namespace AntlrUnitTests
             checkDecision(g, 2, expecting, null, null, null, null, 0);
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestGreedyNonLLStarStillGetsError()
         {
             Grammar g = new Grammar(
@@ -1611,7 +1611,7 @@ namespace AntlrUnitTests
             assertNonLLStar(g, altsWithRecursion);
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestGreedyRecOverflowStillGetsError()
         {
             Grammar g = new Grammar(
@@ -1625,7 +1625,7 @@ namespace AntlrUnitTests
 
         // Check state table creation
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestCyclicTableCreation() /*throws Exception*/ {
             Grammar g = new Grammar(
                 "parser grammar t;\n" +
@@ -1662,8 +1662,7 @@ namespace AntlrUnitTests
             }
             NonRegularDecisionMessage msg = getNonRegularDecisionMessage( equeue.errors );
             Assert.IsNotNull(msg, "expected fatal non-LL(*) msg");
-            List<int> alts = new List<int>();
-            alts.AddRange( msg.altsWithRecursion );
+            List<int> alts = new List<int>(msg.altsWithRecursion);
             alts.Sort();
             //Collections.sort( alts );
             //Assert.AreEqual( expectedBadAlts, alts );
@@ -1690,7 +1689,7 @@ namespace AntlrUnitTests
             Assert.AreEqual(expectedAlt, msg.alt, "mismatched alt");
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestWildcardInTreeGrammar() /*throws Exception*/
         {
             Grammar g = new Grammar(
@@ -1709,7 +1708,7 @@ namespace AntlrUnitTests
                           nonDetAlts, ambigInput, danglingAlts, numWarnings );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestWildcardInTreeGrammar2() /*throws Exception*/
         {
             Grammar g = new Grammar(

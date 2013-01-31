@@ -50,7 +50,7 @@ namespace AntlrUnitTests
         {
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestMessageStringificationIsConsistent() /*throws Exception*/
         {
             string action = "$other.tree = null;";

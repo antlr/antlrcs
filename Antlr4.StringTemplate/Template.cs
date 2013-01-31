@@ -82,6 +82,11 @@ namespace Antlr4.StringTemplate
         public static readonly string UnknownName = "anonymous";
         public static readonly object EmptyAttribute = new object();
 
+        /** When there are no formal args for template t and you map t across
+         *  some values, t implicitly gets arg "it".  E.g., "<b>$it$</b>"
+         */
+        public static readonly string ImplicitArgumentName = "it";
+
         /** The implementation for this template among all instances of same tmpelate . */
         public CompiledTemplate impl;
 
@@ -241,12 +246,9 @@ namespace Antlr4.StringTemplate
         public virtual Template Add(string name, object value)
         {
             if (name == null)
-                return this; // allow null value but not name
-
+                throw new ArgumentNullException("name");
             if (name.IndexOf('.') >= 0)
-            {
                 throw new ArgumentException("cannot have '.' in attribute names");
-            }
 
             if (Group.TrackCreationEvents)
             {
@@ -457,12 +459,6 @@ namespace Antlr4.StringTemplate
                 multi = new AttributeList(listAttr.Count);
                 multi.AddRange(listAttr.Cast<object>());
             }
-            else if (curvalue.GetType().IsArray)
-            { // copy array to list
-                object[] a = (object[])curvalue;
-                multi = new AttributeList(a.Length);
-                multi.AddRange(a); // asList doesn't copy as far as I can tell
-            }
             else
             {
                 // curvalue nonlist and we want to Add an attribute
@@ -626,8 +622,6 @@ namespace Antlr4.StringTemplate
         public static string Format(int lineWidth, string template, params object[] attributes)
         {
             template = Regex.Replace(template, "[0-9]+", "arg$0");
-            Console.WriteLine(template);
-
             Template st = new Template(template);
             int i = 1;
             foreach (object a in attributes)

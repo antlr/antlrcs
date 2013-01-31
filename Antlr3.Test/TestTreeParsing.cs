@@ -37,7 +37,7 @@ namespace AntlrUnitTests
     [TestClass]
     public class TestTreeParsing : BaseTest
     {
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestFlatList() /*throws Exception*/ {
             string grammar =
                 "grammar T;\n" +
@@ -58,7 +58,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( "abc, 34" + NewLine, found );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestSimpleTree() /*throws Exception*/ {
             string grammar =
                 "grammar T;\n" +
@@ -79,7 +79,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( "abc, 34" + NewLine, found );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestFlatVsTreeDecision() /*throws Exception*/ {
             string grammar =
                 "grammar T;\n" +
@@ -103,7 +103,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( "^(a 1)b 2" + NewLine, found );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestFlatVsTreeDecision2() /*throws Exception*/ {
             string grammar =
                 "grammar T;\n" +
@@ -128,7 +128,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( "^(a 3)b 5" + NewLine, found );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestCyclicDFALookahead() /*throws Exception*/ {
             string grammar =
                 "grammar T;\n" +
@@ -151,7 +151,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( "alt 1" + NewLine, found );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestTemplateOutput() /*throws Exception*/ {
             string grammar =
                 "grammar T;\n" +
@@ -173,7 +173,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( "34" + NewLine, found );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestNullableChildList() /*throws Exception*/ {
             string grammar =
                 "grammar T;\n" +
@@ -194,7 +194,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( "abc" + NewLine, found );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestNullableChildList2() /*throws Exception*/ {
             string grammar =
                 "grammar T;\n" +
@@ -216,7 +216,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( "abc" + NewLine, found );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestNullableChildList3() /*throws Exception*/ {
             string grammar =
                 "grammar T;\n" +
@@ -239,7 +239,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( "abc, def" + NewLine, found );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestActionsAfterRoot() /*throws Exception*/ {
             string grammar =
                 "grammar T;\n" +
@@ -261,7 +261,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( "abc, 2" + NewLine, found );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestWildcardLookahead() /*throws Exception*/
         {
             string grammar =
@@ -284,7 +284,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( "alt 1" + NewLine, found );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestWildcardLookahead2() /*throws Exception*/
         {
             string grammar =
@@ -310,7 +310,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( "alt 1" + NewLine, found );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestWildcardLookahead3() /*throws Exception*/
         {
             string grammar =
@@ -336,7 +336,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( "alt 1" + NewLine, found );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestWildcardPlusLookahead() /*throws Exception*/
         {
             string grammar =

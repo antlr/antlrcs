@@ -294,6 +294,9 @@ namespace Antlr3.Extensions
 
             public DownCastListView( IList<TSource> source )
             {
+                if (source == null)
+                    throw new ArgumentNullException("source");
+
                 _source = source;
             }
 

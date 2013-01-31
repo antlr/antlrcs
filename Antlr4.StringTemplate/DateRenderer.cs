@@ -32,52 +32,53 @@
 
 namespace Antlr4.StringTemplate
 {
+    using System;
     using System.Collections.Generic;
     using CultureInfo = System.Globalization.CultureInfo;
 
-/** A renderer for java.util.Date and Calendar objects. It understands a
- *  variety of format names as shown in formatToInt field.  By default
- *  it assumes "short" format.  A prefix of date: or time: shows only
- *  those components of the time object.
- */
-public class DateRenderer : AttributeRenderer {
-#if false
-    public static readonly IDictionary<string,int> formatToInt =
-        new Dictionary<string,int>() {
-            {
-                put("short", DateFormat.SHORT);
-                put("medium", DateFormat.MEDIUM);
-                put("long", DateFormat.LONG);
-                put("full", DateFormat.FULL);
+    /** A renderer for java.util.Date and Calendar objects. It understands a
+     *  variety of format names as shown in formatToInt field.  By default
+     *  it assumes "short" format.  A prefix of date: or time: shows only
+     *  those components of the time object.
+     */
+    public class DateRenderer : IAttributeRenderer
+    {
+        public static readonly IDictionary<string, string> formatToInt =
+            new Dictionary<string, string>() {
+                {"short", "g"},
+                {"medium", "g"},
+                {"long", "f"},
+                {"full", "F"},
 
-                put("date:short", DateFormat.SHORT);
-                put("date:medium", DateFormat.MEDIUM);
-                put("date:long", DateFormat.LONG);
-                put("date:full", DateFormat.FULL);
+                {"date:short", "d"},
+                {"date:medium", "d"},
+                {"date:long", "D"},
+                {"date:full", "D"},
 
-                put("time:short", DateFormat.SHORT);
-                put("time:medium", DateFormat.MEDIUM);
-                put("time:long", DateFormat.LONG);
-                put("time:full", DateFormat.FULL);
-            }
-        };
-#endif
+                {"time:short", "t"},
+                {"time:medium", "t"},
+                {"time:long", "T"},
+                {"time:full", "T"},
+            };
 
-    public virtual string toString(object o, string formatString, CultureInfo locale) {
-        Date d;
-        if ( formatString==null ) formatString = "short";
-        if ( o is Calendar ) d = ((Calendar)o).getTime();
-        else d = (Date)o;
-        Integer styleI = formatToInt.get(formatString);
-        DateFormat f;
-        if ( styleI==null ) f = new SimpleDateFormat(formatString);
-        else {
-            int style = styleI.intValue();
-            if ( formatString.startsWith("date:") ) f = DateFormat.getDateInstance(style);
-            else if ( formatString.startsWith("time:") ) f = DateFormat.getTimeInstance(style);
-            else f = DateFormat.getDateTimeInstance(style, style);
+        public virtual string ToString(object o, string formatString, CultureInfo locale)
+        {
+            if (formatString == null)
+                formatString = "short";
+
+            DateTimeOffset d;
+            if (o is DateTime)
+                d = (DateTime)o;
+            else if (o is DateTimeOffset)
+                d = (DateTimeOffset)o;
+            else
+                throw new ArgumentException();
+
+            string dateFormat;
+            if (!formatToInt.TryGetValue(formatString, out dateFormat))
+                return d.ToString(formatString, locale);
+
+            return d.ToString(dateFormat, locale);
         }
-        return f.format(d);
     }
-}
 }

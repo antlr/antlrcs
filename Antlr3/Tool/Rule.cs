@@ -1033,7 +1033,7 @@ namespace Antlr3.Tool
             }
             if ( key.Equals( "memoize" ) && value.ToString().Equals( "true" ) )
             {
-                Grammar.atLeastOneRuleMemoizes = true;
+                Grammar.composite.RootGrammar.atLeastOneRuleMemoizes = true;
             }
             if ( key == "backtrack" && value.ToString() == "true" )
             {

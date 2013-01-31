@@ -56,7 +56,7 @@ namespace AntlrUnitTests
             return ( (CommonTreeNodeStream)stream ).ToTokenTypeString();
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestSingleNode()
         {
             ITree t = new CommonTree( new CommonToken( 101 ) );
@@ -71,7 +71,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( expecting, found );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void Test4Nodes() /*throws Exception*/ {
             // ^(101 ^(102 103) 104)
             ITree t = new CommonTree( new CommonToken( 101 ) );
@@ -89,7 +89,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( expecting, found );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestList() /*throws Exception*/ {
             ITree root = new CommonTree( (IToken)null );
 
@@ -113,7 +113,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( expecting, found );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestFlatList() /*throws Exception*/ {
             ITree root = new CommonTree( (IToken)null );
 
@@ -131,7 +131,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( expecting, found );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestListWithOneNode() /*throws Exception*/ {
             ITree root = new CommonTree( (IToken)null );
 
@@ -147,7 +147,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( expecting, found );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestAoverB() /*throws Exception*/ {
             ITree t = new CommonTree( new CommonToken( 101 ) );
             t.AddChild( new CommonTree( new CommonToken( 102 ) ) );
@@ -162,7 +162,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( expecting, found );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestLT() /*throws Exception*/ {
             // ^(101 ^(102 103) 104)
             ITree t = new CommonTree( new CommonToken( 101 ) );
@@ -184,7 +184,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( TokenTypes.EndOfFile, ( (ITree)stream.LT( 100 ) ).Type );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestMarkRewindEntire() /*throws Exception*/ {
             // ^(101 ^(102 103 ^(106 107) ) 104 105)
             // stream has 7 real + 6 nav nodes
@@ -218,7 +218,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( TokenTypes.EndOfFile, ( (ITree)stream.LT( 1 ) ).Type );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestMarkRewindInMiddle() /*throws Exception*/ {
             // ^(101 ^(102 103 ^(106 107) ) 104 105)
             // stream has 7 real + 6 nav nodes
@@ -265,7 +265,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( TokenTypes.Up, ( (ITree)stream.LT( -1 ) ).Type );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestMarkRewindNested() /*throws Exception*/ {
             // ^(101 ^(102 103 ^(106 107) ) 104 105)
             // stream has 7 real + 6 nav nodes
@@ -305,7 +305,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( TokenTypes.Down, ( (ITree)stream.LT( 1 ) ).Type );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestSeekFromStart() /*throws Exception*/ {
             // ^(101 ^(102 103 ^(106 107) ) 104 105)
             // stream has 7 real + 6 nav nodes
@@ -329,7 +329,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( 104, ( (ITree)stream.LT( 1 ) ).Type );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestDeepTree()
         {
             // ^(10 100 101 ^(20 ^(30 40 (50 (60 70)))) (80 90)))

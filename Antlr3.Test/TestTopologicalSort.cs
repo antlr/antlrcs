@@ -41,7 +41,7 @@ namespace AntlrUnitTests
     [TestClass]
     public class TestTopologicalSort : BaseTest
     {
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public virtual void TestFairlyLargeGraph()
         {
             Graph g = new Graph();
@@ -64,7 +64,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( expecting, result );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public virtual void TestCyclicGraph()
         {
             Graph g = new Graph();
@@ -79,7 +79,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( expecting, result );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public virtual void TestRepeatedEdges()
         {
             Graph g = new Graph();
@@ -94,7 +94,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( expecting, result );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public virtual void TestSimpleTokenDependence()
         {
             Graph g = new Graph();
@@ -109,7 +109,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( expecting, result );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public virtual void TestParserLexerCombo()
         {
             Graph g = new Graph();

@@ -35,11 +35,12 @@ namespace Antlr4.Test.StringTemplate
     using Antlr4.StringTemplate;
     using Microsoft.VisualStudio.TestTools.UnitTesting;
     using System.Collections.Generic;
+    using ErrorBuffer = Antlr4.StringTemplate.Misc.ErrorBuffer;
 
     [TestClass]
     public class TestIndirectionAndEarlyEval : BaseTest
     {
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST4)]
         public void TestEarlyEval()
         {
             string template = "<(name)>";
@@ -50,7 +51,7 @@ namespace Antlr4.Test.StringTemplate
             Assert.AreEqual(expected, result);
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST4)]
         public void TestIndirectTemplateInclude()
         {
             TemplateGroup group = new TemplateGroup();
@@ -64,7 +65,7 @@ namespace Antlr4.Test.StringTemplate
             Assert.AreEqual(expected, result);
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST4)]
         public void TestIndirectTemplateIncludeWithArgs()
         {
             TemplateGroup group = new TemplateGroup();
@@ -79,6 +80,25 @@ namespace Antlr4.Test.StringTemplate
         }
 
         [TestMethod]
+        [TestCategory(TestCategories.ST4)]
+        public void TestIndirectCallWithPassThru()
+        {
+            // pass-through for dynamic template invocation is not supported by the
+            // bytecode representation
+            writeFile(tmpdir, "t.stg",
+                "t1(x) ::= \"<x>\"\n" +
+                "main(x=\"hello\",t=\"t1\") ::= <<\n" +
+                "<(t)(...)>\n" +
+                ">>");
+            TemplateGroup group = new TemplateGroupFile(tmpdir + "/t.stg");
+            ErrorBuffer errors = new ErrorBuffer();
+            group.Listener = errors;
+            Template st = group.GetInstanceOf("main");
+            Assert.AreEqual("t.stg 2:34: mismatched input '...' expecting RPAREN" + newline, errors.ToString());
+            Assert.IsNull(st);
+        }
+
+        [TestMethod][TestCategory(TestCategories.ST4)]
         public void TestIndirectTemplateIncludeViaTemplate()
         {
             TemplateGroup group = new TemplateGroup();
@@ -92,7 +112,7 @@ namespace Antlr4.Test.StringTemplate
             Assert.AreEqual(expected, result);
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST4)]
         public void TestIndirectProp()
         {
             string template = "<u.(propname)>: <u.name>";
@@ -104,7 +124,7 @@ namespace Antlr4.Test.StringTemplate
             Assert.AreEqual(expected, result);
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST4)]
         public void TestIndirectMap()
         {
             TemplateGroup group = new TemplateGroup();
@@ -121,7 +141,7 @@ namespace Antlr4.Test.StringTemplate
             Assert.AreEqual(expected, result);
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST4)]
         public void TestNonStringDictLookup()
         {
             string template = "<m.(intkey)>";

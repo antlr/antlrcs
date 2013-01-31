@@ -52,6 +52,7 @@
   <ItemGroup>
     <Content Include="Antlr3.targets">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <SubType>Designer</SubType>
     </Content>
   </ItemGroup>
   <ItemGroup>

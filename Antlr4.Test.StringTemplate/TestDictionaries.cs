@@ -42,7 +42,7 @@ namespace Antlr4.Test.StringTemplate
     [TestClass]
     public class TestDictionaries : BaseTest
     {
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST4)]
         public void TestDict()
         {
             string templates =
@@ -59,7 +59,7 @@ namespace Antlr4.Test.StringTemplate
             Assert.AreEqual(expecting, result);
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST4)]
         public void TestEmptyDictionary()
         {
             string templates =
@@ -74,7 +74,7 @@ namespace Antlr4.Test.StringTemplate
             Assert.AreEqual(0, errors.Errors.Count);
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST4)]
         public void TestDictValuesAreTemplates()
         {
             string templates =
@@ -93,7 +93,7 @@ namespace Antlr4.Test.StringTemplate
             Assert.AreEqual(expecting, result);
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST4)]
         public void TestDictKeyLookupViaTemplate()
         {
             // Make sure we try rendering stuff to string if not found as regular object
@@ -112,7 +112,7 @@ namespace Antlr4.Test.StringTemplate
             Assert.AreEqual(expecting, result);
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST4)]
         public void TestDictKeyLookupAsNonToStringableObject()
         {
             // Make sure we try rendering stuff to string if not found as regular object
@@ -133,7 +133,7 @@ namespace Antlr4.Test.StringTemplate
             Assert.AreEqual(expecting, result);
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST4)]
         public void TestDictMissingDefaultValueIsEmpty()
         {
             string templates =
@@ -151,7 +151,7 @@ namespace Antlr4.Test.StringTemplate
             Assert.AreEqual(expecting, result);
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST4)]
         public void TestDictMissingDefaultValueIsEmptyForNullKey()
         {
             string templates =
@@ -169,7 +169,7 @@ namespace Antlr4.Test.StringTemplate
             Assert.AreEqual(expecting, result);
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST4)]
         public void TestDictHiddenByFormalArg()
         {
             string templates =
@@ -186,7 +186,7 @@ namespace Antlr4.Test.StringTemplate
             Assert.AreEqual(expecting, result);
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST4)]
         public void TestDictEmptyValueAndAngleBracketStrings()
         {
             string templates =
@@ -203,7 +203,7 @@ namespace Antlr4.Test.StringTemplate
             Assert.AreEqual(expecting, result);
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST4)]
         public void TestDictDefaultValue()
         {
             string templates =
@@ -220,7 +220,7 @@ namespace Antlr4.Test.StringTemplate
             Assert.AreEqual(expecting, result);
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST4)]
         public void TestDictNullKeyGetsDefaultValue()
         {
             string templates =
@@ -237,7 +237,7 @@ namespace Antlr4.Test.StringTemplate
             Assert.AreEqual(expecting, result);
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST4)]
         public void TestDictEmptyDefaultValue()
         {
             string templates =
@@ -254,7 +254,7 @@ namespace Antlr4.Test.StringTemplate
             Assert.AreEqual(expected, result);
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST4)]
         public void TestDictDefaultValueIsKey()
         {
             string templates =
@@ -271,7 +271,7 @@ namespace Antlr4.Test.StringTemplate
             Assert.AreEqual(expecting, result);
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST4)]
         public void TestDictWithoutIteration()
         {
             string templates =
@@ -297,7 +297,7 @@ namespace Antlr4.Test.StringTemplate
             Assert.AreEqual(expecting, result);
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST4)]
         public void TestDictWithoutIteration2()
         {
             string templates =
@@ -324,7 +324,7 @@ namespace Antlr4.Test.StringTemplate
             Assert.AreEqual(expecting, result);
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST4)]
         public void TestDictWithoutIteration3()
         {
             string templates =
@@ -356,7 +356,7 @@ namespace Antlr4.Test.StringTemplate
         /**
          * Test that a map can have only the default entry.
          */
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST4)]
         public void TestDictDefaultStringAsKey()
         {
             string templates =
@@ -376,7 +376,7 @@ namespace Antlr4.Test.StringTemplate
         /**
          * Test that a map can return a <b>string</b> with the word: default.
          */
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST4)]
         public void TestDictDefaultIsDefaultString()
         {
             string templates =
@@ -391,7 +391,7 @@ namespace Antlr4.Test.StringTemplate
             Assert.AreEqual(expecting, result);
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST4)]
         public void TestDictViaEnclosingTemplates()
         {
             string templates =
@@ -409,7 +409,7 @@ namespace Antlr4.Test.StringTemplate
             Assert.AreEqual(expecting, result);
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST4)]
         public void TestDictViaEnclosingTemplates2()
         {
             string templates =
@@ -429,7 +429,7 @@ namespace Antlr4.Test.StringTemplate
             Assert.AreEqual(expecting, result);
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST4)]
         public void TestAccessDictionaryFromAnonymousTemplate()
         {
             string dir = tmpdir;
@@ -448,7 +448,7 @@ namespace Antlr4.Test.StringTemplate
             Assert.AreEqual(expected, result);
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST4)]
         public void TestAccessDictionaryFromAnonymousTemplateInRegion()
         {
             string dir = tmpdir;
@@ -466,6 +466,158 @@ namespace Antlr4.Test.StringTemplate
             TemplateGroup group = new TemplateGroupFile(Path.Combine(dir, "g.stg"));
             Template st = group.GetInstanceOf("a");
             string expected = "[foo]";
+            string result = st.Render();
+            Assert.AreEqual(expected, result);
+        }
+
+        [TestMethod]
+        [TestCategory(TestCategories.ST4)]
+        public void TestStringsInDictionary()
+        {
+            string templates =
+                "auxMap ::= [\n" +
+                "   \"E\": \"electric <field>\",\n" +
+                "   \"I\": \"in <field> between\",\n" +
+                "   \"F\": \"<field> force\",\n" +
+                "   default: \"<field>\"\n" +
+                "]\n" +
+                "\n" +
+                "makeTmpl(type, field) ::= <<\n" +
+                "<auxMap.(type)>\n" +
+                ">>\n" +
+                "\n" +
+                "top() ::= <<\n" +
+                "  <makeTmpl(\"E\", \"foo\")>\n" +
+                "  <makeTmpl(\"F\", \"foo\")>\n" +
+                "  <makeTmpl(\"I\", \"foo\")>\n" +
+                ">>\n";
+            writeFile(tmpdir, "t.stg", templates);
+            TemplateGroup group = new TemplateGroupFile(tmpdir + Path.DirectorySeparatorChar + "t.stg");
+            Template st = group.GetInstanceOf("top");
+            Assert.IsNotNull(st);
+            string expecting =
+                "  electric <field>" + newline +
+                "  <field> force" + newline +
+                "  in <field> between";
+            Assert.AreEqual(expecting, st.Render());
+        }
+
+        [TestMethod]
+        [TestCategory(TestCategories.ST4)]
+        public void TestTemplatesInDictionary()
+        {
+            string templates =
+                "auxMap ::= [\n" +
+                "   \"E\": {electric <field>},\n" +
+                "   \"I\": {in <field> between},\n" +
+                "   \"F\": {<field> force},\n" +
+                "   default: {<field>}\n" +
+                "]\n" +
+                "\n" +
+                "makeTmpl(type, field) ::= <<\n" +
+                "<auxMap.(type)>\n" +
+                ">>\n" +
+                "\n" +
+                "top() ::= <<\n" +
+                "  <makeTmpl(\"E\", \"foo\")>\n" +
+                "  <makeTmpl(\"F\", \"foo\")>\n" +
+                "  <makeTmpl(\"I\", \"foo\")>\n" +
+                ">>\n";
+            writeFile(tmpdir, "t.stg", templates);
+            TemplateGroup group = new TemplateGroupFile(tmpdir + Path.DirectorySeparatorChar + "t.stg");
+            Template st = group.GetInstanceOf("top");
+            Assert.IsNotNull(st);
+            string expecting =
+                "  electric foo" + newline +
+                "  foo force" + newline +
+                "  in foo between";
+            Assert.AreEqual(expecting, st.Render());
+        }
+
+        [TestMethod]
+        [TestCategory(TestCategories.ST4)]
+        public void TestDictionaryBehaviorTrue()
+        {
+            string templates =
+                "d ::= [\n" +
+                "	\"x\" : true,\n" +
+                "	default : false,\n" +
+                "]\n" +
+                "\n" +
+                "t() ::= <<\n" +
+                "<d.(\"x\")><if(d.(\"x\"))>+<else>-<endif>\n" +
+                ">>\n";
+
+            writeFile(tmpdir, "t.stg", templates);
+            TemplateGroup group = new TemplateGroupFile(tmpdir + Path.DirectorySeparatorChar + "t.stg");
+            Template st = group.GetInstanceOf("t");
+            string expected = "true+";
+            string result = st.Render();
+            Assert.AreEqual(expected, result);
+        }
+
+        [TestMethod]
+        [TestCategory(TestCategories.ST4)]
+        public void TestDictionaryBehaviorFalse()
+        {
+            string templates =
+                "d ::= [\n" +
+                "	\"x\" : false,\n" +
+                "	default : false,\n" +
+                "]\n" +
+                "\n" +
+                "t() ::= <<\n" +
+                "<d.(\"x\")><if(d.(\"x\"))>+<else>-<endif>\n" +
+                ">>\n";
+
+            writeFile(tmpdir, "t.stg", templates);
+            TemplateGroup group = new TemplateGroupFile(tmpdir + Path.DirectorySeparatorChar + "t.stg");
+            Template st = group.GetInstanceOf("t");
+            string expected = "false-";
+            string result = st.Render();
+            Assert.AreEqual(expected, result);
+        }
+
+        [TestMethod]
+        [TestCategory(TestCategories.ST4)]
+        public void TestDictionaryBehaviorEmptyTemplate()
+        {
+            string templates =
+                "d ::= [\n" +
+                "	\"x\" : {},\n" +
+                "	default : false,\n" +
+                "]\n" +
+                "\n" +
+                "t() ::= <<\n" +
+                "<d.(\"x\")><if(d.(\"x\"))>+<else>-<endif>\n" +
+                ">>\n";
+
+            writeFile(tmpdir, "t.stg", templates);
+            TemplateGroup group = new TemplateGroupFile(tmpdir + Path.DirectorySeparatorChar + "t.stg");
+            Template st = group.GetInstanceOf("t");
+            string expected = "+";
+            string result = st.Render();
+            Assert.AreEqual(expected, result);
+        }
+
+        [TestMethod]
+        [TestCategory(TestCategories.ST4)]
+        public void TestDictionaryBehaviorEmptyList()
+        {
+            string templates =
+                "d ::= [\n" +
+                "	\"x\" : [],\n" +
+                "	default : false,\n" +
+                "]\n" +
+                "\n" +
+                "t() ::= <<\n" +
+                "<d.(\"x\")><if(d.(\"x\"))>+<else>-<endif>\n" +
+                ">>\n";
+
+            writeFile(tmpdir, "t.stg", templates);
+            TemplateGroup group = new TemplateGroupFile(tmpdir + Path.DirectorySeparatorChar + "t.stg");
+            Template st = group.GetInstanceOf("t");
+            string expected = "-";
             string result = st.Render();
             Assert.AreEqual(expected, result);
         }

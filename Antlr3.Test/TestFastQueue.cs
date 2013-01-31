@@ -42,7 +42,7 @@ namespace AntlrUnitTests
     [TestClass]
     public class TestFastQueue
     {
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestQueueNoRemove()
         {
             FastQueue<string> q = new FastQueue<string>();
@@ -56,7 +56,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( expecting, found );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestQueueThenRemoveAll()
         {
             FastQueue<string> q = new FastQueue<string>();
@@ -79,7 +79,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( expecting, found );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestQueueThenRemoveOneByOne()
         {
             StringBuilder buf = new StringBuilder();
@@ -102,7 +102,7 @@ namespace AntlrUnitTests
 
         // E r r o r s
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         [ExpectedException(typeof(InvalidOperationException))]
         public void TestGetFromEmptyQueue()
         {
@@ -110,7 +110,7 @@ namespace AntlrUnitTests
             q.Dequeue();
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         [ExpectedException(typeof(InvalidOperationException))]
         public void TestGetFromEmptyQueueAfterSomeAdds()
         {
@@ -122,7 +122,7 @@ namespace AntlrUnitTests
             q.Dequeue();
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         [ExpectedException(typeof(InvalidOperationException))]
         public void TestGetFromEmptyQueueAfterClear()
         {

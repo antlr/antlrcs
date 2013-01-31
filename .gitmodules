@@ -1,0 +1,9 @@
+[submodule "Reference/antlr3"]
+	path = Reference/antlr3
+	url = git://github.com/antlr/antlr3.git
+[submodule "Reference/stringtemplate3"]
+	path = Reference/stringtemplate3
+	url = git://github.com/antlr/stringtemplate3.git
+[submodule "Reference/stringtemplate4"]
+	path = Reference/stringtemplate4
+	url = git://github.com/antlr/stringtemplate4.git

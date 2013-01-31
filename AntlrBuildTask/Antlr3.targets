@@ -28,7 +28,7 @@
 <Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <BuildSystem>MSBuild</BuildSystem>
-    <TaskVersion>3.3.0.7239</TaskVersion>
+    <TaskVersion>3.5.0.0</TaskVersion>
     <TaskKeyToken>eb42632606e9261f</TaskKeyToken>
     <AntlrBuildTaskAssemblyName Condition="'$(AntlrBuildTaskAssemblyName)'==''">AntlrBuildTask, Version=$(TaskVersion), Culture=neutral, PublicKeyToken=$(TaskKeyToken)</AntlrBuildTaskAssemblyName>
   </PropertyGroup>
@@ -78,6 +78,14 @@
     <AvailableItemName Include="AntlrAbstractGrammar" />
   </ItemGroup>
 
+  <ItemDefinitionGroup>
+    <Antlr3>
+      <TargetLanguage/>
+      <DebugGrammar>false</DebugGrammar>
+      <ProfileGrammar>false</ProfileGrammar>
+    </Antlr3>
+  </ItemDefinitionGroup>
+
   <Target Name="AntlrCompileReadGeneratedFileList">
     <ReadLinesFromFile File="$(IntermediateOutputPath)$(AntlrGenCodeFileNames)">
       <Output TaskParameter="Lines" ItemName="AntlrOutputCodeFilesList"/>
@@ -110,13 +118,6 @@
       <AntlrGeneratedCodeFiles Remove="@(AntlrGeneratedCodeFiles)" />
     </ItemGroup>
 
-    <ItemGroup>
-      <Antlr3>
-        <DebugGrammar Condition=" '%(DebugGrammar)' == '' ">false</DebugGrammar>
-        <ProfileGrammar Condition=" '%(ProfileGrammar)' == '' ">false</ProfileGrammar>
-      </Antlr3>
-    </ItemGroup>
-
     <PropertyGroup>
       <_IntellisenseOnlyCompile>false</_IntellisenseOnlyCompile>
       <_IntellisenseOnlyCompile Condition="'$(BuildingProject)' != 'true'">true</_IntellisenseOnlyCompile>
@@ -125,7 +126,7 @@
       AntlrToolPath="$(AntlrToolLocation)"
       BuildTaskPath="$(AntlrBuildTaskLocation)"
       OutputPath="$(IntermediateOutputPath)"
-      Language="%(Antlr3.TargetLanguage)"
+      TargetLanguage="%(Antlr3.TargetLanguage)"
       SourceCodeFiles="@(Antlr3)"
       ContinueOnError="$(_IntellisenseOnlyCompile)"
       TokensFiles="@(AntlrTokens)"
@@ -135,7 +136,6 @@
       ProfileGrammar="%(Antlr3.ProfileGrammar)">
 
       <Output ItemName="AntlrGeneratedCodeFiles" TaskParameter="GeneratedCodeFiles" />
-      <!--<Output ItemName="Compile" TaskParameter="GeneratedCodeFiles" />-->
     </AntlrClassGenerationTask>
 
     <WriteLinesToFile

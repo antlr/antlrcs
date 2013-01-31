@@ -42,7 +42,7 @@ namespace AntlrUnitTests
     [TestClass]
     public class TestInterpretedParsing : BaseTest
     {
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestSimpleParse()
         {
             Grammar pg = new Grammar(
@@ -79,10 +79,9 @@ namespace AntlrUnitTests
             Assert.AreEqual(expecting, result);
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestMismatchedTokenError()
         {
-            Assert.Inconclusive("May be failing on just my port...");
             Grammar pg = new Grammar(
                 "parser grammar p;\n" +
                 "prog : WHILE ID LCURLY (assign)* RCURLY;\n" +
@@ -117,10 +116,9 @@ namespace AntlrUnitTests
             Assert.AreEqual(expecting, result);
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestMismatchedSetError()
         {
-            Assert.Inconclusive("May be failing on just my port...");
             Grammar pg = new Grammar(
                 "parser grammar p;\n" +
                 "prog : WHILE ID LCURLY (assign)* RCURLY;\n" +
@@ -155,10 +153,9 @@ namespace AntlrUnitTests
             Assert.AreEqual(expecting, result);
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestNoViableAltError()
         {
-            Assert.Inconclusive("May be failing on just my port...");
             Grammar pg = new Grammar(
                 "parser grammar p;\n" +
                 "prog : WHILE ID LCURLY (assign)* RCURLY;\n" +

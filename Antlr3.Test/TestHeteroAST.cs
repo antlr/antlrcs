@@ -42,7 +42,7 @@ namespace AntlrUnitTests
 
         // PARSERS -- AUTO AST
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestToken() /*throws Exception*/ {
             string grammar =
                 "grammar T;\n" +
@@ -60,7 +60,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( "a<V>" + NewLine, found );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestTokenCommonTree()
         {
             string grammar =
@@ -74,7 +74,7 @@ namespace AntlrUnitTests
             Assert.AreEqual("a" + NewLine, found);
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestTokenWithQualifiedType() /*throws Exception*/ {
             string grammar =
                 "grammar T;\n" +
@@ -92,7 +92,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( "a<V>" + NewLine, found );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestTokenWithLabel() /*throws Exception*/ {
             string grammar =
                 "grammar T;\n" +
@@ -110,7 +110,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( "a<V>" + NewLine, found );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestTokenWithListLabel() /*throws Exception*/ {
             string grammar =
                 "grammar T;\n" +
@@ -128,7 +128,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( "a<V>" + NewLine, found );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestTokenRoot() /*throws Exception*/ {
             string grammar =
                 "grammar T;\n" +
@@ -146,7 +146,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( "a<V>" + NewLine, found );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestTokenRootWithListLabel() /*throws Exception*/ {
             string grammar =
                 "grammar T;\n" +
@@ -164,7 +164,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( "a<V>" + NewLine, found );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestString() /*throws Exception*/ {
             string grammar =
                 "grammar T;\n" +
@@ -182,7 +182,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( "begin<V>" + NewLine, found );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestStringRoot() /*throws Exception*/ {
             string grammar =
                 "grammar T;\n" +
@@ -202,7 +202,7 @@ namespace AntlrUnitTests
 
         // PARSERS -- REWRITE AST
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestRewriteToken() /*throws Exception*/ {
             string grammar =
                 "grammar T;\n" +
@@ -220,7 +220,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( "a<V>" + NewLine, found );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestRewriteTokenWithArgs() /*throws Exception*/ {
             // arg to ID<V>[42,19,30] means you're constructing node not associated with ID
             // so must pass in token manually
@@ -243,7 +243,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( "<V>;421930 a<V>;9900" + NewLine, found );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestRewriteTokenRoot() /*throws Exception*/ {
             string grammar =
                 "grammar T;\n" +
@@ -262,7 +262,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( "(a<V> 2)" + NewLine, found );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestRewriteString() /*throws Exception*/ {
             string grammar =
                 "grammar T;\n" +
@@ -280,7 +280,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( "begin<V>" + NewLine, found );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestRewriteStringRoot() /*throws Exception*/ {
             string grammar =
                 "grammar T;\n" +
@@ -299,7 +299,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( "(begin<V> 2)" + NewLine, found );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestRewriteRuleResults() /*throws Exception*/ {
             string grammar =
                 "grammar T;\n" +
@@ -325,7 +325,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( "(LIST<W> a<V> b<V> c<V>)" + NewLine, found );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestCopySemanticsWithHetero() /*throws Exception*/ {
             string grammar =
                 "grammar T;\n" +
@@ -350,7 +350,7 @@ namespace AntlrUnitTests
 
         // TREE PARSERS -- REWRITE AST
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestTreeParserRewriteFlatList() /*throws Exception*/ {
             string grammar =
                 "grammar T;\n" +
@@ -381,7 +381,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( "34<V> abc<W>" + NewLine, found );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestTreeParserRewriteTree() /*throws Exception*/ {
             string grammar =
                 "grammar T;\n" +
@@ -412,7 +412,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( "(34<V> abc<W>)" + NewLine, found );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestTreeParserRewriteImaginary() /*throws Exception*/ {
             string grammar =
                 "grammar T;\n" +
@@ -440,7 +440,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( "ROOT<V> abc" + NewLine, found );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestTreeParserRewriteImaginaryWithArgs() /*throws Exception*/ {
             string grammar =
                 "grammar T;\n" +
@@ -469,7 +469,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( "ROOT<V>;42 abc" + NewLine, found );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestTreeParserRewriteImaginaryRoot() /*throws Exception*/ {
             string grammar =
                 "grammar T;\n" +
@@ -497,7 +497,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( "(ROOT<V> abc)" + NewLine, found );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestTreeParserRewriteImaginaryFromReal() /*throws Exception*/ {
             string grammar =
                 "grammar T;\n" +
@@ -526,7 +526,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( "ROOT<V>@1" + NewLine, found ); // at line 1; shows copy of ID's stuff
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestTreeParserAutoHeteroAST() /*throws Exception*/ {
             string grammar =
                 "grammar T;\n" +

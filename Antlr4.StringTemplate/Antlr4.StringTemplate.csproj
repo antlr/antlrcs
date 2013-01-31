@@ -37,6 +37,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Compiler\TemplateCompiler.TemplateLexerNoNewlines.cs" />
+    <Compile Include="TemplateRawGroupDirectory.cs" />
     <Compile Include="Debug\IndentEvent.cs" />
     <Compile Include="Extensions\ExceptionExtensions.cs" />
     <Compile Include="IAttributeRenderer.cs" />
@@ -56,7 +57,7 @@
     <None Include="..\..\..\..\keys\antlr\Key.snk">
       <Link>Key.snk</Link>
     </None>
-    <None Include="DateRenderer.cs" />
+    <Compile Include="DateRenderer.cs" />
     <Compile Include="Compiler\Instruction.cs" />
     <Compile Include="ITypeProxyFactory.cs" />
     <Compile Include="Misc\TypeRegistry`1.cs" />
@@ -132,7 +133,7 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\antlr3\runtime\CSharp3\Sources\Antlr3.Runtime\Antlr3.Runtime.csproj">
+    <ProjectReference Include="..\Reference\antlr3\runtime\CSharp3\Sources\Antlr3.Runtime\Antlr3.Runtime.csproj">
       <Project>{8FDC0A87-9005-4D5A-AB75-E55CEB575559}</Project>
       <Name>Antlr3.Runtime</Name>
     </ProjectReference>

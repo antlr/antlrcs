@@ -54,13 +54,13 @@ ruleDeclarations() ::= <<
 /** What to emit when there is no rewrite rule.  For auto build
  *  mode, does nothing.
  */
-noRewrite(rewriteBlockLevel, treeLevel) ::= <<
+noRewrite(rewriteBlockLevel=false, treeLevel=false) ::= <<
 <if(!ruleDescriptor.isSynPred)>
 <if(backtracking)>if (<actions.(actionScope).synpredgate>) {<endif>
 <if(rewriteMode)>
 retval.Tree = (<ASTLabelType>)_first_0;
 if (adaptor.GetParent(retval.Tree)!=null && adaptor.IsNil(adaptor.GetParent(retval.Tree)))
-    retval.Tree = (<ASTLabelType>)adaptor.GetParent(retval.Tree);
+	retval.Tree = (<ASTLabelType>)adaptor.GetParent(retval.Tree);
 <endif>
 <if(backtracking)>}<endif>
 <endif>
@@ -91,9 +91,9 @@ if (_first_<enclosingTreeLevel> == null) _first_<enclosingTreeLevel> = <root.el.
 <actionsAfterRoot:element()>
 <if(nullableChildList)>
 if (input.LA(1) == TokenTypes.Down) {
-    Match(input, TokenTypes.Down, null); <checkRuleBacktrackFailure()>
-    <children:element()>
-    Match(input, TokenTypes.Up, null); <checkRuleBacktrackFailure()>
+	Match(input, TokenTypes.Down, null); <checkRuleBacktrackFailure()>
+	<children:element()>
+	Match(input, TokenTypes.Up, null); <checkRuleBacktrackFailure()>
 }
 <else>
 Match(input, TokenTypes.Down, null); <checkRuleBacktrackFailure()>

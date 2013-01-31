@@ -42,7 +42,7 @@ namespace Antlr4.Test.StringTemplate
     [TestClass]
     public class TestGroupSyntax : BaseTest
     {
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST4)]
         public void TestSimpleGroup()
         {
             string templates =
@@ -58,7 +58,7 @@ namespace Antlr4.Test.StringTemplate
             Assert.AreEqual(expected, result);
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST4)]
         public void TestEscapedQuote()
         {
             // setTest(ranges) ::= "<ranges; separator=\"||\">"
@@ -76,7 +76,7 @@ namespace Antlr4.Test.StringTemplate
             Assert.AreEqual(expected, result);
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST4)]
         public void TestMultiTemplates()
         {
             string templates =
@@ -100,7 +100,7 @@ namespace Antlr4.Test.StringTemplate
             Assert.AreEqual(expected, result);
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST4)]
         public void TestSetDefaultDelimiters()
         {
             string templates =
@@ -116,7 +116,7 @@ namespace Antlr4.Test.StringTemplate
             Assert.AreEqual(expected, result);
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST4)]
         public void TestSetNonDefaultDelimiters()
         {
             string templates =
@@ -132,7 +132,7 @@ namespace Antlr4.Test.StringTemplate
             Assert.AreEqual(expected, result);
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST4)]
         public void TestSingleTemplateWithArgs()
         {
             string templates =
@@ -148,7 +148,7 @@ namespace Antlr4.Test.StringTemplate
             Assert.AreEqual(expected, result);
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST4)]
         public void TestDefaultValues()
         {
             string templates =
@@ -164,7 +164,7 @@ namespace Antlr4.Test.StringTemplate
             Assert.AreEqual(expected, result);
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST4)]
         public void TestDefaultValues2()
         {
             string templates =
@@ -180,7 +180,7 @@ namespace Antlr4.Test.StringTemplate
             Assert.AreEqual(expected, result);
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST4)]
         public void TestDefaultValueTemplateWithArg()
         {
             string templates =
@@ -197,6 +197,74 @@ namespace Antlr4.Test.StringTemplate
         }
 
         [TestMethod]
+        [TestCategory(TestCategories.ST4)]
+        public void TestDefaultValueBehaviorTrue()
+        {
+            string templates =
+                "t(a=true) ::= <<\n" +
+                "<a><if(a)>+<else>-<endif>\n" +
+                ">>\n";
+
+            writeFile(tmpdir, "t.stg", templates);
+            TemplateGroup group = new TemplateGroupFile(tmpdir + Path.DirectorySeparatorChar + "t.stg");
+            Template st = group.GetInstanceOf("t");
+            string expected = "true+";
+            string result = st.Render();
+            Assert.AreEqual(expected, result);
+        }
+
+        [TestMethod]
+        [TestCategory(TestCategories.ST4)]
+        public void TestDefaultValueBehaviorFalse()
+        {
+            string templates =
+                "t(a=false) ::= <<\n" +
+                "<a><if(a)>+<else>-<endif>\n" +
+                ">>\n";
+
+            writeFile(tmpdir, "t.stg", templates);
+            TemplateGroup group = new TemplateGroupFile(tmpdir + Path.DirectorySeparatorChar + "t.stg");
+            Template st = group.GetInstanceOf("t");
+            string expected = "false-";
+            string result = st.Render();
+            Assert.AreEqual(expected, result);
+        }
+
+        [TestMethod]
+        [TestCategory(TestCategories.ST4)]
+        public void TestDefaultValueBehaviorEmptyTemplate()
+        {
+            string templates =
+                "t(a={}) ::= <<\n" +
+                "<a><if(a)>+<else>-<endif>\n" +
+                ">>\n";
+
+            writeFile(tmpdir, "t.stg", templates);
+            TemplateGroup group = new TemplateGroupFile(tmpdir + Path.DirectorySeparatorChar + "t.stg");
+            Template st = group.GetInstanceOf("t");
+            string expected = "+";
+            string result = st.Render();
+            Assert.AreEqual(expected, result);
+        }
+
+        [TestMethod]
+        [TestCategory(TestCategories.ST4)]
+        public void TestDefaultValueBehaviorEmptyList()
+        {
+            string templates =
+                "t(a=[]) ::= <<\n" +
+                "<a><if(a)>+<else>-<endif>\n" +
+                ">>\n";
+
+            writeFile(tmpdir, "t.stg", templates);
+            TemplateGroup group = new TemplateGroupFile(tmpdir + Path.DirectorySeparatorChar + "t.stg");
+            Template st = group.GetInstanceOf("t");
+            string expected = "-";
+            string result = st.Render();
+            Assert.AreEqual(expected, result);
+        }
+
+        [TestMethod][TestCategory(TestCategories.ST4)]
         public void TestNestedTemplateInGroupFile()
         {
             string templates =
@@ -212,7 +280,7 @@ namespace Antlr4.Test.StringTemplate
             Assert.AreEqual(expected, result);
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST4)]
         public void TestNestedDefaultValueTemplate()
         {
             string templates =
@@ -229,7 +297,7 @@ namespace Antlr4.Test.StringTemplate
             Assert.AreEqual(expected, result);
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST4)]
         public void TestNestedDefaultValueTemplateWithEscapes()
         {
             string templates =
@@ -245,7 +313,7 @@ namespace Antlr4.Test.StringTemplate
             Assert.AreEqual(expected, result);
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST4)]
         public void TestMessedUpTemplateDoesntCauseRuntimeError()
         {
             string templates =

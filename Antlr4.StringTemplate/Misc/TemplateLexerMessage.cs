@@ -40,16 +40,40 @@ namespace Antlr4.StringTemplate.Misc
     /** */
     public class TemplateLexerMessage : TemplateMessage
     {
-        string msg;
-        IToken templateToken; // overall token pulled from group file
-        string srcName;
+        private readonly string _message;
+        private readonly IToken _templateToken; // overall token pulled from group file
+        private readonly string _sourceName;
 
-        public TemplateLexerMessage(string srcName, string msg, IToken templateToken, Exception cause)
+        public TemplateLexerMessage(string sourceName, string message, IToken templateToken, Exception cause)
             : base(ErrorType.LEXER_ERROR, null, cause, null)
         {
-            this.msg = msg;
-            this.templateToken = templateToken;
-            this.srcName = srcName;
+            this._message = message;
+            this._templateToken = templateToken;
+            this._sourceName = sourceName;
+        }
+
+        public string Message
+        {
+            get
+            {
+                return _message;
+            }
+        }
+
+        public IToken TemplateToken
+        {
+            get
+            {
+                return _templateToken;
+            }
+        }
+
+        public string SourceName
+        {
+            get
+            {
+                return _sourceName;
+            }
         }
 
         public override string ToString()
@@ -57,24 +81,24 @@ namespace Antlr4.StringTemplate.Misc
             RecognitionException re = (RecognitionException)Cause;
             int line = re.Line;
             int charPos = re.CharPositionInLine;
-            if (templateToken != null)
+            if (_templateToken != null)
             {
                 int templateDelimiterSize = 1;
-                if (templateToken.Type == GroupParser.BIGSTRING)
+                if (_templateToken.Type == GroupParser.BIGSTRING)
                 {
                     templateDelimiterSize = 2;
                 }
-                line += templateToken.Line - 1;
-                charPos += templateToken.CharPositionInLine + templateDelimiterSize;
+                line += _templateToken.Line - 1;
+                charPos += _templateToken.CharPositionInLine + templateDelimiterSize;
             }
 
             string filepos = line + ":" + charPos;
-            if (srcName != null)
+            if (_sourceName != null)
             {
-                return srcName + " " + filepos + ": " + string.Format(Error.Message, msg);
+                return _sourceName + " " + filepos + ": " + string.Format(Error.Message, _message);
             }
 
-            return filepos + ": " + string.Format(Error.Message, msg);
+            return filepos + ": " + string.Format(Error.Message, _message);
         }
     }
 }

@@ -85,7 +85,7 @@ namespace Antlr4.Test.StringTemplate
             }
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST4)]
         public void TestSimpleAdaptor()
         {
             string templates =
@@ -100,7 +100,7 @@ namespace Antlr4.Test.StringTemplate
             Assert.AreEqual(expecting, result);
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST4)]
         public void TestAdaptorAndBadProp()
         {
             ErrorBufferAllErrors errors = new ErrorBufferAllErrors();
@@ -121,7 +121,7 @@ namespace Antlr4.Test.StringTemplate
             Assert.AreEqual("User.qqq", e.PropertyName);
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST4)]
         public void TestAdaptorCoversSubclass()
         {
             string templates =
@@ -136,7 +136,7 @@ namespace Antlr4.Test.StringTemplate
             Assert.AreEqual(expecting, result);
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST4)]
         public void TestWeCanResetAdaptorCacheInvalidatedUponAdaptorReset()
         {
             string templates =
@@ -156,7 +156,7 @@ namespace Antlr4.Test.StringTemplate
             Assert.AreEqual(expecting, result);
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST4)]
         public void TestSeesMostSpecificAdaptor()
         {
             string templates =

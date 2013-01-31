@@ -43,7 +43,7 @@ using System.Windows;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Tunnel Vision Laboratories, LLC")]
 [assembly: AssemblyProduct("Antlr4.StringTemplate.Visualizer")]
-[assembly: AssemblyCopyright("Copyright © Sam Harwell 2011")]
+[assembly: AssemblyCopyright("Copyright © Sam Harwell 2013")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 [assembly: CLSCompliant(false)]
@@ -83,5 +83,5 @@ using System.Windows;
 // You can specify all the values or you can default the Build and Revision Numbers 
 // by using the '*' as shown below:
 // [assembly: AssemblyVersion("1.0.*")]
-[assembly: AssemblyVersion("4.0.6.9004")]
-[assembly: AssemblyFileVersion("4.0.6.9004")]
+[assembly: AssemblyVersion("4.0.7.0")]
+[assembly: AssemblyFileVersion("4.0.7.0")]

@@ -159,6 +159,9 @@ namespace Antlr4.StringTemplate
                 if (frame.StackDepth > 200)
                     throw new TemplateException("Template stack overflow.", null);
 
+                if (trace)
+                    Console.Out.WriteLine("Execute({0})", frame.Template.Name);
+
                 SetDefaultArguments(frame);
                 return ExecuteImpl(@out, frame);
             }
@@ -647,6 +650,7 @@ namespace Antlr4.StringTemplate
                         // if no default value
                         if (arg.DefaultValueToken == null)
                         {
+                            _errorManager.RuntimeError(frame, ErrorType.NO_SUCH_ATTRIBUTE_PASS_THROUGH, arg.Name);
                             attrs[arg.Name] = null;
                         }
                     }
@@ -656,6 +660,12 @@ namespace Antlr4.StringTemplate
 
         internal virtual void StoreArguments(TemplateFrame frame, IDictionary<string, object> attrs, Template st)
         {
+            if (attrs != null && attrs.Count > 0 &&
+                 !st.impl.HasFormalArgs && st.impl.FormalArguments == null)
+            {
+                st.Add(Template.ImplicitArgumentName, null); // pretend we have "it" arg
+            }
+
             int nformalArgs = 0;
             if (st.impl.FormalArguments != null)
                 nformalArgs = st.impl.FormalArguments.Count;
@@ -688,6 +698,11 @@ namespace Antlr4.StringTemplate
 
         internal virtual void StoreArguments(TemplateFrame frame, int nargs, Template st)
         {
+            if (nargs > 0 && !st.impl.HasFormalArgs && st.impl.FormalArguments == null)
+            {
+                st.Add(Template.ImplicitArgumentName, null); // pretend we have "it" arg
+            }
+
             int nformalArgs = 0;
             if (st.impl.FormalArguments != null)
                 nformalArgs = st.impl.FormalArguments.Count;
@@ -1071,6 +1086,16 @@ namespace Antlr4.StringTemplate
 
         protected virtual void SetFirstArgument(TemplateFrame frame, Template st, object attr)
         {
+            if (!st.impl.HasFormalArgs)
+            {
+                if (st.impl.FormalArguments == null)
+                {
+                    st.Add(Template.ImplicitArgumentName, attr);
+                    return;
+                }
+                // else fall thru to set locals[0]
+            }
+
             if (st.impl.FormalArguments == null)
             {
                 _errorManager.RuntimeError(frame, ErrorType.ARGUMENT_COUNT_MISMATCH, 1, st.impl.Name, 0);
@@ -1332,7 +1357,7 @@ namespace Antlr4.StringTemplate
 
             IEnumerable enumerable = o as IEnumerable;
             if (enumerable != null)
-                return enumerable.Cast<object>().GetEnumerator();
+                return enumerable.GetEnumerator();
 
             //// This code is implied in the last line
             //Iterator iterator = o as Iterator;
@@ -1395,7 +1420,7 @@ namespace Antlr4.StringTemplate
             if (o == null)
             {
                 _errorManager.RuntimeError(frame, ErrorType.NO_SUCH_PROPERTY,
-                                          "null attribute");
+                                          "null." + property);
                 return null;
             }
 
@@ -1502,7 +1527,7 @@ namespace Antlr4.StringTemplate
             StringBuilder buf = new StringBuilder();
             dis.DisassembleInstruction(buf, ip);
             string name = self.impl.Name + ":";
-            if (self.impl.Name == Template.UnknownName)
+            if (object.ReferenceEquals(self.impl.Name, Template.UnknownName))
                 name = string.Empty;
 
             tr.Append(string.Format("{0,-40}", name + buf));

@@ -32,17 +32,19 @@
 
 namespace Antlr4.Test.StringTemplate
 {
+    using Antlr.Runtime;
     using Antlr4.StringTemplate;
-    using Microsoft.VisualStudio.TestTools.UnitTesting;
     using Antlr4.StringTemplate.Compiler;
-    using Path = System.IO.Path;
-    using File = System.IO.File;
+    using Microsoft.VisualStudio.TestTools.UnitTesting;
+    using ArgumentException = System.ArgumentException;
+    using CultureInfo = System.Globalization.CultureInfo;
+    using DateTime = System.DateTime;
     using Directory = System.IO.Directory;
     using Environment = System.Environment;
-    using Antlr.Runtime;
-    using DateTime = System.DateTime;
+    using File = System.IO.File;
+    using Path = System.IO.Path;
     using StringBuilder = System.Text.StringBuilder;
-    using ArgumentException = System.ArgumentException;
+    using Thread = System.Threading.Thread;
 
     [TestClass]
     public abstract class BaseTest
@@ -64,6 +66,7 @@ namespace Antlr4.Test.StringTemplate
 
         protected virtual void setUpImpl()
         {
+            Thread.CurrentThread.CurrentCulture = CultureInfo.GetCultureInfo("en-us");
             TemplateGroup.DefaultGroup = new TemplateGroup();
             TemplateCompiler.subtemplateCount = 0;
 

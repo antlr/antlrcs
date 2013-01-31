@@ -44,7 +44,7 @@ namespace AntlrUnitTests
     {
         protected bool debug = false;
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestDelete() /*throws Exception*/ {
             string grammar =
                 "grammar T;\n" +
@@ -58,7 +58,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( "", found );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestAction() /*throws Exception*/ {
             string grammar =
                 "grammar T;\n" +
@@ -72,7 +72,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( "abc" + NewLine, found );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestEmbeddedLiteralConstructor() /*throws Exception*/ {
             string grammar =
                 "grammar T;\n" +
@@ -86,7 +86,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( "abc" + NewLine, found );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestInlineTemplate() /*throws Exception*/ {
             string grammar =
                 "grammar T;\n" +
@@ -100,7 +100,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( "x:abc, y:34;" + NewLine, found );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestNamedTemplate() /*throws Exception*/ {
             // the support code adds template group in it's output Test.java
             // that defines template foo.
@@ -116,7 +116,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( "abc 34" + NewLine, found );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestIndirectTemplate() /*throws Exception*/ {
             // the support code adds template group in it's output Test.java
             // that defines template foo.
@@ -132,7 +132,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( "abc 34" + NewLine, found );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestInlineTemplateInvokingLib() /*throws Exception*/ {
             string grammar =
                 "grammar T;\n" +
@@ -146,7 +146,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( "abc 34" + NewLine, found );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestPredicatedAlts() /*throws Exception*/ {
             // the support code adds template group in it's output Test.java
             // that defines template foo.
@@ -164,7 +164,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( "hi abc" + NewLine, found );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestTemplateReturn() /*throws Exception*/ {
             string grammar =
                 "grammar T;\n" +
@@ -179,7 +179,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( "abc 34" + NewLine, found );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestReturnValueWithTemplate() /*throws Exception*/ {
             string grammar =
                 "grammar T;\n" +
@@ -194,7 +194,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( "8" + NewLine, found );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestTemplateRefToDynamicAttributes() /*throws Exception*/ {
             string grammar =
                 "grammar T;\n" +
@@ -213,7 +213,7 @@ namespace AntlrUnitTests
 
         // tests for rewriting templates in tree parsers
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestSingleNode() /*throws Exception*/ {
             string grammar =
                 "grammar T;\n" +
@@ -234,7 +234,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( "|abc|" + NewLine, found );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestSingleNodeRewriteMode() /*throws Exception*/ {
             string grammar =
                 "grammar T;\n" +
@@ -255,7 +255,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( "|abc|" + NewLine, found );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestRewriteRuleAndRewriteModeOnSimpleElements() /*throws Exception*/ {
             ErrorQueue equeue = new ErrorQueue();
             ErrorManager.SetErrorListener( equeue );
@@ -277,7 +277,7 @@ namespace AntlrUnitTests
             Assert.AreEqual(0, equeue.warnings.Count, "unexpected errors: " + equeue);
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestRewriteRuleAndRewriteModeIgnoreActionsPredicates() /*throws Exception*/ {
             ErrorQueue equeue = new ErrorQueue();
             ErrorManager.SetErrorListener( equeue );
@@ -300,7 +300,7 @@ namespace AntlrUnitTests
             Assert.AreEqual(0, equeue.warnings.Count, "unexpected errors: " + equeue);
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestRewriteRuleAndRewriteModeNotSimple() /*throws Exception*/ {
             ErrorQueue equeue = new ErrorQueue();
             ErrorManager.SetErrorListener( equeue );
@@ -320,7 +320,7 @@ namespace AntlrUnitTests
             Assert.AreEqual(0, equeue.warnings.Count, "unexpected errors: " + equeue);
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestRewriteRuleAndRewriteModeRefRule() /*throws Exception*/ {
             ErrorQueue equeue = new ErrorQueue();
             ErrorManager.SetErrorListener( equeue );

@@ -77,9 +77,10 @@ namespace Antlr3.Codegen
     using Stopwatch = System.Diagnostics.Stopwatch;
     using StringTemplate = Antlr4.StringTemplate.Template;
     using TemplateGroup = Antlr4.StringTemplate.TemplateGroup;
-    using TemplateGroupFile = Antlr4.StringTemplate.TemplateGroupFile;
+    using ToolTemplateGroupFile = Antlr3.Tool.ToolTemplateGroupFile;
     using TextWriter = System.IO.TextWriter;
     using TimeSpan = System.TimeSpan;
+    using Antlr3.Misc;
 
     /** ANTLR's code generator.
      *
@@ -413,13 +414,6 @@ namespace Antlr3.Codegen
             // first load main language template
             TemplateGroup coreTemplates = GetOrCacheTemplateGroup(tool, language, null, null);
             baseTemplates = coreTemplates;
-            if (coreTemplates == null)
-            {
-                ErrorManager.Error(ErrorManager.MSG_MISSING_CODE_GEN_TEMPLATES, language);
-                baseTemplates = null;
-                templates = null;
-                return;
-            }
 
             outputOption = outputOption ?? string.Empty;
             // dynamically add subgroups that act like filters to apply to
@@ -568,7 +562,7 @@ namespace Antlr3.Codegen
 
             if (string.IsNullOrEmpty(name))
             {
-                TemplateGroup group = new TemplateGroupFile(groupFileName);
+                TemplateGroup group = new ToolTemplateGroupFile(groupFileName);
                 group.TrackCreationEvents = CodeGenerator.LaunchTemplateInspector;
                 group.IterateAcrossValues = true;
                 _coreTemplates[language] = group;
@@ -576,7 +570,7 @@ namespace Antlr3.Codegen
             }
             else
             {
-                TemplateGroup group = new TemplateGroupFile(groupFileName);
+                TemplateGroup group = new ToolTemplateGroupFile(groupFileName);
                 group.TrackCreationEvents = CodeGenerator.LaunchTemplateInspector;
                 group.IterateAcrossValues = true;
 
@@ -602,7 +596,7 @@ namespace Antlr3.Codegen
 
             if (string.IsNullOrEmpty(name) && superGroup == null)
             {
-                TemplateGroup group = new TemplateGroupFile(groupFileName);
+                TemplateGroup group = new ToolTemplateGroupFile(groupFileName);
                 group.TrackCreationEvents = CodeGenerator.LaunchTemplateInspector;
                 group.IterateAcrossValues = true;
                 _coreTemplates[language] = group;
@@ -610,7 +604,7 @@ namespace Antlr3.Codegen
             }
             else
             {
-                TemplateGroup group = new TemplateGroupFile(groupFileName);
+                TemplateGroup group = new ToolTemplateGroupFile(groupFileName);
                 group.TrackCreationEvents = CodeGenerator.LaunchTemplateInspector;
                 group.IterateAcrossValues = true;
                 group.ImportTemplates(superGroup);
@@ -837,6 +831,10 @@ namespace Antlr3.Codegen
             // all recognizers can see Grammar object
             recognizerST.SetAttribute( "grammar", _grammar );
 
+            // do not render templates to disk if errors occurred
+            if (ErrorManager.GetErrorState().errors > 0)
+                return null;
+
             if (CodeGenerator.LaunchTemplateInspector)
             {
                 outputFileST.Visualize();
@@ -920,11 +918,11 @@ namespace Antlr3.Codegen
             {
                 ruleName = r.Name;
             }
-            ICollection<string> actionNameSet = scopeActions.Keys.ToArray();
-            foreach ( string name in actionNameSet )
+
+            foreach ( var scopeAction in scopeActions.ToArray() )
             {
-                object action;
-                scopeActions.TryGetValue(name, out action);
+                string name = scopeAction.Key;
+                object action = scopeAction.Value;
                 GrammarAST actionAST = action as GrammarAST;
                 IList<object> chunks = TranslateAction( ruleName, actionAST );
                 scopeActions[name] = chunks; // replace with translation
@@ -1191,12 +1189,60 @@ namespace Antlr3.Codegen
             }
             string testSTName = "lookaheadTest";
             string testRangeSTName = "lookaheadRangeTest";
-            if ( !partOfDFA )
+            string testSetSTName = "lookaheadSetTest";
+            string varSTName = "lookaheadVarName";
+            if (!partOfDFA)
             {
                 testSTName = "isolatedLookaheadTest";
                 testRangeSTName = "isolatedLookaheadRangeTest";
+                testSetSTName = "isolatedLookaheadSetTest";
+                varSTName = "isolatedLookaheadVarName";
             }
+
             StringTemplate setST = templates.GetInstanceOf( "setTest" );
+            // If the SetTest template exists, separate the ranges:
+            // flatten the small ones into one list and make that a range,
+            // and leave the others as they are.
+            if (templates.IsDefined(testSetSTName))
+            {
+                // Flatten the IntervalSet into a list of integers.
+                StringTemplate sST = templates.GetInstanceOf(testSetSTName);
+                int rangeNumber2 = 1;
+                foreach (Interval I in iset.Intervals)
+                {
+                    int a = I.a;
+                    int b = I.b;
+                    // Not flattening the large ranges helps us avoid making a
+                    // set that contains 90% of Unicode when we could just use
+                    // a simple range like (LA(1)>=123 && LA(1)<=65535).
+                    // This flattens all ranges of length 4 or less.
+                    if (b - a < 4)
+                    {
+                        for (int i = a; i <= b; i++)
+                        {
+                            sST.Add("values", GetTokenTypeAsTargetLabel(i));
+                            sST.Add("valuesAsInt", i);
+                        }
+                    }
+                    else
+                    {
+                        StringTemplate eST = templates.GetInstanceOf(testRangeSTName);
+                        eST.Add("lower", GetTokenTypeAsTargetLabel(a));
+                        eST.Add("lowerAsInt", a);
+                        eST.Add("upper", GetTokenTypeAsTargetLabel(b));
+                        eST.Add("upperAsInt", b);
+                        eST.Add("rangeNumber", rangeNumber2);
+                        eST.Add("k", k);
+                        setST.Add("ranges", eST);
+                        rangeNumber2++;
+                    }
+                }
+
+                sST.Add("k", k);
+                setST.Add("ranges", sST);
+                return setST;
+            }
+
             int rangeNumber = 1;
             foreach ( Interval I in iset.Intervals )
             {

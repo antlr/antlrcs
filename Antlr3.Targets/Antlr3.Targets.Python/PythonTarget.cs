@@ -50,6 +50,14 @@ namespace Antlr3.Targets
 
     public class PythonTarget : Target
     {
+        public override bool UseBaseTemplatesForSynPredFragments
+        {
+            get
+            {
+                return false;
+            }
+        }
+
         /** Target must be able to override the labels used for token types */
         public override string GetTokenTypeAsTargetLabel( CodeGenerator generator,
                             int ttype )

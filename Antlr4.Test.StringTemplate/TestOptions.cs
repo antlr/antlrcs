@@ -41,7 +41,7 @@ namespace Antlr4.Test.StringTemplate
     [TestClass]
     public class TestOptions : BaseTest
     {
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST4)]
         public void TestSeparator()
         {
             TemplateGroup group = new TemplateGroup();
@@ -55,7 +55,7 @@ namespace Antlr4.Test.StringTemplate
             Assert.AreEqual(expected, result);
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST4)]
         public void TestSeparatorWithSpaces()
         {
             TemplateGroup group = new TemplateGroup();
@@ -70,7 +70,7 @@ namespace Antlr4.Test.StringTemplate
             Assert.AreEqual(expected, result);
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST4)]
         public void TestAttrSeparator()
         {
             TemplateGroup group = new TemplateGroup();
@@ -85,7 +85,7 @@ namespace Antlr4.Test.StringTemplate
             Assert.AreEqual(expected, result);
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST4)]
         public void TestIncludeSeparator()
         {
             TemplateGroup group = new TemplateGroup();
@@ -101,7 +101,7 @@ namespace Antlr4.Test.StringTemplate
             Assert.AreEqual(expected, result);
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST4)]
         public void TestSubtemplateSeparator()
         {
             TemplateGroup group = new TemplateGroup();
@@ -116,7 +116,7 @@ namespace Antlr4.Test.StringTemplate
             Assert.AreEqual(expected, result);
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST4)]
         public void TestSeparatorWithNullFirstValueAndNullOption()
         {
             TemplateGroup group = new TemplateGroup();
@@ -130,7 +130,7 @@ namespace Antlr4.Test.StringTemplate
             Assert.AreEqual(expected, result);
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST4)]
         public void TestSeparatorWithNull2ndValueAndNullOption()
         {
             TemplateGroup group = new TemplateGroup();
@@ -145,7 +145,7 @@ namespace Antlr4.Test.StringTemplate
             Assert.AreEqual(expected, result);
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST4)]
         public void TestNullValueAndNullOption()
         {
             TemplateGroup group = new TemplateGroup();
@@ -157,7 +157,7 @@ namespace Antlr4.Test.StringTemplate
             Assert.AreEqual(expected, result);
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST4)]
         public void TestListApplyWithNullValueAndNullOption()
         {
             TemplateGroup group = new TemplateGroup();
@@ -171,7 +171,7 @@ namespace Antlr4.Test.StringTemplate
             Assert.AreEqual(expected, result);
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST4)]
         public void TestDoubleListApplyWithNullValueAndNullOption()
         {
             // first apply sends [Template, null, Template] to second apply, which puts [] around
@@ -188,7 +188,7 @@ namespace Antlr4.Test.StringTemplate
             Assert.AreEqual(expected, result);
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST4)]
         public void TestMissingValueAndNullOption()
         {
             TemplateGroup group = new TemplateGroup();
@@ -199,7 +199,7 @@ namespace Antlr4.Test.StringTemplate
             Assert.AreEqual(expected, result);
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST4)]
         public void TestOptionDoesntApplyToNestedTemplate()
         {
             TemplateGroup group = new TemplateGroup();
@@ -212,7 +212,7 @@ namespace Antlr4.Test.StringTemplate
             Assert.AreEqual(expected, result);
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST4)]
         public void TestIllegalOption()
         {
             ErrorBuffer errors = new ErrorBuffer();

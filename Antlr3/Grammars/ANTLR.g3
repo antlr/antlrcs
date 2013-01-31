@@ -402,10 +402,11 @@ elementNoOptionSpec
 {
 	IntSet elements=null;
 }
-	:	(	id (ASSIGN^|PLUS_ASSIGN^) (atom|block)
+	:	(	id (ASSIGN^|PLUS_ASSIGN^)
+			(	atom (ebnfSuffix[root_0,false]! {root_0 = $ebnfSuffix.tree;})?
+			|	ebnf
+			)
 		)
-		(	ebnfSuffix[root_0,false]! {root_0 = $ebnfSuffix.tree;}
-		)?
 	|	atom
 		(	ebnfSuffix[$atom.tree,false]! {root_0 = $ebnfSuffix.tree;}
 		)?
@@ -481,8 +482,19 @@ ebnf
 		)
 	;
 
-range
-	:	CHAR_LITERAL RANGE<type=CHAR_RANGE;text="..">^ CHAR_LITERAL
+range!
+	:	{Rule.GetRuleType(currentRuleName) == RuleType.Lexer}?=>
+	 	CHAR_LITERAL RANGE<type=CHAR_RANGE;text="..">^ CHAR_LITERAL
+	|	// range elsewhere is an error
+		(	// have to generate something for surrounding code, just return first token
+			TOKEN_REF r=RANGE! TOKEN_REF!
+		|	STRING_LITERAL r=RANGE! STRING_LITERAL!
+		|	CHAR_LITERAL r=RANGE! CHAR_LITERAL!
+		)
+		{
+		ErrorManager.SyntaxError(
+			ErrorManager.MSG_RANGE_OP_ILLEGAL,Grammar,$r,null,null);
+		}
 	;
 
 terminal
@@ -813,14 +825,6 @@ DOLLAR : '$' ;
 
 STRAY_BRACKET
 	:	']'
-		{
-			ErrorManager.SyntaxError(
-				ErrorManager.MSG_SYNTAX_ERROR,
-				null,
-				state.token,
-				"antlr: dangling ']'? make sure to escape with \\]",
-				null);
-		}
 	;
 
 CHAR_LITERAL

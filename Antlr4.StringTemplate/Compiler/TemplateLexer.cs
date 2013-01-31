@@ -689,12 +689,24 @@ namespace Antlr4.StringTemplate.Compiler
 
         private void ConsumeLineBreak()
         {
-            Match('\\'); // only kill 2nd \ as outside() kills first one
+            Match('\\'); // only kill 2nd \ as MatchEscape() kills first one
             Match(delimiterStopChar);
             while (c == ' ' || c == '\t')
                 Consume(); // scarf WS after <\\>
+
+            if (c == EOF)
+            {
+                RecognitionException re = new RecognitionException(input);
+                re.Line = input.Line;
+                re.CharPositionInLine = input.CharPositionInLine;
+                errMgr.LexerError(input.SourceName, "Missing newline after newline escape <\\\\>",
+                                  templateToken, re);
+                return;
+            }
+
             if (c == '\r')
                 Consume();
+
             Match('\n');
             while (c == ' ' || c == '\t')
                 Consume(); // scarf any indent

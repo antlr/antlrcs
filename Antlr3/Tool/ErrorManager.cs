@@ -156,6 +156,7 @@ namespace Antlr3.Tool
         public const int MSG_CONFLICTING_OPTION_IN_TREE_FILTER = 167;
         public const int MSG_ILLEGAL_OPTION_VALUE = 168;
         public const int MSG_ALL_OPS_NEED_SAME_ASSOC = 169;
+        public const int MSG_RANGE_OP_ILLEGAL = 170;
 
         // GRAMMAR WARNINGS
         public const int MSG_GRAMMAR_NONDETERMINISM = 200; // A predicts alts 1,2
@@ -218,7 +219,8 @@ namespace Antlr3.Tool
         /** Each thread might need it's own error listener; e.g., a GUI with
          *  multiple window frames holding multiple grammars.
          */
-        private static Dictionary<Thread, IANTLRErrorListener> threadToListenerMap = new Dictionary<Thread, IANTLRErrorListener>();
+        [ThreadStatic]
+        private static IANTLRErrorListener _listener;
 
         public class ErrorState
         {
@@ -233,13 +235,15 @@ namespace Antlr3.Tool
         /** Track the number of errors regardless of the listener but track
          *  per thread.
          */
-        private static IDictionary<Thread, ErrorState> threadToErrorStateMap = new Dictionary<Thread, ErrorState>();
+        [ThreadStatic]
+        private static ErrorState _errorState;
 
         /** Each thread has its own ptr to a Tool object, which knows how
          *  to panic, for example.  In a GUI, the thread might just throw an Error
          *  to exit rather than the suicide System.exit.
          */
-        private static IDictionary<Thread, Tool> threadToToolMap = new Dictionary<Thread, Tool>();
+        [ThreadStatic]
+        private static Tool _tool;
 
         /** The group of templates that represent all possible ANTLR errors. */
         private static TemplateGroup messages;
@@ -249,7 +253,7 @@ namespace Antlr3.Tool
         /** From a msgID how can I get the name of the template that describes
          *  the error or warning?
          */
-        private static String[] idToMessageTemplateName = new String[MAX_MESSAGE_NUMBER + 1];
+        private static readonly String[] idToMessageTemplateName = new String[MAX_MESSAGE_NUMBER + 1];
 
         static ErrorManager()
         {
@@ -550,22 +554,22 @@ namespace Antlr3.Tool
          */
         public static void SetErrorListener( IANTLRErrorListener listener )
         {
-            threadToListenerMap[Thread.CurrentThread] = listener;
+            ErrorManager._listener = listener;
         }
 
         public static void RemoveErrorListener()
         {
-            threadToListenerMap.Remove( Thread.CurrentThread );
+            ErrorManager._listener = null;
         }
 
         public static Tool GetTool()
         {
-            return threadToToolMap[Thread.CurrentThread];
+            return _tool;
         }
 
         public static void SetTool( Tool tool )
         {
-            threadToToolMap[Thread.CurrentThread] = tool;
+            _tool = tool;
         }
 
         /** Given a message ID, return a StringTemplate that somebody can fill
@@ -613,24 +617,22 @@ namespace Antlr3.Tool
 
         public static IANTLRErrorListener GetErrorListener()
         {
-            IANTLRErrorListener el;
-            threadToListenerMap.TryGetValue(Thread.CurrentThread, out el);
+            IANTLRErrorListener el = _listener;
             if ( el == null )
-            {
                 return theDefaultErrorListener;
-            }
+
             return el;
         }
 
         public static ErrorState GetErrorState()
         {
-            ErrorState ec;
-            threadToErrorStateMap.TryGetValue(Thread.CurrentThread, out ec);
+            ErrorState ec = _errorState;
             if ( ec == null )
             {
                 ec = new ErrorState();
-                threadToErrorStateMap[Thread.CurrentThread] = ec;
+                _errorState = ec;
             }
+
             return ec;
         }
 
@@ -641,9 +643,7 @@ namespace Antlr3.Tool
 
         public static void ResetErrorState()
         {
-            threadToListenerMap = new Dictionary<Thread, IANTLRErrorListener>();
-            ErrorState ec = new ErrorState();
-            threadToErrorStateMap[Thread.CurrentThread] = ec;
+            _errorState = new ErrorState();
         }
 
         public static void Info( String msg )
@@ -1028,8 +1028,7 @@ namespace Antlr3.Tool
          */
         public static void Panic()
         {
-            Tool tool;
-            threadToToolMap.TryGetValue(Thread.CurrentThread, out tool);
+            Tool tool = _tool;
             if ( tool == null )
             {
                 // no tool registered, exit

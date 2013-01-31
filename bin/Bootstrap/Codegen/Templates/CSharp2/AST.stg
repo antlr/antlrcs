@@ -117,7 +117,7 @@ root_0 = (<ASTLabelType>)adaptor.Nil();
 // T r a c k i n g  R u l e  E l e m e n t s
 
 /** ID and track it for use in a rewrite rule */
-tokenRefTrack(token,label,elementIndex,terminalOptions) ::= <<
+tokenRefTrack(token,label,elementIndex,terminalOptions={}) ::= <<
 <tokenRefBang(...)> <! Track implies no auto AST construction!>
 <if(backtracking)>if (<actions.(actionScope).synpredgate>) <endif>stream_<token>.Add(<label>);<\n>
 >>
@@ -125,19 +125,19 @@ tokenRefTrack(token,label,elementIndex,terminalOptions) ::= <<
 /** ids+=ID and track it for use in a rewrite rule; adds to ids *and*
  *  to the tracking list stream_ID for use in the rewrite.
  */
-tokenRefTrackAndListLabel(token,label,elementIndex,terminalOptions) ::= <<
+tokenRefTrackAndListLabel(token,label,elementIndex,terminalOptions={}) ::= <<
 <tokenRefTrack(...)>
 <listLabelElem(elem=label,elemType=labelType,...)>
 >>
 
 /** ^(ID ...) track for rewrite */
-tokenRefRuleRootTrack(token,label,elementIndex,terminalOptions) ::= <<
+tokenRefRuleRootTrack(token,label,elementIndex,terminalOptions={}) ::= <<
 <tokenRefBang(...)>
 <if(backtracking)>if (<actions.(actionScope).synpredgate>) <endif>stream_<token>.Add(<label>);
 >>
 
 /** Match ^(label+=TOKEN ...) track for rewrite */
-tokenRefRuleRootTrackAndListLabel(token,label,elementIndex,terminalOptions) ::= <<
+tokenRefRuleRootTrackAndListLabel(token,label,elementIndex,terminalOptions={}) ::= <<
 <tokenRefRuleRootTrack(...)>
 <listLabelElem(elem=label,elemType=labelType,...)>
 >>
@@ -321,7 +321,7 @@ DebugLocation(<e.line>, <e.pos>);<\n>
 %>
 
 /** Gen ID or ID[args] */
-rewriteTokenRef(token,elementIndex,terminalOptions,args) ::= <<
+rewriteTokenRef(token,elementIndex,args,terminalOptions={}) ::= <<
 adaptor.AddChild(root_<treeLevel>, <createRewriteNodeFromElement(...)>);<\n>
 >>
 
@@ -344,15 +344,15 @@ root_<treeLevel> = (<ASTLabelType>)adaptor.BecomeRoot(stream_<label>.NextNode(),
 rewriteTokenListLabelRefRoot ::= rewriteTokenLabelRefRoot
 
 /** Gen ^(ID ...) or ^(ID[args] ...) */
-rewriteTokenRefRoot(token,elementIndex,terminalOptions,args) ::= <<
+rewriteTokenRefRoot(token,elementIndex,args,terminalOptions={}) ::= <<
 root_<treeLevel> = (<ASTLabelType>)adaptor.BecomeRoot(<createRewriteNodeFromElement(...)>, root_<treeLevel>);<\n>
 >>
 
-rewriteImaginaryTokenRef(args,token,terminalOptions,elementIndex) ::= <<
+rewriteImaginaryTokenRef(args,token,elementIndex,terminalOptions={}) ::= <<
 adaptor.AddChild(root_<treeLevel>, <createImaginaryNode(tokenType=token, ...)>);<\n>
 >>
 
-rewriteImaginaryTokenRefRoot(args,token,terminalOptions,elementIndex) ::= <<
+rewriteImaginaryTokenRefRoot(args,token,elementIndex,terminalOptions={}) ::= <<
 root_<treeLevel> = (<ASTLabelType>)adaptor.BecomeRoot(<createImaginaryNode(tokenType=token, ...)>, root_<treeLevel>);<\n>
 >>
 
@@ -408,7 +408,7 @@ rewriteWildcardLabelRef(label) ::= <<
 adaptor.AddChild(root_<treeLevel>, stream_<label>.NextTree());<\n>
 >>
 
-createImaginaryNode(tokenType,terminalOptions,args) ::= <%
+createImaginaryNode(tokenType,args,terminalOptions={}) ::= <%
 <if(terminalOptions.node)>
 <! new MethodNode(IDLabel, args) !>
 new <terminalOptions.node>(<tokenType><if(args)>, <args; separator=", "><endif>)
@@ -417,7 +417,7 @@ new <terminalOptions.node>(<tokenType><if(args)>, <args; separator=", "><endif>)
 <endif>
 %>
 
-createRewriteNodeFromElement(token,terminalOptions,args) ::= <%
+createRewriteNodeFromElement(token,args,terminalOptions={}) ::= <%
 <if(terminalOptions.node)>
 new <terminalOptions.node>(stream_<token>.NextToken()<if(args)>, <args; separator=", "><endif>)
 <else>

@@ -39,7 +39,7 @@ namespace Antlr4.Test.StringTemplate
     [TestClass]
     public class TestIndentation : BaseTest
     {
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST4)]
         public void TestIndentInFrontOfTwoExpr()
         {
             string templates =
@@ -58,7 +58,7 @@ namespace Antlr4.Test.StringTemplate
             Assert.AreEqual(expecting, t.Render());
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST4)]
         public void TestSimpleIndentOfAttributeList()
         {
             string templates =
@@ -79,7 +79,7 @@ namespace Antlr4.Test.StringTemplate
             Assert.AreEqual(expecting, t.Render());
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST4)]
         public void TestIndentOfMultilineAttributes()
         {
             string templates =
@@ -104,7 +104,7 @@ namespace Antlr4.Test.StringTemplate
             Assert.AreEqual(expecting, t.Render());
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST4)]
         public void TestIndentOfMultipleBlankLines()
         {
             string templates =
@@ -122,7 +122,7 @@ namespace Antlr4.Test.StringTemplate
             Assert.AreEqual(expecting, t.Render());
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST4)]
         public void TestIndentBetweenLeftJustifiedLiterals()
         {
             string templates =
@@ -146,7 +146,7 @@ namespace Antlr4.Test.StringTemplate
             Assert.AreEqual(expecting, t.Render());
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST4)]
         public void TestNestedIndent()
         {
             string templates =
@@ -192,7 +192,7 @@ namespace Antlr4.Test.StringTemplate
             Assert.AreEqual(expecting, t.Render());
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST4)]
         public void TestIndentedIFWithValueExpr()
         {
             Template t = new Template(
@@ -208,7 +208,7 @@ namespace Antlr4.Test.StringTemplate
             Assert.AreEqual(expecting, result);
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST4)]
         public void TestIndentedIFWithElse()
         {
             Template t = new Template(
@@ -221,7 +221,7 @@ namespace Antlr4.Test.StringTemplate
             Assert.AreEqual(expecting, result);
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST4)]
         public void TestIndentedIFWithElse2()
         {
             Template t = new Template(
@@ -234,7 +234,7 @@ namespace Antlr4.Test.StringTemplate
             Assert.AreEqual(expecting, result);
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST4)]
         public void TestIndentedIFWithNewlineBeforeText()
         {
             TemplateGroup group = new TemplateGroup();
@@ -252,7 +252,7 @@ namespace Antlr4.Test.StringTemplate
             Assert.AreEqual(expecting, result);
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST4)]
         public void TestIndentedIFWithEndifNextLine()
         {
             TemplateGroup group = new TemplateGroup();
@@ -269,7 +269,7 @@ namespace Antlr4.Test.StringTemplate
             Assert.AreEqual(expecting, result);
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST4)]
         public void TestIFWithIndentOnMultipleLines()
         {
             Template t = new Template(
@@ -288,7 +288,7 @@ namespace Antlr4.Test.StringTemplate
             Assert.AreEqual(expecting, result);
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST4)]
         public void TestIFWithIndentAndExprOnMultipleLines()
         {
             Template t = new Template(
@@ -308,7 +308,7 @@ namespace Antlr4.Test.StringTemplate
             Assert.AreEqual(expecting, result);
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST4)]
         public void TestIFWithIndentAndExprWithIndentOnMultipleLines()
         {
             Template t = new Template(
@@ -328,7 +328,7 @@ namespace Antlr4.Test.StringTemplate
             Assert.AreEqual(expecting, result);
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST4)]
         public void TestNestedIFWithIndentOnMultipleLines()
         {
             Template t = new Template(
@@ -353,7 +353,7 @@ namespace Antlr4.Test.StringTemplate
             Assert.AreEqual(expecting, result);
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST4)]
         public void TestIFInSubtemplate()
         {
             Template t = new Template(

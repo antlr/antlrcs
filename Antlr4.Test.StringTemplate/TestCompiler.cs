@@ -47,7 +47,7 @@ namespace Antlr4.Test.StringTemplate
             base.setUpImpl();
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST4)]
         public void TestAttr()
         {
             string template = "hi <name>";
@@ -63,7 +63,7 @@ namespace Antlr4.Test.StringTemplate
             Assert.AreEqual(stringsExpected, stringsResult);
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST4)]
         public void TestInclude()
         {
             string template = "hi <foo()>";
@@ -77,7 +77,7 @@ namespace Antlr4.Test.StringTemplate
             Assert.AreEqual(stringsExpected, stringsResult);
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST4)]
         public void TestIncludeWithPassThrough()
         {
             string template = "hi <foo(...)>";
@@ -91,7 +91,7 @@ namespace Antlr4.Test.StringTemplate
             Assert.AreEqual(stringsExpected, stringsResult);
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST4)]
         public void TestIncludeWithPartialPassThrough()
         {
             string template = "hi <foo(x=y,...)>";
@@ -105,7 +105,7 @@ namespace Antlr4.Test.StringTemplate
             Assert.AreEqual(stringsExpected, stringsResult);
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST4)]
         public void TestSuperInclude()
         {
             string template = "<super.foo()>";
@@ -120,7 +120,7 @@ namespace Antlr4.Test.StringTemplate
             Assert.AreEqual(stringsExpected, stringsResult);
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST4)]
         public void TestSuperIncludeWithArgs()
         {
             string template = "<super.foo(a,{b})>";
@@ -134,7 +134,7 @@ namespace Antlr4.Test.StringTemplate
             Assert.AreEqual(stringsExpected, stringsResult);
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST4)]
         public void TestSuperIncludeWithNamedArgs()
         {
             string template = "<super.foo(x=a,y={b})>";
@@ -148,7 +148,7 @@ namespace Antlr4.Test.StringTemplate
             Assert.AreEqual(stringsExpected, stringsResult);
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST4)]
         public void TestIncludeWithArgs()
         {
             string template = "hi <foo(a,b)>";
@@ -162,7 +162,7 @@ namespace Antlr4.Test.StringTemplate
             Assert.AreEqual(stringsExpected, stringsResult);
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST4)]
         public void TestAnonIncludeArgs()
         {
             string template = "<({ a, b | <a><b>})>";
@@ -176,7 +176,7 @@ namespace Antlr4.Test.StringTemplate
             Assert.AreEqual(stringsExpected, stringsResult);
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST4)]
         public void TestAnonIncludeArgMismatch()
         {
             ITemplateErrorListener errors = new ErrorBuffer();
@@ -189,7 +189,7 @@ namespace Antlr4.Test.StringTemplate
             Assert.AreEqual(expected, errors.ToString());
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST4)]
         public void TestAnonIncludeArgMismatch2()
         {
             ITemplateErrorListener errors = new ErrorBuffer();
@@ -202,7 +202,7 @@ namespace Antlr4.Test.StringTemplate
             Assert.AreEqual(expected, errors.ToString());
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST4)]
         public void TestAnonIncludeArgMismatch3()
         {
             ITemplateErrorListener errors = new ErrorBuffer();
@@ -215,7 +215,7 @@ namespace Antlr4.Test.StringTemplate
             Assert.AreEqual(expected, errors.ToString());
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST4)]
         public void TestIndirectIncludeWitArgs()
         {
             string template = "hi <(foo)(a,b)>";
@@ -229,7 +229,7 @@ namespace Antlr4.Test.StringTemplate
             Assert.AreEqual(stringsExpected, stringsResult);
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST4)]
         public void TestProp()
         {
             string template = "hi <a.b>";
@@ -243,7 +243,7 @@ namespace Antlr4.Test.StringTemplate
             Assert.AreEqual(stringsExpected, stringsResult);
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST4)]
         public void TestProp2()
         {
             string template = "<u.id>: <u.name>";
@@ -258,7 +258,7 @@ namespace Antlr4.Test.StringTemplate
             Assert.AreEqual(stringsExpected, stringsResult);
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST4)]
         public void TestMap()
         {
             string template = "<name:bold()>";
@@ -272,7 +272,7 @@ namespace Antlr4.Test.StringTemplate
             Assert.AreEqual(stringsExpected, stringsResult);
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST4)]
         public void TestMapAsOption()
         {
             string template = "<a; wrap=name:bold()>";
@@ -287,7 +287,7 @@ namespace Antlr4.Test.StringTemplate
             Assert.AreEqual(stringsExpected, stringsResult);
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST4)]
         public void TestMapArg()
         {
             string template = "<name:bold(x)>";
@@ -301,7 +301,7 @@ namespace Antlr4.Test.StringTemplate
             Assert.AreEqual(stringsExpected, stringsResult);
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST4)]
         public void TestIndirectMapArg()
         {
             string template = "<name:(t)(x)>";
@@ -315,7 +315,7 @@ namespace Antlr4.Test.StringTemplate
             Assert.AreEqual(stringsExpected, stringsResult);
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST4)]
         public void TestRepeatedMap()
         {
             string template = "<name:bold():italics()>";
@@ -329,7 +329,7 @@ namespace Antlr4.Test.StringTemplate
             Assert.AreEqual(stringsExpected, stringsResult);
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST4)]
         public void TestRepeatedMapArg()
         {
             string template = "<name:bold(x):italics(x,y)>";
@@ -344,7 +344,7 @@ namespace Antlr4.Test.StringTemplate
             Assert.AreEqual(stringsExpected, stringsResult);
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST4)]
         public void TestRotMap()
         {
             string template = "<name:bold(),italics()>";
@@ -358,7 +358,7 @@ namespace Antlr4.Test.StringTemplate
             Assert.AreEqual(stringsExpected, stringsResult);
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST4)]
         public void TestRotMapArg()
         {
             string template = "<name:bold(x),italics()>";
@@ -372,7 +372,7 @@ namespace Antlr4.Test.StringTemplate
             Assert.AreEqual(stringsExpected, stringsResult);
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST4)]
         public void TestZipMap()
         {
             string template = "<names,phones:bold()>";
@@ -386,7 +386,7 @@ namespace Antlr4.Test.StringTemplate
             Assert.AreEqual(stringsExpected, stringsResult);
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST4)]
         public void TestZipMapArg()
         {
             string template = "<names,phones:bold(x)>";
@@ -400,7 +400,7 @@ namespace Antlr4.Test.StringTemplate
             Assert.AreEqual(stringsExpected, stringsResult);
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST4)]
         public void TestAnonMap()
         {
             string template = "<name:{n | <n>}>";
@@ -414,7 +414,7 @@ namespace Antlr4.Test.StringTemplate
             Assert.AreEqual(stringsExpected, stringsResult);
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST4)]
         public void TestAnonZipMap()
         {
             string template = "<a,b:{x,y | <x><y>}>";
@@ -428,7 +428,7 @@ namespace Antlr4.Test.StringTemplate
             Assert.AreEqual(stringsExpected, stringsResult);
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST4)]
         public void TestIf()
         {
             string template = "go: <if(name)>hi, foo<endif>";
@@ -442,7 +442,7 @@ namespace Antlr4.Test.StringTemplate
             Assert.AreEqual(stringsExpected, stringsResult);
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST4)]
         public void TestIfElse()
         {
             string template = "go: <if(name)>hi, foo<else>bye<endif>";
@@ -461,7 +461,7 @@ namespace Antlr4.Test.StringTemplate
             Assert.AreEqual(stringsExpected, stringsResult);
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST4)]
         public void TestElseIf()
         {
             string template = "go: <if(name)>hi, foo<elseif(user)>a user<endif>";
@@ -482,7 +482,7 @@ namespace Antlr4.Test.StringTemplate
             Assert.AreEqual(stringsExpected, stringsResult);
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST4)]
         public void TestElseIfElse()
         {
             string template = "go: <if(name)>hi, foo<elseif(user)>a user<else>bye<endif>";
@@ -505,7 +505,7 @@ namespace Antlr4.Test.StringTemplate
             Assert.AreEqual(stringsExpected, stringsResult);
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST4)]
         public void TestOption()
         {
             string template = "hi <name; separator=\"x\">";
@@ -519,7 +519,7 @@ namespace Antlr4.Test.StringTemplate
             Assert.AreEqual(stringsExpected, stringsResult);
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST4)]
         public void TestOptionAsTemplate()
         {
             string template = "hi <name; separator={, }>";
@@ -533,7 +533,7 @@ namespace Antlr4.Test.StringTemplate
             Assert.AreEqual(stringsExpected, stringsResult);
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST4)]
         public void TestOptions()
         {
             string template = "hi <name; anchor, wrap=foo(), separator=\", \">";
@@ -557,7 +557,7 @@ namespace Antlr4.Test.StringTemplate
             Assert.AreEqual(asmExpected, asmResult);
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST4)]
         public void TestEmptyList()
         {
             string template = "<[]>";
@@ -570,7 +570,7 @@ namespace Antlr4.Test.StringTemplate
             Assert.AreEqual(stringsExpected, stringsResult);
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST4)]
         public void TestList()
         {
             string template = "<[a,b]>";
@@ -583,7 +583,7 @@ namespace Antlr4.Test.StringTemplate
             Assert.AreEqual(stringsExpected, stringsResult);
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST4)]
         public void TestEmbeddedRegion()
         {
             string template = "<@r>foo<@end>";
@@ -598,7 +598,7 @@ namespace Antlr4.Test.StringTemplate
             Assert.AreEqual(stringsExpected, stringsResult);
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST4)]
         public void TestRegion()
         {
             string template = "x:<@r()>";

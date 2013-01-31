@@ -37,7 +37,7 @@ namespace AntlrUnitTests
     [TestClass]
     public class TestSemanticPredicateEvaluation : BaseTest
     {
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestSimpleCyclicDFAWithPredicate() /*throws Exception*/ {
             string grammar =
                 "grammar foo;\n" +
@@ -49,7 +49,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( "alt2" + NewLine, found );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestSimpleCyclicDFAWithInstanceVarPredicate() /*throws Exception*/ {
             string grammar =
                 "grammar foo;\n" +
@@ -62,7 +62,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( "alt2" + NewLine, found );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestPredicateValidation() /*throws Exception*/ {
             string grammar =
                 "grammar foo;\n" +
@@ -79,7 +79,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( "error: FailedPredicateException(a,{false}?)" + NewLine, found );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestLexerPreds() /*throws Exception*/ {
             string grammar =
                 "grammar foo;" +
@@ -93,7 +93,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( "token 2" + NewLine, found );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestLexerPreds2() /*throws Exception*/ {
             string grammar =
                 "grammar foo;" +
@@ -107,7 +107,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( "token 1" + NewLine, found );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestLexerPredInExitBranch() /*throws Exception*/ {
             // p says it's ok to exit; it has precendence over the !p loopback branch
             string grammar =
@@ -122,7 +122,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( "222" + NewLine, found );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestLexerPredInExitBranch2() /*throws Exception*/ {
             string grammar =
                 "grammar foo;" +
@@ -135,7 +135,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( "111" + NewLine, found );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestLexerPredInExitBranch3() /*throws Exception*/ {
             string grammar =
                 "grammar foo;" +
@@ -148,7 +148,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( "122" + NewLine, found );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestLexerPredInExitBranch4() /*throws Exception*/ {
             string grammar =
                 "grammar foo;" +
@@ -160,7 +160,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( "01xxx" + NewLine, found );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestLexerPredsInCyclicDFA() /*throws Exception*/ {
             string grammar =
                 "grammar foo;" +
@@ -173,7 +173,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( "token 2" + NewLine, found );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestLexerPredsInCyclicDFA2() /*throws Exception*/ {
             string grammar =
                 "grammar foo;" +
@@ -186,7 +186,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( "token 2" + NewLine, found );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestGatedPred() /*throws Exception*/ {
             string grammar =
                 "grammar foo;" +
@@ -199,7 +199,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( "token 1" + NewLine + "token 1" + NewLine, found );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestGatedPred2() /*throws Exception*/ {
             string grammar =
                 "grammar foo;\n" +
@@ -213,7 +213,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( "AC" + NewLine, found );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestPredWithActionTranslation() /*throws Exception*/ {
             string grammar =
                 "grammar foo;\n" +
@@ -227,7 +227,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( "alt 2" + NewLine, found );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestPredicatesOnEOTTarget() /*throws Exception*/ {
             string grammar =
                 "grammar foo; \n" +
@@ -243,13 +243,13 @@ namespace AntlrUnitTests
         }
 
 #if true // my lookahead tests
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestSynpredLookahead()
         {
             string grammar =
                 "grammar foo;\n" +
                 "a : B EOF {System.out.println(\"B\");};\n" +
-                "B : '/*';\n" +
+                "B : '/*'\n" +
                 "    ( ('/' ~'*') => '/'\n" +
                 "    | ('*' ~'/') => '*'\n" +
                 "    | B\n" +
@@ -262,7 +262,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( "B" + NewLine, found );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestPredicatesWithGlobalScope()
         {
             string grammar =
@@ -274,7 +274,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( "B" + NewLine, found );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestPredicatesWithGlobalScope2()
         {
             string grammar =
@@ -296,7 +296,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( "B" + NewLine, found );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         [Ignore]
         public void TestPredicatesWithGlobalScope3()
         {

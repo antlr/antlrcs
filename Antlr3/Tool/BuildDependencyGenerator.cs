@@ -127,7 +127,7 @@ namespace Antlr3.Tool
             System.IO.DirectoryInfo outputDir = tool.GetOutputDirectory( grammarFileName );
             if ( outputDir.Name.Equals( "." ) )
             {
-                outputDir = null;
+                outputDir = outputDir.Parent;
             }
             else if ( outputDir.Name.IndexOf( ' ' ) >= 0 )
             { // has spaces?

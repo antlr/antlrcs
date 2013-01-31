@@ -51,7 +51,7 @@ namespace AntlrUnitTests
     {
         protected bool debug = false;
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestFlatList() /*throws Exception*/ {
             string grammar =
                 "grammar T;\n" +
@@ -72,7 +72,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( "34 abc" + NewLine, found );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestSimpleTree() /*throws Exception*/ {
             string grammar =
                 "grammar T;\n" +
@@ -93,7 +93,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( "(34 abc)" + NewLine, found );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestNonImaginaryWithCtor() /*throws Exception*/ {
             string grammar =
                 "grammar T;\n" +
@@ -113,7 +113,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( "99" + NewLine, found );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestCombinedRewriteAndAuto() /*throws Exception*/ {
             string grammar =
                 "grammar T;\n" +
@@ -138,7 +138,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( "34" + NewLine, found );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestAvoidDup() /*throws Exception*/ {
             string grammar =
                 "grammar T;\n" +
@@ -159,7 +159,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( "(abc abc)" + NewLine, found );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestLoop() /*throws Exception*/ {
             string grammar =
                 "grammar T;\n" +
@@ -180,7 +180,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( "3 4 5 a b c" + NewLine, found );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestAutoDup() /*throws Exception*/ {
             string grammar =
                 "grammar T;\n" +
@@ -201,7 +201,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( "abc" + NewLine, found );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestAutoDupRule() /*throws Exception*/ {
             string grammar =
                 "grammar T;\n" +
@@ -223,7 +223,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( "a 1" + NewLine, found );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestAutoWildcard() /*throws Exception*/
         {
             string grammar =
@@ -245,7 +245,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( "abc 34" + NewLine, found );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestNoWildcardAsRootError() /*throws Exception*/
         {
             ErrorQueue equeue = new ErrorQueue();
@@ -275,7 +275,7 @@ namespace AntlrUnitTests
             checkError( equeue, expectedMessage );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestAutoWildcard2() /*throws Exception*/
         {
             string grammar =
@@ -297,7 +297,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( "(abc 34)" + NewLine, found );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestAutoWildcardWithLabel() /*throws Exception*/
         {
             string grammar =
@@ -319,7 +319,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( "abc 34" + NewLine, found );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestAutoWildcardWithListLabel() /*throws Exception*/
         {
             string grammar =
@@ -341,7 +341,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( "abc 34" + NewLine, found );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestAutoDupMultiple() /*throws Exception*/ {
             string grammar =
                 "grammar T;\n" +
@@ -362,7 +362,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( "a b 3" + NewLine, found );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestAutoDupTree() /*throws Exception*/ {
             string grammar =
                 "grammar T;\n" +
@@ -383,7 +383,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( "(a 3)" + NewLine, found );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestAutoDupTree2() /*throws Exception*/ {
             string grammar =
                 "grammar T;\n" +
@@ -405,7 +405,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( "(a 3 4)" + NewLine, found );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestAutoDupTreeWithLabels() /*throws Exception*/ {
             string grammar =
                 "grammar T;\n" +
@@ -426,7 +426,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( "(a 3)" + NewLine, found );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestAutoDupTreeWithListLabels() /*throws Exception*/ {
             string grammar =
                 "grammar T;\n" +
@@ -447,7 +447,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( "(a 3)" + NewLine, found );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestAutoDupTreeWithRuleRoot() /*throws Exception*/ {
             string grammar =
                 "grammar T;\n" +
@@ -468,7 +468,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( "(a 3)" + NewLine, found );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestAutoDupTreeWithRuleRootAndLabels() /*throws Exception*/ {
             string grammar =
                 "grammar T;\n" +
@@ -489,7 +489,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( "(a 3)" + NewLine, found );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestAutoDupTreeWithRuleRootAndListLabels() /*throws Exception*/ {
             string grammar =
                 "grammar T;\n" +
@@ -511,7 +511,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( "(a 3)" + NewLine, found );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestAutoDupNestedTree() /*throws Exception*/ {
             string grammar =
                 "grammar T;\n" +
@@ -532,7 +532,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( "(a (b 3))" + NewLine, found );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestAutoDupTreeWithSubruleInside() /*throws Exception*/ {
             string grammar =
                 "grammar T;\n" +
@@ -555,7 +555,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( "(OP a)" + NewLine, found );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestDelete() /*throws Exception*/ {
             string grammar =
                 "grammar T;\n" +
@@ -576,7 +576,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( "", found );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestSetMatchNoRewrite() /*throws Exception*/ {
             string grammar =
                 "grammar T;\n" +
@@ -598,7 +598,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( "abc 34" + NewLine, found );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestSetOptionalMatchNoRewrite() /*throws Exception*/ {
             string grammar =
                 "grammar T;\n" +
@@ -619,7 +619,7 @@ namespace AntlrUnitTests
         }
 
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestSetMatchNoRewriteLevel2() /*throws Exception*/ {
             string grammar =
                 "grammar T;\n" +
@@ -639,7 +639,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( "(abc 34)" + NewLine, found );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestSetMatchNoRewriteLevel2Root() /*throws Exception*/ {
             string grammar =
                 "grammar T;\n" +
@@ -662,7 +662,7 @@ namespace AntlrUnitTests
 
         // REWRITE MODE
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestRewriteModeCombinedRewriteAndAuto() /*throws Exception*/ {
             string grammar =
                 "grammar T;\n" +
@@ -688,7 +688,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( "34" + NewLine, found );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestRewriteModeFlatTree() /*throws Exception*/ {
             string grammar =
                 "grammar T;\n" +
@@ -710,7 +710,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( "abc 1" + NewLine, found );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestRewriteModeChainRuleFlatTree() /*throws Exception*/ {
             string grammar =
                 "grammar T;\n" +
@@ -733,7 +733,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( "34 abc" + NewLine, found );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestRewriteModeChainRuleTree() /*throws Exception*/ {
             string grammar =
                 "grammar T;\n" +
@@ -756,7 +756,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( "34" + NewLine, found );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestRewriteModeChainRuleTree2() /*throws Exception*/ {
             string grammar =
                 "grammar T;\n" +
@@ -780,7 +780,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( "34" + NewLine, found );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestRewriteModeChainRuleTree3() /*throws Exception*/ {
             string grammar =
                 "grammar T;\n" +
@@ -804,7 +804,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( "boo 34" + NewLine, found );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestRewriteModeChainRuleTree4() /*throws Exception*/ {
             string grammar =
                 "grammar T;\n" +
@@ -828,7 +828,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( "(boo 34)" + NewLine, found );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestRewriteModeChainRuleTree5() /*throws Exception*/ {
             string grammar =
                 "grammar T;\n" +
@@ -852,7 +852,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( "(boo 34)" + NewLine, found );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestRewriteOfRuleRef() /*throws Exception*/ {
             string grammar =
                 "grammar T;\n" +
@@ -873,7 +873,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( "abc 34" + NewLine, found );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestRewriteOfRuleRefRoot() /*throws Exception*/ {
             string grammar =
                 "grammar T;\n" +
@@ -897,7 +897,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( "(12 (abc 34))" + NewLine, found );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestRewriteOfRuleRefRootLabeled() /*throws Exception*/ {
             string grammar =
                 "grammar T;\n" +
@@ -921,8 +921,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( "(12 (abc 34))" + NewLine, found );
         }
 
-        [TestMethod]
-        [Ignore]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestRewriteOfRuleRefRootListLabeled() /*throws Exception*/ {
             string grammar =
                 "grammar T;\n" +
@@ -946,7 +945,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( "(12 (abc 34))" + NewLine, found );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestRewriteOfRuleRefChild() /*throws Exception*/ {
             string grammar =
                 "grammar T;\n" +
@@ -967,7 +966,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( "(34 34)" + NewLine, found );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestRewriteOfRuleRefLabel() /*throws Exception*/ {
             string grammar =
                 "grammar T;\n" +
@@ -988,7 +987,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( "(34 34)" + NewLine, found );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestRewriteOfRuleRefListLabel() /*throws Exception*/ {
             string grammar =
                 "grammar T;\n" +
@@ -1009,7 +1008,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( "(34 34)" + NewLine, found );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestRewriteModeWithPredicatedRewrites() /*throws Exception*/ {
             string grammar =
                 "grammar T;\n" +
@@ -1033,7 +1032,7 @@ namespace AntlrUnitTests
                          "(root (ick 34))" + NewLine, found );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestWildcardSingleNode() /*throws Exception*/
         {
             string grammar =
@@ -1055,7 +1054,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( "34" + NewLine, found );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestWildcardUnlabeledSingleNode() /*throws Exception*/
         {
             string grammar =
@@ -1077,7 +1076,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( "abc" + NewLine, found );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestWildcardGrabsSubtree() /*throws Exception*/
         {
             string grammar =
@@ -1099,7 +1098,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( "(1 2 3)" + NewLine, found );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestWildcardGrabsSubtree2() /*throws Exception*/
         {
             string grammar =
@@ -1121,7 +1120,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( "(1 2 3)" + NewLine, found );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestWildcardListLabel() /*throws Exception*/
         {
             string grammar =
@@ -1143,7 +1142,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( "1 2 3" + NewLine, found );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestWildcardListLabel2() /*throws Exception*/
         {
             string grammar =
@@ -1165,7 +1164,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( "(2 3) (2 3)" + NewLine, found );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestRuleResultAsRoot()
         {
             string grammar =

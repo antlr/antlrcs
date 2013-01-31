@@ -83,9 +83,14 @@ namespace Antlr4.StringTemplate.Misc
 
         public virtual void CompiletimeError(ErrorType error, IToken templateToken, IToken t)
         {
-            string srcName = t.InputStream.SourceName;
-            if (srcName != null)
-                srcName = Path.GetFileName(srcName);
+            ICharStream input = t.InputStream;
+            string srcName = null;
+            if (input != null)
+            {
+                srcName = input.SourceName;
+                if (srcName != null)
+                    srcName = Path.GetFileName(srcName);
+            }
 
             Listener.CompiletimeError(new TemplateCompiletimeMessage(error, srcName, templateToken, t, null, t.Text));
         }

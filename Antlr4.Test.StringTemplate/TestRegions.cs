@@ -40,7 +40,7 @@ namespace Antlr4.Test.StringTemplate
     [TestClass]
     public class TestRegions : BaseTest
     {
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST4)]
         public void TestEmbeddedRegion()
         {
             string dir = tmpdir;
@@ -56,7 +56,7 @@ namespace Antlr4.Test.StringTemplate
             Assert.AreEqual(expected, result);
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST4)]
         public void TestRegion()
         {
             string dir = tmpdir;
@@ -72,7 +72,7 @@ namespace Antlr4.Test.StringTemplate
             Assert.AreEqual(expected, result);
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST4)]
         public void TestDefineRegionInSubgroup()
         {
             string dir = tmpdir;
@@ -88,7 +88,7 @@ namespace Antlr4.Test.StringTemplate
             Assert.AreEqual(expected, result);
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST4)]
         public void TestDefineRegionInSubgroupOneInSubdir()
         {
             string dir = tmpdir;
@@ -104,7 +104,7 @@ namespace Antlr4.Test.StringTemplate
             Assert.AreEqual(expected, result);
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST4)]
         public void TestDefineRegionInSubgroupBothInSubdir()
         {
             string dir = tmpdir;
@@ -120,7 +120,7 @@ namespace Antlr4.Test.StringTemplate
             Assert.AreEqual(expected, result);
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST4)]
         public void TestDefineRegionInSubgroupThatRefsSuper()
         {
             string dir = tmpdir;
@@ -138,7 +138,7 @@ namespace Antlr4.Test.StringTemplate
             Assert.AreEqual(expected, result);
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST4)]
         public void TestDefineRegionInSubgroup2()
         {
             string dir = tmpdir;
@@ -156,7 +156,7 @@ namespace Antlr4.Test.StringTemplate
             Assert.AreEqual(expected, result);
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST4)]
         public void TestDefineRegionInSameGroup()
         {
             string dir = tmpdir;
@@ -171,7 +171,7 @@ namespace Antlr4.Test.StringTemplate
             Assert.AreEqual(expected, result);
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST4)]
         public void TestAnonymousTemplateInRegion()
         {
             string dir = tmpdir;
@@ -189,6 +189,26 @@ namespace Antlr4.Test.StringTemplate
         }
 
         [TestMethod]
+        [TestCategory(TestCategories.ST4)]
+        public void TestAnonymousTemplateInRegionInSubdir()
+        {
+            //fails since it makes region name /region__/g/a/_r
+            string dir = tmpdir;
+            string g = "a() ::= <<[<@r()>]>>\n" +
+                       "@a.r() ::= <<\n" +
+                       "<[\"foo\"]:{x|<x>}>\n" +
+                       ">>\n";
+            writeFile(dir, "g.stg", g);
+
+            TemplateGroup group = new TemplateGroupDirectory(dir);
+            group.Verbose = true;
+            Template st = group.GetInstanceOf("g/a");
+            string expected = "[foo]";
+            string result = st.Render();
+            Assert.AreEqual(expected, result);
+        }
+
+        [TestMethod][TestCategory(TestCategories.ST4)]
         public void TestCantDefineEmbeddedRegionAgain()
         {
             string dir = tmpdir;
@@ -205,7 +225,7 @@ namespace Antlr4.Test.StringTemplate
             Assert.AreEqual(expected, result);
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST4)]
         public void TestCantDefineEmbeddedRegionAgainInTemplate()
         {
             string dir = tmpdir;
@@ -234,7 +254,7 @@ namespace Antlr4.Test.StringTemplate
             Assert.AreEqual(expected, result);
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST4)]
         public void TestMissingRegionName()
         {
             string dir = tmpdir;
@@ -250,7 +270,7 @@ namespace Antlr4.Test.StringTemplate
             Assert.AreEqual(expected, result);
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST4)]
         public void TestIndentBeforeRegionIsIgnored()
         {
             string dir = tmpdir;
@@ -270,7 +290,7 @@ namespace Antlr4.Test.StringTemplate
             Assert.AreEqual(expected, result);
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST4)]
         public void TestRegionOverrideStripsNewlines()
         {
             string dir = tmpdir;
@@ -294,7 +314,7 @@ namespace Antlr4.Test.StringTemplate
 
         //
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST4)]
         public void TestRegionOverrideRefSuperRegion()
         {
             string dir = tmpdir;
@@ -316,7 +336,7 @@ namespace Antlr4.Test.StringTemplate
             Assert.AreEqual(expecting, result);
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST4)]
         public void TestRegionOverrideRefSuperRegion2Levels()
         {
             string g =
@@ -336,7 +356,7 @@ namespace Antlr4.Test.StringTemplate
             Assert.AreEqual(expecting, result);
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST4)]
         public void TestRegionOverrideRefSuperRegion3Levels()
         {
             string dir = tmpdir;
@@ -365,7 +385,7 @@ namespace Antlr4.Test.StringTemplate
             Assert.AreEqual(expecting, result);
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST4)]
         public void TestRegionOverrideRefSuperImplicitRegion()
         {
             string dir = tmpdir;
@@ -386,13 +406,13 @@ namespace Antlr4.Test.StringTemplate
             Assert.AreEqual(expecting, result);
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST4)]
         public void TestUnknownRegionDefError()
         {
             string dir = tmpdir;
             string g =
                     "a() ::= <<\n" +
-                    "X<@r()>Y" +
+                    "X<@r()>Y\n" +
                     ">>\n" +
                     "@a.q() ::= \"foo\"" + newline;
             ITemplateErrorListener errors = new ErrorBuffer();
@@ -402,11 +422,11 @@ namespace Antlr4.Test.StringTemplate
             Template st = group.GetInstanceOf("a");
             st.Render();
             string result = errors.ToString();
-            string expecting = "g.stg 3:3: template a doesn't have a region called q" + newline;
+            string expecting = "g.stg 4:3: template /a doesn't have a region called q" + newline;
             Assert.AreEqual(expecting, result);
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST4)]
         public void TestSuperRegionRefMissingOk()
         {
             string dir = tmpdir;
@@ -430,7 +450,7 @@ namespace Antlr4.Test.StringTemplate
             Assert.AreEqual(expecting, result);
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST4)]
         public void TestEmbeddedRegionOnOneLine()
         {
             string dir = tmpdir;
@@ -449,7 +469,7 @@ namespace Antlr4.Test.StringTemplate
             Assert.AreEqual(expected, result);
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST4)]
         public void TestEmbeddedRegionTagsOnSeparateLines()
         {
             string dir = tmpdir;
@@ -470,7 +490,7 @@ namespace Antlr4.Test.StringTemplate
         }
 
         [Ignore]
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST4)]
         public void TestEmbeddedSubtemplate()
         {
             // fix so we ignore inside {...}

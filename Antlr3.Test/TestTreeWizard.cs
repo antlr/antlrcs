@@ -46,7 +46,7 @@ namespace AntlrUnitTests
             new string[] { "", "", "", "", "", "A", "B", "C", "D", "E", "ID", "VAR" };
         protected static readonly ITreeAdaptor adaptor = new CommonTreeAdaptor();
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestSingleNode() /*throws Exception*/ {
             TreeWizard wiz = new TreeWizard( adaptor, tokens );
             CommonTree t = (CommonTree)wiz.Create( "ID" );
@@ -55,7 +55,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( expecting, found );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestSingleNodeWithArg() /*throws Exception*/ {
             TreeWizard wiz = new TreeWizard( adaptor, tokens );
             CommonTree t = (CommonTree)wiz.Create( "ID[foo]" );
@@ -64,7 +64,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( expecting, found );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestSingleNodeTree() /*throws Exception*/ {
             TreeWizard wiz = new TreeWizard( adaptor, tokens );
             CommonTree t = (CommonTree)wiz.Create( "(A)" );
@@ -73,7 +73,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( expecting, found );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestSingleLevelTree() /*throws Exception*/ {
             TreeWizard wiz = new TreeWizard( adaptor, tokens );
             CommonTree t = (CommonTree)wiz.Create( "(A B C D)" );
@@ -82,7 +82,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( expecting, found );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestListTree() /*throws Exception*/ {
             TreeWizard wiz = new TreeWizard( adaptor, tokens );
             CommonTree t = (CommonTree)wiz.Create( "(nil A B C)" );
@@ -91,14 +91,14 @@ namespace AntlrUnitTests
             Assert.AreEqual( expecting, found );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestInvalidListTree() /*throws Exception*/ {
             TreeWizard wiz = new TreeWizard( adaptor, tokens );
             CommonTree t = (CommonTree)wiz.Create( "A B C" );
-            Assert.IsTrue( t == null );
+            Assert.IsNull(t);
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestDoubleLevelTree() /*throws Exception*/ {
             TreeWizard wiz = new TreeWizard( adaptor, tokens );
             CommonTree t = (CommonTree)wiz.Create( "(A (B C) (B D) E)" );
@@ -107,7 +107,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( expecting, found );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestSingleNodeIndex() /*throws Exception*/ {
             TreeWizard wiz = new TreeWizard( adaptor, tokens );
             CommonTree t = (CommonTree)wiz.Create( "ID" );
@@ -117,7 +117,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( expecting, found );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestNoRepeatsIndex() /*throws Exception*/ {
             TreeWizard wiz = new TreeWizard( adaptor, tokens );
             CommonTree t = (CommonTree)wiz.Create( "(A B C D)" );
@@ -127,7 +127,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( expecting, found );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestRepeatsIndex() /*throws Exception*/ {
             TreeWizard wiz = new TreeWizard( adaptor, tokens );
             CommonTree t = (CommonTree)wiz.Create( "(A B (A C B) B D D)" );
@@ -152,7 +152,7 @@ namespace AntlrUnitTests
             }
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestNoRepeatsVisit() /*throws Exception*/ {
             TreeWizard wiz = new TreeWizard( adaptor, tokens );
             CommonTree t = (CommonTree)wiz.Create( "(A B C D)" );
@@ -163,7 +163,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( expecting, found );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestNoRepeatsVisit2() /*throws Exception*/ {
             TreeWizard wiz = new TreeWizard( adaptor, tokens );
             CommonTree t = (CommonTree)wiz.Create( "(A B (A C B) B D D)" );
@@ -175,7 +175,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( expecting, found );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestRepeatsVisit() /*throws Exception*/ {
             TreeWizard wiz = new TreeWizard( adaptor, tokens );
             CommonTree t = (CommonTree)wiz.Create( "(A B (A C B) B D D)" );
@@ -187,7 +187,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( expecting, found );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestRepeatsVisit2() /*throws Exception*/ {
             TreeWizard wiz = new TreeWizard( adaptor, tokens );
             CommonTree t = (CommonTree)wiz.Create( "(A B (A C B) B D D)" );
@@ -220,7 +220,7 @@ namespace AntlrUnitTests
             }
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestRepeatsVisitWithContext() /*throws Exception*/ {
             TreeWizard wiz = new TreeWizard( adaptor, tokens );
             CommonTree t = (CommonTree)wiz.Create( "(A B (A C B) B D D)" );
@@ -232,7 +232,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( expecting, found );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestRepeatsVisitWithNullParentAndContext() /*throws Exception*/ {
             TreeWizard wiz = new TreeWizard( adaptor, tokens );
             CommonTree t = (CommonTree)wiz.Create( "(A B (A C B) B D D)" );
@@ -244,7 +244,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( expecting, found );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestVisitPattern() /*throws Exception*/ {
             TreeWizard wiz = new TreeWizard( adaptor, tokens );
             CommonTree t = (CommonTree)wiz.Create( "(A B C (A B) D)" );
@@ -256,7 +256,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( expecting, found );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestVisitPatternMultiple() /*throws Exception*/ {
             TreeWizard wiz = new TreeWizard( adaptor, tokens );
             CommonTree t = (CommonTree)wiz.Create( "(A B C (A B) (D (A B)))" );
@@ -286,7 +286,7 @@ namespace AntlrUnitTests
 
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestVisitPatternMultipleWithLabels() /*throws Exception*/ {
             TreeWizard wiz = new TreeWizard( adaptor, tokens );
             CommonTree t = (CommonTree)wiz.Create( "(A B C (A[foo] B[bar]) (D (A[big] B[dog])))" );
@@ -298,7 +298,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( expecting, found );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestParse() /*throws Exception*/ {
             TreeWizard wiz = new TreeWizard( adaptor, tokens );
             CommonTree t = (CommonTree)wiz.Create( "(A B C)" );
@@ -306,7 +306,7 @@ namespace AntlrUnitTests
             Assert.IsTrue( valid );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestParseSingleNode() /*throws Exception*/ {
             TreeWizard wiz = new TreeWizard( adaptor, tokens );
             CommonTree t = (CommonTree)wiz.Create( "A" );
@@ -314,7 +314,7 @@ namespace AntlrUnitTests
             Assert.IsTrue( valid );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestParseFlatTree() /*throws Exception*/ {
             TreeWizard wiz = new TreeWizard( adaptor, tokens );
             CommonTree t = (CommonTree)wiz.Create( "(nil A B C)" );
@@ -322,7 +322,7 @@ namespace AntlrUnitTests
             Assert.IsTrue( valid );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestWildcard() /*throws Exception*/ {
             TreeWizard wiz = new TreeWizard( adaptor, tokens );
             CommonTree t = (CommonTree)wiz.Create( "(A B C)" );
@@ -330,7 +330,7 @@ namespace AntlrUnitTests
             Assert.IsTrue( valid );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestParseWithText() /*throws Exception*/ {
             TreeWizard wiz = new TreeWizard( adaptor, tokens );
             CommonTree t = (CommonTree)wiz.Create( "(A B[foo] C[bar])" );
@@ -340,7 +340,7 @@ namespace AntlrUnitTests
             Assert.IsTrue( valid );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestParseWithText2()
         {
             TreeWizard wiz = new TreeWizard(adaptor, tokens);
@@ -351,7 +351,7 @@ namespace AntlrUnitTests
             Assert.AreEqual("(A T__32 (C (D a)))", t.ToStringTree());
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestParseWithTextFails() /*throws Exception*/ {
             TreeWizard wiz = new TreeWizard( adaptor, tokens );
             CommonTree t = (CommonTree)wiz.Create( "(A B C)" );
@@ -359,7 +359,7 @@ namespace AntlrUnitTests
             Assert.IsTrue( !valid ); // fails
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestParseLabels() /*throws Exception*/ {
             TreeWizard wiz = new TreeWizard( adaptor, tokens );
             CommonTree t = (CommonTree)wiz.Create( "(A B C)" );
@@ -371,7 +371,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( "C", labels.get( "c" ).ToString() );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestParseWithWildcardLabels() /*throws Exception*/ {
             TreeWizard wiz = new TreeWizard( adaptor, tokens );
             CommonTree t = (CommonTree)wiz.Create( "(A B C)" );
@@ -382,7 +382,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( "C", labels.get( "c" ).ToString() );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestParseLabelsAndTestText() /*throws Exception*/ {
             TreeWizard wiz = new TreeWizard( adaptor, tokens );
             CommonTree t = (CommonTree)wiz.Create( "(A B[foo] C)" );
@@ -394,7 +394,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( "C", labels.get( "c" ).ToString() );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestParseLabelsInNestedTree() /*throws Exception*/ {
             TreeWizard wiz = new TreeWizard( adaptor, tokens );
             CommonTree t = (CommonTree)wiz.Create( "(A (B C) (D E))" );
@@ -408,7 +408,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( "E", labels.get( "e" ).ToString() );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestEquals() /*throws Exception*/ {
             TreeWizard wiz = new TreeWizard( adaptor, tokens );
             CommonTree t1 = (CommonTree)wiz.Create( "(A B C)" );
@@ -417,7 +417,7 @@ namespace AntlrUnitTests
             Assert.IsTrue( same );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestEqualsWithText() /*throws Exception*/ {
             TreeWizard wiz = new TreeWizard( adaptor, tokens );
             CommonTree t1 = (CommonTree)wiz.Create( "(A B[foo] C)" );
@@ -426,7 +426,7 @@ namespace AntlrUnitTests
             Assert.IsTrue( same );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestEqualsWithMismatchedText() /*throws Exception*/ {
             TreeWizard wiz = new TreeWizard( adaptor, tokens );
             CommonTree t1 = (CommonTree)wiz.Create( "(A B[foo] C)" );
@@ -435,7 +435,7 @@ namespace AntlrUnitTests
             Assert.IsTrue( !same );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestFindPattern() /*throws Exception*/ {
             TreeWizard wiz = new TreeWizard( adaptor, tokens );
             CommonTree t = (CommonTree)wiz.Create( "(A B C (A[foo] B[bar]) (D (A[big] B[dog])))" );

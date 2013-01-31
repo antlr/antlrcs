@@ -39,7 +39,7 @@ namespace Antlr4.Test.StringTemplate
     [TestClass]
     public class TestDollarDelimiters : BaseTest
     {
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST4)]
         public void TestAttr()
         {
             string template = "hi $name$!";
@@ -50,7 +50,7 @@ namespace Antlr4.Test.StringTemplate
             Assert.AreEqual(expected, result);
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST4)]
         public void TestParallelMap()
         {
             TemplateGroup group = new TemplateGroup('$', '$');
@@ -68,7 +68,7 @@ namespace Antlr4.Test.StringTemplate
             Assert.AreEqual(expected, result);
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST4)]
         public void TestRefToAnotherTemplateInSameGroup()
         {
             string dir = tmpdir;
@@ -83,7 +83,7 @@ namespace Antlr4.Test.StringTemplate
             Assert.AreEqual(expected, result);
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST4)]
         public void TestDefaultArgument()
         {
             string templates =

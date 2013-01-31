@@ -48,8 +48,10 @@
     <Compile Include="Extensions\ListExtensions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TestAggregates.cs" />
+    <Compile Include="TestCategories.cs" />
     <Compile Include="TestNoNewlineTemplates.cs" />
     <Compile Include="TestTemplateNames.cs" />
+    <Compile Include="TestTemplateRawGroupDirectory.cs" />
     <Compile Include="TestVisualizer.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -83,7 +85,7 @@
     <Compile Include="TestWhitespace.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\antlr3\runtime\CSharp3\Sources\Antlr3.Runtime\Antlr3.Runtime.csproj">
+    <ProjectReference Include="..\Reference\antlr3\runtime\CSharp3\Sources\Antlr3.Runtime\Antlr3.Runtime.csproj">
       <Project>{8FDC0A87-9005-4D5A-AB75-E55CEB575559}</Project>
       <Name>Antlr3.Runtime</Name>
     </ProjectReference>

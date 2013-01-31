@@ -53,7 +53,7 @@ namespace AntlrUnitTests
         {
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestPredsButSyntaxResolves() /*throws Exception*/ {
             Grammar g = new Grammar(
                 "parser grammar P;\n" +
@@ -64,7 +64,7 @@ namespace AntlrUnitTests
             checkDecision( g, 1, expecting, null, null, null, null, null, 0, false );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestLL_1_Pred() /*throws Exception*/ {
             Grammar g = new Grammar(
                 "parser grammar P;\n" +
@@ -76,7 +76,7 @@ namespace AntlrUnitTests
             checkDecision( g, 1, expecting, null, null, null, null, null, 0, false );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestLL_1_Pred_forced_k_1() /*throws Exception*/ {
             // should stop just like before w/o k set.
             Grammar g = new Grammar(
@@ -89,7 +89,7 @@ namespace AntlrUnitTests
             checkDecision( g, 1, expecting, null, null, null, null, null, 0, false );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestLL_2_Pred() /*throws Exception*/ {
             Grammar g = new Grammar(
                 "parser grammar P;\n" +
@@ -102,7 +102,7 @@ namespace AntlrUnitTests
             checkDecision( g, 1, expecting, null, null, null, null, null, 0, false );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestPredicatedLoop() /*throws Exception*/ {
             Grammar g = new Grammar(
                 "parser grammar P;\n" +
@@ -115,20 +115,19 @@ namespace AntlrUnitTests
             checkDecision( g, 1, expecting, null, null, null, null, null, 0, false );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestPredicatedToStayInLoop() /*throws Exception*/ {
             Grammar g = new Grammar(
                 "parser grammar P;\n" +
                 "a : ( {p1}? A )+ (A)+;" );
             string expecting =
                 ".s0-A->.s1" + NewLine +
-                ".s1-{!(p1)}?->:s2=>1" + NewLine +
-                ".s1-{p1}?->:s3=>2" + NewLine;       // loop back
-            Assert.Inconclusive("Also fails in the Java version.");
-            checkDecision( g, 1, expecting, null, null, null, null, null, 0, false );
+                ".s1-{p1}?->:s2=>1" + NewLine +
+                ".s1-{true}?->:s3=>2" + NewLine;       // loop back
+            checkDecision(g, 1, expecting, null, null, null, null, null, 0, false);
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestAndPredicates() /*throws Exception*/ {
             Grammar g = new Grammar(
                 "parser grammar P;\n" +
@@ -140,7 +139,7 @@ namespace AntlrUnitTests
             checkDecision( g, 1, expecting, null, null, null, null, null, 0, false );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestOrPredicates() /*throws Exception*/ {
             Grammar g = new Grammar(
                 "parser grammar P;\n" +
@@ -153,7 +152,7 @@ namespace AntlrUnitTests
             checkDecision( g, 1, expecting, null, null, null, null, null, 0, false );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestIgnoresHoistingDepthGreaterThanZero() /*throws Exception*/ {
             Grammar g = new Grammar(
                 "parser grammar P;\n" +
@@ -164,7 +163,7 @@ namespace AntlrUnitTests
                           new int[] { 1, 2 }, "A", null, null, 2, false );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestIgnoresPredsHiddenByActions() /*throws Exception*/ {
             Grammar g = new Grammar(
                 "parser grammar P;\n" +
@@ -175,7 +174,7 @@ namespace AntlrUnitTests
                           new int[] { 1, 2 }, "A", null, null, 2, true );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestIgnoresPredsHiddenByActionsOneAlt() /*throws Exception*/ {
             Grammar g = new Grammar(
                 "parser grammar P;\n" +
@@ -204,7 +203,7 @@ namespace AntlrUnitTests
         }	
          */
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestHoist2() /*throws Exception*/ {
             Grammar g = new Grammar(
                 "parser grammar P;\n" +
@@ -218,7 +217,7 @@ namespace AntlrUnitTests
             checkDecision( g, 1, expecting, null, null, null, null, null, 0, false );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestHoistCorrectContext() /*throws Exception*/ {
             Grammar g = new Grammar(
                 "parser grammar P;\n" +
@@ -232,7 +231,7 @@ namespace AntlrUnitTests
             checkDecision( g, 1, expecting, null, null, null, null, null, 0, false );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestDefaultPredNakedAltIsLast() /*throws Exception*/ {
             Grammar g = new Grammar(
                 "parser grammar P;\n" +
@@ -246,7 +245,7 @@ namespace AntlrUnitTests
             checkDecision( g, 1, expecting, null, null, null, null, null, 0, false );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestDefaultPredNakedAltNotLast() /*throws Exception*/ {
             Grammar g = new Grammar(
                 "parser grammar P;\n" +
@@ -260,7 +259,7 @@ namespace AntlrUnitTests
             checkDecision( g, 1, expecting, null, null, null, null, null, 0, false );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestLeftRecursivePred() /*throws Exception*/ {
             // No analysis possible. but probably good to fail.  Not sure we really want
             // left-recursion even if guarded with pred.
@@ -297,7 +296,7 @@ namespace AntlrUnitTests
             Assert.IsTrue(msg is LeftRecursionCyclesMessage, "warning must be a left recursion msg");
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestIgnorePredFromLL2AltLastAltIsDefaultTrue() /*throws Exception*/ {
             Grammar g = new Grammar(
                 "parser grammar P;\n" +
@@ -319,7 +318,7 @@ namespace AntlrUnitTests
             checkDecision( g, 1, expecting, null, null, null, null, null, 0, false );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestIgnorePredFromLL2AltPredUnionNeeded() /*throws Exception*/ {
             Grammar g = new Grammar(
                 "parser grammar P;\n" +
@@ -341,7 +340,7 @@ namespace AntlrUnitTests
             checkDecision( g, 1, expecting, null, null, null, null, null, 0, false );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestPredGets2SymbolSyntacticContext() /*throws Exception*/ {
             Grammar g = new Grammar(
                 "parser grammar P;\n" +
@@ -356,7 +355,7 @@ namespace AntlrUnitTests
             checkDecision( g, 1, expecting, null, null, null, null, null, 0, false );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestMatchesLongestThenTestPred() /*throws Exception*/ {
             Grammar g = new Grammar(
                 "parser grammar P;\n" +
@@ -371,7 +370,7 @@ namespace AntlrUnitTests
             checkDecision( g, 1, expecting, null, null, null, null, null, 0, false );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestPredsUsedAfterRecursionOverflow() /*throws Exception*/ {
             // analysis must bail out due to non-LL(*) nature (ovf)
             // retries with k=1 (but with LL(*) algorithm not optimized version
@@ -402,7 +401,7 @@ namespace AntlrUnitTests
             checkDecision( g, 1, expecting, null, null, null, null, null, 0, false );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestPredsUsedAfterK2FailsNoRecursionOverflow() /*throws Exception*/ {
             // analysis must bail out due to non-LL(*) nature (ovf)
             // retries with k=1 (but with LL(*) algorithm not optimized version
@@ -438,7 +437,7 @@ namespace AntlrUnitTests
             checkDecision( g, 1, expecting, null, null, null, null, null, 0, false );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestLexerMatchesLongestThenTestPred() /*throws Exception*/ {
             Grammar g = new Grammar(
                 "lexer grammar P;\n" +
@@ -454,7 +453,7 @@ namespace AntlrUnitTests
             checkDecision( g, 2, expecting, null, null, null, null, null, 0, false );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestLexerMatchesLongestMinusPred() /*throws Exception*/ {
             Grammar g = new Grammar(
                 "lexer grammar P;\n" +
@@ -468,7 +467,7 @@ namespace AntlrUnitTests
             checkDecision( g, 2, expecting, null, null, null, null, null, 0, false );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestGatedPred() /*throws Exception*/ {
             // gated preds are present on all arcs in predictor
             Grammar g = new Grammar(
@@ -485,7 +484,7 @@ namespace AntlrUnitTests
             checkDecision( g, 2, expecting, null, null, null, null, null, 0, false );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestGatedPredHoistsAndCanBeInStopState() /*throws Exception*/ {
             // I found a bug where merging stop states made us throw away
             // a stop state with a gated pred!
@@ -500,7 +499,7 @@ namespace AntlrUnitTests
             checkDecision( g, 1, expecting, null, null, null, null, null, 0, false );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestGatedPredInCyclicDFA() /*throws Exception*/ {
             Grammar g = new Grammar(
                 "lexer grammar P;\n" +
@@ -518,7 +517,7 @@ namespace AntlrUnitTests
             checkDecision( g, 3, expecting, null, null, null, null, null, 0, false );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestGatedPredNotActuallyUsedOnEdges() /*throws Exception*/ {
             Grammar g = new Grammar(
                 "lexer grammar P;\n" +
@@ -542,7 +541,7 @@ namespace AntlrUnitTests
             checkDecision( g, 2, expecting2, null, null, null, null, null, 0, false );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestGatedPredDoesNotForceAllToBeGated() /*throws Exception*/ {
             Grammar g = new Grammar(
                 "grammar w;\n" +
@@ -556,7 +555,7 @@ namespace AntlrUnitTests
             checkDecision( g, 1, expecting, null, null, null, null, null, 0, false );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestGatedPredDoesNotForceAllToBeGated2() /*throws Exception*/ {
             Grammar g = new Grammar(
                 "grammar w;\n" +
@@ -574,7 +573,7 @@ namespace AntlrUnitTests
             checkDecision( g, 1, expecting, null, null, null, null, null, 0, false );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestORGatedPred() /*throws Exception*/ {
             Grammar g = new Grammar(
                 "grammar w;\n" +
@@ -595,7 +594,7 @@ namespace AntlrUnitTests
         /** The following grammar should yield an error that rule 'a' has
          *  insufficient semantic info pulled from 'b'.
          */
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestIncompleteSemanticHoistedContext() /*throws Exception*/ {
             ErrorQueue equeue = new ErrorQueue();
             ErrorManager.SetErrorListener( equeue );
@@ -609,7 +608,7 @@ namespace AntlrUnitTests
                           new int[] { 1, 2 }, "B", new int[] { 1 }, null, 3, false );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestIncompleteSemanticHoistedContextk2() /*throws Exception*/ {
             ErrorQueue equeue = new ErrorQueue();
             ErrorManager.SetErrorListener( equeue );
@@ -624,7 +623,7 @@ namespace AntlrUnitTests
                           new int[] { 1, 2 }, "A B", new int[] { 1 }, null, 3, false );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestIncompleteSemanticHoistedContextInFOLLOW() /*throws Exception*/ {
             ErrorQueue equeue = new ErrorQueue();
             ErrorManager.SetErrorListener( equeue );
@@ -639,7 +638,7 @@ namespace AntlrUnitTests
                           new int[] { 1, 2 }, "A", new int[] { 2 }, null, 3, false );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestIncompleteSemanticHoistedContextInFOLLOWk2() /*throws Exception*/ {
             ErrorQueue equeue = new ErrorQueue();
             ErrorManager.SetErrorListener( equeue );
@@ -655,7 +654,7 @@ namespace AntlrUnitTests
                           new int[] { 1, 2 }, "A B", new int[] { 2 }, null, 2, false );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestIncompleteSemanticHoistedContextInFOLLOWDueToHiddenPred() /*throws Exception*/ {
             ErrorQueue equeue = new ErrorQueue();
             ErrorManager.SetErrorListener( equeue );
@@ -681,7 +680,7 @@ namespace AntlrUnitTests
          *  conversion to include an edge for D.  Alt 1 is the only possible
          *  prediction because we resolve the ambiguity by choosing alt 1.
          */
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestIncompleteSemanticHoistedContext2() /*throws Exception*/ {
             ErrorQueue equeue = new ErrorQueue();
             ErrorManager.SetErrorListener( equeue );
@@ -696,7 +695,7 @@ namespace AntlrUnitTests
                           null, 3, false );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestTooFewSemanticPredicates() /*throws Exception*/ {
             Grammar g = new Grammar(
                 "parser grammar t;\n" +
@@ -708,7 +707,7 @@ namespace AntlrUnitTests
                           null, null, 2, false );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestPredWithK1() /*throws Exception*/ {
             Grammar g = new Grammar(
                 "\tlexer grammar TLexer;\n" +
@@ -734,7 +733,7 @@ namespace AntlrUnitTests
                           danglingAlts, numWarnings, false );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestPredWithArbitraryLookahead() /*throws Exception*/ {
             Grammar g = new Grammar(
                 "\tlexer grammar TLexer;\n" +
@@ -764,7 +763,7 @@ namespace AntlrUnitTests
          *  test a||a||b||a||a etc...  ANTLR makes a unique set and THEN
          *  OR's them together.
          */
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestUniquePredicateOR() /*throws Exception*/ {
             Grammar g = new Grammar(
                 "parser grammar v;\n" +
@@ -793,7 +792,7 @@ namespace AntlrUnitTests
                           danglingAlts, numWarnings, false );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestSemanticContextPreventsEarlyTerminationOfClosure() /*throws Exception*/ {
             Grammar g = new Grammar(
                 "parser grammar T;\n" +

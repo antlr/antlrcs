@@ -1119,10 +1119,9 @@ namespace Antlr3.Tool
             grammarTree.SetUnknownTokenBoundaries();
 
             FileName = lexer.Filename; // the lexer #src might change name
-            if ( grammarTree == null || grammarTree.FindFirstType( ANTLRParser.RULE ) == null )
+            if ( grammarTree.FindFirstType( ANTLRParser.RULE ) == null )
             {
                 ErrorManager.Error( ErrorManager.MSG_NO_RULES, FileName );
-                return;
             }
         }
 
@@ -2665,23 +2664,33 @@ namespace Antlr3.Tool
          */
         public virtual bool IsEmptyRule( GrammarAST block )
         {
-            foreach ( ITree node in GrammarAST.Descendants(block) )
-            {
-                switch ( node.Type )
-                {
-                case ANTLRParser.TOKEN_REF:
-                case ANTLRParser.STRING_LITERAL:
-                case ANTLRParser.CHAR_LITERAL:
-                case ANTLRParser.WILDCARD:
-                case ANTLRParser.RULE_REF:
-                    return false;
+            BitSet nonEmptyTerminals = new BitSet();
+            nonEmptyTerminals.Add(ANTLRParser.TOKEN_REF);
+            nonEmptyTerminals.Add(ANTLRParser.STRING_LITERAL);
+            nonEmptyTerminals.Add(ANTLRParser.CHAR_LITERAL);
+            nonEmptyTerminals.Add(ANTLRParser.WILDCARD);
+            nonEmptyTerminals.Add(ANTLRParser.RULE_REF);
+            return FindFirstTypeOutsideRewrite(block, nonEmptyTerminals) == null;
+        }
 
-                default:
+        protected virtual GrammarAST FindFirstTypeOutsideRewrite(GrammarAST block, BitSet types)
+        {
+            List<GrammarAST> worklist = new List<GrammarAST>();
+            worklist.Add(block);
+            while (worklist.Count > 0)
+            {
+                GrammarAST current = worklist[worklist.Count - 1];
+                worklist.RemoveAt(worklist.Count - 1);
+                if (current.Type == ANTLRParser.REWRITE)
                     continue;
-                }
+
+                if (current.Type >= 0 && types.Contains(current.Type))
+                    return current;
+
+                worklist.AddRange(current.GetChildrenAsArray());
             }
 
-            return true;
+            return null;
         }
 
         public virtual bool IsAtomTokenType( int ttype )

@@ -32,6 +32,9 @@
 
 namespace Antlr3.Grammars
 {
+    using ErrorManager = Antlr3.Tool.ErrorManager;
+    using IToken = Antlr.Runtime.IToken;
+
     partial class ANTLRLexer
     {
         public bool hasASTOperator = false;
@@ -48,6 +51,25 @@ namespace Antlr3.Grammars
             {
                 return ANTLRParser.tokenNames;
             }
+        }
+
+        public override IToken NextToken()
+        {
+            IToken token = base.NextToken();
+            while (token.Type == STRAY_BRACKET)
+            {
+                ErrorManager.SyntaxError(
+                    ErrorManager.MSG_SYNTAX_ERROR,
+                    null,
+                    token,
+                    "antlr: dangling ']'? make sure to escape with \\]",
+                    null);
+
+                // skip this token
+                token = base.NextToken();
+            }
+
+            return token;
         }
     }
 }

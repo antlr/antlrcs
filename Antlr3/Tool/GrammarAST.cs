@@ -405,6 +405,9 @@ namespace Antlr3.Tool
 
         public virtual GrammarAST[] GetChildrenAsArray()
         {
+            if (Children == null)
+                return new GrammarAST[0];
+
             return Children.CastListDown<GrammarAST, ITree>().ToArray();
         }
 

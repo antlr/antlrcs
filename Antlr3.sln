@@ -54,13 +54,13 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Antlr3.Targets.Python", "An
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Antlr3.Targets.Ruby", "Antlr3.Targets\Antlr3.Targets.Ruby\Antlr3.Targets.Ruby.csproj", "{64418260-E75A-4556-BB7E-8BDAAFC2EFB9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Antlr3.Runtime", "..\antlr3\runtime\CSharp3\Sources\Antlr3.Runtime\Antlr3.Runtime.csproj", "{8FDC0A87-9005-4D5A-AB75-E55CEB575559}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Antlr3.Runtime", "Reference\antlr3\runtime\CSharp3\Sources\Antlr3.Runtime\Antlr3.Runtime.csproj", "{8FDC0A87-9005-4D5A-AB75-E55CEB575559}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Antlr3.Runtime.Debug", "..\antlr3\runtime\CSharp3\Sources\Antlr3.Runtime.Debug\Antlr3.Runtime.Debug.csproj", "{5EE27A90-B023-42C9-AAF1-52B0424C5D0B}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Antlr3.Runtime.Debug", "Reference\antlr3\runtime\CSharp3\Sources\Antlr3.Runtime.Debug\Antlr3.Runtime.Debug.csproj", "{5EE27A90-B023-42C9-AAF1-52B0424C5D0B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Antlr3.Runtime.JavaExtensions", "..\antlr3\runtime\CSharp3\Sources\Antlr3.Runtime.JavaExtensions\Antlr3.Runtime.JavaExtensions.csproj", "{A7EEC557-EB14-451C-9616-B7A61F4ECE69}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Antlr3.Runtime.JavaExtensions", "Reference\antlr3\runtime\CSharp3\Sources\Antlr3.Runtime.JavaExtensions\Antlr3.Runtime.JavaExtensions.csproj", "{A7EEC557-EB14-451C-9616-B7A61F4ECE69}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Antlr3.Runtime.Test", "..\antlr3\runtime\CSharp3\Sources\Antlr3.Runtime.Test\Antlr3.Runtime.Test.csproj", "{19B965DE-5100-4064-A580-159644F6980E}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Antlr3.Runtime.Test", "Reference\antlr3\runtime\CSharp3\Sources\Antlr3.Runtime.Test\Antlr3.Runtime.Test.csproj", "{19B965DE-5100-4064-A580-159644F6980E}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AntlrBuildTask", "AntlrBuildTask\AntlrBuildTask.csproj", "{60F8B554-5C53-4DE2-B868-A0BFEF4EF80E}"
 EndProject
@@ -71,6 +71,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Antlr4.StringTemplate.Visualizer", "Antlr4.StringTemplate.Visualizer\Antlr4.StringTemplate.Visualizer.csproj", "{DC0A9616-0B69-4A3B-ADC7-62FCA9207B98}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Antlr3.Runtime.Visualizer", "Antlr3.Runtime.Visualizer\Antlr3.Runtime.Visualizer.csproj", "{2F59DA1C-A502-440C-ABE8-240BDE2D0664}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Antlr3.Targets.Python3", "Antlr3.Targets\Antlr3.Targets.Python3\Antlr3.Targets.Python3.csproj", "{5B7F1199-FB67-4AC1-A482-6BF1DA6CCDC5}"
 EndProject
 Global
 	GlobalSection(TestCaseManagementSettings) = postSolution
@@ -177,6 +179,10 @@ Global
 		{2F59DA1C-A502-440C-ABE8-240BDE2D0664}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2F59DA1C-A502-440C-ABE8-240BDE2D0664}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2F59DA1C-A502-440C-ABE8-240BDE2D0664}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5B7F1199-FB67-4AC1-A482-6BF1DA6CCDC5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5B7F1199-FB67-4AC1-A482-6BF1DA6CCDC5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5B7F1199-FB67-4AC1-A482-6BF1DA6CCDC5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5B7F1199-FB67-4AC1-A482-6BF1DA6CCDC5}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -194,5 +200,6 @@ Global
 		{9444ACEF-784D-47B0-B317-F374782FA511} = {3A92893D-7810-4D8B-80D8-E1E8D151FA73}
 		{1DEA6EB4-2288-4B6C-B5F4-1D102B8745BB} = {3A92893D-7810-4D8B-80D8-E1E8D151FA73}
 		{64418260-E75A-4556-BB7E-8BDAAFC2EFB9} = {3A92893D-7810-4D8B-80D8-E1E8D151FA73}
+		{5B7F1199-FB67-4AC1-A482-6BF1DA6CCDC5} = {3A92893D-7810-4D8B-80D8-E1E8D151FA73}
 	EndGlobalSection
 EndGlobal

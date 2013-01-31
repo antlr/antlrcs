@@ -42,7 +42,7 @@ namespace Antlr4.Test.StringTemplate
     [TestClass]
     public class TestLineWrap : BaseTest
     {
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST4)]
         public void TestLineWrap1()
         {
             string templates =
@@ -69,7 +69,7 @@ namespace Antlr4.Test.StringTemplate
             Assert.AreEqual(expecting, result);
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST4)]
         public void TestLineWrapAnchored()
         {
             string templates =
@@ -91,7 +91,7 @@ namespace Antlr4.Test.StringTemplate
             Assert.AreEqual(expecting, a.Render(40));
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST4)]
         public void TestSubtemplatesAnchorToo()
         {
             string templates =
@@ -115,7 +115,7 @@ namespace Antlr4.Test.StringTemplate
             Assert.AreEqual(expecting, a.Render(40));
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST4)]
         public void TestFortranLineWrap()
         {
             string templates =
@@ -132,7 +132,7 @@ namespace Antlr4.Test.StringTemplate
             Assert.AreEqual(expecting, a.Render(30));
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST4)]
         public void TestLineWrapWithDiffAnchor()
         {
             string templates =
@@ -153,11 +153,11 @@ namespace Antlr4.Test.StringTemplate
             Assert.AreEqual(expecting, a.Render(30));
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST4)]
         public void TestLineWrapEdgeCase()
         {
             string templates =
-                    "duh(chars) ::= <<<chars; wrap=\"\\n\"\\>>>" + newline;
+                "duh(chars) ::= \"<chars; wrap={<\\n>}>\"" + newline;
             writeFile(tmpdir, "t.stg", templates);
             TemplateGroup group = new TemplateGroupFile(Path.Combine(tmpdir, "t.stg"));
 
@@ -170,11 +170,13 @@ namespace Antlr4.Test.StringTemplate
             Assert.AreEqual(expecting, a.Render(3));
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST4)]
         public void TestLineWrapLastCharIsNewline()
         {
             string templates =
-                    "duh(chars) ::= <<<chars; wrap=\"\\n\"\\>>>" + newline;
+                "duh(chars) ::= <<" + newline +
+                "<chars; wrap=\"\\n\"\\>" + newline +
+                ">>" + newline;
             writeFile(tmpdir, "t.stg", templates);
             TemplateGroup group = new TemplateGroupFile(Path.Combine(tmpdir, "t.stg"));
 
@@ -187,11 +189,13 @@ namespace Antlr4.Test.StringTemplate
             Assert.AreEqual(expecting, a.Render(3));
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST4)]
         public void TestLineWrapCharAfterWrapIsNewline()
         {
             string templates =
-                    "duh(chars) ::= <<<chars; wrap=\"\\n\"\\>>>" + newline;
+                "duh(chars) ::= <<" + newline +
+                "<chars; wrap=\"\\n\"\\>" + newline +
+                ">>" + newline;
             writeFile(tmpdir, "t.stg", templates);
             TemplateGroup group = new TemplateGroupFile(Path.Combine(tmpdir, "t.stg"));
 
@@ -207,7 +211,7 @@ namespace Antlr4.Test.StringTemplate
             Assert.AreEqual(expecting, a.Render(3));
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST4)]
         public void TestLineWrapForList()
         {
             string templates =
@@ -224,7 +228,7 @@ namespace Antlr4.Test.StringTemplate
             Assert.AreEqual(expecting, a.Render(4));
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST4)]
         public void TestLineWrapForAnonTemplate()
         {
             string templates =
@@ -241,7 +245,7 @@ namespace Antlr4.Test.StringTemplate
             Assert.AreEqual(expecting, a.Render(9));
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST4)]
         public void TestLineWrapForAnonTemplateAnchored()
         {
             string templates =
@@ -258,7 +262,7 @@ namespace Antlr4.Test.StringTemplate
             Assert.AreEqual(expecting, a.Render(9));
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST4)]
         public void TestLineWrapForAnonTemplateComplicatedWrap()
         {
             string templates =
@@ -280,11 +284,13 @@ namespace Antlr4.Test.StringTemplate
             Assert.AreEqual(expecting, t.Render(9));
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST4)]
         public void TestIndentBeyondLineWidth()
         {
             string templates =
-                    "duh(chars) ::= <<    <chars; wrap=\"\\n\"\\>>>" + newline;
+                    "duh(chars) ::= <<" + newline +
+                    "    <chars; wrap=\"\\n\">" + newline +
+                    ">>" + newline;
             writeFile(tmpdir, "t.stg", templates);
             TemplateGroup group = new TemplateGroupFile(Path.Combine(tmpdir, "t.stg"));
 
@@ -300,11 +306,13 @@ namespace Antlr4.Test.StringTemplate
             Assert.AreEqual(expecting, a.Render(2));
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST4)]
         public void TestIndentedExpr()
         {
             string templates =
-                    "duh(chars) ::= <<    <chars; wrap=\"\\n\"\\>>>" + newline;
+                    "duh(chars) ::= <<" + newline +
+                    "    <chars; wrap=\"\\n\">" + newline +
+                    ">>" + newline;
             writeFile(tmpdir, "t.stg", templates);
             TemplateGroup group = new TemplateGroupFile(Path.Combine(tmpdir, "t.stg"));
 
@@ -319,12 +327,14 @@ namespace Antlr4.Test.StringTemplate
             Assert.AreEqual(expecting, a.Render(6));
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST4)]
         public void TestNestedIndentedExpr()
         {
             string templates =
                     "top(d) ::= <<  <d>!>>" + newline +
-                    "duh(chars) ::= <<  <chars; wrap=\"\\n\"\\>>>" + newline;
+                    "duh(chars) ::= <<" + newline +
+                    "  <chars; wrap=\"\\n\">" + newline +
+                    ">>" + newline;
             writeFile(tmpdir, "t.stg", templates);
             TemplateGroup group = new TemplateGroupFile(Path.Combine(tmpdir, "t.stg"));
 
@@ -340,12 +350,14 @@ namespace Antlr4.Test.StringTemplate
             Assert.AreEqual(expecting, top.Render(6));
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST4)]
         public void TestNestedWithIndentAndTrackStartOfExpr()
         {
             string templates =
                     "top(d) ::= <<  <d>!>>" + newline +
-                    "duh(chars) ::= <<x: <chars; anchor, wrap=\"\\n\"\\>>>" + newline;
+                    "duh(chars) ::= <<" + newline +
+                    "x: <chars; anchor, wrap=\"\\n\">" + newline +
+                    ">>" + newline;
             writeFile(tmpdir, "t.stg", templates);
             TemplateGroup group = new TemplateGroupFile(Path.Combine(tmpdir, "t.stg"));
 
@@ -361,7 +373,7 @@ namespace Antlr4.Test.StringTemplate
             Assert.AreEqual(expecting, top.Render(7));
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST4)]
         public void TestLineDoesNotWrapDueToLiteral()
         {
             string templates =
@@ -380,7 +392,7 @@ namespace Antlr4.Test.StringTemplate
             Assert.AreEqual(expecting, a.Render(n));
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST4)]
         public void TestSingleValueWrap()
         {
             string templates =
@@ -397,12 +409,12 @@ namespace Antlr4.Test.StringTemplate
             Assert.AreEqual(expecting, m.Render(2));
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST4)]
         public void TestLineWrapInNestedExpr()
         {
             string templates =
                     "top(arrays) ::= <<Arrays: <arrays>done>>" + newline +
-                    "array(values) ::= <<int[] a = { <values; anchor, wrap=\"\\n\", separator=\",\"> };<\\n\\>>>" + newline;
+                    "array(values) ::= <%int[] a = { <values; anchor, wrap=\"\\n\", separator=\",\"> };<\\n>%>" + newline;
             writeFile(tmpdir, "t.stg", templates);
             TemplateGroup group = new TemplateGroupFile(Path.Combine(tmpdir, "t.stg"));
 

@@ -40,6 +40,14 @@ namespace Antlr3.Targets
 
     public class JavaTarget : Target
     {
+        public override bool UseBaseTemplatesForSynPredFragments
+        {
+            get
+            {
+                return false;
+            }
+        }
+
         protected override void PerformGrammarAnalysis(CodeGenerator generator, Grammar grammar)
         {
             base.PerformGrammarAnalysis(generator, grammar);

@@ -38,7 +38,7 @@ namespace Antlr4.Test.StringTemplate
     [TestClass]
     public class TestAggregates : BaseTest
     {
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST4)]
         public void TestApplyAnonymousTemplateToAggregateAttribute()
         {
             Template st = new Template("<items:{it|<it.id>: <it.lastName>, <it.firstName>\n}>");
@@ -79,7 +79,7 @@ namespace Antlr4.Test.StringTemplate
             }
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST4)]
         public void TestComplicatedIndirectTemplateApplication()
         {
             string templates =

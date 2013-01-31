@@ -42,31 +42,55 @@ namespace Antlr4.StringTemplate.Misc
      */
     public class TemplateCompiletimeMessage : TemplateMessage
     {
-        private readonly IToken templateToken; // overall token pulled from group file
-        private readonly IToken token;         // token inside template
-        private readonly string srcName;
+        private readonly IToken _templateToken; // overall token pulled from group file
+        private readonly IToken _token;         // token inside template
+        private readonly string _sourceName;
 
-        public TemplateCompiletimeMessage(ErrorType error, string srcName, IToken templateToken, IToken t)
-            : this(error, srcName, templateToken, t, null)
+        public TemplateCompiletimeMessage(ErrorType error, string sourceName, IToken templateToken, IToken token)
+            : this(error, sourceName, templateToken, token, null)
         {
         }
 
-        public TemplateCompiletimeMessage(ErrorType error, string srcName, IToken templateToken, IToken t, Exception cause)
-            : this(error, srcName, templateToken, t, cause, null)
+        public TemplateCompiletimeMessage(ErrorType error, string sourceName, IToken templateToken, IToken token, Exception cause)
+            : this(error, sourceName, templateToken, token, cause, null)
         {
         }
 
-        public TemplateCompiletimeMessage(ErrorType error, string srcName, IToken templateToken, IToken t, Exception cause, object arg)
-            : this(error, srcName, templateToken, t, cause, arg, null)
+        public TemplateCompiletimeMessage(ErrorType error, string sourceName, IToken templateToken, IToken token, Exception cause, object arg)
+            : this(error, sourceName, templateToken, token, cause, arg, null)
         {
         }
 
-        public TemplateCompiletimeMessage(ErrorType error, string srcName, IToken templateToken, IToken t, Exception cause, object arg, object arg2)
+        public TemplateCompiletimeMessage(ErrorType error, string sourceName, IToken templateToken, IToken token, Exception cause, object arg, object arg2)
             : base(error, null, cause, arg, arg2)
         {
-            this.templateToken = templateToken;
-            this.token = t;
-            this.srcName = srcName;
+            this._templateToken = templateToken;
+            this._token = token;
+            this._sourceName = sourceName;
+        }
+
+        public IToken TemplateToken
+        {
+            get
+            {
+                return _templateToken;
+            }
+        }
+
+        public IToken Token
+        {
+            get
+            {
+                return _token;
+            }
+        }
+
+        public string SourceName
+        {
+            get
+            {
+                return _sourceName;
+            }
         }
 
         public override string ToString()
@@ -74,25 +98,25 @@ namespace Antlr4.StringTemplate.Misc
             RecognitionException re = (RecognitionException)Cause;
             int line = 0;
             int charPos = -1;
-            if (token != null)
+            if (_token != null)
             {
-                line = token.Line;
-                charPos = token.CharPositionInLine;
-                if (templateToken != null)
+                line = _token.Line;
+                charPos = _token.CharPositionInLine;
+                // check the input streams - if different then token is embedded in templateToken and we need to adjust the offset
+                if (_templateToken != null && !_templateToken.InputStream.Equals(Token.InputStream))
                 {
                     int templateDelimiterSize = 1;
-                    if (templateToken.Type == GroupParser.BIGSTRING)
-                    {
+                    if (_templateToken.Type == GroupParser.BIGSTRING || _templateToken.Type == GroupParser.BIGSTRING_NO_NL)
                         templateDelimiterSize = 2;
-                    }
-                    line += templateToken.Line - 1;
-                    charPos += templateToken.CharPositionInLine + templateDelimiterSize;
+
+                    line += _templateToken.Line - 1;
+                    charPos += _templateToken.CharPositionInLine + templateDelimiterSize;
                 }
             }
 
             string filepos = string.Format("{0}:{1}", line, charPos);
-            if (srcName != null)
-                return string.Format("{0} {1}: {2}", srcName, filepos, string.Format(Error.Message, Arg, Arg2));
+            if (_sourceName != null)
+                return string.Format("{0} {1}: {2}", _sourceName, filepos, string.Format(Error.Message, Arg, Arg2));
 
             return string.Format("{0}: {1}", filepos, string.Format(Error.Message, Arg, Arg2));
         }

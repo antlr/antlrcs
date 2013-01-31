@@ -40,6 +40,8 @@ tokens {
 	COMMA=',';
 	TRUE='true';
 	FALSE='false';
+	LBRACK='[';
+	RBRACK=']';
 }
 
 @lexer::namespace{Antlr4.StringTemplate.Compiler}
@@ -70,8 +72,9 @@ this._group = lexer.group = $group;
 			}
 			ID ('.' ID)* // might be a.b.c.d
 		)*
-        def[prefix]+
-    ;
+		def[prefix]+
+		EOF
+	;
 
 oldStyleHeader // ignore but lets us use this parser in AW for both v3 and v4
     :   'group' ID ( ':' ID )?
@@ -127,7 +130,11 @@ templateDef[string prefix]
 			template = Utility.Strip(template, n);
 			string templateName = $name.text;
 			if (prefix.Length > 0) templateName = prefix + $name.text;
-			_group.DefineTemplateOrRegion(templateName, $enclosing.text, templateToken,
+			string enclosingTemplateName = $enclosing.text;
+			if (enclosingTemplateName != null && enclosingTemplateName.Length > 0 && prefix.Length > 0)
+				enclosingTemplateName = prefix + enclosingTemplateName;
+
+			_group.DefineTemplateOrRegion(templateName, enclosingTemplateName, templateToken,
 	    								 template, $name, $formalArgs.args);
 		}
 	    }
@@ -145,6 +152,7 @@ bool hasOptionalParameter;
 formalArg[List<FormalArgument> args]
 	:	ID
 		(	'=' a=(STRING|ANONYMOUS_TEMPLATE|'true'|'false') {$formalArgs::hasOptionalParameter = true;}
+		|	'=' a='[' ']' {$formalArgs::hasOptionalParameter = true;}
 		|	{if ($formalArgs::hasOptionalParameter) _group.ErrorManager.GroupSyntaxError(ErrorType.REQUIRED_PARAMETER_AFTER_OPTIONAL, SourceName, input.LT(1));}
 		)
 		{$args.Add(new FormalArgument($ID.text, $a));}
@@ -203,6 +211,7 @@ keyValue returns [object value]
 	|	a=STRING				{$value = Utility.ReplaceEscapes(Utility.Strip($a.text, 1));}
 	|	TRUE					{$value = true;}
 	|	FALSE					{$value = false;}
+	|	'[' ']'					{$value = new object[0];}
 	|	{input.LT(1).Text.Equals("key")}?=> ID
 								{$value = TemplateGroup.DictionaryKey;}
 	;
@@ -229,19 +238,32 @@ STRING
 		{$text = $text.Replace("\\\"","\"");}
 	;
 
+/** Match <<...>> but also allow <<..<x>>> so we can have tag on end.
+ *  Escapes: >\> means >> inside of <<...>>.
+ *  Escapes: \>> means >> inside of <<...>> unless at end like <<...\>>>>.
+ *  In that case, use <%..>>%> instead.
+ */
 BIGSTRING
 	:	'<<'
 		(	options {greedy=false;}
 		:	'\\' '>'  // \> escape
-		|	'\\' ~'>'
+		|	'\\' ~'>' // allow this but don't collapse in action
 		|	~'\\'
 		)*
-        '>>'
-        {Text = Text.Replace("\\>",">");}
+		'>>'
+		{
+		string txt = Text;
+		txt = Utility.ReplaceEscapedRightAngle(txt); // replace \> with > unless <\\>
+		Text = txt;
+		}
 	;
 
 BIGSTRING_NO_NL // same as BIGSTRING but means ignore newlines later
 	:	'<%' .* '%>'
+		// %\> is the escape to avoid end of string
+		{
+		Text = Text.Replace("\%\\>","\%>");
+		}
 	;
 
 ANONYMOUS_TEMPLATE

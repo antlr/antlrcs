@@ -45,6 +45,7 @@ namespace Antlr4.StringTemplate
     using File = System.IO.File;
     using IOException = System.IO.IOException;
     using NotImplementedException = System.NotImplementedException;
+    using NotSupportedException = System.NotSupportedException;
     using Path = System.IO.Path;
     using StreamReader = System.IO.StreamReader;
     using Uri = System.Uri;
@@ -124,8 +125,17 @@ namespace Antlr4.StringTemplate
             if (encoding == null)
                 throw new ArgumentNullException("encoding");
 
+            this.groupDirName = Path.GetFileName(root.AbsolutePath);
             this.root = root;
             this.Encoding = encoding;
+        }
+
+        public override void ImportTemplates(IToken fileNameToken)
+        {
+            string msg =
+                "import illegal in group files embedded in TemplateGroupDirectory; " +
+                "import " + fileNameToken.Text + " in TemplateGroupDirectory " + this.Name;
+            throw new NotSupportedException(msg);
         }
 
         /** <summary>
@@ -144,7 +154,7 @@ namespace Antlr4.StringTemplate
 
             //    	if (parent.isEmpty()) {
             //    		// no need to check for a group file as name has no parent
-            //            return loadTemplateFile("/", name+".st"); // load t.st file
+            //            return loadTemplateFile("/", name+TemplateFileExtension); // load t.st file
             //    	}
 
             if (!Path.IsPathRooted(parent))
@@ -154,18 +164,18 @@ namespace Antlr4.StringTemplate
             try
             {
                 // see if parent of template name is a group file
-                groupFileURL = new Uri(TemplateName.GetTemplatePath(root.LocalPath, parent) + ".stg");
+                groupFileURL = new Uri(TemplateName.GetTemplatePath(root.LocalPath, parent) + GroupFileExtension);
             }
             catch (UriFormatException e)
             {
-                ErrorManager.InternalError(null, "bad URL: " + TemplateName.GetTemplatePath(root.LocalPath, parent) + ".stg", e);
+                ErrorManager.InternalError(null, "bad URL: " + TemplateName.GetTemplatePath(root.LocalPath, parent) + GroupFileExtension, e);
                 return null;
             }
 
             if (!File.Exists(groupFileURL.LocalPath))
             {
                 string unqualifiedName = Path.GetFileName(name);
-                return LoadTemplateFile(prefix, unqualifiedName + ".st"); // load t.st file
+                return LoadTemplateFile(prefix, unqualifiedName + TemplateFileExtension); // load t.st file
             }
 #if false
             InputStream @is = null;
@@ -176,7 +186,7 @@ namespace Antlr4.StringTemplate
             catch (FileNotFoundException fnfe)
             {
                 // must not be in a group file
-                return loadTemplateFile(parent, name + ".st"); // load t.st file
+                return loadTemplateFile(parent, name + TemplateFileExtension); // load t.st file
             }
             catch (IOException ioe)
             {

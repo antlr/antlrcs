@@ -54,7 +54,7 @@ namespace AntlrUnitTests
         {
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestParserSimpleTokens() /*throws Exception*/ {
             Grammar g = new Grammar(
                     "parser grammar t;\n" +
@@ -65,7 +65,7 @@ namespace AntlrUnitTests
             checkSymbols( g, rules, tokenNames );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestParserTokensSection() /*throws Exception*/ {
             Grammar g = new Grammar(
                     "parser grammar t;\n" +
@@ -80,7 +80,7 @@ namespace AntlrUnitTests
             checkSymbols( g, rules, tokenNames );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestLexerTokensSection() /*throws Exception*/ {
             Grammar g = new Grammar(
                     "lexer grammar t;\n" +
@@ -95,7 +95,7 @@ namespace AntlrUnitTests
             checkSymbols( g, rules, tokenNames );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestTokensSectionWithAssignmentSection() /*throws Exception*/ {
             Grammar g = new Grammar(
                     "grammar t;\n" +
@@ -110,7 +110,7 @@ namespace AntlrUnitTests
             checkSymbols( g, rules, tokenNames );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestCombinedGrammarLiterals() /*throws Exception*/ {
             Grammar g = new Grammar(
                     "grammar t;\n" +
@@ -124,7 +124,7 @@ namespace AntlrUnitTests
             checkSymbols( g, rules, tokenNames );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestLiteralInParserAndLexer() /*throws Exception*/ {
             // 'x' is token and char in lexer rule
             Grammar g = new Grammar(
@@ -146,7 +146,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( implicitLexer, g.GetLexerGrammar() );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestCombinedGrammarWithRefToLiteralButNoTokenIDRef() /*throws Exception*/ {
             Grammar g = new Grammar(
                     "grammar t;\n" +
@@ -157,7 +157,7 @@ namespace AntlrUnitTests
             checkSymbols( g, rules, tokenNames );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestSetDoesNotMissTokenAliases() /*throws Exception*/ {
             Grammar g = new Grammar(
                     "grammar t;\n" +
@@ -169,7 +169,7 @@ namespace AntlrUnitTests
             checkSymbols( g, rules, tokenNames );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestSimplePlusEqualLabel() /*throws Exception*/ {
             Grammar g = new Grammar(
                     "parser grammar t;\n" +
@@ -180,7 +180,7 @@ namespace AntlrUnitTests
             checkPlusEqualsLabels( g, rule, tokenLabels, ruleLabels );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestMixedPlusEqualLabel() /*throws Exception*/ {
             Grammar g = new Grammar(
                     "grammar t;\n" +
@@ -196,7 +196,7 @@ namespace AntlrUnitTests
 
         // T E S T  L I T E R A L  E S C A P E S
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestParserCharLiteralWithEscape() /*throws Exception*/ {
             Grammar g = new Grammar(
                     "grammar t;\n" +
@@ -206,7 +206,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( "'\\n'", literals.ToArray()[0] );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestTokenInTokensSectionAndTokenRuleDef() /*throws Exception*/ {
             // this must return A not I to the parser; calling a nonfragment rule
             // from a nonfragment rule does not set the overall token.
@@ -222,7 +222,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( "a}" + NewLine, found );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestTokenInTokensSectionAndTokenRuleDef2() /*throws Exception*/ {
             // this must return A not I to the parser; calling a nonfragment rule
             // from a nonfragment rule does not set the overall token.
@@ -239,7 +239,7 @@ namespace AntlrUnitTests
         }
 
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestRefToRuleWithNoReturnValue() /*throws Exception*/ {
             ErrorQueue equeue = new ErrorQueue();
             ErrorManager.SetErrorListener( equeue );
@@ -263,7 +263,7 @@ namespace AntlrUnitTests
 
         // T E S T  E R R O R S
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestParserStringLiterals() /*throws Exception*/ {
             ErrorQueue equeue = new ErrorQueue();
             ErrorManager.SetErrorListener( equeue );
@@ -278,7 +278,7 @@ namespace AntlrUnitTests
             checkGrammarSemanticsError( equeue, expectedMessage );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestParserCharLiterals() /*throws Exception*/ {
             ErrorQueue equeue = new ErrorQueue();
             ErrorManager.SetErrorListener( equeue );
@@ -293,7 +293,7 @@ namespace AntlrUnitTests
             checkGrammarSemanticsError( equeue, expectedMessage );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestEmptyNotChar() /*throws Exception*/ {
             ErrorQueue equeue = new ErrorQueue();
             ErrorManager.SetErrorListener( equeue );
@@ -308,7 +308,7 @@ namespace AntlrUnitTests
             checkGrammarSemanticsError( equeue, expectedMessage );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestEmptyNotToken() /*throws Exception*/ {
             ErrorQueue equeue = new ErrorQueue();
             ErrorManager.SetErrorListener( equeue );
@@ -323,7 +323,7 @@ namespace AntlrUnitTests
             checkGrammarSemanticsError( equeue, expectedMessage );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestEmptyNotSet() /*throws Exception*/ {
             ErrorQueue equeue = new ErrorQueue();
             ErrorManager.SetErrorListener( equeue );
@@ -338,7 +338,7 @@ namespace AntlrUnitTests
             checkGrammarSemanticsError( equeue, expectedMessage );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestStringLiteralInParserTokensSection() /*throws Exception*/ {
             ErrorQueue equeue = new ErrorQueue();
             ErrorManager.SetErrorListener( equeue ); // unique listener per thread
@@ -356,7 +356,7 @@ namespace AntlrUnitTests
             checkGrammarSemanticsError( equeue, expectedMessage );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestCharLiteralInParserTokensSection() /*throws Exception*/ {
             ErrorQueue equeue = new ErrorQueue();
             ErrorManager.SetErrorListener( equeue ); // unique listener per thread
@@ -374,7 +374,7 @@ namespace AntlrUnitTests
             checkGrammarSemanticsError( equeue, expectedMessage );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestCharLiteralInLexerTokensSection() /*throws Exception*/ {
             ErrorQueue equeue = new ErrorQueue();
             ErrorManager.SetErrorListener( equeue ); // unique listener per thread
@@ -391,7 +391,7 @@ namespace AntlrUnitTests
             checkGrammarSemanticsError( equeue, expectedMessage );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestRuleRedefinition() /*throws Exception*/ {
             ErrorQueue equeue = new ErrorQueue();
             ErrorManager.SetErrorListener( equeue ); // unique listener per thread
@@ -407,7 +407,7 @@ namespace AntlrUnitTests
             checkGrammarSemanticsError( equeue, expectedMessage );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestLexerRuleRedefinition() /*throws Exception*/ {
             ErrorQueue equeue = new ErrorQueue();
             ErrorManager.SetErrorListener( equeue ); // unique listener per thread
@@ -423,7 +423,7 @@ namespace AntlrUnitTests
             checkGrammarSemanticsError( equeue, expectedMessage );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestCombinedRuleRedefinition() /*throws Exception*/ {
             ErrorQueue equeue = new ErrorQueue();
             ErrorManager.SetErrorListener( equeue ); // unique listener per thread
@@ -440,7 +440,7 @@ namespace AntlrUnitTests
             checkGrammarSemanticsError( equeue, expectedMessage );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestUndefinedToken() /*throws Exception*/ {
             ErrorQueue equeue = new ErrorQueue();
             ErrorManager.SetErrorListener( equeue ); // unique listener per thread
@@ -455,7 +455,7 @@ namespace AntlrUnitTests
             checkGrammarSemanticsWarning( equeue, expectedMessage );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestUndefinedTokenOkInParser() /*throws Exception*/ {
             ErrorQueue equeue = new ErrorQueue();
             ErrorManager.SetErrorListener( equeue ); // unique listener per thread
@@ -465,7 +465,7 @@ namespace AntlrUnitTests
             Assert.AreEqual(0, equeue.errors.Count, "should not be an error");
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestUndefinedRule() /*throws Exception*/ {
             ErrorQueue equeue = new ErrorQueue();
             ErrorManager.SetErrorListener( equeue ); // unique listener per thread
@@ -480,7 +480,7 @@ namespace AntlrUnitTests
             checkGrammarSemanticsError( equeue, expectedMessage );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestLexerRuleInParser() /*throws Exception*/ {
             ErrorQueue equeue = new ErrorQueue();
             ErrorManager.SetErrorListener( equeue ); // unique listener per thread
@@ -495,7 +495,7 @@ namespace AntlrUnitTests
             checkGrammarSemanticsError( equeue, expectedMessage );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestParserRuleInLexer() /*throws Exception*/ {
             ErrorQueue equeue = new ErrorQueue();
             ErrorManager.SetErrorListener( equeue ); // unique listener per thread
@@ -510,7 +510,7 @@ namespace AntlrUnitTests
             checkGrammarSemanticsError( equeue, expectedMessage );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestRuleScopeConflict() /*throws Exception*/ {
             ErrorQueue equeue = new ErrorQueue();
             ErrorManager.SetErrorListener( equeue ); // unique listener per thread
@@ -529,7 +529,7 @@ namespace AntlrUnitTests
             checkGrammarSemanticsError( equeue, expectedMessage );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestTokenRuleScopeConflict() /*throws Exception*/ {
             ErrorQueue equeue = new ErrorQueue();
             ErrorManager.SetErrorListener( equeue ); // unique listener per thread
@@ -548,7 +548,7 @@ namespace AntlrUnitTests
             checkGrammarSemanticsError( equeue, expectedMessage );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestTokenScopeConflict() /*throws Exception*/ {
             ErrorQueue equeue = new ErrorQueue();
             ErrorManager.SetErrorListener( equeue ); // unique listener per thread
@@ -568,7 +568,7 @@ namespace AntlrUnitTests
             checkGrammarSemanticsError( equeue, expectedMessage );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestTokenRuleScopeConflictInLexerGrammar() /*throws Exception*/ {
             ErrorQueue equeue = new ErrorQueue();
             ErrorManager.SetErrorListener( equeue ); // unique listener per thread
@@ -587,7 +587,7 @@ namespace AntlrUnitTests
             checkGrammarSemanticsError( equeue, expectedMessage );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestTokenLabelScopeConflict() /*throws Exception*/ {
             ErrorQueue equeue = new ErrorQueue();
             ErrorManager.SetErrorListener( equeue ); // unique listener per thread
@@ -606,7 +606,7 @@ namespace AntlrUnitTests
             checkGrammarSemanticsError( equeue, expectedMessage );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestRuleLabelScopeConflict() /*throws Exception*/ {
             ErrorQueue equeue = new ErrorQueue();
             ErrorManager.SetErrorListener( equeue ); // unique listener per thread
@@ -626,7 +626,7 @@ namespace AntlrUnitTests
             checkGrammarSemanticsError( equeue, expectedMessage );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestLabelAndRuleNameConflict() /*throws Exception*/ {
             ErrorQueue equeue = new ErrorQueue();
             ErrorManager.SetErrorListener( equeue ); // unique listener per thread
@@ -644,7 +644,7 @@ namespace AntlrUnitTests
             checkGrammarSemanticsError( equeue, expectedMessage );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestLabelAndTokenNameConflict() /*throws Exception*/ {
             ErrorQueue equeue = new ErrorQueue();
             ErrorManager.SetErrorListener( equeue ); // unique listener per thread
@@ -662,7 +662,7 @@ namespace AntlrUnitTests
             checkGrammarSemanticsError( equeue, expectedMessage );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestLabelAndArgConflict() /*throws Exception*/ {
             ErrorQueue equeue = new ErrorQueue();
             ErrorManager.SetErrorListener( equeue ); // unique listener per thread
@@ -678,7 +678,7 @@ namespace AntlrUnitTests
             checkGrammarSemanticsError( equeue, expectedMessage );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestLabelAndParameterConflict() /*throws Exception*/ {
             ErrorQueue equeue = new ErrorQueue();
             ErrorManager.SetErrorListener( equeue ); // unique listener per thread
@@ -694,7 +694,7 @@ namespace AntlrUnitTests
             checkGrammarSemanticsError( equeue, expectedMessage );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestLabelRuleScopeConflict() /*throws Exception*/ {
             ErrorQueue equeue = new ErrorQueue();
             ErrorManager.SetErrorListener( equeue ); // unique listener per thread
@@ -715,7 +715,7 @@ namespace AntlrUnitTests
             checkGrammarSemanticsError( equeue, expectedMessage );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestRuleScopeArgConflict() /*throws Exception*/ {
             ErrorQueue equeue = new ErrorQueue();
             ErrorManager.SetErrorListener( equeue ); // unique listener per thread
@@ -736,7 +736,7 @@ namespace AntlrUnitTests
             checkGrammarSemanticsError( equeue, expectedMessage );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestRuleScopeReturnValueConflict() /*throws Exception*/ {
             ErrorQueue equeue = new ErrorQueue();
             ErrorManager.SetErrorListener( equeue ); // unique listener per thread
@@ -757,7 +757,7 @@ namespace AntlrUnitTests
             checkGrammarSemanticsError( equeue, expectedMessage );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestRuleScopeRuleNameConflict() /*throws Exception*/ {
             ErrorQueue equeue = new ErrorQueue();
             ErrorManager.SetErrorListener( equeue ); // unique listener per thread
@@ -778,7 +778,7 @@ namespace AntlrUnitTests
             checkGrammarSemanticsError( equeue, expectedMessage );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestBadGrammarOption() /*throws Exception*/ {
             ErrorQueue equeue = new ErrorQueue();
             ErrorManager.SetErrorListener( equeue ); // unique listener per thread
@@ -795,7 +795,7 @@ namespace AntlrUnitTests
             checkGrammarSemanticsError( equeue, expectedMessage );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestBadRuleOption() /*throws Exception*/ {
             ErrorQueue equeue = new ErrorQueue();
             ErrorManager.SetErrorListener( equeue ); // unique listener per thread
@@ -812,7 +812,7 @@ namespace AntlrUnitTests
             checkGrammarSemanticsError( equeue, expectedMessage );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestBadSubRuleOption() /*throws Exception*/ {
             ErrorQueue equeue = new ErrorQueue();
             ErrorManager.SetErrorListener( equeue ); // unique listener per thread
@@ -830,7 +830,7 @@ namespace AntlrUnitTests
             checkGrammarSemanticsError( equeue, expectedMessage );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestTokenVocabStringUsedInLexer() /*throws Exception*/ {
             ErrorQueue equeue = new ErrorQueue();
             ErrorManager.SetErrorListener( equeue );
@@ -863,7 +863,7 @@ namespace AntlrUnitTests
             Assert.AreEqual(0, equeue.errors.Count, "unexpected errors: " + equeue);
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestTokenVocabStringUsedInCombined() /*throws Exception*/ {
             ErrorQueue equeue = new ErrorQueue();
             ErrorManager.SetErrorListener( equeue );

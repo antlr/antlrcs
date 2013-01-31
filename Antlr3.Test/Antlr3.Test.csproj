@@ -47,6 +47,7 @@
     <Compile Include="TestAttributes.cs" />
     <Compile Include="TestAutoAST.cs" />
     <Compile Include="TestBufferedTreeNodeStream.cs" />
+    <Compile Include="TestCategories.cs" />
     <Compile Include="TestCharDFAConversion.cs" />
     <Compile Include="TestCommonTokenStream.cs" />
     <Compile Include="TestCompositeGrammars.cs" />
@@ -60,6 +61,7 @@
     <Compile Include="TestJavaCodeGeneration.cs" />
     <Compile Include="TestLeftRecursion.cs" />
     <Compile Include="TestLexer.cs" />
+    <Compile Include="TestLookaheadStream.cs" />
     <Compile Include="TestMessages.cs" />
     <Compile Include="TestNFAConstruction.cs" />
     <Compile Include="TestRewriteAST.cs" />
@@ -101,15 +103,15 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\antlr3\runtime\CSharp3\Sources\Antlr3.Runtime.Debug\Antlr3.Runtime.Debug.csproj">
+    <ProjectReference Include="..\Reference\antlr3\runtime\CSharp3\Sources\Antlr3.Runtime.Debug\Antlr3.Runtime.Debug.csproj">
       <Project>{5EE27A90-B023-42C9-AAF1-52B0424C5D0B}</Project>
       <Name>Antlr3.Runtime.Debug</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\antlr3\runtime\CSharp3\Sources\Antlr3.Runtime.JavaExtensions\Antlr3.Runtime.JavaExtensions.csproj">
+    <ProjectReference Include="..\Reference\antlr3\runtime\CSharp3\Sources\Antlr3.Runtime.JavaExtensions\Antlr3.Runtime.JavaExtensions.csproj">
       <Project>{A7EEC557-EB14-451C-9616-B7A61F4ECE69}</Project>
       <Name>Antlr3.Runtime.JavaExtensions</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\antlr3\runtime\CSharp3\Sources\Antlr3.Runtime\Antlr3.Runtime.csproj">
+    <ProjectReference Include="..\Reference\antlr3\runtime\CSharp3\Sources\Antlr3.Runtime\Antlr3.Runtime.csproj">
       <Project>{8FDC0A87-9005-4D5A-AB75-E55CEB575559}</Project>
       <Name>Antlr3.Runtime</Name>
     </ProjectReference>

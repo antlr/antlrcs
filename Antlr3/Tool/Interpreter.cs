@@ -158,7 +158,7 @@ namespace Antlr3.Tool
             {
                 return;
             }
-            ICharStream @in = (ICharStream)this.input;
+
             //Console.Out.WriteLine( "scan(" + startRule + ",'" + @in.substring( @in.Index, @in.Size() - 1 ) + "')" );
             // Build NFAs/DFAs from the grammar AST if NFAs haven't been built yet
             if ( grammar.GetRuleStartState( startRule ) == null )
@@ -176,7 +176,7 @@ namespace Antlr3.Tool
             Stack<object> ruleInvocationStack = new Stack<object>();
             NFAState start = grammar.GetRuleStartState( startRule );
             NFAState stop = grammar.GetRuleStopState( startRule );
-            ParseEngine( startRule, start, stop, @in, ruleInvocationStack,
+            ParseEngine( startRule, start, stop, input, ruleInvocationStack,
                         actions, visitedStates );
         }
 

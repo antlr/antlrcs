@@ -39,7 +39,7 @@ namespace AntlrUnitTests
     {
         protected bool debug = false;
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestTokenList() /*throws Exception*/ {
             string grammar =
                 "grammar foo;\n" +
@@ -53,7 +53,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( "abc 34" + NewLine, found );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestTokenListInSingleAltBlock() /*throws Exception*/ {
             string grammar =
                 "grammar foo;\n" +
@@ -67,7 +67,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( "abc 34" + NewLine, found );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestSimpleRootAtOuterLevel() /*throws Exception*/ {
             string grammar =
                 "grammar foo;\n" +
@@ -81,7 +81,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( "(abc 34)" + NewLine, found );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestSimpleRootAtOuterLevelReverse() /*throws Exception*/ {
             string grammar =
                 "grammar T;\n" +
@@ -95,7 +95,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( "(abc 34)" + NewLine, found );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestBang() /*throws Exception*/ {
             string grammar =
                 "grammar T;\n" +
@@ -109,7 +109,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( "abc 4532" + NewLine, found );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestOptionalThenRoot() /*throws Exception*/ {
             string grammar =
                 "grammar T;\n" +
@@ -123,7 +123,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( "(b a 1)" + NewLine, found );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestLabeledStringRoot() /*throws Exception*/ {
             string grammar =
                 "grammar T;\n" +
@@ -137,7 +137,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( "(void foo ;)" + NewLine, found );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestWildcard() /*throws Exception*/ {
             string grammar =
                 "grammar T;\n" +
@@ -151,7 +151,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( "(void foo ;)" + NewLine, found );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestWildcardRoot() /*throws Exception*/ {
             string grammar =
                 "grammar T;\n" +
@@ -165,7 +165,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( "(foo void ;)" + NewLine, found );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestWildcardRootWithLabel() /*throws Exception*/ {
             string grammar =
                 "grammar T;\n" +
@@ -179,7 +179,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( "(foo void ;)" + NewLine, found );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestWildcardRootWithListLabel() /*throws Exception*/ {
             string grammar =
                 "grammar T;\n" +
@@ -193,7 +193,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( "(foo void ;)" + NewLine, found );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestWildcardBangWithListLabel() /*throws Exception*/
         {
             string grammar =
@@ -208,7 +208,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( "void ;" + NewLine, found );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestRootRoot() /*throws Exception*/ {
             string grammar =
                 "grammar T;\n" +
@@ -222,7 +222,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( "(34 a c)" + NewLine, found );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestRootRoot2() /*throws Exception*/ {
             string grammar =
                 "grammar T;\n" +
@@ -236,7 +236,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( "(c (34 a))" + NewLine, found );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestRootThenRootInLoop() /*throws Exception*/ {
             string grammar =
                 "grammar T;\n" +
@@ -250,7 +250,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( "(* (* (a 34) b 9) c)" + NewLine, found );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestNestedSubrule() /*throws Exception*/ {
             string grammar =
                 "grammar T;\n" +
@@ -264,7 +264,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( "void a b ;" + NewLine, found );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestInvokeRule() /*throws Exception*/ {
             string grammar =
                 "grammar T;\n" +
@@ -279,7 +279,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( "int a" + NewLine, found );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestInvokeRuleAsRoot() /*throws Exception*/ {
             string grammar =
                 "grammar T;\n" +
@@ -294,7 +294,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( "(int a)" + NewLine, found );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestInvokeRuleAsRootWithLabel() /*throws Exception*/ {
             string grammar =
                 "grammar T;\n" +
@@ -309,7 +309,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( "(int a)" + NewLine, found );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestInvokeRuleAsRootWithListLabel() /*throws Exception*/ {
             string grammar =
                 "grammar T;\n" +
@@ -324,7 +324,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( "(int a)" + NewLine, found );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestRuleRootInLoop() /*throws Exception*/ {
             string grammar =
                 "grammar T;\n" +
@@ -338,7 +338,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( "(+ (+ (+ a b) c) d)" + NewLine, found );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestRuleInvocationRuleRootInLoop() /*throws Exception*/ {
             string grammar =
                 "grammar T;\n" +
@@ -353,7 +353,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( "(- (+ (+ a b) c) d)" + NewLine, found );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestTailRecursion() /*throws Exception*/ {
             string grammar =
                 "grammar T;\n" +
@@ -369,7 +369,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( "(exp 3 (exp 4 5))" + NewLine, found );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestSet() /*throws Exception*/ {
             string grammar =
                 "grammar T;\n" +
@@ -383,7 +383,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( "abc" + NewLine, found );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestSetRoot() /*throws Exception*/ {
             string grammar =
                 "grammar T;\n" +
@@ -397,9 +397,8 @@ namespace AntlrUnitTests
             Assert.AreEqual( "(+ abc)" + NewLine, found );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestSetRootWithLabel() /*throws Exception*/ {
-            // FAILS until I rebuild the antlr.g in v3 (ROOT can't follow a block after an ID assign)
             string grammar =
                 "grammar T;\n" +
                 "options {output=AST;}\n" +
@@ -409,11 +408,10 @@ namespace AntlrUnitTests
                 "WS : (' '|'\\n') {$channel=HIDDEN;} ;\n";
             string found = execParser( "T.g", grammar, "TParser", "TLexer",
                                       "a", "+abc", debug );
-            Assert.Inconclusive("Known to fail.");
             Assert.AreEqual( "(+ abc)" + NewLine, found );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestSetAsRuleRootInLoop() /*throws Exception*/ {
             string grammar =
                 "grammar T;\n" +
@@ -427,7 +425,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( "(- (+ a b) c)" + NewLine, found );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestNotSet() /*throws Exception*/ {
             string grammar =
                 "grammar T;\n" +
@@ -441,7 +439,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( "34 + 2" + NewLine, found );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestNotSetWithLabel() /*throws Exception*/ {
             string grammar =
                 "grammar T;\n" +
@@ -455,7 +453,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( "34 + 2" + NewLine, found );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestNotSetWithListLabel() /*throws Exception*/ {
             string grammar =
                 "grammar T;\n" +
@@ -469,7 +467,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( "34 + 2" + NewLine, found );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestNotSetRoot() /*throws Exception*/ {
             string grammar =
                 "grammar T;\n" +
@@ -483,7 +481,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( "(34 55)" + NewLine, found );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestNotSetRootWithLabel() /*throws Exception*/ {
             string grammar =
                 "grammar T;\n" +
@@ -497,7 +495,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( "(34 55)" + NewLine, found );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestNotSetRootWithListLabel() /*throws Exception*/ {
             string grammar =
                 "grammar T;\n" +
@@ -511,7 +509,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( "(34 55)" + NewLine, found );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestNotSetRuleRootInLoop() /*throws Exception*/ {
             string grammar =
                 "grammar T;\n" +
@@ -526,7 +524,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( "(+ (+ 3 4) 5)" + NewLine, found );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestTokenLabelReuse() /*throws Exception*/ {
             // check for compilation problem due to multiple defines
             string grammar =
@@ -541,7 +539,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( "2nd id=b;a b" + NewLine, found );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestTokenLabelReuse2() /*throws Exception*/ {
             // check for compilation problem due to multiple defines
             string grammar =
@@ -556,7 +554,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( "2nd id=b;(b a)" + NewLine, found );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestTokenListLabelReuse() /*throws Exception*/ {
             // check for compilation problem due to multiple defines
             // make sure ids has both ID tokens
@@ -573,7 +571,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( expecting, found );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestTokenListLabelReuse2() /*throws Exception*/ {
             // check for compilation problem due to multiple defines
             // make sure ids has both ID tokens
@@ -590,7 +588,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( expecting, found );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestTokenListLabelRuleRoot() /*throws Exception*/ {
             string grammar =
                 "grammar T;\n" +
@@ -604,7 +602,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( "a" + NewLine, found );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestTokenListLabelBang() /*throws Exception*/ {
             string grammar =
                 "grammar T;\n" +
@@ -618,7 +616,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( "", found );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestRuleListLabel() /*throws Exception*/ {
             string grammar =
                 "grammar T;\n" +
@@ -635,7 +633,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( "2nd x=b;a b" + NewLine, found );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestRuleListLabelRuleRoot() /*throws Exception*/ {
             string grammar =
                 "grammar T;\n" +
@@ -651,7 +649,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( "x=(b a);(b a)" + NewLine, found );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestRuleListLabelBang() /*throws Exception*/ {
             string grammar =
                 "grammar T;\n" +
@@ -667,7 +665,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( "1st x=a;b" + NewLine, found );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestComplicatedMelange() /*throws Exception*/ {
             // check for compilation problem
             string grammar =
@@ -684,7 +682,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( "a b b c c d" + NewLine, found );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestReturnValueWithAST() /*throws Exception*/ {
             string grammar =
                 "grammar foo;\n" +
@@ -699,7 +697,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( "34" + NewLine + "abc 34" + NewLine, found );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestSetLoop() /*throws Exception*/ {
             string grammar =
                 "grammar T;\n" +
@@ -713,7 +711,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( "abc 34 d" + NewLine, found );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestExtraTokenInSimpleDecl() /*throws Exception*/ {
             string grammar =
                 "grammar foo;\n" +
@@ -729,7 +727,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( "(int x 1)" + NewLine, found ); // tree gets correct x and 1 tokens
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestMissingIDInSimpleDecl() /*throws Exception*/ {
             string grammar =
                 "grammar foo;\n" +
@@ -746,7 +744,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( "(int <missing ID> 1)" + NewLine, found ); // tree gets invented ID token
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestMissingSetInSimpleDecl() /*throws Exception*/ {
             string grammar =
                 "grammar foo;\n" +
@@ -763,7 +761,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( "(<error: x> x 1)" + NewLine, found ); // tree gets invented ID token
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestMissingTokenGivesErrorNode() /*throws Exception*/ {
             string grammar =
                 "grammar foo;\n" +
@@ -778,7 +776,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( "abc <missing INT>" + NewLine, found );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestMissingTokenGivesErrorNodeInInvokedRule() /*throws Exception*/ {
             string grammar =
                 "grammar foo;\n" +
@@ -794,7 +792,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( "<mismatched token: [@1,3:3='<EOF>',<-1>,1:3], resync=abc>" + NewLine, found );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestExtraTokenGivesErrorNode() /*throws Exception*/ {
             string grammar =
                 "grammar foo;\n" +
@@ -811,7 +809,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( "abc 34" + NewLine, found );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestMissingFirstTokenGivesErrorNode() /*throws Exception*/ {
             string grammar =
                 "grammar foo;\n" +
@@ -826,7 +824,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( "<missing ID> 34" + NewLine, found );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestMissingFirstTokenGivesErrorNode2() /*throws Exception*/ {
             string grammar =
                 "grammar foo;\n" +
@@ -846,7 +844,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( "<missing ID> 34" + NewLine, found );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestNoViableAltGivesErrorNode() /*throws Exception*/ {
             string grammar =
                 "grammar foo;\n" +

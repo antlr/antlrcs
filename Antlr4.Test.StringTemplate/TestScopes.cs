@@ -40,7 +40,7 @@ namespace Antlr4.Test.StringTemplate
     [TestClass]
     public class TestScopes : BaseTest
     {
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST4)]
         public void TestSeesEnclosingAttr()
         {
             string templates =
@@ -62,7 +62,7 @@ namespace Antlr4.Test.StringTemplate
             Assert.AreEqual(expected, result);
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST4)]
         public void TestMissingArg()
         {
             string templates =
@@ -79,7 +79,7 @@ namespace Antlr4.Test.StringTemplate
             Assert.AreEqual(expectedError, errors.ToString());
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST4)]
         public void TestUnknownAttr()
         {
             string templates =
@@ -95,7 +95,7 @@ namespace Antlr4.Test.StringTemplate
             Assert.AreEqual(expectedError, errors.ToString());
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST4)]
         public void TestArgWithSameNameAsEnclosing()
         {
             string templates =
@@ -118,7 +118,7 @@ namespace Antlr4.Test.StringTemplate
             group.Listener = ErrorManager.DefaultErrorListener;
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST4)]
         public void TestIndexAttrVisibleLocallyOnly()
         {
             string templates =

@@ -44,7 +44,7 @@ namespace AntlrUnitTests
     {
         protected bool debug = false;
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestWildcardStillWorks() /*throws Exception*/ {
             ErrorQueue equeue = new ErrorQueue();
             ErrorManager.SetErrorListener( equeue );
@@ -55,7 +55,7 @@ namespace AntlrUnitTests
             Assert.AreEqual(0, equeue.errors.Count, "unexpected errors: " + equeue);
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestDelegatorInvokesDelegateRule() /*throws Exception*/ {
             string slave =
                 "parser grammar S;\n" +
@@ -73,7 +73,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( "S.a" + NewLine, found );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestDelegatorInvokesDelegateRuleWithArgs() /*throws Exception*/ {
             // must generate something like:
             // public int a(int x) throws RecognitionException { return gS.a(x); }
@@ -94,7 +94,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( "S.a1000" + NewLine, found );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestDelegatorInvokesDelegateRuleWithReturnStruct() /*throws Exception*/ {
             // must generate something like:
             // public int a(int x) throws RecognitionException { return gS.a(x); }
@@ -115,7 +115,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( "S.ab" + NewLine, found );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestDelegatorAccessesDelegateMembers() /*throws Exception*/ {
             string slave =
                 "parser grammar S;\n" +
@@ -135,7 +135,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( "foo" + NewLine, found );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestDelegatorInvokesFirstVersionOfDelegateRule() /*throws Exception*/ {
             string slave =
                 "parser grammar S;\n" +
@@ -158,7 +158,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( "S.a" + NewLine, found );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestDelegatesSeeSameTokenType() /*throws Exception*/ {
             string slave =
                 "parser grammar S;\n" + // A, B, C token type order
@@ -197,7 +197,7 @@ namespace AntlrUnitTests
                          "T.y" + NewLine, found );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestDelegatesSeeSameTokenType2() /*throws Exception*/ {
             ErrorQueue equeue = new ErrorQueue();
             ErrorManager.SetErrorListener( equeue );
@@ -243,7 +243,7 @@ namespace AntlrUnitTests
             Assert.AreEqual(0, equeue.errors.Count, "unexpected errors: " + equeue);
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestCombinedImportsCombined() /*throws Exception*/ {
             //Assert.Inconclusive( "May be failing on just my port..." );
             // for now, we don't allow combined to import combined
@@ -275,7 +275,7 @@ namespace AntlrUnitTests
             Assert.AreEqual(expectedError, Regex.Replace(equeue.errors[0].ToString(), "\\-[0-9]+", ""), "unexpected errors: " + equeue);
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestSameStringTwoNames() /*throws Exception*/ {
             ErrorQueue equeue = new ErrorQueue();
             ErrorManager.SetErrorListener( equeue );
@@ -329,7 +329,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( expectedError, equeue.errors[0].ToString() );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestSameNameTwoStrings() /*throws Exception*/ {
             ErrorQueue equeue = new ErrorQueue();
             ErrorManager.SetErrorListener( equeue );
@@ -382,7 +382,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( expectedError, equeue.errors[0].ToString() );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestImportedTokenVocabIgnoredWithWarning() /*throws Exception*/ {
             ErrorQueue equeue = new ErrorQueue();
             ErrorManager.SetErrorListener( equeue );
@@ -421,7 +421,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( expectedError, equeue.warnings[0].ToString() );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestImportedTokenVocabWorksInRoot() /*throws Exception*/ {
             ErrorQueue equeue = new ErrorQueue();
             ErrorManager.SetErrorListener( equeue );
@@ -463,7 +463,7 @@ namespace AntlrUnitTests
             Assert.AreEqual(0, equeue.errors.Count, "unexpected errors: " + equeue);
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestSyntaxErrorsInImportsNotThrownOut() /*throws Exception*/ {
             ErrorQueue equeue = new ErrorQueue();
             ErrorManager.SetErrorListener( equeue );
@@ -490,7 +490,7 @@ namespace AntlrUnitTests
             Assert.AreEqual(5, equeue.errors.Count, "unexpected errors: " + equeue);
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestSyntaxErrorsInImportsNotThrownOut2() /*throws Exception*/ {
             ErrorQueue equeue = new ErrorQueue();
             ErrorManager.SetErrorListener( equeue );
@@ -517,7 +517,7 @@ namespace AntlrUnitTests
             Assert.AreEqual(3, equeue.errors.Count, "unexpected errors: " + equeue);
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestDelegatorRuleOverridesDelegate() /*throws Exception*/ {
             string slave =
                 "parser grammar S;\n" +
@@ -535,7 +535,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( "S.a" + NewLine, found );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestDelegatorRuleOverridesLookaheadInDelegate() /*throws Exception*/ {
             string slave =
                 "parser grammar JavaDecl;\n" +
@@ -563,7 +563,7 @@ namespace AntlrUnitTests
 
         // LEXER INHERITANCE
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestLexerDelegatorInvokesDelegateRule() /*throws Exception*/ {
             string slave =
                 "lexer grammar S;\n" +
@@ -580,7 +580,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( "S.A"+NewLine+"abc"+NewLine, found );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestLexerDelegatorRuleOverridesDelegate() /*throws Exception*/ {
             string slave =
                 "lexer grammar S;\n" +
@@ -599,7 +599,7 @@ namespace AntlrUnitTests
                          "ab" + NewLine, found );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestLexerDelegatorRuleOverridesDelegateLeavingNoRules() /*throws Exception*/ {
             // M.Tokens has nothing to predict tokens from S.  Should
             // not include S.Tokens alt in this case?
@@ -641,7 +641,7 @@ namespace AntlrUnitTests
             Assert.AreEqual(0, equeue.errors.Count, "unexpected errors: " + equeue);
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestInvalidImportMechanism() /*throws Exception*/ {
             // M.Tokens has nothing to predict tokens from S.  Should
             // not include S.Tokens alt in this case?
@@ -672,7 +672,7 @@ namespace AntlrUnitTests
             Assert.AreEqual(expectedError, Regex.Replace(equeue.errors[0].ToString(), "\\-[0-9]+", ""));
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestSyntacticPredicateRulesAreNotInherited() /*throws Exception*/ {
             // if this compiles, it means that synpred1_S is defined in S.java
             // but not MParser.java.  MParser has its own synpred1_M which must
@@ -697,7 +697,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( "S.a1" + NewLine, found );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestKeywordVSIDGivesNoWarning() /*throws Exception*/ {
             ErrorQueue equeue = new ErrorQueue();
             ErrorManager.SetErrorListener( equeue );
@@ -721,7 +721,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( "S.A" + NewLine + "M.a" + NewLine, found );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestWarningForUndefinedToken() /*throws Exception*/ {
             ErrorQueue equeue = new ErrorQueue();
             ErrorManager.SetErrorListener( equeue );
@@ -748,7 +748,7 @@ namespace AntlrUnitTests
         }
 
         /** Make sure that M can import S that imports T. */
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void Test3LevelImport() /*throws Exception*/ {
             ErrorQueue equeue = new ErrorQueue();
             ErrorManager.SetErrorListener( equeue );
@@ -795,7 +795,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( expecting, ok );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestBigTreeOfImports() /*throws Exception*/ {
             ErrorQueue equeue = new ErrorQueue();
             ErrorManager.SetErrorListener( equeue );
@@ -859,7 +859,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( expecting, ok );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestRulesVisibleThroughMultilevelImport() /*throws Exception*/ {
             ErrorQueue equeue = new ErrorQueue();
             ErrorManager.SetErrorListener( equeue );
@@ -901,7 +901,7 @@ namespace AntlrUnitTests
             Assert.AreEqual(0, equeue.errors.Count, "unexpected errors: " + equeue);
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestNestedComposite()
         {
             // Wasn't compiling. http://www.antlr.org/jira/browse/ANTLR-438
@@ -960,7 +960,7 @@ namespace AntlrUnitTests
             Assert.AreEqual(expecting, ok);
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestHeadersPropogatedCorrectlyToImportedGrammars()
         {
             string slave =

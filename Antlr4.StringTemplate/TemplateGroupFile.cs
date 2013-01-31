@@ -73,7 +73,7 @@ namespace Antlr4.StringTemplate
 
             try
             {
-                if (!fileName.EndsWith(".stg"))
+                if (!fileName.EndsWith(GroupFileExtension))
                     throw new ArgumentException("Group file names must end in .stg: " + fileName);
 
                 if (!File.Exists(fileName))

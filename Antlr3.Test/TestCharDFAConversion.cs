@@ -53,7 +53,7 @@ namespace AntlrUnitTests
 
         // R A N G E S  &  S E T S
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestSimpleRangeVersusChar() /*throws Exception*/ {
             Grammar g = new Grammar(
                 "lexer grammar t;\n" +
@@ -67,7 +67,7 @@ namespace AntlrUnitTests
             checkDecision( g, 1, expecting, null );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestRangeWithDisjointSet() /*throws Exception*/ {
             Grammar g = new Grammar(
                 "lexer grammar t;\n" +
@@ -85,7 +85,7 @@ namespace AntlrUnitTests
             checkDecision( g, 1, expecting, null );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestDisjointSetCollidingWithTwoRanges() /*throws Exception*/ {
             Grammar g = new Grammar(
                 "lexer grammar t;\n" +
@@ -103,7 +103,7 @@ namespace AntlrUnitTests
             checkDecision( g, 1, expecting, null );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestDisjointSetCollidingWithTwoRangesCharsFirst() /*throws Exception*/ {
             Grammar g = new Grammar(
                 "lexer grammar t;\n" +
@@ -120,7 +120,7 @@ namespace AntlrUnitTests
             checkDecision( g, 1, expecting, null );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestDisjointSetCollidingWithTwoRangesAsSeparateAlts() /*throws Exception*/ {
             Grammar g = new Grammar(
                 "lexer grammar t;\n" +
@@ -147,7 +147,7 @@ namespace AntlrUnitTests
             checkDecision( g, 1, expecting, null );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestKeywordVersusID() /*throws Exception*/ {
             Grammar g = new Grammar(
                 "lexer grammar t;\n" +
@@ -167,7 +167,7 @@ namespace AntlrUnitTests
             checkDecision( g, 2, expecting, null );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestIdenticalRules() /*throws Exception*/ {
             Grammar g = new Grammar(
                 "lexer grammar t;\n" +
@@ -190,7 +190,7 @@ namespace AntlrUnitTests
 
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestAdjacentNotCharLoops() /*throws Exception*/ {
             Grammar g = new Grammar(
                 "lexer grammar t;\n" +
@@ -206,7 +206,7 @@ namespace AntlrUnitTests
             checkDecision( g, 3, expecting, null );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestNonAdjacentNotCharLoops() /*throws Exception*/ {
             Grammar g = new Grammar(
                 "lexer grammar t;\n" +
@@ -222,7 +222,7 @@ namespace AntlrUnitTests
             checkDecision( g, 3, expecting, null );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestLoopsWithOptimizedOutExitBranches() /*throws Exception*/ {
             Grammar g = new Grammar(
                 "lexer grammar t;\n" +
@@ -246,7 +246,7 @@ namespace AntlrUnitTests
 
         // N O N G R E E D Y
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestNonGreedy() /*throws Exception*/ {
             Grammar g = new Grammar(
                 "lexer grammar t;\n" +
@@ -259,7 +259,7 @@ namespace AntlrUnitTests
             checkDecision( g, 1, expecting, null );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestNonGreedyWildcardStar() /*throws Exception*/ {
             Grammar g = new Grammar(
                 "lexer grammar t;\n" +
@@ -270,7 +270,7 @@ namespace AntlrUnitTests
             checkDecision( g, 1, expecting, null );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestNonGreedyByDefaultWildcardStar() /*throws Exception*/ {
             Grammar g = new Grammar(
                 "lexer grammar t;\n" +
@@ -281,7 +281,7 @@ namespace AntlrUnitTests
             checkDecision( g, 1, expecting, null );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestNonGreedyWildcardPlus() /*throws Exception*/ {
             // same DFA as nongreedy .* but code gen checks number of
             // iterations at runtime
@@ -294,7 +294,7 @@ namespace AntlrUnitTests
             checkDecision( g, 1, expecting, null );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestNonGreedyByDefaultWildcardPlus() /*throws Exception*/ {
             Grammar g = new Grammar(
                 "lexer grammar t;\n" +
@@ -305,7 +305,7 @@ namespace AntlrUnitTests
             checkDecision( g, 1, expecting, null );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestNonGreedyByDefaultWildcardPlusWithParens() /*throws Exception*/ {
             Grammar g = new Grammar(
                 "lexer grammar t;\n" +
@@ -316,7 +316,7 @@ namespace AntlrUnitTests
             checkDecision( g, 1, expecting, null );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestNonWildcardNonGreedy() /*throws Exception*/ {
             Grammar g = new Grammar(
                 "lexer grammar t;\n" +
@@ -329,7 +329,7 @@ namespace AntlrUnitTests
             checkDecision( g, 1, expecting, null );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestNonWildcardEOTMakesItWorkWithoutNonGreedyOption() /*throws Exception*/ {
             Grammar g = new Grammar(
                 "lexer grammar t;\n" +
@@ -344,7 +344,7 @@ namespace AntlrUnitTests
             checkDecision( g, 1, expecting, null );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestAltConflictsWithLoopThenExit() /*throws Exception*/ {
             // \" predicts alt 1, but wildcard then " can predict exit also
             Grammar g = new Grammar(
@@ -360,7 +360,7 @@ namespace AntlrUnitTests
             checkDecision( g, 1, expecting, null );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestNonGreedyLoopThatNeverLoops() /*throws Exception*/ {
             Grammar g = new Grammar(
                 "lexer grammar t;\n" +
@@ -380,7 +380,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( "[1]", u.alts.ToElementString() );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestRecursive() /*throws Exception*/ {
             // this is cool because the 3rd alt includes !(all other possibilities)
             Grammar g = new Grammar(
@@ -404,7 +404,7 @@ namespace AntlrUnitTests
             checkDecision( g, 1, expecting, null );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestRecursive2() /*throws Exception*/ {
             // this is also cool because it resolves \\ to be ESC alt; it's just
             // less efficient of a DFA
@@ -435,7 +435,7 @@ namespace AntlrUnitTests
             checkDecision( g, 1, expecting, null );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestNotFragmentInLexer() /*throws Exception*/ {
             Grammar g = new Grammar(
                 "lexer grammar T;\n" +
@@ -448,7 +448,7 @@ namespace AntlrUnitTests
             checkDecision( g, 1, expecting, null );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestNotSetFragmentInLexer() /*throws Exception*/ {
             Grammar g = new Grammar(
                 "lexer grammar T;\n" +
@@ -461,7 +461,7 @@ namespace AntlrUnitTests
             checkDecision( g, 1, expecting, null );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestNotTokenInLexer() /*throws Exception*/ {
             Grammar g = new Grammar(
                 "lexer grammar T;\n" +
@@ -474,7 +474,7 @@ namespace AntlrUnitTests
             checkDecision( g, 1, expecting, null );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestNotComplicatedSetRuleInLexer() /*throws Exception*/ {
             Grammar g = new Grammar(
                 "lexer grammar T;\n" +
@@ -487,7 +487,7 @@ namespace AntlrUnitTests
             checkDecision( g, 1, expecting, null );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestNotSetWithRuleInLexer() /*throws Exception*/ {
             Grammar g = new Grammar(
                 "lexer grammar T;\n" +
@@ -503,7 +503,7 @@ namespace AntlrUnitTests
             checkDecision( g, 1, expecting, null );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestSetCallsRuleWithNot() /*throws Exception*/ {
             Grammar g = new Grammar(
                 "lexer grammar A;\n" +
@@ -515,7 +515,7 @@ namespace AntlrUnitTests
             checkDecision( g, 1, expecting, null );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestSynPredInLexer() /*throws Exception*/ {
             Grammar g = new Grammar(
                 "lexer grammar T;\n" +

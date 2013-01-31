@@ -39,7 +39,7 @@ namespace Antlr4.Test.StringTemplate
     [TestClass]
     public class TestTemplateNames : BaseTest
     {
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST4)]
         public void TestAbsoluteTemplateRefFromOutside()
         {
             // /randomdir/a and /randomdir/subdir/b
@@ -53,7 +53,7 @@ namespace Antlr4.Test.StringTemplate
         }
 
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST4)]
         public void TestRelativeTemplateRefInExpr()
         {
             // /randomdir/a and /randomdir/subdir/b
@@ -64,7 +64,7 @@ namespace Antlr4.Test.StringTemplate
             Assert.AreEqual(" bar ", group.GetInstanceOf("a").Render());
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST4)]
         public void TestAbsoluteTemplateRefInExpr()
         {
             // /randomdir/a and /randomdir/subdir/b
@@ -75,7 +75,7 @@ namespace Antlr4.Test.StringTemplate
             Assert.AreEqual(" bar ", group.GetInstanceOf("a").Render());
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST4)]
         public void TestRefToAnotherTemplateInSameGroup()
         {
             string dir = tmpdir;
@@ -88,7 +88,7 @@ namespace Antlr4.Test.StringTemplate
             Assert.AreEqual(expected, result);
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST4)]
         public void TestRefToAnotherTemplateInSameSubdir()
         {
             // /randomdir/a and /randomdir/subdir/b
@@ -100,7 +100,7 @@ namespace Antlr4.Test.StringTemplate
             Assert.AreEqual(" bar ", group.GetInstanceOf("/subdir/a").Render());
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST4)]
         public void TestFullyQualifiedGetInstanceOf()
         {
             string dir = tmpdir;
@@ -110,7 +110,7 @@ namespace Antlr4.Test.StringTemplate
             Assert.AreEqual("foo", group.GetInstanceOf("/a").Render());
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST4)]
         public void TestFullyQualifiedTemplateRef()
         {
             // /randomdir/a and /randomdir/subdir/b
@@ -128,7 +128,7 @@ namespace Antlr4.Test.StringTemplate
             Assert.AreEqual(" bar ", template.Render());
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST4)]
         public void TestFullyQualifiedTemplateRef2()
         {
             // /randomdir/a and /randomdir/group.stg with b and c templates
@@ -149,7 +149,7 @@ namespace Antlr4.Test.StringTemplate
             Assert.AreEqual(" bar ", st2.Render());
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST4)]
         public void TestRelativeInSubdir()
         {
             // /randomdir/a and /randomdir/subdir/b

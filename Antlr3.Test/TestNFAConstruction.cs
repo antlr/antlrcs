@@ -47,7 +47,7 @@ namespace AntlrUnitTests
         {
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestA() /*throws Exception*/ {
             Grammar g = new Grammar(
                 "parser grammar P;\n" +
@@ -61,7 +61,7 @@ namespace AntlrUnitTests
             checkRule( g, "a", expecting );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestAB() /*throws Exception*/ {
             Grammar g = new Grammar(
                 "parser grammar P;\n" +
@@ -76,7 +76,7 @@ namespace AntlrUnitTests
             checkRule( g, "a", expecting );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestAorB() /*throws Exception*/ {
             Grammar g = new Grammar(
                 "parser grammar P;\n" +
@@ -100,7 +100,7 @@ namespace AntlrUnitTests
             checkRule( g, "a", expecting );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestRangeOrRange() /*throws Exception*/ {
             Grammar g = new Grammar(
                 "lexer grammar P;\n" +
@@ -123,7 +123,7 @@ namespace AntlrUnitTests
             checkRule( g, "A", expecting );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestRange() /*throws Exception*/ {
             Grammar g = new Grammar(
                 "lexer grammar P;\n" +
@@ -138,7 +138,7 @@ namespace AntlrUnitTests
             checkRule( g, "A", expecting );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestCharSetInParser() /*throws Exception*/ {
             Grammar g = new Grammar(
                 "grammar P;\n" +
@@ -153,7 +153,7 @@ namespace AntlrUnitTests
             checkRule( g, "a", expecting );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestABorCD() /*throws Exception*/ {
             Grammar g = new Grammar(
                 "parser grammar P;\n" +
@@ -174,7 +174,7 @@ namespace AntlrUnitTests
             checkRule( g, "a", expecting );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestbA() /*throws Exception*/ {
             Grammar g = new Grammar(
                 "parser grammar P;\n" +
@@ -195,7 +195,7 @@ namespace AntlrUnitTests
             checkRule( g, "a", expecting );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestbA_bC() /*throws Exception*/ {
             Grammar g = new Grammar(
                 "parser grammar P;\n" +
@@ -222,7 +222,7 @@ namespace AntlrUnitTests
             checkRule( g, "a", expecting );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestAorEpsilon() /*throws Exception*/ {
             Grammar g = new Grammar(
                 "parser grammar P;\n" +
@@ -245,7 +245,7 @@ namespace AntlrUnitTests
             checkRule( g, "a", expecting );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestAOptional() /*throws Exception*/ {
             Grammar g = new Grammar(
                 "parser grammar P;\n" +
@@ -263,7 +263,7 @@ namespace AntlrUnitTests
             checkRule( g, "a", expecting );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestNakedAoptional() /*throws Exception*/ {
             Grammar g = new Grammar(
                 "parser grammar P;\n" +
@@ -281,7 +281,7 @@ namespace AntlrUnitTests
             checkRule( g, "a", expecting );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestAorBthenC() /*throws Exception*/ {
             Grammar g = new Grammar(
                 "parser grammar P;\n" +
@@ -294,7 +294,7 @@ namespace AntlrUnitTests
                      */
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestAplus() /*throws Exception*/ {
             Grammar g = new Grammar(
                 "parser grammar P;\n" +
@@ -312,7 +312,7 @@ namespace AntlrUnitTests
             checkRule( g, "a", expecting );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestNakedAplus() /*throws Exception*/ {
             Grammar g = new Grammar(
                 "parser grammar P;\n" +
@@ -330,7 +330,7 @@ namespace AntlrUnitTests
             checkRule( g, "a", expecting );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestAplusNonGreedy() /*throws Exception*/ {
             Grammar g = new Grammar(
                 "lexer grammar t;\n" +
@@ -348,7 +348,7 @@ namespace AntlrUnitTests
             checkRule( g, "A", expecting );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestAorBplus() /*throws Exception*/ {
             Grammar g = new Grammar(
                 "parser grammar P;\n" +
@@ -372,7 +372,7 @@ namespace AntlrUnitTests
             checkRule( g, "a", expecting );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestAorBorEmptyPlus() /*throws Exception*/ {
             Grammar g = new Grammar(
                 "parser grammar P;\n" +
@@ -399,7 +399,7 @@ namespace AntlrUnitTests
             checkRule( g, "a", expecting );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestAStar() /*throws Exception*/ {
             Grammar g = new Grammar(
                 "parser grammar P;\n" +
@@ -419,7 +419,7 @@ namespace AntlrUnitTests
             checkRule( g, "a", expecting );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestNestedAstar() /*throws Exception*/ {
             Grammar g = new Grammar(
                 "parser grammar P;\n" +
@@ -446,7 +446,7 @@ namespace AntlrUnitTests
             checkRule( g, "a", expecting );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestPlusNestedInStar() /*throws Exception*/ {
             Grammar g = new Grammar(
                 "parser grammar P;\n" +
@@ -471,7 +471,7 @@ namespace AntlrUnitTests
             checkRule( g, "a", expecting );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestStarNestedInPlus() /*throws Exception*/ {
             Grammar g = new Grammar(
                 "parser grammar P;\n" +
@@ -496,7 +496,7 @@ namespace AntlrUnitTests
             checkRule( g, "a", expecting );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestNakedAstar() /*throws Exception*/ {
             Grammar g = new Grammar(
                 "parser grammar P;\n" +
@@ -516,7 +516,7 @@ namespace AntlrUnitTests
             checkRule( g, "a", expecting );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestAorBstar() /*throws Exception*/ {
             Grammar g = new Grammar(
                 "parser grammar P;\n" +
@@ -542,7 +542,7 @@ namespace AntlrUnitTests
             checkRule( g, "a", expecting );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestAorBOptionalSubrule() /*throws Exception*/ {
             Grammar g = new Grammar(
                 "parser grammar P;\n" +
@@ -560,7 +560,7 @@ namespace AntlrUnitTests
             checkRule( g, "a", expecting );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestPredicatedAorB() /*throws Exception*/ {
             Grammar g = new Grammar(
                 "parser grammar P;\n" +
@@ -581,7 +581,7 @@ namespace AntlrUnitTests
             checkRule( g, "a", expecting );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestMultiplePredicates() /*throws Exception*/ {
             Grammar g = new Grammar(
                 "parser grammar P;\n" +
@@ -615,7 +615,7 @@ namespace AntlrUnitTests
             checkRule( g, "a", expecting );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestSets() /*throws Exception*/ {
             Grammar g = new Grammar(
                 "parser grammar P;\n" +
@@ -686,7 +686,7 @@ namespace AntlrUnitTests
             checkRule( g, "e", expecting );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestNotSet() /*throws Exception*/ {
             Grammar g = new Grammar(
                 "parser grammar P;\n" +
@@ -706,7 +706,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( expectingGrammarStr, g.ToString() );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestNotSingletonBlockSet() /*throws Exception*/ {
             Grammar g = new Grammar(
                 "parser grammar P;\n" +
@@ -726,7 +726,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( expectingGrammarStr, g.ToString() );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestNotCharSet() /*throws Exception*/ {
             Grammar g = new Grammar(
                 "lexer grammar P;\n" +
@@ -746,7 +746,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( expectingGrammarStr, g.ToString() );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestNotBlockSet() /*throws Exception*/ {
             Grammar g = new Grammar(
                 "lexer grammar P;\n" +
@@ -766,7 +766,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( expectingGrammarStr, g.ToString() );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestNotSetLoop() /*throws Exception*/ {
             Grammar g = new Grammar(
                 "lexer grammar P;\n" +
@@ -792,7 +792,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( expectingGrammarStr, g.ToString() );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestNotBlockSetLoop() /*throws Exception*/ {
             Grammar g = new Grammar(
                 "lexer grammar P;\n" +
@@ -818,7 +818,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( expectingGrammarStr, g.ToString() );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestSetsInCombinedGrammarSentToLexer() /*throws Exception*/ {
             // not sure this belongs in this test suite, but whatever.
             Grammar g = new Grammar(
@@ -832,7 +832,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( expecting, result );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestLabeledNotSet() /*throws Exception*/ {
             Grammar g = new Grammar(
                 "parser grammar P;\n" +
@@ -852,7 +852,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( expectingGrammarStr, g.ToString() );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestLabeledNotCharSet() /*throws Exception*/ {
             Grammar g = new Grammar(
                 "lexer grammar P;\n" +
@@ -872,7 +872,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( expectingGrammarStr, g.ToString() );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestLabeledNotBlockSet() /*throws Exception*/ {
             Grammar g = new Grammar(
                 "lexer grammar P;\n" +
@@ -892,7 +892,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( expectingGrammarStr, g.ToString() );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestEscapedCharLiteral() /*throws Exception*/ {
             Grammar g = new Grammar(
                 "grammar P;\n" +
@@ -906,7 +906,7 @@ namespace AntlrUnitTests
             checkRule( g, "a", expecting );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestEscapedStringLiteral() /*throws Exception*/ {
             Grammar g = new Grammar(
                 "grammar P;\n" +
@@ -922,7 +922,7 @@ namespace AntlrUnitTests
 
         // AUTO BACKTRACKING STUFF
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestAutoBacktracking_RuleBlock() /*throws Exception*/ {
             Grammar g = new Grammar(
                 "grammar t;\n" +
@@ -945,7 +945,7 @@ namespace AntlrUnitTests
             checkRule( g, "a", expecting );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestAutoBacktracking_RuleSetBlock() /*throws Exception*/ {
             Grammar g = new Grammar(
                 "grammar t;\n" +
@@ -961,7 +961,7 @@ namespace AntlrUnitTests
             checkRule( g, "a", expecting );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestAutoBacktracking_SimpleBlock() /*throws Exception*/ {
             Grammar g = new Grammar(
                 "grammar t;\n" +
@@ -985,7 +985,7 @@ namespace AntlrUnitTests
             checkRule( g, "a", expecting );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestAutoBacktracking_SetBlock() /*throws Exception*/ {
             Grammar g = new Grammar(
                 "grammar t;\n" +
@@ -1001,7 +1001,7 @@ namespace AntlrUnitTests
             checkRule( g, "a", expecting );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestAutoBacktracking_StarBlock() /*throws Exception*/ {
             Grammar g = new Grammar(
                 "grammar t;\n" +
@@ -1031,7 +1031,7 @@ namespace AntlrUnitTests
             checkRule( g, "a", expecting );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestAutoBacktracking_StarSetBlock_IgnoresPreds() /*throws Exception*/ {
             Grammar g = new Grammar(
                 "grammar t;\n" +
@@ -1053,7 +1053,7 @@ namespace AntlrUnitTests
             checkRule( g, "a", expecting );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestAutoBacktracking_StarSetBlock() /*throws Exception*/ {
             Grammar g = new Grammar(
                 "grammar t;\n" +
@@ -1083,7 +1083,7 @@ namespace AntlrUnitTests
             checkRule( g, "a", expecting );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestAutoBacktracking_StarBlock1Alt() /*throws Exception*/ {
             Grammar g = new Grammar(
                 "grammar t;\n" +
@@ -1106,7 +1106,7 @@ namespace AntlrUnitTests
             checkRule( g, "a", expecting );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestAutoBacktracking_PlusBlock() /*throws Exception*/ {
             Grammar g = new Grammar(
                 "grammar t;\n" +
@@ -1134,7 +1134,7 @@ namespace AntlrUnitTests
             checkRule( g, "a", expecting );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestAutoBacktracking_PlusSetBlock() /*throws Exception*/ {
             Grammar g = new Grammar(
                 "grammar t;\n" +
@@ -1162,7 +1162,7 @@ namespace AntlrUnitTests
             checkRule( g, "a", expecting );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestAutoBacktracking_PlusBlock1Alt() /*throws Exception*/ {
             Grammar g = new Grammar(
                 "grammar t;\n" +
@@ -1183,7 +1183,7 @@ namespace AntlrUnitTests
             checkRule( g, "a", expecting );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestAutoBacktracking_OptionalBlock2Alts() /*throws Exception*/ {
             Grammar g = new Grammar(
                 "grammar t;\n" +
@@ -1210,7 +1210,7 @@ namespace AntlrUnitTests
             checkRule( g, "a", expecting );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestAutoBacktracking_OptionalBlock1Alt() /*throws Exception*/ {
             Grammar g = new Grammar(
                 "grammar t;\n" +
@@ -1231,7 +1231,7 @@ namespace AntlrUnitTests
             checkRule( g, "a", expecting );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestAutoBacktracking_ExistingPred() /*throws Exception*/ {
             Grammar g = new Grammar(
                 "grammar t;\n" +

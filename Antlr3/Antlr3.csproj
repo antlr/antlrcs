@@ -92,6 +92,7 @@
     <Compile Include="Tool\Message.cs" />
     <Compile Include="Tool\Rule.cs" />
     <Compile Include="Tool\ToolMessage.cs" />
+    <Compile Include="Tool\ToolTemplateGroupFile.cs" />
   </ItemGroup>
   <ItemGroup>
     <Antlr3 Include="Grammars\ActionTranslator.g3">
@@ -200,281 +201,281 @@
     <Compile Include="Tool\Strip.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="..\..\antlr3\tool\src\main\resources\org\antlr\codegen\templates\ActionScript\ActionScript.stg">
+    <Content Include="..\Reference\antlr3\tool\src\main\resources\org\antlr\codegen\templates\ActionScript\ActionScript.stg">
       <Link>Codegen\Templates\ActionScript\ActionScript.stg</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="..\..\antlr3\tool\src\main\resources\org\antlr\codegen\templates\ActionScript\AST.stg">
+    <Content Include="..\Reference\antlr3\tool\src\main\resources\org\antlr\codegen\templates\ActionScript\AST.stg">
       <Link>Codegen\Templates\ActionScript\AST.stg</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="..\..\antlr3\tool\src\main\resources\org\antlr\codegen\templates\ActionScript\ASTParser.stg">
+    <Content Include="..\Reference\antlr3\tool\src\main\resources\org\antlr\codegen\templates\ActionScript\ASTParser.stg">
       <Link>Codegen\Templates\ActionScript\ASTParser.stg</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="..\..\antlr3\tool\src\main\resources\org\antlr\codegen\templates\ActionScript\ASTTreeParser.stg">
+    <Content Include="..\Reference\antlr3\tool\src\main\resources\org\antlr\codegen\templates\ActionScript\ASTTreeParser.stg">
       <Link>Codegen\Templates\ActionScript\ASTTreeParser.stg</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="..\..\antlr3\tool\src\main\resources\org\antlr\codegen\templates\CSharp3\AST.stg">
+    <Content Include="..\Reference\antlr3\tool\src\main\resources\org\antlr\codegen\templates\CSharp3\AST.stg">
       <Link>Codegen\Templates\CSharp3\AST.stg</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="..\..\antlr3\tool\src\main\resources\org\antlr\codegen\templates\CSharp3\ASTDbg.stg">
+    <Content Include="..\Reference\antlr3\tool\src\main\resources\org\antlr\codegen\templates\CSharp3\ASTDbg.stg">
       <Link>Codegen\Templates\CSharp3\ASTDbg.stg</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="..\..\antlr3\tool\src\main\resources\org\antlr\codegen\templates\CSharp3\ASTParser.stg">
+    <Content Include="..\Reference\antlr3\tool\src\main\resources\org\antlr\codegen\templates\CSharp3\ASTParser.stg">
       <Link>Codegen\Templates\CSharp3\ASTParser.stg</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="..\..\antlr3\tool\src\main\resources\org\antlr\codegen\templates\CSharp3\ASTTreeParser.stg">
+    <Content Include="..\Reference\antlr3\tool\src\main\resources\org\antlr\codegen\templates\CSharp3\ASTTreeParser.stg">
       <Link>Codegen\Templates\CSharp3\ASTTreeParser.stg</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="..\..\antlr3\tool\src\main\resources\org\antlr\codegen\templates\CSharp3\CSharp3.stg">
+    <Content Include="..\Reference\antlr3\tool\src\main\resources\org\antlr\codegen\templates\CSharp3\CSharp3.stg">
       <Link>Codegen\Templates\CSharp3\CSharp3.stg</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="..\..\antlr3\tool\src\main\resources\org\antlr\codegen\templates\CSharp3\Dbg.stg">
+    <Content Include="..\Reference\antlr3\tool\src\main\resources\org\antlr\codegen\templates\CSharp3\Dbg.stg">
       <Link>Codegen\Templates\CSharp3\Dbg.stg</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="..\..\antlr3\tool\src\main\resources\org\antlr\codegen\templates\CSharp3\ST.stg">
+    <Content Include="..\Reference\antlr3\tool\src\main\resources\org\antlr\codegen\templates\CSharp3\ST.stg">
       <Link>Codegen\Templates\CSharp3\ST.stg</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="..\..\antlr3\tool\src\main\resources\org\antlr\codegen\templates\CSharp2\AST.stg">
+    <Content Include="..\Reference\antlr3\tool\src\main\resources\org\antlr\codegen\templates\CSharp2\AST.stg">
       <Link>Codegen\Templates\CSharp2\AST.stg</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="..\..\antlr3\tool\src\main\resources\org\antlr\codegen\templates\CSharp2\ASTDbg.stg">
+    <Content Include="..\Reference\antlr3\tool\src\main\resources\org\antlr\codegen\templates\CSharp2\ASTDbg.stg">
       <Link>Codegen\Templates\CSharp2\ASTDbg.stg</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="..\..\antlr3\tool\src\main\resources\org\antlr\codegen\templates\CSharp2\ASTParser.stg">
+    <Content Include="..\Reference\antlr3\tool\src\main\resources\org\antlr\codegen\templates\CSharp2\ASTParser.stg">
       <Link>Codegen\Templates\CSharp2\ASTParser.stg</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="..\..\antlr3\tool\src\main\resources\org\antlr\codegen\templates\CSharp2\ASTTreeParser.stg">
+    <Content Include="..\Reference\antlr3\tool\src\main\resources\org\antlr\codegen\templates\CSharp2\ASTTreeParser.stg">
       <Link>Codegen\Templates\CSharp2\ASTTreeParser.stg</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="..\..\antlr3\tool\src\main\resources\org\antlr\codegen\templates\CSharp2\CSharp2.stg">
+    <Content Include="..\Reference\antlr3\tool\src\main\resources\org\antlr\codegen\templates\CSharp2\CSharp2.stg">
       <Link>Codegen\Templates\CSharp2\CSharp2.stg</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="..\..\antlr3\tool\src\main\resources\org\antlr\codegen\templates\CSharp2\Dbg.stg">
+    <Content Include="..\Reference\antlr3\tool\src\main\resources\org\antlr\codegen\templates\CSharp2\Dbg.stg">
       <Link>Codegen\Templates\CSharp2\Dbg.stg</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="..\..\antlr3\tool\src\main\resources\org\antlr\codegen\templates\CSharp2\ST.stg">
+    <Content Include="..\Reference\antlr3\tool\src\main\resources\org\antlr\codegen\templates\CSharp2\ST.stg">
       <Link>Codegen\Templates\CSharp2\ST.stg</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="..\..\antlr3\tool\src\main\resources\org\antlr\codegen\templates\C\AST.stg">
+    <Content Include="..\Reference\antlr3\tool\src\main\resources\org\antlr\codegen\templates\C\AST.stg">
       <Link>Codegen\Templates\C\AST.stg</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="..\..\antlr3\tool\src\main\resources\org\antlr\codegen\templates\C\ASTDbg.stg">
+    <Content Include="..\Reference\antlr3\tool\src\main\resources\org\antlr\codegen\templates\C\ASTDbg.stg">
       <Link>Codegen\Templates\C\ASTDbg.stg</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="..\..\antlr3\tool\src\main\resources\org\antlr\codegen\templates\C\ASTParser.stg">
+    <Content Include="..\Reference\antlr3\tool\src\main\resources\org\antlr\codegen\templates\C\ASTParser.stg">
       <Link>Codegen\Templates\C\ASTParser.stg</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="..\..\antlr3\tool\src\main\resources\org\antlr\codegen\templates\C\ASTTreeParser.stg">
+    <Content Include="..\Reference\antlr3\tool\src\main\resources\org\antlr\codegen\templates\C\ASTTreeParser.stg">
       <Link>Codegen\Templates\C\ASTTreeParser.stg</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="..\..\antlr3\tool\src\main\resources\org\antlr\codegen\templates\C\C.stg">
+    <Content Include="..\Reference\antlr3\tool\src\main\resources\org\antlr\codegen\templates\C\C.stg">
       <Link>Codegen\Templates\C\C.stg</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="..\..\antlr3\tool\src\main\resources\org\antlr\codegen\templates\C\Dbg.stg">
+    <Content Include="..\Reference\antlr3\tool\src\main\resources\org\antlr\codegen\templates\C\Dbg.stg">
       <Link>Codegen\Templates\C\Dbg.stg</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="..\..\antlr3\tool\src\main\resources\org\antlr\codegen\templates\CPP\CPP.stg">
+    <Content Include="..\Reference\antlr3\tool\src\main\resources\org\antlr\codegen\templates\CPP\CPP.stg">
       <Link>Codegen\Templates\CPP\CPP.stg</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="..\..\antlr3\tool\src\main\resources\org\antlr\codegen\templates\Delphi\AST.stg">
+    <Content Include="..\Reference\antlr3\tool\src\main\resources\org\antlr\codegen\templates\Delphi\AST.stg">
       <Link>Codegen\Templates\Delphi\AST.stg</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="..\..\antlr3\tool\src\main\resources\org\antlr\codegen\templates\Delphi\ASTParser.stg">
+    <Content Include="..\Reference\antlr3\tool\src\main\resources\org\antlr\codegen\templates\Delphi\ASTParser.stg">
       <Link>Codegen\Templates\Delphi\ASTParser.stg</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="..\..\antlr3\tool\src\main\resources\org\antlr\codegen\templates\Delphi\ASTTreeParser.stg">
+    <Content Include="..\Reference\antlr3\tool\src\main\resources\org\antlr\codegen\templates\Delphi\ASTTreeParser.stg">
       <Link>Codegen\Templates\Delphi\ASTTreeParser.stg</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="..\..\antlr3\tool\src\main\resources\org\antlr\codegen\templates\Delphi\Delphi.stg">
+    <Content Include="..\Reference\antlr3\tool\src\main\resources\org\antlr\codegen\templates\Delphi\Delphi.stg">
       <Link>Codegen\Templates\Delphi\Delphi.stg</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="..\..\antlr3\tool\src\main\resources\org\antlr\codegen\templates\JavaScript\AST.stg">
+    <Content Include="..\Reference\antlr3\tool\src\main\resources\org\antlr\codegen\templates\JavaScript\AST.stg">
       <Link>Codegen\Templates\JavaScript\AST.stg</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="..\..\antlr3\tool\src\main\resources\org\antlr\codegen\templates\JavaScript\ASTParser.stg">
+    <Content Include="..\Reference\antlr3\tool\src\main\resources\org\antlr\codegen\templates\JavaScript\ASTParser.stg">
       <Link>Codegen\Templates\JavaScript\ASTParser.stg</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="..\..\antlr3\tool\src\main\resources\org\antlr\codegen\templates\JavaScript\ASTTreeParser.stg">
+    <Content Include="..\Reference\antlr3\tool\src\main\resources\org\antlr\codegen\templates\JavaScript\ASTTreeParser.stg">
       <Link>Codegen\Templates\JavaScript\ASTTreeParser.stg</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="..\..\antlr3\tool\src\main\resources\org\antlr\codegen\templates\JavaScript\JavaScript.stg">
+    <Content Include="..\Reference\antlr3\tool\src\main\resources\org\antlr\codegen\templates\JavaScript\JavaScript.stg">
       <Link>Codegen\Templates\JavaScript\JavaScript.stg</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="..\..\antlr3\tool\src\main\resources\org\antlr\codegen\templates\Java\AST.stg">
+    <Content Include="..\Reference\antlr3\tool\src\main\resources\org\antlr\codegen\templates\Java\AST.stg">
       <Link>Codegen\Templates\Java\AST.stg</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="..\..\antlr3\tool\src\main\resources\org\antlr\codegen\templates\Java\ASTDbg.stg">
+    <Content Include="..\Reference\antlr3\tool\src\main\resources\org\antlr\codegen\templates\Java\ASTDbg.stg">
       <Link>Codegen\Templates\Java\ASTDbg.stg</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="..\..\antlr3\tool\src\main\resources\org\antlr\codegen\templates\Java\ASTParser.stg">
+    <Content Include="..\Reference\antlr3\tool\src\main\resources\org\antlr\codegen\templates\Java\ASTParser.stg">
       <Link>Codegen\Templates\Java\ASTParser.stg</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="..\..\antlr3\tool\src\main\resources\org\antlr\codegen\templates\Java\ASTTreeParser.stg">
+    <Content Include="..\Reference\antlr3\tool\src\main\resources\org\antlr\codegen\templates\Java\ASTTreeParser.stg">
       <Link>Codegen\Templates\Java\ASTTreeParser.stg</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="..\..\antlr3\tool\src\main\resources\org\antlr\codegen\templates\Java\Dbg.stg">
+    <Content Include="..\Reference\antlr3\tool\src\main\resources\org\antlr\codegen\templates\Java\Dbg.stg">
       <Link>Codegen\Templates\Java\Dbg.stg</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="..\..\antlr3\tool\src\main\resources\org\antlr\codegen\templates\Java\Java.stg">
+    <Content Include="..\Reference\antlr3\tool\src\main\resources\org\antlr\codegen\templates\Java\Java.stg">
       <Link>Codegen\Templates\Java\Java.stg</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="..\..\antlr3\tool\src\main\resources\org\antlr\codegen\templates\Java\ST.stg">
+    <Content Include="..\Reference\antlr3\tool\src\main\resources\org\antlr\codegen\templates\Java\ST.stg">
       <Link>Codegen\Templates\Java\ST.stg</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="..\..\antlr3\tool\src\main\resources\org\antlr\codegen\templates\ObjC\AST.stg">
+    <Content Include="..\Reference\antlr3\tool\src\main\resources\org\antlr\codegen\templates\ObjC\AST.stg">
       <Link>Codegen\Templates\ObjC\AST.stg</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="..\..\antlr3\tool\src\main\resources\org\antlr\codegen\templates\ObjC\ASTDbg.stg">
+    <Content Include="..\Reference\antlr3\tool\src\main\resources\org\antlr\codegen\templates\ObjC\ASTDbg.stg">
       <Link>Codegen\Templates\ObjC\ASTDbg.stg</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="..\..\antlr3\tool\src\main\resources\org\antlr\codegen\templates\ObjC\ASTParser.stg">
+    <Content Include="..\Reference\antlr3\tool\src\main\resources\org\antlr\codegen\templates\ObjC\ASTParser.stg">
       <Link>Codegen\Templates\ObjC\ASTParser.stg</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="..\..\antlr3\tool\src\main\resources\org\antlr\codegen\templates\ObjC\ASTTreeParser.stg">
+    <Content Include="..\Reference\antlr3\tool\src\main\resources\org\antlr\codegen\templates\ObjC\ASTTreeParser.stg">
       <Link>Codegen\Templates\ObjC\ASTTreeParser.stg</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="..\..\antlr3\tool\src\main\resources\org\antlr\codegen\templates\ObjC\Dbg.stg">
+    <Content Include="..\Reference\antlr3\tool\src\main\resources\org\antlr\codegen\templates\ObjC\Dbg.stg">
       <Link>Codegen\Templates\ObjC\Dbg.stg</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="..\..\antlr3\tool\src\main\resources\org\antlr\codegen\templates\ObjC\ObjC.stg">
+    <Content Include="..\Reference\antlr3\tool\src\main\resources\org\antlr\codegen\templates\ObjC\ObjC.stg">
       <Link>Codegen\Templates\ObjC\ObjC.stg</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="..\..\antlr3\tool\src\main\resources\org\antlr\codegen\templates\Perl5\ASTTreeParser.stg">
+    <Content Include="..\Reference\antlr3\tool\src\main\resources\org\antlr\codegen\templates\Perl5\ASTTreeParser.stg">
       <Link>Codegen\Templates\Perl5\ASTTreeParser.stg</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="..\..\antlr3\tool\src\main\resources\org\antlr\codegen\templates\Perl5\Perl5.stg">
+    <Content Include="..\Reference\antlr3\tool\src\main\resources\org\antlr\codegen\templates\Perl5\Perl5.stg">
       <Link>Codegen\Templates\Perl5\Perl5.stg</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="..\..\antlr3\tool\src\main\resources\org\antlr\codegen\templates\Python\AST.stg">
+    <Content Include="..\Reference\antlr3\tool\src\main\resources\org\antlr\codegen\templates\Python\AST.stg">
       <Link>Codegen\Templates\Python\AST.stg</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="..\..\antlr3\tool\src\main\resources\org\antlr\codegen\templates\Python\ASTDbg.stg">
+    <Content Include="..\Reference\antlr3\tool\src\main\resources\org\antlr\codegen\templates\Python\ASTDbg.stg">
       <Link>Codegen\Templates\Python\ASTDbg.stg</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="..\..\antlr3\tool\src\main\resources\org\antlr\codegen\templates\Python\ASTParser.stg">
+    <Content Include="..\Reference\antlr3\tool\src\main\resources\org\antlr\codegen\templates\Python\ASTParser.stg">
       <Link>Codegen\Templates\Python\ASTParser.stg</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="..\..\antlr3\tool\src\main\resources\org\antlr\codegen\templates\Python\ASTTreeParser.stg">
+    <Content Include="..\Reference\antlr3\tool\src\main\resources\org\antlr\codegen\templates\Python\ASTTreeParser.stg">
       <Link>Codegen\Templates\Python\ASTTreeParser.stg</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="..\..\antlr3\tool\src\main\resources\org\antlr\codegen\templates\Python\Dbg.stg">
+    <Content Include="..\Reference\antlr3\tool\src\main\resources\org\antlr\codegen\templates\Python\Dbg.stg">
       <Link>Codegen\Templates\Python\Dbg.stg</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="..\..\antlr3\tool\src\main\resources\org\antlr\codegen\templates\Python\Python.stg">
+    <Content Include="..\Reference\antlr3\tool\src\main\resources\org\antlr\codegen\templates\Python\Python.stg">
       <Link>Codegen\Templates\Python\Python.stg</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="..\..\antlr3\tool\src\main\resources\org\antlr\codegen\templates\Python\ST.stg">
+    <Content Include="..\Reference\antlr3\tool\src\main\resources\org\antlr\codegen\templates\Python\ST.stg">
       <Link>Codegen\Templates\Python\ST.stg</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="..\..\antlr3\tool\src\main\resources\org\antlr\codegen\templates\Ruby\Ruby.stg">
+    <Content Include="..\Reference\antlr3\tool\src\main\resources\org\antlr\codegen\templates\Ruby\Ruby.stg">
       <Link>Codegen\Templates\Ruby\Ruby.stg</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="..\..\antlr3\tool\src\main\resources\org\antlr\tool\templates\depend.stg">
+    <Content Include="..\Reference\antlr3\tool\src\main\resources\org\antlr\tool\templates\depend.stg">
       <Link>Tool\Templates\depend.stg</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <EmbeddedResource Include="..\..\antlr3\tool\src\main\resources\org\antlr\tool\templates\messages\formats\antlr.stg">
+    <EmbeddedResource Include="..\Reference\antlr3\tool\src\main\resources\org\antlr\tool\templates\messages\formats\antlr.stg">
       <Link>Tool\Templates\messages\formats\antlr.stg</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </EmbeddedResource>
-    <Content Include="..\..\antlr3\tool\src\main\resources\org\antlr\tool\templates\messages\formats\gnu.stg">
+    <Content Include="..\Reference\antlr3\tool\src\main\resources\org\antlr\tool\templates\messages\formats\gnu.stg">
       <Link>Tool\Templates\messages\formats\gnu.stg</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="..\..\antlr3\tool\src\main\resources\org\antlr\tool\templates\messages\formats\vs2005.stg">
+    <Content Include="..\Reference\antlr3\tool\src\main\resources\org\antlr\tool\templates\messages\formats\vs2005.stg">
       <Link>Tool\Templates\messages\formats\vs2005.stg</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <EmbeddedResource Include="..\..\antlr3\tool\src\main\resources\org\antlr\tool\templates\messages\languages\en.stg">
+    <EmbeddedResource Include="..\Reference\antlr3\tool\src\main\resources\org\antlr\tool\templates\messages\languages\en.stg">
       <Link>Tool\Templates\messages\languages\en.stg</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </EmbeddedResource>
-    <Content Include="..\..\antlr3\tool\src\main\resources\org\antlr\tool\templates\dot\dot.stg">
+    <Content Include="..\Reference\antlr3\tool\src\main\resources\org\antlr\tool\templates\dot\dot.stg">
       <Link>Tool\Templates\dot\dot.stg</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="..\..\antlr3\tool\src\main\resources\org\antlr\codegen\templates\Ruby\AST.stg">
+    <Content Include="..\Reference\antlr3\tool\src\main\resources\org\antlr\codegen\templates\Ruby\AST.stg">
       <Link>Codegen\Templates\Ruby\AST.stg</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="..\..\antlr3\tool\src\main\resources\org\antlr\codegen\templates\Ruby\ASTDbg.stg">
+    <Content Include="..\Reference\antlr3\tool\src\main\resources\org\antlr\codegen\templates\Ruby\ASTDbg.stg">
       <Link>Codegen\Templates\Ruby\ASTDbg.stg</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="..\..\antlr3\tool\src\main\resources\org\antlr\codegen\templates\Ruby\ASTParser.stg">
+    <Content Include="..\Reference\antlr3\tool\src\main\resources\org\antlr\codegen\templates\Ruby\ASTParser.stg">
       <Link>Codegen\Templates\Ruby\ASTParser.stg</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="..\..\antlr3\tool\src\main\resources\org\antlr\codegen\templates\Ruby\ASTTreeParser.stg">
+    <Content Include="..\Reference\antlr3\tool\src\main\resources\org\antlr\codegen\templates\Ruby\ASTTreeParser.stg">
       <Link>Codegen\Templates\Ruby\ASTTreeParser.stg</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="..\..\antlr3\tool\src\main\resources\org\antlr\codegen\templates\Ruby\Dbg.stg">
+    <Content Include="..\Reference\antlr3\tool\src\main\resources\org\antlr\codegen\templates\Ruby\Dbg.stg">
       <Link>Codegen\Templates\Ruby\Dbg.stg</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="..\..\antlr3\tool\src\main\resources\org\antlr\codegen\templates\Ruby\ST.stg">
+    <Content Include="..\Reference\antlr3\tool\src\main\resources\org\antlr\codegen\templates\Ruby\ST.stg">
       <Link>Codegen\Templates\Ruby\ST.stg</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <EmbeddedResource Include="..\..\antlr3\tool\src\main\resources\org\antlr\codegen\templates\LeftRecursiveRules.stg">
+    <EmbeddedResource Include="..\Reference\antlr3\tool\src\main\resources\org\antlr\codegen\templates\LeftRecursiveRules.stg">
       <Link>Codegen\Templates\LeftRecursiveRules.stg</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </EmbeddedResource>
@@ -487,15 +488,15 @@
     </Antlr3>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\antlr3\runtime\CSharp3\Sources\Antlr3.Runtime.Debug\Antlr3.Runtime.Debug.csproj">
+    <ProjectReference Include="..\Reference\antlr3\runtime\CSharp3\Sources\Antlr3.Runtime.Debug\Antlr3.Runtime.Debug.csproj">
       <Project>{5EE27A90-B023-42C9-AAF1-52B0424C5D0B}</Project>
       <Name>Antlr3.Runtime.Debug</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\antlr3\runtime\CSharp3\Sources\Antlr3.Runtime.JavaExtensions\Antlr3.Runtime.JavaExtensions.csproj">
+    <ProjectReference Include="..\Reference\antlr3\runtime\CSharp3\Sources\Antlr3.Runtime.JavaExtensions\Antlr3.Runtime.JavaExtensions.csproj">
       <Project>{A7EEC557-EB14-451C-9616-B7A61F4ECE69}</Project>
       <Name>Antlr3.Runtime.JavaExtensions</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\antlr3\runtime\CSharp3\Sources\Antlr3.Runtime\Antlr3.Runtime.csproj">
+    <ProjectReference Include="..\Reference\antlr3\runtime\CSharp3\Sources\Antlr3.Runtime\Antlr3.Runtime.csproj">
       <Project>{8FDC0A87-9005-4D5A-AB75-E55CEB575559}</Project>
       <Name>Antlr3.Runtime</Name>
     </ProjectReference>

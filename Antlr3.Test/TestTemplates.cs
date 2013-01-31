@@ -50,7 +50,7 @@ namespace AntlrUnitTests
     {
         private readonly string LINE_SEP = NewLine;
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestTemplateConstructor() /*throws Exception*/ {
             string action = "x = %foo(name={$ID.text});";
             string expecting = "x = templateLib.getInstanceOf(\"foo\"," +
@@ -88,7 +88,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( expecting, found );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestTemplateConstructorNoArgs() /*throws Exception*/ {
             string action = "x = %foo();";
             string expecting = "x = templateLib.getInstanceOf(\"foo\");";
@@ -125,7 +125,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( expecting, found );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestIndirectTemplateConstructor() /*throws Exception*/ {
             string action = "x = %({\"foo\"})(name={$ID.text});";
             string expecting = "x = templateLib.getInstanceOf(\"foo\"," +
@@ -163,7 +163,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( expecting, found );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestStringConstructor() /*throws Exception*/ {
             string action = "x = %{$ID.text};";
             string expecting = "x = new StringTemplate(templateLib,(ID1!=null?ID1.getText():null));";
@@ -199,7 +199,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( expecting, found );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestSetAttr() /*throws Exception*/ {
             string action = "%x.y = z;";
             string expecting = "(x).setAttribute(\"y\", z);";
@@ -236,7 +236,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( expecting, found );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestSetAttrOfExpr() /*throws Exception*/ {
             string action = "%{foo($ID.text).getST()}.y = z;";
             string expecting = "(foo((ID1!=null?ID1.getText():null)).getST()).setAttribute(\"y\", z);";
@@ -272,7 +272,7 @@ namespace AntlrUnitTests
             Assert.AreEqual( expecting, found );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestSetAttrOfExprInMembers() /*throws Exception*/ {
             ErrorQueue equeue = new ErrorQueue();
             ErrorManager.SetErrorListener( equeue );
@@ -296,7 +296,7 @@ namespace AntlrUnitTests
             assertNoErrors( equeue );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestCannotHaveSpaceBeforeDot() /*throws Exception*/ {
             string action = "%x .y = z;";
             //String expecting = null;
@@ -325,7 +325,7 @@ namespace AntlrUnitTests
             checkError( equeue, expectedMessage );
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestCannotHaveSpaceAfterDot() /*throws Exception*/ {
             string action = "%x. y = z;";
             //String expecting = null;

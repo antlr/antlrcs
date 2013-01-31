@@ -32,6 +32,8 @@
 
 namespace Antlr4.StringTemplate.Misc
 {
+    using StringBuilder = System.Text.StringBuilder;
+
     public static class Utility
     {
         public static string Strip(string s, int n)
@@ -93,6 +95,45 @@ namespace Antlr4.StringTemplate.Misc
             s = s.Replace("\r", "\\\\r");
             s = s.Replace("\t", "\\\\t");
             return s;
+        }
+
+        /** Replace >\> with >> in s. Replace \>> unless prefix of \>>> with >>.
+         *  Do NOT replace if it's <\\>
+         */
+        public static string ReplaceEscapedRightAngle(string s)
+        {
+            StringBuilder buf = new StringBuilder();
+            int i = 0;
+            while (i < s.Length)
+            {
+                char c = s[i];
+                if (c == '<' && s.Substring(i).StartsWith("<\\\\>"))
+                {
+                    buf.Append("<\\\\>");
+                    i += "<\\\\>".Length;
+                    continue;
+                }
+
+                if (c == '>' && s.Substring(i).StartsWith(">\\>"))
+                {
+                    buf.Append(">>");
+                    i += ">\\>".Length;
+                    continue;
+                }
+
+                if (c == '\\' && s.Substring(i).StartsWith("\\>>") &&
+                    !s.Substring(i).StartsWith("\\>>>"))
+                {
+                    buf.Append(">>");
+                    i += "\\>>".Length;
+                    continue;
+                }
+
+                buf.Append(c);
+                i++;
+            }
+
+            return buf.ToString();
         }
 
         /** Given index into string, compute the line and char position in line */

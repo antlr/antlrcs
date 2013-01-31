@@ -63,7 +63,7 @@ namespace Antlr4.Test.StringTemplate
             }
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST4)]
         public void TestMissingEmbeddedTemplate()
         {
             ErrorBuffer errors = new ErrorBuffer();
@@ -81,7 +81,7 @@ namespace Antlr4.Test.StringTemplate
             Assert.AreEqual(expected, result);
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST4)]
         public void TestMissingSuperTemplate()
         {
             ErrorBuffer errors = new ErrorBuffer();
@@ -105,7 +105,7 @@ namespace Antlr4.Test.StringTemplate
             Assert.AreEqual(expected, result);
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST4)]
         public void TestNoPropertyNotError()
         {
             ErrorBuffer errors = new ErrorBuffer();
@@ -124,7 +124,7 @@ namespace Antlr4.Test.StringTemplate
             Assert.AreEqual(expected, result);
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST4)]
         public void TestHiddenPropertyNotError()
         {
             ErrorBuffer errors = new ErrorBuffer();
@@ -143,7 +143,7 @@ namespace Antlr4.Test.StringTemplate
             Assert.AreEqual(expected, result);
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST4)]
         public void TestHiddenFieldNotError()
         {
             ErrorBuffer errors = new ErrorBuffer();
@@ -162,7 +162,7 @@ namespace Antlr4.Test.StringTemplate
             Assert.AreEqual(expected, result);
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST4)]
         public void TestSoleArg()
         {
             ErrorBuffer errors = new ErrorBuffer();
@@ -181,7 +181,7 @@ namespace Antlr4.Test.StringTemplate
             Assert.AreEqual(expected, result);
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST4)]
         public void TestSoleArgUsingApplySyntax()
         {
             ErrorBuffer errors = new ErrorBuffer();
@@ -203,7 +203,7 @@ namespace Antlr4.Test.StringTemplate
             Assert.AreEqual(expected, result);
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST4)]
         public void TestUndefinedAttr()
         {
             ErrorBuffer errors = new ErrorBuffer();
@@ -222,7 +222,7 @@ namespace Antlr4.Test.StringTemplate
             Assert.AreEqual(expected, result);
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST4)]
         public void TestParallelAttributeIterationWithMissingArgs()
         {
             ErrorBuffer errors = new ErrorBuffer();
@@ -246,7 +246,7 @@ namespace Antlr4.Test.StringTemplate
             Assert.AreEqual(expecting, e.Render());
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST4)]
         public void TestStringTypeMismatch()
         {
             ErrorBuffer errors = new ErrorBuffer();
@@ -259,7 +259,7 @@ namespace Antlr4.Test.StringTemplate
             Assert.AreEqual(errorExpecting, errors.ToString());
         }
 
-        [TestMethod]
+        [TestMethod][TestCategory(TestCategories.ST4)]
         public void TestStringTypeMismatch2()
         {
             ErrorBuffer errors = new ErrorBuffer();

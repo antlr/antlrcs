@@ -42,7 +42,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyConfiguration( "" )]
 [assembly: AssemblyCompany( "Pixel Mine, Inc." )]
 [assembly: AssemblyProduct( "AntlrUnitTests" )]
-[assembly: AssemblyCopyright( "Copyright © Sam Harwell 2011" )]
+[assembly: AssemblyCopyright( "Copyright © Sam Harwell 2013" )]
 [assembly: AssemblyTrademark( "" )]
 [assembly: AssemblyCulture( "" )]
 
@@ -63,5 +63,5 @@ using System.Runtime.InteropServices;
 //
 // You can specify all the values or you can default the Revision and Build Numbers 
 // by using the '*' as shown below:
-[assembly: AssemblyVersion("3.4.1.9004")]
-[assembly: AssemblyFileVersion("3.4.1.9004")]
+[assembly: AssemblyVersion("3.5.0.0")]
+[assembly: AssemblyFileVersion("3.5.0.0")]
