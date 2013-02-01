@@ -34,8 +34,8 @@ namespace Antlr3.Tool
 {
     using System.Collections.Generic;
     using System.Linq;
-    using Antlr.Runtime.JavaExtensions;
     using Antlr3.Grammars;
+    using Antlr3.Misc;
 
     using Label = Antlr3.Analysis.Label;
     using NFAState = Antlr3.Analysis.NFAState;
@@ -127,7 +127,7 @@ namespace Antlr3.Tool
             // the faux token types take first NUM_FAUX_LABELS positions
             // then we must have room for the predefined runtime token types
             // like DOWN/UP used for tree parsing.
-            typeToTokenList.setSize( Label.NUM_FAUX_LABELS + Label.MIN_TOKEN_TYPE - 1 );
+            typeToTokenList.Resize( Label.NUM_FAUX_LABELS + Label.MIN_TOKEN_TYPE - 1 );
             typeToTokenList[Label.NUM_FAUX_LABELS + Label.INVALID] = "<INVALID>";
             typeToTokenList[Label.NUM_FAUX_LABELS + Label.EOT] = "<EOT>";
             typeToTokenList[Label.NUM_FAUX_LABELS + Label.SEMPRED] = "<SEMPRED>";
@@ -475,7 +475,7 @@ namespace Antlr3.Tool
 
         public virtual void AddState( NFAState state )
         {
-            numberToStateList.setSize( state.StateNumber + 1 ); // make sure we have room
+            numberToStateList.Resize( state.StateNumber + 1 ); // make sure we have room
             numberToStateList[state.StateNumber] = state;
         }
 

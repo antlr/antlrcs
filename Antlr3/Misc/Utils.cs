@@ -30,20 +30,22 @@
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#if DEBUG
-
 namespace Antlr3.Misc
 {
-    using System;
+    using System.Collections.Generic;
+
+    using ArgumentNullException = System.ArgumentNullException;
+    using ArgumentOutOfRangeException = System.ArgumentOutOfRangeException;
 
     public static class Utils
     {
+#if DEBUG
         /** Integer objects are immutable so share all Integers with the
          *  same value up to some max size.  Use an array as a perfect hash.
          *  Return shared object for 0..INTEGER_POOL_MAX_VALUE or a new
          *  Integer object with x in it.
          */
-        [Obsolete]
+        [System.Obsolete]
         public static int integer( int x )
         {
             //if ( x<0 || x>INTEGER_POOL_MAX_VALUE ) {
@@ -65,12 +67,41 @@ namespace Antlr3.Misc
             This should be faster than Java's String.replaceAll as that one
             uses regex (I only want to play with strings anyway).
         */
-        [Obsolete]
+        [System.Obsolete]
         public static string replace( string src, string replacee, string replacer )
         {
             return src.Replace( replacee, replacer );
         }
+#endif
+
+        public static void Resize<T>(this IList<T> list, int size)
+        {
+            if (list == null)
+                throw new ArgumentNullException("list");
+            if (size < 0)
+                throw new ArgumentOutOfRangeException("size");
+
+            if (size == list.Count)
+                return;
+
+            if (size < list.Count)
+            {
+                List<T> asList = list as List<T>;
+                if (asList != null)
+                {
+                    asList.RemoveRange(size, asList.Count);
+                }
+                else
+                {
+                    while (list.Count > size)
+                        list.RemoveAt(list.Count - 1);
+                }
+            }
+            else
+            {
+                while (list.Count < size)
+                    list.Add(default(T));
+            }
+        }
     }
 }
-
-#endif
