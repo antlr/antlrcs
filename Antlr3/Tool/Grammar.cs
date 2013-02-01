@@ -35,7 +35,6 @@ namespace Antlr3.Tool
     using System.Collections.Generic;
     using System.Collections.ObjectModel;
     using System.Linq;
-    using Antlr.Runtime.JavaExtensions;
     using Antlr3.Analysis;
     using Antlr3.Extensions;
     using Antlr3.Grammars;
@@ -50,7 +49,6 @@ namespace Antlr3.Tool
     using File = System.IO.File;
     using IOException = System.IO.IOException;
     using IToken = Antlr.Runtime.IToken;
-    using ITree = Antlr.Runtime.Tree.ITree;
     using Math = System.Math;
     using Path = System.IO.Path;
     using RecognitionException = Antlr.Runtime.RecognitionException;
@@ -1940,7 +1938,7 @@ namespace Antlr3.Tool
                 // track in reverse index too
                 if ( tokenType >= composite.TypeToStringLiteralList.Count )
                 {
-                    composite.TypeToStringLiteralList.setSize( tokenType + 1 );
+                    composite.TypeToStringLiteralList.Resize( tokenType + 1 );
                 }
                 composite.TypeToStringLiteralList[tokenType] = text;
             }
@@ -1954,7 +1952,7 @@ namespace Antlr3.Tool
             composite.MaxTokenType = Math.Max( composite.MaxTokenType, tokenType );
             if ( index >= composite.TypeToTokenList.Count )
             {
-                composite.TypeToTokenList.setSize( index + 1 );
+                composite.TypeToTokenList.Resize( index + 1 );
             }
             string prevToken = (string)composite.TypeToTokenList[index];
             if ( prevToken == null || prevToken[0] == '\'' )
@@ -2000,7 +1998,7 @@ namespace Antlr3.Tool
             SetRuleAST( ruleName, tree );
             r.SetOptions( options, ruleToken );
             r.ArgActionAST = argActionAST;
-            composite.RuleIndexToRuleList.setSize( composite.RuleIndex + 1 );
+            composite.RuleIndexToRuleList.Resize( composite.RuleIndex + 1 );
             composite.RuleIndexToRuleList[composite.RuleIndex] = r;
             composite.RuleIndex++;
             if ( ruleName.StartsWith( SynpredRulePrefix ) )
@@ -3392,7 +3390,7 @@ namespace Antlr3.Tool
             Decision d = new Decision();
             d.decision = decision;
             d.grammar = this;
-            indexToDecision.setSize( NumberOfDecisions );
+            indexToDecision.Resize( NumberOfDecisions );
             indexToDecision[index] = d;
             return d;
         }

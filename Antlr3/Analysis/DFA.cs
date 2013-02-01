@@ -34,7 +34,7 @@ namespace Antlr3.Analysis
 {
     using System.Collections.Generic;
     using System.Linq;
-    using Antlr.Runtime.JavaExtensions;
+    using Antlr3.Misc;
     using Antlr3.Tool;
 
     using CodeGenerator = Antlr3.Codegen.CodeGenerator;
@@ -887,7 +887,7 @@ namespace Antlr3.Analysis
             _transition = new int[NumberOfStates][]; // Vector<Vector<int>>
             //transition.setSize( this.NumberOfStates );
             _transitionEdgeTables = new List<int?>( this.NumberOfStates ); // Vector<Vector<int>>
-            _transitionEdgeTables.setSize( this.NumberOfStates );
+            _transitionEdgeTables.Resize( this.NumberOfStates );
 
             // for each state in the DFA, fill relevant tables.
             IEnumerable<DFAState> it = null;
@@ -1449,7 +1449,7 @@ namespace Antlr3.Analysis
             DFAState n = new DFAState( this );
             n.StateNumber = _stateCounter;
             _stateCounter++;
-            _states.setSize( n.StateNumber + 1 );
+            _states.Resize( n.StateNumber + 1 );
             _states[n.StateNumber] = n; // track state num to state
             return n;
         }
