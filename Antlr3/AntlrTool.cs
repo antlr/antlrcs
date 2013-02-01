@@ -713,7 +713,7 @@ namespace Antlr3
                     else
                     {
                         ErrorManager.Error( ErrorManager.MSG_CANNOT_OPEN_FILE,
-                                           grammarFileName );
+                                           grammarFileName, e );
                     }
                 }
                 catch ( Exception e )
