@@ -80,6 +80,7 @@
 
   <ItemDefinitionGroup>
     <Antlr3>
+      <Generator>MSBuild:Compile</Generator>
       <TargetLanguage/>
       <DebugGrammar>false</DebugGrammar>
       <ProfileGrammar>false</ProfileGrammar>
