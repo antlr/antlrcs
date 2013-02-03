@@ -58,53 +58,29 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Antlr3 Include="SimpleExpression.g3">
-      <Generator>MSBuild:Compile</Generator>
-    </Antlr3>
-    <Antlr3 Include="FastSimpleExpression.g3">
-      <Generator>MSBuild:Compile</Generator>
-    </Antlr3>
-    <None Include="JavaCompat\Expr.g3">
-      <Generator>MSBuild:Compile</Generator>
-    </None>
+    <Antlr3 Include="SimpleExpression.g3" />
+    <Antlr3 Include="FastSimpleExpression.g3" />
+    <None Include="JavaCompat\Expr.g3" />
     <Antlr3 Include="BuildOptions\DebugGrammar.g3">
       <!--<GrammarOptions>-debug</GrammarOptions>-->
-      <Generator>MSBuild:Compile</Generator>
     </Antlr3>
     <Antlr3 Include="BuildOptions\DebugTreeGrammar.g3">
       <!--<GrammarOptions>-debug</GrammarOptions>-->
-      <Generator>MSBuild:Compile</Generator>
     </Antlr3>
-    <Antlr3 Include="StringTemplateOutput.g3">
-      <Generator>MSBuild:Compile</Generator>
-    </Antlr3>
-    <Antlr3 Include="TestActionFeatures.g3">
-      <Generator>MSBuild:Compile</Generator>
-    </Antlr3>
-    <Antlr3 Include="SemanticPredicateReduction.g3">
-      <Generator>MSBuild:Compile</Generator>
-    </Antlr3>
-    <Antlr3 Include="Composition\Reduce.g3">
-      <Generator>MSBuild:Compile</Generator>
-    </Antlr3>
-    <Antlr3 Include="Composition\Simplify.g3">
-      <Generator>MSBuild:Compile</Generator>
-    </Antlr3>
-    <Antlr3 Include="Composition\VecMath.g3">
-      <Generator>MSBuild:Compile</Generator>
-    </Antlr3>
+    <Antlr3 Include="StringTemplateOutput.g3" />
+    <Antlr3 Include="TestActionFeatures.g3" />
+    <Antlr3 Include="SemanticPredicateReduction.g3" />
+    <Antlr3 Include="Composition\Reduce.g3" />
+    <Antlr3 Include="Composition\Simplify.g3" />
+    <Antlr3 Include="Composition\VecMath.g3" />
     <AntlrAbstractGrammar Include="Composition\VecMath_Lexer.g3">
       <Generator>MSBuild:Compile</Generator>
     </AntlrAbstractGrammar>
     <AntlrAbstractGrammar Include="Composition\VecMath_Parser.g3">
       <Generator>MSBuild:Compile</Generator>
     </AntlrAbstractGrammar>
-    <Antlr3 Include="PreprocessorLexer.g3">
-      <Generator>MSBuild:Compile</Generator>
-    </Antlr3>
-    <Antlr3 Include="SynpredTreeParser.g3">
-      <Generator>MSBuild:Compile</Generator>
-    </Antlr3>
+    <Antlr3 Include="PreprocessorLexer.g3" />
+    <Antlr3 Include="SynpredTreeParser.g3" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Composition\Program.cs" />
@@ -176,7 +152,6 @@
   <ItemGroup>
     <None Include="BuildOptions\ProfileGrammar.g3">
       <!--<GrammarOptions>-profile</GrammarOptions>-->
-      <Generator>MSBuild:Compile</Generator>
     </None>
     <None Include="BuildOptions\ProfileGrammarLexerHelper.cs">
       <DependentUpon>ProfileGrammar.g3</DependentUpon>
@@ -184,14 +159,11 @@
     <None Include="BuildOptions\ProfileGrammarParserHelper.cs">
       <DependentUpon>ProfileGrammar.g3</DependentUpon>
     </None>
-    <None Include="TestExpressionFeatures.g3">
-      <Generator>MSBuild:Compile</Generator>
-    </None>
+    <None Include="TestExpressionFeatures.g3" />
   </ItemGroup>
   <ItemGroup>
     <None Include="BuildOptions\ProfileTreeGrammar.g3">
       <!--<GrammarOptions>-profile</GrammarOptions>-->
-      <Generator>MSBuild:Compile</Generator>
     </None>
     <None Include="BuildOptions\ProfileTreeGrammarHelper.cs">
       <DependentUpon>ProfileTreeGrammar.g3</DependentUpon>
