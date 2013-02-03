@@ -95,9 +95,7 @@
     <Compile Include="Tool\ToolTemplateGroupFile.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Antlr3 Include="Grammars\ActionTranslator.g3">
-      <Generator>MSBuild:Compile</Generator>
-    </Antlr3>
+    <Antlr3 Include="Grammars\ActionTranslator.g3" />
     <Compile Include="Codegen\ACyclicDFACodeGenerator.cs" />
     <Compile Include="Tool\Attribute.cs" />
     <Compile Include="Tool\AttributeScope.cs" />
@@ -109,25 +107,19 @@
     <Compile Include="Grammars\ActionTranslatorHelper.cs">
       <DependentUpon>ActionTranslator.g3</DependentUpon>
     </Compile>
-    <Antlr3 Include="Grammars\CodeGenTreeWalker.g3">
-      <Generator>MSBuild:Compile</Generator>
-    </Antlr3>
+    <Antlr3 Include="Grammars\CodeGenTreeWalker.g3" />
     <Compile Include="Grammars\CodeGenTreeWalkerHelper.cs">
       <DependentUpon>CodeGenTreeWalker.g3</DependentUpon>
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Antlr3 Include="Grammars\ActionAnalysisLexer.g3">
-      <Generator>MSBuild:Compile</Generator>
-    </Antlr3>
+    <Antlr3 Include="Grammars\ActionAnalysisLexer.g3" />
     <Compile Include="Grammars\ActionAnalysisLexerHelper.cs">
       <DependentUpon>ActionAnalysisLexer.g3</DependentUpon>
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Antlr3 Include="Grammars\ANTLR.g3">
-      <Generator>MSBuild:Compile</Generator>
-    </Antlr3>
+    <Antlr3 Include="Grammars\ANTLR.g3" />
     <Compile Include="Grammars\ANTLRParserHelper.cs">
       <DependentUpon>ANTLR.g3</DependentUpon>
     </Compile>
@@ -136,33 +128,25 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Antlr3 Include="Grammars\ANTLRTreePrinter.g3">
-      <Generator>MSBuild:Compile</Generator>
-    </Antlr3>
+    <Antlr3 Include="Grammars\ANTLRTreePrinter.g3" />
     <Compile Include="Grammars\ANTLRTreePrinterHelper.cs">
       <DependentUpon>ANTLRTreePrinter.g3</DependentUpon>
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Antlr3 Include="Grammars\AssignTokenTypesWalker.g3">
-      <Generator>MSBuild:Compile</Generator>
-    </Antlr3>
+    <Antlr3 Include="Grammars\AssignTokenTypesWalker.g3" />
     <Compile Include="Grammars\AssignTokenTypesWalkerHelper.cs">
       <DependentUpon>AssignTokenTypesWalker.g3</DependentUpon>
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Antlr3 Include="Grammars\DefineGrammarItemsWalker.g3">
-      <Generator>MSBuild:Compile</Generator>
-    </Antlr3>
+    <Antlr3 Include="Grammars\DefineGrammarItemsWalker.g3" />
     <Compile Include="Grammars\DefineGrammarItemsWalkerHelper.cs">
       <DependentUpon>DefineGrammarItemsWalker.g3</DependentUpon>
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Antlr3 Include="Grammars\TreeToNFAConverter.g3">
-      <Generator>MSBuild:Compile</Generator>
-    </Antlr3>
+    <Antlr3 Include="Grammars\TreeToNFAConverter.g3" />
     <Compile Include="Analysis\MachineProbe.cs" />
     <Compile Include="Extensions\EnumerableExtensions.cs" />
     <Compile Include="Extensions\ExceptionExtensions.cs" />
@@ -483,9 +467,7 @@
       <Link>Key.snk</Link>
     </None>
     <None Include="app.config" />
-    <Antlr3 Include="Grammars\LeftRecursiveRuleWalker.g3">
-      <Generator>MSBuild:Compile</Generator>
-    </Antlr3>
+    <Antlr3 Include="Grammars\LeftRecursiveRuleWalker.g3" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Reference\antlr3\runtime\CSharp3\Sources\Antlr3.Runtime.Debug\Antlr3.Runtime.Debug.csproj">
