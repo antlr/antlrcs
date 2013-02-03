@@ -109,15 +109,11 @@
     <Compile Include="ITemplateWriter.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Antlr3 Include="Compiler\CodeGenerator.g3">
-      <Generator>MSBuild:Compile</Generator>
-    </Antlr3>
+    <Antlr3 Include="Compiler\CodeGenerator.g3" />
     <Compile Include="Compiler\CodeGenerator.g3.cs">
       <DependentUpon>CodeGenerator.g3</DependentUpon>
     </Compile>
-    <Antlr3 Include="Compiler\Group.g3">
-      <Generator>MSBuild:Compile</Generator>
-    </Antlr3>
+    <Antlr3 Include="Compiler\Group.g3" />
     <Compile Include="Compiler\Group.g3.parser.cs">
       <DependentUpon>Group.g3</DependentUpon>
     </Compile>
@@ -125,9 +121,7 @@
       <DependentUpon>Group.g3</DependentUpon>
     </Compile>
     <AntlrTokens Include="Compiler\TemplateLexer.tokens" />
-    <Antlr3 Include="Compiler\TemplateParser.g3">
-      <Generator>MSBuild:Compile</Generator>
-    </Antlr3>
+    <Antlr3 Include="Compiler\TemplateParser.g3" />
     <Compile Include="Compiler\TemplateParser.g3.cs">
       <DependentUpon>TemplateParser.g3</DependentUpon>
     </Compile>

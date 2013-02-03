@@ -55,9 +55,7 @@
     <Compile Include="StringTemplateWriter.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Antlr3 Include="Language\AngleBracketTemplateLexer.g3">
-      <Generator>MSBuild:Compile</Generator>
-    </Antlr3>
+    <Antlr3 Include="Language\AngleBracketTemplateLexer.g3" />
     <Compile Include="ITypeProxyFactory.cs" />
     <Compile Include="JavaExtensions\AntlrJavaExtensions.cs" />
     <Compile Include="JavaExtensions\DictionaryExtensions.cs" />
@@ -65,9 +63,7 @@
     <Compile Include="Language\AngleBracketTemplateLexerHelper.cs">
       <DependentUpon>AngleBracketTemplateLexer.g3</DependentUpon>
     </Compile>
-    <Antlr3 Include="Language\Template.g3">
-      <Generator>MSBuild:Compile</Generator>
-    </Antlr3>
+    <Antlr3 Include="Language\Template.g3" />
     <Compile Include="Language\ASTExpr.cs" />
     <Compile Include="Language\Cat.cs" />
     <Compile Include="Language\ChunkToken.cs" />
@@ -86,36 +82,28 @@
     <Compile Include="Language\TemplateParserHelper.cs">
       <DependentUpon>Template.g3</DependentUpon>
     </Compile>
-    <Antlr3 Include="Language\Interface.g3">
-      <Generator>MSBuild:Compile</Generator>
-    </Antlr3>
+    <Antlr3 Include="Language\Interface.g3" />
     <Compile Include="Language\InterfaceLexerHelper.cs">
       <DependentUpon>Interface.g3</DependentUpon>
     </Compile>
     <Compile Include="Language\InterfaceParserHelper.cs">
       <DependentUpon>Interface.g3</DependentUpon>
     </Compile>
-    <Antlr3 Include="Language\Group.g3">
-      <Generator>MSBuild:Compile</Generator>
-    </Antlr3>
+    <Antlr3 Include="Language\Group.g3" />
     <Compile Include="Language\GroupLexerHelper.cs">
       <DependentUpon>Group.g3</DependentUpon>
     </Compile>
     <Compile Include="Language\GroupParserHelper.cs">
       <DependentUpon>Group.g3</DependentUpon>
     </Compile>
-    <Antlr3 Include="Language\Action.g3">
-      <Generator>MSBuild:Compile</Generator>
-    </Antlr3>
+    <Antlr3 Include="Language\Action.g3" />
     <Compile Include="Language\ActionLexerHelper.cs">
       <DependentUpon>Action.g3</DependentUpon>
     </Compile>
     <Compile Include="Language\ActionParserHelper.cs">
       <DependentUpon>Action.g3</DependentUpon>
     </Compile>
-    <Antlr3 Include="Language\ActionEvaluator.g3">
-      <Generator>MSBuild:Compile</Generator>
-    </Antlr3>
+    <Antlr3 Include="Language\ActionEvaluator.g3" />
     <Compile Include="Language\ActionEvaluatorHelper.cs">
       <DependentUpon>ActionEvaluator.g3</DependentUpon>
     </Compile>
