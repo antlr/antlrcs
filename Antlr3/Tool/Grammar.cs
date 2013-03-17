@@ -1199,7 +1199,7 @@ namespace Antlr3.Tool
         {
             if ( Tool.internalOption_PrintGrammarTree )
             {
-                Console.Out.WriteLine( grammarTree.ToStringList() );
+                Console.Out.WriteLine( grammarTree.ToStringTree() );
             }
 
             // DEFINE RULES
