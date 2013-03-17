@@ -386,6 +386,25 @@ namespace AntlrUnitTests
             Assert.AreEqual( result, expecting );
         }
 
+        /**
+         * This case is responsible for antlr/antlr4#153.
+         * https://github.com/antlr/antlr4/issues/153
+         * <p/>
+         * Resolution back-ported from V4.
+         */
+        [TestMethod][TestCategory(TestCategories.Antlr3)]
+        public void TestMergeWhereAdditionMergesThreeExistingIntervals()
+        {
+            IntervalSet s = new IntervalSet();
+            s.Add(0);
+            s.Add(3);
+            s.Add(5);
+            s.Add(0, 7);
+            String expecting = "0..7";
+            String result = s.ToString();
+            Assert.AreEqual(expecting, result);
+        }
+
         [TestMethod][TestCategory(TestCategories.Antlr3)]
         public void TestMergeWithDoubleOverlap() /*throws Exception*/ {
             IntervalSet s = IntervalSet.Of( 1, 10 );

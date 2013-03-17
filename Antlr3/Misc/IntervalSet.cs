@@ -180,21 +180,21 @@ namespace Antlr3.Misc
                     intervals[i] = bigger;
                     // make sure we didn't just create an interval that
                     // should be merged with next interval in list
-                    if ( i < intervals.Count - 1 )
+                    while ( i < intervals.Count - 1 )
                     {
                         i++;
                         Interval next = intervals[i];
                         //Interval next = (Interval)iter.next();
-                        if ( bigger.Adjacent( next ) || !bigger.Disjoint( next ) )
-                        {
-                            // if we bump up against or overlap next, merge
-                            //iter.remove();   // remove this one
-                            intervals.RemoveAt( i );
-                            //iter.previous(); // move backwards to what we just set
-                            i--;
-                            //iter.set( bigger.union( next ) ); // set to 3 merged ones
-                            intervals[i] = bigger.Union( next );
-                        }
+                        if ( !bigger.Adjacent( next ) && bigger.Disjoint( next ) )
+                            break;
+
+                        // if we bump up against or overlap next, merge
+                        //iter.remove();   // remove this one
+                        intervals.RemoveAt( i );
+                        //iter.previous(); // move backwards to what we just set
+                        i--;
+                        //iter.set( bigger.union( next ) ); // set to 3 merged ones
+                        intervals[i] = bigger.Union( next );
                     }
                     return;
                 }

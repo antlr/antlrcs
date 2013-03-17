@@ -584,11 +584,6 @@ namespace Antlr3.Tool
                 child.enclosingRuleName = rname;
         }
 
-        internal string ToStringList()
-        {
-            throw new System.NotImplementedException();
-        }
-
         /** Track start/stop token for subtree root created for a rule.
          *  Only works with Tree nodes.  For rules that match nothing,
          *  seems like this will yield start=i and stop=i-1 in a nil node.
