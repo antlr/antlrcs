@@ -149,9 +149,9 @@ namespace Antlr.Runtime.Tree
 
         #endregion
 
-        public virtual void Reset()
+        public override void Reset()
         {
-            base.Clear();
+            base.Reset();
             _it.Reset();
             _hasNilRoot = false;
             _level = 0;

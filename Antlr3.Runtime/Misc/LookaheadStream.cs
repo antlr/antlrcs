@@ -90,9 +90,9 @@ namespace Antlr.Runtime.Misc
             }
         }
 
-        public override void Clear()
+        public virtual void Reset()
         {
-            base.Clear();
+            Clear();
             _currentElementIndex = 0;
             _p = 0;
             _previousElement = null;
