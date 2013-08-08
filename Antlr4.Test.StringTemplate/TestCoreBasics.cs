@@ -1221,5 +1221,20 @@ namespace Antlr4.Test.StringTemplate
             Template st = new Template(template);
             st.impl.Dump();
         }
+
+        [TestMethod]
+        [TestCategory(TestCategories.ST4)]
+        public void TestPrototype()
+        {
+            Template prototype = new Template("simple template");
+
+            Template st = new Template(prototype);
+            st.Add("arg1", "value");
+            Assert.AreEqual("simple template", st.Render());
+
+            Template st2 = new Template(prototype);
+            st2.Add("arg1", "value");
+            Assert.AreEqual("simple template", st2.Render());
+        }
     }
 }
