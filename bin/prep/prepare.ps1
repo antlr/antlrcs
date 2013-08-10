@@ -8,6 +8,7 @@ if (!(Test-Path $SolutionPath)) {
 }
 
 $BuildConfig = "Release"
+$DebugBuild = false
 
 # clean up from any previous builds
 $CleanItems = "Runtime", "Tool", "Bootstrap", "ST3", "ST4"
@@ -35,7 +36,13 @@ $ArchivePath = ".\Backup\Bootstrap-" + [System.IO.Path]::GetFileNameWithoutExten
 .\7z.exe a -r $ArchivePath "..\Bootstrap\*"
 
 # copy the new bootstrap files
-$BootstrapBinaries = "Antlr3.exe", "Antlr3.exe.config", "Antlr3.Runtime.dll", "Antlr3.Runtime.Debug.dll", "Antlr4.StringTemplate.dll", "Antlr4.StringTemplate.Visualizer.dll", "Antlr3.targets", "Antlr3.props", "AntlrBuildTask.dll"
+if ($DebugBuild) {
+  $BootstrapBinaries = "Antlr3.exe", "Antlr3.exe.config", "Antlr3.Runtime.dll", "Antlr3.Runtime.Debug.dll", "Antlr4.StringTemplate.dll", "Antlr4.StringTemplate.Visualizer.dll", "Antlr3.targets", "Antlr3.props", "AntlrBuildTask.dll"
+}
+else {
+  $BootstrapBinaries = "Antlr3.exe", "Antlr3.exe.config", "Antlr3.Runtime.dll", "Antlr3.Runtime.Debug.dll", "Antlr4.StringTemplate.dll", "Antlr3.targets", "Antlr3.props", "AntlrBuildTask.dll"
+}
+
 $BootstrapBinaries | ForEach-Object {
     copy -force "..\$BuildConfig\$_" "..\Bootstrap"
     if ($LASTEXITCODE -ne 0) {
@@ -114,7 +121,9 @@ copy "..\$BuildConfig\Antlr3.exe.config" ".\Tool"
 copy "..\$BuildConfig\Antlr3.Runtime.dll" ".\Tool"
 copy "..\$BuildConfig\Antlr3.Runtime.Debug.dll" ".\Tool"
 copy "..\$BuildConfig\Antlr4.StringTemplate.dll" ".\Tool"
-copy "..\$BuildConfig\Antlr4.StringTemplate.Visualizer.dll" ".\Tool"
+if ($DebugBuild) {
+  copy "..\$BuildConfig\Antlr4.StringTemplate.Visualizer.dll" ".\Tool"
+}
 copy "..\$BuildConfig\Antlr3.props" ".\Tool"
 copy "..\$BuildConfig\Antlr3.targets" ".\Tool"
 copy "..\$BuildConfig\AntlrBuildTask.dll" ".\Tool"
@@ -127,13 +136,17 @@ copy "..\$BuildConfig\Antlr3.pdb" ".\Tool"
 copy "..\$BuildConfig\Antlr3.Runtime.pdb" ".\Tool"
 copy "..\$BuildConfig\Antlr3.Runtime.Debug.pdb" ".\Tool"
 copy "..\$BuildConfig\Antlr4.StringTemplate.pdb" ".\Tool"
-copy "..\$BuildConfig\Antlr4.StringTemplate.Visualizer.pdb" ".\Tool"
+if ($DebugBuild) {
+  copy "..\$BuildConfig\Antlr4.StringTemplate.Visualizer.pdb" ".\Tool"
+}
 copy "..\$BuildConfig\AntlrBuildTask.pdb" ".\Tool"
 copy "..\$BuildConfig\Antlr3.xml" ".\Tool"
 copy "..\$BuildConfig\Antlr3.Runtime.xml" ".\Tool"
 copy "..\$BuildConfig\Antlr3.Runtime.Debug.xml" ".\Tool"
 copy "..\$BuildConfig\Antlr4.StringTemplate.xml" ".\Tool"
-copy "..\$BuildConfig\Antlr4.StringTemplate.Visualizer.xml" ".\Tool"
+if ($DebugBuild) {
+  copy "..\$BuildConfig\Antlr4.StringTemplate.Visualizer.xml" ".\Tool"
+}
 copy "..\$BuildConfig\AntlrBuildTask.xml" ".\Tool"
 
 mkdir "Tool\Codegen"

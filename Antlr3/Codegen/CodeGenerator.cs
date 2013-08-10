@@ -37,7 +37,9 @@ namespace Antlr3.Codegen
     using Antlr3.Analysis;
     using Antlr3.Extensions;
     using Antlr3.Grammars;
+#if DEBUG
     using Antlr4.StringTemplate.Visualizer.Extensions;
+#endif
 
     using Activator = System.Activator;
     using ANTLRLexer = Antlr3.Grammars.ANTLRLexer;
@@ -121,7 +123,9 @@ namespace Antlr3.Codegen
         public static int MaxSwitchCaseLabels = DefaultMaxSwitchCaseLabels;
         public static int MinSwitchAlts = DefaultMinSwitchAlts;
         public static int MaxAcyclicDfaStatesInline = DefaultMaxAcyclicDfaStatesInline;
+#if DEBUG
         public static bool LaunchTemplateInspector = false;
+#endif
 
         public bool GenerateSwitchesWhenPossible = true;
 
@@ -597,7 +601,9 @@ namespace Antlr3.Codegen
             if (string.IsNullOrEmpty(name) && superGroup == null)
             {
                 TemplateGroup group = new ToolTemplateGroupFile(groupFileName);
+#if DEBUG
                 group.TrackCreationEvents = CodeGenerator.LaunchTemplateInspector;
+#endif
                 group.IterateAcrossValues = true;
                 _coreTemplates[language] = group;
                 return group;
@@ -605,7 +611,9 @@ namespace Antlr3.Codegen
             else
             {
                 TemplateGroup group = new ToolTemplateGroupFile(groupFileName);
+#if DEBUG
                 group.TrackCreationEvents = CodeGenerator.LaunchTemplateInspector;
+#endif
                 group.IterateAcrossValues = true;
                 group.ImportTemplates(superGroup);
 
@@ -835,12 +843,14 @@ namespace Antlr3.Codegen
             if (ErrorManager.GetErrorState().errors > 0)
                 return null;
 
+#if DEBUG
             if (CodeGenerator.LaunchTemplateInspector)
             {
                 outputFileST.Visualize();
                 if (_templates.IsDefined("headerFile"))
                     headerFileST.Visualize();
             }
+#endif
 
             // WRITE FILES
             try

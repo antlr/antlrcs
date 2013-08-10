@@ -364,9 +364,11 @@ namespace Antlr3
                     internalOption_watchNFAConversion = true;
                     break;
 
+#if DEBUG
                 case "-XdbgST":
                     CodeGenerator.LaunchTemplateInspector = true;
                     break;
+#endif
 
                 case "-Xmaxinlinedfastates":
                     if (i + 1 >= args.Length)
@@ -971,7 +973,9 @@ namespace Antlr3
             Console.Error.WriteLine("  -Xnomergestopstates     do not merge stop states");
             Console.Error.WriteLine("  -Xdfaverbose            generate DFA states in DOT with NFA configs");
             Console.Error.WriteLine("  -Xwatchconversion       print a message for each NFA before converting");
+#if DEBUG
             Console.Error.WriteLine("  -XdbgST                 put tags at start/stop of all templates in output");
+#endif
             Console.Error.WriteLine("  -Xnfastates             for nondeterminisms, list NFA states for each path");
             Console.Error.WriteLine("  -Xm m                   max number of rule invocations during conversion           [" + NFAContext.MAX_SAME_RULE_INVOCATIONS_PER_NFA_CONFIG_STACK + "]");
             Console.Error.WriteLine("  -Xmaxdfaedges m         max \"comfortable\" number of edges for single DFA state     [" + DFA.MAX_STATE_TRANSITIONS_FOR_TABLE + "]");
