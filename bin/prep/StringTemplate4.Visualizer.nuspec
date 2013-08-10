@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
+  <metadata>
+    <id>StringTemplate4.Visualizer</id>
+    <version>0.0.0</version>
+    <authors>Sam Harwell, Terence Parr</authors>
+    <owners>Sam Harwell</owners>
+    <description>Provides the visualizer runtime for StringTemplate 4.</description>
+    <language>en-us</language>
+    <projectUrl>https://github.com/sharwell/antlrcs</projectUrl>
+    <licenseUrl>https://raw.github.com/sharwell/antlrcs/master/bin/prep/LICENSE.txt</licenseUrl>
+    <iconUrl>https://raw.github.com/antlr/website-antlr4/master/images/icons/antlr.png</iconUrl>
+    <copyright>Copyright © Sam Harwell 2013</copyright>
+    <releaseNotes>https://github.com/sharwell/antlrcs/releases/v$ANTLRVersion$</releaseNotes>
+    <requireLicenseAcceptance>true</requireLicenseAcceptance>
+    <tags>stringtemplate st4 stringtemplate4 stviz template</tags>
+    <title>StringTemplate 4 Visualizer</title>
+    <summary>Provides the visualizer runtime for StringTemplate 4.</summary>
+    <dependencies>
+      <dependency id="Antlr3.Runtime" version="$ANTLRVersion$" />
+      <dependency id="StringTemplate4" version="$version$" />
+    </dependencies>
+  </metadata>
+  <files>
+    <!-- Runtime Libraries -->
+
+    <file src="ST4\Antlr4.StringTemplate.Visualizer.dll" target="lib\net35-client"/>
+    <file src="ST4\Antlr4.StringTemplate.Visualizer.pdb" target="lib\net35-client"/>
+    <file src="ST4\Antlr4.StringTemplate.Visualizer.xml" target="lib\net35-client"/>
+
+    <!-- Source Code -->
+
+    <file exclude="..\..\Antlr4.StringTemplate.Visualizer\obj\**\*.cs" src="..\..\Antlr4.StringTemplate.Visualizer\**\*.cs" target="src"/>
+    <file src="..\..\Antlr4.StringTemplate.Visualizer\**\*.xaml" target="src"/>
+    <file src="..\..\Antlr4.StringTemplate.Visualizer\obj\$Configuration$\**\*.cs" target="src\obj\$Configuration$"/>
+    <file src="..\..\Antlr4.StringTemplate.Visualizer\obj\$Configuration$\**\*.tokens" target="src\obj\$Configuration$"/>
+  </files>
+</package>

@@ -165,6 +165,12 @@ namespace Antlr3.Build.Tasks
             AppDomain domain = null;
             bool success;
 
+            if (!Path.IsPathRooted(AntlrToolPath))
+                AntlrToolPath = Path.Combine(Path.GetDirectoryName(BuildEngine.ProjectFileOfTaskNode), AntlrToolPath);
+
+            if (!Path.IsPathRooted(BuildTaskPath))
+                BuildTaskPath = Path.Combine(Path.GetDirectoryName(BuildEngine.ProjectFileOfTaskNode), BuildTaskPath);
+
             try
             {
                 domain = GetAntlrTaskAppDomain();

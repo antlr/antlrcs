@@ -35,7 +35,7 @@ $ArchivePath = ".\Backup\Bootstrap-" + [System.IO.Path]::GetFileNameWithoutExten
 .\7z.exe a -r $ArchivePath "..\Bootstrap\*"
 
 # copy the new bootstrap files
-$BootstrapBinaries = "Antlr3.exe", "Antlr3.exe.config", "Antlr3.Runtime.dll", "Antlr3.Runtime.Debug.dll", "Antlr4.StringTemplate.dll", "Antlr4.StringTemplate.Visualizer.dll", "Antlr3.targets", "AntlrBuildTask.dll"
+$BootstrapBinaries = "Antlr3.exe", "Antlr3.exe.config", "Antlr3.Runtime.dll", "Antlr3.Runtime.Debug.dll", "Antlr4.StringTemplate.dll", "Antlr4.StringTemplate.Visualizer.dll", "Antlr3.targets", "Antlr3.props", "AntlrBuildTask.dll"
 $BootstrapBinaries | ForEach-Object {
     copy -force "..\$BuildConfig\$_" "..\Bootstrap"
     if ($LASTEXITCODE -ne 0) {
@@ -106,6 +106,7 @@ mkdir ST3
 mkdir ST4
 copy "..\$BuildConfig\Antlr3.Runtime.dll" ".\Runtime"
 copy "..\$BuildConfig\Antlr3.Runtime.pdb" ".\Runtime"
+copy "..\$BuildConfig\Antlr3.Runtime.xml" ".\Runtime"
 copy "LICENSE.txt" ".\Runtime"
 
 copy "..\$BuildConfig\Antlr3.exe" ".\Tool"
@@ -114,6 +115,7 @@ copy "..\$BuildConfig\Antlr3.Runtime.dll" ".\Tool"
 copy "..\$BuildConfig\Antlr3.Runtime.Debug.dll" ".\Tool"
 copy "..\$BuildConfig\Antlr4.StringTemplate.dll" ".\Tool"
 copy "..\$BuildConfig\Antlr4.StringTemplate.Visualizer.dll" ".\Tool"
+copy "..\$BuildConfig\Antlr3.props" ".\Tool"
 copy "..\$BuildConfig\Antlr3.targets" ".\Tool"
 copy "..\$BuildConfig\AntlrBuildTask.dll" ".\Tool"
 copy "LICENSE.txt" ".\Tool"
@@ -127,6 +129,12 @@ copy "..\$BuildConfig\Antlr3.Runtime.Debug.pdb" ".\Tool"
 copy "..\$BuildConfig\Antlr4.StringTemplate.pdb" ".\Tool"
 copy "..\$BuildConfig\Antlr4.StringTemplate.Visualizer.pdb" ".\Tool"
 copy "..\$BuildConfig\AntlrBuildTask.pdb" ".\Tool"
+copy "..\$BuildConfig\Antlr3.xml" ".\Tool"
+copy "..\$BuildConfig\Antlr3.Runtime.xml" ".\Tool"
+copy "..\$BuildConfig\Antlr3.Runtime.Debug.xml" ".\Tool"
+copy "..\$BuildConfig\Antlr4.StringTemplate.xml" ".\Tool"
+copy "..\$BuildConfig\Antlr4.StringTemplate.Visualizer.xml" ".\Tool"
+copy "..\$BuildConfig\AntlrBuildTask.xml" ".\Tool"
 
 mkdir "Tool\Codegen"
 mkdir "Tool\Targets"
@@ -134,6 +142,7 @@ mkdir "Tool\Tool"
 copy -r "..\$BuildConfig\Codegen\*" ".\Tool\Codegen"
 copy -r "..\$BuildConfig\Targets\*.dll" ".\Tool\Targets"
 copy -r "..\$BuildConfig\Targets\*.pdb" ".\Tool\Targets"
+copy -r "..\$BuildConfig\Targets\*.xml" ".\Tool\Targets"
 copy -r "..\$BuildConfig\Tool\*" ".\Tool\Tool"
 
 mkdir "Bootstrap\Codegen\Templates\CSharp2"
@@ -153,6 +162,8 @@ copy "..\..\Antlr3.StringTemplate\bin\$BuildConfig\Antlr3.StringTemplate.dll" ".
 copy "..\..\Antlr3.StringTemplate\bin\$BuildConfig\Antlr3.Runtime.dll" ".\ST3"
 copy "..\..\Antlr3.StringTemplate\bin\$BuildConfig\Antlr3.StringTemplate.pdb" ".\ST3"
 copy "..\..\Antlr3.StringTemplate\bin\$BuildConfig\Antlr3.Runtime.pdb" ".\ST3"
+copy "..\..\Antlr3.StringTemplate\bin\$BuildConfig\Antlr3.StringTemplate.xml" ".\ST3"
+copy "..\..\Antlr3.StringTemplate\bin\$BuildConfig\Antlr3.Runtime.xml" ".\ST3"
 copy "LICENSE.txt" ".\ST3"
 
 # ST4 dist
@@ -162,11 +173,14 @@ copy "..\$BuildConfig\Antlr4.StringTemplate.Visualizer.dll" ".\ST4"
 copy "..\$BuildConfig\Antlr3.Runtime.pdb" ".\ST4"
 copy "..\$BuildConfig\Antlr4.StringTemplate.pdb" ".\ST4"
 copy "..\$BuildConfig\Antlr4.StringTemplate.Visualizer.pdb" ".\ST4"
+copy "..\$BuildConfig\Antlr3.Runtime.xml" ".\ST4"
+copy "..\$BuildConfig\Antlr4.StringTemplate.xml" ".\ST4"
+copy "..\$BuildConfig\Antlr4.StringTemplate.Visualizer.xml" ".\ST4"
 copy "LICENSE.txt" ".\ST4"
 
 # compress the distributable packages
-$AntlrVersion = "special-3.5.0.2"
-$STVersion = "special-4.0.7.1"
+$AntlrVersion = "3.5.0.3-alpha001"
+$STVersion = "4.0.7.2-alpha001"
 
 $ArchivePath = ".\dist\antlr-dotnet-csharpbootstrap-" + $AntlrVersion + ".7z"
 .\7z.exe a -r -mx9 $ArchivePath ".\Bootstrap\*"
@@ -178,3 +192,16 @@ $ArchivePath = ".\dist\antlr-dotnet-st3-" + $AntlrVersion + ".7z"
 .\7z.exe a -r -mx9 $ArchivePath ".\ST3\*"
 $ArchivePath = ".\dist\antlr-dotnet-st4-" + $STVersion + ".7z"
 .\7z.exe a -r -mx9 $ArchivePath ".\ST4\*"
+
+# Build the NuGet packages
+
+if (-not (Test-Path nuget)) {
+  mkdir "nuget"
+}
+
+.\NuGet.exe pack .\Antlr3.Runtime.nuspec -OutputDirectory nuget -Prop Configuration=Release -Version $AntlrVersion -Prop ANTLRVersion=$AntlrVersion -Prop STVersion=$STVersion -Symbols
+.\NuGet.exe pack .\Antlr3.Runtime.Debug.nuspec -OutputDirectory nuget -Prop Configuration=Release -Version $AntlrVersion -Prop ANTLRVersion=$AntlrVersion -Prop STVersion=$STVersion -Symbols
+.\NuGet.exe pack .\Antlr3.nuspec -OutputDirectory nuget -Prop Configuration=Release -Version $AntlrVersion -Prop ANTLRVersion=$AntlrVersion -Prop STVersion=$STVersion -Symbols
+.\NuGet.exe pack .\StringTemplate3.nuspec -OutputDirectory nuget -Prop Configuration=Release -Version $AntlrVersion -Prop ANTLRVersion=$AntlrVersion -Prop STVersion=$STVersion -Symbols
+.\NuGet.exe pack .\StringTemplate4.nuspec -OutputDirectory nuget -Prop Configuration=Release -Version $STVersion -Prop ANTLRVersion=$AntlrVersion -Prop STVersion=$STVersion -Symbols
+.\NuGet.exe pack .\StringTemplate4.Visualizer.nuspec -OutputDirectory nuget -Prop Configuration=Release -Version $STVersion -Prop ANTLRVersion=$AntlrVersion -Prop STVersion=$STVersion -Symbols
