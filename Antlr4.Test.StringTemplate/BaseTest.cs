@@ -142,6 +142,7 @@ namespace Antlr4.Test.StringTemplate
         {
             public int id;
             public string name;
+            public static string StaticField = "field_value";
 
             public User(int id, string name)
             {
@@ -170,6 +171,19 @@ namespace Antlr4.Test.StringTemplate
                 get
                 {
                     return name;
+                }
+            }
+
+            public static string GetStaticMethod()
+            {
+                return "method_result";
+            }
+
+            public static string StaticProperty
+            {
+                get
+                {
+                    return "property_result";
                 }
             }
         }
