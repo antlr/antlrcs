@@ -104,6 +104,31 @@ namespace Antlr4.Test.StringTemplate
             Assert.AreEqual(expected, result);
         }
 
+        [TestMethod]
+        [TestCategory(TestCategories.ST4)]
+        public void TestEmptyGroupImportGroupFileSameDir()
+        {
+            /*
+            dir
+                group1.stg		that imports group2.stg in same dir with just filename
+                group2.stg		has c()
+             */
+            string dir = tmpdir;
+            string groupFile =
+                "import \"group2.stg\"\n";
+            writeFile(dir, "group1.stg", groupFile);
+
+            groupFile =
+                "c() ::= \"g2 c\"\n";
+            writeFile(dir, "group2.stg", groupFile);
+
+            TemplateGroup group1 = new TemplateGroupFile(Path.Combine(dir, "group1.stg"));
+            Template st = group1.GetInstanceOf("c"); // should see c()
+            string expected = "g2 c";
+            string result = st.Render();
+            Assert.AreEqual(expected, result);
+        }
+
         [TestMethod][TestCategory(TestCategories.ST4)]
         public void TestImportGroupFileSameDir()
         {

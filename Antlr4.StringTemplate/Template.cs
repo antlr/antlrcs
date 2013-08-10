@@ -195,7 +195,12 @@ namespace Antlr4.StringTemplate
                 throw new ArgumentNullException("prototype");
 
             this.impl = prototype.impl;
-            this.locals = shadowLocals || prototype.locals == null ? prototype.locals : (object[])prototype.locals.Clone();
+
+            if (shadowLocals && prototype.locals != null)
+                this.locals = (object[])prototype.locals.Clone();
+            else if (impl.FormalArguments != null && impl.FormalArguments.Count > 0)
+                this.locals = new object[impl.FormalArguments.Count];
+
             this.groupThatCreatedThisInstance = prototype.groupThatCreatedThisInstance;
         }
 
