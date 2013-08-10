@@ -35,16 +35,21 @@ namespace Antlr3.ST.Extensions
     using System;
 
     using BindingFlags = System.Reflection.BindingFlags;
+    using MethodInfo = System.Reflection.MethodInfo;
     using TextWriter = System.IO.TextWriter;
 
     public static class ExceptionExtensions
     {
-        private static readonly Action<Exception> _internalPreserveStackTrace =
-            (Action<Exception>)Delegate.CreateDelegate(
-                typeof(Action<Exception>),
-                typeof(Exception).GetMethod(
-                    "InternalPreserveStackTrace",
-                    BindingFlags.Instance | BindingFlags.NonPublic));
+        private static readonly Action<Exception> _internalPreserveStackTrace = GetInternalPreserveStackTraceDelegate();
+
+        private static Action<Exception> GetInternalPreserveStackTraceDelegate()
+        {
+            MethodInfo methodInfo = typeof(Exception).GetMethod("InternalPreserveStackTrace", BindingFlags.Instance | BindingFlags.NonPublic);
+            if (methodInfo == null)
+                return null;
+
+            return (Action<Exception>)Delegate.CreateDelegate(typeof(Action<Exception>), methodInfo);
+        }
 
 #pragma warning disable 618
         public static bool IsCritical(this Exception e)
@@ -65,7 +70,8 @@ namespace Antlr3.ST.Extensions
 
         public static void PreserveStackTrace(this Exception e)
         {
-            _internalPreserveStackTrace(e);
+            if (_internalPreserveStackTrace != null)
+                _internalPreserveStackTrace(e);
         }
 
         internal static void PrintStackTrace(this Exception e)
