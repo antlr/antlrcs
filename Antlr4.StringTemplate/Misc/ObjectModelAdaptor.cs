@@ -122,6 +122,13 @@ namespace Antlr4.StringTemplate.Misc
                         method = type.GetMethod("get_" + name, Type.EmptyTypes);
                 }
 
+                if (method == null)
+                {
+                    method = type.GetMethod(methodSuffix, Type.EmptyTypes);
+                    if (method == null && checkOriginalName)
+                        method = type.GetMethod(name, Type.EmptyTypes);
+                }
+
                 if (method != null)
                 {
                     accessor = BuildAccessor(method);
@@ -173,13 +180,20 @@ namespace Antlr4.StringTemplate.Misc
 
         private static System.Func<object, object> BuildAccessor(MethodInfo method)
         {
-            ParameterExpression obj = Expression.Parameter(typeof(object), "obj");
+
+            ParameterExpression obj = Expression.Parameter(typeof (object), "obj");
+            UnaryExpression unaryExpression = null;
+
+            if (!method.IsStatic)
+            {
+                unaryExpression = Expression.Convert(obj, method.DeclaringType);
+            }
+
             Expression<System.Func<object, object>> expr = Expression.Lambda<System.Func<object, object>>(
                 Expression.Convert(
                     Expression.Call(
-                        Expression.Convert(obj, method.DeclaringType),
-                        method),
-                    typeof(object)),
+                        unaryExpression, method),
+                    typeof (object)),
                 obj);
 
             return expr.Compile();

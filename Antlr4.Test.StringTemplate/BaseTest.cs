@@ -172,6 +172,16 @@ namespace Antlr4.Test.StringTemplate
                     return name;
                 }
             }
+
+            public static string StaticMethod()
+            {
+                return "method_result";
+            }
+
+            public static string StaticProperty
+            {
+                get { return "property_result"; } 
+            }
         }
 
         public class HashableUser : User
