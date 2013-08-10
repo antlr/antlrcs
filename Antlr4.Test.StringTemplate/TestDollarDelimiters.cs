@@ -100,5 +100,52 @@ namespace Antlr4.Test.StringTemplate
             string result = b.Render();
             Assert.AreEqual(expecting, result);
         }
+
+        /// <summary>
+        /// This is part of a regression test for antlr/stringtemplate4#46.
+        /// </summary>
+        /// <seealso href="https://github.com/antlr/stringtemplate4/issues/46">STGroupString does not honor delimeter stanza in a string definition</seealso>
+        [TestMethod]
+        [TestCategory(TestCategories.ST4)]
+        public void TestDelimitersClause()
+        {
+            string templates =
+                    "delimiters \"$\", \"$\"" + newline +
+                    "method(name) ::= <<" + newline +
+                    "$stat(name)$" + newline +
+                    ">>" + newline +
+                    "stat(name,value=\"99\") ::= \"x=$value$; // $name$\"" + newline
+                    ;
+            writeFile(tmpdir, "group.stg", templates);
+            TemplateGroup group = new TemplateGroupFile(tmpdir + "/group.stg");
+            Template b = group.GetInstanceOf("method");
+            b.Add("name", "foo");
+            string expecting = "x=99; // foo";
+            string result = b.Render();
+            Assert.AreEqual(expecting, result);
+        }
+
+        /// <summary>
+        /// This is part of a regression test for antlr/stringtemplate4#46.
+        /// </summary>
+        /// <seealso href="https://github.com/antlr/stringtemplate4/issues/46">STGroupString does not honor delimeter stanza in a string definition</seealso>
+        [TestMethod]
+        [TestCategory(TestCategories.ST4)]
+        public void TestDelimitersClauseInGroupString()
+        {
+            string templates =
+                    "delimiters \"$\", \"$\"" + newline +
+                    "method(name) ::= <<" + newline +
+                    "$stat(name)$" + newline +
+                    ">>" + newline +
+                    "stat(name,value=\"99\") ::= \"x=$value$; // $name$\"" + newline
+                    ;
+            TemplateGroup group = new TemplateGroupString(templates);
+            Template b = group.GetInstanceOf("method");
+            b.Add("name", "foo");
+            string expecting = "x=99; // foo";
+            string result = b.Render();
+            Assert.AreEqual(expecting, result);
+        }
     }
 }
