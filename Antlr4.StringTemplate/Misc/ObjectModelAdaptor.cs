@@ -174,11 +174,10 @@ namespace Antlr4.StringTemplate.Misc
         private static System.Func<object, object> BuildAccessor(MethodInfo method)
         {
             ParameterExpression obj = Expression.Parameter(typeof(object), "obj");
+            UnaryExpression instance = !method.IsStatic ? Expression.Convert(obj, method.DeclaringType) : null;
             Expression<System.Func<object, object>> expr = Expression.Lambda<System.Func<object, object>>(
                 Expression.Convert(
-                    Expression.Call(
-                        Expression.Convert(obj, method.DeclaringType),
-                        method),
+                    Expression.Call(instance, method),
                     typeof(object)),
                 obj);
 
@@ -191,12 +190,10 @@ namespace Antlr4.StringTemplate.Misc
         private static System.Func<object, object> BuildAccessor(MethodInfo method, string argument)
         {
             ParameterExpression obj = Expression.Parameter(typeof(object), "obj");
+            UnaryExpression instance = !method.IsStatic ? Expression.Convert(obj, method.DeclaringType) : null;
             Expression<System.Func<object, object>> expr = Expression.Lambda<System.Func<object, object>>(
                 Expression.Convert(
-                    Expression.Call(
-                        Expression.Convert(obj, method.DeclaringType),
-                        method,
-                        Expression.Constant(argument)),
+                    Expression.Call(instance, method, Expression.Constant(argument)),
                     typeof(object)),
                 obj);
 
@@ -206,11 +203,10 @@ namespace Antlr4.StringTemplate.Misc
         private static System.Func<object, object> BuildAccessor(FieldInfo field)
         {
             ParameterExpression obj = Expression.Parameter(typeof(object), "obj");
+            UnaryExpression instance = !field.IsStatic ? Expression.Convert(obj, field.DeclaringType) : null;
             Expression<System.Func<object, object>> expr = Expression.Lambda<System.Func<object, object>>(
                 Expression.Convert(
-                    Expression.Field(
-                        Expression.Convert(obj, field.DeclaringType),
-                        field),
+                    Expression.Field(instance, field),
                     typeof(object)),
                 obj);
 

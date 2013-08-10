@@ -210,6 +210,42 @@ namespace Antlr4.Test.StringTemplate
             Assert.AreEqual(expected, result);
         }
 
+        [TestMethod]
+        [TestCategory(TestCategories.ST4)]
+        public void TestStaticMethod()
+        {
+            string template = "<t.StaticMethod>";
+            Template st = new Template(template);
+            st.Add("t", new User(32, "Ter"));
+            string expected = "method_result";
+            string result = st.Render();
+            Assert.AreEqual(expected, result);
+        }
+
+        [TestMethod]
+        [TestCategory(TestCategories.ST4)]
+        public void TestStaticProperty()
+        {
+            string template = "<t.StaticProperty>";
+            Template st = new Template(template);
+            st.Add("t", new User(32, "Ter"));
+            string expected = "property_result";
+            string result = st.Render();
+            Assert.AreEqual(expected, result);
+        }
+
+        [TestMethod]
+        [TestCategory(TestCategories.ST4)]
+        public void TestStaticField()
+        {
+            string template = "<t.StaticField>";
+            Template st = new Template(template);
+            st.Add("t", new User(32, "Ter"));
+            string expected = "field_value";
+            string result = st.Render();
+            Assert.AreEqual(expected, result);
+        }
+
         [TestMethod][TestCategory(TestCategories.ST4)]
         public void TestNullAttrProp()
         {
