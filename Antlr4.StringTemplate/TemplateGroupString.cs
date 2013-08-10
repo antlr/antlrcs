@@ -46,7 +46,7 @@ namespace Antlr4.StringTemplate
         private bool alreadyLoaded = false;
 
         public TemplateGroupString(string text)
-            : this("<string>", text, '<', '>')
+            : this("[string]", text, '<', '>')
         {
         }
 
@@ -66,7 +66,7 @@ namespace Antlr4.StringTemplate
         {
             get
             {
-                return "<string>";
+                return sourceName;
             }
         }
 
@@ -98,7 +98,7 @@ namespace Antlr4.StringTemplate
             }
             catch (Exception e)
             {
-                ErrorManager.IOError(null, ErrorType.CANT_LOAD_GROUP_FILE, e, "<string>");
+                ErrorManager.IOError(null, ErrorType.CANT_LOAD_GROUP_FILE, e, FileName);
             }
         }
 
