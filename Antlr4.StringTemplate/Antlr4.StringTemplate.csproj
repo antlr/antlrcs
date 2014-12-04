@@ -10,7 +10,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Antlr4.StringTemplate</RootNamespace>
     <AssemblyName>Antlr4.StringTemplate</AssemblyName>
-    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile>Client</TargetFrameworkProfile>
   </PropertyGroup>
@@ -38,6 +38,7 @@
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ANTLRFileStream.cs" />
     <Compile Include="Compiler\TemplateCompiler.TemplateLexerNoNewlines.cs" />
     <Compile Include="TemplateRawGroupDirectory.cs" />
     <Compile Include="Debug\IndentEvent.cs" />
