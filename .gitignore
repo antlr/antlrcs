@@ -17,18 +17,19 @@ Thumbs.db
 *.log
 *.sbr
 *.sln.ide/
-obj/
-[Dd]ebug*/
-[Rr]elease*/
 _ReSharper*/
 [Tt]est[Rr]esult*
 
+# Ignore build output
+bin/
+obj/
+
 # Ignore prepared output folders
-bin/prep/Backup/
-bin/prep/Bootstrap/
-bin/prep/dist/
-bin/prep/nuget/
-bin/prep/Runtime/
-bin/prep/ST3/
-bin/prep/ST4/
-bin/prep/Tool/
+build/prep/Backup/
+build/prep/Bootstrap/
+build/prep/dist/
+build/prep/nuget/
+build/prep/Runtime/
+build/prep/ST3/
+build/prep/ST4/
+build/prep/Tool/

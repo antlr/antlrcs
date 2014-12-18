@@ -76,14 +76,14 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Antlr3.Targets.Python3", "A
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Build", "Build", "{D2D979DC-1305-4C44-B21A-9EB3EEE95F7B}"
 	ProjectSection(SolutionItems) = preProject
-		bin\prep\Antlr3.nuspec = bin\prep\Antlr3.nuspec
-		bin\prep\Antlr3.Runtime.Debug.nuspec = bin\prep\Antlr3.Runtime.Debug.nuspec
-		bin\prep\Antlr3.Runtime.nuspec = bin\prep\Antlr3.Runtime.nuspec
-		bin\prep\LICENSE.txt = bin\prep\LICENSE.txt
-		bin\prep\prepare.ps1 = bin\prep\prepare.ps1
-		bin\prep\StringTemplate3.nuspec = bin\prep\StringTemplate3.nuspec
-		bin\prep\StringTemplate4.nuspec = bin\prep\StringTemplate4.nuspec
-		bin\prep\StringTemplate4.Visualizer.nuspec = bin\prep\StringTemplate4.Visualizer.nuspec
+		build\prep\Antlr3.nuspec = build\prep\Antlr3.nuspec
+		build\prep\Antlr3.Runtime.Debug.nuspec = build\prep\Antlr3.Runtime.Debug.nuspec
+		build\prep\Antlr3.Runtime.nuspec = build\prep\Antlr3.Runtime.nuspec
+		build\prep\LICENSE.txt = build\prep\LICENSE.txt
+		build\prep\prepare.ps1 = build\prep\prepare.ps1
+		build\prep\StringTemplate3.nuspec = build\prep\StringTemplate3.nuspec
+		build\prep\StringTemplate4.nuspec = build\prep\StringTemplate4.nuspec
+		build\prep\StringTemplate4.Visualizer.nuspec = build\prep\StringTemplate4.Visualizer.nuspec
 	EndProjectSection
 EndProject
 Global
