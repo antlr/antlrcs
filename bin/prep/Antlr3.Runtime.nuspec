@@ -26,6 +26,6 @@
 
     <!-- Source Code -->
 
-    <file exclude="..\..\Reference\antlr3\runtime\CSharp3\Sources\Antlr3.Runtime\obj\**\*.cs" src="..\..\Reference\antlr3\runtime\CSharp3\Sources\Antlr3.Runtime\**\*.cs" target="src"/>
+    <file exclude="..\..\Runtime\Antlr3.Runtime\obj\**\*.cs" src="..\..\Runtime\Antlr3.Runtime\**\*.cs" target="src"/>
   </files>
 </package>

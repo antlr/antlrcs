@@ -40,7 +40,7 @@
     <Reference Include="System.Numerics" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\..\..\..\Antlr3.StringTemplate\Antlr3.StringTemplate.csproj">
+    <ProjectReference Include="..\..\Antlr3.StringTemplate\Antlr3.StringTemplate.csproj">
       <Project>{B5910BE2-DE21-4AA9-95C1-486F42B9E794}</Project>
       <Name>Antlr3.StringTemplate</Name>
     </ProjectReference>
@@ -172,11 +172,11 @@
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <!-- Folder containing AntlrBuildTask.dll -->
-    <AntlrBuildTaskPath>$(ProjectDir)..\..\..\..\..\..\bin\Bootstrap</AntlrBuildTaskPath>
+    <AntlrBuildTaskPath>$(ProjectDir)..\..\bin\Bootstrap</AntlrBuildTaskPath>
     <!-- Path to the ANTLR Tool itself. -->
-    <AntlrToolPath>$(ProjectDir)..\..\..\..\..\..\bin\Bootstrap\Antlr3.exe</AntlrToolPath>
+    <AntlrToolPath>$(ProjectDir)..\..\bin\Bootstrap\Antlr3.exe</AntlrToolPath>
   </PropertyGroup>
-  <Import Project="$(ProjectDir)..\..\..\..\..\..\bin\Bootstrap\Antlr3.targets" />
+  <Import Project="$(ProjectDir)..\..\bin\Bootstrap\Antlr3.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">
