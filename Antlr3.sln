@@ -74,6 +74,18 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Antlr3.Runtime.Visualizer",
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Antlr3.Targets.Python3", "Antlr3.Targets\Antlr3.Targets.Python3\Antlr3.Targets.Python3.csproj", "{5B7F1199-FB67-4AC1-A482-6BF1DA6CCDC5}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Build", "Build", "{D2D979DC-1305-4C44-B21A-9EB3EEE95F7B}"
+	ProjectSection(SolutionItems) = preProject
+		bin\prep\Antlr3.nuspec = bin\prep\Antlr3.nuspec
+		bin\prep\Antlr3.Runtime.Debug.nuspec = bin\prep\Antlr3.Runtime.Debug.nuspec
+		bin\prep\Antlr3.Runtime.nuspec = bin\prep\Antlr3.Runtime.nuspec
+		bin\prep\LICENSE.txt = bin\prep\LICENSE.txt
+		bin\prep\prepare.ps1 = bin\prep\prepare.ps1
+		bin\prep\StringTemplate3.nuspec = bin\prep\StringTemplate3.nuspec
+		bin\prep\StringTemplate4.nuspec = bin\prep\StringTemplate4.nuspec
+		bin\prep\StringTemplate4.Visualizer.nuspec = bin\prep\StringTemplate4.Visualizer.nuspec
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(TestCaseManagementSettings) = postSolution
 		CategoryFile = Antlr3.vsmdi
@@ -201,5 +213,6 @@ Global
 		{1DEA6EB4-2288-4B6C-B5F4-1D102B8745BB} = {3A92893D-7810-4D8B-80D8-E1E8D151FA73}
 		{64418260-E75A-4556-BB7E-8BDAAFC2EFB9} = {3A92893D-7810-4D8B-80D8-E1E8D151FA73}
 		{5B7F1199-FB67-4AC1-A482-6BF1DA6CCDC5} = {3A92893D-7810-4D8B-80D8-E1E8D151FA73}
+		{D2D979DC-1305-4C44-B21A-9EB3EEE95F7B} = {C0B451C4-EAFC-4942-B18E-49EC73DABABD}
 	EndGlobalSection
 EndGlobal
