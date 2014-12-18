@@ -1,0 +1,35 @@
+parser grammar VecMath_Parser;
+
+options {
+    output=AST;
+}
+
+tokens {
+    SHIFT;    
+    VEC;      
+}
+
+public
+prog
+   : stat+ ;
+
+stat
+   : ID EQUAL expr -> ^( EQUAL ID expr )
+   | PRINT^ expr
+   ;
+
+expr
+   : multExpr ( PLUS^ multExpr )*
+   ;
+
+multExpr
+   : primary ( ( MULT^ | DOT^ ) primary )*
+   ;
+
+primary
+   :   INT
+   |   ID
+   |   OPEN_SQUARE expr ( COMMA expr )* CLOSE_SQUARE -> ^( VEC expr+ )
+   |   OPEN_BRACE expr CLOSE_BRACE             -> expr
+   ;
+

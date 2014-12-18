@@ -1,0 +1,65 @@
+﻿grammar TestActionFeatures;
+
+options {
+    language=CSharp3;
+    TokenLabelType=CommonToken;
+    output=AST;
+    ASTLabelType=CommonTree;
+}
+
+@lexer::namespace{Antlr3.Runtime.Test}
+@parser::namespace{Antlr3.Runtime.Test}
+
+@parser::header{using Console = System.Console;}
+
+/*
+ * Parser Rules
+ */
+
+public
+compileUnit
+    :   EOF
+    ;
+
+// SET_DYNAMIC_SCOPE_ATTR
+
+setDynamicScopeAttr
+scope {int i;}
+	:	EOF {$setDynamicScopeAttr::i=3; $setDynamicScopeAttr[0]::i=3; $setDynamicScopeAttr[-0]::i=3;}
+	;
+
+// DYNAMIC_SCOPE_ATTR
+
+dynamicScopeAttr
+scope {int i;}
+	:	EOF {Console.WriteLine($dynamicScopeAttr::i);}
+	;
+
+// DYNAMIC_NEGATIVE_INDEXED_SCOPE_ATTR
+
+dynamicNegativeIndexedScopeAttr
+scope {int i;}
+	:	EOF {Console.WriteLine($dynamicNegativeIndexedScopeAttr[-1]::i);}
+	;
+
+// DYNAMIC_ABSOLUTE_INDEXED_SCOPE_ATTR
+
+dynamicAbsoluteIndexedScopeAttr
+scope {int i;}
+	:	EOF {Console.WriteLine($dynamicNegativeIndexedScopeAttr[0]::i);}
+	;
+
+// ISOLATED_DYNAMIC_SCOPE
+
+isolatedDynamicScope
+scope {int i;}
+	:	EOF {Console.WriteLine($isolatedDynamicScope.Count);}
+	;
+
+/*
+ * Lexer Rules
+ */
+
+WS
+    :   ' '
+    ;

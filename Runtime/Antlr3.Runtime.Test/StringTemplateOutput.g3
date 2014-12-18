@@ -1,0 +1,36 @@
+﻿grammar StringTemplateOutput;
+
+options {
+    language=CSharp3;
+    TokenLabelType=CommonToken;
+    output=template;
+}
+
+@lexer::namespace{Antlr3.Runtime.Test}
+@parser::namespace{Antlr3.Runtime.Test}
+
+/*
+ * Parser Rules
+ */
+
+public
+compileUnit
+    :   ID integer EOF
+		-> new(id={$ID.text}, value={$integer.st})
+    ;
+
+integer
+	:	i='int' -> {%{$i.text}}
+	;
+
+/*
+ * Lexer Rules
+ */
+
+ID
+	:	'a'..'z'*
+	;
+
+WS
+    :   ' '
+    ;
