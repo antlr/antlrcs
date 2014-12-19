@@ -1,0 +1,36 @@
+# Source code files
+*.cs text
+*.vsixmanifest text
+*.config text
+*.resx text
+*.vstemplate text
+*.nuspec text
+*.md text
+*.txt text
+*.ps1 text
+*.stg text
+*.xml text
+LICENSE text
+
+# SHFB Content Files
+*.aml text
+*.content text
+*.tokens text
+
+# Projects and solutions
+*.sln text
+*.csproj text
+*.shfbproj text
+*.targets text
+*.props text
+
+# Certainly binary files
+*.exe binary
+*.dll binary
+*.pdb binary
+
+*.docx binary
+
+*.png binary
+*.ico binary
+*.snk binary
