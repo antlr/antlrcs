@@ -1,9 +1,7 @@
-#ignore thumbnails created by windows
+# ignore thumbnails created by windows
 Thumbs.db
-#Ignore files build by Visual Studio
-*.obj
-*.exe
-*.pdb
+
+# Ignore files build by Visual Studio
 *.user
 *.aps
 *.pch
@@ -14,15 +12,24 @@ Thumbs.db
 *.suo
 *.tlb
 *.tlh
-*.bak
 *.cache
 *.ilk
 *.log
-[Bb]in
-[Dd]ebug*/
-*.lib
 *.sbr
-obj/
-[Rr]elease*/
+*.sln.ide/
 _ReSharper*/
 [Tt]est[Rr]esult*
+
+# Ignore build output
+bin/
+obj/
+
+# Ignore prepared output folders
+build/prep/Backup/
+build/prep/Bootstrap/
+build/prep/dist/
+build/prep/nuget/
+build/prep/Runtime/
+build/prep/ST3/
+build/prep/ST4/
+build/prep/Tool/

@@ -1,0 +1,17 @@
+lexer grammar VecMath_Lexer;
+
+
+PRINT        : 'print';
+ID           : 'a'..'z'+ ;
+INT          : '0'..'9'+ ;
+WS           : (' '|'\r'|'\n')+ {Skip();} ;
+PLUS         : '+';
+MINUS        : '-';
+MULT         : '*';
+EQUAL        : '=';
+DOT          : '.';
+OPEN_BRACE   : '(';
+OPEN_SQUARE  : '[';
+CLOSE_BRACE  : ')';
+CLOSE_SQUARE : ']';
+COMMA        : ',';

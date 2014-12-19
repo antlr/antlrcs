@@ -1,0 +1,23 @@
+﻿grammar SemanticPredicateReduction;
+
+options {
+    language=CSharp3;
+    TokenLabelType=CommonToken;
+}
+
+@lexer::namespace{Antlr3.Runtime.Test}
+@parser::namespace{Antlr3.Runtime.Test}
+
+start : mainprog optional? EOF;
+
+mainprog : '(' args ')';
+args : ID ID*;
+
+optional: ':'  args element ':' args element2;
+element : {true}?=>args2;
+element2: {false}?=>args3;
+args2 : ID ID*;
+args3 : ID ID* ;
+
+WS  : (' '|'\t'|'\n'|'\r')+;
+ID  : ('a'..'z')+;

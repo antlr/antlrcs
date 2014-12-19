@@ -1,0 +1,20 @@
+tree grammar Simplify;
+
+options {
+    tokenVocab=VecMath;    
+    ASTLabelType=CommonTree;
+    output=AST;
+    language=CSharp3;
+    filter=true;
+    //rewrite=true;
+}
+
+@namespace{Antlr3.Runtime.Test.Composition}
+
+topdown
+    :   ^( MULT INT ^(VEC (e+=.)+) ) -> ^(VEC ^(MULT INT $e)+)
+    ;
+
+bottomup
+    :  ^(MULT a=. b=INT {$b.int==0}?) -> $b // x*0 -> 0
+    ;
