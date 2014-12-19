@@ -88,6 +88,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Build", "Build", "{D2D979DC
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Antlr3.Runtime.net40-client", "Runtime\Antlr3.Runtime\Antlr3.Runtime.net40-client.csproj", "{075C5424-3DB3-4AEF-AB9D-A87366AF152D}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Antlr3.Runtime.portable-net40", "Runtime\Antlr3.Runtime\Antlr3.Runtime.portable-net40.csproj", "{34BA0BD4-FB93-48D7-967E-83F229F220A0}"
+EndProject
 Global
 	GlobalSection(TestCaseManagementSettings) = postSolution
 		CategoryFile = Antlr3.vsmdi
@@ -201,6 +203,10 @@ Global
 		{075C5424-3DB3-4AEF-AB9D-A87366AF152D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{075C5424-3DB3-4AEF-AB9D-A87366AF152D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{075C5424-3DB3-4AEF-AB9D-A87366AF152D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{34BA0BD4-FB93-48D7-967E-83F229F220A0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{34BA0BD4-FB93-48D7-967E-83F229F220A0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{34BA0BD4-FB93-48D7-967E-83F229F220A0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{34BA0BD4-FB93-48D7-967E-83F229F220A0}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

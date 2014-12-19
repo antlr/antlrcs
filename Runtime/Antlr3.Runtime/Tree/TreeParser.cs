@@ -34,7 +34,7 @@ namespace Antlr.Runtime.Tree
 {
     using ConditionalAttribute = System.Diagnostics.ConditionalAttribute;
     using Regex = System.Text.RegularExpressions.Regex;
-    using RegexOptions = System.Text.RegularExpressions.RegexOptions;
+    using RegexOptionsHelper = Antlr.Runtime.Misc.RegexOptionsHelper;
 
     /** <summary>
      *  A parser for a stream of tree nodes.  "tree grammars" result in a subclass
@@ -50,8 +50,8 @@ namespace Antlr.Runtime.Tree
         // precompiled regex used by inContext
         static string dotdot = ".*[^.]\\.\\.[^.].*";
         static string doubleEtc = ".*\\.\\.\\.\\s+\\.\\.\\..*";
-        static Regex dotdotPattern = new Regex( dotdot, RegexOptions.Compiled );
-        static Regex doubleEtcPattern = new Regex( doubleEtc, RegexOptions.Compiled );
+        static Regex dotdotPattern = new Regex( dotdot, RegexOptionsHelper.Compiled );
+        static Regex doubleEtcPattern = new Regex( doubleEtc, RegexOptionsHelper.Compiled );
 
         protected ITreeNodeStream input;
 

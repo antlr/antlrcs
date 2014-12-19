@@ -75,6 +75,7 @@
     <Compile Include="Misc\FunctionDelegates.cs" />
     <Compile Include="Misc\ListStack`1.cs" />
     <Compile Include="Misc\LookaheadStream.cs" />
+    <Compile Include="Misc\RegexOptionsHelper.cs" />
     <Compile Include="MismatchedNotSetException.cs" />
     <Compile Include="MismatchedRangeException.cs" />
     <Compile Include="MismatchedSetException.cs" />

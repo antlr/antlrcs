@@ -30,6 +30,8 @@
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+#if !PORTABLE
+
 namespace Antlr.Runtime
 {
     using Encoding = System.Text.Encoding;
@@ -86,3 +88,5 @@ namespace Antlr.Runtime
         }
     }
 }
+
+#endif

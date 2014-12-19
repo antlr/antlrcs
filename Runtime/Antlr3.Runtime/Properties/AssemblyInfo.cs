@@ -32,8 +32,11 @@
 
 using System;
 using System.Reflection;
-using System.Runtime.InteropServices;
 using System.Security;
+
+#if !PORTABLE
+using System.Runtime.InteropServices;
+#endif
 
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
@@ -49,6 +52,7 @@ using System.Security;
 [assembly: CLSCompliant( true )]
 [assembly: AllowPartiallyTrustedCallers]
 
+#if !PORTABLE
 // Setting ComVisible to false makes the types in this assembly not visible 
 // to COM components.  If you need to access a type in this assembly from 
 // COM, set the ComVisible attribute to true on that type.
@@ -56,6 +60,7 @@ using System.Security;
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
 [assembly: Guid( "7a0b4db7-f127-4cf5-ac2c-e294957efcd6" )]
+#endif
 
 /* Version information for an assembly consists of four values in the following order:
  *

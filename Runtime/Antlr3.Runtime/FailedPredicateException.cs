@@ -34,8 +34,11 @@ namespace Antlr.Runtime
 {
     using ArgumentNullException = System.ArgumentNullException;
     using Exception = System.Exception;
+
+#if !PORTABLE
     using SerializationInfo = System.Runtime.Serialization.SerializationInfo;
     using StreamingContext = System.Runtime.Serialization.StreamingContext;
+#endif
 
     /** <summary>
      *  A semantic predicate failed during validation.  Validation of predicates
@@ -85,6 +88,7 @@ namespace Antlr.Runtime
             this._predicateText = predicateText;
         }
 
+#if !PORTABLE
         protected FailedPredicateException(SerializationInfo info, StreamingContext context)
             : base(info, context)
         {
@@ -94,6 +98,7 @@ namespace Antlr.Runtime
             this._ruleName = info.GetString("RuleName");
             this._predicateText = info.GetString("PredicateText");
         }
+#endif
 
         public string RuleName
         {
@@ -111,6 +116,7 @@ namespace Antlr.Runtime
             }
         }
 
+#if !PORTABLE
         public override void GetObjectData(SerializationInfo info, StreamingContext context)
         {
             if (info == null)
@@ -120,6 +126,7 @@ namespace Antlr.Runtime
             info.AddValue("RuleName", _ruleName);
             info.AddValue("PredicateText", _predicateText);
         }
+#endif
 
         public override string ToString()
         {

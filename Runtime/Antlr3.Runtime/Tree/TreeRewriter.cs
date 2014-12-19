@@ -34,7 +34,9 @@ namespace Antlr.Runtime.Tree
 {
     using Antlr.Runtime.Misc;
 
+#if !PORTABLE
     using Console = System.Console;
+#endif
 
     public class TreeRewriter : TreeParser
     {
@@ -138,7 +140,9 @@ namespace Antlr.Runtime.Tree
             ITree @new = newTree as ITree;
             string oldMessage = old != null ? old.ToStringTree() : "??";
             string newMessage = @new != null ? @new.ToStringTree() : "??";
+#if !PORTABLE
             Console.WriteLine("{0} -> {1}", oldMessage, newMessage);
+#endif
         }
     }
 }

@@ -34,10 +34,13 @@ namespace Antlr.Runtime.Tree
 {
     using System.Collections.Generic;
 
-    using Console = System.Console;
     using IList = System.Collections.IList;
     using InvalidOperationException = System.InvalidOperationException;
     using StringBuilder = System.Text.StringBuilder;
+
+#if !PORTABLE
+    using Console = System.Console;
+#endif
 
     /** <summary>A buffered stream of tree nodes.  Nodes can be from a tree of ANY kind.</summary>
      *
@@ -590,7 +593,10 @@ namespace Antlr.Runtime.Tree
 
         public virtual string ToString( object start, object stop )
         {
+#if !PORTABLE
             Console.Out.WriteLine( "toString" );
+#endif
+
             if ( start == null || stop == null )
             {
                 return null;
@@ -599,6 +605,7 @@ namespace Antlr.Runtime.Tree
             {
                 throw new InvalidOperationException( "Buffer is not yet filled." );
             }
+#if !PORTABLE
             //Console.Out.WriteLine( "stop: " + stop );
             if ( start is CommonTree )
                 Console.Out.Write( "toString: " + ( (CommonTree)start ).Token + ", " );
@@ -608,6 +615,7 @@ namespace Antlr.Runtime.Tree
                 Console.Out.WriteLine( ( (CommonTree)stop ).Token );
             else
                 Console.Out.WriteLine( stop );
+#endif
             // if we have the token stream, use that to dump text in order
             if ( tokens != null )
             {

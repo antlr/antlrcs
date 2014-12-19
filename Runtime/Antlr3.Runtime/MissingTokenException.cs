@@ -34,8 +34,11 @@ namespace Antlr.Runtime
 {
     using System.Collections.Generic;
     using Exception = System.Exception;
+
+#if !PORTABLE
     using SerializationInfo = System.Runtime.Serialization.SerializationInfo;
     using StreamingContext = System.Runtime.Serialization.StreamingContext;
+#endif
 
     /** <summary>
      *  We were expecting a token but it's not found.  The current token
@@ -84,10 +87,12 @@ namespace Antlr.Runtime
             this._inserted = inserted;
         }
 
+#if !PORTABLE
         protected MissingTokenException(SerializationInfo info, StreamingContext context)
             : base(info, context)
         {
         }
+#endif
 
         public virtual int MissingType
         {
