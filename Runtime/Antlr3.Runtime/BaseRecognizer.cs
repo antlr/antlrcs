@@ -40,9 +40,14 @@ namespace Antlr.Runtime
     using IDebugEventListener = Antlr.Runtime.Debug.IDebugEventListener;
     using MethodBase = System.Reflection.MethodBase;
     using Regex = System.Text.RegularExpressions.Regex;
+    using TextWriter = System.IO.TextWriter;
+
+#if !PORTABLE
     using StackFrame = System.Diagnostics.StackFrame;
     using StackTrace = System.Diagnostics.StackTrace;
-    using TextWriter = System.IO.TextWriter;
+#else
+    using NotSupportedException = System.NotSupportedException;
+#endif
 
     /** <summary>
      *  A generic recognizer that can handle recognizers generated from
@@ -828,6 +833,7 @@ namespace Antlr.Runtime
             state._fsp--;
         }
 
+#if !PORTABLE
         /** <summary>
          *  Return List<String> of the rules in your parser instance
          *  leading up to a call to this method.  You could override if
@@ -870,6 +876,7 @@ namespace Antlr.Runtime
 
             return rules;
         }
+#endif
 
         public virtual int BacktrackingLevel
         {

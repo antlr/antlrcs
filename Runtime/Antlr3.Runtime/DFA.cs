@@ -34,8 +34,11 @@ namespace Antlr.Runtime
 {
     using ArgumentNullException = System.ArgumentNullException;
     using ConditionalAttribute = System.Diagnostics.ConditionalAttribute;
-    using Console = System.Console;
     using IDebugEventListener = Antlr.Runtime.Debug.IDebugEventListener;
+
+#if !PORTABLE
+    using Console = System.Console;
+#endif
 
     public delegate int SpecialStateTransitionHandler( DFA dfa, int s, IIntStream input );
 
@@ -200,12 +203,15 @@ namespace Antlr.Runtime
         [Conditional("DEBUG_DFA")]
         private void DfaDebugMessage(string format, params object[] args)
         {
+#if !PORTABLE
             Console.Error.WriteLine(format, args);
+#endif
         }
 
         [Conditional("DEBUG_DFA")]
         private void DfaDebugInvalidSymbol(int s)
         {
+#if !PORTABLE
             Console.Error.WriteLine("min[{0}]={1}", s, min[s]);
             Console.Error.WriteLine("max[{0}]={1}", s, max[s]);
             Console.Error.WriteLine("eot[{0}]={1}", s, eot[s]);
@@ -215,6 +221,7 @@ namespace Antlr.Runtime
                 Console.Error.Write(transition[s][p] + " ");
 
             Console.Error.WriteLine();
+#endif
         }
 
         protected virtual void NoViableAlt( int s, IIntStream input )

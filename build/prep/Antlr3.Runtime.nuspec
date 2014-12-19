@@ -24,6 +24,10 @@
     <file src="Runtime\Antlr3.Runtime.pdb" target="lib\net20"/>
     <file src="Runtime\Antlr3.Runtime.xml" target="lib\net20"/>
 
+    <file src="..\..\Runtime\Antlr3.Runtime\bin\net40-client\$Configuration$\Antlr3.Runtime.dll" target="lib\net40-client"/>
+    <file src="..\..\Runtime\Antlr3.Runtime\bin\net40-client\$Configuration$\Antlr3.Runtime.pdb" target="lib\net40-client"/>
+    <file src="..\..\Runtime\Antlr3.Runtime\bin\net40-client\$Configuration$\Antlr3.Runtime.xml" target="lib\net40-client"/>
+
     <!-- Source Code -->
 
     <file exclude="..\..\Runtime\Antlr3.Runtime\obj\**\*.cs" src="..\..\Runtime\Antlr3.Runtime\**\*.cs" target="src"/>

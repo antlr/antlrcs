@@ -5,13 +5,15 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProductVersion>9.0.30729</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{8FDC0A87-9005-4D5A-AB75-E55CEB575559}</ProjectGuid>
+    <ProjectGuid>{075C5424-3DB3-4AEF-AB9D-A87366AF152D}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Antlr.Runtime</RootNamespace>
     <AssemblyName>Antlr3.Runtime</AssemblyName>
-    <TargetFrameworkVersion>v2.0</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <TargetFrameworkProfile>Client</TargetFrameworkProfile>
     <FileAlignment>512</FileAlignment>
+    <BaseIntermediateOutputPath>obj\net40-client\</BaseIntermediateOutputPath>
     <SignAssembly>true</SignAssembly>
     <AssemblyOriginatorKeyFile>..\..\..\..\..\keys\antlr\Key.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
@@ -19,20 +21,20 @@
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
+    <OutputPath>bin\net40-client\Debug\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <DocumentationFile>bin\Debug\Antlr3.Runtime.xml</DocumentationFile>
+    <DocumentationFile>bin\net40-client\Debug\Antlr3.Runtime.xml</DocumentationFile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
+    <OutputPath>bin\net40-client\Release\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <DocumentationFile>bin\Release\Antlr3.Runtime.xml</DocumentationFile>
+    <DocumentationFile>bin\net40-client\Release\Antlr3.Runtime.xml</DocumentationFile>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -74,6 +76,7 @@
     <Compile Include="Misc\FunctionDelegates.cs" />
     <Compile Include="Misc\ListStack`1.cs" />
     <Compile Include="Misc\LookaheadStream.cs" />
+    <Compile Include="Misc\RegexOptionsHelper.cs" />
     <Compile Include="MismatchedNotSetException.cs" />
     <Compile Include="MismatchedRangeException.cs" />
     <Compile Include="MismatchedSetException.cs" />

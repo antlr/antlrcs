@@ -35,12 +35,15 @@ namespace Antlr.Runtime
     using System.Collections.Generic;
 
     using ArgumentException = System.ArgumentException;
-    using Console = System.Console;
     using Math = System.Math;
     using DebuggerDisplay = System.Diagnostics.DebuggerDisplayAttribute;
     using Exception = System.Exception;
     using StringBuilder = System.Text.StringBuilder;
     using Type = System.Type;
+
+#if !PORTABLE
+    using Console = System.Console;
+#endif
 
     /** Useful for dumping out the input stream after doing some
      *  augmentation or other manipulations.
@@ -617,7 +620,9 @@ namespace Antlr.Runtime
                         rewrites[prevRop.instructionIndex] = null; // kill first delete
                         rop.index = Math.Min(prevRop.index, rop.index);
                         rop.lastIndex = Math.Max(prevRop.lastIndex, rop.lastIndex);
+#if !PORTABLE
                         Console.WriteLine("new rop " + rop);
+#endif
                     }
                     else if ( !disjoint && !same )
                     {

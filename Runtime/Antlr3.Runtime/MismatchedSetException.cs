@@ -34,8 +34,11 @@ namespace Antlr.Runtime
 {
     using ArgumentNullException = System.ArgumentNullException;
     using Exception = System.Exception;
+
+#if !PORTABLE
     using SerializationInfo = System.Runtime.Serialization.SerializationInfo;
     using StreamingContext = System.Runtime.Serialization.StreamingContext;
+#endif
 
     [System.Serializable]
     public class MismatchedSetException : RecognitionException
@@ -74,6 +77,7 @@ namespace Antlr.Runtime
             this._expecting = expecting;
         }
 
+#if !PORTABLE
         protected MismatchedSetException(SerializationInfo info, StreamingContext context)
             : base(info, context)
         {
@@ -82,6 +86,7 @@ namespace Antlr.Runtime
 
             this._expecting = (BitSet)info.GetValue("Expecting", typeof(BitSet));
         }
+#endif
 
         public BitSet Expecting
         {
@@ -91,6 +96,7 @@ namespace Antlr.Runtime
             }
         }
 
+#if !PORTABLE
         public override void GetObjectData(SerializationInfo info, StreamingContext context)
         {
             if (info == null)
@@ -99,6 +105,7 @@ namespace Antlr.Runtime
             base.GetObjectData(info, context);
             info.AddValue("Expecting", _expecting);
         }
+#endif
 
         public override string ToString()
         {

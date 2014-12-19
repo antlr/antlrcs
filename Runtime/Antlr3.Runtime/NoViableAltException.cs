@@ -34,8 +34,11 @@ namespace Antlr.Runtime
 {
     using ArgumentNullException = System.ArgumentNullException;
     using Exception = System.Exception;
+
+#if !PORTABLE
     using SerializationInfo = System.Runtime.Serialization.SerializationInfo;
     using StreamingContext = System.Runtime.Serialization.StreamingContext;
+#endif
 
     [System.Serializable]
     public class NoViableAltException : RecognitionException
@@ -104,6 +107,7 @@ namespace Antlr.Runtime
             this._stateNumber = stateNumber;
         }
 
+#if !PORTABLE
         protected NoViableAltException(SerializationInfo info, StreamingContext context)
             : base(info, context)
         {
@@ -114,6 +118,7 @@ namespace Antlr.Runtime
             this._decisionNumber = info.GetInt32("DecisionNumber");
             this._stateNumber = info.GetInt32("StateNumber");
         }
+#endif
 
         public int DecisionNumber
         {
@@ -139,6 +144,7 @@ namespace Antlr.Runtime
             }
         }
 
+#if !PORTABLE
         public override void GetObjectData(SerializationInfo info, StreamingContext context)
         {
             if (info == null)
@@ -149,6 +155,7 @@ namespace Antlr.Runtime
             info.AddValue("DecisionNumber", _decisionNumber);
             info.AddValue("StateNumber", _stateNumber);
         }
+#endif
 
         public override string ToString()
         {

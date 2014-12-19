@@ -52,9 +52,9 @@
       <Project>{A7EEC557-EB14-451C-9616-B7A61F4ECE69}</Project>
       <Name>Antlr3.Runtime.JavaExtensions</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Antlr3.Runtime\Antlr3.Runtime.csproj">
+    <ProjectReference Include="..\Antlr3.Runtime\Antlr3.Runtime.net20.csproj">
       <Project>{8FDC0A87-9005-4D5A-AB75-E55CEB575559}</Project>
-      <Name>Antlr3.Runtime</Name>
+      <Name>Antlr3.Runtime.net20</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

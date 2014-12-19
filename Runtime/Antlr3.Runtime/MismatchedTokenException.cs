@@ -36,8 +36,11 @@ namespace Antlr.Runtime
     using System.Collections.ObjectModel;
     using ArgumentNullException = System.ArgumentNullException;
     using Exception = System.Exception;
+
+#if !PORTABLE
     using SerializationInfo = System.Runtime.Serialization.SerializationInfo;
     using StreamingContext = System.Runtime.Serialization.StreamingContext;
+#endif
 
     /** <summary>A mismatched char or Token or tree node</summary> */
     [System.Serializable]
@@ -71,7 +74,7 @@ namespace Antlr.Runtime
             this._expecting = expecting;
 
             if (tokenNames != null)
-                this._tokenNames = new List<string>(tokenNames).AsReadOnly();
+                this._tokenNames = new ReadOnlyCollection<string>(new List<string>(tokenNames));
         }
 
         public MismatchedTokenException(string message, int expecting, IIntStream input, IList<string> tokenNames)
@@ -80,7 +83,7 @@ namespace Antlr.Runtime
             this._expecting = expecting;
 
             if (tokenNames != null)
-                this._tokenNames = new List<string>(tokenNames).AsReadOnly();
+                this._tokenNames = new ReadOnlyCollection<string>(new List<string>(tokenNames));
         }
 
         public MismatchedTokenException(string message, int expecting, IIntStream input, IList<string> tokenNames, Exception innerException)
@@ -89,9 +92,10 @@ namespace Antlr.Runtime
             this._expecting = expecting;
 
             if (tokenNames != null)
-                this._tokenNames = new List<string>(tokenNames).AsReadOnly();
+                this._tokenNames = new ReadOnlyCollection<string>(new List<string>(tokenNames));
         }
 
+#if !PORTABLE
         protected MismatchedTokenException(SerializationInfo info, StreamingContext context)
             : base(info, context)
         {
@@ -101,6 +105,7 @@ namespace Antlr.Runtime
             this._expecting = info.GetInt32("Expecting");
             this._tokenNames = new ReadOnlyCollection<string>((string[])info.GetValue("TokenNames", typeof(string[])));
         }
+#endif
 
         public int Expecting
         {
@@ -118,6 +123,7 @@ namespace Antlr.Runtime
             }
         }
 
+#if !PORTABLE
         public override void GetObjectData(SerializationInfo info, StreamingContext context)
         {
             if (info == null)
@@ -127,6 +133,7 @@ namespace Antlr.Runtime
             info.AddValue("Expecting", _expecting);
             info.AddValue("TokenNames", (_tokenNames != null) ? new List<string>(_tokenNames).ToArray() : default(string[]));
         }
+#endif
 
         public override string ToString()
         {

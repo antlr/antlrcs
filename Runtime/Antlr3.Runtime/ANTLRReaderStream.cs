@@ -86,7 +86,7 @@ namespace Antlr.Runtime
             }
             finally
             {
-                r.Close();
+                r.Dispose();
             }
         }
     }
