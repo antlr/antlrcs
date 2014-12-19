@@ -19,8 +19,6 @@
     <developmentDependency>true</developmentDependency>
     <dependencies>
       <dependency id="Antlr3.Runtime" version="$version$" />
-      <dependency id="Antlr3.Runtime.Debug" version="$version$" />
-      <dependency id="StringTemplate3" version="$version$" />
     </dependencies>
   </metadata>
   <files>
