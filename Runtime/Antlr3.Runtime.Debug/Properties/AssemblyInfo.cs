@@ -67,4 +67,5 @@ using System.Runtime.InteropServices;
  *   3. Revision is the Perforce changelist number associated with the release.
  */
 [assembly: AssemblyVersion("3.5.0.2")]
-[assembly: AssemblyFileVersion("3.5.0.2")]
+[assembly: AssemblyFileVersion("3.5.0.3")]
+[assembly: AssemblyInformationalVersion("3.5.0.3-dev")]

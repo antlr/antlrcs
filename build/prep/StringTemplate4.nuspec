@@ -7,11 +7,11 @@
     <owners>Sam Harwell</owners>
     <description>The C# port of StringTemplate 4.</description>
     <language>en-us</language>
-    <projectUrl>https://github.com/sharwell/antlrcs</projectUrl>
-    <licenseUrl>https://raw.github.com/sharwell/antlrcs/master/bin/prep/LICENSE.txt</licenseUrl>
+    <projectUrl>https://github.com/antlr/antlrcs</projectUrl>
+    <licenseUrl>https://raw.githubusercontent.com/antlr/antlrcs/master/build/prep/LICENSE.txt</licenseUrl>
     <iconUrl>https://raw.github.com/antlr/website-antlr4/master/images/icons/antlr.png</iconUrl>
     <copyright>Copyright © Sam Harwell 2013</copyright>
-    <releaseNotes>https://github.com/sharwell/antlrcs/releases/v$ANTLRVersion$</releaseNotes>
+    <releaseNotes>https://github.com/antlr/antlrcs/releases/$ANTLRVersion$</releaseNotes>
     <requireLicenseAcceptance>true</requireLicenseAcceptance>
     <tags>stringtemplate st4 stringtemplate4 template</tags>
     <title>StringTemplate 4</title>
