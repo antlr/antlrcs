@@ -250,11 +250,13 @@ namespace Antlr.Runtime
             return "[@" + TokenIndex + "," + start + ":" + stop + "='" + txt + "',<" + type + ">" + channelStr + "," + line + ":" + CharPositionInLine + "]";
         }
 
+#if !PORTABLE
         [System.Runtime.Serialization.OnSerializing]
         internal void OnSerializing( System.Runtime.Serialization.StreamingContext context )
         {
             if ( text == null )
                 text = Text;
         }
+#endif
     }
 }
