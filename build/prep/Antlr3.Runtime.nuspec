@@ -28,6 +28,13 @@
     <file src="..\..\Runtime\Antlr3.Runtime\bin\net40-client\$Configuration$\Antlr3.Runtime.pdb" target="lib\net40-client"/>
     <file src="..\..\Runtime\Antlr3.Runtime\bin\net40-client\$Configuration$\Antlr3.Runtime.xml" target="lib\net40-client"/>
 
+    <file src="..\..\Runtime\Antlr3.Runtime\bin\portable-net45\$Configuration$\Antlr3.Runtime.dll" target="lib\portable-net45+win8+wp8+wpa81\" />
+    <file src="..\..\Runtime\Antlr3.Runtime\bin\portable-net45\$Configuration$\Antlr3.Runtime.pdb" target="lib\portable-net45+win8+wp8+wpa81\" />
+    <file src="..\..\Runtime\Antlr3.Runtime\bin\portable-net45\$Configuration$\Antlr3.Runtime.xml" target="lib\portable-net45+win8+wp8+wpa81\" />
+    <file src="..\..\Runtime\Antlr3.Runtime\bin\portable-net45\$Configuration$\Antlr3.Runtime.dll" target="lib\dotnet\" />
+    <file src="..\..\Runtime\Antlr3.Runtime\bin\portable-net45\$Configuration$\Antlr3.Runtime.pdb" target="lib\dotnet\" />
+    <file src="..\..\Runtime\Antlr3.Runtime\bin\portable-net45\$Configuration$\Antlr3.Runtime.xml" target="lib\dotnet\" />
+
     <!-- Source Code -->
 
     <file exclude="..\..\Runtime\Antlr3.Runtime\obj\**\*.cs" src="..\..\Runtime\Antlr3.Runtime\**\*.cs" target="src"/>
