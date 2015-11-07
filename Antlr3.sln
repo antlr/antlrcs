@@ -90,6 +90,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Antlr3.Runtime.net40-client
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Antlr3.Runtime.portable-net40", "Runtime\Antlr3.Runtime\Antlr3.Runtime.portable-net40.csproj", "{34BA0BD4-FB93-48D7-967E-83F229F220A0}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Antlr3.Runtime.portable-net45", "Runtime\Antlr3.Runtime\Antlr3.Runtime.portable-net45.csproj", "{AC2C28AB-D93A-41E3-85A6-5ECB08CAE5C3}"
+EndProject
 Global
 	GlobalSection(TestCaseManagementSettings) = postSolution
 		CategoryFile = Antlr3.vsmdi
@@ -207,6 +209,10 @@ Global
 		{34BA0BD4-FB93-48D7-967E-83F229F220A0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{34BA0BD4-FB93-48D7-967E-83F229F220A0}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{34BA0BD4-FB93-48D7-967E-83F229F220A0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AC2C28AB-D93A-41E3-85A6-5ECB08CAE5C3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AC2C28AB-D93A-41E3-85A6-5ECB08CAE5C3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AC2C28AB-D93A-41E3-85A6-5ECB08CAE5C3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AC2C28AB-D93A-41E3-85A6-5ECB08CAE5C3}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
