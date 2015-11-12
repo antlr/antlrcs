@@ -28,6 +28,14 @@
     <file src="..\..\Runtime\Antlr3.Runtime\bin\net40-client\$Configuration$\Antlr3.Runtime.pdb" target="lib\net40-client"/>
     <file src="..\..\Runtime\Antlr3.Runtime\bin\net40-client\$Configuration$\Antlr3.Runtime.xml" target="lib\net40-client"/>
 
+    <file src="..\..\Runtime\Antlr3.Runtime\bin\portable-net40\$Configuration$\Antlr3.Runtime.dll" target="lib\portable-net4+sl5+netcore45+wpa81+wp8+MonoAndroid1+MonoTouch1"/>
+    <file src="..\..\Runtime\Antlr3.Runtime\bin\portable-net40\$Configuration$\Antlr3.Runtime.pdb" target="lib\portable-net4+sl5+netcore45+wpa81+wp8+MonoAndroid1+MonoTouch1"/>
+    <file src="..\..\Runtime\Antlr3.Runtime\bin\portable-net40\$Configuration$\Antlr3.Runtime.xml" target="lib\portable-net4+sl5+netcore45+wpa81+wp8+MonoAndroid1+MonoTouch1"/>
+
+    <file src="..\..\Runtime\Antlr3.Runtime\bin\portable-net45\$Configuration$\Antlr3.Runtime.dll" target="lib\portable-net45+netcore45+wpa81+wp8+MonoAndroid1+MonoTouch1"/>
+    <file src="..\..\Runtime\Antlr3.Runtime\bin\portable-net45\$Configuration$\Antlr3.Runtime.pdb" target="lib\portable-net45+netcore45+wpa81+wp8+MonoAndroid1+MonoTouch1"/>
+    <file src="..\..\Runtime\Antlr3.Runtime\bin\portable-net45\$Configuration$\Antlr3.Runtime.xml" target="lib\portable-net45+netcore45+wpa81+wp8+MonoAndroid1+MonoTouch1"/>
+
     <!-- Source Code -->
 
     <file exclude="..\..\Runtime\Antlr3.Runtime\obj\**\*.cs" src="..\..\Runtime\Antlr3.Runtime\**\*.cs" target="src"/>
