@@ -2,8 +2,16 @@ param (
   [switch]$Debug,
   [string]$VisualStudioVersion = '14.0',
   [string]$Verbosity = 'minimal',
-  [string]$Logger
+  [string]$Logger,
+  [string]$versionsuffix = "",
+  [string]$AntlrVersion = '3.5.0.3',
+  [string]$STVersion = '4.0.7.2'
 )
+
+If ($version -ne "") {
+  $AntlrVersion = "$AntlrVersion-$versionsuffix"
+  $STVersion = "$STVersion-$versionsuffix"
+}
 
 # build the solution
 $SolutionPath = "..\..\Antlr3.sln"
@@ -204,8 +212,6 @@ copy "..\..\bin\$BuildConfig\Antlr4.StringTemplate.Visualizer.xml" ".\ST4"
 copy "LICENSE.txt" ".\ST4"
 
 # compress the distributable packages
-$AntlrVersion = "3.5.0.3-dev"
-$STVersion = "4.0.7.2-dev"
 
 $ArchivePath = ".\dist\antlr-dotnet-csharpbootstrap-" + $AntlrVersion + ".7z"
 .\7z.exe a -r -mx9 $ArchivePath ".\Bootstrap\*"
