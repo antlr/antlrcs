@@ -94,7 +94,9 @@
     <Compile Include="RecognizerSharedState.cs" />
     <Compile Include="System\ICloneable.cs" />
     <Compile Include="System\NonSerializedAttribute.cs" />
+    <Compile Include="System\OnSerializingAttribute.cs" />
     <Compile Include="System\SerializableAttribute.cs" />
+    <Compile Include="System\StreamingContext.cs" />
     <Compile Include="TemplateParserRuleReturnScope`2.cs" />
     <Compile Include="TokenChannels.cs" />
     <Compile Include="TokenRewriteStream.cs" />
