@@ -30,7 +30,7 @@
     <!-- Source Code -->
 
     <file exclude="..\..\Antlr3.StringTemplate\obj\**\*.cs" src="..\..\Antlr3.StringTemplate\**\*.cs" target="src"/>
-    <file src="..\..\Antlr3.StringTemplate\obj\$Configuration$\**\*.cs" target="src\obj\$Configuration$"/>
-    <file src="..\..\Antlr3.StringTemplate\obj\$Configuration$\**\*.tokens" target="src\obj\$Configuration$"/>
+    <file src="..\..\Antlr3.StringTemplate\obj\net35-client\$Configuration$\**\*.cs" target="src\obj\net35-client\$Configuration$"/>
+    <file src="..\..\Antlr3.StringTemplate\obj\net35-client\$Configuration$\**\*.tokens" target="src\obj\net35-client\$Configuration$"/>
   </files>
 </package>

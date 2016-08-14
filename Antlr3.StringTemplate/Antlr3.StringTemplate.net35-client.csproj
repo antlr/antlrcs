@@ -13,6 +13,7 @@
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <TargetFrameworkProfile>Client</TargetFrameworkProfile>
     <FileAlignment>512</FileAlignment>
+    <BaseIntermediateOutputPath>obj\net35-client\</BaseIntermediateOutputPath>
     <SignAssembly>true</SignAssembly>
     <AssemblyOriginatorKeyFile>..\..\..\..\keys\antlr\Key.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
@@ -20,20 +21,20 @@
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
+    <OutputPath>bin\net35-client\Debug\</OutputPath>
     <DefineConstants>TRACE;DEBUG;COMPILE_EXPRESSIONS; CACHE_FUNCTORS</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <DocumentationFile>bin\Debug\Antlr3.StringTemplate.xml</DocumentationFile>
+    <DocumentationFile>bin\net35-client\Debug\Antlr3.StringTemplate.xml</DocumentationFile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
+    <OutputPath>bin\net35-client\Release\</OutputPath>
     <DefineConstants>TRACE;COMPILE_EXPRESSIONS; CACHE_FUNCTORS</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <DocumentationFile>bin\Release\Antlr3.StringTemplate.xml</DocumentationFile>
+    <DocumentationFile>bin\net35-client\Release\Antlr3.StringTemplate.xml</DocumentationFile>
   </PropertyGroup>
   <PropertyGroup>
     <CodeAnalysisRuleSet>..\Antlr3.ruleset</CodeAnalysisRuleSet>
