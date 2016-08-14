@@ -44,14 +44,14 @@
     <Compile Include="RubyTarget.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\Antlr3\Antlr3.csproj">
+    <ProjectReference Include="..\..\Antlr3\Antlr3.net35-client.csproj">
       <Project>{2AB8CAED-C046-4F05-8B18-6948100D2FE7}</Project>
-      <Name>Antlr3</Name>
+      <Name>Antlr3.net35-client</Name>
       <Private>False</Private>
     </ProjectReference>
-    <ProjectReference Include="..\..\Antlr4.StringTemplate\Antlr4.StringTemplate.csproj">
+    <ProjectReference Include="..\..\Antlr4.StringTemplate\Antlr4.StringTemplate.net35-client.csproj">
       <Project>{DE9B7DA2-35DD-46CC-B768-DAEE3C298660}</Project>
-      <Name>Antlr4.StringTemplate</Name>
+      <Name>Antlr4.StringTemplate.net35-client</Name>
       <Private>False</Private>
     </ProjectReference>
   </ItemGroup>

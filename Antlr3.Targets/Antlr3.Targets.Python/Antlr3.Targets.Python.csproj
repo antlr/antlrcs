@@ -49,9 +49,9 @@
       <Name>Antlr3.Runtime.net20</Name>
       <Private>False</Private>
     </ProjectReference>
-    <ProjectReference Include="..\..\Antlr3\Antlr3.csproj">
+    <ProjectReference Include="..\..\Antlr3\Antlr3.net35-client.csproj">
       <Project>{2AB8CAED-C046-4F05-8B18-6948100D2FE7}</Project>
-      <Name>Antlr3</Name>
+      <Name>Antlr3.net35-client</Name>
       <Private>False</Private>
     </ProjectReference>
   </ItemGroup>
