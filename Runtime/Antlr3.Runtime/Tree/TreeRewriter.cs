@@ -34,7 +34,7 @@ namespace Antlr.Runtime.Tree
 {
     using Antlr.Runtime.Misc;
 
-#if !PORTABLE
+#if !PORTABLE && !NO_SYSTEM_CONSOLE
     using Console = System.Console;
 #endif
 
@@ -140,7 +140,7 @@ namespace Antlr.Runtime.Tree
             ITree @new = newTree as ITree;
             string oldMessage = old != null ? old.ToStringTree() : "??";
             string newMessage = @new != null ? @new.ToStringTree() : "??";
-#if !PORTABLE
+#if !PORTABLE && !NO_SYSTEM_CONSOLE
             Console.WriteLine("{0} -> {1}", oldMessage, newMessage);
 #endif
         }

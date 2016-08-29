@@ -42,7 +42,7 @@ namespace Antlr.Runtime
     using Regex = System.Text.RegularExpressions.Regex;
     using TextWriter = System.IO.TextWriter;
 
-#if !PORTABLE
+#if !PORTABLE && !LIMITED_OR_NO_STACKTRACE
     using StackFrame = System.Diagnostics.StackFrame;
     using StackTrace = System.Diagnostics.StackTrace;
 #else
@@ -833,7 +833,7 @@ namespace Antlr.Runtime
             state._fsp--;
         }
 
-#if !PORTABLE
+#if !PORTABLE && !LIMITED_OR_NO_STACKTRACE
         /** <summary>
          *  Return List<String> of the rules in your parser instance
          *  leading up to a call to this method.  You could override if

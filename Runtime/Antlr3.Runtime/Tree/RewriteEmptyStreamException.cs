@@ -34,7 +34,7 @@ namespace Antlr.Runtime.Tree
 {
     using Exception = System.Exception;
 
-#if !PORTABLE
+#if !PORTABLE && !NO_BINARY_SERIALIZATION
     using SerializationInfo = System.Runtime.Serialization.SerializationInfo;
     using StreamingContext = System.Runtime.Serialization.StreamingContext;
 #endif
@@ -67,7 +67,7 @@ namespace Antlr.Runtime.Tree
         {
         }
 
-#if !PORTABLE
+#if !PORTABLE && !NO_BINARY_SERIALIZATION
         protected RewriteEmptyStreamException(SerializationInfo info, StreamingContext context)
             : base(info, context)
         {

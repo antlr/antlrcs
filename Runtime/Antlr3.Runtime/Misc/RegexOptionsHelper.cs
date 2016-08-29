@@ -2,7 +2,7 @@
 {
     using System.Text.RegularExpressions;
 
-#if PORTABLE
+#if PORTABLE || NET_STANDARD
     using System;
 #endif
 
@@ -12,7 +12,7 @@
 
         static RegexOptionsHelper()
         {
-#if !PORTABLE
+#if !PORTABLE && !NO_REGEXOPTIONS_COMPILED
             Compiled = RegexOptions.Compiled;
 #else
             if (!Enum.TryParse("Compiled", out Compiled))

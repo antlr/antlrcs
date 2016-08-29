@@ -30,7 +30,7 @@
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#if !PORTABLE
+#if !PORTABLE && !NO_SYSTEM_IO_FILE
 
 namespace Antlr.Runtime
 {
@@ -46,7 +46,9 @@ namespace Antlr.Runtime
      *  </summary>
      */
     [System.Serializable]
+#if !NO_SYSTEM_SECURITY_PERMISSIONS
     [System.Security.Permissions.FileIOPermission(System.Security.Permissions.SecurityAction.Demand, Unrestricted = true)]
+#endif
     public class ANTLRFileStream : ANTLRStringStream
     {
         protected string fileName;

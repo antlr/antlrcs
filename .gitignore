@@ -19,6 +19,9 @@ Thumbs.db
 *.sln.ide/
 _ReSharper*/
 [Tt]est[Rr]esult*
+.vs/
+project.lock.json
+*.project.lock.json
 
 # Ignore build output
 bin/
