@@ -38,7 +38,7 @@ namespace Antlr.Runtime.Tree
     using InvalidOperationException = System.InvalidOperationException;
     using StringBuilder = System.Text.StringBuilder;
 
-#if !PORTABLE
+#if !PORTABLE && !NO_SYSTEM_CONSOLE
     using Console = System.Console;
 #endif
 
@@ -593,7 +593,7 @@ namespace Antlr.Runtime.Tree
 
         public virtual string ToString( object start, object stop )
         {
-#if !PORTABLE
+#if !PORTABLE && !NO_SYSTEM_CONSOLE
             Console.Out.WriteLine( "toString" );
 #endif
 
@@ -605,7 +605,7 @@ namespace Antlr.Runtime.Tree
             {
                 throw new InvalidOperationException( "Buffer is not yet filled." );
             }
-#if !PORTABLE
+#if !PORTABLE && !NO_SYSTEM_CONSOLE
             //Console.Out.WriteLine( "stop: " + stop );
             if ( start is CommonTree )
                 Console.Out.Write( "toString: " + ( (CommonTree)start ).Token + ", " );

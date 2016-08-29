@@ -41,7 +41,7 @@ namespace Antlr.Runtime
     using StringBuilder = System.Text.StringBuilder;
     using Type = System.Type;
 
-#if !PORTABLE
+#if !PORTABLE && !NO_SYSTEM_CONSOLE
     using Console = System.Console;
 #endif
 
@@ -620,7 +620,7 @@ namespace Antlr.Runtime
                         rewrites[prevRop.instructionIndex] = null; // kill first delete
                         rop.index = Math.Min(prevRop.index, rop.index);
                         rop.lastIndex = Math.Max(prevRop.lastIndex, rop.lastIndex);
-#if !PORTABLE
+#if !PORTABLE && !NO_SYSTEM_CONSOLE
                         Console.WriteLine("new rop " + rop);
 #endif
                     }

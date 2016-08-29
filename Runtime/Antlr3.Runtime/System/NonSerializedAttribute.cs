@@ -1,4 +1,4 @@
-﻿#if PORTABLE
+﻿#if PORTABLE || NO_BINARY_SERIALIZATION
 
 namespace System 
 {

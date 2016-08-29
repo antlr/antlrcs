@@ -34,7 +34,7 @@ namespace Antlr.Runtime
 {
     using Exception = System.Exception;
 
-#if !PORTABLE
+#if !PORTABLE && !NO_BINARY_SERIALIZATION
     using SerializationInfo = System.Runtime.Serialization.SerializationInfo;
     using StreamingContext = System.Runtime.Serialization.StreamingContext;
 #endif
@@ -71,7 +71,7 @@ namespace Antlr.Runtime
         {
         }
 
-#if !PORTABLE
+#if !PORTABLE && !NO_BINARY_SERIALIZATION
         protected MismatchedNotSetException(SerializationInfo info, StreamingContext context)
             : base(info, context)
         {

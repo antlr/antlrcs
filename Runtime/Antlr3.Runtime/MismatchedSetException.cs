@@ -35,7 +35,7 @@ namespace Antlr.Runtime
     using ArgumentNullException = System.ArgumentNullException;
     using Exception = System.Exception;
 
-#if !PORTABLE
+#if !PORTABLE && !NO_BINARY_SERIALIZATION
     using SerializationInfo = System.Runtime.Serialization.SerializationInfo;
     using StreamingContext = System.Runtime.Serialization.StreamingContext;
 #endif
@@ -77,7 +77,7 @@ namespace Antlr.Runtime
             this._expecting = expecting;
         }
 
-#if !PORTABLE
+#if !PORTABLE && !NO_BINARY_SERIALIZATION
         protected MismatchedSetException(SerializationInfo info, StreamingContext context)
             : base(info, context)
         {
@@ -96,7 +96,7 @@ namespace Antlr.Runtime
             }
         }
 
-#if !PORTABLE
+#if !PORTABLE && !NO_BINARY_SERIALIZATION
         public override void GetObjectData(SerializationInfo info, StreamingContext context)
         {
             if (info == null)
