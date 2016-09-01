@@ -37,6 +37,10 @@ If ($Logger) {
   $LoggerArgument = "/logger:$Logger"
 }
 
+# Restore packages
+.\NuGet.exe update -self
+.\NuGet.exe restore $SolutionPath
+
 &$msbuild /nologo /m /nr:false /t:rebuild $LoggerArgument "/verbosity:$Verbosity" /p:Configuration=$BuildConfig $SolutionPath
 If (-not $?) {
   $host.ui.WriteErrorLine("Build Failed, Aborting!")
