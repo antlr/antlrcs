@@ -37,6 +37,9 @@
     <WarningLevel>4</WarningLevel>
     <DocumentationFile>bin\portable-net40\Release\Antlr3.Runtime.xml</DocumentationFile>
   </PropertyGroup>
+  <PropertyGroup>
+    <CodeAnalysisRuleSet>..\..\Antlr3.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
   <ItemGroup>
     <Compile Include="ANTLRFileStream.cs" />
     <Compile Include="ANTLRInputStream.cs" />

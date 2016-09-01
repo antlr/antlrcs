@@ -36,6 +36,9 @@
     <WarningLevel>4</WarningLevel>
     <DocumentationFile>bin\net40-client\Release\Antlr3.Runtime.xml</DocumentationFile>
   </PropertyGroup>
+  <PropertyGroup>
+    <CodeAnalysisRuleSet>..\..\Antlr3.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
   </ItemGroup>
