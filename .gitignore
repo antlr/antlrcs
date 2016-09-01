@@ -16,7 +16,7 @@ Thumbs.db
 *.ilk
 *.log
 *.sbr
-*.sln.ide/
+*.vs/
 _ReSharper*/
 [Tt]est[Rr]esult*
 
