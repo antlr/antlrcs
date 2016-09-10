@@ -81,9 +81,10 @@ namespace Antlr3.Analysis
          */
         private bool _resolveWithPredicate;
 
-        /** Lots of NFA states have only epsilon edges (1 or 2).  We can
-         *  safely consider only n>0 during closure.
-         */
+        ///// <summary>
+        ///// Lots of NFA states have only epsilon edges (1 or 2).  We can
+        ///// safely consider only n>0 during closure.
+        ///// </summary>
         //int _numberEpsilonTransitionsEmanatingFromState;
 
         /** Indicates that the NFA state associated with this configuration

@@ -62,9 +62,14 @@ namespace Antlr.Runtime
         }
 
         #region Properties
+        /// <summary>
+        /// Gets or sets the text matched so far for the current token or any text override.
+        /// </summary>
+        /// <remarks>
+        /// <para>Setting this value replaces any previously set value, and overrides the original text.</para>
+        /// </remarks>
         public string Text
         {
-            /** <summary>Return the text matched so far for the current token or any text override.</summary> */
             get
             {
                 if ( state.text != null )
@@ -73,7 +78,6 @@ namespace Antlr.Runtime
                 }
                 return input.Substring( state.tokenStartCharIndex, CharIndex - state.tokenStartCharIndex );
             }
-            /** <summary>Set the complete text of this token; it wipes any previous changes to the text.</summary> */
             set
             {
                 state.text = value;
@@ -203,7 +207,7 @@ namespace Antlr.Runtime
             {
                 return input;
             }
-            /** <summary>Set the char stream and reset the lexer</summary> */
+            /* Set the char stream and reset the lexer */
             set
             {
                 input = null;
@@ -327,15 +331,15 @@ namespace Antlr.Runtime
 
         public override void ReportError( RecognitionException e )
         {
-            /** TODO: not thought about recovery in lexer yet.
+            /* TODO: not thought about recovery in lexer yet.
              *
-            // if we've already reported an error and have not matched a token
-            // yet successfully, don't report any errors.
-            if ( errorRecovery ) {
-                //System.err.print("[SPURIOUS] ");
-                return;
-            }
-            errorRecovery = true;
+             * // if we've already reported an error and have not matched a token
+             * // yet successfully, don't report any errors.
+             * if ( errorRecovery ) {
+             *     //System.err.print("[SPURIOUS] ");
+             *     return;
+             * }
+             * errorRecovery = true;
              */
 
             DisplayRecognitionError( this.TokenNames, e );

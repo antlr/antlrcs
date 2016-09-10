@@ -56,7 +56,7 @@ namespace Antlr3.Misc
                 return _elements[i];
             }
 
-            /** Replace an existing value with a new value; updates the element
+            /* Replace an existing value with a new value; updates the element
              *  list and the hash table, but not the key as that has not changed.
              */
             set

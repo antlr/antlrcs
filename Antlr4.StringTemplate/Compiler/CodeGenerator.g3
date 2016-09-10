@@ -145,13 +145,13 @@ subtemplate returns [string name, int nargs]
 
 ifstat[CommonTree indent]
 @init {
-	///** Tracks address of branch operand (in code block).  It's how
-	//	*  we backpatch forward references when generating code for IFs.
-	//	*/
+	/* Tracks address of branch operand (in code block).  It's how
+	 * we backpatch forward references when generating code for IFs.
+	 */
 	int prevBranchOperand = -1;
-	///** Branch instruction operands that are forward refs to end of IF.
-	//	*  We need to update them once we see the endif.
-	//	*/
+	/* Branch instruction operands that are forward refs to end of IF.
+	 * We need to update them once we see the endif.
+	 */
 	List<int> endRefs = new List<int>();
 	if ($indent != null) Indent($indent);
 }
