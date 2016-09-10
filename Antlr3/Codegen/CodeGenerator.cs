@@ -1179,7 +1179,7 @@ namespace Antlr3.Codegen
         }
 
         /** For intervals such as [3..3, 30..35], generate an expression that
-         *  tests the lookahead similar to LA(1)==3 || (LA(1)>=30&&LA(1)<=35)
+         *  tests the lookahead similar to LA(1)==3 || (LA(1)>=30&amp;&amp;LA(1)&lt;=35)
          */
         public virtual StringTemplate GenSetExpr( TemplateGroup templates,
                                          IIntSet set,
@@ -1823,7 +1823,7 @@ namespace Antlr3.Codegen
         /** Create a label to track a token / rule reference's result.
          *  Technically, this is a place where I break model-view separation
          *  as I am creating a variable name that could be invalid in a
-         *  target language, however, label ::= <ID><INT> is probably ok in
+         *  target language, however, label ::= &lt;ID&gt;&lt;INT&gt; is probably ok in
          *  all languages we care about.
          */
         public virtual string CreateUniqueLabel( string name )

@@ -60,7 +60,7 @@ namespace Antlr4.StringTemplate
      */
     public class Template
     {
-        /** <@r()>, <@r>...<@end>, and @t.r() ::= "..." defined manually by coder */
+        /** &lt;@r()&gt;, &lt;@r&gt;...&lt;@end&gt;, and @t.r() ::= "..." defined manually by coder */
         public enum RegionType
         {
             /// <summary>

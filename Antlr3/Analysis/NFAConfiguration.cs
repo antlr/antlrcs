@@ -55,7 +55,7 @@ namespace Antlr3.Analysis
         /** The set of semantic predicates associated with this NFA
          *  configuration.  The predicates were found on the way to
          *  the associated NFA state in this syntactic context.
-         *  Set<AST>: track nodes in grammar containing the predicate
+         *  Set of AST: track nodes in grammar containing the predicate
          *  for error messages and such (nice to know where the predicate
          *  came from in case of duplicates etc...).  By using a set,
          *  the equals() method will correctly show {pred1,pred2} as equals()
@@ -81,9 +81,10 @@ namespace Antlr3.Analysis
          */
         private bool _resolveWithPredicate;
 
-        /** Lots of NFA states have only epsilon edges (1 or 2).  We can
-         *  safely consider only n>0 during closure.
-         */
+        ///// <summary>
+        ///// Lots of NFA states have only epsilon edges (1 or 2).  We can
+        ///// safely consider only n>0 during closure.
+        ///// </summary>
         //int _numberEpsilonTransitionsEmanatingFromState;
 
         /** Indicates that the NFA state associated with this configuration

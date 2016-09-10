@@ -36,6 +36,9 @@
     <DocumentationFile>bin\Release\Antlr4.StringTemplate.Visualizer.xml</DocumentationFile>
   </PropertyGroup>
   <PropertyGroup>
+    <CodeAnalysisRuleSet>..\Antlr3.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup>
     <SignAssembly>true</SignAssembly>
   </PropertyGroup>
   <PropertyGroup>

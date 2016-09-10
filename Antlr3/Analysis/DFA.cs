@@ -598,7 +598,7 @@ namespace Antlr3.Analysis
          *  gives
          * 
          * .s0-X->.s1
-         * .s0-Y&&{synpred1_t}?->:s2=>1
+         * .s0-Y&amp;&amp;{synpred1_t}?->:s2=>1
          * .s1-{synpred1_t}?->:s2=>1
          * .s1-{true}?->:s3=>2
          */

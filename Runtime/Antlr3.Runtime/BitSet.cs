@@ -55,7 +55,7 @@ namespace Antlr.Runtime
         /** <summary>
          *  We will often need to do a mod operator (i mod nbits).  Its
          *  turns out that, for powers of two, this mod operation is
-         *  same as (i & (nbits-1)).  Since mod is slow, we use a
+         *  same as (i &amp; (nbits-1)).  Since mod is slow, we use a
          *  precomputed mod mask to do the mod instead.
          *  </summary>
          */

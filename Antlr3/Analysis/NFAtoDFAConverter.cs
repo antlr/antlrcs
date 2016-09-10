@@ -384,14 +384,14 @@ namespace Antlr3.Analysis
          *
          *  The normal decision to predict alts 1, 2, 3 is:
          *
-         *  if ( (input.LA(1)>='1' && input.LA(1)&lt;='9') ) {
+         *  if ( (input.LA(1)>='1' &amp;&amp; input.LA(1)&lt;='9') ) {
          *       alt7=1;
          *  }
          *  else if ( input.LA(1)=='0' ) {
          *      if ( input.LA(2)=='X'||input.LA(2)=='x' ) {
          *          alt7=2;
          *      }
-         *      else if ( (input.LA(2)>='0' && input.LA(2)&lt;='7') ) {
+         *      else if ( (input.LA(2)>='0' &amp;&amp; input.LA(2)&lt;='7') ) {
          *           alt7=3;
          *      }
          *      else if ( input.LA(2)=='L'||input.LA(2)=='l' ) {
@@ -409,7 +409,7 @@ namespace Antlr3.Analysis
          *
          *  A better decision is as follows:
          *
-         *  if ( (input.LA(1)>='1' && input.LA(1)&lt;='9') ) {
+         *  if ( (input.LA(1)>='1' &amp;&amp; input.LA(1)&lt;='9') ) {
          *      alt7=1;
          *  }
          *  else if ( input.LA(1)=='0' ) {
@@ -1236,7 +1236,7 @@ namespace Antlr3.Analysis
          *  it uniquely predicts one alt. :)  Problem
          *  states will look like this during conversion:
          *
-         *  DFA 1:{9|1, 19|2, 14|3, 20|2, 23|2, 24|2, ...}-<EOT>->5:{41|3, 42|2}
+         *  DFA 1:{9|1, 19|2, 14|3, 20|2, 23|2, 24|2, ...}-&lt;EOT&gt;->5:{41|3, 42|2}
          *
          *  Worse, when you have two identical literal rules, you will see 3 alts
          *  in the EOT state (one for ID and one each for the identical rules).

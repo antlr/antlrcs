@@ -32,6 +32,7 @@
 
 namespace Antlr.Runtime.Debug
 {
+    using ITreeAdaptor = Antlr.Runtime.Tree.ITreeAdaptor;
 
     /** <summary>All debugging events that a recognizer can trigger.</summary>
      *
@@ -204,7 +205,7 @@ namespace Antlr.Runtime.Debug
          *		enterAlt1
          *		location 7 5
          *		LT(1)
-         *		consumeToken [c/<4>,1:0]
+         *		consumeToken [c/&lt;4&gt;,1:0]
          *		location 7 7
          *		enterSubRule 2
          *		enter decision 2
@@ -215,7 +216,7 @@ namespace Antlr.Runtime.Debug
          *		exitSubRule 2
          *		beginResync
          *		LT(1)
-         *		consumeToken [c/<4>,1:1]
+         *		consumeToken [c/&lt;4&gt;,1:1]
          *		LT(1)
          *		endResync
          *		LT(-1)
@@ -358,7 +359,7 @@ namespace Antlr.Runtime.Debug
          *  RemoteDebugEventSocketListener then only IDs are set.
          *  </remarks>
          *
-         *  <seealso cref="Antlr.Runtime.Tree.TreeAdaptor.becomeRoot()"/>
+         *  <seealso cref="ITreeAdaptor.BecomeRoot(object, object)"/>
          */
         void BecomeRoot( object newRoot, object oldRoot );
 
@@ -369,7 +370,7 @@ namespace Antlr.Runtime.Debug
          *  RemoteDebugEventSocketListener then only IDs are set.
          *  </remarks>
          *
-         *  <seealso cref="Antlr.Runtime.Tree.TreeAdaptor.addChild()"/>
+         *  <seealso cref="ITreeAdaptor.AddChild(object, object)"/>
          */
         void AddChild( object root, object child );
 

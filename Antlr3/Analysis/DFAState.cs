@@ -402,7 +402,7 @@ namespace Antlr3.Analysis
         }
 
         /** Add an NFA configuration to this DFA node.  Add uniquely
-         *  an NFA state/alt/syntactic&semantic context (chain of invoking state(s)
+         *  an NFA state/alt/syntactic&amp;semantic context (chain of invoking state(s)
          *  and semantic predicate contexts).
          *
          *  I don't see how there could be two configurations with same
@@ -498,7 +498,7 @@ namespace Antlr3.Analysis
          *
          *  The idea for adding a new set, t, is to look for overlap with the
          *  elements of existing list s.  Upon overlap, replace
-         *  existing set s[i] with two new disjoint sets, s[i]-t and s[i]&t.
+         *  existing set s[i] with two new disjoint sets, s[i]-t and s[i]&amp;t.
          *  (if s[i]-t is nil, don't add).  The remainder is t-s[i], which is
          *  what you want to add to the set minus what was already there.  The
          *  remainder must then be compared against the i+1..n elements in s

@@ -203,7 +203,7 @@ namespace Antlr3.Tool
             };
 
         /** Only one error can be emitted for any entry in this table.
-         *  Map<String,Set> where the key is a method name like danglingState.
+         *  Map from string to a set where the key is a method name like danglingState.
          *  The set is whatever that method accepts or derives like a DFA.
          */
         public static readonly IDictionary<string, ICollection<object>> emitSingleError =
@@ -527,7 +527,7 @@ namespace Antlr3.Tool
             String fileName = "org/antlr/tool/templates/messages/"+language+".stg";
             ClassLoader cl = Thread.currentThread().getContextClassLoader();
             InputStream is = cl.getResourceAsStream(fileName);
-            if ( is==null && language.equals(Locale.US.getLanguage()) ) {
+            if ( is==null &amp;&amp; language.equals(Locale.US.getLanguage()) ) {
                 return null;
             }
             else if ( is==null ) {
@@ -535,7 +535,7 @@ namespace Antlr3.Tool
             }
 
             boolean messagesOK = verifyMessages();
-            if ( !messagesOK && language.equals(Locale.US.getLanguage()) ) {
+            if ( !messagesOK &amp;&amp; language.equals(Locale.US.getLanguage()) ) {
                 return null;
             }
             else if ( !messagesOK ) {

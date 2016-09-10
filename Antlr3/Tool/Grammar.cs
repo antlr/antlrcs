@@ -448,7 +448,7 @@ namespace Antlr3.Tool
 
         /** An AST that records entire input grammar with all rules.  A simple
          *  grammar with one rule, "grammar t; a : A | B ;", looks like:
-         * ( grammar t ( rule a ( BLOCK ( ALT A ) ( ALT B ) ) <end-of-rule> ) )
+         * ( grammar t ( rule a ( BLOCK ( ALT A ) ( ALT B ) ) &lt;end-of-rule&gt; ) )
          */
         protected GrammarAST grammarTree = null;
 
@@ -2973,7 +2973,7 @@ namespace Antlr3.Tool
             delegateGrammar.composite = this.composite;
         }
 
-        /** Load a vocab file <vocabName>.tokens and return max token type found. */
+        /** Load a vocab file &lt;vocabName&gt;.tokens and return max token type found. */
         public virtual int ImportTokenVocabulary( GrammarAST tokenVocabOptionAST,
                                          string vocabName )
         {
@@ -3733,7 +3733,7 @@ namespace Antlr3.Tool
         }
 
         /** given a token type and the text of the literal, come up with a
-         *  decent token type label.  For now it's just T<type>.  Actually,
+         *  decent token type label.  For now it's just T&lt;type&gt;.  Actually,
          *  if there is an aliased name from tokens like PLUS='+', use it.
          */
         public virtual string ComputeTokenNameFromLiteral( int tokenType, string literal )

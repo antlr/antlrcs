@@ -48,7 +48,7 @@ namespace Antlr.Runtime
      *  lexing then you should not throw an exception to the parser--it has already
      *  requested a token.  Keep lexing until you get a valid one.  Just report
      *  errors and keep going, looking for a valid token.
-     *  </summary>
+     *  </remarks>
      */
     public interface ITokenSource
     {

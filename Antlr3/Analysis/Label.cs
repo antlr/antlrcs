@@ -121,7 +121,9 @@ namespace Antlr3.Analysis
         /** tokens and char range overlap; tokens are MIN_TOKEN_TYPE..n */
         public const int MIN_TOKEN_TYPE = TokenTypes.Min;
 
-        /** The wildcard '.' char atom implies all valid characters==UNICODE */
+        ///// <summary>
+        ///// The wildcard '.' char atom implies all valid characters==UNICODE
+        ///// </summary>
         //public static readonly IIntSet ALLCHAR = IntervalSet.of( MIN_CHAR_VALUE, MAX_CHAR_VALUE );
 
         /** The token type or character value; or, signifies special label. */
