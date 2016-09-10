@@ -106,31 +106,31 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Runtime\Antlr3.Runtime.Debug\Antlr3.Runtime.Debug.csproj">
+    <ProjectReference Include="..\Runtime\Antlr3.Runtime.Debug\Antlr3.Runtime.Debug.net20.csproj">
       <Project>{5EE27A90-B023-42C9-AAF1-52B0424C5D0B}</Project>
-      <Name>Antlr3.Runtime.Debug</Name>
+      <Name>Antlr3.Runtime.Debug.net20</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Runtime\Antlr3.Runtime.JavaExtensions\Antlr3.Runtime.JavaExtensions.csproj">
+    <ProjectReference Include="..\Runtime\Antlr3.Runtime.JavaExtensions\Antlr3.Runtime.JavaExtensions.net35-client.csproj">
       <Project>{A7EEC557-EB14-451C-9616-B7A61F4ECE69}</Project>
-      <Name>Antlr3.Runtime.JavaExtensions</Name>
+      <Name>Antlr3.Runtime.JavaExtensions.net35-client</Name>
     </ProjectReference>
     <ProjectReference Include="..\Runtime\Antlr3.Runtime\Antlr3.Runtime.net20.csproj">
       <Project>{8FDC0A87-9005-4D5A-AB75-E55CEB575559}</Project>
       <Name>Antlr3.Runtime.net20</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Antlr3.StringTemplate\Antlr3.StringTemplate.csproj">
+    <ProjectReference Include="..\Antlr3.StringTemplate\Antlr3.StringTemplate.net35-client.csproj">
       <Project>{B5910BE2-DE21-4AA9-95C1-486F42B9E794}</Project>
-      <Name>Antlr3.StringTemplate</Name>
+      <Name>Antlr3.StringTemplate.net35-client</Name>
       <Private>True</Private>
     </ProjectReference>
-    <ProjectReference Include="..\Antlr3\Antlr3.csproj">
+    <ProjectReference Include="..\Antlr3\Antlr3.net35-client.csproj">
       <Project>{2AB8CAED-C046-4F05-8B18-6948100D2FE7}</Project>
-      <Name>Antlr3</Name>
+      <Name>Antlr3.net35-client</Name>
       <Private>True</Private>
     </ProjectReference>
-    <ProjectReference Include="..\Antlr4.StringTemplate\Antlr4.StringTemplate.csproj">
+    <ProjectReference Include="..\Antlr4.StringTemplate\Antlr4.StringTemplate.net35-client.csproj">
       <Project>{DE9B7DA2-35DD-46CC-B768-DAEE3C298660}</Project>
-      <Name>Antlr4.StringTemplate</Name>
+      <Name>Antlr4.StringTemplate.net35-client</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
