@@ -34,19 +34,17 @@ namespace Antlr.Runtime
 {
     using System.Collections.Generic;
 
-    using ArgumentNullException = System.ArgumentNullException;
     using Array = System.Array;
     using Conditional = System.Diagnostics.ConditionalAttribute;
     using IDebugEventListener = Antlr.Runtime.Debug.IDebugEventListener;
-    using MethodBase = System.Reflection.MethodBase;
     using Regex = System.Text.RegularExpressions.Regex;
     using TextWriter = System.IO.TextWriter;
 
 #if !PORTABLE
+    using ArgumentNullException = System.ArgumentNullException;
+    using MethodBase = System.Reflection.MethodBase;
     using StackFrame = System.Diagnostics.StackFrame;
     using StackTrace = System.Diagnostics.StackTrace;
-#else
-    using NotSupportedException = System.NotSupportedException;
 #endif
 
     /** <summary>
