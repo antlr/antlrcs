@@ -37,9 +37,9 @@
     <file src="..\..\Runtime\Antlr3.Runtime\bin\portable-net40\$Configuration$\Antlr3.Runtime.pdb" target="lib\portable-net4+sl5+netcore45+wpa81+wp8+MonoAndroid1+MonoTouch1"/>
     <file src="..\..\Runtime\Antlr3.Runtime\bin\portable-net40\$Configuration$\Antlr3.Runtime.xml" target="lib\portable-net4+sl5+netcore45+wpa81+wp8+MonoAndroid1+MonoTouch1"/>
 
-    <file src="..\..\Runtime\Antlr3.Runtime\bin\portable-net45\$Configuration$\Antlr3.Runtime.dll" target="lib\netstandard1.1"/>
-    <file src="..\..\Runtime\Antlr3.Runtime\bin\portable-net45\$Configuration$\Antlr3.Runtime.pdb" target="lib\netstandard1.1"/>
-    <file src="..\..\Runtime\Antlr3.Runtime\bin\portable-net45\$Configuration$\Antlr3.Runtime.xml" target="lib\netstandard1.1"/>
+    <file src="..\..\Runtime\Antlr3.Runtime\bin\netstandard\$Configuration$\Antlr3.Runtime.dll" target="lib\netstandard1.1"/>
+    <file src="..\..\Runtime\Antlr3.Runtime\bin\netstandard\$Configuration$\Antlr3.Runtime.pdb" target="lib\netstandard1.1"/>
+    <file src="..\..\Runtime\Antlr3.Runtime\bin\netstandard\$Configuration$\Antlr3.Runtime.xml" target="lib\netstandard1.1"/>
 
     <!-- Source Code -->
 

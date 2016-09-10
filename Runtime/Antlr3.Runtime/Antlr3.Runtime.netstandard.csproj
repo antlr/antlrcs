@@ -14,7 +14,7 @@
     <TargetFrameworkVersion>v5.0</TargetFrameworkVersion>
     <TargetFrameworkProfile />
     <FileAlignment>512</FileAlignment>
-    <BaseIntermediateOutputPath>obj\portable-net45\</BaseIntermediateOutputPath>
+    <BaseIntermediateOutputPath>obj\netstandard\</BaseIntermediateOutputPath>
     <SignAssembly>true</SignAssembly>
     <AssemblyOriginatorKeyFile>..\..\..\..\..\keys\antlr\Key.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
@@ -22,20 +22,20 @@
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>bin\portable-net45\Debug\</OutputPath>
+    <OutputPath>bin\netstandard\Debug\</OutputPath>
     <DefineConstants>DEBUG;TRACE;PORTABLE;NETSTANDARD;NET45PLUS;NET40PLUS;NET35PLUS;NET20PLUS</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <DocumentationFile>bin\portable-net45\Debug\Antlr3.Runtime.xml</DocumentationFile>
+    <DocumentationFile>bin\netstandard\Debug\Antlr3.Runtime.xml</DocumentationFile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
-    <OutputPath>bin\portable-net45\Release\</OutputPath>
+    <OutputPath>bin\netstandard\Release\</OutputPath>
     <DefineConstants>TRACE;PORTABLE;NETSTANDARD;NET45PLUS;NET40PLUS;NET35PLUS;NET20PLUS</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <DocumentationFile>bin\portable-net45\Release\Antlr3.Runtime.xml</DocumentationFile>
+    <DocumentationFile>bin\netstandard\Release\Antlr3.Runtime.xml</DocumentationFile>
   </PropertyGroup>
   <PropertyGroup>
     <CodeAnalysisRuleSet>..\..\Antlr3.ruleset</CodeAnalysisRuleSet>
@@ -140,7 +140,7 @@
     <None Include="..\..\..\..\..\keys\antlr\Key.snk">
       <Link>Key.snk</Link>
     </None>
-    <None Include="Antlr3.Runtime.portable-net45.project.json" />
+    <None Include="Antlr3.Runtime.netstandard.project.json" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
