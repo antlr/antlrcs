@@ -20,7 +20,7 @@ If ($Debug) {
   $BuildConfig = 'Release'
 }
 
-$DebugBuild = false
+$DebugBuild = $false
 
 # clean up from any previous builds
 $CleanItems = "Runtime", "Tool", "Bootstrap", "ST3", "ST4"
@@ -111,7 +111,7 @@ If (-not $?) {
 Remove-Item -force "..\Bootstrap\Tool\Templates\messages\formats\gnu.stg"
 
 # build the project again with the new bootstrap files
-&$msbuild /nologo /m /nr:false /t:rebuild /p:Configuration=$BuildConfig $SolutionPath
+&$msbuild /nologo /m /nr:false /t:rebuild "/verbosity:$Verbosity" /p:Configuration=$BuildConfig $SolutionPath
 If (-not $?) {
   $host.ui.WriteErrorLine("Build Failed, Aborting!")
   exit $LASTEXITCODE
