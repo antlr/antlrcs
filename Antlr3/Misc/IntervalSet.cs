@@ -143,7 +143,7 @@ namespace Antlr3.Misc
         }
 
         /** Add interval; i.e., add all integers from a to b to set.
-         *  If b<a, do nothing.
+         *  If b&lt;a, do nothing.
          *  Keep list in sorted order (by left range value).
          *  If overlap, combine ranges.  For example,
          *  If this is {1..5, 10..20}, adding 6..7 yields
@@ -356,7 +356,7 @@ namespace Antlr3.Misc
             return compl;
         }
 
-        /** Compute this-other via this&~other.
+        /** Compute this-other via this&amp;~other.
          *  Return a new set containing all elements in this but not in other.
          *  other is assumed to be a subset of this;
          *  anything that is in other but not in this will be ignored.

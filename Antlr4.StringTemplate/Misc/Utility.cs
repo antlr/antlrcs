@@ -98,7 +98,7 @@ namespace Antlr4.StringTemplate.Misc
         }
 
         /** Replace >\> with >> in s. Replace \>> unless prefix of \>>> with >>.
-         *  Do NOT replace if it's <\\>
+         *  Do NOT replace if it's &lt;\\&gt;
          */
         public static string ReplaceEscapedRightAngle(string s)
         {

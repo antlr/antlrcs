@@ -68,15 +68,15 @@
  *  1. Finds a list of all literals and token names.
  *  2. Finds a list of all token name rule definitions;
  *     no token rules implies pure parser.
- *  3. Finds a list of all simple token rule defs of form "<NAME> : <literal>;"
+ *  3. Finds a list of all simple token rule defs of form "&lt;NAME&gt; : &lt;literal&gt;;"
  *     and aliases them.
  *  4. Walks token names table and assign types to any unassigned
  *  5. Walks aliases and assign types to referenced literals
  *  6. Walks literals, assigning types if untyped
  *  4. Informs the Grammar object of the type definitions such as:
- *     g.defineToken(<charliteral>, ttype);
- *     g.defineToken(<stringliteral>, ttype);
- *     g.defineToken(<tokenID>, ttype);
+ *     g.defineToken(&lt;charliteral&gt;, ttype);
+ *     g.defineToken(&lt;stringliteral&gt;, ttype);
+ *     g.defineToken(&lt;tokenID&gt;, ttype);
  *     where some of the ttype values will be the same for aliases tokens.
  */
 tree grammar AssignTokenTypesWalker;

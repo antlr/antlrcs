@@ -47,17 +47,17 @@ namespace Antlr.Runtime.Tree
         }
 
         /** <summary>
-         * Get tree node at current input pointer + {@code k} ahead where
-         * {@code k==1} is next node. {@code k<0} indicates nodes in the past. So
+         * Get tree node at current input pointer + <paramref name="k"/> ahead where
+         * <paramref name="k"/>==1 is next node. <paramref name="k"/>&lt;0 indicates nodes in the past. So
          * {@code LT(-1)} is previous node, but implementations are not required to
-         * provide results for {@code k < -1}. {@code LT(0)} is undefined. For
-         * {@code k<=n}, return {@code null}. Return {@code null} for {@code LT(0)}
+         * provide results for <paramref name="k"/> &lt; -1. {@code LT(0)} is undefined. For
+         * <paramref name="k"/>&lt;=n, return <see langword="null"/>. Return <see langword="null"/> for {@code LT(0)}
          * and any index that results in an absolute address that is negative.
          *  </summary>
          *
          *  <remarks>
-         * This is analogous to {@link TokenStream#LT}, but this returns a tree node
-         * instead of a {@link Token}. Makes code generation identical for both
+         * This is analogous to <see cref="ITokenStream.LT(int)"/>, but this returns a tree node
+         * instead of a <see cref="IToken"/>. Makes code generation identical for both
          * parser and tree grammars.
          *  </remarks>
          */

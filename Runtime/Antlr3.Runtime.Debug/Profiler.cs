@@ -45,7 +45,7 @@ namespace Antlr.Runtime.Debug
     using StringBuilder = System.Text.StringBuilder;
 
     /** <summary>Using the debug event interface, track what is happening in the parser
-     *  and record statistics about the runtime.
+     *  and record statistics about the runtime.</summary>
      */
     public class Profiler : BlankDebugEventListener
     {

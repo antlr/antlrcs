@@ -48,7 +48,7 @@ namespace Antlr3.Analysis
 
     /** A binary tree structure used to record the semantic context in which
      *  an NFA configuration is valid.  It's either a single predicate or
-     *  a tree representing an operation tree such as: p1&&p2 or p1||p2.
+     *  a tree representing an operation tree such as: p1&amp;&amp;p2 or p1||p2.
      *
      *  For NFA o-p1->o-p2->o, create tree AND(p1,p2).
      *  For NFA (1)-p1->(2)
@@ -76,8 +76,8 @@ namespace Antlr3.Analysis
         public static readonly SemanticContext EmptySemanticContext = new Predicate(Predicate.InvalidPredValue);
 
         /** Given a semantic context expression tree, return a tree with all
-         *  nongated predicates set to true and then reduced.  So p&&(q||r) would
-         *  return p&&r if q is nongated but p and r are gated.
+         *  nongated predicates set to true and then reduced.  So p&amp;&amp;(q||r) would
+         *  return p&amp;&amp;r if q is nongated but p and r are gated.
          */
         public abstract SemanticContext GatedPredicateContext
         {

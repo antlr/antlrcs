@@ -96,7 +96,7 @@ namespace Antlr.Runtime
         public int backtracking;
 
         /** <summary>
-         *  An array[size num rules] of Map<Integer,Integer> that tracks
+         *  An array[size num rules] of dictionaries that tracks
          *  the stop token index for each rule.  ruleMemo[ruleIndex] is
          *  the memoization table for ruleIndex.  For key ruleStartIndex, you
          *  get back the stop token for associated rule or MEMO_RULE_FAILED.

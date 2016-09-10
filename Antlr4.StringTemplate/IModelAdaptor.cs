@@ -39,7 +39,7 @@ namespace Antlr4.StringTemplate
      *  an object of type M with property method foo() (not getFoo()), we
      *  register a model adaptor object, adap, that converts foo lookup to foo().
      *
-     *  Given <a.foo>, we look up foo via the adaptor if "a instanceof(M)".
+     *  Given &lt;a.foo&gt;, we look up foo via the adaptor if "a instanceof(M)".
      *
      *  See unit tests.
      */

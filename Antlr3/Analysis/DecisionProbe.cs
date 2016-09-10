@@ -161,7 +161,7 @@ namespace Antlr3.Analysis
          *  an input sequence.  Tracks the input position
          *  we were at the last time at this node.  If same input position, then
          *  we'd have reached same state without consuming input...probably an
-         *  infinite loop.  Stop.  Set<String>.  The strings look like
+         *  infinite loop.  Stop.  Set of strings.  The strings look like
          *  stateNumber_labelIndex.
          */
         private ICollection<string> _statesVisitedAtInputDepth;
@@ -375,7 +375,7 @@ namespace Antlr3.Analysis
             _stateToRecursionOverflowConfigurationsMap.Remove( d.StateNumber );
         }
 
-        /** Return a IList<Label> indicating an input sequence that can be matched
+        /** Return a IList&lt;Label&gt; indicating an input sequence that can be matched
          *  from the start state of the DFA to the targetState (which is known
          *  to have a problem).
          */
@@ -900,7 +900,7 @@ namespace Antlr3.Analysis
         /** Given a start state and a final state, find a list of edge labels
          *  between the two ignoring epsilon.  Limit your scan to a set of states
          *  passed in.  This is used to show a sample input sequence that is
-         *  nondeterministic with respect to this decision.  Return IList<Label> as
+         *  nondeterministic with respect to this decision.  Return IList&lt;Label&gt; as
          *  a parameter.  The incoming states set must be all states that lead
          *  from startState to targetState and no others so this algorithm doesn't
          *  take a path that eventually leads to a state other than targetState.

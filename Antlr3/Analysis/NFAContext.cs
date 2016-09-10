@@ -211,7 +211,7 @@ namespace Antlr3.Analysis
          *  This is used in relation to checking conflicts associated with a
          *  single NFA state's configurations within a single DFA state.
          *  If there are configurations s and t within a DFA state such that
-         *  s.state=t.state && s.alt != t.alt && s.ctx conflicts t.ctx then
+         *  s.state=t.state &amp;&amp; s.alt != t.alt &amp;&amp; s.ctx conflicts t.ctx then
          *  the DFA state predicts more than a single alt--it's nondeterministic.
          *  Two contexts conflict if they are the same or if one is a suffix
          *  of the other.

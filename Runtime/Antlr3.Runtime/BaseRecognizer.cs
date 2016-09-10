@@ -835,7 +835,7 @@ namespace Antlr.Runtime
 
 #if !PORTABLE
         /** <summary>
-         *  Return List<String> of the rules in your parser instance
+         *  Return <see cref="IList{T}"/> of the rules in your parser instance
          *  leading up to a call to this method.  You could override if
          *  you want more details such as the file/line info of where
          *  in the parser java code a rule is invoked.
@@ -933,7 +933,7 @@ namespace Antlr.Runtime
 
         /** <summary>
          *  A convenience method for use most often with template rewrites.
-         *  Convert a List<Token> to List<String>
+         *  Convert a list of <see cref="IToken"/> to a list of <see cref="string"/>.
          *  </summary>
          */
         public virtual List<string> ToStrings( ICollection<IToken> tokens )

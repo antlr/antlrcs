@@ -59,10 +59,10 @@ namespace Antlr.Runtime
          */
         protected List<IToken> tokens;
 
-        /** <summary>Map<tokentype, channel> to override some Tokens' channel numbers</summary> */
+        /** <summary>Map from token type to channel to override some Tokens' channel numbers</summary> */
         protected IDictionary<int, int> channelOverrideMap;
 
-        /** <summary>Set<tokentype>; discard any tokens with this type</summary> */
+        /** <summary>Set of token types; discard any tokens with this type</summary> */
         protected List<int> discardSet;
 
         /** <summary>Skip tokens on any channel but this one; this is how we skip whitespace...</summary> */

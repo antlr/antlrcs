@@ -39,7 +39,7 @@ namespace Antlr3.ST.Language
     {
         /** <summary>
          *  Track any args for anonymous templates like
-         *  &lt;tokens,rules:{t,r | <t> then <r>}>
+         *  &lt;tokens,rules:{t,r | &lt;t&gt; then &lt;r&gt;}>
          *  The lexer in action.g returns a single token ANONYMOUS_TEMPLATE
          *  and so I need to have it parse args in the lexer and make them
          *  available for when I build the anonymous template.
