@@ -383,7 +383,7 @@ namespace Antlr.Runtime
          *  an error and next valid token match
          *  </summary>
          *
-         *  <seealso cref="reportError()"/>
+         *  <seealso cref="ReportError(RecognitionException)"/>
          */
         public virtual int NumberOfSyntaxErrors
         {
