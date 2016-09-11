@@ -84,7 +84,7 @@ namespace Antlr4.StringTemplate
                 return;
 
             alreadyLoaded = true;
-            GroupParser parser = null;
+            GroupParser parser;
             try
             {
                 ANTLRStringStream fs = new ANTLRStringStream(text);

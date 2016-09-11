@@ -147,8 +147,8 @@ namespace Antlr4.StringTemplate.Compiler
                     s = "null";
                 else
                 {
-                    s = code.strings[poolIndex].ToString();
-                    if (code.strings[poolIndex] is string)
+                    s = code.strings[poolIndex];
+                    if (code.strings[poolIndex] != null)
                     {
                         s = Utility.ReplaceEscapes(s);
                         s = '"' + s + '"';

@@ -616,9 +616,7 @@ namespace Antlr4.StringTemplate
             return string.Format("{0}({1})", name, args);
         }
 
-        // Template.Format("name, phone | <name>:<phone>", n, p);
         // Template.Format("<%1>:<%2>", n, p);
-        // Template.Format("<name>:<phone>", "name", x, "phone", y);
         public static string Format(string template, params object[] attributes)
         {
             return Format(AutoIndentWriter.NoWrap, template, attributes);

@@ -143,7 +143,7 @@ namespace Antlr4.StringTemplate.Compiler
         {
             ANTLRStringStream @is = new ANTLRStringStream(template, srcName);
             @is.name = srcName != null ? srcName : name;
-            TemplateLexer lexer = null;
+            TemplateLexer lexer;
             if (templateToken != null && templateToken.Type == GroupParser.BIGSTRING_NO_NL)
             {
                 lexer = new TemplateLexerNoNewlines(ErrorManager, @is, templateToken, DelimiterStartChar, DelimiterStopChar);
@@ -155,7 +155,7 @@ namespace Antlr4.StringTemplate.Compiler
 
             CommonTokenStream tokens = new CommonTokenStream(lexer);
             TemplateParser p = new TemplateParser(tokens, ErrorManager, templateToken);
-            IAstRuleReturnScope<CommonTree> r = null;
+            IAstRuleReturnScope<CommonTree> r;
             try
             {
                 r = p.templateAndEOF();

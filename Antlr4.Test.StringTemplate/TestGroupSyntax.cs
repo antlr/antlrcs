@@ -326,7 +326,7 @@ namespace Antlr4.Test.StringTemplate
                 ">>\n";
             writeFile(tmpdir, "t.stg", templates);
 
-            TemplateGroupFile group = null;
+            TemplateGroupFile group;
             ErrorBuffer errors = new ErrorBuffer();
             group = new TemplateGroupFile(Path.Combine(tmpdir, "t.stg"));
             group.Listener = errors;

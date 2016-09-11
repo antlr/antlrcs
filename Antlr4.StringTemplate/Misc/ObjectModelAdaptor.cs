@@ -56,7 +56,7 @@ namespace Antlr4.StringTemplate.Misc
             if (property == null)
                 throw new TemplateNoSuchPropertyException(o, string.Format("{0}.{1}", c.FullName, propertyName ?? "null"));
 
-            object value = null;
+            object value;
             var accessor = FindMember(c, propertyName);
             if (accessor != null)
             {

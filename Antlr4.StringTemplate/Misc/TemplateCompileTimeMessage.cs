@@ -35,7 +35,6 @@ namespace Antlr4.StringTemplate.Misc
     using Antlr4.StringTemplate.Compiler;
     using Exception = System.Exception;
     using IToken = Antlr.Runtime.IToken;
-    using RecognitionException = Antlr.Runtime.RecognitionException;
 
     /** Used for semantic errors that occur at compile time not during
      *  interpretation. For Template parsing ONLY not group parsing.
@@ -95,7 +94,6 @@ namespace Antlr4.StringTemplate.Misc
 
         public override string ToString()
         {
-            RecognitionException re = (RecognitionException)Cause;
             int line = 0;
             int charPos = -1;
             if (_token != null)
