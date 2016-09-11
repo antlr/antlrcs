@@ -43,7 +43,8 @@ namespace Antlr4.Test.StringTemplate
     [TestClass]
     public class TestRenderers : BaseTest
     {
-        [TestMethod][TestCategory(TestCategories.ST4)]
+        [TestMethod]
+        [TestCategory(TestCategories.ST4)]
         public void TestRendererForGroup()
         {
             string templates =

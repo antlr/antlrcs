@@ -114,9 +114,10 @@ namespace Antlr4.StringTemplate.Misc
         public override string ToString()
         {
             StringBuilder buf = new StringBuilder();
-            string loc = GetSourceLocation();
+            string loc = null;
             if (_frame != null)
             {
+                loc = GetSourceLocation();
                 buf.Append("context [");
                 buf.Append(_frame.GetEnclosingInstanceStackString());
                 buf.Append("]");

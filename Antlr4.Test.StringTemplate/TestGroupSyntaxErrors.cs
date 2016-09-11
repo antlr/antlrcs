@@ -54,7 +54,7 @@ namespace Antlr4.Test.StringTemplate
             group.Listener = errors;
             group.Load(); // force load
             string expected = "t.stg 2:0: mismatched input 'foo' expecting STRING" + newline +
-                "t.stg 2:3: required (...)+ loop did not match anything at input '('" + newline;
+                "t.stg 2:3: missing EndOfFile at '('" + newline;
             string result = errors.ToString();
             Assert.AreEqual(expected, result);
         }

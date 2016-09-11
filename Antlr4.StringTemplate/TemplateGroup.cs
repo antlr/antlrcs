@@ -375,7 +375,7 @@ namespace Antlr4.StringTemplate
         public virtual Template CreateSingleton(IToken templateToken)
         {
             string template;
-            if (templateToken.Type == GroupParser.BIGSTRING)
+            if (templateToken.Type == GroupParser.BIGSTRING || templateToken.Type == GroupParser.BIGSTRING_NO_NL)
             {
                 template = Utility.Strip(templateToken.Text, 2);
             }

@@ -37,6 +37,7 @@ namespace Antlr4.Test.StringTemplate
     using System.Collections.Generic;
     using Antlr4.StringTemplate.Misc;
     using Antlr4.Test.StringTemplate.Extensions;
+    using File = System.IO.File;
     using Path = System.IO.Path;
 
     [TestClass]
@@ -618,6 +619,32 @@ namespace Antlr4.Test.StringTemplate
             TemplateGroup group = new TemplateGroupFile(tmpdir + Path.DirectorySeparatorChar + "t.stg");
             Template st = group.GetInstanceOf("t");
             string expected = "-";
+            string result = st.Render();
+            Assert.AreEqual(expected, result);
+        }
+
+        /// <summary>
+        /// This is a regression test for antlr/stringtemplate4#114. Before the fix the following test would return
+        /// %hi%.
+        /// </summary>
+        /// <seealso href="https://github.com/antlr/stringtemplate4/issues/114">dictionary value using &lt;% %&gt; is broken</seealso>
+        [TestMethod]
+        [TestCategory(TestCategories.ST4)]
+        public void TestDictionaryBehaviorNoNewlineTemplate()
+        {
+            string templates =
+                "d ::= [\n" +
+                "	\"x\" : <%hi%>\n" +
+                "]\n" +
+                "\n" +
+                "t() ::= <<\n" +
+                "<d.x>\n" +
+                ">>\n";
+
+            writeFile(tmpdir, "t.stg", templates);
+            TemplateGroup group = new TemplateGroupFile(tmpdir + Path.DirectorySeparatorChar + "t.stg");
+            Template st = group.GetInstanceOf("t");
+            string expected = "hi";
             string result = st.Render();
             Assert.AreEqual(expected, result);
         }

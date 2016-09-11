@@ -32,6 +32,7 @@
 
 namespace Antlr4.StringTemplate
 {
+    using System.Linq;
     using System.Runtime.CompilerServices;
     using Antlr4.StringTemplate.Compiler;
     using Antlr4.StringTemplate.Extensions;
@@ -55,7 +56,16 @@ namespace Antlr4.StringTemplate
      */
     public class TemplateGroupFile : TemplateGroup
     {
+        /// <summary>
+        /// Records how the user "spelled" the file name they wanted to load.
+        /// The URI is the key field here for loading content. If they use the
+        /// constructor with a URI argument, this field is <see langword="null"/>.
+        /// </summary>
         private readonly string _fileName;
+
+        /// <summary>
+        /// Where to find the group file; non-null.
+        /// </summary>
         private readonly Uri _url;
         private bool _alreadyLoaded = false;
 
@@ -109,6 +119,10 @@ namespace Antlr4.StringTemplate
             this.Encoding = encoding;
         }
 
+        /// <summary>
+        /// Pass in a URL with the location of a group file. E.g.,
+        /// TemplateGroup g = new TemplateGroupFile("file:///org/foo/templates/g.stg", Encoding.UTF8, '&lt;', '&gt;');
+        /// </summary>
         public TemplateGroupFile(Uri url, Encoding encoding, char delimiterStartChar, char delimiterStopChar)
             : base(delimiterStartChar, delimiterStopChar)
         {
@@ -119,7 +133,7 @@ namespace Antlr4.StringTemplate
 
             this._url = url;
             this.Encoding = encoding;
-            this._fileName = _url.AbsolutePath;
+            this._fileName = null;
         }
 
         public override bool IsDefined(string name)
@@ -176,7 +190,7 @@ namespace Antlr4.StringTemplate
         {
             get
             {
-                return Path.GetFileNameWithoutExtension(_fileName);
+                return Path.GetFileNameWithoutExtension(FileName);
             }
         }
 
@@ -184,7 +198,7 @@ namespace Antlr4.StringTemplate
         {
             get
             {
-                return _fileName;
+                return _fileName ?? _url.Segments.Last();
             }
         }
 

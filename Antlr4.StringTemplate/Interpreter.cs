@@ -660,50 +660,7 @@ namespace Antlr4.StringTemplate
 
         internal virtual void StoreArguments(TemplateFrame frame, IDictionary<string, object> attrs, Template st)
         {
-            if (st.impl.HasFormalArgs)
-            {
-                bool argumentCountMismatch = false;
-                var formalArguments = st.impl.FormalArguments;
-                if (formalArguments == null)
-                    formalArguments = new List<FormalArgument>();
-
-                // first make sure that all non-default arguments are specified
-                foreach (FormalArgument formalArgument in formalArguments)
-                {
-                    if (formalArgument.DefaultValueToken != null || formalArgument.DefaultValue != null)
-                    {
-                        // this argument has a default value, so it doesn't need to appear in attrs
-                        continue;
-                    }
-
-                    if (attrs == null || !attrs.ContainsKey(formalArgument.Name))
-                    {
-                        argumentCountMismatch = true;
-                        break;
-                    }
-                }
-
-                // next make sure there aren't too many arguments. note that the names
-                // of arguments are checked below as they are applied to the template
-                // instance, so there's no need to do that here.
-                if (attrs != null && attrs.Count > formalArguments.Count)
-                {
-                    argumentCountMismatch = true;
-                }
-
-                if (argumentCountMismatch)
-                {
-                    int nargs = attrs != null ? attrs.Count : 0;
-                    int nformalArgs = formalArguments.Count;
-                    _errorManager.RuntimeError(
-                        frame,
-                        ErrorType.ARGUMENT_COUNT_MISMATCH,
-                        nargs,
-                        st.impl.Name,
-                        nformalArgs);
-                }
-            }
-
+            bool noSuchAttributeReported = false;
             if (attrs != null)
             {
                 foreach (KeyValuePair<string, object> argument in attrs)
@@ -727,6 +684,7 @@ namespace Antlr4.StringTemplate
                         // don't let it throw an exception in RawSetAttribute
                         if (st.impl.FormalArguments == null || st.impl.TryGetFormalArgument(argument.Key) == null)
                         {
+                            noSuchAttributeReported = true;
                             _errorManager.RuntimeError(
                                 frame,
                                 ErrorType.NO_SUCH_ATTRIBUTE,
@@ -736,6 +694,54 @@ namespace Antlr4.StringTemplate
 
                         st.RawSetAttribute(argument.Key, argument.Value);
                     }
+                }
+            }
+
+            if (st.impl.HasFormalArgs)
+            {
+                bool argumentCountMismatch = false;
+                var formalArguments = st.impl.FormalArguments;
+                if (formalArguments == null)
+                    formalArguments = new List<FormalArgument>();
+
+                // first make sure that all non-default arguments are specified
+                // ignore this check if a NO_SUCH_ATTRIBUTE error already occurred
+                if (!noSuchAttributeReported)
+                {
+                    foreach (FormalArgument formalArgument in formalArguments)
+                    {
+                        if (formalArgument.DefaultValueToken != null || formalArgument.DefaultValue != null)
+                        {
+                            // this argument has a default value, so it doesn't need to appear in attrs
+                            continue;
+                        }
+
+                        if (attrs == null || !attrs.ContainsKey(formalArgument.Name))
+                        {
+                            argumentCountMismatch = true;
+                            break;
+                        }
+                    }
+                }
+
+                // next make sure there aren't too many arguments. note that the names
+                // of arguments are checked below as they are applied to the template
+                // instance, so there's no need to do that here.
+                if (attrs != null && attrs.Count > formalArguments.Count)
+                {
+                    argumentCountMismatch = true;
+                }
+
+                if (argumentCountMismatch)
+                {
+                    int nargs = attrs != null ? attrs.Count : 0;
+                    int nformalArgs = formalArguments.Count;
+                    _errorManager.RuntimeError(
+                        frame,
+                        ErrorType.ARGUMENT_COUNT_MISMATCH,
+                        nargs,
+                        st.impl.Name,
+                        nformalArgs);
                 }
             }
         }
@@ -1404,9 +1410,9 @@ namespace Antlr4.StringTemplate
                 return enumerable.GetEnumerator();
 
             //// This code is implied in the last line
-            //Iterator iterator = o as Iterator;
-            //if ( iterator != null )
-            //    return iterator;
+            //IEnumerator enumerator = o as IEnumerator;
+            //if ( enumerator != null )
+            //    return enumerator;
 
             return o;
         }
