@@ -862,7 +862,7 @@ namespace Antlr4.StringTemplate
 
             if (isTemplateFile)
             {
-                g = new TemplateGroup();
+                g = new TemplateGroup(delimiterStartChar, delimiterStopChar);
                 g.Listener = this.Listener;
                 Uri fileURL = null;
                 if (File.Exists(fileUnderRoot.LocalPath))
