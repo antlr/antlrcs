@@ -194,7 +194,7 @@ namespace Antlr4.Test.StringTemplate
         /// <seealso href="https://github.com/antlr/stringtemplate4/issues/66">Changing delimiters doesn't work with STGroupFile</seealso>
         [TestMethod]
         [TestCategory(TestCategories.ST4)]
-        public void testImportGroupPreservesDelimiters()
+        public void TestImportGroupPreservesDelimiters()
         {
             string groupFile =
                 "group GenerateHtml;" + newline +
@@ -234,7 +234,7 @@ namespace Antlr4.Test.StringTemplate
         /// <seealso href="https://github.com/antlr/stringtemplate4/issues/66">Changing delimiters doesn't work with STGroupFile</seealso>
         [TestMethod]
         [TestCategory(TestCategories.ST4)]
-        public void testDelimitersClauseOverridesConstructorDelimiters()
+        public void TestDelimitersClauseOverridesConstructorDelimiters()
         {
             string groupFile =
                 "group GenerateHtml;" + newline +
@@ -275,7 +275,7 @@ namespace Antlr4.Test.StringTemplate
         /// <seealso href="https://github.com/antlr/stringtemplate4/issues/66">Changing delimiters doesn't work with STGroupFile</seealso>
         [TestMethod]
         [TestCategory(TestCategories.ST4)]
-        public void testDelimitersClauseOverridesInheritedDelimiters()
+        public void TestDelimitersClauseOverridesInheritedDelimiters()
         {
             string groupFile =
                 "group GenerateHtml;" + newline +
