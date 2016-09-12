@@ -205,7 +205,7 @@ copy "LICENSE.txt" ".\ST4"
 
 # compress the distributable packages
 $AntlrVersion = "3.5.0.3-dev"
-$STVersion = "4.0.7.2-dev"
+$STVersion = "4.0.8.0-dev"
 
 $ArchivePath = ".\dist\antlr-dotnet-csharpbootstrap-" + $AntlrVersion + ".7z"
 .\7z.exe a -r -mx9 $ArchivePath ".\Bootstrap\*"
