@@ -360,6 +360,24 @@ namespace Antlr4.StringTemplate.Compiler
             return FormalArguments.FirstOrDefault(i => i.Name == name);
         }
 
+        /// <summary>
+        /// Cloning the <see cref="CompiledTemplate"/> for a <see cref="StringTemplate.Template"/> instance allows
+        /// <see cref="StringTemplate.Template.Add"/> to be called safely during interpretation for templates that do
+        /// not contain formal arguments.
+        /// </summary>
+        /// <returns>
+        /// A copy of the current <see cref="CompiledTemplate"/> instance. The copy is a shallow copy, with the
+        /// exception of the <see cref="_formalArguments"/> field which is also cloned.
+        /// </returns>
+        public CompiledTemplate Clone()
+        {
+            CompiledTemplate clone = (CompiledTemplate)MemberwiseClone();
+            if (_formalArguments != null)
+                _formalArguments = new List<FormalArgument>(_formalArguments);
+
+            return clone;
+        }
+
         public virtual void AddImplicitlyDefinedTemplate(CompiledTemplate sub)
         {
             sub.Prefix = this.Prefix;

@@ -147,5 +147,39 @@ namespace Antlr4.Test.StringTemplate
             string result = st.Render();
             Assert.AreEqual(expected, result);
         }
+
+        /// <summary>
+        /// This is a regression test for antlr/stringtemplate4#70
+        /// </summary>
+        /// <seealso href="https://github.com/antlr/stringtemplate4/issues/70">Argument initialisation for sub-template in template with STRawGroupDir doesn't recognize valid parameters</seealso>
+        [TestMethod]
+        [TestCategory(TestCategories.ST4)]
+        public void TestRawArgumentPassing()
+        {
+            string dir1 = tmpdir;
+            string mainRawTemplate = "Hello $name$" + newline +
+                "Then do the footer:" + newline +
+                "$footerRaw(lastLine=veryLastLineRaw())$" + newline;
+            string footerRawTemplate =
+                "Simple footer. And now a last line:" + newline +
+                "$lastLine$";
+            string veryLastLineTemplate =
+                "That's the last line.";
+            writeFile(dir1, "mainRaw.st", mainRawTemplate);
+            writeFile(dir1, "footerRaw.st", footerRawTemplate);
+            writeFile(dir1, "veryLastLineRaw.st", veryLastLineTemplate);
+
+            TemplateGroup group = new TemplateRawGroupDirectory(dir1, '$', '$');
+            Template st = group.GetInstanceOf("mainRaw");
+            Assert.IsNotNull(st);
+            st.Add("name", "John");
+            string result = st.Render();
+            string expected =
+                "Hello John" + newline +
+                "Then do the footer:" + newline +
+                "Simple footer. And now a last line:" + newline +
+                "That's the last line." + newline;
+            Assert.AreEqual(expected, result);
+        }
     }
 }

@@ -458,7 +458,7 @@ namespace Antlr4.StringTemplate.Compiler
             if (c == 'u')
                 return MatchUnicode();
 
-            string text = null;
+            string text;
             switch (c)
             {
             case '\\':
@@ -801,7 +801,7 @@ namespace Antlr4.StringTemplate.Compiler
                 else
                     txt = "<no text>";
 
-                string tokenName = null;
+                string tokenName;
                 if (Type == EOF_TYPE)
                     tokenName = "EOF";
                 else

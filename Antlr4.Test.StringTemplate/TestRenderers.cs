@@ -43,7 +43,8 @@ namespace Antlr4.Test.StringTemplate
     [TestClass]
     public class TestRenderers : BaseTest
     {
-        [TestMethod][TestCategory(TestCategories.ST4)]
+        [TestMethod]
+        [TestCategory(TestCategories.ST4)]
         public void TestRendererForGroup()
         {
             string templates =
@@ -53,7 +54,7 @@ namespace Antlr4.Test.StringTemplate
             group.RegisterRenderer(typeof(DateTime), new DateRenderer());
             group.RegisterRenderer(typeof(DateTimeOffset), new DateRenderer());
             Template st = group.GetInstanceOf("dateThing");
-            st.Add("created", new DateTime(2005, 07, 05));
+            st.Add("created", new DateTime(2005, 7, 5));
             string expecting = "datetime: 7/5/2005 12:00 AM";
             string result = st.Render();
             Assert.AreEqual(expecting, result);
@@ -70,7 +71,7 @@ namespace Antlr4.Test.StringTemplate
             group.RegisterRenderer(typeof(DateTime), new DateRenderer());
             group.RegisterRenderer(typeof(DateTimeOffset), new DateRenderer());
             Template st = group.GetInstanceOf("dateThing");
-            st.Add("created", new DateTime(2005, 07, 05));
+            st.Add("created", new DateTime(2005, 7, 5));
             string expecting = " date: 2005.07.05 ";
             string result = st.Render();
             Assert.AreEqual(expecting, result);
@@ -87,7 +88,7 @@ namespace Antlr4.Test.StringTemplate
             group.RegisterRenderer(typeof(DateTime), new DateRenderer());
             group.RegisterRenderer(typeof(DateTimeOffset), new DateRenderer());
             Template st = group.GetInstanceOf("dateThing");
-            st.Add("created", new DateTime(2005, 07, 05));
+            st.Add("created", new DateTime(2005, 7, 5));
             string expecting = " datetime: 7/5/2005 12:00 AM ";
             string result = st.Render();
             Assert.AreEqual(expecting, result);
@@ -104,7 +105,7 @@ namespace Antlr4.Test.StringTemplate
             group.RegisterRenderer(typeof(DateTime), new DateRenderer());
             group.RegisterRenderer(typeof(DateTimeOffset), new DateRenderer());
             Template st = group.GetInstanceOf("dateThing");
-            st.Add("created", new DateTime(2005, 07, 05));
+            st.Add("created", new DateTime(2005, 7, 5));
             string expecting = " datetime: Tuesday, July 05, 2005 12:00:00 AM ";
             string result = st.Render();
             Assert.AreEqual(expecting, result);
@@ -123,7 +124,7 @@ namespace Antlr4.Test.StringTemplate
             group.RegisterRenderer(typeof(DateTime), new DateRenderer());
             group.RegisterRenderer(typeof(DateTimeOffset), new DateRenderer());
             Template st = group.GetInstanceOf("dateThing");
-            st.Add("created", new DateTime(2005, 07, 05));
+            st.Add("created", new DateTime(2005, 7, 5));
             string expecting = " date: Jul 5, 2005 ";
             string result = st.Render();
             Assert.AreEqual(expecting, result);
@@ -142,7 +143,7 @@ namespace Antlr4.Test.StringTemplate
             group.RegisterRenderer(typeof(DateTime), new DateRenderer());
             group.RegisterRenderer(typeof(DateTimeOffset), new DateRenderer());
             Template st = group.GetInstanceOf("dateThing");
-            st.Add("created", new DateTime(2005, 07, 05));
+            st.Add("created", new DateTime(2005, 7, 5));
             string expecting = " time: 12:00:00 AM ";
             string result = st.Render();
             Assert.AreEqual(expecting, result);

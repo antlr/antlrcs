@@ -147,5 +147,168 @@ namespace Antlr4.Test.StringTemplate
             string result = b.Render();
             Assert.AreEqual(expecting, result);
         }
+
+        /// <summary>
+        /// This is part of a regression test for antlr/stringtemplate4#66.
+        /// </summary>
+        /// <seealso href="https://github.com/antlr/stringtemplate4/issues/66">Changing delimiters doesn't work with STGroupFile</seealso>
+        [TestMethod]
+        [TestCategory(TestCategories.ST4)]
+        public void TestImportTemplatePreservesDelimiters()
+        {
+            string groupFile =
+                "group GenerateHtml;" + newline +
+                "import \"html.st\"" + newline +
+                "entry() ::= <<" + newline +
+                "$html()$" + newline +
+                ">>" + newline;
+            string htmlFile =
+                "html() ::= <<" + newline +
+                "<table style=\"stuff\">" + newline +
+                ">>" + newline;
+
+            string dir = tmpdir;
+            writeFile(dir, "GenerateHtml.stg", groupFile);
+            writeFile(dir, "html.st", htmlFile);
+
+            TemplateGroup group = new TemplateGroupFile(dir + "/GenerateHtml.stg", '$', '$');
+
+            // test html template directly
+            Template st = group.GetInstanceOf("html");
+            Assert.IsNotNull(st);
+            string expected = "<table style=\"stuff\">";
+            string result = st.Render();
+            Assert.AreEqual(expected, result);
+
+            // test from entry template
+            st = group.GetInstanceOf("entry");
+            Assert.IsNotNull(st);
+            expected = "<table style=\"stuff\">";
+            result = st.Render();
+            Assert.AreEqual(expected, result);
+        }
+
+        /// <summary>
+        /// This is part of a regression test for antlr/stringtemplate4#66.
+        /// </summary>
+        /// <seealso href="https://github.com/antlr/stringtemplate4/issues/66">Changing delimiters doesn't work with STGroupFile</seealso>
+        [TestMethod]
+        [TestCategory(TestCategories.ST4)]
+        public void TestImportGroupPreservesDelimiters()
+        {
+            string groupFile =
+                "group GenerateHtml;" + newline +
+                "import \"HtmlTemplates.stg\"" + newline +
+                "entry() ::= <<" + newline +
+                "$html()$" + newline +
+                ">>" + newline;
+            string htmlFile =
+                "html() ::= <<" + newline +
+                "<table style=\"stuff\">" + newline +
+                ">>" + newline;
+
+            string dir = tmpdir;
+            writeFile(dir, "GenerateHtml.stg", groupFile);
+            writeFile(dir, "HtmlTemplates.stg", htmlFile);
+
+            TemplateGroup group = new TemplateGroupFile(dir + "/GenerateHtml.stg", '$', '$');
+
+            // test html template directly
+            Template st = group.GetInstanceOf("html");
+            Assert.IsNotNull(st);
+            string expected = "<table style=\"stuff\">";
+            string result = st.Render();
+            Assert.AreEqual(expected, result);
+
+            // test from entry template
+            st = group.GetInstanceOf("entry");
+            Assert.IsNotNull(st);
+            expected = "<table style=\"stuff\">";
+            result = st.Render();
+            Assert.AreEqual(expected, result);
+        }
+
+        /// <summary>
+        /// This is part of a regression test for antlr/stringtemplate4#66.
+        /// </summary>
+        /// <seealso href="https://github.com/antlr/stringtemplate4/issues/66">Changing delimiters doesn't work with STGroupFile</seealso>
+        [TestMethod]
+        [TestCategory(TestCategories.ST4)]
+        public void TestDelimitersClauseOverridesConstructorDelimiters()
+        {
+            string groupFile =
+                "group GenerateHtml;" + newline +
+                "delimiters \"$\", \"$\"" + newline +
+                "import \"html.st\"" + newline +
+                "entry() ::= <<" + newline +
+                "$html()$" + newline +
+                ">>" + newline;
+            string htmlFile =
+                "html() ::= <<" + newline +
+                "<table style=\"stuff\">" + newline +
+                ">>" + newline;
+
+            string dir = tmpdir;
+            writeFile(dir, "GenerateHtml.stg", groupFile);
+            writeFile(dir, "html.st", htmlFile);
+
+            TemplateGroup group = new TemplateGroupFile(dir + "/GenerateHtml.stg", '<', '>');
+
+            // test html template directly
+            Template st = group.GetInstanceOf("html");
+            Assert.IsNotNull(st);
+            string expected = "<table style=\"stuff\">";
+            string result = st.Render();
+            Assert.AreEqual(expected, result);
+
+            // test from entry template
+            st = group.GetInstanceOf("entry");
+            Assert.IsNotNull(st);
+            expected = "<table style=\"stuff\">";
+            result = st.Render();
+            Assert.AreEqual(expected, result);
+        }
+
+        /// <summary>
+        /// This is part of a regression test for antlr/stringtemplate4#66.
+        /// </summary>
+        /// <seealso href="https://github.com/antlr/stringtemplate4/issues/66">Changing delimiters doesn't work with STGroupFile</seealso>
+        [TestMethod]
+        [TestCategory(TestCategories.ST4)]
+        public void TestDelimitersClauseOverridesInheritedDelimiters()
+        {
+            string groupFile =
+                "group GenerateHtml;" + newline +
+                "delimiters \"<\", \">\"" + newline +
+                "import \"HtmlTemplates.stg\"" + newline +
+                "entry() ::= <<" + newline +
+                "<html()>" + newline +
+                ">>" + newline;
+            string htmlFile =
+                "delimiters \"$\", \"$\"" + newline +
+                "html() ::= <<" + newline +
+                "<table style=\"stuff\">" + newline +
+                ">>" + newline;
+
+            string dir = tmpdir;
+            writeFile(dir, "GenerateHtml.stg", groupFile);
+            writeFile(dir, "HtmlTemplates.stg", htmlFile);
+
+            TemplateGroup group = new TemplateGroupFile(dir + "/GenerateHtml.stg");
+
+            // test html template directly
+            Template st = group.GetInstanceOf("html");
+            Assert.IsNotNull(st);
+            string expected = "<table style=\"stuff\">";
+            string result = st.Render();
+            Assert.AreEqual(expected, result);
+
+            // test from entry template
+            st = group.GetInstanceOf("entry");
+            Assert.IsNotNull(st);
+            expected = "<table style=\"stuff\">";
+            result = st.Render();
+            Assert.AreEqual(expected, result);
+        }
     }
 }

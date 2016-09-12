@@ -54,7 +54,7 @@ namespace Antlr4.Test.StringTemplate
             group.Listener = errors;
             group.Load(); // force load
             string expected = "t.stg 2:0: mismatched input 'foo' expecting STRING" + newline +
-                "t.stg 2:3: required (...)+ loop did not match anything at input '('" + newline;
+                "t.stg 2:3: missing EndOfFile at '('" + newline;
             string result = errors.ToString();
             Assert.AreEqual(expected, result);
         }
@@ -83,7 +83,7 @@ namespace Antlr4.Test.StringTemplate
                 "foo() ::= \n";
             writeFile(tmpdir, "t.stg", templates);
 
-            TemplateGroupFile group = null;
+            TemplateGroupFile group;
             ITemplateErrorListener errors = new ErrorBuffer();
             group = new TemplateGroupFile(Path.Combine(tmpdir, "t.stg"));
             group.Listener = errors;
@@ -100,7 +100,7 @@ namespace Antlr4.Test.StringTemplate
                 "foo() ::= {";
             writeFile(tmpdir, "t.stg", templates);
 
-            TemplateGroupFile group = null;
+            TemplateGroupFile group;
             ITemplateErrorListener errors = new ErrorBuffer();
             group = new TemplateGroupFile(Path.Combine(tmpdir, "t.stg"));
             group.Listener = errors;
@@ -118,7 +118,7 @@ namespace Antlr4.Test.StringTemplate
                 "foo( ::= << >>\n";
             writeFile(tmpdir, "t.stg", templates);
 
-            TemplateGroupFile group = null;
+            TemplateGroupFile group;
             ITemplateErrorListener errors = new ErrorBuffer();
             group = new TemplateGroupFile(Path.Combine(tmpdir, "t.stg"));
             group.Listener = errors;
@@ -135,7 +135,7 @@ namespace Antlr4.Test.StringTemplate
                 "foo() ::= \"\nfoo\"\n";
             writeFile(tmpdir, "t.stg", templates);
 
-            TemplateGroupFile group = null;
+            TemplateGroupFile group;
             ITemplateErrorListener errors = new ErrorBuffer();
             group = new TemplateGroupFile(Path.Combine(tmpdir, "t.stg"));
             group.Listener = errors;
@@ -153,7 +153,7 @@ namespace Antlr4.Test.StringTemplate
                 "bar() ::= <<bar>>\n";
             writeFile(tmpdir, "t.stg", templates);
 
-            TemplateGroupFile group = null;
+            TemplateGroupFile group;
             ITemplateErrorListener errors = new ErrorBuffer();
             group = new TemplateGroupFile(Path.Combine(tmpdir, "t.stg"));
             group.Listener = errors;
@@ -170,7 +170,7 @@ namespace Antlr4.Test.StringTemplate
                 "foo(a,) ::= << >>\n";
             writeFile(tmpdir, "t.stg", templates);
 
-            TemplateGroupFile group = null;
+            TemplateGroupFile group;
             ITemplateErrorListener errors = new ErrorBuffer();
             group = new TemplateGroupFile(Path.Combine(tmpdir, "t.stg"));
             group.Listener = errors;
@@ -187,7 +187,7 @@ namespace Antlr4.Test.StringTemplate
                 "foo(a,,) ::= << >>\n";
             writeFile(tmpdir, "t.stg", templates);
 
-            TemplateGroupFile group = null;
+            TemplateGroupFile group;
             ErrorBuffer errors = new ErrorBuffer();
             group = new TemplateGroupFile(Path.Combine(tmpdir, "t.stg"));
             group.Listener = errors;
@@ -206,7 +206,7 @@ namespace Antlr4.Test.StringTemplate
                 "foo(a b) ::= << >>\n";
             writeFile(tmpdir, "t.stg", templates);
 
-            TemplateGroupFile group = null;
+            TemplateGroupFile group;
             ErrorBuffer errors = new ErrorBuffer();
             group = new TemplateGroupFile(Path.Combine(tmpdir, "t.stg"));
             group.Listener = errors;
@@ -224,7 +224,7 @@ namespace Antlr4.Test.StringTemplate
                 "foo(a={hi}, b) ::= << >>\n";
             writeFile(tmpdir, "t.stg", templates);
 
-            TemplateGroupFile group = null;
+            TemplateGroupFile group;
             ErrorBuffer errors = new ErrorBuffer();
             group = new TemplateGroupFile(Path.Combine(tmpdir, "t.stg"));
             group.Listener = errors;
@@ -242,7 +242,7 @@ namespace Antlr4.Test.StringTemplate
                 "foo(a) ::= \"<a b>\"\n";
             writeFile(tmpdir, "t.stg", templates);
 
-            TemplateGroupFile group = null;
+            TemplateGroupFile group;
             ErrorBuffer errors = new ErrorBuffer();
             group = new TemplateGroupFile(Path.Combine(tmpdir, "t.stg"));
             group.Listener = errors;
@@ -259,7 +259,7 @@ namespace Antlr4.Test.StringTemplate
                 "d ::= [\"k\":]\n";
             writeFile(tmpdir, "t.stg", templates);
 
-            TemplateGroupFile group = null;
+            TemplateGroupFile group;
             ErrorBuffer errors = new ErrorBuffer();
             group = new TemplateGroupFile(Path.Combine(tmpdir, "t.stg"));
             group.Listener = errors;
@@ -276,7 +276,7 @@ namespace Antlr4.Test.StringTemplate
                 "d ::= [\"k\":{dfkj}}]\n"; // extra }
             writeFile(tmpdir, "t.stg", templates);
 
-            TemplateGroupFile group = null;
+            TemplateGroupFile group;
             ErrorBuffer errors = new ErrorBuffer();
             group = new TemplateGroupFile(Path.Combine(tmpdir, "t.stg"));
             group.Listener = errors;
@@ -293,7 +293,7 @@ namespace Antlr4.Test.StringTemplate
                 "f() ::= \""; // extra }
             writeFile(tmpdir, "t.stg", templates);
 
-            TemplateGroupFile group = null;
+            TemplateGroupFile group;
             ErrorBuffer errors = new ErrorBuffer();
             group = new TemplateGroupFile(Path.Combine(tmpdir, "t.stg"));
             group.Listener = errors;

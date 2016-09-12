@@ -326,15 +326,15 @@ namespace Antlr4.Test.StringTemplate
                 ">>\n";
             writeFile(tmpdir, "t.stg", templates);
 
-            TemplateGroupFile group = null;
+            TemplateGroupFile group;
             ErrorBuffer errors = new ErrorBuffer();
             group = new TemplateGroupFile(Path.Combine(tmpdir, "t.stg"));
             group.Listener = errors;
             Template st = group.GetInstanceOf("main");
             st.Render();
 
-            string expected = "[context [/main] 1:1 passed 1 arg(s) to template /f with 0 declared arg(s)," +
-                              " context [/main] 1:1 attribute x isn't defined," +
+            string expected = "[context [/main] 1:1 attribute x isn't defined," +
+                              " context [/main] 1:1 passed 1 arg(s) to template /f with 0 declared arg(s)," +
                               " context [/main /f] 1:1 attribute x isn't defined]";
             string result = errors.Errors.ToListString();
             Assert.AreEqual(expected, result);
