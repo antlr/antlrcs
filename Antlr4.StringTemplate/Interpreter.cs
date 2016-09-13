@@ -996,7 +996,7 @@ namespace Antlr4.StringTemplate
             {
                 // if only single value, just apply first template to sole value
                 Template proto = prototypes[0];
-                Template st = group.CreateStringTemplateInternally(proto);
+                Template st = proto.CreateShadow();
                 if (st != null)
                 {
                     SetFirstArgument(frame, st, attr);
