@@ -6,30 +6,31 @@
     <ProductVersion>
     </ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{1B70CBF4-B592-4A9C-B7B3-AD1A087F4B9C}</ProjectGuid>
+    <ProjectGuid>{0FB5C69A-F894-45DC-B775-5FC273D41460}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Antlr4.Test.StringTemplate</RootNamespace>
     <AssemblyName>Antlr4.Test.StringTemplate</AssemblyName>
-    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
+    <TargetFrameworkProfile />
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{3AC096D0-A1C2-E12C-1390-A8335801FDAB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
-    <BaseIntermediateOutputPath>obj\net40\</BaseIntermediateOutputPath>
+    <BaseIntermediateOutputPath>obj\netstandard\</BaseIntermediateOutputPath>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>bin\net40\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <OutputPath>bin\netstandard\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE;NETSTANDARD</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
-    <OutputPath>bin\net40\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
+    <OutputPath>bin\netstandard\Release\</OutputPath>
+    <DefineConstants>TRACE;NETSTANDARD</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
@@ -39,14 +40,6 @@
   <ItemGroup>
     <Reference Include="Microsoft.VisualStudio.QualityTools.UnitTestFramework, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
     <Reference Include="System" />
-    <Reference Include="System.Core">
-      <RequiredTargetFramework>3.5</RequiredTargetFramework>
-    </Reference>
-  </ItemGroup>
-  <ItemGroup>
-    <CodeAnalysisDependentAssemblyPaths Condition=" '$(VS100COMNTOOLS)' != '' " Include="$(VS100COMNTOOLS)..\IDE\PrivateAssemblies">
-      <Visible>False</Visible>
-    </CodeAnalysisDependentAssemblyPaths>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Extensions\ListExtensions.cs" />
@@ -90,17 +83,16 @@
     <Compile Include="TestWhitespace.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Runtime\Antlr3.Runtime\Antlr3.Runtime.net20.csproj">
-      <Project>{8FDC0A87-9005-4D5A-AB75-E55CEB575559}</Project>
-      <Name>Antlr3.Runtime.net20</Name>
+    <None Include="Antlr4.Test.StringTemplate.netstandard.project.json" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Antlr4.StringTemplate\Antlr4.StringTemplate.netstandard.csproj">
+      <Project>{7e0e3f5c-54d4-49b5-beef-8c3d364a8061}</Project>
+      <Name>Antlr4.StringTemplate.netstandard</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Antlr4.StringTemplate.Visualizer\Antlr4.StringTemplate.Visualizer.net35-client.csproj">
-      <Project>{DC0A9616-0B69-4A3B-ADC7-62FCA9207B98}</Project>
-      <Name>Antlr4.StringTemplate.Visualizer.net35-client</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Antlr4.StringTemplate\Antlr4.StringTemplate.net35-client.csproj">
-      <Project>{DE9B7DA2-35DD-46CC-B768-DAEE3C298660}</Project>
-      <Name>Antlr4.StringTemplate.net35-client</Name>
+    <ProjectReference Include="..\Runtime\Antlr3.Runtime\Antlr3.Runtime.netstandard.csproj">
+      <Project>{ac2c28ab-d93a-41e3-85a6-5ecb08cae5c3}</Project>
+      <Name>Antlr3.Runtime.netstandard</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
