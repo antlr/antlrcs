@@ -11,10 +11,10 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Antlr.Runtime</RootNamespace>
     <AssemblyName>Antlr3.Runtime</AssemblyName>
-    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
-    <TargetFrameworkProfile>Profile259</TargetFrameworkProfile>
+    <TargetFrameworkVersion>v5.0</TargetFrameworkVersion>
+    <TargetFrameworkProfile />
     <FileAlignment>512</FileAlignment>
-    <BaseIntermediateOutputPath>obj\portable-net45\</BaseIntermediateOutputPath>
+    <BaseIntermediateOutputPath>obj\netstandard\</BaseIntermediateOutputPath>
     <SignAssembly>true</SignAssembly>
     <AssemblyOriginatorKeyFile>..\..\..\..\..\keys\antlr\Key.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
@@ -22,20 +22,20 @@
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>bin\portable-net45\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE;PORTABLE;NET45;NET45PLUS;NET40PLUS;NET35PLUS;NET20PLUS</DefineConstants>
+    <OutputPath>bin\netstandard\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE;PORTABLE;NETSTANDARD;NET45PLUS;NET40PLUS;NET35PLUS;NET20PLUS</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <DocumentationFile>bin\portable-net45\Debug\Antlr3.Runtime.xml</DocumentationFile>
+    <DocumentationFile>bin\netstandard\Debug\Antlr3.Runtime.xml</DocumentationFile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
-    <OutputPath>bin\portable-net45\Release\</OutputPath>
-    <DefineConstants>TRACE;PORTABLE;NET45;NET45PLUS;NET40PLUS;NET35PLUS;NET20PLUS</DefineConstants>
+    <OutputPath>bin\netstandard\Release\</OutputPath>
+    <DefineConstants>TRACE;PORTABLE;NETSTANDARD;NET45PLUS;NET40PLUS;NET35PLUS;NET20PLUS</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <DocumentationFile>bin\portable-net45\Release\Antlr3.Runtime.xml</DocumentationFile>
+    <DocumentationFile>bin\netstandard\Release\Antlr3.Runtime.xml</DocumentationFile>
   </PropertyGroup>
   <PropertyGroup>
     <CodeAnalysisRuleSet>..\..\Antlr3.ruleset</CodeAnalysisRuleSet>
@@ -92,7 +92,9 @@
     <Compile Include="RecognizerSharedState.cs" />
     <Compile Include="System\ICloneable.cs" />
     <Compile Include="System\NonSerializedAttribute.cs" />
+    <Compile Include="System\OnSerializingAttribute.cs" />
     <Compile Include="System\SerializableAttribute.cs" />
+    <Compile Include="System\StreamingContext.cs" />
     <Compile Include="TemplateParserRuleReturnScope`2.cs" />
     <Compile Include="TokenChannels.cs" />
     <Compile Include="TokenRewriteStream.cs" />
@@ -138,6 +140,7 @@
     <None Include="..\..\..\..\..\keys\antlr\Key.snk">
       <Link>Key.snk</Link>
     </None>
+    <None Include="Antlr3.Runtime.netstandard.project.json" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
