@@ -10,6 +10,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		Antlr3.ruleset = Antlr3.ruleset
 		Antlr3.vsmdi = Antlr3.vsmdi
 		AntlrTestConfig.testrunconfig = AntlrTestConfig.testrunconfig
+		appveyor.yml = appveyor.yml
 		PublishingProcess.txt = PublishingProcess.txt
 		README.md = README.md
 	EndProjectSection
