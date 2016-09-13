@@ -106,7 +106,7 @@ namespace Antlr4.Test.StringTemplate
             group.RegisterRenderer(typeof(DateTimeOffset), new DateRenderer());
             Template st = group.GetInstanceOf("dateThing");
             st.Add("created", new DateTime(2005, 7, 5));
-            string expecting = " datetime: Tuesday, July 05, 2005 12:00:00 AM ";
+            string expecting = " datetime: Tuesday, July 5, 2005 12:00:00 AM ";
             string result = st.Render();
             Assert.AreEqual(expecting, result);
         }
