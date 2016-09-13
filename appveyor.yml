@@ -15,8 +15,8 @@ build_script:
 - powershell -Command .\prepare.ps1 -Logger "${env:ProgramFiles}\AppVeyor\BuildAgent\Appveyor.MSBuildLogger.dll"
 - cd ..\..
 test_script:
-- vstest.console /logger:Appveyor "C:\projects\antlrcs\Antlr4.Test.StringTemplate\bin\net40\%CONFIGURATION%\Antlr4.Test.StringTemplate.dll"
-- vstest.console /logger:Appveyor "C:\projects\antlrcs\Antlr4.Test.StringTemplate\bin\netstandard\%CONFIGURATION%\Antlr4.Test.StringTemplate.dll"
+- vstest.console /logger:Appveyor /TestCaseFilter:"TestCategory!=Visualizer" "C:\projects\antlrcs\Antlr4.Test.StringTemplate\bin\net40\%CONFIGURATION%\Antlr4.Test.StringTemplate.dll"
+- vstest.console /logger:Appveyor /TestCaseFilter:"TestCategory!=Visualizer" "C:\projects\antlrcs\Antlr4.Test.StringTemplate\bin\netstandard\%CONFIGURATION%\Antlr4.Test.StringTemplate.dll"
 artifacts:
 - path: build\prep\nuget\*.nupkg
 - path: build\prep\dist\*.7z
