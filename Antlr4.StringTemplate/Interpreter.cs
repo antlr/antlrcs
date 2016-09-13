@@ -165,14 +165,8 @@ namespace Antlr4.StringTemplate
                 SetDefaultArguments(frame);
                 return ExecuteImpl(@out, frame);
             }
-            catch (Exception e)
+            catch (Exception e) when (!e.IsCritical())
             {
-                if (e.IsCritical())
-                {
-                    e.PreserveStackTrace();
-                    throw;
-                }
-
                 StringBuilder builder = new StringBuilder();
                 builder.AppendLine(e.ToString());
                 builder.AppendLine(e.StackTrace);

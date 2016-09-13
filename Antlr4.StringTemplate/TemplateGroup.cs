@@ -61,6 +61,7 @@ namespace Antlr4.StringTemplate
     using Path = System.IO.Path;
     using SeekOrigin = System.IO.SeekOrigin;
     using Stream = System.IO.Stream;
+    using StreamReader = System.IO.StreamReader;
     using StringBuilder = System.Text.StringBuilder;
     using StringComparer = System.StringComparer;
     using TemplateToken = Antlr4.StringTemplate.Compiler.TemplateLexer.TemplateToken;
@@ -445,19 +446,21 @@ namespace Antlr4.StringTemplate
          *  and import relationships.  This essentially forces next GetInstanceOf
          *  to reload templates.
          */
-        [MethodImpl(MethodImplOptions.Synchronized)]
         public virtual void Unload()
         {
-            templates.Clear();
-            dictionaries.Clear();
+            lock (this)
+            {
+                templates.Clear();
+                dictionaries.Clear();
 
-            foreach (var import in _imports)
-                import.Unload();
+                foreach (var import in _imports)
+                    import.Unload();
 
-            foreach (var import in _importsToClearOnUnload)
-                _imports.Remove(import);
+                foreach (var import in _importsToClearOnUnload)
+                    _imports.Remove(import);
 
-            _importsToClearOnUnload.Clear();
+                _importsToClearOnUnload.Clear();
+            }
         }
 
         /** Load st from disk if dir or load whole group file if .stg file (then
@@ -944,7 +947,7 @@ namespace Antlr4.StringTemplate
             try
             {
                 Uri f = new Uri(fileName);
-                ANTLRReaderStream fs = new ANTLRReaderStream(new System.IO.StreamReader(f.LocalPath, Encoding));
+                ANTLRReaderStream fs = new ANTLRReaderStream(new System.IO.StreamReader(File.OpenRead(f.LocalPath), Encoding));
 
                 var timer = System.Diagnostics.Stopwatch.StartNew();
 
@@ -968,12 +971,8 @@ namespace Antlr4.StringTemplate
                 }
 
             }
-            catch (Exception e)
+            catch (Exception e) when (!e.IsCritical())
             {
-                e.PreserveStackTrace();
-                if (e.IsCritical())
-                    throw;
-
                 ErrorManager.IOError(null, ErrorType.CANT_LOAD_GROUP_FILE, e, fileName);
             }
         }
@@ -1619,15 +1618,13 @@ namespace Antlr4.StringTemplate
 
             CalculateReachableSerializedObjects(obj.GetType(), reachableObjects);
 
-            switch (Type.GetTypeCode(obj.GetType()))
+            if (obj is bool || obj is string)
             {
-            case TypeCode.Boolean:
-            case TypeCode.String:
                 // nothing more to do
                 return;
-
-            case TypeCode.Object:
-            default:
+            }
+            else
+            {
                 IToken token = obj as IToken;
                 if (token != null)
                 {
@@ -1689,18 +1686,16 @@ namespace Antlr4.StringTemplate
                 {
                     throw new NotImplementedException();
                 }
-
-                break;
             }
         }
 
         /** Load template file into this group using absolute filename */
         public virtual CompiledTemplate LoadAbsoluteTemplateFile(string fileName)
         {
-            ANTLRFileStream fs;
+            ANTLRReaderStream fs;
             try
             {
-                fs = new ANTLRFileStream(fileName, Encoding);
+                fs = new ANTLRReaderStream(new StreamReader(File.OpenRead(fileName), Encoding));
                 fs.name = fileName;
             }
             catch (IOException)

@@ -34,6 +34,7 @@ namespace Antlr4.StringTemplate.Misc
 {
     using System.Collections.Generic;
     using System.Linq;
+    using Antlr4.StringTemplate.Extensions;
 
     using AmbiguousMatchException = System.Reflection.AmbiguousMatchException;
     using ArgumentNullException = System.ArgumentNullException;

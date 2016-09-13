@@ -30,6 +30,8 @@
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+ #if !NETSTANDARD
+
 namespace Antlr4.Test.StringTemplate
 {
     using Antlr4.StringTemplate;
@@ -202,3 +204,5 @@ namespace Antlr4.Test.StringTemplate
         }
     }
 }
+
+#endif

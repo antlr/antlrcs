@@ -234,7 +234,7 @@ namespace Antlr4.StringTemplate
             ANTLRReaderStream fs = null;
             try
             {
-                fs = new ANTLRReaderStream(new StreamReader(f.LocalPath, Encoding));
+                fs = new ANTLRReaderStream(new StreamReader(File.OpenRead(f.LocalPath), Encoding));
                 fs.name = unqualifiedFileName;
             }
             catch (IOException)

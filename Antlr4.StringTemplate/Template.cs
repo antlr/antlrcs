@@ -38,6 +38,7 @@ namespace Antlr4.StringTemplate
     using System.Text.RegularExpressions;
     using Antlr4.StringTemplate.Compiler;
     using Antlr4.StringTemplate.Debug;
+    using Antlr4.StringTemplate.Extensions;
     using Antlr4.StringTemplate.Misc;
     using ArgumentException = System.ArgumentException;
     using ArgumentNullException = System.ArgumentNullException;
@@ -247,114 +248,117 @@ namespace Antlr4.StringTemplate
          *
          *  Return self so we can chain.  t.add("x", 1).add("y", "hi");
          */
-        [MethodImpl(MethodImplOptions.Synchronized)]
         public virtual Template Add(string name, object value)
         {
-            if (name == null)
-                throw new ArgumentNullException("name");
-            if (name.IndexOf('.') >= 0)
-                throw new ArgumentException("cannot have '.' in attribute names");
+            lock (this)
+            { if (name == null)
+                    throw new ArgumentNullException("name");
+                if (name.IndexOf('.') >= 0)
+                    throw new ArgumentException("cannot have '.' in attribute names");
 
-            if (Group.TrackCreationEvents)
-            {
-                if (_debugState == null)
-                    _debugState = new TemplateDebugState();
-                _debugState.AddAttributeEvents.Add(name, new AddAttributeEvent(name, value));
-            }
-
-            FormalArgument arg = null;
-            if (impl.HasFormalArgs)
-            {
-                arg = impl.TryGetFormalArgument(name);
-                if (arg == null)
-                    throw new ArgumentException("no such attribute: " + name);
-            }
-            else
-            {
-                // define and make room in locals (a hack to make new Template("simple template") work.)
-                arg = impl.TryGetFormalArgument(name);
-                if (arg == null)
+                if (Group.TrackCreationEvents)
                 {
-                    // not defined
-                    arg = new FormalArgument(name);
-                    impl.AddArgument(arg);
-                    if (locals == null)
-                        locals = new object[1];
-                    else
-                        Array.Resize(ref locals, impl.FormalArguments.Count);
-
-                    locals[arg.Index] = EmptyAttribute;
+                    if (_debugState == null)
+                        _debugState = new TemplateDebugState();
+                    _debugState.AddAttributeEvents.Add(name, new AddAttributeEvent(name, value));
                 }
-            }
 
-            object curvalue = locals[arg.Index];
-            if (curvalue == EmptyAttribute)
-            {
-                // new attribute
-                locals[arg.Index] = value;
+                FormalArgument arg = null;
+                if (impl.HasFormalArgs)
+                {
+                    arg = impl.TryGetFormalArgument(name);
+                    if (arg == null)
+                        throw new ArgumentException("no such attribute: " + name);
+                }
+                else
+                {
+                    // define and make room in locals (a hack to make new Template("simple template") work.)
+                    arg = impl.TryGetFormalArgument(name);
+                    if (arg == null)
+                    {
+                        // not defined
+                        arg = new FormalArgument(name);
+                        impl.AddArgument(arg);
+                        if (locals == null)
+                            locals = new object[1];
+                        else
+                            Array.Resize(ref locals, impl.FormalArguments.Count);
+
+                        locals[arg.Index] = EmptyAttribute;
+                    }
+                }
+
+                object curvalue = locals[arg.Index];
+                if (curvalue == EmptyAttribute)
+                {
+                    // new attribute
+                    locals[arg.Index] = value;
+                    return this;
+                }
+
+                // attribute will be multi-valued for sure now
+                // convert current attribute to list if not already
+                // copy-on-Write semantics; copy a list injected by user to Add new value
+                AttributeList multi = ConvertToAttributeList(curvalue);
+                locals[arg.Index] = multi; // replace with list
+
+                // now, Add incoming value to multi-valued attribute
+                IList list = value as IList;
+                if (list != null)
+                {
+                    // flatten incoming list into existing list
+                    multi.AddRange(list.Cast<object>());
+                }
+                else
+                {
+                    multi.Add(value);
+                }
+
                 return this;
             }
-
-            // attribute will be multi-valued for sure now
-            // convert current attribute to list if not already
-            // copy-on-Write semantics; copy a list injected by user to Add new value
-            AttributeList multi = ConvertToAttributeList(curvalue);
-            locals[arg.Index] = multi; // replace with list
-
-            // now, Add incoming value to multi-valued attribute
-            IList list = value as IList;
-            if (list != null)
-            {
-                // flatten incoming list into existing list
-                multi.AddRange(list.Cast<object>());
-            }
-            else
-            {
-                multi.Add(value);
-            }
-
-            return this;
         }
 
         /** Split "aggrName.{propName1,propName2}" into list [propName1,propName2]
          *  and the aggrName. Spaces are allowed around ','.
          */
-        [MethodImpl(MethodImplOptions.Synchronized)]
         public Template AddMany(string aggrSpec, params object[] values)
         {
-            if (aggrSpec == null)
-                throw new ArgumentNullException("aggrSpec");
-            if (values == null)
-                throw new ArgumentNullException("values");
-
-            if (values.Length == 0)
-                throw new ArgumentException(string.Format("missing values for aggregate attribute format: {0}", aggrSpec), "aggrSpec");
-
-            int dot = aggrSpec.IndexOf(".{");
-            int finalCurly = aggrSpec.IndexOf('}');
-            if (dot < 0 || finalCurly < 0)
-                throw new ArgumentException(string.Format("invalid aggregate attribute format: {0}", aggrSpec), "aggrSpec");
-
-            string aggrName = aggrSpec.Substring(0, dot);
-            string propString = aggrSpec.Substring(dot + 2, aggrSpec.Length - dot - 3);
-            propString = propString.Trim();
-            string[] propNames = Array.ConvertAll(propString.Split(','), p => p.Trim());
-            if (propNames == null || propNames.Length == 0)
-                throw new ArgumentException(string.Format("invalid aggregate attribute format: {0}", aggrSpec), "aggrSpec");
-
-            if (values.Length != propNames.Length)
-                throw new ArgumentException(string.Format("number of properties and values mismatch for aggregate attribute format: {0}", aggrSpec), "aggrSpec");
-
-            int i = 0;
-            Aggregate aggr = new Aggregate();
-            foreach (string p in propNames)
+            lock (this)
             {
-                object value = values[i++];
-                aggr[p] = value;
-            }
+                if (aggrSpec == null)
+                    throw new ArgumentNullException("aggrSpec");
+                if (values == null)
+                    throw new ArgumentNullException("values");
 
-            Add(aggrName, aggr); // now add as usual
-            return this;
+                if (values.Length == 0)
+                    throw new ArgumentException(string.Format("missing values for aggregate attribute format: {0}", aggrSpec), "aggrSpec");
+
+                int dot = aggrSpec.IndexOf(".{");
+                int finalCurly = aggrSpec.IndexOf('}');
+                if (dot < 0 || finalCurly < 0)
+                    throw new ArgumentException(string.Format("invalid aggregate attribute format: {0}", aggrSpec), "aggrSpec");
+
+                string aggrName = aggrSpec.Substring(0, dot);
+                string propString = aggrSpec.Substring(dot + 2, aggrSpec.Length - dot - 3);
+                propString = propString.Trim();
+                string[] propNames = Arrays.ConvertAll(propString.Split(','), p => p.Trim());
+                if (propNames == null || propNames.Length == 0)
+                    throw new ArgumentException(string.Format("invalid aggregate attribute format: {0}", aggrSpec), "aggrSpec");
+
+                if (values.Length != propNames.Length)
+                    throw new ArgumentException(string.Format("number of properties and values mismatch for aggregate attribute format: {0}", aggrSpec), "aggrSpec");
+
+                int i = 0;
+                Aggregate aggr = new Aggregate();
+                foreach (string p in propNames)
+                {
+                    object value = values[i++];
+                    aggr[p] = value;
+                }
+
+                Add(aggrName, aggr); // now add as usual
+                return this;
+            }
         }
 
         /** Remove an attribute value entirely (can't Remove attribute definitions). */

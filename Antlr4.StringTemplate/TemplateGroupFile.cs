@@ -144,11 +144,13 @@ namespace Antlr4.StringTemplate
             return base.IsDefined(name);
         }
 
-        [MethodImpl(MethodImplOptions.Synchronized)]
         public override void Unload()
         {
-            base.Unload();
-            _alreadyLoaded = false;
+            lock (this)
+            {
+                base.Unload();
+                _alreadyLoaded = false;
+            }
         }
 
         protected override CompiledTemplate Load(string name)
