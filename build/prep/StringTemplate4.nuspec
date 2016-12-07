@@ -17,8 +17,11 @@
     <title>StringTemplate 4</title>
     <summary>The C# port of StringTemplate 4.</summary>
     <dependencies>
-      <dependency id="Antlr3.Runtime" version="$ANTLRVersion$" />
+      <group targetFramework="net35-client">
+        <dependency id="Antlr3.Runtime" version="$ANTLRVersion$" />
+      </group>
       <group targetFramework="netstandard1.3">
+        <dependency id="Antlr3.Runtime" version="$ANTLRVersion$" />
         <dependency id="NETStandard.Library" version="1.6.0"/>
       </group>
     </dependencies>
