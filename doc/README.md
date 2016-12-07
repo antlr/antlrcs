@@ -1,5 +1,7 @@
 # Visual Studio and the ANTLR C# Target
 
+:warning: This document was written several years ago, and sections may be out of date.
+
 ## Introduction
 
 This document gives a basic overview of using ANTLR and its CSharp2 or CSharp3 target with C# projects in Visual Studio.
