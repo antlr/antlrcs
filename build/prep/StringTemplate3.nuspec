@@ -8,7 +8,7 @@
     <description>The C# port of StringTemplate 3.</description>
     <language>en-us</language>
     <projectUrl>https://github.com/antlr/antlrcs</projectUrl>
-    <licenseUrl>https://raw.githubusercontent.com/antlr/antlrcs/master/build/prep/LICENSE.txt</licenseUrl>
+    <licenseUrl>https://raw.githubusercontent.com/antlr/antlrcs/master/LICENSE.txt</licenseUrl>
     <iconUrl>https://raw.github.com/antlr/website-antlr4/master/images/icons/antlr.png</iconUrl>
     <copyright>Copyright © Sam Harwell 2013</copyright>
     <releaseNotes>https://github.com/antlr/antlrcs/releases/$ANTLRVersion$</releaseNotes>

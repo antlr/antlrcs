@@ -15,3 +15,11 @@ This repository contains C# versions of 3 major projects, some of which have mul
 * StringTemplate 4
   * [StringTemplate4](https://www.nuget.org/packages/StringTemplate4): Runtime library
   * [StringTemplate4.Visualizer](https://www.nuget.org/packages/StringTemplate4.Visualizer): WPF visualizer for rendering StringTemplate 4 templates
+
+## Documentation
+
+The following pages provide documentation for this project:
+
+* [Visual Studio and the ANTLR C# Target](doc/README.md)
+* [ANTLR v3 Home](http://www.antlr3.org)
+* [StringTemplate Home](http://www.stringtemplate.org/)

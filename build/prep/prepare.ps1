@@ -130,7 +130,7 @@ mkdir ST4
 copy "..\..\bin\$BuildConfig\Antlr3.Runtime.dll" ".\Runtime"
 copy "..\..\bin\$BuildConfig\Antlr3.Runtime.pdb" ".\Runtime"
 copy "..\..\bin\$BuildConfig\Antlr3.Runtime.xml" ".\Runtime"
-copy "LICENSE.txt" ".\Runtime"
+copy "..\..\LICENSE.txt" ".\Runtime"
 
 copy "..\..\bin\$BuildConfig\Antlr3.exe" ".\Tool"
 copy "..\..\bin\$BuildConfig\Antlr3.exe.config" ".\Tool"
@@ -143,7 +143,7 @@ if ($DebugBuild) {
 copy "..\..\bin\$BuildConfig\Antlr3.props" ".\Tool"
 copy "..\..\bin\$BuildConfig\Antlr3.targets" ".\Tool"
 copy "..\..\bin\$BuildConfig\AntlrBuildTask.dll" ".\Tool"
-copy "LICENSE.txt" ".\Tool"
+copy "..\..\LICENSE.txt" ".\Tool"
 
 copy ".\Tool\*" ".\Bootstrap"
 
@@ -193,7 +193,7 @@ copy "..\..\Antlr3.StringTemplate\bin\net35-client\$BuildConfig\Antlr3.StringTem
 copy "..\..\Antlr3.StringTemplate\bin\net35-client\$BuildConfig\Antlr3.Runtime.pdb" ".\ST3"
 copy "..\..\Antlr3.StringTemplate\bin\net35-client\$BuildConfig\Antlr3.StringTemplate.xml" ".\ST3"
 copy "..\..\Antlr3.StringTemplate\bin\net35-client\$BuildConfig\Antlr3.Runtime.xml" ".\ST3"
-copy "LICENSE.txt" ".\ST3"
+copy "..\..\LICENSE.txt" ".\ST3"
 
 # ST4 dist
 copy "..\..\bin\$BuildConfig\Antlr3.Runtime.dll" ".\ST4"
@@ -205,7 +205,7 @@ copy "..\..\bin\$BuildConfig\Antlr4.StringTemplate.Visualizer.pdb" ".\ST4"
 copy "..\..\bin\$BuildConfig\Antlr3.Runtime.xml" ".\ST4"
 copy "..\..\bin\$BuildConfig\Antlr4.StringTemplate.xml" ".\ST4"
 copy "..\..\bin\$BuildConfig\Antlr4.StringTemplate.Visualizer.xml" ".\ST4"
-copy "LICENSE.txt" ".\ST4"
+copy "..\..\LICENSE.txt" ".\ST4"
 
 # compress the distributable packages
 $AntlrVersion = "3.5.0.3-dev"

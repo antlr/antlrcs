@@ -8,7 +8,7 @@
     <description>The C# target of the ANTLR 3 parser generator. This package supports projects targeting .NET 2.0 or newer, and built using Visual Studio 2008 or newer.</description>
     <language>en-us</language>
     <projectUrl>https://github.com/antlr/antlrcs</projectUrl>
-    <licenseUrl>https://raw.githubusercontent.com/antlr/antlrcs/master/build/prep/LICENSE.txt</licenseUrl>
+    <licenseUrl>https://raw.githubusercontent.com/antlr/antlrcs/master/LICENSE.txt</licenseUrl>
     <iconUrl>https://raw.github.com/antlr/website-antlr4/master/images/icons/antlr.png</iconUrl>
     <copyright>Copyright © Sam Harwell 2013</copyright>
     <releaseNotes>https://github.com/antlr/antlrcs/releases/$version$</releaseNotes>
