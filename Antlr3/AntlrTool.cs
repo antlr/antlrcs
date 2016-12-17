@@ -35,6 +35,7 @@ namespace Antlr3
     using System;
     using System.Collections.Generic;
     using System.Linq;
+    using System.Reflection;
     using Antlr3.Analysis;
     using Antlr3.Codegen;
     using Antlr3.Misc;
@@ -158,6 +159,17 @@ namespace Antlr3
             }
         }
 
+        public static string AssemblyInformationalVersion
+        {
+            get
+            {
+                var assembly = typeof(AntlrTool).Assembly;
+                var attributes = assembly.GetCustomAttributes(typeof(AssemblyInformationalVersionAttribute), true);
+                var informationalVersion = attributes.OfType<AssemblyInformationalVersionAttribute>().FirstOrDefault();
+                return informationalVersion?.InformationalVersion ?? AssemblyVersion.ToString(4);
+            }
+        }
+
         public static string ToolPathRoot
         {
             get;
@@ -186,7 +198,7 @@ namespace Antlr3
         {
             if (verbose)
             {
-                ErrorManager.Info("ANTLR Parser Generator  Version " + AssemblyVersion.ToString(4));
+                ErrorManager.Info("ANTLR Parser Generator  Version " + AssemblyInformationalVersion);
                 showBanner = false;
             }
 
@@ -573,7 +585,7 @@ namespace Antlr3
             // before setting options. The banner won't display that way!
             if ( Verbose && showBanner )
             {
-                ErrorManager.Info( "ANTLR Parser Generator  Version " + AssemblyVersion.ToString(4) );
+                ErrorManager.Info( "ANTLR Parser Generator  Version " + AssemblyInformationalVersion );
                 showBanner = false;
             }
 
@@ -933,7 +945,7 @@ namespace Antlr3
 
         private static void Version()
         {
-            ErrorManager.Info( "ANTLR Parser Generator  Version " + AntlrTool.AssemblyVersion.ToString(4) );
+            ErrorManager.Info( "ANTLR Parser Generator  Version " + AntlrTool.AssemblyInformationalVersion );
         }
 
         private static void Help()
