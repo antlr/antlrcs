@@ -65,6 +65,6 @@ using System.Runtime.InteropServices;
  *      of whether it's an incremental or nightly). The value resets to zero whenever
  *      the Major or Minor version is incremented.
  */
-[assembly: AssemblyVersion("4.0.8.0")]
+[assembly: AssemblyVersion("4.0.7.0")]
 [assembly: AssemblyFileVersion("4.0.8.0")]
 [assembly: AssemblyInformationalVersion("4.0.8.0-dev")]
