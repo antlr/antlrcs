@@ -791,8 +791,8 @@ namespace Antlr3.Codegen
                 _target.GetTargetStringLiteralFromString( _grammar.FileName );
             outputFileST.SetAttribute( "fileName", targetAppropriateFileNameString );
             headerFileST.SetAttribute( "fileName", targetAppropriateFileNameString );
-            outputFileST.SetAttribute( "ANTLRVersion", AntlrTool.AssemblyVersion.ToString(4) );
-            headerFileST.SetAttribute( "ANTLRVersion", AntlrTool.AssemblyVersion.ToString(4) );
+            outputFileST.SetAttribute( "ANTLRVersion", AntlrTool.AssemblyInformationalVersion );
+            headerFileST.SetAttribute( "ANTLRVersion", AntlrTool.AssemblyInformationalVersion );
             outputFileST.SetAttribute( "generatedTimestamp", AntlrTool.GetCurrentTimeStamp() );
             headerFileST.SetAttribute( "generatedTimestamp", AntlrTool.GetCurrentTimeStamp() );
 
