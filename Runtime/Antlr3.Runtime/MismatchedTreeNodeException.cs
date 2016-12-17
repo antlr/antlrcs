@@ -37,6 +37,7 @@ namespace Antlr.Runtime
     using ITreeNodeStream = Antlr.Runtime.Tree.ITreeNodeStream;
 
 #if !PORTABLE
+    using SecurityCriticalAttribute = System.Security.SecurityCriticalAttribute;
     using SerializationInfo = System.Runtime.Serialization.SerializationInfo;
     using StreamingContext = System.Runtime.Serialization.StreamingContext;
 #endif
@@ -98,6 +99,7 @@ namespace Antlr.Runtime
         }
 
 #if !PORTABLE
+        [SecurityCritical]
         public override void GetObjectData(SerializationInfo info, StreamingContext context)
         {
             if (info == null)
