@@ -208,7 +208,7 @@ copy "..\..\bin\$BuildConfig\Antlr4.StringTemplate.Visualizer.xml" ".\ST4"
 copy "..\..\LICENSE.txt" ".\ST4"
 
 # compress the distributable packages
-$AntlrVersion = "3.5.1"
+$AntlrVersion = "3.5.2-dev"
 $STVersion = "4.0.8"
 
 $ArchivePath = ".\dist\antlr-dotnet-csharpbootstrap-" + $AntlrVersion + ".7z"
