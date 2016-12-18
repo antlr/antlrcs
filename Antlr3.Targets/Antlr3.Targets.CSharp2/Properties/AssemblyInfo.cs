@@ -66,5 +66,5 @@ using System.Runtime.InteropServices;
  *      the Major or Minor version is incremented.
  */
 [assembly: AssemblyVersion("3.5.0.2")]
-[assembly: AssemblyFileVersion("3.5.0.3")]
-[assembly: AssemblyInformationalVersion("3.5.0.3-dev")]
+[assembly: AssemblyFileVersion("3.5.2.0")]
+[assembly: AssemblyInformationalVersion("3.5.2-dev")]
