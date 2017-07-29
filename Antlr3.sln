@@ -23,7 +23,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Antlr3.net35-client", "Antl
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Antlr3.StringTemplate.net35-client", "Antlr3.StringTemplate\Antlr3.StringTemplate.net35-client.csproj", "{B5910BE2-DE21-4AA9-95C1-486F42B9E794}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Antlr3.Test", "Antlr3.Test\Antlr3.Test.csproj", "{8B58597B-058E-4D7A-B83E-5269BDABBE2C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Antlr3.Test", "Antlr3.Test\Antlr3.Test.csproj", "{8B58597B-058E-4D7A-B83E-5269BDABBE2C}"
 	ProjectSection(ProjectDependencies) = postProject
 		{696F611F-003B-477D-AFA0-4F15478C9D32} = {696F611F-003B-477D-AFA0-4F15478C9D32}
 		{67012F41-94F9-48E6-9677-E3C56E42917F} = {67012F41-94F9-48E6-9677-E3C56E42917F}
@@ -69,13 +69,13 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Antlr3.Runtime.Debug.net20"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Antlr3.Runtime.JavaExtensions.net35-client", "Runtime\Antlr3.Runtime.JavaExtensions\Antlr3.Runtime.JavaExtensions.net35-client.csproj", "{A7EEC557-EB14-451C-9616-B7A61F4ECE69}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Antlr3.Runtime.Test", "Runtime\Antlr3.Runtime.Test\Antlr3.Runtime.Test.csproj", "{19B965DE-5100-4064-A580-159644F6980E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Antlr3.Runtime.Test", "Runtime\Antlr3.Runtime.Test\Antlr3.Runtime.Test.csproj", "{19B965DE-5100-4064-A580-159644F6980E}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AntlrBuildTask", "AntlrBuildTask\AntlrBuildTask.csproj", "{60F8B554-5C53-4DE2-B868-A0BFEF4EF80E}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Antlr4.StringTemplate.net35-client", "Antlr4.StringTemplate\Antlr4.StringTemplate.net35-client.csproj", "{DE9B7DA2-35DD-46CC-B768-DAEE3C298660}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Antlr4.Test.StringTemplate.net40", "Antlr4.Test.StringTemplate\Antlr4.Test.StringTemplate.net40.csproj", "{1B70CBF4-B592-4A9C-B7B3-AD1A087F4B9C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Antlr4.Test.StringTemplate", "Antlr4.Test.StringTemplate\Antlr4.Test.StringTemplate.csproj", "{1B70CBF4-B592-4A9C-B7B3-AD1A087F4B9C}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Antlr4.StringTemplate.Visualizer.net35-client", "Antlr4.StringTemplate.Visualizer\Antlr4.StringTemplate.Visualizer.net35-client.csproj", "{DC0A9616-0B69-4A3B-ADC7-62FCA9207B98}"
 EndProject
@@ -101,8 +101,6 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Antlr3.Runtime.netstandard", "Runtime\Antlr3.Runtime\Antlr3.Runtime.netstandard.csproj", "{AC2C28AB-D93A-41E3-85A6-5ECB08CAE5C3}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Antlr4.StringTemplate.netstandard", "Antlr4.StringTemplate\Antlr4.StringTemplate.netstandard.csproj", "{7E0E3F5C-54D4-49B5-BEEF-8C3D364A8061}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Antlr4.Test.StringTemplate.netstandard", "Antlr4.Test.StringTemplate\Antlr4.Test.StringTemplate.netstandard.csproj", "{0FB5C69A-F894-45DC-B775-5FC273D41460}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -226,10 +224,6 @@ Global
 		{7E0E3F5C-54D4-49B5-BEEF-8C3D364A8061}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7E0E3F5C-54D4-49B5-BEEF-8C3D364A8061}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7E0E3F5C-54D4-49B5-BEEF-8C3D364A8061}.Release|Any CPU.Build.0 = Release|Any CPU
-		{0FB5C69A-F894-45DC-B775-5FC273D41460}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{0FB5C69A-F894-45DC-B775-5FC273D41460}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{0FB5C69A-F894-45DC-B775-5FC273D41460}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{0FB5C69A-F894-45DC-B775-5FC273D41460}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
