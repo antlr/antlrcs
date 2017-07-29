@@ -1,9 +1,13 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.25420.1
-MinimumVisualStudioVersion = 10.0.40219.1
+# Visual Studio 15
+VisualStudioVersion = 15.0.26724.1
+MinimumVisualStudioVersion = 15.0
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Targets", "Targets", "{3A92893D-7810-4D8B-80D8-E1E8D151FA73}"
+	ProjectSection(SolutionItems) = preProject
+		Antlr3.Targets\Directory.Build.props = Antlr3.Targets\Directory.Build.props
+		Antlr3.Targets\Directory.Build.targets = Antlr3.Targets\Directory.Build.targets
+	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{C0B451C4-EAFC-4942-B18E-49EC73DABABD}"
 	ProjectSection(SolutionItems) = preProject
@@ -35,29 +39,29 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Antlr3.Test", "Antlr3.Test\
 		{9444ACEF-784D-47B0-B317-F374782FA511} = {9444ACEF-784D-47B0-B317-F374782FA511}
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Antlr3.Targets.ActionScript", "Antlr3.Targets\Antlr3.Targets.ActionScript\Antlr3.Targets.ActionScript.csproj", "{2A03CB56-C3E2-4B65-92C0-004C9D78E2A4}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Antlr3.Targets.ActionScript", "Antlr3.Targets\Antlr3.Targets.ActionScript\Antlr3.Targets.ActionScript.csproj", "{2A03CB56-C3E2-4B65-92C0-004C9D78E2A4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Antlr3.Targets.C", "Antlr3.Targets\Antlr3.Targets.C\Antlr3.Targets.C.csproj", "{ABFF04E1-91CE-4F31-AAA0-0C70E3DBB4A6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Antlr3.Targets.C", "Antlr3.Targets\Antlr3.Targets.C\Antlr3.Targets.C.csproj", "{ABFF04E1-91CE-4F31-AAA0-0C70E3DBB4A6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Antlr3.Targets.Cpp", "Antlr3.Targets\Antlr3.Targets.Cpp\Antlr3.Targets.Cpp.csproj", "{46171154-755A-4595-99AA-537D684BCA28}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Antlr3.Targets.Cpp", "Antlr3.Targets\Antlr3.Targets.Cpp\Antlr3.Targets.Cpp.csproj", "{46171154-755A-4595-99AA-537D684BCA28}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Antlr3.Targets.CSharp2", "Antlr3.Targets\Antlr3.Targets.CSharp2\Antlr3.Targets.CSharp2.csproj", "{5CBAC55A-A209-45CA-9F57-D0BFFFE2B7F9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Antlr3.Targets.CSharp2", "Antlr3.Targets\Antlr3.Targets.CSharp2\Antlr3.Targets.CSharp2.csproj", "{5CBAC55A-A209-45CA-9F57-D0BFFFE2B7F9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Antlr3.Targets.CSharp3", "Antlr3.Targets\Antlr3.Targets.CSharp3\Antlr3.Targets.CSharp3.csproj", "{67012F41-94F9-48E6-9677-E3C56E42917F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Antlr3.Targets.CSharp3", "Antlr3.Targets\Antlr3.Targets.CSharp3\Antlr3.Targets.CSharp3.csproj", "{67012F41-94F9-48E6-9677-E3C56E42917F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Antlr3.Targets.Delphi", "Antlr3.Targets\Antlr3.Targets.Delphi\Antlr3.Targets.Delphi.csproj", "{6689F268-CE30-4CEC-AAD5-2DF72C43623C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Antlr3.Targets.Delphi", "Antlr3.Targets\Antlr3.Targets.Delphi\Antlr3.Targets.Delphi.csproj", "{6689F268-CE30-4CEC-AAD5-2DF72C43623C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Antlr3.Targets.Java", "Antlr3.Targets\Antlr3.Targets.Java\Antlr3.Targets.Java.csproj", "{696F611F-003B-477D-AFA0-4F15478C9D32}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Antlr3.Targets.Java", "Antlr3.Targets\Antlr3.Targets.Java\Antlr3.Targets.Java.csproj", "{696F611F-003B-477D-AFA0-4F15478C9D32}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Antlr3.Targets.JavaScript", "Antlr3.Targets\Antlr3.Targets.JavaScript\Antlr3.Targets.JavaScript.csproj", "{1551D1E7-D515-4488-A889-5DEBB4950880}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Antlr3.Targets.JavaScript", "Antlr3.Targets\Antlr3.Targets.JavaScript\Antlr3.Targets.JavaScript.csproj", "{1551D1E7-D515-4488-A889-5DEBB4950880}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Antlr3.Targets.ObjC", "Antlr3.Targets\Antlr3.Targets.ObjC\Antlr3.Targets.ObjC.csproj", "{8EFEA650-B9F6-498B-8865-A78103CCB590}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Antlr3.Targets.ObjC", "Antlr3.Targets\Antlr3.Targets.ObjC\Antlr3.Targets.ObjC.csproj", "{8EFEA650-B9F6-498B-8865-A78103CCB590}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Antlr3.Targets.Perl5", "Antlr3.Targets\Antlr3.Targets.Perl5\Antlr3.Targets.Perl5.csproj", "{9444ACEF-784D-47B0-B317-F374782FA511}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Antlr3.Targets.Perl5", "Antlr3.Targets\Antlr3.Targets.Perl5\Antlr3.Targets.Perl5.csproj", "{9444ACEF-784D-47B0-B317-F374782FA511}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Antlr3.Targets.Python", "Antlr3.Targets\Antlr3.Targets.Python\Antlr3.Targets.Python.csproj", "{1DEA6EB4-2288-4B6C-B5F4-1D102B8745BB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Antlr3.Targets.Python", "Antlr3.Targets\Antlr3.Targets.Python\Antlr3.Targets.Python.csproj", "{1DEA6EB4-2288-4B6C-B5F4-1D102B8745BB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Antlr3.Targets.Ruby", "Antlr3.Targets\Antlr3.Targets.Ruby\Antlr3.Targets.Ruby.csproj", "{64418260-E75A-4556-BB7E-8BDAAFC2EFB9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Antlr3.Targets.Ruby", "Antlr3.Targets\Antlr3.Targets.Ruby\Antlr3.Targets.Ruby.csproj", "{64418260-E75A-4556-BB7E-8BDAAFC2EFB9}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Antlr3.Runtime.net20", "Runtime\Antlr3.Runtime\Antlr3.Runtime.net20.csproj", "{8FDC0A87-9005-4D5A-AB75-E55CEB575559}"
 EndProject
@@ -77,7 +81,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Antlr4.StringTemplate.Visua
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Antlr3.Runtime.Visualizer.net35-client", "Antlr3.Runtime.Visualizer\Antlr3.Runtime.Visualizer.net35-client.csproj", "{2F59DA1C-A502-440C-ABE8-240BDE2D0664}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Antlr3.Targets.Python3", "Antlr3.Targets\Antlr3.Targets.Python3\Antlr3.Targets.Python3.csproj", "{5B7F1199-FB67-4AC1-A482-6BF1DA6CCDC5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Antlr3.Targets.Python3", "Antlr3.Targets\Antlr3.Targets.Python3\Antlr3.Targets.Python3.csproj", "{5B7F1199-FB67-4AC1-A482-6BF1DA6CCDC5}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Build", "Build", "{D2D979DC-1305-4C44-B21A-9EB3EEE95F7B}"
 	ProjectSection(SolutionItems) = preProject
@@ -245,6 +249,9 @@ Global
 		{64418260-E75A-4556-BB7E-8BDAAFC2EFB9} = {3A92893D-7810-4D8B-80D8-E1E8D151FA73}
 		{5B7F1199-FB67-4AC1-A482-6BF1DA6CCDC5} = {3A92893D-7810-4D8B-80D8-E1E8D151FA73}
 		{D2D979DC-1305-4C44-B21A-9EB3EEE95F7B} = {C0B451C4-EAFC-4942-B18E-49EC73DABABD}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {46CE14C6-8A1E-4634-A720-69B2E14873EE}
 	EndGlobalSection
 	GlobalSection(TestCaseManagementSettings) = postSolution
 		CategoryFile = Antlr3.vsmdi

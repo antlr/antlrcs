@@ -1,6 +1,6 @@
 param (
   [switch]$Debug,
-  [string]$VisualStudioVersion = '14.0',
+  [string]$VisualStudioVersion = '15.0',
   [string]$Verbosity = 'minimal',
   [string]$Logger
 )
@@ -31,7 +31,12 @@ $CleanItems | ForEach-Object {
 }
 
 # build the project
-$msbuild = "${env:ProgramFiles(x86)}\MSBuild\$VisualStudioVersion\Bin\MSBuild.exe"
+$visualStudio = (Get-ItemProperty 'HKLM:\SOFTWARE\WOW6432Node\Microsoft\VisualStudio\SxS\VS7')."$VisualStudioVersion"
+$msbuild = "$visualStudio\MSBuild\$VisualStudioVersion\Bin\MSBuild.exe"
+If (-not (Test-Path $msbuild)) {
+  $host.UI.WriteErrorLine("Couldn't find MSBuild.exe")
+  exit 1
+}
 
 If ($Logger) {
   $LoggerArgument = "/logger:$Logger"
@@ -39,7 +44,7 @@ If ($Logger) {
 
 # Restore packages
 .\NuGet.exe update -self
-.\NuGet.exe restore $SolutionPath
+.\NuGet.exe restore $SolutionPath -Project2ProjectTimeOut 1200
 
 &$msbuild /nologo /m /nr:false /t:rebuild $LoggerArgument "/verbosity:$Verbosity" /p:Configuration=$BuildConfig $SolutionPath
 If (-not $?) {

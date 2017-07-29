@@ -31,20 +31,8 @@
  */
 
 using System;
-using System.Reflection;
 using System.Runtime.InteropServices;
 
-// General Information about an assembly is controlled through the following 
-// set of attributes. Change these attribute values to modify the information
-// associated with an assembly.
-[assembly: AssemblyTitle( "Antlr3.Targets.Cpp" )]
-[assembly: AssemblyDescription( "" )]
-[assembly: AssemblyConfiguration( "" )]
-[assembly: AssemblyCompany( "Tunnel Vision Laboratories, LLC" )]
-[assembly: AssemblyProduct( "Antlr3.Targets.Cpp" )]
-[assembly: AssemblyCopyright( "Copyright © Sam Harwell 2013" )]
-[assembly: AssemblyTrademark( "" )]
-[assembly: AssemblyCulture( "" )]
 [assembly: CLSCompliant(true)]
 
 // Setting ComVisible to false makes the types in this assembly not visible 
@@ -54,17 +42,3 @@ using System.Runtime.InteropServices;
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
 [assembly: Guid( "8e891174-fb0e-45c6-953d-d847b757bcc9" )]
-
-/* Version information for an assembly consists of four values in the following order:
- *
- *   Major.Minor.Build.Revision
- *
- * These values are updated according to the following:
- *   1. Major.Minor follows the ANTLR release schedule
- *   2. Build is incremented each time the C# port is packaged for release (regardless
- *      of whether it's an incremental or nightly). The value resets to zero whenever
- *      the Major or Minor version is incremented.
- */
-[assembly: AssemblyVersion("3.5.0.2")]
-[assembly: AssemblyFileVersion("3.5.2.0")]
-[assembly: AssemblyInformationalVersion("3.5.2-dev")]
