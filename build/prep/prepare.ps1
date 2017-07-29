@@ -46,7 +46,7 @@ If ($Logger) {
 .\NuGet.exe update -self
 .\NuGet.exe restore $SolutionPath -Project2ProjectTimeOut 1200
 
-&$msbuild /nologo /m /nr:false /t:rebuild $LoggerArgument "/verbosity:$Verbosity" /p:Configuration=$BuildConfig $SolutionPath
+&$msbuild /nologo /nr:false /t:rebuild $LoggerArgument "/verbosity:$Verbosity" /p:Configuration=$BuildConfig $SolutionPath
 If (-not $?) {
   $host.ui.WriteErrorLine("Build Failed, Aborting!")
   exit $LASTEXITCODE
@@ -120,7 +120,7 @@ If (-not $?) {
 Remove-Item -force "..\Bootstrap\Tool\Templates\messages\formats\gnu.stg"
 
 # build the project again with the new bootstrap files
-&$msbuild /nologo /m /nr:false /t:rebuild "/verbosity:$Verbosity" /p:Configuration=$BuildConfig $SolutionPath
+&$msbuild /nologo /nr:false /t:rebuild "/verbosity:$Verbosity" /p:Configuration=$BuildConfig $SolutionPath
 If (-not $?) {
   $host.ui.WriteErrorLine("Build Failed, Aborting!")
   exit $LASTEXITCODE
