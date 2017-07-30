@@ -23,9 +23,9 @@
   <files>
     <!-- Runtime Libraries -->
 
-    <file src="Tool\Antlr3.Runtime.Debug.dll" target="lib\net20"/>
-    <file src="Tool\Antlr3.Runtime.Debug.pdb" target="lib\net20"/>
-    <file src="Tool\Antlr3.Runtime.Debug.xml" target="lib\net20"/>
+    <file src="..\..\Runtime\Antlr3.Runtime.Debug\bin\$Configuration$\net20\Antlr3.Runtime.Debug.dll" target="lib\net20"/>
+    <file src="..\..\Runtime\Antlr3.Runtime.Debug\bin\$Configuration$\net20\Antlr3.Runtime.Debug.pdb" target="lib\net20"/>
+    <file src="..\..\Runtime\Antlr3.Runtime.Debug\bin\$Configuration$\net20\Antlr3.Runtime.Debug.xml" target="lib\net20"/>
 
     <!-- Source Code -->
 
