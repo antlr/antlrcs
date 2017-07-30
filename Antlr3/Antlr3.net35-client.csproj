@@ -483,9 +483,9 @@
       <Project>{8FDC0A87-9005-4D5A-AB75-E55CEB575559}</Project>
       <Name>Antlr3.Runtime.net20</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Antlr4.StringTemplate.Visualizer\Antlr4.StringTemplate.Visualizer.net35-client.csproj">
+    <ProjectReference Include="..\Antlr4.StringTemplate.Visualizer\Antlr4.StringTemplate.Visualizer.csproj">
       <Project>{DC0A9616-0B69-4A3B-ADC7-62FCA9207B98}</Project>
-      <Name>Antlr4.StringTemplate.Visualizer.net35-client</Name>
+      <Name>Antlr4.StringTemplate.Visualizer</Name>
     </ProjectReference>
     <ProjectReference Include="..\Antlr4.StringTemplate\Antlr4.StringTemplate.net35-client.csproj">
       <Project>{DE9B7DA2-35DD-46CC-B768-DAEE3C298660}</Project>

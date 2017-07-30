@@ -4,7 +4,7 @@
   <PropertyGroup>
     <TargetFrameworks>net45;netcoreapp1.0</TargetFrameworks>
 
-    <Description>The C# port of ANTLR 3</Description>
+    <Description>The C# port of StringTemplate 4</Description>
     <Company>Tunnel Vision Laboratories, LLC</Company>
     <Copyright>Copyright © Sam Harwell 2011</Copyright>
     <Version>4.0.6.9004</Version>
@@ -26,7 +26,7 @@
     <When Condition="'$(TargetFramework)' == 'net45'">
       <ItemGroup>
         <ProjectReference Include="..\Runtime\Antlr3.Runtime\Antlr3.Runtime.net20.csproj" />
-        <ProjectReference Include="..\Antlr4.StringTemplate.Visualizer\Antlr4.StringTemplate.Visualizer.net35-client.csproj" />
+        <ProjectReference Include="..\Antlr4.StringTemplate.Visualizer\Antlr4.StringTemplate.Visualizer.csproj" />
         <ProjectReference Include="..\Antlr4.StringTemplate\Antlr4.StringTemplate.net35-client.csproj" />
       </ItemGroup>
     </When>
