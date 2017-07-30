@@ -10,7 +10,25 @@
     <Version>4.0.7.0</Version>
     <FileVersion>4.0.9.0</FileVersion>
     <InformationalVersion>4.0.9-dev</InformationalVersion>
+
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <IncludeSymbols>true</IncludeSymbols>
+    <NuspecFile>..\build\prep\StringTemplate4.Visualizer.nuspec</NuspecFile>
+    <NuspecProperties>Configuration=$(Configuration);version=$(InformationalVersion);ANTLRVersion=3.5.2-dev</NuspecProperties>
+    <PackageOutputPath>..\build\prep\nuget\</PackageOutputPath>
   </PropertyGroup>
+
+  <Target Name="DisableCrazyPackageDeletion" BeforeTargets="Clean">
+    <PropertyGroup>
+      <GeneratePackageValue>$(GeneratePackageOnBuild)</GeneratePackageValue>
+      <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
+    </PropertyGroup>
+  </Target>
+  <Target Name="EnablePackageGeneration" Condition="'$(GeneratePackageValue)' != ''" BeforeTargets="Build">
+    <PropertyGroup>
+      <GeneratePackageOnBuild>$(GeneratePackageValue)</GeneratePackageOnBuild>
+    </PropertyGroup>
+  </Target>
 
   <Choose>
     <When Condition="'$(TargetFramework)' == 'net35-client'">

@@ -30,6 +30,10 @@ $CleanItems | ForEach-Object {
   }
 }
 
+if (-not (Test-Path nuget)) {
+  mkdir "nuget"
+}
+
 # build the project
 $visualStudio = (Get-ItemProperty 'HKLM:\SOFTWARE\WOW6432Node\Microsoft\VisualStudio\SxS\VS7')."$VisualStudioVersion"
 $msbuild = "$visualStudio\MSBuild\$VisualStudioVersion\Bin\MSBuild.exe"
@@ -229,10 +233,6 @@ $ArchivePath = ".\dist\antlr-dotnet-st4-" + $STVersion + ".7z"
 
 # Build the NuGet packages
 
-if (-not (Test-Path nuget)) {
-  mkdir "nuget"
-}
-
 .\NuGet.exe pack .\Antlr3.Runtime.nuspec -OutputDirectory nuget -Prop Configuration=$BuildConfig -Version $AntlrVersion -Prop ANTLRVersion=$AntlrVersion -Prop STVersion=$STVersion -Symbols
 If (-not $?) {
   $host.ui.WriteErrorLine("Failed to create NuGet package, Aborting!")
@@ -252,18 +252,6 @@ If (-not $?) {
 }
 
 .\NuGet.exe pack .\StringTemplate3.nuspec -OutputDirectory nuget -Prop Configuration=$BuildConfig -Version $AntlrVersion -Prop ANTLRVersion=$AntlrVersion -Prop STVersion=$STVersion -Symbols
-If (-not $?) {
-  $host.ui.WriteErrorLine("Failed to create NuGet package, Aborting!")
-  exit 1
-}
-
-.\NuGet.exe pack .\StringTemplate4.nuspec -OutputDirectory nuget -Prop Configuration=$BuildConfig -Version $STVersion -Prop ANTLRVersion=$AntlrVersion -Prop STVersion=$STVersion -Symbols
-If (-not $?) {
-  $host.ui.WriteErrorLine("Failed to create NuGet package, Aborting!")
-  exit 1
-}
-
-.\NuGet.exe pack .\StringTemplate4.Visualizer.nuspec -OutputDirectory nuget -Prop Configuration=$BuildConfig -Version $STVersion -Prop ANTLRVersion=$AntlrVersion -Prop STVersion=$STVersion -Symbols
 If (-not $?) {
   $host.ui.WriteErrorLine("Failed to create NuGet package, Aborting!")
   exit 1
