@@ -71,7 +71,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Antlr3.Runtime.JavaExtensio
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Antlr3.Runtime.Test", "Runtime\Antlr3.Runtime.Test\Antlr3.Runtime.Test.csproj", "{19B965DE-5100-4064-A580-159644F6980E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AntlrBuildTask", "AntlrBuildTask\AntlrBuildTask.csproj", "{60F8B554-5C53-4DE2-B868-A0BFEF4EF80E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AntlrBuildTask", "AntlrBuildTask\AntlrBuildTask.csproj", "{60F8B554-5C53-4DE2-B868-A0BFEF4EF80E}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Antlr4.StringTemplate.net35-client", "Antlr4.StringTemplate\Antlr4.StringTemplate.net35-client.csproj", "{DE9B7DA2-35DD-46CC-B768-DAEE3C298660}"
 EndProject
