@@ -67,7 +67,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Antlr3.Runtime.net20", "Run
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Antlr3.Runtime.Debug", "Runtime\Antlr3.Runtime.Debug\Antlr3.Runtime.Debug.csproj", "{5EE27A90-B023-42C9-AAF1-52B0424C5D0B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Antlr3.Runtime.JavaExtensions.net35-client", "Runtime\Antlr3.Runtime.JavaExtensions\Antlr3.Runtime.JavaExtensions.net35-client.csproj", "{A7EEC557-EB14-451C-9616-B7A61F4ECE69}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Antlr3.Runtime.JavaExtensions", "Runtime\Antlr3.Runtime.JavaExtensions\Antlr3.Runtime.JavaExtensions.csproj", "{A7EEC557-EB14-451C-9616-B7A61F4ECE69}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Antlr3.Runtime.Test", "Runtime\Antlr3.Runtime.Test\Antlr3.Runtime.Test.csproj", "{19B965DE-5100-4064-A580-159644F6980E}"
 EndProject

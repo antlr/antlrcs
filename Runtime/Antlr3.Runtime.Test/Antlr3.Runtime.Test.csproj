@@ -24,7 +24,7 @@
   <ItemGroup>
     <ProjectReference Include="..\..\Antlr3.StringTemplate\Antlr3.StringTemplate.csproj" />
     <ProjectReference Include="..\Antlr3.Runtime.Debug\Antlr3.Runtime.Debug.csproj" />
-    <ProjectReference Include="..\Antlr3.Runtime.JavaExtensions\Antlr3.Runtime.JavaExtensions.net35-client.csproj" />
+    <ProjectReference Include="..\Antlr3.Runtime.JavaExtensions\Antlr3.Runtime.JavaExtensions.csproj" />
     <ProjectReference Include="..\Antlr3.Runtime\Antlr3.Runtime.net20.csproj" />
   </ItemGroup>
 
