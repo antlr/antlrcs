@@ -45,7 +45,7 @@
     <ProjectReference Include="$(MSBuildThisFileDirectory)..\Antlr3\Antlr3.net35-client.csproj">
       <Private>false</Private>
     </ProjectReference>
-    <ProjectReference Include="$(MSBuildThisFileDirectory)..\Antlr4.StringTemplate\Antlr4.StringTemplate.net35-client.csproj">
+    <ProjectReference Include="$(MSBuildThisFileDirectory)..\Antlr4.StringTemplate\Antlr4.StringTemplate.csproj">
       <Private>false</Private>
     </ProjectReference>
   </ItemGroup>

@@ -1,0 +1,74 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFrameworks>net35-client;netstandard1.3</TargetFrameworks>
+
+    <Description>The C# port of StringTemplate 4</Description>
+    <Company>Tunnel Vision Laboratories, LLC</Company>
+    <Copyright>Copyright © Sam Harwell 2011</Copyright>
+    <Version>4.0.7.0</Version>
+    <FileVersion>4.0.9.0</FileVersion>
+    <InformationalVersion>4.0.9-dev</InformationalVersion>
+
+    <SignAssembly>true</SignAssembly>
+    <AssemblyOriginatorKeyFile>..\..\..\..\keys\antlr\Key.snk</AssemblyOriginatorKeyFile>
+  </PropertyGroup>
+
+  <Choose>
+    <When Condition="'$(TargetFramework)' == 'net35-client'">
+      <PropertyGroup>
+        <TargetFrameworkIdentifier>.NETFramework</TargetFrameworkIdentifier>
+        <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+        <TargetFrameworkProfile>Client</TargetFrameworkProfile>
+      </PropertyGroup>
+
+      <ItemGroup>
+        <ProjectReference Include="..\Runtime\Antlr3.Runtime\Antlr3.Runtime.net20.csproj" />
+      </ItemGroup>
+    </When>
+    <When Condition="'$(TargetFramework)' == 'netstandard1.3'">
+      <PropertyGroup>
+        <DefineConstants>$(DefineConstants);NETSTANDARD</DefineConstants>
+      </PropertyGroup>
+
+      <ItemGroup>
+        <ProjectReference Include="..\Runtime\Antlr3.Runtime\Antlr3.Runtime.netstandard.csproj" />
+      </ItemGroup>
+    </When>
+  </Choose>
+
+  <PropertyGroup>
+    <GenerateDocumentationFile>True</GenerateDocumentationFile>
+    <CodeAnalysisRuleSet>..\Antlr3.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Include="Debug\DebugTemplate.cs" />
+    <Compile Remove="Debug\DebugTemplate.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Antlr3 Include="Compiler\CodeGenerator.g3" />
+    <Compile Update="Compiler\CodeGenerator.g3.cs">
+      <DependentUpon>CodeGenerator.g3</DependentUpon>
+    </Compile>
+    <Antlr3 Include="Compiler\Group.g3" />
+    <Compile Update="Compiler\Group.g3.parser.cs">
+      <DependentUpon>Group.g3</DependentUpon>
+    </Compile>
+    <Compile Update="Compiler\Group.g3.lexer.cs">
+      <DependentUpon>Group.g3</DependentUpon>
+    </Compile>
+    <AntlrTokens Include="Compiler\TemplateLexer.tokens" />
+    <Antlr3 Include="Compiler\TemplateParser.g3" />
+    <Compile Update="Compiler\TemplateParser.g3.cs">
+      <DependentUpon>TemplateParser.g3</DependentUpon>
+    </Compile>
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="$(AssemblyOriginatorKeyFile)" Link="%(Filename)%(Extension)" />
+  </ItemGroup>
+
+</Project>

@@ -487,9 +487,9 @@
       <Project>{DC0A9616-0B69-4A3B-ADC7-62FCA9207B98}</Project>
       <Name>Antlr4.StringTemplate.Visualizer</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Antlr4.StringTemplate\Antlr4.StringTemplate.net35-client.csproj">
+    <ProjectReference Include="..\Antlr4.StringTemplate\Antlr4.StringTemplate.csproj">
       <Project>{DE9B7DA2-35DD-46CC-B768-DAEE3C298660}</Project>
-      <Name>Antlr4.StringTemplate.net35-client</Name>
+      <Name>Antlr4.StringTemplate</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

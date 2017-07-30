@@ -73,7 +73,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Antlr3.Runtime.Test", "Runt
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AntlrBuildTask", "AntlrBuildTask\AntlrBuildTask.csproj", "{60F8B554-5C53-4DE2-B868-A0BFEF4EF80E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Antlr4.StringTemplate.net35-client", "Antlr4.StringTemplate\Antlr4.StringTemplate.net35-client.csproj", "{DE9B7DA2-35DD-46CC-B768-DAEE3C298660}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Antlr4.StringTemplate", "Antlr4.StringTemplate\Antlr4.StringTemplate.csproj", "{DE9B7DA2-35DD-46CC-B768-DAEE3C298660}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Antlr4.Test.StringTemplate", "Antlr4.Test.StringTemplate\Antlr4.Test.StringTemplate.csproj", "{1B70CBF4-B592-4A9C-B7B3-AD1A087F4B9C}"
 EndProject
@@ -99,8 +99,6 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Antlr3.Runtime.portable-net40", "Runtime\Antlr3.Runtime\Antlr3.Runtime.portable-net40.csproj", "{34BA0BD4-FB93-48D7-967E-83F229F220A0}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Antlr3.Runtime.netstandard", "Runtime\Antlr3.Runtime\Antlr3.Runtime.netstandard.csproj", "{AC2C28AB-D93A-41E3-85A6-5ECB08CAE5C3}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Antlr4.StringTemplate.netstandard", "Antlr4.StringTemplate\Antlr4.StringTemplate.netstandard.csproj", "{7E0E3F5C-54D4-49B5-BEEF-8C3D364A8061}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -220,10 +218,6 @@ Global
 		{AC2C28AB-D93A-41E3-85A6-5ECB08CAE5C3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{AC2C28AB-D93A-41E3-85A6-5ECB08CAE5C3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{AC2C28AB-D93A-41E3-85A6-5ECB08CAE5C3}.Release|Any CPU.Build.0 = Release|Any CPU
-		{7E0E3F5C-54D4-49B5-BEEF-8C3D364A8061}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{7E0E3F5C-54D4-49B5-BEEF-8C3D364A8061}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{7E0E3F5C-54D4-49B5-BEEF-8C3D364A8061}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{7E0E3F5C-54D4-49B5-BEEF-8C3D364A8061}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
