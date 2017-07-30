@@ -21,7 +21,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Antlr3.net35-client", "Antlr3\Antlr3.net35-client.csproj", "{2AB8CAED-C046-4F05-8B18-6948100D2FE7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Antlr3.StringTemplate.net35-client", "Antlr3.StringTemplate\Antlr3.StringTemplate.net35-client.csproj", "{B5910BE2-DE21-4AA9-95C1-486F42B9E794}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Antlr3.StringTemplate", "Antlr3.StringTemplate\Antlr3.StringTemplate.csproj", "{B5910BE2-DE21-4AA9-95C1-486F42B9E794}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Antlr3.Test", "Antlr3.Test\Antlr3.Test.csproj", "{8B58597B-058E-4D7A-B83E-5269BDABBE2C}"
 	ProjectSection(ProjectDependencies) = postProject

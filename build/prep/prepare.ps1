@@ -250,9 +250,3 @@ If (-not $?) {
   $host.ui.WriteErrorLine("Failed to create NuGet package, Aborting!")
   exit 1
 }
-
-.\NuGet.exe pack .\StringTemplate3.nuspec -OutputDirectory nuget -Prop Configuration=$BuildConfig -Version $AntlrVersion -Prop ANTLRVersion=$AntlrVersion -Prop STVersion=$STVersion -Symbols
-If (-not $?) {
-  $host.ui.WriteErrorLine("Failed to create NuGet package, Aborting!")
-  exit 1
-}

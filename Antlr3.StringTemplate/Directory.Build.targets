@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project>
+
+  <PropertyGroup>
+    <!-- Folder containing AntlrBuildTask.dll -->
+    <AntlrBuildTaskPath>$(MSBuildThisFileDirectory)..\build\Bootstrap</AntlrBuildTaskPath>
+    <!-- Path to the ANTLR Tool itself. -->
+    <AntlrToolPath>$(MSBuildThisFileDirectory)..\build\Bootstrap\Antlr3.exe</AntlrToolPath>
+  </PropertyGroup>
+
+  <Import Project="$(MSBuildThisFileDirectory)..\build\Bootstrap\Antlr3.targets" />
+
+</Project>

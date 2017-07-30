@@ -1,0 +1,113 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFrameworks>net35-client</TargetFrameworks>
+    <RootNamespace>Antlr.ST</RootNamespace>
+
+    <Description>The C# port of StringTemplate 3</Description>
+    <Company>Tunnel Vision Laboratories, LLC</Company>
+    <Copyright>Copyright © Sam Harwell 2011</Copyright>
+    <Version>3.5.0.2</Version>
+    <FileVersion>3.5.2.0</FileVersion>
+    <InformationalVersion>3.5.2-dev</InformationalVersion>
+
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <IncludeSymbols>true</IncludeSymbols>
+    <NuspecFile>..\build\prep\StringTemplate3.nuspec</NuspecFile>
+    <NuspecProperties>Configuration=$(Configuration);version=$(InformationalVersion);ANTLRVersion=$(InformationalVersion)</NuspecProperties>
+    <PackageOutputPath>..\build\prep\nuget\</PackageOutputPath>
+
+    <SignAssembly>true</SignAssembly>
+    <AssemblyOriginatorKeyFile>..\..\..\..\keys\antlr\Key.snk</AssemblyOriginatorKeyFile>
+  </PropertyGroup>
+
+  <Target Name="DisableCrazyPackageDeletion" BeforeTargets="Clean">
+    <PropertyGroup>
+      <GeneratePackageValue>$(GeneratePackageOnBuild)</GeneratePackageValue>
+      <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
+    </PropertyGroup>
+  </Target>
+  <Target Name="EnablePackageGeneration" Condition="'$(GeneratePackageValue)' != ''" BeforeTargets="Build">
+    <PropertyGroup>
+      <GeneratePackageOnBuild>$(GeneratePackageValue)</GeneratePackageOnBuild>
+    </PropertyGroup>
+  </Target>
+
+  <Choose>
+    <When Condition="'$(TargetFramework)' == 'net35-client'">
+      <PropertyGroup>
+        <TargetFrameworkIdentifier>.NETFramework</TargetFrameworkIdentifier>
+        <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+        <TargetFrameworkProfile>Client</TargetFrameworkProfile>
+      </PropertyGroup>
+    </When>
+  </Choose>
+
+  <PropertyGroup>
+    <DefineConstants>$(DefineConstants);COMPILE_EXPRESSIONS;CACHE_FUNCTORS</DefineConstants>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <DebugType>full</DebugType>
+    <DebugSymbols>true</DebugSymbols>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <DebugType>pdbonly</DebugType>
+    <DebugSymbols>true</DebugSymbols>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <GenerateDocumentationFile>True</GenerateDocumentationFile>
+    <CodeAnalysisRuleSet>..\Antlr3.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Runtime\Antlr3.Runtime\Antlr3.Runtime.net20.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Antlr3 Include="Language\AngleBracketTemplateLexer.g3" />
+    <Compile Update="Language\AngleBracketTemplateLexerHelper.cs">
+      <DependentUpon>AngleBracketTemplateLexer.g3</DependentUpon>
+    </Compile>
+    <Antlr3 Include="Language\Template.g3" />
+    <Compile Update="Language\TemplateLexerHelper.cs">
+      <DependentUpon>Template.g3</DependentUpon>
+    </Compile>
+    <Compile Update="Language\TemplateParserHelper.cs">
+      <DependentUpon>Template.g3</DependentUpon>
+    </Compile>
+    <Antlr3 Include="Language\Interface.g3" />
+    <Compile Update="Language\InterfaceLexerHelper.cs">
+      <DependentUpon>Interface.g3</DependentUpon>
+    </Compile>
+    <Compile Update="Language\InterfaceParserHelper.cs">
+      <DependentUpon>Interface.g3</DependentUpon>
+    </Compile>
+    <Antlr3 Include="Language\Group.g3" />
+    <Compile Update="Language\GroupLexerHelper.cs">
+      <DependentUpon>Group.g3</DependentUpon>
+    </Compile>
+    <Compile Update="Language\GroupParserHelper.cs">
+      <DependentUpon>Group.g3</DependentUpon>
+    </Compile>
+    <Antlr3 Include="Language\Action.g3" />
+    <Compile Update="Language\ActionLexerHelper.cs">
+      <DependentUpon>Action.g3</DependentUpon>
+    </Compile>
+    <Compile Update="Language\ActionParserHelper.cs">
+      <DependentUpon>Action.g3</DependentUpon>
+    </Compile>
+    <Antlr3 Include="Language\ActionEvaluator.g3" />
+    <Compile Update="Language\ActionEvaluatorHelper.cs">
+      <DependentUpon>ActionEvaluator.g3</DependentUpon>
+    </Compile>
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="$(AssemblyOriginatorKeyFile)" Link="%(Filename)%(Extension)" />
+  </ItemGroup>
+
+</Project>
