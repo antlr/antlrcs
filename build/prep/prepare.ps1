@@ -68,13 +68,13 @@ $BootstrapBinaries | ForEach-Object {
     copy -force "..\..\bin\$BuildConfig\$_" "..\Bootstrap"
     If (-not $?) {
       $host.ui.WriteErrorLine("Bootstrap update failed, Aborting!")
-      exit $LASTEXITCODE
+      exit 1
     }
 }
 
 If (-not $?) {
   $host.ui.WriteErrorLine("Bootstrap update failed, Aborting!")
-  exit $LASTEXITCODE
+  exit 1
 }
 
 if (-not (Test-Path "..\Bootstrap\Codegen\Templates\CSharp2")) {
@@ -84,37 +84,37 @@ if (-not (Test-Path "..\Bootstrap\Codegen\Templates\CSharp2")) {
 copy -force "..\..\bin\$BuildConfig\Codegen\Templates\LeftRecursiveRules.stg" "..\Bootstrap\Codegen\Templates"
 If (-not $?) {
   $host.ui.WriteErrorLine("Bootstrap update failed, Aborting!")
-  exit $LASTEXITCODE
+  exit 1
 }
 
 copy -force "..\..\bin\$BuildConfig\Codegen\Templates\CSharp2\*" "..\Bootstrap\Codegen\Templates\CSharp2"
 If (-not $?) {
   $host.ui.WriteErrorLine('Bootstrap update failed, Aborting!')
-  exit $LASTEXITCODE
+  exit 1
 }
 
 copy -force "..\..\bin\$BuildConfig\Codegen\Templates\CSharp3\*" "..\Bootstrap\Codegen\Templates\CSharp3"
 If (-not $?) {
   $host.ui.WriteErrorLine("Bootstrap update failed, Aborting!")
-  exit $LASTEXITCODE
+  exit 1
 }
 
 copy -force "..\..\bin\$BuildConfig\Targets\Antlr3.Targets.CSharp2.dll" "..\Bootstrap\Targets"
 If (-not $?) {
   $host.ui.WriteErrorLine("Bootstrap update failed, Aborting!")
-  exit $LASTEXITCODE
+  exit 1
 }
 
 copy -force "..\..\bin\$BuildConfig\Targets\Antlr3.Targets.CSharp3.dll" "..\Bootstrap\Targets"
 If (-not $?) {
   $host.ui.WriteErrorLine("Bootstrap update failed, Aborting!")
-  exit $LASTEXITCODE
+  exit 1
 }
 
 copy -r -force "..\..\bin\$BuildConfig\Tool\*" "..\Bootstrap\Tool"
 If (-not $?) {
   $host.ui.WriteErrorLine("Bootstrap update failed, Aborting!")
-  exit $LASTEXITCODE
+  exit 1
 }
 
 Remove-Item -force "..\Bootstrap\Tool\Templates\messages\formats\gnu.stg"
@@ -123,7 +123,7 @@ Remove-Item -force "..\Bootstrap\Tool\Templates\messages\formats\gnu.stg"
 &$msbuild /nologo /nr:false /t:rebuild "/verbosity:$Verbosity" /p:Configuration=$BuildConfig $SolutionPath
 If (-not $?) {
   $host.ui.WriteErrorLine("Build Failed, Aborting!")
-  exit $LASTEXITCODE
+  exit 1
 }
 
 # copy files from the build
@@ -236,35 +236,35 @@ if (-not (Test-Path nuget)) {
 .\NuGet.exe pack .\Antlr3.Runtime.nuspec -OutputDirectory nuget -Prop Configuration=$BuildConfig -Version $AntlrVersion -Prop ANTLRVersion=$AntlrVersion -Prop STVersion=$STVersion -Symbols
 If (-not $?) {
   $host.ui.WriteErrorLine("Failed to create NuGet package, Aborting!")
-  exit $LASTEXITCODE
+  exit 1
 }
 
 .\NuGet.exe pack .\Antlr3.Runtime.Debug.nuspec -OutputDirectory nuget -Prop Configuration=$BuildConfig -Version $AntlrVersion -Prop ANTLRVersion=$AntlrVersion -Prop STVersion=$STVersion -Symbols
 If (-not $?) {
   $host.ui.WriteErrorLine("Failed to create NuGet package, Aborting!")
-  exit $LASTEXITCODE
+  exit 1
 }
 
 .\NuGet.exe pack .\Antlr3.nuspec -OutputDirectory nuget -Prop Configuration=$BuildConfig -Version $AntlrVersion -Prop ANTLRVersion=$AntlrVersion -Prop STVersion=$STVersion -Symbols
 If (-not $?) {
   $host.ui.WriteErrorLine("Failed to create NuGet package, Aborting!")
-  exit $LASTEXITCODE
+  exit 1
 }
 
 .\NuGet.exe pack .\StringTemplate3.nuspec -OutputDirectory nuget -Prop Configuration=$BuildConfig -Version $AntlrVersion -Prop ANTLRVersion=$AntlrVersion -Prop STVersion=$STVersion -Symbols
 If (-not $?) {
   $host.ui.WriteErrorLine("Failed to create NuGet package, Aborting!")
-  exit $LASTEXITCODE
+  exit 1
 }
 
 .\NuGet.exe pack .\StringTemplate4.nuspec -OutputDirectory nuget -Prop Configuration=$BuildConfig -Version $STVersion -Prop ANTLRVersion=$AntlrVersion -Prop STVersion=$STVersion -Symbols
 If (-not $?) {
   $host.ui.WriteErrorLine("Failed to create NuGet package, Aborting!")
-  exit $LASTEXITCODE
+  exit 1
 }
 
 .\NuGet.exe pack .\StringTemplate4.Visualizer.nuspec -OutputDirectory nuget -Prop Configuration=$BuildConfig -Version $STVersion -Prop ANTLRVersion=$AntlrVersion -Prop STVersion=$STVersion -Symbols
 If (-not $?) {
   $host.ui.WriteErrorLine("Failed to create NuGet package, Aborting!")
-  exit $LASTEXITCODE
+  exit 1
 }
