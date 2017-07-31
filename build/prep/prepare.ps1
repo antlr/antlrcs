@@ -196,12 +196,12 @@ copy -r "..\..\bin\$BuildConfig\Tool\*" ".\Bootstrap\Tool"
 Remove-Item ".\Bootstrap\Tool\Templates\messages\formats\gnu.stg"
 
 # ST3 dist
-copy "..\..\Antlr3.StringTemplate\bin\net35-client\$BuildConfig\Antlr3.StringTemplate.dll" ".\ST3"
-copy "..\..\Antlr3.StringTemplate\bin\net35-client\$BuildConfig\Antlr3.Runtime.dll" ".\ST3"
-copy "..\..\Antlr3.StringTemplate\bin\net35-client\$BuildConfig\Antlr3.StringTemplate.pdb" ".\ST3"
-copy "..\..\Antlr3.StringTemplate\bin\net35-client\$BuildConfig\Antlr3.Runtime.pdb" ".\ST3"
-copy "..\..\Antlr3.StringTemplate\bin\net35-client\$BuildConfig\Antlr3.StringTemplate.xml" ".\ST3"
-copy "..\..\Antlr3.StringTemplate\bin\net35-client\$BuildConfig\Antlr3.Runtime.xml" ".\ST3"
+copy "..\..\Antlr3.StringTemplate\bin\$BuildConfig\net35-client\Antlr3.StringTemplate.dll" ".\ST3"
+copy "..\..\Antlr3.StringTemplate\bin\$BuildConfig\net35-client\Antlr3.Runtime.dll" ".\ST3"
+copy "..\..\Antlr3.StringTemplate\bin\$BuildConfig\net35-client\Antlr3.StringTemplate.pdb" ".\ST3"
+copy "..\..\Antlr3.StringTemplate\bin\$BuildConfig\net35-client\Antlr3.Runtime.pdb" ".\ST3"
+copy "..\..\Antlr3.StringTemplate\bin\$BuildConfig\net35-client\Antlr3.StringTemplate.xml" ".\ST3"
+copy "..\..\Antlr3.StringTemplate\bin\$BuildConfig\net35-client\Antlr3.Runtime.xml" ".\ST3"
 copy "..\..\LICENSE.txt" ".\ST3"
 
 # ST4 dist
