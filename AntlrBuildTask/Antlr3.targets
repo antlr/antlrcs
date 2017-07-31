@@ -27,6 +27,10 @@
 -->
 <Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
+    <MSBuildAllProjects>$(MSBuildAllProjects);$(MSBuildThisFileFullPath)</MSBuildAllProjects>
+  </PropertyGroup>
+
+  <PropertyGroup>
     <BuildSystem>MSBuild</BuildSystem>
     <TaskVersion>3.5.0.2</TaskVersion>
     <TaskKeyToken>eb42632606e9261f</TaskKeyToken>
