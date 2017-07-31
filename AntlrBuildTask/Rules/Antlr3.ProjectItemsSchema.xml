@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ProjectSchemaDefinitions xmlns="http://schemas.microsoft.com/build/2009/properties">
+  <ContentType Name="Antlr3" DisplayName="ANTLR 3 Grammar" ItemType="Antlr3" />
+  <ItemType Name="Antlr3" DisplayName="ANTLR 3 grammar" />
+  <FileExtension Name=".g" ContentType="Antlr3" />
+  <FileExtension Name=".g3" ContentType="Antlr3" />
+</ProjectSchemaDefinitions>

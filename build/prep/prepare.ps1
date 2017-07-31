@@ -117,6 +117,12 @@ If (-not $?) {
   exit 1
 }
 
+copy -r -force "..\..\bin\$BuildConfig\Rules\*" "..\Bootstrap"
+If (-not $?) {
+  $host.ui.WriteErrorLine("Bootstrap update failed, Aborting!")
+  exit 1
+}
+
 Remove-Item -force "..\Bootstrap\Tool\Templates\messages\formats\gnu.stg"
 
 # build the project again with the new bootstrap files
@@ -129,6 +135,7 @@ If (-not $?) {
 # copy files from the build
 mkdir Runtime
 mkdir Tool
+mkdir Tool\Rules
 mkdir Bootstrap
 mkdir ST3
 mkdir ST4
@@ -148,6 +155,8 @@ if ($DebugBuild) {
 copy "..\..\bin\$BuildConfig\Antlr3.props" ".\Tool"
 copy "..\..\bin\$BuildConfig\Antlr3.targets" ".\Tool"
 copy "..\..\bin\$BuildConfig\AntlrBuildTask.dll" ".\Tool"
+copy "..\..\bin\$BuildConfig\Rules\Antlr3.ProjectItemsSchema.xml" ".\Tool\Rules"
+copy "..\..\bin\$BuildConfig\Rules\Antlr3.xml" ".\Tool\Rules"
 copy "..\..\LICENSE.txt" ".\Tool"
 
 copy ".\Tool\*" ".\Bootstrap"
