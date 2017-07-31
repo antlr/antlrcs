@@ -30,10 +30,6 @@ $CleanItems | ForEach-Object {
   }
 }
 
-if (-not (Test-Path nuget)) {
-  mkdir "nuget"
-}
-
 # build the project
 $visualStudio = (Get-ItemProperty 'HKLM:\SOFTWARE\WOW6432Node\Microsoft\VisualStudio\SxS\VS7')."$VisualStudioVersion"
 $msbuild = "$visualStudio\MSBuild\$VisualStudioVersion\Bin\MSBuild.exe"
