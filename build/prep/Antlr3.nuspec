@@ -5,7 +5,7 @@
     <version>0.0.0</version>
     <authors>Sam Harwell, Terence Parr</authors>
     <owners>Sam Harwell</owners>
-    <description>The C# target of the ANTLR 3 parser generator. This package supports projects targeting .NET 2.0 or newer, and built using Visual Studio 2008 or newer.</description>
+    <description>The C# target of the ANTLR 3 parser generator. This package supports projects targeting .NET 2.0 or newer, and built using Visual Studio 2010 or newer.</description>
     <language>en-us</language>
     <projectUrl>https://github.com/antlr/antlrcs</projectUrl>
     <licenseUrl>https://raw.githubusercontent.com/antlr/antlrcs/master/LICENSE.txt</licenseUrl>
