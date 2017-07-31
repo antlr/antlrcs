@@ -107,8 +107,12 @@
   </PropertyGroup>
 
   <Target Name="DesignTimeGrammarCompilation">
+    <PropertyGroup>
+      <AntlrDesignTimeBuild Condition="'$(DesignTimeBuild)' == 'true' OR '$(BuildingProject)' != 'true'">true</AntlrDesignTimeBuild>
+    </PropertyGroup>
+
     <!-- Only if we are not actually performing a compile i.e. we are in design mode -->
-    <CallTarget Condition="'$(BuildingProject)' != 'true'"
+    <CallTarget Condition="'$(AntlrDesignTimeBuild)' == 'true'"
                 Targets="AntlrCompile" />
   </Target>
 
@@ -124,16 +128,17 @@
     </ItemGroup>
 
     <PropertyGroup>
-      <_IntellisenseOnlyCompile>false</_IntellisenseOnlyCompile>
-      <_IntellisenseOnlyCompile Condition="'$(BuildingProject)' != 'true'">true</_IntellisenseOnlyCompile>
+      <AntlrDesignTimeBuild>false</AntlrDesignTimeBuild>
+      <AntlrDesignTimeBuild Condition="'$(DesignTimeBuild)' == 'true' OR '$(BuildingProject)' != 'true'">true</AntlrDesignTimeBuild>
     </PropertyGroup>
+
     <AntlrClassGenerationTask
       AntlrToolPath="$(AntlrToolLocation)"
       BuildTaskPath="$(AntlrBuildTaskLocation)"
       OutputPath="$(IntermediateOutputPath)"
       TargetLanguage="%(Antlr3.TargetLanguage)"
       SourceCodeFiles="@(Antlr3)"
-      ContinueOnError="$(_IntellisenseOnlyCompile)"
+      ContinueOnError="$(AntlrDesignTimeBuild)"
       TokensFiles="@(AntlrTokens)"
       AbstractGrammarFiles="@(AntlrAbstractGrammar)"
       LanguageSourceExtensions="$(DefaultLanguageSourceExtension)"
@@ -144,7 +149,7 @@
     </AntlrClassGenerationTask>
 
     <WriteLinesToFile
-      Condition="'$(_IntellisenseOnlyCompile)' != 'true'"
+      Condition="'$(AntlrDesignTimeBuild)' != 'true'"
       File="$(IntermediateOutputPath)$(AntlrGenCodeFileNames)"
       Lines="@(AntlrGeneratedCodeFiles)"
       Overwrite="true"/>
