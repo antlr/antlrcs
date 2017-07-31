@@ -1,65 +1,33 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project Sdk="Microsoft.NET.Sdk">
+
   <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProductVersion>9.0.30729</ProductVersion>
-    <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{19B965DE-5100-4064-A580-159644F6980E}</ProjectGuid>
-    <OutputType>Library</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Antlr3.Runtime.Test</RootNamespace>
-    <AssemblyName>Antlr3.Runtime.Test</AssemblyName>
-    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
-    <FileAlignment>512</FileAlignment>
-    <ProjectTypeGuids>{3AC096D0-A1C2-E12C-1390-A8335801FDAB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <TargetFrameworks>net45</TargetFrameworks>
+
+    <Description>The C# port of ANTLR 3</Description>
+    <Company>Tunnel Vision Laboratories, LLC</Company>
+    <Copyright>Copyright © Sam Harwell 2011</Copyright>
+    <Version>3.5.0.2</Version>
+    <FileVersion>3.5.2.0</FileVersion>
+    <InformationalVersion>3.5.2-dev</InformationalVersion>
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DebugType>pdbonly</DebugType>
-    <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-  </PropertyGroup>
+
   <PropertyGroup>
     <CodeAnalysisRuleSet>..\..\Antlr3.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
+
   <ItemGroup>
-    <Reference Include="Microsoft.VisualStudio.QualityTools.UnitTestFramework, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
-    <Reference Include="System" />
-    <Reference Include="System.Core">
-      <RequiredTargetFramework>3.5</RequiredTargetFramework>
-    </Reference>
-    <Reference Include="System.Numerics" />
+    <PackageReference Include="MSTest.TestAdapter" Version="1.1.18" />
+    <PackageReference Include="MSTest.TestFramework" Version="1.1.18" />
   </ItemGroup>
+
   <ItemGroup>
-    <ProjectReference Include="..\..\Antlr3.StringTemplate\Antlr3.StringTemplate.net35-client.csproj">
-      <Project>{B5910BE2-DE21-4AA9-95C1-486F42B9E794}</Project>
-      <Name>Antlr3.StringTemplate.net35-client</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Antlr3.Runtime.Debug\Antlr3.Runtime.Debug.net20.csproj">
-      <Project>{5EE27A90-B023-42C9-AAF1-52B0424C5D0B}</Project>
-      <Name>Antlr3.Runtime.Debug.net20</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Antlr3.Runtime.JavaExtensions\Antlr3.Runtime.JavaExtensions.net35-client.csproj">
-      <Project>{A7EEC557-EB14-451C-9616-B7A61F4ECE69}</Project>
-      <Name>Antlr3.Runtime.JavaExtensions.net35-client</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Antlr3.Runtime\Antlr3.Runtime.net20.csproj">
-      <Project>{8FDC0A87-9005-4D5A-AB75-E55CEB575559}</Project>
-      <Name>Antlr3.Runtime.net20</Name>
-    </ProjectReference>
+    <ProjectReference Include="..\..\Antlr3.StringTemplate\Antlr3.StringTemplate.csproj" />
+    <ProjectReference Include="..\Antlr3.Runtime.Debug\Antlr3.Runtime.Debug.csproj" />
+    <ProjectReference Include="..\Antlr3.Runtime.JavaExtensions\Antlr3.Runtime.JavaExtensions.csproj" />
+    <ProjectReference Include="..\Antlr3.Runtime\Antlr3.Runtime.csproj" />
   </ItemGroup>
+
   <ItemGroup>
     <Antlr3 Include="SimpleExpression.g3" />
     <Antlr3 Include="FastSimpleExpression.g3" />
@@ -85,73 +53,70 @@
     <Antlr3 Include="PreprocessorLexer.g3" />
     <Antlr3 Include="SynpredTreeParser.g3" />
   </ItemGroup>
+
   <ItemGroup>
-    <Compile Include="Composition\Program.cs" />
-    <Compile Include="PreprocessorLexer.g3.cs">
+    <Compile Remove="BuildOptions\DebugGrammarLexer.cs" />
+    <Compile Remove="BuildOptions\DebugGrammarParser.cs" />
+    <Compile Remove="BuildOptions\DebugTreeGrammar.cs" />
+    <Compile Remove="BuildOptions\ProfileGrammarLexer.cs" />
+    <Compile Remove="BuildOptions\ProfileGrammarParser.cs" />
+    <Compile Remove="BuildOptions\ProfileTreeGrammar.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="PreprocessorLexer.g3.cs">
       <DependentUpon>PreprocessorLexer.g3</DependentUpon>
     </Compile>
-    <Compile Include="PreprocessorTests.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="SemanticPredicateReduction.g3.lexer.cs">
+    <Compile Update="SemanticPredicateReduction.g3.lexer.cs">
       <DependentUpon>SemanticPredicateReduction.g3</DependentUpon>
     </Compile>
-    <Compile Include="SemanticPredicateReduction.g3.parser.cs">
+    <Compile Update="SemanticPredicateReduction.g3.parser.cs">
       <DependentUpon>SemanticPredicateReduction.g3</DependentUpon>
     </Compile>
-    <Compile Include="SimpleExpressionLexerHelper.cs">
+    <Compile Update="SimpleExpressionLexerHelper.cs">
       <DependentUpon>SimpleExpression.g3</DependentUpon>
     </Compile>
-    <Compile Include="SimpleExpressionParserHelper.cs">
+    <Compile Update="SimpleExpressionParserHelper.cs">
       <DependentUpon>SimpleExpression.g3</DependentUpon>
     </Compile>
-    <Compile Include="FastSimpleExpressionLexerHelper.cs">
+    <Compile Update="FastSimpleExpressionLexerHelper.cs">
       <DependentUpon>FastSimpleExpression.g3</DependentUpon>
     </Compile>
-    <Compile Include="FastSimpleExpressionParserHelper.cs">
+    <Compile Update="FastSimpleExpressionParserHelper.cs">
       <DependentUpon>FastSimpleExpression.g3</DependentUpon>
     </Compile>
-    <Compile Include="BuildOptions\DebugGrammarLexerHelper.cs">
+    <Compile Update="BuildOptions\DebugGrammarLexerHelper.cs">
       <DependentUpon>DebugGrammar.g3</DependentUpon>
     </Compile>
-    <Compile Include="BuildOptions\DebugGrammarParserHelper.cs">
+    <Compile Update="BuildOptions\DebugGrammarParserHelper.cs">
       <DependentUpon>DebugGrammar.g3</DependentUpon>
     </Compile>
-    <Compile Include="BuildOptions\DebugTreeGrammarHelper.cs">
+    <Compile Update="BuildOptions\DebugTreeGrammarHelper.cs">
       <DependentUpon>DebugTreeGrammar.g3</DependentUpon>
     </Compile>
-    <Compile Include="SlimParsing\ITokenSource`1.cs" />
-    <Compile Include="SlimParsing\ITokenStream`1.cs" />
-    <Compile Include="SlimParsing\SlimLexer.cs" />
-    <Compile Include="SlimParsing\SlimStringStream.cs" />
-    <Compile Include="SlimParsing\SlimToken.cs" />
-    <Compile Include="SlimParsing\SlimTokenStream.cs" />
-    <Compile Include="SlimParsing\Tree\ITreeAdaptor`1.cs" />
-    <Compile Include="SlimParsing\Tree\ITreeFactory.cs" />
-    <Compile Include="SlimParsing\Tree\ITreeNodeStream`1.cs" />
-    <Compile Include="StringTemplateOutput.g3.lexer.cs">
+    <Compile Update="StringTemplateOutput.g3.lexer.cs">
       <DependentUpon>StringTemplateOutput.g3</DependentUpon>
     </Compile>
-    <Compile Include="StringTemplateOutput.g3.parser.cs">
+    <Compile Update="StringTemplateOutput.g3.parser.cs">
       <DependentUpon>StringTemplateOutput.g3</DependentUpon>
     </Compile>
-    <Compile Include="SynpredTreeParser.g3.cs">
+    <Compile Update="SynpredTreeParser.g3.cs">
       <DependentUpon>SynpredTreeParser.g3</DependentUpon>
     </Compile>
-    <Compile Include="TestActionFeatures.g3.lexer.cs">
+    <Compile Update="TestActionFeatures.g3.lexer.cs">
       <DependentUpon>TestActionFeatures.g3</DependentUpon>
     </Compile>
-    <Compile Include="TestActionFeatures.g3.parser.cs">
+    <Compile Update="TestActionFeatures.g3.parser.cs">
       <DependentUpon>TestActionFeatures.g3</DependentUpon>
     </Compile>
-    <Compile Include="TestDotTreeGenerator.cs" />
-    <Compile Include="TestExpressionFeatures.g3.lexer.cs">
+    <Compile Update="TestExpressionFeatures.g3.lexer.cs">
       <DependentUpon>TestExpressionFeatures.g3</DependentUpon>
     </Compile>
-    <Compile Include="TestExpressionFeatures.g3.parser.cs">
+    <Compile Update="TestExpressionFeatures.g3.parser.cs">
       <DependentUpon>TestExpressionFeatures.g3</DependentUpon>
     </Compile>
-    <Compile Include="TestFastLexer.cs" />
   </ItemGroup>
+
   <ItemGroup>
     <None Include="BuildOptions\ProfileGrammar.g3">
       <!--<GrammarOptions>-profile</GrammarOptions>-->
@@ -163,7 +128,11 @@
       <DependentUpon>ProfileGrammar.g3</DependentUpon>
     </None>
     <None Include="TestExpressionFeatures.g3" />
+
+    <Compile Remove="BuildOptions\ProfileGrammarLexerHelper.cs" />
+    <Compile Remove="BuildOptions\ProfileGrammarParserHelper.cs" />
   </ItemGroup>
+
   <ItemGroup>
     <None Include="BuildOptions\ProfileTreeGrammar.g3">
       <!--<GrammarOptions>-profile</GrammarOptions>-->
@@ -171,20 +140,8 @@
     <None Include="BuildOptions\ProfileTreeGrammarHelper.cs">
       <DependentUpon>ProfileTreeGrammar.g3</DependentUpon>
     </None>
+
+    <Compile Remove="BuildOptions\ProfileTreeGrammarHelper.cs" />
   </ItemGroup>
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <PropertyGroup>
-    <!-- Folder containing AntlrBuildTask.dll -->
-    <AntlrBuildTaskPath>$(ProjectDir)..\..\build\Bootstrap</AntlrBuildTaskPath>
-    <!-- Path to the ANTLR Tool itself. -->
-    <AntlrToolPath>$(ProjectDir)..\..\build\Bootstrap\Antlr3.exe</AntlrToolPath>
-  </PropertyGroup>
-  <Import Project="$(ProjectDir)..\..\build\Bootstrap\Antlr3.targets" />
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
-       Other similar extension points exist, see Microsoft.Common.targets.
-  <Target Name="BeforeBuild">
-  </Target>
-  <Target Name="AfterBuild">
-  </Target>
-  -->
+
 </Project>

@@ -34,17 +34,6 @@ using System;
 using System.Reflection;
 using System.Runtime.InteropServices;
 
-// General Information about an assembly is controlled through the following 
-// set of attributes. Change these attribute values to modify the information
-// associated with an assembly.
-[assembly: AssemblyTitle("Antlr4.Test.StringTemplate")]
-[assembly: AssemblyDescription("")]
-[assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("Tunnel Vision Laboratories, LLC")]
-[assembly: AssemblyProduct("Antlr4.Test.StringTemplate")]
-[assembly: AssemblyCopyright("Copyright © Sam Harwell 2013")]
-[assembly: AssemblyTrademark("")]
-[assembly: AssemblyCulture("")]
 [assembly: CLSCompliant(false)]
 
 // Setting ComVisible to false makes the types in this assembly not visible 
@@ -54,16 +43,3 @@ using System.Runtime.InteropServices;
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
 [assembly: Guid("b9f5baf7-993e-434d-a217-1c8a4e2337a9")]
-
-// Version information for an assembly consists of the following four values:
-//
-//      Major Version
-//      Minor Version 
-//      Build Number
-//      Revision
-//
-// You can specify all the values or you can default the Build and Revision Numbers 
-// by using the '*' as shown below:
-[assembly: AssemblyVersion("4.0.6.9004")]
-[assembly: AssemblyFileVersion("4.0.6.9004")]
-[assembly: AssemblyInformationalVersion("4.0.6.9004-dev")]

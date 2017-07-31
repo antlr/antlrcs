@@ -1,6 +1,6 @@
 param (
   [switch]$Debug,
-  [string]$VisualStudioVersion = '14.0',
+  [string]$VisualStudioVersion = '15.0',
   [string]$Verbosity = 'minimal',
   [string]$Logger
 )
@@ -31,7 +31,12 @@ $CleanItems | ForEach-Object {
 }
 
 # build the project
-$msbuild = "${env:ProgramFiles(x86)}\MSBuild\$VisualStudioVersion\Bin\MSBuild.exe"
+$visualStudio = (Get-ItemProperty 'HKLM:\SOFTWARE\WOW6432Node\Microsoft\VisualStudio\SxS\VS7')."$VisualStudioVersion"
+$msbuild = "$visualStudio\MSBuild\$VisualStudioVersion\Bin\MSBuild.exe"
+If (-not (Test-Path $msbuild)) {
+  $host.UI.WriteErrorLine("Couldn't find MSBuild.exe")
+  exit 1
+}
 
 If ($Logger) {
   $LoggerArgument = "/logger:$Logger"
@@ -39,7 +44,7 @@ If ($Logger) {
 
 # Restore packages
 .\NuGet.exe update -self
-.\NuGet.exe restore $SolutionPath
+.\NuGet.exe restore $SolutionPath -Project2ProjectTimeOut 1200
 
 &$msbuild /nologo /m /nr:false /t:rebuild $LoggerArgument "/verbosity:$Verbosity" /p:Configuration=$BuildConfig $SolutionPath
 If (-not $?) {
@@ -63,13 +68,13 @@ $BootstrapBinaries | ForEach-Object {
     copy -force "..\..\bin\$BuildConfig\$_" "..\Bootstrap"
     If (-not $?) {
       $host.ui.WriteErrorLine("Bootstrap update failed, Aborting!")
-      exit $LASTEXITCODE
+      exit 1
     }
 }
 
 If (-not $?) {
   $host.ui.WriteErrorLine("Bootstrap update failed, Aborting!")
-  exit $LASTEXITCODE
+  exit 1
 }
 
 if (-not (Test-Path "..\Bootstrap\Codegen\Templates\CSharp2")) {
@@ -79,37 +84,37 @@ if (-not (Test-Path "..\Bootstrap\Codegen\Templates\CSharp2")) {
 copy -force "..\..\bin\$BuildConfig\Codegen\Templates\LeftRecursiveRules.stg" "..\Bootstrap\Codegen\Templates"
 If (-not $?) {
   $host.ui.WriteErrorLine("Bootstrap update failed, Aborting!")
-  exit $LASTEXITCODE
+  exit 1
 }
 
 copy -force "..\..\bin\$BuildConfig\Codegen\Templates\CSharp2\*" "..\Bootstrap\Codegen\Templates\CSharp2"
 If (-not $?) {
   $host.ui.WriteErrorLine('Bootstrap update failed, Aborting!')
-  exit $LASTEXITCODE
+  exit 1
 }
 
 copy -force "..\..\bin\$BuildConfig\Codegen\Templates\CSharp3\*" "..\Bootstrap\Codegen\Templates\CSharp3"
 If (-not $?) {
   $host.ui.WriteErrorLine("Bootstrap update failed, Aborting!")
-  exit $LASTEXITCODE
+  exit 1
 }
 
 copy -force "..\..\bin\$BuildConfig\Targets\Antlr3.Targets.CSharp2.dll" "..\Bootstrap\Targets"
 If (-not $?) {
   $host.ui.WriteErrorLine("Bootstrap update failed, Aborting!")
-  exit $LASTEXITCODE
+  exit 1
 }
 
 copy -force "..\..\bin\$BuildConfig\Targets\Antlr3.Targets.CSharp3.dll" "..\Bootstrap\Targets"
 If (-not $?) {
   $host.ui.WriteErrorLine("Bootstrap update failed, Aborting!")
-  exit $LASTEXITCODE
+  exit 1
 }
 
 copy -r -force "..\..\bin\$BuildConfig\Tool\*" "..\Bootstrap\Tool"
 If (-not $?) {
   $host.ui.WriteErrorLine("Bootstrap update failed, Aborting!")
-  exit $LASTEXITCODE
+  exit 1
 }
 
 Remove-Item -force "..\Bootstrap\Tool\Templates\messages\formats\gnu.stg"
@@ -118,7 +123,7 @@ Remove-Item -force "..\Bootstrap\Tool\Templates\messages\formats\gnu.stg"
 &$msbuild /nologo /m /nr:false /t:rebuild "/verbosity:$Verbosity" /p:Configuration=$BuildConfig $SolutionPath
 If (-not $?) {
   $host.ui.WriteErrorLine("Build Failed, Aborting!")
-  exit $LASTEXITCODE
+  exit 1
 }
 
 # copy files from the build
@@ -187,12 +192,12 @@ copy -r "..\..\bin\$BuildConfig\Tool\*" ".\Bootstrap\Tool"
 Remove-Item ".\Bootstrap\Tool\Templates\messages\formats\gnu.stg"
 
 # ST3 dist
-copy "..\..\Antlr3.StringTemplate\bin\net35-client\$BuildConfig\Antlr3.StringTemplate.dll" ".\ST3"
-copy "..\..\Antlr3.StringTemplate\bin\net35-client\$BuildConfig\Antlr3.Runtime.dll" ".\ST3"
-copy "..\..\Antlr3.StringTemplate\bin\net35-client\$BuildConfig\Antlr3.StringTemplate.pdb" ".\ST3"
-copy "..\..\Antlr3.StringTemplate\bin\net35-client\$BuildConfig\Antlr3.Runtime.pdb" ".\ST3"
-copy "..\..\Antlr3.StringTemplate\bin\net35-client\$BuildConfig\Antlr3.StringTemplate.xml" ".\ST3"
-copy "..\..\Antlr3.StringTemplate\bin\net35-client\$BuildConfig\Antlr3.Runtime.xml" ".\ST3"
+copy "..\..\Antlr3.StringTemplate\bin\$BuildConfig\net35-client\Antlr3.StringTemplate.dll" ".\ST3"
+copy "..\..\Antlr3.StringTemplate\bin\$BuildConfig\net35-client\Antlr3.Runtime.dll" ".\ST3"
+copy "..\..\Antlr3.StringTemplate\bin\$BuildConfig\net35-client\Antlr3.StringTemplate.pdb" ".\ST3"
+copy "..\..\Antlr3.StringTemplate\bin\$BuildConfig\net35-client\Antlr3.Runtime.pdb" ".\ST3"
+copy "..\..\Antlr3.StringTemplate\bin\$BuildConfig\net35-client\Antlr3.StringTemplate.xml" ".\ST3"
+copy "..\..\Antlr3.StringTemplate\bin\$BuildConfig\net35-client\Antlr3.Runtime.xml" ".\ST3"
 copy "..\..\LICENSE.txt" ".\ST3"
 
 # ST4 dist
@@ -224,42 +229,8 @@ $ArchivePath = ".\dist\antlr-dotnet-st4-" + $STVersion + ".7z"
 
 # Build the NuGet packages
 
-if (-not (Test-Path nuget)) {
-  mkdir "nuget"
-}
-
-.\NuGet.exe pack .\Antlr3.Runtime.nuspec -OutputDirectory nuget -Prop Configuration=$BuildConfig -Version $AntlrVersion -Prop ANTLRVersion=$AntlrVersion -Prop STVersion=$STVersion -Symbols
-If (-not $?) {
-  $host.ui.WriteErrorLine("Failed to create NuGet package, Aborting!")
-  exit $LASTEXITCODE
-}
-
-.\NuGet.exe pack .\Antlr3.Runtime.Debug.nuspec -OutputDirectory nuget -Prop Configuration=$BuildConfig -Version $AntlrVersion -Prop ANTLRVersion=$AntlrVersion -Prop STVersion=$STVersion -Symbols
-If (-not $?) {
-  $host.ui.WriteErrorLine("Failed to create NuGet package, Aborting!")
-  exit $LASTEXITCODE
-}
-
 .\NuGet.exe pack .\Antlr3.nuspec -OutputDirectory nuget -Prop Configuration=$BuildConfig -Version $AntlrVersion -Prop ANTLRVersion=$AntlrVersion -Prop STVersion=$STVersion -Symbols
 If (-not $?) {
   $host.ui.WriteErrorLine("Failed to create NuGet package, Aborting!")
-  exit $LASTEXITCODE
-}
-
-.\NuGet.exe pack .\StringTemplate3.nuspec -OutputDirectory nuget -Prop Configuration=$BuildConfig -Version $AntlrVersion -Prop ANTLRVersion=$AntlrVersion -Prop STVersion=$STVersion -Symbols
-If (-not $?) {
-  $host.ui.WriteErrorLine("Failed to create NuGet package, Aborting!")
-  exit $LASTEXITCODE
-}
-
-.\NuGet.exe pack .\StringTemplate4.nuspec -OutputDirectory nuget -Prop Configuration=$BuildConfig -Version $STVersion -Prop ANTLRVersion=$AntlrVersion -Prop STVersion=$STVersion -Symbols
-If (-not $?) {
-  $host.ui.WriteErrorLine("Failed to create NuGet package, Aborting!")
-  exit $LASTEXITCODE
-}
-
-.\NuGet.exe pack .\StringTemplate4.Visualizer.nuspec -OutputDirectory nuget -Prop Configuration=$BuildConfig -Version $STVersion -Prop ANTLRVersion=$AntlrVersion -Prop STVersion=$STVersion -Symbols
-If (-not $?) {
-  $host.ui.WriteErrorLine("Failed to create NuGet package, Aborting!")
-  exit $LASTEXITCODE
+  exit 1
 }

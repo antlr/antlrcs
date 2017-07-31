@@ -30,21 +30,7 @@
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-using System.Reflection;
-using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
-
-// General Information about an assembly is controlled through the following 
-// set of attributes. Change these attribute values to modify the information
-// associated with an assembly.
-[assembly: AssemblyTitle( "AntlrUnitTests" )]
-[assembly: AssemblyDescription( "" )]
-[assembly: AssemblyConfiguration( "" )]
-[assembly: AssemblyCompany( "Pixel Mine, Inc." )]
-[assembly: AssemblyProduct( "AntlrUnitTests" )]
-[assembly: AssemblyCopyright( "Copyright © Sam Harwell 2013" )]
-[assembly: AssemblyTrademark( "" )]
-[assembly: AssemblyCulture( "" )]
 
 // Setting ComVisible to false makes the types in this assembly not visible 
 // to COM componenets.  If you need to access a type in this assembly from 
@@ -53,16 +39,3 @@ using System.Runtime.InteropServices;
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
 [assembly: Guid( "a0f4c939-114e-4512-8eb1-fad6056493aa" )]
-
-// Version information for an assembly consists of the following four values:
-//
-//      Major Version
-//      Minor Version 
-//      Build Number
-//      Revision
-//
-// You can specify all the values or you can default the Revision and Build Numbers 
-// by using the '*' as shown below:
-[assembly: AssemblyVersion("3.5.0.2")]
-[assembly: AssemblyFileVersion("3.5.2.0")]
-[assembly: AssemblyInformationalVersion("3.5.2-dev")]

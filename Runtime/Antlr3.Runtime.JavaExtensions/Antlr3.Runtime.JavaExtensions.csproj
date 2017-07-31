@@ -1,0 +1,40 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFrameworks>net35-client</TargetFrameworks>
+
+    <Description>The C# port of ANTLR 3</Description>
+    <Company>Tunnel Vision Laboratories, LLC</Company>
+    <Copyright>Copyright © Sam Harwell 2011</Copyright>
+    <Version>3.5.0.2</Version>
+    <FileVersion>3.5.2.0</FileVersion>
+    <InformationalVersion>3.5.2-dev</InformationalVersion>
+
+    <SignAssembly>true</SignAssembly>
+    <AssemblyOriginatorKeyFile>..\..\..\..\..\keys\antlr\Key.snk</AssemblyOriginatorKeyFile>
+  </PropertyGroup>
+
+  <Choose>
+    <When Condition="'$(TargetFramework)' == 'net35-client'">
+      <PropertyGroup>
+        <TargetFrameworkIdentifier>.NETFramework</TargetFrameworkIdentifier>
+        <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+        <TargetFrameworkProfile>Client</TargetFrameworkProfile>
+      </PropertyGroup>
+    </When>
+  </Choose>
+
+  <PropertyGroup>
+    <CodeAnalysisRuleSet>..\..\Antlr3.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Antlr3.Runtime\Antlr3.Runtime.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="$(AssemblyOriginatorKeyFile)" Link="%(Filename)%(Extension)" />
+  </ItemGroup>
+
+</Project>

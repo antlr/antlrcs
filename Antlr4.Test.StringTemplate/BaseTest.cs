@@ -44,7 +44,9 @@ namespace Antlr4.Test.StringTemplate
     using File = System.IO.File;
     using Path = System.IO.Path;
     using StringBuilder = System.Text.StringBuilder;
+#if !NETSTANDARD
     using Thread = System.Threading.Thread;
+#endif
 
     [TestClass]
     public abstract class BaseTest
@@ -66,7 +68,12 @@ namespace Antlr4.Test.StringTemplate
 
         protected virtual void setUpImpl()
         {
-            Thread.CurrentThread.CurrentCulture = CultureInfo.GetCultureInfo("en-us");
+            // Ideally we wanted en-US, but invariant provides a suitable default for testing.
+#if NETSTANDARD
+            CultureInfo.CurrentCulture = CultureInfo.InvariantCulture;
+#else
+            Thread.CurrentThread.CurrentCulture = CultureInfo.InvariantCulture;
+#endif
             TemplateGroup.DefaultGroup = new TemplateGroup();
             TemplateCompiler.subtemplateCount = 0;
 

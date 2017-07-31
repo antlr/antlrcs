@@ -62,15 +62,10 @@ namespace AntlrUnitTests
     using StringTemplateGroup = Antlr4.StringTemplate.TemplateGroup;
 
     [TestClass]
-#if DEBUG
-    [DeploymentItem(@"bin\Debug\Codegen\", "Codegen")]
-    [DeploymentItem(@"bin\Debug\Targets\", "Targets")]
-    [DeploymentItem(@"bin\Debug\Tool\", "Tool")]
-#else
-    [DeploymentItem(@"bin\Release\Codegen\", "Codegen")]
-    [DeploymentItem(@"bin\Release\Targets\", "Targets")]
-    [DeploymentItem(@"bin\Release\Tool\", "Tool")]
-#endif
+    [DeploymentItem(@"Codegen\", "Codegen")]
+    [DeploymentItem(@"Antlr3.Targets.Java.dll", "Targets")]
+    [DeploymentItem(@"Antlr3.Targets.Java.pdb", "Targets")]
+    [DeploymentItem(@"Tool\", "Tool")]
     public abstract class BaseTest
     {
         public readonly string jikes = null;

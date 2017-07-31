@@ -1,0 +1,125 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFrameworks>net35-client</TargetFrameworks>
+
+    <Description>The C# port of StringTemplate 4</Description>
+    <Company>Tunnel Vision Laboratories, LLC</Company>
+    <Copyright>Copyright © Sam Harwell 2011</Copyright>
+    <Version>4.0.7.0</Version>
+    <FileVersion>4.0.9.0</FileVersion>
+    <InformationalVersion>4.0.9-dev</InformationalVersion>
+
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <IncludeSymbols>true</IncludeSymbols>
+    <NuspecFile>..\build\prep\StringTemplate4.Visualizer.nuspec</NuspecFile>
+    <NuspecProperties>Configuration=$(Configuration);version=$(InformationalVersion);ANTLRVersion=3.5.2-dev</NuspecProperties>
+    <PackageOutputPath>..\build\prep\nuget\</PackageOutputPath>
+  </PropertyGroup>
+
+  <Target Name="DisableCrazyPackageDeletion" BeforeTargets="Clean">
+    <PropertyGroup>
+      <GeneratePackageValue>$(GeneratePackageOnBuild)</GeneratePackageValue>
+      <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
+    </PropertyGroup>
+  </Target>
+  <Target Name="EnablePackageGeneration" Condition="'$(GeneratePackageValue)' != ''" BeforeTargets="Build">
+    <PropertyGroup>
+      <GeneratePackageOnBuild>$(GeneratePackageValue)</GeneratePackageOnBuild>
+    </PropertyGroup>
+  </Target>
+
+  <Choose>
+    <When Condition="'$(TargetFramework)' == 'net35-client'">
+      <PropertyGroup>
+        <TargetFrameworkIdentifier>.NETFramework</TargetFrameworkIdentifier>
+        <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+        <TargetFrameworkProfile>Client</TargetFrameworkProfile>
+      </PropertyGroup>
+    </When>
+  </Choose>
+
+  <PropertyGroup>
+    <!-- Workaround for lack of XAML support in the new project system -->
+    <LanguageTargets>$(MSBuildExtensionsPath)\$(VisualStudioVersion)\Bin\Microsoft.CSharp.targets</LanguageTargets>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <DebugType>full</DebugType>
+    <DebugSymbols>true</DebugSymbols>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <DebugType>pdbonly</DebugType>
+    <DebugSymbols>true</DebugSymbols>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <GenerateDocumentationFile>True</GenerateDocumentationFile>
+    <CodeAnalysisRuleSet>..\Antlr3.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <SignAssembly>true</SignAssembly>
+    <AssemblyOriginatorKeyFile>..\..\..\..\keys\antlr\Key.snk</AssemblyOriginatorKeyFile>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Reference Include="PresentationCore" />
+    <Reference Include="PresentationFramework" />
+    <Reference Include="WindowsBase" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Runtime\Antlr3.Runtime\Antlr3.Runtime.csproj" />
+    <ProjectReference Include="..\Antlr4.StringTemplate\Antlr4.StringTemplate.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Update="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+    <Compile Update="TemplateVisualizerFrame.xaml.cs">
+      <DependentUpon>TemplateVisualizerFrame.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="TemplateVisualizerWindow.xaml.cs">
+      <DependentUpon>TemplateVisualizerWindow.xaml</DependentUpon>
+    </Compile>
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Update="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="$(AssemblyOriginatorKeyFile)" Link="%(Filename)%(Extension)" />
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+    <None Include="Resources\Templates\AttributeRendererTemplates.stg" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Page Include="TemplateVisualizerFrame.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="TemplateVisualizerWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
+
+</Project>
