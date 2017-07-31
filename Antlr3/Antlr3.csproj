@@ -383,7 +383,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Runtime\Antlr3.Runtime.Debug\Antlr3.Runtime.Debug.csproj" />
-    <ProjectReference Include="..\Runtime\Antlr3.Runtime\Antlr3.Runtime.net20.csproj" />
+    <ProjectReference Include="..\Runtime\Antlr3.Runtime\Antlr3.Runtime.csproj" />
     <ProjectReference Include="..\Antlr4.StringTemplate.Visualizer\Antlr4.StringTemplate.Visualizer.csproj" />
     <ProjectReference Include="..\Antlr4.StringTemplate\Antlr4.StringTemplate.csproj" />
   </ItemGroup>

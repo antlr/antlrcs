@@ -233,12 +233,6 @@ $ArchivePath = ".\dist\antlr-dotnet-st4-" + $STVersion + ".7z"
 
 # Build the NuGet packages
 
-.\NuGet.exe pack .\Antlr3.Runtime.nuspec -OutputDirectory nuget -Prop Configuration=$BuildConfig -Version $AntlrVersion -Prop ANTLRVersion=$AntlrVersion -Prop STVersion=$STVersion -Symbols
-If (-not $?) {
-  $host.ui.WriteErrorLine("Failed to create NuGet package, Aborting!")
-  exit 1
-}
-
 .\NuGet.exe pack .\Antlr3.nuspec -OutputDirectory nuget -Prop Configuration=$BuildConfig -Version $AntlrVersion -Prop ANTLRVersion=$AntlrVersion -Prop STVersion=$STVersion -Symbols
 If (-not $?) {
   $host.ui.WriteErrorLine("Failed to create NuGet package, Aborting!")

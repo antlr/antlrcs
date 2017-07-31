@@ -31,24 +31,12 @@
  */
 
 using System;
-using System.Reflection;
 using System.Security;
 
 #if !PORTABLE
 using System.Runtime.InteropServices;
 #endif
 
-// General Information about an assembly is controlled through the following 
-// set of attributes. Change these attribute values to modify the information
-// associated with an assembly.
-[assembly: AssemblyTitle( "Antlr3.Runtime" )]
-[assembly: AssemblyDescription( "" )]
-[assembly: AssemblyConfiguration( "" )]
-[assembly: AssemblyCompany( "Tunnel Vision Laboratories, LLC" )]
-[assembly: AssemblyProduct( "Antlr3.Runtime" )]
-[assembly: AssemblyCopyright("Copyright © Sam Harwell 2013")]
-[assembly: AssemblyTrademark( "" )]
-[assembly: AssemblyCulture( "" )]
 [assembly: CLSCompliant( true )]
 [assembly: AllowPartiallyTrustedCallers]
 
@@ -61,18 +49,3 @@ using System.Runtime.InteropServices;
 // The following GUID is for the ID of the typelib if this project is exposed to COM
 [assembly: Guid( "7a0b4db7-f127-4cf5-ac2c-e294957efcd6" )]
 #endif
-
-/* Version information for an assembly consists of four values in the following order:
- *
- *   Major.Minor.Build.Revision
- *
- * These values are updated according to the following:
- *   1. Major.Minor follows the ANTLR release schedule
- *   2. Build is incremented each time the C# port is packaged for release (regardless
- *      of whether it's an incremental or nightly). The value resets to zero whenever
- *      the Major or Minor version is incremented.
- *   3. Revision is the Perforce changelist number associated with the release.
- */
-[assembly: AssemblyVersion("3.5.0.2")]
-[assembly: AssemblyFileVersion("3.5.2.0")]
-[assembly: AssemblyInformationalVersion("3.5.2-dev")]

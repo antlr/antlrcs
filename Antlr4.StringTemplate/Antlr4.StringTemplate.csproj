@@ -40,19 +40,11 @@
         <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
         <TargetFrameworkProfile>Client</TargetFrameworkProfile>
       </PropertyGroup>
-
-      <ItemGroup>
-        <ProjectReference Include="..\Runtime\Antlr3.Runtime\Antlr3.Runtime.net20.csproj" />
-      </ItemGroup>
     </When>
     <When Condition="'$(TargetFramework)' == 'netstandard1.3'">
       <PropertyGroup>
         <DefineConstants>$(DefineConstants);NETSTANDARD</DefineConstants>
       </PropertyGroup>
-
-      <ItemGroup>
-        <ProjectReference Include="..\Runtime\Antlr3.Runtime\Antlr3.Runtime.netstandard.csproj" />
-      </ItemGroup>
     </When>
   </Choose>
 
@@ -70,6 +62,10 @@
     <GenerateDocumentationFile>True</GenerateDocumentationFile>
     <CodeAnalysisRuleSet>..\Antlr3.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Runtime\Antlr3.Runtime\Antlr3.Runtime.csproj" />
+  </ItemGroup>
 
   <ItemGroup>
     <None Include="Debug\DebugTemplate.cs" />

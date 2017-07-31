@@ -39,7 +39,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="$(MSBuildThisFileDirectory)..\Runtime\Antlr3.Runtime\Antlr3.Runtime.net20.csproj">
+    <ProjectReference Include="$(MSBuildThisFileDirectory)..\Runtime\Antlr3.Runtime\Antlr3.Runtime.csproj">
       <Private>false</Private>
     </ProjectReference>
     <ProjectReference Include="$(MSBuildThisFileDirectory)..\Antlr3\Antlr3.csproj">

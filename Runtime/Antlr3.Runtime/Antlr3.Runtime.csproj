@@ -2,8 +2,8 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>net20</TargetFrameworks>
-    <RootNamespace>Antlr.Runtime.Debug</RootNamespace>
+    <TargetFrameworks>net20;net40-client;portable40-net40+sl5+win8+wp8+wpa81;netstandard1.1</TargetFrameworks>
+    <RootNamespace>Antlr.Runtime</RootNamespace>
 
     <Description>The C# port of ANTLR 3</Description>
     <Company>Tunnel Vision Laboratories, LLC</Company>
@@ -14,7 +14,7 @@
 
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <IncludeSymbols>true</IncludeSymbols>
-    <NuspecFile>..\..\build\prep\Antlr3.Runtime.Debug.nuspec</NuspecFile>
+    <NuspecFile>..\..\build\prep\Antlr3.Runtime.nuspec</NuspecFile>
     <NuspecProperties>Configuration=$(Configuration);version=$(InformationalVersion);ANTLRVersion=$(InformationalVersion)</NuspecProperties>
     <PackageOutputPath>..\..\build\prep\nuget\</PackageOutputPath>
 
@@ -34,6 +34,34 @@
     </PropertyGroup>
   </Target>
 
+  <Choose>
+    <When Condition="'$(TargetFramework)' == 'net40-client'">
+      <PropertyGroup>
+        <TargetFrameworkIdentifier>.NETFramework</TargetFrameworkIdentifier>
+        <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+        <TargetFrameworkProfile>Client</TargetFrameworkProfile>
+      </PropertyGroup>
+    </When>
+    <When Condition="'$(TargetFramework)' == 'netstandard1.1'">
+      <PropertyGroup>
+        <DefineConstants>$(DefineConstants);PORTABLE;NETSTANDARD;NET45PLUS;NET40PLUS;NET35PLUS;NET20PLUS</DefineConstants>
+      </PropertyGroup>
+    </When>
+    <When Condition="'$(TargetFramework)' == 'portable40-net40+sl5+win8+wp8+wpa81'">
+      <PropertyGroup>
+        <TargetFrameworkIdentifier>.NETPortable</TargetFrameworkIdentifier>
+        <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+        <TargetFrameworkProfile>Profile328</TargetFrameworkProfile>
+        <DefineConstants>$(DefineConstants);PORTABLE;NET40;NET40PLUS;NET35PLUS;NET20PLUS</DefineConstants>
+      </PropertyGroup>
+
+      <ItemGroup>
+        <Reference Include="System" />
+        <Reference Include="System.Core" />
+      </ItemGroup>
+    </When>
+  </Choose>
+
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
     <DebugType>full</DebugType>
     <DebugSymbols>true</DebugSymbols>
@@ -51,12 +79,6 @@
 
   <ItemGroup>
     <None Include="$(AssemblyOriginatorKeyFile)" Link="%(Filename)%(Extension)" />
-    <None Include="ParserDebugger.cs" />
-    <Compile Remove="ParserDebugger.cs" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="..\Antlr3.Runtime\Antlr3.Runtime.csproj" />
   </ItemGroup>
 
 </Project>

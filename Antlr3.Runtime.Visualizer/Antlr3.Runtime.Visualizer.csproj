@@ -54,7 +54,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Runtime\Antlr3.Runtime\Antlr3.Runtime.net20.csproj" />
+    <ProjectReference Include="..\Runtime\Antlr3.Runtime\Antlr3.Runtime.csproj" />
   </ItemGroup>
 
   <ItemGroup>
