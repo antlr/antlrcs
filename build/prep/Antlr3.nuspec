@@ -18,22 +18,11 @@
     <summary>The C# target of the ANTLR 3 parser generator.</summary>
     <developmentDependency>true</developmentDependency>
     <dependencies>
+      <dependency id="Antlr3.CodeGenerator" version="$version$" />
       <dependency id="Antlr3.Runtime" version="$version$" />
     </dependencies>
   </metadata>
   <files>
-    <!-- Tools -->
-
-    <file src="Bootstrap\**\*.*" target="tools"/>
-
-    <!-- Build Configuration -->
-
-    <file src="Tool\Antlr3.props" target="build"/>
-    <file src="Tool\Antlr3.targets" target="build"/>
-    <file src="Tool\AntlrBuildTask.dll" target="build"/>
-    <file src="Tool\Rules\Antlr3.ProjectItemsSchema.xml" target="build\Rules" />
-    <file src="Tool\Rules\Antlr3.xml" target="build\Rules" />
-    <file src="Tool\Rules\AntlrAbstractGrammar.xml" target="build\Rules" />
-    <file src="Tool\Rules\AntlrTokens.xml" target="build\Rules" />
+    <file src="..\..\LICENSE.txt" target="tools" />
   </files>
 </package>

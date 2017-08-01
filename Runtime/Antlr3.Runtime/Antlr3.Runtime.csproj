@@ -17,9 +17,6 @@
     <NuspecFile>..\..\build\prep\Antlr3.Runtime.nuspec</NuspecFile>
     <NuspecProperties>Configuration=$(Configuration);version=$(InformationalVersion);ANTLRVersion=$(InformationalVersion)</NuspecProperties>
     <PackageOutputPath>..\..\build\prep\nuget\</PackageOutputPath>
-
-    <SignAssembly>true</SignAssembly>
-    <AssemblyOriginatorKeyFile>..\..\..\..\..\keys\antlr\Key.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
 
   <Target Name="DisableCrazyPackageDeletion" BeforeTargets="Clean">
@@ -61,24 +58,5 @@
       </ItemGroup>
     </When>
   </Choose>
-
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-    <DebugType>full</DebugType>
-    <DebugSymbols>true</DebugSymbols>
-  </PropertyGroup>
-
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
-    <DebugType>pdbonly</DebugType>
-    <DebugSymbols>true</DebugSymbols>
-  </PropertyGroup>
-
-  <PropertyGroup>
-    <GenerateDocumentationFile>True</GenerateDocumentationFile>
-    <CodeAnalysisRuleSet>..\..\Antlr3.ruleset</CodeAnalysisRuleSet>
-  </PropertyGroup>
-
-  <ItemGroup>
-    <None Include="$(AssemblyOriginatorKeyFile)" Link="%(Filename)%(Extension)" />
-  </ItemGroup>
 
 </Project>

@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
+  <metadata minClientVersion="2.5">
+    <id>Antlr3.CodeGenerator</id>
+    <version>0.0.0</version>
+    <authors>Sam Harwell, Terence Parr</authors>
+    <owners>Sam Harwell</owners>
+    <description>The C# target of the ANTLR 3 parser generator. This package supports projects targeting .NET 2.0 or newer, and built using Visual Studio 2010 or newer.</description>
+    <language>en-us</language>
+    <projectUrl>https://github.com/antlr/antlrcs</projectUrl>
+    <licenseUrl>https://raw.githubusercontent.com/antlr/antlrcs/master/LICENSE.txt</licenseUrl>
+    <iconUrl>https://raw.github.com/antlr/website-antlr4/master/images/icons/antlr.png</iconUrl>
+    <copyright>Copyright © Sam Harwell 2013</copyright>
+    <releaseNotes>https://github.com/antlr/antlrcs/releases/$version$</releaseNotes>
+    <requireLicenseAcceptance>true</requireLicenseAcceptance>
+    <tags>antlr antlr3 parsing</tags>
+    <title>ANTLR 3</title>
+    <summary>The C# target of the ANTLR 3 parser generator.</summary>
+    <developmentDependency>true</developmentDependency>
+  </metadata>
+  <files>
+    <!-- Tools -->
+
+    <file src="..\..\bin\$Configuration$\Antlr3.exe" target="tools"/>
+    <file src="..\..\bin\$Configuration$\Antlr3.pdb" target="tools"/>
+    <file src="..\..\bin\$Configuration$\Antlr3.exe.config" target="tools"/>
+    <file src="..\..\bin\$Configuration$\Antlr3.Runtime.Debug.dll" target="tools"/>
+    <file src="..\..\bin\$Configuration$\Antlr3.Runtime.Debug.pdb" target="tools"/>
+    <file src="..\..\bin\$Configuration$\Antlr3.Runtime.dll" target="tools"/>
+    <file src="..\..\bin\$Configuration$\Antlr3.Runtime.pdb" target="tools"/>
+    <file src="..\..\bin\$Configuration$\Antlr4.StringTemplate.dll" target="tools"/>
+    <file src="..\..\bin\$Configuration$\Antlr4.StringTemplate.pdb" target="tools"/>
+    <file src="..\..\bin\$Configuration$\Codegen\Templates\*.stg" target="tools\Codegen\Templates"/>
+    <file src="..\..\bin\$Configuration$\Codegen\Templates\CSharp2\*.stg" target="tools\Codegen\Templates\CSharp2"/>
+    <file src="..\..\bin\$Configuration$\Codegen\Templates\CSharp3\*.stg" target="tools\Codegen\Templates\CSharp3"/>
+    <file src="..\..\bin\$Configuration$\Targets\Antlr3.Targets.CSharp2.dll" target="tools\Targets"/>
+    <file src="..\..\bin\$Configuration$\Targets\Antlr3.Targets.CSharp2.pdb" target="tools\Targets"/>
+    <file src="..\..\bin\$Configuration$\Targets\Antlr3.Targets.CSharp3.dll" target="tools\Targets"/>
+    <file src="..\..\bin\$Configuration$\Targets\Antlr3.Targets.CSharp3.pdb" target="tools\Targets"/>
+    <file src="..\..\bin\$Configuration$\Tool\Templates\**\*.stg" target="tools\Tool\Templates"/>
+
+    <!-- Build Configuration -->
+
+    <file src="..\..\bin\$Configuration$\Antlr3.props" target="build\Antlr3.CodeGenerator.props" />
+    <file src="..\..\bin\$Configuration$\Antlr3.targets" target="build\Antlr3.CodeGenerator.targets" />
+    <file src="..\..\bin\$Configuration$\AntlrBuildTask.dll" target="build" />
+    <file src="..\..\bin\$Configuration$\AntlrBuildTask.pdb" target="build" />
+    <file src="..\..\bin\$Configuration$\Rules\Antlr3.ProjectItemsSchema.xml" target="build\Rules" />
+    <file src="..\..\bin\$Configuration$\Rules\Antlr3.xml" target="build\Rules" />
+    <file src="..\..\bin\$Configuration$\Rules\AntlrAbstractGrammar.xml" target="build\Rules" />
+    <file src="..\..\bin\$Configuration$\Rules\AntlrTokens.xml" target="build\Rules" />
+  </files>
+</package>

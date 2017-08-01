@@ -10,9 +10,6 @@
     <Version>3.5.0.2</Version>
     <FileVersion>3.5.2.0</FileVersion>
     <InformationalVersion>3.5.2-dev</InformationalVersion>
-
-    <SignAssembly>true</SignAssembly>
-    <AssemblyOriginatorKeyFile>..\..\..\..\keys\antlr\Key.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
 
   <Choose>
@@ -28,21 +25,6 @@
   <PropertyGroup>
     <!-- Workaround for lack of XAML support in the new project system -->
     <LanguageTargets>$(MSBuildExtensionsPath)\$(VisualStudioVersion)\Bin\Microsoft.CSharp.targets</LanguageTargets>
-  </PropertyGroup>
-
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-    <DebugType>full</DebugType>
-    <DebugSymbols>true</DebugSymbols>
-  </PropertyGroup>
-
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
-    <DebugType>pdbonly</DebugType>
-    <DebugSymbols>true</DebugSymbols>
-  </PropertyGroup>
-
-  <PropertyGroup>
-    <GenerateDocumentationFile>True</GenerateDocumentationFile>
-    <CodeAnalysisRuleSet>..\Antlr3.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
 
   <ItemGroup>
@@ -96,7 +78,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Include="$(AssemblyOriginatorKeyFile)" Link="%(Filename)%(Extension)" />
     <None Update="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>

@@ -4,7 +4,6 @@
   <PropertyGroup>
     <TargetFrameworks>net35-client</TargetFrameworks>
     <OutputType>Exe</OutputType>
-    <EnableDefaultAntlrItems>false</EnableDefaultAntlrItems>
 
     <Description>The C# port of ANTLR 3</Description>
     <Company>Tunnel Vision Laboratories, LLC</Company>
@@ -15,9 +14,6 @@
 
     <OutputPath>..\bin\$(Configuration)\</OutputPath>
     <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
-
-    <SignAssembly>true</SignAssembly>
-    <AssemblyOriginatorKeyFile>..\..\..\..\keys\antlr\Key.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
 
   <Choose>
@@ -29,11 +25,6 @@
       </PropertyGroup>
     </When>
   </Choose>
-
-  <PropertyGroup>
-    <GenerateDocumentationFile>True</GenerateDocumentationFile>
-    <CodeAnalysisRuleSet>..\Antlr3.ruleset</CodeAnalysisRuleSet>
-  </PropertyGroup>
 
   <ItemGroup>
     <Compile Update="Grammars\LeftRecursiveRuleWalker.g3.cs">
@@ -377,7 +368,6 @@
       <Link>Codegen\Templates\LeftRecursiveRules.stg</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </EmbeddedResource>
-    <None Include="$(AssemblyOriginatorKeyFile)" Link="%(Filename)%(Extension)" />
     <None Include="app.config" />
     <Antlr3 Include="Grammars\LeftRecursiveRuleWalker.g3" />
   </ItemGroup>

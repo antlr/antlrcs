@@ -3,7 +3,6 @@
 
   <PropertyGroup>
     <TargetFrameworks>net45</TargetFrameworks>
-    <EnableDefaultAntlrItems>false</EnableDefaultAntlrItems>
 
     <Description>The C# port of ANTLR 3</Description>
     <Company>Tunnel Vision Laboratories, LLC</Company>
@@ -11,10 +10,6 @@
     <Version>3.5.0.2</Version>
     <FileVersion>3.5.2.0</FileVersion>
     <InformationalVersion>3.5.2-dev</InformationalVersion>
-  </PropertyGroup>
-
-  <PropertyGroup>
-    <CodeAnalysisRuleSet>..\..\Antlr3.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
 
   <ItemGroup>

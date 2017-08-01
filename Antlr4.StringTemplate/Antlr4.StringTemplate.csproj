@@ -3,7 +3,6 @@
 
   <PropertyGroup>
     <TargetFrameworks>net35-client;netstandard1.3</TargetFrameworks>
-    <EnableDefaultAntlrItems>false</EnableDefaultAntlrItems>
 
     <Description>The C# port of StringTemplate 4</Description>
     <Company>Tunnel Vision Laboratories, LLC</Company>
@@ -17,9 +16,6 @@
     <NuspecFile>..\build\prep\StringTemplate4.nuspec</NuspecFile>
     <NuspecProperties>Configuration=$(Configuration);version=$(InformationalVersion);ANTLRVersion=3.5.2-dev</NuspecProperties>
     <PackageOutputPath>..\build\prep\nuget\</PackageOutputPath>
-
-    <SignAssembly>true</SignAssembly>
-    <AssemblyOriginatorKeyFile>..\..\..\..\keys\antlr\Key.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
 
   <Target Name="DisableCrazyPackageDeletion" BeforeTargets="Clean">
@@ -49,21 +45,6 @@
     </When>
   </Choose>
 
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-    <DebugType>full</DebugType>
-    <DebugSymbols>true</DebugSymbols>
-  </PropertyGroup>
-
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
-    <DebugType>pdbonly</DebugType>
-    <DebugSymbols>true</DebugSymbols>
-  </PropertyGroup>
-
-  <PropertyGroup>
-    <GenerateDocumentationFile>True</GenerateDocumentationFile>
-    <CodeAnalysisRuleSet>..\Antlr3.ruleset</CodeAnalysisRuleSet>
-  </PropertyGroup>
-
   <ItemGroup>
     <ProjectReference Include="..\Runtime\Antlr3.Runtime\Antlr3.Runtime.csproj" />
   </ItemGroup>
@@ -90,10 +71,6 @@
     <Compile Update="Compiler\TemplateParser.g3.cs">
       <DependentUpon>TemplateParser.g3</DependentUpon>
     </Compile>
-  </ItemGroup>
-
-  <ItemGroup>
-    <None Include="$(AssemblyOriginatorKeyFile)" Link="%(Filename)%(Extension)" />
   </ItemGroup>
 
 </Project>

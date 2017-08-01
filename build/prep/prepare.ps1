@@ -6,6 +6,9 @@ param (
   [switch]$NoValidate
 )
 
+$AntlrVersion = "3.5.2-dev"
+$STVersion = "4.0.9-dev"
+
 # build the solution
 $SolutionPath = "..\..\Antlr3.sln"
 
@@ -43,6 +46,11 @@ If ($Logger) {
   $LoggerArgument = "/logger:$Logger"
 }
 
+# Make sure we don't have a stray config file from the bootstrap build
+If (Test-Path '..\..\NuGet.config') {
+  Remove-Item '..\..\NuGet.config'
+}
+
 # Restore packages
 .\NuGet.exe update -self
 .\NuGet.exe restore $SolutionPath -Project2ProjectTimeOut 1200
@@ -57,81 +65,24 @@ If (-not $?) {
 $ArchivePath = ".\Backup\Bootstrap-" + [System.IO.Path]::GetFileNameWithoutExtension([System.IO.Path]::GetRandomFileName()) + ".7z"
 .\7z.exe a -r $ArchivePath "..\Bootstrap\*"
 
-# copy the new bootstrap files
-if ($DebugBuild) {
-  $BootstrapBinaries = "Antlr3.exe", "Antlr3.exe.config", "Antlr3.Runtime.dll", "Antlr3.Runtime.Debug.dll", "Antlr4.StringTemplate.dll", "Antlr4.StringTemplate.Visualizer.dll", "Antlr3.targets", "Antlr3.props", "AntlrBuildTask.dll"
-}
-else {
-  $BootstrapBinaries = "Antlr3.exe", "Antlr3.exe.config", "Antlr3.Runtime.dll", "Antlr3.Runtime.Debug.dll", "Antlr4.StringTemplate.dll", "Antlr3.targets", "Antlr3.props", "AntlrBuildTask.dll"
-}
-
-$BootstrapBinaries | ForEach-Object {
-    copy -force "..\..\bin\$BuildConfig\$_" "..\Bootstrap"
-    If (-not $?) {
-      $host.ui.WriteErrorLine("Bootstrap update failed, Aborting!")
-      exit 1
-    }
-}
-
+# Build Antlr3.CodeGenerator so we can use it for the boostrap build
+.\NuGet.exe pack .\Antlr3.CodeGenerator.nuspec -OutputDirectory nuget -Prop Configuration=$BuildConfig -Version $AntlrVersion -Prop ANTLRVersion=$AntlrVersion -Prop STVersion=$STVersion -Symbols
 If (-not $?) {
-  $host.ui.WriteErrorLine("Bootstrap update failed, Aborting!")
+  $host.ui.WriteErrorLine("Failed to create NuGet package prior to bootstrap, Aborting!")
   exit 1
 }
-
-if (-not (Test-Path "..\Bootstrap\Codegen\Templates\CSharp2")) {
-  mkdir "..\Bootstrap\Codegen\Templates\CSharp2"
-}
-
-copy -force "..\..\bin\$BuildConfig\Codegen\Templates\LeftRecursiveRules.stg" "..\Bootstrap\Codegen\Templates"
-If (-not $?) {
-  $host.ui.WriteErrorLine("Bootstrap update failed, Aborting!")
-  exit 1
-}
-
-copy -force "..\..\bin\$BuildConfig\Codegen\Templates\CSharp2\*" "..\Bootstrap\Codegen\Templates\CSharp2"
-If (-not $?) {
-  $host.ui.WriteErrorLine('Bootstrap update failed, Aborting!')
-  exit 1
-}
-
-copy -force "..\..\bin\$BuildConfig\Codegen\Templates\CSharp3\*" "..\Bootstrap\Codegen\Templates\CSharp3"
-If (-not $?) {
-  $host.ui.WriteErrorLine("Bootstrap update failed, Aborting!")
-  exit 1
-}
-
-copy -force "..\..\bin\$BuildConfig\Targets\Antlr3.Targets.CSharp2.dll" "..\Bootstrap\Targets"
-If (-not $?) {
-  $host.ui.WriteErrorLine("Bootstrap update failed, Aborting!")
-  exit 1
-}
-
-copy -force "..\..\bin\$BuildConfig\Targets\Antlr3.Targets.CSharp3.dll" "..\Bootstrap\Targets"
-If (-not $?) {
-  $host.ui.WriteErrorLine("Bootstrap update failed, Aborting!")
-  exit 1
-}
-
-copy -r -force "..\..\bin\$BuildConfig\Tool\*" "..\Bootstrap\Tool"
-If (-not $?) {
-  $host.ui.WriteErrorLine("Bootstrap update failed, Aborting!")
-  exit 1
-}
-
-copy -r -force "..\..\bin\$BuildConfig\Rules\*" "..\Bootstrap"
-If (-not $?) {
-  $host.ui.WriteErrorLine("Bootstrap update failed, Aborting!")
-  exit 1
-}
-
-Remove-Item -force "..\Bootstrap\Tool\Templates\messages\formats\gnu.stg"
 
 # build the project again with the new bootstrap files
+copy -force '..\..\NuGet.config.bootstrap' '..\..\NuGet.config'
+.\NuGet.exe restore $SolutionPath -Project2ProjectTimeOut 1200
 &$msbuild /nologo /m /nr:false /t:rebuild "/verbosity:$Verbosity" /p:Configuration=$BuildConfig $SolutionPath
 If (-not $?) {
   $host.ui.WriteErrorLine("Build Failed, Aborting!")
+  Remove-Item '..\..\NuGet.config'
   exit 1
 }
+
+Remove-Item '..\..\NuGet.config'
 
 # copy files from the build
 mkdir Runtime
@@ -225,8 +176,6 @@ copy "..\..\bin\$BuildConfig\Antlr4.StringTemplate.Visualizer.xml" ".\ST4"
 copy "..\..\LICENSE.txt" ".\ST4"
 
 # compress the distributable packages
-$AntlrVersion = "3.5.2-dev"
-$STVersion = "4.0.9-dev"
 
 $ArchivePath = ".\dist\antlr-dotnet-csharpbootstrap-" + $AntlrVersion + ".7z"
 .\7z.exe a -r -mx9 $ArchivePath ".\Bootstrap\*"
@@ -240,6 +189,12 @@ $ArchivePath = ".\dist\antlr-dotnet-st4-" + $STVersion + ".7z"
 .\7z.exe a -r -mx9 $ArchivePath ".\ST4\*"
 
 # Build the NuGet packages
+
+.\NuGet.exe pack .\Antlr3.CodeGenerator.nuspec -OutputDirectory nuget -Prop Configuration=$BuildConfig -Version $AntlrVersion -Prop ANTLRVersion=$AntlrVersion -Prop STVersion=$STVersion -Symbols
+If (-not $?) {
+  $host.ui.WriteErrorLine("Failed to create NuGet package, Aborting!")
+  exit 1
+}
 
 .\NuGet.exe pack .\Antlr3.nuspec -OutputDirectory nuget -Prop Configuration=$BuildConfig -Version $AntlrVersion -Prop ANTLRVersion=$AntlrVersion -Prop STVersion=$STVersion -Symbols
 If (-not $?) {

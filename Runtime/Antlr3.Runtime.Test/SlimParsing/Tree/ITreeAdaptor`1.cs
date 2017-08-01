@@ -71,7 +71,7 @@ namespace Antlr.Runtime.Tree
          *  the last symbol consumed during recovery.
          *  </summary>
          *
-         *  </remarks>
+         *  <remarks>
          *  You must specify the input stream so that the erroneous text can
          *  be packaged up in the error node.  The exception could be useful
          *  to some applications; default implementation stores ptr to it in

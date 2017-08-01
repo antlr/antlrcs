@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project>
+
+  <ItemGroup>
+    <None Condition="'$(SignAssembly)' == 'true'" Include="$(AssemblyOriginatorKeyFile)" Link="%(Filename)%(Extension)" />
+  </ItemGroup>
+
+  <PropertyGroup Condition="'$(BootstrapBuild)' != 'true'">
+    <!-- Folder containing AntlrBuildTask.dll -->
+    <AntlrBuildTaskPath>$(MSBuildThisFileDirectory)build\Bootstrap</AntlrBuildTaskPath>
+    <!-- Path to the ANTLR Tool itself. -->
+    <AntlrToolPath>$(MSBuildThisFileDirectory)build\Bootstrap\Antlr3.exe</AntlrToolPath>
+  </PropertyGroup>
+
+  <Import Condition="'$(BootstrapBuild)' != 'true'" Project="$(MSBuildThisFileDirectory)build\Bootstrap\Antlr3.targets" />
+
+</Project>

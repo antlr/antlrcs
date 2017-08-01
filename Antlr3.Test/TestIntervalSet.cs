@@ -438,7 +438,7 @@ namespace AntlrUnitTests
         }
 
         /** The following was broken:
-            {'\u0000'..'s', 'u'..'\uFFFE'} & {'\u0000'..'q', 's'..'\uFFFE'}=
+            {'\u0000'..'s', 'u'..'\uFFFE'} &amp; {'\u0000'..'q', 's'..'\uFFFE'}=
             {'\u0000'..'q', 's'}!!!! broken...
             'q' is 113 ascii
             'u' is 117

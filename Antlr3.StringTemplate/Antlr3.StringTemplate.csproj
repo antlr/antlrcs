@@ -4,7 +4,6 @@
   <PropertyGroup>
     <TargetFrameworks>net35-client</TargetFrameworks>
     <RootNamespace>Antlr.ST</RootNamespace>
-    <EnableDefaultAntlrItems>false</EnableDefaultAntlrItems>
 
     <Description>The C# port of StringTemplate 3</Description>
     <Company>Tunnel Vision Laboratories, LLC</Company>
@@ -18,9 +17,6 @@
     <NuspecFile>..\build\prep\StringTemplate3.nuspec</NuspecFile>
     <NuspecProperties>Configuration=$(Configuration);version=$(InformationalVersion);ANTLRVersion=$(InformationalVersion)</NuspecProperties>
     <PackageOutputPath>..\build\prep\nuget\</PackageOutputPath>
-
-    <SignAssembly>true</SignAssembly>
-    <AssemblyOriginatorKeyFile>..\..\..\..\keys\antlr\Key.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
 
   <Target Name="DisableCrazyPackageDeletion" BeforeTargets="Clean">
@@ -47,21 +43,6 @@
 
   <PropertyGroup>
     <DefineConstants>$(DefineConstants);COMPILE_EXPRESSIONS;CACHE_FUNCTORS</DefineConstants>
-  </PropertyGroup>
-
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-    <DebugType>full</DebugType>
-    <DebugSymbols>true</DebugSymbols>
-  </PropertyGroup>
-
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
-    <DebugType>pdbonly</DebugType>
-    <DebugSymbols>true</DebugSymbols>
-  </PropertyGroup>
-
-  <PropertyGroup>
-    <GenerateDocumentationFile>True</GenerateDocumentationFile>
-    <CodeAnalysisRuleSet>..\Antlr3.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
 
   <ItemGroup>
@@ -105,10 +86,6 @@
     <Compile Update="Language\ActionEvaluatorHelper.cs">
       <DependentUpon>ActionEvaluator.g3</DependentUpon>
     </Compile>
-  </ItemGroup>
-
-  <ItemGroup>
-    <None Include="$(AssemblyOriginatorKeyFile)" Link="%(Filename)%(Extension)" />
   </ItemGroup>
 
 </Project>
