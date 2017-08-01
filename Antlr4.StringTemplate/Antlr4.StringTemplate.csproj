@@ -3,7 +3,6 @@
 
   <PropertyGroup>
     <TargetFrameworks>net35-client;netstandard1.3</TargetFrameworks>
-    <EnableDefaultAntlrItems>false</EnableDefaultAntlrItems>
 
     <Description>The C# port of StringTemplate 4</Description>
     <Company>Tunnel Vision Laboratories, LLC</Company>
