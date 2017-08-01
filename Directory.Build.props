@@ -2,6 +2,16 @@
 <Project>
 
   <PropertyGroup>
+    <ANTLRVersion>3.5.0.2</ANTLRVersion>
+    <ANTLRFileVersion>3.5.2.0</ANTLRFileVersion>
+    <ANTLRInformationalVersion>3.5.2-dev</ANTLRInformationalVersion>
+
+    <STVersion>4.0.7.0</STVersion>
+    <STFileVersion>4.0.9.0</STFileVersion>
+    <STInformationalVersion>4.0.9-dev</STInformationalVersion>
+  </PropertyGroup>
+
+  <PropertyGroup>
     <EnableDefaultAntlrItems>false</EnableDefaultAntlrItems>
 
     <SignAssembly>true</SignAssembly>
@@ -28,7 +38,7 @@
   </PropertyGroup>
 
   <ItemGroup Condition="'$(BootstrapBuild)' == 'true'">
-    <PackageReference Include="Antlr3.CodeGenerator" Version="3.5.2-dev" />
+    <PackageReference Include="Antlr3.CodeGenerator" Version="$(ANTLRInformationalVersion)" />
   </ItemGroup>
 
 </Project>
