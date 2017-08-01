@@ -2,7 +2,8 @@ param (
   [switch]$Debug,
   [string]$VisualStudioVersion = '15.0',
   [string]$Verbosity = 'minimal',
-  [string]$Logger
+  [string]$Logger,
+  [switch]$NoValidate
 )
 
 # build the solution
@@ -244,4 +245,59 @@ $ArchivePath = ".\dist\antlr-dotnet-st4-" + $STVersion + ".7z"
 If (-not $?) {
   $host.ui.WriteErrorLine("Failed to create NuGet package, Aborting!")
   exit 1
+}
+
+# Validate the build
+
+If (-not $NoValidate) {
+	#git 'clean' '-dxf' '..\Validation'
+	#dotnet 'run' '--project' '..\Validation\DotnetValidation.csproj' '--framework' 'netcoreapp1.1'
+	#if (-not $?) {
+	#	$host.ui.WriteErrorLine('Build failed, aborting!')
+	#	Exit $LASTEXITCODE
+	#}
+
+	git 'clean' '-dxf' '..\Validation'
+	.\NuGet.exe 'restore' '..\Validation'
+	&$msbuild '/nologo' '/m' '/nr:false' '/t:Rebuild' $LoggerArgument "/verbosity:$Verbosity" "/p:Configuration=$BuildConfig" '..\Validation\DotnetValidation.sln'
+	if (-not $?) {
+		$host.ui.WriteErrorLine('Build failed, aborting!')
+		Exit 1
+	}
+
+	"..\Validation\bin\$BuildConfig\net20\DotnetValidation.exe"
+	if (-not $?) {
+		$host.ui.WriteErrorLine('Build failed, aborting!')
+		Exit 1
+	}
+
+	"..\Validation\bin\$BuildConfig\net30\DotnetValidation.exe"
+	if (-not $?) {
+		$host.ui.WriteErrorLine('Build failed, aborting!')
+		Exit 1
+	}
+
+	"..\Validation\bin\$BuildConfig\net35\DotnetValidation.exe"
+	if (-not $?) {
+		$host.ui.WriteErrorLine('Build failed, aborting!')
+		Exit 1
+	}
+
+	"..\Validation\bin\$BuildConfig\net40\DotnetValidation.exe"
+	if (-not $?) {
+		$host.ui.WriteErrorLine('Build failed, aborting!')
+		Exit 1
+	}
+
+	"..\Validation\bin\$BuildConfig\portable40-net40+sl5+win8+wp8+wpa81\DotnetValidation.exe"
+	if (-not $?) {
+		$host.ui.WriteErrorLine('Build failed, aborting!')
+		Exit 1
+	}
+
+	"..\Validation\bin\$BuildConfig\net45\DotnetValidation.exe"
+	if (-not $?) {
+		$host.ui.WriteErrorLine('Build failed, aborting!')
+		Exit 1
+	}
 }
