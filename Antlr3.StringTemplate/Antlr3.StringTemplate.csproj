@@ -18,9 +18,6 @@
     <NuspecFile>..\build\prep\StringTemplate3.nuspec</NuspecFile>
     <NuspecProperties>Configuration=$(Configuration);version=$(InformationalVersion);ANTLRVersion=$(InformationalVersion)</NuspecProperties>
     <PackageOutputPath>..\build\prep\nuget\</PackageOutputPath>
-
-    <SignAssembly>true</SignAssembly>
-    <AssemblyOriginatorKeyFile>..\..\..\..\keys\antlr\Key.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
 
   <Target Name="DisableCrazyPackageDeletion" BeforeTargets="Clean">
@@ -95,10 +92,6 @@
     <Compile Update="Language\ActionEvaluatorHelper.cs">
       <DependentUpon>ActionEvaluator.g3</DependentUpon>
     </Compile>
-  </ItemGroup>
-
-  <ItemGroup>
-    <None Include="$(AssemblyOriginatorKeyFile)" Link="%(Filename)%(Extension)" />
   </ItemGroup>
 
 </Project>

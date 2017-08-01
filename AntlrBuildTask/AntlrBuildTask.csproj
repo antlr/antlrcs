@@ -13,9 +13,6 @@
 
     <OutputPath>..\bin\$(Configuration)\</OutputPath>
     <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
-
-    <SignAssembly>true</SignAssembly>
-    <AssemblyOriginatorKeyFile>..\..\..\..\keys\antlr\Key.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
 
   <PropertyGroup>
@@ -34,7 +31,6 @@
   </Choose>
 
   <ItemGroup>
-    <None Include="$(AssemblyOriginatorKeyFile)" Link="%(Filename)%(Extension)" />
     <None Include="Antlr3.Java.targets" />
     <None Include="Antlr3.props">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>

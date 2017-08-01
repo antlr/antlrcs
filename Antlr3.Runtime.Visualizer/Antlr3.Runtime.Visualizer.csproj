@@ -10,9 +10,6 @@
     <Version>3.5.0.2</Version>
     <FileVersion>3.5.2.0</FileVersion>
     <InformationalVersion>3.5.2-dev</InformationalVersion>
-
-    <SignAssembly>true</SignAssembly>
-    <AssemblyOriginatorKeyFile>..\..\..\..\keys\antlr\Key.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
 
   <Choose>
@@ -86,7 +83,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Include="$(AssemblyOriginatorKeyFile)" Link="%(Filename)%(Extension)" />
     <None Update="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>

@@ -1,10 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Project>
 
-  <ItemGroup>
-    <None Include="$(AssemblyOriginatorKeyFile)" Link="%(Filename)%(Extension)" />
-  </ItemGroup>
-
   <Target Name="RemoveTransitiveProjectReferences" AfterTargets="IncludeTransitiveProjectReferences">
     <ItemGroup>
       <ProjectReference Remove="@(_TransitiveProjectReferences)" />
