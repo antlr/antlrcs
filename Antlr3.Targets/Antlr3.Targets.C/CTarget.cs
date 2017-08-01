@@ -69,7 +69,7 @@ namespace Antlr3.Targets
             // Pick up the file name we are generating. This method will return a 
             // a file suffixed with .c, so we must substring and add the extName
             // to it as we cannot assign into strings in Java.
-            ///
+            //
             string fileName = generator.GetRecognizerFileName( grammar.name, grammar.type );
             fileName = fileName.Substring( 0, fileName.Length - 2 ) + extName;
 

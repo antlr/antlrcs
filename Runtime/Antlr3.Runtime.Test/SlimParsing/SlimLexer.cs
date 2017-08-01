@@ -58,9 +58,12 @@ namespace Antlr.Runtime
         }
 
         #region Properties
+        /// <summary>
+        /// Gets or sets the text for the current token. Setting this property overrides any previous text assigned to
+        /// the token.
+        /// </summary>
         public string Text
         {
-            /** <summary>Return the text matched so far for the current token or any text override.</summary> */
             get
             {
                 if ( state.text != null )
@@ -69,7 +72,6 @@ namespace Antlr.Runtime
                 }
                 return input.Substring( state.tokenStartCharIndex, CharIndex - state.tokenStartCharIndex );
             }
-            /** <summary>Set the complete text of this token; it wipes any previous changes to the text.</summary> */
             set
             {
                 state.text = value;
@@ -193,13 +195,15 @@ namespace Antlr.Runtime
         /** <summary>This is the lexer entry point that sets instance var 'token'</summary> */
         public abstract void mTokens();
 
+        /// <summary>
+        /// Gets or sets the lexer input stream. Setting this property resets the lexer state.
+        /// </summary>
         public ICharStream CharStream
         {
             get
             {
                 return input;
             }
-            /** <summary>Set the char stream and reset the lexer</summary> */
             set
             {
                 input = null;
@@ -216,17 +220,17 @@ namespace Antlr.Runtime
             }
         }
 
-        ///** <summary>
-        // *  Currently does not support multiple emits per nextToken invocation
-        // *  for efficiency reasons.  Subclass and override this method and
-        // *  nextToken (to push tokens into a list and pull from that list rather
-        // *  than a single variable as this implementation does).
-        // *  </summary>
-        // */
-        //public void Emit( T token )
-        //{
-        //    _token = token;
-        //}
+        /////** <summary>
+        //// *  Currently does not support multiple emits per nextToken invocation
+        //// *  for efficiency reasons.  Subclass and override this method and
+        //// *  nextToken (to push tokens into a list and pull from that list rather
+        //// *  than a single variable as this implementation does).
+        //// *  </summary>
+        //// */
+        ////public void Emit( T token )
+        ////{
+        ////    _token = token;
+        ////}
 
         /** <summary>
          *  The standard method called to automatically emit a token at the
@@ -336,7 +340,7 @@ namespace Antlr.Runtime
 
         public override void ReportError( RecognitionException e )
         {
-            /** TODO: not thought about recovery in lexer yet.
+            /* TODO: not thought about recovery in lexer yet.
              *
             // if we've already reported an error and have not matched a token
             // yet successfully, don't report any errors.

@@ -4321,8 +4321,8 @@ namespace AntlrUnitTests
 
         /**
          * Test that a map can have only the default entry.
-         * <p>
-         * Bug ref: JIRA bug ST-15 (Fixed)
+         *
+         * <p>Bug ref: JIRA bug ST-15 (Fixed)</p>
          */
         [TestMethod][TestCategory(TestCategories.ST3)]
         public void TestMapDefaultStringAsKey()
@@ -4344,8 +4344,8 @@ namespace AntlrUnitTests
 
         /**
          * Test that a map can return a <b>string</b> with the word: default.
-         * <p>
-         * Bug ref: JIRA bug ST-15 (Fixed)
+         *
+         * <p>Bug ref: JIRA bug ST-15 (Fixed)</p>
          */
         [TestMethod][TestCategory(TestCategories.ST3)]
         public void TestMapDefaultIsDefaultString()
