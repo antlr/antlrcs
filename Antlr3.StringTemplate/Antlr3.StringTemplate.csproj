@@ -46,11 +46,6 @@
     <DefineConstants>$(DefineConstants);COMPILE_EXPRESSIONS;CACHE_FUNCTORS</DefineConstants>
   </PropertyGroup>
 
-  <PropertyGroup>
-    <GenerateDocumentationFile>True</GenerateDocumentationFile>
-    <CodeAnalysisRuleSet>..\Antlr3.ruleset</CodeAnalysisRuleSet>
-  </PropertyGroup>
-
   <ItemGroup>
     <ProjectReference Include="..\Runtime\Antlr3.Runtime\Antlr3.Runtime.csproj" />
   </ItemGroup>

@@ -22,10 +22,6 @@
     </When>
   </Choose>
 
-  <PropertyGroup>
-    <CodeAnalysisRuleSet>..\..\Antlr3.ruleset</CodeAnalysisRuleSet>
-  </PropertyGroup>
-
   <ItemGroup>
     <ProjectReference Include="..\Antlr3.Runtime\Antlr3.Runtime.csproj" />
   </ItemGroup>

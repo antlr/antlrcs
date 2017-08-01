@@ -59,9 +59,4 @@
     </When>
   </Choose>
 
-  <PropertyGroup>
-    <GenerateDocumentationFile>True</GenerateDocumentationFile>
-    <CodeAnalysisRuleSet>..\..\Antlr3.ruleset</CodeAnalysisRuleSet>
-  </PropertyGroup>
-
 </Project>

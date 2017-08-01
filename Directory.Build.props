@@ -16,4 +16,9 @@
     <DebugSymbols>true</DebugSymbols>
   </PropertyGroup>
 
+  <PropertyGroup>
+    <GenerateDocumentationFile>True</GenerateDocumentationFile>
+    <CodeAnalysisRuleSet>$(MSBuildThisFileDirectory)Antlr3.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+
 </Project>

@@ -31,11 +31,6 @@
     </PropertyGroup>
   </Target>
 
-  <PropertyGroup>
-    <GenerateDocumentationFile>True</GenerateDocumentationFile>
-    <CodeAnalysisRuleSet>..\..\Antlr3.ruleset</CodeAnalysisRuleSet>
-  </PropertyGroup>
-
   <ItemGroup>
     <None Include="ParserDebugger.cs" />
     <Compile Remove="ParserDebugger.cs" />
