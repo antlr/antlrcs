@@ -205,12 +205,12 @@ If (-not $?) {
 # Validate the build
 
 If (-not $NoValidate) {
-	#git 'clean' '-dxf' '..\Validation'
-	#dotnet 'run' '--project' '..\Validation\DotnetValidation.csproj' '--framework' 'netcoreapp1.1'
-	#if (-not $?) {
-	#	$host.ui.WriteErrorLine('Build failed, aborting!')
-	#	Exit $LASTEXITCODE
-	#}
+	git 'clean' '-dxf' '..\Validation'
+	dotnet 'run' '--project' '..\Validation\DotnetValidation.csproj' '--framework' 'netcoreapp1.1'
+	if (-not $?) {
+		$host.ui.WriteErrorLine('Build failed, aborting!')
+		Exit $LASTEXITCODE
+	}
 
 	git 'clean' '-dxf' '..\Validation'
 	.\NuGet.exe 'restore' '..\Validation'

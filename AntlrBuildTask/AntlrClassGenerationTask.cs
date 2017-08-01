@@ -30,7 +30,6 @@ namespace Antlr3.Build.Tasks
 {
     using System;
     using System.Collections.Generic;
-    using System.Diagnostics;
     using System.Linq;
     using System.Reflection;
     using System.Threading;
@@ -40,6 +39,9 @@ namespace Antlr3.Build.Tasks
     using File = System.IO.File;
     using FileAttributes = System.IO.FileAttributes;
     using Path = System.IO.Path;
+#if !NETSTANDARD
+    using System.Diagnostics;
+#endif
 
     public class AntlrClassGenerationTask
         : Task
@@ -284,9 +286,7 @@ namespace Antlr3.Build.Tasks
         {
             while (exception != null)
             {
-                if ((exception is OutOfMemoryException)
-                    || (exception is InsufficientMemoryException)
-                    || (exception is ThreadAbortException))
+                if (exception is OutOfMemoryException)
                 {
                     return true;
                 }

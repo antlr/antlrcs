@@ -39,12 +39,32 @@
     <file src="..\..\bin\$Configuration$\net40-client\Targets\Antlr3.Targets.CSharp3.pdb" target="tools\net40\Targets"/>
     <file src="..\..\bin\$Configuration$\net40-client\Tool\Templates\**\*.stg" target="tools\net40\Tool\Templates"/>
 
+    <file src="..\..\bin\$Configuration$\netstandard2.0\Antlr3.dll" target="tools\netstandard"/>
+    <file src="..\..\bin\$Configuration$\netstandard2.0\Antlr3.pdb" target="tools\netstandard"/>
+    <file src="..\..\bin\$Configuration$\netstandard2.0\Antlr3.dll.config" target="tools\netstandard"/>
+    <file src="..\..\bin\$Configuration$\netstandard2.0\Antlr3.Runtime.Debug.dll" target="tools\netstandard"/>
+    <file src="..\..\bin\$Configuration$\netstandard2.0\Antlr3.Runtime.Debug.pdb" target="tools\netstandard"/>
+    <file src="..\..\bin\$Configuration$\netstandard2.0\Antlr3.Runtime.dll" target="tools\netstandard"/>
+    <file src="..\..\bin\$Configuration$\netstandard2.0\Antlr3.Runtime.pdb" target="tools\netstandard"/>
+    <file src="..\..\bin\$Configuration$\netstandard2.0\Antlr4.StringTemplate.dll" target="tools\netstandard"/>
+    <file src="..\..\bin\$Configuration$\netstandard2.0\Antlr4.StringTemplate.pdb" target="tools\netstandard"/>
+    <file src="..\..\bin\$Configuration$\netstandard2.0\Codegen\Templates\*.stg" target="tools\netstandard\Codegen\Templates"/>
+    <file src="..\..\bin\$Configuration$\netstandard2.0\Codegen\Templates\CSharp2\*.stg" target="tools\netstandard\Codegen\Templates\CSharp2"/>
+    <file src="..\..\bin\$Configuration$\netstandard2.0\Codegen\Templates\CSharp3\*.stg" target="tools\netstandard\Codegen\Templates\CSharp3"/>
+    <file src="..\..\bin\$Configuration$\netstandard2.0\Targets\Antlr3.Targets.CSharp2.dll" target="tools\netstandard\Targets"/>
+    <file src="..\..\bin\$Configuration$\netstandard2.0\Targets\Antlr3.Targets.CSharp2.pdb" target="tools\netstandard\Targets"/>
+    <file src="..\..\bin\$Configuration$\netstandard2.0\Targets\Antlr3.Targets.CSharp3.dll" target="tools\netstandard\Targets"/>
+    <file src="..\..\bin\$Configuration$\netstandard2.0\Targets\Antlr3.Targets.CSharp3.pdb" target="tools\netstandard\Targets"/>
+    <file src="..\..\bin\$Configuration$\netstandard2.0\Tool\Templates\**\*.stg" target="tools\netstandard\Tool\Templates"/>
+
     <!-- Build Configuration -->
 
     <file src="..\..\bin\$Configuration$\net40\Antlr3.props" target="build\Antlr3.CodeGenerator.props" />
     <file src="..\..\bin\$Configuration$\net40\Antlr3.targets" target="build\Antlr3.CodeGenerator.targets" />
     <file src="..\..\bin\$Configuration$\net40\AntlrBuildTask.dll" target="tools\net40" />
     <file src="..\..\bin\$Configuration$\net40\AntlrBuildTask.pdb" target="tools\net40" />
+    <file src="..\..\bin\$Configuration$\netstandard2.0\AntlrBuildTask.dll" target="tools\netstandard" />
+    <file src="..\..\bin\$Configuration$\netstandard2.0\AntlrBuildTask.pdb" target="tools\netstandard" />
     <file src="..\..\bin\$Configuration$\net40\Rules\Antlr3.ProjectItemsSchema.xml" target="build\Rules" />
     <file src="..\..\bin\$Configuration$\net40\Rules\Antlr3.xml" target="build\Rules" />
     <file src="..\..\bin\$Configuration$\net40\Rules\AntlrAbstractGrammar.xml" target="build\Rules" />

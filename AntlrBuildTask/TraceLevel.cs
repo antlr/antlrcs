@@ -1,10 +1,6 @@
 ﻿/*
  * [The "BSD licence"]
- * Copyright (c) 2005-2008 Terence Parr
- * All rights reserved.
- *
- * Conversion to C#:
- * Copyright (c) 2008-2010 Sam Harwell, Pixel Mine, Inc.
+ * Copyright (c) 2009 Sam Harwell
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -30,15 +26,18 @@
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-using System;
-using System.Runtime.InteropServices;
+#if NETSTANDARD
 
-[assembly: CLSCompliant(false)]
+namespace Antlr3.Build.Tasks
+{
+    internal enum TraceLevel
+    {
+        Off,
+        Error,
+        Warning,
+        Info,
+        Verbose,
+    }
+}
 
-// Setting ComVisible to false makes the types in this assembly not visible 
-// to COM components.  If you need to access a type in this assembly from 
-// COM, set the ComVisible attribute to true on that type.
-[assembly: ComVisible(false)]
-
-// The following GUID is for the ID of the typelib if this project is exposed to COM
-[assembly: Guid("2028affe-3dfd-4164-9faf-2959ec04f7f7")]
+#endif

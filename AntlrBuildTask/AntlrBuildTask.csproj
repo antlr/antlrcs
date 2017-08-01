@@ -2,7 +2,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>net40</TargetFrameworks>
+    <TargetFrameworks>netstandard2.0;net40</TargetFrameworks>
 
     <Description>The C# port of ANTLR 3</Description>
     <Company>Tunnel Vision Laboratories, LLC</Company>
@@ -15,6 +15,16 @@
   </PropertyGroup>
 
   <Choose>
+    <When Condition="'$(TargetFramework)' == 'netstandard2.0'">
+      <ItemGroup>
+        <PackageReference Include="Microsoft.Build.Framework" Version="14.3" />
+        <PackageReference Include="Microsoft.Build.Tasks.Core" Version="14.3" />
+      </ItemGroup>
+
+      <PropertyGroup>
+        <DefineConstants>$(DefineConstants);NETSTANDARD</DefineConstants>
+      </PropertyGroup>
+    </When>
     <When Condition="'$(TargetFramework)' == 'net40'">
       <ItemGroup>
         <Reference Include="Microsoft.Build.Framework" />
