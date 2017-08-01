@@ -11,4 +11,6 @@
     </ItemGroup>
   </Target>
 
+  <Import Project="../Directory.Build.targets" />
+
 </Project>
