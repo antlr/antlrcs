@@ -23,4 +23,12 @@
     <CodeAnalysisRuleSet>$(MSBuildThisFileDirectory)Antlr3.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
 
+  <PropertyGroup>
+    <BootstrapBuild Condition="'$(BootstrapBuild)' == '' AND Exists('$(MSBuildThisFileDirectory)NuGet.config')">True</BootstrapBuild>
+  </PropertyGroup>
+
+  <ItemGroup Condition="'$(BootstrapBuild)' == 'true'">
+    <PackageReference Include="Antlr3.CodeGenerator" Version="3.5.2-dev" />
+  </ItemGroup>
+
 </Project>

@@ -5,13 +5,13 @@
     <None Condition="'$(SignAssembly)' == 'true'" Include="$(AssemblyOriginatorKeyFile)" Link="%(Filename)%(Extension)" />
   </ItemGroup>
 
-  <PropertyGroup>
+  <PropertyGroup Condition="'$(BootstrapBuild)' != 'true'">
     <!-- Folder containing AntlrBuildTask.dll -->
     <AntlrBuildTaskPath>$(MSBuildThisFileDirectory)build\Bootstrap</AntlrBuildTaskPath>
     <!-- Path to the ANTLR Tool itself. -->
     <AntlrToolPath>$(MSBuildThisFileDirectory)build\Bootstrap\Antlr3.exe</AntlrToolPath>
   </PropertyGroup>
 
-  <Import Project="$(MSBuildThisFileDirectory)build\Bootstrap\Antlr3.targets" />
+  <Import Condition="'$(BootstrapBuild)' != 'true'" Project="$(MSBuildThisFileDirectory)build\Bootstrap\Antlr3.targets" />
 
 </Project>
