@@ -6,8 +6,10 @@
 
   <PropertyGroup>
     <!-- Folder containing AntlrBuildTask.dll -->
-    <AntlrBuildTaskPath>.</AntlrBuildTaskPath>
+    <AntlrBuildTaskPath Condition="'$(MSBuildRuntimeType)' != 'Core'">$(MSBuildThisFileDirectory)..\tools\net40</AntlrBuildTaskPath>
+    <AntlrBuildTaskPath Condition="'$(MSBuildRuntimeType)' == 'Core'">$(MSBuildThisFileDirectory)..\tools\netstandard</AntlrBuildTaskPath>
     <!-- Path to the ANTLR tool itself -->
-    <AntlrToolPath>..\tools\Antlr3.exe</AntlrToolPath>
+    <AntlrToolPath Condition="'$(MSBuildRuntimeType)' != 'Core'">$(AntlrBuildTaskPath)\Antlr3.exe</AntlrToolPath>
+    <AntlrToolPath Condition="'$(MSBuildRuntimeType)' == 'Core'">$(AntlrBuildTaskPath)\Antlr3.dll</AntlrToolPath>
   </PropertyGroup>
 </Project>

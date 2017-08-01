@@ -34,10 +34,11 @@ namespace Antlr3.Tool
 {
     using System.Collections.Generic;
 
-    using ANTLRFileStream = Antlr.Runtime.ANTLRFileStream;
+    using ANTLRStringStream = Antlr.Runtime.ANTLRStringStream;
     using ANTLRReaderStream = Antlr.Runtime.ANTLRReaderStream;
     using ANTLRLexer = Antlr3.Grammars.ANTLRLexer;
     using ANTLRParser = Antlr3.Grammars.ANTLRParser;
+    using File = System.IO.File;
     using ICharStream = Antlr.Runtime.ICharStream;
     using CommonTree = Antlr.Runtime.Tree.CommonTree;
     using Console = System.Console;
@@ -79,7 +80,7 @@ namespace Antlr3.Tool
             ICharStream input = null;
             if ( filename != null )
             {
-                input = new ANTLRFileStream( filename );
+                input = new ANTLRStringStream( File.ReadAllText(filename), filename );
             }
             else
             {

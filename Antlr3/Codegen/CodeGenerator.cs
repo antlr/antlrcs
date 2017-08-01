@@ -37,7 +37,7 @@ namespace Antlr3.Codegen
     using Antlr3.Analysis;
     using Antlr3.Extensions;
     using Antlr3.Grammars;
-#if DEBUG
+#if DEBUG && !NETSTANDARD
     using Antlr4.StringTemplate.Visualizer.Extensions;
 #endif
 
@@ -843,7 +843,7 @@ namespace Antlr3.Codegen
             if (ErrorManager.GetErrorState().errors > 0)
                 return null;
 
-#if DEBUG
+#if DEBUG && !NETSTANDARD
             if (CodeGenerator.LaunchTemplateInspector)
             {
                 outputFileST.Visualize();

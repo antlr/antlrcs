@@ -13,7 +13,8 @@
     <FileVersion>3.5.2.0</FileVersion>
     <InformationalVersion>3.5.2-dev</InformationalVersion>
 
-    <OutputPath>$(MSBuildThisFileDirectory)..\bin\$(Configuration)\Targets\</OutputPath>
+    <IntermediateOutputPath Condition="'$(TargetFramework)' != ''">obj\$(TargetFramework)\$(Configuration)\</IntermediateOutputPath>
+    <OutputPath Condition="'$(TargetFramework)' != ''">$(MSBuildThisFileDirectory)..\bin\$(Configuration)\$(TargetFramework)\Targets\</OutputPath>
     <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
   </PropertyGroup>
 
@@ -25,10 +26,20 @@
         <TargetFrameworkProfile>Client</TargetFrameworkProfile>
       </PropertyGroup>
     </When>
+    <When Condition="'$(TargetFramework)' == 'net40-client'">
+      <PropertyGroup>
+        <TargetFrameworkIdentifier>.NETFramework</TargetFrameworkIdentifier>
+        <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+        <TargetFrameworkProfile>Client</TargetFrameworkProfile>
+      </PropertyGroup>
+    </When>
   </Choose>
 
   <ItemGroup>
     <ProjectReference Include="$(MSBuildThisFileDirectory)..\Runtime\Antlr3.Runtime\Antlr3.Runtime.csproj">
+      <Private>false</Private>
+    </ProjectReference>
+    <ProjectReference Include="$(MSBuildThisFileDirectory)..\Runtime\Antlr3.Runtime.Debug\Antlr3.Runtime.Debug.csproj">
       <Private>false</Private>
     </ProjectReference>
     <ProjectReference Include="$(MSBuildThisFileDirectory)..\Antlr3\Antlr3.csproj">

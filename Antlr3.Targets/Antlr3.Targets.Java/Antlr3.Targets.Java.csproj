@@ -2,7 +2,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>net35-client</TargetFrameworks>
+    <TargetFrameworks>net35-client;net40-client;netstandard2.0</TargetFrameworks>
   </PropertyGroup>
 
 </Project>

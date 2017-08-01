@@ -91,67 +91,67 @@ mkdir Tool\Rules
 mkdir Bootstrap
 mkdir ST3
 mkdir ST4
-copy "..\..\bin\$BuildConfig\Antlr3.Runtime.dll" ".\Runtime"
-copy "..\..\bin\$BuildConfig\Antlr3.Runtime.pdb" ".\Runtime"
-copy "..\..\bin\$BuildConfig\Antlr3.Runtime.xml" ".\Runtime"
+copy "..\..\bin\$BuildConfig\net35-client\Antlr3.Runtime.dll" ".\Runtime"
+copy "..\..\bin\$BuildConfig\net35-client\Antlr3.Runtime.pdb" ".\Runtime"
+copy "..\..\bin\$BuildConfig\net35-client\Antlr3.Runtime.xml" ".\Runtime"
 copy "..\..\LICENSE.txt" ".\Runtime"
 
-copy "..\..\bin\$BuildConfig\Antlr3.exe" ".\Tool"
-copy "..\..\bin\$BuildConfig\Antlr3.exe.config" ".\Tool"
-copy "..\..\bin\$BuildConfig\Antlr3.Runtime.dll" ".\Tool"
-copy "..\..\bin\$BuildConfig\Antlr3.Runtime.Debug.dll" ".\Tool"
-copy "..\..\bin\$BuildConfig\Antlr4.StringTemplate.dll" ".\Tool"
+copy "..\..\bin\$BuildConfig\net35-client\Antlr3.exe" ".\Tool"
+copy "..\..\bin\$BuildConfig\net35-client\Antlr3.exe.config" ".\Tool"
+copy "..\..\bin\$BuildConfig\net35-client\Antlr3.Runtime.dll" ".\Tool"
+copy "..\..\bin\$BuildConfig\net35-client\Antlr3.Runtime.Debug.dll" ".\Tool"
+copy "..\..\bin\$BuildConfig\net35-client\Antlr4.StringTemplate.dll" ".\Tool"
 if ($DebugBuild) {
-  copy "..\..\bin\$BuildConfig\Antlr4.StringTemplate.Visualizer.dll" ".\Tool"
+  copy "..\..\bin\$BuildConfig\net35-client\Antlr4.StringTemplate.Visualizer.dll" ".\Tool"
 }
-copy "..\..\bin\$BuildConfig\Antlr3.props" ".\Tool"
-copy "..\..\bin\$BuildConfig\Antlr3.targets" ".\Tool"
-copy "..\..\bin\$BuildConfig\AntlrBuildTask.dll" ".\Tool"
-copy "..\..\bin\$BuildConfig\Rules\Antlr3.ProjectItemsSchema.xml" ".\Tool\Rules"
-copy "..\..\bin\$BuildConfig\Rules\Antlr3.xml" ".\Tool\Rules"
-copy "..\..\bin\$BuildConfig\Rules\AntlrAbstractGrammar.xml" ".\Tool\Rules"
-copy "..\..\bin\$BuildConfig\Rules\AntlrTokens.xml" ".\Tool\Rules"
+copy "..\..\bin\$BuildConfig\net40\Antlr3.props" ".\Tool"
+copy "..\..\bin\$BuildConfig\net40\Antlr3.targets" ".\Tool"
+copy "..\..\bin\$BuildConfig\net40\AntlrBuildTask.dll" ".\Tool"
+copy "..\..\bin\$BuildConfig\net40\Rules\Antlr3.ProjectItemsSchema.xml" ".\Tool\Rules"
+copy "..\..\bin\$BuildConfig\net40\Rules\Antlr3.xml" ".\Tool\Rules"
+copy "..\..\bin\$BuildConfig\net40\Rules\AntlrAbstractGrammar.xml" ".\Tool\Rules"
+copy "..\..\bin\$BuildConfig\net40\Rules\AntlrTokens.xml" ".\Tool\Rules"
 copy "..\..\LICENSE.txt" ".\Tool"
 
 copy ".\Tool\*" ".\Bootstrap"
 
 # copy ST4 binaries and all symbol files to the full Tool folder
-copy "..\..\bin\$BuildConfig\Antlr3.pdb" ".\Tool"
-copy "..\..\bin\$BuildConfig\Antlr3.Runtime.pdb" ".\Tool"
-copy "..\..\bin\$BuildConfig\Antlr3.Runtime.Debug.pdb" ".\Tool"
-copy "..\..\bin\$BuildConfig\Antlr4.StringTemplate.pdb" ".\Tool"
+copy "..\..\bin\$BuildConfig\net35-client\Antlr3.pdb" ".\Tool"
+copy "..\..\bin\$BuildConfig\net35-client\Antlr3.Runtime.pdb" ".\Tool"
+copy "..\..\bin\$BuildConfig\net35-client\Antlr3.Runtime.Debug.pdb" ".\Tool"
+copy "..\..\bin\$BuildConfig\net35-client\Antlr4.StringTemplate.pdb" ".\Tool"
 if ($DebugBuild) {
-  copy "..\..\bin\$BuildConfig\Antlr4.StringTemplate.Visualizer.pdb" ".\Tool"
+  copy "..\..\bin\$BuildConfig\net35-client\Antlr4.StringTemplate.Visualizer.pdb" ".\Tool"
 }
-copy "..\..\bin\$BuildConfig\AntlrBuildTask.pdb" ".\Tool"
-copy "..\..\bin\$BuildConfig\Antlr3.xml" ".\Tool"
-copy "..\..\bin\$BuildConfig\Antlr3.Runtime.xml" ".\Tool"
-copy "..\..\bin\$BuildConfig\Antlr3.Runtime.Debug.xml" ".\Tool"
-copy "..\..\bin\$BuildConfig\Antlr4.StringTemplate.xml" ".\Tool"
+copy "..\..\bin\$BuildConfig\net40\AntlrBuildTask.pdb" ".\Tool"
+copy "..\..\bin\$BuildConfig\net35-client\Antlr3.xml" ".\Tool"
+copy "..\..\bin\$BuildConfig\net35-client\Antlr3.Runtime.xml" ".\Tool"
+copy "..\..\bin\$BuildConfig\net35-client\Antlr3.Runtime.Debug.xml" ".\Tool"
+copy "..\..\bin\$BuildConfig\net35-client\Antlr4.StringTemplate.xml" ".\Tool"
 if ($DebugBuild) {
-  copy "..\..\bin\$BuildConfig\Antlr4.StringTemplate.Visualizer.xml" ".\Tool"
+  copy "..\..\bin\$BuildConfig\net35-client\Antlr4.StringTemplate.Visualizer.xml" ".\Tool"
 }
-copy "..\..\bin\$BuildConfig\AntlrBuildTask.xml" ".\Tool"
+copy "..\..\bin\$BuildConfig\net40\AntlrBuildTask.xml" ".\Tool"
 
 mkdir "Tool\Codegen"
 mkdir "Tool\Targets"
 mkdir "Tool\Tool"
-copy -r "..\..\bin\$BuildConfig\Codegen\*" ".\Tool\Codegen"
-copy -r "..\..\bin\$BuildConfig\Targets\*.dll" ".\Tool\Targets"
-copy -r "..\..\bin\$BuildConfig\Targets\*.pdb" ".\Tool\Targets"
-copy -r "..\..\bin\$BuildConfig\Targets\*.xml" ".\Tool\Targets"
-copy -r "..\..\bin\$BuildConfig\Tool\*" ".\Tool\Tool"
+copy -r "..\..\bin\$BuildConfig\net35-client\Codegen\*" ".\Tool\Codegen"
+copy -r "..\..\bin\$BuildConfig\net35-client\Targets\*.dll" ".\Tool\Targets"
+copy -r "..\..\bin\$BuildConfig\net35-client\Targets\*.pdb" ".\Tool\Targets"
+copy -r "..\..\bin\$BuildConfig\net35-client\Targets\*.xml" ".\Tool\Targets"
+copy -r "..\..\bin\$BuildConfig\net35-client\Tool\*" ".\Tool\Tool"
 
 mkdir "Bootstrap\Codegen\Templates\CSharp2"
 mkdir "Bootstrap\Codegen\Templates\CSharp3"
 mkdir "Bootstrap\Tool"
 mkdir "Bootstrap\Targets"
-copy "..\..\bin\$BuildConfig\Codegen\Templates\LeftRecursiveRules.stg" ".\Bootstrap\Codegen\Templates"
-copy "..\..\bin\$BuildConfig\Codegen\Templates\CSharp2\*" ".\Bootstrap\Codegen\Templates\CSharp2"
-copy "..\..\bin\$BuildConfig\Codegen\Templates\CSharp3\*" ".\Bootstrap\Codegen\Templates\CSharp3"
-copy "..\..\bin\$BuildConfig\Targets\Antlr3.Targets.CSharp2.dll" ".\Bootstrap\Targets"
-copy "..\..\bin\$BuildConfig\Targets\Antlr3.Targets.CSharp3.dll" ".\Bootstrap\Targets"
-copy -r "..\..\bin\$BuildConfig\Tool\*" ".\Bootstrap\Tool"
+copy "..\..\bin\$BuildConfig\net35-client\Codegen\Templates\LeftRecursiveRules.stg" ".\Bootstrap\Codegen\Templates"
+copy "..\..\bin\$BuildConfig\net35-client\Codegen\Templates\CSharp2\*" ".\Bootstrap\Codegen\Templates\CSharp2"
+copy "..\..\bin\$BuildConfig\net35-client\Codegen\Templates\CSharp3\*" ".\Bootstrap\Codegen\Templates\CSharp3"
+copy "..\..\bin\$BuildConfig\net35-client\Targets\Antlr3.Targets.CSharp2.dll" ".\Bootstrap\Targets"
+copy "..\..\bin\$BuildConfig\net35-client\Targets\Antlr3.Targets.CSharp3.dll" ".\Bootstrap\Targets"
+copy -r "..\..\bin\$BuildConfig\net35-client\Tool\*" ".\Bootstrap\Tool"
 Remove-Item ".\Bootstrap\Tool\Templates\messages\formats\gnu.stg"
 
 # ST3 dist
@@ -164,15 +164,15 @@ copy "..\..\Antlr3.StringTemplate\bin\$BuildConfig\net35-client\Antlr3.Runtime.x
 copy "..\..\LICENSE.txt" ".\ST3"
 
 # ST4 dist
-copy "..\..\bin\$BuildConfig\Antlr3.Runtime.dll" ".\ST4"
-copy "..\..\bin\$BuildConfig\Antlr4.StringTemplate.dll" ".\ST4"
-copy "..\..\bin\$BuildConfig\Antlr4.StringTemplate.Visualizer.dll" ".\ST4"
-copy "..\..\bin\$BuildConfig\Antlr3.Runtime.pdb" ".\ST4"
-copy "..\..\bin\$BuildConfig\Antlr4.StringTemplate.pdb" ".\ST4"
-copy "..\..\bin\$BuildConfig\Antlr4.StringTemplate.Visualizer.pdb" ".\ST4"
-copy "..\..\bin\$BuildConfig\Antlr3.Runtime.xml" ".\ST4"
-copy "..\..\bin\$BuildConfig\Antlr4.StringTemplate.xml" ".\ST4"
-copy "..\..\bin\$BuildConfig\Antlr4.StringTemplate.Visualizer.xml" ".\ST4"
+copy "..\..\bin\$BuildConfig\net35-client\Antlr3.Runtime.dll" ".\ST4"
+copy "..\..\bin\$BuildConfig\net35-client\Antlr4.StringTemplate.dll" ".\ST4"
+copy "..\..\bin\$BuildConfig\net35-client\Antlr4.StringTemplate.Visualizer.dll" ".\ST4"
+copy "..\..\bin\$BuildConfig\net35-client\Antlr3.Runtime.pdb" ".\ST4"
+copy "..\..\bin\$BuildConfig\net35-client\Antlr4.StringTemplate.pdb" ".\ST4"
+copy "..\..\bin\$BuildConfig\net35-client\Antlr4.StringTemplate.Visualizer.pdb" ".\ST4"
+copy "..\..\bin\$BuildConfig\net35-client\Antlr3.Runtime.xml" ".\ST4"
+copy "..\..\bin\$BuildConfig\net35-client\Antlr4.StringTemplate.xml" ".\ST4"
+copy "..\..\bin\$BuildConfig\net35-client\Antlr4.StringTemplate.Visualizer.xml" ".\ST4"
 copy "..\..\LICENSE.txt" ".\ST4"
 
 # compress the distributable packages
@@ -205,12 +205,12 @@ If (-not $?) {
 # Validate the build
 
 If (-not $NoValidate) {
-	#git 'clean' '-dxf' '..\Validation'
-	#dotnet 'run' '--project' '..\Validation\DotnetValidation.csproj' '--framework' 'netcoreapp1.1'
-	#if (-not $?) {
-	#	$host.ui.WriteErrorLine('Build failed, aborting!')
-	#	Exit $LASTEXITCODE
-	#}
+	git 'clean' '-dxf' '..\Validation'
+	dotnet 'run' '--project' '..\Validation\DotnetValidation.csproj' '--framework' 'netcoreapp1.1'
+	if (-not $?) {
+		$host.ui.WriteErrorLine('Build failed, aborting!')
+		Exit $LASTEXITCODE
+	}
 
 	git 'clean' '-dxf' '..\Validation'
 	.\NuGet.exe 'restore' '..\Validation'
