@@ -33,5 +33,7 @@
     <file src="Tool\AntlrBuildTask.dll" target="build"/>
     <file src="Tool\Rules\Antlr3.ProjectItemsSchema.xml" target="build\Rules" />
     <file src="Tool\Rules\Antlr3.xml" target="build\Rules" />
+    <file src="Tool\Rules\AntlrAbstractGrammar.xml" target="build\Rules" />
+    <file src="Tool\Rules\AntlrTokens.xml" target="build\Rules" />
   </files>
 </package>

@@ -157,6 +157,8 @@ copy "..\..\bin\$BuildConfig\Antlr3.targets" ".\Tool"
 copy "..\..\bin\$BuildConfig\AntlrBuildTask.dll" ".\Tool"
 copy "..\..\bin\$BuildConfig\Rules\Antlr3.ProjectItemsSchema.xml" ".\Tool\Rules"
 copy "..\..\bin\$BuildConfig\Rules\Antlr3.xml" ".\Tool\Rules"
+copy "..\..\bin\$BuildConfig\Rules\AntlrAbstractGrammar.xml" ".\Tool\Rules"
+copy "..\..\bin\$BuildConfig\Rules\AntlrTokens.xml" ".\Tool\Rules"
 copy "..\..\LICENSE.txt" ".\Tool"
 
 copy ".\Tool\*" ".\Bootstrap"
