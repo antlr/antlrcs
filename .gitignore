@@ -20,11 +20,6 @@ Thumbs.db
 _ReSharper*/
 [Tt]est[Rr]esult*
 
-# User files related to NuGet project.json
-*.lock.json
-*.nuget.props
-*.nuget.targets
-
 # Ignore build output
 bin/
 obj/
