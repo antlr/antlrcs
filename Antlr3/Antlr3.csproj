@@ -2,7 +2,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>net35-client;net40-client</TargetFrameworks>
+    <TargetFrameworks>net35-client;net40-client;netstandard2.0</TargetFrameworks>
     <OutputType>Exe</OutputType>
 
     <Description>The C# port of ANTLR 3</Description>
@@ -28,6 +28,11 @@
         <TargetFrameworkIdentifier>.NETFramework</TargetFrameworkIdentifier>
         <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
         <TargetFrameworkProfile>Client</TargetFrameworkProfile>
+      </PropertyGroup>
+    </When>
+    <When Condition="'$(TargetFramework)' == 'netstandard2.0'">
+      <PropertyGroup>
+        <DefineConstants>$(DefineConstants);NETSTANDARD</DefineConstants>
       </PropertyGroup>
     </When>
   </Choose>
@@ -381,7 +386,7 @@
   <ItemGroup>
     <ProjectReference Include="..\Runtime\Antlr3.Runtime.Debug\Antlr3.Runtime.Debug.csproj" />
     <ProjectReference Include="..\Runtime\Antlr3.Runtime\Antlr3.Runtime.csproj" />
-    <ProjectReference Include="..\Antlr4.StringTemplate.Visualizer\Antlr4.StringTemplate.Visualizer.csproj" />
+    <ProjectReference Condition="'$(TargetFramework)' != 'netstandard2.0'" Include="..\Antlr4.StringTemplate.Visualizer\Antlr4.StringTemplate.Visualizer.csproj" />
     <ProjectReference Include="..\Antlr4.StringTemplate\Antlr4.StringTemplate.csproj" />
   </ItemGroup>
 

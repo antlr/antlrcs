@@ -39,6 +39,9 @@
     <ProjectReference Include="$(MSBuildThisFileDirectory)..\Runtime\Antlr3.Runtime\Antlr3.Runtime.csproj">
       <Private>false</Private>
     </ProjectReference>
+    <ProjectReference Include="$(MSBuildThisFileDirectory)..\Runtime\Antlr3.Runtime.Debug\Antlr3.Runtime.Debug.csproj">
+      <Private>false</Private>
+    </ProjectReference>
     <ProjectReference Include="$(MSBuildThisFileDirectory)..\Antlr3\Antlr3.csproj">
       <Private>false</Private>
     </ProjectReference>
