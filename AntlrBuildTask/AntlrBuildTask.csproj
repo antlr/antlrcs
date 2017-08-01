@@ -12,7 +12,6 @@
     <InformationalVersion>3.5.2-dev</InformationalVersion>
 
     <OutputPath>..\bin\$(Configuration)\</OutputPath>
-    <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
   </PropertyGroup>
 
   <Choose>

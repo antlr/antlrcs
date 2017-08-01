@@ -21,33 +21,33 @@
   <files>
     <!-- Tools -->
 
-    <file src="..\..\bin\$Configuration$\Antlr3.exe" target="tools"/>
-    <file src="..\..\bin\$Configuration$\Antlr3.pdb" target="tools"/>
-    <file src="..\..\bin\$Configuration$\Antlr3.exe.config" target="tools"/>
-    <file src="..\..\bin\$Configuration$\Antlr3.Runtime.Debug.dll" target="tools"/>
-    <file src="..\..\bin\$Configuration$\Antlr3.Runtime.Debug.pdb" target="tools"/>
-    <file src="..\..\bin\$Configuration$\Antlr3.Runtime.dll" target="tools"/>
-    <file src="..\..\bin\$Configuration$\Antlr3.Runtime.pdb" target="tools"/>
-    <file src="..\..\bin\$Configuration$\Antlr4.StringTemplate.dll" target="tools"/>
-    <file src="..\..\bin\$Configuration$\Antlr4.StringTemplate.pdb" target="tools"/>
-    <file src="..\..\bin\$Configuration$\Codegen\Templates\*.stg" target="tools\Codegen\Templates"/>
-    <file src="..\..\bin\$Configuration$\Codegen\Templates\CSharp2\*.stg" target="tools\Codegen\Templates\CSharp2"/>
-    <file src="..\..\bin\$Configuration$\Codegen\Templates\CSharp3\*.stg" target="tools\Codegen\Templates\CSharp3"/>
-    <file src="..\..\bin\$Configuration$\Targets\Antlr3.Targets.CSharp2.dll" target="tools\Targets"/>
-    <file src="..\..\bin\$Configuration$\Targets\Antlr3.Targets.CSharp2.pdb" target="tools\Targets"/>
-    <file src="..\..\bin\$Configuration$\Targets\Antlr3.Targets.CSharp3.dll" target="tools\Targets"/>
-    <file src="..\..\bin\$Configuration$\Targets\Antlr3.Targets.CSharp3.pdb" target="tools\Targets"/>
-    <file src="..\..\bin\$Configuration$\Tool\Templates\**\*.stg" target="tools\Tool\Templates"/>
+    <file src="..\..\bin\$Configuration$\net40-client\Antlr3.exe" target="tools\net40"/>
+    <file src="..\..\bin\$Configuration$\net40-client\Antlr3.pdb" target="tools\net40"/>
+    <file src="..\..\bin\$Configuration$\net40-client\Antlr3.exe.config" target="tools\net40"/>
+    <file src="..\..\bin\$Configuration$\net40-client\Antlr3.Runtime.Debug.dll" target="tools\net40"/>
+    <file src="..\..\bin\$Configuration$\net40-client\Antlr3.Runtime.Debug.pdb" target="tools\net40"/>
+    <file src="..\..\bin\$Configuration$\net40-client\Antlr3.Runtime.dll" target="tools\net40"/>
+    <file src="..\..\bin\$Configuration$\net40-client\Antlr3.Runtime.pdb" target="tools\net40"/>
+    <file src="..\..\bin\$Configuration$\net40-client\Antlr4.StringTemplate.dll" target="tools\net40"/>
+    <file src="..\..\bin\$Configuration$\net40-client\Antlr4.StringTemplate.pdb" target="tools\net40"/>
+    <file src="..\..\bin\$Configuration$\net40-client\Codegen\Templates\*.stg" target="tools\net40\Codegen\Templates"/>
+    <file src="..\..\bin\$Configuration$\net40-client\Codegen\Templates\CSharp2\*.stg" target="tools\net40\Codegen\Templates\CSharp2"/>
+    <file src="..\..\bin\$Configuration$\net40-client\Codegen\Templates\CSharp3\*.stg" target="tools\net40\Codegen\Templates\CSharp3"/>
+    <file src="..\..\bin\$Configuration$\net40-client\Targets\Antlr3.Targets.CSharp2.dll" target="tools\net40\Targets"/>
+    <file src="..\..\bin\$Configuration$\net40-client\Targets\Antlr3.Targets.CSharp2.pdb" target="tools\net40\Targets"/>
+    <file src="..\..\bin\$Configuration$\net40-client\Targets\Antlr3.Targets.CSharp3.dll" target="tools\net40\Targets"/>
+    <file src="..\..\bin\$Configuration$\net40-client\Targets\Antlr3.Targets.CSharp3.pdb" target="tools\net40\Targets"/>
+    <file src="..\..\bin\$Configuration$\net40-client\Tool\Templates\**\*.stg" target="tools\net40\Tool\Templates"/>
 
     <!-- Build Configuration -->
 
-    <file src="..\..\bin\$Configuration$\Antlr3.props" target="build\Antlr3.CodeGenerator.props" />
-    <file src="..\..\bin\$Configuration$\Antlr3.targets" target="build\Antlr3.CodeGenerator.targets" />
-    <file src="..\..\bin\$Configuration$\AntlrBuildTask.dll" target="build" />
-    <file src="..\..\bin\$Configuration$\AntlrBuildTask.pdb" target="build" />
-    <file src="..\..\bin\$Configuration$\Rules\Antlr3.ProjectItemsSchema.xml" target="build\Rules" />
-    <file src="..\..\bin\$Configuration$\Rules\Antlr3.xml" target="build\Rules" />
-    <file src="..\..\bin\$Configuration$\Rules\AntlrAbstractGrammar.xml" target="build\Rules" />
-    <file src="..\..\bin\$Configuration$\Rules\AntlrTokens.xml" target="build\Rules" />
+    <file src="..\..\bin\$Configuration$\net40\Antlr3.props" target="build\Antlr3.CodeGenerator.props" />
+    <file src="..\..\bin\$Configuration$\net40\Antlr3.targets" target="build\Antlr3.CodeGenerator.targets" />
+    <file src="..\..\bin\$Configuration$\net40\AntlrBuildTask.dll" target="tools\net40" />
+    <file src="..\..\bin\$Configuration$\net40\AntlrBuildTask.pdb" target="tools\net40" />
+    <file src="..\..\bin\$Configuration$\net40\Rules\Antlr3.ProjectItemsSchema.xml" target="build\Rules" />
+    <file src="..\..\bin\$Configuration$\net40\Rules\Antlr3.xml" target="build\Rules" />
+    <file src="..\..\bin\$Configuration$\net40\Rules\AntlrAbstractGrammar.xml" target="build\Rules" />
+    <file src="..\..\bin\$Configuration$\net40\Rules\AntlrTokens.xml" target="build\Rules" />
   </files>
 </package>

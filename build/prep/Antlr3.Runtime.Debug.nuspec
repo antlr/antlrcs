@@ -27,6 +27,10 @@
     <file src="..\..\Runtime\Antlr3.Runtime.Debug\bin\$Configuration$\net20\Antlr3.Runtime.Debug.pdb" target="lib\net20"/>
     <file src="..\..\Runtime\Antlr3.Runtime.Debug\bin\$Configuration$\net20\Antlr3.Runtime.Debug.xml" target="lib\net20"/>
 
+    <file src="..\..\Runtime\Antlr3.Runtime.Debug\bin\$Configuration$\net40-client\Antlr3.Runtime.Debug.dll" target="lib\net40-client"/>
+    <file src="..\..\Runtime\Antlr3.Runtime.Debug\bin\$Configuration$\net40-client\Antlr3.Runtime.Debug.pdb" target="lib\net40-client"/>
+    <file src="..\..\Runtime\Antlr3.Runtime.Debug\bin\$Configuration$\net40-client\Antlr3.Runtime.Debug.xml" target="lib\net40-client"/>
+
     <!-- Source Code -->
 
     <file exclude="..\..\Runtime\Antlr3.Runtime.Debug\obj\**\*.cs" src="..\..\Runtime\Antlr3.Runtime.Debug\**\*.cs" target="src"/>

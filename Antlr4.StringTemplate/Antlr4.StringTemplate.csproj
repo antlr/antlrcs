@@ -2,7 +2,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>net35-client;netstandard1.3</TargetFrameworks>
+    <TargetFrameworks>net35-client;net40-client;netstandard1.3</TargetFrameworks>
 
     <Description>The C# port of StringTemplate 4</Description>
     <Company>Tunnel Vision Laboratories, LLC</Company>
@@ -35,6 +35,13 @@
       <PropertyGroup>
         <TargetFrameworkIdentifier>.NETFramework</TargetFrameworkIdentifier>
         <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+        <TargetFrameworkProfile>Client</TargetFrameworkProfile>
+      </PropertyGroup>
+    </When>
+    <When Condition="'$(TargetFramework)' == 'net40-client'">
+      <PropertyGroup>
+        <TargetFrameworkIdentifier>.NETFramework</TargetFrameworkIdentifier>
+        <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
         <TargetFrameworkProfile>Client</TargetFrameworkProfile>
       </PropertyGroup>
     </When>

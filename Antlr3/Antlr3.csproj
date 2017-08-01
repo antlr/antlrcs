@@ -2,7 +2,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>net35-client</TargetFrameworks>
+    <TargetFrameworks>net35-client;net40-client</TargetFrameworks>
     <OutputType>Exe</OutputType>
 
     <Description>The C# port of ANTLR 3</Description>
@@ -13,7 +13,6 @@
     <InformationalVersion>3.5.2-dev</InformationalVersion>
 
     <OutputPath>..\bin\$(Configuration)\</OutputPath>
-    <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
   </PropertyGroup>
 
   <Choose>
@@ -21,6 +20,13 @@
       <PropertyGroup>
         <TargetFrameworkIdentifier>.NETFramework</TargetFrameworkIdentifier>
         <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+        <TargetFrameworkProfile>Client</TargetFrameworkProfile>
+      </PropertyGroup>
+    </When>
+    <When Condition="'$(TargetFramework)' == 'net40-client'">
+      <PropertyGroup>
+        <TargetFrameworkIdentifier>.NETFramework</TargetFrameworkIdentifier>
+        <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
         <TargetFrameworkProfile>Client</TargetFrameworkProfile>
       </PropertyGroup>
     </When>

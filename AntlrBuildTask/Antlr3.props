@@ -6,8 +6,8 @@
 
   <PropertyGroup>
     <!-- Folder containing AntlrBuildTask.dll -->
-    <AntlrBuildTaskPath>.</AntlrBuildTaskPath>
+    <AntlrBuildTaskPath>$(MSBuildThisFileDirectory)..\tools\net40</AntlrBuildTaskPath>
     <!-- Path to the ANTLR tool itself -->
-    <AntlrToolPath>..\tools\Antlr3.exe</AntlrToolPath>
+    <AntlrToolPath>$(AntlrBuildTaskPath)\Antlr3.exe</AntlrToolPath>
   </PropertyGroup>
 </Project>

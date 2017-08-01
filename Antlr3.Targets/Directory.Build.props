@@ -13,7 +13,8 @@
     <FileVersion>3.5.2.0</FileVersion>
     <InformationalVersion>3.5.2-dev</InformationalVersion>
 
-    <OutputPath>$(MSBuildThisFileDirectory)..\bin\$(Configuration)\Targets\</OutputPath>
+    <IntermediateOutputPath Condition="'$(TargetFramework)' != ''">obj\$(TargetFramework)\$(Configuration)\</IntermediateOutputPath>
+    <OutputPath Condition="'$(TargetFramework)' != ''">$(MSBuildThisFileDirectory)..\bin\$(Configuration)\$(TargetFramework)\Targets\</OutputPath>
     <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
   </PropertyGroup>
 
@@ -22,6 +23,13 @@
       <PropertyGroup>
         <TargetFrameworkIdentifier>.NETFramework</TargetFrameworkIdentifier>
         <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+        <TargetFrameworkProfile>Client</TargetFrameworkProfile>
+      </PropertyGroup>
+    </When>
+    <When Condition="'$(TargetFramework)' == 'net40-client'">
+      <PropertyGroup>
+        <TargetFrameworkIdentifier>.NETFramework</TargetFrameworkIdentifier>
+        <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
         <TargetFrameworkProfile>Client</TargetFrameworkProfile>
       </PropertyGroup>
     </When>
