@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ProjectSchemaDefinitions xmlns="http://schemas.microsoft.com/build/2009/properties">
+  <ContentType Name="Antlr3" DisplayName="ANTLR 3 Grammar" ItemType="Antlr3" />
+  <ContentType Name="AntlrAbstractGrammar" DisplayName="ANTLR 3 Imported Grammar" ItemType="AntlrAbstractGrammar" />
+  <ContentType Name="AntlrTokens" DisplayName="ANTLR 3 Tokens File" ItemType="AntlrTokens" />
+
+  <ItemType Name="Antlr3" DisplayName="ANTLR 3 grammar" />
+  <ItemType Name="AntlrAbstractGrammar" DisplayName="ANTLR 3 imported grammar" />
+  <ItemType Name="AntlrTokens" DisplayName="ANTLR 3 tokens file" />
+
+  <FileExtension Name=".g" ContentType="Antlr3" />
+  <FileExtension Name=".g3" ContentType="Antlr3" />
+  <FileExtension Name=".tokens" ContentType="AntlrTokens" />
+</ProjectSchemaDefinitions>

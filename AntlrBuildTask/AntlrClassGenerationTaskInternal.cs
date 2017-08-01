@@ -36,7 +36,7 @@ namespace Antlr3.Build.Tasks
     using System.Reflection;
     using System.Text;
 
-    internal class AntlrClassGenerationTaskInternal : MarshalByRefObject
+    internal class AntlrClassGenerationTaskInternal
     {
         private List<string> _generatedCodeFiles = new List<string>();
         private IList<string> _sourceCodeFiles = new List<string>();

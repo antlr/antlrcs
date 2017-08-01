@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFrameworks>net20;net30;net35;net40;net45;netcoreapp1.1;portable40-net40+sl5+win8+wp8+wpa81</TargetFrameworks>
+    <EnableDefaultNoneItems>False</EnableDefaultNoneItems>
+    <Antlr4UseCSharpGenerator>True</Antlr4UseCSharpGenerator>
+  </PropertyGroup>
+
+  <Choose>
+    <When Condition="'$(TargetFramework)' == 'portable40-net40+sl5+win8+wp8+wpa81'">
+      <PropertyGroup>
+        <TargetFrameworkIdentifier>.NETPortable</TargetFrameworkIdentifier>
+        <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+        <TargetFrameworkProfile>Profile328</TargetFrameworkProfile>
+        <DefineConstants>$(DefineConstants);LEGACY_PCL</DefineConstants>
+      </PropertyGroup>
+      <ItemGroup>
+        <Reference Include="System" />
+      </ItemGroup>
+    </When>
+  </Choose>
+
+  <ItemGroup>
+    <PackageReference Include="Antlr3" Version="3.5.2-dev" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="NuGet.config" />
+  </ItemGroup>
+
+</Project>

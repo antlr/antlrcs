@@ -28,6 +28,7 @@ _ReSharper*/
 # Ignore build output
 bin/
 obj/
+packages/
 
 # Ignore prepared output folders
 build/prep/Backup/

@@ -2,7 +2,8 @@ param (
   [switch]$Debug,
   [string]$VisualStudioVersion = '15.0',
   [string]$Verbosity = 'minimal',
-  [string]$Logger
+  [string]$Logger,
+  [switch]$NoValidate
 )
 
 # build the solution
@@ -117,6 +118,12 @@ If (-not $?) {
   exit 1
 }
 
+copy -r -force "..\..\bin\$BuildConfig\Rules\*" "..\Bootstrap"
+If (-not $?) {
+  $host.ui.WriteErrorLine("Bootstrap update failed, Aborting!")
+  exit 1
+}
+
 Remove-Item -force "..\Bootstrap\Tool\Templates\messages\formats\gnu.stg"
 
 # build the project again with the new bootstrap files
@@ -129,6 +136,7 @@ If (-not $?) {
 # copy files from the build
 mkdir Runtime
 mkdir Tool
+mkdir Tool\Rules
 mkdir Bootstrap
 mkdir ST3
 mkdir ST4
@@ -148,6 +156,10 @@ if ($DebugBuild) {
 copy "..\..\bin\$BuildConfig\Antlr3.props" ".\Tool"
 copy "..\..\bin\$BuildConfig\Antlr3.targets" ".\Tool"
 copy "..\..\bin\$BuildConfig\AntlrBuildTask.dll" ".\Tool"
+copy "..\..\bin\$BuildConfig\Rules\Antlr3.ProjectItemsSchema.xml" ".\Tool\Rules"
+copy "..\..\bin\$BuildConfig\Rules\Antlr3.xml" ".\Tool\Rules"
+copy "..\..\bin\$BuildConfig\Rules\AntlrAbstractGrammar.xml" ".\Tool\Rules"
+copy "..\..\bin\$BuildConfig\Rules\AntlrTokens.xml" ".\Tool\Rules"
 copy "..\..\LICENSE.txt" ".\Tool"
 
 copy ".\Tool\*" ".\Bootstrap"
@@ -233,4 +245,59 @@ $ArchivePath = ".\dist\antlr-dotnet-st4-" + $STVersion + ".7z"
 If (-not $?) {
   $host.ui.WriteErrorLine("Failed to create NuGet package, Aborting!")
   exit 1
+}
+
+# Validate the build
+
+If (-not $NoValidate) {
+	#git 'clean' '-dxf' '..\Validation'
+	#dotnet 'run' '--project' '..\Validation\DotnetValidation.csproj' '--framework' 'netcoreapp1.1'
+	#if (-not $?) {
+	#	$host.ui.WriteErrorLine('Build failed, aborting!')
+	#	Exit $LASTEXITCODE
+	#}
+
+	git 'clean' '-dxf' '..\Validation'
+	.\NuGet.exe 'restore' '..\Validation'
+	&$msbuild '/nologo' '/m' '/nr:false' '/t:Rebuild' $LoggerArgument "/verbosity:$Verbosity" "/p:Configuration=$BuildConfig" '..\Validation\DotnetValidation.sln'
+	if (-not $?) {
+		$host.ui.WriteErrorLine('Build failed, aborting!')
+		Exit 1
+	}
+
+	"..\Validation\bin\$BuildConfig\net20\DotnetValidation.exe"
+	if (-not $?) {
+		$host.ui.WriteErrorLine('Build failed, aborting!')
+		Exit 1
+	}
+
+	"..\Validation\bin\$BuildConfig\net30\DotnetValidation.exe"
+	if (-not $?) {
+		$host.ui.WriteErrorLine('Build failed, aborting!')
+		Exit 1
+	}
+
+	"..\Validation\bin\$BuildConfig\net35\DotnetValidation.exe"
+	if (-not $?) {
+		$host.ui.WriteErrorLine('Build failed, aborting!')
+		Exit 1
+	}
+
+	"..\Validation\bin\$BuildConfig\net40\DotnetValidation.exe"
+	if (-not $?) {
+		$host.ui.WriteErrorLine('Build failed, aborting!')
+		Exit 1
+	}
+
+	"..\Validation\bin\$BuildConfig\portable40-net40+sl5+win8+wp8+wpa81\DotnetValidation.exe"
+	if (-not $?) {
+		$host.ui.WriteErrorLine('Build failed, aborting!')
+		Exit 1
+	}
+
+	"..\Validation\bin\$BuildConfig\net45\DotnetValidation.exe"
+	if (-not $?) {
+		$host.ui.WriteErrorLine('Build failed, aborting!')
+		Exit 1
+	}
 }

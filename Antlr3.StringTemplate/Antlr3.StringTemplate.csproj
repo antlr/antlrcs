@@ -4,6 +4,7 @@
   <PropertyGroup>
     <TargetFrameworks>net35-client</TargetFrameworks>
     <RootNamespace>Antlr.ST</RootNamespace>
+    <EnableDefaultAntlrItems>false</EnableDefaultAntlrItems>
 
     <Description>The C# port of StringTemplate 3</Description>
     <Company>Tunnel Vision Laboratories, LLC</Company>

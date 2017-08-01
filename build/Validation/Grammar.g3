@@ -1,0 +1,14 @@
+grammar Grammar;
+
+options {
+	output=AST;
+}
+
+public
+compilationUnit
+	:	'text' EOF
+	;
+
+WS
+	:	(' ' | '\t' | '\r' | '\n')+ {Skip();}
+	;
