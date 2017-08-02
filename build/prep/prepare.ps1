@@ -6,8 +6,7 @@ param (
   [switch]$NoValidate
 )
 
-$AntlrVersion = "3.5.2-dev"
-$STVersion = "4.0.9-dev"
+. .\version.ps1
 
 # build the solution
 $SolutionPath = "..\..\Antlr3.sln"
