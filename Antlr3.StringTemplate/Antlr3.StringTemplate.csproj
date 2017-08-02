@@ -50,39 +50,33 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Antlr3 Include="Language\AngleBracketTemplateLexer.g3" />
     <Compile Update="Language\AngleBracketTemplateLexerHelper.cs">
       <DependentUpon>AngleBracketTemplateLexer.g3</DependentUpon>
     </Compile>
-    <Antlr3 Include="Language\Template.g3" />
     <Compile Update="Language\TemplateLexerHelper.cs">
       <DependentUpon>Template.g3</DependentUpon>
     </Compile>
     <Compile Update="Language\TemplateParserHelper.cs">
       <DependentUpon>Template.g3</DependentUpon>
     </Compile>
-    <Antlr3 Include="Language\Interface.g3" />
     <Compile Update="Language\InterfaceLexerHelper.cs">
       <DependentUpon>Interface.g3</DependentUpon>
     </Compile>
     <Compile Update="Language\InterfaceParserHelper.cs">
       <DependentUpon>Interface.g3</DependentUpon>
     </Compile>
-    <Antlr3 Include="Language\Group.g3" />
     <Compile Update="Language\GroupLexerHelper.cs">
       <DependentUpon>Group.g3</DependentUpon>
     </Compile>
     <Compile Update="Language\GroupParserHelper.cs">
       <DependentUpon>Group.g3</DependentUpon>
     </Compile>
-    <Antlr3 Include="Language\Action.g3" />
     <Compile Update="Language\ActionLexerHelper.cs">
       <DependentUpon>Action.g3</DependentUpon>
     </Compile>
     <Compile Update="Language\ActionParserHelper.cs">
       <DependentUpon>Action.g3</DependentUpon>
     </Compile>
-    <Antlr3 Include="Language\ActionEvaluator.g3" />
     <Compile Update="Language\ActionEvaluatorHelper.cs">
       <DependentUpon>ActionEvaluator.g3</DependentUpon>
     </Compile>

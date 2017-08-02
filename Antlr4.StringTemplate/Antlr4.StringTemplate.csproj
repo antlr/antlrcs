@@ -62,19 +62,15 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Antlr3 Include="Compiler\CodeGenerator.g3" />
     <Compile Update="Compiler\CodeGenerator.g3.cs">
       <DependentUpon>CodeGenerator.g3</DependentUpon>
     </Compile>
-    <Antlr3 Include="Compiler\Group.g3" />
     <Compile Update="Compiler\Group.g3.parser.cs">
       <DependentUpon>Group.g3</DependentUpon>
     </Compile>
     <Compile Update="Compiler\Group.g3.lexer.cs">
       <DependentUpon>Group.g3</DependentUpon>
     </Compile>
-    <AntlrTokens Include="Compiler\TemplateLexer.tokens" />
-    <Antlr3 Include="Compiler\TemplateParser.g3" />
     <Compile Update="Compiler\TemplateParser.g3.cs">
       <DependentUpon>TemplateParser.g3</DependentUpon>
     </Compile>

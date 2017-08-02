@@ -60,10 +60,6 @@ If (-not $?) {
   exit $LASTEXITCODE
 }
 
-# back up the bootstrap folder
-$ArchivePath = ".\Backup\Bootstrap-" + [System.IO.Path]::GetFileNameWithoutExtension([System.IO.Path]::GetRandomFileName()) + ".7z"
-.\7z.exe a -r $ArchivePath "..\Bootstrap\*"
-
 # Build Antlr3.CodeGenerator so we can use it for the boostrap build
 .\NuGet.exe pack .\Antlr3.CodeGenerator.nuspec -OutputDirectory nuget -Prop Configuration=$BuildConfig -Version $AntlrVersion -Prop ANTLRVersion=$AntlrVersion -Prop STVersion=$STVersion -Symbols
 If (-not $?) {
