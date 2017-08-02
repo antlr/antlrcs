@@ -43,14 +43,14 @@ namespace Antlr4.StringTemplate.Misc
 
             if (property == null)
                 value = map[TemplateGroup.DefaultKey];
-            else if (property.Equals("keys"))
-                value = map.Keys;
-            else if (property.Equals("values"))
-                value = map.Values;
             else if (map.Contains(property))
                 value = map[property];
             else if (map.Contains(propertyName))
                 value = map[propertyName]; // if can't find the key, try ToString version
+            else if (property.Equals("keys"))
+                value = map.Keys;
+            else if (property.Equals("values"))
+                value = map.Values;
             else
                 value = map[TemplateGroup.DefaultKey]; // not found, use default
 

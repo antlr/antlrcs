@@ -648,5 +648,81 @@ namespace Antlr4.Test.StringTemplate
             string result = st.Render();
             Assert.AreEqual(expected, result);
         }
+
+        [TestMethod]
+        [TestCategory(TestCategories.ST4)]
+        public void TestDictionarySpecialValues()
+        {
+            string templates = @"
+t(id) ::= <<
+<identifier.(id)>
+>>
+
+identifier ::= [
+    ""keyword"" : ""@keyword"",
+    default : key
+]
+";
+
+            writeFile(tmpdir, "t.stg", templates);
+            var group = new TemplateGroupFile(Path.Combine(tmpdir, "t.stg"));
+
+            // try with mapped values
+            var template = group.GetInstanceOf("t").Add("id", "keyword");
+            Assert.AreEqual("@keyword", template.Render());
+
+            // try with non-mapped values
+            template = group.GetInstanceOf("t").Add("id", "nonkeyword");
+            Assert.AreEqual("nonkeyword", template.Render());
+
+            // try with non-mapped values that might break (Substring here guarantees unique instances)
+            template = group.GetInstanceOf("t").Add("id", "_default".Substring(1));
+            Assert.AreEqual("default", template.Render());
+
+            template = group.GetInstanceOf("t").Add("id", "_keys".Substring(1));
+            Assert.AreEqual("keyworddefault", template.Render());
+
+            template = group.GetInstanceOf("t").Add("id", "_values".Substring(1));
+            Assert.AreEqual("@keywordkey", template.Render());
+        }
+
+        [TestMethod]
+        [TestCategory(TestCategories.ST4)]
+        public void TestDictionarySpecialValuesOverride()
+        {
+            string templates = @"
+t(id) ::= <<
+<identifier.(id)>
+>>
+
+identifier ::= [
+    ""keyword"" : ""@keyword"",
+    ""keys"" : ""keys"",
+    ""values"" : ""values"",
+    default : key
+]
+";
+
+            writeFile(tmpdir, "t.stg", templates);
+            var group = new TemplateGroupFile(Path.Combine(tmpdir, "t.stg"));
+
+            // try with mapped values
+            var template = group.GetInstanceOf("t").Add("id", "keyword");
+            Assert.AreEqual("@keyword", template.Render());
+
+            // try with non-mapped values
+            template = group.GetInstanceOf("t").Add("id", "nonkeyword");
+            Assert.AreEqual("nonkeyword", template.Render());
+
+            // try with non-mapped values that might break (Substring here guarantees unique instances)
+            template = group.GetInstanceOf("t").Add("id", "_default".Substring(1));
+            Assert.AreEqual("default", template.Render());
+
+            template = group.GetInstanceOf("t").Add("id", "_keys".Substring(1));
+            Assert.AreEqual("keys", template.Render());
+
+            template = group.GetInstanceOf("t").Add("id", "_values".Substring(1));
+            Assert.AreEqual("values", template.Render());
+        }
     }
 }
