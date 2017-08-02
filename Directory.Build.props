@@ -12,8 +12,6 @@
   </PropertyGroup>
 
   <PropertyGroup>
-    <EnableDefaultAntlrItems>false</EnableDefaultAntlrItems>
-
     <SignAssembly>true</SignAssembly>
     <AssemblyOriginatorKeyFile>$(MSBuildThisFileDirectory)..\..\..\keys\antlr\Key.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
