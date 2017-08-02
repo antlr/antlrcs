@@ -7,14 +7,14 @@
     <Description>The C# port of StringTemplate 4</Description>
     <Company>Tunnel Vision Laboratories, LLC</Company>
     <Copyright>Copyright © Sam Harwell 2011</Copyright>
-    <Version>4.0.7.0</Version>
-    <FileVersion>4.0.9.0</FileVersion>
-    <InformationalVersion>4.0.9-dev</InformationalVersion>
+    <Version>$(STVersion)</Version>
+    <FileVersion>$(STFileVersion)</FileVersion>
+    <InformationalVersion>$(STInformationalVersion)</InformationalVersion>
 
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <IncludeSymbols>true</IncludeSymbols>
     <NuspecFile>..\build\prep\StringTemplate4.nuspec</NuspecFile>
-    <NuspecProperties>Configuration=$(Configuration);version=$(InformationalVersion);ANTLRVersion=3.5.2-dev</NuspecProperties>
+    <NuspecProperties>Configuration=$(Configuration);version=$(InformationalVersion);ANTLRVersion=$(ANTLRInformationalVersion)</NuspecProperties>
     <PackageOutputPath>..\build\prep\nuget\</PackageOutputPath>
   </PropertyGroup>
 

@@ -7,9 +7,9 @@
     <Description>The C# port of ANTLR 3</Description>
     <Company>Tunnel Vision Laboratories, LLC</Company>
     <Copyright>Copyright © Sam Harwell 2011</Copyright>
-    <Version>3.5.0.2</Version>
-    <FileVersion>3.5.2.0</FileVersion>
-    <InformationalVersion>3.5.2-dev</InformationalVersion>
+    <Version>$(ANTLRVersion)</Version>
+    <FileVersion>$(ANTLRFileVersion)</FileVersion>
+    <InformationalVersion>$(ANTLRInformationalVersion)</InformationalVersion>
 
     <OutputPath>..\bin\$(Configuration)\</OutputPath>
   </PropertyGroup>
