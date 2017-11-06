@@ -111,7 +111,7 @@ namespace AntlrUnitTests
             string configuration = "Release";
 #endif
             System.IO.DirectoryInfo currentAssemblyDirectory = new System.IO.FileInfo(typeof(BaseTest).Assembly.Location).Directory;
-            AntlrTool.ToolPathRoot = Path.Combine(currentAssemblyDirectory.Parent.Parent.Parent.FullName, @"bin\" + configuration);
+            AntlrTool.ToolPathRoot = Path.Combine(currentAssemblyDirectory.Parent.Parent.Parent.FullName, "bin", configuration, "net40-client");
 
             // new output dir for each test
             tmpdir = Path.GetFullPath( Path.Combine( Path.GetTempPath(), "antlr-" + currentTimeMillis() ) );
