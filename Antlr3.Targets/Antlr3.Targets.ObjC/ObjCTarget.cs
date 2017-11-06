@@ -1,4 +1,4 @@
-/*
+﻿/*
  * [The "BSD licence"]
  *  Copyright (c) 2010 Terence Parr and Alan Condit
  *  Copyright (c) 2006 Kay Roepke (Objective-C runtime)
