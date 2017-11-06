@@ -48,6 +48,7 @@ namespace Antlr4.StringTemplate
     using Path = System.IO.Path;
     using Uri = System.Uri;
     using UriFormatException = System.UriFormatException;
+    using UriKind = System.UriKind;
     using Utility = Antlr4.StringTemplate.Misc.Utility;
 
     /** The internal representation of a single group file (which must end in
@@ -89,7 +90,11 @@ namespace Antlr4.StringTemplate
                 if (!File.Exists(fileName))
                     throw new FileNotFoundException(string.Format("No such group file: {0}", fileName));
 
-                this._url = new Uri(fileName);
+                if (!Uri.TryCreate(Path.GetFullPath(fileName), UriKind.Absolute, out _url))
+                {
+                    _url = new Uri("file://" + fileName.Replace('\\', '/'));
+                }
+
                 this._fileName = fileName;
 
                 if (Verbose)
@@ -208,18 +213,7 @@ namespace Antlr4.StringTemplate
         {
             get
             {
-                //System.out.println("url of "+fileName+" is "+url.toString());
-                string parent = Path.GetDirectoryName(_url.ToString());
-                try
-                {
-                    return new Uri(parent);
-                }
-                catch (UriFormatException mue)
-                {
-                    ErrorManager.RuntimeError(null, ErrorType.INVALID_TEMPLATE_NAME, mue, parent);
-                }
-
-                return null;
+                return new Uri(_url, ".");
             }
         }
     }
