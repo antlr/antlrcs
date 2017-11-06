@@ -1,4 +1,4 @@
-// $ANTLR 3.1.2 BuildOptions\\DebugGrammar.g3 2009-09-30 13:18:14
+﻿// $ANTLR 3.1.2 BuildOptions\\DebugGrammar.g3 2009-09-30 13:18:14
 
 // The variable 'variable' is assigned but its value is never used.
 #pragma warning disable 219

@@ -1,4 +1,4 @@
-/*
+﻿/*
  * [The "BSD licence"]
  * Copyright (c) 2008 Erik van Bilsen
  * Copyright (c) 2006 Kunle Odutola

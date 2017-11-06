@@ -1,4 +1,4 @@
-/*
+﻿/*
  * [The "BSD license"]
  * Copyright (c) 2011 Terence Parr
  * All rights reserved.
