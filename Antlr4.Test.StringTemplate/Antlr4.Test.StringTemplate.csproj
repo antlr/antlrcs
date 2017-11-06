@@ -2,7 +2,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>net45;netcoreapp1.0</TargetFrameworks>
+    <TargetFrameworks>net45;netcoreapp2.0</TargetFrameworks>
 
     <Description>The C# port of StringTemplate 4</Description>
     <Company>Tunnel Vision Laboratories, LLC</Company>
@@ -13,7 +13,7 @@
   </PropertyGroup>
 
   <Choose>
-    <When Condition="'$(TargetFramework)' == 'netcoreapp1.0'">
+    <When Condition="'$(TargetFramework)' == 'netcoreapp2.0'">
       <PropertyGroup>
         <DefineConstants>$(DefineConstants);NETSTANDARD</DefineConstants>
       </PropertyGroup>
