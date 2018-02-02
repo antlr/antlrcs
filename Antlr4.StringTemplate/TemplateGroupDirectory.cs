@@ -76,7 +76,7 @@ namespace Antlr4.StringTemplate
                 if (Directory.Exists(dirName))
                 {
                     // we found the directory and it'll be file based
-                    root = new Uri(dirName);
+                    root = new Uri(Path.GetFullPath(dirName));
                 }
                 else
                 {
