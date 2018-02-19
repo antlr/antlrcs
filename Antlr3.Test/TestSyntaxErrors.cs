@@ -39,6 +39,7 @@ namespace AntlrUnitTests
     using Regex = System.Text.RegularExpressions.Regex;
 
     [TestClass]
+    [TestCategory(TestCategories.SkipOnCI)]
     public class TestSyntaxErrors : BaseTest
     {
         [TestMethod][TestCategory(TestCategories.Antlr3)]

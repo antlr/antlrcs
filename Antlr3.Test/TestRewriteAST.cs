@@ -41,6 +41,7 @@ namespace AntlrUnitTests
     using GrammarSemanticsMessage = Antlr3.Tool.GrammarSemanticsMessage;
 
     [TestClass]
+    [TestCategory(TestCategories.SkipOnCI)]
     public class TestRewriteAST : BaseTest
     {
         protected bool debug = false;

@@ -6,5 +6,7 @@
         public const string ST3 = "ST3";
 
         public const string Antlr3LeftRecursion = Antlr3 + " (Left Recursion)";
+
+        public const string SkipOnCI = nameof(SkipOnCI);
     }
 }

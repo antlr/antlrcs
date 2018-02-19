@@ -643,7 +643,8 @@ namespace Antlr3.Tool
 
         public static void ResetErrorState()
         {
-            _errorState = new ErrorState();
+            _listener = null;
+            _errorState = null;
         }
 
         public static void Info( String msg )

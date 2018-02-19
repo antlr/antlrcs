@@ -40,6 +40,7 @@ namespace AntlrUnitTests
     using Grammar = Antlr3.Tool.Grammar;
 
     [TestClass]
+    [TestCategory(TestCategories.SkipOnCI)]
     public class TestRewriteTemplates : BaseTest
     {
         protected bool debug = false;

@@ -47,6 +47,7 @@ namespace AntlrUnitTests
      *  and basic functionality.
      */
     [TestClass]
+    [TestCategory(TestCategories.SkipOnCI)]
     public class TestTreeGrammarRewriteAST : BaseTest
     {
         protected bool debug = false;

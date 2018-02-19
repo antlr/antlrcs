@@ -36,6 +36,7 @@ namespace AntlrUnitTests
 
     /** Test the set stuff in lexer and parser */
     [TestClass]
+    [TestCategory(TestCategories.SkipOnCI)]
     public class TestSets : BaseTest
     {
         protected bool debug = false;

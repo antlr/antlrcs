@@ -36,6 +36,7 @@ namespace AntlrUnitTests
 
     /** Test hetero trees in parsers and tree parsers */
     [TestClass]
+    [TestCategory(TestCategories.SkipOnCI)]
     public class TestHeteroAST : BaseTest
     {
         protected bool debug = false;
