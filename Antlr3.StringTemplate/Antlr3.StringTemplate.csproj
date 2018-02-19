@@ -2,7 +2,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>net35-client;netstandard2.0</TargetFrameworks>
+    <TargetFrameworks>net35-client;net40-client;netstandard2.0</TargetFrameworks>
     <RootNamespace>Antlr.ST</RootNamespace>
 
     <Description>The C# port of StringTemplate 3.</Description>
