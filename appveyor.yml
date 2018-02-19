@@ -17,6 +17,7 @@ build_script:
 test_script:
 - vstest.console /logger:Appveyor /TestCaseFilter:"TestCategory!=SkipOnCI" "C:\projects\antlrcs\Antlr3.Test\bin\%CONFIGURATION%\net45\AntlrUnitTests.dll"
 - vstest.console /logger:Appveyor /TestCaseFilter:"TestCategory!=Visualizer" "C:\projects\antlrcs\Antlr4.Test.StringTemplate\bin\%CONFIGURATION%\net45\Antlr4.Test.StringTemplate.dll"
+- dotnet vstest /Framework:".NETCoreApp,Version=v2.0" /TestCaseFilter:"TestCategory!=SkipOnCI" "C:\projects\antlrcs\Antlr3.Test\bin\%CONFIGURATION%\netcoreapp2.0\AntlrUnitTests.dll"
 - dotnet vstest /Framework:".NETCoreApp,Version=v2.0" /TestCaseFilter:"TestCategory!=Visualizer" "C:\projects\antlrcs\Antlr4.Test.StringTemplate\bin\%CONFIGURATION%\netcoreapp2.0\Antlr4.Test.StringTemplate.dll"
 artifacts:
 - path: build\prep\nuget\*.nupkg

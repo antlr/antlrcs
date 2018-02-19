@@ -2,7 +2,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>net35-client</TargetFrameworks>
+    <TargetFrameworks>net35-client;netstandard2.0</TargetFrameworks>
     <RootNamespace>Antlr.ST</RootNamespace>
 
     <Description>The C# port of StringTemplate 3.</Description>
@@ -32,6 +32,15 @@
       <GeneratePackageOnBuild>$(GeneratePackageValue)</GeneratePackageOnBuild>
     </PropertyGroup>
   </Target>
+
+  <Choose>
+    <When Condition="'$(TargetFramework)' == 'netstandard2.0'">
+      <ItemGroup>
+        <PackageReference Include="System.Reflection.Emit.ILGeneration" Version="4.3.0" />
+        <PackageReference Include="System.Reflection.Emit.Lightweight" Version="4.3.0" />
+      </ItemGroup>
+    </When>
+  </Choose>
 
   <PropertyGroup>
     <DefineConstants>$(DefineConstants);COMPILE_EXPRESSIONS;CACHE_FUNCTORS</DefineConstants>

@@ -2,7 +2,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>net35-client;net40-client</TargetFrameworks>
+    <TargetFrameworks>net35-client;net40-client;netstandard2.0</TargetFrameworks>
 
     <Description>The C# port of ANTLR 3</Description>
     <Company>Tunnel Vision Laboratories, LLC</Company>

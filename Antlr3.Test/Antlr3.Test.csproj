@@ -2,7 +2,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>net45</TargetFrameworks>
+    <TargetFrameworks>net45;netcoreapp2.0</TargetFrameworks>
     <RootNamespace>AntlrUnitTests</RootNamespace>
     <AssemblyName>AntlrUnitTests</AssemblyName>
 
@@ -13,6 +13,10 @@
     <FileVersion>$(ANTLRFileVersion)</FileVersion>
     <InformationalVersion>$(ANTLRInformationalVersion)</InformationalVersion>
   </PropertyGroup>
+
+  <ItemGroup Condition="'$(TargetFramework)' == 'netcoreapp2.0'">
+    <PackageReference Include="Microsoft.Win32.Registry" Version="4.3.0" />
+  </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="15.0.0" />

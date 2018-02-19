@@ -204,9 +204,11 @@ namespace Antlr3.ST.Language
                     {
                         Type[] parameterTypes = { typeof( ASTExpr ), typeof( StringTemplate ), typeof( IStringTemplateWriter ) };
                         method = new DynamicMethod( "ActionEvaluator" + _evaluatorNumber, typeof( int ), parameterTypes, typeof( ConditionalExpr ), true );
+#if !NETSTANDARD2_0
                         method.DefineParameter( 1, ParameterAttributes.None, "chunk" );
                         method.DefineParameter( 2, ParameterAttributes.None, "self" );
                         method.DefineParameter( 3, ParameterAttributes.None, "writer" );
+#endif
                         _evaluatorNumber++;
 
                         var gen = method.GetILGenerator();
