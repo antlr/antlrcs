@@ -4,19 +4,21 @@
   <PropertyGroup>
     <TargetFrameworks>net35-client;net40-client;netstandard1.3</TargetFrameworks>
 
-    <Description>The C# port of StringTemplate 4</Description>
-    <Company>Tunnel Vision Laboratories, LLC</Company>
-    <Copyright>Copyright © Sam Harwell 2011</Copyright>
+    <Description>The C# port of StringTemplate 4.</Description>
     <Version>$(STVersion)</Version>
     <FileVersion>$(STFileVersion)</FileVersion>
     <InformationalVersion>$(STInformationalVersion)</InformationalVersion>
 
+    <Title>StringTemplate 4</Title>
+    <PackageId>StringTemplate4</PackageId>
+    <PackageTags>stringtemplate st4 stringtemplate4 template</PackageTags>
+
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-    <IncludeSymbols>true</IncludeSymbols>
-    <NuspecFile>..\build\prep\StringTemplate4.nuspec</NuspecFile>
-    <NuspecProperties>Configuration=$(Configuration);version=$(InformationalVersion);ANTLRVersion=$(ANTLRInformationalVersion)</NuspecProperties>
-    <PackageOutputPath>..\build\prep\nuget\</PackageOutputPath>
   </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="MSBuild.Sdk.Extras" Version="1.2.1" PrivateAssets="All" />
+  </ItemGroup>
 
   <Target Name="DisableCrazyPackageDeletion" BeforeTargets="Clean">
     <PropertyGroup>
@@ -31,20 +33,6 @@
   </Target>
 
   <Choose>
-    <When Condition="'$(TargetFramework)' == 'net35-client'">
-      <PropertyGroup>
-        <TargetFrameworkIdentifier>.NETFramework</TargetFrameworkIdentifier>
-        <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
-        <TargetFrameworkProfile>Client</TargetFrameworkProfile>
-      </PropertyGroup>
-    </When>
-    <When Condition="'$(TargetFramework)' == 'net40-client'">
-      <PropertyGroup>
-        <TargetFrameworkIdentifier>.NETFramework</TargetFrameworkIdentifier>
-        <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
-        <TargetFrameworkProfile>Client</TargetFrameworkProfile>
-      </PropertyGroup>
-    </When>
     <When Condition="'$(TargetFramework)' == 'netstandard1.3'">
       <PropertyGroup>
         <DefineConstants>$(DefineConstants);NETSTANDARD</DefineConstants>
@@ -76,4 +64,5 @@
     </Compile>
   </ItemGroup>
 
+  <Import Project="$(MSBuildSDKExtrasTargets)" Condition="Exists('$(MSBuildSDKExtrasTargets)')" />
 </Project>

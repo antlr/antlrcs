@@ -5,19 +5,21 @@
     <TargetFrameworks>net35-client</TargetFrameworks>
     <RootNamespace>Antlr.ST</RootNamespace>
 
-    <Description>The C# port of StringTemplate 3</Description>
-    <Company>Tunnel Vision Laboratories, LLC</Company>
-    <Copyright>Copyright © Sam Harwell 2011</Copyright>
+    <Description>The C# port of StringTemplate 3.</Description>
     <Version>$(ANTLRVersion)</Version>
     <FileVersion>$(ANTLRFileVersion)</FileVersion>
     <InformationalVersion>$(ANTLRInformationalVersion)</InformationalVersion>
 
+    <Title>StringTemplate 3</Title>
+    <PackageId>StringTemplate3</PackageId>
+    <PackageTags>stringtemplate st3 stringtemplate3 template</PackageTags>
+
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-    <IncludeSymbols>true</IncludeSymbols>
-    <NuspecFile>..\build\prep\StringTemplate3.nuspec</NuspecFile>
-    <NuspecProperties>Configuration=$(Configuration);version=$(InformationalVersion);ANTLRVersion=$(InformationalVersion)</NuspecProperties>
-    <PackageOutputPath>..\build\prep\nuget\</PackageOutputPath>
   </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="MSBuild.Sdk.Extras" Version="1.2.1" PrivateAssets="All" />
+  </ItemGroup>
 
   <Target Name="DisableCrazyPackageDeletion" BeforeTargets="Clean">
     <PropertyGroup>
@@ -30,16 +32,6 @@
       <GeneratePackageOnBuild>$(GeneratePackageValue)</GeneratePackageOnBuild>
     </PropertyGroup>
   </Target>
-
-  <Choose>
-    <When Condition="'$(TargetFramework)' == 'net35-client'">
-      <PropertyGroup>
-        <TargetFrameworkIdentifier>.NETFramework</TargetFrameworkIdentifier>
-        <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
-        <TargetFrameworkProfile>Client</TargetFrameworkProfile>
-      </PropertyGroup>
-    </When>
-  </Choose>
 
   <PropertyGroup>
     <DefineConstants>$(DefineConstants);COMPILE_EXPRESSIONS;CACHE_FUNCTORS</DefineConstants>
@@ -82,4 +74,5 @@
     </Compile>
   </ItemGroup>
 
+  <Import Project="$(MSBuildSDKExtrasTargets)" Condition="Exists('$(MSBuildSDKExtrasTargets)')" />
 </Project>
