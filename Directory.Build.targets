@@ -2,6 +2,10 @@
 <Project>
 
   <PropertyGroup>
+    <MSBuildAllProjects>$(MSBuildAllProjects);$(MSBuildThisFileFullPath)</MSBuildAllProjects>
+  </PropertyGroup>
+
+  <PropertyGroup>
     <!-- Default NuGet package properties. Additional items set in Directory.Build.props. -->
     <PackageVersion Condition="'$(PackageVersion)' == ''">$(InformationalVersion)</PackageVersion>
   </PropertyGroup>

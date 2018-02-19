@@ -2,6 +2,10 @@
 <Project>
 
   <PropertyGroup>
+    <MSBuildAllProjects>$(MSBuildAllProjects);$(MSBuildThisFileFullPath)</MSBuildAllProjects>
+  </PropertyGroup>
+
+  <PropertyGroup>
     <!--
       These properties are used by Directory.Build.props. Make sure they are set early enough for cases where they are
       not explicitly set during the MSBuild invocation.
