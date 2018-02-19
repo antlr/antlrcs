@@ -40,6 +40,7 @@ namespace AntlrUnitTests
     using Regex = System.Text.RegularExpressions.Regex;
 
     [TestClass]
+    [TestCategory(TestCategories.SkipOnCI)]
     public class TestCompositeGrammars : BaseTest
     {
         protected bool debug = false;

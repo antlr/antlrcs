@@ -39,6 +39,7 @@ namespace AntlrUnitTests
      *  etc... than testing a particular ANTLR feature.
      */
     [TestClass]
+    [TestCategory(TestCategories.SkipOnCI)]
     public class TestJavaCodeGeneration : BaseTest
     {
         [TestMethod][TestCategory(TestCategories.Antlr3)]

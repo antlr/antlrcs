@@ -41,6 +41,7 @@ namespace AntlrUnitTests
     using StringTemplate = Antlr4.StringTemplate.Template;
 
     [TestClass]
+    [TestCategory(TestCategories.SkipOnCI)]
     public class TestLexer : BaseTest
     {
         protected bool debug = false;

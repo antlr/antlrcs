@@ -35,6 +35,7 @@ namespace AntlrUnitTests
     using Microsoft.VisualStudio.TestTools.UnitTesting;
 
     [TestClass]
+    [TestCategory(TestCategories.SkipOnCI)]
     public class TestTreeParsing : BaseTest
     {
         [TestMethod][TestCategory(TestCategories.Antlr3)]
