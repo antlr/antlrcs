@@ -93,7 +93,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Build", "Build", "{D2D979DC
 		build\prep\push-antlr.ps1 = build\prep\push-antlr.ps1
 		build\prep\push-st3.ps1 = build\prep\push-st3.ps1
 		build\prep\push-st4.ps1 = build\prep\push-st4.ps1
-		build\prep\StringTemplate4.nuspec = build\prep\StringTemplate4.nuspec
 		build\prep\StringTemplate4.Visualizer.nuspec = build\prep\StringTemplate4.Visualizer.nuspec
 		build\prep\version.ps1 = build\prep\version.ps1
 	EndProjectSection
