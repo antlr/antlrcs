@@ -79,7 +79,7 @@ namespace Antlr3.ST
         public PathGroupLoader( string dirStr, IStringTemplateErrorListener errors )
         {
             _errors = errors;
-            Directories = new ReadOnlyCollection<string>(dirStr.Split(':'));
+            Directories = new ReadOnlyCollection<string>(dirStr.Split(Path.PathSeparator));
         }
 
         /** <summary>Gets a list of directories to pull groups from</summary> */

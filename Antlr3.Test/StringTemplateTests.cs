@@ -206,7 +206,7 @@ namespace AntlrUnitTests
                 }
             }
             StringTemplateGroup.RegisterGroupLoader(
-                new PathGroupLoader( tmpdir + ":" + tmpdir + "/sub", errors )
+                new PathGroupLoader( tmpdir + Path.PathSeparator + tmpdir + "/sub", errors )
             );
 
             string templates =
