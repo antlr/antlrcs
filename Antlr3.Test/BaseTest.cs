@@ -115,7 +115,7 @@ namespace AntlrUnitTests
 #if NET45
             AntlrTool.ToolPathRoot = Path.Combine(currentAssemblyDirectory.Parent.Parent.Parent.FullName, "bin", configuration, "net40-client");
 #else
-            AntlrTool.ToolPathRoot = Path.Combine(currentAssemblyDirectory.Parent.Parent.Parent.FullName, "bin", configuration, "netstandard2.0");
+            AntlrTool.ToolPathRoot = Path.Combine(currentAssemblyDirectory.Parent.Parent.Parent.Parent.FullName, "bin", configuration, "netstandard2.0");
 #endif
 
             // new output dir for each test
