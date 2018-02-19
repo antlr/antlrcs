@@ -73,6 +73,11 @@
       AntlrCompileAddFilesGenerated;
       $(PrepareResourcesDependsOn)
     </PrepareResourcesDependsOn>
+    <SourceFilesProjectOutputGroupDependsOn>
+      AntlrCompile;
+      AntlrCompileAddFilesGenerated;
+      $(SourceFilesProjectOutputGroupDependsOn)
+    </SourceFilesProjectOutputGroupDependsOn>
   </PropertyGroup>
 
   <PropertyGroup>
