@@ -49,6 +49,7 @@
     <ProjectReference Include="..\Antlr3.StringTemplate\Antlr3.StringTemplate.csproj" />
     <ProjectReference Include="..\Antlr3\Antlr3.csproj" />
     <ProjectReference Include="..\Antlr4.StringTemplate\Antlr4.StringTemplate.csproj" />
+    <ProjectReference Include="..\Antlr3.Targets\Antlr3.Targets.CSharp3\Antlr3.Targets.CSharp3.csproj" />
     <ProjectReference Include="..\Antlr3.Targets\Antlr3.Targets.Java\Antlr3.Targets.Java.csproj" />
   </ItemGroup>
 
