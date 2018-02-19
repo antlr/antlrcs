@@ -40,7 +40,7 @@ namespace Antlr3.Targets
     using StringTemplate = Antlr4.StringTemplate.Template;
     using Target = Antlr3.Codegen.Target;
 
-    public class CPPTarget : Target
+    public class CppTarget : Target
     {
         List<string> strings = new List<string>();
 
