@@ -5,4 +5,9 @@
     <None Condition="'$(SignAssembly)' == 'true'" Include="$(AssemblyOriginatorKeyFile)" Link="%(Filename)%(Extension)" />
   </ItemGroup>
 
+  <ItemGroup Condition="'$(GeneratePackageOnBuild)' == 'true'">
+    <!-- Workaround for https://github.com/NuGet/Home/issues/6582 -->
+    <UpToDateCheckInput Condition="'$(NuspecFile)' != ''" Include="$(NuspecFile)" />
+  </ItemGroup>
+
 </Project>
