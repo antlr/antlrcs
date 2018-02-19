@@ -2258,6 +2258,7 @@ namespace AntlrUnitTests
         }
 
         [TestMethod][TestCategory(TestCategories.Antlr3)]
+        [TestCategory(TestCategories.SkipOnCI)]
         public void TestRuleLabelOnTwoDifferentRulesAST() /*throws Exception*/ {
             //Assert.Inconclusive( "I broke this test while trying to fix return values on another test..." );
             string grammar =
@@ -2274,6 +2275,7 @@ namespace AntlrUnitTests
         }
 
         [TestMethod][TestCategory(TestCategories.Antlr3)]
+        [TestCategory(TestCategories.SkipOnCI)]
         public void TestRuleLabelOnTwoDifferentRulesTemplate() /*throws Exception*/ {
             //Assert.Inconclusive( "I broke this test while trying to fix return values on another test..." );
             string grammar =

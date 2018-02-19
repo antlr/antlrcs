@@ -2,6 +2,19 @@
 <Project>
 
   <PropertyGroup>
+    <MSBuildAllProjects>$(MSBuildAllProjects);$(MSBuildThisFileFullPath)</MSBuildAllProjects>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <!--
+      These properties are used by Directory.Build.props. Make sure they are set early enough for cases where they are
+      not explicitly set during the MSBuild invocation.
+    -->
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+  </PropertyGroup>
+
+  <PropertyGroup>
     <ANTLRVersion>3.5.0.2</ANTLRVersion>
     <ANTLRFileVersion>3.5.2.0</ANTLRFileVersion>
     <ANTLRInformationalVersion>3.5.2-dev</ANTLRInformationalVersion>

@@ -1093,7 +1093,7 @@ namespace Antlr3
         {
             string outputDir = OutputDirectory;
 
-            if ( fileNameWithPath.IndexOfAny( System.IO.Path.GetInvalidPathChars() ) >= 0 )
+            if (IsInvalidFileNameWithPath(fileNameWithPath) )
                 return new System.IO.DirectoryInfo( outputDir );
 
             if ( !System.IO.Path.IsPathRooted( fileNameWithPath ) )
@@ -1156,6 +1156,16 @@ namespace Antlr3
                 outputDir = fileDirectory;
             }
             return new System.IO.DirectoryInfo( outputDir );
+        }
+
+        private static bool IsInvalidFileNameWithPath(string fileNameWithPath)
+        {
+            if (fileNameWithPath.IndexOfAny(Path.GetInvalidPathChars()) >= 0)
+                return true;
+
+            // On some platforms, GetInvalidFileNameChars is not simply equal to GetInvalidPathChars plus the directory separators
+            string[] segments = fileNameWithPath.Split(new[] { Path.DirectorySeparatorChar, Path.AltDirectorySeparatorChar }, StringSplitOptions.RemoveEmptyEntries);
+            return segments.Any(segment => segment.IndexOfAny(Path.GetInvalidFileNameChars()) >= 0);
         }
 
         /**
