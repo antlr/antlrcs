@@ -23,7 +23,7 @@
   </Choose>
 
   <ItemGroup>
-    <PackageReference Include="Antlr3" Version="3.5.2-dev" />
+    <PackageReference Include="Antlr3" Version="3.5.2-beta2" />
   </ItemGroup>
 
   <ItemGroup>
