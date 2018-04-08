@@ -2,7 +2,10 @@
 
 [![Join the chat at https://gitter.im/antlr/antlrcs](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/antlr/antlrcs?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
-[![Build status](https://ci.appveyor.com/api/projects/status/x21gyx4ikxsa9n3t/branch/master?svg=true)](https://ci.appveyor.com/project/sharwell/antlrcs/branch/master)
+| Platform | Build Status |
+| --- | --- |
+| Windows | [![Build status](https://ci.appveyor.com/api/projects/status/x21gyx4ikxsa9n3t/branch/master?svg=true)](https://ci.appveyor.com/project/sharwell/antlrcs/branch/master) |
+| Linux | [![Build status](https://travis-ci.org/antlr/antlrcs.svg?branch=master)](https://travis-ci.org/antlr/antlrcs) |
 
 This repository contains C# versions of 3 major projects, some of which have multiple build artifacts:
 
