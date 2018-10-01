@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project>
+
+  <!--
+    Note: In this file, only items may be conditioned on the Antlr4IsSdkProject property. The EnableDefaultAntlrItems
+    is defined unconditionally, but it is simply unused outside of SDK projects.
+  -->
+  <ItemGroup Condition="'$(AntlrIsSdkProject)' == 'True' AND '$(EnableDefaultItems)' == 'True'">
+    <Antlr3 Include="**/*.g" Exclude="$(DefaultItemExcludes);$(DefaultExcludesInProjectFolder)" Condition="'$(EnableDefaultAntlrItems)' == 'True'" />
+    <Antlr3 Include="**/*.g3" Exclude="$(DefaultItemExcludes);$(DefaultExcludesInProjectFolder)" Condition="'$(EnableDefaultAntlrItems)' == 'True'" />
+    <AntlrTokens Include="**/*.tokens" Exclude="$(DefaultItemExcludes);$(DefaultExcludesInProjectFolder)" Condition="'$(EnableDefaultAntlrItems)' == 'True'" />
+  </ItemGroup>
+
+</Project>

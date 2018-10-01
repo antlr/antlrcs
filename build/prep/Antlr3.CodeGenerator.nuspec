@@ -59,6 +59,7 @@
 
     <!-- Build Configuration -->
 
+    <file src="..\..\bin\$Configuration$\net40\Antlr3.CodeGenerator.DefaultItems.props" target="build" />
     <file src="..\..\bin\$Configuration$\net40\Antlr3.CodeGenerator.DefaultItems.targets" target="build" />
     <file src="..\..\bin\$Configuration$\net40\Antlr3.CodeGenerator.props" target="build" />
     <file src="..\..\bin\$Configuration$\net40\Antlr3.CodeGenerator.targets" target="build" />

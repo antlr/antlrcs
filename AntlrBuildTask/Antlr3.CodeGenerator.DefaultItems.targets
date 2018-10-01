@@ -5,12 +5,6 @@
     <EnableDefaultAntlrItems Condition="'$(EnableDefaultAntlrItems)' == ''">True</EnableDefaultAntlrItems>
   </PropertyGroup>
 
-  <ItemGroup Condition="'$(EnableDefaultItems)' == 'True'">
-    <Antlr3 Include="**/*.g" Exclude="$(DefaultItemExcludes);$(DefaultExcludesInProjectFolder)" Condition="'$(EnableDefaultAntlrItems)' == 'True'" />
-    <Antlr3 Include="**/*.g3" Exclude="$(DefaultItemExcludes);$(DefaultExcludesInProjectFolder)" Condition="'$(EnableDefaultAntlrItems)' == 'True'" />
-    <AntlrTokens Include="**/*.tokens" Exclude="$(DefaultItemExcludes);$(DefaultExcludesInProjectFolder)" Condition="'$(EnableDefaultAntlrItems)' == 'True'" />
-  </ItemGroup>
-
   <ItemGroup Condition="'$(EnableDefaultItems)' == 'True' AND '$(EnableDefaultNoneItems)' == 'True'">
     <None Remove="**/*.g" Condition="'$(EnableDefaultAntlrItems)' == 'True'" />
     <None Remove="**/*.g3" Condition="'$(EnableDefaultAntlrItems)' == 'True'" />
