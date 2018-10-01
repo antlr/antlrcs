@@ -22,11 +22,11 @@
   <PropertyGroup>
     <ANTLRVersion>3.5.0.2</ANTLRVersion>
     <ANTLRFileVersion>3.5.2.0</ANTLRFileVersion>
-    <ANTLRInformationalVersion>3.5.2-dev</ANTLRInformationalVersion>
+    <ANTLRInformationalVersion>3.5.2-rc1</ANTLRInformationalVersion>
 
     <STVersion>4.0.7.0</STVersion>
     <STFileVersion>4.0.9.0</STFileVersion>
-    <STInformationalVersion>4.0.9-dev</STInformationalVersion>
+    <STInformationalVersion>4.0.9-rc1</STInformationalVersion>
   </PropertyGroup>
 
   <PropertyGroup>
