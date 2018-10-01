@@ -51,6 +51,18 @@
     <ProjectReference Include="..\Antlr4.StringTemplate\Antlr4.StringTemplate.csproj" />
     <ProjectReference Include="..\Antlr3.Targets\Antlr3.Targets.CSharp3\Antlr3.Targets.CSharp3.csproj" />
     <ProjectReference Include="..\Antlr3.Targets\Antlr3.Targets.Java\Antlr3.Targets.Java.csproj" />
+
+    <ProjectReference Include="..\Antlr3.Targets\Antlr3.Targets.ActionScript\Antlr3.Targets.ActionScript.csproj" ReferenceOutputAssembly="False" />
+    <ProjectReference Include="..\Antlr3.Targets\Antlr3.Targets.Cpp\Antlr3.Targets.Cpp.csproj" ReferenceOutputAssembly="False" />
+    <ProjectReference Include="..\Antlr3.Targets\Antlr3.Targets.CSharp2\Antlr3.Targets.CSharp2.csproj" ReferenceOutputAssembly="False" />
+    <ProjectReference Include="..\Antlr3.Targets\Antlr3.Targets.C\Antlr3.Targets.C.csproj" ReferenceOutputAssembly="False" />
+    <ProjectReference Include="..\Antlr3.Targets\Antlr3.Targets.Delphi\Antlr3.Targets.Delphi.csproj" ReferenceOutputAssembly="False" />
+    <ProjectReference Include="..\Antlr3.Targets\Antlr3.Targets.JavaScript\Antlr3.Targets.JavaScript.csproj" ReferenceOutputAssembly="False" />
+    <ProjectReference Include="..\Antlr3.Targets\Antlr3.Targets.ObjC\Antlr3.Targets.ObjC.csproj" ReferenceOutputAssembly="False" />
+    <ProjectReference Include="..\Antlr3.Targets\Antlr3.Targets.Perl5\Antlr3.Targets.Perl5.csproj" ReferenceOutputAssembly="False" />
+    <ProjectReference Include="..\Antlr3.Targets\Antlr3.Targets.Python3\Antlr3.Targets.Python3.csproj" ReferenceOutputAssembly="False" />
+    <ProjectReference Include="..\Antlr3.Targets\Antlr3.Targets.Python\Antlr3.Targets.Python.csproj" ReferenceOutputAssembly="False" />
+    <ProjectReference Include="..\Antlr3.Targets\Antlr3.Targets.Ruby\Antlr3.Targets.Ruby.csproj" ReferenceOutputAssembly="False" />
   </ItemGroup>
 
 </Project>
