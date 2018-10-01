@@ -35,11 +35,10 @@
   </Choose>
 
   <ItemGroup>
-    <None Include="Antlr3.Java.targets" />
-    <None Include="Antlr3.props">
+    <None Update="Antlr3.props">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Antlr3.targets">
+    <None Update="Antlr3.targets">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>
