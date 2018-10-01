@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="MSBuild.Sdk.Extras">
 
   <PropertyGroup>
     <TargetFrameworks>net20;net40-client;netstandard2.0</TargetFrameworks>
@@ -15,10 +15,6 @@
 
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
   </PropertyGroup>
-
-  <ItemGroup>
-    <PackageReference Include="MSBuild.Sdk.Extras" Version="1.2.1" PrivateAssets="All" />
-  </ItemGroup>
 
   <Target Name="DisableCrazyPackageDeletion" BeforeTargets="Clean">
     <PropertyGroup>
@@ -41,5 +37,4 @@
     <ProjectReference Include="..\Antlr3.Runtime\Antlr3.Runtime.csproj" />
   </ItemGroup>
 
-  <Import Project="$(MSBuildSDKExtrasTargets)" Condition="Exists('$(MSBuildSDKExtrasTargets)')" />
 </Project>
