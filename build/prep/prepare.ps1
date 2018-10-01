@@ -99,8 +99,10 @@ copy "..\..\bin\$BuildConfig\net35-client\Antlr4.StringTemplate.dll" ".\Tool"
 if ($DebugBuild) {
   copy "..\..\bin\$BuildConfig\net35-client\Antlr4.StringTemplate.Visualizer.dll" ".\Tool"
 }
-copy "..\..\bin\$BuildConfig\net40\Antlr3.props" ".\Tool"
-copy "..\..\bin\$BuildConfig\net40\Antlr3.targets" ".\Tool"
+copy "..\..\bin\$BuildConfig\net40\Antlr3.CodeGenerator.DefaultItems.props" ".\Tool"
+copy "..\..\bin\$BuildConfig\net40\Antlr3.CodeGenerator.DefaultItems.targets" ".\Tool"
+copy "..\..\bin\$BuildConfig\net40\Antlr3.CodeGenerator.props" ".\Tool"
+copy "..\..\bin\$BuildConfig\net40\Antlr3.CodeGenerator.targets" ".\Tool"
 copy "..\..\bin\$BuildConfig\net40\AntlrBuildTask.dll" ".\Tool"
 copy "..\..\bin\$BuildConfig\net40\Rules\Antlr3.ProjectItemsSchema.xml" ".\Tool\Rules"
 copy "..\..\bin\$BuildConfig\net40\Rules\Antlr3.xml" ".\Tool\Rules"
