@@ -15,6 +15,11 @@
   </PropertyGroup>
 
   <PropertyGroup>
+    <!-- Solution build dependencies are not project dependencies. https://github.com/Microsoft/msbuild/issues/3626 -->
+    <AddSyntheticProjectReferencesForSolutionDependencies>false</AddSyntheticProjectReferencesForSolutionDependencies>
+  </PropertyGroup>
+
+  <PropertyGroup>
     <ANTLRVersion>3.5.0.2</ANTLRVersion>
     <ANTLRFileVersion>3.5.2.0</ANTLRFileVersion>
     <ANTLRInformationalVersion>3.5.2-dev</ANTLRInformationalVersion>
