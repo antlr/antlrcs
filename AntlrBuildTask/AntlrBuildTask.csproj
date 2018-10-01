@@ -35,10 +35,10 @@
   </Choose>
 
   <ItemGroup>
-    <None Update="Antlr3.props">
+    <None Update="Antlr3.CodeGenerator.props">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="Antlr3.targets">
+    <None Update="Antlr3.CodeGenerator.targets">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>
