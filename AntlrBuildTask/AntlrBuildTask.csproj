@@ -35,6 +35,9 @@
   </Choose>
 
   <ItemGroup>
+    <None Update="Antlr3.CodeGenerator.DefaultItems.targets">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Update="Antlr3.CodeGenerator.props">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>

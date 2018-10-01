@@ -189,21 +189,6 @@
 
   <Choose>
     <When Condition="'$(AntlrIsSdkProject)' == 'True'">
-      <PropertyGroup>
-        <EnableDefaultAntlrItems Condition="'$(EnableDefaultAntlrItems)' == ''">True</EnableDefaultAntlrItems>
-      </PropertyGroup>
-
-      <ItemGroup Condition="'$(EnableDefaultItems)' == 'True'">
-        <Antlr3 Include="**/*.g" Exclude="$(DefaultItemExcludes);$(DefaultExcludesInProjectFolder)" Condition="'$(EnableDefaultAntlrItems)' == 'True'" />
-        <Antlr3 Include="**/*.g3" Exclude="$(DefaultItemExcludes);$(DefaultExcludesInProjectFolder)" Condition="'$(EnableDefaultAntlrItems)' == 'True'" />
-        <AntlrTokens Include="**/*.tokens" Exclude="$(DefaultItemExcludes);$(DefaultExcludesInProjectFolder)" Condition="'$(EnableDefaultAntlrItems)' == 'True'" />
-      </ItemGroup>
-      <ItemGroup Condition="'$(EnableDefaultItems)' == 'True' AND '$(EnableDefaultNoneItems)' == 'True'">
-        <None Remove="**/*.g" Condition="'$(EnableDefaultAntlrItems)' == 'True'" />
-        <None Remove="**/*.g3" Condition="'$(EnableDefaultAntlrItems)' == 'True'" />
-        <None Remove="**/*.tokens" Condition="'$(EnableDefaultAntlrItems)' == 'True'" />
-      </ItemGroup>
-
       <ItemGroup>
         <PropertyPageSchema Include="$(MSBuildThisFileDirectory)Rules\Antlr3.ProjectItemsSchema.xml">
           <Context>Project</Context>
@@ -218,13 +203,8 @@
           <Context>File;BrowseObject</Context>
         </PropertyPageSchema>
       </ItemGroup>
-
-      <!-- Modify the CustomToolNamespace based on the directory location of the grammar -->
-      <ItemGroup>
-        <Antlr3 Update="@(Antlr3)" DefaultCustomToolNamespace="$([MSBuild]::ValueOrDefault(%(RelativeDir), '').Replace('\', '.').Replace('/', '.').TrimEnd('.'))" />
-        <Antlr3 Update="@(Antlr3)" Condition="'$(RootNamespace)' != ''" DefaultCustomToolNamespace="$([MSBuild]::ValueOrDefault('$(RootNamespace).%(DefaultCustomToolNamespace)', '').TrimEnd('.'))" />
-        <Antlr3 Update="@(Antlr3)" CustomToolNamespace="$([MSBuild]::ValueOrDefault(%(CustomToolNamespace), %(DefaultCustomToolNamespace)))" />
-      </ItemGroup>
     </When>
   </Choose>
+
+  <Import Condition="'$(AntlrIsSdkProject)' == 'True'" Project="Antlr3.CodeGenerator.DefaultItems.targets" />
 </Project>
