@@ -35,11 +35,16 @@
   </Choose>
 
   <ItemGroup>
-    <None Include="Antlr3.Java.targets" />
-    <None Include="Antlr3.props">
+    <None Update="Antlr3.CodeGenerator.DefaultItems.props">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Antlr3.targets">
+    <None Update="Antlr3.CodeGenerator.DefaultItems.targets">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Antlr3.CodeGenerator.props">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Antlr3.CodeGenerator.targets">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>

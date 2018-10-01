@@ -12,4 +12,6 @@
     <AntlrToolPath Condition="'$(MSBuildRuntimeType)' != 'Core'">$(AntlrBuildTaskPath)\Antlr3.exe</AntlrToolPath>
     <AntlrToolPath Condition="'$(MSBuildRuntimeType)' == 'Core'">$(AntlrBuildTaskPath)\Antlr3.dll</AntlrToolPath>
   </PropertyGroup>
+
+  <Import Project="Antlr3.CodeGenerator.DefaultItems.props" />
 </Project>
