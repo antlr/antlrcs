@@ -2,11 +2,9 @@ version: 1.0.{build}
 os: Visual Studio 2017
 configuration: Release
 init:
-- cmd: >-
+- cmd: |
     git config --global core.autocrlf true
-
     mkdir ..\..\..\keys\antlr
-
     "C:\Program Files (x86)\Microsoft SDKs\Windows\v10.0A\bin\NETFX 4.6 Tools\sn.exe" -k ..\..\..\keys\antlr\Key.snk
 install:
 - git submodule update --init --recursive
