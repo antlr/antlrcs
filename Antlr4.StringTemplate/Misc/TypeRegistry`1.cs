@@ -238,7 +238,15 @@ namespace Antlr4.StringTemplate.Misc
                 }
             }
 
-            List<Type> candidates = _backingStore.Keys.Where(i => i.IsAssignableFrom(key)).ToList();
+            List<Type> candidates = new List<Type>();
+            foreach (var i in this._backingStore.Keys)
+            {
+                if (i.IsAssignableFrom(key))
+                {
+                    candidates.Add(i);
+                }
+            }
+
             if (candidates.Count == 0)
             {
                 _cache[key] = null;
