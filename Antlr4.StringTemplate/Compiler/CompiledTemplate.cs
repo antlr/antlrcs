@@ -93,6 +93,8 @@ namespace Antlr4.StringTemplate.Compiler
 
         private List<FormalArgument> _formalArguments;
 
+        private Dictionary<string, FormalArgument> _formalArguments2;
+
         private bool _hasFormalArgs;
 
         /** A list of all regions and subtemplates */
@@ -218,6 +220,7 @@ namespace Antlr4.StringTemplate.Compiler
             }
         }
 
+        // TODO: Problem - List is externally exposed and writable without an event hook to know when it's edited to make the dictionary. Making it non-exposed or non-writable would be breaking changes
         public List<FormalArgument> FormalArguments
         {
             get
@@ -229,6 +232,7 @@ namespace Antlr4.StringTemplate.Compiler
             {
                 _formalArguments = value;
                 _numberOfArgsWithDefaultValues = (_formalArguments != null) ? _formalArguments.Count(i => i.DefaultValueToken != null) : 0;
+                _formalArguments2 = value?.ToDictionary(i => i.Name);
             }
         }
 
@@ -354,10 +358,15 @@ namespace Antlr4.StringTemplate.Compiler
         {
             if (name == null)
                 throw new ArgumentNullException("name");
-            if (FormalArguments == null)
+            if (_formalArguments2 == null)
                 return null;
 
-            return FormalArguments.FirstOrDefault(i => i.Name == name);
+            if (_formalArguments2.TryGetValue(name, out FormalArgument value))
+            {
+                return value;
+            }
+
+            return default(FormalArgument);
         }
 
         /// <summary>
@@ -367,13 +376,15 @@ namespace Antlr4.StringTemplate.Compiler
         /// </summary>
         /// <returns>
         /// A copy of the current <see cref="CompiledTemplate"/> instance. The copy is a shallow copy, with the
-        /// exception of the <see cref="_formalArguments"/> field which is also cloned.
+        /// exception of the <see cref="_formalArguments"/> and <see cref="_formalArguments2"/> fields which are also cloned.
         /// </returns>
         public CompiledTemplate Clone()
         {
             CompiledTemplate clone = (CompiledTemplate)MemberwiseClone();
             if (_formalArguments != null)
                 _formalArguments = new List<FormalArgument>(_formalArguments);
+            if (_formalArguments2 != null)
+                _formalArguments2 = new Dictionary<string, FormalArgument>(_formalArguments2);
 
             return clone;
         }
@@ -452,6 +463,9 @@ namespace Antlr4.StringTemplate.Compiler
 
             a.Index = FormalArguments.Count;
             FormalArguments.Add(a);
+            this._formalArguments2[a.Name] = a; // TODO: Is it supposed to be that duplicates are first-writer-wins or last? The test ST4.TestGroupSyntaxErrors.TestArg2 tries to add a duplicate, but passes with either first or last implementation.
+            // Last writer wins:
+            ////if (!_formalArguments2.ContainsKey(a.Name)) _formalArguments2.Add(a.Name, a);
             if (a.DefaultValueToken != null)
                 _numberOfArgsWithDefaultValues++;
         }
