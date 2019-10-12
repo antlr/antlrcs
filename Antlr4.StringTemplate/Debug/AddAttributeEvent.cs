@@ -64,7 +64,7 @@ namespace Antlr4.StringTemplate.Debug
             return "addEvent{" +
                 ", name='" + name + '\'' +
                 ", value=" + value +
-#if !NETSTANDARD
+#if !NETSTANDARD1_3
                 ", location=" + GetFileName() + ":" + GetLine() +
 #endif
                 '}';

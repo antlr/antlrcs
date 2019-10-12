@@ -33,14 +33,14 @@
 namespace Antlr4.StringTemplate.Extensions
 {
     using System;
-#if !NETSTANDARD
+#if !NETSTANDARD1_3
     using BindingFlags = System.Reflection.BindingFlags;
     using MethodInfo = System.Reflection.MethodInfo;
 #endif
 
     public static class ExceptionExtensions
     {
-#if !NETSTANDARD
+#if !NETSTANDARD1_3
         private static readonly Action<Exception> _internalPreserveStackTrace = GetInternalPreserveStackTraceDelegate();
 
         private static Action<Exception> GetInternalPreserveStackTraceDelegate()
@@ -62,7 +62,7 @@ namespace Antlr4.StringTemplate.Extensions
                 return true;
             }
 
-#if NETSTANDARD
+#if NETSTANDARD1_3
             switch (e.GetType().FullName)
             {
             case "System.AccessViolationException":
@@ -90,7 +90,7 @@ namespace Antlr4.StringTemplate.Extensions
 
         public static void PreserveStackTrace(this Exception e)
         {
-#if !NETSTANDARD
+#if !NETSTANDARD1_3
             if (_internalPreserveStackTrace != null)
                 _internalPreserveStackTrace(e);
 #endif

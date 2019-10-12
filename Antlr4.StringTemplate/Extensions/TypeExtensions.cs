@@ -1,4 +1,4 @@
-﻿#if NETSTANDARD
+﻿#if NETSTANDARD1_3
 
 namespace Antlr4.StringTemplate.Extensions
 {
