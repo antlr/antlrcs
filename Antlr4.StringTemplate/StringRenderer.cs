@@ -35,7 +35,7 @@ namespace Antlr4.StringTemplate
     using CultureInfo = System.Globalization.CultureInfo;
     using Encoding = System.Text.Encoding;
     using HttpUtility = Antlr4.StringTemplate.Misc.HttpUtility;
-#if !NETSTANDARD
+#if !NETSTANDARD1_3
     using SecurityElement = System.Security.SecurityElement;
 #endif
 
@@ -65,7 +65,7 @@ namespace Antlr4.StringTemplate
 
             if (formatString.Equals("xml-encode"))
             {
-#if NETSTANDARD
+#if NETSTANDARD1_3
                 return s.Replace("&", "&amp;")
                     .Replace("<", "&lt;")
                     .Replace(">", "&gt;")

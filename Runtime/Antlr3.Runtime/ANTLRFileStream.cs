@@ -46,7 +46,9 @@ namespace Antlr.Runtime
      *  </summary>
      */
     [System.Serializable]
+#if !NETSTANDARD
     [System.Security.Permissions.FileIOPermission(System.Security.Permissions.SecurityAction.Demand, Unrestricted = true)]
+#endif
     public class ANTLRFileStream : ANTLRStringStream
     {
         protected string fileName;

@@ -32,25 +32,25 @@
 
 namespace Antlr4.StringTemplate.Debug
 {
-#if !NETSTANDARD
+#if !NETSTANDARD1_3
     using System.Diagnostics;
 #endif
 
     /** An event that happens when building Template trees, adding attributes etc... */
     public class ConstructionEvent
     {
-#if !NETSTANDARD
+#if !NETSTANDARD1_3
         private readonly StackTrace stack;
 #endif
 
         public ConstructionEvent()
         {
-#if !NETSTANDARD
+#if !NETSTANDARD1_3
             stack = new StackTrace(true);
 #endif
         }
 
-#if !NETSTANDARD
+#if !NETSTANDARD1_3
         public virtual string GetFileName()
         {
             return GetTemplateEntryPoint().GetFileName();
